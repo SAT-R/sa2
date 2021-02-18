@@ -51,6 +51,7 @@ Temporary Items
 # =========================
 
 *.gba
+*.sav
 *.elf
 *.map
 *.o
