@@ -1,0 +1,20 @@
+OUTPUT_ARCH(arm)
+SECTIONS
+{
+	. = 0x08000000;
+    ROM :
+	ALIGN(4)
+	{
+        build/sa2/asm/code.o(.text);
+
+        /* Data */
+        build/sa2/data/data.o(.data);
+
+	} = 0
+
+    /* Discard everything not specifically mentioned above. */
+    /DISCARD/ :
+    {
+        *(*);
+    }
+}
