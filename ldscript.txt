@@ -1,6 +1,20 @@
 OUTPUT_ARCH(arm)
 SECTIONS
 {
+    . = 0x02000000;
+    EWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_ewram.txt"
+    }
+
+    . = 0x03000000;
+    IWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_iwram.txt"
+    }
+    
 	. = 0x08000000;
     ROM :
 	ALIGN(4)
