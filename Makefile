@@ -30,12 +30,14 @@ LDSCRIPT := ldscript.txt
 C_SUBDIR = src
 ASM_SUBDIR = asm
 DATA_ASM_SUBDIR = data
+SOUND_ASM_SUBDIR = sound
 
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
+SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
 
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR))
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR))
 
 C_SRCS := $(wildcard $(C_SUBDIR)/*.c)
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
@@ -46,7 +48,10 @@ ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS)
+SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
+SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
+
+OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SOUND_ASM_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 src/agb_sram.o: CC1FLAGS := -O1 -mthumb-interwork
@@ -81,4 +86,7 @@ $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
+	$(AS) $(ASFLAGS) -o $@ $<
+
+$(SOUND_ASM_BUILDDIR)/%.o: $(SOUND_ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
