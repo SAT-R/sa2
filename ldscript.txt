@@ -23,6 +23,8 @@ SECTIONS
 
         /* Data */
         build/sa2/data/data.o(.data);
+        build/sa2/sound/sound.o(.data);
+        build/sa2/data/data2.o(.data);
 
 	} = 0
 
