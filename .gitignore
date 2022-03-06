@@ -54,7 +54,8 @@ Temporary Items
 *.sav
 *.elf
 *.map
+*.bin
 *.o
 *.dump
 build
-tools
+tools/agbcc

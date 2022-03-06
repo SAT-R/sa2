@@ -1,5 +1,7 @@
 #### Tools ####
 
+SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
+
 CC1      := tools/agbcc/bin/agbcc
 CC1_OLD  := tools/agbcc/bin/old_agbcc
 CPP      := $(DEVKITARM)/bin/arm-none-eabi-cpp
@@ -36,6 +38,7 @@ C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
+SAMPLE_SUBDIR = sound/direct_sound_samples
 
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR))
 
@@ -61,16 +64,24 @@ src/test.o: CC1FLAGS := -O0 -mthumb-interwork
 #### Main Targets ####
 
 compare: $(ROM)
-	sha1sum -c checksum.sha1
+	$(SHA1) checksum.sha1
 
 clean:
-	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) src/*.s
+	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) $(SAMPLE_SUBDIR)/*.bin src/*.s
 
 tidy:
 	rm -f $(ROM) $(ELF) $(MAP)
 	rm -r build/*
 
+
 #### Recipes ####
+
+%.s: ;
+%.png: ;
+%.pal: ;
+
+$(SAMPLE_SUBDIR)/%.bin: $(SAMPLE_SUBDIR)/%.aif
+	$(AIF) $< $@
 	
 $(ELF): $(OBJS) $(LDSCRIPT)
 	$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
@@ -88,5 +99,10 @@ $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
+# Tell make that sounds.s depends
+# on all the .bin files in `direct_sound_samples`
+sound/sound.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
+
 $(SOUND_ASM_BUILDDIR)/%.o: $(SOUND_ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
+
