@@ -343,12 +343,12 @@ gUnknown_08ACEBD4:	@ 0x08ACEBD4
 	.global gUnknown_08ACED90
 gUnknown_08ACED90:	@ 0x08ACED90
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACED90
-	voice_directsound 65, 0, gUnknown_08B53440, 255, 0, 255, 0	@08ACED9C
-	voice_directsound 65, 0, gUnknown_08B58484, 255, 0, 255, 0	@08ACEDA8
+	voice_directsound 65, 0, sound_title_screen_announcement, 255, 0, 255, 0	@08ACED9C
+	voice_directsound 65, 0, sound_sonic_selected_announcement, 255, 0, 255, 0	@08ACEDA8
 	voice_directsound 65, 0, gUnknown_08B5AA00, 255, 0, 255, 0	@08ACEDB4
 	voice_directsound 65, 0, gUnknown_08B5C858, 255, 0, 255, 0	@08ACEDC0
 	voice_directsound 65, 0, gUnknown_08B5F64C, 255, 0, 255, 0	@08ACEDCC
-	voice_directsound 65, 0, gUnknown_08B61D94, 255, 0, 255, 0	@08ACEDD8
+	voice_directsound 65, 0, sound_cream_selected_announcement, 255, 0, 255, 0	@08ACEDD8
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACEDE4
 	voice_directsound 65, 0, gUnknown_08B6410C, 255, 0, 255, 0	@08ACEDF0
 	voice_directsound 65, 0, gUnknown_08B65154, 255, 0, 255, 0	@08ACEDFC

@@ -304,14 +304,14 @@ gUnknown_08B51EBC:
 	.incbin "sound/direct_sound_samples/08B51EBC.bin"
 
 	.align 2
-	.global gUnknown_08B53440
-gUnknown_08B53440:
-	.incbin "sound/direct_sound_samples/08B53440.bin"
+	.global sound_title_screen_announcement
+sound_title_screen_announcement:
+	.incbin "sound/direct_sound_samples/title_screen_announcement.bin"
 
 	.align 2
-	.global gUnknown_08B58484
-gUnknown_08B58484:
-	.incbin "sound/direct_sound_samples/08B58484.bin"
+	.global sound_sonic_selected_announcement
+sound_sonic_selected_announcement:
+	.incbin "sound/direct_sound_samples/sonic_selected_announcement.bin"
 
 	.align 2
 	.global gUnknown_08B5AA00
@@ -329,9 +329,9 @@ gUnknown_08B5F64C:
 	.incbin "sound/direct_sound_samples/08B5F64C.bin"
 
 	.align 2
-	.global gUnknown_08B61D94
-gUnknown_08B61D94:
-	.incbin "sound/direct_sound_samples/08B61D94.bin"
+	.global sound_cream_selected_announcement
+sound_cream_selected_announcement:
+	.incbin "sound/direct_sound_samples/cream_selected_announcement.bin"
 
 	.align 2
 	.global gUnknown_08B6410C
