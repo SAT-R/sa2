@@ -1,4 +1,5 @@
 #### Tools ####
+include config.mk
 
 SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
@@ -88,9 +89,12 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
+	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
+# Build c sources, and ensure alignment
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
+	@echo ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s

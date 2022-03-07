@@ -20,6 +20,8 @@ SECTIONS
 	ALIGN(4)
 	{
         build/sa2/asm/crt0.o(.text);
+        build/sa2/asm/libraries.o(.text);
+        build/sa2/src/main.o(.text);
         build/sa2/asm/code.o(.text);
 
         /* Data */
