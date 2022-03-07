@@ -19,6 +19,7 @@ SECTIONS
     ROM :
 	ALIGN(4)
 	{
+        build/sa2/asm/crt0.o(.text);
         build/sa2/asm/code.o(.text);
 
         /* Data */
