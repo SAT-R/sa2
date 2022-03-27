@@ -1,7 +1,5 @@
 #include "global.h"
 
-#define DISPSTAT ((volatile uint16_t *)0x04000004)
-
 extern char gUnknown_030053B4;
 extern int gUnknown_03001840;
 extern char gUnknown_030026F4;
@@ -56,6 +54,6 @@ void MainLoop(void) {
         }
 
         do {
-        } while ((*DISPSTAT & 1) != 0);
+        } while ((REG_DISPSTAT & 1) != 0);
     } while (1);
 }
