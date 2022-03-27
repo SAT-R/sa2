@@ -18,7 +18,7 @@ PREPROC := tools/preproc/preproc
 RAMSCRGEN := tools/ramscrgen/ramscrgen
 FIX := tools/gbafix/gbafix
 
-CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O1 -fhex-asm
+CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm
 CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 
