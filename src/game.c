@@ -9,15 +9,15 @@ extern int gUnknown_03002860;
 extern int gUnknown_03001890;
 extern int gUnknown_03002790;
 
-extern void sub_8095320();
-extern void sub_800227C();
-extern int sub_8000420(int* a, int* b, int c);
-extern void sub_8002724();
-extern void sub_80019A0();
-extern void sub_8001C90();
-extern void sub_80019A0();
-extern void sub_8002450();
-extern void sub_8001D78();
+void sub_8095320();
+void sub_800227C();
+int sub_8000420(int* a, int* b, int c);
+void sub_8002724();
+void sub_80019A0();
+void sub_8001C90();
+void sub_80019A0();
+void sub_8002450();
+void sub_8001D78();
 
 void MainLoop(void) {
     do {
@@ -48,9 +48,9 @@ void MainLoop(void) {
         }
         if ((gUnknown_03001840 & 0x400) != 0) {
         LAB_08001968:
-            gUnknown_03001840 = gUnknown_03001840 | 0x800;
+            gUnknown_03001840 |= 0x800;
         } else {
-            gUnknown_03001840 = gUnknown_03001840 & 0xfffff7ff;
+            gUnknown_03001840 &= ~2048;
         }
 
         do {
