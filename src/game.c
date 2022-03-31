@@ -18,7 +18,7 @@ void sub_80019A0();
 void sub_8001D78();
 
 void MainLoop(void) {
-    do {
+    while (TRUE) {
         gUnknown_030053B4 = 0;
         if ((gUnknown_03001840 & 0x4000) == 0) {
             sub_8095320();
@@ -40,18 +40,16 @@ void MainLoop(void) {
             }
         } else {
             sub_80019A0();
-            if ((gUnknown_03001840 & 0x400) != 0) goto LAB_08001968;
-
-            sub_8001C90();
+            if (!(gUnknown_03001840 & 0x400)) {
+                sub_8001C90();
+            }
         }
-        if ((gUnknown_03001840 & 0x400) != 0) {
-        LAB_08001968:
+        if ((gUnknown_03001840 & 0x400)) {
             gUnknown_03001840 |= 0x800;
         } else {
             gUnknown_03001840 &= ~2048;
         }
 
-        do {
-        } while ((REG_DISPSTAT & 1) != 0);
-    } while (1);
+        while (REG_DISPSTAT & DISPSTAT_VBLANK);
+    } ;
 }
