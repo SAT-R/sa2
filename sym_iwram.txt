@@ -562,7 +562,7 @@
 . = 0x00004D5C; gUnknown_03004D5C = .;
 . = 0x00004D60; gUnknown_03004D60 = .;
 . = 0x00004D80; gUnknown_03004D80 = .;
-. = 0x00004D90; gUnknown_03004D90 = .;
+. = 0x00004D90; gOamBuffer = .;
 . = 0x00004D96; gUnknown_03004D96 = .;
 . = 0x00005156; gUnknown_03005156 = .;
 . = 0x00005176; gUnknown_03005176 = .;

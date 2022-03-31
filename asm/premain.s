@@ -195,7 +195,7 @@ _08001B42:
 	bne _08001B90
 	bl sub_800594C
 	ldr r0, _08001C04 @ =0x040000D4
-	ldr r3, _08001C18 @ =gUnknown_03004D90
+	ldr r3, _08001C18 @ =gOamBuffer
 	str r3, [r0]
 	movs r1, #0xe0
 	lsls r1, r1, #0x13
@@ -290,7 +290,7 @@ _08001C08: .4byte gUnknown_03001884
 _08001C0C: .4byte gUnknown_03002878
 _08001C10: .4byte gUnknown_03002A80
 _08001C14: .4byte gUnknown_030026F4
-_08001C18: .4byte gUnknown_03004D90
+_08001C18: .4byte gOamBuffer
 _08001C1C: .4byte 0x80000080
 _08001C20: .4byte 0x07000100
 _08001C24: .4byte 0x07000200
@@ -399,7 +399,7 @@ _08001CEA:
 	ldr r0, _08001D68 @ =0x040000D4
 	mov r1, sp
 	str r1, [r0]
-	ldr r1, _08001D6C @ =gUnknown_03004D90
+	ldr r1, _08001D6C @ =gOamBuffer
 	mov ip, r1
 	str r1, [r0, #4]
 	ldr r2, _08001D70 @ =0x81000080
@@ -448,7 +448,7 @@ _08001CEA:
 _08001D60: .4byte gUnknown_030022AC
 _08001D64: .4byte gUnknown_030022C0
 _08001D68: .4byte 0x040000D4
-_08001D6C: .4byte gUnknown_03004D90
+_08001D6C: .4byte gOamBuffer
 _08001D70: .4byte 0x81000080
 _08001D74: .4byte gUnknown_03004D50
 
@@ -584,7 +584,7 @@ _08001EAE:
 	cmp r0, #0xff
 	bne _08001EC8
 	bl sub_800594C
-	ldr r0, _08001F34 @ =gUnknown_03004D90
+	ldr r0, _08001F34 @ =gOamBuffer
 	movs r1, #0xe0
 	lsls r1, r1, #0x13
 	movs r2, #0x80
@@ -641,7 +641,7 @@ _08001F24: .4byte 0x04000200
 _08001F28: .4byte 0x0000FFFD
 _08001F2C: .4byte gUnknown_030018E0
 _08001F30: .4byte gUnknown_030026F4
-_08001F34: .4byte gUnknown_03004D90
+_08001F34: .4byte gOamBuffer
 _08001F38: .4byte gUnknown_03001948
 _08001F3C: .4byte gUnknown_030053A0
 _08001F40: .4byte gUnknown_03001840

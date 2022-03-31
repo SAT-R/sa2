@@ -82,7 +82,7 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
 void DummyFunc(void) { return; }
 
-void sub_8002450(void) {
+void ClearOamBufferCpuSet(void) {
     gUnknown_0300188C = 0;
 
     gUnknown_03001840 &= ~8;
@@ -96,7 +96,7 @@ void sub_8002450(void) {
         }
     }
     gUnknown_03001840 &= ~4;
-    CpuFastFill(0x200, gUnknown_03004D90, OAM_SIZE);
+    CpuFastFill(0x200, gOamBuffer, OAM_SIZE);
     gUnknown_03004D50 = 0;
     gUnknown_03001840 &= ~16;
 }

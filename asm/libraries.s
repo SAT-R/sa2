@@ -2433,7 +2433,7 @@ _0800148A:
 	adds r5, r1, #0
 	strh r5, [r3]
 	str r3, [r0]
-	ldr r1, _08001750 @ =gUnknown_03004D90
+	ldr r1, _08001750 @ =gOamBuffer
 	str r1, [r0, #4]
 	ldr r4, _08001754 @ =0x81000200
 	str r4, [r0, #8]
@@ -2682,7 +2682,7 @@ _08001740: .4byte gUnknown_030027A0
 _08001744: .4byte 0x85000020
 _08001748: .4byte gUnknown_030018F0
 _0800174C: .4byte gUnknown_03002AE0
-_08001750: .4byte gUnknown_03004D90
+_08001750: .4byte gOamBuffer
 _08001754: .4byte 0x81000200
 _08001758: .4byte gUnknown_030022D0
 _0800175C: .4byte gUnknown_03001850

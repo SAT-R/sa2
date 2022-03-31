@@ -15,7 +15,6 @@ void sub_8002724();
 void sub_80019A0();
 void sub_8001C90();
 void sub_80019A0();
-void sub_8002450();
 void sub_8001D78();
 
 void MainLoop(void) {
@@ -37,7 +36,7 @@ void MainLoop(void) {
         if ((gUnknown_03001840 & 0x4000) != 0) {
             sub_8001D78();
             if ((gUnknown_03001840 & 0x400) == 0) {
-                sub_8002450();
+                ClearOamBufferCpuSet();
             }
         } else {
             sub_80019A0();
