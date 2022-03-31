@@ -26,4 +26,7 @@
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))
 
+// TODO: Find better place for this
+typedef void (*HBlankFunc)(u8);
+
 #endif  // GUARD_GLOBAL_H

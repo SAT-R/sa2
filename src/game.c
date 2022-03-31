@@ -10,7 +10,6 @@ extern int gUnknown_03001890;
 extern int gUnknown_03002790;
 
 void sub_8095320();
-void sub_800227C();
 int sub_8000420(int* a, int* b, int c);
 void sub_8002724();
 void sub_80019A0();

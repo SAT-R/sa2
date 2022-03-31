@@ -1,20 +1,7 @@
 #include "global.h"
+#include "main.h"
 
-void sub_8001404(void);
-void InitMain(void);
-
-extern char gUnknown_0300188C;
-extern s32 gUnknown_03001840;
-extern s32 gUnknown_03001884;
-extern s32 gUnknown_03004D54;
-extern s32 gUnknown_030022C0;
-extern s32 gUnknown_030022AC;
-
-extern OamData gUnknown_03004D90[];
-extern char gUnknown_03004D50;
-
-extern u8 gUnknown_030018E0;
-extern HBlankFunc gUnknown_03002AF0[0xa0];
+#define GetBit(x, y) ((x) >> (y)&1)
 
 static void HBlankIntr(void);
 static void VCountIntr(void);
@@ -28,9 +15,41 @@ static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
 
+void sub_800227C(void) {
+    s8 i;
+    u8 *r7 = gUnknown_030022A0, *sb = gUnknown_03002700,
+       *r8 = gUnknown_03002850;
+    gUnknown_03002290 = (~REG_KEYINPUT & KEYS_MASK);
+    gUnknown_03001880 = gUnknown_03002290;
+
+    if (gUnknown_030053C0.unk8 == 1) {
+        sub_8007DBC(gUnknown_03002290);
+    } else if (gUnknown_030053C0.unk8 == 2) {
+        gUnknown_03002290 = sub_8007D8C();
+    }
+
+    gUnknown_03002ADC =
+        (gUnknown_03002290 ^ gUnknown_03002A88) & gUnknown_03002290;
+    gUnknown_0300270C =
+        (gUnknown_03002290 ^ gUnknown_03002A88) & gUnknown_03002A88;
+    gUnknown_03002A88 = gUnknown_03002290;
+    gUnknown_030022B8 = gUnknown_03002ADC;
+
+    for (i = 0; i < 10; i++) {
+        if (!GetBit(gUnknown_03002290, i)) {
+            r7[i] = sb[i];
+        } else if (r7[i] != 0) {
+            r7[i]--;
+        } else {
+            gUnknown_030022B8 |= 1 << i;
+            r7[i] = r8[i];
+        }
+    }
+}
+
 static void HBlankIntr(void) {
     u8 i;
-    u8 vcount = *(vu8*)REG_ADDR_VCOUNT;
+    u8 vcount = *(vu8 *)REG_ADDR_VCOUNT;
 
     if (vcount <= 0x9f) {
         for (i = 0; i < gUnknown_030018E0; i++) {
