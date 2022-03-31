@@ -913,7 +913,7 @@ _080020E0:
 	ands r3, r1
 	strh r3, [r0, #0xa]
 	ldrh r0, [r0, #0xa]
-	ldr r0, _080021B8 @ =gUnknown_03002290
+	ldr r0, _080021B8 @ =gInput
 	strh r5, [r0]
 	movs r0, #0x20
 	bl sub_08097134
@@ -939,7 +939,7 @@ _080021A8: .4byte 0x040000B0
 _080021AC: .4byte 0x0000C5FF
 _080021B0: .4byte 0x00007FFF
 _080021B4: .4byte 0x040000D4
-_080021B8: .4byte gUnknown_03002290
+_080021B8: .4byte gInput
 _080021BC: .4byte gUnknown_03002264
 _080021C0: .4byte 0x04000202
 

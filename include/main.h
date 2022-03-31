@@ -21,10 +21,10 @@ extern u16 sub_8007D8C(void);
 
 extern u8 gUnknown_03002700[];
 extern u8 gUnknown_03002850[];
-extern u16 gUnknown_03002290;  // gInput
-extern u16 gUnknown_03002ADC;  // gPressedKeys
-extern u16 gUnknown_0300270C;  // gReleasedKeys
-extern u16 gUnknown_03002A88;  // gPrevInput
+extern u16 gInput;  // gInput
+extern u16 gPressedKeys;  // gPressedKeys
+extern u16 gReleasedKeys;  // gReleasedKeys
+extern u16 gPrevInput;  // gPrevInput
 extern u16 gUnknown_030022B8;
 extern u16 gUnknown_03001880;
 extern struct Unk_03006CB0 gUnknown_030053C0;

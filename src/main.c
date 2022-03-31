@@ -15,28 +15,28 @@ static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
 
-void sub_800227C(void) {
+void GetInput(void) {
     s8 i;
     u8 *r7 = gUnknown_030022A0, *sb = gUnknown_03002700,
        *r8 = gUnknown_03002850;
-    gUnknown_03002290 = (~REG_KEYINPUT & KEYS_MASK);
-    gUnknown_03001880 = gUnknown_03002290;
+    gInput = (~REG_KEYINPUT & KEYS_MASK);
+    gUnknown_03001880 = gInput;
 
     if (gUnknown_030053C0.unk8 == 1) {
-        sub_8007DBC(gUnknown_03002290);
+        sub_8007DBC(gInput);
     } else if (gUnknown_030053C0.unk8 == 2) {
-        gUnknown_03002290 = sub_8007D8C();
+        gInput = sub_8007D8C();
     }
 
-    gUnknown_03002ADC =
-        (gUnknown_03002290 ^ gUnknown_03002A88) & gUnknown_03002290;
-    gUnknown_0300270C =
-        (gUnknown_03002290 ^ gUnknown_03002A88) & gUnknown_03002A88;
-    gUnknown_03002A88 = gUnknown_03002290;
-    gUnknown_030022B8 = gUnknown_03002ADC;
+    gPressedKeys =
+        (gInput ^ gPrevInput) & gInput;
+    gReleasedKeys =
+        (gInput ^ gPrevInput) & gPrevInput;
+    gPrevInput = gInput;
+    gUnknown_030022B8 = gPressedKeys;
 
     for (i = 0; i < 10; i++) {
-        if (!GetBit(gUnknown_03002290, i)) {
+        if (!GetBit(gInput, i)) {
             r7[i] = sb[i];
         } else if (r7[i] != 0) {
             r7[i]--;

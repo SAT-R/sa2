@@ -25,7 +25,7 @@ void MainLoop(void) {
             sub_8095320();
         }
         if (gUnknown_030026F4 == 255) {
-            sub_800227C();
+            GetInput();
             if (gUnknown_03001954 != '\0') {
                 gUnknown_03001950 =
                     sub_8000420(&gUnknown_03002860, &gUnknown_03001890, 0);

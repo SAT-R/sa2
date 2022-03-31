@@ -2325,7 +2325,7 @@ sub_8001404: @ 0x08001404
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
 _0800144A:
-	ldr r0, _08001480 @ =gUnknown_03002290
+	ldr r0, _08001480 @ =gInput
 	ldrh r0, [r0]
 	cmp r0, #0xf
 	bne _08001484
@@ -2344,7 +2344,7 @@ _08001470: .4byte 0x040000D4
 _08001474: .4byte 0x06010000
 _08001478: .4byte gUnknown_0203B000
 _0800147C: .4byte 0x80002800
-_08001480: .4byte gUnknown_03002290
+_08001480: .4byte gInput
 _08001484:
 	ldr r0, [r2]
 	ldr r1, _08001700 @ =0xFFFFEFFF
