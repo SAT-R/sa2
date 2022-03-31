@@ -1,7 +1,7 @@
 #include "global.h"
 
 void sub_8001404(void);
-void sub_801A51C(void);
+void InitMain(void);
 
 extern char gUnknown_0300188C;
 extern int gUnknown_03001840;
@@ -86,6 +86,7 @@ void sub_8002450(void) {
 
 void AgbMain(void) {
     sub_8001404();
-    sub_801A51C();
+    // Some sort of init function
+    InitMain();
     MainLoop();
 }
