@@ -14,3 +14,9 @@ It builds the following ROM:
 * Then get the build tools from https://github.com/pret/pokeruby-tools. Copy the `tools/` folder into the repository directory.
 
 * You can then build sa2 using `make` in the MSYS environment provided with devkitARM.
+
+### Notes
+
+- It seems the [Kirby & The Amazing Mirror](https://github.com/jiangzhengwenjz/katam/) decompilation uses a very similar codebase
+- https://decomp.me is a great resource for helping to create matching functions
+- `ldscript.txt` tells the linker the order which files should be linked
