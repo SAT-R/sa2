@@ -11,7 +11,9 @@ It builds the following ROM:
 
 * Install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM).
 
-* Then get the build tools from https://github.com/pret/pokeruby-tools. Copy the `tools/` folder into the repository directory.
+* Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
+
+* Run `./build.sh` and `./install.sh path/to/SoAdvance2`
 
 * You can then build sa2 using `make` in the MSYS environment provided with devkitARM.
 
