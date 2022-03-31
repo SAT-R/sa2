@@ -9,7 +9,7 @@ extern int gUnknown_03002860;
 extern int gUnknown_03001890;
 extern int gUnknown_03002790;
 
-void sub_8095320();
+void m4aSoundMain();
 int sub_8000420(int* a, int* b, int c);
 void sub_8002724();
 void sub_80019A0();
@@ -20,8 +20,8 @@ void sub_8001D78();
 void MainLoop(void) {
     while (TRUE) {
         gUnknown_030053B4 = 0;
-        if ((gUnknown_03001840 & 0x4000) == 0) {
-            sub_8095320();
+        if (!(gUnknown_03001840 & 0x4000)) {
+            m4aSoundMain();
         }
         if (gUnknown_030026F4 == 255) {
             GetInput();
