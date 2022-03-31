@@ -4,64 +4,62 @@ void sub_8001404(void);
 void InitMain(void);
 
 extern char gUnknown_0300188C;
-extern int gUnknown_03001840;
-extern int gUnknown_03001884;
-extern int gUnknown_03004D54;
-extern int gUnknown_030022C0;
-extern int gUnknown_030022AC;
+extern s32 gUnknown_03001840;
+extern s32 gUnknown_03001884;
+extern s32 gUnknown_03004D54;
+extern s32 gUnknown_030022C0;
+extern s32 gUnknown_030022AC;
 
-extern int gUnknown_03004D90;
+extern OamData gUnknown_03004D90[];
 extern char gUnknown_03004D50;
 
-void SetReg5(void) {
-    REG_IF = 4;
-    return;
+extern u8 gUnknown_030018E0;
+extern HBlankFunc gUnknown_03002AF0[0xa0];
+
+static void HBlankIntr(void);
+static void VCountIntr(void);
+static void Timer0Intr(void);
+static void Timer1Intr(void);
+static void Timer2Intr(void);
+static void Dma0Intr(void);
+static void Dma1Intr(void);
+static void Dma2Intr(void);
+static void Dma3Intr(void);
+static void KeypadIntr(void);
+static void GamepakIntr(void);
+
+static void HBlankIntr(void) {
+    u8 i;
+    u8 vcount = *(vu8*)REG_ADDR_VCOUNT;
+
+    if (vcount <= 0x9f) {
+        for (i = 0; i < gUnknown_030018E0; i++) {
+            gUnknown_03002AF0[i](vcount);
+        }
+    }
+
+    REG_IF = INTR_FLAG_HBLANK;
 }
 
-void SetReg100(void) {
-    REG_IF = 0x100;
-    return;
-}
+static void VCountIntr(void) { REG_IF = INTR_FLAG_VCOUNT; }
 
-void SetReg200(void) {
-    REG_IF = 0x200;
-    return;
-}
+static void Dma0Intr(void) { REG_IF = INTR_FLAG_DMA0; }
 
-void SetReg400(void) {
-    REG_IF = 0x400;
-    return;
-}
+static void Dma1Intr(void) { REG_IF = INTR_FLAG_DMA1; }
 
-void SetReg800(void) {
-    REG_IF = 0x800;
-    return;
-}
+static void Dma2Intr(void) { REG_IF = INTR_FLAG_DMA2; }
 
-void SetReg8(void) {
-    REG_IF = 8;
-    return;
-}
+static void Dma3Intr(void) { REG_IF = INTR_FLAG_DMA3; }
 
-void SetReg10(void) {
-    REG_IF = 0x10;
-    return;
-}
+static void Timer0Intr(void) { REG_IF = INTR_FLAG_TIMER0; }
 
-void SetReg20(void) {
-    REG_IF = 0x20;
-    return;
-}
+static void Timer1Intr(void) { REG_IF = INTR_FLAG_TIMER1; }
 
-void SetReg1000(void) {
-    REG_IF = 0x1000;
-    return;
-}
+static void Timer2Intr(void) { REG_IF = INTR_FLAG_TIMER2; }
 
-void SetReg2000(void) {
-    REG_IF = 0x2000;
-    return;
-}
+static void KeypadIntr(void) { REG_IF = INTR_FLAG_KEYPAD; }
+
+static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
 void DummyFunc(void) { return; }
 
@@ -79,7 +77,7 @@ void sub_8002450(void) {
         }
     }
     gUnknown_03001840 &= ~4;
-    CpuFastFill(0x200, &gUnknown_03004D90, 1024);
+    CpuFastFill(0x200, gUnknown_03004D90, OAM_SIZE);
     gUnknown_03004D50 = 0;
     gUnknown_03001840 &= ~16;
 }

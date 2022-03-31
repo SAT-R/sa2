@@ -9,7 +9,7 @@
 
 // #include "types.h"
 // #include "variables.h"
-// #include "functions.h"
+#include "functions.h"
 
 // helper macros
 

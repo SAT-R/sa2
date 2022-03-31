@@ -114,24 +114,35 @@ struct PlttData
     u16 unused_15:1;
 } /*__attribute__((packed))*/;
 
-struct OamData
-{
+typedef union {
+    struct {
     /*0x00*/ u32 y:8;
-    /*0x01*/ u32 affineMode:2;  // 0x1, 0x2 = 0x3
-             u32 objMode:2;     // 0x4, 0x8 = 0xC
+    /*0x01*/ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
+             u32 objMode:2;     // 0x4, 0x8 -> 0xC
              u32 mosaic:1;      // 0x10
              u32 bpp:1;         // 0x20
-             u32 shape:2;       // 0x40, 0x80
+             u32 shape:2;       // 0x40, 0x80 -> 0xC0
 
     /*0x02*/ u32 x:9;
-             u32 matrixNum:5; // bits 3/4 are h-flip/v-flip if not in affine mode
-             u32 size:2;
+             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
 
-    /*0x04*/ u16 tileNum:10;
-             u16 priority:2;
+    /*0x04*/ u16 tileNum:10;    // 0x3FF
+             u16 priority:2;    // 0x400, 0x800 -> 0xC00
              u16 paletteNum:4;
-    /*0x06*/ u16 affineParam;
-};
+
+    /*0x06*/ u16 fractional:8;
+             u16 integer:7;
+             u16 sign:1;
+    } split;
+
+    struct {
+        u16 attr0;
+        u16 attr1;
+        u16 attr2;
+        u16 affineParam;
+    } all;
+} OamData;
 
 #define ST_OAM_OBJ_NORMAL 0
 #define ST_OAM_OBJ_BLEND  1
