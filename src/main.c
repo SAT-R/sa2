@@ -16,9 +16,176 @@ static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
 
-ASM_FUNC("asm/non_matching/main/sub_8001404.inc", void sub_8001404(void));
+// To be filled once we have all the functions needed
+// IntrFunc const gIntrTableTemplate[] = {
+//     (void*)gMultiSioIntrFuncBuf,
+//     VBlankIntr,
+//     HBlankIntr,
+//     VCountIntr,
+//     Timer0Intr,
+//     Timer1Intr,
+//     Timer2Intr,
+//     Timer3Intr,
+//     Dma0Intr,
+//     Dma1Intr,
+//     Dma2Intr,
+//     Dma3Intr,
+//     KeypadIntr,
+//     GamepakIntr,
+// };
 
-void MainLoop(void) {
+
+void GameInit(void) {
+    s16 i;
+
+    REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
+    gUnknown_03001840 = 0;
+    gUnknown_03002790 = 0;
+
+    if ((REG_RCNT & 0xc000) != 0x8000) {
+        gUnknown_03001840 = 0x200;
+        DmaSet(3, OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
+    }
+
+    if (gInput ==
+        (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
+        gUnknown_03001840 = gUnknown_03001840 | 0x1000;
+    } else {
+        gUnknown_03001840 &= 0xffffefff;
+    }
+
+    DmaFill32(3, 0, (void*)VRAM, VRAM_SIZE);
+    DmaFill32(3, 0, (void*)OAM, OAM_SIZE);
+    DmaFill32(3, 0, (void*)PLTT, PLTT_SIZE)
+
+    gUnknown_030026F4 = 0xff;
+    gUnknown_03002AE4 = 0;
+    gUnknown_0300287C = 0;
+    gUnknown_03005390 = 0;
+    gUnknown_03004D5C = 0;
+    gUnknown_03002A84 = 0;
+
+    DmaFill32(3, 0, gUnknown_03002280, 0x10);
+    gUnknown_03004D80 = 0;
+
+    DmaFill32(3, 0, gUnknown_03002830, sizeof(gUnknown_03002830));
+
+    gUnknown_030017F4[0] = 0;
+    gUnknown_030017F4[1] = 0;
+
+    gUnknown_03002840 = DISPCNT_FORCED_BLANK;
+
+    DmaFill32(3, 0, gUnknown_030027A0, 0x80);
+
+    gUnknown_030018F0 = 0;
+    gUnknown_03002AE0 = 0;
+
+    DmaFill16(3, 0x200, gOamBuffer, OAM_SIZE);
+    DmaFill16(3, 0x200, gUnknown_030022D0, 0x400);
+    DmaFill32(3, ~0, gUnknown_03001850, 0x20);
+    DmaFill32(3, ~0, gUnknown_03004D60, 0x20);
+    DmaFill32(3, 0, gUnknown_03002060, OBJ_PLTT_SIZE);
+    DmaFill32(3, 0, gUnknown_03002880, BG_PLTT_SIZE);
+
+    gUnknown_03001920.bg2pa = 0x100;
+    gUnknown_03001920.bg2pb = 0;
+    gUnknown_03001920.bg2pc = 0;
+    gUnknown_03001920.bg2pd = 0x100;
+    gUnknown_03001920.bg2x = 0;
+    gUnknown_03001920.bg2y = 0;
+    gUnknown_03001920.bg3pa = 0x100;
+    gUnknown_03001920.bg3pb = 0;
+    gUnknown_03001920.bg3pc = 0;
+    gUnknown_03001920.bg3pd = 0x100;
+    gUnknown_03001920.bg3x = 0;
+    gUnknown_03001920.bg3y = 0;
+
+    gUnknown_03001944 = 0;
+    gUnknown_030017F0 = 0x100;
+    gUnknown_03005394 = 0x100;
+    gUnknown_03002A8C = 0;
+    gUnknown_03004D58 = 0;
+    gUnknown_0300194C = 0;
+    gUnknown_03002820 = 0;
+    gUnknown_03005398 = 0x100;
+
+    gUnknown_03002270[0] = 0;
+    gUnknown_03002270[1] = 0;
+    gUnknown_03002270[2] = 0;
+    gUnknown_03002270[3] = 0;
+    gUnknown_03002270[4] = 0;
+    gUnknown_03002270[5] = 0;
+
+    gUnknown_030018E8.bldCnt = 0;
+    gUnknown_030018E8.bldAlpha = 0;
+    gUnknown_030018E8.bldY = 0;
+
+    gUnknown_030026D0 = 0;
+    gUnknown_030053B8 = 0;
+
+    for (i = 0; i < 10; i++) {
+        gUnknown_03002700[i] = 0x14;
+        gUnknown_03002850[i] = 8;
+    }
+
+    gUnknown_030053C0.unk8 = 0;
+    // This matches better when the params are inlined
+    asm("":::"sb");
+    gUnknown_03001880 = 0;
+    gUnknown_030053B0 = 0;
+    asm("":::"sl");
+
+    gUnknown_03002264 = 0;
+
+    for (i = 0; i < 15; i++) {
+        gIntrTable[i] = gIntrTableTemplate[i];
+    }
+    
+    DmaFill32(3, 0, &gUnknown_03001B60, 0x500);
+
+    gUnknown_03001884 = gUnknown_03001B60[0];
+    gUnknown_030022AC = gUnknown_03001B60[1];
+    gUnknown_03002878 = 0;
+    gUnknown_03002A80 = 0;
+    gUnknown_0300188C = 0;
+    gUnknown_030018E0 = 0;
+
+    DmaFill32(3, 0, gUnknown_030026E0, 0x10);
+    DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
+
+    gUnknown_03004D50 = 0;
+    gUnknown_03001948 = 0;
+
+    DmaFill32(3, 0, gUnknown_03001870, 0x10);
+    DmaFill32(3, 0, gUnknown_030053A0, 0x10);
+
+    sub_80952A8();
+    sub_8095844(0x93f500);
+    gUnknown_030053B4 = 1;
+    sub_8002504();
+    sub_8007B2C();
+    gUnknown_03001888 = 0x230;
+    gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
+    sub_8007CC8();
+
+    if (sub_8096C9C() != 0) {
+        gUnknown_03001840 = gUnknown_03001840 | 0x100;
+    } else {
+        sub_8096884(1, &gUnknown_030007C4);
+    }
+    DmaCopy32(3, IntrMain, &gUnknown_030007F0, 0x200);
+    INTR_VECTOR = &gUnknown_030007F0;
+    REG_IME = INTR_FLAG_VBLANK;
+    REG_IE = INTR_FLAG_VBLANK;
+    REG_DISPSTAT = 0x18;
+    DmaFill32(3, 0, &gUnknown_03002860, sizeof(gUnknown_03002860));
+    DmaFill32(3, 0, gUnknown_03001890, sizeof(gUnknown_03001890));
+    gUnknown_03001950 = 0;
+    gUnknown_03001954 = 0;
+    sub_800032C(0);
+}
+
+void GameLoop(void) {
     while (TRUE) {
         gUnknown_030053B4 = 0;
         if (!(gUnknown_03001840 & 0x4000)) {
@@ -153,8 +320,8 @@ void ClearOamBufferCpuSet(void) {
 }
 
 void AgbMain(void) {
-    sub_8001404();
+    GameInit();
     // Some sort of init function
     InitMain();
-    MainLoop();
+    GameLoop();
 }
