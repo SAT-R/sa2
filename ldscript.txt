@@ -23,6 +23,10 @@ SECTIONS
         build/sa2/asm/libraries.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/asm/code.o(.text);
+        build/sa2/asm/libagbsyscall.o(.text);
+        build/sa2/asm/sub_08097178.o(.text);
+        build/sa2/asm/libgcc.o(.text);
+        build/sa2/asm/code2.o(.text);
 
         /* Data */
         build/sa2/data/data.o(.data);
