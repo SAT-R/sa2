@@ -200,6 +200,6 @@ void sub_8001D78();
 
 void GetInput(void);
 void ClearOamBufferCpuSet(void);
-void MainLoop(void);
+void GameLoop(void);
 
 #endif
