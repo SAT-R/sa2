@@ -1,16 +1,15 @@
 #include "global.h"
+#include "main.h"
 
 extern char gUnknown_030053B4;
 extern int gUnknown_03001840;
 extern char gUnknown_030026F4;
 extern char gUnknown_03001954;
 extern int gUnknown_03001950;
-extern int gUnknown_03002860;
-extern int gUnknown_03001890;
 extern int gUnknown_03002790;
 
 void m4aSoundMain();
-int sub_8000420(int* a, int* b, int c);
+int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
 void sub_8002724();
 void sub_80019A0();
 void sub_8001C90();
@@ -27,7 +26,7 @@ void MainLoop(void) {
             GetInput();
             if (gUnknown_03001954 != '\0') {
                 gUnknown_03001950 =
-                    sub_8000420(&gUnknown_03002860, &gUnknown_03001890, 0);
+                    sub_8000420(&gUnknown_03002860, gUnknown_03001890, 0);
             }
             sub_8002724();
         }

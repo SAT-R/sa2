@@ -90,4 +90,7 @@ union MultiSioData {
 extern union MultiSioData gUnknown_03002860; // gMultiSioSend
 extern union MultiSioData gUnknown_03001890[4]; // gMultiSioRecv
 
+void GetInput(void);
+void ClearOamBufferCpuSet(void);
+
 #endif
