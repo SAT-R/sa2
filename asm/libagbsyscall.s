@@ -47,8 +47,8 @@ RLUnCompWram: @ 0x08097130
 	svc #0x14
 	bx lr
 
-	thumb_func_start sub_08097134
-sub_08097134: @ 0x08097134
+	thumb_func_start SoftReset
+SoftReset: @ 0x08097134
 	ldr r3, _08097144 @ =0x04000208
 	movs r2, #0
 	strb r2, [r3]
@@ -73,8 +73,8 @@ VBlankIntrWait: @ 0x08097150
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_08097158
-sub_08097158: @ 0x08097158
+	thumb_func_start SoftReset2
+SoftReset2: @ 0x08097158
 	ldr r3, _08097170 @ =0x04000208
 	movs r2, #0
 	strb r2, [r3]

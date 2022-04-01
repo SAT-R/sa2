@@ -25,7 +25,7 @@ SECTIONS
         build/sa2/asm/code.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
         build/sa2/asm/sub_08097178.o(.text);
-        build/sa2/asm/libgcc.o(.text);
+        *libgcc.a:_call_via_rX.o(.text);
         build/sa2/asm/code2.o(.text);
 
         /* Data */

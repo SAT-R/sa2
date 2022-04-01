@@ -226,7 +226,7 @@ _080020E0:
 	ldr r0, _080021B8 @ =gInput
 	strh r5, [r0]
 	movs r0, #0x20
-	bl sub_08097134
+	bl SoftReset
 _0800217A:
 	ldr r1, _080021BC @ =gUnknown_03002264
 	ldr r0, [r1]
