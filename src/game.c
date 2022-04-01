@@ -1,20 +1,8 @@
 #include "global.h"
 #include "main.h"
+#include "m4a.h"
 
-extern char gUnknown_030053B4;
-extern int gUnknown_03001840;
-extern char gUnknown_030026F4;
-extern char gUnknown_03001954;
-extern int gUnknown_03001950;
-extern int gUnknown_03002790;
-
-void m4aSoundMain();
-int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
-void sub_8002724();
-void sub_80019A0();
-void sub_8001C90();
-void sub_80019A0();
-void sub_8001D78();
+ASM_FUNC("asm/non_matching/main/sub_8001404.inc", void sub_8001404(void));
 
 void MainLoop(void) {
     while (TRUE) {

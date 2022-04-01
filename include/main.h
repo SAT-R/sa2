@@ -1,7 +1,7 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
 
-extern void sub_8001404(void);
+// extern void sub_8001404(void);
 extern void InitMain(void);
 
 extern char gUnknown_0300188C;
@@ -90,7 +90,22 @@ union MultiSioData {
 extern union MultiSioData gUnknown_03002860; // gMultiSioSend
 extern union MultiSioData gUnknown_03001890[4]; // gMultiSioRecv
 
+extern char gUnknown_030053B4;
+extern int gUnknown_03001840;
+extern char gUnknown_030026F4;
+extern char gUnknown_03001954;
+extern int gUnknown_03001950;
+extern int gUnknown_03002790;
+
+int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
+void sub_8002724();
+void sub_80019A0();
+void sub_8001C90();
+void sub_80019A0();
+void sub_8001D78();
+
 void GetInput(void);
 void ClearOamBufferCpuSet(void);
+void MainLoop(void);
 
 #endif

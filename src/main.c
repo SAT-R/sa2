@@ -15,6 +15,8 @@ static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
 
+ASM_FUNC("asm/non_matching/main/sub_80021c4.inc", void sub_80021c4(void));
+
 void GetInput(void) {
     s8 i;
     u8 *r7 = gUnknown_030022A0, *sb = gUnknown_03002700,

@@ -9,6 +9,10 @@
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
 
+#define NAKED __attribute__((naked))
+#define UNUSED __attribute__((unused))
+#define PACKED __attribute__((packed))
+
 #define ALIGNED(n) __attribute__((aligned(n)))
 
 #define SOUND_INFO_PTR (*(struct SoundInfo **)0x3007FF0)

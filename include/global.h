@@ -11,7 +11,17 @@
 // #include "variables.h"
 #include "functions.h"
 
+
 // helper macros
+
+#if NON_MATCHING
+#define ASM_FUNC(path, decl)
+#else
+#define ASM_FUNC(path, decl)    \
+    NAKED decl {                \
+        asm(".include " #path); \
+    }
+#endif
 
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
