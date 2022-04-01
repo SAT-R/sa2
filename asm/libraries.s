@@ -2558,8 +2558,8 @@ _080015FC:
 	mov r1, r8
 	str r0, [r1]
 	movs r2, #0
-	ldr r4, _080017C4 @ =gUnknown_030007B0
-	ldr r3, _080017C8 @ =gUnknown_08097A2C
+	ldr r4, _080017C4 @ =gIntrTable
+	ldr r3, _080017C8 @ =gIntrTableTemplate
 _0800162C:
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
@@ -2711,8 +2711,8 @@ _080017B4: .4byte gUnknown_03002264
 _080017B8: .4byte gUnknown_03001B60
 _080017BC: .4byte gUnknown_03002700
 _080017C0: .4byte gUnknown_03002850
-_080017C4: .4byte gUnknown_030007B0
-_080017C8: .4byte gUnknown_08097A2C
+_080017C4: .4byte gIntrTable
+_080017C8: .4byte gIntrTableTemplate
 _080017CC: .4byte 0x85000140
 _080017D0: .4byte gUnknown_03001884
 _080017D4: .4byte gUnknown_030022AC

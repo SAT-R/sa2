@@ -28,5 +28,7 @@
 
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8);
+typedef void (*IntrFunc)(void);
+
 
 #endif  // GUARD_GLOBAL_H

@@ -167,6 +167,13 @@
 #define DmaFill16Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 16)
 #define DmaFill32Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 32)
 
+#define DmaWait(dmaNum)                           \
+{                                                 \
+    vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
+    while (dmaRegs[2] & (DMA_ENABLE << 16))       \
+        ;                                         \
+}
+
 // from pokeemerald
 // Maximum amount of data we will transfer in one operation
 #define MAX_DMA_BLOCK_SIZE 0x1000

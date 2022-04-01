@@ -49,7 +49,8 @@ void MainLoop(void) {
         } else {
             gUnknown_03001840 &= ~2048;
         }
-
+        
+        // Wait for vblank
         while (REG_DISPSTAT & DISPSTAT_VBLANK);
     } ;
 }

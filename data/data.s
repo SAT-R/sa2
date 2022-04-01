@@ -4,8 +4,8 @@
 gUnknown_080979F8:
     .incbin "baserom.gba", 0x000979F8, 0x34
 
-    .global gUnknown_08097A2C
-gUnknown_08097A2C:
+    .global gIntrTableTemplate
+gIntrTableTemplate:
     .incbin "baserom.gba", 0x00097A2C, 0x38
 
     .global gUnknown_08097A64
