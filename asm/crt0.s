@@ -1,4 +1,6 @@
 .include "asm/macros.inc"
+.include "include/gba.inc"
+
 .syntax unified
 .arm
 
@@ -13,8 +15,8 @@ start_vector:
 	mov r0, #0x1f
 	msr cpsr_fc, r0
 	ldr sp, _080000F4 @ =gUnknown_03007F00
-	ldr r1, _080001C0 @ =gUnknown_03007FFC
-	add r0, pc, #0x18 @ =intr_main
+	ldr r1, _080001C0 @ =INTR_VECTOR
+	add r0, pc, #0x18 @ =IntrMain
 	str r0, [r1]
 	ldr r1, _080001C4 @ =AgbMain
 	mov lr, pc
@@ -24,8 +26,8 @@ _080000F0:
 _080000F4: .4byte gUnknown_03007F00
 _080000F8: .4byte gUnknown_03007FA0
 
-	arm_func_start intr_main
-intr_main: @ 0x080000FC
+	arm_func_start IntrMain
+IntrMain: @ 0x080000FC
 	mov r3, #0x4000000
 	add r3, r3, #0x200
 	ldr r2, [r3]
@@ -78,6 +80,6 @@ _080001AC:
 	ldr r0, [r1]
 	bx r0
 	.align 2, 0
-_080001C0: .4byte gUnknown_03007FFC
+_080001C0: .4byte INTR_VECTOR
 _080001C4: .4byte AgbMain
 _080001C8: .4byte gIntrTable

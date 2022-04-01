@@ -1,6 +1,8 @@
-	.syntax unified
+.include "include/gba.inc"
 
-	.text
+.syntax unified
+.text
+
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -450,14 +452,14 @@ _08001818:
 	bl sub_8096884
 _08001820:
 	ldr r1, _08001888 @ =0x040000D4
-	ldr r0, _0800188C @ =intr_main
+	ldr r0, _0800188C @ =IntrMain
 	str r0, [r1]
 	ldr r2, _08001890 @ =gUnknown_030007F0
 	str r2, [r1, #4]
 	ldr r0, _08001894 @ =0x84000080
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
-	ldr r0, _08001898 @ =gUnknown_03007FFC
+	ldr r0, _08001898 @ =INTR_VECTOR
 	str r2, [r0]
 	ldr r0, _0800189C @ =0x04000208
 	movs r2, #1
@@ -500,10 +502,10 @@ _08001820:
 	.align 2, 0
 _08001884: .4byte gUnknown_030007C4
 _08001888: .4byte 0x040000D4
-_0800188C: .4byte intr_main
+_0800188C: .4byte IntrMain
 _08001890: .4byte gUnknown_030007F0
 _08001894: .4byte 0x84000080
-_08001898: .4byte gUnknown_03007FFC
+_08001898: .4byte INTR_VECTOR
 _0800189C: .4byte 0x04000208
 _080018A0: .4byte 0x04000004
 _080018A4: .4byte gUnknown_03002860
