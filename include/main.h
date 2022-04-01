@@ -1,7 +1,7 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
 
-// extern void sub_8001404(void);
+void sub_8001404(void);
 extern void InitMain(void);
 
 extern char gUnknown_0300188C;
@@ -101,7 +101,6 @@ int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
 void sub_8002724();
 void sub_80019A0();
 void sub_8001C90();
-void sub_80019A0();
 void sub_8001D78();
 
 void GetInput(void);
