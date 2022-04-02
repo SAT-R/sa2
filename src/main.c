@@ -238,7 +238,28 @@ void GameLoop(void) {
 
 ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc", void UpdateScreenDma(void));
 
-ASM_FUNC("asm/non_matching/main/ClearOamBufferDma.inc", void ClearOamBufferDma(void));
+void ClearOamBufferDma(void) {
+    gUnknown_0300188C = 0;
+
+    gUnknown_03001840 &= ~8;
+    if ((gUnknown_03001840 & (0x20)) == 0) {
+        if (gUnknown_03001884 == gUnknown_03004D54) {
+            gUnknown_03001884 = gUnknown_030022C0;
+            gUnknown_030022AC = gUnknown_03004D54;
+        } else {
+            gUnknown_03001884 = gUnknown_03004D54;
+            gUnknown_030022AC = gUnknown_030022C0;
+        }
+    }
+    gUnknown_03001840 &= ~4;
+    DmaFill16(3, 0x200, gOamBuffer, 0x100);
+    DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
+    DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
+    DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
+    
+    gUnknown_03004D50 = 0;
+    gUnknown_03001840 &= ~16;
+}
 
 ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc", void UpdateScreenCpuSet(void));
 
