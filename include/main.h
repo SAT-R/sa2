@@ -134,7 +134,7 @@ extern int gUnknown_03004D80;
 extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern short gUnknown_030017F4[2];
 extern short gDispCnt;  // gDispCnt
-extern struct Unk_03002EC0 gUnknown_030027A0[];
+extern struct Unk_03002EC0* gUnknown_030027A0[];
 extern u8 gUnknown_030018F0;
 extern u8 gUnknown_03002AE0;
 extern int gUnknown_03004D90;

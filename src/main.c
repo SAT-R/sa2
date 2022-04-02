@@ -1,8 +1,9 @@
-#include "global.h"
 #include "main.h"
+
+#include "global.h"
 #include "m4a.h"
-#include "multi_sio.h"
 #include "malloc_ewram.h"
+#include "multi_sio.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
@@ -36,7 +37,6 @@ static void GamepakIntr(void);
 //     GamepakIntr,
 // };
 
-
 void GameInit(void) {
     s16 i;
 
@@ -49,18 +49,17 @@ void GameInit(void) {
         DmaSet(3, OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
     }
 
-    if (gInput ==
-        (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
+    if (gInput == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
         gUnknown_03001840 = gUnknown_03001840 | 0x1000;
     } else {
         gUnknown_03001840 &= 0xffffefff;
     }
 
-    DmaFill32(3, 0, (void*)VRAM, VRAM_SIZE);
-    DmaFill32(3, 0, (void*)OAM, OAM_SIZE);
-    DmaFill32(3, 0, (void*)PLTT, PLTT_SIZE)
+    DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
+    DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
+    DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE)
 
-    gUnknown_030026F4 = 0xff;
+        gUnknown_030026F4 = 0xff;
     gUnknown_03002AE4 = 0;
     gUnknown_0300287C = 0;
     gUnknown_03005390 = 0;
@@ -132,17 +131,17 @@ void GameInit(void) {
 
     gUnknown_030053C0.unk8 = 0;
     // This matches better when the params are inlined
-    asm("":::"sb");
+    asm("" ::: "sb");
     gUnknown_03001880 = 0;
     gUnknown_030053B0 = 0;
-    asm("":::"sl");
+    asm("" ::: "sl");
 
     gUnknown_03002264 = 0;
 
     for (i = 0; i < 15; i++) {
         gIntrTable[i] = gIntrTableTemplate[i];
     }
-    
+
     DmaFill32(3, 0, &gUnknown_03001B60, 0x500);
 
     gUnknown_03001884 = gUnknown_03001B60[0];
@@ -230,13 +229,15 @@ void GameLoop(void) {
         } else {
             gUnknown_03001840 &= ~0x800;
         }
-        
+
         // Wait for vblank
-        while (REG_DISPSTAT & DISPSTAT_VBLANK);
-    } ;
+        while (REG_DISPSTAT & DISPSTAT_VBLANK)
+            ;
+    };
 }
 
-ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc", void UpdateScreenDma(void));
+ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc",
+         void UpdateScreenDma(void));
 
 void ClearOamBufferDma(void) {
     gUnknown_0300188C = 0;
@@ -256,16 +257,45 @@ void ClearOamBufferDma(void) {
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
-    
+
     gUnknown_03004D50 = 0;
     gUnknown_03001840 &= ~16;
 }
 
-ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc", void UpdateScreenCpuSet(void));
+ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc",
+         void UpdateScreenCpuSet(void));
 
 ASM_FUNC("asm/non_matching/main/sub_8001F9C.inc", void sub_8001F9C(void));
 
-ASM_FUNC("asm/non_matching/main/sub_80021c4.inc", void sub_80021c4(void));
+u32 sub_80021c4(void) {
+    u32 i;
+    struct Unk_03002EC0 *current;
+
+    while (gUnknown_03004D5C != gUnknown_03002A84) {
+        current = gUnknown_030027A0[gUnknown_03004D5C];
+
+        if (current->unk8) {
+            for (i = 0; current->unk8 != 0; i += 0x400) {
+                if (current->unk8 > 0x400) {
+                    DmaCopy16(3, current->unk0 + i, current->unk4 + i, 0x400);
+                    current->unk8 -= 0x400;
+                } else {
+                    DmaCopy16(3, current->unk0 + i, current->unk4 + i,
+                              current->unk8);
+                    current->unk8 = 0;
+                }
+            }
+        }
+
+        gUnknown_03004D5C++;
+        gUnknown_03004D5C &= 0x1f;
+
+        if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void GetInput(void) {
     s8 i;
@@ -280,10 +310,8 @@ void GetInput(void) {
         gInput = sub_8007D8C();
     }
 
-    gPressedKeys =
-        (gInput ^ gPrevInput) & gInput;
-    gReleasedKeys =
-        (gInput ^ gPrevInput) & gPrevInput;
+    gPressedKeys = (gInput ^ gPrevInput) & gInput;
+    gReleasedKeys = (gInput ^ gPrevInput) & gPrevInput;
     gPrevInput = gInput;
     gUnknown_030022B8 = gPressedKeys;
 
