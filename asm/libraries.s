@@ -216,8 +216,8 @@ _08000414: .4byte sub_800020C
 _08000418: .4byte gUnknown_03000440
 _0800041C: .4byte 0x04000048
 
-	thumb_func_start sub_8000420
-sub_8000420: @ 0x08000420
+	thumb_func_start MultiSioMain
+MultiSioMain: @ 0x08000420
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8

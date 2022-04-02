@@ -91,7 +91,7 @@ extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern int gUnknown_03001840;
-extern int gUnknown_03001950;
+extern u32 gMultiSioStatusFlags;
 extern int gUnknown_03002790;
 struct BgAffineRegs {
     u16 bg2pa;
@@ -171,7 +171,6 @@ extern short gUnknown_03001888;
 extern int gUnknown_03001940;
 
 extern int gUnknown_030007C4;
-extern int gUnknown_03001950;
 extern u8 gUnknown_03001954;
 extern int gUnknown_0203B000;
 extern u8 gUnknown_030026E0[];
@@ -188,11 +187,10 @@ extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
 extern void TaskInit(void);
 
-int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
 void sub_8002724();
-void sub_80019A0();
-void sub_8001C90();
-void sub_8001D78();
+void UpdateScreenDma();
+void ClearOamBufferDma();
+void UpdateScreenCpuSet();
 
 void GetInput(void);
 void ClearOamBufferCpuSet(void);

@@ -178,7 +178,7 @@ void GameInit(void) {
     } else {
         sub_8096884(1, &gUnknown_030007C4);
     }
-    
+
     // Setup interrupt table
     DmaCopy32(3, IntrMain, &gUnknown_030007F0, 0x200);
     INTR_VECTOR = &gUnknown_030007F0;
@@ -190,8 +190,9 @@ void GameInit(void) {
     // Setup multi sio
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
-    gUnknown_03001950 = 0;
+    gMultiSioStatusFlags = 0;
     gUnknown_03001954 = 0;
+
     MultiSioInit(0);
 }
 
@@ -201,31 +202,33 @@ void GameLoop(void) {
         if (!(gUnknown_03001840 & 0x4000)) {
             m4aSoundMain();
         }
-        if (gUnknown_030026F4 == 255) {
+
+        if (gUnknown_030026F4 == 0xff) {
             GetInput();
-            if (gUnknown_03001954 != '\0') {
-                gUnknown_03001950 =
-                    sub_8000420(&gMultiSioSend, gMultiSioRecv, 0);
+            if (gUnknown_03001954 != 0) {
+                gMultiSioStatusFlags =
+                    MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
             sub_8002724();
         }
+
         gUnknown_03002790 = gUnknown_03001840;
         VBlankIntrWait();
-        if ((gUnknown_03001840 & 0x4000) != 0) {
-            sub_8001D78();
-            if ((gUnknown_03001840 & 0x400) == 0) {
+        if (gUnknown_03001840 & 0x4000) {
+            UpdateScreenCpuSet();
+            if (!(gUnknown_03001840 & 0x400)) {
                 ClearOamBufferCpuSet();
             }
         } else {
-            sub_80019A0();
+            UpdateScreenDma();
             if (!(gUnknown_03001840 & 0x400)) {
-                sub_8001C90();
+                ClearOamBufferDma();
             }
         }
         if ((gUnknown_03001840 & 0x400)) {
             gUnknown_03001840 |= 0x800;
         } else {
-            gUnknown_03001840 &= ~2048;
+            gUnknown_03001840 &= ~0x800;
         }
         
         // Wait for vblank
@@ -233,11 +236,11 @@ void GameLoop(void) {
     } ;
 }
 
-ASM_FUNC("asm/non_matching/main/sub_80019A0.inc", void sub_80019A0(void));
+ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc", void UpdateScreenDma(void));
 
-ASM_FUNC("asm/non_matching/main/sub_8001C90.inc", void sub_8001C90(void));
+ASM_FUNC("asm/non_matching/main/ClearOamBufferDma.inc", void ClearOamBufferDma(void));
 
-ASM_FUNC("asm/non_matching/main/sub_8001D78.inc", void sub_8001D78(void));
+ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc", void UpdateScreenCpuSet(void));
 
 ASM_FUNC("asm/non_matching/main/sub_8001F9C.inc", void sub_8001F9C(void));
 

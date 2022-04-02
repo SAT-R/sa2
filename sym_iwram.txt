@@ -500,7 +500,7 @@
 . = 0x00001944; gUnknown_03001944 = .;
 . = 0x00001948; gUnknown_03001948 = .;
 . = 0x0000194C; gUnknown_0300194C = .;
-. = 0x00001950; gUnknown_03001950 = .;
+. = 0x00001950; gMultiSioStatusFlags = .;
 . = 0x00001954; gUnknown_03001954 = .;
 . = 0x00001960; gUnknown_03001960 = .;
 . = 0x00001B60; gUnknown_03001B60 = .;
