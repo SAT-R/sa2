@@ -1,6 +1,8 @@
 #ifndef GUARD_AGB_SRAM_H
 #define GUARD_AGB_SRAM_H
 
+#include "global.h"
+
 void SetSramFastFunc(void);
 void WriteSramFast(const u8 *src, u8 *dest, u32 size);
 extern void (*ReadSramFast)(const u8 *src, u8 *dest, u32 size);

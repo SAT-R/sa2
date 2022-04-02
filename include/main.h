@@ -1,6 +1,8 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
 
+#include "global.h"
+
 void GameInit(void);
 extern void InitMain(void);
 
