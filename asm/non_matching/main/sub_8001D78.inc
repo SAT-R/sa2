@@ -6,7 +6,7 @@
 	movs r4, #0
 	movs r1, #0x80
 	lsls r1, r1, #0x13
-	ldr r0, _08001E3C @ =gUnknown_03002840
+	ldr r0, _08001E3C @ =gDispCnt
 	ldrh r0, [r0]
 	strh r0, [r1]
 	ldr r0, _08001E40 @ =gUnknown_030022B0
@@ -20,7 +20,7 @@
 	ands r0, r6
 	cmp r0, #0
 	beq _08001DB2
-	ldr r0, _08001E50 @ =gUnknown_03002880
+	ldr r0, _08001E50 @ =gBgPalette
 	movs r1, #0xa0
 	lsls r1, r1, #0x13
 	movs r2, #0x80
@@ -34,7 +34,7 @@ _08001DB2:
 	ands r0, r6
 	cmp r0, #0
 	beq _08001DCC
-	ldr r0, _08001E54 @ =gUnknown_03002060
+	ldr r0, _08001E54 @ =gObjPalette
 	ldr r1, _08001E58 @ =0x05000200
 	movs r2, #0x80
 	bl CpuFastSet
@@ -42,11 +42,11 @@ _08001DB2:
 	eors r0, r6
 	str r0, [r5]
 _08001DCC:
-	ldr r0, _08001E5C @ =gUnknown_03002270
+	ldr r0, _08001E5C @ =gWinRegs
 	ldr r1, _08001E60 @ =0x04000040
 	ldr r2, _08001E64 @ =0x04000003
 	bl CpuSet
-	ldr r0, _08001E68 @ =gUnknown_030018E8
+	ldr r0, _08001E68 @ =gBldRegs
 	ldr r1, _08001E6C @ =0x04000050
 	movs r2, #3
 	bl CpuSet
@@ -54,11 +54,11 @@ _08001DCC:
 	ldr r1, _08001E74 @ =0x0400004C
 	movs r2, #2
 	bl CpuSet
-	ldr r0, _08001E78 @ =gUnknown_03002830
+	ldr r0, _08001E78 @ =gBgScrollRegs
 	ldr r1, _08001E7C @ =0x04000010
 	movs r2, #8
 	bl CpuSet
-	ldr r0, _08001E80 @ =gUnknown_03001920
+	ldr r0, _08001E80 @ =gBgAffineRegs
 	ldr r1, _08001E84 @ =0x04000020
 	adds r2, r7, #0
 	bl CpuSet
@@ -92,24 +92,24 @@ _08001E32:
 	strb r0, [r1]
 	b _08001EAE
 	.align 2, 0
-_08001E3C: .4byte gUnknown_03002840
+_08001E3C: .4byte gDispCnt
 _08001E40: .4byte gUnknown_030022B0
 _08001E44: .4byte 0x04000008
 _08001E48: .4byte 0x04000002
 _08001E4C: .4byte gUnknown_03001840
-_08001E50: .4byte gUnknown_03002880
-_08001E54: .4byte gUnknown_03002060
+_08001E50: .4byte gBgPalette
+_08001E54: .4byte gObjPalette
 _08001E58: .4byte 0x05000200
-_08001E5C: .4byte gUnknown_03002270
+_08001E5C: .4byte gWinRegs
 _08001E60: .4byte 0x04000040
 _08001E64: .4byte 0x04000003
-_08001E68: .4byte gUnknown_030018E8
+_08001E68: .4byte gBldRegs
 _08001E6C: .4byte 0x04000050
 _08001E70: .4byte gUnknown_030026D0
 _08001E74: .4byte 0x0400004C
-_08001E78: .4byte gUnknown_03002830
+_08001E78: .4byte gBgScrollRegs
 _08001E7C: .4byte 0x04000010
-_08001E80: .4byte gUnknown_03001920
+_08001E80: .4byte gBgAffineRegs
 _08001E84: .4byte 0x04000020
 _08001E88: .4byte 0x04000200
 _08001E8C: .4byte gUnknown_03002AF0

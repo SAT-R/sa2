@@ -87,8 +87,8 @@ union MultiSioData {
     struct MultiSioData_0_2 pat2;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
-extern union MultiSioData gUnknown_03002860; // gMultiSioSend
-extern union MultiSioData gUnknown_03001890[4]; // gMultiSioRecv
+extern union MultiSioData gMultiSioSend; // gMultiSioSend
+extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern int gUnknown_03001840;
 extern int gUnknown_03001950;
@@ -131,9 +131,9 @@ extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03002A84;
 extern u8 gUnknown_03002280[];
 extern int gUnknown_03004D80;
-extern u16 gUnknown_03002830[4][2];  // gBgScrollRegs
+extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern short gUnknown_030017F4[2];
-extern short gUnknown_03002840;  // gDispCnt
+extern short gDispCnt;  // gDispCnt
 extern struct Unk_03002EC0 gUnknown_030027A0[];
 extern u8 gUnknown_030018F0;
 extern u8 gUnknown_03002AE0;
@@ -141,9 +141,9 @@ extern int gUnknown_03004D90;
 extern OamData gUnknown_030022D0[];
 extern u8 gUnknown_03001850[];
 extern u8 gUnknown_03004D60[];
-extern u16 gUnknown_03002060[0x100];  // gObjPalette
-extern u16 gUnknown_03002880[0x100];  // gBgPalette
-extern struct BgAffineRegs gUnknown_03001920; // gBgAffineRegs
+extern u16 gObjPalette[0x100];  // gObjPalette
+extern u16 gBgPalette[0x100];  // gBgPalette
+extern struct BgAffineRegs gBgAffineRegs; // gBgAffineRegs
 extern short gUnknown_03001944;
 extern short gUnknown_030017F0;
 extern short gUnknown_03005394;
@@ -152,11 +152,11 @@ extern short gUnknown_03004D58;
 extern short gUnknown_0300194C;
 extern short gUnknown_03002820;
 extern short gUnknown_03005398;
-extern u16 gUnknown_03002270[6];  // gWinRegs
+extern u16 gWinRegs[6];  // gWinRegs
 extern u8 gUnknown_03002A80;
 extern u32 gUnknown_03002878;
 
-extern struct BlendRegs gUnknown_030018E8;  // gBldRegs
+extern struct BlendRegs gBldRegs;  // gBldRegs
 extern u16 gUnknown_030026D0;
 extern int gUnknown_030053B8;
 extern u32 gUnknown_030053B0;
@@ -183,14 +183,10 @@ extern IntrFunc gUnknown_030007F0;
 extern IntrFunc const gIntrTableTemplate[];
 extern IntrFunc gIntrTable[];
 
-extern void sub_80952A8(void);
-extern void sub_8095844(int a);
 extern void sub_8007CC8(void);
 extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
-extern void sub_8002504(void);
-extern void sub_8007B2C(void);
-extern void sub_800032C(int a);
+extern void TaskInit(void);
 
 int sub_8000420(union MultiSioData* a, union MultiSioData b[4], int c);
 void sub_8002724();

@@ -65,7 +65,16 @@
 
 #define RGB_BLACK RGB(0, 0, 0)
 #define RGB_WHITE RGB(31, 31, 31)
+#define RGB_RED RGB(31, 0, 0)
+#define RGB_GREEN RGB(0, 31, 0)
+#define RGB_BLUE RGB(0, 0, 31)
+#define RGB_YELLOW RGB(31, 31, 0)
+#define RGB_MAGENTA RGB(31, 0, 31)
+#define RGB_CYAN RGB(0, 31, 31)
+#define RGB_WHITEALPHA (RGB_WHITE | 0x8000)
 
 #define WIN_RANGE(a, b) (((a) << 8) | (b))
+
+#define SYSTEM_CLOCK           (16 * 1024 * 1024)   // System Clock
 
 #endif // GUARD_GBA_DEFINES

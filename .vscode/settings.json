@@ -2,5 +2,8 @@
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }",
     "C_Cpp.default.systemIncludePath": [
         "include"
-    ]
+    ],
+    "files.associations": {
+        "multi_sio.h": "c"
+    }
 }

@@ -105,8 +105,8 @@ _08000318:
 _08000324: .4byte gUnknown_03000560
 _08000328: .4byte 0x0400010E
 
-	thumb_func_start sub_800032C
-sub_800032C: @ 0x0800032C
+	thumb_func_start MultiSioInit
+MultiSioInit: @ 0x0800032C
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	adds r5, r0, #0

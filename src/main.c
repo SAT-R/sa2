@@ -1,6 +1,8 @@
 #include "global.h"
 #include "main.h"
 #include "m4a.h"
+#include "multi_sio.h"
+#include "malloc_ewram.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
@@ -68,12 +70,12 @@ void GameInit(void) {
     DmaFill32(3, 0, gUnknown_03002280, 0x10);
     gUnknown_03004D80 = 0;
 
-    DmaFill32(3, 0, gUnknown_03002830, sizeof(gUnknown_03002830));
+    DmaFill32(3, 0, gBgScrollRegs, sizeof(gBgScrollRegs));
 
     gUnknown_030017F4[0] = 0;
     gUnknown_030017F4[1] = 0;
 
-    gUnknown_03002840 = DISPCNT_FORCED_BLANK;
+    gDispCnt = DISPCNT_FORCED_BLANK;
 
     DmaFill32(3, 0, gUnknown_030027A0, 0x80);
 
@@ -84,21 +86,21 @@ void GameInit(void) {
     DmaFill16(3, 0x200, gUnknown_030022D0, 0x400);
     DmaFill32(3, ~0, gUnknown_03001850, 0x20);
     DmaFill32(3, ~0, gUnknown_03004D60, 0x20);
-    DmaFill32(3, 0, gUnknown_03002060, OBJ_PLTT_SIZE);
-    DmaFill32(3, 0, gUnknown_03002880, BG_PLTT_SIZE);
+    DmaFill32(3, 0, gObjPalette, OBJ_PLTT_SIZE);
+    DmaFill32(3, 0, gBgPalette, BG_PLTT_SIZE);
 
-    gUnknown_03001920.bg2pa = 0x100;
-    gUnknown_03001920.bg2pb = 0;
-    gUnknown_03001920.bg2pc = 0;
-    gUnknown_03001920.bg2pd = 0x100;
-    gUnknown_03001920.bg2x = 0;
-    gUnknown_03001920.bg2y = 0;
-    gUnknown_03001920.bg3pa = 0x100;
-    gUnknown_03001920.bg3pb = 0;
-    gUnknown_03001920.bg3pc = 0;
-    gUnknown_03001920.bg3pd = 0x100;
-    gUnknown_03001920.bg3x = 0;
-    gUnknown_03001920.bg3y = 0;
+    gBgAffineRegs.bg2pa = 0x100;
+    gBgAffineRegs.bg2pb = 0;
+    gBgAffineRegs.bg2pc = 0;
+    gBgAffineRegs.bg2pd = 0x100;
+    gBgAffineRegs.bg2x = 0;
+    gBgAffineRegs.bg2y = 0;
+    gBgAffineRegs.bg3pa = 0x100;
+    gBgAffineRegs.bg3pb = 0;
+    gBgAffineRegs.bg3pc = 0;
+    gBgAffineRegs.bg3pd = 0x100;
+    gBgAffineRegs.bg3x = 0;
+    gBgAffineRegs.bg3y = 0;
 
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;
@@ -109,16 +111,16 @@ void GameInit(void) {
     gUnknown_03002820 = 0;
     gUnknown_03005398 = 0x100;
 
-    gUnknown_03002270[0] = 0;
-    gUnknown_03002270[1] = 0;
-    gUnknown_03002270[2] = 0;
-    gUnknown_03002270[3] = 0;
-    gUnknown_03002270[4] = 0;
-    gUnknown_03002270[5] = 0;
+    gWinRegs[0] = 0;
+    gWinRegs[1] = 0;
+    gWinRegs[2] = 0;
+    gWinRegs[3] = 0;
+    gWinRegs[4] = 0;
+    gWinRegs[5] = 0;
 
-    gUnknown_030018E8.bldCnt = 0;
-    gUnknown_030018E8.bldAlpha = 0;
-    gUnknown_030018E8.bldY = 0;
+    gBldRegs.bldCnt = 0;
+    gBldRegs.bldAlpha = 0;
+    gBldRegs.bldY = 0;
 
     gUnknown_030026D0 = 0;
     gUnknown_030053B8 = 0;
@@ -159,11 +161,14 @@ void GameInit(void) {
     DmaFill32(3, 0, gUnknown_03001870, 0x10);
     DmaFill32(3, 0, gUnknown_030053A0, 0x10);
 
-    sub_80952A8();
-    sub_8095844(0x93f500);
+    m4aSoundInit();
+    m4aSoundMode(0x93f500);
+
     gUnknown_030053B4 = 1;
-    sub_8002504();
-    sub_8007B2C();
+
+    TaskInit();
+    EwramInitHeap();
+
     gUnknown_03001888 = 0x230;
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
@@ -173,16 +178,21 @@ void GameInit(void) {
     } else {
         sub_8096884(1, &gUnknown_030007C4);
     }
+    
+    // Setup interrupt table
     DmaCopy32(3, IntrMain, &gUnknown_030007F0, 0x200);
     INTR_VECTOR = &gUnknown_030007F0;
+
     REG_IME = INTR_FLAG_VBLANK;
     REG_IE = INTR_FLAG_VBLANK;
-    REG_DISPSTAT = 0x18;
-    DmaFill32(3, 0, &gUnknown_03002860, sizeof(gUnknown_03002860));
-    DmaFill32(3, 0, gUnknown_03001890, sizeof(gUnknown_03001890));
+    REG_DISPSTAT = DISPSTAT_HBLANK_INTR | DISPSTAT_VBLANK_INTR;
+
+    // Setup multi sio
+    DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
+    DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
     gUnknown_03001950 = 0;
     gUnknown_03001954 = 0;
-    sub_800032C(0);
+    MultiSioInit(0);
 }
 
 void GameLoop(void) {
@@ -195,7 +205,7 @@ void GameLoop(void) {
             GetInput();
             if (gUnknown_03001954 != '\0') {
                 gUnknown_03001950 =
-                    sub_8000420(&gUnknown_03002860, gUnknown_03001890, 0);
+                    sub_8000420(&gMultiSioSend, gMultiSioRecv, 0);
             }
             sub_8002724();
         }
