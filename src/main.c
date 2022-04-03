@@ -39,7 +39,7 @@ static void GamepakIntr(void);
 // };
 
 static FuncType_08097A64 const gUnknown_08097A64[];
-// TODO: create definitions once all funcs are in place 
+// TODO: create definitions once all funcs are in place
 // {
 //     sub_081525DC,
 //     sub_08154B14,
@@ -276,23 +276,23 @@ void ClearOamBufferDma(void) {
 void UpdateScreenCpuSet(void) {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
-    CpuCopy32(gBgCntRegs, (void*)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
+    CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
     if (gUnknown_03001840 & 1) {
-        CpuFastCopy(gBgPalette, (void*)BG_PLTT, BG_PLTT_SIZE);
+        CpuFastCopy(gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
         gUnknown_03001840 ^= 1;
     }
-    
+
     if (gUnknown_03001840 & 2) {
-        CpuFastCopy(gObjPalette, (void*)OBJ_PLTT, OBJ_PLTT_SIZE);
+        CpuFastCopy(gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
         gUnknown_03001840 ^= 2;
     }
 
-    CpuCopy32(gWinRegs, (void*)REG_ADDR_WIN0H, sizeof(gWinRegs));
-    CpuCopy16(&gBldRegs, (void*)REG_ADDR_BLDCNT, 6);
-    CpuCopy16(&gUnknown_030026D0, (void*)REG_ADDR_MOSAIC, 4);
-    CpuCopy16(gBgScrollRegs, (void*)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
-    CpuCopy32(&gBgAffineRegs, (void*)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
+    CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
+    CpuCopy16(&gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+    CpuCopy16(&gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
+    CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
     if (gUnknown_03001840 & 8) {
         REG_IE |= INTR_FLAG_HBLANK;
@@ -301,15 +301,14 @@ void UpdateScreenCpuSet(void) {
             CpuFastSet(gUnknown_030026E0, gUnknown_03002AF0, gUnknown_0300188C);
         }
         gUnknown_030018E0 = gUnknown_0300188C;
-    }
-    else {
+    } else {
         REG_IE &= ~INTR_FLAG_HBLANK;
         gUnknown_030018E0 = 0;
     }
 
     if (gUnknown_030026F4 == 0xff) {
         DrawToOamBuffer();
-        CpuFastCopy(gOamBuffer, (void*)OAM, OAM_SIZE);
+        CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
 
     for (i = 0; i < gUnknown_03001948; i++) {
@@ -322,8 +321,7 @@ void UpdateScreenCpuSet(void) {
             CpuFastSet(gUnknown_03001870, gUnknown_030053A0, gUnknown_03004D50);
         }
         gUnknown_03001948 = gUnknown_03004D50;
-    }
-    else {
+    } else {
         gUnknown_03001948 = gUnknown_03001840 & 0x10;
     }
 
