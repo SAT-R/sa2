@@ -245,9 +245,81 @@ void GameLoop(void) {
     };
 }
 
-// 080019a0
-ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc",
-         void UpdateScreenDma(void));
+void UpdateScreenDma(void) {
+    u8 i, j = 0;
+    REG_DISPCNT = gDispCnt;
+    DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
+
+    if (gUnknown_03001840 & 1) {
+        DmaCopy32(3, gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
+        gUnknown_03001840 ^= 1;
+    }
+
+    if (gUnknown_03001840 & 2) {
+        DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
+        gUnknown_03001840 ^= 2;
+    }
+
+    DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
+    DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+    DmaCopy16(3, &gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS,
+              sizeof(gBgScrollRegs));
+    DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
+
+    if (gUnknown_03001840 & 8) {
+        REG_IE |= INTR_FLAG_HBLANK;
+        DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
+        if (gUnknown_0300188C != 0) {
+            DmaCopy32(3, gUnknown_030026E0, gUnknown_03002AF0,
+                      gUnknown_0300188C * 4);
+        }
+        gUnknown_030018E0 = gUnknown_0300188C;
+    } else {
+        REG_IE &= ~INTR_FLAG_HBLANK;
+        gUnknown_030018E0 = 0;
+    }
+
+    if (gUnknown_03001840 & 4) {
+        DmaCopy16(3, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
+    }
+
+    if (gUnknown_030026F4 == 0xff) {
+        DrawToOamBuffer();
+        DmaCopy16(3, gOamBuffer, (void *)OAM, 0x100);
+        DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
+        DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
+        DmaCopy16(3, gOamBuffer + 0x60, (void *)OAM + 0x300, 0x100);
+    }
+
+    for (i = 0; i < gUnknown_03001948; i++) {
+        gUnknown_030053A0[i]();
+    }
+
+    if (gUnknown_03001840 & 0x10) {
+        DmaFill32(3, 0, gUnknown_030053A0, 0x10);
+        if (gUnknown_03004D50 != 0) {
+            DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
+                      gUnknown_03004D50 * 4);
+        }
+        gUnknown_03001948 = gUnknown_03004D50;
+    } else {
+        gUnknown_03001948 = gUnknown_03001840 & 0x10;
+    }
+
+    j = gUnknown_030026F4;
+    if (j == 0xff) {
+        j = 0;
+    }
+
+    gUnknown_030026F4 = 0xff;
+    for (; j <= 3; j++) {
+        if (gUnknown_08097A64[j]() == 0) {
+            gUnknown_030026F4 = j;
+            break;
+        }
+    }
+}
 
 void ClearOamBufferDma(void) {
     gUnknown_0300188C = 0;
