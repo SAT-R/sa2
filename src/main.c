@@ -38,6 +38,15 @@ static void GamepakIntr(void);
 //     GamepakIntr,
 // };
 
+static FuncType_08097A64 const gUnknown_08097A64[];
+// TODO: create definitions once all funcs are in place 
+// {
+//     sub_081525DC,
+//     sub_08154B14,
+//     sub_0815436C,
+//     sub_08153184,
+// };
+
 void GameInit(void) {
     s16 i;
 
@@ -264,9 +273,73 @@ void ClearOamBufferDma(void) {
     gUnknown_03001840 &= ~16;
 }
 
-// 08001d78
-ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc",
-         void UpdateScreenCpuSet(void));
+void UpdateScreenCpuSet(void) {
+    u8 i, j = 0;
+    REG_DISPCNT = gDispCnt;
+    CpuCopy32(gBgCntRegs, (void*)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
+
+    if (gUnknown_03001840 & 1) {
+        CpuFastCopy(gBgPalette, (void*)BG_PLTT, BG_PLTT_SIZE);
+        gUnknown_03001840 ^= 1;
+    }
+    
+    if (gUnknown_03001840 & 2) {
+        CpuFastCopy(gObjPalette, (void*)OBJ_PLTT, OBJ_PLTT_SIZE);
+        gUnknown_03001840 ^= 2;
+    }
+
+    CpuCopy32(gWinRegs, (void*)REG_ADDR_WIN0H, sizeof(gWinRegs));
+    CpuCopy16(&gBldRegs, (void*)REG_ADDR_BLDCNT, 6);
+    CpuCopy16(&gUnknown_030026D0, (void*)REG_ADDR_MOSAIC, 4);
+    CpuCopy16(gBgScrollRegs, (void*)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
+    CpuCopy32(&gBgAffineRegs, (void*)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
+
+    if (gUnknown_03001840 & 8) {
+        REG_IE |= INTR_FLAG_HBLANK;
+        CpuFastFill(0, gUnknown_03002AF0, 0x10);
+        if (gUnknown_0300188C != 0) {
+            CpuFastSet(gUnknown_030026E0, gUnknown_03002AF0, gUnknown_0300188C);
+        }
+        gUnknown_030018E0 = gUnknown_0300188C;
+    }
+    else {
+        REG_IE &= ~INTR_FLAG_HBLANK;
+        gUnknown_030018E0 = 0;
+    }
+
+    if (gUnknown_030026F4 == 0xff) {
+        DrawToOamBuffer();
+        CpuFastCopy(gOamBuffer, (void*)OAM, OAM_SIZE);
+    }
+
+    for (i = 0; i < gUnknown_03001948; i++) {
+        gUnknown_030053A0[i]();
+    }
+
+    if (gUnknown_03001840 & 0x10) {
+        CpuFastFill(0, gUnknown_030053A0, 0x10);
+        if (gUnknown_03004D50 != 0) {
+            CpuFastSet(gUnknown_03001870, gUnknown_030053A0, gUnknown_03004D50);
+        }
+        gUnknown_03001948 = gUnknown_03004D50;
+    }
+    else {
+        gUnknown_03001948 = gUnknown_03001840 & 0x10;
+    }
+
+    j = gUnknown_030026F4;
+    if (j == 0xff) {
+        j = 0;
+    }
+
+    gUnknown_030026F4 = 0xff;
+    for (; j <= 3; j++) {
+        if (gUnknown_08097A64[j]() == 0) {
+            gUnknown_030026F4 = j;
+            break;
+        }
+    }
+}
 
 void VBlankIntr(void) {
     u16 keys;

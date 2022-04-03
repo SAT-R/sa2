@@ -36,6 +36,7 @@ extern char gUnknown_03004D50;
 
 extern u8 gUnknown_030018E0;
 extern HBlankFunc gUnknown_03002AF0[0xa0];
+extern u16 gBgCntRegs[4];
 
 struct Unk_020382A0_8_0
 {
@@ -159,7 +160,7 @@ extern u8 gUnknown_03002A80;
 extern u32 gUnknown_03002878;
 
 extern struct BlendRegs gBldRegs;  // gBldRegs
-extern u16 gUnknown_030026D0;
+extern s16 gUnknown_030026D0;
 extern int gUnknown_030053B8;
 extern u32 gUnknown_030053B0;
 extern u32 gUnknown_03002264;
@@ -178,7 +179,7 @@ extern int gUnknown_0203B000;
 extern u8 gUnknown_030026E0[];
 extern u8 gUnknown_03001948;
 extern u8 gUnknown_03001870[];
-extern u8 gUnknown_030053A0[];
+extern FuncType_030053A0 gUnknown_030053A0[];
 extern int gUnknown_03002790;
 extern u8 gUnknown_03002874;
 extern int gUnknown_03001840;
@@ -193,6 +194,7 @@ extern void sub_8096884(int a, int* b);
 extern void TaskInit(void);
 extern void sub_8095460(void);
 extern void sub_8095930(void);
+
 
 void sub_8002724();
 void UpdateScreenDma();

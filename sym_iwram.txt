@@ -517,7 +517,7 @@
 . = 0x00002290; gInput = .;
 . = 0x000022A0; gUnknown_030022A0 = .;
 . = 0x000022AC; gUnknown_030022AC = .;
-. = 0x000022B0; gUnknown_030022B0 = .;
+. = 0x000022B0; gBgCntRegs = .;
 . = 0x000022B8; gUnknown_030022B8 = .;
 . = 0x000022BC; gUnknown_030022BC = .;
 . = 0x000022C0; gUnknown_030022C0 = .;

@@ -10,7 +10,7 @@
 	ldrh r0, [r0]
 	strh r0, [r1]
 	ldr r3, _08001A94 @ =0x040000D4
-	ldr r0, _08001A98 @ =gUnknown_030022B0
+	ldr r0, _08001A98 @ =gBgCntRegs
 	str r0, [r3]
 	ldr r0, _08001A9C @ =0x04000008
 	str r0, [r3, #4]
@@ -126,7 +126,7 @@ _08001A86:
 	.align 2, 0
 _08001A90: .4byte gDispCnt
 _08001A94: .4byte 0x040000D4
-_08001A98: .4byte gUnknown_030022B0
+_08001A98: .4byte gBgCntRegs
 _08001A9C: .4byte 0x04000008
 _08001AA0: .4byte 0x84000002
 _08001AA4: .4byte gUnknown_03001840
@@ -189,7 +189,7 @@ _08001B42:
 	ldrb r0, [r0]
 	cmp r0, #0xff
 	bne _08001B90
-	bl sub_800594C
+	bl DrawToOamBuffer
 	ldr r0, _08001C04 @ =0x040000D4
 	ldr r3, _08001C18 @ =gOamBuffer
 	str r3, [r0]
