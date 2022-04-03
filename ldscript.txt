@@ -22,7 +22,9 @@ SECTIONS
         build/sa2/asm/crt0.o(.text);
         build/sa2/asm/libraries.o(.text);
         build/sa2/src/main.o(.text);
-        build/sa2/asm/code.o(.text);
+        build/sa2/asm/code0.o(.text);
+        build/sa2/asm/m4a.o(.text);
+        build/sa2/asm/code1.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
         build/sa2/asm/sub_08097178.o(.text);
         *libgcc.a:_call_via_rX.o(.text);

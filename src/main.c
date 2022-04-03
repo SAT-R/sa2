@@ -68,9 +68,9 @@ void GameInit(void) {
 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
     DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
-    DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE)
+    DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE);
 
-        gUnknown_030026F4 = 0xff;
+    gUnknown_030026F4 = 0xff;
     gUnknown_03002AE4 = 0;
     gUnknown_0300287C = 0;
     gUnknown_03005390 = 0;
