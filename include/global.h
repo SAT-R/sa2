@@ -40,7 +40,7 @@
 typedef void (*HBlankFunc)(u8);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
-typedef u32 (*FuncType_08097A64)(void);
+typedef u32 (*SpriteUpdateFunc)(void);
 
 
 #endif  // GUARD_GLOBAL_H

@@ -4,6 +4,7 @@
 #include "m4a.h"
 #include "malloc_ewram.h"
 #include "multi_sio.h"
+#include "sprite.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
@@ -20,31 +21,32 @@ static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
 
-// To be filled once we have all the functions needed
-// IntrFunc const gIntrTableTemplate[] = {
-//     (void*)gMultiSioIntrFuncBuf,
-//     VBlankIntr,
-//     HBlankIntr,
-//     VCountIntr,
-//     Timer0Intr,
-//     Timer1Intr,
-//     Timer2Intr,
-//     Dma0Intr,
-//     Dma1Intr,
-//     Dma2Intr,
-//     Dma3Intr,
-//     KeypadIntr,
-//     GamepakIntr,
-// };
+static u32 sub_80021C4(void);
 
-static FuncType_08097A64 const gUnknown_08097A64[];
-// TODO: create definitions once all funcs are in place
-// {
-//     sub_081525DC,
-//     sub_08154B14,
-//     sub_0815436C,
-//     sub_08153184,
-// };
+// Warning: array length is listed as 2 longer than
+// reality in order to add 4 bytes of padding before the next declaration;
+IntrFunc const gIntrTableTemplate[14] = {
+    (void*)gMultiSioIntrFuncBuf,
+    VBlankIntr,
+    HBlankIntr,
+    VCountIntr,
+    Timer0Intr,
+    Timer1Intr,
+    Timer2Intr,
+    Dma0Intr,
+    Dma1Intr,
+    Dma2Intr,
+    Dma3Intr,
+    KeypadIntr,
+    GamepakIntr,
+};
+
+static SpriteUpdateFunc const spriteUpdateFuncs[] = {
+    sub_80021C4,
+    sub_8004010,
+    sub_80039E4,
+    sub_8002B20,
+};
 
 void GameInit(void) {
     s16 i;
@@ -314,7 +316,7 @@ void UpdateScreenDma(void) {
 
     gUnknown_030026F4 = 0xff;
     for (; j <= 3; j++) {
-        if (gUnknown_08097A64[j]() == 0) {
+        if (spriteUpdateFuncs[j]() == 0) {
             gUnknown_030026F4 = j;
             break;
         }
@@ -403,7 +405,7 @@ void UpdateScreenCpuSet(void) {
 
     gUnknown_030026F4 = 0xff;
     for (; j <= 3; j++) {
-        if (gUnknown_08097A64[j]() == 0) {
+        if (spriteUpdateFuncs[j]() == 0) {
             gUnknown_030026F4 = j;
             break;
         }
@@ -467,7 +469,7 @@ static void VBlankIntr(void) {
     REG_IF = INTR_FLAG_VBLANK;
 }
 
-u32 sub_80021c4(void) {
+static u32 sub_80021C4(void) {
     u32 i;
     struct Unk_03002EC0 *current;
 

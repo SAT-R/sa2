@@ -185,7 +185,6 @@ extern u8 gUnknown_03002874;
 extern int gUnknown_03001840;
 
 extern IntrFunc gUnknown_030007F0;
-extern IntrFunc const gIntrTableTemplate[];
 extern IntrFunc gIntrTable[];
 
 extern void sub_8007CC8(void);
