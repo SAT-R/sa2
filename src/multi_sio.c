@@ -1,3 +1,3 @@
 #include "global.h"
 
-static const u8 sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
+static const char sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
