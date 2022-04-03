@@ -179,6 +179,9 @@ extern u8 gUnknown_030026E0[];
 extern u8 gUnknown_03001948;
 extern u8 gUnknown_03001870[];
 extern u8 gUnknown_030053A0[];
+extern int gUnknown_03002790;
+extern u8 gUnknown_03002874;
+extern int gUnknown_03001840;
 
 extern IntrFunc gUnknown_030007F0;
 extern IntrFunc const gIntrTableTemplate[];
@@ -188,6 +191,8 @@ extern void sub_8007CC8(void);
 extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
 extern void TaskInit(void);
+extern void sub_8095460(void);
+extern void sub_8095930(void);
 
 void sub_8002724();
 void UpdateScreenDma();

@@ -4,6 +4,8 @@
         "include"
     ],
     "files.associations": {
-        "multi_sio.h": "c"
+        "multi_sio.h": "c",
+        "global.h": "c",
+        "m4a_internal.h": "c"
     }
 }

@@ -7,6 +7,7 @@
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
+static void VBlankIntr(void);
 static void HBlankIntr(void);
 static void VCountIntr(void);
 static void Timer0Intr(void);
@@ -236,6 +237,7 @@ void GameLoop(void) {
     };
 }
 
+// 080019a0
 ASM_FUNC("asm/non_matching/main/UpdateScreenDma.inc",
          void UpdateScreenDma(void));
 
@@ -262,10 +264,66 @@ void ClearOamBufferDma(void) {
     gUnknown_03001840 &= ~16;
 }
 
+// 08001d78
 ASM_FUNC("asm/non_matching/main/UpdateScreenCpuSet.inc",
          void UpdateScreenCpuSet(void));
 
-ASM_FUNC("asm/non_matching/main/sub_8001F9C.inc", void sub_8001F9C(void));
+void VBlankIntr(void) {
+    u16 keys;
+    DmaStop(0);
+    m4aSoundVSync();
+    INTR_CHECK |= 1;
+    gUnknown_030053B4 = 1;
+
+    if (gUnknown_03002790 & 4) {
+        REG_IE |= INTR_FLAG_HBLANK;
+        DmaWait(0);
+        DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
+        DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
+                << 16) |
+                   (gUnknown_03002A80 >> 1));
+    } else if (gUnknown_03002878 != 0) {
+        REG_IE &= ~INTR_FLAG_HBLANK;
+        gUnknown_03002878 = gUnknown_03002790 & 4;
+    }
+
+    if (gUnknown_03002790 & 0x40) {
+        REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
+        REG_DISPSTAT &= 0xff;
+        REG_DISPSTAT |= gUnknown_03002874 << 8;
+        REG_DISPSTAT &= ~DISPSTAT_VCOUNT;
+        REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
+        REG_IE |= INTR_FLAG_VCOUNT;
+    } else {
+        REG_DISPSTAT &= ~DISPSTAT_VCOUNT;
+        REG_DISPSTAT &= ~DISPSTAT_VCOUNT_INTR;
+        REG_IE &= ~INTR_FLAG_VCOUNT;
+    }
+
+    if (!(gUnknown_03002790 & 0x8000)) {
+        keys = ~REG_KEYINPUT &
+               (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
+        if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
+            gUnknown_03001840 |= 0x8000;
+            REG_IE = 0;
+            REG_IME = 0;
+            REG_DISPSTAT = DISPCNT_MODE_0;
+            sub_8095460();
+            sub_8095930();
+            gUnknown_03001840 &= ~4;
+            DmaStop(0);
+            DmaStop(1);
+            DmaStop(2);
+            DmaStop(3);
+            gInput = keys;
+            SoftReset(0x20);
+        }
+    }
+
+    gUnknown_03002264++;
+    REG_IF = INTR_FLAG_VBLANK;
+}
 
 u32 sub_80021c4(void) {
     u32 i;
