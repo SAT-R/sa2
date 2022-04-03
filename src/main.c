@@ -23,10 +23,10 @@ static void GamepakIntr(void);
 
 static u32 sub_80021C4(void);
 
-// Warning: array length is listed as 2 longer than
-// reality in order to add 4 bytes of padding before the next declaration;
-IntrFunc const gIntrTableTemplate[14] = {
-    (void*)gMultiSioIntrFuncBuf,
+// Warning: array contains an empty slot which would have
+// been used for a Timer3Intr function
+IntrFunc const gIntrTableTemplate[] = {
+    (void *)gMultiSioIntrFuncBuf,
     VBlankIntr,
     HBlankIntr,
     VCountIntr,
@@ -39,6 +39,7 @@ IntrFunc const gIntrTableTemplate[14] = {
     Dma3Intr,
     KeypadIntr,
     GamepakIntr,
+    NULL,
 };
 
 static SpriteUpdateFunc const spriteUpdateFuncs[] = {
@@ -172,7 +173,7 @@ void GameInit(void) {
     DmaFill32(3, 0, gUnknown_030053A0, 0x10);
 
     m4aSoundInit();
-    m4aSoundMode(0x93f500);
+    m4aSoundMode(DEFAULT_SOUND_MODE);
 
     gUnknown_030053B4 = 1;
 
