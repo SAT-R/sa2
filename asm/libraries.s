@@ -143,7 +143,7 @@ MultiSioInit: @ 0x0800032C
 	ldr r2, _08000410 @ =0x04000010
 	bl CpuSet
 	ldr r0, _08000414 @ =sub_800020C
-	ldr r1, _08000418 @ =gUnknown_03000440
+	ldr r1, _08000418 @ =gMultiSioIntrFuncBuf
 	ldr r2, _0800041C @ =0x04000048
 	bl CpuSet
 	strb r5, [r4, #2]
@@ -213,7 +213,7 @@ _08000408: .4byte sub_80001CC
 _0800040C: .4byte gUnknown_03000750
 _08000410: .4byte 0x04000010
 _08000414: .4byte sub_800020C
-_08000418: .4byte gUnknown_03000440
+_08000418: .4byte gMultiSioIntrFuncBuf
 _0800041C: .4byte 0x04000048
 
 	thumb_func_start MultiSioMain

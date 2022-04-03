@@ -29,7 +29,6 @@ static void GamepakIntr(void);
 //     Timer0Intr,
 //     Timer1Intr,
 //     Timer2Intr,
-//     Timer3Intr,
 //     Dma0Intr,
 //     Dma1Intr,
 //     Dma2Intr,
@@ -339,7 +338,7 @@ void UpdateScreenCpuSet(void) {
     }
 }
 
-void VBlankIntr(void) {
+static void VBlankIntr(void) {
     u16 keys;
     DmaStop(0);
     m4aSoundVSync();

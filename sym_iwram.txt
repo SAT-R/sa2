@@ -385,7 +385,7 @@
 . = 0x00000430; gUnknown_03000430 = .;
 . = 0x00000434; gUnknown_03000434 = .;
 . = 0x0000043C; gUnknown_0300043C = .;
-. = 0x00000440; gUnknown_03000440 = .;
+. = 0x00000440; gMultiSioIntrFuncBuf = .;
 . = 0x00000448; gUnknown_03000448 = .;
 . = 0x00000470; gUnknown_03000470 = .;
 . = 0x00000478; gUnknown_03000478 = .;
