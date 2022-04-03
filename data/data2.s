@@ -1,4 +1,4 @@
-	.section .data
+	.section .rodata
     
     .global gUnknown_08C86DB8
 gUnknown_08C86DB8:

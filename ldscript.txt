@@ -29,17 +29,17 @@ SECTIONS
         build/sa2/asm/code2.o(.text);
 
         /* Data */
-        build/sa2/data/data0.o(.data);
+        build/sa2/data/data0.o(.rodata);
         /* 
         TODO: include these:
             build/sa2/src/multi_sio.o(.rodata);
             build/sa2/src/sio32_multi_load.o(.rodata) 
         */;
         build/sa2/src/main.o(.rodata);
-        build/sa2/data/main.o(.data);
-        build/sa2/data/data1.o(.data);
-        build/sa2/sound/sound.o(.data);
-        build/sa2/data/data2.o(.data);
+        build/sa2/data/main.o(.rodata);
+        build/sa2/data/data1.o(.rodata);
+        build/sa2/sound/sound.o(.rodata);
+        build/sa2/data/data2.o(.rodata);
 
 	} = 0
 
