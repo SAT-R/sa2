@@ -1860,8 +1860,8 @@ gUnknown_086E9E08:
 gUnknown_086EA408:
     .incbin "baserom.gba", 0x006EA408, 0x3E3870
 
-    .global gUnknown_08ACDC78
-gUnknown_08ACDC78:
+    .global gMPlayJumpTableTemplate
+gMPlayJumpTableTemplate:
     .incbin "baserom.gba", 0x00ACDC78, 0x90
 
     .global gScaleTable

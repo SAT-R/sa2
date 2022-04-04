@@ -84,7 +84,7 @@ _08094678: .4byte 0x00000630
 SoundMainRAM: @ 0x0809467C
 	ldrb r3, [r0, #5]
 	cmp r3, #0
-	beq sub_080946DC
+	beq SoundMainRAM_NoReverb
 	add r1, pc, #0x4 @ =SoundMainRAM_Reverb
 	bx r1
 	.align 2, 0
@@ -111,11 +111,11 @@ _08094698:
 	strb r0, [r5], #1
 	subs r4, r4, #1
 	bgt _08094698
-	add r0, pc, #0x2F @ =sub_0809470A
+	add r0, pc, #0x2F @ =SoundMainRAM_ChanLoop
 	bx r0
 
-	thumb_func_start sub_080946DC
-sub_080946DC: @ 0x080946DC
+	thumb_func_start SoundMainRAM_NoReverb
+SoundMainRAM_NoReverb: @ 0x080946DC
 	movs r0, #0
 	mov r1, r8
 	adds r6, r6, r5
@@ -142,8 +142,8 @@ _080946F6:
 	subs r1, #1
 	bgt _080946F6
 
-	non_word_aligned_thumb_func_start sub_0809470A
-sub_0809470A: @ 0x0809470A
+	non_word_aligned_thumb_func_start SoundMainRAM_ChanLoop
+SoundMainRAM_ChanLoop: @ 0x0809470A
 	ldr r4, [sp, #0x18]
 	ldr r0, [r4, #0x18]
 	mov ip, r0
@@ -457,12 +457,24 @@ sub_08094A1A: @ 0x08094A1A
 	bx r3
 	.align 2, 0
 _08094A1C: .4byte 0x68736D53
-_08094A20:
-	.byte 0xA4, 0x46, 0x00, 0x21, 0x00, 0x22, 0x00, 0x23, 0x00, 0x24, 0x1E, 0xC0, 0x1E, 0xC0, 0x1E, 0xC0
-	.byte 0x1E, 0xC0, 0x64, 0x46, 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start sub_8094A38
-sub_8094A38: @ 0x08094A38
+	thumb_func_start SoundMainBTM
+SoundMainBTM: @ 0x0814F810
+	mov ip, r4
+	movs r1, #0
+	movs r2, #0
+	movs r3, #0
+	movs r4, #0
+	stm r0!, {r1, r2, r3, r4}
+	stm r0!, {r1, r2, r3, r4}
+	stm r0!, {r1, r2, r3, r4}
+	stm r0!, {r1, r2, r3, r4}
+	mov r4, ip
+	bx lr
+	.align 2, 0
+
+	thumb_func_start RealClearChain
+RealClearChain: @ 0x08094A38
 	ldr r3, [r0, #0x2c]
 	cmp r3, #0
 	beq _08094A56
@@ -483,7 +495,9 @@ _08094A52:
 	str r1, [r0, #0x2c]
 _08094A56:
 	bx lr
-_08094A58:
+
+	thumb_func_start ply_fine
+ply_fine:
 	push {r4, r5, lr}
 	adds r5, r1, #0
 	ldr r4, [r5, #0x20]
@@ -499,7 +513,7 @@ _08094A62:
 	strb r1, [r4]
 _08094A70:
 	adds r0, r4, #0
-	bl sub_8094A38
+	bl RealClearChain
 	ldr r4, [r4, #0x34]
 	cmp r4, #0
 	bne _08094A62
@@ -515,7 +529,7 @@ _08094A7C:
 MPlayJumpTableCopy: @ 0x08094A88
 	mov ip, lr
 	movs r1, #0x24
-	ldr r2, _08094AB8 @ =gUnknown_08ACDC78
+	ldr r2, _08094AB8 @ =gMPlayJumpTableTemplate
 _08094A8E:
 	ldr r3, [r2]
 	bl _08094AA2
@@ -533,7 +547,7 @@ _08094AA2:
 	push {r0}
 	lsrs r0, r2, #0x19
 	bne _08094AB4
-	ldr r0, _08094AB8 @ =gUnknown_08ACDC78
+	ldr r0, _08094AB8 @ =gMPlayJumpTableTemplate
 	cmp r2, r0
 	blo _08094AB2
 	lsrs r0, r2, #0xe
@@ -544,7 +558,7 @@ _08094AB4:
 	pop {r0}
 	bx lr
 	.align 2, 0
-_08094AB8: .4byte gUnknown_08ACDC78
+_08094AB8: .4byte gMPlayJumpTableTemplate
 
 	thumb_func_start sub_8094ABC
 sub_8094ABC: @ 0x08094ABC
@@ -557,7 +571,9 @@ sub_08094ABE: @ 0x08094ABE
 	ldrb r3, [r2]
 	b _08094AA2
 	.align 2, 0
-_08094AC8:
+
+	thumb_func_start ply_goto
+ply_goto:
 	push {lr}
 _08094ACA:
 	ldr r2, [r1, #0x40]
@@ -575,8 +591,8 @@ _08094ACA:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8094AE8
-sub_8094AE8: @ 0x08094AE8
+	thumb_func_start ply_patt
+ply_patt: @ 0x08094AE8
 	ldrb r2, [r1, #2]
 	cmp r2, #3
 	bhs _08094B00
@@ -588,13 +604,13 @@ sub_8094AE8: @ 0x08094AE8
 	ldrb r2, [r1, #2]
 	adds r2, #1
 	strb r2, [r1, #2]
-	b _08094AC8
+	b ply_goto
 _08094B00:
-	b _08094A58
+	b ply_fine
 	.align 2, 0
 
-	thumb_func_start sub_8094B04
-sub_8094B04: @ 0x08094B04
+	thumb_func_start ply_pend
+ply_pend: @ 0x08094B04
 	ldrb r2, [r1, #2]
 	cmp r2, #0
 	beq _08094B16
@@ -607,8 +623,8 @@ sub_8094B04: @ 0x08094B04
 _08094B16:
 	bx lr
 
-	thumb_func_start sub_8094B18
-sub_8094B18: @ 0x08094B18
+	thumb_func_start ply_rept
+ply_rept: @ 0x08094B18
 	push {lr}
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -635,8 +651,8 @@ _08094B3A:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8094B48
-sub_8094B48: @ 0x08094B48
+	thumb_func_start ply_prio
+ply_prio: @ 0x08094B48
 	mov ip, lr
 	bl sub_8094ABC
 	strb r3, [r1, #0x1d]
