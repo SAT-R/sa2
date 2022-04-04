@@ -1872,8 +1872,8 @@ gUnknown_08ACDD08:
 gUnknown_08ACDDBC:
     .incbin "baserom.gba", 0x00ACDDBC, 0x30
 
-    .global gUnknown_08ACDDEC
-gUnknown_08ACDDEC:
+    .global gPcmSamplesPerVBlankTable
+gPcmSamplesPerVBlankTable:
     .incbin "baserom.gba", 0x00ACDDEC, 0x18
 
     .global gUnknown_08ACDE04

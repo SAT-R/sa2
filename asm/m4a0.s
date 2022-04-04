@@ -45,8 +45,8 @@ _08094C8C:
 _08094C90: .4byte 0x040000BC
 _08094C94: .4byte 0x84400004
 
-	thumb_func_start sub_8094C98
-sub_8094C98: @ 0x08094C98
+	thumb_func_start MPlayMain
+MPlayMain: @ 0x08094C98
 	ldr r2, _08094EFC @ =0x68736D53
 	ldr r3, [r0, #0x34]
 	cmp r2, r3

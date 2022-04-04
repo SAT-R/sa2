@@ -455,7 +455,7 @@ static void VBlankIntr(void) {
             REG_IME = 0;
             REG_DISPSTAT = DISPCNT_MODE_0;
             m4aMPlayAllStop();
-            sub_8095930();
+            m4aSoundVSyncOff();
             gUnknown_03001840 &= ~4;
             DmaStop(0);
             DmaStop(1);
