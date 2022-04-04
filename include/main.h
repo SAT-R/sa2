@@ -7,7 +7,6 @@ void GameInit(void);
 extern void InitMain(void);
 
 extern char gUnknown_0300188C;
-extern s32 gUnknown_03001840;
 extern u8* gUnknown_03001884;
 extern u8* gUnknown_03004D54;
 extern u8* gUnknown_030022C0;
@@ -93,7 +92,6 @@ union MultiSioData {
 extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
-extern int gUnknown_03001840;
 extern u32 gMultiSioStatusFlags;
 extern int gUnknown_03002790;
 struct BgAffineRegs {
@@ -167,7 +165,6 @@ extern u32 gUnknown_03002264;
 extern u8 gUnknown_03001B60[2][0x280];
 extern u8 gUnknown_03002700[];
 extern u8 gUnknown_03002850[];
-extern s32 gUnknown_03001840;
 
 extern u8 gUnknown_030053B4;
 extern short gUnknown_03001888;
@@ -182,7 +179,6 @@ extern u8 gUnknown_03001870[];
 extern FuncType_030053A0 gUnknown_030053A0[];
 extern int gUnknown_03002790;
 extern u8 gUnknown_03002874;
-extern int gUnknown_03001840;
 
 extern IntrFunc gUnknown_030007F0;
 extern IntrFunc gIntrTable[];
@@ -191,7 +187,6 @@ extern void sub_8007CC8(void);
 extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
 
-void sub_8002724();
 void UpdateScreenDma();
 void ClearOamBufferDma();
 void UpdateScreenCpuSet();

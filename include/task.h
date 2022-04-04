@@ -40,7 +40,7 @@ struct Unk_03003A20 {
 })
 
 extern struct Task gUnknown_030009F0[];
-extern u32 gUnk_03002440;
+extern u32 gUnknown_03001840;
 extern struct Task gEmptyTask;
 extern u8 gUnk_03002558;
 extern struct Task* gTaskList[];
@@ -49,14 +49,14 @@ extern struct Task* gUnk_03002E98;
 extern struct Task* gNextTask;
 extern struct Task* gCurTask;
 extern struct Unk_03003A20 gUnknown_03002B00[];
-extern u8 gUnk_030068D4;
+extern u8 gUnknown_030053B4;
 extern OamData *gUnknown_03005BB4;
 
 u32 TaskInit(void);
 void TaskExecute(void);
 struct Task* TaskCreate(TaskMain, u16, u16, u16, TaskDestructor);
 void TaskDestroy(struct Task*);
-struct Unk_03003A20* IwramMalloc(u16);
+uintptr_t IwramMalloc(u16);
 void sub_08152FB0(u16, u16);
 
 #endif

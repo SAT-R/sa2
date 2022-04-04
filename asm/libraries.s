@@ -1,4 +1,5 @@
 .include "asm/macros.inc"
+.include "include/gba.inc"
 
 .syntax unified
 .arm

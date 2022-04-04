@@ -221,7 +221,7 @@ void GameLoop(void) {
                 gMultiSioStatusFlags =
                     MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
-            sub_8002724();
+            TaskExecute();
         }
 
         gUnknown_03002790 = gUnknown_03001840;
