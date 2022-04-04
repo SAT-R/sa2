@@ -494,7 +494,7 @@
 . = 0x000018E0; gUnknown_030018E0 = .;
 . = 0x000018E8; gBldRegs = .;
 . = 0x000018F0; gUnknown_030018F0 = .;
-. = 0x00001900; gUnknown_03001900 = .;
+. = 0x00001900; gEmptyTask = .;
 . = 0x00001920; gBgAffineRegs = .;
 . = 0x00001940; gUnknown_03001940 = .;
 . = 0x00001944; gUnknown_03001944 = .;
@@ -502,7 +502,7 @@
 . = 0x0000194C; gUnknown_0300194C = .;
 . = 0x00001950; gMultiSioStatusFlags = .;
 . = 0x00001954; gUnknown_03001954 = .;
-. = 0x00001960; gUnknown_03001960 = .;
+. = 0x00001960; gTaskList = .;
 . = 0x00001B60; gUnknown_03001B60 = .;
 . = 0x00002060; gObjPalette = .;
 . = 0x000020C0; gUnknown_030020C0 = .;
@@ -510,7 +510,7 @@
 . = 0x00002260; gUnknown_03002260 = .;
 . = 0x00002264; gUnknown_03002264 = .;
 . = 0x00002270; gWinRegs = .;
-. = 0x0000227C; gUnknown_0300227C = .;
+. = 0x0000227C; gLastTaskNum = .;
 . = 0x00002280; gUnknown_03002280 = .;
 . = 0x00002282; gUnknown_03002282 = .;
 . = 0x00002283; gUnknown_03002283 = .;
@@ -519,13 +519,13 @@
 . = 0x000022AC; gUnknown_030022AC = .;
 . = 0x000022B0; gBgCntRegs = .;
 . = 0x000022B8; gUnknown_030022B8 = .;
-. = 0x000022BC; gUnknown_030022BC = .;
+. = 0x000022BC; gNextTask = .;
 . = 0x000022C0; gUnknown_030022C0 = .;
 . = 0x000022C8; gUnknown_030022C8 = .;
 . = 0x000022D0; gUnknown_030022D0 = .;
 . = 0x000026D0; gUnknown_030026D0 = .;
 . = 0x000026E0; gUnknown_030026E0 = .;
-. = 0x000026F0; gUnknown_030026F0 = .;
+. = 0x000026F0; gCurTask = .;
 . = 0x000026F4; gUnknown_030026F4 = .;
 . = 0x00002700; gUnknown_03002700 = .;
 . = 0x0000270C; gReleasedKeys = .;

@@ -5,6 +5,7 @@
 #include "malloc_ewram.h"
 #include "multi_sio.h"
 #include "sprite.h"
+#include "task.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 

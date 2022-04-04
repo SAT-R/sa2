@@ -190,7 +190,6 @@ extern IntrFunc gIntrTable[];
 extern void sub_8007CC8(void);
 extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
-extern void TaskInit(void);
 
 void sub_8002724();
 void UpdateScreenDma();
