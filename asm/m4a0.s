@@ -879,8 +879,8 @@ sub_8095268: @ 0x08095268
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_809526C
-sub_809526C: @ 0x0809526C
+	thumb_func_start MPlayContinue
+MPlayContinue: @ 0x0809526C
 	adds r2, r0, #0
 	ldr r3, [r2, #0x34]
 	ldr r0, _08095280 @ =0x68736D53

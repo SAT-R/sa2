@@ -3,89 +3,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_8095358
-sub_8095358: @ 0x08095358
-	push {lr}
-	lsls r0, r0, #0x10
-	ldr r2, _08095384 @ =gMPlayTable
-	ldr r1, _08095388 @ =gSongTable
-	lsrs r0, r0, #0xd
-	adds r0, r0, r1
-	ldrh r3, [r0, #4]
-	lsls r1, r3, #1
-	adds r1, r1, r3
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	ldr r3, [r1]
-	ldr r2, [r0]
-	cmp r3, r2
-	beq _0809538C
-	adds r0, r1, #0
-	adds r1, r2, #0
-	bl MPlayStart
-	b _080953A0
-	.align 2, 0
-_08095384: .4byte gMPlayTable
-_08095388: .4byte gSongTable
-_0809538C:
-	ldr r2, [r1, #4]
-	ldrh r0, [r1, #4]
-	cmp r0, #0
-	beq _08095398
-	cmp r2, #0
-	bge _080953A0
-_08095398:
-	adds r0, r1, #0
-	adds r1, r3, #0
-	bl MPlayStart
-_080953A0:
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_80953A4
-sub_80953A4: @ 0x080953A4
-	push {lr}
-	lsls r0, r0, #0x10
-	ldr r2, _080953D0 @ =gMPlayTable
-	ldr r1, _080953D4 @ =gSongTable
-	lsrs r0, r0, #0xd
-	adds r0, r0, r1
-	ldrh r3, [r0, #4]
-	lsls r1, r3, #1
-	adds r1, r1, r3
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r1, [r1]
-	ldr r3, [r1]
-	ldr r2, [r0]
-	cmp r3, r2
-	beq _080953D8
-	adds r0, r1, #0
-	adds r1, r2, #0
-	bl MPlayStart
-	b _080953F4
-	.align 2, 0
-_080953D0: .4byte gMPlayTable
-_080953D4: .4byte gSongTable
-_080953D8:
-	ldr r2, [r1, #4]
-	ldrh r0, [r1, #4]
-	cmp r0, #0
-	bne _080953EA
-	adds r0, r1, #0
-	adds r1, r3, #0
-	bl MPlayStart
-	b _080953F4
-_080953EA:
-	cmp r2, #0
-	bge _080953F4
-	adds r0, r1, #0
-	bl sub_809526C
-_080953F4:
-	pop {r0}
-	bx r0
-
 	thumb_func_start sub_80953F8
 sub_80953F8: @ 0x080953F8
 	push {lr}
@@ -132,7 +49,7 @@ sub_809542C: @ 0x0809542C
 	cmp r1, r0
 	bne _08095452
 	adds r0, r2, #0
-	bl sub_809526C
+	bl MPlayContinue
 _08095452:
 	pop {r0}
 	bx r0
@@ -168,7 +85,7 @@ _08095488: .4byte gMPlayTable
 	thumb_func_start sub_809548C
 sub_809548C: @ 0x0809548C
 	push {lr}
-	bl sub_809526C
+	bl MPlayContinue
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -185,7 +102,7 @@ sub_8095498: @ 0x08095498
 	adds r4, r0, #0
 _080954A8:
 	ldr r0, [r5]
-	bl sub_809526C
+	bl MPlayContinue
 	adds r5, #0xc
 	subs r4, #1
 	cmp r4, #0

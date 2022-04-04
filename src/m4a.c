@@ -35,3 +35,40 @@ void m4aSongNumStart(u16 n)
 
     MPlayStart(mplay->info, song->header);
 }
+
+void m4aSongNumStartOrChange(u16 n)
+{
+    const struct MusicPlayer *mplayTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[n];
+    const struct MusicPlayer *mplay = &mplayTable[song->ms];
+
+    if (mplay->info->songHeader != song->header)
+    {
+        MPlayStart(mplay->info, song->header);
+    }
+    else
+    {
+        if ((mplay->info->status & MUSICPLAYER_STATUS_TRACK) == 0
+         || (mplay->info->status & MUSICPLAYER_STATUS_PAUSE))
+        {
+            MPlayStart(mplay->info, song->header);
+        }
+    }
+}
+
+void m4aSongNumStartOrContinue(u16 n)
+{
+    const struct MusicPlayer *mplayTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[n];
+    const struct MusicPlayer *mplay = &mplayTable[song->ms];
+
+    if (mplay->info->songHeader != song->header)
+        MPlayStart(mplay->info, song->header);
+    else if ((mplay->info->status & MUSICPLAYER_STATUS_TRACK) == 0)
+        MPlayStart(mplay->info, song->header);
+    else if (mplay->info->status & MUSICPLAYER_STATUS_PAUSE)
+        MPlayContinue(mplay->info);
+}
+
