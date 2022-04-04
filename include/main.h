@@ -191,7 +191,7 @@ extern void sub_8007CC8(void);
 extern u16 sub_8096C9C(void);
 extern void sub_8096884(int a, int* b);
 extern void TaskInit(void);
-extern void sub_8095460(void);
+extern void m4aMPlayAllStop(void);
 extern void sub_8095930(void);
 
 

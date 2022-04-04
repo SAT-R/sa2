@@ -1,4 +1,5 @@
 gNumMusicPlayers = 4;
+gMaxLines = 0;
 
 OUTPUT_ARCH(arm)
 SECTIONS

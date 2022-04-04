@@ -5,7 +5,7 @@
 
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync: @ 0x08094C4C
-	ldr r0, _08094EF8 @ =gUnknown_03007FF0
+	ldr r0, _08094EF8 @ =0x03007ff0
 	ldr r0, [r0]
 	ldr r2, _08094EFC @ =0x68736D53
 	ldr r3, [r0]
@@ -75,11 +75,11 @@ _08094CB4:
 	bge _08094CCC
 	b _08094EE0
 _08094CCC:
-	ldr r0, _08094EF8 @ =gUnknown_03007FF0
+	ldr r0, _08094EF8 @ =0x03007ff0
 	ldr r0, [r0]
 	mov r8, r0
 	adds r0, r7, #0
-	bl sub_8095B84
+	bl FadeOutBody
 	ldr r0, [r7, #4]
 	cmp r0, #0
 	bge _08094CE0
@@ -124,7 +124,7 @@ _08094D06:
 	b _08094D28
 _08094D22:
 	adds r0, r4, #0
-	bl sub_8095680
+	bl ClearChain
 _08094D28:
 	ldr r4, [r4, #0x34]
 	cmp r4, #0
@@ -135,7 +135,7 @@ _08094D2E:
 	tst r0, r3
 	beq _08094DAC
 	adds r0, r5, #0
-	bl sub_8095694
+	bl Clear64byte
 	movs r0, #0x80
 	strb r0, [r5]
 	movs r0, #2
@@ -290,7 +290,7 @@ _08094E3C:
 	mov sb, r2
 	adds r0, r7, #0
 	adds r1, r5, #0
-	bl sub_8095C4C
+	bl TrkVolPitSet
 	ldr r4, [r5, #0x20]
 	cmp r4, #0
 	beq _08094ECC
@@ -300,7 +300,7 @@ _08094E5A:
 	tst r0, r1
 	bne _08094E6A
 	adds r0, r4, #0
-	bl sub_8095680
+	bl ClearChain
 	b _08094EC6
 _08094E6A:
 	ldrb r0, [r4, #1]
@@ -380,11 +380,11 @@ sub_08094EF0: @ 0x08094EF0
 	bx r3
 	.align 2, 0
 _08094EF4: .4byte gUnknown_08ACDEEC
-_08094EF8: .4byte gUnknown_03007FF0
+_08094EF8: .4byte 0x03007ff0
 _08094EFC: .4byte 0x68736D53
 
-	thumb_func_start sub_8094F00
-sub_8094F00: @ 0x08094F00
+	thumb_func_start TrackStop
+TrackStop: @ 0x08094F00
 	push {r4, r5, r6, lr}
 	adds r5, r1, #0
 	ldrb r1, [r5]
@@ -403,7 +403,7 @@ _08094F14:
 	movs r3, #7
 	ands r0, r3
 	beq _08094F2C
-	ldr r3, _08094F40 @ =gUnknown_03007FF0
+	ldr r3, _08094F40 @ =0x03007ff0
 	ldr r3, [r3]
 	ldr r3, [r3, #0x2c]
 	bl sub_08094EF0
@@ -421,7 +421,7 @@ _08094F38:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08094F40: .4byte gUnknown_03007FF0
+_08094F40: .4byte 0x03007ff0
 
 	thumb_func_start sub_8094F44
 sub_8094F44: @ 0x08094F44
@@ -452,8 +452,8 @@ _08094F70:
 	strb r0, [r4, #3]
 	bx lr
 
-	thumb_func_start sub_8094F74
-sub_8094F74: @ 0x08094F74
+	thumb_func_start ply_note
+ply_note: @ 0x08094F74
 	push {r4, r5, r6, r7, lr}
 	mov r4, r8
 	mov r5, sb
@@ -463,7 +463,7 @@ sub_8094F74: @ 0x08094F74
 	sub sp, #0x18
 	str r1, [sp]
 	adds r5, r2, #0
-	ldr r1, _0809516C @ =gUnknown_03007FF0
+	ldr r1, _0809516C @ =0x03007ff0
 	ldr r1, [r1]
 	str r1, [sp, #4]
 	ldr r1, _08095170 @ =gUnknown_08ACDEEC
@@ -635,7 +635,7 @@ _080950A8:
 	beq _0809515A
 _080950B4:
 	adds r0, r4, #0
-	bl sub_8095680
+	bl ClearChain
 	movs r1, #0
 	str r1, [r4, #0x30]
 	ldr r3, [r5, #0x20]
@@ -655,7 +655,7 @@ _080950C8:
 _080950DA:
 	ldr r0, [sp]
 	adds r1, r5, #0
-	bl sub_8095C4C
+	bl TrkVolPitSet
 	ldr r0, [r5, #4]
 	str r0, [r4, #0x10]
 	ldr r0, [sp, #0x10]
@@ -728,11 +728,11 @@ _0809515A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0809516C: .4byte gUnknown_03007FF0
+_0809516C: .4byte 0x03007ff0
 _08095170: .4byte gUnknown_08ACDEEC
 
-	thumb_func_start sub_8095174
-sub_8095174: @ 0x08095174
+	thumb_func_start ply_endtie
+ply_endtie: @ 0x08095174
 	push {r4, r5}
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -799,8 +799,8 @@ sub_80951D0: @ 0x080951D0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_80951DC
-sub_80951DC: @ 0x080951DC
+	thumb_func_start ply_lfos
+ply_lfos: @ 0x080951DC
 	mov ip, lr
 	bl sub_80951D0
 	strb r3, [r1, #0x19]
@@ -811,8 +811,8 @@ _080951EC:
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_80951F0
-sub_80951F0: @ 0x080951F0
+	thumb_func_start ply_mod
+ply_mod: @ 0x080951F0
 	mov ip, lr
 	bl sub_80951D0
 	strb r3, [r1, #0x17]
@@ -896,8 +896,8 @@ _0809527E:
 _08095280: .4byte 0x68736D53
 _08095284: .4byte 0x7FFFFFFF
 
-	thumb_func_start sub_8095288
-sub_8095288: @ 0x08095288
+	thumb_func_start MPlayFadeOut
+MPlayFadeOut: @ 0x08095288
 	adds r2, r0, #0
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10

@@ -6,6 +6,7 @@
     "files.associations": {
         "multi_sio.h": "c",
         "global.h": "c",
-        "m4a_internal.h": "c"
+        "m4a_internal.h": "c",
+        "m4a.h": "c"
     }
 }

@@ -5,10 +5,8 @@
 . = 0x00000A00; gUnknown_02000A00 = .;
 . = 0x00000F00; gUnknown_02000F00 = .;
 . = 0x00001400; gSoundInfo = .;
-. = 0x000023B0; gUnknown_020023B0 = .;
+. = 0x000023B0; gMPlayJumpTable = .;
 . = 0x000023B4; gUnknown_020023B4 = .;
-. = 0x00002438; gUnknown_02002438 = .;
-. = 0x0000243C; gUnknown_0200243C = .;
 . = 0x00002440; gCgbChans = .;
 . = 0x00002540; gUnknown_02002540 = .;
 . = 0x00002580; gUnknown_02002580 = .;

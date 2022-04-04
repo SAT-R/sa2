@@ -454,7 +454,7 @@ static void VBlankIntr(void) {
             REG_IE = 0;
             REG_IME = 0;
             REG_DISPSTAT = DISPCNT_MODE_0;
-            sub_8095460();
+            m4aMPlayAllStop();
             sub_8095930();
             gUnknown_03001840 &= ~4;
             DmaStop(0);
@@ -563,7 +563,7 @@ static void KeypadIntr(void) { REG_IF = INTR_FLAG_KEYPAD; }
 
 static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
-void DummyFunc(void) { return; }
+void DummyFunc_main(void) { return; }
 
 void ClearOamBufferCpuSet(void) {
     gUnknown_0300188C = 0;
