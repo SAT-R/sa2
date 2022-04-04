@@ -995,7 +995,7 @@ _08094D80:
 	beq _08094E08
 	b _08094DAC
 _08094DA2:
-	ldr r0, _08094EF4 @ =gUnknown_08ACDEEC
+	ldr r0, _08094EF4 @ =gClockTable
 	subs r1, #0x80
 	adds r1, r1, r0
 	ldrb r0, [r1]
@@ -1184,7 +1184,7 @@ _08094EE0:
 sub_08094EF0: @ 0x08094EF0
 	bx r3
 	.align 2, 0
-_08094EF4: .4byte gUnknown_08ACDEEC
+_08094EF4: .4byte gClockTable
 _08094EF8: .4byte 0x03007ff0
 _08094EFC: .4byte 0x68736D53
 
@@ -1271,7 +1271,7 @@ ply_note: @ 0x08094F74
 	ldr r1, _0809516C @ =0x03007ff0
 	ldr r1, [r1]
 	str r1, [sp, #4]
-	ldr r1, _08095170 @ =gUnknown_08ACDEEC
+	ldr r1, _08095170 @ =gClockTable
 	adds r0, r0, r1
 	ldrb r0, [r0]
 	strb r0, [r5, #4]
@@ -1534,7 +1534,7 @@ _0809515A:
 	bx r0
 	.align 2, 0
 _0809516C: .4byte 0x03007ff0
-_08095170: .4byte gUnknown_08ACDEEC
+_08095170: .4byte gClockTable
 
 	thumb_func_start ply_endtie
 ply_endtie: @ 0x08095174
