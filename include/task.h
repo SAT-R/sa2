@@ -19,7 +19,8 @@ struct Task {
     /* 0x12 */ u16 flags; // 0x1  = active
                           // 0x2  = ???
                           // 0x10 = use ewram for struct
-    /* 0x14 */ u16 unk14;
+    /* 0x14 */ u8 unk14;
+    /* 0x15 */ u8 unk15;
     /* 0x16 */ u16 unk16;
     /* 0x18 */ u16 unk18;
 };

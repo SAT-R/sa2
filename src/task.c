@@ -55,3 +55,50 @@ u32 TaskInit(void) {
     gUnknown_03002B00[0].unk2 = 0x2204;
     return 1;
 }
+
+struct Task* TaskCreate(TaskMain taskMain, u16 structSize, u16 arg2, u16 flags, TaskDestructor taskDestructor) {
+    struct Task* slow;
+    struct Task* r4;
+    u16 fast;
+    struct EwramNode* r1;
+
+    // ???
+    do ; while (0);
+    
+    r4 = NULL;
+    slow = NULL;
+
+    if (gLastTaskNum <= 0x7f) {
+        struct Task* nextSlot = gTaskList[gLastTaskNum++];
+        r4 = nextSlot;
+    }
+
+    if (r4 == NULL) {
+        return &gEmptyTask;
+    }
+
+    r4->main = taskMain;
+    r4->dtor = taskDestructor;
+    r4->unk10 = arg2;
+    r4->flags = flags;
+    r4->unk15 = 0;
+    r4->unk16 = 0;
+    r4->unk18 = 0;
+    r4->structOffset = ((uintptr_t)IwramMalloc(structSize));
+    r4->unk0 = (uintptr_t)gCurTask;
+    
+    slow = gTaskList[0];
+    fast = slow->next;
+    while ((fast + IWRAM_START) != IWRAM_START) {
+        if (((struct Task*)(fast + IWRAM_START))->unk10 > arg2) {
+            ((struct Task*)(fast + IWRAM_START))->unk2 = (uintptr_t)r4;
+            r4->next = slow->next;
+            r4->unk2 = (uintptr_t)slow;
+            slow->next = (uintptr_t)r4;
+            break;
+        }
+        slow = (struct Task*)(fast + IWRAM_START);
+        fast = ((struct Task*)(fast + IWRAM_START))->next;
+    }
+    return r4;
+}
