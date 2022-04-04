@@ -58,9 +58,11 @@ SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$
 OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SOUND_ASM_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
-src/agb_sram.o: CC1FLAGS := -O1 -mthumb-interwork
-src/test.o: CC1FLAGS := -O0 -mthumb-interwork
+# Use the old compiler for m4a, as it was prebuilt and statically linked
+# to the original codebase
+$(C_BUILDDIR)/m4a.o: CC1 := $(CC1_OLD)
 
+$(C_BUILDDIR)/agb_sram.o: CC1FLAGS := -O1 -mthumb-interwork
 
 #### Main Targets ####
 

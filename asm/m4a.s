@@ -3,36 +3,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start m4aSoundMain
-m4aSoundMain: @ 0x08095320
-	push {lr}
-	bl sub_80945F8
-	pop {r0}
-	bx r0
-	.align 2, 0
-	thumb_func_start sub_809532C
-sub_809532C: @ 0x0809532C
-	push {lr}
-	lsls r0, r0, #0x10
-	ldr r2, _08095350 @ =gMPlayTable
-	ldr r1, _08095354 @ =gSongTable
-	lsrs r0, r0, #0xd
-	adds r0, r0, r1
-	ldrh r3, [r0, #4]
-	lsls r1, r3, #1
-	adds r1, r1, r3
-	lsls r1, r1, #2
-	adds r1, r1, r2
-	ldr r2, [r1]
-	ldr r1, [r0]
-	adds r0, r2, #0
-	bl sub_8095A60
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08095350: .4byte gMPlayTable
-_08095354: .4byte gSongTable
-
 	thumb_func_start sub_8095358
 sub_8095358: @ 0x08095358
 	push {lr}
@@ -53,7 +23,7 @@ sub_8095358: @ 0x08095358
 	beq _0809538C
 	adds r0, r1, #0
 	adds r1, r2, #0
-	bl sub_8095A60
+	bl MPlayStart
 	b _080953A0
 	.align 2, 0
 _08095384: .4byte gMPlayTable
@@ -68,7 +38,7 @@ _0809538C:
 _08095398:
 	adds r0, r1, #0
 	adds r1, r3, #0
-	bl sub_8095A60
+	bl MPlayStart
 _080953A0:
 	pop {r0}
 	bx r0
@@ -93,7 +63,7 @@ sub_80953A4: @ 0x080953A4
 	beq _080953D8
 	adds r0, r1, #0
 	adds r1, r2, #0
-	bl sub_8095A60
+	bl MPlayStart
 	b _080953F4
 	.align 2, 0
 _080953D0: .4byte gMPlayTable
@@ -105,7 +75,7 @@ _080953D8:
 	bne _080953EA
 	adds r0, r1, #0
 	adds r1, r3, #0
-	bl sub_8095A60
+	bl MPlayStart
 	b _080953F4
 _080953EA:
 	cmp r2, #0
@@ -940,8 +910,8 @@ _08095A54: .4byte gUnknown_03007FF0
 _08095A58: .4byte 0x68736D53
 _08095A5C: .4byte sub_8094C98
 
-	thumb_func_start sub_8095A60
-sub_8095A60: @ 0x08095A60
+	thumb_func_start MPlayStart
+MPlayStart: @ 0x08095A60
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}

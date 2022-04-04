@@ -20,3 +20,18 @@ void m4aSoundInit(void) {
         mplayInfo->memAccArea = gMPlayMemAccArea;
     }
 }
+
+void m4aSoundMain(void)
+{
+    SoundMain();
+}
+
+void m4aSongNumStart(u16 n)
+{
+    const struct MusicPlayer *mplayTable = gMPlayTable;
+    const struct Song *songTable = gSongTable;
+    const struct Song *song = &songTable[n];
+    const struct MusicPlayer *mplay = &mplayTable[song->ms];
+
+    MPlayStart(mplay->info, song->header);
+}
