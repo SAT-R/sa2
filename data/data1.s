@@ -1896,7 +1896,7 @@ gCgb3Vol:
 gUnknown_08ACDEEC:
     .incbin "baserom.gba", 0x00ACDEEC, 0x34
 
-    .global gUnknown_08ACDF20
-gUnknown_08ACDF20:
+    .global gXcmdTable
+gXcmdTable:
     .incbin "baserom.gba", 0x00ACDF20, 0x30
 
