@@ -1876,20 +1876,20 @@ gUnknown_08ACDDBC:
 gPcmSamplesPerVBlankTable:
     .incbin "baserom.gba", 0x00ACDDEC, 0x18
 
-    .global gUnknown_08ACDE04
-gUnknown_08ACDE04:
+    .global gCgbScaleTable
+gCgbScaleTable:
     .incbin "baserom.gba", 0x00ACDE04, 0x84
 
-    .global gUnknown_08ACDE88
-gUnknown_08ACDE88:
+    .global gCgbFreqTable
+gCgbFreqTable:
     .incbin "baserom.gba", 0x00ACDE88, 0x18
 
-    .global gUnknown_08ACDEA0
-gUnknown_08ACDEA0:
+    .global gNoiseTable
+gNoiseTable:
     .incbin "baserom.gba", 0x00ACDEA0, 0x3C
 
-    .global gUnknown_08ACDEDC
-gUnknown_08ACDEDC:
+    .global gCgb3Vol
+gCgb3Vol:
     .incbin "baserom.gba", 0x00ACDEDC, 0x10
 
     .global gUnknown_08ACDEEC

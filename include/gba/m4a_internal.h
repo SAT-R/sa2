@@ -100,7 +100,7 @@ struct CgbChannel
     u8 le;
     u8 sw;
     u32 fr;
-    u32 wp;
+    u32 *wp;
     u32 cp;
     u32 tp;
     u32 pp;
@@ -346,6 +346,7 @@ typedef void (*XcmdFunc)(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 extern const XcmdFunc gXcmdTable[];
 
 extern struct CgbChannel gCgbChans[];
+extern const u8 gCgb3Vol[];
 
 extern const u8 gScaleTable[];
 extern const u32 gFreqTable[];
