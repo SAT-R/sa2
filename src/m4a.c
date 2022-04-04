@@ -4,6 +4,50 @@
 extern ALIGNED(4) char SoundMainRAM_Buffer[0x400];
 extern struct SoundInfo gSoundInfo;
 
+u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
+{
+    u32 val1;
+    u32 val2;
+    u32 fineAdjustShifted = fineAdjust << 24;
+
+    if (key > 178)
+    {
+        key = 178;
+        fineAdjustShifted = 255 << 24;
+    }
+    val1 = gScaleTable[key];
+    val1 = gFreqTable[val1 & 0xF] >> (val1 >> 4);
+    val2 = gScaleTable[key + 1];
+    val2 = gFreqTable[val2 & 0xF] >> (val2 >> 4);
+    return umul3232H32(wav->freq, val1 + umul3232H32(val2 - val1, fineAdjustShifted));
+}
+
+void nullsub_8095268(void)
+{
+}
+
+void MPlayContinue(struct MusicPlayerInfo *mplayInfo)
+{
+    if (mplayInfo->ident == ID_NUMBER)
+    {
+        ++mplayInfo->ident;
+        mplayInfo->status &= ~MUSICPLAYER_STATUS_PAUSE;
+        mplayInfo->ident = ID_NUMBER;
+    }
+}
+
+void MPlayFadeOut(struct MusicPlayerInfo *mplayInfo, u16 speed)
+{
+    if (mplayInfo->ident == ID_NUMBER)
+    {
+        ++mplayInfo->ident;
+        mplayInfo->fadeOC = speed;
+        mplayInfo->fadeOI = speed;
+        mplayInfo->fadeOV = (64 << FADE_VOL_SHIFT);
+        mplayInfo->ident = ID_NUMBER;
+    }
+}
+
 void m4aSoundInit(void) {
      s32 i;
 

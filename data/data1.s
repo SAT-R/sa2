@@ -1864,12 +1864,12 @@ gUnknown_086EA408:
 gUnknown_08ACDC78:
     .incbin "baserom.gba", 0x00ACDC78, 0x90
 
-    .global gUnknown_08ACDD08
-gUnknown_08ACDD08:
+    .global gScaleTable
+gScaleTable:
     .incbin "baserom.gba", 0x00ACDD08, 0xB4
 
-    .global gUnknown_08ACDDBC
-gUnknown_08ACDDBC:
+    .global gFreqTable
+gFreqTable:
     .incbin "baserom.gba", 0x00ACDDBC, 0x30
 
     .global gPcmSamplesPerVBlankTable
