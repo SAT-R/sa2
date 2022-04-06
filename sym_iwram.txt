@@ -457,7 +457,7 @@
 . = 0x00000782; gUnknown_03000782 = .;
 . = 0x00000783; gUnknown_03000783 = .;
 . = 0x00000784; gUnknown_03000784 = .;
-. = 0x00000790; gUnknown_03000790 = .;
+. = 0x00000790; gSio32MultiLoadArea = .;
 . = 0x000007B0; gIntrTable = .;
 . = 0x000007B4; gUnknown_030007B4 = .;
 . = 0x000007B8; gUnknown_030007B8 = .;

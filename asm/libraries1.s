@@ -4,493 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start MultiSioMain
-MultiSioMain: @ 0x08000420
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	mov sb, r0
-	mov ip, r1
-	mov r8, r2
-	ldr r5, _08000440 @ =0x04000128
-	ldr r6, [r5]
-	ldr r7, _08000444 @ =gMultiSioArea
-	ldrb r0, [r7, #1]
-	cmp r0, #0
-	beq _08000448
-	cmp r0, #1
-	beq _080004B0
-	b _080004BE
-	.align 2, 0
-_08000440: .4byte 0x04000128
-_08000444: .4byte gMultiSioArea
-_08000448:
-	movs r1, #0x30
-	adds r0, r6, #0
-	ands r0, r1
-	cmp r0, #0
-	bne _080004AA
-	movs r0, #0x88
-	adds r4, r6, #0
-	ands r4, r0
-	cmp r4, #8
-	bne _080004BE
-	movs r1, #4
-	adds r0, r6, #0
-	ands r0, r1
-	lsls r0, r0, #0x18
-	lsrs r1, r0, #0x18
-	cmp r1, #0
-	bne _080004AA
-	ldr r0, [r7, #0x14]
-	cmp r0, #0xd
-	bne _080004AA
-	ldr r3, _080004F0 @ =0x04000208
-	strh r1, [r3]
-	ldr r2, _080004F4 @ =0x04000200
-	ldrh r1, [r2]
-	ldr r0, _080004F8 @ =0x0000FF7F
-	ands r0, r1
-	strh r0, [r2]
-	ldrh r0, [r2]
-	movs r1, #0x40
-	orrs r0, r1
-	strh r0, [r2]
-	movs r0, #1
-	strh r0, [r3]
-	ldrb r1, [r5, #1]
-	movs r0, #0x41
-	rsbs r0, r0, #0
-	ands r0, r1
-	strb r0, [r5, #1]
-	ldr r1, _080004FC @ =0x04000202
-	movs r0, #0xc0
-	strh r0, [r1]
-	subs r1, #0xf6
-	ldr r0, _08000500 @ =0x0000BBBC
-	str r0, [r1]
-	strb r4, [r7]
-	ldrb r0, [r5]
-	movs r1, #0x80
-	orrs r0, r1
-	strb r0, [r5]
-_080004AA:
-	ldr r1, _08000504 @ =gMultiSioArea
-	movs r0, #1
-	strb r0, [r1, #1]
-_080004B0:
-	mov r0, ip
-	bl sub_8000608
-	mov r0, sb
-	mov r1, r8
-	bl sub_8000538
-_080004BE:
-	ldr r1, _08000504 @ =gMultiSioArea
-	ldrb r0, [r1, #0xb]
-	adds r0, #1
-	strb r0, [r1, #0xb]
-	ldrb r3, [r1, #3]
-	ldrb r2, [r1, #8]
-	movs r0, #0x10
-	ands r0, r2
-	orrs r3, r0
-	movs r0, #0x20
-	ands r0, r2
-	orrs r3, r0
-	movs r0, #0x40
-	ands r0, r2
-	orrs r3, r0
-	ldrb r0, [r1, #2]
-	lsls r2, r0, #8
-	ldrb r0, [r1]
-	cmp r0, #8
-	bne _08000508
-	movs r0, #0x80
-	orrs r0, r2
-	orrs r0, r3
-	b _0800050C
-	.align 2, 0
-_080004F0: .4byte 0x04000208
-_080004F4: .4byte 0x04000200
-_080004F8: .4byte 0x0000FF7F
-_080004FC: .4byte 0x04000202
-_08000500: .4byte 0x0000BBBC
-_08000504: .4byte gMultiSioArea
-_08000508:
-	adds r0, r3, #0
-	orrs r0, r2
-_0800050C:
-	adds r2, r0, #0
-	ldrb r0, [r1, #9]
-	cmp r0, #0
-	beq _0800051A
-	movs r0, #0x80
-	lsls r0, r0, #5
-	orrs r2, r0
-_0800051A:
-	adds r1, r2, #0
-	lsls r0, r6, #0x1a
-	lsrs r0, r0, #0x1e
-	cmp r0, #3
-	bls _0800052A
-	movs r0, #0x80
-	lsls r0, r0, #6
-	orrs r1, r0
-_0800052A:
-	adds r0, r1, #0
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-
-	thumb_func_start sub_8000538
-sub_8000538: @ 0x08000538
-	push {r4, r5, r6, r7, lr}
-	movs r7, #0
-	ldr r5, _080005F8 @ =gMultiSioArea
-	ldr r4, [r5, #0x28]
-	movs r2, #1
-	ands r1, r2
-	lsls r1, r1, #4
-	ldrb r3, [r4, #1]
-	movs r2, #0x11
-	rsbs r2, r2, #0
-	ands r2, r3
-	orrs r2, r1
-	strb r2, [r4, #1]
-	ldr r6, [r5, #0x28]
-	ldr r1, _080005FC @ =gUnknown_03000790
-	ldrb r1, [r1, #3]
-	movs r3, #1
-	adds r2, r3, #0
-	ands r2, r1
-	lsls r2, r2, #5
-	ldrb r4, [r6, #1]
-	movs r1, #0x21
-	rsbs r1, r1, #0
-	ands r1, r4
-	orrs r1, r2
-	strb r1, [r6, #1]
-	ldr r4, [r5, #0x28]
-	ldrb r1, [r5, #8]
-	lsls r1, r1, #0x19
-	lsrs r1, r1, #0x1f
-	ands r3, r1
-	lsls r3, r3, #6
-	ldrb r2, [r4, #1]
-	movs r1, #0x41
-	rsbs r1, r1, #0
-	ands r1, r2
-	orrs r1, r3
-	strb r1, [r4, #1]
-	ldr r2, [r5, #0x28]
-	ldrb r1, [r5, #0xb]
-	strb r1, [r2]
-	ldr r4, [r5, #0x28]
-	ldrb r2, [r5, #2]
-	ldrb r1, [r5, #3]
-	eors r2, r1
-	movs r1, #0xf
-	ands r2, r1
-	ldrb r3, [r4, #1]
-	movs r1, #0x10
-	rsbs r1, r1, #0
-	ands r1, r3
-	orrs r1, r2
-	strb r1, [r4, #1]
-	ldr r1, [r5, #0x28]
-	strh r7, [r1, #2]
-	ldr r1, [r5, #0x28]
-	adds r1, #4
-	ldr r2, _08000600 @ =0x04000005
-	bl CpuSet
-	movs r2, #0
-	ldr r1, [r5, #0x28]
-_080005B4:
-	ldrh r0, [r1]
-	adds r7, r7, r0
-	adds r1, #2
-	adds r2, #1
-	cmp r2, #0xb
-	bls _080005B4
-	adds r2, r5, #0
-	ldr r1, [r2, #0x28]
-	mvns r0, r7
-	strh r0, [r1, #2]
-	ldrb r0, [r2]
-	cmp r0, #0
-	beq _080005D4
-	ldr r1, _08000604 @ =0x0400010E
-	movs r0, #0
-	strh r0, [r1]
-_080005D4:
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r5, #0x14]
-	ldrb r0, [r5]
-	cmp r0, #0
-	beq _080005F0
-	ldrb r1, [r5, #8]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _080005F0
-	ldr r1, _08000604 @ =0x0400010E
-	movs r0, #0xc0
-	strh r0, [r1]
-_080005F0:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080005F8: .4byte gMultiSioArea
-_080005FC: .4byte gUnknown_03000790
-_08000600: .4byte 0x04000005
-_08000604: .4byte 0x0400010E
-
-	thumb_func_start sub_8000608
-sub_8000608: @ 0x08000608
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0x14
-	str r0, [sp, #0xc]
-	ldr r0, _08000714 @ =gMultiSioRecvFuncBuf
-	movs r4, #0
-	str r4, [sp]
-	bl _call_via_r0
-	str r0, [sp, #4]
-	ldr r0, _08000718 @ =gMultiSioArea
-	strb r4, [r0, #3]
-	add r1, sp, #4
-	mov sl, r1
-	add r2, sp, #8
-	mov sb, r2
-	adds r5, r0, #0
-	adds r6, r5, #0
-	movs r7, #0x50
-	adds r7, r7, r6
-	mov r8, r7
-_08000638:
-	movs r3, #0
-	movs r2, #0
-	lsls r5, r4, #2
-	adds r0, r4, #1
-	str r0, [sp, #0x10]
-	mov r1, r8
-	adds r0, r5, r1
-	ldr r1, [r0]
-_08000648:
-	ldrh r0, [r1]
-	adds r3, r3, r0
-	adds r1, #2
-	adds r2, #1
-	cmp r2, #0xb
-	bls _08000648
-	mov r2, sl
-	adds r0, r2, r4
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _080006AA
-	lsls r0, r3, #0x10
-	asrs r0, r0, #0x10
-	movs r7, #1
-	rsbs r7, r7, #0
-	cmp r0, r7
-	bne _080006AA
-	movs r0, #1
-	lsls r0, r4
-	ldrb r1, [r6, #3]
-	orrs r0, r1
-	strb r0, [r6, #3]
-	ldrb r2, [r6, #8]
-	lsls r1, r2, #0x1c
-	lsrs r1, r1, #0x1c
-	mov r0, r8
-	adds r3, r5, r0
-	ldr r0, [r3]
-	ldrb r0, [r0, #1]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1f
-	lsls r0, r4
-	orrs r0, r1
-	movs r1, #0xf
-	ands r0, r1
-	subs r7, #0xf
-	adds r1, r7, #0
-	ands r2, r1
-	orrs r2, r0
-	strb r2, [r6, #8]
-	ldr r0, [r3]
-	adds r0, #4
-	adds r1, r5, r4
-	lsls r1, r1, #2
-	ldr r2, [sp, #0xc]
-	adds r1, r2, r1
-	ldr r2, _0800071C @ =0x04000005
-	bl CpuSet
-_080006AA:
-	movs r0, #0
-	str r0, [sp, #8]
-	mov r7, r8
-	adds r0, r5, r7
-	ldr r1, [r0]
-	adds r1, #4
-	mov r0, sb
-	ldr r2, _08000720 @ =0x05000005
-	bl CpuSet
-	ldr r4, [sp, #0x10]
-	cmp r4, #3
-	ble _08000638
-	ldr r0, _08000718 @ =gMultiSioArea
-	ldrb r1, [r0, #2]
-	ldrb r2, [r0, #3]
-	adds r3, r1, #0
-	orrs r3, r2
-	strb r3, [r0, #2]
-	movs r1, #1
-	ands r1, r2
-	adds r5, r0, #0
-	cmp r1, #0
-	beq _08000760
-	ldrb r0, [r5]
-	cmp r0, #8
-	bne _08000724
-	movs r0, #3
-	ands r0, r2
-	cmp r0, #0
-	beq _080006F8
-	lsls r0, r2, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, r3
-	bne _080006F8
-	ldrb r0, [r5, #8]
-	movs r1, #0x10
-	orrs r0, r1
-	strb r0, [r5, #8]
-_080006F8:
-	ldrb r4, [r5, #8]
-	lsls r2, r4, #0x1c
-	lsrs r2, r2, #0x1c
-	movs r0, #0xe
-	ldrb r3, [r5, #2]
-	adds r1, r0, #0
-	ands r1, r2
-	ands r0, r3
-	cmp r1, r0
-	bne _08000744
-	movs r0, #0x40
-	orrs r0, r4
-	b _08000742
-	.align 2, 0
-_08000714: .4byte gMultiSioRecvFuncBuf
-_08000718: .4byte gMultiSioArea
-_0800071C: .4byte 0x04000005
-_08000720: .4byte 0x05000005
-_08000724:
-	ldrb r2, [r5, #8]
-	lsls r1, r2, #0x19
-	lsrs r1, r1, #0x1f
-	ldr r0, [r5, #0x50]
-	ldrb r0, [r0, #1]
-	lsls r0, r0, #0x19
-	lsrs r0, r0, #0x1f
-	orrs r1, r0
-	movs r0, #1
-	ands r1, r0
-	lsls r1, r1, #6
-	movs r0, #0x41
-	rsbs r0, r0, #0
-	ands r0, r2
-	orrs r0, r1
-_08000742:
-	strb r0, [r5, #8]
-_08000744:
-	ldrb r2, [r5, #8]
-	lsls r1, r2, #0x1a
-	lsrs r1, r1, #0x1f
-	ldr r0, [r5, #0x50]
-	ldrb r0, [r0, #1]
-	lsls r0, r0, #0x1b
-	lsrs r0, r0, #0x1f
-	orrs r0, r1
-	lsls r0, r0, #5
-	movs r1, #0x21
-	rsbs r1, r1, #0
-	ands r1, r2
-	orrs r1, r0
-	strb r1, [r5, #8]
-_08000760:
-	ldrb r0, [r5, #3]
-	add sp, #0x14
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_8000774
-sub_8000774: @ 0x08000774
-	push {lr}
-	ldr r2, _0800078C @ =gMultiSioArea
-	ldrb r0, [r2]
-	cmp r0, #0
-	beq _08000786
-	ldrb r0, [r2, #8]
-	movs r1, #0x80
-	orrs r0, r1
-	strb r0, [r2, #8]
-_08000786:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800078C: .4byte gMultiSioArea
-
-	thumb_func_start sub_8000790
-sub_8000790: @ 0x08000790
-	ldr r3, _080007C4 @ =0x04000208
-	movs r0, #0
-	strh r0, [r3]
-	ldr r2, _080007C8 @ =0x04000200
-	ldrh r1, [r2]
-	ldr r0, _080007CC @ =0x0000FF3F
-	ands r0, r1
-	strh r0, [r2]
-	movs r0, #1
-	strh r0, [r3]
-	ldr r1, _080007D0 @ =0x04000128
-	ldr r2, _080007D4 @ =0x00002003
-	adds r0, r2, #0
-	strh r0, [r1]
-	subs r1, #0x1c
-	ldr r0, _080007D8 @ =0x0000BBBC
-	str r0, [r1]
-	adds r1, #0xf6
-	movs r0, #0xc0
-	strh r0, [r1]
-	ldr r2, _080007DC @ =gMultiSioArea
-	ldrb r1, [r2, #8]
-	movs r0, #0x7f
-	ands r0, r1
-	strb r0, [r2, #8]
-	bx lr
-	.align 2, 0
-_080007C4: .4byte 0x04000208
-_080007C8: .4byte 0x04000200
-_080007CC: .4byte 0x0000FF3F
-_080007D0: .4byte 0x04000128
-_080007D4: .4byte 0x00002003
-_080007D8: .4byte 0x0000BBBC
-_080007DC: .4byte gMultiSioArea
-
 	thumb_func_start sub_80007E0
 sub_80007E0: @ 0x080007E0
 	push {r4, r5, r6, r7, lr}
@@ -1656,7 +1169,7 @@ _080010B8: .4byte 0x0000795C
 sub_80010BC: @ 0x080010BC
 	push {r4, r5, r6, r7, lr}
 	adds r2, r0, #0
-	ldr r0, _080010D8 @ =gUnknown_03000790
+	ldr r0, _080010D8 @ =gSio32MultiLoadArea
 	ldrb r1, [r0, #1]
 	adds r5, r0, #0
 	cmp r1, #4
@@ -1669,7 +1182,7 @@ _080010CC:
 	ldr r0, [r0]
 	mov pc, r0
 	.align 2, 0
-_080010D8: .4byte gUnknown_03000790
+_080010D8: .4byte gSio32MultiLoadArea
 _080010DC: .4byte _080010E0
 _080010E0: @ jump table
 	.4byte _080010F4 @ case 0
@@ -1905,7 +1418,7 @@ sub_80012A0: @ 0x080012A0
 	push {r4, r5, lr}
 	ldr r2, _080012C4 @ =0x04000120
 	ldr r3, [r2]
-	ldr r5, _080012C8 @ =gUnknown_03000790
+	ldr r5, _080012C8 @ =gSio32MultiLoadArea
 	ldrb r0, [r5]
 	adds r4, r5, #0
 	cmp r0, #1
@@ -1921,7 +1434,7 @@ sub_80012A0: @ 0x080012A0
 	b _0800130A
 	.align 2, 0
 _080012C4: .4byte 0x04000120
-_080012C8: .4byte gUnknown_03000790
+_080012C8: .4byte gSio32MultiLoadArea
 _080012CC: .4byte 0x04000128
 _080012D0:
 	ldr r1, _080012E4 @ =0x0400010E
@@ -2021,7 +1534,7 @@ sub_8001368: @ 0x08001368
 	mov r8, r0
 	strh r0, [r3]
 	str r6, [sp]
-	ldr r4, _080013F0 @ =gUnknown_03000790
+	ldr r4, _080013F0 @ =gSio32MultiLoadArea
 	ldr r2, _080013F4 @ =0x05000006
 	mov r0, sp
 	adds r1, r4, #0
@@ -2069,7 +1582,7 @@ _080013D6:
 _080013E4: .4byte 0x04000208
 _080013E8: .4byte 0x04000200
 _080013EC: .4byte 0x0000FF3F
-_080013F0: .4byte gUnknown_03000790
+_080013F0: .4byte gSio32MultiLoadArea
 _080013F4: .4byte 0x05000006
 _080013F8: .4byte 0x04000128
 _080013FC: .4byte 0x00002003
