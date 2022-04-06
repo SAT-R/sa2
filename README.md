@@ -22,3 +22,9 @@ It builds the following ROM:
 - It seems the [Kirby & The Amazing Mirror](https://github.com/jiangzhengwenjz/katam/) decompilation uses a very similar codebase
 - https://decomp.me is a great resource for helping to create matching functions
 - `ldscript.txt` tells the linker the order which files should be linked
+
+### Credits
+
+- Special thanks to @normatt for the initial repo setup and sounds decompilation
+- Shout out to @froggestspirit for the drive to set this project up
+- [Pokemon Reverse Engineering Team](github.com/pret) for their help with the project, and tooling for GBA decompilations
