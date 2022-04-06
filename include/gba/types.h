@@ -28,83 +28,18 @@ typedef u8  bool8;
 typedef u16 bool16;
 typedef u32 bool32;
 
-struct DispCnt
-{
-    u16 mode:3;
-    u16 cgbMode:1;  // reserved, do not use
-    u16 bmpFrameNum:1;
-    u16 hblankIntervalFree:1;
-    u16 obj1dMap:1;
-    u16 forcedBlank:1;
-    u16 bg0_on:1;
-    u16 bg1_on:1;
-    u16 bg2_on:1;
-    u16 bg3_on:1;
-    u16 obj_on:1;
-    u16 win0_on:1;
-    u16 win1_on:1;
-    u16 objWin_on:1;
-};
-
-struct DispStat
-{
-    u16 vblankFlag:1;
-    u16 hblankFlag:1;
-    u16 vcountFlag:1;
-    u16 vblankIrqEnable:1;
-    u16 hblankIrqEnable:1;
-    u16 vcountIrqEnable:1;
-    u16 dummy:2;
-    u8 vcountCompare;
-};
-
 struct BgCnt
 {
     u16 priority:2;
     u16 charBaseBlock:2;
     u16 dummy:2;
     u16 mosaic:1;
-    u16 colorMode:1;
+    u16 palettes:1;
     u16 screenBaseBlock:5;
     u16 areaOverflowMode:1;
     u16 screenSize:2;
 };
-
-struct WinCnt
-{
-    u8  win0_bg0_on:1;
-    u8  win0_bg1_on:1;
-    u8  win0_bg2_on:1;
-    u8  win0_bg3_on:1;
-    u8  win0_obj_on:1;
-    u8  win0_blend_on:1;
-    u8  dummy1:2;
-
-    u8  win1_bg0_on:1;
-    u8  win1_bg1_on:1;
-    u8  win1_bg2_on:1;
-    u8  win1_bg3_on:1;
-    u8  win1_obj_on:1;
-    u8  win1_blend_on:1;
-    u8  dummy2:2;
-};
-
-struct BlendCnt
-{
-    u16 target1_bg0_on:1;
-    u16 target1_bg1_on:1;
-    u16 target1_bg2_on:1;
-    u16 target1_bg3_on:1;
-    u16 target1_obj_on:1;
-    u16 target1_bd_on:1;
-    u16 effect:2;
-    u16 target2_bg0_on:1;
-    u16 target2_bg1_on:1;
-    u16 target2_bg2_on:1;
-    u16 target2_bg3_on:1;
-    u16 target2_obj_on:1;
-    u16 target2_bd_on:1;
-};
+typedef volatile struct BgCnt vBgCnt;
 
 struct PlttData
 {
@@ -112,7 +47,7 @@ struct PlttData
     u16 g:5; // green
     u16 b:5; // blue
     u16 unused_15:1;
-} /*__attribute__((packed))*/;
+};
 
 typedef union {
     struct {
@@ -144,6 +79,10 @@ typedef union {
     } all;
 } OamData;
 
+#define ST_OAM_HFLIP     0x08
+#define ST_OAM_VFLIP     0x10
+#define ST_OAM_MNUM_FLIP_MASK 0x18
+
 #define ST_OAM_OBJ_NORMAL 0
 #define ST_OAM_OBJ_BLEND  1
 #define ST_OAM_OBJ_WINDOW 2
@@ -162,6 +101,29 @@ typedef union {
 #define ST_OAM_SQUARE      0
 #define ST_OAM_H_RECTANGLE 1
 #define ST_OAM_V_RECTANGLE 2
+
+#define ST_OAM_SIZE_0   0
+#define ST_OAM_SIZE_1   1
+#define ST_OAM_SIZE_2   2
+#define ST_OAM_SIZE_3   3
+
+#define SPRITE_SIZE_8x8     ((ST_OAM_SIZE_0 << 2) | (ST_OAM_SQUARE))
+#define SPRITE_SIZE_16x16   ((ST_OAM_SIZE_1 << 2) | (ST_OAM_SQUARE))
+#define SPRITE_SIZE_32x32   ((ST_OAM_SIZE_2 << 2) | (ST_OAM_SQUARE))
+#define SPRITE_SIZE_64x64   ((ST_OAM_SIZE_3 << 2) | (ST_OAM_SQUARE))
+
+#define SPRITE_SIZE_16x8    ((ST_OAM_SIZE_0 << 2) | (ST_OAM_H_RECTANGLE))
+#define SPRITE_SIZE_32x8    ((ST_OAM_SIZE_1 << 2) | (ST_OAM_H_RECTANGLE))
+#define SPRITE_SIZE_32x16   ((ST_OAM_SIZE_2 << 2) | (ST_OAM_H_RECTANGLE))
+#define SPRITE_SIZE_64x32   ((ST_OAM_SIZE_3 << 2) | (ST_OAM_H_RECTANGLE))
+
+#define SPRITE_SIZE_8x16    ((ST_OAM_SIZE_0 << 2) | (ST_OAM_V_RECTANGLE))
+#define SPRITE_SIZE_8x32    ((ST_OAM_SIZE_1 << 2) | (ST_OAM_V_RECTANGLE))
+#define SPRITE_SIZE_16x32   ((ST_OAM_SIZE_2 << 2) | (ST_OAM_V_RECTANGLE))
+#define SPRITE_SIZE_32x64   ((ST_OAM_SIZE_3 << 2) | (ST_OAM_V_RECTANGLE))
+
+#define SPRITE_SIZE(dim)  ((SPRITE_SIZE_##dim >> 2) & 0x03)
+#define SPRITE_SHAPE(dim) (SPRITE_SIZE_##dim & 0x03)
 
 struct BgAffineSrcData
 {
@@ -191,6 +153,31 @@ struct ObjAffineSrcData
     u16 rotation;
 };
 
+// Normal SIO Control Structure
+struct SioNormalCnt
+{
+    u16 sck_I_O:1;          // Clock I/O Select
+    u16 sck:1;              // Internal Clock Select
+    u16 ackRecv:1;          // Transfer Enable Flag Receive
+    u16 ackSend:1;          // Transfer Enable Flag Send
+    u16 unused_6_4:3;
+    u16 enable:1;           // SIO Enable
+    u16 unused_11_8:4;
+    u16 mode:2;             // Communication Mode Select
+    u16 ifEnable:1;         // Interrupt Request Enable
+    u16 unused_15:1;
+    u8  data;               // Data
+    u8  unused_31_24;
+};
+
+#define ST_SIO_8BIT_MODE            0       // Normal 8-bit communication mode
+#define ST_SIO_32BIT_MODE           1       // Normal 32-bit communication mode
+
+#define ST_SIO_SCK_OUT              0       // Select external clock
+#define ST_SIO_SCK_IN               1       // Select internal clock
+#define ST_SIO_IN_SCK_256K          0       // Select internal clock 256KHz
+#define ST_SIO_IN_SCK_2M            1       //                  Select 2MHz 
+
 // Multi-player SIO Control Structure
 struct SioMultiCnt
 {
@@ -202,32 +189,91 @@ struct SioMultiCnt
     u16 enable:1;      // SIO enable
     u16 unused_11_8:4;
     u16 mode:2;        // communication mode (should equal 2)
-    u16 intrEnable:1;  // IRQ enable
+    u16 ifEnable:1;  // IRQ enable
     u16 unused_15:1;
     u16 data;          // data
 };
 
-#define ST_SIO_MULTI_MODE 2 // Multi-player communication mode
+#define ST_SIO_MULTI_MODE           2       // Multi-play communication mode
 
-// baud rate
-#define ST_SIO_9600_BPS   0 //   9600 bps
-#define ST_SIO_38400_BPS  1 //  38400 bps
-#define ST_SIO_57600_BPS  2 //  57600 bps
-#define ST_SIO_115200_BPS 3 // 115200 bps
+#define ST_SIO_9600_BPS             0       // Baud rate 9600 bps
+#define ST_SIO_38400_BPS            1       //          38400 bps
+#define ST_SIO_57600_BPS            2       //          57600 bps
+#define ST_SIO_115200_BPS           3       //         115200 bps
+#define ST_SIO_MULTI_PARENT         1       // Multi-play communication  Connect master
+#define ST_SIO_MULTI_CHILD          0       //                  Connect slave
 
-struct WaitCnt
+// UART - SIO Control Structure
+struct SioUartCnt
 {
-    u16 sramWait:2;
-    u16 rom0_1stAcc:2;
-    u16 rom0_2ndAcc:1;
-    u16 rom1_1stAcc:2;
-    u16 rom1_2ndAcc:1;
-    u16 rom2_1stAcc:2;
-    u16 rom2_2ndAcc:1;
-    u16 phiTerminalClock:2;
-    u16 dummy:1;
-    u16 prefetchBufEnable:1;
-    u16 gamePakType:1;
+    u16 baudRate:2;         // Baud Rate
+    u16 ctsEnable:1;        // Send Signal Enable
+    u16 paritySelect:1;     // Parity Even/Odd
+    u16 transDataFull:1;    // Transmit Data Full
+    u16 recvDataEmpty:1;    // Receive Data Empty
+    u16 error:1;            // Error Detect
+    u16 length:1;           // Data Length
+    u16 fifoEnable:1;       // FIFO Enable
+    u16 parityEnable:1;     // Parity Enable
+    u16 transEnable:1;      // Transmitter Enable
+    u16 recvEnable:1;       // Receiver Enable
+    u16 mode:2;             // Communication Mode Select
+    u16 ifEnable:1;         // Interrupt Request Enable
+    u16 unused_15:1;
+    u8  data;               // Data
+    u8  unused_31_24;
 };
+
+#define ST_SIO_UART_MODE            3       // UART communication mode
+
+#define ST_SIO_UART_7BIT            0       // UART communication data length 7 bits
+#define ST_SIO_UART_8BIT            1       //                       8 bits
+#define ST_SIO_PARITY_EVEN          0       // Even parity
+#define ST_SIO_PARITY_ODD           1       // Odd parity
+
+// JOY Bus Communication Control Structure
+struct JoyCnt
+{
+    u8  ifReset:1;         // JOY Bus Reset Interrupt Request
+    u8  ifRecv:1;          // JOY Bus Received Interrupt Request
+    u8  ifSend:1;          // JOY Bus Sent Interrupt Request
+    u8  unused_5_3:3;
+    u8  ifEnable:1;        // Interrupt Request Enable
+    u8  unused_7:1;
+};
+
+// JOY Bus Communication Status Structure
+struct JoyStat
+{
+    u8  unused_0:1;
+    u8  recv:1;             // Receive Status
+    u8  unused_2:1;
+    u8  send:1;             // Send Status
+    u8  flags:2;            // General Flag
+    u8  unused_7_6:2;
+};
+
+// General Input/Output Control Structure
+struct RCnt
+{
+    u8  sc:1;               // Data
+    u8  sd:1;
+    u8  si:1;
+    u8  so:1;
+    u8  sc_i_o:1;           // I/O Select
+    u8  sd_i_o:1;
+    u8  si_i_o:1;
+    u8  so_i_o:1;
+    u8  ifEnable:1;         // Interrupt Request Enable
+    u8  unused_13_9:5;
+    u8  sioModeMaster:2;    // SIO Mode Master
+};
+
+#define ST_R_SIO_MASTER_MODE        0       // SIO master mode
+#define ST_R_DIRECT_MODE            2       // General input/output communication mode
+#define ST_R_JOY_MODE               3       // JOY communication mode
+
+#define ST_R_IN                     0       // Select input
+#define ST_R_OUT                    1       // Select output
 
 #endif // GUARD_GBA_TYPES_H

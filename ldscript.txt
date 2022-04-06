@@ -23,7 +23,9 @@ SECTIONS
 	ALIGN(4)
 	{
         build/sa2/asm/crt0.o(.text);
-        build/sa2/asm/libraries.o(.text);
+        build/sa2/asm/multi_sio_asm.o(.text);
+        build/sa2/src/multi_sio.o(.text);
+        build/sa2/asm/libraries1.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
         build/sa2/asm/code0.o(.text);
