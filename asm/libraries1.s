@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_80007E0
-sub_80007E0: @ 0x080007E0
+	thumb_func_start MultiBootMain
+MultiBootMain: @ 0x080007E0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
