@@ -25,6 +25,7 @@ SECTIONS
         build/sa2/asm/crt0.o(.text);
         build/sa2/asm/multi_sio_asm.o(.text);
         build/sa2/src/multi_sio.o(.text);
+        build/sa2/src/multi_boot.o(.text);
         build/sa2/asm/libraries1.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);

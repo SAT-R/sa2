@@ -371,7 +371,7 @@
 . = 0x000003DC; gUnknown_030003DC = .;
 . = 0x000003E4; gUnknown_030003E4 = .;
 . = 0x000003FC; gUnknown_030003FC = .;
-. = 0x00000400; gUnknown_03000400 = .;
+. = 0x00000400; gMultiBootRequiredData = .;
 . = 0x00000408; gUnknown_03000408 = .;
 . = 0x0000040A; gUnknown_0300040A = .;
 . = 0x0000040C; gUnknown_0300040C = .;
