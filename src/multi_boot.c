@@ -1,9 +1,9 @@
 #include "multi_boot.h"
 #include "global.h"
 
-s32 MultiBootSend(struct MultiBootParam *mp, u16 data);
-s32 MultiBootHandShake(struct MultiBootParam *mp);
-void MultiBootWaitSendDone(void);
+static s32 MultiBootSend(struct MultiBootParam *mp, u16 data);
+static s32 MultiBootHandShake(struct MultiBootParam *mp);
+static void MultiBootWaitSendDone(void);
 
 // TODO: convert to static and use 
 // . = 0x00000400; src/multi_boot.o(.bss);
@@ -347,7 +347,7 @@ output_burst:
 /*
  * If connection has problem, non-0
  */
-s32 MultiBootSend(struct MultiBootParam *mp, u16 data)
+static s32 MultiBootSend(struct MultiBootParam *mp, u16 data)
 {
     s32 i;
 
@@ -436,7 +436,7 @@ void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
 /*                  Handshake (final confirmation of boot)          */
 /*------------------------------------------------------------------*/
 
-s32 MultiBootHandShake(struct MultiBootParam *mp)
+static s32 MultiBootHandShake(struct MultiBootParam *mp)
 {
     s32 i, j;
 
