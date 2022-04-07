@@ -53,6 +53,7 @@ SECTIONS
         build/sa2/src/m4a_tables.o(.rodata);
         build/sa2/sound/sound.o(.rodata);
         build/sa2/data/data2.o(.rodata);
+        build/sa2/data/data3.o(.rodata);
 
 	} = 0
 
