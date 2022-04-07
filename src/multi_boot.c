@@ -23,6 +23,10 @@ extern u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
     REG_SIODATA8 = 0;                                   \
 
 
+/*------------------------------------------------------------------*/
+/*                   Multi-play Boot Main                           */
+/*------------------------------------------------------------------*/
+
 s32 MultiBootMain(struct MultiBootParam *mp)
 {
     s32 i, j, k;
@@ -334,4 +338,262 @@ output_burst:
         return 0;
     }
     /* never comes here */
+}
+
+/*------------------------------------------------------------------*/
+/*                       Send Data                                  */
+/*------------------------------------------------------------------*/
+
+/*
+ * If connection has problem, non-0
+ */
+s32 MultiBootSend(struct MultiBootParam *mp, u16 data)
+{
+    s32 i;
+
+    /* If SC7 is on, problem has occurred.
+     * There may be a problem with the connection(connected to JOY) and      
+     * communication does not have timeout error.
+     * (reconnect cable) May be first communication so no check for
+     * SC6, connection ID.
+     */
+    i = REG_SIOCNT & (SIO_MULTI_BUSY | SIO_MULTI_SD | SIO_MULTI_SI);
+    if (i != SIO_MULTI_SD)
+    {
+        MULTIBOOT_INIT(mp);
+        return i ^ SIO_MULTI_SD;
+    }
+    REG_SIODATA8 = data;
+    REG_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS | SIO_START;
+    mp->sendflag = 1;
+    return 0;
+}
+
+/*------------------------------------------------------------------*/
+/*                    Start recognition of client                   */
+/*------------------------------------------------------------------*/
+
+void MultiBootStartProbe(struct MultiBootParam *mp)
+{
+    if (mp->probe_count != 0)
+    {
+        MULTIBOOT_INIT(mp);
+        return;
+    }
+    mp->check_wait = 0;
+    mp->client_bit = 0;
+    mp->probe_count = 1;
+}
+
+/*------------------------------------------------------------------*/
+/*                   Start send from master server                  */
+/*------------------------------------------------------------------*/
+
+void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length, u8 palette_color, s8 palette_speed)
+{
+    s32 i;
+
+    if (mp->probe_count != 0
+     || mp->client_bit == 0
+     || mp->check_wait != 0)
+    {
+        /* Recognition processing, cannot do processing */
+        MULTIBOOT_INIT(mp);
+        return;
+    }
+    mp->boot_srcp = srcp;
+    length = (length + 15) & ~15; /* 16 byte units */
+    if (length < MULTIBOOT_SEND_SIZE_MIN || length > MULTIBOOT_SEND_SIZE_MAX)
+    {
+        /* More than number or transfer bytes */
+        MULTIBOOT_INIT(mp);
+        return;
+    }
+    mp->boot_endp = srcp + length;
+    switch (palette_speed)
+    {
+    case -4:
+    case -3:
+    case -2:
+    case -1:
+        i = (palette_color << 3) | (3 - palette_speed);
+        break;
+    case 0:
+        i = 0x38 | palette_color;
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        i = (palette_color << 3) | (palette_speed - 1);
+        break;
+    }
+    mp->palette_data = ((i & 0x3f) << 1) | 0x81;
+    mp->probe_count = 0xd0;
+}
+
+/*------------------------------------------------------------------*/
+/*                  Handshake (final confirmation of boot)          */
+/*------------------------------------------------------------------*/
+
+s32 MultiBootHandShake(struct MultiBootParam *mp)
+{
+    s32 i, j;
+
+#define send_data (mp->system_work[0])
+#define must_data (mp->system_work[1])
+    switch (mp->probe_count)
+    {
+    case 0xe0:
+    case_0xe0:
+        /* Master sends 0x0000. */
+        mp->probe_count = 0xe1;
+        must_data = 0x0000;
+        send_data = 0x100000; /* Right before next send >>5  */
+        return MultiBootSend(mp, 0x0000);
+    default:
+        /* 0xe1-0xe6
+         * If expected data does not come, do again from case_0xe0.
+         * 0xe1: After master sends 0x0000. All slaves must be 0x0000.
+         * 0xe2: After master sends 0x8000. All slaves must be 0x0000.
+         * 0xe3:        0x0400                            0x8000
+         * 0xe4:        0x0020                            0x0400
+         * 0xe5:        0x0001                            0x0020
+         * 0xe6:        0x0000                            0x0001
+         */
+        for (i = MULTIBOOT_NCHILD; i != 0; --i)
+        {
+            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            if ((mp->client_bit & (1 << i))
+                && j != must_data)
+                /* Expected data still hasn't come from all slaves. */
+                goto case_0xe0;
+        }
+        ++mp->probe_count;
+        must_data = send_data & 0xffff;
+        if (send_data == 0x0000)
+        {
+            /* This time send initial code low. */
+            must_data = mp->masterp[0xac] | (mp->masterp[0xad] << 8);
+            send_data = must_data << 5; /* right before sending >>5 */
+        }
+        send_data >>= 5;
+    output_common:
+        return MultiBootSend(mp, send_data);
+    case 0xe7: /* Master sent initial code, low. All slaves must be same. */
+    case 0xe8: /* Master sent initial code, high. All slaves must be same. */
+        for (i = MULTIBOOT_NCHILD; i != 0; --i)
+        {
+            j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
+            if ((mp->client_bit & (1 << i)) && j != must_data)
+            {
+                /* Desired data did not come from all slaves.
+                 * If reach this point and have error, stop(infinite loop) slave, 
+                 * and no retry by master.
+                 * On master's screen display,
+                 * "Communication failure. Turn off power and check connection. 
+                 *  Turn on power again."
+                 */
+                MULTIBOOT_INIT(mp);
+                return MULTIBOOT_ERROR_HANDSHAKE_FAILURE;
+            }
+        }
+        ++mp->probe_count;
+        if (mp->probe_count == 0xe9)
+            /* Handshake Success! */
+            return 0;
+        /* This time send the initial code, high. */
+        send_data = mp->masterp[0xae] | (mp->masterp[0xaf] << 8);
+        must_data = send_data;
+        goto output_common;
+    }
+#undef send_data
+#undef must_data
+}
+
+/*------------------------------------------------------------------*/
+/*                   Multi-play Boot Initialization                 */
+/*------------------------------------------------------------------*/
+
+void MultiBootInit(struct MultiBootParam *mp)
+{
+    MULTIBOOT_INIT(mp);
+}
+
+/*------------------------------------------------------------------*/
+/*                       Check transfer completion                  */
+/*------------------------------------------------------------------*/
+
+s32 MultiBootCheckComplete(struct MultiBootParam *mp)
+{
+    if (mp->probe_count == 0xe9)
+        /* Transfer complete status */
+        return 1;
+    /* middle of recognition, haven't started transfer, or transfer failure */
+    return 0;
+}
+
+/*------------------------------------------------------------------*/
+/*                     Wait Cycle                                   */
+/*------------------------------------------------------------------*/
+
+static inline void MultiBootWaitCycles(u32 cycles)
+{
+    /* Depending on if this is in CPU internal working, CPU external 
+     * working, ROM, the CPU cycles used for one of this function's wait 
+     * loops is different.
+     * CPU External Working (0x02XXXXXX) ... 12 cycles/loop
+     * ROM        (0x08XXXXXX) ... 13 cycles/loop 
+     *            (Have prefetch  Setup maximum speed)
+     * CPU Internal Working (0x03XXXXXX) ... 4  cycles/loop
+     * If address area other than above, temporarily use 4 cycles/loop.
+     * If set up lower cycles/loop than actual, 
+     * can get specified cycle number wait.
+     *
+     * Use AGB system clock 16.78MHz as hint for argument, cycles.
+     * If use 0x1000000 (16777216) with cycles approximately 1 second wait.
+     * (If V blank interrupt is processed during this, actual wait is longer)
+     */
+
+    asm(
+        "mov r2, pc\n\t"
+        "lsr r2, #24\n\t"
+        "mov r1, #12\n\t"
+        "cmp r2, #0x02\n\t"
+        "beq MultiBootWaitCyclesLoop\n\t"
+        "mov r1, #13\n\t"
+        "cmp r2, #0x08\n\t"
+        "beq MultiBootWaitCyclesLoop\n\t"
+        "mov r1, #4\n\t"
+        "MultiBootWaitCyclesLoop:\n\t"
+        "sub r0, r1\n\t"
+        "bgt MultiBootWaitCyclesLoop\n\t"
+        :
+        :
+        : "r0", "r1", "r2"
+    );
+}
+
+/*------------------------------------------------------------------*/
+/*             Check if communication completed within fixed time   */
+/*------------------------------------------------------------------*/
+
+static void MultiBootWaitSendDone(void)
+{
+    s32 i;
+
+    /* If cannot detect communication end within fixed time(1 frame),
+     * remove loop.
+     * Even if fast this loop takes 9 cycles/loop,
+     * (ldr=3, and=1, branch skip=1, i++=1, branch=3)
+     * try loop for 1 frame.
+     * Number of times do loop is,
+     * 0x1000000 (16.78MHz=cycles/sec) / 60 (frames/sec) / 9 (cycles/loop)
+     * = approximately 31069 (loops/frame)
+     */
+    for (i = 0; i < 31069; ++i)
+        if ((REG_SIOCNT & SIO_START) == 0)
+            break;
+    /* Sufficient time for slave's interrupt processing */
+    MultiBootWaitCycles(600);
 }
