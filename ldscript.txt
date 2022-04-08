@@ -32,7 +32,8 @@ SECTIONS
         build/sa2/asm/code0.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);
-        build/sa2/asm/code1.o(.text);
+        build/sa2/asm/agb_flash.o(.text);
+        build/sa2/src/agb_flash_le_512k.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
@@ -55,7 +56,7 @@ SECTIONS
         build/sa2/src/m4a_tables.o(.rodata);
         build/sa2/sound/sound.o(.rodata);
         build/sa2/data/data2_0.o(.rodata);
-        build/sa2/src/agb_flash.o(.rodata);
+        build/sa2/src/agb_flash_512k.o(.rodata);
         build/sa2/data/data2_1.o(.rodata);
         *libgcc.a:_divdi3.o(.rodata);
         build/sa2/data/data3.o(.rodata);

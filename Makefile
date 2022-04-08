@@ -62,6 +62,8 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 # to the original codebase
 $(C_BUILDDIR)/m4a.o: CC1 := $(CC1_OLD)
 
+# Use `-O1` for agb_flash libs, as these were also prebuilt
+$(C_BUILDDIR)/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork
 $(C_BUILDDIR)/agb_sram.o: CC1FLAGS := -O1 -mthumb-interwork
 
 #### Main Targets ####

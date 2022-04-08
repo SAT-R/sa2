@@ -72,10 +72,12 @@ u32 ProgramFlashSectorAndVerifyNBytes(u16 sectorNum, void *dataSrc, u32 n);
 
 u16 WaitForFlashWrite_Common(u8 phase, u8 *addr, u8 lastData);
 
+u16 ProgramByte(u8 *src, u8 *dest);
+
 u16 EraseFlashChip_MX(void);
-u16 EraseFlashSector_MX(u16 sectorNum);
+u16 EraseFlashSector_LE(u16 sectorNum);
 u16 ProgramFlashByte_MX(u16 sectorNum, u32 offset, u8 data);
-u16 ProgramFlashSector_MX(u16 sectorNum, void *src);
+u16 ProgramFlashSector_LE(u16 sectorNum, u8 *src);
 
 // agb_flash_1m
 u16 IdentifyFlash(void);

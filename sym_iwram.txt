@@ -681,8 +681,8 @@
 . = 0x00005B94; gUnknown_03005B94 = .;
 . = 0x00005B98; WaitForFlashWrite = .;
 . = 0x00005B9C; gUnknown_03005B9C = .;
-. = 0x00005BA0; gUnknown_03005BA0 = .;
-. = 0x00005BA4; gUnknown_03005BA4 = .;
+. = 0x00005BA0; gFlash = .;
+. = 0x00005BA4; gFlashNumRemainingBytes = .;
 . = 0x00005BA8; gUnknown_03005BA8 = .;
 . = 0x00005BAC; gUnknown_03005BAC = .;
 . = 0x00005BB0; gUnknown_03005BB0 = .;

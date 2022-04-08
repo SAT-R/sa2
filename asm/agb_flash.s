@@ -31,7 +31,7 @@ sub_80967C0: @ 0x080967C0
 	push {r4, r5, lr}
 	sub sp, #0x44
 	mov r0, sp
-	bl sub_80969B0
+	bl SetReadFlash1
 	mov r5, sp
 	adds r5, #1
 	ldr r2, _080967E8 @ =0x0E005555
@@ -271,8 +271,8 @@ sub_80969AC: @ 0x080969AC
 	ldrb r0, [r0]
 	bx lr
 
-	thumb_func_start sub_80969B0
-sub_80969B0: @ 0x080969B0
+	thumb_func_start SetReadFlash1
+SetReadFlash1: @ 0x080969B0
 	push {lr}
 	adds r2, r0, #0
 	ldr r1, _080969CC @ =gUnknown_03005B94
@@ -281,7 +281,7 @@ sub_80969B0: @ 0x080969B0
 	ldr r3, _080969D0 @ =sub_80969AC+1
 	movs r0, #1
 	eors r3, r0
-	ldr r0, _080969D4 @ =sub_80969B0
+	ldr r0, _080969D4 @ =SetReadFlash1
 	ldr r1, _080969D0 @ =sub_80969AC+1
 	subs r0, r0, r1
 	lsls r0, r0, #0xf
@@ -289,7 +289,7 @@ sub_80969B0: @ 0x080969B0
 	.align 2, 0
 _080969CC: .4byte gUnknown_03005B94
 _080969D0: .4byte sub_80969AC+1
-_080969D4: .4byte sub_80969B0
+_080969D4: .4byte SetReadFlash1
 _080969D8:
 	ldrh r0, [r3]
 	strh r0, [r2]
@@ -345,7 +345,7 @@ sub_8096A14: @ 0x08096A14
 	movs r1, #3
 	orrs r0, r1
 	strh r0, [r2]
-	ldr r0, _08096A68 @ =gUnknown_03005BA0
+	ldr r0, _08096A68 @ =gFlash
 	ldr r0, [r0]
 	ldr r1, [r0]
 	movs r0, #0x80
@@ -371,7 +371,7 @@ _08096A4C:
 	.align 2, 0
 _08096A60: .4byte 0x04000204
 _08096A64: .4byte 0x0000FFFC
-_08096A68: .4byte gUnknown_03005BA0
+_08096A68: .4byte gFlash
 _08096A6C: .4byte sub_80969F0+1
 _08096A70: .4byte sub_8096A14
 _08096A74:
@@ -387,7 +387,7 @@ _08096A80:
 	bne _08096A74
 	mov r3, sp
 	adds r3, #1
-	ldr r0, _08096AAC @ =gUnknown_03005BA0
+	ldr r0, _08096AAC @ =gFlash
 	ldr r0, [r0]
 	ldrb r0, [r0, #8]
 	lsls r4, r0
@@ -404,7 +404,7 @@ _08096A80:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08096AAC: .4byte gUnknown_03005BA0
+_08096AAC: .4byte gFlash
 
 	thumb_func_start sub_8096AB0
 sub_8096AB0: @ 0x08096AB0
@@ -451,7 +451,7 @@ sub_8096AE0: @ 0x08096AE0
 	movs r1, #3
 	orrs r0, r1
 	strh r0, [r2]
-	ldr r0, _08096B30 @ =gUnknown_03005BA0
+	ldr r0, _08096B30 @ =gFlash
 	ldr r0, [r0]
 	ldr r1, [r0]
 	movs r0, #0x80
@@ -477,7 +477,7 @@ _08096B14:
 	.align 2, 0
 _08096B28: .4byte 0x04000204
 _08096B2C: .4byte 0x0000FFFC
-_08096B30: .4byte gUnknown_03005BA0
+_08096B30: .4byte gFlash
 _08096B34: .4byte sub_8096AB0+1
 _08096B38: .4byte sub_8096AE0
 _08096B3C:
@@ -493,7 +493,7 @@ _08096B48:
 	bne _08096B3C
 	mov r3, sp
 	adds r3, #1
-	ldr r0, _08096B74 @ =gUnknown_03005BA0
+	ldr r0, _08096B74 @ =gFlash
 	ldr r0, [r0]
 	ldrb r1, [r0, #8]
 	lsls r4, r1
@@ -509,7 +509,7 @@ _08096B48:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08096B74: .4byte gUnknown_03005BA0
+_08096B74: .4byte gFlash
 
 	thumb_func_start sub_8096B78
 sub_8096B78: @ 0x08096B78
@@ -519,7 +519,7 @@ sub_8096B78: @ 0x08096B78
 	adds r6, r2, #0
 	lsls r2, r0, #0x10
 	lsrs r4, r2, #0x10
-	ldr r0, _08096BC0 @ =gUnknown_03005BA0
+	ldr r0, _08096BC0 @ =gFlash
 	ldr r0, [r0]
 	ldr r1, [r0]
 	movs r0, #0x80
@@ -550,7 +550,7 @@ _08096BA0:
 	lsls r0, r0, #0xf
 	b _08096BE0
 	.align 2, 0
-_08096BC0: .4byte gUnknown_03005BA0
+_08096BC0: .4byte gFlash
 _08096BC4: .4byte 0x04000204
 _08096BC8: .4byte 0x0000FFFC
 _08096BCC: .4byte sub_8096AB0+1
@@ -568,7 +568,7 @@ _08096BE0:
 	bne _08096BD4
 	mov r3, sp
 	adds r3, #1
-	ldr r0, _08096C0C @ =gUnknown_03005BA0
+	ldr r0, _08096C0C @ =gFlash
 	ldr r0, [r0]
 	ldrb r1, [r0, #8]
 	lsls r4, r1
@@ -584,7 +584,7 @@ _08096BE0:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08096C0C: .4byte gUnknown_03005BA0
+_08096C0C: .4byte gFlash
 
 	thumb_func_start sub_8096C10
 sub_8096C10: @ 0x08096C10
@@ -718,7 +718,7 @@ _08096CDE:
 	ldr r0, [r2]
 	ldr r0, [r0, #0x10]
 	str r0, [r1]
-	ldr r1, _08096D2C @ =gUnknown_03005BA0
+	ldr r1, _08096D2C @ =gFlash
 	ldr r0, [r2]
 	adds r0, #0x14
 	str r0, [r1]
@@ -732,7 +732,7 @@ _08096D1C: .4byte gUnknown_03005BA8
 _08096D20: .4byte gUnknown_03005BAC
 _08096D24: .4byte WaitForFlashWrite
 _08096D28: .4byte gUnknown_03005BB0
-_08096D2C: .4byte gUnknown_03005BA0
+_08096D2C: .4byte gFlash
 
 	thumb_func_start sub_8096D30
 sub_8096D30: @ 0x08096D30
@@ -758,7 +758,7 @@ sub_8096D30: @ 0x08096D30
 	.align 2, 0
 _08096D58: .4byte gUnknown_03005B94
 _08096D5C:
-	ldr r0, _08096D74 @ =gUnknown_03005BA0
+	ldr r0, _08096D74 @ =gFlash
 	ldr r0, [r0]
 	ldrb r0, [r0, #0x14]
 	cmp r0, #0xc2
@@ -771,7 +771,7 @@ _08096D6C:
 	mov r8, r4
 	b _08096DA4
 	.align 2, 0
-_08096D74: .4byte gUnknown_03005BA0
+_08096D74: .4byte gFlash
 _08096D78: .4byte 0x0E005555
 _08096D7C:
 	ldr r1, [r7]
@@ -811,7 +811,7 @@ VerifyFlashErase: @ 0x08096DB8
 	ldrh r1, [r5]
 	ldr r6, _08096E18 @ =0x0000FFFC
 	ands r1, r6
-	ldr r0, _08096E1C @ =gUnknown_03005BA0
+	ldr r0, _08096E1C @ =gFlash
 	ldr r0, [r0]
 	ldrh r0, [r0, #0x10]
 	orrs r1, r0
@@ -829,7 +829,7 @@ VerifyFlashErase: @ 0x08096DB8
 	movs r0, #0x10
 	strb r0, [r1]
 	mov r0, sp
-	bl sub_80969B0
+	bl SetReadFlash1
 	ldr r0, _08096E28 @ =WaitForFlashWrite
 	movs r1, #0xe0
 	lsls r1, r1, #0x14
@@ -851,13 +851,13 @@ VerifyFlashErase: @ 0x08096DB8
 	.align 2, 0
 _08096E14: .4byte 0x04000204
 _08096E18: .4byte 0x0000FFFC
-_08096E1C: .4byte gUnknown_03005BA0
+_08096E1C: .4byte gFlash
 _08096E20: .4byte 0x0E005555
 _08096E24: .4byte 0x0E002AAA
 _08096E28: .4byte WaitForFlashWrite
 
-	thumb_func_start EraseFlashSector_MX
-EraseFlashSector_MX: @ 0x08096E2C
+	thumb_func_start EraseFlashSector_LE
+EraseFlashSector_LE: @ 0x08096E2C
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}
@@ -871,7 +871,7 @@ EraseFlashSector_MX: @ 0x08096E2C
 	ldr r0, _08096EA0 @ =0x0000FFFC
 	mov r8, r0
 	ands r1, r0
-	ldr r0, _08096EA4 @ =gUnknown_03005BA0
+	ldr r0, _08096EA4 @ =gFlash
 	ldr r2, [r0]
 	ldrh r0, [r2, #0x10]
 	orrs r1, r0
@@ -895,7 +895,7 @@ EraseFlashSector_MX: @ 0x08096E2C
 	movs r0, #0x30
 	strb r0, [r4]
 	mov r0, sp
-	bl sub_80969B0
+	bl SetReadFlash1
 	ldr r0, _08096EB0 @ =WaitForFlashWrite
 	ldr r3, [r0]
 	movs r0, #2
@@ -914,7 +914,7 @@ EraseFlashSector_MX: @ 0x08096E2C
 	.align 2, 0
 _08096E9C: .4byte 0x04000204
 _08096EA0: .4byte 0x0000FFFC
-_08096EA4: .4byte gUnknown_03005BA0
+_08096EA4: .4byte gFlash
 _08096EA8: .4byte 0x0E005555
 _08096EAC: .4byte 0x0E002AAA
 _08096EB0: .4byte WaitForFlashWrite
@@ -976,7 +976,7 @@ sub_8096F00: @ 0x08096F00
 	.align 2, 0
 _08096F1C: .4byte 0x000080FF
 _08096F20:
-	ldr r0, _08096F40 @ =gUnknown_03005BA0
+	ldr r0, _08096F40 @ =gFlash
 	ldr r0, [r0]
 	ldrb r0, [r0, #8]
 	mov r7, r8
@@ -993,7 +993,7 @@ _08096F20:
 	subs r0, r0, r1
 	b _08096F56
 	.align 2, 0
-_08096F40: .4byte gUnknown_03005BA0
+_08096F40: .4byte gFlash
 _08096F44: .4byte sub_8097024+1
 _08096F48: .4byte sub_8097048
 _08096F4C:
@@ -1017,7 +1017,7 @@ _08096F62:
 	beq _0809700C
 _08096F6C:
 	mov r0, r8
-	bl EraseFlashSector_MX
+	bl EraseFlashSector_LE
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
 	cmp r5, #0
@@ -1040,7 +1040,7 @@ _08096F94:
 	bhi _08096FAA
 _08096F9A:
 	mov r0, r8
-	bl EraseFlashSector_MX
+	bl EraseFlashSector_LE
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
@@ -1048,17 +1048,17 @@ _08096F9A:
 	bls _08096F9A
 _08096FAA:
 	mov r0, sp
-	bl sub_80969B0
+	bl SetReadFlash1
 	ldr r3, _08096FCC @ =0x04000204
 	ldrh r1, [r3]
 	ldr r0, _08096FD0 @ =0x0000FFFC
 	ands r1, r0
-	ldr r0, _08096FD4 @ =gUnknown_03005BA0
+	ldr r0, _08096FD4 @ =gFlash
 	ldr r2, [r0]
 	ldrh r0, [r2, #0x10]
 	orrs r1, r0
 	strh r1, [r3]
-	ldr r1, _08096FD8 @ =gUnknown_03005BA4
+	ldr r1, _08096FD8 @ =gFlashNumRemainingBytes
 	ldr r0, [r2, #4]
 	strh r0, [r1]
 	adds r4, r1, #0
@@ -1066,8 +1066,8 @@ _08096FAA:
 	.align 2, 0
 _08096FCC: .4byte 0x04000204
 _08096FD0: .4byte 0x0000FFFC
-_08096FD4: .4byte gUnknown_03005BA0
-_08096FD8: .4byte gUnknown_03005BA4
+_08096FD4: .4byte gFlash
+_08096FD8: .4byte gFlashNumRemainingBytes
 _08096FDC:
 	ldrh r0, [r4]
 	subs r0, #1
@@ -1147,89 +1147,3 @@ _08097058:
 	bx r1
 	.align 2, 0
 _0809705C: .4byte 0x00008004
-
-	thumb_func_start ProgramFlashSector_MX
-ProgramFlashSector_MX: @ 0x08097060
-	push {r4, r5, r6, r7, lr}
-	sub sp, #0x40
-	adds r7, r1, #0
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	ldr r0, _08097078 @ =gUnknown_03005BA0
-	ldr r0, [r0]
-	ldrh r0, [r0, #0xa]
-	cmp r4, r0
-	blo _08097080
-	ldr r0, _0809707C @ =0x000080FF
-	b _080970FC
-	.align 2, 0
-_08097078: .4byte gUnknown_03005BA0
-_0809707C: .4byte 0x000080FF
-_08097080:
-	adds r0, r4, #0
-	bl EraseFlashSector_MX
-	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
-	cmp r5, #0
-	bne _080970FA
-	mov r0, sp
-	bl sub_80969B0
-	ldr r3, _080970BC @ =0x04000204
-	ldrh r1, [r3]
-	ldr r0, _080970C0 @ =0x0000FFFC
-	ands r1, r0
-	ldr r0, _080970C4 @ =gUnknown_03005BA0
-	ldr r2, [r0]
-	ldrh r0, [r2, #0x10]
-	orrs r1, r0
-	strh r1, [r3]
-	ldr r1, _080970C8 @ =gUnknown_03005BA4
-	ldr r0, [r2, #4]
-	strh r0, [r1]
-	ldrb r0, [r2, #8]
-	lsls r4, r0
-	movs r0, #0xe0
-	lsls r0, r0, #0x14
-	adds r4, r4, r0
-	adds r6, r1, #0
-	b _080970D6
-	.align 2, 0
-_080970BC: .4byte 0x04000204
-_080970C0: .4byte 0x0000FFFC
-_080970C4: .4byte gUnknown_03005BA0
-_080970C8: .4byte gUnknown_03005BA4
-_080970CC:
-	ldrh r0, [r6]
-	subs r0, #1
-	strh r0, [r6]
-	adds r7, #1
-	adds r4, #1
-_080970D6:
-	ldrh r0, [r6]
-	cmp r0, #0
-	beq _080970EC
-	adds r0, r7, #0
-	adds r1, r4, #0
-	bl ProgramByte
-	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
-	cmp r5, #0
-	beq _080970CC
-_080970EC:
-	ldr r2, _08097104 @ =0x04000204
-	ldrh r0, [r2]
-	ldr r1, _08097108 @ =0x0000FFFC
-	ands r0, r1
-	movs r1, #3
-	orrs r0, r1
-	strh r0, [r2]
-_080970FA:
-	adds r0, r5, #0
-_080970FC:
-	add sp, #0x40
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_08097104: .4byte 0x04000204
-_08097108: .4byte 0x0000FFFC
