@@ -36,7 +36,7 @@ SECTIONS
         build/sa2/asm/libagbsyscall.o(.text);
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
-        build/sa2/asm/code2.o(.text);
+        *libgcc.a:_divdi3.o(.text);
         *libgcc.a:_divsi3.o(.text);
         *libgcc.a:_dvmd_tls.o(.text);
         *libgcc.a:_modsi3.o(.text);
@@ -54,6 +54,7 @@ SECTIONS
         build/sa2/src/m4a_tables.o(.rodata);
         build/sa2/sound/sound.o(.rodata);
         build/sa2/data/data2.o(.rodata);
+        *libgcc.a:_divdi3.o(.rodata);
         build/sa2/data/data3.o(.rodata);
 
 	} = 0

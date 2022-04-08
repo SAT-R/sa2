@@ -1,8 +1,8 @@
 	.section .rodata
 
-    .global gUnknown_08C86F98
-gUnknown_08C86F98:
-    .incbin "baserom.gba", 0x00C86F98, 0x23C
+    .global gUnknown_08c87098_unused
+gUnknown_08c87098_unused:
+    .incbin "baserom.gba", 0x00C87098, 0x13c
 
     .global gUnknown_08C871D4
 gUnknown_08C871D4:
