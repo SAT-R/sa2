@@ -185,7 +185,7 @@ void GameInit(void) {
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
 
-    if (sub_8096C9C() != 0) {
+    if (PollingSR_512k_COMMON() != 0) {
         gUnknown_03001840 = gUnknown_03001840 | 0x100;
     } else {
         sub_8096884(1, &gUnknown_030007C4);

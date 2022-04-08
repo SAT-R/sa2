@@ -6,8 +6,8 @@
 
 	.align 2, 0
 
-	thumb_func_start sub_809679C
-sub_809679C: @ 0x0809679C
+	thumb_func_start ProgramFlashSectorEx2
+ProgramFlashSectorEx2: @ 0x0809679C
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	ldr r3, _080967B8 @ =0x0E005555
@@ -355,7 +355,7 @@ sub_8096A14: @ 0x08096A14
 	lsrs r0, r3, #0x14
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_809679C
+	bl ProgramFlashSectorEx2
 	movs r0, #0xf
 	ands r4, r0
 _08096A4C:
@@ -461,7 +461,7 @@ sub_8096AE0: @ 0x08096AE0
 	lsrs r0, r3, #0x14
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_809679C
+	bl ProgramFlashSectorEx2
 	movs r0, #0xf
 	ands r4, r0
 _08096B14:
@@ -529,7 +529,7 @@ sub_8096B78: @ 0x08096B78
 	lsrs r0, r2, #0x14
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_809679C
+	bl ProgramFlashSectorEx2
 	movs r0, #0xf
 	ands r4, r0
 _08096BA0:
@@ -664,8 +664,8 @@ _08096C90:
 	.align 2, 0
 _08096C98: .4byte gUnknown_03005B9C
 
-	thumb_func_start sub_8096C9C
-sub_8096C9C: @ 0x08096C9C
+	thumb_func_start PollingSR_512k_COMMON
+PollingSR_512k_COMMON: @ 0x08096C9C
 	push {r4, lr}
 	ldr r2, _08096CBC @ =0x04000204
 	ldrh r0, [r2]
@@ -930,8 +930,8 @@ _08096EB6:
 	.align 2, 0
 _08096EC4: .4byte 0x000080FF
 
-	thumb_func_start sub_8096EC8
-sub_8096EC8: @ 0x08096EC8
+	thumb_func_start VerifyFlashErase
+VerifyFlashErase: @ 0x08096EC8
 	push {r4, lr}
 	ldr r4, _08096EF4 @ =0x0E005555
 	movs r2, #0xaa
@@ -1081,7 +1081,7 @@ _08096FE8:
 	beq _08096FFE
 	mov r0, sb
 	adds r1, r7, #0
-	bl sub_8096EC8
+	bl VerifyFlashErase
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
 	cmp r5, #0
@@ -1148,8 +1148,8 @@ _08097058:
 	.align 2, 0
 _0809705C: .4byte 0x00008004
 
-	thumb_func_start sub_8097060
-sub_8097060: @ 0x08097060
+	thumb_func_start ProgramFlashSector_MX5
+ProgramFlashSector_MX5: @ 0x08097060
 	push {r4, r5, r6, r7, lr}
 	sub sp, #0x40
 	adds r7, r1, #0
@@ -1210,7 +1210,7 @@ _080970D6:
 	beq _080970EC
 	adds r0, r7, #0
 	adds r1, r4, #0
-	bl sub_8096EC8
+	bl VerifyFlashErase
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
 	cmp r5, #0

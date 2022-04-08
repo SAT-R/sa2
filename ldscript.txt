@@ -40,7 +40,8 @@ SECTIONS
         *libgcc.a:_divsi3.o(.text);
         *libgcc.a:_dvmd_tls.o(.text);
         *libgcc.a:_modsi3.o(.text);
-        build/sa2/asm/code4.o(.text);
+        *libgcc.a:_muldi3.o(.text);
+        *libgcc.a:_negdi2.o(.text);
         *libgcc.a:_udivsi3.o(.text);
         *libgcc.a:_umodsi3.o(.text);
         *libc.a:memcpy.o(.text);
