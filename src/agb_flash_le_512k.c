@@ -13,7 +13,7 @@ u16 ProgramFlashSector_LE(u16 sectorNum, u8 *src)
 
     //TODO: erase verify routine transmit
 
-    result = EraseFlashSector_LE(sectorNum);
+    result = EraseFlashSector_MX(sectorNum);
 
     //TODO: erase retry
 

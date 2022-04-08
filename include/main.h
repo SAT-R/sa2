@@ -184,8 +184,7 @@ extern IntrFunc gUnknown_030007F0;
 extern IntrFunc gIntrTable[];
 
 extern void sub_8007CC8(void);
-extern u16 PollingSR_512k_COMMON(void);
-extern void sub_8096884(int a, int* b);
+extern void SetFlashTimerIntr(int a, int* b);
 
 void UpdateScreenDma();
 void ClearOamBufferDma();

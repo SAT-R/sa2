@@ -6,6 +6,7 @@
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
+#include "agb_flash_512k.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
@@ -185,10 +186,10 @@ void GameInit(void) {
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
 
-    if (PollingSR_512k_COMMON() != 0) {
+    if (IdentifyFlash512K() != 0) {
         gUnknown_03001840 = gUnknown_03001840 | 0x100;
     } else {
-        sub_8096884(1, &gUnknown_030007C4);
+        SetFlashTimerIntr(1, &gUnknown_030007C4);
     }
 
     // Setup interrupt table

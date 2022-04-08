@@ -9,6 +9,7 @@
         "m4a_internal.h": "c",
         "m4a.h": "c",
         "task.h": "c",
-        "flash_internal.h": "c"
+        "flash_internal.h": "c",
+        "agb_flash_512k.h": "c"
     }
 }
