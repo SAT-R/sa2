@@ -74,8 +74,8 @@ VBlankIntrWait: @ 0x08097150
 	bx lr
 	.align 2, 0
 
-	thumb_func_start SoftReset2
-SoftReset2: @ 0x08097158
+	thumb_func_start SoftResetExram
+SoftResetExram: @ 0x08097158
 	ldr r3, _08097170 @ =0x04000208
 	movs r2, #0
 	strb r2, [r3]

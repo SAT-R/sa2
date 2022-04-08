@@ -34,7 +34,7 @@ SECTIONS
         build/sa2/src/m4a.o(.text);
         build/sa2/asm/code1.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
-        build/sa2/asm/sub_08097178.o(.text);
+        *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         build/sa2/asm/code2.o(.text);
         *libgcc.a:_divsi3.o(.text);
@@ -43,7 +43,8 @@ SECTIONS
         build/sa2/asm/code4.o(.text);
         *libgcc.a:_udivsi3.o(.text);
         *libgcc.a:_umodsi3.o(.text);
-        build/sa2/asm/code5.o(.text);
+        *libc.a:memcpy.o(.text);
+        *libc.a:memset.o(.text);
 
         /* Data */
         build/sa2/src/multi_sio.o(.rodata);
