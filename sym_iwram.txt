@@ -679,7 +679,7 @@
 . = 0x00005B80; gUnknown_03005B80 = .;
 . = 0x00005B90; gUnknown_03005B90 = .;
 . = 0x00005B94; gUnknown_03005B94 = .;
-. = 0x00005B98; gUnknown_03005B98 = .;
+. = 0x00005B98; WaitForFlashWrite = .;
 . = 0x00005B9C; gUnknown_03005B9C = .;
 . = 0x00005BA0; gUnknown_03005BA0 = .;
 . = 0x00005BA4; gUnknown_03005BA4 = .;
