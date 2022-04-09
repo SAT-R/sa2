@@ -683,8 +683,8 @@
 . = 0x00005B9C; ProgramFlashSector = .;
 . = 0x00005BA0; gFlash = .;
 . = 0x00005BA4; gFlashNumRemainingBytes = .;
-. = 0x00005BA8; gUnknown_03005BA8 = .;
-. = 0x00005BAC; gUnknown_03005BAC = .;
+. = 0x00005BA8; EraseFlashChip = .;
+. = 0x00005BAC; EraseFlashSector = .;
 . = 0x00005BB0; gFlashMaxTime = .;
 . = 0x00005BB4; gUnknown_03005BB4 = .;
 . = 0x00007F00; gUnknown_03007F00 = .;

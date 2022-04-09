@@ -34,7 +34,6 @@ struct FlashType {
 
 struct FlashSetupInfo
 {
-    u16 (*programFlashByte)(u16, u32, u8);
     u16 (*programFlashSector)(u16, void *);
     u16 (*eraseFlashChip)(void);
     u16 (*eraseFlashSector)(u16);
