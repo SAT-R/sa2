@@ -315,38 +315,36 @@ static struct Task* TaskGetNextSlot(void) {
     }
 }
 
-ASM_FUNC("asm/non_matching/sub_80029D0.inc",
-         void sub_80029D0(u16 arg0, u16 arg1)
-         // {
-         //     struct Task* r2;
+void sub_80029D0(u16 arg0, u16 arg1) {
+    struct Task *r4 = gTaskList[0], *r1;
+    u32 r0 = (u16)(uintptr_t)r4;
+    u32 unk10;
 
-         //     u32 r0;
-         //     struct Task* next;
-         //     r2 = gTaskList[0];
-         //     r0 = (u16)(uintptr_t)r2;
+    while (r0 != 0) {
+        unk10 = r4->unk10;
+        if (unk10 >= arg0) {
+            while (unk10 < arg1) {
+                r1 = r4;
+                r4 = (struct Task*)(r1->next + IWRAM_START);
 
-         //     while (r0 != 0) {
-         //         if (r2->unk10 >= arg0) {
-         //             while (r2->unk10 < arg1) {
-         //                 next = (struct Task*)(r2->next + (IWRAM_START));
+                if (r1 != gTaskList[0] && r1 != gTaskList[1]) {
+                    TaskDestroy(r1);
+                }
 
-         //                 if (r2 != gTaskList[0] && r2 != gTaskList[1]) {
-         //                     TaskDestroy(r2);
-         //                 }
-
-         //                 if (next != (struct Task*)IWRAM_START) {
-         //                     break;
-         //                 }
-
-         //                 r2 = next;
-         //             }
-         //             return;
-         //         }
-         //         r0 = r2->next;
-         //         r2 = (struct Task*)(r0 + IWRAM_START);
-         //     }
-         // }
-)
+                if (r4 == (struct Task*)IWRAM_START) {
+                    break;
+                } else if (1) {
+                    unk10 = r4->unk10;
+                } else {
+                    break;
+                }
+            }
+            return;
+        }
+        r0 = r4->next;
+        r4 = (struct Task*)(r0 + IWRAM_START);
+    }
+}
 
 static void nullsub_8002A30(void) {}
 
