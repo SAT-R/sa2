@@ -64,3 +64,106 @@ u16 ProgramByte(u8 *src, u8 *dest)
 
     return WaitForFlashWrite(1, dest, *src);
 }
+
+static u32 VerifyEraseSector_Core(u8 *dest);
+static u16 VerifyEraseSector(u8 *dest, u8 *src);
+
+u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
+{
+    u16 result;
+    u8 *dest;
+    u16 VerifyEraseSector_Core_Buffer[0x30];
+    u16 *funcSrc;
+    u16 *funcDest;
+    u16 i;
+    u32 (*local_VerifyEraseSector_Core)(u8 *);
+    u8 tryNum;
+    u8 erasesToTry;
+    u8 j;
+
+    if (sectorNum > 15)
+        return 0x80FF;
+
+    if (gFlash->sector.count == FLASH_ROM_SIZE_1M)
+    {
+        SwitchFlashBank(sectorNum / SECTORS_PER_BANK);
+        sectorNum %= SECTORS_PER_BANK;
+    }
+
+    dest = FLASH_BASE + (sectorNum << gFlash->sector.shift);
+    funcSrc = (u16 *)((s32)VerifyEraseSector_Core ^ 1);
+    funcDest = VerifyEraseSector_Core_Buffer;
+
+    i = ((s32)VerifyEraseSector - (s32)VerifyEraseSector_Core);
+
+    while (i != 0)
+    {
+        *funcDest++ = *funcSrc++;
+        i-=2;
+    }
+    tryNum = 0;
+    
+    while (TRUE) {
+        
+        result = EraseFlashSector_MX(sectorNum);
+        if (result == 0) {
+            result = VerifyEraseSector(dest, (u8*)((s32)&VerifyEraseSector_Core_Buffer + 1));
+            if (result == 0) {
+                break;
+            };
+        }
+        
+
+        tryNum++;
+        if (tryNum == 0x51) {
+            return result;
+        }
+    }
+    
+    erasesToTry = 1;
+    if (tryNum != 0) {
+        erasesToTry = 6;
+    }
+    
+    for (j = 1; j <= erasesToTry; j++) {
+        EraseFlashSector_MX(sectorNum);
+    }
+    
+    SetReadFlash1(VerifyEraseSector_Core_Buffer);
+
+    REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | gFlash->wait[0];
+    gFlashNumRemainingBytes = gFlash->sector.size;
+    while (gFlashNumRemainingBytes && (result = ProgramByte(src, dest), result == 0)) {
+        gFlashNumRemainingBytes--;
+        src++, dest++;
+    }
+    REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | 3;
+    return result;
+}
+
+static u32 VerifyEraseSector_Core(u8 *dest) {
+    u32 sectorNum;
+    u8 src;
+
+    for (sectorNum = gFlash->sector.size; sectorNum != 0; sectorNum--) {
+        src = *dest++;
+        
+        if (src != 0xff) {
+            break;
+        }
+    }
+    return sectorNum;
+    
+}
+
+static u16 VerifyEraseSector(u8 *dest, u8 *src) {
+    u32 result;
+    // call VerifyEraseSector_Core
+    result = ((u32 (*)(u8*))((s32)src))(dest);
+
+    if (result != 0) {
+        return 0x8004;
+    }
+
+    return 0;
+}
