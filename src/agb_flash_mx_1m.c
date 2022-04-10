@@ -101,19 +101,10 @@ u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
         *funcDest++ = *funcSrc++;
         i-=2;
     }
-    tryNum = 0;
-    
-    while (TRUE) {
-        
-        result = EraseFlashSector_MX(sectorNum);
-        if (result == 0) {
-            result = VerifyEraseSector(dest, (u8*)((s32)&VerifyEraseSector_Core_Buffer + 1));
-            if (result == 0) {
-                break;
-            };
-        }
-        
 
+    tryNum = 0;
+    while ((result = EraseFlashSector_MX(sectorNum)) ||
+           (result = VerifyEraseSector(dest, (u8 *)((s32)&VerifyEraseSector_Core_Buffer + 1)))) {
         tryNum++;
         if (tryNum == 0x51) {
             return result;
