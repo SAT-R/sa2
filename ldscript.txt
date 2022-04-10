@@ -35,7 +35,6 @@ SECTIONS
         build/sa2/src/agb_flash.o(.text);
         build/sa2/src/agb_flash_512k.o(.text);
         build/sa2/src/agb_flash_mx_1m.o(.text);
-        build/sa2/asm/agb_flash.o(.text);
         build/sa2/src/agb_flash_le_512k.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
         *libgcc.a:_ashrdi3.o(.text);
