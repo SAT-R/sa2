@@ -24,7 +24,6 @@ extern void *gUnknown_020226D0;
 extern u32* gUnknown_03002260;
 extern u32* gUnknown_03002794;
 extern u32 gUnknown_030059D8;
-extern u32 gUnknown_03005844;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[];
 extern u8 gUnknown_0300543C;

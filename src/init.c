@@ -1,10 +1,13 @@
 #include "global.h"
 #include "data.h"
+#include "task.h"
 #include "init.h"
 
 // likely static data, needs to be extracted
 extern u32 gUnknown_080D5CE4;
 extern u32 gUnknown_080F40D4;
+
+struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 void sub_80723C4();
@@ -16,11 +19,12 @@ void sub_8063940();
 void sub_80724C0();
 void sub_8081C0C();
 
+
+static void sub_801A6C8(void);
+void sub_801A6CC(struct Task*);
+
 void sub_801A51C(void) {
     u32 i;
-    u32 uVar3;
-    u32* puVar3;
-
     u32 tmp = 0;
 
     gUnknown_03002260 = &gUnknown_080D5CE4;
@@ -31,7 +35,7 @@ void sub_801A51C(void) {
     gUnknown_03005424 = gUnknown_0300544C = 0;
 
     gUnknown_030059D8 = 0;
-    gUnknown_03005844 = 0;
+    gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
     gUnknown_030059E0.unkA8 = 0;
     gUnknown_03005960.unk5C = 0;
@@ -86,3 +90,14 @@ void sub_801A51C(void) {
     
     sub_808B3FC();
 }
+
+void sub_801A684(void){
+  gUnknown_03005844 = TaskCreate(sub_801A6C8, 0, 0x100, 0, sub_801A6CC);
+}
+
+void sub_801A6B0(void) {
+  TaskDestroy(gUnknown_03005844);
+  gUnknown_03005844 = NULL;
+}
+
+static void sub_801A6C8(void) {}
