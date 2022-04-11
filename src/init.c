@@ -12,11 +12,11 @@ struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 void sub_80723C4();
-u16 sub_807241C();
+u16 sub_8063940_HasProfile();
 void sub_8072474();
-void sub_808B3FC();
+void sub_808B3FC_CreateIntro();
 void sub_808D41C();
-void sub_8063940();
+void sub_8063940_CreateProfileScreen();
 void sub_80724C0();
 void sub_8081C0C();
 
@@ -25,7 +25,7 @@ static void sub_801A6CC(struct Task*);
 
 void sub_801A51C(void) {
     u32 i;
-    u32 tmp = 0;
+    u32 hasProfile = FALSE;
 
     gUnknown_03002260 = gUnknown_080D5CE4;
     gUnknown_03002794 = &gUnknown_080F40D4;
@@ -62,9 +62,10 @@ void sub_801A51C(void) {
 
     sub_80723C4();
 
-    if (sub_807241C()) {
+    // Potentially has saved before?
+    if (sub_8063940_HasProfile()) {
         sub_8072474();
-        tmp = 1;
+        hasProfile = TRUE;
     }
     if ((gUnknown_03001840 & 0x200) != 0) {
         sub_8081C0C();
@@ -72,13 +73,13 @@ void sub_801A51C(void) {
     }
     
     if ((gUnknown_03001840 & 0x100) != 0) {
-        sub_808B3FC();
+        sub_808B3FC_CreateIntro();
         sub_80724C0();
         return;
     }
     
-    if (!tmp) {
-        sub_8063940();
+    if (!hasProfile) {
+        sub_8063940_CreateProfileScreen();
         return;
     }
     
@@ -88,7 +89,7 @@ void sub_801A51C(void) {
         return;
     }
     
-    sub_808B3FC();
+    sub_808B3FC_CreateIntro();
 }
 
 void sub_801A684(void){
