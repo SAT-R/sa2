@@ -40,7 +40,6 @@ struct Unk_03003A20 {
 })
 
 extern struct Task gUnknown_030009F0[];
-extern u32 gUnknown_03001840;
 extern struct Task gEmptyTask;
 extern u8 gUnk_03002558;
 extern struct Task* gTaskList[];

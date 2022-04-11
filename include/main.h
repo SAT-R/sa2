@@ -7,9 +7,7 @@ void GameInit(void);
 extern void sub_801A51C(void);
 
 extern char gUnknown_0300188C;
-extern u8* gUnknown_03001884;
-extern u8* gUnknown_03004D54;
-extern u8* gUnknown_030022C0;
+
 extern u8* gUnknown_030022AC;
 
 extern u8 gUnknown_030022A0[];
@@ -162,7 +160,7 @@ extern s16 gUnknown_030026D0;
 extern int gUnknown_030053B8;
 extern u32 gUnknown_030053B0;
 extern u32 gUnknown_03002264;
-extern u8 gUnknown_03001B60[2][0x280];
+
 extern u8 gUnknown_03002700[];
 extern u8 gUnknown_03002850[];
 
