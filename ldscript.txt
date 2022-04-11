@@ -32,7 +32,6 @@ SECTIONS
         build/sa2/asm/sprite.o(.text);
         build/sa2/asm/code0.o(.text);
         build/sa2/src/malloc_ewram.o(.text);
-        build/sa2/asm/malloc_ewram.o(.text);
         build/sa2/asm/code1.o(.text);
         build/sa2/src/init.o(.text);
         build/sa2/asm/init.o(.text);

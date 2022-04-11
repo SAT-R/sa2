@@ -4,7 +4,6 @@
 #include "global.h"
 
 void GameInit(void);
-extern void sub_801A51C(void);
 
 extern char gUnknown_0300188C;
 
