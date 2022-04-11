@@ -1,23 +1,21 @@
 #include "global.h"
 #include "gba/flash_internal.h"
 
-// TODO: should be static and referenced
-// in the iwram
-u8 gTimerNum;
-u16 gTimerCount;
-vu16 *gTimerReg;
-u16 gSavedIme;
+// TODO: should be referenced
+// in the iwram once we find the function reference which
+// uses these globally 
+extern u8 gTimerNum;
+extern u16 gTimerCount;
+extern vu16 *gTimerReg;
+extern u16 gSavedIme;
 
-// Can remain global
-u8 gFlashTimeoutFlag;
-u8 (*PollFlashStatus)(u8 *);
-u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData);
-u16 (*ProgramFlashSector)(u16 sectorNum, void *src);
+extern u8 gFlashTimeoutFlag;
+extern u8 (*PollFlashStatus)(u8 *);
+extern u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData);
+extern u16 (*ProgramFlashSector)(u16 sectorNum, void *src);
 const struct FlashType *gFlash;
-u16 (*ProgramFlashByte)(u16 sectorNum, u32 offset, u8 data);
-u16 gFlashNumRemainingBytes;
-u16 (*EraseFlashChip)();
-u16 (*EraseFlashSector)(u16 sectorNum);
+extern u16 (*EraseFlashChip)();
+extern u16 (*EraseFlashSector)(u16 sectorNum);
 const u16 *gFlashMaxTime;
 
 void SetReadFlash1(u16 *dest);

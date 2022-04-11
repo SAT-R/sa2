@@ -1,7 +1,13 @@
 #include "global.h"
 #include "gba/flash_internal.h"
 
-struct FlashSetupInfo * const gSetup512KInfos[];
+static const char AgbLibFlash512KVersion[] = "FLASH512_V130";
+const struct FlashSetupInfo * const gSetup512KInfos[] = {
+    &LE39FW512,
+    &MN63F805MNP,
+    &MX29L512, 
+    &DefaultFlash512K
+};
 
 u16 IdentifyFlash512K(void)
 {
