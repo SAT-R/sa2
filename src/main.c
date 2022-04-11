@@ -589,6 +589,6 @@ void ClearOamBufferCpuSet(void) {
 void AgbMain(void) {
     GameInit();
     // Some sort of init function
-    InitMain();
+    sub_801A51C();
     GameLoop();
 }

@@ -29,7 +29,12 @@ SECTIONS
         build/sa2/src/sio32_multi_load.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
+        build/sa2/asm/sprite.o(.text);
         build/sa2/asm/code0.o(.text);
+        build/sa2/asm/malloc_ewram.o(.text);
+        build/sa2/asm/code1.o(.text);
+        build/sa2/asm/init.o(.text);
+        build/sa2/asm/code2.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);
         build/sa2/src/agb_flash.o(.text);
