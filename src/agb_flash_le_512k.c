@@ -124,7 +124,6 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
     u16 *funcSrc;
     u16 *funcDest;
     u16 i;
-    u32 (*local_VerifyEraseSector_Core)(u8 *);
     u8 tryNum;
     u8 erasesToTry;
     u8 j;
