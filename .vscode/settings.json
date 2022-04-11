@@ -12,6 +12,7 @@
         "flash_internal.h": "c",
         "agb_flash_512k.h": "c",
         "malloc_ewram.h": "c",
-        "data.h": "c"
+        "data.h": "c",
+        "sprite.h": "c"
     }
 }

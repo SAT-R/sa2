@@ -91,20 +91,6 @@ extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern u32 gMultiSioStatusFlags;
 extern int gUnknown_03002790;
-struct BgAffineRegs {
-    u16 bg2pa;
-    u16 bg2pb;
-    u16 bg2pc;
-    u16 bg2pd;
-    u32 bg2x;
-    u32 bg2y;
-    u16 bg3pa;
-    u16 bg3pb;
-    u16 bg3pc;
-    u16 bg3pd;
-    u32 bg3x;
-    u32 bg3y;
-};
 
 struct BlendRegs {
     u16 bldCnt;
@@ -112,36 +98,24 @@ struct BlendRegs {
     u16 bldY;
 };
 
-struct Unk_03002EC0 {
-    /* TODO: fixing types breaks sub_081525DC. */
-    u32 unk0;  // const void *
-    u32 unk4;  // void *
-    u16 unk8;
-    u8 fillerA[2];
-};
-
 extern int gUnknown_03002790;
 extern u8 gUnknown_030026F4;
 extern u8 gUnknown_03002AE4;
-extern u8 gUnknown_0300287C;
 extern u8 gUnknown_03005390;
 extern u8 gUnknown_03004D5C;
-extern u8 gUnknown_03002A84;
 extern u8 gUnknown_03002280[];
 extern int gUnknown_03004D80;
 extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern short gUnknown_030017F4[2];
 extern short gDispCnt;  // gDispCnt
-extern struct Unk_03002EC0* gUnknown_030027A0[];
+
 extern u8 gUnknown_030018F0;
 extern u8 gUnknown_03002AE0;
 extern int gUnknown_03004D90;
 extern OamData gUnknown_030022D0[];
 extern u8 gUnknown_03001850[];
 extern u8 gUnknown_03004D60[];
-extern u16 gObjPalette[0x100];  // gObjPalette
-extern u16 gBgPalette[0x100];  // gBgPalette
-extern struct BgAffineRegs gBgAffineRegs; // gBgAffineRegs
+
 extern short gUnknown_03001944;
 extern short gUnknown_030017F0;
 extern short gUnknown_03005394;

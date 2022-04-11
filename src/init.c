@@ -4,9 +4,10 @@
 #include "init.h"
 
 // likely static data, needs to be extracted
-extern u32 gUnknown_080D5CE4;
+extern union Unk_03002E60 gUnknown_080D5CE4[];
 extern u32 gUnknown_080F40D4;
 
+// Some sort of unused task variable
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
@@ -19,15 +20,14 @@ void sub_8063940();
 void sub_80724C0();
 void sub_8081C0C();
 
-
 static void sub_801A6C8(void);
-static void sub_801A6CC(struct Task* taskId);
+static void sub_801A6CC(struct Task*);
 
 void sub_801A51C(void) {
     u32 i;
     u32 tmp = 0;
 
-    gUnknown_03002260 = &gUnknown_080D5CE4;
+    gUnknown_03002260 = gUnknown_080D5CE4;
     gUnknown_03002794 = &gUnknown_080F40D4;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];
@@ -102,6 +102,6 @@ void sub_801A6B0(void) {
 
 static void sub_801A6C8(void) {}
 
-static void sub_801A6CC(struct Task* taskId) {
+static void sub_801A6CC(struct Task* task) {
     gUnknown_03005844 = NULL;
 }
