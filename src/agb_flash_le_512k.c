@@ -11,9 +11,9 @@ const u16 le512kMaxTime[] =
 
 const struct FlashSetupInfo DefaultFlash512K =
 {
-    ProgramFlashSector_MX,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
+    ProgramFlashSector_LE,
+    EraseFlashChip_LE,
+    EraseFlashSector_LE,
     WaitForFlashWrite512K_Common,
     le512kMaxTime,
     {
@@ -31,9 +31,9 @@ const struct FlashSetupInfo DefaultFlash512K =
 
 const struct FlashSetupInfo LE39FW512 =
 {
-    ProgramFlashSector_MX,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
+    ProgramFlashSector_LE,
+    EraseFlashChip_LE,
+    EraseFlashSector_LE,
     WaitForFlashWrite512K_Common,
     le512kMaxTime,
     {
@@ -49,7 +49,7 @@ const struct FlashSetupInfo LE39FW512 =
     }
 };
 
-u16 EraseFlashChip_MX(void)
+u16 EraseFlashChip_LE(void)
 {
     u16 result;
     u16 readFlash1Buffer[0x20];
@@ -72,7 +72,7 @@ u16 EraseFlashChip_MX(void)
     return result;
 }
 
-u16 EraseFlashSector_MX(u16 sectorNum)
+u16 EraseFlashSector_LE(u16 sectorNum)
 {
     u16 result;
     u8 *addr;
@@ -116,7 +116,7 @@ u16 ProgramByte(u8 *src, u8 *dest)
 static u32 VerifyEraseSector_Core(u8 *dest);
 static u16 VerifyEraseSector(u8 *dest, u8 *src);
 
-u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
+u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
 {
     u16 result;
     u8 *dest;
@@ -151,7 +151,7 @@ u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
     }
 
     tryNum = 0;
-    while ((result = EraseFlashSector_MX(sectorNum)) ||
+    while ((result = EraseFlashSector_LE(sectorNum)) ||
            (result = VerifyEraseSector(dest, (u8 *)((s32)&VerifyEraseSector_Core_Buffer + 1)))) {
         tryNum++;
         if (tryNum == 0x51) {
@@ -165,7 +165,7 @@ u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
     }
     
     for (j = 1; j <= erasesToTry; j++) {
-        EraseFlashSector_MX(sectorNum);
+        EraseFlashSector_LE(sectorNum);
     }
     
     SetReadFlash1(VerifyEraseSector_Core_Buffer);

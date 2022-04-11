@@ -19,9 +19,9 @@ const u16 paMaxTime[] =
 
 const struct FlashSetupInfo MX29L512 =
 {
-    ProgramFlashSector_LE,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
+    ProgramFlashSector_MX,
+    EraseFlashChip_LE,
+    EraseFlashSector_LE,
     WaitForFlashWrite512K_Common,
     mx512kMaxTime,
     {
@@ -39,9 +39,9 @@ const struct FlashSetupInfo MX29L512 =
 
 const struct FlashSetupInfo MN63F805MNP =
 {
-    ProgramFlashSector_LE,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
+    ProgramFlashSector_MX,
+    EraseFlashChip_LE,
+    EraseFlashSector_LE,
     WaitForFlashWrite512K_Common,
     paMaxTime,
     {
@@ -57,7 +57,7 @@ const struct FlashSetupInfo MN63F805MNP =
     }
 };
 
-u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
+u16 ProgramFlashSector_MX(u16 sectorNum, void *src)
 {
     u16 result;
     u8 *dest;
@@ -69,7 +69,7 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
 
     //TODO: erase verify routine transmit
 
-    result = EraseFlashSector_MX(sectorNum);
+    result = EraseFlashSector_LE(sectorNum);
 
     //TODO: erase retry
 

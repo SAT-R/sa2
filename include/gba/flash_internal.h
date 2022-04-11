@@ -79,8 +79,8 @@ u16 WaitForFlashWrite_Common(u8 phase, u8 *addr, u8 lastData);
 
 u16 ProgramByte(u8 *src, u8 *dest);
 
-u16 EraseFlashChip_MX(void);
-u16 EraseFlashSector_MX(u16 sectorNum);
+u16 EraseFlashChip_LE(void);
+u16 EraseFlashSector_LE(u16 sectorNum);
 u16 ProgramFlashSector_LE(u16 sectorNum, void *src);
 u16 ProgramFlashSector_MX(u16 sectorNum, void *src);
 
