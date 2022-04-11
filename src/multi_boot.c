@@ -375,14 +375,14 @@ void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
         MULTIBOOT_INIT(mp);
         return;
     }
-    mp->boot_srcp = srcp;
+    mp->boot_srcp = (u8*)srcp;
     length = (length + 15) & ~15; /* 16 byte units */
     if (length < MULTIBOOT_SEND_SIZE_MIN || length > MULTIBOOT_SEND_SIZE_MAX) {
         /* More than number or transfer bytes */
         MULTIBOOT_INIT(mp);
         return;
     }
-    mp->boot_endp = srcp + length;
+    mp->boot_endp = (u8*)(srcp + length);
     switch (palette_speed) {
         case -4:
         case -3:
