@@ -21,7 +21,7 @@ void sub_8081C0C();
 
 
 static void sub_801A6C8(void);
-void sub_801A6CC(struct Task*);
+static void sub_801A6CC(struct Task* taskId);
 
 void sub_801A51C(void) {
     u32 i;
@@ -84,7 +84,7 @@ void sub_801A51C(void) {
     
     if ((gUnknown_03001840 & 0x1000) != 0) {
         sub_808D41C();
-        gUnknown_03001840 &= ~4096;
+        gUnknown_03001840 &= ~0x1000;
         return;
     }
     
@@ -101,3 +101,7 @@ void sub_801A6B0(void) {
 }
 
 static void sub_801A6C8(void) {}
+
+static void sub_801A6CC(struct Task* taskId) {
+    gUnknown_03005844 = NULL;
+}
