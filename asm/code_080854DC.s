@@ -4,6 +4,9 @@
 .syntax unified
 .arm
 
+// Used in save module, but not sure what B70 and B74 yet
+// refer to
+
 	thumb_func_start sub_80854DC
 sub_80854DC: @ 0x080854DC
 	ldr r3, _080854F4 @ =gUnknown_03005B70

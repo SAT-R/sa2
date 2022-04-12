@@ -39,6 +39,7 @@ SECTIONS
         build/sa2/asm/profile.o(.text);
         build/sa2/asm/code2_1.o(.text);
         build/sa2/asm/save.o(.text);
+        build/sa2/src/save.o(.text);
         build/sa2/asm/code3.o(.text);
         build/sa2/asm/code_080854DC.o(.text);
         build/sa2/asm/code4.o(.text);
