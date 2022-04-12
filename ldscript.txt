@@ -36,6 +36,10 @@ SECTIONS
         build/sa2/asm/code1.o(.text);
         build/sa2/src/init.o(.text);
         build/sa2/asm/code2.o(.text);
+        build/sa2/asm/save.o(.text);
+        build/sa2/asm/code3.o(.text);
+        build/sa2/asm/code_080854DC.o(.text);
+        build/sa2/asm/code4.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);
         build/sa2/src/agb_flash.o(.text);
