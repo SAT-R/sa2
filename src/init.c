@@ -25,7 +25,7 @@ static void sub_801A6CC(struct Task*);
 
 void sub_801A51C(void) {
     u32 i;
-    u32 hasProfile = FALSE;
+    bool32 hasProfile = FALSE;
 
     gUnknown_03002260 = gUnknown_080D5CE4;
     gUnknown_03002794 = &gUnknown_080F40D4;
@@ -67,12 +67,13 @@ void sub_801A51C(void) {
         sub_8072474();
         hasProfile = TRUE;
     }
-    if ((gUnknown_03001840 & 0x200) != 0) {
+
+    if (gUnknown_03001840 & 0x200) {
         sub_8081C0C();
         return;
     }
     
-    if ((gUnknown_03001840 & 0x100) != 0) {
+    if (gUnknown_03001840 & 0x100) {
         sub_808B3FC_CreateIntro();
         sub_80724C0();
         return;
@@ -83,7 +84,7 @@ void sub_801A51C(void) {
         return;
     }
     
-    if ((gUnknown_03001840 & 0x1000) != 0) {
+    if (gUnknown_03001840 & 0x1000) {
         sub_808D41C();
         gUnknown_03001840 &= ~0x1000;
         return;
