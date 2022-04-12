@@ -35,11 +35,15 @@ SECTIONS
         build/sa2/src/malloc_ewram.o(.text);
         build/sa2/asm/code1.o(.text);
         build/sa2/src/init.o(.text);
-        build/sa2/asm/code2.o(.text);
+        build/sa2/asm/code2_0.o(.text);
+        build/sa2/asm/profile.o(.text);
+        build/sa2/asm/code2_1.o(.text);
         build/sa2/asm/save.o(.text);
         build/sa2/asm/code3.o(.text);
         build/sa2/asm/code_080854DC.o(.text);
         build/sa2/asm/code4.o(.text);
+        build/sa2/asm/intro.o(.text);
+        build/sa2/asm/code5.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);
         build/sa2/src/agb_flash.o(.text);
