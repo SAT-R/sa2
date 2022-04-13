@@ -12,7 +12,7 @@ struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 void sub_80723C4();
-u16 sub_8063940_HasProfile();
+bool16 sub_8063940_HasProfile();
 void sub_8072474();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C();

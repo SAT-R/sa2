@@ -115,6 +115,6 @@ extern u8 gUnknown_0300287C;
 extern union Unk_03002E60 *gUnknown_03002260;
 
 // Some sort of save data?
-extern u16* gUnknown_03005B64;
+extern u32* gUnknown_03005B64;
 
 #endif
