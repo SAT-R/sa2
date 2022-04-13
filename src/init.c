@@ -3,6 +3,7 @@
 #include "task.h"
 #include "init.h"
 #include "flags.h"
+#include "save.h"
 
 // likely static data, needs to be extracted
 extern union Unk_03002E60 gUnknown_080D5CE4[];
@@ -13,7 +14,6 @@ struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 void sub_80723C4();
-bool16 sub_8063940_HasProfile();
 void sub_8072474();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
@@ -63,8 +63,8 @@ void sub_801A51C(void) {
 
     sub_80723C4();
 
-    // Potentially has saved before?
     if (sub_8063940_HasProfile()) {
+        // Load save data?
         sub_8072474();
         hasProfile = TRUE;
     }

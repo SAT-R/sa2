@@ -3,19 +3,66 @@
 #include "malloc_ewram.h"
 #include "data.h"
 #include "flags.h"
+#include "save.h"
 
 // Only used in here;
-extern u32* gUnknown_03005B60;
+extern struct GameData* gUnknown_03005B60;
 extern u32* gUnknown_03005B68;
 
-extern void sub_807234C(u32*);
 extern s16 sub_80721A4(void);
 extern s16 sub_8071944(void);
 extern s16 sub_8071E28(void);
-extern void sub_80717EC(u32*);
+extern void sub_80717EC(struct GameData*);
 extern void sub_8071898(u32*);
 
 static bool16 sub_80724D4(void);
+
+#ifndef NONMATCHING
+ASM_FUNC("asm/non_matching/sub_807234C.inc", void sub_807234C(struct GameData* data))
+#else
+void sub_807234C(struct GameData* data){
+    s32 iVar1;
+    u32 uVar2;
+    u8 i;
+    
+    u8 arrayVal;
+    
+    if (data->unk0 == 0) {
+        iVar1 = sub_80854DC();
+        uVar2 = sub_80854DC();
+
+        iVar1 = iVar1 << 0x10;
+        data->unk0 = (u32)iVar1 | (u16)uVar2;
+    }
+    
+    data->checksum = 0;
+    uVar2 = 0;
+    do {
+        iVar1 = (s32)(s16)uVar2;
+        
+        arrayVal = 0x1d;
+        if (iVar1 == 0) {
+            arrayVal = 0x1e;
+        }
+        data->unk7[iVar1] = arrayVal;
+        data->unkC[iVar1] = 0xff;
+        
+        uVar2 = iVar1 + 1;
+    } while ((s16)iVar1 < 5);
+
+    data->unk13 = 0x1f;
+    data->unk11 = 1;
+    data->unk12 = 1;
+    data->unk14 = 1;
+    data->unk19 = 1;
+    data->unk1A = 2;
+    data->unk1B = 1;
+    data->unk15 = 1;
+    data->unk16 = 1;
+    data->unk17 = 1;
+    data->unk18 = 1;
+}
+#endif
 
 // InitSaveData
 void sub_80723C4(void) {
@@ -54,7 +101,7 @@ s32 sub_8072474(void) {
 }
 
 u32 sub_8072484(void) {
-    if (!sub_80724D4() && gUnknown_03005B64[0]) {
+    if (!sub_80724D4() && gUnknown_03005B64->unk0) {
         return 1;
     } else {
         return sub_8071944();
@@ -68,7 +115,7 @@ s32 sub_80724B0(void) {
     return result;
 }
 
-// Reset game data
+// Initialise a completed game state
 void sub_80724C0(void) {
     sub_807234C(gUnknown_03005B64);
 }
