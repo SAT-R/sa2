@@ -4,7 +4,6 @@
 #include "global.h"
 
 extern u32 gUnknown_03005B70;
-extern u16 gUnknown_03005B74[];
 
 // Returns a 16-bit pseudorandom number
 u16 Random(void);

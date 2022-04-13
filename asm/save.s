@@ -53,7 +53,7 @@ _080719A2:
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
 	adds r0, r7, #0
-	bl sub_8071D24
+	bl sub_8071D24_ReadSave
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	bne _080719C8
@@ -533,8 +533,8 @@ _08071D12:
 	bx r1
 	.align 2, 0
 
-	thumb_func_start sub_8071D24
-sub_8071D24: @ 0x08071D24
+	thumb_func_start sub_8071D24_ReadSave
+sub_8071D24_ReadSave: @ 0x08071D24
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1178,7 +1178,7 @@ sub_80721A4: @ 0x080721A4
 	bl sub_80719D0_NewGame
 	adds r0, r7, #0
 	movs r1, #0
-	bl sub_8071D24
+	bl sub_8071D24_ReadSave
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08072218

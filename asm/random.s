@@ -24,14 +24,3 @@ Random: @ 0x080854DC
 _080854F4: .4byte gUnknown_03005B70
 _080854F8: .4byte gUnknown_03005B74
 _080854FC: .4byte 0x37119371
-
-	thumb_func_start SeedRng
-SeedRng: @ 0x08085500
-	ldr r2, _0808550C @ =gUnknown_03005B70
-	str r0, [r2]
-	ldr r0, _08085510 @ =gUnknown_03005B74
-	str r1, [r0]
-	bx lr
-	.align 2, 0
-_0808550C: .4byte gUnknown_03005B70
-_08085510: .4byte gUnknown_03005B74
