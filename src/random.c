@@ -13,10 +13,9 @@ extern u16 gRngValue[];
 u16 Random(void) {
     u32* pPrev;
     u32* pCurrent;
-    u32 currentRngValue;
     u32 prev;
     
-    u32 rand;
+    u32 new;
 
     // These need to be loaded
     // and referenced as pointers to
@@ -29,12 +28,12 @@ u16 Random(void) {
     
     // This calculation has to be done
     // in 2 stages to match asm
-    rand = prev + RAND_CONST;
-    rand += *pCurrent;
+    new = prev + RAND_CONST;
+    new += *pCurrent;
 
     // Could use the pointer here
     // but it's more clear when we assign
-    *(u32*)&gRngValue = rand;
+    *(u32*)&gRngValue = new;
 
     // Take the top 16 bits
     return gRngValue[1];
