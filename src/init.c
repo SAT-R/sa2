@@ -2,6 +2,7 @@
 #include "data.h"
 #include "task.h"
 #include "init.h"
+#include "flags.h"
 
 // likely static data, needs to be extracted
 extern union Unk_03002E60 gUnknown_080D5CE4[];
@@ -15,7 +16,7 @@ void sub_80723C4();
 bool16 sub_8063940_HasProfile();
 void sub_8072474();
 void sub_808B3FC_CreateIntro();
-void sub_808D41C();
+void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
 void sub_80724C0();
 void sub_8081C0C();
@@ -68,12 +69,12 @@ void sub_801A51C(void) {
         hasProfile = TRUE;
     }
 
-    if (gUnknown_03001840 & 0x200) {
+    if (gFlags & 0x200) {
         sub_8081C0C();
         return;
     }
     
-    if (gUnknown_03001840 & 0x100) {
+    if (gFlags & FLAGS_NO_GAME_FLASH) {
         sub_808B3FC_CreateIntro();
         sub_80724C0();
         return;
@@ -84,9 +85,12 @@ void sub_801A51C(void) {
         return;
     }
     
-    if (gUnknown_03001840 & 0x1000) {
-        sub_808D41C();
-        gUnknown_03001840 &= ~0x1000;
+    // When a special button combination is pressed
+    // skip the intro and go straight to the
+    // title screen
+    if (gFlags & FLAGS_SKIP_INTRO) {
+        sub_808D41C_CreateTitleScreen();
+        gFlags &= ~FLAGS_SKIP_INTRO;
         return;
     }
     

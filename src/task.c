@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "m4a.h"
+#include "flags.h"
 
 static void nullsub_8002A30(void);
 static void nullsub_8002A34(void);
@@ -150,7 +151,7 @@ void TaskDestroy(struct Task* task) {
 
 void TaskExecute(void) {
     gCurTask = gTaskList[0];
-    if (!(gUnknown_03001840 & 0x800) &&
+    if (!(gFlags & 0x800) &&
         (gTaskList[0] != (struct Task*)IWRAM_START)) {
         while (gCurTask != (struct Task*)IWRAM_START) {
             gNextTask = (struct Task*)(IWRAM_START + gCurTask->next);

@@ -129,7 +129,7 @@ _0808B46C:
 	bl sub_808B768
 	movs r0, #1
 	bl m4aSongNumStart
-	ldr r2, _0808B55C @ =gUnknown_03001840
+	ldr r2, _0808B55C @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x80
 	lsls r1, r1, #8
@@ -161,7 +161,7 @@ _0808B54C: .4byte gUnknown_080E1054
 _0808B550: .4byte gUnknown_080E0EF4
 _0808B554: .4byte 0x000002B2
 _0808B558: .4byte gUnknown_03005B80
-_0808B55C: .4byte gUnknown_03001840
+_0808B55C: .4byte gFlags
 
 	thumb_func_start sub_808B560
 sub_808B560: @ 0x0808B560
@@ -339,7 +339,7 @@ _0808B69A:
 	strh r0, [r2, #4]
 	ldr r0, _0808B750 @ =gBldRegs
 	strh r4, [r0]
-	ldr r2, _0808B754 @ =gUnknown_03001840
+	ldr r2, _0808B754 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0808B758 @ =0xFFFF7FFF
 	ands r0, r1
@@ -388,7 +388,7 @@ _0808B744: .4byte 0x0000FEFF
 _0808B748: .4byte gBgCntRegs
 _0808B74C: .4byte 0x0000DFFF
 _0808B750: .4byte gBldRegs
-_0808B754: .4byte gUnknown_03001840
+_0808B754: .4byte gFlags
 _0808B758: .4byte 0xFFFF7FFF
 _0808B75C: .4byte 0x06008000
 _0808B760: .4byte 0x0600E800

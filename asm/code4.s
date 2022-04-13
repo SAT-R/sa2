@@ -3800,7 +3800,7 @@ sub_80871C4: @ 0x080871C4
 	ldr r3, _08087278 @ =gUnknown_03002878
 	ldr r0, _0808727C @ =0x04000040
 	str r0, [r3]
-	ldr r4, _08087280 @ =gUnknown_03001840
+	ldr r4, _08087280 @ =gFlags
 	ldr r0, [r4]
 	movs r3, #4
 	orrs r0, r3
@@ -3877,7 +3877,7 @@ _08087270: .4byte gUnknown_03001884
 _08087274: .4byte gUnknown_03002A80
 _08087278: .4byte gUnknown_03002878
 _0808727C: .4byte 0x04000040
-_08087280: .4byte gUnknown_03001840
+_08087280: .4byte gFlags
 _08087284: .4byte 0xFFFF0000
 _08087288:
 	cmp r3, #0
@@ -4073,7 +4073,7 @@ _080873E8: .4byte gDispCnt
 
 	thumb_func_start sub_80873EC
 sub_80873EC: @ 0x080873EC
-	ldr r0, _080873FC @ =gUnknown_03001840
+	ldr r0, _080873FC @ =gFlags
 	ldr r1, [r0]
 	movs r2, #5
 	rsbs r2, r2, #0
@@ -4081,7 +4081,7 @@ sub_80873EC: @ 0x080873EC
 	str r1, [r0]
 	bx lr
 	.align 2, 0
-_080873FC: .4byte gUnknown_03001840
+_080873FC: .4byte gFlags
 
 	thumb_func_start sub_8087400
 sub_8087400: @ 0x08087400
@@ -4506,7 +4506,7 @@ _08087738:
 	bl MultiSioStop
 	movs r0, #0
 	bl MultiSioInit
-	bl sub_808D41C
+	bl sub_808D41C_CreateTitleScreen
 	movs r1, #0
 	ldr r3, _080877D4 @ =gUnknown_030055A0
 	movs r2, #0
@@ -5908,7 +5908,7 @@ sub_80882F8: @ 0x080882F8
 	strh r0, [r1, #8]
 	movs r0, #0x11
 	strh r0, [r1, #0xa]
-	ldr r2, _08088388 @ =gUnknown_03001840
+	ldr r2, _08088388 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -5959,7 +5959,7 @@ _08088378: .4byte gUnknown_03002A80
 _0808837C: .4byte gUnknown_03002878
 _08088380: .4byte 0x04000042
 _08088384: .4byte gWinRegs
-_08088388: .4byte gUnknown_03001840
+_08088388: .4byte gFlags
 _0808838C: .4byte gUnknown_0300014C
 _08088390: .4byte gPressedKeys
 _08088394: .4byte sub_8088398
@@ -6011,7 +6011,7 @@ _080883D6:
 	strh r0, [r1, #8]
 	movs r0, #0x11
 	strh r0, [r1, #0xa]
-	ldr r2, _08088444 @ =gUnknown_03001840
+	ldr r2, _08088444 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -6044,7 +6044,7 @@ _08088434: .4byte gUnknown_03002A80
 _08088438: .4byte gUnknown_03002878
 _0808843C: .4byte 0x04000042
 _08088440: .4byte gWinRegs
-_08088444: .4byte gUnknown_03001840
+_08088444: .4byte gFlags
 _08088448: .4byte gUnknown_03000080
 _0808844C:
 	movs r0, #0x32
@@ -6205,7 +6205,7 @@ _08088566:
 	strh r0, [r1, #8]
 	movs r0, #0x11
 	strh r0, [r1, #0xa]
-	ldr r2, _08088620 @ =gUnknown_03001840
+	ldr r2, _08088620 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -6277,7 +6277,7 @@ _08088610: .4byte gUnknown_03002A80
 _08088614: .4byte gUnknown_03002878
 _08088618: .4byte 0x04000042
 _0808861C: .4byte gWinRegs
-_08088620: .4byte gUnknown_03001840
+_08088620: .4byte gFlags
 _08088624: .4byte gPressedKeys
 _08088628: .4byte 0x0000014D
 _0808862C: .4byte gUnknown_03005B64
@@ -6372,7 +6372,7 @@ sub_80886C8: @ 0x080886C8
 	lsrs r3, r0, #0x18
 	cmp r3, #1
 	bne _08088714
-	ldr r2, _08088708 @ =gUnknown_03001840
+	ldr r2, _08088708 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #5
 	rsbs r1, r1, #0
@@ -6387,7 +6387,7 @@ sub_80886C8: @ 0x080886C8
 	.align 2, 0
 _08088700: .4byte gCurTask
 _08088704: .4byte gUnknown_03000140
-_08088708: .4byte gUnknown_03001840
+_08088708: .4byte gFlags
 _0808870C: .4byte gUnknown_03001954
 _08088710: .4byte sub_808883C
 _08088714:
@@ -6403,7 +6403,7 @@ _08088714:
 	strh r0, [r1, #8]
 	movs r0, #0x31
 	strh r0, [r1, #0xa]
-	ldr r2, _08088764 @ =gUnknown_03001840
+	ldr r2, _08088764 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -6426,7 +6426,7 @@ _08088754: .4byte gUnknown_03002A80
 _08088758: .4byte gUnknown_03002878
 _0808875C: .4byte 0x04000042
 _08088760: .4byte gWinRegs
-_08088764: .4byte gUnknown_03001840
+_08088764: .4byte gFlags
 
 	thumb_func_start sub_8088768
 sub_8088768: @ 0x08088768
@@ -6444,7 +6444,7 @@ sub_8088768: @ 0x08088768
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bne _080887AC
-	ldr r2, _080887A8 @ =gUnknown_03001840
+	ldr r2, _080887A8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #5
 	rsbs r1, r1, #0
@@ -6457,7 +6457,7 @@ sub_8088768: @ 0x08088768
 	.align 2, 0
 _080887A0: .4byte gCurTask
 _080887A4: .4byte gUnknown_03000140
-_080887A8: .4byte gUnknown_03001840
+_080887A8: .4byte gFlags
 _080887AC:
 	ldr r1, _080887EC @ =gUnknown_03002A80
 	movs r0, #2
@@ -6471,7 +6471,7 @@ _080887AC:
 	strh r0, [r1, #8]
 	movs r0, #0x31
 	strh r0, [r1, #0xa]
-	ldr r2, _080887FC @ =gUnknown_03001840
+	ldr r2, _080887FC @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -6494,7 +6494,7 @@ _080887EC: .4byte gUnknown_03002A80
 _080887F0: .4byte gUnknown_03002878
 _080887F4: .4byte 0x04000042
 _080887F8: .4byte gWinRegs
-_080887FC: .4byte gUnknown_03001840
+_080887FC: .4byte gFlags
 
 	thumb_func_start sub_8088800
 sub_8088800: @ 0x08088800
@@ -7228,7 +7228,7 @@ _08088E00: .4byte gUnknown_030054CC
 _08088E04: .4byte gUnknown_030054F0
 _08088E08: .4byte gUnknown_030055B4
 _08088E0C:
-	bl sub_808D41C
+	bl sub_808D41C_CreateTitleScreen
 	b _08088EAC
 _08088E12:
 	movs r5, #0
@@ -10837,7 +10837,7 @@ sub_808AB08: @ 0x0808AB08
 	adds r0, r0, r3
 	ldr r1, _0808ADDC @ =sub_808DB2C
 	str r1, [r0]
-	ldr r2, _0808ADE0 @ =gUnknown_03001840
+	ldr r2, _0808ADE0 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #8
 	orrs r0, r1
@@ -11139,7 +11139,7 @@ _0808ADD0: .4byte gBgScrollRegs
 _0808ADD4: .4byte gUnknown_030026E0
 _0808ADD8: .4byte gUnknown_0300188C
 _0808ADDC: .4byte sub_808DB2C
-_0808ADE0: .4byte gUnknown_03001840
+_0808ADE0: .4byte gFlags
 _0808ADE4: .4byte gUnknown_080E0C30
 _0808ADE8: .4byte 0x0000070C
 _0808ADEC: .4byte 0xFFFFFBFF

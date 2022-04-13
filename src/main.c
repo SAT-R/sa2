@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "agb_flash_512k.h"
+#include "flags.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
@@ -56,18 +57,20 @@ void GameInit(void) {
     s16 i;
 
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
-    gUnknown_03001840 = 0;
+    gFlags = 0;
     gUnknown_03002790 = 0;
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
-        gUnknown_03001840 = 0x200;
+        gFlags = 0x200;
         DmaSet(3, OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
     }
 
+    // Skip the intro if these
+    // 4 buttons are pressed
     if (gInput == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
-        gUnknown_03001840 = gUnknown_03001840 | 0x1000;
+        gFlags |= FLAGS_SKIP_INTRO;
     } else {
-        gUnknown_03001840 &= 0xffffefff;
+        gFlags &= ~FLAGS_SKIP_INTRO;
     }
 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
@@ -187,8 +190,8 @@ void GameInit(void) {
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
 
-    if (IdentifyFlash512K() != 0) {
-        gUnknown_03001840 = gUnknown_03001840 | 0x100;
+    if (IdentifyFlash512K()) {
+        gFlags |= FLAGS_NO_GAME_FLASH;
     } else {
         SetFlashTimerIntr(1, &gUnknown_030007C4);
     }
@@ -213,7 +216,7 @@ void GameInit(void) {
 void GameLoop(void) {
     while (TRUE) {
         gUnknown_030053B4 = 0;
-        if (!(gUnknown_03001840 & 0x4000)) {
+        if (!(gFlags & 0x4000)) {
             m4aSoundMain();
         }
 
@@ -226,23 +229,23 @@ void GameLoop(void) {
             TaskExecute();
         }
 
-        gUnknown_03002790 = gUnknown_03001840;
+        gUnknown_03002790 = gFlags;
         VBlankIntrWait();
-        if (gUnknown_03001840 & 0x4000) {
+        if (gFlags & 0x4000) {
             UpdateScreenCpuSet();
-            if (!(gUnknown_03001840 & 0x400)) {
+            if (!(gFlags & 0x400)) {
                 ClearOamBufferCpuSet();
             }
         } else {
             UpdateScreenDma();
-            if (!(gUnknown_03001840 & 0x400)) {
+            if (!(gFlags & 0x400)) {
                 ClearOamBufferDma();
             }
         }
-        if ((gUnknown_03001840 & 0x400)) {
-            gUnknown_03001840 |= 0x800;
+        if ((gFlags & 0x400)) {
+            gFlags |= 0x800;
         } else {
-            gUnknown_03001840 &= ~0x800;
+            gFlags &= ~0x800;
         }
 
         // Wait for vblank
@@ -256,14 +259,14 @@ void UpdateScreenDma(void) {
     REG_DISPCNT = gDispCnt;
     DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
 
-    if (gUnknown_03001840 & 1) {
+    if (gFlags & 1) {
         DmaCopy32(3, gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
-        gUnknown_03001840 ^= 1;
+        gFlags ^= 1;
     }
 
-    if (gUnknown_03001840 & 2) {
+    if (gFlags & 2) {
         DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
-        gUnknown_03001840 ^= 2;
+        gFlags ^= 2;
     }
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
@@ -273,7 +276,7 @@ void UpdateScreenDma(void) {
               sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
-    if (gUnknown_03001840 & 8) {
+    if (gFlags & 8) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
         if (gUnknown_0300188C != 0) {
@@ -286,7 +289,7 @@ void UpdateScreenDma(void) {
         gUnknown_030018E0 = 0;
     }
 
-    if (gUnknown_03001840 & 4) {
+    if (gFlags & 4) {
         DmaCopy16(3, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
     }
 
@@ -302,7 +305,7 @@ void UpdateScreenDma(void) {
         gUnknown_030053A0[i]();
     }
 
-    if (gUnknown_03001840 & 0x10) {
+    if (gFlags & 0x10) {
         DmaFill32(3, 0, gUnknown_030053A0, 0x10);
         if (gUnknown_03004D50 != 0) {
             DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
@@ -310,7 +313,7 @@ void UpdateScreenDma(void) {
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
-        gUnknown_03001948 = gUnknown_03001840 & 0x10;
+        gUnknown_03001948 = gFlags & 0x10;
     }
 
     j = gUnknown_030026F4;
@@ -330,8 +333,8 @@ void UpdateScreenDma(void) {
 void ClearOamBufferDma(void) {
     gUnknown_0300188C = 0;
 
-    gUnknown_03001840 &= ~8;
-    if ((gUnknown_03001840 & (0x20)) == 0) {
+    gFlags &= ~8;
+    if ((gFlags & (0x20)) == 0) {
         if (gUnknown_03001884 == gUnknown_03004D54) {
             gUnknown_03001884 = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
@@ -340,14 +343,14 @@ void ClearOamBufferDma(void) {
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }
-    gUnknown_03001840 &= ~4;
+    gFlags &= ~4;
     DmaFill16(3, 0x200, gOamBuffer, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
 
     gUnknown_03004D50 = 0;
-    gUnknown_03001840 &= ~16;
+    gFlags &= ~16;
 }
 
 void UpdateScreenCpuSet(void) {
@@ -355,14 +358,14 @@ void UpdateScreenCpuSet(void) {
     REG_DISPCNT = gDispCnt;
     CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
-    if (gUnknown_03001840 & 1) {
+    if (gFlags & 1) {
         CpuFastCopy(gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
-        gUnknown_03001840 ^= 1;
+        gFlags ^= 1;
     }
 
-    if (gUnknown_03001840 & 2) {
+    if (gFlags & 2) {
         CpuFastCopy(gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
-        gUnknown_03001840 ^= 2;
+        gFlags ^= 2;
     }
 
     CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
@@ -371,7 +374,7 @@ void UpdateScreenCpuSet(void) {
     CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
-    if (gUnknown_03001840 & 8) {
+    if (gFlags & 8) {
         REG_IE |= INTR_FLAG_HBLANK;
         CpuFastFill(0, gUnknown_03002AF0, 0x10);
         if (gUnknown_0300188C != 0) {
@@ -392,14 +395,14 @@ void UpdateScreenCpuSet(void) {
         gUnknown_030053A0[i]();
     }
 
-    if (gUnknown_03001840 & 0x10) {
+    if (gFlags & 0x10) {
         CpuFastFill(0, gUnknown_030053A0, 0x10);
         if (gUnknown_03004D50 != 0) {
             CpuFastSet(gUnknown_03001870, gUnknown_030053A0, gUnknown_03004D50);
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
-        gUnknown_03001948 = gUnknown_03001840 & 0x10;
+        gUnknown_03001948 = gFlags & 0x10;
     }
 
     j = gUnknown_030026F4;
@@ -453,13 +456,13 @@ static void VBlankIntr(void) {
         keys = ~REG_KEYINPUT &
                (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
-            gUnknown_03001840 |= 0x8000;
+            gFlags |= 0x8000;
             REG_IE = 0;
             REG_IME = 0;
             REG_DISPSTAT = DISPCNT_MODE_0;
             m4aMPlayAllStop();
             m4aSoundVSyncOff();
-            gUnknown_03001840 &= ~4;
+            gFlags &= ~4;
             DmaStop(0);
             DmaStop(1);
             DmaStop(2);
@@ -571,8 +574,8 @@ void DummyFunc_main(void) { return; }
 void ClearOamBufferCpuSet(void) {
     gUnknown_0300188C = 0;
 
-    gUnknown_03001840 &= ~8;
-    if ((gUnknown_03001840 & (0x20)) == 0) {
+    gFlags &= ~8;
+    if ((gFlags & (0x20)) == 0) {
         if (gUnknown_03001884 == gUnknown_03004D54) {
             gUnknown_03001884 = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
@@ -581,10 +584,10 @@ void ClearOamBufferCpuSet(void) {
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }
-    gUnknown_03001840 &= ~4;
+    gFlags &= ~4;
     CpuFastFill(0x200, gOamBuffer, OAM_SIZE);
     gUnknown_03004D50 = 0;
-    gUnknown_03001840 &= ~16;
+    gFlags &= ~16;
 }
 
 void AgbMain(void) {

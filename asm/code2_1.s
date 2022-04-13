@@ -17823,7 +17823,7 @@ _0806C8E4:
 	ldr r0, _0806C91C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C
+	bl sub_808D41C_CreateTitleScreen
 	b _0806C942
 	.align 2, 0
 _0806C908: .4byte 0x0000FFFF
@@ -22060,7 +22060,7 @@ sub_806EA04: @ 0x0806EA04
 	adds r0, r7, r5
 	ldrh r0, [r0]
 	mov r8, r0
-	ldr r2, _0806EB60 @ =gUnknown_03001840
+	ldr r2, _0806EB60 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #4
 	orrs r0, r1
@@ -22182,7 +22182,7 @@ _0806EB50: .4byte 0x04000020
 _0806EB54: .4byte gUnknown_03001884
 _0806EB58: .4byte gUnknown_08097AA4
 _0806EB5C: .4byte 0x000005CE
-_0806EB60: .4byte gUnknown_03001840
+_0806EB60: .4byte gFlags
 _0806EB64: .4byte 0x000005D1
 _0806EB68: .4byte 0x000005CA
 _0806EB6C: .4byte 0x000005CC

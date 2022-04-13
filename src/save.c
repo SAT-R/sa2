@@ -1,16 +1,32 @@
 #include "global.h"
 #include "agb_flash_512k.h"
+#include "malloc_ewram.h"
 #include "data.h"
+#include "flags.h"
 
 // Only used in here;
 extern u32* gUnknown_03005B60;
+extern u32* gUnknown_03005B68;
 
 extern void sub_807234C(u32*);
 extern s16 sub_80721A4(void);
 extern s16 sub_8071944(void);
 extern s16 sub_8071E28(void);
+extern void sub_80717EC(u32*);
+extern void sub_8071898(u32*);
 
 static bool16 sub_80724D4(void);
+
+// InitSaveData
+void sub_80723C4(void) {
+    gUnknown_03005B64 = EwramMalloc(0x378);
+    gUnknown_03005B60 = EwramMalloc(0x378);
+    gUnknown_03005B68 = EwramMalloc(0x378);
+
+    sub_80717EC(gUnknown_03005B64);
+    sub_80717EC(gUnknown_03005B60);
+    sub_8071898(gUnknown_03005B68);
+}
 
 // Check if the first 10 sectors of flash
 // data contain the bytes 0x4547474d
@@ -18,7 +34,7 @@ bool16 sub_8063940_HasProfile(void) {
     u32 data[32];
     s16 i;
 
-    if (gUnknown_03001840 & 0x100) {
+    if (gFlags & FLAGS_NO_GAME_FLASH) {
         return FALSE;
     };
 
@@ -52,6 +68,7 @@ s32 sub_80724B0(void) {
     return result;
 }
 
+// Reset game data
 void sub_80724C0(void) {
     sub_807234C(gUnknown_03005B64);
 }

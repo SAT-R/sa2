@@ -12,9 +12,6 @@ extern u8* gUnknown_03001884;
 extern u8* gUnknown_03004D54;
 extern u8* gUnknown_030022C0;
 
-// Something task related
-extern u32 gUnknown_03001840;
-
 extern u8 gUnknown_03001B60[2][0x280];
 
 // Used in ewram malloc 

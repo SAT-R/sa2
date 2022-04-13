@@ -1,6 +1,7 @@
 #include "global.h"
 #include "data.h"
 #include "sprite.h"
+#include "flags.h"
 
 extern struct Unk_03002400 *gUnknown_03001800[];
 
@@ -26,7 +27,7 @@ void sub_8002A3C(struct Unk_03002400 *r4) {
 
     if (!(r4->unk2E & 0x10)) {
         DmaCopy16(3, c, gBgPalette + r4->unk2A, a * 2);
-        gUnknown_03001840 |= 1;
+        gFlags |= 1;
         r4->unk2E ^= 0x10;
     }
 

@@ -3739,7 +3739,7 @@ sub_8009854: @ 0x08009854
 	movs r3, #0
 	ldr r0, _080098AC @ =0x00007FFF
 	strh r0, [r1, #2]
-	ldr r2, _080098B0 @ =gUnknown_03001840
+	ldr r2, _080098B0 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #1
 	orrs r0, r1
@@ -3768,7 +3768,7 @@ sub_8009854: @ 0x08009854
 _080098A4: .4byte gCurTask
 _080098A8: .4byte gBgPalette
 _080098AC: .4byte 0x00007FFF
-_080098B0: .4byte gUnknown_03001840
+_080098B0: .4byte gFlags
 _080098B4: .4byte gUnknown_086E9E08
 _080098B8: .4byte gUnknown_080D5128
 _080098BC: .4byte sub_8009780
@@ -4445,7 +4445,7 @@ _08009DE8: .4byte gWinRegs
 
 	thumb_func_start sub_8009DEC
 sub_8009DEC: @ 0x08009DEC
-	ldr r0, _08009DFC @ =gUnknown_03001840
+	ldr r0, _08009DFC @ =gFlags
 	ldr r1, [r0]
 	movs r2, #5
 	rsbs r2, r2, #0
@@ -4453,7 +4453,7 @@ sub_8009DEC: @ 0x08009DEC
 	str r1, [r0]
 	bx lr
 	.align 2, 0
-_08009DFC: .4byte gUnknown_03001840
+_08009DFC: .4byte gFlags
 
 	thumb_func_start sub_8009E00
 sub_8009E00: @ 0x08009E00
@@ -5240,7 +5240,7 @@ sub_800A43C: @ 0x0800A43C
 	ldr r1, _0800A4C0 @ =gBgPalette
 	ldr r0, _0800A4C4 @ =0x00007FFF
 	strh r0, [r1, #2]
-	ldr r2, _0800A4C8 @ =gUnknown_03001840
+	ldr r2, _0800A4C8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #1
 	orrs r0, r1
@@ -5260,7 +5260,7 @@ _0800A4B8: .4byte gUnknown_03002280
 _0800A4BC: .4byte sub_800A4CC
 _0800A4C0: .4byte gBgPalette
 _0800A4C4: .4byte 0x00007FFF
-_0800A4C8: .4byte gUnknown_03001840
+_0800A4C8: .4byte gFlags
 
 	thumb_func_start sub_800A4CC
 sub_800A4CC: @ 0x0800A4CC
@@ -5892,7 +5892,7 @@ sub_800A9B8: @ 0x0800A9B8
 	strh r1, [r0, #4]
 	strh r1, [r0, #2]
 	strh r1, [r0, #6]
-	ldr r2, _0800A9F8 @ =gUnknown_03001840
+	ldr r2, _0800A9F8 @ =gFlags
 	ldr r0, [r2]
 	subs r1, #5
 	ands r0, r1
@@ -5904,7 +5904,7 @@ _0800A9E8: .4byte 0x00009FFF
 _0800A9EC: .4byte 0x0000FEFF
 _0800A9F0: .4byte gBldRegs
 _0800A9F4: .4byte gWinRegs
-_0800A9F8: .4byte gUnknown_03001840
+_0800A9F8: .4byte gFlags
 
 	thumb_func_start sub_800A9FC
 sub_800A9FC: @ 0x0800A9FC
@@ -6096,7 +6096,7 @@ _0800AB70:
 	cmp r6, #0
 	beq _0800ABB8
 _0800AB84:
-	ldr r2, _0800ABA8 @ =gUnknown_03001840
+	ldr r2, _0800ABA8 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0800ABAC @ =0xFFFFFBFF
 	ands r0, r1
@@ -6111,7 +6111,7 @@ _0800AB84:
 	.align 2, 0
 _0800ABA0: .4byte gPressedKeys
 _0800ABA4: .4byte gUnknown_030054CC
-_0800ABA8: .4byte gUnknown_03001840
+_0800ABA8: .4byte gFlags
 _0800ABAC: .4byte 0xFFFFFBFF
 _0800ABB0: .4byte gMPlayTable
 _0800ABB4: .4byte gCurTask
@@ -6122,7 +6122,7 @@ _0800ABB8:
 	ands r0, r1
 	cmp r0, #0
 	beq _0800AC7C
-	ldr r2, _0800ABF8 @ =gUnknown_03001840
+	ldr r2, _0800ABF8 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0800ABFC @ =0xFFFFFBFF
 	ands r0, r1
@@ -6145,7 +6145,7 @@ _0800ABB8:
 	bl sub_80890BC
 	b _0800AD8A
 	.align 2, 0
-_0800ABF8: .4byte gUnknown_03001840
+_0800ABF8: .4byte gFlags
 _0800ABFC: .4byte 0xFFFFFBFF
 _0800AC00: .4byte 0x0000FFFF
 _0800AC04: .4byte gUnknown_03002AE4
@@ -6162,7 +6162,7 @@ _0800AC18:
 	ands r0, r1
 	cmp r0, #0
 	beq _0800AC7C
-	ldr r2, _0800AC5C @ =gUnknown_03001840
+	ldr r2, _0800AC5C @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0800AC60 @ =0xFFFFFBFF
 	ands r0, r1
@@ -6182,10 +6182,10 @@ _0800AC18:
 	ldr r0, _0800AC78 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C
+	bl sub_808D41C_CreateTitleScreen
 	b _0800AD8A
 	.align 2, 0
-_0800AC5C: .4byte gUnknown_03001840
+_0800AC5C: .4byte gFlags
 _0800AC60: .4byte 0xFFFFFBFF
 _0800AC64: .4byte 0x0000FFFF
 _0800AC68: .4byte gUnknown_03002AE4
@@ -6367,7 +6367,7 @@ _0800ADD6:
 	bls _0800ADCA
 	movs r0, #0x8e
 	bl m4aSongNumStart
-	ldr r2, _0800AE30 @ =gUnknown_03001840
+	ldr r2, _0800AE30 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x80
 	lsls r1, r1, #3
@@ -6402,7 +6402,7 @@ _0800ADD6:
 _0800AE24: .4byte gCurTask
 _0800AE28: .4byte gUnknown_08AD53BC+4
 _0800AE2C: .4byte gMPlayTable
-_0800AE30: .4byte gUnknown_03001840
+_0800AE30: .4byte gFlags
 _0800AE34: .4byte 0x040000D4
 _0800AE38: .4byte gUnknown_03002252
 _0800AE3C: .4byte 0x80000003
@@ -6433,7 +6433,7 @@ sub_800AE58: @ 0x0800AE58
 	ldr r1, _0800AE90 @ =gObjPalette
 	ldr r0, _0800AE94 @ =0x00007FFF
 	strh r0, [r1, #2]
-	ldr r2, _0800AE98 @ =gUnknown_03001840
+	ldr r2, _0800AE98 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #2
 	orrs r0, r1
@@ -6448,7 +6448,7 @@ _0800AE88: .4byte 0x06017EC0
 _0800AE8C: .4byte 0x800000A0
 _0800AE90: .4byte gObjPalette
 _0800AE94: .4byte 0x00007FFF
-_0800AE98: .4byte gUnknown_03001840
+_0800AE98: .4byte gFlags
 _0800AE9C: .4byte 0xFFFFFBFF
 
 	thumb_func_start sub_800AEA0
@@ -19948,7 +19948,7 @@ _080116A2:
 	ldrb r2, [r6]
 	cmp r2, #1
 	beq _080116BC
-	ldr r0, _080116B8 @ =gUnknown_03001840
+	ldr r0, _080116B8 @ =gFlags
 	ldr r1, [r0]
 	movs r2, #0x41
 	rsbs r2, r2, #0
@@ -19956,7 +19956,7 @@ _080116A2:
 	str r1, [r0]
 	b _080117DC
 	.align 2, 0
-_080116B8: .4byte gUnknown_03001840
+_080116B8: .4byte gFlags
 _080116BC:
 	ldr r1, _080116E0 @ =gUnknown_03005590
 	ldr r0, [r1]
@@ -20013,7 +20013,7 @@ _0801170A:
 	adds r0, r0, r3
 	ldr r1, _080117B4 @ =sub_8011A4C
 	str r1, [r0]
-	ldr r2, _080117B8 @ =gUnknown_03001840
+	ldr r2, _080117B8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x10
 	orrs r0, r1
@@ -20078,7 +20078,7 @@ _0801178C:
 	str r0, [r1, #0xc]
 	ldr r0, _080117C4 @ =gUnknown_03002874
 	strb r2, [r0]
-	ldr r2, _080117B8 @ =gUnknown_03001840
+	ldr r2, _080117B8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x40
 	orrs r0, r1
@@ -20087,7 +20087,7 @@ _0801178C:
 _080117AC: .4byte gUnknown_03001870
 _080117B0: .4byte gUnknown_03004D50
 _080117B4: .4byte sub_8011A4C
-_080117B8: .4byte gUnknown_03001840
+_080117B8: .4byte gFlags
 _080117BC: .4byte gIntrTable
 _080117C0: .4byte sub_8011ACC
 _080117C4: .4byte gUnknown_03002874
@@ -20096,7 +20096,7 @@ _080117C8:
 	ldr r0, _080117E8 @ =gIntrTableTemplate
 	ldr r0, [r0, #0xc]
 	str r0, [r1, #0xc]
-	ldr r2, _080117EC @ =gUnknown_03001840
+	ldr r2, _080117EC @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x41
 	rsbs r1, r1, #0
@@ -20110,7 +20110,7 @@ _080117DC:
 	.align 2, 0
 _080117E4: .4byte gIntrTable
 _080117E8: .4byte gIntrTableTemplate
-_080117EC: .4byte gUnknown_03001840
+_080117EC: .4byte gFlags
 
 	thumb_func_start sub_80117F0
 sub_80117F0: @ 0x080117F0
@@ -20388,7 +20388,7 @@ _08011A1C: .4byte 0x739C739C
 	thumb_func_start sub_8011A20
 sub_8011A20: @ 0x08011A20
 	ldr r3, _08011A3C @ =gUnknown_03005660
-	ldr r2, _08011A40 @ =gUnknown_03001840
+	ldr r2, _08011A40 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x41
 	rsbs r1, r1, #0
@@ -20403,7 +20403,7 @@ sub_8011A20: @ 0x08011A20
 	bx lr
 	.align 2, 0
 _08011A3C: .4byte gUnknown_03005660
-_08011A40: .4byte gUnknown_03001840
+_08011A40: .4byte gFlags
 _08011A44: .4byte gIntrTable
 _08011A48: .4byte gIntrTableTemplate
 
@@ -20448,7 +20448,7 @@ sub_8011A4C: @ 0x08011A4C
 	ldr r0, _08011AC4 @ =0x0000FEFF
 	ands r0, r1
 	strh r0, [r2]
-	ldr r2, _08011AC8 @ =gUnknown_03001840
+	ldr r2, _08011AC8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #3
 	orrs r0, r1
@@ -20465,7 +20465,7 @@ _08011AB8: .4byte 0x84000074
 _08011ABC: .4byte 0x05000200
 _08011AC0: .4byte 0x84000080
 _08011AC4: .4byte 0x0000FEFF
-_08011AC8: .4byte gUnknown_03001840
+_08011AC8: .4byte gFlags
 
 	thumb_func_start sub_8011ACC
 sub_8011ACC: @ 0x08011ACC
@@ -20497,7 +20497,7 @@ sub_8011ACC: @ 0x08011ACC
 	ldr r0, _08011B30 @ =0x0000FEFF
 	ands r0, r1
 	strh r0, [r2]
-	ldr r2, _08011B34 @ =gUnknown_03001840
+	ldr r2, _08011B34 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #3
 	orrs r0, r1
@@ -20514,7 +20514,7 @@ _08011B24: .4byte 0x84000074
 _08011B28: .4byte 0x05000200
 _08011B2C: .4byte 0x84000080
 _08011B30: .4byte 0x0000FEFF
-_08011B34: .4byte gUnknown_03001840
+_08011B34: .4byte gFlags
 _08011B38: .4byte 0x04000202
 
 	thumb_func_start sub_8011B3C
@@ -28717,7 +28717,7 @@ _08015884:
 	orrs r2, r0
 	str r2, [r4, #8]
 	ldr r0, [r4, #8]
-	ldr r2, _080159C4 @ =gUnknown_03001840
+	ldr r2, _080159C4 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #2
 	orrs r0, r1
@@ -28748,7 +28748,7 @@ _080159B4: .4byte gUnknown_08135EC4
 _080159B8: .4byte 0x040000D4
 _080159BC: .4byte gUnknown_03002794
 _080159C0: .4byte gObjPalette
-_080159C4: .4byte gUnknown_03001840
+_080159C4: .4byte gFlags
 
 	thumb_func_start sub_80159C8
 sub_80159C8: @ 0x080159C8
@@ -29001,7 +29001,7 @@ sub_8015B64: @ 0x08015B64
 	orrs r2, r0
 	str r2, [r4, #8]
 	ldr r0, [r4, #8]
-	ldr r2, _08015BD0 @ =gUnknown_03001840
+	ldr r2, _08015BD0 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #2
 	orrs r0, r1
@@ -29015,7 +29015,7 @@ _08015BC0: .4byte gUnknown_08135EC4
 _08015BC4: .4byte 0x040000D4
 _08015BC8: .4byte gUnknown_03002794
 _08015BCC: .4byte gObjPalette
-_08015BD0: .4byte gUnknown_03001840
+_08015BD0: .4byte gFlags
 
 	thumb_func_start sub_8015BD4
 sub_8015BD4: @ 0x08015BD4

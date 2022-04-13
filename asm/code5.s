@@ -329,7 +329,7 @@ sub_808BAD8: @ 0x0808BAD8
 	strh r0, [r3, #2]
 	movs r0, #0
 	strh r0, [r4]
-	ldr r2, _0808BB48 @ =gUnknown_03001840
+	ldr r2, _0808BB48 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0808BB4C @ =0xFFFF7FFF
 	ands r0, r1
@@ -350,7 +350,7 @@ _0808BB38: .4byte gBldRegs
 _0808BB3C: .4byte gUnknown_03000F3E
 _0808BB40: .4byte gDispCnt
 _0808BB44: .4byte 0x0000FEFF
-_0808BB48: .4byte gUnknown_03001840
+_0808BB48: .4byte gFlags
 _0808BB4C: .4byte 0xFFFF7FFF
 _0808BB50: .4byte sub_808BB54
 
@@ -2107,7 +2107,7 @@ _0808C96E:
 	strh r0, [r2, #4]
 	ldr r0, _0808CA54 @ =gBldRegs
 	strh r4, [r0]
-	ldr r2, _0808CA58 @ =gUnknown_03001840
+	ldr r2, _0808CA58 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0808CA5C @ =0xFFFF7FFF
 	ands r0, r1
@@ -2146,7 +2146,7 @@ _0808CA48: .4byte gBgScrollRegs
 _0808CA4C: .4byte gBgCntRegs
 _0808CA50: .4byte 0x0000DFFF
 _0808CA54: .4byte gBldRegs
-_0808CA58: .4byte gUnknown_03001840
+_0808CA58: .4byte gFlags
 _0808CA5C: .4byte 0xFFFF7FFF
 _0808CA60: .4byte gCurTask
 _0808CA64: .4byte sub_808D53C
@@ -2370,7 +2370,7 @@ _0808CC0E:
 	adds r0, r0, r3
 	ldr r1, _0808CCFC @ =sub_808D874
 	str r1, [r0]
-	ldr r5, _0808CD00 @ =gUnknown_03001840
+	ldr r5, _0808CD00 @ =gFlags
 	ldr r2, [r5]
 	movs r6, #0x10
 	orrs r2, r6
@@ -2474,7 +2474,7 @@ _0808CCF0: .4byte 0xFFFFFD00
 _0808CCF4: .4byte gUnknown_03001870
 _0808CCF8: .4byte gUnknown_03004D50
 _0808CCFC: .4byte sub_808D874
-_0808CD00: .4byte gUnknown_03001840
+_0808CD00: .4byte gFlags
 _0808CD04: .4byte gUnknown_030026E0
 _0808CD08: .4byte gUnknown_0300188C
 _0808CD0C: .4byte sub_808DB2C
@@ -3314,7 +3314,7 @@ _0808D3B0:
 	movs r4, #1
 	ands r4, r1
 _0808D3B4:
-	ldr r2, _0808D408 @ =gUnknown_03001840
+	ldr r2, _0808D408 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x80
 	lsls r1, r1, #8
@@ -3350,14 +3350,14 @@ _0808D3B4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0808D408: .4byte gUnknown_03001840
+_0808D408: .4byte gFlags
 _0808D40C: .4byte gUnknown_080AED70
 _0808D410: .4byte gUnknown_02000008
 _0808D414: .4byte gUnknown_02000010
 _0808D418: .4byte gUnknown_03002264
 
-	thumb_func_start sub_808D41C
-sub_808D41C: @ 0x0808D41C
+	thumb_func_start sub_808D41C_CreateTitleScreen
+sub_808D41C_CreateTitleScreen: @ 0x0808D41C
 	push {lr}
 	sub sp, #4
 	ldr r2, _0808D450 @ =0x04000128
@@ -3456,7 +3456,7 @@ sub_808D4DC: @ 0x0808D4DC
 	movs r1, #0x9c
 	lsls r1, r1, #2
 	adds r0, r4, r1
-	ldr r3, _0808D52C @ =gUnknown_03001840
+	ldr r3, _0808D52C @ =gFlags
 	ldr r1, [r3]
 	movs r2, #5
 	rsbs r2, r2, #0
@@ -3487,7 +3487,7 @@ sub_808D4DC: @ 0x0808D4DC
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0808D52C: .4byte gUnknown_03001840
+_0808D52C: .4byte gFlags
 _0808D530: .4byte 0x00003FBF
 _0808D534: .4byte gCurTask
 _0808D538: .4byte sub_808C8EC
@@ -3657,7 +3657,7 @@ sub_808D67C: @ 0x0808D67C
 	ldrh r0, [r4]
 	cmp r0, #0x3c
 	bls _0808D6B0
-	ldr r2, _0808D6CC @ =gUnknown_03001840
+	ldr r2, _0808D6CC @ =gFlags
 	ldr r0, [r2]
 	movs r1, #5
 	rsbs r1, r1, #0
@@ -3682,7 +3682,7 @@ _0808D6B0:
 	.align 2, 0
 _0808D6C4: .4byte gCurTask
 _0808D6C8: .4byte gUnknown_03000F3E
-_0808D6CC: .4byte gUnknown_03001840
+_0808D6CC: .4byte gFlags
 _0808D6D0: .4byte sub_808C218
 
 	thumb_func_start sub_808D6D4

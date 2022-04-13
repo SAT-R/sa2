@@ -33,7 +33,7 @@ _0807196C:
 	adds r0, r7, #0
 	adds r1, r6, #0
 	bl sub_80719D0
-	ldr r0, _080719C4 @ =gUnknown_03001840
+	ldr r0, _080719C4 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
 	lsls r1, r1, #1
@@ -63,7 +63,7 @@ _080719A2:
 _080719B8: .4byte gUnknown_03005B64
 _080719BC: .4byte gUnknown_03005B60
 _080719C0: .4byte gUnknown_03005B68
-_080719C4: .4byte gUnknown_03001840
+_080719C4: .4byte gFlags
 _080719C8:
 	movs r0, #0
 _080719CA:
@@ -546,7 +546,7 @@ sub_8071D24: @ 0x08071D24
 	lsrs r5, r5, #0x10
 	bl m4aMPlayAllStop
 	bl m4aSoundVSyncOff
-	ldr r0, _08071E04 @ =gUnknown_03001840
+	ldr r0, _08071E04 @ =gFlags
 	mov r8, r0
 	ldr r1, [r0]
 	movs r0, #0x80
@@ -644,7 +644,7 @@ sub_8071D24: @ 0x08071D24
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08071E04: .4byte gUnknown_03001840
+_08071E04: .4byte gFlags
 _08071E08: .4byte 0x04000200
 _08071E0C: .4byte 0x04000208
 _08071E10: .4byte 0x04000004
@@ -673,7 +673,7 @@ sub_8071E28: @ 0x08071E28
 	mov r0, sb
 	adds r1, r7, #0
 	bl memcpy
-	ldr r0, _08071E70 @ =gUnknown_03001840
+	ldr r0, _08071E70 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
 	lsls r1, r1, #1
@@ -688,7 +688,7 @@ sub_8071E28: @ 0x08071E28
 _08071E64: .4byte gUnknown_03005B64
 _08071E68: .4byte gUnknown_03005B60
 _08071E6C: .4byte gUnknown_03005B68
-_08071E70: .4byte gUnknown_03001840
+_08071E70: .4byte gFlags
 _08071E74:
 	lsls r0, r5, #0x10
 	asrs r0, r0, #0x10
@@ -1165,7 +1165,7 @@ sub_80721A4: @ 0x080721A4
 	mov r0, sb
 	adds r1, r4, #0
 	bl memcpy
-	ldr r0, _08072214 @ =gUnknown_03001840
+	ldr r0, _08072214 @ =gFlags
 	ldr r1, [r0]
 	movs r0, #0x80
 	lsls r0, r0, #1
@@ -1189,7 +1189,7 @@ _08072204:
 _08072208: .4byte gUnknown_03005B64
 _0807220C: .4byte gUnknown_03005B60
 _08072210: .4byte gUnknown_03005B68
-_08072214: .4byte gUnknown_03001840
+_08072214: .4byte gFlags
 _08072218:
 	movs r1, #1
 _0807221A:
@@ -1228,7 +1228,7 @@ sub_8072244: @ 0x08072244
 	lsrs r5, r5, #0x10
 	bl m4aMPlayAllStop
 	bl m4aSoundVSyncOff
-	ldr r0, _08072324 @ =gUnknown_03001840
+	ldr r0, _08072324 @ =gFlags
 	mov r8, r0
 	ldr r1, [r0]
 	movs r0, #0x80
@@ -1325,7 +1325,7 @@ sub_8072244: @ 0x08072244
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08072324: .4byte gUnknown_03001840
+_08072324: .4byte gFlags
 _08072328: .4byte 0x04000200
 _0807232C: .4byte 0x04000208
 _08072330: .4byte 0x04000004
@@ -1399,41 +1399,3 @@ _0807238C:
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
-
-	thumb_func_start sub_80723C4
-sub_80723C4: @ 0x080723C4
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	ldr r0, _08072410 @ =gUnknown_03005B64
-	mov r8, r0
-	movs r4, #0xde
-	lsls r4, r4, #2
-	adds r0, r4, #0
-	bl EwramMalloc
-	mov r1, r8
-	str r0, [r1]
-	ldr r6, _08072414 @ =gUnknown_03005B60
-	adds r0, r4, #0
-	bl EwramMalloc
-	str r0, [r6]
-	ldr r5, _08072418 @ =gUnknown_03005B68
-	adds r0, r4, #0
-	bl EwramMalloc
-	str r0, [r5]
-	mov r1, r8
-	ldr r0, [r1]
-	bl sub_80717EC
-	ldr r0, [r6]
-	bl sub_80717EC
-	ldr r0, [r5]
-	bl sub_8071898
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08072410: .4byte gUnknown_03005B64
-_08072414: .4byte gUnknown_03005B60
-_08072418: .4byte gUnknown_03005B68
