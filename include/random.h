@@ -3,8 +3,6 @@
 
 #include "global.h"
 
-extern u32 gUnknown_03005B70;
-
 // Returns a 16-bit pseudorandom number
 u16 Random(void);
 
