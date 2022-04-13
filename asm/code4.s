@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_8085514
-sub_8085514: @ 0x08085514
+	thumb_func_start AbsMax
+AbsMax: @ 0x08085514
 	push {lr}
 	adds r2, r0, #0
 	adds r0, r1, #0
@@ -9065,7 +9065,7 @@ sub_8089C24: @ 0x08089C24
 	ldr r0, [r4, #8]
 	ldr r1, _08089D98 @ =gUnknown_03005960
 	ldr r1, [r1]
-	bl sub_8085500
+	bl SeedRng
 	ldr r2, _08089D94 @ =gUnknown_030059E0
 	adds r2, #0x24
 	mov r8, r2
@@ -9075,7 +9075,7 @@ sub_8089C24: @ 0x08089C24
 	movs r0, #0xf
 	mov sb, r0
 _08089CF6:
-	bl sub_80854DC
+	bl Random
 	adds r1, r7, #0
 	adds r1, #0x64
 	adds r3, r1, r6
@@ -9184,7 +9184,7 @@ _08089DD8:
 	muls r0, r1, r0
 	asrs r0, r0, #8
 	strh r0, [r3]
-	bl sub_80854DC
+	bl Random
 	ldr r3, _08089E50 @ =0x000003FF
 	mov ip, r3
 	adds r2, r7, #0
@@ -9384,7 +9384,7 @@ _08089F62:
 	ldr r0, [r4, #8]
 	ldr r1, _08089FF4 @ =gUnknown_03005960
 	ldr r1, [r1]
-	bl sub_8085500
+	bl SeedRng
 	adds r3, r7, #0
 	adds r3, #0xe2
 	str r3, [sp]
@@ -9410,7 +9410,7 @@ _08089F8E:
 	ands r0, r1
 	cmp r0, #0
 	beq _0808A000
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x18
 	movs r2, #0x80
 	lsls r2, r2, #0x17
@@ -9452,7 +9452,7 @@ _08089FF4: .4byte gUnknown_03005960
 _08089FF8: .4byte gUnknown_08097AA4
 _08089FFC: .4byte gUnknown_03005A04
 _0808A000:
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
 	ldr r1, _0808A094 @ =gUnknown_03005A04
@@ -9478,7 +9478,7 @@ _0808A000:
 	mov r1, r8
 	strh r0, [r1]
 _0808A034:
-	bl sub_80854DC
+	bl Random
 	ldr r3, _0808A098 @ =0x000003FF
 	adds r2, r3, #0
 	lsls r1, r7, #3

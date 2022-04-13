@@ -21825,7 +21825,7 @@ _0807CD0A:
 	bne _0807CD22
 	b _0807CE74
 _0807CD22:
-	bl sub_80854DC
+	bl Random
 	ldr r2, _0807CD6C @ =gUnknown_080E0136
 	movs r5, #7
 	adds r1, r5, #0
@@ -21840,7 +21840,7 @@ _0807CD22:
 	adds r0, r0, r1
 	adds r0, r7, r0
 	str r0, [r6]
-	bl sub_80854DC
+	bl Random
 	strb r0, [r6, #4]
 	str r4, [r6, #8]
 	movs r2, #0x8c
@@ -21849,7 +21849,7 @@ _0807CD22:
 	ldrh r0, [r0]
 	cmp r0, #0
 	beq _0807CD70
-	bl sub_80854DC
+	bl Random
 	adds r1, r5, #0
 	ands r1, r0
 	rsbs r1, r1, #0
@@ -22444,7 +22444,7 @@ _0807D1CC:
 	adds r4, r4, r5
 	lsls r4, r4, #3
 	adds r4, r6, r4
-	bl sub_80854DC
+	bl Random
 	movs r1, #7
 	ands r1, r0
 	add r1, r8
@@ -22457,10 +22457,10 @@ _0807D1CC:
 	adds r0, r0, r1
 	adds r0, r6, r0
 	str r0, [r4]
-	bl sub_80854DC
+	bl Random
 	strb r0, [r4, #4]
 	str r7, [r4, #8]
-	bl sub_80854DC
+	bl Random
 	movs r1, #0x3f
 	ands r1, r0
 	lsls r1, r1, #8

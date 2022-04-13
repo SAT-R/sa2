@@ -7750,28 +7750,28 @@ sub_80677EC: @ 0x080677EC
 	adds r0, r0, r6
 	mov sl, r0
 	bl sub_8067F84
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r7, r4
 	adds r0, r5, #0
 	adds r1, r7, #0
-	bl sub_8085500
-	bl sub_80854DC
+	bl SeedRng
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r5, r4
 	adds r0, r5, #0
 	adds r1, r7, #0
-	bl sub_8085500
+	bl SeedRng
 	bl sub_8067B90
 	lsls r0, r0, #0x10
 	cmp r0, #0
@@ -14912,28 +14912,28 @@ _0806B1B4: .4byte gCurTask
 	thumb_func_start sub_806B1B8
 sub_806B1B8: @ 0x0806B1B8
 	push {r4, r5, r6, lr}
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r6, r4
 	adds r0, r5, #0
 	adds r1, r6, #0
-	bl sub_8085500
-	bl sub_80854DC
+	bl SeedRng
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r5, r4
 	adds r0, r5, #0
 	adds r1, r6, #0
-	bl sub_8085500
+	bl SeedRng
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -21295,14 +21295,14 @@ _0806E434:
 	ldrh r4, [r4, #8]
 	strh r4, [r5, #8]
 	str r3, [sp, #0xc]
-	bl sub_80854DC
+	bl Random
 	mov r4, sl
 	ands r4, r0
-	bl sub_80854DC
+	bl Random
 	movs r6, #0x7f
 	ands r6, r0
 	adds r6, #0x40
-	bl sub_80854DC
+	bl Random
 	mov r2, sl
 	ands r2, r0
 	movs r7, #0x80

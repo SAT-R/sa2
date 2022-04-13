@@ -3330,9 +3330,9 @@ _0808D3B4:
 	str r5, [r0]
 	adds r0, #4
 	str r4, [r0]
-	bl sub_80854DC
+	bl Random
 	adds r4, r0, #0
-	bl sub_80854DC
+	bl Random
 	ldr r2, _0808D414 @ =gUnknown_02000010
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
@@ -8392,7 +8392,7 @@ sub_808FC78: @ 0x0808FC78
 	mov r8, r0
 	movs r5, #0
 	ldr r1, _0808FE70 @ =0x0000FFFF
-	bl sub_8085500
+	bl SeedRng
 	ldr r1, _0808FE74 @ =gDispCnt
 	movs r2, #0x8a
 	lsls r2, r2, #5
@@ -8826,7 +8826,7 @@ _08090026:
 	bls _08090026
 	movs r5, #0
 _0809003A:
-	bl sub_80854DC
+	bl Random
 	lsls r4, r5, #1
 	adds r4, r4, r5
 	lsls r4, r4, #2
@@ -8843,7 +8843,7 @@ _0809003A:
 	adds r0, r0, r4
 	movs r6, #0
 	str r6, [r0]
-	bl sub_80854DC
+	bl Random
 	movs r2, #0xfc
 	lsls r2, r2, #2
 	add r2, r8
@@ -10626,7 +10626,7 @@ _08090E44:
 	movs r0, #0xe6
 	lsls r0, r0, #8
 	str r0, [r5]
-	bl sub_80854DC
+	bl Random
 	mov r1, r8
 	adds r2, r1, r4
 	movs r1, #3
@@ -10638,7 +10638,7 @@ _08090E44:
 	lsls r1, r1, #1
 	adds r0, r0, r1
 	str r0, [r2]
-	bl sub_80854DC
+	bl Random
 	movs r1, #0xfa
 	lsls r1, r1, #2
 	adds r2, r7, r1
@@ -11677,7 +11677,7 @@ sub_8091684: @ 0x08091684
 	movs r5, #0
 	ldr r1, _08091A6C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_8085500
+	bl SeedRng
 	ldr r1, _08091A70 @ =gDispCnt
 	movs r2, #0x9a
 	lsls r2, r2, #5
@@ -11907,7 +11907,7 @@ _080917F6:
 	movs r5, #0
 	movs r6, #1
 _08091864:
-	bl sub_80854DC
+	bl Random
 	lsls r4, r5, #1
 	adds r4, r4, r5
 	lsls r4, r4, #2
@@ -11925,7 +11925,7 @@ _08091864:
 	movs r3, #0
 	str r3, [r0]
 	str r3, [sp, #0x48]
-	bl sub_80854DC
+	bl Random
 	movs r1, #0x80
 	lsls r1, r1, #3
 	adds r2, r7, r1
@@ -12675,7 +12675,7 @@ _08091ED4: .4byte gUnknown_03000350
 _08091ED8: .4byte gUnknown_0300036C
 _08091EDC: .4byte gUnknown_0300036E
 _08091EE0:
-	bl sub_80854DC
+	bl Random
 	movs r1, #0xf
 	ands r1, r0
 	strh r1, [r4]
@@ -12899,7 +12899,7 @@ _08092074:
 	movs r0, #0xe6
 	lsls r0, r0, #8
 	str r0, [r5]
-	bl sub_80854DC
+	bl Random
 	mov r1, r8
 	adds r2, r1, r4
 	mov r1, sb
@@ -12911,7 +12911,7 @@ _08092074:
 	lsls r1, r1, #1
 	adds r0, r0, r1
 	str r0, [r2]
-	bl sub_80854DC
+	bl Random
 	movs r1, #0xfe
 	lsls r1, r1, #2
 	adds r2, r7, r1
@@ -13162,12 +13162,12 @@ _08092280:
 	.align 2, 0
 _0809228C: .4byte 0x00000365
 _08092290:
-	bl sub_80854DC
+	bl Random
 	movs r1, #0x3f
 	ands r1, r0
 	adds r1, #0x3c
 	strb r1, [r6]
-	bl sub_80854DC
+	bl Random
 	mov r3, r8
 	lsls r2, r3, #3
 	movs r3, #0xde
@@ -13202,7 +13202,7 @@ _080922D6:
 	ldrsh r0, [r2, r3]
 	cmp r0, #0x5f
 	bgt _080922FC
-	bl sub_80854DC
+	bl Random
 	mov r1, sb
 	adds r2, r1, r4
 	lsls r0, r0, #0x10
@@ -13215,7 +13215,7 @@ _080922D6:
 	.align 2, 0
 _080922F8: .4byte gBgScrollRegs
 _080922FC:
-	bl sub_80854DC
+	bl Random
 	mov r1, sb
 	adds r2, r1, r4
 	lsls r0, r0, #0x10
@@ -14345,7 +14345,7 @@ _08092BC4:
 	bls _08092BC4
 	movs r4, #0
 _08092BFE:
-	bl sub_80854DC
+	bl Random
 	lsls r1, r4, #2
 	adds r1, r1, r4
 	lsls r1, r1, #2

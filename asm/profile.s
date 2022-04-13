@@ -8,28 +8,28 @@
 sub_8063940_CreateProfileScreen: @ 0x08063940
 	push {r4, r5, r6, lr}
 	sub sp, #4
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r6, r4
 	adds r0, r5, #0
 	adds r1, r6, #0
-	bl sub_8085500
-	bl sub_80854DC
+	bl SeedRng
+	bl Random
 	lsls r0, r0, #0x10
 	eors r4, r0
-	bl sub_80854DC
+	bl Random
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	eors r4, r0
 	eors r5, r4
 	adds r0, r5, #0
 	adds r1, r6, #0
-	bl sub_8085500
+	bl SeedRng
 	ldr r0, _080639E0 @ =sub_806B0D8
 	movs r1, #0x81
 	lsls r1, r1, #2

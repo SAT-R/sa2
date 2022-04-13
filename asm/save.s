@@ -16,9 +16,9 @@ sub_8071944: @ 0x08071944
 	ldr r0, [r5]
 	cmp r0, #0
 	bne _0807196C
-	bl sub_80854DC
+	bl Random
 	adds r4, r0, #0
-	bl sub_80854DC
+	bl Random
 	lsls r4, r4, #0x10
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
@@ -32,7 +32,7 @@ _0807196C:
 	bl memcpy
 	adds r0, r7, #0
 	adds r1, r6, #0
-	bl sub_80719D0
+	bl sub_80719D0_NewGame
 	ldr r0, _080719C4 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
@@ -71,8 +71,8 @@ _080719CA:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_80719D0
-sub_80719D0: @ 0x080719D0
+	thumb_func_start sub_80719D0_NewGame
+sub_80719D0_NewGame: @ 0x080719D0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -383,9 +383,9 @@ _08071BBC:
 	adds r1, r6, r2
 	movs r2, #0xc8
 	bl memcpy
-	bl sub_80854DC
+	bl Random
 	adds r4, r0, #0
-	bl sub_80854DC
+	bl Random
 	movs r3, #0xdb
 	lsls r3, r3, #2
 	adds r1, r5, r3
@@ -1175,7 +1175,7 @@ sub_80721A4: @ 0x080721A4
 	str r1, [r7, #4]
 	adds r0, r7, #0
 	mov r1, sb
-	bl sub_80719D0
+	bl sub_80719D0_NewGame
 	adds r0, r7, #0
 	movs r1, #0
 	bl sub_8071D24

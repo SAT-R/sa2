@@ -7,8 +7,8 @@
 // Used in save module, but not sure what B70 and B74 yet
 // refer to
 
-	thumb_func_start sub_80854DC
-sub_80854DC: @ 0x080854DC
+	thumb_func_start Random
+Random: @ 0x080854DC
 	ldr r3, _080854F4 @ =gUnknown_03005B70
 	ldr r1, _080854F8 @ =gUnknown_03005B74
 	ldr r0, [r3]
@@ -25,8 +25,8 @@ _080854F4: .4byte gUnknown_03005B70
 _080854F8: .4byte gUnknown_03005B74
 _080854FC: .4byte 0x37119371
 
-	thumb_func_start sub_8085500
-sub_8085500: @ 0x08085500
+	thumb_func_start SeedRng
+SeedRng: @ 0x08085500
 	ldr r2, _0808550C @ =gUnknown_03005B70
 	str r0, [r2]
 	ldr r0, _08085510 @ =gUnknown_03005B74

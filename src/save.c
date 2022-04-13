@@ -5,6 +5,7 @@
 #include "flags.h"
 #include "save.h"
 #include "m4a.h"
+#include "random.h"
 
 // Only used in here;
 extern struct GameData* gUnknown_03005B60;
@@ -15,9 +16,6 @@ extern s16 sub_8071944(void);
 extern s16 sub_8071E28(void);
 extern void sub_80717EC(struct GameData*);
 extern void sub_8071898(u32*);
-
-// Could be random?
-extern u16 sub_80854DC(void);
 
 static bool16 sub_80724D4(void);
 
@@ -38,7 +36,7 @@ u16 sub_8072244(u16 sectorNum) {
     REG_IE = 0;
     REG_IME = 0;
     REG_DISPSTAT = 0;
-    gFlags &= 0xfffffffb;
+    gFlags &= ~4;
     
     DmaStop(0);
     DmaStop(1);
@@ -52,7 +50,7 @@ u16 sub_8072244(u16 sectorNum) {
     REG_DISPSTAT = preDISPSTAT;
 
     m4aSoundVSyncOn();
-    gFlags = gFlags & 0xffff7fff;
+    gFlags &= ~0x8000;
 
     return result;
 }
@@ -62,7 +60,7 @@ void sub_807234C(struct GameData* data) {
     
     if (data->unk0 == 0) {
         // id?
-        data->unk0 = (sub_80854DC() << 0x10 | sub_80854DC());
+        data->unk0 = Random32();
     }
     
     data->checksum = 0;
@@ -85,7 +83,7 @@ void sub_807234C(struct GameData* data) {
     data->unk18 = 1;
 }
 
-// InitSaveData
+// SaveDataInit
 void sub_80723C4(void) {
     gUnknown_03005B64 = EwramMalloc(0x378);
     gUnknown_03005B60 = EwramMalloc(0x378);
@@ -109,7 +107,7 @@ bool16 sub_8063940_HasProfile(void) {
     for (i = 0; i < 10; i++) {
         ReadFlash(i, 0, &data[i * 2], 8);
 
-        if (data[i * 2] ==  0x4547474d) {
+        if (data[i * 2] == 0x4547474d) {
             return TRUE;
         }
     } 
