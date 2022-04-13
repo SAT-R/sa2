@@ -16,6 +16,9 @@ extern s16 sub_8071E28(void);
 extern void sub_80717EC(struct GameData*);
 extern void sub_8071898(u32*);
 
+// Could be random?
+extern u16 sub_80854DC(void);
+
 static bool16 sub_80724D4(void);
 
 u16 sub_8072244(u16 sectorNum) {
@@ -54,38 +57,20 @@ u16 sub_8072244(u16 sectorNum) {
     return result;
 }
 
-#ifndef NONMATCHING
-ASM_FUNC("asm/non_matching/sub_807234C.inc", void sub_807234C(struct GameData* data))
-#else
-void sub_807234C(struct GameData* data){
-    s32 iVar1;
-    u32 uVar2;
-    u8 i;
-    
-    u8 arrayVal;
+void sub_807234C(struct GameData* data) {
+    s16 i;
     
     if (data->unk0 == 0) {
-        iVar1 = sub_80854DC();
-        uVar2 = sub_80854DC();
-
-        iVar1 = iVar1 << 0x10;
-        data->unk0 = (u32)iVar1 | (u16)uVar2;
+        // id?
+        data->unk0 = (sub_80854DC() << 0x10 | sub_80854DC());
     }
     
     data->checksum = 0;
-    uVar2 = 0;
-    do {
-        iVar1 = (s32)(s16)uVar2;
-        
-        arrayVal = 0x1d;
-        if (iVar1 == 0) {
-            arrayVal = 0x1e;
-        }
-        data->unk7[iVar1] = arrayVal;
-        data->unkC[iVar1] = 0xff;
-        
-        uVar2 = iVar1 + 1;
-    } while ((s16)iVar1 < 5);
+    
+    for (i = 0; i < 5; i++) {
+        data->unk7[i] = i == 0 ? 0x1e : 0x1d;
+        data->unkC[i] = 0xff;
+    }
 
     data->unk13 = 0x1f;
     data->unk11 = 1;
@@ -99,7 +84,6 @@ void sub_807234C(struct GameData* data){
     data->unk17 = 1;
     data->unk18 = 1;
 }
-#endif
 
 // InitSaveData
 void sub_80723C4(void) {
