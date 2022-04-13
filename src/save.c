@@ -4,6 +4,7 @@
 #include "data.h"
 #include "flags.h"
 #include "save.h"
+#include "m4a.h"
 
 // Only used in here;
 extern struct GameData* gUnknown_03005B60;
@@ -16,6 +17,42 @@ extern void sub_80717EC(struct GameData*);
 extern void sub_8071898(u32*);
 
 static bool16 sub_80724D4(void);
+
+u16 sub_8072244(u16 sectorNum) {
+    u32 preIE;
+    u32 preIME;
+    u32 preDISPSTAT;
+    u16 result;
+    
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+    gFlags |= 0x8000;
+    
+    preIE = REG_IE;
+    preIME = REG_IME;
+    preDISPSTAT = REG_DISPSTAT;
+
+    REG_IE = 0;
+    REG_IME = 0;
+    REG_DISPSTAT = 0;
+    gFlags &= 0xfffffffb;
+    
+    DmaStop(0);
+    DmaStop(1);
+    DmaStop(2);
+    DmaStop(3);
+
+    result = EraseFlashSector(sectorNum);
+    
+    REG_IE = preIE;
+    REG_IME = preIME;
+    REG_DISPSTAT = preDISPSTAT;
+
+    m4aSoundVSyncOn();
+    gFlags = gFlags & 0xffff7fff;
+
+    return result;
+}
 
 #ifndef NONMATCHING
 ASM_FUNC("asm/non_matching/sub_807234C.inc", void sub_807234C(struct GameData* data))
