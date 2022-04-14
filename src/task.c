@@ -1,9 +1,9 @@
 #include "task.h"
-#include "data.h"
 
+#include "data.h"
+#include "flags.h"
 #include "global.h"
 #include "m4a.h"
-#include "flags.h"
 
 static void nullsub_8002A30(void);
 static void nullsub_8002A34(void);
@@ -13,20 +13,15 @@ static struct Task* TaskGetNextSlot(void);
 
 u32 TaskInit(void) {
     struct Task *r2, *r4;
-    struct Task **i, **r1;
+    s32 i;
     gCurTask = NULL;
     gNextTask = NULL;
     gLastTaskNum = 0;
     DmaFill32(3, 0, gUnknown_030009F0, 0x200);
-    r1 = gTaskList;
-    r2 = gUnknown_030009F0 + 0x7f;
-    i = r1 + 0x7f;
 
-    do {
-        *i = r2;
-        r2--;
-        i--;
-    } while ((intptr_t)i >= (intptr_t)r1);
+    for (i = 0; i < 0x80; ++i) {
+        gTaskList[i] = &gUnknown_030009F0[i];
+    }
 
     r4 = TaskGetNextSlot();
     if (!r4) {
@@ -151,8 +146,7 @@ void TaskDestroy(struct Task* task) {
 
 void TaskExecute(void) {
     gCurTask = gTaskList[0];
-    if (!(gFlags & 0x800) &&
-        (gTaskList[0] != (struct Task*)IWRAM_START)) {
+    if (!(gFlags & 0x800) && (gTaskList[0] != (struct Task*)IWRAM_START)) {
         while (gCurTask != (struct Task*)IWRAM_START) {
             gNextTask = (struct Task*)(IWRAM_START + gCurTask->next);
 
