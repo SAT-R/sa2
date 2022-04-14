@@ -14,6 +14,7 @@
         "malloc_ewram.h": "c",
         "data.h": "c",
         "sprite.h": "c",
-        "random.h": "c"
+        "random.h": "c",
+        "save.h": "c"
     }
 }

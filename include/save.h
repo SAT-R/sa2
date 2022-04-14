@@ -29,4 +29,7 @@ struct GameData {
     u32 checksum;
 };
 
+// Some sort of save data?
+extern struct GameData* gUnknown_03005B64;
+
 #endif

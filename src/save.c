@@ -19,7 +19,7 @@ extern void sub_8071898(u32*);
 
 static bool16 sub_80724D4(void);
 
-u16 sub_8072244(u16 sectorNum) {
+u16 sub_8071D24_EraseSaveSector(u16 sectorNum) {
     u32 preIE;
     u32 preIME;
     u32 preDISPSTAT;

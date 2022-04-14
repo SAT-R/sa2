@@ -111,7 +111,4 @@ extern u8 gUnknown_0300287C;
 // Pointer to gUnknown_080D5CE4
 extern union Unk_03002E60 *gUnknown_03002260;
 
-// Some sort of save data?
-extern struct GameData* gUnknown_03005B64;
-
 #endif
