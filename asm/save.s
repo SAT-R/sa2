@@ -5,8 +5,8 @@
 .arm
 
 
-	thumb_func_start sub_80717EC_SaveGameDataInit
-sub_80717EC_SaveGameDataInit: @ 0x080717EC
+	thumb_func_start sub_80717EC_ResetSave
+sub_80717EC_ResetSave: @ 0x080717EC
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r2, #0xde
@@ -876,7 +876,7 @@ _08071E7C:
 	asrs r4, r0, #0x10
 	adds r0, r6, #0
 	adds r1, r4, #0
-	bl sub_8072538
+	bl sub_8072538_ReadSaveAndVerify
 	lsls r0, r0, #0x10
 	lsrs r1, r0, #0x10
 	mov r8, r1
