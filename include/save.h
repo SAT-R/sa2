@@ -8,7 +8,9 @@ bool16 sub_8063940_HasProfile(void);
 struct GameData {
     u32 unk0;
 
-    u8 filler4[3];
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
 
     u8 unk7[5];
     u8 unkC[5];
@@ -25,7 +27,8 @@ struct GameData {
     u8 unk1A;
     u8 unk1B;
 
-    u8 filler[856];
+    u8 unk1C[21];
+    u8 filler[835];
     u32 checksum;
 };
 

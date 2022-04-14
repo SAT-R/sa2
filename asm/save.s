@@ -5,8 +5,8 @@
 .arm
 
 
-	thumb_func_start sub_80717EC
-sub_80717EC: @ 0x080717EC
+	thumb_func_start sub_80717EC_SaveGameDataInit
+sub_80717EC_SaveGameDataInit: @ 0x080717EC
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r2, #0xde
@@ -209,7 +209,7 @@ _0807196C:
 	bl memcpy
 	adds r0, r7, #0
 	adds r1, r6, #0
-	bl sub_80719D0_NewGame
+	bl sub_80719D0_PrepareSave
 	ldr r0, _080719C4 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
@@ -248,8 +248,8 @@ _080719CA:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_80719D0_NewGame
-sub_80719D0_NewGame: @ 0x080719D0
+	thumb_func_start sub_80719D0_PrepareSave
+sub_80719D0_PrepareSave: @ 0x080719D0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -888,7 +888,7 @@ _08071E7C:
 	adds r0, r0, r1
 	lsrs r5, r0, #0x10
 	adds r0, r4, #0
-	bl sub_8071D24_EraseSaveSector
+	bl sub_8072244_EraseSaveSector
 	cmp r4, #0
 	bne _08071EAA
 	movs r1, #9
@@ -1312,82 +1312,3 @@ _08072138:
 	pop {r1}
 	bx r1
 	.align 2, 0
-
-	thumb_func_start sub_80721A4
-sub_80721A4: @ 0x080721A4
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	ldr r0, _08072208 @ =gUnknown_03005B64
-	ldr r4, [r0]
-	ldr r0, _0807220C @ =gUnknown_03005B60
-	ldr r0, [r0]
-	mov sb, r0
-	ldr r0, _08072210 @ =gUnknown_03005B68
-	ldr r7, [r0]
-	ldrb r0, [r4, #6]
-	mov r8, r0
-	movs r0, #0xdd
-	lsls r0, r0, #2
-	adds r5, r4, r0
-	ldr r6, [r5]
-	adds r0, r4, #0
-	bl sub_80717EC
-	mov r0, r8
-	strb r0, [r4, #6]
-	str r6, [r5]
-	movs r2, #0xde
-	lsls r2, r2, #2
-	mov r0, sb
-	adds r1, r4, #0
-	bl memcpy
-	ldr r0, _08072214 @ =gFlags
-	ldr r1, [r0]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	ands r1, r0
-	cmp r1, #0
-	bne _08072204
-	str r1, [r7, #4]
-	adds r0, r7, #0
-	mov r1, sb
-	bl sub_80719D0_NewGame
-	adds r0, r7, #0
-	movs r1, #0
-	bl sub_8071D24_WriteSave
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	beq _08072218
-_08072204:
-	movs r0, #0
-	b _08072238
-	.align 2, 0
-_08072208: .4byte gUnknown_03005B64
-_0807220C: .4byte gUnknown_03005B60
-_08072210: .4byte gUnknown_03005B68
-_08072214: .4byte gFlags
-_08072218:
-	movs r1, #1
-_0807221A:
-	lsls r0, r1, #0x10
-	asrs r4, r0, #0x10
-	adds r0, r4, #0
-	bl sub_8071D24_EraseSaveSector
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	bne _08072204
-	adds r0, r4, #1
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #9
-	ble _0807221A
-	movs r0, #1
-_08072238:
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1

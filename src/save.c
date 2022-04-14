@@ -9,17 +9,66 @@
 
 // Only used in here;
 extern struct GameData* gUnknown_03005B60;
-extern u32* gUnknown_03005B68;
+extern struct GameData* gUnknown_03005B68;
 
-extern s16 sub_80721A4(void);
 extern s16 sub_8071944(void);
 extern s16 sub_8071E28(void);
-extern void sub_80717EC(struct GameData*);
-extern void sub_8071898(u32*);
+extern void sub_80717EC_SaveGameDataInit(struct GameData*);
+extern void sub_80719D0_PrepareSave(struct GameData*, struct GameData*);
+extern u32 sub_8071D24_WriteSave(struct GameData* data, s16 sectorNum);
+extern void sub_8071898(struct GameData*);
 
+
+// todo make static
+u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4(void);
 
-u16 sub_8071D24_EraseSaveSector(u16 sectorNum) {
+s16 sub_80721A4(void) {
+    s16 i;
+    u16 flashError;
+    
+    struct GameData *gd4 = gUnknown_03005B64;
+    struct GameData *gd0 = gUnknown_03005B60;
+    struct GameData *gd8 = gUnknown_03005B68;
+    
+    u8 prevUnk6 = gd4->unk6;
+    u32 prevChecksum = gd4->checksum;
+
+    // Initialise the data structure
+    sub_80717EC_SaveGameDataInit(gd4);
+
+    gd4->unk6 = prevUnk6;
+    gd4->checksum = prevChecksum;
+
+    memcpy(gd0, gd4, 0x378);
+
+    if ((gFlags & FLAGS_NO_GAME_FLASH)) {
+        return 0;
+    }
+
+    // TODO: work out what this is achieving
+    *(u32 *)&gd8->unk4 = 0;
+
+    // Most likely write gd0 to gd8;
+    sub_80719D0_PrepareSave(gd8, gd0);
+
+    flashError = sub_8071D24_WriteSave(gd8, 0);
+    if (flashError) {
+        return 0;
+    }
+
+    // Erase flash sectors 1 -> 9
+    for (i = 1; i < 10; i++) {
+        flashError = sub_8072244_EraseSaveSector(i);
+        if (flashError) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+u16 sub_8072244_EraseSaveSector(s16 sectorNum) {
     u32 preIE;
     u32 preIME;
     u32 preDISPSTAT;
@@ -89,8 +138,8 @@ void sub_80723C4(void) {
     gUnknown_03005B60 = EwramMalloc(0x378);
     gUnknown_03005B68 = EwramMalloc(0x378);
 
-    sub_80717EC(gUnknown_03005B64);
-    sub_80717EC(gUnknown_03005B60);
+    sub_80717EC_SaveGameDataInit(gUnknown_03005B64);
+    sub_80717EC_SaveGameDataInit(gUnknown_03005B60);
     sub_8071898(gUnknown_03005B68);
 }
 
@@ -115,7 +164,7 @@ bool16 sub_8063940_HasProfile(void) {
     return FALSE;
 }
 
-s32 sub_8072474(void) {
+s16 sub_8072474(void) {
     return sub_8071E28();
 }
 
@@ -128,10 +177,8 @@ u32 sub_8072484(void) {
 }
 
 
-s32 sub_80724B0(void) {
-    s16 result = sub_80721A4();
-
-    return result;
+s16 sub_80724B0(void) {
+    return sub_80721A4();
 }
 
 // Initialise a completed game state
