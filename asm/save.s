@@ -5,8 +5,8 @@
 .arm
 
 
-	thumb_func_start sub_80717EC_ResetSave
-sub_80717EC_ResetSave: @ 0x080717EC
+	thumb_func_start sub_80717EC_InitGameData
+sub_80717EC_InitGameData: @ 0x080717EC
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r2, #0xde
@@ -831,8 +831,8 @@ _08071E1C: .4byte 0x00007FFF
 _08071E20: .4byte 0x040000D4
 _08071E24: .4byte 0xFFFF7FFF
 
-	thumb_func_start sub_8071E28
-sub_8071E28: @ 0x08071E28
+	thumb_func_start sub_8071E28_ReadSaveToGameData
+sub_8071E28_ReadSaveToGameData: @ 0x08071E28
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -876,7 +876,7 @@ _08071E7C:
 	asrs r4, r0, #0x10
 	adds r0, r6, #0
 	adds r1, r4, #0
-	bl sub_8072538_ReadSaveAndVerify
+	bl sub_8072538_ReadSaveAndVerifyChecksum
 	lsls r0, r0, #0x10
 	lsrs r1, r0, #0x10
 	mov r8, r1
@@ -905,7 +905,7 @@ _08071EB2:
 _08071EB8:
 	adds r0, r7, #0
 	adds r1, r6, #0
-	bl sub_8071F8C
+	bl sub_8071F8C_UnpackSave
 	movs r2, #0xde
 	lsls r2, r2, #2
 	mov r0, sb
@@ -1016,299 +1016,3 @@ _08071F6E:
 	.align 2, 0
 _08071F84: .4byte 0x4547474D
 _08071F88: .4byte 0x0000FFFF
-
-	thumb_func_start sub_8071F8C
-sub_8071F8C: @ 0x08071F8C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	adds r4, r0, #0
-	adds r5, r1, #0
-	movs r2, #0xde
-	lsls r2, r2, #2
-	movs r1, #0
-	bl memset
-	adds r1, r4, #0
-	adds r1, #0x20
-	adds r0, r5, #0
-	adds r0, #0xc
-	ldm r0!, {r2, r3, r6}
-	stm r1!, {r2, r3, r6}
-	ldr r0, [r5, #8]
-	str r0, [r4]
-	ldrb r0, [r5, #0x18]
-	strb r0, [r4, #6]
-	ldrb r1, [r5, #0x19]
-	movs r2, #1
-	adds r0, r2, #0
-	ands r0, r1
-	cmp r0, #0
-	beq _08071FC8
-	strb r2, [r4, #4]
-_08071FC8:
-	ldrb r1, [r5, #0x19]
-	movs r0, #2
-	mov r8, r0
-	ands r0, r1
-	cmp r0, #0
-	beq _08071FD6
-	strb r2, [r4, #5]
-_08071FD6:
-	ldrb r3, [r5, #0x1a]
-	adds r0, r2, #0
-	ands r0, r3
-	adds r1, r3, #0
-	cmp r0, #0
-	beq _08071FE4
-	strb r2, [r4, #0x19]
-_08071FE4:
-	movs r0, #6
-	ands r0, r1
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	beq _08071FF2
-	lsrs r0, r0, #0x19
-	strb r0, [r4, #0x1a]
-_08071FF2:
-	movs r7, #8
-	adds r0, r7, #0
-	ands r0, r1
-	cmp r0, #0
-	beq _08071FFE
-	strb r2, [r4, #0x1b]
-_08071FFE:
-	movs r0, #0x10
-	ands r0, r1
-	cmp r0, #0
-	beq _08072008
-	strb r2, [r4, #0x15]
-_08072008:
-	movs r6, #0x20
-	adds r0, r6, #0
-	ands r0, r1
-	cmp r0, #0
-	beq _08072014
-	strb r2, [r4, #0x16]
-_08072014:
-	movs r0, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0807201E
-	strb r2, [r4, #0x17]
-_0807201E:
-	movs r0, #0x80
-	ands r0, r3
-	cmp r0, #0
-	beq _08072028
-	strb r2, [r4, #0x18]
-_08072028:
-	movs r3, #1
-	strb r3, [r4, #0x13]
-	ldrb r1, [r5, #0x1b]
-	adds r0, r3, #0
-	ands r0, r1
-	adds r2, r1, #0
-	cmp r0, #0
-	beq _0807203C
-	movs r0, #3
-	strb r0, [r4, #0x13]
-_0807203C:
-	mov r0, r8
-	ands r0, r2
-	cmp r0, #0
-	beq _0807204C
-	ldrb r0, [r4, #0x13]
-	movs r1, #4
-	orrs r0, r1
-	strb r0, [r4, #0x13]
-_0807204C:
-	movs r0, #4
-	ands r0, r2
-	cmp r0, #0
-	beq _0807205C
-	ldrb r0, [r4, #0x13]
-	movs r1, #8
-	orrs r0, r1
-	strb r0, [r4, #0x13]
-_0807205C:
-	adds r0, r7, #0
-	ands r0, r2
-	cmp r0, #0
-	beq _0807206C
-	ldrb r0, [r4, #0x13]
-	movs r1, #0x10
-	orrs r0, r1
-	strb r0, [r4, #0x13]
-_0807206C:
-	adds r0, r6, #0
-	ands r0, r2
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #0
-	beq _0807207C
-	strb r3, [r4, #0x11]
-	b _0807207E
-_0807207C:
-	strb r0, [r4, #0x11]
-_0807207E:
-	movs r0, #0x10
-	ands r0, r2
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #0
-	beq _0807208C
-	movs r0, #1
-_0807208C:
-	strb r0, [r4, #0x12]
-	movs r0, #0x40
-	ands r0, r2
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #0
-	beq _0807209C
-	movs r0, #1
-_0807209C:
-	strb r0, [r4, #0x14]
-	ldrb r0, [r5, #0x1c]
-	cmp r0, #2
-	beq _080720B6
-	cmp r0, #2
-	bgt _080720AE
-	cmp r0, #1
-	beq _080720B6
-	b _080720B8
-_080720AE:
-	cmp r0, #4
-	bne _080720B8
-	movs r0, #0x80
-	lsls r0, r0, #1
-_080720B6:
-	strh r0, [r4, #0x2c]
-_080720B8:
-	ldrb r0, [r5, #0x1d]
-	cmp r0, #2
-	beq _080720D0
-	cmp r0, #2
-	bgt _080720C8
-	cmp r0, #1
-	beq _080720D0
-	b _080720D2
-_080720C8:
-	cmp r0, #4
-	bne _080720D2
-	movs r0, #0x80
-	lsls r0, r0, #1
-_080720D0:
-	strh r0, [r4, #0x2e]
-_080720D2:
-	ldrb r0, [r5, #0x1e]
-	cmp r0, #2
-	beq _080720EA
-	cmp r0, #2
-	bgt _080720E2
-	cmp r0, #1
-	beq _080720EA
-	b _080720EC
-_080720E2:
-	cmp r0, #4
-	bne _080720EC
-	movs r0, #0x80
-	lsls r0, r0, #1
-_080720EA:
-	strh r0, [r4, #0x30]
-_080720EC:
-	movs r1, #0
-	adds r7, r4, #0
-	adds r7, #0xc
-	movs r2, #0x24
-	adds r2, r2, r5
-	mov ip, r2
-	movs r3, #0x29
-	adds r3, r3, r5
-	mov r8, r3
-	movs r6, #0x2a
-	adds r6, r6, r5
-	mov sb, r6
-	movs r0, #0x2b
-	adds r0, r0, r5
-	mov sl, r0
-	adds r2, r4, #0
-	adds r2, #0x34
-	str r2, [sp, #4]
-	adds r3, r5, #0
-	adds r3, #0x2c
-	str r3, [sp]
-	adds r6, r4, #7
-	subs r3, #0xd
-_0807211A:
-	lsls r0, r1, #0x10
-	asrs r0, r0, #0x10
-	adds r2, r6, r0
-	adds r1, r3, r0
-	ldrb r1, [r1]
-	strb r1, [r2]
-	adds r0, #1
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #4
-	ble _0807211A
-	movs r1, #0
-	adds r6, r7, #0
-	mov r3, ip
-_08072138:
-	lsls r0, r1, #0x10
-	asrs r0, r0, #0x10
-	adds r2, r6, r0
-	adds r1, r3, r0
-	ldrb r1, [r1]
-	strb r1, [r2]
-	adds r0, #1
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #4
-	ble _08072138
-	mov r6, r8
-	ldrb r0, [r6]
-	strb r0, [r4, #0x1c]
-	mov r1, sb
-	ldrb r0, [r1]
-	strb r0, [r4, #0x1d]
-	mov r2, sl
-	ldrb r0, [r2]
-	strb r0, [r4, #0x1e]
-	movs r2, #0x9e
-	lsls r2, r2, #2
-	ldr r0, [sp, #4]
-	ldr r1, [sp]
-	bl memcpy
-	movs r3, #0xab
-	lsls r3, r3, #2
-	adds r0, r4, r3
-	movs r6, #0xa9
-	lsls r6, r6, #2
-	adds r1, r5, r6
-	movs r2, #0xc8
-	bl memcpy
-	movs r0, #0xdd
-	lsls r0, r0, #2
-	adds r1, r4, r0
-	movs r2, #0xdc
-	lsls r2, r2, #2
-	adds r0, r5, r2
-	ldr r0, [r0]
-	str r0, [r1]
-	movs r0, #1
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0

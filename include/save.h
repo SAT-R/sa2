@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-bool16 sub_8063940_HasProfile(void);
+bool16 sub_8063940_SaveExists(void);
 
 struct GameData {
     u32 unk0;
@@ -14,7 +14,7 @@ struct GameData {
 
     u8 unk7[5];
     u8 unkC[5];
-    
+
     u8 unk11;
     u8 unk12;
     u8 unk13;
@@ -26,9 +26,54 @@ struct GameData {
     u8 unk19;
     u8 unk1A;
     u8 unk1B;
+    u8 unk1C;
+    u8 unk1D;
+    u8 unk1E;
+    u8 unk1F;
 
-    u8 unk1C[21];
-    u8 filler[835];
+    u32 unk20[3];
+
+    u16 unk2C;
+    u16 unk2E;
+    u16 unk30;
+    u16 unk32;
+
+    u8 unk34[0x278];
+    u8 unk2AC[200];
+
+    u32 unk374;
+};
+
+struct SaveData {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+
+    u32 unkC[3];
+
+    u8 unk18;
+    u8 unk19;
+
+    u8 unk1A;
+    u8 unk1B;
+    u8 unk1C;
+    u8 unk1D;
+    u8 unk1E;
+
+    u8 unk1F[5];
+    u8 unk24[5];
+
+    u8 unk29;
+    u8 unk2A;
+    u8 unk2B;
+
+    // Probbaly some structs
+    u8 unk2C[0x278];
+    u8 unk2A4[200];
+
+    u8 filler36C[4];
+
+    u32 unk370;
     u32 checksum;
 };
 

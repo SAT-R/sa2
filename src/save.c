@@ -9,19 +9,142 @@
 
 // Only used in here;
 extern struct GameData* gUnknown_03005B60;
-extern struct GameData* gUnknown_03005B68;
+extern struct SaveData* gUnknown_03005B68;
 
 extern s16 sub_8071944(void);
-extern s16 sub_8071E28(void);
-extern void sub_80717EC_ResetSave(struct GameData*);
-extern void sub_80719D0_PrepareSave(struct GameData*, struct GameData*);
-extern u32 sub_8071D24_WriteSave(struct GameData* data, s16 sectorNum);
-extern void sub_8071898(struct GameData*);
+extern s16 sub_8071E28_ReadSaveToGameData(void);
+extern void sub_80717EC_InitGameData(struct GameData*);
+extern void sub_80719D0_PrepareSave(struct SaveData*, struct GameData*);
+extern u32 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum);
+extern void sub_8071898(struct SaveData*);
 
 
 // todo make static
 u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4(void);
+
+bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save) {
+    s16 i;
+
+    memset(gameState, 0, sizeof(struct GameData));
+    memcpy(gameState->unk20, &save->unkC, 12);
+    
+    gameState->unk0 = save->unk8;
+    gameState->unk6 = save->unk18;
+
+    if ((save->unk19 & 1)) {
+        gameState->unk4 = 1;
+    }
+
+    if ((save->unk19 & 2)) {
+        gameState->unk5 = 1;
+    }
+
+    if ((save->unk1A & 1)) {
+        gameState->unk19 = 1;
+    }
+    if ((save->unk1A & 6)) {
+        gameState->unk1A = (save->unk1A & 6) >> 1;
+    }
+    if ((save->unk1A & 8)) {
+        gameState->unk1B = 1;
+    }
+    if ((save->unk1A & 0x10)) {
+        gameState->unk15 = 1;
+    }
+    if ((save->unk1A & 0x20)) {
+        gameState->unk16 = 1;
+    }
+    if ((save->unk1A & 0x40)) {
+        gameState->unk17 = 1;
+    }
+    if ((save->unk1A & 0x80)) {
+        gameState->unk18 = 1;
+    }
+
+    gameState->unk13 = 1;
+
+    if ((save->unk1B & 1)) {
+        gameState->unk13 = 3;
+    }
+    if ((save->unk1B & 2)) {
+        gameState->unk13 |= 4;
+    }
+    if ((save->unk1B & 4)) {
+        gameState->unk13 |= 8;
+    }
+    if ((save->unk1B & 8)) {
+        gameState->unk13 |= 0x10;
+    }
+
+    if ((save->unk1B & 0x20)) {
+        gameState->unk11 = 1;
+    } else {
+        gameState->unk11 = 0;
+    }
+
+    if ((save->unk1B & 0x10)) {
+        gameState->unk12 = 1;
+    } else {
+        gameState->unk12 = 0;
+    }
+
+    if ((save->unk1B & 0x40)) {
+        gameState->unk14 = 1;
+    } else {
+        gameState->unk14 = 0;
+    }
+
+     switch (save->unk1C) {
+        case 4:
+            gameState->unk2C = 0x100;
+            break;
+        case 2:
+            gameState->unk2C = 2;
+            break;
+        case 1:
+            gameState->unk2C = 1;
+            break;
+    }
+    switch (save->unk1D) {
+        case 4:
+            gameState->unk2E = 0x100;
+            break;
+        case 2:
+            gameState->unk2E = 2;
+            break;
+        case 1:
+            gameState->unk2E = 1;
+            break;
+    }
+    switch (save->unk1E) {
+        case 4:
+            gameState->unk30 = 0x100;
+            break;
+        case 2:
+            gameState->unk30 = 2;
+            break;
+        case 1:
+            gameState->unk30 = 1;
+            break;
+    }
+    
+    for (i = 0; i < 5; i++) {
+        gameState->unk7[i] = save->unk1F[i];
+    }
+
+    for (i = 0; i < 5; i++) {
+        gameState->unkC[i] = save->unk24[i];
+    }
+
+    gameState->unk1C = save->unk29;
+    gameState->unk1D = save->unk2A;
+    gameState->unk1E = save->unk2B;
+    memcpy(gameState->unk34, save->unk2C, 0x278);
+    memcpy(gameState->unk2AC, save->unk2A4, 200);
+    gameState->unk374 = save->unk370;
+    return TRUE;
+}
 
 // Resets and writes save
 s16 sub_80721A4(void) {
@@ -30,16 +153,16 @@ s16 sub_80721A4(void) {
     
     struct GameData *gd4 = gUnknown_03005B64;
     struct GameData *gd0 = gUnknown_03005B60;
-    struct GameData *gd8 = gUnknown_03005B68;
+    struct SaveData *gd8 = gUnknown_03005B68;
     
     u8 prevUnk6 = gd4->unk6;
-    u32 prevChecksum = gd4->checksum;
+    u32 prevUnk374 = gd4->unk374;
 
     // Initialise the data structure
-    sub_80717EC_ResetSave(gd4);
+    sub_80717EC_InitGameData(gd4);
 
     gd4->unk6 = prevUnk6;
-    gd4->checksum = prevChecksum;
+    gd4->unk374 = prevUnk374;
 
     memcpy(gd0, gd4, 0x378);
 
@@ -47,8 +170,7 @@ s16 sub_80721A4(void) {
         return 0;
     }
 
-    // TODO: work out what this is achieving
-    *(u32 *)&gd8->unk4 = 0;
+    gd8->unk4 = 0;
 
     // Most likely write gd0 to gd8;
     sub_80719D0_PrepareSave(gd8, gd0);
@@ -113,7 +235,7 @@ void sub_807234C(struct GameData* data) {
         data->unk0 = Random32();
     }
     
-    data->checksum = 0;
+    data->unk374 = 0;
     
     for (i = 0; i < 5; i++) {
         data->unk7[i] = i == 0 ? 0x1e : 0x1d;
@@ -139,14 +261,14 @@ void sub_80723C4(void) {
     gUnknown_03005B60 = EwramMalloc(0x378);
     gUnknown_03005B68 = EwramMalloc(0x378);
 
-    sub_80717EC_ResetSave(gUnknown_03005B64);
-    sub_80717EC_ResetSave(gUnknown_03005B60);
+    sub_80717EC_InitGameData(gUnknown_03005B64);
+    sub_80717EC_InitGameData(gUnknown_03005B60);
     sub_8071898(gUnknown_03005B68);
 }
 
 // Check if the first 10 sectors of flash
 // data contain the bytes 0x4547474d
-bool16 sub_8063940_HasProfile(void) {
+bool16 sub_8063940_SaveExists(void) {
     u32 data[32];
     s16 i;
 
@@ -165,8 +287,8 @@ bool16 sub_8063940_HasProfile(void) {
     return FALSE;
 }
 
-s16 sub_8072474(void) {
-    return sub_8071E28();
+s16 sub_8072474_LoadSave(void) {
+    return sub_8071E28_ReadSaveToGameData();
 }
 
 u32 sub_8072484(void) {
@@ -211,7 +333,7 @@ UNUSED u32 CalculateChecksum(void* data) {
     u32 i;
     u32 sum = 0; 
 
-    for (i = 0; i < offsetof(struct GameData, checksum); i += sizeof(u32)) {
+    for (i = 0; i < offsetof(struct SaveData, checksum); i += sizeof(u32)) {
         sum += *(u32*)(data + i);
     }
 
@@ -220,17 +342,17 @@ UNUSED u32 CalculateChecksum(void* data) {
 
 // Read flash data at given sector into data
 // and verify integrity
-bool32 sub_8072538_ReadSaveAndVerify(void *data, u16 sectorNum) {
+bool32 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, u16 sectorNum) {
     u32 i;
     u32 sum;
     u32* expected;
     
-    ReadFlash(sectorNum, 0, data, sizeof(struct GameData));
-    expected = &((struct GameData*)data)->checksum;
+    ReadFlash(sectorNum, 0, saveBuf, sizeof(struct SaveData));
+    expected = &((struct SaveData*)saveBuf)->checksum;
   
     sum = 0;
-    for (i = 0; i < offsetof(struct GameData, checksum); i += sizeof(u32)) {
-        sum += *(u32*)(data + i);
+    for (i = 0; i < offsetof(struct SaveData, checksum); i += sizeof(u32)) {
+        sum += *(u32*)(saveBuf + i);
     }
 
     if (*expected != sum) {
