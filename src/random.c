@@ -11,19 +11,14 @@ extern u16 gRngValue[];
 #define RAND_CONST 0x37119371;
 
 u16 Random(void) {
-    u32* pPrev;
-    u32* pCurrent;
-    u32 prev;
-    
     u32 new;
-
     // These need to be loaded
     // and referenced as pointers to
     // match asm
-    pPrev = &gPrevRngValue;
-    pCurrent = (u32*)&gRngValue;
+    u32* pPrev = &gPrevRngValue;
+    u32* pCurrent = (u32*)&gRngValue;
 
-    prev = *pPrev;
+    u32 prev = *pPrev;
     gPrevRngValue = *pCurrent;
     
     // This calculation has to be done
