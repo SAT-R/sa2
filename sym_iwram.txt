@@ -673,8 +673,7 @@
 . = 0x00005B64; gUnknown_03005B64 = .;
 . = 0x00005B68; gUnknown_03005B68 = .;
 . = 0x00005B6C; gUnknown_03005B6C = .;
-. = 0x00005B70; gPrevRngValue = .;
-. = 0x00005B74; gRngValue = .;
+. = 0x00005B70; build/sa2/src/random.o(.bss);
 . = 0x00005B7C; gUnknown_03005B7C = .;
 . = 0x00005B80; gUnknown_03005B80 = .;
 . = 0x00005B90; gFlashTimeoutFlag = .;
