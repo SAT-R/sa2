@@ -13,12 +13,12 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void sub_80723C4();
+void sub_80723C4_SaveInit();
 void sub_8072474_LoadSave();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
-void sub_80724C0();
+void sub_80724C0_LoadCompletedGame();
 void sub_8081C0C();
 
 static void sub_801A6C8(void);
@@ -61,7 +61,7 @@ void sub_801A51C(void) {
         gUnknown_030054D4[i] = 0;
     }
 
-    sub_80723C4();
+    sub_80723C4_SaveInit();
 
     if (sub_8063940_SaveExists()) {
         // Load save data?
@@ -76,7 +76,7 @@ void sub_801A51C(void) {
     
     if (gFlags & FLAGS_NO_GAME_FLASH) {
         sub_808B3FC_CreateIntro();
-        sub_80724C0();
+        sub_80724C0_LoadCompletedGame();
         return;
     }
     

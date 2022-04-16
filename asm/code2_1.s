@@ -7057,7 +7057,7 @@ _08067260:
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl sub_8063C7C
-	bl sub_80724B0
+	bl sub_80724B0_NewSave
 	ldr r0, [r4]
 	ldr r1, _08067290 @ =0x00000784
 	adds r0, r0, r1
@@ -8630,7 +8630,7 @@ _08067EF8: .4byte 0x00000163
 _08067EFC:
 	cmp r2, #2
 	bne _08067F04
-	bl sub_80724B0
+	bl sub_80724B0_NewSave
 _08067F04:
 	movs r1, #0
 	ldr r5, _08067F58 @ =gUnknown_03005B64

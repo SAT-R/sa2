@@ -45,8 +45,8 @@ struct GameData {
 };
 
 struct SaveData {
-    u32 unk0;
-    u32 unk4;
+    u32 securityKey;
+    u32 version;
     u32 unk8;
 
     u32 unkC[3];

@@ -12,16 +12,69 @@ extern struct GameData* gUnknown_03005B60;
 extern struct SaveData* gUnknown_03005B68;
 
 extern s16 sub_8071944(void);
-extern s16 sub_8071E28_ReadSaveToGameData(void);
-extern void sub_80717EC_InitGameData(struct GameData*);
+extern void sub_80717EC_InitNewGameData(struct GameData*);
 extern void sub_80719D0_PackSave(struct SaveData*, struct GameData*);
 extern u32 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum);
 extern void sub_8071898(struct SaveData*);
 
 
 // todo make static
+s16 sub_8071EE0(void);
+bool16 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, s16 sectorNum);
+bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save);
 u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4(void);
+
+bool16 sub_8071E28_ReadSaveToGameData(void) {
+    s16 sectorNum, i, successfulRead;
+    
+    struct GameData *lastSavedData, *gameData;
+    struct SaveData *saveData;
+
+    gameData = gUnknown_03005B64;
+    lastSavedData = gUnknown_03005B60;
+    saveData = gUnknown_03005B68;
+
+    i = 0;
+
+    // Keep a copy of the last game state
+    memcpy(lastSavedData, gameData, sizeof(struct GameData));
+
+    // Only read if we actually have game flash
+    if (!(gFlags & FLAGS_NO_GAME_FLASH)) {
+        // Get the last sector num where there is save data
+        sectorNum = sub_8071EE0();
+        do {
+            successfulRead = sub_8072538_ReadSaveAndVerifyChecksum(saveData, sectorNum);
+            if (!successfulRead) {
+                i++;
+                sub_8072244_EraseSaveSector(sectorNum);
+                // If we reach the first sector
+                // loop back around so we get a 
+                // chence to try them all
+                if (sectorNum == 0) {
+                    sectorNum = 9;
+                } else {
+                    sectorNum--;
+                };
+            } else {
+                // We had a success reading the data
+                // to we can continue with the copied save data
+                break;
+            } 
+        } while (i < 10);
+
+        if (successfulRead) {
+            sub_8071F8C_UnpackSave(gameData, saveData);
+            memcpy(lastSavedData, gameData, sizeof(struct GameData));
+            return TRUE;
+        }
+    }
+   
+    return FALSE;   
+}
+
+ASM_FUNC("asm/non_matching/sub_8071EE0.inc", s16 sub_8071EE0(void));
 
 bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save) {
     s16 i;
@@ -147,7 +200,7 @@ bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save)
 }
 
 // Resets and writes save
-s16 sub_80721A4(void) {
+s16 sub_80721A4_CreateAndWriteNewSave(void) {
     s16 i;
     u16 flashError;
     
@@ -159,7 +212,7 @@ s16 sub_80721A4(void) {
     u32 prevUnk374 = gd4->unk374;
 
     // Initialise the data structure
-    sub_80717EC_InitGameData(gd4);
+    sub_80717EC_InitNewGameData(gd4);
 
     gd4->unk6 = prevUnk6;
     gd4->unk374 = prevUnk374;
@@ -170,7 +223,7 @@ s16 sub_80721A4(void) {
         return 0;
     }
 
-    gd8->unk4 = 0;
+    gd8->version = 0;
 
     // Most likely write gd0 to gd8;
     sub_80719D0_PackSave(gd8, gd0);
@@ -256,13 +309,13 @@ void sub_807234C(struct GameData* data) {
 }
 
 // SaveDataInit
-void sub_80723C4(void) {
+void sub_80723C4_SaveInit(void) {
     gUnknown_03005B64 = EwramMalloc(0x378);
     gUnknown_03005B60 = EwramMalloc(0x378);
     gUnknown_03005B68 = EwramMalloc(0x378);
 
-    sub_80717EC_InitGameData(gUnknown_03005B64);
-    sub_80717EC_InitGameData(gUnknown_03005B60);
+    sub_80717EC_InitNewGameData(gUnknown_03005B64);
+    sub_80717EC_InitNewGameData(gUnknown_03005B60);
     sub_8071898(gUnknown_03005B68);
 }
 
@@ -300,12 +353,12 @@ u32 sub_8072484(void) {
 }
 
 
-s16 sub_80724B0(void) {
-    return sub_80721A4();
+s16 sub_80724B0_NewSave(void) {
+    return sub_80721A4_CreateAndWriteNewSave();
 }
 
 // Initialise a completed game state
-void sub_80724C0(void) {
+void sub_80724C0_LoadCompletedGame(void) {
     sub_807234C(gUnknown_03005B64);
 }
 
@@ -342,7 +395,7 @@ UNUSED u32 CalculateChecksum(void* data) {
 
 // Read flash data at given sector into data
 // and verify integrity
-bool32 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, u16 sectorNum) {
+bool16 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, s16 sectorNum) {
     u32 i;
     u32 sum;
     u32* expected;
