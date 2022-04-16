@@ -9,7 +9,7 @@ const struct FlashSetupInfo * const gSetup512KInfos[] = {
     &DefaultFlash512K
 };
 
-u16 IdentifyFlash512K(void)
+u16 IdentifyFlash(void)
 {
     u16 result;
     u16 flashId;

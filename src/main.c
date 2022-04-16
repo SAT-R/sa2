@@ -7,7 +7,7 @@
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
-#include "agb_flash_512k.h"
+#include "agb_flash.h"
 #include "flags.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
@@ -190,7 +190,7 @@ void GameInit(void) {
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
 
-    if (IdentifyFlash512K()) {
+    if (IdentifyFlash()) {
         gFlags |= FLAGS_NO_GAME_FLASH;
     } else {
         SetFlashTimerIntr(1, &gUnknown_030007C4);

@@ -85,6 +85,6 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src);
 u16 ProgramFlashSector_MX(u16 sectorNum, void *src);
 
 // agb_flash_1m
-u16 IdentifyFlash512k(void);
+u16 IdentifyFlash(void);
 
 #endif // GUARD_GBA_FLASH_INTERNAL_H

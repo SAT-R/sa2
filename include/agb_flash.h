@@ -4,7 +4,7 @@
 
 #include "global.h"
 
-u16 IdentifyFlash512K(void);
+u16 IdentifyFlash(void);
 void ReadFlash(u16 sectorNum, u32 offset, void *dest, u32 size);
 u32 ProgramFlashSectorAndVerifyNBytes(u16 sectorNum, void *dataSrc, u32 n);
 extern u16 (*EraseFlashSector)(u16);
