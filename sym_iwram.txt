@@ -379,8 +379,7 @@
 . = 0x00000412; gUnknown_03000412 = .;
 . = 0x0000041C; gUnknown_0300041C = .;
 . = 0x00000420; gUnknown_03000420 = .;
-. = 0x0000042C; gTimerNum = .;
-. = 0x0000042E; gTimerCount = .;
+. = 0x0000042C; build/sa2/src/agb_flash.o(.bss);
 . = 0x00000430; gTimerReg = .;
 . = 0x00000434; gSavedIme = .;
 . = 0x0000043C; gUnknown_0300043C = .;

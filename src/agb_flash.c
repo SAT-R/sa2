@@ -1,22 +1,13 @@
 #include "global.h"
 #include "gba/flash_internal.h"
 
-// TODO: should be referenced
-// in the iwram once we find the function reference which
-// uses these globally 
-extern u8 gTimerNum;
-extern u16 gTimerCount;
+static u8 sTimerNum;
+static u16 sTimerCount;
+
+// TODO: can't make gSavedIme static because
+// it comes after gTimerReg which is used globally
 extern vu16 *gTimerReg;
 extern u16 gSavedIme;
-
-extern u8 gFlashTimeoutFlag;
-extern u8 (*PollFlashStatus)(u8 *);
-extern u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData);
-extern u16 (*ProgramFlashSector)(u16 sectorNum, void *src);
-const struct FlashType *gFlash;
-extern u16 (*EraseFlashChip)();
-extern u16 (*EraseFlashSector)(u16 sectorNum);
-const u16 *gFlashMaxTime;
 
 void SetReadFlash1(u16 *dest);
 
@@ -65,7 +56,7 @@ u16 ReadFlashId(void)
 
 void FlashTimerIntr(void)
 {
-    if (gTimerCount != 0 && --gTimerCount == 0)
+    if (sTimerCount != 0 && --sTimerCount == 0)
         gFlashTimeoutFlag = 1;
 }
 
@@ -74,8 +65,8 @@ u16 SetFlashTimerIntr(u8 timerNum, void (**intrFunc)(void))
     if (timerNum >= 4)
         return 1;
 
-    gTimerNum = timerNum;
-    gTimerReg = &REG_TMCNT(gTimerNum);
+    sTimerNum = timerNum;
+    gTimerReg = &REG_TMCNT(sTimerNum);
     *intrFunc = FlashTimerIntr;
     return 0;
 }
@@ -86,12 +77,12 @@ void StartFlashTimer(u8 phase)
     gSavedIme = REG_IME;
     REG_IME = 0;
     gTimerReg[1] = 0;
-    REG_IE |= (INTR_FLAG_TIMER0 << gTimerNum);
+    REG_IE |= (INTR_FLAG_TIMER0 << sTimerNum);
     gFlashTimeoutFlag = 0;
-    gTimerCount = *maxTime++;
+    sTimerCount = *maxTime++;
     *gTimerReg++ = *maxTime++;
     *gTimerReg-- = *maxTime++;
-    REG_IF = (INTR_FLAG_TIMER0 << gTimerNum);
+    REG_IF = (INTR_FLAG_TIMER0 << sTimerNum);
     REG_IME = 1;
 }
 
@@ -100,7 +91,7 @@ void StopFlashTimer(void)
     REG_IME = 0;
     *gTimerReg++ = 0;
     *gTimerReg-- = 0;
-    REG_IE &= ~(INTR_FLAG_TIMER0 << gTimerNum);
+    REG_IE &= ~(INTR_FLAG_TIMER0 << sTimerNum);
     REG_IME = gSavedIme;
 }
 

@@ -209,7 +209,7 @@ _0807196C:
 	bl memcpy
 	adds r0, r7, #0
 	adds r1, r6, #0
-	bl sub_80719D0_PrepareSave
+	bl sub_80719D0_PackSave
 	ldr r0, _080719C4 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
@@ -248,8 +248,8 @@ _080719CA:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_80719D0_PrepareSave
-sub_80719D0_PrepareSave: @ 0x080719D0
+	thumb_func_start sub_80719D0_PackSave
+sub_80719D0_PackSave: @ 0x080719D0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

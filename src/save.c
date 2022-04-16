@@ -14,7 +14,7 @@ extern struct SaveData* gUnknown_03005B68;
 extern s16 sub_8071944(void);
 extern s16 sub_8071E28_ReadSaveToGameData(void);
 extern void sub_80717EC_InitGameData(struct GameData*);
-extern void sub_80719D0_PrepareSave(struct SaveData*, struct GameData*);
+extern void sub_80719D0_PackSave(struct SaveData*, struct GameData*);
 extern u32 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum);
 extern void sub_8071898(struct SaveData*);
 
@@ -173,7 +173,7 @@ s16 sub_80721A4(void) {
     gd8->unk4 = 0;
 
     // Most likely write gd0 to gd8;
-    sub_80719D0_PrepareSave(gd8, gd0);
+    sub_80719D0_PackSave(gd8, gd0);
 
     flashError = sub_8071D24_WriteSave(gd8, 0);
     if (flashError) {
