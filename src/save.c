@@ -14,16 +14,50 @@ extern struct SaveData* gUnknown_03005B68;
 extern s16 sub_8071944(void);
 extern void sub_80717EC_InitNewGameData(struct GameData*);
 extern void sub_80719D0_PackSave(struct SaveData*, struct GameData*);
-extern u32 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum);
 extern void sub_8071898(struct SaveData*);
 
-
 // todo make static
-s16 sub_8071EE0(void);
+s16 sub_8071EE0_FindNewestSave(void);
 bool16 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, s16 sectorNum);
 bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save);
 u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4(void);
+
+u16 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum) {
+    u32 preIE;
+    u32 preIME;
+    u32 preDISPSTAT;
+    u16 result;
+    
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+    gFlags |= 0x8000;
+    
+    preIE = REG_IE;
+    preIME = REG_IME;
+    preDISPSTAT = REG_DISPSTAT;
+
+    REG_IE = 0;
+    REG_IME = 0;
+    REG_DISPSTAT = 0;
+    gFlags &= ~4;
+    
+    DmaStop(0);
+    DmaStop(1);
+    DmaStop(2);
+    DmaStop(3);
+
+    result = ProgramFlashSectorAndVerifyNBytes(sectorNum, data, sizeof(struct SaveData));
+    
+    REG_IE = preIE;
+    REG_IME = preIME;
+    REG_DISPSTAT = preDISPSTAT;
+
+    m4aSoundVSyncOn();
+    gFlags &= ~0x8000;
+
+    return result;
+}
 
 bool16 sub_8071E28_ReadSaveToGameData(void) {
     s16 sectorNum, i, successfulRead;
@@ -43,7 +77,7 @@ bool16 sub_8071E28_ReadSaveToGameData(void) {
     // Only read if we actually have game flash
     if (!(gFlags & FLAGS_NO_GAME_FLASH)) {
         // Get the last sector num where there is save data
-        sectorNum = sub_8071EE0();
+        sectorNum = sub_8071EE0_FindNewestSave();
         do {
             successfulRead = sub_8072538_ReadSaveAndVerifyChecksum(saveData, sectorNum);
             if (!successfulRead) {
@@ -74,7 +108,46 @@ bool16 sub_8071E28_ReadSaveToGameData(void) {
     return FALSE;   
 }
 
-ASM_FUNC("asm/non_matching/sub_8071EE0.inc", s16 sub_8071EE0(void));
+// Thanks to jiang for the match on this one
+s16 sub_8071EE0_FindNewestSave(void) {
+    struct SaveDataHeader sectors[10];
+    s16 i;
+    u32 maxVersion = 0, minVersion = ~0;
+    s16 bestSector = 0;
+
+    for (i = 0; i < (s32)10; i++) {
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
+        // If the value we just read was this
+        if (sectors[i].securityKey == SECTOR_SECURITY_NUM) {
+          if (sectors[i].version > maxVersion) {
+            bestSector = i;
+            maxVersion = sectors[i].version;
+          }
+
+          if (sectors[i].version < minVersion) {
+            minVersion = sectors[i].version;
+          }
+        }
+    } 
+
+    if (minVersion > 0) {
+        return bestSector;
+    } else {
+        // if we found a min version number of 0
+        // look through all the sectors for the highest
+        // version number which is less than 0xffff
+        // not exactly sure why
+        maxVersion = 0;
+        for (i = 0; i < (s32)10; i++) {
+            if (maxVersion <= 0xffff && sectors[i].version > maxVersion) {
+                bestSector = i;
+                maxVersion = sectors[i].version;
+            }
+        } 
+    }
+
+    return bestSector;
+}
 
 bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save) {
     s16 i;
@@ -223,7 +296,7 @@ s16 sub_80721A4_CreateAndWriteNewSave(void) {
         return 0;
     }
 
-    gd8->version = 0;
+    gd8->header.version = 0;
 
     // Most likely write gd0 to gd8;
     sub_80719D0_PackSave(gd8, gd0);
@@ -319,10 +392,11 @@ void sub_80723C4_SaveInit(void) {
     sub_8071898(gUnknown_03005B68);
 }
 
-// Check if the first 10 sectors of flash
-// data contain the bytes 0x4547474d
+// Check if the any of the first 10 sectors of flash
+// data contain a save
 bool16 sub_8063940_SaveExists(void) {
-    u32 data[32];
+    // Not sure why this is 16 long
+    struct SaveDataHeader sectors[16];
     s16 i;
 
     if (gFlags & FLAGS_NO_GAME_FLASH) {
@@ -330,9 +404,9 @@ bool16 sub_8063940_SaveExists(void) {
     };
 
     for (i = 0; i < 10; i++) {
-        ReadFlash(i, 0, &data[i * 2], 8);
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
 
-        if (data[i * 2] == 0x4547474d) {
+        if (sectors[i].securityKey == SECTOR_SECURITY_NUM) {
             return TRUE;
         }
     } 

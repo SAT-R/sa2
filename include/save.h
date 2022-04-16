@@ -3,6 +3,9 @@
 
 #include "global.h"
 
+// If the sector's security field is not this value then the sector is either invalid or empty.
+#define SECTOR_SECURITY_NUM 0x4547474D
+
 bool16 sub_8063940_SaveExists(void);
 
 struct GameData {
@@ -44,9 +47,12 @@ struct GameData {
     u32 unk374;
 };
 
+struct SaveDataHeader {
+    u32 securityKey, version;
+};
+
 struct SaveData {
-    u32 securityKey;
-    u32 version;
+    struct SaveDataHeader header;
     u32 unk8;
 
     u32 unkC[3];
