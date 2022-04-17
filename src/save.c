@@ -8,26 +8,26 @@
 #include "random.h"
 
 // Only used in here;
-extern struct GameData* gUnknown_03005B60;
-extern struct SaveData* gUnknown_03005B68;
+extern struct SaveGame* gUnknown_03005B60;
+extern struct SaveSectorData* gUnknown_03005B68;
 
 extern s16 sub_8071944_TryWriteSaveGame(void);
-extern void sub_80717EC_InitNewGameData(struct GameData*);
-extern void sub_8071898(struct SaveData*);
+extern void sub_80717EC_GenerateNewSaveGame(struct SaveGame*);
+extern void sub_8071898(struct SaveSectorData*);
 
 // todo make static
 s16 sub_8071EE0_FindNewestGameSaveSector(void);
 bool16 sub_8072538_ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum);
-bool16 sub_8071F8C_UnpackSaveSectorData(struct GameData* gameState, struct SaveData* save);
+bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save);
 u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4_HasChangesToSave(void);
 
-bool16 sub_80719D0_PackSaveSectorData(struct SaveData* save, struct GameData* gameState) {
+bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState) {
     s16 i;
     u32 j, checksum, version;
 
     version = save->header.version;
-    memset(save, 0, sizeof(struct SaveData));
+    memset(save, 0, sizeof(struct SaveSectorData));
     
     save->header.securityKey = SECTOR_SECURITY_NUM;
     save->header.version = version + 1;
@@ -145,7 +145,7 @@ bool16 sub_80719D0_PackSaveSectorData(struct SaveData* save, struct GameData* ga
 
     // Not sure why they chose to rewrite the checksum logic here
     checksum = 0;
-    for (j = 0; j < offsetof(struct SaveData, checksum); j += sizeof(u32)) {
+    for (j = 0; j < offsetof(struct SaveSectorData, checksum); j += sizeof(u32)) {
         checksum += *(u32*)((u32)save + j);
     }
     save->checksum = checksum;
@@ -154,13 +154,13 @@ bool16 sub_80719D0_PackSaveSectorData(struct SaveData* save, struct GameData* ga
 }
 
 s16 sub_8071C60_FindOldestGameSaveSector(void) {
-    struct SaveDataHeader sectors[10];
+    struct SaveSectorHeader sectors[10];
     s16 i;
     u32 maxVersion = 0, minVersion = 0xffffffff;
     s16 bestSector = 0xffff;
 
     for (i = 0; i < 10; i++) {
-        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveSectorHeader));
         
         if (sectors[i].securityKey != SECTOR_SECURITY_NUM) {
             // If this sector is empty, use it
@@ -197,7 +197,7 @@ s16 sub_8071C60_FindOldestGameSaveSector(void) {
     return -1;
 }
 
-u16 sub_8071D24_WriteToSaveSector(struct SaveData* data, s16 sectorNum) {
+u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum) {
     u32 preIE;
     u32 preIME;
     u32 preDISPSTAT;
@@ -221,7 +221,7 @@ u16 sub_8071D24_WriteToSaveSector(struct SaveData* data, s16 sectorNum) {
     DmaStop(2);
     DmaStop(3);
 
-    result = ProgramFlashSectorAndVerifyNBytes(sectorNum, data, sizeof(struct SaveData));
+    result = ProgramFlashSectorAndVerifyNBytes(sectorNum, data, sizeof(struct SaveSectorData));
     
     REG_IE = preIE;
     REG_IME = preIME;
@@ -236,8 +236,8 @@ u16 sub_8071D24_WriteToSaveSector(struct SaveData* data, s16 sectorNum) {
 bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
     s16 sectorNum, i, successfulRead;
     
-    struct GameData *lastSavedData, *gameData;
-    struct SaveData *saveData;
+    struct SaveGame *lastSavedData, *gameData;
+    struct SaveSectorData *saveData;
 
     gameData = gUnknown_03005B64;
     lastSavedData = gUnknown_03005B60;
@@ -246,7 +246,7 @@ bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
     i = 0;
 
     // Keep a copy of the last game state
-    memcpy(lastSavedData, gameData, sizeof(struct GameData));
+    memcpy(lastSavedData, gameData, sizeof(struct SaveGame));
 
     // Only read if we actually have game flash
     if (!(gFlags & FLAGS_NO_GAME_FLASH)) {
@@ -274,7 +274,7 @@ bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
 
         if (successfulRead) {
             sub_8071F8C_UnpackSaveSectorData(gameData, saveData);
-            memcpy(lastSavedData, gameData, sizeof(struct GameData));
+            memcpy(lastSavedData, gameData, sizeof(struct SaveGame));
             return TRUE;
         }
     }
@@ -288,13 +288,13 @@ bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
 // previous save instead
 s16 sub_8071EE0_FindNewestGameSaveSector(void) {
     // Thanks to jiang for the match on this one    
-    struct SaveDataHeader sectors[10];
+    struct SaveSectorHeader sectors[10];
     s16 i;
     u32 maxVersion = 0, minVersion = 0xffffffff;
     s16 bestSector = 0;
 
     for (i = 0; i < 10; i++) {
-        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveSectorHeader));
         // If the value we just read was this
         if (sectors[i].securityKey == SECTOR_SECURITY_NUM) {
           if (sectors[i].version > maxVersion) {
@@ -327,10 +327,10 @@ s16 sub_8071EE0_FindNewestGameSaveSector(void) {
     return bestSector;
 }
 
-bool16 sub_8071F8C_UnpackSaveSectorData(struct GameData* gameState, struct SaveData* save) {
+bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save) {
     s16 i;
 
-    memset(gameState, 0, sizeof(struct GameData));
+    memset(gameState, 0, sizeof(struct SaveGame));
     memcpy(gameState->unk20, &save->unkC, 12);
     
     gameState->unk0 = save->unk8;
@@ -455,15 +455,14 @@ s16 sub_80721A4_CreateAndWriteNewSave(void) {
     s16 i;
     u16 flashError;
     
-    struct GameData *gd4 = gUnknown_03005B64;
-    struct GameData *gd0 = gUnknown_03005B60;
-    struct SaveData *gd8 = gUnknown_03005B68;
+    struct SaveGame *gd4 = gUnknown_03005B64;
+    struct SaveGame *gd0 = gUnknown_03005B60;
+    struct SaveSectorData *gd8 = gUnknown_03005B68;
     
     u8 prevUnk6 = gd4->unk6;
     u32 prevUnk374 = gd4->unk374;
-
-    // Initialise the data structure
-    sub_80717EC_InitNewGameData(gd4);
+    
+    sub_80717EC_GenerateNewSaveGame(gd4);
 
     gd4->unk6 = prevUnk6;
     gd4->unk374 = prevUnk374;
@@ -532,7 +531,7 @@ u16 sub_8072244_EraseSaveSector(s16 sectorNum) {
     return result;
 }
 
-void sub_807234C_GenerateCompletedGameData(struct GameData* data) {
+void sub_807234C_GenerateCompletedGameData(struct SaveGame* data) {
     s16 i;
     
     if (data->unk0 == 0) {
@@ -566,8 +565,8 @@ void sub_80723C4_SaveInit(void) {
     gUnknown_03005B60 = EwramMalloc(0x378);
     gUnknown_03005B68 = EwramMalloc(0x378);
 
-    sub_80717EC_InitNewGameData(gUnknown_03005B64);
-    sub_80717EC_InitNewGameData(gUnknown_03005B60);
+    sub_80717EC_GenerateNewSaveGame(gUnknown_03005B64);
+    sub_80717EC_GenerateNewSaveGame(gUnknown_03005B60);
     sub_8071898(gUnknown_03005B68);
 }
 
@@ -575,7 +574,7 @@ void sub_80723C4_SaveInit(void) {
 // data contain a save
 bool16 sub_8063940_SaveGameExists(void) {
     // Not sure why this is 16 long
-    struct SaveDataHeader sectors[16];
+    struct SaveSectorHeader sectors[16];
     s16 i;
 
     if (gFlags & FLAGS_NO_GAME_FLASH) {
@@ -583,7 +582,7 @@ bool16 sub_8063940_SaveGameExists(void) {
     };
 
     for (i = 0; i < 10; i++) {
-        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveSectorHeader));
 
         if (sectors[i].securityKey == SECTOR_SECURITY_NUM) {
             return TRUE;
@@ -610,7 +609,7 @@ s16 sub_80724B0_NewSaveGame(void) {
 }
 
 // Initialise a completed game state
-void sub_80724C0_LoadCompletedGame(void) {
+void sub_80724C0_LoadCompletedSaveGame(void) {
     sub_807234C_GenerateCompletedGameData(gUnknown_03005B64);
 }
 
@@ -620,7 +619,7 @@ static bool16 sub_80724D4_HasChangesToSave(void) {
     u16* pSaved = (u16*)gUnknown_03005B60;
 
     s16 i = 0;
-    u16 size = sizeof(struct GameData) / sizeof(u16);
+    u16 size = sizeof(struct SaveGame) / sizeof(u16);
     
     do {
         if (*pCurrent == *pSaved) {
@@ -638,7 +637,7 @@ UNUSED u32 CalculateChecksum(void* data) {
     u32 i;
     u32 sum = 0; 
 
-    for (i = 0; i < offsetof(struct SaveData, checksum); i += sizeof(u32)) {
+    for (i = 0; i < offsetof(struct SaveSectorData, checksum); i += sizeof(u32)) {
         sum += *(u32*)(data + i);
     }
 
@@ -652,11 +651,11 @@ bool16 sub_8072538_ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum)
     u32 sum;
     u32* expected;
     
-    ReadFlash(sectorNum, 0, saveBuf, sizeof(struct SaveData));
-    expected = &((struct SaveData*)saveBuf)->checksum;
+    ReadFlash(sectorNum, 0, saveBuf, sizeof(struct SaveSectorData));
+    expected = &((struct SaveSectorData*)saveBuf)->checksum;
   
     sum = 0;
-    for (i = 0; i < offsetof(struct SaveData, checksum); i += sizeof(u32)) {
+    for (i = 0; i < offsetof(struct SaveSectorData, checksum); i += sizeof(u32)) {
         sum += *(u32*)(saveBuf + i);
     }
 

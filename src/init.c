@@ -18,7 +18,7 @@ void sub_8072474_LoadSaveGame();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
-void sub_80724C0_LoadCompletedGame();
+void sub_80724C0_LoadCompletedSaveGame();
 void sub_8081C0C();
 
 static void sub_801A6C8(void);
@@ -64,7 +64,6 @@ void sub_801A51C(void) {
     sub_80723C4_SaveInit();
 
     if (sub_8063940_SaveGameExists()) {
-        // Load save data?
         sub_8072474_LoadSaveGame();
         hasProfile = TRUE;
     }
@@ -76,7 +75,7 @@ void sub_801A51C(void) {
     
     if (gFlags & FLAGS_NO_GAME_FLASH) {
         sub_808B3FC_CreateIntro();
-        sub_80724C0_LoadCompletedGame();
+        sub_80724C0_LoadCompletedSaveGame();
         return;
     }
     

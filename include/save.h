@@ -8,7 +8,7 @@
 
 bool16 sub_8063940_SaveGameExists(void);
 
-struct GameData {
+struct SaveGame {
     u32 unk0;
 
     u8 unk4;
@@ -47,12 +47,12 @@ struct GameData {
     u32 unk374;
 };
 
-struct SaveDataHeader {
+struct SaveSectorHeader {
     u32 securityKey, version;
 };
 
-struct SaveData {
-    struct SaveDataHeader header;
+struct SaveSectorData {
+    struct SaveSectorHeader header;
     u32 unk8;
 
     u32 unkC[3];
@@ -84,6 +84,6 @@ struct SaveData {
 };
 
 // Some sort of save data?
-extern struct GameData* gUnknown_03005B64;
+extern struct SaveGame* gUnknown_03005B64;
 
 #endif

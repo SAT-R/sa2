@@ -5,8 +5,8 @@
 .arm
 
 
-	thumb_func_start sub_80717EC_InitNewGameData
-sub_80717EC_InitNewGameData: @ 0x080717EC
+	thumb_func_start sub_80717EC_GenerateNewSaveGame
+sub_80717EC_GenerateNewSaveGame: @ 0x080717EC
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r2, #0xde
