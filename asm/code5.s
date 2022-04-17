@@ -7837,7 +7837,7 @@ _0808F848:
 	cmp r0, #0
 	bne _0808F858
 	strb r2, [r1, #0x19]
-	bl sub_8072484
+	bl sub_8072484_WriteSaveGame
 _0808F858:
 	movs r1, #0
 	adds r2, r4, #0
@@ -7874,7 +7874,7 @@ _0808F874:
 	movs r0, #1
 	orrs r0, r1
 	strb r0, [r2, #0x1a]
-	bl sub_8072484
+	bl sub_8072484_WriteSaveGame
 _0808F89E:
 	ldr r1, _0808F93C @ =gUnknown_030054F0
 	movs r0, #0
@@ -7990,7 +7990,7 @@ _0808F966:
 	orrs r0, r1
 	strb r0, [r2, #0x13]
 _0808F974:
-	bl sub_8072484
+	bl sub_8072484_WriteSaveGame
 	ldr r2, _0808F994 @ =0x00000161
 	adds r1, r6, r2
 	movs r0, #0
@@ -8043,7 +8043,7 @@ _0808F9D0:
 	bne _0808F9E2
 	movs r0, #1
 	strb r0, [r1, #0x1b]
-	bl sub_8072484
+	bl sub_8072484_WriteSaveGame
 _0808F9E2:
 	ldr r0, _0808FA10 @ =gUnknown_03000161
 	adds r1, r4, r0

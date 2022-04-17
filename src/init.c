@@ -14,7 +14,7 @@ struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 void sub_80723C4_SaveInit();
-void sub_8072474_LoadSave();
+void sub_8072474_LoadSaveGame();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
@@ -63,9 +63,9 @@ void sub_801A51C(void) {
 
     sub_80723C4_SaveInit();
 
-    if (sub_8063940_SaveExists()) {
+    if (sub_8063940_SaveGameExists()) {
         // Load save data?
-        sub_8072474_LoadSave();
+        sub_8072474_LoadSaveGame();
         hasProfile = TRUE;
     }
 

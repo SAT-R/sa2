@@ -6,7 +6,7 @@
 // If the sector's security field is not this value then the sector is either invalid or empty.
 #define SECTOR_SECURITY_NUM 0x4547474D
 
-bool16 sub_8063940_SaveExists(void);
+bool16 sub_8063940_SaveGameExists(void);
 
 struct GameData {
     u32 unk0;

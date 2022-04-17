@@ -181,8 +181,8 @@ _08071938: .4byte 0x4547474D
 _0807193C: .4byte 0x0000FFFF
 _08071940: .4byte 0xFFFF8CA0
 	
-	thumb_func_start sub_8071944
-sub_8071944: @ 0x08071944
+	thumb_func_start sub_8071944_TryWriteSaveGame
+sub_8071944_TryWriteSaveGame: @ 0x08071944
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _080719B8 @ =gUnknown_03005B64
 	ldr r5, [r0]
@@ -209,7 +209,7 @@ _0807196C:
 	bl memcpy
 	adds r0, r7, #0
 	adds r1, r6, #0
-	bl sub_80719D0_PackSave
+	bl sub_80719D0_PackSaveSectorData
 	ldr r0, _080719C4 @ =gFlags
 	ldr r0, [r0]
 	movs r1, #0x80
@@ -217,7 +217,7 @@ _0807196C:
 	ands r0, r1
 	cmp r0, #0
 	bne _080719C8
-	bl sub_8071C60_FindOldestSave
+	bl sub_8071C60_FindOldestGameSaveSector
 	lsls r0, r0, #0x10
 	lsrs r2, r0, #0x10
 	asrs r0, r0, #0x10
@@ -230,7 +230,7 @@ _080719A2:
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
 	adds r0, r7, #0
-	bl sub_8071D24_WriteSave
+	bl sub_8071D24_WriteToSaveSector
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	bne _080719C8
