@@ -7,12 +7,11 @@
 #include "m4a.h"
 #include "random.h"
 
-// Only used in here;
-extern struct SaveGame* gLastWrittenSaveGame;
-extern struct SaveSectorData* gSaveSectorDataBuffer;
+// TODO: make static, only used here
+struct SaveGame* gLastWrittenSaveGame;
+struct SaveSectorData* gSaveSectorDataBuffer;
 
 extern void sub_80717EC_GenerateNewSaveGame(struct SaveGame*);
-extern void sub_8071898(struct SaveSectorData*);
 
 static s16 sub_8071EE0_FindNewestSaveGameSector(void);
 static bool16 sub_8072538_ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum);
@@ -22,6 +21,46 @@ static bool16 sub_80724D4_HasChangesToSave(void);
 static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState);
 static s16 sub_8071C60_FindOldestSaveGameSector(void);
 static u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
+
+static void sub_8071898_InitSaveGameSectorData(struct SaveSectorData* saveData) {
+    s16 i, *p1;
+    struct SectorDataUnk2A4* p2;
+    
+    memset(saveData, 0, sizeof(struct SaveSectorData));
+    
+    saveData->header.security = SECTOR_SECURITY_NUM;
+    saveData->header.version = 0;
+    saveData->unk8 = 0;
+    saveData->unkC[0] = 0xffff;
+    saveData->unk18 = 2;
+    saveData->unk1B = 0;
+    saveData->unk1A = 0;
+    saveData->unk19 = 0;
+    saveData->unk1C = 1;
+    saveData->unk1D = 2;
+    saveData->unk1E = 4;
+    saveData->unk29 = 0;
+    saveData->unk2A = 0;
+    saveData->unk2B = 0;
+
+    // Not sure why these weren't done as array accesses
+    p1 = saveData->unk2C;
+    // One less than the length of the array for some reason
+    for (i = 0; i < 0x13B; i++, p1++) {
+        *p1 = 36000;
+    }
+
+    p2 = saveData->unk2A4;
+    for (i = 0; i < 10; i++, p2++) {
+        p2->unk10 = 0;
+        p2->unk11 = 0;
+        p2->unk12 = 0;
+        p2->unk13 = 0;
+        p2->unk4 = 0xFFFF;
+    }
+
+    saveData->unk370 = 0;
+}
 
 static s16 sub_8071944_TryWriteSaveGame(void) {
     s16 sectorToWrite, flashError;
@@ -603,9 +642,11 @@ void sub_80723C4_SaveInit(void) {
     gLastWrittenSaveGame = EwramMalloc(0x378);
     gSaveSectorDataBuffer = EwramMalloc(0x378);
 
+    // Why not just generate for 1 and copy...
     sub_80717EC_GenerateNewSaveGame(gLoadedSaveGame);
     sub_80717EC_GenerateNewSaveGame(gLastWrittenSaveGame);
-    sub_8071898(gSaveSectorDataBuffer);
+
+    sub_8071898_InitSaveGameSectorData(gSaveSectorDataBuffer);
 }
 
 // Check if the any of the first 10 sectors of flash
