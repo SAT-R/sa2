@@ -274,7 +274,7 @@ sub_808B560: @ 0x0808B560
 	str r0, [r7, #0xc]
 	strh r4, [r7, #0x18]
 	strh r4, [r7, #0x1a]
-	ldr r0, _0808B694 @ =gUnknown_03005B64
+	ldr r0, _0808B694 @ =gLoadedSaveGame
 	ldr r0, [r0]
 	ldrb r0, [r0, #6]
 	cmp r0, #1
@@ -301,7 +301,7 @@ _0808B684: .4byte gUnknown_03004D80
 _0808B688: .4byte gUnknown_03002280
 _0808B68C: .4byte gBgScrollRegs
 _0808B690: .4byte 0x0600D000
-_0808B694: .4byte gUnknown_03005B64
+_0808B694: .4byte gLoadedSaveGame
 _0808B698:
 	ldr r0, _0808B73C @ =0x00000109
 _0808B69A:

@@ -668,9 +668,9 @@
 . = 0x00005B54; gUnknown_03005B54 = .;
 . = 0x00005B58; gUnknown_03005B58 = .;
 . = 0x00005B5C; gUnknown_03005B5C = .;
-. = 0x00005B60; gUnknown_03005B60 = .;
-. = 0x00005B64; gUnknown_03005B64 = .;
-. = 0x00005B68; gUnknown_03005B68 = .;
+. = 0x00005B60; gLastWrittenSaveGame = .;
+. = 0x00005B64; gLoadedSaveGame = .;
+. = 0x00005B68; gSaveSectorDataBuffer = .;
 . = 0x00005B6C; gUnknown_03005B6C = .;
 . = 0x00005B70; build/sa2/src/random.o(.bss);
 . = 0x00005B7C; gUnknown_03005B7C = .;

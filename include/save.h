@@ -3,11 +3,6 @@
 
 #include "global.h"
 
-// If the sector's security field is not this value then the sector is either invalid or empty.
-#define SECTOR_SECURITY_NUM 0x4547474D
-
-bool16 sub_8063940_SaveGameExists(void);
-
 struct SaveGame {
     u32 unk0;
 
@@ -48,7 +43,7 @@ struct SaveGame {
 };
 
 struct SaveSectorHeader {
-    u32 securityKey, version;
+    u32 security, version;
 };
 
 struct SaveSectorData {
@@ -83,7 +78,17 @@ struct SaveSectorData {
     u32 checksum;
 };
 
+// If the sector's security field is not this value then the sector is either invalid or empty.
+#define SECTOR_SECURITY_NUM 0x4547474D
+#define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
+#define NUM_SAVE_SECTORS 10
+
 // Some sort of save data?
-extern struct SaveGame* gUnknown_03005B64;
+extern struct SaveGame* gLoadedSaveGame;
+
+bool16 sub_8063940_SaveGameExists(void);
+void sub_80723C4_SaveInit(void);
+s16 sub_8072474_LoadSaveGame(void);
+void sub_80724C0_LoadCompletedSaveGame(void);
 
 #endif

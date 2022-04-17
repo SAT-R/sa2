@@ -46,7 +46,7 @@ sub_8063940_CreateProfileScreen: @ 0x08063940
 	ldr r2, _080639E4 @ =gUnknown_030001FC
 	adds r0, r1, r2
 	str r5, [r0]
-	ldr r0, _080639E8 @ =gUnknown_03005B64
+	ldr r0, _080639E8 @ =gLoadedSaveGame
 	ldr r0, [r0]
 	ldrb r0, [r0, #6]
 	subs r0, #1
@@ -80,7 +80,7 @@ _080639BC:
 	.align 2, 0
 _080639E0: .4byte sub_806B0D8
 _080639E4: .4byte gUnknown_030001FC
-_080639E8: .4byte gUnknown_03005B64
+_080639E8: .4byte gLoadedSaveGame
 _080639EC: .4byte gUnknown_03000200
 _080639F0: .4byte gUnknown_03000201
 _080639F4: .4byte gUnknown_03005B50

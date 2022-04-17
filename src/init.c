@@ -13,12 +13,9 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void sub_80723C4_SaveInit();
-void sub_8072474_LoadSaveGame();
 void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
-void sub_80724C0_LoadCompletedSaveGame();
 void sub_8081C0C();
 
 static void sub_801A6C8(void);
@@ -73,7 +70,7 @@ void sub_801A51C(void) {
         return;
     }
     
-    if (gFlags & FLAGS_NO_GAME_FLASH) {
+    if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         sub_808B3FC_CreateIntro();
         sub_80724C0_LoadCompletedSaveGame();
         return;

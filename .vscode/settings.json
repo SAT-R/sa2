@@ -15,6 +15,7 @@
         "data.h": "c",
         "sprite.h": "c",
         "random.h": "c",
-        "save.h": "c"
+        "save.h": "c",
+        "flags.h": "c"
     }
 }

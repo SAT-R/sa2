@@ -191,7 +191,7 @@ void GameInit(void) {
     sub_8007CC8();
 
     if (IdentifyFlash()) {
-        gFlags |= FLAGS_NO_GAME_FLASH;
+        gFlags |= FLAGS_NO_FLASH_MEMORY;
     } else {
         SetFlashTimerIntr(1, &gUnknown_030007C4);
     }

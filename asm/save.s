@@ -184,11 +184,11 @@ _08071940: .4byte 0xFFFF8CA0
 	thumb_func_start sub_8071944_TryWriteSaveGame
 sub_8071944_TryWriteSaveGame: @ 0x08071944
 	push {r4, r5, r6, r7, lr}
-	ldr r0, _080719B8 @ =gUnknown_03005B64
+	ldr r0, _080719B8 @ =gLoadedSaveGame
 	ldr r5, [r0]
-	ldr r0, _080719BC @ =gUnknown_03005B60
+	ldr r0, _080719BC @ =gLastWrittenSaveGame
 	ldr r6, [r0]
-	ldr r0, _080719C0 @ =gUnknown_03005B68
+	ldr r0, _080719C0 @ =gSaveSectorDataBuffer
 	ldr r7, [r0]
 	ldr r0, [r5]
 	cmp r0, #0
@@ -217,7 +217,7 @@ _0807196C:
 	ands r0, r1
 	cmp r0, #0
 	bne _080719C8
-	bl sub_8071C60_FindOldestGameSaveSector
+	bl sub_8071C60_FindOldestSaveGameSector
 	lsls r0, r0, #0x10
 	lsrs r2, r0, #0x10
 	asrs r0, r0, #0x10
@@ -237,9 +237,9 @@ _080719A2:
 	movs r0, #1
 	b _080719CA
 	.align 2, 0
-_080719B8: .4byte gUnknown_03005B64
-_080719BC: .4byte gUnknown_03005B60
-_080719C0: .4byte gUnknown_03005B68
+_080719B8: .4byte gLoadedSaveGame
+_080719BC: .4byte gLastWrittenSaveGame
+_080719C0: .4byte gSaveSectorDataBuffer
 _080719C4: .4byte gFlags
 _080719C8:
 	movs r0, #0
