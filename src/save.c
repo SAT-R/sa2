@@ -153,7 +153,49 @@ bool16 sub_80719D0_PackSave(struct SaveData* save, struct GameData* gameState) {
     return TRUE;
 }
 
-ASM_FUNC("asm/non_matching/sub_8071C60_FindOldestSave.inc", s16 sub_8071C60_FindOldestSave(void));
+s16 sub_8071C60_FindOldestSave(void) {
+    struct SaveDataHeader sectors[10];
+    s16 i;
+    u32 maxVersion = 0, minVersion = 0xffffffff;
+    s16 bestSector = 0xffff;
+
+    for (i = 0; i < 10; i++) {
+        ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
+        
+        if (sectors[i].securityKey != SECTOR_SECURITY_NUM) {
+            // If this sector is empty, use it
+            return i;
+        }
+        
+        if (sectors[i].version > maxVersion) {
+            maxVersion = sectors[i].version;
+        }
+        
+        if (sectors[i].version < minVersion) {
+            bestSector = i;
+            minVersion = sectors[i].version;
+        }
+    } 
+
+    if (maxVersion != ~0) {
+        return bestSector;
+    }
+    
+    minVersion = 0xffff0000;
+    for (i = 0; i < 10; i++) {
+        if (minVersion > 0xffff0000 && sectors[i].version < minVersion) {
+            bestSector = i;
+            minVersion = sectors[i].version;
+        }
+    }
+
+    if (minVersion != 0xffff0000) {
+        return bestSector;
+    }
+
+    // Could not find a suitable sector
+    return -1;
+}
 
 u16 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum) {
     u32 preIE;
@@ -244,10 +286,10 @@ bool16 sub_8071E28_ReadSaveToGameData(void) {
 s16 sub_8071EE0_FindNewestSave(void) {
     struct SaveDataHeader sectors[10];
     s16 i;
-    u32 maxVersion = 0, minVersion = ~0;
+    u32 maxVersion = 0, minVersion = 0xffffffff;
     s16 bestSector = 0;
 
-    for (i = 0; i < (s32)10; i++) {
+    for (i = 0; i < 10; i++) {
         ReadFlash(i, 0, &sectors[i], sizeof(struct SaveDataHeader));
         // If the value we just read was this
         if (sectors[i].securityKey == SECTOR_SECURITY_NUM) {
@@ -264,18 +306,18 @@ s16 sub_8071EE0_FindNewestSave(void) {
 
     if (minVersion > 0) {
         return bestSector;
-    } else {
-        // if we found a min version number of 0
-        // look through all the sectors for the highest
-        // version number which is less than 0xffff
-        // not exactly sure why
-        maxVersion = 0;
-        for (i = 0; i < (s32)10; i++) {
-            if (maxVersion <= 0xffff && sectors[i].version > maxVersion) {
-                bestSector = i;
-                maxVersion = sectors[i].version;
-            }
-        } 
+    }
+
+    // if we found a min version number of 0
+    // look through all the sectors for the highest
+    // version number until we get to a version number
+    // of <= 0xffff
+    maxVersion = 0;
+    for (i = 0; i < 10; i++) {
+        if (maxVersion <= 0xffff && sectors[i].version > maxVersion) {
+            bestSector = i;
+            maxVersion = sectors[i].version;
+        }
     }
 
     return bestSector;
