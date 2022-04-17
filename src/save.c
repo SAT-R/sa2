@@ -13,7 +13,6 @@ extern struct SaveData* gUnknown_03005B68;
 
 extern s16 sub_8071944(void);
 extern void sub_80717EC_InitNewGameData(struct GameData*);
-extern void sub_80719D0_PackSave(struct SaveData*, struct GameData*);
 extern void sub_8071898(struct SaveData*);
 
 // todo make static
@@ -22,6 +21,139 @@ bool16 sub_8072538_ReadSaveAndVerifyChecksum(void *saveBuf, s16 sectorNum);
 bool16 sub_8071F8C_UnpackSave(struct GameData* gameState, struct SaveData* save);
 u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4(void);
+
+bool16 sub_80719D0_PackSave(struct SaveData* save, struct GameData* gameState) {
+    s16 i;
+    u32 j, checksum, version;
+
+    version = save->header.version;
+    memset(save, 0, sizeof(struct SaveData));
+    
+    save->header.securityKey = SECTOR_SECURITY_NUM;
+    save->header.version = version + 1;
+
+    save->unk8 = gameState->unk0;
+    memcpy(save->unkC, &gameState->unk20, 12);
+    save->unk18 = gameState->unk6;
+
+    save->unk19 = 0;
+    if (gameState->unk4) {
+        save->unk19 = 1;
+    }
+
+    if (gameState->unk5) {
+        save->unk19 |= 2;
+    }
+    save->unk1A = 0;
+    if (gameState->unk19) {
+        save->unk1A = 1;
+    }
+    if (gameState->unk1A) {
+        save->unk1A |= (gameState->unk1A << 1) & 6;
+    }
+    if (gameState->unk1B) {
+        save->unk1A |= 8;
+    }
+    if (gameState->unk15) {
+        save->unk1A |= 0x10;
+    }
+    if (gameState->unk16) {
+        save->unk1A |= 0x20;
+    }
+    if (gameState->unk17) {
+        save->unk1A |= 0x40;
+    }
+    if (gameState->unk18) {
+        save->unk1A |= 0x80;
+    }
+    save->unk1B = 0;
+    if ((gameState->unk13 & 2)) {
+        save->unk1B = 1;
+    }
+    if ((gameState->unk13 & 4)) {
+        save->unk1B |= 2;
+    }
+    if ((gameState->unk13 & 8)) {
+        save->unk1B |= 4;
+    }
+    if ((gameState->unk13 & 0x10)) {
+        save->unk1B |= 8;
+    }
+    if (gameState->unk11) {
+        save->unk1B |= 0x20;
+    }
+    if (gameState->unk12) {
+        save->unk1B |= 0x10;
+    }
+    if (gameState->unk14) {
+        save->unk1B |= 0x40;
+    }
+
+    switch (gameState->unk2C) {
+        case 2:
+            save->unk1C = 2;
+            break;
+        case 1:
+            save->unk1C = 1;
+            break;
+        case 0x100:
+            save->unk1C = 4;
+            break;
+    }
+
+    switch (gameState->unk2E) {
+        case 2:
+            save->unk1D = 2;
+            break;
+        case 1:
+            save->unk1D = 1;
+            break;
+        case 0x100:
+            save->unk1D = 4;
+            break;
+    }
+
+    switch (gameState->unk30) {
+        case 2:
+            save->unk1E = 2;
+            break;
+        case 1:
+            save->unk1E = 1;
+            break;
+        case 0x100:
+            save->unk1E = 4;
+            break;
+    }
+
+    for (i = 0; i < 5; i++) {
+        save->unk1F[i] = gameState->unk7[i];
+    }
+
+    for (i = 0; i < 5; i++) {
+        save->unk24[i] = gameState->unkC[i];
+    }
+
+    save->unk29 = gameState->unk1C;
+    save->unk2A = gameState->unk1D;
+    save->unk2B = gameState->unk1E;
+
+    memcpy(save->unk2C, gameState->unk34, 0x278);
+    memcpy(save->unk2A4, gameState->unk2AC, 200);
+
+    save->unk36C = Random32();
+    save->unk370 = gameState->unk374;
+
+    // Not sure why they chose to rewrite the checksum logic here
+    checksum = 0;
+    for (j = 0; j < offsetof(struct SaveData, checksum); j += sizeof(u32)) {
+        checksum += *(u32*)((u32)save + j);
+    }
+    save->checksum = checksum;
+
+    return TRUE;
+}
+
+ASM_FUNC("asm/non_matching/sub_8071C60_FindOldestSave.inc", s16 sub_8071C60_FindOldestSave(void));
 
 u16 sub_8071D24_WriteSave(struct SaveData* data, s16 sectorNum) {
     u32 preIE;

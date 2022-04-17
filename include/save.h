@@ -73,11 +73,11 @@ struct SaveData {
     u8 unk2A;
     u8 unk2B;
 
-    // Probbaly some structs
+    // Probably some structs
     u8 unk2C[0x278];
     u8 unk2A4[200];
 
-    u8 filler36C[4];
+    u32 unk36C;
 
     u32 unk370;
     u32 checksum;
