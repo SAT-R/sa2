@@ -11,18 +11,56 @@
 extern struct SaveGame* gLastWrittenSaveGame;
 extern struct SaveSectorData* gSaveSectorDataBuffer;
 
-extern s16 sub_8071944_TryWriteSaveGame(void);
 extern void sub_80717EC_GenerateNewSaveGame(struct SaveGame*);
 extern void sub_8071898(struct SaveSectorData*);
 
-// todo make static
 static s16 sub_8071EE0_FindNewestSaveGameSector(void);
 static bool16 sub_8072538_ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum);
 static bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save);
 static u16 sub_8072244_EraseSaveSector(s16 sectorNum);
 static bool16 sub_80724D4_HasChangesToSave(void);
+static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState);
+static s16 sub_8071C60_FindOldestSaveGameSector(void);
+static u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
 
-bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState) {
+static s16 sub_8071944_TryWriteSaveGame(void) {
+    s16 sectorToWrite, flashError;
+    
+    struct SaveGame *lastWrittenSaveGame, *saveGame;
+    struct SaveSectorData *saveData;
+
+    saveGame = gLoadedSaveGame;
+    lastWrittenSaveGame = gLastWrittenSaveGame;
+    saveData = gSaveSectorDataBuffer;
+
+    if (saveGame->unk0 == 0) {
+        saveGame->unk0 = Random32();
+    }
+
+    // Keep a copy of the last game state
+    memcpy(lastWrittenSaveGame, saveGame, sizeof(struct SaveGame));
+    sub_80719D0_PackSaveSectorData(saveData, lastWrittenSaveGame);
+
+    // Only write if we actually have game flash
+    if (!(gFlags & FLAGS_NO_FLASH_MEMORY)) {
+        sectorToWrite = sub_8071C60_FindOldestSaveGameSector();
+        
+        // Couldn't find an oldest sector
+        if (sectorToWrite == -1) {
+            sectorToWrite = 0;
+        }
+
+        flashError = sub_8071D24_WriteToSaveSector(saveData, sectorToWrite);
+
+        if (!flashError) {
+            return TRUE;
+        }
+    }
+   
+    return FALSE;   
+}
+
+static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState) {
     s16 i;
     u32 j, checksum, version;
 
@@ -153,7 +191,7 @@ bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGa
     return TRUE;
 }
 
-s16 sub_8071C60_FindOldestSaveGameSector(void) {
+static s16 sub_8071C60_FindOldestSaveGameSector(void) {
     struct SaveSectorHeader sectors[10];
     s16 i;
     u32 maxVersion = 0, minVersion = 0xffffffff;
@@ -197,7 +235,7 @@ s16 sub_8071C60_FindOldestSaveGameSector(void) {
     return -1;
 }
 
-u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum) {
+static u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum) {
     u32 preIE;
     u32 preIME;
     u32 preDISPSTAT;
@@ -233,7 +271,7 @@ u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum) {
     return result;
 }
 
-bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
+static bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
     s16 sectorNum, i, successfulRead;
     
     struct SaveGame *lastSavedData, *gameData;
@@ -286,7 +324,7 @@ bool16 sub_8071E28_TryLoadLatestSaveGame(void) {
 // and keep the old save. Incase a save sector
 // becomes corrupted we can always use the
 // previous save instead
-s16 sub_8071EE0_FindNewestSaveGameSector(void) {
+static s16 sub_8071EE0_FindNewestSaveGameSector(void) {
     // Thanks to jiang for the match on this one    
     struct SaveSectorHeader sectors[10];
     s16 i;
@@ -327,7 +365,7 @@ s16 sub_8071EE0_FindNewestSaveGameSector(void) {
     return bestSector;
 }
 
-bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save) {
+static bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save) {
     s16 i;
 
     memset(gameState, 0, sizeof(struct SaveGame));
@@ -451,7 +489,7 @@ bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveS
 }
 
 // Resets and writes save
-s16 sub_80721A4_CreateAndWriteNewSave(void) {
+static s16 sub_80721A4_CreateAndWriteNewSave(void) {
     s16 i;
     u16 flashError;
     
@@ -495,7 +533,7 @@ s16 sub_80721A4_CreateAndWriteNewSave(void) {
     return 1;
 }
 
-u16 sub_8072244_EraseSaveSector(s16 sectorNum) {
+static u16 sub_8072244_EraseSaveSector(s16 sectorNum) {
     u32 preIE;
     u32 preIME;
     u32 preDISPSTAT;
