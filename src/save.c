@@ -11,8 +11,6 @@
 struct SaveGame* gLastWrittenSaveGame;
 struct SaveSectorData* gSaveSectorDataBuffer;
 
-extern void sub_80717EC_GenerateNewSaveGame(struct SaveGame*);
-
 static s16 sub_8071EE0_FindNewestSaveGameSector(void);
 static bool16 sub_8072538_ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum);
 static bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save);
@@ -21,6 +19,57 @@ static bool16 sub_80724D4_HasChangesToSave(void);
 static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState);
 static s16 sub_8071C60_FindOldestSaveGameSector(void);
 static u16 sub_8071D24_WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
+
+static void sub_80717EC_GenerateNewSaveGame(struct SaveGame* gameState) {
+    s16 i, *p1;
+    struct SectorDataUnk2A4* p2;
+    struct SaveGameUnk2C* p3;
+    
+    memset(gameState, 0, sizeof(struct SaveGame));
+    
+    gameState->unk0 = 0;
+    gameState->unk13 = 1;
+    gameState->unk4 = 0;
+    gameState->unk5 = 0;
+    gameState->unk6 = 2;
+    gameState->unk20[0] = 0xffff;
+
+    p3 = &gameState->unk2C;
+    
+    p3->unk0 = 1;
+    p3->unk2 = 2;
+    p3->unk4 = 0x100;
+
+     // Not sure why these weren't done as array accesses
+    p1 = gameState->unk34;
+    // One less than the length of the array for some reason
+    for (i = 0; i < 0x13B; i++, p1++) {
+        *p1 = 36000;
+    }
+
+    gameState->unk1C = 0;
+    gameState->unk1D = 0;
+    gameState->unk1E = 0;
+
+    p2 = gameState->unk2AC;
+    for (i = 0; i < 10; i++, p2++) {
+        p2->unk10 = 0;
+        p2->unk11 = 0;
+        p2->unk12 = 0;
+        p2->unk13 = 0;
+        p2->unk4 = 0xFFFF;
+    }
+
+    gameState->unk374 = 0;
+    gameState->unk19 = 0;
+    gameState->unk1A = 0;
+    gameState->unk1B = 0;
+
+    gameState->unk15 = 0;
+    gameState->unk16 = 0;
+    gameState->unk17 = 0;
+    gameState->unk18 = 0;
+}
 
 static void sub_8071898_InitSaveGameSectorData(struct SaveSectorData* saveData) {
     s16 i, *p1;
@@ -166,7 +215,7 @@ static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct
         save->unk1B |= 0x40;
     }
 
-    switch (gameState->unk2C) {
+    switch (gameState->unk2C.unk0) {
         case 2:
             save->unk1C = 2;
             break;
@@ -178,7 +227,7 @@ static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct
             break;
     }
 
-    switch (gameState->unk2E) {
+    switch (gameState->unk2C.unk2) {
         case 2:
             save->unk1D = 2;
             break;
@@ -190,7 +239,7 @@ static bool16 sub_80719D0_PackSaveSectorData(struct SaveSectorData* save, struct
             break;
     }
 
-    switch (gameState->unk30) {
+    switch (gameState->unk2C.unk4) {
         case 2:
             save->unk1E = 2;
             break;
@@ -478,35 +527,35 @@ static bool16 sub_8071F8C_UnpackSaveSectorData(struct SaveGame* gameState, struc
 
      switch (save->unk1C) {
         case 4:
-            gameState->unk2C = 0x100;
+            gameState->unk2C.unk0 = 0x100;
             break;
         case 2:
-            gameState->unk2C = 2;
+            gameState->unk2C.unk0 = 2;
             break;
         case 1:
-            gameState->unk2C = 1;
+            gameState->unk2C.unk0 = 1;
             break;
     }
     switch (save->unk1D) {
         case 4:
-            gameState->unk2E = 0x100;
+            gameState->unk2C.unk2 = 0x100;
             break;
         case 2:
-            gameState->unk2E = 2;
+            gameState->unk2C.unk2 = 2;
             break;
         case 1:
-            gameState->unk2E = 1;
+            gameState->unk2C.unk2 = 1;
             break;
     }
     switch (save->unk1E) {
         case 4:
-            gameState->unk30 = 0x100;
+            gameState->unk2C.unk4 = 0x100;
             break;
         case 2:
-            gameState->unk30 = 2;
+            gameState->unk2C.unk4 = 2;
             break;
         case 1:
-            gameState->unk30 = 1;
+            gameState->unk2C.unk4 = 1;
             break;
     }
     

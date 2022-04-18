@@ -14,6 +14,12 @@ struct SectorDataUnk2A4 {
     u8 unk13;
 };
 
+struct SaveGameUnk2C {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+};
+
 struct SaveGame {
     u32 unk0;
 
@@ -43,10 +49,7 @@ struct SaveGame {
     // Could also be a struct
     u16 unk20[6];
 
-    u16 unk2C;
-    u16 unk2E;
-    u16 unk30;
-    u16 unk32;
+    struct SaveGameUnk2C unk2C;
 
     u16 unk34[0x13C];
     struct SectorDataUnk2A4 unk2AC[10];
@@ -69,6 +72,7 @@ struct SaveSectorData {
 
     u8 unk1A;
     u8 unk1B;
+
     u8 unk1C;
     u8 unk1D;
     u8 unk1E;
@@ -82,6 +86,7 @@ struct SaveSectorData {
 
     // Probably some structs
     u16 unk2C[0x13C];
+
     struct SectorDataUnk2A4 unk2A4[10];
 
     u32 unk36C;
@@ -89,7 +94,6 @@ struct SaveSectorData {
     u32 unk370;
     u32 checksum;
 };
-
 
 // If the sector's security field is not this value then the sector is either invalid or empty.
 #define SECTOR_SECURITY_NUM 0x4547474D
