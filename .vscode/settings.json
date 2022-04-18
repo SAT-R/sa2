@@ -17,6 +17,10 @@
         "random.h": "c",
         "save.h": "c",
         "flags.h": "c",
-        "gba.h": "c"
+        "gba.h": "c",
+        "intro.h": "c",
+        "stddef.h": "c",
+        "defines.h": "c",
+        "functions.h": "c"
     }
 }

@@ -43,6 +43,7 @@ SECTIONS
         build/sa2/asm/random.o(.text);
         build/sa2/src/random.o(.text);
         build/sa2/asm/code4.o(.text);
+        build/sa2/src/intro.o(.text);
         build/sa2/asm/intro.o(.text);
         build/sa2/asm/code5.o(.text);
         build/sa2/asm/m4a0.o(.text);
