@@ -66,6 +66,7 @@ void sub_801A51C(void) {
     }
 
     if (gFlags & 0x200) {
+        // TODO: find out what this does and what 0x200 means
         sub_8081C0C();
         return;
     }

@@ -1,8 +1,6 @@
 #ifndef GUARD_GLOBAL_H
 #define GUARD_GLOBAL_H
 
-#include <stdlib.h>
-
 #include "gba/gba.h"
 
 #define CONST_DATA __attribute__((section(".data")))

@@ -16,6 +16,7 @@
         "sprite.h": "c",
         "random.h": "c",
         "save.h": "c",
-        "flags.h": "c"
+        "flags.h": "c",
+        "gba.h": "c"
     }
 }

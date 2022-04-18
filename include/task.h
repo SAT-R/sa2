@@ -31,13 +31,7 @@ struct Unk_03003A20 {
     u8 space[0];
 };
 
-#define TaskGetStructPtr(taskp, dst) ({                                    \
-    if ((taskp)->flags & 0x10)                                             \
-        (dst) = (typeof(dst))(EWRAM_START + ((taskp)->structOffset << 2)); \
-    else                                                                   \
-        (dst) = (typeof(dst))(IWRAM_START + (taskp)->structOffset);        \
-    (dst);                                                                 \
-})
+#define TaskGetStructPtr(taskp, dst) (typeof(dst))(IWRAM_START + (taskp)->structOffset)
 
 extern struct Task gUnknown_030009F0[];
 extern struct Task gEmptyTask;
