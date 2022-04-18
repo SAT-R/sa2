@@ -38135,7 +38135,7 @@ _0801A2C2:
 	ble _0801A236
 	adds r0, r6, #0
 	bl sub_80716F0
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 _0801A2DA:
 	ldr r1, _0801A324 @ =0x0000FFFF
 	movs r0, #0

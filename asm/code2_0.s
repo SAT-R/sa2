@@ -1936,7 +1936,7 @@ sub_801B744: @ 0x0801B744
 	ldr r0, _0801B79C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	ldr r0, _0801B7A0 @ =gUnknown_030054CC
 	ldrb r0, [r0]
 	cmp r0, #0
@@ -46328,7 +46328,7 @@ _08030D68:
 	adds r0, r0, r1
 	movs r1, #0x1d
 	strb r1, [r0]
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	movs r0, #0
 	adds r1, r5, #0
 	bl sub_80029D0
@@ -46392,7 +46392,7 @@ _08030DE0:
 	strb r0, [r1]
 	bl sub_808E8B0
 _08030E16:
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	b _080310E6
 	.align 2, 0
 _08030E1C: .4byte gUnknown_02002540
@@ -53316,7 +53316,7 @@ sub_80346C8: @ 0x080346C8
 	ldr r0, [r0]
 	mov r1, sl
 	strb r1, [r0, #0x1a]
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 _08034700:
 	ldr r0, _08034730 @ =gUnknown_030054CC
 	ldrb r0, [r0]
@@ -131196,7 +131196,7 @@ _0805B6DE:
 	subs r4, #1
 	cmp r4, #0
 	bge _0805B610
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	ldr r0, _0805B718 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy

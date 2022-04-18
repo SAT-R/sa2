@@ -3,7 +3,7 @@
 This is a work in progress matching decompilation of Sonic Advance 2
 
 It so far builds the following ROM:
-* [sa2.gba](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d`
+* [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d`
 
 ### Current state
 

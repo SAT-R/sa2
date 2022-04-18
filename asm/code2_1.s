@@ -7057,7 +7057,7 @@ _08067260:
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl sub_8063C7C
-	bl sub_80724B0_NewSaveGame
+	bl NewSaveGame
 	ldr r0, [r4]
 	ldr r1, _08067290 @ =0x00000784
 	adds r0, r0, r1
@@ -8630,7 +8630,7 @@ _08067EF8: .4byte 0x00000163
 _08067EFC:
 	cmp r2, #2
 	bne _08067F04
-	bl sub_80724B0_NewSaveGame
+	bl NewSaveGame
 _08067F04:
 	movs r1, #0
 	ldr r5, _08067F58 @ =gLoadedSaveGame
@@ -8652,7 +8652,7 @@ _08067F0C:
 	asrs r0, r0, #0x10
 	cmp r0, #5
 	ble _08067F0C
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	ldr r1, _08067F60 @ =0x0000FFFF
 	movs r0, #0
 	bl sub_80029D0
@@ -14373,7 +14373,7 @@ _0806AD48: .4byte gUnknown_03000774
 _0806AD4C:
 	adds r0, r4, #0
 	bl sub_8063C7C
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	ldr r1, _0806AD80 @ =0x0000FFFF
 	movs r0, #0
 	bl sub_80029D0
@@ -17630,7 +17630,7 @@ _0806C732:
 	ldr r0, _0806C7B4 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	bl sub_801A770
 _0806C770:
 	pop {r4, r5, r6, r7}

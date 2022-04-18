@@ -8883,7 +8883,7 @@ sub_8089B40: @ 0x08089B40
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bne _08089BA0
-	bl sub_8072484_WriteSaveGame
+	bl WriteSaveGame
 	ldr r1, _08089B88 @ =0x0000FFFF
 	movs r0, #0
 	bl sub_80029D0

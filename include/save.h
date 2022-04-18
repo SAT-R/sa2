@@ -103,9 +103,11 @@ struct SaveSectorData {
 // Some sort of save data?
 extern struct SaveGame* gLoadedSaveGame;
 
-bool16 sub_8063940_SaveGameExists(void);
-void sub_80723C4_SaveInit(void);
-s16 sub_8072474_LoadSaveGame(void);
-void sub_80724C0_LoadCompletedSaveGame(void);
+void SaveInit(void);
+bool16 SaveGameExists(void);
+s16 NewSaveGame(void);
+s16 LoadSaveGame(void);
+void LoadCompletedSaveGame(void);
+bool32 WriteSaveGame(void);
 
 #endif

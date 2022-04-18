@@ -58,10 +58,10 @@ void sub_801A51C(void) {
         gUnknown_030054D4[i] = 0;
     }
 
-    sub_80723C4_SaveInit();
+    SaveInit();
 
-    if (sub_8063940_SaveGameExists()) {
-        sub_8072474_LoadSaveGame();
+    if (SaveGameExists()) {
+        LoadSaveGame();
         hasProfile = TRUE;
     }
 
@@ -72,7 +72,7 @@ void sub_801A51C(void) {
     
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         sub_808B3FC_CreateIntro();
-        sub_80724C0_LoadCompletedSaveGame();
+        LoadCompletedSaveGame();
         return;
     }
     
