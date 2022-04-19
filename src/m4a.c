@@ -5,6 +5,8 @@
 extern ALIGNED(4) char SoundMainRAM_Buffer[0x400];
 extern struct SoundInfo gSoundInfo;
 
+static void DummyCallback(void);
+
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust) {
     u32 val1;
     u32 val2;
@@ -22,7 +24,7 @@ u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust) {
                        val1 + umul3232H32(val2 - val1, fineAdjustShifted));
 }
 
-void nullsub_8095268(void) {}
+static void DummyFunc(void) {}
 
 void MPlayContinue(struct MusicPlayerInfo *mplayInfo) {
     if (mplayInfo->ident == ID_NUMBER) {
@@ -267,10 +269,10 @@ void SoundInit(struct SoundInfo *soundInfo) {
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
     soundInfo->plynote = (u32)ply_note;
-    soundInfo->CgbSound = DummyFunc;
-    soundInfo->CgbOscOff = (void (*)(u8))DummyFunc;
-    soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyFunc;
-    soundInfo->ExtVolPit = (u32)DummyFunc;
+    soundInfo->CgbSound = DummyCallback;
+    soundInfo->CgbOscOff = (void (*)(u8))DummyCallback;
+    soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyCallback;
+    soundInfo->ExtVolPit = (u32)DummyCallback;
     MPlayJumpTableCopy(gMPlayJumpTable);
     soundInfo->MPlayJumpTable = (u32)gMPlayJumpTable;
     SampleFreqSet(SOUND_MODE_FREQ_13379);  // ???
@@ -696,32 +698,32 @@ void CgbSound(void) {
         if (!(channels->sf & 0xc7)) continue;
         switch (ch) {
             case 1:
-                nrx0ptr = (vu8 *)(REG_ADDR_NR10);
-                nrx1ptr = (vu8 *)(REG_ADDR_NR11);
-                nrx2ptr = (vu8 *)(REG_ADDR_NR12);
-                nrx3ptr = (vu8 *)(REG_ADDR_NR13);
-                nrx4ptr = (vu8 *)(REG_ADDR_NR14);
+                nrx0ptr = &REG_NR10;
+                nrx1ptr = &REG_NR11;
+                nrx2ptr = &REG_NR12;
+                nrx3ptr = &REG_NR13;
+                nrx4ptr = &REG_NR14;
                 break;
             case 2:
                 nrx0ptr = (vu8 *)(REG_ADDR_NR10 + 1);
-                nrx1ptr = (vu8 *)(REG_ADDR_NR21);
-                nrx2ptr = (vu8 *)(REG_ADDR_NR22);
-                nrx3ptr = (vu8 *)(REG_ADDR_NR23);
-                nrx4ptr = (vu8 *)(REG_ADDR_NR24);
+                nrx1ptr = &REG_NR21;
+                nrx2ptr = &REG_NR22;
+                nrx3ptr = &REG_NR23;
+                nrx4ptr = &REG_NR24;
                 break;
             case 3:
-                nrx0ptr = (vu8 *)(REG_ADDR_NR30);
-                nrx1ptr = (vu8 *)(REG_ADDR_NR31);
-                nrx2ptr = (vu8 *)(REG_ADDR_NR32);
-                nrx3ptr = (vu8 *)(REG_ADDR_NR33);
-                nrx4ptr = (vu8 *)(REG_ADDR_NR34);
+                nrx0ptr = &REG_NR30;
+                nrx1ptr = &REG_NR31;
+                nrx2ptr = &REG_NR32;
+                nrx3ptr = &REG_NR33;
+                nrx4ptr = &REG_NR34;
                 break;
             default:
                 nrx0ptr = (vu8 *)(REG_ADDR_NR30 + 1);
-                nrx1ptr = (vu8 *)(REG_ADDR_NR41);
-                nrx2ptr = (vu8 *)(REG_ADDR_NR42);
-                nrx3ptr = (vu8 *)(REG_ADDR_NR43);
-                nrx4ptr = (vu8 *)(REG_ADDR_NR44);
+                nrx1ptr = &REG_NR41;
+                nrx2ptr = &REG_NR42;
+                nrx3ptr = &REG_NR43;
+                nrx4ptr = &REG_NR44;
                 break;
         }
         prevC15 = soundInfo->c15;
@@ -1231,4 +1233,4 @@ void ply_xswee(struct MusicPlayerInfo *mplayInfo,
     ++track->cmdPtr;
 }
 
-void DummyFunc(void) {}
+static void DummyCallback(void) {}

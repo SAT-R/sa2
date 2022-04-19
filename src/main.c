@@ -569,7 +569,7 @@ static void KeypadIntr(void) { REG_IF = INTR_FLAG_KEYPAD; }
 
 static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
-void DummyFunc_main(void) { return; }
+static void DummyFunc(void) { }
 
 void ClearOamBufferCpuSet(void) {
     gUnknown_0300188C = 0;

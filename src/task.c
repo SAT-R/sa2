@@ -5,9 +5,9 @@
 #include "global.h"
 #include "m4a.h"
 
-static void nullsub_8002A30(void);
-static void nullsub_8002A34(void);
-static void nullsub_8002A38(void);
+static void DummyCallback1(void);
+static void DummyCallback2(void);
+static void DummyCallback3(void);
 static void IwramFree(struct Unk_03003A20* arg0);
 static struct Task* TaskGetNextSlot(void);
 
@@ -28,7 +28,7 @@ u32 TaskInit(void) {
         return 0;
     }
 
-    r4->main = nullsub_8002A30;
+    r4->main = DummyCallback1;
     r4->unk10 = 0;
     r4->flags = 0;
     r4->unk0 = 0;
@@ -41,7 +41,7 @@ u32 TaskInit(void) {
 
     ((struct Task*)(r4->next + IWRAM_START))->unk2 = (u32)r4;
     r4 = (struct Task*)(r4->next + IWRAM_START);
-    r4->main = nullsub_8002A34;
+    r4->main = DummyCallback2;
     r4->unk10 = 0xffff;
     r4->flags = 0;
     r4->unk0 = 0;
@@ -132,7 +132,7 @@ void TaskDestroy(struct Task* task) {
                 gTaskList[--gLastTaskNum] = task;
                 task->unk0 = 0;
                 task->unk2 = 0;
-                task->main = nullsub_8002A38;
+                task->main = DummyCallback3;
                 task->unk10 = 0;
                 task->flags = 0;
                 task->structOffset = 0;
@@ -342,8 +342,8 @@ void sub_80029D0(u16 arg0, u16 arg1) {
     }
 }
 
-static void nullsub_8002A30(void) {}
+static void DummyCallback1(void) {}
 
-static void nullsub_8002A34(void) {}
+static void DummyCallback2(void) {}
 
-static void nullsub_8002A38(void) {}
+static void DummyCallback3(void) {}

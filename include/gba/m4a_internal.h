@@ -388,7 +388,6 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 void CgbSound(void);
 void CgbOscOff(u8);
 u32 MidiKeyToCgbFreq(u8, u8, u8);
-void DummyFunc(void);
 void MPlayJumpTableCopy(void **mplayJumpTable);
 void SampleFreqSet(u32 freq);
 void m4aSoundVSyncOn(void);
