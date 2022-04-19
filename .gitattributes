@@ -1,17 +1,21 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+*.pal text eol=crlf
 
-# Custom for Visual Studio
-*.cs     diff=csharp
+*.s text eol=lf
+*.txt text eol=lf
+Makefile text eol=lf
+*.mk text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.pl text eol=lf
+*.inc text eol=lf
+*.sha1 text eol=lf
+*.sed text eol=lf
+*.sh text eol=lf
+*.json text eol=lf
 
-# Standard to msysgit
-*.doc	 diff=astextplain
-*.DOC	 diff=astextplain
-*.docx diff=astextplain
-*.DOCX diff=astextplain
-*.dot  diff=astextplain
-*.DOT  diff=astextplain
-*.pdf  diff=astextplain
-*.PDF	 diff=astextplain
-*.rtf	 diff=astextplain
-*.RTF	 diff=astextplain
+*.png binary
+*.bin binary
+*.pcm binary
+
+*.h linguist-language=C
+*.inc linguist-language=Assembly
