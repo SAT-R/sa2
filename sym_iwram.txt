@@ -469,10 +469,7 @@
 . = 0x000009F0; gUnknown_030009F0 = .;
 . = 0x00000A58; gUnknown_03000A58 = .;
 . = 0x00000A5A; gUnknown_03000A5A = .;
-. = 0x00000F34; gUnknown_03000F34 = .;
-. = 0x00000F36; gUnknown_03000F36 = .;
 . = 0x00000F38; gUnknown_03000F38 = .;
-. = 0x00000F3A; gUnknown_03000F3A = .;
 . = 0x00000F3C; gUnknown_03000F3C = .;
 . = 0x00000F3D; gUnknown_03000F3D = .;
 . = 0x00000F3E; gUnknown_03000F3E = .;
