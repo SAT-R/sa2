@@ -9,7 +9,7 @@ struct Unk_03002400 {
     u32 unk4; // vram
     u16 unk8;
     u16 unkA;
-    u16 unkC; // vram
+    u32 unkC; // vram
     const u16 *unk10;
     u16 unk14;
     u16 unk16;
@@ -25,6 +25,7 @@ struct Unk_03002400 {
     u8 unk2A;
     u8 unk2B;
     u8 unk2C;
+    u8 unk2D;
     u16 unk2E;
     u16 unk30;
     u16 unk32;
@@ -43,7 +44,7 @@ struct Unk_03002EC0 {
     u8 fillerA[2];
 };
 
-void sub_08153060(struct Unk_03002400 *);
+void sub_8002A3C(struct Unk_03002400 *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);

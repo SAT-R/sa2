@@ -103,11 +103,11 @@ extern u8 gUnknown_030026F4;
 extern u8 gUnknown_03002AE4;
 extern u8 gUnknown_03005390;
 extern u8 gUnknown_03004D5C;
-extern u8 gUnknown_03002280[];
-extern int gUnknown_03004D80;
+extern u8 gUnknown_03002280[16];
+extern u8 gUnknown_03004D80[16];
 extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
-extern short gUnknown_030017F4[2];
-extern short gDispCnt;  // gDispCnt
+extern u16 gUnknown_030017F4[2];
+extern u16 gDispCnt;  // gDispCnt
 
 extern u8 gUnknown_030018F0;
 extern u8 gUnknown_03002AE0;

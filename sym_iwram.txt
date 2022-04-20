@@ -507,8 +507,6 @@
 . = 0x00002270; gWinRegs = .;
 . = 0x0000227C; gLastTaskNum = .;
 . = 0x00002280; gUnknown_03002280 = .;
-. = 0x00002282; gUnknown_03002282 = .;
-. = 0x00002283; gUnknown_03002283 = .;
 . = 0x00002290; gInput = .;
 . = 0x000022A0; gUnknown_030022A0 = .;
 . = 0x000022AC; gUnknown_030022AC = .;

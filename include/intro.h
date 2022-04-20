@@ -2,6 +2,7 @@
 #define GUARD_INTRO_H
 
 #include "global.h"
+#include "sprite.h"
 
 struct UNK_0808B3FC_UNK27C {
     u8 unk0;
@@ -27,7 +28,10 @@ struct UNK_0808B3FC_UNK270 {
 };
 
 struct UNK_0808B3FC {
-    u8 filler0[0x270];
+    struct Unk_03002400 unk0;
+    struct Unk_03002400 unk40;
+
+    u8 filler0[0x1F0];
 
     struct UNK_0808B3FC_UNK270 unk270;
     struct UNK_0808B3FC_UNK27C unk27C;
@@ -55,7 +59,6 @@ struct UNK_0808B3FC {
 
     u8 fillerF43[33];
 }; /* size 0xF64 */
-
 
 // Store the intro data objects
 struct UNK_3005B80 {

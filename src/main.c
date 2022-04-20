@@ -62,7 +62,7 @@ void GameInit(void) {
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
         gFlags = 0x200;
-        DmaSet(3, OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
+        DmaSet(3, (void*)OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
     }
 
     // Skip the intro if these
@@ -85,7 +85,9 @@ void GameInit(void) {
     gUnknown_03002A84 = 0;
 
     DmaFill32(3, 0, gUnknown_03002280, 0x10);
-    gUnknown_03004D80 = 0;
+
+    // TODO: sort out this type
+    *(u32*)gUnknown_03004D80 = 0;
 
     DmaFill32(3, 0, gBgScrollRegs, sizeof(gBgScrollRegs));
 

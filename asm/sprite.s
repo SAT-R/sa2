@@ -2805,7 +2805,7 @@ _08004024:
 	ldr r1, _080040DC @ =gUnknown_03002280
 	adds r1, #1
 	adds r4, r0, r1
-	ldr r6, _080040E0 @ =gUnknown_03002283
+	ldr r6, _080040E0 @ =gUnknown_03002280 + 3
 	adds r6, r0, r6
 	str r6, [sp, #0xc]
 	ldrb r1, [r4]
@@ -2816,7 +2816,7 @@ _08004024:
 	bne _08004056
 	ldr r0, _080040DC @ =gUnknown_03002280
 	add r0, sl
-	ldr r1, _080040E4 @ =gUnknown_03002282
+	ldr r1, _080040E4 @ =gUnknown_03002280 + 2
 	add r1, sl
 	ldrb r0, [r0]
 	mov r7, r8
@@ -2895,8 +2895,8 @@ _08004056:
 	b _080041C0
 	.align 2, 0
 _080040DC: .4byte gUnknown_03002280
-_080040E0: .4byte gUnknown_03002283
-_080040E4: .4byte gUnknown_03002282
+_080040E0: .4byte gUnknown_03002280 + 3
+_080040E4: .4byte gUnknown_03002280 + 2
 _080040E8: .4byte gBgCntRegs
 _080040EC: .4byte gDispCnt
 _080040F0: .4byte gUnknown_03004D80
@@ -2914,7 +2914,7 @@ _08004106:
 	add r0, r8
 	mov ip, r0
 	ldr r2, _08004160 @ =0x040000D4
-	ldr r1, _08004164 @ =gUnknown_03002282
+	ldr r1, _08004164 @ =gUnknown_03002280 + 2
 	add r1, sl
 	mov r8, r1
 	ldr r6, [sp, #0xc]
@@ -2957,7 +2957,7 @@ _08004118:
 	.align 2, 0
 _0800415C: .4byte gUnknown_03004D80
 _08004160: .4byte 0x040000D4
-_08004164: .4byte gUnknown_03002282
+_08004164: .4byte gUnknown_03002280 + 2
 _08004168:
 	ldr r1, [sp, #8]
 	lsls r0, r1, #1
@@ -2973,7 +2973,7 @@ _08004168:
 	bhi _08004182
 	movs r3, #0x40
 _08004182:
-	ldr r1, _080041C8 @ =gUnknown_03002282
+	ldr r1, _080041C8 @ =gUnknown_03002280 + 2
 	add r1, sl
 	ldrb r0, [r1]
 	cmp r0, #0xff
@@ -2990,7 +2990,7 @@ _08004182:
 	ldr r1, _080041D0 @ =0x040000D4
 	str r6, [r1]
 	str r0, [r1, #4]
-	ldr r0, _080041D4 @ =gUnknown_03002283
+	ldr r0, _080041D4 @ =gUnknown_03002280 + 3
 	add r0, sl
 	ldrb r0, [r0]
 	subs r0, r0, r4
@@ -3009,12 +3009,12 @@ _080041C0:
 	adds r7, #1
 	b _0800422C
 	.align 2, 0
-_080041C8: .4byte gUnknown_03002282
+_080041C8: .4byte gUnknown_03002280 + 2
 _080041CC: .4byte gUnknown_03004D80
 _080041D0: .4byte 0x040000D4
-_080041D4: .4byte gUnknown_03002283
+_080041D4: .4byte gUnknown_03002280 + 3
 _080041D8:
-	ldr r0, _08004260 @ =gUnknown_03002283
+	ldr r0, _08004260 @ =gUnknown_03002280 + 3
 	add r0, sl
 	add r2, sp, #4
 	mov sb, r2
@@ -3087,7 +3087,7 @@ _0800424E:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08004260: .4byte gUnknown_03002283
+_08004260: .4byte gUnknown_03002280 + 3
 _08004264: .4byte gUnknown_03004D80
 _08004268: .4byte 0x040000D4
 _0800426C: .4byte gUnknown_03002280
