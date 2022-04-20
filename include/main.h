@@ -98,7 +98,6 @@ struct BlendRegs {
     u16 bldY;
 };
 
-extern int gUnknown_03002790;
 extern u8 gUnknown_030026F4;
 extern u8 gUnknown_03002AE4;
 extern u8 gUnknown_03005390;
@@ -141,21 +140,17 @@ extern u8 gUnknown_030053B4;
 extern short gUnknown_03001888;
 extern int gUnknown_03001940;
 
-extern int gUnknown_030007C4;
 extern u8 gUnknown_03001954;
 extern int gUnknown_0203B000;
 extern u8 gUnknown_030026E0[];
 extern u8 gUnknown_03001948;
 extern u8 gUnknown_03001870[];
 extern FuncType_030053A0 gUnknown_030053A0[];
-extern int gUnknown_03002790;
 extern u8 gUnknown_03002874;
 
-extern IntrFunc gUnknown_030007F0;
 extern IntrFunc gIntrTable[];
 
 extern void sub_8007CC8(void);
-extern void SetFlashTimerIntr(int a, int* b);
 
 void UpdateScreenDma();
 void ClearOamBufferDma();

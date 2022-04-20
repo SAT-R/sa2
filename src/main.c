@@ -55,6 +55,7 @@ static SpriteUpdateFunc const spriteUpdateFuncs[] = {
 
 void GameInit(void) {
     s16 i;
+    u16 errorIdentifying;
 
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     gFlags = 0;
@@ -192,15 +193,16 @@ void GameInit(void) {
     gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
     sub_8007CC8();
 
-    if (IdentifyFlash()) {
+    errorIdentifying = IdentifyFlash();
+    if (errorIdentifying) {
         gFlags |= FLAGS_NO_FLASH_MEMORY;
     } else {
-        SetFlashTimerIntr(1, &gUnknown_030007C4);
+        SetFlashTimerIntr(1, &gIntrTable[5]);
     }
 
     // Setup interrupt table
-    DmaCopy32(3, IntrMain, &gUnknown_030007F0, 0x200);
-    INTR_VECTOR = &gUnknown_030007F0;
+    DmaCopy32(3, IntrMain, &gIntrTable[16], 0x200);
+    INTR_VECTOR = &gIntrTable[16];
 
     REG_IME = INTR_FLAG_VBLANK;
     REG_IE = INTR_FLAG_VBLANK;

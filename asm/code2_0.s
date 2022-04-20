@@ -103790,7 +103790,7 @@ sub_804DB34: @ 0x0804DB34
 	bl sub_8050958
 	adds r0, r7, #0
 	bl sub_804DCF8
-	ldr r1, _0804DC24 @ =gUnknown_030007B4
+	ldr r1, _0804DC24 @ =gIntrTable+4
 	adds r5, r5, r1
 	ldr r6, _0804DC28 @ =gUnknown_03005960
 	ldr r0, [r6]
@@ -103846,7 +103846,7 @@ _0804DC14: .4byte gUnknown_03000594
 _0804DC18: .4byte gUnknown_03000654
 _0804DC1C: .4byte gDispCnt
 _0804DC20: .4byte 0x00009FFF
-_0804DC24: .4byte gUnknown_030007B4
+_0804DC24: .4byte gIntrTable+4
 _0804DC28: .4byte gUnknown_03005960
 _0804DC2C:
 	adds r0, r7, #0
@@ -109720,7 +109720,7 @@ sub_8050A7C: @ 0x08050A7C
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	ldr r1, _08050B1C @ =gUnknown_030007B8
+	ldr r1, _08050B1C @ =gIntrTable+8
 	adds r0, r5, r1
 	ldr r0, [r0]
 	cmp r0, #0
@@ -109730,7 +109730,7 @@ _08050A94:
 	movs r4, #0
 	ldr r0, _08050B20 @ =gUnknown_030000CC
 	adds r7, r5, r0
-	ldr r1, _08050B24 @ =gUnknown_030007F4
+	ldr r1, _08050B24 @ =gIntrTable+68
 	adds r5, r5, r1
 _08050A9E:
 	lsls r0, r4, #4
@@ -109791,9 +109791,9 @@ _08050AB8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08050B1C: .4byte gUnknown_030007B8
+_08050B1C: .4byte gIntrTable+8
 _08050B20: .4byte gUnknown_030000CC
-_08050B24: .4byte gUnknown_030007F4
+_08050B24: .4byte gIntrTable+68
 _08050B28: .4byte gUnknown_03005B4C
 
 	thumb_func_start sub_8050B2C
