@@ -9,7 +9,6 @@
 #include "main.h"
 #include "data.h"
 
-
 extern struct UNK_3005B80 gUnknown_03005B80;
 
 extern u8 gUnknown_080E0EF4[0x160];

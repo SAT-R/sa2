@@ -27,13 +27,42 @@ struct UNK_0808B3FC_UNK270 {
     u16 unkA;
 };
 
+struct UNK_0808B3FC_UNK240 {
+    u32 unk0;
+    u32 unk4;
+    u16 unk8;
+    u16 unkA;
+    u32 unkC;
+    u32 unk10;
+    u16 unk14;
+    u16 unk16;
+    u16 unk18;
+    u16 unk1A;
+    u16 unk1C;
+    u16 unk1E;
+    u8 unk20;
+    u8 unk21;
+    u8 unk22;
+    u8 unk23;
+    u8 unk24;
+    u8 unk25;
+    u8 filler26[10];
+};
+
 struct UNK_0808B3FC {
+    // Possibly an array of ui elements?
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
     struct Unk_03002400 unk80;
+    struct Unk_03002400 unkC0;
+    struct Unk_03002400 unk100;
+    struct Unk_03002400 unk140;
+    struct Unk_03002400 unk180;
+    struct Unk_03002400 unk1C0;
+    struct Unk_03002400 unk200;
 
-    u8 fillerC0[0x1B0];
-
+    // Dunno what these are
+    struct UNK_0808B3FC_UNK240 unk240;
     struct UNK_0808B3FC_UNK270 unk270;
     struct UNK_0808B3FC_UNK27C unk27C;
 
