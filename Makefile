@@ -1,6 +1,10 @@
 #### Tools ####
 include config.mk
 
+# Unused atm
+NODEP = 0
+SCAN_DEPS = 1
+
 SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
 CC1      := tools/agbcc/bin/agbcc
@@ -86,8 +90,7 @@ tidy:
 %.png: ;
 %.pal: ;
 
-$(SAMPLE_SUBDIR)/%.bin: $(SAMPLE_SUBDIR)/%.aif
-	$(AIF) $< $@
+sound/%.bin: sound/%.aif ; $(AIF) $< $@
 	
 $(ELF): $(OBJS) $(LDSCRIPT)
 	$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
@@ -110,7 +113,7 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 
 # Tell make that sounds.s depends
 # on all the .bin files in `direct_sound_samples`
-sound/sound.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
+data/sound_data.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
 
 $(SOUND_ASM_BUILDDIR)/%.o: $(SOUND_ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<

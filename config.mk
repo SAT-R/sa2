@@ -14,6 +14,7 @@ BUILD_NAME := sa2
 TITLE      := SONICADVANC2
 GAME_CODE  := A2NE
 
+
 # Revision
 ifeq ($(GAME_REVISION), 0)
   BUILD_NAME := $(BUILD_NAME)
