@@ -2239,7 +2239,7 @@ gUnknown_08C53E40:	@ 0x08C53E40
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD36BC		@ voicegroup/tone
+	.word	voicegroup021		@ voicegroup/tone
 
 	.word	gUnknown_08C53E40_1		@ track
 	.word	gUnknown_08C53E40_2		@ track
@@ -3047,7 +3047,7 @@ gUnknown_08C5415C:	@ 0x08C5415C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0D10		@ voicegroup/tone
+	.word	voicegroup011		@ voicegroup/tone
 
 	.word	gUnknown_08C5415C_1		@ track
 	.word	gUnknown_08C5415C_2		@ track
@@ -3779,7 +3779,7 @@ gUnknown_08C54460:	@ 0x08C54460
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C54460_1		@ track
 	.word	gUnknown_08C54460_2		@ track
@@ -5363,7 +5363,7 @@ gUnknown_08C54AB8:	@ 0x08C54AB8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C54AB8_1		@ track
 	.word	gUnknown_08C54AB8_2		@ track
@@ -7341,7 +7341,7 @@ gUnknown_08C552A4:	@ 0x08C552A4
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C552A4_1		@ track
 	.word	gUnknown_08C552A4_2		@ track
@@ -9019,7 +9019,7 @@ gUnknown_08C55974:	@ 0x08C55974
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C55974_1		@ track
 	.word	gUnknown_08C55974_2		@ track
@@ -10974,7 +10974,7 @@ gUnknown_08C56174:	@ 0x08C56174
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C56174_1		@ track
 	.word	gUnknown_08C56174_2		@ track
@@ -14110,7 +14110,7 @@ gUnknown_08C56E78:	@ 0x08C56E78
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C56E78_1		@ track
 	.word	gUnknown_08C56E78_2		@ track
@@ -18903,7 +18903,7 @@ gUnknown_08C5820C:	@ 0x08C5820C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C5820C_1		@ track
 	.word	gUnknown_08C5820C_2		@ track
@@ -23386,7 +23386,7 @@ gUnknown_08C59458:	@ 0x08C59458
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C59458_1		@ track
 	.word	gUnknown_08C59458_2		@ track
@@ -26580,7 +26580,7 @@ gUnknown_08C5A208:	@ 0x08C5A208
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C5A208_1		@ track
 	.word	gUnknown_08C5A208_2		@ track
@@ -30998,7 +30998,7 @@ gUnknown_08C5B47C:	@ 0x08C5B47C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C5B47C_1		@ track
 	.word	gUnknown_08C5B47C_2		@ track
@@ -35470,7 +35470,7 @@ gUnknown_08C5C6CC:	@ 0x08C5C6CC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C5C6CC_1		@ track
 	.word	gUnknown_08C5C6CC_2		@ track
@@ -41118,7 +41118,7 @@ gUnknown_08C5DD98:	@ 0x08C5DD98
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C5DD98_1		@ track
 	.word	gUnknown_08C5DD98_2		@ track
@@ -47709,7 +47709,7 @@ gUnknown_08C5F90C:	@ 0x08C5F90C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C5F90C_1		@ track
 	.word	gUnknown_08C5F90C_2		@ track
@@ -58657,7 +58657,7 @@ gUnknown_08C6271C:	@ 0x08C6271C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C6271C_1		@ track
 	.word	gUnknown_08C6271C_2		@ track
@@ -62949,7 +62949,7 @@ gUnknown_08C638C8:	@ 0x08C638C8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C638C8_1		@ track
 	.word	gUnknown_08C638C8_2		@ track
@@ -67933,7 +67933,7 @@ gUnknown_08C64D24:	@ 0x08C64D24
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C64D24_1		@ track
 	.word	gUnknown_08C64D24_2		@ track
@@ -74850,7 +74850,7 @@ gUnknown_08C669D8:	@ 0x08C669D8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C669D8_1		@ track
 	.word	gUnknown_08C669D8_2		@ track
@@ -86777,7 +86777,7 @@ gUnknown_08C69A24:	@ 0x08C69A24
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C69A24_1		@ track
 	.word	gUnknown_08C69A24_2		@ track
@@ -90777,7 +90777,7 @@ gUnknown_08C6ABBC:	@ 0x08C6ABBC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C6ABBC_1		@ track
 	.word	gUnknown_08C6ABBC_2		@ track
@@ -94101,7 +94101,7 @@ gUnknown_08C6BA2C:	@ 0x08C6BA2C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C6BA2C_1		@ track
 	.word	gUnknown_08C6BA2C_2		@ track
@@ -95873,7 +95873,7 @@ gUnknown_08C6C23C:	@ 0x08C6C23C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C6C23C_1		@ track
 	.word	gUnknown_08C6C23C_2		@ track
@@ -100302,7 +100302,7 @@ gUnknown_08C6D4EC:	@ 0x08C6D4EC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C6D4EC_1		@ track
 	.word	gUnknown_08C6D4EC_2		@ track
@@ -102301,7 +102301,7 @@ gUnknown_08C6DCFC:	@ 0x08C6DCFC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C6DCFC_1		@ track
 	.word	gUnknown_08C6DCFC_2		@ track
@@ -102738,7 +102738,7 @@ gUnknown_08C6DEBC:	@ 0x08C6DEBC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0110		@ voicegroup/tone
+	.word	voicegroup009		@ voicegroup/tone
 
 	.word	gUnknown_08C6DEBC_1		@ track
 	.word	gUnknown_08C6DEBC_2		@ track
@@ -108092,7 +108092,7 @@ gUnknown_08C6F4C0:	@ 0x08C6F4C0
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C6F4C0_1		@ track
 	.word	gUnknown_08C6F4C0_2		@ track
@@ -109818,7 +109818,7 @@ gUnknown_08C6FC3C:	@ 0x08C6FC3C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C6FC3C_1		@ track
 	.word	gUnknown_08C6FC3C_2		@ track
@@ -122823,7 +122823,7 @@ gUnknown_08C73008:	@ 0x08C73008
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C73008_1		@ track
 	.word	gUnknown_08C73008_2		@ track
@@ -127159,7 +127159,7 @@ gUnknown_08C74210:	@ 0x08C74210
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C74210_1		@ track
 	.word	gUnknown_08C74210_2		@ track
@@ -130217,7 +130217,7 @@ gUnknown_08C74F3C:	@ 0x08C74F3C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C74F3C_1		@ track
 	.word	gUnknown_08C74F3C_2		@ track
@@ -133057,7 +133057,7 @@ gUnknown_08C75C14:	@ 0x08C75C14
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C75C14_1		@ track
 	.word	gUnknown_08C75C14_2		@ track
@@ -134705,7 +134705,7 @@ gUnknown_08C7632C:	@ 0x08C7632C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C7632C_1		@ track
 	.word	gUnknown_08C7632C_2		@ track
@@ -135166,7 +135166,7 @@ gUnknown_08C764FC:	@ 0x08C764FC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C764FC_1		@ track
 	.word	gUnknown_08C764FC_2		@ track
@@ -137754,7 +137754,7 @@ gUnknown_08C76EF8:	@ 0x08C76EF8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD30BC		@ voicegroup/tone
+	.word	voicegroup020		@ voicegroup/tone
 
 	.word	gUnknown_08C76EF8_1		@ track
 	.word	gUnknown_08C76EF8_2		@ track
@@ -142631,7 +142631,7 @@ gUnknown_08C78270:	@ 0x08C78270
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C78270_1		@ track
 	.word	gUnknown_08C78270_2		@ track
@@ -149776,7 +149776,7 @@ gUnknown_08C7A070:	@ 0x08C7A070
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C7A070_1		@ track
 	.word	gUnknown_08C7A070_2		@ track
@@ -153079,7 +153079,7 @@ gUnknown_08C7AD88:	@ 0x08C7AD88
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C7AD88_1		@ track
 	.word	gUnknown_08C7AD88_2		@ track
@@ -154696,7 +154696,7 @@ gUnknown_08C7B430:	@ 0x08C7B430
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1B44		@ voicegroup/tone
+	.word	voicegroup014		@ voicegroup/tone
 
 	.word	gUnknown_08C7B430_1		@ track
 	.word	gUnknown_08C7B430_2		@ track
@@ -157196,7 +157196,7 @@ gUnknown_08C7BF48:	@ 0x08C7BF48
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C7BF48_1		@ track
 	.word	gUnknown_08C7BF48_2		@ track
@@ -160269,7 +160269,7 @@ gUnknown_08C7CC88:	@ 0x08C7CC88
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C7CC88_1		@ track
 	.word	gUnknown_08C7CC88_2		@ track
@@ -160586,7 +160586,7 @@ gUnknown_08C7CDCC:	@ 0x08C7CDCC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C7CDCC_1		@ track
 	.word	gUnknown_08C7CDCC_2		@ track
@@ -163578,7 +163578,7 @@ gUnknown_08C7DA24:	@ 0x08C7DA24
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C7DA24_1		@ track
 	.word	gUnknown_08C7DA24_2		@ track
@@ -165261,7 +165261,7 @@ gUnknown_08C7E0F8:	@ 0x08C7E0F8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C7E0F8_1		@ track
 	.word	gUnknown_08C7E0F8_2		@ track
@@ -165523,7 +165523,7 @@ gUnknown_08C7E1F0:	@ 0x08C7E1F0
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C7E1F0_1		@ track
 	.word	gUnknown_08C7E1F0_2		@ track
@@ -165982,7 +165982,7 @@ gUnknown_08C7E3A8:	@ 0x08C7E3A8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C7E3A8_1		@ track
 	.word	gUnknown_08C7E3A8_2		@ track
@@ -167307,7 +167307,7 @@ gUnknown_08C7E8DC:	@ 0x08C7E8DC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0110		@ voicegroup/tone
+	.word	voicegroup009		@ voicegroup/tone
 
 	.word	gUnknown_08C7E8DC_1		@ track
 	.word	gUnknown_08C7E8DC_2		@ track
@@ -167689,7 +167689,7 @@ gUnknown_08C7EA40:	@ 0x08C7EA40
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0110		@ voicegroup/tone
+	.word	voicegroup009		@ voicegroup/tone
 
 	.word	gUnknown_08C7EA40_1		@ track
 	.word	gUnknown_08C7EA40_2		@ track
@@ -168076,7 +168076,7 @@ gUnknown_08C7EBC8:	@ 0x08C7EBC8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C7EBC8_1		@ track
 	.word	gUnknown_08C7EBC8_2		@ track
@@ -171255,7 +171255,7 @@ gUnknown_08C7F888:	@ 0x08C7F888
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD42BC		@ voicegroup/tone
+	.word	voicegroup023		@ voicegroup/tone
 
 	.word	gUnknown_08C7F888_1		@ track
 	.word	gUnknown_08C7F888_2		@ track
@@ -172165,7 +172165,7 @@ gUnknown_08C7FC04:	@ 0x08C7FC04
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD42BC		@ voicegroup/tone
+	.word	voicegroup023		@ voicegroup/tone
 
 	.word	gUnknown_08C7FC04_1		@ track
 	.word	gUnknown_08C7FC04_2		@ track
@@ -173078,7 +173078,7 @@ gUnknown_08C7FFF4:	@ 0x08C7FFF4
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C7FFF4_1		@ track
 	.word	gUnknown_08C7FFF4_2		@ track
@@ -174356,7 +174356,7 @@ gUnknown_08C8057C:	@ 0x08C8057C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD42BC		@ voicegroup/tone
+	.word	voicegroup023		@ voicegroup/tone
 
 	.word	gUnknown_08C8057C_1		@ track
 	.word	gUnknown_08C8057C_2		@ track
@@ -176023,7 +176023,7 @@ gUnknown_08C80C64:	@ 0x08C80C64
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD42BC		@ voicegroup/tone
+	.word	voicegroup023		@ voicegroup/tone
 
 	.word	gUnknown_08C80C64_1		@ track
 	.word	gUnknown_08C80C64_2		@ track
@@ -176063,7 +176063,7 @@ gUnknown_08C80C98:	@ 0x08C80C98
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80C98_1		@ track
 
@@ -176145,7 +176145,7 @@ gUnknown_08C80CE4:	@ 0x08C80CE4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80CE4_1		@ track
 
@@ -176199,7 +176199,7 @@ gUnknown_08C80D14:	@ 0x08C80D14
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80D14_1		@ track
 
@@ -176245,7 +176245,7 @@ gUnknown_08C80D3C:	@ 0x08C80D3C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80D3C_1		@ track
 
@@ -176291,7 +176291,7 @@ gUnknown_08C80D64:	@ 0x08C80D64
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C80D64_1		@ track
 
@@ -176333,7 +176333,7 @@ gUnknown_08C80D88:	@ 0x08C80D88
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C80D88_1		@ track
 
@@ -176371,7 +176371,7 @@ gUnknown_08C80DA8:	@ 0x08C80DA8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C80DA8_1		@ track
 
@@ -176409,7 +176409,7 @@ gUnknown_08C80DC8:	@ 0x08C80DC8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80DC8_1		@ track
 
@@ -176619,7 +176619,7 @@ gUnknown_08C80E94:	@ 0x08C80E94
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C80E94_1		@ track
 
@@ -176661,7 +176661,7 @@ gUnknown_08C80EB8:	@ 0x08C80EB8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80EB8_1		@ track
 
@@ -176767,7 +176767,7 @@ gUnknown_08C80F1C:	@ 0x08C80F1C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C80F1C_1		@ track
 
@@ -176941,7 +176941,7 @@ gUnknown_08C80FC4:	@ 0x08C80FC4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C80FC4_1		@ track
 
@@ -177005,7 +177005,7 @@ gUnknown_08C81000:	@ 0x08C81000
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81000_1		@ track
 
@@ -177103,7 +177103,7 @@ gUnknown_08C8105C:	@ 0x08C8105C
 	.byte	15		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C8105C_1		@ track
 
@@ -177185,7 +177185,7 @@ gUnknown_08C810A8:	@ 0x08C810A8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C810A8_1		@ track
 
@@ -177219,7 +177219,7 @@ gUnknown_08C810C4:	@ 0x08C810C4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C810C4_1		@ track
 
@@ -177253,7 +177253,7 @@ gUnknown_08C810E0:	@ 0x08C810E0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C810E0_1		@ track
 
@@ -177295,7 +177295,7 @@ gUnknown_08C81104:	@ 0x08C81104
 	.byte	40		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81104_1		@ track
 
@@ -177403,7 +177403,7 @@ gUnknown_08C8116C:	@ 0x08C8116C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C8116C_1		@ track
 
@@ -177445,7 +177445,7 @@ gUnknown_08C81190:	@ 0x08C81190
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81190_1		@ track
 
@@ -177675,7 +177675,7 @@ gUnknown_08C81270:	@ 0x08C81270
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81270_1		@ track
 
@@ -177905,7 +177905,7 @@ gUnknown_08C81350:	@ 0x08C81350
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81350_1		@ track
 
@@ -178155,7 +178155,7 @@ gUnknown_08C81444:	@ 0x08C81444
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81444_1		@ track
 
@@ -178189,7 +178189,7 @@ gUnknown_08C81460:	@ 0x08C81460
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81460_1		@ track
 
@@ -178223,7 +178223,7 @@ gUnknown_08C8147C:	@ 0x08C8147C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C8147C_1		@ track
 
@@ -178345,7 +178345,7 @@ gUnknown_08C814F0:	@ 0x08C814F0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C814F0_1		@ track
 
@@ -178383,7 +178383,7 @@ gUnknown_08C81510:	@ 0x08C81510
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81510_1		@ track
 
@@ -178486,7 +178486,7 @@ gUnknown_08C8156C:	@ 0x08C8156C
 	.byte	50		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C8156C_1		@ track
 	.word	gUnknown_08C8156C_2		@ track
@@ -178533,7 +178533,7 @@ gUnknown_08C81598:	@ 0x08C81598
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81598_1		@ track
 
@@ -178571,7 +178571,7 @@ gUnknown_08C815B8:	@ 0x08C815B8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C815B8_1		@ track
 
@@ -178609,7 +178609,7 @@ gUnknown_08C815D8:	@ 0x08C815D8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C815D8_1		@ track
 
@@ -178659,7 +178659,7 @@ gUnknown_08C81604:	@ 0x08C81604
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81604_1		@ track
 
@@ -178873,7 +178873,7 @@ gUnknown_08C816D4:	@ 0x08C816D4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C816D4_1		@ track
 
@@ -178915,7 +178915,7 @@ gUnknown_08C816F8:	@ 0x08C816F8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C816F8_1		@ track
 
@@ -179129,7 +179129,7 @@ gUnknown_08C817C8:	@ 0x08C817C8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C817C8_1		@ track
 
@@ -179219,7 +179219,7 @@ gUnknown_08C8181C:	@ 0x08C8181C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C8181C_1		@ track
 
@@ -179257,7 +179257,7 @@ gUnknown_08C8183C:	@ 0x08C8183C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C8183C_1		@ track
 
@@ -179339,7 +179339,7 @@ gUnknown_08C81888:	@ 0x08C81888
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81888_1		@ track
 
@@ -179441,7 +179441,7 @@ gUnknown_08C818E8:	@ 0x08C818E8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C818E8_1		@ track
 
@@ -179544,7 +179544,7 @@ gUnknown_08C81944:	@ 0x08C81944
 	.byte	50		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81944_1		@ track
 	.word	gUnknown_08C81944_2		@ track
@@ -179591,7 +179591,7 @@ gUnknown_08C81970:	@ 0x08C81970
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81970_1		@ track
 
@@ -179637,7 +179637,7 @@ gUnknown_08C81998:	@ 0x08C81998
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81998_1		@ track
 
@@ -179719,7 +179719,7 @@ gUnknown_08C819E4:	@ 0x08C819E4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C819E4_1		@ track
 
@@ -179841,7 +179841,7 @@ gUnknown_08C81A58:	@ 0x08C81A58
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81A58_1		@ track
 
@@ -180071,7 +180071,7 @@ gUnknown_08C81B38:	@ 0x08C81B38
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81B38_1		@ track
 
@@ -180257,7 +180257,7 @@ gUnknown_08C81BEC:	@ 0x08C81BEC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81BEC_1		@ track
 
@@ -180331,7 +180331,7 @@ gUnknown_08C81C30:	@ 0x08C81C30
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81C30_1		@ track
 
@@ -180421,7 +180421,7 @@ gUnknown_08C81C84:	@ 0x08C81C84
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACDF50		@ voicegroup/tone
+	.word	voicegroup000		@ voicegroup/tone
 
 	.word	gUnknown_08C81C84_1		@ track
 
@@ -180459,7 +180459,7 @@ gUnknown_08C81CA4:	@ 0x08C81CA4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81CA4_1		@ track
 
@@ -180497,7 +180497,7 @@ gUnknown_08C81CC4:	@ 0x08C81CC4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81CC4_1		@ track
 
@@ -180535,7 +180535,7 @@ gUnknown_08C81CE4:	@ 0x08C81CE4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81CE4_1		@ track
 
@@ -180573,7 +180573,7 @@ gUnknown_08C81D04:	@ 0x08C81D04
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81D04_1		@ track
 
@@ -180611,7 +180611,7 @@ gUnknown_08C81D24:	@ 0x08C81D24
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81D24_1		@ track
 
@@ -180649,7 +180649,7 @@ gUnknown_08C81D44:	@ 0x08C81D44
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81D44_1		@ track
 
@@ -180687,7 +180687,7 @@ gUnknown_08C81D64:	@ 0x08C81D64
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81D64_1		@ track
 
@@ -180725,7 +180725,7 @@ gUnknown_08C81D84:	@ 0x08C81D84
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81D84_1		@ track
 
@@ -180763,7 +180763,7 @@ gUnknown_08C81DA4:	@ 0x08C81DA4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81DA4_1		@ track
 
@@ -180801,7 +180801,7 @@ gUnknown_08C81DC4:	@ 0x08C81DC4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACE784		@ voicegroup/tone
+	.word	voicegroup003		@ voicegroup/tone
 
 	.word	gUnknown_08C81DC4_1		@ track
 
@@ -180991,7 +180991,7 @@ gUnknown_08C81E7C:	@ 0x08C81E7C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81E7C_1		@ track
 
@@ -181181,7 +181181,7 @@ gUnknown_08C81F34:	@ 0x08C81F34
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81F34_1		@ track
 
@@ -181215,7 +181215,7 @@ gUnknown_08C81F50:	@ 0x08C81F50
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81F50_1		@ track
 
@@ -181249,7 +181249,7 @@ gUnknown_08C81F6C:	@ 0x08C81F6C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81F6C_1		@ track
 
@@ -181283,7 +181283,7 @@ gUnknown_08C81F88:	@ 0x08C81F88
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81F88_1		@ track
 
@@ -181317,7 +181317,7 @@ gUnknown_08C81FA4:	@ 0x08C81FA4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81FA4_1		@ track
 
@@ -181351,7 +181351,7 @@ gUnknown_08C81FC0:	@ 0x08C81FC0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81FC0_1		@ track
 
@@ -181385,7 +181385,7 @@ gUnknown_08C81FDC:	@ 0x08C81FDC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81FDC_1		@ track
 
@@ -181419,7 +181419,7 @@ gUnknown_08C81FF8:	@ 0x08C81FF8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C81FF8_1		@ track
 
@@ -181453,7 +181453,7 @@ gUnknown_08C82014:	@ 0x08C82014
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82014_1		@ track
 
@@ -181487,7 +181487,7 @@ gUnknown_08C82030:	@ 0x08C82030
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82030_1		@ track
 
@@ -181521,7 +181521,7 @@ gUnknown_08C8204C:	@ 0x08C8204C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8204C_1		@ track
 
@@ -181555,7 +181555,7 @@ gUnknown_08C82068:	@ 0x08C82068
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82068_1		@ track
 
@@ -181709,7 +181709,7 @@ gUnknown_08C820FC:	@ 0x08C820FC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C820FC_1		@ track
 
@@ -181875,7 +181875,7 @@ gUnknown_08C8219C:	@ 0x08C8219C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8219C_1		@ track
 
@@ -182029,7 +182029,7 @@ gUnknown_08C82230:	@ 0x08C82230
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82230_1		@ track
 
@@ -182203,7 +182203,7 @@ gUnknown_08C822D8:	@ 0x08C822D8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C822D8_1		@ track
 
@@ -182301,7 +182301,7 @@ gUnknown_08C82334:	@ 0x08C82334
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82334_1		@ track
 
@@ -182375,7 +182375,7 @@ gUnknown_08C82378:	@ 0x08C82378
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82378_1		@ track
 
@@ -182429,7 +182429,7 @@ gUnknown_08C823A8:	@ 0x08C823A8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C823A8_1		@ track
 
@@ -182471,7 +182471,7 @@ gUnknown_08C823CC:	@ 0x08C823CC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C823CC_1		@ track
 
@@ -182641,7 +182641,7 @@ gUnknown_08C82470:	@ 0x08C82470
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82470_1		@ track
 
@@ -182705,7 +182705,7 @@ gUnknown_08C824AC:	@ 0x08C824AC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C824AC_1		@ track
 
@@ -182847,7 +182847,7 @@ gUnknown_08C82534:	@ 0x08C82534
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82534_1		@ track
 
@@ -182899,7 +182899,7 @@ gUnknown_08C82564:	@ 0x08C82564
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82564_1		@ track
 
@@ -183165,7 +183165,7 @@ gUnknown_08C82668:	@ 0x08C82668
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82668_1		@ track
 
@@ -183287,7 +183287,7 @@ gUnknown_08C826DC:	@ 0x08C826DC
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C826DC_1		@ track
 
@@ -183419,7 +183419,7 @@ gUnknown_08C8275C:	@ 0x08C8275C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8275C_1		@ track
 
@@ -183471,7 +183471,7 @@ gUnknown_08C8278C:	@ 0x08C8278C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8278C_1		@ track
 
@@ -183505,7 +183505,7 @@ gUnknown_08C827A8:	@ 0x08C827A8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C827A8_1		@ track
 
@@ -183675,7 +183675,7 @@ gUnknown_08C8284C:	@ 0x08C8284C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8284C_1		@ track
 
@@ -183727,7 +183727,7 @@ gUnknown_08C8287C:	@ 0x08C8287C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8287C_1		@ track
 
@@ -184241,7 +184241,7 @@ gUnknown_08C82A78:	@ 0x08C82A78
 	.byte	15		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82A78_1		@ track
 
@@ -184411,7 +184411,7 @@ gUnknown_08C82B1C:	@ 0x08C82B1C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82B1C_1		@ track
 
@@ -184629,7 +184629,7 @@ gUnknown_08C82BF0:	@ 0x08C82BF0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82BF0_1		@ track
 
@@ -184935,7 +184935,7 @@ gUnknown_08C82D1C:	@ 0x08C82D1C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82D1C_1		@ track
 
@@ -185071,7 +185071,7 @@ gUnknown_08C82DA0:	@ 0x08C82DA0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82DA0_1		@ track
 
@@ -185113,7 +185113,7 @@ gUnknown_08C82DC4:	@ 0x08C82DC4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82DC4_1		@ track
 
@@ -185219,7 +185219,7 @@ gUnknown_08C82E28:	@ 0x08C82E28
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82E28_1		@ track
 
@@ -185449,7 +185449,7 @@ gUnknown_08C82F08:	@ 0x08C82F08
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82F08_1		@ track
 
@@ -185663,7 +185663,7 @@ gUnknown_08C82FD8:	@ 0x08C82FD8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82FD8_1		@ track
 
@@ -185705,7 +185705,7 @@ gUnknown_08C82FFC:	@ 0x08C82FFC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C82FFC_1		@ track
 
@@ -185833,7 +185833,7 @@ gUnknown_08C83078:	@ 0x08C83078
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83078_1		@ track
 
@@ -185883,7 +185883,7 @@ gUnknown_08C830A4:	@ 0x08C830A4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C830A4_1		@ track
 
@@ -185979,7 +185979,7 @@ gUnknown_08C83100:	@ 0x08C83100
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83100_1		@ track
 
@@ -186285,7 +186285,7 @@ gUnknown_08C8322C:	@ 0x08C8322C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8322C_1		@ track
 
@@ -186327,7 +186327,7 @@ gUnknown_08C83250:	@ 0x08C83250
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83250_1		@ track
 
@@ -186449,7 +186449,7 @@ gUnknown_08C832C4:	@ 0x08C832C4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C832C4_1		@ track
 
@@ -186491,7 +186491,7 @@ gUnknown_08C832E8:	@ 0x08C832E8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C832E8_1		@ track
 
@@ -186653,7 +186653,7 @@ gUnknown_08C83384:	@ 0x08C83384
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83384_1		@ track
 
@@ -186797,7 +186797,7 @@ gUnknown_08C83410:	@ 0x08C83410
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83410_1		@ track
 
@@ -186905,7 +186905,7 @@ gUnknown_08C83478:	@ 0x08C83478
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83478_1		@ track
 
@@ -186951,7 +186951,7 @@ gUnknown_08C834A0:	@ 0x08C834A0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C834A0_1		@ track
 
@@ -187041,7 +187041,7 @@ gUnknown_08C834F4:	@ 0x08C834F4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C834F4_1		@ track
 
@@ -187155,7 +187155,7 @@ gUnknown_08C83560:	@ 0x08C83560
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83560_1		@ track
 
@@ -187389,7 +187389,7 @@ gUnknown_08C83644:	@ 0x08C83644
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83644_1		@ track
 
@@ -187441,7 +187441,7 @@ gUnknown_08C83674:	@ 0x08C83674
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83674_1		@ track
 
@@ -187555,7 +187555,7 @@ gUnknown_08C836E0:	@ 0x08C836E0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C836E0_1		@ track
 
@@ -187641,7 +187641,7 @@ gUnknown_08C83730:	@ 0x08C83730
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83730_1		@ track
 
@@ -187731,7 +187731,7 @@ gUnknown_08C83784:	@ 0x08C83784
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83784_1		@ track
 
@@ -187901,7 +187901,7 @@ gUnknown_08C83828:	@ 0x08C83828
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83828_1		@ track
 
@@ -188095,7 +188095,7 @@ gUnknown_08C838E4:	@ 0x08C838E4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C838E4_1		@ track
 
@@ -188313,7 +188313,7 @@ gUnknown_08C839B8:	@ 0x08C839B8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C839B8_1		@ track
 
@@ -188403,7 +188403,7 @@ gUnknown_08C83A0C:	@ 0x08C83A0C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83A0C_1		@ track
 
@@ -188445,7 +188445,7 @@ gUnknown_08C83A30:	@ 0x08C83A30
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83A30_1		@ track
 
@@ -188587,7 +188587,7 @@ gUnknown_08C83AB8:	@ 0x08C83AB8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83AB8_1		@ track
 
@@ -188773,7 +188773,7 @@ gUnknown_08C83B6C:	@ 0x08C83B6C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83B6C_1		@ track
 
@@ -188913,7 +188913,7 @@ gUnknown_08C83BF4:	@ 0x08C83BF4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83BF4_1		@ track
 
@@ -189099,7 +189099,7 @@ gUnknown_08C83CA8:	@ 0x08C83CA8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83CA8_1		@ track
 
@@ -189215,7 +189215,7 @@ gUnknown_08C83D18:	@ 0x08C83D18
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83D18_1		@ track
 
@@ -189403,7 +189403,7 @@ gUnknown_08C83DD0:	@ 0x08C83DD0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83DD0_1		@ track
 
@@ -189474,7 +189474,7 @@ gUnknown_08C83E0C:	@ 0x08C83E0C
 	.byte	30		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83E0C_1		@ track
 	.word	gUnknown_08C83E0C_2		@ track
@@ -189613,7 +189613,7 @@ gUnknown_08C83E94:	@ 0x08C83E94
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83E94_1		@ track
 
@@ -189843,7 +189843,7 @@ gUnknown_08C83F74:	@ 0x08C83F74
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C83F74_1		@ track
 
@@ -190077,7 +190077,7 @@ gUnknown_08C84058:	@ 0x08C84058
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84058_1		@ track
 
@@ -190167,7 +190167,7 @@ gUnknown_08C840AC:	@ 0x08C840AC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C840AC_1		@ track
 
@@ -190357,7 +190357,7 @@ gUnknown_08C84164:	@ 0x08C84164
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84164_1		@ track
 
@@ -190549,7 +190549,7 @@ gUnknown_08C84220:	@ 0x08C84220
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84220_1		@ track
 
@@ -190601,7 +190601,7 @@ gUnknown_08C84250:	@ 0x08C84250
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84250_1		@ track
 
@@ -190649,7 +190649,7 @@ gUnknown_08C8427C:	@ 0x08C8427C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8427C_1		@ track
 
@@ -190841,7 +190841,7 @@ gUnknown_08C84338:	@ 0x08C84338
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84338_1		@ track
 
@@ -191031,7 +191031,7 @@ gUnknown_08C843F0:	@ 0x08C843F0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C843F0_1		@ track
 
@@ -191171,7 +191171,7 @@ gUnknown_08C84478:	@ 0x08C84478
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84478_1		@ track
 
@@ -191255,7 +191255,7 @@ gUnknown_08C844C8:	@ 0x08C844C8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C844C8_1		@ track
 
@@ -191425,7 +191425,7 @@ gUnknown_08C8456C:	@ 0x08C8456C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8456C_1		@ track
 
@@ -191533,7 +191533,7 @@ gUnknown_08C845D4:	@ 0x08C845D4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C845D4_1		@ track
 
@@ -191595,7 +191595,7 @@ gUnknown_08C8460C:	@ 0x08C8460C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8460C_1		@ track
 
@@ -191787,7 +191787,7 @@ gUnknown_08C846C8:	@ 0x08C846C8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C846C8_1		@ track
 
@@ -191893,7 +191893,7 @@ gUnknown_08C8472C:	@ 0x08C8472C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8472C_1		@ track
 
@@ -192171,7 +192171,7 @@ gUnknown_08C8483C:	@ 0x08C8483C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C8483C_1		@ track
 
@@ -192315,7 +192315,7 @@ gUnknown_08C848C8:	@ 0x08C848C8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C848C8_1		@ track
 
@@ -192457,7 +192457,7 @@ gUnknown_08C84950:	@ 0x08C84950
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84950_1		@ track
 
@@ -192497,7 +192497,7 @@ gUnknown_08C84974:	@ 0x08C84974
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84974_1		@ track
 
@@ -192577,7 +192577,7 @@ gUnknown_08C849C0:	@ 0x08C849C0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C849C0_1		@ track
 
@@ -192687,7 +192687,7 @@ gUnknown_08C84A28:	@ 0x08C84A28
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84A28_1		@ track
 
@@ -192729,7 +192729,7 @@ gUnknown_08C84A4C:	@ 0x08C84A4C
 	.byte	40		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84A4C_1		@ track
 
@@ -192771,7 +192771,7 @@ gUnknown_08C84A70:	@ 0x08C84A70
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84A70_1		@ track
 
@@ -192813,7 +192813,7 @@ gUnknown_08C84A94:	@ 0x08C84A94
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84A94_1		@ track
 
@@ -192855,7 +192855,7 @@ gUnknown_08C84AB8:	@ 0x08C84AB8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84AB8_1		@ track
 
@@ -192897,7 +192897,7 @@ gUnknown_08C84ADC:	@ 0x08C84ADC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84ADC_1		@ track
 
@@ -192939,7 +192939,7 @@ gUnknown_08C84B00:	@ 0x08C84B00
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84B00_1		@ track
 
@@ -192981,7 +192981,7 @@ gUnknown_08C84B24:	@ 0x08C84B24
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84B24_1		@ track
 
@@ -193023,7 +193023,7 @@ gUnknown_08C84B48:	@ 0x08C84B48
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84B48_1		@ track
 
@@ -193065,7 +193065,7 @@ gUnknown_08C84B6C:	@ 0x08C84B6C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84B6C_1		@ track
 
@@ -193107,7 +193107,7 @@ gUnknown_08C84B90:	@ 0x08C84B90
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84B90_1		@ track
 
@@ -193149,7 +193149,7 @@ gUnknown_08C84BB4:	@ 0x08C84BB4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84BB4_1		@ track
 
@@ -193191,7 +193191,7 @@ gUnknown_08C84BD8:	@ 0x08C84BD8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84BD8_1		@ track
 
@@ -193233,7 +193233,7 @@ gUnknown_08C84BFC:	@ 0x08C84BFC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84BFC_1		@ track
 
@@ -193275,7 +193275,7 @@ gUnknown_08C84C20:	@ 0x08C84C20
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84C20_1		@ track
 
@@ -193317,7 +193317,7 @@ gUnknown_08C84C44:	@ 0x08C84C44
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84C44_1		@ track
 
@@ -193359,7 +193359,7 @@ gUnknown_08C84C68:	@ 0x08C84C68
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84C68_1		@ track
 
@@ -193401,7 +193401,7 @@ gUnknown_08C84C8C:	@ 0x08C84C8C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84C8C_1		@ track
 
@@ -193443,7 +193443,7 @@ gUnknown_08C84CB0:	@ 0x08C84CB0
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84CB0_1		@ track
 
@@ -193485,7 +193485,7 @@ gUnknown_08C84CD4:	@ 0x08C84CD4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84CD4_1		@ track
 
@@ -193527,7 +193527,7 @@ gUnknown_08C84CF8:	@ 0x08C84CF8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84CF8_1		@ track
 
@@ -193569,7 +193569,7 @@ gUnknown_08C84D1C:	@ 0x08C84D1C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84D1C_1		@ track
 
@@ -193619,7 +193619,7 @@ gUnknown_08C84D48:	@ 0x08C84D48
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84D48_1		@ track
 
@@ -193661,7 +193661,7 @@ gUnknown_08C84D6C:	@ 0x08C84D6C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84D6C_1		@ track
 
@@ -193731,7 +193731,7 @@ gUnknown_08C84DAC:	@ 0x08C84DAC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84DAC_1		@ track
 
@@ -193793,7 +193793,7 @@ gUnknown_08C84DE4:	@ 0x08C84DE4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84DE4_1		@ track
 
@@ -193835,7 +193835,7 @@ gUnknown_08C84E08:	@ 0x08C84E08
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84E08_1		@ track
 
@@ -193877,7 +193877,7 @@ gUnknown_08C84E2C:	@ 0x08C84E2C
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84E2C_1		@ track
 
@@ -193919,7 +193919,7 @@ gUnknown_08C84E50:	@ 0x08C84E50
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84E50_1		@ track
 
@@ -193961,7 +193961,7 @@ gUnknown_08C84E74:	@ 0x08C84E74
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84E74_1		@ track
 
@@ -194003,7 +194003,7 @@ gUnknown_08C84E98:	@ 0x08C84E98
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84E98_1		@ track
 
@@ -194045,7 +194045,7 @@ gUnknown_08C84EBC:	@ 0x08C84EBC
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84EBC_1		@ track
 
@@ -194079,7 +194079,7 @@ gUnknown_08C84ED8:	@ 0x08C84ED8
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84ED8_1		@ track
 
@@ -194113,7 +194113,7 @@ gUnknown_08C84EF4:	@ 0x08C84EF4
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF384		@ voicegroup/tone
+	.word	voicegroup006		@ voicegroup/tone
 
 	.word	gUnknown_08C84EF4_1		@ track
 
@@ -194275,7 +194275,7 @@ gUnknown_08C84F90:	@ 0x08C84F90
 	.byte	20		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACED90		@ voicegroup/tone
+	.word	voicegroup005		@ voicegroup/tone
 
 	.word	gUnknown_08C84F90_1		@ track
 
@@ -194548,7 +194548,7 @@ gUnknown_08C8508C:	@ 0x08C8508C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACFB10		@ voicegroup/tone
+	.word	voicegroup008		@ voicegroup/tone
 
 	.word	gUnknown_08C8508C_1		@ track
 	.word	gUnknown_08C8508C_2		@ track
@@ -195064,7 +195064,7 @@ gUnknown_08C85270:	@ 0x08C85270
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACFB10		@ voicegroup/tone
+	.word	voicegroup008		@ voicegroup/tone
 
 	.word	gUnknown_08C85270_1		@ track
 	.word	gUnknown_08C85270_2		@ track
@@ -195745,7 +195745,7 @@ gUnknown_08C85500:	@ 0x08C85500
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACFB10		@ voicegroup/tone
+	.word	voicegroup008		@ voicegroup/tone
 
 	.word	gUnknown_08C85500_1		@ track
 	.word	gUnknown_08C85500_2		@ track
@@ -196293,7 +196293,7 @@ gUnknown_08C85718:	@ 0x08C85718
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACFB10		@ voicegroup/tone
+	.word	voicegroup008		@ voicegroup/tone
 
 	.word	gUnknown_08C85718_1		@ track
 	.word	gUnknown_08C85718_2		@ track
@@ -196724,7 +196724,7 @@ gUnknown_08C858B0:	@ 0x08C858B0
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C858B0_1		@ track
 	.word	gUnknown_08C858B0_2		@ track
@@ -197673,7 +197673,7 @@ gUnknown_08C85C4C:	@ 0x08C85C4C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD3CBC		@ voicegroup/tone
+	.word	voicegroup022		@ voicegroup/tone
 
 	.word	gUnknown_08C85C4C_1		@ track
 	.word	gUnknown_08C85C4C_2		@ track
@@ -197978,7 +197978,7 @@ gUnknown_08C85D80:	@ 0x08C85D80
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08ACF510		@ voicegroup/tone
+	.word	voicegroup007		@ voicegroup/tone
 
 	.word	gUnknown_08C85D80_1		@ track
 	.word	gUnknown_08C85D80_2		@ track
@@ -198732,7 +198732,7 @@ gUnknown_08C8605C:	@ 0x08C8605C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C8605C_1		@ track
 	.word	gUnknown_08C8605C_2		@ track
@@ -199174,7 +199174,7 @@ gUnknown_08C861FC:	@ 0x08C861FC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C861FC_1		@ track
 	.word	gUnknown_08C861FC_2		@ track
@@ -199726,7 +199726,7 @@ gUnknown_08C86410:	@ 0x08C86410
 	.byte	255		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD42BC		@ voicegroup/tone
+	.word	voicegroup023		@ voicegroup/tone
 
 	.word	gUnknown_08C86410_1		@ track
 	.word	gUnknown_08C86410_2		@ track
@@ -199887,7 +199887,7 @@ gUnknown_08C864AC:	@ 0x08C864AC
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C864AC_1		@ track
 	.word	gUnknown_08C864AC_2		@ track
@@ -200108,7 +200108,7 @@ gUnknown_08C86580:	@ 0x08C86580
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C86580_1		@ track
 	.word	gUnknown_08C86580_2		@ track
@@ -200248,7 +200248,7 @@ gUnknown_08C86600:	@ 0x08C86600
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C86600_1		@ track
 	.word	gUnknown_08C86600_2		@ track
@@ -201030,7 +201030,7 @@ gUnknown_08C868F8:	@ 0x08C868F8
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD1544		@ voicegroup/tone
+	.word	voicegroup013		@ voicegroup/tone
 
 	.word	gUnknown_08C868F8_1		@ track
 	.word	gUnknown_08C868F8_2		@ track
@@ -201391,7 +201391,7 @@ gUnknown_08C86A4C:	@ 0x08C86A4C
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C86A4C_1		@ track
 	.word	gUnknown_08C86A4C_2		@ track
@@ -201907,7 +201907,7 @@ gUnknown_08C86C34:	@ 0x08C86C34
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C86C34_1		@ track
 	.word	gUnknown_08C86C34_2		@ track
@@ -202271,7 +202271,7 @@ gUnknown_08C86D94:	@ 0x08C86D94
 	.byte	0		@ priority
 	.byte	128		@ reverb
 
-	.word	gUnknown_08AD0710		@ voicegroup/tone
+	.word	voicegroup010		@ voicegroup/tone
 
 	.word	gUnknown_08C86D94_1		@ track
 	.word	gUnknown_08C86D94_2		@ track

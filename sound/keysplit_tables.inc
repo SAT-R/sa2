@@ -1,8 +1,5 @@
 	.align 2
-	@********************** KeySplit **********************@
-
-	.global gUnknown_08AD4E20
-gUnknown_08AD4E20:	@ 0x08AD4E20
+KeySplitTable1:	@ 0x08AD4E20
 	.byte	1
 	.byte	60
 	.byte	0
