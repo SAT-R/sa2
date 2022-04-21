@@ -105,10 +105,24 @@ union __attribute__((transparent_union)) Unk_03002E60 {
     struct LevelInfo_1A0_Full *y;
 };
 
+struct BlendRegs {
+    u16 bldCnt;
+    u16 bldAlpha;
+    u16 bldY;
+};
+
 extern u8 gUnknown_03002A84;
 extern u8 gUnknown_0300287C;
 
 // Pointer to gUnknown_080D5CE4
 extern union Unk_03002E60 *gUnknown_03002260;
+
+extern OamData gOamBuffer[];
+extern u16 gBgCntRegs[4];
+extern OamData gUnknown_030022D0[];
+extern u16 gWinRegs[6];
+extern struct BlendRegs gBldRegs;
+extern u16 gDispCnt;  // gDispCnt
+extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
 
 #endif

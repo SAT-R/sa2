@@ -3,9 +3,7 @@
 
 #include "global.h"
 
-void GameInit(void);
-
-extern char gUnknown_0300188C;
+extern u8 gUnknown_0300188C;
 
 extern u8* gUnknown_030022AC;
 
@@ -14,25 +12,17 @@ struct Unk_03006CB0 {
     u8 filler0[8];
     u8 unk8;
 };
-extern void sub_8007DBC(u16);
-extern u16 sub_8007D8C(void);
+
 
 extern u8 gUnknown_03002700[];
 extern u8 gUnknown_03002850[];
-extern u16 gInput;
-extern u16 gPressedKeys;
-extern u16 gReleasedKeys;
-extern u16 gPrevInput;
 extern u16 gUnknown_030022B8;
 extern u16 gUnknown_03001880;
 extern struct Unk_03006CB0 gUnknown_030053C0;
 
-extern OamData gOamBuffer[];
-extern char gUnknown_03004D50;
-
+extern u8 gUnknown_03004D50;
 extern u8 gUnknown_030018E0;
 extern HBlankFunc gUnknown_03002AF0[0xa0];
-extern u16 gBgCntRegs[4];
 
 struct Unk_020382A0_8_0
 {
@@ -90,13 +80,7 @@ extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern u32 gMultiSioStatusFlags;
-extern int gUnknown_03002790;
-
-struct BlendRegs {
-    u16 bldCnt;
-    u16 bldAlpha;
-    u16 bldY;
-};
+extern u32 gUnknown_03002790;
 
 extern u8 gUnknown_030026F4;
 extern u8 gUnknown_03002AE4;
@@ -104,44 +88,40 @@ extern u8 gUnknown_03005390;
 extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03002280[16];
 extern u8 gUnknown_03004D80[16];
-extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern u16 gUnknown_030017F4[2];
-extern u16 gDispCnt;  // gDispCnt
+
 
 extern u8 gUnknown_030018F0;
 extern u8 gUnknown_03002AE0;
-extern int gUnknown_03004D90;
-extern OamData gUnknown_030022D0[];
+extern u32 gUnknown_03004D90;
 extern u8 gUnknown_03001850[];
 extern u8 gUnknown_03004D60[];
 
-extern short gUnknown_03001944;
-extern short gUnknown_030017F0;
-extern short gUnknown_03005394;
-extern short gUnknown_03002A8C;
-extern short gUnknown_03004D58;
-extern short gUnknown_0300194C;
-extern short gUnknown_03002820;
-extern short gUnknown_03005398;
-extern u16 gWinRegs[6];  // gWinRegs
+extern u16 gUnknown_03001944;
+extern u16 gUnknown_030017F0;
+extern u16 gUnknown_03005394;
+extern u16 gUnknown_03002A8C;
+extern u16 gUnknown_03004D58;
+extern u16 gUnknown_0300194C;
+extern u16 gUnknown_03002820;
+extern u16 gUnknown_03005398;
+
 extern u8 gUnknown_03002A80;
 extern u32 gUnknown_03002878;
 
-extern struct BlendRegs gBldRegs;  // gBldRegs
 extern s16 gUnknown_030026D0;
-extern int gUnknown_030053B8;
+extern u32 gUnknown_030053B8;
 extern u32 gUnknown_030053B0;
 extern u32 gUnknown_03002264;
 
-extern u8 gUnknown_03002700[];
 extern u8 gUnknown_03002850[];
 
 extern u8 gUnknown_030053B4;
-extern short gUnknown_03001888;
-extern int gUnknown_03001940;
+extern u16 gUnknown_03001888;
+extern u32 gUnknown_03001940;
 
 extern u8 gUnknown_03001954;
-extern int gUnknown_0203B000;
+extern u32 gUnknown_0203B000;
 extern u8 gUnknown_030026E0[];
 extern u8 gUnknown_03001948;
 extern u8 gUnknown_03001870[];
@@ -151,6 +131,8 @@ extern u8 gUnknown_03002874;
 extern IntrFunc gIntrTable[];
 
 extern void sub_8007CC8(void);
+extern void sub_8007DBC(u16);
+extern u16 sub_8007D8C(void);
 
 void UpdateScreenDma();
 void ClearOamBufferDma();

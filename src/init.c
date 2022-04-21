@@ -18,9 +18,6 @@ void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
 void sub_8081C0C();
 
-static void sub_801A6C8(void);
-static void sub_801A6CC(struct Task*);
-
 void sub_801A51C(void) {
     u32 i;
     bool32 hasProfile = FALSE;
@@ -94,17 +91,20 @@ void sub_801A51C(void) {
     sub_808B3FC_CreateIntro();
 }
 
-void sub_801A684(void){
-  gUnknown_03005844 = TaskCreate(sub_801A6C8, 0, 0x100, 0, sub_801A6CC);
+static void Task_DummyFunc(void);
+static void Task_DummyTeardown(struct Task*);
+
+static void CreateDummyTask(void){
+  gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, Task_DummyTeardown);
 }
 
-void sub_801A6B0(void) {
+static void DestroyDummyTask(void) {
   TaskDestroy(gUnknown_03005844);
   gUnknown_03005844 = NULL;
 }
 
-static void sub_801A6C8(void) {}
+static void Task_DummyFunc(void) {}
 
-static void sub_801A6CC(struct Task* task) {
+static void Task_DummyTeardown(struct Task* task) {
     gUnknown_03005844 = NULL;
 }

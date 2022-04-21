@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "save.h"
 #include "main.h"
+#include "data.h"
 
 
 extern struct UNK_3005B80 gUnknown_03005B80;

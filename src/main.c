@@ -9,8 +9,13 @@
 #include "task.h"
 #include "agb_flash.h"
 #include "flags.h"
+#include "input.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
+
+
+static void UpdateScreenDma(void);
+static u32 sub_80021C4(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -24,8 +29,6 @@ static void Dma2Intr(void);
 static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
-
-static u32 sub_80021C4(void);
 
 // Warning: array contains an empty slot which would have
 // been used for a Timer3Intr function
@@ -53,7 +56,7 @@ static SpriteUpdateFunc const spriteUpdateFuncs[] = {
     sub_8002B20,
 };
 
-void GameInit(void) {
+static void GameInit(void) {
     s16 i;
     u16 errorIdentifying;
 
@@ -258,7 +261,7 @@ void GameLoop(void) {
     };
 }
 
-void UpdateScreenDma(void) {
+static void UpdateScreenDma(void) {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
     DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
