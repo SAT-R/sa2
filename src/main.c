@@ -15,6 +15,10 @@
 
 
 static void UpdateScreenDma(void);
+static void UpdateScreenCpuSet(void);
+static void ClearOamBufferCpuSet(void);
+static void ClearOamBufferDma(void);
+static void GetInput(void);
 static u32 sub_80021C4(void);
 
 static void VBlankIntr(void);
@@ -220,7 +224,7 @@ static void GameInit(void) {
     MultiSioInit(0);
 }
 
-void GameLoop(void) {
+static void GameLoop(void) {
     while (TRUE) {
         gUnknown_030053B4 = 0;
         if (!(gFlags & 0x4000)) {
@@ -337,7 +341,7 @@ static void UpdateScreenDma(void) {
     }
 }
 
-void ClearOamBufferDma(void) {
+static void ClearOamBufferDma(void) {
     gUnknown_0300188C = 0;
 
     gFlags &= ~8;
@@ -360,7 +364,7 @@ void ClearOamBufferDma(void) {
     gFlags &= ~16;
 }
 
-void UpdateScreenCpuSet(void) {
+static void UpdateScreenCpuSet(void) {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
     CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
@@ -513,7 +517,7 @@ static u32 sub_80021C4(void) {
     return 1;
 }
 
-void GetInput(void) {
+static void GetInput(void) {
     s8 i;
     u8 *r7 = gUnknown_030022A0, *sb = gUnknown_03002700,
        *r8 = gUnknown_03002850;
@@ -578,7 +582,7 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
 static void DummyFunc(void) { }
 
-void ClearOamBufferCpuSet(void) {
+static void ClearOamBufferCpuSet(void) {
     gUnknown_0300188C = 0;
 
     gFlags &= ~8;

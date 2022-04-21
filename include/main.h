@@ -131,15 +131,5 @@ extern u8 gUnknown_03002874;
 extern IntrFunc gIntrTable[];
 
 extern void sub_8007CC8(void);
-extern void sub_8007DBC(u16);
-extern u16 sub_8007D8C(void);
-
-void UpdateScreenDma();
-void ClearOamBufferDma();
-void UpdateScreenCpuSet();
-
-void GetInput(void);
-void ClearOamBufferCpuSet(void);
-void GameLoop(void);
 
 #endif

@@ -72,7 +72,7 @@ SECTIONS
         build/sa2/src/main.o(.rodata);
         build/sa2/data/data1.o(.rodata);
         build/sa2/src/m4a_tables.o(.rodata);
-        build/sa2/sound/sound.o(.rodata);
+        build/sa2/data/sound_data.o(.rodata);
         build/sa2/src/agb_flash.o(.rodata);
         build/sa2/src/agb_flash_512k.o(.rodata);
         build/sa2/src/agb_flash_le_512k.o(.rodata);
