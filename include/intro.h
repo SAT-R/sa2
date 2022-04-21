@@ -30,8 +30,9 @@ struct UNK_0808B3FC_UNK270 {
 struct UNK_0808B3FC {
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
+    struct Unk_03002400 unk80;
 
-    u8 filler0[0x1F0];
+    u8 fillerC0[0x1B0];
 
     struct UNK_0808B3FC_UNK270 unk270;
     struct UNK_0808B3FC_UNK27C unk27C;

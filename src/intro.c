@@ -16,9 +16,10 @@ extern u8 gUnknown_080E0EF4[0x160];
 extern u8 gUnknown_080E1054[10];
 
 extern void sub_808D598(void);
-extern void sub_808B768(struct UNK_0808B3FC*);
 extern void sub_802D4CC(struct UNK_0808B3FC_UNK270*);
 extern void sub_808B884(struct UNK_0808B3FC*);
+
+static void sub_808B768(struct UNK_0808B3FC*);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -108,9 +109,8 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
 
     sub_808B884(introConfig);
 
-    // Possibly a fake match, need to decode the flags
-    gDispCnt = 0x1640;
-    gDispCnt |= 1;
+    gDispCnt = 0;
+    gDispCnt |= 0x1641;
     
     gBgCntRegs[0] = 0x1f04;
     gBgCntRegs[1] = 0x9d0a;
@@ -133,8 +133,8 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     gUnknown_03002280[10] = 0xFF;
     gUnknown_03002280[11] = 0x20;
 
-    gBgScrollRegs[0][2] = 8;
-    gBgScrollRegs[0][3] = 0x200;
+    gBgScrollRegs[1][0] = 8;
+    gBgScrollRegs[1][1] = 0x200;
 
     config0 = &introConfig->unk0;
     config0->unk4 = BG_SCREEN_ADDR(0);
@@ -187,4 +187,77 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     m4aSongNumStart(2);
 
     sub_802D4CC(&introConfig->unk270);
+}
+
+static void sub_808B768(struct UNK_0808B3FC* introConfig) {
+    struct Unk_03002400 *config80, *config0;
+
+    gDispCnt = 1;
+    gDispCnt |= 0x1440;
+    
+    gBgCntRegs[0] = 0x1f04;
+    gBgCntRegs[1] = 0x9d0a;
+    gBgCntRegs[2] = 0x7a81;
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xFF;
+    gUnknown_03002280[3] = 0x20;
+    gUnknown_03004D80[1] = 0;
+    gUnknown_03002280[4] = 0;
+    gUnknown_03002280[5] = 0;
+    gUnknown_03002280[6] = 0xFF;
+    gUnknown_03002280[7] = 0x20;
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[8] = 0;
+    gUnknown_03002280[9] = 0;
+    gUnknown_03002280[10] = 0xFF;
+    gUnknown_03002280[11] = 0x20;
+
+    DmaFill32(3, 0, (void*)BG_VRAM, BG_VRAM_SIZE);
+
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0;
+    gBgScrollRegs[1][0] = 8;
+    gBgScrollRegs[1][1] = 0x200;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+
+    config80 = &introConfig->unk80;
+
+    config80->unk4 = BG_SCREEN_ADDR(8);
+    config80->unkA = 0;
+    config80->unkC = BG_SCREEN_ADDR(31);
+    config80->unk18 = 0;
+    config80->unk1A = 0;
+    config80->unk1C = 0x60;
+    config80->unk1E = 0;
+    config80->unk20 = 0;
+    config80->unk22 = 0;
+    config80->unk24 = 0;
+    config80->unk26 = 0x1e;
+    config80->unk28 = 0x14;
+    config80->unk2A = 0;
+    config80->unk2E = 0;
+
+    sub_8002A3C(config80);
+
+    config0 = &introConfig->unk0;
+
+    config0->unk4 = BG_SCREEN_ADDR(0);
+    config0->unkA = 0;
+    config0->unkC =  BG_SCREEN_ADDR(26);
+    config0->unk18 = 0;
+    config0->unk1A = 0;
+    config0->unk1C = 0x106;
+    config0->unk1E = 0;
+    config0->unk20 = 0;
+    config0->unk22 = 0;
+    config0->unk24 = 0;
+    config0->unk26 = 0x20;
+    config0->unk28 = 0x20;
+    config0->unk2A = 0;
+    config0->unk2E = 6;
+
+    sub_8002A3C(config0);
 }
