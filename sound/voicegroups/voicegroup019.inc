@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup019
 voicegroup019:	@ 0x08AD2ABC
 	voice_directsound_no_resample 60, 0, gUnknown_08C0C3E4, 255, 0, 255, 0	@08AD2ABC
 	voice_directsound_no_resample 60, 0, gUnknown_08C0C89C, 255, 0, 255, 0	@08AD2AC8

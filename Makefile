@@ -37,15 +37,19 @@ LDSCRIPT := ldscript.txt
 C_SUBDIR = src
 ASM_SUBDIR = asm
 DATA_ASM_SUBDIR = data
+SONG_SUBDIR = sound/songs
 SOUND_ASM_SUBDIR = sound
+MID_SUBDIR = sound/songs/midi
+SAMPLE_SUBDIR = sound/direct_sound_samples
 
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
+SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
-SAMPLE_SUBDIR = sound/direct_sound_samples
+MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
-$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR))
+$(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
 C_SRCS := $(wildcard $(C_SUBDIR)/*.c)
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
@@ -56,10 +60,16 @@ ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
+SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
+SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
+
+MID_SRCS := $(wildcard $(MID_SUBDIR)/*.mid)
+MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
+
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SOUND_ASM_OBJS)
+OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
@@ -86,6 +96,8 @@ tidy:
 
 #### Recipes ####
 
+include songs.mk
+
 %.s: ;
 %.png: ;
 %.pal: ;
@@ -105,16 +117,15 @@ $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	@echo ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
+$(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
+	$(AS) $(ASFLAGS) -I sound -o $@ $<
+
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
-# Tell make that sounds.s depends
+# Tell make that sound_data.s depends
 # on all the .bin files in `direct_sound_samples`
 data/sound_data.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
-
-$(SOUND_ASM_BUILDDIR)/%.o: $(SOUND_ASM_SUBDIR)/%.s
-	$(AS) $(ASFLAGS) -o $@ $<
-

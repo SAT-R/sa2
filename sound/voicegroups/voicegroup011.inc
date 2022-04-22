@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup011
 voicegroup011:	@ 0x08AD0D10
 	voice_square_2_alt 1, 0, 0, 15, 0	@08AD0D10
 	voice_programmable_wave_alt gUnknown_08AD4ECC, 0, 0, 15, 0	@08AD0D1C

@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup023
 voicegroup023:	@ 0x08AD42BC
 	voice_square_1_alt 0, 0, 0, 0, 15, 0	@08AD42BC
 	voice_square_1_alt 0, 1, 0, 0, 15, 0	@08AD42C8

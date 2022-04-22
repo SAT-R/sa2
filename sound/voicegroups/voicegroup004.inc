@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup004
 voicegroup004:	@ 0x08ACEBD4
 	voice_directsound 60, 0, gUnknown_08AF65D8, 255, 0, 255, 0	@08ACEBD4
 	voice_programmable_wave_alt gUnknown_08AD4F0C, 0, 3, 0, 2	@08ACEBE0

@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup001
 voicegroup001:	@ 0x08ACE3A0
 	voice_directsound 60, 0, gUnknown_08AF65D8, 255, 0, 255, 0	@08ACE3A0
 	voice_directsound 60, 0, gUnknown_08AF6F80, 255, 0, 255, 149	@08ACE3AC

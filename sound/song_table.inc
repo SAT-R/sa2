@@ -2,7 +2,7 @@
 	.global gSongTable
 gSongTable:	@ 0x08AD4F4C
 	song gUnknown_08AD5F24, 0, 0 	@ 0x08AD4F4C
-	song gUnknown_08C53E40, 0, 0 	@ 0x08AD4F54
+	song song0001, 0, 0 	@ 0x08AD4F54
 	song gUnknown_08C5415C, 0, 0 	@ 0x08AD4F5C
 	song gUnknown_08C54460, 0, 0 	@ 0x08AD4F64
 	song gUnknown_08C54AB8, 0, 0 	@ 0x08AD4F6C
@@ -513,7 +513,7 @@ gUnknown_08AD53BC:
 	song gUnknown_08AD5F24, 0, 0 	@ 0x08AD5F04
 	song gUnknown_08C86A4C, 0, 0 	@ 0x08AD5F0C
 	song gUnknown_08C86C34, 0, 0 	@ 0x08AD5F14
-	song gUnknown_08C86D94, 0, 0 	@ 0x08AD5F1C
+	song song0506, 0, 0 	@ 0x08AD5F1C
 
 	.align 2
 	.global gUnknown_08AD5F24

@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup018
 voicegroup018:	@ 0x08AD2948
 	voice_directsound_no_resample 60, 0, gUnknown_08C025EC, 255, 0, 255, 0	@08AD2948
 	voice_directsound_no_resample 60, 0, gUnknown_08C02AF4, 255, 0, 255, 0	@08AD2954

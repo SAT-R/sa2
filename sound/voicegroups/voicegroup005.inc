@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup005
 voicegroup005:	@ 0x08ACED90
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACED90
 	voice_directsound 65, 0, sound_title_screen_announcement, 255, 0, 255, 0	@08ACED9C

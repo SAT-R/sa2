@@ -1,4 +1,5 @@
 	.align 2
+	.global voicegroup016
 voicegroup016:	@ 0x08AD2108
 	voice_keysplit_all voicegroup019	@08AD2108
 	voice_keysplit_all voicegroup018	@08AD2114
