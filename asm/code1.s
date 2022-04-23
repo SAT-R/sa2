@@ -6350,7 +6350,7 @@ sub_800ADAC: @ 0x0800ADAC
 	adds r1, r1, r0
 	mov r8, r1
 	movs r4, #0
-	ldr r0, _0800AE28 @ =gUnknown_08AD53BC+4
+	ldr r0, _0800AE28 @ =gSongTable + (142 * 8) + 4
 	ldrh r6, [r0]
 	movs r5, #0
 	ldr r7, _0800AE2C @ =gMPlayTable
@@ -6400,7 +6400,7 @@ _0800ADD6:
 	bx r0
 	.align 2, 0
 _0800AE24: .4byte gCurTask
-_0800AE28: .4byte gUnknown_08AD53BC+4
+_0800AE28: .4byte gSongTable + (142 * 8) + 4
 _0800AE2C: .4byte gMPlayTable
 _0800AE30: .4byte gFlags
 _0800AE34: .4byte 0x040000D4

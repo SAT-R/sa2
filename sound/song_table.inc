@@ -143,12 +143,6 @@ gSongTable:	@ 0x08AD4F4C
 	song gUnknown_08C81598, 2, 2 	@ 0x08AD53A4
 	song gUnknown_08C815B8, 2, 2 	@ 0x08AD53AC
 	song gUnknown_08C815D8, 3, 3 	@ 0x08AD53B4
-
-	@********************** Voicegroup **********************@
-
-	.align 2
-	.global gUnknown_08AD53BC
-gUnknown_08AD53BC:
 	song gUnknown_08C81604, 3, 3 	@ 0x08AD53BC
 	song gUnknown_08C816D4, 1, 1 	@ 0x08AD53C4
 	song gUnknown_08C816F8, 3, 3 	@ 0x08AD53CC
