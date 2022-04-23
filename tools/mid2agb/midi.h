@@ -84,4 +84,8 @@ inline bool IsPatternBoundary(EventType type)
     return type == EventType::EndOfTrack || (int)type <= 0x17;
 }
 
+inline bool IsVolumeEvent(const Event& event) {
+    return event.type == EventType::Controller && event.param1 == 0x07;
+}
+
 #endif // MIDI_H

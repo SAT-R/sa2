@@ -431,22 +431,37 @@ void PrintAgbTrack(std::vector<Event>& events)
         if (event.type == EventType::Note)
             break;
 
-        if (event.type == EventType::Controller && event.param1 == 0x07)
+        if (IsVolumeEvent(event))
         {
             foundVolBeforeNote = true;
             break;
         }
     }
 
+    // If we find this signature we need to print
+    // the keyshift after the volume event
+    bool needsKeyshiftWorkaround =
+        events[0].type == EventType::WholeNoteMark &&
+        IsVolumeEvent(events[1]) &&
+        events[2].type == EventType::InstrumentChange;
+
     if (!foundVolBeforeNote)
         PrintByte("\tVOL   , 127*%s_mvl/mxv", g_asmLabel.c_str());
 
+    if (!needsKeyshiftWorkaround) {
+        PrintByte("KEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
+    }
+
     PrintWait(g_initialWait);
-    PrintByte("KEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
 
     for (unsigned i = 0; events[i].type != EventType::EndOfTrack; i++)
     {
         const Event& event = events[i];
+
+        // print the keyshift after we have written the volume value
+        if (needsKeyshiftWorkaround && i == 2) {
+            PrintByte("\tKEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
+        }
 
         if (IsPatternBoundary(event.type))
         {
