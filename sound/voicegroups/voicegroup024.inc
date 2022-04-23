@@ -1,6 +1,6 @@
 	.align 2
 	.global voicegroup024
-voicegroup024:
+voicegroup024: @ 0x08AD470C
 	voice_square_1_alt 0, 2, 2, 0, 15, 2	@08AD470C
 	voice_programmable_wave_alt gUnknown_08AD4EDC, 2, 0, 15, 2	@08AD4718
 	voice_programmable_wave_alt gUnknown_08AD4E9C, 0, 4, 3, 0	@08AD4724
