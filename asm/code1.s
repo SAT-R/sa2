@@ -6521,7 +6521,7 @@ sub_800AEA0: @ 0x0800AEA0
 	cmp r0, #0
 	beq _0800AF84
 	ldr r4, _0800AF78 @ =gUnknown_020025C0
-	ldr r1, _0800AF7C @ =gUnknown_08C810C4
+	ldr r1, _0800AF7C @ =song0117
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -6548,11 +6548,11 @@ _0800AF6C: .4byte gUnknown_03000025
 _0800AF70: .4byte gUnknown_030053F0
 _0800AF74: .4byte gUnknown_03000030
 _0800AF78: .4byte gUnknown_020025C0
-_0800AF7C: .4byte gUnknown_08C810C4
+_0800AF7C: .4byte song0117
 _0800AF80: .4byte 0x0000FFFF
 _0800AF84:
 	ldr r4, _0800AFC0 @ =gUnknown_02002580
-	ldr r1, _0800AFC4 @ =gUnknown_08C810C4
+	ldr r1, _0800AFC4 @ =song0117
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -6580,7 +6580,7 @@ _0800AFB2:
 	bx r0
 	.align 2, 0
 _0800AFC0: .4byte gUnknown_02002580
-_0800AFC4: .4byte gUnknown_08C810C4
+_0800AFC4: .4byte song0117
 _0800AFC8: .4byte 0x0000FFFF
 _0800AFCC: .4byte gUnknown_0300540C
 

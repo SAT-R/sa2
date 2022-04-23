@@ -1,8 +1,8 @@
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5415C_1
-gUnknown_08C5415C_1:	@ 0x08C53E6C
+	.global song0002_1
+song0002_1:	@ 0x08C53E6C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -205,8 +205,8 @@ gUnknown_08C5415C_1:	@ 0x08C53E6C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5415C_2
-gUnknown_08C5415C_2:	@ 0x08C53F33
+	.global song0002_2
+song0002_2:	@ 0x08C53F33
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -305,8 +305,8 @@ gUnknown_08C5415C_2:	@ 0x08C53F33
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5415C_3
-gUnknown_08C5415C_3:	@ 0x08C53F92
+	.global song0002_3
+song0002_3:	@ 0x08C53F92
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -416,8 +416,8 @@ gUnknown_08C5415C_3:	@ 0x08C53F92
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5415C_4
-gUnknown_08C5415C_4:	@ 0x08C53FFC
+	.global song0002_4
+song0002_4:	@ 0x08C53FFC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -524,8 +524,8 @@ gUnknown_08C5415C_4:	@ 0x08C53FFC
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5415C_5
-gUnknown_08C5415C_5:	@ 0x08C54063
+	.global song0002_5
+song0002_5:	@ 0x08C54063
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -569,8 +569,8 @@ gUnknown_08C5415C_5:	@ 0x08C54063
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5415C_6
-gUnknown_08C5415C_6:	@ 0x08C5408B
+	.global song0002_6
+song0002_6:	@ 0x08C5408B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -648,8 +648,8 @@ gUnknown_08C5415C_6:	@ 0x08C5408B
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5415C_7
-gUnknown_08C5415C_7:	@ 0x08C540D5
+	.global song0002_7
+song0002_7:	@ 0x08C540D5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -787,8 +787,8 @@ gUnknown_08C5415C_7:	@ 0x08C540D5
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5415C
-gUnknown_08C5415C:	@ 0x08C5415C
+	.global song0002
+song0002:	@ 0x08C5415C
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -796,19 +796,19 @@ gUnknown_08C5415C:	@ 0x08C5415C
 
 	.word	voicegroup011		@ voicegroup/tone
 
-	.word	gUnknown_08C5415C_1		@ track
-	.word	gUnknown_08C5415C_2		@ track
-	.word	gUnknown_08C5415C_3		@ track
-	.word	gUnknown_08C5415C_4		@ track
-	.word	gUnknown_08C5415C_5		@ track
-	.word	gUnknown_08C5415C_6		@ track
-	.word	gUnknown_08C5415C_7		@ track
+	.word	song0002_1		@ track
+	.word	song0002_2		@ track
+	.word	song0002_3		@ track
+	.word	song0002_4		@ track
+	.word	song0002_5		@ track
+	.word	song0002_6		@ track
+	.word	song0002_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C54460_1
-gUnknown_08C54460_1:	@ 0x08C54180
+	.global song0003_1
+song0003_1:	@ 0x08C54180
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C54182:
@@ -1235,8 +1235,8 @@ gUnknown_08C54250:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C54460_2
-gUnknown_08C54460_2:	@ 0x08C54335
+	.global song0003_2
+song0003_2:	@ 0x08C54335
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C54337:
@@ -1406,8 +1406,8 @@ gUnknown_08C5435F:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C54460_3
-gUnknown_08C54460_3:	@ 0x08C543E4
+	.global song0003_3
+song0003_3:	@ 0x08C543E4
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C543E6:
@@ -1519,8 +1519,8 @@ gUnknown_08C54404:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C54460
-gUnknown_08C54460:	@ 0x08C54460
+	.global song0003
+song0003:	@ 0x08C54460
 	.byte	3		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -1528,15 +1528,15 @@ gUnknown_08C54460:	@ 0x08C54460
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C54460_1		@ track
-	.word	gUnknown_08C54460_2		@ track
-	.word	gUnknown_08C54460_3		@ track
+	.word	song0003_1		@ track
+	.word	song0003_2		@ track
+	.word	song0003_3		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C54AB8_1
-gUnknown_08C54AB8_1:	@ 0x08C54474
+	.global song0004_1
+song0004_1:	@ 0x08C54474
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -1713,8 +1713,8 @@ gUnknown_08C544A5:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C54AB8_2
-gUnknown_08C54AB8_2:	@ 0x08C5452D
+	.global song0004_2
+song0004_2:	@ 0x08C5452D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x94
@@ -1955,8 +1955,8 @@ gUnknown_08C545D5:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C54AB8_3
-gUnknown_08C54AB8_3:	@ 0x08C54624
+	.global song0004_3
+song0004_3:	@ 0x08C54624
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -2030,8 +2030,8 @@ gUnknown_08C54632:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C54AB8_4
-gUnknown_08C54AB8_4:	@ 0x08C5466C
+	.global song0004_4
+song0004_4:	@ 0x08C5466C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -2173,8 +2173,8 @@ gUnknown_08C546A1:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C54AB8_5
-gUnknown_08C54AB8_5:	@ 0x08C546FE
+	.global song0004_5
+song0004_5:	@ 0x08C546FE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -2296,8 +2296,8 @@ gUnknown_08C54735:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C54AB8_6
-gUnknown_08C54AB8_6:	@ 0x08C5477F
+	.global song0004_6
+song0004_6:	@ 0x08C5477F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -2513,8 +2513,8 @@ gUnknown_08C547E1:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C54AB8_7
-gUnknown_08C54AB8_7:	@ 0x08C5485D
+	.global song0004_7
+song0004_7:	@ 0x08C5485D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -2630,8 +2630,8 @@ gUnknown_08C5488C:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C54AB8_8
-gUnknown_08C54AB8_8:	@ 0x08C548D9
+	.global song0004_8
+song0004_8:	@ 0x08C548D9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -3103,8 +3103,8 @@ gUnknown_08C5497E:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C54AB8
-gUnknown_08C54AB8:	@ 0x08C54AB8
+	.global song0004
+song0004:	@ 0x08C54AB8
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -3112,20 +3112,20 @@ gUnknown_08C54AB8:	@ 0x08C54AB8
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C54AB8_1		@ track
-	.word	gUnknown_08C54AB8_2		@ track
-	.word	gUnknown_08C54AB8_3		@ track
-	.word	gUnknown_08C54AB8_4		@ track
-	.word	gUnknown_08C54AB8_5		@ track
-	.word	gUnknown_08C54AB8_6		@ track
-	.word	gUnknown_08C54AB8_7		@ track
-	.word	gUnknown_08C54AB8_8		@ track
+	.word	song0004_1		@ track
+	.word	song0004_2		@ track
+	.word	song0004_3		@ track
+	.word	song0004_4		@ track
+	.word	song0004_5		@ track
+	.word	song0004_6		@ track
+	.word	song0004_7		@ track
+	.word	song0004_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C552A4_1
-gUnknown_08C552A4_1:	@ 0x08C54AE0
+	.global song0005_1
+song0005_1:	@ 0x08C54AE0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -3615,8 +3615,8 @@ gUnknown_08C54C21:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C552A4_2
-gUnknown_08C552A4_2:	@ 0x08C54CCE
+	.global song0005_2
+song0005_2:	@ 0x08C54CCE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -3667,8 +3667,8 @@ gUnknown_08C54CD9:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C552A4_3
-gUnknown_08C552A4_3:	@ 0x08C54D01
+	.global song0005_3
+song0005_3:	@ 0x08C54D01
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -3908,8 +3908,8 @@ gUnknown_08C54D85:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C552A4_4
-gUnknown_08C552A4_4:	@ 0x08C54E00
+	.global song0005_4
+song0005_4:	@ 0x08C54E00
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -4032,8 +4032,8 @@ gUnknown_08C54E0A:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C552A4_5
-gUnknown_08C552A4_5:	@ 0x08C54E79
+	.global song0005_5
+song0005_5:	@ 0x08C54E79
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -4097,8 +4097,8 @@ gUnknown_08C54E83:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C552A4_6
-gUnknown_08C552A4_6:	@ 0x08C54EB7
+	.global song0005_6
+song0005_6:	@ 0x08C54EB7
 	.byte	0xBE
 	.byte	0x73
 	.byte	0xBC
@@ -4282,8 +4282,8 @@ gUnknown_08C54F48:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C552A4_7
-gUnknown_08C552A4_7:	@ 0x08C54F7A
+	.global song0005_7
+song0005_7:	@ 0x08C54F7A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -4520,8 +4520,8 @@ gUnknown_08C54F84:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C552A4_8
-gUnknown_08C552A4_8:	@ 0x08C55065
+	.global song0005_8
+song0005_8:	@ 0x08C55065
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x94
@@ -4786,8 +4786,8 @@ gUnknown_08C55118:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C552A4_9
-gUnknown_08C552A4_9:	@ 0x08C5517B
+	.global song0005_9
+song0005_9:	@ 0x08C5517B
 	.byte	0xBE
 	.byte	0x73
 	.byte	0xBC
@@ -4990,8 +4990,8 @@ gUnknown_08C5520E:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C552A4_10
-gUnknown_08C552A4_10:	@ 0x08C5524B
+	.global song0005_10
+song0005_10:	@ 0x08C5524B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -5081,8 +5081,8 @@ gUnknown_08C55255:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C552A4
-gUnknown_08C552A4:	@ 0x08C552A4
+	.global song0005
+song0005:	@ 0x08C552A4
 	.byte	10		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -5090,22 +5090,22 @@ gUnknown_08C552A4:	@ 0x08C552A4
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C552A4_1		@ track
-	.word	gUnknown_08C552A4_2		@ track
-	.word	gUnknown_08C552A4_3		@ track
-	.word	gUnknown_08C552A4_4		@ track
-	.word	gUnknown_08C552A4_5		@ track
-	.word	gUnknown_08C552A4_6		@ track
-	.word	gUnknown_08C552A4_7		@ track
-	.word	gUnknown_08C552A4_8		@ track
-	.word	gUnknown_08C552A4_9		@ track
-	.word	gUnknown_08C552A4_10		@ track
+	.word	song0005_1		@ track
+	.word	song0005_2		@ track
+	.word	song0005_3		@ track
+	.word	song0005_4		@ track
+	.word	song0005_5		@ track
+	.word	song0005_6		@ track
+	.word	song0005_7		@ track
+	.word	song0005_8		@ track
+	.word	song0005_9		@ track
+	.word	song0005_10		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C55974_1
-gUnknown_08C55974_1:	@ 0x08C552D4
+	.global song0006_1
+song0006_1:	@ 0x08C552D4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -5537,8 +5537,8 @@ gUnknown_08C553EC:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C55974_2
-gUnknown_08C55974_2:	@ 0x08C55488
+	.global song0006_2
+song0006_2:	@ 0x08C55488
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -5589,8 +5589,8 @@ gUnknown_08C55493:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C55974_3
-gUnknown_08C55974_3:	@ 0x08C554BB
+	.global song0006_3
+song0006_3:	@ 0x08C554BB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -5795,8 +5795,8 @@ gUnknown_08C5554A:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C55974_4
-gUnknown_08C55974_4:	@ 0x08C5558C
+	.global song0006_4
+song0006_4:	@ 0x08C5558C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -5891,8 +5891,8 @@ gUnknown_08C555BC:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C55974_5
-gUnknown_08C55974_5:	@ 0x08C555EF
+	.global song0006_5
+song0006_5:	@ 0x08C555EF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -6013,8 +6013,8 @@ gUnknown_08C55636:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C55974_6
-gUnknown_08C55974_6:	@ 0x08C55672
+	.global song0006_6
+song0006_6:	@ 0x08C55672
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -6132,8 +6132,8 @@ gUnknown_08C556BB:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C55974_7
-gUnknown_08C55974_7:	@ 0x08C556F0
+	.global song0006_7
+song0006_7:	@ 0x08C556F0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x98
@@ -6312,8 +6312,8 @@ gUnknown_08C55760:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C55974_8
-gUnknown_08C55974_8:	@ 0x08C557AB
+	.global song0006_8
+song0006_8:	@ 0x08C557AB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0x94
@@ -6534,8 +6534,8 @@ gUnknown_08C557DD:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C55974_9
-gUnknown_08C55974_9:	@ 0x08C55886
+	.global song0006_9
+song0006_9:	@ 0x08C55886
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xC0
@@ -6646,8 +6646,8 @@ gUnknown_08C558C2:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C55974_10
-gUnknown_08C55974_10:	@ 0x08C558FC
+	.global song0006_10
+song0006_10:	@ 0x08C558FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xC0
@@ -6759,8 +6759,8 @@ gUnknown_08C55938:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C55974
-gUnknown_08C55974:	@ 0x08C55974
+	.global song0006
+song0006:	@ 0x08C55974
 	.byte	10		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -6768,22 +6768,22 @@ gUnknown_08C55974:	@ 0x08C55974
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C55974_1		@ track
-	.word	gUnknown_08C55974_2		@ track
-	.word	gUnknown_08C55974_3		@ track
-	.word	gUnknown_08C55974_4		@ track
-	.word	gUnknown_08C55974_5		@ track
-	.word	gUnknown_08C55974_6		@ track
-	.word	gUnknown_08C55974_7		@ track
-	.word	gUnknown_08C55974_8		@ track
-	.word	gUnknown_08C55974_9		@ track
-	.word	gUnknown_08C55974_10		@ track
+	.word	song0006_1		@ track
+	.word	song0006_2		@ track
+	.word	song0006_3		@ track
+	.word	song0006_4		@ track
+	.word	song0006_5		@ track
+	.word	song0006_6		@ track
+	.word	song0006_7		@ track
+	.word	song0006_8		@ track
+	.word	song0006_9		@ track
+	.word	song0006_10		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C56174_1
-gUnknown_08C56174_1:	@ 0x08C559A4
+	.global song0007_1
+song0007_1:	@ 0x08C559A4
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C559A6:
@@ -6891,8 +6891,8 @@ gUnknown_08C559D7:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C56174_2
-gUnknown_08C56174_2:	@ 0x08C55A33
+	.global song0007_2
+song0007_2:	@ 0x08C55A33
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C55A35:
@@ -7431,8 +7431,8 @@ gUnknown_08C55AFA:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C56174_3
-gUnknown_08C56174_3:	@ 0x08C55C61
+	.global song0007_3
+song0007_3:	@ 0x08C55C61
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C55C63:
@@ -7624,8 +7624,8 @@ gUnknown_08C55C63:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C56174_4
-gUnknown_08C56174_4:	@ 0x08C55D1F
+	.global song0007_4
+song0007_4:	@ 0x08C55D1F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C55D21:
@@ -8119,8 +8119,8 @@ gUnknown_08C55DC4:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C56174_5
-gUnknown_08C56174_5:	@ 0x08C55F0D
+	.global song0007_5
+song0007_5:	@ 0x08C55F0D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C55F0F:
@@ -8613,8 +8613,8 @@ gUnknown_08C55FB2:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C56174_6
-gUnknown_08C56174_6:	@ 0x08C560FA
+	.global song0007_6
+song0007_6:	@ 0x08C560FA
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C560FC:
@@ -8714,8 +8714,8 @@ gUnknown_08C56131:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C56174
-gUnknown_08C56174:	@ 0x08C56174
+	.global song0007
+song0007:	@ 0x08C56174
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -8723,18 +8723,18 @@ gUnknown_08C56174:	@ 0x08C56174
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C56174_1		@ track
-	.word	gUnknown_08C56174_2		@ track
-	.word	gUnknown_08C56174_3		@ track
-	.word	gUnknown_08C56174_4		@ track
-	.word	gUnknown_08C56174_5		@ track
-	.word	gUnknown_08C56174_6		@ track
+	.word	song0007_1		@ track
+	.word	song0007_2		@ track
+	.word	song0007_3		@ track
+	.word	song0007_4		@ track
+	.word	song0007_5		@ track
+	.word	song0007_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C56E78_1
-gUnknown_08C56E78_1:	@ 0x08C56194
+	.global song0009_1
+song0009_1:	@ 0x08C56194
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -9009,8 +9009,8 @@ gUnknown_08C56246:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C56E78_2
-gUnknown_08C56E78_2:	@ 0x08C562DB
+	.global song0009_2
+song0009_2:	@ 0x08C562DB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -9241,8 +9241,8 @@ gUnknown_08C5630D:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C56E78_3
-gUnknown_08C56E78_3:	@ 0x08C5640A
+	.global song0009_3
+song0009_3:	@ 0x08C5640A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -10274,8 +10274,8 @@ gUnknown_08C564B7:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C56E78_4
-gUnknown_08C56E78_4:	@ 0x08C56827
+	.global song0009_4
+song0009_4:	@ 0x08C56827
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -10441,8 +10441,8 @@ gUnknown_08C56834:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C56E78_5
-gUnknown_08C56E78_5:	@ 0x08C568D1
+	.global song0009_5
+song0009_5:	@ 0x08C568D1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -10641,8 +10641,8 @@ gUnknown_08C56919:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C56E78_6
-gUnknown_08C56E78_6:	@ 0x08C569CD
+	.global song0009_6
+song0009_6:	@ 0x08C569CD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -11021,8 +11021,8 @@ gUnknown_08C569DE:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C56E78_7
-gUnknown_08C56E78_7:	@ 0x08C56B46
+	.global song0009_7
+song0009_7:	@ 0x08C56B46
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -11401,8 +11401,8 @@ gUnknown_08C56B57:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C56E78_8
-gUnknown_08C56E78_8:	@ 0x08C56CBF
+	.global song0009_8
+song0009_8:	@ 0x08C56CBF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -11552,8 +11552,8 @@ gUnknown_08C56CCC:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C56E78_9
-gUnknown_08C56E78_9:	@ 0x08C56D53
+	.global song0009_9
+song0009_9:	@ 0x08C56D53
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -11703,8 +11703,8 @@ gUnknown_08C56D60:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C56E78_10
-gUnknown_08C56E78_10:	@ 0x08C56DE7
+	.global song0009_10
+song0009_10:	@ 0x08C56DE7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -11850,8 +11850,8 @@ gUnknown_08C56DF4:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C56E78
-gUnknown_08C56E78:	@ 0x08C56E78
+	.global song0009
+song0009:	@ 0x08C56E78
 	.byte	10		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -11859,22 +11859,22 @@ gUnknown_08C56E78:	@ 0x08C56E78
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C56E78_1		@ track
-	.word	gUnknown_08C56E78_2		@ track
-	.word	gUnknown_08C56E78_3		@ track
-	.word	gUnknown_08C56E78_4		@ track
-	.word	gUnknown_08C56E78_5		@ track
-	.word	gUnknown_08C56E78_6		@ track
-	.word	gUnknown_08C56E78_7		@ track
-	.word	gUnknown_08C56E78_8		@ track
-	.word	gUnknown_08C56E78_9		@ track
-	.word	gUnknown_08C56E78_10		@ track
+	.word	song0009_1		@ track
+	.word	song0009_2		@ track
+	.word	song0009_3		@ track
+	.word	song0009_4		@ track
+	.word	song0009_5		@ track
+	.word	song0009_6		@ track
+	.word	song0009_7		@ track
+	.word	song0009_8		@ track
+	.word	song0009_9		@ track
+	.word	song0009_10		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5820C_1
-gUnknown_08C5820C_1:	@ 0x08C56EA8
+	.global song0013_1
+song0013_1:	@ 0x08C56EA8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -12389,8 +12389,8 @@ gUnknown_08C57085:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5820C_2
-gUnknown_08C5820C_2:	@ 0x08C570FC
+	.global song0013_2
+song0013_2:	@ 0x08C570FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -12767,8 +12767,8 @@ gUnknown_08C57239:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5820C_3
-gUnknown_08C5820C_3:	@ 0x08C572C8
+	.global song0013_3
+song0013_3:	@ 0x08C572C8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -13727,8 +13727,8 @@ gUnknown_08C5758E:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5820C_4
-gUnknown_08C5820C_4:	@ 0x08C576BC
+	.global song0013_4
+song0013_4:	@ 0x08C576BC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -14019,8 +14019,8 @@ gUnknown_08C5773C:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5820C_5
-gUnknown_08C5820C_5:	@ 0x08C577EB
+	.global song0013_5
+song0013_5:	@ 0x08C577EB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -14479,8 +14479,8 @@ gUnknown_08C577F4:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5820C_6
-gUnknown_08C5820C_6:	@ 0x08C579B4
+	.global song0013_6
+song0013_6:	@ 0x08C579B4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -14939,8 +14939,8 @@ gUnknown_08C579BD:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5820C_7
-gUnknown_08C5820C_7:	@ 0x08C57B7D
+	.global song0013_7
+song0013_7:	@ 0x08C57B7D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15010,8 +15010,8 @@ gUnknown_08C57B86:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5820C_8
-gUnknown_08C5820C_8:	@ 0x08C57BC1
+	.global song0013_8
+song0013_8:	@ 0x08C57BC1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15313,8 +15313,8 @@ gUnknown_08C57BCC:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5820C_9
-gUnknown_08C5820C_9:	@ 0x08C57CED
+	.global song0013_9
+song0013_9:	@ 0x08C57CED
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15584,8 +15584,8 @@ gUnknown_08C57CF8:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5820C_10
-gUnknown_08C5820C_10:	@ 0x08C57DF9
+	.global song0013_10
+song0013_10:	@ 0x08C57DF9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15716,8 +15716,8 @@ gUnknown_08C57E0D:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C5820C_11
-gUnknown_08C5820C_11:	@ 0x08C57E7C
+	.global song0013_11
+song0013_11:	@ 0x08C57E7C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15841,8 +15841,8 @@ gUnknown_08C57E9E:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C5820C_12
-gUnknown_08C5820C_12:	@ 0x08C57EF8
+	.global song0013_12
+song0013_12:	@ 0x08C57EF8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -15936,8 +15936,8 @@ gUnknown_08C57F01:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C5820C_13
-gUnknown_08C5820C_13:	@ 0x08C57F54
+	.global song0013_13
+song0013_13:	@ 0x08C57F54
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -16228,8 +16228,8 @@ gUnknown_08C57F5D:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C5820C_14
-gUnknown_08C5820C_14:	@ 0x08C58075
+	.global song0013_14
+song0013_14:	@ 0x08C58075
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -16313,8 +16313,8 @@ gUnknown_08C5807E:
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C5820C_15
-gUnknown_08C5820C_15:	@ 0x08C580C7
+	.global song0013_15
+song0013_15:	@ 0x08C580C7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -16416,8 +16416,8 @@ gUnknown_08C580D0:
 
 	@********************** Track  16 **********************@
 
-	.global gUnknown_08C5820C_16
-gUnknown_08C5820C_16:	@ 0x08C5812B
+	.global song0013_16
+song0013_16:	@ 0x08C5812B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -16643,8 +16643,8 @@ gUnknown_08C58136:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C5820C
-gUnknown_08C5820C:	@ 0x08C5820C
+	.global song0013
+song0013:	@ 0x08C5820C
 	.byte	16		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -16652,28 +16652,28 @@ gUnknown_08C5820C:	@ 0x08C5820C
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C5820C_1		@ track
-	.word	gUnknown_08C5820C_2		@ track
-	.word	gUnknown_08C5820C_3		@ track
-	.word	gUnknown_08C5820C_4		@ track
-	.word	gUnknown_08C5820C_5		@ track
-	.word	gUnknown_08C5820C_6		@ track
-	.word	gUnknown_08C5820C_7		@ track
-	.word	gUnknown_08C5820C_8		@ track
-	.word	gUnknown_08C5820C_9		@ track
-	.word	gUnknown_08C5820C_10		@ track
-	.word	gUnknown_08C5820C_11		@ track
-	.word	gUnknown_08C5820C_12		@ track
-	.word	gUnknown_08C5820C_13		@ track
-	.word	gUnknown_08C5820C_14		@ track
-	.word	gUnknown_08C5820C_15		@ track
-	.word	gUnknown_08C5820C_16		@ track
+	.word	song0013_1		@ track
+	.word	song0013_2		@ track
+	.word	song0013_3		@ track
+	.word	song0013_4		@ track
+	.word	song0013_5		@ track
+	.word	song0013_6		@ track
+	.word	song0013_7		@ track
+	.word	song0013_8		@ track
+	.word	song0013_9		@ track
+	.word	song0013_10		@ track
+	.word	song0013_11		@ track
+	.word	song0013_12		@ track
+	.word	song0013_13		@ track
+	.word	song0013_14		@ track
+	.word	song0013_15		@ track
+	.word	song0013_16		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C59458_1
-gUnknown_08C59458_1:	@ 0x08C58254
+	.global song0014_1
+song0014_1:	@ 0x08C58254
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -17193,8 +17193,8 @@ gUnknown_08C58402:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C59458_2
-gUnknown_08C59458_2:	@ 0x08C58495
+	.global song0014_2
+song0014_2:	@ 0x08C58495
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -17626,8 +17626,8 @@ gUnknown_08C585D1:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C59458_3
-gUnknown_08C59458_3:	@ 0x08C58691
+	.global song0014_3
+song0014_3:	@ 0x08C58691
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -18653,8 +18653,8 @@ gUnknown_08C58959:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C59458_4
-gUnknown_08C59458_4:	@ 0x08C58AC4
+	.global song0014_4
+song0014_4:	@ 0x08C58AC4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -19020,8 +19020,8 @@ gUnknown_08C58B3C:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C59458_5
-gUnknown_08C59458_5:	@ 0x08C58C38
+	.global song0014_5
+song0014_5:	@ 0x08C58C38
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -19303,8 +19303,8 @@ gUnknown_08C58C42:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C59458_6
-gUnknown_08C59458_6:	@ 0x08C58D50
+	.global song0014_6
+song0014_6:	@ 0x08C58D50
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -19618,8 +19618,8 @@ gUnknown_08C58D5A:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C59458_7
-gUnknown_08C59458_7:	@ 0x08C58E88
+	.global song0014_7
+song0014_7:	@ 0x08C58E88
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -19693,8 +19693,8 @@ gUnknown_08C58E92:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C59458_8
-gUnknown_08C59458_8:	@ 0x08C58ED0
+	.global song0014_8
+song0014_8:	@ 0x08C58ED0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -19997,8 +19997,8 @@ gUnknown_08C58EDC:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C59458_9
-gUnknown_08C59458_9:	@ 0x08C58FFD
+	.global song0014_9
+song0014_9:	@ 0x08C58FFD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -20269,8 +20269,8 @@ gUnknown_08C59009:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C59458_10
-gUnknown_08C59458_10:	@ 0x08C5910A
+	.global song0014_10
+song0014_10:	@ 0x08C5910A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -20394,8 +20394,8 @@ gUnknown_08C5911C:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C59458_11
-gUnknown_08C59458_11:	@ 0x08C59186
+	.global song0014_11
+song0014_11:	@ 0x08C59186
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -20510,8 +20510,8 @@ gUnknown_08C591AE:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C59458_12
-gUnknown_08C59458_12:	@ 0x08C591F9
+	.global song0014_12
+song0014_12:	@ 0x08C591F9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -20619,8 +20619,8 @@ gUnknown_08C59203:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C59458_13
-gUnknown_08C59458_13:	@ 0x08C59263
+	.global song0014_13
+song0014_13:	@ 0x08C59263
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -20915,8 +20915,8 @@ gUnknown_08C5926F:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C59458_14
-gUnknown_08C59458_14:	@ 0x08C59388
+	.global song0014_14
+song0014_14:	@ 0x08C59388
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -21002,8 +21002,8 @@ gUnknown_08C59392:
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C59458_15
-gUnknown_08C59458_15:	@ 0x08C593DC
+	.global song0014_15
+song0014_15:	@ 0x08C593DC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -21126,8 +21126,8 @@ gUnknown_08C59438:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C59458
-gUnknown_08C59458:	@ 0x08C59458
+	.global song0014
+song0014:	@ 0x08C59458
 	.byte	15		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -21135,27 +21135,27 @@ gUnknown_08C59458:	@ 0x08C59458
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C59458_1		@ track
-	.word	gUnknown_08C59458_2		@ track
-	.word	gUnknown_08C59458_3		@ track
-	.word	gUnknown_08C59458_4		@ track
-	.word	gUnknown_08C59458_5		@ track
-	.word	gUnknown_08C59458_6		@ track
-	.word	gUnknown_08C59458_7		@ track
-	.word	gUnknown_08C59458_8		@ track
-	.word	gUnknown_08C59458_9		@ track
-	.word	gUnknown_08C59458_10		@ track
-	.word	gUnknown_08C59458_11		@ track
-	.word	gUnknown_08C59458_12		@ track
-	.word	gUnknown_08C59458_13		@ track
-	.word	gUnknown_08C59458_14		@ track
-	.word	gUnknown_08C59458_15		@ track
+	.word	song0014_1		@ track
+	.word	song0014_2		@ track
+	.word	song0014_3		@ track
+	.word	song0014_4		@ track
+	.word	song0014_5		@ track
+	.word	song0014_6		@ track
+	.word	song0014_7		@ track
+	.word	song0014_8		@ track
+	.word	song0014_9		@ track
+	.word	song0014_10		@ track
+	.word	song0014_11		@ track
+	.word	song0014_12		@ track
+	.word	song0014_13		@ track
+	.word	song0014_14		@ track
+	.word	song0014_15		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5A208_1
-gUnknown_08C5A208_1:	@ 0x08C5949C
+	.global song0015_1
+song0015_1:	@ 0x08C5949C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -21518,8 +21518,8 @@ gUnknown_08C595D8:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5A208_2
-gUnknown_08C5A208_2:	@ 0x08C5965C
+	.global song0015_2
+song0015_2:	@ 0x08C5965C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -21776,8 +21776,8 @@ gUnknown_08C596AE:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5A208_3
-gUnknown_08C5A208_3:	@ 0x08C597AE
+	.global song0015_3
+song0015_3:	@ 0x08C597AE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -22223,8 +22223,8 @@ gUnknown_08C5990D:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5A208_4
-gUnknown_08C5A208_4:	@ 0x08C59988
+	.global song0015_4
+song0015_4:	@ 0x08C59988
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -22625,8 +22625,8 @@ gUnknown_08C599BE:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5A208_5
-gUnknown_08C5A208_5:	@ 0x08C59B1E
+	.global song0015_5
+song0015_5:	@ 0x08C59B1E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -22932,8 +22932,8 @@ gUnknown_08C59BB1:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5A208_6
-gUnknown_08C5A208_6:	@ 0x08C59C63
+	.global song0015_6
+song0015_6:	@ 0x08C59C63
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -23240,8 +23240,8 @@ gUnknown_08C59CF6:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5A208_7
-gUnknown_08C5A208_7:	@ 0x08C59DA9
+	.global song0015_7
+song0015_7:	@ 0x08C59DA9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -23395,8 +23395,8 @@ gUnknown_08C59DB5:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5A208_8
-gUnknown_08C5A208_8:	@ 0x08C59E41
+	.global song0015_8
+song0015_8:	@ 0x08C59E41
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -23565,8 +23565,8 @@ gUnknown_08C59E6F:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5A208_9
-gUnknown_08C5A208_9:	@ 0x08C59EEA
+	.global song0015_9
+song0015_9:	@ 0x08C59EEA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -24146,8 +24146,8 @@ gUnknown_08C5A0D9:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5A208_10
-gUnknown_08C5A208_10:	@ 0x08C5A15A
+	.global song0015_10
+song0015_10:	@ 0x08C5A15A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -24320,8 +24320,8 @@ gUnknown_08C5A18A:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5A208
-gUnknown_08C5A208:	@ 0x08C5A208
+	.global song0015
+song0015:	@ 0x08C5A208
 	.byte	10		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -24329,22 +24329,22 @@ gUnknown_08C5A208:	@ 0x08C5A208
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C5A208_1		@ track
-	.word	gUnknown_08C5A208_2		@ track
-	.word	gUnknown_08C5A208_3		@ track
-	.word	gUnknown_08C5A208_4		@ track
-	.word	gUnknown_08C5A208_5		@ track
-	.word	gUnknown_08C5A208_6		@ track
-	.word	gUnknown_08C5A208_7		@ track
-	.word	gUnknown_08C5A208_8		@ track
-	.word	gUnknown_08C5A208_9		@ track
-	.word	gUnknown_08C5A208_10		@ track
+	.word	song0015_1		@ track
+	.word	song0015_2		@ track
+	.word	song0015_3		@ track
+	.word	song0015_4		@ track
+	.word	song0015_5		@ track
+	.word	song0015_6		@ track
+	.word	song0015_7		@ track
+	.word	song0015_8		@ track
+	.word	song0015_9		@ track
+	.word	song0015_10		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5B47C_1
-gUnknown_08C5B47C_1:	@ 0x08C5A238
+	.global song0016_1
+song0016_1:	@ 0x08C5A238
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -24780,8 +24780,8 @@ gUnknown_08C5A3B0:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5B47C_2
-gUnknown_08C5B47C_2:	@ 0x08C5A43F
+	.global song0016_2
+song0016_2:	@ 0x08C5A43F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -25137,8 +25137,8 @@ gUnknown_08C5A50C:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5B47C_3
-gUnknown_08C5B47C_3:	@ 0x08C5A5EA
+	.global song0016_3
+song0016_3:	@ 0x08C5A5EA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -25841,8 +25841,8 @@ gUnknown_08C5A819:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5B47C_4
-gUnknown_08C5B47C_4:	@ 0x08C5A8D0
+	.global song0016_4
+song0016_4:	@ 0x08C5A8D0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -26246,8 +26246,8 @@ gUnknown_08C5A906:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5B47C_5
-gUnknown_08C5B47C_5:	@ 0x08C5AA69
+	.global song0016_5
+song0016_5:	@ 0x08C5AA69
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -26646,8 +26646,8 @@ gUnknown_08C5AAFF:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5B47C_6
-gUnknown_08C5B47C_6:	@ 0x08C5AC05
+	.global song0016_6
+song0016_6:	@ 0x08C5AC05
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -27053,8 +27053,8 @@ gUnknown_08C5AC9D:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5B47C_7
-gUnknown_08C5B47C_7:	@ 0x08C5ADA8
+	.global song0016_7
+song0016_7:	@ 0x08C5ADA8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -27209,8 +27209,8 @@ gUnknown_08C5ADB4:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5B47C_8
-gUnknown_08C5B47C_8:	@ 0x08C5AE41
+	.global song0016_8
+song0016_8:	@ 0x08C5AE41
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -27450,8 +27450,8 @@ gUnknown_08C5AEA3:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5B47C_9
-gUnknown_08C5B47C_9:	@ 0x08C5AF33
+	.global song0016_9
+song0016_9:	@ 0x08C5AF33
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -28202,8 +28202,8 @@ gUnknown_08C5B1CE:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5B47C_10
-gUnknown_08C5B47C_10:	@ 0x08C5B250
+	.global song0016_10
+song0016_10:	@ 0x08C5B250
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -28324,8 +28324,8 @@ gUnknown_08C5B274:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C5B47C_11
-gUnknown_08C5B47C_11:	@ 0x08C5B2C7
+	.global song0016_11
+song0016_11:	@ 0x08C5B2C7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -28552,8 +28552,8 @@ gUnknown_08C5B333:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C5B47C_12
-gUnknown_08C5B47C_12:	@ 0x08C5B3C3
+	.global song0016_12
+song0016_12:	@ 0x08C5B3C3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -28614,8 +28614,8 @@ gUnknown_08C5B3CF:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C5B47C_13
-gUnknown_08C5B47C_13:	@ 0x08C5B3FE
+	.global song0016_13
+song0016_13:	@ 0x08C5B3FE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -28738,8 +28738,8 @@ gUnknown_08C5B42C:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5B47C
-gUnknown_08C5B47C:	@ 0x08C5B47C
+	.global song0016
+song0016:	@ 0x08C5B47C
 	.byte	13		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -28747,25 +28747,25 @@ gUnknown_08C5B47C:	@ 0x08C5B47C
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C5B47C_1		@ track
-	.word	gUnknown_08C5B47C_2		@ track
-	.word	gUnknown_08C5B47C_3		@ track
-	.word	gUnknown_08C5B47C_4		@ track
-	.word	gUnknown_08C5B47C_5		@ track
-	.word	gUnknown_08C5B47C_6		@ track
-	.word	gUnknown_08C5B47C_7		@ track
-	.word	gUnknown_08C5B47C_8		@ track
-	.word	gUnknown_08C5B47C_9		@ track
-	.word	gUnknown_08C5B47C_10		@ track
-	.word	gUnknown_08C5B47C_11		@ track
-	.word	gUnknown_08C5B47C_12		@ track
-	.word	gUnknown_08C5B47C_13		@ track
+	.word	song0016_1		@ track
+	.word	song0016_2		@ track
+	.word	song0016_3		@ track
+	.word	song0016_4		@ track
+	.word	song0016_5		@ track
+	.word	song0016_6		@ track
+	.word	song0016_7		@ track
+	.word	song0016_8		@ track
+	.word	song0016_9		@ track
+	.word	song0016_10		@ track
+	.word	song0016_11		@ track
+	.word	song0016_12		@ track
+	.word	song0016_13		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5C6CC_1
-gUnknown_08C5C6CC_1:	@ 0x08C5B4B8
+	.global song0017_1
+song0017_1:	@ 0x08C5B4B8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -29607,8 +29607,8 @@ gUnknown_08C5B4C8:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5C6CC_2
-gUnknown_08C5C6CC_2:	@ 0x08C5B800
+	.global song0017_2
+song0017_2:	@ 0x08C5B800
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -30445,8 +30445,8 @@ gUnknown_08C5B80E:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5C6CC_3
-gUnknown_08C5C6CC_3:	@ 0x08C5BB43
+	.global song0017_3
+song0017_3:	@ 0x08C5BB43
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -31280,8 +31280,8 @@ gUnknown_08C5BB51:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5C6CC_4
-gUnknown_08C5C6CC_4:	@ 0x08C5BE83
+	.global song0017_4
+song0017_4:	@ 0x08C5BE83
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -31482,8 +31482,8 @@ gUnknown_08C5BF26:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5C6CC_5
-gUnknown_08C5C6CC_5:	@ 0x08C5BF83
+	.global song0017_5
+song0017_5:	@ 0x08C5BF83
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -31820,8 +31820,8 @@ gUnknown_08C5C04A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5C6CC_6
-gUnknown_08C5C6CC_6:	@ 0x08C5C0F1
+	.global song0017_6
+song0017_6:	@ 0x08C5C0F1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -32323,8 +32323,8 @@ gUnknown_08C5C16D:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5C6CC_7
-gUnknown_08C5C6CC_7:	@ 0x08C5C30C
+	.global song0017_7
+song0017_7:	@ 0x08C5C30C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -32638,8 +32638,8 @@ gUnknown_08C5C359:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5C6CC_8
-gUnknown_08C5C6CC_8:	@ 0x08C5C448
+	.global song0017_8
+song0017_8:	@ 0x08C5C448
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -32803,8 +32803,8 @@ gUnknown_08C5C486:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5C6CC_9
-gUnknown_08C5C6CC_9:	@ 0x08C5C4EE
+	.global song0017_9
+song0017_9:	@ 0x08C5C4EE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -32968,8 +32968,8 @@ gUnknown_08C5C52C:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5C6CC_10
-gUnknown_08C5C6CC_10:	@ 0x08C5C594
+	.global song0017_10
+song0017_10:	@ 0x08C5C594
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -33210,8 +33210,8 @@ gUnknown_08C5C675:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5C6CC
-gUnknown_08C5C6CC:	@ 0x08C5C6CC
+	.global song0017
+song0017:	@ 0x08C5C6CC
 	.byte	10		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -33219,22 +33219,22 @@ gUnknown_08C5C6CC:	@ 0x08C5C6CC
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C5C6CC_1		@ track
-	.word	gUnknown_08C5C6CC_2		@ track
-	.word	gUnknown_08C5C6CC_3		@ track
-	.word	gUnknown_08C5C6CC_4		@ track
-	.word	gUnknown_08C5C6CC_5		@ track
-	.word	gUnknown_08C5C6CC_6		@ track
-	.word	gUnknown_08C5C6CC_7		@ track
-	.word	gUnknown_08C5C6CC_8		@ track
-	.word	gUnknown_08C5C6CC_9		@ track
-	.word	gUnknown_08C5C6CC_10		@ track
+	.word	song0017_1		@ track
+	.word	song0017_2		@ track
+	.word	song0017_3		@ track
+	.word	song0017_4		@ track
+	.word	song0017_5		@ track
+	.word	song0017_6		@ track
+	.word	song0017_7		@ track
+	.word	song0017_8		@ track
+	.word	song0017_9		@ track
+	.word	song0017_10		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5DD98_1
-gUnknown_08C5DD98_1:	@ 0x08C5C6FC
+	.global song0018_1
+song0018_1:	@ 0x08C5C6FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -34080,8 +34080,8 @@ gUnknown_08C5C709:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5DD98_2
-gUnknown_08C5DD98_2:	@ 0x08C5CA48
+	.global song0018_2
+song0018_2:	@ 0x08C5CA48
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -34929,8 +34929,8 @@ gUnknown_08C5CA53:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5DD98_3
-gUnknown_08C5DD98_3:	@ 0x08C5CD96
+	.global song0018_3
+song0018_3:	@ 0x08C5CD96
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -35789,8 +35789,8 @@ gUnknown_08C5CDA1:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5DD98_4
-gUnknown_08C5DD98_4:	@ 0x08C5D0EF
+	.global song0018_4
+song0018_4:	@ 0x08C5D0EF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -36078,8 +36078,8 @@ gUnknown_08C5D1D3:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5DD98_5
-gUnknown_08C5DD98_5:	@ 0x08C5D24C
+	.global song0018_5
+song0018_5:	@ 0x08C5D24C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -36548,8 +36548,8 @@ gUnknown_08C5D37A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5DD98_6
-gUnknown_08C5DD98_6:	@ 0x08C5D43F
+	.global song0018_6
+song0018_6:	@ 0x08C5D43F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -37346,8 +37346,8 @@ gUnknown_08C5D4C6:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5DD98_7
-gUnknown_08C5DD98_7:	@ 0x08C5D791
+	.global song0018_7
+song0018_7:	@ 0x08C5D791
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -37748,8 +37748,8 @@ gUnknown_08C5D79A:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5DD98_8
-gUnknown_08C5DD98_8:	@ 0x08C5D920
+	.global song0018_8
+song0018_8:	@ 0x08C5D920
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -37832,8 +37832,8 @@ gUnknown_08C5D92B:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5DD98_9
-gUnknown_08C5DD98_9:	@ 0x08C5D971
+	.global song0018_9
+song0018_9:	@ 0x08C5D971
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -38426,8 +38426,8 @@ gUnknown_08C5DB8D:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5DD98_10
-gUnknown_08C5DD98_10:	@ 0x08C5DBD8
+	.global song0018_10
+song0018_10:	@ 0x08C5DBD8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -38495,8 +38495,8 @@ gUnknown_08C5DBED:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C5DD98_11
-gUnknown_08C5DD98_11:	@ 0x08C5DC25
+	.global song0018_11
+song0018_11:	@ 0x08C5DC25
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -38615,8 +38615,8 @@ gUnknown_08C5DC3A:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C5DD98_12
-gUnknown_08C5DD98_12:	@ 0x08C5DC9F
+	.global song0018_12
+song0018_12:	@ 0x08C5DC9F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -38690,8 +38690,8 @@ gUnknown_08C5DCAA:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C5DD98_13
-gUnknown_08C5DD98_13:	@ 0x08C5DCED
+	.global song0018_13
+song0018_13:	@ 0x08C5DCED
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -38858,8 +38858,8 @@ gUnknown_08C5DD0D:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5DD98
-gUnknown_08C5DD98:	@ 0x08C5DD98
+	.global song0018
+song0018:	@ 0x08C5DD98
 	.byte	13		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -38867,25 +38867,25 @@ gUnknown_08C5DD98:	@ 0x08C5DD98
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C5DD98_1		@ track
-	.word	gUnknown_08C5DD98_2		@ track
-	.word	gUnknown_08C5DD98_3		@ track
-	.word	gUnknown_08C5DD98_4		@ track
-	.word	gUnknown_08C5DD98_5		@ track
-	.word	gUnknown_08C5DD98_6		@ track
-	.word	gUnknown_08C5DD98_7		@ track
-	.word	gUnknown_08C5DD98_8		@ track
-	.word	gUnknown_08C5DD98_9		@ track
-	.word	gUnknown_08C5DD98_10		@ track
-	.word	gUnknown_08C5DD98_11		@ track
-	.word	gUnknown_08C5DD98_12		@ track
-	.word	gUnknown_08C5DD98_13		@ track
+	.word	song0018_1		@ track
+	.word	song0018_2		@ track
+	.word	song0018_3		@ track
+	.word	song0018_4		@ track
+	.word	song0018_5		@ track
+	.word	song0018_6		@ track
+	.word	song0018_7		@ track
+	.word	song0018_8		@ track
+	.word	song0018_9		@ track
+	.word	song0018_10		@ track
+	.word	song0018_11		@ track
+	.word	song0018_12		@ track
+	.word	song0018_13		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C5F90C_1
-gUnknown_08C5F90C_1:	@ 0x08C5DDD4
+	.global song0019_1
+song0019_1:	@ 0x08C5DDD4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -39152,8 +39152,8 @@ gUnknown_08C5DE66:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C5F90C_2
-gUnknown_08C5F90C_2:	@ 0x08C5DF40
+	.global song0019_2
+song0019_2:	@ 0x08C5DF40
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -39997,8 +39997,8 @@ gUnknown_08C5E14A:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C5F90C_3
-gUnknown_08C5F90C_3:	@ 0x08C5E2EE
+	.global song0019_3
+song0019_3:	@ 0x08C5E2EE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -40477,8 +40477,8 @@ gUnknown_08C5E497:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C5F90C_4
-gUnknown_08C5F90C_4:	@ 0x08C5E511
+	.global song0019_4
+song0019_4:	@ 0x08C5E511
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -40691,8 +40691,8 @@ gUnknown_08C5E594:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C5F90C_5
-gUnknown_08C5F90C_5:	@ 0x08C5E622
+	.global song0019_5
+song0019_5:	@ 0x08C5E622
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -40878,8 +40878,8 @@ gUnknown_08C5E6AE:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C5F90C_6
-gUnknown_08C5F90C_6:	@ 0x08C5E701
+	.global song0019_6
+song0019_6:	@ 0x08C5E701
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -41043,8 +41043,8 @@ gUnknown_08C5E74E:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C5F90C_7
-gUnknown_08C5F90C_7:	@ 0x08C5E7CA
+	.global song0019_7
+song0019_7:	@ 0x08C5E7CA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -41235,8 +41235,8 @@ gUnknown_08C5E806:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C5F90C_8
-gUnknown_08C5F90C_8:	@ 0x08C5E88D
+	.global song0019_8
+song0019_8:	@ 0x08C5E88D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -41507,8 +41507,8 @@ gUnknown_08C5E922:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C5F90C_9
-gUnknown_08C5F90C_9:	@ 0x08C5E9A0
+	.global song0019_9
+song0019_9:	@ 0x08C5E9A0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -41901,8 +41901,8 @@ gUnknown_08C5EA53:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C5F90C_10
-gUnknown_08C5F90C_10:	@ 0x08C5EB2B
+	.global song0019_10
+song0019_10:	@ 0x08C5EB2B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -42812,8 +42812,8 @@ gUnknown_08C5EC9B:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C5F90C_11
-gUnknown_08C5F90C_11:	@ 0x08C5EEBB
+	.global song0019_11
+song0019_11:	@ 0x08C5EEBB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -43392,8 +43392,8 @@ gUnknown_08C5EF06:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C5F90C_12
-gUnknown_08C5F90C_12:	@ 0x08C5F101
+	.global song0019_12
+song0019_12:	@ 0x08C5F101
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -43676,8 +43676,8 @@ gUnknown_08C5F10D:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C5F90C_13
-gUnknown_08C5F90C_13:	@ 0x08C5F21A
+	.global song0019_13
+song0019_13:	@ 0x08C5F21A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -45147,8 +45147,8 @@ gUnknown_08C5F22A:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C5F90C_14
-gUnknown_08C5F90C_14:	@ 0x08C5F7D6
+	.global song0019_14
+song0019_14:	@ 0x08C5F7D6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -45449,8 +45449,8 @@ gUnknown_08C5F826:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C5F90C
-gUnknown_08C5F90C:	@ 0x08C5F90C
+	.global song0019
+song0019:	@ 0x08C5F90C
 	.byte	14		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -45458,26 +45458,26 @@ gUnknown_08C5F90C:	@ 0x08C5F90C
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C5F90C_1		@ track
-	.word	gUnknown_08C5F90C_2		@ track
-	.word	gUnknown_08C5F90C_3		@ track
-	.word	gUnknown_08C5F90C_4		@ track
-	.word	gUnknown_08C5F90C_5		@ track
-	.word	gUnknown_08C5F90C_6		@ track
-	.word	gUnknown_08C5F90C_7		@ track
-	.word	gUnknown_08C5F90C_8		@ track
-	.word	gUnknown_08C5F90C_9		@ track
-	.word	gUnknown_08C5F90C_10		@ track
-	.word	gUnknown_08C5F90C_11		@ track
-	.word	gUnknown_08C5F90C_12		@ track
-	.word	gUnknown_08C5F90C_13		@ track
-	.word	gUnknown_08C5F90C_14		@ track
+	.word	song0019_1		@ track
+	.word	song0019_2		@ track
+	.word	song0019_3		@ track
+	.word	song0019_4		@ track
+	.word	song0019_5		@ track
+	.word	song0019_6		@ track
+	.word	song0019_7		@ track
+	.word	song0019_8		@ track
+	.word	song0019_9		@ track
+	.word	song0019_10		@ track
+	.word	song0019_11		@ track
+	.word	song0019_12		@ track
+	.word	song0019_13		@ track
+	.word	song0019_14		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6271C_1
-gUnknown_08C6271C_1:	@ 0x08C5F94C
+	.global song0020_1
+song0020_1:	@ 0x08C5F94C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C5F94E:
@@ -48263,8 +48263,8 @@ gUnknown_08C5F94E:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6271C_2
-gUnknown_08C6271C_2:	@ 0x08C6042C
+	.global song0020_2
+song0020_2:	@ 0x08C6042C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6042E:
@@ -48965,8 +48965,8 @@ gUnknown_08C60626:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6271C_3
-gUnknown_08C6271C_3:	@ 0x08C607C9
+	.global song0020_3
+song0020_3:	@ 0x08C607C9
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C607CB:
@@ -49858,8 +49858,8 @@ gUnknown_08C60A5E:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6271C_4
-gUnknown_08C6271C_4:	@ 0x08C60BA9
+	.global song0020_4
+song0020_4:	@ 0x08C60BA9
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C60BAB:
@@ -50324,8 +50324,8 @@ gUnknown_08C60D38:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6271C_5
-gUnknown_08C6271C_5:	@ 0x08C60DB8
+	.global song0020_5
+song0020_5:	@ 0x08C60DB8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C60DBA:
@@ -50688,8 +50688,8 @@ gUnknown_08C60E94:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6271C_6
-gUnknown_08C6271C_6:	@ 0x08C60F39
+	.global song0020_6
+song0020_6:	@ 0x08C60F39
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C60F3B:
@@ -50820,8 +50820,8 @@ gUnknown_08C60F49:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6271C_7
-gUnknown_08C6271C_7:	@ 0x08C60FBE
+	.global song0020_7
+song0020_7:	@ 0x08C60FBE
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C60FC0:
@@ -51051,8 +51051,8 @@ gUnknown_08C61047:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6271C_8
-gUnknown_08C6271C_8:	@ 0x08C610AE
+	.global song0020_8
+song0020_8:	@ 0x08C610AE
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C610B0:
@@ -51218,8 +51218,8 @@ gUnknown_08C610B0:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C6271C_9
-gUnknown_08C6271C_9:	@ 0x08C61152
+	.global song0020_9
+song0020_9:	@ 0x08C61152
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C61154:
@@ -51993,8 +51993,8 @@ gUnknown_08C6129A:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C6271C_10
-gUnknown_08C6271C_10:	@ 0x08C6145F
+	.global song0020_10
+song0020_10:	@ 0x08C6145F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C61461:
@@ -52948,8 +52948,8 @@ gUnknown_08C6153A:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C6271C_11
-gUnknown_08C6271C_11:	@ 0x08C6181D
+	.global song0020_11
+song0020_11:	@ 0x08C6181D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6181F:
@@ -55157,8 +55157,8 @@ gUnknown_08C61D3F:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C6271C_12
-gUnknown_08C6271C_12:	@ 0x08C620CC
+	.global song0020_12
+song0020_12:	@ 0x08C620CC
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C620CE:
@@ -55574,8 +55574,8 @@ gUnknown_08C62240:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C6271C_13
-gUnknown_08C6271C_13:	@ 0x08C622F4
+	.global song0020_13
+song0020_13:	@ 0x08C622F4
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C622F6:
@@ -55798,8 +55798,8 @@ gUnknown_08C623BA:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C6271C_14
-gUnknown_08C6271C_14:	@ 0x08C62421
+	.global song0020_14
+song0020_14:	@ 0x08C62421
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C62423:
@@ -56001,8 +56001,8 @@ gUnknown_08C624DD:
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C6271C_15
-gUnknown_08C6271C_15:	@ 0x08C6253F
+	.global song0020_15
+song0020_15:	@ 0x08C6253F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C62541:
@@ -56204,8 +56204,8 @@ gUnknown_08C625FC:
 
 	@********************** Track  16 **********************@
 
-	.global gUnknown_08C6271C_16
-gUnknown_08C6271C_16:	@ 0x08C6265D
+	.global song0020_16
+song0020_16:	@ 0x08C6265D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6265F:
@@ -56397,8 +56397,8 @@ gUnknown_08C6265F:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6271C
-gUnknown_08C6271C:	@ 0x08C6271C
+	.global song0020
+song0020:	@ 0x08C6271C
 	.byte	16		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -56406,28 +56406,28 @@ gUnknown_08C6271C:	@ 0x08C6271C
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C6271C_1		@ track
-	.word	gUnknown_08C6271C_2		@ track
-	.word	gUnknown_08C6271C_3		@ track
-	.word	gUnknown_08C6271C_4		@ track
-	.word	gUnknown_08C6271C_5		@ track
-	.word	gUnknown_08C6271C_6		@ track
-	.word	gUnknown_08C6271C_7		@ track
-	.word	gUnknown_08C6271C_8		@ track
-	.word	gUnknown_08C6271C_9		@ track
-	.word	gUnknown_08C6271C_10		@ track
-	.word	gUnknown_08C6271C_11		@ track
-	.word	gUnknown_08C6271C_12		@ track
-	.word	gUnknown_08C6271C_13		@ track
-	.word	gUnknown_08C6271C_14		@ track
-	.word	gUnknown_08C6271C_15		@ track
-	.word	gUnknown_08C6271C_16		@ track
+	.word	song0020_1		@ track
+	.word	song0020_2		@ track
+	.word	song0020_3		@ track
+	.word	song0020_4		@ track
+	.word	song0020_5		@ track
+	.word	song0020_6		@ track
+	.word	song0020_7		@ track
+	.word	song0020_8		@ track
+	.word	song0020_9		@ track
+	.word	song0020_10		@ track
+	.word	song0020_11		@ track
+	.word	song0020_12		@ track
+	.word	song0020_13		@ track
+	.word	song0020_14		@ track
+	.word	song0020_15		@ track
+	.word	song0020_16		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C638C8_1
-gUnknown_08C638C8_1:	@ 0x08C62764
+	.global song0021_1
+song0021_1:	@ 0x08C62764
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -57403,8 +57403,8 @@ gUnknown_08C62995:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C638C8_2
-gUnknown_08C638C8_2:	@ 0x08C62B75
+	.global song0021_2
+song0021_2:	@ 0x08C62B75
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -57763,8 +57763,8 @@ gUnknown_08C62BBD:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C638C8_3
-gUnknown_08C638C8_3:	@ 0x08C62CDF
+	.global song0021_3
+song0021_3:	@ 0x08C62CDF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -58245,8 +58245,8 @@ gUnknown_08C62E2F:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C638C8_4
-gUnknown_08C638C8_4:	@ 0x08C62EFE
+	.global song0021_4
+song0021_4:	@ 0x08C62EFE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -58463,8 +58463,8 @@ gUnknown_08C62F31:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C638C8_5
-gUnknown_08C638C8_5:	@ 0x08C62FE2
+	.global song0021_5
+song0021_5:	@ 0x08C62FE2
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -58598,8 +58598,8 @@ gUnknown_08C63028:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C638C8_6
-gUnknown_08C638C8_6:	@ 0x08C63075
+	.global song0021_6
+song0021_6:	@ 0x08C63075
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -58999,8 +58999,8 @@ gUnknown_08C63146:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C638C8_7
-gUnknown_08C638C8_7:	@ 0x08C63213
+	.global song0021_7
+song0021_7:	@ 0x08C63213
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -59176,8 +59176,8 @@ gUnknown_08C63290:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C638C8_8
-gUnknown_08C638C8_8:	@ 0x08C632CF
+	.global song0021_8
+song0021_8:	@ 0x08C632CF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -59715,8 +59715,8 @@ gUnknown_08C634B2:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C638C8_9
-gUnknown_08C638C8_9:	@ 0x08C634F5
+	.global song0021_9
+song0021_9:	@ 0x08C634F5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -60325,8 +60325,8 @@ gUnknown_08C636AE:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C638C8_10
-gUnknown_08C638C8_10:	@ 0x08C63754
+	.global song0021_10
+song0021_10:	@ 0x08C63754
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -60544,8 +60544,8 @@ gUnknown_08C63789:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C638C8_11
-gUnknown_08C638C8_11:	@ 0x08C63839
+	.global song0021_11
+song0021_11:	@ 0x08C63839
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -60689,8 +60689,8 @@ gUnknown_08C63851:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C638C8
-gUnknown_08C638C8:	@ 0x08C638C8
+	.global song0021
+song0021:	@ 0x08C638C8
 	.byte	11		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -60698,23 +60698,23 @@ gUnknown_08C638C8:	@ 0x08C638C8
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C638C8_1		@ track
-	.word	gUnknown_08C638C8_2		@ track
-	.word	gUnknown_08C638C8_3		@ track
-	.word	gUnknown_08C638C8_4		@ track
-	.word	gUnknown_08C638C8_5		@ track
-	.word	gUnknown_08C638C8_6		@ track
-	.word	gUnknown_08C638C8_7		@ track
-	.word	gUnknown_08C638C8_8		@ track
-	.word	gUnknown_08C638C8_9		@ track
-	.word	gUnknown_08C638C8_10		@ track
-	.word	gUnknown_08C638C8_11		@ track
+	.word	song0021_1		@ track
+	.word	song0021_2		@ track
+	.word	song0021_3		@ track
+	.word	song0021_4		@ track
+	.word	song0021_5		@ track
+	.word	song0021_6		@ track
+	.word	song0021_7		@ track
+	.word	song0021_8		@ track
+	.word	song0021_9		@ track
+	.word	song0021_10		@ track
+	.word	song0021_11		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C64D24_1
-gUnknown_08C64D24_1:	@ 0x08C638FC
+	.global song0022_1
+song0022_1:	@ 0x08C638FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -61555,8 +61555,8 @@ gUnknown_08C63C0E:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C64D24_2
-gUnknown_08C64D24_2:	@ 0x08C63C96
+	.global song0022_2
+song0022_2:	@ 0x08C63C96
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -61960,8 +61960,8 @@ gUnknown_08C63D6D:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C64D24_3
-gUnknown_08C64D24_3:	@ 0x08C63E32
+	.global song0022_3
+song0022_3:	@ 0x08C63E32
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -62363,8 +62363,8 @@ gUnknown_08C63FBB:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C64D24_4
-gUnknown_08C64D24_4:	@ 0x08C6400A
+	.global song0022_4
+song0022_4:	@ 0x08C6400A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -62491,8 +62491,8 @@ gUnknown_08C64050:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C64D24_5
-gUnknown_08C64D24_5:	@ 0x08C64090
+	.global song0022_5
+song0022_5:	@ 0x08C64090
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -62618,8 +62618,8 @@ gUnknown_08C640D5:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C64D24_6
-gUnknown_08C64D24_6:	@ 0x08C64115
+	.global song0022_6
+song0022_6:	@ 0x08C64115
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -63033,8 +63033,8 @@ gUnknown_08C6418F:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C64D24_7
-gUnknown_08C64D24_7:	@ 0x08C642BD
+	.global song0022_7
+song0022_7:	@ 0x08C642BD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -64283,8 +64283,8 @@ gUnknown_08C644BB:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C64D24_8
-gUnknown_08C64D24_8:	@ 0x08C647A8
+	.global song0022_8
+song0022_8:	@ 0x08C647A8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -65419,8 +65419,8 @@ gUnknown_08C64982:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C64D24_9
-gUnknown_08C64D24_9:	@ 0x08C64C1F
+	.global song0022_9
+song0022_9:	@ 0x08C64C1F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -65673,8 +65673,8 @@ gUnknown_08C64C98:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C64D24
-gUnknown_08C64D24:	@ 0x08C64D24
+	.global song0022
+song0022:	@ 0x08C64D24
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -65682,21 +65682,21 @@ gUnknown_08C64D24:	@ 0x08C64D24
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C64D24_1		@ track
-	.word	gUnknown_08C64D24_2		@ track
-	.word	gUnknown_08C64D24_3		@ track
-	.word	gUnknown_08C64D24_4		@ track
-	.word	gUnknown_08C64D24_5		@ track
-	.word	gUnknown_08C64D24_6		@ track
-	.word	gUnknown_08C64D24_7		@ track
-	.word	gUnknown_08C64D24_8		@ track
-	.word	gUnknown_08C64D24_9		@ track
+	.word	song0022_1		@ track
+	.word	song0022_2		@ track
+	.word	song0022_3		@ track
+	.word	song0022_4		@ track
+	.word	song0022_5		@ track
+	.word	song0022_6		@ track
+	.word	song0022_7		@ track
+	.word	song0022_8		@ track
+	.word	song0022_9		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C669D8_1
-gUnknown_08C669D8_1:	@ 0x08C64D50
+	.global song0023_1
+song0023_1:	@ 0x08C64D50
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C64D52:
@@ -65776,8 +65776,8 @@ gUnknown_08C64D52:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C669D8_2
-gUnknown_08C669D8_2:	@ 0x08C64D9E
+	.global song0023_2
+song0023_2:	@ 0x08C64D9E
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C64DA0:
@@ -66267,8 +66267,8 @@ gUnknown_08C64DF5:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C669D8_3
-gUnknown_08C669D8_3:	@ 0x08C64FF3
+	.global song0023_3
+song0023_3:	@ 0x08C64FF3
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C64FF5:
@@ -66403,8 +66403,8 @@ gUnknown_08C65001:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C669D8_4
-gUnknown_08C669D8_4:	@ 0x08C650EC
+	.global song0023_4
+song0023_4:	@ 0x08C650EC
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C650EE:
@@ -67586,8 +67586,8 @@ gUnknown_08C65511:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C669D8_5
-gUnknown_08C669D8_5:	@ 0x08C655EB
+	.global song0023_5
+song0023_5:	@ 0x08C655EB
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C655ED:
@@ -68269,8 +68269,8 @@ gUnknown_08C6577A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C669D8_6
-gUnknown_08C669D8_6:	@ 0x08C658C8
+	.global song0023_6
+song0023_6:	@ 0x08C658C8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C658CA:
@@ -69428,8 +69428,8 @@ gUnknown_08C65BE1:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C669D8_7
-gUnknown_08C669D8_7:	@ 0x08C65D5C
+	.global song0023_7
+song0023_7:	@ 0x08C65D5C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C65D5E:
@@ -70488,8 +70488,8 @@ gUnknown_08C6614C:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C669D8_8
-gUnknown_08C669D8_8:	@ 0x08C6618B
+	.global song0023_8
+song0023_8:	@ 0x08C6618B
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6618D:
@@ -70727,8 +70727,8 @@ gUnknown_08C6618D:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C669D8_9
-gUnknown_08C669D8_9:	@ 0x08C66277
+	.global song0023_9
+song0023_9:	@ 0x08C66277
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66279:
@@ -70943,8 +70943,8 @@ gUnknown_08C66309:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C669D8_10
-gUnknown_08C669D8_10:	@ 0x08C66363
+	.global song0023_10
+song0023_10:	@ 0x08C66363
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66365:
@@ -71633,8 +71633,8 @@ gUnknown_08C665B9:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C669D8_11
-gUnknown_08C669D8_11:	@ 0x08C66622
+	.global song0023_11
+song0023_11:	@ 0x08C66622
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66624:
@@ -71807,8 +71807,8 @@ gUnknown_08C66658:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C669D8_12
-gUnknown_08C669D8_12:	@ 0x08C666D1
+	.global song0023_12
+song0023_12:	@ 0x08C666D1
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C666D3:
@@ -71931,8 +71931,8 @@ gUnknown_08C666D3:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C669D8_13
-gUnknown_08C669D8_13:	@ 0x08C6674A
+	.global song0023_13
+song0023_13:	@ 0x08C6674A
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6674C:
@@ -72066,8 +72066,8 @@ gUnknown_08C6674C:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C669D8_14
-gUnknown_08C669D8_14:	@ 0x08C667CE
+	.global song0023_14
+song0023_14:	@ 0x08C667CE
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C667D0:
@@ -72590,8 +72590,8 @@ gUnknown_08C667D0:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C669D8
-gUnknown_08C669D8:	@ 0x08C669D8
+	.global song0023
+song0023:	@ 0x08C669D8
 	.byte	14		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -72599,26 +72599,26 @@ gUnknown_08C669D8:	@ 0x08C669D8
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C669D8_1		@ track
-	.word	gUnknown_08C669D8_2		@ track
-	.word	gUnknown_08C669D8_3		@ track
-	.word	gUnknown_08C669D8_4		@ track
-	.word	gUnknown_08C669D8_5		@ track
-	.word	gUnknown_08C669D8_6		@ track
-	.word	gUnknown_08C669D8_7		@ track
-	.word	gUnknown_08C669D8_8		@ track
-	.word	gUnknown_08C669D8_9		@ track
-	.word	gUnknown_08C669D8_10		@ track
-	.word	gUnknown_08C669D8_11		@ track
-	.word	gUnknown_08C669D8_12		@ track
-	.word	gUnknown_08C669D8_13		@ track
-	.word	gUnknown_08C669D8_14		@ track
+	.word	song0023_1		@ track
+	.word	song0023_2		@ track
+	.word	song0023_3		@ track
+	.word	song0023_4		@ track
+	.word	song0023_5		@ track
+	.word	song0023_6		@ track
+	.word	song0023_7		@ track
+	.word	song0023_8		@ track
+	.word	song0023_9		@ track
+	.word	song0023_10		@ track
+	.word	song0023_11		@ track
+	.word	song0023_12		@ track
+	.word	song0023_13		@ track
+	.word	song0023_14		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C69A24_1
-gUnknown_08C69A24_1:	@ 0x08C66A18
+	.global song0024_1
+song0024_1:	@ 0x08C66A18
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66A1A:
@@ -73419,8 +73419,8 @@ gUnknown_08C66CB2:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C69A24_2
-gUnknown_08C69A24_2:	@ 0x08C66DAF
+	.global song0024_2
+song0024_2:	@ 0x08C66DAF
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66DB1:
@@ -73599,8 +73599,8 @@ gUnknown_08C66DDD:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C69A24_3
-gUnknown_08C69A24_3:	@ 0x08C66E6B
+	.global song0024_3
+song0024_3:	@ 0x08C66E6B
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66E6D:
@@ -73735,8 +73735,8 @@ gUnknown_08C66E7A:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C69A24_4
-gUnknown_08C69A24_4:	@ 0x08C66F61
+	.global song0024_4
+song0024_4:	@ 0x08C66F61
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C66F63:
@@ -75491,8 +75491,8 @@ gUnknown_08C6759A:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C69A24_5
-gUnknown_08C69A24_5:	@ 0x08C6768B
+	.global song0024_5
+song0024_5:	@ 0x08C6768B
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6768D:
@@ -76608,8 +76608,8 @@ gUnknown_08C678D4:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C69A24_6
-gUnknown_08C69A24_6:	@ 0x08C67B17
+	.global song0024_6
+song0024_6:	@ 0x08C67B17
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C67B19:
@@ -78058,8 +78058,8 @@ gUnknown_08C67EBA:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C69A24_7
-gUnknown_08C69A24_7:	@ 0x08C680C8
+	.global song0024_7
+song0024_7:	@ 0x08C680C8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C680CA:
@@ -79119,8 +79119,8 @@ gUnknown_08C684B9:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C69A24_8
-gUnknown_08C69A24_8:	@ 0x08C684F8
+	.global song0024_8
+song0024_8:	@ 0x08C684F8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C684FA:
@@ -79359,8 +79359,8 @@ gUnknown_08C684FA:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C69A24_9
-gUnknown_08C69A24_9:	@ 0x08C685E5
+	.global song0024_9
+song0024_9:	@ 0x08C685E5
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C685E7:
@@ -79577,8 +79577,8 @@ gUnknown_08C6867C:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C69A24_10
-gUnknown_08C69A24_10:	@ 0x08C686D6
+	.global song0024_10
+song0024_10:	@ 0x08C686D6
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C686D8:
@@ -80268,8 +80268,8 @@ gUnknown_08C6892D:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C69A24_11
-gUnknown_08C69A24_11:	@ 0x08C68996
+	.global song0024_11
+song0024_11:	@ 0x08C68996
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C68998:
@@ -80553,8 +80553,8 @@ gUnknown_08C689CD:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C69A24_12
-gUnknown_08C69A24_12:	@ 0x08C68AB4
+	.global song0024_12
+song0024_12:	@ 0x08C68AB4
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C68AB6:
@@ -80678,8 +80678,8 @@ gUnknown_08C68AB6:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C69A24_13
-gUnknown_08C69A24_13:	@ 0x08C68B2E
+	.global song0024_13
+song0024_13:	@ 0x08C68B2E
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C68B30:
@@ -82552,8 +82552,8 @@ gUnknown_08C68E24:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C69A24_14
-gUnknown_08C69A24_14:	@ 0x08C6927F
+	.global song0024_14
+song0024_14:	@ 0x08C6927F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C69281:
@@ -83461,8 +83461,8 @@ gUnknown_08C69281:
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C69A24_15
-gUnknown_08C69A24_15:	@ 0x08C69609
+	.global song0024_15
+song0024_15:	@ 0x08C69609
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6960B:
@@ -84436,8 +84436,8 @@ gUnknown_08C6960B:
 
 	@********************** Track  16 **********************@
 
-	.global gUnknown_08C69A24_16
-gUnknown_08C69A24_16:	@ 0x08C699D5
+	.global song0024_16
+song0024_16:	@ 0x08C699D5
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C699D7:
@@ -84517,8 +84517,8 @@ gUnknown_08C699D7:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C69A24
-gUnknown_08C69A24:	@ 0x08C69A24
+	.global song0024
+song0024:	@ 0x08C69A24
 	.byte	16		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -84526,28 +84526,28 @@ gUnknown_08C69A24:	@ 0x08C69A24
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C69A24_1		@ track
-	.word	gUnknown_08C69A24_2		@ track
-	.word	gUnknown_08C69A24_3		@ track
-	.word	gUnknown_08C69A24_4		@ track
-	.word	gUnknown_08C69A24_5		@ track
-	.word	gUnknown_08C69A24_6		@ track
-	.word	gUnknown_08C69A24_7		@ track
-	.word	gUnknown_08C69A24_8		@ track
-	.word	gUnknown_08C69A24_9		@ track
-	.word	gUnknown_08C69A24_10		@ track
-	.word	gUnknown_08C69A24_11		@ track
-	.word	gUnknown_08C69A24_12		@ track
-	.word	gUnknown_08C69A24_13		@ track
-	.word	gUnknown_08C69A24_14		@ track
-	.word	gUnknown_08C69A24_15		@ track
-	.word	gUnknown_08C69A24_16		@ track
+	.word	song0024_1		@ track
+	.word	song0024_2		@ track
+	.word	song0024_3		@ track
+	.word	song0024_4		@ track
+	.word	song0024_5		@ track
+	.word	song0024_6		@ track
+	.word	song0024_7		@ track
+	.word	song0024_8		@ track
+	.word	song0024_9		@ track
+	.word	song0024_10		@ track
+	.word	song0024_11		@ track
+	.word	song0024_12		@ track
+	.word	song0024_13		@ track
+	.word	song0024_14		@ track
+	.word	song0024_15		@ track
+	.word	song0024_16		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6ABBC_1
-gUnknown_08C6ABBC_1:	@ 0x08C69A6C
+	.global song0025_1
+song0025_1:	@ 0x08C69A6C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C69A6E:
@@ -84964,8 +84964,8 @@ gUnknown_08C69BC6:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6ABBC_2
-gUnknown_08C6ABBC_2:	@ 0x08C69CA1
+	.global song0025_2
+song0025_2:	@ 0x08C69CA1
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C69CA3:
@@ -85257,8 +85257,8 @@ gUnknown_08C69D05:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6ABBC_3
-gUnknown_08C6ABBC_3:	@ 0x08C69DC5
+	.global song0025_3
+song0025_3:	@ 0x08C69DC5
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C69DC7:
@@ -85468,8 +85468,8 @@ gUnknown_08C69E1C:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6ABBC_4
-gUnknown_08C6ABBC_4:	@ 0x08C69EA5
+	.global song0025_4
+song0025_4:	@ 0x08C69EA5
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C69EA7:
@@ -85759,8 +85759,8 @@ gUnknown_08C69FD2:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6ABBC_5
-gUnknown_08C6ABBC_5:	@ 0x08C6A05A
+	.global song0025_5
+song0025_5:	@ 0x08C6A05A
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6A05C:
@@ -86111,8 +86111,8 @@ gUnknown_08C6A0DC:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6ABBC_6
-gUnknown_08C6ABBC_6:	@ 0x08C6A1EF
+	.global song0025_6
+song0025_6:	@ 0x08C6A1EF
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6A1F1:
@@ -86524,8 +86524,8 @@ gUnknown_08C6A2C7:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6ABBC_7
-gUnknown_08C6ABBC_7:	@ 0x08C6A3C1
+	.global song0025_7
+song0025_7:	@ 0x08C6A3C1
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6A3C3:
@@ -86960,8 +86960,8 @@ gUnknown_08C6A4E8:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6ABBC_8
-gUnknown_08C6ABBC_8:	@ 0x08C6A57E
+	.global song0025_8
+song0025_8:	@ 0x08C6A57E
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6A580:
@@ -87551,8 +87551,8 @@ gUnknown_08C6A6DD:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C6ABBC_9
-gUnknown_08C6ABBC_9:	@ 0x08C6A7D8
+	.global song0025_9
+song0025_9:	@ 0x08C6A7D8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6A7DA:
@@ -88151,8 +88151,8 @@ gUnknown_08C6A9F1:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C6ABBC_10
-gUnknown_08C6ABBC_10:	@ 0x08C6AA4D
+	.global song0025_10
+song0025_10:	@ 0x08C6AA4D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6AA4F:
@@ -88429,8 +88429,8 @@ gUnknown_08C6AAA9:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C6ABBC_11
-gUnknown_08C6ABBC_11:	@ 0x08C6AB66
+	.global song0025_11
+song0025_11:	@ 0x08C6AB66
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6AB68:
@@ -88517,8 +88517,8 @@ gUnknown_08C6AB68:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6ABBC
-gUnknown_08C6ABBC:	@ 0x08C6ABBC
+	.global song0025
+song0025:	@ 0x08C6ABBC
 	.byte	11		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -88526,23 +88526,23 @@ gUnknown_08C6ABBC:	@ 0x08C6ABBC
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C6ABBC_1		@ track
-	.word	gUnknown_08C6ABBC_2		@ track
-	.word	gUnknown_08C6ABBC_3		@ track
-	.word	gUnknown_08C6ABBC_4		@ track
-	.word	gUnknown_08C6ABBC_5		@ track
-	.word	gUnknown_08C6ABBC_6		@ track
-	.word	gUnknown_08C6ABBC_7		@ track
-	.word	gUnknown_08C6ABBC_8		@ track
-	.word	gUnknown_08C6ABBC_9		@ track
-	.word	gUnknown_08C6ABBC_10		@ track
-	.word	gUnknown_08C6ABBC_11		@ track
+	.word	song0025_1		@ track
+	.word	song0025_2		@ track
+	.word	song0025_3		@ track
+	.word	song0025_4		@ track
+	.word	song0025_5		@ track
+	.word	song0025_6		@ track
+	.word	song0025_7		@ track
+	.word	song0025_8		@ track
+	.word	song0025_9		@ track
+	.word	song0025_10		@ track
+	.word	song0025_11		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6BA2C_1
-gUnknown_08C6BA2C_1:	@ 0x08C6ABF0
+	.global song0026_1
+song0026_1:	@ 0x08C6ABF0
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6ABF2:
@@ -89034,8 +89034,8 @@ gUnknown_08C6ADA9:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6BA2C_2
-gUnknown_08C6BA2C_2:	@ 0x08C6AE4D
+	.global song0026_2
+song0026_2:	@ 0x08C6AE4D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6AE4F:
@@ -89245,8 +89245,8 @@ gUnknown_08C6AEC2:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6BA2C_3
-gUnknown_08C6BA2C_3:	@ 0x08C6AF25
+	.global song0026_3
+song0026_3:	@ 0x08C6AF25
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6AF27:
@@ -89534,8 +89534,8 @@ gUnknown_08C6B032:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6BA2C_4
-gUnknown_08C6BA2C_4:	@ 0x08C6B0BA
+	.global song0026_4
+song0026_4:	@ 0x08C6B0BA
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B0BC:
@@ -89892,8 +89892,8 @@ gUnknown_08C6B1BC:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6BA2C_5
-gUnknown_08C6BA2C_5:	@ 0x08C6B22F
+	.global song0026_5
+song0026_5:	@ 0x08C6B22F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B231:
@@ -90421,8 +90421,8 @@ gUnknown_08C6B397:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6BA2C_6
-gUnknown_08C6BA2C_6:	@ 0x08C6B460
+	.global song0026_6
+song0026_6:	@ 0x08C6B460
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B462:
@@ -90658,8 +90658,8 @@ gUnknown_08C6B4EC:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6BA2C_7
-gUnknown_08C6BA2C_7:	@ 0x08C6B54F
+	.global song0026_7
+song0026_7:	@ 0x08C6B54F
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B551:
@@ -90936,8 +90936,8 @@ gUnknown_08C6B60F:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6BA2C_8
-gUnknown_08C6BA2C_8:	@ 0x08C6B672
+	.global song0026_8
+song0026_8:	@ 0x08C6B672
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B674:
@@ -91270,8 +91270,8 @@ gUnknown_08C6B771:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C6BA2C_9
-gUnknown_08C6BA2C_9:	@ 0x08C6B7F9
+	.global song0026_9
+song0026_9:	@ 0x08C6B7F9
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B7FB:
@@ -91545,8 +91545,8 @@ gUnknown_08C6B7FB:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C6BA2C_10
-gUnknown_08C6BA2C_10:	@ 0x08C6B909
+	.global song0026_10
+song0026_10:	@ 0x08C6B909
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B90B:
@@ -91624,8 +91624,8 @@ gUnknown_08C6B90B:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C6BA2C_11
-gUnknown_08C6BA2C_11:	@ 0x08C6B955
+	.global song0026_11
+song0026_11:	@ 0x08C6B955
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C6B957:
@@ -91841,8 +91841,8 @@ gUnknown_08C6B957:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6BA2C
-gUnknown_08C6BA2C:	@ 0x08C6BA2C
+	.global song0026
+song0026:	@ 0x08C6BA2C
 	.byte	11		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -91850,23 +91850,23 @@ gUnknown_08C6BA2C:	@ 0x08C6BA2C
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C6BA2C_1		@ track
-	.word	gUnknown_08C6BA2C_2		@ track
-	.word	gUnknown_08C6BA2C_3		@ track
-	.word	gUnknown_08C6BA2C_4		@ track
-	.word	gUnknown_08C6BA2C_5		@ track
-	.word	gUnknown_08C6BA2C_6		@ track
-	.word	gUnknown_08C6BA2C_7		@ track
-	.word	gUnknown_08C6BA2C_8		@ track
-	.word	gUnknown_08C6BA2C_9		@ track
-	.word	gUnknown_08C6BA2C_10		@ track
-	.word	gUnknown_08C6BA2C_11		@ track
+	.word	song0026_1		@ track
+	.word	song0026_2		@ track
+	.word	song0026_3		@ track
+	.word	song0026_4		@ track
+	.word	song0026_5		@ track
+	.word	song0026_6		@ track
+	.word	song0026_7		@ track
+	.word	song0026_8		@ track
+	.word	song0026_9		@ track
+	.word	song0026_10		@ track
+	.word	song0026_11		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6C23C_1
-gUnknown_08C6C23C_1:	@ 0x08C6BA60
+	.global song0027_1
+song0027_1:	@ 0x08C6BA60
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -92078,8 +92078,8 @@ gUnknown_08C6BA9D:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6C23C_2
-gUnknown_08C6C23C_2:	@ 0x08C6BBB6
+	.global song0027_2
+song0027_2:	@ 0x08C6BBB6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -92416,8 +92416,8 @@ gUnknown_08C6BCB2:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6C23C_3
-gUnknown_08C6C23C_3:	@ 0x08C6BD0D
+	.global song0027_3
+song0027_3:	@ 0x08C6BD0D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -92619,8 +92619,8 @@ gUnknown_08C6BDB0:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6C23C_4
-gUnknown_08C6C23C_4:	@ 0x08C6BE55
+	.global song0027_4
+song0027_4:	@ 0x08C6BE55
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -92908,8 +92908,8 @@ gUnknown_08C6BF52:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6C23C_5
-gUnknown_08C6C23C_5:	@ 0x08C6BF7B
+	.global song0027_5
+song0027_5:	@ 0x08C6BF7B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -93204,8 +93204,8 @@ gUnknown_08C6BF84:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6C23C_6
-gUnknown_08C6C23C_6:	@ 0x08C6C0A0
+	.global song0027_6
+song0027_6:	@ 0x08C6C0A0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -93546,8 +93546,8 @@ gUnknown_08C6C187:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6C23C_7
-gUnknown_08C6C23C_7:	@ 0x08C6C1FB
+	.global song0027_7
+song0027_7:	@ 0x08C6C1FB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -93613,8 +93613,8 @@ gUnknown_08C6C208:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C6C23C
-gUnknown_08C6C23C:	@ 0x08C6C23C
+	.global song0027
+song0027:	@ 0x08C6C23C
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -93622,19 +93622,19 @@ gUnknown_08C6C23C:	@ 0x08C6C23C
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C6C23C_1		@ track
-	.word	gUnknown_08C6C23C_2		@ track
-	.word	gUnknown_08C6C23C_3		@ track
-	.word	gUnknown_08C6C23C_4		@ track
-	.word	gUnknown_08C6C23C_5		@ track
-	.word	gUnknown_08C6C23C_6		@ track
-	.word	gUnknown_08C6C23C_7		@ track
+	.word	song0027_1		@ track
+	.word	song0027_2		@ track
+	.word	song0027_3		@ track
+	.word	song0027_4		@ track
+	.word	song0027_5		@ track
+	.word	song0027_6		@ track
+	.word	song0027_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6D4EC_1
-gUnknown_08C6D4EC_1:	@ 0x08C6C260
+	.global song0028_1
+song0028_1:	@ 0x08C6C260
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -93831,8 +93831,8 @@ gUnknown_08C6C2D3:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6D4EC_2
-gUnknown_08C6D4EC_2:	@ 0x08C6C37F
+	.global song0028_2
+song0028_2:	@ 0x08C6C37F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -94025,8 +94025,8 @@ gUnknown_08C6C3F4:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6D4EC_3
-gUnknown_08C6D4EC_3:	@ 0x08C6C496
+	.global song0028_3
+song0028_3:	@ 0x08C6C496
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -94922,8 +94922,8 @@ gUnknown_08C6C711:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6D4EC_4
-gUnknown_08C6D4EC_4:	@ 0x08C6C841
+	.global song0028_4
+song0028_4:	@ 0x08C6C841
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -95637,8 +95637,8 @@ gUnknown_08C6C9DD:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6D4EC_5
-gUnknown_08C6D4EC_5:	@ 0x08C6CB30
+	.global song0028_5
+song0028_5:	@ 0x08C6CB30
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -96253,8 +96253,8 @@ gUnknown_08C6CCB2:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6D4EC_6
-gUnknown_08C6D4EC_6:	@ 0x08C6CDB7
+	.global song0028_6
+song0028_6:	@ 0x08C6CDB7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -96818,8 +96818,8 @@ gUnknown_08C6CF92:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6D4EC_7
-gUnknown_08C6D4EC_7:	@ 0x08C6CFF9
+	.global song0028_7
+song0028_7:	@ 0x08C6CFF9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -97381,8 +97381,8 @@ gUnknown_08C6D1D4:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6D4EC_8
-gUnknown_08C6D4EC_8:	@ 0x08C6D23B
+	.global song0028_8
+song0028_8:	@ 0x08C6D23B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -97592,8 +97592,8 @@ gUnknown_08C6D2C1:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C6D4EC_9
-gUnknown_08C6D4EC_9:	@ 0x08C6D315
+	.global song0028_9
+song0028_9:	@ 0x08C6D315
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -97722,8 +97722,8 @@ gUnknown_08C6D35A:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C6D4EC_10
-gUnknown_08C6D4EC_10:	@ 0x08C6D3A4
+	.global song0028_10
+song0028_10:	@ 0x08C6D3A4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -97942,8 +97942,8 @@ gUnknown_08C6D400:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C6D4EC_11
-gUnknown_08C6D4EC_11:	@ 0x08C6D48A
+	.global song0028_11
+song0028_11:	@ 0x08C6D48A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -98042,8 +98042,8 @@ gUnknown_08C6D499:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6D4EC
-gUnknown_08C6D4EC:	@ 0x08C6D4EC
+	.global song0028
+song0028:	@ 0x08C6D4EC
 	.byte	11		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -98051,23 +98051,23 @@ gUnknown_08C6D4EC:	@ 0x08C6D4EC
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C6D4EC_1		@ track
-	.word	gUnknown_08C6D4EC_2		@ track
-	.word	gUnknown_08C6D4EC_3		@ track
-	.word	gUnknown_08C6D4EC_4		@ track
-	.word	gUnknown_08C6D4EC_5		@ track
-	.word	gUnknown_08C6D4EC_6		@ track
-	.word	gUnknown_08C6D4EC_7		@ track
-	.word	gUnknown_08C6D4EC_8		@ track
-	.word	gUnknown_08C6D4EC_9		@ track
-	.word	gUnknown_08C6D4EC_10		@ track
-	.word	gUnknown_08C6D4EC_11		@ track
+	.word	song0028_1		@ track
+	.word	song0028_2		@ track
+	.word	song0028_3		@ track
+	.word	song0028_4		@ track
+	.word	song0028_5		@ track
+	.word	song0028_6		@ track
+	.word	song0028_7		@ track
+	.word	song0028_8		@ track
+	.word	song0028_9		@ track
+	.word	song0028_10		@ track
+	.word	song0028_11		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6DCFC_1
-gUnknown_08C6DCFC_1:	@ 0x08C6D520
+	.global song0029_1
+song0029_1:	@ 0x08C6D520
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -98263,8 +98263,8 @@ gUnknown_08C6D57F:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6DCFC_2
-gUnknown_08C6DCFC_2:	@ 0x08C6D604
+	.global song0029_2
+song0029_2:	@ 0x08C6D604
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -98659,8 +98659,8 @@ gUnknown_08C6D60F:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6DCFC_3
-gUnknown_08C6DCFC_3:	@ 0x08C6D78D
+	.global song0029_3
+song0029_3:	@ 0x08C6D78D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -98776,8 +98776,8 @@ gUnknown_08C6D7A7:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6DCFC_4
-gUnknown_08C6DCFC_4:	@ 0x08C6D804
+	.global song0029_4
+song0029_4:	@ 0x08C6D804
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -99359,8 +99359,8 @@ gUnknown_08C6D815:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6DCFC_5
-gUnknown_08C6DCFC_5:	@ 0x08C6DA48
+	.global song0029_5
+song0029_5:	@ 0x08C6DA48
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -99559,8 +99559,8 @@ gUnknown_08C6DA8A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6DCFC_6
-gUnknown_08C6DCFC_6:	@ 0x08C6DB0D
+	.global song0029_6
+song0029_6:	@ 0x08C6DB0D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -99737,8 +99737,8 @@ gUnknown_08C6DB18:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6DCFC_7
-gUnknown_08C6DCFC_7:	@ 0x08C6DBBC
+	.global song0029_7
+song0029_7:	@ 0x08C6DBBC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -99957,8 +99957,8 @@ gUnknown_08C6DC46:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6DCFC_8
-gUnknown_08C6DCFC_8:	@ 0x08C6DCA5
+	.global song0029_8
+song0029_8:	@ 0x08C6DCA5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -100041,8 +100041,8 @@ gUnknown_08C6DCC5:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6DCFC
-gUnknown_08C6DCFC:	@ 0x08C6DCFC
+	.global song0029
+song0029:	@ 0x08C6DCFC
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -100050,20 +100050,20 @@ gUnknown_08C6DCFC:	@ 0x08C6DCFC
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C6DCFC_1		@ track
-	.word	gUnknown_08C6DCFC_2		@ track
-	.word	gUnknown_08C6DCFC_3		@ track
-	.word	gUnknown_08C6DCFC_4		@ track
-	.word	gUnknown_08C6DCFC_5		@ track
-	.word	gUnknown_08C6DCFC_6		@ track
-	.word	gUnknown_08C6DCFC_7		@ track
-	.word	gUnknown_08C6DCFC_8		@ track
+	.word	song0029_1		@ track
+	.word	song0029_2		@ track
+	.word	song0029_3		@ track
+	.word	song0029_4		@ track
+	.word	song0029_5		@ track
+	.word	song0029_6		@ track
+	.word	song0029_7		@ track
+	.word	song0029_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6DEBC_1
-gUnknown_08C6DEBC_1:	@ 0x08C6DD24
+	.global song0031_1
+song0031_1:	@ 0x08C6DD24
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -100223,8 +100223,8 @@ gUnknown_08C6DD88:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6DEBC_2
-gUnknown_08C6DEBC_2:	@ 0x08C6DDC2
+	.global song0031_2
+song0031_2:	@ 0x08C6DDC2
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -100382,8 +100382,8 @@ gUnknown_08C6DE24:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6DEBC_3
-gUnknown_08C6DEBC_3:	@ 0x08C6DE5E
+	.global song0031_3
+song0031_3:	@ 0x08C6DE5E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -100478,8 +100478,8 @@ gUnknown_08C6DE96:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6DEBC
-gUnknown_08C6DEBC:	@ 0x08C6DEBC
+	.global song0031
+song0031:	@ 0x08C6DEBC
 	.byte	3		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -100487,15 +100487,15 @@ gUnknown_08C6DEBC:	@ 0x08C6DEBC
 
 	.word	voicegroup009		@ voicegroup/tone
 
-	.word	gUnknown_08C6DEBC_1		@ track
-	.word	gUnknown_08C6DEBC_2		@ track
-	.word	gUnknown_08C6DEBC_3		@ track
+	.word	song0031_1		@ track
+	.word	song0031_2		@ track
+	.word	song0031_3		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6F4C0_1
-gUnknown_08C6F4C0_1:	@ 0x08C6DED0
+	.global song0032_1
+song0032_1:	@ 0x08C6DED0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -101041,8 +101041,8 @@ gUnknown_08C6DFBB:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6F4C0_2
-gUnknown_08C6F4C0_2:	@ 0x08C6E103
+	.global song0032_2
+song0032_2:	@ 0x08C6E103
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -101197,8 +101197,8 @@ gUnknown_08C6E155:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6F4C0_3
-gUnknown_08C6F4C0_3:	@ 0x08C6E1E9
+	.global song0032_3
+song0032_3:	@ 0x08C6E1E9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -101691,8 +101691,8 @@ gUnknown_08C6E3E4:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6F4C0_4
-gUnknown_08C6F4C0_4:	@ 0x08C6E412
+	.global song0032_4
+song0032_4:	@ 0x08C6E412
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -101794,8 +101794,8 @@ gUnknown_08C6E467:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6F4C0_5
-gUnknown_08C6F4C0_5:	@ 0x08C6E47E
+	.global song0032_5
+song0032_5:	@ 0x08C6E47E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -102933,8 +102933,8 @@ gUnknown_08C6E605:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6F4C0_6
-gUnknown_08C6F4C0_6:	@ 0x08C6E908
+	.global song0032_6
+song0032_6:	@ 0x08C6E908
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -103626,8 +103626,8 @@ gUnknown_08C6EAF7:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6F4C0_7
-gUnknown_08C6F4C0_7:	@ 0x08C6EC04
+	.global song0032_7
+song0032_7:	@ 0x08C6EC04
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -104274,8 +104274,8 @@ gUnknown_08C6EC65:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6F4C0_8
-gUnknown_08C6F4C0_8:	@ 0x08C6EEA3
+	.global song0032_8
+song0032_8:	@ 0x08C6EEA3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -105832,8 +105832,8 @@ gUnknown_08C6F0CA:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6F4C0
-gUnknown_08C6F4C0:	@ 0x08C6F4C0
+	.global song0032
+song0032:	@ 0x08C6F4C0
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -105841,20 +105841,20 @@ gUnknown_08C6F4C0:	@ 0x08C6F4C0
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C6F4C0_1		@ track
-	.word	gUnknown_08C6F4C0_2		@ track
-	.word	gUnknown_08C6F4C0_3		@ track
-	.word	gUnknown_08C6F4C0_4		@ track
-	.word	gUnknown_08C6F4C0_5		@ track
-	.word	gUnknown_08C6F4C0_6		@ track
-	.word	gUnknown_08C6F4C0_7		@ track
-	.word	gUnknown_08C6F4C0_8		@ track
+	.word	song0032_1		@ track
+	.word	song0032_2		@ track
+	.word	song0032_3		@ track
+	.word	song0032_4		@ track
+	.word	song0032_5		@ track
+	.word	song0032_6		@ track
+	.word	song0032_7		@ track
+	.word	song0032_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C6FC3C_1
-gUnknown_08C6FC3C_1:	@ 0x08C6F4E8
+	.global song0033_1
+song0033_1:	@ 0x08C6F4E8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -105945,8 +105945,8 @@ gUnknown_08C6F4F2:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C6FC3C_2
-gUnknown_08C6FC3C_2:	@ 0x08C6F56E
+	.global song0033_2
+song0033_2:	@ 0x08C6F56E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -106186,8 +106186,8 @@ gUnknown_08C6F617:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C6FC3C_3
-gUnknown_08C6FC3C_3:	@ 0x08C6F679
+	.global song0033_3
+song0033_3:	@ 0x08C6F679
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -106381,8 +106381,8 @@ gUnknown_08C6F713:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C6FC3C_4
-gUnknown_08C6FC3C_4:	@ 0x08C6F754
+	.global song0033_4
+song0033_4:	@ 0x08C6F754
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -106470,8 +106470,8 @@ gUnknown_08C6F781:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C6FC3C_5
-gUnknown_08C6FC3C_5:	@ 0x08C6F7AA
+	.global song0033_5
+song0033_5:	@ 0x08C6F7AA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -106552,8 +106552,8 @@ gUnknown_08C6F7D8:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C6FC3C_6
-gUnknown_08C6FC3C_6:	@ 0x08C6F7FD
+	.global song0033_6
+song0033_6:	@ 0x08C6F7FD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -106805,8 +106805,8 @@ gUnknown_08C6F87B:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C6FC3C_7
-gUnknown_08C6FC3C_7:	@ 0x08C6F91D
+	.global song0033_7
+song0033_7:	@ 0x08C6F91D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -107128,8 +107128,8 @@ gUnknown_08C6FA00:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C6FC3C_8
-gUnknown_08C6FC3C_8:	@ 0x08C6FA78
+	.global song0033_8
+song0033_8:	@ 0x08C6FA78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -107235,8 +107235,8 @@ gUnknown_08C6FA8A:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C6FC3C_9
-gUnknown_08C6FC3C_9:	@ 0x08C6FAE0
+	.global song0033_9
+song0033_9:	@ 0x08C6FAE0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -107558,8 +107558,8 @@ gUnknown_08C6FBC3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C6FC3C
-gUnknown_08C6FC3C:	@ 0x08C6FC3C
+	.global song0033
+song0033:	@ 0x08C6FC3C
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -107567,21 +107567,21 @@ gUnknown_08C6FC3C:	@ 0x08C6FC3C
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C6FC3C_1		@ track
-	.word	gUnknown_08C6FC3C_2		@ track
-	.word	gUnknown_08C6FC3C_3		@ track
-	.word	gUnknown_08C6FC3C_4		@ track
-	.word	gUnknown_08C6FC3C_5		@ track
-	.word	gUnknown_08C6FC3C_6		@ track
-	.word	gUnknown_08C6FC3C_7		@ track
-	.word	gUnknown_08C6FC3C_8		@ track
-	.word	gUnknown_08C6FC3C_9		@ track
+	.word	song0033_1		@ track
+	.word	song0033_2		@ track
+	.word	song0033_3		@ track
+	.word	song0033_4		@ track
+	.word	song0033_5		@ track
+	.word	song0033_6		@ track
+	.word	song0033_7		@ track
+	.word	song0033_8		@ track
+	.word	song0033_9		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C73008_1
-gUnknown_08C73008_1:	@ 0x08C6FC68
+	.global song0034_1
+song0034_1:	@ 0x08C6FC68
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -108273,8 +108273,8 @@ gUnknown_08C6FDBC:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C73008_2
-gUnknown_08C73008_2:	@ 0x08C6FF6F
+	.global song0034_2
+song0034_2:	@ 0x08C6FF6F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -108345,8 +108345,8 @@ gUnknown_08C6FF76:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C73008_3
-gUnknown_08C73008_3:	@ 0x08C6FFB4
+	.global song0034_3
+song0034_3:	@ 0x08C6FFB4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -108681,8 +108681,8 @@ gUnknown_08C700B4:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C73008_4
-gUnknown_08C73008_4:	@ 0x08C7011F
+	.global song0034_4
+song0034_4:	@ 0x08C7011F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -111555,8 +111555,8 @@ gUnknown_08C70B23:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C73008_5
-gUnknown_08C73008_5:	@ 0x08C70C94
+	.global song0034_5
+song0034_5:	@ 0x08C70C94
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -114429,8 +114429,8 @@ gUnknown_08C71698:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C73008_6
-gUnknown_08C73008_6:	@ 0x08C71809
+	.global song0034_6
+song0034_6:	@ 0x08C71809
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -115451,8 +115451,8 @@ gUnknown_08C71A20:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C73008_7
-gUnknown_08C73008_7:	@ 0x08C71C0C
+	.global song0034_7
+song0034_7:	@ 0x08C71C0C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -116666,8 +116666,8 @@ gUnknown_08C71EA3:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C73008_8
-gUnknown_08C73008_8:	@ 0x08C720D0
+	.global song0034_8
+song0034_8:	@ 0x08C720D0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -116812,8 +116812,8 @@ gUnknown_08C720FF:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C73008_9
-gUnknown_08C73008_9:	@ 0x08C7215F
+	.global song0034_9
+song0034_9:	@ 0x08C7215F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -117007,8 +117007,8 @@ gUnknown_08C72166:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C73008_10
-gUnknown_08C73008_10:	@ 0x08C7221F
+	.global song0034_10
+song0034_10:	@ 0x08C7221F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -118929,8 +118929,8 @@ gUnknown_08C727EE:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C73008_11
-gUnknown_08C73008_11:	@ 0x08C729AE
+	.global song0034_11
+song0034_11:	@ 0x08C729AE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -119976,8 +119976,8 @@ gUnknown_08C729F2:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C73008_12
-gUnknown_08C73008_12:	@ 0x08C72DC2
+	.global song0034_12
+song0034_12:	@ 0x08C72DC2
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -120430,8 +120430,8 @@ gUnknown_08C72DC9:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C73008_13
-gUnknown_08C73008_13:	@ 0x08C72F85
+	.global song0034_13
+song0034_13:	@ 0x08C72F85
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -120563,8 +120563,8 @@ gUnknown_08C72F8C:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C73008
-gUnknown_08C73008:	@ 0x08C73008
+	.global song0034
+song0034:	@ 0x08C73008
 	.byte	13		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -120572,25 +120572,25 @@ gUnknown_08C73008:	@ 0x08C73008
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C73008_1		@ track
-	.word	gUnknown_08C73008_2		@ track
-	.word	gUnknown_08C73008_3		@ track
-	.word	gUnknown_08C73008_4		@ track
-	.word	gUnknown_08C73008_5		@ track
-	.word	gUnknown_08C73008_6		@ track
-	.word	gUnknown_08C73008_7		@ track
-	.word	gUnknown_08C73008_8		@ track
-	.word	gUnknown_08C73008_9		@ track
-	.word	gUnknown_08C73008_10		@ track
-	.word	gUnknown_08C73008_11		@ track
-	.word	gUnknown_08C73008_12		@ track
-	.word	gUnknown_08C73008_13		@ track
+	.word	song0034_1		@ track
+	.word	song0034_2		@ track
+	.word	song0034_3		@ track
+	.word	song0034_4		@ track
+	.word	song0034_5		@ track
+	.word	song0034_6		@ track
+	.word	song0034_7		@ track
+	.word	song0034_8		@ track
+	.word	song0034_9		@ track
+	.word	song0034_10		@ track
+	.word	song0034_11		@ track
+	.word	song0034_12		@ track
+	.word	song0034_13		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C74210_1
-gUnknown_08C74210_1:	@ 0x08C73044
+	.global song0035_1
+song0035_1:	@ 0x08C73044
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -120947,8 +120947,8 @@ gUnknown_08C7313A:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C74210_2
-gUnknown_08C74210_2:	@ 0x08C731F6
+	.global song0035_2
+song0035_2:	@ 0x08C731F6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -121082,8 +121082,8 @@ gUnknown_08C73208:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C74210_3
-gUnknown_08C74210_3:	@ 0x08C732DC
+	.global song0035_3
+song0035_3:	@ 0x08C732DC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -122026,8 +122026,8 @@ gUnknown_08C735C3:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C74210_4
-gUnknown_08C74210_4:	@ 0x08C736B3
+	.global song0035_4
+song0035_4:	@ 0x08C736B3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -122328,8 +122328,8 @@ gUnknown_08C736BA:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C74210_5
-gUnknown_08C74210_5:	@ 0x08C737DE
+	.global song0035_5
+song0035_5:	@ 0x08C737DE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -122907,8 +122907,8 @@ gUnknown_08C73912:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C74210_6
-gUnknown_08C74210_6:	@ 0x08C73A22
+	.global song0035_6
+song0035_6:	@ 0x08C73A22
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -123566,8 +123566,8 @@ gUnknown_08C73A2D:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C74210_7
-gUnknown_08C74210_7:	@ 0x08C73CB2
+	.global song0035_7
+song0035_7:	@ 0x08C73CB2
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -123756,8 +123756,8 @@ gUnknown_08C73D39:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C74210_8
-gUnknown_08C74210_8:	@ 0x08C73D80
+	.global song0035_8
+song0035_8:	@ 0x08C73D80
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -123867,8 +123867,8 @@ gUnknown_08C73D8B:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C74210_9
-gUnknown_08C74210_9:	@ 0x08C73DEC
+	.global song0035_9
+song0035_9:	@ 0x08C73DEC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -123976,8 +123976,8 @@ gUnknown_08C73DF7:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C74210_10
-gUnknown_08C74210_10:	@ 0x08C73E56
+	.global song0035_10
+song0035_10:	@ 0x08C73E56
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124226,8 +124226,8 @@ gUnknown_08C73E5F:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C74210_11
-gUnknown_08C74210_11:	@ 0x08C73F4D
+	.global song0035_11
+song0035_11:	@ 0x08C73F4D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124296,8 +124296,8 @@ gUnknown_08C73F56:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C74210_12
-gUnknown_08C74210_12:	@ 0x08C73F90
+	.global song0035_12
+song0035_12:	@ 0x08C73F90
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124368,8 +124368,8 @@ gUnknown_08C73F9B:
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C74210_13
-gUnknown_08C74210_13:	@ 0x08C73FD5
+	.global song0035_13
+song0035_13:	@ 0x08C73FD5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124491,8 +124491,8 @@ gUnknown_08C7402D:
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C74210_14
-gUnknown_08C74210_14:	@ 0x08C74055
+	.global song0035_14
+song0035_14:	@ 0x08C74055
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124583,8 +124583,8 @@ gUnknown_08C74075:
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C74210_15
-gUnknown_08C74210_15:	@ 0x08C740BE
+	.global song0035_15
+song0035_15:	@ 0x08C740BE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBE
@@ -124724,8 +124724,8 @@ gUnknown_08C740C5:
 
 	@********************** Track  16 **********************@
 
-	.global gUnknown_08C74210_16
-gUnknown_08C74210_16:	@ 0x08C74148
+	.global song0035_16
+song0035_16:	@ 0x08C74148
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -124899,8 +124899,8 @@ gUnknown_08C741C9:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C74210
-gUnknown_08C74210:	@ 0x08C74210
+	.global song0035
+song0035:	@ 0x08C74210
 	.byte	16		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -124908,28 +124908,28 @@ gUnknown_08C74210:	@ 0x08C74210
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C74210_1		@ track
-	.word	gUnknown_08C74210_2		@ track
-	.word	gUnknown_08C74210_3		@ track
-	.word	gUnknown_08C74210_4		@ track
-	.word	gUnknown_08C74210_5		@ track
-	.word	gUnknown_08C74210_6		@ track
-	.word	gUnknown_08C74210_7		@ track
-	.word	gUnknown_08C74210_8		@ track
-	.word	gUnknown_08C74210_9		@ track
-	.word	gUnknown_08C74210_10		@ track
-	.word	gUnknown_08C74210_11		@ track
-	.word	gUnknown_08C74210_12		@ track
-	.word	gUnknown_08C74210_13		@ track
-	.word	gUnknown_08C74210_14		@ track
-	.word	gUnknown_08C74210_15		@ track
-	.word	gUnknown_08C74210_16		@ track
+	.word	song0035_1		@ track
+	.word	song0035_2		@ track
+	.word	song0035_3		@ track
+	.word	song0035_4		@ track
+	.word	song0035_5		@ track
+	.word	song0035_6		@ track
+	.word	song0035_7		@ track
+	.word	song0035_8		@ track
+	.word	song0035_9		@ track
+	.word	song0035_10		@ track
+	.word	song0035_11		@ track
+	.word	song0035_12		@ track
+	.word	song0035_13		@ track
+	.word	song0035_14		@ track
+	.word	song0035_15		@ track
+	.word	song0035_16		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C74F3C_1
-gUnknown_08C74F3C_1:	@ 0x08C74258
+	.global song0036_1
+song0036_1:	@ 0x08C74258
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -125244,8 +125244,8 @@ gUnknown_08C7436B:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C74F3C_2
-gUnknown_08C74F3C_2:	@ 0x08C743D1
+	.global song0036_2
+song0036_2:	@ 0x08C743D1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -125368,8 +125368,8 @@ gUnknown_08C743E3:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C74F3C_3
-gUnknown_08C74F3C_3:	@ 0x08C7449A
+	.global song0036_3
+song0036_3:	@ 0x08C7449A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -126133,8 +126133,8 @@ gUnknown_08C7471E:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C74F3C_4
-gUnknown_08C74F3C_4:	@ 0x08C747B9
+	.global song0036_4
+song0036_4:	@ 0x08C747B9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -126566,8 +126566,8 @@ gUnknown_08C7492B:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C74F3C_5
-gUnknown_08C74F3C_5:	@ 0x08C74985
+	.global song0036_5
+song0036_5:	@ 0x08C74985
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127118,8 +127118,8 @@ gUnknown_08C74B6A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C74F3C_6
-gUnknown_08C74F3C_6:	@ 0x08C74BBA
+	.global song0036_6
+song0036_6:	@ 0x08C74BBA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127265,8 +127265,8 @@ gUnknown_08C74C38:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C74F3C_7
-gUnknown_08C74F3C_7:	@ 0x08C74C6D
+	.global song0036_7
+song0036_7:	@ 0x08C74C6D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127451,8 +127451,8 @@ gUnknown_08C74C76:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C74F3C_8
-gUnknown_08C74F3C_8:	@ 0x08C74D24
+	.global song0036_8
+song0036_8:	@ 0x08C74D24
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127531,8 +127531,8 @@ gUnknown_08C74D47:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C74F3C_9
-gUnknown_08C74F3C_9:	@ 0x08C74D73
+	.global song0036_9
+song0036_9:	@ 0x08C74D73
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127621,8 +127621,8 @@ gUnknown_08C74DA4:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C74F3C_10
-gUnknown_08C74F3C_10:	@ 0x08C74DD0
+	.global song0036_10
+song0036_10:	@ 0x08C74DD0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127826,8 +127826,8 @@ gUnknown_08C74DD9:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C74F3C_11
-gUnknown_08C74F3C_11:	@ 0x08C74E9A
+	.global song0036_11
+song0036_11:	@ 0x08C74E9A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -127957,8 +127957,8 @@ gUnknown_08C74F07:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C74F3C
-gUnknown_08C74F3C:	@ 0x08C74F3C
+	.global song0036
+song0036:	@ 0x08C74F3C
 	.byte	11		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -127966,23 +127966,23 @@ gUnknown_08C74F3C:	@ 0x08C74F3C
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C74F3C_1		@ track
-	.word	gUnknown_08C74F3C_2		@ track
-	.word	gUnknown_08C74F3C_3		@ track
-	.word	gUnknown_08C74F3C_4		@ track
-	.word	gUnknown_08C74F3C_5		@ track
-	.word	gUnknown_08C74F3C_6		@ track
-	.word	gUnknown_08C74F3C_7		@ track
-	.word	gUnknown_08C74F3C_8		@ track
-	.word	gUnknown_08C74F3C_9		@ track
-	.word	gUnknown_08C74F3C_10		@ track
-	.word	gUnknown_08C74F3C_11		@ track
+	.word	song0036_1		@ track
+	.word	song0036_2		@ track
+	.word	song0036_3		@ track
+	.word	song0036_4		@ track
+	.word	song0036_5		@ track
+	.word	song0036_6		@ track
+	.word	song0036_7		@ track
+	.word	song0036_8		@ track
+	.word	song0036_9		@ track
+	.word	song0036_10		@ track
+	.word	song0036_11		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C75C14_1
-gUnknown_08C75C14_1:	@ 0x08C74F70
+	.global song0037_1
+song0037_1:	@ 0x08C74F70
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C74F72:
@@ -128440,8 +128440,8 @@ gUnknown_08C750E4:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C75C14_2
-gUnknown_08C75C14_2:	@ 0x08C751A0
+	.global song0037_2
+song0037_2:	@ 0x08C751A0
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C751A2:
@@ -128693,8 +128693,8 @@ gUnknown_08C751DC:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C75C14_3
-gUnknown_08C75C14_3:	@ 0x08C752A1
+	.global song0037_3
+song0037_3:	@ 0x08C752A1
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C752A3:
@@ -128886,8 +128886,8 @@ gUnknown_08C75347:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C75C14_4
-gUnknown_08C75C14_4:	@ 0x08C7536D
+	.global song0037_4
+song0037_4:	@ 0x08C7536D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7536F:
@@ -129214,8 +129214,8 @@ gUnknown_08C7549B:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C75C14_5
-gUnknown_08C75C14_5:	@ 0x08C7550D
+	.global song0037_5
+song0037_5:	@ 0x08C7550D
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7550F:
@@ -129376,8 +129376,8 @@ gUnknown_08C75543:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C75C14_6
-gUnknown_08C75C14_6:	@ 0x08C755AE
+	.global song0037_6
+song0037_6:	@ 0x08C755AE
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C755B0:
@@ -129509,8 +129509,8 @@ gUnknown_08C755FB:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C75C14_7
-gUnknown_08C75C14_7:	@ 0x08C75634
+	.global song0037_7
+song0037_7:	@ 0x08C75634
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75636:
@@ -129677,8 +129677,8 @@ gUnknown_08C756BC:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C75C14_8
-gUnknown_08C75C14_8:	@ 0x08C756E7
+	.global song0037_8
+song0037_8:	@ 0x08C756E7
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C756E9:
@@ -129788,8 +129788,8 @@ gUnknown_08C75702:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C75C14_9
-gUnknown_08C75C14_9:	@ 0x08C7575E
+	.global song0037_9
+song0037_9:	@ 0x08C7575E
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75760:
@@ -130174,8 +130174,8 @@ gUnknown_08C7590B:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C75C14_10
-gUnknown_08C75C14_10:	@ 0x08C7592A
+	.global song0037_10
+song0037_10:	@ 0x08C7592A
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7592C:
@@ -130521,8 +130521,8 @@ gUnknown_08C75A70:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C75C14_11
-gUnknown_08C75C14_11:	@ 0x08C75AE2
+	.global song0037_11
+song0037_11:	@ 0x08C75AE2
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75AE4:
@@ -130608,8 +130608,8 @@ gUnknown_08C75AF8:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C75C14_12
-gUnknown_08C75C14_12:	@ 0x08C75B3E
+	.global song0037_12
+song0037_12:	@ 0x08C75B3E
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75B40:
@@ -130797,8 +130797,8 @@ gUnknown_08C75BEB:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C75C14
-gUnknown_08C75C14:	@ 0x08C75C14
+	.global song0037
+song0037:	@ 0x08C75C14
 	.byte	12		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -130806,24 +130806,24 @@ gUnknown_08C75C14:	@ 0x08C75C14
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C75C14_1		@ track
-	.word	gUnknown_08C75C14_2		@ track
-	.word	gUnknown_08C75C14_3		@ track
-	.word	gUnknown_08C75C14_4		@ track
-	.word	gUnknown_08C75C14_5		@ track
-	.word	gUnknown_08C75C14_6		@ track
-	.word	gUnknown_08C75C14_7		@ track
-	.word	gUnknown_08C75C14_8		@ track
-	.word	gUnknown_08C75C14_9		@ track
-	.word	gUnknown_08C75C14_10		@ track
-	.word	gUnknown_08C75C14_11		@ track
-	.word	gUnknown_08C75C14_12		@ track
+	.word	song0037_1		@ track
+	.word	song0037_2		@ track
+	.word	song0037_3		@ track
+	.word	song0037_4		@ track
+	.word	song0037_5		@ track
+	.word	song0037_6		@ track
+	.word	song0037_7		@ track
+	.word	song0037_8		@ track
+	.word	song0037_9		@ track
+	.word	song0037_10		@ track
+	.word	song0037_11		@ track
+	.word	song0037_12		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7632C_1
-gUnknown_08C7632C_1:	@ 0x08C75C4C
+	.global song0038_1
+song0038_1:	@ 0x08C75C4C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75C4E:
@@ -131056,8 +131056,8 @@ gUnknown_08C75CDD:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7632C_2
-gUnknown_08C7632C_2:	@ 0x08C75D6C
+	.global song0038_2
+song0038_2:	@ 0x08C75D6C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75D6E:
@@ -131312,8 +131312,8 @@ gUnknown_08C75E0C:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7632C_3
-gUnknown_08C7632C_3:	@ 0x08C75E73
+	.global song0038_3
+song0038_3:	@ 0x08C75E73
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75E75:
@@ -131589,8 +131589,8 @@ gUnknown_08C75F3F:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7632C_4
-gUnknown_08C7632C_4:	@ 0x08C75FAB
+	.global song0038_4
+song0038_4:	@ 0x08C75FAB
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C75FAD:
@@ -131671,8 +131671,8 @@ gUnknown_08C75FCB:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7632C_5
-gUnknown_08C7632C_5:	@ 0x08C76002
+	.global song0038_5
+song0038_5:	@ 0x08C76002
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C76004:
@@ -131788,8 +131788,8 @@ gUnknown_08C76055:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7632C_6
-gUnknown_08C7632C_6:	@ 0x08C7607C
+	.global song0038_6
+song0038_6:	@ 0x08C7607C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7607E:
@@ -131946,8 +131946,8 @@ gUnknown_08C760F2:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7632C_7
-gUnknown_08C7632C_7:	@ 0x08C76121
+	.global song0038_7
+song0038_7:	@ 0x08C76121
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C76123:
@@ -132237,8 +132237,8 @@ gUnknown_08C76225:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C7632C_8
-gUnknown_08C7632C_8:	@ 0x08C76255
+	.global song0038_8
+song0038_8:	@ 0x08C76255
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C76257:
@@ -132352,8 +132352,8 @@ gUnknown_08C76293:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C7632C_9
-gUnknown_08C7632C_9:	@ 0x08C762CB
+	.global song0038_9
+song0038_9:	@ 0x08C762CB
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C762CD:
@@ -132445,8 +132445,8 @@ gUnknown_08C76305:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7632C
-gUnknown_08C7632C:	@ 0x08C7632C
+	.global song0038
+song0038:	@ 0x08C7632C
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -132454,21 +132454,21 @@ gUnknown_08C7632C:	@ 0x08C7632C
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C7632C_1		@ track
-	.word	gUnknown_08C7632C_2		@ track
-	.word	gUnknown_08C7632C_3		@ track
-	.word	gUnknown_08C7632C_4		@ track
-	.word	gUnknown_08C7632C_5		@ track
-	.word	gUnknown_08C7632C_6		@ track
-	.word	gUnknown_08C7632C_7		@ track
-	.word	gUnknown_08C7632C_8		@ track
-	.word	gUnknown_08C7632C_9		@ track
+	.word	song0038_1		@ track
+	.word	song0038_2		@ track
+	.word	song0038_3		@ track
+	.word	song0038_4		@ track
+	.word	song0038_5		@ track
+	.word	song0038_6		@ track
+	.word	song0038_7		@ track
+	.word	song0038_8		@ track
+	.word	song0038_9		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C764FC_1
-gUnknown_08C764FC_1:	@ 0x08C76358
+	.global song0041_1
+song0041_1:	@ 0x08C76358
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -132522,8 +132522,8 @@ gUnknown_08C764FC_1:	@ 0x08C76358
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C764FC_2
-gUnknown_08C764FC_2:	@ 0x08C7638A
+	.global song0041_2
+song0041_2:	@ 0x08C7638A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -132664,8 +132664,8 @@ gUnknown_08C764FC_2:	@ 0x08C7638A
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C764FC_3
-gUnknown_08C764FC_3:	@ 0x08C76413
+	.global song0041_3
+song0041_3:	@ 0x08C76413
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -132726,8 +132726,8 @@ gUnknown_08C764FC_3:	@ 0x08C76413
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C764FC_4
-gUnknown_08C764FC_4:	@ 0x08C7644C
+	.global song0041_4
+song0041_4:	@ 0x08C7644C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -132906,8 +132906,8 @@ gUnknown_08C764FC_4:	@ 0x08C7644C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C764FC
-gUnknown_08C764FC:	@ 0x08C764FC
+	.global song0041
+song0041:	@ 0x08C764FC
 	.byte	4		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -132915,16 +132915,16 @@ gUnknown_08C764FC:	@ 0x08C764FC
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C764FC_1		@ track
-	.word	gUnknown_08C764FC_2		@ track
-	.word	gUnknown_08C764FC_3		@ track
-	.word	gUnknown_08C764FC_4		@ track
+	.word	song0041_1		@ track
+	.word	song0041_2		@ track
+	.word	song0041_3		@ track
+	.word	song0041_4		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C76EF8_1
-gUnknown_08C76EF8_1:	@ 0x08C76514
+	.global song0042_1
+song0042_1:	@ 0x08C76514
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -133725,8 +133725,8 @@ gUnknown_08C76EF8_1:	@ 0x08C76514
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C76EF8_2
-gUnknown_08C76EF8_2:	@ 0x08C76831
+	.global song0042_2
+song0042_2:	@ 0x08C76831
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -133938,8 +133938,8 @@ gUnknown_08C76EF8_2:	@ 0x08C76831
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C76EF8_3
-gUnknown_08C76EF8_3:	@ 0x08C76901
+	.global song0042_3
+song0042_3:	@ 0x08C76901
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -134017,8 +134017,8 @@ gUnknown_08C76EF8_3:	@ 0x08C76901
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C76EF8_4
-gUnknown_08C76EF8_4:	@ 0x08C7694B
+	.global song0042_4
+song0042_4:	@ 0x08C7694B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -134461,8 +134461,8 @@ gUnknown_08C76EF8_4:	@ 0x08C7694B
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C76EF8_5
-gUnknown_08C76EF8_5:	@ 0x08C76B02
+	.global song0042_5
+song0042_5:	@ 0x08C76B02
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -134576,8 +134576,8 @@ gUnknown_08C76EF8_5:	@ 0x08C76B02
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C76EF8_6
-gUnknown_08C76EF8_6:	@ 0x08C76B70
+	.global song0042_6
+song0042_6:	@ 0x08C76B70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -134657,8 +134657,8 @@ gUnknown_08C76EF8_6:	@ 0x08C76B70
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C76EF8_7
-gUnknown_08C76EF8_7:	@ 0x08C76BBC
+	.global song0042_7
+song0042_7:	@ 0x08C76BBC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -135085,8 +135085,8 @@ gUnknown_08C76EF8_7:	@ 0x08C76BBC
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C76EF8_8
-gUnknown_08C76EF8_8:	@ 0x08C76D63
+	.global song0042_8
+song0042_8:	@ 0x08C76D63
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xB0
@@ -135494,8 +135494,8 @@ gUnknown_08C76EF8_8:	@ 0x08C76D63
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C76EF8
-gUnknown_08C76EF8:	@ 0x08C76EF8
+	.global song0042
+song0042:	@ 0x08C76EF8
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -135503,20 +135503,20 @@ gUnknown_08C76EF8:	@ 0x08C76EF8
 
 	.word	voicegroup020		@ voicegroup/tone
 
-	.word	gUnknown_08C76EF8_1		@ track
-	.word	gUnknown_08C76EF8_2		@ track
-	.word	gUnknown_08C76EF8_3		@ track
-	.word	gUnknown_08C76EF8_4		@ track
-	.word	gUnknown_08C76EF8_5		@ track
-	.word	gUnknown_08C76EF8_6		@ track
-	.word	gUnknown_08C76EF8_7		@ track
-	.word	gUnknown_08C76EF8_8		@ track
+	.word	song0042_1		@ track
+	.word	song0042_2		@ track
+	.word	song0042_3		@ track
+	.word	song0042_4		@ track
+	.word	song0042_5		@ track
+	.word	song0042_6		@ track
+	.word	song0042_7		@ track
+	.word	song0042_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C78270_1
-gUnknown_08C78270_1:	@ 0x08C76F20
+	.global song0043_1
+song0043_1:	@ 0x08C76F20
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -136273,8 +136273,8 @@ gUnknown_08C76F94:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C78270_2
-gUnknown_08C78270_2:	@ 0x08C77228
+	.global song0043_2
+song0043_2:	@ 0x08C77228
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -136409,8 +136409,8 @@ gUnknown_08C7723A:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C78270_3
-gUnknown_08C78270_3:	@ 0x08C772E8
+	.global song0043_3
+song0043_3:	@ 0x08C772E8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -137151,8 +137151,8 @@ gUnknown_08C7757F:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C78270_4
-gUnknown_08C78270_4:	@ 0x08C775DF
+	.global song0043_4
+song0043_4:	@ 0x08C775DF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -138090,8 +138090,8 @@ gUnknown_08C778D4:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C78270_5
-gUnknown_08C78270_5:	@ 0x08C77989
+	.global song0043_5
+song0043_5:	@ 0x08C77989
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139029,8 +139029,8 @@ gUnknown_08C77C7E:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C78270_6
-gUnknown_08C78270_6:	@ 0x08C77D33
+	.global song0043_6
+song0043_6:	@ 0x08C77D33
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139230,8 +139230,8 @@ gUnknown_08C77DE5:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C78270_7
-gUnknown_08C78270_7:	@ 0x08C77E0B
+	.global song0043_7
+song0043_7:	@ 0x08C77E0B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139324,8 +139324,8 @@ gUnknown_08C77E44:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C78270_8
-gUnknown_08C78270_8:	@ 0x08C77E6A
+	.global song0043_8
+song0043_8:	@ 0x08C77E6A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139398,8 +139398,8 @@ gUnknown_08C78270_8:	@ 0x08C77E6A
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C78270_9
-gUnknown_08C78270_9:	@ 0x08C77EAF
+	.global song0043_9
+song0043_9:	@ 0x08C77EAF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139501,8 +139501,8 @@ gUnknown_08C77EC7:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C78270_10
-gUnknown_08C78270_10:	@ 0x08C77F15
+	.global song0043_10
+song0043_10:	@ 0x08C77F15
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -139616,8 +139616,8 @@ gUnknown_08C77F41:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C78270_11
-gUnknown_08C78270_11:	@ 0x08C77F8B
+	.global song0043_11
+song0043_11:	@ 0x08C77F8B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -140271,8 +140271,8 @@ gUnknown_08C78270_11:	@ 0x08C77F8B
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C78270_12
-gUnknown_08C78270_12:	@ 0x08C78215
+	.global song0043_12
+song0043_12:	@ 0x08C78215
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -140324,8 +140324,8 @@ gUnknown_08C78270_12:	@ 0x08C78215
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C78270_13
-gUnknown_08C78270_13:	@ 0x08C78245
+	.global song0043_13
+song0043_13:	@ 0x08C78245
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -140371,8 +140371,8 @@ gUnknown_08C78270_13:	@ 0x08C78245
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C78270
-gUnknown_08C78270:	@ 0x08C78270
+	.global song0043
+song0043:	@ 0x08C78270
 	.byte	13		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -140380,25 +140380,25 @@ gUnknown_08C78270:	@ 0x08C78270
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C78270_1		@ track
-	.word	gUnknown_08C78270_2		@ track
-	.word	gUnknown_08C78270_3		@ track
-	.word	gUnknown_08C78270_4		@ track
-	.word	gUnknown_08C78270_5		@ track
-	.word	gUnknown_08C78270_6		@ track
-	.word	gUnknown_08C78270_7		@ track
-	.word	gUnknown_08C78270_8		@ track
-	.word	gUnknown_08C78270_9		@ track
-	.word	gUnknown_08C78270_10		@ track
-	.word	gUnknown_08C78270_11		@ track
-	.word	gUnknown_08C78270_12		@ track
-	.word	gUnknown_08C78270_13		@ track
+	.word	song0043_1		@ track
+	.word	song0043_2		@ track
+	.word	song0043_3		@ track
+	.word	song0043_4		@ track
+	.word	song0043_5		@ track
+	.word	song0043_6		@ track
+	.word	song0043_7		@ track
+	.word	song0043_8		@ track
+	.word	song0043_9		@ track
+	.word	song0043_10		@ track
+	.word	song0043_11		@ track
+	.word	song0043_12		@ track
+	.word	song0043_13		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7A070_1
-gUnknown_08C7A070_1:	@ 0x08C782AC
+	.global song0044_1
+song0044_1:	@ 0x08C782AC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -141018,8 +141018,8 @@ gUnknown_08C784E4:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7A070_2
-gUnknown_08C7A070_2:	@ 0x08C7857B
+	.global song0044_2
+song0044_2:	@ 0x08C7857B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -141532,8 +141532,8 @@ gUnknown_08C78726:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7A070_3
-gUnknown_08C7A070_3:	@ 0x08C78806
+	.global song0044_3
+song0044_3:	@ 0x08C78806
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -142420,8 +142420,8 @@ gUnknown_08C78B0F:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7A070_4
-gUnknown_08C7A070_4:	@ 0x08C78BF7
+	.global song0044_4
+song0044_4:	@ 0x08C78BF7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -143355,8 +143355,8 @@ gUnknown_08C78DD0:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7A070_5
-gUnknown_08C7A070_5:	@ 0x08C78FCB
+	.global song0044_5
+song0044_5:	@ 0x08C78FCB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -144275,8 +144275,8 @@ gUnknown_08C79199:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7A070_6
-gUnknown_08C7A070_6:	@ 0x08C79393
+	.global song0044_6
+song0044_6:	@ 0x08C79393
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -144562,8 +144562,8 @@ gUnknown_08C79454:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7A070_7
-gUnknown_08C7A070_7:	@ 0x08C794DA
+	.global song0044_7
+song0044_7:	@ 0x08C794DA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -144737,8 +144737,8 @@ gUnknown_08C79508:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C7A070_8
-gUnknown_08C7A070_8:	@ 0x08C7958A
+	.global song0044_8
+song0044_8:	@ 0x08C7958A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -145443,8 +145443,8 @@ gUnknown_08C79680:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C7A070_9
-gUnknown_08C7A070_9:	@ 0x08C7984D
+	.global song0044_9
+song0044_9:	@ 0x08C7984D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146108,8 +146108,8 @@ gUnknown_08C798BE:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C7A070_10
-gUnknown_08C7A070_10:	@ 0x08C79AE5
+	.global song0044_10
+song0044_10:	@ 0x08C79AE5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146189,8 +146189,8 @@ gUnknown_08C79AF8:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C7A070_11
-gUnknown_08C7A070_11:	@ 0x08C79B39
+	.global song0044_11
+song0044_11:	@ 0x08C79B39
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146342,8 +146342,8 @@ gUnknown_08C79B4C:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C7A070_12
-gUnknown_08C7A070_12:	@ 0x08C79BD5
+	.global song0044_12
+song0044_12:	@ 0x08C79BD5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146700,8 +146700,8 @@ gUnknown_08C7A070_12:	@ 0x08C79BD5
 
 	@********************** Track  13 **********************@
 
-	.global gUnknown_08C7A070_13
-gUnknown_08C7A070_13:	@ 0x08C79D36
+	.global song0044_13
+song0044_13:	@ 0x08C79D36
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146834,8 +146834,8 @@ gUnknown_08C7A070_13:	@ 0x08C79D36
 
 	@********************** Track  14 **********************@
 
-	.global gUnknown_08C7A070_14
-gUnknown_08C7A070_14:	@ 0x08C79DB7
+	.global song0044_14
+song0044_14:	@ 0x08C79DB7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -146944,8 +146944,8 @@ gUnknown_08C7A070_14:	@ 0x08C79DB7
 
 	@********************** Track  15 **********************@
 
-	.global gUnknown_08C7A070_15
-gUnknown_08C7A070_15:	@ 0x08C79E20
+	.global song0044_15
+song0044_15:	@ 0x08C79E20
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -147190,8 +147190,8 @@ gUnknown_08C7A070_15:	@ 0x08C79E20
 
 	@********************** Track  16 **********************@
 
-	.global gUnknown_08C7A070_16
-gUnknown_08C7A070_16:	@ 0x08C79F11
+	.global song0044_16
+song0044_16:	@ 0x08C79F11
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -147516,8 +147516,8 @@ gUnknown_08C79FC8:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7A070
-gUnknown_08C7A070:	@ 0x08C7A070
+	.global song0044
+song0044:	@ 0x08C7A070
 	.byte	16		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -147525,28 +147525,28 @@ gUnknown_08C7A070:	@ 0x08C7A070
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C7A070_1		@ track
-	.word	gUnknown_08C7A070_2		@ track
-	.word	gUnknown_08C7A070_3		@ track
-	.word	gUnknown_08C7A070_4		@ track
-	.word	gUnknown_08C7A070_5		@ track
-	.word	gUnknown_08C7A070_6		@ track
-	.word	gUnknown_08C7A070_7		@ track
-	.word	gUnknown_08C7A070_8		@ track
-	.word	gUnknown_08C7A070_9		@ track
-	.word	gUnknown_08C7A070_10		@ track
-	.word	gUnknown_08C7A070_11		@ track
-	.word	gUnknown_08C7A070_12		@ track
-	.word	gUnknown_08C7A070_13		@ track
-	.word	gUnknown_08C7A070_14		@ track
-	.word	gUnknown_08C7A070_15		@ track
-	.word	gUnknown_08C7A070_16		@ track
+	.word	song0044_1		@ track
+	.word	song0044_2		@ track
+	.word	song0044_3		@ track
+	.word	song0044_4		@ track
+	.word	song0044_5		@ track
+	.word	song0044_6		@ track
+	.word	song0044_7		@ track
+	.word	song0044_8		@ track
+	.word	song0044_9		@ track
+	.word	song0044_10		@ track
+	.word	song0044_11		@ track
+	.word	song0044_12		@ track
+	.word	song0044_13		@ track
+	.word	song0044_14		@ track
+	.word	song0044_15		@ track
+	.word	song0044_16		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7AD88_1
-gUnknown_08C7AD88_1:	@ 0x08C7A0B8
+	.global song0045_1
+song0045_1:	@ 0x08C7A0B8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -148184,8 +148184,8 @@ gUnknown_08C7A26F:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7AD88_2
-gUnknown_08C7AD88_2:	@ 0x08C7A348
+	.global song0045_2
+song0045_2:	@ 0x08C7A348
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -149127,8 +149127,8 @@ gUnknown_08C7A350:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7AD88_3
-gUnknown_08C7AD88_3:	@ 0x08C7A6F4
+	.global song0045_3
+song0045_3:	@ 0x08C7A6F4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -149497,8 +149497,8 @@ gUnknown_08C7A719:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7AD88_4
-gUnknown_08C7AD88_4:	@ 0x08C7A863
+	.global song0045_4
+song0045_4:	@ 0x08C7A863
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -150412,8 +150412,8 @@ gUnknown_08C7A8BB:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7AD88_5
-gUnknown_08C7AD88_5:	@ 0x08C7ABF3
+	.global song0045_5
+song0045_5:	@ 0x08C7ABF3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -150476,8 +150476,8 @@ gUnknown_08C7AC18:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7AD88_6
-gUnknown_08C7AD88_6:	@ 0x08C7AC30
+	.global song0045_6
+song0045_6:	@ 0x08C7AC30
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -150819,8 +150819,8 @@ gUnknown_08C7AC3A:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7AD88
-gUnknown_08C7AD88:	@ 0x08C7AD88
+	.global song0045
+song0045:	@ 0x08C7AD88
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -150828,18 +150828,18 @@ gUnknown_08C7AD88:	@ 0x08C7AD88
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C7AD88_1		@ track
-	.word	gUnknown_08C7AD88_2		@ track
-	.word	gUnknown_08C7AD88_3		@ track
-	.word	gUnknown_08C7AD88_4		@ track
-	.word	gUnknown_08C7AD88_5		@ track
-	.word	gUnknown_08C7AD88_6		@ track
+	.word	song0045_1		@ track
+	.word	song0045_2		@ track
+	.word	song0045_3		@ track
+	.word	song0045_4		@ track
+	.word	song0045_5		@ track
+	.word	song0045_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7B430_1
-gUnknown_08C7B430_1:	@ 0x08C7ADA8
+	.global song0046_1
+song0046_1:	@ 0x08C7ADA8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -151345,8 +151345,8 @@ gUnknown_08C7AF2B:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7B430_2
-gUnknown_08C7B430_2:	@ 0x08C7AFC7
+	.global song0046_2
+song0046_2:	@ 0x08C7AFC7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -151725,8 +151725,8 @@ gUnknown_08C7AFD4:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7B430_3
-gUnknown_08C7B430_3:	@ 0x08C7B140
+	.global song0046_3
+song0046_3:	@ 0x08C7B140
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -151970,8 +151970,8 @@ gUnknown_08C7B17B:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7B430_4
-gUnknown_08C7B430_4:	@ 0x08C7B252
+	.global song0046_4
+song0046_4:	@ 0x08C7B252
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -152225,8 +152225,8 @@ gUnknown_08C7B287:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7B430_5
-gUnknown_08C7B430_5:	@ 0x08C7B362
+	.global song0046_5
+song0046_5:	@ 0x08C7B362
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -152301,8 +152301,8 @@ gUnknown_08C7B36A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7B430_6
-gUnknown_08C7B430_6:	@ 0x08C7B3AB
+	.global song0046_6
+song0046_6:	@ 0x08C7B3AB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -152436,8 +152436,8 @@ gUnknown_08C7B3B3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7B430
-gUnknown_08C7B430:	@ 0x08C7B430
+	.global song0046
+song0046:	@ 0x08C7B430
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -152445,18 +152445,18 @@ gUnknown_08C7B430:	@ 0x08C7B430
 
 	.word	voicegroup014		@ voicegroup/tone
 
-	.word	gUnknown_08C7B430_1		@ track
-	.word	gUnknown_08C7B430_2		@ track
-	.word	gUnknown_08C7B430_3		@ track
-	.word	gUnknown_08C7B430_4		@ track
-	.word	gUnknown_08C7B430_5		@ track
-	.word	gUnknown_08C7B430_6		@ track
+	.word	song0046_1		@ track
+	.word	song0046_2		@ track
+	.word	song0046_3		@ track
+	.word	song0046_4		@ track
+	.word	song0046_5		@ track
+	.word	song0046_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7BF48_1
-gUnknown_08C7BF48_1:	@ 0x08C7B450
+	.global song0048_1
+song0048_1:	@ 0x08C7B450
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -152698,8 +152698,8 @@ gUnknown_08C7B4D0:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7BF48_2
-gUnknown_08C7BF48_2:	@ 0x08C7B591
+	.global song0048_2
+song0048_2:	@ 0x08C7B591
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -152842,8 +152842,8 @@ gUnknown_08C7B5BE:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7BF48_3
-gUnknown_08C7BF48_3:	@ 0x08C7B670
+	.global song0048_3
+song0048_3:	@ 0x08C7B670
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -153461,8 +153461,8 @@ gUnknown_08C7B83B:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7BF48_4
-gUnknown_08C7BF48_4:	@ 0x08C7B90B
+	.global song0048_4
+song0048_4:	@ 0x08C7B90B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -153732,8 +153732,8 @@ gUnknown_08C7B981:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7BF48_5
-gUnknown_08C7BF48_5:	@ 0x08C7BA65
+	.global song0048_5
+song0048_5:	@ 0x08C7BA65
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -154096,8 +154096,8 @@ gUnknown_08C7BB40:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7BF48_6
-gUnknown_08C7BF48_6:	@ 0x08C7BBD8
+	.global song0048_6
+song0048_6:	@ 0x08C7BBD8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -154389,8 +154389,8 @@ gUnknown_08C7BCAE:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7BF48_7
-gUnknown_08C7BF48_7:	@ 0x08C7BD02
+	.global song0048_7
+song0048_7:	@ 0x08C7BD02
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -154671,8 +154671,8 @@ gUnknown_08C7BDDB:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C7BF48_8
-gUnknown_08C7BF48_8:	@ 0x08C7BE2F
+	.global song0048_8
+song0048_8:	@ 0x08C7BE2F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -154936,8 +154936,8 @@ gUnknown_08C7BED0:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7BF48
-gUnknown_08C7BF48:	@ 0x08C7BF48
+	.global song0048
+song0048:	@ 0x08C7BF48
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -154945,20 +154945,20 @@ gUnknown_08C7BF48:	@ 0x08C7BF48
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C7BF48_1		@ track
-	.word	gUnknown_08C7BF48_2		@ track
-	.word	gUnknown_08C7BF48_3		@ track
-	.word	gUnknown_08C7BF48_4		@ track
-	.word	gUnknown_08C7BF48_5		@ track
-	.word	gUnknown_08C7BF48_6		@ track
-	.word	gUnknown_08C7BF48_7		@ track
-	.word	gUnknown_08C7BF48_8		@ track
+	.word	song0048_1		@ track
+	.word	song0048_2		@ track
+	.word	song0048_3		@ track
+	.word	song0048_4		@ track
+	.word	song0048_5		@ track
+	.word	song0048_6		@ track
+	.word	song0048_7		@ track
+	.word	song0048_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7CC88_1
-gUnknown_08C7CC88_1:	@ 0x08C7BF70
+	.global song0049_1
+song0049_1:	@ 0x08C7BF70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -155264,8 +155264,8 @@ gUnknown_08C7C030:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7CC88_2
-gUnknown_08C7CC88_2:	@ 0x08C7C0E3
+	.global song0049_2
+song0049_2:	@ 0x08C7C0E3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -155405,8 +155405,8 @@ gUnknown_08C7C124:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7CC88_3
-gUnknown_08C7CC88_3:	@ 0x08C7C1BF
+	.global song0049_3
+song0049_3:	@ 0x08C7C1BF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -156170,8 +156170,8 @@ gUnknown_08C7C3F8:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7CC88_4
-gUnknown_08C7CC88_4:	@ 0x08C7C4E6
+	.global song0049_4
+song0049_4:	@ 0x08C7C4E6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -156427,8 +156427,8 @@ gUnknown_08C7C58F:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7CC88_5
-gUnknown_08C7CC88_5:	@ 0x08C7C619
+	.global song0049_5
+song0049_5:	@ 0x08C7C619
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -156507,8 +156507,8 @@ gUnknown_08C7C62B:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7CC88_6
-gUnknown_08C7CC88_6:	@ 0x08C7C66E
+	.global song0049_6
+song0049_6:	@ 0x08C7C66E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -156907,8 +156907,8 @@ gUnknown_08C7C759:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7CC88_7
-gUnknown_08C7CC88_7:	@ 0x08C7C803
+	.global song0049_7
+song0049_7:	@ 0x08C7C803
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -157207,8 +157207,8 @@ gUnknown_08C7C8E3:
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C7CC88_8
-gUnknown_08C7CC88_8:	@ 0x08C7C936
+	.global song0049_8
+song0049_8:	@ 0x08C7C936
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -157506,8 +157506,8 @@ gUnknown_08C7CA12:
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C7CC88_9
-gUnknown_08C7CC88_9:	@ 0x08C7CA6A
+	.global song0049_9
+song0049_9:	@ 0x08C7CA6A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -157756,8 +157756,8 @@ gUnknown_08C7CAEE:
 
 	@********************** Track  10 **********************@
 
-	.global gUnknown_08C7CC88_10
-gUnknown_08C7CC88_10:	@ 0x08C7CB71
+	.global song0049_10
+song0049_10:	@ 0x08C7CB71
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -157830,8 +157830,8 @@ gUnknown_08C7CB7C:
 
 	@********************** Track  11 **********************@
 
-	.global gUnknown_08C7CC88_11
-gUnknown_08C7CC88_11:	@ 0x08C7CBC1
+	.global song0049_11
+song0049_11:	@ 0x08C7CBC1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -157905,8 +157905,8 @@ gUnknown_08C7CBCD:
 
 	@********************** Track  12 **********************@
 
-	.global gUnknown_08C7CC88_12
-gUnknown_08C7CC88_12:	@ 0x08C7CC11
+	.global song0049_12
+song0049_12:	@ 0x08C7CC11
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -158009,8 +158009,8 @@ gUnknown_08C7CC39:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7CC88
-gUnknown_08C7CC88:	@ 0x08C7CC88
+	.global song0049
+song0049:	@ 0x08C7CC88
 	.byte	12		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -158018,24 +158018,24 @@ gUnknown_08C7CC88:	@ 0x08C7CC88
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C7CC88_1		@ track
-	.word	gUnknown_08C7CC88_2		@ track
-	.word	gUnknown_08C7CC88_3		@ track
-	.word	gUnknown_08C7CC88_4		@ track
-	.word	gUnknown_08C7CC88_5		@ track
-	.word	gUnknown_08C7CC88_6		@ track
-	.word	gUnknown_08C7CC88_7		@ track
-	.word	gUnknown_08C7CC88_8		@ track
-	.word	gUnknown_08C7CC88_9		@ track
-	.word	gUnknown_08C7CC88_10		@ track
-	.word	gUnknown_08C7CC88_11		@ track
-	.word	gUnknown_08C7CC88_12		@ track
+	.word	song0049_1		@ track
+	.word	song0049_2		@ track
+	.word	song0049_3		@ track
+	.word	song0049_4		@ track
+	.word	song0049_5		@ track
+	.word	song0049_6		@ track
+	.word	song0049_7		@ track
+	.word	song0049_8		@ track
+	.word	song0049_9		@ track
+	.word	song0049_10		@ track
+	.word	song0049_11		@ track
+	.word	song0049_12		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7CDCC_1
-gUnknown_08C7CDCC_1:	@ 0x08C7CCC0
+	.global song0050_1
+song0050_1:	@ 0x08C7CCC0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -158130,8 +158130,8 @@ gUnknown_08C7CDCC_1:	@ 0x08C7CCC0
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7CDCC_2
-gUnknown_08C7CDCC_2:	@ 0x08C7CD1B
+	.global song0050_2
+song0050_2:	@ 0x08C7CD1B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -158169,8 +158169,8 @@ gUnknown_08C7CDCC_2:	@ 0x08C7CD1B
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7CDCC_3
-gUnknown_08C7CDCC_3:	@ 0x08C7CD3D
+	.global song0050_3
+song0050_3:	@ 0x08C7CD3D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -158225,8 +158225,8 @@ gUnknown_08C7CDCC_3:	@ 0x08C7CD3D
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7CDCC_4
-gUnknown_08C7CDCC_4:	@ 0x08C7CD70
+	.global song0050_4
+song0050_4:	@ 0x08C7CD70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -158280,8 +158280,8 @@ gUnknown_08C7CDCC_4:	@ 0x08C7CD70
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7CDCC_5
-gUnknown_08C7CDCC_5:	@ 0x08C7CDA2
+	.global song0050_5
+song0050_5:	@ 0x08C7CDA2
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -158326,8 +158326,8 @@ gUnknown_08C7CDCC_5:	@ 0x08C7CDA2
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7CDCC
-gUnknown_08C7CDCC:	@ 0x08C7CDCC
+	.global song0050
+song0050:	@ 0x08C7CDCC
 	.byte	5		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -158335,17 +158335,17 @@ gUnknown_08C7CDCC:	@ 0x08C7CDCC
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C7CDCC_1		@ track
-	.word	gUnknown_08C7CDCC_2		@ track
-	.word	gUnknown_08C7CDCC_3		@ track
-	.word	gUnknown_08C7CDCC_4		@ track
-	.word	gUnknown_08C7CDCC_5		@ track
+	.word	song0050_1		@ track
+	.word	song0050_2		@ track
+	.word	song0050_3		@ track
+	.word	song0050_4		@ track
+	.word	song0050_5		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7DA24_1
-gUnknown_08C7DA24_1:	@ 0x08C7CDE8
+	.global song0051_1
+song0051_1:	@ 0x08C7CDE8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -158811,8 +158811,8 @@ gUnknown_08C7CF2B:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7DA24_2
-gUnknown_08C7DA24_2:	@ 0x08C7D029
+	.global song0051_2
+song0051_2:	@ 0x08C7D029
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -159422,8 +159422,8 @@ gUnknown_08C7D161:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7DA24_3
-gUnknown_08C7DA24_3:	@ 0x08C7D2BC
+	.global song0051_3
+song0051_3:	@ 0x08C7D2BC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -159784,8 +159784,8 @@ gUnknown_08C7D32E:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7DA24_4
-gUnknown_08C7DA24_4:	@ 0x08C7D42B
+	.global song0051_4
+song0051_4:	@ 0x08C7D42B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -160307,8 +160307,8 @@ gUnknown_08C7D443:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7DA24_5
-gUnknown_08C7DA24_5:	@ 0x08C7D633
+	.global song0051_5
+song0051_5:	@ 0x08C7D633
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -161011,8 +161011,8 @@ gUnknown_08C7D755:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7DA24_6
-gUnknown_08C7DA24_6:	@ 0x08C7D8F0
+	.global song0051_6
+song0051_6:	@ 0x08C7D8F0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -161110,8 +161110,8 @@ gUnknown_08C7D908:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7DA24_7
-gUnknown_08C7DA24_7:	@ 0x08C7D950
+	.global song0051_7
+song0051_7:	@ 0x08C7D950
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -161318,8 +161318,8 @@ gUnknown_08C7D9E7:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7DA24
-gUnknown_08C7DA24:	@ 0x08C7DA24
+	.global song0051
+song0051:	@ 0x08C7DA24
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -161327,19 +161327,19 @@ gUnknown_08C7DA24:	@ 0x08C7DA24
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C7DA24_1		@ track
-	.word	gUnknown_08C7DA24_2		@ track
-	.word	gUnknown_08C7DA24_3		@ track
-	.word	gUnknown_08C7DA24_4		@ track
-	.word	gUnknown_08C7DA24_5		@ track
-	.word	gUnknown_08C7DA24_6		@ track
-	.word	gUnknown_08C7DA24_7		@ track
+	.word	song0051_1		@ track
+	.word	song0051_2		@ track
+	.word	song0051_3		@ track
+	.word	song0051_4		@ track
+	.word	song0051_5		@ track
+	.word	song0051_6		@ track
+	.word	song0051_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7E0F8_1
-gUnknown_08C7E0F8_1:	@ 0x08C7DA48
+	.global song0052_1
+song0052_1:	@ 0x08C7DA48
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -161657,8 +161657,8 @@ gUnknown_08C7DB50:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7E0F8_2
-gUnknown_08C7E0F8_2:	@ 0x08C7DB93
+	.global song0052_2
+song0052_2:	@ 0x08C7DB93
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -162075,8 +162075,8 @@ gUnknown_08C7DCE5:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7E0F8_3
-gUnknown_08C7E0F8_3:	@ 0x08C7DD4C
+	.global song0052_3
+song0052_3:	@ 0x08C7DD4C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -162146,8 +162146,8 @@ gUnknown_08C7DD77:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7E0F8_4
-gUnknown_08C7E0F8_4:	@ 0x08C7DD92
+	.global song0052_4
+song0052_4:	@ 0x08C7DD92
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -162820,8 +162820,8 @@ gUnknown_08C7DFD1:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7E0F8_5
-gUnknown_08C7E0F8_5:	@ 0x08C7E03F
+	.global song0052_5
+song0052_5:	@ 0x08C7E03F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163001,8 +163001,8 @@ gUnknown_08C7E0CE:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7E0F8
-gUnknown_08C7E0F8:	@ 0x08C7E0F8
+	.global song0052
+song0052:	@ 0x08C7E0F8
 	.byte	5		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -163010,17 +163010,17 @@ gUnknown_08C7E0F8:	@ 0x08C7E0F8
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C7E0F8_1		@ track
-	.word	gUnknown_08C7E0F8_2		@ track
-	.word	gUnknown_08C7E0F8_3		@ track
-	.word	gUnknown_08C7E0F8_4		@ track
-	.word	gUnknown_08C7E0F8_5		@ track
+	.word	song0052_1		@ track
+	.word	song0052_2		@ track
+	.word	song0052_3		@ track
+	.word	song0052_4		@ track
+	.word	song0052_5		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7E1F0_1
-gUnknown_08C7E1F0_1:	@ 0x08C7E114
+	.global song0053_1
+song0053_1:	@ 0x08C7E114
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -163079,8 +163079,8 @@ gUnknown_08C7E1F0_1:	@ 0x08C7E114
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7E1F0_2
-gUnknown_08C7E1F0_2:	@ 0x08C7E14B
+	.global song0053_2
+song0053_2:	@ 0x08C7E14B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163127,8 +163127,8 @@ gUnknown_08C7E1F0_2:	@ 0x08C7E14B
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7E1F0_3
-gUnknown_08C7E1F0_3:	@ 0x08C7E176
+	.global song0053_3
+song0053_3:	@ 0x08C7E176
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163183,8 +163183,8 @@ gUnknown_08C7E1F0_3:	@ 0x08C7E176
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7E1F0_4
-gUnknown_08C7E1F0_4:	@ 0x08C7E1A9
+	.global song0053_4
+song0053_4:	@ 0x08C7E1A9
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163234,8 +163234,8 @@ gUnknown_08C7E1F0_4:	@ 0x08C7E1A9
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7E1F0_5
-gUnknown_08C7E1F0_5:	@ 0x08C7E1D7
+	.global song0053_5
+song0053_5:	@ 0x08C7E1D7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163263,8 +163263,8 @@ gUnknown_08C7E1F0_5:	@ 0x08C7E1D7
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7E1F0
-gUnknown_08C7E1F0:	@ 0x08C7E1F0
+	.global song0053
+song0053:	@ 0x08C7E1F0
 	.byte	5		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -163272,17 +163272,17 @@ gUnknown_08C7E1F0:	@ 0x08C7E1F0
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C7E1F0_1		@ track
-	.word	gUnknown_08C7E1F0_2		@ track
-	.word	gUnknown_08C7E1F0_3		@ track
-	.word	gUnknown_08C7E1F0_4		@ track
-	.word	gUnknown_08C7E1F0_5		@ track
+	.word	song0053_1		@ track
+	.word	song0053_2		@ track
+	.word	song0053_3		@ track
+	.word	song0053_4		@ track
+	.word	song0053_5		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7E3A8_1
-gUnknown_08C7E3A8_1:	@ 0x08C7E20C
+	.global song0054_1
+song0054_1:	@ 0x08C7E20C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -163392,8 +163392,8 @@ gUnknown_08C7E3A8_1:	@ 0x08C7E20C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7E3A8_2
-gUnknown_08C7E3A8_2:	@ 0x08C7E276
+	.global song0054_2
+song0054_2:	@ 0x08C7E276
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163436,8 +163436,8 @@ gUnknown_08C7E3A8_2:	@ 0x08C7E276
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7E3A8_3
-gUnknown_08C7E3A8_3:	@ 0x08C7E29D
+	.global song0054_3
+song0054_3:	@ 0x08C7E29D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163566,8 +163566,8 @@ gUnknown_08C7E3A8_3:	@ 0x08C7E29D
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7E3A8_4
-gUnknown_08C7E3A8_4:	@ 0x08C7E31A
+	.global song0054_4
+song0054_4:	@ 0x08C7E31A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163649,8 +163649,8 @@ gUnknown_08C7E3A8_4:	@ 0x08C7E31A
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7E3A8_5
-gUnknown_08C7E3A8_5:	@ 0x08C7E368
+	.global song0054_5
+song0054_5:	@ 0x08C7E368
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163686,8 +163686,8 @@ gUnknown_08C7E3A8_5:	@ 0x08C7E368
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7E3A8_6
-gUnknown_08C7E3A8_6:	@ 0x08C7E388
+	.global song0054_6
+song0054_6:	@ 0x08C7E388
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -163722,8 +163722,8 @@ gUnknown_08C7E3A8_6:	@ 0x08C7E388
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7E3A8
-gUnknown_08C7E3A8:	@ 0x08C7E3A8
+	.global song0054
+song0054:	@ 0x08C7E3A8
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -163731,18 +163731,18 @@ gUnknown_08C7E3A8:	@ 0x08C7E3A8
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C7E3A8_1		@ track
-	.word	gUnknown_08C7E3A8_2		@ track
-	.word	gUnknown_08C7E3A8_3		@ track
-	.word	gUnknown_08C7E3A8_4		@ track
-	.word	gUnknown_08C7E3A8_5		@ track
-	.word	gUnknown_08C7E3A8_6		@ track
+	.word	song0054_1		@ track
+	.word	song0054_2		@ track
+	.word	song0054_3		@ track
+	.word	song0054_4		@ track
+	.word	song0054_5		@ track
+	.word	song0054_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7E8DC_1
-gUnknown_08C7E8DC_1:	@ 0x08C7E3C8
+	.global song0055_1
+song0055_1:	@ 0x08C7E3C8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E3CA:
@@ -163969,8 +163969,8 @@ gUnknown_08C7E3E6:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7E8DC_2
-gUnknown_08C7E8DC_2:	@ 0x08C7E4AB
+	.global song0055_2
+song0055_2:	@ 0x08C7E4AB
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E4AD:
@@ -164195,8 +164195,8 @@ gUnknown_08C7E4AD:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7E8DC_3
-gUnknown_08C7E8DC_3:	@ 0x08C7E58A
+	.global song0055_3
+song0055_3:	@ 0x08C7E58A
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E58C:
@@ -164382,8 +164382,8 @@ gUnknown_08C7E58C:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7E8DC_4
-gUnknown_08C7E8DC_4:	@ 0x08C7E642
+	.global song0055_4
+song0055_4:	@ 0x08C7E642
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E644:
@@ -164521,8 +164521,8 @@ gUnknown_08C7E64F:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7E8DC_5
-gUnknown_08C7E8DC_5:	@ 0x08C7E6CC
+	.global song0055_5
+song0055_5:	@ 0x08C7E6CC
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E6CE:
@@ -164595,8 +164595,8 @@ gUnknown_08C7E6CE:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7E8DC_6
-gUnknown_08C7E8DC_6:	@ 0x08C7E713
+	.global song0055_6
+song0055_6:	@ 0x08C7E713
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C7E715:
@@ -165047,8 +165047,8 @@ gUnknown_08C7E820:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7E8DC
-gUnknown_08C7E8DC:	@ 0x08C7E8DC
+	.global song0055
+song0055:	@ 0x08C7E8DC
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -165056,18 +165056,18 @@ gUnknown_08C7E8DC:	@ 0x08C7E8DC
 
 	.word	voicegroup009		@ voicegroup/tone
 
-	.word	gUnknown_08C7E8DC_1		@ track
-	.word	gUnknown_08C7E8DC_2		@ track
-	.word	gUnknown_08C7E8DC_3		@ track
-	.word	gUnknown_08C7E8DC_4		@ track
-	.word	gUnknown_08C7E8DC_5		@ track
-	.word	gUnknown_08C7E8DC_6		@ track
+	.word	song0055_1		@ track
+	.word	song0055_2		@ track
+	.word	song0055_3		@ track
+	.word	song0055_4		@ track
+	.word	song0055_5		@ track
+	.word	song0055_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7EA40_1
-gUnknown_08C7EA40_1:	@ 0x08C7E8FC
+	.global song0056_1
+song0056_1:	@ 0x08C7E8FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -165102,8 +165102,8 @@ gUnknown_08C7EA40_1:	@ 0x08C7E8FC
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7EA40_2
-gUnknown_08C7EA40_2:	@ 0x08C7E91B
+	.global song0056_2
+song0056_2:	@ 0x08C7E91B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165136,8 +165136,8 @@ gUnknown_08C7EA40_2:	@ 0x08C7E91B
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7EA40_3
-gUnknown_08C7EA40_3:	@ 0x08C7E938
+	.global song0056_3
+song0056_3:	@ 0x08C7E938
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165170,8 +165170,8 @@ gUnknown_08C7EA40_3:	@ 0x08C7E938
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7EA40_4
-gUnknown_08C7EA40_4:	@ 0x08C7E955
+	.global song0056_4
+song0056_4:	@ 0x08C7E955
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165202,8 +165202,8 @@ gUnknown_08C7EA40_4:	@ 0x08C7E955
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7EA40_5
-gUnknown_08C7EA40_5:	@ 0x08C7E970
+	.global song0056_5
+song0056_5:	@ 0x08C7E970
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165234,8 +165234,8 @@ gUnknown_08C7EA40_5:	@ 0x08C7E970
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7EA40_6
-gUnknown_08C7EA40_6:	@ 0x08C7E98B
+	.global song0056_6
+song0056_6:	@ 0x08C7E98B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165266,8 +165266,8 @@ gUnknown_08C7EA40_6:	@ 0x08C7E98B
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7EA40_7
-gUnknown_08C7EA40_7:	@ 0x08C7E9A6
+	.global song0056_7
+song0056_7:	@ 0x08C7E9A6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165346,8 +165346,8 @@ gUnknown_08C7EA40_7:	@ 0x08C7E9A6
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C7EA40_8
-gUnknown_08C7EA40_8:	@ 0x08C7E9F1
+	.global song0056_8
+song0056_8:	@ 0x08C7E9F1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165429,8 +165429,8 @@ gUnknown_08C7EA40_8:	@ 0x08C7E9F1
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7EA40
-gUnknown_08C7EA40:	@ 0x08C7EA40
+	.global song0056
+song0056:	@ 0x08C7EA40
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -165438,20 +165438,20 @@ gUnknown_08C7EA40:	@ 0x08C7EA40
 
 	.word	voicegroup009		@ voicegroup/tone
 
-	.word	gUnknown_08C7EA40_1		@ track
-	.word	gUnknown_08C7EA40_2		@ track
-	.word	gUnknown_08C7EA40_3		@ track
-	.word	gUnknown_08C7EA40_4		@ track
-	.word	gUnknown_08C7EA40_5		@ track
-	.word	gUnknown_08C7EA40_6		@ track
-	.word	gUnknown_08C7EA40_7		@ track
-	.word	gUnknown_08C7EA40_8		@ track
+	.word	song0056_1		@ track
+	.word	song0056_2		@ track
+	.word	song0056_3		@ track
+	.word	song0056_4		@ track
+	.word	song0056_5		@ track
+	.word	song0056_6		@ track
+	.word	song0056_7		@ track
+	.word	song0056_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7EBC8_1
-gUnknown_08C7EBC8_1:	@ 0x08C7EA68
+	.global song0057_1
+song0057_1:	@ 0x08C7EA68
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -165504,8 +165504,8 @@ gUnknown_08C7EA77:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7EBC8_2
-gUnknown_08C7EBC8_2:	@ 0x08C7EA9B
+	.global song0057_2
+song0057_2:	@ 0x08C7EA9B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165556,8 +165556,8 @@ gUnknown_08C7EAA8:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7EBC8_3
-gUnknown_08C7EBC8_3:	@ 0x08C7EACC
+	.global song0057_3
+song0057_3:	@ 0x08C7EACC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165624,8 +165624,8 @@ gUnknown_08C7EAE9:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7EBC8_4
-gUnknown_08C7EBC8_4:	@ 0x08C7EB0D
+	.global song0057_4
+song0057_4:	@ 0x08C7EB0D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165682,8 +165682,8 @@ gUnknown_08C7EB24:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7EBC8_5
-gUnknown_08C7EBC8_5:	@ 0x08C7EB44
+	.global song0057_5
+song0057_5:	@ 0x08C7EB44
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -165816,8 +165816,8 @@ gUnknown_08C7EB75:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7EBC8
-gUnknown_08C7EBC8:	@ 0x08C7EBC8
+	.global song0057
+song0057:	@ 0x08C7EBC8
 	.byte	5		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -165825,17 +165825,17 @@ gUnknown_08C7EBC8:	@ 0x08C7EBC8
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C7EBC8_1		@ track
-	.word	gUnknown_08C7EBC8_2		@ track
-	.word	gUnknown_08C7EBC8_3		@ track
-	.word	gUnknown_08C7EBC8_4		@ track
-	.word	gUnknown_08C7EBC8_5		@ track
+	.word	song0057_1		@ track
+	.word	song0057_2		@ track
+	.word	song0057_3		@ track
+	.word	song0057_4		@ track
+	.word	song0057_5		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7F888_1
-gUnknown_08C7F888_1:	@ 0x08C7EBE4
+	.global song0058_1
+song0058_1:	@ 0x08C7EBE4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -166196,8 +166196,8 @@ gUnknown_08C7EC02:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7F888_2
-gUnknown_08C7F888_2:	@ 0x08C7ED8D
+	.global song0058_2
+song0058_2:	@ 0x08C7ED8D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -166822,8 +166822,8 @@ gUnknown_08C7EEF0:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7F888_3
-gUnknown_08C7F888_3:	@ 0x08C7F010
+	.global song0058_3
+song0058_3:	@ 0x08C7F010
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -167865,8 +167865,8 @@ gUnknown_08C7F15C:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7F888_4
-gUnknown_08C7F888_4:	@ 0x08C7F420
+	.global song0058_4
+song0058_4:	@ 0x08C7F420
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -168007,8 +168007,8 @@ gUnknown_08C7F42D:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7F888_5
-gUnknown_08C7F888_5:	@ 0x08C7F4AB
+	.global song0058_5
+song0058_5:	@ 0x08C7F4AB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -168098,8 +168098,8 @@ gUnknown_08C7F4C0:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7F888_6
-gUnknown_08C7F888_6:	@ 0x08C7F508
+	.global song0058_6
+song0058_6:	@ 0x08C7F508
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -168162,8 +168162,8 @@ gUnknown_08C7F50F:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7F888_7
-gUnknown_08C7F888_7:	@ 0x08C7F545
+	.global song0058_7
+song0058_7:	@ 0x08C7F545
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -168995,8 +168995,8 @@ gUnknown_08C7F5AF:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7F888
-gUnknown_08C7F888:	@ 0x08C7F888
+	.global song0058
+song0058:	@ 0x08C7F888
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -169004,19 +169004,19 @@ gUnknown_08C7F888:	@ 0x08C7F888
 
 	.word	voicegroup023		@ voicegroup/tone
 
-	.word	gUnknown_08C7F888_1		@ track
-	.word	gUnknown_08C7F888_2		@ track
-	.word	gUnknown_08C7F888_3		@ track
-	.word	gUnknown_08C7F888_4		@ track
-	.word	gUnknown_08C7F888_5		@ track
-	.word	gUnknown_08C7F888_6		@ track
-	.word	gUnknown_08C7F888_7		@ track
+	.word	song0058_1		@ track
+	.word	song0058_2		@ track
+	.word	song0058_3		@ track
+	.word	song0058_4		@ track
+	.word	song0058_5		@ track
+	.word	song0058_6		@ track
+	.word	song0058_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7FC04_1
-gUnknown_08C7FC04_1:	@ 0x08C7F8AC
+	.global song0059_1
+song0059_1:	@ 0x08C7F8AC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -169150,8 +169150,8 @@ gUnknown_08C7FC04_1:	@ 0x08C7F8AC
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7FC04_2
-gUnknown_08C7FC04_2:	@ 0x08C7F92E
+	.global song0059_2
+song0059_2:	@ 0x08C7F92E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169204,8 +169204,8 @@ gUnknown_08C7FC04_2:	@ 0x08C7F92E
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7FC04_3
-gUnknown_08C7FC04_3:	@ 0x08C7F95F
+	.global song0059_3
+song0059_3:	@ 0x08C7F95F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169374,8 +169374,8 @@ gUnknown_08C7FC04_3:	@ 0x08C7F95F
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7FC04_4
-gUnknown_08C7FC04_4:	@ 0x08C7FA04
+	.global song0059_4
+song0059_4:	@ 0x08C7FA04
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169548,8 +169548,8 @@ gUnknown_08C7FC04_4:	@ 0x08C7FA04
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7FC04_5
-gUnknown_08C7FC04_5:	@ 0x08C7FAAD
+	.global song0059_5
+song0059_5:	@ 0x08C7FAAD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169716,8 +169716,8 @@ gUnknown_08C7FC04_5:	@ 0x08C7FAAD
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7FC04_6
-gUnknown_08C7FC04_6:	@ 0x08C7FB50
+	.global song0059_6
+song0059_6:	@ 0x08C7FB50
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169763,8 +169763,8 @@ gUnknown_08C7FC04_6:	@ 0x08C7FB50
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7FC04_7
-gUnknown_08C7FC04_7:	@ 0x08C7FB7A
+	.global song0059_7
+song0059_7:	@ 0x08C7FB7A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -169905,8 +169905,8 @@ gUnknown_08C7FC04_7:	@ 0x08C7FB7A
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C7FC04
-gUnknown_08C7FC04:	@ 0x08C7FC04
+	.global song0059
+song0059:	@ 0x08C7FC04
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -169914,19 +169914,19 @@ gUnknown_08C7FC04:	@ 0x08C7FC04
 
 	.word	voicegroup023		@ voicegroup/tone
 
-	.word	gUnknown_08C7FC04_1		@ track
-	.word	gUnknown_08C7FC04_2		@ track
-	.word	gUnknown_08C7FC04_3		@ track
-	.word	gUnknown_08C7FC04_4		@ track
-	.word	gUnknown_08C7FC04_5		@ track
-	.word	gUnknown_08C7FC04_6		@ track
-	.word	gUnknown_08C7FC04_7		@ track
+	.word	song0059_1		@ track
+	.word	song0059_2		@ track
+	.word	song0059_3		@ track
+	.word	song0059_4		@ track
+	.word	song0059_5		@ track
+	.word	song0059_6		@ track
+	.word	song0059_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C7FFF4_1
-gUnknown_08C7FFF4_1:	@ 0x08C7FC28
+	.global song0061_1
+song0061_1:	@ 0x08C7FC28
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -170058,8 +170058,8 @@ gUnknown_08C7FC5A:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C7FFF4_2
-gUnknown_08C7FFF4_2:	@ 0x08C7FCAC
+	.global song0061_2
+song0061_2:	@ 0x08C7FCAC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -170158,8 +170158,8 @@ gUnknown_08C7FD03:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C7FFF4_3
-gUnknown_08C7FFF4_3:	@ 0x08C7FD1D
+	.global song0061_3
+song0061_3:	@ 0x08C7FD1D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -170257,8 +170257,8 @@ gUnknown_08C7FD73:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C7FFF4_4
-gUnknown_08C7FFF4_4:	@ 0x08C7FD8D
+	.global song0061_4
+song0061_4:	@ 0x08C7FD8D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -170380,8 +170380,8 @@ gUnknown_08C7FDBB:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C7FFF4_5
-gUnknown_08C7FFF4_5:	@ 0x08C7FE07
+	.global song0061_5
+song0061_5:	@ 0x08C7FE07
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -170511,8 +170511,8 @@ gUnknown_08C7FE44:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C7FFF4_6
-gUnknown_08C7FFF4_6:	@ 0x08C7FEA3
+	.global song0061_6
+song0061_6:	@ 0x08C7FEA3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -170653,8 +170653,8 @@ gUnknown_08C7FEE8:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C7FFF4_7
-gUnknown_08C7FFF4_7:	@ 0x08C7FF4A
+	.global song0061_7
+song0061_7:	@ 0x08C7FF4A
 	.byte	0xBE
 	.byte	0x6E
 	.byte	0xBC
@@ -170818,8 +170818,8 @@ gUnknown_08C7FFC3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C7FFF4
-gUnknown_08C7FFF4:	@ 0x08C7FFF4
+	.global song0061
+song0061:	@ 0x08C7FFF4
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -170827,19 +170827,19 @@ gUnknown_08C7FFF4:	@ 0x08C7FFF4
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C7FFF4_1		@ track
-	.word	gUnknown_08C7FFF4_2		@ track
-	.word	gUnknown_08C7FFF4_3		@ track
-	.word	gUnknown_08C7FFF4_4		@ track
-	.word	gUnknown_08C7FFF4_5		@ track
-	.word	gUnknown_08C7FFF4_6		@ track
-	.word	gUnknown_08C7FFF4_7		@ track
+	.word	song0061_1		@ track
+	.word	song0061_2		@ track
+	.word	song0061_3		@ track
+	.word	song0061_4		@ track
+	.word	song0061_5		@ track
+	.word	song0061_6		@ track
+	.word	song0061_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8057C_1
-gUnknown_08C8057C_1:	@ 0x08C80018
+	.global song0064_1
+song0064_1:	@ 0x08C80018
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -171032,8 +171032,8 @@ gUnknown_08C80090:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C8057C_2
-gUnknown_08C8057C_2:	@ 0x08C8010B
+	.global song0064_2
+song0064_2:	@ 0x08C8010B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -171337,8 +171337,8 @@ gUnknown_08C801E3:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C8057C_3
-gUnknown_08C8057C_3:	@ 0x08C80255
+	.global song0064_3
+song0064_3:	@ 0x08C80255
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -171455,8 +171455,8 @@ gUnknown_08C802A5:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C8057C_4
-gUnknown_08C8057C_4:	@ 0x08C802D3
+	.global song0064_4
+song0064_4:	@ 0x08C802D3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -171539,8 +171539,8 @@ gUnknown_08C80305:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C8057C_5
-gUnknown_08C8057C_5:	@ 0x08C8032B
+	.global song0064_5
+song0064_5:	@ 0x08C8032B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -171615,8 +171615,8 @@ gUnknown_08C8035A:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C8057C_6
-gUnknown_08C8057C_6:	@ 0x08C80378
+	.global song0064_6
+song0064_6:	@ 0x08C80378
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -171763,8 +171763,8 @@ gUnknown_08C803E6:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C8057C_7
-gUnknown_08C8057C_7:	@ 0x08C80414
+	.global song0064_7
+song0064_7:	@ 0x08C80414
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -172096,8 +172096,8 @@ gUnknown_08C804F4:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8057C
-gUnknown_08C8057C:	@ 0x08C8057C
+	.global song0064
+song0064:	@ 0x08C8057C
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -172105,19 +172105,19 @@ gUnknown_08C8057C:	@ 0x08C8057C
 
 	.word	voicegroup023		@ voicegroup/tone
 
-	.word	gUnknown_08C8057C_1		@ track
-	.word	gUnknown_08C8057C_2		@ track
-	.word	gUnknown_08C8057C_3		@ track
-	.word	gUnknown_08C8057C_4		@ track
-	.word	gUnknown_08C8057C_5		@ track
-	.word	gUnknown_08C8057C_6		@ track
-	.word	gUnknown_08C8057C_7		@ track
+	.word	song0064_1		@ track
+	.word	song0064_2		@ track
+	.word	song0064_3		@ track
+	.word	song0064_4		@ track
+	.word	song0064_5		@ track
+	.word	song0064_6		@ track
+	.word	song0064_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80C64_1
-gUnknown_08C80C64_1:	@ 0x08C805A0
+	.global song0066_1
+song0066_1:	@ 0x08C805A0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -172463,8 +172463,8 @@ gUnknown_08C805FB:
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C80C64_2
-gUnknown_08C80C64_2:	@ 0x08C8071B
+	.global song0066_2
+song0066_2:	@ 0x08C8071B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -172712,8 +172712,8 @@ gUnknown_08C80770:
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C80C64_3
-gUnknown_08C80C64_3:	@ 0x08C80835
+	.global song0066_3
+song0066_3:	@ 0x08C80835
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -172878,8 +172878,8 @@ gUnknown_08C80846:
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C80C64_4
-gUnknown_08C80C64_4:	@ 0x08C808D8
+	.global song0066_4
+song0066_4:	@ 0x08C808D8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -172974,8 +172974,8 @@ gUnknown_08C808E7:
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C80C64_5
-gUnknown_08C80C64_5:	@ 0x08C80935
+	.global song0066_5
+song0066_5:	@ 0x08C80935
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -173116,8 +173116,8 @@ gUnknown_08C80944:
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C80C64_6
-gUnknown_08C80C64_6:	@ 0x08C809C0
+	.global song0066_6
+song0066_6:	@ 0x08C809C0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -173323,8 +173323,8 @@ gUnknown_08C809E8:
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C80C64_7
-gUnknown_08C80C64_7:	@ 0x08C80A8C
+	.global song0066_7
+song0066_7:	@ 0x08C80A8C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -173763,8 +173763,8 @@ gUnknown_08C80B33:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80C64
-gUnknown_08C80C64:	@ 0x08C80C64
+	.global song0066
+song0066:	@ 0x08C80C64
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -173772,19 +173772,19 @@ gUnknown_08C80C64:	@ 0x08C80C64
 
 	.word	voicegroup023		@ voicegroup/tone
 
-	.word	gUnknown_08C80C64_1		@ track
-	.word	gUnknown_08C80C64_2		@ track
-	.word	gUnknown_08C80C64_3		@ track
-	.word	gUnknown_08C80C64_4		@ track
-	.word	gUnknown_08C80C64_5		@ track
-	.word	gUnknown_08C80C64_6		@ track
-	.word	gUnknown_08C80C64_7		@ track
+	.word	song0066_1		@ track
+	.word	song0066_2		@ track
+	.word	song0066_3		@ track
+	.word	song0066_4		@ track
+	.word	song0066_5		@ track
+	.word	song0066_6		@ track
+	.word	song0066_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80C98_1
-gUnknown_08C80C98_1:	@ 0x08C80C88
+	.global song0102_1
+song0102_1:	@ 0x08C80C88
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -173803,8 +173803,8 @@ gUnknown_08C80C98_1:	@ 0x08C80C88
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80C98
-gUnknown_08C80C98:	@ 0x08C80C98
+	.global song0102
+song0102:	@ 0x08C80C98
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -173812,13 +173812,13 @@ gUnknown_08C80C98:	@ 0x08C80C98
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80C98_1		@ track
+	.word	song0102_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80CE4_1
-gUnknown_08C80CE4_1:	@ 0x08C80CA4
+	.global song0103_1
+song0103_1:	@ 0x08C80CA4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -173885,8 +173885,8 @@ gUnknown_08C80CE4_1:	@ 0x08C80CA4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80CE4
-gUnknown_08C80CE4:	@ 0x08C80CE4
+	.global song0103
+song0103:	@ 0x08C80CE4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -173894,13 +173894,13 @@ gUnknown_08C80CE4:	@ 0x08C80CE4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80CE4_1		@ track
+	.word	song0103_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80D14_1
-gUnknown_08C80D14_1:	@ 0x08C80CF0
+	.global song0104_1
+song0104_1:	@ 0x08C80CF0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -173939,8 +173939,8 @@ gUnknown_08C80D14_1:	@ 0x08C80CF0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80D14
-gUnknown_08C80D14:	@ 0x08C80D14
+	.global song0104
+song0104:	@ 0x08C80D14
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -173948,13 +173948,13 @@ gUnknown_08C80D14:	@ 0x08C80D14
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80D14_1		@ track
+	.word	song0104_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80D3C_1
-gUnknown_08C80D3C_1:	@ 0x08C80D20
+	.global song0105_1
+song0105_1:	@ 0x08C80D20
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -173985,8 +173985,8 @@ gUnknown_08C80D3C_1:	@ 0x08C80D20
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80D3C
-gUnknown_08C80D3C:	@ 0x08C80D3C
+	.global song0105
+song0105:	@ 0x08C80D3C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -173994,13 +173994,13 @@ gUnknown_08C80D3C:	@ 0x08C80D3C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80D3C_1		@ track
+	.word	song0105_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80D64_1
-gUnknown_08C80D64_1:	@ 0x08C80D48
+	.global song0106_1
+song0106_1:	@ 0x08C80D48
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174031,8 +174031,8 @@ gUnknown_08C80D64_1:	@ 0x08C80D48
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80D64
-gUnknown_08C80D64:	@ 0x08C80D64
+	.global song0106
+song0106:	@ 0x08C80D64
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174040,13 +174040,13 @@ gUnknown_08C80D64:	@ 0x08C80D64
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C80D64_1		@ track
+	.word	song0106_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80D88_1
-gUnknown_08C80D88_1:	@ 0x08C80D70
+	.global song0107_1
+song0107_1:	@ 0x08C80D70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174073,8 +174073,8 @@ gUnknown_08C80D88_1:	@ 0x08C80D70
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80D88
-gUnknown_08C80D88:	@ 0x08C80D88
+	.global song0107
+song0107:	@ 0x08C80D88
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174082,13 +174082,13 @@ gUnknown_08C80D88:	@ 0x08C80D88
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C80D88_1		@ track
+	.word	song0107_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80DA8_1
-gUnknown_08C80DA8_1:	@ 0x08C80D94
+	.global song0108_1
+song0108_1:	@ 0x08C80D94
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174111,8 +174111,8 @@ gUnknown_08C80DA8_1:	@ 0x08C80D94
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80DA8
-gUnknown_08C80DA8:	@ 0x08C80DA8
+	.global song0108
+song0108:	@ 0x08C80DA8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174120,13 +174120,13 @@ gUnknown_08C80DA8:	@ 0x08C80DA8
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C80DA8_1		@ track
+	.word	song0108_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80DC8_1
-gUnknown_08C80DC8_1:	@ 0x08C80DB4
+	.global song0109_1
+song0109_1:	@ 0x08C80DB4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174149,8 +174149,8 @@ gUnknown_08C80DC8_1:	@ 0x08C80DB4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80DC8
-gUnknown_08C80DC8:	@ 0x08C80DC8
+	.global song0109
+song0109:	@ 0x08C80DC8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174158,13 +174158,13 @@ gUnknown_08C80DC8:	@ 0x08C80DC8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80DC8_1		@ track
+	.word	song0109_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80E94_1
-gUnknown_08C80E94_1:	@ 0x08C80DD4
+	.global song0110_1
+song0110_1:	@ 0x08C80DD4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174359,8 +174359,8 @@ gUnknown_08C80E94_1:	@ 0x08C80DD4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80E94
-gUnknown_08C80E94:	@ 0x08C80E94
+	.global song0110
+song0110:	@ 0x08C80E94
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174368,13 +174368,13 @@ gUnknown_08C80E94:	@ 0x08C80E94
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C80E94_1		@ track
+	.word	song0110_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80EB8_1
-gUnknown_08C80EB8_1:	@ 0x08C80EA0
+	.global song0111_1
+song0111_1:	@ 0x08C80EA0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174401,8 +174401,8 @@ gUnknown_08C80EB8_1:	@ 0x08C80EA0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80EB8
-gUnknown_08C80EB8:	@ 0x08C80EB8
+	.global song0111
+song0111:	@ 0x08C80EB8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174410,13 +174410,13 @@ gUnknown_08C80EB8:	@ 0x08C80EB8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80EB8_1		@ track
+	.word	song0111_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80F1C_1
-gUnknown_08C80F1C_1:	@ 0x08C80EC4
+	.global song0112_1
+song0112_1:	@ 0x08C80EC4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174507,8 +174507,8 @@ gUnknown_08C80F1C_1:	@ 0x08C80EC4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80F1C
-gUnknown_08C80F1C:	@ 0x08C80F1C
+	.global song0112
+song0112:	@ 0x08C80F1C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174516,13 +174516,13 @@ gUnknown_08C80F1C:	@ 0x08C80F1C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C80F1C_1		@ track
+	.word	song0112_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C80FC4_1
-gUnknown_08C80FC4_1:	@ 0x08C80F28
+	.global song0113_1
+song0113_1:	@ 0x08C80F28
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174681,8 +174681,8 @@ gUnknown_08C80FC4_1:	@ 0x08C80F28
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C80FC4
-gUnknown_08C80FC4:	@ 0x08C80FC4
+	.global song0113
+song0113:	@ 0x08C80FC4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174690,13 +174690,13 @@ gUnknown_08C80FC4:	@ 0x08C80FC4
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C80FC4_1		@ track
+	.word	song0113_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81000_1
-gUnknown_08C81000_1:	@ 0x08C80FD0
+	.global song0114_1
+song0114_1:	@ 0x08C80FD0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174745,8 +174745,8 @@ gUnknown_08C80FF3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81000
-gUnknown_08C81000:	@ 0x08C81000
+	.global song0114
+song0114:	@ 0x08C81000
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174754,13 +174754,13 @@ gUnknown_08C81000:	@ 0x08C81000
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81000_1		@ track
+	.word	song0114_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8105C_1
-gUnknown_08C8105C_1:	@ 0x08C8100C
+	.global song0115_1
+song0115_1:	@ 0x08C8100C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174843,8 +174843,8 @@ gUnknown_08C8105C_1:	@ 0x08C8100C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8105C
-gUnknown_08C8105C:	@ 0x08C8105C
+	.global song0115
+song0115:	@ 0x08C8105C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	15		@ priority
@@ -174852,13 +174852,13 @@ gUnknown_08C8105C:	@ 0x08C8105C
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C8105C_1		@ track
+	.word	song0115_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C810A8_1
-gUnknown_08C810A8_1:	@ 0x08C81068
+	.global song0116_1
+song0116_1:	@ 0x08C81068
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174925,8 +174925,8 @@ gUnknown_08C810A8_1:	@ 0x08C81068
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C810A8
-gUnknown_08C810A8:	@ 0x08C810A8
+	.global song0116
+song0116:	@ 0x08C810A8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174934,13 +174934,13 @@ gUnknown_08C810A8:	@ 0x08C810A8
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C810A8_1		@ track
+	.word	song0116_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C810C4_1
-gUnknown_08C810C4_1:	@ 0x08C810B4
+	.global song0117_1
+song0117_1:	@ 0x08C810B4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174959,8 +174959,8 @@ gUnknown_08C810C4_1:	@ 0x08C810B4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C810C4
-gUnknown_08C810C4:	@ 0x08C810C4
+	.global song0117
+song0117:	@ 0x08C810C4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -174968,13 +174968,13 @@ gUnknown_08C810C4:	@ 0x08C810C4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C810C4_1		@ track
+	.word	song0117_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C810E0_1
-gUnknown_08C810E0_1:	@ 0x08C810D0
+	.global song0118_1
+song0118_1:	@ 0x08C810D0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -174993,8 +174993,8 @@ gUnknown_08C810E0_1:	@ 0x08C810D0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C810E0
-gUnknown_08C810E0:	@ 0x08C810E0
+	.global song0118
+song0118:	@ 0x08C810E0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -175002,13 +175002,13 @@ gUnknown_08C810E0:	@ 0x08C810E0
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C810E0_1		@ track
+	.word	song0118_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81104_1
-gUnknown_08C81104_1:	@ 0x08C810EC
+	.global song0119_1
+song0119_1:	@ 0x08C810EC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175035,8 +175035,8 @@ gUnknown_08C81104_1:	@ 0x08C810EC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81104
-gUnknown_08C81104:	@ 0x08C81104
+	.global song0119
+song0119:	@ 0x08C81104
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	40		@ priority
@@ -175044,13 +175044,13 @@ gUnknown_08C81104:	@ 0x08C81104
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81104_1		@ track
+	.word	song0119_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8116C_1
-gUnknown_08C8116C_1:	@ 0x08C81110
+	.global song0120_1
+song0120_1:	@ 0x08C81110
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175143,8 +175143,8 @@ gUnknown_08C8112A:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8116C
-gUnknown_08C8116C:	@ 0x08C8116C
+	.global song0120
+song0120:	@ 0x08C8116C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -175152,13 +175152,13 @@ gUnknown_08C8116C:	@ 0x08C8116C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C8116C_1		@ track
+	.word	song0120_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81190_1
-gUnknown_08C81190_1:	@ 0x08C81178
+	.global song0121_1
+song0121_1:	@ 0x08C81178
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175185,8 +175185,8 @@ gUnknown_08C81190_1:	@ 0x08C81178
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81190
-gUnknown_08C81190:	@ 0x08C81190
+	.global song0121
+song0121:	@ 0x08C81190
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -175194,13 +175194,13 @@ gUnknown_08C81190:	@ 0x08C81190
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81190_1		@ track
+	.word	song0121_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81270_1
-gUnknown_08C81270_1:	@ 0x08C8119C
+	.global song0125_1
+song0125_1:	@ 0x08C8119C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175415,8 +175415,8 @@ gUnknown_08C81270_1:	@ 0x08C8119C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81270
-gUnknown_08C81270:	@ 0x08C81270
+	.global song0125
+song0125:	@ 0x08C81270
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -175424,13 +175424,13 @@ gUnknown_08C81270:	@ 0x08C81270
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81270_1		@ track
+	.word	song0125_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81350_1
-gUnknown_08C81350_1:	@ 0x08C8127C
+	.global song0126_1
+song0126_1:	@ 0x08C8127C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175645,8 +175645,8 @@ gUnknown_08C81350_1:	@ 0x08C8127C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81350
-gUnknown_08C81350:	@ 0x08C81350
+	.global song0126
+song0126:	@ 0x08C81350
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -175654,13 +175654,13 @@ gUnknown_08C81350:	@ 0x08C81350
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81350_1		@ track
+	.word	song0126_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81444_1
-gUnknown_08C81444_1:	@ 0x08C8135C
+	.global song0127_1
+song0127_1:	@ 0x08C8135C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175895,8 +175895,8 @@ gUnknown_08C81444_1:	@ 0x08C8135C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81444
-gUnknown_08C81444:	@ 0x08C81444
+	.global song0127
+song0127:	@ 0x08C81444
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -175904,13 +175904,13 @@ gUnknown_08C81444:	@ 0x08C81444
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81444_1		@ track
+	.word	song0127_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81460_1
-gUnknown_08C81460_1:	@ 0x08C81450
+	.global song0128_1
+song0128_1:	@ 0x08C81450
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175929,8 +175929,8 @@ gUnknown_08C81460_1:	@ 0x08C81450
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81460
-gUnknown_08C81460:	@ 0x08C81460
+	.global song0128
+song0128:	@ 0x08C81460
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -175938,13 +175938,13 @@ gUnknown_08C81460:	@ 0x08C81460
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81460_1		@ track
+	.word	song0128_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8147C_1
-gUnknown_08C8147C_1:	@ 0x08C8146C
+	.global song0129_1
+song0129_1:	@ 0x08C8146C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -175963,8 +175963,8 @@ gUnknown_08C8147C_1:	@ 0x08C8146C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8147C
-gUnknown_08C8147C:	@ 0x08C8147C
+	.global song0129
+song0129:	@ 0x08C8147C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -175972,13 +175972,13 @@ gUnknown_08C8147C:	@ 0x08C8147C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C8147C_1		@ track
+	.word	song0129_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C814F0_1
-gUnknown_08C814F0_1:	@ 0x08C81488
+	.global song0131_1
+song0131_1:	@ 0x08C81488
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176085,8 +176085,8 @@ gUnknown_08C814F0_1:	@ 0x08C81488
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C814F0
-gUnknown_08C814F0:	@ 0x08C814F0
+	.global song0131
+song0131:	@ 0x08C814F0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176094,13 +176094,13 @@ gUnknown_08C814F0:	@ 0x08C814F0
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C814F0_1		@ track
+	.word	song0131_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81510_1
-gUnknown_08C81510_1:	@ 0x08C814FC
+	.global song0135_1
+song0135_1:	@ 0x08C814FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176123,8 +176123,8 @@ gUnknown_08C81510_1:	@ 0x08C814FC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81510
-gUnknown_08C81510:	@ 0x08C81510
+	.global song0135
+song0135:	@ 0x08C81510
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176132,13 +176132,13 @@ gUnknown_08C81510:	@ 0x08C81510
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81510_1		@ track
+	.word	song0135_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8156C_1
-gUnknown_08C8156C_1:	@ 0x08C8151C
+	.global song0138_1
+song0138_1:	@ 0x08C8151C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176205,8 +176205,8 @@ gUnknown_08C8156C_1:	@ 0x08C8151C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C8156C_2
-gUnknown_08C8156C_2:	@ 0x08C8155B
+	.global song0138_2
+song0138_2:	@ 0x08C8155B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -176226,8 +176226,8 @@ gUnknown_08C8156C_2:	@ 0x08C8155B
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8156C
-gUnknown_08C8156C:	@ 0x08C8156C
+	.global song0138
+song0138:	@ 0x08C8156C
 	.byte	2		@ trackCount
 	.byte	0		@ blockCount
 	.byte	50		@ priority
@@ -176235,14 +176235,14 @@ gUnknown_08C8156C:	@ 0x08C8156C
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C8156C_1		@ track
-	.word	gUnknown_08C8156C_2		@ track
+	.word	song0138_1		@ track
+	.word	song0138_2		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81598_1
-gUnknown_08C81598_1:	@ 0x08C8157C
+	.global song0139_1
+song0139_1:	@ 0x08C8157C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176273,8 +176273,8 @@ gUnknown_08C81598_1:	@ 0x08C8157C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81598
-gUnknown_08C81598:	@ 0x08C81598
+	.global song0139
+song0139:	@ 0x08C81598
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176282,13 +176282,13 @@ gUnknown_08C81598:	@ 0x08C81598
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81598_1		@ track
+	.word	song0139_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C815B8_1
-gUnknown_08C815B8_1:	@ 0x08C815A4
+	.global song0140_1
+song0140_1:	@ 0x08C815A4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176311,8 +176311,8 @@ gUnknown_08C815B8_1:	@ 0x08C815A4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C815B8
-gUnknown_08C815B8:	@ 0x08C815B8
+	.global song0140
+song0140:	@ 0x08C815B8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176320,13 +176320,13 @@ gUnknown_08C815B8:	@ 0x08C815B8
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C815B8_1		@ track
+	.word	song0140_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C815D8_1
-gUnknown_08C815D8_1:	@ 0x08C815C4
+	.global song0141_1
+song0141_1:	@ 0x08C815C4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176349,8 +176349,8 @@ gUnknown_08C815D8_1:	@ 0x08C815C4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C815D8
-gUnknown_08C815D8:	@ 0x08C815D8
+	.global song0141
+song0141:	@ 0x08C815D8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176358,13 +176358,13 @@ gUnknown_08C815D8:	@ 0x08C815D8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C815D8_1		@ track
+	.word	song0141_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81604_1
-gUnknown_08C81604_1:	@ 0x08C815E4
+	.global song0142_1
+song0142_1:	@ 0x08C815E4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176399,8 +176399,8 @@ gUnknown_08C81604_1:	@ 0x08C815E4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81604
-gUnknown_08C81604:	@ 0x08C81604
+	.global song0142
+song0142:	@ 0x08C81604
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176408,13 +176408,13 @@ gUnknown_08C81604:	@ 0x08C81604
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81604_1		@ track
+	.word	song0142_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C816D4_1
-gUnknown_08C816D4_1:	@ 0x08C81610
+	.global song0143_1
+song0143_1:	@ 0x08C81610
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176613,8 +176613,8 @@ gUnknown_08C816D4_1:	@ 0x08C81610
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C816D4
-gUnknown_08C816D4:	@ 0x08C816D4
+	.global song0143
+song0143:	@ 0x08C816D4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176622,13 +176622,13 @@ gUnknown_08C816D4:	@ 0x08C816D4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C816D4_1		@ track
+	.word	song0143_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C816F8_1
-gUnknown_08C816F8_1:	@ 0x08C816E0
+	.global song0144_1
+song0144_1:	@ 0x08C816E0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176655,8 +176655,8 @@ gUnknown_08C816F8_1:	@ 0x08C816E0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C816F8
-gUnknown_08C816F8:	@ 0x08C816F8
+	.global song0144
+song0144:	@ 0x08C816F8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176664,13 +176664,13 @@ gUnknown_08C816F8:	@ 0x08C816F8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C816F8_1		@ track
+	.word	song0144_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C817C8_1
-gUnknown_08C817C8_1:	@ 0x08C81704
+	.global song0145_1
+song0145_1:	@ 0x08C81704
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176869,8 +176869,8 @@ gUnknown_08C817C8_1:	@ 0x08C81704
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C817C8
-gUnknown_08C817C8:	@ 0x08C817C8
+	.global song0145
+song0145:	@ 0x08C817C8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176878,13 +176878,13 @@ gUnknown_08C817C8:	@ 0x08C817C8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C817C8_1		@ track
+	.word	song0145_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8181C_1
-gUnknown_08C8181C_1:	@ 0x08C817D4
+	.global song0146_1
+song0146_1:	@ 0x08C817D4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176959,8 +176959,8 @@ gUnknown_08C8181C_1:	@ 0x08C817D4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8181C
-gUnknown_08C8181C:	@ 0x08C8181C
+	.global song0146
+song0146:	@ 0x08C8181C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -176968,13 +176968,13 @@ gUnknown_08C8181C:	@ 0x08C8181C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C8181C_1		@ track
+	.word	song0146_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8183C_1
-gUnknown_08C8183C_1:	@ 0x08C81828
+	.global song0147_1
+song0147_1:	@ 0x08C81828
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -176997,8 +176997,8 @@ gUnknown_08C8183C_1:	@ 0x08C81828
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8183C
-gUnknown_08C8183C:	@ 0x08C8183C
+	.global song0147
+song0147:	@ 0x08C8183C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177006,13 +177006,13 @@ gUnknown_08C8183C:	@ 0x08C8183C
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C8183C_1		@ track
+	.word	song0147_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81888_1
-gUnknown_08C81888_1:	@ 0x08C81848
+	.global song0148_1
+song0148_1:	@ 0x08C81848
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177079,8 +177079,8 @@ gUnknown_08C81888_1:	@ 0x08C81848
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81888
-gUnknown_08C81888:	@ 0x08C81888
+	.global song0148
+song0148:	@ 0x08C81888
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177088,13 +177088,13 @@ gUnknown_08C81888:	@ 0x08C81888
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81888_1		@ track
+	.word	song0148_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C818E8_1
-gUnknown_08C818E8_1:	@ 0x08C81894
+	.global song0149_1
+song0149_1:	@ 0x08C81894
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177181,8 +177181,8 @@ gUnknown_08C818E8_1:	@ 0x08C81894
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C818E8
-gUnknown_08C818E8:	@ 0x08C818E8
+	.global song0149
+song0149:	@ 0x08C818E8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177190,13 +177190,13 @@ gUnknown_08C818E8:	@ 0x08C818E8
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C818E8_1		@ track
+	.word	song0149_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81944_1
-gUnknown_08C81944_1:	@ 0x08C818F4
+	.global song0150_1
+song0150_1:	@ 0x08C818F4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177263,8 +177263,8 @@ gUnknown_08C81944_1:	@ 0x08C818F4
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C81944_2
-gUnknown_08C81944_2:	@ 0x08C81933
+	.global song0150_2
+song0150_2:	@ 0x08C81933
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -177284,8 +177284,8 @@ gUnknown_08C81944_2:	@ 0x08C81933
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81944
-gUnknown_08C81944:	@ 0x08C81944
+	.global song0150
+song0150:	@ 0x08C81944
 	.byte	2		@ trackCount
 	.byte	0		@ blockCount
 	.byte	50		@ priority
@@ -177293,14 +177293,14 @@ gUnknown_08C81944:	@ 0x08C81944
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81944_1		@ track
-	.word	gUnknown_08C81944_2		@ track
+	.word	song0150_1		@ track
+	.word	song0150_2		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81970_1
-gUnknown_08C81970_1:	@ 0x08C81954
+	.global song0151_1
+song0151_1:	@ 0x08C81954
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177331,8 +177331,8 @@ gUnknown_08C81970_1:	@ 0x08C81954
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81970
-gUnknown_08C81970:	@ 0x08C81970
+	.global song0151
+song0151:	@ 0x08C81970
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177340,13 +177340,13 @@ gUnknown_08C81970:	@ 0x08C81970
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81970_1		@ track
+	.word	song0151_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81998_1
-gUnknown_08C81998_1:	@ 0x08C8197C
+	.global song0152_1
+song0152_1:	@ 0x08C8197C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177377,8 +177377,8 @@ gUnknown_08C81998_1:	@ 0x08C8197C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81998
-gUnknown_08C81998:	@ 0x08C81998
+	.global song0152
+song0152:	@ 0x08C81998
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177386,13 +177386,13 @@ gUnknown_08C81998:	@ 0x08C81998
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81998_1		@ track
+	.word	song0152_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C819E4_1
-gUnknown_08C819E4_1:	@ 0x08C819A4
+	.global song0153_1
+song0153_1:	@ 0x08C819A4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177459,8 +177459,8 @@ gUnknown_08C819E4_1:	@ 0x08C819A4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C819E4
-gUnknown_08C819E4:	@ 0x08C819E4
+	.global song0153
+song0153:	@ 0x08C819E4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177468,13 +177468,13 @@ gUnknown_08C819E4:	@ 0x08C819E4
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C819E4_1		@ track
+	.word	song0153_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81A58_1
-gUnknown_08C81A58_1:	@ 0x08C819F0
+	.global song0154_1
+song0154_1:	@ 0x08C819F0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177581,8 +177581,8 @@ gUnknown_08C81A58_1:	@ 0x08C819F0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81A58
-gUnknown_08C81A58:	@ 0x08C81A58
+	.global song0154
+song0154:	@ 0x08C81A58
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177590,13 +177590,13 @@ gUnknown_08C81A58:	@ 0x08C81A58
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81A58_1		@ track
+	.word	song0154_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81B38_1
-gUnknown_08C81B38_1:	@ 0x08C81A64
+	.global song0155_1
+song0155_1:	@ 0x08C81A64
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177811,8 +177811,8 @@ gUnknown_08C81B38_1:	@ 0x08C81A64
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81B38
-gUnknown_08C81B38:	@ 0x08C81B38
+	.global song0155
+song0155:	@ 0x08C81B38
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -177820,13 +177820,13 @@ gUnknown_08C81B38:	@ 0x08C81B38
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81B38_1		@ track
+	.word	song0155_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81BEC_1
-gUnknown_08C81BEC_1:	@ 0x08C81B44
+	.global song0156_1
+song0156_1:	@ 0x08C81B44
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -177997,8 +177997,8 @@ gUnknown_08C81BEC_1:	@ 0x08C81B44
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81BEC
-gUnknown_08C81BEC:	@ 0x08C81BEC
+	.global song0156
+song0156:	@ 0x08C81BEC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178006,13 +178006,13 @@ gUnknown_08C81BEC:	@ 0x08C81BEC
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81BEC_1		@ track
+	.word	song0156_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81C30_1
-gUnknown_08C81C30_1:	@ 0x08C81BF8
+	.global song0157_1
+song0157_1:	@ 0x08C81BF8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178071,8 +178071,8 @@ gUnknown_08C81C30_1:	@ 0x08C81BF8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81C30
-gUnknown_08C81C30:	@ 0x08C81C30
+	.global song0157
+song0157:	@ 0x08C81C30
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178080,13 +178080,13 @@ gUnknown_08C81C30:	@ 0x08C81C30
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81C30_1		@ track
+	.word	song0157_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81C84_1
-gUnknown_08C81C84_1:	@ 0x08C81C3C
+	.global song0158_1
+song0158_1:	@ 0x08C81C3C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178161,8 +178161,8 @@ gUnknown_08C81C84_1:	@ 0x08C81C3C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81C84
-gUnknown_08C81C84:	@ 0x08C81C84
+	.global song0158
+song0158:	@ 0x08C81C84
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178170,13 +178170,13 @@ gUnknown_08C81C84:	@ 0x08C81C84
 
 	.word	voicegroup000		@ voicegroup/tone
 
-	.word	gUnknown_08C81C84_1		@ track
+	.word	song0158_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81CA4_1
-gUnknown_08C81CA4_1:	@ 0x08C81C90
+	.global song0159_1
+song0159_1:	@ 0x08C81C90
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178199,8 +178199,8 @@ gUnknown_08C81CA4_1:	@ 0x08C81C90
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81CA4
-gUnknown_08C81CA4:	@ 0x08C81CA4
+	.global song0159
+song0159:	@ 0x08C81CA4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178208,13 +178208,13 @@ gUnknown_08C81CA4:	@ 0x08C81CA4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81CA4_1		@ track
+	.word	song0159_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81CC4_1
-gUnknown_08C81CC4_1:	@ 0x08C81CB0
+	.global song0160_1
+song0160_1:	@ 0x08C81CB0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178237,8 +178237,8 @@ gUnknown_08C81CC4_1:	@ 0x08C81CB0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81CC4
-gUnknown_08C81CC4:	@ 0x08C81CC4
+	.global song0160
+song0160:	@ 0x08C81CC4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178246,13 +178246,13 @@ gUnknown_08C81CC4:	@ 0x08C81CC4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81CC4_1		@ track
+	.word	song0160_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81CE4_1
-gUnknown_08C81CE4_1:	@ 0x08C81CD0
+	.global song0161_1
+song0161_1:	@ 0x08C81CD0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178275,8 +178275,8 @@ gUnknown_08C81CE4_1:	@ 0x08C81CD0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81CE4
-gUnknown_08C81CE4:	@ 0x08C81CE4
+	.global song0161
+song0161:	@ 0x08C81CE4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178284,13 +178284,13 @@ gUnknown_08C81CE4:	@ 0x08C81CE4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81CE4_1		@ track
+	.word	song0161_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81D04_1
-gUnknown_08C81D04_1:	@ 0x08C81CF0
+	.global song0162_1
+song0162_1:	@ 0x08C81CF0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178313,8 +178313,8 @@ gUnknown_08C81D04_1:	@ 0x08C81CF0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81D04
-gUnknown_08C81D04:	@ 0x08C81D04
+	.global song0162
+song0162:	@ 0x08C81D04
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178322,13 +178322,13 @@ gUnknown_08C81D04:	@ 0x08C81D04
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81D04_1		@ track
+	.word	song0162_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81D24_1
-gUnknown_08C81D24_1:	@ 0x08C81D10
+	.global song0163_1
+song0163_1:	@ 0x08C81D10
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178351,8 +178351,8 @@ gUnknown_08C81D24_1:	@ 0x08C81D10
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81D24
-gUnknown_08C81D24:	@ 0x08C81D24
+	.global song0163
+song0163:	@ 0x08C81D24
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178360,13 +178360,13 @@ gUnknown_08C81D24:	@ 0x08C81D24
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81D24_1		@ track
+	.word	song0163_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81D44_1
-gUnknown_08C81D44_1:	@ 0x08C81D30
+	.global song0164_1
+song0164_1:	@ 0x08C81D30
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178389,8 +178389,8 @@ gUnknown_08C81D44_1:	@ 0x08C81D30
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81D44
-gUnknown_08C81D44:	@ 0x08C81D44
+	.global song0164
+song0164:	@ 0x08C81D44
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178398,13 +178398,13 @@ gUnknown_08C81D44:	@ 0x08C81D44
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81D44_1		@ track
+	.word	song0164_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81D64_1
-gUnknown_08C81D64_1:	@ 0x08C81D50
+	.global song0165_1
+song0165_1:	@ 0x08C81D50
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178427,8 +178427,8 @@ gUnknown_08C81D64_1:	@ 0x08C81D50
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81D64
-gUnknown_08C81D64:	@ 0x08C81D64
+	.global song0165
+song0165:	@ 0x08C81D64
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178436,13 +178436,13 @@ gUnknown_08C81D64:	@ 0x08C81D64
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81D64_1		@ track
+	.word	song0165_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81D84_1
-gUnknown_08C81D84_1:	@ 0x08C81D70
+	.global song0166_1
+song0166_1:	@ 0x08C81D70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178465,8 +178465,8 @@ gUnknown_08C81D84_1:	@ 0x08C81D70
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81D84
-gUnknown_08C81D84:	@ 0x08C81D84
+	.global song0166
+song0166:	@ 0x08C81D84
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178474,13 +178474,13 @@ gUnknown_08C81D84:	@ 0x08C81D84
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81D84_1		@ track
+	.word	song0166_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81DA4_1
-gUnknown_08C81DA4_1:	@ 0x08C81D90
+	.global song0167_1
+song0167_1:	@ 0x08C81D90
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178503,8 +178503,8 @@ gUnknown_08C81DA4_1:	@ 0x08C81D90
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81DA4
-gUnknown_08C81DA4:	@ 0x08C81DA4
+	.global song0167
+song0167:	@ 0x08C81DA4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178512,13 +178512,13 @@ gUnknown_08C81DA4:	@ 0x08C81DA4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81DA4_1		@ track
+	.word	song0167_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81DC4_1
-gUnknown_08C81DC4_1:	@ 0x08C81DB0
+	.global song0168_1
+song0168_1:	@ 0x08C81DB0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178541,8 +178541,8 @@ gUnknown_08C81DC4_1:	@ 0x08C81DB0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C81DC4
-gUnknown_08C81DC4:	@ 0x08C81DC4
+	.global song0168
+song0168:	@ 0x08C81DC4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178550,13 +178550,13 @@ gUnknown_08C81DC4:	@ 0x08C81DC4
 
 	.word	voicegroup003		@ voicegroup/tone
 
-	.word	gUnknown_08C81DC4_1		@ track
+	.word	song0168_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81E7C_1
-gUnknown_08C81E7C_1:	@ 0x08C81DD0
+	.global song0169_1
+song0169_1:	@ 0x08C81DD0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178731,8 +178731,8 @@ gUnknown_08C81E7C_1:	@ 0x08C81DD0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81E7C
-gUnknown_08C81E7C:	@ 0x08C81E7C
+	.global song0169
+song0169:	@ 0x08C81E7C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178740,13 +178740,13 @@ gUnknown_08C81E7C:	@ 0x08C81E7C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81E7C_1		@ track
+	.word	song0169_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81F34_1
-gUnknown_08C81F34_1:	@ 0x08C81E88
+	.global song0170_1
+song0170_1:	@ 0x08C81E88
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178921,8 +178921,8 @@ gUnknown_08C81F34_1:	@ 0x08C81E88
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81F34
-gUnknown_08C81F34:	@ 0x08C81F34
+	.global song0170
+song0170:	@ 0x08C81F34
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178930,13 +178930,13 @@ gUnknown_08C81F34:	@ 0x08C81F34
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81F34_1		@ track
+	.word	song0170_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81F50_1
-gUnknown_08C81F50_1:	@ 0x08C81F40
+	.global song0201_1
+song0201_1:	@ 0x08C81F40
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178955,8 +178955,8 @@ gUnknown_08C81F50_1:	@ 0x08C81F40
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81F50
-gUnknown_08C81F50:	@ 0x08C81F50
+	.global song0201
+song0201:	@ 0x08C81F50
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178964,13 +178964,13 @@ gUnknown_08C81F50:	@ 0x08C81F50
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81F50_1		@ track
+	.word	song0201_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81F6C_1
-gUnknown_08C81F6C_1:	@ 0x08C81F5C
+	.global song0202_1
+song0202_1:	@ 0x08C81F5C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -178989,8 +178989,8 @@ gUnknown_08C81F6C_1:	@ 0x08C81F5C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81F6C
-gUnknown_08C81F6C:	@ 0x08C81F6C
+	.global song0202
+song0202:	@ 0x08C81F6C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -178998,13 +178998,13 @@ gUnknown_08C81F6C:	@ 0x08C81F6C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81F6C_1		@ track
+	.word	song0202_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81F88_1
-gUnknown_08C81F88_1:	@ 0x08C81F78
+	.global song0203_1
+song0203_1:	@ 0x08C81F78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179023,8 +179023,8 @@ gUnknown_08C81F88_1:	@ 0x08C81F78
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81F88
-gUnknown_08C81F88:	@ 0x08C81F88
+	.global song0203
+song0203:	@ 0x08C81F88
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179032,13 +179032,13 @@ gUnknown_08C81F88:	@ 0x08C81F88
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81F88_1		@ track
+	.word	song0203_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81FA4_1
-gUnknown_08C81FA4_1:	@ 0x08C81F94
+	.global song0204_1
+song0204_1:	@ 0x08C81F94
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179057,8 +179057,8 @@ gUnknown_08C81FA4_1:	@ 0x08C81F94
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81FA4
-gUnknown_08C81FA4:	@ 0x08C81FA4
+	.global song0204
+song0204:	@ 0x08C81FA4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179066,13 +179066,13 @@ gUnknown_08C81FA4:	@ 0x08C81FA4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81FA4_1		@ track
+	.word	song0204_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81FC0_1
-gUnknown_08C81FC0_1:	@ 0x08C81FB0
+	.global song0205_1
+song0205_1:	@ 0x08C81FB0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179091,8 +179091,8 @@ gUnknown_08C81FC0_1:	@ 0x08C81FB0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81FC0
-gUnknown_08C81FC0:	@ 0x08C81FC0
+	.global song0205
+song0205:	@ 0x08C81FC0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179100,13 +179100,13 @@ gUnknown_08C81FC0:	@ 0x08C81FC0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81FC0_1		@ track
+	.word	song0205_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81FDC_1
-gUnknown_08C81FDC_1:	@ 0x08C81FCC
+	.global song0206_1
+song0206_1:	@ 0x08C81FCC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179125,8 +179125,8 @@ gUnknown_08C81FDC_1:	@ 0x08C81FCC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81FDC
-gUnknown_08C81FDC:	@ 0x08C81FDC
+	.global song0206
+song0206:	@ 0x08C81FDC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179134,13 +179134,13 @@ gUnknown_08C81FDC:	@ 0x08C81FDC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81FDC_1		@ track
+	.word	song0206_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C81FF8_1
-gUnknown_08C81FF8_1:	@ 0x08C81FE8
+	.global song0208_1
+song0208_1:	@ 0x08C81FE8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179159,8 +179159,8 @@ gUnknown_08C81FF8_1:	@ 0x08C81FE8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C81FF8
-gUnknown_08C81FF8:	@ 0x08C81FF8
+	.global song0208
+song0208:	@ 0x08C81FF8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179168,13 +179168,13 @@ gUnknown_08C81FF8:	@ 0x08C81FF8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C81FF8_1		@ track
+	.word	song0208_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82014_1
-gUnknown_08C82014_1:	@ 0x08C82004
+	.global song0209_1
+song0209_1:	@ 0x08C82004
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179193,8 +179193,8 @@ gUnknown_08C82014_1:	@ 0x08C82004
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82014
-gUnknown_08C82014:	@ 0x08C82014
+	.global song0209
+song0209:	@ 0x08C82014
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179202,13 +179202,13 @@ gUnknown_08C82014:	@ 0x08C82014
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82014_1		@ track
+	.word	song0209_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82030_1
-gUnknown_08C82030_1:	@ 0x08C82020
+	.global song0210_1
+song0210_1:	@ 0x08C82020
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179227,8 +179227,8 @@ gUnknown_08C82030_1:	@ 0x08C82020
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82030
-gUnknown_08C82030:	@ 0x08C82030
+	.global song0210
+song0210:	@ 0x08C82030
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179236,13 +179236,13 @@ gUnknown_08C82030:	@ 0x08C82030
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82030_1		@ track
+	.word	song0210_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8204C_1
-gUnknown_08C8204C_1:	@ 0x08C8203C
+	.global song0211_1
+song0211_1:	@ 0x08C8203C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179261,8 +179261,8 @@ gUnknown_08C8204C_1:	@ 0x08C8203C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8204C
-gUnknown_08C8204C:	@ 0x08C8204C
+	.global song0211
+song0211:	@ 0x08C8204C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179270,13 +179270,13 @@ gUnknown_08C8204C:	@ 0x08C8204C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8204C_1		@ track
+	.word	song0211_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82068_1
-gUnknown_08C82068_1:	@ 0x08C82058
+	.global song0212_1
+song0212_1:	@ 0x08C82058
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179295,8 +179295,8 @@ gUnknown_08C82068_1:	@ 0x08C82058
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82068
-gUnknown_08C82068:	@ 0x08C82068
+	.global song0212
+song0212:	@ 0x08C82068
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179304,13 +179304,13 @@ gUnknown_08C82068:	@ 0x08C82068
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82068_1		@ track
+	.word	song0212_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C820FC_1
-gUnknown_08C820FC_1:	@ 0x08C82074
+	.global song0213_1
+song0213_1:	@ 0x08C82074
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179449,8 +179449,8 @@ gUnknown_08C820FC_1:	@ 0x08C82074
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C820FC
-gUnknown_08C820FC:	@ 0x08C820FC
+	.global song0213
+song0213:	@ 0x08C820FC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179458,13 +179458,13 @@ gUnknown_08C820FC:	@ 0x08C820FC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C820FC_1		@ track
+	.word	song0213_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8219C_1
-gUnknown_08C8219C_1:	@ 0x08C82108
+	.global song0214_1
+song0214_1:	@ 0x08C82108
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179615,8 +179615,8 @@ gUnknown_08C8219C_1:	@ 0x08C82108
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8219C
-gUnknown_08C8219C:	@ 0x08C8219C
+	.global song0214
+song0214:	@ 0x08C8219C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179624,13 +179624,13 @@ gUnknown_08C8219C:	@ 0x08C8219C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8219C_1		@ track
+	.word	song0214_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82230_1
-gUnknown_08C82230_1:	@ 0x08C821A8
+	.global song0215_1
+song0215_1:	@ 0x08C821A8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179769,8 +179769,8 @@ gUnknown_08C82230_1:	@ 0x08C821A8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82230
-gUnknown_08C82230:	@ 0x08C82230
+	.global song0215
+song0215:	@ 0x08C82230
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179778,13 +179778,13 @@ gUnknown_08C82230:	@ 0x08C82230
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82230_1		@ track
+	.word	song0215_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C822D8_1
-gUnknown_08C822D8_1:	@ 0x08C8223C
+	.global song0216_1
+song0216_1:	@ 0x08C8223C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -179943,8 +179943,8 @@ gUnknown_08C822D8_1:	@ 0x08C8223C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C822D8
-gUnknown_08C822D8:	@ 0x08C822D8
+	.global song0216
+song0216:	@ 0x08C822D8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -179952,13 +179952,13 @@ gUnknown_08C822D8:	@ 0x08C822D8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C822D8_1		@ track
+	.word	song0216_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82334_1
-gUnknown_08C82334_1:	@ 0x08C822E4
+	.global song0217_1
+song0217_1:	@ 0x08C822E4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180041,8 +180041,8 @@ gUnknown_08C82334_1:	@ 0x08C822E4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82334
-gUnknown_08C82334:	@ 0x08C82334
+	.global song0217
+song0217:	@ 0x08C82334
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180050,13 +180050,13 @@ gUnknown_08C82334:	@ 0x08C82334
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82334_1		@ track
+	.word	song0217_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82378_1
-gUnknown_08C82378_1:	@ 0x08C82340
+	.global song0218_1
+song0218_1:	@ 0x08C82340
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180115,8 +180115,8 @@ gUnknown_08C82378_1:	@ 0x08C82340
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82378
-gUnknown_08C82378:	@ 0x08C82378
+	.global song0218
+song0218:	@ 0x08C82378
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180124,13 +180124,13 @@ gUnknown_08C82378:	@ 0x08C82378
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82378_1		@ track
+	.word	song0218_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C823A8_1
-gUnknown_08C823A8_1:	@ 0x08C82384
+	.global song0219_1
+song0219_1:	@ 0x08C82384
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180169,8 +180169,8 @@ gUnknown_08C823A8_1:	@ 0x08C82384
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C823A8
-gUnknown_08C823A8:	@ 0x08C823A8
+	.global song0219
+song0219:	@ 0x08C823A8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180178,13 +180178,13 @@ gUnknown_08C823A8:	@ 0x08C823A8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C823A8_1		@ track
+	.word	song0219_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C823CC_1
-gUnknown_08C823CC_1:	@ 0x08C823B4
+	.global song0220_1
+song0220_1:	@ 0x08C823B4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180211,8 +180211,8 @@ gUnknown_08C823CC_1:	@ 0x08C823B4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C823CC
-gUnknown_08C823CC:	@ 0x08C823CC
+	.global song0220
+song0220:	@ 0x08C823CC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180220,13 +180220,13 @@ gUnknown_08C823CC:	@ 0x08C823CC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C823CC_1		@ track
+	.word	song0220_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82470_1
-gUnknown_08C82470_1:	@ 0x08C823D8
+	.global song0221_1
+song0221_1:	@ 0x08C823D8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180381,8 +180381,8 @@ gUnknown_08C82470_1:	@ 0x08C823D8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82470
-gUnknown_08C82470:	@ 0x08C82470
+	.global song0221
+song0221:	@ 0x08C82470
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180390,13 +180390,13 @@ gUnknown_08C82470:	@ 0x08C82470
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82470_1		@ track
+	.word	song0221_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C824AC_1
-gUnknown_08C824AC_1:	@ 0x08C8247C
+	.global song0222_1
+song0222_1:	@ 0x08C8247C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180445,8 +180445,8 @@ gUnknown_08C8249F:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C824AC
-gUnknown_08C824AC:	@ 0x08C824AC
+	.global song0222
+song0222:	@ 0x08C824AC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180454,13 +180454,13 @@ gUnknown_08C824AC:	@ 0x08C824AC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C824AC_1		@ track
+	.word	song0222_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82534_1
-gUnknown_08C82534_1:	@ 0x08C824B8
+	.global song0223_1
+song0223_1:	@ 0x08C824B8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180587,8 +180587,8 @@ gUnknown_08C82534_1:	@ 0x08C824B8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82534
-gUnknown_08C82534:	@ 0x08C82534
+	.global song0223
+song0223:	@ 0x08C82534
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180596,13 +180596,13 @@ gUnknown_08C82534:	@ 0x08C82534
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82534_1		@ track
+	.word	song0223_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82564_1
-gUnknown_08C82564_1:	@ 0x08C82540
+	.global song0224_1
+song0224_1:	@ 0x08C82540
 	.byte	0xBE
 	.byte	0x64
 	.byte	0xBC
@@ -180639,8 +180639,8 @@ gUnknown_08C82557:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82564
-gUnknown_08C82564:	@ 0x08C82564
+	.global song0224
+song0224:	@ 0x08C82564
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -180648,13 +180648,13 @@ gUnknown_08C82564:	@ 0x08C82564
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82564_1		@ track
+	.word	song0224_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82668_1
-gUnknown_08C82668_1:	@ 0x08C82570
+	.global song0225_1
+song0225_1:	@ 0x08C82570
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -180905,8 +180905,8 @@ gUnknown_08C82668_1:	@ 0x08C82570
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82668
-gUnknown_08C82668:	@ 0x08C82668
+	.global song0225
+song0225:	@ 0x08C82668
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -180914,13 +180914,13 @@ gUnknown_08C82668:	@ 0x08C82668
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82668_1		@ track
+	.word	song0225_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C826DC_1
-gUnknown_08C826DC_1:	@ 0x08C82674
+	.global song0226_1
+song0226_1:	@ 0x08C82674
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181027,8 +181027,8 @@ gUnknown_08C826DC_1:	@ 0x08C82674
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C826DC
-gUnknown_08C826DC:	@ 0x08C826DC
+	.global song0226
+song0226:	@ 0x08C826DC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -181036,13 +181036,13 @@ gUnknown_08C826DC:	@ 0x08C826DC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C826DC_1		@ track
+	.word	song0226_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8275C_1
-gUnknown_08C8275C_1:	@ 0x08C826E8
+	.global song0227_1
+song0227_1:	@ 0x08C826E8
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C826EA:
@@ -181159,8 +181159,8 @@ gUnknown_08C826EA:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8275C
-gUnknown_08C8275C:	@ 0x08C8275C
+	.global song0227
+song0227:	@ 0x08C8275C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -181168,13 +181168,13 @@ gUnknown_08C8275C:	@ 0x08C8275C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8275C_1		@ track
+	.word	song0227_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8278C_1
-gUnknown_08C8278C_1:	@ 0x08C82768
+	.global song0228_1
+song0228_1:	@ 0x08C82768
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181211,8 +181211,8 @@ gUnknown_08C82780:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8278C
-gUnknown_08C8278C:	@ 0x08C8278C
+	.global song0228
+song0228:	@ 0x08C8278C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -181220,13 +181220,13 @@ gUnknown_08C8278C:	@ 0x08C8278C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8278C_1		@ track
+	.word	song0228_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C827A8_1
-gUnknown_08C827A8_1:	@ 0x08C82798
+	.global song0229_1
+song0229_1:	@ 0x08C82798
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181245,8 +181245,8 @@ gUnknown_08C827A8_1:	@ 0x08C82798
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C827A8
-gUnknown_08C827A8:	@ 0x08C827A8
+	.global song0229
+song0229:	@ 0x08C827A8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -181254,13 +181254,13 @@ gUnknown_08C827A8:	@ 0x08C827A8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C827A8_1		@ track
+	.word	song0229_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8284C_1
-gUnknown_08C8284C_1:	@ 0x08C827B4
+	.global song0230_1
+song0230_1:	@ 0x08C827B4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181415,8 +181415,8 @@ gUnknown_08C8284C_1:	@ 0x08C827B4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8284C
-gUnknown_08C8284C:	@ 0x08C8284C
+	.global song0230
+song0230:	@ 0x08C8284C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -181424,13 +181424,13 @@ gUnknown_08C8284C:	@ 0x08C8284C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8284C_1		@ track
+	.word	song0230_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8287C_1
-gUnknown_08C8287C_1:	@ 0x08C82858
+	.global song0231_1
+song0231_1:	@ 0x08C82858
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181467,8 +181467,8 @@ gUnknown_08C8286E:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8287C
-gUnknown_08C8287C:	@ 0x08C8287C
+	.global song0231
+song0231:	@ 0x08C8287C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -181476,13 +181476,13 @@ gUnknown_08C8287C:	@ 0x08C8287C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8287C_1		@ track
+	.word	song0231_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82A78_1
-gUnknown_08C82A78_1:	@ 0x08C82888
+	.global song0232_1
+song0232_1:	@ 0x08C82888
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -181981,8 +181981,8 @@ gUnknown_08C82A78_1:	@ 0x08C82888
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82A78
-gUnknown_08C82A78:	@ 0x08C82A78
+	.global song0232
+song0232:	@ 0x08C82A78
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	15		@ priority
@@ -181990,13 +181990,13 @@ gUnknown_08C82A78:	@ 0x08C82A78
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82A78_1		@ track
+	.word	song0232_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82B1C_1
-gUnknown_08C82B1C_1:	@ 0x08C82A84
+	.global song0234_1
+song0234_1:	@ 0x08C82A84
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182151,8 +182151,8 @@ gUnknown_08C82B1C_1:	@ 0x08C82A84
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82B1C
-gUnknown_08C82B1C:	@ 0x08C82B1C
+	.global song0234
+song0234:	@ 0x08C82B1C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182160,13 +182160,13 @@ gUnknown_08C82B1C:	@ 0x08C82B1C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82B1C_1		@ track
+	.word	song0234_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82BF0_1
-gUnknown_08C82BF0_1:	@ 0x08C82B28
+	.global song0235_1
+song0235_1:	@ 0x08C82B28
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182369,8 +182369,8 @@ gUnknown_08C82BF0_1:	@ 0x08C82B28
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82BF0
-gUnknown_08C82BF0:	@ 0x08C82BF0
+	.global song0235
+song0235:	@ 0x08C82BF0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182378,13 +182378,13 @@ gUnknown_08C82BF0:	@ 0x08C82BF0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82BF0_1		@ track
+	.word	song0235_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82D1C_1
-gUnknown_08C82D1C_1:	@ 0x08C82BFC
+	.global song0236_1
+song0236_1:	@ 0x08C82BFC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182675,8 +182675,8 @@ gUnknown_08C82D1C_1:	@ 0x08C82BFC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82D1C
-gUnknown_08C82D1C:	@ 0x08C82D1C
+	.global song0236
+song0236:	@ 0x08C82D1C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182684,13 +182684,13 @@ gUnknown_08C82D1C:	@ 0x08C82D1C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82D1C_1		@ track
+	.word	song0236_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82DA0_1
-gUnknown_08C82DA0_1:	@ 0x08C82D28
+	.global song0237_1
+song0237_1:	@ 0x08C82D28
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182811,8 +182811,8 @@ gUnknown_08C82D90:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82DA0
-gUnknown_08C82DA0:	@ 0x08C82DA0
+	.global song0237
+song0237:	@ 0x08C82DA0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182820,13 +182820,13 @@ gUnknown_08C82DA0:	@ 0x08C82DA0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82DA0_1		@ track
+	.word	song0237_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82DC4_1
-gUnknown_08C82DC4_1:	@ 0x08C82DAC
+	.global song0238_1
+song0238_1:	@ 0x08C82DAC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182853,8 +182853,8 @@ gUnknown_08C82DC4_1:	@ 0x08C82DAC
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C82DC4
-gUnknown_08C82DC4:	@ 0x08C82DC4
+	.global song0238
+song0238:	@ 0x08C82DC4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182862,13 +182862,13 @@ gUnknown_08C82DC4:	@ 0x08C82DC4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82DC4_1		@ track
+	.word	song0238_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82E28_1
-gUnknown_08C82E28_1:	@ 0x08C82DD0
+	.global song0239_1
+song0239_1:	@ 0x08C82DD0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -182959,8 +182959,8 @@ gUnknown_08C82E28_1:	@ 0x08C82DD0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82E28
-gUnknown_08C82E28:	@ 0x08C82E28
+	.global song0239
+song0239:	@ 0x08C82E28
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -182968,13 +182968,13 @@ gUnknown_08C82E28:	@ 0x08C82E28
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82E28_1		@ track
+	.word	song0239_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82F08_1
-gUnknown_08C82F08_1:	@ 0x08C82E34
+	.global song0241_1
+song0241_1:	@ 0x08C82E34
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183189,8 +183189,8 @@ gUnknown_08C82F08_1:	@ 0x08C82E34
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C82F08
-gUnknown_08C82F08:	@ 0x08C82F08
+	.global song0241
+song0241:	@ 0x08C82F08
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183198,13 +183198,13 @@ gUnknown_08C82F08:	@ 0x08C82F08
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82F08_1		@ track
+	.word	song0241_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82FD8_1
-gUnknown_08C82FD8_1:	@ 0x08C82F14
+	.global song0242_1
+song0242_1:	@ 0x08C82F14
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183403,8 +183403,8 @@ gUnknown_08C82FD8_1:	@ 0x08C82F14
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82FD8
-gUnknown_08C82FD8:	@ 0x08C82FD8
+	.global song0242
+song0242:	@ 0x08C82FD8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183412,13 +183412,13 @@ gUnknown_08C82FD8:	@ 0x08C82FD8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82FD8_1		@ track
+	.word	song0242_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C82FFC_1
-gUnknown_08C82FFC_1:	@ 0x08C82FE4
+	.global song0243_1
+song0243_1:	@ 0x08C82FE4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183445,8 +183445,8 @@ gUnknown_08C82FFC_1:	@ 0x08C82FE4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C82FFC
-gUnknown_08C82FFC:	@ 0x08C82FFC
+	.global song0243
+song0243:	@ 0x08C82FFC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183454,13 +183454,13 @@ gUnknown_08C82FFC:	@ 0x08C82FFC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C82FFC_1		@ track
+	.word	song0243_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83078_1
-gUnknown_08C83078_1:	@ 0x08C83008
+	.global song0244_1
+song0244_1:	@ 0x08C83008
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183573,8 +183573,8 @@ gUnknown_08C83031:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83078
-gUnknown_08C83078:	@ 0x08C83078
+	.global song0244
+song0244:	@ 0x08C83078
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183582,13 +183582,13 @@ gUnknown_08C83078:	@ 0x08C83078
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83078_1		@ track
+	.word	song0244_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C830A4_1
-gUnknown_08C830A4_1:	@ 0x08C83084
+	.global song0245_1
+song0245_1:	@ 0x08C83084
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183623,8 +183623,8 @@ gUnknown_08C830A4_1:	@ 0x08C83084
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C830A4
-gUnknown_08C830A4:	@ 0x08C830A4
+	.global song0245
+song0245:	@ 0x08C830A4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183632,13 +183632,13 @@ gUnknown_08C830A4:	@ 0x08C830A4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C830A4_1		@ track
+	.word	song0245_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83100_1
-gUnknown_08C83100_1:	@ 0x08C830B0
+	.global song0246_1
+song0246_1:	@ 0x08C830B0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -183719,8 +183719,8 @@ gUnknown_08C830C4:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83100
-gUnknown_08C83100:	@ 0x08C83100
+	.global song0246
+song0246:	@ 0x08C83100
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -183728,13 +183728,13 @@ gUnknown_08C83100:	@ 0x08C83100
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83100_1		@ track
+	.word	song0246_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8322C_1
-gUnknown_08C8322C_1:	@ 0x08C8310C
+	.global song0248_1
+song0248_1:	@ 0x08C8310C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184025,8 +184025,8 @@ gUnknown_08C8322C_1:	@ 0x08C8310C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8322C
-gUnknown_08C8322C:	@ 0x08C8322C
+	.global song0248
+song0248:	@ 0x08C8322C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184034,13 +184034,13 @@ gUnknown_08C8322C:	@ 0x08C8322C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8322C_1		@ track
+	.word	song0248_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83250_1
-gUnknown_08C83250_1:	@ 0x08C83238
+	.global song0249_1
+song0249_1:	@ 0x08C83238
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184067,8 +184067,8 @@ gUnknown_08C83250_1:	@ 0x08C83238
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83250
-gUnknown_08C83250:	@ 0x08C83250
+	.global song0249
+song0249:	@ 0x08C83250
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184076,13 +184076,13 @@ gUnknown_08C83250:	@ 0x08C83250
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83250_1		@ track
+	.word	song0249_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C832C4_1
-gUnknown_08C832C4_1:	@ 0x08C8325C
+	.global song0250_1
+song0250_1:	@ 0x08C8325C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184189,8 +184189,8 @@ gUnknown_08C832C4_1:	@ 0x08C8325C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C832C4
-gUnknown_08C832C4:	@ 0x08C832C4
+	.global song0250
+song0250:	@ 0x08C832C4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184198,13 +184198,13 @@ gUnknown_08C832C4:	@ 0x08C832C4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C832C4_1		@ track
+	.word	song0250_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C832E8_1
-gUnknown_08C832E8_1:	@ 0x08C832D0
+	.global song0251_1
+song0251_1:	@ 0x08C832D0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184231,8 +184231,8 @@ gUnknown_08C832E8_1:	@ 0x08C832D0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C832E8
-gUnknown_08C832E8:	@ 0x08C832E8
+	.global song0251
+song0251:	@ 0x08C832E8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184240,13 +184240,13 @@ gUnknown_08C832E8:	@ 0x08C832E8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C832E8_1		@ track
+	.word	song0251_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83384_1
-gUnknown_08C83384_1:	@ 0x08C832F4
+	.global song0252_1
+song0252_1:	@ 0x08C832F4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184393,8 +184393,8 @@ gUnknown_08C83384_1:	@ 0x08C832F4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83384
-gUnknown_08C83384:	@ 0x08C83384
+	.global song0252
+song0252:	@ 0x08C83384
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184402,13 +184402,13 @@ gUnknown_08C83384:	@ 0x08C83384
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83384_1		@ track
+	.word	song0252_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83410_1
-gUnknown_08C83410_1:	@ 0x08C83390
+	.global song0253_1
+song0253_1:	@ 0x08C83390
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C83392:
@@ -184537,8 +184537,8 @@ gUnknown_08C83392:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83410
-gUnknown_08C83410:	@ 0x08C83410
+	.global song0253
+song0253:	@ 0x08C83410
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184546,13 +184546,13 @@ gUnknown_08C83410:	@ 0x08C83410
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83410_1		@ track
+	.word	song0253_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83478_1
-gUnknown_08C83478_1:	@ 0x08C8341C
+	.global song0254_1
+song0254_1:	@ 0x08C8341C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C8341E:
@@ -184645,8 +184645,8 @@ gUnknown_08C8341E:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83478
-gUnknown_08C83478:	@ 0x08C83478
+	.global song0254
+song0254:	@ 0x08C83478
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184654,13 +184654,13 @@ gUnknown_08C83478:	@ 0x08C83478
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83478_1		@ track
+	.word	song0254_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C834A0_1
-gUnknown_08C834A0_1:	@ 0x08C83484
+	.global song0255_1
+song0255_1:	@ 0x08C83484
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184691,8 +184691,8 @@ gUnknown_08C834A0_1:	@ 0x08C83484
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C834A0
-gUnknown_08C834A0:	@ 0x08C834A0
+	.global song0255
+song0255:	@ 0x08C834A0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184700,13 +184700,13 @@ gUnknown_08C834A0:	@ 0x08C834A0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C834A0_1		@ track
+	.word	song0255_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C834F4_1
-gUnknown_08C834F4_1:	@ 0x08C834AC
+	.global song0256_1
+song0256_1:	@ 0x08C834AC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184781,8 +184781,8 @@ gUnknown_08C834F4_1:	@ 0x08C834AC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C834F4
-gUnknown_08C834F4:	@ 0x08C834F4
+	.global song0256
+song0256:	@ 0x08C834F4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184790,13 +184790,13 @@ gUnknown_08C834F4:	@ 0x08C834F4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C834F4_1		@ track
+	.word	song0256_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83560_1
-gUnknown_08C83560_1:	@ 0x08C83500
+	.global song0257_1
+song0257_1:	@ 0x08C83500
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -184895,8 +184895,8 @@ gUnknown_08C83560_1:	@ 0x08C83500
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83560
-gUnknown_08C83560:	@ 0x08C83560
+	.global song0257
+song0257:	@ 0x08C83560
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -184904,13 +184904,13 @@ gUnknown_08C83560:	@ 0x08C83560
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83560_1		@ track
+	.word	song0257_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83644_1
-gUnknown_08C83644_1:	@ 0x08C8356C
+	.global song0258_1
+song0258_1:	@ 0x08C8356C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185129,8 +185129,8 @@ gUnknown_08C83644_1:	@ 0x08C8356C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83644
-gUnknown_08C83644:	@ 0x08C83644
+	.global song0258
+song0258:	@ 0x08C83644
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185138,13 +185138,13 @@ gUnknown_08C83644:	@ 0x08C83644
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83644_1		@ track
+	.word	song0258_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83674_1
-gUnknown_08C83674_1:	@ 0x08C83650
+	.global song0259_1
+song0259_1:	@ 0x08C83650
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185181,8 +185181,8 @@ gUnknown_08C83668:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83674
-gUnknown_08C83674:	@ 0x08C83674
+	.global song0259
+song0259:	@ 0x08C83674
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185190,13 +185190,13 @@ gUnknown_08C83674:	@ 0x08C83674
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83674_1		@ track
+	.word	song0259_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C836E0_1
-gUnknown_08C836E0_1:	@ 0x08C83680
+	.global song0260_1
+song0260_1:	@ 0x08C83680
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185295,8 +185295,8 @@ gUnknown_08C836E0_1:	@ 0x08C83680
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C836E0
-gUnknown_08C836E0:	@ 0x08C836E0
+	.global song0260
+song0260:	@ 0x08C836E0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185304,13 +185304,13 @@ gUnknown_08C836E0:	@ 0x08C836E0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C836E0_1		@ track
+	.word	song0260_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83730_1
-gUnknown_08C83730_1:	@ 0x08C836EC
+	.global song0261_1
+song0261_1:	@ 0x08C836EC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185381,8 +185381,8 @@ gUnknown_08C83730_1:	@ 0x08C836EC
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83730
-gUnknown_08C83730:	@ 0x08C83730
+	.global song0261
+song0261:	@ 0x08C83730
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185390,13 +185390,13 @@ gUnknown_08C83730:	@ 0x08C83730
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83730_1		@ track
+	.word	song0261_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83784_1
-gUnknown_08C83784_1:	@ 0x08C8373C
+	.global song0262_1
+song0262_1:	@ 0x08C8373C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185471,8 +185471,8 @@ gUnknown_08C83784_1:	@ 0x08C8373C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83784
-gUnknown_08C83784:	@ 0x08C83784
+	.global song0262
+song0262:	@ 0x08C83784
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185480,13 +185480,13 @@ gUnknown_08C83784:	@ 0x08C83784
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83784_1		@ track
+	.word	song0262_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83828_1
-gUnknown_08C83828_1:	@ 0x08C83790
+	.global song0263_1
+song0263_1:	@ 0x08C83790
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185641,8 +185641,8 @@ gUnknown_08C83828_1:	@ 0x08C83790
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83828
-gUnknown_08C83828:	@ 0x08C83828
+	.global song0263
+song0263:	@ 0x08C83828
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185650,13 +185650,13 @@ gUnknown_08C83828:	@ 0x08C83828
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83828_1		@ track
+	.word	song0263_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C838E4_1
-gUnknown_08C838E4_1:	@ 0x08C83834
+	.global song0264_1
+song0264_1:	@ 0x08C83834
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -185835,8 +185835,8 @@ gUnknown_08C838E4_1:	@ 0x08C83834
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C838E4
-gUnknown_08C838E4:	@ 0x08C838E4
+	.global song0264
+song0264:	@ 0x08C838E4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -185844,13 +185844,13 @@ gUnknown_08C838E4:	@ 0x08C838E4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C838E4_1		@ track
+	.word	song0264_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C839B8_1
-gUnknown_08C839B8_1:	@ 0x08C838F0
+	.global song0265_1
+song0265_1:	@ 0x08C838F0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186053,8 +186053,8 @@ gUnknown_08C839B8_1:	@ 0x08C838F0
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C839B8
-gUnknown_08C839B8:	@ 0x08C839B8
+	.global song0265
+song0265:	@ 0x08C839B8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186062,13 +186062,13 @@ gUnknown_08C839B8:	@ 0x08C839B8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C839B8_1		@ track
+	.word	song0265_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83A0C_1
-gUnknown_08C83A0C_1:	@ 0x08C839C4
+	.global song0266_1
+song0266_1:	@ 0x08C839C4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186143,8 +186143,8 @@ gUnknown_08C83A0C_1:	@ 0x08C839C4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83A0C
-gUnknown_08C83A0C:	@ 0x08C83A0C
+	.global song0266
+song0266:	@ 0x08C83A0C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186152,13 +186152,13 @@ gUnknown_08C83A0C:	@ 0x08C83A0C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83A0C_1		@ track
+	.word	song0266_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83A30_1
-gUnknown_08C83A30_1:	@ 0x08C83A18
+	.global song0267_1
+song0267_1:	@ 0x08C83A18
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186185,8 +186185,8 @@ gUnknown_08C83A30_1:	@ 0x08C83A18
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83A30
-gUnknown_08C83A30:	@ 0x08C83A30
+	.global song0267
+song0267:	@ 0x08C83A30
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186194,13 +186194,13 @@ gUnknown_08C83A30:	@ 0x08C83A30
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83A30_1		@ track
+	.word	song0267_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83AB8_1
-gUnknown_08C83AB8_1:	@ 0x08C83A3C
+	.global song0268_1
+song0268_1:	@ 0x08C83A3C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186327,8 +186327,8 @@ gUnknown_08C83AB8_1:	@ 0x08C83A3C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83AB8
-gUnknown_08C83AB8:	@ 0x08C83AB8
+	.global song0268
+song0268:	@ 0x08C83AB8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186336,13 +186336,13 @@ gUnknown_08C83AB8:	@ 0x08C83AB8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83AB8_1		@ track
+	.word	song0268_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83B6C_1
-gUnknown_08C83B6C_1:	@ 0x08C83AC4
+	.global song0269_1
+song0269_1:	@ 0x08C83AC4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186513,8 +186513,8 @@ gUnknown_08C83B6C_1:	@ 0x08C83AC4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83B6C
-gUnknown_08C83B6C:	@ 0x08C83B6C
+	.global song0269
+song0269:	@ 0x08C83B6C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186522,13 +186522,13 @@ gUnknown_08C83B6C:	@ 0x08C83B6C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83B6C_1		@ track
+	.word	song0269_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83BF4_1
-gUnknown_08C83BF4_1:	@ 0x08C83B78
+	.global song0270_1
+song0270_1:	@ 0x08C83B78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186653,8 +186653,8 @@ gUnknown_08C83BE9:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83BF4
-gUnknown_08C83BF4:	@ 0x08C83BF4
+	.global song0270
+song0270:	@ 0x08C83BF4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186662,13 +186662,13 @@ gUnknown_08C83BF4:	@ 0x08C83BF4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83BF4_1		@ track
+	.word	song0270_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83CA8_1
-gUnknown_08C83CA8_1:	@ 0x08C83C00
+	.global song0271_1
+song0271_1:	@ 0x08C83C00
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -186839,8 +186839,8 @@ gUnknown_08C83CA8_1:	@ 0x08C83C00
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83CA8
-gUnknown_08C83CA8:	@ 0x08C83CA8
+	.global song0271
+song0271:	@ 0x08C83CA8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186848,13 +186848,13 @@ gUnknown_08C83CA8:	@ 0x08C83CA8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83CA8_1		@ track
+	.word	song0271_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83D18_1
-gUnknown_08C83D18_1:	@ 0x08C83CB4
+	.global song0272_1
+song0272_1:	@ 0x08C83CB4
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C83CB6:
@@ -186955,8 +186955,8 @@ gUnknown_08C83CB6:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83D18
-gUnknown_08C83D18:	@ 0x08C83D18
+	.global song0272
+song0272:	@ 0x08C83D18
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -186964,13 +186964,13 @@ gUnknown_08C83D18:	@ 0x08C83D18
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83D18_1		@ track
+	.word	song0272_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83DD0_1
-gUnknown_08C83DD0_1:	@ 0x08C83D24
+	.global song0273_1
+song0273_1:	@ 0x08C83D24
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187143,8 +187143,8 @@ gUnknown_08C83DC5:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83DD0
-gUnknown_08C83DD0:	@ 0x08C83DD0
+	.global song0273
+song0273:	@ 0x08C83DD0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -187152,13 +187152,13 @@ gUnknown_08C83DD0:	@ 0x08C83DD0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83DD0_1		@ track
+	.word	song0273_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83E0C_1
-gUnknown_08C83E0C_1:	@ 0x08C83DDC
+	.global song0274_1
+song0274_1:	@ 0x08C83DDC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187186,8 +187186,8 @@ gUnknown_08C83E0C_1:	@ 0x08C83DDC
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C83E0C_2
-gUnknown_08C83E0C_2:	@ 0x08C83DF4
+	.global song0274_2
+song0274_2:	@ 0x08C83DF4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -187214,8 +187214,8 @@ gUnknown_08C83E0C_2:	@ 0x08C83DF4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83E0C
-gUnknown_08C83E0C:	@ 0x08C83E0C
+	.global song0274
+song0274:	@ 0x08C83E0C
 	.byte	2		@ trackCount
 	.byte	0		@ blockCount
 	.byte	30		@ priority
@@ -187223,14 +187223,14 @@ gUnknown_08C83E0C:	@ 0x08C83E0C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83E0C_1		@ track
-	.word	gUnknown_08C83E0C_2		@ track
+	.word	song0274_1		@ track
+	.word	song0274_2		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83E94_1
-gUnknown_08C83E94_1:	@ 0x08C83E1C
+	.global song0275_1
+song0275_1:	@ 0x08C83E1C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187353,8 +187353,8 @@ gUnknown_08C83E94_1:	@ 0x08C83E1C
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C83E94
-gUnknown_08C83E94:	@ 0x08C83E94
+	.global song0275
+song0275:	@ 0x08C83E94
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -187362,13 +187362,13 @@ gUnknown_08C83E94:	@ 0x08C83E94
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83E94_1		@ track
+	.word	song0275_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C83F74_1
-gUnknown_08C83F74_1:	@ 0x08C83EA0
+	.global song0276_1
+song0276_1:	@ 0x08C83EA0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187583,8 +187583,8 @@ gUnknown_08C83F74_1:	@ 0x08C83EA0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C83F74
-gUnknown_08C83F74:	@ 0x08C83F74
+	.global song0276
+song0276:	@ 0x08C83F74
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -187592,13 +187592,13 @@ gUnknown_08C83F74:	@ 0x08C83F74
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C83F74_1		@ track
+	.word	song0276_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84058_1
-gUnknown_08C84058_1:	@ 0x08C83F80
+	.global song0277_1
+song0277_1:	@ 0x08C83F80
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187817,8 +187817,8 @@ gUnknown_08C84058_1:	@ 0x08C83F80
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84058
-gUnknown_08C84058:	@ 0x08C84058
+	.global song0277
+song0277:	@ 0x08C84058
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -187826,13 +187826,13 @@ gUnknown_08C84058:	@ 0x08C84058
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84058_1		@ track
+	.word	song0277_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C840AC_1
-gUnknown_08C840AC_1:	@ 0x08C84064
+	.global song0278_1
+song0278_1:	@ 0x08C84064
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -187907,8 +187907,8 @@ gUnknown_08C840AC_1:	@ 0x08C84064
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C840AC
-gUnknown_08C840AC:	@ 0x08C840AC
+	.global song0278
+song0278:	@ 0x08C840AC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -187916,13 +187916,13 @@ gUnknown_08C840AC:	@ 0x08C840AC
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C840AC_1		@ track
+	.word	song0278_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84164_1
-gUnknown_08C84164_1:	@ 0x08C840B8
+	.global song0279_1
+song0279_1:	@ 0x08C840B8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188097,8 +188097,8 @@ gUnknown_08C84164_1:	@ 0x08C840B8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84164
-gUnknown_08C84164:	@ 0x08C84164
+	.global song0279
+song0279:	@ 0x08C84164
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188106,13 +188106,13 @@ gUnknown_08C84164:	@ 0x08C84164
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84164_1		@ track
+	.word	song0279_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84220_1
-gUnknown_08C84220_1:	@ 0x08C84170
+	.global song0280_1
+song0280_1:	@ 0x08C84170
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188289,8 +188289,8 @@ gUnknown_08C8420B:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84220
-gUnknown_08C84220:	@ 0x08C84220
+	.global song0280
+song0280:	@ 0x08C84220
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188298,13 +188298,13 @@ gUnknown_08C84220:	@ 0x08C84220
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84220_1		@ track
+	.word	song0280_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84250_1
-gUnknown_08C84250_1:	@ 0x08C8422C
+	.global song0281_1
+song0281_1:	@ 0x08C8422C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188341,8 +188341,8 @@ gUnknown_08C84242:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84250
-gUnknown_08C84250:	@ 0x08C84250
+	.global song0281
+song0281:	@ 0x08C84250
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188350,13 +188350,13 @@ gUnknown_08C84250:	@ 0x08C84250
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84250_1		@ track
+	.word	song0281_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8427C_1
-gUnknown_08C8427C_1:	@ 0x08C8425C
+	.global song0282_1
+song0282_1:	@ 0x08C8425C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188389,8 +188389,8 @@ gUnknown_08C84270:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8427C
-gUnknown_08C8427C:	@ 0x08C8427C
+	.global song0282
+song0282:	@ 0x08C8427C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188398,13 +188398,13 @@ gUnknown_08C8427C:	@ 0x08C8427C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8427C_1		@ track
+	.word	song0282_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84338_1
-gUnknown_08C84338_1:	@ 0x08C84288
+	.global song0283_1
+song0283_1:	@ 0x08C84288
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188581,8 +188581,8 @@ gUnknown_08C84323:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84338
-gUnknown_08C84338:	@ 0x08C84338
+	.global song0283
+song0283:	@ 0x08C84338
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188590,13 +188590,13 @@ gUnknown_08C84338:	@ 0x08C84338
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84338_1		@ track
+	.word	song0283_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C843F0_1
-gUnknown_08C843F0_1:	@ 0x08C84344
+	.global song0284_1
+song0284_1:	@ 0x08C84344
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188771,8 +188771,8 @@ gUnknown_08C843F0_1:	@ 0x08C84344
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C843F0
-gUnknown_08C843F0:	@ 0x08C843F0
+	.global song0284
+song0284:	@ 0x08C843F0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188780,13 +188780,13 @@ gUnknown_08C843F0:	@ 0x08C843F0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C843F0_1		@ track
+	.word	song0284_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84478_1
-gUnknown_08C84478_1:	@ 0x08C843FC
+	.global song0285_1
+song0285_1:	@ 0x08C843FC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188911,8 +188911,8 @@ gUnknown_08C84443:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84478
-gUnknown_08C84478:	@ 0x08C84478
+	.global song0285
+song0285:	@ 0x08C84478
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -188920,13 +188920,13 @@ gUnknown_08C84478:	@ 0x08C84478
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84478_1		@ track
+	.word	song0285_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C844C8_1
-gUnknown_08C844C8_1:	@ 0x08C84484
+	.global song0286_1
+song0286_1:	@ 0x08C84484
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -188995,8 +188995,8 @@ gUnknown_08C844BA:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C844C8
-gUnknown_08C844C8:	@ 0x08C844C8
+	.global song0286
+song0286:	@ 0x08C844C8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189004,13 +189004,13 @@ gUnknown_08C844C8:	@ 0x08C844C8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C844C8_1		@ track
+	.word	song0286_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8456C_1
-gUnknown_08C8456C_1:	@ 0x08C844D4
+	.global song0287_1
+song0287_1:	@ 0x08C844D4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189165,8 +189165,8 @@ gUnknown_08C8456C_1:	@ 0x08C844D4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8456C
-gUnknown_08C8456C:	@ 0x08C8456C
+	.global song0287
+song0287:	@ 0x08C8456C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189174,13 +189174,13 @@ gUnknown_08C8456C:	@ 0x08C8456C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8456C_1		@ track
+	.word	song0287_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C845D4_1
-gUnknown_08C845D4_1:	@ 0x08C84578
+	.global song0288_1
+song0288_1:	@ 0x08C84578
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189273,8 +189273,8 @@ gUnknown_08C845C9:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C845D4
-gUnknown_08C845D4:	@ 0x08C845D4
+	.global song0288
+song0288:	@ 0x08C845D4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189282,13 +189282,13 @@ gUnknown_08C845D4:	@ 0x08C845D4
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C845D4_1		@ track
+	.word	song0288_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8460C_1
-gUnknown_08C8460C_1:	@ 0x08C845E0
+	.global song0289_1
+song0289_1:	@ 0x08C845E0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189335,8 +189335,8 @@ gUnknown_08C8460C_1:	@ 0x08C845E0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C8460C
-gUnknown_08C8460C:	@ 0x08C8460C
+	.global song0289
+song0289:	@ 0x08C8460C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189344,13 +189344,13 @@ gUnknown_08C8460C:	@ 0x08C8460C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8460C_1		@ track
+	.word	song0289_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C846C8_1
-gUnknown_08C846C8_1:	@ 0x08C84618
+	.global song0290_1
+song0290_1:	@ 0x08C84618
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189527,8 +189527,8 @@ gUnknown_08C846B3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C846C8
-gUnknown_08C846C8:	@ 0x08C846C8
+	.global song0290
+song0290:	@ 0x08C846C8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189536,13 +189536,13 @@ gUnknown_08C846C8:	@ 0x08C846C8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C846C8_1		@ track
+	.word	song0290_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8472C_1
-gUnknown_08C8472C_1:	@ 0x08C846D4
+	.global song0291_1
+song0291_1:	@ 0x08C846D4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189633,8 +189633,8 @@ gUnknown_08C8472C_1:	@ 0x08C846D4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8472C
-gUnknown_08C8472C:	@ 0x08C8472C
+	.global song0291
+song0291:	@ 0x08C8472C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189642,13 +189642,13 @@ gUnknown_08C8472C:	@ 0x08C8472C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8472C_1		@ track
+	.word	song0291_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8483C_1
-gUnknown_08C8483C_1:	@ 0x08C84738
+	.global song0292_1
+song0292_1:	@ 0x08C84738
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -189911,8 +189911,8 @@ gUnknown_08C8483C_1:	@ 0x08C84738
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8483C
-gUnknown_08C8483C:	@ 0x08C8483C
+	.global song0292
+song0292:	@ 0x08C8483C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -189920,13 +189920,13 @@ gUnknown_08C8483C:	@ 0x08C8483C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C8483C_1		@ track
+	.word	song0292_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C848C8_1
-gUnknown_08C848C8_1:	@ 0x08C84848
+	.global song0293_1
+song0293_1:	@ 0x08C84848
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C8484A:
@@ -190055,8 +190055,8 @@ gUnknown_08C8484A:
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C848C8
-gUnknown_08C848C8:	@ 0x08C848C8
+	.global song0293
+song0293:	@ 0x08C848C8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190064,13 +190064,13 @@ gUnknown_08C848C8:	@ 0x08C848C8
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C848C8_1		@ track
+	.word	song0293_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84950_1
-gUnknown_08C84950_1:	@ 0x08C848D4
+	.global song0294_1
+song0294_1:	@ 0x08C848D4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190197,8 +190197,8 @@ gUnknown_08C84950_1:	@ 0x08C848D4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84950
-gUnknown_08C84950:	@ 0x08C84950
+	.global song0294
+song0294:	@ 0x08C84950
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190206,13 +190206,13 @@ gUnknown_08C84950:	@ 0x08C84950
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84950_1		@ track
+	.word	song0294_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84974_1
-gUnknown_08C84974_1:	@ 0x08C8495C
+	.global song0295_1
+song0295_1:	@ 0x08C8495C
 	.byte	0xBC
 	.byte	0x00
 gUnknown_08C8495E:
@@ -190237,8 +190237,8 @@ gUnknown_08C8495E:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84974
-gUnknown_08C84974:	@ 0x08C84974
+	.global song0295
+song0295:	@ 0x08C84974
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190246,13 +190246,13 @@ gUnknown_08C84974:	@ 0x08C84974
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84974_1		@ track
+	.word	song0295_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C849C0_1
-gUnknown_08C849C0_1:	@ 0x08C84980
+	.global song0296_1
+song0296_1:	@ 0x08C84980
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190317,8 +190317,8 @@ gUnknown_08C849B3:
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C849C0
-gUnknown_08C849C0:	@ 0x08C849C0
+	.global song0296
+song0296:	@ 0x08C849C0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190326,13 +190326,13 @@ gUnknown_08C849C0:	@ 0x08C849C0
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C849C0_1		@ track
+	.word	song0296_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84A28_1
-gUnknown_08C84A28_1:	@ 0x08C849CC
+	.global song0297_1
+song0297_1:	@ 0x08C849CC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190427,8 +190427,8 @@ gUnknown_08C84A28_1:	@ 0x08C849CC
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84A28
-gUnknown_08C84A28:	@ 0x08C84A28
+	.global song0297
+song0297:	@ 0x08C84A28
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190436,13 +190436,13 @@ gUnknown_08C84A28:	@ 0x08C84A28
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84A28_1		@ track
+	.word	song0297_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84A4C_1
-gUnknown_08C84A4C_1:	@ 0x08C84A34
+	.global song0298_1
+song0298_1:	@ 0x08C84A34
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190469,8 +190469,8 @@ gUnknown_08C84A4C_1:	@ 0x08C84A34
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84A4C
-gUnknown_08C84A4C:	@ 0x08C84A4C
+	.global song0298
+song0298:	@ 0x08C84A4C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	40		@ priority
@@ -190478,13 +190478,13 @@ gUnknown_08C84A4C:	@ 0x08C84A4C
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84A4C_1		@ track
+	.word	song0298_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84A70_1
-gUnknown_08C84A70_1:	@ 0x08C84A58
+	.global song0300_1
+song0300_1:	@ 0x08C84A58
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190511,8 +190511,8 @@ gUnknown_08C84A70_1:	@ 0x08C84A58
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84A70
-gUnknown_08C84A70:	@ 0x08C84A70
+	.global song0300
+song0300:	@ 0x08C84A70
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190520,13 +190520,13 @@ gUnknown_08C84A70:	@ 0x08C84A70
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84A70_1		@ track
+	.word	song0300_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84A94_1
-gUnknown_08C84A94_1:	@ 0x08C84A7C
+	.global song0301_1
+song0301_1:	@ 0x08C84A7C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190553,8 +190553,8 @@ gUnknown_08C84A94_1:	@ 0x08C84A7C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84A94
-gUnknown_08C84A94:	@ 0x08C84A94
+	.global song0301
+song0301:	@ 0x08C84A94
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190562,13 +190562,13 @@ gUnknown_08C84A94:	@ 0x08C84A94
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84A94_1		@ track
+	.word	song0301_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84AB8_1
-gUnknown_08C84AB8_1:	@ 0x08C84AA0
+	.global song0302_1
+song0302_1:	@ 0x08C84AA0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190595,8 +190595,8 @@ gUnknown_08C84AB8_1:	@ 0x08C84AA0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84AB8
-gUnknown_08C84AB8:	@ 0x08C84AB8
+	.global song0302
+song0302:	@ 0x08C84AB8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190604,13 +190604,13 @@ gUnknown_08C84AB8:	@ 0x08C84AB8
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84AB8_1		@ track
+	.word	song0302_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84ADC_1
-gUnknown_08C84ADC_1:	@ 0x08C84AC4
+	.global song0303_1
+song0303_1:	@ 0x08C84AC4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190637,8 +190637,8 @@ gUnknown_08C84ADC_1:	@ 0x08C84AC4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84ADC
-gUnknown_08C84ADC:	@ 0x08C84ADC
+	.global song0303
+song0303:	@ 0x08C84ADC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190646,13 +190646,13 @@ gUnknown_08C84ADC:	@ 0x08C84ADC
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84ADC_1		@ track
+	.word	song0303_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84B00_1
-gUnknown_08C84B00_1:	@ 0x08C84AE8
+	.global song0304_1
+song0304_1:	@ 0x08C84AE8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190679,8 +190679,8 @@ gUnknown_08C84B00_1:	@ 0x08C84AE8
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84B00
-gUnknown_08C84B00:	@ 0x08C84B00
+	.global song0304
+song0304:	@ 0x08C84B00
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190688,13 +190688,13 @@ gUnknown_08C84B00:	@ 0x08C84B00
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84B00_1		@ track
+	.word	song0304_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84B24_1
-gUnknown_08C84B24_1:	@ 0x08C84B0C
+	.global song0305_1
+song0305_1:	@ 0x08C84B0C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190721,8 +190721,8 @@ gUnknown_08C84B24_1:	@ 0x08C84B0C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84B24
-gUnknown_08C84B24:	@ 0x08C84B24
+	.global song0305
+song0305:	@ 0x08C84B24
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190730,13 +190730,13 @@ gUnknown_08C84B24:	@ 0x08C84B24
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84B24_1		@ track
+	.word	song0305_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84B48_1
-gUnknown_08C84B48_1:	@ 0x08C84B30
+	.global song0306_1
+song0306_1:	@ 0x08C84B30
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190763,8 +190763,8 @@ gUnknown_08C84B48_1:	@ 0x08C84B30
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84B48
-gUnknown_08C84B48:	@ 0x08C84B48
+	.global song0306
+song0306:	@ 0x08C84B48
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190772,13 +190772,13 @@ gUnknown_08C84B48:	@ 0x08C84B48
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84B48_1		@ track
+	.word	song0306_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84B6C_1
-gUnknown_08C84B6C_1:	@ 0x08C84B54
+	.global song0307_1
+song0307_1:	@ 0x08C84B54
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190805,8 +190805,8 @@ gUnknown_08C84B6C_1:	@ 0x08C84B54
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84B6C
-gUnknown_08C84B6C:	@ 0x08C84B6C
+	.global song0307
+song0307:	@ 0x08C84B6C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190814,13 +190814,13 @@ gUnknown_08C84B6C:	@ 0x08C84B6C
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84B6C_1		@ track
+	.word	song0307_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84B90_1
-gUnknown_08C84B90_1:	@ 0x08C84B78
+	.global song0308_1
+song0308_1:	@ 0x08C84B78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190847,8 +190847,8 @@ gUnknown_08C84B90_1:	@ 0x08C84B78
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84B90
-gUnknown_08C84B90:	@ 0x08C84B90
+	.global song0308
+song0308:	@ 0x08C84B90
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190856,13 +190856,13 @@ gUnknown_08C84B90:	@ 0x08C84B90
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84B90_1		@ track
+	.word	song0308_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84BB4_1
-gUnknown_08C84BB4_1:	@ 0x08C84B9C
+	.global song0309_1
+song0309_1:	@ 0x08C84B9C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190889,8 +190889,8 @@ gUnknown_08C84BB4_1:	@ 0x08C84B9C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84BB4
-gUnknown_08C84BB4:	@ 0x08C84BB4
+	.global song0309
+song0309:	@ 0x08C84BB4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190898,13 +190898,13 @@ gUnknown_08C84BB4:	@ 0x08C84BB4
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84BB4_1		@ track
+	.word	song0309_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84BD8_1
-gUnknown_08C84BD8_1:	@ 0x08C84BC0
+	.global song0310_1
+song0310_1:	@ 0x08C84BC0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190931,8 +190931,8 @@ gUnknown_08C84BD8_1:	@ 0x08C84BC0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84BD8
-gUnknown_08C84BD8:	@ 0x08C84BD8
+	.global song0310
+song0310:	@ 0x08C84BD8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190940,13 +190940,13 @@ gUnknown_08C84BD8:	@ 0x08C84BD8
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84BD8_1		@ track
+	.word	song0310_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84BFC_1
-gUnknown_08C84BFC_1:	@ 0x08C84BE4
+	.global song0311_1
+song0311_1:	@ 0x08C84BE4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -190973,8 +190973,8 @@ gUnknown_08C84BFC_1:	@ 0x08C84BE4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84BFC
-gUnknown_08C84BFC:	@ 0x08C84BFC
+	.global song0311
+song0311:	@ 0x08C84BFC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -190982,13 +190982,13 @@ gUnknown_08C84BFC:	@ 0x08C84BFC
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84BFC_1		@ track
+	.word	song0311_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84C20_1
-gUnknown_08C84C20_1:	@ 0x08C84C08
+	.global song0312_1
+song0312_1:	@ 0x08C84C08
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191015,8 +191015,8 @@ gUnknown_08C84C20_1:	@ 0x08C84C08
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84C20
-gUnknown_08C84C20:	@ 0x08C84C20
+	.global song0312
+song0312:	@ 0x08C84C20
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191024,13 +191024,13 @@ gUnknown_08C84C20:	@ 0x08C84C20
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84C20_1		@ track
+	.word	song0312_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84C44_1
-gUnknown_08C84C44_1:	@ 0x08C84C2C
+	.global song0313_1
+song0313_1:	@ 0x08C84C2C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191057,8 +191057,8 @@ gUnknown_08C84C44_1:	@ 0x08C84C2C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84C44
-gUnknown_08C84C44:	@ 0x08C84C44
+	.global song0313
+song0313:	@ 0x08C84C44
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191066,13 +191066,13 @@ gUnknown_08C84C44:	@ 0x08C84C44
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84C44_1		@ track
+	.word	song0313_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84C68_1
-gUnknown_08C84C68_1:	@ 0x08C84C50
+	.global song0314_1
+song0314_1:	@ 0x08C84C50
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191099,8 +191099,8 @@ gUnknown_08C84C68_1:	@ 0x08C84C50
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84C68
-gUnknown_08C84C68:	@ 0x08C84C68
+	.global song0314
+song0314:	@ 0x08C84C68
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191108,13 +191108,13 @@ gUnknown_08C84C68:	@ 0x08C84C68
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84C68_1		@ track
+	.word	song0314_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84C8C_1
-gUnknown_08C84C8C_1:	@ 0x08C84C74
+	.global song0315_1
+song0315_1:	@ 0x08C84C74
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191141,8 +191141,8 @@ gUnknown_08C84C8C_1:	@ 0x08C84C74
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84C8C
-gUnknown_08C84C8C:	@ 0x08C84C8C
+	.global song0315
+song0315:	@ 0x08C84C8C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191150,13 +191150,13 @@ gUnknown_08C84C8C:	@ 0x08C84C8C
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84C8C_1		@ track
+	.word	song0315_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84CB0_1
-gUnknown_08C84CB0_1:	@ 0x08C84C98
+	.global song0316_1
+song0316_1:	@ 0x08C84C98
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191183,8 +191183,8 @@ gUnknown_08C84CB0_1:	@ 0x08C84C98
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84CB0
-gUnknown_08C84CB0:	@ 0x08C84CB0
+	.global song0316
+song0316:	@ 0x08C84CB0
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191192,13 +191192,13 @@ gUnknown_08C84CB0:	@ 0x08C84CB0
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84CB0_1		@ track
+	.word	song0316_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84CD4_1
-gUnknown_08C84CD4_1:	@ 0x08C84CBC
+	.global song0317_1
+song0317_1:	@ 0x08C84CBC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191225,8 +191225,8 @@ gUnknown_08C84CD4_1:	@ 0x08C84CBC
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84CD4
-gUnknown_08C84CD4:	@ 0x08C84CD4
+	.global song0317
+song0317:	@ 0x08C84CD4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191234,13 +191234,13 @@ gUnknown_08C84CD4:	@ 0x08C84CD4
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84CD4_1		@ track
+	.word	song0317_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84CF8_1
-gUnknown_08C84CF8_1:	@ 0x08C84CE0
+	.global song0318_1
+song0318_1:	@ 0x08C84CE0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191267,8 +191267,8 @@ gUnknown_08C84CF8_1:	@ 0x08C84CE0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84CF8
-gUnknown_08C84CF8:	@ 0x08C84CF8
+	.global song0318
+song0318:	@ 0x08C84CF8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191276,13 +191276,13 @@ gUnknown_08C84CF8:	@ 0x08C84CF8
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84CF8_1		@ track
+	.word	song0318_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84D1C_1
-gUnknown_08C84D1C_1:	@ 0x08C84D04
+	.global song0319_1
+song0319_1:	@ 0x08C84D04
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191309,8 +191309,8 @@ gUnknown_08C84D1C_1:	@ 0x08C84D04
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84D1C
-gUnknown_08C84D1C:	@ 0x08C84D1C
+	.global song0319
+song0319:	@ 0x08C84D1C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191318,13 +191318,13 @@ gUnknown_08C84D1C:	@ 0x08C84D1C
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84D1C_1		@ track
+	.word	song0319_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84D48_1
-gUnknown_08C84D48_1:	@ 0x08C84D28
+	.global song0320_1
+song0320_1:	@ 0x08C84D28
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191359,8 +191359,8 @@ gUnknown_08C84D48_1:	@ 0x08C84D28
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84D48
-gUnknown_08C84D48:	@ 0x08C84D48
+	.global song0320
+song0320:	@ 0x08C84D48
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191368,13 +191368,13 @@ gUnknown_08C84D48:	@ 0x08C84D48
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84D48_1		@ track
+	.word	song0320_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84D6C_1
-gUnknown_08C84D6C_1:	@ 0x08C84D54
+	.global song0321_1
+song0321_1:	@ 0x08C84D54
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191401,8 +191401,8 @@ gUnknown_08C84D6C_1:	@ 0x08C84D54
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84D6C
-gUnknown_08C84D6C:	@ 0x08C84D6C
+	.global song0321
+song0321:	@ 0x08C84D6C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191410,13 +191410,13 @@ gUnknown_08C84D6C:	@ 0x08C84D6C
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84D6C_1		@ track
+	.word	song0321_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84DAC_1
-gUnknown_08C84DAC_1:	@ 0x08C84D78
+	.global song0322_1
+song0322_1:	@ 0x08C84D78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191471,8 +191471,8 @@ gUnknown_08C84DAC_1:	@ 0x08C84D78
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84DAC
-gUnknown_08C84DAC:	@ 0x08C84DAC
+	.global song0322
+song0322:	@ 0x08C84DAC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191480,13 +191480,13 @@ gUnknown_08C84DAC:	@ 0x08C84DAC
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84DAC_1		@ track
+	.word	song0322_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84DE4_1
-gUnknown_08C84DE4_1:	@ 0x08C84DB8
+	.global song0323_1
+song0323_1:	@ 0x08C84DB8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191533,8 +191533,8 @@ gUnknown_08C84DE4_1:	@ 0x08C84DB8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84DE4
-gUnknown_08C84DE4:	@ 0x08C84DE4
+	.global song0323
+song0323:	@ 0x08C84DE4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191542,13 +191542,13 @@ gUnknown_08C84DE4:	@ 0x08C84DE4
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84DE4_1		@ track
+	.word	song0323_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84E08_1
-gUnknown_08C84E08_1:	@ 0x08C84DF0
+	.global song0324_1
+song0324_1:	@ 0x08C84DF0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191575,8 +191575,8 @@ gUnknown_08C84E08_1:	@ 0x08C84DF0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84E08
-gUnknown_08C84E08:	@ 0x08C84E08
+	.global song0324
+song0324:	@ 0x08C84E08
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191584,13 +191584,13 @@ gUnknown_08C84E08:	@ 0x08C84E08
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84E08_1		@ track
+	.word	song0324_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84E2C_1
-gUnknown_08C84E2C_1:	@ 0x08C84E14
+	.global song0325_1
+song0325_1:	@ 0x08C84E14
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191617,8 +191617,8 @@ gUnknown_08C84E2C_1:	@ 0x08C84E14
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84E2C
-gUnknown_08C84E2C:	@ 0x08C84E2C
+	.global song0325
+song0325:	@ 0x08C84E2C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191626,13 +191626,13 @@ gUnknown_08C84E2C:	@ 0x08C84E2C
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84E2C_1		@ track
+	.word	song0325_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84E50_1
-gUnknown_08C84E50_1:	@ 0x08C84E38
+	.global song0326_1
+song0326_1:	@ 0x08C84E38
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191659,8 +191659,8 @@ gUnknown_08C84E50_1:	@ 0x08C84E38
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84E50
-gUnknown_08C84E50:	@ 0x08C84E50
+	.global song0326
+song0326:	@ 0x08C84E50
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191668,13 +191668,13 @@ gUnknown_08C84E50:	@ 0x08C84E50
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84E50_1		@ track
+	.word	song0326_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84E74_1
-gUnknown_08C84E74_1:	@ 0x08C84E5C
+	.global song0327_1
+song0327_1:	@ 0x08C84E5C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191701,8 +191701,8 @@ gUnknown_08C84E74_1:	@ 0x08C84E5C
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84E74
-gUnknown_08C84E74:	@ 0x08C84E74
+	.global song0327
+song0327:	@ 0x08C84E74
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191710,13 +191710,13 @@ gUnknown_08C84E74:	@ 0x08C84E74
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84E74_1		@ track
+	.word	song0327_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84E98_1
-gUnknown_08C84E98_1:	@ 0x08C84E80
+	.global song0328_1
+song0328_1:	@ 0x08C84E80
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191743,8 +191743,8 @@ gUnknown_08C84E98_1:	@ 0x08C84E80
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84E98
-gUnknown_08C84E98:	@ 0x08C84E98
+	.global song0328
+song0328:	@ 0x08C84E98
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191752,13 +191752,13 @@ gUnknown_08C84E98:	@ 0x08C84E98
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84E98_1		@ track
+	.word	song0328_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84EBC_1
-gUnknown_08C84EBC_1:	@ 0x08C84EA4
+	.global song0329_1
+song0329_1:	@ 0x08C84EA4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191785,8 +191785,8 @@ gUnknown_08C84EBC_1:	@ 0x08C84EA4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C84EBC
-gUnknown_08C84EBC:	@ 0x08C84EBC
+	.global song0329
+song0329:	@ 0x08C84EBC
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191794,13 +191794,13 @@ gUnknown_08C84EBC:	@ 0x08C84EBC
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84EBC_1		@ track
+	.word	song0329_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84ED8_1
-gUnknown_08C84ED8_1:	@ 0x08C84EC8
+	.global song0331_1
+song0331_1:	@ 0x08C84EC8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191819,8 +191819,8 @@ gUnknown_08C84ED8_1:	@ 0x08C84EC8
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84ED8
-gUnknown_08C84ED8:	@ 0x08C84ED8
+	.global song0331
+song0331:	@ 0x08C84ED8
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191828,13 +191828,13 @@ gUnknown_08C84ED8:	@ 0x08C84ED8
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84ED8_1		@ track
+	.word	song0331_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84EF4_1
-gUnknown_08C84EF4_1:	@ 0x08C84EE4
+	.global song0332_1
+song0332_1:	@ 0x08C84EE4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -191853,8 +191853,8 @@ gUnknown_08C84EF4_1:	@ 0x08C84EE4
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84EF4
-gUnknown_08C84EF4:	@ 0x08C84EF4
+	.global song0332
+song0332:	@ 0x08C84EF4
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -191862,13 +191862,13 @@ gUnknown_08C84EF4:	@ 0x08C84EF4
 
 	.word	voicegroup006		@ voicegroup/tone
 
-	.word	gUnknown_08C84EF4_1		@ track
+	.word	song0332_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C84F90_1
-gUnknown_08C84F90_1:	@ 0x08C84F00
+	.global song0333_1
+song0333_1:	@ 0x08C84F00
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -192015,8 +192015,8 @@ gUnknown_08C84F90_1:	@ 0x08C84F00
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C84F90
-gUnknown_08C84F90:	@ 0x08C84F90
+	.global song0333
+song0333:	@ 0x08C84F90
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority
@@ -192024,13 +192024,13 @@ gUnknown_08C84F90:	@ 0x08C84F90
 
 	.word	voicegroup005		@ voicegroup/tone
 
-	.word	gUnknown_08C84F90_1		@ track
+	.word	song0333_1		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8508C_1
-gUnknown_08C8508C_1:	@ 0x08C84F9C
+	.global song0401_1
+song0401_1:	@ 0x08C84F9C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -192083,8 +192083,8 @@ gUnknown_08C8508C_1:	@ 0x08C84F9C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C8508C_2
-gUnknown_08C8508C_2:	@ 0x08C84FCD
+	.global song0401_2
+song0401_2:	@ 0x08C84FCD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192134,8 +192134,8 @@ gUnknown_08C8508C_2:	@ 0x08C84FCD
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C8508C_3
-gUnknown_08C8508C_3:	@ 0x08C84FFB
+	.global song0401_3
+song0401_3:	@ 0x08C84FFB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192185,8 +192185,8 @@ gUnknown_08C8508C_3:	@ 0x08C84FFB
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C8508C_4
-gUnknown_08C8508C_4:	@ 0x08C85029
+	.global song0401_4
+song0401_4:	@ 0x08C85029
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192288,8 +192288,8 @@ gUnknown_08C8508C_4:	@ 0x08C85029
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8508C
-gUnknown_08C8508C:	@ 0x08C8508C
+	.global song0401
+song0401:	@ 0x08C8508C
 	.byte	4		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -192297,16 +192297,16 @@ gUnknown_08C8508C:	@ 0x08C8508C
 
 	.word	voicegroup008		@ voicegroup/tone
 
-	.word	gUnknown_08C8508C_1		@ track
-	.word	gUnknown_08C8508C_2		@ track
-	.word	gUnknown_08C8508C_3		@ track
-	.word	gUnknown_08C8508C_4		@ track
+	.word	song0401_1		@ track
+	.word	song0401_2		@ track
+	.word	song0401_3		@ track
+	.word	song0401_4		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C85270_1
-gUnknown_08C85270_1:	@ 0x08C850A4
+	.global song0402_1
+song0402_1:	@ 0x08C850A4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -192381,8 +192381,8 @@ gUnknown_08C85270_1:	@ 0x08C850A4
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C85270_2
-gUnknown_08C85270_2:	@ 0x08C850EB
+	.global song0402_2
+song0402_2:	@ 0x08C850EB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192440,8 +192440,8 @@ gUnknown_08C85270_2:	@ 0x08C850EB
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C85270_3
-gUnknown_08C85270_3:	@ 0x08C85121
+	.global song0402_3
+song0402_3:	@ 0x08C85121
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192510,8 +192510,8 @@ gUnknown_08C85270_3:	@ 0x08C85121
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C85270_4
-gUnknown_08C85270_4:	@ 0x08C85162
+	.global song0402_4
+song0402_4:	@ 0x08C85162
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192562,8 +192562,8 @@ gUnknown_08C85270_4:	@ 0x08C85162
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C85270_5
-gUnknown_08C85270_5:	@ 0x08C85191
+	.global song0402_5
+song0402_5:	@ 0x08C85191
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192614,8 +192614,8 @@ gUnknown_08C85270_5:	@ 0x08C85191
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C85270_6
-gUnknown_08C85270_6:	@ 0x08C851C0
+	.global song0402_6
+song0402_6:	@ 0x08C851C0
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192673,8 +192673,8 @@ gUnknown_08C85270_6:	@ 0x08C851C0
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C85270_7
-gUnknown_08C85270_7:	@ 0x08C851F6
+	.global song0402_7
+song0402_7:	@ 0x08C851F6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192738,8 +192738,8 @@ gUnknown_08C85270_7:	@ 0x08C851F6
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C85270_8
-gUnknown_08C85270_8:	@ 0x08C85232
+	.global song0402_8
+song0402_8:	@ 0x08C85232
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192804,8 +192804,8 @@ gUnknown_08C85270_8:	@ 0x08C85232
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C85270
-gUnknown_08C85270:	@ 0x08C85270
+	.global song0402
+song0402:	@ 0x08C85270
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -192813,20 +192813,20 @@ gUnknown_08C85270:	@ 0x08C85270
 
 	.word	voicegroup008		@ voicegroup/tone
 
-	.word	gUnknown_08C85270_1		@ track
-	.word	gUnknown_08C85270_2		@ track
-	.word	gUnknown_08C85270_3		@ track
-	.word	gUnknown_08C85270_4		@ track
-	.word	gUnknown_08C85270_5		@ track
-	.word	gUnknown_08C85270_6		@ track
-	.word	gUnknown_08C85270_7		@ track
-	.word	gUnknown_08C85270_8		@ track
+	.word	song0402_1		@ track
+	.word	song0402_2		@ track
+	.word	song0402_3		@ track
+	.word	song0402_4		@ track
+	.word	song0402_5		@ track
+	.word	song0402_6		@ track
+	.word	song0402_7		@ track
+	.word	song0402_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C85500_1
-gUnknown_08C85500_1:	@ 0x08C85298
+	.global song0403_1
+song0403_1:	@ 0x08C85298
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -192867,8 +192867,8 @@ gUnknown_08C85500_1:	@ 0x08C85298
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C85500_2
-gUnknown_08C85500_2:	@ 0x08C852BD
+	.global song0403_2
+song0403_2:	@ 0x08C852BD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192905,8 +192905,8 @@ gUnknown_08C85500_2:	@ 0x08C852BD
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C85500_3
-gUnknown_08C85500_3:	@ 0x08C852DE
+	.global song0403_3
+song0403_3:	@ 0x08C852DE
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192947,8 +192947,8 @@ gUnknown_08C85500_3:	@ 0x08C852DE
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C85500_4
-gUnknown_08C85500_4:	@ 0x08C85303
+	.global song0403_4
+song0403_4:	@ 0x08C85303
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -192990,8 +192990,8 @@ gUnknown_08C85500_4:	@ 0x08C85303
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C85500_5
-gUnknown_08C85500_5:	@ 0x08C85329
+	.global song0403_5
+song0403_5:	@ 0x08C85329
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193030,8 +193030,8 @@ gUnknown_08C85500_5:	@ 0x08C85329
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C85500_6
-gUnknown_08C85500_6:	@ 0x08C8534C
+	.global song0403_6
+song0403_6:	@ 0x08C8534C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193172,8 +193172,8 @@ gUnknown_08C85500_6:	@ 0x08C8534C
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C85500_7
-gUnknown_08C85500_7:	@ 0x08C853D5
+	.global song0403_7
+song0403_7:	@ 0x08C853D5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193314,8 +193314,8 @@ gUnknown_08C85500_7:	@ 0x08C853D5
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C85500_8
-gUnknown_08C85500_8:	@ 0x08C8545E
+	.global song0403_8
+song0403_8:	@ 0x08C8545E
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193449,8 +193449,8 @@ gUnknown_08C85500_8:	@ 0x08C8545E
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C85500_9
-gUnknown_08C85500_9:	@ 0x08C854E0
+	.global song0403_9
+song0403_9:	@ 0x08C854E0
 	.byte	0xBE
 	.byte	0x6E
 	.byte	0xBC
@@ -193485,8 +193485,8 @@ gUnknown_08C85500_9:	@ 0x08C854E0
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C85500
-gUnknown_08C85500:	@ 0x08C85500
+	.global song0403
+song0403:	@ 0x08C85500
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -193494,21 +193494,21 @@ gUnknown_08C85500:	@ 0x08C85500
 
 	.word	voicegroup008		@ voicegroup/tone
 
-	.word	gUnknown_08C85500_1		@ track
-	.word	gUnknown_08C85500_2		@ track
-	.word	gUnknown_08C85500_3		@ track
-	.word	gUnknown_08C85500_4		@ track
-	.word	gUnknown_08C85500_5		@ track
-	.word	gUnknown_08C85500_6		@ track
-	.word	gUnknown_08C85500_7		@ track
-	.word	gUnknown_08C85500_8		@ track
-	.word	gUnknown_08C85500_9		@ track
+	.word	song0403_1		@ track
+	.word	song0403_2		@ track
+	.word	song0403_3		@ track
+	.word	song0403_4		@ track
+	.word	song0403_5		@ track
+	.word	song0403_6		@ track
+	.word	song0403_7		@ track
+	.word	song0403_8		@ track
+	.word	song0403_9		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C85718_1
-gUnknown_08C85718_1:	@ 0x08C8552C
+	.global song0404_1
+song0404_1:	@ 0x08C8552C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -193584,8 +193584,8 @@ gUnknown_08C85718_1:	@ 0x08C8552C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C85718_2
-gUnknown_08C85718_2:	@ 0x08C85574
+	.global song0404_2
+song0404_2:	@ 0x08C85574
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193656,8 +193656,8 @@ gUnknown_08C85718_2:	@ 0x08C85574
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C85718_3
-gUnknown_08C85718_3:	@ 0x08C855B7
+	.global song0404_3
+song0404_3:	@ 0x08C855B7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193712,8 +193712,8 @@ gUnknown_08C85718_3:	@ 0x08C855B7
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C85718_4
-gUnknown_08C85718_4:	@ 0x08C855EA
+	.global song0404_4
+song0404_4:	@ 0x08C855EA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193758,8 +193758,8 @@ gUnknown_08C85718_4:	@ 0x08C855EA
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C85718_5
-gUnknown_08C85718_5:	@ 0x08C85613
+	.global song0404_5
+song0404_5:	@ 0x08C85613
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193828,8 +193828,8 @@ gUnknown_08C85718_5:	@ 0x08C85613
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C85718_6
-gUnknown_08C85718_6:	@ 0x08C85654
+	.global song0404_6
+song0404_6:	@ 0x08C85654
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -193884,8 +193884,8 @@ gUnknown_08C85718_6:	@ 0x08C85654
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C85718_7
-gUnknown_08C85718_7:	@ 0x08C85687
+	.global song0404_7
+song0404_7:	@ 0x08C85687
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194033,8 +194033,8 @@ gUnknown_08C85718_7:	@ 0x08C85687
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C85718
-gUnknown_08C85718:	@ 0x08C85718
+	.global song0404
+song0404:	@ 0x08C85718
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -194042,19 +194042,19 @@ gUnknown_08C85718:	@ 0x08C85718
 
 	.word	voicegroup008		@ voicegroup/tone
 
-	.word	gUnknown_08C85718_1		@ track
-	.word	gUnknown_08C85718_2		@ track
-	.word	gUnknown_08C85718_3		@ track
-	.word	gUnknown_08C85718_4		@ track
-	.word	gUnknown_08C85718_5		@ track
-	.word	gUnknown_08C85718_6		@ track
-	.word	gUnknown_08C85718_7		@ track
+	.word	song0404_1		@ track
+	.word	song0404_2		@ track
+	.word	song0404_3		@ track
+	.word	song0404_4		@ track
+	.word	song0404_5		@ track
+	.word	song0404_6		@ track
+	.word	song0404_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C858B0_1
-gUnknown_08C858B0_1:	@ 0x08C8573C
+	.global song0405_1
+song0405_1:	@ 0x08C8573C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -194091,8 +194091,8 @@ gUnknown_08C858B0_1:	@ 0x08C8573C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C858B0_2
-gUnknown_08C858B0_2:	@ 0x08C8575D
+	.global song0405_2
+song0405_2:	@ 0x08C8575D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194144,8 +194144,8 @@ gUnknown_08C858B0_2:	@ 0x08C8575D
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C858B0_3
-gUnknown_08C858B0_3:	@ 0x08C8578D
+	.global song0405_3
+song0405_3:	@ 0x08C8578D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194203,8 +194203,8 @@ gUnknown_08C858B0_3:	@ 0x08C8578D
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C858B0_4
-gUnknown_08C858B0_4:	@ 0x08C857C3
+	.global song0405_4
+song0405_4:	@ 0x08C857C3
 	.byte	0xBE
 	.byte	0x6E
 	.byte	0xBC
@@ -194242,8 +194242,8 @@ gUnknown_08C858B0_4:	@ 0x08C857C3
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C858B0_5
-gUnknown_08C858B0_5:	@ 0x08C857E5
+	.global song0405_5
+song0405_5:	@ 0x08C857E5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194280,8 +194280,8 @@ gUnknown_08C858B0_5:	@ 0x08C857E5
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C858B0_6
-gUnknown_08C858B0_6:	@ 0x08C85806
+	.global song0405_6
+song0405_6:	@ 0x08C85806
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194319,8 +194319,8 @@ gUnknown_08C858B0_6:	@ 0x08C85806
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C858B0_7
-gUnknown_08C858B0_7:	@ 0x08C85828
+	.global song0405_7
+song0405_7:	@ 0x08C85828
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194357,8 +194357,8 @@ gUnknown_08C858B0_7:	@ 0x08C85828
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C858B0_8
-gUnknown_08C858B0_8:	@ 0x08C85849
+	.global song0405_8
+song0405_8:	@ 0x08C85849
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194464,8 +194464,8 @@ gUnknown_08C858B0_8:	@ 0x08C85849
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C858B0
-gUnknown_08C858B0:	@ 0x08C858B0
+	.global song0405
+song0405:	@ 0x08C858B0
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -194473,20 +194473,20 @@ gUnknown_08C858B0:	@ 0x08C858B0
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C858B0_1		@ track
-	.word	gUnknown_08C858B0_2		@ track
-	.word	gUnknown_08C858B0_3		@ track
-	.word	gUnknown_08C858B0_4		@ track
-	.word	gUnknown_08C858B0_5		@ track
-	.word	gUnknown_08C858B0_6		@ track
-	.word	gUnknown_08C858B0_7		@ track
-	.word	gUnknown_08C858B0_8		@ track
+	.word	song0405_1		@ track
+	.word	song0405_2		@ track
+	.word	song0405_3		@ track
+	.word	song0405_4		@ track
+	.word	song0405_5		@ track
+	.word	song0405_6		@ track
+	.word	song0405_7		@ track
+	.word	song0405_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C85C4C_1
-gUnknown_08C85C4C_1:	@ 0x08C858D8
+	.global song0406_1
+song0406_1:	@ 0x08C858D8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -194563,8 +194563,8 @@ gUnknown_08C85C4C_1:	@ 0x08C858D8
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C85C4C_2
-gUnknown_08C85C4C_2:	@ 0x08C85921
+	.global song0406_2
+song0406_2:	@ 0x08C85921
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194689,8 +194689,8 @@ gUnknown_08C85C4C_2:	@ 0x08C85921
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C85C4C_3
-gUnknown_08C85C4C_3:	@ 0x08C8599A
+	.global song0406_3
+song0406_3:	@ 0x08C8599A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194779,8 +194779,8 @@ gUnknown_08C85C4C_3:	@ 0x08C8599A
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C85C4C_4
-gUnknown_08C85C4C_4:	@ 0x08C859EF
+	.global song0406_4
+song0406_4:	@ 0x08C859EF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194838,8 +194838,8 @@ gUnknown_08C85C4C_4:	@ 0x08C859EF
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C85C4C_5
-gUnknown_08C85C4C_5:	@ 0x08C85A25
+	.global song0406_5
+song0406_5:	@ 0x08C85A25
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -194986,8 +194986,8 @@ gUnknown_08C85C4C_5:	@ 0x08C85A25
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C85C4C_6
-gUnknown_08C85C4C_6:	@ 0x08C85AB4
+	.global song0406_6
+song0406_6:	@ 0x08C85AB4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195133,8 +195133,8 @@ gUnknown_08C85C4C_6:	@ 0x08C85AB4
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C85C4C_7
-gUnknown_08C85C4C_7:	@ 0x08C85B42
+	.global song0406_7
+song0406_7:	@ 0x08C85B42
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195196,8 +195196,8 @@ gUnknown_08C85C4C_7:	@ 0x08C85B42
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C85C4C_8
-gUnknown_08C85C4C_8:	@ 0x08C85B7C
+	.global song0406_8
+song0406_8:	@ 0x08C85B7C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195257,8 +195257,8 @@ gUnknown_08C85C4C_8:	@ 0x08C85B7C
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C85C4C_9
-gUnknown_08C85C4C_9:	@ 0x08C85BB4
+	.global song0406_9
+song0406_9:	@ 0x08C85BB4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195413,8 +195413,8 @@ gUnknown_08C85C4C_9:	@ 0x08C85BB4
 	.byte	0xB1
 
 	.align 2
-	.global gUnknown_08C85C4C
-gUnknown_08C85C4C:	@ 0x08C85C4C
+	.global song0406
+song0406:	@ 0x08C85C4C
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -195422,21 +195422,21 @@ gUnknown_08C85C4C:	@ 0x08C85C4C
 
 	.word	voicegroup022		@ voicegroup/tone
 
-	.word	gUnknown_08C85C4C_1		@ track
-	.word	gUnknown_08C85C4C_2		@ track
-	.word	gUnknown_08C85C4C_3		@ track
-	.word	gUnknown_08C85C4C_4		@ track
-	.word	gUnknown_08C85C4C_5		@ track
-	.word	gUnknown_08C85C4C_6		@ track
-	.word	gUnknown_08C85C4C_7		@ track
-	.word	gUnknown_08C85C4C_8		@ track
-	.word	gUnknown_08C85C4C_9		@ track
+	.word	song0406_1		@ track
+	.word	song0406_2		@ track
+	.word	song0406_3		@ track
+	.word	song0406_4		@ track
+	.word	song0406_5		@ track
+	.word	song0406_6		@ track
+	.word	song0406_7		@ track
+	.word	song0406_8		@ track
+	.word	song0406_9		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C85D80_1
-gUnknown_08C85D80_1:	@ 0x08C85C78
+	.global song0407_1
+song0407_1:	@ 0x08C85C78
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -195577,8 +195577,8 @@ gUnknown_08C85D80_1:	@ 0x08C85C78
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C85D80_2
-gUnknown_08C85D80_2:	@ 0x08C85D01
+	.global song0407_2
+song0407_2:	@ 0x08C85D01
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195640,8 +195640,8 @@ gUnknown_08C85D80_2:	@ 0x08C85D01
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C85D80_3
-gUnknown_08C85D80_3:	@ 0x08C85D3B
+	.global song0407_3
+song0407_3:	@ 0x08C85D3B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195671,8 +195671,8 @@ gUnknown_08C85D80_3:	@ 0x08C85D3B
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C85D80_4
-gUnknown_08C85D80_4:	@ 0x08C85D55
+	.global song0407_4
+song0407_4:	@ 0x08C85D55
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195718,8 +195718,8 @@ gUnknown_08C85D80_4:	@ 0x08C85D55
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C85D80
-gUnknown_08C85D80:	@ 0x08C85D80
+	.global song0407
+song0407:	@ 0x08C85D80
 	.byte	4		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -195727,16 +195727,16 @@ gUnknown_08C85D80:	@ 0x08C85D80
 
 	.word	voicegroup007		@ voicegroup/tone
 
-	.word	gUnknown_08C85D80_1		@ track
-	.word	gUnknown_08C85D80_2		@ track
-	.word	gUnknown_08C85D80_3		@ track
-	.word	gUnknown_08C85D80_4		@ track
+	.word	song0407_1		@ track
+	.word	song0407_2		@ track
+	.word	song0407_3		@ track
+	.word	song0407_4		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C8605C_1
-gUnknown_08C8605C_1:	@ 0x08C85D98
+	.global song0408_1
+song0408_1:	@ 0x08C85D98
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -195791,8 +195791,8 @@ gUnknown_08C8605C_1:	@ 0x08C85D98
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C8605C_2
-gUnknown_08C8605C_2:	@ 0x08C85DCB
+	.global song0408_2
+song0408_2:	@ 0x08C85DCB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195875,8 +195875,8 @@ gUnknown_08C8605C_2:	@ 0x08C85DCB
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C8605C_3
-gUnknown_08C8605C_3:	@ 0x08C85E1A
+	.global song0408_3
+song0408_3:	@ 0x08C85E1A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -195946,8 +195946,8 @@ gUnknown_08C8605C_3:	@ 0x08C85E1A
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C8605C_4
-gUnknown_08C8605C_4:	@ 0x08C85E5C
+	.global song0408_4
+song0408_4:	@ 0x08C85E5C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196170,8 +196170,8 @@ gUnknown_08C8605C_4:	@ 0x08C85E5C
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C8605C_5
-gUnknown_08C8605C_5:	@ 0x08C85F37
+	.global song0408_5
+song0408_5:	@ 0x08C85F37
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196247,8 +196247,8 @@ gUnknown_08C8605C_5:	@ 0x08C85F37
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C8605C_6
-gUnknown_08C8605C_6:	@ 0x08C85F7F
+	.global song0408_6
+song0408_6:	@ 0x08C85F7F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196472,8 +196472,8 @@ gUnknown_08C8605C_6:	@ 0x08C85F7F
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C8605C
-gUnknown_08C8605C:	@ 0x08C8605C
+	.global song0408
+song0408:	@ 0x08C8605C
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -196481,18 +196481,18 @@ gUnknown_08C8605C:	@ 0x08C8605C
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C8605C_1		@ track
-	.word	gUnknown_08C8605C_2		@ track
-	.word	gUnknown_08C8605C_3		@ track
-	.word	gUnknown_08C8605C_4		@ track
-	.word	gUnknown_08C8605C_5		@ track
-	.word	gUnknown_08C8605C_6		@ track
+	.word	song0408_1		@ track
+	.word	song0408_2		@ track
+	.word	song0408_3		@ track
+	.word	song0408_4		@ track
+	.word	song0408_5		@ track
+	.word	song0408_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C861FC_1
-gUnknown_08C861FC_1:	@ 0x08C8607C
+	.global song0410_1
+song0410_1:	@ 0x08C8607C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -196552,8 +196552,8 @@ gUnknown_08C861FC_1:	@ 0x08C8607C
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C861FC_2
-gUnknown_08C861FC_2:	@ 0x08C860B4
+	.global song0410_2
+song0410_2:	@ 0x08C860B4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196598,8 +196598,8 @@ gUnknown_08C861FC_2:	@ 0x08C860B4
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C861FC_3
-gUnknown_08C861FC_3:	@ 0x08C860DD
+	.global song0410_3
+song0410_3:	@ 0x08C860DD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196642,8 +196642,8 @@ gUnknown_08C861FC_3:	@ 0x08C860DD
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C861FC_4
-gUnknown_08C861FC_4:	@ 0x08C86104
+	.global song0410_4
+song0410_4:	@ 0x08C86104
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196688,8 +196688,8 @@ gUnknown_08C861FC_4:	@ 0x08C86104
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C861FC_5
-gUnknown_08C861FC_5:	@ 0x08C8612D
+	.global song0410_5
+song0410_5:	@ 0x08C8612D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196733,8 +196733,8 @@ gUnknown_08C861FC_5:	@ 0x08C8612D
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C861FC_6
-gUnknown_08C861FC_6:	@ 0x08C86155
+	.global song0410_6
+song0410_6:	@ 0x08C86155
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196819,8 +196819,8 @@ gUnknown_08C861FC_6:	@ 0x08C86155
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C861FC_7
-gUnknown_08C861FC_7:	@ 0x08C861A6
+	.global song0410_7
+song0410_7:	@ 0x08C861A6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196865,8 +196865,8 @@ gUnknown_08C861FC_7:	@ 0x08C861A6
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C861FC_8
-gUnknown_08C861FC_8:	@ 0x08C861CF
+	.global song0410_8
+song0410_8:	@ 0x08C861CF
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -196914,8 +196914,8 @@ gUnknown_08C861FC_8:	@ 0x08C861CF
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C861FC
-gUnknown_08C861FC:	@ 0x08C861FC
+	.global song0410
+song0410:	@ 0x08C861FC
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -196923,20 +196923,20 @@ gUnknown_08C861FC:	@ 0x08C861FC
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C861FC_1		@ track
-	.word	gUnknown_08C861FC_2		@ track
-	.word	gUnknown_08C861FC_3		@ track
-	.word	gUnknown_08C861FC_4		@ track
-	.word	gUnknown_08C861FC_5		@ track
-	.word	gUnknown_08C861FC_6		@ track
-	.word	gUnknown_08C861FC_7		@ track
-	.word	gUnknown_08C861FC_8		@ track
+	.word	song0410_1		@ track
+	.word	song0410_2		@ track
+	.word	song0410_3		@ track
+	.word	song0410_4		@ track
+	.word	song0410_5		@ track
+	.word	song0410_6		@ track
+	.word	song0410_7		@ track
+	.word	song0410_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C86410_1
-gUnknown_08C86410_1:	@ 0x08C86224
+	.global song0411_1
+song0411_1:	@ 0x08C86224
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -196993,8 +196993,8 @@ gUnknown_08C86410_1:	@ 0x08C86224
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C86410_2
-gUnknown_08C86410_2:	@ 0x08C86259
+	.global song0411_2
+song0411_2:	@ 0x08C86259
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197050,8 +197050,8 @@ gUnknown_08C86410_2:	@ 0x08C86259
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C86410_3
-gUnknown_08C86410_3:	@ 0x08C8628D
+	.global song0411_3
+song0411_3:	@ 0x08C8628D
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197081,8 +197081,8 @@ gUnknown_08C86410_3:	@ 0x08C8628D
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C86410_4
-gUnknown_08C86410_4:	@ 0x08C862A7
+	.global song0411_4
+song0411_4:	@ 0x08C862A7
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197154,8 +197154,8 @@ gUnknown_08C86410_4:	@ 0x08C862A7
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C86410_5
-gUnknown_08C86410_5:	@ 0x08C862EB
+	.global song0411_5
+song0411_5:	@ 0x08C862EB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197208,8 +197208,8 @@ gUnknown_08C86410_5:	@ 0x08C862EB
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C86410_6
-gUnknown_08C86410_6:	@ 0x08C8631C
+	.global song0411_6
+song0411_6:	@ 0x08C8631C
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197267,8 +197267,8 @@ gUnknown_08C86410_6:	@ 0x08C8631C
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C86410_7
-gUnknown_08C86410_7:	@ 0x08C86352
+	.global song0411_7
+song0411_7:	@ 0x08C86352
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197417,8 +197417,8 @@ gUnknown_08C86410_7:	@ 0x08C86352
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C86410_8
-gUnknown_08C86410_8:	@ 0x08C863E3
+	.global song0411_8
+song0411_8:	@ 0x08C863E3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197466,8 +197466,8 @@ gUnknown_08C86410_8:	@ 0x08C863E3
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C86410
-gUnknown_08C86410:	@ 0x08C86410
+	.global song0411
+song0411:	@ 0x08C86410
 	.byte	8		@ trackCount
 	.byte	0		@ blockCount
 	.byte	255		@ priority
@@ -197475,20 +197475,20 @@ gUnknown_08C86410:	@ 0x08C86410
 
 	.word	voicegroup023		@ voicegroup/tone
 
-	.word	gUnknown_08C86410_1		@ track
-	.word	gUnknown_08C86410_2		@ track
-	.word	gUnknown_08C86410_3		@ track
-	.word	gUnknown_08C86410_4		@ track
-	.word	gUnknown_08C86410_5		@ track
-	.word	gUnknown_08C86410_6		@ track
-	.word	gUnknown_08C86410_7		@ track
-	.word	gUnknown_08C86410_8		@ track
+	.word	song0411_1		@ track
+	.word	song0411_2		@ track
+	.word	song0411_3		@ track
+	.word	song0411_4		@ track
+	.word	song0411_5		@ track
+	.word	song0411_6		@ track
+	.word	song0411_7		@ track
+	.word	song0411_8		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C864AC_1
-gUnknown_08C864AC_1:	@ 0x08C86438
+	.global song0412_1
+song0412_1:	@ 0x08C86438
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -197516,8 +197516,8 @@ gUnknown_08C864AC_1:	@ 0x08C86438
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C864AC_2
-gUnknown_08C864AC_2:	@ 0x08C86450
+	.global song0412_2
+song0412_2:	@ 0x08C86450
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197543,8 +197543,8 @@ gUnknown_08C864AC_2:	@ 0x08C86450
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C864AC_3
-gUnknown_08C864AC_3:	@ 0x08C86466
+	.global song0412_3
+song0412_3:	@ 0x08C86466
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197569,8 +197569,8 @@ gUnknown_08C864AC_3:	@ 0x08C86466
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C864AC_4
-gUnknown_08C864AC_4:	@ 0x08C8647B
+	.global song0412_4
+song0412_4:	@ 0x08C8647B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197596,8 +197596,8 @@ gUnknown_08C864AC_4:	@ 0x08C8647B
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C864AC_5
-gUnknown_08C864AC_5:	@ 0x08C86491
+	.global song0412_5
+song0412_5:	@ 0x08C86491
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197627,8 +197627,8 @@ gUnknown_08C864AC_5:	@ 0x08C86491
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C864AC
-gUnknown_08C864AC:	@ 0x08C864AC
+	.global song0412
+song0412:	@ 0x08C864AC
 	.byte	5		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -197636,17 +197636,17 @@ gUnknown_08C864AC:	@ 0x08C864AC
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C864AC_1		@ track
-	.word	gUnknown_08C864AC_2		@ track
-	.word	gUnknown_08C864AC_3		@ track
-	.word	gUnknown_08C864AC_4		@ track
-	.word	gUnknown_08C864AC_5		@ track
+	.word	song0412_1		@ track
+	.word	song0412_2		@ track
+	.word	song0412_3		@ track
+	.word	song0412_4		@ track
+	.word	song0412_5		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C86580_1
-gUnknown_08C86580_1:	@ 0x08C864C8
+	.global song0413_1
+song0413_1:	@ 0x08C864C8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -197698,8 +197698,8 @@ gUnknown_08C86580_1:	@ 0x08C864C8
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C86580_2
-gUnknown_08C86580_2:	@ 0x08C864F8
+	.global song0413_2
+song0413_2:	@ 0x08C864F8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197747,8 +197747,8 @@ gUnknown_08C86580_2:	@ 0x08C864F8
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C86580_3
-gUnknown_08C86580_3:	@ 0x08C86524
+	.global song0413_3
+song0413_3:	@ 0x08C86524
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197798,8 +197798,8 @@ gUnknown_08C86580_3:	@ 0x08C86524
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C86580_4
-gUnknown_08C86580_4:	@ 0x08C86552
+	.global song0413_4
+song0413_4:	@ 0x08C86552
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197848,8 +197848,8 @@ gUnknown_08C86580_4:	@ 0x08C86552
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C86580
-gUnknown_08C86580:	@ 0x08C86580
+	.global song0413
+song0413:	@ 0x08C86580
 	.byte	4		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -197857,16 +197857,16 @@ gUnknown_08C86580:	@ 0x08C86580
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C86580_1		@ track
-	.word	gUnknown_08C86580_2		@ track
-	.word	gUnknown_08C86580_3		@ track
-	.word	gUnknown_08C86580_4		@ track
+	.word	song0413_1		@ track
+	.word	song0413_2		@ track
+	.word	song0413_3		@ track
+	.word	song0413_4		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C86600_1
-gUnknown_08C86600_1:	@ 0x08C86598
+	.global song0414_1
+song0414_1:	@ 0x08C86598
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -197897,8 +197897,8 @@ gUnknown_08C86600_1:	@ 0x08C86598
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C86600_2
-gUnknown_08C86600_2:	@ 0x08C865B3
+	.global song0414_2
+song0414_2:	@ 0x08C865B3
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197927,8 +197927,8 @@ gUnknown_08C86600_2:	@ 0x08C865B3
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C86600_3
-gUnknown_08C86600_3:	@ 0x08C865CC
+	.global song0414_3
+song0414_3:	@ 0x08C865CC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197957,8 +197957,8 @@ gUnknown_08C86600_3:	@ 0x08C865CC
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C86600_4
-gUnknown_08C86600_4:	@ 0x08C865E5
+	.global song0414_4
+song0414_4:	@ 0x08C865E5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -197988,8 +197988,8 @@ gUnknown_08C86600_4:	@ 0x08C865E5
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C86600
-gUnknown_08C86600:	@ 0x08C86600
+	.global song0414
+song0414:	@ 0x08C86600
 	.byte	4		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -197997,16 +197997,16 @@ gUnknown_08C86600:	@ 0x08C86600
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C86600_1		@ track
-	.word	gUnknown_08C86600_2		@ track
-	.word	gUnknown_08C86600_3		@ track
-	.word	gUnknown_08C86600_4		@ track
+	.word	song0414_1		@ track
+	.word	song0414_2		@ track
+	.word	song0414_3		@ track
+	.word	song0414_4		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C868F8_1
-gUnknown_08C868F8_1:	@ 0x08C86618
+	.global song0415_1
+song0415_1:	@ 0x08C86618
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -198066,8 +198066,8 @@ gUnknown_08C868F8_1:	@ 0x08C86618
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C868F8_2
-gUnknown_08C868F8_2:	@ 0x08C86650
+	.global song0415_2
+song0415_2:	@ 0x08C86650
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198175,8 +198175,8 @@ gUnknown_08C868F8_2:	@ 0x08C86650
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C868F8_3
-gUnknown_08C868F8_3:	@ 0x08C866B8
+	.global song0415_3
+song0415_3:	@ 0x08C866B8
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198246,8 +198246,8 @@ gUnknown_08C868F8_3:	@ 0x08C866B8
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C868F8_4
-gUnknown_08C868F8_4:	@ 0x08C866FA
+	.global song0415_4
+song0415_4:	@ 0x08C866FA
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198485,8 +198485,8 @@ gUnknown_08C868F8_4:	@ 0x08C866FA
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C868F8_5
-gUnknown_08C868F8_5:	@ 0x08C867E4
+	.global song0415_5
+song0415_5:	@ 0x08C867E4
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198561,8 +198561,8 @@ gUnknown_08C868F8_5:	@ 0x08C867E4
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C868F8_6
-gUnknown_08C868F8_6:	@ 0x08C8682B
+	.global song0415_6
+song0415_6:	@ 0x08C8682B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198770,8 +198770,8 @@ gUnknown_08C868F8_6:	@ 0x08C8682B
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C868F8
-gUnknown_08C868F8:	@ 0x08C868F8
+	.global song0415
+song0415:	@ 0x08C868F8
 	.byte	6		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -198779,18 +198779,18 @@ gUnknown_08C868F8:	@ 0x08C868F8
 
 	.word	voicegroup013		@ voicegroup/tone
 
-	.word	gUnknown_08C868F8_1		@ track
-	.word	gUnknown_08C868F8_2		@ track
-	.word	gUnknown_08C868F8_3		@ track
-	.word	gUnknown_08C868F8_4		@ track
-	.word	gUnknown_08C868F8_5		@ track
-	.word	gUnknown_08C868F8_6		@ track
+	.word	song0415_1		@ track
+	.word	song0415_2		@ track
+	.word	song0415_3		@ track
+	.word	song0415_4		@ track
+	.word	song0415_5		@ track
+	.word	song0415_6		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C86A4C_1
-gUnknown_08C86A4C_1:	@ 0x08C86918
+	.global song0504_1
+song0504_1:	@ 0x08C86918
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -198845,8 +198845,8 @@ gUnknown_08C86A4C_1:	@ 0x08C86918
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C86A4C_2
-gUnknown_08C86A4C_2:	@ 0x08C8694B
+	.global song0504_2
+song0504_2:	@ 0x08C8694B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198882,8 +198882,8 @@ gUnknown_08C86A4C_2:	@ 0x08C8694B
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C86A4C_3
-gUnknown_08C86A4C_3:	@ 0x08C8696B
+	.global song0504_3
+song0504_3:	@ 0x08C8696B
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198918,8 +198918,8 @@ gUnknown_08C86A4C_3:	@ 0x08C8696B
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C86A4C_4
-gUnknown_08C86A4C_4:	@ 0x08C8698A
+	.global song0504_4
+song0504_4:	@ 0x08C8698A
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198957,8 +198957,8 @@ gUnknown_08C86A4C_4:	@ 0x08C8698A
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C86A4C_5
-gUnknown_08C86A4C_5:	@ 0x08C869AC
+	.global song0504_5
+song0504_5:	@ 0x08C869AC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -198994,8 +198994,8 @@ gUnknown_08C86A4C_5:	@ 0x08C869AC
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C86A4C_6
-gUnknown_08C86A4C_6:	@ 0x08C869CC
+	.global song0504_6
+song0504_6:	@ 0x08C869CC
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199030,8 +199030,8 @@ gUnknown_08C86A4C_6:	@ 0x08C869CC
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C86A4C_7
-gUnknown_08C86A4C_7:	@ 0x08C869EB
+	.global song0504_7
+song0504_7:	@ 0x08C869EB
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199131,8 +199131,8 @@ gUnknown_08C86A4C_7:	@ 0x08C869EB
 	.byte	0x00
 
 	.align 2
-	.global gUnknown_08C86A4C
-gUnknown_08C86A4C:	@ 0x08C86A4C
+	.global song0504
+song0504:	@ 0x08C86A4C
 	.byte	7		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -199140,19 +199140,19 @@ gUnknown_08C86A4C:	@ 0x08C86A4C
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C86A4C_1		@ track
-	.word	gUnknown_08C86A4C_2		@ track
-	.word	gUnknown_08C86A4C_3		@ track
-	.word	gUnknown_08C86A4C_4		@ track
-	.word	gUnknown_08C86A4C_5		@ track
-	.word	gUnknown_08C86A4C_6		@ track
-	.word	gUnknown_08C86A4C_7		@ track
+	.word	song0504_1		@ track
+	.word	song0504_2		@ track
+	.word	song0504_3		@ track
+	.word	song0504_4		@ track
+	.word	song0504_5		@ track
+	.word	song0504_6		@ track
+	.word	song0504_7		@ track
 
 	.align 2
 	@********************** Track  1 **********************@
 
-	.global gUnknown_08C86C34_1
-gUnknown_08C86C34_1:	@ 0x08C86A70
+	.global song0505_1
+song0505_1:	@ 0x08C86A70
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBB
@@ -199210,8 +199210,8 @@ gUnknown_08C86C34_1:	@ 0x08C86A70
 
 	@********************** Track  2 **********************@
 
-	.global gUnknown_08C86C34_2
-gUnknown_08C86C34_2:	@ 0x08C86AA6
+	.global song0505_2
+song0505_2:	@ 0x08C86AA6
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199258,8 +199258,8 @@ gUnknown_08C86C34_2:	@ 0x08C86AA6
 
 	@********************** Track  3 **********************@
 
-	.global gUnknown_08C86C34_3
-gUnknown_08C86C34_3:	@ 0x08C86AD1
+	.global song0505_3
+song0505_3:	@ 0x08C86AD1
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199307,8 +199307,8 @@ gUnknown_08C86C34_3:	@ 0x08C86AD1
 
 	@********************** Track  4 **********************@
 
-	.global gUnknown_08C86C34_4
-gUnknown_08C86C34_4:	@ 0x08C86AFD
+	.global song0505_4
+song0505_4:	@ 0x08C86AFD
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199330,8 +199330,8 @@ gUnknown_08C86C34_4:	@ 0x08C86AFD
 
 	@********************** Track  5 **********************@
 
-	.global gUnknown_08C86C34_5
-gUnknown_08C86C34_5:	@ 0x08C86B0F
+	.global song0505_5
+song0505_5:	@ 0x08C86B0F
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199386,8 +199386,8 @@ gUnknown_08C86C34_5:	@ 0x08C86B0F
 
 	@********************** Track  6 **********************@
 
-	.global gUnknown_08C86C34_6
-gUnknown_08C86C34_6:	@ 0x08C86B42
+	.global song0505_6
+song0505_6:	@ 0x08C86B42
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199439,8 +199439,8 @@ gUnknown_08C86C34_6:	@ 0x08C86B42
 
 	@********************** Track  7 **********************@
 
-	.global gUnknown_08C86C34_7
-gUnknown_08C86C34_7:	@ 0x08C86B72
+	.global song0505_7
+song0505_7:	@ 0x08C86B72
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199543,8 +199543,8 @@ gUnknown_08C86C34_7:	@ 0x08C86B72
 
 	@********************** Track  8 **********************@
 
-	.global gUnknown_08C86C34_8
-gUnknown_08C86C34_8:	@ 0x08C86BD5
+	.global song0505_8
+song0505_8:	@ 0x08C86BD5
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199598,8 +199598,8 @@ gUnknown_08C86C34_8:	@ 0x08C86BD5
 
 	@********************** Track  9 **********************@
 
-	.global gUnknown_08C86C34_9
-gUnknown_08C86C34_9:	@ 0x08C86C07
+	.global song0505_9
+song0505_9:	@ 0x08C86C07
 	.byte	0xBC
 	.byte	0x00
 	.byte	0xBD
@@ -199647,8 +199647,8 @@ gUnknown_08C86C34_9:	@ 0x08C86C07
 	.byte	0x00
 
     .align 2
-	.global gUnknown_08C86C34
-gUnknown_08C86C34:	@ 0x08C86C34
+	.global song0505
+song0505:	@ 0x08C86C34
 	.byte	9		@ trackCount
 	.byte	0		@ blockCount
 	.byte	0		@ priority
@@ -199656,15 +199656,15 @@ gUnknown_08C86C34:	@ 0x08C86C34
 
 	.word	voicegroup010		@ voicegroup/tone
 
-	.word	gUnknown_08C86C34_1		@ track
-	.word	gUnknown_08C86C34_2		@ track
-	.word	gUnknown_08C86C34_3		@ track
-	.word	gUnknown_08C86C34_4		@ track
-	.word	gUnknown_08C86C34_5		@ track
-	.word	gUnknown_08C86C34_6		@ track
-	.word	gUnknown_08C86C34_7		@ track
-	.word	gUnknown_08C86C34_8		@ track
-	.word	gUnknown_08C86C34_9		@ track
+	.word	song0505_1		@ track
+	.word	song0505_2		@ track
+	.word	song0505_3		@ track
+	.word	song0505_4		@ track
+	.word	song0505_5		@ track
+	.word	song0505_6		@ track
+	.word	song0505_7		@ track
+	.word	song0505_8		@ track
+	.word	song0505_9		@ track
 	.align 2
 
 	@********************** Track  1 **********************@

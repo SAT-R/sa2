@@ -28,6 +28,7 @@ tone_to_vg = {
     '8AD3CBC': 'voicegroup022',
     '8AD470C': 'voicegroup024'
 }
+
 play_table_addr = 0x08AD4F1C
 num_players = 4
 song_table_addr = play_table_addr + (num_players * 12)
@@ -79,7 +80,8 @@ def extract_from_song_table(rom: BufferedReader):
         with open('songs.mk', "w") as f_songs_config:
             f_song_table.write("\t.align 2\n")
             f_song_table.write("\t.global gSongTable\n")
-            f_song_table.write(f"gSongTable:\t@ 0x{rom.tell():08d}\n")
+            song_table_addr = hex(rom.tell() + 0x08000000).split("0x")[1]
+            f_song_table.write(f"gSongTable:\t@ 0x0{song_table_addr.upper()}\n")
 
             for song_num in range(num_songs):
                 song_addr = read_u32(rom)
@@ -107,8 +109,10 @@ def extract_from_song_table(rom: BufferedReader):
 
             if "dummy_song_header" in list(song_addr_to_name.values()):
                 f_song_table.write("\n\t.align 2\n")
-                f_song_table.write("dummy_song_header\n")
+                f_song_table.write("dummy_song_header:\n")
                 f_song_table.write("\t.byte 0, 0, 0, 0\n")
+        
+    print(song_addr_to_name)
 
 with open('baserom.gba', 'rb') as rom:
     rom.seek(addr_to_offset(song_table_addr))
