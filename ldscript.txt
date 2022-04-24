@@ -328,9 +328,9 @@ SECTIONS
         build/sa2/sound/songs/song0413.o(.rodata);
         build/sa2/sound/songs/song0414.o(.rodata);
         build/sa2/sound/songs/song0415.o(.rodata);
-        build/sa2/sound/songs/song0504.o(.rodata);
-        build/sa2/sound/songs/song0505.o(.rodata);
-        build/sa2/sound/songs/song0506.o(.rodata);
+        build/sa2/sound/songs/midi/song0504.o(.rodata);
+        build/sa2/sound/songs/midi/song0505.o(.rodata);
+        build/sa2/sound/songs/midi/song0506.o(.rodata);
         build/sa2/src/agb_flash.o(.rodata);
         build/sa2/src/agb_flash_512k.o(.rodata);
         build/sa2/src/agb_flash_le_512k.o(.rodata);
