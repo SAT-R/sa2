@@ -13,6 +13,9 @@
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
+// TODO make static
+u32 gUnknown_03002790;
+
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);

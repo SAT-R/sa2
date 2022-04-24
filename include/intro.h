@@ -96,4 +96,6 @@ struct UNK_3005B80 {
     struct UNK_0808B3FC* unk4;
 };
 
+void sub_808B3FC_CreateIntro(void);
+
 #endif

@@ -4,6 +4,7 @@
 #include "init.h"
 #include "flags.h"
 #include "save.h"
+#include "intro.h"
 
 // likely static data, needs to be extracted
 extern union Unk_03002E60 gUnknown_080D5CE4[];
@@ -13,7 +14,6 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void sub_808B3FC_CreateIntro();
 void sub_808D41C_CreateTitleScreen();
 void sub_8063940_CreateProfileScreen();
 void sub_8081C0C();
