@@ -1,743 +1,517 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0408_1
 song0408_1:	@ 0x08C85D98
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x32
-	.byte	0xBD
-	.byte	0x7F
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x2D
-	.byte	0x7F
-	.byte	0x86
-	.byte	0xD3
-	.byte	0x26
-	.byte	0x4C
-	.byte	0xD4
-	.byte	0x2B
-	.byte	0x7F
-	.byte	0x86
-	.byte	0xD3
-	.byte	0x26
-	.byte	0x4C
-	.byte	0xD7
-	.byte	0x2A
-	.byte	0x7F
-	.byte	0x86
-	.byte	0x24
-	.byte	0xD4
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x86
-	.byte	0xD5
-	.byte	0x25
-	.byte	0x7F
-	.byte	0x86
-	.byte	0xD1
-	.byte	0xD3
-	.byte	0x26
-	.byte	0x4C
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x27
-	.byte	0xFB
-	.byte	0x31
-	.byte	0x7F
-	.byte	0xA2
-	.byte	0x9A
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 50
+	.byte	VOICE	, 127
+	.byte	VOL	, v105
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N05	, An1, v127
+	.byte	W06
+	.byte		N04	, Dn1, v076
+	.byte		N05	, Gn1, v127
+	.byte	W06
+	.byte		N04	, Dn1, v076
+	.byte		N08	, Fs1, v127
+	.byte	W06
+	.byte			Cn1
+	.byte		N05	, Ds1, v076
+	.byte	W06
+	.byte		N06	, Cs1, v127
+	.byte	W06
+	.byte		N02	
+	.byte		N04	, Dn1, v076
+	.byte	W06
+	.byte		N05	, Ds1
+	.byte		N84	, Cs2, v127
+	.byte	W54
+	.byte	W30
+	.byte	FINE
 
 	@********************** Track  2 **********************@
 
 	.global song0408_2
 song0408_2:	@ 0x08C85DCB
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x22
-	.byte	0xC4
-	.byte	0x00
-	.byte	0xC1
-	.byte	0x00
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD3
-	.byte	0x24
-	.byte	0x7F
-	.byte	0xD3
-	.byte	0x28
-	.byte	0x86
-	.byte	0xD2
-	.byte	0xD3
-	.byte	0x2B
-	.byte	0x86
-	.byte	0xD3
-	.byte	0xD3
-	.byte	0x30
-	.byte	0x86
-	.byte	0xD5
-	.byte	0xD5
-	.byte	0x34
-	.byte	0x8C
-	.byte	0xD2
-	.byte	0x2B
-	.byte	0xD3
-	.byte	0x30
-	.byte	0x86
-	.byte	0xCF
-	.byte	0x32
-	.byte	0xCF
-	.byte	0x35
-	.byte	0xA2
-	.byte	0xA0
-	.byte	0xBE
-	.byte	0x69
-	.byte	0x86
-	.byte	0x63
-	.byte	0x86
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x55
-	.byte	0x86
-	.byte	0x4F
-	.byte	0x86
-	.byte	0x48
-	.byte	0x86
-	.byte	0x42
-	.byte	0x86
-	.byte	0x3B
-	.byte	0x86
-	.byte	0x34
-	.byte	0x86
-	.byte	0x2E
-	.byte	0x86
-	.byte	0x27
-	.byte	0x86
-	.byte	0x21
-	.byte	0x86
-	.byte	0x1A
-	.byte	0x86
-	.byte	0x13
-	.byte	0x86
-	.byte	0x0D
-	.byte	0x86
-	.byte	0x06
-	.byte	0x86
-	.byte	0xCE
-	.byte	0x32
-	.byte	0x35
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 34
+	.byte	MOD	, 0
+	.byte	BENDR	, 0
+	.byte	VOL	, v105
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N04	, Cn1, v127
+	.byte		N04	, En1
+	.byte	W06
+	.byte		N03	
+	.byte		N04	, Gn1
+	.byte	W06
+	.byte		N04	
+	.byte		N04	, Cn2
+	.byte	W06
+	.byte		N06	
+	.byte		N06	, En2
+	.byte	W12
+	.byte		N03	, Gn1
+	.byte		N04	, Cn2
+	.byte	W06
+	.byte		TIE	, Dn2
+	.byte		TIE	, Fn2
+	.byte	W54
+	.byte	W48
+	.byte	VOL	, v105
+	.byte	W06
+	.byte		v099
+	.byte	W06
+	.byte		v092
+	.byte	W06
+	.byte		v085
+	.byte	W06
+	.byte		v079
+	.byte	W06
+	.byte		v072
+	.byte	W06
+	.byte		v066
+	.byte	W06
+	.byte		v059
+	.byte	W06
+	.byte		v052
+	.byte	W06
+	.byte		v046
+	.byte	W06
+	.byte		v039
+	.byte	W06
+	.byte		v033
+	.byte	W06
+	.byte		v026
+	.byte	W06
+	.byte		v019
+	.byte	W06
+	.byte		v013
+	.byte	W06
+	.byte		v006
+	.byte	W06
+	.byte		EOT	, Dn2
+	.byte			Fn2
+	.byte	FINE
 
 	@********************** Track  3 **********************@
 
 	.global song0408_3
 song0408_3:	@ 0x08C85E1A
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x29
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x34
-	.byte	0x78
-	.byte	0x86
-	.byte	0x37
-	.byte	0x6C
-	.byte	0x86
-	.byte	0x3C
-	.byte	0x86
-	.byte	0xDB
-	.byte	0x40
-	.byte	0x7F
-	.byte	0x8C
-	.byte	0xD4
-	.byte	0x3C
-	.byte	0x74
-	.byte	0x86
-	.byte	0xCF
-	.byte	0x41
-	.byte	0x7F
-	.byte	0xA2
-	.byte	0xA0
-	.byte	0xBE
-	.byte	0x69
-	.byte	0x86
-	.byte	0x63
-	.byte	0x86
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x55
-	.byte	0x86
-	.byte	0x4F
-	.byte	0x86
-	.byte	0x48
-	.byte	0x86
-	.byte	0x42
-	.byte	0x86
-	.byte	0x3B
-	.byte	0x86
-	.byte	0x34
-	.byte	0x86
-	.byte	0x2E
-	.byte	0x86
-	.byte	0x27
-	.byte	0x86
-	.byte	0x21
-	.byte	0x86
-	.byte	0x1A
-	.byte	0x86
-	.byte	0x13
-	.byte	0x86
-	.byte	0x0D
-	.byte	0x86
-	.byte	0x06
-	.byte	0x86
-	.byte	0xCE
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 41
+	.byte	VOL	, v105
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N05	, En2, v120
+	.byte	W06
+	.byte			Gn2, v108
+	.byte	W06
+	.byte			Cn3
+	.byte	W06
+	.byte		N12	, En3, v127
+	.byte	W12
+	.byte		N05	, Cn3, v116
+	.byte	W06
+	.byte		TIE	, Fn3, v127
+	.byte	W54
+	.byte	W48
+	.byte	VOL	, v105
+	.byte	W06
+	.byte		v099
+	.byte	W06
+	.byte		v092
+	.byte	W06
+	.byte		v085
+	.byte	W06
+	.byte		v079
+	.byte	W06
+	.byte		v072
+	.byte	W06
+	.byte		v066
+	.byte	W06
+	.byte		v059
+	.byte	W06
+	.byte		v052
+	.byte	W06
+	.byte		v046
+	.byte	W06
+	.byte		v039
+	.byte	W06
+	.byte		v033
+	.byte	W06
+	.byte		v026
+	.byte	W06
+	.byte		v019
+	.byte	W06
+	.byte		v013
+	.byte	W06
+	.byte		v006
+	.byte	W06
+	.byte		EOT	
+	.byte	FINE
 
 	@********************** Track  4 **********************@
 
 	.global song0408_4
 song0408_4:	@ 0x08C85E5C
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x69
-	.byte	0xC4
-	.byte	0x01
-	.byte	0xC1
-	.byte	0x00
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x3C
-	.byte	0x58
-	.byte	0x86
-	.byte	0x40
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x43
-	.byte	0x86
-	.byte	0xD5
-	.byte	0x48
-	.byte	0x60
-	.byte	0x8C
-	.byte	0xD4
-	.byte	0x43
-	.byte	0x50
-	.byte	0x86
-	.byte	0xF1
-	.byte	0x46
-	.byte	0x30
-	.byte	0x9C
-	.byte	0xD1
-	.byte	0x65
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x5E
-	.byte	0x83
-	.byte	0x62
-	.byte	0x83
-	.byte	0x5B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x5E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x59
-	.byte	0x83
-	.byte	0x5B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x56
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x59
-	.byte	0x83
-	.byte	0x52
-	.byte	0x83
-	.byte	0x56
-	.byte	0x83
-	.byte	0x4F
-	.byte	0x50
-	.byte	0x83
-	.byte	0x52
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x4D
-	.byte	0x50
-	.byte	0x83
-	.byte	0x4F
-	.byte	0x83
-	.byte	0x4A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x4D
-	.byte	0x83
-	.byte	0x46
-	.byte	0x83
-	.byte	0x4A
-	.byte	0x83
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0x46
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x41
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xD1
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x63
-	.byte	0xD1
-	.byte	0x41
-	.byte	0x83
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x5C
-	.byte	0xD1
-	.byte	0x3E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x41
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x55
-	.byte	0xD1
-	.byte	0x3A
-	.byte	0x83
-	.byte	0x3E
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x4F
-	.byte	0xD1
-	.byte	0x37
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x48
-	.byte	0xD1
-	.byte	0x37
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x42
-	.byte	0xD1
-	.byte	0x35
-	.byte	0x50
-	.byte	0x83
-	.byte	0x37
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x3B
-	.byte	0xD1
-	.byte	0x32
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x35
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x34
-	.byte	0xD1
-	.byte	0x2E
-	.byte	0x83
-	.byte	0x32
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x2E
-	.byte	0xD1
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x2E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x27
-	.byte	0xD1
-	.byte	0x29
-	.byte	0x83
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x21
-	.byte	0xD1
-	.byte	0x26
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x29
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x1A
-	.byte	0xD1
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x26
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x13
-	.byte	0xD1
-	.byte	0x29
-	.byte	0x83
-	.byte	0x22
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x0D
-	.byte	0xD1
-	.byte	0x26
-	.byte	0x83
-	.byte	0x1F
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x06
-	.byte	0xD1
-	.byte	0x22
-	.byte	0x5C
-	.byte	0x82
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 105
+	.byte	MOD	, 1
+	.byte	BENDR	, 0
+	.byte	VOL	, v105
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N05	, Cn3, v088
+	.byte	W06
+	.byte			En3, v076
+	.byte	W06
+	.byte			Gn3
+	.byte	W06
+	.byte		N06	, Cn4, v096
+	.byte	W12
+	.byte		N05	, Gn3, v080
+	.byte	W06
+	.byte		N54	, As3, v048
+	.byte	W36
+	.byte		N02	, Fn6, v092
+	.byte	W03
+	.byte			As5
+	.byte	W03
+	.byte			Dn6
+	.byte	W03
+	.byte			Gn5, v080
+	.byte	W03
+	.byte			As5, v092
+	.byte	W03
+	.byte			Fn5
+	.byte	W03
+	.byte			Gn5, v080
+	.byte	W03
+	.byte			Dn5, v092
+	.byte	W03
+	.byte			Fn5
+	.byte	W03
+	.byte			As4
+	.byte	W03
+	.byte			Dn5
+	.byte	W03
+	.byte			Gn4, v080
+	.byte	W03
+	.byte			As4, v092
+	.byte	W03
+	.byte			Fn4, v080
+	.byte	W03
+	.byte			Gn4
+	.byte	W03
+	.byte			Dn4, v092
+	.byte	W03
+	.byte			Fn4
+	.byte	W03
+	.byte			As3
+	.byte	W03
+	.byte			Dn4
+	.byte	W03
+	.byte			Gn3, v080
+	.byte	W03
+	.byte			As3, v092
+	.byte	W03
+	.byte			Fn3
+	.byte	W03
+	.byte	VOL	, v105
+	.byte		N02	, Gn3, v080
+	.byte	W03
+	.byte			Dn3, v092
+	.byte	W03
+	.byte	VOL	, v099
+	.byte		N02	, Fn3
+	.byte	W03
+	.byte			Gn3, v080
+	.byte	W03
+	.byte	VOL	, v092
+	.byte		N02	, Dn3, v092
+	.byte	W03
+	.byte			Fn3
+	.byte	W03
+	.byte	VOL	, v085
+	.byte		N02	, As2
+	.byte	W03
+	.byte			Dn3
+	.byte	W03
+	.byte	VOL	, v079
+	.byte		N02	, Gn2, v080
+	.byte	W03
+	.byte			As2, v092
+	.byte	W03
+	.byte	VOL	, v072
+	.byte		N02	, Gn2, v080
+	.byte	W03
+	.byte			As2, v092
+	.byte	W03
+	.byte	VOL	, v066
+	.byte		N02	, Fn2, v080
+	.byte	W03
+	.byte			Gn2
+	.byte	W03
+	.byte	VOL	, v059
+	.byte		N02	, Dn2, v092
+	.byte	W03
+	.byte			Fn2
+	.byte	W03
+	.byte	VOL	, v052
+	.byte		N02	, As1
+	.byte	W03
+	.byte			Dn2
+	.byte	W03
+	.byte	VOL	, v046
+	.byte		N02	, Gn1, v080
+	.byte	W03
+	.byte			As1, v092
+	.byte	W03
+	.byte	VOL	, v039
+	.byte		N02	, Fn1
+	.byte	W03
+	.byte			Gn1, v080
+	.byte	W03
+	.byte	VOL	, v033
+	.byte		N02	, Dn1, v092
+	.byte	W03
+	.byte			Fn1
+	.byte	W03
+	.byte	VOL	, v026
+	.byte		N02	, Gn1, v080
+	.byte	W03
+	.byte			Dn1, v092
+	.byte	W03
+	.byte	VOL	, v019
+	.byte		N02	, Fn1
+	.byte	W03
+	.byte			As0
+	.byte	W03
+	.byte	VOL	, v013
+	.byte		N02	, Dn1
+	.byte	W03
+	.byte			Gn0, v080
+	.byte	W03
+	.byte	VOL	, v006
+	.byte		N02	, As0, v092
+	.byte	W02
+	.byte	FINE
 
 	@********************** Track  5 **********************@
 
 	.global song0408_5
 song0408_5:	@ 0x08C85F37
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x6B
-	.byte	0xC4
-	.byte	0x01
-	.byte	0xC1
-	.byte	0x00
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD5
-	.byte	0x30
-	.byte	0x6C
-	.byte	0x86
-	.byte	0x37
-	.byte	0x68
-	.byte	0x86
-	.byte	0x3C
-	.byte	0x6C
-	.byte	0x86
-	.byte	0x40
-	.byte	0x60
-	.byte	0x86
-	.byte	0x34
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x3C
-	.byte	0x60
-	.byte	0x86
-	.byte	0xCF
-	.byte	0x37
-	.byte	0x74
-	.byte	0xA2
-	.byte	0xA0
-	.byte	0xBE
-	.byte	0x69
-	.byte	0x86
-	.byte	0x63
-	.byte	0x86
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x55
-	.byte	0x86
-	.byte	0x4F
-	.byte	0x86
-	.byte	0x48
-	.byte	0x86
-	.byte	0x42
-	.byte	0x86
-	.byte	0x3B
-	.byte	0x86
-	.byte	0x34
-	.byte	0x86
-	.byte	0x2E
-	.byte	0x86
-	.byte	0x27
-	.byte	0x86
-	.byte	0x21
-	.byte	0x86
-	.byte	0x1A
-	.byte	0x86
-	.byte	0x13
-	.byte	0x86
-	.byte	0x0D
-	.byte	0x86
-	.byte	0x06
-	.byte	0x86
-	.byte	0xCE
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 107
+	.byte	MOD	, 1
+	.byte	BENDR	, 0
+	.byte	VOL	, v105
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N06	, Cn2, v108
+	.byte	W06
+	.byte			Gn2, v104
+	.byte	W06
+	.byte			Cn3, v108
+	.byte	W06
+	.byte			En3, v096
+	.byte	W06
+	.byte			En2, v092
+	.byte	W06
+	.byte			Cn3, v096
+	.byte	W06
+	.byte		TIE	, Gn2, v116
+	.byte	W54
+	.byte	W48
+	.byte	VOL	, v105
+	.byte	W06
+	.byte		v099
+	.byte	W06
+	.byte		v092
+	.byte	W06
+	.byte		v085
+	.byte	W06
+	.byte		v079
+	.byte	W06
+	.byte		v072
+	.byte	W06
+	.byte		v066
+	.byte	W06
+	.byte		v059
+	.byte	W06
+	.byte		v052
+	.byte	W06
+	.byte		v046
+	.byte	W06
+	.byte		v039
+	.byte	W06
+	.byte		v033
+	.byte	W06
+	.byte		v026
+	.byte	W06
+	.byte		v019
+	.byte	W06
+	.byte		v013
+	.byte	W06
+	.byte		v006
+	.byte	W06
+	.byte		EOT	
+	.byte	FINE
 
 	@********************** Track  6 **********************@
 
 	.global song0408_6
 song0408_6:	@ 0x08C85F7F
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x40
-	.byte	0xC4
-	.byte	0x01
-	.byte	0xC1
-	.byte	0x00
-	.byte	0xBE
-	.byte	0x5D
-	.byte	0xBF
-	.byte	0x40
-	.byte	0x86
-	.byte	0xD2
-	.byte	0x34
-	.byte	0x78
-	.byte	0x86
-	.byte	0x37
-	.byte	0x6C
-	.byte	0x86
-	.byte	0xD1
-	.byte	0x3C
-	.byte	0x86
-	.byte	0xD3
-	.byte	0x40
-	.byte	0x7F
-	.byte	0x8C
-	.byte	0xD1
-	.byte	0x3C
-	.byte	0x74
-	.byte	0x86
-	.byte	0xE9
-	.byte	0x41
-	.byte	0x7F
-	.byte	0x9A
-	.byte	0xD1
-	.byte	0x65
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x5E
-	.byte	0x83
-	.byte	0x62
-	.byte	0x83
-	.byte	0x5B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x5E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x59
-	.byte	0x83
-	.byte	0x5B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x56
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x5D
-	.byte	0xD1
-	.byte	0x59
-	.byte	0x83
-	.byte	0x52
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x57
-	.byte	0xD1
-	.byte	0x56
-	.byte	0x83
-	.byte	0x4F
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x51
-	.byte	0xD1
-	.byte	0x52
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x4D
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x4C
-	.byte	0xD1
-	.byte	0x4F
-	.byte	0x83
-	.byte	0x4A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x46
-	.byte	0xD1
-	.byte	0x4D
-	.byte	0x83
-	.byte	0x46
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x40
-	.byte	0xD1
-	.byte	0x4A
-	.byte	0x83
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x3A
-	.byte	0xD1
-	.byte	0x46
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x41
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x34
-	.byte	0xD1
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x2F
-	.byte	0xD1
-	.byte	0x41
-	.byte	0x83
-	.byte	0x43
-	.byte	0x50
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x29
-	.byte	0xD1
-	.byte	0x3E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x41
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x23
-	.byte	0xD1
-	.byte	0x3A
-	.byte	0x83
-	.byte	0x3E
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x1D
-	.byte	0xD1
-	.byte	0x37
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x17
-	.byte	0xD1
-	.byte	0x37
-	.byte	0x50
-	.byte	0x83
-	.byte	0x3A
-	.byte	0x5C
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x12
-	.byte	0xD1
-	.byte	0x35
-	.byte	0x50
-	.byte	0x83
-	.byte	0x37
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x0C
-	.byte	0xD1
-	.byte	0x32
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x35
-	.byte	0x83
-	.byte	0xBE
-	.byte	0x06
-	.byte	0xD1
-	.byte	0x2E
-	.byte	0x83
-	.byte	0x32
-	.byte	0x83
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x2E
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x29
-	.byte	0x83
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x26
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x29
-	.byte	0x83
-	.byte	0x2B
-	.byte	0x50
-	.byte	0x83
-	.byte	0x26
-	.byte	0x5C
-	.byte	0x83
-	.byte	0x29
-	.byte	0x83
-	.byte	0x22
-	.byte	0x83
-	.byte	0x26
-	.byte	0x83
-	.byte	0x1F
-	.byte	0x50
-	.byte	0x83
-	.byte	0x22
-	.byte	0x5C
-	.byte	0x82
-	.byte	0xB1
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 64
+	.byte	MOD	, 1
+	.byte	BENDR	, 0
+	.byte	VOL	, v093
+	.byte	PAN	, c_v
+	.byte	W06
+	.byte		N03	, En2, v120
+	.byte	W06
+	.byte			Gn2, v108
+	.byte	W06
+	.byte		N02	, Cn3
+	.byte	W06
+	.byte		N04	, En3, v127
+	.byte	W12
+	.byte		N02	, Cn3, v116
+	.byte	W06
+	.byte		N30	, Fn3, v127
+	.byte	W30
+	.byte		N02	, Fn6, v092
+	.byte	W03
+	.byte			As5
+	.byte	W03
+	.byte			Dn6
+	.byte	W03
+	.byte			Gn5, v080
+	.byte	W03
+	.byte			As5, v092
+	.byte	W03
+	.byte			Fn5
+	.byte	W03
+	.byte			Gn5, v080
+	.byte	W03
+	.byte			Dn5, v092
+	.byte	W03
+	.byte	VOL	, v093
+	.byte		N02	, Fn5
+	.byte	W03
+	.byte			As4
+	.byte	W03
+	.byte	VOL	, v087
+	.byte		N02	, Dn5
+	.byte	W03
+	.byte			Gn4, v080
+	.byte	W03
+	.byte	VOL	, v081
+	.byte		N02	, As4, v092
+	.byte	W03
+	.byte			Fn4, v080
+	.byte	W03
+	.byte	VOL	, v076
+	.byte		N02	, Gn4
+	.byte	W03
+	.byte			Dn4, v092
+	.byte	W03
+	.byte	VOL	, v070
+	.byte		N02	, Fn4
+	.byte	W03
+	.byte			As3
+	.byte	W03
+	.byte	VOL	, v064
+	.byte		N02	, Dn4
+	.byte	W03
+	.byte			Gn3, v080
+	.byte	W03
+	.byte	VOL	, v058
+	.byte		N02	, As3, v092
+	.byte	W03
+	.byte			Fn3
+	.byte	W03
+	.byte	VOL	, v052
+	.byte		N02	, Gn3, v080
+	.byte	W03
+	.byte			Dn3, v092
+	.byte	W03
+	.byte	VOL	, v047
+	.byte		N02	, Fn3
+	.byte	W03
+	.byte			Gn3, v080
+	.byte	W03
+	.byte	VOL	, v041
+	.byte		N02	, Dn3, v092
+	.byte	W03
+	.byte			Fn3
+	.byte	W03
+	.byte	VOL	, v035
+	.byte		N02	, As2
+	.byte	W03
+	.byte			Dn3
+	.byte	W03
+	.byte	VOL	, v029
+	.byte		N02	, Gn2, v080
+	.byte	W03
+	.byte			As2, v092
+	.byte	W03
+	.byte	VOL	, v023
+	.byte		N02	, Gn2, v080
+	.byte	W03
+	.byte			As2, v092
+	.byte	W03
+	.byte	VOL	, v018
+	.byte		N02	, Fn2, v080
+	.byte	W03
+	.byte			Gn2
+	.byte	W03
+	.byte	VOL	, v012
+	.byte		N02	, Dn2, v092
+	.byte	W03
+	.byte			Fn2
+	.byte	W03
+	.byte	VOL	, v006
+	.byte		N02	, As1
+	.byte	W03
+	.byte			Dn2
+	.byte	W03
+	.byte			Gn1, v080
+	.byte	W03
+	.byte			As1, v092
+	.byte	W03
+	.byte			Fn1
+	.byte	W03
+	.byte			Gn1, v080
+	.byte	W03
+	.byte			Dn1, v092
+	.byte	W03
+	.byte			Fn1
+	.byte	W03
+	.byte			Gn1, v080
+	.byte	W03
+	.byte			Dn1, v092
+	.byte	W03
+	.byte			Fn1
+	.byte	W03
+	.byte			As0
+	.byte	W03
+	.byte			Dn1
+	.byte	W03
+	.byte			Gn0, v080
+	.byte	W03
+	.byte			As0, v092
+	.byte	W02
+	.byte	FINE
 
 	.align 2
 	.global song0408

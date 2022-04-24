@@ -1,72 +1,58 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0296_1
 song0296_1:	@ 0x08C84980
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x3C
-	.byte	0xBD
-	.byte	0x60
-	.byte	0xC1
-	.byte	0x0A
-	.byte	0xC4
-	.byte	0x6D
-	.byte	0xC2
-	.byte	0x07
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xBE
-	.byte	0x00
-	.byte	0xCF
-	.byte	0x50
-	.byte	0x7F
-	.byte	0x81
-	.byte	0xBE
-	.byte	0x0C
-	.byte	0x81
-	.byte	0x13
-	.byte	0x81
-	.byte	0x19
-	.byte	0x81
-	.byte	0x21
-	.byte	0x81
-	.byte	0x27
-	.byte	0x81
-	.byte	0x2E
-	.byte	0x81
-	.byte	0x34
-	.byte	0x81
-	.byte	0x3B
-	.byte	0x81
-	.byte	0x42
-	.byte	0x81
-	.byte	0x49
-	.byte	0x81
-	.byte	0x4F
-	.byte	0x81
-	.byte	0x56
-	.byte	0x81
-	.byte	0x5C
-	.byte	0x81
-	.byte	0x64
-	.byte	0x8A
-gUnknown_08C849B3:
-	.byte	0xA8
-	.byte	0xB2
-	.word	gUnknown_08C849B3
-	.byte	0xB0
-	.byte	0xCE
-	.byte	0x50
-	.byte	0xB1
-	.byte	0x00
-	.byte	0x00
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 60
+	.byte	VOICE	, 96
+	.byte	BENDR	, 10
+	.byte	MOD	, 109
+	.byte	LFOS	, 7
+	.byte	MODT	, 0
+	.byte	PAN	, c_v
+	.byte	VOL	, v000
+	.byte		TIE	, Gs4, v127
+	.byte	W01
+	.byte	VOL	, v012
+	.byte	W01
+	.byte		v019
+	.byte	W01
+	.byte		v025
+	.byte	W01
+	.byte		v033
+	.byte	W01
+	.byte		v039
+	.byte	W01
+	.byte		v046
+	.byte	W01
+	.byte		v052
+	.byte	W01
+	.byte		v059
+	.byte	W01
+	.byte		v066
+	.byte	W01
+	.byte		v073
+	.byte	W01
+	.byte		v079
+	.byte	W01
+	.byte		v086
+	.byte	W01
+	.byte		v092
+	.byte	W01
+	.byte		v100
+	.byte	W10
+song0296_1_1:
+	.byte	W72
+	.byte	GOTO	
+		.word	song0296_1_1
+	.byte	W96
+	.byte		EOT	, Gs4
+	.byte	FINE
 
 	.align 2
 	.global song0296

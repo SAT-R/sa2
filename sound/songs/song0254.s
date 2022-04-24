@@ -1,100 +1,80 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0254_1
 song0254_1:	@ 0x08C8341C
-	.byte	0xBC
-	.byte	0x00
-gUnknown_08C8341E:
-	.byte	0xBB
-	.byte	0x4B
-	.byte	0xBD
-	.byte	0x36
-	.byte	0xBE
-	.byte	0x64
-	.byte	0xC1
-	.byte	0x0F
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xD0
-	.byte	0x5D
-	.byte	0x68
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x70
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x81
-	.byte	0x58
-	.byte	0x82
-	.byte	0x56
-	.byte	0x68
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x70
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x81
-	.byte	0x58
-	.byte	0x81
-	.byte	0x56
-	.byte	0x68
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x70
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x56
-	.byte	0x81
-	.byte	0x58
-	.byte	0x81
-	.byte	0x56
-	.byte	0x68
-	.byte	0x81
-	.byte	0x58
-	.byte	0x6C
-	.byte	0x83
-	.byte	0x62
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x88
-	.byte	0xD0
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x88
-	.byte	0xD0
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x82
-	.byte	0xD0
-	.byte	0x83
-	.byte	0xB2
-	.word	gUnknown_08C8341E
-	.byte	0xB1
-	.byte	0x00
+	.byte	KEYSH	, 0
+song0254_1_1:
+	.byte	TEMPO	, 75
+	.byte	VOICE	, 54
+	.byte	VOL	, v100
+	.byte	BENDR	, 15
+	.byte	PAN	, c_v
+	.byte		N01	, An5, v104
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5, v112
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5
+	.byte	W01
+	.byte			En5
+	.byte	W02
+	.byte			Dn5, v104
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5, v112
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5
+	.byte	W01
+	.byte			En5
+	.byte	W01
+	.byte			Dn5, v104
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5, v112
+	.byte	W01
+	.byte			En5, v108
+	.byte	W01
+	.byte			Dn5
+	.byte	W01
+	.byte			En5
+	.byte	W01
+	.byte			Dn5, v104
+	.byte	W01
+	.byte			En5, v108
+	.byte	W03
+	.byte			Dn6
+	.byte	W02
+	.byte		N01	
+	.byte	W02
+	.byte		N01	
+	.byte	W08
+	.byte		N01	
+	.byte	W02
+	.byte		N01	
+	.byte	W02
+	.byte		N01	
+	.byte	W08
+	.byte		N01	
+	.byte	W02
+	.byte		N01	
+	.byte	W02
+	.byte		N01	
+	.byte	W03
+	.byte	GOTO	
+		.word	song0254_1_1
+	.byte	FINE
 
 	.align 2
 	.global song0254

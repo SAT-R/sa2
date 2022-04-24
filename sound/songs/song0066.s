@@ -1,1653 +1,1132 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0066_1
 song0066_1:	@ 0x08C805A0
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x57
-	.byte	0xBD
-	.byte	0x7F
-	.byte	0xBE
-	.byte	0x69
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x89
-	.byte	0xDD
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x89
-	.byte	0xDD
-	.byte	0x34
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x89
-	.byte	0xDD
-	.byte	0x34
-	.byte	0x8F
-	.byte	0xEA
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xD5
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x89
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDE
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-gUnknown_08C805EC:
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-gUnknown_08C805FB:
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xB4
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xB3
-	.word	gUnknown_08C805FB
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x34
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xD6
-	.byte	0x88
-	.byte	0x33
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDE
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x90
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x34
-	.byte	0x90
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDE
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x34
-	.byte	0x90
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x90
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x98
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x98
-	.byte	0xD6
-	.byte	0x26
-	.byte	0x28
-	.byte	0x98
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x98
-	.byte	0xD6
-	.byte	0x26
-	.byte	0x28
-	.byte	0x98
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x98
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xD6
-	.byte	0x88
-	.byte	0x33
-	.byte	0x88
-	.byte	0x34
-	.byte	0x90
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0x27
-	.byte	0x4C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x98
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xE6
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xB2
-	.word	gUnknown_08C805EC
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x33
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x34
-	.byte	0x89
-	.byte	0xE6
-	.byte	0x27
-	.byte	0x4C
-	.byte	0xDD
-	.byte	0x34
-	.byte	0x7C
-	.byte	0x8F
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x89
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 87
+	.byte	VOICE	, 127
+	.byte	VOL	, v105
+	.byte		N14	, Ds2, v124
+	.byte	W15
+	.byte		N07	, En2
+	.byte	W09
+	.byte		N14	
+	.byte	W15
+	.byte		N08	, Ds2
+	.byte	W09
+	.byte		N14	, En2
+	.byte	W15
+	.byte		N08	, Ds2
+	.byte	W09
+	.byte		N14	, En2
+	.byte	W15
+	.byte		N32	, Ds1, v076
+	.byte		N06	, Ds2, v124
+	.byte	W09
+	.byte	W15
+	.byte		N08	
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte			Ds1, v076
+	.byte	W15
+	.byte		N08	, Ds2, v124
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N15	, En2, v124
+	.byte	W24
+	.byte		N23	, Ds1, v076
+	.byte		N14	, Ds2, v124
+	.byte	W15
+	.byte		N08	
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+song0066_1_2:
+	.byte		N23	, Ds1, v076
+	.byte	W15
+	.byte		N08	, Ds2, v124
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+song0066_1_1:
+	.byte		N23	, Ds1, v076
+	.byte		N14	, Ds2, v124
+	.byte	W15
+	.byte		N08	
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte			Ds1, v076
+	.byte	W15
+	.byte		N08	, Ds2, v124
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte	PEND
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte	PATT	
+		.word	song0066_1_1
+	.byte		N23	, Ds1, v076
+	.byte		N14	, Ds2, v124
+	.byte	W15
+	.byte		N08	, En2
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N14	, En2, v124
+	.byte	W15
+	.byte		N08	, Ds2
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N07	, En2, v124
+	.byte	W08
+	.byte		N07	
+	.byte	W08
+	.byte			Ds2
+	.byte	W08
+	.byte		N15	, Ds1, v076
+	.byte		N15	, En2, v124
+	.byte	W16
+	.byte		N23	, Ds1, v076
+	.byte		N23	, Ds2, v124
+	.byte	W08
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte		N15	, En2
+	.byte	W16
+	.byte		N23	, Ds1, v076
+	.byte		N23	, Ds2, v124
+	.byte	W24
+	.byte		N07	, En2
+	.byte	W08
+	.byte		N15	, Ds2
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte		N23	, Ds1, v076
+	.byte		N15	, Ds2, v124
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte		N15	, En2
+	.byte	W16
+	.byte		N23	, Ds1, v076
+	.byte		N23	, Ds2, v124
+	.byte	W24
+	.byte		N07	, En2
+	.byte	W08
+	.byte		N15	
+	.byte	W16
+	.byte		N23	, Ds1, v076
+	.byte		N07	, Ds2, v124
+	.byte	W08
+	.byte	W24
+	.byte		N23	, Ds1, v076
+	.byte	W24
+	.byte		N07	, Dn1, v040
+	.byte	W24
+	.byte		N23	, Ds1, v076
+	.byte	W24
+	.byte		N07	, Dn1, v040
+	.byte	W24
+	.byte		N23	, Ds1, v076
+	.byte	W24
+	.byte		N07	, En2, v124
+	.byte	W08
+	.byte		N07	
+	.byte	W08
+	.byte			Ds2
+	.byte	W08
+	.byte			En2
+	.byte	W16
+	.byte		N23	, Ds1, v076
+	.byte		N14	, Ds2, v124
+	.byte	W08
+	.byte	W15
+	.byte		N08	
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte			Ds1, v076
+	.byte	W15
+	.byte		N08	, Ds2, v124
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte			Ds1, v076
+	.byte		N23	, Ds2, v124
+	.byte	W24
+	.byte			Ds1, v076
+	.byte		N23	, En2, v124
+	.byte	W24
+	.byte	GOTO	
+		.word	song0066_1_2
+	.byte		N23	, Ds1, v076
+	.byte		N14	, Ds2, v124
+	.byte	W15
+	.byte		N08	, En2
+	.byte	W09
+	.byte		N23	, Ds1, v076
+	.byte		N14	, En2, v124
+	.byte	W15
+	.byte		N08	, Ds2
+	.byte	W09
+	.byte	FINE
 
 	@********************** Track  2 **********************@
 
 	.global song0066_2
 song0066_2:	@ 0x08C8071B
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x2C
-	.byte	0xBE
-	.byte	0x69
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x2E
-	.byte	0x58
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x38
-	.byte	0x6C
-	.byte	0x88
-	.byte	0xDA
-	.byte	0x35
-	.byte	0x54
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x38
-	.byte	0x60
-	.byte	0x88
-	.byte	0xDA
-	.byte	0x3D
-	.byte	0x90
-	.byte	0xE3
-	.byte	0x33
-	.byte	0x7F
-	.byte	0x88
-gUnknown_08C8073C:
-	.byte	0x90
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x7F
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x3F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x88
-	.byte	0xDC
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xB4
-gUnknown_08C80752:
-	.byte	0xDA
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xB4
-gUnknown_08C8075F:
-	.byte	0xD9
-	.byte	0x33
-	.byte	0x7F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x90
-	.byte	0xE3
-	.byte	0x88
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-gUnknown_08C80770:
-	.byte	0xDA
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x90
-	.byte	0xE3
-	.byte	0x88
-	.byte	0xB4
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xB3
-	.word	gUnknown_08C80770
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xB3
-	.word	gUnknown_08C80770
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xB3
-	.word	gUnknown_08C80770
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xB3
-	.word	gUnknown_08C80770
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xB3
-	.word	gUnknown_08C80770
-	.byte	0xB3
-	.word	gUnknown_08C8073C
-	.byte	0xDA
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD8
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xDD
-	.byte	0x35
-	.byte	0x90
-	.byte	0xE4
-	.byte	0x36
-	.byte	0x88
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x31
-	.byte	0x88
-	.byte	0xDB
-	.byte	0x36
-	.byte	0x90
-	.byte	0xE8
-	.byte	0x38
-	.byte	0x9B
-	.byte	0xDC
-	.byte	0x98
-	.byte	0x39
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x34
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x39
-	.byte	0x90
-	.byte	0xE7
-	.byte	0x3B
-	.byte	0x9B
-	.byte	0xDD
-	.byte	0x90
-	.byte	0xF3
-	.byte	0x3D
-	.byte	0x88
-	.byte	0xA5
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xDD
-	.byte	0x38
-	.byte	0x90
-	.byte	0xED
-	.byte	0x31
-	.byte	0x88
-	.byte	0xA0
-	.byte	0xDA
-	.byte	0x3D
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x38
-	.byte	0x88
-	.byte	0xDA
-	.byte	0x31
-	.byte	0x90
-	.byte	0xE0
-	.byte	0x33
-	.byte	0x88
-	.byte	0x90
-	.byte	0xDA
-	.byte	0x88
-	.byte	0xD9
-	.byte	0x3F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x33
-	.byte	0x88
-	.byte	0xDC
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x88
-	.byte	0xB3
-	.word	gUnknown_08C80752
-	.byte	0xB2
-	.word	gUnknown_08C8075F
-	.byte	0xD9
-	.byte	0x33
-	.byte	0x7F
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x90
-	.byte	0xE3
-	.byte	0x88
-	.byte	0x90
-	.byte	0xD7
-	.byte	0x88
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 44
+	.byte	VOL	, v105
+	.byte	W16
+	.byte		N07	, As1, v088
+	.byte	W08
+	.byte		N10	, Ds2
+	.byte	W16
+	.byte		N07	, Gs2, v108
+	.byte	W08
+	.byte		N11	, Fn2, v084
+	.byte	W16
+	.byte		N07	, Gs2, v096
+	.byte	W08
+	.byte		N11	, Cs3
+	.byte	W16
+	.byte		N20	, Ds2, v127
+	.byte	W08
+song0066_2_1:
+	.byte	W16
+	.byte		N08	, Ds2, v127
+	.byte	W08
+	.byte		N10	, Ds3
+	.byte	W16
+	.byte		N07	, Ds2
+	.byte	W08
+	.byte		N13	
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N08	, Ds2
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte	PEND
+song0066_2_3:
+	.byte		N11	, Ds3, v127
+	.byte	W16
+	.byte		N07	, Ds2
+	.byte	W08
+	.byte		N10	
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte	PEND
+song0066_2_4:
+	.byte		N10	, Ds2, v127
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N08	, Ds2
+	.byte	W16
+	.byte		N20	
+	.byte	W08
+	.byte	PATT	
+		.word	song0066_2_1
+song0066_2_2:
+	.byte		N11	, Ds3, v127
+	.byte	W16
+	.byte		N07	, Ds2
+	.byte	W08
+	.byte		N10	
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N10	, Ds2
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N08	, Ds2
+	.byte	W16
+	.byte		N20	
+	.byte	W08
+	.byte	PEND
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte	PATT	
+		.word	song0066_2_2
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte	PATT	
+		.word	song0066_2_2
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte	PATT	
+		.word	song0066_2_2
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte	PATT	
+		.word	song0066_2_2
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte	PATT	
+		.word	song0066_2_2
+	.byte	PATT	
+		.word	song0066_2_1
+	.byte		N11	, Ds3, v127
+	.byte	W16
+	.byte		N07	, Ds2
+	.byte	W08
+	.byte		N10	
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N09	, Ds2
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte		N14	, Fn2
+	.byte	W16
+	.byte		N21	, Fs2
+	.byte	W08
+	.byte	W16
+	.byte		N07	, Cs2
+	.byte	W08
+	.byte		N12	, Fs2
+	.byte	W16
+	.byte		N28	, Gs2
+	.byte	W32
+	.byte		N13	
+	.byte	W24
+	.byte			An2
+	.byte	W16
+	.byte		N07	, En2
+	.byte	W08
+	.byte		N15	, An2
+	.byte	W16
+	.byte		N24	, Bn2
+	.byte	W32
+	.byte		N14	
+	.byte	W16
+	.byte		N60	, Cs3
+	.byte	W08
+	.byte	W64
+	.byte		N07	
+	.byte	W08
+	.byte		N14	, Gs2
+	.byte	W16
+	.byte		N42	, Cs2
+	.byte	W08
+	.byte	W48
+	.byte		N11	, Cs3
+	.byte	W16
+	.byte		N07	, Gs2
+	.byte	W08
+	.byte		N11	, Cs2
+	.byte	W16
+	.byte		N17	, Ds2
+	.byte	W08
+	.byte	W16
+	.byte		N11	
+	.byte	W08
+	.byte		N10	, Ds3
+	.byte	W16
+	.byte		N07	, Ds2
+	.byte	W08
+	.byte		N13	
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N08	, Ds2
+	.byte	W16
+	.byte		N07	
+	.byte	W08
+	.byte	PATT	
+		.word	song0066_2_3
+	.byte	GOTO	
+		.word	song0066_2_4
+	.byte		N10	, Ds2, v127
+	.byte	W16
+	.byte		N07	, Ds3
+	.byte	W08
+	.byte		N08	, Ds2
+	.byte	W16
+	.byte		N20	
+	.byte	W08
+	.byte	W16
+	.byte		N08	
+	.byte	W08
+	.byte	FINE
 
 	@********************** Track  3 **********************@
 
 	.global song0066_3
 song0066_3:	@ 0x08C80835
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x67
-	.byte	0xBE
-	.byte	0x52
-	.byte	0xC1
-	.byte	0x3B
-	.byte	0xAD
-	.byte	0xCF
-	.byte	0x3F
-	.byte	0x70
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x94
-	.byte	0xCE
-	.byte	0x99
-gUnknown_08C80846:
-	.byte	0xEB
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x3D
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x3D
-	.byte	0x7C
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x3F
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xEB
-	.byte	0x3F
-	.byte	0x78
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x3D
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x3D
-	.byte	0x78
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x3F
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x3F
-	.byte	0x70
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x3F
-	.byte	0x6C
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x3D
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x3D
-	.byte	0x6C
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x44
-	.byte	0x74
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x3F
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xE6
-	.byte	0x3F
-	.byte	0x74
-	.byte	0xA0
-	.byte	0xB0
-	.byte	0xA0
-	.byte	0x3D
-	.byte	0x7F
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x3D
-	.byte	0x74
-	.byte	0x90
-	.byte	0xE9
-	.byte	0x42
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x90
-	.byte	0xE9
-	.byte	0x44
-	.byte	0x9B
-	.byte	0xE6
-	.byte	0x44
-	.byte	0x74
-	.byte	0x98
-	.byte	0x45
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x90
-	.byte	0xE9
-	.byte	0x9B
-	.byte	0xDE
-	.byte	0x45
-	.byte	0x74
-	.byte	0x90
-	.byte	0xF6
-	.byte	0x47
-	.byte	0x88
-	.byte	0xA5
-	.byte	0xDD
-	.byte	0x9B
-	.byte	0xA0
-	.byte	0xDF
-	.byte	0x3D
-	.byte	0x98
-	.byte	0xDB
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x3F
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9F
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x81
-	.byte	0xB2
-	.word	gUnknown_08C80846
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 103
+	.byte	VOL	, v082
+	.byte	BENDR	, 59
+	.byte	W88
+	.byte		TIE	, Ds3, v112
+	.byte	W08
+	.byte	W96
+	.byte	W20
+	.byte		EOT	
+	.byte	W28
+song0066_3_1:
+	.byte		N36	, Ds3, v127
+	.byte	W40
+	.byte		TIE	, Cs3, v116
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Cs3, v124
+	.byte	W40
+	.byte		TIE	, Ds3, v116
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N36	, Ds3, v120
+	.byte	W40
+	.byte		TIE	, Cs3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Cs3, v120
+	.byte	W40
+	.byte		TIE	, Ds3, v116
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Ds3, v112
+	.byte	W24
+	.byte		N15	, Ds3, v108
+	.byte	W16
+	.byte		TIE	, Cs3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Cs3, v108
+	.byte	W24
+	.byte		N15	, Gs3, v116
+	.byte	W16
+	.byte		TIE	, Ds3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N23	, Ds3, v116
+	.byte	W48
+	.byte	W96
+	.byte	W48
+	.byte			Cs3, v127
+	.byte	W24
+	.byte		N15	, Cs3, v116
+	.byte	W16
+	.byte		N30	, Fs3, v124
+	.byte	W08
+	.byte	W24
+	.byte		N15	
+	.byte	W16
+	.byte		N30	, Gs3
+	.byte	W32
+	.byte		N23	, Gs3, v116
+	.byte	W24
+	.byte			An3, v124
+	.byte	W24
+	.byte		N15	
+	.byte	W16
+	.byte		N30	
+	.byte	W32
+	.byte		N15	, An3, v116
+	.byte	W16
+	.byte		N68	, Bn3
+	.byte	W08
+	.byte	W64
+	.byte		N14	
+	.byte	W32
+	.byte	W48
+	.byte		N16	, Cs3
+	.byte	W24
+	.byte		N12	
+	.byte	W16
+	.byte		TIE	, Ds3
+	.byte	W08
+	.byte	W96
+	.byte	W44
+	.byte	W03
+	.byte		EOT	
+	.byte	W01
+	.byte	GOTO	
+		.word	song0066_3_1
+	.byte	FINE
 
 	@********************** Track  4 **********************@
 
 	.global song0066_4
 song0066_4:	@ 0x08C808D8
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x68
-	.byte	0xBE
-	.byte	0x52
-	.byte	0xC4
-	.byte	0x00
-	.byte	0xC2
-	.byte	0x56
-	.byte	0xC1
-	.byte	0x35
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xA0
-gUnknown_08C808E7:
-	.byte	0xA0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xAD
-	.byte	0xCF
-	.byte	0x41
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x41
-	.byte	0x78
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x43
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x9A
-	.byte	0xDE
-	.byte	0x43
-	.byte	0x6C
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x41
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x41
-	.byte	0x6C
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x43
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xE6
-	.byte	0x43
-	.byte	0x74
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x41
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x99
-	.byte	0x81
-	.byte	0xCE
-	.byte	0xA6
-	.byte	0x81
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xA0
-	.byte	0xB2
-	.word	gUnknown_08C808E7
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 104
+	.byte	VOL	, v082
+	.byte	MOD	, 0
+	.byte	LFOS	, 86
+	.byte	BENDR	, 53
+	.byte	W96
+	.byte	W96
+	.byte	W48
+song0066_4_1:
+	.byte	W48
+	.byte	W96
+	.byte	W96
+	.byte	W96
+	.byte	W88
+	.byte		TIE	, Fn3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Fn3, v120
+	.byte	W40
+	.byte		TIE	, Gn3, v116
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W30
+	.byte		N15	, Gn3, v108
+	.byte	W16
+	.byte		TIE	, Fn3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Fn3, v108
+	.byte	W40
+	.byte		TIE	, Gn3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N23	, Gn3, v116
+	.byte	W24
+	.byte		N15	
+	.byte	W16
+	.byte		TIE	, Fn3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W28
+	.byte	W01
+	.byte		EOT	
+	.byte	W66
+	.byte	W01
+	.byte	W96
+	.byte	W96
+	.byte	W96
+	.byte	W96
+	.byte	W96
+	.byte	W48
+	.byte	GOTO	
+		.word	song0066_4_1
+	.byte	FINE
 
 	@********************** Track  5 **********************@
 
 	.global song0066_5
 song0066_5:	@ 0x08C80935
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x69
-	.byte	0xBE
-	.byte	0x52
-	.byte	0xAD
-	.byte	0xCF
-	.byte	0x3A
-	.byte	0x70
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x94
-	.byte	0xCE
-	.byte	0x99
-gUnknown_08C80944:
-	.byte	0xEB
-	.byte	0x3A
-	.byte	0x7F
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x38
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x38
-	.byte	0x7C
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x3A
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xEB
-	.byte	0x3A
-	.byte	0x78
-	.byte	0xA0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xB0
-	.byte	0xA0
-	.byte	0xE6
-	.byte	0x3A
-	.byte	0x70
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x44
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x44
-	.byte	0x6C
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x3F
-	.byte	0x74
-	.byte	0x98
-	.byte	0xB0
-	.byte	0xA8
-	.byte	0x46
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x44
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x99
-	.byte	0x81
-	.byte	0xCE
-	.byte	0x93
-	.byte	0xDD
-	.byte	0x44
-	.byte	0x74
-	.byte	0x98
-	.byte	0xDD
-	.byte	0x90
-	.byte	0xEE
-	.byte	0x3D
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x9D
-	.byte	0xE9
-	.byte	0x3F
-	.byte	0x9B
-	.byte	0xE6
-	.byte	0x3F
-	.byte	0x74
-	.byte	0x98
-	.byte	0xEB
-	.byte	0x40
-	.byte	0x7C
-	.byte	0x9D
-	.byte	0xE9
-	.byte	0x9B
-	.byte	0xDE
-	.byte	0x40
-	.byte	0x74
-	.byte	0x90
-	.byte	0xF6
-	.byte	0x42
-	.byte	0x88
-	.byte	0xA5
-	.byte	0xDD
-	.byte	0x98
-	.byte	0xF1
-	.byte	0x3D
-	.byte	0xF1
-	.byte	0x44
-	.byte	0x88
-	.byte	0xA0
-	.byte	0xDF
-	.byte	0x98
-	.byte	0xDB
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x46
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9F
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x81
-	.byte	0xB2
-	.word	gUnknown_08C80944
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 105
+	.byte	VOL	, v082
+	.byte	W88
+	.byte		TIE	, As2, v112
+	.byte	W08
+	.byte	W96
+	.byte	W20
+	.byte		EOT	
+	.byte	W28
+song0066_5_1:
+	.byte		N36	, As2, v127
+	.byte	W40
+	.byte		TIE	, Gs2, v116
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Gs2, v124
+	.byte	W40
+	.byte		TIE	, As2, v116
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N36	, As2, v120
+	.byte	W48
+	.byte	W96
+	.byte	W96
+	.byte	W96
+	.byte	W48
+	.byte		N23	, As2, v112
+	.byte	W40
+	.byte		TIE	, Gs3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Gs3, v108
+	.byte	W24
+	.byte		N15	, Ds3, v116
+	.byte	W24
+	.byte	W96
+	.byte	W72
+	.byte			As3
+	.byte	W16
+	.byte		TIE	, Gs3, v124
+	.byte	W08
+	.byte	W96
+	.byte	W28
+	.byte	W01
+	.byte		EOT	
+	.byte	W19
+	.byte		N14	, Gs3, v116
+	.byte	W24
+	.byte		N14	
+	.byte	W16
+	.byte		N44	, Cs3, v124
+	.byte	W08
+	.byte	W40
+	.byte		N30	, Ds3
+	.byte	W32
+	.byte		N23	, Ds3, v116
+	.byte	W24
+	.byte		N36	, En3, v124
+	.byte	W40
+	.byte		N30	
+	.byte	W32
+	.byte		N15	, En3, v116
+	.byte	W16
+	.byte		N68	, Fs3
+	.byte	W08
+	.byte	W64
+	.byte		N14	
+	.byte	W24
+	.byte		N54	, Cs3
+	.byte		N54	, Gs3
+	.byte	W08
+	.byte	W48
+	.byte		N16	
+	.byte	W24
+	.byte		N12	
+	.byte	W16
+	.byte		TIE	, As3
+	.byte	W08
+	.byte	W96
+	.byte	W44
+	.byte	W03
+	.byte		EOT	
+	.byte	W01
+	.byte	GOTO	
+		.word	song0066_5_1
+	.byte	FINE
 
 	@********************** Track  6 **********************@
 
 	.global song0066_6
 song0066_6:	@ 0x08C809C0
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x61
-	.byte	0xBE
-	.byte	0x3E
-	.byte	0xC1
-	.byte	0x0C
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x46
-	.byte	0x58
-	.byte	0x88
-	.byte	0xDB
-	.byte	0x4B
-	.byte	0x60
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x50
-	.byte	0x6C
-	.byte	0x88
-	.byte	0xD7
-	.byte	0x4D
-	.byte	0x54
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x50
-	.byte	0x64
-	.byte	0x88
-	.byte	0xDB
-	.byte	0x55
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x57
-	.byte	0x70
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x94
-	.byte	0xCE
-	.byte	0x99
-gUnknown_08C809E8:
-	.byte	0xEB
-	.byte	0x4F
-	.byte	0x7F
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x4D
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x4D
-	.byte	0x7C
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x4F
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xEB
-	.byte	0x4F
-	.byte	0x78
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x50
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xCE
-	.byte	0x89
-	.byte	0xEB
-	.byte	0x50
-	.byte	0x78
-	.byte	0x9D
-	.byte	0xCF
-	.byte	0x52
-	.byte	0x74
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x4F
-	.byte	0x70
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x52
-	.byte	0x6C
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x50
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9E
-	.byte	0xCE
-	.byte	0x86
-	.byte	0xE6
-	.byte	0x50
-	.byte	0x6C
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x54
-	.byte	0x74
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x52
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x9D
-	.byte	0xCE
-	.byte	0x88
-	.byte	0xE6
-	.byte	0x52
-	.byte	0x74
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x57
-	.byte	0x90
-	.byte	0xCF
-	.byte	0x55
-	.byte	0x7C
-	.byte	0x88
-	.byte	0xB0
-	.byte	0x99
-	.byte	0x81
-	.byte	0xCE
-	.byte	0x93
-	.byte	0xD7
-	.byte	0x55
-	.byte	0x3C
-	.byte	0x90
-	.byte	0xD6
-	.byte	0x57
-	.byte	0x64
-	.byte	0x88
-	.byte	0xDE
-	.byte	0x59
-	.byte	0x74
-	.byte	0x90
-	.byte	0xE9
-	.byte	0x5A
-	.byte	0x7C
-	.byte	0x88
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x59
-	.byte	0x90
-	.byte	0xE7
-	.byte	0x57
-	.byte	0x9B
-	.byte	0xD6
-	.byte	0x57
-	.byte	0x74
-	.byte	0x98
-	.byte	0xE6
-	.byte	0x58
-	.byte	0x7C
-	.byte	0x98
-	.byte	0xDE
-	.byte	0x57
-	.byte	0x90
-	.byte	0xE7
-	.byte	0x55
-	.byte	0x9B
-	.byte	0xDC
-	.byte	0x55
-	.byte	0x74
-	.byte	0x90
-	.byte	0xF1
-	.byte	0x57
-	.byte	0x88
-	.byte	0xA5
-	.byte	0xDD
-	.byte	0x98
-	.byte	0xF1
-	.byte	0x55
-	.byte	0x88
-	.byte	0xA0
-	.byte	0xDF
-	.byte	0x98
-	.byte	0xDB
-	.byte	0x90
-	.byte	0xE9
-	.byte	0x57
-	.byte	0x88
-	.byte	0xB0
-	.byte	0xA0
-	.byte	0xB2
-	.word	gUnknown_08C809E8
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 97
+	.byte	VOL	, v062
+	.byte	BENDR	, 12
+	.byte	W16
+	.byte		N07	, As3, v088
+	.byte	W08
+	.byte		N12	, Ds4, v096
+	.byte	W16
+	.byte		N07	, Gs4, v108
+	.byte	W08
+	.byte		N08	, Fn4, v084
+	.byte	W16
+	.byte		N07	, Gs4, v100
+	.byte	W08
+	.byte		N12	, Cs5
+	.byte	W16
+	.byte		TIE	, Ds5, v112
+	.byte	W08
+	.byte	W96
+	.byte	W20
+	.byte		EOT	
+	.byte	W28
+song0066_6_1:
+	.byte		N36	, Gn4, v127
+	.byte	W40
+	.byte		TIE	, Fn4, v116
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Fn4, v124
+	.byte	W40
+	.byte		TIE	, Gn4, v116
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N36	, Gn4, v120
+	.byte	W40
+	.byte		TIE	, Gs4, v124
+	.byte	W08
+	.byte	W96
+	.byte	W36
+	.byte	W03
+	.byte		EOT	
+	.byte	W09
+	.byte		N36	, Gs4, v120
+	.byte	W40
+	.byte		TIE	, As4, v116
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Gn4, v112
+	.byte	W24
+	.byte		N15	, As4, v108
+	.byte	W16
+	.byte		TIE	, Gs4, v124
+	.byte	W08
+	.byte	W96
+	.byte	W42
+	.byte		EOT	
+	.byte	W06
+	.byte		N23	, Gs4, v108
+	.byte	W24
+	.byte		N15	, Cn5, v116
+	.byte	W16
+	.byte		TIE	, As4, v124
+	.byte	W08
+	.byte	W96
+	.byte	W40
+	.byte		EOT	
+	.byte	W08
+	.byte		N23	, As4, v116
+	.byte	W24
+	.byte		N15	, Ds5
+	.byte	W16
+	.byte		TIE	, Cs5, v124
+	.byte	W08
+	.byte	W96
+	.byte	W28
+	.byte	W01
+	.byte		EOT	
+	.byte	W19
+	.byte		N08	, Cs5, v060
+	.byte	W16
+	.byte		N07	, Ds5, v100
+	.byte	W08
+	.byte		N15	, Fn5, v116
+	.byte	W16
+	.byte		N30	, Fs5, v124
+	.byte	W08
+	.byte	W24
+	.byte		N15	, Fn5
+	.byte	W16
+	.byte		N24	, Ds5
+	.byte	W32
+	.byte		N07	, Ds5, v116
+	.byte	W24
+	.byte		N23	, En5, v124
+	.byte	W24
+	.byte		N15	, Ds5
+	.byte	W16
+	.byte		N24	, Cs5
+	.byte	W32
+	.byte		N13	, Cs5, v116
+	.byte	W16
+	.byte		N54	, Ds5
+	.byte	W08
+	.byte	W64
+	.byte		N14	
+	.byte	W24
+	.byte		N54	, Cs5
+	.byte	W08
+	.byte	W48
+	.byte		N16	
+	.byte	W24
+	.byte		N12	
+	.byte	W16
+	.byte		N30	, Ds5
+	.byte	W08
+	.byte	W96
+	.byte	W48
+	.byte	GOTO	
+		.word	song0066_6_1
+	.byte	FINE
 
 	@********************** Track  7 **********************@
 
 	.global song0066_7
 song0066_7:	@ 0x08C80A8C
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x0B
-	.byte	0xBE
-	.byte	0x4A
-	.byte	0xC1
-	.byte	0x0C
-	.byte	0xB0
-gUnknown_08C80A95:
-	.byte	0xD7
-	.byte	0x33
-	.byte	0x1C
-	.byte	0x88
-	.byte	0x37
-	.byte	0x20
-	.byte	0x88
-	.byte	0x3A
-	.byte	0x28
-	.byte	0x88
-	.byte	0x3F
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x43
-	.byte	0x30
-	.byte	0x88
-	.byte	0x46
-	.byte	0x34
-	.byte	0x88
-	.byte	0x3A
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x3F
-	.byte	0x40
-	.byte	0x88
-	.byte	0x43
-	.byte	0x44
-	.byte	0x88
-	.byte	0x46
-	.byte	0x48
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x50
-	.byte	0x88
-	.byte	0x4F
-	.byte	0x54
-	.byte	0x88
-	.byte	0xB4
-gUnknown_08C80ABB:
-	.byte	0xD7
-	.byte	0x52
-	.byte	0x58
-	.byte	0x88
-	.byte	0x4F
-	.byte	0x50
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x4C
-	.byte	0x88
-	.byte	0x4F
-	.byte	0x48
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x44
-	.byte	0x88
-	.byte	0x46
-	.byte	0x40
-	.byte	0x88
-	.byte	0xB4
-gUnknown_08C80ACF:
-	.byte	0xD7
-	.byte	0x4B
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x46
-	.byte	0x38
-	.byte	0x88
-	.byte	0x43
-	.byte	0x34
-	.byte	0x88
-	.byte	0x3F
-	.byte	0x30
-	.byte	0x88
-	.byte	0x3A
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x37
-	.byte	0x24
-	.byte	0x88
-gUnknown_08C80AE2:
-	.byte	0xD7
-	.byte	0x31
-	.byte	0x1C
-	.byte	0x88
-	.byte	0x35
-	.byte	0x20
-	.byte	0x88
-	.byte	0x38
-	.byte	0x28
-	.byte	0x88
-	.byte	0x3D
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x41
-	.byte	0x30
-	.byte	0x88
-	.byte	0x44
-	.byte	0x34
-	.byte	0x88
-	.byte	0x38
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x3D
-	.byte	0x40
-	.byte	0x88
-	.byte	0x41
-	.byte	0x44
-	.byte	0x88
-	.byte	0x44
-	.byte	0x48
-	.byte	0x88
-	.byte	0x49
-	.byte	0x50
-	.byte	0x88
-	.byte	0x4D
-	.byte	0x54
-	.byte	0x88
-	.byte	0xB4
-gUnknown_08C80B08:
-	.byte	0xD7
-	.byte	0x50
-	.byte	0x58
-	.byte	0x88
-	.byte	0x4D
-	.byte	0x50
-	.byte	0x88
-	.byte	0x49
-	.byte	0x4C
-	.byte	0x88
-	.byte	0x4D
-	.byte	0x48
-	.byte	0x88
-	.byte	0x49
-	.byte	0x44
-	.byte	0x88
-	.byte	0x44
-	.byte	0x40
-	.byte	0x88
-	.byte	0x49
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x44
-	.byte	0x38
-	.byte	0x88
-	.byte	0x41
-	.byte	0x34
-	.byte	0x88
-	.byte	0x3D
-	.byte	0x30
-	.byte	0x88
-	.byte	0x38
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x35
-	.byte	0x24
-	.byte	0x88
-	.byte	0xB4
-	.byte	0xB3
-	.word	gUnknown_08C80A95
-gUnknown_08C80B33:
-	.byte	0xD7
-	.byte	0x52
-	.byte	0x58
-	.byte	0x88
-	.byte	0x4F
-	.byte	0x50
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x4C
-	.byte	0x88
-	.byte	0x4F
-	.byte	0x48
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x44
-	.byte	0x88
-	.byte	0x46
-	.byte	0x40
-	.byte	0x88
-	.byte	0x4B
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x46
-	.byte	0x38
-	.byte	0x88
-	.byte	0x43
-	.byte	0x34
-	.byte	0x88
-	.byte	0x3F
-	.byte	0x30
-	.byte	0x88
-	.byte	0x3A
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x37
-	.byte	0x24
-	.byte	0x88
-	.byte	0xB4
-	.byte	0xB3
-	.word	gUnknown_08C80AE2
-	.byte	0xB3
-	.word	gUnknown_08C80B08
-	.byte	0xB3
-	.word	gUnknown_08C80A95
-	.byte	0xB3
-	.word	gUnknown_08C80B33
-	.byte	0xB3
-	.word	gUnknown_08C80AE2
-	.byte	0xB3
-	.word	gUnknown_08C80B08
-	.byte	0xB3
-	.word	gUnknown_08C80A95
-	.byte	0xB3
-	.word	gUnknown_08C80B33
-	.byte	0xB3
-	.word	gUnknown_08C80AE2
-	.byte	0xB3
-	.word	gUnknown_08C80B08
-	.byte	0xD5
-	.byte	0x3A
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x3D
-	.byte	0x54
-	.byte	0x86
-	.byte	0x42
-	.byte	0x60
-	.byte	0x86
-	.byte	0x46
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x49
-	.byte	0x58
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x60
-	.byte	0x86
-	.byte	0x3C
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x3F
-	.byte	0x54
-	.byte	0x86
-	.byte	0x44
-	.byte	0x86
-	.byte	0x48
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x86
-	.byte	0x50
-	.byte	0x58
-	.byte	0x86
-	.byte	0x54
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x50
-	.byte	0x60
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x54
-	.byte	0x86
-	.byte	0x48
-	.byte	0x86
-	.byte	0x3D
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x40
-	.byte	0x54
-	.byte	0x86
-	.byte	0x45
-	.byte	0x60
-	.byte	0x86
-	.byte	0x49
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x4C
-	.byte	0x58
-	.byte	0x86
-	.byte	0x51
-	.byte	0x60
-	.byte	0x86
-	.byte	0x3F
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x42
-	.byte	0x54
-	.byte	0x86
-	.byte	0x47
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x86
-	.byte	0x53
-	.byte	0x58
-	.byte	0x86
-	.byte	0x57
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x53
-	.byte	0x60
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x54
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x86
-	.byte	0x3F
-	.byte	0x86
-	.byte	0x42
-	.byte	0x58
-	.byte	0x86
-	.byte	0x47
-	.byte	0x60
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x54
-	.byte	0x86
-	.byte	0x42
-	.byte	0x4C
-	.byte	0x86
-	.byte	0x47
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x48
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x58
-	.byte	0x86
-	.byte	0x47
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x54
-	.byte	0x86
-	.byte	0x53
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x4B
-	.byte	0x48
-	.byte	0x86
-	.byte	0x4E
-	.byte	0x58
-	.byte	0x86
-	.byte	0x53
-	.byte	0x54
-	.byte	0x86
-	.byte	0x57
-	.byte	0x58
-	.byte	0x86
-	.byte	0x59
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x55
-	.byte	0x60
-	.byte	0x86
-	.byte	0x50
-	.byte	0x86
-	.byte	0x4D
-	.byte	0x50
-	.byte	0x86
-	.byte	0x55
-	.byte	0x86
-	.byte	0x50
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x4D
-	.byte	0x54
-	.byte	0x86
-	.byte	0x49
-	.byte	0x5C
-	.byte	0x86
-	.byte	0x4D
-	.byte	0x86
-	.byte	0x49
-	.byte	0x54
-	.byte	0x86
-	.byte	0x44
-	.byte	0x58
-	.byte	0x86
-	.byte	0x41
-	.byte	0x86
-	.byte	0x49
-	.byte	0x60
-	.byte	0x86
-	.byte	0x44
-	.byte	0x86
-	.byte	0x41
-	.byte	0x54
-	.byte	0x86
-	.byte	0x3D
-	.byte	0x60
-	.byte	0x86
-	.byte	0xB3
-	.word	gUnknown_08C80A95
-	.byte	0xB3
-	.word	gUnknown_08C80ABB
-	.byte	0xB2
-	.word	gUnknown_08C80ACF
-	.byte	0xD7
-	.byte	0x4B
-	.byte	0x3C
-	.byte	0x88
-	.byte	0x46
-	.byte	0x38
-	.byte	0x88
-	.byte	0x43
-	.byte	0x34
-	.byte	0x88
-	.byte	0x3F
-	.byte	0x30
-	.byte	0x88
-	.byte	0x3A
-	.byte	0x2C
-	.byte	0x88
-	.byte	0x37
-	.byte	0x24
-	.byte	0x88
-	.byte	0xB1
-	.byte	0x00
-	.byte	0x00
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 11
+	.byte	VOL	, v074
+	.byte	BENDR	, 12
+	.byte	W96
+song0066_7_1:
+	.byte		N08	, Ds2, v028
+	.byte	W08
+	.byte			Gn2, v032
+	.byte	W08
+	.byte			As2, v040
+	.byte	W08
+	.byte			Ds3, v044
+	.byte	W08
+	.byte			Gn3, v048
+	.byte	W08
+	.byte			As3, v052
+	.byte	W08
+	.byte			As2, v060
+	.byte	W08
+	.byte			Ds3, v064
+	.byte	W08
+	.byte			Gn3, v068
+	.byte	W08
+	.byte			As3, v072
+	.byte	W08
+	.byte			Ds4, v080
+	.byte	W08
+	.byte			Gn4, v084
+	.byte	W08
+	.byte	PEND
+song0066_7_5:
+	.byte		N08	, As4, v088
+	.byte	W08
+	.byte			Gn4, v080
+	.byte	W08
+	.byte			Ds4, v076
+	.byte	W08
+	.byte			Gn4, v072
+	.byte	W08
+	.byte			Ds4, v068
+	.byte	W08
+	.byte			As3, v064
+	.byte	W08
+	.byte	PEND
+song0066_7_6:
+	.byte		N08	, Ds4, v060
+	.byte	W08
+	.byte			As3, v056
+	.byte	W08
+	.byte			Gn3, v052
+	.byte	W08
+	.byte			Ds3, v048
+	.byte	W08
+	.byte			As2, v044
+	.byte	W08
+	.byte			Gn2, v036
+	.byte	W08
+song0066_7_2:
+	.byte		N08	, Cs2, v028
+	.byte	W08
+	.byte			Fn2, v032
+	.byte	W08
+	.byte			Gs2, v040
+	.byte	W08
+	.byte			Cs3, v044
+	.byte	W08
+	.byte			Fn3, v048
+	.byte	W08
+	.byte			Gs3, v052
+	.byte	W08
+	.byte			Gs2, v060
+	.byte	W08
+	.byte			Cs3, v064
+	.byte	W08
+	.byte			Fn3, v068
+	.byte	W08
+	.byte			Gs3, v072
+	.byte	W08
+	.byte			Cs4, v080
+	.byte	W08
+	.byte			Fn4, v084
+	.byte	W08
+	.byte	PEND
+song0066_7_3:
+	.byte		N08	, Gs4, v088
+	.byte	W08
+	.byte			Fn4, v080
+	.byte	W08
+	.byte			Cs4, v076
+	.byte	W08
+	.byte			Fn4, v072
+	.byte	W08
+	.byte			Cs4, v068
+	.byte	W08
+	.byte			Gs3, v064
+	.byte	W08
+	.byte			Cs4, v060
+	.byte	W08
+	.byte			Gs3, v056
+	.byte	W08
+	.byte			Fn3, v052
+	.byte	W08
+	.byte			Cs3, v048
+	.byte	W08
+	.byte			Gs2, v044
+	.byte	W08
+	.byte			Fn2, v036
+	.byte	W08
+	.byte	PEND
+	.byte	PATT	
+		.word	song0066_7_1
+song0066_7_4:
+	.byte		N08	, As4, v088
+	.byte	W08
+	.byte			Gn4, v080
+	.byte	W08
+	.byte			Ds4, v076
+	.byte	W08
+	.byte			Gn4, v072
+	.byte	W08
+	.byte			Ds4, v068
+	.byte	W08
+	.byte			As3, v064
+	.byte	W08
+	.byte			Ds4, v060
+	.byte	W08
+	.byte			As3, v056
+	.byte	W08
+	.byte			Gn3, v052
+	.byte	W08
+	.byte			Ds3, v048
+	.byte	W08
+	.byte			As2, v044
+	.byte	W08
+	.byte			Gn2, v036
+	.byte	W08
+	.byte	PEND
+	.byte	PATT	
+		.word	song0066_7_2
+	.byte	PATT	
+		.word	song0066_7_3
+	.byte	PATT	
+		.word	song0066_7_1
+	.byte	PATT	
+		.word	song0066_7_4
+	.byte	PATT	
+		.word	song0066_7_2
+	.byte	PATT	
+		.word	song0066_7_3
+	.byte	PATT	
+		.word	song0066_7_1
+	.byte	PATT	
+		.word	song0066_7_4
+	.byte	PATT	
+		.word	song0066_7_2
+	.byte	PATT	
+		.word	song0066_7_3
+	.byte		N06	, As2, v092
+	.byte	W06
+	.byte			Cs3, v084
+	.byte	W06
+	.byte			Fs3, v096
+	.byte	W06
+	.byte			As3, v092
+	.byte	W06
+	.byte			Cs4, v088
+	.byte	W06
+	.byte			Fs4, v096
+	.byte	W06
+	.byte			Cn3, v076
+	.byte	W06
+	.byte			Ds3, v084
+	.byte	W06
+	.byte			Gs3
+	.byte	W06
+	.byte			Cn4, v076
+	.byte	W06
+	.byte			Ds4
+	.byte	W06
+	.byte			Gs4, v088
+	.byte	W06
+	.byte			Cn5, v076
+	.byte	W06
+	.byte			Gs4, v096
+	.byte	W06
+	.byte			Ds4, v084
+	.byte	W06
+	.byte			Cn4
+	.byte	W06
+	.byte			Cs3, v092
+	.byte	W06
+	.byte			En3, v084
+	.byte	W06
+	.byte			An3, v096
+	.byte	W06
+	.byte			Cs4, v092
+	.byte	W06
+	.byte			En4, v088
+	.byte	W06
+	.byte			An4, v096
+	.byte	W06
+	.byte			Ds3, v076
+	.byte	W06
+	.byte			Fs3, v084
+	.byte	W06
+	.byte			Bn3
+	.byte	W06
+	.byte			Ds4, v076
+	.byte	W06
+	.byte			Fs4
+	.byte	W06
+	.byte			Bn4, v088
+	.byte	W06
+	.byte			Ds5, v076
+	.byte	W06
+	.byte			Bn4, v096
+	.byte	W06
+	.byte			Fs4, v084
+	.byte	W06
+	.byte			Ds4
+	.byte	W06
+	.byte			Ds3
+	.byte	W06
+	.byte			Fs3, v088
+	.byte	W06
+	.byte			Bn3, v096
+	.byte	W06
+	.byte			Ds4, v084
+	.byte	W06
+	.byte			Fs3, v076
+	.byte	W06
+	.byte			Bn3, v092
+	.byte	W06
+	.byte			Ds4, v072
+	.byte	W06
+	.byte			Fs4, v088
+	.byte	W06
+	.byte			Bn3
+	.byte	W06
+	.byte			Ds4
+	.byte	W06
+	.byte			Fs4, v084
+	.byte	W06
+	.byte			Bn4, v092
+	.byte	W06
+	.byte			Ds4, v072
+	.byte	W06
+	.byte			Fs4, v088
+	.byte	W06
+	.byte			Bn4, v084
+	.byte	W06
+	.byte			Ds5, v088
+	.byte	W06
+	.byte			Fn5, v092
+	.byte	W06
+	.byte			Cs5, v096
+	.byte	W06
+	.byte			Gs4
+	.byte	W06
+	.byte			Fn4, v080
+	.byte	W06
+	.byte			Cs5
+	.byte	W06
+	.byte			Gs4, v092
+	.byte	W06
+	.byte			Fn4, v084
+	.byte	W06
+	.byte			Cs4, v092
+	.byte	W06
+	.byte			Fn4
+	.byte	W06
+	.byte			Cs4, v084
+	.byte	W06
+	.byte			Gs3, v088
+	.byte	W06
+	.byte			Fn3
+	.byte	W06
+	.byte			Cs4, v096
+	.byte	W06
+	.byte			Gs3
+	.byte	W06
+	.byte			Fn3, v084
+	.byte	W06
+	.byte			Cs3, v096
+	.byte	W06
+	.byte	PATT	
+		.word	song0066_7_1
+	.byte	PATT	
+		.word	song0066_7_5
+	.byte	GOTO	
+		.word	song0066_7_6
+	.byte		N08	, Ds4, v060
+	.byte	W08
+	.byte			As3, v056
+	.byte	W08
+	.byte			Gn3, v052
+	.byte	W08
+	.byte			Ds3, v048
+	.byte	W08
+	.byte			As2, v044
+	.byte	W08
+	.byte			Gn2, v036
+	.byte	W08
+	.byte	FINE
 
 	.align 2
 	.global song0066

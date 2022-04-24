@@ -1,98 +1,85 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0291_1
 song0291_1:	@ 0x08C846D4
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x30
-	.byte	0xBD
-	.byte	0x5B
-	.byte	0xBE
-	.byte	0x64
-	.byte	0xC2
-	.byte	0x2D
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC4
-	.byte	0x4C
-	.byte	0xD4
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x3F
-	.byte	0x7F
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x86
-	.byte	0xD4
-	.byte	0x85
-	.byte	0xB1
-	.byte	0x00
-	.byte	0x00
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 48
+	.byte	VOICE	, 91
+	.byte	VOL	, v100
+	.byte	LFOS	, 45
+	.byte	MODT	, 0
+	.byte	PAN	, c_v
+	.byte	MOD	, 76
+	.byte		N05	, Ds3, v127
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	, Ds3, v127
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W06
+	.byte		N05	
+	.byte	W05
+	.byte	FINE
 
 	.align 2
 	.global song0291

@@ -1,129 +1,96 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0414_1
 song0414_1:	@ 0x08C86598
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x26
-	.byte	0xBD
-	.byte	0x6C
-	.byte	0xBE
-	.byte	0x4D
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xD1
-	.byte	0x53
-	.byte	0x6C
-	.byte	0x82
-	.byte	0x4F
-	.byte	0x83
-	.byte	0x56
-	.byte	0x83
-	.byte	0xD4
-	.byte	0x53
-	.byte	0x85
-	.byte	0x5B
-	.byte	0x85
-	.byte	0xD9
-	.byte	0x56
-	.byte	0x8B
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 38
+	.byte	VOICE	, 108
+	.byte	VOL	, v077
+	.byte	PAN	, c_v
+	.byte		N02	, Bn4, v108
+	.byte	W02
+	.byte			Gn4
+	.byte	W03
+	.byte			Dn5
+	.byte	W03
+	.byte		N05	, Bn4
+	.byte	W05
+	.byte			Gn5
+	.byte	W05
+	.byte		N10	, Dn5
+	.byte	W11
+	.byte	FINE
 
 	@********************** Track  2 **********************@
 
 	.global song0414_2
 song0414_2:	@ 0x08C865B3
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x6D
-	.byte	0xBE
-	.byte	0x4D
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xD1
-	.byte	0x4A
-	.byte	0x6C
-	.byte	0x82
-	.byte	0x47
-	.byte	0x83
-	.byte	0x4E
-	.byte	0x83
-	.byte	0xD4
-	.byte	0x4A
-	.byte	0x85
-	.byte	0x53
-	.byte	0x85
-	.byte	0xD9
-	.byte	0x4E
-	.byte	0x8B
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 109
+	.byte	VOL	, v077
+	.byte	PAN	, c_v
+	.byte		N02	, Dn4, v108
+	.byte	W02
+	.byte			Bn3
+	.byte	W03
+	.byte			Fs4
+	.byte	W03
+	.byte		N05	, Dn4
+	.byte	W05
+	.byte			Bn4
+	.byte	W05
+	.byte		N10	, Fs4
+	.byte	W11
+	.byte	FINE
 
 	@********************** Track  3 **********************@
 
 	.global song0414_3
 song0414_3:	@ 0x08C865CC
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x3F
-	.byte	0xBE
-	.byte	0x4D
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xD1
-	.byte	0x47
-	.byte	0x6C
-	.byte	0x82
-	.byte	0x43
-	.byte	0x83
-	.byte	0x4A
-	.byte	0x83
-	.byte	0xD4
-	.byte	0x47
-	.byte	0x85
-	.byte	0x4F
-	.byte	0x85
-	.byte	0xD9
-	.byte	0x4A
-	.byte	0x8B
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 63
+	.byte	VOL	, v077
+	.byte	PAN	, c_v
+	.byte		N02	, Bn3, v108
+	.byte	W02
+	.byte			Gn3
+	.byte	W03
+	.byte			Dn4
+	.byte	W03
+	.byte		N05	, Bn3
+	.byte	W05
+	.byte			Gn4
+	.byte	W05
+	.byte		N10	, Dn4
+	.byte	W11
+	.byte	FINE
 
 	@********************** Track  4 **********************@
 
 	.global song0414_4
 song0414_4:	@ 0x08C865E5
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x40
-	.byte	0xBE
-	.byte	0x4D
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xD1
-	.byte	0x3E
-	.byte	0x6C
-	.byte	0x82
-	.byte	0x3B
-	.byte	0x83
-	.byte	0x42
-	.byte	0x83
-	.byte	0xD4
-	.byte	0x3E
-	.byte	0x85
-	.byte	0x47
-	.byte	0x85
-	.byte	0xD9
-	.byte	0x42
-	.byte	0x8B
-	.byte	0xB1
-	.byte	0x00
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 64
+	.byte	VOL	, v077
+	.byte	PAN	, c_v
+	.byte		N02	, Dn3, v108
+	.byte	W02
+	.byte			Bn2
+	.byte	W03
+	.byte			Fs3
+	.byte	W03
+	.byte		N05	, Dn3
+	.byte	W05
+	.byte			Bn3
+	.byte	W05
+	.byte		N10	, Fs3
+	.byte	W11
+	.byte	FINE
 
 	.align 2
 	.global song0414

@@ -1,54 +1,43 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0289_1
 song0289_1:	@ 0x08C845E0
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x3C
-	.byte	0xBD
-	.byte	0x59
-	.byte	0xBE
-	.byte	0x64
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC1
-	.byte	0x0A
-	.byte	0xC2
-	.byte	0x0D
-	.byte	0xC4
-	.byte	0x00
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xC0
-	.byte	0x63
-	.byte	0xE1
-	.byte	0x3C
-	.byte	0x7F
-	.byte	0x81
-	.byte	0xC0
-	.byte	0x71
-	.byte	0x82
-	.byte	0x7A
-	.byte	0x81
-	.byte	0x7A
-	.byte	0x82
-	.byte	0x71
-	.byte	0x81
-	.byte	0x4D
-	.byte	0x82
-	.byte	0x31
-	.byte	0x81
-	.byte	0x0D
-	.byte	0x82
-	.byte	0x00
-	.byte	0x81
-	.byte	0x00
-	.byte	0x85
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 60
+	.byte	VOICE	, 89
+	.byte	VOL	, v100
+	.byte	PAN	, c_v
+	.byte	BENDR	, 10
+	.byte	LFOS	, 13
+	.byte	MOD	, 0
+	.byte	MODT	, 0
+	.byte	BEND	, c_v+35
+	.byte		N18	, Cn3, v127
+	.byte	W01
+	.byte	BEND	, c_v+49
+	.byte	W02
+	.byte		c_v+58
+	.byte	W01
+	.byte		c_v+58
+	.byte	W02
+	.byte		c_v+49
+	.byte	W01
+	.byte		c_v+13
+	.byte	W02
+	.byte		c_v-15
+	.byte	W01
+	.byte		c_v-51
+	.byte	W02
+	.byte		c_v-64
+	.byte	W01
+	.byte		c_v-64
+	.byte	W05
+	.byte	FINE
 
 	.align 2
 	.global song0289

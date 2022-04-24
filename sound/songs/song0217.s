@@ -1,90 +1,76 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0217_1
 song0217_1:	@ 0x08C822E4
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x25
-	.byte	0xBD
-	.byte	0x11
-	.byte	0xBE
-	.byte	0x62
-	.byte	0xC2
-	.byte	0x30
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC4
-	.byte	0x10
-	.byte	0xC0
-	.byte	0x09
-	.byte	0xE9
-	.byte	0x2C
-	.byte	0x68
-	.byte	0x81
-	.byte	0xBE
-	.byte	0x60
-	.byte	0x81
-	.byte	0x5D
-	.byte	0x81
-	.byte	0x5B
-	.byte	0xC0
-	.byte	0x36
-	.byte	0x81
-	.byte	0xBE
-	.byte	0x59
-	.byte	0x81
-	.byte	0x57
-	.byte	0x81
-	.byte	0xC0
-	.byte	0x36
-	.byte	0x83
-	.byte	0x63
-	.byte	0x83
-	.byte	0x7A
-	.byte	0x83
-	.byte	0x7A
-	.byte	0x83
-	.byte	0x75
-	.byte	0x83
-	.byte	0x5F
-	.byte	0x83
-	.byte	0x2D
-	.byte	0x83
-	.byte	0x1B
-	.byte	0x83
-	.byte	0x1B
-	.byte	0x83
-	.byte	0x1F
-	.byte	0x83
-	.byte	0x28
-	.byte	0x83
-	.byte	0x44
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7F
-	.byte	0x83
-	.byte	0x7A
-	.byte	0x83
-	.byte	0x56
-	.byte	0x83
-	.byte	0x1B
-	.byte	0xB1
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 37
+	.byte	VOICE	, 17
+	.byte	VOL	, v098
+	.byte	LFOS	, 48
+	.byte	MODT	, 0
+	.byte	PAN	, c_v
+	.byte	MOD	, 16
+	.byte	BEND	, c_v-55
+	.byte		N30	, Gs1, v104
+	.byte	W01
+	.byte	VOL	, v096
+	.byte	W01
+	.byte		v093
+	.byte	W01
+	.byte		v091
+	.byte	BEND	, c_v-10
+	.byte	W01
+	.byte	VOL	, v089
+	.byte	W01
+	.byte		v087
+	.byte	W01
+	.byte	BEND	, c_v-10
+	.byte	W03
+	.byte		c_v+35
+	.byte	W03
+	.byte		c_v+58
+	.byte	W03
+	.byte		c_v+58
+	.byte	W03
+	.byte		c_v+53
+	.byte	W03
+	.byte		c_v+31
+	.byte	W03
+	.byte		c_v-19
+	.byte	W03
+	.byte		c_v-37
+	.byte	W03
+	.byte		c_v-37
+	.byte	W03
+	.byte		c_v-33
+	.byte	W03
+	.byte		c_v-24
+	.byte	W03
+	.byte		c_v+4
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+63
+	.byte	W03
+	.byte		c_v+58
+	.byte	W03
+	.byte		c_v+22
+	.byte	W03
+	.byte		c_v-37
+	.byte	FINE
 
 	.align 2
 	.global song0217

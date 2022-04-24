@@ -1,95 +1,78 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0150_1
 song0150_1:	@ 0x08C818F4
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x4B
-	.byte	0xBD
-	.byte	0x34
-	.byte	0xBE
-	.byte	0x46
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC1
-	.byte	0x06
-	.byte	0xC0
-	.byte	0x3F
-	.byte	0xF3
-	.byte	0x48
-	.byte	0x7C
-	.byte	0x81
-	.byte	0xC0
-	.byte	0x54
-	.byte	0x81
-	.byte	0x69
-	.byte	0x81
-	.byte	0x7A
-	.byte	0x81
-	.byte	0x6D
-	.byte	0x81
-	.byte	0x5F
-	.byte	0x81
-	.byte	0x52
-	.byte	0x81
-	.byte	0x44
-	.byte	0x81
-	.byte	0x37
-	.byte	0x81
-	.byte	0x29
-	.byte	0x81
-	.byte	0x1C
-	.byte	0x81
-	.byte	0x0E
-	.byte	0x81
-	.byte	0x00
-	.byte	0x81
-	.byte	0x0E
-	.byte	0x81
-	.byte	0x1C
-	.byte	0x81
-	.byte	0x2A
-	.byte	0x81
-	.byte	0x38
-	.byte	0x81
-	.byte	0x46
-	.byte	0x81
-	.byte	0x54
-	.byte	0x81
-	.byte	0x62
-	.byte	0x81
-	.byte	0x70
-	.byte	0x81
-	.byte	0x7F
-	.byte	0x9C
-	.byte	0x83
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 75
+	.byte	VOICE	, 52
+	.byte	VOL	, v070
+	.byte	PAN	, c_v
+	.byte	BENDR	, 6
+	.byte	BEND	, c_v-1
+	.byte		N60	, Cn4, v124
+	.byte	W01
+	.byte	BEND	, c_v+20
+	.byte	W01
+	.byte		c_v+41
+	.byte	W01
+	.byte		c_v+58
+	.byte	W01
+	.byte		c_v+45
+	.byte	W01
+	.byte		c_v+31
+	.byte	W01
+	.byte		c_v+18
+	.byte	W01
+	.byte		c_v+4
+	.byte	W01
+	.byte		c_v-9
+	.byte	W01
+	.byte		c_v-23
+	.byte	W01
+	.byte		c_v-36
+	.byte	W01
+	.byte		c_v-50
+	.byte	W01
+	.byte		c_v-64
+	.byte	W01
+	.byte		c_v-50
+	.byte	W01
+	.byte		c_v-36
+	.byte	W01
+	.byte		c_v-22
+	.byte	W01
+	.byte		c_v-8
+	.byte	W01
+	.byte		c_v+6
+	.byte	W01
+	.byte		c_v+20
+	.byte	W01
+	.byte		c_v+34
+	.byte	W01
+	.byte		c_v+48
+	.byte	W01
+	.byte		c_v+63
+	.byte	W36
+	.byte	W03
+	.byte	FINE
 
 	@********************** Track  2 **********************@
 
 	.global song0150_2
 song0150_2:	@ 0x08C81933
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBD
-	.byte	0x32
-	.byte	0xBE
-	.byte	0x7F
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC1
-	.byte	0x0F
-	.byte	0xD1
-	.byte	0x41
-	.byte	0x7C
-	.byte	0x82
-	.byte	0xB1
-	.byte	0x00
-	.byte	0x00
+	.byte	KEYSH	, 0
+	.byte	VOICE	, 50
+	.byte	VOL	, v127
+	.byte	PAN	, c_v
+	.byte	BENDR	, 15
+	.byte		N02	, Fn3, v124
+	.byte	W02
+	.byte	FINE
 
 	.align 2
 	.global song0150

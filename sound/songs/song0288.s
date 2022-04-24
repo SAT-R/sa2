@@ -1,100 +1,88 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0288_1
 song0288_1:	@ 0x08C84578
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x3C
-	.byte	0xBD
-	.byte	0x58
-	.byte	0xC1
-	.byte	0x0B
-	.byte	0xC2
-	.byte	0x49
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xBE
-	.byte	0x64
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC4
-	.byte	0x0F
-	.byte	0xC0
-	.byte	0x05
-	.byte	0xCF
-	.byte	0x32
-	.byte	0x7F
-	.byte	0x82
-	.byte	0xC0
-	.byte	0x0C
-	.byte	0x81
-	.byte	0x10
-	.byte	0x81
-	.byte	0x14
-	.byte	0x81
-	.byte	0x18
-	.byte	0x81
-	.byte	0x1C
-	.byte	0x81
-	.byte	0x20
-	.byte	0x81
-	.byte	0x24
-	.byte	0x81
-	.byte	0x28
-	.byte	0x81
-	.byte	0x2C
-	.byte	0x81
-	.byte	0x30
-	.byte	0x81
-	.byte	0x34
-	.byte	0x81
-	.byte	0x38
-	.byte	0x81
-	.byte	0x3C
-	.byte	0x81
-	.byte	0x40
-	.byte	0x81
-	.byte	0x44
-	.byte	0x81
-	.byte	0x48
-	.byte	0x81
-	.byte	0x4C
-	.byte	0x81
-	.byte	0x50
-	.byte	0x81
-	.byte	0x54
-	.byte	0x81
-	.byte	0x58
-	.byte	0x81
-	.byte	0x5C
-	.byte	0x81
-	.byte	0x60
-	.byte	0x81
-	.byte	0x64
-	.byte	0x81
-	.byte	0x68
-	.byte	0x81
-	.byte	0x6C
-	.byte	0x81
-	.byte	0x71
-	.byte	0x81
-	.byte	0x71
-	.byte	0x81
-	.byte	0x71
-	.byte	0x93
-gUnknown_08C845C9:
-	.byte	0xA0
-	.byte	0xB0
-	.byte	0xB2
-	.word	gUnknown_08C845C9
-	.byte	0x96
-	.byte	0xCE
-	.byte	0x32
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 60
+	.byte	VOICE	, 88
+	.byte	BENDR	, 11
+	.byte	LFOS	, 73
+	.byte	MODT	, 0
+	.byte	VOL	, v100
+	.byte	PAN	, c_v
+	.byte	MOD	, 15
+	.byte	BEND	, c_v-59
+	.byte		TIE	, Dn2, v127
+	.byte	W02
+	.byte	BEND	, c_v-52
+	.byte	W01
+	.byte		c_v-48
+	.byte	W01
+	.byte		c_v-44
+	.byte	W01
+	.byte		c_v-40
+	.byte	W01
+	.byte		c_v-36
+	.byte	W01
+	.byte		c_v-32
+	.byte	W01
+	.byte		c_v-28
+	.byte	W01
+	.byte		c_v-24
+	.byte	W01
+	.byte		c_v-20
+	.byte	W01
+	.byte		c_v-16
+	.byte	W01
+	.byte		c_v-12
+	.byte	W01
+	.byte		c_v-8
+	.byte	W01
+	.byte		c_v-4
+	.byte	W01
+	.byte		c_v
+	.byte	W01
+	.byte		c_v+4
+	.byte	W01
+	.byte		c_v+8
+	.byte	W01
+	.byte		c_v+12
+	.byte	W01
+	.byte		c_v+16
+	.byte	W01
+	.byte		c_v+20
+	.byte	W01
+	.byte		c_v+24
+	.byte	W01
+	.byte		c_v+28
+	.byte	W01
+	.byte		c_v+32
+	.byte	W01
+	.byte		c_v+36
+	.byte	W01
+	.byte		c_v+40
+	.byte	W01
+	.byte		c_v+44
+	.byte	W01
+	.byte		c_v+49
+	.byte	W01
+	.byte		c_v+49
+	.byte	W01
+	.byte		c_v+49
+	.byte	W19
+song0288_1_1:
+	.byte	W48
+	.byte	W96
+	.byte	GOTO	
+		.word	song0288_1_1
+	.byte	W22
+	.byte		EOT	, Dn2
+	.byte	FINE
 
 	.align 2
 	.global song0288

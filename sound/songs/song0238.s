@@ -1,34 +1,25 @@
 	.include "MPlayDef.s"
+
 	.section .rodata
-	.align 2
+
 	@********************** Track  1 **********************@
 
+	.align 2
 	.global song0238_1
 song0238_1:	@ 0x08C82DAC
-	.byte	0xBC
-	.byte	0x00
-	.byte	0xBB
-	.byte	0x3C
-	.byte	0xBD
-	.byte	0x26
-	.byte	0xBE
-	.byte	0x64
-	.byte	0xC2
-	.byte	0x02
-	.byte	0xC5
-	.byte	0x00
-	.byte	0xBF
-	.byte	0x40
-	.byte	0xC4
-	.byte	0x00
-	.byte	0xD4
-	.byte	0x4A
-	.byte	0x5C
-	.byte	0x86
-	.byte	0xD9
-	.byte	0x3B
-	.byte	0x8A
-	.byte	0xB1
+	.byte	KEYSH	, 0
+	.byte	TEMPO	, 60
+	.byte	VOICE	, 38
+	.byte	VOL	, v100
+	.byte	LFOS	, 2
+	.byte	MODT	, 0
+	.byte	PAN	, c_v
+	.byte	MOD	, 0
+	.byte		N05	, Dn4, v092
+	.byte	W06
+	.byte		N10	, Bn2
+	.byte	W10
+	.byte	FINE
 
 	.align 2
 	.global song0238
