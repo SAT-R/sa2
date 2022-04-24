@@ -1,0 +1,159 @@
+	.include "MPlayDef.s"
+	.section .rodata
+	.align 2
+	@********************** Track  1 **********************@
+
+	.global song0412_1
+song0412_1:	@ 0x08C86438
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBB
+	.byte	0x46
+	.byte	0xBD
+	.byte	0x71
+	.byte	0xBE
+	.byte	0x1C
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xD5
+	.byte	0x5C
+	.byte	0x70
+	.byte	0x98
+	.byte	0x57
+	.byte	0x98
+	.byte	0x5A
+	.byte	0x98
+	.byte	0x55
+	.byte	0x98
+	.byte	0xDB
+	.byte	0x54
+	.byte	0x8C
+	.byte	0xB1
+
+	@********************** Track  2 **********************@
+
+	.global song0412_2
+song0412_2:	@ 0x08C86450
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBD
+	.byte	0x72
+	.byte	0xBE
+	.byte	0x23
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xD5
+	.byte	0x57
+	.byte	0x70
+	.byte	0x98
+	.byte	0x54
+	.byte	0x98
+	.byte	0x55
+	.byte	0x98
+	.byte	0x52
+	.byte	0x98
+	.byte	0xDB
+	.byte	0x50
+	.byte	0x8C
+	.byte	0xB1
+
+	@********************** Track  3 **********************@
+
+	.global song0412_3
+song0412_3:	@ 0x08C86466
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBD
+	.byte	0x44
+	.byte	0xBE
+	.byte	0x4D
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xD5
+	.byte	0x48
+	.byte	0x70
+	.byte	0x98
+	.byte	0x44
+	.byte	0x98
+	.byte	0x46
+	.byte	0x98
+	.byte	0x42
+	.byte	0x98
+	.byte	0x3F
+	.byte	0x86
+	.byte	0xB1
+
+	@********************** Track  4 **********************@
+
+	.global song0412_4
+song0412_4:	@ 0x08C8647B
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBD
+	.byte	0x45
+	.byte	0xBE
+	.byte	0x4D
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xD5
+	.byte	0x50
+	.byte	0x70
+	.byte	0x98
+	.byte	0x4B
+	.byte	0x98
+	.byte	0x4E
+	.byte	0x98
+	.byte	0x49
+	.byte	0x98
+	.byte	0xF1
+	.byte	0x48
+	.byte	0xA2
+	.byte	0xB1
+
+	@********************** Track  5 **********************@
+
+	.global song0412_5
+song0412_5:	@ 0x08C86491
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBD
+	.byte	0x44
+	.byte	0xBE
+	.byte	0x26
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xE6
+	.byte	0x4B
+	.byte	0x70
+	.byte	0x98
+	.byte	0x48
+	.byte	0x98
+	.byte	0x49
+	.byte	0x98
+	.byte	0x46
+	.byte	0x98
+	.byte	0xBD
+	.byte	0x44
+	.byte	0xF9
+	.byte	0x44
+	.byte	0xAA
+	.byte	0xB1
+	.byte	0x00
+	.byte	0x00
+	.byte	0x00
+
+	.align 2
+	.global song0412
+song0412:	@ 0x08C864AC
+	.byte	5		@ trackCount
+	.byte	0		@ blockCount
+	.byte	0		@ priority
+	.byte	128		@ reverb
+
+	.word	voicegroup010		@ voicegroup/tone
+
+	.word	song0412_1		@ track
+	.word	song0412_2		@ track
+	.word	song0412_3		@ track
+	.word	song0412_4		@ track
+	.word	song0412_5		@ track

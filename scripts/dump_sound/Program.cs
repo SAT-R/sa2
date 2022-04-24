@@ -937,7 +937,7 @@ namespace dump_sound
         {
             var sb = new StringBuilder();
             var sbt = new StringBuilder();
-            var currName = String.Format("song{0:d3}", id);
+            var currName = String.Format("song{0:d4}", id);
             var realName = currName;
             if (soundInfo.ContainsKey(ofs))
             {
@@ -1007,8 +1007,20 @@ namespace dump_sound
 
             if (String.Compare(realName, currName) == 0)
             {
-                Directory.CreateDirectory("sound/songs/");
-                File.WriteAllText(outfilename, sbt.ToString() + sb.ToString());
+                // int[] goodSongs = {
+                //     114, 228, 244, 273, 282,
+                //     286, 296, 222, 231, 259,
+                //     280, 283, 288, 224, 237,
+                //     270, 281, 285, 290
+                // };
+                int[] goodSongs = {
+                    5
+                };
+
+                if (goodSongs.Contains(id)) {
+                    Directory.CreateDirectory("sound/songs/");
+                    File.WriteAllText(outfilename, sbt.ToString() + sb.ToString());
+                }
             }
 
             return sbt.ToString() + sb.ToString();

@@ -55,6 +55,7 @@ Temporary Items
 *.elf
 *.map
 *.bin
+*.hex
 *.o
 *.dump
 build

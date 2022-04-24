@@ -87,7 +87,7 @@ compare: $(ROM)
 	$(SHA1) checksum.sha1
 
 clean:
-	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) $(SAMPLE_SUBDIR)/*.bin src/*.s
+	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s src/*.s
 
 tidy:
 	rm -f $(ROM) $(ELF) $(MAP)

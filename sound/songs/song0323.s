@@ -1,0 +1,63 @@
+	.include "MPlayDef.s"
+	.section .rodata
+	.align 2
+	@********************** Track  1 **********************@
+
+	.global song0323_1
+song0323_1:	@ 0x08C84DB8
+	.byte	0xBC
+	.byte	0x00
+	.byte	0xBB
+	.byte	0x2D
+	.byte	0xBD
+	.byte	0x19
+	.byte	0xBE
+	.byte	0x78
+	.byte	0xC5
+	.byte	0x00
+	.byte	0xC2
+	.byte	0x16
+	.byte	0xBF
+	.byte	0x40
+	.byte	0xC4
+	.byte	0x00
+	.byte	0xC1
+	.byte	0x14
+	.byte	0xD1
+	.byte	0x3D
+	.byte	0x68
+	.byte	0xD5
+	.byte	0x3E
+	.byte	0x64
+	.byte	0x85
+	.byte	0xD3
+	.byte	0x3C
+	.byte	0x87
+	.byte	0xD1
+	.byte	0x3A
+	.byte	0x74
+	.byte	0x85
+	.byte	0xD0
+	.byte	0x40
+	.byte	0x7F
+	.byte	0xE7
+	.byte	0x41
+	.byte	0x78
+	.byte	0x98
+	.byte	0x83
+	.byte	0xB1
+	.byte	0x00
+	.byte	0x00
+	.byte	0x00
+
+	.align 2
+	.global song0323
+song0323:	@ 0x08C84DE4
+	.byte	1		@ trackCount
+	.byte	0		@ blockCount
+	.byte	20		@ priority
+	.byte	128		@ reverb
+
+	.word	voicegroup006		@ voicegroup/tone
+
+	.word	song0323_1		@ track

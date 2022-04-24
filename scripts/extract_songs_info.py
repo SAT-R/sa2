@@ -75,9 +75,10 @@ $(MID_SUBDIR)/{name}.s: %.s: %.mid
 
 def extract_from_song_table(rom: BufferedReader):
     song_addr_to_name = {}
+    song_files = []
 
-    with open("songs.inc", "w") as f_song_table:
-        with open('songs.mk', "w") as f_songs_config:
+    with open("new_songs.inc", "w") as f_song_table:
+        with open('new_songs.mk', "w") as f_songs_config:
             f_song_table.write("\t.align 2\n")
             f_song_table.write("\t.global gSongTable\n")
             song_table_addr = hex(rom.tell() + 0x08000000).split("0x")[1]
@@ -100,6 +101,7 @@ def extract_from_song_table(rom: BufferedReader):
 
                     if track_count != 0:
                         f_songs_config.write(extract_song_compiler_config(rom, song_name))
+                        song_files.append(f"build/sa2/sound/songs/midi/{song_name}.o(.rodata);")
                     else:
                         song_addr_to_name[song_addr] = "dummy_song_header"
 
@@ -113,6 +115,7 @@ def extract_from_song_table(rom: BufferedReader):
                 f_song_table.write("\t.byte 0, 0, 0, 0\n")
         
     print(song_addr_to_name)
+    print("\n".join(song_files))
 
 with open('baserom.gba', 'rb') as rom:
     rom.seek(addr_to_offset(song_table_addr))
