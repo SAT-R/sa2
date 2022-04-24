@@ -2,7 +2,7 @@
 	.global voicegroup011
 voicegroup011:	@ 0x08AD0D10
 	voice_square_2_alt 1, 0, 0, 15, 0	@08AD0D10
-	voice_programmable_wave_alt gUnknown_08AD4ECC, 0, 0, 15, 0	@08AD0D1C
+	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 0, 15, 0	@08AD0D1C
 	voice_directsound 60, 0, gUnknown_08AD98B0, 255, 0, 255, 127	@08AD0D28
 	voice_directsound 60, 0, gUnknown_08AE7F2C, 255, 0, 255, 0	@08AD0D34
 	voice_directsound 60, 0, gUnknown_08AF2584, 255, 0, 255, 127	@08AD0D40
@@ -12,7 +12,7 @@ voicegroup011:	@ 0x08AD0D10
 	voice_directsound 60, 0, gUnknown_08BA3AB8, 255, 0, 255, 0	@08AD0D70
 	voice_directsound 60, 0, gUnknown_08BA4DA4, 255, 0, 255, 0	@08AD0D7C
 	voice_directsound 60, 0, gUnknown_08BA62E0, 255, 235, 25, 165	@08AD0D88
-	voice_programmable_wave_alt gUnknown_08AD4ECC, 0, 4, 3, 0	@08AD0D94
+	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 3, 0	@08AD0D94
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0DA0
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0DAC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0DB8

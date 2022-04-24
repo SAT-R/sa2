@@ -14,17 +14,17 @@ voicegroup008:	@ 0x08ACFB10
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFB88
 	voice_directsound 60, 0, gUnknown_08AD98B0, 255, 0, 255, 127	@08ACFB94
 	voice_directsound 60, 0, gUnknown_08AE9BB4, 255, 0, 255, 127	@08ACFBA0
-	voice_programmable_wave_alt gUnknown_08AD4EEC, 0, 0, 15, 0	@08ACFBAC
+	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 0, 15, 0	@08ACFBAC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFBB8
 	voice_square_1_alt 0, 1, 0, 0, 15, 0	@08ACFBC4
 	voice_directsound 60, 0, gUnknown_08ADE2D0, 255, 0, 255, 0	@08ACFBD0
-	voice_programmable_wave_alt gUnknown_08AD4EEC, 0, 0, 15, 0	@08ACFBDC
+	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 0, 15, 0	@08ACFBDC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFBE8
 	voice_directsound 60, 0, gUnknown_08B80688, 255, 0, 255, 0	@08ACFBF4
 	voice_directsound 60, 0, gUnknown_08B84450, 255, 0, 255, 0	@08ACFC00
 	voice_square_2_alt 2, 0, 0, 15, 0	@08ACFC0C
 	voice_directsound 60, 0, gUnknown_08AF6F80, 255, 0, 255, 149	@08ACFC18
-	voice_programmable_wave_alt gUnknown_08AD4EEC, 0, 3, 7, 0	@08ACFC24
+	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 3, 7, 0	@08ACFC24
 	voice_square_1_alt 0, 2, 0, 0, 15, 0	@08ACFC30
 	voice_directsound 60, 0, gUnknown_08B8A5F8, 255, 0, 255, 0	@08ACFC3C
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFC48
@@ -32,7 +32,7 @@ voicegroup008:	@ 0x08ACFB10
 	voice_directsound 60, 0, gUnknown_08ADB1A4, 255, 0, 255, 127	@08ACFC60
 	voice_directsound 60, 0, gUnknown_08AD98B0, 255, 0, 255, 127	@08ACFC6C
 	voice_square_2_alt 2, 0, 0, 15, 0	@08ACFC78
-	voice_programmable_wave_alt gUnknown_08AD4EEC, 0, 3, 7, 0	@08ACFC84
+	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 3, 7, 0	@08ACFC84
 	voice_square_1_alt 0, 2, 0, 3, 4, 0	@08ACFC90
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFC9C
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACFCA8

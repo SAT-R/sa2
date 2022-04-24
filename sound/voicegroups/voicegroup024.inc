@@ -2,10 +2,10 @@
 	.global voicegroup024
 voicegroup024: @ 0x08AD470C
 	voice_square_1_alt 0, 2, 2, 0, 15, 2	@08AD470C
-	voice_programmable_wave_alt gUnknown_08AD4EDC, 2, 0, 15, 2	@08AD4718
-	voice_programmable_wave_alt gUnknown_08AD4E9C, 0, 4, 3, 0	@08AD4724
+	voice_programmable_wave_alt ProgrammableWaveData_7, 2, 0, 15, 2	@08AD4718
+	voice_programmable_wave_alt ProgrammableWaveData_3, 0, 4, 3, 0	@08AD4724
 	voice_square_1_alt 0, 2, 0, 6, 0, 0	@08AD4730
-	voice_programmable_wave_alt gUnknown_08AD4EFC, 3, 6, 4, 2	@08AD473C
+	voice_programmable_wave_alt ProgrammableWaveData_9, 3, 6, 4, 2	@08AD473C
 	voice_square_1_alt 0, 2, 0, 6, 1, 0	@08AD4748
 	voice_square_1_alt 0, 2, 0, 6, 1, 0	@08AD4754
 	voice_square_2_alt 2, 0, 6, 0, 0	@08AD4760

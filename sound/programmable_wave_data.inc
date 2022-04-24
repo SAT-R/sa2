@@ -1,49 +1,39 @@
 	.align 2
-	.global gUnknown_08AD4E44
-gUnknown_08AD4E44:
-	.incbin "sound/programmable_wave_samples/08AD4E44.pcm"
+ProgrammableWaveData_1:
+	.incbin "sound/programmable_wave_samples/01.pcm"
 
 	.align 2
-	.global gUnknown_08AD4E8C
-gUnknown_08AD4E8C:
-	.incbin "sound/programmable_wave_samples/08AD4E8C.pcm"
+ProgrammableWaveData_2:
+	.incbin "sound/programmable_wave_samples/02.pcm"
 
 	.align 2
-	.global gUnknown_08AD4E9C
-gUnknown_08AD4E9C:
-	.incbin "sound/programmable_wave_samples/08AD4E9C.pcm"
+ProgrammableWaveData_3:
+	.incbin "sound/programmable_wave_samples/03.pcm"
 
 	.align 2
-	.global gUnknown_08AD4EAC
-gUnknown_08AD4EAC:
-	.incbin "sound/programmable_wave_samples/08AD4EAC.pcm"
+ProgrammableWaveData_4:
+	.incbin "sound/programmable_wave_samples/04.pcm"
 
 	.align 2
-	.global gUnknown_08AD4EBC
-gUnknown_08AD4EBC:
-	.incbin "sound/programmable_wave_samples/08AD4EBC.pcm"
+ProgrammableWaveData_5:
+	.incbin "sound/programmable_wave_samples/05.pcm"
 
 	.align 2
-	.global gUnknown_08AD4ECC
-gUnknown_08AD4ECC:
-	.incbin "sound/programmable_wave_samples/08AD4ECC.pcm"
+ProgrammableWaveData_6:
+	.incbin "sound/programmable_wave_samples/06.pcm"
 
 	.align 2
-	.global gUnknown_08AD4EDC
-gUnknown_08AD4EDC:
-	.incbin "sound/programmable_wave_samples/08AD4EDC.pcm"
+ProgrammableWaveData_7:
+	.incbin "sound/programmable_wave_samples/07.pcm"
 
 	.align 2
-	.global gUnknown_08AD4EEC
-gUnknown_08AD4EEC:
-	.incbin "sound/programmable_wave_samples/08AD4EEC.pcm"
+ProgrammableWaveData_8:
+	.incbin "sound/programmable_wave_samples/08.pcm"
 
 	.align 2
-	.global gUnknown_08AD4EFC
-gUnknown_08AD4EFC:
-	.incbin "sound/programmable_wave_samples/08AD4EFC.pcm"
+ProgrammableWaveData_9:
+	.incbin "sound/programmable_wave_samples/09.pcm"
 
 	.align 2
-	.global gUnknown_08AD4F0C
-gUnknown_08AD4F0C:
-	.incbin "sound/programmable_wave_samples/08AD4F0C.pcm"
+ProgrammableWaveData_10:
+	.incbin "sound/programmable_wave_samples/10.pcm"

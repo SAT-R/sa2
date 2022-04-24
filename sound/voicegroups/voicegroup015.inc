@@ -12,7 +12,7 @@ voicegroup015:	@ 0x08AD1F94
 	voice_directsound 60, 0, gUnknown_08BCD1DC, 255, 0, 255, 127	@08AD1FF4
 	voice_directsound 60, 0, gUnknown_08BCD85C, 255, 0, 255, 127	@08AD2000
 	voice_directsound 60, 0, gUnknown_08BA62E0, 255, 235, 25, 165	@08AD200C
-	voice_programmable_wave_alt gUnknown_08AD4EEC, 0, 4, 4, 0	@08AD2018
+	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 4, 4, 0	@08AD2018
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD2024
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD2030
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD203C

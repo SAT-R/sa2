@@ -2,7 +2,7 @@
 	.global voicegroup004
 voicegroup004:	@ 0x08ACEBD4
 	voice_directsound 60, 0, gUnknown_08AF65D8, 255, 0, 255, 0	@08ACEBD4
-	voice_programmable_wave_alt gUnknown_08AD4F0C, 0, 3, 0, 2	@08ACEBE0
+	voice_programmable_wave_alt ProgrammableWaveData_10, 0, 3, 0, 2	@08ACEBE0
 	voice_noise 60, 0, 0, 1, 1, 0, 12, 2	@08ACEBEC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACEBF8
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACEC04

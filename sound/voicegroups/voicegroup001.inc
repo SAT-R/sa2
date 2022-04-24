@@ -32,9 +32,9 @@ voicegroup001:	@ 0x08ACE3A0
 	voice_directsound 60, 0, gUnknown_08B109B8, 255, 0, 255, 0	@08ACE4F0
 	voice_directsound 60, 0, gUnknown_08B18DD0, 255, 0, 255, 0	@08ACE4FC
 	voice_directsound 60, 0, gUnknown_08B1E9F0, 255, 0, 255, 149	@08ACE508
-	voice_programmable_wave_alt gUnknown_08AD4ECC, 0, 5, 1, 0	@08ACE514
+	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 5, 1, 0	@08ACE514
 	voice_directsound 60, 0, gUnknown_08B20204, 255, 216, 25, 0	@08ACE520
-	voice_programmable_wave_alt gUnknown_08AD4ECC, 0, 4, 4, 0	@08ACE52C
+	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 4, 0	@08ACE52C
 	voice_keysplit_all voicegroup004	@08ACE538
 	voice_keysplit_all voicegroup001	@08ACE544
 	
