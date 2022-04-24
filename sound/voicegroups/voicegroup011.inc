@@ -3,15 +3,15 @@
 voicegroup011:	@ 0x08AD0D10
 	voice_square_2_alt 1, 0, 0, 15, 0	@08AD0D10
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 0, 15, 0	@08AD0D1C
-	voice_directsound 60, 0, gUnknown_08AD98B0, 255, 0, 255, 127	@08AD0D28
-	voice_directsound 60, 0, gUnknown_08AE7F2C, 255, 0, 255, 0	@08AD0D34
-	voice_directsound 60, 0, gUnknown_08AF2584, 255, 0, 255, 127	@08AD0D40
+	voice_directsound 60, 0, DirectSoundWaveData_5, 255, 0, 255, 127	@08AD0D28
+	voice_directsound 60, 0, DirectSoundWaveData_11, 255, 0, 255, 0	@08AD0D34
+	voice_directsound 60, 0, DirectSoundWaveData_17, 255, 0, 255, 127	@08AD0D40
 	voice_square_1_alt 0, 1, 0, 0, 15, 0	@08AD0D4C
 	voice_square_1_alt 0, 3, 0, 6, 1, 0	@08AD0D58
-	voice_directsound 60, 0, gUnknown_08BA2C60, 255, 0, 255, 127	@08AD0D64
-	voice_directsound 60, 0, gUnknown_08BA3AB8, 255, 0, 255, 0	@08AD0D70
-	voice_directsound 60, 0, gUnknown_08BA4DA4, 255, 0, 255, 0	@08AD0D7C
-	voice_directsound 60, 0, gUnknown_08BA62E0, 255, 235, 25, 165	@08AD0D88
+	voice_directsound 60, 0, DirectSoundWaveData_94, 255, 0, 255, 127	@08AD0D64
+	voice_directsound 60, 0, DirectSoundWaveData_95, 255, 0, 255, 0	@08AD0D70
+	voice_directsound 60, 0, DirectSoundWaveData_96, 255, 0, 255, 0	@08AD0D7C
+	voice_directsound 60, 0, DirectSoundWaveData_97, 255, 235, 25, 165	@08AD0D88
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 3, 0	@08AD0D94
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0DA0
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0DAC

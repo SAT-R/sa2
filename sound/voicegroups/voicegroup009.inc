@@ -21,8 +21,8 @@ voicegroup009:	@ 0x08AD0110
 	voice_square_2_alt 0, 0, 3, 0, 2	@08AD01DC
 	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 3, 4, 0	@08AD01E8
 	voice_square_2_alt 2, 0, 2, 2, 0	@08AD01F4
-	voice_directsound 60, 0, gUnknown_08AF6F80, 255, 0, 255, 149	@08AD0200
-	voice_directsound 60, 0, gUnknown_08B91D70, 255, 0, 255, 149	@08AD020C
+	voice_directsound 60, 0, DirectSoundWaveData_22, 255, 0, 255, 149	@08AD0200
+	voice_directsound 60, 0, DirectSoundWaveData_81, 255, 0, 255, 149	@08AD020C
 	voice_square_1_alt 0, 2, 1, 0, 10, 3	@08AD0218
 	voice_programmable_wave_alt ProgrammableWaveData_8, 0, 3, 7, 0	@08AD0224
 	voice_square_2_alt 2, 0, 0, 15, 0	@08AD0230
@@ -61,29 +61,29 @@ voicegroup009:	@ 0x08AD0110
 	voice_noise 60, 0, 0, 0, 1, 0, 15, 0	@08AD03BC
 	voice_noise 60, 0, 0, 1, 0, 0, 15, 0	@08AD03C8
 	voice_noise 60, 0, 0, 0, 0, 0, 15, 2	@08AD03D4
-	voice_directsound 60, 0, gUnknown_08B80688, 255, 0, 255, 0	@08AD03E0
-	voice_directsound 60, 0, gUnknown_08B84450, 255, 0, 255, 0	@08AD03EC
-	voice_directsound 60, 0, gUnknown_08B940F0, 255, 0, 255, 0	@08AD03F8
-	voice_directsound 60, 0, gUnknown_08B98840, 255, 0, 255, 0	@08AD0404
-	voice_directsound 60, 0, gUnknown_08B8A5F8, 255, 0, 255, 0	@08AD0410
-	voice_directsound 60, 0, gUnknown_08B80688, 255, 0, 255, 0	@08AD041C
-	voice_directsound 60, 0, gUnknown_08B84450, 255, 0, 255, 0	@08AD0428
-	voice_directsound 60, 0, gUnknown_08B940F0, 255, 250, 18, 250	@08AD0434
-	voice_directsound 60, 0, gUnknown_08B98840, 255, 250, 18, 250	@08AD0440
-	voice_directsound 60, 0, gUnknown_08B8A5F8, 255, 250, 18, 250	@08AD044C
-	voice_directsound 60, 0, gUnknown_08AD5F28, 255, 0, 255, 0	@08AD0458
-	voice_directsound 60, 0, gUnknown_08AD73FC, 255, 0, 255, 0	@08AD0464
-	voice_directsound 60, 0, gUnknown_08AD8810, 255, 0, 255, 0	@08AD0470
-	voice_directsound 60, 0, gUnknown_08AD9140, 255, 0, 255, 0	@08AD047C
-	voice_directsound 60, 0, gUnknown_08AD98B0, 255, 0, 255, 127	@08AD0488
-	voice_directsound 60, 0, gUnknown_08ADB1A4, 255, 0, 255, 127	@08AD0494
-	voice_directsound 60, 0, gUnknown_08ADE2D0, 255, 0, 255, 0	@08AD04A0
-	voice_directsound 60, 0, gUnknown_08ADE918, 255, 235, 38, 165	@08AD04AC
-	voice_directsound 60, 0, gUnknown_08AE200C, 255, 0, 255, 127	@08AD04B8
-	voice_directsound 60, 0, gUnknown_08AE4FE8, 255, 0, 255, 0	@08AD04C4
-	voice_directsound 60, 0, gUnknown_08AE7F2C, 255, 0, 255, 0	@08AD04D0
-	voice_directsound 60, 0, gUnknown_08AE98B4, 255, 0, 255, 127	@08AD04DC
-	voice_directsound 60, 0, gUnknown_08AE9BB4, 255, 0, 255, 127	@08AD04E8
+	voice_directsound 60, 0, DirectSoundWaveData_78, 255, 0, 255, 0	@08AD03E0
+	voice_directsound 60, 0, DirectSoundWaveData_79, 255, 0, 255, 0	@08AD03EC
+	voice_directsound 60, 0, DirectSoundWaveData_82, 255, 0, 255, 0	@08AD03F8
+	voice_directsound 60, 0, DirectSoundWaveData_83, 255, 0, 255, 0	@08AD0404
+	voice_directsound 60, 0, DirectSoundWaveData_80, 255, 0, 255, 0	@08AD0410
+	voice_directsound 60, 0, DirectSoundWaveData_78, 255, 0, 255, 0	@08AD041C
+	voice_directsound 60, 0, DirectSoundWaveData_79, 255, 0, 255, 0	@08AD0428
+	voice_directsound 60, 0, DirectSoundWaveData_82, 255, 250, 18, 250	@08AD0434
+	voice_directsound 60, 0, DirectSoundWaveData_83, 255, 250, 18, 250	@08AD0440
+	voice_directsound 60, 0, DirectSoundWaveData_80, 255, 250, 18, 250	@08AD044C
+	voice_directsound 60, 0, DirectSoundWaveData_1, 255, 0, 255, 0	@08AD0458
+	voice_directsound 60, 0, DirectSoundWaveData_2, 255, 0, 255, 0	@08AD0464
+	voice_directsound 60, 0, DirectSoundWaveData_3, 255, 0, 255, 0	@08AD0470
+	voice_directsound 60, 0, DirectSoundWaveData_4, 255, 0, 255, 0	@08AD047C
+	voice_directsound 60, 0, DirectSoundWaveData_5, 255, 0, 255, 127	@08AD0488
+	voice_directsound 60, 0, DirectSoundWaveData_6, 255, 0, 255, 127	@08AD0494
+	voice_directsound 60, 0, DirectSoundWaveData_7, 255, 0, 255, 0	@08AD04A0
+	voice_directsound 60, 0, DirectSoundWaveData_8, 255, 235, 38, 165	@08AD04AC
+	voice_directsound 60, 0, DirectSoundWaveData_9, 255, 0, 255, 127	@08AD04B8
+	voice_directsound 60, 0, DirectSoundWaveData_10, 255, 0, 255, 0	@08AD04C4
+	voice_directsound 60, 0, DirectSoundWaveData_11, 255, 0, 255, 0	@08AD04D0
+	voice_directsound 60, 0, DirectSoundWaveData_12, 255, 0, 255, 127	@08AD04DC
+	voice_directsound 60, 0, DirectSoundWaveData_13, 255, 0, 255, 127	@08AD04E8
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD04F4
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0500
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD050C
@@ -91,9 +91,9 @@ voicegroup009:	@ 0x08AD0110
 	voice_noise 60, 0, 0, 1, 0, 0, 15, 1	@08AD0524
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0530
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD053C
-	voice_directsound 60, 0, gUnknown_08AF39C8, 255, 0, 255, 0	@08AD0548
-	voice_directsound 60, 0, gUnknown_08AF5F44, 255, 0, 255, 0	@08AD0554
-	voice_directsound 60, 0, gUnknown_08AF65D8, 255, 0, 255, 0	@08AD0560
+	voice_directsound 60, 0, DirectSoundWaveData_19, 255, 0, 255, 0	@08AD0548
+	voice_directsound 60, 0, DirectSoundWaveData_20, 255, 0, 255, 0	@08AD0554
+	voice_directsound 60, 0, DirectSoundWaveData_21, 255, 0, 255, 0	@08AD0560
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD056C
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0578
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0584
@@ -108,17 +108,17 @@ voicegroup009:	@ 0x08AD0110
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD05F0
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD05FC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD0608
-	voice_directsound_no_resample 60, 0, gUnknown_08B9A988, 255, 0, 255, 0	@08AD0614
-	voice_directsound_no_resample 60, 0, gUnknown_08B9AD68, 255, 0, 255, 0	@08AD0620
-	voice_directsound_no_resample 60, 0, gUnknown_08B9B1C0, 255, 0, 255, 0	@08AD062C
-	voice_directsound_no_resample 60, 0, gUnknown_08B9BB3C, 255, 0, 255, 0	@08AD0638
-	voice_directsound_no_resample 60, 0, gUnknown_08B9BF9C, 255, 0, 255, 0	@08AD0644
-	voice_directsound_no_resample 60, 0, gUnknown_08B9C408, 255, 0, 255, 0	@08AD0650
-	voice_directsound_no_resample 60, 0, gUnknown_08B9C894, 255, 0, 255, 0	@08AD065C
-	voice_directsound_no_resample 60, 0, gUnknown_08B9D1C0, 255, 0, 255, 0	@08AD0668
-	voice_directsound_no_resample 60, 0, gUnknown_08B9D718, 255, 0, 255, 0	@08AD0674
-	voice_directsound_no_resample 60, 0, gUnknown_08B5121C, 255, 0, 255, 0	@08AD0680
-	voice_directsound_no_resample 60, 0, gUnknown_08B51EBC, 255, 0, 255, 0	@08AD068C
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_84, 255, 0, 255, 0	@08AD0614
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_85, 255, 0, 255, 0	@08AD0620
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_86, 255, 0, 255, 0	@08AD062C
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_87, 255, 0, 255, 0	@08AD0638
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_88, 255, 0, 255, 0	@08AD0644
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_89, 255, 0, 255, 0	@08AD0650
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_90, 255, 0, 255, 0	@08AD065C
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_91, 255, 0, 255, 0	@08AD0668
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_92, 255, 0, 255, 0	@08AD0674
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_60, 255, 0, 255, 0	@08AD0680
+	voice_directsound_no_resample 60, 0, DirectSoundWaveData_61, 255, 0, 255, 0	@08AD068C
 	voice_noise 60, 0, 0, 0, 0, 0, 15, 0	@08AD0698
 	voice_noise 60, 0, 0, 0, 1, 0, 15, 2	@08AD06A4
 	voice_noise 60, 0, 0, 1, 1, 0, 12, 2	@08AD06B0

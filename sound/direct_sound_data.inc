@@ -1,1909 +1,1528 @@
 	.align 2
-    .global gUnknown_08AD5F28
-gUnknown_08AD5F28:
-	.incbin "sound/direct_sound_samples/08AD5F28.bin"
+    .global DirectSoundWaveData_1
+DirectSoundWaveData_1:
+	.incbin "sound/direct_sound_samples/unknown_001.bin"
 
 	.align 2
-	.global gUnknown_08AD73FC
-gUnknown_08AD73FC:
-	.incbin "sound/direct_sound_samples/08AD73FC.bin"
+DirectSoundWaveData_2:
+	.incbin "sound/direct_sound_samples/unknown_002.bin"
 
 	.align 2
-	.global gUnknown_08AD8810
-gUnknown_08AD8810:
-	.incbin "sound/direct_sound_samples/08AD8810.bin"
+DirectSoundWaveData_3:
+	.incbin "sound/direct_sound_samples/unknown_003.bin"
 
 	.align 2
-	.global gUnknown_08AD9140
-gUnknown_08AD9140:
-	.incbin "sound/direct_sound_samples/08AD9140.bin"
+DirectSoundWaveData_4:
+	.incbin "sound/direct_sound_samples/unknown_004.bin"
 
 	.align 2
-	.global gUnknown_08AD98B0
-gUnknown_08AD98B0:
-	.incbin "sound/direct_sound_samples/08AD98B0.bin"
+DirectSoundWaveData_5:
+	.incbin "sound/direct_sound_samples/unknown_005.bin"
 
 	.align 2
-	.global gUnknown_08ADB1A4
-gUnknown_08ADB1A4:
-	.incbin "sound/direct_sound_samples/08ADB1A4.bin"
+DirectSoundWaveData_6:
+	.incbin "sound/direct_sound_samples/unknown_006.bin"
 
 	.align 2
-	.global gUnknown_08ADE2D0
-gUnknown_08ADE2D0:
-	.incbin "sound/direct_sound_samples/08ADE2D0.bin"
+DirectSoundWaveData_7:
+	.incbin "sound/direct_sound_samples/unknown_007.bin"
 
 	.align 2
-	.global gUnknown_08ADE918
-gUnknown_08ADE918:
-	.incbin "sound/direct_sound_samples/08ADE918.bin"
+DirectSoundWaveData_8:
+	.incbin "sound/direct_sound_samples/unknown_008.bin"
 
 	.align 2
-	.global gUnknown_08AE200C
-gUnknown_08AE200C:
-	.incbin "sound/direct_sound_samples/08AE200C.bin"
+DirectSoundWaveData_9:
+	.incbin "sound/direct_sound_samples/unknown_009.bin"
 
 	.align 2
-	.global gUnknown_08AE4FE8
-gUnknown_08AE4FE8:
-	.incbin "sound/direct_sound_samples/08AE4FE8.bin"
+DirectSoundWaveData_10:
+	.incbin "sound/direct_sound_samples/unknown_010.bin"
 
 	.align 2
-	.global gUnknown_08AE7F2C
-gUnknown_08AE7F2C:
-	.incbin "sound/direct_sound_samples/08AE7F2C.bin"
+DirectSoundWaveData_11:
+	.incbin "sound/direct_sound_samples/unknown_011.bin"
 
 	.align 2
-	.global gUnknown_08AE98B4
-gUnknown_08AE98B4:
-	.incbin "sound/direct_sound_samples/08AE98B4.bin"
+DirectSoundWaveData_12:
+	.incbin "sound/direct_sound_samples/unknown_012.bin"
 
 	.align 2
-	.global gUnknown_08AE9BB4
-gUnknown_08AE9BB4:
-	.incbin "sound/direct_sound_samples/08AE9BB4.bin"
+DirectSoundWaveData_13:
+	.incbin "sound/direct_sound_samples/unknown_013.bin"
 
 	.align 2
-	.global gUnknown_08AEA788
-gUnknown_08AEA788:
-	.incbin "sound/direct_sound_samples/08AEA788.bin"
+DirectSoundWaveData_14:
+	.incbin "sound/direct_sound_samples/unknown_014.bin"
 
 	.align 2
-	.global gUnknown_08AED36C
-gUnknown_08AED36C:
-	.incbin "sound/direct_sound_samples/08AED36C.bin"
+DirectSoundWaveData_15:
+	.incbin "sound/direct_sound_samples/unknown_015.bin"
 
 	.align 2
-	.global gUnknown_08AF0160
-gUnknown_08AF0160:
-	.incbin "sound/direct_sound_samples/08AF0160.bin"
+DirectSoundWaveData_16:
+	.incbin "sound/direct_sound_samples/unknown_016.bin"
 
 	.align 2
-	.global gUnknown_08AF2584
-gUnknown_08AF2584:
-	.incbin "sound/direct_sound_samples/08AF2584.bin"
+DirectSoundWaveData_17:
+	.incbin "sound/direct_sound_samples/unknown_017.bin"
 
 	.align 2
-	.global gUnknown_08AF2C98
-gUnknown_08AF2C98:
-	.incbin "sound/direct_sound_samples/08AF2C98.bin"
+DirectSoundWaveData_18:
+	.incbin "sound/direct_sound_samples/unknown_018.bin"
 
 	.align 2
-	.global gUnknown_08AF39C8
-gUnknown_08AF39C8:
-	.incbin "sound/direct_sound_samples/08AF39C8.bin"
+DirectSoundWaveData_19:
+	.incbin "sound/direct_sound_samples/unknown_019.bin"
 
 	.align 2
-	.global gUnknown_08AF5F44
-gUnknown_08AF5F44:
-	.incbin "sound/direct_sound_samples/08AF5F44.bin"
+DirectSoundWaveData_20:
+	.incbin "sound/direct_sound_samples/unknown_020.bin"
 
 	.align 2
-	.global gUnknown_08AF65D8
-gUnknown_08AF65D8:
-	.incbin "sound/direct_sound_samples/08AF65D8.bin"
+DirectSoundWaveData_21:
+	.incbin "sound/direct_sound_samples/unknown_021.bin"
 
 	.align 2
-	.global gUnknown_08AF6F80
-gUnknown_08AF6F80:
-	.incbin "sound/direct_sound_samples/08AF6F80.bin"
+DirectSoundWaveData_22:
+	.incbin "sound/direct_sound_samples/unknown_022.bin"
 
 	.align 2
-	.global gUnknown_08AFA040
-gUnknown_08AFA040:
-	.incbin "sound/direct_sound_samples/08AFA040.bin"
+DirectSoundWaveData_23:
+	.incbin "sound/direct_sound_samples/unknown_023.bin"
 
 	.align 2
-	.global gUnknown_08AFAD54
-gUnknown_08AFAD54:
-	.incbin "sound/direct_sound_samples/08AFAD54.bin"
+DirectSoundWaveData_24:
+	.incbin "sound/direct_sound_samples/unknown_024.bin"
 
 	.align 2
-	.global gUnknown_08AFDF30
-gUnknown_08AFDF30:
-	.incbin "sound/direct_sound_samples/08AFDF30.bin"
+DirectSoundWaveData_25:
+	.incbin "sound/direct_sound_samples/unknown_025.bin"
 
 	.align 2
-	.global gUnknown_08B00004
-gUnknown_08B00004:
-	.incbin "sound/direct_sound_samples/08B00004.bin"
+DirectSoundWaveData_26:
+	.incbin "sound/direct_sound_samples/unknown_026.bin"
 
 	.align 2
-	.global gUnknown_08B02518
-gUnknown_08B02518:
-	.incbin "sound/direct_sound_samples/08B02518.bin"
+DirectSoundWaveData_27:
+	.incbin "sound/direct_sound_samples/unknown_027.bin"
 
 	.align 2
-	.global gUnknown_08B04840
-gUnknown_08B04840:
-	.incbin "sound/direct_sound_samples/08B04840.bin"
+DirectSoundWaveData_28:
+	.incbin "sound/direct_sound_samples/unknown_028.bin"
 
 	.align 2
-	.global gUnknown_08B051E4
-gUnknown_08B051E4:
-	.incbin "sound/direct_sound_samples/08B051E4.bin"
+DirectSoundWaveData_29:
+	.incbin "sound/direct_sound_samples/unknown_029.bin"
 
 	.align 2
-	.global gUnknown_08B0C95C
-gUnknown_08B0C95C:
-	.incbin "sound/direct_sound_samples/08B0C95C.bin"
+DirectSoundWaveData_30:
+	.incbin "sound/direct_sound_samples/unknown_030.bin"
 
 	.align 2
-	.global gUnknown_08B0F724
-gUnknown_08B0F724:
-	.incbin "sound/direct_sound_samples/08B0F724.bin"
+DirectSoundWaveData_31:
+	.incbin "sound/direct_sound_samples/unknown_031.bin"
 
 	.align 2
-	.global gUnknown_08B109B8
-gUnknown_08B109B8:
-	.incbin "sound/direct_sound_samples/08B109B8.bin"
+DirectSoundWaveData_32:
+	.incbin "sound/direct_sound_samples/unknown_032.bin"
 
 	.align 2
-	.global gUnknown_08B18DD0
-gUnknown_08B18DD0:
-	.incbin "sound/direct_sound_samples/08B18DD0.bin"
+DirectSoundWaveData_33:
+	.incbin "sound/direct_sound_samples/unknown_033.bin"
 
 	.align 2
-	.global gUnknown_08B1E9F0
-gUnknown_08B1E9F0:
-	.incbin "sound/direct_sound_samples/08B1E9F0.bin"
+DirectSoundWaveData_34:
+	.incbin "sound/direct_sound_samples/unknown_034.bin"
 
 	.align 2
-	.global gUnknown_08B20204
-gUnknown_08B20204:
-	.incbin "sound/direct_sound_samples/08B20204.bin"
+DirectSoundWaveData_35:
+	.incbin "sound/direct_sound_samples/unknown_035.bin"
 
 	.align 2
-	.global gUnknown_08B21DC8
-gUnknown_08B21DC8:
-	.incbin "sound/direct_sound_samples/08B21DC8.bin"
+DirectSoundWaveData_36:
+	.incbin "sound/direct_sound_samples/unknown_036.bin"
 
 	.align 2
-	.global gUnknown_08B22678
-gUnknown_08B22678:
-	.incbin "sound/direct_sound_samples/08B22678.bin"
+DirectSoundWaveData_37:
+	.incbin "sound/direct_sound_samples/unknown_037.bin"
 
 	.align 2
-	.global gUnknown_08B232F0
-gUnknown_08B232F0:
-	.incbin "sound/direct_sound_samples/08B232F0.bin"
+DirectSoundWaveData_38:
+	.incbin "sound/direct_sound_samples/unknown_038.bin"
 
 	.align 2
-	.global gUnknown_08B24488
-gUnknown_08B24488:
-	.incbin "sound/direct_sound_samples/08B24488.bin"
+DirectSoundWaveData_39:
+	.incbin "sound/direct_sound_samples/unknown_039.bin"
 
 	.align 2
-	.global gUnknown_08B24D8C
-gUnknown_08B24D8C:
-	.incbin "sound/direct_sound_samples/08B24D8C.bin"
+DirectSoundWaveData_40:
+	.incbin "sound/direct_sound_samples/unknown_040.bin"
 
 	.align 2
-	.global gUnknown_08B257FC
-gUnknown_08B257FC:
-	.incbin "sound/direct_sound_samples/08B257FC.bin"
+DirectSoundWaveData_41:
+	.incbin "sound/direct_sound_samples/unknown_041.bin"
 
 	.align 2
-	.global gUnknown_08B2993C
-gUnknown_08B2993C:
-	.incbin "sound/direct_sound_samples/08B2993C.bin"
+DirectSoundWaveData_42:
+	.incbin "sound/direct_sound_samples/unknown_042.bin"
 
 	.align 2
-	.global gUnknown_08B2D744
-gUnknown_08B2D744:
-	.incbin "sound/direct_sound_samples/08B2D744.bin"
+DirectSoundWaveData_43:
+	.incbin "sound/direct_sound_samples/unknown_043.bin"
 
 	.align 2
-	.global gUnknown_08B2DEF8
-gUnknown_08B2DEF8:
-	.incbin "sound/direct_sound_samples/08B2DEF8.bin"
+DirectSoundWaveData_44:
+	.incbin "sound/direct_sound_samples/unknown_044.bin"
 
 	.align 2
-	.global gUnknown_08B2E708
-gUnknown_08B2E708:
-	.incbin "sound/direct_sound_samples/08B2E708.bin"
+DirectSoundWaveData_45:
+	.incbin "sound/direct_sound_samples/unknown_045.bin"
 
 	.align 2
-	.global gUnknown_08B2EEB8
-gUnknown_08B2EEB8:
-	.incbin "sound/direct_sound_samples/08B2EEB8.bin"
+DirectSoundWaveData_46:
+	.incbin "sound/direct_sound_samples/unknown_046.bin"
 
 	.align 2
-	.global gUnknown_08B2F9FC
-gUnknown_08B2F9FC:
-	.incbin "sound/direct_sound_samples/08B2F9FC.bin"
+DirectSoundWaveData_47:
+	.incbin "sound/direct_sound_samples/unknown_047.bin"
 
 	.align 2
-	.global gUnknown_08B3125C
-gUnknown_08B3125C:
-	.incbin "sound/direct_sound_samples/08B3125C.bin"
+DirectSoundWaveData_48:
+	.incbin "sound/direct_sound_samples/unknown_048.bin"
 
 	.align 2
-	.global gUnknown_08B36678
-gUnknown_08B36678:
-	.incbin "sound/direct_sound_samples/08B36678.bin"
+DirectSoundWaveData_49:
+	.incbin "sound/direct_sound_samples/unknown_049.bin"
 
 	.align 2
-	.global gUnknown_08B3B740
-gUnknown_08B3B740:
-	.incbin "sound/direct_sound_samples/08B3B740.bin"
+DirectSoundWaveData_50:
+	.incbin "sound/direct_sound_samples/unknown_050.bin"
 
 	.align 2
-	.global gUnknown_08B3D2F8
-gUnknown_08B3D2F8:
-	.incbin "sound/direct_sound_samples/08B3D2F8.bin"
+DirectSoundWaveData_51:
+	.incbin "sound/direct_sound_samples/unknown_051.bin"
 
 	.align 2
-	.global gUnknown_08B413E0
-gUnknown_08B413E0:
-	.incbin "sound/direct_sound_samples/08B413E0.bin"
+DirectSoundWaveData_52:
+	.incbin "sound/direct_sound_samples/unknown_052.bin"
 
 	.align 2
-	.global gUnknown_08B4603C
-gUnknown_08B4603C:
-	.incbin "sound/direct_sound_samples/08B4603C.bin"
+DirectSoundWaveData_53:
+	.incbin "sound/direct_sound_samples/unknown_053.bin"
 
 	.align 2
-	.global gUnknown_08B481E0
-gUnknown_08B481E0:
-	.incbin "sound/direct_sound_samples/08B481E0.bin"
+DirectSoundWaveData_54:
+	.incbin "sound/direct_sound_samples/unknown_054.bin"
 
 	.align 2
-	.global gUnknown_08B49D64
-gUnknown_08B49D64:
-	.incbin "sound/direct_sound_samples/08B49D64.bin"
+DirectSoundWaveData_55:
+	.incbin "sound/direct_sound_samples/unknown_055.bin"
 
 	.align 2
-	.global gUnknown_08B4BB5C
-gUnknown_08B4BB5C:
-	.incbin "sound/direct_sound_samples/08B4BB5C.bin"
+DirectSoundWaveData_56:
+	.incbin "sound/direct_sound_samples/unknown_056.bin"
 
 	.align 2
-	.global gUnknown_08B4C398
-gUnknown_08B4C398:
-	.incbin "sound/direct_sound_samples/08B4C398.bin"
+DirectSoundWaveData_57:
+	.incbin "sound/direct_sound_samples/unknown_057.bin"
 
 	.align 2
-	.global gUnknown_08B4F264
-gUnknown_08B4F264:
-	.incbin "sound/direct_sound_samples/08B4F264.bin"
+DirectSoundWaveData_58:
+	.incbin "sound/direct_sound_samples/unknown_058.bin"
 
 	.align 2
-	.global gUnknown_08B503F8
-gUnknown_08B503F8:
-	.incbin "sound/direct_sound_samples/08B503F8.bin"
+DirectSoundWaveData_59:
+	.incbin "sound/direct_sound_samples/unknown_059.bin"
 
 	.align 2
-	.global gUnknown_08B5121C
-gUnknown_08B5121C:
-	.incbin "sound/direct_sound_samples/08B5121C.bin"
+DirectSoundWaveData_60:
+	.incbin "sound/direct_sound_samples/unknown_060.bin"
 
 	.align 2
-	.global gUnknown_08B51EBC
-gUnknown_08B51EBC:
-	.incbin "sound/direct_sound_samples/08B51EBC.bin"
+DirectSoundWaveData_61:
+	.incbin "sound/direct_sound_samples/unknown_061.bin"
 
 	.align 2
-	.global sound_title_screen_announcement
-sound_title_screen_announcement:
+DirectSoundWaveData_title_screen_announcement:
 	.incbin "sound/direct_sound_samples/title_screen_announcement.bin"
 
 	.align 2
-	.global sound_sonic_selected_announcement
-sound_sonic_selected_announcement:
+DirectSoundWaveData_sonic_selected_announcement:
 	.incbin "sound/direct_sound_samples/sonic_selected_announcement.bin"
 
 	.align 2
-	.global gUnknown_08B5AA00
-gUnknown_08B5AA00:
-	.incbin "sound/direct_sound_samples/08B5AA00.bin"
+DirectSoundWaveData_62:
+	.incbin "sound/direct_sound_samples/unknown_062.bin"
 
 	.align 2
-	.global gUnknown_08B5C858
-gUnknown_08B5C858:
-	.incbin "sound/direct_sound_samples/08B5C858.bin"
+DirectSoundWaveData_63:
+	.incbin "sound/direct_sound_samples/unknown_063.bin"
 
 	.align 2
-	.global gUnknown_08B5F64C
-gUnknown_08B5F64C:
-	.incbin "sound/direct_sound_samples/08B5F64C.bin"
+DirectSoundWaveData_64:
+	.incbin "sound/direct_sound_samples/unknown_064.bin"
 
 	.align 2
-	.global sound_cream_selected_announcement
-sound_cream_selected_announcement:
+DirectSoundWaveData_cream_selected_announcement:
 	.incbin "sound/direct_sound_samples/cream_selected_announcement.bin"
 
 	.align 2
-	.global gUnknown_08B6410C
-gUnknown_08B6410C:
-	.incbin "sound/direct_sound_samples/08B6410C.bin"
+DirectSoundWaveData_65:
+	.incbin "sound/direct_sound_samples/unknown_065.bin"
 
 	.align 2
-	.global gUnknown_08B65154
-gUnknown_08B65154:
-	.incbin "sound/direct_sound_samples/08B65154.bin"
+DirectSoundWaveData_66:
+	.incbin "sound/direct_sound_samples/unknown_066.bin"
 
 	.align 2
-	.global gUnknown_08B663E0
-gUnknown_08B663E0:
-	.incbin "sound/direct_sound_samples/08B663E0.bin"
+DirectSoundWaveData_67:
+	.incbin "sound/direct_sound_samples/unknown_067.bin"
 
 	.align 2
-	.global gUnknown_08B67464
-gUnknown_08B67464:
-	.incbin "sound/direct_sound_samples/08B67464.bin"
+DirectSoundWaveData_68:
+	.incbin "sound/direct_sound_samples/unknown_068.bin"
 
 	.align 2
-	.global gUnknown_08B688B8
-gUnknown_08B688B8:
-	.incbin "sound/direct_sound_samples/08B688B8.bin"
+DirectSoundWaveData_69:
+	.incbin "sound/direct_sound_samples/unknown_069.bin"
 
 	.align 2
-	.global gUnknown_08B6BA40
-gUnknown_08B6BA40:
-	.incbin "sound/direct_sound_samples/08B6BA40.bin"
+DirectSoundWaveData_70:
+	.incbin "sound/direct_sound_samples/unknown_070.bin"
 
 	.align 2
-	.global gUnknown_08B6FA94
-gUnknown_08B6FA94:
-	.incbin "sound/direct_sound_samples/08B6FA94.bin"
+DirectSoundWaveData_71:
+	.incbin "sound/direct_sound_samples/unknown_071.bin"
 
 	.align 2
-	.global gUnknown_08B70C1C
-gUnknown_08B70C1C:
-	.incbin "sound/direct_sound_samples/08B70C1C.bin"
+DirectSoundWaveData_72:
+	.incbin "sound/direct_sound_samples/unknown_072.bin"
 
 	.align 2
-	.global gUnknown_08B72E4C
-gUnknown_08B72E4C:
-	.incbin "sound/direct_sound_samples/08B72E4C.bin"
+DirectSoundWaveData_73:
+	.incbin "sound/direct_sound_samples/unknown_073.bin"
 
 	.align 2
-	.global gUnknown_08B756E4
-gUnknown_08B756E4:
-	.incbin "sound/direct_sound_samples/08B756E4.bin"
+DirectSoundWaveData_74:
+	.incbin "sound/direct_sound_samples/unknown_074.bin"
 
 	.align 2
-	.global gUnknown_08B78148
-gUnknown_08B78148:
-	.incbin "sound/direct_sound_samples/08B78148.bin"
+DirectSoundWaveData_75:
+	.incbin "sound/direct_sound_samples/unknown_075.bin"
 
 	.align 2
-	.global gUnknown_08B7A79C
-gUnknown_08B7A79C:
-	.incbin "sound/direct_sound_samples/08B7A79C.bin"
+DirectSoundWaveData_76:
+	.incbin "sound/direct_sound_samples/unknown_076.bin"
 
 	.align 2
-	.global gUnknown_08B7E428
-gUnknown_08B7E428:
-	.incbin "sound/direct_sound_samples/08B7E428.bin"
+DirectSoundWaveData_77:
+	.incbin "sound/direct_sound_samples/unknown_077.bin"
 
 	.align 2
-	.global gUnknown_08B80688
-gUnknown_08B80688:
-	.incbin "sound/direct_sound_samples/08B80688.bin"
+DirectSoundWaveData_78:
+	.incbin "sound/direct_sound_samples/unknown_078.bin"
 
 	.align 2
-	.global gUnknown_08B84450
-gUnknown_08B84450:
-	.incbin "sound/direct_sound_samples/08B84450.bin"
+DirectSoundWaveData_79:
+	.incbin "sound/direct_sound_samples/unknown_079.bin"
 
 	.align 2
-	.global gUnknown_08B8A5F8
-gUnknown_08B8A5F8:
-	.incbin "sound/direct_sound_samples/08B8A5F8.bin"
+DirectSoundWaveData_80:
+	.incbin "sound/direct_sound_samples/unknown_080.bin"
 
 	.align 2
-	.global gUnknown_08B91D70
-gUnknown_08B91D70:
-	.incbin "sound/direct_sound_samples/08B91D70.bin"
+DirectSoundWaveData_81:
+	.incbin "sound/direct_sound_samples/unknown_081.bin"
 
 	.align 2
-	.global gUnknown_08B940F0
-gUnknown_08B940F0:
-	.incbin "sound/direct_sound_samples/08B940F0.bin"
+DirectSoundWaveData_82:
+	.incbin "sound/direct_sound_samples/unknown_082.bin"
 
 	.align 2
-	.global gUnknown_08B98840
-gUnknown_08B98840:
-	.incbin "sound/direct_sound_samples/08B98840.bin"
+DirectSoundWaveData_83:
+	.incbin "sound/direct_sound_samples/unknown_083.bin"
 
 	.align 2
-	.global gUnknown_08B9A988
-gUnknown_08B9A988:
-	.incbin "sound/direct_sound_samples/08B9A988.bin"
+DirectSoundWaveData_84:
+	.incbin "sound/direct_sound_samples/unknown_084.bin"
 
 	.align 2
-	.global gUnknown_08B9AD68
-gUnknown_08B9AD68:
-	.incbin "sound/direct_sound_samples/08B9AD68.bin"
+DirectSoundWaveData_85:
+	.incbin "sound/direct_sound_samples/unknown_085.bin"
 
 	.align 2
-	.global gUnknown_08B9B1C0
-gUnknown_08B9B1C0:
-	.incbin "sound/direct_sound_samples/08B9B1C0.bin"
+DirectSoundWaveData_86:
+	.incbin "sound/direct_sound_samples/unknown_086.bin"
 
 	.align 2
-	.global gUnknown_08B9BB3C
-gUnknown_08B9BB3C:
-	.incbin "sound/direct_sound_samples/08B9BB3C.bin"
+DirectSoundWaveData_87:
+	.incbin "sound/direct_sound_samples/unknown_087.bin"
 
 	.align 2
-	.global gUnknown_08B9BF9C
-gUnknown_08B9BF9C:
-	.incbin "sound/direct_sound_samples/08B9BF9C.bin"
+DirectSoundWaveData_88:
+	.incbin "sound/direct_sound_samples/unknown_088.bin"
 
 	.align 2
-	.global gUnknown_08B9C408
-gUnknown_08B9C408:
-	.incbin "sound/direct_sound_samples/08B9C408.bin"
+DirectSoundWaveData_89:
+	.incbin "sound/direct_sound_samples/unknown_089.bin"
 
 	.align 2
-	.global gUnknown_08B9C894
-gUnknown_08B9C894:
-	.incbin "sound/direct_sound_samples/08B9C894.bin"
+DirectSoundWaveData_90:
+	.incbin "sound/direct_sound_samples/unknown_090.bin"
 
 	.align 2
-	.global gUnknown_08B9D1C0
-gUnknown_08B9D1C0:
-	.incbin "sound/direct_sound_samples/08B9D1C0.bin"
+DirectSoundWaveData_91:
+	.incbin "sound/direct_sound_samples/unknown_091.bin"
 
 	.align 2
-	.global gUnknown_08B9D718
-gUnknown_08B9D718:
-	.incbin "sound/direct_sound_samples/08B9D718.bin"
+DirectSoundWaveData_92:
+	.incbin "sound/direct_sound_samples/unknown_092.bin"
 
 	.align 2
-	.global gUnknown_08B9DB80
-gUnknown_08B9DB80:
-	.incbin "sound/direct_sound_samples/08B9DB80.bin"
+DirectSoundWaveData_93:
+	.incbin "sound/direct_sound_samples/unknown_093.bin"
 
 	.align 2
-	.global gUnknown_08BA2C60
-gUnknown_08BA2C60:
-	.incbin "sound/direct_sound_samples/08BA2C60.bin"
+DirectSoundWaveData_94:
+	.incbin "sound/direct_sound_samples/unknown_094.bin"
 
 	.align 2
-	.global gUnknown_08BA3AB8
-gUnknown_08BA3AB8:
-	.incbin "sound/direct_sound_samples/08BA3AB8.bin"
+DirectSoundWaveData_95:
+	.incbin "sound/direct_sound_samples/unknown_095.bin"
 
 	.align 2
-	.global gUnknown_08BA4DA4
-gUnknown_08BA4DA4:
-	.incbin "sound/direct_sound_samples/08BA4DA4.bin"
+DirectSoundWaveData_96:
+	.incbin "sound/direct_sound_samples/unknown_096.bin"
 
 	.align 2
-	.global gUnknown_08BA62E0
-gUnknown_08BA62E0:
-	.incbin "sound/direct_sound_samples/08BA62E0.bin"
+DirectSoundWaveData_97:
+	.incbin "sound/direct_sound_samples/unknown_097.bin"
 
 	.align 2
-	.global gUnknown_08BA6AA0
-gUnknown_08BA6AA0:
-	.incbin "sound/direct_sound_samples/08BA6AA0.bin"
+DirectSoundWaveData_98:
+	.incbin "sound/direct_sound_samples/unknown_098.bin"
 
 	.align 2
-	.global gUnknown_08BAA2DC
-gUnknown_08BAA2DC:
-	.incbin "sound/direct_sound_samples/08BAA2DC.bin"
+DirectSoundWaveData_99:
+	.incbin "sound/direct_sound_samples/unknown_099.bin"
 
 	.align 2
-	.global gUnknown_08BAFDC0
-gUnknown_08BAFDC0:
-	.incbin "sound/direct_sound_samples/08BAFDC0.bin"
+DirectSoundWaveData_100:
+	.incbin "sound/direct_sound_samples/unknown_100.bin"
 
 	.align 2
-	.global gUnknown_08BB152C
-gUnknown_08BB152C:
-	.incbin "sound/direct_sound_samples/08BB152C.bin"
+DirectSoundWaveData_101:
+	.incbin "sound/direct_sound_samples/unknown_101.bin"
 
 	.align 2
-	.global gUnknown_08BB2CAC
-gUnknown_08BB2CAC:
-	.incbin "sound/direct_sound_samples/08BB2CAC.bin"
+DirectSoundWaveData_102:
+	.incbin "sound/direct_sound_samples/unknown_102.bin"
 
 	.align 2
-	.global gUnknown_08BB4C60
-gUnknown_08BB4C60:
-	.incbin "sound/direct_sound_samples/08BB4C60.bin"
+DirectSoundWaveData_103:
+	.incbin "sound/direct_sound_samples/unknown_103.bin"
 
 	.align 2
-	.global gUnknown_08BB672C
-gUnknown_08BB672C:
-	.incbin "sound/direct_sound_samples/08BB672C.bin"
+DirectSoundWaveData_104:
+	.incbin "sound/direct_sound_samples/unknown_104.bin"
 
 	.align 2
-	.global gUnknown_08BB8F2C
-gUnknown_08BB8F2C:
-	.incbin "sound/direct_sound_samples/08BB8F2C.bin"
+DirectSoundWaveData_105:
+	.incbin "sound/direct_sound_samples/unknown_105.bin"
 
 	.align 2
-	.global gUnknown_08BBA360
-gUnknown_08BBA360:
-	.incbin "sound/direct_sound_samples/08BBA360.bin"
+DirectSoundWaveData_106:
+	.incbin "sound/direct_sound_samples/unknown_106.bin"
 
 	.align 2
-	.global gUnknown_08BBB180
-gUnknown_08BBB180:
-	.incbin "sound/direct_sound_samples/08BBB180.bin"
+DirectSoundWaveData_107:
+	.incbin "sound/direct_sound_samples/unknown_107.bin"
 
 	.align 2
-	.global gUnknown_08BBC26C
-gUnknown_08BBC26C:
-	.incbin "sound/direct_sound_samples/08BBC26C.bin"
+DirectSoundWaveData_108:
+	.incbin "sound/direct_sound_samples/unknown_108.bin"
 
 	.align 2
-	.global gUnknown_08BBD0E4
-gUnknown_08BBD0E4:
-	.incbin "sound/direct_sound_samples/08BBD0E4.bin"
+DirectSoundWaveData_109:
+	.incbin "sound/direct_sound_samples/unknown_109.bin"
 
 	.align 2
-	.global gUnknown_08BC0D9C
-gUnknown_08BC0D9C:
-	.incbin "sound/direct_sound_samples/08BC0D9C.bin"
+DirectSoundWaveData_110:
+	.incbin "sound/direct_sound_samples/unknown_110.bin"
 
 	.align 2
-	.global gUnknown_08BC311C
-gUnknown_08BC311C:
-	.incbin "sound/direct_sound_samples/08BC311C.bin"
+DirectSoundWaveData_111:
+	.incbin "sound/direct_sound_samples/unknown_111.bin"
 
 	.align 2
-	.global gUnknown_08BC3DD4
-gUnknown_08BC3DD4:
-	.incbin "sound/direct_sound_samples/08BC3DD4.bin"
+DirectSoundWaveData_112:
+	.incbin "sound/direct_sound_samples/unknown_112.bin"
 
 	.align 2
-	.global gUnknown_08BC6304
-gUnknown_08BC6304:
-	.incbin "sound/direct_sound_samples/08BC6304.bin"
+DirectSoundWaveData_113:
+	.incbin "sound/direct_sound_samples/unknown_113.bin"
 
 	.align 2
-	.global gUnknown_08BC7C58
-gUnknown_08BC7C58:
-	.incbin "sound/direct_sound_samples/08BC7C58.bin"
+DirectSoundWaveData_114:
+	.incbin "sound/direct_sound_samples/unknown_114.bin"
 
 	.align 2
-	.global gUnknown_08BCCBD4
-gUnknown_08BCCBD4:
-	.incbin "sound/direct_sound_samples/08BCCBD4.bin"
+DirectSoundWaveData_115:
+	.incbin "sound/direct_sound_samples/unknown_115.bin"
 
 	.align 2
-	.global gUnknown_08BCD1DC
-gUnknown_08BCD1DC:
-	.incbin "sound/direct_sound_samples/08BCD1DC.bin"
+DirectSoundWaveData_116:
+	.incbin "sound/direct_sound_samples/unknown_116.bin"
 
 	.align 2
-	.global gUnknown_08BCD85C
-gUnknown_08BCD85C:
-	.incbin "sound/direct_sound_samples/08BCD85C.bin"
+DirectSoundWaveData_117:
+	.incbin "sound/direct_sound_samples/unknown_117.bin"
 
 	.align 2
-	.global gUnknown_08BCDF04
-gUnknown_08BCDF04:
-	.incbin "sound/direct_sound_samples/08BCDF04.bin"
+DirectSoundWaveData_118:
+	.incbin "sound/direct_sound_samples/unknown_118.bin"
 
 	.align 2
-	.global gUnknown_08BCF078
-gUnknown_08BCF078:
-	.incbin "sound/direct_sound_samples/08BCF078.bin"
+DirectSoundWaveData_119:
+	.incbin "sound/direct_sound_samples/unknown_119.bin"
 
 	.align 2
-	.global gUnknown_08BCFC30
-gUnknown_08BCFC30:
-	.incbin "sound/direct_sound_samples/08BCFC30.bin"
+DirectSoundWaveData_120:
+	.incbin "sound/direct_sound_samples/unknown_120.bin"
 
 	.align 2
-	.global gUnknown_08BD0EC0
-gUnknown_08BD0EC0:
-	.incbin "sound/direct_sound_samples/08BD0EC0.bin"
+DirectSoundWaveData_121:
+	.incbin "sound/direct_sound_samples/unknown_121.bin"
 
 	.align 2
-	.global gUnknown_08BD154C
-gUnknown_08BD154C:
-	.incbin "sound/direct_sound_samples/08BD154C.bin"
+DirectSoundWaveData_122:
+	.incbin "sound/direct_sound_samples/unknown_122.bin"
 
 	.align 2
-	.global gUnknown_08BD26FC
-gUnknown_08BD26FC:
-	.incbin "sound/direct_sound_samples/08BD26FC.bin"
+DirectSoundWaveData_123:
+	.incbin "sound/direct_sound_samples/unknown_123.bin"
 
 	.align 2
-	.global gUnknown_08BD2F00
-gUnknown_08BD2F00:
-	.incbin "sound/direct_sound_samples/08BD2F00.bin"
+DirectSoundWaveData_124:
+	.incbin "sound/direct_sound_samples/unknown_124.bin"
 
 	.align 2
-	.global gUnknown_08BD3704
-gUnknown_08BD3704:
-	.incbin "sound/direct_sound_samples/08BD3704.bin"
+DirectSoundWaveData_125:
+	.incbin "sound/direct_sound_samples/unknown_125.bin"
 
 	.align 2
-	.global gUnknown_08BD4838
-gUnknown_08BD4838:
-	.incbin "sound/direct_sound_samples/08BD4838.bin"
+DirectSoundWaveData_126:
+	.incbin "sound/direct_sound_samples/unknown_126.bin"
 
 	.align 2
-	.global gUnknown_08BD554C
-gUnknown_08BD554C:
-	.incbin "sound/direct_sound_samples/08BD554C.bin"
+DirectSoundWaveData_127:
+	.incbin "sound/direct_sound_samples/unknown_127.bin"
 
 	.align 2
-	.global gUnknown_08BD624C
-gUnknown_08BD624C:
-	.incbin "sound/direct_sound_samples/08BD624C.bin"
+DirectSoundWaveData_128:
+	.incbin "sound/direct_sound_samples/unknown_128.bin"
 
 	.align 2
-	.global gUnknown_08BD69B0
-gUnknown_08BD69B0:
-	.incbin "sound/direct_sound_samples/08BD69B0.bin"
+DirectSoundWaveData_129:
+	.incbin "sound/direct_sound_samples/unknown_129.bin"
 
 	.align 2
-	.global gUnknown_08BD7148
-gUnknown_08BD7148:
-	.incbin "sound/direct_sound_samples/08BD7148.bin"
+DirectSoundWaveData_130:
+	.incbin "sound/direct_sound_samples/unknown_130.bin"
 
 	.align 2
-	.global gUnknown_08BD78B0
-gUnknown_08BD78B0:
-	.incbin "sound/direct_sound_samples/08BD78B0.bin"
+DirectSoundWaveData_131:
+	.incbin "sound/direct_sound_samples/unknown_131.bin"
 
 	.align 2
-	.global gUnknown_08BD8038
-gUnknown_08BD8038:
-	.incbin "sound/direct_sound_samples/08BD8038.bin"
+DirectSoundWaveData_132:
+	.incbin "sound/direct_sound_samples/unknown_132.bin"
 
 	.align 2
-	.global gUnknown_08BD8F8C
-gUnknown_08BD8F8C:
-	.incbin "sound/direct_sound_samples/08BD8F8C.bin"
+DirectSoundWaveData_133:
+	.incbin "sound/direct_sound_samples/unknown_133.bin"
 
 	.align 2
-	.global gUnknown_08BD974C
-gUnknown_08BD974C:
-	.incbin "sound/direct_sound_samples/08BD974C.bin"
+DirectSoundWaveData_134:
+	.incbin "sound/direct_sound_samples/unknown_134.bin"
 
 	.align 2
-	.global gUnknown_08BD9E98
-gUnknown_08BD9E98:
-	.incbin "sound/direct_sound_samples/08BD9E98.bin"
+DirectSoundWaveData_135:
+	.incbin "sound/direct_sound_samples/unknown_135.bin"
 
 	.align 2
-	.global gUnknown_08BDA604
-gUnknown_08BDA604:
-	.incbin "sound/direct_sound_samples/08BDA604.bin"
+DirectSoundWaveData_136:
+	.incbin "sound/direct_sound_samples/unknown_136.bin"
 
 	.align 2
-	.global gUnknown_08BDADF0
-gUnknown_08BDADF0:
-	.incbin "sound/direct_sound_samples/08BDADF0.bin"
+DirectSoundWaveData_137:
+	.incbin "sound/direct_sound_samples/unknown_137.bin"
 
 	.align 2
-	.global gUnknown_08BDB550
-gUnknown_08BDB550:
-	.incbin "sound/direct_sound_samples/08BDB550.bin"
+DirectSoundWaveData_138:
+	.incbin "sound/direct_sound_samples/unknown_138.bin"
 
 	.align 2
-	.global gUnknown_08BDBBDC
-gUnknown_08BDBBDC:
-	.incbin "sound/direct_sound_samples/08BDBBDC.bin"
+DirectSoundWaveData_139:
+	.incbin "sound/direct_sound_samples/unknown_139.bin"
 
 	.align 2
-	.global gUnknown_08BDC2B0
-gUnknown_08BDC2B0:
-	.incbin "sound/direct_sound_samples/08BDC2B0.bin"
+DirectSoundWaveData_140:
+	.incbin "sound/direct_sound_samples/unknown_140.bin"
 
 	.align 2
-	.global gUnknown_08BDC990
-gUnknown_08BDC990:
-	.incbin "sound/direct_sound_samples/08BDC990.bin"
+DirectSoundWaveData_141:
+	.incbin "sound/direct_sound_samples/unknown_141.bin"
 
 	.align 2
-	.global gUnknown_08BDD1E0
-gUnknown_08BDD1E0:
-	.incbin "sound/direct_sound_samples/08BDD1E0.bin"
+DirectSoundWaveData_142:
+	.incbin "sound/direct_sound_samples/unknown_142.bin"
 
 	.align 2
-	.global gUnknown_08BDD84C
-gUnknown_08BDD84C:
-	.incbin "sound/direct_sound_samples/08BDD84C.bin"
+DirectSoundWaveData_143:
+	.incbin "sound/direct_sound_samples/unknown_143.bin"
 
 	.align 2
-	.global gUnknown_08BDE000
-gUnknown_08BDE000:
-	.incbin "sound/direct_sound_samples/08BDE000.bin"
+DirectSoundWaveData_144:
+	.incbin "sound/direct_sound_samples/unknown_144.bin"
 
 	.align 2
-	.global gUnknown_08BDE740
-gUnknown_08BDE740:
-	.incbin "sound/direct_sound_samples/08BDE740.bin"
+DirectSoundWaveData_145:
+	.incbin "sound/direct_sound_samples/unknown_145.bin"
 
 	.align 2
-	.global gUnknown_08BDEE64
-gUnknown_08BDEE64:
-	.incbin "sound/direct_sound_samples/08BDEE64.bin"
+DirectSoundWaveData_146:
+	.incbin "sound/direct_sound_samples/unknown_146.bin"
 
 	.align 2
-	.global gUnknown_08BDF514
-gUnknown_08BDF514:
-	.incbin "sound/direct_sound_samples/08BDF514.bin"
+DirectSoundWaveData_147:
+	.incbin "sound/direct_sound_samples/unknown_147.bin"
 
 	.align 2
-	.global gUnknown_08BDFC2C
-gUnknown_08BDFC2C:
-	.incbin "sound/direct_sound_samples/08BDFC2C.bin"
+DirectSoundWaveData_148:
+	.incbin "sound/direct_sound_samples/unknown_148.bin"
 
 	.align 2
-	.global gUnknown_08BE0354
-gUnknown_08BE0354:
-	.incbin "sound/direct_sound_samples/08BE0354.bin"
+DirectSoundWaveData_149:
+	.incbin "sound/direct_sound_samples/unknown_149.bin"
 
 	.align 2
-	.global gUnknown_08BE0AC0
-gUnknown_08BE0AC0:
-	.incbin "sound/direct_sound_samples/08BE0AC0.bin"
+DirectSoundWaveData_150:
+	.incbin "sound/direct_sound_samples/unknown_150.bin"
 
 	.align 2
-	.global gUnknown_08BE11F0
-gUnknown_08BE11F0:
-	.incbin "sound/direct_sound_samples/08BE11F0.bin"
+DirectSoundWaveData_151:
+	.incbin "sound/direct_sound_samples/unknown_151.bin"
 
 	.align 2
-	.global gUnknown_08BE18E4
-gUnknown_08BE18E4:
-	.incbin "sound/direct_sound_samples/08BE18E4.bin"
+DirectSoundWaveData_152:
+	.incbin "sound/direct_sound_samples/unknown_152.bin"
 
 	.align 2
-	.global gUnknown_08BE2034
-gUnknown_08BE2034:
-	.incbin "sound/direct_sound_samples/08BE2034.bin"
+DirectSoundWaveData_153:
+	.incbin "sound/direct_sound_samples/unknown_153.bin"
 
 	.align 2
-	.global gUnknown_08BE2770
-gUnknown_08BE2770:
-	.incbin "sound/direct_sound_samples/08BE2770.bin"
+DirectSoundWaveData_154:
+	.incbin "sound/direct_sound_samples/unknown_154.bin"
 
 	.align 2
-	.global gUnknown_08BE2E54
-gUnknown_08BE2E54:
-	.incbin "sound/direct_sound_samples/08BE2E54.bin"
+DirectSoundWaveData_155:
+	.incbin "sound/direct_sound_samples/unknown_155.bin"
 
 	.align 2
-	.global gUnknown_08BE3350
-gUnknown_08BE3350:
-	.incbin "sound/direct_sound_samples/08BE3350.bin"
+DirectSoundWaveData_156:
+	.incbin "sound/direct_sound_samples/unknown_156.bin"
 
 	.align 2
-	.global gUnknown_08BE39D8
-gUnknown_08BE39D8:
-	.incbin "sound/direct_sound_samples/08BE39D8.bin"
+DirectSoundWaveData_157:
+	.incbin "sound/direct_sound_samples/unknown_157.bin"
 
 	.align 2
-	.global gUnknown_08BE3EBC
-gUnknown_08BE3EBC:
-	.incbin "sound/direct_sound_samples/08BE3EBC.bin"
+DirectSoundWaveData_158:
+	.incbin "sound/direct_sound_samples/unknown_158.bin"
 
 	.align 2
-	.global gUnknown_08BE4B28
-gUnknown_08BE4B28:
-	.incbin "sound/direct_sound_samples/08BE4B28.bin"
+DirectSoundWaveData_159:
+	.incbin "sound/direct_sound_samples/unknown_159.bin"
 
 	.align 2
-	.global gUnknown_08BE5160
-gUnknown_08BE5160:
-	.incbin "sound/direct_sound_samples/08BE5160.bin"
+DirectSoundWaveData_160:
+	.incbin "sound/direct_sound_samples/unknown_160.bin"
 
 	.align 2
-	.global gUnknown_08BE5720
-gUnknown_08BE5720:
-	.incbin "sound/direct_sound_samples/08BE5720.bin"
+DirectSoundWaveData_161:
+	.incbin "sound/direct_sound_samples/unknown_161.bin"
 
 	.align 2
-	.global gUnknown_08BE5CD4
-gUnknown_08BE5CD4:
-	.incbin "sound/direct_sound_samples/08BE5CD4.bin"
+DirectSoundWaveData_162:
+	.incbin "sound/direct_sound_samples/unknown_162.bin"
 
 	.align 2
-	.global gUnknown_08BE6294
-gUnknown_08BE6294:
-	.incbin "sound/direct_sound_samples/08BE6294.bin"
+DirectSoundWaveData_163:
+	.incbin "sound/direct_sound_samples/unknown_163.bin"
 
 	.align 2
-	.global gUnknown_08BE68B0
-gUnknown_08BE68B0:
-	.incbin "sound/direct_sound_samples/08BE68B0.bin"
+DirectSoundWaveData_164:
+	.incbin "sound/direct_sound_samples/unknown_164.bin"
 
 	.align 2
-	.global gUnknown_08BE6DE4
-gUnknown_08BE6DE4:
-	.incbin "sound/direct_sound_samples/08BE6DE4.bin"
+DirectSoundWaveData_165:
+	.incbin "sound/direct_sound_samples/unknown_165.bin"
 
 	.align 2
-	.global gUnknown_08BE7464
-gUnknown_08BE7464:
-	.incbin "sound/direct_sound_samples/08BE7464.bin"
+DirectSoundWaveData_166:
+	.incbin "sound/direct_sound_samples/unknown_166.bin"
 
 	.align 2
-	.global gUnknown_08BE79E8
-gUnknown_08BE79E8:
-	.incbin "sound/direct_sound_samples/08BE79E8.bin"
+DirectSoundWaveData_167:
+	.incbin "sound/direct_sound_samples/unknown_167.bin"
 
 	.align 2
-	.global gUnknown_08BE7F6C
-gUnknown_08BE7F6C:
-	.incbin "sound/direct_sound_samples/08BE7F6C.bin"
+DirectSoundWaveData_168:
+	.incbin "sound/direct_sound_samples/unknown_168.bin"
 
 	.align 2
-	.global gUnknown_08BE84CC
-gUnknown_08BE84CC:
-	.incbin "sound/direct_sound_samples/08BE84CC.bin"
+DirectSoundWaveData_169:
+	.incbin "sound/direct_sound_samples/unknown_169.bin"
 
 	.align 2
-	.global gUnknown_08BE8B70
-gUnknown_08BE8B70:
-	.incbin "sound/direct_sound_samples/08BE8B70.bin"
+DirectSoundWaveData_170:
+	.incbin "sound/direct_sound_samples/unknown_170.bin"
 
 	.align 2
-	.global gUnknown_08BE8F8C
-gUnknown_08BE8F8C:
-	.incbin "sound/direct_sound_samples/08BE8F8C.bin"
+DirectSoundWaveData_171:
+	.incbin "sound/direct_sound_samples/unknown_171.bin"
 
 	.align 2
-	.global gUnknown_08BE96B0
-gUnknown_08BE96B0:
-	.incbin "sound/direct_sound_samples/08BE96B0.bin"
+DirectSoundWaveData_172:
+	.incbin "sound/direct_sound_samples/unknown_172.bin"
 
 	.align 2
-	.global gUnknown_08BE9A64
-gUnknown_08BE9A64:
-	.incbin "sound/direct_sound_samples/08BE9A64.bin"
+DirectSoundWaveData_173:
+	.incbin "sound/direct_sound_samples/unknown_173.bin"
 
 	.align 2
-	.global gUnknown_08BEA558
-gUnknown_08BEA558:
-	.incbin "sound/direct_sound_samples/08BEA558.bin"
+DirectSoundWaveData_174:
+	.incbin "sound/direct_sound_samples/unknown_174.bin"
 
 	.align 2
-	.global gUnknown_08BEAC68
-gUnknown_08BEAC68:
-	.incbin "sound/direct_sound_samples/08BEAC68.bin"
+DirectSoundWaveData_175:
+	.incbin "sound/direct_sound_samples/unknown_175.bin"
 
 	.align 2
-	.global gUnknown_08BEB050
-gUnknown_08BEB050:
-	.incbin "sound/direct_sound_samples/08BEB050.bin"
+DirectSoundWaveData_176:
+	.incbin "sound/direct_sound_samples/unknown_176.bin"
 
 	.align 2
-	.global gUnknown_08BEB6F8
-gUnknown_08BEB6F8:
-	.incbin "sound/direct_sound_samples/08BEB6F8.bin"
+DirectSoundWaveData_177:
+	.incbin "sound/direct_sound_samples/unknown_177.bin"
 
 	.align 2
-	.global gUnknown_08BEBB08
-gUnknown_08BEBB08:
-	.incbin "sound/direct_sound_samples/08BEBB08.bin"
+DirectSoundWaveData_178:
+	.incbin "sound/direct_sound_samples/unknown_178.bin"
 
 	.align 2
-	.global gUnknown_08BEC1F4
-gUnknown_08BEC1F4:
-	.incbin "sound/direct_sound_samples/08BEC1F4.bin"
+DirectSoundWaveData_179:
+	.incbin "sound/direct_sound_samples/unknown_179.bin"
 
 	.align 2
-	.global gUnknown_08BEC5E0
-gUnknown_08BEC5E0:
-	.incbin "sound/direct_sound_samples/08BEC5E0.bin"
+DirectSoundWaveData_180:
+	.incbin "sound/direct_sound_samples/unknown_180.bin"
 
 	.align 2
-	.global gUnknown_08BECC28
-gUnknown_08BECC28:
-	.incbin "sound/direct_sound_samples/08BECC28.bin"
+DirectSoundWaveData_181:
+	.incbin "sound/direct_sound_samples/unknown_181.bin"
 
 	.align 2
-	.global gUnknown_08BED0D0
-gUnknown_08BED0D0:
-	.incbin "sound/direct_sound_samples/08BED0D0.bin"
+DirectSoundWaveData_182:
+	.incbin "sound/direct_sound_samples/unknown_182.bin"
 
 	.align 2
-	.global gUnknown_08BED77C
-gUnknown_08BED77C:
-	.incbin "sound/direct_sound_samples/08BED77C.bin"
+DirectSoundWaveData_183:
+	.incbin "sound/direct_sound_samples/unknown_183.bin"
 
 	.align 2
-	.global gUnknown_08BEDBC4
-gUnknown_08BEDBC4:
-	.incbin "sound/direct_sound_samples/08BEDBC4.bin"
+DirectSoundWaveData_184:
+	.incbin "sound/direct_sound_samples/unknown_184.bin"
 
 	.align 2
-	.global gUnknown_08BEE23C
-gUnknown_08BEE23C:
-	.incbin "sound/direct_sound_samples/08BEE23C.bin"
+DirectSoundWaveData_185:
+	.incbin "sound/direct_sound_samples/unknown_185.bin"
 
 	.align 2
-	.global gUnknown_08BEE66C
-gUnknown_08BEE66C:
-	.incbin "sound/direct_sound_samples/08BEE66C.bin"
+DirectSoundWaveData_186:
+	.incbin "sound/direct_sound_samples/unknown_186.bin"
 
 	.align 2
-	.global gUnknown_08BEECEC
-gUnknown_08BEECEC:
-	.incbin "sound/direct_sound_samples/08BEECEC.bin"
+DirectSoundWaveData_187:
+	.incbin "sound/direct_sound_samples/unknown_187.bin"
 
 	.align 2
-	.global gUnknown_08BEF12C
-gUnknown_08BEF12C:
-	.incbin "sound/direct_sound_samples/08BEF12C.bin"
+DirectSoundWaveData_188:
+	.incbin "sound/direct_sound_samples/unknown_188.bin"
 
 	.align 2
-	.global gUnknown_08BEF76C
-gUnknown_08BEF76C:
-	.incbin "sound/direct_sound_samples/08BEF76C.bin"
+DirectSoundWaveData_189:
+	.incbin "sound/direct_sound_samples/unknown_189.bin"
 
 	.align 2
-	.global gUnknown_08BEFBF8
-gUnknown_08BEFBF8:
-	.incbin "sound/direct_sound_samples/08BEFBF8.bin"
+DirectSoundWaveData_190:
+	.incbin "sound/direct_sound_samples/unknown_190.bin"
 
 	.align 2
-	.global gUnknown_08BF0268
-gUnknown_08BF0268:
-	.incbin "sound/direct_sound_samples/08BF0268.bin"
+DirectSoundWaveData_191:
+	.incbin "sound/direct_sound_samples/unknown_191.bin"
 
 	.align 2
-	.global gUnknown_08BF0708
-gUnknown_08BF0708:
-	.incbin "sound/direct_sound_samples/08BF0708.bin"
+DirectSoundWaveData_192:
+	.incbin "sound/direct_sound_samples/unknown_192.bin"
 
 	.align 2
-	.global gUnknown_08BF0DBC
-gUnknown_08BF0DBC:
-	.incbin "sound/direct_sound_samples/08BF0DBC.bin"
+DirectSoundWaveData_193:
+	.incbin "sound/direct_sound_samples/unknown_193.bin"
 
 	.align 2
-	.global gUnknown_08BF11CC
-gUnknown_08BF11CC:
-	.incbin "sound/direct_sound_samples/08BF11CC.bin"
+DirectSoundWaveData_194:
+	.incbin "sound/direct_sound_samples/unknown_194.bin"
 
 	.align 2
-	.global gUnknown_08BF1878
-gUnknown_08BF1878:
-	.incbin "sound/direct_sound_samples/08BF1878.bin"
+DirectSoundWaveData_195:
+	.incbin "sound/direct_sound_samples/unknown_195.bin"
 
 	.align 2
-	.global gUnknown_08BF1CA4
-gUnknown_08BF1CA4:
-	.incbin "sound/direct_sound_samples/08BF1CA4.bin"
+DirectSoundWaveData_196:
+	.incbin "sound/direct_sound_samples/unknown_196.bin"
 
 	.align 2
-	.global gUnknown_08BF27BC
-gUnknown_08BF27BC:
-	.incbin "sound/direct_sound_samples/08BF27BC.bin"
+DirectSoundWaveData_197:
+	.incbin "sound/direct_sound_samples/unknown_197.bin"
 
 	.align 2
-	.global gUnknown_08BF2DCC
-gUnknown_08BF2DCC:
-	.incbin "sound/direct_sound_samples/08BF2DCC.bin"
+DirectSoundWaveData_198:
+	.incbin "sound/direct_sound_samples/unknown_198.bin"
 
 	.align 2
-	.global gUnknown_08BF32F8
-gUnknown_08BF32F8:
-	.incbin "sound/direct_sound_samples/08BF32F8.bin"
+DirectSoundWaveData_199:
+	.incbin "sound/direct_sound_samples/unknown_199.bin"
 
 	.align 2
-	.global gUnknown_08BF3860
-gUnknown_08BF3860:
-	.incbin "sound/direct_sound_samples/08BF3860.bin"
+DirectSoundWaveData_200:
+	.incbin "sound/direct_sound_samples/unknown_200.bin"
 
 	.align 2
-	.global gUnknown_08BF3D74
-gUnknown_08BF3D74:
-	.incbin "sound/direct_sound_samples/08BF3D74.bin"
+DirectSoundWaveData_201:
+	.incbin "sound/direct_sound_samples/unknown_201.bin"
 
 	.align 2
-	.global gUnknown_08BF42D8
-gUnknown_08BF42D8:
-	.incbin "sound/direct_sound_samples/08BF42D8.bin"
+DirectSoundWaveData_202:
+	.incbin "sound/direct_sound_samples/unknown_202.bin"
 
 	.align 2
-	.global gUnknown_08BF4834
-gUnknown_08BF4834:
-	.incbin "sound/direct_sound_samples/08BF4834.bin"
+DirectSoundWaveData_203:
+	.incbin "sound/direct_sound_samples/unknown_203.bin"
 
 	.align 2
-	.global gUnknown_08BF4D94
-gUnknown_08BF4D94:
-	.incbin "sound/direct_sound_samples/08BF4D94.bin"
+DirectSoundWaveData_204:
+	.incbin "sound/direct_sound_samples/unknown_204.bin"
 
 	.align 2
-	.global gUnknown_08BF52B0
-gUnknown_08BF52B0:
-	.incbin "sound/direct_sound_samples/08BF52B0.bin"
+DirectSoundWaveData_205:
+	.incbin "sound/direct_sound_samples/unknown_205.bin"
 
 	.align 2
-	.global gUnknown_08BF5814
-gUnknown_08BF5814:
-	.incbin "sound/direct_sound_samples/08BF5814.bin"
+DirectSoundWaveData_206:
+	.incbin "sound/direct_sound_samples/unknown_206.bin"
 
 	.align 2
-	.global gUnknown_08BF5D34
-gUnknown_08BF5D34:
-	.incbin "sound/direct_sound_samples/08BF5D34.bin"
+DirectSoundWaveData_207:
+	.incbin "sound/direct_sound_samples/unknown_207.bin"
 
 	.align 2
-	.global gUnknown_08BF6250
-gUnknown_08BF6250:
-	.incbin "sound/direct_sound_samples/08BF6250.bin"
+DirectSoundWaveData_208:
+	.incbin "sound/direct_sound_samples/unknown_208.bin"
 
 	.align 2
-	.global gUnknown_08BF6774
-gUnknown_08BF6774:
-	.incbin "sound/direct_sound_samples/08BF6774.bin"
+DirectSoundWaveData_209:
+	.incbin "sound/direct_sound_samples/unknown_209.bin"
 
 	.align 2
-	.global gUnknown_08BF6C70
-gUnknown_08BF6C70:
-	.incbin "sound/direct_sound_samples/08BF6C70.bin"
+DirectSoundWaveData_210:
+	.incbin "sound/direct_sound_samples/unknown_210.bin"
 
 	.align 2
-	.global gUnknown_08BF7244
-gUnknown_08BF7244:
-	.incbin "sound/direct_sound_samples/08BF7244.bin"
+DirectSoundWaveData_211:
+	.incbin "sound/direct_sound_samples/unknown_211.bin"
 
 	.align 2
-	.global gUnknown_08BF7794
-gUnknown_08BF7794:
-	.incbin "sound/direct_sound_samples/08BF7794.bin"
+DirectSoundWaveData_212:
+	.incbin "sound/direct_sound_samples/unknown_212.bin"
 
 	.align 2
-	.global gUnknown_08BF7CBC
-gUnknown_08BF7CBC:
-	.incbin "sound/direct_sound_samples/08BF7CBC.bin"
+DirectSoundWaveData_213:
+	.incbin "sound/direct_sound_samples/unknown_213.bin"
 
 	.align 2
-	.global gUnknown_08BF820C
-gUnknown_08BF820C:
-	.incbin "sound/direct_sound_samples/08BF820C.bin"
+DirectSoundWaveData_214:
+	.incbin "sound/direct_sound_samples/unknown_214.bin"
 
 	.align 2
-	.global gUnknown_08BF92B4
-gUnknown_08BF92B4:
-	.incbin "sound/direct_sound_samples/08BF92B4.bin"
+DirectSoundWaveData_215:
+	.incbin "sound/direct_sound_samples/unknown_215.bin"
 
 	.align 2
-	.global gUnknown_08BF9DB0
-gUnknown_08BF9DB0:
-	.incbin "sound/direct_sound_samples/08BF9DB0.bin"
+DirectSoundWaveData_216:
+	.incbin "sound/direct_sound_samples/unknown_216.bin"
 
 	.align 2
-	.global gUnknown_08BFA5B8
-gUnknown_08BFA5B8:
-	.incbin "sound/direct_sound_samples/08BFA5B8.bin"
+DirectSoundWaveData_217:
+	.incbin "sound/direct_sound_samples/unknown_217.bin"
 
 	.align 2
-	.global gUnknown_08BFAE34
-gUnknown_08BFAE34:
-	.incbin "sound/direct_sound_samples/08BFAE34.bin"
+DirectSoundWaveData_218:
+	.incbin "sound/direct_sound_samples/unknown_218.bin"
 
 	.align 2
-	.global gUnknown_08BFBEEC
-gUnknown_08BFBEEC:
-	.incbin "sound/direct_sound_samples/08BFBEEC.bin"
+DirectSoundWaveData_219:
+	.incbin "sound/direct_sound_samples/unknown_219.bin"
 
 	.align 2
-	.global gUnknown_08BFCF88
-gUnknown_08BFCF88:
-	.incbin "sound/direct_sound_samples/08BFCF88.bin"
+DirectSoundWaveData_220:
+	.incbin "sound/direct_sound_samples/unknown_220.bin"
 
 	.align 2
-	.global gUnknown_08BFDA70
-gUnknown_08BFDA70:
-	.incbin "sound/direct_sound_samples/08BFDA70.bin"
+DirectSoundWaveData_221:
+	.incbin "sound/direct_sound_samples/unknown_221.bin"
 
 	.align 2
-	.global gUnknown_08BFDF50
-gUnknown_08BFDF50:
-	.incbin "sound/direct_sound_samples/08BFDF50.bin"
+DirectSoundWaveData_222:
+	.incbin "sound/direct_sound_samples/unknown_222.bin"
 
 	.align 2
-	.global gUnknown_08BFE458
-gUnknown_08BFE458:
-	.incbin "sound/direct_sound_samples/08BFE458.bin"
+DirectSoundWaveData_223:
+	.incbin "sound/direct_sound_samples/unknown_223.bin"
 
 	.align 2
-	.global gUnknown_08BFEA24
-gUnknown_08BFEA24:
-	.incbin "sound/direct_sound_samples/08BFEA24.bin"
+DirectSoundWaveData_224:
+	.incbin "sound/direct_sound_samples/unknown_224.bin"
 
 	.align 2
-	.global gUnknown_08BFEFA8
-gUnknown_08BFEFA8:
-	.incbin "sound/direct_sound_samples/08BFEFA8.bin"
+DirectSoundWaveData_225:
+	.incbin "sound/direct_sound_samples/unknown_225.bin"
 
 	.align 2
-	.global gUnknown_08BFF56C
-gUnknown_08BFF56C:
-	.incbin "sound/direct_sound_samples/08BFF56C.bin"
+DirectSoundWaveData_226:
+	.incbin "sound/direct_sound_samples/unknown_226.bin"
 
 	.align 2
-	.global gUnknown_08BFFAC0
-gUnknown_08BFFAC0:
-	.incbin "sound/direct_sound_samples/08BFFAC0.bin"
+DirectSoundWaveData_227:
+	.incbin "sound/direct_sound_samples/unknown_227.bin"
 
 	.align 2
-	.global gUnknown_08C00064
-gUnknown_08C00064:
-	.incbin "sound/direct_sound_samples/08C00064.bin"
+DirectSoundWaveData_228:
+	.incbin "sound/direct_sound_samples/unknown_228.bin"
 
 	.align 2
-	.global gUnknown_08C005CC
-gUnknown_08C005CC:
-	.incbin "sound/direct_sound_samples/08C005CC.bin"
+DirectSoundWaveData_229:
+	.incbin "sound/direct_sound_samples/unknown_229.bin"
 
 	.align 2
-	.global gUnknown_08C00A50
-gUnknown_08C00A50:
-	.incbin "sound/direct_sound_samples/08C00A50.bin"
+DirectSoundWaveData_230:
+	.incbin "sound/direct_sound_samples/unknown_230.bin"
 
 	.align 2
-	.global gUnknown_08C01068
-gUnknown_08C01068:
-	.incbin "sound/direct_sound_samples/08C01068.bin"
+DirectSoundWaveData_231:
+	.incbin "sound/direct_sound_samples/unknown_231.bin"
 
 	.align 2
-	.global gUnknown_08C015CC
-gUnknown_08C015CC:
-	.incbin "sound/direct_sound_samples/08C015CC.bin"
+DirectSoundWaveData_232:
+	.incbin "sound/direct_sound_samples/unknown_232.bin"
 
 	.align 2
-	.global gUnknown_08C01B38
-gUnknown_08C01B38:
-	.incbin "sound/direct_sound_samples/08C01B38.bin"
+DirectSoundWaveData_233:
+	.incbin "sound/direct_sound_samples/unknown_233.bin"
 
 	.align 2
-	.global gUnknown_08C020E4
-gUnknown_08C020E4:
-	.incbin "sound/direct_sound_samples/08C020E4.bin"
+DirectSoundWaveData_234:
+	.incbin "sound/direct_sound_samples/unknown_234.bin"
 
 	.align 2
-	.global gUnknown_08C025EC
-gUnknown_08C025EC:
-	.incbin "sound/direct_sound_samples/08C025EC.bin"
+DirectSoundWaveData_235:
+	.incbin "sound/direct_sound_samples/unknown_235.bin"
 
 	.align 2
-	.global gUnknown_08C02AF4
-gUnknown_08C02AF4:
-	.incbin "sound/direct_sound_samples/08C02AF4.bin"
+DirectSoundWaveData_236:
+	.incbin "sound/direct_sound_samples/unknown_236.bin"
 
 	.align 2
-	.global gUnknown_08C03000
-gUnknown_08C03000:
-	.incbin "sound/direct_sound_samples/08C03000.bin"
+DirectSoundWaveData_237:
+	.incbin "sound/direct_sound_samples/unknown_237.bin"
 
 	.align 2
-	.global gUnknown_08C03134
-gUnknown_08C03134:
-	.incbin "sound/direct_sound_samples/08C03134.bin"
+DirectSoundWaveData_238:
+	.incbin "sound/direct_sound_samples/unknown_238.bin"
 
 	.align 2
-	.global gUnknown_08C03674
-gUnknown_08C03674:
-	.incbin "sound/direct_sound_samples/08C03674.bin"
+DirectSoundWaveData_239:
+	.incbin "sound/direct_sound_samples/unknown_239.bin"
 
 	.align 2
-	.global gUnknown_08C03B7C
-gUnknown_08C03B7C:
-	.incbin "sound/direct_sound_samples/08C03B7C.bin"
+DirectSoundWaveData_240:
+	.incbin "sound/direct_sound_samples/unknown_240.bin"
 
 	.align 2
-	.global gUnknown_08C041A4
-gUnknown_08C041A4:
-	.incbin "sound/direct_sound_samples/08C041A4.bin"
+DirectSoundWaveData_241:
+	.incbin "sound/direct_sound_samples/unknown_241.bin"
 
 	.align 2
-	.global gUnknown_08C046A8
-gUnknown_08C046A8:
-	.incbin "sound/direct_sound_samples/08C046A8.bin"
+DirectSoundWaveData_242:
+	.incbin "sound/direct_sound_samples/unknown_242.bin"
 
 	.align 2
-	.global gUnknown_08C04C44
-gUnknown_08C04C44:
-	.incbin "sound/direct_sound_samples/08C04C44.bin"
+DirectSoundWaveData_243:
+	.incbin "sound/direct_sound_samples/unknown_243.bin"
 
 	.align 2
-	.global gUnknown_08C051BC
-gUnknown_08C051BC:
-	.incbin "sound/direct_sound_samples/08C051BC.bin"
+DirectSoundWaveData_244:
+	.incbin "sound/direct_sound_samples/unknown_244.bin"
 
 	.align 2
-	.global gUnknown_08C05700
-gUnknown_08C05700:
-	.incbin "sound/direct_sound_samples/08C05700.bin"
+DirectSoundWaveData_245:
+	.incbin "sound/direct_sound_samples/unknown_245.bin"
 
 	.align 2
-	.global gUnknown_08C05CB4
-gUnknown_08C05CB4:
-	.incbin "sound/direct_sound_samples/08C05CB4.bin"
+DirectSoundWaveData_246:
+	.incbin "sound/direct_sound_samples/unknown_246.bin"
 
 	.align 2
-	.global gUnknown_08C061F8
-gUnknown_08C061F8:
-	.incbin "sound/direct_sound_samples/08C061F8.bin"
+DirectSoundWaveData_247:
+	.incbin "sound/direct_sound_samples/unknown_247.bin"
 
 	.align 2
-	.global gUnknown_08C0673C
-gUnknown_08C0673C:
-	.incbin "sound/direct_sound_samples/08C0673C.bin"
+DirectSoundWaveData_248:
+	.incbin "sound/direct_sound_samples/unknown_248.bin"
 
 	.align 2
-	.global gUnknown_08C06C6C
-gUnknown_08C06C6C:
-	.incbin "sound/direct_sound_samples/08C06C6C.bin"
+DirectSoundWaveData_249:
+	.incbin "sound/direct_sound_samples/unknown_249.bin"
 
 	.align 2
-	.global gUnknown_08C071FC
-gUnknown_08C071FC:
-	.incbin "sound/direct_sound_samples/08C071FC.bin"
+DirectSoundWaveData_250:
+	.incbin "sound/direct_sound_samples/unknown_250.bin"
 
 	.align 2
-	.global gUnknown_08C07770
-gUnknown_08C07770:
-	.incbin "sound/direct_sound_samples/08C07770.bin"
+DirectSoundWaveData_251:
+	.incbin "sound/direct_sound_samples/unknown_251.bin"
 
 	.align 2
-	.global gUnknown_08C07C9C
-gUnknown_08C07C9C:
-	.incbin "sound/direct_sound_samples/08C07C9C.bin"
+DirectSoundWaveData_252:
+	.incbin "sound/direct_sound_samples/unknown_252.bin"
 
 	.align 2
-	.global gUnknown_08C081C0
-gUnknown_08C081C0:
-	.incbin "sound/direct_sound_samples/08C081C0.bin"
+DirectSoundWaveData_253:
+	.incbin "sound/direct_sound_samples/unknown_253.bin"
 
 	.align 2
-	.global gUnknown_08C086CC
-gUnknown_08C086CC:
-	.incbin "sound/direct_sound_samples/08C086CC.bin"
+DirectSoundWaveData_254:
+	.incbin "sound/direct_sound_samples/unknown_254.bin"
 
 	.align 2
-	.global gUnknown_08C087B4
-gUnknown_08C087B4:
-	.incbin "sound/direct_sound_samples/08C087B4.bin"
+DirectSoundWaveData_255:
+	.incbin "sound/direct_sound_samples/unknown_255.bin"
 
 	.align 2
-	.global gUnknown_08C08CD0
-gUnknown_08C08CD0:
-	.incbin "sound/direct_sound_samples/08C08CD0.bin"
+DirectSoundWaveData_256:
+	.incbin "sound/direct_sound_samples/unknown_256.bin"
 
 	.align 2
-	.global gUnknown_08C09240
-gUnknown_08C09240:
-	.incbin "sound/direct_sound_samples/08C09240.bin"
+DirectSoundWaveData_257:
+	.incbin "sound/direct_sound_samples/unknown_257.bin"
 
 	.align 2
-	.global gUnknown_08C097F0
-gUnknown_08C097F0:
-	.incbin "sound/direct_sound_samples/08C097F0.bin"
+DirectSoundWaveData_258:
+	.incbin "sound/direct_sound_samples/unknown_258.bin"
 
 	.align 2
-	.global gUnknown_08C09DC4
-gUnknown_08C09DC4:
-	.incbin "sound/direct_sound_samples/08C09DC4.bin"
+DirectSoundWaveData_259:
+	.incbin "sound/direct_sound_samples/unknown_259.bin"
 
 	.align 2
-	.global gUnknown_08C0A2B0
-gUnknown_08C0A2B0:
-	.incbin "sound/direct_sound_samples/08C0A2B0.bin"
+DirectSoundWaveData_260:
+	.incbin "sound/direct_sound_samples/unknown_260.bin"
 
 	.align 2
-	.global gUnknown_08C0A814
-gUnknown_08C0A814:
-	.incbin "sound/direct_sound_samples/08C0A814.bin"
+DirectSoundWaveData_261:
+	.incbin "sound/direct_sound_samples/unknown_261.bin"
 
 	.align 2
-	.global gUnknown_08C0ADC0
-gUnknown_08C0ADC0:
-	.incbin "sound/direct_sound_samples/08C0ADC0.bin"
+DirectSoundWaveData_262:
+	.incbin "sound/direct_sound_samples/unknown_262.bin"
 
 	.align 2
-	.global gUnknown_08C0B310
-gUnknown_08C0B310:
-	.incbin "sound/direct_sound_samples/08C0B310.bin"
+DirectSoundWaveData_263:
+	.incbin "sound/direct_sound_samples/unknown_263.bin"
 
 	.align 2
-	.global gUnknown_08C0B874
-gUnknown_08C0B874:
-	.incbin "sound/direct_sound_samples/08C0B874.bin"
+DirectSoundWaveData_264:
+	.incbin "sound/direct_sound_samples/unknown_264.bin"
 
 	.align 2
-	.global gUnknown_08C0BE18
-gUnknown_08C0BE18:
-	.incbin "sound/direct_sound_samples/08C0BE18.bin"
+DirectSoundWaveData_265:
+	.incbin "sound/direct_sound_samples/unknown_265.bin"
 
 	.align 2
-	.global gUnknown_08C0C3E4
-gUnknown_08C0C3E4:
-	.incbin "sound/direct_sound_samples/08C0C3E4.bin"
+DirectSoundWaveData_266:
+	.incbin "sound/direct_sound_samples/unknown_266.bin"
 
 	.align 2
-	.global gUnknown_08C0C89C
-gUnknown_08C0C89C:
-	.incbin "sound/direct_sound_samples/08C0C89C.bin"
+DirectSoundWaveData_267:
+	.incbin "sound/direct_sound_samples/unknown_267.bin"
 
 	.align 2
-	.global gUnknown_08C0CE1C
-gUnknown_08C0CE1C:
-	.incbin "sound/direct_sound_samples/08C0CE1C.bin"
+DirectSoundWaveData_268:
+	.incbin "sound/direct_sound_samples/unknown_268.bin"
 
 	.align 2
-	.global gUnknown_08C0D368
-gUnknown_08C0D368:
-	.incbin "sound/direct_sound_samples/08C0D368.bin"
+DirectSoundWaveData_269:
+	.incbin "sound/direct_sound_samples/unknown_269.bin"
 
 	.align 2
-	.global gUnknown_08C0D8A0
-gUnknown_08C0D8A0:
-	.incbin "sound/direct_sound_samples/08C0D8A0.bin"
+DirectSoundWaveData_270:
+	.incbin "sound/direct_sound_samples/unknown_270.bin"
 
 	.align 2
-	.global gUnknown_08C0DE50
-gUnknown_08C0DE50:
-	.incbin "sound/direct_sound_samples/08C0DE50.bin"
+DirectSoundWaveData_271:
+	.incbin "sound/direct_sound_samples/unknown_271.bin"
 
 	.align 2
-	.global gUnknown_08C0E9F8
-gUnknown_08C0E9F8:
-	.incbin "sound/direct_sound_samples/08C0E9F8.bin"
+DirectSoundWaveData_272:
+	.incbin "sound/direct_sound_samples/unknown_272.bin"
 
 	.align 2
-	.global gUnknown_08C0F12C
-gUnknown_08C0F12C:
-	.incbin "sound/direct_sound_samples/08C0F12C.bin"
+DirectSoundWaveData_273:
+	.incbin "sound/direct_sound_samples/unknown_273.bin"
 
 	.align 2
-	.global gUnknown_08C0F654
-gUnknown_08C0F654:
-	.incbin "sound/direct_sound_samples/08C0F654.bin"
+DirectSoundWaveData_274:
+	.incbin "sound/direct_sound_samples/unknown_274.bin"
 
 	.align 2
-	.global gUnknown_08C0FC88
-gUnknown_08C0FC88:
-	.incbin "sound/direct_sound_samples/08C0FC88.bin"
+DirectSoundWaveData_275:
+	.incbin "sound/direct_sound_samples/unknown_275.bin"
 
 	.align 2
-	.global gUnknown_08C10254
-gUnknown_08C10254:
-	.incbin "sound/direct_sound_samples/08C10254.bin"
+DirectSoundWaveData_276:
+	.incbin "sound/direct_sound_samples/unknown_276.bin"
 
 	.align 2
-	.global gUnknown_08C10934
-gUnknown_08C10934:
-	.incbin "sound/direct_sound_samples/08C10934.bin"
+DirectSoundWaveData_277:
+	.incbin "sound/direct_sound_samples/unknown_277.bin"
 
 	.align 2
-	.global gUnknown_08C10E74
-gUnknown_08C10E74:
-	.incbin "sound/direct_sound_samples/08C10E74.bin"
+DirectSoundWaveData_278:
+	.incbin "sound/direct_sound_samples/unknown_278.bin"
 
 	.align 2
-	.global gUnknown_08C1153C
-gUnknown_08C1153C:
-	.incbin "sound/direct_sound_samples/08C1153C.bin"
+DirectSoundWaveData_279:
+	.incbin "sound/direct_sound_samples/unknown_279.bin"
 
 	.align 2
-	.global gUnknown_08C11A60
-gUnknown_08C11A60:
-	.incbin "sound/direct_sound_samples/08C11A60.bin"
+DirectSoundWaveData_280:
+	.incbin "sound/direct_sound_samples/unknown_280.bin"
 
 	.align 2
-	.global gUnknown_08C12124
-gUnknown_08C12124:
-	.incbin "sound/direct_sound_samples/08C12124.bin"
+DirectSoundWaveData_281:
+	.incbin "sound/direct_sound_samples/unknown_281.bin"
 
 	.align 2
-	.global gUnknown_08C12674
-gUnknown_08C12674:
-	.incbin "sound/direct_sound_samples/08C12674.bin"
+DirectSoundWaveData_282:
+	.incbin "sound/direct_sound_samples/unknown_282.bin"
 
 	.align 2
-	.global gUnknown_08C12D24
-gUnknown_08C12D24:
-	.incbin "sound/direct_sound_samples/08C12D24.bin"
+DirectSoundWaveData_283:
+	.incbin "sound/direct_sound_samples/unknown_283.bin"
 
 	.align 2
-	.global gUnknown_08C13254
-gUnknown_08C13254:
-	.incbin "sound/direct_sound_samples/08C13254.bin"
+DirectSoundWaveData_284:
+	.incbin "sound/direct_sound_samples/unknown_284.bin"
 
 	.align 2
-	.global gUnknown_08C13928
-gUnknown_08C13928:
-	.incbin "sound/direct_sound_samples/08C13928.bin"
+DirectSoundWaveData_285:
+	.incbin "sound/direct_sound_samples/unknown_285.bin"
 
 	.align 2
-	.global gUnknown_08C13E3C
-gUnknown_08C13E3C:
-	.incbin "sound/direct_sound_samples/08C13E3C.bin"
+DirectSoundWaveData_286:
+	.incbin "sound/direct_sound_samples/unknown_286.bin"
 
 	.align 2
-	.global gUnknown_08C14524
-gUnknown_08C14524:
-	.incbin "sound/direct_sound_samples/08C14524.bin"
+DirectSoundWaveData_287:
+	.incbin "sound/direct_sound_samples/unknown_287.bin"
 
 	.align 2
-	.global gUnknown_08C14AA0
-gUnknown_08C14AA0:
-	.incbin "sound/direct_sound_samples/08C14AA0.bin"
+DirectSoundWaveData_288:
+	.incbin "sound/direct_sound_samples/unknown_288.bin"
 
 	.align 2
-	.global gUnknown_08C15164
-gUnknown_08C15164:
-	.incbin "sound/direct_sound_samples/08C15164.bin"
+DirectSoundWaveData_289:
+	.incbin "sound/direct_sound_samples/unknown_289.bin"
 
 	.align 2
-	.global gUnknown_08C15698
-gUnknown_08C15698:
-	.incbin "sound/direct_sound_samples/08C15698.bin"
+DirectSoundWaveData_290:
+	.incbin "sound/direct_sound_samples/unknown_290.bin"
 
 	.align 2
-	.global gUnknown_08C15C60
-gUnknown_08C15C60:
-	.incbin "sound/direct_sound_samples/08C15C60.bin"
+DirectSoundWaveData_291:
+	.incbin "sound/direct_sound_samples/unknown_291.bin"
 
 	.align 2
-	.global gUnknown_08C162A4
-gUnknown_08C162A4:
-	.incbin "sound/direct_sound_samples/08C162A4.bin"
+DirectSoundWaveData_292:
+	.incbin "sound/direct_sound_samples/unknown_292.bin"
 
 	.align 2
-	.global gUnknown_08C16970
-gUnknown_08C16970:
-	.incbin "sound/direct_sound_samples/08C16970.bin"
+DirectSoundWaveData_293:
+	.incbin "sound/direct_sound_samples/unknown_293.bin"
 
 	.align 2
-	.global gUnknown_08C16EB8
-gUnknown_08C16EB8:
-	.incbin "sound/direct_sound_samples/08C16EB8.bin"
+DirectSoundWaveData_294:
+	.incbin "sound/direct_sound_samples/unknown_294.bin"
 
 	.align 2
-	.global gUnknown_08C17584
-gUnknown_08C17584:
-	.incbin "sound/direct_sound_samples/08C17584.bin"
+DirectSoundWaveData_295:
+	.incbin "sound/direct_sound_samples/unknown_295.bin"
 
 	.align 2
-	.global gUnknown_08C17A94
-gUnknown_08C17A94:
-	.incbin "sound/direct_sound_samples/08C17A94.bin"
+DirectSoundWaveData_296:
+	.incbin "sound/direct_sound_samples/unknown_296.bin"
 
 	.align 2
-	.global gUnknown_08C18188
-gUnknown_08C18188:
-	.incbin "sound/direct_sound_samples/08C18188.bin"
+DirectSoundWaveData_297:
+	.incbin "sound/direct_sound_samples/unknown_297.bin"
 
 	.align 2
-	.global gUnknown_08C186E8
-gUnknown_08C186E8:
-	.incbin "sound/direct_sound_samples/08C186E8.bin"
+DirectSoundWaveData_298:
+	.incbin "sound/direct_sound_samples/unknown_298.bin"
 
 	.align 2
-	.global gUnknown_08C18D8C
-gUnknown_08C18D8C:
-	.incbin "sound/direct_sound_samples/08C18D8C.bin"
+DirectSoundWaveData_299:
+	.incbin "sound/direct_sound_samples/unknown_299.bin"
 
 	.align 2
-	.global gUnknown_08C192A8
-gUnknown_08C192A8:
-	.incbin "sound/direct_sound_samples/08C192A8.bin"
+DirectSoundWaveData_300:
+	.incbin "sound/direct_sound_samples/unknown_300.bin"
 
 	.align 2
-	.global gUnknown_08C1998C
-gUnknown_08C1998C:
-	.incbin "sound/direct_sound_samples/08C1998C.bin"
+DirectSoundWaveData_301:
+	.incbin "sound/direct_sound_samples/unknown_301.bin"
 
 	.align 2
-	.global gUnknown_08C19EB8
-gUnknown_08C19EB8:
-	.incbin "sound/direct_sound_samples/08C19EB8.bin"
+DirectSoundWaveData_302:
+	.incbin "sound/direct_sound_samples/unknown_302.bin"
 
 	.align 2
-	.global gUnknown_08C1A3F4
-gUnknown_08C1A3F4:
-	.incbin "sound/direct_sound_samples/08C1A3F4.bin"
+DirectSoundWaveData_303:
+	.incbin "sound/direct_sound_samples/unknown_303.bin"
 
 	.align 2
-	.global gUnknown_08C1A900
-gUnknown_08C1A900:
-	.incbin "sound/direct_sound_samples/08C1A900.bin"
+DirectSoundWaveData_304:
+	.incbin "sound/direct_sound_samples/unknown_304.bin"
 
 	.align 2
-	.global gUnknown_08C1AE50
-gUnknown_08C1AE50:
-	.incbin "sound/direct_sound_samples/08C1AE50.bin"
+DirectSoundWaveData_305:
+	.incbin "sound/direct_sound_samples/unknown_305.bin"
 
 	.align 2
-	.global gUnknown_08C1B380
-gUnknown_08C1B380:
-	.incbin "sound/direct_sound_samples/08C1B380.bin"
+DirectSoundWaveData_306:
+	.incbin "sound/direct_sound_samples/unknown_306.bin"
 
 	.align 2
-	.global gUnknown_08C1B928
-gUnknown_08C1B928:
-	.incbin "sound/direct_sound_samples/08C1B928.bin"
+DirectSoundWaveData_307:
+	.incbin "sound/direct_sound_samples/unknown_307.bin"
 
 	.align 2
-	.global gUnknown_08C1BE0C
-gUnknown_08C1BE0C:
-	.incbin "sound/direct_sound_samples/08C1BE0C.bin"
+DirectSoundWaveData_308:
+	.incbin "sound/direct_sound_samples/unknown_308.bin"
 
 	.align 2
-	.global gUnknown_08C1C378
-gUnknown_08C1C378:
-	.incbin "sound/direct_sound_samples/08C1C378.bin"
+DirectSoundWaveData_309:
+	.incbin "sound/direct_sound_samples/unknown_309.bin"
 
 	.align 2
-	.global gUnknown_08C1C884
-gUnknown_08C1C884:
-	.incbin "sound/direct_sound_samples/08C1C884.bin"
+DirectSoundWaveData_310:
+	.incbin "sound/direct_sound_samples/unknown_310.bin"
 
 	.align 2
-	.global gUnknown_08C1CDB8
-gUnknown_08C1CDB8:
-	.incbin "sound/direct_sound_samples/08C1CDB8.bin"
+DirectSoundWaveData_311:
+	.incbin "sound/direct_sound_samples/unknown_311.bin"
 
 	.align 2
-	.global gUnknown_08C1D2E0
-gUnknown_08C1D2E0:
-	.incbin "sound/direct_sound_samples/08C1D2E0.bin"
+DirectSoundWaveData_312:
+	.incbin "sound/direct_sound_samples/unknown_312.bin"
 
 	.align 2
-	.global gUnknown_08C1D7EC
-gUnknown_08C1D7EC:
-	.incbin "sound/direct_sound_samples/08C1D7EC.bin"
+DirectSoundWaveData_313:
+	.incbin "sound/direct_sound_samples/unknown_313.bin"
 
 	.align 2
-	.global gUnknown_08C1DD2C
-gUnknown_08C1DD2C:
-	.incbin "sound/direct_sound_samples/08C1DD2C.bin"
+DirectSoundWaveData_314:
+	.incbin "sound/direct_sound_samples/unknown_314.bin"
 
 	.align 2
-	.global gUnknown_08C1E29C
-gUnknown_08C1E29C:
-	.incbin "sound/direct_sound_samples/08C1E29C.bin"
+DirectSoundWaveData_315:
+	.incbin "sound/direct_sound_samples/unknown_315.bin"
 
 	.align 2
-	.global gUnknown_08C1E760
-gUnknown_08C1E760:
-	.incbin "sound/direct_sound_samples/08C1E760.bin"
+DirectSoundWaveData_316:
+	.incbin "sound/direct_sound_samples/unknown_316.bin"
 
 	.align 2
-	.global gUnknown_08C1ED70
-gUnknown_08C1ED70:
-	.incbin "sound/direct_sound_samples/08C1ED70.bin"
+DirectSoundWaveData_317:
+	.incbin "sound/direct_sound_samples/unknown_317.bin"
 
 	.align 2
-	.global gUnknown_08C1F268
-gUnknown_08C1F268:
-	.incbin "sound/direct_sound_samples/08C1F268.bin"
+DirectSoundWaveData_318:
+	.incbin "sound/direct_sound_samples/unknown_318.bin"
 
 	.align 2
-	.global gUnknown_08C1FD70
-gUnknown_08C1FD70:
-	.incbin "sound/direct_sound_samples/08C1FD70.bin"
+DirectSoundWaveData_319:
+	.incbin "sound/direct_sound_samples/unknown_319.bin"
 
 	.align 2
-	.global gUnknown_08C202D0
-gUnknown_08C202D0:
-	.incbin "sound/direct_sound_samples/08C202D0.bin"
+DirectSoundWaveData_320:
+	.incbin "sound/direct_sound_samples/unknown_320.bin"
 
 	.align 2
-	.global gUnknown_08C207D0
-gUnknown_08C207D0:
-	.incbin "sound/direct_sound_samples/08C207D0.bin"
+DirectSoundWaveData_321:
+	.incbin "sound/direct_sound_samples/unknown_321.bin"
 
 	.align 2
-	.global gUnknown_08C212B8
-gUnknown_08C212B8:
-	.incbin "sound/direct_sound_samples/08C212B8.bin"
+DirectSoundWaveData_322:
+	.incbin "sound/direct_sound_samples/unknown_322.bin"
 
 	.align 2
-	.global gUnknown_08C218C0
-gUnknown_08C218C0:
-	.incbin "sound/direct_sound_samples/08C218C0.bin"
+DirectSoundWaveData_323:
+	.incbin "sound/direct_sound_samples/unknown_323.bin"
 
 	.align 2
-	.global gUnknown_08C21D18
-gUnknown_08C21D18:
-	.incbin "sound/direct_sound_samples/08C21D18.bin"
+DirectSoundWaveData_324:
+	.incbin "sound/direct_sound_samples/unknown_324.bin"
 
 	.align 2
-	.global gUnknown_08C22298
-gUnknown_08C22298:
-	.incbin "sound/direct_sound_samples/08C22298.bin"
+DirectSoundWaveData_325:
+	.incbin "sound/direct_sound_samples/unknown_325.bin"
 
 	.align 2
-	.global gUnknown_08C22760
-gUnknown_08C22760:
-	.incbin "sound/direct_sound_samples/08C22760.bin"
+DirectSoundWaveData_326:
+	.incbin "sound/direct_sound_samples/unknown_326.bin"
 
 	.align 2
-	.global gUnknown_08C23218
-gUnknown_08C23218:
-	.incbin "sound/direct_sound_samples/08C23218.bin"
+DirectSoundWaveData_327:
+	.incbin "sound/direct_sound_samples/unknown_327.bin"
 
 	.align 2
-	.global gUnknown_08C23CA8
-gUnknown_08C23CA8:
-	.incbin "sound/direct_sound_samples/08C23CA8.bin"
+DirectSoundWaveData_328:
+	.incbin "sound/direct_sound_samples/unknown_328.bin"
 
 	.align 2
-	.global gUnknown_08C242A8
-gUnknown_08C242A8:
-	.incbin "sound/direct_sound_samples/08C242A8.bin"
+DirectSoundWaveData_329:
+	.incbin "sound/direct_sound_samples/unknown_329.bin"
 
 	.align 2
-	.global gUnknown_08C24730
-gUnknown_08C24730:
-	.incbin "sound/direct_sound_samples/08C24730.bin"
+DirectSoundWaveData_330:
+	.incbin "sound/direct_sound_samples/unknown_330.bin"
 
 	.align 2
-	.global gUnknown_08C24C80
-gUnknown_08C24C80:
-	.incbin "sound/direct_sound_samples/08C24C80.bin"
+DirectSoundWaveData_331:
+	.incbin "sound/direct_sound_samples/unknown_331.bin"
 
 	.align 2
-	.global gUnknown_08C2572C
-gUnknown_08C2572C:
-	.incbin "sound/direct_sound_samples/08C2572C.bin"
+DirectSoundWaveData_332:
+	.incbin "sound/direct_sound_samples/unknown_332.bin"
 
 	.align 2
-	.global gUnknown_08C25D2C
-gUnknown_08C25D2C:
-	.incbin "sound/direct_sound_samples/08C25D2C.bin"
+DirectSoundWaveData_333:
+	.incbin "sound/direct_sound_samples/unknown_333.bin"
 
 	.align 2
-	.global gUnknown_08C261B4
-gUnknown_08C261B4:
-	.incbin "sound/direct_sound_samples/08C261B4.bin"
+DirectSoundWaveData_334:
+	.incbin "sound/direct_sound_samples/unknown_334.bin"
 
 	.align 2
-	.global gUnknown_08C26724
-gUnknown_08C26724:
-	.incbin "sound/direct_sound_samples/08C26724.bin"
+DirectSoundWaveData_335:
+	.incbin "sound/direct_sound_samples/unknown_335.bin"
 
 	.align 2
-	.global gUnknown_08C26CA0
-gUnknown_08C26CA0:
-	.incbin "sound/direct_sound_samples/08C26CA0.bin"
+DirectSoundWaveData_336:
+	.incbin "sound/direct_sound_samples/unknown_336.bin"
 
 	.align 2
-	.global gUnknown_08C271B8
-gUnknown_08C271B8:
-	.incbin "sound/direct_sound_samples/08C271B8.bin"
+DirectSoundWaveData_337:
+	.incbin "sound/direct_sound_samples/unknown_337.bin"
 
 	.align 2
-	.global gUnknown_08C27770
-gUnknown_08C27770:
-	.incbin "sound/direct_sound_samples/08C27770.bin"
+DirectSoundWaveData_338:
+	.incbin "sound/direct_sound_samples/unknown_338.bin"
 
 	.align 2
-	.global gUnknown_08C27C58
-gUnknown_08C27C58:
-	.incbin "sound/direct_sound_samples/08C27C58.bin"
+DirectSoundWaveData_339:
+	.incbin "sound/direct_sound_samples/unknown_339.bin"
 
 	.align 2
-	.global gUnknown_08C281A8
-gUnknown_08C281A8:
-	.incbin "sound/direct_sound_samples/08C281A8.bin"
+DirectSoundWaveData_340:
+	.incbin "sound/direct_sound_samples/unknown_340.bin"
 
 	.align 2
-	.global gUnknown_08C28CFC
-gUnknown_08C28CFC:
-	.incbin "sound/direct_sound_samples/08C28CFC.bin"
+DirectSoundWaveData_341:
+	.incbin "sound/direct_sound_samples/unknown_341.bin"
 
 	.align 2
-	.global gUnknown_08C295D0
-gUnknown_08C295D0:
-	.incbin "sound/direct_sound_samples/08C295D0.bin"
+DirectSoundWaveData_342:
+	.incbin "sound/direct_sound_samples/unknown_342.bin"
 
 	.align 2
-	.global gUnknown_08C29BF0
-gUnknown_08C29BF0:
-	.incbin "sound/direct_sound_samples/08C29BF0.bin"
+DirectSoundWaveData_343:
+	.incbin "sound/direct_sound_samples/unknown_343.bin"
 
 	.align 2
-	.global gUnknown_08C2A158
-gUnknown_08C2A158:
-	.incbin "sound/direct_sound_samples/08C2A158.bin"
+DirectSoundWaveData_344:
+	.incbin "sound/direct_sound_samples/unknown_344.bin"
 
 	.align 2
-	.global gUnknown_08C2AC00
-gUnknown_08C2AC00:
-	.incbin "sound/direct_sound_samples/08C2AC00.bin"
+DirectSoundWaveData_345:
+	.incbin "sound/direct_sound_samples/unknown_345.bin"
 
 	.align 2
-	.global gUnknown_08C2B22C
-gUnknown_08C2B22C:
-	.incbin "sound/direct_sound_samples/08C2B22C.bin"
+DirectSoundWaveData_346:
+	.incbin "sound/direct_sound_samples/unknown_346.bin"
 
 	.align 2
-	.global gUnknown_08C2B6EC
-gUnknown_08C2B6EC:
-	.incbin "sound/direct_sound_samples/08C2B6EC.bin"
+DirectSoundWaveData_347:
+	.incbin "sound/direct_sound_samples/unknown_347.bin"
 
 	.align 2
-	.global gUnknown_08C2BC58
-gUnknown_08C2BC58:
-	.incbin "sound/direct_sound_samples/08C2BC58.bin"
+DirectSoundWaveData_348:
+	.incbin "sound/direct_sound_samples/unknown_348.bin"
 
 	.align 2
-	.global gUnknown_08C2C0F8
-gUnknown_08C2C0F8:
-	.incbin "sound/direct_sound_samples/08C2C0F8.bin"
+DirectSoundWaveData_349:
+	.incbin "sound/direct_sound_samples/unknown_349.bin"
 
 	.align 2
-	.global gUnknown_08C2CBC4
-gUnknown_08C2CBC4:
-	.incbin "sound/direct_sound_samples/08C2CBC4.bin"
+DirectSoundWaveData_350:
+	.incbin "sound/direct_sound_samples/unknown_350.bin"
 
 	.align 2
-	.global gUnknown_08C2D494
-gUnknown_08C2D494:
-	.incbin "sound/direct_sound_samples/08C2D494.bin"
+DirectSoundWaveData_351:
+	.incbin "sound/direct_sound_samples/unknown_351.bin"
 
 	.align 2
-	.global gUnknown_08C2DEF4
-gUnknown_08C2DEF4:
-	.incbin "sound/direct_sound_samples/08C2DEF4.bin"
+DirectSoundWaveData_352:
+	.incbin "sound/direct_sound_samples/unknown_352.bin"
 
 	.align 2
-	.global gUnknown_08C2E44C
-gUnknown_08C2E44C:
-	.incbin "sound/direct_sound_samples/08C2E44C.bin"
+DirectSoundWaveData_353:
+	.incbin "sound/direct_sound_samples/unknown_353.bin"
 
 	.align 2
-	.global gUnknown_08C2E8CC
-gUnknown_08C2E8CC:
-	.incbin "sound/direct_sound_samples/08C2E8CC.bin"
+DirectSoundWaveData_354:
+	.incbin "sound/direct_sound_samples/unknown_354.bin"
 
 	.align 2
-	.global gUnknown_08C2ED58
-gUnknown_08C2ED58:
-	.incbin "sound/direct_sound_samples/08C2ED58.bin"
+DirectSoundWaveData_355:
+	.incbin "sound/direct_sound_samples/unknown_355.bin"
 
 	.align 2
-	.global gUnknown_08C2F314
-gUnknown_08C2F314:
-	.incbin "sound/direct_sound_samples/08C2F314.bin"
+DirectSoundWaveData_356:
+	.incbin "sound/direct_sound_samples/unknown_356.bin"
 
 	.align 2
-	.global gUnknown_08C2F978
-gUnknown_08C2F978:
-	.incbin "sound/direct_sound_samples/08C2F978.bin"
+DirectSoundWaveData_357:
+	.incbin "sound/direct_sound_samples/unknown_357.bin"
 
 	.align 2
-	.global gUnknown_08C30F08
-gUnknown_08C30F08:
-	.incbin "sound/direct_sound_samples/08C30F08.bin"
+DirectSoundWaveData_358:
+	.incbin "sound/direct_sound_samples/unknown_358.bin"
 
 	.align 2
-	.global gUnknown_08C34DFC
-gUnknown_08C34DFC:
-	.incbin "sound/direct_sound_samples/08C34DFC.bin"
+DirectSoundWaveData_359:
+	.incbin "sound/direct_sound_samples/unknown_359.bin"
 
 	.align 2
-	.global gUnknown_08C35C68
-gUnknown_08C35C68:
-	.incbin "sound/direct_sound_samples/08C35C68.bin"
+DirectSoundWaveData_360:
+	.incbin "sound/direct_sound_samples/unknown_360.bin"
 
 	.align 2
-	.global gUnknown_08C37240
-gUnknown_08C37240:
-	.incbin "sound/direct_sound_samples/08C37240.bin"
+DirectSoundWaveData_361:
+	.incbin "sound/direct_sound_samples/unknown_361.bin"
 
 	.align 2
-	.global gUnknown_08C382F4
-gUnknown_08C382F4:
-	.incbin "sound/direct_sound_samples/08C382F4.bin"
+DirectSoundWaveData_362:
+	.incbin "sound/direct_sound_samples/unknown_362.bin"
 
 	.align 2
-	.global gUnknown_08C3A298
-gUnknown_08C3A298:
-	.incbin "sound/direct_sound_samples/08C3A298.bin"
+DirectSoundWaveData_363:
+	.incbin "sound/direct_sound_samples/unknown_363.bin"
 
 	.align 2
-	.global gUnknown_08C3BC34
-gUnknown_08C3BC34:
-	.incbin "sound/direct_sound_samples/08C3BC34.bin"
+DirectSoundWaveData_364:
+	.incbin "sound/direct_sound_samples/unknown_364.bin"
 
 	.align 2
-	.global gUnknown_08C3D53C
-gUnknown_08C3D53C:
-	.incbin "sound/direct_sound_samples/08C3D53C.bin"
+DirectSoundWaveData_365:
+	.incbin "sound/direct_sound_samples/unknown_365.bin"
 
 	.align 2
-	.global gUnknown_08C3F3E0
-gUnknown_08C3F3E0:
-	.incbin "sound/direct_sound_samples/08C3F3E0.bin"
+DirectSoundWaveData_366:
+	.incbin "sound/direct_sound_samples/unknown_366.bin"
 
 	.align 2
-	.global gUnknown_08C40314
-gUnknown_08C40314:
-	.incbin "sound/direct_sound_samples/08C40314.bin"
+DirectSoundWaveData_367:
+	.incbin "sound/direct_sound_samples/unknown_367.bin"
 
 	.align 2
-	.global gUnknown_08C41284
-gUnknown_08C41284:
-	.incbin "sound/direct_sound_samples/08C41284.bin"
+DirectSoundWaveData_368:
+	.incbin "sound/direct_sound_samples/unknown_368.bin"
 
 	.align 2
-	.global gUnknown_08C41820
-gUnknown_08C41820:
-	.incbin "sound/direct_sound_samples/08C41820.bin"
+DirectSoundWaveData_369:
+	.incbin "sound/direct_sound_samples/unknown_369.bin"
 
 	.align 2
-	.global gUnknown_08C42488
-gUnknown_08C42488:
-	.incbin "sound/direct_sound_samples/08C42488.bin"
+DirectSoundWaveData_370:
+	.incbin "sound/direct_sound_samples/unknown_370.bin"
 
 	.align 2
-	.global gUnknown_08C46A48
-gUnknown_08C46A48:
-	.incbin "sound/direct_sound_samples/08C46A48.bin"
+DirectSoundWaveData_371:
+	.incbin "sound/direct_sound_samples/unknown_371.bin"
 
 	.align 2
-	.global gUnknown_08C4991C
-gUnknown_08C4991C:
-	.incbin "sound/direct_sound_samples/08C4991C.bin"
+DirectSoundWaveData_372:
+	.incbin "sound/direct_sound_samples/unknown_372.bin"
 
 	.align 2
-	.global gUnknown_08C4C92C
-gUnknown_08C4C92C:
-	.incbin "sound/direct_sound_samples/08C4C92C.bin"
+DirectSoundWaveData_373:
+	.incbin "sound/direct_sound_samples/unknown_373.bin"
 
 	.align 2
-	.global gUnknown_08C4E120
-gUnknown_08C4E120:
-	.incbin "sound/direct_sound_samples/08C4E120.bin"
+DirectSoundWaveData_374:
+	.incbin "sound/direct_sound_samples/unknown_374.bin"
 
 	.align 2
-	.global gUnknown_08C50304
-gUnknown_08C50304:
-	.incbin "sound/direct_sound_samples/08C50304.bin"
+DirectSoundWaveData_375:
+	.incbin "sound/direct_sound_samples/unknown_375.bin"
 
 	.align 2
-	.global gUnknown_08C517B0
-gUnknown_08C517B0:
-	.incbin "sound/direct_sound_samples/08C517B0.bin"
+DirectSoundWaveData_376:
+	.incbin "sound/direct_sound_samples/unknown_376.bin"
 
 	.align 2
-	.global gUnknown_08C526AC
-gUnknown_08C526AC:
-	.incbin "sound/direct_sound_samples/08C526AC.bin"
+DirectSoundWaveData_377:
+	.incbin "sound/direct_sound_samples/unknown_377.bin"
 
 	.align 2
-	.global gUnknown_08C52BAC
-gUnknown_08C52BAC:
-	.incbin "sound/direct_sound_samples/08C52BAC.bin"
+DirectSoundWaveData_378:
+	.incbin "sound/direct_sound_samples/unknown_378.bin"
 
 	.align 2
-	.global gUnknown_08C530E4
-gUnknown_08C530E4:
-	.incbin "sound/direct_sound_samples/08C530E4.bin"
+DirectSoundWaveData_379:
+	.incbin "sound/direct_sound_samples/unknown_379.bin"
