@@ -19,9 +19,14 @@ extern const u8 gUnknown_080E1054[10];
 
 extern void sub_808D598(void);
 extern void sub_802D4CC(struct UNK_0808B3FC_UNK270*);
-extern void sub_808B884(struct UNK_0808B3FC*);
 
 static void sub_808B768(struct UNK_0808B3FC*);
+
+// TODO make static once decompiled
+void sub_808B884(struct UNK_0808B3FC*);
+void sub_808CBA4(struct UNK_0808B3FC*);
+void sub_808D5FC(void);
+void sub_808BB54(void);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -359,4 +364,50 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
     config->unk25 = 0;
     config->unk10 = 0x3000;
     sub_8004558(config);
+}
+
+#define FadeInAlpha(frame, fadeSpeed)  \
+    ((16 - frame) << (7 + fadeSpeed)) | (frame * fadeSpeed)
+
+#define FadeOutAlpha(frame, fadeSpeed)       \
+({                                           \
+    u32 tmp = frame * fadeSpeed;             \
+    (frame << (7 + fadeSpeed)) | (16 - tmp); \
+})
+
+// Task_FadeInSegaLogo
+void sub_808BA78(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+
+    gBldRegs.bldAlpha = FadeInAlpha(introConfig->unkF3E, 1);
+
+    if (introConfig->unkF3E >= 16) {
+        introConfig->unkF3E = 0;
+        gBldRegs.bldAlpha = 16;
+        gBgScrollRegs[0][0] = 0;
+        gBgScrollRegs[0][1] = 0;
+        gCurTask->main = sub_808D5FC;
+    }
+
+    introConfig->unkF3E++;
+}
+
+// Task_FadeOutSegaLogo
+void sub_808BAD8(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+
+    // Fade out?
+    gBldRegs.bldAlpha = FadeOutAlpha(introConfig->unkF3E, 2);
+
+    if (introConfig->unkF3E >= 8) {
+        gDispCnt &= ~0x100;
+        gBldRegs.bldAlpha = 0x1000;
+        introConfig->unkF3E = 0;
+        gFlags &= ~0x8000;
+        gCurTask->main = sub_808BB54;
+    }
+
+    introConfig->unkF3E++;
 }

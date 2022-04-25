@@ -44,7 +44,6 @@ SECTIONS
         build/sa2/asm/math.o(.text);
         build/sa2/asm/code4.o(.text);
         build/sa2/src/intro.o(.text);
-        build/sa2/asm/intro.o(.text);
         build/sa2/asm/code5.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);

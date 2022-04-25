@@ -95,7 +95,6 @@
 . = 0x00000F38; gUnknown_03000F38 = .;
 . = 0x00000F3C; gUnknown_03000F3C = .;
 . = 0x00000F3D; gUnknown_03000F3D = .;
-. = 0x00000F3E; gUnknown_03000F3E = .;
 . = 0x00000F40; gUnknown_03000F40 = .;
 . = 0x00000F42; gUnknown_03000F42 = .;
 . = 0x000017F0; gUnknown_030017F0 = .;
