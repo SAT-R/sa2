@@ -8,6 +8,7 @@
 #include "save.h"
 #include "main.h"
 #include "data.h"
+#include "input.h"
 
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
@@ -26,7 +27,12 @@ static void sub_808B768(struct UNK_0808B3FC*);
 void sub_808B884(struct UNK_0808B3FC*);
 void sub_808CBA4(struct UNK_0808B3FC*);
 void sub_808D5FC(void);
-void sub_808BB54(void);
+static void sub_808BB54(void);
+static void sub_808BBF4(void);
+void sub_808D63C(void);
+static void sub_808BCC4(void);
+void sub_808CE00(u32, u32, u32, u32, u32);
+void sub_808D4DC(struct UNK_0808B3FC*);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -409,5 +415,129 @@ void sub_808BAD8(void) {
         gCurTask->main = sub_808BB54;
     }
 
+    introConfig->unkF3E++;
+}
+
+// Task_InitSonicTeamLogo
+static void sub_808BB54(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct Unk_03002400* config80;
+    
+    sub_808CBA4(introConfig);
+
+    if (introConfig->unkF3E == 1) {
+        // TODO: some macro for this
+        config80 = &introConfig->unk80;
+        config80->unk4 = BG_SCREEN_ADDR(8);
+        config80->unkA = 0;
+        config80->unkC = BG_SCREEN_ADDR(31);
+        config80->unk18 = 0;
+        config80->unk1A = 0;
+        config80->unk1C = 0x61;
+        config80->unk1E = 0;
+        config80->unk20 = 0;
+        config80->unk22 = 0;
+        config80->unk24 = 0;
+        config80->unk26 = 0x1e;
+        config80->unk28 = 0x14;
+        config80->unk2A = 0;
+        config80->unk2E = 0x10;
+        sub_8002A3C(config80);
+    }
+
+    if (introConfig->unkF3E > 2) {
+        introConfig->unkF3E = 0;
+        gDispCnt |= 0x100;
+        gCurTask->main = sub_808BBF4;
+    }
+
+    introConfig->unkF3E++;
+}
+
+// Task_FadeInSonicTeamLogo
+static void sub_808BBF4(void) {
+    // Wondering if this is some inline function
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+
+    gBldRegs.bldAlpha = FadeInAlpha(introConfig->unkF3E, 1);
+
+    if (introConfig->unkF3E >= 16) {
+        introConfig->unkF3E = 0;
+        gBldRegs.bldAlpha = 16;
+        gBgScrollRegs[0][0] = 0;
+        gBgScrollRegs[0][1] = 0;
+        // Only diference is this function assignment for the next task
+        gCurTask->main = sub_808D63C;
+    }
+
+    introConfig->unkF3E++;
+}
+
+// Task_FadeOutSonicTeamLogo
+void sub_808BC54(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+
+    gBldRegs.bldAlpha = FadeOutAlpha(introConfig->unkF3E, 2);
+
+    if (introConfig->unkF3E >= 8) {
+        gCurTask->main = sub_808BCC4;
+        introConfig->unkF3E = 0;
+        gDispCnt &= ~0x100;
+        gBgScrollRegs[0][0] = 0;
+        gBgScrollRegs[0][1] = 0;    
+    }
+
+    introConfig->unkF3E++;
+}
+
+void sub_808BDBC(void);
+
+// Detect user input and do something
+static void sub_808BCC4(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct Unk_03002400* config40;
+    sub_808CBA4(introConfig);
+
+    if ((gPressedKeys & (A_BUTTON | START_BUTTON))) {
+        sub_808D4DC(introConfig);
+        return;
+    }
+
+    if (introConfig->unkF3E == 59) {
+        config40 = &introConfig->unk40;
+        config40->unk4 = BG_SCREEN_ADDR(16);
+        config40->unkA = 0;
+        config40->unkC = BG_SCREEN_ADDR(29);
+        config40->unk18 = 0;
+        config40->unk1A = 0;
+        config40->unk1C = 0x105;
+        config40->unk1E = 0;
+        config40->unk20 = 0;
+        config40->unk22 = 0;
+        config40->unk24 = 0;
+        config40->unk26 = 0x20;
+        config40->unk28 = 0x40;
+        config40->unk2A = 0;
+        config40->unk2E = 1;
+        sub_8002A3C(config40);
+    }
+    
+    // Doesn't match as as else if for
+    // some reason. Maybe this is how they wrote it.
+    // Interesting that GCC is not good enough
+    // to understand that this is not possible
+    // to trigger if the previous if is true
+    if (introConfig->unkF3E > 140) {
+        gCurTask->main = sub_808BDBC;
+        introConfig->unkF3E = 0;
+        gDispCnt |= 0x200;
+        gBldRegs.bldAlpha = 0x1000;
+        gBldRegs.bldCnt = 0x241;
+        sub_808CE00(0x7c, 0xffffffc4, 0, 0xffdf, 0);
+        sub_808CE00(0xb4, 0xffffffe8, 3, 0x20, 0);
+    }
+    
     introConfig->unkF3E++;
 }
