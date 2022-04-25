@@ -2,8 +2,20 @@
 
 #include "global.h"
 
+// TODO: reference this in IWRAM
 extern ALIGNED(4) char SoundMainRAM_Buffer[0x400];
-extern struct SoundInfo gSoundInfo;
+
+// TODO: somehow reference these in ewram defintion
+struct SoundInfo gSoundInfo;
+MPlayFunc gMPlayJumpTable[36];
+struct CgbChannel gCgbChans[4];
+
+// For some reason these were declared in this order
+struct MusicPlayerInfo gMPlayInfo_BGM;
+struct MusicPlayerInfo gMPlayInfo_SE1;
+struct MusicPlayerInfo gMPlayInfo_SE2;
+u8 gMPlayMemAccArea[0x10];
+struct MusicPlayerInfo gMPlayInfo_SE3;
 
 static void DummyCallback(void);
 

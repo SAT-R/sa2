@@ -3080,14 +3080,14 @@ _0808D3B4:
 	movs r1, #0x80
 	lsls r1, r1, #0x12
 	bl LZ77UnCompWram
-	ldr r0, _0808D410 @ =gUnknown_02000008
+	ldr r0, _0808D410 @ =EWRAM_START + 8
 	str r5, [r0]
 	adds r0, #4
 	str r4, [r0]
 	bl Random
 	adds r4, r0, #0
 	bl Random
-	ldr r2, _0808D414 @ =gUnknown_02000010
+	ldr r2, _0808D414 @ =EWRAM_START + 16
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
 	ldr r1, _0808D418 @ =gUnknown_03002264
@@ -3106,8 +3106,8 @@ _0808D3B4:
 	.align 2, 0
 _0808D408: .4byte gFlags
 _0808D40C: .4byte gUnknown_080AED70
-_0808D410: .4byte gUnknown_02000008
-_0808D414: .4byte gUnknown_02000010
+_0808D410: .4byte EWRAM_START + 8
+_0808D414: .4byte EWRAM_START + 16
 _0808D418: .4byte gUnknown_03002264
 
 	thumb_func_start sub_808D41C_CreateTitleScreen
@@ -6186,7 +6186,7 @@ sub_808ECB4: @ 0x0808ECB4
 	adds r4, r5, r0
 	movs r0, #1
 	strh r0, [r4, #2]
-	ldr r0, _0808ECFC @ =gUnknown_02002540
+	ldr r0, _0808ECFC @ =gMPlayInfo_BGM
 	movs r1, #0x18
 	bl m4aMPlayFadeOutTemporarily
 	adds r0, r4, #0
@@ -6210,7 +6210,7 @@ _0808ECEE:
 	.align 2, 0
 _0808ECF4: .4byte gCurTask
 _0808ECF8: .4byte gUnknown_03000040
-_0808ECFC: .4byte gUnknown_02002540
+_0808ECFC: .4byte gMPlayInfo_BGM
 _0808ED00: .4byte gUnknown_0300004C
 
 	thumb_func_start sub_808ED04
@@ -6688,7 +6688,7 @@ sub_808F0BC: @ 0x0808F0BC
 	adds r4, r5, r0
 	movs r0, #1
 	strh r0, [r4, #2]
-	ldr r0, _0808F104 @ =gUnknown_02002540
+	ldr r0, _0808F104 @ =gMPlayInfo_BGM
 	movs r1, #0x18
 	bl m4aMPlayFadeOutTemporarily
 	adds r0, r4, #0
@@ -6712,7 +6712,7 @@ _0808F0F6:
 	.align 2, 0
 _0808F0FC: .4byte gCurTask
 _0808F100: .4byte gUnknown_03000040
-_0808F104: .4byte gUnknown_02002540
+_0808F104: .4byte gMPlayInfo_BGM
 _0808F108: .4byte gUnknown_0300004C
 
 	thumb_func_start sub_808F10C

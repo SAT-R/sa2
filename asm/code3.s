@@ -33807,16 +33807,16 @@ sub_8082AA8: @ 0x08082AA8
 	bls _08082AF6
 	movs r0, #0
 	strh r0, [r4]
-	ldr r0, _08082B04 @ =gUnknown_02002540
+	ldr r0, _08082B04 @ =gMPlayInfo_BGM
 	movs r1, #8
 	bl m4aMPlayFadeOut
-	ldr r0, _08082B08 @ =gUnknown_02002580
+	ldr r0, _08082B08 @ =gMPlayInfo_SE1
 	movs r1, #8
 	bl m4aMPlayFadeOut
-	ldr r0, _08082B0C @ =gUnknown_020025C0
+	ldr r0, _08082B0C @ =gMPlayInfo_SE2
 	movs r1, #8
 	bl m4aMPlayFadeOut
-	ldr r0, _08082B10 @ =gUnknown_02002610
+	ldr r0, _08082B10 @ =gMPlayInfo_SE3
 	movs r1, #8
 	bl m4aMPlayFadeOut
 	ldr r1, _08082B14 @ =gBldRegs
@@ -33832,10 +33832,10 @@ _08082AF6:
 	.align 2, 0
 _08082AFC: .4byte gCurTask
 _08082B00: .4byte gTimerReg
-_08082B04: .4byte gUnknown_02002540
-_08082B08: .4byte gUnknown_02002580
-_08082B0C: .4byte gUnknown_020025C0
-_08082B10: .4byte gUnknown_02002610
+_08082B04: .4byte gMPlayInfo_BGM
+_08082B08: .4byte gMPlayInfo_SE1
+_08082B0C: .4byte gMPlayInfo_SE2
+_08082B10: .4byte gMPlayInfo_SE3
 _08082B14: .4byte gBldRegs
 _08082B18: .4byte sub_8082630
 

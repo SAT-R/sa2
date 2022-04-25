@@ -151,6 +151,17 @@ struct SoundChannel
 
 #define PCM_DMA_BUF_SIZE 1584 // size of Direct Sound buffer
 
+struct MusicPlayerInfo;
+
+typedef void (*MPlayFunc)();
+typedef void (*PlyNoteFunc)(u32, struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+typedef void (*CgbSoundFunc)(void);
+typedef void (*CgbOscOffFunc)(u8);
+typedef u32 (*MidiKeyToCgbFreqFunc)(u8, u8, u8);
+typedef void (*ExtVolPitFunc)(void);
+typedef void (*MPlayMainFunc)(struct MusicPlayerInfo *);
+
+// TODO: update this struct with better names from pret
 struct SoundInfo
 {
     // This field is normally equal to ID_NUMBER but it is set to other
@@ -168,7 +179,7 @@ struct SoundInfo
     u8 freq;
 
     u8 mode;
-    u8 c15;
+    u8 c15;          // periodically counts from 14 down to 0 (15 states)
     u8 pcmDmaPeriod; // number of V-blanks per PCM DMA
     u8 maxLines;
     u8 gap[3];
@@ -340,7 +351,7 @@ extern u8 gMPlayMemAccArea[];
 
 extern char SoundMainRAM[];
 
-extern void *gMPlayJumpTable[];
+extern MPlayFunc gMPlayJumpTable[];
 
 typedef void (*XcmdFunc)(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 extern const XcmdFunc gXcmdTable[];
@@ -388,7 +399,7 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
 void CgbSound(void);
 void CgbOscOff(u8);
 u32 MidiKeyToCgbFreq(u8, u8, u8);
-void MPlayJumpTableCopy(void **mplayJumpTable);
+void MPlayJumpTableCopy(MPlayFunc *mplayJumpTable);
 void SampleFreqSet(u32 freq);
 void m4aSoundVSyncOn(void);
 void m4aSoundVSyncOff(void);

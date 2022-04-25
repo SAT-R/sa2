@@ -6163,7 +6163,7 @@ _08089054:
 	strh r0, [r1]
 	movs r0, #0x6a
 	bl m4aSongNumStart
-	ldr r0, _080890B0 @ =gUnknown_02002540
+	ldr r0, _080890B0 @ =gMPlayInfo_BGM
 	movs r1, #0x80
 	lsls r1, r1, #5
 	bl m4aMPlayFadeOut
@@ -6186,7 +6186,7 @@ _080890A0: .4byte gUnknown_080E0474
 _080890A4: .4byte gUnknown_030054F0
 _080890A8: .4byte 0xFFFFFBFF
 _080890AC: .4byte gUnknown_080E04C4
-_080890B0: .4byte gUnknown_02002540
+_080890B0: .4byte gMPlayInfo_BGM
 _080890B4: .4byte gCurTask
 _080890B8: .4byte sub_8088D60
 
@@ -9239,7 +9239,7 @@ _0808A952:
 	movs r4, #0
 	strb r0, [r1]
 	bl m4aMPlayAllStop
-	ldr r0, _0808AA54 @ =gUnknown_02002540
+	ldr r0, _0808AA54 @ =gMPlayInfo_BGM
 	ldr r3, _0808AA58 @ =gSongTable
 	ldr r2, _0808AA5C @ =gUnknown_080E0A24
 	ldrb r1, [r5]
@@ -9324,7 +9324,7 @@ _0808AA44: .4byte gPressedKeys
 _0808AA48: .4byte 0x00000704
 _0808AA4C: .4byte gUnknown_080E0AAC
 _0808AA50: .4byte 0x000002CA
-_0808AA54: .4byte gUnknown_02002540
+_0808AA54: .4byte gMPlayInfo_BGM
 _0808AA58: .4byte gSongTable
 _0808AA5C: .4byte gUnknown_080E0A24
 _0808AA60: .4byte 0x0000070A
