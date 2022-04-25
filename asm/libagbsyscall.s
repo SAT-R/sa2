@@ -4,6 +4,8 @@
 .syntax unified
 .arm
 
+	.set SOFT_RESET_DIRECT_BUF, 0x03007FFA
+
 	thumb_func_start ArcTan2
 ArcTan2: @ 0x0809710C
 	svc #0xa
@@ -50,17 +52,17 @@ RLUnCompWram: @ 0x08097130
 
 	thumb_func_start SoftReset
 SoftReset: @ 0x08097134
-	ldr r3, _08097144 @ =0x04000208
+	ldr r3, _08097144 @ =REG_IME
 	movs r2, #0
 	strb r2, [r3]
-	ldr r1, _08097148 @ =gUnknown_03007F00
+	ldr r1, _08097148 @ =IWRAM_END - 0x100
 	mov sp, r1
 	svc #1
 	svc #0
 	movs r0, r0
 	.align 2, 0
-_08097144: .4byte 0x04000208
-_08097148: .4byte gUnknown_03007F00
+_08097144: .4byte REG_IME
+_08097148: .4byte IWRAM_END - 0x100
 
 	thumb_func_start Sqrt
 Sqrt: @ 0x0809714C
@@ -76,10 +78,10 @@ VBlankIntrWait: @ 0x08097150
 
 	thumb_func_start SoftResetExram
 SoftResetExram: @ 0x08097158
-	ldr r3, _08097170 @ =0x04000208
+	ldr r3, =REG_IME
 	movs r2, #0
 	strb r2, [r3]
-	ldr r3, _08097174 @ =gUnknown_03007FFA
+	ldr r3, =SOFT_RESET_DIRECT_BUF
 	movs r2, #1
 	strb r2, [r3]
 	subs r3, #0xfa
@@ -89,5 +91,3 @@ SoftResetExram: @ 0x08097158
 	svc #1
 	svc #0
 	.align 2, 0
-_08097170: .4byte 0x04000208
-_08097174: .4byte gUnknown_03007FFA

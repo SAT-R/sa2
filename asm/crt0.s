@@ -4,117 +4,76 @@
 .syntax unified
 .arm
 
-Init: @ 0x08000000
-	b start_vector
-
-	# These will be set by gbafix
-	
-	.global RomHeaderNintendoLogo
-RomHeaderNintendoLogo:
-	.space 0x9c
-
-RomHeaderGameTitle:
-	.space 12
-
-RomHeaderGameCode:
-	.4byte 0
-
-RomHeaderMakerCode:
-	.2byte 0
-
-RomHeaderMagic:
-	.byte 0x96
-
-RomHeaderMainUnitCode:
-	.byte 0
-
-RomHeaderDeviceType:
-	.byte 0
-
-RomHeaderReserved1:
-	.space 7
-
-RomHeaderSoftwareVersion:
-	.byte 0
-
-RomHeaderChecksum:
-	.byte 0
-
-RomHeaderReserved2:
-	.space 2
-
+	.global start_vector
 start_vector:
-	mov r0, #0x12
+	mov r0, #PSR_IRQ_MODE
 	msr cpsr_fc, r0
-	ldr sp, _080000F8 @ =gUnknown_03007FA0
-	mov r0, #0x1f
+	ldr sp, sp_irq
+	mov r0, #PSR_SYS_MODE
 	msr cpsr_fc, r0
-	ldr sp, _080000F4 @ =gUnknown_03007F00
-	ldr r1, _080001C0 @ =INTR_VECTOR
-	add r0, pc, #0x18 @ =IntrMain
+	ldr sp, sp_sys
+	ldr r1, =INTR_VECTOR
+	adr r0, IntrMain
 	str r0, [r1]
-	ldr r1, _080001C4 @ =AgbMain
+	ldr r1, =AgbMain
 	mov lr, pc
 	bx r1
-_080000F0:
-	.byte 0xF2, 0xFF, 0xFF, 0xEA
-_080000F4: .4byte gUnknown_03007F00
-_080000F8: .4byte gUnknown_03007FA0
+	b start_vector
+
+sp_sys: .word IWRAM_END - 0x100
+sp_irq: .word IWRAM_END - 0x60
 
 	arm_func_start IntrMain
 IntrMain: @ 0x080000FC
-	mov r3, #0x4000000
-	add r3, r3, #0x200
+	mov r3, #REG_BASE
+	add r3, r3, #OFFSET_REG_IE
 	ldr r2, [r3]
 	and r1, r2, r2, lsr #16
 	mov r2, #0
-	ands r0, r1, #0x2000
-_08000114:
-	bne _08000114
-	ands r0, r1, #0xc0
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_GAMEPAK
+	bne . @ spin
+	ands r0, r1, #INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #1
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_VBLANK
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #2
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_HBLANK
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #4
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_VCOUNT
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #8
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_TIMER0
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x10
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_TIMER1
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x20
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_TIMER2
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x100
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_DMA0
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x200
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_DMA1
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x400
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_DMA2
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x800
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_DMA3
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x1000
-	bne _080001AC
+	ands r0, r1, #INTR_FLAG_KEYPAD
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x2000
-_080001AC:
+	ands r0, r1, #INTR_FLAG_GAMEPAK
+IntrMain_FoundIntr:
 	strh r0, [r3, #2]
-	ldr r1, _080001C8 @ =gIntrTable
+	ldr r1, =gIntrTable
 	add r1, r1, r2
 	ldr r0, [r1]
 	bx r0
+
 	.align 2, 0
-_080001C0: .4byte INTR_VECTOR
-_080001C4: .4byte AgbMain
-_080001C8: .4byte gIntrTable

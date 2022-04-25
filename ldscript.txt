@@ -22,6 +22,7 @@ SECTIONS
     ROM :
 	ALIGN(4)
 	{
+        build/sa2/asm/rom_header.o(.text);
         build/sa2/asm/crt0.o(.text);
         build/sa2/asm/multi_sio_asm.o(.text);
         build/sa2/src/multi_sio.o(.text);
