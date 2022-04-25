@@ -43,17 +43,17 @@ sub_8063940_CreateProfileScreen: @ 0x08063940
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r1, r0
-	ldr r2, _080639E4 @ =gUnknown_030001FC
+	ldr r2, _080639E4 @ =IWRAM_START + 0x1FC
 	adds r0, r1, r2
 	str r5, [r0]
 	ldr r0, _080639E8 @ =gLoadedSaveGame
 	ldr r0, [r0]
 	ldrb r0, [r0, #6]
 	subs r0, #1
-	ldr r3, _080639EC @ =gUnknown_03000200
+	ldr r3, _080639EC @ =IWRAM_START + 0x200
 	adds r2, r1, r3
 	strb r0, [r2]
-	ldr r0, _080639F0 @ =gUnknown_03000201
+	ldr r0, _080639F0 @ =IWRAM_START + 0x201
 	adds r1, r1, r0
 	movs r3, #1
 	strb r3, [r1]
@@ -79,10 +79,10 @@ _080639BC:
 	bx r0
 	.align 2, 0
 _080639E0: .4byte sub_806B0D8
-_080639E4: .4byte gUnknown_030001FC
+_080639E4: .4byte IWRAM_START + 0x1FC
 _080639E8: .4byte gLoadedSaveGame
-_080639EC: .4byte gUnknown_03000200
-_080639F0: .4byte gUnknown_03000201
+_080639EC: .4byte IWRAM_START + 0x200
+_080639F0: .4byte IWRAM_START + 0x201
 _080639F4: .4byte gUnknown_03005B50
 _080639F8: .4byte 0x06010000
 _080639FC: .4byte gUnknown_03005B54

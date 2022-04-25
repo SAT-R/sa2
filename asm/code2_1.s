@@ -24,14 +24,14 @@ sub_8063A00: @ 0x08063A00
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r5, r3, r0
-	ldr r1, _08063A70 @ =gUnknown_0300014C
+	ldr r1, _08063A70 @ =IWRAM_START + 0x14C
 	adds r0, r3, r1
 	str r6, [r0]
 	ldr r0, _08063A74 @ =gLoadedSaveGame
 	ldr r0, [r0]
 	ldrb r0, [r0, #6]
 	subs r0, #1
-	ldr r1, _08063A78 @ =gUnknown_030003BA
+	ldr r1, _08063A78 @ =IWRAM_START + 0x3BA
 	adds r2, r3, r1
 	strb r0, [r2]
 	movs r1, #1
@@ -39,10 +39,10 @@ sub_8063A00: @ 0x08063A00
 	bne _08063A42
 	movs r1, #2
 _08063A42:
-	ldr r4, _08063A7C @ =gUnknown_030003BB
+	ldr r4, _08063A7C @ =IWRAM_START + 0x3BB
 	adds r0, r3, r4
 	strb r1, [r0]
-	ldr r1, _08063A80 @ =gUnknown_03000252
+	ldr r1, _08063A80 @ =IWRAM_START + 0x252
 	adds r0, r3, r1
 	strb r6, [r0]
 	ldrb r2, [r2]
@@ -52,32 +52,32 @@ _08063A42:
 	adds r0, r3, r4
 	movs r1, #0
 	strh r2, [r0]
-	ldr r4, _08063A84 @ =gUnknown_03000253
+	ldr r4, _08063A84 @ =IWRAM_START + 0x253
 	adds r0, r3, r4
 	strb r1, [r0]
-	ldr r1, _08063A88 @ =gUnknown_03000250
+	ldr r1, _08063A88 @ =IWRAM_START + 0x250
 	adds r0, r3, r1
 	strh r2, [r0]
 	b _08063AA2
 	.align 2, 0
 _08063A6C: .4byte sub_806B354
-_08063A70: .4byte gUnknown_0300014C
+_08063A70: .4byte IWRAM_START + 0x14C
 _08063A74: .4byte gLoadedSaveGame
-_08063A78: .4byte gUnknown_030003BA
-_08063A7C: .4byte gUnknown_030003BB
-_08063A80: .4byte gUnknown_03000252
-_08063A84: .4byte gUnknown_03000253
-_08063A88: .4byte gUnknown_03000250
+_08063A78: .4byte IWRAM_START + 0x3BA
+_08063A7C: .4byte IWRAM_START + 0x3BB
+_08063A80: .4byte IWRAM_START + 0x252
+_08063A84: .4byte IWRAM_START + 0x253
+_08063A88: .4byte IWRAM_START + 0x250
 _08063A8C:
-	ldr r2, _08063B14 @ =gUnknown_030003B8
+	ldr r2, _08063B14 @ =IWRAM_START + 0x3B8
 	adds r0, r3, r2
 	movs r2, #0
 	movs r1, #0x63
 	strh r1, [r0]
-	ldr r4, _08063B18 @ =gUnknown_03000253
+	ldr r4, _08063B18 @ =IWRAM_START + 0x253
 	adds r0, r3, r4
 	strb r2, [r0]
-	ldr r2, _08063B1C @ =gUnknown_03000250
+	ldr r2, _08063B1C @ =IWRAM_START + 0x250
 	adds r0, r3, r2
 	strh r1, [r0]
 _08063AA2:
@@ -135,9 +135,9 @@ _08063AC0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08063B14: .4byte gUnknown_030003B8
-_08063B18: .4byte gUnknown_03000253
-_08063B1C: .4byte gUnknown_03000250
+_08063B14: .4byte IWRAM_START + 0x3B8
+_08063B18: .4byte IWRAM_START + 0x253
+_08063B1C: .4byte IWRAM_START + 0x250
 _08063B20: .4byte 0x000003BA
 _08063B24: .4byte gUnknown_03005B50
 _08063B28: .4byte gUnknown_03005B54
@@ -1162,7 +1162,7 @@ sub_8064304: @ 0x08064304
 	adds r0, r0, r3
 	movs r2, #0
 	ldrsb r2, [r0, r2]
-	ldr r4, _0806449C @ =gUnknown_03000360
+	ldr r4, _0806449C @ =IWRAM_START + 0x360
 	adds r0, r5, r4
 	movs r7, #0
 	strh r2, [r0]
@@ -1344,7 +1344,7 @@ _08064482:
 _08064490: .4byte gCurTask
 _08064494: .4byte gUnknown_03000783
 _08064498: .4byte gUnknown_080D9540
-_0806449C: .4byte gUnknown_03000360
+_0806449C: .4byte IWRAM_START + 0x360
 _080644A0: .4byte gUnknown_03000780
 _080644A4: .4byte 0x00000414
 _080644A8: .4byte gBgScrollRegs
@@ -1374,7 +1374,7 @@ sub_80644C4: @ 0x080644C4
 	lsls r1, r1, #1
 	adds r1, r1, r2
 	ldrh r2, [r1]
-	ldr r3, _080645BC @ =gUnknown_03000360
+	ldr r3, _080645BC @ =IWRAM_START + 0x360
 	adds r0, r5, r3
 	movs r7, #0
 	strh r2, [r0]
@@ -1481,7 +1481,7 @@ _080645A6:
 _080645B0: .4byte gCurTask
 _080645B4: .4byte gUnknown_080D9550
 _080645B8: .4byte gUnknown_03000783
-_080645BC: .4byte gUnknown_03000360
+_080645BC: .4byte IWRAM_START + 0x360
 _080645C0: .4byte gUnknown_03000780
 _080645C4: .4byte 0x00000414
 _080645C8: .4byte gBgScrollRegs
@@ -1510,7 +1510,7 @@ sub_80645E0: @ 0x080645E0
 	lsls r1, r1, #1
 	adds r1, r1, r2
 	ldrh r2, [r1]
-	ldr r3, _080646D8 @ =gUnknown_03000360
+	ldr r3, _080646D8 @ =IWRAM_START + 0x360
 	adds r0, r5, r3
 	movs r7, #0
 	strh r2, [r0]
@@ -1616,7 +1616,7 @@ _080646C0:
 _080646CC: .4byte gCurTask
 _080646D0: .4byte gUnknown_080D9570
 _080646D4: .4byte gUnknown_03000783
-_080646D8: .4byte gUnknown_03000360
+_080646D8: .4byte IWRAM_START + 0x360
 _080646DC: .4byte gUnknown_03000780
 _080646E0: .4byte 0x00000414
 _080646E4: .4byte gBgScrollRegs
@@ -1658,7 +1658,7 @@ sub_80646FC: @ 0x080646FC
 	mov r0, sb
 	movs r1, #0
 	bl sub_8063D20
-	ldr r1, _080647BC @ =gUnknown_03000364
+	ldr r1, _080647BC @ =IWRAM_START + 0x364
 	adds r0, r7, r1
 	movs r1, #0x1e
 	mov r8, r1
@@ -1673,7 +1673,7 @@ sub_80646FC: @ 0x080646FC
 	movs r2, #7
 	movs r3, #0x85
 	bl sub_806B854
-	ldr r1, _080647C0 @ =gUnknown_030003A4
+	ldr r1, _080647C0 @ =IWRAM_START + 0x3A4
 	adds r0, r7, r1
 	mov r1, r8
 	str r1, [sp]
@@ -1717,8 +1717,8 @@ _080647AC: .4byte gUnknown_03000774
 _080647B0: .4byte gUnknown_03005B50
 _080647B4: .4byte 0x06010000
 _080647B8: .4byte gUnknown_03005B54
-_080647BC: .4byte gUnknown_03000364
-_080647C0: .4byte gUnknown_030003A4
+_080647BC: .4byte IWRAM_START + 0x364
+_080647C0: .4byte IWRAM_START + 0x3A4
 _080647C4: .4byte sub_806A968
 
 	thumb_func_start sub_80647C8
@@ -1753,7 +1753,7 @@ sub_80647C8: @ 0x080647C8
 	mov r0, sb
 	movs r1, #0
 	bl sub_8063D20
-	ldr r1, _08064890 @ =gUnknown_03000364
+	ldr r1, _08064890 @ =IWRAM_START + 0x364
 	adds r0, r7, r1
 	movs r1, #0x1e
 	mov r8, r1
@@ -1768,7 +1768,7 @@ sub_80647C8: @ 0x080647C8
 	movs r2, #7
 	movs r3, #0x85
 	bl sub_806B854
-	ldr r1, _08064894 @ =gUnknown_030003A4
+	ldr r1, _08064894 @ =IWRAM_START + 0x3A4
 	adds r0, r7, r1
 	mov r1, r8
 	str r1, [sp]
@@ -1814,8 +1814,8 @@ _08064880: .4byte gUnknown_03000774
 _08064884: .4byte gUnknown_03005B50
 _08064888: .4byte 0x06010000
 _0806488C: .4byte gUnknown_03005B54
-_08064890: .4byte gUnknown_03000364
-_08064894: .4byte gUnknown_030003A4
+_08064890: .4byte IWRAM_START + 0x364
+_08064894: .4byte IWRAM_START + 0x3A4
 _08064898: .4byte sub_806AA18
 
 	thumb_func_start sub_806489C
@@ -1835,7 +1835,7 @@ sub_806489C: @ 0x0806489C
 	mov r8, r0
 	ldr r0, _08064980 @ =gUnknown_03000774
 	adds r5, r7, r0
-	ldr r1, _08064984 @ =gUnknown_0300035B
+	ldr r1, _08064984 @ =IWRAM_START + 0x35B
 	adds r4, r7, r1
 	ldrb r0, [r4]
 	mov sl, r0
@@ -1865,7 +1865,7 @@ _080648EC:
 	mov r0, r8
 	movs r1, #0
 	bl sub_8063D20
-	ldr r1, _08064998 @ =gUnknown_03000364
+	ldr r1, _08064998 @ =IWRAM_START + 0x364
 	adds r0, r7, r1
 	movs r1, #0x1e
 	mov sl, r1
@@ -1880,7 +1880,7 @@ _080648EC:
 	movs r2, #7
 	movs r3, #0x85
 	bl sub_806B854
-	ldr r1, _0806499C @ =gUnknown_030003A4
+	ldr r1, _0806499C @ =IWRAM_START + 0x3A4
 	adds r0, r7, r1
 	mov r1, sl
 	str r1, [sp]
@@ -1932,13 +1932,13 @@ _0806496C:
 	.align 2, 0
 _0806497C: .4byte gCurTask
 _08064980: .4byte gUnknown_03000774
-_08064984: .4byte gUnknown_0300035B
+_08064984: .4byte IWRAM_START + 0x35B
 _08064988: .4byte gUnknown_03000784
 _0806498C: .4byte gUnknown_03005B50
 _08064990: .4byte 0x06010000
 _08064994: .4byte gUnknown_03005B54
-_08064998: .4byte gUnknown_03000364
-_0806499C: .4byte gUnknown_030003A4
+_08064998: .4byte IWRAM_START + 0x364
+_0806499C: .4byte IWRAM_START + 0x3A4
 _080649A0: .4byte sub_806AAC8
 
 	thumb_func_start sub_80649A4
@@ -1954,7 +1954,7 @@ sub_80649A4: @ 0x080649A4
 	lsls r0, r0, #0x12
 	adds r0, r0, r1
 	mov sb, r0
-	ldr r2, _08064A38 @ =gUnknown_030003E4
+	ldr r2, _08064A38 @ =IWRAM_START + 0x3E4
 	adds r0, r1, r2
 	adds r2, #0x30
 	adds r7, r1, r2
@@ -2017,7 +2017,7 @@ _08064A0E:
 	bx r0
 	.align 2, 0
 _08064A34: .4byte gCurTask
-_08064A38: .4byte gUnknown_030003E4
+_08064A38: .4byte IWRAM_START + 0x3E4
 _08064A3C: .4byte gUnknown_03000594
 
 	thumb_func_start sub_8064A40
@@ -2285,9 +2285,9 @@ sub_8064C44: @ 0x08064C44
 	adds r3, r6, #0
 	adds r1, #0x60
 	adds r4, r0, r1
-	ldr r2, _08064CDC @ =gUnknown_03000120
+	ldr r2, _08064CDC @ =IWRAM_START + 0x120
 	adds r7, r0, r2
-	ldr r5, _08064CE0 @ =gUnknown_0300015C
+	ldr r5, _08064CE0 @ =IWRAM_START + 0x15C
 	adds r0, r0, r5
 	ldr r0, [r0]
 	movs r1, #0xd8
@@ -2353,8 +2353,8 @@ _08064CD2:
 	bx r0
 	.align 2, 0
 _08064CD8: .4byte gCurTask
-_08064CDC: .4byte gUnknown_03000120
-_08064CE0: .4byte gUnknown_0300015C
+_08064CDC: .4byte IWRAM_START + 0x120
+_08064CE0: .4byte IWRAM_START + 0x15C
 _08064CE4: .4byte 0x00000161
 _08064CE8: .4byte sub_8064CEC
 
@@ -2372,10 +2372,10 @@ sub_8064CEC: @ 0x08064CEC
 	adds r7, r4, r0
 	adds r0, #0x60
 	adds r5, r4, r0
-	ldr r1, _08064D4C @ =gUnknown_03000120
+	ldr r1, _08064D4C @ =IWRAM_START + 0x120
 	adds r1, r1, r4
 	mov r8, r1
-	ldr r1, _08064D50 @ =gUnknown_0300015C
+	ldr r1, _08064D50 @ =IWRAM_START + 0x15C
 	adds r0, r4, r1
 	ldr r0, [r0]
 	mov sb, r0
@@ -2394,7 +2394,7 @@ sub_8064CEC: @ 0x08064CEC
 	lsrs r3, r0, #0x10
 	cmp r3, #0
 	beq _08064D62
-	ldr r0, _08064D58 @ =gUnknown_03000160
+	ldr r0, _08064D58 @ =IWRAM_START + 0x160
 	adds r1, r4, r0
 	ldrb r2, [r1]
 	movs r0, #0
@@ -2406,10 +2406,10 @@ sub_8064CEC: @ 0x08064CEC
 	b _08064D86
 	.align 2, 0
 _08064D48: .4byte gCurTask
-_08064D4C: .4byte gUnknown_03000120
-_08064D50: .4byte gUnknown_0300015C
+_08064D4C: .4byte IWRAM_START + 0x120
+_08064D50: .4byte IWRAM_START + 0x15C
 _08064D54: .4byte gUnknown_030022B8
-_08064D58: .4byte gUnknown_03000160
+_08064D58: .4byte IWRAM_START + 0x160
 _08064D5C:
 	movs r0, #3
 	strb r0, [r1]
@@ -2419,7 +2419,7 @@ _08064D62:
 	ands r0, r1
 	cmp r0, #0
 	beq _08064D86
-	ldr r0, _08064D80 @ =gUnknown_03000160
+	ldr r0, _08064D80 @ =IWRAM_START + 0x160
 	adds r1, r4, r0
 	ldrb r2, [r1]
 	movs r0, #0
@@ -2430,7 +2430,7 @@ _08064D62:
 	strb r0, [r1]
 	b _08064D86
 	.align 2, 0
-_08064D80: .4byte gUnknown_03000160
+_08064D80: .4byte IWRAM_START + 0x160
 _08064D84:
 	strb r3, [r1]
 _08064D86:
@@ -2564,10 +2564,10 @@ sub_8064E6C: @ 0x08064E6C
 	adds r4, r6, #0
 	adds r1, #0x60
 	adds r5, r0, r1
-	ldr r3, _08064EFC @ =gUnknown_03000120
+	ldr r3, _08064EFC @ =IWRAM_START + 0x120
 	adds r3, r3, r0
 	mov r8, r3
-	ldr r7, _08064F00 @ =gUnknown_0300015C
+	ldr r7, _08064F00 @ =IWRAM_START + 0x15C
 	adds r0, r0, r7
 	ldr r0, [r0]
 	movs r1, #0xd8
@@ -2625,8 +2625,8 @@ _08064EC4:
 	b _08064F10
 	.align 2, 0
 _08064EF8: .4byte gCurTask
-_08064EFC: .4byte gUnknown_03000120
-_08064F00: .4byte gUnknown_0300015C
+_08064EFC: .4byte IWRAM_START + 0x120
+_08064F00: .4byte IWRAM_START + 0x15C
 _08064F04: .4byte 0x00000161
 _08064F08:
 	mov r1, ip
@@ -2656,7 +2656,7 @@ sub_8064F1C: @ 0x08064F1C
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
 	mov sb, r0
-	ldr r1, _08064FE8 @ =gUnknown_03000150
+	ldr r1, _08064FE8 @ =IWRAM_START + 0x150
 	adds r5, r6, r1
 	adds r1, #0x13
 	adds r0, r6, r1
@@ -2669,7 +2669,7 @@ sub_8064F1C: @ 0x08064F1C
 	str r0, [r1]
 	ldr r0, _08064FF4 @ =gUnknown_03005B54
 	str r7, [r0]
-	ldr r0, _08064FF8 @ =gUnknown_0300015C
+	ldr r0, _08064FF8 @ =IWRAM_START + 0x15C
 	adds r6, r6, r0
 	ldr r0, [r6]
 	movs r1, #1
@@ -2740,11 +2740,11 @@ _08064FD4:
 	bx r0
 	.align 2, 0
 _08064FE4: .4byte gCurTask
-_08064FE8: .4byte gUnknown_03000150
+_08064FE8: .4byte IWRAM_START + 0x150
 _08064FEC: .4byte gUnknown_03005B50
 _08064FF0: .4byte 0x06010000
 _08064FF4: .4byte gUnknown_03005B54
-_08064FF8: .4byte gUnknown_0300015C
+_08064FF8: .4byte IWRAM_START + 0x15C
 _08064FFC: .4byte 0x00000784
 _08065000: .4byte sub_806AB90
 
@@ -2757,7 +2757,7 @@ sub_8065004: @ 0x08065004
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	ldr r0, _08065044 @ =gUnknown_03000150
+	ldr r0, _08065044 @ =IWRAM_START + 0x150
 	adds r4, r5, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -2765,7 +2765,7 @@ sub_8065004: @ 0x08065004
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _08065076
-	ldr r1, _08065048 @ =gUnknown_0300015C
+	ldr r1, _08065048 @ =IWRAM_START + 0x15C
 	adds r0, r5, r1
 	ldr r0, [r0]
 	ldr r1, _0806504C @ =0x0000035D
@@ -2778,8 +2778,8 @@ sub_8065004: @ 0x08065004
 	b _08065056
 	.align 2, 0
 _08065040: .4byte gCurTask
-_08065044: .4byte gUnknown_03000150
-_08065048: .4byte gUnknown_0300015C
+_08065044: .4byte IWRAM_START + 0x150
+_08065048: .4byte IWRAM_START + 0x15C
 _0806504C: .4byte 0x0000035D
 _08065050:
 	adds r0, r6, #0
@@ -2827,7 +2827,7 @@ sub_806508C: @ 0x0806508C
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
 	mov sb, r0
-	ldr r1, _08065158 @ =gUnknown_03000150
+	ldr r1, _08065158 @ =IWRAM_START + 0x150
 	adds r5, r6, r1
 	adds r1, #0x13
 	adds r0, r6, r1
@@ -2840,7 +2840,7 @@ sub_806508C: @ 0x0806508C
 	str r0, [r1]
 	ldr r0, _08065164 @ =gUnknown_03005B54
 	str r7, [r0]
-	ldr r0, _08065168 @ =gUnknown_0300015C
+	ldr r0, _08065168 @ =IWRAM_START + 0x15C
 	adds r6, r6, r0
 	ldr r0, [r6]
 	movs r1, #1
@@ -2911,11 +2911,11 @@ _08065144:
 	bx r0
 	.align 2, 0
 _08065154: .4byte gCurTask
-_08065158: .4byte gUnknown_03000150
+_08065158: .4byte IWRAM_START + 0x150
 _0806515C: .4byte gUnknown_03005B50
 _08065160: .4byte 0x06010000
 _08065164: .4byte gUnknown_03005B54
-_08065168: .4byte gUnknown_0300015C
+_08065168: .4byte IWRAM_START + 0x15C
 _0806516C: .4byte 0x00000784
 _08065170: .4byte sub_806ABF4
 
@@ -2935,7 +2935,7 @@ sub_8065174: @ 0x08065174
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
 	mov sb, r0
-	ldr r1, _08065240 @ =gUnknown_03000150
+	ldr r1, _08065240 @ =IWRAM_START + 0x150
 	adds r5, r6, r1
 	adds r1, #0x13
 	adds r0, r6, r1
@@ -2948,7 +2948,7 @@ sub_8065174: @ 0x08065174
 	str r0, [r1]
 	ldr r0, _0806524C @ =gUnknown_03005B54
 	str r7, [r0]
-	ldr r0, _08065250 @ =gUnknown_0300015C
+	ldr r0, _08065250 @ =IWRAM_START + 0x15C
 	adds r6, r6, r0
 	ldr r0, [r6]
 	movs r1, #1
@@ -3019,11 +3019,11 @@ _0806522C:
 	bx r0
 	.align 2, 0
 _0806523C: .4byte gCurTask
-_08065240: .4byte gUnknown_03000150
+_08065240: .4byte IWRAM_START + 0x150
 _08065244: .4byte gUnknown_03005B50
 _08065248: .4byte 0x06010000
 _0806524C: .4byte gUnknown_03005B54
-_08065250: .4byte gUnknown_0300015C
+_08065250: .4byte IWRAM_START + 0x15C
 _08065254: .4byte 0x00000784
 _08065258: .4byte sub_806ACBC
 
@@ -3230,9 +3230,9 @@ sub_80653E4: @ 0x080653E4
 	adds r5, r0, r1
 	adds r1, #4
 	adds r3, r0, r1
-	ldr r2, _08065480 @ =gUnknown_03000064
+	ldr r2, _08065480 @ =IWRAM_START + 0x64
 	adds r4, r0, r2
-	ldr r6, _08065484 @ =gUnknown_030000C4
+	ldr r6, _08065484 @ =IWRAM_START + 0xC4
 	adds r7, r0, r6
 	ldr r0, [r5]
 	movs r1, #0xd8
@@ -3300,8 +3300,8 @@ _08065476:
 	bx r0
 	.align 2, 0
 _0806547C: .4byte gCurTask
-_08065480: .4byte gUnknown_03000064
-_08065484: .4byte gUnknown_030000C4
+_08065480: .4byte IWRAM_START + 0x64
+_08065484: .4byte IWRAM_START + 0xC4
 _08065488: .4byte sub_806548C
 
 	thumb_func_start sub_806548C
@@ -3318,9 +3318,9 @@ sub_806548C: @ 0x0806548C
 	lsls r0, r0, #0x12
 	adds r0, r0, r4
 	mov r8, r0
-	ldr r0, _08065598 @ =gUnknown_03000064
+	ldr r0, _08065598 @ =IWRAM_START + 0x64
 	adds r6, r4, r0
-	ldr r1, _0806559C @ =gUnknown_030000C4
+	ldr r1, _0806559C @ =IWRAM_START + 0xC4
 	adds r1, r1, r4
 	mov sb, r1
 	mov r2, r8
@@ -3329,7 +3329,7 @@ sub_806548C: @ 0x0806548C
 	lsls r3, r3, #2
 	adds r0, r7, r3
 	ldrh r5, [r0]
-	ldr r1, _080655A0 @ =gUnknown_030000F6
+	ldr r1, _080655A0 @ =IWRAM_START + 0xF6
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -3346,7 +3346,7 @@ sub_806548C: @ 0x0806548C
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	movs r2, #0
-	ldr r3, _080655A8 @ =gUnknown_030000F4
+	ldr r3, _080655A8 @ =IWRAM_START + 0xF4
 	adds r1, r4, r3
 	movs r0, #0
 	ldrsb r0, [r1, r0]
@@ -3356,7 +3356,7 @@ sub_806548C: @ 0x0806548C
 _080654EC:
 	strb r2, [r1]
 	movs r0, #0
-	ldr r1, _080655A8 @ =gUnknown_030000F4
+	ldr r1, _080655A8 @ =IWRAM_START + 0xF4
 	adds r4, r4, r1
 	lsls r5, r5, #0x10
 	adds r3, r4, #0
@@ -3438,11 +3438,11 @@ _08065534:
 	b _080655D6
 	.align 2, 0
 _08065594: .4byte gCurTask
-_08065598: .4byte gUnknown_03000064
-_0806559C: .4byte gUnknown_030000C4
-_080655A0: .4byte gUnknown_030000F6
+_08065598: .4byte IWRAM_START + 0x64
+_0806559C: .4byte IWRAM_START + 0xC4
+_080655A0: .4byte IWRAM_START + 0xF6
 _080655A4: .4byte gUnknown_030022B8
-_080655A8: .4byte gUnknown_030000F4
+_080655A8: .4byte IWRAM_START + 0xF4
 _080655AC: .4byte gPressedKeys
 _080655B0: .4byte gUnknown_080D9798
 _080655B4: .4byte 0x000005C4
@@ -3490,9 +3490,9 @@ sub_80655FC: @ 0x080655FC
 	adds r6, r0, r1
 	adds r1, #4
 	adds r3, r0, r1
-	ldr r4, _08065694 @ =gUnknown_03000064
+	ldr r4, _08065694 @ =IWRAM_START + 0x64
 	adds r5, r0, r4
-	ldr r7, _08065698 @ =gUnknown_030000C4
+	ldr r7, _08065698 @ =IWRAM_START + 0xC4
 	adds r7, r7, r0
 	mov r8, r7
 	ldr r0, [r6]
@@ -3554,8 +3554,8 @@ _08065634:
 	b _080656A4
 	.align 2, 0
 _08065690: .4byte gCurTask
-_08065694: .4byte gUnknown_03000064
-_08065698: .4byte gUnknown_030000C4
+_08065694: .4byte IWRAM_START + 0x64
+_08065698: .4byte IWRAM_START + 0xC4
 _0806569C:
 	mov r1, ip
 	ldr r0, [r1]
@@ -3771,9 +3771,9 @@ sub_8065838: @ 0x08065838
 	adds r5, r0, r1
 	adds r1, #4
 	adds r3, r0, r1
-	ldr r2, _080658D4 @ =gUnknown_03000064
+	ldr r2, _080658D4 @ =IWRAM_START + 0x64
 	adds r4, r0, r2
-	ldr r6, _080658D8 @ =gUnknown_030000C4
+	ldr r6, _080658D8 @ =IWRAM_START + 0xC4
 	adds r7, r0, r6
 	ldr r0, [r5]
 	movs r1, #0xd8
@@ -3841,8 +3841,8 @@ _080658CA:
 	bx r0
 	.align 2, 0
 _080658D0: .4byte gCurTask
-_080658D4: .4byte gUnknown_03000064
-_080658D8: .4byte gUnknown_030000C4
+_080658D4: .4byte IWRAM_START + 0x64
+_080658D8: .4byte IWRAM_START + 0xC4
 _080658DC: .4byte sub_80658E0
 
 	thumb_func_start sub_80658E0
@@ -3859,9 +3859,9 @@ sub_80658E0: @ 0x080658E0
 	lsls r0, r0, #0x12
 	adds r0, r0, r4
 	mov r8, r0
-	ldr r0, _080659EC @ =gUnknown_03000064
+	ldr r0, _080659EC @ =IWRAM_START + 0x64
 	adds r6, r4, r0
-	ldr r1, _080659F0 @ =gUnknown_030000C4
+	ldr r1, _080659F0 @ =IWRAM_START + 0xC4
 	adds r1, r1, r4
 	mov sb, r1
 	mov r2, r8
@@ -3870,7 +3870,7 @@ sub_80658E0: @ 0x080658E0
 	lsls r3, r3, #2
 	adds r0, r7, r3
 	ldrh r5, [r0]
-	ldr r1, _080659F4 @ =gUnknown_030000F6
+	ldr r1, _080659F4 @ =IWRAM_START + 0xF6
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -3887,7 +3887,7 @@ sub_80658E0: @ 0x080658E0
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	movs r2, #0
-	ldr r3, _080659FC @ =gUnknown_030000F4
+	ldr r3, _080659FC @ =IWRAM_START + 0xF4
 	adds r1, r4, r3
 	movs r0, #0
 	ldrsb r0, [r1, r0]
@@ -3897,7 +3897,7 @@ sub_80658E0: @ 0x080658E0
 _08065940:
 	strb r2, [r1]
 	movs r0, #0
-	ldr r1, _080659FC @ =gUnknown_030000F4
+	ldr r1, _080659FC @ =IWRAM_START + 0xF4
 	adds r4, r4, r1
 	lsls r5, r5, #0x10
 	adds r3, r4, #0
@@ -3979,11 +3979,11 @@ _08065988:
 	b _08065A2A
 	.align 2, 0
 _080659E8: .4byte gCurTask
-_080659EC: .4byte gUnknown_03000064
-_080659F0: .4byte gUnknown_030000C4
-_080659F4: .4byte gUnknown_030000F6
+_080659EC: .4byte IWRAM_START + 0x64
+_080659F0: .4byte IWRAM_START + 0xC4
+_080659F4: .4byte IWRAM_START + 0xF6
 _080659F8: .4byte gUnknown_030022B8
-_080659FC: .4byte gUnknown_030000F4
+_080659FC: .4byte IWRAM_START + 0xF4
 _08065A00: .4byte gPressedKeys
 _08065A04: .4byte gUnknown_080D97F8
 _08065A08: .4byte 0x000005F4
@@ -4031,9 +4031,9 @@ sub_8065A50: @ 0x08065A50
 	adds r6, r0, r1
 	adds r1, #4
 	adds r3, r0, r1
-	ldr r4, _08065AE8 @ =gUnknown_03000064
+	ldr r4, _08065AE8 @ =IWRAM_START + 0x64
 	adds r5, r0, r4
-	ldr r7, _08065AEC @ =gUnknown_030000C4
+	ldr r7, _08065AEC @ =IWRAM_START + 0xC4
 	adds r7, r7, r0
 	mov r8, r7
 	ldr r0, [r6]
@@ -4095,8 +4095,8 @@ _08065A88:
 	b _08065AF8
 	.align 2, 0
 _08065AE4: .4byte gCurTask
-_08065AE8: .4byte gUnknown_03000064
-_08065AEC: .4byte gUnknown_030000C4
+_08065AE8: .4byte IWRAM_START + 0x64
+_08065AEC: .4byte IWRAM_START + 0xC4
 _08065AF0:
 	mov r1, ip
 	ldr r0, [r1]
@@ -4148,17 +4148,17 @@ _08065B44:
 	beq _08065B60
 	b _08065B66
 _08065B4E:
-	ldr r1, _08065B54 @ =gUnknown_03000244
+	ldr r1, _08065B54 @ =IWRAM_START + 0x244
 	b _08065B62
 	.align 2, 0
-_08065B54: .4byte gUnknown_03000244
+_08065B54: .4byte IWRAM_START + 0x244
 _08065B58:
-	ldr r1, _08065B5C @ =gUnknown_03000245
+	ldr r1, _08065B5C @ =IWRAM_START + 0x245
 	b _08065B62
 	.align 2, 0
-_08065B5C: .4byte gUnknown_03000245
+_08065B5C: .4byte IWRAM_START + 0x245
 _08065B60:
-	ldr r1, _08065B7C @ =gUnknown_03000246
+	ldr r1, _08065B7C @ =IWRAM_START + 0x246
 _08065B62:
 	adds r0, r2, r1
 	strb r4, [r0]
@@ -4174,7 +4174,7 @@ _08065B66:
 	beq _08065B8E
 	b _08065BAC
 	.align 2, 0
-_08065B7C: .4byte gUnknown_03000246
+_08065B7C: .4byte IWRAM_START + 0x246
 _08065B80: .4byte 0x00000352
 _08065B84:
 	movs r0, #0x80
@@ -4628,12 +4628,12 @@ sub_8065F04: @ 0x08065F04
 	mov r8, r1
 	ldr r1, _08065FEC @ =IWRAM_START+4
 	adds r3, r0, r1
-	ldr r2, _08065FF0 @ =gUnknown_03000124
+	ldr r2, _08065FF0 @ =IWRAM_START + 0x124
 	adds r5, r0, r2
-	ldr r4, _08065FF4 @ =gUnknown_030001B4
+	ldr r4, _08065FF4 @ =IWRAM_START + 0x1B4
 	adds r4, r4, r0
 	mov ip, r4
-	ldr r1, _08065FF8 @ =gUnknown_03000214
+	ldr r1, _08065FF8 @ =IWRAM_START + 0x214
 	adds r1, r1, r0
 	mov sb, r1
 	mov r2, r8
@@ -4735,9 +4735,9 @@ _08065FDA:
 	.align 2, 0
 _08065FE8: .4byte gCurTask
 _08065FEC: .4byte IWRAM_START+4
-_08065FF0: .4byte gUnknown_03000124
-_08065FF4: .4byte gUnknown_030001B4
-_08065FF8: .4byte gUnknown_03000214
+_08065FF0: .4byte IWRAM_START + 0x124
+_08065FF4: .4byte IWRAM_START + 0x1B4
+_08065FF8: .4byte IWRAM_START + 0x214
 _08065FFC: .4byte 0x00000143
 _08066000: .4byte sub_8066004
 
@@ -4754,9 +4754,9 @@ sub_8066004: @ 0x08066004
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r4, r0
-	ldr r1, _0806606C @ =gUnknown_03000124
+	ldr r1, _0806606C @ =IWRAM_START + 0x124
 	adds r5, r4, r1
-	ldr r2, _08066070 @ =gUnknown_03000249
+	ldr r2, _08066070 @ =IWRAM_START + 0x249
 	adds r0, r4, r2
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -4782,7 +4782,7 @@ sub_8066004: @ 0x08066004
 	lsrs r2, r0, #0x10
 	cmp r2, #0
 	beq _08066086
-	ldr r3, _0806607C @ =gUnknown_03000244
+	ldr r3, _0806607C @ =IWRAM_START + 0x244
 	adds r1, r4, r3
 	ldrb r0, [r1]
 	cmp r0, #0
@@ -4792,17 +4792,17 @@ sub_8066004: @ 0x08066004
 	b _0806609E
 	.align 2, 0
 _08066068: .4byte gCurTask
-_0806606C: .4byte gUnknown_03000124
-_08066070: .4byte gUnknown_03000249
+_0806606C: .4byte IWRAM_START + 0x124
+_08066070: .4byte IWRAM_START + 0x249
 _08066074: .4byte gUnknown_080D99F0
 _08066078: .4byte gUnknown_030022B8
-_0806607C: .4byte gUnknown_03000244
+_0806607C: .4byte IWRAM_START + 0x244
 _08066080:
 	movs r0, #2
 	strb r0, [r1]
 	b _0806609E
 _08066086:
-	ldr r0, _08066098 @ =gUnknown_03000244
+	ldr r0, _08066098 @ =IWRAM_START + 0x244
 	adds r1, r4, r0
 	ldrb r0, [r1]
 	cmp r0, #1
@@ -4811,7 +4811,7 @@ _08066086:
 	strb r0, [r1]
 	b _0806609E
 	.align 2, 0
-_08066098: .4byte gUnknown_03000244
+_08066098: .4byte IWRAM_START + 0x244
 _0806609C:
 	strb r2, [r1]
 _0806609E:
@@ -4839,9 +4839,9 @@ _080660BE:
 	bne _080660CC
 	b _080661CC
 _080660CC:
-	ldr r3, _080660F4 @ =gUnknown_03000244
+	ldr r3, _080660F4 @ =IWRAM_START + 0x244
 	adds r2, r4, r3
-	ldr r5, _080660F8 @ =gUnknown_03000245
+	ldr r5, _080660F8 @ =IWRAM_START + 0x245
 	adds r1, r4, r5
 	ldrb r0, [r2]
 	ldrb r3, [r1]
@@ -4860,8 +4860,8 @@ _080660E4:
 	b _080660FE
 	.align 2, 0
 _080660F0: .4byte gPressedKeys
-_080660F4: .4byte gUnknown_03000244
-_080660F8: .4byte gUnknown_03000245
+_080660F4: .4byte IWRAM_START + 0x244
+_080660F8: .4byte IWRAM_START + 0x245
 _080660FC:
 	strb r4, [r1]
 _080660FE:
@@ -4971,7 +4971,7 @@ _080661CC:
 	beq _08066200
 	movs r0, #0x6b
 	bl m4aSongNumStart
-	ldr r1, _080661F4 @ =gUnknown_03000248
+	ldr r1, _080661F4 @ =IWRAM_START + 0x248
 	adds r0, r4, r1
 	strb r5, [r0]
 	ldr r0, [r6]
@@ -4984,7 +4984,7 @@ _080661CC:
 	str r0, [r1, #8]
 	b _08066212
 	.align 2, 0
-_080661F4: .4byte gUnknown_03000248
+_080661F4: .4byte IWRAM_START + 0x248
 _080661F8: .4byte 0x00000784
 _080661FC: .4byte sub_8066718
 _08066200:
@@ -5015,7 +5015,7 @@ sub_8066220: @ 0x08066220
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r4, r0
-	ldr r1, _08066284 @ =gUnknown_03000249
+	ldr r1, _08066284 @ =IWRAM_START + 0x249
 	adds r0, r4, r1
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -5037,13 +5037,13 @@ sub_8066220: @ 0x08066220
 	ldrh r1, [r5]
 	movs r0, #0x20
 	ands r0, r1
-	ldr r2, _08066290 @ =gUnknown_03000174
+	ldr r2, _08066290 @ =IWRAM_START + 0x174
 	adds r7, r4, r2
 	cmp r0, #0
 	beq _080662A8
-	ldr r5, _08066294 @ =gUnknown_03000245
+	ldr r5, _08066294 @ =IWRAM_START + 0x245
 	adds r1, r4, r5
-	ldr r0, _08066298 @ =gUnknown_03000244
+	ldr r0, _08066298 @ =IWRAM_START + 0x244
 	adds r2, r4, r0
 	movs r3, #2
 _08066274:
@@ -5055,12 +5055,12 @@ _08066274:
 	b _0806629E
 	.align 2, 0
 _08066280: .4byte gCurTask
-_08066284: .4byte gUnknown_03000249
+_08066284: .4byte IWRAM_START + 0x249
 _08066288: .4byte gUnknown_080D99F0
 _0806628C: .4byte gUnknown_030022B8
-_08066290: .4byte gUnknown_03000174
-_08066294: .4byte gUnknown_03000245
-_08066298: .4byte gUnknown_03000244
+_08066290: .4byte IWRAM_START + 0x174
+_08066294: .4byte IWRAM_START + 0x245
+_08066298: .4byte IWRAM_START + 0x244
 _0806629C:
 	strb r3, [r1]
 _0806629E:
@@ -5072,11 +5072,11 @@ _0806629E:
 _080662A8:
 	movs r0, #0x10
 	ands r0, r1
-	ldr r5, _080662CC @ =gUnknown_03000174
+	ldr r5, _080662CC @ =IWRAM_START + 0x174
 	adds r7, r4, r5
 	cmp r0, #0
 	beq _080662DE
-	ldr r0, _080662D0 @ =gUnknown_03000245
+	ldr r0, _080662D0 @ =IWRAM_START + 0x245
 	adds r1, r4, r0
 	adds r5, #0xd0
 	adds r2, r4, r5
@@ -5089,8 +5089,8 @@ _080662BE:
 	strb r0, [r1]
 	b _080662D6
 	.align 2, 0
-_080662CC: .4byte gUnknown_03000174
-_080662D0: .4byte gUnknown_03000245
+_080662CC: .4byte IWRAM_START + 0x174
+_080662D0: .4byte IWRAM_START + 0x245
 _080662D4:
 	strb r3, [r1]
 _080662D6:
@@ -5123,9 +5123,9 @@ _08066304:
 	ands r0, r1
 	cmp r0, #0
 	beq _080663B4
-	ldr r2, _08066348 @ =gUnknown_03000244
+	ldr r2, _08066348 @ =IWRAM_START + 0x244
 	adds r3, r4, r2
-	ldr r5, _0806634C @ =gUnknown_03000246
+	ldr r5, _0806634C @ =IWRAM_START + 0x246
 	adds r2, r4, r5
 	ldrb r0, [r3]
 	ldrb r1, [r2]
@@ -5137,10 +5137,10 @@ _08066304:
 	cmp r0, r1
 	bne _0806638C
 _0806632A:
-	ldr r0, _08066350 @ =gUnknown_030001A4
+	ldr r0, _08066350 @ =IWRAM_START + 0x1A4
 	adds r7, r4, r0
 	adds r5, r3, #0
-	ldr r1, _08066354 @ =gUnknown_03000245
+	ldr r1, _08066354 @ =IWRAM_START + 0x245
 	adds r3, r4, r1
 	movs r4, #0
 _08066336:
@@ -5152,10 +5152,10 @@ _08066336:
 	b _0806635A
 	.align 2, 0
 _08066344: .4byte gPressedKeys
-_08066348: .4byte gUnknown_03000244
-_0806634C: .4byte gUnknown_03000246
-_08066350: .4byte gUnknown_030001A4
-_08066354: .4byte gUnknown_03000245
+_08066348: .4byte IWRAM_START + 0x244
+_0806634C: .4byte IWRAM_START + 0x246
+_08066350: .4byte IWRAM_START + 0x1A4
+_08066354: .4byte IWRAM_START + 0x245
 _08066358:
 	strb r4, [r2]
 _0806635A:
@@ -5205,9 +5205,9 @@ _080663B4:
 	ands r0, r1
 	cmp r0, #0
 	beq _0806645C
-	ldr r1, _080663F0 @ =gUnknown_03000244
+	ldr r1, _080663F0 @ =IWRAM_START + 0x244
 	adds r3, r4, r1
-	ldr r5, _080663F4 @ =gUnknown_03000245
+	ldr r5, _080663F4 @ =IWRAM_START + 0x245
 	adds r2, r4, r5
 	ldrb r0, [r3]
 	ldrb r1, [r2]
@@ -5219,10 +5219,10 @@ _080663B4:
 	cmp r1, r0
 	bne _08066434
 _080663D6:
-	ldr r0, _080663F8 @ =gUnknown_03000174
+	ldr r0, _080663F8 @ =IWRAM_START + 0x174
 	adds r7, r4, r0
 	adds r5, r3, #0
-	ldr r1, _080663FC @ =gUnknown_03000246
+	ldr r1, _080663FC @ =IWRAM_START + 0x246
 	adds r3, r4, r1
 	movs r4, #0
 _080663E2:
@@ -5233,10 +5233,10 @@ _080663E2:
 	strb r0, [r2]
 	b _08066402
 	.align 2, 0
-_080663F0: .4byte gUnknown_03000244
-_080663F4: .4byte gUnknown_03000245
-_080663F8: .4byte gUnknown_03000174
-_080663FC: .4byte gUnknown_03000246
+_080663F0: .4byte IWRAM_START + 0x244
+_080663F4: .4byte IWRAM_START + 0x245
+_080663F8: .4byte IWRAM_START + 0x174
+_080663FC: .4byte IWRAM_START + 0x246
 _08066400:
 	strb r4, [r2]
 _08066402:
@@ -5323,7 +5323,7 @@ sub_8066478: @ 0x08066478
 _080664A6:
 	movs r0, #0x6a
 	bl m4aSongNumStart
-	ldr r1, _080664C8 @ =gUnknown_03000244
+	ldr r1, _080664C8 @ =IWRAM_START + 0x244
 	adds r0, r6, r1
 	ldrb r0, [r0]
 	cmp r0, #1
@@ -5336,7 +5336,7 @@ _080664A6:
 	.align 2, 0
 _080664C0: .4byte gCurTask
 _080664C4: .4byte gPressedKeys
-_080664C8: .4byte gUnknown_03000244
+_080664C8: .4byte IWRAM_START + 0x244
 _080664CC:
 	cmp r0, #2
 	beq _080664E4
@@ -5457,7 +5457,7 @@ _08066590:
 	beq _080665B8
 	movs r0, #0x6b
 	bl m4aSongNumStart
-	ldr r1, _080665B0 @ =gUnknown_03000247
+	ldr r1, _080665B0 @ =IWRAM_START + 0x247
 	adds r0, r6, r1
 	strb r4, [r0]
 	mov r2, sb
@@ -5466,7 +5466,7 @@ _08066590:
 	str r0, [r1, #8]
 	b _080665CA
 	.align 2, 0
-_080665B0: .4byte gUnknown_03000247
+_080665B0: .4byte IWRAM_START + 0x247
 _080665B4: .4byte sub_806AFAC
 _080665B8:
 	movs r0, #4
@@ -5495,9 +5495,9 @@ sub_80665D8: @ 0x080665D8
 	lsls r0, r0, #0x12
 	adds r6, r2, r0
 	ldr r3, [r6]
-	ldr r0, _0806662C @ =gUnknown_03000124
+	ldr r0, _0806662C @ =IWRAM_START + 0x124
 	adds r5, r2, r0
-	ldr r1, _08066630 @ =gUnknown_03000249
+	ldr r1, _08066630 @ =IWRAM_START + 0x249
 	adds r0, r2, r1
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -5506,7 +5506,7 @@ sub_80665D8: @ 0x080665D8
 	lsls r0, r0, #3
 	ldr r1, _08066634 @ =gUnknown_080D99F0
 	adds r7, r0, r1
-	ldr r4, _08066638 @ =gUnknown_03000244
+	ldr r4, _08066638 @ =IWRAM_START + 0x244
 	adds r1, r2, r4
 	movs r0, #0
 	strb r0, [r1]
@@ -5514,7 +5514,7 @@ sub_80665D8: @ 0x080665D8
 	adds r0, r2, r4
 	movs r4, #1
 	strb r4, [r0]
-	ldr r0, _0806663C @ =gUnknown_03000246
+	ldr r0, _0806663C @ =IWRAM_START + 0x246
 	adds r2, r2, r0
 	movs r0, #2
 	strb r0, [r2]
@@ -5528,11 +5528,11 @@ sub_80665D8: @ 0x080665D8
 	b _08066660
 	.align 2, 0
 _08066628: .4byte gCurTask
-_0806662C: .4byte gUnknown_03000124
-_08066630: .4byte gUnknown_03000249
+_0806662C: .4byte IWRAM_START + 0x124
+_08066630: .4byte IWRAM_START + 0x249
 _08066634: .4byte gUnknown_080D99F0
-_08066638: .4byte gUnknown_03000244
-_0806663C: .4byte gUnknown_03000246
+_08066638: .4byte IWRAM_START + 0x244
+_0806663C: .4byte IWRAM_START + 0x246
 _08066640:
 	cmp r0, #2
 	beq _08066658
@@ -5675,12 +5675,12 @@ sub_8066718: @ 0x08066718
 	mov r8, r1
 	ldr r1, _080667EC @ =IWRAM_START+4
 	adds r4, r0, r1
-	ldr r3, _080667F0 @ =gUnknown_03000124
+	ldr r3, _080667F0 @ =IWRAM_START + 0x124
 	adds r6, r0, r3
-	ldr r5, _080667F4 @ =gUnknown_030001B4
+	ldr r5, _080667F4 @ =IWRAM_START + 0x1B4
 	adds r5, r5, r0
 	mov ip, r5
-	ldr r1, _080667F8 @ =gUnknown_03000214
+	ldr r1, _080667F8 @ =IWRAM_START + 0x214
 	adds r1, r1, r0
 	mov sb, r1
 	mov r3, r8
@@ -5771,9 +5771,9 @@ _080667A2:
 	.align 2, 0
 _080667E8: .4byte gCurTask
 _080667EC: .4byte IWRAM_START+4
-_080667F0: .4byte gUnknown_03000124
-_080667F4: .4byte gUnknown_030001B4
-_080667F8: .4byte gUnknown_03000214
+_080667F0: .4byte IWRAM_START + 0x124
+_080667F4: .4byte IWRAM_START + 0x1B4
+_080667F8: .4byte IWRAM_START + 0x214
 _080667FC: .4byte 0x00000143
 _08066800:
 	mov r1, sl
@@ -5799,7 +5799,7 @@ sub_8066818: @ 0x08066818
 	ldrh r0, [r0, #6]
 	ldr r1, _080668A0 @ =IWRAM_START+4
 	adds r4, r0, r1
-	ldr r1, _080668A4 @ =gUnknown_03000124
+	ldr r1, _080668A4 @ =IWRAM_START + 0x124
 	adds r7, r0, r1
 	adds r1, #0x90
 	adds r6, r0, r1
@@ -5857,7 +5857,7 @@ _0806686C:
 	.align 2, 0
 _0806689C: .4byte gCurTask
 _080668A0: .4byte IWRAM_START+4
-_080668A4: .4byte gUnknown_03000124
+_080668A4: .4byte IWRAM_START + 0x124
 
 	thumb_func_start sub_80668A8
 sub_80668A8: @ 0x080668A8
@@ -6167,7 +6167,7 @@ sub_8066B0C: @ 0x08066B0C
 	beq _08066B5A
 	movs r0, #0x6c
 	bl m4aSongNumStart
-	ldr r0, _08066B4C @ =gUnknown_03000200
+	ldr r0, _08066B4C @ =IWRAM_START + 0x200
 	adds r1, r4, r0
 	ldrb r2, [r1]
 	movs r0, #0
@@ -6179,7 +6179,7 @@ sub_8066B0C: @ 0x08066B0C
 	.align 2, 0
 _08066B44: .4byte gCurTask
 _08066B48: .4byte gUnknown_030022B8
-_08066B4C: .4byte gUnknown_03000200
+_08066B4C: .4byte IWRAM_START + 0x200
 _08066B50:
 	adds r0, r2, #1
 _08066B52:
@@ -6193,7 +6193,7 @@ _08066B5A:
 	beq _08066B88
 	movs r0, #0x6c
 	bl m4aSongNumStart
-	ldr r2, _08066B7C @ =gUnknown_03000200
+	ldr r2, _08066B7C @ =IWRAM_START + 0x200
 	adds r1, r4, r2
 	ldrb r2, [r1]
 	movs r0, #0
@@ -6203,7 +6203,7 @@ _08066B5A:
 	movs r0, #5
 	b _08066B82
 	.align 2, 0
-_08066B7C: .4byte gUnknown_03000200
+_08066B7C: .4byte IWRAM_START + 0x200
 _08066B80:
 	subs r0, r2, #1
 _08066B82:
@@ -6298,7 +6298,7 @@ sub_8066C2C: @ 0x08066C2C
 	adds r1, #0x60
 	adds r1, r1, r0
 	mov ip, r1
-	ldr r3, _08066C70 @ =gUnknown_03000180
+	ldr r3, _08066C70 @ =IWRAM_START + 0x180
 	adds r6, r0, r3
 	adds r3, #0x80
 	adds r1, r0, r3
@@ -6309,7 +6309,7 @@ sub_8066C2C: @ 0x08066C2C
 	ldr r1, _08066C74 @ =gUnknown_080D9A80
 	adds r1, r1, r3
 	mov r8, r1
-	ldr r1, _08066C78 @ =gUnknown_03000201
+	ldr r1, _08066C78 @ =IWRAM_START + 0x201
 	adds r0, r0, r1
 	ldrb r0, [r0]
 	cmp r0, #1
@@ -6318,9 +6318,9 @@ sub_8066C2C: @ 0x08066C2C
 	b _08066C82
 	.align 2, 0
 _08066C6C: .4byte gCurTask
-_08066C70: .4byte gUnknown_03000180
+_08066C70: .4byte IWRAM_START + 0x180
 _08066C74: .4byte gUnknown_080D9A80
-_08066C78: .4byte gUnknown_03000201
+_08066C78: .4byte IWRAM_START + 0x201
 _08066C7C: .4byte gUnknown_080D9AB0
 _08066C80:
 	ldr r0, _08066CF8 @ =gUnknown_080D9AE0
@@ -6403,23 +6403,23 @@ sub_8066CFC: @ 0x08066CFC
 	movs r4, #0xc0
 	lsls r4, r4, #0x12
 	adds r4, r1, r4
-	ldr r2, _08066D6C @ =gUnknown_0300013C
+	ldr r2, _08066D6C @ =IWRAM_START + 0x13C
 	adds r0, r1, r2
 	str r5, [r0]
-	ldr r3, _08066D70 @ =gUnknown_03000140
+	ldr r3, _08066D70 @ =IWRAM_START + 0x140
 	adds r2, r1, r3
 	movs r0, #1
 	strb r0, [r2]
-	ldr r2, _08066D74 @ =gUnknown_03000141
+	ldr r2, _08066D74 @ =IWRAM_START + 0x141
 	adds r0, r1, r2
 	strb r6, [r0]
 	ldr r3, _08066D78 @ =0x0000035B
 	adds r5, r5, r3
 	ldrb r2, [r5]
-	ldr r3, _08066D7C @ =gUnknown_03000142
+	ldr r3, _08066D7C @ =IWRAM_START + 0x142
 	adds r0, r1, r3
 	strb r2, [r0]
-	ldr r0, _08066D80 @ =gUnknown_03000143
+	ldr r0, _08066D80 @ =IWRAM_START + 0x143
 	adds r1, r1, r0
 	strb r6, [r1]
 	ldr r1, _08066D84 @ =gUnknown_03005B50
@@ -6439,12 +6439,12 @@ sub_8066CFC: @ 0x08066CFC
 	bx r0
 	.align 2, 0
 _08066D68: .4byte sub_806B280
-_08066D6C: .4byte gUnknown_0300013C
-_08066D70: .4byte gUnknown_03000140
-_08066D74: .4byte gUnknown_03000141
+_08066D6C: .4byte IWRAM_START + 0x13C
+_08066D70: .4byte IWRAM_START + 0x140
+_08066D74: .4byte IWRAM_START + 0x141
 _08066D78: .4byte 0x0000035B
-_08066D7C: .4byte gUnknown_03000142
-_08066D80: .4byte gUnknown_03000143
+_08066D7C: .4byte IWRAM_START + 0x142
+_08066D80: .4byte IWRAM_START + 0x143
 _08066D84: .4byte gUnknown_03005B50
 _08066D88: .4byte 0x06010000
 _08066D8C: .4byte gUnknown_03005B54
@@ -6715,7 +6715,7 @@ sub_8066FAC: @ 0x08066FAC
 	adds r6, r4, r0
 	adds r0, #0x60
 	adds r5, r4, r0
-	ldr r1, _08067064 @ =gUnknown_030000C0
+	ldr r1, _08067064 @ =IWRAM_START + 0xC0
 	adds r7, r4, r1
 	ldr r0, _08067068 @ =gUnknown_030022B8
 	ldrh r1, [r0]
@@ -6726,7 +6726,7 @@ sub_8066FAC: @ 0x08066FAC
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	movs r2, #0
-	ldr r0, _0806706C @ =gUnknown_03000140
+	ldr r0, _0806706C @ =IWRAM_START + 0x140
 	adds r1, r4, r0
 	movs r0, #0
 	ldrsb r0, [r1, r0]
@@ -6736,7 +6736,7 @@ sub_8066FAC: @ 0x08066FAC
 _08066FE4:
 	strb r2, [r1]
 	movs r0, #0
-	ldr r1, _0806706C @ =gUnknown_03000140
+	ldr r1, _0806706C @ =IWRAM_START + 0x140
 	adds r3, r4, r1
 _08066FEC:
 	movs r2, #0
@@ -6797,9 +6797,9 @@ _08067024:
 	b _0806708C
 	.align 2, 0
 _08067060: .4byte gCurTask
-_08067064: .4byte gUnknown_030000C0
+_08067064: .4byte IWRAM_START + 0xC0
 _08067068: .4byte gUnknown_030022B8
-_0806706C: .4byte gUnknown_03000140
+_0806706C: .4byte IWRAM_START + 0x140
 _08067070: .4byte gPressedKeys
 _08067074: .4byte sub_806709C
 _08067078:
@@ -6834,9 +6834,9 @@ sub_806709C: @ 0x0806709C
 	adds r6, r4, r0
 	adds r0, #0x60
 	adds r5, r4, r0
-	ldr r1, _08067130 @ =gUnknown_030000C0
+	ldr r1, _08067130 @ =IWRAM_START + 0xC0
 	adds r7, r4, r1
-	ldr r3, _08067134 @ =gUnknown_03000142
+	ldr r3, _08067134 @ =IWRAM_START + 0x142
 	adds r0, r4, r3
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -6845,19 +6845,19 @@ sub_806709C: @ 0x0806709C
 	ldr r1, _08067138 @ =gUnknown_080D9B70
 	adds r0, r0, r1
 	ldrh r2, [r0, #2]
-	ldr r3, _0806713C @ =gUnknown_03000020
+	ldr r3, _0806713C @ =IWRAM_START + 0x20
 	adds r1, r4, r3
 	strb r2, [r1]
 	ldrh r0, [r0]
 	strh r0, [r6, #0xa]
 	adds r0, r6, #0
 	bl sub_8004558
-	ldr r0, _08067140 @ =gUnknown_03000140
+	ldr r0, _08067140 @ =IWRAM_START + 0x140
 	adds r1, r4, r0
 	movs r0, #1
 	strb r0, [r1]
 	movs r0, #0
-	ldr r1, _08067140 @ =gUnknown_03000140
+	ldr r1, _08067140 @ =IWRAM_START + 0x140
 	adds r4, r4, r1
 _080670E2:
 	movs r2, #0
@@ -6898,11 +6898,11 @@ _080670E2:
 	bx r0
 	.align 2, 0
 _0806712C: .4byte gCurTask
-_08067130: .4byte gUnknown_030000C0
-_08067134: .4byte gUnknown_03000142
+_08067130: .4byte IWRAM_START + 0xC0
+_08067134: .4byte IWRAM_START + 0x142
 _08067138: .4byte gUnknown_080D9B70
-_0806713C: .4byte gUnknown_03000020
-_08067140: .4byte gUnknown_03000140
+_0806713C: .4byte IWRAM_START + 0x20
+_08067140: .4byte IWRAM_START + 0x140
 _08067144: .4byte sub_8067148
 
 	thumb_func_start sub_8067148
@@ -6916,7 +6916,7 @@ sub_8067148: @ 0x08067148
 	adds r6, r4, r0
 	adds r0, #0x60
 	adds r5, r4, r0
-	ldr r1, _080671FC @ =gUnknown_030000C0
+	ldr r1, _080671FC @ =IWRAM_START + 0xC0
 	adds r7, r4, r1
 	ldr r0, _08067200 @ =gUnknown_030022B8
 	ldrh r1, [r0]
@@ -6927,7 +6927,7 @@ sub_8067148: @ 0x08067148
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	movs r2, #0
-	ldr r0, _08067204 @ =gUnknown_03000140
+	ldr r0, _08067204 @ =IWRAM_START + 0x140
 	adds r1, r4, r0
 	movs r0, #0
 	ldrsb r0, [r1, r0]
@@ -6937,7 +6937,7 @@ sub_8067148: @ 0x08067148
 _08067180:
 	strb r2, [r1]
 	movs r0, #0
-	ldr r1, _08067204 @ =gUnknown_03000140
+	ldr r1, _08067204 @ =IWRAM_START + 0x140
 	adds r3, r4, r1
 _08067188:
 	movs r2, #0
@@ -6998,9 +6998,9 @@ _080671C0:
 	b _08067222
 	.align 2, 0
 _080671F8: .4byte gCurTask
-_080671FC: .4byte gUnknown_030000C0
+_080671FC: .4byte IWRAM_START + 0xC0
 _08067200: .4byte gUnknown_030022B8
-_08067204: .4byte gUnknown_03000140
+_08067204: .4byte IWRAM_START + 0x140
 _08067208: .4byte gPressedKeys
 _0806720C: .4byte 0x00000143
 _08067210:
@@ -7034,7 +7034,7 @@ sub_806723C: @ 0x0806723C
 	ldr r0, _08067258 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r4, [r0, #6]
-	ldr r1, _0806725C @ =gUnknown_03000130
+	ldr r1, _0806725C @ =IWRAM_START + 0x130
 	adds r0, r4, r1
 	bl sub_802D4CC
 	lsls r0, r0, #0x18
@@ -7044,16 +7044,16 @@ sub_806723C: @ 0x0806723C
 	b _080672AA
 	.align 2, 0
 _08067258: .4byte gCurTask
-_0806725C: .4byte gUnknown_03000130
+_0806725C: .4byte IWRAM_START + 0x130
 _08067260:
-	ldr r1, _08067288 @ =gUnknown_03000143
+	ldr r1, _08067288 @ =IWRAM_START + 0x143
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	cmp r0, #0
 	beq _08067294
-	ldr r0, _0806728C @ =gUnknown_0300013C
+	ldr r0, _0806728C @ =IWRAM_START + 0x13C
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl sub_8063C7C
@@ -7064,11 +7064,11 @@ _08067260:
 	movs r1, #0
 	b _080672A0
 	.align 2, 0
-_08067288: .4byte gUnknown_03000143
-_0806728C: .4byte gUnknown_0300013C
+_08067288: .4byte IWRAM_START + 0x143
+_0806728C: .4byte IWRAM_START + 0x13C
 _08067290: .4byte 0x00000784
 _08067294:
-	ldr r1, _080672B0 @ =gUnknown_0300013C
+	ldr r1, _080672B0 @ =IWRAM_START + 0x13C
 	adds r0, r4, r1
 	ldr r0, [r0]
 	ldr r1, _080672B4 @ =0x00000784
@@ -7084,7 +7084,7 @@ _080672AA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080672B0: .4byte gUnknown_0300013C
+_080672B0: .4byte IWRAM_START + 0x13C
 _080672B4: .4byte 0x00000784
 _080672B8: .4byte gCurTask
 
@@ -7109,54 +7109,54 @@ sub_80672BC: @ 0x080672BC
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r5, r3, r0
-	ldr r1, _08067324 @ =gUnknown_0300014C
+	ldr r1, _08067324 @ =IWRAM_START + 0x14C
 	adds r0, r3, r1
 	str r6, [r0]
 	movs r2, #0xb1
 	lsls r2, r2, #1
 	adds r0, r6, r2
 	ldrb r0, [r0]
-	ldr r2, _08067328 @ =gUnknown_030003BA
+	ldr r2, _08067328 @ =IWRAM_START + 0x3BA
 	adds r1, r3, r2
 	strb r0, [r1]
 	adds r2, #1
 	adds r0, r3, r2
 	strb r4, [r0]
-	ldr r2, _0806732C @ =gUnknown_03000252
+	ldr r2, _0806732C @ =IWRAM_START + 0x252
 	adds r0, r3, r2
 	strb r4, [r0]
 	ldrb r2, [r1]
 	cmp r2, #0
 	bne _0806733C
-	ldr r4, _08067330 @ =gUnknown_030003B8
+	ldr r4, _08067330 @ =IWRAM_START + 0x3B8
 	adds r0, r3, r4
 	movs r1, #0
 	strh r2, [r0]
-	ldr r4, _08067334 @ =gUnknown_03000253
+	ldr r4, _08067334 @ =IWRAM_START + 0x253
 	adds r0, r3, r4
 	strb r1, [r0]
-	ldr r1, _08067338 @ =gUnknown_03000250
+	ldr r1, _08067338 @ =IWRAM_START + 0x250
 	adds r0, r3, r1
 	strh r2, [r0]
 	b _08067352
 	.align 2, 0
 _08067320: .4byte sub_806B354
-_08067324: .4byte gUnknown_0300014C
-_08067328: .4byte gUnknown_030003BA
-_0806732C: .4byte gUnknown_03000252
-_08067330: .4byte gUnknown_030003B8
-_08067334: .4byte gUnknown_03000253
-_08067338: .4byte gUnknown_03000250
+_08067324: .4byte IWRAM_START + 0x14C
+_08067328: .4byte IWRAM_START + 0x3BA
+_0806732C: .4byte IWRAM_START + 0x252
+_08067330: .4byte IWRAM_START + 0x3B8
+_08067334: .4byte IWRAM_START + 0x253
+_08067338: .4byte IWRAM_START + 0x250
 _0806733C:
-	ldr r2, _080673FC @ =gUnknown_030003B8
+	ldr r2, _080673FC @ =IWRAM_START + 0x3B8
 	adds r0, r3, r2
 	movs r2, #0
 	movs r1, #0x63
 	strh r1, [r0]
-	ldr r4, _08067400 @ =gUnknown_03000253
+	ldr r4, _08067400 @ =IWRAM_START + 0x253
 	adds r0, r3, r4
 	strb r2, [r0]
-	ldr r2, _08067404 @ =gUnknown_03000250
+	ldr r2, _08067404 @ =IWRAM_START + 0x250
 	adds r0, r3, r2
 	strh r1, [r0]
 _08067352:
@@ -7244,9 +7244,9 @@ _080673BE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080673FC: .4byte gUnknown_030003B8
-_08067400: .4byte gUnknown_03000253
-_08067404: .4byte gUnknown_03000250
+_080673FC: .4byte IWRAM_START + 0x3B8
+_08067400: .4byte IWRAM_START + 0x253
+_08067404: .4byte IWRAM_START + 0x250
 _08067408: .4byte gUnknown_03005B50
 _0806740C: .4byte gUnknown_03005B54
 _08067410: .4byte 0x0000FFFF
@@ -7746,7 +7746,7 @@ sub_80677EC: @ 0x080677EC
 	lsls r0, r0, #0x12
 	adds r0, r6, r0
 	str r0, [sp]
-	ldr r0, _080678E8 @ =gUnknown_03000258
+	ldr r0, _080678E8 @ =IWRAM_START + 0x258
 	adds r0, r0, r6
 	mov sl, r0
 	bl sub_8067F84
@@ -7792,7 +7792,7 @@ _08067860:
 	bne _0806786E
 	b _08067A9C
 _0806786E:
-	ldr r1, _080678F0 @ =gUnknown_03000252
+	ldr r1, _080678F0 @ =IWRAM_START + 0x252
 	adds r1, r1, r6
 	mov sb, r1
 	movs r0, #0
@@ -7801,7 +7801,7 @@ _0806786E:
 	ble _0806787E
 	b _08067A14
 _0806787E:
-	ldr r2, _080678F4 @ =gUnknown_030003B8
+	ldr r2, _080678F4 @ =IWRAM_START + 0x3B8
 	adds r2, r2, r6
 	mov r8, r2
 	ldrh r0, [r2]
@@ -7816,13 +7816,13 @@ _08067890:
 	bne _08067898
 	movs r7, #1
 _08067898:
-	ldr r3, _080678F8 @ =gUnknown_030003AA
+	ldr r3, _080678F8 @ =IWRAM_START + 0x3AA
 	adds r4, r6, r3
 	ldrh r0, [r4]
 	cmp r0, #5
 	bhi _08067976
 	lsls r0, r0, #1
-	ldr r1, _080678FC @ =gUnknown_030003AC
+	ldr r1, _080678FC @ =IWRAM_START + 0x3AC
 	adds r5, r6, r1
 	adds r2, r5, r0
 	ldrh r1, [r2]
@@ -7853,12 +7853,12 @@ _08067898:
 	b _0806795A
 	.align 2, 0
 _080678E4: .4byte gCurTask
-_080678E8: .4byte gUnknown_03000258
+_080678E8: .4byte IWRAM_START + 0x258
 _080678EC: .4byte gUnknown_030022B8
-_080678F0: .4byte gUnknown_03000252
-_080678F4: .4byte gUnknown_030003B8
-_080678F8: .4byte gUnknown_030003AA
-_080678FC: .4byte gUnknown_030003AC
+_080678F0: .4byte IWRAM_START + 0x252
+_080678F4: .4byte IWRAM_START + 0x3B8
+_080678F8: .4byte IWRAM_START + 0x3AA
+_080678FC: .4byte IWRAM_START + 0x3AC
 _08067900: .4byte 0x0000FFFF
 _08067904:
 	ldrh r0, [r4]
@@ -7880,11 +7880,11 @@ _0806791C:
 	movs r0, #0xb
 	mov r3, sb
 	strb r0, [r3]
-	ldr r2, _08067930 @ =gUnknown_03000253
+	ldr r2, _08067930 @ =IWRAM_START + 0x253
 	adds r0, r6, r2
 	b _080679C0
 	.align 2, 0
-_08067930: .4byte gUnknown_03000253
+_08067930: .4byte IWRAM_START + 0x253
 _08067934:
 	adds r6, r7, #0
 	ldrh r1, [r2]
@@ -7921,7 +7921,7 @@ _08067976:
 	ldrh r0, [r4]
 	subs r0, #1
 	lsls r0, r0, #1
-	ldr r1, _08067A0C @ =gUnknown_030003AC
+	ldr r1, _08067A0C @ =IWRAM_START + 0x3AC
 	adds r5, r6, r1
 	adds r0, r5, r0
 	ldrh r1, [r0]
@@ -7951,7 +7951,7 @@ _080679B0:
 	movs r0, #0xb
 	mov r2, sb
 	strb r0, [r2]
-	ldr r3, _08067A10 @ =gUnknown_03000253
+	ldr r3, _08067A10 @ =IWRAM_START + 0x253
 	adds r0, r6, r3
 _080679C0:
 	strb r1, [r0]
@@ -7996,10 +7996,10 @@ _08067A04:
 	strh r0, [r4]
 	b _08067B72
 	.align 2, 0
-_08067A0C: .4byte gUnknown_030003AC
-_08067A10: .4byte gUnknown_03000253
+_08067A0C: .4byte IWRAM_START + 0x3AC
+_08067A10: .4byte IWRAM_START + 0x253
 _08067A14:
-	ldr r2, _08067A2C @ =gUnknown_03000253
+	ldr r2, _08067A2C @ =IWRAM_START + 0x253
 	adds r0, r6, r2
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -8012,13 +8012,13 @@ _08067A14:
 	beq _08067A36
 	b _08067B72
 	.align 2, 0
-_08067A2C: .4byte gUnknown_03000253
+_08067A2C: .4byte IWRAM_START + 0x253
 _08067A30:
 	cmp r0, #6
 	beq _08067A88
 	b _08067B72
 _08067A36:
-	ldr r3, _08067A48 @ =gUnknown_030003AA
+	ldr r3, _08067A48 @ =IWRAM_START + 0x3AA
 	adds r1, r6, r3
 	ldrh r0, [r1]
 	cmp r0, #0
@@ -8029,9 +8029,9 @@ _08067A42:
 	strh r0, [r1]
 	b _08067A72
 	.align 2, 0
-_08067A48: .4byte gUnknown_030003AA
+_08067A48: .4byte IWRAM_START + 0x3AA
 _08067A4C:
-	ldr r0, _08067A7C @ =gUnknown_030003AA
+	ldr r0, _08067A7C @ =IWRAM_START + 0x3AA
 	adds r2, r6, r0
 	ldrh r0, [r2]
 	cmp r0, #4
@@ -8039,7 +8039,7 @@ _08067A4C:
 	b _08067B72
 _08067A58:
 	lsls r0, r0, #1
-	ldr r3, _08067A80 @ =gUnknown_030003AC
+	ldr r3, _08067A80 @ =IWRAM_START + 0x3AC
 	adds r1, r6, r3
 	adds r3, r1, r0
 	ldrh r1, [r3]
@@ -8057,11 +8057,11 @@ _08067A72:
 	bl m4aSongNumStart
 	b _08067B72
 	.align 2, 0
-_08067A7C: .4byte gUnknown_030003AA
-_08067A80: .4byte gUnknown_030003AC
+_08067A7C: .4byte IWRAM_START + 0x3AA
+_08067A80: .4byte IWRAM_START + 0x3AC
 _08067A84: .4byte 0x0000FFFF
 _08067A88:
-	ldr r1, _08067A98 @ =gUnknown_030003AC
+	ldr r1, _08067A98 @ =IWRAM_START + 0x3AC
 	adds r0, r6, r1
 	bl sub_806B988
 	lsls r0, r0, #0x10
@@ -8069,7 +8069,7 @@ _08067A88:
 	beq _08067AC2
 	b _08067ADC
 	.align 2, 0
-_08067A98: .4byte gUnknown_030003AC
+_08067A98: .4byte IWRAM_START + 0x3AC
 _08067A9C:
 	ldr r0, _08067ACC @ =gPressedKeys
 	ldrh r1, [r0]
@@ -8077,13 +8077,13 @@ _08067A9C:
 	ands r0, r1
 	cmp r0, #0
 	beq _08067B00
-	ldr r2, _08067AD0 @ =gUnknown_03000252
+	ldr r2, _08067AD0 @ =IWRAM_START + 0x252
 	adds r4, r6, r2
 	ldrh r1, [r4]
 	ldr r0, _08067AD4 @ =0x0000060B
 	cmp r1, r0
 	bne _08067AE8
-	ldr r3, _08067AD8 @ =gUnknown_030003AC
+	ldr r3, _08067AD8 @ =IWRAM_START + 0x3AC
 	adds r0, r6, r3
 	bl sub_806B988
 	lsls r0, r0, #0x10
@@ -8095,9 +8095,9 @@ _08067AC2:
 	b _08067B72
 	.align 2, 0
 _08067ACC: .4byte gPressedKeys
-_08067AD0: .4byte gUnknown_03000252
+_08067AD0: .4byte IWRAM_START + 0x252
 _08067AD4: .4byte 0x0000060B
-_08067AD8: .4byte gUnknown_030003AC
+_08067AD8: .4byte IWRAM_START + 0x3AC
 _08067ADC:
 	movs r0, #0x6a
 	bl m4aSongNumStart
@@ -8108,13 +8108,13 @@ _08067AE8:
 	bl m4aSongNumStart
 	movs r0, #0xb
 	strb r0, [r4]
-	ldr r0, _08067AFC @ =gUnknown_03000253
+	ldr r0, _08067AFC @ =IWRAM_START + 0x253
 	adds r1, r6, r0
 	movs r0, #6
 	strb r0, [r1]
 	b _08067B72
 	.align 2, 0
-_08067AFC: .4byte gUnknown_03000253
+_08067AFC: .4byte IWRAM_START + 0x253
 _08067B00:
 	movs r0, #2
 	ands r0, r2
@@ -8122,14 +8122,14 @@ _08067B00:
 	beq _08067B72
 	movs r0, #0x6b
 	bl m4aSongNumStart
-	ldr r1, _08067B84 @ =gUnknown_030003AA
+	ldr r1, _08067B84 @ =IWRAM_START + 0x3AA
 	adds r0, r6, r1
 	ldrh r2, [r0]
 	cmp r2, #0
 	beq _08067B2A
 	adds r1, r2, #0
 	lsls r1, r1, #1
-	ldr r3, _08067B88 @ =gUnknown_030003AC
+	ldr r3, _08067B88 @ =IWRAM_START + 0x3AC
 	adds r0, r6, r3
 	adds r0, r0, r1
 	ldrh r1, [r0]
@@ -8187,8 +8187,8 @@ _08067B72:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08067B84: .4byte gUnknown_030003AA
-_08067B88: .4byte gUnknown_030003AC
+_08067B84: .4byte IWRAM_START + 0x3AA
+_08067B88: .4byte IWRAM_START + 0x3AC
 _08067B8C: .4byte 0x0000FFFF
 
 	thumb_func_start sub_8067B90
@@ -8204,7 +8204,7 @@ sub_8067B90: @ 0x08067B90
 	ands r0, r2
 	cmp r0, #0
 	beq _08067C04
-	ldr r0, _08067BF8 @ =gUnknown_030003AA
+	ldr r0, _08067BF8 @ =IWRAM_START + 0x3AA
 	adds r6, r1, r0
 	ldrh r0, [r6]
 	cmp r0, #0
@@ -8218,7 +8218,7 @@ sub_8067B90: @ 0x08067B90
 	ldrh r2, [r6]
 	adds r0, r2, #1
 	lsls r0, r0, #1
-	ldr r3, _08067BFC @ =gUnknown_030003AC
+	ldr r3, _08067BFC @ =IWRAM_START + 0x3AC
 	adds r5, r1, r3
 	adds r0, r5, r0
 	ldrh r4, [r0]
@@ -8242,8 +8242,8 @@ sub_8067B90: @ 0x08067B90
 	.align 2, 0
 _08067BF0: .4byte gCurTask
 _08067BF4: .4byte gUnknown_030022B8
-_08067BF8: .4byte gUnknown_030003AA
-_08067BFC: .4byte gUnknown_030003AC
+_08067BF8: .4byte IWRAM_START + 0x3AA
+_08067BFC: .4byte IWRAM_START + 0x3AC
 _08067C00: .4byte 0x0000FFFF
 _08067C04:
 	movs r0, #0x80
@@ -8251,13 +8251,13 @@ _08067C04:
 	ands r0, r2
 	cmp r0, #0
 	beq _08067C48
-	ldr r0, _08067C3C @ =gUnknown_030003AA
+	ldr r0, _08067C3C @ =IWRAM_START + 0x3AA
 	adds r2, r1, r0
 	ldrh r0, [r2]
 	cmp r0, #4
 	bhi _08067C38
 	lsls r0, r0, #1
-	ldr r3, _08067C40 @ =gUnknown_030003AC
+	ldr r3, _08067C40 @ =IWRAM_START + 0x3AC
 	adds r1, r1, r3
 	adds r3, r1, r0
 	ldrh r1, [r3]
@@ -8277,8 +8277,8 @@ _08067C38:
 	movs r0, #1
 	b _08067C4A
 	.align 2, 0
-_08067C3C: .4byte gUnknown_030003AA
-_08067C40: .4byte gUnknown_030003AC
+_08067C3C: .4byte IWRAM_START + 0x3AA
+_08067C40: .4byte IWRAM_START + 0x3AC
 _08067C44: .4byte 0x0000FFFF
 _08067C48:
 	movs r0, #0
@@ -8310,14 +8310,14 @@ _08067C66:
 	lsrs r5, r0, #0x10
 	cmp r5, #0
 	beq _08067D00
-	ldr r1, _08067CA4 @ =gUnknown_03000252
+	ldr r1, _08067CA4 @ =IWRAM_START + 0x252
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	cmp r0, #0xa
 	bgt _08067CE4
-	ldr r2, _08067CA8 @ =gUnknown_03000253
+	ldr r2, _08067CA8 @ =IWRAM_START + 0x253
 	adds r1, r4, r2
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8329,10 +8329,10 @@ _08067C66:
 	.align 2, 0
 _08067C9C: .4byte gCurTask
 _08067CA0: .4byte gUnknown_030022B8
-_08067CA4: .4byte gUnknown_03000252
-_08067CA8: .4byte gUnknown_03000253
+_08067CA4: .4byte IWRAM_START + 0x252
+_08067CA8: .4byte IWRAM_START + 0x253
 _08067CAC:
-	ldr r0, _08067CC8 @ =gUnknown_03000250
+	ldr r0, _08067CC8 @ =IWRAM_START + 0x250
 	adds r2, r4, r0
 	ldrh r0, [r2]
 	cmp r0, #0
@@ -8346,7 +8346,7 @@ _08067CAC:
 	strh r0, [r2]
 	b _08067DCC
 	.align 2, 0
-_08067CC8: .4byte gUnknown_03000250
+_08067CC8: .4byte IWRAM_START + 0x250
 _08067CCC: .4byte gBgScrollRegs
 _08067CD0:
 	movs r0, #6
@@ -8360,7 +8360,7 @@ _08067CD0:
 	.align 2, 0
 _08067CE0: .4byte gBgScrollRegs
 _08067CE4:
-	ldr r2, _08067CF8 @ =gUnknown_03000253
+	ldr r2, _08067CF8 @ =IWRAM_START + 0x253
 	adds r1, r4, r2
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8370,7 +8370,7 @@ _08067CE4:
 	subs r0, r2, #1
 	b _08067DCA
 	.align 2, 0
-_08067CF8: .4byte gUnknown_03000253
+_08067CF8: .4byte IWRAM_START + 0x253
 _08067CFC:
 	movs r0, #6
 	b _08067DCA
@@ -8379,14 +8379,14 @@ _08067D00:
 	ands r0, r1
 	cmp r0, #0
 	beq _08067D8C
-	ldr r1, _08067D2C @ =gUnknown_03000252
+	ldr r1, _08067D2C @ =IWRAM_START + 0x252
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	cmp r0, #0xa
 	bgt _08067D70
-	ldr r2, _08067D30 @ =gUnknown_03000253
+	ldr r2, _08067D30 @ =IWRAM_START + 0x253
 	adds r3, r4, r2
 	ldrb r1, [r3]
 	movs r0, #0
@@ -8397,10 +8397,10 @@ _08067D00:
 	strb r0, [r3]
 	b _08067DCC
 	.align 2, 0
-_08067D2C: .4byte gUnknown_03000252
-_08067D30: .4byte gUnknown_03000253
+_08067D2C: .4byte IWRAM_START + 0x252
+_08067D30: .4byte IWRAM_START + 0x253
 _08067D34:
-	ldr r0, _08067D50 @ =gUnknown_03000250
+	ldr r0, _08067D50 @ =IWRAM_START + 0x250
 	adds r4, r4, r0
 	ldrh r0, [r4]
 	cmp r0, #0xa4
@@ -8414,7 +8414,7 @@ _08067D34:
 	strh r0, [r4]
 	b _08067DCC
 	.align 2, 0
-_08067D50: .4byte gUnknown_03000250
+_08067D50: .4byte IWRAM_START + 0x250
 _08067D54: .4byte gBgScrollRegs
 _08067D58:
 	ldr r0, _08067D68 @ =gBgScrollRegs
@@ -8428,7 +8428,7 @@ _08067D58:
 _08067D68: .4byte gBgScrollRegs
 _08067D6C: .4byte 0x0000FFD9
 _08067D70:
-	ldr r2, _08067D84 @ =gUnknown_03000253
+	ldr r2, _08067D84 @ =IWRAM_START + 0x253
 	adds r1, r4, r2
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8438,7 +8438,7 @@ _08067D70:
 	adds r0, r2, #1
 	b _08067DCA
 	.align 2, 0
-_08067D84: .4byte gUnknown_03000253
+_08067D84: .4byte IWRAM_START + 0x253
 _08067D88:
 	movs r0, #4
 	b _08067DCA
@@ -8449,7 +8449,7 @@ _08067D8C:
 	lsrs r3, r0, #0x10
 	cmp r3, #0
 	beq _08067DD0
-	ldr r0, _08067DAC @ =gUnknown_03000252
+	ldr r0, _08067DAC @ =IWRAM_START + 0x252
 	adds r1, r4, r0
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8459,9 +8459,9 @@ _08067D8C:
 	subs r0, r2, #1
 	b _08067DCA
 	.align 2, 0
-_08067DAC: .4byte gUnknown_03000252
+_08067DAC: .4byte IWRAM_START + 0x252
 _08067DB0:
-	ldr r2, _08067DC4 @ =gUnknown_03000253
+	ldr r2, _08067DC4 @ =IWRAM_START + 0x253
 	adds r0, r4, r2
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -8471,7 +8471,7 @@ _08067DB0:
 	movs r0, #0xa
 	b _08067DCA
 	.align 2, 0
-_08067DC4: .4byte gUnknown_03000253
+_08067DC4: .4byte IWRAM_START + 0x253
 _08067DC8:
 	movs r0, #0xb
 _08067DCA:
@@ -8484,14 +8484,14 @@ _08067DD0:
 	ands r0, r1
 	cmp r0, #0
 	beq _08067E1C
-	ldr r1, _08067DF8 @ =gUnknown_03000253
+	ldr r1, _08067DF8 @ =IWRAM_START + 0x253
 	adds r0, r4, r1
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	cmp r0, #3
 	bgt _08067E00
-	ldr r2, _08067DFC @ =gUnknown_03000252
+	ldr r2, _08067DFC @ =IWRAM_START + 0x252
 	adds r1, r4, r2
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8500,10 +8500,10 @@ _08067DD0:
 	ble _08067E0E
 	b _08067E18
 	.align 2, 0
-_08067DF8: .4byte gUnknown_03000253
-_08067DFC: .4byte gUnknown_03000252
+_08067DF8: .4byte IWRAM_START + 0x253
+_08067DFC: .4byte IWRAM_START + 0x252
 _08067E00:
-	ldr r0, _08067E14 @ =gUnknown_03000252
+	ldr r0, _08067E14 @ =IWRAM_START + 0x252
 	adds r1, r4, r0
 	ldrb r2, [r1]
 	movs r0, #0
@@ -8514,7 +8514,7 @@ _08067E0E:
 	adds r0, r2, #1
 	b _08067DCA
 	.align 2, 0
-_08067E14: .4byte gUnknown_03000252
+_08067E14: .4byte IWRAM_START + 0x252
 _08067E18:
 	strb r3, [r1]
 	b _08067DCC
@@ -8531,16 +8531,16 @@ sub_8067E24: @ 0x08067E24
 	ldr r1, _08067E8C @ =gCurTask
 	ldr r0, [r1]
 	ldrh r2, [r0, #6]
-	ldr r0, _08067E90 @ =gUnknown_03000140
+	ldr r0, _08067E90 @ =IWRAM_START + 0x140
 	adds r3, r2, r0
-	ldr r4, _08067E94 @ =gUnknown_030003BB
+	ldr r4, _08067E94 @ =IWRAM_START + 0x3BB
 	adds r0, r2, r4
 	ldrb r0, [r0]
 	adds r7, r1, #0
 	ldr r6, _08067E98 @ =sub_8067EA4
 	cmp r0, #0
 	bne _08067E6C
-	ldr r1, _08067E9C @ =gUnknown_0300014C
+	ldr r1, _08067E9C @ =IWRAM_START + 0x14C
 	adds r0, r2, r1
 	ldr r0, [r0]
 	movs r4, #0xae
@@ -8548,7 +8548,7 @@ sub_8067E24: @ 0x08067E24
 	adds r0, r0, r4
 	ldr r5, [r0]
 	movs r0, #0
-	ldr r1, _08067EA0 @ =gUnknown_030003AC
+	ldr r1, _08067EA0 @ =IWRAM_START + 0x3AC
 	adds r4, r2, r1
 _08067E52:
 	lsls r1, r0, #0x10
@@ -8582,11 +8582,11 @@ _08067E6C:
 	bx r0
 	.align 2, 0
 _08067E8C: .4byte gCurTask
-_08067E90: .4byte gUnknown_03000140
-_08067E94: .4byte gUnknown_030003BB
+_08067E90: .4byte IWRAM_START + 0x140
+_08067E94: .4byte IWRAM_START + 0x3BB
 _08067E98: .4byte sub_8067EA4
-_08067E9C: .4byte gUnknown_0300014C
-_08067EA0: .4byte gUnknown_030003AC
+_08067E9C: .4byte IWRAM_START + 0x14C
+_08067EA0: .4byte IWRAM_START + 0x3AC
 
 	thumb_func_start sub_8067EA4
 sub_8067EA4: @ 0x08067EA4
@@ -8594,9 +8594,9 @@ sub_8067EA4: @ 0x08067EA4
 	ldr r6, _08067EC8 @ =gCurTask
 	ldr r0, [r6]
 	ldrh r4, [r0, #6]
-	ldr r1, _08067ECC @ =gUnknown_03000140
+	ldr r1, _08067ECC @ =IWRAM_START + 0x140
 	adds r0, r4, r1
-	ldr r2, _08067ED0 @ =gUnknown_030003BB
+	ldr r2, _08067ED0 @ =IWRAM_START + 0x3BB
 	adds r1, r4, r2
 	ldrb r5, [r1]
 	bl sub_802D4CC
@@ -8607,15 +8607,15 @@ sub_8067EA4: @ 0x08067EA4
 	b _08067F7C
 	.align 2, 0
 _08067EC8: .4byte gCurTask
-_08067ECC: .4byte gUnknown_03000140
-_08067ED0: .4byte gUnknown_030003BB
+_08067ECC: .4byte IWRAM_START + 0x140
+_08067ED0: .4byte IWRAM_START + 0x3BB
 _08067ED4:
 	lsls r0, r5, #0x10
 	asrs r2, r0, #0x10
 	adds r7, r0, #0
 	cmp r2, #0
 	bne _08067EFC
-	ldr r1, _08067EF4 @ =gUnknown_0300014C
+	ldr r1, _08067EF4 @ =IWRAM_START + 0x14C
 	adds r0, r4, r1
 	ldr r0, [r0]
 	ldr r1, _08067EF8 @ =0x00000163
@@ -8625,7 +8625,7 @@ _08067ED4:
 	bl TaskDestroy
 	b _08067F7C
 	.align 2, 0
-_08067EF4: .4byte gUnknown_0300014C
+_08067EF4: .4byte IWRAM_START + 0x14C
 _08067EF8: .4byte 0x00000163
 _08067EFC:
 	cmp r2, #2
@@ -8634,7 +8634,7 @@ _08067EFC:
 _08067F04:
 	movs r1, #0
 	ldr r5, _08067F58 @ =gLoadedSaveGame
-	ldr r2, _08067F5C @ =gUnknown_030003AC
+	ldr r2, _08067F5C @ =IWRAM_START + 0x3AC
 	adds r3, r4, r2
 _08067F0C:
 	ldr r2, [r5]
@@ -8674,7 +8674,7 @@ _08067F0C:
 	b _08067F7C
 	.align 2, 0
 _08067F58: .4byte gLoadedSaveGame
-_08067F5C: .4byte gUnknown_030003AC
+_08067F5C: .4byte IWRAM_START + 0x3AC
 _08067F60: .4byte 0x0000FFFF
 _08067F64: .4byte gUnknown_03002AE4
 _08067F68: .4byte gUnknown_0300287C
@@ -8705,15 +8705,15 @@ sub_8067F84: @ 0x08067F84
 	adds r7, r0, r1
 	adds r1, #0x30
 	adds r4, r0, r1
-	ldr r2, _08068070 @ =gUnknown_03000150
+	ldr r2, _08068070 @ =IWRAM_START + 0x150
 	adds r5, r0, r2
-	ldr r1, _08068074 @ =gUnknown_030001B0
+	ldr r1, _08068074 @ =IWRAM_START + 0x1B0
 	adds r1, r1, r0
 	mov r8, r1
-	ldr r2, _08068078 @ =gUnknown_03000288
+	ldr r2, _08068078 @ =IWRAM_START + 0x288
 	adds r2, r2, r0
 	mov sb, r2
-	ldr r1, _0806807C @ =gUnknown_03000258
+	ldr r1, _0806807C @ =IWRAM_START + 0x258
 	adds r1, r1, r0
 	mov sl, r1
 	adds r0, r7, #0
@@ -8803,10 +8803,10 @@ _08067FBE:
 	b _080680B8
 	.align 2, 0
 _0806806C: .4byte gCurTask
-_08068070: .4byte gUnknown_03000150
-_08068074: .4byte gUnknown_030001B0
-_08068078: .4byte gUnknown_03000288
-_0806807C: .4byte gUnknown_03000258
+_08068070: .4byte IWRAM_START + 0x150
+_08068074: .4byte IWRAM_START + 0x1B0
+_08068078: .4byte IWRAM_START + 0x288
+_0806807C: .4byte IWRAM_START + 0x258
 _08068080: .4byte 0x00000252
 _08068084: .4byte 0x000003BA
 _08068088: .4byte 0x00000253
@@ -9315,7 +9315,7 @@ _0806849C:
 	adds r2, r1, #0
 	cmp r2, #0
 	bne _080684C4
-	ldr r1, _080684C0 @ =gUnknown_03000071
+	ldr r1, _080684C0 @ =IWRAM_START + 0x71
 	adds r0, r4, r1
 	strb r2, [r0]
 	adds r1, #0x30
@@ -9326,13 +9326,13 @@ _0806849C:
 _080684B4: .4byte gCurTask
 _080684B8: .4byte gUnknown_030022B8
 _080684BC: .4byte gUnknown_03000710
-_080684C0: .4byte gUnknown_03000071
+_080684C0: .4byte IWRAM_START + 0x71
 _080684C4:
-	ldr r0, _080684FC @ =gUnknown_03000071
+	ldr r0, _080684FC @ =IWRAM_START + 0x71
 	adds r1, r4, r0
 	movs r0, #1
 	strb r0, [r1]
-	ldr r0, _08068500 @ =gUnknown_030000A1
+	ldr r0, _08068500 @ =IWRAM_START + 0xA1
 	adds r1, r4, r0
 	movs r0, #0xff
 	strb r0, [r1]
@@ -9355,8 +9355,8 @@ _080684D4:
 	bl sub_806B498
 	b _0806851E
 	.align 2, 0
-_080684FC: .4byte gUnknown_03000071
-_08068500: .4byte gUnknown_030000A1
+_080684FC: .4byte IWRAM_START + 0x71
+_08068500: .4byte IWRAM_START + 0xA1
 _08068504: .4byte gUnknown_030022B8
 _08068508: .4byte gPressedKeys
 _0806850C:
@@ -10729,7 +10729,7 @@ _0806900A:
 	strh r0, [r1, #8]
 	movs r0, #0x10
 	strh r0, [r1, #0xa]
-	ldr r1, _08069094 @ =gUnknown_03000204
+	ldr r1, _08069094 @ =IWRAM_START + 0x204
 	adds r0, r7, r1
 	ldr r5, _08069098 @ =gUnknown_080D9590
 	lsls r6, r6, #2
@@ -10748,7 +10748,7 @@ _0806900A:
 	str r4, [sp, #0x14]
 	movs r2, #0x16
 	bl sub_806B854
-	ldr r1, _0806909C @ =gUnknown_03000244
+	ldr r1, _0806909C @ =IWRAM_START + 0x244
 	adds r0, r7, r1
 	adds r5, #2
 	adds r6, r6, r5
@@ -10781,9 +10781,9 @@ _08069084: .4byte gCurTask
 _08069088: .4byte gUnknown_03000704
 _0806908C: .4byte gBgScrollRegs
 _08069090: .4byte 0x0000FF10
-_08069094: .4byte gUnknown_03000204
+_08069094: .4byte IWRAM_START + 0x204
 _08069098: .4byte gUnknown_080D9590
-_0806909C: .4byte gUnknown_03000244
+_0806909C: .4byte IWRAM_START + 0x244
 _080690A0: .4byte sub_80690A4
 
 	thumb_func_start sub_80690A4
@@ -10911,7 +10911,7 @@ sub_8069180: @ 0x08069180
 	lsls r0, r0, #4
 	ldrh r2, [r2, #6]
 	adds r0, r0, r2
-	ldr r2, _08069200 @ =gUnknown_03000314
+	ldr r2, _08069200 @ =IWRAM_START + 0x314
 	adds r2, r2, r0
 	mov ip, r2
 	lsls r1, r1, #0x10
@@ -10963,7 +10963,7 @@ _080691F4:
 	bx r0
 	.align 2, 0
 _080691FC: .4byte gCurTask
-_08069200: .4byte gUnknown_03000314
+_08069200: .4byte IWRAM_START + 0x314
 _08069204: .4byte 0xFFFF0000
 
 	thumb_func_start sub_8069208
@@ -11413,12 +11413,12 @@ sub_806955C: @ 0x0806955C
 	lsls r0, r0, #0x12
 	adds r0, r0, r4
 	mov r8, r0
-	ldr r1, _080695F4 @ =gUnknown_0300007C
+	ldr r1, _080695F4 @ =IWRAM_START + 0x7C
 	adds r0, r4, r1
-	ldr r2, _080695F8 @ =gUnknown_030000DC
+	ldr r2, _080695F8 @ =IWRAM_START + 0xDC
 	adds r2, r2, r4
 	mov sb, r2
-	ldr r3, _080695FC @ =gUnknown_0300010C
+	ldr r3, _080695FC @ =IWRAM_START + 0x10C
 	adds r7, r4, r3
 	ldr r2, _08069600 @ =gUnknown_0300070F
 	adds r1, r4, r2
@@ -11434,7 +11434,7 @@ sub_806955C: @ 0x0806955C
 	ldrh r1, [r2]
 	strh r1, [r0, #0xa]
 	ldrh r2, [r2, #2]
-	ldr r3, _0806960C @ =gUnknown_0300009C
+	ldr r3, _0806960C @ =IWRAM_START + 0x9C
 	adds r1, r4, r3
 	strb r2, [r1]
 	bl sub_8004558
@@ -11453,7 +11453,7 @@ sub_806955C: @ 0x0806955C
 	mov r1, sb
 	strh r0, [r1, #0xa]
 	ldrh r1, [r2, #2]
-	ldr r2, _08069618 @ =gUnknown_030000FC
+	ldr r2, _08069618 @ =IWRAM_START + 0xFC
 	adds r0, r4, r2
 	strb r1, [r0]
 	mov r0, sb
@@ -11473,16 +11473,16 @@ sub_806955C: @ 0x0806955C
 	b _08069634
 	.align 2, 0
 _080695F0: .4byte gCurTask
-_080695F4: .4byte gUnknown_0300007C
-_080695F8: .4byte gUnknown_030000DC
-_080695FC: .4byte gUnknown_0300010C
+_080695F4: .4byte IWRAM_START + 0x7C
+_080695F8: .4byte IWRAM_START + 0xDC
+_080695FC: .4byte IWRAM_START + 0x10C
 _08069600: .4byte gUnknown_0300070F
 _08069604: .4byte gUnknown_03000705
 _08069608: .4byte gUnknown_080D9F40
-_0806960C: .4byte gUnknown_0300009C
+_0806960C: .4byte IWRAM_START + 0x9C
 _08069610: .4byte gUnknown_03000710
 _08069614: .4byte gUnknown_03000706
-_08069618: .4byte gUnknown_030000FC
+_08069618: .4byte IWRAM_START + 0xFC
 _0806961C: .4byte gUnknown_080D9FD0
 _08069620:
 	lsls r2, r5, #3
@@ -11540,7 +11540,7 @@ sub_8069688: @ 0x08069688
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r5, r4, r0
-	ldr r1, _080696B4 @ =gUnknown_030001FC
+	ldr r1, _080696B4 @ =IWRAM_START + 0x1FC
 	adds r0, r4, r1
 	ldr r6, [r0]
 	adds r0, r5, #0
@@ -11553,7 +11553,7 @@ sub_8069688: @ 0x08069688
 	b _08069772
 	.align 2, 0
 _080696B0: .4byte gCurTask
-_080696B4: .4byte gUnknown_030001FC
+_080696B4: .4byte IWRAM_START + 0x1FC
 _080696B8:
 	ldr r3, _080696CC @ =gUnknown_03000711
 	adds r1, r4, r3
@@ -11618,7 +11618,7 @@ _08069730:
 	bne _0806973E
 	movs r5, #1
 _0806973E:
-	ldr r3, _0806977C @ =gUnknown_03000200
+	ldr r3, _0806977C @ =IWRAM_START + 0x200
 	adds r0, r4, r3
 	ldr r0, [r0]
 	bl EwramFree
@@ -11647,7 +11647,7 @@ _08069772:
 	bx r0
 	.align 2, 0
 _08069778: .4byte gUnknown_03000709
-_0806977C: .4byte gUnknown_03000200
+_0806977C: .4byte IWRAM_START + 0x200
 _08069780: .4byte 0x0000FFFF
 _08069784: .4byte gUnknown_03002AE4
 _08069788: .4byte gUnknown_0300287C
@@ -11674,17 +11674,17 @@ sub_806979C: @ 0x0806979C
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	str r1, [sp, #4]
-	ldr r1, _08069864 @ =gUnknown_03000314
+	ldr r1, _08069864 @ =IWRAM_START + 0x314
 	adds r1, r1, r0
 	mov sl, r1
-	ldr r2, _08069868 @ =gUnknown_03000284
+	ldr r2, _08069868 @ =IWRAM_START + 0x284
 	adds r4, r0, r2
-	ldr r3, _0806986C @ =gUnknown_0300004C
+	ldr r3, _0806986C @ =IWRAM_START + 0x4C
 	adds r5, r0, r3
-	ldr r1, _08069870 @ =gUnknown_030000AC
+	ldr r1, _08069870 @ =IWRAM_START + 0xAC
 	adds r1, r1, r0
 	mov r8, r1
-	ldr r2, _08069874 @ =gUnknown_0300010C
+	ldr r2, _08069874 @ =IWRAM_START + 0x10C
 	adds r2, r0, r2
 	str r2, [sp, #8]
 	adds r3, #0xf0
@@ -11761,11 +11761,11 @@ _0806985A:
 	b _0806988A
 	.align 2, 0
 _08069860: .4byte gCurTask
-_08069864: .4byte gUnknown_03000314
-_08069868: .4byte gUnknown_03000284
-_0806986C: .4byte gUnknown_0300004C
-_08069870: .4byte gUnknown_030000AC
-_08069874: .4byte gUnknown_0300010C
+_08069864: .4byte IWRAM_START + 0x314
+_08069868: .4byte IWRAM_START + 0x284
+_0806986C: .4byte IWRAM_START + 0x4C
+_08069870: .4byte IWRAM_START + 0xAC
+_08069874: .4byte IWRAM_START + 0x10C
 _08069878: .4byte gUnknown_03000704
 _0806987C: .4byte gUnknown_0300070A
 _08069880: .4byte 0x00000711
@@ -11919,10 +11919,10 @@ sub_8069978: @ 0x08069978
 	movs r0, #0xb9
 	lsls r0, r0, #5
 	bl EwramMalloc
-	ldr r1, _08069B08 @ =gUnknown_03000390
+	ldr r1, _08069B08 @ =IWRAM_START + 0x390
 	adds r2, r4, r1
 	str r0, [r2]
-	ldr r3, _08069B0C @ =gUnknown_0300038C
+	ldr r3, _08069B0C @ =IWRAM_START + 0x38C
 	adds r0, r4, r3
 	str r6, [r0]
 	adds r1, #4
@@ -11947,7 +11947,7 @@ sub_8069978: @ 0x08069978
 	subs r5, #6
 	adds r6, r6, r5
 	ldr r7, [r6]
-	ldr r6, _08069B10 @ =gUnknown_03000398
+	ldr r6, _08069B10 @ =IWRAM_START + 0x398
 	adds r1, r4, r6
 	adds r0, r7, #0
 	ldm r0!, {r3, r5, r6}
@@ -11956,13 +11956,13 @@ sub_8069978: @ 0x08069978
 	lsls r1, r1, #2
 	adds r0, r7, r1
 	ldrb r1, [r0]
-	ldr r3, _08069B14 @ =gUnknown_03000395
+	ldr r3, _08069B14 @ =IWRAM_START + 0x395
 	adds r0, r4, r3
 	strb r1, [r0]
 	ldr r5, _08069B18 @ =0x0000034D
 	adds r0, r7, r5
 	ldrb r1, [r0]
-	ldr r6, _08069B1C @ =gUnknown_03000396
+	ldr r6, _08069B1C @ =IWRAM_START + 0x396
 	adds r0, r4, r6
 	strb r1, [r0]
 	ldr r1, _08069B20 @ =0x0000034E
@@ -12095,12 +12095,12 @@ _08069A94:
 	bx r0
 	.align 2, 0
 _08069B04: .4byte sub_806B760
-_08069B08: .4byte gUnknown_03000390
-_08069B0C: .4byte gUnknown_0300038C
-_08069B10: .4byte gUnknown_03000398
-_08069B14: .4byte gUnknown_03000395
+_08069B08: .4byte IWRAM_START + 0x390
+_08069B0C: .4byte IWRAM_START + 0x38C
+_08069B10: .4byte IWRAM_START + 0x398
+_08069B14: .4byte IWRAM_START + 0x395
 _08069B18: .4byte 0x0000034D
-_08069B1C: .4byte gUnknown_03000396
+_08069B1C: .4byte IWRAM_START + 0x396
 _08069B20: .4byte 0x0000034E
 _08069B24: .4byte 0x0000FFFF
 _08069B28: .4byte 0x00000295
@@ -12548,7 +12548,7 @@ sub_8069EC4: @ 0x08069EC4
 	ldr r1, _0806A0E4 @ =gCurTask
 	ldr r1, [r1]
 	ldrh r2, [r1, #6]
-	ldr r1, _0806A0E8 @ =gUnknown_03000390
+	ldr r1, _0806A0E8 @ =IWRAM_START + 0x390
 	adds r2, r2, r1
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
@@ -12803,7 +12803,7 @@ _0806A0D4:
 	bx r0
 	.align 2, 0
 _0806A0E4: .4byte gCurTask
-_0806A0E8: .4byte gUnknown_03000390
+_0806A0E8: .4byte IWRAM_START + 0x390
 _0806A0EC: .4byte 0x0000FFFF
 _0806A0F0: .4byte gUnknown_080D9E60
 
@@ -12813,7 +12813,7 @@ sub_806A0F4: @ 0x0806A0F4
 	ldr r7, _0806A140 @ =gCurTask
 	ldr r0, [r7]
 	ldrh r5, [r0, #6]
-	ldr r1, _0806A144 @ =gUnknown_03000390
+	ldr r1, _0806A144 @ =IWRAM_START + 0x390
 	adds r0, r5, r1
 	ldr r6, [r0]
 	bl sub_806A348
@@ -12827,7 +12827,7 @@ sub_806A0F4: @ 0x0806A0F4
 	ands r0, r1
 	cmp r0, #0
 	beq _0806A154
-	ldr r2, _0806A14C @ =gUnknown_030003A6
+	ldr r2, _0806A14C @ =IWRAM_START + 0x3A6
 	adds r4, r5, r2
 	ldrb r0, [r4]
 	cmp r0, #0
@@ -12835,7 +12835,7 @@ sub_806A0F4: @ 0x0806A0F4
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	ldrb r1, [r4]
-	ldr r2, _0806A150 @ =gUnknown_030003A5
+	ldr r2, _0806A150 @ =IWRAM_START + 0x3A5
 	adds r0, r5, r2
 	strb r1, [r0]
 	ldrb r0, [r4]
@@ -12847,16 +12847,16 @@ sub_806A0F4: @ 0x0806A0F4
 	b _0806A19A
 	.align 2, 0
 _0806A140: .4byte gCurTask
-_0806A144: .4byte gUnknown_03000390
+_0806A144: .4byte IWRAM_START + 0x390
 _0806A148: .4byte gUnknown_030022B8
-_0806A14C: .4byte gUnknown_030003A6
-_0806A150: .4byte gUnknown_030003A5
+_0806A14C: .4byte IWRAM_START + 0x3A6
+_0806A150: .4byte IWRAM_START + 0x3A5
 _0806A154:
 	movs r0, #0x80
 	ands r0, r1
 	cmp r0, #0
 	beq _0806A1B0
-	ldr r0, _0806A1A4 @ =gUnknown_030003A6
+	ldr r0, _0806A1A4 @ =IWRAM_START + 0x3A6
 	adds r4, r5, r0
 	ldrb r0, [r4]
 	cmp r0, #5
@@ -12876,7 +12876,7 @@ _0806A154:
 	movs r0, #0x6c
 	bl m4aSongNumStart
 	ldrb r1, [r4]
-	ldr r2, _0806A1A8 @ =gUnknown_030003A4
+	ldr r2, _0806A1A8 @ =IWRAM_START + 0x3A4
 	adds r0, r5, r2
 	strb r1, [r0]
 	ldrb r1, [r4]
@@ -12892,8 +12892,8 @@ _0806A19A:
 	str r0, [r1, #8]
 	b _0806A1C6
 	.align 2, 0
-_0806A1A4: .4byte gUnknown_030003A6
-_0806A1A8: .4byte gUnknown_030003A4
+_0806A1A4: .4byte IWRAM_START + 0x3A6
+_0806A1A8: .4byte IWRAM_START + 0x3A4
 _0806A1AC: .4byte sub_806A1D0
 _0806A1B0:
 	ldr r0, _0806A1CC @ =gUnknown_030022B8
@@ -12924,12 +12924,12 @@ sub_806A1D0: @ 0x0806A1D0
 	lsls r0, r0, #0x12
 	adds r7, r1, r0
 	movs r3, #5
-	ldr r0, _0806A210 @ =gUnknown_03000394
+	ldr r0, _0806A210 @ =IWRAM_START + 0x394
 	adds r2, r1, r0
 	ldrb r0, [r2]
 	adds r0, #1
 	strb r0, [r2]
-	ldr r4, _0806A214 @ =gUnknown_030003A6
+	ldr r4, _0806A214 @ =IWRAM_START + 0x3A6
 	adds r0, r1, r4
 	subs r4, #1
 	adds r1, r1, r4
@@ -12945,8 +12945,8 @@ sub_806A1D0: @ 0x0806A1D0
 	b _0806A222
 	.align 2, 0
 _0806A20C: .4byte gCurTask
-_0806A210: .4byte gUnknown_03000394
-_0806A214: .4byte gUnknown_030003A6
+_0806A210: .4byte IWRAM_START + 0x394
+_0806A214: .4byte IWRAM_START + 0x3A6
 _0806A218:
 	ldrb r1, [r2]
 	lsls r1, r1, #1
@@ -13122,21 +13122,21 @@ sub_806A348: @ 0x0806A348
 	lsls r0, r0, #0x12
 	adds r0, r5, r0
 	str r0, [sp]
-	ldr r1, _0806A53C @ =gUnknown_0300008C
+	ldr r1, _0806A53C @ =IWRAM_START + 0x8C
 	adds r0, r5, r1
-	ldr r2, _0806A540 @ =gUnknown_030000BC
+	ldr r2, _0806A540 @ =IWRAM_START + 0xBC
 	adds r4, r5, r2
-	ldr r3, _0806A544 @ =gUnknown_0300014C
+	ldr r3, _0806A544 @ =IWRAM_START + 0x14C
 	adds r6, r5, r3
-	ldr r1, _0806A548 @ =gUnknown_0300026C
+	ldr r1, _0806A548 @ =IWRAM_START + 0x26C
 	adds r7, r5, r1
-	ldr r2, _0806A54C @ =gUnknown_030002CC
+	ldr r2, _0806A54C @ =IWRAM_START + 0x2CC
 	adds r2, r2, r5
 	mov r8, r2
-	ldr r3, _0806A550 @ =gUnknown_0300032C
+	ldr r3, _0806A550 @ =IWRAM_START + 0x32C
 	adds r3, r3, r5
 	mov sb, r3
-	ldr r1, _0806A554 @ =gUnknown_03000390
+	ldr r1, _0806A554 @ =IWRAM_START + 0x390
 	adds r1, r1, r5
 	mov sl, r1
 	movs r2, #5
@@ -13144,16 +13144,16 @@ sub_806A348: @ 0x0806A348
 	bl sub_80051E8
 	adds r0, r4, #0
 	bl sub_80051E8
-	ldr r4, _0806A558 @ =gUnknown_030000EC
+	ldr r4, _0806A558 @ =IWRAM_START + 0xEC
 	adds r3, r5, r4
 	adds r0, r3, #0
 	bl sub_8004558
-	ldr r0, _0806A55C @ =gUnknown_0300011C
+	ldr r0, _0806A55C @ =IWRAM_START + 0x11C
 	adds r3, r5, r0
 	adds r0, r3, #0
 	bl sub_8004558
 	adds r3, r5, r4
-	ldr r1, _0806A560 @ =gUnknown_030003A6
+	ldr r1, _0806A560 @ =IWRAM_START + 0x3A6
 	adds r4, r5, r1
 	ldrb r0, [r4]
 	cmp r0, #0
@@ -13161,7 +13161,7 @@ sub_806A348: @ 0x0806A348
 	adds r0, r3, #0
 	bl sub_80051E8
 _0806A3B8:
-	ldr r2, _0806A55C @ =gUnknown_0300011C
+	ldr r2, _0806A55C @ =IWRAM_START + 0x11C
 	adds r3, r5, r2
 	ldrb r0, [r4]
 	lsls r1, r0, #3
@@ -13353,16 +13353,16 @@ _0806A528:
 	bx r0
 	.align 2, 0
 _0806A538: .4byte gCurTask
-_0806A53C: .4byte gUnknown_0300008C
-_0806A540: .4byte gUnknown_030000BC
-_0806A544: .4byte gUnknown_0300014C
-_0806A548: .4byte gUnknown_0300026C
-_0806A54C: .4byte gUnknown_030002CC
-_0806A550: .4byte gUnknown_0300032C
-_0806A554: .4byte gUnknown_03000390
-_0806A558: .4byte gUnknown_030000EC
-_0806A55C: .4byte gUnknown_0300011C
-_0806A560: .4byte gUnknown_030003A6
+_0806A53C: .4byte IWRAM_START + 0x8C
+_0806A540: .4byte IWRAM_START + 0xBC
+_0806A544: .4byte IWRAM_START + 0x14C
+_0806A548: .4byte IWRAM_START + 0x26C
+_0806A54C: .4byte IWRAM_START + 0x2CC
+_0806A550: .4byte IWRAM_START + 0x32C
+_0806A554: .4byte IWRAM_START + 0x390
+_0806A558: .4byte IWRAM_START + 0xEC
+_0806A55C: .4byte IWRAM_START + 0x11C
+_0806A560: .4byte IWRAM_START + 0x3A6
 _0806A564: .4byte 0xFFFF0000
 
 	thumb_func_start sub_806A568
@@ -14087,7 +14087,7 @@ sub_806AAFC: @ 0x0806AAFC
 	ldr r0, _0806AB20 @ =gCurTask
 	ldr r3, [r0]
 	ldrh r0, [r3, #6]
-	ldr r1, _0806AB24 @ =gUnknown_03000150
+	ldr r1, _0806AB24 @ =IWRAM_START + 0x150
 	adds r0, r0, r1
 	movs r2, #0
 	strh r2, [r0]
@@ -14104,7 +14104,7 @@ sub_806AAFC: @ 0x0806AAFC
 	bx lr
 	.align 2, 0
 _0806AB20: .4byte gCurTask
-_0806AB24: .4byte gUnknown_03000150
+_0806AB24: .4byte IWRAM_START + 0x150
 _0806AB28: .4byte sub_806AB2C
 
 	thumb_func_start sub_806AB2C
@@ -14116,7 +14116,7 @@ sub_806AB2C: @ 0x0806AB2C
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	ldr r0, _0806AB7C @ =gUnknown_03000150
+	ldr r0, _0806AB7C @ =IWRAM_START + 0x150
 	adds r4, r5, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -14126,11 +14126,11 @@ sub_806AB2C: @ 0x0806AB2C
 	beq _0806AB70
 	adds r0, r6, #0
 	bl sub_80672BC
-	ldr r0, _0806AB80 @ =gUnknown_03000163
+	ldr r0, _0806AB80 @ =IWRAM_START + 0x163
 	adds r1, r5, r0
 	movs r0, #1
 	strb r0, [r1]
-	ldr r1, _0806AB84 @ =gUnknown_0300015C
+	ldr r1, _0806AB84 @ =IWRAM_START + 0x15C
 	adds r0, r5, r1
 	ldr r0, [r0]
 	ldr r1, _0806AB88 @ =0x00000784
@@ -14146,9 +14146,9 @@ _0806AB70:
 	bx r0
 	.align 2, 0
 _0806AB78: .4byte gCurTask
-_0806AB7C: .4byte gUnknown_03000150
-_0806AB80: .4byte gUnknown_03000163
-_0806AB84: .4byte gUnknown_0300015C
+_0806AB7C: .4byte IWRAM_START + 0x150
+_0806AB80: .4byte IWRAM_START + 0x163
+_0806AB84: .4byte IWRAM_START + 0x15C
 _0806AB88: .4byte 0x00000784
 _0806AB8C: .4byte sub_8064F1C
 
@@ -14158,7 +14158,7 @@ sub_806AB90: @ 0x0806AB90
 	ldr r5, _0806ABB8 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806ABBC @ =gUnknown_03000150
+	ldr r0, _0806ABBC @ =IWRAM_START + 0x150
 	adds r4, r4, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -14175,7 +14175,7 @@ _0806ABB2:
 	bx r0
 	.align 2, 0
 _0806ABB8: .4byte gCurTask
-_0806ABBC: .4byte gUnknown_03000150
+_0806ABBC: .4byte IWRAM_START + 0x150
 _0806ABC0: .4byte sub_8064C44
 
 	thumb_func_start sub_806ABC4
@@ -14183,7 +14183,7 @@ sub_806ABC4: @ 0x0806ABC4
 	ldr r0, _0806ABE8 @ =gCurTask
 	ldr r3, [r0]
 	ldrh r0, [r3, #6]
-	ldr r1, _0806ABEC @ =gUnknown_03000150
+	ldr r1, _0806ABEC @ =IWRAM_START + 0x150
 	adds r0, r0, r1
 	movs r2, #0
 	strh r2, [r0]
@@ -14200,7 +14200,7 @@ sub_806ABC4: @ 0x0806ABC4
 	bx lr
 	.align 2, 0
 _0806ABE8: .4byte gCurTask
-_0806ABEC: .4byte gUnknown_03000150
+_0806ABEC: .4byte IWRAM_START + 0x150
 _0806ABF0: .4byte sub_8065004
 
 	thumb_func_start sub_806ABF4
@@ -14209,7 +14209,7 @@ sub_806ABF4: @ 0x0806ABF4
 	ldr r5, _0806AC1C @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806AC20 @ =gUnknown_03000150
+	ldr r0, _0806AC20 @ =IWRAM_START + 0x150
 	adds r4, r4, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -14226,7 +14226,7 @@ _0806AC16:
 	bx r0
 	.align 2, 0
 _0806AC1C: .4byte gCurTask
-_0806AC20: .4byte gUnknown_03000150
+_0806AC20: .4byte IWRAM_START + 0x150
 _0806AC24: .4byte sub_8064C44
 
 	thumb_func_start sub_806AC28
@@ -14234,7 +14234,7 @@ sub_806AC28: @ 0x0806AC28
 	ldr r0, _0806AC4C @ =gCurTask
 	ldr r3, [r0]
 	ldrh r0, [r3, #6]
-	ldr r1, _0806AC50 @ =gUnknown_03000150
+	ldr r1, _0806AC50 @ =IWRAM_START + 0x150
 	adds r0, r0, r1
 	movs r2, #0
 	strh r2, [r0]
@@ -14251,7 +14251,7 @@ sub_806AC28: @ 0x0806AC28
 	bx lr
 	.align 2, 0
 _0806AC4C: .4byte gCurTask
-_0806AC50: .4byte gUnknown_03000150
+_0806AC50: .4byte IWRAM_START + 0x150
 _0806AC54: .4byte sub_806AC58
 
 	thumb_func_start sub_806AC58
@@ -14263,7 +14263,7 @@ sub_806AC58: @ 0x0806AC58
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	ldr r0, _0806ACA8 @ =gUnknown_03000150
+	ldr r0, _0806ACA8 @ =IWRAM_START + 0x150
 	adds r4, r5, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -14273,11 +14273,11 @@ sub_806AC58: @ 0x0806AC58
 	beq _0806AC9C
 	adds r0, r6, #0
 	bl sub_8069978
-	ldr r0, _0806ACAC @ =gUnknown_03000163
+	ldr r0, _0806ACAC @ =IWRAM_START + 0x163
 	adds r1, r5, r0
 	movs r0, #1
 	strb r0, [r1]
-	ldr r1, _0806ACB0 @ =gUnknown_0300015C
+	ldr r1, _0806ACB0 @ =IWRAM_START + 0x15C
 	adds r0, r5, r1
 	ldr r0, [r0]
 	ldr r1, _0806ACB4 @ =0x00000784
@@ -14293,9 +14293,9 @@ _0806AC9C:
 	bx r0
 	.align 2, 0
 _0806ACA4: .4byte gCurTask
-_0806ACA8: .4byte gUnknown_03000150
-_0806ACAC: .4byte gUnknown_03000163
-_0806ACB0: .4byte gUnknown_0300015C
+_0806ACA8: .4byte IWRAM_START + 0x150
+_0806ACAC: .4byte IWRAM_START + 0x163
+_0806ACB0: .4byte IWRAM_START + 0x15C
 _0806ACB4: .4byte 0x00000784
 _0806ACB8: .4byte sub_8065174
 
@@ -14305,7 +14305,7 @@ sub_806ACBC: @ 0x0806ACBC
 	ldr r5, _0806ACE4 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806ACE8 @ =gUnknown_03000150
+	ldr r0, _0806ACE8 @ =IWRAM_START + 0x150
 	adds r4, r4, r0
 	bl sub_806AD98
 	adds r0, r4, #0
@@ -14322,7 +14322,7 @@ _0806ACDE:
 	bx r0
 	.align 2, 0
 _0806ACE4: .4byte gCurTask
-_0806ACE8: .4byte gUnknown_03000150
+_0806ACE8: .4byte IWRAM_START + 0x150
 _0806ACEC: .4byte sub_8064C44
 
 	thumb_func_start sub_806ACF0
@@ -14469,13 +14469,13 @@ sub_806ADF4: @ 0x0806ADF4
 	ldr r3, _0806AE44 @ =0x00000359
 	adds r1, r4, r3
 	ldrb r3, [r1]
-	ldr r6, _0806AE48 @ =gUnknown_030000F4
+	ldr r6, _0806AE48 @ =IWRAM_START + 0xF4
 	adds r1, r2, r6
 	strb r3, [r1]
 	ldr r1, _0806AE4C @ =0x0000035B
 	adds r4, r4, r1
 	ldrb r3, [r4]
-	ldr r4, _0806AE50 @ =gUnknown_030000F6
+	ldr r4, _0806AE50 @ =IWRAM_START + 0xF6
 	adds r1, r2, r4
 	strb r3, [r1]
 	adds r6, #1
@@ -14489,9 +14489,9 @@ sub_806ADF4: @ 0x0806ADF4
 	.align 2, 0
 _0806AE40: .4byte sub_80653E4
 _0806AE44: .4byte 0x00000359
-_0806AE48: .4byte gUnknown_030000F4
+_0806AE48: .4byte IWRAM_START + 0xF4
 _0806AE4C: .4byte 0x0000035B
-_0806AE50: .4byte gUnknown_030000F6
+_0806AE50: .4byte IWRAM_START + 0xF6
 
 	thumb_func_start sub_806AE54
 sub_806AE54: @ 0x0806AE54
@@ -14561,13 +14561,13 @@ sub_806AEB0: @ 0x0806AEB0
 	ldr r3, _0806AF00 @ =0x0000035A
 	adds r1, r4, r3
 	ldrb r3, [r1]
-	ldr r6, _0806AF04 @ =gUnknown_030000F4
+	ldr r6, _0806AF04 @ =IWRAM_START + 0xF4
 	adds r1, r2, r6
 	strb r3, [r1]
 	ldr r1, _0806AF08 @ =0x0000035B
 	adds r4, r4, r1
 	ldrb r3, [r4]
-	ldr r4, _0806AF0C @ =gUnknown_030000F6
+	ldr r4, _0806AF0C @ =IWRAM_START + 0xF6
 	adds r1, r2, r4
 	strb r3, [r1]
 	adds r6, #1
@@ -14581,9 +14581,9 @@ sub_806AEB0: @ 0x0806AEB0
 	.align 2, 0
 _0806AEFC: .4byte sub_8065838
 _0806AF00: .4byte 0x0000035A
-_0806AF04: .4byte gUnknown_030000F4
+_0806AF04: .4byte IWRAM_START + 0xF4
 _0806AF08: .4byte 0x0000035B
-_0806AF0C: .4byte gUnknown_030000F6
+_0806AF0C: .4byte IWRAM_START + 0xF6
 
 	thumb_func_start sub_806AF10
 sub_806AF10: @ 0x0806AF10
@@ -14638,7 +14638,7 @@ sub_806AF6C: @ 0x0806AF6C
 	ldr r4, _0806AF9C @ =gCurTask
 	ldr r0, [r4]
 	ldrh r1, [r0, #6]
-	ldr r0, _0806AFA0 @ =gUnknown_030001B4
+	ldr r0, _0806AFA0 @ =IWRAM_START + 0x1B4
 	adds r3, r1, r0
 	adds r0, #0x60
 	adds r2, r1, r0
@@ -14646,7 +14646,7 @@ sub_806AF6C: @ 0x0806AF6C
 	strh r0, [r2, #0x18]
 	movs r0, #0x35
 	strh r0, [r3, #0x18]
-	ldr r2, _0806AFA4 @ =gUnknown_030001E4
+	ldr r2, _0806AFA4 @ =IWRAM_START + 0x1E4
 	adds r3, r1, r2
 	strh r0, [r3, #0x18]
 	bl sub_8066818
@@ -14658,8 +14658,8 @@ sub_806AF6C: @ 0x0806AF6C
 	bx r0
 	.align 2, 0
 _0806AF9C: .4byte gCurTask
-_0806AFA0: .4byte gUnknown_030001B4
-_0806AFA4: .4byte gUnknown_030001E4
+_0806AFA0: .4byte IWRAM_START + 0x1B4
+_0806AFA4: .4byte IWRAM_START + 0x1E4
 _0806AFA8: .4byte sub_8066004
 
 	thumb_func_start sub_806AFAC
@@ -14668,7 +14668,7 @@ sub_806AFAC: @ 0x0806AFAC
 	ldr r4, _0806AFDC @ =gCurTask
 	ldr r0, [r4]
 	ldrh r1, [r0, #6]
-	ldr r0, _0806AFE0 @ =gUnknown_030001B4
+	ldr r0, _0806AFE0 @ =IWRAM_START + 0x1B4
 	adds r3, r1, r0
 	adds r0, #0x60
 	adds r2, r1, r0
@@ -14676,7 +14676,7 @@ sub_806AFAC: @ 0x0806AFAC
 	strh r0, [r2, #0x18]
 	movs r0, #0x4d
 	strh r0, [r3, #0x18]
-	ldr r2, _0806AFE4 @ =gUnknown_030001E4
+	ldr r2, _0806AFE4 @ =IWRAM_START + 0x1E4
 	adds r3, r1, r2
 	strh r0, [r3, #0x18]
 	bl sub_8066818
@@ -14688,8 +14688,8 @@ sub_806AFAC: @ 0x0806AFAC
 	bx r0
 	.align 2, 0
 _0806AFDC: .4byte gCurTask
-_0806AFE0: .4byte gUnknown_030001B4
-_0806AFE4: .4byte gUnknown_030001E4
+_0806AFE0: .4byte IWRAM_START + 0x1B4
+_0806AFE4: .4byte IWRAM_START + 0x1E4
 _0806AFE8: .4byte sub_8066220
 
 	thumb_func_start sub_806AFEC
@@ -14698,7 +14698,7 @@ sub_806AFEC: @ 0x0806AFEC
 	ldr r4, _0806B01C @ =gCurTask
 	ldr r0, [r4]
 	ldrh r1, [r0, #6]
-	ldr r0, _0806B020 @ =gUnknown_030001B4
+	ldr r0, _0806B020 @ =IWRAM_START + 0x1B4
 	adds r3, r1, r0
 	adds r0, #0x60
 	adds r2, r1, r0
@@ -14706,7 +14706,7 @@ sub_806AFEC: @ 0x0806AFEC
 	strh r0, [r2, #0x18]
 	movs r0, #0xb4
 	strh r0, [r3, #0x18]
-	ldr r2, _0806B024 @ =gUnknown_030001E4
+	ldr r2, _0806B024 @ =IWRAM_START + 0x1E4
 	adds r3, r1, r2
 	strh r0, [r3, #0x18]
 	bl sub_8066818
@@ -14718,8 +14718,8 @@ sub_806AFEC: @ 0x0806AFEC
 	bx r0
 	.align 2, 0
 _0806B01C: .4byte gCurTask
-_0806B020: .4byte gUnknown_030001B4
-_0806B024: .4byte gUnknown_030001E4
+_0806B020: .4byte IWRAM_START + 0x1B4
+_0806B024: .4byte IWRAM_START + 0x1E4
 _0806B028: .4byte sub_8066478
 
 	thumb_func_start sub_806B02C
@@ -14740,16 +14740,16 @@ sub_806B02C: @ 0x0806B02C
 	movs r4, #0xc0
 	lsls r4, r4, #0x12
 	adds r4, r1, r4
-	ldr r2, _0806B090 @ =gUnknown_030001FC
+	ldr r2, _0806B090 @ =IWRAM_START + 0x1FC
 	adds r0, r1, r2
 	str r5, [r0]
 	ldr r3, _0806B094 @ =0x0000035B
 	adds r5, r5, r3
 	ldrb r2, [r5]
-	ldr r3, _0806B098 @ =gUnknown_03000200
+	ldr r3, _0806B098 @ =IWRAM_START + 0x200
 	adds r0, r1, r3
 	strb r2, [r0]
-	ldr r0, _0806B09C @ =gUnknown_03000201
+	ldr r0, _0806B09C @ =IWRAM_START + 0x201
 	adds r1, r1, r0
 	strb r6, [r1]
 	ldr r1, _0806B0A0 @ =gUnknown_03005B50
@@ -14769,10 +14769,10 @@ sub_806B02C: @ 0x0806B02C
 	bx r0
 	.align 2, 0
 _0806B08C: .4byte sub_806B0D8
-_0806B090: .4byte gUnknown_030001FC
+_0806B090: .4byte IWRAM_START + 0x1FC
 _0806B094: .4byte 0x0000035B
-_0806B098: .4byte gUnknown_03000200
-_0806B09C: .4byte gUnknown_03000201
+_0806B098: .4byte IWRAM_START + 0x200
+_0806B09C: .4byte IWRAM_START + 0x201
 _0806B0A0: .4byte gUnknown_03005B50
 _0806B0A4: .4byte 0x06010000
 _0806B0A8: .4byte gUnknown_03005B54
@@ -14807,7 +14807,7 @@ sub_806B0D8: @ 0x0806B0D8
 	ldr r5, _0806B104 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806B108 @ =gUnknown_030001F0
+	ldr r0, _0806B108 @ =IWRAM_START + 0x1F0
 	adds r4, r4, r0
 	bl sub_806B1F8
 	bl sub_806B1B8
@@ -14825,7 +14825,7 @@ _0806B0FE:
 	bx r0
 	.align 2, 0
 _0806B104: .4byte gCurTask
-_0806B108: .4byte gUnknown_030001F0
+_0806B108: .4byte IWRAM_START + 0x1F0
 _0806B10C: .4byte sub_8066B0C
 
 	thumb_func_start sub_806B110
@@ -14834,7 +14834,7 @@ sub_806B110: @ 0x0806B110
 	ldr r4, _0806B140 @ =gCurTask
 	ldr r0, [r4]
 	ldrh r0, [r0, #6]
-	ldr r1, _0806B144 @ =gUnknown_030001F0
+	ldr r1, _0806B144 @ =IWRAM_START + 0x1F0
 	adds r0, r0, r1
 	movs r2, #0
 	strh r2, [r0]
@@ -14855,7 +14855,7 @@ sub_806B110: @ 0x0806B110
 	bx r0
 	.align 2, 0
 _0806B140: .4byte gCurTask
-_0806B144: .4byte gUnknown_030001F0
+_0806B144: .4byte IWRAM_START + 0x1F0
 _0806B148: .4byte sub_806B14C
 
 	thumb_func_start sub_806B14C
@@ -14864,7 +14864,7 @@ sub_806B14C: @ 0x0806B14C
 	ldr r0, _0806B170 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r5, [r0, #6]
-	ldr r0, _0806B174 @ =gUnknown_030001F0
+	ldr r0, _0806B174 @ =IWRAM_START + 0x1F0
 	adds r4, r5, r0
 	bl sub_806B1B8
 	adds r0, r4, #0
@@ -14876,9 +14876,9 @@ sub_806B14C: @ 0x0806B14C
 	b _0806B1A6
 	.align 2, 0
 _0806B170: .4byte gCurTask
-_0806B174: .4byte gUnknown_030001F0
+_0806B174: .4byte IWRAM_START + 0x1F0
 _0806B178:
-	ldr r1, _0806B18C @ =gUnknown_03000201
+	ldr r1, _0806B18C @ =IWRAM_START + 0x201
 	adds r0, r5, r1
 	ldrb r0, [r0]
 	cmp r0, #1
@@ -14887,9 +14887,9 @@ _0806B178:
 	bl sub_8063A00
 	b _0806B19E
 	.align 2, 0
-_0806B18C: .4byte gUnknown_03000201
+_0806B18C: .4byte IWRAM_START + 0x201
 _0806B190:
-	ldr r1, _0806B1AC @ =gUnknown_030001FC
+	ldr r1, _0806B1AC @ =IWRAM_START + 0x1FC
 	adds r0, r5, r1
 	ldr r0, [r0]
 	ldr r1, _0806B1B0 @ =0x00000784
@@ -14905,7 +14905,7 @@ _0806B1A6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806B1AC: .4byte gUnknown_030001FC
+_0806B1AC: .4byte IWRAM_START + 0x1FC
 _0806B1B0: .4byte 0x00000784
 _0806B1B4: .4byte gCurTask
 
@@ -14949,7 +14949,7 @@ sub_806B1F8: @ 0x0806B1F8
 	adds r4, r0, r1
 	adds r1, #0x60
 	adds r6, r0, r1
-	ldr r1, _0806B254 @ =gUnknown_03000180
+	ldr r1, _0806B254 @ =IWRAM_START + 0x180
 	adds r7, r0, r1
 	movs r5, #0
 _0806B210:
@@ -14984,7 +14984,7 @@ _0806B22A:
 	bx r0
 	.align 2, 0
 _0806B250: .4byte gCurTask
-_0806B254: .4byte gUnknown_03000180
+_0806B254: .4byte IWRAM_START + 0x180
 
 	thumb_func_start sub_806B258
 sub_806B258: @ 0x0806B258
@@ -15014,7 +15014,7 @@ sub_806B280: @ 0x0806B280
 	ldr r5, _0806B2A8 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806B2AC @ =gUnknown_03000130
+	ldr r0, _0806B2AC @ =IWRAM_START + 0x130
 	adds r4, r4, r0
 	bl sub_806B2F8
 	adds r0, r4, #0
@@ -15031,7 +15031,7 @@ _0806B2A2:
 	bx r0
 	.align 2, 0
 _0806B2A8: .4byte gCurTask
-_0806B2AC: .4byte gUnknown_03000130
+_0806B2AC: .4byte IWRAM_START + 0x130
 _0806B2B0: .4byte sub_8066FAC
 
 	thumb_func_start sub_806B2B4
@@ -15040,7 +15040,7 @@ sub_806B2B4: @ 0x0806B2B4
 	ldr r5, _0806B2EC @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806B2F0 @ =gUnknown_03000130
+	ldr r0, _0806B2F0 @ =IWRAM_START + 0x130
 	adds r4, r4, r0
 	bl sub_806B2F8
 	movs r1, #0
@@ -15063,7 +15063,7 @@ sub_806B2B4: @ 0x0806B2B4
 	bx r0
 	.align 2, 0
 _0806B2EC: .4byte gCurTask
-_0806B2F0: .4byte gUnknown_03000130
+_0806B2F0: .4byte IWRAM_START + 0x130
 _0806B2F4: .4byte sub_806723C
 
 	thumb_func_start sub_806B2F8
@@ -15119,7 +15119,7 @@ sub_806B354: @ 0x0806B354
 	ldr r6, _0806B384 @ =gCurTask
 	ldr r0, [r6]
 	ldrh r5, [r0, #6]
-	ldr r0, _0806B388 @ =gUnknown_03000140
+	ldr r0, _0806B388 @ =IWRAM_START + 0x140
 	adds r4, r5, r0
 	bl sub_8067F84
 	adds r0, r4, #0
@@ -15127,7 +15127,7 @@ sub_806B354: @ 0x0806B354
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _0806B37E
-	ldr r0, _0806B38C @ =gUnknown_030003B8
+	ldr r0, _0806B38C @ =IWRAM_START + 0x3B8
 	adds r1, r5, r0
 	movs r0, #0
 	strh r0, [r1]
@@ -15140,8 +15140,8 @@ _0806B37E:
 	bx r0
 	.align 2, 0
 _0806B384: .4byte gCurTask
-_0806B388: .4byte gUnknown_03000140
-_0806B38C: .4byte gUnknown_030003B8
+_0806B388: .4byte IWRAM_START + 0x140
+_0806B38C: .4byte IWRAM_START + 0x3B8
 _0806B390: .4byte sub_80677EC
 
 	thumb_func_start sub_806B394
@@ -15244,7 +15244,7 @@ sub_806B454: @ 0x0806B454
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r1, r0
-	ldr r2, _0806B47C @ =gUnknown_030001FC
+	ldr r2, _0806B47C @ =IWRAM_START + 0x1FC
 	adds r1, r1, r2
 	ldr r4, [r1]
 	bl sub_802D4CC
@@ -15255,7 +15255,7 @@ sub_806B454: @ 0x0806B454
 	b _0806B48E
 	.align 2, 0
 _0806B478: .4byte gCurTask
-_0806B47C: .4byte gUnknown_030001FC
+_0806B47C: .4byte IWRAM_START + 0x1FC
 _0806B480:
 	ldr r0, _0806B494 @ =0x00000163
 	adds r1, r4, r0
@@ -15327,7 +15327,7 @@ sub_806B4F8: @ 0x0806B4F8
 	ldr r0, _0806B550 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
-	ldr r2, _0806B554 @ =gUnknown_0300010C
+	ldr r2, _0806B554 @ =IWRAM_START + 0x10C
 	adds r0, r1, r2
 	adds r2, #0x30
 	adds r5, r1, r2
@@ -15367,7 +15367,7 @@ _0806B52C:
 	bx r0
 	.align 2, 0
 _0806B550: .4byte gCurTask
-_0806B554: .4byte gUnknown_0300010C
+_0806B554: .4byte IWRAM_START + 0x10C
 
 	thumb_func_start sub_806B558
 sub_806B558: @ 0x0806B558
@@ -15466,7 +15466,7 @@ sub_806B60C: @ 0x0806B60C
 	movs r5, #0xc0
 	lsls r5, r5, #0x12
 	adds r5, r4, r5
-	ldr r1, _0806B66C @ =gUnknown_030000DC
+	ldr r1, _0806B66C @ =IWRAM_START + 0xDC
 	adds r0, r4, r1
 	ldr r2, _0806B670 @ =gUnknown_03000706
 	adds r1, r4, r2
@@ -15478,7 +15478,7 @@ sub_806B60C: @ 0x0806B60C
 	movs r6, #0
 	strh r2, [r0, #0xa]
 	ldrh r2, [r1, #2]
-	ldr r3, _0806B678 @ =gUnknown_030000FC
+	ldr r3, _0806B678 @ =IWRAM_START + 0xFC
 	adds r1, r4, r3
 	strb r2, [r1]
 	bl sub_8004558
@@ -15500,10 +15500,10 @@ sub_806B60C: @ 0x0806B60C
 	bx r0
 	.align 2, 0
 _0806B668: .4byte gCurTask
-_0806B66C: .4byte gUnknown_030000DC
+_0806B66C: .4byte IWRAM_START + 0xDC
 _0806B670: .4byte gUnknown_03000706
 _0806B674: .4byte gUnknown_080D9F40
-_0806B678: .4byte gUnknown_030000FC
+_0806B678: .4byte IWRAM_START + 0xFC
 _0806B67C: .4byte gUnknown_03000707
 _0806B680: .4byte sub_8069110
 
@@ -15622,7 +15622,7 @@ sub_806B760: @ 0x0806B760
 	ldr r5, _0806B790 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r0, [r0, #6]
-	ldr r1, _0806B794 @ =gUnknown_03000394
+	ldr r1, _0806B794 @ =IWRAM_START + 0x394
 	adds r4, r0, r1
 	ldrb r0, [r4]
 	bl sub_8069EC4
@@ -15644,7 +15644,7 @@ _0806B78A:
 	bx r0
 	.align 2, 0
 _0806B790: .4byte gCurTask
-_0806B794: .4byte gUnknown_03000394
+_0806B794: .4byte IWRAM_START + 0x394
 _0806B798: .4byte sub_806B79C
 
 	thumb_func_start sub_806B79C
@@ -15707,7 +15707,7 @@ sub_806B800: @ 0x0806B800
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r4, r0
-	ldr r2, _0806B828 @ =gUnknown_0300038C
+	ldr r2, _0806B828 @ =IWRAM_START + 0x38C
 	adds r1, r4, r2
 	ldr r5, [r1]
 	bl sub_802D4CC
@@ -15718,9 +15718,9 @@ sub_806B800: @ 0x0806B800
 	b _0806B844
 	.align 2, 0
 _0806B824: .4byte gCurTask
-_0806B828: .4byte gUnknown_0300038C
+_0806B828: .4byte IWRAM_START + 0x38C
 _0806B82C:
-	ldr r1, _0806B84C @ =gUnknown_03000390
+	ldr r1, _0806B84C @ =IWRAM_START + 0x390
 	adds r0, r4, r1
 	ldr r0, [r0]
 	bl EwramFree
@@ -15735,7 +15735,7 @@ _0806B844:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806B84C: .4byte gUnknown_03000390
+_0806B84C: .4byte IWRAM_START + 0x390
 _0806B850: .4byte 0x00000163
 
 	thumb_func_start sub_806B854
@@ -16359,9 +16359,9 @@ sub_806BD28: @ 0x0806BD28
 	ldr r6, _0806BD7C @ =gCurTask
 	ldr r0, [r6]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806BD80 @ =gUnknown_03000088
+	ldr r0, _0806BD80 @ =IWRAM_START + 0x88
 	adds r5, r4, r0
-	ldr r1, _0806BD84 @ =gUnknown_03000018
+	ldr r1, _0806BD84 @ =IWRAM_START + 0x18
 	adds r0, r4, r1
 	bl sub_80051E8
 	ldr r2, _0806BD88 @ =gBldRegs
@@ -16399,8 +16399,8 @@ _0806BD76:
 	bx r0
 	.align 2, 0
 _0806BD7C: .4byte gCurTask
-_0806BD80: .4byte gUnknown_03000088
-_0806BD84: .4byte gUnknown_03000018
+_0806BD80: .4byte IWRAM_START + 0x88
+_0806BD84: .4byte IWRAM_START + 0x18
 _0806BD88: .4byte gBldRegs
 _0806BD8C: .4byte gUnknown_030005A2
 _0806BD90: .4byte sub_806BD94
@@ -16553,7 +16553,7 @@ sub_806BE9C: @ 0x0806BE9C
 	ldrh r0, [r2]
 	cmp r0, #6
 	bne _0806BED2
-	ldr r0, _0806BF10 @ =gUnknown_030000B4
+	ldr r0, _0806BF10 @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	ldrh r0, [r1]
 	subs r0, #0xe
@@ -16597,7 +16597,7 @@ _0806BEF6:
 	.align 2, 0
 _0806BF08: .4byte gCurTask
 _0806BF0C: .4byte gUnknown_030005B4
-_0806BF10: .4byte gUnknown_030000B4
+_0806BF10: .4byte IWRAM_START + 0xB4
 _0806BF14: .4byte 0x000005B4
 _0806BF18:
 	cmp r0, #0xf
@@ -16699,7 +16699,7 @@ sub_806BFD0: @ 0x0806BFD0
 	movs r3, #0xc0
 	lsls r3, r3, #0x12
 	adds r4, r0, r3
-	ldr r1, _0806C034 @ =gUnknown_03000088
+	ldr r1, _0806C034 @ =IWRAM_START + 0x88
 	adds r0, r0, r1
 	ldr r1, [r4, #0x14]
 	ldrh r2, [r1, #6]
@@ -16725,7 +16725,7 @@ sub_806BFD0: @ 0x0806BFD0
 	ldr r1, _0806C040 @ =gWinRegs
 	ldr r0, _0806C044 @ =0x0000103F
 	strh r0, [r1, #0xa]
-	ldr r0, _0806C048 @ =gUnknown_030000B4
+	ldr r0, _0806C048 @ =IWRAM_START + 0xB4
 	adds r4, r4, r0
 	ldrh r0, [r4]
 	cmp r0, #0xd
@@ -16741,12 +16741,12 @@ _0806C024:
 	bx r0
 	.align 2, 0
 _0806C030: .4byte gCurTask
-_0806C034: .4byte gUnknown_03000088
+_0806C034: .4byte IWRAM_START + 0x88
 _0806C038: .4byte gDispCnt
 _0806C03C: .4byte 0x00009641
 _0806C040: .4byte gWinRegs
 _0806C044: .4byte 0x0000103F
-_0806C048: .4byte gUnknown_030000B4
+_0806C048: .4byte IWRAM_START + 0xB4
 _0806C04C: .4byte sub_806C050
 
 	thumb_func_start sub_806C050
@@ -16759,7 +16759,7 @@ sub_806C050: @ 0x0806C050
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r5, r0
-	ldr r1, _0806C088 @ =gUnknown_03000088
+	ldr r1, _0806C088 @ =IWRAM_START + 0x88
 	adds r0, r5, r1
 	ldr r1, [r4, #0xc]
 	ldrh r7, [r1, #6]
@@ -16777,7 +16777,7 @@ sub_806C050: @ 0x0806C050
 	b _0806C14A
 	.align 2, 0
 _0806C084: .4byte gCurTask
-_0806C088: .4byte gUnknown_03000088
+_0806C088: .4byte IWRAM_START + 0x88
 _0806C08C: .4byte gDispCnt
 _0806C090: .4byte 0x00009641
 _0806C094: .4byte gWinRegs
@@ -16818,7 +16818,7 @@ _0806C0D4:
 	movs r0, #0
 	str r0, [r4, #0x10]
 _0806C0E2:
-	ldr r1, _0806C12C @ =gUnknown_03000048
+	ldr r1, _0806C12C @ =IWRAM_START + 0x48
 	adds r0, r5, r1
 	movs r1, #0x20
 	str r1, [sp]
@@ -16841,7 +16841,7 @@ _0806C0E2:
 	lsls r2, r2, #5
 	adds r0, r2, #0
 	strh r0, [r1]
-	ldr r0, _0806C138 @ =gUnknown_030000B4
+	ldr r0, _0806C138 @ =IWRAM_START + 0xB4
 	adds r1, r7, r0
 	ldrh r0, [r1]
 	cmp r0, #0xd
@@ -16855,10 +16855,10 @@ _0806C0E2:
 	ldr r0, _0806C140 @ =sub_806CA18
 	b _0806C148
 	.align 2, 0
-_0806C12C: .4byte gUnknown_03000048
+_0806C12C: .4byte IWRAM_START + 0x48
 _0806C130: .4byte gBgScrollRegs
 _0806C134: .4byte gDispCnt
-_0806C138: .4byte gUnknown_030000B4
+_0806C138: .4byte IWRAM_START + 0xB4
 _0806C13C: .4byte gUnknown_030005A2
 _0806C140: .4byte sub_806CA18
 _0806C144:
@@ -16926,7 +16926,7 @@ _0806C1B2:
 	ldr r1, _0806C204 @ =gUnknown_030005B0
 	adds r0, r4, r1
 	str r5, [r0]
-	ldr r1, _0806C208 @ =gUnknown_030000B4
+	ldr r1, _0806C208 @ =IWRAM_START + 0xB4
 	adds r0, r7, r1
 	ldrh r0, [r0]
 	cmp r0, #0x10
@@ -16956,7 +16956,7 @@ _0806C1F8: .4byte gUnknown_030005AC
 _0806C1FC: .4byte gUnknown_030005C5
 _0806C200: .4byte 0x00002710
 _0806C204: .4byte gUnknown_030005B0
-_0806C208: .4byte gUnknown_030000B4
+_0806C208: .4byte IWRAM_START + 0xB4
 _0806C20C: .4byte gUnknown_030005C7
 _0806C210: .4byte gUnknown_030005C8
 _0806C214:
@@ -17541,7 +17541,7 @@ sub_806C6A4: @ 0x0806C6A4
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r7, r4, r0
-	ldr r1, _0806C77C @ =gUnknown_03000088
+	ldr r1, _0806C77C @ =IWRAM_START + 0x88
 	adds r0, r4, r1
 	bl sub_802D4CC
 	lsls r0, r0, #0x18
@@ -17638,7 +17638,7 @@ _0806C770:
 	bx r0
 	.align 2, 0
 _0806C778: .4byte gCurTask
-_0806C77C: .4byte gUnknown_03000088
+_0806C77C: .4byte IWRAM_START + 0x88
 _0806C780: .4byte gUnknown_030005A2
 _0806C784: .4byte gUnknown_030005B0
 _0806C788: .4byte gUnknown_03005450
@@ -17883,7 +17883,7 @@ sub_806C970: @ 0x0806C970
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
 	bl sub_806BCB8
-	ldr r1, _0806C9C0 @ =gUnknown_03000018
+	ldr r1, _0806C9C0 @ =IWRAM_START + 0x18
 	adds r0, r4, r1
 	movs r3, #0xdf
 	lsls r3, r3, #2
@@ -17914,7 +17914,7 @@ sub_806C970: @ 0x0806C970
 	bx r0
 	.align 2, 0
 _0806C9BC: .4byte gCurTask
-_0806C9C0: .4byte gUnknown_03000018
+_0806C9C0: .4byte IWRAM_START + 0x18
 _0806C9C4: .4byte gUnknown_030005B4
 _0806C9C8: .4byte sub_806BD28
 
@@ -17924,7 +17924,7 @@ sub_806C9CC: @ 0x0806C9CC
 	ldr r5, _0806CA04 @ =gCurTask
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
-	ldr r1, _0806CA08 @ =gUnknown_03000088
+	ldr r1, _0806CA08 @ =IWRAM_START + 0x88
 	adds r0, r4, r1
 	bl sub_802D4CC
 	lsls r0, r0, #0x18
@@ -17949,7 +17949,7 @@ _0806C9FE:
 	bx r0
 	.align 2, 0
 _0806CA04: .4byte gCurTask
-_0806CA08: .4byte gUnknown_03000088
+_0806CA08: .4byte IWRAM_START + 0x88
 _0806CA0C: .4byte gUnknown_030005A2
 _0806CA10: .4byte gUnknown_030005B4
 _0806CA14: .4byte sub_806BE40
@@ -18701,7 +18701,7 @@ sub_806CF78: @ 0x0806CF78
 	str r6, [r0]
 	mov r1, sl
 	str r1, [r0, #4]
-	ldr r2, _0806D1CC @ =gUnknown_030000A8
+	ldr r2, _0806D1CC @ =IWRAM_START + 0xA8
 	adds r3, r7, r2
 	ldr r2, _0806D1D0 @ =gUnknown_080DF9D8
 	lsls r1, r4, #1
@@ -18712,7 +18712,7 @@ sub_806CF78: @ 0x0806CF78
 	ldrsh r0, [r0, r4]
 	lsls r0, r0, #0x10
 	str r0, [r3]
-	ldr r6, _0806D1D4 @ =gUnknown_030000AC
+	ldr r6, _0806D1D4 @ =IWRAM_START + 0xAC
 	adds r3, r7, r6
 	adds r0, r2, #2
 	adds r0, r1, r0
@@ -18727,23 +18727,23 @@ sub_806CF78: @ 0x0806CF78
 	adds r2, #4
 	adds r1, r1, r2
 	ldrh r1, [r1]
-	ldr r4, _0806D1D8 @ =gUnknown_030000B2
+	ldr r4, _0806D1D8 @ =IWRAM_START + 0xB2
 	adds r0, r7, r4
 	strh r1, [r0]
 	adds r6, #4
 	adds r0, r7, r6
 	strh r3, [r0]
-	ldr r0, _0806D1DC @ =gUnknown_030000B6
+	ldr r0, _0806D1DC @ =IWRAM_START + 0xB6
 	adds r1, r7, r0
 	movs r0, #0x96
 	strh r0, [r1]
-	ldr r1, _0806D1E0 @ =gUnknown_030000BC
+	ldr r1, _0806D1E0 @ =IWRAM_START + 0xBC
 	adds r0, r7, r1
 	strh r3, [r0]
-	ldr r2, _0806D1E4 @ =gUnknown_030000BE
+	ldr r2, _0806D1E4 @ =IWRAM_START + 0xBE
 	adds r0, r7, r2
 	strh r3, [r0]
-	ldr r3, _0806D1E8 @ =gUnknown_030000C0
+	ldr r3, _0806D1E8 @ =IWRAM_START + 0xC0
 	adds r1, r7, r3
 	movs r0, #1
 	strh r0, [r1]
@@ -18768,10 +18768,10 @@ sub_806CF78: @ 0x0806CF78
 	asrs r0, r0, #0xb
 	adds r1, r1, r0
 	str r1, [r2]
-	ldr r0, _0806D1F4 @ =gUnknown_0300009C
+	ldr r0, _0806D1F4 @ =IWRAM_START + 0x9C
 	adds r5, r7, r0
 	str r1, [r5]
-	ldr r4, _0806D1F8 @ =gUnknown_030000A0
+	ldr r4, _0806D1F8 @ =IWRAM_START + 0xA0
 	adds r4, r7, r4
 	str r4, [sp, #0x1c]
 	adds r0, r1, #0
@@ -18791,7 +18791,7 @@ sub_806CF78: @ 0x0806CF78
 	str r6, [sp]
 	movs r3, #9
 	bl sub_806D548
-	ldr r1, _0806D200 @ =gUnknown_03000038
+	ldr r1, _0806D200 @ =IWRAM_START + 0x38
 	adds r0, r7, r1
 	ldr r1, [r5]
 	movs r3, #0
@@ -18800,7 +18800,7 @@ sub_806CF78: @ 0x0806CF78
 	str r3, [sp]
 	movs r3, #0xa
 	bl sub_806D548
-	ldr r4, _0806D208 @ =gUnknown_03000068
+	ldr r4, _0806D208 @ =IWRAM_START + 0x68
 	adds r2, r7, r4
 	ldr r4, _0806D20C @ =gUnknown_03005156
 	ldr r6, [sp, #0x1c]
@@ -18821,11 +18821,11 @@ sub_806CF78: @ 0x0806CF78
 	strh r1, [r2, #0x1c]
 	ldr r0, _0806D218 @ =0x0000FFFF
 	strh r0, [r2, #0x1e]
-	ldr r3, _0806D21C @ =gUnknown_03000088
+	ldr r3, _0806D21C @ =IWRAM_START + 0x88
 	adds r0, r7, r3
 	movs r6, #2
 	strb r6, [r0]
-	ldr r0, _0806D220 @ =gUnknown_03000089
+	ldr r0, _0806D220 @ =IWRAM_START + 0x89
 	adds r1, r7, r0
 	movs r0, #0xff
 	strb r0, [r1]
@@ -18833,7 +18833,7 @@ sub_806CF78: @ 0x0806CF78
 	adds r1, r7, r3
 	movs r0, #0x10
 	strb r0, [r1]
-	ldr r6, _0806D224 @ =gUnknown_0300008D
+	ldr r6, _0806D224 @ =IWRAM_START + 0x8D
 	adds r0, r7, r6
 	movs r1, #0
 	strb r1, [r0]
@@ -18865,23 +18865,23 @@ _0806D0EC:
 	beq _0806D10C
 	b _0806D268
 _0806D10C:
-	ldr r4, _0806D230 @ =gUnknown_030000C8
+	ldr r4, _0806D230 @ =IWRAM_START + 0xC8
 	adds r0, r7, r4
 	mov r6, sl
 	str r6, [r0]
-	ldr r0, _0806D234 @ =gUnknown_030000CC
+	ldr r0, _0806D234 @ =IWRAM_START + 0xCC
 	adds r1, r7, r0
 	movs r0, #6
 	str r0, [r1]
-	ldr r1, _0806D238 @ =gUnknown_030000D0
+	ldr r1, _0806D238 @ =IWRAM_START + 0xD0
 	adds r0, r7, r1
 	movs r1, #0x80
 	lsls r1, r1, #9
 	str r1, [r0]
-	ldr r2, _0806D23C @ =gUnknown_030000D4
+	ldr r2, _0806D23C @ =IWRAM_START + 0xD4
 	adds r0, r7, r2
 	str r1, [r0]
-	ldr r3, _0806D240 @ =gUnknown_030000D8
+	ldr r3, _0806D240 @ =IWRAM_START + 0xD8
 	adds r1, r7, r3
 	movs r0, #0x28
 	str r0, [r1]
@@ -18889,11 +18889,11 @@ _0806D10C:
 	adds r1, r7, r4
 	subs r0, #0x53
 	str r0, [r1]
-	ldr r6, _0806D244 @ =gUnknown_030000E0
+	ldr r6, _0806D244 @ =IWRAM_START + 0xE0
 	adds r1, r7, r6
 	ldr r0, _0806D248 @ =0xFFFFFEA2
 	str r0, [r1]
-	ldr r0, _0806D24C @ =gUnknown_030000E4
+	ldr r0, _0806D24C @ =IWRAM_START + 0xE4
 	adds r1, r7, r0
 	movs r0, #0xb2
 	lsls r0, r0, #6
@@ -18916,7 +18916,7 @@ _0806D10C:
 	adds r1, r7, r6
 	movs r0, #0x14
 	strh r0, [r1]
-	ldr r0, _0806D254 @ =gUnknown_030000F2
+	ldr r0, _0806D254 @ =IWRAM_START + 0xF2
 	adds r1, r7, r0
 	ldr r0, _0806D258 @ =0x0000FFD8
 	strh r0, [r1]
@@ -18937,7 +18937,7 @@ _0806D10C:
 	adds r1, r7, r6
 	adds r0, #8
 	str r0, [r1]
-	ldr r0, _0806D25C @ =gUnknown_030000F8
+	ldr r0, _0806D25C @ =IWRAM_START + 0xF8
 	adds r1, r7, r0
 	movs r0, #0x80
 	lsls r0, r0, #4
@@ -18959,59 +18959,59 @@ _0806D10C:
 	.align 2, 0
 _0806D1C4: .4byte gUnknown_080DF670
 _0806D1C8: .4byte sub_806D2C8
-_0806D1CC: .4byte gUnknown_030000A8
+_0806D1CC: .4byte IWRAM_START + 0xA8
 _0806D1D0: .4byte gUnknown_080DF9D8
-_0806D1D4: .4byte gUnknown_030000AC
-_0806D1D8: .4byte gUnknown_030000B2
-_0806D1DC: .4byte gUnknown_030000B6
-_0806D1E0: .4byte gUnknown_030000BC
-_0806D1E4: .4byte gUnknown_030000BE
-_0806D1E8: .4byte gUnknown_030000C0
+_0806D1D4: .4byte IWRAM_START + 0xAC
+_0806D1D8: .4byte IWRAM_START + 0xB2
+_0806D1DC: .4byte IWRAM_START + 0xB6
+_0806D1E0: .4byte IWRAM_START + 0xBC
+_0806D1E4: .4byte IWRAM_START + 0xBE
+_0806D1E8: .4byte IWRAM_START + 0xC0
 _0806D1EC: .4byte 0x000005B6
 _0806D1F0: .4byte gUnknown_03005B5C
-_0806D1F4: .4byte gUnknown_0300009C
-_0806D1F8: .4byte gUnknown_030000A0
+_0806D1F4: .4byte IWRAM_START + 0x9C
+_0806D1F8: .4byte IWRAM_START + 0xA0
 _0806D1FC: .4byte 0x000005CC
-_0806D200: .4byte gUnknown_03000038
+_0806D200: .4byte IWRAM_START + 0x38
 _0806D204: .4byte gUnknown_080DF668
-_0806D208: .4byte gUnknown_03000068
+_0806D208: .4byte IWRAM_START + 0x68
 _0806D20C: .4byte gUnknown_03005156
 _0806D210: .4byte 0x0000037A
 _0806D214: .4byte 0x0000107E
 _0806D218: .4byte 0x0000FFFF
-_0806D21C: .4byte gUnknown_03000088
-_0806D220: .4byte gUnknown_03000089
-_0806D224: .4byte gUnknown_0300008D
+_0806D21C: .4byte IWRAM_START + 0x88
+_0806D220: .4byte IWRAM_START + 0x89
+_0806D224: .4byte IWRAM_START + 0x8D
 _0806D228: .4byte 0x000005BA
 _0806D22C: .4byte 0x000005B7
-_0806D230: .4byte gUnknown_030000C8
-_0806D234: .4byte gUnknown_030000CC
-_0806D238: .4byte gUnknown_030000D0
-_0806D23C: .4byte gUnknown_030000D4
-_0806D240: .4byte gUnknown_030000D8
-_0806D244: .4byte gUnknown_030000E0
+_0806D230: .4byte IWRAM_START + 0xC8
+_0806D234: .4byte IWRAM_START + 0xCC
+_0806D238: .4byte IWRAM_START + 0xD0
+_0806D23C: .4byte IWRAM_START + 0xD4
+_0806D240: .4byte IWRAM_START + 0xD8
+_0806D244: .4byte IWRAM_START + 0xE0
 _0806D248: .4byte 0xFFFFFEA2
-_0806D24C: .4byte gUnknown_030000E4
+_0806D24C: .4byte IWRAM_START + 0xE4
 _0806D250: .4byte 0x00000502
-_0806D254: .4byte gUnknown_030000F2
+_0806D254: .4byte IWRAM_START + 0xF2
 _0806D258: .4byte 0x0000FFD8
-_0806D25C: .4byte gUnknown_030000F8
+_0806D25C: .4byte IWRAM_START + 0xF8
 _0806D260: .4byte 0x0000FF80
 _0806D264: .4byte 0x0000FFC0
 _0806D268:
-	ldr r6, _0806D2B0 @ =gUnknown_030000C8
+	ldr r6, _0806D2B0 @ =IWRAM_START + 0xC8
 	adds r0, r7, r6
 	mov r1, sl
 	str r1, [r0]
-	ldr r2, _0806D2B4 @ =gUnknown_030000CC
+	ldr r2, _0806D2B4 @ =IWRAM_START + 0xCC
 	adds r0, r7, r2
 	str r1, [r0]
-	ldr r3, _0806D2B8 @ =gUnknown_030000D0
+	ldr r3, _0806D2B8 @ =IWRAM_START + 0xD0
 	adds r1, r7, r3
 	movs r0, #0xc0
 	lsls r0, r0, #4
 	str r0, [r1]
-	ldr r4, _0806D2BC @ =gUnknown_030000D4
+	ldr r4, _0806D2BC @ =IWRAM_START + 0xD4
 	adds r1, r7, r4
 	ldr r0, _0806D2C0 @ =0x00007FFF
 	str r0, [r1]
@@ -19020,7 +19020,7 @@ _0806D268:
 	movs r0, #0x80
 	lsls r0, r0, #1
 	str r0, [r1]
-	ldr r0, _0806D2C4 @ =gUnknown_030000DC
+	ldr r0, _0806D2C4 @ =IWRAM_START + 0xDC
 	adds r1, r7, r0
 	movs r0, #0x80
 	lsls r0, r0, #4
@@ -19036,12 +19036,12 @@ _0806D29C:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0806D2B0: .4byte gUnknown_030000C8
-_0806D2B4: .4byte gUnknown_030000CC
-_0806D2B8: .4byte gUnknown_030000D0
-_0806D2BC: .4byte gUnknown_030000D4
+_0806D2B0: .4byte IWRAM_START + 0xC8
+_0806D2B4: .4byte IWRAM_START + 0xCC
+_0806D2B8: .4byte IWRAM_START + 0xD0
+_0806D2BC: .4byte IWRAM_START + 0xD4
 _0806D2C0: .4byte 0x00007FFF
-_0806D2C4: .4byte gUnknown_030000DC
+_0806D2C4: .4byte IWRAM_START + 0xDC
 
 	thumb_func_start sub_806D2C8
 sub_806D2C8: @ 0x0806D2C8
@@ -19063,7 +19063,7 @@ sub_806D2C8: @ 0x0806D2C8
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0806D318
-	ldr r7, _0806D314 @ =gUnknown_030000B4
+	ldr r7, _0806D314 @ =IWRAM_START + 0xB4
 	adds r0, r5, r7
 	ldrh r0, [r0]
 	adds r0, #1
@@ -19077,7 +19077,7 @@ sub_806D2C8: @ 0x0806D2C8
 _0806D308: .4byte gCurTask
 _0806D30C: .4byte gUnknown_080DF684
 _0806D310: .4byte 0x000005BA
-_0806D314: .4byte gUnknown_030000B4
+_0806D314: .4byte IWRAM_START + 0xB4
 _0806D318:
 	ldr r0, [sp]
 	bl _call_via_r0
@@ -19450,11 +19450,11 @@ sub_806D5D0: @ 0x0806D5D0
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	ldr r5, [r1]
-	ldr r2, _0806D624 @ =gUnknown_030000C4
+	ldr r2, _0806D624 @ =IWRAM_START + 0xC4
 	adds r1, r0, r2
 	ldr r3, [r1]
 	adds r3, #0x60
-	ldr r4, _0806D628 @ =gUnknown_030000B0
+	ldr r4, _0806D628 @ =IWRAM_START + 0xB0
 	adds r2, r0, r4
 	adds r4, #8
 	adds r1, r0, r4
@@ -19464,7 +19464,7 @@ sub_806D5D0: @ 0x0806D5D0
 	ldrh r1, [r2]
 	adds r4, r4, r1
 	strh r4, [r2]
-	ldr r2, _0806D62C @ =gUnknown_03000008
+	ldr r2, _0806D62C @ =IWRAM_START + 0x8
 	adds r0, r0, r2
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -19483,9 +19483,9 @@ sub_806D5D0: @ 0x0806D5D0
 	bx r0
 	.align 2, 0
 _0806D620: .4byte gCurTask
-_0806D624: .4byte gUnknown_030000C4
-_0806D628: .4byte gUnknown_030000B0
-_0806D62C: .4byte gUnknown_03000008
+_0806D624: .4byte IWRAM_START + 0xC4
+_0806D628: .4byte IWRAM_START + 0xB0
+_0806D62C: .4byte IWRAM_START + 0x8
 _0806D630: .4byte 0x000005CC
 
 	thumb_func_start sub_806D634
@@ -19498,11 +19498,11 @@ sub_806D634: @ 0x0806D634
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	ldr r5, [r1]
-	ldr r2, _0806D688 @ =gUnknown_030000C4
+	ldr r2, _0806D688 @ =IWRAM_START + 0xC4
 	adds r1, r0, r2
 	ldr r3, [r1]
 	adds r3, #0x78
-	ldr r4, _0806D68C @ =gUnknown_030000B0
+	ldr r4, _0806D68C @ =IWRAM_START + 0xB0
 	adds r2, r0, r4
 	adds r4, #8
 	adds r1, r0, r4
@@ -19512,7 +19512,7 @@ sub_806D634: @ 0x0806D634
 	ldrh r1, [r2]
 	adds r4, r4, r1
 	strh r4, [r2]
-	ldr r2, _0806D690 @ =gUnknown_03000008
+	ldr r2, _0806D690 @ =IWRAM_START + 0x8
 	adds r0, r0, r2
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -19531,9 +19531,9 @@ sub_806D634: @ 0x0806D634
 	bx r0
 	.align 2, 0
 _0806D684: .4byte gCurTask
-_0806D688: .4byte gUnknown_030000C4
-_0806D68C: .4byte gUnknown_030000B0
-_0806D690: .4byte gUnknown_03000008
+_0806D688: .4byte IWRAM_START + 0xC4
+_0806D68C: .4byte IWRAM_START + 0xB0
+_0806D690: .4byte IWRAM_START + 0x8
 _0806D694: .4byte 0x000005CC
 
 	thumb_func_start sub_806D698
@@ -19546,11 +19546,11 @@ sub_806D698: @ 0x0806D698
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	ldr r2, [r1]
-	ldr r3, _0806D6D0 @ =gUnknown_030000C4
+	ldr r3, _0806D6D0 @ =IWRAM_START + 0xC4
 	adds r1, r0, r3
 	ldr r3, [r1]
 	adds r3, #0x90
-	ldr r4, _0806D6D4 @ =gUnknown_03000008
+	ldr r4, _0806D6D4 @ =IWRAM_START + 0x8
 	adds r0, r0, r4
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -19564,8 +19564,8 @@ sub_806D698: @ 0x0806D698
 	bx r0
 	.align 2, 0
 _0806D6CC: .4byte gCurTask
-_0806D6D0: .4byte gUnknown_030000C4
-_0806D6D4: .4byte gUnknown_03000008
+_0806D6D0: .4byte IWRAM_START + 0xC4
+_0806D6D4: .4byte IWRAM_START + 0x8
 _0806D6D8: .4byte 0x000005CC
 
 	thumb_func_start sub_806D6DC
@@ -19578,11 +19578,11 @@ sub_806D6DC: @ 0x0806D6DC
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	ldr r5, [r1]
-	ldr r2, _0806D730 @ =gUnknown_030000C4
+	ldr r2, _0806D730 @ =IWRAM_START + 0xC4
 	adds r1, r0, r2
 	ldr r3, [r1]
 	adds r3, #0x98
-	ldr r4, _0806D734 @ =gUnknown_030000B0
+	ldr r4, _0806D734 @ =IWRAM_START + 0xB0
 	adds r2, r0, r4
 	adds r4, #8
 	adds r1, r0, r4
@@ -19592,7 +19592,7 @@ sub_806D6DC: @ 0x0806D6DC
 	ldrh r1, [r2]
 	adds r4, r4, r1
 	strh r4, [r2]
-	ldr r2, _0806D738 @ =gUnknown_03000008
+	ldr r2, _0806D738 @ =IWRAM_START + 0x8
 	adds r0, r0, r2
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -19611,9 +19611,9 @@ sub_806D6DC: @ 0x0806D6DC
 	bx r0
 	.align 2, 0
 _0806D72C: .4byte gCurTask
-_0806D730: .4byte gUnknown_030000C4
-_0806D734: .4byte gUnknown_030000B0
-_0806D738: .4byte gUnknown_03000008
+_0806D730: .4byte IWRAM_START + 0xC4
+_0806D734: .4byte IWRAM_START + 0xB0
+_0806D738: .4byte IWRAM_START + 0x8
 _0806D73C: .4byte 0x000005CC
 
 	thumb_func_start sub_806D740
@@ -19626,11 +19626,11 @@ sub_806D740: @ 0x0806D740
 	lsls r1, r1, #0x12
 	adds r1, r0, r1
 	ldr r2, [r1]
-	ldr r3, _0806D77C @ =gUnknown_030000C4
+	ldr r3, _0806D77C @ =IWRAM_START + 0xC4
 	adds r1, r0, r3
 	ldr r3, [r1]
 	adds r3, #0xa0
-	ldr r4, _0806D780 @ =gUnknown_03000008
+	ldr r4, _0806D780 @ =IWRAM_START + 0x8
 	adds r0, r0, r4
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -19646,8 +19646,8 @@ sub_806D740: @ 0x0806D740
 	bx r0
 	.align 2, 0
 _0806D778: .4byte gCurTask
-_0806D77C: .4byte gUnknown_030000C4
-_0806D780: .4byte gUnknown_03000008
+_0806D77C: .4byte IWRAM_START + 0xC4
+_0806D780: .4byte IWRAM_START + 0x8
 _0806D784: .4byte 0x000005CC
 
 	thumb_func_start sub_806D788
@@ -19656,7 +19656,7 @@ sub_806D788: @ 0x0806D788
 	ldr r0, _0806D7C0 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
-	ldr r0, _0806D7C4 @ =gUnknown_030000BC
+	ldr r0, _0806D7C4 @ =IWRAM_START + 0xBC
 	adds r2, r1, r0
 	ldrh r3, [r2]
 	movs r4, #0
@@ -19669,10 +19669,10 @@ sub_806D788: @ 0x0806D788
 	asrs r2, r0, #0x10
 	cmp r2, #0
 	bne _0806D7B8
-	ldr r3, _0806D7C8 @ =gUnknown_030000BE
+	ldr r3, _0806D7C8 @ =IWRAM_START + 0xBE
 	adds r0, r1, r3
 	strh r2, [r0]
-	ldr r4, _0806D7CC @ =gUnknown_030000C0
+	ldr r4, _0806D7CC @ =IWRAM_START + 0xC0
 	adds r1, r1, r4
 	movs r0, #1
 	strh r0, [r1]
@@ -19682,9 +19682,9 @@ _0806D7B8:
 	bx r0
 	.align 2, 0
 _0806D7C0: .4byte gCurTask
-_0806D7C4: .4byte gUnknown_030000BC
-_0806D7C8: .4byte gUnknown_030000BE
-_0806D7CC: .4byte gUnknown_030000C0
+_0806D7C4: .4byte IWRAM_START + 0xBC
+_0806D7C8: .4byte IWRAM_START + 0xBE
+_0806D7CC: .4byte IWRAM_START + 0xC0
 
 	thumb_func_start sub_806D7D0
 sub_806D7D0: @ 0x0806D7D0
@@ -20154,16 +20154,16 @@ sub_806DB48: @ 0x0806DB48
 	ldr r1, _0806DC68 @ =IWRAM_START+4
 	adds r0, r4, r1
 	bl sub_8004558
-	ldr r1, _0806DC6C @ =gUnknown_03000064
+	ldr r1, _0806DC6C @ =IWRAM_START + 0x64
 	adds r0, r4, r1
 	bl sub_8004558
-	ldr r1, _0806DC70 @ =gUnknown_03000034
+	ldr r1, _0806DC70 @ =IWRAM_START + 0x34
 	adds r0, r4, r1
 	bl sub_8004558
-	ldr r1, _0806DC74 @ =gUnknown_03000094
+	ldr r1, _0806DC74 @ =IWRAM_START + 0x94
 	adds r0, r4, r1
 	bl sub_8004558
-	ldr r1, _0806DC78 @ =gUnknown_030000C4
+	ldr r1, _0806DC78 @ =IWRAM_START + 0xC4
 	adds r0, r4, r1
 	bl sub_8004558
 	bl sub_806DC98
@@ -20273,10 +20273,10 @@ _0806DC54:
 _0806DC60: .4byte gCurTask
 _0806DC64: .4byte 0x000005BA
 _0806DC68: .4byte IWRAM_START+4
-_0806DC6C: .4byte gUnknown_03000064
-_0806DC70: .4byte gUnknown_03000034
-_0806DC74: .4byte gUnknown_03000094
-_0806DC78: .4byte gUnknown_030000C4
+_0806DC6C: .4byte IWRAM_START + 0x64
+_0806DC70: .4byte IWRAM_START + 0x34
+_0806DC74: .4byte IWRAM_START + 0x94
+_0806DC78: .4byte IWRAM_START + 0xC4
 _0806DC7C: .4byte 0x000005B4
 _0806DC80: .4byte 0x00000A5A
 _0806DC84: .4byte 0x00000886
@@ -20315,7 +20315,7 @@ sub_806DC98: @ 0x0806DC98
 	ldrh r2, [r0, #6]
 	adds r3, r3, r2
 	mov r8, r3
-	ldr r3, _0806DD08 @ =gUnknown_030000A8
+	ldr r3, _0806DD08 @ =IWRAM_START + 0xA8
 	adds r0, r2, r3
 	ldr r1, [r0]
 	asrs r0, r1, #0x10
@@ -20325,7 +20325,7 @@ sub_806DC98: @ 0x0806DC98
 	ldr r3, [r0]
 	asrs r0, r3, #0x10
 	str r0, [sp, #4]
-	ldr r0, _0806DD0C @ =gUnknown_030000B0
+	ldr r0, _0806DD0C @ =IWRAM_START + 0xB0
 	adds r2, r2, r0
 	ldrh r0, [r2]
 	lsls r0, r0, #0x10
@@ -20342,8 +20342,8 @@ sub_806DC98: @ 0x0806DC98
 	.align 2, 0
 _0806DD00: .4byte gCurTask
 _0806DD04: .4byte gUnknown_08C878E8
-_0806DD08: .4byte gUnknown_030000A8
-_0806DD0C: .4byte gUnknown_030000B0
+_0806DD08: .4byte IWRAM_START + 0xA8
+_0806DD0C: .4byte IWRAM_START + 0xB0
 _0806DD10:
 	movs r3, #0
 	ldrsh r0, [r5, r3]
@@ -21055,7 +21055,7 @@ _0806E274:
 	ldrsh r0, [r4, r3]
 	cmp r0, #0
 	bne _0806E298
-	ldr r2, _0806E290 @ =gUnknown_03000094
+	ldr r2, _0806E290 @ =IWRAM_START + 0x94
 	add r2, sl
 	cmp r1, #1
 	bne _0806E288
@@ -21067,11 +21067,11 @@ _0806E288:
 	ldrh r3, [r4, #4]
 	b _0806E324
 	.align 2, 0
-_0806E290: .4byte gUnknown_03000094
+_0806E290: .4byte IWRAM_START + 0x94
 _0806E294: .4byte IWRAM_START+4
 _0806E298:
 	ldr r1, [sp]
-	ldr r0, _0806E3A4 @ =gUnknown_03000064
+	ldr r0, _0806E3A4 @ =IWRAM_START + 0x64
 	add r0, sl
 	ldm r0!, {r3, r5, r7}
 	stm r1!, {r3, r5, r7}
@@ -21127,11 +21127,11 @@ _0806E2FC:
 	bl sub_806CD68
 	movs r1, #0
 	ldrsh r0, [r4, r1]
-	ldr r2, _0806E3AC @ =gUnknown_030000C4
+	ldr r2, _0806E3AC @ =IWRAM_START + 0xC4
 	add r2, sl
 	cmp r0, #1
 	bne _0806E316
-	ldr r2, _0806E3B0 @ =gUnknown_03000034
+	ldr r2, _0806E3B0 @ =IWRAM_START + 0x34
 	add r2, sl
 _0806E316:
 	ldrh r3, [r4, #2]
@@ -21208,10 +21208,10 @@ _0806E374:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806E3A4: .4byte gUnknown_03000064
+_0806E3A4: .4byte IWRAM_START + 0x64
 _0806E3A8: .4byte 0x000005CC
-_0806E3AC: .4byte gUnknown_030000C4
-_0806E3B0: .4byte gUnknown_03000034
+_0806E3AC: .4byte IWRAM_START + 0xC4
+_0806E3B0: .4byte IWRAM_START + 0x34
 _0806E3B4: .4byte gUnknown_03004D96
 
 	thumb_func_start sub_806E3B8
@@ -21231,15 +21231,15 @@ sub_806E3B8: @ 0x0806E3B8
 	mov r8, r2
 	ldr r0, [r3, #0xc]
 	ldrh r0, [r0, #6]
-	ldr r4, _0806E410 @ =gUnknown_030000A8
+	ldr r4, _0806E410 @ =IWRAM_START + 0xA8
 	adds r2, r0, r4
 	ldr r2, [r2]
 	str r2, [sp]
-	ldr r7, _0806E414 @ =gUnknown_030000AC
+	ldr r7, _0806E414 @ =IWRAM_START + 0xAC
 	adds r2, r0, r7
 	ldr r2, [r2]
 	str r2, [sp, #4]
-	ldr r2, _0806E418 @ =gUnknown_030000B0
+	ldr r2, _0806E418 @ =IWRAM_START + 0xB0
 	adds r0, r0, r2
 	movs r7, #0
 	ldrsh r4, [r0, r7]
@@ -21262,9 +21262,9 @@ _0806E40C:
 	adds r0, r1, #0
 	b _0806E422
 	.align 2, 0
-_0806E410: .4byte gUnknown_030000A8
-_0806E414: .4byte gUnknown_030000AC
-_0806E418: .4byte gUnknown_030000B0
+_0806E410: .4byte IWRAM_START + 0xA8
+_0806E414: .4byte IWRAM_START + 0xAC
+_0806E418: .4byte IWRAM_START + 0xB0
 _0806E41C: .4byte 0x000005A4
 _0806E420:
 	lsrs r0, r2, #0x10
@@ -21510,7 +21510,7 @@ sub_806E584: @ 0x0806E584
 	subs r2, r2, r0
 	mov sl, r2
 	adds r1, r5, #0
-	ldr r0, _0806E674 @ =gUnknown_03000034
+	ldr r0, _0806E674 @ =IWRAM_START + 0x34
 	add r0, sb
 	ldm r0!, {r2, r3, r7}
 	stm r1!, {r2, r3, r7}
@@ -21572,7 +21572,7 @@ _0806E65C:
 	.align 2, 0
 _0806E66C: .4byte gCurTask
 _0806E670: .4byte 0x000007B4
-_0806E674: .4byte gUnknown_03000034
+_0806E674: .4byte IWRAM_START + 0x34
 _0806E678: .4byte 0x000C1060
 _0806E67C: .4byte 0x000005CC
 _0806E680: .4byte gUnknown_03004D96
@@ -21663,7 +21663,7 @@ sub_806E6E8: @ 0x0806E6E8
 	str r4, [r5, #4]
 	str r4, [r5, #8]
 	str r4, [r5, #0xc]
-	ldr r0, _0806E7B8 @ =gUnknown_03000010
+	ldr r0, _0806E7B8 @ =IWRAM_START + 0x10
 	add r0, r8
 	movs r2, #0xb7
 	lsls r2, r2, #3
@@ -21684,7 +21684,7 @@ sub_806E6E8: @ 0x0806E6E8
 	movs r1, #1
 	movs r2, #0x10
 	bl sub_806CEC4
-	ldr r0, _0806E7BC @ =gUnknown_03000050
+	ldr r0, _0806E7BC @ =IWRAM_START + 0x50
 	add r8, r0
 	mov r1, sb
 	ldrb r0, [r1]
@@ -21720,8 +21720,8 @@ _0806E7A8: .4byte gUnknown_080DF768
 _0806E7AC: .4byte gUnknown_080DF776
 _0806E7B0: .4byte sub_806EA04
 _0806E7B4: .4byte sub_806EBF4
-_0806E7B8: .4byte gUnknown_03000010
-_0806E7BC: .4byte gUnknown_03000050
+_0806E7B8: .4byte IWRAM_START + 0x10
+_0806E7BC: .4byte IWRAM_START + 0x50
 
 	thumb_func_start sub_806E7C0
 sub_806E7C0: @ 0x0806E7C0
@@ -22317,7 +22317,7 @@ _0806EC68:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0806ECB6
-	ldr r3, _0806EC8C @ =gUnknown_030000B4
+	ldr r3, _0806EC8C @ =IWRAM_START + 0xB4
 	adds r0, r4, r3
 	ldrh r0, [r0]
 	adds r0, #1
@@ -22328,9 +22328,9 @@ _0806EC68:
 	b _0806ECB6
 	.align 2, 0
 _0806EC88: .4byte 0x000005BA
-_0806EC8C: .4byte gUnknown_030000B4
+_0806EC8C: .4byte IWRAM_START + 0xB4
 _0806EC90:
-	ldr r7, _0806ED20 @ =gUnknown_030000B4
+	ldr r7, _0806ED20 @ =IWRAM_START + 0xB4
 	adds r1, r4, r7
 	ldrh r0, [r1]
 	cmp r0, #0xa
@@ -22402,7 +22402,7 @@ _0806ECB6:
 	movs r0, #0
 	b _0806ED38
 	.align 2, 0
-_0806ED20: .4byte gUnknown_030000B4
+_0806ED20: .4byte IWRAM_START + 0xB4
 _0806ED24: .4byte 0x000005BA
 _0806ED28: .4byte gUnknown_08097AA4
 _0806ED2C: .4byte 0xFFFFFEFF
@@ -22487,13 +22487,13 @@ sub_806EDB4: @ 0x0806EDB4
 	ldrh r4, [r0, #6]
 	adds r1, r1, r4
 	mov ip, r1
-	ldr r0, _0806EE34 @ =gUnknown_030000C8
+	ldr r0, _0806EE34 @ =IWRAM_START + 0xC8
 	adds r5, r4, r0
 	ldr r3, [r5]
-	ldr r1, _0806EE38 @ =gUnknown_030000E4
+	ldr r1, _0806EE38 @ =IWRAM_START + 0xE4
 	adds r0, r4, r1
 	ldr r6, [r0]
-	ldr r2, _0806EE3C @ =gUnknown_030000B2
+	ldr r2, _0806EE3C @ =IWRAM_START + 0xB2
 	adds r0, r4, r2
 	ldrh r1, [r0]
 	ldr r2, _0806EE40 @ =gUnknown_08097AA4
@@ -22518,7 +22518,7 @@ sub_806EDB4: @ 0x0806EDB4
 	lsrs r2, r0, #0x10
 	cmp r2, #0
 	beq _0806EE74
-	ldr r1, _0806EE48 @ =gUnknown_030000D8
+	ldr r1, _0806EE48 @ =IWRAM_START + 0xD8
 	adds r0, r4, r1
 	ldr r0, [r0]
 	cmp r3, r6
@@ -22532,37 +22532,37 @@ sub_806EDB4: @ 0x0806EDB4
 	lsls r0, r0, #6
 	cmp r3, r0
 	bgt _0806EE62
-	ldr r0, _0806EE4C @ =gUnknown_030000B4
+	ldr r0, _0806EE4C @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	b _0806EF0C
 	.align 2, 0
 _0806EE30: .4byte gCurTask
-_0806EE34: .4byte gUnknown_030000C8
-_0806EE38: .4byte gUnknown_030000E4
-_0806EE3C: .4byte gUnknown_030000B2
+_0806EE34: .4byte IWRAM_START + 0xC8
+_0806EE38: .4byte IWRAM_START + 0xE4
+_0806EE3C: .4byte IWRAM_START + 0xB2
 _0806EE40: .4byte gUnknown_08097AA4
 _0806EE44: .4byte gInput
-_0806EE48: .4byte gUnknown_030000D8
-_0806EE4C: .4byte gUnknown_030000B4
+_0806EE48: .4byte IWRAM_START + 0xD8
+_0806EE4C: .4byte IWRAM_START + 0xB4
 _0806EE50:
 	str r6, [r5]
 	adds r3, r6, #0
 	b _0806EE62
 _0806EE56:
-	ldr r1, _0806EE6C @ =gUnknown_030000DC
+	ldr r1, _0806EE6C @ =IWRAM_START + 0xDC
 	adds r0, r4, r1
 	ldr r0, [r0]
 	adds r0, r3, r0
 	str r0, [r5]
 	adds r3, r0, #0
 _0806EE62:
-	ldr r2, _0806EE70 @ =gUnknown_030000B4
+	ldr r2, _0806EE70 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #2
 	b _0806EF0E
 	.align 2, 0
-_0806EE6C: .4byte gUnknown_030000DC
-_0806EE70: .4byte gUnknown_030000B4
+_0806EE6C: .4byte IWRAM_START + 0xDC
+_0806EE70: .4byte IWRAM_START + 0xB4
 _0806EE74:
 	movs r0, #0x80
 	ands r0, r1
@@ -22570,10 +22570,10 @@ _0806EE74:
 	lsrs r1, r0, #0x10
 	cmp r1, #0
 	beq _0806EECE
-	ldr r1, _0806EE98 @ =gUnknown_030000E0
+	ldr r1, _0806EE98 @ =IWRAM_START + 0xE0
 	adds r0, r4, r1
 	ldr r6, [r0]
-	ldr r0, _0806EE9C @ =gUnknown_030000B4
+	ldr r0, _0806EE9C @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	ldrh r0, [r1]
 	cmp r0, #0
@@ -22582,8 +22582,8 @@ _0806EE74:
 	strh r0, [r1]
 	b _0806EF38
 	.align 2, 0
-_0806EE98: .4byte gUnknown_030000E0
-_0806EE9C: .4byte gUnknown_030000B4
+_0806EE98: .4byte IWRAM_START + 0xE0
+_0806EE9C: .4byte IWRAM_START + 0xB4
 _0806EEA0:
 	adds r0, r3, r6
 	cmp r0, #0
@@ -22612,7 +22612,7 @@ _0806EEC4:
 	strh r0, [r1]
 	b _0806EF18
 _0806EECE:
-	ldr r2, _0806EEE0 @ =gUnknown_030000DC
+	ldr r2, _0806EEE0 @ =IWRAM_START + 0xDC
 	adds r0, r4, r2
 	ldr r0, [r0]
 	adds r0, r3, r0
@@ -22622,7 +22622,7 @@ _0806EECE:
 	adds r3, r0, #0
 	b _0806EEE8
 	.align 2, 0
-_0806EEE0: .4byte gUnknown_030000DC
+_0806EEE0: .4byte IWRAM_START + 0xDC
 _0806EEE4:
 	str r1, [r5]
 	movs r3, #0
@@ -22692,7 +22692,7 @@ sub_806EF44: @ 0x0806EF44
 	ldr r0, [r0]
 	ldr r0, [r0, #0xc]
 	ldrh r3, [r0, #6]
-	ldr r0, _0806EFA4 @ =gUnknown_030000B2
+	ldr r0, _0806EFA4 @ =IWRAM_START + 0xB2
 	adds r4, r3, r0
 	ldrh r1, [r4]
 	ldr r0, _0806EFA8 @ =gInput
@@ -22705,7 +22705,7 @@ sub_806EF44: @ 0x0806EF44
 	ands r0, r2
 	cmp r0, #0
 	beq _0806EF7E
-	ldr r5, _0806EFAC @ =gUnknown_030000CC
+	ldr r5, _0806EFAC @ =IWRAM_START + 0xCC
 	adds r0, r3, r5
 	ldr r0, [r0]
 	adds r0, r1, r0
@@ -22716,7 +22716,7 @@ _0806EF7E:
 	ands r0, r2
 	cmp r0, #0
 	beq _0806EF92
-	ldr r2, _0806EFAC @ =gUnknown_030000CC
+	ldr r2, _0806EFAC @ =IWRAM_START + 0xCC
 	adds r0, r3, r2
 	ldr r0, [r0]
 	subs r0, r1, r0
@@ -22732,9 +22732,9 @@ _0806EF98:
 	bx r0
 	.align 2, 0
 _0806EFA0: .4byte gCurTask
-_0806EFA4: .4byte gUnknown_030000B2
+_0806EFA4: .4byte IWRAM_START + 0xB2
 _0806EFA8: .4byte gInput
-_0806EFAC: .4byte gUnknown_030000CC
+_0806EFAC: .4byte IWRAM_START + 0xCC
 _0806EFB0: .4byte 0x000003FF
 
 	thumb_func_start sub_806EFB4
@@ -22751,12 +22751,12 @@ sub_806EFB4: @ 0x0806EFB4
 	ldrh r4, [r0, #6]
 	bl sub_806EF44
 	bl sub_806F56C
-	ldr r0, _0806F01C @ =gUnknown_030000BA
+	ldr r0, _0806F01C @ =IWRAM_START + 0xBA
 	adds r1, r4, r0
 	ldrh r0, [r1]
 	adds r0, #1
 	strh r0, [r1]
-	ldr r3, _0806F020 @ =gUnknown_030000B8
+	ldr r3, _0806F020 @ =IWRAM_START + 0xB8
 	adds r2, r4, r3
 	adds r3, #0x3a
 	adds r0, r4, r3
@@ -22764,7 +22764,7 @@ sub_806EFB4: @ 0x0806EFB4
 	ldrh r3, [r2]
 	adds r0, r0, r3
 	strh r0, [r2]
-	ldr r2, _0806F024 @ =gUnknown_030000F0
+	ldr r2, _0806F024 @ =IWRAM_START + 0xF0
 	adds r0, r4, r2
 	movs r3, #0
 	ldrsh r1, [r1, r3]
@@ -22780,7 +22780,7 @@ sub_806EFB4: @ 0x0806EFB4
 	cmp r0, #0
 	bne _0806F010
 _0806F008:
-	ldr r3, _0806F030 @ =gUnknown_030000B4
+	ldr r3, _0806F030 @ =IWRAM_START + 0xB4
 	adds r1, r4, r3
 	movs r0, #5
 	strh r0, [r1]
@@ -22790,12 +22790,12 @@ _0806F010:
 	bx r0
 	.align 2, 0
 _0806F018: .4byte gCurTask
-_0806F01C: .4byte gUnknown_030000BA
-_0806F020: .4byte gUnknown_030000B8
-_0806F024: .4byte gUnknown_030000F0
+_0806F01C: .4byte IWRAM_START + 0xBA
+_0806F020: .4byte IWRAM_START + 0xB8
+_0806F024: .4byte IWRAM_START + 0xF0
 _0806F028: .4byte gInput
 _0806F02C: .4byte gUnknown_03005B38
-_0806F030: .4byte gUnknown_030000B4
+_0806F030: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F034
 sub_806F034: @ 0x0806F034
@@ -22811,51 +22811,51 @@ sub_806F034: @ 0x0806F034
 	ldrh r4, [r0, #6]
 	bl sub_806EF44
 	bl sub_806F56C
-	ldr r0, _0806F088 @ =gUnknown_030000B8
+	ldr r0, _0806F088 @ =IWRAM_START + 0xB8
 	adds r1, r4, r0
-	ldr r2, _0806F08C @ =gUnknown_030000F4
+	ldr r2, _0806F08C @ =IWRAM_START + 0xF4
 	adds r0, r4, r2
 	ldrh r0, [r0]
 	ldrh r2, [r1]
 	adds r0, r0, r2
 	strh r0, [r1]
-	ldr r0, _0806F090 @ =gUnknown_030000B0
+	ldr r0, _0806F090 @ =IWRAM_START + 0xB0
 	adds r2, r4, r0
 	movs r1, #0
 	ldrsh r0, [r2, r1]
 	cmp r0, #0
 	bgt _0806F0B8
-	ldr r1, _0806F094 @ =gUnknown_030000C8
+	ldr r1, _0806F094 @ =IWRAM_START + 0xC8
 	adds r0, r4, r1
 	ldr r1, [r0]
 	movs r0, #0
 	strh r0, [r2]
 	cmp r1, #0
 	bgt _0806F09C
-	ldr r2, _0806F098 @ =gUnknown_030000B4
+	ldr r2, _0806F098 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #8
 	b _0806F0B6
 	.align 2, 0
 _0806F084: .4byte gCurTask
-_0806F088: .4byte gUnknown_030000B8
-_0806F08C: .4byte gUnknown_030000F4
-_0806F090: .4byte gUnknown_030000B0
-_0806F094: .4byte gUnknown_030000C8
-_0806F098: .4byte gUnknown_030000B4
+_0806F088: .4byte IWRAM_START + 0xB8
+_0806F08C: .4byte IWRAM_START + 0xF4
+_0806F090: .4byte IWRAM_START + 0xB0
+_0806F094: .4byte IWRAM_START + 0xC8
+_0806F098: .4byte IWRAM_START + 0xB4
 _0806F09C:
 	movs r0, #0x8c
 	lsls r0, r0, #6
 	cmp r1, r0
 	bgt _0806F0B0
-	ldr r0, _0806F0AC @ =gUnknown_030000B4
+	ldr r0, _0806F0AC @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	movs r0, #1
 	b _0806F0B6
 	.align 2, 0
-_0806F0AC: .4byte gUnknown_030000B4
+_0806F0AC: .4byte IWRAM_START + 0xB4
 _0806F0B0:
-	ldr r2, _0806F0C0 @ =gUnknown_030000B4
+	ldr r2, _0806F0C0 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #2
 _0806F0B6:
@@ -22865,7 +22865,7 @@ _0806F0B8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806F0C0: .4byte gUnknown_030000B4
+_0806F0C0: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F0C4
 sub_806F0C4: @ 0x0806F0C4
@@ -22881,51 +22881,51 @@ sub_806F0C4: @ 0x0806F0C4
 	ldrh r4, [r0, #6]
 	bl sub_806EF44
 	bl sub_806F604
-	ldr r0, _0806F118 @ =gUnknown_030000B8
+	ldr r0, _0806F118 @ =IWRAM_START + 0xB8
 	adds r1, r4, r0
-	ldr r2, _0806F11C @ =gUnknown_030000F6
+	ldr r2, _0806F11C @ =IWRAM_START + 0xF6
 	adds r0, r4, r2
 	ldrh r0, [r0]
 	ldrh r2, [r1]
 	adds r0, r0, r2
 	strh r0, [r1]
-	ldr r0, _0806F120 @ =gUnknown_030000B0
+	ldr r0, _0806F120 @ =IWRAM_START + 0xB0
 	adds r2, r4, r0
 	movs r1, #0
 	ldrsh r0, [r2, r1]
 	cmp r0, #0
 	bgt _0806F148
-	ldr r1, _0806F124 @ =gUnknown_030000C8
+	ldr r1, _0806F124 @ =IWRAM_START + 0xC8
 	adds r0, r4, r1
 	ldr r1, [r0]
 	movs r0, #0
 	strh r0, [r2]
 	cmp r1, #0
 	bgt _0806F12C
-	ldr r2, _0806F128 @ =gUnknown_030000B4
+	ldr r2, _0806F128 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #8
 	b _0806F146
 	.align 2, 0
 _0806F114: .4byte gCurTask
-_0806F118: .4byte gUnknown_030000B8
-_0806F11C: .4byte gUnknown_030000F6
-_0806F120: .4byte gUnknown_030000B0
-_0806F124: .4byte gUnknown_030000C8
-_0806F128: .4byte gUnknown_030000B4
+_0806F118: .4byte IWRAM_START + 0xB8
+_0806F11C: .4byte IWRAM_START + 0xF6
+_0806F120: .4byte IWRAM_START + 0xB0
+_0806F124: .4byte IWRAM_START + 0xC8
+_0806F128: .4byte IWRAM_START + 0xB4
 _0806F12C:
 	movs r0, #0x8c
 	lsls r0, r0, #6
 	cmp r1, r0
 	bgt _0806F140
-	ldr r0, _0806F13C @ =gUnknown_030000B4
+	ldr r0, _0806F13C @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	movs r0, #1
 	b _0806F146
 	.align 2, 0
-_0806F13C: .4byte gUnknown_030000B4
+_0806F13C: .4byte IWRAM_START + 0xB4
 _0806F140:
-	ldr r2, _0806F150 @ =gUnknown_030000B4
+	ldr r2, _0806F150 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #2
 _0806F146:
@@ -22935,7 +22935,7 @@ _0806F148:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806F150: .4byte gUnknown_030000B4
+_0806F150: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F154
 sub_806F154: @ 0x0806F154
@@ -22951,7 +22951,7 @@ sub_806F154: @ 0x0806F154
 	ldrh r4, [r0, #6]
 	bl sub_806EF44
 	bl sub_806F604
-	ldr r0, _0806F1CC @ =gUnknown_030000A8
+	ldr r0, _0806F1CC @ =IWRAM_START + 0xA8
 	adds r2, r4, r0
 	adds r0, #0x28
 	adds r1, r4, r0
@@ -22959,15 +22959,15 @@ sub_806F154: @ 0x0806F154
 	ldr r1, [r1]
 	adds r0, r0, r1
 	str r0, [r2]
-	ldr r1, _0806F1D0 @ =gUnknown_030000AC
+	ldr r1, _0806F1D0 @ =IWRAM_START + 0xAC
 	adds r2, r4, r1
-	ldr r0, _0806F1D4 @ =gUnknown_030000D4
+	ldr r0, _0806F1D4 @ =IWRAM_START + 0xD4
 	adds r1, r4, r0
 	ldr r0, [r2]
 	ldr r1, [r1]
 	adds r0, r0, r1
 	str r0, [r2]
-	ldr r2, _0806F1D8 @ =gUnknown_030000B8
+	ldr r2, _0806F1D8 @ =IWRAM_START + 0xB8
 	adds r1, r4, r2
 	adds r2, #0x3c
 	adds r0, r4, r2
@@ -22975,20 +22975,20 @@ sub_806F154: @ 0x0806F154
 	ldrh r2, [r1]
 	adds r0, r0, r2
 	strh r0, [r1]
-	ldr r0, _0806F1DC @ =gUnknown_030000B0
+	ldr r0, _0806F1DC @ =IWRAM_START + 0xB0
 	adds r2, r4, r0
 	movs r1, #0
 	ldrsh r0, [r2, r1]
 	cmp r0, #0
 	bgt _0806F1C2
-	ldr r0, _0806F1E0 @ =gUnknown_030000C8
+	ldr r0, _0806F1E0 @ =IWRAM_START + 0xC8
 	adds r1, r4, r0
 	movs r0, #0x80
 	lsls r0, r0, #6
 	str r0, [r1]
 	movs r0, #0
 	strh r0, [r2]
-	ldr r2, _0806F1E4 @ =gUnknown_030000B4
+	ldr r2, _0806F1E4 @ =IWRAM_START + 0xB4
 	adds r1, r4, r2
 	movs r0, #1
 	strh r0, [r1]
@@ -22998,13 +22998,13 @@ _0806F1C2:
 	bx r0
 	.align 2, 0
 _0806F1C8: .4byte gCurTask
-_0806F1CC: .4byte gUnknown_030000A8
-_0806F1D0: .4byte gUnknown_030000AC
-_0806F1D4: .4byte gUnknown_030000D4
-_0806F1D8: .4byte gUnknown_030000B8
-_0806F1DC: .4byte gUnknown_030000B0
-_0806F1E0: .4byte gUnknown_030000C8
-_0806F1E4: .4byte gUnknown_030000B4
+_0806F1CC: .4byte IWRAM_START + 0xA8
+_0806F1D0: .4byte IWRAM_START + 0xAC
+_0806F1D4: .4byte IWRAM_START + 0xD4
+_0806F1D8: .4byte IWRAM_START + 0xB8
+_0806F1DC: .4byte IWRAM_START + 0xB0
+_0806F1E0: .4byte IWRAM_START + 0xC8
+_0806F1E4: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F1E8
 sub_806F1E8: @ 0x0806F1E8
@@ -23022,16 +23022,16 @@ sub_806F1E8: @ 0x0806F1E8
 	adds r0, #1
 	movs r7, #0
 	strh r0, [r6, #4]
-	ldr r0, _0806F240 @ =gUnknown_030000B8
+	ldr r0, _0806F240 @ =IWRAM_START + 0xB8
 	adds r4, r5, r0
-	ldr r1, _0806F244 @ =gUnknown_030000FA
+	ldr r1, _0806F244 @ =IWRAM_START + 0xFA
 	adds r0, r5, r1
 	ldrh r0, [r0]
 	ldrh r2, [r4]
 	adds r0, r0, r2
 	strh r0, [r4]
 	bl sub_806F56C
-	ldr r0, _0806F248 @ =gUnknown_030000B0
+	ldr r0, _0806F248 @ =IWRAM_START + 0xB0
 	adds r1, r5, r0
 	movs r2, #0
 	ldrsh r0, [r1, r2]
@@ -23040,24 +23040,24 @@ sub_806F1E8: @ 0x0806F1E8
 	strh r7, [r6, #4]
 	strh r7, [r4]
 	strh r7, [r1]
-	ldr r1, _0806F24C @ =gUnknown_030000C8
+	ldr r1, _0806F24C @ =IWRAM_START + 0xC8
 	adds r0, r5, r1
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _0806F254
-	ldr r2, _0806F250 @ =gUnknown_030000B4
+	ldr r2, _0806F250 @ =IWRAM_START + 0xB4
 	adds r1, r5, r2
 	movs r0, #0xd
 	b _0806F25A
 	.align 2, 0
 _0806F23C: .4byte gCurTask
-_0806F240: .4byte gUnknown_030000B8
-_0806F244: .4byte gUnknown_030000FA
-_0806F248: .4byte gUnknown_030000B0
-_0806F24C: .4byte gUnknown_030000C8
-_0806F250: .4byte gUnknown_030000B4
+_0806F240: .4byte IWRAM_START + 0xB8
+_0806F244: .4byte IWRAM_START + 0xFA
+_0806F248: .4byte IWRAM_START + 0xB0
+_0806F24C: .4byte IWRAM_START + 0xC8
+_0806F250: .4byte IWRAM_START + 0xB4
 _0806F254:
-	ldr r0, _0806F264 @ =gUnknown_030000B4
+	ldr r0, _0806F264 @ =IWRAM_START + 0xB4
 	adds r1, r5, r0
 	movs r0, #0xc
 _0806F25A:
@@ -23067,7 +23067,7 @@ _0806F25C:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806F264: .4byte gUnknown_030000B4
+_0806F264: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F268
 sub_806F268: @ 0x0806F268
@@ -23083,13 +23083,13 @@ sub_806F268: @ 0x0806F268
 	ldrh r0, [r0, #6]
 	adds r1, r1, r0
 	mov ip, r1
-	ldr r2, _0806F2BC @ =gUnknown_030000E0
+	ldr r2, _0806F2BC @ =IWRAM_START + 0xE0
 	adds r1, r0, r2
 	ldr r3, [r1]
-	ldr r7, _0806F2C0 @ =gUnknown_030000C8
+	ldr r7, _0806F2C0 @ =IWRAM_START + 0xC8
 	adds r5, r0, r7
 	ldr r4, [r5]
-	ldr r1, _0806F2C4 @ =gUnknown_030000B2
+	ldr r1, _0806F2C4 @ =IWRAM_START + 0xB2
 	adds r0, r0, r1
 	ldrh r1, [r0]
 	ldr r2, _0806F2C8 @ =gUnknown_08097AA4
@@ -23112,9 +23112,9 @@ sub_806F268: @ 0x0806F268
 	b _0806F2D2
 	.align 2, 0
 _0806F2B8: .4byte gCurTask
-_0806F2BC: .4byte gUnknown_030000E0
-_0806F2C0: .4byte gUnknown_030000C8
-_0806F2C4: .4byte gUnknown_030000B2
+_0806F2BC: .4byte IWRAM_START + 0xE0
+_0806F2C0: .4byte IWRAM_START + 0xC8
+_0806F2C4: .4byte IWRAM_START + 0xB2
 _0806F2C8: .4byte gUnknown_08097AA4
 _0806F2CC:
 	movs r0, #0
@@ -23162,15 +23162,15 @@ sub_806F300: @ 0x0806F300
 	adds r0, #1
 	movs r6, #0
 	strh r0, [r3, #4]
-	ldr r0, _0806F358 @ =gUnknown_030000B8
+	ldr r0, _0806F358 @ =IWRAM_START + 0xB8
 	adds r2, r4, r0
-	ldr r1, _0806F35C @ =gUnknown_030000FE
+	ldr r1, _0806F35C @ =IWRAM_START + 0xFE
 	adds r0, r4, r1
 	ldrh r0, [r0]
 	ldrh r1, [r2]
 	adds r0, r0, r1
 	strh r0, [r2]
-	ldr r0, _0806F360 @ =gUnknown_030000B0
+	ldr r0, _0806F360 @ =IWRAM_START + 0xB0
 	adds r5, r4, r0
 	movs r0, #0
 	ldrsh r1, [r5, r0]
@@ -23182,7 +23182,7 @@ sub_806F300: @ 0x0806F300
 	movs r0, #0xc0
 	lsls r0, r0, #8
 	strh r0, [r5]
-	ldr r0, _0806F368 @ =gUnknown_030000B4
+	ldr r0, _0806F368 @ =IWRAM_START + 0xB4
 	adds r1, r4, r0
 	movs r0, #0xf
 	strh r0, [r1]
@@ -23192,11 +23192,11 @@ _0806F34C:
 	bx r0
 	.align 2, 0
 _0806F354: .4byte gCurTask
-_0806F358: .4byte gUnknown_030000B8
-_0806F35C: .4byte gUnknown_030000FE
-_0806F360: .4byte gUnknown_030000B0
+_0806F358: .4byte IWRAM_START + 0xB8
+_0806F35C: .4byte IWRAM_START + 0xFE
+_0806F360: .4byte IWRAM_START + 0xB0
 _0806F364: .4byte 0xFFFFC000
-_0806F368: .4byte gUnknown_030000B4
+_0806F368: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F36C
 sub_806F36C: @ 0x0806F36C
@@ -23210,7 +23210,7 @@ sub_806F36C: @ 0x0806F36C
 	ldr r0, [r2]
 	ldr r0, [r0, #0xc]
 	ldrh r3, [r0, #6]
-	ldr r0, _0806F3B8 @ =gUnknown_030000B2
+	ldr r0, _0806F3B8 @ =IWRAM_START + 0xB2
 	adds r1, r3, r0
 	ldrh r0, [r1]
 	adds r0, #0x10
@@ -23226,10 +23226,10 @@ sub_806F36C: @ 0x0806F36C
 	cmp r0, #0x1f
 	ble _0806F3AE
 	strh r4, [r2, #4]
-	ldr r1, _0806F3BC @ =gUnknown_030000C8
+	ldr r1, _0806F3BC @ =IWRAM_START + 0xC8
 	adds r0, r3, r1
 	str r4, [r0]
-	ldr r0, _0806F3C0 @ =gUnknown_030000B4
+	ldr r0, _0806F3C0 @ =IWRAM_START + 0xB4
 	adds r1, r3, r0
 	movs r0, #8
 	strh r0, [r1]
@@ -23239,9 +23239,9 @@ _0806F3AE:
 	bx r0
 	.align 2, 0
 _0806F3B4: .4byte gCurTask
-_0806F3B8: .4byte gUnknown_030000B2
-_0806F3BC: .4byte gUnknown_030000C8
-_0806F3C0: .4byte gUnknown_030000B4
+_0806F3B8: .4byte IWRAM_START + 0xB2
+_0806F3BC: .4byte IWRAM_START + 0xC8
+_0806F3C0: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F3C4
 sub_806F3C4: @ 0x0806F3C4
@@ -23255,7 +23255,7 @@ sub_806F3C4: @ 0x0806F3C4
 	ldr r0, [r5]
 	ldr r0, [r0, #0xc]
 	ldrh r4, [r0, #6]
-	ldr r0, _0806F44C @ =gUnknown_030000A8
+	ldr r0, _0806F44C @ =IWRAM_START + 0xA8
 	adds r2, r4, r0
 	ldr r0, [r2]
 	movs r3, #0xc0
@@ -23272,7 +23272,7 @@ _0806F3E8:
 	lsls r0, r0, #0x12
 	str r0, [r2]
 _0806F3F6:
-	ldr r6, _0806F454 @ =gUnknown_030000AC
+	ldr r6, _0806F454 @ =IWRAM_START + 0xAC
 	adds r2, r4, r6
 	ldr r0, [r2]
 	cmp r0, r3
@@ -23290,15 +23290,15 @@ _0806F40E:
 	adds r0, #1
 	movs r1, #0
 	strh r0, [r5, #4]
-	ldr r0, _0806F458 @ =gUnknown_030000B8
+	ldr r0, _0806F458 @ =IWRAM_START + 0xB8
 	adds r3, r4, r0
-	ldr r2, _0806F45C @ =gUnknown_030000FA
+	ldr r2, _0806F45C @ =IWRAM_START + 0xFA
 	adds r0, r4, r2
 	ldrh r0, [r0]
 	ldrh r6, [r3]
 	adds r0, r0, r6
 	strh r0, [r3]
-	ldr r0, _0806F460 @ =gUnknown_030000B0
+	ldr r0, _0806F460 @ =IWRAM_START + 0xB0
 	adds r2, r4, r0
 	movs r6, #0
 	ldrsh r0, [r2, r6]
@@ -23309,7 +23309,7 @@ _0806F40E:
 	strh r1, [r5, #4]
 	strh r1, [r3]
 	strh r1, [r2]
-	ldr r2, _0806F464 @ =gUnknown_030000B4
+	ldr r2, _0806F464 @ =IWRAM_START + 0xB4
 	adds r0, r4, r2
 	strh r1, [r0]
 _0806F442:
@@ -23318,13 +23318,13 @@ _0806F442:
 	bx r0
 	.align 2, 0
 _0806F448: .4byte gCurTask
-_0806F44C: .4byte gUnknown_030000A8
+_0806F44C: .4byte IWRAM_START + 0xA8
 _0806F450: .4byte 0x3CFFFFF
-_0806F454: .4byte gUnknown_030000AC
-_0806F458: .4byte gUnknown_030000B8
-_0806F45C: .4byte gUnknown_030000FA
-_0806F460: .4byte gUnknown_030000B0
-_0806F464: .4byte gUnknown_030000B4
+_0806F454: .4byte IWRAM_START + 0xAC
+_0806F458: .4byte IWRAM_START + 0xB8
+_0806F45C: .4byte IWRAM_START + 0xFA
+_0806F460: .4byte IWRAM_START + 0xB0
+_0806F464: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806F468
 sub_806F468: @ 0x0806F468
@@ -23350,10 +23350,10 @@ sub_806F468: @ 0x0806F468
 	lsls r0, r0, #2
 	adds r0, r0, r2
 	ldr r2, [r0]
-	ldr r1, _0806F4F8 @ =gUnknown_030000A8
+	ldr r1, _0806F4F8 @ =IWRAM_START + 0xA8
 	adds r0, r3, r1
 	ldrh r4, [r0, #2]
-	ldr r7, _0806F4FC @ =gUnknown_030000AC
+	ldr r7, _0806F4FC @ =IWRAM_START + 0xAC
 	adds r0, r3, r7
 	ldrh r0, [r0, #2]
 	mov r8, r0
@@ -23365,7 +23365,7 @@ sub_806F468: @ 0x0806F468
 	beq _0806F560
 	lsls r0, r4, #0x10
 	asrs r4, r0, #0x10
-	ldr r1, _0806F500 @ =gUnknown_030000B4
+	ldr r1, _0806F500 @ =IWRAM_START + 0xB4
 	adds r5, r3, r1
 	movs r6, #0
 _0806F4B8:
@@ -23400,9 +23400,9 @@ _0806F4B8:
 	.align 2, 0
 _0806F4F0: .4byte gCurTask
 _0806F4F4: .4byte gUnknown_08C87904
-_0806F4F8: .4byte gUnknown_030000A8
-_0806F4FC: .4byte gUnknown_030000AC
-_0806F500: .4byte gUnknown_030000B4
+_0806F4F8: .4byte IWRAM_START + 0xA8
+_0806F4FC: .4byte IWRAM_START + 0xAC
+_0806F500: .4byte IWRAM_START + 0xB4
 _0806F504:
 	mov r1, ip
 	adds r1, #0xc8
@@ -23475,13 +23475,13 @@ sub_806F56C: @ 0x0806F56C
 	ldrh r0, [r0, #6]
 	adds r1, r1, r0
 	mov r8, r1
-	ldr r1, _0806F5C4 @ =gUnknown_030000C8
+	ldr r1, _0806F5C4 @ =IWRAM_START + 0xC8
 	adds r5, r0, r1
 	ldr r4, [r5]
-	ldr r2, _0806F5C8 @ =gUnknown_030000B2
+	ldr r2, _0806F5C8 @ =IWRAM_START + 0xB2
 	adds r1, r0, r2
 	ldrh r1, [r1]
-	ldr r6, _0806F5CC @ =gUnknown_03000100
+	ldr r6, _0806F5CC @ =IWRAM_START + 0x100
 	adds r0, r0, r6
 	ldr r3, [r0]
 	ldr r2, _0806F5D0 @ =gUnknown_08097AA4
@@ -23505,9 +23505,9 @@ sub_806F56C: @ 0x0806F56C
 	b _0806F5DA
 	.align 2, 0
 _0806F5C0: .4byte gCurTask
-_0806F5C4: .4byte gUnknown_030000C8
-_0806F5C8: .4byte gUnknown_030000B2
-_0806F5CC: .4byte gUnknown_03000100
+_0806F5C4: .4byte IWRAM_START + 0xC8
+_0806F5C8: .4byte IWRAM_START + 0xB2
+_0806F5CC: .4byte IWRAM_START + 0x100
 _0806F5D0: .4byte gUnknown_08097AA4
 _0806F5D4:
 	movs r0, #0
@@ -23552,13 +23552,13 @@ sub_806F604: @ 0x0806F604
 	ldrh r0, [r0, #6]
 	adds r1, r1, r0
 	mov r8, r1
-	ldr r1, _0806F65C @ =gUnknown_030000C8
+	ldr r1, _0806F65C @ =IWRAM_START + 0xC8
 	adds r5, r0, r1
 	ldr r4, [r5]
-	ldr r2, _0806F660 @ =gUnknown_030000B2
+	ldr r2, _0806F660 @ =IWRAM_START + 0xB2
 	adds r1, r0, r2
 	ldrh r1, [r1]
-	ldr r6, _0806F664 @ =gUnknown_03000104
+	ldr r6, _0806F664 @ =IWRAM_START + 0x104
 	adds r0, r0, r6
 	ldr r3, [r0]
 	ldr r2, _0806F668 @ =gUnknown_08097AA4
@@ -23582,9 +23582,9 @@ sub_806F604: @ 0x0806F604
 	b _0806F672
 	.align 2, 0
 _0806F658: .4byte gCurTask
-_0806F65C: .4byte gUnknown_030000C8
-_0806F660: .4byte gUnknown_030000B2
-_0806F664: .4byte gUnknown_03000104
+_0806F65C: .4byte IWRAM_START + 0xC8
+_0806F660: .4byte IWRAM_START + 0xB2
+_0806F664: .4byte IWRAM_START + 0x104
 _0806F668: .4byte gUnknown_08097AA4
 _0806F66C:
 	movs r0, #0
@@ -23634,13 +23634,13 @@ sub_806F69C: @ 0x0806F69C
 	ldr r1, _0806F708 @ =0x000003FF
 	adds r0, r1, #0
 	ands r5, r0
-	ldr r1, _0806F70C @ =gUnknown_030000A8
+	ldr r1, _0806F70C @ =IWRAM_START + 0xA8
 	adds r0, r3, r1
 	ldr r1, [r2, #0x40]
 	ldr r0, [r0]
 	subs r1, r1, r0
 	mov r8, r1
-	ldr r0, _0806F710 @ =gUnknown_030000AC
+	ldr r0, _0806F710 @ =IWRAM_START + 0xAC
 	adds r3, r3, r0
 	ldr r1, [r2, #0x44]
 	ldr r0, [r3]
@@ -23670,8 +23670,8 @@ sub_806F69C: @ 0x0806F69C
 	b _0806F738
 	.align 2, 0
 _0806F708: .4byte 0x000003FF
-_0806F70C: .4byte gUnknown_030000A8
-_0806F710: .4byte gUnknown_030000AC
+_0806F70C: .4byte IWRAM_START + 0xA8
+_0806F710: .4byte IWRAM_START + 0xAC
 _0806F714:
 	lsls r0, r3, #0x10
 	movs r1, #0xff
@@ -23997,7 +23997,7 @@ sub_806F944: @ 0x0806F944
 	asrs r1, r2, #4
 	bl sub_806F84C
 	adds r4, r0, #0
-	ldr r0, _0806F9C0 @ =gUnknown_030000D0
+	ldr r0, _0806F9C0 @ =IWRAM_START + 0xD0
 	adds r0, r0, r6
 	mov sb, r0
 	lsls r5, r5, #5
@@ -24008,7 +24008,7 @@ sub_806F944: @ 0x0806F944
 	bl __divsi3
 	mov r1, sb
 	str r0, [r1]
-	ldr r2, _0806F9C4 @ =gUnknown_030000D4
+	ldr r2, _0806F9C4 @ =IWRAM_START + 0xD4
 	adds r5, r6, r2
 	mov r0, r8
 	lsls r0, r0, #5
@@ -24016,7 +24016,7 @@ sub_806F944: @ 0x0806F944
 	adds r1, r4, #0
 	bl __divsi3
 	str r0, [r5]
-	ldr r1, _0806F9C8 @ =gUnknown_030000B8
+	ldr r1, _0806F9C8 @ =IWRAM_START + 0xB8
 	adds r6, r6, r1
 	movs r0, #0xc0
 	lsls r0, r0, #2
@@ -24028,9 +24028,9 @@ sub_806F944: @ 0x0806F944
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806F9C0: .4byte gUnknown_030000D0
-_0806F9C4: .4byte gUnknown_030000D4
-_0806F9C8: .4byte gUnknown_030000B8
+_0806F9C0: .4byte IWRAM_START + 0xD0
+_0806F9C4: .4byte IWRAM_START + 0xD4
+_0806F9C8: .4byte IWRAM_START + 0xB8
 
 	thumb_func_start sub_806F9CC
 sub_806F9CC: @ 0x0806F9CC
@@ -24067,7 +24067,7 @@ sub_806F9E4: @ 0x0806F9E4
 	lsrs r1, r0, #0x10
 	cmp r1, #0
 	bne _0806FA1C
-	ldr r2, _0806FA30 @ =gUnknown_030000B4
+	ldr r2, _0806FA30 @ =IWRAM_START + 0xB4
 	adds r0, r4, r2
 	strh r1, [r0]
 _0806FA1C:
@@ -24078,7 +24078,7 @@ _0806FA1C:
 	.align 2, 0
 _0806FA28: .4byte gCurTask
 _0806FA2C: .4byte gInput
-_0806FA30: .4byte gUnknown_030000B4
+_0806FA30: .4byte IWRAM_START + 0xB4
 
 	thumb_func_start sub_806FA34
 sub_806FA34: @ 0x0806FA34
@@ -24099,21 +24099,21 @@ sub_806FA34: @ 0x0806FA34
 	ands r0, r2
 	cmp r0, #0
 	beq _0806FA7E
-	ldr r0, _0806FA90 @ =gUnknown_030000B4
+	ldr r0, _0806FA90 @ =IWRAM_START + 0xB4
 	adds r1, r3, r0
 	movs r2, #0
 	movs r0, #4
 	strh r0, [r1]
-	ldr r1, _0806FA94 @ =gUnknown_030000B0
+	ldr r1, _0806FA94 @ =IWRAM_START + 0xB0
 	adds r0, r3, r1
 	strh r2, [r0]
-	ldr r4, _0806FA98 @ =gUnknown_030000EC
+	ldr r4, _0806FA98 @ =IWRAM_START + 0xEC
 	adds r0, r3, r4
 	ldrh r1, [r0]
 	subs r4, #0x34
 	adds r0, r3, r4
 	strh r1, [r0]
-	ldr r1, _0806FA9C @ =gUnknown_030000BA
+	ldr r1, _0806FA9C @ =IWRAM_START + 0xBA
 	adds r0, r3, r1
 	strh r2, [r0]
 	movs r0, #0x74
@@ -24126,10 +24126,10 @@ _0806FA7E:
 _0806FA84: .4byte gCurTask
 _0806FA88: .4byte gPressedKeys
 _0806FA8C: .4byte gUnknown_03005B38
-_0806FA90: .4byte gUnknown_030000B4
-_0806FA94: .4byte gUnknown_030000B0
-_0806FA98: .4byte gUnknown_030000EC
-_0806FA9C: .4byte gUnknown_030000BA
+_0806FA90: .4byte IWRAM_START + 0xB4
+_0806FA94: .4byte IWRAM_START + 0xB0
+_0806FA98: .4byte IWRAM_START + 0xEC
+_0806FA9C: .4byte IWRAM_START + 0xBA
 
 	thumb_func_start sub_806FAA0
 sub_806FAA0: @ 0x0806FAA0
@@ -24143,7 +24143,7 @@ sub_806FAA0: @ 0x0806FAA0
 	ldr r0, [r0]
 	ldr r0, [r0, #0xc]
 	ldrh r3, [r0, #6]
-	ldr r0, _0806FAF4 @ =gUnknown_030000A8
+	ldr r0, _0806FAF4 @ =IWRAM_START + 0xA8
 	adds r1, r3, r0
 	ldr r0, [r1]
 	ldr r4, _0806FAF8 @ =0x002FFFFF
@@ -24160,7 +24160,7 @@ _0806FAC6:
 	ble _0806FAD2
 	str r2, [r1]
 _0806FAD2:
-	ldr r0, _0806FAFC @ =gUnknown_030000AC
+	ldr r0, _0806FAFC @ =IWRAM_START + 0xAC
 	adds r1, r3, r0
 	ldr r0, [r1]
 	cmp r0, r4
@@ -24179,9 +24179,9 @@ _0806FAEA:
 	bx r0
 	.align 2, 0
 _0806FAF0: .4byte gCurTask
-_0806FAF4: .4byte gUnknown_030000A8
+_0806FAF4: .4byte IWRAM_START + 0xA8
 _0806FAF8: .4byte 0x002FFFFF
-_0806FAFC: .4byte gUnknown_030000AC
+_0806FAFC: .4byte IWRAM_START + 0xAC
 
 	thumb_func_start sub_806FB00
 sub_806FB00: @ 0x0806FB00
@@ -24201,7 +24201,7 @@ sub_806FB04: @ 0x0806FB04
 	bl sub_8070C58
 	bl sub_806FFC8
 	bl sub_8070D14
-	ldr r0, _0806FB5C @ =gUnknown_030002A8
+	ldr r0, _0806FB5C @ =IWRAM_START + 0x2A8
 	adds r4, r4, r0
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -24230,7 +24230,7 @@ _0806FB44:
 	b _0806FB80
 	.align 2, 0
 _0806FB58: .4byte gCurTask
-_0806FB5C: .4byte gUnknown_030002A8
+_0806FB5C: .4byte IWRAM_START + 0x2A8
 _0806FB60: .4byte 0x000005B4
 _0806FB64:
 	ldr r1, _0806FBB8 @ =0x000005A2
@@ -24460,7 +24460,7 @@ sub_806FCF8: @ 0x0806FCF8
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov r8, r0
-	ldr r1, _0806FD68 @ =gUnknown_030002AA
+	ldr r1, _0806FD68 @ =IWRAM_START + 0x2AA
 	adds r2, r2, r1
 	ldrh r0, [r2]
 	adds r1, r0, #1
@@ -24483,7 +24483,7 @@ _0806FD58: .4byte gCurTask
 _0806FD5C: .4byte 0x000005BB
 _0806FD60: .4byte 0x000005BC
 _0806FD64: .4byte 0x000005BD
-_0806FD68: .4byte gUnknown_030002AA
+_0806FD68: .4byte IWRAM_START + 0x2AA
 _0806FD6C:
 	cmp r2, #2
 	bgt _0806FD7E
@@ -24804,7 +24804,7 @@ _0806FFE6:
 	ldrsb r0, [r5, r0]
 	cmp r0, #0
 	beq _08070002
-	ldr r1, _08070070 @ =gUnknown_030000C4
+	ldr r1, _08070070 @ =IWRAM_START + 0xC4
 	adds r0, r7, r1
 	bl sub_80051E8
 	movs r0, #0
@@ -24863,7 +24863,7 @@ _08070054:
 _08070064: .4byte gCurTask
 _08070068: .4byte 0x000005BA
 _0807006C: .4byte 0x000005BF
-_08070070: .4byte gUnknown_030000C4
+_08070070: .4byte IWRAM_START + 0xC4
 _08070074: .4byte 0x000005C2
 
 	thumb_func_start sub_8070078
@@ -24884,7 +24884,7 @@ sub_8070078: @ 0x08070078
 	lsls r0, r0, #3
 	ldr r4, _08070150 @ =gUnknown_080DF7E8
 	adds r1, r0, r4
-	ldr r3, _08070154 @ =gUnknown_030000C4
+	ldr r3, _08070154 @ =IWRAM_START + 0xC4
 	adds r2, r6, r3
 	ldrh r0, [r1]
 	movs r7, #0
@@ -24903,7 +24903,7 @@ sub_8070078: @ 0x08070078
 	asrs r0, r0, #0x18
 	lsls r0, r0, #3
 	adds r1, r0, r4
-	ldr r3, _08070158 @ =gUnknown_030000F4
+	ldr r3, _08070158 @ =IWRAM_START + 0xF4
 	adds r2, r6, r3
 	ldrh r0, [r1]
 	strh r0, [r2, #0xa]
@@ -24920,12 +24920,12 @@ sub_8070078: @ 0x08070078
 	asrs r0, r0, #0x18
 	lsls r0, r0, #3
 	adds r1, r0, r4
-	ldr r3, _08070160 @ =gUnknown_03000124
+	ldr r3, _08070160 @ =IWRAM_START + 0x124
 	adds r2, r6, r3
 	ldrh r0, [r1]
 	strh r0, [r2, #0xa]
 	ldrh r1, [r1, #2]
-	ldr r4, _08070164 @ =gUnknown_03000144
+	ldr r4, _08070164 @ =IWRAM_START + 0x144
 	adds r0, r6, r4
 	strb r1, [r0]
 	adds r0, r2, #0
@@ -24958,12 +24958,12 @@ sub_8070078: @ 0x08070078
 	adds r1, r5, r2
 	movs r0, #0x78
 	strb r0, [r1]
-	ldr r3, _08070178 @ =gUnknown_03000154
+	ldr r3, _08070178 @ =IWRAM_START + 0x154
 	adds r2, r6, r3
 	movs r0, #0xde
 	lsls r0, r0, #2
 	strh r0, [r2, #0xa]
-	ldr r1, _0807017C @ =gUnknown_03000174
+	ldr r1, _0807017C @ =IWRAM_START + 0x174
 	adds r0, r6, r1
 	strb r4, [r0]
 	b _080701A6
@@ -24971,17 +24971,17 @@ sub_8070078: @ 0x08070078
 _08070148: .4byte gCurTask
 _0807014C: .4byte 0x000005BF
 _08070150: .4byte gUnknown_080DF7E8
-_08070154: .4byte gUnknown_030000C4
-_08070158: .4byte gUnknown_030000F4
+_08070154: .4byte IWRAM_START + 0xC4
+_08070158: .4byte IWRAM_START + 0xF4
 _0807015C: .4byte 0x000005C1
-_08070160: .4byte gUnknown_03000124
-_08070164: .4byte gUnknown_03000144
+_08070160: .4byte IWRAM_START + 0x124
+_08070164: .4byte IWRAM_START + 0x144
 _08070168: .4byte 0x000005C5
 _0807016C: .4byte 0x000005A4
 _08070170: .4byte 0x000005A6
 _08070174: .4byte 0x000005C7
-_08070178: .4byte gUnknown_03000154
-_0807017C: .4byte gUnknown_03000174
+_08070178: .4byte IWRAM_START + 0x154
+_0807017C: .4byte IWRAM_START + 0x174
 _08070180:
 	ldr r2, _080701B0 @ =0x000005A4
 	adds r0, r5, r2
@@ -24994,12 +24994,12 @@ _08070180:
 	cmp r2, r0
 	bge _080701C0
 	strb r7, [r3]
-	ldr r0, _080701B8 @ =gUnknown_03000154
+	ldr r0, _080701B8 @ =IWRAM_START + 0x154
 	adds r2, r6, r0
 	movs r0, #0xde
 	lsls r0, r0, #2
 	strh r0, [r2, #0xa]
-	ldr r1, _080701BC @ =gUnknown_03000174
+	ldr r1, _080701BC @ =IWRAM_START + 0x174
 	adds r0, r6, r1
 	strb r7, [r0]
 _080701A6:
@@ -25009,10 +25009,10 @@ _080701A6:
 	.align 2, 0
 _080701B0: .4byte 0x000005A4
 _080701B4: .4byte 0x000005A6
-_080701B8: .4byte gUnknown_03000154
-_080701BC: .4byte gUnknown_03000174
+_080701B8: .4byte IWRAM_START + 0x154
+_080701BC: .4byte IWRAM_START + 0x174
 _080701C0:
-	ldr r3, _080701D0 @ =gUnknown_03000154
+	ldr r3, _080701D0 @ =IWRAM_START + 0x154
 	adds r2, r6, r3
 	adds r0, r2, #0
 	bl sub_8004558
@@ -25021,7 +25021,7 @@ _080701CA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080701D0: .4byte gUnknown_03000154
+_080701D0: .4byte IWRAM_START + 0x154
 
 	thumb_func_start sub_80701D4
 sub_80701D4: @ 0x080701D4
@@ -25578,7 +25578,7 @@ sub_807061C: @ 0x0807061C
 	adds r0, r1, #0
 	adds r0, #0x4c
 	strh r0, [r3, #0x16]
-	ldr r0, _08070670 @ =gUnknown_03000034
+	ldr r0, _08070670 @ =IWRAM_START + 0x34
 	adds r3, r4, r0
 	ldrh r0, [r5]
 	adds r0, #4
@@ -25588,7 +25588,7 @@ _08070660: .4byte gCurTask
 _08070664: .4byte gUnknown_03000516
 _08070668: .4byte IWRAM_START+4
 _0807066C: .4byte 0x000005C5
-_08070670: .4byte gUnknown_03000034
+_08070670: .4byte IWRAM_START + 0x34
 _08070674:
 	adds r0, r1, #0
 	adds r0, #0x30
@@ -25662,7 +25662,7 @@ sub_80706D8: @ 0x080706D8
 	ldr r3, _08070738 @ =gUnknown_0300051A
 	adds r1, r2, r3
 	strh r0, [r1]
-	ldr r1, _0807073C @ =gUnknown_030001B4
+	ldr r1, _0807073C @ =IWRAM_START + 0x1B4
 	adds r3, r2, r1
 	adds r0, #0x30
 	strh r0, [r3, #0x16]
@@ -25696,7 +25696,7 @@ _0807070A:
 	.align 2, 0
 _08070734: .4byte gCurTask
 _08070738: .4byte gUnknown_0300051A
-_0807073C: .4byte gUnknown_030001B4
+_0807073C: .4byte IWRAM_START + 0x1B4
 
 	thumb_func_start sub_8070740
 sub_8070740: @ 0x08070740
@@ -25716,7 +25716,7 @@ sub_8070740: @ 0x08070740
 	ldr r3, _080707A0 @ =gUnknown_0300051C
 	adds r1, r2, r3
 	strh r0, [r1]
-	ldr r1, _080707A4 @ =gUnknown_030001E4
+	ldr r1, _080707A4 @ =IWRAM_START + 0x1E4
 	adds r3, r2, r1
 	adds r0, #0x30
 	strh r0, [r3, #0x16]
@@ -25750,7 +25750,7 @@ _08070772:
 	.align 2, 0
 _0807079C: .4byte gCurTask
 _080707A0: .4byte gUnknown_0300051C
-_080707A4: .4byte gUnknown_030001E4
+_080707A4: .4byte IWRAM_START + 0x1E4
 
 	thumb_func_start sub_80707A8
 sub_80707A8: @ 0x080707A8
@@ -25770,7 +25770,7 @@ sub_80707A8: @ 0x080707A8
 	ldr r3, _08070808 @ =gUnknown_0300051E
 	adds r1, r2, r3
 	strh r0, [r1]
-	ldr r1, _0807080C @ =gUnknown_03000214
+	ldr r1, _0807080C @ =IWRAM_START + 0x214
 	adds r3, r2, r1
 	adds r0, #0x30
 	strh r0, [r3, #0x16]
@@ -25803,7 +25803,7 @@ _080707D8:
 	.align 2, 0
 _08070804: .4byte gCurTask
 _08070808: .4byte gUnknown_0300051E
-_0807080C: .4byte gUnknown_03000214
+_0807080C: .4byte IWRAM_START + 0x214
 _08070810: .4byte 0x00000424
 
 	thumb_func_start sub_8070814
@@ -25998,7 +25998,7 @@ sub_807087C: @ 0x0807087C
 	mov sb, r6
 	cmp r0, #0
 	beq _080709D2
-	ldr r2, _08070B84 @ =gUnknown_03000034
+	ldr r2, _08070B84 @ =IWRAM_START + 0x34
 	adds r0, r7, r2
 	bl sub_80051E8
 _080709D2:
@@ -26214,7 +26214,7 @@ _08070B74: .4byte gCurTask
 _08070B78: .4byte 0x000005AC
 _08070B7C: .4byte IWRAM_START+4
 _08070B80: .4byte 0x000005C5
-_08070B84: .4byte gUnknown_03000034
+_08070B84: .4byte IWRAM_START + 0x34
 _08070B88: .4byte gUnknown_080DF7E8
 _08070B8C: .4byte 0x00000424
 
@@ -26238,14 +26238,14 @@ sub_8070B90: @ 0x08070B90
 	lsls r0, r0, #0x12
 	adds r0, r3, r0
 	str r5, [r0]
-	ldr r2, _08070BE0 @ =gUnknown_030002A4
+	ldr r2, _08070BE0 @ =IWRAM_START + 0x2A4
 	adds r1, r3, r2
 	movs r2, #0
 	str r2, [r1]
-	ldr r5, _08070BE4 @ =gUnknown_030002A8
+	ldr r5, _08070BE4 @ =IWRAM_START + 0x2A8
 	adds r1, r3, r5
 	strb r2, [r1]
-	ldr r1, _08070BE8 @ =gUnknown_030002A9
+	ldr r1, _08070BE8 @ =IWRAM_START + 0x2A9
 	adds r3, r3, r1
 	strb r2, [r3]
 	bl sub_8070C3C
@@ -26257,9 +26257,9 @@ sub_8070B90: @ 0x08070B90
 	.align 2, 0
 _08070BD8: .4byte sub_806FB04
 _08070BDC: .4byte sub_8070BEC
-_08070BE0: .4byte gUnknown_030002A4
-_08070BE4: .4byte gUnknown_030002A8
-_08070BE8: .4byte gUnknown_030002A9
+_08070BE0: .4byte IWRAM_START + 0x2A4
+_08070BE4: .4byte IWRAM_START + 0x2A8
+_08070BE8: .4byte IWRAM_START + 0x2A9
 
 	thumb_func_start sub_8070BEC
 sub_8070BEC: @ 0x08070BEC
@@ -26350,7 +26350,7 @@ _08070C76:
 	ldrsb r0, [r6, r0]
 	cmp r0, #0
 	beq _08070C92
-	ldr r1, _08070CC8 @ =gUnknown_03000034
+	ldr r1, _08070CC8 @ =IWRAM_START + 0x34
 	adds r0, r5, r1
 	bl sub_80051E8
 _08070C92:
@@ -26361,11 +26361,11 @@ _08070C92:
 	orrs r1, r0
 	cmp r1, #0
 	beq _08070CA8
-	ldr r1, _08070CD0 @ =gUnknown_03000064
+	ldr r1, _08070CD0 @ =IWRAM_START + 0x64
 	adds r0, r5, r1
 	bl sub_80051E8
 _08070CA8:
-	ldr r1, _08070CD4 @ =gUnknown_03000094
+	ldr r1, _08070CD4 @ =IWRAM_START + 0x94
 	adds r0, r5, r1
 	bl sub_80051E8
 	pop {r4, r5, r6}
@@ -26376,10 +26376,10 @@ _08070CB8: .4byte gCurTask
 _08070CBC: .4byte 0x000005BA
 _08070CC0: .4byte IWRAM_START+4
 _08070CC4: .4byte 0x000005BB
-_08070CC8: .4byte gUnknown_03000034
+_08070CC8: .4byte IWRAM_START + 0x34
 _08070CCC: .4byte 0x000005BC
-_08070CD0: .4byte gUnknown_03000064
-_08070CD4: .4byte gUnknown_03000094
+_08070CD0: .4byte IWRAM_START + 0x64
+_08070CD4: .4byte IWRAM_START + 0x94
 
 	thumb_func_start sub_8070CD8
 sub_8070CD8: @ 0x08070CD8
@@ -26424,7 +26424,7 @@ sub_8070D14: @ 0x08070D14
 	ldr r3, [r0]
 	ldr r0, [r3, #0xc]
 	ldrh r0, [r0, #6]
-	ldr r1, _08070D6C @ =gUnknown_030000C0
+	ldr r1, _08070D6C @ =IWRAM_START + 0xC0
 	adds r0, r0, r1
 	movs r4, #0
 	ldrsh r1, [r0, r4]
@@ -26433,7 +26433,7 @@ sub_8070D14: @ 0x08070D14
 	lsls r1, r1, #3
 	ldr r0, _08070D70 @ =gUnknown_080DF830
 	adds r1, r1, r0
-	ldr r5, _08070D74 @ =gUnknown_03000214
+	ldr r5, _08070D74 @ =IWRAM_START + 0x214
 	adds r4, r2, r5
 	ldr r5, _08070D78 @ =0x000005BA
 	adds r0, r3, r5
@@ -26443,7 +26443,7 @@ sub_8070D14: @ 0x08070D14
 	ldrh r0, [r1]
 	strh r0, [r4, #0xa]
 	ldrh r1, [r1, #2]
-	ldr r3, _08070D7C @ =gUnknown_03000234
+	ldr r3, _08070D7C @ =IWRAM_START + 0x234
 	adds r0, r2, r3
 	strb r1, [r0]
 	adds r0, r4, #0
@@ -26457,11 +26457,11 @@ _08070D60:
 	bx r0
 	.align 2, 0
 _08070D68: .4byte gCurTask
-_08070D6C: .4byte gUnknown_030000C0
+_08070D6C: .4byte IWRAM_START + 0xC0
 _08070D70: .4byte gUnknown_080DF830
-_08070D74: .4byte gUnknown_03000214
+_08070D74: .4byte IWRAM_START + 0x214
 _08070D78: .4byte 0x000005BA
-_08070D7C: .4byte gUnknown_03000234
+_08070D7C: .4byte IWRAM_START + 0x234
 
 	thumb_func_start sub_8070D80
 sub_8070D80: @ 0x08070D80
@@ -26795,7 +26795,7 @@ _08070FCE:
 	strh r0, [r5]
 	ldrh r0, [r4, #0x12]
 	strh r0, [r5, #8]
-	ldr r0, _0807109C @ =gUnknown_03000048
+	ldr r0, _0807109C @ =IWRAM_START + 0x48
 	add r0, r8
 	movs r2, #0xb4
 	lsls r2, r2, #3
@@ -26841,7 +26841,7 @@ _08071060:
 	ldrsh r1, [r6, r0]
 	cmp r1, #2
 	bne _0807107C
-	ldr r0, _080710AC @ =gUnknown_0300004C
+	ldr r0, _080710AC @ =IWRAM_START + 0x4C
 	add r0, r8
 	ldrh r0, [r0]
 	ands r1, r0
@@ -26866,11 +26866,11 @@ _08071082:
 _08071090: .4byte gCurTask
 _08071094: .4byte gUnknown_03005176
 _08071098: .4byte 0x000005BA
-_0807109C: .4byte gUnknown_03000048
+_0807109C: .4byte IWRAM_START + 0x48
 _080710A0: .4byte 0x000003FF
 _080710A4: .4byte 0x000005CC
 _080710A8: .4byte IWRAM_START+4
-_080710AC: .4byte gUnknown_0300004C
+_080710AC: .4byte IWRAM_START + 0x4C
 
 	thumb_func_start sub_80710B0
 sub_80710B0: @ 0x080710B0
@@ -26888,7 +26888,7 @@ sub_80710B0: @ 0x080710B0
 	ldr r0, [r6]
 	ldr r0, [r0, #0xc]
 	ldrh r1, [r0, #6]
-	ldr r0, _08071150 @ =gUnknown_03000048
+	ldr r0, _08071150 @ =IWRAM_START + 0x48
 	adds r0, r0, r5
 	mov r8, r0
 	ldrh r2, [r0]
@@ -26913,12 +26913,12 @@ sub_80710B0: @ 0x080710B0
 	add r0, sb
 	movs r2, #0
 	ldrsh r3, [r0, r2]
-	ldr r2, _0807115C @ =gUnknown_030000A8
+	ldr r2, _0807115C @ =IWRAM_START + 0xA8
 	adds r0, r1, r2
 	ldr r2, [r0]
 	ldr r0, [r6, #0x40]
 	subs r2, r2, r0
-	ldr r0, _08071160 @ =gUnknown_030000AC
+	ldr r0, _08071160 @ =IWRAM_START + 0xAC
 	adds r1, r1, r0
 	ldr r1, [r1]
 	ldr r0, [r6, #0x44]
@@ -26941,7 +26941,7 @@ sub_80710B0: @ 0x080710B0
 	mov r1, sb
 	cmp r4, #0
 	ble _08071168
-	ldr r2, _08071164 @ =gUnknown_03000050
+	ldr r2, _08071164 @ =IWRAM_START + 0x50
 	adds r0, r5, r2
 	ldrh r0, [r0]
 	mov r3, ip
@@ -26953,26 +26953,26 @@ sub_80710B0: @ 0x080710B0
 	b _08071192
 	.align 2, 0
 _0807114C: .4byte gCurTask
-_08071150: .4byte gUnknown_03000048
+_08071150: .4byte IWRAM_START + 0x48
 _08071154: .4byte 0x000003FF
 _08071158: .4byte gUnknown_08097AA4
-_0807115C: .4byte gUnknown_030000A8
-_08071160: .4byte gUnknown_030000AC
-_08071164: .4byte gUnknown_03000050
+_0807115C: .4byte IWRAM_START + 0xA8
+_08071160: .4byte IWRAM_START + 0xAC
+_08071164: .4byte IWRAM_START + 0x50
 _08071168:
 	cmp r4, #0
 	bge _0807117C
-	ldr r2, _08071178 @ =gUnknown_03000050
+	ldr r2, _08071178 @ =IWRAM_START + 0x50
 	adds r0, r5, r2
 	ldrh r0, [r0]
 	add r0, ip
 	b _0807118A
 	.align 2, 0
-_08071178: .4byte gUnknown_03000050
+_08071178: .4byte IWRAM_START + 0x50
 _0807117C:
 	cmp r0, #0
 	bge _08071192
-	ldr r3, _08071208 @ =gUnknown_03000050
+	ldr r3, _08071208 @ =IWRAM_START + 0x50
 	adds r0, r5, r3
 	ldrh r0, [r0]
 	mov r2, ip
@@ -27041,7 +27041,7 @@ _080711F8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08071208: .4byte gUnknown_03000050
+_08071208: .4byte IWRAM_START + 0x50
 
 	thumb_func_start sub_807120C
 sub_807120C: @ 0x0807120C
@@ -27062,10 +27062,10 @@ sub_807120C: @ 0x0807120C
 	ldr r0, [r5, #0x44]
 	lsrs r0, r0, #0x10
 	mov r8, r0
-	ldr r2, _08071270 @ =gUnknown_030000A8
+	ldr r2, _08071270 @ =IWRAM_START + 0xA8
 	adds r0, r1, r2
 	ldrh r2, [r0, #2]
-	ldr r6, _08071274 @ =gUnknown_030000AC
+	ldr r6, _08071274 @ =IWRAM_START + 0xAC
 	adds r0, r1, r6
 	ldrh r0, [r0, #2]
 	mov sl, r0
@@ -27077,7 +27077,7 @@ sub_807120C: @ 0x0807120C
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov ip, r0
-	ldr r0, _08071278 @ =gUnknown_030000B4
+	ldr r0, _08071278 @ =IWRAM_START + 0xB4
 	adds r1, r1, r0
 	ldrh r6, [r1]
 	mov sb, r6
@@ -27097,9 +27097,9 @@ _0807125E:
 _0807126C:
 	b _08071284
 	.align 2, 0
-_08071270: .4byte gUnknown_030000A8
-_08071274: .4byte gUnknown_030000AC
-_08071278: .4byte gUnknown_030000B4
+_08071270: .4byte IWRAM_START + 0xA8
+_08071274: .4byte IWRAM_START + 0xAC
+_08071278: .4byte IWRAM_START + 0xB4
 _0807127C:
 	cmp r1, #0xa
 	beq _08071372

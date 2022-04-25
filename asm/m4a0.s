@@ -71,12 +71,12 @@ _0809463A:
 _0809465A:
 	str r5, [sp, #8]
 	ldr r6, _08094678 @ =0x00000630
-	ldr r3, _0809466C @ =gUnknown_03000001
+	ldr r3, _0809466C @ =SoundMainRAM_Buffer + 1
 	bx r3
 	.align 2, 0
 _08094664: .4byte 0x03007ff0
 _08094668: .4byte 0x68736D53
-_0809466C: .4byte gUnknown_03000001
+_0809466C: .4byte SoundMainRAM_Buffer + 1
 _08094670: .4byte 0x04000006
 _08094674: .4byte 0x00000350
 _08094678: .4byte 0x00000630
