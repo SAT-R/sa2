@@ -10,8 +10,8 @@ struct UNK_0808B3FC_UNK27C {
     u8 unk2;
     u8 filler3;
 
-    u8* unk4;
-    u8* unk8;
+    const u8* unk4;
+    const u8* unk8;
 
     u8 fillerC[40];
     u16 unk34;
@@ -27,42 +27,23 @@ struct UNK_0808B3FC_UNK270 {
     u16 unkA;
 };
 
-struct UNK_0808B3FC_UNK240 {
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
-    u16 unkA;
-    u32 unkC;
-    u32 unk10;
-    u16 unk14;
-    u16 unk16;
-    u16 unk18;
-    u16 unk1A;
-    u16 unk1C;
-    u16 unk1E;
-    u8 unk20;
-    u8 unk21;
-    u8 unk22;
-    u8 unk23;
-    u8 unk24;
-    u8 unk25;
-    u8 filler26[10];
-};
-
 struct UNK_0808B3FC {
     // Possibly an array of ui elements?
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
     struct Unk_03002400 unk80;
-    struct Unk_03002400 unkC0;
-    struct Unk_03002400 unk100;
-    struct Unk_03002400 unk140;
-    struct Unk_03002400 unk180;
-    struct Unk_03002400 unk1C0;
-    struct Unk_03002400 unk200;
 
-    // Dunno what these are
+    // Dunno what these are yet
+    struct UNK_0808B3FC_UNK240 unkC0;
+    struct UNK_0808B3FC_UNK240 unkF0;
+
+    // Might be something else here, but this fits
+    struct UNK_0808B3FC_UNK240 unk120[6];
+
+    // Used
     struct UNK_0808B3FC_UNK240 unk240;
+
+    // Some more configs
     struct UNK_0808B3FC_UNK270 unk270;
     struct UNK_0808B3FC_UNK27C unk27C;
 
@@ -95,6 +76,23 @@ struct UNK_3005B80 {
     struct UNK_0808B3FC_UNK27C* unk0;
     struct UNK_0808B3FC* unk4;
 };
+
+struct UNK_080E0D64 {
+    u32 unk0;
+    u16 unk4;
+    s8 unk6;
+};
+
+
+
+// These sit next to each other in the ROM
+// but changing to a struct, or joining them 
+// together doesn't match
+extern const struct UNK_080E0D64 gUnknown_080E0D64[7];
+extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
+
+// Used outside of this module I think, so declared here
+struct UNK_3005B80 gUnknown_03005B80;
 
 void sub_808B3FC_CreateIntro(void);
 

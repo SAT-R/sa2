@@ -80,7 +80,6 @@ extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern u32 gMultiSioStatusFlags;
-extern u32 gUnknown_03002790;
 
 extern u8 gUnknown_030026F4;
 extern u8 gUnknown_03002AE4;

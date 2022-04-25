@@ -22,7 +22,7 @@ PREPROC := tools/preproc/preproc
 RAMSCRGEN := tools/ramscrgen/ramscrgen
 FIX := tools/gbafix/gbafix
 
-CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm
+CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
 CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 
@@ -77,8 +77,8 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 $(C_BUILDDIR)/m4a.o: CC1 := $(CC1_OLD)
 
 # Use `-O1` for agb_flash libs, as these were also prebuilt
-$(C_BUILDDIR)/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork
-$(C_BUILDDIR)/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork
+$(C_BUILDDIR)/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 
 ifeq ($(DINFO),1)
 override CC1FLAGS += -g

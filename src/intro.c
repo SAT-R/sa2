@@ -9,10 +9,13 @@
 #include "main.h"
 #include "data.h"
 
-extern struct UNK_3005B80 gUnknown_03005B80;
+// Might not be declared here
+struct UNK_3005B80 gUnknown_03005B80;
 
-extern u8 gUnknown_080E0EF4[0x160];
-extern u8 gUnknown_080E1054[10];
+// TODO: Extract this data from ROM
+// I believe these will only be used here
+extern const u8 gUnknown_080E0EF4[0x160];
+extern const u8 gUnknown_080E1054[10];
 
 extern void sub_808D598(void);
 extern void sub_802D4CC(struct UNK_0808B3FC_UNK270*);
@@ -259,4 +262,101 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     config0->unk2E = 6;
 
     sub_8002A3C(config0);
+}
+
+void sub_808B884(struct UNK_0808B3FC* introConfig) {
+    // Credit to @jiang for the match on this one too
+    s8 saveValue;
+    u32 i, objAddr;
+    struct UNK_0808B3FC_UNK240 *config;
+
+    // Must be 0 - 6;
+    saveValue = gLoadedSaveGame->unk6;
+    objAddr = OBJ_VRAM0;
+
+    // TODO: make these into macros maybe?
+    config = &introConfig->unkC0;
+    
+    config->unk4 = objAddr;
+    objAddr += (90 * TILE_SIZE_4BPP);
+    
+    config->unkA = 0x33e;
+    config->unk20 = 1;
+    config->unk21 = 0xFF;
+    config->unk16 = 0;
+    config->unk18 = 0x82;
+    config->unk8 = 0;
+    config->unk1A = 0x100;
+    config->unk1C = 0;
+    config->unk22 = 0x10;
+    config->unk25 = 0;
+    config->unk10 = 0;
+    sub_8004558(config);
+
+    config = &introConfig->unkF0;
+
+    config->unk4 = objAddr;
+    objAddr += (gUnknown_080E0D64[saveValue].unk0 * TILE_SIZE_4BPP);
+    
+    config->unkA = gUnknown_080E0D64[saveValue].unk4;
+    config->unk20 = gUnknown_080E0D64[saveValue].unk6;
+    config->unk21 = 0xFF;
+    config->unk16 = 0x78;
+    config->unk18 = 0x6E;
+    config->unk8 = 0;
+    config->unk1A = 0xC0;
+    config->unk1C = 0;
+    config->unk22 = 0x10;
+    config->unk25 = 0;
+    config->unk10 = 0;
+    sub_8004558(config);
+
+    for (i = 0; i < 6; i++) {
+        config = &introConfig->unk120[i];
+
+        // gUnknown_080E0D9C could be considered a 2d array ([7][6] so [saveValue][i])
+        // but this doesn't match
+        config->unk4 = objAddr;
+        objAddr += (gUnknown_080E0D9C[i + saveValue * 6].unk0 * TILE_SIZE_4BPP);
+        
+        config->unkA = gUnknown_080E0D9C[i + saveValue * 6].unk4;
+        config->unk20 = gUnknown_080E0D9C[i + saveValue * 6].unk6;
+        config->unk21 = 0xFF;
+        config->unk16 = 0x78;
+        
+        // TODO: understand this
+        if (i < 2) {
+          config->unk18 = (i * 0x12) + 0x60;
+        } else {
+          if (gLoadedSaveGame->unk14 != 0) {
+            config->unk18 = (i - 2) * 0x10 + 0x60;
+          } else {
+            config->unk18 = (i - 2) * 0x12 + 0x64;
+          }
+        }
+        
+        config->unk8 = 0;
+        config->unk1A = 0xc0;
+        config->unk1C = 0;
+        config->unk22 = 0x10;
+        config->unk25 = 0;
+        config->unk10 = 0;
+        sub_8004558(config);
+    };
+
+    config = &introConfig->unk240;
+    config->unk4 = objAddr;
+    // Use last value for this one
+    config->unkA = gUnknown_080E0D9C[42].unk4;
+    config->unk20 = gUnknown_080E0D9C[42].unk6;
+    config->unk21 = 0xFF;
+    config->unk16 = 0x78;
+    config->unk18 = 0x50;
+    config->unk8 = 0;
+    config->unk1A = 0x780;
+    config->unk1C = 0;
+    config->unk22 = 0x10;
+    config->unk25 = 0;
+    config->unk10 = 0x3000;
+    sub_8004558(config);
 }
