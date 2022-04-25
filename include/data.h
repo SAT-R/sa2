@@ -14,9 +14,6 @@ extern u8* gUnknown_030022C0;
 
 extern u8 gUnknown_03001B60[2][0x280];
 
-// Used in ewram malloc 
-extern void *gUnknown_020226D0;
-
 // set in init.c
 extern u32* gUnknown_03002794;
 extern u32 gUnknown_030059D8;

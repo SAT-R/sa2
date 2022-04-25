@@ -11,7 +11,7 @@ struct EwramNode
     /* 0x8 */ u8 space[0];            // space for general purposes
 };
 
-extern struct EwramNode gEwramHeap;
+void *gUnknown_020226D0;
 
 void EwramInitHeap(void);
 void *EwramMalloc(u32);

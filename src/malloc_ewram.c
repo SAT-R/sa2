@@ -1,5 +1,10 @@
+#include "global.h"
 #include "malloc_ewram.h"
 #include "data.h"
+
+// TODO: reference in EWRAM
+struct EwramNode gEwramHeap;
+void *gUnknown_020226D0;
 
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)
