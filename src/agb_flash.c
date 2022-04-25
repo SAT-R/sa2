@@ -1,13 +1,14 @@
 #include "global.h"
 #include "gba/flash_internal.h"
+#include "agb_flash.h"
 
 static u8 sTimerNum;
 static u16 sTimerCount;
 
 // TODO: can't make gSavedIme static because
 // it comes after gTimerReg which is used globally
-extern vu16 *gTimerReg;
-extern u16 gSavedIme;
+vu16 *gTimerReg;
+u16 gSavedIme;
 
 void SetReadFlash1(u16 *dest);
 

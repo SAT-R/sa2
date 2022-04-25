@@ -7,8 +7,11 @@
 #include "m4a.h"
 #include "random.h"
 
+// TODO: Move refernce these in iwram
 // TODO: make static, only used here
 struct SaveGame* gLastWrittenSaveGame;
+struct SaveGame* gLoadedSaveGame;
+// TODO: make static, only used here
 struct SaveSectorData* gSaveSectorDataBuffer;
 
 static s16 FindNewestSaveGameSector(void);

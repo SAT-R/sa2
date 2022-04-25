@@ -101,7 +101,7 @@ struct SaveSectorData {
 #define NUM_SAVE_SECTORS 10
 
 // Some sort of save data?
-extern struct SaveGame* gLoadedSaveGame;
+struct SaveGame* gLoadedSaveGame;
 
 void SaveInit(void);
 bool16 SaveGameExists(void);
