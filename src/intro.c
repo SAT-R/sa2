@@ -17,22 +17,34 @@ struct UNK_3005B80 gUnknown_03005B80;
 // I believe these will only be used here
 extern const u8 gUnknown_080E0EF4[0x160];
 extern const u8 gUnknown_080E1054[10];
+extern const u8 gUnknown_080E105E[5];
 
 extern void sub_808D598(void);
 extern void sub_802D4CC(struct UNK_0808B3FC_UNK270*);
 
+void sub_808CE00(u32, u32, u32, u32, u32);
+void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
+
 static void sub_808B768(struct UNK_0808B3FC*);
 
-// TODO make static once decompiled
+// TODO: make static once references to it are decompiled
 void sub_808B884(struct UNK_0808B3FC*);
+
+// TODO: make static once decompiled
 void sub_808CBA4(struct UNK_0808B3FC*);
 void sub_808D5FC(void);
 static void sub_808BB54(void);
 static void sub_808BBF4(void);
 void sub_808D63C(void);
-static void sub_808BCC4(void);
-void sub_808CE00(u32, u32, u32, u32, u32);
+
 void sub_808D4DC(struct UNK_0808B3FC*);
+
+static void sub_808BCC4(void);
+static void sub_808BDBC(void);
+static void sub_808BF7C(void);
+
+void sub_808D124(void);
+void sub_808C1AC(void);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -494,8 +506,6 @@ void sub_808BC54(void) {
     introConfig->unkF3E++;
 }
 
-void sub_808BDBC(void);
-
 // Detect user input and do something
 static void sub_808BCC4(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
@@ -541,5 +551,179 @@ static void sub_808BCC4(void) {
         sub_808CE00(0xb4, 0xffffffe8, 3, 0x20, 0);
     }
     
+    introConfig->unkF3E++;
+}
+
+static void sub_808BDBC(void) {
+    struct Unk_03002400* config0;
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
+        sub_808D4DC(introConfig);
+        return;
+    }
+
+    gBgScrollRegs[1][1] -= introConfig->unkF3D;
+    if (gBgScrollRegs[1][1] < 0xAF) {
+        gBgScrollRegs[1][1] = 0xAF;
+    }
+
+    if (gBgScrollRegs[1][1] < 0x15F) {
+        gDispCnt &= 0xFBFF;
+        gDispCnt &= 0xBFFF;
+    } else {
+        introConfig->unkF38 += introConfig->unkF3D;
+        sub_808CBA4(introConfig);
+    }
+
+    if (introConfig->unkF3E == gUnknown_080E105E[introConfig->unkF3C]) {
+        introConfig->unkF3E = 0;
+        introConfig->unkF3D++;
+        introConfig->unkF3C++;
+    }
+
+    if (introConfig->unkF3E > 0x3C && introConfig->unkF3C > 2) {
+        gBgCntRegs[2] &= ~0x2000;
+
+        gUnknown_03004D80[0] = 2;
+        gUnknown_03002280[0] = 0;
+        gUnknown_03002280[1] = 0;
+        gUnknown_03002280[2] = 0x20;
+        gUnknown_03002280[3] = 0x20;
+
+        gBldRegs.bldCnt = 0;
+
+        config0 = &introConfig->unk0;
+        config0->unk4 = BG_SCREEN_ADDR(8);
+        config0->unkA = 0;
+        config0->unkC = BG_SCREEN_ADDR(31);
+        config0->unk18 = 0;
+        config0->unk1A = 0;
+        config0->unk1C = 0x107;
+        config0->unk1E = 0;
+        config0->unk20 = 0;
+        config0->unk22 = 0;
+        config0->unk24 = 0;
+        config0->unk26 = 7;
+        config0->unk28 = 0x10;
+        config0->unk2A = 0;
+        config0->unk2E = 0x10;
+        sub_8002A3C(config0);
+
+        gBgScrollRegs[0][1] = 0x4F;
+        gCurTask->main = sub_808BF7C;
+
+        introConfig->unkF3E = 0;
+        gWinRegs[1] = 0xF0;
+        gWinRegs[3] = 0xA0;
+        gWinRegs[4] |= 0x3F00;
+        gWinRegs[5] |= 0x3F;
+
+        gBldRegs.bldCnt = 0x3FBF;
+        gBldRegs.bldY = 0;
+
+        gDispCnt |= 0x4000;
+        REG_SIOCNT |= SIO_INTR_ENABLE;
+    }
+    introConfig->unkF3E++;
+}
+
+static void sub_808BF7C(void) {
+    struct Unk_03002400* config0;
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
+        sub_808D4DC(introConfig);
+        return;
+    }
+
+    if (introConfig->unkF3E == 2) {
+        sub_808D124();
+    }
+
+    // is odd
+    if (introConfig->unkF3E & 1) {
+        sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 10, &gBgAffineRegs);
+        gDispCnt |= 0x100;
+    }
+
+    if (introConfig->unkF3C > 2 && (u16)(introConfig->unkF3E - 0x14) < 0x77) {
+        gDispCnt &= 0xFEFF;
+        gDispCnt |= 0x4000;
+
+        gWinRegs[1] = 0xF0;
+        // Display height?
+        gWinRegs[3] = 0xA0;
+        gWinRegs[4] |= 0x3F00;
+        gWinRegs[5] |= 0x3F;
+
+        gBldRegs.bldCnt = 0x3FBF;
+        
+        if (introConfig->unkF3E > 0x1D) {
+            gBldRegs.bldY = 0x10 - ((introConfig->unkF3E - 0x1E) >> 3);
+        } else {
+            gBldRegs.bldY = 0x10;
+        }
+        
+        if (introConfig->unkF3E == 0x15) {
+            gBgScrollRegs[1][1] = 0;
+        }
+    }
+
+   
+    if (introConfig->unkF3E > 0x8A) {
+        config0 = &introConfig->unk0;
+
+        // Probably wrong size here (0x4000)
+        DmaFill32(3, 0, (void *)VRAM, OBJ_VRAM1_SIZE);
+
+        gUnknown_03004D80[0] = 2;
+        gUnknown_03002280[0] = 0;
+        gUnknown_03002280[1] = 0;
+        gUnknown_03002280[2] = 0xff;
+        gUnknown_03002280[3] = 0x20;
+        gUnknown_03004D80[2] = 0;
+        gUnknown_03002280[8] = 0;
+        gUnknown_03002280[9] = 0;
+        gUnknown_03002280[10] = 0xff;
+        gUnknown_03002280[11] = 0x20;
+        
+        config0->unk4 = BG_SCREEN_ADDR(0);
+        config0->unkA = 0;
+        config0->unkC = BG_SCREEN_ADDR(26);
+        config0->unk18 = 0;
+        config0->unk1A = 0;
+        
+        if (gLoadedSaveGame->unk6 < 2) {
+            config0->unk1C = 0x108;
+        } else {
+            config0->unk1C = 0x109;
+        }
+
+        config0->unk1E = 0;
+        config0->unk20 = 0;
+        config0->unk22 = 0;
+        config0->unk24 = 0;
+        config0->unk26 = 0x1A;
+        config0->unk28 = 10;
+        config0->unk2A = 0;
+        config0->unk2E = 6;
+
+        sub_8002A3C(config0);
+
+        gBgCntRegs[2] &= 0xDFFF;
+        gCurTask->main = sub_808C1AC;
+        
+        gDispCnt |= 0x400;
+        gDispCnt &= 0xFEFF;
+
+        gBldRegs.bldAlpha = 0x1000;
+        gBldRegs.bldCnt = 0x244;
+
+        introConfig->unkF3E = 0;
+        gBgScrollRegs[1][1] = 0;
+        
+        sub_808B884(introConfig);
+    }
     introConfig->unkF3E++;
 }

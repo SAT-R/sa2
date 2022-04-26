@@ -120,6 +120,6 @@ extern OamData gUnknown_030022D0[];
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern u16 gDispCnt;  // gDispCnt
-extern u16 gBgScrollRegs[4][2];  // gBgScrollRegs
+extern s16 gBgScrollRegs[4][2];  // gBgScrollRegs
 
 #endif

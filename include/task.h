@@ -50,6 +50,6 @@ void TaskExecute(void);
 struct Task* TaskCreate(TaskMain, u16, u16, u16, TaskDestructor);
 void TaskDestroy(struct Task*);
 uintptr_t IwramMalloc(u16);
-void sub_08152FB0(u16, u16);
+void sub_80029D0(u16, u16);
 
 #endif
