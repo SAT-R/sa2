@@ -122,12 +122,13 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
 
     sub_808B884(introConfig);
 
+    // Possibly a macro, why would this be set to 0 first
     gDispCnt = 0;
-    gDispCnt |= 0x1641;
+    gDispCnt |= DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     
-    gBgCntRegs[0] = 0x1f04;
-    gBgCntRegs[1] = 0x9d0a;
-    gBgCntRegs[2] = 0x5a81;
+    gBgCntRegs[0] = BGCNT_PRIORITY(0) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(31) | BGCNT_16COLOR;
+    gBgCntRegs[1] = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(29) | BGCNT_AFF512x512 | BGCNT_16COLOR;
+    gBgCntRegs[2] = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(26) | BGCNT_AFF256x256 | BGCNT_256COLOR;
 
     DmaFill32(3, 0, (void*)BG_VRAM, BG_VRAM_SIZE);
     gUnknown_03004D80[0] = 0;
@@ -147,7 +148,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     gUnknown_03002280[11] = 0x20;
 
     gBgScrollRegs[1][0] = 8;
-    gBgScrollRegs[1][1] = 0x200;
+    gBgScrollRegs[1][1] = 512;
 
     config0 = &introConfig->unk0;
     config0->unk4 = BG_SCREEN_ADDR(0);
@@ -171,12 +172,12 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
 
     sub_8002A3C(config0);
 
-    gDispCnt &= 0xfeff;
+    gDispCnt &= ~DISPCNT_BG0_ON;
     gDispCnt |= DISPCNT_BG1_ON | DISPCNT_BG2_ON;
 
     gBgCntRegs[2] &= ~BGCNT_WRAP;
 
-    gBldRegs.bldCnt = 0;
+    gBldRegs.bldCnt = BLDCNT_EFFECT_NONE;
     gFlags &= ~0x8000;
 
     config40 = &introConfig->unk40;
@@ -205,8 +206,8 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
 static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     struct Unk_03002400 *config80, *config0;
 
-    gDispCnt = 1;
-    gDispCnt |= 0x1440;
+    gDispCnt = DISPCNT_MODE_1;
+    gDispCnt |= DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
     
     gBgCntRegs[0] = 0x1f04;
     gBgCntRegs[1] = 0x9d0a;
@@ -372,25 +373,22 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
     sub_8004558(config);
 }
 
-#define FadeInAlpha(frame, fadeSpeed)  \
-    ((16 - frame) << (7 + fadeSpeed)) | (frame * fadeSpeed)
+#define FadeInBlend(frame, numFrames, fadeSpeed)  \
+    BLDALPHA_BLEND(frame * fadeSpeed, numFrames - (frame * fadeSpeed))
 
-#define FadeOutAlpha(frame, fadeSpeed)       \
-({                                           \
-    u32 tmp = frame * fadeSpeed;             \
-    (frame << (7 + fadeSpeed)) | (16 - tmp); \
-})
+#define FadeOutBlend(frame, numFrames, fadeSpeed) \
+    BLDALPHA_BLEND(numFrames - (frame * fadeSpeed), (frame * fadeSpeed))
 
 // Task_FadeInSegaLogo
 void sub_808BA78(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeInAlpha(introConfig->unkF3E, 1);
+    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E, 16, 1);
 
     if (introConfig->unkF3E >= 16) {
         introConfig->unkF3E = 0;
-        gBldRegs.bldAlpha = 16;
+        gBldRegs.bldAlpha = FadeInBlend(16, 16, 1);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         gCurTask->main = sub_808D5FC;
@@ -405,11 +403,11 @@ void sub_808BAD8(void) {
     sub_808CBA4(introConfig);
 
     // Fade out?
-    gBldRegs.bldAlpha = FadeOutAlpha(introConfig->unkF3E, 2);
+    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E, 16, 2);
 
     if (introConfig->unkF3E >= 8) {
-        gDispCnt &= ~0x100;
-        gBldRegs.bldAlpha = 0x1000;
+        gDispCnt &= ~DISPCNT_BG0_ON;
+        gBldRegs.bldAlpha = FadeOutBlend(16, 16, 1);
         introConfig->unkF3E = 0;
         gFlags &= ~0x8000;
         gCurTask->main = sub_808BB54;
@@ -447,7 +445,7 @@ static void sub_808BB54(void) {
 
     if (introConfig->unkF3E > 2) {
         introConfig->unkF3E = 0;
-        gDispCnt |= 0x100;
+        gDispCnt |= DISPCNT_BG0_ON;
         gCurTask->main = sub_808BBF4;
     }
 
@@ -460,11 +458,11 @@ static void sub_808BBF4(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeInAlpha(introConfig->unkF3E, 1);
+    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E, 16, 1);
 
     if (introConfig->unkF3E >= 16) {
         introConfig->unkF3E = 0;
-        gBldRegs.bldAlpha = 16;
+        gBldRegs.bldAlpha = FadeInBlend(16, 16, 1);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         // Only diference is this function assignment for the next task
@@ -479,12 +477,12 @@ void sub_808BC54(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeOutAlpha(introConfig->unkF3E, 2);
+    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E, 16, 2);
 
     if (introConfig->unkF3E >= 8) {
         gCurTask->main = sub_808BCC4;
         introConfig->unkF3E = 0;
-        gDispCnt &= ~0x100;
+        gDispCnt &= ~DISPCNT_BG0_ON;
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;    
     }
@@ -500,7 +498,7 @@ static void sub_808BCC4(void) {
     struct Unk_03002400* config40;
     sub_808CBA4(introConfig);
 
-    if ((gPressedKeys & (A_BUTTON | START_BUTTON))) {
+    if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
         sub_808D4DC(introConfig);
         return;
     }
@@ -532,9 +530,9 @@ static void sub_808BCC4(void) {
     if (introConfig->unkF3E > 140) {
         gCurTask->main = sub_808BDBC;
         introConfig->unkF3E = 0;
-        gDispCnt |= 0x200;
-        gBldRegs.bldAlpha = 0x1000;
-        gBldRegs.bldCnt = 0x241;
+        gDispCnt |= DISPCNT_BG1_ON;
+        gBldRegs.bldAlpha = FadeOutBlend(16, 16, 1);
+        gBldRegs.bldCnt = BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1;
         sub_808CE00(0x7c, 0xffffffc4, 0, 0xffdf, 0);
         sub_808CE00(0xb4, 0xffffffe8, 3, 0x20, 0);
     }
