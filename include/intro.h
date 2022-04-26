@@ -37,7 +37,6 @@ struct UNK_0808B3FC {
     struct UNK_0808B3FC_UNK240 unkC0;
     struct UNK_0808B3FC_UNK240 unkF0;
 
-    // Might be something else here, but this fits
     struct UNK_0808B3FC_UNK240 unk120[6];
 
     // Used

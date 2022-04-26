@@ -39,13 +39,13 @@ void sub_808B3FC_CreateIntro(void) {
     struct UNK_0808B3FC* introConfig;
     struct UNK_0808B3FC_UNK270* config270;
     struct UNK_0808B3FC_UNK27C* config27C;
-    s32 i, val, res;
-    u16 unknownWaveAttr;
+    s32 i, val;
+    s16 denom;
 
     t = TaskCreate(sub_808D598, sizeof(struct UNK_0808B3FC), 0x1000, 0, NULL);
     introConfig = TaskGetStructPtr(t, introConfig);
 
-    introConfig->unkF34 = 0x200;
+    introConfig->unkF34 = 512;
     introConfig->unkF36 = 0x100;
     introConfig->unkF38 = 2;
 
@@ -60,12 +60,16 @@ void sub_808B3FC_CreateIntro(void) {
 
     // Generate the wave effects
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
-        res = Div(0x10000, (i + 1) * 8);
-        unknownWaveAttr = introConfig->unkF34;
+        denom = Div(65536, (i + 1) * 8);
 
-        val = ((s16)res * unknownWaveAttr) >> 8;
+        // I.E: (512 * demon) - Not sure why it uses this when it's constant
+        val = (introConfig->unkF34 * denom) >> 8;
+        
+        // Goes from 16384 -> 102 in an log curve \_
         introConfig->unk2B4[i] = val;
-        introConfig->unkDF4[i] = Div(0x10000, val);
+        // Goes from 4 -> 642 in steps of 4 but becomes 
+        // a slightly more jagged line as i in creases
+        introConfig->unkDF4[i] = Div(65536, val);
     };
 
     config270 = &introConfig->unk270;
