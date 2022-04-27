@@ -103425,7 +103425,7 @@ _0804D878:
 	lsrs r0, r0, #0x10
 	cmp r0, #0x4f
 	bne _0804D8C0
-	ldr r0, _0804D8CC @ =gUnknown_03000900
+	ldr r0, _0804D8CC @ =IWRAM_START + 0x900
 	add r0, r8
 	movs r1, #0xc0
 	lsls r1, r1, #0x13
@@ -103446,7 +103446,7 @@ _0804D878:
 	strh r1, [r0, #0x26]
 	movs r1, #0x14
 	strh r1, [r0, #0x28]
-	ldr r2, _0804D8D4 @ =gUnknown_0300092A
+	ldr r2, _0804D8D4 @ =IWRAM_START + 0x92A
 	add r2, r8
 	movs r1, #0
 	strb r1, [r2]
@@ -103464,9 +103464,9 @@ _0804D8C0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D8CC: .4byte gUnknown_03000900
+_0804D8CC: .4byte IWRAM_START + 0x900
 _0804D8D0: .4byte 0x0600E000
-_0804D8D4: .4byte gUnknown_0300092A
+_0804D8D4: .4byte IWRAM_START + 0x92A
 _0804D8D8: .4byte gBgCntRegs
 _0804D8DC: .4byte 0x00001C02
 
@@ -103790,7 +103790,7 @@ sub_804DB34: @ 0x0804DB34
 	bl sub_8050958
 	adds r0, r7, #0
 	bl sub_804DCF8
-	ldr r1, _0804DC24 @ =gIntrTable+4
+	ldr r1, _0804DC24 @ =gIntrTable + 4
 	adds r5, r5, r1
 	ldr r6, _0804DC28 @ =gUnknown_03005960
 	ldr r0, [r6]
@@ -103846,7 +103846,7 @@ _0804DC14: .4byte gUnknown_03000594
 _0804DC18: .4byte gUnknown_03000654
 _0804DC1C: .4byte gDispCnt
 _0804DC20: .4byte 0x00009FFF
-_0804DC24: .4byte gIntrTable+4
+_0804DC24: .4byte gIntrTable + 4
 _0804DC28: .4byte gUnknown_03005960
 _0804DC2C:
 	adds r0, r7, #0
@@ -109730,7 +109730,7 @@ _08050A94:
 	movs r4, #0
 	ldr r0, _08050B20 @ =IWRAM_START + 0xCC
 	adds r7, r5, r0
-	ldr r1, _08050B24 @ =gIntrTable+68
+	ldr r1, _08050B24 @ =gIntrMainBuf + 4
 	adds r5, r5, r1
 _08050A9E:
 	lsls r0, r4, #4
@@ -109791,9 +109791,9 @@ _08050AB8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08050B1C: .4byte gIntrTable+8
+_08050B1C: .4byte gIntrTable + 8
 _08050B20: .4byte IWRAM_START + 0xCC
-_08050B24: .4byte gIntrTable+68
+_08050B24: .4byte gIntrMainBuf + 4
 _08050B28: .4byte gUnknown_03005B4C
 
 	thumb_func_start sub_8050B2C

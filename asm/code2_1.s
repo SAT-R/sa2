@@ -19959,7 +19959,7 @@ sub_806D9B4: @ 0x0806D9B4
 	lsls r0, r0, #0x12
 	adds r7, r1, r0
 	movs r2, #0
-	ldr r0, _0806DB34 @ =gUnknown_03000914
+	ldr r0, _0806DB34 @ =IWRAM_START + 0x914
 	adds r3, r1, r0
 	movs r5, #1
 	movs r4, #0xa1
@@ -20130,7 +20130,7 @@ _0806D9D8:
 	bx r0
 	.align 2, 0
 _0806DB30: .4byte gCurTask
-_0806DB34: .4byte gUnknown_03000914
+_0806DB34: .4byte IWRAM_START + 0x914
 _0806DB38: .4byte 0x00000A5A
 _0806DB3C: .4byte 0x00000372
 _0806DB40: .4byte 0x0000037B
@@ -20502,7 +20502,7 @@ sub_806DE10: @ 0x0806DE10
 	ldrsh r0, [r0, r2]
 	cmp r6, r0
 	bge _0806DE8E
-	ldr r2, _0806DEA0 @ =gUnknown_03000914
+	ldr r2, _0806DEA0 @ =IWRAM_START + 0x914
 	adds r5, r5, r2
 	adds r7, r0, #0
 _0806DE4A:
@@ -20551,7 +20551,7 @@ _0806DE8E:
 	.align 2, 0
 _0806DE98: .4byte gCurTask
 _0806DE9C: .4byte gUnknown_080DF6CC
-_0806DEA0: .4byte gUnknown_03000914
+_0806DEA0: .4byte IWRAM_START + 0x914
 
 	thumb_func_start sub_806DEA4
 sub_806DEA4: @ 0x0806DEA4
@@ -20785,7 +20785,7 @@ sub_806E038: @ 0x0806E038
 	bne _0806E06E
 	b _0806E196
 _0806E06E:
-	ldr r4, _0806E11C @ =gUnknown_03000914
+	ldr r4, _0806E11C @ =IWRAM_START + 0x914
 	adds r4, r4, r3
 	mov sl, r4
 	mov r7, sp
@@ -20873,7 +20873,7 @@ _0806E100:
 	b _0806E186
 	.align 2, 0
 _0806E118: .4byte gCurTask
-_0806E11C: .4byte gUnknown_03000914
+_0806E11C: .4byte IWRAM_START + 0x914
 _0806E120:
 	movs r3, #0
 	ldr r2, [sp, #0x28]

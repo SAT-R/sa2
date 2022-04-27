@@ -86,9 +86,7 @@
 . = 0x00000784; gUnknown_03000784 = .;
 . = 0x00000790; gSio32MultiLoadArea = .;
 . = 0x000007B0; gIntrTable = .;
-. = 0x00000900; gUnknown_03000900 = .;
-. = 0x00000914; gUnknown_03000914 = .;
-. = 0x0000092A; gUnknown_0300092A = .;
+. = 0x000007F0; gIntrMainBuf = .;
 . = 0x000009F0; gUnknown_030009F0 = .;
 . = 0x00000A58; gUnknown_03000A58 = .;
 . = 0x00000A5A; gUnknown_03000A5A = .;

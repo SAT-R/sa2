@@ -123,6 +123,7 @@ extern FuncType_030053A0 gUnknown_030053A0[];
 extern u8 gUnknown_03002874;
 
 extern IntrFunc gIntrTable[];
+extern u32 gIntrMainBuf[0x80];
 
 extern void sub_8007CC8(void);
 
