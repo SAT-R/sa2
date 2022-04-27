@@ -4,158 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_808C358
-sub_808C358: @ 0x0808C358
-	push {r4, r5, r6, r7, lr}
-	ldr r0, _0808C3C4 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r5, r0, r1
-	adds r1, #0xc0
-	adds r0, r0, r1
-	bl sub_80051E8
-	adds r0, r5, #0
-	bl sub_808D740
-	movs r4, #0
-_0808C376:
-	movs r0, #1
-	adds r1, r4, #0
-	eors r1, r0
-	lsls r0, r1, #1
-	adds r0, r0, r1
-	lsls r0, r0, #4
-	movs r2, #0x90
-	lsls r2, r2, #1
-	adds r0, r0, r2
-	adds r0, r5, r0
-	ldr r2, _0808C3C8 @ =0x00000F42
-	adds r1, r5, r2
-	ldrb r2, [r1]
-	adds r1, r4, #0
-	eors r1, r2
-	adds r2, r0, #0
-	adds r2, #0x25
-	strb r1, [r2]
-	bl sub_80051E8
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #1
-	bls _0808C376
-	ldr r0, _0808C3CC @ =gUnknown_030022B8
-	ldrh r1, [r0]
-	movs r0, #0xc0
-	ands r0, r1
-	cmp r0, #0
-	beq _0808C3DA
-	ldr r0, _0808C3C8 @ =0x00000F42
-	adds r1, r5, r0
-	ldrb r0, [r1]
-	cmp r0, #0
-	beq _0808C3D0
-	movs r0, #0
-	b _0808C3D2
-	.align 2, 0
-_0808C3C4: .4byte gCurTask
-_0808C3C8: .4byte 0x00000F42
-_0808C3CC: .4byte gUnknown_030022B8
-_0808C3D0:
-	movs r0, #1
-_0808C3D2:
-	strb r0, [r1]
-	movs r0, #0x6c
-	bl m4aSongNumStart
-_0808C3DA:
-	ldr r0, _0808C41C @ =gPressedKeys
-	ldrh r2, [r0]
-	movs r7, #1
-	adds r1, r7, #0
-	ands r1, r2
-	cmp r1, #0
-	beq _0808C46C
-	movs r0, #0x6a
-	bl m4aSongNumStart
-	ldr r1, _0808C420 @ =0x00000F42
-	adds r6, r5, r1
-	ldrb r4, [r6]
-	cmp r4, #0
-	bne _0808C430
-	movs r2, #0xb3
-	lsls r2, r2, #1
-	adds r1, r5, r2
-	movs r0, #0x78
-	strh r0, [r1]
-	movs r1, #0xa8
-	lsls r1, r1, #1
-	adds r0, r5, r1
-	movs r1, #0
-	bl sub_808D790
-	ldr r2, _0808C424 @ =0x00000F3E
-	adds r0, r5, r2
-	strh r4, [r0]
-	ldr r0, _0808C428 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0808C42C @ =sub_808C498
-	b _0808C488
-	.align 2, 0
-_0808C41C: .4byte gPressedKeys
-_0808C420: .4byte 0x00000F42
-_0808C424: .4byte 0x00000F3E
-_0808C428: .4byte gCurTask
-_0808C42C: .4byte sub_808C498
-_0808C430:
-	movs r0, #0x9c
-	lsls r0, r0, #2
-	adds r4, r5, r0
-	movs r1, #0x90
-	lsls r1, r1, #1
-	adds r0, r5, r1
-	movs r1, #0
-	bl sub_808D790
-	movs r1, #0
-	ldr r0, _0808C460 @ =0x00003FFF
-	strh r0, [r4, #8]
-	strh r1, [r4, #4]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r4, #6]
-	strh r7, [r4, #2]
-	movs r0, #4
-	strb r0, [r6]
-	ldr r0, _0808C464 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0808C468 @ =sub_808C710
-	b _0808C488
-	.align 2, 0
-_0808C460: .4byte 0x00003FFF
-_0808C464: .4byte gCurTask
-_0808C468: .4byte sub_808C710
-_0808C46C:
-	movs r0, #2
-	ands r0, r2
-	cmp r0, #0
-	beq _0808C48A
-	movs r2, #0xf4
-	lsls r2, r2, #4
-	adds r0, r5, r2
-	strh r1, [r0]
-	movs r0, #0x6b
-	bl m4aSongNumStart
-	ldr r0, _0808C490 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0808C494 @ =sub_808C218
-_0808C488:
-	str r0, [r1, #8]
-_0808C48A:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0808C490: .4byte gCurTask
-_0808C494: .4byte sub_808C218
-
 	thumb_func_start sub_808C498
 sub_808C498: @ 0x0808C498
 	push {r4, r5, r6, r7, lr}
@@ -319,7 +167,7 @@ _0808C5E2:
 _0808C5F4:
 	adds r0, r5, #0
 	bl sub_808D740
-	ldr r0, _0808C618 @ =gUnknown_030022B8
+	ldr r0, _0808C618 @ =gRepeatPressedKeys
 	ldrh r1, [r0]
 	movs r0, #0x40
 	ands r0, r1
@@ -335,7 +183,7 @@ _0808C5F4:
 	subs r0, #1
 	b _0808C622
 	.align 2, 0
-_0808C618: .4byte gUnknown_030022B8
+_0808C618: .4byte gRepeatPressedKeys
 _0808C61C: .4byte 0x00000F42
 _0808C620:
 	subs r0, r6, #1

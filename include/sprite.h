@@ -72,7 +72,9 @@ struct Unk_03002EC0 {
     u8 fillerA[2];
 };
 
+// Register menu item
 u32 sub_8004558(struct UNK_0808B3FC_UNK240*);
+
 void sub_80051E8(struct UNK_0808B3FC_UNK240*);
 void sub_8002A3C(struct Unk_03002400 *);
 u32 sub_8004010(void);

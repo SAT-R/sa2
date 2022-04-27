@@ -37,6 +37,7 @@ struct UNK_0808B3FC {
     struct UNK_0808B3FC_UNK240 unkC0;
     struct UNK_0808B3FC_UNK240 unkF0;
 
+    // menu items
     struct UNK_0808B3FC_UNK240 unk120[6];
 
     // Used
@@ -62,9 +63,12 @@ struct UNK_0808B3FC {
     u8 unkF3C;
     u8 unkF3D;
 
+    // frameNum
     u16 unkF3E;
 
     u16 unkF40;
+
+    // menuCursor
     u8 unkF42;
 
     u8 fillerF43[33];
@@ -94,5 +98,12 @@ extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
 struct UNK_3005B80 gUnknown_03005B80;
 
 void sub_808B3FC_CreateIntro(void);
+
+#define MENU_ITEM_SINGLE_PLAYER 0
+#define MENU_ITEM_MULTI_PLAYER 1
+#define MENU_ITEM_GAME_START 2
+#define MENU_ITEM_TINY_CHOW_GARDEN 3
+#define MENU_ITEM_TIME_ATTACK 4
+#define MENU_ITEM_OPTIONS 5
 
 #endif

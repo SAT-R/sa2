@@ -7,16 +7,11 @@ extern u8 gUnknown_0300188C;
 
 extern u8* gUnknown_030022AC;
 
-extern u8 gUnknown_030022A0[];
 struct Unk_03006CB0 {
     u8 filler0[8];
     u8 unk8;
 };
 
-
-extern u8 gUnknown_03002700[];
-extern u8 gUnknown_03002850[];
-extern u16 gUnknown_030022B8;
 extern u16 gUnknown_03001880;
 extern struct Unk_03006CB0 gUnknown_030053C0;
 

@@ -52,6 +52,9 @@ void sub_808C2C8(void);
 void sub_808D6D4(void);
 void sub_808D790(struct UNK_0808B3FC_UNK240*, u32);
 void sub_808C358(void);
+void sub_808C218(void);
+void sub_808C498(void);
+void sub_808C710(void);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -68,7 +71,7 @@ void sub_808B3FC_CreateIntro(void) {
     introConfig->unkF36 = 0x100;
     introConfig->unkF38 = 2;
 
-    introConfig->unkF42 = 0;
+    introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
     introConfig->unkF40 = 0;
 
     introConfig->unkF3E = 0;
@@ -128,7 +131,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     
     introConfig->unkF36 = 3;
     introConfig->unkF38 = 2;
-    introConfig->unkF42 = 0;
+    introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
     introConfig->unkF40 = 0;
     introConfig->unkF3E = 0;
     introConfig->unkF3A = 0x20;
@@ -299,6 +302,7 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     sub_8002A3C(config0);
 }
 
+// Create TitleScreen
 void sub_808B884(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
     s8 saveValue;
@@ -359,10 +363,13 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
         config->unk21 = 0xFF;
         config->unk16 = 0x78;
         
-        // TODO: understand this
+        // Generate the first page of menu item positions
         if (i < 2) {
           config->unk18 = (i * 0x12) + 0x60;
         } else {
+          // The next page menu items
+          // need to be shifted if the chow garden
+          // is available
           if (gLoadedSaveGame->unk14 != 0) {
             config->unk18 = (i - 2) * 0x10 + 0x60;
           } else {
@@ -770,13 +777,13 @@ void sub_808C218(void) {
     if (gPressedKeys & START_BUTTON) {
         m4aSongNumStart(SE_SELECT);
         introConfig->unkF3E = 0;
-        introConfig->unkF42 = 0;
+        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
         gCurTask->main = sub_808C2C8;
     }
 
     sub_808D740(introConfig);
-    introConfig->unkF40++;
 
+    introConfig->unkF40++;
     if (introConfig->unkF40 == 900) {
         gCurTask->main = sub_808D6D4;
     }
@@ -788,20 +795,83 @@ void sub_808C2C8(void) {
     if ((introConfig->unkF3E & 7) > 3) {
         sub_80051E8(&introConfig->unkF0);
     }
-
     introConfig->unkF3E++;
+
     sub_80051E8(&introConfig->unkC0);
 
     if (introConfig->unkF3E == 10) {
-        sub_808D790(&introConfig->unk120[0], 1);
-        sub_808D790(&introConfig->unk120[1], 1);
+        sub_808D790(&introConfig->unk120[MENU_ITEM_SINGLE_PLAYER], 1);
+        sub_808D790(&introConfig->unk120[MENU_ITEM_MULTI_PLAYER], 1);
     }
 
-    if (introConfig->unkF3E > 0x10) {
+    if (introConfig->unkF3E > 16) {
         introConfig->unkF3E = 0;
-        introConfig->unkF42 = 0;
+        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
         gCurTask->main = sub_808C358;
     }
 
     sub_808D740(introConfig);
 }
+
+// Task_HandleTitleScreenPlayModeMenu
+void sub_808C358(void) {
+    u8 i;
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct UNK_0808B3FC_UNK240* menuItem;
+    struct UNK_0808B3FC_UNK270* config270;
+    
+    sub_80051E8(&introConfig->unkC0);
+    sub_808D740(introConfig);
+
+    // Highlight the menu items from cursor position
+    for (i = MENU_ITEM_SINGLE_PLAYER; i < MENU_ITEM_GAME_START; i++) {
+        menuItem = &introConfig->unk120[i ^ 1];
+        menuItem->unk25 = (i ^ introConfig->unkF42);
+        sub_80051E8(menuItem);
+    }; 
+
+    // Move the cursor if buttons are pressed
+    if (gRepeatPressedKeys & (DPAD_UP | DPAD_DOWN)) {
+        if (introConfig->unkF42 != MENU_ITEM_SINGLE_PLAYER) {
+            introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        } else {
+            introConfig->unkF42 = MENU_ITEM_MULTI_PLAYER;
+        }
+
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    }
+
+    // Select option
+    if (gPressedKeys & A_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+
+        if (introConfig->unkF42 == MENU_ITEM_SINGLE_PLAYER) {
+            introConfig->unk120[MENU_ITEM_MULTI_PLAYER].unk16 = 0x78;
+            sub_808D790(&introConfig->unk120[MENU_ITEM_MULTI_PLAYER], 0);
+            
+            introConfig->unkF3E = 0;
+
+            gCurTask->main = sub_808C498;
+        } else {
+            config270 = &introConfig->unk270;
+            sub_808D790(&introConfig->unk120[MENU_ITEM_SINGLE_PLAYER], 0);
+            
+            config270->unk8 = 0x3FFF;
+            config270->unk4 = 0;
+            config270->unk6 = 0x100;
+            config270->unk2 = 1;
+            introConfig->unkF42 = MENU_ITEM_TIME_ATTACK;
+
+            gCurTask->main = sub_808C710;
+        }
+        return;
+    }
+
+    // Return to previous page
+    if (gPressedKeys & B_BUTTON) {
+        introConfig->unkF40 = 0;
+        m4aSongNumStart(SE_RETURN);
+        gCurTask->main = sub_808C218;
+    }
+}
+

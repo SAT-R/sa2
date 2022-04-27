@@ -180,10 +180,10 @@ $(MID_SUBDIR)/song0105.s: %.s: %.mid
 $(MID_SUBDIR)/se_select.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G0 -P20
     
-$(MID_SUBDIR)/song0107.s: %.s: %.mid
+$(MID_SUBDIR)/se_return.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G0 -P20
     
-$(MID_SUBDIR)/song0108.s: %.s: %.mid
+$(MID_SUBDIR)/se_menu_cursor_move.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G0 -P20
     
 $(MID_SUBDIR)/song0109.s: %.s: %.mid

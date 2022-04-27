@@ -134,8 +134,8 @@ SECTIONS
         build/sa2/sound/songs/midi/song0104.o(.rodata);
         build/sa2/sound/songs/midi/song0105.o(.rodata);
         build/sa2/sound/songs/midi/se_select.o(.rodata);
-        build/sa2/sound/songs/midi/song0107.o(.rodata);
-        build/sa2/sound/songs/midi/song0108.o(.rodata);
+        build/sa2/sound/songs/midi/se_return.o(.rodata);
+        build/sa2/sound/songs/midi/se_menu_cursor_move.o(.rodata);
         build/sa2/sound/songs/midi/song0109.o(.rodata);
         build/sa2/sound/songs/midi/song0110.o(.rodata);
         build/sa2/sound/songs/midi/song0111.o(.rodata);

@@ -10,5 +10,13 @@ extern u16 gInput;
 extern u16 gPressedKeys;
 extern u16 gReleasedKeys;
 extern u16 gPrevInput;
+// TODO: Potentially better name
+extern u16 gRepeatPressedKeys;
+
+// Something to do with storing the repeat
+// key states
+extern u8 gUnknown_030022A0[];
+extern u8 gUnknown_03002700[];
+extern u8 gUnknown_03002850[];
 
 #endif

@@ -522,8 +522,10 @@ static u32 sub_80021C4(void) {
 
 static void GetInput(void) {
     s8 i;
-    u8 *r7 = gUnknown_030022A0, *sb = gUnknown_03002700,
+    u8 *r7 = gUnknown_030022A0, 
+       *sb = gUnknown_03002700,
        *r8 = gUnknown_03002850;
+
     gInput = (~REG_KEYINPUT & KEYS_MASK);
     gUnknown_03001880 = gInput;
 
@@ -536,7 +538,7 @@ static void GetInput(void) {
     gPressedKeys = (gInput ^ gPrevInput) & gInput;
     gReleasedKeys = (gInput ^ gPrevInput) & gPrevInput;
     gPrevInput = gInput;
-    gUnknown_030022B8 = gPressedKeys;
+    gRepeatPressedKeys = gPressedKeys;
 
     for (i = 0; i < 10; i++) {
         if (!GetBit(gInput, i)) {
@@ -544,7 +546,7 @@ static void GetInput(void) {
         } else if (r7[i] != 0) {
             r7[i]--;
         } else {
-            gUnknown_030022B8 |= 1 << i;
+            gRepeatPressedKeys |= 1 << i;
             r7[i] = r8[i];
         }
     }

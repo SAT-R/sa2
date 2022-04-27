@@ -108,8 +108,8 @@ gSongTable:	@ 0x08AD4F4C
 	song song0104, 3, 3
 	song song0105, 3, 3
 	song se_select, 2, 2
-	song song0107, 2, 2
-	song song0108, 2, 2
+	song se_return, 2, 2
+	song se_menu_cursor_move, 2, 2
 	song song0109, 3, 3
 	song song0110, 2, 2
 	song song0111, 3, 3
