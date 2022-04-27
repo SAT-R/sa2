@@ -156,7 +156,7 @@ static void GameInit(void) {
     gUnknown_030053B8 = 0;
 
     for (i = 0; i < 10; i++) {
-        gKeysFirstRepeatIntervals[i] = 0x14;
+        gKeysFirstRepeatIntervals[i] = 20;
         gKeysContinuedRepeatIntervals[i] = 8;
     }
 

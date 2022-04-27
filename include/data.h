@@ -26,6 +26,8 @@ extern u8 gUnknown_03005B34;
 extern u8 gUnknown_030054C8;
 extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
+extern u8 gUnknown_030055B4;
+extern u8 gUnknown_030054F0;
 extern u16 gUnknown_0300544C;
 
 extern u32 gUnknown_030055A0[4];

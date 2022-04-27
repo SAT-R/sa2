@@ -19,6 +19,7 @@
         "stddef.h": "c",
         "defines.h": "c",
         "functions.h": "c",
-        "init.h": "c"
+        "init.h": "c",
+        "chrono": "c"
     }
 }

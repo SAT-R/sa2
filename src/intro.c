@@ -20,8 +20,17 @@ extern const u8 gUnknown_080E0EF4[0x160];
 extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
 
+// Don't know who these belong to yet
 extern void sub_808D598(void);
-extern void sub_802D4CC(struct UNK_0808B3FC_UNK270*);
+extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
+extern void sub_801A6D8(void);
+extern void sub_803143C(u32, u8);
+extern void sub_8087FC0(void);
+// CreateOptionsScreen
+extern void sub_8063730(u32);
+extern void sub_8063A00(u16);
+extern void sub_805A1CC(void);
+
 
 void sub_808CE00(u32, u32, u32, u32, u32);
 void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
@@ -56,6 +65,7 @@ void sub_808C218(void);
 static void sub_808C498(void);
 void sub_808C58C(void);
 void sub_808C710(void);
+void sub_808D35C(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateIntro(void) {
@@ -74,7 +84,7 @@ void sub_808B3FC_CreateIntro(void) {
     introConfig->unkF36 = 0x100;
     introConfig->unkF38 = 2;
 
-    introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+    introConfig->unkF42 = 0;
     introConfig->unkF40 = 0;
 
     introConfig->unkF3E = 0;
@@ -785,7 +795,7 @@ void sub_808C218(void) {
     if (gPressedKeys & START_BUTTON) {
         m4aSongNumStart(SE_SELECT);
         introConfig->unkF3E = 0;
-        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         gCurTask->main = sub_808C2C8;
     }
 
@@ -812,13 +822,13 @@ static void sub_808C2C8(void) {
 
     // Show the next menu items after 1/6 of a second (10 frames) 
     if (introConfig->unkF3E == 10) {
-        sub_808D790(&introConfig->unk120[MENU_ITEM_SINGLE_PLAYER], 1);
-        sub_808D790(&introConfig->unk120[MENU_ITEM_MULTI_PLAYER], 1);
+        sub_808D790(&introConfig->unk120[PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)], 1);
+        sub_808D790(&introConfig->unk120[PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER)], 1);
     }
 
     if (introConfig->unkF3E > 16) {
         introConfig->unkF3E = 0;
-        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         gCurTask->main = sub_808C358;
     }
 
@@ -836,7 +846,7 @@ void sub_808C358(void) {
     sub_808D740(introConfig);
 
     // Highlight the menu items from cursor position
-    for (menuIndex = MENU_ITEM_SINGLE_PLAYER; menuIndex < 2; menuIndex++) {
+    for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &introConfig->unk120[menuIndex ^ 1];
         menuItem->unk25 = (menuIndex ^ introConfig->unkF42);
         sub_80051E8(menuItem);
@@ -844,10 +854,10 @@ void sub_808C358(void) {
 
     // Move the cursor if buttons are pressed
     if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
-        if (introConfig->unkF42 != MENU_ITEM_SINGLE_PLAYER) {
-            introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        if (introConfig->unkF42 != PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
+            introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         } else {
-            introConfig->unkF42 = MENU_ITEM_MULTI_PLAYER;
+            introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER);
         }
 
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -857,11 +867,11 @@ void sub_808C358(void) {
     if (gPressedKeys & A_BUTTON) {
         m4aSongNumStart(SE_SELECT);
 
-        if (introConfig->unkF42 == MENU_ITEM_SINGLE_PLAYER) {
+        if (introConfig->unkF42 == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
             introConfig->unk120[MENU_ITEM_MULTI_PLAYER].unk16 = 0x78;
             sub_808D790(&introConfig->unk120[MENU_ITEM_MULTI_PLAYER], 0);
             
-            introConfig->unkF3E = 0;
+            introConfig->unkF3E = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
 
             gCurTask->main = sub_808C498;
         } else {
@@ -872,8 +882,8 @@ void sub_808C358(void) {
             config270->unk4 = 0;
             config270->unk6 = 0x100;
             config270->unk2 = 1;
-            introConfig->unkF42 = MENU_ITEM_TIME_ATTACK;
-
+            
+            introConfig->unkF42 = SPECIAL_MENU_INDEX_MULTI_PLAYER;
             gCurTask->main = sub_808C710;
         }
         return;
@@ -903,40 +913,38 @@ static void sub_808C498(void) {
     // Allow back to be pressed during animation
     // to cancel
     if (gPressedKeys & B_BUTTON) {
-        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = sub_808C358;
     }
 
     if (introConfig->unkF3E == 8) {
         sub_808D790(&menuItems[MENU_ITEM_GAME_START], 1);
-        sub_808D790(&menuItems[MENU_ITEM_OPTIONS], 1);
         sub_808D790(&menuItems[MENU_ITEM_TIME_ATTACK], 1);
+        sub_808D790(&menuItems[MENU_ITEM_OPTIONS], 1);
         
         if (gLoadedSaveGame->unk14) {
-            sub_808D790(&menuItems[MENU_ITEM_TINY_CHOW_GARDEN], 1);
+            sub_808D790(&menuItems[MENU_ITEM_TINY_CHAO_GARDEN], 1);
         }
     }
 
     if (introConfig->unkF3E > 12) {
         introConfig->unkF3E = 0;
-        introConfig->unkF42 = 0;
+        introConfig->unkF42 = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
         gCurTask->main = sub_808C58C;
     }
 
     sub_808D740(introConfig);
 }
 
-#define SinglePlayerMenu_IsFocused(introConfig, item) \
-    (introConfig->unkF42 == (item - MENU_ITEM_GAME_START)) 
-
 // Task_SinglePlayerMenu
 void sub_808C58C(void) {
     struct UNK_0808B3FC_UNK240 * menuItem;
     struct UNK_0808B3FC* introConfig;
     struct UNK_0808B3FC_UNK270* config270;
-    u8 numMenuItems = 3, menuIndex;
+    u8 menuIndex;
 
+    u8 numMenuItems = 3;
     if (gLoadedSaveGame->unk14) {
         numMenuItems = 4;
     }
@@ -944,7 +952,7 @@ void sub_808C58C(void) {
     introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
     for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
-        menuItem = &introConfig->unk120[MENU_ITEM_GAME_START + menuIndex];
+        menuItem = &introConfig->unk120[SinglePlayerMenuItem(menuIndex)];
         if (introConfig->unkF42 == menuIndex) {
             menuItem->unk25 = 1;
         } else {
@@ -974,7 +982,7 @@ void sub_808C58C(void) {
 
 
     if (gPressedKeys & B_BUTTON) {
-        introConfig->unkF42 = 0;
+        introConfig->unkF42 = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = sub_808C358;
         return;
@@ -983,7 +991,7 @@ void sub_808C58C(void) {
     if (gPressedKeys & A_BUTTON) {
         config270 = &introConfig->unk270;
         config270->unk8 = 0x3FFF;
-        if (SinglePlayerMenu_IsFocused(introConfig, MENU_ITEM_TINY_CHOW_GARDEN)) {
+        if (introConfig->unkF42 == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
            config270->unk8 = 0x3FBF;
         }
         config270->unk6 = 0x100;
@@ -992,7 +1000,7 @@ void sub_808C58C(void) {
 
         for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
             if (menuIndex != introConfig->unkF42) {
-                sub_808D790(&introConfig->unk120[MENU_ITEM_GAME_START + menuIndex], 0);
+                sub_808D790(&introConfig->unk120[SinglePlayerMenuItem(menuIndex)], 0);
             }
         }
 
@@ -1000,3 +1008,74 @@ void sub_808C58C(void) {
         gCurTask->main = sub_808C710;
     }
 }
+
+// Task_HandleTitleScreenFinished
+void sub_808C710(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct UNK_0808B3FC_UNK240* menuItem;
+    u8 i;
+
+    if (sub_802D4CC(&introConfig->unk270) == 1) {
+        gUnknown_03005424 = 0;
+        gUnknown_030055B4 = 0;
+        gUnknown_030054F0 = 0;
+        
+        switch(introConfig->unkF42) {
+            case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
+                gUnknown_030054CC = 0;
+                sub_801A6D8();
+                if (gLoadedSaveGame->unk13 & 0x10) {
+                    sub_803143C(0, 1);
+                } else {
+                    sub_803143C(0, 0);   
+                }
+                break;
+            case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
+                sub_801A6D8();
+                gUnknown_030055B4 = 0;
+                gUnknown_030054F0 = 0;
+                gUnknown_030054CC = 1;
+                sub_8087FC0();
+                break;
+            case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
+                gUnknown_030054CC = 0;
+                sub_8063730(0);
+                break;
+            case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
+                sub_808D35C();
+                break;
+            case SPECIAL_MENU_INDEX_MULTI_PLAYER:
+                gUnknown_030054CC = 3;
+                sub_801A6D8();
+                if (gLoadedSaveGame->unk20[0] != 0xFFFF) {
+                    sub_805A1CC();
+                } else {
+                    sub_8063A00(0);
+                }
+                break;
+        }
+        TaskDestroy(gCurTask);
+    } else {
+        sub_808D740(introConfig);
+        if (introConfig->unkF42 == SPECIAL_MENU_INDEX_MULTI_PLAYER) {
+            // ?? wat, who writes for loops like this
+            // is some macro for the numMenuItems so it wasn't
+            // obvious
+            for (i = 0; i < 1; i++) {
+                menuItem = &introConfig->unk120[i ^ 1];
+                menuItem->unk25 = i ^ 1;
+                if ((++introConfig->unkF3E & 7) > 3) {
+                    sub_80051E8(menuItem);
+                }
+            }
+            sub_80051E8(&introConfig->unkC0);
+        } else {
+            menuItem = &introConfig->unk120[SinglePlayerMenuItem(introConfig->unkF42)];
+            menuItem->unk25 = 1;
+            if ((++introConfig->unkF3E & 7) > 3) {
+                sub_80051E8(menuItem);
+            }
+        }
+    }
+}
+
