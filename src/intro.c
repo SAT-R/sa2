@@ -57,8 +57,10 @@ static void sub_808C498(void);
 void sub_808C58C(void);
 void sub_808C710(void);
 
+// CreateTitleScreen
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
+    // state (TitleScreenState)
     struct UNK_0808B3FC* introConfig;
     struct UNK_0808B3FC_UNK270* config270;
     struct UNK_0808B3FC_UNK27C* config27C;
@@ -132,7 +134,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     
     introConfig->unkF36 = 3;
     introConfig->unkF38 = 2;
-    introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+    introConfig->unkF42 = 0;
     introConfig->unkF40 = 0;
     introConfig->unkF3E = 0;
     introConfig->unkF3A = 0x20;
@@ -774,8 +776,8 @@ void sub_808C218(void) {
     }
 
     introConfig->unkF3E++;
-    // And don't show it for 2/3 of a second
-    if (introConfig->unkF3E > 0x50) {
+    // And don't show it for the next 2/3 of a second
+    if (introConfig->unkF3E > 80) {
         introConfig->unkF3E = 0;
     }
     sub_80051E8(&introConfig->unkC0);
@@ -828,15 +830,15 @@ void sub_808C358(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct UNK_0808B3FC_UNK240* menuItem;
     struct UNK_0808B3FC_UNK270* config270;
-    u8 i;
+    u8 menuIndex;
     
     sub_80051E8(&introConfig->unkC0);
     sub_808D740(introConfig);
 
     // Highlight the menu items from cursor position
-    for (i = MENU_ITEM_SINGLE_PLAYER; i < MENU_ITEM_GAME_START; i++) {
-        menuItem = &introConfig->unk120[i ^ 1];
-        menuItem->unk25 = (i ^ introConfig->unkF42);
+    for (menuIndex = MENU_ITEM_SINGLE_PLAYER; menuIndex < 2; menuIndex++) {
+        menuItem = &introConfig->unk120[menuIndex ^ 1];
+        menuItem->unk25 = (menuIndex ^ introConfig->unkF42);
         sub_80051E8(menuItem);
     }; 
 
