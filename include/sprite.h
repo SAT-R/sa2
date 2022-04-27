@@ -59,6 +59,7 @@ struct UNK_0808B3FC_UNK240 {
     u8 unk22;
     u8 unk23;
     u8 unk24;
+    // focused
     u8 unk25;
 
     u8 filler26[10];

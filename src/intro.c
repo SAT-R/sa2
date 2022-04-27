@@ -48,12 +48,13 @@ static void sub_808C1AC(void);
 void sub_808D124(void);
 void sub_808D67C(void);
 void sub_808D740(struct UNK_0808B3FC*);
-void sub_808C2C8(void);
+static void sub_808C2C8(void);
 void sub_808D6D4(void);
 void sub_808D790(struct UNK_0808B3FC_UNK240*, u32);
 void sub_808C358(void);
 void sub_808C218(void);
-void sub_808C498(void);
+static void sub_808C498(void);
+void sub_808C58C(void);
 void sub_808C710(void);
 
 void sub_808B3FC_CreateIntro(void) {
@@ -305,12 +306,12 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
 // Create TitleScreen
 void sub_808B884(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
-    s8 saveValue;
+    s8 language;
     u32 i, objAddr;
     struct UNK_0808B3FC_UNK240 *config;
 
     // Must be 0 - 6;
-    saveValue = gLoadedSaveGame->unk6;
+    language = gLoadedSaveGame->unk6;
     objAddr = OBJ_VRAM0;
 
     // TODO: make these into macros maybe?
@@ -335,10 +336,10 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
     config = &introConfig->unkF0;
 
     config->unk4 = objAddr;
-    objAddr += (gUnknown_080E0D64[saveValue].unk0 * TILE_SIZE_4BPP);
+    objAddr += (gUnknown_080E0D64[language].unk0 * TILE_SIZE_4BPP);
     
-    config->unkA = gUnknown_080E0D64[saveValue].unk4;
-    config->unk20 = gUnknown_080E0D64[saveValue].unk6;
+    config->unkA = gUnknown_080E0D64[language].unk4;
+    config->unk20 = gUnknown_080E0D64[language].unk6;
     config->unk21 = 0xFF;
     config->unk16 = 0x78;
     config->unk18 = 0x6E;
@@ -353,13 +354,13 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
     for (i = 0; i < 6; i++) {
         config = &introConfig->unk120[i];
 
-        // gUnknown_080E0D9C could be considered a 2d array ([7][6] so [saveValue][i])
+        // gUnknown_080E0D9C could be considered a 2d array ([7][6] so [language][i])
         // but this doesn't match
         config->unk4 = objAddr;
-        objAddr += (gUnknown_080E0D9C[i + saveValue * 6].unk0 * TILE_SIZE_4BPP);
+        objAddr += (gUnknown_080E0D9C[i + language * 6].unk0 * TILE_SIZE_4BPP);
         
-        config->unkA = gUnknown_080E0D9C[i + saveValue * 6].unk4;
-        config->unk20 = gUnknown_080E0D9C[i + saveValue * 6].unk6;
+        config->unkA = gUnknown_080E0D9C[i + language * 6].unk4;
+        config->unk20 = gUnknown_080E0D9C[i + language * 6].unk6;
         config->unk21 = 0xFF;
         config->unk16 = 0x78;
         
@@ -654,7 +655,7 @@ static void sub_808BF7C(void) {
         sub_808D124();
     }
 
-    // is odd
+    // Every other frame
     if (introConfig->unkF3E & 1) {
         sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 10, &gBgAffineRegs);
         gDispCnt |= 0x100;
@@ -761,14 +762,19 @@ static void sub_808C1AC(void) {
     sub_808D740(introConfig);
 }
 
+#define FRAME_TIME_SECONDS(n) ((n) * 60)
+
+// Task_PressStartScreen
 void sub_808C218(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
-    if (introConfig->unkF3E < 0x28) {
+    // Show the press start text for 2/3 of a second
+    if (introConfig->unkF3E < 40) {
         sub_80051E8(&introConfig->unkF0);
     }
 
     introConfig->unkF3E++;
+    // And don't show it for 2/3 of a second
     if (introConfig->unkF3E > 0x50) {
         introConfig->unkF3E = 0;
     }
@@ -784,14 +790,17 @@ void sub_808C218(void) {
     sub_808D740(introConfig);
 
     introConfig->unkF40++;
-    if (introConfig->unkF40 == 900) {
+    if (introConfig->unkF40 == FRAME_TIME_SECONDS(15)) {
+        // Start the demo after 15 seconds on this screen
         gCurTask->main = sub_808D6D4;
     }
 }
 
-void sub_808C2C8(void) {
+// Task_StartPressedTransition
+static void sub_808C2C8(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
+    // Flash the start button
     if ((introConfig->unkF3E & 7) > 3) {
         sub_80051E8(&introConfig->unkF0);
     }
@@ -799,6 +808,7 @@ void sub_808C2C8(void) {
 
     sub_80051E8(&introConfig->unkC0);
 
+    // Show the next menu items after 1/6 of a second (10 frames) 
     if (introConfig->unkF3E == 10) {
         sub_808D790(&introConfig->unk120[MENU_ITEM_SINGLE_PLAYER], 1);
         sub_808D790(&introConfig->unk120[MENU_ITEM_MULTI_PLAYER], 1);
@@ -813,12 +823,12 @@ void sub_808C2C8(void) {
     sub_808D740(introConfig);
 }
 
-// Task_HandleTitleScreenPlayModeMenu
+// Task_PlayModeMenu
 void sub_808C358(void) {
-    u8 i;
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct UNK_0808B3FC_UNK240* menuItem;
     struct UNK_0808B3FC_UNK270* config270;
+    u8 i;
     
     sub_80051E8(&introConfig->unkC0);
     sub_808D740(introConfig);
@@ -867,7 +877,7 @@ void sub_808C358(void) {
         return;
     }
 
-    // Return to previous page
+    // Return to start screen
     if (gPressedKeys & B_BUTTON) {
         introConfig->unkF40 = 0;
         m4aSongNumStart(SE_RETURN);
@@ -875,3 +885,116 @@ void sub_808C358(void) {
     }
 }
 
+// Task_SinglePlayerSelectedTransition
+static void sub_808C498(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct UNK_0808B3FC_UNK240* menuItems = introConfig->unk120;
+    
+    // Flash the previous selected single player menu item
+    if ((introConfig->unkF3E & 7) > 3) {
+        sub_80051E8(&menuItems[MENU_ITEM_SINGLE_PLAYER]);
+    }
+    introConfig->unkF3E++;
+
+    sub_80051E8(&introConfig->unkC0);
+
+    // Allow back to be pressed during animation
+    // to cancel
+    if (gPressedKeys & B_BUTTON) {
+        introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
+        m4aSongNumStart(SE_RETURN);
+        gCurTask->main = sub_808C358;
+    }
+
+    if (introConfig->unkF3E == 8) {
+        sub_808D790(&menuItems[MENU_ITEM_GAME_START], 1);
+        sub_808D790(&menuItems[MENU_ITEM_OPTIONS], 1);
+        sub_808D790(&menuItems[MENU_ITEM_TIME_ATTACK], 1);
+        
+        if (gLoadedSaveGame->unk14) {
+            sub_808D790(&menuItems[MENU_ITEM_TINY_CHOW_GARDEN], 1);
+        }
+    }
+
+    if (introConfig->unkF3E > 12) {
+        introConfig->unkF3E = 0;
+        introConfig->unkF42 = 0;
+        gCurTask->main = sub_808C58C;
+    }
+
+    sub_808D740(introConfig);
+}
+
+#define SinglePlayerMenu_IsFocused(introConfig, item) \
+    (introConfig->unkF42 == (item - MENU_ITEM_GAME_START)) 
+
+// Task_SinglePlayerMenu
+void sub_808C58C(void) {
+    struct UNK_0808B3FC_UNK240 * menuItem;
+    struct UNK_0808B3FC* introConfig;
+    struct UNK_0808B3FC_UNK270* config270;
+    u8 numMenuItems = 3, menuIndex;
+
+    if (gLoadedSaveGame->unk14) {
+        numMenuItems = 4;
+    }
+
+    introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
+        menuItem = &introConfig->unk120[MENU_ITEM_GAME_START + menuIndex];
+        if (introConfig->unkF42 == menuIndex) {
+            menuItem->unk25 = 1;
+        } else {
+            menuItem->unk25 = 0;
+        }
+        sub_80051E8(menuItem);
+    }
+
+    sub_808D740(introConfig);
+
+    // Handle input and wrap the cursor around
+    if (gRepeatPressedKeys & DPAD_UP) {
+        if (introConfig->unkF42 > 0) {
+            introConfig->unkF42--;
+        } else {
+            introConfig->unkF42 = numMenuItems - 1;
+        }
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    } else if (gRepeatPressedKeys & DPAD_DOWN) {
+        if (introConfig->unkF42 < (numMenuItems - 1)) {
+            introConfig->unkF42++;
+        } else {
+            introConfig->unkF42 = 0; 
+        }
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    }
+
+
+    if (gPressedKeys & B_BUTTON) {
+        introConfig->unkF42 = 0;
+        m4aSongNumStart(SE_RETURN);
+        gCurTask->main = sub_808C358;
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        config270 = &introConfig->unk270;
+        config270->unk8 = 0x3FFF;
+        if (SinglePlayerMenu_IsFocused(introConfig, MENU_ITEM_TINY_CHOW_GARDEN)) {
+           config270->unk8 = 0x3FBF;
+        }
+        config270->unk6 = 0x100;
+        config270->unk4 = 0;
+        config270->unk2 = 1;
+
+        for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
+            if (menuIndex != introConfig->unkF42) {
+                sub_808D790(&introConfig->unk120[MENU_ITEM_GAME_START + menuIndex], 0);
+            }
+        }
+
+        m4aSongNumStart(SE_SELECT);
+        gCurTask->main = sub_808C710;
+    }
+}

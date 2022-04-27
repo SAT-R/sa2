@@ -25,6 +25,8 @@ struct SaveGame {
 
     u8 unk4;
     u8 unk5;
+    
+    // Language
     u8 unk6;
 
     u8 unk7[5];
@@ -33,7 +35,10 @@ struct SaveGame {
     u8 unk11;
     u8 unk12;
     u8 unk13;
+
+    // Tiny chow garden
     u8 unk14;
+    
     u8 unk15;
     u8 unk16;
     u8 unk17;
