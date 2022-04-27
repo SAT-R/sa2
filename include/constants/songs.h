@@ -1,0 +1,9 @@
+#ifndef GUARD_CONSTANTS_SONGS_H
+#define GUARD_CONSTANTS_SONGS_H
+
+#define MUS_DUMMY 0
+#define MUS_INTRO 1
+
+#define SE_SELECT 106
+
+#endif

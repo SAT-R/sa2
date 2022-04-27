@@ -75,7 +75,7 @@ SECTIONS
         build/sa2/data/sound_data.o(.rodata);
 
         /* Songs */
-        build/sa2/sound/songs/midi/song0001.o(.rodata);
+        build/sa2/sound/songs/midi/mus_intro.o(.rodata);
         build/sa2/sound/songs/midi/song0002.o(.rodata);
         build/sa2/sound/songs/midi/song0003.o(.rodata);
         build/sa2/sound/songs/midi/song0004.o(.rodata);
@@ -133,7 +133,7 @@ SECTIONS
         build/sa2/sound/songs/midi/song0103.o(.rodata);
         build/sa2/sound/songs/midi/song0104.o(.rodata);
         build/sa2/sound/songs/midi/song0105.o(.rodata);
-        build/sa2/sound/songs/midi/song0106.o(.rodata);
+        build/sa2/sound/songs/midi/se_select.o(.rodata);
         build/sa2/sound/songs/midi/song0107.o(.rodata);
         build/sa2/sound/songs/midi/song0108.o(.rodata);
         build/sa2/sound/songs/midi/song0109.o(.rodata);

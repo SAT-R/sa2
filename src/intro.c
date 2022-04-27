@@ -1,5 +1,6 @@
 #include "intro.h"
 
+#include "constants/songs.h"
 #include "flags.h"
 #include "global.h"
 #include "m4a.h"
@@ -42,9 +43,15 @@ void sub_808D4DC(struct UNK_0808B3FC*);
 static void sub_808BCC4(void);
 static void sub_808BDBC(void);
 static void sub_808BF7C(void);
+static void sub_808C1AC(void);
 
 void sub_808D124(void);
-void sub_808C1AC(void);
+void sub_808D67C(void);
+void sub_808D740(struct UNK_0808B3FC*);
+void sub_808C2C8(void);
+void sub_808D6D4(void);
+void sub_808D790(struct UNK_0808B3FC_UNK240*, u32);
+void sub_808C358(void);
 
 void sub_808B3FC_CreateIntro(void) {
     struct Task* t;
@@ -105,7 +112,7 @@ void sub_808B3FC_CreateIntro(void) {
     gUnknown_03005B80.unk4 = introConfig;
 
     sub_808B768(introConfig);
-    m4aSongNumStart(1);
+    m4aSongNumStart(MUS_INTRO);
     gFlags |= 0x8000;
 
     sub_802D4CC(config270);
@@ -389,22 +396,22 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
     sub_8004558(config);
 }
 
-#define FadeInBlend(frame, numFrames, fadeSpeed)  \
-    BLDALPHA_BLEND(frame * fadeSpeed, numFrames - (frame * fadeSpeed))
+#define FadeInBlend(frame)  \
+    BLDALPHA_BLEND(frame, 16 - (frame))
 
-#define FadeOutBlend(frame, numFrames, fadeSpeed) \
-    BLDALPHA_BLEND(numFrames - (frame * fadeSpeed), (frame * fadeSpeed))
+#define FadeOutBlend(frame) \
+    BLDALPHA_BLEND(16 - (frame), frame)
 
 // Task_FadeInSegaLogo
 void sub_808BA78(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E, 16, 1);
+    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E);
 
     if (introConfig->unkF3E >= 16) {
         introConfig->unkF3E = 0;
-        gBldRegs.bldAlpha = FadeInBlend(16, 16, 1);
+        gBldRegs.bldAlpha = FadeInBlend(16);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         gCurTask->main = sub_808D5FC;
@@ -418,12 +425,11 @@ void sub_808BAD8(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    // Fade out?
-    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E, 16, 2);
+    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E * 2);
 
     if (introConfig->unkF3E >= 8) {
         gDispCnt &= ~DISPCNT_BG0_ON;
-        gBldRegs.bldAlpha = FadeOutBlend(16, 16, 1);
+        gBldRegs.bldAlpha = FadeOutBlend(16);
         introConfig->unkF3E = 0;
         gFlags &= ~0x8000;
         gCurTask->main = sub_808BB54;
@@ -474,11 +480,11 @@ static void sub_808BBF4(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E, 16, 1);
+    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E);
 
     if (introConfig->unkF3E >= 16) {
         introConfig->unkF3E = 0;
-        gBldRegs.bldAlpha = FadeInBlend(16, 16, 1);
+        gBldRegs.bldAlpha = FadeInBlend(16);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         // Only diference is this function assignment for the next task
@@ -493,7 +499,7 @@ void sub_808BC54(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
-    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E, 16, 2);
+    gBldRegs.bldAlpha = FadeOutBlend(introConfig->unkF3E * 2);
 
     if (introConfig->unkF3E >= 8) {
         gCurTask->main = sub_808BCC4;
@@ -545,7 +551,7 @@ static void sub_808BCC4(void) {
         gCurTask->main = sub_808BDBC;
         introConfig->unkF3E = 0;
         gDispCnt |= DISPCNT_BG1_ON;
-        gBldRegs.bldAlpha = FadeOutBlend(16, 16, 1);
+        gBldRegs.bldAlpha = FadeOutBlend(16);
         gBldRegs.bldCnt = BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1;
         sub_808CE00(0x7c, 0xffffffc4, 0, 0xffdf, 0);
         sub_808CE00(0xb4, 0xffffffe8, 3, 0x20, 0);
@@ -726,4 +732,76 @@ static void sub_808BF7C(void) {
         sub_808B884(introConfig);
     }
     introConfig->unkF3E++;
+}
+
+static void sub_808C1AC(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
+        sub_808D4DC(introConfig);
+        return;
+    }
+
+    gBldRegs.bldAlpha = FadeInBlend(introConfig->unkF3E >> 2);
+
+    if (introConfig->unkF3E > 64) {
+        gBldRegs.bldCnt = 0;
+        introConfig->unkF3E = 0;
+        gCurTask->main = sub_808D67C;
+    }
+
+    introConfig->unkF3E++;
+    sub_808D740(introConfig);
+}
+
+void sub_808C218(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    if (introConfig->unkF3E < 0x28) {
+        sub_80051E8(&introConfig->unkF0);
+    }
+
+    introConfig->unkF3E++;
+    if (introConfig->unkF3E > 0x50) {
+        introConfig->unkF3E = 0;
+    }
+    sub_80051E8(&introConfig->unkC0);
+
+    if (gPressedKeys & START_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        introConfig->unkF3E = 0;
+        introConfig->unkF42 = 0;
+        gCurTask->main = sub_808C2C8;
+    }
+
+    sub_808D740(introConfig);
+    introConfig->unkF40++;
+
+    if (introConfig->unkF40 == 900) {
+        gCurTask->main = sub_808D6D4;
+    }
+}
+
+void sub_808C2C8(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+
+    if ((introConfig->unkF3E & 7) > 3) {
+        sub_80051E8(&introConfig->unkF0);
+    }
+
+    introConfig->unkF3E++;
+    sub_80051E8(&introConfig->unkC0);
+
+    if (introConfig->unkF3E == 10) {
+        sub_808D790(&introConfig->unk120[0], 1);
+        sub_808D790(&introConfig->unk120[1], 1);
+    }
+
+    if (introConfig->unkF3E > 0x10) {
+        introConfig->unkF3E = 0;
+        introConfig->unkF42 = 0;
+        gCurTask->main = sub_808C358;
+    }
+
+    sub_808D740(introConfig);
 }

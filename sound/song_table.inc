@@ -2,7 +2,7 @@
 	.global gSongTable
 gSongTable:	@ 0x08AD4F4C
 	song dummy_song_header, 0, 0
-	song song0001, 0, 0
+	song mus_intro, 0, 0
 	song song0002, 0, 0
 	song song0003, 0, 0
 	song song0004, 0, 0
@@ -107,7 +107,7 @@ gSongTable:	@ 0x08AD4F4C
 	song song0103, 3, 3
 	song song0104, 3, 3
 	song song0105, 3, 3
-	song song0106, 2, 2
+	song se_select, 2, 2
 	song song0107, 2, 2
 	song song0108, 2, 2
 	song song0109, 3, 3

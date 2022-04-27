@@ -3,7 +3,7 @@ STD_REVERB = 0
 $(MID_BUILDDIR)/%.o: $(MID_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -I sound -o $@ $<
 
-$(MID_SUBDIR)/song0001.s: %.s: %.mid
+$(MID_SUBDIR)/mus_intro.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G21 
     
 $(MID_SUBDIR)/song0002.s: %.s: %.mid
@@ -177,7 +177,7 @@ $(MID_SUBDIR)/song0104.s: %.s: %.mid
 $(MID_SUBDIR)/song0105.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G3 -P20
     
-$(MID_SUBDIR)/song0106.s: %.s: %.mid
+$(MID_SUBDIR)/se_select.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G0 -P20
     
 $(MID_SUBDIR)/song0107.s: %.s: %.mid
