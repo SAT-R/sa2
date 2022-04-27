@@ -54966,7 +54966,7 @@ _0803543E:
 	cmp r0, #0
 	beq _080354A6
 _0803548C:
-	ldr r0, _08035510 @ =gRepeatPressedKeys
+	ldr r0, _08035510 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -55026,7 +55026,7 @@ _08035500: .4byte 0x00004050
 _08035504: .4byte 0x000004BB
 _08035508: .4byte gMultiSioStatusFlags
 _0803550C: .4byte gPressedKeys
-_08035510: .4byte gRepeatPressedKeys
+_08035510: .4byte gRepeatedKeys
 _08035514: .4byte 0x00004051
 _08035518: .4byte gMultiSioRecv
 _0803551C: .4byte 0x000004AC
@@ -134451,7 +134451,7 @@ sub_805D1F8: @ 0x0805D1F8
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0805D27E
-	ldr r0, _0805D25C @ =gRepeatPressedKeys
+	ldr r0, _0805D25C @ =gRepeatedKeys
 	ldrh r2, [r0]
 	movs r0, #0x10
 	ands r0, r2
@@ -134474,7 +134474,7 @@ _0805D24A:
 	.align 2, 0
 _0805D254: .4byte gCurTask
 _0805D258: .4byte IWRAM_START + 0x31F
-_0805D25C: .4byte gRepeatPressedKeys
+_0805D25C: .4byte gRepeatedKeys
 _0805D260: .4byte IWRAM_START + 0x31E
 _0805D264:
 	movs r0, #0x20
@@ -147294,9 +147294,9 @@ sub_8063730: @ 0x08063730
 	ldr r0, _080637E0 @ =gUnknown_03005B54
 	str r2, [r0]
 	movs r1, #0
-	ldr r5, _080637E4 @ =gUnknown_03002700
+	ldr r5, _080637E4 @ =gKeysFirstRepeatIntervals
 	movs r4, #0x14
-	ldr r3, _080637E8 @ =gUnknown_03002850
+	ldr r3, _080637E8 @ =gKeysContinuedRepeatIntervals
 	movs r2, #8
 _0806379E:
 	lsls r0, r1, #0x10
@@ -147325,8 +147325,8 @@ _080637D4: .4byte gUnknown_03000782
 _080637D8: .4byte gUnknown_03005B50
 _080637DC: .4byte 0x06010000
 _080637E0: .4byte gUnknown_03005B54
-_080637E4: .4byte gUnknown_03002700
-_080637E8: .4byte gUnknown_03002850
+_080637E4: .4byte gKeysFirstRepeatIntervals
+_080637E8: .4byte gKeysContinuedRepeatIntervals
 
 	thumb_func_start sub_80637EC
 sub_80637EC: @ 0x080637EC

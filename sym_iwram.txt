@@ -129,10 +129,10 @@
 . = 0x0000227C; gLastTaskNum = .;
 . = 0x00002280; gUnknown_03002280 = .;
 . = 0x00002290; gInput = .;
-. = 0x000022A0; gUnknown_030022A0 = .;
+. = 0x000022A0; gRepeatedKeysTestCounter = .;
 . = 0x000022AC; gUnknown_030022AC = .;
 . = 0x000022B0; gBgCntRegs = .;
-. = 0x000022B8; gRepeatPressedKeys = .;
+. = 0x000022B8; gRepeatedKeys = .;
 . = 0x000022BC; gNextTask = .;
 . = 0x000022C0; gUnknown_030022C0 = .;
 . = 0x000022C8; gUnknown_030022C8 = .;
@@ -141,7 +141,7 @@
 . = 0x000026E0; gUnknown_030026E0 = .;
 . = 0x000026F0; gCurTask = .;
 . = 0x000026F4; gUnknown_030026F4 = .;
-. = 0x00002700; gUnknown_03002700 = .;
+. = 0x00002700; gKeysFirstRepeatIntervals = .;
 . = 0x0000270C; gReleasedKeys = .;
 . = 0x00002710; gUnknown_03002710 = .;
 . = 0x00002790; gUnknown_03002790 = .;
@@ -150,7 +150,7 @@
 . = 0x00002820; gUnknown_03002820 = .;
 . = 0x00002830; gBgScrollRegs = .;
 . = 0x00002840; gDispCnt = .;
-. = 0x00002850; gUnknown_03002850 = .;
+. = 0x00002850; gKeysContinuedRepeatIntervals = .;
 . = 0x00002860; gMultiSioSend = .;
 . = 0x0000286E; gUnknown_0300286E = .;
 . = 0x00002874; gUnknown_03002874 = .;

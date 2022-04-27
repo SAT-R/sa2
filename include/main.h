@@ -108,7 +108,7 @@ extern u32 gUnknown_030053B8;
 extern u32 gUnknown_030053B0;
 extern u32 gUnknown_03002264;
 
-extern u8 gUnknown_03002850[];
+extern u8 gKeysContinuedRepeatIntervals[];
 
 extern u8 gUnknown_030053B4;
 extern u16 gUnknown_03001888;

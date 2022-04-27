@@ -843,7 +843,7 @@ void sub_808C358(void) {
     }; 
 
     // Move the cursor if buttons are pressed
-    if (gRepeatPressedKeys & (DPAD_UP | DPAD_DOWN)) {
+    if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
         if (introConfig->unkF42 != MENU_ITEM_SINGLE_PLAYER) {
             introConfig->unkF42 = MENU_ITEM_SINGLE_PLAYER;
         } else {
@@ -956,14 +956,14 @@ void sub_808C58C(void) {
     sub_808D740(introConfig);
 
     // Handle input and wrap the cursor around
-    if (gRepeatPressedKeys & DPAD_UP) {
+    if (gRepeatedKeys & DPAD_UP) {
         if (introConfig->unkF42 > 0) {
             introConfig->unkF42--;
         } else {
             introConfig->unkF42 = numMenuItems - 1;
         }
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-    } else if (gRepeatPressedKeys & DPAD_DOWN) {
+    } else if (gRepeatedKeys & DPAD_DOWN) {
         if (introConfig->unkF42 < (numMenuItems - 1)) {
             introConfig->unkF42++;
         } else {

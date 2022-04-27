@@ -1030,7 +1030,7 @@ _0806422C:
 	bl sub_806ACF0
 	b _080642F0
 _08064232:
-	ldr r0, _08064260 @ =gRepeatPressedKeys
+	ldr r0, _08064260 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x80
 	ands r0, r1
@@ -1052,7 +1052,7 @@ _08064232:
 	strb r6, [r2]
 	b _0806426C
 	.align 2, 0
-_08064260: .4byte gRepeatPressedKeys
+_08064260: .4byte gRepeatedKeys
 _08064264: .4byte gUnknown_03000780
 _08064268:
 	adds r0, r1, #1
@@ -2379,7 +2379,7 @@ sub_8064CEC: @ 0x08064CEC
 	adds r0, r4, r1
 	ldr r0, [r0]
 	mov sb, r0
-	ldr r6, _08064D54 @ =gRepeatPressedKeys
+	ldr r6, _08064D54 @ =gRepeatedKeys
 	ldrh r1, [r6]
 	movs r0, #0xc0
 	ands r0, r1
@@ -2408,7 +2408,7 @@ sub_8064CEC: @ 0x08064CEC
 _08064D48: .4byte gCurTask
 _08064D4C: .4byte IWRAM_START + 0x120
 _08064D50: .4byte IWRAM_START + 0x15C
-_08064D54: .4byte gRepeatPressedKeys
+_08064D54: .4byte gRepeatedKeys
 _08064D58: .4byte IWRAM_START + 0x160
 _08064D5C:
 	movs r0, #3
@@ -2471,7 +2471,7 @@ _08064D8E:
 	strh r0, [r1, #0x18]
 _08064DCA:
 	bl sub_806AD98
-	ldr r0, _08064E08 @ =gRepeatPressedKeys
+	ldr r0, _08064E08 @ =gRepeatedKeys
 	ldrh r0, [r0]
 	movs r5, #0xc0
 	ands r5, r0
@@ -2499,7 +2499,7 @@ _08064DCA:
 	beq _08064E1A
 	b _08064E54
 	.align 2, 0
-_08064E08: .4byte gRepeatPressedKeys
+_08064E08: .4byte gRepeatedKeys
 _08064E0C: .4byte gPressedKeys
 _08064E10:
 	cmp r0, #2
@@ -3337,7 +3337,7 @@ sub_806548C: @ 0x0806548C
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov sl, r0
-	ldr r0, _080655A4 @ =gRepeatPressedKeys
+	ldr r0, _080655A4 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -3393,7 +3393,7 @@ _080654F8:
 	strh r0, [r3, #0x16]
 _08065534:
 	bl sub_806AE54
-	ldr r0, _080655A4 @ =gRepeatPressedKeys
+	ldr r0, _080655A4 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -3441,7 +3441,7 @@ _08065594: .4byte gCurTask
 _08065598: .4byte IWRAM_START + 0x64
 _0806559C: .4byte IWRAM_START + 0xC4
 _080655A0: .4byte IWRAM_START + 0xF6
-_080655A4: .4byte gRepeatPressedKeys
+_080655A4: .4byte gRepeatedKeys
 _080655A8: .4byte IWRAM_START + 0xF4
 _080655AC: .4byte gPressedKeys
 _080655B0: .4byte gUnknown_080D9798
@@ -3878,7 +3878,7 @@ sub_80658E0: @ 0x080658E0
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov sl, r0
-	ldr r0, _080659F8 @ =gRepeatPressedKeys
+	ldr r0, _080659F8 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -3934,7 +3934,7 @@ _0806594C:
 	strh r0, [r3, #0x16]
 _08065988:
 	bl sub_806AF10
-	ldr r0, _080659F8 @ =gRepeatPressedKeys
+	ldr r0, _080659F8 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -3982,7 +3982,7 @@ _080659E8: .4byte gCurTask
 _080659EC: .4byte IWRAM_START + 0x64
 _080659F0: .4byte IWRAM_START + 0xC4
 _080659F4: .4byte IWRAM_START + 0xF6
-_080659F8: .4byte gRepeatPressedKeys
+_080659F8: .4byte gRepeatedKeys
 _080659FC: .4byte IWRAM_START + 0xF4
 _08065A00: .4byte gPressedKeys
 _08065A04: .4byte gUnknown_080D97F8
@@ -4767,7 +4767,7 @@ sub_8066004: @ 0x08066004
 	adds r0, r0, r1
 	mov r8, r0
 	bl sub_8066818
-	ldr r7, _08066078 @ =gRepeatPressedKeys
+	ldr r7, _08066078 @ =gRepeatedKeys
 	ldrh r1, [r7]
 	movs r0, #0x30
 	ands r0, r1
@@ -4795,7 +4795,7 @@ _08066068: .4byte gCurTask
 _0806606C: .4byte IWRAM_START + 0x124
 _08066070: .4byte IWRAM_START + 0x249
 _08066074: .4byte gUnknown_080D99F0
-_08066078: .4byte gRepeatPressedKeys
+_08066078: .4byte gRepeatedKeys
 _0806607C: .4byte IWRAM_START + 0x244
 _08066080:
 	movs r0, #2
@@ -5026,7 +5026,7 @@ sub_8066220: @ 0x08066220
 	adds r0, r0, r1
 	mov r8, r0
 	bl sub_8066818
-	ldr r5, _0806628C @ =gRepeatPressedKeys
+	ldr r5, _0806628C @ =gRepeatedKeys
 	ldrh r1, [r5]
 	movs r0, #0x30
 	ands r0, r1
@@ -5057,7 +5057,7 @@ _08066274:
 _08066280: .4byte gCurTask
 _08066284: .4byte IWRAM_START + 0x249
 _08066288: .4byte gUnknown_080D99F0
-_0806628C: .4byte gRepeatPressedKeys
+_0806628C: .4byte gRepeatedKeys
 _08066290: .4byte IWRAM_START + 0x174
 _08066294: .4byte IWRAM_START + 0x245
 _08066298: .4byte IWRAM_START + 0x244
@@ -6159,7 +6159,7 @@ sub_8066B0C: @ 0x08066B0C
 	lsls r0, r0, #0x12
 	adds r5, r4, r0
 	bl sub_806B1B8
-	ldr r0, _08066B48 @ =gRepeatPressedKeys
+	ldr r0, _08066B48 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x80
 	ands r0, r1
@@ -6178,7 +6178,7 @@ sub_8066B0C: @ 0x08066B0C
 	b _08066B52
 	.align 2, 0
 _08066B44: .4byte gCurTask
-_08066B48: .4byte gRepeatPressedKeys
+_08066B48: .4byte gRepeatedKeys
 _08066B4C: .4byte IWRAM_START + 0x200
 _08066B50:
 	adds r0, r2, #1
@@ -6211,7 +6211,7 @@ _08066B82:
 	bl sub_8066C2C
 _08066B88:
 	bl sub_806B1F8
-	ldr r0, _08066BCC @ =gRepeatPressedKeys
+	ldr r0, _08066BCC @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0xc0
 	ands r0, r1
@@ -6241,7 +6241,7 @@ _08066B88:
 	bl sub_806B110
 	b _08066C1C
 	.align 2, 0
-_08066BCC: .4byte gRepeatPressedKeys
+_08066BCC: .4byte gRepeatedKeys
 _08066BD0: .4byte 0x00000201
 _08066BD4: .4byte gPressedKeys
 _08066BD8: .4byte gLoadedSaveGame
@@ -6717,7 +6717,7 @@ sub_8066FAC: @ 0x08066FAC
 	adds r5, r4, r0
 	ldr r1, _08067064 @ =IWRAM_START + 0xC0
 	adds r7, r4, r1
-	ldr r0, _08067068 @ =gRepeatPressedKeys
+	ldr r0, _08067068 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -6769,7 +6769,7 @@ _08066FEC:
 	strh r0, [r7, #0x16]
 _08067024:
 	bl sub_806B2F8
-	ldr r0, _08067068 @ =gRepeatPressedKeys
+	ldr r0, _08067068 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -6798,7 +6798,7 @@ _08067024:
 	.align 2, 0
 _08067060: .4byte gCurTask
 _08067064: .4byte IWRAM_START + 0xC0
-_08067068: .4byte gRepeatPressedKeys
+_08067068: .4byte gRepeatedKeys
 _0806706C: .4byte IWRAM_START + 0x140
 _08067070: .4byte gPressedKeys
 _08067074: .4byte sub_806709C
@@ -6918,7 +6918,7 @@ sub_8067148: @ 0x08067148
 	adds r5, r4, r0
 	ldr r1, _080671FC @ =IWRAM_START + 0xC0
 	adds r7, r4, r1
-	ldr r0, _08067200 @ =gRepeatPressedKeys
+	ldr r0, _08067200 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -6970,7 +6970,7 @@ _08067188:
 	strh r0, [r7, #0x16]
 _080671C0:
 	bl sub_806B2F8
-	ldr r0, _08067200 @ =gRepeatPressedKeys
+	ldr r0, _08067200 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -6999,7 +6999,7 @@ _080671C0:
 	.align 2, 0
 _080671F8: .4byte gCurTask
 _080671FC: .4byte IWRAM_START + 0xC0
-_08067200: .4byte gRepeatPressedKeys
+_08067200: .4byte gRepeatedKeys
 _08067204: .4byte IWRAM_START + 0x140
 _08067208: .4byte gPressedKeys
 _0806720C: .4byte 0x00000143
@@ -7784,7 +7784,7 @@ _08067854:
 	beq _08067860
 	b _08067B72
 _08067860:
-	ldr r0, _080678EC @ =gRepeatPressedKeys
+	ldr r0, _080678EC @ =gRepeatedKeys
 	ldrh r2, [r0]
 	movs r0, #1
 	ands r0, r2
@@ -7854,7 +7854,7 @@ _08067898:
 	.align 2, 0
 _080678E4: .4byte gCurTask
 _080678E8: .4byte IWRAM_START + 0x258
-_080678EC: .4byte gRepeatPressedKeys
+_080678EC: .4byte gRepeatedKeys
 _080678F0: .4byte IWRAM_START + 0x252
 _080678F4: .4byte IWRAM_START + 0x3B8
 _080678F8: .4byte IWRAM_START + 0x3AA
@@ -8197,7 +8197,7 @@ sub_8067B90: @ 0x08067B90
 	ldr r0, _08067BF0 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
-	ldr r0, _08067BF4 @ =gRepeatPressedKeys
+	ldr r0, _08067BF4 @ =gRepeatedKeys
 	ldrh r2, [r0]
 	movs r0, #0x80
 	lsls r0, r0, #2
@@ -8241,7 +8241,7 @@ sub_8067B90: @ 0x08067B90
 	b _08067C32
 	.align 2, 0
 _08067BF0: .4byte gCurTask
-_08067BF4: .4byte gRepeatPressedKeys
+_08067BF4: .4byte gRepeatedKeys
 _08067BF8: .4byte IWRAM_START + 0x3AA
 _08067BFC: .4byte IWRAM_START + 0x3AC
 _08067C00: .4byte 0x0000FFFF
@@ -8293,7 +8293,7 @@ sub_8067C50: @ 0x08067C50
 	ldr r0, _08067C9C @ =gCurTask
 	ldr r0, [r0]
 	ldrh r4, [r0, #6]
-	ldr r5, _08067CA0 @ =gRepeatPressedKeys
+	ldr r5, _08067CA0 @ =gRepeatedKeys
 	ldrh r1, [r5]
 	movs r0, #0xf0
 	ands r0, r1
@@ -8328,7 +8328,7 @@ _08067C66:
 	b _08067DCA
 	.align 2, 0
 _08067C9C: .4byte gCurTask
-_08067CA0: .4byte gRepeatPressedKeys
+_08067CA0: .4byte gRepeatedKeys
 _08067CA4: .4byte IWRAM_START + 0x252
 _08067CA8: .4byte IWRAM_START + 0x253
 _08067CAC:
@@ -9295,7 +9295,7 @@ sub_8068474: @ 0x08068474
 	ldr r0, _080684B4 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r4, [r0, #6]
-	ldr r0, _080684B8 @ =gRepeatPressedKeys
+	ldr r0, _080684B8 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -9324,7 +9324,7 @@ _0806849C:
 	b _080684D4
 	.align 2, 0
 _080684B4: .4byte gCurTask
-_080684B8: .4byte gRepeatPressedKeys
+_080684B8: .4byte gRepeatedKeys
 _080684BC: .4byte gUnknown_03000710
 _080684C0: .4byte IWRAM_START + 0x71
 _080684C4:
@@ -9338,7 +9338,7 @@ _080684C4:
 	strb r0, [r1]
 _080684D4:
 	bl sub_806B4F8
-	ldr r0, _08068504 @ =gRepeatPressedKeys
+	ldr r0, _08068504 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x30
 	ands r0, r1
@@ -9357,7 +9357,7 @@ _080684D4:
 	.align 2, 0
 _080684FC: .4byte IWRAM_START + 0x71
 _08068500: .4byte IWRAM_START + 0xA1
-_08068504: .4byte gRepeatPressedKeys
+_08068504: .4byte gRepeatedKeys
 _08068508: .4byte gPressedKeys
 _0806850C:
 	movs r0, #2
@@ -10997,7 +10997,7 @@ _08069234:
 _0806923A:
 	movs r0, #0
 	bl sub_806979C
-	ldr r7, _080692AC @ =gRepeatPressedKeys
+	ldr r7, _080692AC @ =gRepeatedKeys
 	ldrh r1, [r7]
 	movs r0, #0x30
 	ands r0, r1
@@ -11049,7 +11049,7 @@ _0806925E:
 _080692A0: .4byte gCurTask
 _080692A4: .4byte gUnknown_03000704
 _080692A8: .4byte gUnknown_0300070A
-_080692AC: .4byte gRepeatPressedKeys
+_080692AC: .4byte gRepeatedKeys
 _080692B0: .4byte gUnknown_03000711
 _080692B4: .4byte gUnknown_03000710
 _080692B8: .4byte gUnknown_03000706
@@ -12817,7 +12817,7 @@ sub_806A0F4: @ 0x0806A0F4
 	adds r0, r5, r1
 	ldr r6, [r0]
 	bl sub_806A348
-	ldr r0, _0806A148 @ =gRepeatPressedKeys
+	ldr r0, _0806A148 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0xc0
 	ands r0, r1
@@ -12848,7 +12848,7 @@ sub_806A0F4: @ 0x0806A0F4
 	.align 2, 0
 _0806A140: .4byte gCurTask
 _0806A144: .4byte IWRAM_START + 0x390
-_0806A148: .4byte gRepeatPressedKeys
+_0806A148: .4byte gRepeatedKeys
 _0806A14C: .4byte IWRAM_START + 0x3A6
 _0806A150: .4byte IWRAM_START + 0x3A5
 _0806A154:
@@ -12896,7 +12896,7 @@ _0806A1A4: .4byte IWRAM_START + 0x3A6
 _0806A1A8: .4byte IWRAM_START + 0x3A4
 _0806A1AC: .4byte sub_806A1D0
 _0806A1B0:
-	ldr r0, _0806A1CC @ =gRepeatPressedKeys
+	ldr r0, _0806A1CC @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #2
 	ands r0, r1
@@ -12910,7 +12910,7 @@ _0806A1C6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0806A1CC: .4byte gRepeatPressedKeys
+_0806A1CC: .4byte gRepeatedKeys
 
 	thumb_func_start sub_806A1D0
 sub_806A1D0: @ 0x0806A1D0

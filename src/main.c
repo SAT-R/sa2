@@ -156,8 +156,8 @@ static void GameInit(void) {
     gUnknown_030053B8 = 0;
 
     for (i = 0; i < 10; i++) {
-        gUnknown_03002700[i] = 0x14;
-        gUnknown_03002850[i] = 8;
+        gKeysFirstRepeatIntervals[i] = 0x14;
+        gKeysContinuedRepeatIntervals[i] = 8;
     }
 
     gUnknown_030053C0.unk8 = 0;
@@ -522,9 +522,9 @@ static u32 sub_80021C4(void) {
 
 static void GetInput(void) {
     s8 i;
-    u8 *r7 = gUnknown_030022A0, 
-       *sb = gUnknown_03002700,
-       *r8 = gUnknown_03002850;
+    u8 *repeatKeyCounters = gRepeatedKeysTestCounter, 
+       *firstIntervals = gKeysFirstRepeatIntervals,
+       *continuedHoldIntervals = gKeysContinuedRepeatIntervals;
 
     gInput = (~REG_KEYINPUT & KEYS_MASK);
     gUnknown_03001880 = gInput;
@@ -538,16 +538,28 @@ static void GetInput(void) {
     gPressedKeys = (gInput ^ gPrevInput) & gInput;
     gReleasedKeys = (gInput ^ gPrevInput) & gPrevInput;
     gPrevInput = gInput;
-    gRepeatPressedKeys = gPressedKeys;
+    
+    // Repeated keys will be the currently pressed keys
+    gRepeatedKeys = gPressedKeys;
 
+    // Calculate the next repeated state for every key
     for (i = 0; i < 10; i++) {
         if (!GetBit(gInput, i)) {
-            r7[i] = sb[i];
-        } else if (r7[i] != 0) {
-            r7[i]--;
+            // If a key is not pressed, reset its counter
+            // to the settings for that key's 
+            // first repeat interval
+            repeatKeyCounters[i] = firstIntervals[i];
+        } else if (repeatKeyCounters[i] > 0) {
+            // If the key is not yet ready to be repeated
+            // continue to wait
+            repeatKeyCounters[i]--;
         } else {
-            gRepeatPressedKeys |= 1 << i;
-            r7[i] = r8[i];
+            // If the key is ready to be repeated, 
+            // add the key to the repeated keys
+            gRepeatedKeys |= 1 << i;
+            // And reset its counter to the settings
+            // for continued hold interval
+            repeatKeyCounters[i] = continuedHoldIntervals[i];
         }
     }
 }

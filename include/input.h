@@ -6,17 +6,28 @@
 extern void sub_8007DBC(u16);
 extern u16 sub_8007D8C(void);
 
-extern u16 gInput;
-extern u16 gPressedKeys;
-extern u16 gReleasedKeys;
-extern u16 gPrevInput;
-// TODO: Potentially better name
-extern u16 gRepeatPressedKeys;
+u16 gInput;
+u16 gPressedKeys;
+u16 gReleasedKeys;
+u16 gPrevInput;
 
-// Something to do with storing the repeat
-// key states
-extern u8 gUnknown_030022A0[];
-extern u8 gUnknown_03002700[];
-extern u8 gUnknown_03002850[];
+// Same as gPressedKeys but will
+// automatically retrigger a key
+// if held
+u16 gRepeatedKeys;
+
+// How many frames left for each key
+// before it will be repeated
+u8 gRepeatedKeysTestCounter[10];
+
+// Settings for each key of how many frames we should
+// wait after the key is pressed before repeating
+// for the first time
+u8 gKeysFirstRepeatIntervals[10];
+
+// Setting for each key of how many frames we should
+// wait after between repeating the key after the
+// first repeat
+u8 gKeysContinuedRepeatIntervals[10];
 
 #endif

@@ -3683,7 +3683,7 @@ _080097D4:
 _080097FC: .4byte gUnknown_03004D80
 _08009800: .4byte gUnknown_03002280
 _08009804:
-	ldr r0, _08009818 @ =gRepeatPressedKeys
+	ldr r0, _08009818 @ =gRepeatedKeys
 	ldrh r1, [r0]
 	movs r0, #0x20
 	ands r0, r1
@@ -3693,7 +3693,7 @@ _08009804:
 	subs r0, #1
 	b _08009828
 	.align 2, 0
-_08009818: .4byte gRepeatPressedKeys
+_08009818: .4byte gRepeatedKeys
 _0800981C:
 	movs r0, #0x10
 	ands r0, r1
@@ -6206,7 +6206,7 @@ _0800AC7C:
 	ands r0, r1
 	str r0, [r4, #0x10]
 _0800AC92:
-	ldr r2, _0800ACB8 @ =gRepeatPressedKeys
+	ldr r2, _0800ACB8 @ =gRepeatedKeys
 	ldrh r1, [r2]
 	movs r0, #0x40
 	ands r0, r1
@@ -6223,7 +6223,7 @@ _0800AC92:
 	.align 2, 0
 _0800ACB0: .4byte gBldRegs
 _0800ACB4: .4byte 0xFFFFFE7F
-_0800ACB8: .4byte gRepeatPressedKeys
+_0800ACB8: .4byte gRepeatedKeys
 _0800ACBC:
 	ldrh r1, [r2]
 	movs r0, #0x80
