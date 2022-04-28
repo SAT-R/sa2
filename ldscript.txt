@@ -76,7 +76,7 @@ SECTIONS
 
         /* Songs */
         build/sa2/sound/songs/midi/mus_intro.o(.rodata);
-        build/sa2/sound/songs/midi/song0002.o(.rodata);
+        build/sa2/sound/songs/midi/mus_title_fanfare.o(.rodata);
         build/sa2/sound/songs/midi/song0003.o(.rodata);
         build/sa2/sound/songs/midi/song0004.o(.rodata);
         build/sa2/sound/songs/midi/song0005.o(.rodata);

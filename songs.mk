@@ -6,7 +6,7 @@ $(MID_BUILDDIR)/%.o: $(MID_SUBDIR)/%.s
 $(MID_SUBDIR)/mus_intro.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G21 
     
-$(MID_SUBDIR)/song0002.s: %.s: %.mid
+$(MID_SUBDIR)/mus_title_fanfare.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G11 
     
 $(MID_SUBDIR)/song0003.s: %.s: %.mid

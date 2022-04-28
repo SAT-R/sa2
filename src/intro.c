@@ -240,7 +240,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
 
     sub_8002A3C(config40);
 
-    m4aSongNumStart(2);
+    m4aSongNumStart(MUS_TITLE_FANFARE);
 
     sub_802D4CC(&introConfig->unk270);
 }

@@ -3,7 +3,7 @@
 gSongTable:	@ 0x08AD4F4C
 	song dummy_song_header, 0, 0
 	song mus_intro, 0, 0
-	song song0002, 0, 0
+	song mus_title_fanfare, 0, 0
 	song song0003, 0, 0
 	song song0004, 0, 0
 	song song0005, 0, 0

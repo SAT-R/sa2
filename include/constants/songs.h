@@ -3,6 +3,7 @@
 
 #define MUS_DUMMY 0
 #define MUS_INTRO 1
+#define MUS_TITLE_FANFARE 2
 
 #define SE_SELECT 106
 #define SE_RETURN 107
