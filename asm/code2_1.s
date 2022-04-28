@@ -8682,7 +8682,7 @@ _08067F6C: .4byte gUnknown_03005390
 _08067F70: .4byte gUnknown_03004D5C
 _08067F74: .4byte gUnknown_03002A84
 _08067F78:
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 _08067F7C:
 	pop {r4, r5, r6, r7}
 	pop {r0}

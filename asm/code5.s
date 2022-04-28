@@ -1499,7 +1499,7 @@ sub_808D4DC: @ 0x0808D4DC
 	bl sub_802D4CC
 	bl m4aMPlayAllStop
 	adds r0, r4, #0
-	bl sub_808B884
+	bl sub_808B884_CreateTitleScreenMenus
 	adds r0, r4, #0
 	bl sub_808D740
 	ldr r0, _0808D534 @ =gCurTask
@@ -1575,7 +1575,7 @@ sub_808D598: @ 0x0808D598
 	cmp r0, #1
 	bne _0808D5DC
 	ldr r1, [r5]
-	ldr r0, _0808D5EC @ =sub_808BA78
+	ldr r0, _0808D5EC @ =sub_808BA78_Task_FadeInSegaLogo
 	str r0, [r1, #8]
 	ldr r1, _0808D5F0 @ =gBldRegs
 	movs r0, #0x80
@@ -1597,7 +1597,7 @@ _0808D5DC:
 	.align 2, 0
 _0808D5E4: .4byte gCurTask
 _0808D5E8: .4byte IWRAM_START + 0x270
-_0808D5EC: .4byte sub_808BA78
+_0808D5EC: .4byte sub_808BA78_Task_FadeInSegaLogo
 _0808D5F0: .4byte gBldRegs
 _0808D5F4: .4byte 0x00000441
 _0808D5F8: .4byte gDispCnt
@@ -1620,7 +1620,7 @@ sub_808D5FC: @ 0x0808D5FC
 	movs r0, #0
 	strh r0, [r4]
 	ldr r1, [r5]
-	ldr r0, _0808D638 @ =sub_808BAD8
+	ldr r0, _0808D638 @ =sub_808BAD8_Task_FadeOutSegaLogo
 	str r0, [r1, #8]
 _0808D622:
 	ldrh r0, [r4]
@@ -1632,7 +1632,7 @@ _0808D622:
 	.align 2, 0
 _0808D630: .4byte gCurTask
 _0808D634: .4byte IWRAM_START + 0xF3E
-_0808D638: .4byte sub_808BAD8
+_0808D638: .4byte sub_808BAD8_Task_FadeOutSegaLogo
 
 	thumb_func_start sub_808D63C
 sub_808D63C: @ 0x0808D63C
@@ -6311,7 +6311,7 @@ _0808FBCC: .4byte IWRAM_START + 0x161
 _0808FBD0:
 	cmp r0, #1
 	bne _0808FBDE
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 	ldr r0, [r4]
 	bl TaskDestroy
 _0808FBDE:
@@ -15563,7 +15563,7 @@ sub_8094570: @ 0x08094570
 _08094588: .4byte gCurTask
 _0809458C: .4byte IWRAM_START + 0xC0
 _08094590:
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 	ldr r0, [r4]
 	bl TaskDestroy
 _0809459A:

@@ -15,6 +15,7 @@ struct Unk_03002400 {
     u16 unk16;
     u16 unk18;
     u16 unk1A;
+    // assetId
     u16 unk1C;
     u16 unk1E;
     u16 unk20;

@@ -38,12 +38,12 @@ void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
 static void sub_808B768(struct UNK_0808B3FC*);
 
 // TODO: make static once references to it are decompiled
-void sub_808B884(struct UNK_0808B3FC*);
+void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC*);
 
 // TODO: make static once decompiled
 void sub_808CBA4(struct UNK_0808B3FC*);
 void sub_808D5FC(void);
-static void sub_808BB54(void);
+static void sub_808BB54_Task_CreateSonicTeamLogo(void);
 static void sub_808BBF4(void);
 void sub_808D63C(void);
 
@@ -68,7 +68,7 @@ void sub_808C710(void);
 void sub_808D35C(void);
 
 // CreateTitleScreen
-void sub_808B3FC_CreateIntro(void) {
+void sub_808B3FC_CreateTitleScreen(void) {
     struct Task* t;
     // state (TitleScreenState)
     struct UNK_0808B3FC* introConfig;
@@ -90,7 +90,10 @@ void sub_808B3FC_CreateIntro(void) {
     introConfig->unkF3E = 0;
     introConfig->unkF3A = 0x20;
 
+    // Intro sequence step
     introConfig->unkF3C = 0;
+
+    // Pan up velocity
     introConfig->unkF3D = 1;
 
     // Generate the wave effects
@@ -159,7 +162,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     config270->unk8 = 0x3fbf;
     config270->unkA = 0;
 
-    sub_808B884(introConfig);
+    sub_808B884_CreateTitleScreenMenus(introConfig);
 
     // Possibly a macro, why would this be set to 0 first
     gDispCnt = 0;
@@ -242,6 +245,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     sub_802D4CC(&introConfig->unk270);
 }
 
+// Maybe create background sprites
 static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     struct Unk_03002400 *config80, *config0;
 
@@ -315,8 +319,8 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     sub_8002A3C(config0);
 }
 
-// Create TitleScreen
-void sub_808B884(struct UNK_0808B3FC* introConfig) {
+// Create TitleScreenMenu
+void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
     s8 language;
     u32 i, objAddr;
@@ -422,8 +426,7 @@ void sub_808B884(struct UNK_0808B3FC* introConfig) {
 #define FadeOutBlend(frame) \
     BLDALPHA_BLEND(16 - (frame), frame)
 
-// Task_FadeInSegaLogo
-void sub_808BA78(void) {
+void sub_808BA78_Task_FadeInSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -440,8 +443,7 @@ void sub_808BA78(void) {
     introConfig->unkF3E++;
 }
 
-// Task_FadeOutSegaLogo
-void sub_808BAD8(void) {
+void sub_808BAD8_Task_FadeOutSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -452,14 +454,14 @@ void sub_808BAD8(void) {
         gBldRegs.bldAlpha = FadeOutBlend(16);
         introConfig->unkF3E = 0;
         gFlags &= ~0x8000;
-        gCurTask->main = sub_808BB54;
+        gCurTask->main = sub_808BB54_Task_CreateSonicTeamLogo;
     }
 
     introConfig->unkF3E++;
 }
 
-// Task_InitSonicTeamLogo
-static void sub_808BB54(void) {
+// Task_CreateSonicTeamLogo
+static void sub_808BB54_Task_CreateSonicTeamLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct Unk_03002400* config80;
     
@@ -473,6 +475,7 @@ static void sub_808BB54(void) {
         config80->unkC = BG_SCREEN_ADDR(31);
         config80->unk18 = 0;
         config80->unk1A = 0;
+        // GFX asset
         config80->unk1C = 0x61;
         config80->unk1E = 0;
         config80->unk20 = 0;
@@ -532,7 +535,7 @@ void sub_808BC54(void) {
     introConfig->unkF3E++;
 }
 
-// Detect user input and do something
+// Task_IntroStartSkyTransition
 static void sub_808BCC4(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct Unk_03002400* config40;
@@ -543,6 +546,8 @@ static void sub_808BCC4(void) {
         return;
     }
 
+    // If animation frame is 59
+    // Load the island sprite
     if (introConfig->unkF3E == 59) {
         config40 = &introConfig->unk40;
         config40->unk4 = BG_SCREEN_ADDR(16);
@@ -562,11 +567,8 @@ static void sub_808BCC4(void) {
         sub_8002A3C(config40);
     }
     
-    // Doesn't match as as else if for
-    // some reason. Maybe this is how they wrote it.
-    // Interesting that GCC is not good enough
-    // to understand that this is not possible
-    // to trigger if the previous if is true
+    // Once the animation frame is at 140
+    // begin the pan, and load the bird animations
     if (introConfig->unkF3E > 140) {
         gCurTask->main = sub_808BDBC;
         introConfig->unkF3E = 0;
@@ -580,6 +582,7 @@ static void sub_808BCC4(void) {
     introConfig->unkF3E++;
 }
 
+// Task_IntroSkyTransition
 static void sub_808BDBC(void) {
     struct Unk_03002400* config0;
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
@@ -602,14 +605,18 @@ static void sub_808BDBC(void) {
         sub_808CBA4(introConfig);
     }
 
+    // Increase the pan up velocity once the correct
+    // frame is reached
     if (introConfig->unkF3E == gUnknown_080E105E[introConfig->unkF3C]) {
         introConfig->unkF3E = 0;
         introConfig->unkF3D++;
         introConfig->unkF3C++;
     }
 
-    if (introConfig->unkF3E > 0x3C && introConfig->unkF3C > 2) {
-        gBgCntRegs[2] &= ~0x2000;
+    // After 1 second, show the lens flare
+    // animation
+    if (introConfig->unkF3E > 60 && introConfig->unkF3C > 2) {
+        gBgCntRegs[2] &= ~BGCNT_WRAP;
 
         gUnknown_03004D80[0] = 2;
         gUnknown_03002280[0] = 0;
@@ -648,12 +655,13 @@ static void sub_808BDBC(void) {
         gBldRegs.bldCnt = 0x3FBF;
         gBldRegs.bldY = 0;
 
-        gDispCnt |= 0x4000;
+        gDispCnt |= DISPCNT_WIN1_ON;
         REG_SIOCNT |= SIO_INTR_ENABLE;
     }
     introConfig->unkF3E++;
 }
 
+// Task
 static void sub_808BF7C(void) {
     struct Unk_03002400* config0;
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
@@ -749,7 +757,7 @@ static void sub_808BF7C(void) {
         introConfig->unkF3E = 0;
         gBgScrollRegs[1][1] = 0;
         
-        sub_808B884(introConfig);
+        sub_808B884_CreateTitleScreenMenus(introConfig);
     }
     introConfig->unkF3E++;
 }

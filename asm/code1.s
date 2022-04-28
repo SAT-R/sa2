@@ -5031,7 +5031,7 @@ sub_800A24C: @ 0x0800A24C
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0800A304
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 	b _0800A308
 	.align 2, 0
 _0800A2C8: .4byte gCurTask
@@ -5310,7 +5310,7 @@ sub_800A510: @ 0x0800A510
 	ldr r0, _0800A540 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 	pop {r0}
 	bx r0
 	.align 2, 0

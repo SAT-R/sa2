@@ -27,6 +27,7 @@ struct UNK_0808B3FC_UNK270 {
     u16 unkA;
 };
 
+// TitleScreen
 struct UNK_0808B3FC {
     // Possibly an array of ui elements?
     struct Unk_03002400 unk0;
@@ -98,7 +99,7 @@ extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
 // Used outside of this module I think, so declared here
 struct UNK_3005B80 gUnknown_03005B80;
 
-void sub_808B3FC_CreateIntro(void);
+void sub_808B3FC_CreateTitleScreen(void);
 
 #define MENU_ITEM_SINGLE_PLAYER 0
 #define MENU_ITEM_MULTI_PLAYER 1

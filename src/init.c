@@ -69,7 +69,7 @@ void sub_801A51C(void) {
     }
     
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
-        sub_808B3FC_CreateIntro();
+        sub_808B3FC_CreateTitleScreen();
         LoadCompletedSaveGame();
         return;
     }
@@ -88,7 +88,7 @@ void sub_801A51C(void) {
         return;
     }
     
-    sub_808B3FC_CreateIntro();
+    sub_808B3FC_CreateTitleScreen();
 }
 
 static void Task_DummyFunc(void);

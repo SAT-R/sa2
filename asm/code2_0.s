@@ -57790,7 +57790,7 @@ sub_8036B70: @ 0x08036B70
 	ldr r0, _08036BC4 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808B3FC_CreateIntro
+	bl sub_808B3FC_CreateTitleScreen
 	b _08036BCE
 	.align 2, 0
 _08036BAC: .4byte gCurTask
