@@ -38,13 +38,13 @@ void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
 static void sub_808B768(struct UNK_0808B3FC*);
 
 // TODO: make static once references to it are decompiled
-void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC*);
+void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
 
 // TODO: make static once decompiled
 void sub_808CBA4(struct UNK_0808B3FC*);
 void sub_808D5FC(void);
-static void sub_808BB54_Task_CreateSonicTeamLogo(void);
-static void sub_808BBF4(void);
+static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void);
+static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void);
 void sub_808D63C(void);
 
 void sub_808D4DC(struct UNK_0808B3FC*);
@@ -64,7 +64,7 @@ void sub_808C358(void);
 void sub_808C218(void);
 static void sub_808C498(void);
 void sub_808C58C(void);
-void sub_808C710(void);
+void sub_808C710_Task_HandleTitleScreenExit(void);
 void sub_808D35C(void);
 
 // CreateTitleScreen
@@ -162,7 +162,7 @@ void sub_808B560(struct UNK_0808B3FC* introConfig) {
     config270->unk8 = 0x3fbf;
     config270->unkA = 0;
 
-    sub_808B884_CreateTitleScreenMenus(introConfig);
+    sub_808B884_InitTitleScreenUI(introConfig);
 
     // Possibly a macro, why would this be set to 0 first
     gDispCnt = 0;
@@ -319,11 +319,12 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     sub_8002A3C(config0);
 }
 
-// Create TitleScreenMenu
-void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC* introConfig) {
+#define NUM_LANGUAGES 6
+
+void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
     s8 language;
-    u32 i, objAddr;
+    u32 menuItemId, objAddr;
     struct UNK_0808B3FC_UNK240 *config;
 
     // Must be 0 - 6;
@@ -367,31 +368,30 @@ void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC* introConfig) {
     config->unk10 = 0;
     sub_8004558(config);
 
-    for (i = 0; i < 6; i++) {
-        config = &introConfig->unk120[i];
+    for (menuItemId = 0; menuItemId < ARRAY_COUNT(introConfig->unk120); menuItemId++) {
+        config = &introConfig->unk120[menuItemId];
 
         // gUnknown_080E0D9C could be considered a 2d array ([7][6] so [language][i])
         // but this doesn't match
         config->unk4 = objAddr;
-        objAddr += (gUnknown_080E0D9C[i + language * 6].unk0 * TILE_SIZE_4BPP);
+        objAddr += (gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk0 * TILE_SIZE_4BPP);
         
-        config->unkA = gUnknown_080E0D9C[i + language * 6].unk4;
-        config->unk20 = gUnknown_080E0D9C[i + language * 6].unk6;
+        config->unkA = gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk4;
+        config->unk20 = gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk6;
         config->unk21 = 0xFF;
         config->unk16 = 0x78;
         
-        // Generate the first page of menu item positions
-        if (i < 2) {
-          config->unk18 = (i * 0x12) + 0x60;
+        // Generate menu item y positions
+        // position * lineHeight + topPadding
+        if (menuItemId < SinglePlayerMenuItem(0)) {
+            // PlayModeMenu positions
+            config->unk18 = (PlayModeMenuIndex(menuItemId) * 0x12) + 0x60;
+        } else if (gLoadedSaveGame->unk14) {
+            // SinglePlayerMenu if we have the chao garden available
+            config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 0x60;
         } else {
-          // The next page menu items
-          // need to be shifted if the chow garden
-          // is available
-          if (gLoadedSaveGame->unk14 != 0) {
-            config->unk18 = (i - 2) * 0x10 + 0x60;
-          } else {
-            config->unk18 = (i - 2) * 0x12 + 0x64;
-          }
+            // SinglePlayerMenu items if we don't have the chao garden
+            config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 0x64;
         }
         
         config->unk8 = 0;
@@ -426,7 +426,7 @@ void sub_808B884_CreateTitleScreenMenus(struct UNK_0808B3FC* introConfig) {
 #define FadeOutBlend(frame) \
     BLDALPHA_BLEND(16 - (frame), frame)
 
-void sub_808BA78_Task_FadeInSegaLogo(void) {
+void sub_808BA78_Task_IntroFadeInSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -443,7 +443,7 @@ void sub_808BA78_Task_FadeInSegaLogo(void) {
     introConfig->unkF3E++;
 }
 
-void sub_808BAD8_Task_FadeOutSegaLogo(void) {
+void sub_808BAD8_Task_IntroFadeOutSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -454,14 +454,14 @@ void sub_808BAD8_Task_FadeOutSegaLogo(void) {
         gBldRegs.bldAlpha = FadeOutBlend(16);
         introConfig->unkF3E = 0;
         gFlags &= ~0x8000;
-        gCurTask->main = sub_808BB54_Task_CreateSonicTeamLogo;
+        gCurTask->main = sub_808BB54_Task_IntroCreateSonicTeamLogo;
     }
 
     introConfig->unkF3E++;
 }
 
 // Task_CreateSonicTeamLogo
-static void sub_808BB54_Task_CreateSonicTeamLogo(void) {
+static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct Unk_03002400* config80;
     
@@ -491,14 +491,13 @@ static void sub_808BB54_Task_CreateSonicTeamLogo(void) {
     if (introConfig->unkF3E > 2) {
         introConfig->unkF3E = 0;
         gDispCnt |= DISPCNT_BG0_ON;
-        gCurTask->main = sub_808BBF4;
+        gCurTask->main = sub_808BBF4_Task_IntroFadeInSonicTeamLogo;
     }
 
     introConfig->unkF3E++;
 }
 
-// Task_FadeInSonicTeamLogo
-static void sub_808BBF4(void) {
+static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void) {
     // Wondering if this is some inline function
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
@@ -582,7 +581,7 @@ static void sub_808BCC4(void) {
     introConfig->unkF3E++;
 }
 
-// Task_IntroSkyTransition
+// Task_IntroPanSkyTransition
 static void sub_808BDBC(void) {
     struct Unk_03002400* config0;
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
@@ -757,11 +756,12 @@ static void sub_808BF7C(void) {
         introConfig->unkF3E = 0;
         gBgScrollRegs[1][1] = 0;
         
-        sub_808B884_CreateTitleScreenMenus(introConfig);
+        sub_808B884_InitTitleScreenUI(introConfig);
     }
     introConfig->unkF3E++;
 }
 
+// Task_FadeInTitleScreen
 static void sub_808C1AC(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
@@ -892,7 +892,7 @@ void sub_808C358(void) {
             config270->unk2 = 1;
             
             introConfig->unkF42 = SPECIAL_MENU_INDEX_MULTI_PLAYER;
-            gCurTask->main = sub_808C710;
+            gCurTask->main = sub_808C710_Task_HandleTitleScreenExit;
         }
         return;
     }
@@ -1013,12 +1013,12 @@ void sub_808C58C(void) {
         }
 
         m4aSongNumStart(SE_SELECT);
-        gCurTask->main = sub_808C710;
+        gCurTask->main = sub_808C710_Task_HandleTitleScreenExit;
     }
 }
 
-// Task_HandleTitleScreenFinished
-void sub_808C710(void) {
+// Task_HandleTitleScreenExit
+void sub_808C710_Task_HandleTitleScreenExit(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct UNK_0808B3FC_UNK240* menuItem;
     u8 i;
