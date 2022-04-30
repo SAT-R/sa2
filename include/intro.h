@@ -51,7 +51,7 @@ struct UNK_0808B3FC {
     // Something to do with the wave effects
     u16 unk2B4[0xA0];
 
-    u8 filler3F4[0xA00];
+    u32 unk3F4[4][0xA0];
 
     u16 unkDF4[0xA0];
 
@@ -59,7 +59,7 @@ struct UNK_0808B3FC {
     u16 unkF36;
     u16 unkF38;
 
-    u16 unkF3A;
+    s16 unkF3A;
 
     u8 unkF3C;
     u8 unkF3D;

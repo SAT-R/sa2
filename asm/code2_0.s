@@ -131998,7 +131998,7 @@ _0805BDC0:
 	ldr r1, _0805BDE4 @ =gUnknown_03002260
 	ldr r0, _0805BDE8 @ =gUnknown_080D5CE4
 	str r0, [r1]
-	bl sub_808D41C_CreateTitleScreen
+	bl sub_808D41C_CreateTitleScreenSkipIntro
 _0805BDD8:
 	pop {r4, r5, r6, r7}
 	pop {r0}

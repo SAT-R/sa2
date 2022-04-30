@@ -66,6 +66,9 @@ static void sub_808C498(void);
 void sub_808C58C(void);
 void sub_808C710_Task_HandleTitleScreenExit(void);
 void sub_808D35C(void);
+void sub_808D53C(void);
+void sub_808D874(void);
+void sub_808DB2C(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -387,10 +390,10 @@ void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
             // PlayModeMenu positions
             config->unk18 = (PlayModeMenuIndex(menuItemId) * 0x12) + 0x60;
         } else if (gLoadedSaveGame->unk14) {
-            // SinglePlayerMenu if we have the chao garden available
+            // SinglePlayerMenu positions if we have the chao garden available
             config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 0x60;
         } else {
-            // SinglePlayerMenu items if we don't have the chao garden
+            // SinglePlayerMenu positions if we don't have the chao garden
             config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 0x64;
         }
         
@@ -405,7 +408,7 @@ void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
 
     config = &introConfig->unk240;
     config->unk4 = objAddr;
-    // Use last value for this one
+    // Uses last value for this one
     config->unkA = gUnknown_080E0D9C[42].unk4;
     config->unk20 = gUnknown_080E0D9C[42].unk6;
     config->unk21 = 0xFF;
@@ -843,22 +846,26 @@ static void sub_808C2C8(void) {
     sub_808D740(introConfig);
 }
 
-// Task_PlayModeMenu
-void sub_808C358(void) {
-    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+static inline void PlayModeMenuHighlightFocused(struct UNK_0808B3FC* introConfig) {
     struct UNK_0808B3FC_UNK240* menuItem;
-    struct UNK_0808B3FC_UNK270* config270;
     u8 menuIndex;
-    
-    sub_80051E8(&introConfig->unkC0);
-    sub_808D740(introConfig);
-
     // Highlight the menu items from cursor position
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &introConfig->unk120[menuIndex ^ 1];
         menuItem->unk25 = (menuIndex ^ introConfig->unkF42);
         sub_80051E8(menuItem);
     }; 
+}
+
+// Task_PlayModeMenu
+void sub_808C358(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct UNK_0808B3FC_UNK270* config270;
+    
+    sub_80051E8(&introConfig->unkC0);
+    sub_808D740(introConfig);
+    
+    PlayModeMenuHighlightFocused(introConfig);
 
     // Move the cursor if buttons are pressed
     if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
@@ -943,21 +950,12 @@ static void sub_808C498(void) {
     }
 
     sub_808D740(introConfig);
+
 }
 
-// Task_SinglePlayerMenu
-void sub_808C58C(void) {
+static inline void SinglePlayerMenuHighlightFocused(struct UNK_0808B3FC* introConfig, u8 numMenuItems) {
     struct UNK_0808B3FC_UNK240 * menuItem;
-    struct UNK_0808B3FC* introConfig;
-    struct UNK_0808B3FC_UNK270* config270;
     u8 menuIndex;
-
-    u8 numMenuItems = 3;
-    if (gLoadedSaveGame->unk14) {
-        numMenuItems = 4;
-    }
-
-    introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
     for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
         menuItem = &introConfig->unk120[SinglePlayerMenuItem(menuIndex)];
@@ -968,6 +966,21 @@ void sub_808C58C(void) {
         }
         sub_80051E8(menuItem);
     }
+};
+
+// Task_SinglePlayerMenu
+void sub_808C58C(void) {
+    struct UNK_0808B3FC* introConfig;
+    struct UNK_0808B3FC_UNK270* config270;
+    u8 menuIndex;
+
+    u8 numMenuItems = 3;
+    if (gLoadedSaveGame->unk14) {
+        numMenuItems = 4;
+    }
+
+    introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    SinglePlayerMenuHighlightFocused(introConfig, numMenuItems);
 
     sub_808D740(introConfig);
 
@@ -1087,3 +1100,181 @@ void sub_808C710_Task_HandleTitleScreenExit(void) {
     }
 }
 
+void sub_808C8EC(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    struct Unk_03002400* config0 = &introConfig->unk0;
+    struct Unk_03002400* config40;
+
+    DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xFF;
+    gUnknown_03002280[3] = 32;
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[8] = 0;
+    gUnknown_03002280[9] = 0;
+    gUnknown_03002280[10] = 0xFF;
+    gUnknown_03002280[11] = 32;
+
+    config0->unk4 = BG_SCREEN_ADDR(0);
+    config0->unkA = 0;
+    config0->unkC = BG_SCREEN_ADDR(26);
+    config0->unk18 = 0;
+    config0->unk1A = 0;
+
+    if (gLoadedSaveGame->unk6 < 2) {
+        config0->unk1C = 0x108;
+    } else {
+        config0->unk1C = 0x109;
+    }
+
+    config0->unk1E = 0;
+    config0->unk20 = 0;
+    config0->unk22 = 0;
+    config0->unk24 = 0;
+    config0->unk26 = 0x1A;
+    config0->unk28 = 10;
+    config0->unk2A = 0;
+    config0->unk2E = 6;
+    sub_8002A3C(config0);
+
+    config40 = &introConfig->unk40;
+    config40->unk4 = BG_SCREEN_ADDR(16);
+    config40->unkA = 0;
+    config40->unkC = BG_SCREEN_ADDR(29);
+    config40->unk18 = 0;
+    config40->unk1A = 0;
+    config40->unk1C = 0x105;
+    config40->unk1E = 0;
+    config40->unk20 = 0;
+    config40->unk22 = 0;
+    config40->unk24 = 0;
+    config40->unk26 = 0x20;
+    config40->unk28 = 0x40;
+    config40->unk2A = 0;
+    config40->unk2E = 1;
+    sub_8002A3C(config40);
+
+    gDispCnt &= ~0x100;
+    gDispCnt |= 0x600;
+    gBgScrollRegs[1][0] = 8;
+    gBgScrollRegs[1][1] = 0;
+    gBgCntRegs[2] &= ~0x2000;
+    gBldRegs.bldCnt = 0;
+    gFlags &= ~0x8000;
+
+    sub_802D4CC(&introConfig->unk270);
+    m4aSongNumStart(MUS_TITLE_FANFARE);
+
+    sub_808D740(introConfig);
+    gCurTask->main = sub_808D53C;
+    
+    REG_SIOCNT |= SIO_INTR_ENABLE;
+}
+
+// Loads the title screen to the play mode menu
+void sub_808CA6C(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    PlayModeMenuHighlightFocused(introConfig);
+
+    sub_80051E8(&introConfig->unkC0);
+    sub_808D740(introConfig);
+    
+    if (sub_802D4CC(&introConfig->unk270) == 1) {
+        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        introConfig->unkF3E = 0;
+        gCurTask->main = sub_808C358;
+    }
+}
+
+// Loads the title screen to the single player menu
+void sub_808CAFC(void) {
+    struct UNK_0808B3FC* introConfig;
+    struct UNK_0808B3FC_UNK270* config270;
+
+    u8 numMenuItems = 3;
+    if (gLoadedSaveGame->unk14) {
+        numMenuItems = 4;
+    }
+
+    introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    SinglePlayerMenuHighlightFocused(introConfig, numMenuItems);
+
+    sub_808D740(introConfig);
+
+    if (sub_802D4CC(&introConfig->unk270) == 1) {
+        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        introConfig->unkF3E = 0;
+        gCurTask->main = sub_808C58C;
+    }
+}
+
+// TODO: work out what this is doing
+void sub_808CBA4(struct UNK_0808B3FC* introConfig) {
+    u32 i;
+    u32 *pointer;
+    s32 j;
+
+    REG_SIOCNT &= ~SIO_INTR_ENABLE;
+    gDispCnt |= 0x4000;
+    gWinRegs[1] = 0xF0;
+    gWinRegs[3] = (introConfig->unkF38 - 2) * 0x100;
+    gWinRegs[3] |= 0xA0;
+    gWinRegs[4] |= 0x3F00;
+    gWinRegs[5] &= 0x13;
+
+    introConfig->unkF3A -= 768;
+    if (introConfig->unkF3A < 0) {
+        introConfig->unkF3A = 7680;
+    }
+
+    gUnknown_03001870[gUnknown_03004D50++] = sub_808D874;
+    gFlags |= 0x10;
+    
+    introConfig->unk27C.unk34 = (introConfig->unkF38 - 2);
+    
+    gUnknown_030026E0[gUnknown_0300188C++] = sub_808DB2C;
+
+    gFlags |= 0x8;
+    gFlags |= 0x4;
+    gUnknown_03002A80 = 16;
+    gUnknown_03002878 = 0x4000020;
+
+    // TODO: not sure unk3F4 is the correct type
+    gUnknown_03001884 = introConfig->unk3F4[0];
+    pointer = introConfig->unk3F4[0];
+    for (i = 0, j = 0; i < 160; i++) {
+        s32 temp, r3;
+        if (introConfig->unkF38 <= i) {
+            r3 = introConfig->unk2B4[i - introConfig->unkF38];
+            *pointer++ = r3;
+            *pointer++ = 0;
+
+            temp = (introConfig->unkDF4[i - introConfig->unkF38] * 0xF000) >> 8;
+            temp = (0xF000 - (temp)) >> 1;
+            temp = ((temp) * r3) >> 8;
+
+            if (temp > 0x7ffffff) {
+                temp = 0x7ffffff;
+            }
+            *pointer++ = -temp;
+            if (((j << 8) * r3) >> 8 >= 0x1F80) {
+                j = 0;
+                // again possibly a macro
+                temp = introConfig->unkF3A;
+                *pointer++ = temp;
+            } else {
+                temp = (((j << 8) * r3) >> 8) + introConfig->unkF3A;
+                *pointer++ = temp;
+            }
+            j++;
+        } else {
+            *pointer++ = 0;
+            *pointer++ = 0;
+            *pointer++ = 0;
+            // Could be a macro
+            *pointer++ = (({i + 0x200;}) - introConfig->unkF38) << 8;
+        }
+    }
+}

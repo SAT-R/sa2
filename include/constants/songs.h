@@ -9,4 +9,6 @@
 #define SE_RETURN 107
 #define SE_MENU_CURSOR_MOVE 108
 
-#endif
+#define SS_TITLE_SCREEN_ANNOUNCEMENT 201
+
+#endif 

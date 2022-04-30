@@ -14,7 +14,7 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void sub_808D41C_CreateTitleScreen();
+void sub_808D41C_CreateTitleScreenSkipIntro();
 void sub_8063940_CreateProfileScreen();
 void sub_8081C0C();
 
@@ -83,7 +83,7 @@ void sub_801A51C(void) {
     // skip the intro and go straight to the
     // title screen
     if (gFlags & FLAGS_SKIP_INTRO) {
-        sub_808D41C_CreateTitleScreen();
+        sub_808D41C_CreateTitleScreenSkipIntro();
         gFlags &= ~FLAGS_SKIP_INTRO;
         return;
     }
@@ -94,17 +94,17 @@ void sub_801A51C(void) {
 static void Task_DummyFunc(void);
 static void Task_DummyTeardown(struct Task*);
 
-static void CreateDummyTask(void){
+UNUSED static void CreateDummyTask(void){
   gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, Task_DummyTeardown);
 }
 
-static void DestroyDummyTask(void) {
+UNUSED static void DestroyDummyTask(void) {
   TaskDestroy(gUnknown_03005844);
   gUnknown_03005844 = NULL;
 }
 
-static void Task_DummyFunc(void) {}
+UNUSED static void Task_DummyFunc(void) {}
 
-static void Task_DummyTeardown(struct Task* task) {
+UNUSED static void Task_DummyTeardown(struct Task* task) {
     gUnknown_03005844 = NULL;
 }

@@ -6182,7 +6182,7 @@ _0800AC18:
 	ldr r0, _0800AC78 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C_CreateTitleScreen
+	bl sub_808D41C_CreateTitleScreenSkipIntro
 	b _0800AD8A
 	.align 2, 0
 _0800AC5C: .4byte gFlags

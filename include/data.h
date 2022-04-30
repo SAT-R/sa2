@@ -8,11 +8,11 @@
 #include "global.h"
 
 // Mostly used in `main.c`
-extern u8* gUnknown_03001884;
-extern u8* gUnknown_03004D54;
-extern u8* gUnknown_030022C0;
-
-extern u8 gUnknown_03001B60[2][0x280];
+extern u32* gUnknown_03001884;
+extern u32* gUnknown_03004D54;
+extern u32* gUnknown_030022C0;
+extern u32* gUnknown_030022AC;
+extern u32 gUnknown_03001B60[2][160];
 
 // set in init.c
 extern u32* gUnknown_03002794;

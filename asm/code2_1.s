@@ -17823,7 +17823,7 @@ _0806C8E4:
 	ldr r0, _0806C91C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C_CreateTitleScreen
+	bl sub_808D41C_CreateTitleScreenSkipIntro
 	b _0806C942
 	.align 2, 0
 _0806C908: .4byte 0x0000FFFF

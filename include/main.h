@@ -5,8 +5,6 @@
 
 extern u8 gUnknown_0300188C;
 
-extern u8* gUnknown_030022AC;
-
 struct Unk_03006CB0 {
     u8 filler0[8];
     u8 unk8;
@@ -116,9 +114,9 @@ extern u32 gUnknown_03001940;
 
 extern u8 gUnknown_03001954;
 extern u32 gUnknown_0203B000;
-extern u8 gUnknown_030026E0[];
+extern void* gUnknown_030026E0[4];
 extern u8 gUnknown_03001948;
-extern u8 gUnknown_03001870[];
+extern void* gUnknown_03001870[4];
 extern FuncType_030053A0 gUnknown_030053A0[];
 extern u8 gUnknown_03002874;
 

@@ -36,7 +36,7 @@ struct SaveGame {
     u8 unk12;
     u8 unk13;
 
-    // Tiny chow garden
+    // Tiny chao garden
     u8 unk14;
     
     u8 unk15;

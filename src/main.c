@@ -290,7 +290,7 @@ static void UpdateScreenDma(void) {
               sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
-    if (gFlags & 8) {
+    if (gFlags & 0x8) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
         if (gUnknown_0300188C != 0) {
@@ -303,7 +303,7 @@ static void UpdateScreenDma(void) {
         gUnknown_030018E0 = 0;
     }
 
-    if (gFlags & 4) {
+    if (gFlags & 0x4) {
         DmaCopy16(3, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
     }
 
@@ -444,7 +444,8 @@ static void VBlankIntr(void) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
-        DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+        // TODO: resolve this cast
+        DmaSet(0, (void*)gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
                 << 16) |
                    (gUnknown_03002A80 >> 1));
