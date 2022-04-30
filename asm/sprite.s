@@ -3513,6 +3513,7 @@ _08004522:
 	bx r1
 	.align 2, 0
 
+@ matched as sub_08153D78 in katam
 	thumb_func_start sub_8004558
 sub_8004558: @ 0x08004558
 	push {r4, r5, r6, r7, lr}

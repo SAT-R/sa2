@@ -10,14 +10,18 @@ struct Unk_03002400 {
     u16 unk8;
     u16 unkA;
     u32 unkC; // vram
+    // Don't think this is right in sa2
     const u16 *unk10;
+
     u16 unk14;
     u16 unk16;
     u16 unk18;
     u16 unk1A;
+
     // assetId
     u16 unk1C;
     u16 unk1E;
+
     u16 unk20;
     u16 unk22;
     u16 unk24;
@@ -39,6 +43,7 @@ struct Unk_03002400 {
 
 // TODO: work out what makes this struct different from the above
 struct UNK_0808B3FC_UNK240 {
+    // These values are part of some other struct
     u32 unk0;
     u32 unk4; // something vram
 
@@ -46,18 +51,24 @@ struct UNK_0808B3FC_UNK240 {
     u16 unkA;
 
     u32 unkC;
+
+    // I believe Unk_03002400 should be using this
     u32 unk10;
 
     u16 unk14;
     u16 unk16;
     u16 unk18;
     u16 unk1A;
+
     u16 unk1C;
     u16 unk1E;
     
     u8 unk20;
     u8 unk21;
     u8 unk22;
+
+    // TODO: these values are only used within some
+    // sort of menu functions. Split out the shared stuff
     u8 unk23;
     u8 unk24;
     // focused

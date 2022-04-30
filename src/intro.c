@@ -31,8 +31,9 @@ extern void sub_8063730(u32);
 extern void sub_8063A00(u16);
 extern void sub_805A1CC(void);
 
+extern u32 sub_8007C10(u32);
 
-void sub_808CE00(u32, u32, u32, u32, u32);
+
 void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
 
 static void sub_808B768(struct UNK_0808B3FC*);
@@ -69,6 +70,9 @@ void sub_808D35C(void);
 void sub_808D53C(void);
 void sub_808D874(void);
 void sub_808DB2C(void);
+
+static void sub_808CE00(u16, s16, u16, u16, u16);
+void sub_808CEFC(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -577,8 +581,8 @@ static void sub_808BCC4(void) {
         gDispCnt |= DISPCNT_BG1_ON;
         gBldRegs.bldAlpha = FadeOutBlend(16);
         gBldRegs.bldCnt = BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1;
-        sub_808CE00(0x7c, 0xffffffc4, 0, 0xffdf, 0);
-        sub_808CE00(0xb4, 0xffffffe8, 3, 0x20, 0);
+        sub_808CE00(0x7c, 0xffc4, 0, 0xffdf, 0);
+        sub_808CE00(0xb4, 0xffe8, 3, 0x20, 0);
     }
     
     introConfig->unkF3E++;
@@ -1259,6 +1263,7 @@ void sub_808CBA4(struct UNK_0808B3FC* introConfig) {
                 temp = 0x7ffffff;
             }
             *pointer++ = -temp;
+            // j * r3
             if (((j << 8) * r3) >> 8 >= 0x1F80) {
                 j = 0;
                 // again possibly a macro
@@ -1277,4 +1282,56 @@ void sub_808CBA4(struct UNK_0808B3FC* introConfig) {
             *pointer++ = (({i + 0x200;}) - introConfig->unkF38) << 8;
         }
     }
+}
+
+UNUSED static void sub_808CD64(struct UNK_0808B3FC* introConfig) {
+    u16 last = introConfig->unkF44[6];
+    introConfig->unkF44[6] = introConfig->unkF44[5];
+    introConfig->unkF44[5] = introConfig->unkF44[4];
+    introConfig->unkF44[4] = introConfig->unkF44[3];
+    introConfig->unkF44[3] = introConfig->unkF44[2];
+    introConfig->unkF44[2] = introConfig->unkF44[1];
+    introConfig->unkF44[1] = last;
+}
+
+UNUSED static void sub_808CDB0(struct UNK_0808B3FC* introConfig, s8 index) {
+    // Might just be a the normal pallet
+    u16* pal = (u16*)BG_PLTT + (index * 16);
+
+    introConfig->unkF44[0] = pal[0];
+    introConfig->unkF44[1] = pal[1];
+    introConfig->unkF44[2] = pal[2];
+    introConfig->unkF44[3] = pal[3];
+    introConfig->unkF44[4] = pal[4];
+    introConfig->unkF44[5] = pal[5];
+    introConfig->unkF44[6] = pal[6];
+}
+
+static void sub_808CE00(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
+    struct Task* t = TaskCreate(sub_808CEFC, 0x40, 0x2000, 0, 0);
+    struct UNK_808CE00* obj = TaskGetStructPtr(t, obj);
+
+    obj->sprite.unk4 = sub_8007C10(3);
+    obj->sprite.unkA = 0x33F;
+    obj->sprite.unk20 = 0;
+    obj->sprite.unk21 = 0xFF;
+    obj->sprite.unk16 = p1;
+    obj->sprite.unk18 = p2;
+    obj->sprite.unk8 = 0;
+    obj->sprite.unk1A = 0xC0;
+    obj->sprite.unk1C = 0;
+    obj->sprite.unk22 = 0x10;
+    obj->sprite.unk25 = 0;
+    obj->sprite.unk10 = 0;
+    sub_8004558(&obj->sprite);
+
+    obj->unk30 = gBgScrollRegs[1][0];
+    obj->unk32 = gBgScrollRegs[1][1];
+    obj->unk38 = p1 * 128;
+    obj->unk3A = p2 * 128;
+    obj->unk34 = p4;
+    obj->unk36 = p5;
+    obj->unk3C = 0;
+    obj->unk3D = 0;
+    obj->unk3E = p3;
 }

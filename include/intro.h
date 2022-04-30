@@ -50,9 +50,7 @@ struct UNK_0808B3FC {
 
     // Something to do with the wave effects
     u16 unk2B4[0xA0];
-
     u32 unk3F4[4][0xA0];
-
     u16 unkDF4[0xA0];
 
     u16 unkF34;
@@ -73,8 +71,23 @@ struct UNK_0808B3FC {
     // menuCursorIndex
     u8 unkF42;
 
-    u8 fillerF43[33];
+    u8 unkF43;
+    u16 unkF44[16];
 }; /* size 0xF64 */
+
+struct UNK_808CE00 {
+    struct UNK_0808B3FC_UNK240 sprite;
+    u16 unk30;
+    u16 unk32;
+    u16 unk34;
+    u16 unk36;
+    u16 unk38;
+    s16 unk3A;
+    u8 unk3C;
+    u8 unk3D;
+    u8 unk3E;
+    u8 unk3F;
+};
 
 // Store the intro data objects
 struct UNK_3005B80 {
