@@ -431,33 +431,22 @@ void PrintAgbTrack(std::vector<Event>& events)
         if (event.type == EventType::Note)
             break;
 
-        if (IsVolumeEvent(event))
+        if (event.type == EventType::Controller && event.param1 == 0x07)
         {
             foundVolBeforeNote = true;
             break;
         }
     }
 
-    // If we find this signature we need to print
-    // the keyshift after the volume event
-    bool needsKeyshiftWorkaround =
-        events[0].type == EventType::WholeNoteMark &&
-        IsVolumeEvent(events[1]);
-
     if (!foundVolBeforeNote)
         PrintByte("\tVOL   , 127*%s_mvl/mxv", g_asmLabel.c_str());
 
-    if (!needsKeyshiftWorkaround) {
-        PrintByte("KEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
-    }
     PrintWait(g_initialWait);
+    PrintByte("KEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
 
     for (unsigned i = 0; events[i].type != EventType::EndOfTrack; i++)
     {
-        // We are going to be hacky
-        // and modify the time value, so can't be const
-        Event& event = events[i];
-        std::int32_t eventTime = event.time;
+        const Event& event = events[i];
 
         if (IsPatternBoundary(event.type))
         {
@@ -524,19 +513,7 @@ void PrintAgbTrack(std::vector<Event>& events)
             PrintOp(event.time, "BEND  ", "c_v%+d", event.param2 - 64);
             break;
         case EventType::Controller:
-            // Ensure that a wait value is not printed after the volume
-            // command
-            if (needsKeyshiftWorkaround && i == 1) {
-                event.time = 0;
-            }
-
             PrintControllerOp(event);
-            // print the keyshift and any wait after we have written the volume value
-            if (needsKeyshiftWorkaround && i == 1) {
-                PrintByte("\tKEYSH , %s_key%+d", g_asmLabel.c_str(), 0);
-                PrintWait(eventTime);
-                event.time = eventTime;
-            }
             break;
         default:
             PrintWait(event.time);

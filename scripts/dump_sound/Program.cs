@@ -1013,11 +1013,11 @@ namespace dump_sound
                 //     280, 283, 288, 224, 237,
                 //     270, 281, 285, 290
                 // };
-                int[] badSongs = {
-                   0,1,2,3,4,5,6,7
+                int[] goodSongs = {
+                   23
                 };
 
-                if (!badSongs.Contains(id)) {
+                if (goodSongs.Contains(id)) {
                     Directory.CreateDirectory("sound/songs/");
                     File.WriteAllText(outfilename, sbt.ToString() + sb.ToString());
                 }

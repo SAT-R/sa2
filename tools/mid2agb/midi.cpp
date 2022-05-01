@@ -573,14 +573,6 @@ bool EventCompare(const Event& event1, const Event& event2)
     unsigned event1Type = (unsigned)event1.type;
     unsigned event2Type = (unsigned)event2.type;
 
-    // For some reason if there is a volume
-    // event and an instrument change event
-    // at the start, we need to ensure the volume event
-    // happens first
-    if (event1.type == EventType::InstrumentChange && IsVolumeEvent(event2) &&
-        event1.time == 0 && event2.time == 0)
-        return false;
-
     if (event1.type == EventType::Note)
         event1Type += event1.note;
 
