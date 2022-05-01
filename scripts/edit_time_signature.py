@@ -1,6 +1,11 @@
 import py_midicsv as pm
 import sys
 
+matched_signatures = {
+    "song0405": "5/4",
+    "song0406": "13/4"
+}
+
 
 data = pm.midi_to_csv(f'sound/songs/midi/{sys.argv[1]}.mid')
 
