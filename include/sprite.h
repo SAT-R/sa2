@@ -7,8 +7,10 @@
 struct Unk_03002400 {
     u32 unk0;
     u32 unk4; // vram
+
     u16 unk8;
     u16 unkA;
+
     u32 unkC; // vram
     // Don't think this is right in sa2
     const u16 *unk10;
@@ -30,6 +32,7 @@ struct Unk_03002400 {
     u8 unk2A;
     u8 unk2B;
     u8 unk2C;
+
     u8 unk2D;
     u16 unk2E;
     u16 unk30;
@@ -42,6 +45,7 @@ struct Unk_03002400 {
 }; /* size = 0x40 */
 
 // TODO: work out what makes this struct different from the above
+// Maybe `struct Sprite`
 struct UNK_0808B3FC_UNK240 {
     // These values are part of some other struct
     u32 unk0;

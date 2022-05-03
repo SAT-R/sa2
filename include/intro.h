@@ -81,7 +81,7 @@ struct UNK_808CE00 {
     u16 unk32;
     u16 unk34;
     u16 unk36;
-    u16 unk38;
+    s16 unk38;
     s16 unk3A;
     u8 unk3C;
     u8 unk3D;

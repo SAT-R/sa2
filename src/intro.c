@@ -19,6 +19,9 @@ struct UNK_3005B80 gUnknown_03005B80;
 extern const u8 gUnknown_080E0EF4[0x160];
 extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
+extern const u16 gUnknown_08097AA4[0xA00 / 2];
+extern const u8 gUnknown_080E10D4[0xA];
+
 
 // Don't know who these belong to yet
 extern void sub_808D598(void);
@@ -57,6 +60,7 @@ static void sub_808C1AC(void);
 
 void sub_808D124(void);
 void sub_808D67C(void);
+void sub_808D76C(void);
 void sub_808D740(struct UNK_0808B3FC*);
 static void sub_808C2C8(void);
 void sub_808D6D4(void);
@@ -1334,4 +1338,54 @@ static void sub_808CE00(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
     obj->unk3C = 0;
     obj->unk3D = 0;
     obj->unk3E = p3;
+}
+
+void sub_808CEFC(void) {
+    struct UNK_808CE00* obj = TaskGetStructPtr(gCurTask, obj);
+    struct UNK_0808B3FC_UNK240* sprite = &obj->sprite;
+    u16 temp;
+
+    switch (obj->unk3C) {
+        case 0:
+            obj->unk3A += 0x30;
+            break;
+        case 1:
+            obj->unk3A -= gUnknown_08097AA4[obj->unk3D * 16] << 0x10 >> 0x1A;
+            break;
+    
+    }
+
+    obj->unk38 += obj->unk34;
+    obj->unk3A += obj->unk36;
+
+    if (obj->unk38 & 0x8000) {
+       temp = obj->unk38 >> 7 | 0xE000;
+    } else {
+        temp = (obj->unk38) >> 7;
+    }
+    sprite->unk16 = (temp << 0x10 >> 0x10) + obj->unk30 - gBgScrollRegs[1][0];
+    
+    if (obj->unk3A & 0x8000) {
+        temp = obj->unk3A >> 7 | 0xE000;
+    } else {
+        temp = obj->unk3A >> 7;
+    }
+    sprite->unk18 = (temp << 0x10 >> 0x10) + obj->unk32 - gBgScrollRegs[1][1];
+    
+    sub_8004558(sprite);
+    sub_80051E8(sprite);
+
+    if ((u16)(sprite->unk16 + 0x40) > 0x170) {
+        sub_808D76C();
+    }
+
+    if ((u16)(sprite->unk18 + 0x40) > 0x134) {
+        sub_808D76C();
+    }
+
+    if (++obj->unk3D > 0xF) {
+        obj->unk3C = gUnknown_080E10D4[obj->unk3E];
+        obj->unk3E++;
+        obj->unk3D = 0;
+    }
 }
