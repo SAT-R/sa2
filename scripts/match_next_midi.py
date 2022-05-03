@@ -22,7 +22,7 @@ for denom in range(2, 17):
             all_time_signatures.append(ts)
 
 for next_song in to_match:
-    if next_song != "song0046":
+    if next_song != "song0042":
         continue
 
     if next_song in skipped:
@@ -63,6 +63,7 @@ for next_song in to_match:
             os.system('git add -A')
             success = True
             break
+        break
 
     if not success:      
         print('fail, reverting')
