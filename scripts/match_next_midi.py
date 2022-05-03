@@ -22,6 +22,9 @@ for denom in range(2, 17):
             all_time_signatures.append(ts)
 
 for next_song in to_match:
+    if next_song != "song0044":
+        continue
+
     if next_song in skipped:
         print(f"skipping {next_song}")
         continue
@@ -47,19 +50,21 @@ for next_song in to_match:
     print('Cleaning build')
     os.system('make tidy >/dev/null 2>&1')
 
-    # for absolute_ticks in range(0, 25):
-    #     print(f'Trying absolute ticks {absolute_ticks}')
-    #     os.system(f'python3 scripts/edit_time_signature.py {next_song} 4 4 {absolute_ticks}')
-    #     # if absolute_ticks:
-    #     #     print(f'applying time signature {ts[0]}/{ts[1]}')
-    #     #     os.system(f'python3 scripts/edit_time_signature.py {next_song} {ts[0]} {ts[1]}')
+    success = False
+    for ts in all_time_signatures:
+        if ts:
+            print(f'applying time signature {ts[0]}/{ts[1]}')
+            os.system(f'python3 scripts/edit_time_signature.py {next_song} {ts[0]} {ts[1]}')
         
-    print('Verifying build')
-    error = os.system("make >/dev/null 2>&1")
-    if not error:
-        print('success!')
-        os.system('git add -A')
-    else:      
+        print('Verifying build')
+        error = os.system("make >/dev/null 2>&1")
+        if not error:
+            print('success!')
+            os.system('git add -A')
+            success = True
+            break
+
+    if not success:      
         print('fail, reverting')
         os.system('git checkout -- sound ldscript.txt')
         os.system('git clean -f >/dev/null 2>&1')
