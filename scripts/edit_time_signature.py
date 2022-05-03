@@ -14,6 +14,8 @@ for i in range(len(data)):
 
     if 'Time_signature' in line:
         new_data = line.split(', ')
+
+        # Set the time signature
         new_data[3] = sys.argv[2]
         new_data[4] = str(int(sys.argv[3]) // 2)
 
