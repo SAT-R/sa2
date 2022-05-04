@@ -90,7 +90,7 @@ SECTIONS
         build/sa2/sound/songs/midi/song0017.o(.rodata);
         build/sa2/sound/songs/midi/song0018.o(.rodata);
         build/sa2/sound/songs/midi/song0019.o(.rodata);
-        build/sa2/sound/songs/song0020.o(.rodata);
+        build/sa2/sound/songs/midi/song0020.o(.rodata);
         build/sa2/sound/songs/midi/song0021.o(.rodata);
         build/sa2/sound/songs/midi/song0022.o(.rodata);
         build/sa2/sound/songs/midi/song0023.o(.rodata);
