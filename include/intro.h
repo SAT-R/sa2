@@ -105,8 +105,8 @@ struct UNK_808D034 {
     struct UNK_0808B3FC_UNK240* sprite;
     u8 filler4[12];
     u8 unk10;
-    u16 unk12;
-    u8 filler13[2];
+    s16 unk12;
+    u8 unk13;
 }; /* size 0x14 */
 
 // These sit next to each other in the ROM

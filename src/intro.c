@@ -1407,3 +1407,26 @@ void sub_808D034(void) {
         TaskDestroy(gCurTask);
     }
 }
+
+void sub_808D09C(void) {
+    struct UNK_808D034* obj = TaskGetStructPtr(gCurTask, obj);
+    struct UNK_0808B3FC_UNK240* sprite = obj->sprite;
+    s32 i;
+    s16 sum = 0;
+
+    for (i = 0; i < 7 - obj->unk10; i++) {
+        sum += gUnknown_080E1063[i];
+    };
+
+    sprite->unk16 = sum + obj->unk12;
+
+    gBldRegs.bldAlpha = FadeInBlend(obj->unk10 * 2);
+    sub_80051E8(sprite);
+
+    if (++obj->unk10 > 8) {
+        sprite->unk16 = obj->unk12;
+        
+        sprite->unk10 &= ~0x80;
+        TaskDestroy(gCurTask);
+    }
+}
