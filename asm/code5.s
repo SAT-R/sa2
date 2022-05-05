@@ -4,58 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_808D034
-sub_808D034: @ 0x0808D034
-	push {r4, r5, r6, lr}
-	ldr r6, _0808D090 @ =gCurTask
-	ldr r0, [r6]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r5, [r4]
-	ldr r1, _0808D094 @ =gUnknown_080E1063
-	ldrb r0, [r4, #0x10]
-	adds r0, r0, r1
-	ldrb r1, [r0]
-	ldrh r0, [r5, #0x16]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	ldr r3, _0808D098 @ =gBldRegs
-	ldrb r1, [r4, #0x10]
-	lsls r2, r1, #1
-	lsls r1, r1, #9
-	movs r0, #0x10
-	subs r0, r0, r2
-	orrs r1, r0
-	strh r1, [r3, #2]
-	adds r0, r5, #0
-	bl sub_80051E8
-	ldrb r0, [r4, #0x10]
-	adds r0, #1
-	strb r0, [r4, #0x10]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #8
-	bls _0808D08A
-	ldrh r0, [r4, #0x12]
-	strh r0, [r5, #0x16]
-	ldr r0, [r5, #0x10]
-	movs r1, #0x81
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r5, #0x10]
-	ldr r0, [r6]
-	bl TaskDestroy
-_0808D08A:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0808D090: .4byte gCurTask
-_0808D094: .4byte gUnknown_080E1063
-_0808D098: .4byte gBldRegs
-
 	thumb_func_start sub_808D09C
 sub_808D09C: @ 0x0808D09C
 	push {r4, r5, r6, r7, lr}

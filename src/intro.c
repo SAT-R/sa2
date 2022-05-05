@@ -21,6 +21,7 @@ extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
 extern const u8 gUnknown_080E10D4[0xA];
+extern const u8 gUnknown_080E1063[0x71];
 
 
 // Don't know who these belong to yet
@@ -1387,5 +1388,22 @@ void sub_808CEFC(void) {
         obj->unk3C = gUnknown_080E10D4[obj->unk3E];
         obj->unk3E++;
         obj->unk3D = 0;
+    }
+}
+
+void sub_808D034(void) {
+    struct UNK_808D034* obj = TaskGetStructPtr(gCurTask, obj);
+    struct UNK_0808B3FC_UNK240* sprite = obj->sprite;
+
+    sprite->unk16 -= gUnknown_080E1063[obj->unk10];
+    gBldRegs.bldAlpha = FadeOutBlend(obj->unk10 * 2);
+
+    sub_80051E8(sprite);
+
+    if (++obj->unk10 > 8) {
+        sprite->unk16 = obj->unk12;
+        
+        sprite->unk10 &= ~0x80;
+        TaskDestroy(gCurTask);
     }
 }
