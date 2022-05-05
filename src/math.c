@@ -31,3 +31,17 @@ u32 sub_8085530(s32 a, s32 b) {
         return (((u64)b * 246) + ((u64)a * 102)) >> 8;
     }
 }
+
+s16 sub_808558C(u16 a, u16 b, u8 c) {
+    u32 c1 = (1 << c);
+    u16 c2 = c1 - 1;
+    
+    b -= a;
+    b &= c2;
+
+    if (b <= (c1 / 2)) {
+        return b;
+    } else {
+        return (b - c1);
+    }
+}
