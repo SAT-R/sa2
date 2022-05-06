@@ -55,7 +55,7 @@ jobs:
       - name: Generate reports
         if: ${{ github.event_name == 'push' }}
         run: |
-          mkdir gh-pages/reports
+          mkdir -p gh-pages/reports
           python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
           python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
           python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
