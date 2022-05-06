@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace dump_sound
 {
-    class Program
+    class SoundDumper
     {
         static int MPlayTableAdr = 0x8AD4F1C;
         static int NumMPlayers = 4;
