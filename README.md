@@ -1,4 +1,14 @@
 # Sonic Advance 2 (USA)
+[![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Contributors][contributors-badge]][contributors-link]
+
+[ci-status-link]: https://github.com/freshollie/sa2/actions/workflows/build.yml
+[ci-badge]: https://github.com/freshollie/sa2/actions/workflows/build.yml/badge.svg
+
+[progress-link]: https://github.com/freshollie/sa2
+[progress-badge]: https://img.shields.io/endpoint?url=https://freshollie.github.io/sa2/reports/progress-sa2-shield.json
+
+[contributors-link]: https://github.com/freshollie/sa2/graphs/contributors
+[contributors-badge]: https://img.shields.io/github/contributors/freshollie/sa2
 
 This is a work in progress matching decompilation of Sonic Advance 2
 
