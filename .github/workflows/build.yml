@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Checkout gh-pages
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+        with:
+          path: gh-pages
+          ref: gh-pages
+
+      - name: Checkout agbcc
+        uses: actions/checkout@master
+        with:
+          path: agbcc
+          repository: pret/agbcc
+
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
+          python3 -m pip install gitpython
+        # build-essential, git, and libpng-dev are already installed
+        # gcc-arm-none-eabi is only needed for the modern build
+        # as an alternative to dkP
+
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: agbcc
+
+      - name: Build tools
+        run: ./build_tools.sh
+      
+      - name: Fetch assets
+        run: curl -o baserom.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_URL }}/baserom.gba
+
+      - name: Compare
+        run: make -j${nproc}
+
+      - name: Progress
+        run: |
+          python3 scripts/progress.py text
+
+      - name: Generate reports
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          mkdir gh-pages/reports
+          python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
+          python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
+          python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
+          echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+
+      - name: Update reports
+        if: ${{ github.event_name == 'push' }}
+        uses: EndBug/add-and-commit@v7
+        with:
+          branch: gh-pages
+          cwd: "./gh-pages"
+          add: "reports"
+          message: ${{ env.REPORTS_COMMIT_MSG }}
+
+      # - name: Modern
+      #   env:
+      #     MODERN: 1
+      #     COMPARE: 0
+      #   run: make -j${nproc} all
+
+      # - name: Move symfiles
+      #   if: ${{ github.event_name == 'push' }}
+      #   run: |
+      #     cp -v *.sym symbols/
+      #     echo "SYMBOLS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+      # - name: Update symfiles
+      #   if: ${{ github.event_name == 'push' }}
+      #   uses: EndBug/add-and-commit@v7
+      #   with:
+      #     branch: symbols
+      #     cwd: "./symbols"
+      #     add: "*.sym"
+      #     message: ${{ env.SYMBOLS_COMMIT_MSG }}
+    
