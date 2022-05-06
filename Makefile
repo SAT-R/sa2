@@ -1,26 +1,52 @@
-#### Tools ####
+TOOLCHAIN := $(DEVKITARM)
+COMPARE ?= 0
+
+ifeq (compare,$(MAKECMDGOALS))
+  COMPARE := 1
+endif
+
+# don't use dkP's base_tools anymore
+# because the redefinition of $(CC) conflicts
+# with when we want to use $(CC) to preprocess files
+# thus, manually create the variables for the bin
+# files, or use arm-none-eabi binaries on the system
+# if dkP is not installed on this system
+
+ifneq (,$(TOOLCHAIN))
+ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+export PATH := $(TOOLCHAIN)/bin:$(PATH)
+endif
+endif
+
+PREFIX := arm-none-eabi-
+
 include config.mk
 
-# Unused atm
-NODEP = 0
-SCAN_DEPS = 1
+ifeq ($(OS),Windows_NT)
+EXE := .exe
+else
+EXE :=
+endif
 
-SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
+#### Tools ####
+SHELL     := /bin/bash -o pipefail
+SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
-CC1      := tools/agbcc/bin/agbcc
-CC1_OLD  := tools/agbcc/bin/old_agbcc
-CPP      := $(DEVKITARM)/bin/arm-none-eabi-cpp
-AS       := $(DEVKITARM)/bin/arm-none-eabi-as
-LD       := $(DEVKITARM)/bin/arm-none-eabi-ld
-OBJCOPY  := $(DEVKITARM)/bin/arm-none-eabi-objcopy
+CC1       := tools/agbcc/bin/agbcc$(EXE)
+CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
 
-GFX := tools/gbagfx/gbagfx
-AIF := tools/aif2pcm/aif2pcm
-MID := $(abspath tools/mid2agb/mid2agb)
-SCANINC := tools/scaninc/scaninc
-PREPROC := tools/preproc/preproc
-RAMSCRGEN := tools/ramscrgen/ramscrgen
-FIX := tools/gbafix/gbafix
+CPP       := $(PREFIX)cpp
+LD        := $(PREFIX)ld
+OBJCOPY   := $(PREFIX)objcopy
+AS 		  := $(PREFIX)as
+
+GFX 	  := tools/gbagfx/gbagfx$(EXE)
+AIF		  := tools/aif2pcm/aif2pcm$(EXE)
+MID2AGB   := tools/mid2agb/mid2agb$(EXE)
+SCANINC   := tools/scaninc/scaninc$(EXE)
+PREPROC	  := tools/preproc/preproc$(EXE)
+RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
+FIX 	  := tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
 CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef
@@ -90,6 +116,7 @@ compare: $(ROM)
 	$(SHA1) checksum.sha1
 
 clean:
+	make tidy
 	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s src/*.s
 
 tidy:
@@ -117,7 +144,7 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 # Build c sources, and ensure alignment
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
-	@echo ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
+	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
