@@ -50,11 +50,25 @@ jobs:
 
       - name: Progress
         run: |
-          mkdir reports
-          python3 scripts/progress.py csv >> reports/progress-sa2-nonmatching.csv
-          python3 scripts/progress.py csv -m >> reports/progress-sa2-matching.csv
-          python3 scripts/progress.py shield-json > reports/progress-sa2-shield.json
           python3 scripts/progress.py text
+
+      - name: Generate reports
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          mkdir gh-pages/reports
+          python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
+          python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
+          python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
+          echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+
+      - name: Update reports
+        if: ${{ github.event_name == 'push' }}
+        uses: EndBug/add-and-commit@v7
+        with:
+          branch: gh-pages
+          cwd: "./gh-pages"
+          add: "reports"
+          message: ${{ env.REPORTS_COMMIT_MSG }}
 
       # - name: Modern
       #   env:
