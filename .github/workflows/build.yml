@@ -51,10 +51,10 @@ jobs:
       - name: Progress
         run: |
           mkdir reports
-          python3 progress.py csv >> reports/progress-sa2-nonmatching.csv
-          python3 progress.py csv -m >> reports/progress-sa2-matching.csv
-          python3 progress.py shield-json > reports/progress-sa2-shield.json
-          python3 progress.py text
+          python3 scripts/progress.py csv >> reports/progress-sa2-nonmatching.csv
+          python3 scripts/progress.py csv -m >> reports/progress-sa2-matching.csv
+          python3 scripts/progress.py shield-json > reports/progress-sa2-shield.json
+          python3 scripts/progress.py text
 
       # - name: Modern
       #   env:
