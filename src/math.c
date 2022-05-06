@@ -1,5 +1,6 @@
 #include "global.h"
 
+
 u32 AbsMax(s32 a, s32 b) {
     if (a < 0) {
         a = -a;
@@ -44,4 +45,10 @@ s16 sub_808558C(u16 a, u16 b, u8 c) {
     } else {
         return (b - c1);
     }
+}
+
+u32 sub_80855C0(s32 a, s32 b, s32 c, u8 d) {
+    s64 e = (s64)c * (a - b);
+
+    return a - (e >> d);
 }
