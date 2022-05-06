@@ -112,12 +112,13 @@ endif
 
 #### Main Targets ####
 
+MAKEFLAGS += --no-print-directory
+
 compare: $(ROM)
 	$(SHA1) checksum.sha1
 
-clean:
-	make tidy
-	$(RM) $(ROM) $(ELF) $(MAP) $(OBJS) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s src/*.s
+clean: tidy
+	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 
 tidy:
 	rm -f $(ROM) $(ELF) $(MAP)
@@ -135,7 +136,8 @@ include songs.mk
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
 	
 $(ELF): $(OBJS) $(LDSCRIPT)
-	$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
+	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
@@ -143,18 +145,22 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 
 # Build c sources, and ensure alignment
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
-	$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
+	@echo "$(CC1) <flags> -o $@ $<"
+	@$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
-	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
+	@$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
-	$(AS) $(ASFLAGS) -I sound -o $@ $<
+	@echo "$(AS) <flags> -I sound -o $@ $<"
+	@$(AS) $(ASFLAGS) -I sound -o $@ $<
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 # Tell make that sound_data.s depends
 # on all the .bin files in `direct_sound_samples`

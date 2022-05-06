@@ -1,7 +1,8 @@
 STD_REVERB = 0
 
 $(MID_BUILDDIR)/%.o: $(MID_SUBDIR)/%.s
-	$(AS) $(ASFLAGS) -I sound -o $@ $<
+	@echo "$(AS) <flags> -I sound -o $@ $<"
+	@$(AS) $(ASFLAGS) -I sound -o $@ $<
 
 $(MID_SUBDIR)/mus_intro.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G21  -V120
