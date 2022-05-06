@@ -27,7 +27,7 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
+          sudo apt update && apt install gcc-arm-none-eabi binutils-arm-none-eabi
           python3 -m pip install gitpython
         # build-essential, git, and libpng-dev are already installed
         # gcc-arm-none-eabi is only needed for the modern build
@@ -43,7 +43,7 @@ jobs:
         run: ./build_tools.sh
       
       - name: Fetch assets
-        run: curl -o baserom.gba -u {{ secrets.STORAGE_USERNAME }}:{{ secrets.STORAGE_PASSWORD }} {{ secrets.STORAGE_URL }}/baserom.gba
+        run: curl -o baserom.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_URL }}/baserom.gba
 
       - name: Compare
         run: make -j${nproc}
