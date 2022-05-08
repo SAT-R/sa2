@@ -13,7 +13,7 @@
 This is a work in progress matching decompilation of Sonic Advance 2
 
 It so far builds the following ROM:
-* [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d`
+* [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d`#
 
 ### Current state
 
@@ -22,18 +22,46 @@ It so far builds the following ROM:
 - All libraries decompiled to C or referenced from `agbcc`
 - Initialisation of game state, main task logic, and part of the title screen has been decompiled
 - All songs have been extracted to [matching MIDI files](./sound/songs/midi)
+- :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
 
 ### Setting up the repository
 
-* You must have a copy of the Sonic Advance 2 (USA) ROM named `baserom.gba` in the repository directory.
+**Provide assets**
 
-* Install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM).
+You must have a copy of the Sonic Advance 2 (USA) ROM named `baserom.gba` in the repository directory.
 
-* Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
+**Install build requirements**
 
-* `cd` into `agbcc` and run `./build.sh` and then install the compiler in this repo `./install.sh path/to/SoAdvance2`
+On Linux systems
+```
+sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev
+```
 
-* You can then build sa2 using `make` in the MSYS environment provided with devkitARM.
+On MacOS and Windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)
+
+**Install `agbcc` into the repo**
+
+Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
+
+Inside the `agbcc` repo and run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
+
+**Build the required tools**
+
+The `tools` directory contains a bunch of tooling (built by [pret](https://github.com/pret)) which is used to build assets and create a matching rom
+
+Run `./build_tools.sh` to build all the projects in this directory
+
+**Build the rom**
+
+On Linux and MacOS, run `make` in the root of the repo to build
+
+On Windows you can build using `make` in the MSYS environment provided with devkitARM.
+
+If the rom built successfully you will see this output
+
+```bash
+sa2.gba: OK
+```
 
 ### Notes
 

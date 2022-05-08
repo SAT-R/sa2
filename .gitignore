@@ -63,3 +63,4 @@ tools/agbcc
 sound/songs/midi/*.s
 /ctx.c
 reports
+.vscode/*.log
