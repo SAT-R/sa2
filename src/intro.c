@@ -22,6 +22,8 @@ extern const u8 gUnknown_080E105E[5];
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
 extern const u8 gUnknown_080E10D4[0xA];
 extern const u8 gUnknown_080E1063[0x71];
+extern const u16 gUnknown_080E10E6[8];
+extern const u16 gUnknown_080E10F6[8][2];
 
 
 // Don't know who these belong to yet
@@ -78,6 +80,7 @@ void sub_808DB2C(void);
 
 static void sub_808CE00(u16, s16, u16, u16, u16);
 void sub_808CEFC(void);
+void sub_808D23C(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -1429,4 +1432,46 @@ void sub_808D09C(void) {
         sprite->unk10 &= ~0x80;
         TaskDestroy(gCurTask);
     }
+}
+
+void sub_808D124(void) {
+    struct Task* t = TaskCreate(sub_808D23C, sizeof(struct UNK_808D124), 0x2000, 0, 0);
+    struct UNK_808D124* config = TaskGetStructPtr(t, config);
+    struct UNK_0808B3FC_UNK240* sprite;
+    struct UNK_808D124_UNK180* config180;
+    u16 F6_0;
+    u32 i;
+
+    for (i = 0; i < 8; i++) {
+        sprite = &config->sprites[i];
+        config180 = &config->unk180[i];
+        
+        sprite->unk4 = sub_8007C10(0x40);
+
+        sprite->unkA = 0x340;
+        sprite->unk20 = gUnknown_080E10E6[i];
+        sprite->unk21 = 0xFF;
+
+        config->unk1E0[i] = F6_0 = gUnknown_080E10F6[i][0];
+        config->unk1F0[i] = gUnknown_080E10F6[i][1];
+
+        sprite->unk8 = 0;
+        sprite->unk1A = (8 - i) * 0x40;
+        sprite->unk1C = 0;
+        sprite->unk22 = 0x10;
+        sprite->unk25 = 0;
+        sprite->unk10 = i | 0x60;
+
+        config180->unk0 = 0;
+        config180->unk4 = config180->unk2 = F6_0 * 2 + 0xB0;
+        config180->unk6 = config->unk1E0[i];
+        config180->unk8 = config->unk1F0[i];
+
+        sub_8004558(sprite);
+    }
+
+    config->unk200 = gBgScrollRegs[1][0];
+    config->unk202 = gBgScrollRegs[1][1];
+    config->unk204 = 0;
+    config->unk205 = 0;
 }

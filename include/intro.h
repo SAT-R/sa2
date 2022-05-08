@@ -109,6 +109,29 @@ struct UNK_808D034 {
     u8 unk13;
 }; /* size 0x14 */
 
+struct UNK_808D124_UNK180 {
+    u16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
+    u8 unkA;
+    u8 unkB;
+}; /* size 0xC */
+
+struct UNK_808D124 {
+    struct UNK_0808B3FC_UNK240 sprites[8];
+    struct UNK_808D124_UNK180 unk180[8];
+    u16 unk1E0[8];
+    u16 unk1F0[8];
+    u16 unk200;
+    u16 unk202;
+    u8 unk204;
+    u8 unk205;
+    u8 unk206;
+    u8 unk207;
+}; /* size 0x208 */
+
 // These sit next to each other in the ROM
 // but changing to a struct, or joining them 
 // together doesn't match
