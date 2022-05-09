@@ -173,7 +173,7 @@ static void GameInit(void) {
         gIntrTable[i] = gIntrTableTemplate[i];
     }
 
-    DmaFill32(3, 0, &gUnknown_03001B60, 0x500);
+    DmaFill32(3, 0, &gUnknown_03001B60, sizeof(gUnknown_03001B60));
 
     gUnknown_03001884 = gUnknown_03001B60[0];
     gUnknown_030022AC = gUnknown_03001B60[1];
