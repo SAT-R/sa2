@@ -103,7 +103,7 @@ extern u32 gUnknown_03002878;
 
 extern s16 gUnknown_030026D0;
 extern u32 gUnknown_030053B8;
-extern u32 gUnknown_030053B0;
+extern const u8* gUnknown_030053B0;
 extern u32 gUnknown_03002264;
 
 extern u8 gKeysContinuedRepeatIntervals[];

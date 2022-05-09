@@ -32,9 +32,13 @@ extern const u16 gUnknown_080E10F6[8][2];
 // 155KB ?? maybe the whole of tiny chao garden
 extern const u8 gUnknown_080AED70[0x25E8C];
 
+// Maybe some sort of graphics table
+// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
+extern const u8* const gUnknown_08C87AAC[4];
+extern const u8 gUnknown_080E10DE[8];
+
 
 // Don't know who these belong to yet
-extern void sub_808D598(void);
 extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
 extern void sub_801A6D8(void);
 extern void sub_803143C(u32, u8);
@@ -43,7 +47,8 @@ extern void sub_8087FC0(void);
 extern void sub_8063730(u32);
 extern void sub_8063A00(u16);
 extern void sub_805A1CC(void);
-
+extern void sub_8009F94(void);
+extern void sub_801A770(void);
 extern u32 sub_8007C10(u32);
 
 
@@ -90,6 +95,7 @@ void sub_808CEFC(void);
 static void sub_808D23C(void);
 
 void sub_808D7F0(void);
+void sub_808D598(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -1569,4 +1575,132 @@ void sub_808D35C(void) {
     *(u32*)(EWRAM_START + 0xC) = langVal;
     *(u32*)(EWRAM_START + 0x10) = (Random() + gUnknown_03002264) * 0x100 + Random();
     SoftResetExram(0);
+}
+
+void sub_808D41C_CreateTitleScreenSkipIntro(void) {
+    struct Task* t;
+    REG_SIOCNT |= SIO_INTR_ENABLE;
+
+    t = TaskCreate(sub_808D53C, sizeof(struct UNK_0808B3FC), 0x1000, 0, 0);
+    sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
+}
+
+// CreateTitleScreenAtPlayModeMenu
+void sub_808D45C(void) {
+    struct Task* t;
+    REG_SIOCNT |= SIO_INTR_ENABLE;
+
+    t = TaskCreate(sub_808CA6C, sizeof(struct UNK_0808B3FC), 0x1000, 0, 0);
+    sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
+}
+
+// CreateTitleScreenSkipToPlayModeMenu
+void sub_808D49C(void) {
+    struct Task* t;
+    REG_SIOCNT |= SIO_INTR_ENABLE;
+
+    t = TaskCreate(sub_808CAFC, sizeof(struct UNK_0808B3FC), 0x1000, 0, 0);
+    sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
+}
+
+void sub_808D4DC(struct UNK_0808B3FC* introConfig) {
+    struct UNK_0808B3FC_UNK270* config270 = &introConfig->unk270;
+    gFlags &= ~0x4;
+    
+    config270->unk0 = 1;
+    config270->unk4 = 0;
+    config270->unk2 = 2;
+    config270->unk6 = 0x100;
+    config270->unk8 = 0x3FBF;
+    config270->unkA = 0;
+    sub_802D4CC(config270);
+    
+    m4aMPlayAllStop();
+
+    sub_808B884_InitTitleScreenUI(introConfig);
+    sub_808D740(introConfig);
+    gCurTask->main = sub_808C8EC;
+}
+
+// ShowPressStartScreen
+void sub_808D53C(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    
+    sub_80051E8(&introConfig->unkC0);
+    sub_808D740(introConfig);
+
+    if (sub_802D4CC(&introConfig->unk270) == 1) {
+        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        introConfig->unkF3E = 0;
+        gCurTask->main = sub_808C218;
+    }
+}
+
+// Task_InitSegaLogo
+void sub_808D598(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+
+    if (sub_802D4CC(&introConfig->unk270) == 1) {
+        gCurTask->main = sub_808BA78_Task_IntroFadeInSegaLogo;
+        gBldRegs.bldAlpha = FadeInBlend(0);
+        gBldRegs.bldCnt = 0x441;
+        gDispCnt |= 0x100;
+    }
+}
+
+void sub_808D5FC(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+    
+    if (introConfig->unkF3E > FRAME_TIME_SECONDS(2)) {
+        introConfig->unkF3E = 0;
+        gCurTask->main = sub_808BAD8_Task_IntroFadeOutSegaLogo;
+    }
+    introConfig->unkF3E++;
+}
+
+void sub_808D63C(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+    sub_808CBA4(introConfig);
+    
+    // After 120 frames
+    if (introConfig->unkF3E > FRAME_TIME_SECONDS(2)) {
+        gCurTask->main = sub_808BC54;
+        introConfig->unkF3E = 0;
+    }
+    introConfig->unkF3E++;
+}
+
+void sub_808D67C(void) {
+    struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
+   
+    if (introConfig->unkF3E > FRAME_TIME_SECONDS(1)) {
+        gFlags &= ~0x4;
+        introConfig->unkF3E = 0;
+        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        gCurTask->main = sub_808C218;
+    }
+    introConfig->unkF3E++;
+
+    sub_808D740(introConfig);
+}
+
+// Task_TitleScreenExitToDemo
+void sub_808D6D4(void) {
+    gUnknown_030053C0.unk8 = 2;
+    gUnknown_030053B0 = gUnknown_08C87AAC[0];
+    
+    gUnknown_030054F0 = 0;
+    gUnknown_030055B4 = gUnknown_080E10DE[0];
+
+    gUnknown_030054C8++;
+    gUnknown_030054C8 &= 3;
+    gUnknown_030054CC = 0;
+
+    sub_8009F94();
+    sub_801A6D8();
+    sub_801A770();
+
+    TaskDestroy(gCurTask);
 }

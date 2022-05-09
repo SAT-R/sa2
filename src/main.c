@@ -164,7 +164,7 @@ static void GameInit(void) {
     // This matches better when the params are inlined
     asm("" ::: "sb");
     gUnknown_03001880 = 0;
-    gUnknown_030053B0 = 0;
+    gUnknown_030053B0 = NULL;
     asm("" ::: "sl");
 
     gUnknown_03002264 = 0;
