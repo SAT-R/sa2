@@ -5,6 +5,7 @@
 .arm
 
 	.set SOFT_RESET_DIRECT_BUF, 0x03007FFA
+	.set RESET_EX_WRAM_FLAG,           0x1
 
 	thumb_func_start ArcTan2
 ArcTan2: @ 0x0809710C
@@ -80,13 +81,13 @@ VBlankIntrWait: @ 0x08097150
 SoftResetExram: @ 0x08097158
 	ldr r3, =REG_IME
 	movs r2, #0
-	strb r2, [r3]
+	strb r2, [r3, #0]
 	ldr r3, =SOFT_RESET_DIRECT_BUF
 	movs r2, #1
-	strb r2, [r3]
-	subs r3, #0xfa
+	strb r2, [r3, #0]
+	subs r3, #SOFT_RESET_DIRECT_BUF - 0x3007f00
 	mov sp, r3
-	movs r2, #1
+	movs r2, #RESET_EX_WRAM_FLAG
 	bics r0, r2
 	svc #1
 	svc #0
