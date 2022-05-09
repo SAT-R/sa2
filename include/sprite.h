@@ -89,6 +89,15 @@ struct Unk_03002EC0 {
     u8 fillerA[2];
 };
 
+struct UNK_808D124_UNK180 {
+    u16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6[2];
+    u8 unkA;
+    u8 unkB;
+}; /* size 0xC */
+
 // Register menu item
 u32 sub_8004558(struct UNK_0808B3FC_UNK240*);
 
@@ -98,6 +107,7 @@ u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);
 void DrawToOamBuffer(void);
+void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
 
 // Probably a list of sprites to draw to screen
 extern struct Unk_03002EC0* gUnknown_030027A0[];

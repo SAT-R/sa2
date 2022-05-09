@@ -11,6 +11,9 @@
 #include "data.h"
 #include "input.h"
 
+// Math.h
+s16 sub_8085654(s32, s32, s32, u8, u8);
+
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
 
@@ -80,7 +83,9 @@ void sub_808DB2C(void);
 
 static void sub_808CE00(u16, s16, u16, u16, u16);
 void sub_808CEFC(void);
-void sub_808D23C(void);
+static void sub_808D23C(void);
+
+void sub_808D7F0(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -1464,8 +1469,8 @@ void sub_808D124(void) {
 
         config180->unk0 = 0;
         config180->unk4 = config180->unk2 = F6_0 * 2 + 0xB0;
-        config180->unk6 = config->unk1E0[i];
-        config180->unk8 = config->unk1F0[i];
+        config180->unk6[0] = config->unk1E0[i];
+        config180->unk6[1] = config->unk1F0[i];
 
         sub_8004558(sprite);
     }
@@ -1474,4 +1479,51 @@ void sub_808D124(void) {
     config->unk202 = gBgScrollRegs[1][1];
     config->unk204 = 0;
     config->unk205 = 0;
+}
+
+static void sub_808D23C(void) {
+    struct UNK_808D124* config = TaskGetStructPtr(gCurTask, config);
+    struct UNK_0808B3FC_UNK240* sprite;
+    struct UNK_808D124_UNK180* config180;
+    u32 i;
+
+    config->unk202 += 3;
+    gBgScrollRegs[0][1] -= 3;
+
+    gBldRegs.bldCnt = 
+        BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | 
+        BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0 | 
+        BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ;
+    gBldRegs.bldAlpha = BLDALPHA_BLEND(7, 31);
+
+    if (!(config->unk205 & 1)) {
+        for (i = 0; i < 8; i++) {
+            sprite = &config->sprites[i];
+            config180 = &config->unk180[i];
+
+            // Potentially a macro
+            config180->unk6[0] = sub_8085654(
+                config->unk1E0[i], 
+                -0x14, 
+                config->unk205 * 16, 
+                8, 
+                0
+            );
+
+            config180->unk6[1] = sub_8085654(
+                config->unk1F0[i] + config->unk202 - gBgScrollRegs[1][1], 
+                -0x14 + config->unk202 - gBgScrollRegs[1][1], 
+                config->unk205 * 16, 
+                8, 
+                0
+            );
+
+            sub_8004860(sprite, config180);
+            sub_80051E8(sprite);
+        }
+    }
+
+    if (++config->unk205 > 17) {
+        sub_808D7F0();
+    };
 }
