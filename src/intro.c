@@ -10,6 +10,7 @@
 #include "main.h"
 #include "data.h"
 #include "input.h"
+#include "random.h"
 
 // Math.h
 s16 sub_8085654(s32, s32, s32, u8, u8);
@@ -27,6 +28,9 @@ extern const u8 gUnknown_080E10D4[0xA];
 extern const u8 gUnknown_080E1063[0x71];
 extern const u16 gUnknown_080E10E6[8];
 extern const u16 gUnknown_080E10F6[8][2];
+
+// 155KB ?? maybe the whole of tiny chao garden
+extern const u8 gUnknown_080AED70[0x25E8C];
 
 
 // Don't know who these belong to yet
@@ -1526,4 +1530,43 @@ static void sub_808D23C(void) {
     if (++config->unk205 > 17) {
         sub_808D7F0();
     };
+}
+
+// LoadTinyChaoGarden
+void sub_808D35C(void) {
+    u32 langVal;
+    u32 unk374 = gLoadedSaveGame->unk374;
+
+    switch (gLoadedSaveGame->unk6) {
+        case 1:
+            langVal = 0;
+            break;
+        case 3:
+            langVal = 3;
+            break;
+        case 4:
+            langVal = 2;
+            break;
+        case 5:
+            langVal = 4;
+            break;    
+        case 2:
+        case 6:
+            langVal = 1;
+            break;
+        default:
+            langVal = gLoadedSaveGame->unk6 & 1;
+            break;
+    }
+
+    gFlags |= 0x8000;
+    m4aMPlayAllStop();
+    m4aSoundVSyncOff();
+    LZ77UnCompWram(gUnknown_080AED70, (void*)EWRAM_START);
+
+    // TODO: what is going on here, doesn't work as a struct
+    *(u32*)(EWRAM_START + 0x8) = unk374;
+    *(u32*)(EWRAM_START + 0xC) = langVal;
+    *(u32*)(EWRAM_START + 0x10) = (Random() + gUnknown_03002264) * 0x100 + Random();
+    SoftResetExram(0);
 }
