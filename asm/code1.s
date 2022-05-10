@@ -19527,9 +19527,9 @@ sub_8011328: @ 0x08011328
 	bls _08011400
 	movs r7, #0
 	movs r4, #0
-	ldr r1, _080113E8 @ =gUnknown_08135EC4
+	ldr r1, _080113E8 @ =gSpriteStates
 	mov r8, r1
-	ldr r2, _080113EC @ =gUnknown_0816ADC8
+	ldr r2, _080113EC @ =gSpritePalettes
 	mov sb, r2
 	ldr r3, _080113F0 @ =IWRAM_START + 0x80
 	adds r6, r6, r3
@@ -19607,8 +19607,8 @@ _080113AE:
 	.align 2, 0
 _080113E0: .4byte gUnknown_03005660
 _080113E4: .4byte gUnknown_030054CC
-_080113E8: .4byte gUnknown_08135EC4
-_080113EC: .4byte gUnknown_0816ADC8
+_080113E8: .4byte gSpriteStates
+_080113EC: .4byte gSpritePalettes
 _080113F0: .4byte IWRAM_START + 0x80
 _080113F4: .4byte gUnknown_030055B8
 _080113F8: .4byte gUnknown_03005500
@@ -19625,14 +19625,14 @@ _08011400:
 	lsrs r0, r0, #0xf
 	adds r0, r0, r1
 	ldrh r0, [r0]
-	ldr r2, _080115B0 @ =gUnknown_08135EC4
+	ldr r2, _080115B0 @ =gSpriteStates
 	lsls r0, r0, #2
 	adds r0, r0, r2
 	ldr r0, [r0]
 	ldr r0, [r0]
 	ldr r0, [r0, #4]
 	lsls r0, r0, #5
-	ldr r1, _080115B4 @ =gUnknown_0816ADC8
+	ldr r1, _080115B4 @ =gSpritePalettes
 	mov r5, ip
 	adds r4, r0, r1
 	movs r7, #0
@@ -19834,8 +19834,8 @@ _08011502:
 	.align 2, 0
 _080115A8: .4byte gUnknown_030059E0
 _080115AC: .4byte gUnknown_080D550C
-_080115B0: .4byte gUnknown_08135EC4
-_080115B4: .4byte gUnknown_0816ADC8
+_080115B0: .4byte gSpriteStates
+_080115B4: .4byte gSpritePalettes
 _080115B8: .4byte gUnknown_080D5678
 _080115BC: .4byte IWRAM_START + 0x20
 _080115C0: .4byte 0x000008A8
@@ -28683,7 +28683,7 @@ _08015884:
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	ldrb r5, [r2]
-	ldr r1, _080159B4 @ =gUnknown_08135EC4
+	ldr r1, _080159B4 @ =gSpriteStates
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -28744,7 +28744,7 @@ _080159A4: .4byte IWRAM_START + 0x31
 _080159A8: .4byte IWRAM_START + 0x2C
 _080159AC: .4byte gUnknown_080D5678
 _080159B0: .4byte gUnknown_030059E0
-_080159B4: .4byte gUnknown_08135EC4
+_080159B4: .4byte gSpriteStates
 _080159B8: .4byte 0x040000D4
 _080159BC: .4byte gUnknown_03002794
 _080159C0: .4byte gObjPalette
@@ -28967,7 +28967,7 @@ sub_8015B64: @ 0x08015B64
 	lsls r0, r0, #0x10
 	lsls r1, r1, #0x10
 	lsrs r4, r1, #0x10
-	ldr r1, _08015BC0 @ =gUnknown_08135EC4
+	ldr r1, _08015BC0 @ =gSpriteStates
 	lsrs r0, r0, #0xe
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -29011,7 +29011,7 @@ _08015BBA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08015BC0: .4byte gUnknown_08135EC4
+_08015BC0: .4byte gSpriteStates
 _08015BC4: .4byte 0x040000D4
 _08015BC8: .4byte gUnknown_03002794
 _08015BCC: .4byte gObjPalette

@@ -146628,7 +146628,7 @@ sub_8063228: @ 0x08063228
 	lsrs r0, r0, #0x16
 	adds r0, r0, r1
 	ldrh r0, [r0]
-	ldr r1, _08063294 @ =gUnknown_08135EC4
+	ldr r1, _08063294 @ =gSpriteStates
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -146672,7 +146672,7 @@ _08063286:
 	.align 2, 0
 _0806328C: .4byte gUnknown_030055B4
 _08063290: .4byte gUnknown_080D94F8
-_08063294: .4byte gUnknown_08135EC4
+_08063294: .4byte gSpriteStates
 _08063298: .4byte 0x040000D4
 _0806329C: .4byte gUnknown_03002794
 _080632A0: .4byte gBgPalette
