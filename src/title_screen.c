@@ -30,62 +30,69 @@ extern const u16 gUnknown_08097AA4[0xA00 / 2];
 // 155KB ?? maybe the whole of tiny chao garden
 extern const u8 gUnknown_080AED70[0x25E8C];
 
-// TODO: Extract this data from ROM
-// I believe these will only be used here
 const struct UNK_080E0D64 gUnknown_080E0D64[] = 
 { 
-    [LANGUAGE_DEFAULT] = {0x2E, 0x364, 0},
-    [LANGUAGE_JAPANESE] = {0x2E, 0x364, 0},
-    [LANGUAGE_ENGLISH] = {0x26, 0x36A, 0},
-    [LANGUAGE_GERMAN] = {0x26, 0x36B, 0},
-    [LANGUAGE_FRENCH] = {0x2E, 0x36C, 0},
-    [LANGUAGE_SPANISH] = {0x1E, 0x36D, 0},
-    [LANGUAGE_ITALIAN] = {0x1E, 0x36E, 0}
+    [LANG_DEFAULT] = {0x2E, 0x364, 0},
+    [LANG_JAPANESE] = {0x2E, 0x364, 0},
+    [LANG_ENGLISH] = {0x26, 0x36A, 0},
+    [LANG_GERMAN] = {0x26, 0x36B, 0},
+    [LANG_FRENCH] = {0x2E, 0x36C, 0},
+    [LANG_SPANISH] = {0x1E, 0x36D, 0},
+    [LANG_ITALIAN] = {0x1E, 0x36E, 0}
 };
 
-const struct UNK_080E0D64 gUnknown_080E0D9C[] = {
-    { 0x14, 0x364, 0x5 },
-    { 0x14, 0x364, 0x6 },
-    { 0x14, 0x364, 0x1 },
-    { 0x14, 0x364, 0x2 },
-    { 0x10, 0x364, 0x3 },
-    { 0x1C, 0x364, 0x4 },
-    { 0x14, 0x364, 0x5 },
-    { 0x14, 0x364, 0x6 },
-    { 0x14, 0x364, 0x1 },
-    { 0x14, 0x364, 0x2 },
-    { 0x10, 0x364, 0x3 },
-    { 0x1C, 0x364, 0x4 },
-    { 0x22, 0x36A, 0x5 },
-    { 0x20, 0x36A, 0x6 },
-    { 0x1E, 0x36A, 0x1 },
-    { 0x20, 0x36A, 0x2 },
-    { 0x16, 0x36A, 0x3 },
-    { 0x2C, 0x36A, 0x4 },
-    { 0x1E, 0x36B, 0x5 },
-    { 0x22, 0x36B, 0x6 },
-    { 0x1A, 0x36B, 0x1 },
-    { 0x1C, 0x36B, 0x2 },
-    { 0x16, 0x36B, 0x3 },
-    { 0x2E, 0x36B, 0x4 },
-    { 0x22, 0x36C, 0x5 },
-    { 0x1A, 0x36C, 0x6 },
-    { 0x1A, 0x36C, 0x1 },
-    { 0x1C, 0x36C, 0x2 },
-    { 0x14, 0x36C, 0x3 },
-    { 0x2C, 0x36C, 0x4 },
-    { 0x16, 0x36D, 0x5 },
-    { 0x1E, 0x36D, 0x6 },
-    { 0x1E, 0x36D, 0x1 },
-    { 0x26, 0x36D, 0x2 },
-    { 0x16, 0x36D, 0x3 },
-    { 0x26, 0x36D, 0x4 },
-    { 0x26, 0x36E, 0x5 },
-    { 0x26, 0x36E, 0x6 },
-    { 0x1A, 0x36E, 0x1 },
-    { 0x28, 0x36E, 0x2 },
-    { 0x12, 0x36E, 0x3 },
-    { 0x26, 0x36E, 0x4 },
+#define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
+const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_SINGLE_PLAYER)] = { 0x14, 0x364, 0x5 },
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_MULTI_PLAYER)] = { 0x14, 0x364, 0x6 },
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_GAME_START)] = { 0x14, 0x364, 0x1 },
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_TIME_ATTACK)] = { 0x14, 0x364, 0x2 },
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_OPTIONS)] = { 0x10, 0x364, 0x3 },
+    [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x1C, 0x364, 0x4 },
+
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_SINGLE_PLAYER)] = { 0x14, 0x364, 0x5 },
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_MULTI_PLAYER)] = { 0x14, 0x364, 0x6 },
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_GAME_START)] = { 0x14, 0x364, 0x1 },
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_TIME_ATTACK)] = { 0x14, 0x364, 0x2 },
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_OPTIONS)] = { 0x10, 0x364, 0x3 },
+    [MenuTextIdx(LANG_JAPANESE, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x1C, 0x364, 0x4 },
+
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_SINGLE_PLAYER)] = { 0x22, 0x36A, 0x5 },
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_MULTI_PLAYER)] = { 0x20, 0x36A, 0x6 },
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_GAME_START)] = { 0x1E, 0x36A, 0x1 },
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_TIME_ATTACK)] = { 0x20, 0x36A, 0x2 },
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_OPTIONS)] = { 0x16, 0x36A, 0x3 },
+    [MenuTextIdx(LANG_ENGLISH, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x2C, 0x36A, 0x4 },
+
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_SINGLE_PLAYER)] = { 0x1E, 0x36B, 0x5 },
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_MULTI_PLAYER)] = { 0x22, 0x36B, 0x6 },
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_GAME_START)] = { 0x1A, 0x36B, 0x1 },
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_TIME_ATTACK)] = { 0x1C, 0x36B, 0x2 },
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_OPTIONS)] = { 0x16, 0x36B, 0x3 },
+    [MenuTextIdx(LANG_GERMAN, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x2E, 0x36B, 0x4 },
+    
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_SINGLE_PLAYER)] = { 0x22, 0x36C, 0x5 },
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_MULTI_PLAYER)] = { 0x1A, 0x36C, 0x6 },
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_GAME_START)] = { 0x1A, 0x36C, 0x1 },
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_TIME_ATTACK)] = { 0x1C, 0x36C, 0x2 },
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_OPTIONS)] = { 0x14, 0x36C, 0x3 },
+    [MenuTextIdx(LANG_FRENCH, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x2C, 0x36C, 0x4 },
+
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_SINGLE_PLAYER)] = { 0x16, 0x36D, 0x5 },
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_MULTI_PLAYER)] = { 0x1E, 0x36D, 0x6 },
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_GAME_START)] = { 0x1E, 0x36D, 0x1 },
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_TIME_ATTACK)] = { 0x26, 0x36D, 0x2 },
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_OPTIONS)] = { 0x16, 0x36D, 0x3 },
+    [MenuTextIdx(LANG_SPANISH, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x26, 0x36D, 0x4 },
+
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_SINGLE_PLAYER)] = { 0x26, 0x36E, 0x5 },
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_MULTI_PLAYER)] = { 0x26, 0x36E, 0x6 },
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_GAME_START)] = { 0x1A, 0x36E, 0x1 },
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_TIME_ATTACK)] = { 0x28, 0x36E, 0x2 },
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_OPTIONS)] = { 0x12, 0x36E, 0x3 },
+    [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x26, 0x36E, 0x4 },
+
+    // TODO: What's this text
     { 0x28, 0x364, 0x7 }
 };
 
@@ -456,13 +463,13 @@ static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     for (menuItemId = 0; menuItemId < ARRAY_COUNT(introConfig->unk120); menuItemId++) {
         config = &introConfig->unk120[menuItemId];
 
-        // gUnknown_080E0D9C could be considered a 2d array ([7][6] so [language][i])
+        // sUnknown_080E0D9C could be considered a 2d array ([7][6] so [language][i])
         // but this doesn't match
         config->unk4 = objAddr;
-        objAddr += (gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk0 * TILE_SIZE_4BPP);
+        objAddr += (sUnknown_080E0D9C[MenuTextIdx(language, menuItemId)].unk0 * TILE_SIZE_4BPP);
         
-        config->unkA = gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk4;
-        config->unk20 = gUnknown_080E0D9C[menuItemId + language * NUM_LANGUAGES].unk6;
+        config->unkA = sUnknown_080E0D9C[MenuTextIdx(language, menuItemId)].unk4;
+        config->unk20 = sUnknown_080E0D9C[MenuTextIdx(language, menuItemId)].unk6;
         config->unk21 = 0xFF;
         config->unk16 = 0x78;
         
@@ -491,8 +498,8 @@ static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     config = &introConfig->unk240;
     config->unk4 = objAddr;
     // Uses last value for this one
-    config->unkA = gUnknown_080E0D9C[42].unk4;
-    config->unk20 = gUnknown_080E0D9C[42].unk6;
+    config->unkA = sUnknown_080E0D9C[42].unk4;
+    config->unk20 = sUnknown_080E0D9C[42].unk6;
     config->unk21 = 0xFF;
     config->unk16 = 0x78;
     config->unk18 = 0x50;
