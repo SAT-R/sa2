@@ -27,7 +27,7 @@ struct UNK_3005B80 gUnknown_03005B80;
 extern const u8* const gUnknown_08C87AAC[4]; /* size 0x95C */
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
 
-// 155KB ?? maybe the whole of tiny chao garden
+// Tiny Chao Garden program
 extern const u8 gUnknown_080AED70[0x25E8C];
 
 const struct UNK_080E0D64 gUnknown_080E0D64[] = 

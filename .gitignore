@@ -65,3 +65,4 @@ sound/songs/midi/*.s
 reports
 .vscode/*.log
 *.gbapal
+*.lz
