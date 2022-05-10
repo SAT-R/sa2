@@ -131556,7 +131556,7 @@ _0805B9F0: .4byte gFlags
 _0805B9F4: .4byte gDispCnt
 _0805B9F8: .4byte gUnknown_03001954
 _0805B9FC: .4byte gUnknown_03002260
-_0805BA00: .4byte gUnknown_080D5CE4
+_0805BA00: .4byte gMapHeaders
 _0805BA04: .4byte gUnknown_03002794
 _0805BA08: .4byte gUnknown_080F40D4
 _0805BA0C: .4byte gUnknown_030054D4
@@ -131996,7 +131996,7 @@ _0805BDC0:
 	movs r0, #0
 	bl MultiSioInit
 	ldr r1, _0805BDE4 @ =gUnknown_03002260
-	ldr r0, _0805BDE8 @ =gUnknown_080D5CE4
+	ldr r0, _0805BDE8 @ =gMapHeaders
 	str r0, [r1]
 	bl sub_808D41C_CreateTitleScreenSkipIntro
 _0805BDD8:
@@ -132006,7 +132006,7 @@ _0805BDD8:
 	.align 2, 0
 _0805BDE0: .4byte gUnknown_03001954
 _0805BDE4: .4byte gUnknown_03002260
-_0805BDE8: .4byte gUnknown_080D5CE4
+_0805BDE8: .4byte gMapHeaders
 
 	thumb_func_start sub_805BDEC
 sub_805BDEC: @ 0x0805BDEC

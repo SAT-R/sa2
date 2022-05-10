@@ -7,7 +7,7 @@
 #include "title_screen.h"
 
 // likely static data, needs to be extracted
-extern union Unk_03002E60 gUnknown_080D5CE4[];
+extern union Unk_03002E60 gMapHeaders[];
 extern u32 gUnknown_080F40D4;
 
 // Some sort of unused task variable
@@ -22,7 +22,7 @@ void sub_801A51C(void) {
     u32 i;
     bool32 hasProfile = FALSE;
 
-    gUnknown_03002260 = gUnknown_080D5CE4;
+    gUnknown_03002260 = gMapHeaders;
     gUnknown_03002794 = &gUnknown_080F40D4;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];

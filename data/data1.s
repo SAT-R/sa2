@@ -261,8 +261,8 @@ gUnknown_080D5CA2:
 gUnknown_080D5CC2:
     .incbin "baserom.gba", 0x000D5CC2, 0x22
 
-    .global gUnknown_080D5CE4
-gUnknown_080D5CE4:
+    .global gMapHeaders
+gMapHeaders:
     .incbin "baserom.gba", 0x000D5CE4, 0x5F4
 
     .global gUnknown_080D62D8
