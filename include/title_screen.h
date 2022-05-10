@@ -121,16 +121,15 @@ struct UNK_808D124 {
     u8 unk207;
 }; /* size 0x208 */
 
-// These sit next to each other in the ROM
-// but changing to a struct, or joining them 
-// together doesn't match
-extern const struct UNK_080E0D64 gUnknown_080E0D64[7];
-extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
-
 // Used outside of this module I think, so declared here
 struct UNK_3005B80 gUnknown_03005B80;
 
 void sub_808B3FC_CreateTitleScreen(void);
+void sub_808D41C_CreateTitleScreenSkipIntro(void);
+// CreateTitleScreenAtPlayModeMenu
+void sub_808D45C(void);
+// CreateTitleScreenSkipToPlayModeMenu
+void sub_808D49C(void);
 
 #define MENU_ITEM_SINGLE_PLAYER 0
 #define MENU_ITEM_MULTI_PLAYER 1

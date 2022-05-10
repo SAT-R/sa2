@@ -11,32 +11,30 @@
 #include "data.h"
 #include "input.h"
 #include "random.h"
-
-// Math.h
-s16 sub_8085654(s32, s32, s32, u8, u8);
+#include "math.h"
 
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
-
-// TODO: Extract this data from ROM
-// I believe these will only be used here
-extern const u8 gUnknown_080E0EF4[0x160];
-extern const u8 gUnknown_080E1054[10];
-extern const u8 gUnknown_080E105E[5];
+// Maybe some sort of graphics table
+// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
+extern const u8* const gUnknown_08C87AAC[4]; /* size 0x95C */
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
-extern const u8 gUnknown_080E10D4[0xA];
-extern const u8 gUnknown_080E1063[0x71];
-extern const u16 gUnknown_080E10E6[8];
-extern const u16 gUnknown_080E10F6[8][2];
 
 // 155KB ?? maybe the whole of tiny chao garden
 extern const u8 gUnknown_080AED70[0x25E8C];
 
-// Maybe some sort of graphics table
-// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
-extern const u8* const gUnknown_08C87AAC[4];
+// TODO: Extract this data from ROM
+// I believe these will only be used here
+extern const struct UNK_080E0D64 gUnknown_080E0D64[7];
+extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
+extern const u8 gUnknown_080E0EF4[0x160];
+extern const u8 gUnknown_080E1054[10];
+extern const u8 gUnknown_080E105E[5];
+extern const u8 gUnknown_080E1063[0x71];
+extern const u8 gUnknown_080E10D4[10];
 extern const u8 gUnknown_080E10DE[8];
-
+extern const u16 gUnknown_080E10E6[8];
+extern const u16 gUnknown_080E10F6[8][2];
 
 // Don't know who these belong to yet
 extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
@@ -53,15 +51,12 @@ extern u32 sub_8007C10(u32);
 extern void sub_8007CF0(u32);
 
 // pallette?
-void sub_808DB2C(void);
+extern void sub_808DB2C(void);
+// TODO: move this function to palette or whatever
 void sub_808D874(void);
 
 static void sub_808B768(struct UNK_0808B3FC*);
-
-// TODO: make static once references to it are decompiled
 static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
-
-// TODO: make static once decompiled
 static void sub_808CBA4(struct UNK_0808B3FC*);
 static void sub_808D5FC(void);
 static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void);
@@ -1212,7 +1207,7 @@ void sub_808CA6C(void) {
 }
 
 // Loads the title screen to the single player menu
-void sub_808CAFC(void) {
+static void sub_808CAFC(void) {
     struct UNK_0808B3FC* introConfig;
     struct UNK_0808B3FC_UNK270* config270;
 
@@ -1757,7 +1752,7 @@ UNUSED void sub_808D824(struct Task* prevTask) {
     TaskDestroy(gCurTask);
 }
 
-// Possibly not for this
+// Might not in title_screen
 void sub_808D874(void) {
     CpuFastSet(gUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;

@@ -1,5 +1,5 @@
 #include "global.h"
-
+#include "math.h"
 
 u32 AbsMax(s32 a, s32 b) {
     if (a < 0) {
