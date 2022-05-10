@@ -50,52 +50,48 @@ extern void sub_805A1CC(void);
 extern void sub_8009F94(void);
 extern void sub_801A770(void);
 extern u32 sub_8007C10(u32);
+extern void sub_8007CF0(u32);
 
-
-void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
+// pallette?
+void sub_808DB2C(void);
+void sub_808D874(void);
 
 static void sub_808B768(struct UNK_0808B3FC*);
 
 // TODO: make static once references to it are decompiled
-void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
+static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
 
 // TODO: make static once decompiled
-void sub_808CBA4(struct UNK_0808B3FC*);
-void sub_808D5FC(void);
+static void sub_808CBA4(struct UNK_0808B3FC*);
+static void sub_808D5FC(void);
 static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void);
 static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void);
-void sub_808D63C(void);
-
-void sub_808D4DC(struct UNK_0808B3FC*);
-
+static void sub_808D63C(void);
+static void sub_808D4DC(struct UNK_0808B3FC*);
 static void sub_808BCC4(void);
 static void sub_808BDBC(void);
 static void sub_808BF7C(void);
 static void sub_808C1AC(void);
-
-void sub_808D124(void);
-void sub_808D67C(void);
-void sub_808D76C(void);
-void sub_808D740(struct UNK_0808B3FC*);
+static void sub_808D124(void);
+static void sub_808D67C(void);
+static void sub_808D76C(void);
+static void sub_808D740(struct UNK_0808B3FC*);
 static void sub_808C2C8(void);
-void sub_808D6D4(void);
-void sub_808D790(struct UNK_0808B3FC_UNK240*, u32);
-void sub_808C358(void);
-void sub_808C218(void);
+static void sub_808D6D4(void);
+static void sub_808D790(struct UNK_0808B3FC_UNK240*, u8);
+static void sub_808C358(void);
+static void sub_808C218(void);
 static void sub_808C498(void);
-void sub_808C58C(void);
-void sub_808C710_Task_HandleTitleScreenExit(void);
-void sub_808D35C(void);
-void sub_808D53C(void);
-void sub_808D874(void);
-void sub_808DB2C(void);
-
+static void sub_808C58C(void);
+static void sub_808C710_Task_HandleTitleScreenExit(void);
+static void sub_808D35C(void);
+static void sub_808D53C(void);
 static void sub_808CE00(u16, s16, u16, u16, u16);
-void sub_808CEFC(void);
+static void sub_808CEFC(void);
 static void sub_808D23C(void);
+static void sub_808D7F0(void);
+static void sub_808D598(void);
 
-void sub_808D7F0(void);
-void sub_808D598(void);
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -351,7 +347,7 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
 
 #define NUM_LANGUAGES 6
 
-void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
+static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
     s8 language;
     u32 menuItemId, objAddr;
@@ -815,7 +811,7 @@ static void sub_808C1AC(void) {
 #define FRAME_TIME_SECONDS(n) ((n) * 60)
 
 // Task_PressStartScreen
-void sub_808C218(void) {
+static void sub_808C218(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
 
     // Show the press start text for 2/3 of a second
@@ -885,7 +881,7 @@ static inline void PlayModeMenuHighlightFocused(struct UNK_0808B3FC* introConfig
 }
 
 // Task_PlayModeMenu
-void sub_808C358(void) {
+static void sub_808C358(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct UNK_0808B3FC_UNK270* config270;
     
@@ -996,7 +992,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct UNK_0808B3FC* introCo
 };
 
 // Task_SinglePlayerMenu
-void sub_808C58C(void) {
+static void sub_808C58C(void) {
     struct UNK_0808B3FC* introConfig;
     struct UNK_0808B3FC_UNK270* config270;
     u8 menuIndex;
@@ -1058,7 +1054,7 @@ void sub_808C58C(void) {
 }
 
 // Task_HandleTitleScreenExit
-void sub_808C710_Task_HandleTitleScreenExit(void) {
+static void sub_808C710_Task_HandleTitleScreenExit(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct UNK_0808B3FC_UNK240* menuItem;
     u8 i;
@@ -1238,7 +1234,7 @@ void sub_808CAFC(void) {
 }
 
 // TODO: work out what this is doing
-void sub_808CBA4(struct UNK_0808B3FC* introConfig) {
+static void sub_808CBA4(struct UNK_0808B3FC* introConfig) {
     u32 i;
     u32 *pointer;
     s32 j;
@@ -1359,7 +1355,7 @@ static void sub_808CE00(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
     obj->unk3E = p3;
 }
 
-void sub_808CEFC(void) {
+static void sub_808CEFC(void) {
     struct UNK_808CE00* obj = TaskGetStructPtr(gCurTask, obj);
     struct UNK_0808B3FC_UNK240* sprite = &obj->sprite;
     u16 temp;
@@ -1449,7 +1445,7 @@ void sub_808D09C(void) {
     }
 }
 
-void sub_808D124(void) {
+static void sub_808D124(void) {
     struct Task* t = TaskCreate(sub_808D23C, sizeof(struct UNK_808D124), 0x2000, 0, 0);
     struct UNK_808D124* config = TaskGetStructPtr(t, config);
     struct UNK_0808B3FC_UNK240* sprite;
@@ -1539,7 +1535,7 @@ static void sub_808D23C(void) {
 }
 
 // LoadTinyChaoGarden
-void sub_808D35C(void) {
+static void sub_808D35C(void) {
     u32 langVal;
     u32 unk374 = gLoadedSaveGame->unk374;
 
@@ -1603,7 +1599,7 @@ void sub_808D49C(void) {
     sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
 }
 
-void sub_808D4DC(struct UNK_0808B3FC* introConfig) {
+static void sub_808D4DC(struct UNK_0808B3FC* introConfig) {
     struct UNK_0808B3FC_UNK270* config270 = &introConfig->unk270;
     gFlags &= ~0x4;
     
@@ -1623,7 +1619,7 @@ void sub_808D4DC(struct UNK_0808B3FC* introConfig) {
 }
 
 // ShowPressStartScreen
-void sub_808D53C(void) {
+static void sub_808D53C(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     
     sub_80051E8(&introConfig->unkC0);
@@ -1637,7 +1633,7 @@ void sub_808D53C(void) {
 }
 
 // Task_InitSegaLogo
-void sub_808D598(void) {
+static void sub_808D598(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -1649,7 +1645,7 @@ void sub_808D598(void) {
     }
 }
 
-void sub_808D5FC(void) {
+static void sub_808D5FC(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
     
@@ -1660,7 +1656,7 @@ void sub_808D5FC(void) {
     introConfig->unkF3E++;
 }
 
-void sub_808D63C(void) {
+static void sub_808D63C(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
     
@@ -1672,7 +1668,7 @@ void sub_808D63C(void) {
     introConfig->unkF3E++;
 }
 
-void sub_808D67C(void) {
+static void sub_808D67C(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
    
     if (introConfig->unkF3E > FRAME_TIME_SECONDS(1)) {
@@ -1687,7 +1683,7 @@ void sub_808D67C(void) {
 }
 
 // Task_TitleScreenExitToDemo
-void sub_808D6D4(void) {
+static void sub_808D6D4(void) {
     gUnknown_030053C0.unk8 = 2;
     gUnknown_030053B0 = gUnknown_08C87AAC[0];
     
@@ -1703,4 +1699,66 @@ void sub_808D6D4(void) {
     sub_801A770();
 
     TaskDestroy(gCurTask);
+}
+
+static void sub_808D740(struct UNK_0808B3FC* _) {
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0x14, 8, &gBgAffineRegs);
+}
+
+static void sub_808D76C(void) {
+    struct UNK_808CE00* obj = TaskGetStructPtr(gCurTask, obj);
+    sub_8007CF0(obj->sprite.unk4);
+    TaskDestroy(gCurTask);
+}
+
+static void sub_808D790(struct UNK_0808B3FC_UNK240* sprite, u8 a) {
+    struct Task* t;
+    struct UNK_808D034* obj;
+    
+    if (a == 0) {
+        t = TaskCreate(sub_808D034, sizeof(struct UNK_808D034), 0x2000, 0, 0);
+    } else if (a == 1) {
+        t = TaskCreate(sub_808D09C, sizeof(struct UNK_808D034), 0x2000, 0, 0);
+    } else {
+        return;
+    }
+    obj = TaskGetStructPtr(t, obj);
+
+    sprite->unk10 |= 0x80;
+    obj->sprite = sprite;
+    obj->unk12 = sprite->unk16;
+    obj->unk10 = 0;
+}
+
+static void sub_808D7F0(void) {
+    struct UNK_808D124* config = TaskGetStructPtr(gCurTask, config);
+    
+    u32 i;
+    for (i = 0; i < 8; i++) {
+        sub_8007CF0(config->sprites[i].unk4);
+    }
+
+    TaskDestroy(gCurTask);
+}
+
+// TODO: understand why this is inline
+static inline void sub_808D824_CreateTitleScreenTask(TaskMain main) {
+    struct Task* t = TaskCreate(main, sizeof(struct UNK_0808B3FC), 0x1000, 0, 0);
+    sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
+}
+
+UNUSED void sub_808D824(struct Task* prevTask) {
+    // Fake match?
+    prevTask = gCurTask;
+    REG_SIOCNT |= SIO_INTR_ENABLE;
+    
+    sub_808D824_CreateTitleScreenTask(sub_808D53C);
+
+    TaskDestroy(gCurTask);
+}
+
+// Possibly not for this
+void sub_808D874(void) {
+    CpuFastSet(gUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
+    REG_SIOCNT |= SIO_INTR_ENABLE;
 }

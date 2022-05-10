@@ -2,6 +2,7 @@
 #define GUARD_SPRITE_H
 
 #include "global.h"
+#include "data.h"
 
 // TODO: move the struct declaration to a proper location
 struct Unk_03002400 {
@@ -108,6 +109,8 @@ u32 sub_80039E4(void);
 u32 sub_8002B20(void);
 void DrawToOamBuffer(void);
 void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
+void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
+
 
 // Probably a list of sprites to draw to screen
 extern struct Unk_03002EC0* gUnknown_030027A0[];

@@ -106,7 +106,6 @@ struct UNK_808D034 {
     u8 filler4[12];
     u8 unk10;
     s16 unk12;
-    u8 unk13;
 }; /* size 0x14 */
 
 struct UNK_808D124 {
