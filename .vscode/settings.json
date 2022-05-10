@@ -15,7 +15,7 @@
         "save.h": "c",
         "flags.h": "c",
         "gba.h": "c",
-        "intro.h": "c",
+        "title_screen.h": "c",
         "stddef.h": "c",
         "defines.h": "c",
         "functions.h": "c",

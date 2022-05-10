@@ -4,7 +4,7 @@
 #include "init.h"
 #include "flags.h"
 #include "save.h"
-#include "intro.h"
+#include "title_screen.h"
 
 // likely static data, needs to be extracted
 extern union Unk_03002E60 gUnknown_080D5CE4[];
