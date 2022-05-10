@@ -64,3 +64,4 @@ sound/songs/midi/*.s
 /ctx.c
 reports
 .vscode/*.log
+*.gbapal

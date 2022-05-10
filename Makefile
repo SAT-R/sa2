@@ -133,6 +133,13 @@ include songs.mk
 %.png: ;
 %.pal: ;
 
+%.1bpp: %.png  ; $(GFX) $< $@
+%.4bpp: %.png  ; $(GFX) $< $@
+%.8bpp: %.png  ; $(GFX) $< $@
+%.gbapal: %.pal ; $(GFX) $< $@
+%.gbapal: %.png ; $(GFX) $< $@
+%.lz: % ; $(GFX) $< $@
+%.rl: % ; $(GFX) $< $@
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
 	
 $(ELF): $(OBJS) $(LDSCRIPT)

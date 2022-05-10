@@ -96,7 +96,9 @@ struct UNK_3005B80 {
 };
 
 struct UNK_080E0D64 {
+    // width
     u32 unk0;
+    // caption ID
     u16 unk4;
     s8 unk6;
 };
