@@ -1,6 +1,7 @@
 #include "title_screen.h"
 
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "flags.h"
 #include "global.h"
 #include "m4a.h"
@@ -13,6 +14,12 @@
 #include "random.h"
 #include "math.h"
 
+#define FadeInBlend(frame)  \
+    BLDALPHA_BLEND(frame, 16 - (frame))
+
+#define FadeOutBlend(frame) \
+    BLDALPHA_BLEND(16 - (frame), frame)
+
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
 // Maybe some sort of graphics table
@@ -23,9 +30,48 @@ extern const u16 gUnknown_08097AA4[0xA00 / 2];
 // 155KB ?? maybe the whole of tiny chao garden
 extern const u8 gUnknown_080AED70[0x25E8C];
 
+#define Unk808E0D64()
+
 // TODO: Extract this data from ROM
 // I believe these will only be used here
-extern const struct UNK_080E0D64 gUnknown_080E0D64[7];
+const struct UNK_080E0D64 gUnknown_080E0D64[7] = 
+{ 
+    {
+        .unk0 = 0x2E,
+        .unk4 = 0x364,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x2E,
+        .unk4 = 0x364,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x26,
+        .unk4 = 0x36A,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x26,
+        .unk4 = 0x36B,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x2E,
+        .unk4 = 0x36C,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x1E,
+        .unk4 = 0x36D,
+        .unk6 = 0
+    },
+    {
+        .unk0 = 0x1E,
+        .unk4 = 0x36E,
+        .unk6 = 0
+    },
+};
 extern const struct UNK_080E0D64 gUnknown_080E0D9C[43];
 extern const u8 gUnknown_080E0EF4[0x160];
 extern const u8 gUnknown_080E1054[10];
@@ -35,6 +81,8 @@ extern const u8 gUnknown_080E10D4[10];
 extern const u8 gUnknown_080E10DE[8];
 extern const u16 gUnknown_080E10E6[8];
 extern const u16 gUnknown_080E10F6[8][2];
+
+
 
 // Don't know who these belong to yet
 extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
@@ -158,7 +206,7 @@ void sub_808B3FC_CreateTitleScreen(void) {
     sub_802D4CC(config270);
 }
 
-void sub_808B560(struct UNK_0808B3FC* introConfig) {
+static void sub_808B560(struct UNK_0808B3FC* introConfig) {
     struct UNK_0808B3FC_UNK270* config270;
     struct Unk_03002400 *config0, *config40;
 
@@ -340,8 +388,6 @@ static void sub_808B768(struct UNK_0808B3FC* introConfig) {
     sub_8002A3C(config0);
 }
 
-#define NUM_LANGUAGES 6
-
 static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     // Credit to @jiang for the match on this one too
     s8 language;
@@ -441,13 +487,7 @@ static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC* introConfig) {
     sub_8004558(config);
 }
 
-#define FadeInBlend(frame)  \
-    BLDALPHA_BLEND(frame, 16 - (frame))
-
-#define FadeOutBlend(frame) \
-    BLDALPHA_BLEND(16 - (frame), frame)
-
-void sub_808BA78_Task_IntroFadeInSegaLogo(void) {
+static void sub_808BA78_Task_IntroFadeInSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -464,7 +504,7 @@ void sub_808BA78_Task_IntroFadeInSegaLogo(void) {
     introConfig->unkF3E++;
 }
 
-void sub_808BAD8_Task_IntroFadeOutSegaLogo(void) {
+static void sub_808BAD8_Task_IntroFadeOutSegaLogo(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -538,7 +578,7 @@ static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void) {
 }
 
 // Task_FadeOutSonicTeamLogo
-void sub_808BC54(void) {
+static void sub_808BC54(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     sub_808CBA4(introConfig);
 
@@ -1118,7 +1158,7 @@ static void sub_808C710_Task_HandleTitleScreenExit(void) {
     }
 }
 
-void sub_808C8EC(void) {
+static void sub_808C8EC(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     struct Unk_03002400* config0 = &introConfig->unk0;
     struct Unk_03002400* config40;
@@ -1192,7 +1232,7 @@ void sub_808C8EC(void) {
 }
 
 // Loads the title screen to the play mode menu
-void sub_808CA6C(void) {
+static void sub_808CA6C(void) {
     struct UNK_0808B3FC* introConfig = TaskGetStructPtr(gCurTask, introConfig);
     PlayModeMenuHighlightFocused(introConfig);
 
@@ -1400,7 +1440,7 @@ static void sub_808CEFC(void) {
     }
 }
 
-void sub_808D034(void) {
+static void sub_808D034(void) {
     struct UNK_808D034* obj = TaskGetStructPtr(gCurTask, obj);
     struct UNK_0808B3FC_UNK240* sprite = obj->sprite;
 
@@ -1417,7 +1457,7 @@ void sub_808D034(void) {
     }
 }
 
-void sub_808D09C(void) {
+static void sub_808D09C(void) {
     struct UNK_808D034* obj = TaskGetStructPtr(gCurTask, obj);
     struct UNK_0808B3FC_UNK240* sprite = obj->sprite;
     s32 i;
