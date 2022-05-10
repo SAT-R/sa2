@@ -275,8 +275,11 @@ gUnknown_080D62D8:
 gUnknown_080D6354:
     .incbin "baserom.gba", 0x000D6354, 0x20
 
-    .global gUnknown_080D6374
-gUnknown_080D6374:
+@; Spawn positions are (counted from the top-left of the map):
+@;   .2byte xPixels
+@;   .2byte yPixels
+    .global gSpawnPositions
+gSpawnPositions:
     .incbin "baserom.gba", 0x000D6374, 0x88
 
     .global gUnknown_080D63FC

@@ -14117,7 +14117,7 @@ sub_8021604: @ 0x08021604
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _08021640
-	ldr r1, _0802163C @ =gUnknown_080D6374
+	ldr r1, _0802163C @ =gSpawnPositions
 	lsls r2, r4, #2
 	adds r0, r2, r1
 	ldrh r3, [r0]
@@ -14133,7 +14133,7 @@ sub_8021604: @ 0x08021604
 	b _0802166A
 	.align 2, 0
 _08021638: .4byte gUnknown_030054CC
-_0802163C: .4byte gUnknown_080D6374
+_0802163C: .4byte gSpawnPositions
 _08021640:
 	ldr r0, _08021688 @ =0x04000128
 	ldr r0, [r0]

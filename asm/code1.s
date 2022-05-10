@@ -29677,7 +29677,7 @@ _080160E8:
 	ldrb r0, [r6]
 	cmp r0, #4
 	bhi _0801612C
-	ldr r1, _08016124 @ =gUnknown_080D6374
+	ldr r1, _08016124 @ =gSpawnPositions
 	ldr r2, _08016128 @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r2, r0]
@@ -29695,7 +29695,7 @@ _080160E8:
 	.align 2, 0
 _0801611C: .4byte IWRAM_START + 0x60
 _08016120: .4byte gUnknown_030054CC
-_08016124: .4byte gUnknown_080D6374
+_08016124: .4byte gSpawnPositions
 _08016128: .4byte gUnknown_030055B4
 _0801612C:
 	ldr r0, _08016144 @ =0x04000128
