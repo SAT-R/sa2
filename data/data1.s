@@ -261,6 +261,8 @@ gUnknown_080D5CA2:
 gUnknown_080D5CC2:
     .incbin "baserom.gba", 0x000D5CC2, 0x22
 
+@; Not sure whether the size is correct, here.
+@; It should be (2 MapHeader pointers + 1 Background-Map pointer) * number_of_maps (which is 31)
     .global gMapHeaders
 gMapHeaders:
     .incbin "baserom.gba", 0x000D5CE4, 0x5F4
