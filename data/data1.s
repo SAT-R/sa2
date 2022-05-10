@@ -33,21 +33,27 @@ gUnknown_080984F4:
 gUnknown_080AED70:
     .incbin "baserom.gba", 0x000AED70, 0x25E8C
 
-    .global gUnknown_080D4BFC
-gUnknown_080D4BFC:
+
+@; NOTE(Jace): To better understand how the data that is
+@;             pointed to from here is composed, look at the below thread.
+@;             Even though it is about SA3, all 3 games do share quite a bit.
+@;             https://twitter.com/JaceCear/status/1362912485951610881
+    .global gSpritePosData_Rings
+gSpritePosData_Rings:
     .incbin "baserom.gba", 0x000D4BFC, 0x88
 
-    .global gUnknown_080D4C84
-gUnknown_080D4C84:
+    .global gSpritePosData_Interactables
+gSpritePosData_Interactables:
     .incbin "baserom.gba", 0x000D4C84, 0x88
 
-    .global gUnknown_080D4D0C
-gUnknown_080D4D0C:
+    .global gSpritePosData_Itemboxes
+gSpritePosData_Itemboxes:
     .incbin "baserom.gba", 0x000D4D0C, 0x88
 
-    .global gUnknown_080D4D94
-gUnknown_080D4D94:
+    .global gSpritePosData_Enemies
+gSpritePosData_Enemies:
     .incbin "baserom.gba", 0x000D4D94, 0x88
+
 
     .global gUnknown_080D4E1C
 gUnknown_080D4E1C:

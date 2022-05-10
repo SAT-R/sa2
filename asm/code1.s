@@ -299,7 +299,7 @@ sub_8007E10: @ 0x08007E10
 	movs r3, #0
 	bl TaskCreate
 	adds r7, r0, #0
-	ldr r5, _08007E68 @ =gUnknown_080D4BFC
+	ldr r5, _08007E68 @ =gSpritePosData_Rings
 	ldr r4, _08007E6C @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -322,7 +322,7 @@ sub_8007E10: @ 0x08007E10
 _08007E5C: .4byte gUnknown_030054CC
 _08007E60: .4byte sub_8007F1C
 _08007E64: .4byte sub_8008874
-_08007E68: .4byte gUnknown_080D4BFC
+_08007E68: .4byte gSpritePosData_Rings
 _08007E6C: .4byte gUnknown_030055B4
 _08007E70:
 	ldr r0, _08007EF4 @ =sub_8007F1C
@@ -470,7 +470,7 @@ _08007F8E:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08007FBE
-	ldr r1, _080082A8 @ =gUnknown_080D4BFC
+	ldr r1, _080082A8 @ =gSpritePosData_Rings
 	ldr r0, _08008298 @ =gUnknown_030055B4
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -872,7 +872,7 @@ _08008298: .4byte gUnknown_030055B4
 _0800829C: .4byte gUnknown_030054B0
 _080082A0: .4byte gUnknown_03005430
 _080082A4: .4byte gUnknown_0300542C
-_080082A8: .4byte gUnknown_080D4BFC
+_080082A8: .4byte gSpritePosData_Rings
 _080082AC: .4byte gUnknown_030059E8
 _080082B0: .4byte gUnknown_030053F0
 _080082B4: .4byte gUnknown_030054CC
@@ -1684,7 +1684,7 @@ _080088BC:
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _0800898C
-	ldr r5, _08008978 @ =gUnknown_080D4C84
+	ldr r5, _08008978 @ =gSpritePosData_Interactables
 	ldr r4, _0800897C @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -1703,7 +1703,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7]
-	ldr r5, _08008980 @ =gUnknown_080D4D0C
+	ldr r5, _08008980 @ =gSpritePosData_Itemboxes
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1721,7 +1721,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7, #4]
-	ldr r5, _08008984 @ =gUnknown_080D4D94
+	ldr r5, _08008984 @ =gSpritePosData_Enemies
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1755,10 +1755,10 @@ _080088BC:
 	.align 2, 0
 _08008970: .4byte sub_8008DCC
 _08008974: .4byte gUnknown_030054CC
-_08008978: .4byte gUnknown_080D4C84
+_08008978: .4byte gSpritePosData_Interactables
 _0800897C: .4byte gUnknown_030055B4
-_08008980: .4byte gUnknown_080D4D0C
-_08008984: .4byte gUnknown_080D4D94
+_08008980: .4byte gSpritePosData_Itemboxes
+_08008984: .4byte gSpritePosData_Enemies
 _08008988: .4byte gUnknown_080D50A0
 _0800898C:
 	ldr r6, _080089BC @ =gUnknown_0203F000
