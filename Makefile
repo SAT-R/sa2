@@ -49,7 +49,7 @@ RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef
+CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 
 
@@ -170,10 +170,19 @@ else
 $(C_BUILDDIR)/%.o: c_dep = $(shell $(SCANINC) -I include $(C_SUBDIR)/$*.c)
 endif
 
+# @$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
+# @$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
+
+# @$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
+# @$(CC1) $(CC1FLAGS) $(C_BUILDDIR)/$*.i -o $(C_BUILDDIR)/$*.s
+
+# @$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
+
 # Build c sources, and ensure alignment
-$(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(data_dep)
+$(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
-	@$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
+	@$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
+	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
@@ -183,7 +192,7 @@ else
 $(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
 endif
 
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(data_dep)
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
@@ -196,7 +205,7 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
+	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"

@@ -67,6 +67,14 @@ private:
 
 CharmapReader::CharmapReader(std::string filename) : m_filename(filename)
 {
+    if (filename == "")
+    {
+        m_size = 0;
+        m_pos = 0;
+        m_buffer = new char[1] {};
+        return;
+    }
+
     FILE *fp = std::fopen(filename.c_str(), "rb");
 
     if (fp == NULL)

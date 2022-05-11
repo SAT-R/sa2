@@ -7,7 +7,7 @@
 _entry: @ 0x08000000
 	b start_vector
 
-	# These will be set by gbafix
+	@ These will be set by gbafix
 	
 	.global RomHeaderNintendoLogo
 RomHeaderNintendoLogo:

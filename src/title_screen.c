@@ -42,7 +42,7 @@ const struct UNK_080E0D64 gUnknown_080E0D64[] =
 };
 
 #define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
-const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
+static const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_SINGLE_PLAYER)] = { 0x14, 0x364, 0x5 },
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_MULTI_PLAYER)] = { 0x14, 0x364, 0x6 },
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_GAME_START)] = { 0x14, 0x364, 0x1 },
@@ -98,6 +98,8 @@ const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
 
 // Some pallett
 extern const u8 gUnknown_080E0EF4[0x160];
+// static const u8 gUnknown_080E0EF4[0x160] = INCBIN_U8("graphics/80E0EF4.gbapal");
+
 
 extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
@@ -1807,9 +1809,9 @@ static inline void sub_808D824_CreateTitleScreenTask(TaskMain main) {
     sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
 }
 
-UNUSED void sub_808D824(struct Task* prevTask) {
-    // Fake match?
-    prevTask = gCurTask;
+UNUSED void sub_808D824(void) {
+    // Unused but required for match
+    struct Task* prevTask = gCurTask;
     REG_SIOCNT |= SIO_INTR_ENABLE;
     
     sub_808D824_CreateTitleScreenTask(sub_808D53C);
