@@ -53,6 +53,16 @@ CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -undef
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 
 
+# Clear the default suffixes
+.SUFFIXES:
+# Don't delete intermediate files
+.SECONDARY:
+# Delete files that weren't built properly
+.DELETE_ON_ERROR:
+
+# Secondary expansion is required for dependency variables in object rules.
+.SECONDEXPANSION:
+
 #### Files ####
 OBJ_DIR:= build/sa2
 ROM      := sa2.gba
@@ -118,11 +128,12 @@ compare: $(ROM)
 	$(SHA1) checksum.sha1
 
 clean: tidy
-	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s chao_garden/*.lz
+	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
+	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
 tidy:
-	rm -f $(ROM) $(ELF) $(MAP)
-	rm -r build/*
+	$(RM) -f $(ROM) $(ELF) $(MAP)
+	$(RM) -r build/*
 
 
 #### Recipes ####
@@ -153,28 +164,40 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
+ifeq ($(NODEP),1)
+$(C_BUILDDIR)/%.o: c_dep :=
+else
+$(C_BUILDDIR)/%.o: c_dep = $(shell $(SCANINC) -I include $(C_SUBDIR)/$*.c)
+endif
+
 # Build c sources, and ensure alignment
-$(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
+$(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(data_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
 	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
+ifeq ($(NODEP),1)
+$(ASM_BUILDDIR)/%.o: asm_dep :=
+else
+$(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
+endif
+
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(data_dep)
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
+
+
+ifeq ($(NODEP),1)
+$(DATA_ASM_BUILDDIR)/%.o: data_dep :=
+else
+$(DATA_ASM_BUILDDIR)/%.o: data_dep = $(shell $(SCANINC) $(DATA_ASM_SUBDIR)/$*.s)
+endif
+
+$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(AS) $(ASFLAGS) -o $@ $<
+
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
-
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
-	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
-
-$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
-	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
-
-# TODO: use `scaninc`
-# Tell make that sound_data.s depends
-# on all the .bin files in `direct_sound_samples`
-data/sound_data.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
-
-data/multiboot_chao_garden.s: chao_garden/mb_chao_garden.gba.lz
