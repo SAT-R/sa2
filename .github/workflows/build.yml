@@ -11,9 +11,16 @@ jobs:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
         uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+       
       - name: Checkout gh-pages
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
