@@ -22,7 +22,8 @@
         "init.h": "c",
         "chrono": "c",
         "math.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "ios": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

@@ -118,7 +118,7 @@ compare: $(ROM)
 	$(SHA1) checksum.sha1
 
 clean: tidy
-	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
+	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s chao_garden/*.lz
 
 tidy:
 	rm -f $(ROM) $(ELF) $(MAP)
@@ -133,7 +133,17 @@ include songs.mk
 %.png: ;
 %.pal: ;
 
+%.1bpp: %.png  ; $(GFX) $< $@
+%.4bpp: %.png  ; $(GFX) $< $@
+%.8bpp: %.png  ; $(GFX) $< $@
+%.gbapal: %.pal ; $(GFX) $< $@
+%.gbapal: %.png ; $(GFX) $< $@
+%.lz: % ; $(GFX) $< $@
+%.rl: % ; $(GFX) $< $@
+
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
+chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
+	$(GFX) $< $@ -search 1
 	
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
@@ -162,6 +172,9 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(AS) $(ASFLAGS) -o $@ $<
 
+# TODO: use `scaninc`
 # Tell make that sound_data.s depends
 # on all the .bin files in `direct_sound_samples`
 data/sound_data.s: $(shell find $(SAMPLE_SUBDIR) -type f -iname '*.aif' | sed 's/\(.*\.\)aif/\1bin/')
+
+data/multiboot_chao_garden.s: chao_garden/mb_chao_garden.gba.lz
