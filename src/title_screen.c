@@ -14,7 +14,7 @@
 #include "random.h"
 #include "math.h"
 #include "mb_programs.h"
-
+#include "options_screen.h"
 
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
@@ -174,6 +174,10 @@ static const u8 sUnknown_080E10D4[] = {
     0, 1, 1, 0, 0
 };
 
+// A list of demo levels
+// I wonder if they were ever going to
+// make the demos show different levels
+// atm only the first is used
 static const u8 sUnknown_080E10DE[] = {
     0, 2, 4, 6, 
     0, 1, 3, 2
@@ -200,8 +204,7 @@ extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
 extern void sub_801A6D8(void);
 extern void sub_803143C(u32, u8);
 extern void sub_8087FC0(void);
-// CreateOptionsScreen
-extern void sub_8063730(u32);
+
 extern void sub_8063A00(u16);
 extern void sub_805A1CC(void);
 extern void sub_8009F94(void);
@@ -1796,13 +1799,22 @@ static void sub_808D67C(void) {
 // Task_TitleScreenExitToDemo
 static void sub_808D6D4(void) {
     gUnknown_030053C0.unk8 = 2;
+    
+    // gDemoInputs
     gUnknown_030053B0 = gUnknown_08C87AAC[0];
     
+    // gSelectedCharacter
     gUnknown_030054F0 = 0;
+
+    // gSelectedLevel
     gUnknown_030055B4 = sUnknown_080E10DE[0];
 
+    // gDemoPlayCounter
     gUnknown_030054C8++;
+    // Don't count higher than 3
     gUnknown_030054C8 &= 3;
+
+    // gGameMode
     gUnknown_030054CC = 0;
 
     sub_8009F94();
