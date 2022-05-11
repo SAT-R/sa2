@@ -40,7 +40,7 @@ struct Unk_03002400 {
     u16 unk32;
     u16 unk34;
     u16 unk36;
-    u32 unk38;
+    const u16 *unk38;
     u16 unk3C;
     u16 unk3E;
 }; /* size = 0x40 */
