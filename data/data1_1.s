@@ -1,20 +1,27 @@
 
 	.section .rodata
-    .global gUnknown_080D4BFC
-gUnknown_080D4BFC:
+
+
+@; NOTE(Jace): To better understand how the data that is
+@;             pointed to from here is composed, look at the below thread.
+@;             Even though it is about SA3, all 3 games do share quite a bit.
+@;             https://twitter.com/JaceCear/status/1362912485951610881
+    .global gSpritePosData_Rings
+gSpritePosData_Rings:
     .incbin "baserom.gba", 0x000D4BFC, 0x88
 
-    .global gUnknown_080D4C84
-gUnknown_080D4C84:
+    .global gSpritePosData_Interactables
+gSpritePosData_Interactables:
     .incbin "baserom.gba", 0x000D4C84, 0x88
 
-    .global gUnknown_080D4D0C
-gUnknown_080D4D0C:
+    .global gSpritePosData_Itemboxes
+gSpritePosData_Itemboxes:
     .incbin "baserom.gba", 0x000D4D0C, 0x88
 
-    .global gUnknown_080D4D94
-gUnknown_080D4D94:
+    .global gSpritePosData_Enemies
+gSpritePosData_Enemies:
     .incbin "baserom.gba", 0x000D4D94, 0x88
+
 
     .global gUnknown_080D4E1C
 gUnknown_080D4E1C:
@@ -228,8 +235,10 @@ gUnknown_080D5CA2:
 gUnknown_080D5CC2:
     .incbin "baserom.gba", 0x000D5CC2, 0x22
 
-    .global gUnknown_080D5CE4
-gUnknown_080D5CE4:
+@; Not sure whether the size is correct, here.
+@; It should be (2 MapHeader pointers + 1 Background-Map pointer) * number_of_maps (which is 31)
+    .global gMapHeaders
+gMapHeaders:
     .incbin "baserom.gba", 0x000D5CE4, 0x5F4
 
     .global gUnknown_080D62D8
@@ -240,8 +249,11 @@ gUnknown_080D62D8:
 gUnknown_080D6354:
     .incbin "baserom.gba", 0x000D6354, 0x20
 
-    .global gUnknown_080D6374
-gUnknown_080D6374:
+@; Spawn positions are (count from the top-left of the map):
+@;   .2byte xPixels
+@;   .2byte yPixels
+    .global gSpawnPositions
+gSpawnPositions:
     .incbin "baserom.gba", 0x000D6374, 0x88
 
     .global gUnknown_080D63FC

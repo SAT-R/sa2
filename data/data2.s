@@ -208,13 +208,30 @@ gUnknown_080E1CA0:
 gUnknown_080F40D4:
     .incbin "baserom.gba", 0x000F40D4, 0x41DF0
 
-    .global gUnknown_08135EC4
-gUnknown_08135EC4:
-    .incbin "baserom.gba", 0x00135EC4, 0x34F04
+    .global gSpriteStates @ 0x08135EC4
+gSpriteStates:
+    .incbin "baserom.gba", 0x00135EC4, 0x17300
+    
+    .global gSpriteDimensions @ 0x0814D1C4
+gSpriteDimensions:
+    .incbin "baserom.gba", 0x0014D1C4, 0x1CA50
 
-    .global gUnknown_0816ADC8
-gUnknown_0816ADC8:
-    .incbin "baserom.gba", 0x0016ADC8, 0x57F040
+@; NOTE(Jace): As the name suggests, the data pointed to
+@;             is using the exact same layout
+@;             as the OAM memory in the GBA.
+@;             IIRC this is used for layouting bigger sprites.
+    .global gSpriteOamData @ 0x08169C14
+gSpriteOamData:
+    .incbin "baserom.gba", 0x00169C14, 0x11B4
+
+    .global gSpritePalettes @ 0x0816ADC8
+gSpritePalettes:
+    .incbin "baserom.gba", 0x0016ADC8, 0x5BE0
+    
+@; TODO: Maybe just call it "gSprites"?
+    .global gSpriteImages @ 0x081709A8
+gSpriteImages:
+    .incbin "baserom.gba", 0x001709A8, 0x579460
 
     .global gUnknown_086E9E08
 gUnknown_086E9E08:
