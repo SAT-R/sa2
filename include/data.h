@@ -77,28 +77,26 @@ struct SomeStruct_5660 {
 };
 
 extern struct SomeStruct_5660 gUnknown_03005660;
-
-// Used for the two background layers.
-struct MapHeader {
-    u16 X_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
-    u16 Y_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
+struct LevelInfo_1A0 {
+    u16 unk0;
+    u16 unk2;
     u16 unk4;
     u8 unk6;
     u8 unk7;
-    void * Tileset;
+    void *unk8;
     u16 unkC;
     u16 unkD;
-    u16 * Palette;
+    u16 *unk10;
     u16 unk14;
     u16 unk16;
-    const u16 * Metatiles;
-    const u16 * Map;
+    const u16 *unk18;
+    u32 unk1C;
 }; /* size = 0x20 */
 
-struct MapHeader_Full {
-    struct MapHeader unk0;
-    u16 Map_Width;  // in Metatiles
-    u16 Map_Height; // in Metatiles
+struct LevelInfo_1A0_Full {
+    struct LevelInfo_1A0 unk0;
+    u16 unk20;
+    u16 unk22;
 };
 
 union __attribute__((transparent_union)) Unk_03002E60 {
