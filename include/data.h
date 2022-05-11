@@ -102,8 +102,8 @@ struct MapHeader_Full {
 };
 
 union __attribute__((transparent_union)) Unk_03002E60 {
-    struct LevelInfo_1A0 *x;
-    struct LevelInfo_1A0_Full *y;
+    struct MapHeader *x;
+    struct MapHeader_Full *y;
 };
 
 struct BlendRegs {
