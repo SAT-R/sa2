@@ -132,30 +132,27 @@ char* GetFileExtension(char* filename)
 
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+    if (argc != 3 && argc != 2)
     {
         std::fprintf(stderr, "Usage: %s SRC_FILE CHARMAP_FILE", argv[0]);
         return 1;
     }
 
-    g_charmap = new Charmap(argv[2]);
+    g_charmap = new (std::nothrow) Charmap(argc == 3 ? argv[2] : "");
+    if (!g_charmap)
+        FATAL_ERROR("Failed to allocate space for Charmap.\n");
 
-    if (argv[1][0] == '-' && argv[1][1] == 0) {
-        PreprocCFile("-");
-    } else {
-        char* extension = GetFileExtension(argv[1]);
+    char* extension = GetFileExtension(argv[1]);
 
-        if (!extension)
-            FATAL_ERROR("\"%s\" has no file extension.\n", argv[1]);
+    if (!extension)
+        FATAL_ERROR("\"%s\" has no file extension.\n", argv[1]);
 
-        if ((extension[0] == 's') && extension[1] == 0)
-            PreprocAsmFile(argv[1]);
-        else if ((extension[0] == 'c' || extension[0] == 'i') && extension[1] == 0)
-            PreprocCFile(argv[1]);
-        else
-            FATAL_ERROR("\"%s\" has an unknown file extension of \"%s\".\n", argv[1], extension);
-    }
-
+    if ((extension[0] == 's') && extension[1] == 0)
+        PreprocAsmFile(argv[1]);
+    else if ((extension[0] == 'c' || extension[0] == 'i') && extension[1] == 0)
+        PreprocCFile(argv[1]);
+    else
+        FATAL_ERROR("\"%s\" has an unknown file extension of \"%s\".\n", argv[1], extension);
 
     return 0;
 }

@@ -42,7 +42,7 @@ const struct UNK_080E0D64 gUnknown_080E0D64[] =
 };
 
 #define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
-const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
+static const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_SINGLE_PLAYER)] = { 0x14, 0x364, 0x5 },
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_MULTI_PLAYER)] = { 0x14, 0x364, 0x6 },
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_GAME_START)] = { 0x14, 0x364, 0x1 },
@@ -96,8 +96,7 @@ const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
     { 0x28, 0x364, 0x7 }
 };
 
-// Some pallett
-extern const u8 gUnknown_080E0EF4[0x160];
+static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
 
 extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
@@ -218,7 +217,7 @@ void sub_808B3FC_CreateTitleScreen(void) {
     config27C->unk34 = introConfig->unkF38;
     config27C->unk1 = 0xE;
     config27C->unk4 = gUnknown_080E1054;
-    config27C->unk8 = gUnknown_080E0EF4;
+    config27C->unk8 = sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
     gUnknown_03005B80.unk0 = config27C;
@@ -1807,9 +1806,9 @@ static inline void sub_808D824_CreateTitleScreenTask(TaskMain main) {
     sub_808B560(TaskGetStructPtr(t, struct UNK_0808B3FC*));
 }
 
-UNUSED void sub_808D824(struct Task* prevTask) {
-    // Fake match?
-    prevTask = gCurTask;
+UNUSED void sub_808D824(void) {
+    // Unused but required for match
+    struct Task* prevTask = gCurTask;
     REG_SIOCNT |= SIO_INTR_ENABLE;
     
     sub_808D824_CreateTitleScreenTask(sub_808D53C);
@@ -1819,6 +1818,6 @@ UNUSED void sub_808D824(struct Task* prevTask) {
 
 // Might not in title_screen
 void sub_808D874(void) {
-    CpuFastSet(gUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
+    CpuFastSet(sUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }
