@@ -299,7 +299,7 @@ sub_8007E10: @ 0x08007E10
 	movs r3, #0
 	bl TaskCreate
 	adds r7, r0, #0
-	ldr r5, _08007E68 @ =gUnknown_080D4BFC
+	ldr r5, _08007E68 @ =gSpritePosData_Rings
 	ldr r4, _08007E6C @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -322,7 +322,7 @@ sub_8007E10: @ 0x08007E10
 _08007E5C: .4byte gUnknown_030054CC
 _08007E60: .4byte sub_8007F1C
 _08007E64: .4byte sub_8008874
-_08007E68: .4byte gUnknown_080D4BFC
+_08007E68: .4byte gSpritePosData_Rings
 _08007E6C: .4byte gUnknown_030055B4
 _08007E70:
 	ldr r0, _08007EF4 @ =sub_8007F1C
@@ -470,7 +470,7 @@ _08007F8E:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08007FBE
-	ldr r1, _080082A8 @ =gUnknown_080D4BFC
+	ldr r1, _080082A8 @ =gSpritePosData_Rings
 	ldr r0, _08008298 @ =gUnknown_030055B4
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -872,7 +872,7 @@ _08008298: .4byte gUnknown_030055B4
 _0800829C: .4byte gUnknown_030054B0
 _080082A0: .4byte gUnknown_03005430
 _080082A4: .4byte gUnknown_0300542C
-_080082A8: .4byte gUnknown_080D4BFC
+_080082A8: .4byte gSpritePosData_Rings
 _080082AC: .4byte gUnknown_030059E8
 _080082B0: .4byte gUnknown_030053F0
 _080082B4: .4byte gUnknown_030054CC
@@ -1684,7 +1684,7 @@ _080088BC:
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _0800898C
-	ldr r5, _08008978 @ =gUnknown_080D4C84
+	ldr r5, _08008978 @ =gSpritePosData_Interactables
 	ldr r4, _0800897C @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -1703,7 +1703,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7]
-	ldr r5, _08008980 @ =gUnknown_080D4D0C
+	ldr r5, _08008980 @ =gSpritePosData_Itemboxes
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1721,7 +1721,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7, #4]
-	ldr r5, _08008984 @ =gUnknown_080D4D94
+	ldr r5, _08008984 @ =gSpritePosData_Enemies
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1755,10 +1755,10 @@ _080088BC:
 	.align 2, 0
 _08008970: .4byte sub_8008DCC
 _08008974: .4byte gUnknown_030054CC
-_08008978: .4byte gUnknown_080D4C84
+_08008978: .4byte gSpritePosData_Interactables
 _0800897C: .4byte gUnknown_030055B4
-_08008980: .4byte gUnknown_080D4D0C
-_08008984: .4byte gUnknown_080D4D94
+_08008980: .4byte gSpritePosData_Itemboxes
+_08008984: .4byte gSpritePosData_Enemies
 _08008988: .4byte gUnknown_080D50A0
 _0800898C:
 	ldr r6, _080089BC @ =gUnknown_0203F000
@@ -19527,9 +19527,9 @@ sub_8011328: @ 0x08011328
 	bls _08011400
 	movs r7, #0
 	movs r4, #0
-	ldr r1, _080113E8 @ =gUnknown_08135EC4
+	ldr r1, _080113E8 @ =gSpriteStates
 	mov r8, r1
-	ldr r2, _080113EC @ =gUnknown_0816ADC8
+	ldr r2, _080113EC @ =gSpritePalettes
 	mov sb, r2
 	ldr r3, _080113F0 @ =IWRAM_START + 0x80
 	adds r6, r6, r3
@@ -19607,8 +19607,8 @@ _080113AE:
 	.align 2, 0
 _080113E0: .4byte gUnknown_03005660
 _080113E4: .4byte gUnknown_030054CC
-_080113E8: .4byte gUnknown_08135EC4
-_080113EC: .4byte gUnknown_0816ADC8
+_080113E8: .4byte gSpriteStates
+_080113EC: .4byte gSpritePalettes
 _080113F0: .4byte IWRAM_START + 0x80
 _080113F4: .4byte gUnknown_030055B8
 _080113F8: .4byte gUnknown_03005500
@@ -19625,14 +19625,14 @@ _08011400:
 	lsrs r0, r0, #0xf
 	adds r0, r0, r1
 	ldrh r0, [r0]
-	ldr r2, _080115B0 @ =gUnknown_08135EC4
+	ldr r2, _080115B0 @ =gSpriteStates
 	lsls r0, r0, #2
 	adds r0, r0, r2
 	ldr r0, [r0]
 	ldr r0, [r0]
 	ldr r0, [r0, #4]
 	lsls r0, r0, #5
-	ldr r1, _080115B4 @ =gUnknown_0816ADC8
+	ldr r1, _080115B4 @ =gSpritePalettes
 	mov r5, ip
 	adds r4, r0, r1
 	movs r7, #0
@@ -19834,8 +19834,8 @@ _08011502:
 	.align 2, 0
 _080115A8: .4byte gUnknown_030059E0
 _080115AC: .4byte gUnknown_080D550C
-_080115B0: .4byte gUnknown_08135EC4
-_080115B4: .4byte gUnknown_0816ADC8
+_080115B0: .4byte gSpriteStates
+_080115B4: .4byte gSpritePalettes
 _080115B8: .4byte gUnknown_080D5678
 _080115BC: .4byte IWRAM_START + 0x20
 _080115C0: .4byte 0x000008A8
@@ -28683,7 +28683,7 @@ _08015884:
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	ldrb r5, [r2]
-	ldr r1, _080159B4 @ =gUnknown_08135EC4
+	ldr r1, _080159B4 @ =gSpriteStates
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -28744,7 +28744,7 @@ _080159A4: .4byte IWRAM_START + 0x31
 _080159A8: .4byte IWRAM_START + 0x2C
 _080159AC: .4byte gUnknown_080D5678
 _080159B0: .4byte gUnknown_030059E0
-_080159B4: .4byte gUnknown_08135EC4
+_080159B4: .4byte gSpriteStates
 _080159B8: .4byte 0x040000D4
 _080159BC: .4byte gUnknown_03002794
 _080159C0: .4byte gObjPalette
@@ -28967,7 +28967,7 @@ sub_8015B64: @ 0x08015B64
 	lsls r0, r0, #0x10
 	lsls r1, r1, #0x10
 	lsrs r4, r1, #0x10
-	ldr r1, _08015BC0 @ =gUnknown_08135EC4
+	ldr r1, _08015BC0 @ =gSpriteStates
 	lsrs r0, r0, #0xe
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -29011,7 +29011,7 @@ _08015BBA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08015BC0: .4byte gUnknown_08135EC4
+_08015BC0: .4byte gSpriteStates
 _08015BC4: .4byte 0x040000D4
 _08015BC8: .4byte gUnknown_03002794
 _08015BCC: .4byte gObjPalette
@@ -29677,7 +29677,7 @@ _080160E8:
 	ldrb r0, [r6]
 	cmp r0, #4
 	bhi _0801612C
-	ldr r1, _08016124 @ =gUnknown_080D6374
+	ldr r1, _08016124 @ =gSpawnPositions
 	ldr r2, _08016128 @ =gUnknown_030055B4
 	movs r0, #0
 	ldrsb r0, [r2, r0]
@@ -29695,7 +29695,7 @@ _080160E8:
 	.align 2, 0
 _0801611C: .4byte IWRAM_START + 0x60
 _08016120: .4byte gUnknown_030054CC
-_08016124: .4byte gUnknown_080D6374
+_08016124: .4byte gSpawnPositions
 _08016128: .4byte gUnknown_030055B4
 _0801612C:
 	ldr r0, _08016144 @ =0x04000128
