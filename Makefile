@@ -148,11 +148,10 @@ include songs.mk
 %.8bpp: %.png  ; $(GFX) $< $@
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
-
-%.lz: % ; $(GFX) $< $@
-%.rl: % ; $(GFX) $< $@
 %.gba.lz: %.gba 
 	$(GFX) $< $@ -search 1
+%.lz: % ; $(GFX) $< $@
+%.rl: % ; $(GFX) $< $@
 
 %.bin: %.aif ; $(AIF) $< $@
 
