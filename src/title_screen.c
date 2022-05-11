@@ -96,10 +96,7 @@ static const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
     { 0x28, 0x364, 0x7 }
 };
 
-// Some pallett
-extern const u8 gUnknown_080E0EF4[0x160];
-// static const u8 gUnknown_080E0EF4[0x160] = INCBIN_U8("graphics/80E0EF4.gbapal");
-
+static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
 
 extern const u8 gUnknown_080E1054[10];
 extern const u8 gUnknown_080E105E[5];
@@ -220,7 +217,7 @@ void sub_808B3FC_CreateTitleScreen(void) {
     config27C->unk34 = introConfig->unkF38;
     config27C->unk1 = 0xE;
     config27C->unk4 = gUnknown_080E1054;
-    config27C->unk8 = gUnknown_080E0EF4;
+    config27C->unk8 = sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
     gUnknown_03005B80.unk0 = config27C;
@@ -1821,6 +1818,6 @@ UNUSED void sub_808D824(void) {
 
 // Might not in title_screen
 void sub_808D874(void) {
-    CpuFastSet(gUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
+    CpuFastSet(sUnknown_080E0EF4, (void*)(PLTT + 0x1C0), 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }
