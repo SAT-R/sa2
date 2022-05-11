@@ -122,7 +122,7 @@
 . = 0x000020C0; gUnknown_030020C0 = .;
 . = 0x00002252; gUnknown_03002252 = .;
 . = 0x00002260; gUnknown_03002260 = .;
-. = 0x00002264; gUnknown_03002264 = .;
+. = 0x00002264; gFrameCount = .;
 . = 0x00002270; gWinRegs = .;
 . = 0x0000227C; gLastTaskNum = .;
 . = 0x00002280; gUnknown_03002280 = .;
@@ -183,11 +183,11 @@
 . = 0x00005394; gUnknown_03005394 = .;
 . = 0x00005398; gUnknown_03005398 = .;
 . = 0x000053A0; gUnknown_030053A0 = .;
-. = 0x000053B0; gUnknown_030053B0 = .;
+. = 0x000053B0; gInputPlaybackBuffer = .;
 . = 0x000053B4; gUnknown_030053B4 = .;
 . = 0x000053B8; gUnknown_030053B8 = .;
-. = 0x000053C0; gUnknown_030053C0 = .;
-. = 0x000053CC; gUnknown_030053CC = .;
+. = 0x000053C0; gInputRecorder = .;
+. = 0x000053CC; gInputRecordBuffer = .;
 . = 0x000053E0; gUnknown_030053E0 = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
@@ -218,8 +218,8 @@
 . = 0x000054B8; gUnknown_030054B8 = .;
 . = 0x000054BC; gUnknown_030054BC = .;
 . = 0x000054C0; gUnknown_030054C0 = .;
-. = 0x000054C8; gUnknown_030054C8 = .;
-. = 0x000054CC; gUnknown_030054CC = .;
+. = 0x000054C8; gDemoPlayCounter = .;
+. = 0x000054CC; gGameMode = .;
 . = 0x000054D0; gUnknown_030054D0 = .;
 . = 0x000054D4; gUnknown_030054D4 = .;
 . = 0x000054D8; gUnknown_030054D8 = .;
@@ -228,7 +228,7 @@
 . = 0x000054E4; gUnknown_030054E4 = .;
 . = 0x000054E8; gUnknown_030054E8 = .;
 . = 0x000054EC; gUnknown_030054EC = .;
-. = 0x000054F0; gUnknown_030054F0 = .;
+. = 0x000054F0; gSelectedCharacter = .;
 . = 0x000054F4; gUnknown_030054F4 = .;
 . = 0x000054F8; gUnknown_030054F8 = .;
 . = 0x000054FC; gUnknown_030054FC = .;
@@ -238,7 +238,7 @@
 . = 0x00005594; gUnknown_03005594 = .;
 . = 0x000055A0; gUnknown_030055A0 = .;
 . = 0x000055B0; gUnknown_030055B0 = .;
-. = 0x000055B4; gUnknown_030055B4 = .;
+. = 0x000055B4; gSelectedLevel = .;
 . = 0x000055B8; gUnknown_030055B8 = .;
 . = 0x000055BC; gUnknown_030055BC = .;
 . = 0x000055D0; gUnknown_030055D0 = .;

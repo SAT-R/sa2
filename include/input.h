@@ -3,8 +3,24 @@
 
 #include "global.h"
 
+// RecordInput
 extern void sub_8007DBC(u16);
+
+// ReadPlaybackInput
 extern u16 sub_8007D8C(void);
+
+# define RECORDER_DISABLED 0
+# define RECORDER_RECORD 1
+# define RECORDER_PLAYBACK 2
+
+struct InputRecorder {
+    u32 playbackHead;
+    u32 recordHead;
+    u8 mode;
+};
+
+const u16* gInputPlaybackBuffer;
+struct InputRecorder gInputRecorder;
 
 u16 gInput;
 u16 gPressedKeys;

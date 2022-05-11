@@ -160,14 +160,14 @@ static void GameInit(void) {
         gKeysContinuedRepeatIntervals[i] = 8;
     }
 
-    gUnknown_030053C0.unk8 = 0;
+    gInputRecorder.mode = RECORDER_DISABLED;
     // This matches better when the params are inlined
     asm("" ::: "sb");
     gUnknown_03001880 = 0;
-    gUnknown_030053B0 = NULL;
+    gInputPlaybackBuffer = NULL;
     asm("" ::: "sl");
 
-    gUnknown_03002264 = 0;
+    gFrameCount = 0;
 
     for (i = 0; i < 15; i++) {
         gIntrTable[i] = gIntrTableTemplate[i];
@@ -487,7 +487,7 @@ static void VBlankIntr(void) {
         }
     }
 
-    gUnknown_03002264++;
+    gFrameCount++;
     REG_IF = INTR_FLAG_VBLANK;
 }
 
@@ -530,9 +530,9 @@ static void GetInput(void) {
     gInput = (~REG_KEYINPUT & KEYS_MASK);
     gUnknown_03001880 = gInput;
 
-    if (gUnknown_030053C0.unk8 == 1) {
+    if (gInputRecorder.mode == RECORDER_RECORD) {
         sub_8007DBC(gInput);
-    } else if (gUnknown_030053C0.unk8 == 2) {
+    } else if (gInputRecorder.mode == RECORDER_PLAYBACK) {
         gInput = sub_8007D8C();
     }
 

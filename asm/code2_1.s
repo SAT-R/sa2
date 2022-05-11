@@ -15552,7 +15552,7 @@ sub_806B6B4: @ 0x0806B6B4
 	.align 2, 0
 _0806B6D8: .4byte gCurTask
 _0806B6DC:
-	ldr r2, _0806B6FC @ =gUnknown_030055B4
+	ldr r2, _0806B6FC @ =gSelectedLevel
 	ldr r1, _0806B700 @ =gUnknown_03000705
 	adds r0, r4, r1
 	ldrb r0, [r0]
@@ -15568,7 +15568,7 @@ _0806B6DC:
 	adds r0, r1, r0
 	b _0806B70A
 	.align 2, 0
-_0806B6FC: .4byte gUnknown_030055B4
+_0806B6FC: .4byte gSelectedLevel
 _0806B700: .4byte gUnknown_03000705
 _0806B704: .4byte gUnknown_03000710
 _0806B708:
@@ -16057,7 +16057,7 @@ sub_806BA84: @ 0x0806BA84
 	asrs r0, r2, #0x12
 	b _0806BAAC
 _0806BAA4:
-	ldr r0, _0806BACC @ =gUnknown_030055B4
+	ldr r0, _0806BACC @ =gSelectedLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -16071,7 +16071,7 @@ _0806BAAC:
 	rsbs r0, r0, #0
 	cmp r1, r0
 	bne _0806BAD4
-	ldr r0, _0806BAD0 @ =gUnknown_030054F0
+	ldr r0, _0806BAD0 @ =gSelectedCharacter
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -16079,8 +16079,8 @@ _0806BAAC:
 	lsrs r4, r0, #0x10
 	b _0806BAD6
 	.align 2, 0
-_0806BACC: .4byte gUnknown_030055B4
-_0806BAD0: .4byte gUnknown_030054F0
+_0806BACC: .4byte gSelectedLevel
+_0806BAD0: .4byte gSelectedCharacter
 _0806BAD4:
 	lsrs r4, r2, #0x10
 _0806BAD6:
@@ -17586,7 +17586,7 @@ _0806C6F2:
 	adds r1, r0, #0
 	cmp r6, r1
 	beq _0806C732
-	ldr r0, _0806C790 @ =gUnknown_030054CC
+	ldr r0, _0806C790 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0806C732
@@ -17643,7 +17643,7 @@ _0806C780: .4byte gUnknown_030005A2
 _0806C784: .4byte gUnknown_030005B0
 _0806C788: .4byte gUnknown_03005450
 _0806C78C: .4byte 0x0000C350
-_0806C790: .4byte gUnknown_030054CC
+_0806C790: .4byte gGameMode
 _0806C794: .4byte gUnknown_03005448
 _0806C798: .4byte gLoadedSaveGame
 _0806C79C: .4byte 0x000005A4

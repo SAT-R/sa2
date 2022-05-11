@@ -21,8 +21,8 @@ struct UNK_3005B80 gUnknown_03005B80;
 
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
 // Maybe some sort of graphics table
-// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
-extern const u8* const gUnknown_08C87AAC[4]; /* size 0x95C */
+// const u16* const gRecordedDemoInputs = {&gUnknown_08C87ABC, ...x3 more}
+extern const u16* const gRecordedDemoInputs[4]; /* size 0x95C */
 
 // TODO: move this function to palette or whatever
 void sub_808D874(void);
@@ -44,7 +44,7 @@ static void sub_808D67C(void);
 static void sub_808D76C(void);
 static void sub_808D740(struct UNK_0808B3FC*);
 static void sub_808C2C8(void);
-static void sub_808D6D4(void);
+static void StartTitleScreenDemo(void);
 static void sub_808D790(struct UNK_0808B3FC_UNK240*, u8);
 static void sub_808C358(void);
 static void sub_808C218(void);
@@ -174,11 +174,10 @@ static const u8 sUnknown_080E10D4[] = {
     0, 1, 1, 0, 0
 };
 
-// A list of demo levels
 // I wonder if they were ever going to
 // make the demos show different levels
 // atm only the first is used
-static const u8 sUnknown_080E10DE[] = {
+static const u8 sDemoLevels[] = {
     0, 2, 4, 6, 
     0, 1, 3, 2
 };
@@ -952,7 +951,7 @@ static void sub_808C218(void) {
     introConfig->unkF40++;
     if (introConfig->unkF40 == FRAME_TIME_SECONDS(15)) {
         // Start the demo after 15 seconds on this screen
-        gCurTask->main = sub_808D6D4;
+        gCurTask->main = StartTitleScreenDemo;
     }
 }
 
@@ -1175,12 +1174,12 @@ static void sub_808C710_Task_HandleTitleScreenExit(void) {
 
     if (sub_802D4CC(&introConfig->unk270) == 1) {
         gUnknown_03005424 = 0;
-        gUnknown_030055B4 = 0;
-        gUnknown_030054F0 = 0;
+        gSelectedLevel = 0;
+        gSelectedCharacter = 0;
         
         switch(introConfig->unkF42) {
             case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
-                gUnknown_030054CC = 0;
+                gGameMode = 0;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk13 & 0x10) {
                     sub_803143C(0, 1);
@@ -1190,20 +1189,20 @@ static void sub_808C710_Task_HandleTitleScreenExit(void) {
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
                 sub_801A6D8();
-                gUnknown_030055B4 = 0;
-                gUnknown_030054F0 = 0;
-                gUnknown_030054CC = 1;
+                gSelectedLevel = 0;
+                gSelectedCharacter = 0;
+                gGameMode = 1;
                 sub_8087FC0();
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
-                gUnknown_030054CC = 0;
+                gGameMode = 0;
                 sub_8063730(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
                 sub_808D35C();
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
-                gUnknown_030054CC = 3;
+                gGameMode = 3;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk20[0] != 0xFFFF) {
                     sub_805A1CC();
@@ -1678,12 +1677,12 @@ static void sub_808D35C(void) {
     gFlags |= 0x8000;
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
-    LZ77UnCompWram(gUnknown_080AED70, (void*)EWRAM_START);
+    LZ77UnCompWram(gMultiBootProgram_TinyChaoGarden, (void*)EWRAM_START);
 
     // TODO: what is going on here, doesn't work as a struct
     *(u32*)(EWRAM_START + 0x8) = unk374;
     *(u32*)(EWRAM_START + 0xC) = langVal;
-    *(u32*)(EWRAM_START + 0x10) = (Random() + gUnknown_03002264) * 0x100 + Random();
+    *(u32*)(EWRAM_START + 0x10) = (Random() + gFrameCount) * 0x100 + Random();
     SoftResetExram(0);
 }
 
@@ -1796,26 +1795,18 @@ static void sub_808D67C(void) {
     sub_808D740(introConfig);
 }
 
-// Task_TitleScreenExitToDemo
-static void sub_808D6D4(void) {
-    gUnknown_030053C0.unk8 = 2;
+static void StartTitleScreenDemo(void) {
+    gInputRecorder.mode = RECORDER_PLAYBACK;
     
-    // gDemoInputs
-    gUnknown_030053B0 = gUnknown_08C87AAC[0];
-    
-    // gSelectedCharacter
-    gUnknown_030054F0 = 0;
+    gInputPlaybackBuffer = gRecordedDemoInputs[0];
+    gSelectedCharacter = 0;
+    gSelectedLevel = sDemoLevels[0];
 
-    // gSelectedLevel
-    gUnknown_030055B4 = sUnknown_080E10DE[0];
-
-    // gDemoPlayCounter
-    gUnknown_030054C8++;
+    gDemoPlayCounter++;
     // Don't count higher than 3
-    gUnknown_030054C8 &= 3;
+    gDemoPlayCounter &= 3;
 
-    // gGameMode
-    gUnknown_030054CC = 0;
+    gGameMode = 0;
 
     sub_8009F94();
     sub_801A6D8();

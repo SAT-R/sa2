@@ -5,13 +5,8 @@
 
 extern u8 gUnknown_0300188C;
 
-struct Unk_03006CB0 {
-    u8 filler0[8];
-    u8 unk8;
-};
-
 extern u16 gUnknown_03001880;
-extern struct Unk_03006CB0 gUnknown_030053C0;
+
 
 extern u8 gUnknown_03004D50;
 extern u8 gUnknown_030018E0;
@@ -103,10 +98,8 @@ extern u32 gUnknown_03002878;
 
 extern s16 gUnknown_030026D0;
 extern u32 gUnknown_030053B8;
-extern const u8* gUnknown_030053B0;
-extern u32 gUnknown_03002264;
 
-extern u8 gKeysContinuedRepeatIntervals[];
+extern u32 gFrameCount;
 
 extern u8 gUnknown_030053B4;
 extern u16 gUnknown_03001888;

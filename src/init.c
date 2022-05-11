@@ -39,10 +39,10 @@ void sub_801A51C(void) {
     gUnknown_03005660.unk10 = 0;
 
     gUnknown_0300543C = 0;
-    gUnknown_030054CC = 0;
+    gGameMode = 0;
     gUnknown_030054DC = 0;
     gUnknown_03005B34 = 0;
-    gUnknown_030054C8 = 0;
+    gDemoPlayCounter = 0;
     gUnknown_030054E4 = 0;
 
     for (i = 0; i < 4; i++) {

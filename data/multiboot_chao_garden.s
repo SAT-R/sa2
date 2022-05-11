@@ -1,5 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_080AED70
-gUnknown_080AED70:
+    .global gMultiBootProgram_TinyChaoGarden
+gMultiBootProgram_TinyChaoGarden:
     .incbin "chao_garden/mb_chao_garden.gba.lz"
