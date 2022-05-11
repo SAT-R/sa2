@@ -135,7 +135,6 @@ tidy:
 	$(RM) -f $(ROM) $(ELF) $(MAP)
 	$(RM) -r build/*
 
-
 #### Recipes ####
 
 include songs.mk
@@ -149,13 +148,14 @@ include songs.mk
 %.8bpp: %.png  ; $(GFX) $< $@
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
+
 %.lz: % ; $(GFX) $< $@
 %.rl: % ; $(GFX) $< $@
-
-sound/%.bin: sound/%.aif ; $(AIF) $< $@
-chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
+%.gba.lz: %.gba 
 	$(GFX) $< $@ -search 1
-	
+
+%.bin: %.aif ; $(AIF) $< $@
+
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
 	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
@@ -169,14 +169,6 @@ $(C_BUILDDIR)/%.o: c_dep :=
 else
 $(C_BUILDDIR)/%.o: c_dep = $(shell $(SCANINC) -I include $(C_SUBDIR)/$*.c)
 endif
-
-# @$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-# @$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
-
-# @$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-# @$(CC1) $(CC1FLAGS) $(C_BUILDDIR)/$*.i -o $(C_BUILDDIR)/$*.s
-
-# @$(CPP) $(CPPFLAGS) $< | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
 
 # Build c sources, and ensure alignment
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(c_dep)
