@@ -13,6 +13,51 @@
 #include "input.h"
 #include "random.h"
 #include "math.h"
+#include "mb_programs.h"
+
+
+// Might not be declared here
+struct UNK_3005B80 gUnknown_03005B80;
+
+extern const u16 gUnknown_08097AA4[0xA00 / 2];
+// Maybe some sort of graphics table
+// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
+extern const u8* const gUnknown_08C87AAC[4]; /* size 0x95C */
+
+// TODO: move this function to palette or whatever
+void sub_808D874(void);
+
+static void sub_808B768(struct UNK_0808B3FC*);
+static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
+static void sub_808CBA4(struct UNK_0808B3FC*);
+static void sub_808D5FC(void);
+static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void);
+static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void);
+static void sub_808D63C(void);
+static void sub_808D4DC(struct UNK_0808B3FC*);
+static void sub_808BCC4(void);
+static void sub_808BDBC(void);
+static void sub_808BF7C(void);
+static void sub_808C1AC(void);
+static void sub_808D124(void);
+static void sub_808D67C(void);
+static void sub_808D76C(void);
+static void sub_808D740(struct UNK_0808B3FC*);
+static void sub_808C2C8(void);
+static void sub_808D6D4(void);
+static void sub_808D790(struct UNK_0808B3FC_UNK240*, u8);
+static void sub_808C358(void);
+static void sub_808C218(void);
+static void sub_808C498(void);
+static void sub_808C58C(void);
+static void sub_808C710_Task_HandleTitleScreenExit(void);
+static void sub_808D35C(void);
+static void sub_808D53C(void);
+static void sub_808CE00(u16, s16, u16, u16, u16);
+static void sub_808CEFC(void);
+static void sub_808D23C(void);
+static void sub_808D7F0(void);
+static void sub_808D598(void);
 
 #define FadeInBlend(frame)  \
     BLDALPHA_BLEND(frame, 16 - (frame))
@@ -20,15 +65,7 @@
 #define FadeOutBlend(frame) \
     BLDALPHA_BLEND(16 - (frame), frame)
 
-// Might not be declared here
-struct UNK_3005B80 gUnknown_03005B80;
-// Maybe some sort of graphics table
-// const u8* const gUnknown_08C87AAC = {&gUnknown_08C87ABC, ...x3 more}
-extern const u8* const gUnknown_08C87AAC[4]; /* size 0x95C */
-extern const u16 gUnknown_08097AA4[0xA00 / 2];
-
-// Tiny Chao Garden program
-extern const u8 gUnknown_080AED70[0x25E8C];
+#define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
 
 const struct UNK_080E0D64 gUnknown_080E0D64[] = 
 { 
@@ -41,7 +78,6 @@ const struct UNK_080E0D64 gUnknown_080E0D64[] =
     [LANG_ITALIAN] = {0x1E, 0x36E, 0}
 };
 
-#define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
 static const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_SINGLE_PLAYER)] = { 0x14, 0x364, 0x5 },
     [MenuTextIdx(LANG_DEFAULT, MENU_ITEM_MULTI_PLAYER)] = { 0x14, 0x364, 0x6 },
@@ -98,15 +134,66 @@ static const struct UNK_080E0D64 sUnknown_080E0D9C[] = {
 
 static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
 
-extern const u8 gUnknown_080E1054[10];
-extern const u8 gUnknown_080E105E[5];
-extern const u8 gUnknown_080E1063[0x71];
-extern const u8 gUnknown_080E10D4[10];
-extern const u8 gUnknown_080E10DE[8];
-extern const u16 gUnknown_080E10E6[8];
-extern const u16 gUnknown_080E10F6[8][2];
+static const u8 sUnknown_080E1054[] = { 
+    0, 3, 8, 14, 21, 
+    32, 46, 66, 96, 160 
+};
 
+static const u8 sUnknown_080E105E[] = { 
+    60, 19, 10, 10, 255, 
+};
 
+static const u8 sUnknown_080E1063[] = { 
+    1, 2, 3, 4, 5, 
+    6, 8, 10, 11, 13, 
+    14, 16, 16, 16, 16, 
+    16, 16, 16, 16, 4, 
+    4, 4, 4, 4, 4, 
+    4, 4, 4, 4, 3, 
+    3, 3, 3, 3, 3, 
+    3, 2, 2, 2, 2, 
+    2, 1, 1, 1, 1, 
+    1, 0, 1, 0, 1, 
+    0, 0, 1, 0, 0, 
+    1, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 
+    0, 0, 0,
+};
+
+static const u8 sUnknown_080E10D4[] = {
+    1, 1, 0, 1, 0, 
+    0, 1, 1, 0, 0
+};
+
+static const u8 sUnknown_080E10DE[] = {
+    0, 2, 4, 6, 
+    0, 1, 3, 2
+};
+
+static const u16 sUnknown_080E10E6[] = {
+    0, 1, 2, 3,
+    4, 5, 6, 6,
+};
+
+static const u16 sUnknown_080E10F6[][2] = {
+    { 20, 10 },
+    { 36, 26 },
+    { 52, 42 },
+    { 68, 58 },
+    { 92, 82 },
+    { 124, 114 },
+    { 148, 138 },
+    { 180, 170 }
+};
 
 // Don't know who these belong to yet
 extern u8 sub_802D4CC(struct UNK_0808B3FC_UNK270*);
@@ -124,41 +211,6 @@ extern void sub_8007CF0(u32);
 
 // pallette?
 extern void sub_808DB2C(void);
-// TODO: move this function to palette or whatever
-void sub_808D874(void);
-
-static void sub_808B768(struct UNK_0808B3FC*);
-static void sub_808B884_InitTitleScreenUI(struct UNK_0808B3FC*);
-static void sub_808CBA4(struct UNK_0808B3FC*);
-static void sub_808D5FC(void);
-static void sub_808BB54_Task_IntroCreateSonicTeamLogo(void);
-static void sub_808BBF4_Task_IntroFadeInSonicTeamLogo(void);
-static void sub_808D63C(void);
-static void sub_808D4DC(struct UNK_0808B3FC*);
-static void sub_808BCC4(void);
-static void sub_808BDBC(void);
-static void sub_808BF7C(void);
-static void sub_808C1AC(void);
-static void sub_808D124(void);
-static void sub_808D67C(void);
-static void sub_808D76C(void);
-static void sub_808D740(struct UNK_0808B3FC*);
-static void sub_808C2C8(void);
-static void sub_808D6D4(void);
-static void sub_808D790(struct UNK_0808B3FC_UNK240*, u8);
-static void sub_808C358(void);
-static void sub_808C218(void);
-static void sub_808C498(void);
-static void sub_808C58C(void);
-static void sub_808C710_Task_HandleTitleScreenExit(void);
-static void sub_808D35C(void);
-static void sub_808D53C(void);
-static void sub_808CE00(u16, s16, u16, u16, u16);
-static void sub_808CEFC(void);
-static void sub_808D23C(void);
-static void sub_808D7F0(void);
-static void sub_808D598(void);
-
 
 // CreateTitleScreen
 void sub_808B3FC_CreateTitleScreen(void) {
@@ -216,7 +268,7 @@ void sub_808B3FC_CreateTitleScreen(void) {
     config27C->unk2 = 0;
     config27C->unk34 = introConfig->unkF38;
     config27C->unk1 = 0xE;
-    config27C->unk4 = gUnknown_080E1054;
+    config27C->unk4 = sUnknown_080E1054;
     config27C->unk8 = sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
@@ -691,7 +743,7 @@ static void sub_808BDBC(void) {
 
     // Increase the pan up velocity once the correct
     // frame is reached
-    if (introConfig->unkF3E == gUnknown_080E105E[introConfig->unkF3C]) {
+    if (introConfig->unkF3E == sUnknown_080E105E[introConfig->unkF3C]) {
         introConfig->unkF3E = 0;
         introConfig->unkF3D++;
         introConfig->unkF3C++;
@@ -1433,7 +1485,7 @@ static void sub_808CEFC(void) {
     obj->unk3A += obj->unk36;
 
     if (obj->unk38 & 0x8000) {
-       temp = obj->unk38 >> 7 | 0xE000;
+        temp = obj->unk38 >> 7 | 0xE000;
     } else {
         temp = (obj->unk38) >> 7;
     }
@@ -1458,7 +1510,7 @@ static void sub_808CEFC(void) {
     }
 
     if (++obj->unk3D > 0xF) {
-        obj->unk3C = gUnknown_080E10D4[obj->unk3E];
+        obj->unk3C = sUnknown_080E10D4[obj->unk3E];
         obj->unk3E++;
         obj->unk3D = 0;
     }
@@ -1468,7 +1520,7 @@ static void sub_808D034(void) {
     struct UNK_808D034* obj = TaskGetStructPtr(gCurTask, obj);
     struct UNK_0808B3FC_UNK240* sprite = obj->sprite;
 
-    sprite->unk16 -= gUnknown_080E1063[obj->unk10];
+    sprite->unk16 -= sUnknown_080E1063[obj->unk10];
     gBldRegs.bldAlpha = FadeOutBlend(obj->unk10 * 2);
 
     sub_80051E8(sprite);
@@ -1488,7 +1540,7 @@ static void sub_808D09C(void) {
     s16 sum = 0;
 
     for (i = 0; i < 7 - obj->unk10; i++) {
-        sum += gUnknown_080E1063[i];
+        sum += sUnknown_080E1063[i];
     };
 
     sprite->unk16 = sum + obj->unk12;
@@ -1519,11 +1571,11 @@ static void sub_808D124(void) {
         sprite->unk4 = sub_8007C10(0x40);
 
         sprite->unkA = 0x340;
-        sprite->unk20 = gUnknown_080E10E6[i];
+        sprite->unk20 = sUnknown_080E10E6[i];
         sprite->unk21 = 0xFF;
 
-        config->unk1E0[i] = F6_0 = gUnknown_080E10F6[i][0];
-        config->unk1F0[i] = gUnknown_080E10F6[i][1];
+        config->unk1E0[i] = F6_0 = sUnknown_080E10F6[i][0];
+        config->unk1F0[i] = sUnknown_080E10F6[i][1];
 
         sprite->unk8 = 0;
         sprite->unk1A = (8 - i) * 0x40;
@@ -1747,7 +1799,7 @@ static void sub_808D6D4(void) {
     gUnknown_030053B0 = gUnknown_08C87AAC[0];
     
     gUnknown_030054F0 = 0;
-    gUnknown_030055B4 = gUnknown_080E10DE[0];
+    gUnknown_030055B4 = sUnknown_080E10DE[0];
 
     gUnknown_030054C8++;
     gUnknown_030054C8 &= 3;
