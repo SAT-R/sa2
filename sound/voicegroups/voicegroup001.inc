@@ -37,4 +37,3 @@ voicegroup001:	@ 0x08ACE3A0
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 4, 0	@08ACE52C
 	voice_keysplit_all voicegroup004	@08ACE538
 	voice_keysplit_all voicegroup001	@08ACE544
-	

@@ -93,4 +93,3 @@ voicegroup000:	@ 0x08ACDF50
 	voice_programmable_wave_alt ProgrammableWaveData_7, 0, 0, 15, 0	@08ACE37C
 	voice_directsound 60, 0, DirectSoundWaveData_19, 255, 0, 255, 127	@08ACE388
 	voice_directsound 60, 0, DirectSoundWaveData_20, 255, 231, 0, 188	@08ACE394
-	

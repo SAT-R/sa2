@@ -48,4 +48,3 @@ voicegroup002:	@ 0x08ACE550
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACE760
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACE76C
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_47, 255, 0, 255, 0	@08ACE778
-	

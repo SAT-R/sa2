@@ -93,4 +93,3 @@ voicegroup014:	@ 0x08AD1B44
 	voice_programmable_wave_alt ProgrammableWaveData_7, 0, 0, 15, 0	@08AD1F70
 	voice_directsound 60, 0, DirectSoundWaveData_19, 255, 0, 255, 127	@08AD1F7C
 	voice_directsound 60, 0, DirectSoundWaveData_20, 255, 231, 0, 188	@08AD1F88
-	

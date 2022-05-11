@@ -34,4 +34,3 @@ voicegroup006:	@ 0x08ACF384
 	voice_directsound 60, 0, DirectSoundWaveData_22, 255, 0, 255, 149	@08ACF4EC
 	voice_square_2_alt 2, 0, 2, 1, 0	@08ACF4F8
 	voice_square_2_alt 2, 0, 2, 2, 6	@08ACF504
-	

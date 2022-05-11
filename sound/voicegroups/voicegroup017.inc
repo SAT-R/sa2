@@ -85,4 +85,3 @@ voicegroup017:	@ 0x08AD2558
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_232, 255, 0, 255, 0	@08AD2924
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_233, 255, 0, 255, 0	@08AD2930
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_234, 255, 0, 255, 0	@08AD293C
-	

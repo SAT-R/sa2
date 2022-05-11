@@ -129,4 +129,3 @@ voicegroup020:	@ 0x08AD30BC
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 4, 0	@08AD3698
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD36A4
 	voice_keysplit_all voicegroup001	@08AD36B0
-	

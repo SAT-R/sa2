@@ -128,4 +128,3 @@ voicegroup005:	@ 0x08ACED90
 	voice_square_2_alt 1, 1, 0, 15, 0	@08ACF360
 	voice_square_2_alt 2, 2, 0, 15, 0	@08ACF36C
 	voice_square_2_alt 0, 2, 0, 15, 0	@08ACF378
-	

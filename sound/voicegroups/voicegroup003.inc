@@ -93,4 +93,3 @@ voicegroup003:	@ 0x08ACE784
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACEBB0
 	voice_directsound 60, 0, DirectSoundWaveData_19, 255, 0, 255, 0	@08ACEBBC
 	voice_directsound 60, 0, DirectSoundWaveData_20, 255, 0, 255, 0	@08ACEBC8
-	

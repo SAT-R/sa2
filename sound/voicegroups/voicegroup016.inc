@@ -93,4 +93,3 @@ voicegroup016:	@ 0x08AD2108
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD2534
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD2540
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD254C
-	

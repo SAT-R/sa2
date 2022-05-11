@@ -93,4 +93,3 @@ voicegroup023:	@ 0x08AD42BC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD46E8
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 3, 0	@08AD46F4
 	voice_square_1_alt 0, 3, 0, 6, 1, 0	@08AD4700
-	

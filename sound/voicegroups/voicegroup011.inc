@@ -93,4 +93,3 @@ voicegroup011:	@ 0x08AD0D10
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD113C
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD1148
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD1154
-	

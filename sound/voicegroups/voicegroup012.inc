@@ -84,4 +84,3 @@ voicegroup012:	@ 0x08AD1160
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD1520
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD152C
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_47, 255, 0, 255, 0	@08AD1538
-	

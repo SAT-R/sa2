@@ -129,4 +129,3 @@ voicegroup022:	@ 0x08AD3CBC
 	voice_directsound 60, 0, DirectSoundWaveData_372, 255, 235, 25, 204	@08AD4298
 	voice_directsound 60, 0, DirectSoundWaveData_374, 255, 235, 25, 204	@08AD42A4
 	voice_keysplit_all voicegroup001	@08AD42B0
-	

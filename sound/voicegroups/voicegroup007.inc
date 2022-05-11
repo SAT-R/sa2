@@ -129,4 +129,3 @@ voicegroup007:	@ 0x08ACF510
 	voice_programmable_wave_alt ProgrammableWaveData_6, 0, 4, 4, 0	@08ACFAEC
 	voice_keysplit_all voicegroup004	@08ACFAF8
 	voice_keysplit_all voicegroup001	@08ACFB04
-	

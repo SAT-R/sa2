@@ -129,4 +129,3 @@ voicegroup019:	@ 0x08AD2ABC
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_195, 255, 0, 255, 0	@08AD3098
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_196, 255, 0, 255, 0	@08AD30A4
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_197, 255, 0, 255, 0	@08AD30B0
-	

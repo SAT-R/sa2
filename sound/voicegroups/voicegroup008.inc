@@ -129,4 +129,3 @@ voicegroup008:	@ 0x08ACFB10
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD00EC
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD00F8
 	voice_keysplit_all voicegroup012	@08AD0104
-	

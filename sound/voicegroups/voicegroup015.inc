@@ -32,4 +32,3 @@ voicegroup015:	@ 0x08AD1F94
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD20E4
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD20F0
 	voice_square_1 0, 2, 0, 0, 15, 0	@08AD20FC
-	

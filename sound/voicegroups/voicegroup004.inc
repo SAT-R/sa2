@@ -38,4 +38,3 @@ voicegroup004:	@ 0x08ACEBD4
 	voice_square_2_alt 1, 0, 2, 0, 0	@08ACED6C
 	voice_keysplit_all voicegroup001	@08ACED78
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_32, 255, 0, 255, 0	@08ACED84
-	

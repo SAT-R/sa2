@@ -32,4 +32,3 @@ voicegroup018:	@ 0x08AD2948
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_263, 255, 0, 255, 0	@08AD2A98
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_264, 255, 0, 255, 0	@08AD2AA4
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_265, 255, 0, 255, 0	@08AD2AB0
-	
