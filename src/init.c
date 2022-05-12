@@ -4,6 +4,8 @@
 #include "init.h"
 #include "flags.h"
 #include "save.h"
+#include "game.h"
+#include "player.h"
 #include "title_screen.h"
 
 // likely static data, needs to be extracted
@@ -39,7 +41,7 @@ void sub_801A51C(void) {
     gUnknown_03005660.unk10 = 0;
 
     gUnknown_0300543C = 0;
-    gGameMode = 0;
+    gGameMode = GAME_MODE_SINGLE_PLAYER;
     gUnknown_030054DC = 0;
     gUnknown_03005B34 = 0;
     gDemoPlayCounter = 0;

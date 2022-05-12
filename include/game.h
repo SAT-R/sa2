@@ -7,4 +7,10 @@
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
 
+extern u8 gDemoPlayCounter;
+extern u8 gGameMode;
+
+extern u8 gSelectedZone;
+extern u8 gSelectedCharacter;
+
 #endif // GUARD_GAME_H

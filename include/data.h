@@ -20,14 +20,12 @@ extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[];
 extern u8 gUnknown_0300543C;
-extern u8 gGameMode;
+
 extern u32 gUnknown_030054DC;
 extern u8 gUnknown_03005B34;
-extern u8 gDemoPlayCounter;
+
 extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
-extern u8 gSelectedZone;
-extern u8 gSelectedCharacter;
 extern u16 gUnknown_0300544C;
 
 extern u32 gUnknown_030055A0[4];
