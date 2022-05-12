@@ -347,7 +347,11 @@ SECTIONS
         build/sa2/src/agb_flash_le_512k.o(.rodata);
         build/sa2/src/agb_flash_mx_512k.o(.rodata);
         *libgcc.a:_divdi3.o(.rodata);
+
+        /* Asset data */
         build/sa2/data/data3.o(.rodata);
+        build/sa2/src/recordings.o(.rodata);
+        build/sa2/data/data4.o(.rodata);
 	} = 0
 
     /* DWARF debug sections.

@@ -32,14 +32,3 @@ gUnknown_08C87960:
 gUnknown_08C8796C:
     .incbin "baserom.gba", 0x00C8796C, 0x140
 
-    .global gRecordedDemoInputs
-gRecordedDemoInputs:
-    .incbin "baserom.gba", 0x00C87AAC, 0x95C
-
-    .global gUnknown_08C88408
-gUnknown_08C88408:
-    .incbin "baserom.gba", 0x00C88408, 0x9E00
-
-    .global gUnknown_08C92208
-gUnknown_08C92208:
-    .incbin "baserom.gba", 0x00C92208, 0x36DDF8

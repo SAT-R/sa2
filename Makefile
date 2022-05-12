@@ -150,6 +150,8 @@ include songs.mk
 %.gbapal: %.png ; $(GFX) $< $@
 %.gba.lz: %.gba 
 	$(GFX) $< $@ -search 1
+%.bin.lz: %.bin 
+	$(GFX) $< $@
 %.lz: % ; $(GFX) $< $@
 %.rl: % ; $(GFX) $< $@
 

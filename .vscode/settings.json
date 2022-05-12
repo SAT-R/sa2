@@ -29,7 +29,8 @@
         "zones.h": "c",
         "player.h": "c",
         "input.h": "c",
-        "input_recorder.h": "c"
+        "input_recorder.h": "c",
+        "recordings.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"
