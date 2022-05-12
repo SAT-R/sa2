@@ -799,7 +799,7 @@ _08086516:
 	ldrh r5, [r1]
 	adds r0, r5, r0
 	strh r0, [r1]
-	ldr r0, _080865A8 @ =gSelectedLevel
+	ldr r0, _080865A8 @ =gSelectedZone
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -850,7 +850,7 @@ _08086598: .4byte gUnknown_030053B8
 _0808659C: .4byte 0x00196225
 _080865A0: .4byte 0x3C6EF35F
 _080865A4: .4byte gUnknown_030053F0
-_080865A8: .4byte gSelectedLevel
+_080865A8: .4byte gSelectedZone
 _080865AC: .4byte gGameMode
 _080865B0: .4byte gUnknown_03005448
 _080865B4: .4byte gUnknown_030054A8
@@ -1817,7 +1817,7 @@ sub_8086CE8: @ 0x08086CE8
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r2, r0
-	ldr r0, _08086D58 @ =gSelectedLevel
+	ldr r0, _08086D58 @ =gSelectedZone
 	ldrb r3, [r0]
 	lsls r1, r3, #0x18
 	asrs r1, r1, #0x19
@@ -1856,7 +1856,7 @@ _08086D3A:
 	.align 2, 0
 _08086D50: .4byte sub_8086EDC
 _08086D54: .4byte sub_8086FC8
-_08086D58: .4byte gSelectedLevel
+_08086D58: .4byte gSelectedZone
 _08086D5C: .4byte IWRAM_START + 0x120
 _08086D60: .4byte gUnknown_030055A0
 _08086D64: .4byte 0x00000121
@@ -5825,14 +5825,14 @@ _08088DB4:
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	bl sub_803143C
-	ldr r1, _08088DDC @ =gSelectedLevel
+	ldr r1, _08088DDC @ =gSelectedZone
 	movs r0, #0
 	strb r0, [r1]
 	b _08088EAC
 	.align 2, 0
 _08088DD4: .4byte gSelectedCharacter
 _08088DD8: .4byte gLoadedSaveGame
-_08088DDC: .4byte gSelectedLevel
+_08088DDC: .4byte gSelectedZone
 _08088DE0:
 	ldr r0, _08088E00 @ =gGameMode
 	ldrb r0, [r0]
@@ -5842,7 +5842,7 @@ _08088DE0:
 	ldrb r1, [r1]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18
-	ldr r2, _08088E08 @ =gSelectedLevel
+	ldr r2, _08088E08 @ =gSelectedZone
 	ldrb r2, [r2]
 	lsls r2, r2, #0x18
 	asrs r2, r2, #0x18
@@ -5851,7 +5851,7 @@ _08088DE0:
 	.align 2, 0
 _08088E00: .4byte gGameMode
 _08088E04: .4byte gSelectedCharacter
-_08088E08: .4byte gSelectedLevel
+_08088E08: .4byte gSelectedZone
 _08088E0C:
 	bl sub_808D41C_CreateTitleScreenSkipIntro
 	b _08088EAC
@@ -6736,7 +6736,7 @@ _0808943E:
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
 	bl sub_8004558
-	ldr r1, _080895E8 @ =gSelectedLevel
+	ldr r1, _080895E8 @ =gSelectedZone
 	mov sb, r1
 	ldrb r0, [r1]
 	movs r6, #3
@@ -6810,7 +6810,7 @@ _080895D8: .4byte 0x00000121
 _080895DC: .4byte 0x00000417
 _080895E0: .4byte gUnknown_080D713C
 _080895E4: .4byte gSelectedCharacter
-_080895E8: .4byte gSelectedLevel
+_080895E8: .4byte gSelectedZone
 _080895EC: .4byte gUnknown_080D715A
 _080895F0:
 	mov r2, sb
@@ -7008,7 +7008,7 @@ _080896D2:
 	movs r0, #1
 	rsbs r0, r0, #0
 	strb r0, [r1]
-	ldr r0, _080897C0 @ =gSelectedLevel
+	ldr r0, _080897C0 @ =gSelectedZone
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -7034,7 +7034,7 @@ _080897B0: .4byte gUnknown_030054B8
 _080897B4: .4byte 0x000002CA
 _080897B8: .4byte 0x000002CE
 _080897BC: .4byte gUnknown_030054A8
-_080897C0: .4byte gSelectedLevel
+_080897C0: .4byte gSelectedZone
 _080897C4: .4byte gUnknown_030059E0
 _080897C8:
 	ldr r0, _080897E4 @ =0x00000195
@@ -7113,7 +7113,7 @@ _08089856:
 	mov r1, r8
 	cmp r1, #0x1c
 	bls _08089886
-	ldr r0, _08089914 @ =gSelectedLevel
+	ldr r0, _08089914 @ =gSelectedZone
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -7207,7 +7207,7 @@ _080898A8:
 	b _08089922
 	.align 2, 0
 _08089910: .4byte IWRAM_START + 0x12C
-_08089914: .4byte gSelectedLevel
+_08089914: .4byte gSelectedZone
 _08089918: .4byte gUnknown_08097AA4
 _0808991C: .4byte 0x000002D6
 _08089920:
@@ -7302,7 +7302,7 @@ sub_80899B8: @ 0x080899B8
 	ldr r0, _08089A84 @ =gSelectedCharacter
 	ldrb r0, [r0]
 	str r0, [sp, #0xc]
-	ldr r1, _08089A88 @ =gSelectedLevel
+	ldr r1, _08089A88 @ =gSelectedZone
 	ldrb r0, [r1]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -7399,7 +7399,7 @@ _08089A5A:
 	b _08089A9A
 	.align 2, 0
 _08089A84: .4byte gSelectedCharacter
-_08089A88: .4byte gSelectedLevel
+_08089A88: .4byte gSelectedZone
 _08089A8C: .4byte gLoadedSaveGame
 _08089A90:
 	adds r0, r3, #1

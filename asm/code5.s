@@ -1781,7 +1781,7 @@ sub_808E6B0: @ 0x0808E6B0
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bne _0808E734
-	ldr r3, _0808E718 @ =gSelectedLevel
+	ldr r3, _0808E718 @ =gSelectedZone
 	movs r2, #0
 	ldrsb r2, [r3, r2]
 	ldr r0, _0808E71C @ =gLoadedSaveGame
@@ -1803,7 +1803,7 @@ sub_808E6B0: @ 0x0808E6B0
 _0808E70C: .4byte gCurTask
 _0808E710: .4byte gBgAffineRegs
 _0808E714: .4byte IWRAM_START + 0x100
-_0808E718: .4byte gSelectedLevel
+_0808E718: .4byte gSelectedZone
 _0808E71C: .4byte gLoadedSaveGame
 _0808E720: .4byte gSelectedCharacter
 _0808E724:
@@ -2148,7 +2148,7 @@ sub_808E9AC: @ 0x0808E9AC
 _0808E9C4: .4byte gCurTask
 _0808E9C8: .4byte IWRAM_START + 0x6E
 _0808E9CC:
-	ldr r0, _0808E9E0 @ =gSelectedLevel
+	ldr r0, _0808E9E0 @ =gSelectedZone
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -2157,7 +2157,7 @@ _0808E9CC:
 	bl sub_808FC78
 	b _0808E9E8
 	.align 2, 0
-_0808E9E0: .4byte gSelectedLevel
+_0808E9E0: .4byte gSelectedZone
 _0808E9E4:
 	bl sub_8091684
 _0808E9E8:

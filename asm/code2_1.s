@@ -15552,7 +15552,7 @@ sub_806B6B4: @ 0x0806B6B4
 	.align 2, 0
 _0806B6D8: .4byte gCurTask
 _0806B6DC:
-	ldr r2, _0806B6FC @ =gSelectedLevel
+	ldr r2, _0806B6FC @ =gSelectedZone
 	ldr r1, _0806B700 @ =gUnknown_03000705
 	adds r0, r4, r1
 	ldrb r0, [r0]
@@ -15568,7 +15568,7 @@ _0806B6DC:
 	adds r0, r1, r0
 	b _0806B70A
 	.align 2, 0
-_0806B6FC: .4byte gSelectedLevel
+_0806B6FC: .4byte gSelectedZone
 _0806B700: .4byte gUnknown_03000705
 _0806B704: .4byte gUnknown_03000710
 _0806B708:
@@ -16057,7 +16057,7 @@ sub_806BA84: @ 0x0806BA84
 	asrs r0, r2, #0x12
 	b _0806BAAC
 _0806BAA4:
-	ldr r0, _0806BACC @ =gSelectedLevel
+	ldr r0, _0806BACC @ =gSelectedZone
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -16079,7 +16079,7 @@ _0806BAAC:
 	lsrs r4, r0, #0x10
 	b _0806BAD6
 	.align 2, 0
-_0806BACC: .4byte gSelectedLevel
+_0806BACC: .4byte gSelectedZone
 _0806BAD0: .4byte gSelectedCharacter
 _0806BAD4:
 	lsrs r4, r2, #0x10

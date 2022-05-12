@@ -24,7 +24,10 @@
         "math.h": "c",
         "main.h": "c",
         "ios": "c",
-        "options_screen.h": "c"
+        "options_screen.h": "c",
+        "game.h": "c",
+        "zones.h": "c",
+        "player.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

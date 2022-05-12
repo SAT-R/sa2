@@ -15,6 +15,9 @@
 #include "math.h"
 #include "mb_programs.h"
 #include "options_screen.h"
+#include "game.h"
+#include "player.h"
+#include "zones.h"
 
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
@@ -177,9 +180,9 @@ static const u8 sUnknown_080E10D4[] = {
 // I wonder if they were ever going to
 // make the demos show different levels
 // atm only the first is used
-static const u8 sDemoLevels[] = {
-    0, 2, 4, 6, 
-    0, 1, 3, 2
+static const u8 sDemoZones[] = {
+    ZONE_1_1, ZONE_1_BOSS, ZONE_2_1, ZONE_2_BOSS, 
+    ZONE_1_1, ZONE_1_2, 3, ZONE_1_BOSS
 };
 
 static const u16 sUnknown_080E10E6[] = {
@@ -1174,12 +1177,12 @@ static void sub_808C710_Task_HandleTitleScreenExit(void) {
 
     if (sub_802D4CC(&introConfig->unk270) == 1) {
         gUnknown_03005424 = 0;
-        gSelectedLevel = 0;
-        gSelectedCharacter = 0;
+        gSelectedZone = ZONE_1_1;
+        gSelectedCharacter = CHARACTER_SONIC;
         
         switch(introConfig->unkF42) {
             case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
-                gGameMode = 0;
+                gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk13 & 0x10) {
                     sub_803143C(0, 1);
@@ -1189,20 +1192,20 @@ static void sub_808C710_Task_HandleTitleScreenExit(void) {
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
                 sub_801A6D8();
-                gSelectedLevel = 0;
-                gSelectedCharacter = 0;
-                gGameMode = 1;
+                gSelectedZone = ZONE_1_1;
+                gSelectedCharacter = CHARACTER_SONIC;
+                gGameMode = GAME_MODE_TIME_ATTACK;
                 sub_8087FC0();
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
-                gGameMode = 0;
+                gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_8063730(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
                 sub_808D35C();
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
-                gGameMode = 3;
+                gGameMode = GAME_MODE_MULTI_PLAYER;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk20[0] != 0xFFFF) {
                     sub_805A1CC();
@@ -1799,14 +1802,14 @@ static void StartTitleScreenDemo(void) {
     gInputRecorder.mode = RECORDER_PLAYBACK;
     
     gInputPlaybackBuffer = gRecordedDemoInputs[0];
-    gSelectedCharacter = 0;
-    gSelectedLevel = sDemoLevels[0];
+    gSelectedCharacter = CHARACTER_SONIC;
+    gSelectedZone = sDemoZones[0];
 
     gDemoPlayCounter++;
     // Don't count higher than 3
     gDemoPlayCounter &= 3;
 
-    gGameMode = 0;
+    gGameMode = GAME_MODE_SINGLE_PLAYER;
 
     sub_8009F94();
     sub_801A6D8();

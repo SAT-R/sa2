@@ -26,7 +26,7 @@ extern u8 gUnknown_03005B34;
 extern u8 gDemoPlayCounter;
 extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
-extern u8 gSelectedLevel;
+extern u8 gSelectedZone;
 extern u8 gSelectedCharacter;
 extern u16 gUnknown_0300544C;
 
