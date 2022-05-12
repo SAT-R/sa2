@@ -183,11 +183,11 @@
 . = 0x00005394; gUnknown_03005394 = .;
 . = 0x00005398; gUnknown_03005398 = .;
 . = 0x000053A0; gUnknown_030053A0 = .;
-. = 0x000053B0; gInputPlaybackBuffer = .;
+. = 0x000053B0; gInputPlaybackData = .;
 . = 0x000053B4; gUnknown_030053B4 = .;
 . = 0x000053B8; gUnknown_030053B8 = .;
 . = 0x000053C0; gInputRecorder = .;
-. = 0x000053CC; gInputRecordBuffer = .;
+. = 0x000053CC; sTapeBuffer = .;
 . = 0x000053E0; gUnknown_030053E0 = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;

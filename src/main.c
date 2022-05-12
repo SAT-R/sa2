@@ -165,7 +165,7 @@ static void GameInit(void) {
     // This matches better when the params are inlined
     asm("" ::: "sb");
     gUnknown_03001880 = 0;
-    gInputPlaybackBuffer = NULL;
+    gInputPlaybackData = NULL;
     asm("" ::: "sl");
 
     gFrameCount = 0;
@@ -532,9 +532,9 @@ static void GetInput(void) {
     gUnknown_03001880 = gInput;
 
     if (gInputRecorder.mode == RECORDER_RECORD) {
-        sub_8007DBC(gInput);
+        InputRecorderWrite(gInput);
     } else if (gInputRecorder.mode == RECORDER_PLAYBACK) {
-        gInput = sub_8007D8C();
+        gInput = InputRecorderRead();
     }
 
     gPressedKeys = (gInput ^ gPrevInput) & gInput;

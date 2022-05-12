@@ -13873,7 +13873,7 @@ _0802141C:
 	cmp r4, #2
 	bne _08021442
 _0802143C:
-	bl sub_8007D38
+	bl InputRecorderLoadTape
 	strb r4, [r6, #8]
 _08021442:
 	ldr r0, _08021484 @ =gUnknown_030054D0

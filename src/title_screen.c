@@ -25,8 +25,8 @@ struct UNK_3005B80 gUnknown_03005B80;
 
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
 
-// const u16* const gRecordedDemoInputs = {&gUnknown_08C87ABC, ...x3 more}
-extern const u16* const gRecordedDemoInputs[4]; /* size 0x95C */
+// const u8* const gRecordedDemoInputs = {&gUnknown_08C87ABC, ...x3 more}
+extern const u8* const gRecordedDemoInputs[4]; /* size 0x95C */
 
 // TODO: move this function to palette or whatever
 void sub_808D874(void);
@@ -1802,7 +1802,7 @@ static void sub_808D67C(void) {
 static void StartTitleScreenDemo(void) {
     gInputRecorder.mode = RECORDER_PLAYBACK;
     
-    gInputPlaybackBuffer = gRecordedDemoInputs[0];
+    gInputPlaybackData = gRecordedDemoInputs[0];
     gSelectedCharacter = CHARACTER_SONIC;
     gSelectedZone = sDemoZones[0];
 

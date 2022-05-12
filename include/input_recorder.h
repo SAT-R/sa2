@@ -1,23 +1,30 @@
 #ifndef GUARD_INPUT_RECORDER_H
 #define GUARD_INPUT_RECORDER_H
 
-// ReadPlaybackInput
-extern u16 sub_8007D8C(void);
+#include "global.h"
 
-// RecordInput
-extern void sub_8007DBC(u16);
+#define RECORDER_DISABLED 0
+#define RECORDER_RECORD 1
 
-# define RECORDER_DISABLED 0
-# define RECORDER_RECORD 1
-# define RECORDER_PLAYBACK 2
+// Maybe `RECORDER_PLAY`
+#define RECORDER_PLAYBACK 2
 
 struct InputRecorder {
-    u32 playbackHead;
-    u32 recordHead;
+    s32 playbackHead;
+    s32 recordHead;
+
     u8 mode;
 };
 
-const u16* gInputPlaybackBuffer;
+const u8* gInputPlaybackData;
 struct InputRecorder gInputRecorder;
+
+
+void InputRecorderResetRecordHead(void);
+void InputRecorderResetPlaybackHead(void);
+void InputRecorderLoadTape(void);
+u16 InputRecorderRead(void);
+void InputRecorderWrite(u16);
+
 
 #endif // INPUT_RECORDER_H
