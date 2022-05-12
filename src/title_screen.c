@@ -11,6 +11,7 @@
 #include "main.h"
 #include "data.h"
 #include "input.h"
+#include "input_recorder.h"
 #include "random.h"
 #include "math.h"
 #include "mb_programs.h"
@@ -23,7 +24,7 @@
 struct UNK_3005B80 gUnknown_03005B80;
 
 extern const u16 gUnknown_08097AA4[0xA00 / 2];
-// Maybe some sort of graphics table
+
 // const u16* const gRecordedDemoInputs = {&gUnknown_08C87ABC, ...x3 more}
 extern const u16* const gRecordedDemoInputs[4]; /* size 0x95C */
 

@@ -10,6 +10,7 @@
 #include "agb_flash.h"
 #include "flags.h"
 #include "input.h"
+#include "input_recorder.h"
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
