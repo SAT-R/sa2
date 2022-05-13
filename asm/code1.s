@@ -4435,7 +4435,7 @@ sub_8009F94: @ 0x08009F94
 	strh r0, [r6, #0x16]
 	movs r0, #0x71
 	strh r0, [r6, #0x18]
-	ldr r0, _0800A0E8 @ =gUnknown_080E0D64
+	ldr r0, _0800A0E8 @ =gPressStartTiles
 	lsls r4, r4, #0x18
 	asrs r4, r4, #0x15
 	adds r4, r4, r0
@@ -4540,7 +4540,7 @@ _0800A0D8: .4byte IWRAM_START + 0x60
 _0800A0DC: .4byte IWRAM_START + 0x64
 _0800A0E0: .4byte IWRAM_START + 0x65
 _0800A0E4: .4byte gUnknown_03005424
-_0800A0E8: .4byte gUnknown_080E0D64
+_0800A0E8: .4byte gPressStartTiles
 _0800A0EC: .4byte IWRAM_START + 0x20
 _0800A0F0: .4byte IWRAM_START + 0x21
 _0800A0F4: .4byte IWRAM_START + 0x22
@@ -4753,7 +4753,7 @@ sub_800A24C: @ 0x0800A24C
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0800A304
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 	b _0800A308
 	.align 2, 0
 _0800A2C8: .4byte gCurTask
@@ -5032,7 +5032,7 @@ sub_800A510: @ 0x0800A510
 	ldr r0, _0800A540 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -5904,7 +5904,7 @@ _0800AC18:
 	ldr r0, _0800AC78 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C_CreateTitleScreenSkipIntro
+	bl CreateTitleScreenAndSkipIntro
 	b _0800AD8A
 	.align 2, 0
 _0800AC5C: .4byte gFlags

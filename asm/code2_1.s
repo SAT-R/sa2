@@ -8682,7 +8682,7 @@ _08067F6C: .4byte gUnknown_03005390
 _08067F70: .4byte gUnknown_03004D5C
 _08067F74: .4byte gUnknown_03002A84
 _08067F78:
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 _08067F7C:
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -17823,7 +17823,7 @@ _0806C8E4:
 	ldr r0, _0806C91C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D41C_CreateTitleScreenSkipIntro
+	bl CreateTitleScreenAndSkipIntro
 	b _0806C942
 	.align 2, 0
 _0806C908: .4byte 0x0000FFFF

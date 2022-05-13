@@ -57790,7 +57790,7 @@ sub_8036B70: @ 0x08036B70
 	ldr r0, _08036BC4 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 	b _08036BCE
 	.align 2, 0
 _08036BAC: .4byte gCurTask
@@ -129885,7 +129885,7 @@ _0805AB6A:
 	adds r7, #0x30
 	ldr r0, [sp, #8]
 	str r0, [r7, #4]
-	ldr r3, _0805AD94 @ =gUnknown_080E0D64
+	ldr r3, _0805AD94 @ =gPressStartTiles
 	ldr r1, _0805AD90 @ =gLoadedSaveGame
 	ldr r2, [r1]
 	ldrb r1, [r2, #6]
@@ -130060,7 +130060,7 @@ _0805AD84: .4byte IWRAM_START + 0xF2
 _0805AD88: .4byte 0x00003FFF
 _0805AD8C: .4byte gUnknown_080D9050
 _0805AD90: .4byte gLoadedSaveGame
-_0805AD94: .4byte gUnknown_080E0D64
+_0805AD94: .4byte gPressStartTiles
 _0805AD98: .4byte 0x00000432
 _0805AD9C: .4byte 0x0600A000
 _0805ADA0: .4byte gMultiSioStatusFlags
@@ -131998,7 +131998,7 @@ _0805BDC0:
 	ldr r1, _0805BDE4 @ =gUnknown_03002260
 	ldr r0, _0805BDE8 @ =gMapHeaders
 	str r0, [r1]
-	bl sub_808D41C_CreateTitleScreenSkipIntro
+	bl CreateTitleScreenAndSkipIntro
 _0805BDD8:
 	pop {r4, r5, r6, r7}
 	pop {r0}

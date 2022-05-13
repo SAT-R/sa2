@@ -3131,7 +3131,7 @@ _08087738:
 	bl MultiSioStop
 	movs r0, #0
 	bl MultiSioInit
-	bl sub_808D41C_CreateTitleScreenSkipIntro
+	bl CreateTitleScreenAndSkipIntro
 	movs r1, #0
 	ldr r3, _080877D4 @ =gUnknown_030055A0
 	movs r2, #0
@@ -5853,7 +5853,7 @@ _08088E00: .4byte gGameMode
 _08088E04: .4byte gSelectedCharacter
 _08088E08: .4byte gSelectedZone
 _08088E0C:
-	bl sub_808D41C_CreateTitleScreenSkipIntro
+	bl CreateTitleScreenAndSkipIntro
 	b _08088EAC
 _08088E12:
 	movs r5, #0

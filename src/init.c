@@ -16,7 +16,7 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void sub_808D41C_CreateTitleScreenSkipIntro();
+void CreateTitleScreenAndSkipIntro();
 void sub_8063940_CreateProfileScreen();
 void sub_8081C0C();
 
@@ -71,7 +71,7 @@ void sub_801A51C(void) {
     }
     
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
-        sub_808B3FC_CreateTitleScreen();
+        CreateTitleScreen();
         LoadCompletedSaveGame();
         return;
     }
@@ -85,12 +85,12 @@ void sub_801A51C(void) {
     // skip the intro and go straight to the
     // title screen
     if (gFlags & FLAGS_SKIP_INTRO) {
-        sub_808D41C_CreateTitleScreenSkipIntro();
+        CreateTitleScreenAndSkipIntro();
         gFlags &= ~FLAGS_SKIP_INTRO;
         return;
     }
     
-    sub_808B3FC_CreateTitleScreen();
+    CreateTitleScreen();
 }
 
 static void Task_DummyFunc(void);

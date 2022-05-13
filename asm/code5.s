@@ -4384,7 +4384,7 @@ _0808FBCC: .4byte IWRAM_START + 0x161
 _0808FBD0:
 	cmp r0, #1
 	bne _0808FBDE
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 	ldr r0, [r4]
 	bl TaskDestroy
 _0808FBDE:
@@ -13636,7 +13636,7 @@ sub_8094570: @ 0x08094570
 _08094588: .4byte gCurTask
 _0809458C: .4byte IWRAM_START + 0xC0
 _08094590:
-	bl sub_808B3FC_CreateTitleScreen
+	bl CreateTitleScreen
 	ldr r0, [r4]
 	bl TaskDestroy
 _0809459A:
