@@ -14388,7 +14388,7 @@ _0806AD4C:
 	ldr r0, _0806AD94 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808D49C
+	bl CreateTitleScreenAtSinglePlayerMenu
 _0806AD78:
 	pop {r4}
 	pop {r0}

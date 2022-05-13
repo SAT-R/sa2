@@ -5075,7 +5075,7 @@ sub_8088768: @ 0x08088768
 	rsbs r1, r1, #0
 	ands r0, r1
 	str r0, [r2]
-	bl sub_808D49C
+	bl CreateTitleScreenAtSinglePlayerMenu
 	ldr r0, [r4]
 	bl TaskDestroy
 	b _080887E6

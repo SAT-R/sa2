@@ -4772,7 +4772,7 @@ _0800A2F8: .4byte gUnknown_03004D5C
 _0800A2FC: .4byte gUnknown_03002A84
 _0800A300: .4byte IWRAM_START + 0x64
 _0800A304:
-	bl sub_808D45C
+	bl CreateTitleScreenAtPlayModeMenu
 _0800A308:
 	pop {r4, r5, r6}
 	pop {r0}

@@ -50238,7 +50238,7 @@ _08032DF8: .4byte gUnknown_03004D5C
 _08032DFC: .4byte gUnknown_03002A84
 _08032E00: .4byte gGameMode
 _08032E04:
-	bl sub_808D49C
+	bl CreateTitleScreenAtSinglePlayerMenu
 	b _08032E2C
 _08032E0A:
 	adds r0, r4, #0
@@ -129545,7 +129545,7 @@ sub_805A918: @ 0x0805A918
 	rsbs r1, r1, #0
 	ands r0, r1
 	str r0, [r2]
-	bl sub_808D45C
+	bl CreateTitleScreenAtPlayModeMenu
 	ldr r0, [r4]
 	bl TaskDestroy
 	b _0805A996

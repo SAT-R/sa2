@@ -97,14 +97,14 @@ struct UNK_080E0D64 {
     s8 unk6;
 };
 
-struct UNK_808D034 {
+struct MenuItemTransition {
     struct UNK_0808B3FC_UNK240* sprite;
     u8 filler4[12];
-    u8 unk10;
+    u8 animFrame;
     s16 unk12;
 }; /* size 0x14 */
 
-struct UNK_808D124 {
+struct LensFlare {
     struct UNK_0808B3FC_UNK240 sprites[8];
     struct UNK_808D124_UNK180 unk180[8];
     s16 unk1E0[8];
@@ -112,6 +112,7 @@ struct UNK_808D124 {
     u16 unk200;
     s16 unk202;
     u8 unk204;
+    // animFrame
     u8 unk205;
     u8 unk206;
     u8 unk207;
@@ -123,9 +124,9 @@ struct UNK_3005B80 gUnknown_03005B80;
 void CreateTitleScreen(void);
 void CreateTitleScreenAndSkipIntro(void);
 // CreateTitleScreenAtPlayModeMenu
-void sub_808D45C(void);
+void CreateTitleScreenAtPlayModeMenu(void);
 // CreateTitleScreenSkipToPlayModeMenu
-void sub_808D49C(void);
+void CreateTitleScreenAtSinglePlayerMenu(void);
 
 #define MENU_ITEM_SINGLE_PLAYER 0
 #define MENU_ITEM_MULTI_PLAYER 1
