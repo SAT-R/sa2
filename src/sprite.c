@@ -5,6 +5,34 @@
 
 extern struct Unk_03002400 *gUnknown_03001800[];
 
+// TODO: use once all functions have been decomped
+// extern void sub_8003800(void);
+// extern void sub_8004314(void);
+// extern void sub_8004380(void);
+// extern void sub_800438c(void);
+// extern void sub_800439c(void);
+// extern void sub_8003870(void);
+// extern void sub_80043b0(void);
+// extern void sub_80043cc(void);
+// extern void sub_80043d8(void);
+// extern void sub_80043f8(void);
+// extern void sub_8004400(void);
+// extern void sub_800440c(void);
+// static const void* gUnknown_08097A74[] = {
+//         sub_8003800,
+//         sub_8004314,
+//         sub_8004380,
+//         sub_800438c,
+//         sub_800439c,
+//         sub_8003870,
+//         sub_80043b0,
+//         sub_80043cc,
+//         sub_80043d8,
+//         sub_80043f8,
+//         sub_8004400,
+//         sub_800440c,
+// };
+
 void sub_8002A3C(struct Unk_03002400 *r4) {
     struct MapHeader_Full *r6 = gUnknown_03002260[r4->unk1C].y;
     u32 a;
