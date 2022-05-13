@@ -37,14 +37,35 @@
 
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
+// Converts a number to Q8.8 fixed-point format
+#define Q_8_8(n) ((s16)((n) * 256))
+
+// Converts a number to Q4.12 fixed-point format
+#define Q_4_12(n)  ((s16)((n) * 4096))
+
+// Converts a number to Q2.14 fixed-point format
+#define Q_2_14(n) ((s16)((n) * 0x4000))
+
+// Converts a number to Q24.8 fixed-point format
+#define Q_24_8(n)  ((s32)((n) << 8))
+
+// Converts a Q8.8 fixed-point format number to a regular integer
+#define Q_8_8_TO_INT(n) ((int)((n) / 256))
+
+// Converts a Q4.12 fixed-point format number to a regular integer
+#define Q_4_12_TO_INT(n)  ((int)((n) / 4096))
+
+// Converts a Q24.8 fixed-point format number to a regular integer
+#define Q_24_8_TO_INT(n) ((int)((n) >> 8))
+
 #define RED_VALUE(color) ((color) & 0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color) (((color) >> 10) & 0x1F)
 
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
-#define SIN(aAngle) (gSinLookup[(aAngle&0xFF)])
-#define COS(aAngle) (gSinLookup[0x40 + (aAngle&0xFF)])
+#define SIN(aAngle) (gSineTable[(aAngle&0xFF)])
+#define COS(aAngle) (gSineTable[0x40 + (aAngle&0xFF)])
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))
 

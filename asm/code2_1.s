@@ -18167,7 +18167,7 @@ sub_806CB84: @ 0x0806CB84
 	ldr r2, _0806CC2C @ =0x000003FF
 	adds r0, r2, #0
 	ands r1, r0
-	ldr r3, _0806CC30 @ =gSinLookup
+	ldr r3, _0806CC30 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r3
 	movs r4, #0
@@ -18230,7 +18230,7 @@ sub_806CB84: @ 0x0806CB84
 	b _0806CCDA
 	.align 2, 0
 _0806CC2C: .4byte 0x000003FF
-_0806CC30: .4byte gSinLookup
+_0806CC30: .4byte gSineTable
 _0806CC34: .4byte 0x00000594
 _0806CC38: .4byte 0x000005D1
 _0806CC3C:
@@ -21276,7 +21276,7 @@ _0806E422:
 	ble _0806E4B8
 	ldr r4, _0806E4EC @ =0x000003FF
 	mov sl, r4
-	ldr r7, _0806E4F0 @ =gSinLookup
+	ldr r7, _0806E4F0 @ =gSineTable
 	mov sb, r7
 _0806E434:
 	lsls r3, r1, #0x10
@@ -21373,7 +21373,7 @@ _0806E4DC:
 	bx r0
 	.align 2, 0
 _0806E4EC: .4byte 0x000003FF
-_0806E4F0: .4byte gSinLookup
+_0806E4F0: .4byte gSineTable
 _0806E4F4: .4byte 0x00000874
 _0806E4F8: .4byte 0x0000FF80
 
@@ -22040,7 +22040,7 @@ sub_806EA04: @ 0x0806EA04
 	lsls r1, r1, #3
 	adds r0, r7, r1
 	ldrh r1, [r0]
-	ldr r2, _0806EB58 @ =gSinLookup
+	ldr r2, _0806EB58 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r2
 	movs r5, #0
@@ -22180,7 +22180,7 @@ _0806EB48: .4byte gUnknown_03002A80
 _0806EB4C: .4byte gUnknown_03002878
 _0806EB50: .4byte 0x04000020
 _0806EB54: .4byte gUnknown_03001884
-_0806EB58: .4byte gSinLookup
+_0806EB58: .4byte gSineTable
 _0806EB5C: .4byte 0x000005CE
 _0806EB60: .4byte gFlags
 _0806EB64: .4byte 0x000005D1
@@ -22358,7 +22358,7 @@ _0806ECB6:
 	adds r0, r6, #0
 	bl sub_806F69C
 	lsls r0, r0, #0x10
-	ldr r3, _0806ED28 @ =gSinLookup
+	ldr r3, _0806ED28 @ =gSineTable
 	lsrs r4, r0, #0x10
 	mov ip, r4
 	asrs r0, r0, #0x10
@@ -22404,7 +22404,7 @@ _0806ECB6:
 	.align 2, 0
 _0806ED20: .4byte IWRAM_START + 0xB4
 _0806ED24: .4byte 0x000005BA
-_0806ED28: .4byte gSinLookup
+_0806ED28: .4byte gSineTable
 _0806ED2C: .4byte 0xFFFFFEFF
 _0806ED30:
 	adds r1, r5, #0
@@ -22496,7 +22496,7 @@ sub_806EDB4: @ 0x0806EDB4
 	ldr r2, _0806EE3C @ =IWRAM_START + 0xB2
 	adds r0, r4, r2
 	ldrh r1, [r0]
-	ldr r2, _0806EE40 @ =gSinLookup
+	ldr r2, _0806EE40 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r2
 	mov r8, r0
@@ -22540,7 +22540,7 @@ _0806EE30: .4byte gCurTask
 _0806EE34: .4byte IWRAM_START + 0xC8
 _0806EE38: .4byte IWRAM_START + 0xE4
 _0806EE3C: .4byte IWRAM_START + 0xB2
-_0806EE40: .4byte gSinLookup
+_0806EE40: .4byte gSineTable
 _0806EE44: .4byte gInput
 _0806EE48: .4byte IWRAM_START + 0xD8
 _0806EE4C: .4byte IWRAM_START + 0xB4
@@ -23092,7 +23092,7 @@ sub_806F268: @ 0x0806F268
 	ldr r1, _0806F2C4 @ =IWRAM_START + 0xB2
 	adds r0, r0, r1
 	ldrh r1, [r0]
-	ldr r2, _0806F2C8 @ =gSinLookup
+	ldr r2, _0806F2C8 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r2
 	movs r7, #0
@@ -23115,7 +23115,7 @@ _0806F2B8: .4byte gCurTask
 _0806F2BC: .4byte IWRAM_START + 0xE0
 _0806F2C0: .4byte IWRAM_START + 0xC8
 _0806F2C4: .4byte IWRAM_START + 0xB2
-_0806F2C8: .4byte gSinLookup
+_0806F2C8: .4byte gSineTable
 _0806F2CC:
 	movs r0, #0
 	str r0, [r5]
@@ -23484,7 +23484,7 @@ sub_806F56C: @ 0x0806F56C
 	ldr r6, _0806F5CC @ =IWRAM_START + 0x100
 	adds r0, r0, r6
 	ldr r3, [r0]
-	ldr r2, _0806F5D0 @ =gSinLookup
+	ldr r2, _0806F5D0 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r2
 	movs r6, #0
@@ -23508,7 +23508,7 @@ _0806F5C0: .4byte gCurTask
 _0806F5C4: .4byte IWRAM_START + 0xC8
 _0806F5C8: .4byte IWRAM_START + 0xB2
 _0806F5CC: .4byte IWRAM_START + 0x100
-_0806F5D0: .4byte gSinLookup
+_0806F5D0: .4byte gSineTable
 _0806F5D4:
 	movs r0, #0
 	str r0, [r5]
@@ -23561,7 +23561,7 @@ sub_806F604: @ 0x0806F604
 	ldr r6, _0806F664 @ =IWRAM_START + 0x104
 	adds r0, r0, r6
 	ldr r3, [r0]
-	ldr r2, _0806F668 @ =gSinLookup
+	ldr r2, _0806F668 @ =gSineTable
 	lsls r0, r1, #1
 	adds r0, r0, r2
 	movs r6, #0
@@ -23585,7 +23585,7 @@ _0806F658: .4byte gCurTask
 _0806F65C: .4byte IWRAM_START + 0xC8
 _0806F660: .4byte IWRAM_START + 0xB2
 _0806F664: .4byte IWRAM_START + 0x104
-_0806F668: .4byte gSinLookup
+_0806F668: .4byte gSineTable
 _0806F66C:
 	movs r0, #0
 	str r0, [r5]
@@ -23746,7 +23746,7 @@ _0806F77C:
 	mov r1, ip
 	asrs r1, r0
 	mov ip, r1
-	ldr r3, _0806F80C @ =gSinLookup
+	ldr r3, _0806F80C @ =gSineTable
 	lsls r0, r5, #1
 	adds r0, r0, r3
 	movs r1, #0
@@ -23800,7 +23800,7 @@ _0806F7DA:
 	b _0806F834
 	.align 2, 0
 _0806F808: .4byte gUnknown_080DF794
-_0806F80C: .4byte gSinLookup
+_0806F80C: .4byte gSineTable
 _0806F810: .4byte 0x000003FF
 _0806F814:
 	cmp r1, #0
@@ -26899,7 +26899,7 @@ sub_80710B0: @ 0x080710B0
 	mov sl, r0
 	mov r3, sl
 	ands r2, r3
-	ldr r0, _08071158 @ =gSinLookup
+	ldr r0, _08071158 @ =gSineTable
 	mov sb, r0
 	lsls r0, r2, #1
 	add r0, sb
@@ -26955,7 +26955,7 @@ sub_80710B0: @ 0x080710B0
 _0807114C: .4byte gCurTask
 _08071150: .4byte IWRAM_START + 0x48
 _08071154: .4byte 0x000003FF
-_08071158: .4byte gSinLookup
+_08071158: .4byte gSineTable
 _0807115C: .4byte IWRAM_START + 0xA8
 _08071160: .4byte IWRAM_START + 0xAC
 _08071164: .4byte IWRAM_START + 0x50

@@ -3899,7 +3899,7 @@ sub_8007738: @ 0x08007738
 	ldr r0, [sp]
 	cmp r7, r0
 	bhs _08007826
-	ldr r4, _0800784C @ =gSinLookup
+	ldr r4, _0800784C @ =gSineTable
 	ldr r3, _08007850 @ =0x000003FF
 	lsls r0, r5, #0x10
 	asrs r0, r0, #0x10
@@ -3967,7 +3967,7 @@ _0800783C: .4byte gUnknown_03002878
 _08007840: .4byte 0x04000010
 _08007844: .4byte gUnknown_03002A80
 _08007848: .4byte gUnknown_03001884
-_0800784C: .4byte gSinLookup
+_0800784C: .4byte gSineTable
 _08007850: .4byte 0x000003FF
 _08007854: .4byte 0x000001FF
 

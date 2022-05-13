@@ -7169,7 +7169,7 @@ _080898A8:
 	beq _08089944
 	adds r5, r7, #0
 	adds r5, #0xcc
-	ldr r1, _08089918 @ =gSinLookup
+	ldr r1, _08089918 @ =gSineTable
 	ldr r3, _0808991C @ =0x000002D6
 	adds r2, r7, r3
 	ldrh r0, [r2]
@@ -7208,7 +7208,7 @@ _080898A8:
 	.align 2, 0
 _08089910: .4byte IWRAM_START + 0x12C
 _08089914: .4byte gSelectedZone
-_08089918: .4byte gSinLookup
+_08089918: .4byte gSineTable
 _0808991C: .4byte 0x000002D6
 _08089920:
 	strh r2, [r3]
@@ -7694,7 +7694,7 @@ sub_8089C24: @ 0x08089C24
 	ldr r2, _08089D94 @ =gUnknown_030059E0
 	adds r2, #0x24
 	mov r8, r2
-	ldr r4, _08089D9C @ =gSinLookup
+	ldr r4, _08089D9C @ =gSineTable
 	movs r3, #0xff
 	mov sl, r3
 	movs r0, #0xf
@@ -7769,7 +7769,7 @@ _08089D8C: .4byte IWRAM_START + 0x51
 _08089D90: .4byte IWRAM_START + 0x55
 _08089D94: .4byte gUnknown_030059E0
 _08089D98: .4byte gUnknown_03005960
-_08089D9C: .4byte gSinLookup
+_08089D9C: .4byte gSineTable
 _08089DA0: .4byte 0x000007FF
 _08089DA4:
 	mov r1, r8
@@ -8015,7 +8015,7 @@ _08089F62:
 	str r3, [sp]
 	adds r7, #0xe4
 	mov r8, r7
-	ldr r4, _08089FF8 @ =gSinLookup
+	ldr r4, _08089FF8 @ =gSineTable
 	adds r6, r5, #0
 	mov r5, sb
 	movs r0, #0xff
@@ -8074,7 +8074,7 @@ _08089F8E:
 	.align 2, 0
 _08089FF0: .4byte gUnknown_030059E0
 _08089FF4: .4byte gUnknown_03005960
-_08089FF8: .4byte gSinLookup
+_08089FF8: .4byte gSineTable
 _08089FFC: .4byte gUnknown_03005A04
 _0808A000:
 	bl Random
@@ -9835,7 +9835,7 @@ _0808AE58:
 	movs r3, #0xe2
 	lsls r3, r3, #3
 	adds r4, r7, r3
-	ldr r2, _0808AF6C @ =gSinLookup
+	ldr r2, _0808AF6C @ =gSineTable
 	ldr r5, _0808AF64 @ =0x00000712
 	adds r3, r7, r5
 	ldrb r1, [r3]
@@ -9882,7 +9882,7 @@ _0808AEBA:
 	ble _0808AEBA
 	ldr r0, [sp, #4]
 	bl sub_80051E8
-	ldr r3, _0808AF6C @ =gSinLookup
+	ldr r3, _0808AF6C @ =gSineTable
 	mov r8, r3
 	movs r0, #0xe1
 	lsls r0, r0, #3
@@ -9950,7 +9950,7 @@ _0808AEBA:
 	.align 2, 0
 _0808AF64: .4byte 0x00000712
 _0808AF68: .4byte 0x000003CA
-_0808AF6C: .4byte gSinLookup
+_0808AF6C: .4byte gSineTable
 _0808AF70: .4byte 0xFFFFFBFF
 
 	thumb_func_start sub_808AF74

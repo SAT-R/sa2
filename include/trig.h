@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-extern const s16 gSinLookup[1280];
+extern const s16 gSineTable[1280];
 
 #endif // GUARD_TRIG_H

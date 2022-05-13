@@ -1479,7 +1479,7 @@ static void sub_808CEFC(void) {
             obj->unk3A += 0x30;
             break;
         case 1:
-            obj->unk3A -= gSinLookup[obj->unk3D * 16] >> 10;
+            obj->unk3A -= gSineTable[obj->unk3D * 16] >> 10;
             break;
     
     }
