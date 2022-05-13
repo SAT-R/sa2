@@ -2678,7 +2678,7 @@ sub_8003EE4: @ 0x08003EE4
 	adds r0, r7, #0
 	mov r1, sb
 	bl Div
-	ldr r1, _0800400C @ =gUnknown_08097AA4
+	ldr r1, _0800400C @ =gSinLookup
 	mov sl, r1
 	movs r2, #0x80
 	lsls r2, r2, #1
@@ -2785,7 +2785,7 @@ sub_8003EE4: @ 0x08003EE4
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800400C: .4byte gUnknown_08097AA4
+_0800400C: .4byte gSinLookup
 
 	thumb_func_start sub_8004010
 sub_8004010: @ 0x08004010
@@ -3851,7 +3851,7 @@ sub_80047A0: @ 0x080047A0
 	asrs r1, r1, #0x10
 	mov r8, r1
 	bl Div
-	ldr r7, _0800485C @ =gUnknown_08097AA4
+	ldr r7, _0800485C @ =gSinLookup
 	movs r2, #0x80
 	lsls r2, r2, #1
 	adds r1, r4, r2
@@ -3916,7 +3916,7 @@ sub_80047A0: @ 0x080047A0
 	bx r0
 	.align 2, 0
 _08004858: .4byte gUnknown_03004D96
-_0800485C: .4byte gUnknown_08097AA4
+_0800485C: .4byte gSinLookup
 
 	thumb_func_start sub_8004860
 sub_8004860: @ 0x08004860
@@ -3948,7 +3948,7 @@ _0800487C:
 	adds r4, r4, r0
 	subs r2, #0x18
 	str r2, [sp, #0x28]
-	ldr r2, _08004A18 @ =gUnknown_08097AA4
+	ldr r2, _08004A18 @ =gSinLookup
 	ldrh r0, [r6]
 	ldr r1, _08004A1C @ =0x000003FF
 	ands r1, r0
@@ -4138,7 +4138,7 @@ _0800497A:
 	b _08004A2E
 	.align 2, 0
 _08004A14: .4byte gUnknown_03004D96
-_08004A18: .4byte gUnknown_08097AA4
+_08004A18: .4byte gSinLookup
 _08004A1C: .4byte 0x000003FF
 _08004A20:
 	mov r2, r8
@@ -4264,7 +4264,7 @@ _08004AD8:
 	lsls r5, r5, #1
 	adds r0, r0, r5
 	lsls r0, r0, #1
-	ldr r6, _08004D64 @ =gUnknown_08097AA4
+	ldr r6, _08004D64 @ =gSinLookup
 	adds r0, r0, r6
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4456,7 +4456,7 @@ _08004C14:
 	lsls r2, r2, #1
 	adds r0, r0, r2
 	lsls r0, r0, #1
-	ldr r4, _08004D64 @ =gUnknown_08097AA4
+	ldr r4, _08004D64 @ =gSinLookup
 	adds r0, r0, r4
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4484,7 +4484,7 @@ _08004C14:
 	ldr r6, _08004D5C @ =gUnknown_03001944
 	ldrh r0, [r6]
 	lsls r0, r0, #1
-	ldr r1, _08004D64 @ =gUnknown_08097AA4
+	ldr r1, _08004D64 @ =gSinLookup
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4562,7 +4562,7 @@ _08004C14:
 _08004D58: .4byte gUnknown_03004D96
 _08004D5C: .4byte gUnknown_03001944
 _08004D60: .4byte 0x000003FF
-_08004D64: .4byte gUnknown_08097AA4
+_08004D64: .4byte gSinLookup
 _08004D68: .4byte gUnknown_030017F0
 _08004D6C: .4byte gUnknown_03005394
 _08004D70: .4byte gUnknown_0300194C
@@ -4691,7 +4691,7 @@ _08004E30:
 	lsls r5, r5, #1
 	adds r0, r0, r5
 	lsls r0, r0, #1
-	ldr r7, _08005134 @ =gUnknown_08097AA4
+	ldr r7, _08005134 @ =gSinLookup
 	adds r0, r0, r7
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4883,7 +4883,7 @@ _08004F6A:
 	lsls r2, r2, #1
 	adds r0, r0, r2
 	lsls r0, r0, #1
-	ldr r3, _08005134 @ =gUnknown_08097AA4
+	ldr r3, _08005134 @ =gSinLookup
 	adds r0, r0, r3
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4913,7 +4913,7 @@ _08004F6A:
 	ldr r5, _0800512C @ =gUnknown_03001944
 	ldrh r0, [r5]
 	lsls r0, r0, #1
-	ldr r1, _08005134 @ =gUnknown_08097AA4
+	ldr r1, _08005134 @ =gSinLookup
 	adds r0, r0, r1
 	movs r2, #0
 	ldrsh r0, [r0, r2]
@@ -4941,7 +4941,7 @@ _08004F6A:
 	ldr r2, _0800512C @ =gUnknown_03001944
 	ldrh r0, [r2]
 	lsls r0, r0, #1
-	ldr r7, _08005134 @ =gUnknown_08097AA4
+	ldr r7, _08005134 @ =gSinLookup
 	adds r0, r0, r7
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -4970,7 +4970,7 @@ _08004F6A:
 	lsls r1, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #1
-	ldr r2, _08005134 @ =gUnknown_08097AA4
+	ldr r2, _08005134 @ =gSinLookup
 	adds r0, r0, r2
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -5050,7 +5050,7 @@ _08004F6A:
 _08005128: .4byte gUnknown_03004D96
 _0800512C: .4byte gUnknown_03001944
 _08005130: .4byte 0x000003FF
-_08005134: .4byte gUnknown_08097AA4
+_08005134: .4byte gSinLookup
 _08005138: .4byte gUnknown_030017F0
 _0800513C: .4byte gUnknown_03005394
 _08005140: .4byte gUnknown_03005398

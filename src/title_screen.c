@@ -20,11 +20,10 @@
 #include "player.h"
 #include "zones.h"
 #include "recordings.h"
+#include "trig.h"
 
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
-
-extern const u16 gUnknown_08097AA4[0xA00 / 2];
 
 // TODO: move this function to palette or whatever
 void sub_808D874(void);
@@ -1480,7 +1479,7 @@ static void sub_808CEFC(void) {
             obj->unk3A += 0x30;
             break;
         case 1:
-            obj->unk3A -= gUnknown_08097AA4[obj->unk3D * 16] << 0x10 >> 0x1A;
+            obj->unk3A -= (u16)gSinLookup[obj->unk3D * 16] << 0x10 >> 0x1A;
             break;
     
     }

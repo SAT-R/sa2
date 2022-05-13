@@ -15,6 +15,9 @@ def read_s8(rom: BufferedReader):
 def read_u16(rom: BufferedReader):
     return struct.unpack('H', rom.read(2))[0]
 
+def read_s16(rom: BufferedReader):
+    return struct.unpack('h', rom.read(2))[0]
+
 def read_u32(rom: BufferedReader):
     return struct.unpack('I', rom.read(4))[0]
 

@@ -786,7 +786,7 @@ sub_8085BB4: @ 0x08085BB4
 	push {r4, lr}
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x11
-	ldr r4, _08085BE8 @ =gUnknown_08097AA4
+	ldr r4, _08085BE8 @ =gSinLookup
 	lsls r2, r1, #1
 	adds r2, r2, r4
 	ldrh r2, [r2]
@@ -809,14 +809,14 @@ sub_8085BB4: @ 0x08085BB4
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08085BE8: .4byte gUnknown_08097AA4
+_08085BE8: .4byte gSinLookup
 
 	thumb_func_start sub_8085BEC
 sub_8085BEC: @ 0x08085BEC
 	push {r4, lr}
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x11
-	ldr r4, _08085C20 @ =gUnknown_08097AA4
+	ldr r4, _08085C20 @ =gSinLookup
 	lsls r2, r1, #1
 	adds r2, r2, r4
 	ldrh r2, [r2]
@@ -839,14 +839,14 @@ sub_8085BEC: @ 0x08085BEC
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08085C20: .4byte gUnknown_08097AA4
+_08085C20: .4byte gSinLookup
 
 	thumb_func_start sub_8085C24
 sub_8085C24: @ 0x08085C24
 	push {r4, lr}
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x11
-	ldr r4, _08085C58 @ =gUnknown_08097AA4
+	ldr r4, _08085C58 @ =gSinLookup
 	lsls r2, r1, #1
 	adds r2, r2, r4
 	ldrh r2, [r2]
@@ -869,14 +869,14 @@ sub_8085C24: @ 0x08085C24
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08085C58: .4byte gUnknown_08097AA4
+_08085C58: .4byte gSinLookup
 
 	thumb_func_start sub_8085C5C
 sub_8085C5C: @ 0x08085C5C
 	push {r4, r5, r6, lr}
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x11
-	ldr r5, _08085CA4 @ =gUnknown_08097AA4
+	ldr r5, _08085CA4 @ =gSinLookup
 	lsls r3, r1, #1
 	adds r3, r3, r5
 	ldrh r4, [r3]
@@ -910,7 +910,7 @@ sub_8085C5C: @ 0x08085C5C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08085CA4: .4byte gUnknown_08097AA4
+_08085CA4: .4byte gSinLookup
 
 	thumb_func_start sub_8085CA8
 sub_8085CA8: @ 0x08085CA8

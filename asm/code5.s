@@ -1002,7 +1002,7 @@ _0808E052:
 	ldrb r0, [r2]
 	adds r0, #4
 	strb r0, [r2]
-	ldr r1, _0808E0BC @ =gUnknown_08097AA4
+	ldr r1, _0808E0BC @ =gSinLookup
 	ldrb r0, [r2]
 	lsls r0, r0, #3
 	adds r0, r0, r1
@@ -1030,7 +1030,7 @@ _0808E0AC: .4byte 0xFFFFE400
 _0808E0B0: .4byte 0xFFFFEC00
 _0808E0B4: .4byte IWRAM_START + 0x7A
 _0808E0B8: .4byte IWRAM_START + 0x24
-_0808E0BC: .4byte gUnknown_08097AA4
+_0808E0BC: .4byte gSinLookup
 _0808E0C0:
 	adds r0, r5, #0
 	adds r0, #0x72
@@ -1109,7 +1109,7 @@ _0808E150: .4byte gCurTask
 _0808E154: .4byte IWRAM_START + 0x78
 _0808E158: .4byte IWRAM_START + 0x70
 _0808E15C:
-	ldr r2, _0808E254 @ =gUnknown_08097AA4
+	ldr r2, _0808E254 @ =gSinLookup
 	ldrh r0, [r1]
 	subs r0, #0x2d
 	lsls r0, r0, #1
@@ -1237,7 +1237,7 @@ _0808E240:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0808E254: .4byte gUnknown_08097AA4
+_0808E254: .4byte gSinLookup
 _0808E258: .4byte IWRAM_START + 0x7C
 _0808E25C: .4byte gUnknown_03005960
 _0808E260: .4byte 0xFFFFC000
@@ -5727,7 +5727,7 @@ _080906C6:
 	adds r0, r1, #1
 	strh r0, [r2]
 _080906D6:
-	ldr r1, _08090700 @ =gUnknown_08097AA4
+	ldr r1, _08090700 @ =gSinLookup
 	ldrh r0, [r2]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -5743,7 +5743,7 @@ _080906F0: .4byte 0xFFFFFF00
 _080906F4: .4byte 0x0000A9FF
 _080906F8: .4byte 0x0000038E
 _080906FC: .4byte 0x000003FF
-_08090700: .4byte gUnknown_08097AA4
+_08090700: .4byte gSinLookup
 _08090704:
 	movs r1, #0xf8
 	lsls r1, r1, #2
@@ -5791,7 +5791,7 @@ _08090754:
 	movs r3, #0xf9
 	lsls r3, r3, #2
 	add r3, ip
-	ldr r2, _08090784 @ =gUnknown_08097AA4
+	ldr r2, _08090784 @ =gSinLookup
 	ldrh r0, [r4]
 	lsls r0, r0, #1
 	movs r1, #0xff
@@ -5813,7 +5813,7 @@ _08090754:
 	strh r0, [r4]
 	b _080907D0
 	.align 2, 0
-_08090784: .4byte gUnknown_08097AA4
+_08090784: .4byte gSinLookup
 _08090788: .4byte 0x0000012B
 _0809078C:
 	ldrb r0, [r5]
@@ -5989,7 +5989,7 @@ _080908D2:
 	strh r0, [r1]
 	ldr r0, _080908F8 @ =0x00000474
 	adds r2, r3, r0
-	ldr r1, _080908FC @ =gUnknown_08097AA4
+	ldr r1, _080908FC @ =gSinLookup
 	ldr r4, _08090900 @ =0x00000396
 	adds r0, r3, r4
 	ldrb r0, [r0]
@@ -6007,7 +6007,7 @@ _080908F0:
 	bx r0
 	.align 2, 0
 _080908F8: .4byte 0x00000474
-_080908FC: .4byte gUnknown_08097AA4
+_080908FC: .4byte gSinLookup
 _08090900: .4byte 0x00000396
 
 	thumb_func_start sub_8090904
@@ -6314,7 +6314,7 @@ _08090B3E:
 	movs r4, #0x80
 	lsls r4, r4, #2
 	adds r0, r0, r4
-	ldr r1, _08090B68 @ =gUnknown_08097AA4
+	ldr r1, _08090B68 @ =gSinLookup
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -6327,7 +6327,7 @@ _08090B3E:
 	b _08090B74
 	.align 2, 0
 _08090B64: .4byte 0x0003FF00
-_08090B68: .4byte gUnknown_08097AA4
+_08090B68: .4byte gSinLookup
 _08090B6C:
 	ldr r0, [sp, #0x10]
 	adds r1, r0, r7
@@ -6350,7 +6350,7 @@ _08090B74:
 	movs r4, #0x80
 	lsls r4, r4, #2
 	adds r0, r0, r4
-	ldr r6, _08090C14 @ =gUnknown_08097AA4
+	ldr r6, _08090C14 @ =gSinLookup
 	adds r0, r0, r6
 	ldrh r1, [r0]
 	lsls r1, r1, #0x10
@@ -6389,7 +6389,7 @@ _08090BD6:
 	adds r2, r6, r2
 	ldrb r0, [r3]
 	lsls r0, r0, #3
-	ldr r1, _08090C14 @ =gUnknown_08097AA4
+	ldr r1, _08090C14 @ =gSinLookup
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -6418,7 +6418,7 @@ _08090C02:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08090C14: .4byte gUnknown_08097AA4
+_08090C14: .4byte gSinLookup
 _08090C18: .4byte 0x0000048C
 _08090C1C: .4byte 0x0003FF00
 _08090C20: .4byte 0xFFFFE200
@@ -11715,7 +11715,7 @@ sub_8093638: @ 0x08093638
 	movs r7, #0xd7
 	lsls r7, r7, #2
 	add r7, ip
-	ldr r1, _0809369C @ =gUnknown_08097AA4
+	ldr r1, _0809369C @ =gSinLookup
 	mov sl, r1
 	mov sb, r6
 	movs r2, #0xd3
@@ -11744,7 +11744,7 @@ _08093674:
 	str r2, [r0]
 	b _080936AA
 	.align 2, 0
-_0809369C: .4byte gUnknown_08097AA4
+_0809369C: .4byte gSinLookup
 _080936A0: .4byte gUnknown_080E1964
 _080936A4:
 	adds r1, r7, r4
@@ -11944,7 +11944,7 @@ _080937FE:
 	movs r1, #0xff
 	ands r0, r1
 	lsls r0, r0, #3
-	ldr r1, _08093864 @ =gUnknown_08097AA4
+	ldr r1, _08093864 @ =gSinLookup
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
@@ -11979,7 +11979,7 @@ _0809384E:
 	bx r0
 	.align 2, 0
 _08093860: .4byte gBgScrollRegs
-_08093864: .4byte gUnknown_08097AA4
+_08093864: .4byte gSinLookup
 
 	thumb_func_start sub_8093868
 sub_8093868: @ 0x08093868
