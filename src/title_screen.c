@@ -15,7 +15,7 @@
 #include "random.h"
 #include "math.h"
 #include "mb_programs.h"
-#include "options_screen.h"
+#include "profile.h"
 #include "game.h"
 #include "player.h"
 #include "zones.h"
