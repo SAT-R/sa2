@@ -28,10 +28,10 @@ struct UNK_3005B80 gUnknown_03005B80;
 // TODO: move this function to palette or whatever
 void sub_808D874(void);
 
-static void sub_808B768(struct TitleScreen*);
+static void InitTitleScreenBackgrounds(struct TitleScreen*);
 static void InitTitleScreenUI(struct TitleScreen*);
 static void WavesBackgroundAnim(struct TitleScreen*);
-static void Task_IntroShowSonicLogo(void);
+static void Task_IntroShowSegaLogo(void);
 static void Task_IntroStartTeamSonicLogoAnim(void);
 static void Task_IntroFadeInSonicTeamLogoAnim(void);
 static void Task_IntroShowSonicTeamLogo(void);
@@ -40,24 +40,29 @@ static void Task_IntroStartSkyTransition(void);
 static void Task_IntroPanSkyTransitionAnim(void);
 static void Task_IntroSkyAnim(void);
 static void Task_IntroFadeInTitleScreenAnim(void);
-static void CreateLensFlareAnimation(void);
+
 static void Task_IntroWaitUntilTitleScreenFanfare(void);
-static void sub_808D76C(void);
-static void sub_808D740(struct TitleScreen*);
+
+static void ShowGameLogo(struct TitleScreen*);
 static void Task_StartPressedTransitionAnim(void);
 static void Task_StartTitleScreenDemo(void);
 static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240*, u8);
 static void Task_PlayModeMenuMain(void);
-static void Task_PressStartScreenMain(void);
+static void Task_PressStartMenuMain(void);
 static void Task_SinglePlayerSelectedTransitionAnim(void);
 static void Task_SinglePlayerMenuMain(void);
 static void Task_HandleTitleScreenExit(void);
 static void Task_LoadTinyChaoGarden(void);
-static void Task_JumpToPressStartScreen(void);
-static void sub_808CE00(u16, s16, u16, u16, u16);
-static void sub_808CEFC(void);
+static void Task_ShowPressStartMenu(void);
+
+static void CreateLensFlareAnimation(void);
 static void Task_LensFlareAnim(void);
 static void LensFlareAnimEnd(void);
+
+static void CreateBirdAnimation(u16, s16, u16, u16, u16);
+static void Task_BirdAnim(void);
+static void BirdAnimEnd(void);
+
 static void Task_IntroStartSegaLogoAnim(void);
 
 #define FadeInBlend(frame)  \
@@ -65,6 +70,8 @@ static void Task_IntroStartSegaLogoAnim(void);
 
 #define FadeOutBlend(frame) \
     BLDALPHA_BLEND(16 - (frame), frame)
+
+#define FRAME_TIME_SECONDS(n) ((n) * 60)
 
 #define TRANSITION_OUT 0
 #define TRANSITION_IN 1
@@ -276,7 +283,7 @@ void CreateTitleScreen(void) {
     gUnknown_03005B80.unk0 = config27C;
     gUnknown_03005B80.unk4 = titleScreen;
 
-    sub_808B768(titleScreen);
+    InitTitleScreenBackgrounds(titleScreen);
     m4aSongNumStart(MUS_INTRO);
     gFlags |= 0x8000;
 
@@ -392,7 +399,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen* titleScreen) {
 }
 
 // Maybe create background sprites
-static void sub_808B768(struct TitleScreen* titleScreen) {
+static void InitTitleScreenBackgrounds(struct TitleScreen* titleScreen) {
     struct Unk_03002400 *config80, *config0;
 
     gDispCnt = DISPCNT_MODE_1;
@@ -573,7 +580,7 @@ static void Task_IntroFadeInSegaLogoAnim(void) {
         gBldRegs.bldAlpha = FadeInBlend(16);
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
-        gCurTask->main = Task_IntroShowSonicLogo;
+        gCurTask->main = Task_IntroShowSegaLogo;
     }
 
     titleScreen->animFrame++;
@@ -707,8 +714,8 @@ static void Task_IntroStartSkyTransition(void) {
         gDispCnt |= DISPCNT_BG1_ON;
         gBldRegs.bldAlpha = FadeOutBlend(16);
         gBldRegs.bldCnt = BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1;
-        sub_808CE00(0x7c, 0xffc4, 0, 0xffdf, 0);
-        sub_808CE00(0xb4, 0xffe8, 3, 0x20, 0);
+        CreateBirdAnimation(0x7c, 0xffc4, 0, 0xffdf, 0);
+        CreateBirdAnimation(0xb4, 0xffe8, 3, 0x20, 0);
     }
     
     titleScreen->animFrame++;
@@ -825,7 +832,7 @@ static void Task_IntroSkyAnim(void) {
 
         gBldRegs.bldCnt = 0x3FBF;
         
-        if (titleScreen->animFrame > 0x1D) {
+        if (titleScreen->animFrame > 29) {
             gBldRegs.bldY = 16 - ((titleScreen->animFrame - 30) >> 3);
         } else {
             gBldRegs.bldY = 16;
@@ -838,6 +845,7 @@ static void Task_IntroSkyAnim(void) {
 
    
     if (titleScreen->animFrame > 138) {
+        // Init title screen background
         config0 = &titleScreen->unk0;
 
         // Probably wrong size here (0x4000)
@@ -860,7 +868,7 @@ static void Task_IntroSkyAnim(void) {
         config0->unk18 = 0;
         config0->unk1A = 0;
         
-        if (gLoadedSaveGame->unk6 < 2) {
+        if (gLoadedSaveGame->unk6 < LANG_ENGLISH) {
             config0->unk1C = 0x108;
         } else {
             config0->unk1C = 0x109;
@@ -911,12 +919,10 @@ static void Task_IntroFadeInTitleScreenAnim(void) {
     }
 
     titleScreen->animFrame++;
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 }
 
-#define FRAME_TIME_SECONDS(n) ((n) * 60)
-
-static void Task_PressStartScreenMain(void) {
+static void Task_PressStartMenuMain(void) {
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
 
     // Show the press start text for 2/3 of a second
@@ -938,7 +944,7 @@ static void Task_PressStartScreenMain(void) {
         gCurTask->main = Task_StartPressedTransitionAnim;
     }
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 
     titleScreen->startScreenTimer++;
     if (titleScreen->startScreenTimer == FRAME_TIME_SECONDS(15)) {
@@ -970,7 +976,7 @@ static void Task_StartPressedTransitionAnim(void) {
         gCurTask->main = Task_PlayModeMenuMain;
     }
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 }
 
 static inline void PlayModeMenuHighlightFocused(struct TitleScreen* titleScreen) {
@@ -989,7 +995,7 @@ static void Task_PlayModeMenuMain(void) {
     struct TitleScreen_UNK270* config270;
     
     sub_80051E8(&titleScreen->unkC0);
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
     
     PlayModeMenuHighlightFocused(titleScreen);
 
@@ -1034,7 +1040,7 @@ static void Task_PlayModeMenuMain(void) {
     if (gPressedKeys & B_BUTTON) {
         titleScreen->startScreenTimer = 0;
         m4aSongNumStart(SE_RETURN);
-        gCurTask->main = Task_PressStartScreenMain;
+        gCurTask->main = Task_PressStartMenuMain;
     }
 }
 
@@ -1076,7 +1082,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void) {
         gCurTask->main = Task_SinglePlayerMenuMain;
     }
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 }
 
 static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen* titleScreen, u8 numMenuItems) {
@@ -1107,7 +1113,7 @@ static void Task_SinglePlayerMenuMain(void) {
     titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
     SinglePlayerMenuHighlightFocused(titleScreen, numMenuItems);
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 
     // Handle input and wrap the cursor around
     if (gRepeatedKeys & DPAD_UP) {
@@ -1201,7 +1207,7 @@ static void Task_HandleTitleScreenExit(void) {
         }
         TaskDestroy(gCurTask);
     } else {
-        sub_808D740(titleScreen);
+        ShowGameLogo(titleScreen);
         if (titleScreen->menuCursorIndex == SPECIAL_MENU_INDEX_MULTI_PLAYER) {
             // ?? wat, who writes for loops like this
             // is some macro for the numMenuItems so it wasn't
@@ -1247,7 +1253,7 @@ static void sub_808C8EC(void) {
     config0->unk18 = 0;
     config0->unk1A = 0;
 
-    // Show game logo depending on language
+    // Show japanese game logo if japanese, otherwise
     if (gLoadedSaveGame->unk6 < LANG_ENGLISH) {
         config0->unk1C = 0x108;
     } else {
@@ -1292,8 +1298,8 @@ static void sub_808C8EC(void) {
     sub_802D4CC(&titleScreen->unk270);
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
-    sub_808D740(titleScreen);
-    gCurTask->main = Task_JumpToPressStartScreen;
+    ShowGameLogo(titleScreen);
+    gCurTask->main = Task_ShowPressStartMenu;
     
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }
@@ -1303,7 +1309,7 @@ static void Task_JumpToPlayModeMenu(void) {
     PlayModeMenuHighlightFocused(titleScreen);
 
     sub_80051E8(&titleScreen->unkC0);
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
     
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
@@ -1324,7 +1330,7 @@ static void Task_JumpToSinglePlayerMenu(void) {
     titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
     SinglePlayerMenuHighlightFocused(titleScreen, numMenuItems);
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
@@ -1346,6 +1352,7 @@ static void WavesBackgroundAnim(struct TitleScreen* titleScreen) {
     gWinRegs[4] |= 0x3F00;
     gWinRegs[5] &= 0x13;
 
+    // Something which effects wave length
     titleScreen->unkF3A -= 768;
     if (titleScreen->unkF3A < 0) {
         titleScreen->unkF3A = 7680;
@@ -1426,82 +1433,82 @@ UNUSED static void sub_808CDB0(struct TitleScreen* titleScreen, s8 index) {
     titleScreen->unkF44[6] = pal[6];
 }
 
-static void sub_808CE00(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
-    struct Task* t = TaskCreate(sub_808CEFC, 0x40, 0x2000, 0, 0);
-    struct UNK_808CE00* obj = TaskGetStructPtr(t, obj);
+static void CreateBirdAnimation(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
+    struct Task* t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
+    struct BirdAnimation* animation = TaskGetStructPtr(t, animation);
 
-    obj->sprite.unk4 = sub_8007C10(3);
-    obj->sprite.unkA = 0x33F;
-    obj->sprite.unk20 = 0;
-    obj->sprite.unk21 = 0xFF;
-    obj->sprite.unk16 = p1;
-    obj->sprite.unk18 = p2;
-    obj->sprite.unk8 = 0;
-    obj->sprite.unk1A = 0xC0;
-    obj->sprite.unk1C = 0;
-    obj->sprite.unk22 = 0x10;
-    obj->sprite.unk25 = 0;
-    obj->sprite.unk10 = 0;
-    sub_8004558(&obj->sprite);
+    animation->sprite.unk4 = sub_8007C10(3);
+    animation->sprite.unkA = 0x33F;
+    animation->sprite.unk20 = 0;
+    animation->sprite.unk21 = 0xFF;
+    animation->sprite.unk16 = p1;
+    animation->sprite.unk18 = p2;
+    animation->sprite.unk8 = 0;
+    animation->sprite.unk1A = 0xC0;
+    animation->sprite.unk1C = 0;
+    animation->sprite.unk22 = 0x10;
+    animation->sprite.unk25 = 0;
+    animation->sprite.unk10 = 0;
+    sub_8004558(&animation->sprite);
 
-    obj->unk30 = gBgScrollRegs[1][0];
-    obj->unk32 = gBgScrollRegs[1][1];
-    obj->unk38 = p1 * 128;
-    obj->unk3A = p2 * 128;
-    obj->unk34 = p4;
-    obj->unk36 = p5;
-    obj->unk3C = 0;
-    obj->unk3D = 0;
-    obj->unk3E = p3;
+    animation->unk30 = gBgScrollRegs[1][0];
+    animation->unk32 = gBgScrollRegs[1][1];
+    animation->unk38 = p1 * 128;
+    animation->unk3A = p2 * 128;
+    animation->unk34 = p4;
+    animation->unk36 = p5;
+    animation->unk3C = 0;
+    animation->unk3D = 0;
+    animation->unk3E = p3;
 }
 
-static void sub_808CEFC(void) {
-    struct UNK_808CE00* obj = TaskGetStructPtr(gCurTask, obj);
-    struct UNK_0808B3FC_UNK240* sprite = &obj->sprite;
+static void Task_BirdAnim(void) {
+    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask, animation);
+    struct UNK_0808B3FC_UNK240* sprite = &animation->sprite;
     u16 temp;
 
-    switch (obj->unk3C) {
+    switch (animation->unk3C) {
         case 0:
-            obj->unk3A += 0x30;
+            animation->unk3A += 0x30;
             break;
         case 1:
-            obj->unk3A -= gSineTable[obj->unk3D * 16] >> 10;
+            animation->unk3A -= gSineTable[animation->unk3D * 16] >> 10;
             break;
     
     }
 
-    obj->unk38 += obj->unk34;
-    obj->unk3A += obj->unk36;
+    animation->unk38 += animation->unk34;
+    animation->unk3A += animation->unk36;
 
-    if (obj->unk38 & 0x8000) {
-        temp = obj->unk38 >> 7 | 0xE000;
+    if (animation->unk38 & 0x8000) {
+        temp = animation->unk38 >> 7 | 0xE000;
     } else {
-        temp = (obj->unk38) >> 7;
+        temp = (animation->unk38) >> 7;
     }
-    sprite->unk16 = (temp << 0x10 >> 0x10) + obj->unk30 - gBgScrollRegs[1][0];
+    sprite->unk16 = (temp << 0x10 >> 0x10) + animation->unk30 - gBgScrollRegs[1][0];
     
-    if (obj->unk3A & 0x8000) {
-        temp = obj->unk3A >> 7 | 0xE000;
+    if (animation->unk3A & 0x8000) {
+        temp = animation->unk3A >> 7 | 0xE000;
     } else {
-        temp = obj->unk3A >> 7;
+        temp = animation->unk3A >> 7;
     }
-    sprite->unk18 = (temp << 0x10 >> 0x10) + obj->unk32 - gBgScrollRegs[1][1];
+    sprite->unk18 = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
     
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
     if ((u16)(sprite->unk16 + 0x40) > 0x170) {
-        sub_808D76C();
+        BirdAnimEnd();
     }
 
     if ((u16)(sprite->unk18 + 0x40) > 0x134) {
-        sub_808D76C();
+        BirdAnimEnd();
     }
 
-    if (++obj->unk3D > 0xF) {
-        obj->unk3C = sUnknown_080E10D4[obj->unk3E];
-        obj->unk3E++;
-        obj->unk3D = 0;
+    if (++animation->unk3D > 0xF) {
+        animation->unk3C = sUnknown_080E10D4[animation->unk3E];
+        animation->unk3E++;
+        animation->unk3D = 0;
     }
 }
 
@@ -1679,7 +1686,7 @@ void CreateTitleScreenAndSkipIntro(void) {
     struct Task* t;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
-    t = TaskCreate(Task_JumpToPressStartScreen, sizeof(struct TitleScreen), 0x1000, 0, 0);
+    t = TaskCreate(Task_ShowPressStartMenu, sizeof(struct TitleScreen), 0x1000, 0, 0);
     CreateTitleScreenWithoutIntro(TaskGetStructPtr(t, struct TitleScreen*));
 }
 
@@ -1714,20 +1721,20 @@ static void SkipIntro(struct TitleScreen* titleScreen) {
     m4aMPlayAllStop();
 
     InitTitleScreenUI(titleScreen);
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
     gCurTask->main = sub_808C8EC;
 }
 
-static void Task_JumpToPressStartScreen(void) {
+static void Task_ShowPressStartMenu(void) {
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
     
     sub_80051E8(&titleScreen->unkC0);
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
         titleScreen->animFrame = 0;
-        gCurTask->main = Task_PressStartScreenMain;
+        gCurTask->main = Task_PressStartMenuMain;
     }
 }
 
@@ -1737,13 +1744,15 @@ static void Task_IntroStartSegaLogoAnim(void) {
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         gCurTask->main = Task_IntroFadeInSegaLogoAnim;
+
         gBldRegs.bldAlpha = FadeInBlend(0);
-        gBldRegs.bldCnt = 0x441;
-        gDispCnt |= 0x100;
+        // Fade in the background effect
+        gBldRegs.bldCnt = BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG0 | BLDCNT_TGT2_BG2;
+        gDispCnt |= DISPCNT_BG0_ON;
     }
 }
 
-static void Task_IntroShowSonicLogo(void) {
+static void Task_IntroShowSegaLogo(void) {
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
     WavesBackgroundAnim(titleScreen);
     
@@ -1775,11 +1784,11 @@ static void Task_IntroWaitUntilTitleScreenFanfare(void) {
         gFlags &= ~0x4;
         titleScreen->animFrame = 0;
         m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
-        gCurTask->main = Task_PressStartScreenMain;
+        gCurTask->main = Task_PressStartMenuMain;
     }
     titleScreen->animFrame++;
 
-    sub_808D740(titleScreen);
+    ShowGameLogo(titleScreen);
 }
 
 static void Task_StartTitleScreenDemo(void) {
@@ -1802,13 +1811,14 @@ static void Task_StartTitleScreenDemo(void) {
     TaskDestroy(gCurTask);
 }
 
-static void sub_808D740(struct TitleScreen* _) {
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0x14, 8, &gBgAffineRegs);
+static void ShowGameLogo(struct TitleScreen* _) {
+    // angle, width, height, right, bottom, left, top
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 20, 8, &gBgAffineRegs);
 }
 
-static void sub_808D76C(void) {
-    struct UNK_808CE00* obj = TaskGetStructPtr(gCurTask, obj);
-    sub_8007CF0(obj->sprite.unk4);
+static void BirdAnimEnd(void) {
+    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask, animation);
+    sub_8007CF0(animation->sprite.unk4);
     TaskDestroy(gCurTask);
 }
 
@@ -1853,7 +1863,7 @@ UNUSED void sub_808D824(void) {
     struct Task* prevTask = gCurTask;
     REG_SIOCNT |= SIO_INTR_ENABLE;
     
-    inline_CreateTitleScreenTaskWithoutIntro(Task_JumpToPressStartScreen);
+    inline_CreateTitleScreenTaskWithoutIntro(Task_ShowPressStartMenu);
 
     TaskDestroy(gCurTask);
 }

@@ -69,7 +69,7 @@ struct TitleScreen {
     u16 unkF44[16];
 }; /* size 0xF64 */
 
-struct UNK_808CE00 {
+struct BirdAnimation {
     struct UNK_0808B3FC_UNK240 sprite;
     u16 unk30;
     u16 unk32;
