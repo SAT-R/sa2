@@ -31,29 +31,34 @@ void sub_808D874(void);
 static void InitTitleScreenBackgrounds(struct TitleScreen*);
 static void InitTitleScreenUI(struct TitleScreen*);
 static void WavesBackgroundAnim(struct TitleScreen*);
+
+static void Task_IntroStartSegaLogoAnim(void);
 static void Task_IntroShowSegaLogo(void);
 static void Task_IntroStartTeamSonicLogoAnim(void);
 static void Task_IntroFadeInSonicTeamLogoAnim(void);
 static void Task_IntroShowSonicTeamLogo(void);
-static void SkipIntro(struct TitleScreen*);
+
 static void Task_IntroStartSkyTransition(void);
-static void Task_IntroPanSkyTransitionAnim(void);
+static void Task_IntroPanSkyAnim(void);
 static void Task_IntroSkyAnim(void);
 static void Task_IntroFadeInTitleScreenAnim(void);
-
 static void Task_IntroWaitUntilTitleScreenFanfare(void);
 
+static void SkipIntro(struct TitleScreen*);
+
 static void ShowGameLogo(struct TitleScreen*);
-static void Task_StartPressedTransitionAnim(void);
-static void Task_StartTitleScreenDemo(void);
-static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240*, u8);
-static void Task_PlayModeMenuMain(void);
+static void Task_ShowPressStartMenu(void);
 static void Task_PressStartMenuMain(void);
+static void Task_StartPressedTransitionAnim(void);
+static void Task_PlayModeMenuMain(void);
 static void Task_SinglePlayerSelectedTransitionAnim(void);
 static void Task_SinglePlayerMenuMain(void);
+
+static void Task_StartTitleScreenDemo(void);
 static void Task_HandleTitleScreenExit(void);
 static void Task_LoadTinyChaoGarden(void);
-static void Task_ShowPressStartMenu(void);
+
+static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240*, u8);
 
 static void CreateLensFlareAnimation(void);
 static void Task_LensFlareAnim(void);
@@ -62,8 +67,6 @@ static void LensFlareAnimEnd(void);
 static void CreateBirdAnimation(u16, s16, u16, u16, u16);
 static void Task_BirdAnim(void);
 static void BirdAnimEnd(void);
-
-static void Task_IntroStartSegaLogoAnim(void);
 
 #define FadeInBlend(frame)  \
     BLDALPHA_BLEND(frame, 16 - (frame))
@@ -145,7 +148,9 @@ static const struct UNK_080E0D64 sMenuTiles[] = {
 
 static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
 
-static const u8 sUnknown_080E1054[] = { 
+// Each value is scan line which the brightness should be increased
+// 0 being top 160 being bottom
+static const u8 sWavesVerticalBrightnessGradiant[] = { 
     0, 3, 8, 14, 21, 
     32, 46, 66, 96, 160 
 };
@@ -180,7 +185,7 @@ static const u8 sMenuItemTransitionKeyFrames[] = {
     0, 0, 0,
 };
 
-static const u8 sUnknown_080E10D4[] = {
+static const u8 sBirdAnimModeSequence[] = {
     1, 1, 0, 1, 0, 
     0, 1, 1, 0, 0
 };
@@ -193,12 +198,12 @@ static const u8 sDemoZones[] = {
     ZONE_1_1, ZONE_1_2, 3, ZONE_1_BOSS
 };
 
-static const u16 sUnknown_080E10E6[] = {
+static const u16 sLensFlareSizes[] = {
     0, 1, 2, 3,
     4, 5, 6, 6,
 };
 
-static const u16 sUnknown_080E10F6[][2] = {
+static const u16 sLensFlareStartPositions[][2] = {
     { 20, 10 },
     { 36, 26 },
     { 52, 42 },
@@ -276,7 +281,7 @@ void CreateTitleScreen(void) {
     config27C->unk2 = 0;
     config27C->unk34 = titleScreen->wavesTopOffset;
     config27C->unk1 = 0xE;
-    config27C->unk4 = sUnknown_080E1054;
+    config27C->unk4 = sWavesVerticalBrightnessGradiant;
     config27C->unk8 = sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
@@ -709,7 +714,7 @@ static void Task_IntroStartSkyTransition(void) {
     // Once the animation frame is at 140
     // begin the pan, and load the bird animations
     if (titleScreen->animFrame > 140) {
-        gCurTask->main = Task_IntroPanSkyTransitionAnim;
+        gCurTask->main = Task_IntroPanSkyAnim;
         titleScreen->animFrame = 0;
         gDispCnt |= DISPCNT_BG1_ON;
         gBldRegs.bldAlpha = FadeOutBlend(16);
@@ -721,7 +726,7 @@ static void Task_IntroStartSkyTransition(void) {
     titleScreen->animFrame++;
 }
 
-static void Task_IntroPanSkyTransitionAnim(void) {
+static void Task_IntroPanSkyAnim(void) {
     struct Unk_03002400* config0;
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
 
@@ -1433,7 +1438,7 @@ UNUSED static void sub_808CDB0(struct TitleScreen* titleScreen, s8 index) {
     titleScreen->unkF44[6] = pal[6];
 }
 
-static void CreateBirdAnimation(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
+static void CreateBirdAnimation(u16 p1, s16 p2, u16 startStep, u16 p4, u16 p5) {
     struct Task* t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation* animation = TaskGetStructPtr(t, animation);
 
@@ -1459,7 +1464,7 @@ static void CreateBirdAnimation(u16 p1, s16 p2, u16 p3, u16 p4, u16 p5) {
     animation->unk36 = p5;
     animation->unk3C = 0;
     animation->unk3D = 0;
-    animation->unk3E = p3;
+    animation->sequenceStep = startStep;
 }
 
 static void Task_BirdAnim(void) {
@@ -1497,17 +1502,18 @@ static void Task_BirdAnim(void) {
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
-    if ((u16)(sprite->unk16 + 0x40) > 0x170) {
+    if ((u16)(sprite->unk16 + 64) > 368) {
         BirdAnimEnd();
     }
 
-    if ((u16)(sprite->unk18 + 0x40) > 0x134) {
+    if ((u16)(sprite->unk18 + 64) > 308) {
         BirdAnimEnd();
     }
 
-    if (++animation->unk3D > 0xF) {
-        animation->unk3C = sUnknown_080E10D4[animation->unk3E];
-        animation->unk3E++;
+    // Next key frame every 15 frames
+    if (++animation->unk3D > 15) {
+        animation->unk3C = sBirdAnimModeSequence[animation->sequenceStep];
+        animation->sequenceStep++;
         animation->unk3D = 0;
     }
 }
@@ -1557,7 +1563,7 @@ static void CreateLensFlareAnimation(void) {
     struct LensFlare* lensFlare = TaskGetStructPtr(t, lensFlare);
     struct UNK_0808B3FC_UNK240* sprite;
     struct UNK_808D124_UNK180* config180;
-    u16 F6_0;
+    u16 posX;
     u32 i;
 
     for (i = 0; i < 8; i++) {
@@ -1567,11 +1573,11 @@ static void CreateLensFlareAnimation(void) {
         sprite->unk4 = sub_8007C10(0x40);
 
         sprite->unkA = 0x340;
-        sprite->unk20 = sUnknown_080E10E6[i];
+        sprite->unk20 = sLensFlareSizes[i];
         sprite->unk21 = 0xFF;
 
-        lensFlare->unk1E0[i] = F6_0 = sUnknown_080E10F6[i][0];
-        lensFlare->unk1F0[i] = sUnknown_080E10F6[i][1];
+        lensFlare->posSequenceX[i] = posX = sLensFlareStartPositions[i][0];
+        lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
 
         sprite->unk8 = 0;
         sprite->unk1A = (8 - i) * 0x40;
@@ -1581,9 +1587,9 @@ static void CreateLensFlareAnimation(void) {
         sprite->unk10 = i | 96;
 
         config180->unk0 = 0;
-        config180->unk4 = config180->unk2 = F6_0 * 2 + 0xB0;
-        config180->unk6[0] = lensFlare->unk1E0[i];
-        config180->unk6[1] = lensFlare->unk1F0[i];
+        config180->unk4 = config180->unk2 = posX * 2 + 0xB0;
+        config180->unk6[0] = lensFlare->posSequenceX[i];
+        config180->unk6[1] = lensFlare->posSequenceY[i];
 
         sub_8004558(sprite);
     }
@@ -1591,16 +1597,16 @@ static void CreateLensFlareAnimation(void) {
     lensFlare->unk200 = gBgScrollRegs[1][0];
     lensFlare->unk202 = gBgScrollRegs[1][1];
     lensFlare->unk204 = 0;
-    lensFlare->unk205 = 0;
+    lensFlare->animFrame = 0;
 }
 
 static void Task_LensFlareAnim(void) {
-    struct LensFlare* config = TaskGetStructPtr(gCurTask, config);
+    struct LensFlare* lensFlare = TaskGetStructPtr(gCurTask, lensFlare);
     struct UNK_0808B3FC_UNK240* sprite;
     struct UNK_808D124_UNK180* config180;
     u32 i;
 
-    config->unk202 += 3;
+    lensFlare->unk202 += 3;
     gBgScrollRegs[0][1] -= 3;
 
     gBldRegs.bldCnt = 
@@ -1609,24 +1615,25 @@ static void Task_LensFlareAnim(void) {
         BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ;
     gBldRegs.bldAlpha = BLDALPHA_BLEND(7, 31);
 
-    if (!(config->unk205 & 1)) {
+    // Show the flares every eother frame
+    if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
-            sprite = &config->sprites[i];
-            config180 = &config->unk180[i];
+            sprite = &lensFlare->sprites[i];
+            config180 = &lensFlare->unk180[i];
 
             // Potentially a macro
             config180->unk6[0] = sub_8085654(
-                config->unk1E0[i], 
+                lensFlare->posSequenceX[i], 
                 -0x14, 
-                config->unk205 * 16, 
+                lensFlare->animFrame * 16, 
                 8, 
                 0
             );
 
             config180->unk6[1] = sub_8085654(
-                config->unk1F0[i] + config->unk202 - gBgScrollRegs[1][1], 
-                -0x14 + config->unk202 - gBgScrollRegs[1][1], 
-                config->unk205 * 16, 
+                lensFlare->posSequenceY[i] + lensFlare->unk202 - gBgScrollRegs[1][1], 
+                -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1], 
+                lensFlare->animFrame * 16, 
                 8, 
                 0
             );
@@ -1636,7 +1643,7 @@ static void Task_LensFlareAnim(void) {
         }
     }
 
-    if (++config->unk205 > 17) {
+    if (++lensFlare->animFrame > 17) {
         LensFlareAnimEnd();
     };
 }

@@ -79,7 +79,7 @@ struct BirdAnimation {
     s16 unk3A;
     u8 unk3C;
     u8 unk3D;
-    u8 unk3E;
+    u8 sequenceStep;
     u8 unk3F;
 };
 
@@ -107,13 +107,13 @@ struct MenuItemTransition {
 struct LensFlare {
     struct UNK_0808B3FC_UNK240 sprites[8];
     struct UNK_808D124_UNK180 unk180[8];
-    s16 unk1E0[8];
-    s16 unk1F0[8];
+    s16 posSequenceX[8];
+    s16 posSequenceY[8];
     u16 unk200;
     s16 unk202;
     u8 unk204;
     // animFrame
-    u8 unk205;
+    u8 animFrame;
     u8 unk206;
     u8 unk207;
 }; /* size 0x208 */
