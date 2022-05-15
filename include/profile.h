@@ -11,4 +11,7 @@ void sub_80637EC(u16, u16);
 
 void sub_8063940_CreateProfileScreen();
 
+// CreateProfileNameScreen
+void sub_8063A00(s16);
+
 #endif // GUARD_OPTION_SCREEN_H

@@ -220,7 +220,6 @@ extern void sub_801A6D8(void);
 extern void sub_803143C(u32, u8);
 extern void sub_8087FC0(void);
 
-extern void sub_8063A00(u16);
 extern void sub_805A1CC(void);
 extern void sub_8009F94(void);
 extern void sub_801A770(void);

@@ -10,10 +10,35 @@
 
 extern void* gUnknown_03005B50;
 extern u32 gUnknown_03005B54;
+
+struct UNK_8063730_UNK0 {
+    u16 unk0[6];
+
+    u16 unkC[0x13C];
+    struct SectorDataUnk2A4 unk284[10];
+
+    u8 unk34C;
+    u8 unk34D;
+    u8 unk34E;
+
+    u8 filler34F;
+
+    struct SaveGameUnk2C unk350; /* size 0x8 */
+};
+
 struct UNK_8063730 {
-    u8 filler0[0x358];
+    struct UNK_8063730_UNK0 unk0;
+
     u8 unk358;
-    u8 unk359[7];
+    u8 unk359;
+    u8 unk35A;
+    u8 unk35B;
+    u8 unk35C;
+    u8 unk35D;
+    u8 unk35E;
+
+    u8 filler35F;
+
     u16 unk360;
     u8 filler362[0X41E];
     u8 unk780;
@@ -173,3 +198,132 @@ void sub_8063940_CreateProfileScreen(void) {
     sub_806B0AC(config);
     sub_8066930(config);
 }
+
+struct UNK_8063A00 {
+    u8 filler0[0x14C];
+
+    u32 unk14C;
+
+    u8 filler150[0x100];
+
+    u16 unk250;
+    u8 unk252;
+    u8 unk253;
+
+    u8 filler254[342];
+
+    u16 unk3AA;
+
+    u16 unk3AC[6];
+
+    u16 unk3B8;
+    u8 unk3BA;
+    u8 unk3BB;
+}; /* size 0x3BC */
+
+extern void sub_806B354(void);
+extern void sub_8067420(u8);
+
+extern void sub_8067484(struct UNK_8063A00*);
+extern void sub_806751C(struct UNK_8063A00*);
+extern void sub_8067610(struct UNK_8063A00*);
+extern void sub_8067710(struct UNK_8063A00*);
+
+// CreateProfileNameScreen
+void sub_8063A00(s16 p1) {
+    struct Task* t;
+    struct UNK_8063A00* config;
+    s16 i;
+    u8 temp;
+    t = TaskCreate(sub_806B354, 0x3BC, 0x2000, 4, 0);
+    config = TaskGetStructPtr(t, config);
+
+    config->unk14C = 0;
+    config->unk3BA = gLoadedSaveGame->unk6 - 1;
+    
+    config->unk3BB = p1 == 1 ? 2 : 1;
+    config->unk252 = 0;
+
+    if (config->unk3BA == 0) {
+        config->unk3B8 = 0;
+        config->unk253 = 0;
+        config->unk250 = 0;
+    } else {
+        config->unk3B8 = 99;
+        config->unk253 = 0;
+        config->unk250 = 99;
+    }
+
+    if (config->unk3BA > 5) {
+        config->unk3BA = 1;
+    }
+
+    for (i = 0; i < 6; i++) {
+        config->unk3AC[i] = 0xFFFF;
+    }
+
+    config->unk3AA = 0;
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = 0;
+
+    sub_8067420(config->unk3BA);
+    sub_8067484(config);
+    sub_806751C(config);
+    sub_8067610(config);
+    sub_8067710(config);
+}
+
+// InitOptionsProfileData
+void sub_8063B38(struct UNK_8063730* optionsScreen) {
+    s16 i;
+    struct SaveGame* saveGame = gLoadedSaveGame;
+    struct UNK_8063730_UNK0* profile = &optionsScreen->unk0;
+
+    memcpy(profile->unk0, saveGame->unk20, 12);
+    memcpy(profile->unkC, saveGame->unk34, 0x278);
+    memcpy(profile->unk284, saveGame->unk2AC, 200);
+
+    profile->unk34C = saveGame->unk1C;
+    profile->unk34D = saveGame->unk1D;
+    profile->unk34E = saveGame->unk1E;
+
+    memcpy(&profile->unk350, &saveGame->unk2C, 8);
+
+    optionsScreen->unk359 = saveGame->unk4;
+    optionsScreen->unk35A = saveGame->unk5;
+    optionsScreen->unk35B = saveGame->unk6 - 1;
+    optionsScreen->unk35C = saveGame->unk11;
+    optionsScreen->unk35D = saveGame->unk12;
+    optionsScreen->unk35E = saveGame->unk13;
+
+    for (i = 0; i < 6; i++) {
+        if (profile->unk0[i] == 0xFFFF) {
+            break;
+        }
+    }
+
+    for (; i < 6; i++) {
+        profile->unk0[i] = 0xFFFF;
+    }
+
+    if (optionsScreen->unk359 > 1) {
+        optionsScreen->unk359 = 0;
+    }
+
+    if (optionsScreen->unk35A > 1) {
+        optionsScreen->unk35A = 0;
+    }
+
+    if (optionsScreen->unk35B > 5) {
+        optionsScreen->unk35B = 1;
+    }
+
+    if (optionsScreen->unk35C > 1) {
+        optionsScreen->unk35C = 0;
+    }
+
+    if (optionsScreen->unk35D > 1) {
+        optionsScreen->unk35D = 0;
+    }
+}
+

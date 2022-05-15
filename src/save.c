@@ -462,7 +462,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     s16 i;
 
     memset(gameState, 0, sizeof(struct SaveGame));
-    memcpy(gameState->unk20, &save->unkC, 12);
+    memcpy(gameState->unk20, save->unkC, 12);
     
     gameState->unk0 = save->unk8;
     gameState->unk6 = save->unk18;
