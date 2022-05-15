@@ -42,9 +42,13 @@ struct UNK_8063730 {
     u8 filler35F;
 
     u16 unk360;
-    u8 filler362[1042];
+    u8 filler362[130];
+    struct UNK_0808B3FC_UNK240 unk3E4;
+    struct UNK_0808B3FC_UNK240 unk414[8];
+    struct UNK_0808B3FC_UNK240 unk594[4];
+    struct UNK_0808B3FC_UNK240 unk654[6];
     struct UNK_802D4CC_UNK270 unk774;
-    u8 unk780;
+    s8 unk780;
     u8 unk781;
     u8 unk782;
     u8 unk783;
@@ -386,4 +390,167 @@ void sub_8063D20(struct UNK_8063730* optionsScreen, s16 p2) {
 
         sub_802D4CC(unk774);
     }
+}
+
+struct UNK_080D95E8 {
+    u16 unk0;
+    u8 unk2;
+    u8 unk3;
+    u16 unk4;
+    u16 unk6;
+};
+
+extern const struct UNK_080D95E8 gUnknown_080D95E8[6];
+extern const struct UNK_080D95E8 gUnknown_080D9618[8][6];
+extern const struct UNK_080D95E8 gUnknown_080D9798[2][6];
+extern const struct UNK_080D95E8 gUnknown_080D97F8[2][6];
+extern const struct UNK_080D95E8 gUnknown_080D9858[6];
+
+extern void sub_806A568(struct UNK_0808B3FC_UNK240*, s32, u16, u16, u32, u16, u16, u32, u8, u8);
+
+void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
+    s32 i;
+    u16 itemPos;
+    u16 otherPos;
+
+    s16 temp0;
+    u8 language = optionsScreen->unk35B;
+    struct UNK_0808B3FC_UNK240* options414 = optionsScreen->unk414;
+    struct UNK_0808B3FC_UNK240* options594 = optionsScreen->unk594;
+    struct UNK_0808B3FC_UNK240* options654 = optionsScreen->unk654;
+
+    const struct UNK_080D95E8* itemText;
+    sub_806A568(
+        &optionsScreen->unk3E4, 
+        0, 
+        gUnknown_080D95E8[language].unk4,
+        gUnknown_080D95E8[language].unk0,
+        0x3000,
+        0, 
+        0xF,
+        0xF,
+        gUnknown_080D95E8[language].unk2,
+        0
+    );
+
+    itemPos = 0x1E;
+
+    for (i = 0; i < 8; i++) {
+        if (optionsScreen->unk35C || i != 5) {
+            itemText = &gUnknown_080D9618[i][language];
+            temp0 = 0x28;
+
+            if (optionsScreen->unk780 == i) {
+                temp0 = 0x20;
+            }
+
+            if (p2 == 1 && i == 0) {
+                temp0 = -0xB8;
+            }
+
+            sub_806A568(
+                &options414[i], 
+                0, 
+                itemText->unk4,
+                itemText->unk0,
+                0x3000,
+                temp0, 
+                itemPos,
+                0xD,
+                itemText->unk2,
+                0
+            );
+
+        }
+    }
+
+    temp0 = 0xA0;
+    if (optionsScreen->unk780 == 0) {
+        temp0 = 0x98;
+    }
+    if (p2 == 1) {
+        temp0 = -0x40;
+    }
+
+    sub_806A568(
+        &options594[0], 
+        0, 
+        0x12,
+        0x3BA,
+        0x3000,
+        temp0, 
+        0x1E,
+        0xC,
+        0,
+        0
+    );
+
+    itemText = &gUnknown_080D9798[optionsScreen->unk359][language];
+    temp0 = 0xA0;
+    if (optionsScreen->unk780 == 1) {
+        temp0 = 0x98;
+    }
+
+    sub_806A568(
+        &options594[1], 
+        0, 
+        itemText->unk4,
+        itemText->unk0,
+        0x3000,
+        temp0, 
+        0x2D,
+        10,
+        itemText->unk2,
+        0
+    );
+
+    itemText = &gUnknown_080D97F8[optionsScreen->unk35A][language];
+    temp0 = 0xA0;
+    if (optionsScreen->unk780 == 2) {
+        temp0 = 0x98;
+    }
+
+    sub_806A568(
+        &options594[2], 
+        0, 
+        itemText->unk4,
+        itemText->unk0,
+        0x3000,
+        temp0, 
+        0x3C,
+        10,
+        itemText->unk2,
+        0
+    );
+
+    itemText = &gUnknown_080D9858[language];
+    temp0 = 0xA0;
+    if (optionsScreen->unk780 == 3) {
+        temp0 = 0x98;
+    }
+
+    sub_806A568(
+        &options594[3], 
+        0, 
+        itemText->unk4,
+        itemText->unk0,
+        0x3000,
+        temp0, 
+        0x4B,
+        10,
+        itemText->unk2,
+        0
+    );
+
+    otherPos = 0xAB;
+    if (optionsScreen->unk780 == 0) {
+        otherPos = 0xA3;
+    }
+
+    // ???
+    if (p2 == 1 && i == 0) {
+        otherPos = 0xFFCB;
+    }
+
+    
 }

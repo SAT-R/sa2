@@ -3,8 +3,10 @@ import itertools as it
 from graphlib import TopologicalSorter
 import sys
 
-if sys.argv[1] == '-e':
+if len(sys.argv) > 1 and sys.argv[1] == '-e':
     excluded = sys.argv[1:]
+else:
+    excluded = []
 
 depends_on = {}
 data = {}
