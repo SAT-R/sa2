@@ -72,7 +72,7 @@ sa2.gba: OK
 
 ### Credits
 
-- Special thanks to [@normatt](https://github.com/normatt) for the initial repo setup and sounds decompilation
+- Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds decompilation
 - Shout out to [@froggestspirit](https://github.com/froggestspirit) for the drive to set this project up
 - [Pokemon Reverse Engineering Team](https://github.com/pret) for their help with the project, and tooling for GBA decompilations
 - [Kermalis](https://github.com/Kermalis) for [their tool](https://github.com/Kermalis/VGMusicStudio) which was used to dump the game midis
