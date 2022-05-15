@@ -215,7 +215,7 @@ static const u16 sLensFlareStartPositions[][2] = {
 };
 
 // Don't know who these belong to yet
-extern u8 sub_802D4CC(struct TitleScreen_UNK270*);
+
 extern void sub_801A6D8(void);
 extern void sub_803143C(u32, u8);
 extern void sub_8087FC0(void);
@@ -232,7 +232,7 @@ extern void sub_808DB2C(void);
 void CreateTitleScreen(void) {
     struct Task* t;
     struct TitleScreen* titleScreen;
-    struct TitleScreen_UNK270* config270;
+    struct UNK_802D4CC_UNK270* config270;
     struct TitleScreen_UNK27C* config27C;
     s32 i, val;
     s16 denom;
@@ -295,7 +295,7 @@ void CreateTitleScreen(void) {
 }
 
 static void CreateTitleScreenWithoutIntro(struct TitleScreen* titleScreen) {
-    struct TitleScreen_UNK270* config270;
+    struct UNK_802D4CC_UNK270* config270;
     struct Unk_03002400 *config0, *config40;
 
     // Size of filler between unk2B4
@@ -996,7 +996,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen* titleScreen)
 
 static void Task_PlayModeMenuMain(void) {
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
-    struct TitleScreen_UNK270* config270;
+    struct UNK_802D4CC_UNK270* config270;
     
     sub_80051E8(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
@@ -1106,7 +1106,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen* titleScr
 
 static void Task_SinglePlayerMenuMain(void) {
     struct TitleScreen* titleScreen;
-    struct TitleScreen_UNK270* config270;
+    struct UNK_802D4CC_UNK270* config270;
     u8 menuIndex;
 
     u8 numMenuItems = 3;
@@ -1326,7 +1326,7 @@ static void Task_JumpToPlayModeMenu(void) {
 
 static void Task_JumpToSinglePlayerMenu(void) {
     struct TitleScreen* titleScreen;
-    struct TitleScreen_UNK270* config270;
+    struct UNK_802D4CC_UNK270* config270;
 
     u8 numMenuItems = 3;
     if (gLoadedSaveGame->unk14) {
@@ -1715,7 +1715,7 @@ void CreateTitleScreenAtSinglePlayerMenu(void) {
 }
 
 static void SkipIntro(struct TitleScreen* titleScreen) {
-    struct TitleScreen_UNK270* config270 = &titleScreen->unk270;
+    struct UNK_802D4CC_UNK270* config270 = &titleScreen->unk270;
     gFlags &= ~0x4;
     
     config270->unk0 = 1;

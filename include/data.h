@@ -124,4 +124,15 @@ extern struct BlendRegs gBldRegs;
 extern u16 gDispCnt;  // gDispCnt
 extern s16 gBgScrollRegs[4][2];  // gBgScrollRegs
 
+struct UNK_802D4CC_UNK270 {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+    u16 unk8;
+    u16 unkA;
+};
+
+extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);
+
 #endif

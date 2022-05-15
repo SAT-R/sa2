@@ -18,15 +18,6 @@ struct TitleScreen_UNK27C {
     u8 unk36;
 };
 
-struct TitleScreen_UNK270 {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    u16 unk8;
-    u16 unkA;
-};
-
 // TitleScreen
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -44,7 +35,7 @@ struct TitleScreen {
     struct UNK_0808B3FC_UNK240 unk240;
 
     // Some more configs
-    struct TitleScreen_UNK270 unk270;
+    struct UNK_802D4CC_UNK270 unk270;
     struct TitleScreen_UNK27C unk27C;
 
     // Something to do with the wave effects

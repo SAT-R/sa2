@@ -6,7 +6,9 @@
 #include "save.h"
 #include "malloc_ewram.h"
 #include "random.h"
+#include "sprite.h"
 #include "constants/songs.h"
+#include "data.h"
 
 extern void* gUnknown_03005B50;
 extern u32 gUnknown_03005B54;
@@ -40,7 +42,8 @@ struct UNK_8063730 {
     u8 filler35F;
 
     u16 unk360;
-    u8 filler362[0X41E];
+    u8 filler362[1042];
+    struct UNK_802D4CC_UNK270 unk774;
     u8 unk780;
     u8 unk781;
     u8 unk782;
@@ -273,7 +276,7 @@ void sub_8063A00(s16 p1) {
     sub_8067710(config);
 }
 
-// InitOptionsProfileData
+// GetProfileData
 void sub_8063B38(struct UNK_8063730* optionsScreen) {
     s16 i;
     struct SaveGame* saveGame = gLoadedSaveGame;
@@ -327,3 +330,60 @@ void sub_8063B38(struct UNK_8063730* optionsScreen) {
     }
 }
 
+// SetProfileData
+void sub_8063C7C(struct UNK_8063730* optionsScreen) {
+    struct SaveGame* saveGame = gLoadedSaveGame;
+    struct UNK_8063730_UNK0* profile = &optionsScreen->unk0;
+
+    memcpy(saveGame->unk20, profile->unk0, 12);
+    memcpy(saveGame->unk34, profile->unkC, 0x278);
+
+    memcpy(&saveGame->unk2AC[0], &profile->unk284[0], 0x14);
+
+    saveGame->unk1C = profile->unk34C;
+    saveGame->unk1D = profile->unk34D;
+    saveGame->unk1E = profile->unk34E;
+
+    memcpy(&saveGame->unk2C, &profile->unk350, 8);
+
+    saveGame->unk4 = optionsScreen->unk359;
+    saveGame->unk5 = optionsScreen->unk35A;
+    saveGame->unk6 = optionsScreen->unk35B + 1;
+    saveGame->unk11 = optionsScreen->unk35C;
+    saveGame->unk12 = optionsScreen->unk35D;
+}
+
+void sub_8063D20(struct UNK_8063730* optionsScreen, s16 p2) {
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+
+    gDispCnt = 0x1740;
+    gBgCntRegs[0] = 0x703;
+    gBgCntRegs[2] = 0x4E05;
+    gBgCntRegs[3] = 0xDC0E;
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+
+    if (!p2) {
+        gBgScrollRegs[2][0] = 0xFF28;
+    } else {
+        gBgScrollRegs[2][0] = 0;
+    }
+
+    gBgScrollRegs[2][1] = 0xFFFD;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+
+    DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
+
+    if (!p2) {
+        unk774->unk0 = 0;
+        unk774->unk2 = 2;
+        unk774->unk4 = 0;
+        unk774->unk6 = 0x100;
+        unk774->unkA = 0;
+        unk774->unk8 = 0xFF;
+
+        sub_802D4CC(unk774);
+    }
+}
