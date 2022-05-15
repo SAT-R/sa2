@@ -69,6 +69,8 @@
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))
 
+#define GetBit(x, y) ((x) >> (y)&1)
+
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8);
 typedef void (*IntrFunc)(void);

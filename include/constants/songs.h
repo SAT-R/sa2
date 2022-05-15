@@ -5,6 +5,10 @@
 #define MUS_INTRO 1
 #define MUS_TITLE_FANFARE 2
 
+#define MUS_ZONE_SELECTION 4
+
+#define MUS_OPTIONS 9
+
 #define SE_SELECT 106
 #define SE_RETURN 107
 #define SE_MENU_CURSOR_MOVE 108

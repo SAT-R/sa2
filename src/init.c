@@ -7,6 +7,7 @@
 #include "game.h"
 #include "player.h"
 #include "title_screen.h"
+#include "profile.h"
 
 // likely static data, needs to be extracted
 extern union Unk_03002E60 gMapHeaders[];
@@ -16,9 +17,7 @@ extern u32 gUnknown_080F40D4;
 struct Task *gUnknown_03005844;
 
 // Need to find what these mean
-void CreateTitleScreenAndSkipIntro();
-void sub_8063940_CreateProfileScreen();
-void sub_8081C0C();
+extern void sub_8081C0C();
 
 void sub_801A51C(void) {
     u32 i;

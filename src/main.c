@@ -12,8 +12,6 @@
 #include "input.h"
 #include "input_recorder.h"
 
-#define GetBit(x, y) ((x) >> (y)&1)
-
 // TODO make static
 u32 gUnknown_03002790;
 
