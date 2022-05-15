@@ -1206,6 +1206,8 @@ static void Task_HandleTitleScreenExit(void) {
                 if (gLoadedSaveGame->unk20[0] != 0xFFFF) {
                     sub_805A1CC();
                 } else {
+                    // If we don't have a profile name
+                    // show the profile creator screen
                     sub_8063A00(0);
                 }
                 break;

@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-// CreateProfileOptionsScreen
-void sub_8063730(u32);
+// CreateOptionsScreen
+void sub_8063730(u16);
 
 #endif // GUARD_OPTION_SCREEN_H
