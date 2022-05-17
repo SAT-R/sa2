@@ -400,20 +400,37 @@ struct UNK_080D95E8 {
     u16 unk6;
 };
 
+struct UNK_806B908 {
+    u32 unk0;
+    u32 unk4;
+};
+
 extern const struct UNK_080D95E8 gUnknown_080D95E8[6];
-extern const struct UNK_080D95E8 gUnknown_080D9618[8][6];
-extern const struct UNK_080D95E8 gUnknown_080D9798[2][6];
-extern const struct UNK_080D95E8 gUnknown_080D97F8[2][6];
+extern const struct UNK_080D95E8 gUnknown_080D9618[8 * 6];
+extern const struct UNK_080D95E8 gUnknown_080D9798[2 * 6];
+extern const struct UNK_080D95E8 gUnknown_080D97F8[2 * 6];
 extern const struct UNK_080D95E8 gUnknown_080D9858[6];
 
 extern void sub_806A568(struct UNK_0808B3FC_UNK240*, s32, u16, u16, u32, u16, u16, u32, u8, u8);
+extern void sub_806B908(struct UNK_806B908*, u16);
 
+#ifndef NON_MATCHING
+ASM_FUNC("asm/non_matching/sub_8063DCC.inc", void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2))
+#else
+// https://decomp.me/scratch/EzQR3
 void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
     s32 i;
     u16 itemPos;
     u16 otherPos;
-
+    u16 var4;
     s16 temp0;
+    u32 bVar1;
+
+    struct UNK_806B908 local48;
+    struct UNK_0808B3FC_UNK240* option414;
+    struct UNK_0808B3FC_UNK240* option594;
+
+
     u8 language = optionsScreen->unk35B;
     struct UNK_0808B3FC_UNK240* options414 = optionsScreen->unk414;
     struct UNK_0808B3FC_UNK240* options594 = optionsScreen->unk594;
@@ -437,7 +454,7 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
 
     for (i = 0; i < 8; i++) {
         if (optionsScreen->unk35C || i != 5) {
-            itemText = &gUnknown_080D9618[i][language];
+            itemText = &gUnknown_080D9618[i + language];
             temp0 = 0x28;
 
             if (optionsScreen->unk780 == i) {
@@ -485,7 +502,7 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
         0
     );
 
-    itemText = &gUnknown_080D9798[optionsScreen->unk359][language];
+    itemText = &gUnknown_080D9798[optionsScreen->unk359 + language];
     temp0 = 0xA0;
     if (optionsScreen->unk780 == 1) {
         temp0 = 0x98;
@@ -504,7 +521,7 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
         0
     );
 
-    itemText = &gUnknown_080D97F8[optionsScreen->unk35A][language];
+    itemText = &gUnknown_080D97F8[optionsScreen->unk35A + language];
     temp0 = 0xA0;
     if (optionsScreen->unk780 == 2) {
         temp0 = 0x98;
@@ -552,5 +569,139 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, u16 p2) {
         otherPos = 0xFFCB;
     }
 
-    
+    bVar1 = 0;
+
+    for (i = 0; i < 6; i++) {
+        if (bVar1) {
+            var4 = 0x11;
+        } else {
+            var4 = optionsScreen->unk0.unk0[i];
+        }
+
+        if (var4 == 0xFFFF) {
+            var4 = 0x11;
+            bVar1 = 1;
+        }
+
+        sub_806B908(&local48, var4);
+        sub_806A568(
+            &options654[i], 
+            0, 
+            local48.unk0,
+            local48.unk4 & 0xFFFF,
+            0x3000,
+            otherPos, 
+            0x26,
+            10,
+            local48.unk4 >> 0x10 & 0xFF,
+            0
+        );
+
+        options654[i].unk25 = optionsScreen->unk780 == 0 ? 7 : 8;
+    }
+
+    for (i = 0; i < 8; i++) {        
+        if (optionsScreen->unk780 == i) {
+            optionsScreen->unk414[i].unk25 = 0;
+        } else {
+            optionsScreen->unk414[i].unk25 = 1;
+        }
+
+        if (i < 4) {
+            
+            if (optionsScreen->unk780 == i) {
+                optionsScreen->unk594[i].unk25 = 0;
+            } else {
+                optionsScreen->unk594[i].unk25 = 1;
+            }
+        }
+
+        
+    }
+
+    sub_806A568(0,0,0,0x3c4,0,0,0,0,0,0);
+    sub_806A568(0,0,0,0x3c4,0,0,0,0,1,0);
+    sub_806A568(0,0,0,0x3c3,0,0,0,0,0xc,0);
+    sub_806A568(0,0,0,0x3c3,0,0,0,0,0xd,0);
+}
+#endif
+
+
+void sub_80649A4(void);
+void sub_806A99C(void);
+void sub_806A8EC(void);
+void sub_806AA4C(void);
+void sub_806ACF0(void);
+void sub_806A814(void);
+void sub_8064304(void);
+
+void sub_80641B0() {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+
+    sub_80649A4();
+
+    if (gPressedKeys & A_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        switch(optionsScreen->unk780) {
+            case 3:
+                sub_806A8EC();
+                return;
+            case 5:
+                sub_806A99C();
+                return;
+            case 6:
+                sub_806AA4C();
+                return;
+            case 7:
+                sub_806ACF0();
+                return;
+            default:
+                sub_806A814();
+                return;
+            
+        }
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        sub_806ACF0();
+        return;
+    }
+
+    if (gRepeatedKeys & DPAD_DOWN) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        optionsScreen->unk781 = optionsScreen->unk780;
+
+        if (optionsScreen->unk780 > 6) {
+            optionsScreen->unk780 = 0;
+        } else {
+            optionsScreen->unk780++;
+        }
+
+        if (optionsScreen->unk35C == 0 && optionsScreen->unk780 == 5) {
+           optionsScreen->unk780++; 
+        }
+        optionsScreen->unk783 = 0;
+        gCurTask->main = sub_8064304;
+        return;
+        
+    }
+
+    if (gRepeatedKeys & DPAD_UP) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+
+        optionsScreen->unk781 = optionsScreen->unk780;
+        if (optionsScreen->unk780 < 1) {
+            optionsScreen->unk780 = 7;
+        } else {
+            optionsScreen->unk780--;
+        }
+
+        if (optionsScreen->unk35C == 0 && optionsScreen->unk780 == 5) {
+            optionsScreen->unk780--;
+        }  
+        
+        optionsScreen->unk783 = 0;
+        gCurTask->main = sub_8064304;
+    }
 }
