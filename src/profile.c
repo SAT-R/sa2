@@ -41,8 +41,10 @@ struct UNK_8063730 {
 
     u8 filler35F;
 
-    u16 unk360;
-    u8 filler362[130];
+    s16 unk360;
+    s16 unk362;
+    struct Unk_03002400 unk364;
+    struct Unk_03002400 unk3A4;
     struct UNK_0808B3FC_UNK240 unk3E4;
     struct UNK_0808B3FC_UNK240 unk414[8];
     struct UNK_0808B3FC_UNK240 unk594[4];
@@ -52,7 +54,7 @@ struct UNK_8063730 {
     s8 unk781;
     s8 unk782;
     s8 unk783;
-    u8 filler784[4];
+    s8 unk784;
 }; /* size 0x788 */
 
 // CharacterSelection stuff
@@ -759,4 +761,102 @@ void sub_8064304(void) {
     if (++optionsScreen->unk783 > 7) {
         gCurTask->main = sub_80641B0;
     }
+}
+
+void sub_806A8A8(void);
+
+extern const s16 gUnknown_080D9550[8];
+
+static inline void sub_80644C4_A(struct UNK_8063730* optionsScreen, const s16* data) {
+    s16 temp0;
+    struct UNK_0808B3FC_UNK240* item;
+
+    temp0 = optionsScreen->unk360 = data[optionsScreen->unk783];
+
+    item = &optionsScreen->unk414[optionsScreen->unk780];
+    item->unk16 = temp0 + 0x20;
+    item->unk25 = 0;
+
+    if (optionsScreen->unk780 < 4) {
+        struct UNK_0808B3FC_UNK240* item;
+        item = &optionsScreen->unk594[optionsScreen->unk780];
+        item->unk16 = temp0 + 0x98;
+        item->unk25 = 0;
+
+        if (optionsScreen->unk780 == 0) {
+            s16 i;
+            struct UNK_0808B3FC_UNK240* item;
+            item = optionsScreen->unk654;
+            
+            for (i = 0; i < 6; i++, item++) {
+                item->unk16 = temp0 + (i * 10 + 0xA3);
+                item->unk25 = 7;                    
+            }
+        }
+    }
+
+    temp0 = - 0xD8 - temp0 ;
+    gBgScrollRegs[2][0] = temp0; 
+}
+
+void sub_80644C4(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    
+    sub_80644C4_A(optionsScreen, gUnknown_080D9550);
+    sub_80649A4();
+
+    if (++optionsScreen->unk783 > 15) {
+        optionsScreen->unk784 = 1;
+        gCurTask->main = sub_806A8A8;
+    }
+}
+
+extern const s16 gUnknown_080D9570[8];
+
+void sub_80641B0(void);
+
+void sub_80645E0(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    
+    sub_80644C4_A(optionsScreen, gUnknown_080D9570);
+
+    sub_80649A4();
+
+    if (++optionsScreen->unk783 > 15) {
+        gUnknown_03005B54 = 0;
+        gCurTask->main = sub_80641B0;
+    }
+}
+
+void sub_8063DCC(struct UNK_8063730* optionsScreen, s16 p2);
+void sub_8063D20(struct UNK_8063730* optionsScreen, s16 p2);
+void sub_806A968(void);
+void sub_806B854(struct Unk_03002400*, u32, u32, u32, u32, u32, u32, u32, u32, u32);
+
+void sub_80646FC(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+
+    s8 unk784 = optionsScreen->unk784;
+    if (unk784) {
+        return;
+    }
+    
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = unk784;
+
+    sub_8063D20(optionsScreen, 0);
+    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
+    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    sub_8063DCC(optionsScreen, 0);
+
+    
+    unk774->unk0 = unk784;
+    unk774->unk2 = 2;
+    unk774->unk4 = unk784;
+    unk774->unk6 = 0x100;
+    unk774->unkA = unk784;
+    unk774->unk8 = 0xFF;
+
+    gCurTask->main = sub_806A968;
 }
