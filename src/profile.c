@@ -59,7 +59,7 @@ struct UNK_8063730 {
     u8 filler785[3];
 }; /* size 0x788 */
 
-// CharacterSelection stuff
+// CreateOptionsScreen stuff
 extern void sub_806A75C(void);
 extern void sub_806A758(struct Task*);
 extern void sub_8063B38(struct UNK_8063730*);
@@ -844,6 +844,7 @@ void sub_80646FC(void) {
         return;
     }
     
+    // TODO make this section a macro or a inline func
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = unk784;
 
@@ -851,7 +852,6 @@ void sub_80646FC(void) {
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
     sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
     sub_8063DCC(optionsScreen, 0);
-
     
     unk774->unk0 = unk784;
     unk774->unk2 = 2;
@@ -861,4 +861,132 @@ void sub_80646FC(void) {
     unk774->unk8 = 0xFF;
 
     gCurTask->main = sub_806A968;
+}
+
+void sub_806AA18(void);
+
+void sub_80647C8(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+
+    s8 unk784 = optionsScreen->unk784;
+    if (unk784) {
+        return;
+    }
+    
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = unk784;
+
+    sub_8063D20(optionsScreen, 0);
+    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
+    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    sub_8063DCC(optionsScreen, 0);
+
+    unk774->unk0 = unk784;
+    unk774->unk2 = 2;
+    unk774->unk4 = unk784;
+    unk774->unk6 = 0x100;
+    unk774->unkA = unk784;
+    unk774->unk8 = 0xFF;
+
+    m4aSongNumStart(9);
+    gCurTask->main = sub_806AA18;
+}
+
+void sub_806AAC8(void);
+
+void sub_806489C(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    u8 unk35B = optionsScreen->unk35B;
+
+    if (optionsScreen->unk784 == 1) {
+        return;
+    }
+
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = 0;
+
+    if (!optionsScreen->unk784) {
+        sub_8063B38(optionsScreen);
+    }
+
+    optionsScreen->unk35B = unk35B;
+
+    sub_8063D20(optionsScreen, 0);
+    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
+    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    sub_8063DCC(optionsScreen, 0);
+
+    unk774->unk0 = 0;
+    unk774->unk2 = 2;
+    unk774->unk4 = 0;
+    unk774->unk6 = 0x100;
+    unk774->unkA = 0;
+    unk774->unk8 = 0xFF;
+
+    if (!optionsScreen->unk784) {
+        m4aSongNumStart(9);
+    }
+
+    optionsScreen->unk784 = 0;
+    gCurTask->main = sub_806AAC8;
+}
+
+void sub_80649A4(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_0808B3FC_UNK240 *option3E4 = &optionsScreen->unk3E4;
+    struct UNK_0808B3FC_UNK240 *options414 = optionsScreen->unk414;
+    struct UNK_0808B3FC_UNK240 *options594 = optionsScreen->unk594;
+    struct UNK_0808B3FC_UNK240 *options654 = optionsScreen->unk654;
+    s16 i;
+
+    sub_80051E8(option3E4);
+
+    for (i = 0; i < 8; i++, options414++) {
+        if ((optionsScreen->unk35C || i != 5) && (sub_80051E8(options414), i < 4)) {
+            sub_80051E8(options594);
+            options594++;
+        }
+    }
+
+    for (i = 0; i < 6; i++, options654++) {
+        sub_80051E8(options654);
+    }
+}
+
+struct UNK_8064A40 {
+    u8 filler0[0x15C];
+    struct UNK_8063730* unk15C;
+    s8 unk160;
+    s8 unk161;
+    s8 unk162;
+    u8 filler163[2];
+}; /* size 0x164 */
+
+void sub_8064C44(void);
+void sub_8064AC0(struct UNK_8064A40*);
+
+
+void sub_8064A40(struct UNK_8063730* optionsScreen) {
+    struct Task* t;
+    struct UNK_8064A40* state;
+    s16 temp;
+
+    t = TaskCreate(sub_8064C44, 0x164, 0x2000, 4, 0);
+    state = TaskGetStructPtr(t, state);
+
+    
+    if (optionsScreen->unk782 != -1) {
+        temp = optionsScreen->unk782; 
+    } else {
+        temp = 0;
+    }
+
+    state->unk15C = optionsScreen;
+    state->unk160 = temp;
+    state->unk161 = 0;
+    state->unk162 = optionsScreen->unk35B;
+
+    sub_8064AC0(state);
 }
