@@ -55,6 +55,8 @@ struct UNK_8063730 {
     s8 unk782;
     s8 unk783;
     s8 unk784;
+
+    u8 filler785[3];
 }; /* size 0x788 */
 
 // CharacterSelection stuff
