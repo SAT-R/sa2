@@ -49,9 +49,9 @@ struct UNK_8063730 {
     struct UNK_0808B3FC_UNK240 unk654[6];
     struct UNK_802D4CC_UNK270 unk774;
     s8 unk780;
-    u8 unk781;
-    u8 unk782;
-    u8 unk783;
+    s8 unk781;
+    s8 unk782;
+    s8 unk783;
     u8 filler784[4];
 }; /* size 0x788 */
 
@@ -619,7 +619,7 @@ void sub_806ACF0(void);
 void sub_806A814(void);
 void sub_8064304(void);
 
-void sub_80641B0() {
+void sub_80641B0(void) {
     struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
 
     sub_80649A4();
@@ -687,5 +687,76 @@ void sub_80641B0() {
         
         optionsScreen->unk783 = 0;
         gCurTask->main = sub_8064304;
+    }
+}
+
+extern const s8 gUnknown_080D9540[2][8];
+
+static inline void sub_8064304_A(struct UNK_8063730* optionsScreen, s8 val) {
+    s16 temp0;
+    struct UNK_0808B3FC_UNK240* item;
+
+    optionsScreen->unk360 = val;
+    temp0 = val;
+
+    item = &optionsScreen->unk414[optionsScreen->unk780];
+    item->unk16 = temp0 + 0x20;
+    item->unk25 = 0;
+
+    if (optionsScreen->unk780 < 4) {
+        item = &optionsScreen->unk594[optionsScreen->unk780];
+        item->unk16 = temp0 + 0x98;
+        item->unk25 = 0;
+
+        if (optionsScreen->unk780 == 0) {
+            s16 i;
+            struct UNK_0808B3FC_UNK240* item = optionsScreen->unk654;
+            
+            for (i = 0; i < 6; i++, item++) {
+                item->unk16 = temp0 + (i * 10 + 0xA3);
+                item->unk25 = 7;                    
+            }
+        }
+    }
+
+    temp0 = - 0xD8 - temp0 ;
+    gBgScrollRegs[2][0] = temp0;    
+}
+
+static inline void sub_8064304_B(struct UNK_8063730* optionsScreen, s8 temp1) {
+    struct UNK_0808B3FC_UNK240* item;
+    
+    item = &optionsScreen->unk414[optionsScreen->unk781];
+
+    item->unk16 = temp1 + 0x20;
+    item->unk25 = 1;
+
+    if (optionsScreen->unk781 < 4) {
+        item = &optionsScreen->unk594[optionsScreen->unk781];
+        item->unk16 = temp1 + 0x98;
+        item->unk25 = 1;
+
+        if (optionsScreen->unk781 == 0) {
+            s16 i;
+            struct UNK_0808B3FC_UNK240* item = optionsScreen->unk654;
+            for (i = 0; i < 6; i++, item++) {
+                item->unk16 = temp1 + (i * 10 + 0xA3);
+                item->unk25 = 8;
+            }
+        }
+    }
+} 
+
+void sub_8064304(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    s16 unk783 = optionsScreen->unk783;
+    
+    sub_8064304_A(optionsScreen, gUnknown_080D9540[0][unk783]);
+    sub_8064304_B(optionsScreen, gUnknown_080D9540[1][unk783]);
+
+    sub_80649A4();
+
+    if (++optionsScreen->unk783 > 7) {
+        gCurTask->main = sub_80641B0;
     }
 }
