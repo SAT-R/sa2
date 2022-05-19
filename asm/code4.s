@@ -9452,8 +9452,8 @@ sub_808AB08: @ 0x0808AB08
 	ldrh r0, [r1, #2]
 	adds r0, #1
 	strh r0, [r1, #2]
-	ldr r3, _0808ADD4 @ =gUnknown_030026E0
-	ldr r2, _0808ADD8 @ =gUnknown_0300188C
+	ldr r3, _0808ADD4 @ =gHBlankCallbacks
+	ldr r2, _0808ADD8 @ =gHBlankCallbackIndex
 	ldrb r0, [r2]
 	adds r1, r0, #1
 	strb r1, [r2]
@@ -9761,8 +9761,8 @@ _0808ADC4: .4byte IWRAM_START + 0x188
 _0808ADC8: .4byte IWRAM_START + 0x1B8
 _0808ADCC: .4byte IWRAM_START + 0x3CC
 _0808ADD0: .4byte gBgScrollRegs
-_0808ADD4: .4byte gUnknown_030026E0
-_0808ADD8: .4byte gUnknown_0300188C
+_0808ADD4: .4byte gHBlankCallbacks
+_0808ADD8: .4byte gHBlankCallbackIndex
 _0808ADDC: .4byte sub_808DB2C
 _0808ADE0: .4byte gFlags
 _0808ADE4: .4byte gUnknown_080E0C30

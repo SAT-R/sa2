@@ -103,9 +103,9 @@
 . = 0x00001880; gUnknown_03001880 = .;
 . = 0x00001884; gUnknown_03001884 = .;
 . = 0x00001888; gUnknown_03001888 = .;
-. = 0x0000188C; gUnknown_0300188C = .;
+. = 0x0000188C; gHBlankCallbackIndex = .;
 . = 0x00001890; gMultiSioRecv = .;
-. = 0x000018E0; gUnknown_030018E0 = .;
+. = 0x000018E0; gHBlankFunctionsLength = .;
 . = 0x000018E8; gBldRegs = .;
 . = 0x000018F0; gUnknown_030018F0 = .;
 . = 0x00001900; gEmptyTask = .;
@@ -136,13 +136,13 @@
 . = 0x000022C8; gUnknown_030022C8 = .;
 . = 0x000022D0; gUnknown_030022D0 = .;
 . = 0x000026D0; gUnknown_030026D0 = .;
-. = 0x000026E0; gUnknown_030026E0 = .;
+. = 0x000026E0; gHBlankCallbacks = .;
 . = 0x000026F0; gCurTask = .;
 . = 0x000026F4; gUnknown_030026F4 = .;
 . = 0x00002700; gKeysFirstRepeatIntervals = .;
 . = 0x0000270C; gReleasedKeys = .;
 . = 0x00002710; gUnknown_03002710 = .;
-. = 0x00002790; gUnknown_03002790 = .;
+. = 0x00002790; gFlagsPreVBlank = .;
 . = 0x00002794; gUnknown_03002794 = .;
 . = 0x000027A0; gUnknown_030027A0 = .;
 . = 0x00002820; gUnknown_03002820 = .;
@@ -165,7 +165,7 @@
 . = 0x00002ADC; gPressedKeys = .;
 . = 0x00002AE0; gUnknown_03002AE0 = .;
 . = 0x00002AE4; gUnknown_03002AE4 = .;
-. = 0x00002AF0; gUnknown_03002AF0 = .;
+. = 0x00002AF0; gHBlankFunctions = .;
 . = 0x00002B00; gUnknown_03002B00 = .;
 . = 0x00004D10; gUnknown_03004D10 = .;
 . = 0x00004D50; gUnknown_03004D50 = .;
@@ -184,7 +184,7 @@
 . = 0x00005398; gUnknown_03005398 = .;
 . = 0x000053A0; gUnknown_030053A0 = .;
 . = 0x000053B0; gInputPlaybackData = .;
-. = 0x000053B4; gUnknown_030053B4 = .;
+. = 0x000053B4; gExecuteSoundMain = .;
 . = 0x000053B8; gUnknown_030053B8 = .;
 . = 0x000053C0; gInputRecorder = .;
 . = 0x000053CC; sTapeBuffer = .;

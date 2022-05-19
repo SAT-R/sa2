@@ -227,7 +227,7 @@ extern u32 sub_8007C10(u32);
 extern void sub_8007CF0(u32);
 
 // pallette?
-extern void sub_808DB2C(void);
+extern void sub_808DB2C(u8);
 
 void CreateTitleScreen(void) {
     struct Task* t;
@@ -339,7 +339,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen* titleScreen) {
     gUnknown_03002280[4] = 0;
     gUnknown_03002280[5] = 0;
     gUnknown_03002280[6] = 0xff;
-    gUnknown_03002280[7] = 32;
+    gUnknown_03002280[7] = 0x20;
     gUnknown_03004D80[2] = 0;
     gUnknown_03002280[8] = 0;
     gUnknown_03002280[9] = 0;
@@ -1236,7 +1236,7 @@ static void Task_HandleTitleScreenExit(void) {
     }
 }
 
-static void sub_808C8EC(void) {
+static void Task_ShowTitleScreenIntroSkipped(void) {
     struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
     struct Unk_03002400* config0 = &titleScreen->unk0;
     struct Unk_03002400* config40;
@@ -1369,12 +1369,12 @@ static void WavesBackgroundAnim(struct TitleScreen* titleScreen) {
     
     titleScreen->unk27C.unk34 = (titleScreen->wavesTopOffset - 2);
     
-    gUnknown_030026E0[gUnknown_0300188C++] = sub_808DB2C;
+    gHBlankCallbacks[gHBlankCallbackIndex++] = sub_808DB2C;
 
-    gFlags |= 0x8;
+    gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     gFlags |= 0x4;
     gUnknown_03002A80 = 16;
-    gUnknown_03002878 = 0x4000020;
+    gUnknown_03002878 = REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
     gUnknown_03001884 = titleScreen->unk3F4[0];
@@ -1730,7 +1730,7 @@ static void SkipIntro(struct TitleScreen* titleScreen) {
 
     InitTitleScreenUI(titleScreen);
     ShowGameLogo(titleScreen);
-    gCurTask->main = sub_808C8EC;
+    gCurTask->main = Task_ShowTitleScreenIntroSkipped;
 }
 
 static void Task_ShowPressStartMenu(void) {

@@ -155,9 +155,9 @@ void TaskExecute(void) {
             }
 
             gCurTask = gNextTask;
-            if ((gUnknown_030053B4 != 0)) {
+            if (gExecuteSoundMain) {
                 m4aSoundMain();
-                gUnknown_030053B4 = 0;
+                gExecuteSoundMain = FALSE;
             }
         }
     } else if (gTaskList[0] != (struct Task*)IWRAM_START) {
@@ -169,9 +169,9 @@ void TaskExecute(void) {
             }
 
             gCurTask = gNextTask;
-            if (gUnknown_030053B4 != 0) {
+            if (gExecuteSoundMain) {
                 m4aSoundMain();
-                gUnknown_030053B4 = 0;
+                gExecuteSoundMain = FALSE;
             }
         }
     }

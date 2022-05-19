@@ -3,14 +3,15 @@
 
 #include "global.h"
 
-extern u8 gUnknown_0300188C;
+extern u8 gHBlankCallbackIndex;
 
 extern u16 gUnknown_03001880;
 
 
 extern u8 gUnknown_03004D50;
-extern u8 gUnknown_030018E0;
-extern HBlankFunc gUnknown_03002AF0[0xa0];
+extern u8 gHBlankFunctionsLength;
+
+extern HBlankFunc gHBlankFunctions[DISPLAY_HEIGHT];
 
 struct Unk_020382A0_8_0
 {
@@ -101,16 +102,16 @@ extern u32 gUnknown_030053B8;
 
 extern u32 gFrameCount;
 
-extern u8 gUnknown_030053B4;
+
 extern u16 gUnknown_03001888;
 extern u32 gUnknown_03001940;
 
 extern u8 gUnknown_03001954;
 extern u32 gUnknown_0203B000;
-extern void* gUnknown_030026E0[4];
+extern HBlankFunc gHBlankCallbacks[4];
 extern u8 gUnknown_03001948;
-extern void* gUnknown_03001870[4];
-extern FuncType_030053A0 gUnknown_030053A0[];
+extern FuncType_030053A0 gUnknown_03001870[4];
+extern FuncType_030053A0 gUnknown_030053A0[4];
 extern u8 gUnknown_03002874;
 
 extern IntrFunc gIntrTable[];

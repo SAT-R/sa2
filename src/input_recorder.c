@@ -5,12 +5,13 @@
 
 #define TAPE_LENGTH 0x800
 
+// Probably not declared here
+const u8* gInputPlaybackData;
+
 static void Task_InputRecorder(void);
 static void InputRecorderEject(struct Task*);
 
-const u8* gInputPlaybackData;
 struct InputRecorder gInputRecorder;
-
 // TODO: make static
 u16* sTapeBuffer;
 

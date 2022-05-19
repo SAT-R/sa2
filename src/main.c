@@ -13,7 +13,7 @@
 #include "input_recorder.h"
 
 // TODO make static
-u32 gUnknown_03002790;
+u32 gFlagsPreVBlank;
 
 
 static void UpdateScreenDma(void);
@@ -68,7 +68,7 @@ static void GameInit(void) {
 
     REG_WAITCNT = WAITCNT_PREFETCH_ENABLE | WAITCNT_WS0_S_1 | WAITCNT_WS0_N_3;
     gFlags = 0;
-    gUnknown_03002790 = 0;
+    gFlagsPreVBlank = 0;
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
         gFlags = 0x200;
@@ -178,22 +178,22 @@ static void GameInit(void) {
     gUnknown_030022AC = gUnknown_03001B60[1];
     gUnknown_03002878 = 0;
     gUnknown_03002A80 = 0;
-    gUnknown_0300188C = 0;
-    gUnknown_030018E0 = 0;
+    gHBlankCallbackIndex = 0;
+    gHBlankFunctionsLength = 0;
 
-    DmaFill32(3, 0, gUnknown_030026E0, 0x10);
-    DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
+    DmaFill32(3, 0, gHBlankCallbacks, 4 * sizeof(HBlankFunc));
+    DmaFill32(3, 0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
 
     gUnknown_03004D50 = 0;
     gUnknown_03001948 = 0;
 
-    DmaFill32(3, 0, gUnknown_03001870, 0x10);
-    DmaFill32(3, 0, gUnknown_030053A0, 0x10);
+    DmaFill32(3, 0, gUnknown_03001870, 4 * sizeof(FuncType_030053A0));
+    DmaFill32(3, 0, gUnknown_030053A0, 4 * sizeof(FuncType_030053A0));
 
     m4aSoundInit();
     m4aSoundMode(DEFAULT_SOUND_MODE);
 
-    gUnknown_030053B4 = 1;
+    gExecuteSoundMain = TRUE;
 
     TaskInit();
     EwramInitHeap();
@@ -228,7 +228,7 @@ static void GameInit(void) {
 
 static void GameLoop(void) {
     while (TRUE) {
-        gUnknown_030053B4 = 0;
+        gExecuteSoundMain = FALSE;
         if (!(gFlags & 0x4000)) {
             m4aSoundMain();
         }
@@ -242,7 +242,7 @@ static void GameLoop(void) {
             TaskExecute();
         }
 
-        gUnknown_03002790 = gFlags;
+        gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
         if (gFlags & 0x4000) {
             UpdateScreenCpuSet();
@@ -261,7 +261,7 @@ static void GameLoop(void) {
             gFlags &= ~0x800;
         }
 
-        // Wait for vblank
+        // Wait for vblank to finish
         while (REG_DISPSTAT & DISPSTAT_VBLANK)
             ;
     };
@@ -289,17 +289,17 @@ static void UpdateScreenDma(void) {
               sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
-    if (gFlags & 0x8) {
+    if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;
-        DmaFill32(3, 0, gUnknown_03002AF0, 0x10);
-        if (gUnknown_0300188C != 0) {
-            DmaCopy32(3, gUnknown_030026E0, gUnknown_03002AF0,
-                      gUnknown_0300188C * 4);
+        DmaFill32(3, 0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
+        if (gHBlankCallbackIndex != 0) {
+            DmaCopy32(3, gHBlankCallbacks, gHBlankFunctions,
+                      gHBlankCallbackIndex * sizeof(HBlankFunc));
         }
-        gUnknown_030018E0 = gUnknown_0300188C;
+        gHBlankFunctionsLength = gHBlankCallbackIndex;
     } else {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gUnknown_030018E0 = 0;
+        gHBlankFunctionsLength = 0;
     }
 
     if (gFlags & 0x4) {
@@ -319,10 +319,10 @@ static void UpdateScreenDma(void) {
     }
 
     if (gFlags & 0x10) {
-        DmaFill32(3, 0, gUnknown_030053A0, 0x10);
+        DmaFill32(3, 0, gUnknown_030053A0, 4 * sizeof(FuncType_030053A0));
         if (gUnknown_03004D50 != 0) {
             DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
-                      gUnknown_03004D50 * 4);
+                      gUnknown_03004D50 * sizeof(FuncType_030053A0));
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
@@ -344,10 +344,10 @@ static void UpdateScreenDma(void) {
 }
 
 static void ClearOamBufferDma(void) {
-    gUnknown_0300188C = 0;
+    gHBlankCallbackIndex = 0;
 
-    gFlags &= ~8;
-    if ((gFlags & (0x20)) == 0) {
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
+    if (!(gFlags & 0x20)) {
         if (gUnknown_03001884 == gUnknown_03004D54) {
             gUnknown_03001884 = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
@@ -387,16 +387,16 @@ static void UpdateScreenCpuSet(void) {
     CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
-    if (gFlags & 8) {
+    if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;
-        CpuFastFill(0, gUnknown_03002AF0, 0x10);
-        if (gUnknown_0300188C != 0) {
-            CpuFastSet(gUnknown_030026E0, gUnknown_03002AF0, gUnknown_0300188C);
+        CpuFastFill(0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
+        if (gHBlankCallbackIndex != 0) {
+            CpuFastSet(gHBlankCallbacks, gHBlankFunctions, gHBlankCallbackIndex);
         }
-        gUnknown_030018E0 = gUnknown_0300188C;
+        gHBlankFunctionsLength = gHBlankCallbackIndex;
     } else {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gUnknown_030018E0 = 0;
+        gHBlankFunctionsLength = 0;
     }
 
     if (gUnknown_030026F4 == 0xff) {
@@ -415,7 +415,7 @@ static void UpdateScreenCpuSet(void) {
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
-        gUnknown_03001948 = gFlags & 0x10;
+        gUnknown_03001948 = 0;
     }
 
     j = gUnknown_030026F4;
@@ -437,9 +437,9 @@ static void VBlankIntr(void) {
     DmaStop(0);
     m4aSoundVSync();
     INTR_CHECK |= 1;
-    gUnknown_030053B4 = 1;
+    gExecuteSoundMain = TRUE;
 
-    if (gUnknown_03002790 & 4) {
+    if (gFlagsPreVBlank & 4) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
@@ -450,10 +450,10 @@ static void VBlankIntr(void) {
                    (gUnknown_03002A80 >> 1));
     } else if (gUnknown_03002878 != 0) {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gUnknown_03002878 = gUnknown_03002790 & 4;
+        gUnknown_03002878 = 0;
     }
 
-    if (gUnknown_03002790 & 0x40) {
+    if (gFlagsPreVBlank & 0x40) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
         REG_DISPSTAT |= gUnknown_03002874 << 8;
@@ -466,7 +466,7 @@ static void VBlankIntr(void) {
         REG_IE &= ~INTR_FLAG_VCOUNT;
     }
 
-    if (!(gUnknown_03002790 & 0x8000)) {
+    if (!(gFlagsPreVBlank & 0x8000)) {
         keys = ~REG_KEYINPUT &
                (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
@@ -568,9 +568,9 @@ static void HBlankIntr(void) {
     u8 i;
     u8 vcount = *(vu8 *)REG_ADDR_VCOUNT;
 
-    if (vcount <= 0x9f) {
-        for (i = 0; i < gUnknown_030018E0; i++) {
-            gUnknown_03002AF0[i](vcount);
+    if (vcount < DISPLAY_HEIGHT) {
+        for (i = 0; i < gHBlankFunctionsLength; i++) {
+            gHBlankFunctions[i](vcount);
         }
     }
 
@@ -600,10 +600,10 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 static void DummyFunc(void) { }
 
 static void ClearOamBufferCpuSet(void) {
-    gUnknown_0300188C = 0;
+    gHBlankCallbackIndex = 0;
 
-    gFlags &= ~8;
-    if ((gFlags & (0x20)) == 0) {
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
+    if (!(gFlags & 0x20)) {
         if (gUnknown_03001884 == gUnknown_03004D54) {
             gUnknown_03001884 = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
