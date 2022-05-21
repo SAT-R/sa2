@@ -1136,13 +1136,11 @@ void sub_8064CEC(void) {
             } else {
                 state->unk160 = 3;
             }
-        } else {
-            if (gRepeatedKeys & DPAD_DOWN) {
-                if (state->unk160 < 3) {
-                    state->unk160++;
-                } else {
-                    state->unk160 = 0;
-                }
+        } else if (gRepeatedKeys & DPAD_DOWN) {
+            if (state->unk160 < 3) {
+                state->unk160++;
+            } else {
+                state->unk160 = 0;
             }
         }
 
@@ -1177,11 +1175,9 @@ void sub_8064CEC(void) {
             default:
                 return;
         }
-    } else {
-        if (gPressedKeys & B_BUTTON) {
-            m4aSongNumStart(SE_RETURN);
-            unk15C->unk784 = 0;
-            gCurTask->main = sub_8064E6C;
-        }
+    } else if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        unk15C->unk784 = 0;
+        gCurTask->main = sub_8064E6C;
     }
 }
