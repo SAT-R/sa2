@@ -956,8 +956,7 @@ void sub_80649A4(void) {
 }
 
 struct UNK_8064A40 {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30;
+    struct UNK_0808B3FC_UNK240 unk0[2];
     struct UNK_0808B3FC_UNK240 unk60[4];
     struct UNK_0808B3FC_UNK240 unk120;
     u8 filler150[0xC];
@@ -1000,6 +999,7 @@ extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
 
 void sub_8064AC0(struct UNK_8064A40* state) {
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
     // Apprently we have to force the compiler to use r9 (sb) for
     // this variable because there is something missing in
     // this function
@@ -1018,7 +1018,7 @@ void sub_8064AC0(struct UNK_8064A40* state) {
     s16 itemPos;
 
     sub_806A568(
-        &state->unk0, 
+        &unk0[0], 
         1, 
         itemText1->unk4,
         itemText1->unk0,
@@ -1031,7 +1031,7 @@ void sub_8064AC0(struct UNK_8064A40* state) {
     );
         
     sub_806A568(
-        &state->unk30, 
+        &unk0[1], 
         1, 
         itemText2->unk4,
         itemText2->unk0,
@@ -1083,4 +1083,105 @@ void sub_8064AC0(struct UNK_8064A40* state) {
         5,
         0
     );
+}
+
+void sub_806AD98(void);
+void sub_8064CEC(void);
+
+void sub_8064C44(void) {
+    struct UNK_8064A40* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
+    
+    s16 unk360 = state->unk15C->unk360;
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk0++) {
+        unk0->unk16 = unk360 + 0x150; 
+    }
+
+    for (i = 0; i < 4; i++, unk60++) {
+        unk60->unk16 = unk360 + 0x100;
+    }
+    
+    unk120->unk16 = unk360 + 0xFE;
+
+    sub_806AD98();
+
+    if (++state->unk161 > 0xF) {
+        state->unk161 = 0;
+        gCurTask->main = sub_8064CEC;
+    }
+}
+
+void sub_806ABC4(void);
+void sub_806AAFC(void);
+void sub_806AC28(void);
+void sub_8064E6C(void);
+
+void sub_8064CEC(void) {
+    struct UNK_8064A40* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
+    struct UNK_8063730* unk15C = state->unk15C;
+    s16 i;
+
+    if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        // Move the cursor up and down
+        if (gRepeatedKeys & DPAD_UP) {
+            if (state->unk160 != 0) {
+                state->unk160--;
+            } else {
+                state->unk160 = 3;
+            }
+        } else {
+            if (gRepeatedKeys & DPAD_DOWN) {
+                if (state->unk160 < 3) {
+                    state->unk160++;
+                } else {
+                    state->unk160 = 0;
+                }
+            }
+        }
+
+        for (i = 0; i < 4; i++, unk60++) {
+            unk60->unk25 = !!(state->unk160 ^ i);
+        }
+        unk120->unk18 = state->unk160 * 0x13 + 0x2E;
+    }
+
+    sub_806AD98();
+    if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+
+        switch(state->unk160) {
+            case 0:
+                sub_806AAFC();
+                return;
+            case 1:
+                sub_806ABC4();
+                return;
+            case 2:
+                sub_806AC28();
+                return;
+            case 3:
+                unk15C->unk784 = 0;
+                gCurTask->main = sub_8064E6C;
+                return;
+            default:
+                return;
+        }
+    } else {
+        if (gPressedKeys & B_BUTTON) {
+            m4aSongNumStart(SE_RETURN);
+            unk15C->unk784 = 0;
+            gCurTask->main = sub_8064E6C;
+        }
+    }
 }
