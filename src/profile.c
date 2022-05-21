@@ -889,7 +889,7 @@ void sub_80647C8(void) {
     unk774->unkA = unk784;
     unk774->unk8 = 0xFF;
 
-    m4aSongNumStart(9);
+    m4aSongNumStart(MUS_OPTIONS);
     gCurTask->main = sub_806AA18;
 }
 
@@ -926,7 +926,7 @@ void sub_806489C(void) {
     unk774->unk8 = 0xFF;
 
     if (!optionsScreen->unk784) {
-        m4aSongNumStart(9);
+        m4aSongNumStart(MUS_OPTIONS);
     }
 
     optionsScreen->unk784 = 0;
@@ -956,7 +956,11 @@ void sub_80649A4(void) {
 }
 
 struct UNK_8064A40 {
-    u8 filler0[0x15C];
+    struct UNK_0808B3FC_UNK240 unk0;
+    struct UNK_0808B3FC_UNK240 unk30;
+    struct UNK_0808B3FC_UNK240 unk60[4];
+    struct UNK_0808B3FC_UNK240 unk120;
+    u8 filler150[0xC];
     struct UNK_8063730* unk15C;
     s8 unk160;
     s8 unk161;
@@ -990,3 +994,103 @@ void sub_8064A40(struct UNK_8063730* optionsScreen) {
 
     sub_8064AC0(state);
 }
+
+extern const struct UNK_080D95E8 gUnknown_080D9C30[6];
+extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
+extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
+
+#ifndef NON_MATCHING
+ASM_FUNC("asm/non_matching/sub_8064AC0.inc", void sub_8064AC0(struct UNK_8064A40* state))
+#else
+// close but not there yet
+// https://decomp.me/scratch/FQSaU
+void sub_8064AC0(struct UNK_8064A40* state) {
+    
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
+    
+    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9C30[state->unk162];
+    const struct UNK_080D95E8 *itemText2 = &gUnknown_080D9C60[state->unk162];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D9C90[state->unk162];
+    
+    s16 unk360 = state->unk15C->unk360;
+    s16 unk160 = state->unk160;
+    s16 i;
+    s16 temp0;
+    s16 itemPos;
+    
+    
+
+    {
+        
+        sub_806A568(
+            &state->unk0, 
+            1, 
+            itemText1->unk4,
+            itemText1->unk0,
+            0x1000,
+            unk360 + 336, 
+            0x20,
+            8,
+            itemText1->unk2,
+            0
+        );
+    }
+    {
+        
+        sub_806A568(
+            &state->unk30, 
+            1, 
+            itemText2->unk4,
+            itemText2->unk0,
+            0x1000,
+            unk360 + 336, 
+            0x84,
+            8,
+            itemText2->unk2,
+            0
+        );
+    }
+    {
+        i = 0;
+        itemPos = 0x2E;
+        
+        
+        while (i < 4) {
+            sub_806A568(
+                unk60, 
+                1, 
+                itemText3->unk4,
+                itemText3->unk0,
+                0x1000,
+                unk360 + 256, 
+                itemPos,
+                8,
+                itemText3->unk2,
+                0
+            );
+
+            temp0 = (unk160 ^ i);
+            unk60->unk25 =((-(unk160 ^ i)) | (temp0 >> 0x1F));
+
+            i++;
+            unk60++;
+            itemText3++;            
+            itemPos += 19;
+        }
+    }
+
+    sub_806A568(
+        unk120,
+        1,
+        0x3f,
+        0x3bd,
+        0x1000,
+        unk360 + 254,
+        unk160 * 0x13 + 0x2E,
+        7,
+        5,
+        0
+    );
+}
+#endif
