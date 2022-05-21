@@ -1181,3 +1181,29 @@ void sub_8064CEC(void) {
         gCurTask->main = sub_8064E6C;
     }
 }
+
+void sub_8064E6C(void) {
+    struct UNK_8064A40* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
+    
+    s16 unk360 = state->unk15C->unk360;
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk0++) {
+        unk0->unk16 = unk360 + 0x150; 
+    }
+
+    for (i = 0; i < 4; i++, unk60++) {
+        unk60->unk16 = unk360 + 0x100;
+    }
+    
+    unk120->unk16 = unk360 + 0xFE;
+
+    if (++state->unk161 < 0xF) {
+       sub_806AD98();
+    } else {
+        TaskDestroy(gCurTask);
+    }
+}
