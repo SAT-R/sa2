@@ -58,20 +58,20 @@ ASM_FUNC("asm/non_matching/sub_80855F8.inc", u16 sub_80855F8(s16 a, u16 b, u8 c,
 #else
 // Something like this, unused anyway
 // https://decomp.me/scratch/ZZB3I
-u16 sub_80855F8(s16 a, u16 b, u8 c, u16 d, s16 e) {
-    s16 val;
-    u16 b1;
-    u32 c1 = (1 << c);
-    val = ((c1) - 1) & (a - b);
-
-    if ((c1 >> 1) > val) {
-        val = (val - c1);
+u16 sub_80855F8(u16 r7, u16 r2, u8 r6, s16 r5, u8 r4) {
+    u32 r3 = (1 << r6);
+    s32 r1 = r3 - 1;
+    u32 r0 = r2 - r7;
+    u16 val;
+    s16 r1_2;
+    r2 = (r0 & r1);
+    if (r2 > r3 >> 1) {
+        r1_2 = r2 - r3;
     } else {
-        val = val; 
+        r1_2 = r2;
     }
-
-    val *= -(d >> e);
-    return val & ((1 << c) - 1);
+    val = -((r5 * -r1_2) >> r4);
+    return (r7 + val) & ((1 << r6) - 1);
 }
 #endif
 

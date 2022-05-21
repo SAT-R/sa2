@@ -999,14 +999,11 @@ extern const struct UNK_080D95E8 gUnknown_080D9C30[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
 
-#ifndef NON_MATCHING
-ASM_FUNC("asm/non_matching/sub_8064AC0.inc", void sub_8064AC0(struct UNK_8064A40* state))
-#else
-// close but not there yet
-// https://decomp.me/scratch/FQSaU
 void sub_8064AC0(struct UNK_8064A40* state) {
-    
-    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    // Apprently we have to force the compiler to use r9 (sb) for
+    // this variable because there is something missing in
+    // this function
+    register struct UNK_0808B3FC_UNK240* unk60 asm("sb") = state->unk60;
     struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
     
     const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9C30[state->unk162];
@@ -1015,69 +1012,63 @@ void sub_8064AC0(struct UNK_8064A40* state) {
     
     s16 unk360 = state->unk15C->unk360;
     s16 unk160 = state->unk160;
+
     s16 i;
     s16 temp0;
     s16 itemPos;
-    
-    
 
-    {
+    sub_806A568(
+        &state->unk0, 
+        1, 
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336, 
+        0x20,
+        8,
+        itemText1->unk2,
+        0
+    );
         
+    sub_806A568(
+        &state->unk30, 
+        1, 
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 336, 
+        0x84,
+        8,
+        itemText2->unk2,
+        0
+    );
+
+    i = 0;
+    itemPos = 0x2E;
+    while (i < 4) {
         sub_806A568(
-            &state->unk0, 
+            unk60, 
             1, 
-            itemText1->unk4,
-            itemText1->unk0,
+            itemText3->unk4,
+            itemText3->unk0,
             0x1000,
-            unk360 + 336, 
-            0x20,
+            unk360 + 256, 
+            itemPos,
             8,
-            itemText1->unk2,
+            itemText3->unk2,
             0
         );
-    }
-    {
-        
-        sub_806A568(
-            &state->unk30, 
-            1, 
-            itemText2->unk4,
-            itemText2->unk0,
-            0x1000,
-            unk360 + 336, 
-            0x84,
-            8,
-            itemText2->unk2,
-            0
-        );
-    }
-    {
-        i = 0;
-        itemPos = 0x2E;
-        
-        
-        while (i < 4) {
-            sub_806A568(
-                unk60, 
-                1, 
-                itemText3->unk4,
-                itemText3->unk0,
-                0x1000,
-                unk360 + 256, 
-                itemPos,
-                8,
-                itemText3->unk2,
-                0
-            );
 
-            temp0 = (unk160 ^ i);
-            unk60->unk25 =((-(unk160 ^ i)) | (temp0 >> 0x1F));
+        temp0 = (unk160 ^ i);
+        // Interesting to note that gcc
+        // uses some trickery here to set this
+        // and the actual logic is `(u32)(-temp0 | temp0) >> 31;`
+        unk60->unk25 = !!temp0;
 
-            i++;
-            unk60++;
-            itemText3++;            
-            itemPos += 19;
-        }
+        i++;
+        unk60++;
+        itemText3++;            
+        itemPos += 19;
     }
 
     sub_806A568(
@@ -1093,4 +1084,3 @@ void sub_8064AC0(struct UNK_8064A40* state) {
         0
     );
 }
-#endif
