@@ -40,7 +40,7 @@ struct TitleScreen {
 
     // Something to do with the wave effects
     u16 wavesTranslationX[0xA0];
-    u32 unk3F4[4][0xA0];
+    u32 unk3F4[0xA0][4];
     u16 wavesTranslationY[0xA0];
 
     u16 unkF34;

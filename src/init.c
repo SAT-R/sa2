@@ -19,7 +19,7 @@ struct Task *gUnknown_03005844;
 // Need to find what these mean
 extern void sub_8081C0C();
 
-void sub_801A51C(void) {
+void GameStart(void) {
     u32 i;
     bool32 hasProfile = FALSE;
 

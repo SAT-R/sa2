@@ -1374,11 +1374,11 @@ static void WavesBackgroundAnim(struct TitleScreen* titleScreen) {
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     gFlags |= 0x4;
     gUnknown_03002A80 = 16;
-    gUnknown_03002878 = REG_ADDR_BG2PA;
+    gUnknown_03002878 = (void*)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
-    gUnknown_03001884 = titleScreen->unk3F4[0];
-    pointer = titleScreen->unk3F4[0];
+    gUnknown_03001884 = &titleScreen->unk3F4[0][0];
+    pointer = &titleScreen->unk3F4[0][0];
     for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
         s32 temp, r3;
         if (titleScreen->wavesTopOffset <= i) {

@@ -162,7 +162,7 @@ static void GameInit(void) {
     gInputRecorder.mode = RECORDER_DISABLED;
     // This matches better when the params are inlined
     asm("" ::: "sb");
-    gUnknown_03001880 = 0;
+    gPhysicalInput = 0;
     gInputPlaybackData = NULL;
     asm("" ::: "sl");
 
@@ -176,7 +176,7 @@ static void GameInit(void) {
 
     gUnknown_03001884 = gUnknown_03001B60[0];
     gUnknown_030022AC = gUnknown_03001B60[1];
-    gUnknown_03002878 = 0;
+    gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
     gHBlankCallbackIndex = 0;
     gHBlankFunctionsLength = 0;
@@ -326,7 +326,7 @@ static void UpdateScreenDma(void) {
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
-        gUnknown_03001948 = gFlags & 0x10;
+        gUnknown_03001948 = 0;
     }
 
     j = gUnknown_030026F4;
@@ -444,13 +444,13 @@ static void VBlankIntr(void) {
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
         // TODO: resolve this cast
-        DmaSet(0, (void*)gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+        DmaSet(0, (vu8*)gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
                 << 16) |
                    (gUnknown_03002A80 >> 1));
-    } else if (gUnknown_03002878 != 0) {
+    } else if (gUnknown_03002878) {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gUnknown_03002878 = 0;
+        gUnknown_03002878 = NULL;
     }
 
     if (gFlagsPreVBlank & 0x40) {
@@ -527,7 +527,12 @@ static void GetInput(void) {
        *continuedHoldIntervals = gKeysContinuedRepeatIntervals;
 
     gInput = (~REG_KEYINPUT & KEYS_MASK);
-    gUnknown_03001880 = gInput;
+
+    // My guess is that whilst the input recorder
+    // is running we still want to know the actual
+    // input. For example; to be able to know when 
+    // to exit the demo
+    gPhysicalInput = gInput;
 
     if (gInputRecorder.mode == RECORDER_RECORD) {
         InputRecorderWrite(gInput);
@@ -620,6 +625,6 @@ static void ClearOamBufferCpuSet(void) {
 
 void AgbMain(void) {
     GameInit();
-    sub_801A51C();
+    GameStart();
     GameLoop();
 }

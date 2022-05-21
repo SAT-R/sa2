@@ -4560,7 +4560,7 @@ sub_800A110: @ 0x0800A110
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r5, r0
-	ldr r0, _0800A170 @ =gUnknown_03001880
+	ldr r0, _0800A170 @ =gPhysicalInput
 	ldrh r1, [r0]
 	movs r0, #8
 	ands r0, r1
@@ -4599,7 +4599,7 @@ sub_800A110: @ 0x0800A110
 	b _0800A1B6
 	.align 2, 0
 _0800A16C: .4byte gCurTask
-_0800A170: .4byte gUnknown_03001880
+_0800A170: .4byte gPhysicalInput
 _0800A174: .4byte gUnknown_030059E0
 _0800A178: .4byte gUnknown_030054E4
 _0800A17C: .4byte IWRAM_START + 0x64
