@@ -53,27 +53,22 @@ u32 sub_80855C0(s32 a, s32 b, s32 c, u8 d) {
     return a - (e >> d);
 }
 
-#ifndef NON_MATCHING
-ASM_FUNC("asm/non_matching/sub_80855F8.inc", u16 sub_80855F8(s16 a, u16 b, u8 c, u16 d, s16 e))
-#else
-// Something like this, unused anyway
-// https://decomp.me/scratch/ZZB3I
 u16 sub_80855F8(u16 r7, u16 r2, u8 r6, s16 r5, u8 r4) {
+    u16 r2_2 = r2;
     u32 r3 = (1 << r6);
     s32 r1 = r3 - 1;
-    u32 r0 = r2 - r7;
+    u32 r0 = r2_2 - r7;
     u16 val;
-    s16 r1_2;
-    r2 = (r0 & r1);
-    if (r2 > r3 >> 1) {
-        r1_2 = r2 - r3;
+    s32 r1_2;
+    r2_2 = (r0 & r1);
+    if (r2_2 > r3 >> 1) {
+        r1_2 = (s16)(r2_2 - r3);
     } else {
-        r1_2 = r2;
+        r1_2 = (s16)r2_2;
     }
     val = -((r5 * -r1_2) >> r4);
     return (r7 + val) & ((1 << r6) - 1);
 }
-#endif
 
 s32 sub_8085654(s32 a, s32 b, s32 c, u8 d, u8 e) {
     do {
