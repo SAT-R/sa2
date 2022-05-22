@@ -956,8 +956,11 @@ void sub_80649A4(void) {
 }
 
 struct UNK_8064A40 {
+    // Header and Footer
     struct UNK_0808B3FC_UNK240 unk0[2];
+    // MenuItems
     struct UNK_0808B3FC_UNK240 unk60[4];
+    // FocusOutline
     struct UNK_0808B3FC_UNK240 unk120;
     u8 filler150[0xC];
     struct UNK_8063730* unk15C;
@@ -998,6 +1001,7 @@ extern const struct UNK_080D95E8 gUnknown_080D9C30[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
 
+// CreatePlayerDataMenuUI
 void sub_8064AC0(struct UNK_8064A40* state) {
     struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
     // Apprently we have to force the compiler to use r9 (sb) for
@@ -1017,6 +1021,7 @@ void sub_8064AC0(struct UNK_8064A40* state) {
     s16 temp0;
     s16 itemPos;
 
+    // Title
     sub_806A568(
         &unk0[0], 
         1, 
@@ -1030,6 +1035,7 @@ void sub_8064AC0(struct UNK_8064A40* state) {
         0
     );
         
+    // Controls
     sub_806A568(
         &unk0[1], 
         1, 
@@ -1043,6 +1049,7 @@ void sub_8064AC0(struct UNK_8064A40* state) {
         0
     );
 
+    // Menu items
     i = 0;
     itemPos = 0x2E;
     while (i < 4) {
@@ -1120,6 +1127,7 @@ void sub_806AAFC(void);
 void sub_806AC28(void);
 void sub_8064E6C(void);
 
+// Task_OptionsPlayerDataMenuMain
 void sub_8064CEC(void) {
     struct UNK_8064A40* state = TaskGetStructPtr(gCurTask, state);
     struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
