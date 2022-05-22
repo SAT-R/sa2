@@ -193,9 +193,9 @@ static void GameInit(void) {
     m4aSoundInit();
     m4aSoundMode(DEFAULT_SOUND_MODE);
 
-    gExecuteSoundMain = TRUE;
+    gExecSoundMain = TRUE;
 
-    TaskInit();
+    TasksInit();
     EwramInitHeap();
 
     gUnknown_03001888 = 0x230;
@@ -228,7 +228,7 @@ static void GameInit(void) {
 
 static void GameLoop(void) {
     while (TRUE) {
-        gExecuteSoundMain = FALSE;
+        gExecSoundMain = FALSE;
         if (!(gFlags & 0x4000)) {
             m4aSoundMain();
         }
@@ -239,7 +239,7 @@ static void GameLoop(void) {
                 gMultiSioStatusFlags =
                     MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
-            TaskExecute();
+            TasksExec();
         }
 
         gFlagsPreVBlank = gFlags;
@@ -437,7 +437,7 @@ static void VBlankIntr(void) {
     DmaStop(0);
     m4aSoundVSync();
     INTR_CHECK |= 1;
-    gExecuteSoundMain = TRUE;
+    gExecSoundMain = TRUE;
 
     if (gFlagsPreVBlank & 4) {
         REG_IE |= INTR_FLAG_HBLANK;

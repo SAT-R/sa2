@@ -903,7 +903,7 @@ sub_801AE48: @ 0x0801AE48
 	bhi _0801AEB4
 	ldr r1, _0801AE98 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0801AE9C @ =gUnknown_03002AE4
 	ldr r0, _0801AEA0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -949,7 +949,7 @@ _0801AED0: .4byte gUnknown_03005448
 _0801AED4:
 	ldr r1, _0801AEFC @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0801AF00 @ =gUnknown_03002AE4
 	ldr r0, _0801AF04 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -1871,7 +1871,7 @@ sub_801B6B4: @ 0x0801B6B4
 	bhi _0801B71C
 	ldr r1, _0801B700 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0801B704 @ =gUnknown_03002AE4
 	ldr r0, _0801B708 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -1924,7 +1924,7 @@ sub_801B744: @ 0x0801B744
 	push {lr}
 	ldr r1, _0801B788 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0801B78C @ =gUnknown_03002AE4
 	ldr r0, _0801B790 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -11399,7 +11399,7 @@ _080200F8:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _080201A4 @ =gUnknown_03005BB4
+	ldr r0, _080201A4 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _08020166
@@ -11474,7 +11474,7 @@ _0802018E:
 	bx r0
 	.align 2, 0
 _080201A0: .4byte gUnknown_030022D0
-_080201A4: .4byte gUnknown_03005BB4
+_080201A4: .4byte iwram_end
 _080201A8: .4byte 0x040000D4
 _080201AC: .4byte 0x80000003
 _080201B0: .4byte 0x000001FF
@@ -11824,7 +11824,7 @@ _08020454:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _08020500 @ =gUnknown_03005BB4
+	ldr r0, _08020500 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _080204C2
@@ -11899,7 +11899,7 @@ _080204EA:
 	bx r0
 	.align 2, 0
 _080204FC: .4byte gUnknown_030022D0
-_08020500: .4byte gUnknown_03005BB4
+_08020500: .4byte iwram_end
 _08020504: .4byte 0x040000D4
 _08020508: .4byte 0x80000003
 _0802050C: .4byte 0x000001FF
@@ -12409,7 +12409,7 @@ _080208DC:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _08020984 @ =gUnknown_03005BB4
+	ldr r0, _08020984 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _0802094A
@@ -12483,7 +12483,7 @@ _08020970:
 	bx r0
 	.align 2, 0
 _08020980: .4byte gUnknown_030022D0
-_08020984: .4byte gUnknown_03005BB4
+_08020984: .4byte iwram_end
 _08020988: .4byte 0x040000D4
 _0802098C: .4byte 0x80000003
 _08020990: .4byte 0x000001FF
@@ -12994,7 +12994,7 @@ _08020D64:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _08020E0C @ =gUnknown_03005BB4
+	ldr r0, _08020E0C @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _08020DD2
@@ -13068,7 +13068,7 @@ _08020DF8:
 	bx r0
 	.align 2, 0
 _08020E08: .4byte gUnknown_030022D0
-_08020E0C: .4byte gUnknown_03005BB4
+_08020E0C: .4byte iwram_end
 _08020E10: .4byte 0x040000D4
 _08020E14: .4byte 0x80000003
 _08020E18: .4byte 0x000001FF
@@ -13664,7 +13664,7 @@ _08021294:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _0802133C @ =gUnknown_03005BB4
+	ldr r0, _0802133C @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _08021302
@@ -13738,7 +13738,7 @@ _08021328:
 	bx r0
 	.align 2, 0
 _08021338: .4byte gUnknown_030022D0
-_0802133C: .4byte gUnknown_03005BB4
+_0802133C: .4byte iwram_end
 _08021340: .4byte 0x040000D4
 _08021344: .4byte 0x80000003
 _08021348: .4byte 0x000001FF
@@ -35877,7 +35877,7 @@ sub_802BC10: @ 0x0802BC10
 	beq _0802BCBE
 	ldr r1, _0802BC8C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0802BC90 @ =gUnknown_03002AE4
 	ldr r0, _0802BC94 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -46331,7 +46331,7 @@ _08030D68:
 	bl WriteSaveGame
 	movs r0, #0
 	adds r1, r5, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08030DBC @ =gUnknown_03002AE4
 	ldr r0, _08030DC0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -46379,7 +46379,7 @@ _08030DE0:
 	strb r2, [r0]
 	movs r0, #0
 	adds r1, r3, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08030E2C @ =gUnknown_03002AE4
 	ldr r0, _08030E30 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -46433,7 +46433,7 @@ _08030E50:
 _08030E72:
 	ldr r1, _08030ED8 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08030EDC @ =gUnknown_03002AE4
 	ldr r0, _08030EE0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -46580,7 +46580,7 @@ _08030F94:
 	bls _08031030
 	ldr r1, _0803100C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08031010 @ =gUnknown_03002AE4
 	ldr r0, _08031014 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -46636,7 +46636,7 @@ _0803102C: .4byte 0x00003FBF
 _08031030:
 	ldr r1, _08031054 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08031058 @ =gUnknown_03002AE4
 	ldr r0, _0803105C @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -48427,7 +48427,7 @@ _08031EC6:
 	bls _08031F38
 	movs r0, #0
 	ldr r1, _08031F1C @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08031F20 @ =gUnknown_03002AE4
 	ldr r0, _08031F24 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -49189,7 +49189,7 @@ _08032528:
 	bls _08032594
 	movs r0, #0
 	ldr r1, _08032578 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0803257C @ =gUnknown_03002AE4
 	ldr r0, _08032580 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -49463,7 +49463,7 @@ _0803276C:
 	bls _080327D8
 	movs r0, #0
 	ldr r1, _080327BC @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080327C0 @ =gUnknown_03002AE4
 	ldr r0, _080327C4 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -49915,7 +49915,7 @@ _08032B26:
 	bls _08032B94
 	movs r0, #0
 	ldr r1, _08032B78 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08032B7C @ =gUnknown_03002AE4
 	ldr r0, _08032B80 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -50210,7 +50210,7 @@ sub_8032D9C: @ 0x08032D9C
 	bne _08032E0A
 	ldr r1, _08032DE8 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08032DEC @ =gUnknown_03002AE4
 	ldr r0, _08032DF0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -52439,7 +52439,7 @@ _08033F92:
 	bls _08034004
 	movs r0, #0
 	ldr r1, _08033FE8 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08033FEC @ =gUnknown_03002AE4
 	ldr r0, _08033FF0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -52918,7 +52918,7 @@ _0803438C:
 	bls _080343FC
 	movs r0, #0
 	ldr r1, _080343E0 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080343E4 @ =gUnknown_03002AE4
 	ldr r0, _080343E8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -54592,7 +54592,7 @@ _0803515E:
 	bls _080351D0
 	movs r0, #0
 	ldr r1, _080351B4 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080351B8 @ =gUnknown_03002AE4
 	ldr r0, _080351BC @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -55099,7 +55099,7 @@ _08035582:
 	bls _080355F4
 	movs r0, #0
 	ldr r1, _080355D8 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080355DC @ =gUnknown_03002AE4
 	ldr r0, _080355E0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -55337,7 +55337,7 @@ _0803577E:
 	bls _080357F0
 	movs r0, #0
 	ldr r1, _080357D4 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080357D8 @ =gUnknown_03002AE4
 	ldr r0, _080357DC @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -57241,7 +57241,7 @@ _08036710:
 	strh r0, [r1, #4]
 	ldr r1, _0803675C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08036760 @ =gUnknown_03002AE4
 	ldr r0, _08036764 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -57686,7 +57686,7 @@ _08036AA8:
 	bne _08036B22
 	ldr r1, _08036AFC @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08036B00 @ =gUnknown_03002AE4
 	ldr r0, _08036B04 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -57779,7 +57779,7 @@ sub_8036B70: @ 0x08036B70
 	bne _08036BC8
 	ldr r1, _08036BB0 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08036BB4 @ =gUnknown_03002AE4
 	ldr r0, _08036BB8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -60258,7 +60258,7 @@ _08037F88:
 	bne _0803802C
 	ldr r1, _08038008 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0803800C @ =gUnknown_03002AE4
 	ldr r0, _08038010 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -63527,7 +63527,7 @@ sub_8039A6C: @ 0x08039A6C
 	beq _08039AA8
 	movs r0, #0
 	ldr r1, _08039AB4 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08039AB8 @ =gUnknown_03002AE4
 	ldr r0, _08039ABC @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -98028,10 +98028,10 @@ sub_804AD68: @ 0x0804AD68
 	bne _0804ADE4
 	ldr r0, _0804ADC8 @ =0x00005010
 	ldr r1, _0804ADCC @ =0x00005011
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r0, _0804ADD0 @ =0x00005431
 	ldr r1, _0804ADD4 @ =0x00005434
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r2, _0804ADD8 @ =gUnknown_03005424
 	ldrh r0, [r2]
 	movs r3, #0x80
@@ -103892,7 +103892,7 @@ sub_804DC60: @ 0x0804DC60
 	bne _0804DCC0
 	ldr r1, _0804DCC8 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0804DCCC @ =gUnknown_03002AE4
 	ldr r0, _0804DCD0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -129632,7 +129632,7 @@ sub_805A9EC: @ 0x0805A9EC
 	ldrb r4, [r0]
 	ldr r1, _0805AA2C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805AA30 @ =gUnknown_03002AE4
 	ldr r0, _0805AA34 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -130123,7 +130123,7 @@ sub_805ADAC: @ 0x0805ADAC
 	bls _0805AE60
 	ldr r1, _0805AE40 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805AE44 @ =gUnknown_03002AE4
 	ldr r0, _0805AE48 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -130190,7 +130190,7 @@ _0805AE92:
 	bls _0805AEE0
 	ldr r1, _0805AEC8 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805AECC @ =gUnknown_03002AE4
 	ldr r0, _0805AED0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -130420,7 +130420,7 @@ _0805B056:
 	bls _0805B0A8
 	ldr r1, _0805B098 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B09C @ =gUnknown_03002AE4
 	ldr r0, _0805B0A0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -130591,7 +130591,7 @@ _0805B1D8:
 	bls _0805B220
 	ldr r1, _0805B208 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B20C @ =gUnknown_03002AE4
 	ldr r0, _0805B210 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -130974,7 +130974,7 @@ _0805B4FA:
 	bls _0805B554
 	movs r0, #0
 	ldr r1, _0805B540 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B544 @ =gUnknown_03002AE4
 	ldr r0, _0805B548 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -131043,7 +131043,7 @@ _0805B576:
 	strb r0, [r1, #3]
 	ldr r1, _0805B5E0 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B5E4 @ =gUnknown_03002AE4
 	ldr r0, _0805B5E8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -131235,7 +131235,7 @@ _0805B71C:
 	strb r0, [r1, #3]
 	ldr r1, _0805B77C @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B780 @ =gUnknown_03002AE4
 	ldr r0, _0805B784 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -131271,7 +131271,7 @@ _0805B78C:
 	bls _0805B7EC
 	ldr r1, _0805B7D4 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805B7D8 @ =gUnknown_03002AE4
 	ldr r0, _0805B7DC @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -131958,7 +131958,7 @@ _0805BD64:
 	ldrb r4, [r0]
 	ldr r1, _0805BDA0 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805BDA4 @ =gUnknown_03002AE4
 	ldr r0, _0805BDA8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -132434,7 +132434,7 @@ _0805C12A:
 	bls _0805C19C
 	movs r0, #0
 	ldr r1, _0805C180 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805C184 @ =gUnknown_03002AE4
 	ldr r0, _0805C188 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -132773,7 +132773,7 @@ _0805C3F6:
 	str r0, [r2]
 	ldr r1, _0805C448 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805C44C @ =gUnknown_03002AE4
 	ldr r0, _0805C450 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -132921,7 +132921,7 @@ _0805C52A:
 	bls _0805C598
 	movs r0, #0
 	ldr r1, _0805C57C @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805C580 @ =gUnknown_03002AE4
 	ldr r0, _0805C584 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -133119,7 +133119,7 @@ _0805C6BA:
 	bls _0805C724
 	movs r0, #0
 	ldr r1, _0805C708 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805C70C @ =gUnknown_03002AE4
 	ldr r0, _0805C710 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -133662,7 +133662,7 @@ _0805CB52:
 	bls _0805CBBC
 	movs r0, #0
 	ldr r1, _0805CBA0 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805CBA4 @ =gUnknown_03002AE4
 	ldr r0, _0805CBA8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -133791,7 +133791,7 @@ _0805CC64:
 	bls _0805CCD4
 	movs r0, #0
 	ldr r1, _0805CCB8 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805CCBC @ =gUnknown_03002AE4
 	ldr r0, _0805CCC0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -134522,7 +134522,7 @@ _0805D29A:
 	bls _0805D2F4
 	movs r0, #0
 	ldr r1, _0805D2E0 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805D2E4 @ =gUnknown_03002AE4
 	ldr r0, _0805D2E8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -134815,7 +134815,7 @@ _0805D510: .4byte 0x00004041
 _0805D514:
 	ldr r1, _0805D538 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0805D53C @ =gUnknown_03002AE4
 	ldr r0, _0805D540 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -136929,7 +136929,7 @@ _0805E5CE:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _0805E624 @ =gUnknown_03005BB4
+	ldr r0, _0805E624 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _0805E688
@@ -136963,7 +136963,7 @@ _0805E5CE:
 	orrs r0, r1
 	b _0805E638
 	.align 2, 0
-_0805E624: .4byte gUnknown_03005BB4
+_0805E624: .4byte iwram_end
 _0805E628: .4byte 0x000001FF
 _0805E62C:
 	lsls r0, r7, #3
@@ -137170,7 +137170,7 @@ _0805E7B0:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r3, r0, #0
-	ldr r0, _0805E800 @ =gUnknown_03005BB4
+	ldr r0, _0805E800 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
 	beq _0805E860
@@ -137202,7 +137202,7 @@ _0805E7B0:
 	orrs r0, r1
 	b _0805E814
 	.align 2, 0
-_0805E800: .4byte gUnknown_03005BB4
+_0805E800: .4byte iwram_end
 _0805E804: .4byte 0x000001FF
 _0805E808:
 	lsls r0, r6, #3

@@ -87,7 +87,7 @@
 . = 0x00000790; gSio32MultiLoadArea = .;
 . = 0x000007B0; gIntrTable = .;
 . = 0x000007F0; gIntrMainBuf = .;
-. = 0x000009F0; gUnknown_030009F0 = .;
+. = 0x000009F0; gTasks = .;
 . = 0x00000A58; gUnknown_03000A58 = .;
 . = 0x00000A5A; gUnknown_03000A5A = .;
 . = 0x00000F38; gUnknown_03000F38 = .;
@@ -116,7 +116,7 @@
 . = 0x0000194C; gUnknown_0300194C = .;
 . = 0x00001950; gMultiSioStatusFlags = .;
 . = 0x00001954; gUnknown_03001954 = .;
-. = 0x00001960; gTaskList = .;
+. = 0x00001960; gTaskPtrs = .;
 . = 0x00001B60; gUnknown_03001B60 = .;
 . = 0x00002060; gObjPalette = .;
 . = 0x000020C0; gUnknown_030020C0 = .;
@@ -124,7 +124,7 @@
 . = 0x00002260; gUnknown_03002260 = .;
 . = 0x00002264; gFrameCount = .;
 . = 0x00002270; gWinRegs = .;
-. = 0x0000227C; gLastTaskNum = .;
+. = 0x0000227C; gNumTasks = .;
 . = 0x00002280; gUnknown_03002280 = .;
 . = 0x00002290; gInput = .;
 . = 0x000022A0; gRepeatedKeysTestCounter = .;
@@ -166,7 +166,7 @@
 . = 0x00002AE0; gUnknown_03002AE0 = .;
 . = 0x00002AE4; gUnknown_03002AE4 = .;
 . = 0x00002AF0; gHBlankFunctions = .;
-. = 0x00002B00; gUnknown_03002B00 = .;
+. = 0x00002B00; gIwramHeap = .;
 . = 0x00004D10; gUnknown_03004D10 = .;
 . = 0x00004D50; gUnknown_03004D50 = .;
 . = 0x00004D54; gUnknown_03004D54 = .;
@@ -184,7 +184,7 @@
 . = 0x00005398; gUnknown_03005398 = .;
 . = 0x000053A0; gUnknown_030053A0 = .;
 . = 0x000053B0; gInputPlaybackData = .;
-. = 0x000053B4; gExecuteSoundMain = .;
+. = 0x000053B4; gExecSoundMain = .;
 . = 0x000053B8; gUnknown_030053B8 = .;
 . = 0x000053C0; gInputRecorder = .;
 . = 0x000053CC; sTapeBuffer = .;
@@ -298,4 +298,4 @@
 . = 0x00005BA8; EraseFlashChip = .;
 . = 0x00005BAC; EraseFlashSector = .;
 . = 0x00005BB0; gFlashMaxTime = .;
-. = 0x00005BB4; gUnknown_03005BB4 = .;
+. = 0x00005BB4; iwram_end = .;

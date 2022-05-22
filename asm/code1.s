@@ -1015,7 +1015,7 @@ _080085C4:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r4, r0, #0
-	ldr r0, _080086A0 @ =gUnknown_03005BB4
+	ldr r0, _080086A0 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
 	bne _080085EA
@@ -1118,7 +1118,7 @@ _0800869A:
 	b _0800884A
 	.align 2, 0
 _0800869C: .4byte gUnknown_030022D0
-_080086A0: .4byte gUnknown_03005BB4
+_080086A0: .4byte iwram_end
 _080086A4: .4byte 0x040000D4
 _080086A8: .4byte 0x80000003
 _080086AC: .4byte gUnknown_03005960
@@ -1250,7 +1250,7 @@ _08008788:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r4, r0, #0
-	ldr r0, _08008860 @ =gUnknown_03005BB4
+	ldr r0, _08008860 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
 	beq _0800884A
@@ -1348,7 +1348,7 @@ _0800884A:
 	bx r0
 	.align 2, 0
 _0800885C: .4byte gUnknown_030022D0
-_08008860: .4byte gUnknown_03005BB4
+_08008860: .4byte iwram_end
 _08008864: .4byte 0x040000D4
 _08008868: .4byte 0x80000003
 _0800886C: .4byte gUnknown_03005960
@@ -4736,7 +4736,7 @@ sub_800A24C: @ 0x0800A24C
 	strb r0, [r1, #5]
 	movs r0, #0
 	adds r1, r5, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0800A2EC @ =gUnknown_03002AE4
 	ldr r0, _0800A2F0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -5853,7 +5853,7 @@ _0800ABB8:
 	bl m4aSongNumStart
 	ldr r1, _0800AC00 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0800AC04 @ =gUnknown_03002AE4
 	ldr r0, _0800AC08 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -5893,7 +5893,7 @@ _0800AC18:
 	bl m4aSongNumStart
 	ldr r1, _0800AC64 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0800AC68 @ =gUnknown_03002AE4
 	ldr r0, _0800AC6C @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -30127,7 +30127,7 @@ _0801666C:
 	bls _080166F0
 	ldr r1, _080166D4 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080166D8 @ =gUnknown_03002AE4
 	ldr r0, _080166DC @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -37861,7 +37861,7 @@ _0801A2C2:
 _0801A2DA:
 	ldr r1, _0801A324 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0801A328 @ =gUnknown_03002AE4
 	ldr r0, _0801A32C @ =gUnknown_0300287C
 	ldrb r0, [r0]

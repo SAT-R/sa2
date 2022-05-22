@@ -5309,7 +5309,7 @@ _08005300:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r4, r0, #0
-	ldr r0, _080053D0 @ =gUnknown_03005BB4
+	ldr r0, _080053D0 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
 	bne _0800532A
@@ -5398,7 +5398,7 @@ _080053B6:
 	.align 2, 0
 _080053C8: .4byte gUnknown_030026D0
 _080053CC: .4byte gUnknown_03002794
-_080053D0: .4byte gUnknown_03005BB4
+_080053D0: .4byte iwram_end
 _080053D4: .4byte gUnknown_030018F0
 _080053D8: .4byte 0x040000D4
 _080053DC: .4byte 0x80000003
@@ -5740,7 +5740,7 @@ _08005642:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r6, r0, #0
-	ldr r0, _08005700 @ =gUnknown_03005BB4
+	ldr r0, _08005700 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r6
 	bne _0800566E
@@ -5820,7 +5820,7 @@ _080056EA:
 	b _08005786
 	.align 2, 0
 _080056FC: .4byte gUnknown_03002794
-_08005700: .4byte gUnknown_03005BB4
+_08005700: .4byte iwram_end
 _08005704: .4byte 0x040000D4
 _08005708: .4byte 0x80000003
 _0800570C: .4byte 0x000001FF
@@ -5956,7 +5956,7 @@ _080057FC:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r5, r0, #0
-	ldr r0, _080058AC @ =gUnknown_03005BB4
+	ldr r0, _080058AC @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r6
 	beq _08005888
@@ -6032,7 +6032,7 @@ _0800589C: .4byte 0x000001FF
 _080058A0: .4byte 0x000003FF
 _080058A4: .4byte 0xF9FF0000
 _080058A8: .4byte 0x040000D4
-_080058AC: .4byte gUnknown_03005BB4
+_080058AC: .4byte iwram_end
 _080058B0: .4byte 0x80000003
 
 	thumb_func_start sub_80058B4
@@ -6050,12 +6050,12 @@ _080058C0:
 	adds r4, r0, #0
 	cmp r1, #0
 	bge _080058DC
-	ldr r0, _080058D8 @ =gUnknown_03005BB4
+	ldr r0, _080058D8 @ =iwram_end
 	ldr r0, [r0]
 	b _08005938
 	.align 2, 0
 _080058D4: .4byte gUnknown_030018F0
-_080058D8: .4byte gUnknown_03005BB4
+_080058D8: .4byte iwram_end
 _080058DC:
 	ldr r0, _08005900 @ =gUnknown_03001850
 	adds r2, r5, r0

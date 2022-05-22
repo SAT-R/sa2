@@ -3021,7 +3021,7 @@ _0808766E:
 	bls _080876DC
 	movs r0, #0
 	ldr r1, _080876C0 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080876C4 @ =gUnknown_03002AE4
 	ldr r0, _080876C8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -3253,7 +3253,7 @@ _0808785A:
 	bls _080878C8
 	movs r0, #0
 	ldr r1, _080878AC @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080878B0 @ =gUnknown_03002AE4
 	ldr r0, _080878B4 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -3588,7 +3588,7 @@ _08087B10:
 	bls _08087B80
 	movs r0, #0
 	ldr r1, _08087B64 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08087B68 @ =gUnknown_03002AE4
 	ldr r0, _08087B6C @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -3787,7 +3787,7 @@ _08087CC2:
 	bls _08087D30
 	movs r0, #0
 	ldr r1, _08087D14 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08087D18 @ =gUnknown_03002AE4
 	ldr r0, _08087D1C @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -5176,7 +5176,7 @@ _08088864:
 	strb r0, [r1]
 	ldr r1, _080888A0 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080888A4 @ =gUnknown_03002AE4
 	ldr r0, _080888A8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -7511,7 +7511,7 @@ sub_8089B40: @ 0x08089B40
 	bl WriteSaveGame
 	ldr r1, _08089B88 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08089B8C @ =gUnknown_03002AE4
 	ldr r0, _08089B90 @ =gUnknown_0300287C
 	ldrb r0, [r0]

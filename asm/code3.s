@@ -31266,7 +31266,7 @@ _080815B4: .4byte gCurTask
 _080815B8:
 	ldr r1, _080815EC @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _080815F0 @ =gUnknown_03002AE4
 	ldr r0, _080815F4 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -31325,7 +31325,7 @@ sub_8081604: @ 0x08081604
 	beq _0808165E
 	ldr r1, _08081738 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0808173C @ =gUnknown_03002AE4
 	ldr r0, _08081740 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -31515,7 +31515,7 @@ _080817D4:
 _080817EC:
 	ldr r1, _08081828 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0808182C @ =gUnknown_03002AE4
 	ldr r0, _08081830 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -31673,7 +31673,7 @@ _08081936:
 	bne _080819B8
 	movs r0, #0
 	ldr r1, _08081998 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0808199C @ =gUnknown_03002AE4
 	ldr r0, _080819A0 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -32582,7 +32582,7 @@ _080820BE:
 	bls _0808212C
 	movs r0, #0
 	ldr r1, _08082110 @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08082114 @ =gUnknown_03002AE4
 	ldr r0, _08082118 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -33438,7 +33438,7 @@ _080827B0:
 	bls _08082818
 	movs r0, #0
 	ldr r1, _080827FC @ =0x0000FFFF
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08082800 @ =gUnknown_03002AE4
 	ldr r0, _08082804 @ =gUnknown_0300287C
 	ldrb r0, [r0]

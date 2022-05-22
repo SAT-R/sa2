@@ -123,7 +123,7 @@ extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern u16 gDispCnt;  // gDispCnt
 extern s16 gBgScrollRegs[4][2];  // gBgScrollRegs
-extern bool8 gExecuteSoundMain;
+extern bool8 gExecSoundMain;
 
 struct UNK_802D4CC_UNK270 {
     u16 unk0;

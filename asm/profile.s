@@ -6022,7 +6022,7 @@ _08067F0C:
 	bl WriteSaveGame
 	ldr r1, _08067F60 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08067F64 @ =gUnknown_03002AE4
 	ldr r0, _08067F68 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -8991,7 +8991,7 @@ _0806973E:
 	bl EwramFree
 	ldr r1, _08069780 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _08069784 @ =gUnknown_03002AE4
 	ldr r0, _08069788 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -11743,7 +11743,7 @@ _0806AD4C:
 	bl WriteSaveGame
 	ldr r1, _0806AD80 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0806AD84 @ =gUnknown_03002AE4
 	ldr r0, _0806AD88 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -14985,7 +14985,7 @@ _0806C732:
 	str r0, [r1]
 	ldr r1, _0806C7A0 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0806C7A4 @ =gUnknown_03002AE4
 	ldr r0, _0806C7A8 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -15179,7 +15179,7 @@ _0806C8E0: .4byte 0x0000FFFE
 _0806C8E4:
 	ldr r1, _0806C908 @ =0x0000FFFF
 	movs r0, #0
-	bl sub_80029D0
+	bl TasksDestroyInPriorityRange
 	ldr r1, _0806C90C @ =gUnknown_03002AE4
 	ldr r0, _0806C910 @ =gUnknown_0300287C
 	ldrb r0, [r0]
@@ -15818,7 +15818,7 @@ _0806CDB6:
 	lsrs r0, r0, #6
 	bl sub_80058B4
 	adds r4, r0, #0
-	ldr r0, _0806CE98 @ =gUnknown_03005BB4
+	ldr r0, _0806CE98 @ =iwram_end
 	ldr r0, [r0]
 	cmp r4, r0
 	beq _0806CE7C
@@ -15915,7 +15915,7 @@ _0806CE7C:
 _0806CE8C: .4byte 0x040000D4
 _0806CE90: .4byte 0x000001FF
 _0806CE94: .4byte gUnknown_03002794
-_0806CE98: .4byte gUnknown_03005BB4
+_0806CE98: .4byte iwram_end
 _0806CE9C: .4byte gUnknown_030018F0
 _0806CEA0: .4byte 0x80000003
 _0806CEA4: .4byte 0xF9FF0000

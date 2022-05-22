@@ -77,5 +77,6 @@ typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);
 
+extern void *iwram_end;
 
 #endif  // GUARD_GLOBAL_H

@@ -8,14 +8,21 @@ struct Task;
 typedef void (*TaskMain)(void);
 typedef void (*TaskDestructor)(struct Task*);
 
+#define MAX_TASK_NUM                0x80
+
+#define TASK_INACTIVE               0x0001
+#define TASK_DESTROY_DISABLED       0x0002
+#define TASK_x0004                  0x0004
+#define TASK_USE_EWRAM              0x0010
+
 struct Task {
-    /* 0x00 */ u16 unk0;
-    /* 0x02 */ u16 unk2; // prev? 
+    /* 0x00 */ u16 parent;
+    /* 0x02 */ u16 prev; // prev? 
     /* 0x04 */ u16 next;
     /* 0x06 */ u16 structOffset;
     /* 0x08 */ TaskMain main;
     /* 0x0C */ TaskDestructor dtor;
-    /* 0x10 */ u16 unk10; // priority? 
+    /* 0x10 */ u16 priority; // priority? 
     /* 0x12 */ u16 flags; // 0x1  = active
                           // 0x2  = ???
                           // 0x10 = use ewram for struct
@@ -25,30 +32,26 @@ struct Task {
     /* 0x18 */ u16 unk18;
 };
 
-struct Unk_03003A20 {
-    u16 unk0;
-    s16 unk2;
-    u8 space[0];
+struct IwramNode {
+    u16 next;
+    s16 state;
 };
 
 #define TaskGetStructPtr(taskp, dst) (typeof(dst))(IWRAM_START + (taskp)->structOffset)
 
-extern struct Task gUnknown_030009F0[];
+extern struct Task gTasks[];
 extern struct Task gEmptyTask;
-extern u8 gUnk_03002558;
-extern struct Task* gTaskList[];
-extern s32 gLastTaskNum;
-extern struct Task* gUnk_03002E98;
+extern struct Task* gTaskPtrs[];
+extern s32 gNumTasks;
 extern struct Task* gNextTask;
 extern struct Task* gCurTask;
-extern struct Unk_03003A20 gUnknown_03002B00[];
-extern OamData *gUnknown_03005BB4;
+extern struct IwramNode gIwramHeap;
 
-u32 TaskInit(void);
-void TaskExecute(void);
+u32 TasksInit(void);
+void TasksExec(void);
 struct Task* TaskCreate(TaskMain, u16, u16, u16, TaskDestructor);
 void TaskDestroy(struct Task*);
-uintptr_t IwramMalloc(u16);
-void sub_80029D0(u16, u16);
+struct IwramNode* IwramMalloc(u16);
+void TasksDestroyInPriorityRange(u16, u16);
 
 #endif
