@@ -1369,7 +1369,7 @@ static void WavesBackgroundAnim(struct TitleScreen* titleScreen) {
     
     titleScreen->unk27C.unk34 = (titleScreen->wavesTopOffset - 2);
     
-    gHBlankCallbacks[gHBlankCallbackIndex++] = sub_808DB2C;
+    gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     gFlags |= 0x4;

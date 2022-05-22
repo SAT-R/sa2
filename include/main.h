@@ -3,15 +3,15 @@
 
 #include "global.h"
 
-extern u8 gHBlankCallbackIndex;
+extern u8 gNumHBlankCallbacks;
 
 extern u16 gPhysicalInput;
 
 
 extern u8 gUnknown_03004D50;
-extern u8 gHBlankFunctionsLength;
+extern u8 gNumHBlankIntrs;
 
-extern HBlankFunc gHBlankFunctions[4];
+extern HBlankFunc gHBlankIntrs[4];
 
 struct Unk_020382A0_8_0
 {

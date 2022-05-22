@@ -4697,10 +4697,10 @@ _0801CD1C:
 	lsrs r4, r0, #0x18
 	cmp r4, #0x9e
 	bls _0801CD06
-	ldr r1, _0801CD6C @ =gHBlankCallbackIndex
+	ldr r1, _0801CD6C @ =gNumHBlankCallbacks
 	ldrb r0, [r1]
 	adds r1, r0, #1
-	ldr r2, _0801CD6C @ =gHBlankCallbackIndex
+	ldr r2, _0801CD6C @ =gNumHBlankCallbacks
 	strb r1, [r2]
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x16
@@ -4727,7 +4727,7 @@ _0801CD5C: .4byte gUnknown_03000408
 _0801CD60: .4byte gUnknown_080D5B20
 _0801CD64: .4byte gUnknown_080D5B22
 _0801CD68: .4byte gUnknown_080D5B21
-_0801CD6C: .4byte gHBlankCallbackIndex
+_0801CD6C: .4byte gNumHBlankCallbacks
 _0801CD70: .4byte gHBlankCallbacks
 _0801CD74: .4byte sub_801E454
 _0801CD78: .4byte gFlags
@@ -7213,7 +7213,7 @@ _0801E14C:
 	asrs r0, r0, #9
 	strh r0, [r2, #2]
 	ldr r3, _0801E194 @ =gHBlankCallbacks
-	ldr r2, _0801E198 @ =gHBlankCallbackIndex
+	ldr r2, _0801E198 @ =gNumHBlankCallbacks
 	ldrb r0, [r2]
 	adds r1, r0, #1
 	strb r1, [r2]
@@ -7235,7 +7235,7 @@ _0801E188: .4byte gUnknown_030059E0
 _0801E18C: .4byte gUnknown_03005590
 _0801E190: .4byte gBgScrollRegs
 _0801E194: .4byte gHBlankCallbacks
-_0801E198: .4byte gHBlankCallbackIndex
+_0801E198: .4byte gNumHBlankCallbacks
 _0801E19C: .4byte sub_801E434
 _0801E1A0: .4byte gFlags
 
@@ -7287,7 +7287,7 @@ sub_801E1E4: @ 0x0801E1E4
 	adds r0, #1
 	strh r0, [r1]
 	ldr r3, _0801E224 @ =gHBlankCallbacks
-	ldr r2, _0801E228 @ =gHBlankCallbackIndex
+	ldr r2, _0801E228 @ =gNumHBlankCallbacks
 	ldrb r0, [r2]
 	adds r1, r0, #1
 	strb r1, [r2]
@@ -7307,7 +7307,7 @@ _0801E218: .4byte gDispCnt
 _0801E21C: .4byte 0x0000FDFF
 _0801E220: .4byte gBgScrollRegs
 _0801E224: .4byte gHBlankCallbacks
-_0801E228: .4byte gHBlankCallbackIndex
+_0801E228: .4byte gNumHBlankCallbacks
 _0801E22C: .4byte sub_801E498
 _0801E230: .4byte gFlags
 
@@ -7441,7 +7441,7 @@ sub_801E310: @ 0x0801E310
 	str r0, [r1]
 _0801E326:
 	ldr r3, _0801E350 @ =gHBlankCallbacks
-	ldr r2, _0801E354 @ =gHBlankCallbackIndex
+	ldr r2, _0801E354 @ =gNumHBlankCallbacks
 	ldrb r0, [r2]
 	adds r1, r0, #1
 	strb r1, [r2]
@@ -7461,7 +7461,7 @@ _0801E326:
 _0801E348: .4byte gUnknown_030059E0
 _0801E34C: .4byte gUnknown_03005590
 _0801E350: .4byte gHBlankCallbacks
-_0801E354: .4byte gHBlankCallbackIndex
+_0801E354: .4byte gNumHBlankCallbacks
 _0801E358: .4byte sub_801E4C4
 _0801E35C: .4byte gFlags
 

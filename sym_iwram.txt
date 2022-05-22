@@ -103,9 +103,9 @@
 . = 0x00001880; gPhysicalInput = .;
 . = 0x00001884; gUnknown_03001884 = .;
 . = 0x00001888; gUnknown_03001888 = .;
-. = 0x0000188C; gHBlankCallbackIndex = .;
+. = 0x0000188C; gNumHBlankCallbacks = .;
 . = 0x00001890; gMultiSioRecv = .;
-. = 0x000018E0; gHBlankFunctionsLength = .;
+. = 0x000018E0; gNumHBlankIntrs = .;
 . = 0x000018E8; gBldRegs = .;
 . = 0x000018F0; gUnknown_030018F0 = .;
 . = 0x00001900; gEmptyTask = .;
@@ -165,7 +165,7 @@
 . = 0x00002ADC; gPressedKeys = .;
 . = 0x00002AE0; gUnknown_03002AE0 = .;
 . = 0x00002AE4; gUnknown_03002AE4 = .;
-. = 0x00002AF0; gHBlankFunctions = .;
+. = 0x00002AF0; gHBlankIntrs = .;
 . = 0x00002B00; gIwramHeap = .;
 . = 0x00004D10; gUnknown_03004D10 = .;
 . = 0x00004D50; gUnknown_03004D50 = .;

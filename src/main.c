@@ -178,17 +178,17 @@ static void GameInit(void) {
     gUnknown_030022AC = gUnknown_03001B60[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
-    gHBlankCallbackIndex = 0;
-    gHBlankFunctionsLength = 0;
+    gNumHBlankCallbacks = 0;
+    gNumHBlankIntrs = 0;
 
-    DmaFill32(3, 0, gHBlankCallbacks, 4 * sizeof(HBlankFunc));
-    DmaFill32(3, 0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
+    DmaFill32(3, 0, gHBlankCallbacks, sizeof(gHBlankCallbacks));
+    DmaFill32(3, 0, gHBlankIntrs, sizeof(gHBlankCallbacks));
 
     gUnknown_03004D50 = 0;
     gUnknown_03001948 = 0;
 
-    DmaFill32(3, 0, gUnknown_03001870, 4 * sizeof(FuncType_030053A0));
-    DmaFill32(3, 0, gUnknown_030053A0, 4 * sizeof(FuncType_030053A0));
+    DmaFill32(3, 0, gUnknown_03001870, sizeof(gUnknown_03001870));
+    DmaFill32(3, 0, gUnknown_030053A0, sizeof(gUnknown_030053A0));
 
     m4aSoundInit();
     m4aSoundMode(DEFAULT_SOUND_MODE);
@@ -291,15 +291,15 @@ static void UpdateScreenDma(void) {
 
     if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;
-        DmaFill32(3, 0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
-        if (gHBlankCallbackIndex != 0) {
-            DmaCopy32(3, gHBlankCallbacks, gHBlankFunctions,
-                      gHBlankCallbackIndex * sizeof(HBlankFunc));
+        DmaFill32(3, 0, gHBlankIntrs, sizeof(gHBlankIntrs));
+        if (gNumHBlankCallbacks != 0) {
+            DmaCopy32(3, gHBlankCallbacks, gHBlankIntrs,
+                      gNumHBlankCallbacks * sizeof(HBlankFunc));
         }
-        gHBlankFunctionsLength = gHBlankCallbackIndex;
+        gNumHBlankIntrs = gNumHBlankCallbacks;
     } else {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gHBlankFunctionsLength = 0;
+        gNumHBlankIntrs = 0;
     }
 
     if (gFlags & 0x4) {
@@ -319,7 +319,7 @@ static void UpdateScreenDma(void) {
     }
 
     if (gFlags & 0x10) {
-        DmaFill32(3, 0, gUnknown_030053A0, 4 * sizeof(FuncType_030053A0));
+        DmaFill32(3, 0, gUnknown_030053A0, sizeof(gUnknown_030053A0));
         if (gUnknown_03004D50 != 0) {
             DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
                       gUnknown_03004D50 * sizeof(FuncType_030053A0));
@@ -344,7 +344,7 @@ static void UpdateScreenDma(void) {
 }
 
 static void ClearOamBufferDma(void) {
-    gHBlankCallbackIndex = 0;
+    gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & 0x20)) {
@@ -389,14 +389,14 @@ static void UpdateScreenCpuSet(void) {
 
     if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;
-        CpuFastFill(0, gHBlankFunctions, 4 * sizeof(HBlankFunc));
-        if (gHBlankCallbackIndex != 0) {
-            CpuFastSet(gHBlankCallbacks, gHBlankFunctions, gHBlankCallbackIndex);
+        CpuFastFill(0, gHBlankIntrs, sizeof(gHBlankIntrs));
+        if (gNumHBlankCallbacks != 0) {
+            CpuFastSet(gHBlankCallbacks, gHBlankIntrs, gNumHBlankCallbacks);
         }
-        gHBlankFunctionsLength = gHBlankCallbackIndex;
+        gNumHBlankIntrs = gNumHBlankCallbacks;
     } else {
         REG_IE &= ~INTR_FLAG_HBLANK;
-        gHBlankFunctionsLength = 0;
+        gNumHBlankIntrs = 0;
     }
 
     if (gUnknown_030026F4 == 0xff) {
@@ -574,8 +574,8 @@ static void HBlankIntr(void) {
     u8 vcount = *(vu8 *)REG_ADDR_VCOUNT;
 
     if (vcount < DISPLAY_HEIGHT) {
-        for (i = 0; i < gHBlankFunctionsLength; i++) {
-            gHBlankFunctions[i](vcount);
+        for (i = 0; i < gNumHBlankIntrs; i++) {
+            gHBlankIntrs[i](vcount);
         }
     }
 
@@ -605,7 +605,7 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 static void DummyFunc(void) { }
 
 static void ClearOamBufferCpuSet(void) {
-    gHBlankCallbackIndex = 0;
+    gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & 0x20)) {

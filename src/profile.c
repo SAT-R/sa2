@@ -72,7 +72,7 @@ void sub_8063730(u16 p1) {
 
     m4aSongNumStart(MUS_OPTIONS);
 
-    t = TaskCreate(sub_806A75C, 0x788, 0x1000, 4, sub_806A758);
+    t = TaskCreate(sub_806A75C, 0x788, 0x1000, TASK_x0004, sub_806A758);
     optionsScreen = TaskGetStructPtr(t, optionsScreen);
 
     sub_8063B38(optionsScreen);
@@ -123,7 +123,7 @@ void sub_80637EC(u16 p1, u16 p2) {
     struct Task* t;
     struct UNK_80637EC* config;
 
-    t = TaskCreate(sub_806B5A4, 0x714, 0x2000, 4, 0);
+    t = TaskCreate(sub_806B5A4, 0x714, 0x2000, TASK_x0004, 0);
     config = TaskGetStructPtr(t, config);
 
     for (i = 1; i < 5; i++) {
@@ -192,7 +192,7 @@ void sub_8063940_CreateProfileScreen(void) {
     rand2 ^= rand1;
     SeedRng(rand2, rand3);
 
-    t = TaskCreate(sub_806B0D8, 0x204, 0x2000, 4, 0);
+    t = TaskCreate(sub_806B0D8, 0x204, 0x2000, TASK_x0004, 0);
     config = TaskGetStructPtr(t, config);
 
     config->unk1FC = 0;
@@ -246,7 +246,7 @@ void sub_8063A00(s16 p1) {
     struct UNK_8063A00* config;
     s16 i;
     u8 temp;
-    t = TaskCreate(sub_806B354, 0x3BC, 0x2000, 4, 0);
+    t = TaskCreate(sub_806B354, 0x3BC, 0x2000, TASK_x0004, 0);
     config = TaskGetStructPtr(t, config);
 
     config->unk14C = 0;
@@ -979,7 +979,7 @@ void sub_8064A40(struct UNK_8063730* optionsScreen) {
     struct UNK_8064A40* state;
     s16 temp;
 
-    t = TaskCreate(sub_8064C44, 0x164, 0x2000, 4, 0);
+    t = TaskCreate(sub_8064C44, 0x164, 0x2000, TASK_x0004, 0);
     state = TaskGetStructPtr(t, state);
 
     
