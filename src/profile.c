@@ -1304,3 +1304,103 @@ void sub_8065174(void) {
         gCurTask->main = sub_806ACBC;
     }
 }
+
+struct UNK_0806ADF4 {
+    struct UNK_8063730* unk0;
+    struct UNK_0808B3FC_UNK240 unk4[2];
+    struct UNK_0808B3FC_UNK240 unk64[2];
+    struct UNK_0808B3FC_UNK240 unkC4;
+    s8 unkF4;
+    s8 unkF5;
+    s8 unkF6;
+    u8 unkF7;
+}; /* size 0xF8 */
+
+extern const struct UNK_080D95E8 gUnknown_080D9888[6];
+extern const struct UNK_080D95E8 gUnknown_080D98B8[6];
+
+void sub_806525C(struct UNK_0806ADF4* state) {
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9888[state->unkF6];
+    const struct UNK_080D95E8 *itemText2 = &gUnknown_080D98B8[state->unkF6];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D9798[state->unkF6];
+    
+    s16 unk360 = state->unk0->unk360;
+    s16 unkF4 = state->unkF4;
+    s16 i;
+
+    sub_806A568(
+        unk4,
+        1,
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336,
+        0x32,
+        8,
+        itemText1->unk2,
+        0
+    );
+
+    unk4++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 336,
+        0x74,
+        8,
+        itemText2->unk2,
+        0
+    );
+    
+    sub_806A568(
+        unk64,
+        1,
+        itemText3->unk4,
+        itemText3->unk0,
+        0x1000,
+        unk360 + 0x112,
+        0x4C,
+        8,
+        itemText3->unk2,
+        0
+    );
+
+    unk64++;
+    itemText3++;
+    sub_806A568(
+        unk64,
+        1,
+        itemText3->unk4,
+        itemText3->unk0,
+        0x1000,
+        unk360 + 0x14E,
+        0x4C,
+        8,
+        itemText3->unk2,
+        0
+    );
+
+    sub_806A568(
+        unkC4,
+        1,
+        0x12,
+        0x3b8,
+        0x1000,
+        unkF4 * 0x3C + 0x110,
+        0x4c,
+        7,
+        3,
+        0
+    );
+
+    for (i = 0, unk64 = state->unk64; i < 2; i++, unk64++) {
+        unk64->unk25 = !!(unkF4 ^ i);
+    }
+} 
