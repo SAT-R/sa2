@@ -1480,3 +1480,234 @@ void sub_806548C(void) {
         gCurTask->main = sub_80655FC;
     }
 }
+
+void sub_80655FC(void) {
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    s16 unk360 = state->unk0->unk360;
+    s16 i = 0;
+
+    while (i < 2) {
+        unk4->unk16 = unk360 + 0x150;
+        i++;
+        unk4++;
+    }
+
+    unk64->unk16 = unk360 + 0x112;
+    unk64++;
+    unk64->unk16 = unk360 + 0x14E;
+
+    unkC4->unk16 = state->unkF4 * 0x3C + 0x110 + unk360;
+
+    if (++state->unkF5 < 0xF) {
+        sub_806AE54();
+    } else {
+        TaskDestroy(gCurTask);
+    }
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D98E8[6];
+extern const struct UNK_080D95E8 gUnknown_080D9918[6];
+
+void sub_80656B0(struct UNK_0806ADF4* state) {
+    // same function as sub_806525C
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    // But these first 2 are different
+    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D98E8[state->unkF6];
+    const struct UNK_080D95E8 *itemText2 = &gUnknown_080D9918[state->unkF6];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D97F8[state->unkF6];
+
+    s16 unk360 = state->unk0->unk360;
+    s16 unkF4 = state->unkF4;
+    s16 i;
+    
+
+    // TODO: can these be a macro?
+    sub_806A568(
+        unk4,
+        1,
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336,
+        0x32,
+        8,
+        itemText1->unk2,
+        0
+    );
+
+    unk4++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 336,
+        0x74,
+        8,
+        itemText2->unk2,
+        0
+    );
+    
+    sub_806A568(
+        unk64,
+        1,
+        itemText3->unk4,
+        itemText3->unk0,
+        0x1000,
+        unk360 + 0x112,
+        0x4C,
+        8,
+        itemText3->unk2,
+        0
+    );
+
+    unk64++;
+    itemText3++;
+    sub_806A568(
+        unk64,
+        1,
+        itemText3->unk4,
+        itemText3->unk0,
+        0x1000,
+        unk360 + 0x14E,
+        0x4C,
+        8,
+        itemText3->unk2,
+        0
+    );
+
+    sub_806A568(
+        unkC4,
+        1,
+        0x12,
+        0x3b8,
+        0x1000,
+        unkF4 * 0x3C + 0x110,
+        0x4c,
+        7,
+        3,
+        0
+    );
+
+    for (i = 0, unk64 = state->unk64; i < 2; i++, unk64++) {
+        unk64->unk25 = !!(unkF4 ^ i);
+    }
+}
+
+void sub_806AF10(void);
+void sub_80658E0(void);
+
+void sub_8065838(void) {
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+    
+    s16 unk360 = state->unk0->unk360;
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk4++) {
+        unk4->unk16 = unk360 + 0x150;
+    }
+
+    unk64->unk16 = unk360 + 0x112;
+    unk64++;
+    unk64->unk16 = unk360 + 0x14E;
+    
+    unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+    sub_806AF10();
+
+    if (++state->unkF5 > 0xF) {
+        state->unkF5 = 0;
+        gCurTask->main = sub_80658E0;
+    }
+}
+
+void sub_8065A50(void);
+
+void sub_80658E0(void) {
+    // Same as sub_806548C
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* menuItem = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+    struct UNK_8063730* parent = state->unk0;
+
+    s16 unk360 = parent->unk360;
+    s16 language = state->unkF6;
+    s16 i;
+
+    if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        state->unkF4 = state->unkF4 == 0;
+
+        i = 0;
+        while (i < 2) {
+            menuItem->unk25 = !!(state->unkF4 ^ i);
+            i++;
+            menuItem++;
+        }
+
+        unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+    }
+
+    sub_806AF10();
+
+    if ((gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT))) {
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        const struct UNK_080D95E8 *itemText3 = &gUnknown_080D97F8[language][state->unkF4];
+        // Except this is different
+        menuItem = &parent->unk594[2];
+        
+        menuItem->unk20 = itemText3->unk2;
+        menuItem->unkA = itemText3->unk0;
+        sub_8004558(menuItem);
+        m4aSongNumStart(SE_SELECT);
+        // and this
+        parent->unk35A = state->unkF4;
+        parent->unk784 = 0;
+        gCurTask->main = sub_8065A50;
+    } else if ((gPressedKeys & B_BUTTON)) {
+        m4aSongNumStart(SE_RETURN);
+        parent->unk784 = 0;
+        gCurTask->main = sub_8065A50;
+    }
+}
+
+void sub_8065A50(void) {
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    s16 unk360 = state->unk0->unk360;
+    s16 i = 0;
+
+    while (i < 2) {
+        unk4->unk16 = unk360 + 0x150;
+        i++;
+        unk4++;
+    }
+
+    unk64->unk16 = unk360 + 0x112;
+    unk64++;
+    unk64->unk16 = unk360 + 0x14E;
+
+    unkC4->unk16 = state->unkF4 * 0x3C + 0x110 + unk360;
+
+    if (++state->unkF5 < 0xF) {
+        sub_806AF10();
+    } else {
+        TaskDestroy(gCurTask);
+    }
+}
