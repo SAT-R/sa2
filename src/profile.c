@@ -1002,16 +1002,7 @@ void sub_8064A40(struct UNK_8063730* optionsScreen) {
 
 extern const struct UNK_080D95E8 gUnknown_080D9C30[6];
 extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
-
-// For some reason this one requires that unk2 is a u8
-struct UNK_080D95E8_Alternative {
-    u16 unk0;
-    u8 unk2;
-    u8 unk3;
-    u16 unk4;
-    u16 unk6;
-};
-extern const struct UNK_080D95E8_Alternative gUnknown_080D9C90[6][4];
+extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
 
 // CreatePlayerDataMenuUI
 static void sub_8064AC0(struct UNK_8064A40* state) {
@@ -1019,18 +1010,17 @@ static void sub_8064AC0(struct UNK_8064A40* state) {
     // Apprently we have to force the compiler to use r9 (sb) for
     // this variable because there is something missing in
     // this function
-    register struct UNK_0808B3FC_UNK240* unk60 asm("sb") = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
     struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
     
     const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9C30[state->unk162];
     const struct UNK_080D95E8 *itemText2 = &gUnknown_080D9C60[state->unk162];
-    const struct UNK_080D95E8_Alternative *itemText3 = gUnknown_080D9C90[state->unk162];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D9C90[state->unk162];
     
     s16 unk360 = state->unk15C->unk360;
     s16 unk160 = state->unk160;
 
     s16 i;
-    s16 temp0;
     s16 itemPos;
 
     // Title
@@ -1078,11 +1068,10 @@ static void sub_8064AC0(struct UNK_8064A40* state) {
             0
         );
 
-        temp0 = (unk160 ^ i);
         // Interesting to note that gcc
         // uses some trickery here to set this
         // and the actual logic is `(u32)(-temp0 | temp0) >> 31;`
-        unk60->unk25 = !!temp0;
+        unk60->unk25 = !!(unk160 ^ i);
 
         i++;
         unk60++;
