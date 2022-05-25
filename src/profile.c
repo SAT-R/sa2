@@ -1007,9 +1007,6 @@ extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
 // CreatePlayerDataMenuUI
 static void sub_8064AC0(struct UNK_8064A40* state) {
     struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
-    // Apprently we have to force the compiler to use r9 (sb) for
-    // this variable because there is something missing in
-    // this function
     struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
     struct UNK_0808B3FC_UNK240* unk120 = &state->unk120;
     
@@ -1711,3 +1708,69 @@ void sub_8065A50(void) {
         TaskDestroy(gCurTask);
     }
 }
+
+struct UNK_8065B04 {
+    struct UNK_8063730* unk0;
+    u8 filler[0x240];
+    u8 unk244;
+    u8 unk245;
+    u8 unk246;
+    u8 unk247;
+    u8 unk248;
+    u8 unk249;
+}; /* size 0x24C */
+
+void sub_8065F04(void);
+void sub_8065C28(struct UNK_8065B04*);
+
+void sub_8065B04(struct UNK_8063730* optionsScreen) {
+    struct Task* t = TaskCreate(sub_8065F04, 0x24C, 0x2000, 4, 0);
+    struct UNK_8065B04* state = TaskGetStructPtr(t, state);
+
+    state->unk0 = optionsScreen;
+    
+    switch(optionsScreen->unk0.unk350.unk0) {
+        case 1:
+            state->unk244 = 0;
+            break;
+        case 2:
+            state->unk245 = 0;
+            break;
+        case 0x100:
+            state->unk246 = 0;
+            break;
+    }
+
+    switch(optionsScreen->unk0.unk350.unk2) {
+        case 1:
+            state->unk244 = 1;
+            break;
+        case 2:
+            state->unk245 = 1;
+            break;
+        case 0x100:
+            state->unk246 = 1;
+            break;
+    }
+
+    switch(optionsScreen->unk0.unk350.unk4) {
+        case 1:
+            state->unk244 = 2;
+            break;
+        case 2:
+            state->unk245 = 2;
+            break;
+        case 0x100:
+            state->unk246 = 2;
+            break;
+    }
+
+    state->unk247 = 0;
+    state->unk248 = 0;
+    state->unk249 = optionsScreen->unk35B;
+    sub_8065C28(state);
+}
+
+// void sub_8065C28(struct UNK_8065B04* state) {
+
+// }
