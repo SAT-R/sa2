@@ -1515,7 +1515,6 @@ void sub_80656B0(struct UNK_0806ADF4* state) {
     struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
     struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
 
-    // But these first 2 are different
     const struct UNK_080D95E8 *itemText1 = &gUnknown_080D98E8[state->unkF6];
     const struct UNK_080D95E8 *itemText2 = &gUnknown_080D9918[state->unkF6];
     const struct UNK_080D95E8 *itemText3 = gUnknown_080D97F8[state->unkF6];
@@ -1711,7 +1710,11 @@ void sub_8065A50(void) {
 
 struct UNK_8065B04 {
     struct UNK_8063730* unk0;
-    u8 filler[0x240];
+    struct UNK_0808B3FC_UNK240 unk4[3];
+    struct UNK_0808B3FC_UNK240 unk94[3];
+    struct UNK_0808B3FC_UNK240 unk124[3];
+    struct UNK_0808B3FC_UNK240 unk1B4[2];
+    struct UNK_0808B3FC_UNK240 unk214;
     u8 unk244;
     u8 unk245;
     u8 unk246;
@@ -1770,6 +1773,11 @@ void sub_8065B04(struct UNK_8063730* optionsScreen) {
     state->unk249 = optionsScreen->unk35B;
     sub_8065C28(state);
 }
+
+extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
+extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
+extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
+
 
 // void sub_8065C28(struct UNK_8065B04* state) {
 
