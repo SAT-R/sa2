@@ -1687,12 +1687,10 @@ void sub_8065A50(void) {
     struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
 
     s16 unk360 = state->unk0->unk360;
-    s16 i = 0;
+    s16 i;
 
-    while (i < 2) {
+    for (i = 0; i < 2; i++, unk4++) {
         unk4->unk16 = unk360 + 0x150;
-        i++;
-        unk4++;
     }
 
     unk64->unk16 = unk360 + 0x112;
@@ -1718,7 +1716,7 @@ struct UNK_8065B04 {
     u8 unk245;
     u8 unk246;
     u8 unk247;
-    u8 unk248;
+    s8 unk248;
     s8 unk249;
 }; /* size 0x24C */
 
@@ -1951,4 +1949,310 @@ void sub_8065C28(struct UNK_8065B04* state) {
         9,
         0
     );
+}
+
+void sub_8066818(void);
+void sub_8066004(void);
+
+void sub_8065F04(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+
+    s16 unk360 = state->unk0->unk360;
+    s16 i;
+
+    for (i = 0; i < 3; i++, unk4++) {
+        unk4->unk16 = unk360 + 0x150;
+    }
+
+    for (;i < 6; i++, unk4++) {
+        unk4->unk16 = unk360 + 0x108;
+    }
+
+    for (i = 0; i < 3; i++, unk124++) {
+        unk124->unk16 = unk360 + 0x14C;
+    }
+
+    unk214->unk16 = unk360 + 0xFC;
+    unk1B4->unk16 = unk360 + 0x143;
+    unk1B4++;
+    unk1B4->unk16 = unk360 + 0x19D;
+    
+    sub_8066818();
+
+    if (++state->unk248 > 0xF) {
+        state->unk248 = 0;
+        gCurTask->main = sub_8066004;
+    }
+}
+
+void sub_806AFAC(void);
+void sub_8066718(void);
+void sub_80665D8(void);
+
+void sub_8066004(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+    const struct UNK_080D95E8 *itemText4;
+
+    sub_8066818();
+
+    if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        if (gRepeatedKeys & (DPAD_LEFT)) {
+            if (state->unk244 != 0) {
+                state->unk244--;
+            } else {
+                state->unk244 = 2;
+            }
+        } else {
+            if (state->unk244 < 2) {
+                state->unk244++;
+            } else {
+                state->unk244 = 0;
+            }
+        }
+
+        itemText4 = &itemText3[state->unk244];
+        unk124->unkA = itemText4->unk0;
+        unk124->unk20 = itemText4->unk2;
+        sub_8004558(&unk124[0]);
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        if (state->unk244 == state->unk245) {
+            while (state->unk244 == state->unk245 || state->unk244 == state->unk246) {
+                if (state->unk245 < 2) {
+                    state->unk245++;
+                } else {
+                    state->unk245 = 0;
+                }
+            }
+            unk124 = &state->unk124[1];
+            unk124->unkA = itemText3[state->unk245].unk0;
+            unk124->unk20 = itemText3[state->unk245].unk2;
+            
+            sub_8004558(unk124);
+        }
+
+        if (state->unk244 == state->unk246) {
+            while (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
+                if (state->unk246 < 2) {
+                    state->unk246++;
+                } else {
+                    state->unk246 = 0;
+                }
+            }
+
+            unk124 = &state->unk124[2];
+            unk124->unkA = itemText3[state->unk246].unk0;
+            unk124->unk20 = itemText3[state->unk246].unk2;
+            sub_8004558(unk124);
+        }
+
+        state->unk247 = 1;
+        m4aSongNumStart(SE_SELECT);
+        gCurTask->main = sub_806AFAC;
+        return;
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        state->unk248 = 0;
+        state->unk0->unk784 = 0;
+        gCurTask->main = sub_8066718;
+        return;
+    }
+
+    if (gPressedKeys & SELECT_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        sub_80665D8();
+    }
+}
+
+void sub_806AFEC(void);
+void sub_806AF6C(void);
+
+void sub_8066220(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk124;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+    const struct UNK_080D95E8 *itemText4;
+    u8 unk245;
+
+    sub_8066818();
+
+    if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        if (gRepeatedKeys & DPAD_LEFT) {
+            do {
+                if (state->unk245 > 0) {
+                    state->unk245--;
+                } else {
+                   state->unk245 = 2;
+                }
+            } while (state->unk244 == state->unk245);
+        } else if (gRepeatedKeys & DPAD_RIGHT) {
+            do {
+                if (state->unk245 < 2) {
+                    state->unk245++;
+                } else {
+                    state->unk245 = 0;
+                }
+            } while (state->unk244 == state->unk245);
+        }
+        
+        // Who knows why this has to be assigned first
+        unk245 = state->unk245;
+        
+        unk124 = &state->unk124[1];
+        itemText4 = &itemText3[unk245];
+        unk124->unkA = itemText4->unk0;
+        unk124->unk20 = itemText4->unk2;
+        sub_8004558(unk124);
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        if (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
+            while (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
+                if (state->unk246 < 2) {
+                    state->unk246++;
+                } else {
+                    state->unk246 = 0;
+                }
+            }
+            unk124 = &state->unk124[2];
+            unk124->unkA = itemText3[state->unk246].unk0;
+            unk124->unk20 = itemText3[state->unk246].unk2;
+            
+            sub_8004558(unk124);
+        }
+
+        state->unk247 = 2;
+        m4aSongNumStart(SE_SELECT);
+        gCurTask->main = sub_806AFEC;
+        return;
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        if (state->unk244 == state->unk245 || state->unk245 == state->unk246) {
+            while (state->unk244 == state->unk245 || state->unk245 == state->unk246) {
+                if (state->unk245 < 2) {
+                    state->unk245++;
+                } else {
+                    state->unk245 = 0;
+                }
+            }
+            unk124 = &state->unk124[1];
+            unk124->unkA = itemText3[state->unk245].unk0;
+            unk124->unk20 = itemText3[state->unk245].unk2;
+            
+            sub_8004558(unk124);
+        }
+        m4aSongNumStart(SE_RETURN);
+        state->unk247 = 0;
+        gCurTask->main = sub_806AF6C;
+        return;
+    }
+
+    if (gPressedKeys & SELECT_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        sub_80665D8();
+    }
+}
+
+static inline void sub_8066478_Unpack(struct UNK_8065B04* state, struct UNK_8063730* unk0) {
+     switch (state->unk244) {
+        case 0:
+            unk0->unk0.unk350.unk0 = 1;
+            break;
+        case 1:
+            unk0->unk0.unk350.unk2 = 1;
+            break;
+        case 2:
+            unk0->unk0.unk350.unk4 = 1;
+            break;
+    }
+
+    switch (state->unk245) {
+        case 0:
+            unk0->unk0.unk350.unk0 = 2;
+            break;
+        case 1:
+            unk0->unk0.unk350.unk2 = 2;
+            break;
+        case 2:
+            unk0->unk0.unk350.unk4 = 2;
+            break;
+    }
+
+    switch (state->unk246) {
+        case 0:
+            unk0->unk0.unk350.unk0 = 0x100;
+            break;
+        case 1:
+            unk0->unk0.unk350.unk2 = 0x100;
+            break;
+        case 2:
+            unk0->unk0.unk350.unk4 = 0x100;
+            break;
+    }
+}
+
+void sub_8066478(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_8063730* unk0 = state->unk0;
+
+    sub_8066818();
+
+    if (gPressedKeys & A_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+    
+        sub_8066478_Unpack(state, unk0);
+    
+        state->unk248 = 0;
+        state->unk0->unk784 = 0;
+        gCurTask->main = sub_8066718;
+        return;
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        state->unk247 = 0;
+        gCurTask->main = sub_806AFAC;
+        return;
+    }
+    
+    if (gPressedKeys & SELECT_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        sub_80665D8();
+    }
+}
+
+void sub_80665D8(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_8063730* unk0 = state->unk0;
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+    s16 i;
+
+    state->unk244 = 0;
+    state->unk245 = 1;
+    state->unk246 = 2;
+
+    sub_8066478_Unpack(state, unk0);
+
+    for (i = 0; i < 3; i++, unk124++) {
+        unk124->unkA = itemText3[i].unk0;
+        unk124->unk20 = itemText3[i].unk2;
+        sub_8004558(unk124);
+    }
+
+    gCurTask->main = sub_806AF6C;
 }
