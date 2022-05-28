@@ -1710,8 +1710,7 @@ void sub_8065A50(void) {
 
 struct UNK_8065B04 {
     struct UNK_8063730* unk0;
-    struct UNK_0808B3FC_UNK240 unk4[3];
-    struct UNK_0808B3FC_UNK240 unk94[3];
+    struct UNK_0808B3FC_UNK240 unk4[6];
     struct UNK_0808B3FC_UNK240 unk124[3];
     struct UNK_0808B3FC_UNK240 unk1B4[2];
     struct UNK_0808B3FC_UNK240 unk214;
@@ -1720,7 +1719,7 @@ struct UNK_8065B04 {
     u8 unk246;
     u8 unk247;
     u8 unk248;
-    u8 unk249;
+    s8 unk249;
 }; /* size 0x24C */
 
 void sub_8065F04(void);
@@ -1778,7 +1777,178 @@ extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
 extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
 extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
 
+void sub_8065C28(struct UNK_8065B04* state) {
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
 
-// void sub_8065C28(struct UNK_8065B04* state) {
+    const struct UNK_080D95E8 *itemText1 = gUnknown_080D9948[state->unk249];
+    const struct UNK_080D95E8 *itemText2 = gUnknown_080D99D8;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
 
-// }
+    s16 unk360 = state->unk0->unk360;
+
+    s16 i;
+
+    sub_806A568(
+        unk4,
+        1,
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336,
+        0x1C,
+        8,
+        itemText1->unk2,
+        0
+    );
+    unk4++;
+    itemText1++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336,
+        0x7A,
+        8,
+        itemText1->unk2,
+        0
+    );
+    unk4++;
+    itemText1++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText1->unk4,
+        itemText1->unk0,
+        0x1000,
+        unk360 + 336,
+        0x87,
+        8,
+        itemText1->unk2,
+        0
+    );
+
+    unk4++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 264,
+        0x35,
+        8,
+        itemText2->unk2,
+        0
+    );
+    unk4++;
+    itemText2++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 264,
+        0x4D,
+        8,
+        itemText2->unk2,
+        0
+    );
+    unk4++;
+    itemText2++;
+    sub_806A568(
+        unk4,
+        1,
+        itemText2->unk4,
+        itemText2->unk0,
+        0x1000,
+        unk360 + 264,
+        0x65,
+        8,
+        itemText2->unk2,
+        0
+    );
+
+    sub_806A568(
+        unk124,
+        1,
+        itemText3[state->unk244].unk4,
+        itemText3[state->unk244].unk0,
+        0x1000,
+        unk360 + 0x14C,
+        0x2D,
+        8,
+        itemText3[state->unk244].unk2,
+        0
+    );
+    unk124++;
+    sub_806A568(
+        unk124,
+        1,
+        itemText3[state->unk245].unk4,
+        itemText3[state->unk245].unk0,
+        0x1000,
+        unk360 + 0x14C,
+        0x45,
+        8,
+        itemText3[state->unk245].unk2,
+        0
+    );
+    unk124++;
+    sub_806A568(
+        unk124,
+        1,
+        itemText3[state->unk246].unk4,
+        itemText3[state->unk246].unk0,
+        0x1000,
+        unk360 + 0x14C,
+        0x5D,
+        8,
+        itemText3[state->unk246].unk2,
+        0
+    );
+
+    sub_806A568(
+        unk214,
+        1,
+        0x42,
+        0x3B6,
+        0x1000,
+        unk360 + 0xFC,
+        0x2A,
+        6,
+        7,
+        0
+    );
+    
+    sub_806A568(
+        unk1B4,
+        1,
+        2,
+        0x3B6,
+        0x1000,
+        unk360 + 0x143,
+        0x35,
+        6,
+        8,
+        0
+    );
+    unk1B4++;
+    sub_806A568(
+        unk1B4,
+        1,
+        2,
+        0x3B6,
+        0x1000,
+        unk360 + 0x19D,
+        0x35,
+        6,
+        9,
+        0
+    );
+}
