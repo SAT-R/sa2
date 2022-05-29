@@ -165,17 +165,22 @@ void sub_80637EC(u16 p1, u16 p2) {
 }
 
 struct UNK_8063940 {
-    u8 filler0[0x1FC];
+    struct UNK_0808B3FC_UNK240 unk0[2];
+    struct UNK_0808B3FC_UNK240 unk60[6];
+    struct UNK_0808B3FC_UNK240 unk180;
+    u8 filler1B0[64];
+    struct UNK_802D4CC_UNK270 unk1F0;
     u32 unk1FC;
-    u8 unk200;
+    // language
+    s8 unk200;
     u8 unk201;
     u8 unk202[2];
 }; /* size 0x204 */
 
 extern void sub_806B0D8(void);
-extern void sub_80668A8(struct UNK_8063940*);
+void sub_80668A8(struct UNK_8063940*);
 extern void sub_806B0AC(struct UNK_8063940*);
-extern void sub_8066930(struct UNK_8063940*);
+void sub_8066930(struct UNK_8063940*);
 
 void sub_8063940_CreateProfileScreen(void) {
     struct Task* t;
@@ -198,7 +203,7 @@ void sub_8063940_CreateProfileScreen(void) {
     config->unk1FC = 0;
     config->unk200 = gLoadedSaveGame->unk6 - 1;
     config->unk201 = 1;
-    if (config->unk200 > 5) {
+    if ((u8)config->unk200 > 5) {
         config->unk200 = 1;
     }
 
@@ -2255,4 +2260,218 @@ void sub_80665D8(void) {
     }
 
     gCurTask->main = sub_806AF6C;
+}
+
+void sub_8066818(void);
+
+void sub_8066718(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+
+    s16 unk360 = state->unk0->unk360;
+    s16 i;
+
+    for (i = 0; i < 3; i++, unk4++) {
+        unk4->unk16 = unk360 + 0x150;
+    }
+
+    for (; i < 6; i++, unk4++) {
+        unk4->unk16 = unk360 + 0x108;
+    }
+
+    for (i = 0; i < 3; i++, unk124++) {
+        unk124->unk16 = unk360 + 0x14C;
+    }
+
+    unk214->unk16 = unk360 + 0xFC;
+    unk1B4->unk16 = unk360 + 0x143;
+    unk1B4++;
+    unk1B4->unk16 = unk360 + 0x19D;
+
+    if (++state->unk248 < 0xF) {
+        sub_8066818();
+    } else {
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_8066818(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+    s16 i;
+
+    for (i = 0; i < 6; i++, unk4++) {
+        sub_80051E8(unk4);
+    }
+
+    for (i = 0; i < 3; i++, unk124++) {
+        sub_80051E8(unk124);
+    }
+    
+    for (i = 0; i < 2; i++, unk1B4++) {
+        sub_8004558(unk1B4);
+        sub_80051E8(unk1B4);
+    }
+    
+    sub_80051E8(unk214);
+}
+
+void sub_80668A8(struct UNK_8063940* config) {
+    struct UNK_802D4CC_UNK270* unk1F0 = &config->unk1F0;
+
+    gDispCnt = 0x1740;
+    gBgCntRegs[0] = 0x703;
+    gBgCntRegs[2] = 0x4E05;
+    gBgCntRegs[3] = 0xDC0E;
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0xFFFD;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+
+    DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
+
+    unk1F0->unk0 = 0;
+    unk1F0->unk2 = 2;
+    unk1F0->unk4 = 0;
+    unk1F0->unk6 = 0x100;
+    unk1F0->unkA = 0;
+    unk1F0->unk8 = 0xFF;
+
+    sub_802D4CC(&config->unk1F0);
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9A80[6];
+extern const struct UNK_080D95E8 gUnknown_080D9AE0[6];
+extern const struct UNK_080D95E8 gUnknown_080D9B10[6];
+extern const struct UNK_080D95E8 gUnknown_080D9AB0[6];
+
+s16 sub_806B8D4(const struct UNK_080D95E8*, u8);
+
+void sub_8066930(struct UNK_8063940* config) {
+    s16 unk200 = config->unk200;
+    struct UNK_0808B3FC_UNK240* unk0 = config->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = config->unk60;
+    struct UNK_0808B3FC_UNK240* unk180 = &config->unk180;
+
+    const struct UNK_080D95E8* a80 = gUnknown_080D9A80;
+    const struct UNK_080D95E8* b10 = gUnknown_080D9B10;
+    const struct UNK_080D95E8* ae0;
+
+    s16 var1;
+    s16 var2;
+    s16 i;
+    s16 pos;
+
+    if (config->unk201 == 0) {
+        ae0 = gUnknown_080D9AB0;
+    } else {
+        ae0 = gUnknown_080D9AE0;
+    }
+
+    var1 = sub_806B8D4(a80, 6);
+    var2 = sub_806B8D4(ae0, 6);
+
+    a80 = &a80[unk200];
+    ae0 = &ae0[unk200];
+    
+    sub_806A568(
+        unk0,
+        0,
+        var1,
+        a80->unk0,
+        0x3000,
+        0x78,
+        0x1A,
+        0xD,
+        a80->unk2,
+        0
+    );
+    unk0++;
+    sub_806A568(
+        unk0,
+        0,
+        var2,
+        ae0->unk0,
+        0x3000,
+        0x78,
+        0x8A,
+        0xD,
+        ae0->unk2,
+        0
+    );
+
+    for (i = 0, pos = 0x28; i < 6; i++, unk60++, b10++, pos+= 0xF) {
+        sub_806A568(
+            unk60,
+            0,
+            b10->unk4,
+            b10->unk0,
+            0x3000,
+            0x28,
+            pos,
+            0xD,
+            b10->unk2,
+            0
+        );
+        unk60->unk25 = !!(unk200 ^ i);
+    }
+
+    sub_806A568(
+        unk180,
+        0,
+        0x3F,
+        0x3BD,
+        0x3000,
+        0x26,
+        (unk200 * 0xF) + 0x28,
+        0xC,
+        5,
+        0
+    );
+
+    sub_806A568(
+        0, 
+        0, 
+        0, 
+        0x3C4, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0
+    );
+    sub_806A568(
+        0, 
+        0, 
+        0, 
+        0x3C4, 
+        0, 
+        0, 
+        0, 
+        0, 
+        1, 
+        0
+    );
+    sub_806A568(
+        0, 
+        0, 
+        0, 
+        0x3C3, 
+        0, 
+        0, 
+        0, 
+        0, 
+        0xC, 
+        0
+    );
 }
