@@ -218,13 +218,17 @@ void sub_8063940_CreateProfileScreen(void) {
     sub_8066930(config);
 }
 
-struct UNK_8063A00 {
-    u8 filler0[0x14C];
 
+struct UNK_8063A00 {
+    struct Unk_03002400 unk0[3];
+    struct Unk_03002400 unkC0;
+    struct Unk_03002400 unk100;
+    
+    struct UNK_802D4CC_UNK270 unk140;
     struct UNK_8064A40* unk14C;
 
-    u8 filler150[0x100];
-
+    struct Unk_03002400 unk150[3];
+    struct Unk_03002400 unk210;
     u16 unk250;
     u8 unk252;
     u8 unk253;
@@ -241,7 +245,7 @@ struct UNK_8063A00 {
 }; /* size 0x3BC */
 
 extern void sub_806B354(void);
-extern void sub_8067420(u8);
+extern void sub_8067420(s16);
 
 extern void sub_8067484(struct UNK_8063A00*);
 extern void sub_806751C(struct UNK_8063A00*);
@@ -2916,4 +2920,74 @@ void sub_80672BC(struct UNK_8064A40* playerDataMenu) {
     sub_806751C(config);
     sub_8067610(config);
     sub_8067710(config);
+}
+
+void sub_8067420(s16 p) {
+    gDispCnt = 0x1740;
+    gBgCntRegs[0] = 0x701;
+    gBgCntRegs[1] = 0x9606;
+    gBgCntRegs[2] = 0x1F0F;
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[1][0] = 0xFFE8;
+    
+    if (!p) {
+        gBgScrollRegs[1][1] = 0xFFD9;
+    } else {
+        gBgScrollRegs[1][1] = 0x69;
+    }
+
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+}
+
+void sub_8067484(struct UNK_8063A00* config) {
+    struct UNK_802D4CC_UNK270* unk140 = &config->unk140;
+
+    unk140->unk0 = 0;
+    unk140->unk2 = 2;
+    unk140->unk4 = 0;
+    unk140->unk6 = 0x100;
+    unk140->unkA = 0;
+    unk140->unk8 = 0xFF;
+    
+    sub_806B854(
+        &config->unkC0, 
+        0, 
+        7, 
+        0x87, 
+        0x1E, 
+        0x14, 
+        0, 
+        0, 
+        0, 
+        0
+    );
+    sub_806B854(
+        &config->unk100, 
+        3, 
+        0x1F, 
+        0x89, 
+        0x1E, 
+        0x14, 
+        0, 
+        2, 
+        0, 
+        0
+    );
+    sub_806B854(
+        &config->unk210, 
+        1, 
+        0x16, 
+        0x88, 
+        0x16, 
+        0x2C, 
+        0, 
+        1, 
+        0, 
+        0
+    );
 }
