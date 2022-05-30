@@ -2,6 +2,8 @@
 #define GUARD_SAVE_H
 
 #include "global.h"
+#include "zones.h"
+#include "player.h"
 
 // TODO: Work out what this is
 struct SectorDataUnk2A4 {
@@ -19,6 +21,15 @@ struct SaveGameUnk2C {
     u16 unk2;
     u16 unk4;
 };
+
+#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
+#define TIME_RECORDS_PER_ZONE 3
+
+struct TimeRecords {
+    u16 table[NUM_ZONES][ACTS_PER_ZONE][NUM_CHARACTERS][TIME_RECORDS_PER_ZONE];
+};
+
+#define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_ZONE
 
 struct SaveGame {
     u32 unk0;
@@ -51,12 +62,14 @@ struct SaveGame {
     u8 unk1E;
     u8 unk1F;
 
-    // Could also be a struct
+    // playerName
     u16 unk20[6];
 
     struct SaveGameUnk2C unk2C;
 
-    u16 unk34[0x13C];
+    // timeRecords
+    struct TimeRecords unk34;
+
     struct SectorDataUnk2A4 unk2AC[10];
 
     u32 unk374;
@@ -70,6 +83,7 @@ struct SaveSectorData {
     struct SaveSectorHeader header;
     u32 unk8;
 
+    // playerName
     u16 unkC[6];
 
     u8 unk18;
@@ -89,8 +103,8 @@ struct SaveSectorData {
     u8 unk2A;
     u8 unk2B;
 
-    // Probably some structs
-    u16 unk2C[0x13C];
+    // timeRecords
+    struct TimeRecords unk2C;
 
     struct SectorDataUnk2A4 unk2A4[10];
 

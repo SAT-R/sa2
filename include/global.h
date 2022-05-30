@@ -71,6 +71,9 @@
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
+// 60 is not exactly true as the GBA's FPS, but it's what they went with for the calculation
+#define GBA_FRAMES_PER_SECOND 60
+
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8);
 typedef void (*IntrFunc)(void);

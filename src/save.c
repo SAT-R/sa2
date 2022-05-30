@@ -10,7 +10,10 @@
 // TODO: Move refernce these in iwram
 // TODO: make static, only used here
 struct SaveGame* gLastWrittenSaveGame;
+
+// TODO: reference this iwram, but not static
 struct SaveGame* gLoadedSaveGame;
+
 // TODO: make static, only used here
 struct SaveSectorData* gSaveSectorDataBuffer;
 
@@ -26,7 +29,7 @@ static u16 EraseSaveSector(s16 sectorNum);
 static bool16 HasChangesToSave(void);
 
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
-    s16 i, *p1;
+    s16 i, *record;
     struct SectorDataUnk2A4* p2;
     struct SaveGameUnk2C* p3;
     
@@ -45,11 +48,9 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     p3->unk2 = 2;
     p3->unk4 = 0x100;
 
-     // Not sure why these weren't done as array accesses
-    p1 = gameState->unk34;
-    // One less than the length of the array for some reason
-    for (i = 0; i < 0x13B; i++, p1++) {
-        *p1 = 36000;
+    record = (u16*)gameState->unk34.table;
+    for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
+        *record = ZONE_TIME_TO_INT(10, 0);
     }
 
     gameState->unk1C = 0;
@@ -77,7 +78,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 }
 
 static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
-    s16 i, *p1;
+    s16 i, *record;
     struct SectorDataUnk2A4* p2;
     
     memset(saveData, 0, sizeof(struct SaveSectorData));
@@ -97,11 +98,9 @@ static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
     saveData->unk2A = 0;
     saveData->unk2B = 0;
 
-    // Not sure why these weren't done as array accesses
-    p1 = saveData->unk2C;
-    // One less than the length of the array for some reason
-    for (i = 0; i < 0x13B; i++, p1++) {
-        *p1 = 36000;
+    record = (u16*)saveData->unk2C.table;
+    for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
+        *record = ZONE_TIME_TO_INT(10, 0);
     }
 
     p2 = saveData->unk2A4;
@@ -268,7 +267,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     save->unk2A = gameState->unk1D;
     save->unk2B = gameState->unk1E;
 
-    memcpy(save->unk2C, gameState->unk34, 0x278);
+    memcpy(&save->unk2C, &gameState->unk34, sizeof(gameState->unk34));
     memcpy(save->unk2A4, gameState->unk2AC, 200);
 
     save->unk36C = Random32();
@@ -575,7 +574,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     gameState->unk1C = save->unk29;
     gameState->unk1D = save->unk2A;
     gameState->unk1E = save->unk2B;
-    memcpy(gameState->unk34, save->unk2C, 0x278);
+    memcpy(&gameState->unk34, &save->unk2C, sizeof(save->unk2C));
     memcpy(gameState->unk2AC, save->unk2A4, 200);
     gameState->unk374 = save->unk370;
     return TRUE;

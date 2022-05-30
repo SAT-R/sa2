@@ -14,9 +14,12 @@ extern void* gUnknown_03005B50;
 extern u32 gUnknown_03005B54;
 
 struct UNK_8063730_UNK0 {
+    // playerName
     u16 unk0[6];
 
-    u16 unkC[0x13C];
+    // timeRecords
+    struct TimeRecords unkC;
+    
     struct SectorDataUnk2A4 unk284[10];
 
     u8 unk34C;
@@ -36,7 +39,10 @@ struct UNK_8063730 {
     u8 unk359;
     u8 unk35A;
     u8 unk35B;
+    
+    // isSoundTestUnlocked
     u8 unk35C;
+
     u8 unk35D;
     u8 unk35E;
 
@@ -97,7 +103,10 @@ void sub_8063730(u16 p1) {
 struct UNK_80637EC {
     u8 filler0[0x1FC];
     u32 unk1FC;
-    u16* unk200;
+
+    // timeRecords
+    struct TimeRecords* unk200;
+
     u8 filler204[0x500];
     u8 unk704;
     u8 unk705;
@@ -134,7 +143,7 @@ void sub_80637EC(u16 p1, u16 p2) {
     };
 
     config->unk1FC = 0;
-    config->unk200 = (u16*)EwramMalloc(0x278);
+    config->unk200 = (struct TimeRecords*)EwramMalloc(sizeof(struct TimeRecords));
     config->unk704 = p2;
     config->unk705 = 0;
     config->unk706 = 0;
@@ -154,7 +163,7 @@ void sub_80637EC(u16 p1, u16 p2) {
         config->unk70F = 1;
     }
 
-    memcpy(config->unk200, gLoadedSaveGame->unk34, 0x278);
+    memcpy(config->unk200, &gLoadedSaveGame->unk34, sizeof(struct TimeRecords));
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = 0;
@@ -220,14 +229,14 @@ void sub_8063940_CreateProfileScreen(void) {
 
 
 struct UNK_8063A00 {
-    struct Unk_03002400 unk0[3];
+    struct UNK_0808B3FC_UNK240 unk0[4];
     struct Unk_03002400 unkC0;
     struct Unk_03002400 unk100;
     
     struct UNK_802D4CC_UNK270 unk140;
     struct UNK_8064A40* unk14C;
 
-    struct Unk_03002400 unk150[3];
+    struct UNK_0808B3FC_UNK240 unk150[4];
     struct Unk_03002400 unk210;
     u16 unk250;
     u8 unk252;
@@ -300,7 +309,7 @@ static void sub_8063B38(struct UNK_8063730* optionsScreen) {
     struct UNK_8063730_UNK0* profile = &optionsScreen->unk0;
 
     memcpy(profile->unk0, saveGame->unk20, 12);
-    memcpy(profile->unkC, saveGame->unk34, 0x278);
+    memcpy(&profile->unkC, &saveGame->unk34, sizeof(saveGame->unk34));
     memcpy(profile->unk284, saveGame->unk2AC, 200);
 
     profile->unk34C = saveGame->unk1C;
@@ -353,7 +362,7 @@ void sub_8063C7C(struct UNK_8063730* optionsScreen) {
     struct UNK_8063730_UNK0* profile = &optionsScreen->unk0;
 
     memcpy(saveGame->unk20, profile->unk0, 12);
-    memcpy(saveGame->unk34, profile->unkC, 0x278);
+    memcpy(&saveGame->unk34, &profile->unkC, sizeof(profile->unkC));
 
     memcpy(&saveGame->unk2AC[0], &profile->unk284[0], 0x14);
 

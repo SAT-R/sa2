@@ -7,4 +7,6 @@
 #define CHARACTER_KNUCKLES 3
 #define CHARACTER_AMY 4
 
+#define NUM_CHARACTERS 5
+
 #endif // GUARD_PLAYER_H

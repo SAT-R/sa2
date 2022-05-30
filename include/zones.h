@@ -9,4 +9,7 @@
 #define ZONE_2_2 5
 #define ZONE_2_BOSS 6
 
+#define NUM_ZONES 7
+#define ACTS_PER_ZONE 3
+
 #endif // GUARD_ZONES_H
