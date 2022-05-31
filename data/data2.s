@@ -179,7 +179,12 @@ gUnknown_080E1CA0:
 
     .global gUnknown_080F40D4
 gUnknown_080F40D4:
-    .incbin "baserom.gba", 0x000F40D4, 0x41DF0
+    .incbin "baserom.gba", 0x000F40D4, 0x18
+
+@; TODO: Extract these animations
+    .global gAnimations
+gAnimations:
+    .incbin "baserom.gba", 0x000F40EC, 0x41DD8
 
     .global gSpriteStates @ 0x08135EC4
 gSpriteStates:
