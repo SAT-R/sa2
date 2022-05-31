@@ -33,11 +33,14 @@ struct UNK_8063730_UNK0 {
 
 // OptionsScreen
 struct UNK_8063730 {
+    // profileData
     struct UNK_8063730_UNK0 unk0;
 
     u8 unk358;
     u8 unk359;
     u8 unk35A;
+
+    // language
     u8 unk35B;
     
     // isSoundTestUnlocked
@@ -198,16 +201,18 @@ void sub_8063940_CreateProfileScreen(void) {
     struct Task* t;
     struct UNK_8063940* config;
 
-    // Reseed the rng, might be a macro
-    u32 rand1, rand2, rand3;
-    rand1 ^= (Random() << 16);
-    rand1 ^= Random();
-    rand3 ^= rand1;
-    SeedRng(rand2, rand3);
-    rand1 ^= (Random() << 16);
-    rand1 ^= Random();
-    rand2 ^= rand1;
-    SeedRng(rand2, rand3);
+    {
+        // Reseed the rng, might be a macro
+        u32 rand1, rand2, rand3;
+        rand1 ^= (Random() << 16);
+        rand1 ^= Random();
+        rand3 ^= rand1;
+        SeedRng(rand2, rand3);
+        rand1 ^= (Random() << 16);
+        rand1 ^= Random();
+        rand2 ^= rand1;
+        SeedRng(rand2, rand3);
+    }
 
     t = TaskCreate(sub_806B0D8, 0x204, 0x2000, TASK_x0004, 0);
     config = TaskGetStructPtr(t, config);
@@ -227,27 +232,35 @@ void sub_8063940_CreateProfileScreen(void) {
     sub_8066930(config);
 }
 
+struct UNK_8063A00_UNK258 {
+    struct UNK_0808B3FC_UNK240 unk258;
+    struct UNK_0808B3FC_UNK240 unk288[6];
+
+    u16 unk3A8;
+    u16 unk3AA;
+
+    // playerName
+    u16 unk3AC[6];
+};
 
 struct UNK_8063A00 {
-    struct UNK_0808B3FC_UNK240 unk0[4];
+    struct UNK_0808B3FC_UNK240 unk0;
+    struct UNK_0808B3FC_UNK240 unk30[3];
     struct Unk_03002400 unkC0;
     struct Unk_03002400 unk100;
     
     struct UNK_802D4CC_UNK270 unk140;
     struct UNK_8064A40* unk14C;
 
-    struct UNK_0808B3FC_UNK240 unk150[4];
+    struct UNK_0808B3FC_UNK240 unk150[2];
+    struct UNK_0808B3FC_UNK240 unk1B0[2];
     struct Unk_03002400 unk210;
     u16 unk250;
-    u8 unk252;
-    u8 unk253;
+    s8 unk252;
+    s8 unk253;
 
-    u8 filler254[342];
-
-    u16 unk3AA;
-
-    u16 unk3AC[6];
-
+    u8 filler254[4];
+    struct UNK_8063A00_UNK258 unk258;
     u16 unk3B8;
     u8 unk3BA;
     u8 unk3BB;
@@ -257,9 +270,9 @@ extern void sub_806B354(void);
 extern void sub_8067420(s16);
 
 extern void sub_8067484(struct UNK_8063A00*);
-extern void sub_806751C(struct UNK_8063A00*);
-extern void sub_8067610(struct UNK_8063A00*);
-extern void sub_8067710(struct UNK_8063A00*);
+void sub_806751C(struct UNK_8063A00*);
+void sub_8067610(struct UNK_8063A00*);
+void sub_8067710(struct UNK_8063A00*);
 
 // CreateProfileNameScreen
 void sub_8063A00(s16 p1) {
@@ -288,10 +301,10 @@ void sub_8063A00(s16 p1) {
     }
 
     for (i = 0; i < 6; i++) {
-        config->unk3AC[i] = 0xFFFF;
+        config->unk258.unk3AC[i] = 0xFFFF;
     }
 
-    config->unk3AA = 0;
+    config->unk258.unk3AA = 0;
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = 0;
 
@@ -566,26 +579,28 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, s16 p2) {
         );
     }
     {
-        u32 bVar1;
-        u16 var4;
+        bool32 finishedReadingName;
+        u16 nameChar;
         temp0 = optionsScreen->unk780 == 0 ? 0xA3 : 0xAB;
         if (p2 == 1 && i == 0) {
             temp0 = -0x35;
         }
         i = 0;
         itemPos = 0x26;
-        bVar1 = 0;
+        finishedReadingName = FALSE;
         while (i < 6) {
-            if (bVar1) {
-                var4 = 0x11;
+            if (finishedReadingName) {
+                nameChar = 0x11;
             } else {
-                var4 = optionsScreen->unk0.unk0[i];
+                nameChar = optionsScreen->unk0.unk0[i];
             }
-            if (var4 == 0xFFFF) {
-                var4 = 0x11;
-                bVar1 = 1;
+        
+            if (nameChar == 0xFFFF) {
+                nameChar = 0x11;
+                finishedReadingName = TRUE;
             }
-            local48 = sub_806B908(var4);
+
+            local48 = sub_806B908(nameChar);
             sub_806A568(
                 options654, 
                 0, 
@@ -2909,16 +2924,16 @@ void sub_80672BC(struct UNK_8064A40* playerDataMenu) {
     }
 
     for (i = 0; i < 6; i++) {
-        config->unk3AC[i] = playerDataMenu->unk15C->unk0.unk0[i];
-        if (config->unk3AC[i] == 0xFFFF) {
+        config->unk258.unk3AC[i] = playerDataMenu->unk15C->unk0.unk0[i];
+        if (config->unk258.unk3AC[i] == 0xFFFF) {
             break;
         }
     }
     
-    config->unk3AA = i;
+    config->unk258.unk3AA = i;
 
     for (;i < 6; i++) {
-        config->unk3AC[i] = 0xFFFF;
+        config->unk258.unk3AC[i] = 0xFFFF;
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
@@ -2999,4 +3014,339 @@ void sub_8067484(struct UNK_8063A00* config) {
         0, 
         0
     );
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9D50[6];
+extern const struct UNK_080D95E8 gUnknown_080D9D80[6];
+
+extern const struct UNK_080D95E8 gUnknown_080D9DB0[2];
+extern const struct UNK_080D95E8 gUnknown_080D9DC0[6];
+
+void sub_806751C(struct UNK_8063A00* config) {
+    struct UNK_0808B3FC_UNK240* unk0 = &config->unk0;
+    struct UNK_0808B3FC_UNK240* unk30 = config->unk30;
+    
+    u8* unk3BA = &config->unk3BA;
+    const struct UNK_080D95E8* db0 = gUnknown_080D9DB0;
+    const struct UNK_080D95E8* dc0 = &gUnknown_080D9DC0[*unk3BA];
+
+    const struct UNK_080D95E8* d50;
+
+    if (config->unk258.unk3AA) {
+        d50 = &gUnknown_080D9D80[*unk3BA];
+    } else {
+        d50 = &gUnknown_080D9D50[*unk3BA];
+    }
+
+    sub_806A568(
+        unk0, 
+        0, 
+        d50->unk4,
+        d50->unk0,
+        0x1000,
+        3, 
+        0x15,
+        0xD,
+        d50->unk2,
+        0
+    );
+    
+    sub_806A568(
+        unk30, 
+        0, 
+        db0->unk4,
+        db0->unk0,
+        0x1000,
+        0xDB, 
+        0x70,
+        0xD,
+        db0->unk2,
+        0
+    );
+    unk30++;
+    db0++;
+    sub_806A568(
+        unk30, 
+        0, 
+        db0->unk4,
+        db0->unk0,
+        0x1000,
+        0xDB, 
+        0x80,
+        0xD,
+        db0->unk2,
+        0
+    );
+    unk30++;
+    sub_806A568(
+       unk30, 
+        0, 
+        dc0->unk4,
+        dc0->unk0,
+        0x1000,
+        0xDB, 
+        0x8F,
+        0xD,
+        dc0->unk2,
+        0
+    );
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9DF0[2];
+
+void sub_8067610(struct UNK_8063A00* config) {
+    struct UNK_0808B3FC_UNK240* unk150 = config->unk150;
+    struct UNK_0808B3FC_UNK240* unk1B0 = config->unk1B0;
+    const struct UNK_080D95E8* df0 = gUnknown_080D9DF0;
+    struct UNK_806B908 local48;
+    
+    sub_806A568(
+        unk150, 
+        0, 
+        10,
+        0x3BA,
+        0x1000,
+        0x21, 
+        0x2F,
+        8,
+        7,
+        0
+    );
+    unk150++;
+    local48 = sub_806B908(config->unk3B8);
+    sub_806A568(
+        unk150, 
+        0, 
+        local48.unk0,
+        local48.unk4,
+        0x1000,
+        0x21, 
+        0x2F,
+        7,
+        local48.unk6,
+        0
+    );
+    
+    sub_806A568(
+        unk1B0, 
+        0, 
+        df0->unk4,
+        df0->unk0,
+        0x1000,
+        8, 
+        0x2C,
+        0xD,
+        df0->unk2,
+        0
+    );
+    unk1B0++;
+    df0++;
+    sub_806A568(
+        unk1B0, 
+        0, 
+        df0->unk4,
+        df0->unk0,
+        0x1000,
+        8, 
+        0x82,
+        0xD,
+        df0->unk2,
+        0
+    );
+}
+
+void sub_8067710(struct UNK_8063A00* config) {
+    struct UNK_806B908 local48;
+   
+    struct UNK_0808B3FC_UNK240* unk288 = config->unk258.unk288;
+    struct UNK_0808B3FC_UNK240* unk258 = &config->unk258.unk258;
+
+    s16 i;
+    s16 pos; 
+    u16 nameChar;
+
+    // Required for match
+    u32 temp0 = 0x16;
+    for (i = 0, pos = 0xA0; i < 6; i++, unk288++, pos += 0xC) {
+        nameChar = config->unk258.unk3AC[i];
+        if (nameChar == 0xFFFF) {
+            nameChar = 0x11;
+        }
+        
+        local48 = sub_806B908(nameChar);
+        sub_806A568(
+            unk288, 
+            0, 
+            local48.unk0,
+            local48.unk4,
+            0x1000,
+            pos, 
+            temp0,
+            8,
+            local48.unk6,
+            0
+        );
+    }
+
+    sub_806A568(
+        unk258, 
+        0, 
+        2,
+        0x3BA,
+        0x1000,
+        config->unk258.unk3AA * 12 + 161, 
+        0x15,
+        5,
+        6,
+        0
+    );
+}
+
+void sub_8067F84(void);
+u16 sub_8067B90(void);
+u16 sub_8067C50(void);
+
+u16 sub_806BA14(s16, u16);
+u16 sub_806A664(s16, u16);
+u16 sub_806B988(u16*);
+void sub_8067E24(void);
+
+void sub_80677EC(void) {
+    struct UNK_8063A00* config = TaskGetStructPtr(gCurTask, config);
+    struct UNK_8063A00_UNK258* state = &config->unk258;
+
+    sub_8067F84();
+    
+    {
+        u32 rand1, rand2, rand3;
+        rand1 ^= (Random() << 16);
+        rand1 ^= Random();
+        rand3 ^= rand1;
+        SeedRng(rand2, rand3);
+        rand1 ^= (Random() << 16);
+        rand1 ^= Random();
+        rand2 ^= rand1;
+        SeedRng(rand2, rand3);
+    }
+
+
+    if (sub_8067B90()) {
+        return;
+    }
+
+    if (sub_8067C50()) {
+        return;
+    }
+
+    if (gRepeatedKeys & A_BUTTON) {
+        if (config->unk252 <= 10) {
+            if (config->unk3B8 == 10 || config->unk3B8 == 0x15) {
+                s16 temp1 = 2;
+                if (config->unk3B8 == 10) {
+                    temp1 = 1;
+                }
+                
+                if (state->unk3AA < 6) {
+                    if (state->unk3AC[state->unk3AA] == 0xFFFF) {
+                        m4aSongNumStart(SE_SELECT);
+                        if (sub_806BA14(temp1, state->unk3AC[state->unk3AA - 1])) {
+                            state->unk3AC[state->unk3AA - 1] = sub_806A664(temp1, state->unk3AC[state->unk3AA - 1]);
+                        } else {
+                            state->unk3AC[state->unk3AA] = config->unk3B8;
+                            if (state->unk3AA < 5) {
+                                state->unk3AA++;                               
+                            } else {
+                                state->unk3AA = 6;
+                                config->unk252 = 11;
+                                config->unk253 = 6;
+                            }
+                        }
+                    } else {
+                        if (sub_806BA14(temp1, state->unk3AC[state->unk3AA])) {
+                            m4aSongNumStart(SE_SELECT);
+                            state->unk3AC[state->unk3AA] = sub_806A664(temp1, state->unk3AC[state->unk3AA]);
+                        } else {
+                            m4aSongNumStart(SE_SELECT);
+                            state->unk3AC[state->unk3AA] = config->unk3B8;
+                        }
+                    }
+                } else {
+                    if (sub_806BA14(temp1, state->unk3AC[state->unk3AA - 1])) {
+                        m4aSongNumStart(SE_SELECT);
+                        state->unk3AC[state->unk3AA - 1] = sub_806A664(temp1, state->unk3AC[state->unk3AA - 1]);
+                    }
+                    state->unk3AA = 6;
+                    config->unk252 = 11;
+                    config->unk253 = 6;
+                }
+            }
+
+            if (state->unk3AA < 6) {
+                if (config->unk3B8 != 10 && config->unk3B8 != 0x15) {
+                    m4aSongNumStart(SE_SELECT);
+                    state->unk3AC[state->unk3AA] = config->unk3B8;
+                    if (state->unk3AA < 5) {
+                        state->unk3AA++;
+                    }
+                }
+            }
+        } else {
+            switch (config->unk253) {
+                case 4:
+                    if (state->unk3AA == 0) {
+                        return;
+                    }
+                    state->unk3AA--;
+                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                    break;  
+                case 5:
+                    if (state->unk3AA > 4) {
+                        return;
+                    }
+                    if (state->unk3AC[state->unk3AA] == 0xFFFF) {
+                        state->unk3AC[state->unk3AA] = 0x11;
+                    }
+                    state->unk3AA++;
+                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                    return;
+                case 6:
+                    if (sub_806B988(state->unk3AC) == 0) {
+                         m4aSongNumStart(SE_RETURN);
+                        return;
+                    }
+                    m4aSongNumStart(SE_SELECT);
+                    sub_8067E24();
+                   
+                    return;
+            }
+        }
+    } else {
+        if (gPressedKeys & START_BUTTON) {
+            if (*(u16*)&config->unk252 == 0x60B) {
+                if (sub_806B988(state->unk3AC) == 0) {
+                    m4aSongNumStart(SE_RETURN);
+                    return;
+                } 
+                m4aSongNumStart(SE_SELECT);
+                sub_8067E24();
+            } else {
+                m4aSongNumStart(SE_SELECT);
+                config->unk252 = 0xB;
+                config->unk253 = 6;
+            }
+        } else {
+            if (gRepeatedKeys & B_BUTTON) {
+                s16 i;
+                m4aSongNumStart(SE_RETURN);
+                if ((state->unk3AA != 0 && state->unk3AC[state->unk3AA] == 0xFFFF) || state->unk3AA > 5) {
+                    state->unk3AA--;
+                }
+                
+                for (i = state->unk3AA; i < 5; i++) {
+                    state->unk3AC[i] = state->unk3AC[i + 1];
+                }
+                state->unk3AC[5] = 0xFFFF;
+            }
+        }
+    }
 }
