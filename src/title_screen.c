@@ -1202,7 +1202,7 @@ static void Task_HandleTitleScreenExit(void) {
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;
                 sub_801A6D8();
-                if (gLoadedSaveGame->unk20[0] != 0xFFFF) {
+                if (gLoadedSaveGame->unk20[0] != PLAYER_NAME_END_CHAR) {
                     sub_805A1CC();
                 } else {
                     // If we don't have a profile name

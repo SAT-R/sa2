@@ -40,7 +40,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     gameState->unk4 = 0;
     gameState->unk5 = 0;
     gameState->unk6 = 2;
-    gameState->unk20[0] = 0xffff;
+    gameState->unk20[0] = PLAYER_NAME_END_CHAR;
 
     p3 = &gameState->unk2C;
     
@@ -86,7 +86,7 @@ static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
     saveData->header.security = SECTOR_SECURITY_NUM;
     saveData->header.version = 0;
     saveData->unk8 = 0;
-    saveData->unkC[0] = 0xffff;
+    saveData->unkC[0] = PLAYER_NAME_END_CHAR;
     saveData->unk18 = 2;
     saveData->unk1B = 0;
     saveData->unk1A = 0;
@@ -448,7 +448,7 @@ static s16 FindNewestSaveGameSector(void) {
     // of <= 0xffff
     maxVersion = 0;
     for (i = 0; i < NUM_SAVE_SECTORS; i++) {
-        if (maxVersion <= 0xffff && sectors[i].version > maxVersion) {
+        if (maxVersion <= 0xFFFF && sectors[i].version > maxVersion) {
             bestSector = i;
             maxVersion = sectors[i].version;
         }

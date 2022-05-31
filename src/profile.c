@@ -201,18 +201,7 @@ void sub_8063940_CreateProfileScreen(void) {
     struct Task* t;
     struct UNK_8063940* config;
 
-    {
-        // Reseed the rng, might be a macro
-        u32 rand1, rand2, rand3;
-        rand1 ^= (Random() << 16);
-        rand1 ^= Random();
-        rand3 ^= rand1;
-        SeedRng(rand2, rand3);
-        rand1 ^= (Random() << 16);
-        rand1 ^= Random();
-        rand2 ^= rand1;
-        SeedRng(rand2, rand3);
-    }
+    ShuffleRngSeed();
 
     t = TaskCreate(sub_806B0D8, 0x204, 0x2000, TASK_x0004, 0);
     config = TaskGetStructPtr(t, config);
@@ -233,14 +222,15 @@ void sub_8063940_CreateProfileScreen(void) {
 }
 
 struct UNK_8063A00_UNK258 {
-    struct UNK_0808B3FC_UNK240 unk258;
-    struct UNK_0808B3FC_UNK240 unk288[6];
+    struct UNK_0808B3FC_UNK240 unk0;
+    struct UNK_0808B3FC_UNK240 unk30[6];
 
-    u16 unk3A8;
-    u16 unk3AA;
+    u16 unk150;
+    // inputCursor
+    u16 unk152;
 
     // playerName
-    u16 unk3AC[6];
+    u16 unk154[6];
 };
 
 struct UNK_8063A00 {
@@ -260,7 +250,10 @@ struct UNK_8063A00 {
     s8 unk253;
 
     u8 filler254[4];
+    
+    // nameInputDisplay
     struct UNK_8063A00_UNK258 unk258;
+
     u16 unk3B8;
     u8 unk3BA;
     u8 unk3BB;
@@ -300,11 +293,11 @@ void sub_8063A00(s16 p1) {
         config->unk3BA = 1;
     }
 
-    for (i = 0; i < 6; i++) {
-        config->unk258.unk3AC[i] = 0xFFFF;
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        config->unk258.unk154[i] = PLAYER_NAME_END_CHAR;
     }
 
-    config->unk258.unk3AA = 0;
+    config->unk258.unk152 = 0;
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = 0;
 
@@ -338,14 +331,14 @@ static void sub_8063B38(struct UNK_8063730* optionsScreen) {
     optionsScreen->unk35D = saveGame->unk12;
     optionsScreen->unk35E = saveGame->unk13;
 
-    for (i = 0; i < 6; i++) {
-        if (profile->unk0[i] == 0xFFFF) {
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        if (profile->unk0[i] == PLAYER_NAME_END_CHAR) {
             break;
         }
     }
 
-    for (; i < 6; i++) {
-        profile->unk0[i] = 0xFFFF;
+    for (; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        profile->unk0[i] = PLAYER_NAME_END_CHAR;
     }
 
     if (optionsScreen->unk359 > 1) {
@@ -588,14 +581,14 @@ void sub_8063DCC(struct UNK_8063730* optionsScreen, s16 p2) {
         i = 0;
         itemPos = 0x26;
         finishedReadingName = FALSE;
-        while (i < 6) {
+        while (i < MAX_PLAYER_NAME_LENGTH) {
             if (finishedReadingName) {
                 nameChar = 0x11;
             } else {
                 nameChar = optionsScreen->unk0.unk0[i];
             }
         
-            if (nameChar == 0xFFFF) {
+            if (nameChar == PLAYER_NAME_END_CHAR) {
                 nameChar = 0x11;
                 finishedReadingName = TRUE;
             }
@@ -2923,17 +2916,17 @@ void sub_80672BC(struct UNK_8064A40* playerDataMenu) {
         config->unk250 = 99;
     }
 
-    for (i = 0; i < 6; i++) {
-        config->unk258.unk3AC[i] = playerDataMenu->unk15C->unk0.unk0[i];
-        if (config->unk258.unk3AC[i] == 0xFFFF) {
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        config->unk258.unk154[i] = playerDataMenu->unk15C->unk0.unk0[i];
+        if (config->unk258.unk154[i] == PLAYER_NAME_END_CHAR) {
             break;
         }
     }
     
-    config->unk258.unk3AA = i;
+    config->unk258.unk152 = i;
 
-    for (;i < 6; i++) {
-        config->unk258.unk3AC[i] = 0xFFFF;
+    for (;i < MAX_PLAYER_NAME_LENGTH; i++) {
+        config->unk258.unk154[i] = PLAYER_NAME_END_CHAR;
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
@@ -3032,7 +3025,7 @@ void sub_806751C(struct UNK_8063A00* config) {
 
     const struct UNK_080D95E8* d50;
 
-    if (config->unk258.unk3AA) {
+    if (config->unk258.unk152) {
         d50 = &gUnknown_080D9D80[*unk3BA];
     } else {
         d50 = &gUnknown_080D9D50[*unk3BA];
@@ -3158,8 +3151,8 @@ void sub_8067610(struct UNK_8063A00* config) {
 void sub_8067710(struct UNK_8063A00* config) {
     struct UNK_806B908 local48;
    
-    struct UNK_0808B3FC_UNK240* unk288 = config->unk258.unk288;
-    struct UNK_0808B3FC_UNK240* unk258 = &config->unk258.unk258;
+    struct UNK_0808B3FC_UNK240* unk30 = config->unk258.unk30;
+    struct UNK_0808B3FC_UNK240* unk0 = &config->unk258.unk0;
 
     s16 i;
     s16 pos; 
@@ -3167,15 +3160,15 @@ void sub_8067710(struct UNK_8063A00* config) {
 
     // Required for match
     u32 temp0 = 0x16;
-    for (i = 0, pos = 0xA0; i < 6; i++, unk288++, pos += 0xC) {
-        nameChar = config->unk258.unk3AC[i];
-        if (nameChar == 0xFFFF) {
+    for (i = 0, pos = 0xA0; i < MAX_PLAYER_NAME_LENGTH; i++, unk30++, pos += 0xC) {
+        nameChar = config->unk258.unk154[i];
+        if (nameChar == PLAYER_NAME_END_CHAR) {
             nameChar = 0x11;
         }
         
         local48 = sub_806B908(nameChar);
         sub_806A568(
-            unk288, 
+            unk30, 
             0, 
             local48.unk0,
             local48.unk4,
@@ -3189,12 +3182,12 @@ void sub_8067710(struct UNK_8063A00* config) {
     }
 
     sub_806A568(
-        unk258, 
+        unk0, 
         0, 
         2,
         0x3BA,
         0x1000,
-        config->unk258.unk3AA * 12 + 161, 
+        config->unk258.unk152 * 12 + 161, 
         0x15,
         5,
         6,
@@ -3212,23 +3205,12 @@ u16 sub_806B988(u16*);
 void sub_8067E24(void);
 
 void sub_80677EC(void) {
-    struct UNK_8063A00* config = TaskGetStructPtr(gCurTask, config);
-    struct UNK_8063A00_UNK258* state = &config->unk258;
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_8063A00_UNK258* unk258 = &state->unk258;
 
     sub_8067F84();
     
-    {
-        u32 rand1, rand2, rand3;
-        rand1 ^= (Random() << 16);
-        rand1 ^= Random();
-        rand3 ^= rand1;
-        SeedRng(rand2, rand3);
-        rand1 ^= (Random() << 16);
-        rand1 ^= Random();
-        rand2 ^= rand1;
-        SeedRng(rand2, rand3);
-    }
-
+    ShuffleRngSeed();
 
     if (sub_8067B90()) {
         return;
@@ -3239,114 +3221,119 @@ void sub_80677EC(void) {
     }
 
     if (gRepeatedKeys & A_BUTTON) {
-        if (config->unk252 <= 10) {
-            if (config->unk3B8 == 10 || config->unk3B8 == 0x15) {
+        if (state->unk252 <= 10) {
+            if (state->unk3B8 == 10 || state->unk3B8 == 0x15) {
                 s16 temp1 = 2;
-                if (config->unk3B8 == 10) {
+                if (state->unk3B8 == 10) {
                     temp1 = 1;
                 }
                 
-                if (state->unk3AA < 6) {
-                    if (state->unk3AC[state->unk3AA] == 0xFFFF) {
+                if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH) {
+                    if (unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) {
                         m4aSongNumStart(SE_SELECT);
-                        if (sub_806BA14(temp1, state->unk3AC[state->unk3AA - 1])) {
-                            state->unk3AC[state->unk3AA - 1] = sub_806A664(temp1, state->unk3AC[state->unk3AA - 1]);
+                        if (sub_806BA14(temp1, unk258->unk154[unk258->unk152 - 1])) {
+                            unk258->unk154[unk258->unk152 - 1] = sub_806A664(temp1, unk258->unk154[unk258->unk152 - 1]);
                         } else {
-                            state->unk3AC[state->unk3AA] = config->unk3B8;
-                            if (state->unk3AA < 5) {
-                                state->unk3AA++;                               
+                            unk258->unk154[unk258->unk152] = state->unk3B8;
+                            if (unk258->unk152 < 5) {
+                                unk258->unk152++;                               
                             } else {
-                                state->unk3AA = 6;
-                                config->unk252 = 11;
-                                config->unk253 = 6;
+                                unk258->unk152 = MAX_PLAYER_NAME_LENGTH;
+                                state->unk252 = 11;
+                                state->unk253 = MAX_PLAYER_NAME_LENGTH;
                             }
                         }
                     } else {
-                        if (sub_806BA14(temp1, state->unk3AC[state->unk3AA])) {
+                        if (sub_806BA14(temp1, unk258->unk154[unk258->unk152])) {
                             m4aSongNumStart(SE_SELECT);
-                            state->unk3AC[state->unk3AA] = sub_806A664(temp1, state->unk3AC[state->unk3AA]);
+                            unk258->unk154[unk258->unk152] = sub_806A664(temp1, unk258->unk154[unk258->unk152]);
                         } else {
                             m4aSongNumStart(SE_SELECT);
-                            state->unk3AC[state->unk3AA] = config->unk3B8;
+                            unk258->unk154[unk258->unk152] = state->unk3B8;
                         }
                     }
                 } else {
-                    if (sub_806BA14(temp1, state->unk3AC[state->unk3AA - 1])) {
+                    if (sub_806BA14(temp1, unk258->unk154[unk258->unk152 - 1])) {
                         m4aSongNumStart(SE_SELECT);
-                        state->unk3AC[state->unk3AA - 1] = sub_806A664(temp1, state->unk3AC[state->unk3AA - 1]);
+                        unk258->unk154[unk258->unk152 - 1] = sub_806A664(temp1, unk258->unk154[unk258->unk152 - 1]);
                     }
-                    state->unk3AA = 6;
-                    config->unk252 = 11;
-                    config->unk253 = 6;
+                    unk258->unk152 = MAX_PLAYER_NAME_LENGTH;
+                    state->unk252 = 11;
+                    state->unk253 = MAX_PLAYER_NAME_LENGTH;
                 }
             }
 
-            if (state->unk3AA < 6) {
-                if (config->unk3B8 != 10 && config->unk3B8 != 0x15) {
+            if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH) {
+                if (state->unk3B8 != 10 && state->unk3B8 != 0x15) {
                     m4aSongNumStart(SE_SELECT);
-                    state->unk3AC[state->unk3AA] = config->unk3B8;
-                    if (state->unk3AA < 5) {
-                        state->unk3AA++;
+                    unk258->unk154[unk258->unk152] = state->unk3B8;
+                    if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
+                        unk258->unk152++;
                     }
                 }
             }
-        } else {
-            switch (config->unk253) {
-                case 4:
-                    if (state->unk3AA == 0) {
-                        return;
-                    }
-                    state->unk3AA--;
-                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-                    break;  
-                case 5:
-                    if (state->unk3AA > 4) {
-                        return;
-                    }
-                    if (state->unk3AC[state->unk3AA] == 0xFFFF) {
-                        state->unk3AC[state->unk3AA] = 0x11;
-                    }
-                    state->unk3AA++;
-                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-                    return;
-                case 6:
-                    if (sub_806B988(state->unk3AC) == 0) {
-                         m4aSongNumStart(SE_RETURN);
-                        return;
-                    }
-                    m4aSongNumStart(SE_SELECT);
-                    sub_8067E24();
-                   
-                    return;
-            }
+            return;
         }
-    } else {
-        if (gPressedKeys & START_BUTTON) {
-            if (*(u16*)&config->unk252 == 0x60B) {
-                if (sub_806B988(state->unk3AC) == 0) {
-                    m4aSongNumStart(SE_RETURN);
+    
+        switch (state->unk253) {
+            case 4:
+                if (unk258->unk152 == 0) {
                     return;
-                } 
+                }
+                unk258->unk152--;
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                break;  
+            case 5:
+                if (unk258->unk152 > MAX_PLAYER_NAME_LENGTH - 2) {
+                    return;
+                }
+                if (unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) {
+                    unk258->unk154[unk258->unk152] = 0x11;
+                }
+                unk258->unk152++;
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                return;
+            case 6:
+                if (sub_806B988(unk258->unk154) == 0) {
+                     m4aSongNumStart(SE_RETURN);
+                    return;
+                }
                 m4aSongNumStart(SE_SELECT);
                 sub_8067E24();
-            } else {
-                m4aSongNumStart(SE_SELECT);
-                config->unk252 = 0xB;
-                config->unk253 = 6;
-            }
-        } else {
-            if (gRepeatedKeys & B_BUTTON) {
-                s16 i;
-                m4aSongNumStart(SE_RETURN);
-                if ((state->unk3AA != 0 && state->unk3AC[state->unk3AA] == 0xFFFF) || state->unk3AA > 5) {
-                    state->unk3AA--;
-                }
-                
-                for (i = state->unk3AA; i < 5; i++) {
-                    state->unk3AC[i] = state->unk3AC[i + 1];
-                }
-                state->unk3AC[5] = 0xFFFF;
-            }
+               
+                return;
         }
+        return;
+    }
+    
+    if (gPressedKeys & START_BUTTON) {
+        // TODO: what's going on here
+        if (*(u16*)&state->unk252 == 0x60B) {
+            if (sub_806B988(unk258->unk154) == 0) {
+                m4aSongNumStart(SE_RETURN);
+                return;
+            } 
+            m4aSongNumStart(SE_SELECT);
+            sub_8067E24();
+            return;
+        } else {
+            m4aSongNumStart(SE_SELECT);
+            state->unk252 = 0xB;
+            state->unk253 = 6;
+        }
+        return;
+    }
+    
+    if (gRepeatedKeys & B_BUTTON) {
+        s16 i;
+        m4aSongNumStart(SE_RETURN);
+        if ((unk258->unk152 != 0 && unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) || unk258->unk152 > MAX_PLAYER_NAME_LENGTH - 1) {
+            unk258->unk152--;
+        }
+        
+        for (i = unk258->unk152; i < MAX_PLAYER_NAME_LENGTH - 1; i++) {
+            unk258->unk154[i] = unk258->unk154[i + 1];
+        }
+        unk258->unk154[MAX_PLAYER_NAME_LENGTH - 1] = 0xFFFF;
     }
 }

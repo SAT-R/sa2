@@ -31,6 +31,9 @@ struct TimeRecords {
 
 #define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_ZONE
 
+#define MAX_PLAYER_NAME_LENGTH 6
+#define PLAYER_NAME_END_CHAR 0xFFFF
+
 struct SaveGame {
     u32 unk0;
 
@@ -84,7 +87,7 @@ struct SaveSectorData {
     u32 unk8;
 
     // playerName
-    u16 unkC[6];
+    u16 unkC[MAX_PLAYER_NAME_LENGTH];
 
     u8 unk18;
     u8 unk19;
