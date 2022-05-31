@@ -68,3 +68,4 @@ reports
 .vscode/*.log
 *.gbapal
 *.lz
+*.gba

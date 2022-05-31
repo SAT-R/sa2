@@ -1,0 +1,22 @@
+ENTRY(start_vector)
+
+SECTIONS {
+	. = 0x2000000;
+
+	.text :
+	ALIGN(4)
+	{
+		build/mb_chao_garden/asm/code.o(.text);
+	} =0
+
+	.rodata :
+	ALIGN(4)
+	{
+	    build/mb_chao_garden/data/data.o(.rodata);
+	} =0
+
+    /DISCARD/ :
+	{
+		*(*);
+	}
+}
