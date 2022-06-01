@@ -19249,7 +19249,7 @@ sub_8011328: @ 0x08011328
 	bls _08011400
 	movs r7, #0
 	movs r4, #0
-	ldr r1, _080113E8 @ =gSpriteStates
+	ldr r1, _080113E8 @ =gAnimations
 	mov r8, r1
 	ldr r2, _080113EC @ =gSpritePalettes
 	mov sb, r2
@@ -19329,7 +19329,7 @@ _080113AE:
 	.align 2, 0
 _080113E0: .4byte gUnknown_03005660
 _080113E4: .4byte gGameMode
-_080113E8: .4byte gSpriteStates
+_080113E8: .4byte gAnimations
 _080113EC: .4byte gSpritePalettes
 _080113F0: .4byte IWRAM_START + 0x80
 _080113F4: .4byte gUnknown_030055B8
@@ -19347,7 +19347,7 @@ _08011400:
 	lsrs r0, r0, #0xf
 	adds r0, r0, r1
 	ldrh r0, [r0]
-	ldr r2, _080115B0 @ =gSpriteStates
+	ldr r2, _080115B0 @ =gAnimations
 	lsls r0, r0, #2
 	adds r0, r0, r2
 	ldr r0, [r0]
@@ -19556,7 +19556,7 @@ _08011502:
 	.align 2, 0
 _080115A8: .4byte gUnknown_030059E0
 _080115AC: .4byte gUnknown_080D550C
-_080115B0: .4byte gSpriteStates
+_080115B0: .4byte gAnimations
 _080115B4: .4byte gSpritePalettes
 _080115B8: .4byte gUnknown_080D5678
 _080115BC: .4byte IWRAM_START + 0x20
@@ -28405,7 +28405,7 @@ _08015884:
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	ldrb r5, [r2]
-	ldr r1, _080159B4 @ =gSpriteStates
+	ldr r1, _080159B4 @ =gAnimations
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -28466,7 +28466,7 @@ _080159A4: .4byte IWRAM_START + 0x31
 _080159A8: .4byte IWRAM_START + 0x2C
 _080159AC: .4byte gUnknown_080D5678
 _080159B0: .4byte gUnknown_030059E0
-_080159B4: .4byte gSpriteStates
+_080159B4: .4byte gAnimations
 _080159B8: .4byte 0x040000D4
 _080159BC: .4byte gUnknown_03002794
 _080159C0: .4byte gObjPalette
@@ -28689,7 +28689,7 @@ sub_8015B64: @ 0x08015B64
 	lsls r0, r0, #0x10
 	lsls r1, r1, #0x10
 	lsrs r4, r1, #0x10
-	ldr r1, _08015BC0 @ =gSpriteStates
+	ldr r1, _08015BC0 @ =gAnimations
 	lsrs r0, r0, #0xe
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -28733,7 +28733,7 @@ _08015BBA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08015BC0: .4byte gSpriteStates
+_08015BC0: .4byte gAnimations
 _08015BC4: .4byte 0x040000D4
 _08015BC8: .4byte gUnknown_03002794
 _08015BCC: .4byte gObjPalette

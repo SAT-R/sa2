@@ -1,6 +1,6 @@
      .align 2, 0
-    .global gSpriteStates
-gSpriteStates:
+    .global gAnimations
+gAnimations:
 	.4byte anim_0000
 	.4byte anim_0001
 	.4byte anim_0002
