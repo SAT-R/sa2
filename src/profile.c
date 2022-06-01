@@ -105,13 +105,16 @@ void sub_8063730(u16 p1) {
 }
 
 struct UNK_80637EC {
-    u8 filler0[0x1FC];
-    u32 unk1FC;
+    struct UNK_802D4CC_UNK270 unk0;
+    u8 fillerC[496];
+    // playerProfileMenu
+    struct UNK_8064A40* unk1FC;
 
     // timeRecords
     struct TimeRecords* unk200;
-
-    u8 filler204[0x500];
+    struct Unk_03002400 unk204;
+    struct Unk_03002400 unk244;
+    u8 filler284[1152];
     u8 unk704;
     u8 unk705;
     u8 unk706;
@@ -3530,4 +3533,148 @@ void sub_8067EA4(void) {
     } else {
         CreateTitleScreen();
     }
+}
+
+void sub_8067F84(void) {
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+
+    struct UNK_0808B3FC_UNK240* unk0 = &state->unk0;
+    struct UNK_0808B3FC_UNK240* unk30 = state->unk30;
+    struct UNK_0808B3FC_UNK240* unk150 = state->unk150;
+    struct UNK_0808B3FC_UNK240* unk1B0 = state->unk1B0;
+    struct UNK_0808B3FC_UNK240* unk258_30 = state->unk258.unk30;
+    struct UNK_0808B3FC_UNK240* unk258_0 = &state->unk258.unk0;
+    struct UNK_806B908 local48;
+    struct UNK_806B908 local28;
+
+    s16 i;
+    u16* nameChar;
+
+    sub_80051E8(unk0);
+
+    for (i = 0; i < 3; i++, unk30++) {
+        sub_80051E8(unk30);
+    }
+
+    if (state->unk252 < 11) {
+        unk150->unkA = 0x3BA;
+        unk150->unk20 = 7;
+        unk150->unk16 = state->unk252 * 0x10 + 0x20;
+        unk150->unk18 = state->unk253 * 0x10 + 0x2F;
+        sub_8004558(unk150);
+        sub_80051E8(unk150);
+        unk150++;
+
+        state->unk3B8 = state->unk250 + state->unk253 * 0xB + state->unk252; 
+        local48 = sub_806B908(state->unk3B8);
+        unk150->unkA = local48.unk4;
+        unk150->unk20 = local48.unk6;
+        unk150->unk16 = state->unk252 * 0x10 + 0x20;
+        unk150->unk18 = state->unk253 * 0x10 + 0x2F;
+        sub_8004558(unk150);
+        sub_80051E8(unk150);
+    } else {
+        unk150->unkA = 0x3BA;
+        unk150->unk20 = 8;
+        unk150->unk16 = 0xCB;
+        unk150->unk18 = state->unk253 * 0x10 + 0x27;
+        sub_8004558(unk150);
+        sub_80051E8(unk150);
+    }
+
+    sub_8004558(unk1B0);
+    unk1B0++;
+    sub_8004558(unk1B0);
+
+    if (state->unk252 < 11) {
+        unk1B0 = state->unk1B0;
+        if (state->unk3B8 > 10) {
+            sub_80051E8(unk1B0);
+        }
+        unk1B0++;
+
+        if (state->unk3B8 < 0xE7) {
+            sub_80051E8(unk1B0);
+        }
+    }
+
+    if (state->unk258.unk152 < 6) {
+        unk258_0->unk16 = state->unk258.unk152 * 0xC + 0xA1;
+        sub_80051E8(unk258_0);
+    }
+
+    for (i = 0, nameChar = state->unk258.unk154; i < 6 && *nameChar != PLAYER_NAME_END_CHAR; i++, unk258_30++, nameChar++) {
+        local28 = sub_806B908(*nameChar);
+        unk258_30->unkA = local28.unk4;
+        unk258_30->unk20 = local28.unk6;
+        sub_8004558(unk258_30);
+        sub_80051E8(unk258_30);
+    }
+}
+
+void sub_806B3F0(void);
+void sub_80682AC(void);
+void sub_80682EC(struct UNK_80637EC*);
+void sub_806834C(struct UNK_80637EC*);
+
+void sub_8068198(struct UNK_8064A40* playerProfileMenu) {
+    struct Task* t = TaskCreate(sub_806B3F0, 0x714, 0x2000, 4, 0);
+    struct UNK_80637EC* config = TaskGetStructPtr(t, config);
+    s16 i;
+
+    for (i = 1; i < 5; i++) {
+        if (!GetBit(gLoadedSaveGame->unk13, i)) {
+            break;
+        }
+    };
+
+    config->unk1FC = playerProfileMenu;
+    config->unk704 = 0;
+    config->unk705 = 0;
+    config->unk706 = 0;
+    config->unk707 = 0;
+    config->unk708 = 0;
+    config->unk709 = i;
+
+    for (i = 0; i < 5; i++) {
+        config->unk70A[i] = gLoadedSaveGame->unk7[i];
+    }
+
+    config->unk70F = playerProfileMenu->unk162;
+    config->unk710 = 0;
+    config->unk711 = 0;
+    
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = 0;
+
+    sub_80682AC();
+    sub_80682EC(config);
+    sub_806834C(config);
+}
+
+void sub_80682AC(void) {
+    gDispCnt = 0x1340;
+    gBgCntRegs[0] = 0x703;
+    gBgCntRegs[1] = 0xF06;
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+}
+
+void sub_80682EC(struct UNK_80637EC* config) {
+    struct UNK_802D4CC_UNK270* unk270 = &config->unk0;
+    unk270->unk0 = 0;
+    unk270->unk2 = 2;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+    sub_806B854(&config->unk204,0,7,0x89,0x1e,0x14,0,0,0,0);
+    sub_806B854(&config->unk244,1,0xF,0x8A,0x1e,0x14,0,1,0,0);
 }
