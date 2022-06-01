@@ -106,7 +106,12 @@ void sub_8063730(u16 p1) {
 
 struct UNK_80637EC {
     struct UNK_802D4CC_UNK270 unk0;
-    u8 fillerC[496];
+    u8 fillerC[64];
+    struct UNK_0808B3FC_UNK240 unk4C[2];
+    u8 fillerAC[96];
+    struct UNK_0808B3FC_UNK240 unk10C;
+    struct UNK_0808B3FC_UNK240 unk13C[2];
+    u8 filler19C[96];
     // playerProfileMenu
     struct UNK_8064A40* unk1FC;
 
@@ -3677,4 +3682,129 @@ void sub_80682EC(struct UNK_80637EC* config) {
     unk270->unk8 = 0xFF;
     sub_806B854(&config->unk204,0,7,0x89,0x1e,0x14,0,0,0,0);
     sub_806B854(&config->unk244,1,0xF,0x8A,0x1e,0x14,0,1,0,0);
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9EB0[6];
+extern const struct UNK_080D95E8 gUnknown_080D9EE0[6][2];
+
+void sub_806834C(struct UNK_80637EC* config) {
+    struct UNK_0808B3FC_UNK240* unk10C = &config->unk10C;
+    struct UNK_0808B3FC_UNK240* unk13C = config->unk13C;
+    struct UNK_0808B3FC_UNK240* unk4C = config->unk4C;
+    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9EB0[config->unk70F];
+    const struct UNK_080D95E8 *itemText2 = gUnknown_080D9EE0[config->unk70F];
+    
+    // TODO: This X is a fake match, the compiler wants to use 0
+    // from a register but won't do it without this
+    s32 x = 0x1000;
+
+    ++x; --x;
+    sub_806A568(
+        unk10C, 
+        0, 
+        itemText1->unk4,
+        itemText1->unk0,
+        x,
+        4, 
+        0x1A,
+        5,
+        itemText1->unk2,
+        0
+    );
+
+    sub_806A568(
+        unk4C, 
+        0, 
+        itemText2->unk4,
+        itemText2->unk0,
+        x,
+        0x28, 
+        0x54,
+        5,
+        itemText2->unk2,
+        0
+    );
+
+    unk4C++;
+    itemText2++;
+    sub_806A568(
+        unk4C, 
+        0, 
+        itemText2->unk4,
+        itemText2->unk0,
+        x,
+        0x86, 
+        0x54,
+        5,
+        itemText2->unk2,
+        0
+    );
+
+    sub_806A568(
+        unk13C, 
+        0, 
+        2,
+        0x3B6,
+        x,
+        100, 
+        0x4B,
+        6,
+        8,
+        0
+    );
+    unk13C++;
+    sub_806A568(
+        unk13C, 
+        0, 
+        2,
+        0x3B6,
+        x,
+        0x8C, 
+        0x4B,
+        6,
+        9,
+        0
+    );
+}
+
+void sub_806B4F8(void);
+void sub_806B498(void);
+void sub_806B424(void);
+
+void sub_8068474(void) {
+    struct UNK_80637EC* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4C = state->unk4C;
+    
+    if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+
+        state->unk710 = state->unk710 == 0;
+        
+        if (!state->unk710) {
+            unk4C->unk25 = 0;
+            unk4C++;
+            unk4C->unk25 = 0;
+        } else {
+            unk4C->unk25 = 1;
+            unk4C++;
+            unk4C->unk25 = 0xFF;
+        }
+    }
+
+    sub_806B4F8();
+
+    if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
+        return;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        m4aSongNumStart(SE_SELECT);
+        sub_806B498();
+        return;
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        sub_806B424();
+    }
 }
