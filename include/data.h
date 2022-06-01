@@ -33,6 +33,10 @@ extern u8 gUnknown_03005500[4];
 extern u8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054D4[4];
 
+extern u8 gUnknown_03002AE4;
+extern u8 gUnknown_03005390;
+extern u8 gUnknown_03004D5C;
+
 
 extern u16 gObjPalette[0x100];
 extern u16 gBgPalette[0x100];

@@ -9,6 +9,7 @@
 #include "sprite.h"
 #include "constants/songs.h"
 #include "data.h"
+#include "title_screen.h"
 
 extern void* gUnknown_03005B50;
 extern u32 gUnknown_03005B54;
@@ -3462,4 +3463,71 @@ u16 sub_8067C50(void) {
     }
 
     return 0;
+}
+
+void sub_8067EA4(void);
+
+void sub_8067E24(void) {
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk140 = &state->unk140;
+    struct UNK_8063A00_UNK258* unk258 = &state->unk258;
+    u16* optionsScreenPlayerName;
+    s16 i;
+
+    // Copy name from input into profile data on the options screen
+    if (state->unk3BB == 0) {
+        struct UNK_8063730_UNK0* profileData = &state->unk14C->unk15C->unk0;
+        for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+            profileData->unk0[i] = unk258->unk154[i];
+        }
+    }
+
+    unk140->unk0 = 0;
+    unk140->unk2 = 1;
+    unk140->unk4 = 0;
+    unk140->unk6 = 0x100;
+    unk140->unkA = 0;
+    unk140->unk8 = 0xFF;
+
+    gCurTask->main = sub_8067EA4;
+}
+
+void sub_805A1CC(void);
+
+void sub_8067EA4(void) {
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk140 = &state->unk140;
+    struct UNK_8063A00_UNK258* unk258 = &state->unk258;
+    s16 unk3BB = state->unk3BB;
+    s16 i;
+
+    if (!sub_802D4CC(unk140)) {
+        sub_8067F84();
+        return;
+    }
+
+    if (unk3BB == 0) {
+        state->unk14C->unk163 = 0;
+        TaskDestroy(gCurTask);
+        return;
+    }
+    
+    if (unk3BB == 2) {
+        NewSaveGame();
+    }
+
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        gLoadedSaveGame->unk20[i] = unk258->unk154[i];
+    }
+    WriteSaveGame();
+    TasksDestroyInPriorityRange(0, 0xFFFF);
+    gUnknown_03002AE4 = gUnknown_0300287C;
+    gUnknown_03005390 = 0;
+    gUnknown_03004D5C = gUnknown_03002A84;
+
+    if (unk3BB == 1) {
+        sub_805A1CC();
+    } else {
+        CreateTitleScreen();
+    }
 }
