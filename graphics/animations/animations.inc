@@ -1,5 +1,3 @@
-	.section .rodata
-
 .equ AnimCmd_GetTileIndex,		-1
 .equ AnimCmd_GetPalette,		-2
 .equ AnimCmd_JumpBack,			-3

@@ -1,4 +1,5 @@
      .align 2, 0
+
     .global gAnimations
 gAnimations:
 	.4byte anim_0000
