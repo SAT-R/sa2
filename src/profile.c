@@ -3337,3 +3337,129 @@ void sub_80677EC(void) {
         unk258->unk154[MAX_PLAYER_NAME_LENGTH - 1] = 0xFFFF;
     }
 }
+
+u16 sub_806B9C8(u16);
+
+u16 sub_8067B90(void) {
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+
+    if (gRepeatedKeys & L_BUTTON) {
+        if (state->unk258.unk152 != 0) {
+            state->unk258.unk152--;
+            if (state->unk258.unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
+                if (
+                    state->unk258.unk154[state->unk258.unk152 + 1] == PLAYER_NAME_END_CHAR &&
+                    sub_806B9C8(state->unk258.unk154[state->unk258.unk152]) == 0
+                ) {
+                    state->unk258.unk154[state->unk258.unk152] = PLAYER_NAME_END_CHAR;    
+                }
+            }
+            m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        }
+        return 1;
+    }
+
+    if (gRepeatedKeys & R_BUTTON) {
+        if (state->unk258.unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
+            if (state->unk258.unk154[state->unk258.unk152] == PLAYER_NAME_END_CHAR) {
+                state->unk258.unk154[state->unk258.unk152] = 0x11;
+            }
+            state->unk258.unk152++;
+            m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
+u16 sub_8067C50(void) {
+    struct UNK_8063A00* state = TaskGetStructPtr(gCurTask, state);
+
+    if (!(gRepeatedKeys & (DPAD_DOWN | DPAD_UP | DPAD_LEFT | DPAD_RIGHT))) {
+        return 0;
+    }
+
+    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+
+    if (gRepeatedKeys & DPAD_UP) {
+        if (state->unk252 < 11) {
+            if (state->unk253 != 0) {
+                state->unk253--;
+                return 1;
+            } 
+    
+            if (state->unk250 > 0) {
+                gBgScrollRegs[1][1] -= 0x10;
+                state->unk250 -= 0xB;
+            } else {
+                state->unk253 = 6; 
+                gBgScrollRegs[1][1] = 0xC9;
+                state->unk250 = 0xA5;
+            }
+        } else {
+            if (state->unk253 > 4) {
+                state->unk253--;
+            } else {
+                state->unk253 = 6;
+            }
+        }
+        return 1;
+    }
+
+    if (gRepeatedKeys & DPAD_DOWN) {
+        if (state->unk252 < 11) {
+            if (state->unk253 < MAX_PLAYER_NAME_LENGTH) {
+                state->unk253++;
+            } else {
+                if (state->unk250 < 0xA5) {
+                    gBgScrollRegs[1][1] += 0x10;
+                    state->unk250 += 0xB;
+                } else {
+                    gBgScrollRegs[1][1] = 0xFFD9;
+                    state->unk253 = 0;
+                    state->unk250 = 0;
+                }
+            }
+        } else {
+            if (state->unk253 < 6) {
+                state->unk253++;
+            } else {
+                state->unk253 = 4;
+            }
+        }
+        return 1;
+    }
+
+    if (gRepeatedKeys & DPAD_LEFT) {
+        if (state->unk252 != 0) {
+            state->unk252--;
+        } else {
+            if (state->unk253 < 4) {
+                state->unk252 = 10;
+            } else {
+                state->unk252 = 11;
+            }
+        }
+        return 1;
+    }
+
+    if (gRepeatedKeys & DPAD_RIGHT) {
+        if (state->unk253 < 4) {
+            if (state->unk252 < 10) {
+                state->unk252++;
+            } else {
+                state->unk252 = 0;
+            }
+        } else {
+            if (state->unk252 < 11) {
+                state->unk252++;
+            } else {
+                state->unk252 = 0;
+            }
+        }
+        return 1;
+    }
+
+    return 0;
+}
