@@ -104,14 +104,15 @@ void sub_8063730(u16 p1) {
     }
 }
 
+// TimeAttackRecordsScreen
 struct UNK_80637EC {
     struct UNK_802D4CC_UNK270 unk0;
-    u8 fillerC[64];
+    struct Unk_03002400 unkC;
     struct UNK_0808B3FC_UNK240 unk4C[2];
-    u8 fillerAC[96];
+    u8 fillerAC[0x60];
     struct UNK_0808B3FC_UNK240 unk10C;
     struct UNK_0808B3FC_UNK240 unk13C[2];
-    u8 filler19C[96];
+    u8 filler19C[0x60];
     // playerProfileMenu
     struct UNK_8064A40* unk1FC;
 
@@ -133,13 +134,16 @@ struct UNK_80637EC {
     u8 filler712[2];
 }; /* size 0x714 */
 
-extern void sub_806B5A4(void);
-extern void sub_8068640(void);
+void sub_806B5A4(void);
+void sub_8068640(void);
 
-extern void sub_8068700(struct UNK_80637EC*);
-extern void sub_80687BC(struct UNK_80637EC*);
+void sub_8068700(struct UNK_80637EC*);
+void sub_80687BC(struct UNK_80637EC*);
 
-// CreateZoneSectionScreen
+// The logic for showing TA records
+// and selecting a time attack course is the same
+// so this is within the profile source.
+// CreateTimeAttackCourseScreen
 void sub_80637EC(u16 p1, u16 p2) {
     s16 i;
     struct Task* t;
@@ -183,7 +187,7 @@ void sub_80637EC(u16 p1, u16 p2) {
     sub_8068640();
     sub_8068700(config);
     sub_80687BC(config);
-    m4aSongNumStart(MUS_ZONE_SELECTION);
+    m4aSongNumStart(MUS_TA_COURSE_SELECTION);
 }
 
 // Language Selection Screen
@@ -867,7 +871,7 @@ void sub_80645E0(void) {
 void sub_8063DCC(struct UNK_8063730* optionsScreen, s16 p2);
 void sub_8063D20(struct UNK_8063730* optionsScreen, s16 p2);
 void sub_806A968(void);
-void sub_806B854(struct Unk_03002400*, u32, u32, u32, u32, u32, u32, u32, u32, u32);
+void sub_806B854(struct Unk_03002400*, u32, u32, u8, u32, u32, u32, u32, u32, u32);
 
 void sub_80646FC(void) {
     struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
@@ -3807,4 +3811,95 @@ void sub_8068474(void) {
         m4aSongNumStart(SE_RETURN);
         sub_806B424();
     }
+}
+
+void sub_8068524(struct UNK_8064A40* playerProfileMenu) {
+    struct Task* t = TaskCreate(sub_806B5A4, 0x714, 0x2000, 4, 0);
+    struct UNK_80637EC* config = TaskGetStructPtr(t, config);
+    s16 i;
+
+    for (i = 1; i < 5; i++) {
+        if (!GetBit(gLoadedSaveGame->unk13, i)) {
+            break;
+        }
+    };
+
+    config->unk1FC = playerProfileMenu;
+    config->unk200 = NULL;
+    config->unk704 = 0;
+    config->unk705 = 0;
+    config->unk706 = 0;
+    config->unk707 = 0;
+    config->unk708 = 0;
+    config->unk709 = i;
+
+    for (i = 0; i < 5; i++) {
+        config->unk70A[i] = gLoadedSaveGame->unk7[i];
+    }
+
+    config->unk70F = playerProfileMenu->unk162;
+    config->unk710 = 0;
+    config->unk711 = 1;
+    
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = 0;
+
+    sub_8068640();
+    sub_8068700(config);
+    sub_80687BC(config);
+}
+
+void sub_8068640(void) {
+    gDispCnt = 0x1740;
+    gBgCntRegs[0] = 0x703;
+    gBgCntRegs[1] = 0x5606;
+    gBgCntRegs[2] = 0x5E09;
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[1][0] = 0xff58;
+    gBgScrollRegs[1][1] = 0;
+    gBgScrollRegs[2][0] = 0xff58;
+    gBgScrollRegs[2][1] = 0x10;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+
+    gUnknown_03004D80[1] = 0;
+    gUnknown_03002280[4] = 0;
+    gUnknown_03002280[5] = 0;
+    gUnknown_03002280[6] = 0xFF;
+    gUnknown_03002280[7] = 64;
+
+    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(1), 0x40);
+
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[8] = 0;
+    gUnknown_03002280[9] = 0;
+    gUnknown_03002280[10] = 0xFF;
+    gUnknown_03002280[11] = 64;
+
+    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(2), 0x40);
+}
+
+extern const u16 gUnknown_080D9590[5][2];
+
+void sub_8068700(struct UNK_80637EC* courseScreen) {
+    struct UNK_802D4CC_UNK270* unk270 = &courseScreen->unk0;
+    u8 lang;
+    if (courseScreen->unk704 != 0xFF) {
+        lang = courseScreen->unk704;
+    } else {
+        lang = 0;
+    }
+
+    unk270->unk0 = 0;
+    unk270->unk2 = 2;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    sub_806B854(&courseScreen->unkC,0,7,0x8B,0x1e,0x14,0,0,0,0);
+    sub_806B854(&courseScreen->unk204,1,0x16,gUnknown_080D9590[lang][0],9,0x14,0,1,0,0);
+    sub_806B854(&courseScreen->unk244,2,0x1E,gUnknown_080D9590[lang][1],9,0x14,0,2,0,0);
 }

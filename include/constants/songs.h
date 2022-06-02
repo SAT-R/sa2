@@ -5,7 +5,7 @@
 #define MUS_INTRO 1
 #define MUS_TITLE_FANFARE 2
 
-#define MUS_ZONE_SELECTION 4
+#define MUS_TA_COURSE_SELECTION 4
 
 #define MUS_OPTIONS 9
 

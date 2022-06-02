@@ -37,6 +37,8 @@ extern u8 gUnknown_03002AE4;
 extern u8 gUnknown_03005390;
 extern u8 gUnknown_03004D5C;
 
+extern u8 gUnknown_03002280[16];
+extern u8 gUnknown_03004D80[16];
 
 extern u16 gObjPalette[0x100];
 extern u16 gBgPalette[0x100];
