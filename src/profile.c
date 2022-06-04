@@ -109,10 +109,10 @@ struct UNK_80637EC {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 unkC;
     struct UNK_0808B3FC_UNK240 unk4C[2];
-    u8 fillerAC[0x60];
+    struct UNK_0808B3FC_UNK240 unkAC[2];
     struct UNK_0808B3FC_UNK240 unk10C;
     struct UNK_0808B3FC_UNK240 unk13C[2];
-    u8 filler19C[0x60];
+    struct UNK_0808B3FC_UNK240 unk19C[2];
     // playerProfileMenu
     struct UNK_8064A40* unk1FC;
 
@@ -120,7 +120,8 @@ struct UNK_80637EC {
     struct TimeRecords* unk200;
     struct Unk_03002400 unk204;
     struct Unk_03002400 unk244;
-    u8 filler284[1152];
+    struct UNK_0808B3FC_UNK240 unk284[3];
+    u8 filler314[1008];
     u8 unk704;
     u8 unk705;
     u8 unk706;
@@ -3883,11 +3884,11 @@ void sub_8068640(void) {
 
 extern const u16 gUnknown_080D9590[5][2];
 
-void sub_8068700(struct UNK_80637EC* courseScreen) {
-    struct UNK_802D4CC_UNK270* unk270 = &courseScreen->unk0;
+void sub_8068700(struct UNK_80637EC* courseRecordsScreen) {
+    struct UNK_802D4CC_UNK270* unk270 = &courseRecordsScreen->unk0;
     u8 lang;
-    if (courseScreen->unk704 != 0xFF) {
-        lang = courseScreen->unk704;
+    if (courseRecordsScreen->unk704 != 0xFF) {
+        lang = courseRecordsScreen->unk704;
     } else {
         lang = 0;
     }
@@ -3899,7 +3900,75 @@ void sub_8068700(struct UNK_80637EC* courseScreen) {
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    sub_806B854(&courseScreen->unkC,0,7,0x8B,0x1e,0x14,0,0,0,0);
-    sub_806B854(&courseScreen->unk204,1,0x16,gUnknown_080D9590[lang][0],9,0x14,0,1,0,0);
-    sub_806B854(&courseScreen->unk244,2,0x1E,gUnknown_080D9590[lang][1],9,0x14,0,2,0,0);
+    sub_806B854(&courseRecordsScreen->unkC,0,7,0x8B,0x1e,0x14,0,0,0,0);
+    sub_806B854(&courseRecordsScreen->unk204,1,0x16,gUnknown_080D9590[lang][0],9,0x14,0,1,0,0);
+    sub_806B854(&courseRecordsScreen->unk244,2,0x1E,gUnknown_080D9590[lang][1],9,0x14,0,2,0,0);
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9F40[7];
+extern const struct UNK_080D95E8 gUnknown_080D9FD0[6][7];
+extern const struct UNK_080D95E8 gUnknown_080DA120[6][7];
+
+void sub_80687BC(struct UNK_80637EC* courseRecordsScreen) {
+    struct UNK_0808B3FC_UNK240* unk284 = courseRecordsScreen->unk284;
+    struct UNK_0808B3FC_UNK240* unk4C = courseRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unkAC = courseRecordsScreen->unkAC;
+    struct UNK_0808B3FC_UNK240* unk10C = &courseRecordsScreen->unk10C;
+    struct UNK_0808B3FC_UNK240* unk13C = courseRecordsScreen->unk13C;
+    
+
+    u8 unk70F = courseRecordsScreen->unk70F;
+    u8 unk705 = courseRecordsScreen->unk705;
+    u8 unk706 = courseRecordsScreen->unk706;
+
+    const struct UNK_080D95E8* r4, *r1, *r0;
+
+    s16 temp;
+
+    sub_806A568(unk13C,0,2,0x41A,0x1400,0xE,0x20,2,0,0);
+    unk13C++;
+    sub_806A568(unk13C,0,2,0x41A,0x1000,0x9C,0x20,2,0,0);
+    unk13C++;
+    sub_806A568(unk13C,0,2,0x41A,0x1000,0xD0,0x18,3,1,0);
+    unk13C++;
+    sub_806A568(unk13C,0,2,0x41A,0x1800,0xD0,0x8C,3,1,0);
+
+    sub_806A568(unk284,0,0x10,0x417,0x1000,4,0x50,5,0xB,0);
+    unk284++;
+    sub_806A568(unk284,0,0x10,0x417,0x1000,0xC,0x68,5,0xC,0);
+    unk284++;
+    sub_806A568(unk284,0,0x10,0x417,0x1000,0x14,0x80,5,0xD,0);
+
+    {
+        r0 = gUnknown_080D9F40;
+        temp = sub_806B8D4(r0, 7);
+        sub_806A568(unk4C,0,0x14,0x418,0x1000,0x10,0xC,3,0,0);
+        asm("":"=r"(r0));
+    }
+
+    unk4C++;
+    {
+        r1 = &gUnknown_080D9F40[unk705];
+        asm("":::"sl");
+        sub_806A568(unk4C,0,temp,r1->unk0,0x1000,0x5E,0xC,3,r1->unk2,0);
+    }
+    if (courseRecordsScreen->unk710 == 0) {
+        sub_806A568(unkAC,0,0x10,0x418,0x1000,0x4E,0x20,3,1,0);
+        unkAC++;
+        {
+            r1 = &gUnknown_080D9F40[unk706];
+            sub_806A568(unkAC,0,temp,r1->unk0,0x1000,0x88,0x20,3,r1->unk2,0);
+        }
+    } else {
+        sub_806A568(unkAC,0,0x14,0x418,0x1000,0x4e,0x20,3,9,0);  
+    }
+
+    if (courseRecordsScreen->unk710 == 0) {
+        r4 = &gUnknown_080D9FD0[unk70F][courseRecordsScreen->unk705];
+    } else {
+        r4 = &gUnknown_080DA120[unk70F][courseRecordsScreen->unk705];
+    }
+
+    temp = sub_806B8D4(r4, 7);
+    sub_806A568(unk10C,0,temp, r4->unk0,0x1000,0x9a,0x44,3,r4->unk2,0);
 }
