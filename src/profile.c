@@ -104,6 +104,13 @@ void sub_8063730(u16 p1) {
     }
 }
 
+struct UNK_80637EC_UNK314 {
+    struct UNK_0808B3FC_UNK240 unk0[2];
+    struct UNK_0808B3FC_UNK240 unk60;
+    struct UNK_0808B3FC_UNK240 unk90[2];
+    struct UNK_0808B3FC_UNK240 unkF0[2];
+};
+
 // TimeAttackRecordsScreen
 struct UNK_80637EC {
     struct UNK_802D4CC_UNK270 unk0;
@@ -121,7 +128,7 @@ struct UNK_80637EC {
     struct Unk_03002400 unk204;
     struct Unk_03002400 unk244;
     struct UNK_0808B3FC_UNK240 unk284[3];
-    u8 filler314[1008];
+    struct UNK_80637EC_UNK314 unk314[3];
     u8 unk704;
     u8 unk705;
     u8 unk706;
@@ -3971,4 +3978,155 @@ void sub_80687BC(struct UNK_80637EC* courseRecordsScreen) {
 
     temp = sub_806B8D4(r4, 7);
     sub_806A568(unk10C,0,temp, r4->unk0,0x1000,0x9a,0x44,3,r4->unk2,0);
+}
+
+extern const struct UNK_080D95E8 gUnknown_080D9F78[11];
+extern const u8 gUnknown_080D6B80[60][2];
+
+static inline u16* LoadCourseTimes(struct UNK_80637EC* courseRecordsScreen) {
+    u8 unk706;
+    
+     if (courseRecordsScreen->unk710 == 0) {
+        unk706 = courseRecordsScreen->unk706;
+    } else {
+        unk706 = 2;
+    }
+
+    // When the records are loaded from options we have to load the data from the options 
+    // screen (though I don't understand why this wasn't done from the gLoadedSaveData)
+    if (courseRecordsScreen->unk711 != 2) {
+        return courseRecordsScreen->unk1FC->unk15C->unk0.unkC.table[courseRecordsScreen->unk704][courseRecordsScreen->unk705][unk706];
+    } else {
+        return courseRecordsScreen->unk200->table[courseRecordsScreen->unk704][courseRecordsScreen->unk705][unk706];
+    }
+}
+
+void sub_8068A94(struct UNK_80637EC* courseRecordsScreen) {
+    struct UNK_80637EC_UNK314* unk314 = courseRecordsScreen->unk314;
+    s16 FCC = gUnknown_080D9F78[10].unk4;
+    struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
+    s16 i;
+
+    u16* courseTimes = LoadCourseTimes(courseRecordsScreen);
+
+    for (i = 0; i < 3; i++, unk314++) {
+        const struct UNK_080D95E8* F78;
+        s16 millis, minutes, seconds;
+        u16 timeValue;
+
+        unk0 = unk314->unk0;
+        unk60 = &unk314->unk60;
+        unk90 = unk314->unk90;
+        unkF0 = unk314->unkF0;
+
+        timeValue = courseTimes[i];
+        if (timeValue < ZONE_TIME_TO_INT(10, 0)) {
+            s16 temp = timeValue % 60;
+            u16 temp2 = timeValue - temp;
+            millis = gUnknown_080D6B80[temp][0] * 10;
+            millis += gUnknown_080D6B80[temp][1];
+            seconds = temp2 / 60;
+            minutes = seconds / 60;
+            seconds += minutes * -60;
+        } else {
+            millis = 99;
+            seconds = 59;
+            minutes = 9;
+        }
+
+        F78 = &gUnknown_080D9F78[10];
+        sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x30),(i * 24 + 84),8,F78->unk2,0);
+
+        unk0++;
+        sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x60),(i * 24 + 84),8,F78->unk2,0);
+
+        F78 = &gUnknown_080D9F78[minutes];
+        sub_806A568(unk60,0,FCC,F78->unk0,0x3000,(i * 8 + 0x20),(i * 24 + 84),8,F78->unk2,0);
+
+        F78 = &gUnknown_080D9F78[seconds / 10];
+        sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x40),(i * 24 + 84),8,F78->unk2,0);
+
+        unk90++;
+        F78 = &gUnknown_080D9F78[seconds % 10];
+        sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x50),(i * 24 + 84),8,F78->unk2,0);
+
+        F78 = &gUnknown_080D9F78[millis / 10];
+        sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x70),(i * 24 + 84),8,F78->unk2,0);
+        
+        unkF0++;
+        F78 = &gUnknown_080D9F78[millis % 10];
+        sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x80),(i * 24 + 84),8,F78->unk2,0);
+    }
+}
+
+void sub_8068D94(struct UNK_80637EC* courseRecordsScreen) {
+    const struct UNK_080D95E8* F78;
+    struct UNK_80637EC_UNK314* unk314 = courseRecordsScreen->unk314;
+    struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
+    s16 i;
+    u16* courseTimes = LoadCourseTimes(courseRecordsScreen);
+
+    for (i = 0; i < 3; i++, unk314++) {
+        s16 millis, minutes, seconds;
+        u16 timeValue;
+        
+        unk60 = &unk314->unk60;
+        unk90 = unk314->unk90;
+        unkF0 = unk314->unkF0;
+        unk0 = unk314->unk0;
+        
+        timeValue = courseTimes[i];
+        if (timeValue < ZONE_TIME_TO_INT(10, 0)) {
+            s16 temp = timeValue % 60;
+            u16 temp2 = timeValue - temp;
+            // This logic is the same as the above function but required to be
+            // inline instead of split, but required to be split in the other function
+            millis = gUnknown_080D6B80[temp][0] * 10 + gUnknown_080D6B80[temp][1];
+            seconds = temp2 / 60;
+            minutes = seconds / 60;
+            seconds += minutes * -60;
+        } else {
+            millis = 99;
+            seconds = 59;
+            minutes = 9;
+        }
+
+        F78 = &gUnknown_080D9F78[minutes];
+        
+        unk60->unkA = F78->unk0;
+        unk60->unk20 = F78->unk2;
+        unk60->unk16 = (i * 8) + 0x110;
+        sub_8004558(unk60);
+        
+        unk0->unk16 = (i * 8) + 0x120;
+        unk0++;
+
+        F78 = &gUnknown_080D9F78[seconds / 10];
+        unk90->unkA = F78->unk0;
+        unk90->unk20 = F78->unk2;
+        unk90->unk16 = (i * 8) + 0x130;
+        sub_8004558(unk90);
+
+        unk90++;
+        F78 = &gUnknown_080D9F78[seconds % 10];
+        unk90->unkA = F78->unk0;
+        unk90->unk20 = F78->unk2;
+        unk90->unk16 = (i * 8) + 0x140;
+        sub_8004558(unk90);
+    
+        unk0->unk16 = (i * 8) + 0x150;
+
+        F78 = &gUnknown_080D9F78[millis / 10];
+        unkF0->unkA = F78->unk0;
+        unkF0->unk20 = F78->unk2;
+        unkF0->unk16 = (i * 8) + 0x160;
+        sub_8004558(unkF0);
+
+        unkF0++;
+        F78 = &gUnknown_080D9F78[millis % 10];
+        unkF0->unkA = F78->unk0;
+        unkF0->unk20 = F78->unk2;
+        unkF0->unk16 = (i * 8) + 0x170;
+        sub_8004558(unkF0);
+    }
 }
