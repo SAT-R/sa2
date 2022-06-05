@@ -3946,26 +3946,31 @@ void sub_80687BC(struct UNK_80637EC* courseRecordsScreen) {
     unk284++;
     sub_806A568(unk284,0,0x10,0x417,0x1000,0x14,0x80,5,0xD,0);
 
-    {
-        r0 = gUnknown_080D9F40;
-        temp = sub_806B8D4(r0, 7);
-        sub_806A568(unk4C,0,0x14,0x418,0x1000,0x10,0xC,3,0,0);
-        asm("":"=r"(r0));
-    }
+// Might not be matching because of somethign to do with the data
+#ifndef NON_MATCHING
+    r0 = gUnknown_080D9F40;
+    temp = sub_806B8D4(r0, 7);
+#else
+    temp = sub_806B8D4(gUnknown_080D9F40, 7);
+#endif
+    sub_806A568(unk4C,0,0x14,0x418,0x1000,0x10,0xC,3,0,0);
+#ifndef NON_MATCHING
+    asm("":"=r"(r0));
+#endif
 
     unk4C++;
-    {
-        r1 = &gUnknown_080D9F40[unk705];
-        asm("":::"sl");
-        sub_806A568(unk4C,0,temp,r1->unk0,0x1000,0x5E,0xC,3,r1->unk2,0);
-    }
+    r1 = &gUnknown_080D9F40[unk705];
+#ifndef NON_MATCHING
+    asm("":::"sl");
+#endif
+    sub_806A568(unk4C,0,temp,r1->unk0,0x1000,0x5E,0xC,3,r1->unk2,0);
+
     if (courseRecordsScreen->unk710 == 0) {
         sub_806A568(unkAC,0,0x10,0x418,0x1000,0x4E,0x20,3,1,0);
         unkAC++;
-        {
-            r1 = &gUnknown_080D9F40[unk706];
-            sub_806A568(unkAC,0,temp,r1->unk0,0x1000,0x88,0x20,3,r1->unk2,0);
-        }
+    
+        r1 = &gUnknown_080D9F40[unk706];
+        sub_806A568(unkAC,0,temp,r1->unk0,0x1000,0x88,0x20,3,r1->unk2,0);
     } else {
         sub_806A568(unkAC,0,0x14,0x418,0x1000,0x4e,0x20,3,9,0);  
     }
