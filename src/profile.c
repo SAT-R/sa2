@@ -4202,3 +4202,35 @@ void sub_8069110(void) {
         gCurTask->main = sub_8069208;
     }
 }
+
+void sub_8069180(s16 a, s16 b) {
+    // Not sure why but the struct has to be loaded like this
+#ifndef NON_MATCHING
+    u32 offsetA = gCurTask->structOffset + (a * sizeof(struct UNK_80637EC_UNK314));
+    register u32 offsetB asm("r2") = IWRAM_START + offsetof(struct UNK_80637EC, unk314);
+    struct UNK_80637EC_UNK314* unk314 = (struct UNK_80637EC_UNK314*)(offsetA + offsetB);
+#else
+    struct UNK_80637EC_UNK314* unk314 = &((struct UNK_80637EC*)(IWRAM_START + gCurTask->structOffset))->unk314[a];
+#endif
+
+    if (b > 0 && b < 9) {
+        struct UNK_0808B3FC_UNK240* unk0 = unk314->unk0;
+        struct UNK_0808B3FC_UNK240* unk60 = &unk314->unk60;
+        struct UNK_0808B3FC_UNK240* unk90 = unk314->unk90;
+        struct UNK_0808B3FC_UNK240* unkF0 = unk314->unkF0;
+        
+        s16 c = (8 - b) * 0x1E + (a * 8);
+        unk60->unk16 = c + 0x20;
+        unk0->unk16 = c + 0x30;
+        unk0++;
+        unk0->unk16 = c + 0x60;
+
+        unk90->unk16 = c + 0x40;
+        unk90++;
+        unk90->unk16 = c + 0x50;
+
+        unkF0->unk16 = c + 0x70;
+        unkF0++;
+        unkF0->unk16 = c + 0x80;
+    }
+}
