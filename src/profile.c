@@ -111,7 +111,7 @@ struct UNK_80637EC_UNK314 {
     struct UNK_0808B3FC_UNK240 unkF0[2];
 };
 
-// TimeAttackRecordsScreen
+// CourseRecordsScreen
 struct UNK_80637EC {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 unkC;
@@ -4133,5 +4133,72 @@ void sub_8068D94(struct UNK_80637EC* courseRecordsScreen) {
         unkF0->unk20 = F78->unk2;
         unkF0->unk16 = (i * 8) + 0x170;
         sub_8004558(unkF0);
+    }
+}
+
+void sub_806979C(u32);
+void sub_80690A4(void);
+
+void sub_8068FE8(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    u32 a;
+
+    if (courseRecordsScreen->unk704 != 0xFF) {
+        a = courseRecordsScreen->unk704;
+    } else {
+        a = 0;
+    }
+
+    sub_806979C(1);
+    gBgScrollRegs[1][0] = 0xFF10;
+    gBgScrollRegs[1][1] = 0;
+    gBgScrollRegs[2][0] = 0xFF10;
+    gBgScrollRegs[2][1] = 0x10;
+
+    sub_806B854(&courseRecordsScreen->unk204, 1, 0x16, gUnknown_080D9590[a][0], 9, 0x14, 0, 1, 0, 0);
+    sub_806B854(&courseRecordsScreen->unk244, 2, 0x1E, gUnknown_080D9590[a][1], 9, 0x14, 0, 2, 0, 0);
+
+    gCurTask->main = sub_80690A4;
+}
+
+void sub_8069110(void);
+
+void sub_80690A4(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+
+    if (++courseRecordsScreen->unk707 < 5) {
+        gBgScrollRegs[1][0] = courseRecordsScreen->unk707 * 0x12 - 0xF0;
+    }
+
+    if (courseRecordsScreen->unk707 > 6) {
+        gBgScrollRegs[2][0] = (courseRecordsScreen->unk707 - 6) * 0x12 - 0xF0;
+    }
+
+    sub_806979C(1);
+
+    if (courseRecordsScreen->unk707 > 9) {
+        courseRecordsScreen->unk707 = 0;
+        gCurTask->main = sub_8069110;
+    }
+}
+
+void sub_8069180(s16, s16);
+void sub_8069208(void);
+
+void sub_8069110(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    s16 i;
+
+    courseRecordsScreen->unk707++;
+    
+    for (i = 0; i < 3; i++) {
+        sub_8069180(i, courseRecordsScreen->unk707 + i * -8);
+    }
+
+    sub_806979C(0);
+
+    if (courseRecordsScreen->unk707 > 0x1F) {
+        courseRecordsScreen->unk707 = 0;
+        gCurTask->main = sub_8069208;
     }
 }
