@@ -48,6 +48,10 @@ PREPROC	  := tools/preproc/preproc$(EXE)
 RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := tools/gbafix/gbafix$(EXE)
 
+TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
+TOOLBASE = $(TOOLDIRS:tools/%=%)
+TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
+
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
 CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
@@ -63,8 +67,16 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 # Secondary expansion is required for dependency variables in object rules.
 .SECONDEXPANSION:
 
-# these commands don't depend on anything
-.PHONY: clean chao_garden
+# these commands will run regardless of deps being completed
+.PHONY: __rom clean chao_garden tools clean-tools $(TOOLDIRS)
+
+# ensure that we don't scan deps if we are not running
+# any of these commands
+ifeq (,$(filter-out all rom __rom compare,$(MAKECMDGOALS)))
+$(call infoshell, $(MAKE) -f tools/Makefile)
+else
+NODEP ?= 1
+endif
 
 #### Files ####
 OBJ_DIR:= build/sa2
@@ -127,19 +139,35 @@ endif
 
 MAKEFLAGS += --no-print-directory
 
-compare: $(ROM)
+all: compare
+
+# Ensure that tools are built before building the rom
+rom: tools
+	@$(MAKE) __rom
+__rom: $(ROM)
+# Dummy command to make sure we don't print
+# even when rom is already built
+	@echo > /dev/null
+
+tools: $(TOOLDIRS)
+
+$(TOOLDIRS):
+	@$(MAKE) -C $@
+
+compare: rom
 	$(SHA1) checksum.sha1
 
-clean: tidy
+clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
+clean-tools:
+	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
+
 tidy:
 	$(RM) -f $(ROM) $(ELF) $(MAP)
 	$(RM) -r build/*
-
-
 
 #### Recipes ####
 
@@ -167,7 +195,7 @@ $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
 	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
 
-%.gba: %.elf
+$(ROM): $(ELF)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
@@ -213,5 +241,5 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 chao_garden/mb_chao_garden.gba: 
 	$(MAKE) -C chao_garden
 
-chao_garden:
+chao_garden: tools
 	$(MAKE) -C chao_garden

@@ -45,17 +45,14 @@ Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
 
 Inside the `agbcc` repo and run `./build.sh` and then install the compiler in this repo `./install.sh path/to/sa2`
 
-**Build the required tools**
-
-The `tools` directory contains a bunch of tooling (built by [pret](https://github.com/pret)) which is used to build assets and create a matching rom
-
-Run `./build_tools.sh` to build all the projects in this directory
-
 **Build the rom**
 
-On Linux and MacOS, run `make` in the root of the repo to build
+On Linux and MacOS, run `make` in the root of the repo to build.
 
 On Windows you can build using `make` in the MSYS environment provided with devkitARM.
+
+This command will also build all the required tooling in the `tools` directory. 
+The `tools` directory contains a bunch of tooling (built by [pret](https://github.com/pret)) which is used to build assets and create a matching rom.
 
 If the rom built successfully you will see this output
 
