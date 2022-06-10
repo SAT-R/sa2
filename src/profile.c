@@ -4407,3 +4407,101 @@ void sub_8069208(void) {
         }
     }
 }
+
+void sub_80694F8(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+
+    courseRecordsScreen->unk707--;
+
+    gBgScrollRegs[1][0] = courseRecordsScreen->unk707 * 0x12 - 0xF0;
+    gBgScrollRegs[2][0] = courseRecordsScreen->unk707 * 0x12 - 0xF0;
+
+    sub_8068D94(courseRecordsScreen);
+    sub_806979C(1);
+
+    if (courseRecordsScreen->unk707 == 0) {
+        courseRecordsScreen->unk707 = 0;
+        gCurTask->main = sub_8068FE8;
+    }
+}
+
+void sub_806955C(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_0808B3FC_UNK240* unk7C = &courseRecordsScreen->unk4C[1];
+    struct UNK_0808B3FC_UNK240* unkDC = &courseRecordsScreen->unkAC[1];
+    struct UNK_0808B3FC_UNK240* unk10C = &courseRecordsScreen->unk10C;
+
+    u16 unk70F = courseRecordsScreen->unk70F;
+    const struct UNK_080D95E8* F40 = &gUnknown_080D9F40[courseRecordsScreen->unk705];
+    unk7C->unkA = F40->unk0;
+    unk7C->unk20 = F40->unk2;
+    
+    sub_8004558(unk7C);
+
+    if (courseRecordsScreen->unk710 == 0) {
+        F40 = &gUnknown_080D9F40[courseRecordsScreen->unk706];
+        unkDC->unkA = F40->unk0;
+        unkDC->unk20 = F40->unk2;
+        sub_8004558(unkDC);
+    }
+
+    if (courseRecordsScreen->unk710 == 0) {
+        F40 = &gUnknown_080D9FD0[unk70F][courseRecordsScreen->unk705];
+    } else {
+        F40 = &gUnknown_080DA120[unk70F][courseRecordsScreen->unk705];
+    }
+
+    unk10C->unkA = F40->unk0;
+    unk10C->unk20 = F40->unk2;
+    sub_8004558(unk10C);
+    sub_8068D94(courseRecordsScreen);
+    sub_806979C(0);
+    courseRecordsScreen->unk707 = 0;
+    gCurTask->main = sub_8069110;
+}
+
+void sub_803143C(u8, u8);
+
+void sub_8069688(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+    struct UNK_8064A40* playerProfileMenu = courseRecordsScreen->unk1FC;
+
+    if (sub_802D4CC(unk0) == 0) {
+        sub_806979C(0);
+    } else {
+        u8 unk709;
+        u8 r5;
+        switch (courseRecordsScreen->unk711) {
+            case 0:
+                courseRecordsScreen->unk707 = 0;
+                courseRecordsScreen->unk710 = 0;
+                courseRecordsScreen->unk711 = 0;
+                gUnknown_03005B50 = (void*)OBJ_VRAM0;
+                gUnknown_03005B54 = 0;
+
+                sub_80682AC();
+                sub_80682EC(courseRecordsScreen);
+                sub_806834C(courseRecordsScreen);
+                gCurTask->main = sub_806B3F0;
+                break;
+            case 1:
+                playerProfileMenu->unk163 = 0;
+                TaskDestroy(gCurTask);
+                break;
+            case 2:
+                r5 = 0;
+                unk709 = courseRecordsScreen->unk709;
+                if (unk709 == 5) {
+                    r5 = 1;
+                }
+                EwramFree(courseRecordsScreen->unk200);
+                TasksDestroyInPriorityRange(0, 0xFFFF);
+                gUnknown_03002AE4 = gUnknown_0300287C;
+                gUnknown_03005390 = 0;
+                gUnknown_03004D5C = gUnknown_03002A84;
+                sub_803143C(courseRecordsScreen->unk704, r5);
+                break;
+        }
+    }
+}
