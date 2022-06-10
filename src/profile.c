@@ -4136,7 +4136,7 @@ void sub_8068D94(struct UNK_80637EC* courseRecordsScreen) {
     }
 }
 
-void sub_806979C(u32);
+void sub_806979C(u16);
 void sub_80690A4(void);
 
 void sub_8068FE8(void) {
@@ -4502,6 +4502,71 @@ void sub_8069688(void) {
                 gUnknown_03004D5C = gUnknown_03002A84;
                 sub_803143C(courseRecordsScreen->unk704, r5);
                 break;
+        }
+    }
+}
+
+void sub_806979C(u16 a) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_80637EC_UNK314* unk314 = courseRecordsScreen->unk314;
+    struct UNK_0808B3FC_UNK240* unk284 = courseRecordsScreen->unk284;
+    struct UNK_0808B3FC_UNK240* unk4C = courseRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unkAC = courseRecordsScreen->unkAC;
+    struct UNK_0808B3FC_UNK240* unk10C = &courseRecordsScreen->unk10C;
+    struct UNK_0808B3FC_UNK240* unk13C = courseRecordsScreen->unk13C;
+
+    struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
+
+    s16 temp, i, j;
+    s16 unk70A = courseRecordsScreen->unk70A[courseRecordsScreen->unk704];
+    if (unk70A == 0) {
+        unk70A = 1;
+    }
+
+    for (i = 0; i < 3; i++, unk284++) {
+        sub_80051E8(unk284);
+    }
+
+    for (i = 0; i < 2; i++, unk4C++) {
+        sub_80051E8(unk4C);
+    }
+
+    j = courseRecordsScreen->unk711 != 2 && a == 0 && courseRecordsScreen->unk709 > 1 ? 4 : 2;
+    temp = courseRecordsScreen->unk711 == 2 && unk70A < 2 ? 0 : j;
+
+    for (i = 0; i < temp; i++, unk13C++) {
+        sub_8004558(unk13C);
+        sub_80051E8(unk13C);
+    }
+
+    if (courseRecordsScreen->unk710 == 0) {
+        for (i = 0; i < 2; i++, unkAC++) {
+            sub_80051E8(unkAC);
+        }
+    } else {
+        sub_80051E8(unkAC);
+    }
+
+    sub_80051E8(unk10C);
+
+    for (i = 0; i < 3; i++, unk314++) {
+        unk0 = unk314->unk0;
+        unk60 = &unk314->unk60;
+        unk90 = unk314->unk90;
+        unkF0 = unk314->unkF0;
+
+        for (j = 0; j < 2; j++, unk0++) {
+            sub_80051E8(unk0);
+        }
+
+        sub_80051E8(unk60);
+
+        for (j = 0; j < 2; j++, unk90++) {
+            sub_80051E8(unk90);
+        }
+
+        for (j = 0; j < 2; j++, unkF0++) {
+            sub_80051E8(unkF0);
         }
     }
 }
