@@ -4234,3 +4234,176 @@ void sub_8069180(s16 a, s16 b) {
         unkF0->unk16 = c + 0x80;
     }
 }
+
+void sub_806955C(void);
+void sub_806B60C(void);
+void sub_806B684(void);
+void sub_80694F8(void);
+void sub_806B730(void);
+
+void sub_8069208(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    s16 unk70A = courseRecordsScreen->unk70A[courseRecordsScreen->unk704];
+    s32 var;
+    if (unk70A == 0) {
+        unk70A = 1;
+    }
+    // Possibly some macro
+    var = (u16)unk70A;
+    if (var > 0x1B) {
+        unk70A = 0x1B;
+    }
+    sub_806979C(0);
+
+    if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
+        if (courseRecordsScreen->unk711 == 2 && unk70A == 1) {
+            return;
+        }
+
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        if (gRepeatedKeys & DPAD_LEFT) {
+            if (courseRecordsScreen->unk710 == 0) {
+                if (courseRecordsScreen->unk711 == 2) {
+                    if (courseRecordsScreen->unk706 == 0) {
+                        if (courseRecordsScreen->unk705 != 0) {
+                            courseRecordsScreen->unk705--;
+                            courseRecordsScreen->unk706 = 1;
+                        } else {
+                            s16 r1;
+                            courseRecordsScreen->unk705 = unk70A >> 2;
+                            r1 = unk70A & 3;
+                            courseRecordsScreen->unk706 = r1 != TRUE;
+                        }
+                        gCurTask->main = sub_806955C;
+                        return;
+                    }
+                    courseRecordsScreen->unk706--;
+                } else {
+                    if (courseRecordsScreen->unk706 == 0) {
+                        courseRecordsScreen->unk706 = 1;
+                        if (courseRecordsScreen->unk705 != 0) {
+                           courseRecordsScreen->unk705--;
+                        } else {
+                            courseRecordsScreen->unk705 = 6;
+                        }
+                        gCurTask->main = sub_806955C;
+                        return;
+                    }
+                    else
+                        courseRecordsScreen->unk706--;
+                }
+            }
+            else {
+                if (courseRecordsScreen->unk705 != 0) {
+                    courseRecordsScreen->unk705--;
+                } else {
+                    courseRecordsScreen->unk705 = 6;
+                }
+                gCurTask->main = sub_806955C;
+                return;
+            }
+        }
+        else if (gRepeatedKeys & DPAD_RIGHT) {
+            if (courseRecordsScreen->unk710 == 0) {
+                if (courseRecordsScreen->unk711 == 2) {
+                    s32 r5;
+                    s16 r1;
+                    s32 backup = unk70A;
+                    unk70A >>= 2;
+                    r1 = backup & 3;
+                    r5 = r1 != TRUE;
+                    if (courseRecordsScreen->unk706 != 0) {
+                        courseRecordsScreen->unk706 = 0;
+                        if (courseRecordsScreen->unk705 < 6) {
+                            courseRecordsScreen->unk705++;
+                        } else {
+                            courseRecordsScreen->unk705 = 0;
+                        }
+
+                        if (courseRecordsScreen->unk705 > unk70A) {
+                            courseRecordsScreen->unk705 = 0;
+                            courseRecordsScreen->unk706 = 0;
+                        }
+                    } else {
+                        courseRecordsScreen->unk706++;
+                        if (courseRecordsScreen->unk705 >= unk70A
+                            && courseRecordsScreen->unk706 > r5) {
+                            courseRecordsScreen->unk705 = 0;
+                            courseRecordsScreen->unk706 = 0;
+                            gCurTask->main = sub_806955C;
+                            return;
+                        }
+                        else {
+                            gCurTask->main = sub_806B60C;
+                            return; 
+                        }
+                    }
+                    gCurTask->main = sub_806955C;
+                    return;
+                }
+
+                if (courseRecordsScreen->unk706 != 0) {
+                    courseRecordsScreen->unk706 = 0;
+                    if (courseRecordsScreen->unk705 < 6) {
+                        courseRecordsScreen->unk705++;
+                    } else {
+                         courseRecordsScreen->unk705 = 0;
+                    }
+                    gCurTask->main = sub_806955C;
+                    return;
+                } else {
+                    courseRecordsScreen->unk706++;
+                }
+                
+            }
+            else {
+                if (courseRecordsScreen->unk705 < 6) {
+                    courseRecordsScreen->unk705++;
+                } else {
+                     courseRecordsScreen->unk705 = 0;
+                }
+                gCurTask->main = sub_806955C;
+                return;
+            }
+            
+        }
+        gCurTask->main = sub_806B60C;
+        return;
+    } else {
+        if (courseRecordsScreen->unk711 != 2) {
+            if (gRepeatedKeys & (DPAD_DOWN | DPAD_UP)) {
+                s16 temp = courseRecordsScreen->unk709 - 1;
+                if (temp == 0) {
+                    return;
+                }
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                if (gRepeatedKeys & DPAD_UP) {
+                    if (courseRecordsScreen->unk704 != 0) {
+                       courseRecordsScreen->unk704--;
+                    } else {
+                         courseRecordsScreen->unk704 = temp;
+                    }
+                } else if (gRepeatedKeys & DPAD_DOWN) {
+                    if (courseRecordsScreen->unk704 < temp) {
+                        courseRecordsScreen->unk704++;
+                    } else {
+                        courseRecordsScreen->unk704 = 0;
+                    }
+                }
+    
+                courseRecordsScreen->unk707 = 4;
+                gCurTask->main = sub_80694F8;
+                return;
+            }
+        }
+        else if (gPressedKeys & A_BUTTON) {
+            m4aSongNumStart(SE_SELECT);
+            sub_806B684();
+            return;
+        }
+        if (gPressedKeys & B_BUTTON) {
+            m4aSongNumStart(SE_RETURN);
+            sub_806B730();
+        }
+    }
+}
