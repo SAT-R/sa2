@@ -8,8 +8,8 @@
 // TODO: Work out what this is
 struct SectorDataUnk2A4 {
     u8 filler0[4];
-    u16 unk4;
-    u8 filler6[10];
+    // playerName
+    u16 unk4[6];
     u8 unk10;
     u8 unk11;
     u8 unk12;

@@ -167,7 +167,7 @@ void sub_80637EC(u16 p1, u16 p2) {
     };
 
     config->unk1FC = 0;
-    config->unk200 = (struct TimeRecords*)EwramMalloc(sizeof(struct TimeRecords));
+    config->unk200 = EwramMallocStruct(struct TimeRecords);
     config->unk704 = p2;
     config->unk705 = 0;
     config->unk706 = 0;
@@ -4569,4 +4569,90 @@ void sub_806979C(u16 a) {
             sub_80051E8(unkF0);
         }
     }
+}
+
+struct UNK_8069978_UNK390_ROW {
+    u16 unk0[6];
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
+    u8 unkF;
+    u8 filler10[576];
+}; /* size 0x250 */
+
+struct UNK_8069978_UNK390 {
+   struct UNK_8069978_UNK390_ROW unk0[10];
+}; /* size 0x1720 */
+
+struct UNK_8069978 {
+    u8 filler0[0x38C];
+    struct UNK_8064A40* unk38C;
+    struct UNK_8069978_UNK390* unk390;
+    u8 unk394;
+    u8 unk395;
+    u8 unk396;
+    u8 unk397;
+
+    u16 unk398[6];
+
+    u8 unk3A4;
+    u8 unk3A5;
+    u8 unk3A6;
+    s8 unk3A7;
+}; /* size 0x3A8 */
+
+void sub_806B760(void);
+void sub_8069B40(void);
+void sub_8069B88(struct UNK_8069978*);
+void sub_8069BF0(struct UNK_8069978*);
+
+void sub_8069978(struct UNK_8064A40* playerDataMenu) {
+    struct UNK_8069978_UNK390_ROW* unk390Rows;
+    struct UNK_8063730_UNK0* profileData;
+    s16 i, j;
+
+
+    struct Task* t = TaskCreate(sub_806B760, sizeof(struct UNK_8069978), 0x2000, 4, 0);
+    struct UNK_8069978* config = TaskGetStructPtr(t, config);
+    config->unk390 = EwramMallocStruct(struct UNK_8069978_UNK390);
+    config->unk38C = playerDataMenu;
+
+    config->unk394 = 0;
+    config->unk3A4 = 0;
+    config->unk3A5 = 0;
+    config->unk3A6 = 0;
+    config->unk3A7 = playerDataMenu->unk162;
+
+
+    profileData = &playerDataMenu->unk15C->unk0;
+    memcpy(config->unk398, profileData->unk0, 12);
+    config->unk395 = profileData->unk34C;
+    config->unk396 = profileData->unk34D;
+    config->unk397 = profileData->unk34E;
+
+    unk390Rows = config->unk390->unk0;
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 6; j++) {
+            unk390Rows[i].unk0[j] = profileData->unk284[i].unk4[j];
+            if (unk390Rows[i].unk0[j] == PLAYER_NAME_END_CHAR) {
+                break;
+            }
+        }
+
+        for (;j < 6; j++) {
+            unk390Rows[i].unk0[j] = PLAYER_NAME_END_CHAR;
+        }
+
+        unk390Rows[i].unkC = profileData->unk284[i].unk10;
+        unk390Rows[i].unkD = profileData->unk284[i].unk11;
+        unk390Rows[i].unkE = profileData->unk284[i].unk12;
+        unk390Rows[i].unkF = profileData->unk284[i].unk13;
+    }
+
+    gUnknown_03005B50 = (void*)(OBJ_VRAM0);
+    gUnknown_03005B54 = 0;
+
+    sub_8069B40();
+    sub_8069B88(config);
+    sub_8069BF0(config);
 }

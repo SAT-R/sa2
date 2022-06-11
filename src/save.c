@@ -63,7 +63,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
         p2->unk11 = 0;
         p2->unk12 = 0;
         p2->unk13 = 0;
-        p2->unk4 = 0xFFFF;
+        p2->unk4[0] = PLAYER_NAME_END_CHAR;
     }
 
     gameState->unk374 = 0;
@@ -109,7 +109,7 @@ static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
         p2->unk11 = 0;
         p2->unk12 = 0;
         p2->unk13 = 0;
-        p2->unk4 = 0xFFFF;
+        p2->unk4[0] = PLAYER_NAME_END_CHAR;
     }
 
     saveData->unk370 = 0;
