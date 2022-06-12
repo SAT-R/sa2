@@ -596,7 +596,7 @@ static s16 CreateAndTryWriteNewSaveGame(void) {
     gd4->unk6 = prevUnk6;
     gd4->unk374 = prevUnk374;
 
-    memcpy(gd0, gd4, 0x378);
+    memcpy(gd0, gd4, sizeof(struct SaveGame));
 
     if ((gFlags & FLAGS_NO_FLASH_MEMORY)) {
         return 0;
@@ -691,9 +691,9 @@ static void GenerateCompletedSaveGame(struct SaveGame* data) {
 // Exported functions
 
 void SaveInit(void) {
-    gLoadedSaveGame = EwramMalloc(0x378);
-    gLastWrittenSaveGame = EwramMalloc(0x378);
-    gSaveSectorDataBuffer = EwramMalloc(0x378);
+    gLoadedSaveGame = EwramMallocStruct(struct SaveGame);
+    gLastWrittenSaveGame = EwramMallocStruct(struct SaveGame);
+    gSaveSectorDataBuffer =  EwramMallocStruct(struct SaveSectorData);
 
     // Why not just generate for 1 and copy...
     GenerateNewSaveGame(gLoadedSaveGame);
