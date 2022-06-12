@@ -4583,12 +4583,9 @@ struct UNK_8069978_UNK390_ROW {
     u8 unkE;
     u8 unkF;
     struct UNK_0808B3FC_UNK240 unk10[6];
-    struct UNK_0808B3FC_UNK240 unk130;
-    struct UNK_0808B3FC_UNK240 unk160;
-    struct UNK_0808B3FC_UNK240 unk190;
-    struct UNK_0808B3FC_UNK240 unk1C0;
-    struct UNK_0808B3FC_UNK240 unk1F0;
-    struct UNK_0808B3FC_UNK240 unk220;
+    struct UNK_0808B3FC_UNK240 unk130[2];
+    struct UNK_0808B3FC_UNK240 unk190[2];
+    struct UNK_0808B3FC_UNK240 unk1F0[2];
 }; /* size 0x250 */
 
 struct UNK_8069978_UNK390 {
@@ -4846,22 +4843,22 @@ void sub_8069EC4(s16 i) {
         temp1 += 6; 
 
         E60Val = &E60[unkD / 10];
-        sub_806A568(&row->unk130,0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk130[0],0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkD % 10];
-        sub_806A568(&row->unk160,0,E60Val->unk4,E60Val->unk0,0x2000,0x84,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk130[1],0,E60Val->unk4,E60Val->unk0,0x2000,0x84,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkE / 10];
-        sub_806A568(&row->unk190,0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk190[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkE % 10];
-        sub_806A568(&row->unk1C0,0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk190[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkF / 10];
-        sub_806A568(&row->unk1F0,0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk1F0[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkF % 10];
-        sub_806A568(&row->unk220,0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&row->unk1F0[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,temp1,0xD,E60Val->unk2,0);
     }
 }
 
@@ -4880,24 +4877,24 @@ void sub_806A0F4(void) {
                 m4aSongNumStart(SE_MENU_CURSOR_MOVE);
                 multiplayerRecordsScreen->unk3A5 = multiplayerRecordsScreen->unk3A6;
                 multiplayerRecordsScreen->unk3A4 = --multiplayerRecordsScreen->unk3A6;
+
                 gCurTask->main = sub_806A1D0;
                 return;
             }
-        } else {
-            if (gRepeatedKeys & DPAD_DOWN) {
-                if (multiplayerRecordsScreen->unk3A6 < 6) {
-                    rows = &rows[multiplayerRecordsScreen->unk3A6 + 4];
-                    if (rows->unkC) {
-                        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-                        multiplayerRecordsScreen->unk3A4 = multiplayerRecordsScreen->unk3A6;
-                        multiplayerRecordsScreen->unk3A5 = multiplayerRecordsScreen->unk3A6;
-                        multiplayerRecordsScreen->unk3A6++;
-                        gCurTask->main = sub_806A1D0;
-                        return;
-                    }   
-                } else {
-                    return;
-                }
+        } else if (gRepeatedKeys & DPAD_DOWN) {
+            if (multiplayerRecordsScreen->unk3A6 >= 6) {
+                return;
+            }
+            
+            rows = &rows[multiplayerRecordsScreen->unk3A6 + 4];
+            if (rows->unkC) {
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                multiplayerRecordsScreen->unk3A4 = multiplayerRecordsScreen->unk3A6;
+                multiplayerRecordsScreen->unk3A5 = multiplayerRecordsScreen->unk3A6;
+                multiplayerRecordsScreen->unk3A6++;
+
+                gCurTask->main = sub_806A1D0;
+                return;
             }
         }
     }
@@ -4905,5 +4902,145 @@ void sub_806A0F4(void) {
     if (gRepeatedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
         sub_806B7D0();
+    }
+}
+
+void sub_806A1D0(void) {
+    struct UNK_8069978_UNK390_ROW* row;
+    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    s16 pos, temp;
+    s16 numRows = 5;
+    s16 i, j;
+    multiplayerRecordsScreen->unk394++;
+
+    if (multiplayerRecordsScreen->unk3A6 < multiplayerRecordsScreen->unk3A5) {
+        temp = multiplayerRecordsScreen->unk394 * 2 + 72;
+    } else {
+        temp = 90 - (multiplayerRecordsScreen->unk394 * 2);
+    }
+    pos = temp;
+
+    if (multiplayerRecordsScreen->unk394 > 8) {
+        pos = 0x5A;
+        multiplayerRecordsScreen->unk3A4 = multiplayerRecordsScreen->unk3A6;
+    }
+
+    if (multiplayerRecordsScreen->unk3A4 == 6) { 
+        numRows--;
+    }
+
+    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A4];
+
+    for (i = 0; i < numRows; i++, pos += 18, row++) {
+        struct UNK_0808B3FC_UNK240* unk10, *unk130, *unk190, *unk1F0;
+        
+        unk10 = row->unk10;
+        for (j = 0; j < 6; j++, unk10++) {
+            unk10->unk18 = pos;
+        }
+
+        unk130 = row->unk130;
+        for (j = 0; j < 2; j++, unk130++) {
+            unk130->unk18 = pos + 6;
+        }
+
+        unk190 = row->unk190;
+        for (j = 0; j < 2; j++, unk190++) {
+            unk190->unk18 = pos + 6;
+        }
+
+        unk1F0 = row->unk1F0;
+        for (j = 0; j < 2; j++, unk1F0++) {
+            unk1F0->unk18 = pos + 6;
+        }
+    }
+
+    sub_806A348();
+
+    if (multiplayerRecordsScreen->unk394 > 8) {
+        multiplayerRecordsScreen->unk394 = 0;
+        gCurTask->main = sub_806A0F4;
+    }
+}
+
+void sub_806A348(void) {
+    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct UNK_0808B3FC_UNK240* unk8C = &multiplayerRecordsScreen->unk8C;
+    struct UNK_0808B3FC_UNK240* unkBC = &multiplayerRecordsScreen->unkBC;
+    struct UNK_0808B3FC_UNK240* unk14C = multiplayerRecordsScreen->unk14C;
+    struct UNK_0808B3FC_UNK240* unk26C = multiplayerRecordsScreen->unk26C;
+    struct UNK_0808B3FC_UNK240* unk2CC = multiplayerRecordsScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* unk32C = multiplayerRecordsScreen->unk32C;
+    struct UNK_8069978_UNK390* unk390 = multiplayerRecordsScreen->unk390;
+    
+    struct UNK_8069978_UNK390_ROW* row;
+    struct UNK_0808B3FC_UNK240* unkEC;
+
+    s16 i, j;
+    s16 numRows = 5;
+   
+
+    sub_80051E8(unk8C);
+    sub_80051E8(unkBC);
+
+    unkEC = multiplayerRecordsScreen->unkEC;
+    sub_8004558(unkEC);
+    unkEC++;
+    sub_8004558(unkEC);
+    unkEC--;
+
+    if (multiplayerRecordsScreen->unk3A6 != 0) {
+        sub_80051E8(unkEC);
+    }
+    unkEC++;
+    
+    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A6 + 4];
+    if (multiplayerRecordsScreen->unk3A6 < 6 && row->unkC) {
+        sub_80051E8(unkEC);
+    }
+
+    for (i = 0; i < 6; i++, unk14C++) {
+        sub_80051E8(unk14C);
+    }
+
+    for (i = 0; i < 2; i++, unk26C++) {
+        sub_80051E8(unk26C);
+    }
+
+    for (i = 0; i < 2; i++, unk2CC++) {
+        sub_80051E8(unk2CC);
+    }
+
+    for (i = 0; i < 2; i++, unk32C++) {
+        sub_80051E8(unk32C);
+    }
+
+    if (multiplayerRecordsScreen->unk3A4 == 6) {
+        numRows--;
+    }
+
+    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A4];
+
+    for (i = 0; i < numRows; i++, row++) {
+        if (!row->unkC) {
+            continue;
+        }
+
+        for (unk14C = row->unk10, j = 0; j < 6; j++, unk14C++) {
+            sub_80051E8(unk14C);
+        }
+
+        unk26C = row->unk130;
+        unk2CC = row->unk190;
+        unk32C = row->unk1F0;
+        sub_80051E8(unk26C);
+        ++unk26C;
+        sub_80051E8(unk26C);
+        sub_80051E8(unk2CC);
+        ++unk2CC;
+        sub_80051E8(unk2CC);
+        sub_80051E8(unk32C);
+        ++unk32C;
+        sub_80051E8(unk32C);
     }
 }
