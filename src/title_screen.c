@@ -223,8 +223,8 @@ extern void sub_8087FC0(void);
 extern void sub_805A1CC(void);
 extern void sub_8009F94(void);
 extern void sub_801A770(void);
-extern u32 sub_8007C10(u32);
-extern void sub_8007CF0(u32);
+extern void* sub_8007C10(u32);
+extern void sub_8007CF0(void*);
 
 // pallette?
 extern void sub_808DB2C(u8);
@@ -479,12 +479,13 @@ static void InitTitleScreenBackgrounds(struct TitleScreen* titleScreen) {
 static void InitTitleScreenUI(struct TitleScreen* titleScreen) {
     // Credit to @jiang for the match on this one too
     s8 language;
-    u32 menuItemId, objAddr;
+    u32 menuItemId;
+    void* objAddr;
     struct UNK_0808B3FC_UNK240 *config;
 
     // Must be 0 - 6;
     language = gLoadedSaveGame->unk6;
-    objAddr = OBJ_VRAM0;
+    objAddr = (void*)OBJ_VRAM0;
 
     // TODO: make these into macros maybe?
     config = &titleScreen->unkC0;

@@ -12,7 +12,7 @@
 #include "title_screen.h"
 
 extern void* gUnknown_03005B50;
-extern u32 gUnknown_03005B54;
+extern void* gUnknown_03005B54;
 
 struct UNK_8063730_UNK0 {
     // playerName
@@ -96,7 +96,7 @@ void sub_8063730(u16 p1) {
     optionsScreen->unk782 = 0xFF;
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     for (i = 0; i < 10; i++) {
         gKeysFirstRepeatIntervals[i] = 20;
@@ -190,7 +190,7 @@ void sub_80637EC(u16 p1, u16 p2) {
     memcpy(config->unk200, &gLoadedSaveGame->unk34, sizeof(struct TimeRecords));
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8068640();
     sub_8068700(config);
@@ -235,7 +235,7 @@ void sub_8063940_CreateProfileScreen(void) {
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_80668A8(config);
     sub_806B0AC(config);
@@ -320,7 +320,7 @@ void sub_8063A00(s16 p1) {
 
     config->unk258.unk152 = 0;
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8067420(config->unk3BA);
     sub_8067484(config);
@@ -460,7 +460,7 @@ extern const struct UNK_080D95E8 gUnknown_080D9798[6][2];
 extern const struct UNK_080D95E8 gUnknown_080D97F8[6][2];
 extern const struct UNK_080D95E8 gUnknown_080D9858[6];
 
-extern void sub_806A568(struct UNK_0808B3FC_UNK240 *, u8, u32, u16, u32, s16, s16, u16, u8, u8);
+void sub_806A568(struct UNK_0808B3FC_UNK240 *, s8, u32, u16, u32, s16, s16, u16, u8, u8);
 extern struct UNK_806B908 sub_806B908(u16);
 
 void sub_8063DCC(struct UNK_8063730* optionsScreen, s16 p2) {
@@ -871,7 +871,7 @@ void sub_80645E0(void) {
     sub_80649A4();
 
     if (++optionsScreen->unk783 > 15) {
-        gUnknown_03005B54 = 0;
+        gUnknown_03005B54 = NULL;
         gCurTask->main = sub_80641B0;
     }
 }
@@ -892,7 +892,7 @@ void sub_80646FC(void) {
     
     // TODO make this section a macro or a inline func
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = unk784;
+    gUnknown_03005B54 = NULL;
 
     sub_8063D20(optionsScreen, 0);
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
@@ -921,7 +921,7 @@ void sub_80647C8(void) {
     }
     
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = unk784;
+    gUnknown_03005B54 = NULL;
 
     sub_8063D20(optionsScreen, 0);
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
@@ -951,7 +951,7 @@ void sub_806489C(void) {
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     if (!optionsScreen->unk784) {
         sub_8063B38(optionsScreen);
@@ -1270,7 +1270,7 @@ static inline void sub_8064F1C_A(struct UNK_8064A40* state, struct UNK_802D4CC_U
     struct UNK_8063730* unk15C;
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8063D20(state->unk15C, 1);
     
@@ -2639,7 +2639,7 @@ void sub_8066CFC(struct UNK_8063730* optionsScreen) {
     config->unk143 = 0;
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8066D90(config);
     sub_806B258(config);
@@ -2954,7 +2954,7 @@ void sub_80672BC(struct UNK_8064A40* playerDataMenu) {
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8067420(config->unk3BA);
     sub_8067484(config);
@@ -3665,7 +3665,7 @@ void sub_8068198(struct UNK_8064A40* playerProfileMenu) {
     config->unk711 = 0;
     
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_80682AC();
     sub_80682EC(config);
@@ -3853,7 +3853,7 @@ void sub_8068524(struct UNK_8064A40* playerProfileMenu) {
     config->unk711 = 1;
     
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8068640();
     sub_8068700(config);
@@ -4481,7 +4481,7 @@ void sub_8069688(void) {
                 courseRecordsScreen->unk710 = 0;
                 courseRecordsScreen->unk711 = 0;
                 gUnknown_03005B50 = (void*)OBJ_VRAM0;
-                gUnknown_03005B54 = 0;
+                gUnknown_03005B54 = NULL;
 
                 sub_80682AC();
                 sub_80682EC(courseRecordsScreen);
@@ -4678,7 +4678,7 @@ void sub_8069978(struct UNK_8064A40* playerDataMenu) {
     }
 
     gUnknown_03005B50 = (void*)(OBJ_VRAM0);
-    gUnknown_03005B54 = 0;
+    gUnknown_03005B54 = NULL;
 
     sub_8069B40();
     sub_8069B88(config);

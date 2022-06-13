@@ -50,7 +50,7 @@ struct Unk_03002400 {
 struct UNK_0808B3FC_UNK240 {
     // These values are part of some other struct
     u32 unk0;
-    u32 unk4; // something vram
+    void* unk4; // something vram
 
     u16 unk8;
     u16 unkA;
@@ -79,7 +79,9 @@ struct UNK_0808B3FC_UNK240 {
     // focused
     u8 unk25;
 
-    u8 filler26[10];
+    u8 filler26[2];
+    s32 unk28;
+    u8 filler2C[4];
 } /* size = 0x30 */;
 
 struct Unk_03002EC0 {
