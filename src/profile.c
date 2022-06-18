@@ -71,8 +71,8 @@ struct UNK_8063730 {
 }; /* size 0x788 */
 
 // CreateOptionsScreen stuff
-extern void sub_806A75C(void);
-extern void sub_806A758(struct Task*);
+void sub_806A75C(void);
+void sub_806A758(struct Task*);
 static void sub_8063B38(struct UNK_8063730*);
 
 // CreateOptionsScreen
@@ -5157,3 +5157,353 @@ u16 sub_806A664(s16 a, u16 b) {
     return b;
 }
 #endif
+
+// OptionScreenTaskDestroyHandler
+void sub_806A758(struct Task* optionsScreenTask) {
+    // unimplemented
+}
+
+void sub_806A7E0(void);
+static void sub_806A794(struct UNK_8063730*);
+
+void sub_806A75C(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+
+    sub_8063D20(optionsScreen, 0);
+    sub_806A794(optionsScreen);
+    sub_8063DCC(optionsScreen, 0);
+    gCurTask->main = sub_806A7E0;
+}
+
+static void sub_806A794(struct UNK_8063730* optionsScreen) {
+    sub_806B854(&optionsScreen->unk364, 0, 7, 0x85, 0x1E, 0x14, 0, 0, 0, 0);
+    sub_806B854(&optionsScreen->unk3A4, 1, 0xE, 0x86, 0x1E, 0x14, 0, 1, 0, 0);
+}
+
+void sub_806A7E0(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        gCurTask->main = sub_80641B0;
+    }
+}
+
+void sub_806ADF4(struct UNK_8063730*);
+void sub_806AEB0(struct UNK_8063730*);
+
+void sub_806A814(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    switch (optionsScreen->unk780) {
+        case 0:
+            sub_8064A40(optionsScreen);
+            break;
+        case 1:
+            sub_806ADF4(optionsScreen);
+            break;
+        case 2:
+            sub_806AEB0(optionsScreen);
+            break;
+        case 3:
+            break;
+        case 4:
+            sub_8065B04(optionsScreen);
+            break;
+        case 5:
+        case 6:
+        case 7:
+            break;
+        
+    }
+    optionsScreen->unk783 = 0;
+    gCurTask->main = sub_80644C4;
+}
+
+void sub_806A8A8(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    if (optionsScreen->unk784 < 2) {
+        sub_80649A4();
+    }
+
+    if (optionsScreen->unk784 == 0) {
+        optionsScreen->unk783 = 0;
+        gCurTask->main = sub_80645E0;
+    }
+}
+
+void sub_806A91C(void);
+
+/** Menu 1 **/
+
+void sub_806A8EC(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806A91C;
+}
+
+void sub_806B02C(struct UNK_8063730*);
+void sub_806A91C(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        sub_806B02C(optionsScreen);
+        optionsScreen->unk784 = 1;
+        gCurTask->main = sub_80646FC;
+    }
+}
+
+void sub_806A968(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        gCurTask->main = sub_80641B0;
+    }   
+}
+
+void sub_806A9CC(void);
+
+/** Menu 2 **/
+
+void sub_806A99C(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806A9CC;
+}
+
+void sub_808A258(struct UNK_8063730*);
+
+void sub_806A9CC(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        sub_808A258(optionsScreen);
+        optionsScreen->unk784 = 1;
+        gCurTask->main = sub_80647C8;
+    }
+}
+
+void sub_806AA18(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        gCurTask->main = sub_80641B0;
+    }
+}
+
+
+void sub_806AA7C(void);
+/** Menu 3 **/
+
+void sub_806AA4C(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806AA7C;
+}
+
+void sub_806AA7C(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        sub_8066CFC(optionsScreen);
+        optionsScreen->unk784 = 1;
+        gCurTask->main = sub_806489C;
+    }
+}
+
+void sub_806AAC8(void) {
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
+    sub_80649A4();
+
+    if (sub_802D4CC(unk774)) {
+        gCurTask->main = sub_80641B0;
+    }
+}
+
+void sub_806AB2C(void);
+
+/** Player Data Menu 1 **/
+
+void sub_806AAFC(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806AB2C;
+}
+
+void sub_806AB2C(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
+    sub_806AD98();
+
+    if (sub_802D4CC(unk150)) {
+        sub_80672BC(playerDataMenu);
+        playerDataMenu->unk163 = 1;
+        playerDataMenu->unk15C->unk784 = 2;
+        gCurTask->main = sub_8064F1C;
+    }
+}
+
+void sub_806AB90(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
+    sub_806AD98();
+
+    if (sub_802D4CC(unk150)) {
+        gCurTask->main = sub_8064C44;
+    }
+}
+
+/** Player Data Menu 2 **/
+
+void sub_806ABC4(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_8065004;
+}
+
+void sub_806ABF4(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
+    sub_806AD98();
+
+    if (sub_802D4CC(unk150)) {
+        gCurTask->main = sub_8064C44;
+    }
+}
+
+void sub_806AC58(void);
+
+/** Player Data Menu 3 **/
+
+void sub_806AC28(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806AC58;
+}
+
+void sub_806AC58(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
+    sub_806AD98();
+
+    if (sub_802D4CC(unk150)) {
+        sub_8069978(playerDataMenu);
+        playerDataMenu->unk163 = 1;
+        playerDataMenu->unk15C->unk784 = 2;
+        gCurTask->main = sub_8065174;
+    }
+}
+
+void sub_806ACBC(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
+    sub_806AD98();
+
+    if (sub_802D4CC(unk150)) {
+        gCurTask->main = sub_8064C44;
+    }
+}
+
+void sub_806AD20(void);
+
+/** Menu 4 **/
+
+void sub_806ACF0(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
+    unk270->unk0 = 0;
+    unk270->unk2 = 1;
+    unk270->unk4 = 0;
+    unk270->unk6 = 0x100;
+    unk270->unkA = 0;
+    unk270->unk8 = 0xFF;
+
+    task->main = sub_806AD20;
+}
+
+void sub_8072484(void);
+
+void sub_806AD20(void) {
+    struct Task* task = gCurTask;
+
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
+    if (!sub_802D4CC(unk270)) {
+        sub_80649A4();
+    } else {
+        sub_8063C7C(optionsScreen);
+        WriteSaveGame();
+        TasksDestroyInPriorityRange(0, 0xFFFF);
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        CreateTitleScreenAtSinglePlayerMenu();
+    }
+}
