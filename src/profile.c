@@ -5044,3 +5044,116 @@ void sub_806A348(void) {
         sub_80051E8(unk32C);
     }
 }
+
+void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 a, u32 b, u16 c, u32 d, s16 e, s16 f, u16 g, u8 h, u8 i) {
+    void* temp,*temp2;
+    struct UNK_0808B3FC_UNK240 newObj;
+    struct UNK_0808B3FC_UNK240* ref;
+    ref = &newObj;
+   
+    if (obj != NULL) {
+        ref = obj;
+    }
+
+    if (a != 0) {    
+        if (gUnknown_03005B54 == NULL) {
+            gUnknown_03005B54 = gUnknown_03005B50;
+        }
+        ref->unk4 = gUnknown_03005B54;
+    } else {
+        ref->unk4 = gUnknown_03005B50;
+    }
+    
+    ref->unk8 = 0;
+    ref->unkA = c;
+    ref->unk10 = d;
+    ref->unk16 = e;
+    ref->unk18 = f;
+    ref->unk1A = g << 6;
+    ref->unk1C = 0;
+    ref->unk1E = 0xffff;
+    ref->unk20 = h;
+    ref->unk21 = 0xff;
+    ref->unk22 = 0x10;
+    ref->unk25 = i;
+    ref->unk28 = -1;
+
+    sub_8004558(ref);
+
+    switch(a) {
+        case 0:
+            gUnknown_03005B50 = gUnknown_03005B50 + b * 0x20;
+            gUnknown_03005B54 = NULL;
+            break;
+        case 1:
+            gUnknown_03005B54 = gUnknown_03005B54 + b * 0x20;
+            break;
+    }
+}
+
+extern const u16 gUnknown_080D95D2[2];
+extern const u16 gUnknown_080D95D6[8];
+extern const u16 gUnknown_080D95C4[2];
+extern const u16 gUnknown_080D95C8[5];
+
+#ifndef NON_MATCHING
+ASM_FUNC("asm/non_matching/sub_806A664.inc", u16 sub_806A664(s16 a, u16 b));
+#else
+// https://decomp.me/scratch/dyZVp
+// something weird in this one which I don't understand
+// may get it later
+u16 sub_806A664(s16 a, u16 b) {
+    u16 unk5D2[2];
+    u16 unk5D6[8];
+    u16 unk5C4[2];
+    u16 unk5C8[5];
+    u16* temp;
+    u32 temp2;
+    s16 i;
+
+    memcpy(unk5D2, gUnknown_080D95D2, 4);
+    memcpy(unk5D6, gUnknown_080D95D2, 16);
+    memcpy(unk5C4, gUnknown_080D95C4, 4);
+    memcpy(unk5C8, gUnknown_080D95C8, 10);
+
+    temp = unk5C4;
+    if (a == 1) {
+        temp = unk5C8;
+        if (b == 2) {
+            temp2 = 1; 
+        }
+    } else {
+        while (*temp != 0xFFFF) {
+            if (*temp <= b && b <= *temp + 4) {
+                temp2 = 1;
+                break;
+            }
+            temp++;
+        }
+        temp2 = 0;
+    }
+
+    if (temp2) {
+        if (a == 1) {
+            if (b == 2) {
+                b = 0x10B;
+            } else {
+                for (i = 0; i < 4; i++) {
+                    if (unk5D6[i * 2] <= b) {
+                        unk5D2[0] = unk5D6[i * 2];
+                        if (b <= unk5D2[0] + 4) {
+                            unk5D2[1] = unk5D6[i * 2 + 1];
+                            b = (b + unk5D2[1] - unk5D2[0]);
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (unk5D2[0] <= b && b <= unk5D2[0] + 4) {
+            b = (b + unk5D2[1] - unk5D2[0]);
+        }
+    }
+
+    return b;
+}
+#endif
