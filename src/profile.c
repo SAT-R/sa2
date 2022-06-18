@@ -5237,9 +5237,7 @@ void sub_806A91C(void);
 /** Menu 1 **/
 
 void sub_806A8EC(void) {
-    struct Task* task = gCurTask;
-
-    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5248,7 +5246,7 @@ void sub_806A8EC(void) {
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    task->main = sub_806A91C;
+    gCurTask->main = sub_806A91C;
 }
 
 void sub_806B02C(struct UNK_8063730*);
@@ -5322,9 +5320,7 @@ void sub_806AA7C(void);
 /** Menu 3 **/
 
 void sub_806AA4C(void) {
-    struct Task* task = gCurTask;
-
-    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5333,7 +5329,7 @@ void sub_806AA4C(void) {
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    task->main = sub_806AA7C;
+    gCurTask->main = sub_806AA7C;
 }
 
 void sub_806AA7C(void) {
@@ -5363,9 +5359,7 @@ void sub_806AB2C(void);
 /** Player Data Menu 1 **/
 
 void sub_806AAFC(void) {
-    struct Task* task = gCurTask;
-
-    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5374,7 +5368,7 @@ void sub_806AAFC(void) {
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    task->main = sub_806AB2C;
+    gCurTask->main = sub_806AB2C;
 }
 
 void sub_806AB2C(void) {
@@ -5403,9 +5397,7 @@ void sub_806AB90(void) {
 /** Player Data Menu 2 **/
 
 void sub_806ABC4(void) {
-    struct Task* task = gCurTask;
-
-    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5414,7 +5406,7 @@ void sub_806ABC4(void) {
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    task->main = sub_8065004;
+    gCurTask->main = sub_8065004;
 }
 
 void sub_806ABF4(void) {
@@ -5491,9 +5483,7 @@ void sub_806ACF0(void) {
 void sub_8072484(void);
 
 void sub_806AD20(void) {
-    struct Task* task = gCurTask;
-
-    struct UNK_8063730* optionsScreen = TaskGetStructPtr(task, optionsScreen);
+    struct UNK_8063730* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     if (!sub_802D4CC(unk270)) {
         sub_80649A4();
@@ -5507,3 +5497,85 @@ void sub_806AD20(void) {
         CreateTitleScreenAtSinglePlayerMenu();
     }
 }
+
+void sub_806AD98(void) {
+    struct UNK_8064A40* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+
+    struct UNK_0808B3FC_UNK240* unk0 = playerDataMenu->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = playerDataMenu->unk60;
+    struct UNK_0808B3FC_UNK240* unk120 = &playerDataMenu->unk120;
+
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk0++) {
+        sub_80051E8(unk0);
+    }
+
+    for (i = 0; i < 4; i++, unk60++) {
+        sub_80051E8(unk60);
+    }
+
+    sub_80051E8(unk120);
+}
+
+void sub_806ADF4(struct UNK_8063730* optionsScreen) {
+    struct Task* t = TaskCreate(sub_80653E4, 0xF8, 0x2000, 4, 0);
+    struct UNK_0806ADF4* state = TaskGetStructPtr(t, state);
+    
+    state->unk0 = optionsScreen;
+    state->unkF4 = optionsScreen->unk359;
+    state->unkF6 = optionsScreen->unk35B;
+    state->unkF5 = 0;
+
+    sub_806525C(state);
+}
+
+void sub_806AE54(void) {
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk4++) {
+        sub_80051E8(unk4);
+    }
+
+    for (i = 0; i < 2; i++, unk64++) {
+        sub_80051E8(unk64);
+    }
+
+    sub_80051E8(unkC4);
+}
+
+void sub_806AEB0(struct UNK_8063730* optionsScreen) {
+    struct Task* t = TaskCreate(sub_8065838, 0xF8, 0x2000, 4, 0);
+    struct UNK_0806ADF4* state = TaskGetStructPtr(t, state);
+
+    state->unk0 = optionsScreen;
+    state->unkF4 = optionsScreen->unk35A;
+    state->unkF6 = optionsScreen->unk35B;
+    state->unkF5 = 0;
+    sub_80656B0(state);
+}
+
+void sub_806AF10(void) {
+    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
+    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
+    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk4++) {
+        sub_80051E8(unk4);
+    }
+
+    for (i = 0; i < 2; i++, unk64++) {
+        sub_80051E8(unk64);
+    }
+
+    sub_80051E8(unkC4);
+}
+
