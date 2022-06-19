@@ -203,7 +203,7 @@ struct UNK_8063940 {
     struct UNK_0808B3FC_UNK240 unk0[2];
     struct UNK_0808B3FC_UNK240 unk60[6];
     struct UNK_0808B3FC_UNK240 unk180;
-    u8 filler1B0[64];
+    struct Unk_03002400 unk1B0;
     struct UNK_802D4CC_UNK270 unk1F0;
     // option screen
     struct UNK_8063730* unk1FC;
@@ -215,7 +215,7 @@ struct UNK_8063940 {
 
 extern void sub_806B0D8(void);
 void sub_80668A8(struct UNK_8063940*);
-extern void sub_806B0AC(struct UNK_8063940*);
+void sub_806B0AC(struct UNK_8063940*);
 void sub_8066930(struct UNK_8063940*);
 
 void sub_8063940_CreateProfileScreen(void) {
@@ -5579,3 +5579,66 @@ void sub_806AF10(void) {
     sub_80051E8(unkC4);
 }
 
+void sub_806AF6C(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+    
+    unk214->unk18 = 0x2A;
+    unk1B4->unk18 = 0x35;
+    unk1B4++;
+    unk1B4->unk18 = 0x35;
+
+    sub_8066818();
+    gCurTask->main = sub_8066004;
+}
+
+void sub_806AFAC(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+    
+    unk214->unk18 = 0x42;
+    unk1B4->unk18 = 0x4D;
+    unk1B4++;
+    unk1B4->unk18 = 0x4D;
+
+    sub_8066818();
+    gCurTask->main = sub_8066220;
+}
+
+void sub_806AFEC(void) {
+    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    
+    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+    
+    unk214->unk18 = 0x5A;
+    unk1B4->unk18 = 0xB4;
+    unk1B4++;
+    unk1B4->unk18 = 0xB4;
+
+    sub_8066818();
+    gCurTask->main = sub_8066478;
+}
+
+void sub_806B02C(struct UNK_8063730* optionScreen) {
+    struct Task* t = TaskCreate(sub_806B0D8, 0x204, 0x2000, 4, 0);
+    struct UNK_8063940* state = TaskGetStructPtr(t, state);
+
+    state->unk1FC = optionScreen;
+    state->unk200 = optionScreen->unk35B;
+    state->unk201 = 0;
+    gUnknown_03005B50 = (void*)(OBJ_VRAM0);
+    gUnknown_03005B54 = 0;
+
+    sub_80668A8(state);
+    sub_806B0AC(state);
+    sub_8066930(state);
+}
+
+void sub_806B0AC(struct UNK_8063940* languageSelectionScreen) {
+    sub_806B854(&languageSelectionScreen->unk1B0,0,7,0x86,0x1E,0x14,0,0,0,0);
+}
