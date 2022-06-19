@@ -213,7 +213,7 @@ struct UNK_8063940 {
     u8 unk202[2];
 }; /* size 0x204 */
 
-extern void sub_806B0D8(void);
+void sub_806B0D8(void);
 void sub_80668A8(struct UNK_8063940*);
 void sub_806B0AC(struct UNK_8063940*);
 void sub_8066930(struct UNK_8063940*);
@@ -2611,11 +2611,10 @@ void sub_8066C2C(void) {
 void sub_806B280(void);
 
 struct UNK_8066CFC {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30;
+    struct UNK_0808B3FC_UNK240 unk0[2];
     struct UNK_0808B3FC_UNK240 unk60[2];
     struct UNK_0808B3FC_UNK240 unkC0;
-    u8 fillerF0[64];
+    struct Unk_03002400 unk1F0;
     struct UNK_802D4CC_UNK270 unk130;
     struct UNK_8063730* unk13C; 
     s8 unk140;
@@ -2688,7 +2687,7 @@ void sub_8066E18(struct UNK_8066CFC* config) {
     s16 unk140 = config->unk140;
     
     sub_806A568(
-        &config->unk0,
+        &config->unk0[0],
         0,
         b40->unk4,
         b40->unk0,
@@ -2700,7 +2699,7 @@ void sub_8066E18(struct UNK_8066CFC* config) {
         0
     );
     sub_806A568(
-        &config->unk30,
+        &config->unk0[1],
         0,
         ba0->unk4,
         ba0->unk0,
@@ -2839,7 +2838,7 @@ void sub_8067148(void);
 void sub_806709C(void) {
     struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
 
-    struct UNK_0808B3FC_UNK240* unk0 = &state->unk0;
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
     struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
     struct UNK_0808B3FC_UNK240* unkC0 = &state->unkC0;
     const struct UNK_080D95E8* b70 = &gUnknown_080D9B70[state->unk142];
@@ -5641,4 +5640,123 @@ void sub_806B02C(struct UNK_8063730* optionScreen) {
 
 void sub_806B0AC(struct UNK_8063940* languageSelectionScreen) {
     sub_806B854(&languageSelectionScreen->unk1B0,0,7,0x86,0x1E,0x14,0,0,0,0);
+}
+
+void sub_806B0D8(void) {
+    struct UNK_8063940* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk1F0 = &state->unk1F0;
+
+    sub_806B1F8();
+    sub_806B1B8();
+
+    if (sub_802D4CC(unk1F0)) {
+        gCurTask->main = sub_8066B0C;
+    }
+}
+
+void sub_806B14C(void);
+void sub_806B110(void) {
+    struct UNK_8063940* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk1F0 = &state->unk1F0;
+    unk1F0->unk0 = 0;
+    unk1F0->unk2 = 1;
+    unk1F0->unk4 = 0;
+    unk1F0->unk6 = 0x100;
+    unk1F0->unkA = 0;
+    unk1F0->unk8 = 0xFF;
+
+    sub_802D4CC(unk1F0);
+    gCurTask->main = sub_806B14C;
+}
+
+void sub_806B14C(void) {
+    struct UNK_8063940* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk1F0 = &state->unk1F0;
+    sub_806B1B8();
+
+    if (!sub_802D4CC(unk1F0)) {
+        sub_806B1F8();
+    } else {
+        if (state->unk201 == 1) {
+            sub_8063A00(1);
+        } else {
+            state->unk1FC->unk784 = 0;
+        }
+        TaskDestroy(gCurTask);
+    }
+}
+
+// ReseedRng
+void sub_806B1B8(void) {
+    ShuffleRngSeed();
+}
+
+void sub_806B1F8(void) {
+    struct UNK_8063940* state = TaskGetStructPtr(gCurTask, state);
+    
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unk180 = &state->unk180;
+
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk0++) {
+        sub_80051E8(unk0);
+    }
+
+    for (i = 0; i < 6; i++, unk60++) {
+        sub_80051E8(unk60);
+    }
+
+    sub_80051E8(unk180);
+}
+
+void sub_806B258(struct UNK_8066CFC* state) {
+    sub_806B854(&state->unk1F0,0,7,0x86,0x1e,0x14,0,0,0,0);
+}
+
+void sub_806B280(void) {
+    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk130 = &state->unk130;
+    sub_806B2F8();
+    if (sub_802D4CC(unk130)) {
+        gCurTask->main = sub_8066FAC;
+    }
+}
+
+void sub_806B2B4(void) {
+    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_802D4CC_UNK270* unk130 = &state->unk130;
+
+    sub_806B2F8();
+
+    unk130->unk0 = 0;
+    unk130->unk2 = 1;
+    unk130->unk4 = 0;
+    unk130->unk6 = 0x100;
+    unk130->unkA = 0;
+    unk130->unk8 = 0xFF;
+
+    sub_802D4CC(unk130);
+    gCurTask->main = sub_806723C;
+}
+
+void sub_806B2F8(void) {
+    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+    
+    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
+    struct UNK_0808B3FC_UNK240* unkC0 = &state->unkC0;
+
+    s16 i;
+
+    for (i = 0; i < 2; i++, unk0++) {
+        sub_80051E8(unk0);
+    }
+
+    for (i = 0; i < 2; i++, unk60++) {
+        sub_80051E8(unk60);
+    }
+
+    sub_80051E8(unkC0);
 }
