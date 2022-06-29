@@ -13,4 +13,7 @@ extern u8 gGameMode;
 extern u8 gSelectedZone;
 extern u8 gSelectedCharacter;
 
+// Possibly CreateGameStage
+void sub_801A770(void);
+
 #endif // GUARD_GAME_H

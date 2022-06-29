@@ -10,6 +10,7 @@
 #include "constants/songs.h"
 #include "data.h"
 #include "title_screen.h"
+#include "game.h"
 
 extern void* gUnknown_03005B50;
 extern void* gUnknown_03005B54;
@@ -130,14 +131,21 @@ struct UNK_80637EC {
     struct UNK_0808B3FC_UNK240 unk284[3];
     struct UNK_80637EC_UNK314 unk314[3];
     u8 unk704;
+
+    // course
     u8 unk705;
+    // act
     u8 unk706;
+
     u8 unk707;
     u8 unk708;
     u8 unk709;
     u8 unk70A[5];
     u8 unk70F;
+
+    // isBossRecords
     u8 unk710;
+
     u8 unk711;
     u8 filler712[2];
 }; /* size 0x714 */
@@ -280,7 +288,7 @@ struct UNK_8063A00 {
     u8 unk3BB;
 }; /* size 0x3BC */
 
-extern void sub_806B354(void);
+void sub_806B354(void);
 extern void sub_8067420(s16);
 
 extern void sub_8067484(struct UNK_8063A00*);
@@ -5759,4 +5767,214 @@ void sub_806B2F8(void) {
     }
 
     sub_80051E8(unkC0);
+}
+
+void sub_806B354(void) {
+    struct UNK_8063A00* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
+
+    sub_8067F84();
+    if (sub_802D4CC(unk140)) {
+        profileNameScreen->unk3B8 = 0;
+        gCurTask->main = sub_80677EC;
+    }
+}
+
+/** Course Records Screen **/
+
+void sub_806B394(struct UNK_80637EC* courseRecordsScreen) {
+    courseRecordsScreen->unk707 = 0;
+    courseRecordsScreen->unk710 = 0;
+    courseRecordsScreen->unk711 = 0;
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = NULL;
+
+    sub_80682AC();
+    sub_80682EC(courseRecordsScreen);
+    sub_806834C(courseRecordsScreen);
+
+    gCurTask->main = sub_806B3F0;
+}
+
+
+void sub_806B3F0(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    sub_806B4F8();
+    if (sub_802D4CC(unk0)) {
+        gCurTask->main = sub_8068474;
+    }
+}
+
+void sub_806B454(void);
+
+void sub_806B424(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    unk0->unk0 = 0;
+    unk0->unk2 = 1;
+    unk0->unk4 = 0;
+    unk0->unk6 = 0x100;
+    unk0->unkA = 0;
+    unk0->unk8 = 0xFF;
+
+    gCurTask->main = sub_806B454;
+}
+
+void sub_806B454(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+    struct UNK_8064A40* playerProfileMenu = courseRecordsScreen->unk1FC;
+
+    if (!sub_802D4CC(unk0)) {
+        sub_806B4F8();
+    } else {
+        playerProfileMenu->unk163 = 0;
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_806B4C8(void);
+
+void sub_806B498(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    unk0->unk0 = 0;
+    unk0->unk2 = 1;
+    unk0->unk4 = 0;
+    unk0->unk6 = 0x100;
+    unk0->unkA = 0;
+    unk0->unk8 = 0xFF;
+
+    gCurTask->main = sub_806B4C8;
+}
+
+void sub_806B558(struct UNK_80637EC*);
+
+void sub_806B4C8(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    if (!sub_802D4CC(unk0)) {
+        sub_806B4F8();
+    } else {
+        sub_806B558(courseRecordsScreen);
+    }
+}
+
+void sub_806B4F8(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+
+    struct UNK_0808B3FC_UNK240* unk10C = &courseRecordsScreen->unk10C;
+    struct UNK_0808B3FC_UNK240* unk13C = courseRecordsScreen->unk13C;
+    struct UNK_0808B3FC_UNK240* unk4C = courseRecordsScreen->unk4C;
+    s16 i;
+
+    sub_80051E8(unk10C);
+
+    for (i = 0; i < 2; i++, unk4C++) {
+        sub_80051E8(unk4C);
+    }
+
+    for (i = 0; i < 2; i++, unk13C++) {
+        sub_8004558(unk13C);
+        sub_80051E8(unk13C);
+    }
+}
+
+void sub_806B558(struct UNK_80637EC* courseRecordsScreen) {
+    courseRecordsScreen->unk711 = 0;
+    gUnknown_03005B50 = (void*)OBJ_VRAM0;
+    gUnknown_03005B54 = NULL;
+
+    sub_8068640();
+    sub_8068700(courseRecordsScreen);
+    sub_80687BC(courseRecordsScreen);
+
+    gCurTask->main = sub_806B5A4;
+}
+
+void sub_806B5CC(void);
+
+void sub_806B5A4(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    sub_8068A94(courseRecordsScreen);
+
+    gCurTask->main = sub_806B5CC;
+}
+
+void sub_806B5CC(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+    sub_806979C(0);
+    
+    if (sub_802D4CC(unk0)) {
+        courseRecordsScreen->unk707 = 0;
+        gCurTask->main = sub_8069208;
+    }
+}
+
+void sub_806B60C(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_0808B3FC_UNK240* unkDC = &courseRecordsScreen->unkAC[1];
+
+    const struct UNK_080D95E8* unk5E8 = &gUnknown_080D9F40[courseRecordsScreen->unk706];
+
+    unkDC->unkA = unk5E8->unk0;
+    unkDC->unk20 = unk5E8->unk2;
+
+    sub_8004558(unkDC);
+    sub_8068D94(courseRecordsScreen);
+    sub_806979C(0);
+
+    courseRecordsScreen->unk707 = 0;
+    gCurTask->main = sub_8069110;
+}
+
+void sub_806B6B4(void);
+
+void sub_806B684(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    unk0->unk0 = 0;
+    unk0->unk2 = 1;
+    unk0->unk4 = 0;
+    unk0->unk6 = 0x100;
+    unk0->unkA = 0;
+    unk0->unk8 = 0xFF;
+
+    gCurTask->main = sub_806B6B4;
+}
+
+void sub_806B6B4(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0; 
+
+    if (!sub_802D4CC(unk0)) {
+        sub_806979C(0);
+    } else {
+        gSelectedZone = courseRecordsScreen->unk705 * 4 + (courseRecordsScreen->unk710 ? 2 : courseRecordsScreen->unk706);
+
+        EwramFree(courseRecordsScreen->unk200);
+        TaskDestroy(gCurTask);
+        sub_801A770();
+    }
+}
+
+void sub_806B730(void) {
+    struct UNK_80637EC* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
+    struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
+
+    unk0->unk0 = 0;
+    unk0->unk2 = 1;
+    unk0->unk4 = 0;
+    unk0->unk6 = 0x100;
+    unk0->unkA = 0;
+    unk0->unk8 = 0xFF;
+
+    gCurTask->main = sub_8069688;
 }

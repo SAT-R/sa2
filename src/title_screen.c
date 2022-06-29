@@ -222,7 +222,6 @@ extern void sub_8087FC0(void);
 
 extern void sub_805A1CC(void);
 extern void sub_8009F94(void);
-extern void sub_801A770(void);
 extern void* sub_8007C10(u32);
 extern void sub_8007CF0(void*);
 
