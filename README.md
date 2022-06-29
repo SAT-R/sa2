@@ -17,10 +17,10 @@ It so far builds the following ROM:
 
 ### Current state
 
-- Assembly code [extracted and dissembled](./asm/)
+- Assembly code [extracted and disassembled](./asm/)
 - Some assembly code categorised
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, and part of the title screen has been decompiled
+- Initialisation of game state, main task logic, save game logic, whole title screen (including intro), and most of the profile options have been decompiled
 - All songs have been extracted to [matching MIDI files](./sound/songs/midi)
 - :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
 
@@ -30,8 +30,14 @@ It so far builds the following ROM:
 
 You must have a copy of the Sonic Advance 2 (USA) ROM named `baserom.gba` in the repository directory.
 
-**Install build requirements**
 
+**Dev container**
+
+If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup.
+
+
+**Install build requirements** *(without dev container)*
+ 
 On Linux systems
 ```
 sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev
