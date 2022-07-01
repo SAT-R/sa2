@@ -7,68 +7,6 @@
 @; Unlikely to all be profile but a large section
 @; but a large section seems to relate to it
 
-	thumb_func_start sub_806BA14
-sub_806BA14: @ 0x0806BA14
-	push {r4, r5, r6, lr}
-	sub sp, #0x10
-	adds r4, r0, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	ldr r1, _0806BA50 @ =gUnknown_080D95C4
-	mov r0, sp
-	movs r2, #4
-	bl memcpy
-	add r6, sp, #4
-	ldr r1, _0806BA54 @ =gUnknown_080D95C8
-	adds r0, r6, #0
-	movs r2, #0xa
-	bl memcpy
-	lsls r4, r4, #0x10
-	asrs r4, r4, #0x10
-	mov r1, sp
-	cmp r4, #1
-	bne _0806BA44
-	adds r1, r6, #0
-_0806BA44:
-	cmp r4, #1
-	bne _0806BA58
-	cmp r5, #2
-	bne _0806BA58
-_0806BA4C:
-	movs r0, #1
-	b _0806BA76
-	.align 2, 0
-_0806BA50: .4byte gUnknown_080D95C4
-_0806BA54: .4byte gUnknown_080D95C8
-_0806BA58:
-	ldrh r0, [r1]
-	ldr r2, _0806BA80 @ =0x0000FFFF
-	cmp r0, r2
-	beq _0806BA74
-_0806BA60:
-	cmp r5, r0
-	blo _0806BA6C
-	ldrh r0, [r1]
-	adds r0, #4
-	cmp r5, r0
-	ble _0806BA4C
-_0806BA6C:
-	adds r1, #2
-	ldrh r0, [r1]
-	cmp r0, r2
-	bne _0806BA60
-_0806BA74:
-	movs r0, #0
-_0806BA76:
-	add sp, #0x10
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0806BA80: .4byte 0x0000FFFF
-
 	thumb_func_start sub_806BA84
 sub_806BA84: @ 0x0806BA84
 	push {r4, r5, r6, r7, lr}
