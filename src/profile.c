@@ -43,11 +43,11 @@ static void sub_8067610(struct ProfileNameScreen*);
 static void sub_8067710(struct ProfileNameScreen*);
 
 static void sub_80649A4(void);
-static void sub_806A99C(void);
-static void sub_806A8EC(void);
-static void sub_806AA4C(void);
-static void sub_806ACF0(void);
-static void sub_806A814(void);
+static void OptionScreenShowSoundTestScreen(void);
+static void OptionScreenShowLanguageScreen(void);
+static void OptionScreenShowDeleteGameDataScreen(void);
+static void OptionScreenHandleExit(void);
+static void OptionsScreenOpenSelectedSubMenu(void);
 static void sub_8064304(void);
 
 static void sub_806A8A8(void);
@@ -66,6 +66,48 @@ static void sub_806AAFC(void);
 static void sub_806AC28(void);
 static void sub_8064E6C(void);
 
+static void sub_806AB90(void);
+static void sub_8068198(struct PlayerDataMenu*);
+static void sub_8068524(struct PlayerDataMenu*);
+static void sub_806508C(void);
+
+static void sub_806ABF4(void);
+static void sub_806ACBC(void);
+static void sub_806AE54(void);
+static void sub_806548C(void);
+
+static void sub_80655FC(void);
+static void sub_806AF10(void);
+static void sub_80658E0(void);
+
+static void sub_8065A50(void);
+static void sub_8065F04(void);
+static void RenderButtonConfigMenuUI(struct ButtonConfigMenu*);
+static void sub_8066818(void);
+static void sub_8066004(void);
+static void sub_806AFAC(void);
+static void sub_8066718(void);
+static void sub_80665D8(void);
+static void sub_806AFEC(void);
+static void sub_806AF6C(void);
+
+static void sub_8066818(void);
+static void sub_806B1B8(void);
+static void sub_8066C2C(void);
+static void sub_806B1F8(void);
+static void sub_806B110(void);
+
+static void sub_806B280(void);
+static void sub_8066D90(struct DeleteGameDataScreen*);
+static void sub_806B258(struct DeleteGameDataScreen*);
+static void sub_8066E18(struct DeleteGameDataScreen*);
+
+static void sub_806B2F8(void);
+static void sub_806709C(void);
+static void sub_806B2B4(void);
+
+static void sub_8067148(void);
+
 #define OPTIONS_MENU_ITEM_PLAYER_DATA 0
 #define OPTIONS_MENU_ITEM_DIFFICULTY 1
 #define OPTIONS_MENU_ITEM_TIME_LIMIT 2
@@ -75,23 +117,47 @@ static void sub_8064E6C(void);
 #define OPTIONS_MENU_ITEM_DELETE_GAME_DATA 6
 #define OPTIONS_MENU_ITEM_EXIT 7
 
+#define OPTIONS_META_ITEM_PLAYER_NAME 0
+#define OPTIONS_META_ITEM_DIFFICULTY_LEVEL 1
+#define OPTIONS_META_ITEM_TIME_LIMIT 2
+#define OPTIONS_META_ITEM_LANGUAGE 3
+
 #define PLAYER_DATA_MENU_ITEM_CHANGE_NAME 0
 #define PLAYER_DATA_MENU_ITEM_TIME_RECORDS 1
 #define PLAYER_DATA_MENU_ITEM_VS_RECORDS 2
 #define PLAYER_DATA_MENU_ITEM_EXIT 3
 
-extern const struct UNK_080D95E8 gUnknown_080D95E8[6];
-extern const struct UNK_080D95E8 gUnknown_080D9618[6][8];
-extern const struct UNK_080D95E8 gUnknown_080D9798[6][2];
-extern const struct UNK_080D95E8 gUnknown_080D97F8[6][2];
-extern const struct UNK_080D95E8 gUnknown_080D9858[6];
+extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
+extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
+extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
+extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
+extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
+extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
+extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
+extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
+
 extern const s16 gUnknown_080D9550[8];
 extern const s8 gUnknown_080D9540[2][8];
 extern const s16 gUnknown_080D9570[8];
 
-extern const struct UNK_080D95E8 gUnknown_080D9C30[6];
-extern const struct UNK_080D95E8 gUnknown_080D9C60[6];
-extern const struct UNK_080D95E8 gUnknown_080D9C90[6][4];
+extern const struct UNK_080D95E8 sPlayerDataMenuTitleText[6];
+extern const struct UNK_080D95E8 sPlayerDataMenuControlsText[6];
+extern const struct UNK_080D95E8 sPlayerDataMenuItemsText[6][4];
+extern const struct UNK_080D95E8 sDifficultyMenuTitleText[6];
+extern const struct UNK_080D95E8 sDifficultyMenuControlsText[6];
+extern const struct UNK_080D95E8 sTimeLimitMenuTitleText[6];
+extern const struct UNK_080D95E8 sTimeLimitMenuControlsText[6];
+
+extern const struct UNK_080D95E8 gUnknown_080D9A80[6];
+extern const struct UNK_080D95E8 gUnknown_080D9AE0[6];
+extern const struct UNK_080D95E8 gUnknown_080D9B10[6];
+extern const struct UNK_080D95E8 gUnknown_080D9AB0[6];
+
+extern const struct UNK_080D95E8 gUnknown_080D9B40[6];
+extern const struct UNK_080D95E8 gUnknown_080D9BA0[6];
+extern const struct UNK_080D95E8 gUnknown_080D9BD0[6][2];
+
+extern const struct UNK_080D95E8 gUnknown_080D9B70[6];
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -125,12 +191,9 @@ void CreateOptionsScreen(u16 p1) {
 // and selecting a time attack course is the same
 // so this is within the profile source.
 void CreateCourseRecordsScreen(u16 p1, u16 p2) {
+    struct Task* t = TaskCreate(sub_806B5A4, sizeof(struct CourseRecordsScreen), 0x2000, TASK_x0004, 0);
+    struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(t, courseRecordsScreen);
     s16 i;
-    struct Task* t;
-    struct CourseRecordsScreen* courseRecordsScreen;
-
-    t = TaskCreate(sub_806B5A4, 0x714, 0x2000, TASK_x0004, 0);
-    courseRecordsScreen = TaskGetStructPtr(t, courseRecordsScreen);
 
     for (i = 1; i < 5; i++) {
         if (!GetBit(gLoadedSaveGame->unk13, i)) {
@@ -180,11 +243,11 @@ void CreateNewProfileScreen(void) {
     languageScreen = TaskGetStructPtr(t, languageScreen);
 
     languageScreen->optionsScreen = NULL;
-    languageScreen->language = gLoadedSaveGame->unk6 - 1;
-    languageScreen->unk201 = 1;
+    languageScreen->menuCursor = gLoadedSaveGame->unk6 - 1;
+    languageScreen->creatingNewProfile = TRUE;
 
-    if ((u8)languageScreen->language >= NUM_LANGUAGES) {
-        languageScreen->language = 1;
+    if ((u8)languageScreen->menuCursor >= NUM_LANGUAGES) {
+        languageScreen->menuCursor = 1;
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
@@ -195,7 +258,7 @@ void CreateNewProfileScreen(void) {
     sub_8066930(languageScreen);
 }
 
-void CreateProfileNameScreen(s16 p1) {
+void CreateNewProfileNameScreen(s16 mode) {
     struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, 0);
     struct ProfileNameScreen* config = TaskGetStructPtr(t, config);
     s16 i;
@@ -203,7 +266,7 @@ void CreateProfileNameScreen(s16 p1) {
     config->unk14C = NULL;
     config->unk3BA = gLoadedSaveGame->unk6 - 1;
     
-    config->unk3BB = p1 == 1 ? 2 : 1;
+    config->onCompleteAction = mode == NEW_PROFILE_NAME_START_GAME ? 2 : 1;
     config->unk252 = 0;
 
     if (config->unk3BA == 0) {
@@ -236,9 +299,10 @@ void CreateProfileNameScreen(s16 p1) {
 }
 
 static void GetProfileData(struct OptionsScreen* optionsScreen) {
-    s16 i;
     struct SaveGame* saveGame = gLoadedSaveGame;
     struct OptionsScreenProfileData* profile = &optionsScreen->profileData;
+
+    s16 i;
 
     memcpy(profile->playerName, saveGame->unk20, sizeof(saveGame->unk20));
     memcpy(&profile->unkC, &saveGame->unk34, sizeof(saveGame->unk34));
@@ -248,10 +312,10 @@ static void GetProfileData(struct OptionsScreen* optionsScreen) {
     profile->unk34D = saveGame->unk1D;
     profile->unk34E = saveGame->unk1E;
 
-    memcpy(&profile->unk350, &saveGame->unk2C, 8);
+    memcpy(&profile->buttonConfig, &saveGame->unk2C, 8);
 
-    optionsScreen->unk359 = saveGame->unk4;
-    optionsScreen->unk35A = saveGame->unk5;
+    optionsScreen->difficultyLevel = saveGame->unk4;
+    optionsScreen->timeLimitEnabled = saveGame->unk5;
     optionsScreen->language = saveGame->unk6 - 1;
     optionsScreen->soundTestUnlocked = saveGame->unk11;
     optionsScreen->unk35D = saveGame->unk12;
@@ -267,16 +331,16 @@ static void GetProfileData(struct OptionsScreen* optionsScreen) {
         profile->playerName[i] = PLAYER_NAME_END_CHAR;
     }
 
-    if (optionsScreen->unk359 > 1) {
-        optionsScreen->unk359 = 0;
+    if (optionsScreen->difficultyLevel > 1) {
+        optionsScreen->difficultyLevel = 0;
     }
 
-    if (optionsScreen->unk35A > 1) {
-        optionsScreen->unk35A = 0;
+    if (optionsScreen->timeLimitEnabled > 1) {
+        optionsScreen->timeLimitEnabled = 0;
     }
 
     if (optionsScreen->language > 5) {
-        optionsScreen->language = 1;
+        optionsScreen->language = LANG_ENGLISH - 1;
     }
 
     if (optionsScreen->soundTestUnlocked > 1) {
@@ -301,10 +365,10 @@ static void SetProfileData(struct OptionsScreen* optionsScreen) {
     saveGame->unk1D = profile->unk34D;
     saveGame->unk1E = profile->unk34E;
 
-    memcpy(&saveGame->unk2C, &profile->unk350, 8);
+    memcpy(&saveGame->unk2C, &profile->buttonConfig, 8);
 
-    saveGame->unk4 = optionsScreen->unk359;
-    saveGame->unk5 = optionsScreen->unk35A;
+    saveGame->unk4 = optionsScreen->difficultyLevel;
+    saveGame->unk5 = optionsScreen->timeLimitEnabled;
     saveGame->unk6 = optionsScreen->language + 1;
     saveGame->unk11 = optionsScreen->soundTestUnlocked;
     saveGame->unk12 = optionsScreen->unk35D;
@@ -346,34 +410,35 @@ static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 p2) {
 }
 
 static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
-    struct UNK_806B908 nameCharTile;
-
     u8 language = optionsScreen->language;
-    struct UNK_0808B3FC_UNK240 *option3E4 = &optionsScreen->unk3E4;
+
+    struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
     struct UNK_0808B3FC_UNK240 *menuItem = optionsScreen->menuItems;
-    struct UNK_0808B3FC_UNK240 *options594 = optionsScreen->unk594;
-    struct UNK_0808B3FC_UNK240 *options654 = optionsScreen->unk654;
+    struct UNK_0808B3FC_UNK240 *metaItem = optionsScreen->metaItems;
+    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar = optionsScreen->playerNameDisplay;
+
+    struct UNK_806B908 nameCharTile;
     s16 i, xPos, yPos;
 
     {
-        const struct UNK_080D95E8 *itemText = &gUnknown_080D95E8[language];
+        const struct UNK_080D95E8 *titleText = &sOptionsScreenTitleText[language];
         sub_806A568(
-            option3E4, 
+            title, 
             0, 
-            itemText->unk4,
-            itemText->unk0,
+            titleText->unk4,
+            titleText->unk0,
             0x3000,
             0, 
             0xF,
             0xF,
-            itemText->unk2,
+            titleText->unk2,
             0
         );
     }
 
     for (i = 0, yPos = 0x1E; i < NUM_OPTIONS_MENU_ITEMS; i++, menuItem++) {
         if (optionsScreen->soundTestUnlocked || i != OPTIONS_MENU_ITEM_SOUND_TEST) {
-            const struct UNK_080D95E8 *itemText = &gUnknown_080D9618[language][i];
+            const struct UNK_080D95E8 *itemText = &sOptionsScreenMenuItemsText[language][i];
 
             if (optionsScreen->menuCursor == i) {
                 xPos = 0x20;
@@ -406,72 +471,72 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
             xPos = -0x40;
         }
         sub_806A568(
-            options594, 
+            metaItem, 
             0, 
             0x12,
             0x3BA,
             0x3000,
             xPos, 
-            0x1E,
+            30,
             0xC,
             0,
             0
         );
-        ++options594;
+        ++metaItem;
     }
 
     {
-        const struct UNK_080D95E8 *itemText = &gUnknown_080D9798[language][optionsScreen->unk359];
-        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_DIFFICULTY ? 0x98 : 0xa0;
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][optionsScreen->difficultyLevel];
+        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_DIFFICULTY ? 152 : 160;
     
         sub_806A568(
-            options594, 
+            metaItem, 
             0, 
-            itemText->unk4,
-            itemText->unk0,
+            difficultyLevelText->unk4,
+            difficultyLevelText->unk0,
             0x3000,
             xPos, 
-            0x2D,
+            45,
             10,
-            itemText->unk2,
+            difficultyLevelText->unk2,
             0
         );
-        ++options594;
+        ++metaItem;
     }
 
     {
-        const struct UNK_080D95E8 *itemText = &gUnknown_080D97F8[language][optionsScreen->unk35A];
-        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_TIME_LIMIT ? 0x98 : 0xa0;
+        const struct UNK_080D95E8 *timeLimitSwitchText = &sTimeLimitMenuSwitchValues[language][optionsScreen->timeLimitEnabled];
+        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_TIME_LIMIT ? 152 : 160;
     
         sub_806A568(
-            options594, 
+            metaItem, 
             0, 
-            itemText->unk4,
-            itemText->unk0,
+            timeLimitSwitchText->unk4,
+            timeLimitSwitchText->unk0,
             0x3000,
             xPos, 
             0x3C,
             10,
-            itemText->unk2,
+            timeLimitSwitchText->unk2,
             0
         );
-        ++options594;
+        ++metaItem;
     }
 
     {
-        const struct UNK_080D95E8 *itemText = &gUnknown_080D9858[language];
-        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_LANGUAGE ? 0x98 : 0xa0;
+        const struct UNK_080D95E8 *languageText = &sOptionsScreenSelectedLanguageText[language];
+        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_LANGUAGE ? 152 : 160;
     
         sub_806A568(
-            options594, 
+            metaItem, 
             0, 
-            itemText->unk4,
-            itemText->unk0,
+            languageText->unk4,
+            languageText->unk0,
             0x3000,
             xPos, 
             0x4B,
             10,
-            itemText->unk2,
+            languageText->unk2,
             0
         );
     }
@@ -479,12 +544,12 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
         bool32 finishedReadingName;
         u16 nameChar;
 
-        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 0xA3 : 0xAB;
+        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 163 : 171;
         if (p2 == 1 && i == 0) {
             xPos = -0x35;
         }
 
-        for (i = 0, yPos = 0x26, finishedReadingName = FALSE; i < MAX_PLAYER_NAME_LENGTH; i++, options654++, xPos += 10) {
+        for (i = 0, yPos = 0x26, finishedReadingName = FALSE; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++, xPos += 10) {
             if (finishedReadingName) {
                 nameChar = 0x11;
             } else {
@@ -498,7 +563,7 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
 
             nameCharTile = sub_806B908(nameChar);
             sub_806A568(
-                options654, 
+                playerNameDisplayChar, 
                 0, 
                 nameCharTile.unk0,
                 nameCharTile.unk4,
@@ -509,36 +574,34 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
                 nameCharTile.unk6,
                 0
             );
-            options654->unk25 = optionsScreen->menuCursor == 0 ? 7 : 8;
+            playerNameDisplayChar->unk25 = optionsScreen->menuCursor == 0 ? 7 : 8;
         }
     }
-    {
-        options594 = optionsScreen->unk594;
-        menuItem = optionsScreen->menuItems;
-        for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++) {        
-            if (optionsScreen->menuCursor == i) {
-                menuItem->unk25 = 0;
-            } else {
-                menuItem->unk25 = 1;
-            }
 
-            ++menuItem;
-            if (i > 3) continue;
-
-            if (optionsScreen->menuCursor == i) {
-                options594->unk25 = 0;
-            } else {
-                options594->unk25 = 1;
-            }
-            ++options594;
+    metaItem = optionsScreen->metaItems;
+    menuItem = optionsScreen->menuItems;
+    for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++) {        
+        if (optionsScreen->menuCursor == i) {
+            menuItem->unk25 = 0;
+        } else {
+            menuItem->unk25 = 1;
         }
+
+        ++menuItem;
+        if (i > 3) continue;
+
+        if (optionsScreen->menuCursor == i) {
+            metaItem->unk25 = 0;
+        } else {
+            metaItem->unk25 = 1;
+        }
+        ++metaItem;
     }
-    {
-        sub_806A568(NULL, 0, 0, 0x3c4, 0, 0, 0, 0, 0, 0);
-        sub_806A568(NULL, 0, 0, 0x3c4, 0, 0, 0, 0, 1, 0);
-        sub_806A568(NULL, 0, 0, 0x3c3, 0, 0, 0, 0, 0xc, 0);
-        sub_806A568(NULL, 0, 0, 0x3c3, 0, 0, 0, 0, 0xd, 0);
-    }
+
+    sub_806A568(NULL, 0, 0, 0x3c4, 0, 0, 0, 0, 0, 0);
+    sub_806A568(NULL, 0, 0, 0x3c4, 0, 0, 0, 0, 1, 0);
+    sub_806A568(NULL, 0, 0, 0x3c3, 0, 0, 0, 0, 0xc, 0);
+    sub_806A568(NULL, 0, 0, 0x3c3, 0, 0, 0, 0, 0xd, 0);
 }
 
 static void Task_OptionScreen(void) {
@@ -550,28 +613,28 @@ static void Task_OptionScreen(void) {
         m4aSongNumStart(SE_SELECT);
         switch(optionsScreen->menuCursor) {
             case OPTIONS_MENU_ITEM_LANGUAGE:
-                sub_806A8EC();
+                OptionScreenShowLanguageScreen();
                 return;
             case OPTIONS_MENU_ITEM_SOUND_TEST:
                 // SoundTest
-                sub_806A99C();
+                OptionScreenShowSoundTestScreen();
                 return;
             case OPTIONS_MENU_ITEM_DELETE_GAME_DATA:
-                sub_806AA4C();
+                OptionScreenShowDeleteGameDataScreen();
                 return;
             case OPTIONS_MENU_ITEM_EXIT:
-                sub_806ACF0();
+                OptionScreenHandleExit();
                 return;
             default:
                 // For other menu items we can just handle this generically
-                sub_806A814();
+                OptionsScreenOpenSelectedSubMenu();
                 return;
         }
     }
 
     if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
-        sub_806ACF0();
+        OptionScreenHandleExit();
         return;
     }
 
@@ -615,52 +678,52 @@ static void Task_OptionScreen(void) {
 }
 
 static inline void sub_8064304_A(struct OptionsScreen* optionsScreen, s8 subMenuAnimPos) {
-    s16 xPos;
+    s16 baseXPos;
     struct UNK_0808B3FC_UNK240* item;
 
     optionsScreen->subMenuXPos = subMenuAnimPos;
-    xPos = subMenuAnimPos;
+    baseXPos = subMenuAnimPos;
 
     item = &optionsScreen->menuItems[optionsScreen->menuCursor];
-    item->unk16 = xPos + 32;
+    item->unk16 = baseXPos + 32;
     item->unk25 = 0;
 
     if (optionsScreen->menuCursor < 4) {
-        item = &optionsScreen->unk594[optionsScreen->menuCursor];
-        item->unk16 = xPos + 152;
+        item = &optionsScreen->metaItems[optionsScreen->menuCursor];
+        item->unk16 = baseXPos + 152;
         item->unk25 = 0;
 
         if (optionsScreen->menuCursor == 0) {
             s16 i;
-            struct UNK_0808B3FC_UNK240* item = optionsScreen->unk654;
+            struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
             
             for (i = 0; i < 6; i++, item++) {
-                item->unk16 = xPos + (i * 10 + 163);
+                item->unk16 = baseXPos + (i * 10 + 163);
                 item->unk25 = 7;                    
             }
         }
     }
 
-    xPos = -0xD8 - xPos;
-    gBgScrollRegs[2][0] = xPos;    
+    baseXPos = -216 - baseXPos;
+    gBgScrollRegs[2][0] = baseXPos;    
 }
 
-static inline void sub_8064304_B(struct OptionsScreen* optionsScreen, s8 temp1) {
+static inline void sub_8064304_B(struct OptionsScreen* optionsScreen, s8 baseXPos) {
     struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->unk781];
 
-    item->unk16 = temp1 + 0x20;
+    item->unk16 = baseXPos + 32;
     item->unk25 = 1;
 
     if (optionsScreen->unk781 < 4) {
-        item = &optionsScreen->unk594[optionsScreen->unk781];
-        item->unk16 = temp1 + 0x98;
+        item = &optionsScreen->metaItems[optionsScreen->unk781];
+        item->unk16 = baseXPos + 152;
         item->unk25 = 1;
 
         if (optionsScreen->unk781 == 0) {
             s16 i;
-            struct UNK_0808B3FC_UNK240* item = optionsScreen->unk654;
+            struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
             for (i = 0; i < 6; i++, item++) {
-                item->unk16 = temp1 + (i * 10 + 0xA3);
+                item->unk16 = baseXPos + (i * 10 + 163);
                 item->unk25 = 8;
             }
         }
@@ -682,29 +745,30 @@ static void sub_8064304(void) {
 }
 
 static inline void sub_80644C4_A(struct OptionsScreen* optionsScreen, const s16* transitionFrames) {
-    s16 xPos = optionsScreen->subMenuXPos = transitionFrames[optionsScreen->transitionFrame];
+    s16 baseXPos = optionsScreen->subMenuXPos = transitionFrames[optionsScreen->transitionFrame];
     struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->menuCursor];
-    item->unk16 = xPos + 0x20;
+
+    item->unk16 = baseXPos + 32;
     item->unk25 = 0;
 
     if (optionsScreen->menuCursor < 4) {
-        struct UNK_0808B3FC_UNK240* item = &optionsScreen->unk594[optionsScreen->menuCursor];
-        item->unk16 = xPos + 0x98;
+        struct UNK_0808B3FC_UNK240* item = &optionsScreen->metaItems[optionsScreen->menuCursor];
+        item->unk16 = baseXPos + 152;
         item->unk25 = 0;
 
         if (optionsScreen->menuCursor == 0) {
             s16 i;
-            struct UNK_0808B3FC_UNK240* item = optionsScreen->unk654;
+            struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
             
             for (i = 0; i < 6; i++, item++) {
-                item->unk16 = xPos + (i * 10 + 0xA3);
+                item->unk16 = baseXPos + (i * 10 + 163);
                 item->unk25 = 7;                    
             }
         }
     }
 
-    xPos = -0xD8 - xPos;
-    gBgScrollRegs[2][0] = xPos; 
+    baseXPos = -216 - baseXPos;
+    gBgScrollRegs[2][0] = baseXPos; 
 }
 
 static void sub_80644C4(void) {
@@ -825,39 +889,39 @@ static void sub_806489C(void) {
 
 static void sub_80649A4(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
-    struct UNK_0808B3FC_UNK240 *option3E4 = &optionsScreen->unk3E4;
-    struct UNK_0808B3FC_UNK240 *options414 = optionsScreen->menuItems;
-    struct UNK_0808B3FC_UNK240 *options594 = optionsScreen->unk594;
-    struct UNK_0808B3FC_UNK240 *options654 = optionsScreen->unk654;
+    struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
+    struct UNK_0808B3FC_UNK240 *menuItem = optionsScreen->menuItems;
+    struct UNK_0808B3FC_UNK240 *metaItem = optionsScreen->metaItems;
+    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar = optionsScreen->playerNameDisplay;
     s16 i;
 
-    sub_80051E8(option3E4);
+    sub_80051E8(title);
 
-    for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++, options414++) {
-        if ((optionsScreen->soundTestUnlocked || i != OPTIONS_MENU_ITEM_SOUND_TEST) && (sub_80051E8(options414), i < 4)) {
-            sub_80051E8(options594);
-            options594++;
+    for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++, menuItem++) {
+        if ((optionsScreen->soundTestUnlocked || i != OPTIONS_MENU_ITEM_SOUND_TEST) && (sub_80051E8(menuItem), i < 4)) {
+            sub_80051E8(metaItem);
+            metaItem++;
         }
     }
 
-    for (i = 0; i < 6; i++, options654++) {
-        sub_80051E8(options654);
+    for (i = 0; i < 6; i++, playerNameDisplayChar++) {
+        sub_80051E8(playerNameDisplayChar);
     }
 }
 
-static void sub_8064A40(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_8064C44, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, 0);
+static void CreatePlayerDataMenu(struct OptionsScreen* optionsScreen) {
+    struct Task* t = TaskCreate(sub_8064C44, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(t, playerDataMenu);
 
-    s16 unk160;
+    s16 initialCursorIndex;
     if (optionsScreen->unk782 != -1) {
-        unk160 = optionsScreen->unk782; 
+        initialCursorIndex = optionsScreen->unk782; 
     } else {
-        unk160 = 0;
+        initialCursorIndex = 0;
     }
 
     playerDataMenu->optionsScreen = optionsScreen;
-    playerDataMenu->menuCursor = unk160;
+    playerDataMenu->menuCursor = initialCursorIndex;
     playerDataMenu->unk161 = 0;
     playerDataMenu->language = optionsScreen->language;
 
@@ -869,9 +933,9 @@ static void RenderPlayerDataMenuUI(struct PlayerDataMenu* playerDataMenu) {
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
     struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
     
-    const struct UNK_080D95E8 *titleText = &gUnknown_080D9C30[playerDataMenu->language];
-    const struct UNK_080D95E8 *footerText = &gUnknown_080D9C60[playerDataMenu->language];
-    const struct UNK_080D95E8 *menuItemText = gUnknown_080D9C90[playerDataMenu->language];
+    const struct UNK_080D95E8 *titleText = &sPlayerDataMenuTitleText[playerDataMenu->language];
+    const struct UNK_080D95E8 *footerText = &sPlayerDataMenuControlsText[playerDataMenu->language];
+    const struct UNK_080D95E8 *menuItemText = sPlayerDataMenuItemsText[playerDataMenu->language];
     
     s16 baseXPos = playerDataMenu->optionsScreen->subMenuXPos;
     s16 menuCursor = playerDataMenu->menuCursor;
@@ -942,12 +1006,12 @@ static void RenderPlayerDataMenuUI(struct PlayerDataMenu* playerDataMenu) {
 }
 
 static void sub_8064C44(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* headerFooter = state->headerFooter;
-    struct UNK_0808B3FC_UNK240* menuItem = state->menuItems;
-    struct UNK_0808B3FC_UNK240* menuItemOutline = &state->menuItemOutline;
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
+    struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
     
-    s16 baseXPos = state->optionsScreen->subMenuXPos;
+    s16 baseXPos = playerDataMenu->optionsScreen->subMenuXPos;
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
@@ -962,8 +1026,8 @@ static void sub_8064C44(void) {
 
     sub_806AD98();
 
-    if (++state->unk161 > 0xF) {
-        state->unk161 = 0;
+    if (++playerDataMenu->unk161 > 15) {
+        playerDataMenu->unk161 = 0;
         gCurTask->main = Task_OptionsPlayerDataMenuMain;
     }
 }
@@ -1031,12 +1095,12 @@ static void Task_OptionsPlayerDataMenuMain(void) {
 }
 
 static void sub_8064E6C(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* headerFooter = state->headerFooter;
-    struct UNK_0808B3FC_UNK240* menuItem = state->menuItems;
-    struct UNK_0808B3FC_UNK240* menuItemOutline = &state->menuItemOutline;
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
+    struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
     
-    s16 baseXPos = state->optionsScreen->subMenuXPos;
+    s16 baseXPos = playerDataMenu->optionsScreen->subMenuXPos;
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
@@ -1049,29 +1113,28 @@ static void sub_8064E6C(void) {
     
     menuItemOutline->unk16 = baseXPos + 254;
 
-    if (++state->unk161 < 15) {
+    if (++playerDataMenu->unk161 < 15) {
         sub_806AD98();
     } else {
         TaskDestroy(gCurTask);
     }
 }
 
-void sub_806AB90(void);
 
-static inline void sub_8064F1C_A(struct PlayerDataMenu* state, struct UNK_802D4CC_UNK270* unk150) {
-    struct OptionsScreen* unk15C;
+static inline void sub_8064F1C_A(struct PlayerDataMenu* playerDataMenu, struct UNK_802D4CC_UNK270* unk150) {
+    struct OptionsScreen* optionsScreen;
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = NULL;
 
-    sub_8063D20(state->optionsScreen, 1);
+    sub_8063D20(playerDataMenu->optionsScreen, 1);
     
-    unk15C = state->optionsScreen;
-    sub_806B854(&unk15C->unk364,0,7,0x85,0x1E,0x14,0,0,0,0);
-    sub_806B854(&unk15C->unk3A4,1,0xE, 0x86,0x1E,0x14,0,1,0,0);
+    optionsScreen = playerDataMenu->optionsScreen;
+    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1E,0x14,0,0,0,0);
+    sub_806B854(&optionsScreen->unk3A4,1,0xE, 0x86,0x1E,0x14,0,1,0,0);
     
-    sub_8063DCC(state->optionsScreen, 1);
-    RenderPlayerDataMenuUI(state);
+    sub_8063DCC(playerDataMenu->optionsScreen, 1);
+    RenderPlayerDataMenuUI(playerDataMenu);
 
     unk150->unk0 = 0;
     unk150->unk2 = 2;
@@ -1080,220 +1143,193 @@ static inline void sub_8064F1C_A(struct PlayerDataMenu* state, struct UNK_802D4C
     unk150->unkA = 0;
     unk150->unk8 = 0xFF;
 
-    state->optionsScreen->unk784 = 1;
+    playerDataMenu->optionsScreen->unk784 = 1;
 }
 
-void sub_8064F1C(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk150 = &state->unk150;
+static void sub_8064F1C(void) {
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
-    if (state->unk163 == 0) {
-        sub_8064F1C_A(state, unk150);
+    if (playerDataMenu->unk163 == 0) {
+        sub_8064F1C_A(playerDataMenu, unk150);
         gCurTask->main = sub_806AB90;
     }
 }
 
-void sub_8068198(struct PlayerDataMenu*);
-void sub_8068524(struct PlayerDataMenu*);
-static void sub_806508C(void);
-
 void sub_8065004(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk150 = &state->unk150;
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     sub_806AD98();
 
     if (sub_802D4CC(unk150)) {
-        if (state->optionsScreen->unk35D) {
-            sub_8068198(state);
+        if (playerDataMenu->optionsScreen->unk35D) {
+            sub_8068198(playerDataMenu);
         } else {
-            sub_8068524(state);
+            sub_8068524(playerDataMenu);
         }
-        state->unk163 = 1;
-        state->optionsScreen->unk784 = 2;
+        playerDataMenu->unk163 = 1;
+        playerDataMenu->optionsScreen->unk784 = 2;
 
         gCurTask->main = sub_806508C;
     }
 }
 
-void sub_806ABF4(void);
-
 static void sub_806508C(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk150 = &state->unk150;
-    struct OptionsScreen* unk15C;
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
-    if (state->unk163 == 0) {
-        sub_8064F1C_A(state, unk150);
+    if (playerDataMenu->unk163 == 0) {
+        sub_8064F1C_A(playerDataMenu, unk150);
         gCurTask->main = sub_806ABF4;
     }
 }
 
-void sub_806ACBC(void);
+static void sub_8065174(void) {
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
-void sub_8065174(void) {
-    struct PlayerDataMenu* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk150 = &state->unk150;
-    struct OptionsScreen* unk15C;
-
-    if (state->unk163 == 0) {
-        sub_8064F1C_A(state, unk150);
+    if (playerDataMenu->unk163 == 0) {
+        sub_8064F1C_A(playerDataMenu, unk150);
         gCurTask->main = sub_806ACBC;
     }
 }
 
-struct UNK_0806ADF4 {
-    struct OptionsScreen* unk0;
-    struct UNK_0808B3FC_UNK240 unk4[2];
-    struct UNK_0808B3FC_UNK240 unk64[2];
-    struct UNK_0808B3FC_UNK240 unkC4;
-    s8 unkF4;
-    s8 unkF5;
-    s8 unkF6;
-    u8 unkF7;
-}; /* size 0xF8 */
+/** Switch Menus **/
 
-extern const struct UNK_080D95E8 gUnknown_080D9888[6];
-extern const struct UNK_080D95E8 gUnknown_080D98B8[6];
+static void RenderDifficultyMenuUI(struct SwitchMenu* difficultyMenu) {
+    struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
 
-void sub_806525C(struct UNK_0806ADF4* state) {
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
-
-    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9888[state->unkF6];
-    const struct UNK_080D95E8 *itemText2 = &gUnknown_080D98B8[state->unkF6];
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D9798[state->unkF6];
+    const struct UNK_080D95E8 *titleText = &sDifficultyMenuTitleText[difficultyMenu->language];
+    const struct UNK_080D95E8 *footerText = &sDifficultyMenuControlsText[difficultyMenu->language];
+    const struct UNK_080D95E8 *difficultyLevelText = sDifficultyLevelSwitchValues[difficultyMenu->language];
     
-    s16 unk360 = state->unk0->subMenuXPos;
-    s16 unkF4 = state->unkF4;
+    s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
+    s16 difficultyLevel = difficultyMenu->switchValue;
     s16 i;
 
     sub_806A568(
-        unk4,
+        headerFooter,
         1,
-        itemText1->unk4,
-        itemText1->unk0,
+        titleText->unk4,
+        titleText->unk0,
         0x1000,
-        unk360 + 336,
-        0x32,
+        baseXPos + 336,
+        50,
         8,
-        itemText1->unk2,
+        titleText->unk2,
         0
     );
 
-    unk4++;
+    headerFooter++;
     sub_806A568(
-        unk4,
+        headerFooter,
         1,
-        itemText2->unk4,
-        itemText2->unk0,
+        footerText->unk4,
+        footerText->unk0,
         0x1000,
-        unk360 + 336,
-        0x74,
+        baseXPos + 336,
+        116,
         8,
-        itemText2->unk2,
+        footerText->unk2,
         0
     );
     
+    // Normal
     sub_806A568(
-        unk64,
+        difficultyOption,
         1,
-        itemText3->unk4,
-        itemText3->unk0,
+        difficultyLevelText->unk4,
+        difficultyLevelText->unk0,
         0x1000,
-        unk360 + 0x112,
-        0x4C,
+        baseXPos + 274,
+        76,
         8,
-        itemText3->unk2,
+        difficultyLevelText->unk2,
         0
     );
 
-    unk64++;
-    itemText3++;
+    difficultyOption++;
+    difficultyLevelText++;
+    // Easy
     sub_806A568(
-        unk64,
+        difficultyOption,
         1,
-        itemText3->unk4,
-        itemText3->unk0,
+        difficultyLevelText->unk4,
+        difficultyLevelText->unk0,
         0x1000,
-        unk360 + 0x14E,
-        0x4C,
+        baseXPos + 334,
+        76,
         8,
-        itemText3->unk2,
+        difficultyLevelText->unk2,
         0
     );
 
     sub_806A568(
-        unkC4,
+        switchValueOutline,
         1,
         0x12,
         0x3b8,
         0x1000,
-        unkF4 * 0x3C + 0x110,
-        0x4c,
+        difficultyLevel * 60 + 272,
+        76,
         7,
         3,
         0
     );
 
-    for (i = 0, unk64 = state->unk64; i < 2; i++, unk64++) {
-        unk64->unk25 = !!(unkF4 ^ i);
+    for (i = 0, difficultyOption = difficultyMenu->options; i < 2; i++, difficultyOption++) {
+        difficultyOption->unk25 = !!(difficultyLevel ^ i);
     }
 } 
 
-void sub_806AE54(void);
-void sub_806548C(void);
-
 void sub_80653E4(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
     
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i;
 
-    for (i = 0; i < 2; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x150;
+    for (i = 0; i < 2; i++, headerFooter++) {
+        headerFooter->unk16 = baseXPos + 336;
     }
 
-    unk64->unk16 = unk360 + 0x112;
-    unk64++;
-    unk64->unk16 = unk360 + 0x14E;
+    difficultyOption->unk16 = baseXPos + 274;
+    difficultyOption++;
+    difficultyOption->unk16 = baseXPos + 334;
     
-    unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+    switchValueOutline->unk16 = baseXPos + (difficultyMenu->switchValue * 60 + 272);
     sub_806AE54();
 
-    if (++state->unkF5 > 0xF) {
-        state->unkF5 = 0;
+    if (++difficultyMenu->unkF5 > 15) {
+        difficultyMenu->unkF5 = 0;
         gCurTask->main = sub_806548C;
     }
 }
 
-void sub_80655FC(void);
+static void sub_806548C(void) {
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
+    struct OptionsScreen* optionsScreen = difficultyMenu->optionsScreen;
 
-void sub_806548C(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* menuItem = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
-    struct OptionsScreen* parent = state->unk0;
-
-    s16 unk360 = parent->subMenuXPos;
-    s16 language = state->unkF6;
+    s16 baseXPos = optionsScreen->subMenuXPos;
+    s16 language = difficultyMenu->language;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        state->unkF4 = state->unkF4 == 0;
+        difficultyMenu->switchValue = difficultyMenu->switchValue == 0;
 
-        i = 0;
-        while (i < 2) {
-            menuItem->unk25 = !!(state->unkF4 ^ i);
-            i++;
-            menuItem++;
+       
+        for (i = 0; i < 2; i++, difficultyOption++) {
+            difficultyOption->unk25 = !!(difficultyMenu->switchValue ^ i);
         }
 
-        unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+        switchValueOutline->unk16 = baseXPos + (difficultyMenu->switchValue * 60 + 272);
     }
 
     sub_806AE54();
@@ -1303,197 +1339,192 @@ void sub_806548C(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *itemText3 = &gUnknown_080D9798[language][state->unkF4];
-        menuItem = &parent->unk594[1];
-        
-        menuItem->unk20 = itemText3->unk2;
-        menuItem->unkA = itemText3->unk0;
-        sub_8004558(menuItem);
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][difficultyMenu->switchValue];
+
+        difficultyOption = &optionsScreen->metaItems[1];
+        difficultyOption->unk20 = difficultyLevelText->unk2;
+        difficultyOption->unkA = difficultyLevelText->unk0;
+        sub_8004558(difficultyOption);
+
         m4aSongNumStart(SE_SELECT);
-        parent->unk359 = state->unkF4;
-        parent->unk784 = 0;
+
+        optionsScreen->difficultyLevel = difficultyMenu->switchValue;
+        optionsScreen->unk784 = 0;
         gCurTask->main = sub_80655FC;
-    } else if ((gPressedKeys & B_BUTTON)) {
+        return;
+    } 
+    
+    if ((gPressedKeys & B_BUTTON)) {
         m4aSongNumStart(SE_RETURN);
-        parent->unk784 = 0;
+        optionsScreen->unk784 = 0;
         gCurTask->main = sub_80655FC;
     }
 }
 
-void sub_80655FC(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+static void sub_80655FC(void) {
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
 
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 unk360 = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i = 0;
 
     while (i < 2) {
-        unk4->unk16 = unk360 + 0x150;
+        headerFooter->unk16 = unk360 + 0x150;
         i++;
-        unk4++;
+        headerFooter++;
     }
 
-    unk64->unk16 = unk360 + 0x112;
-    unk64++;
-    unk64->unk16 = unk360 + 0x14E;
+    difficultyOption->unk16 = unk360 + 0x112;
+    difficultyOption++;
+    difficultyOption->unk16 = unk360 + 0x14E;
 
-    unkC4->unk16 = state->unkF4 * 0x3C + 0x110 + unk360;
+    switchValueOutline->unk16 = difficultyMenu->switchValue * 0x3C + 0x110 + unk360;
 
-    if (++state->unkF5 < 0xF) {
+    if (++difficultyMenu->unkF5 < 0xF) {
         sub_806AE54();
     } else {
         TaskDestroy(gCurTask);
     }
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D98E8[6];
-extern const struct UNK_080D95E8 gUnknown_080D9918[6];
-
-void sub_80656B0(struct UNK_0806ADF4* state) {
+static void RenderTimeLimitMenuUI(struct SwitchMenu* timeLimitMenu) {
     // same function as sub_806525C
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+    struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
 
-    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D98E8[state->unkF6];
-    const struct UNK_080D95E8 *itemText2 = &gUnknown_080D9918[state->unkF6];
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D97F8[state->unkF6];
+    const struct UNK_080D95E8 *titleText = &sTimeLimitMenuTitleText[timeLimitMenu->language];
+    const struct UNK_080D95E8 *footerText = &sTimeLimitMenuControlsText[timeLimitMenu->language];
+    const struct UNK_080D95E8 *timeLimitSwitchText = sTimeLimitMenuSwitchValues[timeLimitMenu->language];
 
-    s16 unk360 = state->unk0->subMenuXPos;
-    s16 unkF4 = state->unkF4;
+    s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
+    s16 timeLimitEnabled = timeLimitMenu->switchValue;
     s16 i;
     
-
     // TODO: can these be a macro?
     sub_806A568(
-        unk4,
+        headerFooter,
         1,
-        itemText1->unk4,
-        itemText1->unk0,
+        titleText->unk4,
+        titleText->unk0,
         0x1000,
-        unk360 + 336,
-        0x32,
+        baseXPos + 336,
+        50,
         8,
-        itemText1->unk2,
+        titleText->unk2,
         0
     );
 
-    unk4++;
+    headerFooter++;
     sub_806A568(
-        unk4,
+        headerFooter,
         1,
-        itemText2->unk4,
-        itemText2->unk0,
+        footerText->unk4,
+        footerText->unk0,
         0x1000,
-        unk360 + 336,
-        0x74,
+        baseXPos + 336,
+        116,
         8,
-        itemText2->unk2,
+        footerText->unk2,
         0
     );
     
+    // On
     sub_806A568(
-        unk64,
+        timeLimitOption,
         1,
-        itemText3->unk4,
-        itemText3->unk0,
+        timeLimitSwitchText->unk4,
+        timeLimitSwitchText->unk0,
         0x1000,
-        unk360 + 0x112,
-        0x4C,
+        baseXPos + 274,
+        76,
         8,
-        itemText3->unk2,
+        timeLimitSwitchText->unk2,
         0
     );
 
-    unk64++;
-    itemText3++;
+    timeLimitOption++;
+    timeLimitSwitchText++;
+    // Off
     sub_806A568(
-        unk64,
+        timeLimitOption,
         1,
-        itemText3->unk4,
-        itemText3->unk0,
+        timeLimitSwitchText->unk4,
+        timeLimitSwitchText->unk0,
         0x1000,
-        unk360 + 0x14E,
-        0x4C,
+        baseXPos + 334,
+        76,
         8,
-        itemText3->unk2,
+        timeLimitSwitchText->unk2,
         0
     );
 
     sub_806A568(
-        unkC4,
+        switchValueOutline,
         1,
         0x12,
         0x3b8,
         0x1000,
-        unkF4 * 0x3C + 0x110,
-        0x4c,
+        timeLimitEnabled * 60 + 272,
+        76,
         7,
         3,
         0
     );
 
-    for (i = 0, unk64 = state->unk64; i < 2; i++, unk64++) {
-        unk64->unk25 = !!(unkF4 ^ i);
+    for (i = 0, timeLimitOption = timeLimitMenu->options; i < 2; i++, timeLimitOption++) {
+        timeLimitOption->unk25 = !!(timeLimitEnabled ^ i);
     }
 }
 
-void sub_806AF10(void);
-void sub_80658E0(void);
-
-void sub_8065838(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+static void sub_8065838(void) {
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
     
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
     s16 i;
 
-    for (i = 0; i < 2; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x150;
+    for (i = 0; i < 2; i++, headerFooter++) {
+        headerFooter->unk16 = baseXPos + 336;
     }
 
-    unk64->unk16 = unk360 + 0x112;
-    unk64++;
-    unk64->unk16 = unk360 + 0x14E;
+    timeLimitOption->unk16 = baseXPos + 274;
+    timeLimitOption++;
+    timeLimitOption->unk16 = baseXPos + 334;
     
-    unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+    switchValueOutline->unk16 = baseXPos + (timeLimitMenu->switchValue * 60 + 272);
     sub_806AF10();
 
-    if (++state->unkF5 > 0xF) {
-        state->unkF5 = 0;
+    if (++timeLimitMenu->unkF5 > 15) {
+        timeLimitMenu->unkF5 = 0;
         gCurTask->main = sub_80658E0;
     }
 }
 
-void sub_8065A50(void);
-
-void sub_80658E0(void) {
+static void sub_80658E0(void) {
     // Same as sub_806548C
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* menuItem = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
-    struct OptionsScreen* parent = state->unk0;
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
+    struct OptionsScreen* optionsScreen = timeLimitMenu->optionsScreen;
 
-    s16 unk360 = parent->subMenuXPos;
-    s16 language = state->unkF6;
+    s16 baseXPos = optionsScreen->subMenuXPos;
+    s16 language = timeLimitMenu->language;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        state->unkF4 = state->unkF4 == 0;
-
-        i = 0;
-        while (i < 2) {
-            menuItem->unk25 = !!(state->unkF4 ^ i);
-            i++;
-            menuItem++;
+        timeLimitMenu->switchValue = timeLimitMenu->switchValue == 0;
+       
+        for (i = 0; i < 2; i++, timeLimitOption++) {
+            timeLimitOption->unk25 = !!(timeLimitMenu->switchValue ^ i);
         }
 
-        unkC4->unk16 = unk360 + (state->unkF4 * 0x3C + 0x110);
+        switchValueOutline->unk16 = baseXPos + (timeLimitMenu->switchValue * 60 + 272);
     }
 
     sub_806AF10();
@@ -1503,131 +1534,112 @@ void sub_80658E0(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *itemText3 = &gUnknown_080D97F8[language][state->unkF4];
+        const struct UNK_080D95E8 *itemText3 = &sTimeLimitMenuSwitchValues[language][timeLimitMenu->switchValue];
         // Except this is different
-        menuItem = &parent->unk594[2];
+        timeLimitOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_TIME_LIMIT];
         
-        menuItem->unk20 = itemText3->unk2;
-        menuItem->unkA = itemText3->unk0;
-        sub_8004558(menuItem);
+        timeLimitOption->unk20 = itemText3->unk2;
+        timeLimitOption->unkA = itemText3->unk0;
+        sub_8004558(timeLimitOption);
         m4aSongNumStart(SE_SELECT);
         // and this
-        parent->unk35A = state->unkF4;
-        parent->unk784 = 0;
+        optionsScreen->timeLimitEnabled = timeLimitMenu->switchValue;
+        optionsScreen->unk784 = 0;
         gCurTask->main = sub_8065A50;
     } else if ((gPressedKeys & B_BUTTON)) {
         m4aSongNumStart(SE_RETURN);
-        parent->unk784 = 0;
+        optionsScreen->unk784 = 0;
         gCurTask->main = sub_8065A50;
     }
 }
 
-void sub_8065A50(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+static void sub_8065A50(void) {
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* timeLimitOption = difficultyMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
 
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i;
 
-    for (i = 0; i < 2; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x150;
+    for (i = 0; i < 2; i++, headerFooter++) {
+        headerFooter->unk16 = baseXPos + 336;
     }
 
-    unk64->unk16 = unk360 + 0x112;
-    unk64++;
-    unk64->unk16 = unk360 + 0x14E;
+    timeLimitOption->unk16 = baseXPos + 274;
+    timeLimitOption++;
+    timeLimitOption->unk16 = baseXPos + 334;
 
-    unkC4->unk16 = state->unkF4 * 0x3C + 0x110 + unk360;
+    switchValueOutline->unk16 = difficultyMenu->switchValue * 60 + 272 + baseXPos;
 
-    if (++state->unkF5 < 0xF) {
+    if (++difficultyMenu->unkF5 < 15) {
         sub_806AF10();
     } else {
         TaskDestroy(gCurTask);
     }
 }
 
-struct UNK_8065B04 {
-    struct OptionsScreen* unk0;
-    struct UNK_0808B3FC_UNK240 unk4[6];
-    struct UNK_0808B3FC_UNK240 unk124[3];
-    struct UNK_0808B3FC_UNK240 unk1B4[2];
-    struct UNK_0808B3FC_UNK240 unk214;
-    u8 unk244;
-    u8 unk245;
-    u8 unk246;
-    u8 unk247;
-    s8 unk248;
-    s8 unk249;
-}; /* size 0x24C */
+/** Button Config Menu **/
 
-void sub_8065F04(void);
-void sub_8065C28(struct UNK_8065B04*);
+void CreateButtonConfigMenu(struct OptionsScreen* optionsScreen) {
+    struct Task* t = TaskCreate(sub_8065F04, sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(t, buttonConfigMenu);
 
-void sub_8065B04(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_8065F04, 0x24C, 0x2000, 4, 0);
-    struct UNK_8065B04* state = TaskGetStructPtr(t, state);
-
-    state->unk0 = optionsScreen;
+    buttonConfigMenu->optionsScreen = optionsScreen;
     
-    switch(optionsScreen->profileData.unk350.unk0) {
+    switch(optionsScreen->profileData.buttonConfig.unk0) {
         case 1:
-            state->unk244 = 0;
+            buttonConfigMenu->unk244 = 0;
             break;
         case 2:
-            state->unk245 = 0;
+            buttonConfigMenu->unk245 = 0;
             break;
         case 0x100:
-            state->unk246 = 0;
+            buttonConfigMenu->unk246 = 0;
             break;
     }
 
-    switch(optionsScreen->profileData.unk350.unk2) {
+    switch(optionsScreen->profileData.buttonConfig.unk2) {
         case 1:
-            state->unk244 = 1;
+            buttonConfigMenu->unk244 = 1;
             break;
         case 2:
-            state->unk245 = 1;
+            buttonConfigMenu->unk245 = 1;
             break;
         case 0x100:
-            state->unk246 = 1;
+            buttonConfigMenu->unk246 = 1;
             break;
     }
 
-    switch(optionsScreen->profileData.unk350.unk4) {
+    switch(optionsScreen->profileData.buttonConfig.unk4) {
         case 1:
-            state->unk244 = 2;
+            buttonConfigMenu->unk244 = 2;
             break;
         case 2:
-            state->unk245 = 2;
+            buttonConfigMenu->unk245 = 2;
             break;
         case 0x100:
-            state->unk246 = 2;
+            buttonConfigMenu->unk246 = 2;
             break;
     }
 
-    state->unk247 = 0;
-    state->unk248 = 0;
-    state->unk249 = optionsScreen->language;
-    sub_8065C28(state);
+    buttonConfigMenu->unk247 = 0;
+    buttonConfigMenu->unk248 = 0;
+    buttonConfigMenu->language = optionsScreen->language;
+    RenderButtonConfigMenuUI(buttonConfigMenu);
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
-extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
-extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
+static void RenderButtonConfigMenuUI(struct ButtonConfigMenu* buttonConfigMenu) {
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
 
-void sub_8065C28(struct UNK_8065B04* state) {
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
-
-    const struct UNK_080D95E8 *itemText1 = gUnknown_080D9948[state->unk249];
+    const struct UNK_080D95E8 *itemText1 = gUnknown_080D9948[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText2 = gUnknown_080D99D8;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
 
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 unk360 = buttonConfigMenu->optionsScreen->subMenuXPos;
 
     s16 i;
 
@@ -1717,39 +1729,39 @@ void sub_8065C28(struct UNK_8065B04* state) {
     sub_806A568(
         unk124,
         1,
-        itemText3[state->unk244].unk4,
-        itemText3[state->unk244].unk0,
+        itemText3[buttonConfigMenu->unk244].unk4,
+        itemText3[buttonConfigMenu->unk244].unk0,
         0x1000,
         unk360 + 0x14C,
         0x2D,
         8,
-        itemText3[state->unk244].unk2,
+        itemText3[buttonConfigMenu->unk244].unk2,
         0
     );
     unk124++;
     sub_806A568(
         unk124,
         1,
-        itemText3[state->unk245].unk4,
-        itemText3[state->unk245].unk0,
+        itemText3[buttonConfigMenu->unk245].unk4,
+        itemText3[buttonConfigMenu->unk245].unk0,
         0x1000,
         unk360 + 0x14C,
         0x45,
         8,
-        itemText3[state->unk245].unk2,
+        itemText3[buttonConfigMenu->unk245].unk2,
         0
     );
     unk124++;
     sub_806A568(
         unk124,
         1,
-        itemText3[state->unk246].unk4,
-        itemText3[state->unk246].unk0,
+        itemText3[buttonConfigMenu->unk246].unk4,
+        itemText3[buttonConfigMenu->unk246].unk0,
         0x1000,
         unk360 + 0x14C,
         0x5D,
         8,
-        itemText3[state->unk246].unk2,
+        itemText3[buttonConfigMenu->unk246].unk2,
         0
     );
 
@@ -1793,52 +1805,45 @@ void sub_8065C28(struct UNK_8065B04* state) {
     );
 }
 
-void sub_8066818(void);
-void sub_8066004(void);
+static void sub_8065F04(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
 
-void sub_8065F04(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
-
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
 
     for (i = 0; i < 3; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x150;
+        unk4->unk16 = baseXPos + 336;
     }
 
     for (;i < 6; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x108;
+        unk4->unk16 = baseXPos + 264;
     }
 
     for (i = 0; i < 3; i++, unk124++) {
-        unk124->unk16 = unk360 + 0x14C;
+        unk124->unk16 = baseXPos + 332;
     }
 
-    unk214->unk16 = unk360 + 0xFC;
-    unk1B4->unk16 = unk360 + 0x143;
+    unk214->unk16 = baseXPos + 252;
+    unk1B4->unk16 = baseXPos + 323;
     unk1B4++;
-    unk1B4->unk16 = unk360 + 0x19D;
+    unk1B4->unk16 = baseXPos + 413;
     
     sub_8066818();
 
-    if (++state->unk248 > 0xF) {
-        state->unk248 = 0;
+    if (++buttonConfigMenu->unk248 > 15) {
+        buttonConfigMenu->unk248 = 0;
         gCurTask->main = sub_8066004;
     }
 }
 
-void sub_806AFAC(void);
-void sub_8066718(void);
-void sub_80665D8(void);
-
-void sub_8066004(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+static void sub_8066004(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText4;
 
     sub_8066818();
@@ -1846,20 +1851,20 @@ void sub_8066004(void) {
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         if (gRepeatedKeys & (DPAD_LEFT)) {
-            if (state->unk244 != 0) {
-                state->unk244--;
+            if (buttonConfigMenu->unk244 != 0) {
+                buttonConfigMenu->unk244--;
             } else {
-                state->unk244 = 2;
+                buttonConfigMenu->unk244 = 2;
             }
         } else {
-            if (state->unk244 < 2) {
-                state->unk244++;
+            if (buttonConfigMenu->unk244 < 2) {
+                buttonConfigMenu->unk244++;
             } else {
-                state->unk244 = 0;
+                buttonConfigMenu->unk244 = 0;
             }
         }
 
-        itemText4 = &itemText3[state->unk244];
+        itemText4 = &itemText3[buttonConfigMenu->unk244];
         unk124->unkA = itemText4->unk0;
         unk124->unk20 = itemText4->unk2;
         sub_8004558(&unk124[0]);
@@ -1867,37 +1872,37 @@ void sub_8066004(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        if (state->unk244 == state->unk245) {
-            while (state->unk244 == state->unk245 || state->unk244 == state->unk246) {
-                if (state->unk245 < 2) {
-                    state->unk245++;
+        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk245) {
+            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk244 == buttonConfigMenu->unk246) {
+                if (buttonConfigMenu->unk245 < 2) {
+                    buttonConfigMenu->unk245++;
                 } else {
-                    state->unk245 = 0;
+                    buttonConfigMenu->unk245 = 0;
                 }
             }
-            unk124 = &state->unk124[1];
-            unk124->unkA = itemText3[state->unk245].unk0;
-            unk124->unk20 = itemText3[state->unk245].unk2;
+            unk124 = &buttonConfigMenu->unk124[1];
+            unk124->unkA = itemText3[buttonConfigMenu->unk245].unk0;
+            unk124->unk20 = itemText3[buttonConfigMenu->unk245].unk2;
             
             sub_8004558(unk124);
         }
 
-        if (state->unk244 == state->unk246) {
-            while (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
-                if (state->unk246 < 2) {
-                    state->unk246++;
+        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk246) {
+            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
+                if (buttonConfigMenu->unk246 < 2) {
+                    buttonConfigMenu->unk246++;
                 } else {
-                    state->unk246 = 0;
+                    buttonConfigMenu->unk246 = 0;
                 }
             }
 
-            unk124 = &state->unk124[2];
-            unk124->unkA = itemText3[state->unk246].unk0;
-            unk124->unk20 = itemText3[state->unk246].unk2;
+            unk124 = &buttonConfigMenu->unk124[2];
+            unk124->unkA = itemText3[buttonConfigMenu->unk246].unk0;
+            unk124->unk20 = itemText3[buttonConfigMenu->unk246].unk2;
             sub_8004558(unk124);
         }
 
-        state->unk247 = 1;
+        buttonConfigMenu->unk247 = 1;
         m4aSongNumStart(SE_SELECT);
         gCurTask->main = sub_806AFAC;
         return;
@@ -1905,8 +1910,8 @@ void sub_8066004(void) {
 
     if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
-        state->unk248 = 0;
-        state->unk0->unk784 = 0;
+        buttonConfigMenu->unk248 = 0;
+        buttonConfigMenu->optionsScreen->unk784 = 0;
         gCurTask->main = sub_8066718;
         return;
     }
@@ -1917,13 +1922,10 @@ void sub_8066004(void) {
     }
 }
 
-void sub_806AFEC(void);
-void sub_806AF6C(void);
-
 void sub_8066220(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
     struct UNK_0808B3FC_UNK240* unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText4;
     u8 unk245;
 
@@ -1933,26 +1935,26 @@ void sub_8066220(void) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         if (gRepeatedKeys & DPAD_LEFT) {
             do {
-                if (state->unk245 > 0) {
-                    state->unk245--;
+                if (buttonConfigMenu->unk245 > 0) {
+                    buttonConfigMenu->unk245--;
                 } else {
-                   state->unk245 = 2;
+                   buttonConfigMenu->unk245 = 2;
                 }
-            } while (state->unk244 == state->unk245);
+            } while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245);
         } else if (gRepeatedKeys & DPAD_RIGHT) {
             do {
-                if (state->unk245 < 2) {
-                    state->unk245++;
+                if (buttonConfigMenu->unk245 < 2) {
+                    buttonConfigMenu->unk245++;
                 } else {
-                    state->unk245 = 0;
+                    buttonConfigMenu->unk245 = 0;
                 }
-            } while (state->unk244 == state->unk245);
+            } while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245);
         }
         
         // Who knows why this has to be assigned first
-        unk245 = state->unk245;
+        unk245 = buttonConfigMenu->unk245;
         
-        unk124 = &state->unk124[1];
+        unk124 = &buttonConfigMenu->unk124[1];
         itemText4 = &itemText3[unk245];
         unk124->unkA = itemText4->unk0;
         unk124->unk20 = itemText4->unk2;
@@ -1961,44 +1963,44 @@ void sub_8066220(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        if (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
-            while (state->unk244 == state->unk246 || state->unk245 == state->unk246) {
-                if (state->unk246 < 2) {
-                    state->unk246++;
+        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
+            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
+                if (buttonConfigMenu->unk246 < 2) {
+                    buttonConfigMenu->unk246++;
                 } else {
-                    state->unk246 = 0;
+                    buttonConfigMenu->unk246 = 0;
                 }
             }
-            unk124 = &state->unk124[2];
-            unk124->unkA = itemText3[state->unk246].unk0;
-            unk124->unk20 = itemText3[state->unk246].unk2;
+            unk124 = &buttonConfigMenu->unk124[2];
+            unk124->unkA = itemText3[buttonConfigMenu->unk246].unk0;
+            unk124->unk20 = itemText3[buttonConfigMenu->unk246].unk2;
             
             sub_8004558(unk124);
         }
 
-        state->unk247 = 2;
+        buttonConfigMenu->unk247 = 2;
         m4aSongNumStart(SE_SELECT);
         gCurTask->main = sub_806AFEC;
         return;
     }
 
     if (gPressedKeys & B_BUTTON) {
-        if (state->unk244 == state->unk245 || state->unk245 == state->unk246) {
-            while (state->unk244 == state->unk245 || state->unk245 == state->unk246) {
-                if (state->unk245 < 2) {
-                    state->unk245++;
+        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
+            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
+                if (buttonConfigMenu->unk245 < 2) {
+                    buttonConfigMenu->unk245++;
                 } else {
-                    state->unk245 = 0;
+                    buttonConfigMenu->unk245 = 0;
                 }
             }
-            unk124 = &state->unk124[1];
-            unk124->unkA = itemText3[state->unk245].unk0;
-            unk124->unk20 = itemText3[state->unk245].unk2;
+            unk124 = &buttonConfigMenu->unk124[1];
+            unk124->unkA = itemText3[buttonConfigMenu->unk245].unk0;
+            unk124->unk20 = itemText3[buttonConfigMenu->unk245].unk2;
             
             sub_8004558(unk124);
         }
         m4aSongNumStart(SE_RETURN);
-        state->unk247 = 0;
+        buttonConfigMenu->unk247 = 0;
         gCurTask->main = sub_806AF6C;
         return;
     }
@@ -2009,64 +2011,64 @@ void sub_8066220(void) {
     }
 }
 
-static inline void sub_8066478_Unpack(struct UNK_8065B04* state, struct OptionsScreen* unk0) {
-     switch (state->unk244) {
+static inline void sub_8066478_StoreButtonConfig(struct ButtonConfigMenu* buttonConfigMenu, struct OptionsScreen* optionsScreen) {
+     switch (buttonConfigMenu->unk244) {
         case 0:
-            unk0->profileData.unk350.unk0 = 1;
+            optionsScreen->profileData.buttonConfig.unk0 = 1;
             break;
         case 1:
-            unk0->profileData.unk350.unk2 = 1;
+            optionsScreen->profileData.buttonConfig.unk2 = 1;
             break;
         case 2:
-            unk0->profileData.unk350.unk4 = 1;
+            optionsScreen->profileData.buttonConfig.unk4 = 1;
             break;
     }
 
-    switch (state->unk245) {
+    switch (buttonConfigMenu->unk245) {
         case 0:
-            unk0->profileData.unk350.unk0 = 2;
+            optionsScreen->profileData.buttonConfig.unk0 = 2;
             break;
         case 1:
-            unk0->profileData.unk350.unk2 = 2;
+            optionsScreen->profileData.buttonConfig.unk2 = 2;
             break;
         case 2:
-            unk0->profileData.unk350.unk4 = 2;
+            optionsScreen->profileData.buttonConfig.unk4 = 2;
             break;
     }
 
-    switch (state->unk246) {
+    switch (buttonConfigMenu->unk246) {
         case 0:
-            unk0->profileData.unk350.unk0 = 0x100;
+            optionsScreen->profileData.buttonConfig.unk0 = 0x100;
             break;
         case 1:
-            unk0->profileData.unk350.unk2 = 0x100;
+            optionsScreen->profileData.buttonConfig.unk2 = 0x100;
             break;
         case 2:
-            unk0->profileData.unk350.unk4 = 0x100;
+            optionsScreen->profileData.buttonConfig.unk4 = 0x100;
             break;
     }
 }
 
-void sub_8066478(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct OptionsScreen* unk0 = state->unk0;
+static void sub_8066478(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct OptionsScreen* optionsScreen = buttonConfigMenu->optionsScreen;
 
     sub_8066818();
 
     if (gPressedKeys & A_BUTTON) {
         m4aSongNumStart(SE_SELECT);
     
-        sub_8066478_Unpack(state, unk0);
+        sub_8066478_StoreButtonConfig(buttonConfigMenu, optionsScreen);
     
-        state->unk248 = 0;
-        state->unk0->unk784 = 0;
+        buttonConfigMenu->unk248 = 0;
+        buttonConfigMenu->optionsScreen->unk784 = 0;
         gCurTask->main = sub_8066718;
         return;
     }
 
     if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
-        state->unk247 = 0;
+        buttonConfigMenu->unk247 = 0;
         gCurTask->main = sub_806AFAC;
         return;
     }
@@ -2077,18 +2079,18 @@ void sub_8066478(void) {
     }
 }
 
-void sub_80665D8(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct OptionsScreen* unk0 = state->unk0;
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[state->unk249];
+static void sub_80665D8(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct OptionsScreen* optionsScreen = buttonConfigMenu->optionsScreen;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
     s16 i;
 
-    state->unk244 = 0;
-    state->unk245 = 1;
-    state->unk246 = 2;
+    buttonConfigMenu->unk244 = 0;
+    buttonConfigMenu->unk245 = 1;
+    buttonConfigMenu->unk246 = 2;
 
-    sub_8066478_Unpack(state, unk0);
+    sub_8066478_StoreButtonConfig(buttonConfigMenu, optionsScreen);
 
     for (i = 0; i < 3; i++, unk124++) {
         unk124->unkA = itemText3[i].unk0;
@@ -2099,48 +2101,46 @@ void sub_80665D8(void) {
     gCurTask->main = sub_806AF6C;
 }
 
-void sub_8066818(void);
+static void sub_8066718(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
 
-void sub_8066718(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
-
-    s16 unk360 = state->unk0->subMenuXPos;
+    s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
 
     for (i = 0; i < 3; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x150;
+        unk4->unk16 = baseXPos + 0x150;
     }
 
     for (; i < 6; i++, unk4++) {
-        unk4->unk16 = unk360 + 0x108;
+        unk4->unk16 = baseXPos + 0x108;
     }
 
     for (i = 0; i < 3; i++, unk124++) {
-        unk124->unk16 = unk360 + 0x14C;
+        unk124->unk16 = baseXPos + 0x14C;
     }
 
-    unk214->unk16 = unk360 + 0xFC;
-    unk1B4->unk16 = unk360 + 0x143;
+    unk214->unk16 = baseXPos + 0xFC;
+    unk1B4->unk16 = baseXPos + 0x143;
     unk1B4++;
-    unk1B4->unk16 = unk360 + 0x19D;
+    unk1B4->unk16 = baseXPos + 0x19D;
 
-    if (++state->unk248 < 0xF) {
+    if (++buttonConfigMenu->unk248 < 0xF) {
         sub_8066818();
     } else {
         TaskDestroy(gCurTask);
     }
 }
 
-void sub_8066818(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = state->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
+static void sub_8066818(void) {
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
     s16 i;
 
     for (i = 0; i < 6; i++, unk4++) {
@@ -2159,8 +2159,8 @@ void sub_8066818(void) {
     sub_80051E8(unk214);
 }
 
-static void sub_80668A8(struct LanguageScreen* config) {
-    struct UNK_802D4CC_UNK270* unk1F0 = &config->unk1F0;
+static void sub_80668A8(struct LanguageScreen* languageScreen) {
+    struct UNK_802D4CC_UNK270* unk1F0 = &languageScreen->unk1F0;
 
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
@@ -2183,21 +2183,14 @@ static void sub_80668A8(struct LanguageScreen* config) {
     unk1F0->unkA = 0;
     unk1F0->unk8 = 0xFF;
 
-    sub_802D4CC(&config->unk1F0);
+    sub_802D4CC(&languageScreen->unk1F0);
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9A80[6];
-extern const struct UNK_080D95E8 gUnknown_080D9AE0[6];
-extern const struct UNK_080D95E8 gUnknown_080D9B10[6];
-extern const struct UNK_080D95E8 gUnknown_080D9AB0[6];
-
-s32 sub_806B8D4(const struct UNK_080D95E8*, s8);
-
-static void sub_8066930(struct LanguageScreen* config) {
-    s16 unk200 = config->language;
-    struct UNK_0808B3FC_UNK240* unk0 = config->unk0;
-    struct UNK_0808B3FC_UNK240* unk60 = config->unk60;
-    struct UNK_0808B3FC_UNK240* unk180 = &config->unk180;
+static void sub_8066930(struct LanguageScreen* languageScreen) {
+    s16 selectedLanguage = languageScreen->menuCursor;
+    struct UNK_0808B3FC_UNK240* unk0 = languageScreen->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = languageScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unk180 = &languageScreen->unk180;
 
     const struct UNK_080D95E8* a80 = gUnknown_080D9A80;
     const struct UNK_080D95E8* b10 = gUnknown_080D9B10;
@@ -2208,7 +2201,7 @@ static void sub_8066930(struct LanguageScreen* config) {
     s16 i;
     s16 pos;
 
-    if (config->unk201 == 0) {
+    if (languageScreen->creatingNewProfile == FALSE) {
         ae0 = gUnknown_080D9AB0;
     } else {
         ae0 = gUnknown_080D9AE0;
@@ -2217,8 +2210,8 @@ static void sub_8066930(struct LanguageScreen* config) {
     var1 = sub_806B8D4(a80, ARRAY_COUNT(gUnknown_080D9A80));
     var2 = sub_806B8D4(ae0, ARRAY_COUNT(gUnknown_080D9AE0));
 
-    a80 = &a80[unk200];
-    ae0 = &ae0[unk200];
+    a80 = &a80[selectedLanguage];
+    ae0 = &ae0[selectedLanguage];
     
     sub_806A568(
         unk0,
@@ -2259,7 +2252,7 @@ static void sub_8066930(struct LanguageScreen* config) {
             b10->unk2,
             0
         );
-        unk60->unk25 = !!(unk200 ^ i);
+        unk60->unk25 = !!(selectedLanguage ^ i);
     }
 
     sub_806A568(
@@ -2269,7 +2262,7 @@ static void sub_8066930(struct LanguageScreen* config) {
         0x3BD,
         0x3000,
         0x26,
-        (unk200 * 0xF) + 0x28,
+        (selectedLanguage * 15) + 40,
         0xC,
         5,
         0
@@ -2313,30 +2306,24 @@ static void sub_8066930(struct LanguageScreen* config) {
     );
 }
 
-void sub_806B1B8(void);
-void sub_8066C2C(void);
-void sub_806B1F8(void);
-void sub_806B110(void);
-
-// Task_ProfileLanguageMenuMain
-void sub_8066B0C(void) {
-    struct LanguageScreen* state = TaskGetStructPtr(gCurTask, state);
+static void Task_LanguageScreenMain(void) {
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
     sub_806B1B8();
 
     if (gRepeatedKeys & (DPAD_DOWN)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        if (state->language > 4) {
-           state->language = 0;
+        if (languageScreen->menuCursor >= NUM_LANGUAGES - 1) {
+           languageScreen->menuCursor = 0;
         } else {
-           state->language++;
+           languageScreen->menuCursor++;
         }
         sub_8066C2C();
     } else if (gRepeatedKeys & DPAD_UP) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        if (state->language < 1) {
-            state->language = 5;
+        if (languageScreen->menuCursor < 1) {
+            languageScreen->menuCursor = NUM_LANGUAGES - 1;
         } else {
-            state->language--;
+            languageScreen->menuCursor--;
         }
         sub_8066C2C();
     }
@@ -2347,10 +2334,10 @@ void sub_8066B0C(void) {
         return;
     }
 
-    if (state->unk201 != 0) {
+    if (languageScreen->creatingNewProfile) {
         if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
             m4aSongNumStart(SE_SELECT);
-            gLoadedSaveGame->unk6 = state->language + 1;
+            gLoadedSaveGame->unk6 = languageScreen->menuCursor + 1;
             sub_806B110();
         }
         return;
@@ -2358,7 +2345,7 @@ void sub_8066B0C(void) {
     
     if (gPressedKeys & A_BUTTON) {
         m4aSongNumStart(SE_SELECT);
-        state->optionsScreen->language = state->language;
+        languageScreen->optionsScreen->language = languageScreen->menuCursor;
         sub_806B110();
     }
 
@@ -2368,26 +2355,26 @@ void sub_8066B0C(void) {
     }
 }
 
-void sub_8066C2C(void) {
-    struct LanguageScreen* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
-    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
-    struct UNK_0808B3FC_UNK240* unk180 = &state->unk180;
+static void sub_8066C2C(void) {
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct UNK_0808B3FC_UNK240* unk0 = languageScreen->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = languageScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unk180 = &languageScreen->unk180;
 
-    const struct UNK_080D95E8* a80 = &gUnknown_080D9A80[state->language];
+    const struct UNK_080D95E8* a80 = &gUnknown_080D9A80[languageScreen->menuCursor];
     const struct UNK_080D95E8* ae0;
     s16 i;
 
-    if (state->unk201 != 1) {
-        ae0 = &gUnknown_080D9AB0[state->language];
+    if (languageScreen->creatingNewProfile != TRUE) {
+        ae0 = &gUnknown_080D9AB0[languageScreen->menuCursor];
     } else {
-        ae0 = &gUnknown_080D9AE0[state->language];
+        ae0 = &gUnknown_080D9AE0[languageScreen->menuCursor];
     }
 
-    unk180->unk18 = state->language * 0xF + 0x28;
+    unk180->unk18 = languageScreen->menuCursor * 0xF + 0x28;
 
     for (i = 0; i < 6; i++, unk60++) {
-        unk60->unk25 = !!(state->language ^ i);
+        unk60->unk25 = !!(languageScreen->menuCursor ^ i);
     }
 
     unk0->unk20 = a80->unk2;
@@ -2400,45 +2387,26 @@ void sub_8066C2C(void) {
     sub_8004558(unk0);
 }
 
-void sub_806B280(void);
+void CreateDeleteGameDataScreen(struct OptionsScreen* optionsScreen) {
+    struct Task* t = TaskCreate(sub_806B280, sizeof(struct DeleteGameDataScreen), 0x2000, TASK_x0004, NULL);
+    struct DeleteGameDataScreen* deleteGameDataScreen = TaskGetStructPtr(t, deleteGameDataScreen);
 
-struct UNK_8066CFC {
-    struct UNK_0808B3FC_UNK240 unk0[2];
-    struct UNK_0808B3FC_UNK240 unk60[2];
-    struct UNK_0808B3FC_UNK240 unkC0;
-    struct Unk_03002400 unk1F0;
-    struct UNK_802D4CC_UNK270 unk130;
-    struct OptionsScreen* unk13C; 
-    s8 unk140;
-    u8 unk141;
-    s8 unk142;
-    s8 unk143;
-}; /* 0x144 */
-
-void sub_8066D90(struct UNK_8066CFC*);
-void sub_806B258(struct UNK_8066CFC*);
-void sub_8066E18(struct UNK_8066CFC*);
-
-void sub_8066CFC(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_806B280, 0x144, 0x2000, TASK_x0004, 0);
-    struct UNK_8066CFC* config = TaskGetStructPtr(t, config);
-
-    config->unk13C = optionsScreen;
-    config->unk140 = 1;
-    config->unk141 = 0;
-    config->unk142 = optionsScreen->language;
-    config->unk143 = 0;
+    deleteGameDataScreen->optionsScreen = optionsScreen;
+    deleteGameDataScreen->confirmationCursor = 1;
+    deleteGameDataScreen->unk141 = 0;
+    deleteGameDataScreen->language = optionsScreen->language;
+    deleteGameDataScreen->unk143 = 0;
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = NULL;
 
-    sub_8066D90(config);
-    sub_806B258(config);
-    sub_8066E18(config);
+    sub_8066D90(deleteGameDataScreen);
+    sub_806B258(deleteGameDataScreen);
+    sub_8066E18(deleteGameDataScreen);
 }
 
-void sub_8066D90(struct UNK_8066CFC* config) {
-    struct UNK_802D4CC_UNK270* unk130 = &config->unk130;
+static void sub_8066D90(struct DeleteGameDataScreen* deleteGameDataScreen) {
+    struct UNK_802D4CC_UNK270* unk130 = &deleteGameDataScreen->unk130;
 
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
@@ -2461,25 +2429,22 @@ void sub_8066D90(struct UNK_8066CFC* config) {
     unk130->unkA = 0;
     unk130->unk8 = 0xFF;
 
-    sub_802D4CC(&config->unk130);
+    sub_802D4CC(&deleteGameDataScreen->unk130);
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9B40[6];
-extern const struct UNK_080D95E8 gUnknown_080D9BA0[6];
-extern const struct UNK_080D95E8 gUnknown_080D9BD0[6][2];
+static void sub_8066E18(struct DeleteGameDataScreen* deleteGameDataScreen) {
+    s16 language = deleteGameDataScreen->language;
+    struct UNK_0808B3FC_UNK240* unk60 = deleteGameDataScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unkC0 = &deleteGameDataScreen->unkC0;
 
-void sub_8066E18(struct UNK_8066CFC* config) {
-    s16 unk142 = config->unk142;
-    struct UNK_0808B3FC_UNK240* unk60 = config->unk60;
-    struct UNK_0808B3FC_UNK240* unkC0 = &config->unkC0;
-    const struct UNK_080D95E8* b40 = &gUnknown_080D9B40[unk142];
-    const struct UNK_080D95E8* ba0 = &gUnknown_080D9BA0[unk142];
-    const struct UNK_080D95E8* bd0 = gUnknown_080D9BD0[unk142];
+    const struct UNK_080D95E8* b40 = &gUnknown_080D9B40[language];
+    const struct UNK_080D95E8* ba0 = &gUnknown_080D9BA0[language];
+    const struct UNK_080D95E8* bd0 = gUnknown_080D9BD0[language];
 
-    s16 unk140 = config->unk140;
+    s16 confirmationCursor = deleteGameDataScreen->confirmationCursor;
     
     sub_806A568(
-        &config->unk0[0],
+        &deleteGameDataScreen->unk0[0],
         0,
         b40->unk4,
         b40->unk0,
@@ -2491,7 +2456,7 @@ void sub_8066E18(struct UNK_8066CFC* config) {
         0
     );
     sub_806A568(
-        &config->unk0[1],
+        &deleteGameDataScreen->unk0[1],
         0,
         ba0->unk4,
         ba0->unk0,
@@ -2537,7 +2502,7 @@ void sub_8066E18(struct UNK_8066CFC* config) {
         0x12,
         0x3B8,
         0x3000,
-        (unk140 * 60) + 56,
+        (confirmationCursor * 60) + 56,
         0x4C,
         0xC,
         3,
@@ -2582,24 +2547,20 @@ void sub_8066E18(struct UNK_8066CFC* config) {
     );
 }
 
-void sub_806B2F8(void);
-void sub_806709C(void);
-void sub_806B2B4(void);
-
-void sub_8066FAC(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
-    struct UNK_0808B3FC_UNK240* unkC0 = &state->unkC0;
+static void sub_8066FAC(void) {
+    struct DeleteGameDataScreen* deleteGameDataScreen = TaskGetStructPtr(gCurTask, deleteGameDataScreen);
+    struct UNK_0808B3FC_UNK240* unk60 = deleteGameDataScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unkC0 = &deleteGameDataScreen->unkC0;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        state->unk140 = state->unk140 == 0;
+        deleteGameDataScreen->confirmationCursor = deleteGameDataScreen->confirmationCursor == 0;
 
         for (i = 0; i < 2; i++, unk60++) {
-            unk60->unk25 = !!(state->unk140 ^ i);
+            unk60->unk25 = !!(deleteGameDataScreen->confirmationCursor ^ i);
         }
-        unkC0->unk16 = state->unk140 * 0x3C + 0x38;
+        unkC0->unk16 = deleteGameDataScreen->confirmationCursor * 0x3C + 0x38;
     }
 
     sub_806B2F8();
@@ -2610,7 +2571,7 @@ void sub_8066FAC(void) {
 
     if (gPressedKeys & A_BUTTON) {
         m4aSongNumStart(SE_SELECT);
-        if (state->unk140 == 0) {
+        if (deleteGameDataScreen->confirmationCursor == 0) {
             gCurTask->main = sub_806709C;
         } else {
             gCurTask->main = sub_806B2B4;
@@ -2623,17 +2584,13 @@ void sub_8066FAC(void) {
     }
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9B70[6];
+static void sub_806709C(void) {
+    struct DeleteGameDataScreen* deleteGameDataScreen = TaskGetStructPtr(gCurTask, deleteGameDataScreen);
 
-void sub_8067148(void);
-
-void sub_806709C(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
-
-    struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
-    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
-    struct UNK_0808B3FC_UNK240* unkC0 = &state->unkC0;
-    const struct UNK_080D95E8* b70 = &gUnknown_080D9B70[state->unk142];
+    struct UNK_0808B3FC_UNK240* unk0 = deleteGameDataScreen->unk0;
+    struct UNK_0808B3FC_UNK240* unk60 = deleteGameDataScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unkC0 = &deleteGameDataScreen->unkC0;
+    const struct UNK_080D95E8* b70 = &gUnknown_080D9B70[deleteGameDataScreen->language];
     s16 i;
 
     unk0->unk20 = b70->unk2;
@@ -2641,32 +2598,32 @@ void sub_806709C(void) {
 
     sub_8004558(unk0);
 
-    state->unk140 = 1;
+    deleteGameDataScreen->confirmationCursor = 1;
 
     for (i = 0; i < 2; i++, unk60++) {
-        unk60->unk25 = !!(state->unk140 ^ i);
+        unk60->unk25 = !!(deleteGameDataScreen->confirmationCursor ^ i);
     }
 
-    unkC0->unk16 = state->unk140 * 0x3C + 0x38;
+    unkC0->unk16 = deleteGameDataScreen->confirmationCursor * 0x3C + 0x38;
 
     sub_806B2F8();
     gCurTask->main = sub_8067148;
 }
 
-void sub_8067148(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk60 = state->unk60;
-    struct UNK_0808B3FC_UNK240* unkC0 = &state->unkC0;
+static void sub_8067148(void) {
+    struct DeleteGameDataScreen* deleteGameDataScreen = TaskGetStructPtr(gCurTask, deleteGameDataScreen);
+    struct UNK_0808B3FC_UNK240* unk60 = deleteGameDataScreen->unk60;
+    struct UNK_0808B3FC_UNK240* unkC0 = &deleteGameDataScreen->unkC0;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        state->unk140 = state->unk140 == 0;
+        deleteGameDataScreen->confirmationCursor = deleteGameDataScreen->confirmationCursor == 0;
 
         for (i = 0; i < 2; i++, unk60++) {
-            unk60->unk25 = !!(state->unk140 ^ i);
+            unk60->unk25 = !!(deleteGameDataScreen->confirmationCursor ^ i);
         }
-        unkC0->unk16 = state->unk140 * 0x3C + 0x38;
+        unkC0->unk16 = deleteGameDataScreen->confirmationCursor * 0x3C + 0x38;
     }
 
     sub_806B2F8();
@@ -2676,8 +2633,8 @@ void sub_8067148(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        if (state->unk140 == 0) {
-            state->unk143 = 1;
+        if (deleteGameDataScreen->confirmationCursor == 0) {
+            deleteGameDataScreen->unk143 = 1;
             m4aSongNumStart(220);
         } else {
             m4aSongNumStart(SE_SELECT);
@@ -2693,65 +2650,65 @@ void sub_8067148(void) {
 }
 
 void sub_806723C(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+    struct DeleteGameDataScreen* deleteGameDataScreen = TaskGetStructPtr(gCurTask, deleteGameDataScreen);
 
-    if (!sub_802D4CC(&state->unk130)) {
+    if (!sub_802D4CC(&deleteGameDataScreen->unk130)) {
         sub_806B2F8();
         return;
     }
 
-    if (state->unk143) {
-        SetProfileData(state->unk13C);
+    if (deleteGameDataScreen->unk143) {
+        SetProfileData(deleteGameDataScreen->optionsScreen);
         NewSaveGame();
-        state->unk13C->unk784 = 0;
+        deleteGameDataScreen->optionsScreen->unk784 = 0;
     } else {
-        state->unk13C->unk784 = 2;
+        deleteGameDataScreen->optionsScreen->unk784 = 2;
     }
 
     TaskDestroy(gCurTask);
 }
 
-void sub_80672BC(struct PlayerDataMenu* playerDataMenu) {
-    struct Task* t = TaskCreate(sub_806B354, 0x3BC, 0x2000, 4, 0);
-    struct ProfileNameScreen* config = TaskGetStructPtr(t, config);
+void CreateEditProfileNameScreen(struct PlayerDataMenu* playerDataMenu) {
+    struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, 4, 0);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t, profileNameScreen);
     s16 i;
 
-    config->unk14C = playerDataMenu;
-    config->unk3BA = playerDataMenu->language;
-    config->unk3BB = 0;
-    config->unk252 = 0;
+    profileNameScreen->unk14C = playerDataMenu;
+    profileNameScreen->unk3BA = playerDataMenu->language;
+    profileNameScreen->onCompleteAction = 0;
+    profileNameScreen->unk252 = 0;
 
-    if (config->unk3BA == 0) {
-        config->unk3B8 = 0;
-        config->unk253 = 0;
-        config->unk250 = 0;
+    if (profileNameScreen->unk3BA == 0) {
+        profileNameScreen->unk3B8 = 0;
+        profileNameScreen->unk253 = 0;
+        profileNameScreen->unk250 = 0;
     } else {
-        config->unk3B8 = 99;
-        config->unk253 = 0;
-        config->unk250 = 99;
+        profileNameScreen->unk3B8 = 99;
+        profileNameScreen->unk253 = 0;
+        profileNameScreen->unk250 = 99;
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        config->nameInput.unk154[i] = playerDataMenu->optionsScreen->profileData.playerName[i];
-        if (config->nameInput.unk154[i] == PLAYER_NAME_END_CHAR) {
+        profileNameScreen->nameInput.unk154[i] = playerDataMenu->optionsScreen->profileData.playerName[i];
+        if (profileNameScreen->nameInput.unk154[i] == PLAYER_NAME_END_CHAR) {
             break;
         }
     }
     
-    config->nameInput.unk152 = i;
+    profileNameScreen->nameInput.unk152 = i;
 
     for (;i < MAX_PLAYER_NAME_LENGTH; i++) {
-        config->nameInput.unk154[i] = PLAYER_NAME_END_CHAR;
+        profileNameScreen->nameInput.unk154[i] = PLAYER_NAME_END_CHAR;
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = NULL;
 
-    sub_8067420(config->unk3BA);
-    sub_8067484(config);
-    sub_806751C(config);
-    sub_8067610(config);
-    sub_8067710(config);
+    sub_8067420(profileNameScreen->unk3BA);
+    sub_8067484(profileNameScreen);
+    sub_806751C(profileNameScreen);
+    sub_8067610(profileNameScreen);
+    sub_8067710(profileNameScreen);
 }
 
 static void sub_8067420(s16 p) {
@@ -3287,7 +3244,7 @@ void sub_8067E24(void) {
     s16 i;
 
     // Copy name from input into profile data on the options screen
-    if (state->unk3BB == 0) {
+    if (state->onCompleteAction == 0) {
         struct OptionsScreenProfileData* profileData = &state->unk14C->optionsScreen->profileData;
         for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
             profileData->playerName[i] = unk258->unk154[i];
@@ -3310,7 +3267,7 @@ void sub_8067EA4(void) {
     struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
     struct UNK_802D4CC_UNK270* unk140 = &state->unk140;
     struct NameInputDisplay* unk258 = &state->nameInput;
-    s16 unk3BB = state->unk3BB;
+    s16 unk3BB = state->onCompleteAction;
     s16 i;
 
     if (!sub_802D4CC(unk140)) {
@@ -3426,7 +3383,7 @@ void sub_80682AC(void);
 void sub_80682EC(struct CourseRecordsScreen*);
 void sub_806834C(struct CourseRecordsScreen*);
 
-void sub_8068198(struct PlayerDataMenu* playerProfileMenu) {
+static void sub_8068198(struct PlayerDataMenu* playerProfileMenu) {
     struct Task* t = TaskCreate(sub_806B3F0, 0x714, 0x2000, 4, 0);
     struct CourseRecordsScreen* config = TaskGetStructPtr(t, config);
     s16 i;
@@ -3613,7 +3570,7 @@ void sub_8068474(void) {
     }
 }
 
-void sub_8068524(struct PlayerDataMenu* playerProfileMenu) {
+static void sub_8068524(struct PlayerDataMenu* playerProfileMenu) {
     struct Task* t = TaskCreate(sub_806B5A4, 0x714, 0x2000, 4, 0);
     struct CourseRecordsScreen* config = TaskGetStructPtr(t, config);
     s16 i;
@@ -4973,32 +4930,33 @@ void sub_806A7E0(void) {
     }
 }
 
-void sub_806ADF4(struct OptionsScreen*);
-void sub_806AEB0(struct OptionsScreen*);
+static void CreateDifficultyMenu(struct OptionsScreen*);
+static void CreateTimeLimitMenu(struct OptionsScreen*);
 
-static void sub_806A814(void) {
+static void OptionsScreenOpenSelectedSubMenu(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+
     switch (optionsScreen->menuCursor) {
-        case 0:
-            sub_8064A40(optionsScreen);
+        case OPTIONS_MENU_ITEM_PLAYER_DATA:
+            CreatePlayerDataMenu(optionsScreen);
             break;
-        case 1:
-            sub_806ADF4(optionsScreen);
+        case OPTIONS_MENU_ITEM_DIFFICULTY:
+            CreateDifficultyMenu(optionsScreen);
             break;
-        case 2:
-            sub_806AEB0(optionsScreen);
+        case OPTIONS_MENU_ITEM_TIME_LIMIT:
+            CreateTimeLimitMenu(optionsScreen);
             break;
-        case 3:
+        case OPTIONS_MENU_ITEM_LANGUAGE:
             break;
-        case 4:
-            sub_8065B04(optionsScreen);
+        case OPTIONS_MENU_ITEM_BUTTON_CONFIG:
+            CreateButtonConfigMenu(optionsScreen);
             break;
-        case 5:
-        case 6:
-        case 7:
+        case OPTIONS_MENU_ITEM_SOUND_TEST:
+        case OPTIONS_MENU_ITEM_DELETE_GAME_DATA:
+        case OPTIONS_MENU_ITEM_EXIT:
             break;
-        
     }
+
     optionsScreen->transitionFrame = 0;
     gCurTask->main = sub_80644C4;
 }
@@ -5019,7 +4977,7 @@ void sub_806A91C(void);
 
 /** Menu 1 **/
 
-static void sub_806A8EC(void) {
+static void OptionScreenShowLanguageScreen(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
@@ -5060,7 +5018,7 @@ void sub_806A9CC(void);
 /** Menu 2 **/
 
 // ShowSoundTestScreen
-static void sub_806A99C(void) {
+static void OptionScreenShowSoundTestScreen(void) {
     struct Task* task = gCurTask;
 
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(task, optionsScreen);
@@ -5098,10 +5056,10 @@ static void sub_806AA18(void) {
 }
 
 
-void sub_806AA7C(void);
+static void sub_806AA7C(void);
 /** Menu 3 **/
 
-static void sub_806AA4C(void) {
+static void OptionScreenShowDeleteGameDataScreen(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
@@ -5114,13 +5072,13 @@ static void sub_806AA4C(void) {
     gCurTask->main = sub_806AA7C;
 }
 
-void sub_806AA7C(void) {
+static void sub_806AA7C(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     sub_80649A4();
 
     if (sub_802D4CC(unk774)) {
-        sub_8066CFC(optionsScreen);
+        CreateDeleteGameDataScreen(optionsScreen);
         optionsScreen->unk784 = 1;
         gCurTask->main = sub_806489C;
     }
@@ -5159,14 +5117,14 @@ void sub_806AB2C(void) {
     sub_806AD98();
 
     if (sub_802D4CC(unk150)) {
-        sub_80672BC(playerDataMenu);
+        CreateEditProfileNameScreen(playerDataMenu);
         playerDataMenu->unk163 = 1;
         playerDataMenu->optionsScreen->unk784 = 2;
         gCurTask->main = sub_8064F1C;
     }
 }
 
-void sub_806AB90(void) {
+static void sub_806AB90(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     sub_806AD98();
@@ -5191,7 +5149,7 @@ static void sub_806ABC4(void) {
     gCurTask->main = sub_8065004;
 }
 
-void sub_806ABF4(void) {
+static void sub_806ABF4(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     sub_806AD98();
@@ -5233,7 +5191,7 @@ void sub_806AC58(void) {
     }
 }
 
-void sub_806ACBC(void) {
+static void sub_806ACBC(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     sub_806AD98();
@@ -5247,7 +5205,7 @@ void sub_806AD20(void);
 
 /** Menu 4 **/
 
-static void sub_806ACF0(void) {
+static void OptionScreenHandleExit(void) {
     struct Task* task = gCurTask;
 
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(task, optionsScreen);
@@ -5300,69 +5258,69 @@ static void sub_806AD98(void) {
     sub_80051E8(menuItemOutline);
 }
 
-void sub_806ADF4(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_80653E4, 0xF8, 0x2000, 4, 0);
-    struct UNK_0806ADF4* state = TaskGetStructPtr(t, state);
+static void CreateDifficultyMenu(struct OptionsScreen* optionsScreen) {
+    struct Task* t = TaskCreate(sub_80653E4, sizeof(struct SwitchMenu), 0x2000, 4, NULL);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(t, difficultyMenu);
     
-    state->unk0 = optionsScreen;
-    state->unkF4 = optionsScreen->unk359;
-    state->unkF6 = optionsScreen->language;
-    state->unkF5 = 0;
+    difficultyMenu->optionsScreen = optionsScreen;
+    difficultyMenu->switchValue = optionsScreen->difficultyLevel;
+    difficultyMenu->language = optionsScreen->language;
+    difficultyMenu->unkF5 = 0;
 
-    sub_806525C(state);
+    RenderDifficultyMenuUI(difficultyMenu);
 }
 
-void sub_806AE54(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+static void sub_806AE54(void) {
+    struct SwitchMenu* state = TaskGetStructPtr(gCurTask, state);
+    struct UNK_0808B3FC_UNK240* headerFooter = state->headerFooter;
+    struct UNK_0808B3FC_UNK240* difficultyOption = state->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &state->switchValueOutline;
 
     s16 i;
 
-    for (i = 0; i < 2; i++, unk4++) {
-        sub_80051E8(unk4);
+    for (i = 0; i < 2; i++, headerFooter++) {
+        sub_80051E8(headerFooter);
     }
 
-    for (i = 0; i < 2; i++, unk64++) {
-        sub_80051E8(unk64);
+    for (i = 0; i < 2; i++, difficultyOption++) {
+        sub_80051E8(difficultyOption);
     }
 
-    sub_80051E8(unkC4);
+    sub_80051E8(switchValueOutline);
 }
 
-void sub_806AEB0(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_8065838, 0xF8, 0x2000, 4, 0);
-    struct UNK_0806ADF4* state = TaskGetStructPtr(t, state);
+static void CreateTimeLimitMenu(struct OptionsScreen* optionsScreen) {
+    struct Task* t = TaskCreate(sub_8065838, sizeof(struct SwitchMenu), 0x2000, 4, 0);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(t, timeLimitMenu);
 
-    state->unk0 = optionsScreen;
-    state->unkF4 = optionsScreen->unk35A;
-    state->unkF6 = optionsScreen->language;
-    state->unkF5 = 0;
-    sub_80656B0(state);
+    timeLimitMenu->optionsScreen = optionsScreen;
+    timeLimitMenu->switchValue = optionsScreen->timeLimitEnabled;
+    timeLimitMenu->language = optionsScreen->language;
+    timeLimitMenu->unkF5 = 0;
+    RenderTimeLimitMenuUI(timeLimitMenu);
 }
 
-void sub_806AF10(void) {
-    struct UNK_0806ADF4* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_0808B3FC_UNK240* unk4 = state->unk4;
-    struct UNK_0808B3FC_UNK240* unk64 = state->unk64;
-    struct UNK_0808B3FC_UNK240* unkC4 = &state->unkC4;
+static void sub_806AF10(void) {
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
+    struct UNK_0808B3FC_UNK240* option = timeLimitMenu->options;
+    struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
 
     s16 i;
 
-    for (i = 0; i < 2; i++, unk4++) {
-        sub_80051E8(unk4);
+    for (i = 0; i < 2; i++, headerFooter++) {
+        sub_80051E8(headerFooter);
     }
 
-    for (i = 0; i < 2; i++, unk64++) {
-        sub_80051E8(unk64);
+    for (i = 0; i < 2; i++, option++) {
+        sub_80051E8(option);
     }
 
-    sub_80051E8(unkC4);
+    sub_80051E8(switchValueOutline);
 }
 
-void sub_806AF6C(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806AF6C(void) {
+    struct ButtonConfigMenu* state = TaskGetStructPtr(gCurTask, state);
     
     struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
     struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
@@ -5376,8 +5334,8 @@ void sub_806AF6C(void) {
     gCurTask->main = sub_8066004;
 }
 
-void sub_806AFAC(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806AFAC(void) {
+    struct ButtonConfigMenu* state = TaskGetStructPtr(gCurTask, state);
     
     struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
     struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
@@ -5391,8 +5349,8 @@ void sub_806AFAC(void) {
     gCurTask->main = sub_8066220;
 }
 
-void sub_806AFEC(void) {
-    struct UNK_8065B04* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806AFEC(void) {
+    struct ButtonConfigMenu* state = TaskGetStructPtr(gCurTask, state);
     
     struct UNK_0808B3FC_UNK240* unk1B4 = state->unk1B4;
     struct UNK_0808B3FC_UNK240* unk214 = &state->unk214;
@@ -5411,8 +5369,8 @@ void sub_806B02C(struct OptionsScreen* optionScreen) {
     struct LanguageScreen* state = TaskGetStructPtr(t, state);
 
     state->optionsScreen = optionScreen;
-    state->language = optionScreen->language;
-    state->unk201 = 0;
+    state->menuCursor = optionScreen->language;
+    state->creatingNewProfile = FALSE;
     gUnknown_03005B50 = (void*)(OBJ_VRAM0);
     gUnknown_03005B54 = 0;
 
@@ -5433,12 +5391,12 @@ static void sub_806B0D8(void) {
     sub_806B1B8();
 
     if (sub_802D4CC(unk1F0)) {
-        gCurTask->main = sub_8066B0C;
+        gCurTask->main = Task_LanguageScreenMain;
     }
 }
 
 void sub_806B14C(void);
-void sub_806B110(void) {
+static void sub_806B110(void) {
     struct LanguageScreen* state = TaskGetStructPtr(gCurTask, state);
     struct UNK_802D4CC_UNK270* unk1F0 = &state->unk1F0;
     unk1F0->unk0 = 0;
@@ -5460,8 +5418,8 @@ void sub_806B14C(void) {
     if (!sub_802D4CC(unk1F0)) {
         sub_806B1F8();
     } else {
-        if (state->unk201 == 1) {
-            CreateProfileNameScreen(1);
+        if (state->creatingNewProfile == TRUE) {
+            CreateNewProfileNameScreen(NEW_PROFILE_NAME_START_GAME);
         } else {
             state->optionsScreen->unk784 = 0;
         }
@@ -5470,11 +5428,11 @@ void sub_806B14C(void) {
 }
 
 // ReseedRng
-void sub_806B1B8(void) {
+static void sub_806B1B8(void) {
     ShuffleRngSeed();
 }
 
-void sub_806B1F8(void) {
+static void sub_806B1F8(void) {
     struct LanguageScreen* state = TaskGetStructPtr(gCurTask, state);
     
     struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
@@ -5494,12 +5452,12 @@ void sub_806B1F8(void) {
     sub_80051E8(unk180);
 }
 
-void sub_806B258(struct UNK_8066CFC* state) {
+static void sub_806B258(struct DeleteGameDataScreen* state) {
     sub_806B854(&state->unk1F0,0,7,0x86,0x1e,0x14,0,0,0,0);
 }
 
-void sub_806B280(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806B280(void) {
+    struct DeleteGameDataScreen* state = TaskGetStructPtr(gCurTask, state);
     struct UNK_802D4CC_UNK270* unk130 = &state->unk130;
     sub_806B2F8();
     if (sub_802D4CC(unk130)) {
@@ -5507,8 +5465,8 @@ void sub_806B280(void) {
     }
 }
 
-void sub_806B2B4(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806B2B4(void) {
+    struct DeleteGameDataScreen* state = TaskGetStructPtr(gCurTask, state);
     struct UNK_802D4CC_UNK270* unk130 = &state->unk130;
 
     sub_806B2F8();
@@ -5524,8 +5482,8 @@ void sub_806B2B4(void) {
     gCurTask->main = sub_806723C;
 }
 
-void sub_806B2F8(void) {
-    struct UNK_8066CFC* state = TaskGetStructPtr(gCurTask, state);
+static void sub_806B2F8(void) {
+    struct DeleteGameDataScreen* state = TaskGetStructPtr(gCurTask, state);
     
     struct UNK_0808B3FC_UNK240* unk0 = state->unk0;
     struct UNK_0808B3FC_UNK240* unk60 = state->unk60;

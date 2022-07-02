@@ -1112,40 +1112,40 @@ gUnknown_080D95D2:
 gUnknown_080D95D6:
     .incbin "baserom.gba", 0x000D95D6, 0x12
 
-    .global gUnknown_080D95E8
-gUnknown_080D95E8:
+    .global sOptionsScreenTitleText
+sOptionsScreenTitleText:
     .incbin "baserom.gba", 0x000D95E8, 0x30
 
-    .global gUnknown_080D9618
-gUnknown_080D9618:
+    .global sOptionsScreenMenuItemsText
+sOptionsScreenMenuItemsText:
     .incbin "baserom.gba", 0x000D9618, 0x180
 
-    .global gUnknown_080D9798
-gUnknown_080D9798:
+    .global sDifficultyLevelSwitchValues
+sDifficultyLevelSwitchValues:
     .incbin "baserom.gba", 0x000D9798, 0x60
 
-    .global gUnknown_080D97F8
-gUnknown_080D97F8:
+    .global sTimeLimitMenuSwitchValues
+sTimeLimitMenuSwitchValues:
     .incbin "baserom.gba", 0x000D97F8, 0x60
 
-    .global gUnknown_080D9858
-gUnknown_080D9858:
+    .global sOptionsScreenSelectedLanguageText
+sOptionsScreenSelectedLanguageText:
     .incbin "baserom.gba", 0x000D9858, 0x30
 
-    .global gUnknown_080D9888
-gUnknown_080D9888:
+    .global sDifficultyMenuTitleText
+sDifficultyMenuTitleText:
     .incbin "baserom.gba", 0x000D9888, 0x30
 
-    .global gUnknown_080D98B8
-gUnknown_080D98B8:
+    .global sDifficultyMenuControlsText
+sDifficultyMenuControlsText:
     .incbin "baserom.gba", 0x000D98B8, 0x30
 
-    .global gUnknown_080D98E8
-gUnknown_080D98E8:
+    .global sTimeLimitMenuTitleText
+sTimeLimitMenuTitleText:
     .incbin "baserom.gba", 0x000D98E8, 0x30
 
-    .global gUnknown_080D9918
-gUnknown_080D9918:
+    .global sTimeLimitMenuControlsText
+sTimeLimitMenuControlsText:
     .incbin "baserom.gba", 0x000D9918, 0x30
 
     .global gUnknown_080D9948
@@ -1192,16 +1192,16 @@ gUnknown_080D9BA0:
 gUnknown_080D9BD0:
     .incbin "baserom.gba", 0x000D9BD0, 0x60
 
-    .global gUnknown_080D9C30
-gUnknown_080D9C30:
+    .global sPlayerDataMenuTitleText
+sPlayerDataMenuTitleText:
     .incbin "baserom.gba", 0x000D9C30, 0x30
 
-    .global gUnknown_080D9C60
-gUnknown_080D9C60:
+    .global sPlayerDataMenuControlsText
+sPlayerDataMenuControlsText:
     .incbin "baserom.gba", 0x000D9C60, 0x30
 
-    .global gUnknown_080D9C90
-gUnknown_080D9C90:
+    .global sPlayerDataMenuItemsText
+sPlayerDataMenuItemsText:
     .incbin "baserom.gba", 0x000D9C90, 0xC0
 
     .global gUnknown_080D9D50

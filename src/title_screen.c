@@ -22,6 +22,48 @@
 #include "recordings.h"
 #include "trig.h"
 
+struct BirdAnimation {
+    struct UNK_0808B3FC_UNK240 sprite;
+    u16 unk30;
+    u16 unk32;
+    u16 unk34;
+    u16 unk36;
+    s16 unk38;
+    s16 unk3A;
+    u8 unk3C;
+    u8 unk3D;
+    u8 sequenceStep;
+    u8 unk3F;
+};
+
+struct UNK_080E0D64 {
+    // width
+    u32 unk0;
+    // caption ID
+    u16 unk4;
+    s8 unk6;
+};
+
+struct MenuItemTransition {
+    struct UNK_0808B3FC_UNK240* sprite;
+    u8 filler4[12];
+    u8 animFrame;
+    s16 unk12;
+}; /* size 0x14 */
+
+struct LensFlare {
+    struct UNK_0808B3FC_UNK240 sprites[8];
+    struct UNK_808D124_UNK180 unk180[8];
+    s16 posSequenceX[8];
+    s16 posSequenceY[8];
+    u16 unk200;
+    s16 unk202;
+    u8 unk204;
+    u8 animFrame;
+    u8 unk206;
+    u8 unk207;
+}; /* size 0x208 */
+
 // Might not be declared here
 struct UNK_3005B80 gUnknown_03005B80;
 
@@ -1222,7 +1264,7 @@ static void Task_HandleTitleScreenExit(void) {
                 } else {
                     // If we don't have a profile name
                     // show the profile creator screen
-                    CreateProfileNameScreen(0);
+                    CreateNewProfileNameScreen(NEW_PROFILE_NAME_MULTIPLAYER);
                 }
                 break;
         }

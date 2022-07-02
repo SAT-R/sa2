@@ -31,7 +31,7 @@ static bool16 HasChangesToSave(void);
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
     struct MultiplayerTimeRecord* p2;
-    struct SaveGameUnk2C* p3;
+    struct ButtonConfig* p3;
     
     memset(gameState, 0, sizeof(struct SaveGame));
     

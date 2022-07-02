@@ -22,7 +22,7 @@ struct MultiplayerTimeRecord {
     u8 unk13;
 };
 
-struct SaveGameUnk2C {
+struct ButtonConfig {
     u16 unk0;
     u16 unk2;
     u16 unk4;
@@ -70,7 +70,8 @@ struct SaveGame {
     // playerName
     u16 unk20[MAX_PLAYER_NAME_LENGTH];
 
-    struct SaveGameUnk2C unk2C;
+    // buttonConfig
+    struct ButtonConfig unk2C;
 
     // timeRecords
     struct TimeRecords unk34;
