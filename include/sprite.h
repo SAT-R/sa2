@@ -59,10 +59,13 @@ struct UNK_0808B3FC_UNK240 {
 
     // I believe Unk_03002400 should be using this
     u32 unk10;
-
     u16 unk14;
+
+    // x
     u16 unk16;
+    // y
     u16 unk18;
+
     u16 unk1A;
 
     u16 unk1C;

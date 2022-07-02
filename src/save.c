@@ -30,7 +30,7 @@ static bool16 HasChangesToSave(void);
 
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
-    struct SectorDataUnk2A4* p2;
+    struct MultiplayerTimeRecord* p2;
     struct SaveGameUnk2C* p3;
     
     memset(gameState, 0, sizeof(struct SaveGame));
@@ -79,7 +79,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 
 static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
     s16 i, *record;
-    struct SectorDataUnk2A4* p2;
+    struct MultiplayerTimeRecord* p2;
     
     memset(saveData, 0, sizeof(struct SaveSectorData));
     

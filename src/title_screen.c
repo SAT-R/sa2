@@ -79,6 +79,21 @@ static void BirdAnimEnd(void);
 #define TRANSITION_OUT 0
 #define TRANSITION_IN 1
 
+#define MENU_ITEM_SINGLE_PLAYER 0
+#define MENU_ITEM_MULTI_PLAYER 1
+#define MENU_ITEM_GAME_START 2
+#define MENU_ITEM_TIME_ATTACK 3
+#define MENU_ITEM_OPTIONS 4
+#define MENU_ITEM_TINY_CHAO_GARDEN 5
+
+#define SPECIAL_MENU_INDEX_MULTI_PLAYER 4
+
+#define PlayModeMenuIndex(item) (item - MENU_ITEM_SINGLE_PLAYER)
+#define PlayModeMenuItem(index) (MENU_ITEM_SINGLE_PLAYER + index)
+
+#define SinglePlayerMenuIndex(item) (item - MENU_ITEM_GAME_START)
+#define SinglePlayerMenuItem(index) (MENU_ITEM_GAME_START + index)
+
 #define MenuTextIdx(language, menuItemId) menuItemId + language * NUM_LANGUAGES
 
 const struct UNK_080E0D64 gPressStartTiles[] = 
@@ -243,7 +258,7 @@ void CreateTitleScreen(void) {
     titleScreen->unkF36 = 0x100;
     titleScreen->wavesTopOffset = 2;
 
-    titleScreen->menuCursorIndex = 0;
+    titleScreen->menuCursor = 0;
     titleScreen->startScreenTimer = 0;
 
     titleScreen->animFrame = 0;
@@ -303,7 +318,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen* titleScreen) {
     
     titleScreen->unkF36 = 3;
     titleScreen->wavesTopOffset = 2;
-    titleScreen->menuCursorIndex = 0;
+    titleScreen->menuCursor = 0;
     titleScreen->startScreenTimer = 0;
     titleScreen->animFrame = 0;
     titleScreen->unkF3A = 0x20;
@@ -944,7 +959,7 @@ static void Task_PressStartMenuMain(void) {
     if (gPressedKeys & START_BUTTON) {
         m4aSongNumStart(SE_SELECT);
         titleScreen->animFrame = 0;
-        titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
+        titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         gCurTask->main = Task_StartPressedTransitionAnim;
     }
 
@@ -976,7 +991,7 @@ static void Task_StartPressedTransitionAnim(void) {
 
     if (titleScreen->animFrame > 16) {
         titleScreen->animFrame = 0;
-        titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
+        titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         gCurTask->main = Task_PlayModeMenuMain;
     }
 
@@ -989,7 +1004,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen* titleScreen)
     // Highlight the menu items from cursor position
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &titleScreen->menuItems[menuIndex ^ 1];
-        menuItem->unk25 = (menuIndex ^ titleScreen->menuCursorIndex);
+        menuItem->unk25 = (menuIndex ^ titleScreen->menuCursor);
         sub_80051E8(menuItem);
     }; 
 }
@@ -1005,10 +1020,10 @@ static void Task_PlayModeMenuMain(void) {
 
     // Move the cursor if buttons are pressed
     if (gRepeatedKeys & (DPAD_UP | DPAD_DOWN)) {
-        if (titleScreen->menuCursorIndex != PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
-            titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
+        if (titleScreen->menuCursor != PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
+            titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         } else {
-            titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER);
+            titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER);
         }
 
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -1018,7 +1033,7 @@ static void Task_PlayModeMenuMain(void) {
     if (gPressedKeys & A_BUTTON) {
         m4aSongNumStart(SE_SELECT);
 
-        if (titleScreen->menuCursorIndex == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
+        if (titleScreen->menuCursor == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
             titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].unk16 = 0x78;
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER], TRANSITION_OUT);
             
@@ -1034,7 +1049,7 @@ static void Task_PlayModeMenuMain(void) {
             config270->unk6 = 0x100;
             config270->unk2 = 1;
             
-            titleScreen->menuCursorIndex = SPECIAL_MENU_INDEX_MULTI_PLAYER;
+            titleScreen->menuCursor = SPECIAL_MENU_INDEX_MULTI_PLAYER;
             gCurTask->main = Task_HandleTitleScreenExit;
         }
         return;
@@ -1063,7 +1078,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void) {
     // Allow back to be pressed during animation
     // to cancel
     if (gPressedKeys & B_BUTTON) {
-        titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
+        titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_PlayModeMenuMain;
     }
@@ -1082,7 +1097,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void) {
     // After 12 frames enable the single player menu
     if (titleScreen->animFrame > 12) {
         titleScreen->animFrame = 0;
-        titleScreen->menuCursorIndex = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
+        titleScreen->menuCursor = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
         gCurTask->main = Task_SinglePlayerMenuMain;
     }
 
@@ -1095,7 +1110,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen* titleScr
 
     for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
         menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)];
-        if (titleScreen->menuCursorIndex == menuIndex) {
+        if (titleScreen->menuCursor == menuIndex) {
             menuItem->unk25 = 1;
         } else {
             menuItem->unk25 = 0;
@@ -1121,24 +1136,24 @@ static void Task_SinglePlayerMenuMain(void) {
 
     // Handle input and wrap the cursor around
     if (gRepeatedKeys & DPAD_UP) {
-        if (titleScreen->menuCursorIndex > 0) {
-            titleScreen->menuCursorIndex--;
+        if (titleScreen->menuCursor > 0) {
+            titleScreen->menuCursor--;
         } else {
-            titleScreen->menuCursorIndex = numMenuItems - 1;
+            titleScreen->menuCursor = numMenuItems - 1;
         }
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
     } else if (gRepeatedKeys & DPAD_DOWN) {
-        if (titleScreen->menuCursorIndex < (numMenuItems - 1)) {
-            titleScreen->menuCursorIndex++;
+        if (titleScreen->menuCursor < (numMenuItems - 1)) {
+            titleScreen->menuCursor++;
         } else {
-            titleScreen->menuCursorIndex = 0; 
+            titleScreen->menuCursor = 0; 
         }
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
     }
 
 
     if (gPressedKeys & B_BUTTON) {
-        titleScreen->menuCursorIndex = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
+        titleScreen->menuCursor = PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER);
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_PlayModeMenuMain;
         return;
@@ -1147,7 +1162,7 @@ static void Task_SinglePlayerMenuMain(void) {
     if (gPressedKeys & A_BUTTON) {
         config270 = &titleScreen->unk270;
         config270->unk8 = 0x3FFF;
-        if (titleScreen->menuCursorIndex == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
+        if (titleScreen->menuCursor == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
            config270->unk8 = 0x3FBF;
         }
         config270->unk6 = 0x100;
@@ -1155,7 +1170,7 @@ static void Task_SinglePlayerMenuMain(void) {
         config270->unk2 = 1;
 
         for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
-            if (menuIndex != titleScreen->menuCursorIndex) {
+            if (menuIndex != titleScreen->menuCursor) {
                 CreateMenuItemTransition(&titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)], TRANSITION_OUT);
             }
         }
@@ -1175,7 +1190,7 @@ static void Task_HandleTitleScreenExit(void) {
         gSelectedZone = ZONE_1_1;
         gSelectedCharacter = CHARACTER_SONIC;
         
-        switch(titleScreen->menuCursorIndex) {
+        switch(titleScreen->menuCursor) {
             case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_801A6D8();
@@ -1194,7 +1209,7 @@ static void Task_HandleTitleScreenExit(void) {
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
-                sub_8063730(0);
+                CreateOptionsScreen(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
                 Task_LoadTinyChaoGarden();
@@ -1207,14 +1222,14 @@ static void Task_HandleTitleScreenExit(void) {
                 } else {
                     // If we don't have a profile name
                     // show the profile creator screen
-                    sub_8063A00(0);
+                    CreateProfileNameScreen(0);
                 }
                 break;
         }
         TaskDestroy(gCurTask);
     } else {
         ShowGameLogo(titleScreen);
-        if (titleScreen->menuCursorIndex == SPECIAL_MENU_INDEX_MULTI_PLAYER) {
+        if (titleScreen->menuCursor == SPECIAL_MENU_INDEX_MULTI_PLAYER) {
             // ?? wat, who writes for loops like this
             // is some macro for the numMenuItems so it wasn't
             // obvious
@@ -1227,7 +1242,7 @@ static void Task_HandleTitleScreenExit(void) {
             }
             sub_80051E8(&titleScreen->unkC0);
         } else {
-            menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursorIndex)];
+            menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
             menuItem->unk25 = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
                 sub_80051E8(menuItem);

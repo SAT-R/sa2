@@ -5,11 +5,17 @@
 #include "zones.h"
 #include "player.h"
 
+#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
+#define TIME_RECORDS_PER_COURSE 3
+
+#define MAX_PLAYER_NAME_LENGTH 6
+#define PLAYER_NAME_END_CHAR 0xFFFF
+
 // TODO: Work out what this is
-struct SectorDataUnk2A4 {
+struct MultiplayerTimeRecord {
     u8 filler0[4];
     // playerName
-    u16 unk4[6];
+    u16 unk4[MAX_PLAYER_NAME_LENGTH];
     u8 unk10;
     u8 unk11;
     u8 unk12;
@@ -22,17 +28,11 @@ struct SaveGameUnk2C {
     u16 unk4;
 };
 
-#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
-#define TIME_RECORDS_PER_ZONE 3
-
 struct TimeRecords {
-    u16 table[NUM_CHARACTERS][NUM_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_ZONE];
+    u16 table[NUM_CHARACTERS][NUM_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
 };
 
-#define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_ZONE
-
-#define MAX_PLAYER_NAME_LENGTH 6
-#define PLAYER_NAME_END_CHAR 0xFFFF
+#define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
 
 struct SaveGame {
     u32 unk0;
@@ -46,7 +46,9 @@ struct SaveGame {
     u8 unk7[5];
     u8 unkC[5];
 
+    // soundTestUnlocked
     u8 unk11;
+
     u8 unk12;
     u8 unk13;
 
@@ -66,14 +68,14 @@ struct SaveGame {
     u8 unk1F;
 
     // playerName
-    u16 unk20[6];
+    u16 unk20[MAX_PLAYER_NAME_LENGTH];
 
     struct SaveGameUnk2C unk2C;
 
     // timeRecords
     struct TimeRecords unk34;
 
-    struct SectorDataUnk2A4 unk2AC[10];
+    struct MultiplayerTimeRecord unk2AC[10];
 
     u32 unk374;
 };
@@ -109,7 +111,7 @@ struct SaveSectorData {
     // timeRecords
     struct TimeRecords unk2C;
 
-    struct SectorDataUnk2A4 unk2A4[10];
+    struct MultiplayerTimeRecord unk2A4[10];
 
     u32 unk36C;
 

@@ -5,6 +5,6 @@
 #include "profile.h"
 
 // CreateSoundTestScreen
-void sub_808A258(struct UNK_8063730*);
+void sub_808A258(struct OptionsScreen*);
 
 #endif

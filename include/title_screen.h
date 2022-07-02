@@ -54,7 +54,7 @@ struct TitleScreen {
 
     u16 animFrame;
     u16 startScreenTimer;
-    u8 menuCursorIndex;
+    u8 menuCursor;
 
     u8 unkF43;
     u16 unkF44[16];
@@ -118,20 +118,5 @@ void CreateTitleScreenAndSkipIntro(void);
 void CreateTitleScreenAtPlayModeMenu(void);
 // CreateTitleScreenSkipToPlayModeMenu
 void CreateTitleScreenAtSinglePlayerMenu(void);
-
-#define MENU_ITEM_SINGLE_PLAYER 0
-#define MENU_ITEM_MULTI_PLAYER 1
-#define MENU_ITEM_GAME_START 2
-#define MENU_ITEM_TIME_ATTACK 3
-#define MENU_ITEM_OPTIONS 4
-#define MENU_ITEM_TINY_CHAO_GARDEN 5
-
-#define SPECIAL_MENU_INDEX_MULTI_PLAYER 4
-
-#define PlayModeMenuIndex(item) (item - MENU_ITEM_SINGLE_PLAYER)
-#define PlayModeMenuItem(index) (MENU_ITEM_SINGLE_PLAYER + index)
-
-#define SinglePlayerMenuIndex(item) (item - MENU_ITEM_GAME_START)
-#define SinglePlayerMenuItem(index) (MENU_ITEM_GAME_START + index)
 
 #endif

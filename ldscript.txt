@@ -40,6 +40,7 @@ SECTIONS
         build/sa2/src/init.o(.text);
         build/sa2/asm/code2_0.o(.text);
         build/sa2/src/profile.o(.text);
+        build/sa2/src/ui.o(.text);
         build/sa2/asm/profile.o(.text);
         build/sa2/src/save.o(.text);
         build/sa2/asm/code3.o(.text);

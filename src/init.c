@@ -76,7 +76,7 @@ void GameStart(void) {
     }
     
     if (!hasProfile) {
-        sub_8063940_CreateProfileScreen();
+        CreateNewProfileScreen();
         return;
     }
     

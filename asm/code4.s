@@ -5846,7 +5846,7 @@ _08088DE0:
 	ldrb r2, [r2]
 	lsls r2, r2, #0x18
 	asrs r2, r2, #0x18
-	bl sub_80637EC
+	bl CreateCourseRecordsScreen
 	b _08088EAC
 	.align 2, 0
 _08088E00: .4byte gGameMode
