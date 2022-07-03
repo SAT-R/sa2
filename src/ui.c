@@ -8,13 +8,13 @@ extern const u16 gUnknown_080D95D6[8];
 extern const u16 gUnknown_080D95C4[2];
 extern const u16 gUnknown_080D95C8[5];
 
-void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 c, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
+void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
     unk2400->unk4 = BG_CHAR_ADDR(a);
     unk2400->unkA = 0;
     unk2400->unkC = BG_SCREEN_ADDR(b);
     unk2400->unk18 = 0;
     unk2400->unk1A = 0;
-    unk2400->unk1C = c;
+    unk2400->unk1C = assetId;
     unk2400->unk1E = 0;
     unk2400->unk20 = 0;
     unk2400->unk22 = 0;
@@ -45,24 +45,24 @@ s32 sub_806B8D4(const struct UNK_080D95E8* itemText, s8 length) {
 }
 
 struct UNK_806B908 sub_806B908(u16 nameChar) {
-    struct UNK_806B908 itemText;
+    struct UNK_806B908 charTile;
     
     if (nameChar >= 0x10C) {
-        itemText.unk4 = 0x3BB;
-        itemText.unk6 = 0x11;
+        charTile.unk4 = 0x3BB;
+        charTile.unk6 = 0x11;
     } else {
-         if ((nameChar & 0x100)) {
-            itemText.unk4 = 0x3C3;
+        if ((nameChar & 0x100)) {
+            charTile.unk4 = 0x3C3;
         } else {
-            itemText.unk4 = 0x3BB;
+            charTile.unk4 = 0x3BB;
         }
 
-        itemText.unk6 = nameChar & 0xFF;   
+        charTile.unk6 = nameChar & 0xFF;   
     }
 
-    itemText.unk0 = 4;
+    charTile.unk0 = 4;
 
-    return itemText;
+    return charTile;
 }
 
 bool16 sub_806B988(u16* playerName) {
@@ -100,10 +100,8 @@ bool16 sub_806B9C8(u16 nameChar) {
     }
 }
 
-u16 sub_806BA14(s16 a, u16 b) {
-    u16 unk5C4[2];
-    u16 unk5C8[5];
-    u16 *cursor; 
+bool16 sub_806BA14(s16 a, u16 b) {
+    u16 unk5C4[2], unk5C8[5], *cursor; 
 
     memcpy(unk5C4, gUnknown_080D95C4, sizeof(gUnknown_080D95C4));
     memcpy(unk5C8, gUnknown_080D95C8, sizeof(gUnknown_080D95C8));

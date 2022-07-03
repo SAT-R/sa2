@@ -4,7 +4,9 @@
 #include "global.h"
 #include "data.h"
 
+
 // TODO: move the struct declaration to a proper location
+// Background
 struct Unk_03002400 {
     u32 unk0;
     u32 unk4; // vram

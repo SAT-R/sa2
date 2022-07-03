@@ -1204,20 +1204,20 @@ sPlayerDataMenuControlsText:
 sPlayerDataMenuItemsText:
     .incbin "baserom.gba", 0x000D9C90, 0xC0
 
-    .global gUnknown_080D9D50
-gUnknown_080D9D50:
+    .global sProfileNameScreenNewTitleText
+sProfileNameScreenNewTitleText:
     .incbin "baserom.gba", 0x000D9D50, 0x30
 
-    .global gUnknown_080D9D80
-gUnknown_080D9D80:
+    .global sProfileNameScreenEditTitleText
+sProfileNameScreenEditTitleText:
     .incbin "baserom.gba", 0x000D9D80, 0x30
 
-    .global gUnknown_080D9DB0
-gUnknown_080D9DB0:
+    .global sProfileNameScreenArrowTiles
+sProfileNameScreenArrowTiles:
     .incbin "baserom.gba", 0x000D9DB0, 0x10
 
-    .global gUnknown_080D9DC0
-gUnknown_080D9DC0:
+    .global sProfileNameScreenEndButtonText
+sProfileNameScreenEndButtonText:
     .incbin "baserom.gba", 0x000D9DC0, 0x30
 
     .global gUnknown_080D9DF0

@@ -37,8 +37,8 @@ static void sub_8066930(struct LanguageScreen*);
 
 static void sub_806B354(void);
 static void sub_8067420(s16);
-static void sub_8067484(struct ProfileNameScreen*);
-static void sub_806751C(struct ProfileNameScreen*);
+static void ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen*);
+static void ProfileNameScreenCreateUIText(struct ProfileNameScreen*);
 static void sub_8067610(struct ProfileNameScreen*);
 static void sub_8067710(struct ProfileNameScreen*);
 
@@ -108,6 +108,13 @@ static void sub_806B2B4(void);
 
 static void sub_8067148(void);
 
+static void RenderProfileNameScreenUI(void);
+static bool16 ProfileNameScreenHandleShoulderInput(void);
+static bool16 ProfileNameScreenHandleDpadInput(void);
+static u16 sub_806A664(s16, u16);
+static void ProfileNameScreenInputComplete(void);
+static void ProfileNameScreenHandleExit(void);
+
 #define OPTIONS_MENU_ITEM_PLAYER_DATA 0
 #define OPTIONS_MENU_ITEM_DIFFICULTY 1
 #define OPTIONS_MENU_ITEM_TIME_LIMIT 2
@@ -126,6 +133,25 @@ static void sub_8067148(void);
 #define PLAYER_DATA_MENU_ITEM_TIME_RECORDS 1
 #define PLAYER_DATA_MENU_ITEM_VS_RECORDS 2
 #define PLAYER_DATA_MENU_ITEM_EXIT 3
+
+#define NAME_CHAR_MATRIX_NUM_COLS 11
+#define NAME_CHAR_MATRIX_NUM_ROWS 22
+#define NAME_CHAR_MATRIX_ROWS_PER_PAGE 7
+#define NAME_CHAR_MATRIX_LAST_PAGE_START_INDEX NAME_CHAR_MATRIX_NUM_COLS * (NAME_CHAR_MATRIX_NUM_ROWS - NAME_CHAR_MATRIX_ROWS_PER_PAGE)
+#define NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT 16
+#define NAME_CHAR_MATRIX_BACKGROUND_COLUMN_WIDTH 16
+
+#define PROFILE_NAME_SCREEN_CONTROLS_COLUMN 11
+#define PROFILE_NAME_SCREEN_CURSOR_BACK_BUTTON 4
+#define PROFILE_NAME_SCREEN_CURSOR_FORWARD_BUTTON 5
+#define PROFILE_NAME_SCREEN_END_BUTTON 6
+
+#define NAME_INPUT_DISPLAY_CHAR_WIDTH 12
+
+#define NAME_SCREEN_COMPLETE_ACTION_START_GAME 2
+#define NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER 1
+
+#define LanguageIndex(lang) (lang - 1)
 
 extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
 extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
@@ -158,6 +184,13 @@ extern const struct UNK_080D95E8 gUnknown_080D9BA0[6];
 extern const struct UNK_080D95E8 gUnknown_080D9BD0[6][2];
 
 extern const struct UNK_080D95E8 gUnknown_080D9B70[6];
+
+extern const struct UNK_080D95E8 sProfileNameScreenNewTitleText[6];
+extern const struct UNK_080D95E8 sProfileNameScreenEditTitleText[6];
+extern const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2];
+extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
+
+extern const struct UNK_080D95E8 gUnknown_080D9DF0[2];
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -259,43 +292,45 @@ void CreateNewProfileScreen(void) {
 }
 
 void CreateNewProfileNameScreen(s16 mode) {
-    struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, 0);
-    struct ProfileNameScreen* config = TaskGetStructPtr(t, config);
+    struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, NULL);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t, profileNameScreen);
     s16 i;
 
-    config->unk14C = NULL;
-    config->unk3BA = gLoadedSaveGame->unk6 - 1;
+    profileNameScreen->playerDataMenu = NULL;
+    profileNameScreen->language = gLoadedSaveGame->unk6 - 1;
     
-    config->onCompleteAction = mode == NEW_PROFILE_NAME_START_GAME ? 2 : 1;
-    config->unk252 = 0;
+    profileNameScreen->onCompleteAction = mode == NEW_PROFILE_NAME_START_GAME ? 
+        NAME_SCREEN_COMPLETE_ACTION_START_GAME : 
+        NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER;
+    profileNameScreen->cursorCol = 0;
 
-    if (config->unk3BA == 0) {
-        config->unk3B8 = 0;
-        config->unk253 = 0;
-        config->unk250 = 0;
+    if (profileNameScreen->language == 0) {
+        profileNameScreen->matrixCursorIndex = 0;
+        profileNameScreen->cursorRow = 0;
+        profileNameScreen->matrixPageIndex = 0;
     } else {
-        config->unk3B8 = 99;
-        config->unk253 = 0;
-        config->unk250 = 99;
+        profileNameScreen->matrixCursorIndex = 99;
+        profileNameScreen->cursorRow = 0;
+        profileNameScreen->matrixPageIndex = 99;
     }
 
-    if (config->unk3BA > 5) {
-        config->unk3BA = 1;
+    if (profileNameScreen->language > 5) {
+        profileNameScreen->language = 1;
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        config->nameInput.unk154[i] = PLAYER_NAME_END_CHAR;
+        profileNameScreen->nameInput.buffer[i] = PLAYER_NAME_END_CHAR;
     }
 
-    config->nameInput.unk152 = 0;
+    profileNameScreen->nameInput.cursor = 0;
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = NULL;
 
-    sub_8067420(config->unk3BA);
-    sub_8067484(config);
-    sub_806751C(config);
-    sub_8067610(config);
-    sub_8067710(config);
+    sub_8067420(profileNameScreen->language);
+    ProfileNameScreenCreateUIBackgrounds(profileNameScreen);
+    ProfileNameScreenCreateUIText(profileNameScreen);
+    sub_8067610(profileNameScreen);
+    sub_8067710(profileNameScreen);
 }
 
 static void GetProfileData(struct OptionsScreen* optionsScreen) {
@@ -2669,49 +2704,49 @@ void sub_806723C(void) {
 }
 
 void CreateEditProfileNameScreen(struct PlayerDataMenu* playerDataMenu) {
-    struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, 4, 0);
+    struct Task* t = TaskCreate(sub_806B354, sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
     struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t, profileNameScreen);
     s16 i;
 
-    profileNameScreen->unk14C = playerDataMenu;
-    profileNameScreen->unk3BA = playerDataMenu->language;
+    profileNameScreen->playerDataMenu = playerDataMenu;
+    profileNameScreen->language = playerDataMenu->language;
     profileNameScreen->onCompleteAction = 0;
-    profileNameScreen->unk252 = 0;
+    profileNameScreen->cursorCol = 0;
 
-    if (profileNameScreen->unk3BA == 0) {
-        profileNameScreen->unk3B8 = 0;
-        profileNameScreen->unk253 = 0;
-        profileNameScreen->unk250 = 0;
+    if (profileNameScreen->language == LanguageIndex(LANG_JAPANESE)) {
+        profileNameScreen->matrixCursorIndex = 0;
+        profileNameScreen->cursorRow = 0;
+        profileNameScreen->matrixPageIndex = 0;
     } else {
-        profileNameScreen->unk3B8 = 99;
-        profileNameScreen->unk253 = 0;
-        profileNameScreen->unk250 = 99;
+        profileNameScreen->matrixCursorIndex = 99;
+        profileNameScreen->cursorRow = 0;
+        profileNameScreen->matrixPageIndex = 99;
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        profileNameScreen->nameInput.unk154[i] = playerDataMenu->optionsScreen->profileData.playerName[i];
-        if (profileNameScreen->nameInput.unk154[i] == PLAYER_NAME_END_CHAR) {
+        profileNameScreen->nameInput.buffer[i] = playerDataMenu->optionsScreen->profileData.playerName[i];
+        if (profileNameScreen->nameInput.buffer[i] == PLAYER_NAME_END_CHAR) {
             break;
         }
     }
     
-    profileNameScreen->nameInput.unk152 = i;
+    profileNameScreen->nameInput.cursor = i;
 
     for (;i < MAX_PLAYER_NAME_LENGTH; i++) {
-        profileNameScreen->nameInput.unk154[i] = PLAYER_NAME_END_CHAR;
+        profileNameScreen->nameInput.buffer[i] = PLAYER_NAME_END_CHAR;
     }
 
     gUnknown_03005B50 = (void*)OBJ_VRAM0;
     gUnknown_03005B54 = NULL;
 
-    sub_8067420(profileNameScreen->unk3BA);
-    sub_8067484(profileNameScreen);
-    sub_806751C(profileNameScreen);
+    sub_8067420(profileNameScreen->language);
+    ProfileNameScreenCreateUIBackgrounds(profileNameScreen);
+    ProfileNameScreenCreateUIText(profileNameScreen);
     sub_8067610(profileNameScreen);
     sub_8067710(profileNameScreen);
 }
 
-static void sub_8067420(s16 p) {
+static void sub_8067420(s16 language) {
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x701;
     gBgCntRegs[1] = 0x9606;
@@ -2721,7 +2756,7 @@ static void sub_8067420(s16 p) {
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[1][0] = 0xFFE8;
     
-    if (!p) {
+    if (language == 0) {
         gBgScrollRegs[1][1] = 0xFFD9;
     } else {
         gBgScrollRegs[1][1] = 0x69;
@@ -2733,8 +2768,8 @@ static void sub_8067420(s16 p) {
     gBgScrollRegs[3][1] = 0;
 }
 
-static void sub_8067484(struct ProfileNameScreen* config) {
-    struct UNK_802D4CC_UNK270* unk140 = &config->unk140;
+static void ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen* profileNameScreen) {
+    struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
 
     unk140->unk0 = 0;
     unk140->unk2 = 2;
@@ -2744,7 +2779,7 @@ static void sub_8067484(struct ProfileNameScreen* config) {
     unk140->unk8 = 0xFF;
     
     sub_806B854(
-        &config->unkC0, 
+        &profileNameScreen->background, 
         0, 
         7, 
         0x87, 
@@ -2756,7 +2791,7 @@ static void sub_8067484(struct ProfileNameScreen* config) {
         0
     );
     sub_806B854(
-        &config->unk100, 
+        &profileNameScreen->charMatrixBackground, 
         3, 
         0x1F, 
         0x89, 
@@ -2768,7 +2803,7 @@ static void sub_8067484(struct ProfileNameScreen* config) {
         0
     );
     sub_806B854(
-        &config->unk210, 
+        &profileNameScreen->charMatrix, 
         1, 
         0x16, 
         0x88, 
@@ -2781,89 +2816,85 @@ static void sub_8067484(struct ProfileNameScreen* config) {
     );
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9D50[6];
-extern const struct UNK_080D95E8 gUnknown_080D9D80[6];
-
-extern const struct UNK_080D95E8 gUnknown_080D9DB0[2];
-extern const struct UNK_080D95E8 gUnknown_080D9DC0[6];
-
-static void sub_806751C(struct ProfileNameScreen* config) {
-    struct UNK_0808B3FC_UNK240* unk0 = &config->unk0;
-    struct UNK_0808B3FC_UNK240* unk30 = config->unk30;
+static void ProfileNameScreenCreateUIText(struct ProfileNameScreen* profileNameScreen) {
+    struct UNK_0808B3FC_UNK240* title = &profileNameScreen->title;
+    struct UNK_0808B3FC_UNK240* control = profileNameScreen->controls;
     
-    u8* unk3BA = &config->unk3BA;
-    const struct UNK_080D95E8* db0 = gUnknown_080D9DB0;
-    const struct UNK_080D95E8* dc0 = &gUnknown_080D9DC0[*unk3BA];
+    u8* language = &profileNameScreen->language;
+    const struct UNK_080D95E8* arrowTile = sProfileNameScreenArrowTiles;
+    const struct UNK_080D95E8* endButtonText = &sProfileNameScreenEndButtonText[*language];
+    const struct UNK_080D95E8* titleText;
 
-    const struct UNK_080D95E8* d50;
-
-    if (config->nameInput.unk152) {
-        d50 = &gUnknown_080D9D80[*unk3BA];
+    if (profileNameScreen->nameInput.cursor > 0) {
+        titleText = &sProfileNameScreenEditTitleText[*language];
     } else {
-        d50 = &gUnknown_080D9D50[*unk3BA];
+        titleText = &sProfileNameScreenNewTitleText[*language];
     }
 
     sub_806A568(
-        unk0, 
+        title, 
         0, 
-        d50->unk4,
-        d50->unk0,
+        titleText->unk4,
+        titleText->unk0,
         0x1000,
         3, 
         0x15,
         0xD,
-        d50->unk2,
+        titleText->unk2,
         0
     );
     
+    // Left arrow
     sub_806A568(
-        unk30, 
+        control, 
         0, 
-        db0->unk4,
-        db0->unk0,
+        arrowTile->unk4,
+        arrowTile->unk0,
         0x1000,
         0xDB, 
         0x70,
         0xD,
-        db0->unk2,
+        arrowTile->unk2,
         0
     );
-    unk30++;
-    db0++;
+    control++;
+    arrowTile++;
+
+    // Right arrow
     sub_806A568(
-        unk30, 
+        control, 
         0, 
-        db0->unk4,
-        db0->unk0,
+        arrowTile->unk4,
+        arrowTile->unk0,
         0x1000,
         0xDB, 
         0x80,
         0xD,
-        db0->unk2,
+        arrowTile->unk2,
         0
     );
-    unk30++;
+    control++;
+
+    // End button
     sub_806A568(
-       unk30, 
+       control, 
         0, 
-        dc0->unk4,
-        dc0->unk0,
+        endButtonText->unk4,
+        endButtonText->unk0,
         0x1000,
         0xDB, 
         0x8F,
         0xD,
-        dc0->unk2,
+        endButtonText->unk2,
         0
     );
 }
 
-extern const struct UNK_080D95E8 gUnknown_080D9DF0[2];
-
-static void sub_8067610(struct ProfileNameScreen* config) {
-    struct UNK_0808B3FC_UNK240* unk150 = config->unk150;
-    struct UNK_0808B3FC_UNK240* unk1B0 = config->unk1B0;
+static void sub_8067610(struct ProfileNameScreen* profileNameScreen) {
+    struct UNK_0808B3FC_UNK240* unk150 = profileNameScreen->focusedCell;
+    struct UNK_0808B3FC_UNK240* unk1B0 = profileNameScreen->scrollArrows;
     const struct UNK_080D95E8* df0 = gUnknown_080D9DF0;
-    struct UNK_806B908 local48;
+    struct UNK_806B908 nameCharTile;
     
     sub_806A568(
         unk150, 
@@ -2878,17 +2909,18 @@ static void sub_8067610(struct ProfileNameScreen* config) {
         0
     );
     unk150++;
-    local48 = sub_806B908(config->unk3B8);
+
+    nameCharTile = sub_806B908(profileNameScreen->matrixCursorIndex);
     sub_806A568(
         unk150, 
         0, 
-        local48.unk0,
-        local48.unk4,
+        nameCharTile.unk0,
+        nameCharTile.unk4,
         0x1000,
         0x21, 
         0x2F,
         7,
-        local48.unk6,
+        nameCharTile.unk6,
         0
     );
     
@@ -2920,35 +2952,35 @@ static void sub_8067610(struct ProfileNameScreen* config) {
     );
 }
 
-static void sub_8067710(struct ProfileNameScreen* config) {
-    struct UNK_806B908 local48;
+static void sub_8067710(struct ProfileNameScreen* profileNameScreen) {
+    struct UNK_806B908 nameCharTile;
    
-    struct UNK_0808B3FC_UNK240* unk30 = config->nameInput.unk30;
-    struct UNK_0808B3FC_UNK240* unk0 = &config->nameInput.unk0;
+    struct UNK_0808B3FC_UNK240* unk30 = profileNameScreen->nameInput.characterDisplay;
+    struct UNK_0808B3FC_UNK240* unk0 = &profileNameScreen->nameInput.displayCursor;
 
     s16 i;
-    s16 pos; 
+    s16 xPos; 
     u16 nameChar;
 
     // Required for match
-    u32 temp0 = 0x16;
-    for (i = 0, pos = 0xA0; i < MAX_PLAYER_NAME_LENGTH; i++, unk30++, pos += 0xC) {
-        nameChar = config->nameInput.unk154[i];
+    u32 yPos = 0x16;
+    for (i = 0, xPos = 0xA0; i < MAX_PLAYER_NAME_LENGTH; i++, unk30++, xPos += 12) {
+        nameChar = profileNameScreen->nameInput.buffer[i];
         if (nameChar == PLAYER_NAME_END_CHAR) {
             nameChar = 0x11;
         }
         
-        local48 = sub_806B908(nameChar);
+        nameCharTile = sub_806B908(nameChar);
         sub_806A568(
             unk30, 
             0, 
-            local48.unk0,
-            local48.unk4,
+            nameCharTile.unk0,
+            nameCharTile.unk4,
             0x1000,
-            pos, 
-            temp0,
+            xPos, 
+            yPos,
             8,
-            local48.unk6,
+            nameCharTile.unk6,
             0
         );
     }
@@ -2959,7 +2991,7 @@ static void sub_8067710(struct ProfileNameScreen* config) {
         2,
         0x3BA,
         0x1000,
-        config->nameInput.unk152 * 12 + 161, 
+        profileNameScreen->nameInput.cursor * 12 + 161, 
         0x15,
         5,
         6,
@@ -2967,161 +2999,161 @@ static void sub_8067710(struct ProfileNameScreen* config) {
     );
 }
 
-void sub_8067F84(void);
-u16 sub_8067B90(void);
-u16 sub_8067C50(void);
+static void Task_ProfileNameScreenMain(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct NameInputDisplay* nameInput = &profileNameScreen->nameInput;
 
-u16 sub_806BA14(s16, u16);
-u16 sub_806A664(s16, u16);
-bool16 sub_806B988(u16*);
-void sub_8067E24(void);
-
-void sub_80677EC(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
-    struct NameInputDisplay* unk258 = &state->nameInput;
-
-    sub_8067F84();
+    RenderProfileNameScreenUI();
     
     ShuffleRngSeed();
 
-    if (sub_8067B90()) {
+    // Don't bother continuing if we take input
+    // from any other functions
+    if (ProfileNameScreenHandleShoulderInput()) {
         return;
     }
 
-    if (sub_8067C50()) {
+    if (ProfileNameScreenHandleDpadInput()) {
         return;
     }
+    
 
+    // Handle action button input
     if (gRepeatedKeys & A_BUTTON) {
-        if (state->unk252 <= 10) {
-            if (state->unk3B8 == 10 || state->unk3B8 == 0x15) {
-                s16 temp1 = 2;
-                if (state->unk3B8 == 10) {
-                    temp1 = 1;
+        // If we are not in the controls column
+        if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+            // If we are at the end of the first 2 rows of the matrix
+            if (profileNameScreen->matrixCursorIndex == NAME_CHAR_MATRIX_NUM_COLS - 1 || profileNameScreen->matrixCursorIndex == NAME_CHAR_MATRIX_NUM_COLS * 2 - 1) {
+                s16 mode = 2;
+                if (profileNameScreen->matrixCursorIndex == NAME_CHAR_MATRIX_NUM_COLS - 1) {
+                    mode = 1;
                 }
                 
-                if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH) {
-                    if (unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) {
+                if (nameInput->cursor < MAX_PLAYER_NAME_LENGTH) {
+                    if (nameInput->buffer[nameInput->cursor] == PLAYER_NAME_END_CHAR) {
                         m4aSongNumStart(SE_SELECT);
-                        if (sub_806BA14(temp1, unk258->unk154[unk258->unk152 - 1])) {
-                            unk258->unk154[unk258->unk152 - 1] = sub_806A664(temp1, unk258->unk154[unk258->unk152 - 1]);
+                        if (sub_806BA14(mode, nameInput->buffer[nameInput->cursor - 1])) {
+                            nameInput->buffer[nameInput->cursor - 1] = sub_806A664(mode, nameInput->buffer[nameInput->cursor - 1]);
                         } else {
-                            unk258->unk154[unk258->unk152] = state->unk3B8;
-                            if (unk258->unk152 < 5) {
-                                unk258->unk152++;                               
+                            nameInput->buffer[nameInput->cursor] = profileNameScreen->matrixCursorIndex;
+                            if (nameInput->cursor < MAX_PLAYER_NAME_LENGTH - 1) {
+                                nameInput->cursor++;                               
                             } else {
-                                unk258->unk152 = MAX_PLAYER_NAME_LENGTH;
-                                state->unk252 = 11;
-                                state->unk253 = MAX_PLAYER_NAME_LENGTH;
+                                nameInput->cursor = MAX_PLAYER_NAME_LENGTH;
+                                // Once we reach the end, set the cusor to the end button
+                                profileNameScreen->cursorCol = PROFILE_NAME_SCREEN_CONTROLS_COLUMN;
+                                profileNameScreen->cursorRow = PROFILE_NAME_SCREEN_END_BUTTON;
                             }
                         }
                     } else {
-                        if (sub_806BA14(temp1, unk258->unk154[unk258->unk152])) {
+                        if (sub_806BA14(mode, nameInput->buffer[nameInput->cursor])) {
                             m4aSongNumStart(SE_SELECT);
-                            unk258->unk154[unk258->unk152] = sub_806A664(temp1, unk258->unk154[unk258->unk152]);
+                            nameInput->buffer[nameInput->cursor] = sub_806A664(mode, nameInput->buffer[nameInput->cursor]);
                         } else {
                             m4aSongNumStart(SE_SELECT);
-                            unk258->unk154[unk258->unk152] = state->unk3B8;
+                            nameInput->buffer[nameInput->cursor] = profileNameScreen->matrixCursorIndex;
                         }
                     }
                 } else {
-                    if (sub_806BA14(temp1, unk258->unk154[unk258->unk152 - 1])) {
+                    if (sub_806BA14(mode, nameInput->buffer[nameInput->cursor - 1])) {
                         m4aSongNumStart(SE_SELECT);
-                        unk258->unk154[unk258->unk152 - 1] = sub_806A664(temp1, unk258->unk154[unk258->unk152 - 1]);
+                        nameInput->buffer[nameInput->cursor - 1] = sub_806A664(mode, nameInput->buffer[nameInput->cursor - 1]);
                     }
-                    unk258->unk152 = MAX_PLAYER_NAME_LENGTH;
-                    state->unk252 = 11;
-                    state->unk253 = MAX_PLAYER_NAME_LENGTH;
+                    nameInput->cursor = MAX_PLAYER_NAME_LENGTH;
+                    profileNameScreen->cursorCol = PROFILE_NAME_SCREEN_CONTROLS_COLUMN;
+                    profileNameScreen->cursorRow = PROFILE_NAME_SCREEN_END_BUTTON;
                 }
             }
 
-            if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH) {
-                if (state->unk3B8 != 10 && state->unk3B8 != 0x15) {
+            if (nameInput->cursor < MAX_PLAYER_NAME_LENGTH) {
+                if (profileNameScreen->matrixCursorIndex != NAME_CHAR_MATRIX_NUM_COLS - 1 && profileNameScreen->matrixCursorIndex != NAME_CHAR_MATRIX_NUM_COLS * 2 - 1) {
                     m4aSongNumStart(SE_SELECT);
-                    unk258->unk154[unk258->unk152] = state->unk3B8;
-                    if (unk258->unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
-                        unk258->unk152++;
+                    nameInput->buffer[nameInput->cursor] = profileNameScreen->matrixCursorIndex;
+                    if (nameInput->cursor < MAX_PLAYER_NAME_LENGTH - 1) {
+                        nameInput->cursor++;
                     }
                 }
             }
             return;
         }
     
-        switch (state->unk253) {
-            case 4:
-                if (unk258->unk152 == 0) {
+        // Otherwise, handle the controls input
+        switch (profileNameScreen->cursorRow) {
+            case PROFILE_NAME_SCREEN_CURSOR_BACK_BUTTON:
+                if (nameInput->cursor == 0) {
                     return;
                 }
-                unk258->unk152--;
+                nameInput->cursor--;
                 m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-                break;  
-            case 5:
-                if (unk258->unk152 > MAX_PLAYER_NAME_LENGTH - 2) {
+                return;  
+            case PROFILE_NAME_SCREEN_CURSOR_FORWARD_BUTTON:
+                if (nameInput->cursor > MAX_PLAYER_NAME_LENGTH - 2) {
                     return;
                 }
-                if (unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) {
-                    unk258->unk154[unk258->unk152] = 0x11;
+                if (nameInput->buffer[nameInput->cursor] == PLAYER_NAME_END_CHAR) {
+                    nameInput->buffer[nameInput->cursor] = 0x11;
                 }
-                unk258->unk152++;
+                nameInput->cursor++;
                 m4aSongNumStart(SE_MENU_CURSOR_MOVE);
                 return;
-            case 6:
-                if (!sub_806B988(unk258->unk154)) {
+            case PROFILE_NAME_SCREEN_END_BUTTON:
+                if (!sub_806B988(nameInput->buffer)) {
                      m4aSongNumStart(SE_RETURN);
                     return;
                 }
                 m4aSongNumStart(SE_SELECT);
-                sub_8067E24();
-               
+                ProfileNameScreenInputComplete();
                 return;
         }
         return;
     }
     
     if (gPressedKeys & START_BUTTON) {
-        // TODO: what's going on here
-        if (*(u16*)&state->unk252 == 0x60B) {
-            if (!sub_806B988(unk258->unk154)) {
+        if (profileNameScreen->cursorCol == PROFILE_NAME_SCREEN_CONTROLS_COLUMN && profileNameScreen->cursorRow == PROFILE_NAME_SCREEN_END_BUTTON) {
+            if (!sub_806B988(nameInput->buffer)) {
                 m4aSongNumStart(SE_RETURN);
                 return;
             } 
             m4aSongNumStart(SE_SELECT);
-            sub_8067E24();
+            ProfileNameScreenInputComplete();
             return;
         } else {
+            // If start is pressed, go to the end button ready for the player
+            // to confirm
             m4aSongNumStart(SE_SELECT);
-            state->unk252 = 0xB;
-            state->unk253 = 6;
+            profileNameScreen->cursorCol = PROFILE_NAME_SCREEN_CONTROLS_COLUMN;
+            profileNameScreen->cursorRow = PROFILE_NAME_SCREEN_END_BUTTON;
         }
         return;
     }
     
+    // Delete the char at the input cursor
     if (gRepeatedKeys & B_BUTTON) {
         s16 i;
         m4aSongNumStart(SE_RETURN);
-        if ((unk258->unk152 != 0 && unk258->unk154[unk258->unk152] == PLAYER_NAME_END_CHAR) || unk258->unk152 > MAX_PLAYER_NAME_LENGTH - 1) {
-            unk258->unk152--;
+        if ((nameInput->cursor != 0 && nameInput->buffer[nameInput->cursor] == PLAYER_NAME_END_CHAR) || nameInput->cursor > MAX_PLAYER_NAME_LENGTH - 1) {
+            nameInput->cursor--;
         }
         
-        for (i = unk258->unk152; i < MAX_PLAYER_NAME_LENGTH - 1; i++) {
-            unk258->unk154[i] = unk258->unk154[i + 1];
+        for (i = nameInput->cursor; i < MAX_PLAYER_NAME_LENGTH - 1; i++) {
+            nameInput->buffer[i] = nameInput->buffer[i + 1];
         }
-        unk258->unk154[MAX_PLAYER_NAME_LENGTH - 1] = 0xFFFF;
+        nameInput->buffer[MAX_PLAYER_NAME_LENGTH - 1] = 0xFFFF;
     }
 }
 
-bool16 sub_8067B90(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
+static bool16 ProfileNameScreenHandleShoulderInput(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
 
     if (gRepeatedKeys & L_BUTTON) {
-        if (state->nameInput.unk152 != 0) {
-            state->nameInput.unk152--;
-            if (state->nameInput.unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
+        if (profileNameScreen->nameInput.cursor > 0) {
+            profileNameScreen->nameInput.cursor--;
+            if (profileNameScreen->nameInput.cursor < MAX_PLAYER_NAME_LENGTH - 1) {
                 if (
-                    state->nameInput.unk154[state->nameInput.unk152 + 1] == PLAYER_NAME_END_CHAR &&
-                    !sub_806B9C8(state->nameInput.unk154[state->nameInput.unk152])
+                    profileNameScreen->nameInput.buffer[profileNameScreen->nameInput.cursor + 1] == PLAYER_NAME_END_CHAR &&
+                    !sub_806B9C8(profileNameScreen->nameInput.buffer[profileNameScreen->nameInput.cursor])
                 ) {
-                    state->nameInput.unk154[state->nameInput.unk152] = PLAYER_NAME_END_CHAR;    
+                    profileNameScreen->nameInput.buffer[profileNameScreen->nameInput.cursor] = PLAYER_NAME_END_CHAR;    
                 }
             }
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -3130,11 +3162,11 @@ bool16 sub_8067B90(void) {
     }
 
     if (gRepeatedKeys & R_BUTTON) {
-        if (state->nameInput.unk152 < MAX_PLAYER_NAME_LENGTH - 1) {
-            if (state->nameInput.unk154[state->nameInput.unk152] == PLAYER_NAME_END_CHAR) {
-                state->nameInput.unk154[state->nameInput.unk152] = 0x11;
+        if (profileNameScreen->nameInput.cursor < MAX_PLAYER_NAME_LENGTH - 1) {
+            if (profileNameScreen->nameInput.buffer[profileNameScreen->nameInput.cursor] == PLAYER_NAME_END_CHAR) {
+                profileNameScreen->nameInput.buffer[profileNameScreen->nameInput.cursor] = 0x11;
             }
-            state->nameInput.unk152++;
+            profileNameScreen->nameInput.cursor++;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         }
         return TRUE;
@@ -3143,8 +3175,8 @@ bool16 sub_8067B90(void) {
     return FALSE;
 }
 
-bool16 sub_8067C50(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
+static bool16 ProfileNameScreenHandleDpadInput(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
 
     if (!(gRepeatedKeys & (DPAD_DOWN | DPAD_UP | DPAD_LEFT | DPAD_RIGHT))) {
         return FALSE;
@@ -3153,101 +3185,104 @@ bool16 sub_8067C50(void) {
     m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
     if (gRepeatedKeys & DPAD_UP) {
-        if (state->unk252 < 11) {
-            if (state->unk253 != 0) {
-                state->unk253--;
-                return 1;
+        if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+            if (profileNameScreen->cursorRow != 0) {
+                profileNameScreen->cursorRow--;
+                return TRUE;
             } 
     
-            if (state->unk250 > 0) {
-                gBgScrollRegs[1][1] -= 0x10;
-                state->unk250 -= 0xB;
+            if (profileNameScreen->matrixPageIndex > 0) {
+                gBgScrollRegs[1][1] -= NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT;
+                profileNameScreen->matrixPageIndex -= NAME_CHAR_MATRIX_NUM_COLS;
             } else {
-                state->unk253 = 6; 
-                gBgScrollRegs[1][1] = 0xC9;
-                state->unk250 = 0xA5;
+                profileNameScreen->cursorRow = NAME_CHAR_MATRIX_ROWS_PER_PAGE - 1;
+                gBgScrollRegs[1][1] = 201;
+                profileNameScreen->matrixPageIndex = NAME_CHAR_MATRIX_LAST_PAGE_START_INDEX;
             }
         } else {
-            if (state->unk253 > 4) {
-                state->unk253--;
+            // handle controls input column
+            if (profileNameScreen->cursorRow > PROFILE_NAME_SCREEN_CURSOR_BACK_BUTTON) {
+                profileNameScreen->cursorRow--;
             } else {
-                state->unk253 = 6;
+                profileNameScreen->cursorRow = PROFILE_NAME_SCREEN_END_BUTTON;
             }
         }
         return TRUE;
     }
 
     if (gRepeatedKeys & DPAD_DOWN) {
-        if (state->unk252 < 11) {
-            if (state->unk253 < MAX_PLAYER_NAME_LENGTH) {
-                state->unk253++;
+        if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+            if (profileNameScreen->cursorRow < MAX_PLAYER_NAME_LENGTH) {
+                profileNameScreen->cursorRow++;
             } else {
-                if (state->unk250 < 0xA5) {
-                    gBgScrollRegs[1][1] += 0x10;
-                    state->unk250 += 0xB;
+                if (profileNameScreen->matrixPageIndex < NAME_CHAR_MATRIX_LAST_PAGE_START_INDEX) {
+                    gBgScrollRegs[1][1] += NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT;
+                    profileNameScreen->matrixPageIndex += NAME_CHAR_MATRIX_NUM_COLS;
                 } else {
-                    gBgScrollRegs[1][1] = 0xFFD9;
-                    state->unk253 = 0;
-                    state->unk250 = 0;
+                    gBgScrollRegs[1][1] = 65497;
+                    profileNameScreen->cursorRow = 0;
+                    profileNameScreen->matrixPageIndex = 0;
                 }
             }
         } else {
-            if (state->unk253 < 6) {
-                state->unk253++;
+            if (profileNameScreen->cursorRow < PROFILE_NAME_SCREEN_END_BUTTON) {
+                profileNameScreen->cursorRow++;
             } else {
-                state->unk253 = 4;
+                profileNameScreen->cursorRow = PROFILE_NAME_SCREEN_CURSOR_BACK_BUTTON;
             }
         }
         return TRUE;
     }
 
     if (gRepeatedKeys & DPAD_LEFT) {
-        if (state->unk252 != 0) {
-            state->unk252--;
+        if (profileNameScreen->cursorCol != 0) {
+            profileNameScreen->cursorCol--;
         } else {
-            if (state->unk253 < 4) {
-                state->unk252 = 10;
+            // If the cursor row doesn't intersect the controls row, then we loop
+            // back around to the end of the matrix
+            if (profileNameScreen->cursorRow < 4) {
+                profileNameScreen->cursorCol = NAME_CHAR_MATRIX_NUM_COLS - 1;
             } else {
-                state->unk252 = 11;
+                profileNameScreen->cursorCol = PROFILE_NAME_SCREEN_CONTROLS_COLUMN;
             }
         }
         return TRUE;
     }
 
     if (gRepeatedKeys & DPAD_RIGHT) {
-        if (state->unk253 < 4) {
-            if (state->unk252 < 10) {
-                state->unk252++;
+        // Allow the cursor to move to the controls column if we intersect
+        // where the controls column starts
+        if (profileNameScreen->cursorRow < 4) {
+            if (profileNameScreen->cursorCol < NAME_CHAR_MATRIX_NUM_COLS - 1) {
+                profileNameScreen->cursorCol++;
             } else {
-                state->unk252 = 0;
+                profileNameScreen->cursorCol = 0;
             }
         } else {
-            if (state->unk252 < 11) {
-                state->unk252++;
+            if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+                profileNameScreen->cursorCol++;
             } else {
-                state->unk252 = 0;
+                profileNameScreen->cursorCol = 0;
             }
         }
         return TRUE;
     }
 
+    // Shouldn't be possible to reach this
     return FALSE;
 }
 
-void sub_8067EA4(void);
-
-void sub_8067E24(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk140 = &state->unk140;
-    struct NameInputDisplay* unk258 = &state->nameInput;
-    u16* optionsScreenPlayerName;
+static void ProfileNameScreenInputComplete(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
+    struct NameInputDisplay* nameInput = &profileNameScreen->nameInput;
     s16 i;
 
     // Copy name from input into profile data on the options screen
-    if (state->onCompleteAction == 0) {
-        struct OptionsScreenProfileData* profileData = &state->unk14C->optionsScreen->profileData;
+    if (profileNameScreen->onCompleteAction == 0) {
+        struct OptionsScreenProfileData* profileData = &profileNameScreen->playerDataMenu->optionsScreen->profileData;
         for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-            profileData->playerName[i] = unk258->unk154[i];
+            profileData->playerName[i] = nameInput->buffer[i];
         }
     }
 
@@ -3258,123 +3293,132 @@ void sub_8067E24(void) {
     unk140->unkA = 0;
     unk140->unk8 = 0xFF;
 
-    gCurTask->main = sub_8067EA4;
+    gCurTask->main = ProfileNameScreenHandleExit;
 }
 
-void sub_805A1CC(void);
-
-void sub_8067EA4(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
-    struct UNK_802D4CC_UNK270* unk140 = &state->unk140;
-    struct NameInputDisplay* unk258 = &state->nameInput;
-    s16 unk3BB = state->onCompleteAction;
+static void ProfileNameScreenHandleExit(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
+    struct NameInputDisplay* unk258 = &profileNameScreen->nameInput;
+    s16 onCompleteAction = profileNameScreen->onCompleteAction;
     s16 i;
 
     if (!sub_802D4CC(unk140)) {
-        sub_8067F84();
+        RenderProfileNameScreenUI();
         return;
     }
 
-    if (unk3BB == 0) {
-        state->unk14C->unk163 = 0;
+    if (onCompleteAction == 0) {
+        profileNameScreen->playerDataMenu->unk163 = 0;
         TaskDestroy(gCurTask);
         return;
     }
     
-    if (unk3BB == 2) {
+    if (onCompleteAction == 2) {
         NewSaveGame();
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        gLoadedSaveGame->unk20[i] = unk258->unk154[i];
+        gLoadedSaveGame->unk20[i] = unk258->buffer[i];
     }
     WriteSaveGame();
-    TasksDestroyInPriorityRange(0, 0xFFFF);
+    TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
     gUnknown_03004D5C = gUnknown_03002A84;
 
-    if (unk3BB == 1) {
+    if (onCompleteAction == 1) {
+        // Continue to multiplayer
         sub_805A1CC();
     } else {
         CreateTitleScreen();
     }
 }
 
-void sub_8067F84(void) {
-    struct ProfileNameScreen* state = TaskGetStructPtr(gCurTask, state);
+static void RenderProfileNameScreenUI(void) {
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
 
-    struct UNK_0808B3FC_UNK240* unk0 = &state->unk0;
-    struct UNK_0808B3FC_UNK240* unk30 = state->unk30;
-    struct UNK_0808B3FC_UNK240* unk150 = state->unk150;
-    struct UNK_0808B3FC_UNK240* unk1B0 = state->unk1B0;
-    struct UNK_0808B3FC_UNK240* unk258_30 = state->nameInput.unk30;
-    struct UNK_0808B3FC_UNK240* unk258_0 = &state->nameInput.unk0;
-    struct UNK_806B908 local48;
-    struct UNK_806B908 local28;
+    struct UNK_0808B3FC_UNK240* title = &profileNameScreen->title;
+    struct UNK_0808B3FC_UNK240* controls = profileNameScreen->controls;
+    struct UNK_0808B3FC_UNK240* focusedCell = profileNameScreen->focusedCell;
+    struct UNK_0808B3FC_UNK240* scrollArrow = profileNameScreen->scrollArrows;
+    struct UNK_0808B3FC_UNK240* inputDisplayChar = profileNameScreen->nameInput.characterDisplay;
+    struct UNK_0808B3FC_UNK240* inputDisplayCursor = &profileNameScreen->nameInput.displayCursor;
+    struct UNK_806B908 charMatrixCursorTile;
+    struct UNK_806B908 nameCharTile;
 
     s16 i;
     u16* nameChar;
 
-    sub_80051E8(unk0);
+    sub_80051E8(title);
 
-    for (i = 0; i < 3; i++, unk30++) {
-        sub_80051E8(unk30);
+    for (i = 0; i < 3; i++, controls++) {
+        sub_80051E8(controls);
     }
 
-    if (state->unk252 < 11) {
-        unk150->unkA = 0x3BA;
-        unk150->unk20 = 7;
-        unk150->unk16 = state->unk252 * 0x10 + 0x20;
-        unk150->unk18 = state->unk253 * 0x10 + 0x2F;
-        sub_8004558(unk150);
-        sub_80051E8(unk150);
-        unk150++;
+    if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+        // background
+        focusedCell->unkA = 0x3BA;
+        focusedCell->unk20 = 7;
+        focusedCell->unk16 = profileNameScreen->cursorCol * NAME_CHAR_MATRIX_BACKGROUND_COLUMN_WIDTH + 32;
+        focusedCell->unk18 = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 47;
+        sub_8004558(focusedCell);
+        sub_80051E8(focusedCell);
+        focusedCell++;
 
-        state->unk3B8 = state->unk250 + state->unk253 * 0xB + state->unk252; 
-        local48 = sub_806B908(state->unk3B8);
-        unk150->unkA = local48.unk4;
-        unk150->unk20 = local48.unk6;
-        unk150->unk16 = state->unk252 * 0x10 + 0x20;
-        unk150->unk18 = state->unk253 * 0x10 + 0x2F;
-        sub_8004558(unk150);
-        sub_80051E8(unk150);
+        // Interesting that this is calculated here, feels like the wrong place
+        profileNameScreen->matrixCursorIndex = profileNameScreen->matrixPageIndex + profileNameScreen->cursorRow * NAME_CHAR_MATRIX_NUM_COLS + profileNameScreen->cursorCol; 
+        
+        // foreground  
+        charMatrixCursorTile = sub_806B908(profileNameScreen->matrixCursorIndex);
+        focusedCell->unkA = charMatrixCursorTile.unk4;
+        focusedCell->unk20 = charMatrixCursorTile.unk6;
+        focusedCell->unk16 = profileNameScreen->cursorCol * NAME_CHAR_MATRIX_BACKGROUND_COLUMN_WIDTH + 32;
+        focusedCell->unk18 = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 47;
+        sub_8004558(focusedCell);
+        sub_80051E8(focusedCell);
     } else {
-        unk150->unkA = 0x3BA;
-        unk150->unk20 = 8;
-        unk150->unk16 = 0xCB;
-        unk150->unk18 = state->unk253 * 0x10 + 0x27;
-        sub_8004558(unk150);
-        sub_80051E8(unk150);
+        // Make a focus outline if we are on the controls
+        focusedCell->unkA = 0x3BA;
+        focusedCell->unk20 = 8;
+        focusedCell->unk16 = 0xCB;
+        focusedCell->unk18 = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 39;
+        sub_8004558(focusedCell);
+        sub_80051E8(focusedCell);
     }
 
-    sub_8004558(unk1B0);
-    unk1B0++;
-    sub_8004558(unk1B0);
+    // top
+    sub_8004558(scrollArrow);
+    scrollArrow++;
+    // bottom
+    sub_8004558(scrollArrow);
 
-    if (state->unk252 < 11) {
-        unk1B0 = state->unk1B0;
-        if (state->unk3B8 > 10) {
-            sub_80051E8(unk1B0);
+    if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
+        // Show the top arrow if we are not on the first row
+        scrollArrow = profileNameScreen->scrollArrows;
+        if (profileNameScreen->matrixCursorIndex > NAME_CHAR_MATRIX_NUM_COLS - 1) {
+            sub_80051E8(scrollArrow);
         }
-        unk1B0++;
+        scrollArrow++;
 
-        if (state->unk3B8 < 0xE7) {
-            sub_80051E8(unk1B0);
+        // Show the bottom arrow if we are not on the last row
+        if (profileNameScreen->matrixCursorIndex < NAME_CHAR_MATRIX_NUM_COLS * (NAME_CHAR_MATRIX_NUM_ROWS - 1)) {
+            sub_80051E8(scrollArrow);
         }
     }
 
-    if (state->nameInput.unk152 < 6) {
-        unk258_0->unk16 = state->nameInput.unk152 * 0xC + 0xA1;
-        sub_80051E8(unk258_0);
+    if (profileNameScreen->nameInput.cursor < MAX_PLAYER_NAME_LENGTH) {
+        inputDisplayCursor->unk16 = profileNameScreen->nameInput.cursor * NAME_INPUT_DISPLAY_CHAR_WIDTH + 161;
+        sub_80051E8(inputDisplayCursor);
     }
 
-    for (i = 0, nameChar = state->nameInput.unk154; i < 6 && *nameChar != PLAYER_NAME_END_CHAR; i++, unk258_30++, nameChar++) {
-        local28 = sub_806B908(*nameChar);
-        unk258_30->unkA = local28.unk4;
-        unk258_30->unk20 = local28.unk6;
-        sub_8004558(unk258_30);
-        sub_80051E8(unk258_30);
+    // render the inputted name into the display
+    for (i = 0, nameChar = profileNameScreen->nameInput.buffer; i < MAX_PLAYER_NAME_LENGTH && *nameChar != PLAYER_NAME_END_CHAR; i++, inputDisplayChar++, nameChar++) {
+        nameCharTile = sub_806B908(*nameChar);
+        inputDisplayChar->unkA = nameCharTile.unk4;
+        inputDisplayChar->unk20 = nameCharTile.unk6;
+        sub_8004558(inputDisplayChar);
+        sub_80051E8(inputDisplayChar);
     }
 }
 
@@ -4245,7 +4289,7 @@ void sub_8069688(void) {
                     r5 = 1;
                 }
                 EwramFree(courseRecordsScreen->timeRecords);
-                TasksDestroyInPriorityRange(0, 0xFFFF);
+                TasksDestroyAll();
                 gUnknown_03002AE4 = gUnknown_0300287C;
                 gUnknown_03005390 = 0;
                 gUnknown_03004D5C = gUnknown_03002A84;
@@ -4843,7 +4887,7 @@ void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 a, u32 b, u16 c, u32 d, s16
 // 
 // Unfortunately sub_806BA14 can't just call this function
 // to match
-static inline u16 sub_806A664_A(s16 a, u16 b) {
+static inline bool16 sub_806A664_A(s16 a, u16 b) {
     u16 unk5C4[2];
     u16 unk5C8[5];
     u16 *cursor; 
@@ -4871,7 +4915,7 @@ static inline u16 sub_806A664_A(s16 a, u16 b) {
     return FALSE;
 }
 
-u16 sub_806A664(s16 a, u16 b) {
+static u16 sub_806A664(s16 a, u16 b) {
     u16 unk5D2[2];
     u16 unk5D6[4][2];
     s16 i;
@@ -5230,7 +5274,7 @@ void sub_806AD20(void) {
     } else {
         SetProfileData(optionsScreen);
         WriteSaveGame();
-        TasksDestroyInPriorityRange(0, 0xFFFF);
+        TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
@@ -5506,10 +5550,10 @@ static void sub_806B354(void) {
     struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
     struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
 
-    sub_8067F84();
+    RenderProfileNameScreenUI();
     if (sub_802D4CC(unk140)) {
-        profileNameScreen->unk3B8 = 0;
-        gCurTask->main = sub_80677EC;
+        profileNameScreen->matrixCursorIndex = 0;
+        gCurTask->main = Task_ProfileNameScreenMain;
     }
 }
 

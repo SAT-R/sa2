@@ -26,5 +26,7 @@ void sub_806B854(struct Unk_03002400*, u32, u32, u8, u16, u16, u16, u8, u16, u16
 s32 sub_806B8D4(const struct UNK_080D95E8*, s8);
 struct UNK_806B908 sub_806B908(u16);
 bool16 sub_806B9C8(u16);
+bool16 sub_806BA14(s16, u16);
+bool16 sub_806B988(u16*);
 
 #endif

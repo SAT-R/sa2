@@ -129,40 +129,41 @@ struct LanguageScreen {
 }; /* size 0x204 */
 
 struct NameInputDisplay {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30[MAX_PLAYER_NAME_LENGTH];
+    struct UNK_0808B3FC_UNK240 displayCursor;
+    struct UNK_0808B3FC_UNK240 characterDisplay[MAX_PLAYER_NAME_LENGTH];
 
     u16 unk150;
     // inputCursor
-    u16 unk152;
+    u16 cursor;
 
     // playerName
-    u16 unk154[MAX_PLAYER_NAME_LENGTH];
+    u16 buffer[MAX_PLAYER_NAME_LENGTH];
 };
 
 struct ProfileNameScreen {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30[3];
-    struct Unk_03002400 unkC0;
-    struct Unk_03002400 unk100;
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 controls[3];
+    struct Unk_03002400 background;
+    struct Unk_03002400 charMatrixBackground;
     
     struct UNK_802D4CC_UNK270 unk140;
-    struct PlayerDataMenu* unk14C;
+    struct PlayerDataMenu* playerDataMenu;
 
-    struct UNK_0808B3FC_UNK240 unk150[2];
-    struct UNK_0808B3FC_UNK240 unk1B0[2];
-    struct Unk_03002400 unk210;
-    u16 unk250;
-    s8 unk252;
-    s8 unk253;
+    struct UNK_0808B3FC_UNK240 focusedCell[2];
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct Unk_03002400 charMatrix;
+    u16 matrixPageIndex;
+
+    s8 cursorCol;
+    s8 cursorRow;
 
     u8 filler254[4];
     
     // nameInputDisplay
     struct NameInputDisplay nameInput;
 
-    u16 unk3B8;
-    u8 unk3BA;
+    u16 matrixCursorIndex;
+    u8 language;
     u8 onCompleteAction;
 }; /* size 0x3BC */
 

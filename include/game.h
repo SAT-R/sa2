@@ -16,4 +16,7 @@ extern u8 gSelectedCharacter;
 // Possibly CreateGameStage
 void sub_801A770(void);
 
+// CreateMultiplayerScreen
+void sub_805A1CC(void);
+
 #endif // GUARD_GAME_H
