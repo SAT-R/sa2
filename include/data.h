@@ -131,6 +131,7 @@ extern u16 gDispCnt;  // gDispCnt
 extern s16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern bool8 gExecSoundMain;
 
+// Possibly transition configuration?
 struct UNK_802D4CC_UNK270 {
     u16 unk0;
     u16 unk2;
@@ -140,6 +141,7 @@ struct UNK_802D4CC_UNK270 {
     u16 unkA;
 };
 
+// Some sort of fade transition function?
 extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);
 
 #endif

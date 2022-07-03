@@ -278,8 +278,8 @@
 . = 0x00005B44; gUnknown_03005B44 = .;
 . = 0x00005B48; gUnknown_03005B48 = .;
 . = 0x00005B4C; gUnknown_03005B4C = .;
-. = 0x00005B50; gUnknown_03005B50 = .;
-. = 0x00005B54; gUnknown_03005B54 = .;
+. = 0x00005B50; gProfileScreenNextVramAddress = .;
+. = 0x00005B54; gProfileScreenSubMenuNextVramAddress = .;
 . = 0x00005B58; gUnknown_03005B58 = .;
 . = 0x00005B5C; gUnknown_03005B5C = .;
 . = 0x00005B60; gLastWrittenSaveGame = .;

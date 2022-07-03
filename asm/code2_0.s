@@ -38471,7 +38471,7 @@ _0802CFF8:
 	lsrs r0, r0, #0x1f
 	mov sl, r0
 _0802D084:
-	ldr r4, _0802D168 @ =gUnknown_080D6B80
+	ldr r4, _0802D168 @ =gMillisLookup
 	lsls r5, r5, #1
 	adds r0, r5, r4
 	ldrb r1, [r0]
@@ -38574,7 +38574,7 @@ _0802D158: .4byte gUnknown_03005424
 _0802D15C: .4byte gUnknown_080D6BF8
 _0802D160: .4byte gUnknown_080D6C72
 _0802D164: .4byte 0x00007E90
-_0802D168: .4byte gUnknown_080D6B80
+_0802D168: .4byte gMillisLookup
 _0802D16C: .4byte gUnknown_080D6B08
 
 	thumb_func_start sub_802D170
@@ -50119,7 +50119,7 @@ _08032CE8:
 	ldrb r2, [r2]
 	lsls r2, r2, #0x18
 	asrs r2, r2, #0x18
-	bl CreateCourseRecordsScreen
+	bl CreateTimeAttackCourseSelectionScreen
 	b _08032D8E
 	.align 2, 0
 _08032D08: .4byte gSelectedCharacter

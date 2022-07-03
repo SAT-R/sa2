@@ -102,7 +102,7 @@ struct CourseRecordsScreen {
     u8 characterZones[NUM_CHARACTERS];
     u8 language;
 
-    bool8 showingBossRecords;
+    bool8 isBossMode;
 
     u8 mode;
 }; /* size 0x714 */
@@ -216,8 +216,61 @@ struct DeleteGameDataScreen {
     s8 unk143;
 }; /* 0x144 */
 
+struct MultiplayerRecord {
+    // playerName
+    u16 unk0[6];
+
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
+    u8 unkF;
+    struct UNK_0808B3FC_UNK240 unk10[6];
+    struct UNK_0808B3FC_UNK240 unk130[2];
+    struct UNK_0808B3FC_UNK240 unk190[2];
+    struct UNK_0808B3FC_UNK240 unk1F0[2];
+}; /* size 0x250 */
+
+struct MultiplayerRecordsTable {
+   struct MultiplayerRecord rows[10];
+}; /* size 0x1720 */
+
+// MultiPlayerRecordsScreen
+struct MultiplayerRecordsScreen {
+    struct UNK_802D4CC_UNK270 unk0;
+
+    struct Unk_03002400 unkC;
+    struct Unk_03002400 unk4C;
+
+    struct UNK_0808B3FC_UNK240 unk8C;
+    struct UNK_0808B3FC_UNK240 unkBC;
+    struct UNK_0808B3FC_UNK240 unkEC[2];
+    struct UNK_0808B3FC_UNK240 unk14C[6];
+    struct UNK_0808B3FC_UNK240 unk26C[2];
+    struct UNK_0808B3FC_UNK240 unk2CC[2];
+    struct UNK_0808B3FC_UNK240 unk32C[2];
+
+    // playerDataMenu
+    struct PlayerDataMenu* playerDataMenu;
+
+    struct MultiplayerRecordsTable* table;
+    u8 unk394;
+    u8 unk395;
+    u8 unk396;
+    u8 unk397;
+
+    // playerName
+    u16 playerName[6];
+
+    u8 unk3A4;
+    u8 unk3A5;
+    u8 unk3A6;
+
+    // language
+    u8 language;
+}; /* size 0x3A8 */
+
 void CreateOptionsScreen(u16);
-void CreateCourseRecordsScreen(u16, u16);
+void CreateTimeAttackCourseSelectionScreen(bool16 isBossMode, u16 selectedCharacter);
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 

@@ -50,7 +50,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 
     record = (u16*)gameState->unk34.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = ZONE_TIME_TO_INT(10, 0);
+        *record = MAX_COURSE_TIME;
     }
 
     gameState->unk1C = 0;
@@ -100,7 +100,7 @@ static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
 
     record = (u16*)saveData->unk2C.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = ZONE_TIME_TO_INT(10, 0);
+        *record = MAX_COURSE_TIME;
     }
 
     p2 = saveData->unk2A4;

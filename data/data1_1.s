@@ -344,8 +344,8 @@ gUnknown_080D6AF0:
 gUnknown_080D6B08:
     .incbin "baserom.gba", 0x000D6B08, 0x78
 
-    .global gUnknown_080D6B80
-gUnknown_080D6B80:
+    .global gMillisLookup
+gMillisLookup:
     .incbin "baserom.gba", 0x000D6B80, 0x1
 
     .global gUnknown_080D6B81
@@ -1220,8 +1220,8 @@ sProfileNameScreenArrowTiles:
 sProfileNameScreenEndButtonText:
     .incbin "baserom.gba", 0x000D9DC0, 0x30
 
-    .global sProfileNameScreenScrollTiles
-sProfileNameScreenScrollTiles:
+    .global sScrollArrowTiles
+sScrollArrowTiles:
     .incbin "baserom.gba", 0x000D9DF0, 0x10
 
     .global gUnknown_080D9E00
@@ -1244,8 +1244,8 @@ gUnknown_080D9EE0:
 gUnknown_080D9F40:
     .incbin "baserom.gba", 0x000D9F40, 0x38
 
-    .global gUnknown_080D9F78
-gUnknown_080D9F78:
+    .global sTimeRecordDigitTiles
+sTimeRecordDigitTiles:
     .incbin "baserom.gba", 0x000D9F78, 0x50
 
     .global gUnknown_080D9FC8

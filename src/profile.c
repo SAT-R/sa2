@@ -16,11 +16,11 @@
 #include "ui.h"
 
 // vram addresses
-extern void* gUnknown_03005B50;
-extern void* gUnknown_03005B54;
+extern void* gProfileScreenNextVramAddress;
+extern void* gProfileScreenSubMenuNextVramAddress;
 
 // CreateOptionsScreen stuff
-static void sub_806A75C(void);
+static void Task_ShowOptionsScreen(void);
 static void sub_806A758(struct Task*);
 
 static void GetProfileData(struct OptionsScreen*);
@@ -61,13 +61,13 @@ static void RenderPlayerDataMenuUI(struct PlayerDataMenu*);
 static void sub_806AD98(void);
 static void Task_OptionsPlayerDataMenuMain(void);
 
-static void sub_806ABC4(void);
-static void sub_806AAFC(void);
-static void sub_806AC28(void);
-static void sub_8064E6C(void);
+static void ShowCourseRecordsScreen(void);
+static void ShowEditProfileNameScreen(void);
+static void ShowMultiplayerRecordsScreen(void);
+static void Task_PlayerDataMenuHandleExit(void);
 
 static void sub_806AB90(void);
-static void sub_8068198(struct PlayerDataMenu*);
+static void CreateCourseRecordsScreen(struct PlayerDataMenu*);
 static void sub_8068524(struct PlayerDataMenu*);
 static void sub_806508C(void);
 
@@ -129,6 +129,23 @@ static void sub_80690A4(void);
 
 static void sub_8069110(void);
 
+static void sub_8069180(s16, s16);
+static void sub_8069208(void);
+static void sub_806955C(void);
+static void sub_806B60C(void);
+static void sub_806B684(void);
+static void sub_80694F8(void);
+static void sub_806B730(void);
+
+static void sub_806B760(void);
+static void sub_8069B40(void);
+static void sub_8069B88(struct MultiplayerRecordsScreen*);
+static void sub_8069BF0(struct MultiplayerRecordsScreen*);
+
+static void sub_806A1D0(void);
+static void sub_806A348(void);
+static void sub_806B7D0(void);
+
 #define OPTIONS_MENU_ITEM_PLAYER_DATA 0
 #define OPTIONS_MENU_ITEM_DIFFICULTY 1
 #define OPTIONS_MENU_ITEM_TIME_LIMIT 2
@@ -142,6 +159,9 @@ static void sub_8069110(void);
 #define OPTIONS_META_ITEM_DIFFICULTY_LEVEL 1
 #define OPTIONS_META_ITEM_TIME_LIMIT 2
 #define OPTIONS_META_ITEM_LANGUAGE 3
+
+#define OPTIONS_SCREEN_STATE_INITIAL 0
+#define OPTIONS_SCREEN_STATE_SUB_MENU_OPEN 1
 
 #define PLAYER_DATA_MENU_ITEM_CHANGE_NAME 0
 #define PLAYER_DATA_MENU_ITEM_TIME_RECORDS 1
@@ -166,6 +186,8 @@ static void sub_8069110(void);
 #define NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER 1
 
 #define LanguageIndex(lang) (lang - 1)
+
+#define COURSE_RECORDS_MODE_TIME_ATTACK 2
 
 extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
 extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
@@ -204,7 +226,7 @@ extern const struct UNK_080D95E8 sProfileNameScreenEditTitleText[6];
 extern const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2];
 extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
 
-extern const struct UNK_080D95E8 sProfileNameScreenScrollTiles[2];
+extern const struct UNK_080D95E8 sScrollArrowTiles[2];
 
 extern const struct UNK_080D95E8 gUnknown_080D9EB0[6];
 extern const struct UNK_080D95E8 gUnknown_080D9EE0[6][2];
@@ -212,9 +234,11 @@ extern const u16 gUnknown_080D9590[5][2];
 extern const struct UNK_080D95E8 gUnknown_080D9F40[7];
 extern const struct UNK_080D95E8 gUnknown_080D9FD0[6][7];
 extern const struct UNK_080D95E8 gUnknown_080DA120[6][7];
-extern const struct UNK_080D95E8 gUnknown_080D9F78[11];
-extern const u8 gUnknown_080D6B80[60][2];
+extern const struct UNK_080D95E8 sTimeRecordDigitTiles[11];
+extern const u8 gMillisLookup[60][2];
 
+extern const struct UNK_080D95E8 gUnknown_080D9E00[6][2];
+extern const struct UNK_080D95E8 gUnknown_080D9E60[10];
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -223,7 +247,7 @@ void CreateOptionsScreen(u16 p1) {
 
     m4aSongNumStart(MUS_OPTIONS);
 
-    t = TaskCreate(sub_806A75C, sizeof(struct OptionsScreen), 0x1000, TASK_x0004, sub_806A758);
+    t = TaskCreate(Task_ShowOptionsScreen, sizeof(struct OptionsScreen), 0x1000, TASK_x0004, sub_806A758);
     optionsScreen = TaskGetStructPtr(t, optionsScreen);
 
     GetProfileData(optionsScreen);
@@ -235,8 +259,8 @@ void CreateOptionsScreen(u16 p1) {
     optionsScreen->menuCursor = 0;
     optionsScreen->unk782 = 0xFF;
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     for (i = 0; i < 10; i++) {
         gKeysFirstRepeatIntervals[i] = 20;
@@ -245,9 +269,10 @@ void CreateOptionsScreen(u16 p1) {
 }
 
 // The logic for showing TA records
-// and selecting a time attack course is the same
+// and selecting a time attack course is the same,
+// except the mode is TIME_ATTACK
 // so this is within the profile source.
-void CreateCourseRecordsScreen(u16 p1, u16 selectedCharacter) {
+void CreateTimeAttackCourseSelectionScreen(bool16 isBossMode, u16 selectedCharacter) {
     struct Task* t = TaskCreate(sub_806B5A4, sizeof(struct CourseRecordsScreen), 0x2000, TASK_x0004, NULL);
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(t, courseRecordsScreen);
     s16 i;
@@ -272,8 +297,8 @@ void CreateCourseRecordsScreen(u16 p1, u16 selectedCharacter) {
     }
 
     courseRecordsScreen->language = LanguageIndex(gLoadedSaveGame->unk6);
-    courseRecordsScreen->showingBossRecords = p1;
-    courseRecordsScreen->mode = 2;
+    courseRecordsScreen->isBossMode = isBossMode;
+    courseRecordsScreen->mode = COURSE_RECORDS_MODE_TIME_ATTACK;
 
     if (courseRecordsScreen->language > NUM_LANGUAGES - 1) {
         courseRecordsScreen->language = LanguageIndex(LANG_ENGLISH);
@@ -281,8 +306,8 @@ void CreateCourseRecordsScreen(u16 p1, u16 selectedCharacter) {
 
     memcpy(courseRecordsScreen->timeRecords, &gLoadedSaveGame->unk34, sizeof(struct TimeRecords));
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8068640();
     sub_8068700(courseRecordsScreen);
@@ -307,8 +332,8 @@ void CreateNewProfileScreen(void) {
         languageScreen->menuCursor = 1;
     }
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_80668A8(languageScreen);
     sub_806B0AC(languageScreen);
@@ -347,8 +372,8 @@ void CreateNewProfileNameScreen(s16 mode) {
     }
 
     profileNameScreen->nameInput.cursor = 0;
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8067420(profileNameScreen->language);
     ProfileNameScreenCreateUIBackgrounds(profileNameScreen);
@@ -433,7 +458,8 @@ static void SetProfileData(struct OptionsScreen* optionsScreen) {
     saveGame->unk12 = optionsScreen->unk35D;
 }
 
-static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 p2) {
+// OptionsScreenInitRegistersAndFadeIn
+static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 state) {
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
 
     gDispCnt = 0x1740;
@@ -444,7 +470,7 @@ static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 p2) {
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    if (!p2) {
+    if (state == OPTIONS_SCREEN_STATE_INITIAL) {
         gBgScrollRegs[2][0] = 0xFF28;
     } else {
         gBgScrollRegs[2][0] = 0;
@@ -456,7 +482,7 @@ static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 p2) {
 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
 
-    if (!p2) {
+    if (state == OPTIONS_SCREEN_STATE_INITIAL) {
         unk774->unk0 = 0;
         unk774->unk2 = 2;
         unk774->unk4 = 0;
@@ -468,7 +494,7 @@ static void sub_8063D20(struct OptionsScreen* optionsScreen, s16 p2) {
     }
 }
 
-static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
+static void CreateOptionScreenUI(struct OptionsScreen* optionsScreen, s16 state) {
     u8 language = optionsScreen->language;
 
     struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
@@ -505,7 +531,7 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
                 xPos = 0x28;
             }
 
-            if (p2 == 1 && i == OPTIONS_MENU_ITEM_PLAYER_DATA) {
+            if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN && i == OPTIONS_MENU_ITEM_PLAYER_DATA) {
                 xPos = -0xB8;
             }
             sub_806A568(
@@ -526,7 +552,7 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
 
     {
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 0x98 : 0xa0;
-        if (p2 == 1) {
+        if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN) {
             xPos = -0x40;
         }
         sub_806A568(
@@ -604,7 +630,7 @@ static void sub_8063DCC(struct OptionsScreen* optionsScreen, s16 p2) {
         u16 nameChar;
 
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 163 : 171;
-        if (p2 == 1 && i == 0) {
+        if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN && i == 0) {
             xPos = -0x35;
         }
 
@@ -849,7 +875,7 @@ static void sub_80645E0(void) {
     sub_80649A4();
 
     if (++optionsScreen->transitionFrame > 15) {
-        gUnknown_03005B54 = NULL;
+        gProfileScreenSubMenuNextVramAddress = NULL;
         gCurTask->main = Task_OptionScreen;
     }
 }
@@ -863,13 +889,13 @@ static void sub_80646FC(void) {
     }
     
     // TODO make this section a macro or a inline func
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
-    sub_8063D20(optionsScreen, 0);
+    sub_8063D20(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
     sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
-    sub_8063DCC(optionsScreen, 0);
+    CreateOptionScreenUI(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
     
     unk774->unk0 = 0;
     unk774->unk2 = 2;
@@ -889,13 +915,13 @@ static void sub_80647C8(void) {
         return;
     }
     
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
-    sub_8063D20(optionsScreen, 0);
+    sub_8063D20(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
     sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
-    sub_8063DCC(optionsScreen, 0);
+    CreateOptionScreenUI(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
 
     unk774->unk0 = 0;
     unk774->unk2 = 2;
@@ -917,8 +943,8 @@ static void sub_806489C(void) {
         return;
     }
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     if (!optionsScreen->unk784) {
         GetProfileData(optionsScreen);
@@ -926,10 +952,10 @@ static void sub_806489C(void) {
 
     optionsScreen->language = language;
 
-    sub_8063D20(optionsScreen, 0);
+    sub_8063D20(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
     sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
-    sub_8063DCC(optionsScreen, 0);
+    CreateOptionScreenUI(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
 
     unk774->unk0 = 0;
     unk774->unk2 = 2;
@@ -1131,17 +1157,17 @@ static void Task_OptionsPlayerDataMenuMain(void) {
 
         switch(playerDataMenu->menuCursor) {
             case PLAYER_DATA_MENU_ITEM_CHANGE_NAME:
-                sub_806AAFC();
+                ShowEditProfileNameScreen();
                 return;
             case PLAYER_DATA_MENU_ITEM_TIME_RECORDS:
-                sub_806ABC4();
+                ShowCourseRecordsScreen();
                 return;
             case PLAYER_DATA_MENU_ITEM_VS_RECORDS:
-                sub_806AC28();
+                ShowMultiplayerRecordsScreen();
                 return;
             case PLAYER_DATA_MENU_ITEM_EXIT:
                 optionsScreen->unk784 = 0;
-                gCurTask->main = sub_8064E6C;
+                gCurTask->main = Task_PlayerDataMenuHandleExit;
                 return;
             default:
                 return;
@@ -1149,11 +1175,11 @@ static void Task_OptionsPlayerDataMenuMain(void) {
     } else if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
         optionsScreen->unk784 = 0;
-        gCurTask->main = sub_8064E6C;
+        gCurTask->main = Task_PlayerDataMenuHandleExit;
     }
 }
 
-static void sub_8064E6C(void) {
+static void Task_PlayerDataMenuHandleExit(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
@@ -1183,16 +1209,16 @@ static void sub_8064E6C(void) {
 static inline void sub_8064F1C_A(struct PlayerDataMenu* playerDataMenu, struct UNK_802D4CC_UNK270* unk150) {
     struct OptionsScreen* optionsScreen;
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
-    sub_8063D20(playerDataMenu->optionsScreen, 1);
+    sub_8063D20(playerDataMenu->optionsScreen, OPTIONS_SCREEN_STATE_SUB_MENU_OPEN);
     
     optionsScreen = playerDataMenu->optionsScreen;
     sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1E,0x14,0,0,0,0);
     sub_806B854(&optionsScreen->unk3A4,1,0xE, 0x86,0x1E,0x14,0,1,0,0);
     
-    sub_8063DCC(playerDataMenu->optionsScreen, 1);
+    CreateOptionScreenUI(playerDataMenu->optionsScreen, 1);
     RenderPlayerDataMenuUI(playerDataMenu);
 
     unk150->unk0 = 0;
@@ -1222,7 +1248,7 @@ void sub_8065004(void) {
 
     if (sub_802D4CC(unk150)) {
         if (playerDataMenu->optionsScreen->unk35D) {
-            sub_8068198(playerDataMenu);
+            CreateCourseRecordsScreen(playerDataMenu);
         } else {
             sub_8068524(playerDataMenu);
         }
@@ -2456,8 +2482,8 @@ void CreateDeleteGameDataScreen(struct OptionsScreen* optionsScreen) {
     deleteGameDataScreen->language = optionsScreen->language;
     deleteGameDataScreen->unk143 = 0;
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8066D90(deleteGameDataScreen);
     sub_806B258(deleteGameDataScreen);
@@ -2760,8 +2786,8 @@ void CreateEditProfileNameScreen(struct PlayerDataMenu* playerDataMenu) {
         profileNameScreen->nameInput.buffer[i] = PLAYER_NAME_END_CHAR;
     }
 
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8067420(profileNameScreen->language);
     ProfileNameScreenCreateUIBackgrounds(profileNameScreen);
@@ -2917,7 +2943,7 @@ static void ProfileNameScreenCreateUIText(struct ProfileNameScreen* profileNameS
 static void ProfileNameScreenCreateUIContextElements(struct ProfileNameScreen* profileNameScreen) {
     struct UNK_0808B3FC_UNK240* focusedCell = profileNameScreen->focusedCell;
     struct UNK_0808B3FC_UNK240* scrollArrow = profileNameScreen->scrollArrows;
-    const struct UNK_080D95E8* scrollArrowTile = sProfileNameScreenScrollTiles;
+    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
     struct UNK_806B908 nameCharTile;
     
     // background
@@ -3446,7 +3472,7 @@ static void RenderProfileNameScreenUI(void) {
     }
 }
 
-static void sub_8068198(struct PlayerDataMenu* playerProfileMenu) {
+static void CreateCourseRecordsScreen(struct PlayerDataMenu* playerProfileMenu) {
     struct Task* t = TaskCreate(sub_806B3F0, sizeof(struct CourseRecordsScreen), 0x2000, 4, NULL);
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(t, courseRecordsScreen);
     s16 i;
@@ -3470,11 +3496,11 @@ static void sub_8068198(struct PlayerDataMenu* playerProfileMenu) {
     }
 
     courseRecordsScreen->language = playerProfileMenu->language;
-    courseRecordsScreen->showingBossRecords = FALSE;
+    courseRecordsScreen->isBossMode = FALSE;
     courseRecordsScreen->mode = 0;
     
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_80682AC();
     sub_80682EC(courseRecordsScreen);
@@ -3595,9 +3621,9 @@ static void sub_8068474(void) {
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
-        courseRecordsScreen->showingBossRecords = !courseRecordsScreen->showingBossRecords;
+        courseRecordsScreen->isBossMode = !courseRecordsScreen->isBossMode;
         
-        if (!courseRecordsScreen->showingBossRecords) {
+        if (!courseRecordsScreen->isBossMode) {
             unk4C->unk25 = 0;
             unk4C++;
             unk4C->unk25 = 0;
@@ -3651,11 +3677,11 @@ static void sub_8068524(struct PlayerDataMenu* playerProfileMenu) {
     }
 
     courseRecordsScreen->language = playerProfileMenu->language;
-    courseRecordsScreen->showingBossRecords = FALSE;
+    courseRecordsScreen->isBossMode = FALSE;
     courseRecordsScreen->mode = 1;
     
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8068640();
     sub_8068700(courseRecordsScreen);
@@ -3763,7 +3789,7 @@ static void sub_80687BC(struct CourseRecordsScreen* courseRecordsScreen) {
 #endif
     sub_806A568(unk4C,0,temp,r1->unk0,0x1000,0x5E,0xC,3,r1->unk2,0);
 
-    if (!courseRecordsScreen->showingBossRecords) {
+    if (!courseRecordsScreen->isBossMode) {
         sub_806A568(unkAC,0,0x10,0x418,0x1000,0x4E,0x20,3,1,0);
         unkAC++;
     
@@ -3773,7 +3799,7 @@ static void sub_80687BC(struct CourseRecordsScreen* courseRecordsScreen) {
         sub_806A568(unkAC,0,0x14,0x418,0x1000,0x4e,0x20,3,9,0);  
     }
 
-    if (!courseRecordsScreen->showingBossRecords) {
+    if (!courseRecordsScreen->isBossMode) {
         r4 = &gUnknown_080D9FD0[language][courseRecordsScreen->zone];
     } else {
         r4 = &gUnknown_080DA120[language][courseRecordsScreen->zone];
@@ -3786,7 +3812,7 @@ static void sub_80687BC(struct CourseRecordsScreen* courseRecordsScreen) {
 static inline u16* LoadCourseTimes(struct CourseRecordsScreen* courseRecordsScreen) {
     u8 act;
     
-     if (!courseRecordsScreen->showingBossRecords) {
+     if (!courseRecordsScreen->isBossMode) {
         act = courseRecordsScreen->act;
     } else {
         act = 2;
@@ -3803,11 +3829,12 @@ static inline u16* LoadCourseTimes(struct CourseRecordsScreen* courseRecordsScre
 
 static void sub_8068A94(struct CourseRecordsScreen* courseRecordsScreen) {
     struct UNK_80637EC_UNK314* unk314 = courseRecordsScreen->unk314;
-    s16 FCC = gUnknown_080D9F78[10].unk4;
+    // interesting optimistation
+    s16 FCC = sTimeRecordDigitTiles[10].unk4;
     struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
-    s16 i;
 
     u16* courseTimes = LoadCourseTimes(courseRecordsScreen);
+    s16 i;
 
     for (i = 0; i < 3; i++, unk314++) {
         const struct UNK_080D95E8* F78;
@@ -3820,11 +3847,11 @@ static void sub_8068A94(struct CourseRecordsScreen* courseRecordsScreen) {
         unkF0 = unk314->unkF0;
 
         timeValue = courseTimes[i];
-        if (timeValue < ZONE_TIME_TO_INT(10, 0)) {
+        if (timeValue < MAX_COURSE_TIME) {
             s16 temp = timeValue % 60;
             u16 temp2 = timeValue - temp;
-            millis = gUnknown_080D6B80[temp][0] * 10;
-            millis += gUnknown_080D6B80[temp][1];
+            millis = gMillisLookup[temp][0] * 10;
+            millis += gMillisLookup[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -3834,39 +3861,41 @@ static void sub_8068A94(struct CourseRecordsScreen* courseRecordsScreen) {
             minutes = 9;
         }
 
-        F78 = &gUnknown_080D9F78[10];
+        F78 = &sTimeRecordDigitTiles[10];
         sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x30),(i * 24 + 84),8,F78->unk2,0);
 
         unk0++;
         sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x60),(i * 24 + 84),8,F78->unk2,0);
 
-        F78 = &gUnknown_080D9F78[minutes];
+        F78 = &sTimeRecordDigitTiles[minutes];
         sub_806A568(unk60,0,FCC,F78->unk0,0x3000,(i * 8 + 0x20),(i * 24 + 84),8,F78->unk2,0);
 
-        F78 = &gUnknown_080D9F78[seconds / 10];
+        F78 = &sTimeRecordDigitTiles[seconds / 10];
         sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x40),(i * 24 + 84),8,F78->unk2,0);
 
         unk90++;
-        F78 = &gUnknown_080D9F78[seconds % 10];
+        F78 = &sTimeRecordDigitTiles[seconds % 10];
         sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x50),(i * 24 + 84),8,F78->unk2,0);
 
-        F78 = &gUnknown_080D9F78[millis / 10];
+        F78 = &sTimeRecordDigitTiles[millis / 10];
         sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x70),(i * 24 + 84),8,F78->unk2,0);
         
         unkF0++;
-        F78 = &gUnknown_080D9F78[millis % 10];
+        F78 = &sTimeRecordDigitTiles[millis % 10];
         sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x80),(i * 24 + 84),8,F78->unk2,0);
     }
 }
 
 static void sub_8068D94(struct CourseRecordsScreen* courseRecordsScreen) {
-    const struct UNK_080D95E8* F78;
+    // Stack has to be declared in this order to match
     struct UNK_80637EC_UNK314* unk314 = courseRecordsScreen->unk314;
     struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
-    s16 i;
+    
     u16* courseTimes = LoadCourseTimes(courseRecordsScreen);
+    s16 i;
 
     for (i = 0; i < 3; i++, unk314++) {
+        const struct UNK_080D95E8* digitTile;
         s16 millis, minutes, seconds;
         u16 timeValue;
         
@@ -3876,12 +3905,12 @@ static void sub_8068D94(struct CourseRecordsScreen* courseRecordsScreen) {
         unk0 = unk314->unk0;
         
         timeValue = courseTimes[i];
-        if (timeValue < ZONE_TIME_TO_INT(10, 0)) {
+        if (timeValue < MAX_COURSE_TIME) {
             s16 temp = timeValue % 60;
             u16 temp2 = timeValue - temp;
             // This logic is the same as the above function but required to be
             // inline instead of split, but required to be split in the other function
-            millis = gUnknown_080D6B80[temp][0] * 10 + gUnknown_080D6B80[temp][1];
+            millis = gMillisLookup[temp][0] * 10 + gMillisLookup[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -3891,41 +3920,41 @@ static void sub_8068D94(struct CourseRecordsScreen* courseRecordsScreen) {
             minutes = 9;
         }
 
-        F78 = &gUnknown_080D9F78[minutes];
+        digitTile = &sTimeRecordDigitTiles[minutes];
         
-        unk60->unkA = F78->unk0;
-        unk60->unk20 = F78->unk2;
+        unk60->unkA = digitTile->unk0;
+        unk60->unk20 = digitTile->unk2;
         unk60->unk16 = (i * 8) + 0x110;
         sub_8004558(unk60);
         
         unk0->unk16 = (i * 8) + 0x120;
         unk0++;
 
-        F78 = &gUnknown_080D9F78[seconds / 10];
-        unk90->unkA = F78->unk0;
-        unk90->unk20 = F78->unk2;
+        digitTile = &sTimeRecordDigitTiles[seconds / 10];
+        unk90->unkA = digitTile->unk0;
+        unk90->unk20 = digitTile->unk2;
         unk90->unk16 = (i * 8) + 0x130;
         sub_8004558(unk90);
 
         unk90++;
-        F78 = &gUnknown_080D9F78[seconds % 10];
-        unk90->unkA = F78->unk0;
-        unk90->unk20 = F78->unk2;
+        digitTile = &sTimeRecordDigitTiles[seconds % 10];
+        unk90->unkA = digitTile->unk0;
+        unk90->unk20 = digitTile->unk2;
         unk90->unk16 = (i * 8) + 0x140;
         sub_8004558(unk90);
     
         unk0->unk16 = (i * 8) + 0x150;
 
-        F78 = &gUnknown_080D9F78[millis / 10];
-        unkF0->unkA = F78->unk0;
-        unkF0->unk20 = F78->unk2;
+        digitTile = &sTimeRecordDigitTiles[millis / 10];
+        unkF0->unkA = digitTile->unk0;
+        unkF0->unk20 = digitTile->unk2;
         unkF0->unk16 = (i * 8) + 0x160;
         sub_8004558(unkF0);
 
         unkF0++;
-        F78 = &gUnknown_080D9F78[millis % 10];
-        unkF0->unkA = F78->unk0;
-        unkF0->unk20 = F78->unk2;
+        digitTile = &sTimeRecordDigitTiles[millis % 10];
+        unkF0->unkA = digitTile->unk0;
+        unkF0->unk20 = digitTile->unk2;
         unkF0->unk16 = (i * 8) + 0x170;
         sub_8004558(unkF0);
     }
@@ -3972,9 +4001,6 @@ static void sub_80690A4(void) {
     }
 }
 
-void sub_8069180(s16, s16);
-void sub_8069208(void);
-
 static void sub_8069110(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     s16 i;
@@ -3993,7 +4019,7 @@ static void sub_8069110(void) {
     }
 }
 
-void sub_8069180(s16 a, s16 b) {
+static void sub_8069180(s16 a, s16 b) {
     // Not sure why but the struct has to be loaded like this
 #ifndef NON_MATCHING
     u32 offsetA = gCurTask->structOffset + (a * sizeof(struct UNK_80637EC_UNK314));
@@ -4025,22 +4051,16 @@ void sub_8069180(s16 a, s16 b) {
     }
 }
 
-void sub_806955C(void);
-void sub_806B60C(void);
-void sub_806B684(void);
-void sub_80694F8(void);
-void sub_806B730(void);
-
-void sub_8069208(void) {
+static void sub_8069208(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     s16 availableZones = courseRecordsScreen->characterZones[courseRecordsScreen->character];
-    s32 var;
+    s32 temp;
     if (availableZones == 0) {
         availableZones = 1;
     }
     // Possibly some macro
-    var = (u16)availableZones;
-    if (var > 0x1B) {
+    temp = (u16)availableZones;
+    if (temp > 0x1B) {
         availableZones = 0x1B;
     }
     sub_806979C(0);
@@ -4052,7 +4072,7 @@ void sub_8069208(void) {
 
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         if (gRepeatedKeys & DPAD_LEFT) {
-            if (courseRecordsScreen->showingBossRecords == 0) {
+            if (courseRecordsScreen->isBossMode == 0) {
                 if (courseRecordsScreen->mode == 2) {
                     if (courseRecordsScreen->act == 0) {
                         if (courseRecordsScreen->zone != 0) {
@@ -4092,7 +4112,7 @@ void sub_8069208(void) {
             }
         }
         else if (gRepeatedKeys & DPAD_RIGHT) {
-            if (!courseRecordsScreen->showingBossRecords) {
+            if (!courseRecordsScreen->isBossMode) {
                 if (courseRecordsScreen->mode == 2) {
                     s32 r5;
                     s16 r1;
@@ -4196,7 +4216,7 @@ void sub_8069208(void) {
     }
 }
 
-void sub_80694F8(void) {
+static void sub_80694F8(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
 
     courseRecordsScreen->unk707--;
@@ -4213,7 +4233,7 @@ void sub_80694F8(void) {
     }
 }
 
-void sub_806955C(void) {
+static void sub_806955C(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     struct UNK_0808B3FC_UNK240* unk7C = &courseRecordsScreen->unk4C[1];
     struct UNK_0808B3FC_UNK240* unkDC = &courseRecordsScreen->unkAC[1];
@@ -4226,14 +4246,14 @@ void sub_806955C(void) {
     
     sub_8004558(unk7C);
 
-    if (!courseRecordsScreen->showingBossRecords) {
+    if (!courseRecordsScreen->isBossMode) {
         F40 = &gUnknown_080D9F40[courseRecordsScreen->act];
         unkDC->unkA = F40->unk0;
         unkDC->unk20 = F40->unk2;
         sub_8004558(unkDC);
     }
 
-    if (!courseRecordsScreen->showingBossRecords) {
+    if (!courseRecordsScreen->isBossMode) {
         F40 = &gUnknown_080D9FD0[language][courseRecordsScreen->zone];
     } else {
         F40 = &gUnknown_080DA120[language][courseRecordsScreen->zone];
@@ -4264,10 +4284,10 @@ void sub_8069688(void) {
     switch (courseRecordsScreen->mode) {
         case 0:
             courseRecordsScreen->unk707 = 0;
-            courseRecordsScreen->showingBossRecords = 0;
+            courseRecordsScreen->isBossMode = 0;
             courseRecordsScreen->mode = 0;
-            gUnknown_03005B50 = (void*)OBJ_VRAM0;
-            gUnknown_03005B54 = NULL;
+            gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+            gProfileScreenSubMenuNextVramAddress = NULL;
 
             sub_80682AC();
             sub_80682EC(courseRecordsScreen);
@@ -4327,7 +4347,7 @@ static void sub_806979C(u16 a) {
         sub_80051E8(unk13C);
     }
 
-    if (courseRecordsScreen->showingBossRecords == 0) {
+    if (courseRecordsScreen->isBossMode == 0) {
         for (i = 0; i < 2; i++, unkAC++) {
             sub_80051E8(unkAC);
         }
@@ -4359,115 +4379,58 @@ static void sub_806979C(u16 a) {
     }
 }
 
-struct UNK_8069978_UNK390_ROW {
-    // playerName
-    u16 unk0[6];
-
-    u8 unkC;
-    u8 unkD;
-    u8 unkE;
-    u8 unkF;
-    struct UNK_0808B3FC_UNK240 unk10[6];
-    struct UNK_0808B3FC_UNK240 unk130[2];
-    struct UNK_0808B3FC_UNK240 unk190[2];
-    struct UNK_0808B3FC_UNK240 unk1F0[2];
-}; /* size 0x250 */
-
-struct UNK_8069978_UNK390 {
-   struct UNK_8069978_UNK390_ROW unk0[10];
-}; /* size 0x1720 */
-
-// MultiPlayerRecordsScreen
-struct UNK_8069978 {
-    struct UNK_802D4CC_UNK270 unk0;
-
-    struct Unk_03002400 unkC;
-    struct Unk_03002400 unk4C;
-
-    struct UNK_0808B3FC_UNK240 unk8C;
-    struct UNK_0808B3FC_UNK240 unkBC;
-    struct UNK_0808B3FC_UNK240 unkEC[2];
-    struct UNK_0808B3FC_UNK240 unk14C[6];
-    struct UNK_0808B3FC_UNK240 unk26C[2];
-    struct UNK_0808B3FC_UNK240 unk2CC[2];
-    struct UNK_0808B3FC_UNK240 unk32C[2];
-
-    // playerDataMenu
-    struct PlayerDataMenu* unk38C;
-
-    struct UNK_8069978_UNK390* unk390;
-    u8 unk394;
-    u8 unk395;
-    u8 unk396;
-    u8 unk397;
-
-    // playerName
-    u16 unk398[6];
-
-    u8 unk3A4;
-    u8 unk3A5;
-    u8 unk3A6;
-
-    // language
-    u8 unk3A7;
-}; /* size 0x3A8 */
-
-void sub_806B760(void);
-void sub_8069B40(void);
-void sub_8069B88(struct UNK_8069978*);
-void sub_8069BF0(struct UNK_8069978*);
-
-void sub_8069978(struct PlayerDataMenu* playerDataMenu) {
-    struct UNK_8069978_UNK390_ROW* unk390Rows;
+static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu) {
+    struct Task* t = TaskCreate(sub_806B760, sizeof(struct MultiplayerRecordsScreen), 0x2000, 4, NULL);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(t, multiplayerRecordsScreen);
+    
+    struct MultiplayerRecord* multiplayerRecords;
     struct OptionsScreenProfileData* profileData;
     s16 i, j;
+    
+    multiplayerRecordsScreen->table = EwramMallocStruct(struct MultiplayerRecordsTable);
+    multiplayerRecordsScreen->playerDataMenu = playerDataMenu;
 
-    struct Task* t = TaskCreate(sub_806B760, sizeof(struct UNK_8069978), 0x2000, 4, 0);
-    struct UNK_8069978* config = TaskGetStructPtr(t, config);
-    config->unk390 = EwramMallocStruct(struct UNK_8069978_UNK390);
-    config->unk38C = playerDataMenu;
-
-    config->unk394 = 0;
-    config->unk3A4 = 0;
-    config->unk3A5 = 0;
-    config->unk3A6 = 0;
-    config->unk3A7 = playerDataMenu->language;
+    multiplayerRecordsScreen->unk394 = 0;
+    multiplayerRecordsScreen->unk3A4 = 0;
+    multiplayerRecordsScreen->unk3A5 = 0;
+    multiplayerRecordsScreen->unk3A6 = 0;
+    multiplayerRecordsScreen->language = playerDataMenu->language;
 
 
     profileData = &playerDataMenu->optionsScreen->profileData;
-    memcpy(config->unk398, profileData->playerName, 12);
-    config->unk395 = profileData->unk34C;
-    config->unk396 = profileData->unk34D;
-    config->unk397 = profileData->unk34E;
+    memcpy(multiplayerRecordsScreen->playerName, profileData->playerName, 12);
+    multiplayerRecordsScreen->unk395 = profileData->unk34C;
+    multiplayerRecordsScreen->unk396 = profileData->unk34D;
+    multiplayerRecordsScreen->unk397 = profileData->unk34E;
 
-    unk390Rows = config->unk390->unk0;
+    multiplayerRecords = multiplayerRecordsScreen->table->rows;
     for (i = 0; i < 10; i++) {
         for (j = 0; j < 6; j++) {
-            unk390Rows[i].unk0[j] = profileData->unk284[i].unk4[j];
-            if (unk390Rows[i].unk0[j] == PLAYER_NAME_END_CHAR) {
+            multiplayerRecords[i].unk0[j] = profileData->unk284[i].unk4[j];
+            if (multiplayerRecords[i].unk0[j] == PLAYER_NAME_END_CHAR) {
                 break;
             }
         }
 
         for (;j < 6; j++) {
-            unk390Rows[i].unk0[j] = PLAYER_NAME_END_CHAR;
+            multiplayerRecords[i].unk0[j] = PLAYER_NAME_END_CHAR;
         }
 
-        unk390Rows[i].unkC = profileData->unk284[i].unk10;
-        unk390Rows[i].unkD = profileData->unk284[i].unk11;
-        unk390Rows[i].unkE = profileData->unk284[i].unk12;
-        unk390Rows[i].unkF = profileData->unk284[i].unk13;
+        multiplayerRecords[i].unkC = profileData->unk284[i].unk10;
+        multiplayerRecords[i].unkD = profileData->unk284[i].unk11;
+        multiplayerRecords[i].unkE = profileData->unk284[i].unk12;
+        multiplayerRecords[i].unkF = profileData->unk284[i].unk13;
     }
 
-    gUnknown_03005B50 = (void*)(OBJ_VRAM0);
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)(OBJ_VRAM0);
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8069B40();
-    sub_8069B88(config);
-    sub_8069BF0(config);
+    sub_8069B88(multiplayerRecordsScreen);
+    sub_8069BF0(multiplayerRecordsScreen);
 }
 
-void sub_8069B40(void) {
+static void sub_8069B40(void) {
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x701;
     gBgCntRegs[1] = 0x9606;
@@ -4483,7 +4446,7 @@ void sub_8069B40(void) {
     gBgScrollRegs[3][1] = 0;
 }
 
-void sub_8069B88(struct UNK_8069978* multiplayerRecordsScreen) {
+static void sub_8069B88(struct MultiplayerRecordsScreen* multiplayerRecordsScreen) {
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
     unk0->unk0 = 0;
     unk0->unk2 = 2;
@@ -4496,18 +4459,8 @@ void sub_8069B88(struct UNK_8069978* multiplayerRecordsScreen) {
     sub_806B854(&multiplayerRecordsScreen->unk4C, 1, 0x16, 0x89, 0x1E, 0x14, 0, 1, 0, 0);
 }
 
-struct UNK_080D9E00 {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-};
-
-extern const struct UNK_080D9E00 gUnknown_080D9E00[6][2];
-extern const struct UNK_080D95E8 gUnknown_080D9E60[10];
-
 // PlayerRecordRow
-void sub_8069BF0(struct UNK_8069978* multiplayerRecordsScreen) {
+static void sub_8069BF0(struct MultiplayerRecordsScreen* multiplayerRecordsScreen) {
     s16 i, pos, temp;
     struct UNK_806B908 local48;
     s16 unk395, unk396, unk397;
@@ -4520,8 +4473,8 @@ void sub_8069BF0(struct UNK_8069978* multiplayerRecordsScreen) {
     struct UNK_0808B3FC_UNK240* unk2CC = multiplayerRecordsScreen->unk2CC;
     struct UNK_0808B3FC_UNK240* unk32C = multiplayerRecordsScreen->unk32C;
 
-    const struct UNK_080D9E00* E00 = gUnknown_080D9E00[multiplayerRecordsScreen->unk3A7];
-    const struct UNK_080D95E8* DF0 = sProfileNameScreenScrollTiles;
+    const struct UNK_080D95E8* E00 = gUnknown_080D9E00[multiplayerRecordsScreen->language];
+    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
     // The data is made into a pointer here but then another pointer is used for
     // the actual reference
     const struct UNK_080D95E8* E60Val, *E60 = gUnknown_080D9E60;
@@ -4531,14 +4484,14 @@ void sub_8069BF0(struct UNK_8069978* multiplayerRecordsScreen) {
     E00++;
     sub_806A568(unkBC,0,E00->unk4,E00->unk0,0x1000,0x76,0x26,5,E00->unk2,0);
     
-    sub_806A568(unkEC,0,DF0->unk4,DF0->unk0,0x1000,8,0x4E,0xD,DF0->unk2,0);
+    sub_806A568(unkEC,0,scrollArrowTile->unk4,scrollArrowTile->unk0,0x1000,8,0x4E,0xD,scrollArrowTile->unk2,0);
     unkEC++;
-    DF0++;
-    sub_806A568(unkEC,0,DF0->unk4,DF0->unk0,0x1000,8,0x88,0xD,DF0->unk2,0);
+    scrollArrowTile++;
+    sub_806A568(unkEC,0,scrollArrowTile->unk4,scrollArrowTile->unk0,0x1000,8,0x88,0xD,scrollArrowTile->unk2,0);
 
 
     for (i = 0, pos = 0x22, temp = 0x3A; i < MAX_PLAYER_NAME_LENGTH; i++, unk14C++, pos+= 0xC) {
-        u16 nameChar = multiplayerRecordsScreen->unk398[i];
+        u16 nameChar = multiplayerRecordsScreen->playerName[i];
         if (nameChar == PLAYER_NAME_END_CHAR) {
             nameChar = 0x11;
         }
@@ -4592,15 +4545,15 @@ void sub_8069EC4(s16 i) {
 
     struct UNK_806B908 local48;
 
-    struct UNK_8069978_UNK390_ROW* row = &((struct UNK_8069978*)(IWRAM_START + gCurTask->structOffset))->unk390->unk0[i];
+    struct MultiplayerRecord* record = &((struct MultiplayerRecordsScreen*)(IWRAM_START + gCurTask->structOffset))->table->rows[i];
     const struct UNK_080D95E8 *E60Val, *E60 = gUnknown_080D9E60;
 
-    if (row->unkC) {
+    if (record->unkC) {
         s16 temp1 = i * 18 + 90;
-        struct UNK_0808B3FC_UNK240* unk10 = row->unk10;
+        struct UNK_0808B3FC_UNK240* unk10 = record->unk10;
         
         for (j = 0, pos = 0x22; j < MAX_PLAYER_NAME_LENGTH; j++, unk10++, pos+= 0xC) {
-            u16 nameChar = row->unk0[j];
+            u16 nameChar = record->unk0[j];
             if (nameChar == PLAYER_NAME_END_CHAR) {
                 nameChar = 0x11;
             }
@@ -4620,38 +4573,34 @@ void sub_8069EC4(s16 i) {
             );
         }
 
-        unkD = row->unkD;
-        unkE = row->unkE;
-        unkF = row->unkF;
+        unkD = record->unkD;
+        unkE = record->unkE;
+        unkF = record->unkF;
         temp1 += 6; 
 
         E60Val = &E60[unkD / 10];
-        sub_806A568(&row->unk130[0],0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk130[0],0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkD % 10];
-        sub_806A568(&row->unk130[1],0,E60Val->unk4,E60Val->unk0,0x2000,0x84,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk130[1],0,E60Val->unk4,E60Val->unk0,0x2000,0x84,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkE / 10];
-        sub_806A568(&row->unk190[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk190[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkE % 10];
-        sub_806A568(&row->unk190[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk190[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkF / 10];
-        sub_806A568(&row->unk1F0[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk1F0[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,temp1,0xD,E60Val->unk2,0);
 
         E60Val = &E60[unkF % 10];
-        sub_806A568(&row->unk1F0[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,temp1,0xD,E60Val->unk2,0);
+        sub_806A568(&record->unk1F0[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,temp1,0xD,E60Val->unk2,0);
     }
 }
 
-void sub_806A1D0(void);
-void sub_806A348(void);
-void sub_806B7D0(void);
-
-void sub_806A0F4(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
-    struct UNK_8069978_UNK390_ROW* rows = multiplayerRecordsScreen->unk390->unk0;
+static void sub_806A0F4(void) {
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecord* rows = multiplayerRecordsScreen->table->rows;
 
     sub_806A348();
     if (gRepeatedKeys & (DPAD_DOWN | DPAD_UP)) {
@@ -4688,9 +4637,9 @@ void sub_806A0F4(void) {
     }
 }
 
-void sub_806A1D0(void) {
-    struct UNK_8069978_UNK390_ROW* row;
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+static void sub_806A1D0(void) {
+    struct MultiplayerRecord* row;
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
     s16 pos, temp;
     s16 numRows = 5;
     s16 i, j;
@@ -4712,7 +4661,7 @@ void sub_806A1D0(void) {
         numRows--;
     }
 
-    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A4];
+    row = &multiplayerRecordsScreen->table->rows[multiplayerRecordsScreen->unk3A4];
 
     for (i = 0; i < numRows; i++, pos += 18, row++) {
         struct UNK_0808B3FC_UNK240* unk10, *unk130, *unk190, *unk1F0;
@@ -4746,22 +4695,22 @@ void sub_806A1D0(void) {
     }
 }
 
-void sub_806A348(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+static void sub_806A348(void) {
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
     struct UNK_0808B3FC_UNK240* unk8C = &multiplayerRecordsScreen->unk8C;
     struct UNK_0808B3FC_UNK240* unkBC = &multiplayerRecordsScreen->unkBC;
     struct UNK_0808B3FC_UNK240* unk14C = multiplayerRecordsScreen->unk14C;
     struct UNK_0808B3FC_UNK240* unk26C = multiplayerRecordsScreen->unk26C;
     struct UNK_0808B3FC_UNK240* unk2CC = multiplayerRecordsScreen->unk2CC;
     struct UNK_0808B3FC_UNK240* unk32C = multiplayerRecordsScreen->unk32C;
-    struct UNK_8069978_UNK390* unk390 = multiplayerRecordsScreen->unk390;
-    
-    struct UNK_8069978_UNK390_ROW* row;
     struct UNK_0808B3FC_UNK240* unkEC;
 
+    // recordsTable completely unused in this var, but needs to be assigned to match
+    struct MultiplayerRecordsTable* recordsTable = multiplayerRecordsScreen->table;
+    struct MultiplayerRecord* row;
+    
     s16 i, j;
     s16 numRows = 5;
-   
 
     sub_80051E8(unk8C);
     sub_80051E8(unkBC);
@@ -4777,7 +4726,8 @@ void sub_806A348(void) {
     }
     unkEC++;
     
-    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A6 + 4];
+    // Maybe they meant to use the assignment here
+    row = &multiplayerRecordsScreen->table->rows[multiplayerRecordsScreen->unk3A6 + 4];
     if (multiplayerRecordsScreen->unk3A6 < 6 && row->unkC) {
         sub_80051E8(unkEC);
     }
@@ -4802,7 +4752,7 @@ void sub_806A348(void) {
         numRows--;
     }
 
-    row = &multiplayerRecordsScreen->unk390->unk0[multiplayerRecordsScreen->unk3A4];
+    row = &multiplayerRecordsScreen->table->rows[multiplayerRecordsScreen->unk3A4];
 
     for (i = 0; i < numRows; i++, row++) {
         if (!row->unkC) {
@@ -4828,47 +4778,49 @@ void sub_806A348(void) {
     }
 }
 
-void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 a, u32 b, u16 c, u32 d, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
+// Some sort of register menu item function
+// used in sound test, but wonder why it wasn't split out
+void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 mode, u32 b, u16 c, u32 d, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
     struct UNK_0808B3FC_UNK240 newObj;
-    struct UNK_0808B3FC_UNK240* ref;
-    ref = &newObj;
+    struct UNK_0808B3FC_UNK240* element;
+    element = &newObj;
    
     if (obj != NULL) {
-        ref = obj;
+        element = obj;
     }
 
-    if (a != 0) {    
-        if (gUnknown_03005B54 == NULL) {
-            gUnknown_03005B54 = gUnknown_03005B50;
+    if (mode != 0) {    
+        if (gProfileScreenSubMenuNextVramAddress == NULL) {
+            gProfileScreenSubMenuNextVramAddress = gProfileScreenNextVramAddress;
         }
-        ref->unk4 = gUnknown_03005B54;
+        element->unk4 = gProfileScreenSubMenuNextVramAddress;
     } else {
-        ref->unk4 = gUnknown_03005B50;
+        element->unk4 = gProfileScreenNextVramAddress;
     }
     
-    ref->unk8 = 0;
-    ref->unkA = c;
-    ref->unk10 = d;
-    ref->unk16 = xPos;
-    ref->unk18 = yPos;
-    ref->unk1A = g << 6;
-    ref->unk1C = 0;
-    ref->unk1E = 0xffff;
-    ref->unk20 = h;
-    ref->unk21 = 0xff;
-    ref->unk22 = 0x10;
-    ref->unk25 = focused;
-    ref->unk28 = -1;
+    element->unk8 = 0;
+    element->unkA = c;
+    element->unk10 = d;
+    element->unk16 = xPos;
+    element->unk18 = yPos;
+    element->unk1A = g << 6;
+    element->unk1C = 0;
+    element->unk1E = 0xffff;
+    element->unk20 = h;
+    element->unk21 = 0xff;
+    element->unk22 = 0x10;
+    element->unk25 = focused;
+    element->unk28 = -1;
 
-    sub_8004558(ref);
+    sub_8004558(element);
 
-    switch(a) {
+    switch(mode) {
         case 0:
-            gUnknown_03005B50 = gUnknown_03005B50 + b * 32;
-            gUnknown_03005B54 = NULL;
+            gProfileScreenNextVramAddress = gProfileScreenNextVramAddress + b * 32;
+            gProfileScreenSubMenuNextVramAddress = NULL;
             break;
         case 1:
-            gUnknown_03005B54 = gUnknown_03005B54 + b * 32;
+            gProfileScreenSubMenuNextVramAddress = gProfileScreenSubMenuNextVramAddress + b * 32;
             break;
     }
 }
@@ -4877,7 +4829,10 @@ void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 a, u32 b, u16 c, u32 d, s16
 // the body is a macro?
 // 
 // Unfortunately sub_806BA14 can't just call this function
-// to match
+// to match.
+//
+// Would match without this as inline if we used sub_806BA14 with -O3
+// but then otherstuff doesn't match. Leaving for now
 static inline bool16 sub_806A664_A(s16 a, u16 b) {
     u16 unk5C4[2];
     u16 unk5C8[5];
@@ -4906,6 +4861,7 @@ static inline bool16 sub_806A664_A(s16 a, u16 b) {
     return FALSE;
 }
 
+// Feels like it should be part of the UI module at the end but is declared here instead
 static u16 sub_806A664(s16 a, u16 b) {
     u16 unk5D2[2];
     u16 unk5D6[4][2];
@@ -4941,12 +4897,13 @@ static void sub_806A758(struct Task* optionsScreenTask) {
 void sub_806A7E0(void);
 static void sub_806A794(struct OptionsScreen*);
 
-static void sub_806A75C(void) {
+static void Task_ShowOptionsScreen(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
 
-    sub_8063D20(optionsScreen, 0);
+    sub_8063D20(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
+
     sub_806A794(optionsScreen);
-    sub_8063DCC(optionsScreen, 0);
+    CreateOptionScreenUI(optionsScreen, OPTIONS_SCREEN_STATE_INITIAL);
     gCurTask->main = sub_806A7E0;
 }
 
@@ -5133,7 +5090,7 @@ void sub_806AB2C(void);
 
 /** Player Data Menu 1 **/
 
-static void sub_806AAFC(void) {
+static void ShowEditProfileNameScreen(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
@@ -5171,7 +5128,7 @@ static void sub_806AB90(void) {
 
 /** Player Data Menu 2 **/
 
-static void sub_806ABC4(void) {
+static void ShowCourseRecordsScreen(void) {
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
@@ -5198,7 +5155,7 @@ void sub_806AC58(void);
 
 /** Player Data Menu 3 **/
 
-static void sub_806AC28(void) {
+static void ShowMultiplayerRecordsScreen(void) {
     struct Task* task = gCurTask;
 
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(task, playerDataMenu);
@@ -5219,7 +5176,7 @@ void sub_806AC58(void) {
     sub_806AD98();
 
     if (sub_802D4CC(unk150)) {
-        sub_8069978(playerDataMenu);
+        CreateMultiplayerRecordsScreen(playerDataMenu);
         playerDataMenu->unk163 = 1;
         playerDataMenu->optionsScreen->unk784 = 2;
         gCurTask->main = sub_8065174;
@@ -5406,8 +5363,8 @@ void sub_806B02C(struct OptionsScreen* optionScreen) {
     state->optionsScreen = optionScreen;
     state->menuCursor = optionScreen->language;
     state->creatingNewProfile = FALSE;
-    gUnknown_03005B50 = (void*)(OBJ_VRAM0);
-    gUnknown_03005B54 = 0;
+    gProfileScreenNextVramAddress = (void*)(OBJ_VRAM0);
+    gProfileScreenSubMenuNextVramAddress = 0;
 
     sub_80668A8(state);
     sub_806B0AC(state);
@@ -5552,10 +5509,10 @@ static void sub_806B354(void) {
 
 void sub_806B394(struct CourseRecordsScreen* courseRecordsScreen) {
     courseRecordsScreen->unk707 = 0;
-    courseRecordsScreen->showingBossRecords = 0;
+    courseRecordsScreen->isBossMode = 0;
     courseRecordsScreen->mode = 0;
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_80682AC();
     sub_80682EC(courseRecordsScreen);
@@ -5655,8 +5612,8 @@ static void sub_806B4F8(void) {
 
 void sub_806B558(struct CourseRecordsScreen* courseRecordsScreen) {
     courseRecordsScreen->mode = 0;
-    gUnknown_03005B50 = (void*)OBJ_VRAM0;
-    gUnknown_03005B54 = NULL;
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0;
+    gProfileScreenSubMenuNextVramAddress = NULL;
 
     sub_8068640();
     sub_8068700(courseRecordsScreen);
@@ -5685,7 +5642,7 @@ void sub_806B5CC(void) {
     }
 }
 
-void sub_806B60C(void) {
+static void sub_806B60C(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     struct UNK_0808B3FC_UNK240* unkDC = &courseRecordsScreen->unkAC[1];
 
@@ -5704,7 +5661,7 @@ void sub_806B60C(void) {
 
 void sub_806B6B4(void);
 
-void sub_806B684(void) {
+static void sub_806B684(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
 
@@ -5725,7 +5682,7 @@ void sub_806B6B4(void) {
     if (!sub_802D4CC(unk0)) {
         sub_806979C(0);
     } else {
-        gSelectedZone = courseRecordsScreen->zone * 4 + (courseRecordsScreen->showingBossRecords ? 2 : courseRecordsScreen->act);
+        gSelectedZone = courseRecordsScreen->zone * 4 + (courseRecordsScreen->isBossMode ? 2 : courseRecordsScreen->act);
 
         EwramFree(courseRecordsScreen->timeRecords);
         TaskDestroy(gCurTask);
@@ -5733,7 +5690,7 @@ void sub_806B6B4(void) {
     }
 }
 
-void sub_806B730(void) {
+static void sub_806B730(void) {
     struct CourseRecordsScreen* courseRecordsScreen = TaskGetStructPtr(gCurTask, courseRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &courseRecordsScreen->unk0;
 
@@ -5749,8 +5706,8 @@ void sub_806B730(void) {
 
 void sub_806B79C(void);
 
-void sub_806B760(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+static void sub_806B760(void) {
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
 
     sub_8069EC4(multiplayerRecordsScreen->unk394);
 
@@ -5761,7 +5718,7 @@ void sub_806B760(void) {
 }
 
 void sub_806B79C(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
     sub_806A348();
 
@@ -5772,8 +5729,8 @@ void sub_806B79C(void) {
 
 void sub_806B800(void);
 
-void sub_806B7D0(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+static void sub_806B7D0(void) {
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5787,14 +5744,14 @@ void sub_806B7D0(void) {
 }
 
 void sub_806B800(void) {
-    struct UNK_8069978* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
-    struct PlayerDataMenu* playerDataMenu = multiplayerRecordsScreen->unk38C;
+    struct PlayerDataMenu* playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 
     if (!sub_802D4CC(unk0)) {
         sub_806A348();
     } else {
-        EwramFree(multiplayerRecordsScreen->unk390);
+        EwramFree(multiplayerRecordsScreen->table);
         playerDataMenu->unk163 = 0;
         TaskDestroy(gCurTask);
     }
