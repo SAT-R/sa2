@@ -63,8 +63,6 @@ struct OptionsScreen {
     s8 unk782;
     s8 transitionFrame;
     s8 unk784;
-
-    u8 filler785[3];
 }; /* size 0x788 */
 
 struct UNK_80637EC_UNK314 {
@@ -93,23 +91,20 @@ struct CourseRecordsScreen {
     struct UNK_0808B3FC_UNK240 unk284[3];
     struct UNK_80637EC_UNK314 unk314[3];
 
-    u8 unk704;
+    u8 character;
 
-    // course
     u8 zone;
-    // act
     u8 act;
 
     u8 unk707;
     u8 unk708;
-    u8 unk709;
-    u8 unk70A[5];
-    u8 unk70F;
+    u8 availableCharacters;
+    u8 characterZones[NUM_CHARACTERS];
+    u8 language;
 
-    u8 showingBossRecords;
+    bool8 showingBossRecords;
 
-    u8 unk711;
-    u8 filler712[2];
+    u8 mode;
 }; /* size 0x714 */
 
 struct LanguageScreen {
@@ -124,8 +119,6 @@ struct LanguageScreen {
     s8 menuCursor;
 
     bool8 creatingNewProfile;
-
-    u8 unk202[2];
 }; /* size 0x204 */
 
 struct NameInputDisplay {
@@ -194,7 +187,6 @@ struct SwitchMenu {
     s8 switchValue;
     s8 unkF5;
     s8 language;
-    u8 unkF7;
 }; /* size 0xF8 */
 
 struct ButtonConfigMenu {

@@ -7,6 +7,8 @@
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
 
+#include "global.h"
+
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
@@ -18,5 +20,8 @@ void sub_801A770(void);
 
 // CreateMultiplayerScreen
 void sub_805A1CC(void);
+
+// CreateCharacterSelectionScreen
+void sub_803143C(u8 selectedCharacter, bool8 allUnlocked);
 
 #endif // GUARD_GAME_H

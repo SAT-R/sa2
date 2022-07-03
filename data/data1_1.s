@@ -1220,8 +1220,8 @@ sProfileNameScreenArrowTiles:
 sProfileNameScreenEndButtonText:
     .incbin "baserom.gba", 0x000D9DC0, 0x30
 
-    .global gUnknown_080D9DF0
-gUnknown_080D9DF0:
+    .global sProfileNameScreenScrollTiles
+sProfileNameScreenScrollTiles:
     .incbin "baserom.gba", 0x000D9DF0, 0x10
 
     .global gUnknown_080D9E00

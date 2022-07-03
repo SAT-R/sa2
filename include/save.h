@@ -43,13 +43,17 @@ struct SaveGame {
     // Language
     u8 unk6;
 
-    u8 unk7[5];
+    // character unlocked zones
+    u8 unk7[NUM_CHARACTERS];
+
     u8 unkC[5];
 
     // soundTestUnlocked
     u8 unk11;
 
     u8 unk12;
+
+    // unlocked characters
     u8 unk13;
 
     // Tiny chao garden

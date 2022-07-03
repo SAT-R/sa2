@@ -274,7 +274,6 @@ static const u16 sLensFlareStartPositions[][2] = {
 // Don't know who these belong to yet
 
 extern void sub_801A6D8(void);
-extern void sub_803143C(u32, u8);
 extern void sub_8087FC0(void);
 
 extern void sub_8009F94(void);
@@ -1235,10 +1234,11 @@ static void Task_HandleTitleScreenExit(void) {
             case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_801A6D8();
-                if (gLoadedSaveGame->unk13 & 0x10) {
+                // If all characters unlocked
+                if (gLoadedSaveGame->unk13 & (1 << (NUM_CHARACTERS - 1))) {
                     sub_803143C(0, 1);
                 } else {
-                    sub_803143C(0, 0);   
+                    sub_803143C(0, 0);
                 }
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
