@@ -52,6 +52,7 @@ struct SaveGame {
     // soundTestUnlocked
     u8 unk11;
 
+    // bossTimeAttackUnlocked
     u8 unk12;
 
     // unlocked characters

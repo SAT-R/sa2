@@ -42,7 +42,7 @@ struct OptionsScreen {
 
     bool8 soundTestUnlocked;
 
-    u8 unk35D;
+    u8 bossTimeAttackUnlocked;
     u8 unk35E;
 
     u8 filler35F;
@@ -61,8 +61,8 @@ struct OptionsScreen {
     s8 menuCursor;
     s8 unk781;
     s8 unk782;
-    s8 transitionFrame;
-    s8 unk784;
+    s8 subMenuAnimFrame;
+    s8 state;
 }; /* size 0x788 */
 
 struct UNK_80637EC_UNK314 {
@@ -72,8 +72,8 @@ struct UNK_80637EC_UNK314 {
     struct UNK_0808B3FC_UNK240 unkF0[2];
 };
 
-// CourseRecordsScreen
-struct CourseRecordsScreen {
+// TimeRecordsScreen
+struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 unkC;
     struct UNK_0808B3FC_UNK240 unk4C[2];
@@ -102,7 +102,7 @@ struct CourseRecordsScreen {
     u8 characterZones[NUM_CHARACTERS];
     u8 language;
 
-    bool8 isBossMode;
+    bool8 isBossView;
 
     u8 mode;
 }; /* size 0x714 */
@@ -203,7 +203,7 @@ struct ButtonConfigMenu {
     s8 language;
 }; /* size 0x24C */
 
-struct DeleteGameDataScreen {
+struct DeleteScreen {
     struct UNK_0808B3FC_UNK240 unk0[2];
     struct UNK_0808B3FC_UNK240 unk60[2];
     struct UNK_0808B3FC_UNK240 unkC0;
@@ -270,7 +270,7 @@ struct MultiplayerRecordsScreen {
 }; /* size 0x3A8 */
 
 void CreateOptionsScreen(u16);
-void CreateTimeAttackCourseSelectionScreen(bool16 isBossMode, u16 selectedCharacter);
+void CreateTimeAttackSelectionScreen(bool16 isBossMode, u16 selectedCharacter);
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 

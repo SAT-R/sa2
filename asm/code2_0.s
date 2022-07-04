@@ -50119,7 +50119,7 @@ _08032CE8:
 	ldrb r2, [r2]
 	lsls r2, r2, #0x18
 	asrs r2, r2, #0x18
-	bl CreateTimeAttackCourseSelectionScreen
+	bl CreateTimeAttackSelectionScreen
 	b _08032D8E
 	.align 2, 0
 _08032D08: .4byte gSelectedCharacter
