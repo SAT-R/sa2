@@ -25,7 +25,7 @@ sub_806BA84: @ 0x0806BA84
 	asrs r0, r2, #0x12
 	b _0806BAAC
 _0806BAA4:
-	ldr r0, _0806BACC @ =gSelectedZone
+	ldr r0, _0806BACC @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -47,7 +47,7 @@ _0806BAAC:
 	lsrs r4, r0, #0x10
 	b _0806BAD6
 	.align 2, 0
-_0806BACC: .4byte gSelectedZone
+_0806BACC: .4byte gCurrentLevel
 _0806BAD0: .4byte gSelectedCharacter
 _0806BAD4:
 	lsrs r4, r2, #0x10

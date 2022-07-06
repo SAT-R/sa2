@@ -238,7 +238,7 @@
 . = 0x00005594; gUnknown_03005594 = .;
 . = 0x000055A0; gUnknown_030055A0 = .;
 . = 0x000055B0; gUnknown_030055B0 = .;
-. = 0x000055B4; gSelectedZone = .;
+. = 0x000055B4; gCurrentLevel = .;
 . = 0x000055B8; gUnknown_030055B8 = .;
 . = 0x000055BC; gUnknown_030055BC = .;
 . = 0x000055D0; gUnknown_030055D0 = .;

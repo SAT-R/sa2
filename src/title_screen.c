@@ -1227,7 +1227,7 @@ static void Task_HandleTitleScreenExit(void) {
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         gUnknown_03005424 = 0;
-        gSelectedZone = ZONE_1_1;
+        gCurrentLevel = ZONE_1_1;
         gSelectedCharacter = CHARACTER_SONIC;
         
         switch(titleScreen->menuCursor) {
@@ -1243,7 +1243,7 @@ static void Task_HandleTitleScreenExit(void) {
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
                 sub_801A6D8();
-                gSelectedZone = ZONE_1_1;
+                gCurrentLevel = ZONE_1_1;
                 gSelectedCharacter = CHARACTER_SONIC;
                 gGameMode = GAME_MODE_TIME_ATTACK;
                 sub_8087FC0();
@@ -1860,7 +1860,7 @@ static void Task_StartTitleScreenDemo(void) {
     
     gInputPlaybackData = gDemoRecordings[0];
     gSelectedCharacter = CHARACTER_SONIC;
-    gSelectedZone = sDemoZones[0];
+    gCurrentLevel = sDemoZones[0];
 
     gDemoPlayCounter++;
     // Don't count higher than 3

@@ -1160,16 +1160,16 @@ gUnknown_080D99D8:
 gUnknown_080D99F0:
     .incbin "baserom.gba", 0x000D99F0, 0x90
 
-    .global gUnknown_080D9A80
-gUnknown_080D9A80:
+    .global sLanguageScreenTitles
+sLanguageScreenTitles:
     .incbin "baserom.gba", 0x000D9A80, 0x30
 
-    .global gUnknown_080D9AB0
-gUnknown_080D9AB0:
+    .global sLanguageScreenEditControlsText
+sLanguageScreenEditControlsText:
     .incbin "baserom.gba", 0x000D9AB0, 0x30
 
-    .global gUnknown_080D9AE0
-gUnknown_080D9AE0:
+    .global sLanguageScreenNewControlsText
+sLanguageScreenNewControlsText:
     .incbin "baserom.gba", 0x000D9AE0, 0x30
 
     .global gUnknown_080D9B10

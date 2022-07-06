@@ -12,7 +12,7 @@
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
-extern u8 gSelectedZone;
+extern u8 gCurrentLevel;
 extern u8 gSelectedCharacter;
 
 // Possibly CreateGameStage

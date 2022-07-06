@@ -65,7 +65,7 @@ struct OptionsScreen {
     s8 state;
 }; /* size 0x788 */
 
-struct UNK_80637EC_UNK314 {
+struct TimeRecordRow {
     struct UNK_0808B3FC_UNK240 unk0[2];
     struct UNK_0808B3FC_UNK240 unk60;
     struct UNK_0808B3FC_UNK240 unk90[2];
@@ -82,14 +82,14 @@ struct TimeRecordsScreen {
     struct UNK_0808B3FC_UNK240 unk13C[2];
     struct UNK_0808B3FC_UNK240 unk19C[2];
 
-    struct PlayerDataMenu* playerProfileMenu;
+    struct PlayerDataMenu* playerDataMenu;
 
     struct TimeRecords* timeRecords;
 
     struct Unk_03002400 unk204;
     struct Unk_03002400 unk244;
     struct UNK_0808B3FC_UNK240 unk284[3];
-    struct UNK_80637EC_UNK314 unk314[3];
+    struct TimeRecordRow unk314[3];
 
     u8 character;
 
@@ -102,15 +102,15 @@ struct TimeRecordsScreen {
     u8 characterZones[NUM_CHARACTERS];
     u8 language;
 
-    bool8 isBossView;
+    bool8 isBossMode;
 
-    u8 mode;
+    u8 view;
 }; /* size 0x714 */
 
 struct LanguageScreen {
-    struct UNK_0808B3FC_UNK240 unk0[2];
-    struct UNK_0808B3FC_UNK240 unk60[6];
-    struct UNK_0808B3FC_UNK240 unk180;
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
+    struct UNK_0808B3FC_UNK240 menuItems[6];
+    struct UNK_0808B3FC_UNK240 menuItemOutline;
     struct Unk_03002400 unk1B0;
     struct UNK_802D4CC_UNK270 unk1F0;
     // option screen
@@ -176,7 +176,7 @@ struct PlayerDataMenu {
     // language
     s8 language;
     
-    s8 unk163;
+    s8 state;
 }; /* size 0x164 */
 
 struct SwitchMenu {
@@ -185,7 +185,7 @@ struct SwitchMenu {
     struct UNK_0808B3FC_UNK240 options[2];
     struct UNK_0808B3FC_UNK240 switchValueOutline;
     s8 switchValue;
-    s8 unkF5;
+    s8 animFrame;
     s8 language;
 }; /* size 0xF8 */
 
@@ -213,7 +213,7 @@ struct DeleteScreen {
     s8 confirmationCursor;
     u8 unk141;
     s8 language;
-    s8 unk143;
+    s8 deleteConfirmed;
 }; /* 0x144 */
 
 struct MultiplayerRecord {
@@ -270,7 +270,7 @@ struct MultiplayerRecordsScreen {
 }; /* size 0x3A8 */
 
 void CreateOptionsScreen(u16);
-void CreateTimeAttackSelectionScreen(bool16 isBossMode, u16 selectedCharacter);
+void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter);
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 

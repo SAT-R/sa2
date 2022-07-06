@@ -22,7 +22,7 @@ sub_8007E10: @ 0x08007E10
 	bl TaskCreate
 	adds r7, r0, #0
 	ldr r5, _08007E68 @ =gSpritePosData_Rings
-	ldr r4, _08007E6C @ =gSelectedZone
+	ldr r4, _08007E6C @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -45,7 +45,7 @@ _08007E5C: .4byte gGameMode
 _08007E60: .4byte sub_8007F1C
 _08007E64: .4byte sub_8008874
 _08007E68: .4byte gSpritePosData_Rings
-_08007E6C: .4byte gSelectedZone
+_08007E6C: .4byte gCurrentLevel
 _08007E70:
 	ldr r0, _08007EF4 @ =sub_8007F1C
 	movs r2, #0x80
@@ -166,7 +166,7 @@ _08007F60:
 	adds r0, r0, r1
 	ldr r0, [r0]
 	str r0, [sp, #0x14]
-	ldr r0, _08008298 @ =gSelectedZone
+	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -193,7 +193,7 @@ _08007F8E:
 	cmp r0, #0
 	beq _08007FBE
 	ldr r1, _080082A8 @ =gSpritePosData_Rings
-	ldr r0, _08008298 @ =gSelectedZone
+	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -210,7 +210,7 @@ _08007F8E:
 _08007FBE:
 	movs r2, #0
 	str r2, [sp, #8]
-	ldr r0, _08008298 @ =gSelectedZone
+	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -369,7 +369,7 @@ _080080D6:
 	ldr r4, [sp, #8]
 	cmp r4, #0
 	bne _0800810A
-	ldr r0, _08008298 @ =gSelectedZone
+	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -436,7 +436,7 @@ _08008166:
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
-	ldr r0, _08008298 @ =gSelectedZone
+	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -590,7 +590,7 @@ _08008288: .4byte gUnknown_030059E0
 _0800828C: .4byte gUnknown_03005424
 _08008290: .4byte gCurTask
 _08008294: .4byte IWRAM_START + 0x30
-_08008298: .4byte gSelectedZone
+_08008298: .4byte gCurrentLevel
 _0800829C: .4byte gUnknown_030054B0
 _080082A0: .4byte gUnknown_03005430
 _080082A4: .4byte gUnknown_0300542C
@@ -1407,7 +1407,7 @@ _080088BC:
 	cmp r0, #5
 	beq _0800898C
 	ldr r5, _08008978 @ =gSpritePosData_Interactables
-	ldr r4, _0800897C @ =gSelectedZone
+	ldr r4, _0800897C @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1478,7 +1478,7 @@ _080088BC:
 _08008970: .4byte sub_8008DCC
 _08008974: .4byte gGameMode
 _08008978: .4byte gSpritePosData_Interactables
-_0800897C: .4byte gSelectedZone
+_0800897C: .4byte gCurrentLevel
 _08008980: .4byte gSpritePosData_Itemboxes
 _08008984: .4byte gSpritePosData_Enemies
 _08008988: .4byte gUnknown_080D50A0
@@ -3509,20 +3509,20 @@ sub_80098C0: @ 0x080098C0
 	bl TaskDestroy
 	cmp r4, #0
 	bne _080098EC
-	ldr r0, _080098E8 @ =gSelectedZone
+	ldr r0, _080098E8 @ =gCurrentLevel
 	strb r4, [r0]
 	bl sub_801A770
 	b _08009900
 	.align 2, 0
 _080098E4: .4byte gCurTask
-_080098E8: .4byte gSelectedZone
+_080098E8: .4byte gCurrentLevel
 _080098EC:
 	cmp r5, #0x22
 	bhi _08009900
 	ldr r1, _08009908 @ =gUnknown_03005B4C
 	movs r0, #0
 	str r0, [r1]
-	ldr r1, _0800990C @ =gSelectedZone
+	ldr r1, _0800990C @ =gCurrentLevel
 	subs r0, r5, #1
 	strb r0, [r1]
 	bl sub_801A770
@@ -3532,7 +3532,7 @@ _08009900:
 	bx r0
 	.align 2, 0
 _08009908: .4byte gUnknown_03005B4C
-_0800990C: .4byte gSelectedZone
+_0800990C: .4byte gCurrentLevel
 _08009910:
 	.byte 0x70, 0x47, 0x00, 0x00
 
@@ -6819,7 +6819,7 @@ _0800B400:
 	adds r0, #0xa
 _0800B408:
 	strh r0, [r1]
-	ldr r0, _0800B468 @ =gSelectedZone
+	ldr r0, _0800B468 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -6866,7 +6866,7 @@ _0800B45C:
 	b _0800B558
 	.align 2, 0
 _0800B464: .4byte gUnknown_030053F0
-_0800B468: .4byte gSelectedZone
+_0800B468: .4byte gCurrentLevel
 _0800B46C: .4byte gGameMode
 _0800B470: .4byte gUnknown_03005448
 _0800B474: .4byte gUnknown_030054A8
@@ -7109,7 +7109,7 @@ _0800B63C:
 	lsls r0, r0, #1
 	adds r0, r0, r5
 	ldrh r1, [r0]
-	ldr r0, _0800B6BC @ =gSelectedZone
+	ldr r0, _0800B6BC @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -7151,7 +7151,7 @@ _0800B6AC: .4byte gUnknown_03005590
 _0800B6B0: .4byte gUnknown_080D51E4
 _0800B6B4: .4byte gUnknown_080D51F4
 _0800B6B8: .4byte gUnknown_03005434
-_0800B6BC: .4byte gSelectedZone
+_0800B6BC: .4byte gCurrentLevel
 _0800B6C0: .4byte gUnknown_080D5178
 _0800B6C4:
 	cmp r2, #0
@@ -7877,7 +7877,7 @@ _0800BC36:
 	ldrh r5, [r1]
 	adds r0, r5, #1
 	strh r0, [r1]
-	ldr r0, _0800BCC8 @ =gSelectedZone
+	ldr r0, _0800BCC8 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -7936,7 +7936,7 @@ _0800BCB8: .4byte gUnknown_030059E0
 _0800BCBC: .4byte gSineTable
 _0800BCC0: .4byte gUnknown_03005AF0
 _0800BCC4: .4byte gUnknown_030053F0
-_0800BCC8: .4byte gSelectedZone
+_0800BCC8: .4byte gCurrentLevel
 _0800BCCC: .4byte gGameMode
 _0800BCD0: .4byte gUnknown_03005448
 _0800BCD4: .4byte gUnknown_030054A8
@@ -8148,7 +8148,7 @@ _0800BE64:
 	ands r1, r3
 	strb r1, [r2, #1]
 	ldr r2, _0800BE8C @ =gUnknown_080D5204
-	ldr r0, _0800BE90 @ =gSelectedZone
+	ldr r0, _0800BE90 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -8160,7 +8160,7 @@ _0800BE64:
 	b _0800BEEA
 	.align 2, 0
 _0800BE8C: .4byte gUnknown_080D5204
-_0800BE90: .4byte gSelectedZone
+_0800BE90: .4byte gCurrentLevel
 _0800BE94:
 	ldr r0, _0800BEBC @ =gMPlayInfo_BGM
 	ldr r4, [r0, #4]
@@ -8186,7 +8186,7 @@ _0800BEBC: .4byte gMPlayInfo_BGM
 _0800BEC0: .4byte gUnknown_080D5254
 _0800BEC4:
 	ldr r2, _0800BEF0 @ =gUnknown_080D5204
-	ldr r0, _0800BEF4 @ =gSelectedZone
+	ldr r0, _0800BEF4 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -8208,7 +8208,7 @@ _0800BEEA:
 	bx r0
 	.align 2, 0
 _0800BEF0: .4byte gUnknown_080D5204
-_0800BEF4: .4byte gSelectedZone
+_0800BEF4: .4byte gCurrentLevel
 
 	thumb_func_start sub_800BEF8
 sub_800BEF8: @ 0x0800BEF8
@@ -9867,7 +9867,7 @@ sub_800CB18: @ 0x0800CB18
 	strh r1, [r2, #0x12]
 	b _0800CB8E
 _0800CB38:
-	ldr r0, _0800CB74 @ =gSelectedZone
+	ldr r0, _0800CB74 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -9899,7 +9899,7 @@ _0800CB58:
 	strh r1, [r2, #0x10]
 	b _0800CB8E
 	.align 2, 0
-_0800CB74: .4byte gSelectedZone
+_0800CB74: .4byte gCurrentLevel
 _0800CB78: .4byte gUnknown_030054B0
 _0800CB7C: .4byte gUnknown_03005960
 _0800CB80:
@@ -10165,7 +10165,7 @@ _0800CD58:
 	orrs r1, r0
 	str r1, [r5, #0x20]
 	str r2, [r5, #0x3c]
-	ldr r0, _0800CDB0 @ =gSelectedZone
+	ldr r0, _0800CDB0 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -10200,7 +10200,7 @@ _0800CDA2:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0800CDB0: .4byte gSelectedZone
+_0800CDB0: .4byte gCurrentLevel
 _0800CDB4: .4byte gUnknown_030054B0
 _0800CDB8: .4byte gUnknown_03005960
 
@@ -10280,7 +10280,7 @@ _0800CE46:
 	cmp r4, #0
 	beq _0800CE78
 	str r0, [r5, #0x3c]
-	ldr r0, _0800CE88 @ =gSelectedZone
+	ldr r0, _0800CE88 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -10314,7 +10314,7 @@ _0800CE7A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0800CE88: .4byte gSelectedZone
+_0800CE88: .4byte gCurrentLevel
 _0800CE8C: .4byte gUnknown_030054B0
 _0800CE90: .4byte gUnknown_03005960
 
@@ -12933,7 +12933,7 @@ sub_800E19C: @ 0x0800E19C
 	movs r0, #0x88
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
-	ldr r0, _0800E2AC @ =gSelectedZone
+	ldr r0, _0800E2AC @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -12979,7 +12979,7 @@ _0800E29C: .4byte IWRAM_START + 0xC
 _0800E2A0: .4byte IWRAM_START + 0x2D
 _0800E2A4: .4byte IWRAM_START + 0x2E
 _0800E2A8: .4byte IWRAM_START + 0x31
-_0800E2AC: .4byte gSelectedZone
+_0800E2AC: .4byte gCurrentLevel
 _0800E2B0: .4byte gUnknown_080D52E0
 _0800E2B4:
 	ldr r0, _0800E314 @ =0x06012980
@@ -13063,7 +13063,7 @@ sub_800E31C: @ 0x0800E31C
 	ldrb r0, [r1]
 	adds r0, #1
 	strb r0, [r1]
-	ldr r0, _0800E3B4 @ =gSelectedZone
+	ldr r0, _0800E3B4 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -13109,7 +13109,7 @@ _0800E3A4: .4byte gCurTask
 _0800E3A8: .4byte gUnknown_030059E0
 _0800E3AC: .4byte sub_800E3D0
 _0800E3B0: .4byte IWRAM_START + 0x2C
-_0800E3B4: .4byte gSelectedZone
+_0800E3B4: .4byte gCurrentLevel
 _0800E3B8: .4byte IWRAM_START + 0x3C
 _0800E3BC: .4byte 0x06012B00
 _0800E3C0:
@@ -13177,7 +13177,7 @@ _0800E42C:
 	ldrb r0, [r1]
 	subs r0, #1
 	strb r0, [r1]
-	ldr r0, _0800E47C @ =gSelectedZone
+	ldr r0, _0800E47C @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -13207,7 +13207,7 @@ _0800E470:
 	bx r0
 	.align 2, 0
 _0800E478: .4byte IWRAM_START + 0x2C
-_0800E47C: .4byte gSelectedZone
+_0800E47C: .4byte gCurrentLevel
 _0800E480: .4byte IWRAM_START + 0x3C
 _0800E484: .4byte 0x06012980
 _0800E488: .4byte gCurTask
@@ -13269,7 +13269,7 @@ sub_800E490: @ 0x0800E490
 	subs r1, #2
 	movs r0, #1
 	strb r0, [r1]
-	ldr r0, _0800E524 @ =gSelectedZone
+	ldr r0, _0800E524 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -13285,7 +13285,7 @@ sub_800E490: @ 0x0800E490
 	.align 2, 0
 _0800E51C: .4byte gUnknown_03005960
 _0800E520: .4byte gUnknown_080D53D0
-_0800E524: .4byte gSelectedZone
+_0800E524: .4byte gCurrentLevel
 _0800E528: .4byte gUnknown_080D53DA
 _0800E52C:
 	movs r0, #0x99
@@ -13308,7 +13308,7 @@ sub_800E540: @ 0x0800E540
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r2, r1, r0
-	ldr r0, _0800E56C @ =gSelectedZone
+	ldr r0, _0800E56C @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -13327,7 +13327,7 @@ _0800E568:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800E56C: .4byte gSelectedZone
+_0800E56C: .4byte gCurrentLevel
 _0800E570: .4byte IWRAM_START + 0x3C
 
 	thumb_func_start sub_800E574
@@ -13699,7 +13699,7 @@ _0800E806:
 	bl sub_8007C10
 	str r0, [r6, #4]
 	ldr r1, _0800E894 @ =gUnknown_080D53E4
-	ldr r0, _0800E898 @ =gSelectedZone
+	ldr r0, _0800E898 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -13745,7 +13745,7 @@ _0800E806:
 _0800E88C: .4byte IWRAM_START + 0x48
 _0800E890: .4byte IWRAM_START + 0x4A
 _0800E894: .4byte gUnknown_080D53E4
-_0800E898: .4byte gSelectedZone
+_0800E898: .4byte gCurrentLevel
 
 	thumb_func_start sub_800E89C
 sub_800E89C: @ 0x0800E89C
@@ -14155,7 +14155,7 @@ sub_800EB28: @ 0x0800EB28
 	cmp r0, #5
 	beq _0800EC08
 	ldr r1, _0800EC00 @ =gUnknown_080D53E4
-	ldr r0, _0800EC04 @ =gSelectedZone
+	ldr r0, _0800EC04 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -14172,7 +14172,7 @@ _0800EBF4: .4byte IWRAM_START + 0x4C
 _0800EBF8: .4byte IWRAM_START + 0x2C
 _0800EBFC: .4byte gGameMode
 _0800EC00: .4byte gUnknown_080D53E4
-_0800EC04: .4byte gSelectedZone
+_0800EC04: .4byte gCurrentLevel
 _0800EC08:
 	ldr r0, _0800EC54 @ =0x0000021D
 _0800EC0A:
@@ -15029,7 +15029,7 @@ _0800F296:
 	mov ip, r0
 	ldr r0, _0800F384 @ =gUnknown_080D5430
 	mov sb, r0
-	ldr r0, _0800F388 @ =gSelectedZone
+	ldr r0, _0800F388 @ =gCurrentLevel
 	mov r8, r0
 	movs r0, #0x20
 	adds r0, r0, r6
@@ -15139,7 +15139,7 @@ _0800F2C6:
 _0800F37C: .4byte IWRAM_START + 0x48
 _0800F380: .4byte IWRAM_START + 0x4A
 _0800F384: .4byte gUnknown_080D5430
-_0800F388: .4byte gSelectedZone
+_0800F388: .4byte gCurrentLevel
 
 	thumb_func_start sub_800F38C
 sub_800F38C: @ 0x0800F38C
@@ -16022,7 +16022,7 @@ sub_800F9D8: @ 0x0800F9D8
 	str r0, [r7, #4]
 	ldr r0, _0800FAE4 @ =0x0000021F
 	strh r0, [r7, #0xa]
-	ldr r0, _0800FAE8 @ =gSelectedZone
+	ldr r0, _0800FAE8 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x1a
@@ -16088,7 +16088,7 @@ _0800FAD8: .4byte 0x00002010
 _0800FADC: .4byte sub_800FE24
 _0800FAE0: .4byte IWRAM_START + 0xC
 _0800FAE4: .4byte 0x0000021F
-_0800FAE8: .4byte gSelectedZone
+_0800FAE8: .4byte gCurrentLevel
 _0800FAEC: .4byte IWRAM_START + 0x2C
 _0800FAF0: .4byte IWRAM_START + 0x2E
 
@@ -18091,7 +18091,7 @@ sub_8010984: @ 0x08010984
 	adds r0, r4, #0
 	strb r0, [r1]
 	ldr r4, _08010AA0 @ =gUnknown_080D5468
-	ldr r5, _08010AA4 @ =gSelectedZone
+	ldr r5, _08010AA4 @ =gCurrentLevel
 	ldrb r1, [r5]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18168,7 +18168,7 @@ _08010A94: .4byte 0x00002010
 _08010A98: .4byte sub_80111C0
 _08010A9C: .4byte IWRAM_START + 0xC
 _08010AA0: .4byte gUnknown_080D5468
-_08010AA4: .4byte gSelectedZone
+_08010AA4: .4byte gCurrentLevel
 _08010AA8: .4byte IWRAM_START + 0x2C
 _08010AAC: .4byte IWRAM_START + 0x2D
 _08010AB0: .4byte IWRAM_START + 0x2E
@@ -18538,7 +18538,7 @@ sub_8010D1C: @ 0x08010D1C
 	mov r8, r1
 	ldr r3, _08010F40 @ =gUnknown_080D549E
 	mov sb, r3
-	ldr r0, _08010F44 @ =gSelectedZone
+	ldr r0, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r0]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18550,7 +18550,7 @@ sub_8010D1C: @ 0x08010D1C
 	str r2, [sp, #4]
 	bl sub_8007C10
 	str r0, [r6, #4]
-	ldr r3, _08010F44 @ =gSelectedZone
+	ldr r3, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r3]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18641,7 +18641,7 @@ sub_8010D1C: @ 0x08010D1C
 	ldr r0, _08010F60 @ =0x80000006
 	str r0, [r4, #8]
 	ldr r0, [r4, #8]
-	ldr r3, _08010F44 @ =gSelectedZone
+	ldr r3, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r3]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18655,7 +18655,7 @@ sub_8010D1C: @ 0x08010D1C
 	str r2, [sp, #4]
 	bl sub_8007C10
 	str r0, [r7, #4]
-	ldr r0, _08010F44 @ =gSelectedZone
+	ldr r0, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r0]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18667,7 +18667,7 @@ sub_8010D1C: @ 0x08010D1C
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	strh r0, [r7, #0xa]
-	ldr r3, _08010F44 @ =gSelectedZone
+	ldr r3, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r3]
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x1a
@@ -18747,7 +18747,7 @@ _08010F34: .4byte IWRAM_START + 0xF2
 _08010F38: .4byte 0xFF800000
 _08010F3C: .4byte 0xFFCE0000
 _08010F40: .4byte gUnknown_080D549E
-_08010F44: .4byte gSelectedZone
+_08010F44: .4byte gCurrentLevel
 _08010F48: .4byte IWRAM_START + 0x20
 _08010F4C: .4byte IWRAM_START + 0x22
 _08010F50: .4byte 0x040000D4
@@ -19639,7 +19639,7 @@ sub_8011660: @ 0x08011660
 	push {r4, r5, r6, r7, lr}
 	ldr r6, _08011688 @ =gUnknown_03005660
 	ldr r7, _0801168C @ =gUnknown_03005960
-	ldr r0, _08011690 @ =gSelectedZone
+	ldr r0, _08011690 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -19659,7 +19659,7 @@ sub_8011660: @ 0x08011660
 	.align 2, 0
 _08011688: .4byte gUnknown_03005660
 _0801168C: .4byte gUnknown_03005960
-_08011690: .4byte gSelectedZone
+_08011690: .4byte gCurrentLevel
 _08011694: .4byte gUnknown_030059E0
 _08011698: .4byte 0x00001A09
 _0801169C: .4byte 0x0000299A
@@ -25085,7 +25085,7 @@ sub_8013FAC: @ 0x08013FAC
 	ldrb r0, [r0]
 	cmp r0, #2
 	bhi _08014060
-	ldr r0, _08013FD4 @ =gSelectedZone
+	ldr r0, _08013FD4 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
@@ -25097,7 +25097,7 @@ sub_8013FAC: @ 0x08013FAC
 	b _08014112
 	.align 2, 0
 _08013FD0: .4byte gGameMode
-_08013FD4: .4byte gSelectedZone
+_08013FD4: .4byte gCurrentLevel
 _08013FD8: .4byte gUnknown_030056A4
 _08013FDC:
 	adds r0, r1, #0
@@ -25423,7 +25423,7 @@ _08014264:
 	str r0, [r1, #8]
 	adds r0, r5, #0
 	bl sub_801412C
-	ldr r0, _080142A0 @ =gSelectedZone
+	ldr r0, _080142A0 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -25451,7 +25451,7 @@ _08014294:
 	bx r0
 	.align 2, 0
 _0801429C: .4byte sub_8014350
-_080142A0: .4byte gSelectedZone
+_080142A0: .4byte gCurrentLevel
 _080142A4: .4byte gUnknown_030054B0
 _080142A8: .4byte gCurTask
 
@@ -25931,7 +25931,7 @@ sub_801464C: @ 0x0801464C
 	mov ip, r0
 	movs r5, #0
 	movs r6, #0
-	ldr r0, _0801470C @ =gSelectedZone
+	ldr r0, _0801470C @ =gCurrentLevel
 	ldrb r1, [r0]
 	mov r0, sb
 	ands r0, r1
@@ -26010,7 +26010,7 @@ _080146EA:
 	.align 2, 0
 _08014704: .4byte gCurTask
 _08014708: .4byte IWRAM_START + 0x54
-_0801470C: .4byte gSelectedZone
+_0801470C: .4byte gCurrentLevel
 _08014710: .4byte gUnknown_030054B0
 _08014714: .4byte 0x0000FFEF
 _08014718: .4byte sub_80148B8
@@ -26245,7 +26245,7 @@ sub_80148B8: @ 0x080148B8
 	adds r5, r1, r0
 	movs r7, #0
 	movs r6, #3
-	ldr r0, _080149D4 @ =gSelectedZone
+	ldr r0, _080149D4 @ =gCurrentLevel
 	ldrb r1, [r0]
 	adds r0, r6, #0
 	ands r0, r1
@@ -26382,7 +26382,7 @@ _080149BA:
 	bx r0
 	.align 2, 0
 _080149D0: .4byte gCurTask
-_080149D4: .4byte gSelectedZone
+_080149D4: .4byte gCurrentLevel
 _080149D8: .4byte gUnknown_030054B0
 _080149DC: .4byte 0x0000FFEF
 _080149E0: .4byte gUnknown_080D5590
@@ -26758,7 +26758,7 @@ sub_8014CC8: @ 0x08014CC8
 	movs r0, #0
 	mov r8, r0
 	mov sb, r0
-	ldr r0, _08014D2C @ =gSelectedZone
+	ldr r0, _08014D2C @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -26800,7 +26800,7 @@ _08014D02:
 	adds r0, r0, r1
 	b _08014D40
 	.align 2, 0
-_08014D2C: .4byte gSelectedZone
+_08014D2C: .4byte gCurrentLevel
 _08014D30: .4byte gUnknown_030054B0
 _08014D34:
 	movs r0, #0x9f
@@ -27081,7 +27081,7 @@ sub_8014EFC: @ 0x08014EFC
 	mov sb, r0
 	movs r1, #0
 	str r1, [sp, #4]
-	ldr r0, _08014F78 @ =gSelectedZone
+	ldr r0, _08014F78 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -27123,7 +27123,7 @@ _08014F50:
 	adds r0, r0, r2
 	b _08014F8C
 	.align 2, 0
-_08014F78: .4byte gSelectedZone
+_08014F78: .4byte gCurrentLevel
 _08014F7C: .4byte gUnknown_030054B0
 _08014F80:
 	movs r0, #0x9f
@@ -28304,7 +28304,7 @@ _0801584E:
 	beq _08015858
 	b _0801596E
 _08015858:
-	ldr r0, _08015984 @ =gSelectedZone
+	ldr r0, _08015984 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -28454,7 +28454,7 @@ _0801596E:
 	.align 2, 0
 _0801597C: .4byte gGameMode
 _08015980: .4byte gUnknown_030055BC
-_08015984: .4byte gSelectedZone
+_08015984: .4byte gCurrentLevel
 _08015988: .4byte gUnknown_030054B0
 _0801598C: .4byte sub_8015B50
 _08015990: .4byte sub_80159C8
@@ -29400,7 +29400,7 @@ _080160E8:
 	cmp r0, #4
 	bhi _0801612C
 	ldr r1, _08016124 @ =gSpawnPositions
-	ldr r2, _08016128 @ =gSelectedZone
+	ldr r2, _08016128 @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r2, r0]
 	lsls r0, r0, #2
@@ -29418,7 +29418,7 @@ _080160E8:
 _0801611C: .4byte IWRAM_START + 0x60
 _08016120: .4byte gGameMode
 _08016124: .4byte gSpawnPositions
-_08016128: .4byte gSelectedZone
+_08016128: .4byte gCurrentLevel
 _0801612C:
 	ldr r0, _08016144 @ =0x04000128
 	ldr r0, [r0]
@@ -37938,7 +37938,7 @@ sub_801A384: @ 0x0801A384
 	ldrb r0, [r0]
 	cmp r0, #2
 	bls _0801A418
-	ldr r0, _0801A3C4 @ =gSelectedZone
+	ldr r0, _0801A3C4 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
 	ands r0, r1
@@ -37965,7 +37965,7 @@ _0801A3AC:
 	b _0801A418
 	.align 2, 0
 _0801A3C0: .4byte gGameMode
-_0801A3C4: .4byte gSelectedZone
+_0801A3C4: .4byte gCurrentLevel
 _0801A3C8: .4byte gUnknown_030054B0
 _0801A3CC: .4byte gUnknown_03005840
 _0801A3D0:
