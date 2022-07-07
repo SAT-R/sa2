@@ -65,11 +65,11 @@ struct OptionsScreen {
     s8 state;
 }; /* size 0x788 */
 
-struct TimeRecordRow {
-    struct UNK_0808B3FC_UNK240 unk0[2];
-    struct UNK_0808B3FC_UNK240 unk60;
-    struct UNK_0808B3FC_UNK240 unk90[2];
-    struct UNK_0808B3FC_UNK240 unkF0[2];
+struct TimeRecordDisplay {
+    struct UNK_0808B3FC_UNK240 deliminators[2];
+    struct UNK_0808B3FC_UNK240 minute;
+    struct UNK_0808B3FC_UNK240 seconds[2];
+    struct UNK_0808B3FC_UNK240 millis[2];
 };
 
 // TimeRecordsScreen
@@ -89,14 +89,14 @@ struct TimeRecordsScreen {
     struct Unk_03002400 unk204;
     struct Unk_03002400 unk244;
     struct UNK_0808B3FC_UNK240 unk284[3];
-    struct TimeRecordRow unk314[3];
+    struct TimeRecordDisplay timeDisplays[3];
 
     u8 character;
 
     u8 zone;
     u8 act;
 
-    u8 unk707;
+    u8 animFrame;
     u8 unk708;
     u8 availableCharacters;
     u8 characterZones[NUM_CHARACTERS];

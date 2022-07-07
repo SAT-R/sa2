@@ -26,9 +26,9 @@ static void sub_806A758(struct Task*);
 static void GetProfileData(struct OptionsScreen*);
 
 static void sub_806B5A4(void);
-static void sub_8068640(void);
+static void TimeRecordsScreenInitRegisters(void);
 static void sub_8068700(struct TimeRecordsScreen*);
-static void CreateTimeRecordsScreenUI(struct TimeRecordsScreen*);
+static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen*);
 
 static void Task_LanguageScreenFadeIn(void);
 static void sub_80668A8(struct LanguageScreen*);
@@ -123,18 +123,18 @@ static void RenderTimeRecordsScreenModeChoiceUI(void);
 static void TimeRecordsScreenShowRecords(void);
 static void sub_806B424(void);
 
-static void RenderTimeRecordsScreenUI(u16);
+static void TimeRecordsScreenRenderCoursesViewUI(u16);
 static void sub_80690A4(void);
 
-static void sub_8069110(void);
+static void Task_TimeRecordsScreenCourseChangeAnim(void);
 
-static void sub_8069180(s16, s16);
+static void TimeRecordsScreenRenderTimeRowAnimFrame(s16, s16);
 static void sub_8069208(void);
 static void sub_806955C(void);
 static void sub_806B60C(void);
 static void sub_806B684(void);
 static void sub_80694F8(void);
-static void TimeRecordsScreenShowPreviousScreen(void);
+static void TimeRecordsScreenHandleReturn(void);
 
 static void sub_806B760(void);
 static void sub_8069B40(void);
@@ -331,7 +331,7 @@ void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter) {
     timeRecordsScreen->character = selectedCharacter;
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
-    timeRecordsScreen->unk707 = 0;
+    timeRecordsScreen->animFrame = 0;
     timeRecordsScreen->unk708 = 0;
     timeRecordsScreen->availableCharacters = i;
 
@@ -351,9 +351,9 @@ void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter) {
 
     ResetProfileScreensVram();
 
-    sub_8068640();
+    TimeRecordsScreenInitRegisters();
     sub_8068700(timeRecordsScreen);
-    CreateTimeRecordsScreenUI(timeRecordsScreen);
+    TimeRecordsScreenCreateCoursesViewUI(timeRecordsScreen);
     m4aSongNumStart(MUS_TA_COURSE_SELECTION);
 }
 
@@ -3522,7 +3522,7 @@ static void CreateTimeRecordsScreen(struct PlayerDataMenu* playerProfileMenu) {
     timeRecordsScreen->character = 0;
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
-    timeRecordsScreen->unk707 = 0;
+    timeRecordsScreen->animFrame = 0;
     timeRecordsScreen->unk708 = 0;
     timeRecordsScreen->availableCharacters = i;
 
@@ -3702,7 +3702,7 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu* playerPr
     timeRecordsScreen->character = 0;
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
-    timeRecordsScreen->unk707 = 0;
+    timeRecordsScreen->animFrame = 0;
     timeRecordsScreen->unk708 = 0;
     timeRecordsScreen->availableCharacters = i;
 
@@ -3716,12 +3716,12 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu* playerPr
     
     ResetProfileScreensVram();
 
-    sub_8068640();
+    TimeRecordsScreenInitRegisters();
     sub_8068700(timeRecordsScreen);
-    CreateTimeRecordsScreenUI(timeRecordsScreen);
+    TimeRecordsScreenCreateCoursesViewUI(timeRecordsScreen);
 }
 
-static void sub_8068640(void) {
+static void TimeRecordsScreenInitRegisters(void) {
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
     gBgCntRegs[1] = 0x5606;
@@ -3774,7 +3774,7 @@ static void sub_8068700(struct TimeRecordsScreen* timeRecordsScreen) {
     sub_806B854(&timeRecordsScreen->unk244,2,0x1E,gUnknown_080D9590[character][1],9,0x14,0,2,0,0);
 }
 
-static void CreateTimeRecordsScreenUI(struct TimeRecordsScreen* timeRecordsScreen) {
+static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
     struct UNK_0808B3FC_UNK240* unk284 = timeRecordsScreen->unk284;
     struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
     struct UNK_0808B3FC_UNK240* unkAC = timeRecordsScreen->unkAC;
@@ -3860,24 +3860,24 @@ static inline u16* LoadCourseTimes(struct TimeRecordsScreen* timeRecordsScreen) 
     }
 }
 
-static void sub_8068A94(struct TimeRecordsScreen* timeRecordsScreen) {
-    struct TimeRecordRow* unk314 = timeRecordsScreen->unk314;
-    // interesting optimistation
-    s16 FCC = sTimeRecordDigitTiles[10].unk4;
-    struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
+static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen* timeRecordsScreen) {
+    struct TimeRecordDisplay* timeRecordDisplay = timeRecordsScreen->timeDisplays;
+    // interesting optimistation, as I guess they are all the same size
+    s16 digitSize = sTimeRecordDigitTiles[10].unk4;
+    struct UNK_0808B3FC_UNK240* minuteDisplay, *secondDisplay, *milliDisplay, *deliminator;
 
     u16* courseTimes = LoadCourseTimes(timeRecordsScreen);
     s16 i;
 
-    for (i = 0; i < 3; i++, unk314++) {
-        const struct UNK_080D95E8* F78;
+    for (i = 0; i < 3; i++, timeRecordDisplay++) {
+        const struct UNK_080D95E8* digit;
         s16 millis, minutes, seconds;
         u16 timeValue;
 
-        unk0 = unk314->unk0;
-        unk60 = &unk314->unk60;
-        unk90 = unk314->unk90;
-        unkF0 = unk314->unkF0;
+        deliminator = timeRecordDisplay->deliminators;
+        minuteDisplay = &timeRecordDisplay->minute;
+        secondDisplay = timeRecordDisplay->seconds;
+        milliDisplay = timeRecordDisplay->millis;
 
         timeValue = courseTimes[i];
         if (timeValue < MAX_COURSE_TIME) {
@@ -3894,34 +3894,34 @@ static void sub_8068A94(struct TimeRecordsScreen* timeRecordsScreen) {
             minutes = 9;
         }
 
-        F78 = &sTimeRecordDigitTiles[10];
-        sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x30),(i * 24 + 84),8,F78->unk2,0);
+        digit = &sTimeRecordDigitTiles[10];
+        sub_806A568(deliminator,0,digitSize,digit->unk0,0x3000,(i * 8 + 48),(i * 24 + 84),8,digit->unk2,0);
 
-        unk0++;
-        sub_806A568(unk0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x60),(i * 24 + 84),8,F78->unk2,0);
+        deliminator++;
+        sub_806A568(deliminator,0,digitSize,digit->unk0,0x3000,(i * 8 + 96),(i * 24 + 84),8,digit->unk2,0);
 
-        F78 = &sTimeRecordDigitTiles[minutes];
-        sub_806A568(unk60,0,FCC,F78->unk0,0x3000,(i * 8 + 0x20),(i * 24 + 84),8,F78->unk2,0);
+        digit = &sTimeRecordDigitTiles[minutes];
+        sub_806A568(minuteDisplay,0,digitSize,digit->unk0,0x3000,(i * 8 + 0x20),(i * 24 + 84),8,digit->unk2,0);
 
-        F78 = &sTimeRecordDigitTiles[seconds / 10];
-        sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x40),(i * 24 + 84),8,F78->unk2,0);
+        digit = &sTimeRecordDigitTiles[seconds / 10];
+        sub_806A568(secondDisplay,0,digitSize,digit->unk0,0x3000,(i * 8 + 0x40),(i * 24 + 84),8,digit->unk2,0);
 
-        unk90++;
-        F78 = &sTimeRecordDigitTiles[seconds % 10];
-        sub_806A568(unk90,0,FCC,F78->unk0,0x3000,(i * 8 + 0x50),(i * 24 + 84),8,F78->unk2,0);
+        secondDisplay++;
+        digit = &sTimeRecordDigitTiles[seconds % 10];
+        sub_806A568(secondDisplay,0,digitSize,digit->unk0,0x3000,(i * 8 + 0x50),(i * 24 + 84),8,digit->unk2,0);
 
-        F78 = &sTimeRecordDigitTiles[millis / 10];
-        sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x70),(i * 24 + 84),8,F78->unk2,0);
+        digit = &sTimeRecordDigitTiles[millis / 10];
+        sub_806A568(milliDisplay,0,digitSize,digit->unk0,0x3000,(i * 8 + 0x70),(i * 24 + 84),8,digit->unk2,0);
         
-        unkF0++;
-        F78 = &sTimeRecordDigitTiles[millis % 10];
-        sub_806A568(unkF0,0,FCC,F78->unk0,0x3000,(i * 8 + 0x80),(i * 24 + 84),8,F78->unk2,0);
+        milliDisplay++;
+        digit = &sTimeRecordDigitTiles[millis % 10];
+        sub_806A568(milliDisplay,0,digitSize,digit->unk0,0x3000,(i * 8 + 0x80),(i * 24 + 84),8,digit->unk2,0);
     }
 }
 
 static void sub_8068D94(struct TimeRecordsScreen* timeRecordsScreen) {
     // Stack has to be declared in this order to match
-    struct TimeRecordRow* unk314 = timeRecordsScreen->unk314;
+    struct TimeRecordDisplay* unk314 = timeRecordsScreen->timeDisplays;
     struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
     
     u16* courseTimes = LoadCourseTimes(timeRecordsScreen);
@@ -3932,10 +3932,10 @@ static void sub_8068D94(struct TimeRecordsScreen* timeRecordsScreen) {
         s16 millis, minutes, seconds;
         u16 timeValue;
         
-        unk60 = &unk314->unk60;
-        unk90 = unk314->unk90;
-        unkF0 = unk314->unkF0;
-        unk0 = unk314->unk0;
+        unk60 = &unk314->minute;
+        unk90 = unk314->seconds;
+        unkF0 = unk314->millis;
+        unk0 = unk314->deliminators;
         
         timeValue = courseTimes[i];
         if (timeValue < MAX_COURSE_TIME) {
@@ -4003,7 +4003,7 @@ static void sub_8068FE8(void) {
         character = CHARACTER_SONIC;
     }
 
-    RenderTimeRecordsScreenUI(1);
+    TimeRecordsScreenRenderCoursesViewUI(1);
     gBgScrollRegs[1][0] = 0xFF10;
     gBgScrollRegs[1][1] = 0;
     gBgScrollRegs[2][0] = 0xFF10;
@@ -4018,69 +4018,69 @@ static void sub_8068FE8(void) {
 static void sub_80690A4(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
 
-    if (++timeRecordsScreen->unk707 < 5) {
-        gBgScrollRegs[1][0] = timeRecordsScreen->unk707 * 0x12 - 0xF0;
+    if (++timeRecordsScreen->animFrame < 5) {
+        gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 0x12 - 0xF0;
     }
 
-    if (timeRecordsScreen->unk707 > 6) {
-        gBgScrollRegs[2][0] = (timeRecordsScreen->unk707 - 6) * 0x12 - 0xF0;
+    if (timeRecordsScreen->animFrame > 6) {
+        gBgScrollRegs[2][0] = (timeRecordsScreen->animFrame - 6) * 0x12 - 0xF0;
     }
 
-    RenderTimeRecordsScreenUI(1);
+    TimeRecordsScreenRenderCoursesViewUI(1);
 
-    if (timeRecordsScreen->unk707 > 9) {
-        timeRecordsScreen->unk707 = 0;
-        gCurTask->main = sub_8069110;
+    if (timeRecordsScreen->animFrame > 9) {
+        timeRecordsScreen->animFrame = 0;
+        gCurTask->main = Task_TimeRecordsScreenCourseChangeAnim;
     }
 }
 
-static void sub_8069110(void) {
+static void Task_TimeRecordsScreenCourseChangeAnim(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
     s16 i;
 
-    timeRecordsScreen->unk707++;
+    timeRecordsScreen->animFrame++;
     
     for (i = 0; i < 3; i++) {
-        sub_8069180(i, timeRecordsScreen->unk707 + i * -8);
+        TimeRecordsScreenRenderTimeRowAnimFrame(i, timeRecordsScreen->animFrame + i * -8);
     }
 
-    RenderTimeRecordsScreenUI(0);
+    TimeRecordsScreenRenderCoursesViewUI(0);
 
-    if (timeRecordsScreen->unk707 > 31) {
-        timeRecordsScreen->unk707 = 0;
+    if (timeRecordsScreen->animFrame > 31) {
+        timeRecordsScreen->animFrame = 0;
         gCurTask->main = sub_8069208;
     }
 }
 
-static void sub_8069180(s16 a, s16 b) {
+static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame) {
     // Not sure why but the struct has to be loaded like this
 #ifndef NON_MATCHING
-    u32 offsetA = gCurTask->structOffset + (a * sizeof(struct TimeRecordRow));
-    register u32 offsetB asm("r2") = IWRAM_START + offsetof(struct TimeRecordsScreen, unk314);
-    struct TimeRecordRow* unk314 = (struct TimeRecordRow*)(offsetA + offsetB);
+    u32 offsetA = gCurTask->structOffset + (rowIndex * sizeof(struct TimeRecordDisplay));
+    register u32 offsetB asm("r2") = IWRAM_START + offsetof(struct TimeRecordsScreen, timeDisplays);
+    struct TimeRecordDisplay* timeDisplay = (struct TimeRecordDisplay*)(offsetA + offsetB);
 #else
     struct UNK_80637EC_UNK314* unk314 = &((struct TimeRecordsScreen*)(IWRAM_START + gCurTask->structOffset))->unk314[a];
 #endif
 
-    if (b > 0 && b < 9) {
-        struct UNK_0808B3FC_UNK240* unk0 = unk314->unk0;
-        struct UNK_0808B3FC_UNK240* unk60 = &unk314->unk60;
-        struct UNK_0808B3FC_UNK240* unk90 = unk314->unk90;
-        struct UNK_0808B3FC_UNK240* unkF0 = unk314->unkF0;
+    if (frame > 0 && frame < 9) {
+        struct UNK_0808B3FC_UNK240* deliminatorDisplay = timeDisplay->deliminators;
+        struct UNK_0808B3FC_UNK240* minuteDisplay = &timeDisplay->minute;
+        struct UNK_0808B3FC_UNK240* secondDisplay = timeDisplay->seconds;
+        struct UNK_0808B3FC_UNK240* milliDisplay = timeDisplay->millis;
         
-        s16 c = (8 - b) * 0x1E + (a * 8);
-        unk60->unk16 = c + 0x20;
-        unk0->unk16 = c + 0x30;
-        unk0++;
-        unk0->unk16 = c + 0x60;
+        s16 baseXPos = (8 - frame) * 30 + (rowIndex * 8);
+        minuteDisplay->unk16 = baseXPos + 0x20;
+        deliminatorDisplay->unk16 = baseXPos + 0x30;
+        deliminatorDisplay++;
+        deliminatorDisplay->unk16 = baseXPos + 0x60;
 
-        unk90->unk16 = c + 0x40;
-        unk90++;
-        unk90->unk16 = c + 0x50;
+        secondDisplay->unk16 = baseXPos + 0x40;
+        secondDisplay++;
+        secondDisplay->unk16 = baseXPos + 0x50;
 
-        unkF0->unk16 = c + 0x70;
-        unkF0++;
-        unkF0->unk16 = c + 0x80;
+        milliDisplay->unk16 = baseXPos + 0x70;
+        milliDisplay++;
+        milliDisplay->unk16 = baseXPos + 0x80;
     }
 }
 
@@ -4096,7 +4096,7 @@ static void sub_8069208(void) {
     if (temp > 0x1B) {
         availableZones = 0x1B;
     }
-    RenderTimeRecordsScreenUI(0);
+    TimeRecordsScreenRenderCoursesViewUI(0);
 
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
         if (timeRecordsScreen->view == 2 && availableZones == 1) {
@@ -4232,7 +4232,7 @@ static void sub_8069208(void) {
                     }
                 }
     
-                timeRecordsScreen->unk707 = 4;
+                timeRecordsScreen->animFrame = 4;
                 gCurTask->main = sub_80694F8;
                 return;
             }
@@ -4244,7 +4244,7 @@ static void sub_8069208(void) {
         }
         if (gPressedKeys & B_BUTTON) {
             m4aSongNumStart(SE_RETURN);
-            TimeRecordsScreenShowPreviousScreen();
+            TimeRecordsScreenHandleReturn();
         }
     }
 }
@@ -4252,16 +4252,16 @@ static void sub_8069208(void) {
 static void sub_80694F8(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
 
-    timeRecordsScreen->unk707--;
+    timeRecordsScreen->animFrame--;
 
-    gBgScrollRegs[1][0] = timeRecordsScreen->unk707 * 0x12 - 0xF0;
-    gBgScrollRegs[2][0] = timeRecordsScreen->unk707 * 0x12 - 0xF0;
+    gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 0x12 - 0xF0;
+    gBgScrollRegs[2][0] = timeRecordsScreen->animFrame * 0x12 - 0xF0;
 
     sub_8068D94(timeRecordsScreen);
-    RenderTimeRecordsScreenUI(1);
+    TimeRecordsScreenRenderCoursesViewUI(1);
 
-    if (timeRecordsScreen->unk707 == 0) {
-        timeRecordsScreen->unk707 = 0;
+    if (timeRecordsScreen->animFrame == 0) {
+        timeRecordsScreen->animFrame = 0;
         gCurTask->main = sub_8068FE8;
     }
 }
@@ -4296,9 +4296,9 @@ static void sub_806955C(void) {
     unk10C->unk20 = F40->unk2;
     sub_8004558(unk10C);
     sub_8068D94(timeRecordsScreen);
-    RenderTimeRecordsScreenUI(0);
-    timeRecordsScreen->unk707 = 0;
-    gCurTask->main = sub_8069110;
+    TimeRecordsScreenRenderCoursesViewUI(0);
+    timeRecordsScreen->animFrame = 0;
+    gCurTask->main = Task_TimeRecordsScreenCourseChangeAnim;
 }
 
 static void Task_TimeRecordsScreenFadeToPrevious(void) {
@@ -4310,13 +4310,13 @@ static void Task_TimeRecordsScreenFadeToPrevious(void) {
     bool8 allCharactersUnlocked;
 
     if (!sub_802D4CC(unk0)) {
-        RenderTimeRecordsScreenUI(0);
+        TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
         
     switch (timeRecordsScreen->view) {
         case TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE:
-            timeRecordsScreen->unk707 = 0;
+            timeRecordsScreen->animFrame = 0;
             timeRecordsScreen->isBossMode = FALSE;
             timeRecordsScreen->view = TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE;
             ResetProfileScreensVram();
@@ -4346,9 +4346,9 @@ static void Task_TimeRecordsScreenFadeToPrevious(void) {
     }
 }
 
-static void RenderTimeRecordsScreenUI(u16 a) {
+static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
-    struct TimeRecordRow* unk314 = timeRecordsScreen->unk314;
+    struct TimeRecordDisplay* timeRecord = timeRecordsScreen->timeDisplays;
     struct UNK_0808B3FC_UNK240* unk284 = timeRecordsScreen->unk284;
     struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
     struct UNK_0808B3FC_UNK240* unkAC = timeRecordsScreen->unkAC;
@@ -4397,11 +4397,11 @@ static void RenderTimeRecordsScreenUI(u16 a) {
 
     sub_80051E8(unk10C);
 
-    for (i = 0; i < 3; i++, unk314++) {
-        unk0 = unk314->unk0;
-        unk60 = &unk314->unk60;
-        unk90 = unk314->unk90;
-        unkF0 = unk314->unkF0;
+    for (i = 0; i < 3; i++, timeRecord++) {
+        unk0 = timeRecord->deliminators;
+        unk60 = &timeRecord->minute;
+        unk90 = timeRecord->seconds;
+        unkF0 = timeRecord->millis;
 
         for (j = 0; j < 2; j++, unk0++) {
             sub_80051E8(unk0);
@@ -5521,7 +5521,7 @@ static void sub_806B354(void) {
 /** Course Records Screen **/
 
 static void sub_806B394(struct TimeRecordsScreen* timeRecordsScreen) {
-    timeRecordsScreen->unk707 = 0;
+    timeRecordsScreen->animFrame = 0;
     timeRecordsScreen->isBossMode = 0;
     timeRecordsScreen->view = TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE;
     ResetProfileScreensVram();
@@ -5620,16 +5620,16 @@ static void sub_806B558(struct TimeRecordsScreen* timeRecordsScreen) {
     timeRecordsScreen->view = TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE;
     ResetProfileScreensVram();
 
-    sub_8068640();
+    TimeRecordsScreenInitRegisters();
     sub_8068700(timeRecordsScreen);
-    CreateTimeRecordsScreenUI(timeRecordsScreen);
+    TimeRecordsScreenCreateCoursesViewUI(timeRecordsScreen);
 
     gCurTask->main = sub_806B5A4;
 }
 
 static void sub_806B5A4(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
-    sub_8068A94(timeRecordsScreen);
+    TimeRecordsScreenCreateTimesUI(timeRecordsScreen);
 
     gCurTask->main = sub_806B5CC;
 }
@@ -5637,10 +5637,10 @@ static void sub_806B5A4(void) {
 static void sub_806B5CC(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
-    RenderTimeRecordsScreenUI(0);
+    TimeRecordsScreenRenderCoursesViewUI(0);
     
     if (sub_802D4CC(unk0)) {
-        timeRecordsScreen->unk707 = 0;
+        timeRecordsScreen->animFrame = 0;
         gCurTask->main = sub_8069208;
     }
 }
@@ -5656,10 +5656,10 @@ static void sub_806B60C(void) {
 
     sub_8004558(unkDC);
     sub_8068D94(timeRecordsScreen);
-    RenderTimeRecordsScreenUI(0);
+    TimeRecordsScreenRenderCoursesViewUI(0);
 
-    timeRecordsScreen->unk707 = 0;
-    gCurTask->main = sub_8069110;
+    timeRecordsScreen->animFrame = 0;
+    gCurTask->main = Task_TimeRecordsScreenCourseChangeAnim;
 }
 
 static void sub_806B684(void) {
@@ -5681,7 +5681,7 @@ static void sub_806B6B4(void) {
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0; 
 
     if (!sub_802D4CC(unk0)) {
-        RenderTimeRecordsScreenUI(0);
+        TimeRecordsScreenRenderCoursesViewUI(0);
     } else {
         gCurrentLevel = timeRecordsScreen->zone * 4 + (timeRecordsScreen->isBossMode ? 2 : timeRecordsScreen->act);
 
@@ -5691,7 +5691,7 @@ static void sub_806B6B4(void) {
     }
 }
 
-static void TimeRecordsScreenShowPreviousScreen(void) {
+static void TimeRecordsScreenHandleReturn(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
