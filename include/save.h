@@ -13,11 +13,14 @@
 #define PLAYER_NAME_END_CHAR 0xFFFF
 
 // TODO: Work out what this is
-struct MultiplayerTimeRecord {
+struct MultiplayerScore {
     u8 filler0[4];
     // playerName
     u16 unk4[MAX_PLAYER_NAME_LENGTH];
+
+    // slotFilled
     u8 unk10;
+
     u8 unk11;
     u8 unk12;
     u8 unk13;
@@ -82,7 +85,7 @@ struct SaveGame {
     // timeRecords
     struct TimeRecords unk34;
 
-    struct MultiplayerTimeRecord unk2AC[10];
+    struct MultiplayerScore unk2AC[10];
 
     u32 unk374;
 };
@@ -118,7 +121,7 @@ struct SaveSectorData {
     // timeRecords
     struct TimeRecords unk2C;
 
-    struct MultiplayerTimeRecord unk2A4[10];
+    struct MultiplayerScore unk2A4[10];
 
     u32 unk36C;
 

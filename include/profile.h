@@ -15,7 +15,7 @@ struct OptionsScreenProfileData {
     // timeRecords
     struct TimeRecords unkC;
     
-    struct MultiplayerTimeRecord unk284[10];
+    struct MultiplayerScore unk284[10];
 
     u8 unk34C;
     u8 unk34D;
@@ -220,18 +220,20 @@ struct MultiplayerRecordRow {
     // playerName
     u16 playerName[6];
 
-    u8 unkC;
-    u8 unkD;
-    u8 unkE;
-    u8 unkF;
+    bool8 slotFilled;
+    u8 wins;
+    u8 loses;
+    u8 draws;
     struct UNK_0808B3FC_UNK240 unk10[6];
     struct UNK_0808B3FC_UNK240 unk130[2];
     struct UNK_0808B3FC_UNK240 unk190[2];
     struct UNK_0808B3FC_UNK240 unk1F0[2];
 }; /* size 0x250 */
 
+#define MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS 10
+
 struct MultiplayerRecordsTable {
-   struct MultiplayerRecordRow rows[10];
+   struct MultiplayerRecordRow rows[MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS];
 }; /* size 0x1720 */
 
 // MultiPlayerRecordsScreen
@@ -253,17 +255,17 @@ struct MultiplayerRecordsScreen {
     struct PlayerDataMenu* playerDataMenu;
 
     struct MultiplayerRecordsTable* table;
-    u8 unk394;
-    u8 unk395;
-    u8 unk396;
-    u8 unk397;
+    u8 scrollAnimFrame;
+    u8 playerWins;
+    u8 playerLoses;
+    u8 playerDraws;
 
     // playerName
     u16 playerName[6];
 
-    u8 unk3A4;
-    u8 unk3A5;
-    u8 unk3A6;
+    u8 targetFirstVisibleRowIndex;
+    u8 currentFirstVisibleRowIndex;
+    u8 scrollIndex;
 
     // language
     u8 language;
