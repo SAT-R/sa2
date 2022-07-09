@@ -35,18 +35,7 @@
         "profile.h": "c",
         "songs.h": "c",
         "text.h": "c",
-        "ui.h": "c",
-        "exception": "c",
-        "type_traits": "c",
-        "*.tcc": "c",
-        "string": "c",
-        "vector": "c",
-        "fstream": "c",
-        "limits": "c",
-        "sstream": "c",
-        "functional": "c",
-        "utility": "c",
-        "random": "c"
+        "ui.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

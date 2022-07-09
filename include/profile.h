@@ -216,9 +216,9 @@ struct DeleteScreen {
     s8 deleteConfirmed;
 }; /* 0x144 */
 
-struct MultiplayerRecord {
+struct MultiplayerRecordRow {
     // playerName
-    u16 unk0[6];
+    u16 playerName[6];
 
     u8 unkC;
     u8 unkD;
@@ -231,7 +231,7 @@ struct MultiplayerRecord {
 }; /* size 0x250 */
 
 struct MultiplayerRecordsTable {
-   struct MultiplayerRecord rows[10];
+   struct MultiplayerRecordRow rows[10];
 }; /* size 0x1720 */
 
 // MultiPlayerRecordsScreen

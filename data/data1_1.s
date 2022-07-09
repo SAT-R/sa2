@@ -1180,8 +1180,8 @@ gUnknown_080D9B10:
 gUnknown_080D9B40:
     .incbin "baserom.gba", 0x000D9B40, 0x30
 
-    .global gUnknown_080D9B70
-gUnknown_080D9B70:
+    .global sDeleteScreenAbsoluteConfirmationMessages
+sDeleteScreenAbsoluteConfirmationMessages:
     .incbin "baserom.gba", 0x000D9B70, 0x30
 
     .global gUnknown_080D9BA0

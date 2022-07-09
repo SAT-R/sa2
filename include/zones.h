@@ -11,5 +11,8 @@
 
 #define NUM_ZONES 7
 #define ACTS_PER_ZONE 3
+#define BOSS_ACT 2
+
+#define TO_LEVEL_INDEX(zone, act) ((zone) * (ACTS_PER_ZONE + 1)) + (act)
 
 #endif // GUARD_ZONES_H
