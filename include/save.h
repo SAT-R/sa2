@@ -8,6 +8,7 @@
 #define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
 #define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
 #define TIME_RECORDS_PER_COURSE 3
+#define NUM_MULTIPLAYER_SCORES 10
 
 #define MAX_PLAYER_NAME_LENGTH 6
 #define PLAYER_NAME_END_CHAR 0xFFFF
@@ -46,8 +47,11 @@ struct TimeRecords {
 struct SaveGame {
     u32 unk0;
 
+    // difficultyLevel
     u8 unk4;
-    u8 unk5;
+
+    // timeLimitEnabled
+    bool8 unk5;
     
     // Language
     u8 unk6;
@@ -76,9 +80,14 @@ struct SaveGame {
     u8 unk19;
     u8 unk1A;
     u8 unk1B;
+
+    // multiplayerWins
     u8 unk1C;
+    // multiplayerLoses
     u8 unk1D;
+    // multiplayerDraws
     u8 unk1E;
+
     u8 unk1F;
 
     // playerName
@@ -90,54 +99,11 @@ struct SaveGame {
     // timeRecords
     struct TimeRecords unk34;
 
-    struct MultiplayerScore unk2AC[10];
+    // multiplayerScores
+    struct MultiplayerScore unk2AC[NUM_MULTIPLAYER_SCORES];
 
     u32 unk374;
 };
-
-struct SaveSectorHeader {
-    u32 security, version;
-};
-
-struct SaveSectorData {
-    struct SaveSectorHeader header;
-    u32 unk8;
-
-    u16 playerName[MAX_PLAYER_NAME_LENGTH];
-
-    u8 language;
-    u8 unk19;
-
-    u8 unk1A;
-
-    u8 unlocks;
-
-    u8 unk1C;
-    u8 unk1D;
-    u8 unk1E;
-
-    u8 unlockedCourses[5];
-    u8 unk24[5];
-
-    u8 unk29;
-    u8 unk2A;
-    u8 unk2B;
-
-    // timeRecords
-    struct TimeRecords timeRecords;
-
-    struct MultiplayerScore multiplayerScores[10];
-
-    u32 id;
-
-    u32 unk370;
-    u32 checksum;
-};
-
-// If the sector's security field is not this value then the sector is either invalid or empty.
-#define SECTOR_SECURITY_NUM 0x4547474D
-#define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
-#define NUM_SAVE_SECTORS 10
 
 // Some sort of save data?
 struct SaveGame* gLoadedSaveGame;

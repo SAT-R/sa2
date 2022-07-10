@@ -71,11 +71,10 @@ struct TimeRecordDisplay {
 struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 coursesViewBackground;
-    struct UNK_0808B3FC_UNK240 choiceViewItems[2];
-    struct UNK_0808B3FC_UNK240 unkAC[2];
-    struct UNK_0808B3FC_UNK240 choiceViewTitle;
-    struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[2];
-    struct UNK_0808B3FC_UNK240 unk19C[2];
+    struct UNK_0808B3FC_UNK240 choiceViewItemsOrZoneTitle[2];
+    struct UNK_0808B3FC_UNK240 actTitle[2];
+    struct UNK_0808B3FC_UNK240 choiceViewTitleOrZoneSubtitle;
+    struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[4];
 
     struct PlayerDataMenu* playerDataMenu;
 
@@ -83,7 +82,7 @@ struct TimeRecordsScreen {
 
     struct Unk_03002400 coursesViewCharacterBackground;
     struct Unk_03002400 coursesViewCharacter;
-    struct UNK_0808B3FC_UNK240 unk284[3];
+    struct UNK_0808B3FC_UNK240 timeRecordDisplays[3];
     struct TimeRecordDisplay timeDisplays[3];
 
     u8 character;
@@ -194,14 +193,14 @@ struct ButtonConfigMenu {
     u8 unk245;
     u8 unk246;
     u8 unk247;
-    s8 unk248;
+    s8 animFrame;
     s8 language;
 }; /* size 0x24C */
 
 struct DeleteScreen {
     struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 unk60[2];
-    struct UNK_0808B3FC_UNK240 unkC0;
+    struct UNK_0808B3FC_UNK240 options[2];
+    struct UNK_0808B3FC_UNK240 optionOutline;
     struct Unk_03002400 background;
     struct UNK_802D4CC_UNK270 unk130;
     struct OptionsScreen* optionsScreen; 
@@ -225,26 +224,24 @@ struct MultiplayerRecordRow {
     struct UNK_0808B3FC_UNK240 defeatsDigits[2];
 }; /* size 0x250 */
 
-#define MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS 10
-
 struct MultiplayerRecordsTable {
-   struct MultiplayerRecordRow rows[MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS];
+   struct MultiplayerRecordRow rows[NUM_MULTIPLAYER_SCORES];
 }; /* size 0x1720 */
 
 // MultiPlayerRecordsScreen
 struct MultiplayerRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
 
-    struct Unk_03002400 unkC;
-    struct Unk_03002400 unk4C;
+    struct Unk_03002400 backgroundTrims;
+    struct Unk_03002400 background;
 
-    struct UNK_0808B3FC_UNK240 unk8C;
-    struct UNK_0808B3FC_UNK240 unkBC;
-    struct UNK_0808B3FC_UNK240 unkEC[2];
-    struct UNK_0808B3FC_UNK240 unk14C[6];
-    struct UNK_0808B3FC_UNK240 unk26C[2];
-    struct UNK_0808B3FC_UNK240 unk2CC[2];
-    struct UNK_0808B3FC_UNK240 unk32C[2];
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 columnHeaders;
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
+    struct UNK_0808B3FC_UNK240 playerWinsDigits[2];
+    struct UNK_0808B3FC_UNK240 playerLosesDigits[2];
+    struct UNK_0808B3FC_UNK240 playerDrawsDigits[2];
 
     // playerDataMenu
     struct PlayerDataMenu* playerDataMenu;
@@ -265,6 +262,18 @@ struct MultiplayerRecordsScreen {
     // language
     u8 language;
 }; /* size 0x3A8 */
+
+extern void* gProfileScreenNextVramAddress;
+extern void* gProfileScreenSubMenuNextVramAddress;
+
+#define ResetProfileScreensVram() ({ \
+    gProfileScreenNextVramAddress = (void*)OBJ_VRAM0; \
+    gProfileScreenSubMenuNextVramAddress = NULL; \
+})
+
+#define ResetProfileScreensSubMenuVram() ({ \
+    gProfileScreenSubMenuNextVramAddress = NULL; \
+})
 
 void CreateOptionsScreen(u16);
 void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter);
