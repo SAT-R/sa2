@@ -6,6 +6,7 @@
 #include "save.h"
 #include "m4a.h"
 #include "random.h"
+#include "constants/text.h"
 
 // TODO: Move refernce these in iwram
 // TODO: make static, only used here
@@ -23,10 +24,26 @@ static s16 FindOldestSaveGameSector(void);
 static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSectorData* save);
 static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState);
 
-static bool16 ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum);
+static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 sectorNum);
 static u16 WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
 static u16 EraseSaveSector(s16 sectorNum);
 static bool16 HasChangesToSave(void);
+
+#define CalcChecksum(save) ({ \
+    u32 j, checksum = 0; \
+    for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(u32)) { \
+        checksum += *(u32*)((u32)(save) + j); \
+    } \
+    checksum; \
+})
+
+#define UNLOCK_FLAG_CREAM 1 << 0
+#define UNLOCK_FLAG_TAILS 1 << 1
+#define UNLOCK_FLAG_KNUCKLES 1 << 2
+#define UNLOCK_FLAG_AMY 1 << 3
+#define UNLOCK_FLAG_BOSS_TA 1 << 4
+#define UNLOCK_FLAG_SOUND_TEST 1 << 5
+#define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
 
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
@@ -36,7 +53,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     memset(gameState, 0, sizeof(struct SaveGame));
     
     gameState->unk0 = 0;
-    gameState->unk13 = 1;
+    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
     gameState->unk4 = 0;
     gameState->unk5 = 0;
     gameState->unk6 = 2;
@@ -59,7 +76,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 
     p2 = gameState->unk2AC;
     for (i = 0; i < 10; i++, p2++) {
-        p2->unk10 = 0;
+        p2->unk10 = FALSE;
         p2->unk11 = 0;
         p2->unk12 = 0;
         p2->unk13 = 0;
@@ -77,61 +94,61 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     gameState->unk18 = 0;
 }
 
-static void InitSaveGameSectorData(struct SaveSectorData* saveData) {
+static void InitSaveGameSectorData(struct SaveSectorData* save) {
     s16 i, *record;
     struct MultiplayerScore* p2;
     
-    memset(saveData, 0, sizeof(struct SaveSectorData));
+    memset(save, 0, sizeof(struct SaveSectorData));
     
-    saveData->header.security = SECTOR_SECURITY_NUM;
-    saveData->header.version = 0;
-    saveData->unk8 = 0;
-    saveData->unkC[0] = PLAYER_NAME_END_CHAR;
-    saveData->unk18 = 2;
-    saveData->unk1B = 0;
-    saveData->unk1A = 0;
-    saveData->unk19 = 0;
-    saveData->unk1C = 1;
-    saveData->unk1D = 2;
-    saveData->unk1E = 4;
-    saveData->unk29 = 0;
-    saveData->unk2A = 0;
-    saveData->unk2B = 0;
+    save->header.security = SECTOR_SECURITY_NUM;
+    save->header.version = 0;
+    save->unk8 = 0;
+    save->playerName[0] = PLAYER_NAME_END_CHAR;
+    save->language = LANG_ENGLISH;
+    save->unlocks = 0;
+    save->unk1A = 0;
+    save->unk19 = 0;
+    save->unk1C = 1;
+    save->unk1D = 2;
+    save->unk1E = 4;
+    save->unk29 = 0;
+    save->unk2A = 0;
+    save->unk2B = 0;
 
-    record = (u16*)saveData->unk2C.table;
+    record = (u16*)save->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
         *record = MAX_COURSE_TIME;
     }
 
-    p2 = saveData->unk2A4;
+    p2 = save->multiplayerScores;
     for (i = 0; i < 10; i++, p2++) {
-        p2->unk10 = 0;
+        p2->unk10 = FALSE;
         p2->unk11 = 0;
         p2->unk12 = 0;
         p2->unk13 = 0;
         p2->unk4[0] = PLAYER_NAME_END_CHAR;
     }
 
-    saveData->unk370 = 0;
+    save->unk370 = 0;
 }
 
 static s16 TryWriteSaveGame(void) {
     s16 sectorToWrite, flashError;
     
-    struct SaveGame *lastWrittenSaveGame, *saveGame;
-    struct SaveSectorData *saveData;
+    struct SaveGame *lastWrittenGameState, *gameState;
+    struct SaveSectorData *save;
 
-    saveGame = gLoadedSaveGame;
-    lastWrittenSaveGame = gLastWrittenSaveGame;
-    saveData = gSaveSectorDataBuffer;
+    gameState = gLoadedSaveGame;
+    lastWrittenGameState = gLastWrittenSaveGame;
+    save = gSaveSectorDataBuffer;
 
-    if (saveGame->unk0 == 0) {
-        saveGame->unk0 = Random32();
+    if (gameState->unk0 == 0) {
+        gameState->unk0 = Random32();
     }
 
     // Keep a copy of the last game state
-    memcpy(lastWrittenSaveGame, saveGame, sizeof(struct SaveGame));
-    PackSaveSectorData(saveData, lastWrittenSaveGame);
+    memcpy(lastWrittenGameState, gameState, sizeof(struct SaveGame));
+    PackSaveSectorData(save, lastWrittenGameState);
 
     // Only write if we actually have game flash
     if (!(gFlags & FLAGS_NO_FLASH_MEMORY)) {
@@ -142,7 +159,7 @@ static s16 TryWriteSaveGame(void) {
             sectorToWrite = 0;
         }
 
-        flashError = WriteToSaveSector(saveData, sectorToWrite);
+        flashError = WriteToSaveSector(save, sectorToWrite);
 
         if (!flashError) {
             return TRUE;
@@ -154,7 +171,7 @@ static s16 TryWriteSaveGame(void) {
 
 static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState) {
     s16 i;
-    u32 j, checksum, version;
+    u32 checksum, version;
 
     version = save->header.version;
     memset(save, 0, sizeof(struct SaveSectorData));
@@ -163,8 +180,8 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     save->header.version = version + 1;
 
     save->unk8 = gameState->unk0;
-    memcpy(save->unkC, &gameState->unk20, 12);
-    save->unk18 = gameState->unk6;
+    memcpy(save->playerName, gameState->unk20, sizeof(gameState->unk20));
+    save->language = gameState->unk6;
 
     save->unk19 = 0;
     if (gameState->unk4) {
@@ -196,27 +213,27 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     if (gameState->unk18) {
         save->unk1A |= 0x80;
     }
-    save->unk1B = 0;
-    if ((gameState->unk13 & 2)) {
-        save->unk1B = 1;
+    save->unlocks = 0;
+    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM))) {
+        save->unlocks = UNLOCK_FLAG_CREAM;
     }
-    if ((gameState->unk13 & 4)) {
-        save->unk1B |= 2;
+    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS))) {
+        save->unlocks |= UNLOCK_FLAG_TAILS;
     }
-    if ((gameState->unk13 & 8)) {
-        save->unk1B |= 4;
+    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES))) {
+        save->unlocks |= UNLOCK_FLAG_KNUCKLES;
     }
-    if ((gameState->unk13 & 0x10)) {
-        save->unk1B |= 8;
+    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_AMY))) {
+        save->unlocks |= UNLOCK_FLAG_AMY;
     }
     if (gameState->unk11) {
-        save->unk1B |= 0x20;
+        save->unlocks |= UNLOCK_FLAG_SOUND_TEST;
     }
     if (gameState->unk12) {
-        save->unk1B |= 0x10;
+        save->unlocks |= UNLOCK_FLAG_BOSS_TA;
     }
     if (gameState->unk14) {
-        save->unk1B |= 0x40;
+        save->unlocks |= UNLOCK_FLAG_CHAO_GARDEN;
     }
 
     switch (gameState->unk2C.unk0) {
@@ -256,7 +273,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     for (i = 0; i < 5; i++) {
-        save->unk1F[i] = gameState->unk7[i];
+        save->unlockedCourses[i] = gameState->unk7[i];
     }
 
     for (i = 0; i < 5; i++) {
@@ -267,17 +284,15 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     save->unk2A = gameState->unk1D;
     save->unk2B = gameState->unk1E;
 
-    memcpy(&save->unk2C, &gameState->unk34, sizeof(gameState->unk34));
-    memcpy(save->unk2A4, gameState->unk2AC, 200);
+    memcpy(&save->timeRecords, &gameState->unk34, sizeof(gameState->unk34));
+    memcpy(save->multiplayerScores, gameState->unk2AC, sizeof(gameState->unk2AC));
 
-    save->unk36C = Random32();
+    save->id = Random32();
     save->unk370 = gameState->unk374;
 
     // Not sure why they chose to rewrite the checksum logic here
-    checksum = 0;
-    for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(u32)) {
-        checksum += *(u32*)((u32)save + j);
-    }
+    
+    checksum = CalcChecksum(save);
     save->checksum = checksum;
 
     return TRUE;
@@ -366,24 +381,24 @@ static u16 WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum) {
 static bool16 TryLoadLatestSaveGame(void) {
     s16 sectorNum, i, successfulRead;
     
-    struct SaveGame *lastSavedData, *gameData;
-    struct SaveSectorData *saveData;
+    struct SaveGame *lastSavedData, *gameState;
+    struct SaveSectorData *save;
 
-    gameData = gLoadedSaveGame;
+    gameState = gLoadedSaveGame;
     lastSavedData = gLastWrittenSaveGame;
-    saveData = gSaveSectorDataBuffer;
+    save = gSaveSectorDataBuffer;
 
     i = 0;
 
     // Keep a copy of the last game state
-    memcpy(lastSavedData, gameData, sizeof(struct SaveGame));
+    memcpy(lastSavedData, gameState, sizeof(struct SaveGame));
 
     // Only read if we actually have game flash
     if (!(gFlags & FLAGS_NO_FLASH_MEMORY)) {
         // Get the last sector num where there is save data
         sectorNum = FindNewestSaveGameSector();
         do {
-            successfulRead = ReadSaveSectorAndVerifyChecksum(saveData, sectorNum);
+            successfulRead = ReadSaveSectorAndVerifyChecksum(save, sectorNum);
             if (!successfulRead) {
                 i++;
                 EraseSaveSector(sectorNum);
@@ -403,8 +418,8 @@ static bool16 TryLoadLatestSaveGame(void) {
         } while (i < 10);
 
         if (successfulRead) {
-            UnpackSaveSectorData(gameData, saveData);
-            memcpy(lastSavedData, gameData, sizeof(struct SaveGame));
+            UnpackSaveSectorData(gameState, save);
+            memcpy(lastSavedData, gameState, sizeof(struct SaveGame));
             return TRUE;
         }
     }
@@ -461,10 +476,10 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     s16 i;
 
     memset(gameState, 0, sizeof(struct SaveGame));
-    memcpy(gameState->unk20, save->unkC, 12);
+    memcpy(gameState->unk20, save->playerName, sizeof(save->playerName));
     
     gameState->unk0 = save->unk8;
-    gameState->unk6 = save->unk18;
+    gameState->unk6 = save->language;
 
     if ((save->unk19 & 1)) {
         gameState->unk4 = 1;
@@ -496,37 +511,37 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
         gameState->unk18 = 1;
     }
 
-    gameState->unk13 = 1;
+    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
 
-    if ((save->unk1B & 1)) {
-        gameState->unk13 = 3;
+    if ((save->unlocks & UNLOCK_FLAG_CREAM)) {
+        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM);
     }
-    if ((save->unk1B & 2)) {
-        gameState->unk13 |= 4;
+    if ((save->unlocks & UNLOCK_FLAG_TAILS)) {
+        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS);
     }
-    if ((save->unk1B & 4)) {
-        gameState->unk13 |= 8;
+    if ((save->unlocks & UNLOCK_FLAG_KNUCKLES)) {
+        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES);
     }
-    if ((save->unk1B & 8)) {
-        gameState->unk13 |= 0x10;
+    if ((save->unlocks & UNLOCK_FLAG_AMY)) {
+        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
     }
 
-    if ((save->unk1B & 0x20)) {
-        gameState->unk11 = 1;
+    if ((save->unlocks & UNLOCK_FLAG_SOUND_TEST)) {
+        gameState->unk11 = TRUE;
     } else {
-        gameState->unk11 = 0;
+        gameState->unk11 = FALSE;
     }
 
-    if ((save->unk1B & 0x10)) {
-        gameState->unk12 = 1;
+    if ((save->unlocks & UNLOCK_FLAG_BOSS_TA)) {
+        gameState->unk12 = TRUE;
     } else {
-        gameState->unk12 = 0;
+        gameState->unk12 = FALSE;
     }
 
-    if ((save->unk1B & 0x40)) {
-        gameState->unk14 = 1;
+    if ((save->unlocks & UNLOCK_FLAG_CHAO_GARDEN)) {
+        gameState->unk14 = TRUE;
     } else {
-        gameState->unk14 = 0;
+        gameState->unk14 = FALSE;
     }
 
      switch (save->unk1C) {
@@ -564,7 +579,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     }
     
     for (i = 0; i < 5; i++) {
-        gameState->unk7[i] = save->unk1F[i];
+        gameState->unk7[i] = save->unlockedCourses[i];
     }
 
     for (i = 0; i < 5; i++) {
@@ -574,8 +589,8 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     gameState->unk1C = save->unk29;
     gameState->unk1D = save->unk2A;
     gameState->unk1E = save->unk2B;
-    memcpy(&gameState->unk34, &save->unk2C, sizeof(save->unk2C));
-    memcpy(gameState->unk2AC, save->unk2A4, 200);
+    memcpy(&gameState->unk34, &save->timeRecords, sizeof(save->timeRecords));
+    memcpy(gameState->unk2AC, save->multiplayerScores, sizeof(save->multiplayerScores));
     gameState->unk374 = save->unk370;
     return TRUE;
 }
@@ -584,32 +599,31 @@ static s16 CreateAndTryWriteNewSaveGame(void) {
     s16 i;
     u16 flashError;
     
-    struct SaveGame *gd4 = gLoadedSaveGame;
-    struct SaveGame *gd0 = gLastWrittenSaveGame;
-    struct SaveSectorData *gd8 = gSaveSectorDataBuffer;
+    struct SaveGame *gameState = gLoadedSaveGame;
+    struct SaveGame *lastWrittenGameState = gLastWrittenSaveGame;
+    struct SaveSectorData *save = gSaveSectorDataBuffer;
     
-    u8 prevUnk6 = gd4->unk6;
-    u32 prevUnk374 = gd4->unk374;
+    u8 language = gameState->unk6;
+    u32 prevUnk374 = gameState->unk374;
 
-    GenerateNewSaveGame(gd4);
+    GenerateNewSaveGame(gameState);
 
-    gd4->unk6 = prevUnk6;
-    gd4->unk374 = prevUnk374;
+    gameState->unk6 = language;
+    gameState->unk374 = prevUnk374;
 
-    memcpy(gd0, gd4, sizeof(struct SaveGame));
+    memcpy(lastWrittenGameState, gameState, sizeof(struct SaveGame));
 
     if ((gFlags & FLAGS_NO_FLASH_MEMORY)) {
         return 0;
     }
 
-    gd8->header.version = 0;
+    save->header.version = 0;
 
-    // Most likely write gd0 to gd8;
-    PackSaveSectorData(gd8, gd0);
+    PackSaveSectorData(save, lastWrittenGameState);
 
     // Write to sector 0, and erase other
     // flash sectors so we know this save will be used
-    flashError = WriteToSaveSector(gd8, 0);
+    flashError = WriteToSaveSector(save, 0);
     if (flashError) {
         return 0;
     }
@@ -660,32 +674,38 @@ static u16 EraseSaveSector(s16 sectorNum) {
     return result;
 }
 
-static void GenerateCompletedSaveGame(struct SaveGame* data) {
+static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
     s16 i;
     
-    if (data->unk0 == 0) {
+    if (gameState->unk0 == 0) {
         // id?
-        data->unk0 = Random32();
+        gameState->unk0 = Random32();
     }
     
-    data->unk374 = 0;
+    gameState->unk374 = 0;
     
     for (i = 0; i < 5; i++) {
-        data->unk7[i] = i == 0 ? 0x1e : 0x1d;
-        data->unkC[i] = 0xff;
+        gameState->unk7[i] = i == 0 ? 0x1e : 0x1d;
+        gameState->unkC[i] = 0xff;
     }
 
-    data->unk13 = 0x1f;
-    data->unk11 = 1;
-    data->unk12 = 1;
-    data->unk14 = 1;
-    data->unk19 = 1;
-    data->unk1A = 2;
-    data->unk1B = 1;
-    data->unk15 = 1;
-    data->unk16 = 1;
-    data->unk17 = 1;
-    data->unk18 = 1;
+    gameState->unk13 = 
+        CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC) | 
+        CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM) | 
+        CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS) | 
+        CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES) | 
+        CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
+    gameState->unk11 = TRUE;
+    gameState->unk12 = TRUE;
+    gameState->unk14 = TRUE;
+
+    gameState->unk19 = 1;
+    gameState->unk1A = 2;
+    gameState->unk1B = 1;
+    gameState->unk15 = 1;
+    gameState->unk16 = 1;
+    gameState->unk17 = 1;
+    gameState->unk18 = 1;
 }
 
 // Exported functions
@@ -766,30 +786,20 @@ static bool16 HasChangesToSave(void) {
 }
 
 UNUSED static u32 CalculateChecksum(void* data) {
-    u32 i;
-    u32 sum = 0; 
-
-    for (i = 0; i < SECTOR_CHECKSUM_OFFSET; i += sizeof(u32)) {
-        sum += *(u32*)(data + i);
-    }
-
-    return sum;
+    return CalcChecksum(data);
 }
 
 // Read flash data at given sector into data
 // and verify integrity
-static bool16 ReadSaveSectorAndVerifyChecksum(void *saveBuf, s16 sectorNum) {
+static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 sectorNum) {
     u32 i;
     u32 sum;
     u32* expected;
     
-    ReadFlash(sectorNum, 0, saveBuf, sizeof(struct SaveSectorData));
-    expected = &((struct SaveSectorData*)saveBuf)->checksum;
+    ReadFlash(sectorNum, 0, save, sizeof(struct SaveSectorData));
+    expected = &save->checksum;
   
-    sum = 0;
-    for (i = 0; i < SECTOR_CHECKSUM_OFFSET; i += sizeof(u32)) {
-        sum += *(u32*)(saveBuf + i);
-    }
+    sum = CalcChecksum(save);
 
     if (*expected != sum) {
         return 0;

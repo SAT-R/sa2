@@ -21,8 +21,13 @@ struct MultiplayerScore {
     // slotFilled
     u8 unk10;
 
+    // wins
     u8 unk11;
+    
+    // loses
     u8 unk12;
+
+    // draws
     u8 unk13;
 };
 
@@ -47,22 +52,22 @@ struct SaveGame {
     // Language
     u8 unk6;
 
-    // character unlocked zones
+    // character unlocked courses
     u8 unk7[NUM_CHARACTERS];
 
     u8 unkC[5];
 
     // soundTestUnlocked
-    u8 unk11;
+    bool8 unk11;
 
     // bossTimeAttackUnlocked
-    u8 unk12;
+    bool8 unk12;
 
     // unlocked characters
     u8 unk13;
 
-    // Tiny chao garden
-    u8 unk14;
+    // chaoGardenUnlocked
+    bool8 unk14;
     
     u8 unk15;
     u8 unk16;
@@ -98,20 +103,20 @@ struct SaveSectorData {
     struct SaveSectorHeader header;
     u32 unk8;
 
-    // playerName
-    u16 unkC[MAX_PLAYER_NAME_LENGTH];
+    u16 playerName[MAX_PLAYER_NAME_LENGTH];
 
-    u8 unk18;
+    u8 language;
     u8 unk19;
 
     u8 unk1A;
-    u8 unk1B;
+
+    u8 unlocks;
 
     u8 unk1C;
     u8 unk1D;
     u8 unk1E;
 
-    u8 unk1F[5];
+    u8 unlockedCourses[5];
     u8 unk24[5];
 
     u8 unk29;
@@ -119,11 +124,11 @@ struct SaveSectorData {
     u8 unk2B;
 
     // timeRecords
-    struct TimeRecords unk2C;
+    struct TimeRecords timeRecords;
 
-    struct MultiplayerScore unk2A4[10];
+    struct MultiplayerScore multiplayerScores[10];
 
-    u32 unk36C;
+    u32 id;
 
     u32 unk370;
     u32 checksum;

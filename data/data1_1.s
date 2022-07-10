@@ -1080,12 +1080,12 @@ gUnknown_080D9518:
 gUnknown_080D9540:
     .incbin "baserom.gba", 0x000D9540, 0x10
 
-    .global gUnknown_080D9550
-gUnknown_080D9550:
+    .global sSubMenuOpenAnimFrames
+sSubMenuOpenAnimFrames:
     .incbin "baserom.gba", 0x000D9550, 0x20
 
-    .global gUnknown_080D9570
-gUnknown_080D9570:
+    .global sSubMenuCloseAnimFrames
+sSubMenuCloseAnimFrames:
     .incbin "baserom.gba", 0x000D9570, 0x20
 
     .global gUnknown_080D9590

@@ -250,9 +250,12 @@ static const u8 sBirdAnimModeSequence[] = {
 // I wonder if they were ever going to
 // make the demos show different levels
 // atm only the first is used
-static const u8 sDemoZones[] = {
-    ZONE_1_1, ZONE_1_BOSS, ZONE_2_1, ZONE_2_BOSS, 
-    ZONE_1_1, ZONE_1_2, 3, ZONE_1_BOSS
+static const u8 sDemoLevels[] = {
+    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, BOSS_ACT), 
+    TO_LEVEL_INDEX(ZONE_2, ACT_1), TO_LEVEL_INDEX(ZONE_2, BOSS_ACT), 
+    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, ACT_2), 
+    // This is really odd
+    3, TO_LEVEL_INDEX(ZONE_1, BOSS_ACT)
 };
 
 static const u16 sLensFlareSizes[] = {
@@ -1227,7 +1230,7 @@ static void Task_HandleTitleScreenExit(void) {
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         gUnknown_03005424 = 0;
-        gCurrentLevel = ZONE_1_1;
+        gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
         
         switch(titleScreen->menuCursor) {
@@ -1243,7 +1246,7 @@ static void Task_HandleTitleScreenExit(void) {
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
                 sub_801A6D8();
-                gCurrentLevel = ZONE_1_1;
+                gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
                 gSelectedCharacter = CHARACTER_SONIC;
                 gGameMode = GAME_MODE_TIME_ATTACK;
                 sub_8087FC0();
@@ -1860,7 +1863,7 @@ static void Task_StartTitleScreenDemo(void) {
     
     gInputPlaybackData = gDemoRecordings[0];
     gSelectedCharacter = CHARACTER_SONIC;
-    gCurrentLevel = sDemoZones[0];
+    gCurrentLevel = sDemoLevels[0];
 
     gDemoPlayCounter++;
     // Don't count higher than 3

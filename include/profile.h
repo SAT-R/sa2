@@ -17,11 +17,9 @@ struct OptionsScreenProfileData {
     
     struct MultiplayerScore unk284[10];
 
-    u8 unk34C;
-    u8 unk34D;
-    u8 unk34E;
-
-    u8 filler34F;
+    u8 multiplayerWins;
+    u8 multiplayerLoses;
+    u8 multiplayerDraws;
 
     struct ButtonConfig buttonConfig;
 };
@@ -45,12 +43,10 @@ struct OptionsScreen {
     u8 bossTimeAttackUnlocked;
     u8 unk35E;
 
-    u8 filler35F;
-
     s16 subMenuXPos;
     s16 unk362;
-    struct Unk_03002400 unk364;
-    struct Unk_03002400 unk3A4;
+    struct Unk_03002400 background;
+    struct Unk_03002400 subMenuBackground;
     struct UNK_0808B3FC_UNK240 title;
     struct UNK_0808B3FC_UNK240 menuItems[NUM_OPTIONS_MENU_ITEMS];
 
@@ -59,7 +55,7 @@ struct OptionsScreen {
     struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
     struct UNK_802D4CC_UNK270 unk774;
     s8 menuCursor;
-    s8 unk781;
+    s8 prevCursorPosition;
     s8 unk782;
     s8 subMenuAnimFrame;
     s8 state;
@@ -75,7 +71,7 @@ struct TimeRecordDisplay {
 // TimeRecordsScreen
 struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
-    struct Unk_03002400 unkC;
+    struct Unk_03002400 coursesViewBackground;
     struct UNK_0808B3FC_UNK240 unk4C[2];
     struct UNK_0808B3FC_UNK240 unkAC[2];
     struct UNK_0808B3FC_UNK240 unk10C;
@@ -86,8 +82,8 @@ struct TimeRecordsScreen {
 
     struct TimeRecords* timeRecords;
 
-    struct Unk_03002400 unk204;
-    struct Unk_03002400 unk244;
+    struct Unk_03002400 coursesViewCharacterBackground;
+    struct Unk_03002400 coursesViewCharacter;
     struct UNK_0808B3FC_UNK240 unk284[3];
     struct TimeRecordDisplay timeDisplays[3];
 
@@ -97,9 +93,9 @@ struct TimeRecordsScreen {
     u8 act;
 
     u8 animFrame;
-    u8 unk708;
+    bool8 unusedUnk708;
     u8 availableCharacters;
-    u8 characterZones[NUM_CHARACTERS];
+    u8 unlockedCourses[NUM_CHARACTERS];
     u8 language;
 
     bool8 isBossMode;
@@ -171,7 +167,7 @@ struct PlayerDataMenu {
     
     struct OptionsScreen* optionsScreen;
     s8 menuCursor;
-    s8 unk161;
+    s8 animFrame;
 
     // language
     s8 language;
@@ -211,7 +207,7 @@ struct DeleteScreen {
     struct UNK_802D4CC_UNK270 unk130;
     struct OptionsScreen* optionsScreen; 
     s8 confirmationCursor;
-    u8 unk141;
+    bool8 unusedUnk141;
     s8 language;
     s8 deleteConfirmed;
 }; /* 0x144 */
@@ -224,10 +220,10 @@ struct MultiplayerRecordRow {
     u8 wins;
     u8 loses;
     u8 draws;
-    struct UNK_0808B3FC_UNK240 unk10[6];
-    struct UNK_0808B3FC_UNK240 unk130[2];
-    struct UNK_0808B3FC_UNK240 unk190[2];
-    struct UNK_0808B3FC_UNK240 unk1F0[2];
+    struct UNK_0808B3FC_UNK240 nameDisplay[6];
+    struct UNK_0808B3FC_UNK240 winsDigits[2];
+    struct UNK_0808B3FC_UNK240 losesDigits[2];
+    struct UNK_0808B3FC_UNK240 defeatsDigits[2];
 }; /* size 0x250 */
 
 #define MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS 10

@@ -20,7 +20,7 @@ extern void* gProfileScreenNextVramAddress;
 extern void* gProfileScreenSubMenuNextVramAddress;
 
 // CreateOptionsScreen stuff
-static void Task_ShowOptionsScreen(void);
+static void Task_OptionsScreenShow(void);
 static void OptionsScreenTaskDestroyHandler(struct Task*);
 
 static void GetProfileData(struct OptionsScreen*);
@@ -145,7 +145,7 @@ static void MultiplayerRecordsScreenRenderUI(void);
 static void Task_MultiplayerRecordsScreenHandleExit(void);
 
 static void Task_OptionScreenFadeIn(void);
-static void sub_806A794(struct OptionsScreen*);
+static void SetupOptionScreenBackgroundsUI(struct OptionsScreen*);
 
 static void CreateDifficultyMenu(struct OptionsScreen*);
 static void CreateTimeLimitMenu(struct OptionsScreen*);
@@ -158,7 +158,6 @@ static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void);
 static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void);
 static void Task_OptionsScreenFadeOutAnimAndSave(void);
 
-static void sub_8072484(void);
 static void Task_LanguageScreenFadeOutAndExit(void);
 static void Task_TimeRecordsScreenFadeOutAndExit(void);
 static void TimeRecordsScreenFadeOutToCoursesView(void);
@@ -236,6 +235,11 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
     gProfileScreenSubMenuNextVramAddress = NULL; \
 })
 
+#define SetupOptionScreenBackgrounds(background, subMenuBackground) ({ \
+    sub_806B854(&(background), 0, 7, 0x85, 0x1E, 0x14, 0, 0, 0, 0); \
+    sub_806B854(&(subMenuBackground), 1, 0xE, 0x86, 0x1E, 0x14, 0, 1, 0, 0); \
+})
+
 extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
 extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
 extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
@@ -245,9 +249,9 @@ extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
 extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
 extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
 
-extern const s16 gUnknown_080D9550[8];
+extern const s16 sSubMenuOpenAnimFrames[16];
 extern const s8 gUnknown_080D9540[2][8];
-extern const s16 gUnknown_080D9570[8];
+extern const s16 sSubMenuCloseAnimFrames[16];
 
 extern const struct UNK_080D95E8 sPlayerDataMenuTitleText[6];
 extern const struct UNK_080D95E8 sPlayerDataMenuControlsText[6];
@@ -294,14 +298,14 @@ void CreateOptionsScreen(u16 p1) {
 
     m4aSongNumStart(MUS_OPTIONS);
 
-    t = TaskCreate(Task_ShowOptionsScreen, sizeof(struct OptionsScreen), 0x1000, TASK_x0004, OptionsScreenTaskDestroyHandler);
+    t = TaskCreate(Task_OptionsScreenShow, sizeof(struct OptionsScreen), 0x1000, TASK_x0004, OptionsScreenTaskDestroyHandler);
     optionsScreen = TaskGetStructPtr(t, optionsScreen);
 
     GetProfileData(optionsScreen);
 
     optionsScreen->unk358 = p1;
     optionsScreen->subMenuXPos = 0;
-    optionsScreen->unk781 = 0;
+    optionsScreen->prevCursorPosition = 0;
     optionsScreen->subMenuAnimFrame = 0;
     optionsScreen->menuCursor = 0;
     optionsScreen->unk782 = 0xFF;
@@ -335,11 +339,11 @@ void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter) {
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
     timeRecordsScreen->animFrame = 0;
-    timeRecordsScreen->unk708 = 0;
+    timeRecordsScreen->unusedUnk708 = FALSE;
     timeRecordsScreen->availableCharacters = i;
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        timeRecordsScreen->characterZones[i] = gLoadedSaveGame->unk7[i];
+        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unk7[i];
     }
 
     timeRecordsScreen->language = LanguageIndex(gLoadedSaveGame->unk6);
@@ -435,9 +439,9 @@ static void GetProfileData(struct OptionsScreen* optionsScreen) {
     memcpy(&profile->unkC, &saveGame->unk34, sizeof(saveGame->unk34));
     memcpy(profile->unk284, saveGame->unk2AC, sizeof(saveGame->unk2AC));
 
-    profile->unk34C = saveGame->unk1C;
-    profile->unk34D = saveGame->unk1D;
-    profile->unk34E = saveGame->unk1E;
+    profile->multiplayerWins = saveGame->unk1C;
+    profile->multiplayerLoses = saveGame->unk1D;
+    profile->multiplayerDraws = saveGame->unk1E;
 
     memcpy(&profile->buttonConfig, &saveGame->unk2C, 8);
 
@@ -488,9 +492,9 @@ static void SetProfileData(struct OptionsScreen* optionsScreen) {
 
     memcpy(&saveGame->unk2AC[0], &profile->unk284[0], 0x14);
 
-    saveGame->unk1C = profile->unk34C;
-    saveGame->unk1D = profile->unk34D;
-    saveGame->unk1E = profile->unk34E;
+    saveGame->unk1C = profile->multiplayerWins;
+    saveGame->unk1D = profile->multiplayerLoses;
+    saveGame->unk1E = profile->multiplayerDraws;
 
     memcpy(&saveGame->unk2C, &profile->buttonConfig, 8);
 
@@ -564,18 +568,18 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
         );
     }
 
-    for (i = 0, yPos = 0x1E; i < NUM_OPTIONS_MENU_ITEMS; i++, menuItem++) {
+    for (i = 0, yPos = 30; i < NUM_OPTIONS_MENU_ITEMS; i++, menuItem++) {
         if (optionsScreen->soundTestUnlocked || i != OPTIONS_MENU_ITEM_SOUND_TEST) {
             const struct UNK_080D95E8 *itemText = &sOptionsScreenMenuItemsText[language][i];
 
             if (optionsScreen->menuCursor == i) {
-                xPos = 0x20;
+                xPos = 32;
             } else {
-                xPos = 0x28;
+                xPos = 40;
             }
 
             if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN && i == OPTIONS_MENU_ITEM_PLAYER_DATA) {
-                xPos = -0xB8;
+                xPos = -184;
             }
             sub_806A568(
                 menuItem, 
@@ -594,9 +598,9 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
     }
 
     {
-        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 0x98 : 0xa0;
+        xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 152 : 160;
         if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN) {
-            xPos = -0x40;
+            xPos = -64;
         }
         sub_806A568(
             metaItem, 
@@ -674,10 +678,10 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
 
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA ? 163 : 171;
         if (state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN && i == 0) {
-            xPos = -0x35;
+            xPos = -53;
         }
 
-        for (i = 0, yPos = 0x26, finishedReadingName = FALSE; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++, xPos += 10) {
+        for (i = 0, yPos = 38, finishedReadingName = FALSE; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++, xPos += 10) {
             if (finishedReadingName) {
                 nameChar = 0x11;
             } else {
@@ -744,7 +748,6 @@ static void Task_OptionsScreenMain(void) {
                 OptionsScreenShowLanguageScreen();
                 return;
             case OPTIONS_MENU_ITEM_SOUND_TEST:
-                // SoundTest
                 OptionsScreenShowSoundTestScreen();
                 return;
             case OPTIONS_MENU_ITEM_DELETE_GAME_DATA:
@@ -768,7 +771,7 @@ static void Task_OptionsScreenMain(void) {
 
     if (gRepeatedKeys & DPAD_DOWN) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-        optionsScreen->unk781 = optionsScreen->menuCursor;
+        optionsScreen->prevCursorPosition = optionsScreen->menuCursor;
 
         if (optionsScreen->menuCursor >= NUM_OPTIONS_MENU_ITEMS - 1) {
             optionsScreen->menuCursor = 0;
@@ -777,7 +780,7 @@ static void Task_OptionsScreenMain(void) {
         }
 
         // Skip the soundtest menu index if not available
-        if (!optionsScreen->soundTestUnlocked && optionsScreen->menuCursor == 5) {
+        if (!optionsScreen->soundTestUnlocked && optionsScreen->menuCursor == OPTIONS_MENU_ITEM_SOUND_TEST) {
            optionsScreen->menuCursor++; 
         }
         optionsScreen->subMenuAnimFrame = 0;
@@ -789,8 +792,8 @@ static void Task_OptionsScreenMain(void) {
     if (gRepeatedKeys & DPAD_UP) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
-        optionsScreen->unk781 = optionsScreen->menuCursor;
-        if (optionsScreen->menuCursor < 1) {
+        optionsScreen->prevCursorPosition = optionsScreen->menuCursor;
+        if (optionsScreen->menuCursor <= 0) {
             optionsScreen->menuCursor = NUM_OPTIONS_MENU_ITEMS - 1;
         } else {
             optionsScreen->menuCursor--;
@@ -821,13 +824,13 @@ static inline void sub_8064304_A(struct OptionsScreen* optionsScreen, s8 subMenu
         item->unk16 = baseXPos + 152;
         item->unk25 = 0;
 
-        if (optionsScreen->menuCursor == 0) {
+        if (optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
-            struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
+            struct UNK_0808B3FC_UNK240* playerNameDisplayChar = optionsScreen->playerNameDisplay;
             
-            for (i = 0; i < 6; i++, item++) {
-                item->unk16 = baseXPos + (i * 10 + 163);
-                item->unk25 = 7;                    
+            for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
+                playerNameDisplayChar->unk16 = baseXPos + (i * 10 + 163);
+                playerNameDisplayChar->unk25 = 7;                    
             }
         }
     }
@@ -837,22 +840,22 @@ static inline void sub_8064304_A(struct OptionsScreen* optionsScreen, s8 subMenu
 }
 
 static inline void sub_8064304_B(struct OptionsScreen* optionsScreen, s8 baseXPos) {
-    struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->unk781];
+    struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
 
     item->unk16 = baseXPos + 32;
     item->unk25 = 1;
 
-    if (optionsScreen->unk781 < 4) {
-        item = &optionsScreen->metaItems[optionsScreen->unk781];
+    if (optionsScreen->prevCursorPosition < 4) {
+        item = &optionsScreen->metaItems[optionsScreen->prevCursorPosition];
         item->unk16 = baseXPos + 152;
         item->unk25 = 1;
 
-        if (optionsScreen->unk781 == 0) {
+        if (optionsScreen->prevCursorPosition == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
-            struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
-            for (i = 0; i < 6; i++, item++) {
-                item->unk16 = baseXPos + (i * 10 + 163);
-                item->unk25 = 8;
+            struct UNK_0808B3FC_UNK240* playerNameDisplayChar = optionsScreen->playerNameDisplay;
+            for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
+                playerNameDisplayChar->unk16 = baseXPos + (i * 10 + 163);
+                playerNameDisplayChar->unk25 = 8;
             }
         }
     }
@@ -872,8 +875,8 @@ static void Task_OptionsScreenMenuCursorMoveAnim(void) {
     }
 }
 
-static inline void sub_80644C4_A(struct OptionsScreen* optionsScreen, const s16* transitionFrames) {
-    s16 baseXPos = optionsScreen->subMenuXPos = transitionFrames[optionsScreen->subMenuAnimFrame];
+static inline void SubMenuAnimFrame(struct OptionsScreen* optionsScreen, const s16* animFrames) {
+    s16 baseXPos = optionsScreen->subMenuXPos = animFrames[optionsScreen->subMenuAnimFrame];
     struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->menuCursor];
 
     item->unk16 = baseXPos + 32;
@@ -888,7 +891,7 @@ static inline void sub_80644C4_A(struct OptionsScreen* optionsScreen, const s16*
             s16 i;
             struct UNK_0808B3FC_UNK240* item = optionsScreen->playerNameDisplay;
             
-            for (i = 0; i < 6; i++, item++) {
+            for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, item++) {
                 item->unk16 = baseXPos + (i * 10 + 163);
                 item->unk25 = 7;                    
             }
@@ -902,10 +905,10 @@ static inline void sub_80644C4_A(struct OptionsScreen* optionsScreen, const s16*
 static void Task_OptionsScreenSubMenuOpenAnim(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     
-    sub_80644C4_A(optionsScreen, gUnknown_080D9550);
+    SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnimFrames);
     OptionsScreenRenderUI();
 
-    if (++optionsScreen->subMenuAnimFrame > 15) {
+    if (++optionsScreen->subMenuAnimFrame >= 16) {
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForSubMenuExit;
     }
@@ -914,10 +917,10 @@ static void Task_OptionsScreenSubMenuOpenAnim(void) {
 static void Task_OptionsScreenSubMenuCloseAnim(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     
-    sub_80644C4_A(optionsScreen, gUnknown_080D9570);
+    SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnimFrames);
     OptionsScreenRenderUI();
 
-    if (++optionsScreen->subMenuAnimFrame > 15) {
+    if (++optionsScreen->subMenuAnimFrame >= 16) {
         ResetProfileScreensSubMenuVram();
         gCurTask->main = Task_OptionsScreenMain;
     }
@@ -934,8 +937,7 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void) {
     ResetProfileScreensVram();
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
-    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
-    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    SetupOptionScreenBackgrounds(optionsScreen->background, optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
     
     unk774->unk0 = 0;
@@ -959,8 +961,7 @@ static void Task_OptionsScreenWaitForSoundTestExit(void) {
     ResetProfileScreensVram();
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
-    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
-    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    SetupOptionScreenBackgrounds(optionsScreen->background, optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
     unk774->unk0 = 0;
@@ -992,8 +993,7 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void) {
     optionsScreen->language = language;
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
-    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1e,0x14,0,0,0,0);
-    sub_806B854(&optionsScreen->unk3A4,1,0xe,0x86,0x1e,0x14,0,1,0,0);
+    SetupOptionScreenBackgrounds(optionsScreen->background, optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
     unk774->unk0 = 0;
@@ -1049,7 +1049,7 @@ static void CreatePlayerDataMenu(struct OptionsScreen* optionsScreen) {
 
     playerDataMenu->optionsScreen = optionsScreen;
     playerDataMenu->menuCursor = initialCursorIndex;
-    playerDataMenu->unk161 = 0;
+    playerDataMenu->animFrame = 0;
     playerDataMenu->language = optionsScreen->language;
 
     PlayerDataMenuCreateUI(playerDataMenu);
@@ -1153,8 +1153,8 @@ static void Task_PlayerDataMenuOpenAnimWait(void) {
 
     PlayerDataMenuRenderUI();
 
-    if (++playerDataMenu->unk161 > 15) {
-        playerDataMenu->unk161 = 0;
+    if (++playerDataMenu->animFrame >= 16) {
+        playerDataMenu->animFrame = 0;
         gCurTask->main = Task_PlayerDataMenuMain;
     }
 }
@@ -1240,7 +1240,7 @@ static void Task_PlayerDataMenuCloseAnim(void) {
     
     menuItemOutline->unk16 = baseXPos + 254;
 
-    if (++playerDataMenu->unk161 < 15) {
+    if (++playerDataMenu->animFrame < 15) {
         PlayerDataMenuRenderUI();
     } else {
         TaskDestroy(gCurTask);
@@ -1255,9 +1255,7 @@ static inline void OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMen
     OptionsScreenInitRegisters(playerDataMenu->optionsScreen, OPTIONS_SCREEN_STATE_SUB_MENU_OPEN);
     
     optionsScreen = playerDataMenu->optionsScreen;
-    sub_806B854(&optionsScreen->unk364,0,7,0x85,0x1E,0x14,0,0,0,0);
-    sub_806B854(&optionsScreen->unk3A4,1,0xE, 0x86,0x1E,0x14,0,1,0,0);
-    
+    SetupOptionScreenBackgrounds(optionsScreen->background, optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(playerDataMenu->optionsScreen, 1);
     PlayerDataMenuCreateUI(playerDataMenu);
 
@@ -2520,7 +2518,7 @@ static void CreateDeleteScreen(struct OptionsScreen* optionsScreen) {
 
     deleteScreen->optionsScreen = optionsScreen;
     deleteScreen->confirmationCursor = 1;
-    deleteScreen->unk141 = 0;
+    deleteScreen->unusedUnk141 = FALSE;
     deleteScreen->language = optionsScreen->language;
     deleteScreen->deleteConfirmed = 0;
 
@@ -3530,11 +3528,11 @@ static void CreateTimeRecordsScreen(struct PlayerDataMenu* playerProfileMenu) {
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
     timeRecordsScreen->animFrame = 0;
-    timeRecordsScreen->unk708 = 0;
+    timeRecordsScreen->unusedUnk708 = FALSE;
     timeRecordsScreen->availableCharacters = i;
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        timeRecordsScreen->characterZones[i] = gLoadedSaveGame->unk7[i];
+        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unk7[i];
     }
 
     timeRecordsScreen->language = playerProfileMenu->language;
@@ -3571,8 +3569,8 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(struct TimeRecordsScr
     unk270->unk6 = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
-    sub_806B854(&timeRecordsScreen->unk204,0,7,0x89,0x1e,0x14,0,0,0,0);
-    sub_806B854(&timeRecordsScreen->unk244,1,0xF,0x8A,0x1e,0x14,0,1,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,0,7,0x89,0x1e,0x14,0,0,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter,1,0xF,0x8A,0x1e,0x14,0,1,0,0);
 }
 
 static void TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
@@ -3710,11 +3708,11 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu* playerPr
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
     timeRecordsScreen->animFrame = 0;
-    timeRecordsScreen->unk708 = 0;
+    timeRecordsScreen->unusedUnk708 = FALSE;
     timeRecordsScreen->availableCharacters = i;
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        timeRecordsScreen->characterZones[i] = gLoadedSaveGame->unk7[i];
+        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unk7[i];
     }
 
     timeRecordsScreen->language = playerProfileMenu->language;
@@ -3776,9 +3774,9 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(struct TimeRecordsSc
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    sub_806B854(&timeRecordsScreen->unkC,0,7,0x8B,0x1e,0x14,0,0,0,0);
-    sub_806B854(&timeRecordsScreen->unk204,1,0x16,gUnknown_080D9590[character][0],9,0x14,0,1,0,0);
-    sub_806B854(&timeRecordsScreen->unk244,2,0x1E,gUnknown_080D9590[character][1],9,0x14,0,2,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewBackground,0,7,0x8B,0x1e,0x14,0,0,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,1,0x16,gUnknown_080D9590[character][0],9,0x14,0,1,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter,2,0x1E,gUnknown_080D9590[character][1],9,0x14,0,2,0,0);
 }
 
 static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
@@ -4016,8 +4014,8 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void) {
     gBgScrollRegs[2][0] = 0xFF10;
     gBgScrollRegs[2][1] = 0x10;
 
-    sub_806B854(&timeRecordsScreen->unk204, 1, 0x16, gUnknown_080D9590[character][0], 9, 0x14, 0, 1, 0, 0);
-    sub_806B854(&timeRecordsScreen->unk244, 2, 0x1E, gUnknown_080D9590[character][1], 9, 0x14, 0, 2, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, gUnknown_080D9590[character][0], 9, 0x14, 0, 1, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E, gUnknown_080D9590[character][1], 9, 0x14, 0, 2, 0, 0);
 
     gCurTask->main = Task_TimeRecordsScreenCharacterChangeAnimIn;
 }
@@ -4093,20 +4091,20 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame) {
 
 static void Task_TimeRecordsScreenCoursesViewMain(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
-    s16 availableZones = timeRecordsScreen->characterZones[timeRecordsScreen->character];
+    s16 availableCourses = timeRecordsScreen->unlockedCourses[timeRecordsScreen->character];
     s32 temp;
-    if (availableZones == 0) {
-        availableZones = 1;
+    if (availableCourses == 0) {
+        availableCourses = 1;
     }
     // Possibly some macro
-    temp = (u16)availableZones;
+    temp = (u16)availableCourses;
     if (temp > 0x1B) {
-        availableZones = 0x1B;
+        availableCourses = 0x1B;
     }
     TimeRecordsScreenRenderCoursesViewUI(0);
 
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
-        if (timeRecordsScreen->view == TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK && availableZones == 1) {
+        if (timeRecordsScreen->view == TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK && availableCourses == 1) {
             return;
         }
 
@@ -4119,8 +4117,8 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                             timeRecordsScreen->zone--;
                             timeRecordsScreen->act = 1;
                         } else {
-                            timeRecordsScreen->zone = availableZones >> 2;
-                            timeRecordsScreen->act = (availableZones & 3) != 1;
+                            timeRecordsScreen->zone = availableCourses >> 2;
+                            timeRecordsScreen->act = (availableCourses & 3) != 1;
                         }
                         gCurTask->main = Task_TimeRecordsScreenHandleCourseChange;
                         return;
@@ -4154,8 +4152,8 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                 if (timeRecordsScreen->view == TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK) {
                     s32 r5;
                     s16 r1;
-                    s32 backup = availableZones;
-                    availableZones >>= 2;
+                    s32 backup = availableCourses;
+                    availableCourses >>= 2;
                     r1 = backup & 3;
                     r5 = r1 != 1;
                     if (timeRecordsScreen->act > 0) {
@@ -4166,13 +4164,13 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                             timeRecordsScreen->zone = 0;
                         }
 
-                        if (timeRecordsScreen->zone > availableZones) {
+                        if (timeRecordsScreen->zone > availableCourses) {
                             timeRecordsScreen->zone = 0;
                             timeRecordsScreen->act = 0;
                         }
                     } else {
                         timeRecordsScreen->act++;
-                        if (timeRecordsScreen->zone >= availableZones
+                        if (timeRecordsScreen->zone >= availableCourses
                             && timeRecordsScreen->act > r5) {
                             timeRecordsScreen->zone = 0;
                             timeRecordsScreen->act = 0;
@@ -4366,9 +4364,9 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
     struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
 
     s16 temp, i, j;
-    s16 availableZones = timeRecordsScreen->characterZones[timeRecordsScreen->character];
-    if (availableZones == 0) {
-        availableZones = 1;
+    s16 availableCourses = timeRecordsScreen->unlockedCourses[timeRecordsScreen->character];
+    if (availableCourses == 0) {
+        availableCourses = 1;
     }
 
     for (i = 0; i < 3; i++, unk284++) {
@@ -4386,7 +4384,7 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
             4 : 
             2;
     temp = timeRecordsScreen->view == TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK && 
-        availableZones < 2 ? 
+        availableCourses < 2 ? 
             0 : 
             j;
 
@@ -4447,9 +4445,9 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu
 
     profileData = &playerDataMenu->optionsScreen->profileData;
     memcpy(multiplayerRecordsScreen->playerName, profileData->playerName, 12);
-    multiplayerRecordsScreen->playerWins = profileData->unk34C;
-    multiplayerRecordsScreen->playerLoses = profileData->unk34D;
-    multiplayerRecordsScreen->playerDraws = profileData->unk34E;
+    multiplayerRecordsScreen->playerWins = profileData->multiplayerWins;
+    multiplayerRecordsScreen->playerLoses = profileData->multiplayerLoses;
+    multiplayerRecordsScreen->playerDraws = profileData->multiplayerDraws;
 
     rows = multiplayerRecordsScreen->table->rows;
     for (i = 0; i < MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS; i++) {
@@ -4598,7 +4596,7 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 i) {
     }
 
     yPos = i * 18 + 90;
-    unk10 = row->unk10;
+    unk10 = row->nameDisplay;
     
     for (j = 0, xPos = 34; j < MAX_PLAYER_NAME_LENGTH; j++, unk10++, xPos+= 12) {
         u16 nameChar = row->playerName[j];
@@ -4627,22 +4625,22 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 i) {
     yPos += 6; 
 
     E60Val = &E60[wins / 10];
-    sub_806A568(&row->unk130[0],0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->winsDigits[0],0,E60Val->unk4,E60Val->unk0,0x2000,0x7C,yPos,0xD,E60Val->unk2,0);
 
     E60Val = &E60[wins % 10];
-    sub_806A568(&row->unk130[1],0,E60Val->unk4,E60Val->unk0,0x2000,0x84,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->winsDigits[1],0,E60Val->unk4,E60Val->unk0,0x2000,0x84,yPos,0xD,E60Val->unk2,0);
 
     E60Val = &E60[loses / 10];
-    sub_806A568(&row->unk190[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->losesDigits[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xA4,yPos,0xD,E60Val->unk2,0);
 
     E60Val = &E60[loses % 10];
-    sub_806A568(&row->unk190[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->losesDigits[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xAC,yPos,0xD,E60Val->unk2,0);
 
     E60Val = &E60[draws / 10];
-    sub_806A568(&row->unk1F0[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->defeatsDigits[0],0,E60Val->unk4,E60Val->unk0,0x2000,0xCC,yPos,0xD,E60Val->unk2,0);
 
     E60Val = &E60[draws % 10];
-    sub_806A568(&row->unk1F0[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,yPos,0xD,E60Val->unk2,0);
+    sub_806A568(&row->defeatsDigits[1],0,E60Val->unk4,E60Val->unk0,0x2000,0xD4,yPos,0xD,E60Val->unk2,0);
 }
 
 static void Task_MultiplayerRecordsScreenMain(void) {
@@ -4717,22 +4715,22 @@ static void Task_MultiplayerRecordsScreenScrollAnim(void) {
     for (i = 0; i < numVisibleRows; i++, yPos += 18, row++) {
         struct UNK_0808B3FC_UNK240* unk10, *unk130, *unk190, *unk1F0;
         
-        unk10 = row->unk10;
+        unk10 = row->nameDisplay;
         for (j = 0; j < 6; j++, unk10++) {
             unk10->unk18 = yPos;
         }
 
-        unk130 = row->unk130;
+        unk130 = row->winsDigits;
         for (j = 0; j < 2; j++, unk130++) {
             unk130->unk18 = yPos + 6;
         }
 
-        unk190 = row->unk190;
+        unk190 = row->losesDigits;
         for (j = 0; j < 2; j++, unk190++) {
             unk190->unk18 = yPos + 6;
         }
 
-        unk1F0 = row->unk1F0;
+        unk1F0 = row->defeatsDigits;
         for (j = 0; j < 2; j++, unk1F0++) {
             unk1F0->unk18 = yPos + 6;
         }
@@ -4810,13 +4808,13 @@ static void MultiplayerRecordsScreenRenderUI(void) {
             continue;
         }
 
-        for (unk14C = row->unk10, j = 0; j < 6; j++, unk14C++) {
+        for (unk14C = row->nameDisplay, j = 0; j < 6; j++, unk14C++) {
             sub_80051E8(unk14C);
         }
 
-        unk26C = row->unk130;
-        unk2CC = row->unk190;
-        unk32C = row->unk1F0;
+        unk26C = row->winsDigits;
+        unk2CC = row->losesDigits;
+        unk32C = row->defeatsDigits;
 
         sub_80051E8(unk26C);
         ++unk26C;
@@ -4888,27 +4886,27 @@ void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
 //
 // Would match without this as inline if we used sub_806BA14 with -O3
 // but then otherstuff doesn't match. Leaving for now
-static inline bool16 sub_806A664_A(s16 a, u16 b) {
+static inline bool16 sub_806A664_A(s16 mode, u16 inputCharacter) {
     u16 unk5C4[2];
     u16 unk5C8[5];
-    u16 *cursor; 
+    u16 *character; 
 
     memcpy(unk5C4, gUnknown_080D95C4, 4);
     memcpy(unk5C8, gUnknown_080D95C8, 10);
 
-    cursor = unk5C4;
-    if (a == 1) {
-        cursor = unk5C8;
+    character = unk5C4;
+    if (mode == 1) {
+        character = unk5C8;
     } else {
-        cursor = unk5C4;
+        character = unk5C4;
     }
 
-    if (a == 1 && b == 2) {
+    if (mode == 1 && inputCharacter == 2) {
         return TRUE;
     }
     
-    for (; *cursor != PLAYER_NAME_END_CHAR; cursor++) {
-        if (b >= *cursor && b <= *cursor + 4) {
+    for (; *character != PLAYER_NAME_END_CHAR; character++) {
+        if (inputCharacter >= *character && inputCharacter <= *character + 4) {
             return TRUE;
         }
     }
@@ -4917,7 +4915,7 @@ static inline bool16 sub_806A664_A(s16 a, u16 b) {
 }
 
 // Feels like it should be part of the UI module at the end but is declared here instead
-static u16 sub_806A664(s16 a, u16 b) {
+static u16 sub_806A664(s16 mode, u16 inputCharacter) {
     u16 unk5D2[2];
     u16 unk5D6[4][2];
     s16 i;
@@ -4925,42 +4923,41 @@ static u16 sub_806A664(s16 a, u16 b) {
     memcpy(unk5D2, gUnknown_080D95D2, 4);
     memcpy(unk5D6, gUnknown_080D95D6, 16);
 
-    if (!sub_806A664_A(a, b)) {
-        return b;
+    if (!sub_806A664_A(mode, inputCharacter)) {
+        return inputCharacter;
     }
 
-    if (a == 1 && b == 2) {
+    if (mode == 1 && inputCharacter == 2) {
         return 0x10B;
-    } else if (a == 1) {
+    } else if (mode == 1) {
         for (i = 0; i < 4; i++) {
-            if (b >= unk5D6[i][0] && b <= unk5D6[i][0] + 4) {
-                return (b + unk5D6[i][1] - unk5D6[i][0]);
+            if (inputCharacter >= unk5D6[i][0] && inputCharacter <= unk5D6[i][0] + 4) {
+                return (inputCharacter + unk5D6[i][1] - unk5D6[i][0]);
             }
         }
-    } else if (b >= unk5D2[0] && b <= unk5D2[0] + 4) {
-        return (b + unk5D2[1] - unk5D2[0]);
+    } else if (inputCharacter >= unk5D2[0] && inputCharacter <= unk5D2[0] + 4) {
+        return (inputCharacter + unk5D2[1] - unk5D2[0]);
     }
 
-    return b;
+    return inputCharacter;
 }
 
 static void OptionsScreenTaskDestroyHandler(struct Task* optionsScreenTask) {
     // unimplemented
 }
 
-static void Task_ShowOptionsScreen(void) {
+static void Task_OptionsScreenShow(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
-    sub_806A794(optionsScreen);
+    SetupOptionScreenBackgroundsUI(optionsScreen);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
     gCurTask->main = Task_OptionScreenFadeIn;
 }
 
-static void sub_806A794(struct OptionsScreen* optionsScreen) {
-    sub_806B854(&optionsScreen->unk364, 0, 7, 0x85, 0x1E, 0x14, 0, 0, 0, 0);
-    sub_806B854(&optionsScreen->unk3A4, 1, 0xE, 0x86, 0x1E, 0x14, 0, 1, 0, 0);
+static void SetupOptionScreenBackgroundsUI(struct OptionsScreen* optionsScreen) {
+    SetupOptionScreenBackgrounds(optionsScreen->background, optionsScreen->subMenuBackground);
 }
 
 static void Task_OptionScreenFadeIn(void) {
