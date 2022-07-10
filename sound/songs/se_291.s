@@ -82,8 +82,8 @@ song0291_1:	@ 0x08C846D4
 	.byte	FINE
 
 	.align 2
-	.global song0291
-song0291:	@ 0x08C8472C
+	.global se_291
+se_291:	@ 0x08C8472C
 	.byte	1		@ trackCount
 	.byte	0		@ blockCount
 	.byte	20		@ priority

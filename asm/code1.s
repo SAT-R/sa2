@@ -6243,7 +6243,7 @@ sub_800AEA0: @ 0x0800AEA0
 	cmp r0, #0
 	beq _0800AF84
 	ldr r4, _0800AF78 @ =gMPlayInfo_SE2
-	ldr r1, _0800AF7C @ =song0117
+	ldr r1, _0800AF7C @ =se_ring_copy
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -6270,11 +6270,11 @@ _0800AF6C: .4byte IWRAM_START + 0x25
 _0800AF70: .4byte gUnknown_030053F0
 _0800AF74: .4byte IWRAM_START + 0x30
 _0800AF78: .4byte gMPlayInfo_SE2
-_0800AF7C: .4byte song0117
+_0800AF7C: .4byte se_ring_copy
 _0800AF80: .4byte 0x0000FFFF
 _0800AF84:
 	ldr r4, _0800AFC0 @ =gMPlayInfo_SE1
-	ldr r1, _0800AFC4 @ =song0117
+	ldr r1, _0800AFC4 @ =se_ring_copy
 	adds r0, r4, #0
 	bl MPlayStart
 	adds r0, r4, #0
@@ -6302,7 +6302,7 @@ _0800AFB2:
 	bx r0
 	.align 2, 0
 _0800AFC0: .4byte gMPlayInfo_SE1
-_0800AFC4: .4byte song0117
+_0800AFC4: .4byte se_ring_copy
 _0800AFC8: .4byte 0x0000FFFF
 _0800AFCC: .4byte gUnknown_0300540C
 
