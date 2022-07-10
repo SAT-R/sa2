@@ -1088,8 +1088,8 @@ sSubMenuOpenAnimFrames:
 sSubMenuCloseAnimFrames:
     .incbin "baserom.gba", 0x000D9570, 0x20
 
-    .global gUnknown_080D9590
-gUnknown_080D9590:
+    .global sTimeRecordsCharacterBackgrounds
+sTimeRecordsCharacterBackgrounds:
     .incbin "baserom.gba", 0x000D9590, 0x14
 
     .global gUnknown_080D95A4
@@ -1172,24 +1172,24 @@ sLanguageScreenEditControlsText:
 sLanguageScreenNewControlsText:
     .incbin "baserom.gba", 0x000D9AE0, 0x30
 
-    .global gUnknown_080D9B10
-gUnknown_080D9B10:
+    .global sLanguageScreenOptionsText
+sLanguageScreenOptionsText:
     .incbin "baserom.gba", 0x000D9B10, 0x30
 
-    .global gUnknown_080D9B40
-gUnknown_080D9B40:
+    .global sDeleteScreenConfirmTitleText
+sDeleteScreenConfirmTitleText:
     .incbin "baserom.gba", 0x000D9B40, 0x30
 
-    .global sDeleteScreenAbsoluteConfirmationMessages
-sDeleteScreenAbsoluteConfirmationMessages:
+    .global sDeleteScreenAbsoluteConfirmTitleText
+sDeleteScreenAbsoluteConfirmTitleText:
     .incbin "baserom.gba", 0x000D9B70, 0x30
 
-    .global gUnknown_080D9BA0
-gUnknown_080D9BA0:
+    .global sDeleteScreenControlsText
+sDeleteScreenControlsText:
     .incbin "baserom.gba", 0x000D9BA0, 0x30
 
-    .global gUnknown_080D9BD0
-gUnknown_080D9BD0:
+    .global sDeleteScreenOptionsText
+sDeleteScreenOptionsText:
     .incbin "baserom.gba", 0x000D9BD0, 0x60
 
     .global sPlayerDataMenuTitleText
