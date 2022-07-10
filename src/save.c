@@ -8,6 +8,45 @@
 #include "random.h"
 #include "constants/text.h"
 
+struct SaveSectorHeader {
+    u32 security, version;
+};
+
+struct SaveSectorData {
+    struct SaveSectorHeader header;
+    u32 unk8;
+
+    u16 playerName[MAX_PLAYER_NAME_LENGTH];
+
+    u8 language;
+    u8 gamePlayOptions;
+
+    u8 unk1A;
+
+    u8 unlocks;
+
+    u8 unk1C;
+    u8 unk1D;
+    u8 unk1E;
+
+    u8 unlockedCourses[NUM_CHARACTERS];
+    u8 unk24[NUM_CHARACTERS];
+
+    u8 multiplayerWins;
+    u8 multiplayerLoses;
+    u8 multiplayerDraws;
+
+    // timeRecords
+    struct TimeRecords timeRecords;
+
+    struct MultiplayerScore multiplayerScores[10];
+
+    u32 id;
+
+    u32 unk370;
+    u32 checksum;
+};
+
 // TODO: Move refernce these in iwram
 // TODO: make static, only used here
 struct SaveGame* gLastWrittenSaveGame;
@@ -44,6 +83,14 @@ static bool16 HasChangesToSave(void);
 #define UNLOCK_FLAG_BOSS_TA 1 << 4
 #define UNLOCK_FLAG_SOUND_TEST 1 << 5
 #define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
+
+#define GAME_PLAY_OPTION_DIFFICULTY_EASY 1
+#define GAME_PLAY_OPTION_TIME_LIMIT_ENABLED 2
+
+// If the sector's security field is not this value then the sector is either invalid or empty.
+#define SECTOR_SECURITY_NUM 0x4547474D
+#define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
+#define NUM_SAVE_SECTORS 10
 
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
@@ -107,13 +154,13 @@ static void InitSaveGameSectorData(struct SaveSectorData* save) {
     save->language = LANG_ENGLISH;
     save->unlocks = 0;
     save->unk1A = 0;
-    save->unk19 = 0;
+    save->gamePlayOptions = 0;
     save->unk1C = 1;
     save->unk1D = 2;
     save->unk1E = 4;
-    save->unk29 = 0;
-    save->unk2A = 0;
-    save->unk2B = 0;
+    save->multiplayerWins = 0;
+    save->multiplayerLoses = 0;
+    save->multiplayerDraws = 0;
 
     record = (u16*)save->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
@@ -183,17 +230,18 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     memcpy(save->playerName, gameState->unk20, sizeof(gameState->unk20));
     save->language = gameState->unk6;
 
-    save->unk19 = 0;
-    if (gameState->unk4) {
-        save->unk19 = 1;
+    save->gamePlayOptions = 0;
+    if (gameState->unk4 != 0) {
+        save->gamePlayOptions |= GAME_PLAY_OPTION_DIFFICULTY_EASY;
     }
 
     if (gameState->unk5) {
-        save->unk19 |= 2;
+        save->gamePlayOptions |= GAME_PLAY_OPTION_TIME_LIMIT_ENABLED;
     }
+
     save->unk1A = 0;
     if (gameState->unk19) {
-        save->unk1A = 1;
+        save->unk1A |= 1;
     }
     if (gameState->unk1A) {
         save->unk1A |= (gameState->unk1A << 1) & 6;
@@ -213,9 +261,10 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     if (gameState->unk18) {
         save->unk1A |= 0x80;
     }
+
     save->unlocks = 0;
     if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM))) {
-        save->unlocks = UNLOCK_FLAG_CREAM;
+        save->unlocks |= UNLOCK_FLAG_CREAM;
     }
     if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS))) {
         save->unlocks |= UNLOCK_FLAG_TAILS;
@@ -272,17 +321,17 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
             break;
     }
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < NUM_CHARACTERS; i++) {
         save->unlockedCourses[i] = gameState->unk7[i];
     }
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < NUM_CHARACTERS; i++) {
         save->unk24[i] = gameState->unkC[i];
     }
 
-    save->unk29 = gameState->unk1C;
-    save->unk2A = gameState->unk1D;
-    save->unk2B = gameState->unk1E;
+    save->multiplayerWins = gameState->unk1C;
+    save->multiplayerLoses = gameState->unk1D;
+    save->multiplayerDraws = gameState->unk1E;
 
     memcpy(&save->timeRecords, &gameState->unk34, sizeof(gameState->unk34));
     memcpy(save->multiplayerScores, gameState->unk2AC, sizeof(gameState->unk2AC));
@@ -481,12 +530,12 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     gameState->unk0 = save->unk8;
     gameState->unk6 = save->language;
 
-    if ((save->unk19 & 1)) {
+    if (save->gamePlayOptions & GAME_PLAY_OPTION_DIFFICULTY_EASY) {
         gameState->unk4 = 1;
     }
 
-    if ((save->unk19 & 2)) {
-        gameState->unk5 = 1;
+    if (save->gamePlayOptions & GAME_PLAY_OPTION_TIME_LIMIT_ENABLED) {
+        gameState->unk5 = TRUE;
     }
 
     if ((save->unk1A & 1)) {
@@ -513,32 +562,32 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
 
     gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
 
-    if ((save->unlocks & UNLOCK_FLAG_CREAM)) {
+    if (save->unlocks & UNLOCK_FLAG_CREAM) {
         gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM);
     }
-    if ((save->unlocks & UNLOCK_FLAG_TAILS)) {
+    if (save->unlocks & UNLOCK_FLAG_TAILS) {
         gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS);
     }
-    if ((save->unlocks & UNLOCK_FLAG_KNUCKLES)) {
+    if (save->unlocks & UNLOCK_FLAG_KNUCKLES) {
         gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES);
     }
-    if ((save->unlocks & UNLOCK_FLAG_AMY)) {
+    if (save->unlocks & UNLOCK_FLAG_AMY) {
         gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
     }
 
-    if ((save->unlocks & UNLOCK_FLAG_SOUND_TEST)) {
+    if (save->unlocks & UNLOCK_FLAG_SOUND_TEST) {
         gameState->unk11 = TRUE;
     } else {
         gameState->unk11 = FALSE;
     }
 
-    if ((save->unlocks & UNLOCK_FLAG_BOSS_TA)) {
+    if (save->unlocks & UNLOCK_FLAG_BOSS_TA) {
         gameState->unk12 = TRUE;
     } else {
         gameState->unk12 = FALSE;
     }
 
-    if ((save->unlocks & UNLOCK_FLAG_CHAO_GARDEN)) {
+    if (save->unlocks & UNLOCK_FLAG_CHAO_GARDEN) {
         gameState->unk14 = TRUE;
     } else {
         gameState->unk14 = FALSE;
@@ -586,9 +635,9 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
         gameState->unkC[i] = save->unk24[i];
     }
 
-    gameState->unk1C = save->unk29;
-    gameState->unk1D = save->unk2A;
-    gameState->unk1E = save->unk2B;
+    gameState->unk1C = save->multiplayerWins;
+    gameState->unk1D = save->multiplayerLoses;
+    gameState->unk1E = save->multiplayerDraws;
     memcpy(&gameState->unk34, &save->timeRecords, sizeof(save->timeRecords));
     memcpy(gameState->unk2AC, save->multiplayerScores, sizeof(save->multiplayerScores));
     gameState->unk374 = save->unk370;

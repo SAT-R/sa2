@@ -71,7 +71,7 @@ struct TimeRecordDisplay {
 struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 coursesViewBackground;
-    struct UNK_0808B3FC_UNK240 choiceViewItems[2];
+    struct UNK_0808B3FC_UNK240 choiceViewItemsOrZoneText[2];
     struct UNK_0808B3FC_UNK240 unkAC[2];
     struct UNK_0808B3FC_UNK240 choiceViewTitle;
     struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[2];
