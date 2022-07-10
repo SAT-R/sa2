@@ -1076,8 +1076,8 @@ gUnknown_080D94F8:
 gUnknown_080D9518:
     .incbin "baserom.gba", 0x000D9518, 0x28
 
-    .global gUnknown_080D9540
-gUnknown_080D9540:
+    .global sMenuCursorMoveAnims
+sMenuCursorMoveAnims:
     .incbin "baserom.gba", 0x000D9540, 0x10
 
     .global sSubMenuOpenAnimFrames

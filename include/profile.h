@@ -4,6 +4,7 @@
 #include "global.h"
 #include "save.h"
 #include "sprite.h"
+#include "constants/text.h"
 
 #define NEW_PROFILE_NAME_MULTIPLAYER 0
 #define NEW_PROFILE_NAME_START_GAME 1
@@ -105,8 +106,8 @@ struct TimeRecordsScreen {
 
 struct LanguageScreen {
     struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 menuItems[6];
-    struct UNK_0808B3FC_UNK240 menuItemOutline;
+    struct UNK_0808B3FC_UNK240 languageOptions[NUM_LANGUAGES];
+    struct UNK_0808B3FC_UNK240 optionOutline;
     struct Unk_03002400 unk1B0;
     struct UNK_802D4CC_UNK270 unk1F0;
     // option screen
@@ -200,10 +201,10 @@ struct ButtonConfigMenu {
 }; /* size 0x24C */
 
 struct DeleteScreen {
-    struct UNK_0808B3FC_UNK240 unk0[2];
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
     struct UNK_0808B3FC_UNK240 unk60[2];
     struct UNK_0808B3FC_UNK240 unkC0;
-    struct Unk_03002400 unk1F0;
+    struct Unk_03002400 background;
     struct UNK_802D4CC_UNK270 unk130;
     struct OptionsScreen* optionsScreen; 
     s8 confirmationCursor;
