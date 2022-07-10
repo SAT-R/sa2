@@ -1377,7 +1377,7 @@ static void Task_JumpToPlayModeMenu(void) {
     ShowGameLogo(titleScreen);
     
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
-        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PlayModeMenuMain;
     }
@@ -1398,7 +1398,7 @@ static void Task_JumpToSinglePlayerMenu(void) {
     ShowGameLogo(titleScreen);
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
-        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_SinglePlayerMenuMain;
     }
@@ -1799,7 +1799,7 @@ static void Task_ShowPressStartMenu(void) {
     ShowGameLogo(titleScreen);
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
-        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PressStartMenuMain;
     }
@@ -1850,7 +1850,7 @@ static void Task_IntroWaitUntilTitleScreenFanfare(void) {
     if (titleScreen->animFrame > FRAME_TIME_SECONDS(1)) {
         gFlags &= ~0x4;
         titleScreen->animFrame = 0;
-        m4aSongNumStart(SS_TITLE_SCREEN_ANNOUNCEMENT);
+        m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         gCurTask->main = Task_PressStartMenuMain;
     }
     titleScreen->animFrame++;
