@@ -8,6 +8,7 @@
 #define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
 #define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
 #define TIME_RECORDS_PER_COURSE 3
+#define NUM_MULTIPLAYER_SCORES 10
 
 #define MAX_PLAYER_NAME_LENGTH 6
 #define PLAYER_NAME_END_CHAR 0xFFFF
@@ -99,7 +100,7 @@ struct SaveGame {
     struct TimeRecords unk34;
 
     // multiplayerScores
-    struct MultiplayerScore unk2AC[10];
+    struct MultiplayerScore unk2AC[NUM_MULTIPLAYER_SCORES];
 
     u32 unk374;
 };

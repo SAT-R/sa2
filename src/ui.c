@@ -30,8 +30,8 @@ void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, 
     sub_8002A3C(unk2400);
 }
 
-// Finds the min unk4 of the item text array
-s32 sub_806B8D4(const struct UNK_080D95E8* itemText, s8 length) {
+// Finds the max unk4 of the item text array
+s32 MaxSpriteSize(const struct UNK_080D95E8* itemText, s8 length) {
     s32 result = 0;
     s16 i;
 

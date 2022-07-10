@@ -59,8 +59,9 @@ struct UNK_0808B3FC_UNK240 {
 
     u32 unkC;
 
-    // I believe Unk_03002400 should be using this
+    // assetId
     u32 unk10;
+
     u16 unk14;
 
     // x

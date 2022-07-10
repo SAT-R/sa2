@@ -1224,12 +1224,12 @@ sProfileNameScreenEndButtonText:
 sScrollArrowTiles:
     .incbin "baserom.gba", 0x000D9DF0, 0x10
 
-    .global gUnknown_080D9E00
-gUnknown_080D9E00:
+    .global sMultiplayerRecordsTitleAndColumnHeadersText
+sMultiplayerRecordsTitleAndColumnHeadersText:
     .incbin "baserom.gba", 0x000D9E00, 0x60
 
-    .global gUnknown_080D9E60
-gUnknown_080D9E60:
+    .global sMultiplayerScoreDigitTiles
+sMultiplayerScoreDigitTiles:
     .incbin "baserom.gba", 0x000D9E60, 0x50
 
     .global sTimeRecordsChoiceViewTitles
@@ -1240,8 +1240,8 @@ sTimeRecordsChoiceViewTitles:
 sTimeRecordsScreenChoices:
     .incbin "baserom.gba", 0x000D9EE0, 0x60
 
-    .global gUnknown_080D9F40
-gUnknown_080D9F40:
+    .global sTimeRecordsZoneActTitleDigits
+sTimeRecordsZoneActTitleDigits:
     .incbin "baserom.gba", 0x000D9F40, 0x38
 
     .global sTimeRecordDigitTiles
@@ -1252,12 +1252,12 @@ sTimeRecordDigitTiles:
 gUnknown_080D9FC8:
     .incbin "baserom.gba", 0x000D9FC8, 0x8
 
-    .global gUnknown_080D9FD0
-gUnknown_080D9FD0:
+    .global sZoneNameTitles
+sZoneNameTitles:
     .incbin "baserom.gba", 0x000D9FD0, 0x150
 
-    .global gUnknown_080DA120
-gUnknown_080DA120:
+    .global sZoneBossTitles
+sZoneBossTitles:
     .incbin "baserom.gba", 0x000DA120, 0x5548
 
     .global gUnknown_080DF668

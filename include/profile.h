@@ -72,8 +72,8 @@ struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 coursesViewBackground;
     struct UNK_0808B3FC_UNK240 choiceViewItemsOrZoneText[2];
-    struct UNK_0808B3FC_UNK240 unkAC[2];
-    struct UNK_0808B3FC_UNK240 choiceViewTitle;
+    struct UNK_0808B3FC_UNK240 actText[2];
+    struct UNK_0808B3FC_UNK240 choiceViewTitleOrZoneSubTitle;
     struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[2];
     struct UNK_0808B3FC_UNK240 unk19C[2];
 
@@ -225,26 +225,24 @@ struct MultiplayerRecordRow {
     struct UNK_0808B3FC_UNK240 defeatsDigits[2];
 }; /* size 0x250 */
 
-#define MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS 10
-
 struct MultiplayerRecordsTable {
-   struct MultiplayerRecordRow rows[MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS];
+   struct MultiplayerRecordRow rows[NUM_MULTIPLAYER_SCORES];
 }; /* size 0x1720 */
 
 // MultiPlayerRecordsScreen
 struct MultiplayerRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
 
-    struct Unk_03002400 unkC;
-    struct Unk_03002400 unk4C;
+    struct Unk_03002400 backgroundTrims;
+    struct Unk_03002400 background;
 
-    struct UNK_0808B3FC_UNK240 unk8C;
-    struct UNK_0808B3FC_UNK240 unkBC;
-    struct UNK_0808B3FC_UNK240 unkEC[2];
-    struct UNK_0808B3FC_UNK240 unk14C[6];
-    struct UNK_0808B3FC_UNK240 unk26C[2];
-    struct UNK_0808B3FC_UNK240 unk2CC[2];
-    struct UNK_0808B3FC_UNK240 unk32C[2];
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 columnHeaders;
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
+    struct UNK_0808B3FC_UNK240 playerWinsDigits[2];
+    struct UNK_0808B3FC_UNK240 playerLosesDigits[2];
+    struct UNK_0808B3FC_UNK240 playerDrawsDigits[2];
 
     // playerDataMenu
     struct PlayerDataMenu* playerDataMenu;

@@ -39,7 +39,7 @@ struct SaveSectorData {
     // timeRecords
     struct TimeRecords timeRecords;
 
-    struct MultiplayerScore multiplayerScores[10];
+    struct MultiplayerScore multiplayerScores[NUM_MULTIPLAYER_SCORES];
 
     u32 id;
 
@@ -103,7 +103,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
     gameState->unk4 = 0;
     gameState->unk5 = 0;
-    gameState->unk6 = 2;
+    gameState->unk6 = LANG_ENGLISH;
     gameState->unk20[0] = PLAYER_NAME_END_CHAR;
 
     p3 = &gameState->unk2C;
@@ -122,7 +122,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     gameState->unk1E = 0;
 
     p2 = gameState->unk2AC;
-    for (i = 0; i < 10; i++, p2++) {
+    for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++, p2++) {
         p2->unk10 = FALSE;
         p2->unk11 = 0;
         p2->unk12 = 0;
