@@ -33,8 +33,11 @@ struct MultiplayerScore {
 };
 
 struct ButtonConfig {
+    // jump
     u16 unk0;
+    // attack
     u16 unk2;
+    // trick
     u16 unk4;
 };
 

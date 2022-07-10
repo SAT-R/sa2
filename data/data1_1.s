@@ -1148,16 +1148,16 @@ sTimeLimitMenuTitleText:
 sTimeLimitMenuControlsText:
     .incbin "baserom.gba", 0x000D9918, 0x30
 
-    .global gUnknown_080D9948
-gUnknown_080D9948:
+    .global sButtonConfigTitleAndControlsText
+sButtonConfigTitleAndControlsText:
     .incbin "baserom.gba", 0x000D9948, 0x90
 
-    .global gUnknown_080D99D8
-gUnknown_080D99D8:
+    .global sButtonConfigButtonIcons
+sButtonConfigButtonIcons:
     .incbin "baserom.gba", 0x000D99D8, 0x18
 
-    .global gUnknown_080D99F0
-gUnknown_080D99F0:
+    .global sButtonConfigActionsText
+sButtonConfigActionsText:
     .incbin "baserom.gba", 0x000D99F0, 0x90
 
     .global sLanguageScreenTitles
