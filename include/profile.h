@@ -13,10 +13,8 @@ struct OptionsScreenProfileData {
     // playerName
     u16 playerName[MAX_PLAYER_NAME_LENGTH];
 
-    // timeRecords
-    struct TimeRecords unkC;
-    
-    struct MultiplayerScore unk284[10];
+    struct TimeRecords timeRecords;
+    struct MultiplayerScore multiplayerScores[10];
 
     u8 multiplayerWins;
     u8 multiplayerLoses;
@@ -32,7 +30,7 @@ struct OptionsScreen {
     // profileData
     struct OptionsScreenProfileData profileData;
 
-    u8 unk358;
+    u8 unusedUnk358;
     u8 difficultyLevel;
     u8 timeLimitEnabled;
 
@@ -57,7 +55,7 @@ struct OptionsScreen {
     struct UNK_802D4CC_UNK270 unk774;
     s8 menuCursor;
     s8 prevCursorPosition;
-    s8 unk782;
+    s8 initialSubMenuCursorPosition;
     s8 subMenuAnimFrame;
     s8 state;
 }; /* size 0x788 */
@@ -73,10 +71,10 @@ struct TimeRecordDisplay {
 struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct Unk_03002400 coursesViewBackground;
-    struct UNK_0808B3FC_UNK240 unk4C[2];
+    struct UNK_0808B3FC_UNK240 choiceViewItems[2];
     struct UNK_0808B3FC_UNK240 unkAC[2];
-    struct UNK_0808B3FC_UNK240 unk10C;
-    struct UNK_0808B3FC_UNK240 unk13C[2];
+    struct UNK_0808B3FC_UNK240 choiceViewTitle;
+    struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[2];
     struct UNK_0808B3FC_UNK240 unk19C[2];
 
     struct PlayerDataMenu* playerDataMenu;

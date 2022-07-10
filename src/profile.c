@@ -287,8 +287,8 @@ extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
 
 extern const struct UNK_080D95E8 sScrollArrowTiles[2];
 
-extern const struct UNK_080D95E8 gUnknown_080D9EB0[6];
-extern const struct UNK_080D95E8 gUnknown_080D9EE0[6][2];
+extern const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[6];
+extern const struct UNK_080D95E8 sTimeRecordsScreenChoices[6][2];
 extern const u16 gUnknown_080D9590[5][2];
 extern const struct UNK_080D95E8 gUnknown_080D9F40[7];
 extern const struct UNK_080D95E8 gUnknown_080D9FD0[6][7];
@@ -311,12 +311,12 @@ void CreateOptionsScreen(u16 p1) {
 
     GetProfileData(optionsScreen);
 
-    optionsScreen->unk358 = p1;
+    optionsScreen->unusedUnk358 = p1;
     optionsScreen->subMenuXPos = 0;
     optionsScreen->prevCursorPosition = 0;
     optionsScreen->subMenuAnimFrame = 0;
     optionsScreen->menuCursor = 0;
-    optionsScreen->unk782 = 0xFF;
+    optionsScreen->initialSubMenuCursorPosition = -1;
 
     ResetProfileScreensVram();
 
@@ -440,8 +440,8 @@ static void GetProfileData(struct OptionsScreen* optionsScreen) {
     s16 i;
 
     memcpy(profile->playerName, saveGame->unk20, sizeof(saveGame->unk20));
-    memcpy(&profile->unkC, &saveGame->unk34, sizeof(saveGame->unk34));
-    memcpy(profile->unk284, saveGame->unk2AC, sizeof(saveGame->unk2AC));
+    memcpy(&profile->timeRecords, &saveGame->unk34, sizeof(saveGame->unk34));
+    memcpy(profile->multiplayerScores, saveGame->unk2AC, sizeof(saveGame->unk2AC));
 
     profile->multiplayerWins = saveGame->unk1C;
     profile->multiplayerLoses = saveGame->unk1D;
@@ -492,9 +492,9 @@ static void SetProfileData(struct OptionsScreen* optionsScreen) {
     struct OptionsScreenProfileData* profile = &optionsScreen->profileData;
 
     memcpy(saveGame->unk20, profile->playerName, sizeof(profile->playerName));
-    memcpy(&saveGame->unk34, &profile->unkC, sizeof(profile->unkC));
+    memcpy(&saveGame->unk34, &profile->timeRecords, sizeof(profile->timeRecords));
 
-    memcpy(&saveGame->unk2AC[0], &profile->unk284[0], 0x14);
+    memcpy(&saveGame->unk2AC[0], &profile->multiplayerScores[0], 0x14);
 
     saveGame->unk1C = profile->multiplayerWins;
     saveGame->unk1D = profile->multiplayerLoses;
@@ -1044,15 +1044,15 @@ static void CreatePlayerDataMenu(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_PlayerDataMenuOpenAnimWait, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
     struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(t, playerDataMenu);
 
-    s16 initialCursorIndex;
-    if (optionsScreen->unk782 != -1) {
-        initialCursorIndex = optionsScreen->unk782; 
+    s16 initialCursorPos;
+    if (optionsScreen->initialSubMenuCursorPosition != -1) {
+        initialCursorPos = optionsScreen->initialSubMenuCursorPosition; 
     } else {
-        initialCursorIndex = 0;
+        initialCursorPos = 0;
     }
 
     playerDataMenu->optionsScreen = optionsScreen;
-    playerDataMenu->menuCursor = initialCursorIndex;
+    playerDataMenu->menuCursor = initialCursorPos;
     playerDataMenu->animFrame = 0;
     playerDataMenu->language = optionsScreen->language;
 
@@ -3574,77 +3574,99 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(struct TimeRecordsScr
 }
 
 static void TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
-    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->unk10C;
-    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->unk13C;
-    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
-    const struct UNK_080D95E8 *itemText1 = &gUnknown_080D9EB0[timeRecordsScreen->language];
-    const struct UNK_080D95E8 *itemText2 = gUnknown_080D9EE0[timeRecordsScreen->language];
+    struct UNK_0808B3FC_UNK240* title = &timeRecordsScreen->choiceViewTitle;
+    struct UNK_0808B3FC_UNK240* scrollArrow = timeRecordsScreen->choiceViewScrollArrows;
+    struct UNK_0808B3FC_UNK240* choiceItem = timeRecordsScreen->choiceViewItems;
+    const struct UNK_080D95E8 *titleText = &sTimeRecordsChoiceViewTitles[timeRecordsScreen->language];
+    const struct UNK_080D95E8 *choiceText = sTimeRecordsScreenChoices[timeRecordsScreen->language];
     
     // TODO: This X is a fake match, the compiler wants to use 0
     // from a register but won't do it without this
+#ifndef NON_MATCHING
     s32 x = 0x1000;
-
     ++x; --x;
+#endif
+
     sub_806A568(
-        unk10C, 
+        title, 
         0, 
-        itemText1->unk4,
-        itemText1->unk0,
+        titleText->unk4,
+        titleText->unk0,
+#ifndef NON_MATCHING
         x,
+#else
+        0x1000,
+#endif
         4, 
         0x1A,
         5,
-        itemText1->unk2,
+        titleText->unk2,
         0
     );
 
     sub_806A568(
-        unk4C, 
+        choiceItem, 
         0, 
-        itemText2->unk4,
-        itemText2->unk0,
+        choiceText->unk4,
+        choiceText->unk0,
+#ifndef NON_MATCHING
         x,
+#else
+        0x1000,
+#endif
         0x28, 
         0x54,
         5,
-        itemText2->unk2,
+        choiceText->unk2,
         0
     );
 
-    unk4C++;
-    itemText2++;
+    choiceItem++;
+    choiceText++;
     sub_806A568(
-        unk4C, 
+        choiceItem, 
         0, 
-        itemText2->unk4,
-        itemText2->unk0,
+        choiceText->unk4,
+        choiceText->unk0,
+#ifndef NON_MATCHING
         x,
+#else
+        0x1000,
+#endif
         0x86, 
         0x54,
         5,
-        itemText2->unk2,
+        choiceText->unk2,
         0
     );
 
     sub_806A568(
-        unk13C, 
+        scrollArrow, 
         0, 
         2,
         0x3B6,
+#ifndef NON_MATCHING
         x,
+#else
+        0x1000,
+#endif
         100, 
         0x4B,
         6,
         8,
         0
     );
-    unk13C++;
+    scrollArrow++;
     sub_806A568(
-        unk13C, 
+        scrollArrow, 
         0, 
         2,
         0x3B6,
+#ifndef NON_MATCHING
         x,
+#else
+        0x1000,
+#endif
         0x8C, 
         0x4B,
         6,
@@ -3655,7 +3677,7 @@ static void TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen* timeRe
 
 static void Task_TimeRecordsScreenModeChoiceMain(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
-    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->choiceViewItems;
     
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -3777,10 +3799,10 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(struct TimeRecordsSc
 
 static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
     struct UNK_0808B3FC_UNK240* unk284 = timeRecordsScreen->unk284;
-    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->choiceViewItems;
     struct UNK_0808B3FC_UNK240* unkAC = timeRecordsScreen->unkAC;
-    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->unk10C;
-    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->unk13C;
+    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->choiceViewTitle;
+    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->choiceViewScrollArrows;
     
     u8 language = timeRecordsScreen->language;
     u8 zone = timeRecordsScreen->zone;
@@ -3855,7 +3877,7 @@ static inline u16* LoadCourseTimes(struct TimeRecordsScreen* timeRecordsScreen) 
     // When the records are loaded from options we have to load the data from the options 
     // screen (though I don't understand why this wasn't done from the gLoadedSaveData)
     if (timeRecordsScreen->view != 2) {
-        return timeRecordsScreen->playerDataMenu->optionsScreen->profileData.unkC.table[timeRecordsScreen->character][timeRecordsScreen->zone][act];
+        return timeRecordsScreen->playerDataMenu->optionsScreen->profileData.timeRecords.table[timeRecordsScreen->character][timeRecordsScreen->zone][act];
     } else {
         return timeRecordsScreen->timeRecords->table[timeRecordsScreen->character][timeRecordsScreen->zone][act];
     }
@@ -4270,9 +4292,9 @@ static void Task_TimeRecordsScreenCharacterChangeAnimOut(void) {
 
 static void Task_TimeRecordsScreenHandleCourseChange(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
-    struct UNK_0808B3FC_UNK240* unk7C = &timeRecordsScreen->unk4C[1];
+    struct UNK_0808B3FC_UNK240* unk7C = &timeRecordsScreen->choiceViewItems[1];
     struct UNK_0808B3FC_UNK240* unkDC = &timeRecordsScreen->unkAC[1];
-    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->unk10C;
+    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->choiceViewTitle;
 
     u16 language = timeRecordsScreen->language;
     const struct UNK_080D95E8* F40 = &gUnknown_080D9F40[timeRecordsScreen->zone];
@@ -4352,10 +4374,10 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
     struct TimeRecordDisplay* timeRecord = timeRecordsScreen->timeDisplays;
     struct UNK_0808B3FC_UNK240* unk284 = timeRecordsScreen->unk284;
-    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->choiceViewItems;
     struct UNK_0808B3FC_UNK240* unkAC = timeRecordsScreen->unkAC;
-    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->unk10C;
-    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->unk13C;
+    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->choiceViewTitle;
+    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->choiceViewScrollArrows;
 
     struct UNK_0808B3FC_UNK240* unk60, *unk90, *unkF0, *unk0;
 
@@ -4448,7 +4470,7 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu
     rows = multiplayerRecordsScreen->table->rows;
     for (i = 0; i < MULTIPLAYER_RECORDS_SCREEN_NUM_RECORD_ROWS; i++) {
         for (j = 0; j < MAX_PLAYER_NAME_LENGTH; j++) {
-            rows[i].playerName[j] = profileData->unk284[i].unk4[j];
+            rows[i].playerName[j] = profileData->multiplayerScores[i].unk4[j];
             if (rows[i].playerName[j] == PLAYER_NAME_END_CHAR) {
                 break;
             }
@@ -4458,10 +4480,10 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu
             rows[i].playerName[j] = PLAYER_NAME_END_CHAR;
         }
 
-        rows[i].slotFilled = profileData->unk284[i].unk10;
-        rows[i].wins = profileData->unk284[i].unk11;
-        rows[i].loses = profileData->unk284[i].unk12;
-        rows[i].draws = profileData->unk284[i].unk13;
+        rows[i].slotFilled = profileData->multiplayerScores[i].unk10;
+        rows[i].wins = profileData->multiplayerScores[i].unk11;
+        rows[i].loses = profileData->multiplayerScores[i].unk12;
+        rows[i].draws = profileData->multiplayerScores[i].unk13;
     }
 
     ResetProfileScreensVram();
@@ -5608,9 +5630,9 @@ static void TimeRecordsScreenFadeOutToCoursesView(void) {
 static void TimeRecordsScreenRenderModeChoiceUI(void) {
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
 
-    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->unk10C;
-    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->unk13C;
-    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->unk4C;
+    struct UNK_0808B3FC_UNK240* unk10C = &timeRecordsScreen->choiceViewTitle;
+    struct UNK_0808B3FC_UNK240* unk13C = timeRecordsScreen->choiceViewScrollArrows;
+    struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->choiceViewItems;
     s16 i;
 
     sub_80051E8(unk10C);

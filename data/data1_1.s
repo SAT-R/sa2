@@ -1232,12 +1232,12 @@ gUnknown_080D9E00:
 gUnknown_080D9E60:
     .incbin "baserom.gba", 0x000D9E60, 0x50
 
-    .global gUnknown_080D9EB0
-gUnknown_080D9EB0:
+    .global sTimeRecordsChoiceViewTitles
+sTimeRecordsChoiceViewTitles:
     .incbin "baserom.gba", 0x000D9EB0, 0x30
 
-    .global gUnknown_080D9EE0
-gUnknown_080D9EE0:
+    .global sTimeRecordsScreenChoices
+sTimeRecordsScreenChoices:
     .incbin "baserom.gba", 0x000D9EE0, 0x60
 
     .global gUnknown_080D9F40
