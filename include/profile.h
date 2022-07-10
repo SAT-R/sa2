@@ -185,14 +185,14 @@ struct SwitchMenu {
 
 struct ButtonConfigMenu {
     struct OptionsScreen* optionsScreen;
-    struct UNK_0808B3FC_UNK240 unk4[6];
-    struct UNK_0808B3FC_UNK240 unk124[3];
-    struct UNK_0808B3FC_UNK240 unk1B4[2];
-    struct UNK_0808B3FC_UNK240 unk214;
-    u8 unk244;
-    u8 unk245;
-    u8 unk246;
-    u8 unk247;
+    struct UNK_0808B3FC_UNK240 staticElements[6];
+    struct UNK_0808B3FC_UNK240 buttonActions[3];
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct UNK_0808B3FC_UNK240 controlFocus;
+    u8 aButtonAction;
+    u8 bButtonAction;
+    u8 rShoulderAction;
+    u8 focus;
     s8 animFrame;
     s8 language;
 }; /* size 0x24C */

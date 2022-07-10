@@ -225,6 +225,14 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define MULTIPLAYER_RECORDS_SCREEN_NUM_VISIBLE_ROWS 4
 #define MULTIPLAYER_RECORDS_SCREEN_MAX_SCROLL_INDEX (NUM_MULTIPLAYER_SCORES - MULTIPLAYER_RECORDS_SCREEN_NUM_VISIBLE_ROWS)
 
+#define BUTTON_CONFIG_MENU_A_BUTTON 0
+#define BUTTON_CONFIG_MENU_B_BUTTON 1
+#define BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON 2
+
+#define BUTTON_CONFIG_MENU_ACTION_JUMP 0
+#define BUTTON_CONFIG_MENU_ACTION_ATTACK 1
+#define BUTTON_CONFIG_MENU_ACTION_TRICK 2
+
 #define SetupOptionScreenBackgrounds(background, subMenuBackground) ({ \
     sub_806B854(&(background), 0, 7, 0x85, 0x1E, 0x14, 0, 0, 0, 0); \
     sub_806B854(&(subMenuBackground), 1, 0xE, 0x86, 0x1E, 0x14, 0, 1, 0, 0); \
@@ -247,9 +255,9 @@ extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
 extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
 extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
 extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
-extern const struct UNK_080D95E8 gUnknown_080D9948[6][3];
-extern const struct UNK_080D95E8 gUnknown_080D99D8[3];
-extern const struct UNK_080D95E8 gUnknown_080D99F0[6][3];
+extern const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[6][3];
+extern const struct UNK_080D95E8 sButtonConfigButtonIcons[3];
+extern const struct UNK_080D95E8 sButtonConfigActionsText[6][3];
 
 extern const s16 sSubMenuOpenAnimFrames[16];
 extern const s8 sMenuCursorMoveAnims[2][8];
@@ -1710,185 +1718,197 @@ void CreateButtonConfigMenu(struct OptionsScreen* optionsScreen) {
     buttonConfigMenu->optionsScreen = optionsScreen;
     
     switch(optionsScreen->profileData.buttonConfig.unk0) {
-        case 1:
-            buttonConfigMenu->unk244 = 0;
+        case A_BUTTON:
+            buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_JUMP;
             break;
-        case 2:
-            buttonConfigMenu->unk245 = 0;
+        case B_BUTTON:
+            buttonConfigMenu->bButtonAction = BUTTON_CONFIG_MENU_ACTION_JUMP;
             break;
-        case 0x100:
-            buttonConfigMenu->unk246 = 0;
+        case R_BUTTON:
+            buttonConfigMenu->rShoulderAction = BUTTON_CONFIG_MENU_ACTION_JUMP;
             break;
     }
 
     switch(optionsScreen->profileData.buttonConfig.unk2) {
-        case 1:
-            buttonConfigMenu->unk244 = 1;
+        case A_BUTTON:
+            buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_ATTACK;
             break;
-        case 2:
-            buttonConfigMenu->unk245 = 1;
+        case B_BUTTON:
+            buttonConfigMenu->bButtonAction = BUTTON_CONFIG_MENU_ACTION_ATTACK;
             break;
-        case 0x100:
-            buttonConfigMenu->unk246 = 1;
+        case R_BUTTON:
+            buttonConfigMenu->rShoulderAction = BUTTON_CONFIG_MENU_ACTION_ATTACK;
             break;
     }
 
     switch(optionsScreen->profileData.buttonConfig.unk4) {
-        case 1:
-            buttonConfigMenu->unk244 = 2;
+        case A_BUTTON:
+            buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_TRICK;
             break;
-        case 2:
-            buttonConfigMenu->unk245 = 2;
+        case B_BUTTON:
+            buttonConfigMenu->bButtonAction = BUTTON_CONFIG_MENU_ACTION_TRICK;
             break;
-        case 0x100:
-            buttonConfigMenu->unk246 = 2;
+        case R_BUTTON:
+            buttonConfigMenu->rShoulderAction = BUTTON_CONFIG_MENU_ACTION_TRICK;
             break;
     }
 
-    buttonConfigMenu->unk247 = 0;
+    buttonConfigMenu->focus = 0;
     buttonConfigMenu->animFrame = 0;
     buttonConfigMenu->language = optionsScreen->language;
     ButtonConfigMenuCreateUI(buttonConfigMenu);
 }
 
 static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu* buttonConfigMenu) {
-    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* uiElement = buttonConfigMenu->staticElements;
+    struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
+    struct UNK_0808B3FC_UNK240* scrollArrow = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* controlFocus = &buttonConfigMenu->controlFocus;
 
-    const struct UNK_080D95E8 *itemText1 = gUnknown_080D9948[buttonConfigMenu->language];
-    const struct UNK_080D95E8 *itemText2 = gUnknown_080D99D8;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
+    const struct UNK_080D95E8 *titleControlsText = sButtonConfigTitleAndControlsText[buttonConfigMenu->language];
+    const struct UNK_080D95E8 *buttonIcon = sButtonConfigButtonIcons;
+    const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
 
     s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
 
     s16 i;
 
+    // title
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText1->unk4,
-        itemText1->unk0,
+        titleControlsText->unk4,
+        titleControlsText->unk0,
         0x1000,
         baseXPos + 336,
         0x1C,
         8,
-        itemText1->unk2,
+        titleControlsText->unk2,
         0
     );
-    unk4++;
-    itemText1++;
+
+    // controls line 1
+    uiElement++;
+    titleControlsText++;
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText1->unk4,
-        itemText1->unk0,
+        titleControlsText->unk4,
+        titleControlsText->unk0,
         0x1000,
         baseXPos + 336,
         0x7A,
         8,
-        itemText1->unk2,
+        titleControlsText->unk2,
         0
     );
-    unk4++;
-    itemText1++;
+    // controls line 2
+    uiElement++;
+    titleControlsText++;
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText1->unk4,
-        itemText1->unk0,
+        titleControlsText->unk4,
+        titleControlsText->unk0,
         0x1000,
         baseXPos + 336,
         0x87,
         8,
-        itemText1->unk2,
+        titleControlsText->unk2,
         0
     );
 
-    unk4++;
+    // A button
+    uiElement++;
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText2->unk4,
-        itemText2->unk0,
+        buttonIcon->unk4,
+        buttonIcon->unk0,
         0x1000,
         baseXPos + 264,
         0x35,
         8,
-        itemText2->unk2,
+        buttonIcon->unk2,
         0
     );
-    unk4++;
-    itemText2++;
+    // B Button
+    uiElement++;
+    buttonIcon++;
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText2->unk4,
-        itemText2->unk0,
+        buttonIcon->unk4,
+        buttonIcon->unk0,
         0x1000,
         baseXPos + 264,
         0x4D,
         8,
-        itemText2->unk2,
+        buttonIcon->unk2,
         0
     );
-    unk4++;
-    itemText2++;
+    // R Shoulder button
+    uiElement++;
+    buttonIcon++;
     sub_806A568(
-        unk4,
+        uiElement,
         RENDER_TARGET_SUB_MENU,
-        itemText2->unk4,
-        itemText2->unk0,
+        buttonIcon->unk4,
+        buttonIcon->unk0,
         0x1000,
         baseXPos + 264,
         0x65,
         8,
-        itemText2->unk2,
+        buttonIcon->unk2,
         0
     );
 
+    // Selected A Button
     sub_806A568(
-        unk124,
+        buttonAction,
         RENDER_TARGET_SUB_MENU,
-        itemText3[buttonConfigMenu->unk244].unk4,
-        itemText3[buttonConfigMenu->unk244].unk0,
+        actionsText[buttonConfigMenu->aButtonAction].unk4,
+        actionsText[buttonConfigMenu->aButtonAction].unk0,
         0x1000,
         baseXPos + 0x14C,
         0x2D,
         8,
-        itemText3[buttonConfigMenu->unk244].unk2,
+        actionsText[buttonConfigMenu->aButtonAction].unk2,
         0
     );
-    unk124++;
+
+    // Selected B Button
+    buttonAction++;
     sub_806A568(
-        unk124,
+        buttonAction,
         RENDER_TARGET_SUB_MENU,
-        itemText3[buttonConfigMenu->unk245].unk4,
-        itemText3[buttonConfigMenu->unk245].unk0,
+        actionsText[buttonConfigMenu->bButtonAction].unk4,
+        actionsText[buttonConfigMenu->bButtonAction].unk0,
         0x1000,
         baseXPos + 0x14C,
         0x45,
         8,
-        itemText3[buttonConfigMenu->unk245].unk2,
+        actionsText[buttonConfigMenu->bButtonAction].unk2,
         0
     );
-    unk124++;
+
+    // Selected R Shoulder button
+    buttonAction++;
     sub_806A568(
-        unk124,
+        buttonAction,
         RENDER_TARGET_SUB_MENU,
-        itemText3[buttonConfigMenu->unk246].unk4,
-        itemText3[buttonConfigMenu->unk246].unk0,
+        actionsText[buttonConfigMenu->rShoulderAction].unk4,
+        actionsText[buttonConfigMenu->rShoulderAction].unk0,
         0x1000,
         baseXPos + 0x14C,
         0x5D,
         8,
-        itemText3[buttonConfigMenu->unk246].unk2,
+        actionsText[buttonConfigMenu->rShoulderAction].unk2,
         0
     );
 
     sub_806A568(
-        unk214,
+        controlFocus,
         RENDER_TARGET_SUB_MENU,
         0x42,
         0x3B6,
@@ -1901,7 +1921,7 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu* buttonConfigMenu) 
     );
     
     sub_806A568(
-        unk1B4,
+        scrollArrow,
         RENDER_TARGET_SUB_MENU,
         2,
         0x3B6,
@@ -1912,9 +1932,9 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu* buttonConfigMenu) 
         8,
         0
     );
-    unk1B4++;
+    scrollArrow++;
     sub_806A568(
-        unk1B4,
+        scrollArrow,
         RENDER_TARGET_SUB_MENU,
         2,
         0x3B6,
@@ -1929,30 +1949,30 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu* buttonConfigMenu) 
 
 static void Task_ButtonConfigMenuOpenAnimWait(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
-    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* uiElement = buttonConfigMenu->staticElements;
+    struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
+    struct UNK_0808B3FC_UNK240* scrollArrow = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* controlFocus = &buttonConfigMenu->controlFocus;
 
     s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
 
-    for (i = 0; i < 3; i++, unk4++) {
-        unk4->unk16 = baseXPos + 336;
+    for (i = 0; i < 3; i++, uiElement++) {
+        uiElement->unk16 = baseXPos + 336;
     }
 
-    for (;i < 6; i++, unk4++) {
-        unk4->unk16 = baseXPos + 264;
+    for (;i < 6; i++, uiElement++) {
+        uiElement->unk16 = baseXPos + 264;
     }
 
-    for (i = 0; i < 3; i++, unk124++) {
-        unk124->unk16 = baseXPos + 332;
+    for (i = 0; i < 3; i++, buttonAction++) {
+        buttonAction->unk16 = baseXPos + 332;
     }
 
-    unk214->unk16 = baseXPos + 252;
-    unk1B4->unk16 = baseXPos + 323;
-    unk1B4++;
-    unk1B4->unk16 = baseXPos + 413;
+    controlFocus->unk16 = baseXPos + 252;
+    scrollArrow->unk16 = baseXPos + 323;
+    scrollArrow++;
+    scrollArrow->unk16 = baseXPos + 413;
     
     ButtonConfigMenuRenderUI();
 
@@ -1964,67 +1984,67 @@ static void Task_ButtonConfigMenuOpenAnimWait(void) {
 
 static void Task_ButtonConfigMenuAButtonMain(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
-    const struct UNK_080D95E8 *itemText4;
+    struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
+    const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
+    const struct UNK_080D95E8 *actionText;
 
     ButtonConfigMenuRenderUI();
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         if (gRepeatedKeys & (DPAD_LEFT)) {
-            if (buttonConfigMenu->unk244 != 0) {
-                buttonConfigMenu->unk244--;
+            if (buttonConfigMenu->aButtonAction > 0) {
+                buttonConfigMenu->aButtonAction--;
             } else {
-                buttonConfigMenu->unk244 = 2;
+                buttonConfigMenu->aButtonAction = 2;
             }
         } else {
-            if (buttonConfigMenu->unk244 < 2) {
-                buttonConfigMenu->unk244++;
+            if (buttonConfigMenu->aButtonAction < 2) {
+                buttonConfigMenu->aButtonAction++;
             } else {
-                buttonConfigMenu->unk244 = 0;
+                buttonConfigMenu->aButtonAction = 0;
             }
         }
 
-        itemText4 = &itemText3[buttonConfigMenu->unk244];
-        unk124->unkA = itemText4->unk0;
-        unk124->unk20 = itemText4->unk2;
-        sub_8004558(&unk124[0]);
+        actionText = &actionsText[buttonConfigMenu->aButtonAction];
+        buttonAction->unkA = actionText->unk0;
+        buttonAction->unk20 = actionText->unk2;
+        sub_8004558(&buttonAction[0]);
         return;
     }
 
     if (gPressedKeys & A_BUTTON) {
-        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk245) {
-            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk244 == buttonConfigMenu->unk246) {
-                if (buttonConfigMenu->unk245 < 2) {
-                    buttonConfigMenu->unk245++;
+        if (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction) {
+            while (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction || buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction) {
+                if (buttonConfigMenu->bButtonAction < 2) {
+                    buttonConfigMenu->bButtonAction++;
                 } else {
-                    buttonConfigMenu->unk245 = 0;
+                    buttonConfigMenu->bButtonAction = 0;
                 }
             }
-            unk124 = &buttonConfigMenu->unk124[1];
-            unk124->unkA = itemText3[buttonConfigMenu->unk245].unk0;
-            unk124->unk20 = itemText3[buttonConfigMenu->unk245].unk2;
+            buttonAction = &buttonConfigMenu->buttonActions[BUTTON_CONFIG_MENU_B_BUTTON];
+            buttonAction->unkA = actionsText[buttonConfigMenu->bButtonAction].unk0;
+            buttonAction->unk20 = actionsText[buttonConfigMenu->bButtonAction].unk2;
             
-            sub_8004558(unk124);
+            sub_8004558(buttonAction);
         }
 
-        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk246) {
-            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
-                if (buttonConfigMenu->unk246 < 2) {
-                    buttonConfigMenu->unk246++;
+        if (buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction) {
+            while (buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction || buttonConfigMenu->bButtonAction == buttonConfigMenu->rShoulderAction) {
+                if (buttonConfigMenu->rShoulderAction < 2) {
+                    buttonConfigMenu->rShoulderAction++;
                 } else {
-                    buttonConfigMenu->unk246 = 0;
+                    buttonConfigMenu->rShoulderAction = 0;
                 }
             }
 
-            unk124 = &buttonConfigMenu->unk124[2];
-            unk124->unkA = itemText3[buttonConfigMenu->unk246].unk0;
-            unk124->unk20 = itemText3[buttonConfigMenu->unk246].unk2;
-            sub_8004558(unk124);
+            buttonAction = &buttonConfigMenu->buttonActions[BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON];
+            buttonAction->unkA = actionsText[buttonConfigMenu->rShoulderAction].unk0;
+            buttonAction->unk20 = actionsText[buttonConfigMenu->rShoulderAction].unk2;
+            sub_8004558(buttonAction);
         }
 
-        buttonConfigMenu->unk247 = 1;
+        buttonConfigMenu->focus = BUTTON_CONFIG_MENU_B_BUTTON;
         m4aSongNumStart(SE_SELECT);
         gCurTask->main = Task_ButtonConfigMenuHandleAButtonComplete;
         return;
@@ -2046,8 +2066,8 @@ static void Task_ButtonConfigMenuAButtonMain(void) {
 
 void Task_ButtonConfigMenuBButtonMain(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
-    struct UNK_0808B3FC_UNK240* unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
+    struct UNK_0808B3FC_UNK240* buttonAction;
+    const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText4;
     u8 unk245;
 
@@ -2057,72 +2077,72 @@ void Task_ButtonConfigMenuBButtonMain(void) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         if (gRepeatedKeys & DPAD_LEFT) {
             do {
-                if (buttonConfigMenu->unk245 > 0) {
-                    buttonConfigMenu->unk245--;
+                if (buttonConfigMenu->bButtonAction > 0) {
+                    buttonConfigMenu->bButtonAction--;
                 } else {
-                   buttonConfigMenu->unk245 = 2;
+                   buttonConfigMenu->bButtonAction = 2;
                 }
-            } while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245);
+            } while (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction);
         } else if (gRepeatedKeys & DPAD_RIGHT) {
             do {
-                if (buttonConfigMenu->unk245 < 2) {
-                    buttonConfigMenu->unk245++;
+                if (buttonConfigMenu->bButtonAction < 2) {
+                    buttonConfigMenu->bButtonAction++;
                 } else {
-                    buttonConfigMenu->unk245 = 0;
+                    buttonConfigMenu->bButtonAction = 0;
                 }
-            } while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245);
+            } while (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction);
         }
         
         // Who knows why this has to be assigned first
-        unk245 = buttonConfigMenu->unk245;
+        unk245 = buttonConfigMenu->bButtonAction;
         
-        unk124 = &buttonConfigMenu->unk124[1];
-        itemText4 = &itemText3[unk245];
-        unk124->unkA = itemText4->unk0;
-        unk124->unk20 = itemText4->unk2;
-        sub_8004558(unk124);
+        buttonAction = &buttonConfigMenu->buttonActions[BUTTON_CONFIG_MENU_B_BUTTON];
+        itemText4 = &actionsText[unk245];
+        buttonAction->unkA = itemText4->unk0;
+        buttonAction->unk20 = itemText4->unk2;
+        sub_8004558(buttonAction);
         return;
     }
 
     if (gPressedKeys & A_BUTTON) {
-        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
-            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk246 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
-                if (buttonConfigMenu->unk246 < 2) {
-                    buttonConfigMenu->unk246++;
+        if (buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction || buttonConfigMenu->bButtonAction == buttonConfigMenu->rShoulderAction) {
+            while (buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction || buttonConfigMenu->bButtonAction == buttonConfigMenu->rShoulderAction) {
+                if (buttonConfigMenu->rShoulderAction < 2) {
+                    buttonConfigMenu->rShoulderAction++;
                 } else {
-                    buttonConfigMenu->unk246 = 0;
+                    buttonConfigMenu->rShoulderAction = 0;
                 }
             }
-            unk124 = &buttonConfigMenu->unk124[2];
-            unk124->unkA = itemText3[buttonConfigMenu->unk246].unk0;
-            unk124->unk20 = itemText3[buttonConfigMenu->unk246].unk2;
+            buttonAction = &buttonConfigMenu->buttonActions[BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON];
+            buttonAction->unkA = actionsText[buttonConfigMenu->rShoulderAction].unk0;
+            buttonAction->unk20 = actionsText[buttonConfigMenu->rShoulderAction].unk2;
             
-            sub_8004558(unk124);
+            sub_8004558(buttonAction);
         }
 
-        buttonConfigMenu->unk247 = 2;
+        buttonConfigMenu->focus = BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON;
         m4aSongNumStart(SE_SELECT);
         gCurTask->main = Task_ButtonConfigMenuHandleBButtonComplete;
         return;
     }
 
     if (gPressedKeys & B_BUTTON) {
-        if (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
-            while (buttonConfigMenu->unk244 == buttonConfigMenu->unk245 || buttonConfigMenu->unk245 == buttonConfigMenu->unk246) {
-                if (buttonConfigMenu->unk245 < 2) {
-                    buttonConfigMenu->unk245++;
+        if (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction || buttonConfigMenu->bButtonAction == buttonConfigMenu->rShoulderAction) {
+            while (buttonConfigMenu->aButtonAction == buttonConfigMenu->bButtonAction || buttonConfigMenu->bButtonAction == buttonConfigMenu->rShoulderAction) {
+                if (buttonConfigMenu->bButtonAction < 2) {
+                    buttonConfigMenu->bButtonAction++;
                 } else {
-                    buttonConfigMenu->unk245 = 0;
+                    buttonConfigMenu->bButtonAction = 0;
                 }
             }
-            unk124 = &buttonConfigMenu->unk124[1];
-            unk124->unkA = itemText3[buttonConfigMenu->unk245].unk0;
-            unk124->unk20 = itemText3[buttonConfigMenu->unk245].unk2;
+            buttonAction = &buttonConfigMenu->buttonActions[BUTTON_CONFIG_MENU_B_BUTTON];
+            buttonAction->unkA = actionsText[buttonConfigMenu->bButtonAction].unk0;
+            buttonAction->unk20 = actionsText[buttonConfigMenu->bButtonAction].unk2;
             
-            sub_8004558(unk124);
+            sub_8004558(buttonAction);
         }
         m4aSongNumStart(SE_RETURN);
-        buttonConfigMenu->unk247 = 0;
+        buttonConfigMenu->focus = BUTTON_CONFIG_MENU_A_BUTTON;
         gCurTask->main = Task_ButtonConfigMenuHandleStartOver;
         return;
     }
@@ -2134,39 +2154,39 @@ void Task_ButtonConfigMenuBButtonMain(void) {
 }
 
 static inline void CommitButtonConfig(struct ButtonConfigMenu* buttonConfigMenu, struct OptionsScreen* optionsScreen) {
-     switch (buttonConfigMenu->unk244) {
-        case 0:
-            optionsScreen->profileData.buttonConfig.unk0 = 1;
+     switch (buttonConfigMenu->aButtonAction) {
+        case BUTTON_CONFIG_MENU_ACTION_JUMP:
+            optionsScreen->profileData.buttonConfig.unk0 = A_BUTTON;
             break;
-        case 1:
-            optionsScreen->profileData.buttonConfig.unk2 = 1;
+        case BUTTON_CONFIG_MENU_ACTION_ATTACK:
+            optionsScreen->profileData.buttonConfig.unk2 = A_BUTTON;
             break;
-        case 2:
-            optionsScreen->profileData.buttonConfig.unk4 = 1;
-            break;
-    }
-
-    switch (buttonConfigMenu->unk245) {
-        case 0:
-            optionsScreen->profileData.buttonConfig.unk0 = 2;
-            break;
-        case 1:
-            optionsScreen->profileData.buttonConfig.unk2 = 2;
-            break;
-        case 2:
-            optionsScreen->profileData.buttonConfig.unk4 = 2;
+        case BUTTON_CONFIG_MENU_ACTION_TRICK:
+            optionsScreen->profileData.buttonConfig.unk4 = A_BUTTON;
             break;
     }
 
-    switch (buttonConfigMenu->unk246) {
-        case 0:
-            optionsScreen->profileData.buttonConfig.unk0 = 0x100;
+    switch (buttonConfigMenu->bButtonAction) {
+        case BUTTON_CONFIG_MENU_ACTION_JUMP:
+            optionsScreen->profileData.buttonConfig.unk0 = B_BUTTON;
             break;
-        case 1:
-            optionsScreen->profileData.buttonConfig.unk2 = 0x100;
+        case BUTTON_CONFIG_MENU_ACTION_ATTACK:
+            optionsScreen->profileData.buttonConfig.unk2 = B_BUTTON;
             break;
-        case 2:
-            optionsScreen->profileData.buttonConfig.unk4 = 0x100;
+        case BUTTON_CONFIG_MENU_ACTION_TRICK:
+            optionsScreen->profileData.buttonConfig.unk4 = B_BUTTON;
+            break;
+    }
+
+    switch (buttonConfigMenu->rShoulderAction) {
+        case BUTTON_CONFIG_MENU_ACTION_JUMP:
+            optionsScreen->profileData.buttonConfig.unk0 = R_BUTTON;
+            break;
+        case BUTTON_CONFIG_MENU_ACTION_ATTACK:
+            optionsScreen->profileData.buttonConfig.unk2 = R_BUTTON;
+            break;
+        case BUTTON_CONFIG_MENU_ACTION_TRICK:
+            optionsScreen->profileData.buttonConfig.unk4 = R_BUTTON;
             break;
     }
 }
@@ -2183,14 +2203,14 @@ static void Task_ButtonConfigMenuRShoulderMain(void) {
         CommitButtonConfig(buttonConfigMenu, optionsScreen);
     
         buttonConfigMenu->animFrame = 0;
-        buttonConfigMenu->optionsScreen->state = 0;
+        buttonConfigMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
         gCurTask->main = Task_ButtonMenuConfigCloseAnim;
         return;
     }
 
     if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
-        buttonConfigMenu->unk247 = 0;
+        buttonConfigMenu->focus = BUTTON_CONFIG_MENU_A_BUTTON;
         gCurTask->main = Task_ButtonConfigMenuHandleAButtonComplete;
         return;
     }
@@ -2204,20 +2224,20 @@ static void Task_ButtonConfigMenuRShoulderMain(void) {
 static void ButtonConfigMenuStartOver(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
     struct OptionsScreen* optionsScreen = buttonConfigMenu->optionsScreen;
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    const struct UNK_080D95E8 *itemText3 = gUnknown_080D99F0[buttonConfigMenu->language];
+    struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
+    const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
     s16 i;
 
-    buttonConfigMenu->unk244 = 0;
-    buttonConfigMenu->unk245 = 1;
-    buttonConfigMenu->unk246 = 2;
+    buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_JUMP;
+    buttonConfigMenu->bButtonAction = BUTTON_CONFIG_MENU_ACTION_ATTACK;
+    buttonConfigMenu->rShoulderAction = BUTTON_CONFIG_MENU_ACTION_TRICK;
 
     CommitButtonConfig(buttonConfigMenu, optionsScreen);
 
-    for (i = 0; i < 3; i++, unk124++) {
-        unk124->unkA = itemText3[i].unk0;
-        unk124->unk20 = itemText3[i].unk2;
-        sub_8004558(unk124);
+    for (i = 0; i < 3; i++, buttonAction++) {
+        buttonAction->unkA = actionsText[i].unk0;
+        buttonAction->unk20 = actionsText[i].unk2;
+        sub_8004558(buttonAction);
     }
 
     gCurTask->main = Task_ButtonConfigMenuHandleStartOver;
@@ -2225,10 +2245,10 @@ static void ButtonConfigMenuStartOver(void) {
 
 static void Task_ButtonMenuConfigCloseAnim(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
-    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->staticElements;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->buttonActions;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
 
     s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2250,7 +2270,7 @@ static void Task_ButtonMenuConfigCloseAnim(void) {
     unk1B4++;
     unk1B4->unk16 = baseXPos + 0x19D;
 
-    if (++buttonConfigMenu->animFrame < 0xF) {
+    if (++buttonConfigMenu->animFrame < 15) {
         ButtonConfigMenuRenderUI();
         return;
     }
@@ -2260,10 +2280,10 @@ static void Task_ButtonMenuConfigCloseAnim(void) {
 
 static void ButtonConfigMenuRenderUI(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
-    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->unk4;
-    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->unk124;
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->staticElements;
+    struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->buttonActions;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
     s16 i;
 
     for (i = 0; i < 6; i++, unk4++) {
@@ -5357,14 +5377,14 @@ static void TimeLimitMenuRenderUI(void) {
 static void Task_ButtonConfigMenuHandleStartOver(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
     
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* scrollArrow = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* controlFocus = &buttonConfigMenu->controlFocus;
     
-    unk214->unk18 = 42;
+    controlFocus->unk18 = 42;
 
-    unk1B4->unk18 = 53;
-    unk1B4++;
-    unk1B4->unk18 = 53;
+    scrollArrow->unk18 = 53;
+    scrollArrow++;
+    scrollArrow->unk18 = 53;
 
     ButtonConfigMenuRenderUI();
     gCurTask->main = Task_ButtonConfigMenuAButtonMain;
@@ -5373,8 +5393,8 @@ static void Task_ButtonConfigMenuHandleStartOver(void) {
 static void Task_ButtonConfigMenuHandleAButtonComplete(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
     
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
     
     unk214->unk18 = 66;
     unk1B4->unk18 = 77;
@@ -5388,8 +5408,8 @@ static void Task_ButtonConfigMenuHandleAButtonComplete(void) {
 static void Task_ButtonConfigMenuHandleBButtonComplete(void) {
     struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
     
-    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->unk1B4;
-    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->unk214;
+    struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
+    struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
     
     unk214->unk18 = 90;
 

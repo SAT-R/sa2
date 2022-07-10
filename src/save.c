@@ -25,9 +25,9 @@ struct SaveSectorData {
 
     u8 unlocks;
 
-    u8 unk1C;
-    u8 unk1D;
-    u8 unk1E;
+    u8 jumpControl;
+    u8 attackControl;
+    u8 trickControl;
 
     u8 unlockedCourses[NUM_CHARACTERS];
     u8 unk24[NUM_CHARACTERS];
@@ -86,6 +86,10 @@ static bool16 HasChangesToSave(void);
 
 #define GAME_PLAY_OPTION_DIFFICULTY_EASY 1
 #define GAME_PLAY_OPTION_TIME_LIMIT_ENABLED 2
+
+#define PACKED_A_BUTTON 1
+#define PACKED_B_BUTTON 2
+#define PACKED_R_BUTTON 4
 
 // If the sector's security field is not this value then the sector is either invalid or empty.
 #define SECTOR_SECURITY_NUM 0x4547474D
@@ -155,9 +159,9 @@ static void InitSaveGameSectorData(struct SaveSectorData* save) {
     save->unlocks = 0;
     save->unk1A = 0;
     save->gamePlayOptions = 0;
-    save->unk1C = 1;
-    save->unk1D = 2;
-    save->unk1E = 4;
+    save->jumpControl = 1;
+    save->attackControl = 2;
+    save->trickControl = 4;
     save->multiplayerWins = 0;
     save->multiplayerLoses = 0;
     save->multiplayerDraws = 0;
@@ -286,38 +290,38 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     switch (gameState->unk2C.unk0) {
-        case 2:
-            save->unk1C = 2;
+        case B_BUTTON:
+            save->jumpControl = PACKED_B_BUTTON;
             break;
-        case 1:
-            save->unk1C = 1;
+        case A_BUTTON:
+            save->jumpControl = PACKED_A_BUTTON;
             break;
-        case 0x100:
-            save->unk1C = 4;
+        case R_BUTTON:
+            save->jumpControl = PACKED_R_BUTTON;
             break;
     }
 
     switch (gameState->unk2C.unk2) {
-        case 2:
-            save->unk1D = 2;
+        case B_BUTTON:
+            save->attackControl = PACKED_B_BUTTON;
             break;
-        case 1:
-            save->unk1D = 1;
+        case A_BUTTON:
+            save->attackControl = PACKED_A_BUTTON;
             break;
-        case 0x100:
-            save->unk1D = 4;
+        case R_BUTTON:
+            save->attackControl = PACKED_R_BUTTON;
             break;
     }
 
     switch (gameState->unk2C.unk4) {
-        case 2:
-            save->unk1E = 2;
+        case B_BUTTON:
+            save->trickControl = PACKED_B_BUTTON;
             break;
-        case 1:
-            save->unk1E = 1;
+        case A_BUTTON:
+            save->trickControl = PACKED_A_BUTTON;
             break;
-        case 0x100:
-            save->unk1E = 4;
+        case R_BUTTON:
+            save->trickControl = PACKED_R_BUTTON;
             break;
     }
 
@@ -593,41 +597,41 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
         gameState->unk14 = FALSE;
     }
 
-     switch (save->unk1C) {
-        case 4:
-            gameState->unk2C.unk0 = 0x100;
+     switch (save->jumpControl) {
+        case PACKED_R_BUTTON:
+            gameState->unk2C.unk0 = R_BUTTON;
             break;
-        case 2:
-            gameState->unk2C.unk0 = 2;
+        case PACKED_B_BUTTON:
+            gameState->unk2C.unk0 = B_BUTTON;
             break;
-        case 1:
-            gameState->unk2C.unk0 = 1;
-            break;
-    }
-    switch (save->unk1D) {
-        case 4:
-            gameState->unk2C.unk2 = 0x100;
-            break;
-        case 2:
-            gameState->unk2C.unk2 = 2;
-            break;
-        case 1:
-            gameState->unk2C.unk2 = 1;
+        case PACKED_A_BUTTON:
+            gameState->unk2C.unk0 = A_BUTTON;
             break;
     }
-    switch (save->unk1E) {
-        case 4:
-            gameState->unk2C.unk4 = 0x100;
+    switch (save->attackControl) {
+        case PACKED_R_BUTTON:
+            gameState->unk2C.unk2 = R_BUTTON;
             break;
-        case 2:
-            gameState->unk2C.unk4 = 2;
+        case PACKED_B_BUTTON:
+            gameState->unk2C.unk2 = B_BUTTON;
             break;
-        case 1:
-            gameState->unk2C.unk4 = 1;
+        case PACKED_A_BUTTON:
+            gameState->unk2C.unk2 = A_BUTTON;
+            break;
+    }
+    switch (save->trickControl) {
+        case PACKED_R_BUTTON:
+            gameState->unk2C.unk4 = R_BUTTON;
+            break;
+        case PACKED_B_BUTTON:
+            gameState->unk2C.unk4 = B_BUTTON;
+            break;
+        case PACKED_A_BUTTON:
+            gameState->unk2C.unk4 = A_BUTTON;
             break;
     }
     
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < NUM_CHARACTERS; i++) {
         gameState->unk7[i] = save->unlockedCourses[i];
     }
 
