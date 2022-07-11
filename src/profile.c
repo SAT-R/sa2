@@ -14,6 +14,7 @@
 #include "game.h"
 #include "sound_test.h"
 #include "ui.h"
+#include "time.h"
 
 // vram addresses
 void* gProfileScreenNextVramAddress;
@@ -250,56 +251,67 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define TensDigit(number) ((number) / 10)
 #define UnitsDigit(number) ((number) % 10)
 
+extern const s8 sMenuCursorMoveAnims[2][8];
+extern const s16 sSubMenuOpenAnimFrames[16];
+extern const s16 sSubMenuCloseAnimFrames[16];
+
+extern const u16 sTimeRecordsCharacterBackgrounds[5][2];
+
+extern const u16 gUnknown_080D95A4[16];
+extern const u16 gUnknown_080D95C4[2];
+extern const u16 gUnknown_080D95C8[5];
+
+extern const u16 gUnknown_080D95D2[2];
+extern const u16 gUnknown_080D95D6[8];
+
 extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
 extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
+
 extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
 extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
+
 extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
+extern const struct UNK_080D95E8 sDifficultyMenuTitleText[6];
+extern const struct UNK_080D95E8 sDifficultyMenuControlsText[6];
+
+extern const struct UNK_080D95E8 sTimeLimitMenuTitleText[6];
+extern const struct UNK_080D95E8 sTimeLimitMenuControlsText[6];
+
 extern const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[6][3];
 extern const struct UNK_080D95E8 sButtonConfigButtonIcons[3];
 extern const struct UNK_080D95E8 sButtonConfigActionsText[6][3];
 
-extern const s16 sSubMenuOpenAnimFrames[16];
-extern const s8 sMenuCursorMoveAnims[2][8];
-extern const s16 sSubMenuCloseAnimFrames[16];
+extern const struct UNK_080D95E8 sLanguageScreenTitles[6];
+extern const struct UNK_080D95E8 sLanguageScreenEditControlsText[6];
+extern const struct UNK_080D95E8 sLanguageScreenNewControlsText[6];
+extern const struct UNK_080D95E8 sLanguageScreenOptionsText[6];
+
+extern const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[6];
+extern const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[6];
+extern const struct UNK_080D95E8 sDeleteScreenControlsText[6];
+extern const struct UNK_080D95E8 sDeleteScreenOptionsText[6][2];
 
 extern const struct UNK_080D95E8 sPlayerDataMenuTitleText[6];
 extern const struct UNK_080D95E8 sPlayerDataMenuControlsText[6];
 extern const struct UNK_080D95E8 sPlayerDataMenuItemsText[6][4];
-extern const struct UNK_080D95E8 sDifficultyMenuTitleText[6];
-extern const struct UNK_080D95E8 sDifficultyMenuControlsText[6];
-extern const struct UNK_080D95E8 sTimeLimitMenuTitleText[6];
-extern const struct UNK_080D95E8 sTimeLimitMenuControlsText[6];
-
-extern const struct UNK_080D95E8 sLanguageScreenTitles[6];
-extern const struct UNK_080D95E8 sLanguageScreenNewControlsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenOptionsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenEditControlsText[6];
-
-extern const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[6];
-extern const struct UNK_080D95E8 sDeleteScreenControlsText[6];
-extern const struct UNK_080D95E8 sDeleteScreenOptionsText[6][2];
-
-extern const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[6];
 
 extern const struct UNK_080D95E8 sProfileNameScreenNewTitleText[6];
 extern const struct UNK_080D95E8 sProfileNameScreenEditTitleText[6];
 extern const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2];
 extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
 
-extern const struct UNK_080D95E8 sScrollArrowTiles[2];
-
-extern const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[6];
-extern const struct UNK_080D95E8 sTimeRecordsScreenChoices[6][2];
-extern const u16 sTimeRecordsCharacterBackgrounds[5][2];
-extern const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7];
-extern const struct UNK_080D95E8 sZoneNameTitles[6][7];
-extern const struct UNK_080D95E8 sZoneBossTitles[6][7];
-extern const struct UNK_080D95E8 sTimeRecordDigitTiles[11];
-extern const u8 gMillisLookup[60][2];
+extern const struct UNK_080D95E8 sProfileNameScreenScrollArrowTiles[2];
 
 extern const struct UNK_080D95E8 sMultiplayerRecordsTitleAndColumnHeadersText[6][2];
 extern const struct UNK_080D95E8 sMultiplayerScoreDigitTiles[10];
+
+extern const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[6];
+extern const struct UNK_080D95E8 sTimeRecordsScreenChoices[6][2];
+
+extern const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7];
+extern const struct UNK_080D95E8 sTimeRecordDigitTiles[11];
+extern const struct UNK_080D95E8 sZoneNameTitles[6][7];
+extern const struct UNK_080D95E8 sZoneBossTitles[6][7];
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -2997,7 +3009,7 @@ static void ProfileNameScreenCreateUIText(struct ProfileNameScreen* profileNameS
 static void ProfileNameScreenCreateUIContextElements(struct ProfileNameScreen* profileNameScreen) {
     struct UNK_0808B3FC_UNK240* focusedCell = profileNameScreen->focusedCell;
     struct UNK_0808B3FC_UNK240* scrollArrow = profileNameScreen->scrollArrows;
-    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
+    const struct UNK_080D95E8* scrollArrowTile = sProfileNameScreenScrollArrowTiles;
     struct UNK_806B908 nameCharTile;
     
     // background
@@ -3903,7 +3915,7 @@ static inline u16* LoadCourseTimes(struct TimeRecordsScreen* timeRecordsScreen) 
 static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen* timeRecordsScreen) {
     struct TimeRecordDisplay* timeRecordDisplay = timeRecordsScreen->timeDisplays;
     // interesting optimistation, as I guess they are all the same size
-    s16 digitSize = sTimeRecordDigitTiles[10].unk4;
+    s16 digitSize = sTimeRecordDigitTiles[DELIMINATOR_DIGIT].unk4;
     struct UNK_0808B3FC_UNK240* minuteDigit, *secondDigit, *milliDigit, *deliminator;
 
     u16* courseTimes = LoadCourseTimes(timeRecordsScreen);
@@ -3923,8 +3935,8 @@ static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen* timeRecords
         if (timeValue < MAX_COURSE_TIME) {
             s16 temp = timeValue % 60;
             u16 temp2 = timeValue - temp;
-            millis = gMillisLookup[temp][0] * 10;
-            millis += gMillisLookup[temp][1];
+            millis = gMillisUnpackTable[temp][0] * 10;
+            millis += gMillisUnpackTable[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -3983,7 +3995,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen* timeRecord
             u16 temp2 = timeValue - temp;
             // This logic is the same as the above function but required to be
             // inline instead of split, but required to be split in the other function
-            millis = gMillisLookup[temp][0] * 10 + gMillisLookup[temp][1];
+            millis = gMillisUnpackTable[temp][0] * 10 + gMillisUnpackTable[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -4556,7 +4568,7 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(struct MultiplayerRecordsS
     struct UNK_0808B3FC_UNK240* playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
 
     const struct UNK_080D95E8* titleAndColumnHeadersText = sMultiplayerRecordsTitleAndColumnHeadersText[multiplayerRecordsScreen->language];
-    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
+    const struct UNK_080D95E8* scrollArrowTile = sProfileNameScreenScrollArrowTiles;
     // The data is made into a pointer here but then another pointer is used for
     // the actual reference
     const struct UNK_080D95E8* digitTile, *digitTiles = sMultiplayerScoreDigitTiles;

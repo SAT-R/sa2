@@ -6342,7 +6342,7 @@ sub_808916C: @ 0x0808916C
 	mov r1, r8
 	subs r4, r1, r0
 	str r4, [r5]
-	ldr r3, _08089268 @ =gMillisLookup
+	ldr r3, _08089268 @ =gMillisUnpackTable
 	lsls r0, r0, #1
 	adds r1, r0, r3
 	ldrb r2, [r1]
@@ -6383,7 +6383,7 @@ _08089258: .4byte IWRAM_START + 0x2D6
 _0808925C: .4byte 0x00003FFF
 _08089260: .4byte IWRAM_START + 0x15C
 _08089264: .4byte 0x00008C9F
-_08089268: .4byte gMillisLookup
+_08089268: .4byte gMillisUnpackTable
 _0808926C:
 	movs r5, #0x63
 	movs r4, #0x3b

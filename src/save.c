@@ -7,6 +7,7 @@
 #include "m4a.h"
 #include "random.h"
 #include "constants/text.h"
+#include "time.h"
 
 struct SaveSectorHeader {
     u32 security, version;

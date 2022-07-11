@@ -27,4 +27,4 @@ def format_hex(val):
 with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
     for i in range(length // 2):
-        print(str(read_u16(rom)) + ",")
+        print("{ " + str(read_u8(rom)) + ", " + str(read_u8(rom)) + " },")

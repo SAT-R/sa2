@@ -38471,7 +38471,7 @@ _0802CFF8:
 	lsrs r0, r0, #0x1f
 	mov sl, r0
 _0802D084:
-	ldr r4, _0802D168 @ =gMillisLookup
+	ldr r4, _0802D168 @ =gMillisUnpackTable
 	lsls r5, r5, #1
 	adds r0, r5, r4
 	ldrb r1, [r0]
@@ -38507,7 +38507,7 @@ _0802D084:
 	strb r2, [r0]
 	adds r0, r7, #0
 	bl sub_80051E8
-	ldr r4, _0802D16C @ =gUnknown_080D6B08
+	ldr r4, _0802D16C @ =gSecondsTable
 	mov r1, r8
 	adds r0, r1, r4
 	ldrb r1, [r0]
@@ -38574,8 +38574,8 @@ _0802D158: .4byte gUnknown_03005424
 _0802D15C: .4byte gUnknown_080D6BF8
 _0802D160: .4byte gUnknown_080D6C72
 _0802D164: .4byte 0x00007E90
-_0802D168: .4byte gMillisLookup
-_0802D16C: .4byte gUnknown_080D6B08
+_0802D168: .4byte gMillisUnpackTable
+_0802D16C: .4byte gSecondsTable
 
 	thumb_func_start sub_802D170
 sub_802D170: @ 0x0802D170

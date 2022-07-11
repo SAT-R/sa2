@@ -7,6 +7,7 @@ extern const u16 gUnknown_080D95D2[2];
 extern const u16 gUnknown_080D95D6[8];
 extern const u16 gUnknown_080D95C4[2];
 extern const u16 gUnknown_080D95C8[5];
+extern const u16 gUnknown_080D95A4[16];
 
 void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
     unk2400->unk4 = BG_CHAR_ADDR(a);
@@ -80,8 +81,6 @@ bool16 sub_806B988(u16* playerName) {
 
     return FALSE;
 }
-
-extern const u16 gUnknown_080D95A4[16];
 
 bool16 sub_806B9C8(u16 nameChar) {
     u16 localD95A4[16], *cursor;  

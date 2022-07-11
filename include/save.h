@@ -4,9 +4,8 @@
 #include "global.h"
 #include "zones.h"
 #include "player.h"
+#include "time.h"
 
-#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
-#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
 #define TIME_RECORDS_PER_COURSE 3
 #define NUM_MULTIPLAYER_SCORES 10
 
