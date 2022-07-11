@@ -1,53 +1,5 @@
 .section .rodata
 
-    .global sMenuCursorMoveAnims
-sMenuCursorMoveAnims:
-    .incbin "baserom.gba", 0x000D9540, 0x10
-
-    .global sSubMenuOpenAnimFrames
-sSubMenuOpenAnimFrames:
-    .incbin "baserom.gba", 0x000D9550, 0x20
-
-    .global sSubMenuCloseAnimFrames
-sSubMenuCloseAnimFrames:
-    .incbin "baserom.gba", 0x000D9570, 0x20
-
-    .global sTimeRecordsCharacterBackgrounds
-sTimeRecordsCharacterBackgrounds:
-    .incbin "baserom.gba", 0x000D9590, 0x14
-
-    .global gUnknown_080D95A4
-gUnknown_080D95A4:
-    .incbin "baserom.gba", 0x000D95A4, 0x20
-
-    .global gUnknown_080D95C4
-gUnknown_080D95C4:
-    .incbin "baserom.gba", 0x000D95C4, 0x4
-
-    .global gUnknown_080D95C8
-gUnknown_080D95C8:
-    .incbin "baserom.gba", 0x000D95C8, 0xA
-
-    .global gUnknown_080D95D2
-gUnknown_080D95D2:
-    .incbin "baserom.gba", 0x000D95D2, 0x4
-
-    .global gUnknown_080D95D6
-gUnknown_080D95D6:
-    .incbin "baserom.gba", 0x000D95D6, 0x12
-
-    .global sOptionsScreenTitleText
-sOptionsScreenTitleText:
-    .incbin "baserom.gba", 0x000D95E8, 0x30
-
-    .global sOptionsScreenMenuItemsText
-sOptionsScreenMenuItemsText:
-    .incbin "baserom.gba", 0x000D9618, 0x180
-
-    .global sDifficultyLevelSwitchValues
-sDifficultyLevelSwitchValues:
-    .incbin "baserom.gba", 0x000D9798, 0x60
-
     .global sTimeLimitMenuSwitchValues
 sTimeLimitMenuSwitchValues:
     .incbin "baserom.gba", 0x000D97F8, 0x60

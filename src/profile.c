@@ -185,6 +185,9 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define OPTIONS_SCREEN_STATE_SUB_MENU_OPEN 1
 #define OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN 2
 
+#define OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS 0
+#define OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS 1
+
 #define PLAYER_DATA_MENU_ITEM_CHANGE_NAME 0
 #define PLAYER_DATA_MENU_ITEM_TIME_RECORDS 1
 #define PLAYER_DATA_MENU_ITEM_VS_RECORDS 2
@@ -217,8 +220,14 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define TIME_RECORDS_SCREEN_VIEW_COURSES 1
 #define TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK 2
 
+#define ASSET_CHARACTER_BACKGROUND 0
+#define ASSET_CHARACTER 1
+
 #define RENDER_TARGET_SCREEN 0
 #define RENDER_TARGET_SUB_MENU 1
+
+#define DIFFICULTY_OPTION_NORMAL 0
+#define DIFFICULTY_OPTION_EASY 1
 
 #define DELETE_SCREEN_CONFIRMATION_YES 0
 #define DELETE_SCREEN_CONFIRMATION_NO 1
@@ -251,23 +260,169 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define TensDigit(number) ((number) / 10)
 #define UnitsDigit(number) ((number) % 10)
 
-extern const s8 sMenuCursorMoveAnims[2][8];
-extern const s16 sSubMenuOpenAnimFrames[16];
-extern const s16 sSubMenuCloseAnimFrames[16];
+static const s8 sMenuCursorMoveAnims[2][8] = {
+    [OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS] = { 8, 4, 1, -1, -2, -1, 1, 0 },
+    [OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS] = { 1, 2, 5, 7, 8, 8, 8, 8 },
+};
 
-extern const u16 sTimeRecordsCharacterBackgrounds[5][2];
+static const s16 sSubMenuOpenAnim[16] = {
+    -16, -41, -66, -91, -116, -141, -166, -186, 
+    -201, -216, -228, -219, -210, -214, -217, -216,
+};
 
-extern const u16 gUnknown_080D95A4[16];
-extern const u16 gUnknown_080D95C4[2];
-extern const u16 gUnknown_080D95C8[5];
+static const s16 sSubMenuCloseAnim[16] = {
+    -216, -201, -186, -171, -156, -141, -126, -111, 
+    -96, -81, -66, -51, -36, -21, -6, 0,
+};
 
-extern const u16 gUnknown_080D95D2[2];
-extern const u16 gUnknown_080D95D6[8];
+static const u16 sTimeRecordsCharacterAssets[NUM_CHARACTERS][2] = {
+    [CHARACTER_SONIC] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 140, 
+        [ASSET_CHARACTER] = 141 
+    },
+    [CHARACTER_CREAM] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 148, 
+        [ASSET_CHARACTER] = 149 
+    },
+    [CHARACTER_TAILS] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 142, 
+        [ASSET_CHARACTER] = 143 
+    },
+    [CHARACTER_KNUCKLES] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 144, 
+        [ASSET_CHARACTER] = 145 
+    },
+    [CHARACTER_AMY] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 146, 
+        [ASSET_CHARACTER] = 147 
+    },
+};
 
-extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
-extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
+const u16 gUnknown_080D95A4[] = {
+    17, 19, 39, 41, 61, 63, 75, 76,
+    77, 109, 142, 174, 175, 208, 241, 65535, 
+};
 
-extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
+const u16 gUnknown_080D95C4[] = {
+    55, 65535,
+};
+
+const u16 gUnknown_080D95C8[] = {
+    11, 22, 33, 55, 65535,
+};
+
+const u16 gUnknown_080D95D2[] = {
+    55, 262,
+};
+
+const u16 gUnknown_080D95D6[4][2] = {
+    { 11, 242 },
+    { 22, 247 },
+    { 33, 252 },
+    { 55, 257 },
+};
+
+static const u16 sUnused = 0;
+
+const struct UNK_080D95E8 sOptionsScreenTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 956, .unk2 = 8, .unk4 = 39, .unk6 = 0 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 975, .unk2 = 8, .unk4 = 26, .unk6 = 0 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 976, .unk2 = 8, .unk4 = 30, .unk6 = 0 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 977, .unk2 = 8, .unk4 = 24, .unk6 = 0 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 978, .unk2 = 8, .unk4 = 30, .unk6 = 0 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 979, .unk2 = 8, .unk4 = 24, .unk6 = 0 },
+};
+
+const struct UNK_080D95E8 sOptionsScreenMenuItemsText[NUM_LANGUAGES][8] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 956, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 956, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 956, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 956, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 956, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 956, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 956, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 956, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 975, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 975, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 975, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 975, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 975, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 975, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 975, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 975, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 976, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 976, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 976, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 976, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 976, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 976, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 976, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 976, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 977, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 977, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 977, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 977, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 977, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 977, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 977, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 977, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 978, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 978, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 978, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 978, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 978, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 978, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 978, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 978, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 979, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 979, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 979, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 979, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 979, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 979, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 979, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 979, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+    },
+};
+
+const struct UNK_080D95E8 sDifficultyLevelSwitchText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 952, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 952, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 990, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 990, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 991, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 991, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 992, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 992, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 993, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 993, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 994, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 994, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+    },
+};
+
 extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
 
 extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
@@ -636,7 +791,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
     }
 
     {
-        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][optionsScreen->difficultyLevel];
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchText[language][optionsScreen->difficultyLevel];
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_DIFFICULTY ? 152 : 160;
     
         sub_806A568(
@@ -857,7 +1012,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, 
     gBgScrollRegs[2][0] = baseXPos;    
 }
 
-static inline void PreviousMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, s8 baseXPos) {
+static inline void PrevMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, s8 baseXPos) {
     struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
 
     item->unk16 = baseXPos + 32;
@@ -883,8 +1038,8 @@ static void Task_OptionsScreenMenuCursorMoveAnim(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     s16 animFrame = optionsScreen->subMenuAnimFrame;
     
-    NextMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[0][animFrame]);
-    PreviousMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[1][animFrame]);
+    NextMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS][animFrame]);
+    PrevMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS][animFrame]);
 
     OptionsScreenRenderUI();
 
@@ -923,7 +1078,7 @@ static inline void SubMenuAnimFrame(struct OptionsScreen* optionsScreen, const s
 static void Task_OptionsScreenSubMenuOpenAnim(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     
-    SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnimFrames);
+    SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnim);
     OptionsScreenRenderUI();
 
     if (++optionsScreen->subMenuAnimFrame >= 16) {
@@ -935,7 +1090,7 @@ static void Task_OptionsScreenSubMenuOpenAnim(void) {
 static void Task_OptionsScreenSubMenuCloseAnim(void) {
     struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
     
-    SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnimFrames);
+    SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnim);
     OptionsScreenRenderUI();
 
     if (++optionsScreen->subMenuAnimFrame >= 16) {
@@ -1344,7 +1499,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu* difficultyMenu) {
 
     const struct UNK_080D95E8 *titleText = &sDifficultyMenuTitleText[difficultyMenu->language];
     const struct UNK_080D95E8 *footerText = &sDifficultyMenuControlsText[difficultyMenu->language];
-    const struct UNK_080D95E8 *difficultyLevelText = sDifficultyLevelSwitchValues[difficultyMenu->language];
+    const struct UNK_080D95E8 *difficultyLevelText = sDifficultyLevelSwitchText[difficultyMenu->language];
     
     s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 difficultyLevel = difficultyMenu->switchValue;
@@ -1445,7 +1600,7 @@ void Task_DifficultyMenuOpenAnimWait(void) {
     switchValueOutline->unk16 = baseXPos + (difficultyMenu->switchValue * 60 + 272);
     DifficultyMenuRenderUI();
 
-    if (++difficultyMenu->animFrame > 15) {
+    if (++difficultyMenu->animFrame >= 16) {
         difficultyMenu->animFrame = 0;
         gCurTask->main = Task_DifficultyMenuMain;
     }
@@ -1480,9 +1635,9 @@ static void Task_DifficultyMenuMain(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][difficultyMenu->switchValue];
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchText[language][difficultyMenu->switchValue];
 
-        difficultyOption = &optionsScreen->metaItems[1];
+        difficultyOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_DIFFICULTY_LEVEL];
         difficultyOption->unk20 = difficultyLevelText->unk2;
         difficultyOption->unkA = difficultyLevelText->unk0;
         sub_8004558(difficultyOption);
@@ -3815,8 +3970,8 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(struct TimeRecordsSc
     unk270->unk8 = 0xFF;
 
     sub_806B854(&timeRecordsScreen->coursesViewBackground,0,7,0x8B,0x1e,0x14,0,0,0,0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,1,0x16,sTimeRecordsCharacterBackgrounds[character][0],9,0x14,0,1,0,0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacter,2,0x1E,sTimeRecordsCharacterBackgrounds[character][1],9,0x14,0,2,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,1,0x16,sTimeRecordsCharacterAssets[character][ASSET_CHARACTER_BACKGROUND],9,0x14,0,1,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter,2,0x1E,sTimeRecordsCharacterAssets[character][ASSET_CHARACTER],9,0x14,0,2,0,0);
 }
 
 static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
@@ -4061,8 +4216,8 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void) {
     gBgScrollRegs[2][0] = 0xFF10;
     gBgScrollRegs[2][1] = 0x10;
 
-    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, sTimeRecordsCharacterBackgrounds[character][0], 9, 0x14, 0, 1, 0, 0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E, sTimeRecordsCharacterBackgrounds[character][1], 9, 0x14, 0, 2, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, sTimeRecordsCharacterAssets[character][0], 9, 0x14, 0, 1, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E, sTimeRecordsCharacterAssets[character][1], 9, 0x14, 0, 2, 0, 0);
 
     gCurTask->main = Task_TimeRecordsScreenCharacterChangeAnimIn;
 }

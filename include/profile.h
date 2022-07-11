@@ -266,6 +266,13 @@ struct MultiplayerRecordsScreen {
 extern void* gProfileScreenNextVramAddress;
 extern void* gProfileScreenSubMenuNextVramAddress;
 
+extern const u16 gUnknown_080D95A4[16];
+extern const u16 gUnknown_080D95C4[2];
+extern const u16 gUnknown_080D95C8[5];
+
+extern const u16 gUnknown_080D95D2[2];
+extern const u16 gUnknown_080D95D6[4][2];
+
 #define ResetProfileScreensVram() ({ \
     gProfileScreenNextVramAddress = (void*)OBJ_VRAM0; \
     gProfileScreenSubMenuNextVramAddress = NULL; \

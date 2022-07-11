@@ -2,12 +2,7 @@
 #include "sprite.h"
 #include "ui.h"
 #include "save.h"
-
-extern const u16 gUnknown_080D95D2[2];
-extern const u16 gUnknown_080D95D6[8];
-extern const u16 gUnknown_080D95C4[2];
-extern const u16 gUnknown_080D95C8[5];
-extern const u16 gUnknown_080D95A4[16];
+#include "profile.h"
 
 void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
     unk2400->unk4 = BG_CHAR_ADDR(a);
