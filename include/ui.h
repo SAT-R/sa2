@@ -7,7 +7,6 @@ struct UNK_080D95E8 {
     u16 unk0;
     u16 unk2;
     u16 unk4;
-    u16 unk6;
 };
 
 struct UNK_806B908 {

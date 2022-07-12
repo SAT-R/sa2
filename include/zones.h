@@ -7,6 +7,7 @@
 #define ZONE_4 3
 #define ZONE_5 4
 #define ZONE_6 5
+#define ZONE_7 6
 
 #define ACT_1 0
 #define ACT_2 1

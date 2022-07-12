@@ -37,11 +37,15 @@ with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
     # for i in range(length // 2):
     #     print(str(read_u16(rom)) + ", ", end="")
-    for i in range(length // 2 // 2 // 4):
-        print(f"    [LanguageIndex(LANG_{langs[i]})] = " + "{")
-        for x in range(2):
+    for i in range(length // 2 // 7 // 4):
+        print(f"    [LanguageIndex(LANG_{langs[i]})] = " + "{ ")
+        for x in range(7):
             print("        { ", end="")
             for j in range(4):
                 print(f".unk{j * 2} = " + str(read_u16(rom)) + ", ", end="")
             print("},")
         print("    },")
+        # print("{ ", end="")
+        # for j in range(4):
+        #     print(f".unk{j * 2} = " + str(read_u16(rom)) + ", ", end="")
+        # print("},")

@@ -220,6 +220,9 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define TIME_RECORDS_SCREEN_VIEW_COURSES 1
 #define TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK 2
 
+#define TIME_RECORDS_CHOICE_BOSS 1
+#define TIME_RECORDS_CHOICE_ACTS 0
+
 #define ASSET_CHARACTER_BACKGROUND 0
 #define ASSET_CHARACTER 1
 
@@ -228,6 +231,9 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 
 #define DIFFICULTY_OPTION_NORMAL 0
 #define DIFFICULTY_OPTION_EASY 1
+
+#define TIME_LIMIT_OPTION_ON 0
+#define TIME_LIMIT_OPTION_OFF 1
 
 #define DELETE_SCREEN_CONFIRMATION_YES 0
 #define DELETE_SCREEN_CONFIRMATION_NO 1
@@ -325,148 +331,628 @@ const u16 gUnknown_080D95D6[4][2] = {
 static const u16 sUnused = 0;
 
 const struct UNK_080D95E8 sOptionsScreenTitleText[NUM_LANGUAGES] = {
-    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 956, .unk2 = 8, .unk4 = 39, .unk6 = 0 },
-    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 975, .unk2 = 8, .unk4 = 26, .unk6 = 0 },
-    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 976, .unk2 = 8, .unk4 = 30, .unk6 = 0 },
-    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 977, .unk2 = 8, .unk4 = 24, .unk6 = 0 },
-    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 978, .unk2 = 8, .unk4 = 30, .unk6 = 0 },
-    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 979, .unk2 = 8, .unk4 = 24, .unk6 = 0 },
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 956, .unk2 = 8, .unk4 = 39 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 975, .unk2 = 8, .unk4 = 26 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 976, .unk2 = 8, .unk4 = 30 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 977, .unk2 = 8, .unk4 = 24,},
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 978, .unk2 = 8, .unk4 = 30 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 979, .unk2 = 8, .unk4 = 24 },
 };
-
 const struct UNK_080D95E8 sOptionsScreenMenuItemsText[NUM_LANGUAGES][8] = {
     [LanguageIndex(LANG_JAPANESE)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 956, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 956, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 956, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 956, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 956, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 956, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 956, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 956, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 956, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 956, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 956, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 956, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 956, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 956, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 956, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 956, .unk2 = 7, .unk4 = 50 },
     },
     [LanguageIndex(LANG_ENGLISH)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 975, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 975, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 975, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 975, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 975, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 975, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 975, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 975, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 975, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 975, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 975, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 975, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 975, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 975, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 975, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 975, .unk2 = 7, .unk4 = 50 },
     },
     [LanguageIndex(LANG_GERMAN)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 976, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 976, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 976, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 976, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 976, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 976, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 976, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 976, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 976, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 976, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 976, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 976, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 976, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 976, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 976, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 976, .unk2 = 7, .unk4 = 50 },
     },
     [LanguageIndex(LANG_FRENCH)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 977, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 977, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 977, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 977, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 977, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 977, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 977, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 977, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 977, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 977, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 977, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 977, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 977, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 977, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 977, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 977, .unk2 = 7, .unk4 = 50 },
     },
     [LanguageIndex(LANG_SPANISH)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 978, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 978, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 978, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 978, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 978, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 978, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 978, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 978, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 978, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 978, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 978, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 978, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 978, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 978, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 978, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 978, .unk2 = 7, .unk4 = 50 },
     },
     [LanguageIndex(LANG_ITALIAN)] = {
-        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 979, .unk2 = 0, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 979, .unk2 = 1, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 979, .unk2 = 2, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 979, .unk2 = 3, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 979, .unk2 = 4, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 979, .unk2 = 6, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 979, .unk2 = 5, .unk4 = 50, .unk6 = 0, },
-        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 979, .unk2 = 7, .unk4 = 50, .unk6 = 0, },
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 979, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 979, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 979, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 979, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 979, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 979, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 979, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 979, .unk2 = 7, .unk4 = 50 },
     },
 };
 
 const struct UNK_080D95E8 sDifficultyLevelSwitchText[NUM_LANGUAGES][2] = {
     [LanguageIndex(LANG_JAPANESE)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 952, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 952, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 952, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 952, .unk2 = 1, .unk4 = 16 },
     },
     [LanguageIndex(LANG_ENGLISH)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 990, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 990, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 990, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 990, .unk2 = 1, .unk4 = 16 },
     },
     [LanguageIndex(LANG_GERMAN)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 991, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 991, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 991, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 991, .unk2 = 1, .unk4 = 16 },
     },
     [LanguageIndex(LANG_FRENCH)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 992, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 992, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 992, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 992, .unk2 = 1, .unk4 = 16 },
     },
     [LanguageIndex(LANG_SPANISH)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 993, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 993, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 993, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 993, .unk2 = 1, .unk4 = 16 },
     },
     [LanguageIndex(LANG_ITALIAN)] = {
-        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 994, .unk2 = 0, .unk4 = 16, .unk6 = 0, },
-        [DIFFICULTY_OPTION_EASY] = { .unk0 = 994, .unk2 = 1, .unk4 = 16, .unk6 = 0, },
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 994, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 994, .unk2 = 1, .unk4 = 16 },
     },
 };
 
-extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
+const struct UNK_080D95E8 sTimeLimitMenuSwitchText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 960, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 960, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1020, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1020, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1021, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1021, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1022, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1022, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1023, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1023, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1024, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1024, .unk2 = 1, .unk4 = 16 },
+    },
+};
 
-extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
-extern const struct UNK_080D95E8 sDifficultyMenuTitleText[6];
-extern const struct UNK_080D95E8 sDifficultyMenuControlsText[6];
+const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 7, .unk4 = 16 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 953, .unk2 = 8, .unk4 = 16 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 953, .unk2 = 9, .unk4 = 16 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 953, .unk2 = 10, .unk4 = 16 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 953, .unk2 = 11, .unk4 = 16 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 953, .unk2 = 12, .unk4 = 16 },
+};
 
-extern const struct UNK_080D95E8 sTimeLimitMenuTitleText[6];
-extern const struct UNK_080D95E8 sTimeLimitMenuControlsText[6];
+const struct UNK_080D95E8 sDifficultyMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 952, .unk2 = 2, .unk4 = 42 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 990, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 991, .unk2 = 2, .unk4 = 50 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 992, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 993, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 994, .unk2 = 2, .unk4 = 45 },
+};
+const struct UNK_080D95E8 sDifficultyMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
 
-extern const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[6][3];
-extern const struct UNK_080D95E8 sButtonConfigButtonIcons[3];
-extern const struct UNK_080D95E8 sButtonConfigActionsText[6][3];
+const struct UNK_080D95E8 sTimeLimitMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 960, .unk2 = 2, .unk4 = 42 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1020, .unk2 = 2, .unk4 = 26 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1021, .unk2 = 2, .unk4 = 24 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1022, .unk2 = 2, .unk4 = 38 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1023, .unk2 = 2, .unk4 = 40 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1024, .unk2 = 2, .unk4 = 36 },
+};
+const struct UNK_080D95E8 sTimeLimitMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
 
-extern const struct UNK_080D95E8 sLanguageScreenTitles[6];
-extern const struct UNK_080D95E8 sLanguageScreenEditControlsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenNewControlsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenOptionsText[6];
+const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[NUM_LANGUAGES][3] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        { .unk0 = 950, .unk2 = 3, .unk4 = 51 }, // title
+        { .unk0 = 958, .unk2 = 0, .unk4 = 28 }, // controls line 1
+        { .unk0 = 950, .unk2 = 10, .unk4 = 14 }, // controls line 2
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        { .unk0 = 980, .unk2 = 3, .unk4 = 38 },
+        { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+        { .unk0 = 980, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        { .unk0 = 981, .unk2 = 3, .unk4 = 38 },
+        { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 981, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        { .unk0 = 982, .unk2 = 3, .unk4 = 44 },
+        { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 982, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        { .unk0 = 983, .unk2 = 3, .unk4 = 40 },
+        { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 983, .unk2 = 4, .unk4 = 21 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        { .unk0 = 984, .unk2 = 3, .unk4 = 46 },
+        { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+        { .unk0 = 984, .unk2 = 4, .unk4 = 15 },
+    },
+};
+const struct UNK_080D95E8 sButtonConfigButtonIcons[] = {
+    [BUTTON_CONFIG_MENU_A_BUTTON] = { .unk0 = 950, .unk2 = 4, .unk4 = 12 },
+    [BUTTON_CONFIG_MENU_B_BUTTON] = { .unk0 = 950, .unk2 = 5, .unk4 = 12 },
+    [BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON] = { .unk0 = 950, .unk2 = 6, .unk4 = 12 },
+};
+const struct UNK_080D95E8 sButtonConfigActionsText[NUM_LANGUAGES][3] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 950, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 950, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 950, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 980, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 980, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 980, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 981, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 981, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 981, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 982, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 982, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 982, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 983, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 983, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 983, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 984, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 984, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 984, .unk2 = 2, .unk4 = 18 },
+    },
+};
 
-extern const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[6];
-extern const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[6];
-extern const struct UNK_080D95E8 sDeleteScreenControlsText[6];
-extern const struct UNK_080D95E8 sDeleteScreenOptionsText[6][2];
+const struct UNK_080D95E8 sLanguageScreenTitles[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 6, .unk4 = 45 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 995, .unk2 = 0, .unk4 = 50 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 996, .unk2 = 0, .unk4 = 46 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 997, .unk2 = 0, .unk4 = 60 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 998, .unk2 = 0, .unk4 = 38 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 999, .unk2 = 0, .unk4 = 46 },
+};
+const struct UNK_080D95E8 sLanguageScreenEditControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sLanguageScreenNewControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 13, .unk4 = 26 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+};
+const struct UNK_080D95E8 sLanguageScreenOptionsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 0, .unk4 = 40 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 953, .unk2 = 1, .unk4 = 40 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 953, .unk2 = 2, .unk4 = 40 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 953, .unk2 = 3, .unk4 = 40 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 953, .unk2 = 4, .unk4 = 40 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 953, .unk2 = 5, .unk4 = 40 },
+};
 
-extern const struct UNK_080D95E8 sPlayerDataMenuTitleText[6];
-extern const struct UNK_080D95E8 sPlayerDataMenuControlsText[6];
-extern const struct UNK_080D95E8 sPlayerDataMenuItemsText[6][4];
+const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 951, .unk2 = 2, .unk4 = 54 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 985, .unk2 = 2, .unk4 = 46 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 986, .unk2 = 2, .unk4 = 48 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 987, .unk2 = 2, .unk4 = 80 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 988, .unk2 = 2, .unk4 = 68 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 989, .unk2 = 2, .unk4 = 60 },
+};
+const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 951, .unk2 = 3, .unk4 = 39 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 985, .unk2 = 3, .unk4 = 38 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 986, .unk2 = 3, .unk4 = 44 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 987, .unk2 = 3, .unk4 = 42 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 988, .unk2 = 3, .unk4 = 63 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 989, .unk2 = 3, .unk4 = 22 },
+};
+const struct UNK_080D95E8 sDeleteScreenControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sDeleteScreenOptionsText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 951, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 951, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 985, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 985, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 986, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 986, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 987, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 987, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 988, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 988, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 989, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 989, .unk2 = 1, .unk4 = 16 },
+    },
+};
 
-extern const struct UNK_080D95E8 sProfileNameScreenNewTitleText[6];
-extern const struct UNK_080D95E8 sProfileNameScreenEditTitleText[6];
-extern const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2];
-extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
+const struct UNK_080D95E8 sPlayerDataMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 957, .unk2 = 4, .unk4 = 51 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1005, .unk2 = 4, .unk4 = 34 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1006, .unk2 = 4, .unk4 = 38 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1007, .unk2 = 4, .unk4 = 28 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1008, .unk2 = 4, .unk4 = 30 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1009, .unk2 = 4, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sPlayerDataMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
 
-extern const struct UNK_080D95E8 sProfileNameScreenScrollArrowTiles[2];
+const struct UNK_080D95E8 sPlayerDataMenuItemsText[NUM_LANGUAGES][4] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 957, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 957, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 957, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 957, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1005, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1005, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1005, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1005, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1006, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1006, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1006, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1006, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1007, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1007, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1007, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1007, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1008, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1008, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1008, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1008, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1009, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1009, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1009, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1009, .unk2 = 3, .unk4 = 40 },
+    },
+};
 
-extern const struct UNK_080D95E8 sMultiplayerRecordsTitleAndColumnHeadersText[6][2];
-extern const struct UNK_080D95E8 sMultiplayerScoreDigitTiles[10];
+const struct UNK_080D95E8 sProfileNameScreenNewTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 2, .unk4 = 48 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1000, .unk2 = 1, .unk4 = 24 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1001, .unk2 = 1, .unk4 = 28 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1002, .unk2 = 1, .unk4 = 30 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1003, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1004, .unk2 = 1, .unk4 = 26 },
+};
+const struct UNK_080D95E8 sProfileNameScreenEditTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 1, .unk4 = 48 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1000, .unk2 = 0, .unk4 = 32 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1001, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1002, .unk2 = 0, .unk4 = 34 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1003, .unk2 = 0, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1004, .unk2 = 0, .unk4 = 32 },
+};
+const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2] = {
+    { .unk0 = 954, .unk2 = 4, .unk4 = 3 },
+    { .unk0 = 954, .unk2 = 3, .unk4 = 3 },
+};
+const struct UNK_080D95E8 sProfileNameScreenEndButtonText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+};
 
-extern const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[6];
-extern const struct UNK_080D95E8 sTimeRecordsScreenChoices[6][2];
+const struct UNK_080D95E8 sProfileNameScreenScrollArrowTiles[2] = {
+    { .unk0 = 962, .unk2 = 0, .unk4 = 2 },
+    { .unk0 = 962, .unk2 = 1, .unk4 = 2 },
+};
 
-extern const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7];
-extern const struct UNK_080D95E8 sTimeRecordDigitTiles[11];
-extern const struct UNK_080D95E8 sZoneNameTitles[6][7];
-extern const struct UNK_080D95E8 sZoneBossTitles[6][7];
+const struct UNK_080D95E8 sMultiplayerRecordsTitleAndColumnHeadersText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        { .unk0 = 961, .unk2 = 0, .unk4 = 48 }, // title
+        { .unk0 = 961, .unk2 = 1, .unk4 = 28 }, // column headers
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        { .unk0 = 1025, .unk2 = 0, .unk4 = 42 },
+        { .unk0 = 1025, .unk2 = 1, .unk4 = 26 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        { .unk0 = 1026, .unk2 = 0, .unk4 = 28 },
+        { .unk0 = 1026, .unk2 = 1, .unk4 = 26 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        { .unk0 = 1027, .unk2 = 0, .unk4 = 42 },
+        { .unk0 = 1027, .unk2 = 1, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        { .unk0 = 1028, .unk2 = 0, .unk4 = 40 },
+        { .unk0 = 1028, .unk2 = 1, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        { .unk0 = 1029, .unk2 = 0, .unk4 = 40 },
+        { .unk0 = 1029, .unk2 = 1, .unk4 = 26 },
+    },
+};
+
+const struct UNK_080D95E8 sMultiplayerScoreDigitTiles[10] = {
+    { .unk0 = 1119, .unk2 = 16, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 17, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 18, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 19, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 20, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 21, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 22, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 23, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 24, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 25, .unk4 = 2 },
+};
+
+const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 959, .unk2 = 0, .unk4 = 66 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1015, .unk2 = 0, .unk4 = 32 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1016, .unk2 = 0, .unk4 = 30 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1017, .unk2 = 0, .unk4 = 44 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1018, .unk2 = 0, .unk4 = 44 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1019, .unk2 = 0, .unk4 = 36 },
+};
+const struct UNK_080D95E8 sTimeRecordsScreenChoices[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 959, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 959, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+};
+
+const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7] = {
+    { .unk0 = 1048, .unk2 = 2, .unk4 = 4 },
+    { .unk0 = 1048, .unk2 = 3, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 4, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 5, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 6, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 7, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 8, .unk4 = 6 },
+};
+
+const struct UNK_080D95E8 sTimeRecordDigitTiles[11] = {
+    { .unk0 = 1047, .unk2 = 0, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 1, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 2, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 3, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 4, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 5, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 6, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 7, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 8, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 9, .unk4 = 4 },
+    [DELIMINATOR_DIGIT] = { .unk0 = 1047, .unk2 = 10, .unk4 = 4 },
+};
+
+const struct UNK_080D95E8 sZoneNameTitles[NUM_LANGUAGES][7] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [ZONE_1] = { .unk0 = 1049, .unk2 = 0, .unk4 = 28 },
+        [ZONE_2] = { .unk0 = 1049, .unk2 = 1, .unk4 = 28 },
+        [ZONE_3] = { .unk0 = 1049, .unk2 = 2, .unk4 = 36 },
+        [ZONE_4] = { .unk0 = 1049, .unk2 = 3, .unk4 = 30 },
+        [ZONE_5] = { .unk0 = 1049, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1049, .unk2 = 5, .unk4 = 22 },
+        [ZONE_7] = { .unk0 = 1049, .unk2 = 6, .unk4 = 30 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+};
+const struct UNK_080D95E8 sZoneBossTitles[NUM_LANGUAGES][7] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [ZONE_1] = { .unk0 = 1064, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1064, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1064, .unk2 = 2, .unk4 = 24 },
+        [ZONE_4] = { .unk0 = 1064, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1064, .unk2 = 4, .unk4 = 24 },
+        [ZONE_6] = { .unk0 = 1064, .unk2 = 5, .unk4 = 28 },
+        [ZONE_7] = { .unk0 = 1064, .unk2 = 6, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+};
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -810,7 +1296,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
     }
 
     {
-        const struct UNK_080D95E8 *timeLimitSwitchText = &sTimeLimitMenuSwitchValues[language][optionsScreen->timeLimitEnabled];
+        const struct UNK_080D95E8 *timeLimitSwitchText = &sTimeLimitMenuSwitchText[language][optionsScreen->timeLimitEnabled];
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_TIME_LIMIT ? 152 : 160;
     
         sub_806A568(
@@ -1693,7 +2179,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu* timeLimitMenu) {
 
     const struct UNK_080D95E8 *titleText = &sTimeLimitMenuTitleText[timeLimitMenu->language];
     const struct UNK_080D95E8 *footerText = &sTimeLimitMenuControlsText[timeLimitMenu->language];
-    const struct UNK_080D95E8 *timeLimitSwitchText = sTimeLimitMenuSwitchValues[timeLimitMenu->language];
+    const struct UNK_080D95E8 *timeLimitSwitchText = sTimeLimitMenuSwitchText[timeLimitMenu->language];
 
     s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
     s16 timeLimitEnabled = timeLimitMenu->switchValue;
@@ -1830,7 +2316,7 @@ static void Task_TimeLimitMenuMain(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *itemText3 = &sTimeLimitMenuSwitchValues[language][timeLimitMenu->switchValue];
+        const struct UNK_080D95E8 *itemText3 = &sTimeLimitMenuSwitchText[language][timeLimitMenu->switchValue];
         // Except this is different
         timeLimitOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_TIME_LIMIT];
         

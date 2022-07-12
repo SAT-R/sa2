@@ -1,5 +1,10 @@
     .section .rodata
 
+@; seems to be empty/unused space
+    .global gUnknown_080DA270
+gUnknown_080DA270:
+    .incbin "baserom.gba", 0x000DA270, 0x53F8
+
     .global gUnknown_080DF668
 gUnknown_080DF668:
     .incbin "baserom.gba", 0x000DF668, 0x8
