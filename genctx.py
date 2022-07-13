@@ -17,6 +17,10 @@ def search_directories(*patterns):
 for filename in search_directories('./src/**/*.h', './include/**/*.h'):
     with open(filename) as header:
         header_name = filename.split('/')[-1]
+
+        if "constants/" in filename:
+            header_name = f"constants/{header_name}"
+
         if "gba/" in filename:
             header_name = "gba/" + header_name
 

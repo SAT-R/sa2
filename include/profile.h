@@ -84,4 +84,6 @@ void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter);
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
+void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused);
+
 #endif // GUARD_OPTION_SCREEN_H
