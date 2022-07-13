@@ -141,6 +141,32 @@ struct UNK_802D4CC_UNK270 {
     u16 unkA;
 };
 
+struct UNK_3005B80_UNK4 {
+    u8 unk0;
+    u8 unk1;
+    u8 unk2;
+    u8 filler13;
+
+    const u8* unk4;
+    const u8* unk8;
+
+    u8 unkC;
+    u8 unkD;
+    u8 unkE;
+    u8 fillerF[37];
+
+    u16 unk34;
+    u8 unk36;
+};
+
+struct UNK_3005B80 {
+    struct UNK_3005B80_UNK4* unk0;
+    struct Unk_03002400* unk4;
+};
+
+// Used outside of this module I think, so declared here
+struct UNK_3005B80 gUnknown_03005B80;
+
 // Some sort of fade transition function?
 extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);
 
