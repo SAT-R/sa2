@@ -3,6 +3,10 @@
 
 #include "gba/m4a_internal.h"
 
+struct MusicPlayerInfo gMPlayInfo_BGM;
+struct MusicPlayerInfo gMPlayInfo_SE1;
+struct MusicPlayerInfo gMPlayInfo_SE2;
+
 void m4aSoundVSync(void);
 
 void m4aSoundInit(void);

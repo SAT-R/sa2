@@ -4125,7 +4125,7 @@ static bool16 ProfileNameScreenHandleShoulderInput(void) {
 static bool16 ProfileNameScreenHandleDpadInput(void) {
     struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
 
-    if (!(gRepeatedKeys & (DPAD_DOWN | DPAD_UP | DPAD_LEFT | DPAD_RIGHT))) {
+    if (!(gRepeatedKeys & (DPAD_ANY))) {
         return FALSE;
     }
 

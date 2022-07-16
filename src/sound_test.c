@@ -4,6 +4,8 @@
 #include "task.h"
 #include "data.h"
 #include "m4a.h"
+#include "input.h"
+#include "constants/songs.h"
 
 struct SoundTestScreen_UNK718 {
     u32 unk0;
@@ -42,12 +44,12 @@ struct SoundTestScreen {
     u8 unk708;
     u8 unk709;
 
-    u8 filler70A;
+    u8 unk70A;
 
     u8 unk70B;
     u8 unk70C;
     u8 unk70D;
-    u16 unk70E;
+    s16 unk70E;
     u16 unk710;
     u8 unk712;
 
@@ -235,4 +237,158 @@ void sub_808A3B4(struct Task* t) {
             0
         );
     }
+}
+
+extern const u8 gUnknown_080E0BF7[57];
+extern const u32 gUnknown_080E0AAC[67];
+extern const u16 gUnknown_080E0A24[68];
+
+void sub_808B18C(void);
+
+void sub_808B3A0(u8);
+void sub_808B030(u8);
+
+void sub_808B350(u8, s16, u8);
+void sub_808AB08();
+
+void sub_808A720(void) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+
+    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
+    struct UNK_0808B3FC_UNK240* unk30C = &soundTestScreen->unk30C;
+    struct UNK_802D4CC_UNK270* unk4 = &soundTestScreen->unk4;
+
+    const u8* sounds;
+    u8 numSounds;
+
+    if (gLoadedSaveGame->unk7[0] >= 30) {
+        sounds = gUnknown_080E0BB8;
+        numSounds = ARRAY_COUNT(gUnknown_080E0BB8);
+    } else {
+        sounds = gUnknown_080E0BF7;
+        numSounds = ARRAY_COUNT(gUnknown_080E0BF7);
+    }
+
+    sub_808B18C();
+
+    if (gRepeatedKeys & DPAD_ANY) {
+        u8 prev70B = soundTestScreen->unk70B;
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+
+        if (gRepeatedKeys & DPAD_LEFT) {
+            soundTestScreen->unk70B--;
+        }
+
+        if (gRepeatedKeys & DPAD_RIGHT) {
+            soundTestScreen->unk70B++;
+        }
+
+        if (gRepeatedKeys & DPAD_UP) {
+            soundTestScreen->unk70B += 10;
+        }
+        
+        if (gRepeatedKeys & DPAD_DOWN) {
+            if (soundTestScreen->unk70B - 10 < 0) {
+                soundTestScreen->unk70B = numSounds;
+            } else {
+                soundTestScreen->unk70B -= 10;
+            }
+        }
+
+        if (soundTestScreen->unk70B == 0) {
+            soundTestScreen->unk70B = numSounds;
+        }
+        
+        if (soundTestScreen->unk70B > numSounds) {
+            soundTestScreen->unk70B = 1;
+        }
+
+        if (soundTestScreen->unk70B % 10 > prev70B % 10) {
+            soundTestScreen->unk70C = 0xF9;
+        } else if (soundTestScreen->unk70B % 10 < prev70B % 10) {
+            soundTestScreen->unk70C = 7;
+        }
+
+        if ((soundTestScreen->unk70B / 10) % 10 > (prev70B / 10) % 10) {
+            soundTestScreen->unk70D = 0xF9;
+        } else if ((soundTestScreen->unk70B / 10) % 10 < (prev70B / 10) % 10){
+            soundTestScreen->unk70D = 7;
+        }
+
+        unk33C[0].unk20 = soundTestScreen->unk70B % 10 + 16;
+        unk33C[1].unk20 = soundTestScreen->unk70B / 10 % 10 + 16;
+        unk33C[2].unk20 = soundTestScreen->unk70B / 100 % 10 + 16;
+
+        sub_8004558(unk33C);
+        sub_8004558(&unk33C[1]);
+        sub_8004558(&unk33C[2]);
+
+        if (soundTestScreen->unk709 == 0) {
+            sub_808B3A0(sounds[soundTestScreen->unk70B - 1]);
+        }
+    }
+
+    if (soundTestScreen->unk709 == 1 && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
+        soundTestScreen->unk709 = 0;
+        unk30C->unk20 = 1;
+        sub_8004558(unk30C);
+        m4aMPlayAllStop();
+        soundTestScreen->unk6FC = 0;
+        soundTestScreen->unk700 = 0;
+        sub_808B030(5);
+    }
+    
+    if (gPressedKeys & A_BUTTON) {
+        u32 songTitle;
+        soundTestScreen->unk704 = songTitle = gUnknown_080E0AAC[sounds[soundTestScreen->unk70B - 1]];
+        soundTestScreen->unk2A8.unk22 = songTitle >> 12;
+        m4aMPlayAllStop();
+
+        MPlayStart(&gMPlayInfo_BGM, gSongTable[gUnknown_080E0A24[sounds[soundTestScreen->unk70B - 1]]].header);
+
+        soundTestScreen->unk709 = 1;
+        unk30C->unk20 = 0;
+        soundTestScreen->unk6FC = 0;
+        soundTestScreen->unk700 = 0;
+        soundTestScreen->unk708 = 0;
+        soundTestScreen->unk70A = 0;
+
+        sub_8004558(unk30C); 
+
+        sub_808B3A0(sounds[soundTestScreen->unk70B - 1]);
+        sub_808B030(2);
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        if (soundTestScreen->unk709 == 1) {
+            soundTestScreen->unk709 = 0;
+            unk30C->unk20 = 1;
+            sub_8004558(unk30C);
+            m4aMPlayAllStop();
+            soundTestScreen->unk6FC = 0;
+            soundTestScreen->unk700 = 0;
+            sub_808B030(5);
+        } else {
+            sub_808B030(0);
+            m4aSongNumStart(SE_RETURN);
+            unk4->unk0 = 0;
+            unk4->unk2 = 1;
+            unk4->unk4 = 0;
+            unk4->unk6 = 0x100;
+            unk4->unkA = 0;
+            unk4->unk8 = 0xFF;
+
+            soundTestScreen->unk6FC = 0;
+            soundTestScreen->unk700 = 0;
+            soundTestScreen->unk709 = 2;
+            gCurTask->main = sub_808AF74;
+        }
+    }
+
+    if (++soundTestScreen->unk70E > 400) {
+        soundTestScreen->unk70E = 0;
+    }
+
+    sub_808B350(sounds[soundTestScreen->unk70B - 1], 0x100 - soundTestScreen->unk70E, 0x9E);
+    sub_808AB08();
 }
