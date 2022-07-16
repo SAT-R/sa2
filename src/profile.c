@@ -419,9 +419,6 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define ASSET_CHARACTER_BACKGROUND 0
 #define ASSET_CHARACTER 1
 
-#define RENDER_TARGET_SCREEN 0
-#define RENDER_TARGET_SUB_MENU 1
-
 #define DIFFICULTY_OPTION_NORMAL 0
 #define DIFFICULTY_OPTION_EASY 1
 

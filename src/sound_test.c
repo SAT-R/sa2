@@ -15,11 +15,24 @@ struct SoundTestScreen {
     struct UNK_802D4CC_UNK270 unk4;
     struct UNK_3005B80_UNK4 unk10;
 
-    u8 filler46[560];
-    void* unk278;
-    u8 filler27C[92];
-    void* unk2D8;
-    u8 filler2DC[1056];
+    u8 filler48[128];
+    struct UNK_0808B3FC_UNK240 unkC8;
+    struct UNK_0808B3FC_UNK240 unkF8;
+    struct UNK_0808B3FC_UNK240 unk128;
+    struct UNK_0808B3FC_UNK240 unk158;
+    struct UNK_0808B3FC_UNK240 unk188;
+    struct UNK_0808B3FC_UNK240 unk1B8[4];
+
+    struct UNK_0808B3FC_UNK240 unk278;
+    struct UNK_0808B3FC_UNK240 unk2A8;
+    struct UNK_0808B3FC_UNK240* unk2D8;
+    struct UNK_0808B3FC_UNK240 unk2DC;
+    struct UNK_0808B3FC_UNK240 unk30C;
+    struct UNK_0808B3FC_UNK240 unk33C[3];
+
+    struct UNK_802D4CC_UNK270 unk3CC[4];
+
+    struct UNK_0808B3FC_UNK240 unk3FC[16];
 
     u8 unk6FC;
     u8 unk6FD[3];
@@ -43,20 +56,18 @@ struct SoundTestScreen {
     void* unk718[8];
     void* unk738[8];
     u8 unk758;
-
-    u8 filler759[3];
 }; /* size 0x75C */
 
 void sub_808AF74(void);
 void sub_808B2B0(struct Task* t);
 void sub_808B2F4(struct Task* t);
-void sub_808A3B4(struct Task* t);
+static void sub_808A3B4(struct Task* t);
 
 extern const u8 gUnknown_080E0C38[12];
 extern const u8 gUnknown_08C8796C[140];
 
 void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_808AF74, 0x75C, 0x1800, TASK_x0004, sub_808B2B0);
+    struct Task* t = TaskCreate(sub_808AF74, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, sub_808B2B0);
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
     struct UNK_802D4CC_UNK270* unk4;
     struct UNK_3005B80_UNK4* unk10;
@@ -87,7 +98,7 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
         soundTestScreen->unk738[i] = NULL;
     }
 
-   ResetProfileScreensVram();
+    ResetProfileScreensVram();
     sub_808B2F4(t);
     sub_808A3B4(t);
    
@@ -111,4 +122,117 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     unk10->unk34 = 0;
 
     gUnknown_03005B80.unk0 = unk10;
+}
+
+extern const u32 gUnknown_080E0C44[NUM_LANGUAGES * 3];
+extern const u32 gUnknown_080E0C8C[NUM_LANGUAGES * 3];
+extern const u32 gUnknown_080E0CD4[NUM_LANGUAGES * 3 * 2];
+
+extern const u8 gUnknown_080E05E4[68][16];
+extern const u8 gUnknown_080E0BB8[63];
+
+void sub_808A3B4(struct Task* t) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+
+    struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->unkC8;
+    struct UNK_0808B3FC_UNK240* unkF8 = &soundTestScreen->unkF8;
+    struct UNK_0808B3FC_UNK240* unk30C = &soundTestScreen->unk30C;
+    struct UNK_0808B3FC_UNK240* unk1B8 = soundTestScreen->unk1B8;
+    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
+    struct UNK_0808B3FC_UNK240* unk2DC = &soundTestScreen->unk2DC;
+    struct UNK_0808B3FC_UNK240* unk278 = &soundTestScreen->unk278;
+    struct UNK_0808B3FC_UNK240* unk188 = &soundTestScreen->unk188;
+    struct UNK_802D4CC_UNK270* unk3CC = soundTestScreen->unk3CC;
+
+    s16 i, xPos, yPos;
+
+    // jiang: "the language stuff is definitely fake but I don't want to waste my time experimenting expression elimination tricks"
+    s8 *language = &soundTestScreen->unk758;
+    const u32 *r6 = gUnknown_080E0C44;
+    s32 langOffset = *language * 3;
+
+    sub_806A568(
+        unkC8,
+        RENDER_TARGET_SCREEN,
+        r6[langOffset],
+        gUnknown_080E0C44[langOffset + 1],
+        0x1000,
+        10,
+        0x10,
+        5,
+        gUnknown_080E0C44[langOffset + 2],
+        0
+    );
+    sub_806A568(unkF8,RENDER_TARGET_SCREEN,0x60,0x3C9,0x1000,0,0,6,0,0);
+
+    // required for match
+    unkF8 = &soundTestScreen->unk128;
+    sub_806A568(
+        unkF8,
+        RENDER_TARGET_SCREEN,
+        gUnknown_080E0C8C[langOffset],
+        gUnknown_080E0C8C[langOffset + 1],
+        0x1000, 10, 0x86, 5,
+        gUnknown_080E0C8C[langOffset + 2],
+        0);
+    
+    sub_806A568(
+        unk30C,
+        RENDER_TARGET_SCREEN,
+        gUnknown_080E0CD4[langOffset * 2 + 3],
+        gUnknown_080E0CD4[langOffset * 2 + 4],
+        0x1000, 
+        0x5A, 
+        0x86, 
+        5,
+        gUnknown_080E0CD4[langOffset * 2 + 5],
+        0
+    );
+    sub_806A568(unk188,RENDER_TARGET_SCREEN,1,0x3C5,0x1000,0x5A,0x5A,5,2,0);
+
+    for (i = 0, xPos = 80, yPos = 96; i < 3; i++, unk33C++, xPos -= 8) {
+        if (i == 0) {
+            sub_806A568(unk33C,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x11,0);
+        } else {
+            sub_806A568(unk33C,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x10,0);
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        sub_806A568(&unk1B8[i],RENDER_TARGET_SCREEN,0x40,0x3ce,i | 0x1060,0x4c,0x5a,6,0,0);
+    }
+
+    for (i = 0; i < 4; i++) {
+        unk3CC[i].unk0 = i << 8;
+        unk3CC[i].unk2 = 0x100;
+        unk3CC[i].unk4 = 0x100;
+        unk3CC[i].unk6 = 0x4C;
+        unk3CC[i].unk8 = 0x5A;
+    }
+
+    unk3CC[1].unk6--;
+    unk3CC[2].unk8--;
+    unk3CC[2].unk6--;
+    unk3CC[3].unk8--;
+
+    sub_806A568(unk2DC,RENDER_TARGET_SCREEN,0x14,0x3CC,0x1000,0xB4,0x8C,6,0,4);
+    sub_806A568(unk278,RENDER_TARGET_SCREEN,0x40,0x3CA,0x1000,0xB4,0x74,5,0,0);
+    unk278++;
+    sub_806A568(unk278,RENDER_TARGET_SCREEN,0x48,0x3C8,0x1000,0xB4,0x74,5,0,0);
+
+    
+    for (i = 0; i < 0x10; i++) {
+        sub_806A568(
+            &soundTestScreen->unk3FC[i],
+            RENDER_TARGET_SCREEN,
+            2,
+            0x45F,
+            0x1000,
+            0,
+            0,
+            5,
+            gUnknown_080E05E4[gUnknown_080E0BB8[0]][i] - 0x20,
+            0
+        );
+    }
 }

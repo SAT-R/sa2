@@ -6,6 +6,9 @@
 #include "sprite.h"
 #include "constants/text.h"
 
+#define RENDER_TARGET_SCREEN 0
+#define RENDER_TARGET_SUB_MENU 1
+
 #define NEW_PROFILE_NAME_MULTIPLAYER 0
 #define NEW_PROFILE_NAME_START_GAME 1
 

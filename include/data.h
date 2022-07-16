@@ -145,7 +145,7 @@ struct UNK_3005B80_UNK4 {
     u8 unk0;
     u8 unk1;
     u8 unk2;
-    u8 filler13;
+    u8 filler3;
 
     const u8* unk4;
     const u8* unk8;
