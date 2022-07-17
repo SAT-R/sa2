@@ -11,73 +11,92 @@
 #include "ui.h"
 #include "backgrounds.h"
 
-struct SoundTestScreen_UNK718 {
-    u32 unk0;
-    u8 filler4[4];
-};
+#define MAX_SONG_NAME_LENGTH 16
+#define NUM_SPEAKER_CONE_SECTIONS 4
 
 struct SoundTestScreen {
     struct OptionsScreen* optionsScreen;
     struct UNK_802D4CC_UNK270 unk4;
     struct UNK_3005B80_UNK4 unk10;
 
-    struct Unk_03002400 unk48[2];
+    // Only 1 used, but fits 2
+    struct Unk_03002400 background[2];
 
-    struct UNK_0808B3FC_UNK240 unkC8;
-    struct UNK_0808B3FC_UNK240 unkF8[2];
-    struct UNK_0808B3FC_UNK240 unk158;
-    struct UNK_0808B3FC_UNK240 unk188;
-    struct UNK_0808B3FC_UNK240 unk1B8[4];
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 titleTrimAndControls[2];
 
-    struct UNK_0808B3FC_UNK240 unk278;
-    struct UNK_0808B3FC_UNK240 unk2A8;
-    struct UNK_0808B3FC_UNK240* unk2D8;
-    struct UNK_0808B3FC_UNK240 unk2DC;
-    struct UNK_0808B3FC_UNK240 unk30C;
-    struct UNK_0808B3FC_UNK240 unk33C[3];
+    struct UNK_0808B3FC_UNK240 unused_unk158;
 
-    struct UNK_808D124_UNK180 unk3CC[4];
+    struct UNK_0808B3FC_UNK240 scrollArrows;
+    struct UNK_0808B3FC_UNK240 speakerCone[NUM_SPEAKER_CONE_SECTIONS];
 
-    struct UNK_0808B3FC_UNK240 unk3FC[16];
+    struct UNK_0808B3FC_UNK240 creams[2];
+    struct UNK_0808B3FC_UNK240* activeCream;
+    struct UNK_0808B3FC_UNK240 danceStage;
+    struct UNK_0808B3FC_UNK240 backControlName;
+    struct UNK_0808B3FC_UNK240 songNumDisplay[3];
 
-    u8 unk6FC;
-    u8 unk6FD[3];
+    struct UNK_808D124_UNK180 speakerConeEffects[NUM_SPEAKER_CONE_SECTIONS];
 
-    u32 unk700;
-    u32 unk704;
-    u8 unk708;
-    u8 unk709;
+    struct UNK_0808B3FC_UNK240 songNameDisplay[MAX_SONG_NAME_LENGTH];
 
-    u8 unk70A;
+    u8 animFrame;
 
-    u8 unk70B;
-    s8 unk70C[2];
+    u32 barBeat;
+    u32 songTempo;
+    u8 scrollArrowAnimFrame;
+    u8 state;
 
-    s16 unk70E;
-    s16 unk710;
-    u8 unk712;
+    u8 creamDanceAnimStep;
 
-    u8 unk713;
-    u8 unk714;
-    u8 unk715;
-    u8 unk716;
-    u8 unk717;
+    u8 songNumber;
+    s8 songNumAnimSteps[2];
 
-    u32 unk718[8];
-    u32 unk738[8];
-    u8 unk758;
+    s16 songNameTickerPos;
+    s16 speakerSize;
+    u8 speakerAnimFrame;
+
+    u8 measurementSound1H;
+    u8 measurementSound2H;
+    u8 measurementSound3H;
+    u8 measurementSound3L;
+
+    u32 freqChanges[8];
+    u32 channelFreqs[8];
+    u8 language;
 }; /* size 0x75C */
 
-static void sub_808AF74(void);
-static void sub_808B2B0(struct Task* t);
-static void sub_808B2F4(struct Task* t);
-static void sub_808A3B4(struct Task* t);
-static void sub_808B18C(void);
-static void sub_808B3A0(u8);
-static void sub_808B030(u8);
-static void sub_808B350(u8, s16, s16);
-static void sub_808AB08(void);
-static void sub_808B2C8(void);
+static void SoundTestScreenCreateUI(struct Task* t);
+static void SoundTestScreenInitRegistersAndBackground(struct Task* t);
+static void SoundTestScreenRenderUI(void);
+static void Task_SoundTestScreenInOutTransition(void);
+
+static void SoundTestScreenOnDestroy(struct Task* t);
+static void Task_SoundTestScreenCleanup(void);
+
+static void SoundTestScreenUpdateCreamAnim(void);
+static void SoundTestScreenSetSongNameDisplay(u8);
+static void SoundTestScreenSetCreamAnim(u8);
+static void SoundTestScreenSetSongNameDisplayPos(u8, s16, s16);
+
+#define SOUND_TEST_SCREEN_STOPPED 0
+#define SOUND_TEST_SCREEN_PLAYING 1
+#define SOUND_TEST_SCREEN_EXITING 2
+
+#define CREAM_ANIM_BOW 0
+#define CREAM_ANIM_IDLE 1
+#define CREAM_ANIM_DANCE_RIGHT 2
+#define CREAM_ANIM_DANCE_MIDDLE 3
+#define CREAM_ANIM_DANCE_LEFT 4
+#define CREAM_ANIM_SONG_END 5
+
+#define IDLE_CREAM 0
+#define DANCING_CREAM 1
+
+#define CREAM_DANCE_STEP_RIGHT 0
+#define CREAM_DANCE_STEP_FIRST_MIDDLE 1
+#define CREAM_DANCE_STEP_LEFT 2
+#define CREAM_DANCE_STEP_SECOND_MIDDLE 3
 
 extern const u8 gUnknown_080E0C38[12];
 extern const u8 gUnknown_08C8796C[140];
@@ -86,17 +105,18 @@ extern const u32 gUnknown_080E0C44[NUM_LANGUAGES * 3];
 extern const u32 gUnknown_080E0C8C[NUM_LANGUAGES * 3];
 extern const u32 gUnknown_080E0CD4[NUM_LANGUAGES * 3 * 2];
 
-extern const u8 gUnknown_080E05E4[68][16];
-extern const u8 gUnknown_080E0BB8[63];
+extern const u8 sSongNames[68][MAX_SONG_NAME_LENGTH];
 
-extern const u8 gUnknown_080E0BF7[57];
+extern const u8 sCompleteSongsList[63];
+extern const u8 sNonCompleteSongsList[57];
+
 extern const u32 gUnknown_080E0AAC[67];
-extern const u16 gUnknown_080E0A24[68];
+extern const u16 sSongIdsList[68];
 
-extern const u8 gUnknown_080E0C30[8];
+extern const u8 sSongNumTransitionAnim[7];
 
 void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
-    struct Task* t = TaskCreate(sub_808AF74, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, sub_808B2B0);
+    struct Task* t = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
     struct UNK_802D4CC_UNK270* unk4;
     struct UNK_3005B80_UNK4* unk10;
@@ -108,28 +128,28 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     m4aMPlayAllStop();
 
     soundTestScreen->optionsScreen = optionsScreen;
-    soundTestScreen->unk6FC = 0;
-    soundTestScreen->unk700 = 0;
-    soundTestScreen->unk704 = 0x10000;
-    soundTestScreen->unk70B = 1;
-    soundTestScreen->unk709 = 0;
-    soundTestScreen->unk708 = 0;
-    soundTestScreen->unk2D8 = &soundTestScreen->unk278;
-    soundTestScreen->unk70C[0] = 0;
-    soundTestScreen->unk70C[1] = 0;
-    soundTestScreen->unk70E = 0;
-    soundTestScreen->unk710 = 0;
-    soundTestScreen->unk712 = 0;
-    soundTestScreen->unk758 = optionsScreen->language;
+    soundTestScreen->animFrame = 0;
+    soundTestScreen->barBeat = 0;
+    soundTestScreen->songTempo = 0x10000;
+    soundTestScreen->songNumber = 1;
+    soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
+    soundTestScreen->scrollArrowAnimFrame = 0;
+    soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
+    soundTestScreen->songNumAnimSteps[0] = 0;
+    soundTestScreen->songNumAnimSteps[1] = 0;
+    soundTestScreen->songNameTickerPos = 0;
+    soundTestScreen->speakerSize = 0;
+    soundTestScreen->speakerAnimFrame = 0;
+    soundTestScreen->language = optionsScreen->language;
         
     for (i = 0; i < 8; i++) {
-        soundTestScreen->unk718[i] = 0;
-        soundTestScreen->unk738[i] = 0;
+        soundTestScreen->freqChanges[i] = 0;
+        soundTestScreen->channelFreqs[i] = 0;
     }
 
     ResetProfileScreensVram();
-    sub_808B2F4(t);
-    sub_808A3B4(t);
+    SoundTestScreenInitRegistersAndBackground(t);
+    SoundTestScreenCreateUI(t);
    
     unk4->unk0 = 0;
     unk4->unk2 = 2;
@@ -153,28 +173,28 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     gUnknown_03005B80.unk0 = unk10;
 }
 
-static void sub_808A3B4(struct Task* t) {
+static void SoundTestScreenCreateUI(struct Task* t) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
 
-    struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->unkC8;
-    struct UNK_0808B3FC_UNK240* unkF8 = soundTestScreen->unkF8;
-    struct UNK_0808B3FC_UNK240* unk30C = &soundTestScreen->unk30C;
-    struct UNK_0808B3FC_UNK240* unk1B8 = soundTestScreen->unk1B8;
-    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
-    struct UNK_0808B3FC_UNK240* unk2DC = &soundTestScreen->unk2DC;
-    struct UNK_0808B3FC_UNK240* unk278 = &soundTestScreen->unk278;
-    struct UNK_0808B3FC_UNK240* unk188 = &soundTestScreen->unk188;
-    struct UNK_808D124_UNK180* unk3CC = soundTestScreen->unk3CC;
+    struct UNK_0808B3FC_UNK240* title = &soundTestScreen->title;
+    struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
+    struct UNK_0808B3FC_UNK240* backControlName = &soundTestScreen->backControlName;
+    struct UNK_0808B3FC_UNK240* speakerCone = soundTestScreen->speakerCone;
+    struct UNK_0808B3FC_UNK240* songNumDisplayElement = soundTestScreen->songNumDisplay;
+    struct UNK_0808B3FC_UNK240* danceStage = &soundTestScreen->danceStage;
+    struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->creams;
+    struct UNK_0808B3FC_UNK240* scrollArrows = &soundTestScreen->scrollArrows;
+    struct UNK_808D124_UNK180* unk3CC = soundTestScreen->speakerConeEffects;
 
     s16 i, xPos, yPos;
 
     // jiang: "the language stuff is definitely fake but I don't want to waste my time experimenting expression elimination tricks"
-    s8 *language = &soundTestScreen->unk758;
+    s8 *language = &soundTestScreen->language;
     const u32 *r6 = gUnknown_080E0C44;
     s32 langOffset = *language * 3;
 
     sub_806A568(
-        unkC8,
+        title,
         RENDER_TARGET_SCREEN,
         r6[langOffset],
         gUnknown_080E0C44[langOffset + 1],
@@ -185,20 +205,24 @@ static void sub_808A3B4(struct Task* t) {
         gUnknown_080E0C44[langOffset + 2],
         0
     );
-    sub_806A568(unkF8,RENDER_TARGET_SCREEN,0x60,0x3C9,0x1000,0,0,6,0,0);
+    // Trim
+    sub_806A568(titleTrimAndControls,RENDER_TARGET_SCREEN,0x60,0x3C9,0x1000,0,0,6,0,0);
 
-    unkF8++;
+    titleTrimAndControls++;
+    // Controls (play and buttons)
     sub_806A568(
-        unkF8,
+        titleTrimAndControls,
         RENDER_TARGET_SCREEN,
         gUnknown_080E0C8C[langOffset],
         gUnknown_080E0C8C[langOffset + 1],
         0x1000, 10, 0x86, 5,
         gUnknown_080E0C8C[langOffset + 2],
-        0);
+        0
+    );
     
+    // back button name
     sub_806A568(
-        unk30C,
+        backControlName,
         RENDER_TARGET_SCREEN,
         gUnknown_080E0CD4[langOffset * 2 + 3],
         gUnknown_080E0CD4[langOffset * 2 + 4],
@@ -209,18 +233,18 @@ static void sub_808A3B4(struct Task* t) {
         gUnknown_080E0CD4[langOffset * 2 + 5],
         0
     );
-    sub_806A568(unk188,RENDER_TARGET_SCREEN,1,0x3C5,0x1000,0x5A,0x5A,5,2,0);
+    sub_806A568(scrollArrows,RENDER_TARGET_SCREEN,1,0x3C5,0x1000,0x5A,0x5A,5,2,0);
 
-    for (i = 0, xPos = 80, yPos = 96; i < 3; i++, unk33C++, xPos -= 8) {
+    for (i = 0, xPos = 80, yPos = 96; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
         if (i == 0) {
-            sub_806A568(unk33C,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x11,0);
+            sub_806A568(songNumDisplayElement,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x11,0);
         } else {
-            sub_806A568(unk33C,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x10,0);
+            sub_806A568(songNumDisplayElement,RENDER_TARGET_SCREEN,2,0x45f,0x1000,xPos,yPos,5,0x10,0);
         }
     }
 
     for (i = 0; i < 4; i++) {
-        sub_806A568(&unk1B8[i],RENDER_TARGET_SCREEN,0x40,0x3ce,i | 0x1060,0x4c,0x5a,6,0,0);
+        sub_806A568(&speakerCone[i],RENDER_TARGET_SCREEN,0x40,0x3ce, i | 0x1060,0x4c,0x5a,6,0,0);
     }
 
     for (i = 0; i < 4; i++) {
@@ -236,15 +260,15 @@ static void sub_808A3B4(struct Task* t) {
     unk3CC[2].unk6[0]--;
     unk3CC[3].unk6[1]--;
 
-    sub_806A568(unk2DC,RENDER_TARGET_SCREEN,0x14,0x3CC,0x1000,0xB4,0x8C,6,0,4);
-    sub_806A568(unk278,RENDER_TARGET_SCREEN,0x40,0x3CA,0x1000,0xB4,0x74,5,0,0);
-    unk278++;
-    sub_806A568(unk278,RENDER_TARGET_SCREEN,0x48,0x3C8,0x1000,0xB4,0x74,5,0,0);
+    sub_806A568(danceStage,RENDER_TARGET_SCREEN,0x14,0x3CC,0x1000,0xB4,0x8C,6,0,4);
+    sub_806A568(animatedCream,RENDER_TARGET_SCREEN,0x40,0x3CA,0x1000,0xB4,0x74,5,0,0);
+    animatedCream++;
+    sub_806A568(animatedCream,RENDER_TARGET_SCREEN,0x48,0x3C8,0x1000,0xB4,0x74,5,0,0);
 
     
-    for (i = 0; i < 0x10; i++) {
+    for (i = 0; i < MAX_SONG_NAME_LENGTH; i++) {
         sub_806A568(
-            &soundTestScreen->unk3FC[i],
+            &soundTestScreen->songNameDisplay[i],
             RENDER_TARGET_SCREEN,
             2,
             0x45F,
@@ -252,134 +276,136 @@ static void sub_808A3B4(struct Task* t) {
             0,
             0,
             5,
-            gUnknown_080E05E4[gUnknown_080E0BB8[0]][i] - 0x20,
+            sSongNames[sCompleteSongsList[0]][i] - 0x20,
             0
         );
     }
 }
 
-
-
-
-static void sub_808A720(void) {
+static void Task_SoundTestScreenMain(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
 
-    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
-    struct UNK_0808B3FC_UNK240* unk30C = &soundTestScreen->unk30C;
+    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->songNumDisplay;
+    struct UNK_0808B3FC_UNK240* backControlName = &soundTestScreen->backControlName;
     struct UNK_802D4CC_UNK270* unk4 = &soundTestScreen->unk4;
 
-    const u8* sounds;
-    u8 numSounds;
+    const u8* songsList;
+    u8 numSongs;
 
-    if (gLoadedSaveGame->unk7[0] >= 30) {
-        sounds = gUnknown_080E0BB8;
-        numSounds = ARRAY_COUNT(gUnknown_080E0BB8);
+    if (gLoadedSaveGame->unk7[CHARACTER_SONIC] >= 30) {
+        songsList = sCompleteSongsList;
+        numSongs = ARRAY_COUNT(sCompleteSongsList);
     } else {
-        sounds = gUnknown_080E0BF7;
-        numSounds = ARRAY_COUNT(gUnknown_080E0BF7);
+        songsList = sNonCompleteSongsList;
+        numSongs = ARRAY_COUNT(sNonCompleteSongsList);
     }
 
-    sub_808B18C();
+    SoundTestScreenUpdateCreamAnim();
 
     if (gRepeatedKeys & DPAD_ANY) {
-        u8 prev70B = soundTestScreen->unk70B;
+        u8 prevSongNumber = soundTestScreen->songNumber;
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
         if (gRepeatedKeys & DPAD_LEFT) {
-            soundTestScreen->unk70B--;
+            soundTestScreen->songNumber--;
         }
 
         if (gRepeatedKeys & DPAD_RIGHT) {
-            soundTestScreen->unk70B++;
+            soundTestScreen->songNumber++;
         }
 
         if (gRepeatedKeys & DPAD_UP) {
-            soundTestScreen->unk70B += 10;
+            soundTestScreen->songNumber += 10;
         }
         
         if (gRepeatedKeys & DPAD_DOWN) {
-            if (soundTestScreen->unk70B - 10 < 0) {
-                soundTestScreen->unk70B = numSounds;
+            if (soundTestScreen->songNumber - 10 < 0) {
+                soundTestScreen->songNumber = numSongs;
             } else {
-                soundTestScreen->unk70B -= 10;
+                soundTestScreen->songNumber -= 10;
             }
         }
 
-        if (soundTestScreen->unk70B == 0) {
-            soundTestScreen->unk70B = numSounds;
+        if (soundTestScreen->songNumber == 0) {
+            soundTestScreen->songNumber = numSongs;
         }
         
-        if (soundTestScreen->unk70B > numSounds) {
-            soundTestScreen->unk70B = 1;
+        if (soundTestScreen->songNumber > numSongs) {
+            soundTestScreen->songNumber = 1;
         }
 
-        if (soundTestScreen->unk70B % 10 > prev70B % 10) {
-            soundTestScreen->unk70C[0] = 0xF9;
-        } else if (soundTestScreen->unk70B % 10 < prev70B % 10) {
-            soundTestScreen->unk70C[0] = 7;
+
+        // units
+        if (soundTestScreen->songNumber % 10 > prevSongNumber % 10) {
+            // Up transiton
+            soundTestScreen->songNumAnimSteps[0] = -7;
+        } else if (soundTestScreen->songNumber % 10 < prevSongNumber % 10) {
+            // down transition
+            soundTestScreen->songNumAnimSteps[0] = 7;
         }
 
-        if ((soundTestScreen->unk70B / 10) % 10 > (prev70B / 10) % 10) {
-            soundTestScreen->unk70C[1] = 0xF9;
-        } else if ((soundTestScreen->unk70B / 10) % 10 < (prev70B / 10) % 10){
-            soundTestScreen->unk70C[1] = 7;
+        // tens
+        if ((soundTestScreen->songNumber / 10) % 10 > (prevSongNumber / 10) % 10) {
+            soundTestScreen->songNumAnimSteps[1] = -7;
+        } else if ((soundTestScreen->songNumber / 10) % 10 < (prevSongNumber / 10) % 10){
+            soundTestScreen->songNumAnimSteps[1] = 7;
         }
 
-        unk33C[0].unk20 = soundTestScreen->unk70B % 10 + 16;
-        unk33C[1].unk20 = soundTestScreen->unk70B / 10 % 10 + 16;
-        unk33C[2].unk20 = soundTestScreen->unk70B / 100 % 10 + 16;
+        unk33C[0].unk20 = soundTestScreen->songNumber % 10 + 16;
+        unk33C[1].unk20 = soundTestScreen->songNumber / 10 % 10 + 16;
+        unk33C[2].unk20 = soundTestScreen->songNumber / 100 % 10 + 16;
 
         sub_8004558(unk33C);
         sub_8004558(&unk33C[1]);
         sub_8004558(&unk33C[2]);
 
-        if (soundTestScreen->unk709 == 0) {
-            sub_808B3A0(sounds[soundTestScreen->unk70B - 1]);
+        if (soundTestScreen->state == SOUND_TEST_SCREEN_STOPPED) {
+            SoundTestScreenSetSongNameDisplay(songsList[soundTestScreen->songNumber - 1]);
         }
     }
 
-    if (soundTestScreen->unk709 == 1 && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
-        soundTestScreen->unk709 = 0;
-        unk30C->unk20 = 1;
-        sub_8004558(unk30C);
+    if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
+        soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
+        backControlName->unk20 = 1;
+        sub_8004558(backControlName);
         m4aMPlayAllStop();
-        soundTestScreen->unk6FC = 0;
-        soundTestScreen->unk700 = 0;
-        sub_808B030(5);
+        soundTestScreen->animFrame = 0;
+        soundTestScreen->barBeat = 0;
+        SoundTestScreenSetCreamAnim(CREAM_ANIM_SONG_END);
     }
     
     if (gPressedKeys & A_BUTTON) {
-        u32 songTitle;
-        soundTestScreen->unk704 = songTitle = gUnknown_080E0AAC[sounds[soundTestScreen->unk70B - 1]];
-        soundTestScreen->unk2A8.unk22 = songTitle >> 12;
+        u32 songTempo;
+        soundTestScreen->songTempo = songTempo = gUnknown_080E0AAC[songsList[soundTestScreen->songNumber - 1]];
+        soundTestScreen->creams[DANCING_CREAM].unk22 = songTempo >> 12;
         m4aMPlayAllStop();
 
-        MPlayStart(&gMPlayInfo_BGM, gSongTable[gUnknown_080E0A24[sounds[soundTestScreen->unk70B - 1]]].header);
+        MPlayStart(&gMPlayInfo_BGM, gSongTable[sSongIdsList[songsList[soundTestScreen->songNumber - 1]]].header);
 
-        soundTestScreen->unk709 = 1;
-        unk30C->unk20 = 0;
-        soundTestScreen->unk6FC = 0;
-        soundTestScreen->unk700 = 0;
-        soundTestScreen->unk708 = 0;
-        soundTestScreen->unk70A = 0;
+        soundTestScreen->state = SOUND_TEST_SCREEN_PLAYING;
+        backControlName->unk20 = 0;
+        soundTestScreen->animFrame = 0;
+        soundTestScreen->barBeat = 0;
+        soundTestScreen->scrollArrowAnimFrame = 0;
+        soundTestScreen->creamDanceAnimStep = 0;
 
-        sub_8004558(unk30C); 
+        sub_8004558(backControlName); 
 
-        sub_808B3A0(sounds[soundTestScreen->unk70B - 1]);
-        sub_808B030(2);
+        SoundTestScreenSetSongNameDisplay(songsList[soundTestScreen->songNumber - 1]);
+        SoundTestScreenSetCreamAnim(2);
     }
 
     if (gPressedKeys & B_BUTTON) {
-        if (soundTestScreen->unk709 == 1) {
-            soundTestScreen->unk709 = 0;
-            unk30C->unk20 = 1;
-            sub_8004558(unk30C);
+        if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
+            soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
+            backControlName->unk20 = 1;
+            sub_8004558(backControlName);
             m4aMPlayAllStop();
-            soundTestScreen->unk6FC = 0;
-            soundTestScreen->unk700 = 0;
-            sub_808B030(5);
+            soundTestScreen->animFrame = 0;
+            soundTestScreen->barBeat = 0;
+            SoundTestScreenSetCreamAnim(CREAM_ANIM_SONG_END);
         } else {
-            sub_808B030(0);
+            SoundTestScreenSetCreamAnim(CREAM_ANIM_BOW);
             m4aSongNumStart(SE_RETURN);
             unk4->unk0 = 0;
             unk4->unk2 = 1;
@@ -388,34 +414,34 @@ static void sub_808A720(void) {
             unk4->unkA = 0;
             unk4->unk8 = 0xFF;
 
-            soundTestScreen->unk6FC = 0;
-            soundTestScreen->unk700 = 0;
-            soundTestScreen->unk709 = 2;
-            gCurTask->main = sub_808AF74;
+            soundTestScreen->animFrame = 0;
+            soundTestScreen->barBeat = 0;
+            soundTestScreen->state = SOUND_TEST_SCREEN_EXITING;
+            gCurTask->main = Task_SoundTestScreenInOutTransition;
         }
     }
 
-    if (++soundTestScreen->unk70E > 400) {
-        soundTestScreen->unk70E = 0;
+    if (++soundTestScreen->songNameTickerPos > 400) {
+        soundTestScreen->songNameTickerPos = 0;
     }
 
-    sub_808B350(sounds[soundTestScreen->unk70B - 1], 0x100 - soundTestScreen->unk70E, 0x9E);
-    sub_808AB08();
+    SoundTestScreenSetSongNameDisplayPos(songsList[soundTestScreen->songNumber - 1], 0x100 - soundTestScreen->songNameTickerPos, 0x9E);
+    SoundTestScreenRenderUI();
 }
 
-static void sub_808AB08(void) {
+static void SoundTestScreenRenderUI(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
-    struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->unkC8;
-    struct UNK_0808B3FC_UNK240* unkF8 = soundTestScreen->unkF8;
-    struct UNK_0808B3FC_UNK240* unk30C = &soundTestScreen->unk30C;
-    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
+    struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->title;
+    struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
+    struct UNK_0808B3FC_UNK240* backCountrolName = &soundTestScreen->backControlName;
+    struct UNK_0808B3FC_UNK240* songNumDisplay = soundTestScreen->songNumDisplay;
     
-    struct UNK_0808B3FC_UNK240* unk2DC = &soundTestScreen->unk2DC;
-    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->unk2D8;
+    struct UNK_0808B3FC_UNK240* unk2DC = &soundTestScreen->danceStage;
+    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->activeCream;
     
-    struct UNK_0808B3FC_UNK240* unk188 = &soundTestScreen->unk188;
-    struct UNK_0808B3FC_UNK240* unk1B8 = soundTestScreen->unk1B8;
-    struct UNK_808D124_UNK180* unk3CC = soundTestScreen->unk3CC;
+    struct UNK_0808B3FC_UNK240* scrollArrows = &soundTestScreen->scrollArrows;
+    struct UNK_0808B3FC_UNK240* speakerConeElement = soundTestScreen->speakerCone;
+    struct UNK_808D124_UNK180* speakerConeEffects = soundTestScreen->speakerConeEffects;
 
     struct SoundInfo* soundInfo;
 
@@ -429,276 +455,279 @@ static void sub_808AB08(void) {
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     
-    for (i = 0; i < 2; i++, unk33C++) {
-        unk33C->unk18 = 0x60;
+    for (i = 0; i < 2; i++, songNumDisplay++) {
+        songNumDisplay->unk18 = 0x60;
 
-        if (soundTestScreen->unk70C[i] != 0) {
-            if (soundTestScreen->unk70C[i] > 0) {
-                unk33C->unk18 = gUnknown_080E0C30[soundTestScreen->unk70C[i]] + 0x60;
-                soundTestScreen->unk70C[i]--;
+        if (soundTestScreen->songNumAnimSteps[i] != 0) {
+            if (soundTestScreen->songNumAnimSteps[i] > 0) {
+                songNumDisplay->unk18 = sSongNumTransitionAnim[soundTestScreen->songNumAnimSteps[i]] + 0x60;
+                soundTestScreen->songNumAnimSteps[i]--;
             }
 
-            if (soundTestScreen->unk70C[i] < 0) {
-                unk33C->unk18 = 0x60 - gUnknown_080E0C30[-soundTestScreen->unk70C[i]];
-                soundTestScreen->unk70C[i]++;
+            if (soundTestScreen->songNumAnimSteps[i] < 0) {
+                songNumDisplay->unk18 = 0x60 - sSongNumTransitionAnim[-soundTestScreen->songNumAnimSteps[i]];
+                soundTestScreen->songNumAnimSteps[i]++;
             }
         }
 
-        sub_80051E8(unk33C);
+        sub_80051E8(songNumDisplay);
     }
 
-    for (i = 0; i < 2; i++, unkF8++) {
-        sub_80051E8(unkF8);
+    for (i = 0; i < 2; i++, titleTrimAndControls++) {
+        sub_80051E8(titleTrimAndControls);
     }
 
-    sub_80051E8(unk30C);
+    sub_80051E8(backCountrolName);
     sub_80051E8(unkC8);
     sub_80051E8(unk2DC);
     unk2DC->unk10 |= 0x400;
     sub_80051E8(unk2DC);
     unk2DC->unk10 &= ~0x400;
 
-    if (soundTestScreen->unk709 == 1) {
-        u8 temp2 = 0;
-        u16 temp = 0;
-        u32 val;
-        val = (u32)(*(s16 *)REG_ADDR_SOUND1CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
-        if (soundTestScreen->unk713 != val) {
-            temp += 0x20;
-            soundTestScreen->unk712 = 0x20;
-            soundTestScreen->unk713 = val;
-            temp2++;
+    if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
+        u8 numChangeElements = 0;
+        u16 amplification = 0;
+        u32 testVal;
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND1CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
+        if (soundTestScreen->measurementSound1H != testVal) {
+            amplification += 32;
+            soundTestScreen->speakerAnimFrame = 32;
+            soundTestScreen->measurementSound1H = testVal;
+            numChangeElements++;
         }
 
-        val = 0;
-        if (soundTestScreen->unk714 != val) {
-            temp += 0x20;
-            soundTestScreen->unk712 = 0x20;
-            soundTestScreen->unk714 = val;
-            temp2++;
+        // Seems to either be broken, or turned off, just have to assume it was to measure sound2
+        testVal = 0;
+        if (soundTestScreen->measurementSound2H != testVal) {
+            amplification += 32;
+            soundTestScreen->speakerAnimFrame = 32;
+            soundTestScreen->measurementSound2H = testVal;
+            numChangeElements++;
         }
 
-        val = (u32)(*(s16 *)REG_ADDR_SOUND3CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
-        if (soundTestScreen->unk715 != val) {
-            temp += 0x20;
-            soundTestScreen->unk712 = 0x20;
-            soundTestScreen->unk715 = val;
-            temp2++;
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND3CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
+        if (soundTestScreen->measurementSound3H != testVal) {
+            amplification += 32;
+            soundTestScreen->speakerAnimFrame = 32;
+            soundTestScreen->measurementSound3H = testVal;
+            numChangeElements++;
         }
 
-        val = (u32)(*(s16 *)REG_ADDR_SOUND4CNT_L & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
-        if (soundTestScreen->unk716 != val) {
-            temp += 0x20;
-            soundTestScreen->unk712 = 0x20;
-            soundTestScreen->unk716 = val;
-            temp2++;
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND4CNT_L & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET)) >> 0xC;
+        if (soundTestScreen->measurementSound3L != testVal) {
+            amplification += 32;
+            soundTestScreen->speakerAnimFrame = 32;
+            soundTestScreen->measurementSound3L = testVal;
+            numChangeElements++;
         }
 
         soundInfo = &gSoundInfo;
 
         for (i = 0; i < 8; i++) {
-            s32 tempFreq;
-            if (soundTestScreen->unk738[i] != soundInfo->chans[i].freq) {
-                tempFreq = soundTestScreen->unk738[i] - soundInfo->chans[i].freq;
-                if (tempFreq - soundTestScreen->unk718[i] > 0x100) {
-                    soundTestScreen->unk710 += 0x20;
-                    soundTestScreen->unk712 = 0x20;
-                    temp2++;
+            if (soundTestScreen->channelFreqs[i] != soundInfo->chans[i].freq) {
+                s32 change = soundTestScreen->channelFreqs[i] - soundInfo->chans[i].freq;
+                if (change - soundTestScreen->freqChanges[i] > 256) {
+                    soundTestScreen->speakerSize += 32;
+                    soundTestScreen->speakerAnimFrame = 32;
+                    numChangeElements++;
                 }
-                soundTestScreen->unk718[i] = tempFreq;
-                soundTestScreen->unk738[i] = soundInfo->chans[i].freq;
+                soundTestScreen->freqChanges[i] = change;
+                soundTestScreen->channelFreqs[i] = soundInfo->chans[i].freq;
             }
         }
 
-        if (temp2 > 0) {
-            soundTestScreen->unk710 += temp / temp2;
+        if (numChangeElements > 0) {
+            soundTestScreen->speakerSize += amplification / numChangeElements;
         }
 
-        if (soundTestScreen->unk710 > 192) {
-            soundTestScreen->unk710 = 192;
-            soundTestScreen->unk712 = 4;
+        if (soundTestScreen->speakerSize > 192) {
+            soundTestScreen->speakerSize = 192;
+            soundTestScreen->speakerAnimFrame = 4;
         }
     } else {
-        soundTestScreen->unk710 = 0;
-        soundTestScreen->unk712 = 0;
+        soundTestScreen->speakerSize = 0;
+        soundTestScreen->speakerAnimFrame = 0;
     }
 
     for (i = 0; i < 4; i++) {
         if (unk2D8->unkA != 0x3CA) {
-            unk3CC[i].unk0 = i << 8;
-            unk3CC[i].unk4 = unk3CC[i].unk2 = soundTestScreen->unk710 + 0x100;
+            speakerConeEffects[i].unk0 = i << 8;
+            speakerConeEffects[i].unk4 = speakerConeEffects[i].unk2 = soundTestScreen->speakerSize + 0x100;
         }
 
-        sub_8004860(&unk1B8[i], &unk3CC[i]);
+        sub_8004860(&speakerConeElement[i], &speakerConeEffects[i]);
     }
 
-    soundTestScreen->unk710 -= gSineTable[0x100 - (soundTestScreen->unk712 * 4)] >> 8;
+    soundTestScreen->speakerSize -= gSineTable[256 - (soundTestScreen->speakerAnimFrame * 4)] >> 8;
 
-    if (soundTestScreen->unk712 != 0) {
-        soundTestScreen->unk712--;
+    if (soundTestScreen->speakerAnimFrame > 0) {
+        soundTestScreen->speakerAnimFrame--;
     }
 
-    if (soundTestScreen->unk710 < 0) {
-        soundTestScreen->unk710 = 0;
+    if (soundTestScreen->speakerSize < 0) {
+        soundTestScreen->speakerSize = 0;
     }
 
     for (i = 0; i < 4; i++) {
-        sub_80051E8(&unk1B8[i]);
+        sub_80051E8(&speakerConeElement[i]);
     }
 
     sub_80051E8(unk2D8);
 
-    unk188->unk16 = ((gSineTable[(soundTestScreen->unk708 & 0xF) * 0x10 + 0x100] >> 6) * 5 >> 7) + 0x5E;
-    sub_80051E8(unk188);
-    unk188->unk16 = 0x3A -((gSineTable[(soundTestScreen->unk708 & 0xF) * 0x10 + 0x100] >> 6) * 5 >> 7);
-    unk188->unk10 |= 0x400;
-    sub_80051E8(unk188);
-    unk188->unk10 &= ~0x400;
+    scrollArrows->unk16 = ((gSineTable[(soundTestScreen->scrollArrowAnimFrame & 15) * 0x10 + 256] >> 6) * 5 >> 7) + 94;
+    sub_80051E8(scrollArrows);
+    scrollArrows->unk16 = 58 -((gSineTable[(soundTestScreen->scrollArrowAnimFrame & 15) * 0x10 + 256] >> 6) * 5 >> 7);
+    scrollArrows->unk10 |= 0x400;
+    sub_80051E8(scrollArrows);
+    scrollArrows->unk10 &= ~0x400;
 
-    soundTestScreen->unk708++;
+    soundTestScreen->scrollArrowAnimFrame++;
 }
 
-static void sub_808AF74(void) {
+static void Task_SoundTestScreenInOutTransition(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
-    struct UNK_0808B3FC_UNK240* unk278 = &soundTestScreen->unk278;
+    struct UNK_0808B3FC_UNK240* idleCream = &soundTestScreen->creams[IDLE_CREAM];
 
-    soundTestScreen->unk6FC++;
+    soundTestScreen->animFrame++;
 
-    if (soundTestScreen->unk709 == 2) {
-        sub_8004558(unk278);
-        if (soundTestScreen->unk6FC > 0x2C) {
+    if (soundTestScreen->state == SOUND_TEST_SCREEN_EXITING) {
+        sub_8004558(idleCream);
+        // Wait for bow animation to finish
+        if (soundTestScreen->animFrame > (60 - 16)) {
             sub_802D4CC(&soundTestScreen->unk4);
         }
     } else {
-        if (soundTestScreen->unk6FC > 0x14) {
-            sub_8004558(unk278);
+        if (soundTestScreen->animFrame > 20) {
+            sub_8004558(idleCream);
         }
         sub_802D4CC(&soundTestScreen->unk4);
     }
 
-    if (soundTestScreen->unk6FC > 0x3C) {
-        if (soundTestScreen->unk709 == 2) {
-            gCurTask->main = sub_808B2C8;
+    if (soundTestScreen->animFrame > 60) {
+        if (soundTestScreen->state == SOUND_TEST_SCREEN_EXITING) {
+            gCurTask->main = Task_SoundTestScreenCleanup;
         } else {
-            soundTestScreen->unk6FC = 0;
-            sub_808B030(1);
-            gCurTask->main = sub_808A720;
+            soundTestScreen->animFrame = 0;
+            SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
+            gCurTask->main = Task_SoundTestScreenMain;
         }
     }
-    sub_808AB08();
+
+    SoundTestScreenRenderUI();
 }
 
-static void sub_808B030(u8 mode) {
+static void SoundTestScreenSetCreamAnim(u8 anim) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
-    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->unk2D8;
+    struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->activeCream;
 
-    switch (mode) {
-        case 0:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk21 = 0xFF;
-            unk2D8->unk20 = 0;
-            unk2D8->unkA = 0x3CA;
+    switch (anim) {
+        case CREAM_ANIM_BOW:
+            soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk21 = 0xFF;
+            animatedCream->unk20 = 0;
+            animatedCream->unkA = 0x3CA;
             break;
-        case 1:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk21 = 0xFF;
-            unk2D8->unk20 = 0;
-            unk2D8->unkA = 0x3CD;
+        case CREAM_ANIM_IDLE:
+            soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk21 = 0xFF;
+            animatedCream->unk20 = 0;
+            animatedCream->unkA = 0x3CD;
             break;
-        case 2:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk10 &= ~0x400;
-            unk2D8->unk20 = 0;
-            unk2D8->unkA = 0x3C8;
+        case CREAM_ANIM_DANCE_RIGHT:
+            soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk10 &= ~0x400;
+            animatedCream->unk20 = 0;
+            animatedCream->unkA = 0x3C8;
             break;
-        case 3:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk10 &= ~0x400;
-            unk2D8->unk20 = 1;
-            unk2D8->unkA = 0x3C8;
+        case CREAM_ANIM_DANCE_MIDDLE:
+            soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk10 &= ~0x400;
+            animatedCream->unk20 = 1;
+            animatedCream->unkA = 0x3C8;
             break;
-        case 4:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk10 |= 0x400;
-            unk2D8->unk20 = 0;
-            unk2D8->unkA = 0x3C8;
+        case CREAM_ANIM_DANCE_LEFT:
+            soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk10 |= 0x400;
+            animatedCream->unk20 = 0;
+            animatedCream->unkA = 0x3C8;
             break;
-        case 5:
-            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
-            unk2D8 = soundTestScreen->unk2D8;
-            unk2D8->unk21 = 0xFF;
-            unk2D8->unk20 = 0;
-            unk2D8->unkA = 0x3CB;
+        case CREAM_ANIM_SONG_END:
+            soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
+            animatedCream = soundTestScreen->activeCream;
+            animatedCream->unk21 = 0xFF;
+            animatedCream->unk20 = 0;
+            animatedCream->unkA = 0x3CB;
             break;
         default:
             break;
     }
 
-    sub_8004558(unk2D8);
+    sub_8004558(animatedCream);
 }
 
-static void sub_808B18C(void) {
+static void SoundTestScreenUpdateCreamAnim(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
-    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->unk2D8;
+    struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->activeCream;
 
-    switch(soundTestScreen->unk709) {
-        case 0:
-            if (unk2D8->unkA == 0x3CB) {
-                if (!sub_8004558(unk2D8)) {
-                    sub_808B030(1);
+    switch(soundTestScreen->state) {
+        case SOUND_TEST_SCREEN_STOPPED:
+            // If current animation is song end, set to anim idle
+            if (animatedCream->unkA == 0x3CB) {
+                if (!sub_8004558(animatedCream)) {
+                    SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
                 }
             } else {
-                sub_8004558(unk2D8);
+                sub_8004558(animatedCream);
             }
             break;
-        case 1:
-            soundTestScreen->unk700 += soundTestScreen->unk704;
-            soundTestScreen->unk6FC = soundTestScreen->unk700 >> 0x10;
-            sub_8004558(unk2D8);
+        case SOUND_TEST_SCREEN_PLAYING:
+            soundTestScreen->barBeat += soundTestScreen->songTempo;
+            soundTestScreen->animFrame = soundTestScreen->barBeat >> 16;
+            sub_8004558(animatedCream);
 
-            if (soundTestScreen->unk6FC >= 0x37 && soundTestScreen->unk70A == 0) {
-                soundTestScreen->unk70A = 1;
-                sub_808B030(3);
+            if (soundTestScreen->animFrame >= 55 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_RIGHT) {
+                soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_FIRST_MIDDLE;
+                SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_MIDDLE);
                 break;
             }
-            if (soundTestScreen->unk6FC >= 0x3C && soundTestScreen->unk70A == 1) {
-                soundTestScreen->unk70A = 2;
-                sub_808B030(4);
-                break;
-            }
-
-            if (soundTestScreen->unk6FC >= 0x73 && soundTestScreen->unk70A == 2) {
-                soundTestScreen->unk70A = 3;
-                sub_808B030(3);
+            if (soundTestScreen->animFrame >= 60 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_FIRST_MIDDLE) {
+                soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_LEFT;
+                SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_LEFT);
                 break;
             }
 
-            if (soundTestScreen->unk6FC > 0x77 && soundTestScreen->unk70A == 3) {
-                soundTestScreen->unk70A = 0;
-                sub_808B030(2);
-                soundTestScreen->unk700 = 0;
-                soundTestScreen->unk6FC = 0;
+            if (soundTestScreen->animFrame >= 115 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_LEFT) {
+                soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_SECOND_MIDDLE;
+                SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_MIDDLE);
+                break;
+            }
+
+            if (soundTestScreen->animFrame > 119 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_SECOND_MIDDLE) {
+                soundTestScreen->creamDanceAnimStep = 0;
+                SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_RIGHT);
+                soundTestScreen->barBeat = 0;
+                soundTestScreen->animFrame = 0;
                 break;
             }
     }    
 }
 
-static void sub_808B2B0(struct Task* t) {
+static void SoundTestScreenOnDestroy(struct Task* t) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
     soundTestScreen->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
 }
 
-static void sub_808B2C8(void) {
+static void Task_SoundTestScreenCleanup(void) {
     ResetProfileScreensVram();
     TaskDestroy(gCurTask);
 }
 
-static void sub_808B2F4(struct Task* t) {
+static void SoundTestScreenInitRegistersAndBackground(struct Task* t) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
     gDispCnt = 0x1141;
     gBgCntRegs[0] = 0x703;
@@ -707,29 +736,29 @@ static void sub_808B2F4(struct Task* t) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
     
-    sub_806B854(soundTestScreen->unk48, 0, 7, 0xA9, 0x20, 0x20, 0, 0, 0, 0);
+    sub_806B854(soundTestScreen->background, 0, 7, 0xA9, 0x20, 0x20, 0, 0, 0, 0);
 }
 
-static void sub_808B350(u8 unused_, s16 x, s16 y) {
+static void SoundTestScreenSetSongNameDisplayPos(u8 unused_, s16 x, s16 y) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
     u32 i;
     
-    for (i = 0; i < 16; i++) {
-        u16 *pos = &soundTestScreen->unk3FC[i].unk16;
+    for (i = 0; i < MAX_SONG_NAME_LENGTH; i++) {
+        u16 *pos = &soundTestScreen->songNameDisplay[i].unk16;
         *pos = x + i * 10;
         pos++;
         *pos = y;
-        sub_80051E8(&soundTestScreen->unk3FC[i]);
+        sub_80051E8(&soundTestScreen->songNameDisplay[i]);
     }
 }
 
-static void sub_808B3A0(u8 soundId) {
+static void SoundTestScreenSetSongNameDisplay(u8 soundId) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
     u32 i;
     for (i = 0; i < 16; i++) {
-        u8 soundTextChar = gUnknown_080E05E4[soundId][i];
+        u8 soundTextChar = sSongNames[soundId][i];
 
-        u8* asset = &soundTestScreen->unk3FC[i].unk20;
+        u8* asset = &soundTestScreen->songNameDisplay[i].unk20;
         asset[0] = soundTextChar - 0x20;
         asset[1] = 0xFF;
 
@@ -737,6 +766,6 @@ static void sub_808B3A0(u8 soundId) {
             asset[0] = 0;
         }
 
-        sub_8004558(&soundTestScreen->unk3FC[i]);
+        sub_8004558(&soundTestScreen->songNameDisplay[i]);
     }
 }

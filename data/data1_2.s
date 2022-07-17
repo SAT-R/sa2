@@ -309,28 +309,28 @@ gUnknown_080E04D4:
 gUnknown_080E05C4:
     .incbin "baserom.gba", 0x000E05C4, 0x20
 
-    .global gUnknown_080E05E4
-gUnknown_080E05E4:
+    .global sSongNames
+sSongNames:
     .incbin "baserom.gba", 0x000E05E4, 0x440
 
-    .global gUnknown_080E0A24
-gUnknown_080E0A24:
+    .global sSongIdsList
+sSongIdsList:
     .incbin "baserom.gba", 0x000E0A24, 0x88
 
     .global gUnknown_080E0AAC
 gUnknown_080E0AAC:
     .incbin "baserom.gba", 0x000E0AAC, 0x10C
 
-    .global gUnknown_080E0BB8
-gUnknown_080E0BB8:
+    .global sCompleteSongsList
+sCompleteSongsList:
     .incbin "baserom.gba", 0x000E0BB8, 0x3F
 
-    .global gUnknown_080E0BF7
-gUnknown_080E0BF7:
+    .global sNonCompleteSongsList
+sNonCompleteSongsList:
     .incbin "baserom.gba", 0x000E0BF7, 0x39
 
-    .global gUnknown_080E0C30
-gUnknown_080E0C30:
+    .global sSongNumTransitionAnim
+sSongNumTransitionAnim:
     .incbin "baserom.gba", 0x000E0C30, 0x8
 
     .global gUnknown_080E0C38

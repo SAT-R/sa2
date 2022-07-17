@@ -74,8 +74,12 @@ struct UNK_0808B3FC_UNK240 {
     u16 unk1C;
     u16 unk1E;
     
+    // variant
     u8 unk20;
+
     u8 unk21;
+
+    // something to do with animation speed
     u8 unk22;
 
     // TODO: these values are only used within some
