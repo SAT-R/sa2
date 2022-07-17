@@ -131,6 +131,19 @@ extern u16 gDispCnt;  // gDispCnt
 extern s16 gBgScrollRegs[4][2];  // gBgScrollRegs
 extern bool8 gExecSoundMain;
 
+extern u32 gFrameCount;
+
+extern u8 gNumHBlankCallbacks;
+extern HBlankFunc gHBlankCallbacks[4];
+
+extern u8 gUnknown_03004D50;
+extern FuncType_030053A0 gUnknown_03001870[4];
+extern FuncType_030053A0 gUnknown_030053A0[4];
+
+extern u8 gUnknown_03002A80;
+
+extern void* gUnknown_03002878;
+
 // Possibly transition configuration?
 struct UNK_802D4CC_UNK270 {
     u16 unk0;

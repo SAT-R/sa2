@@ -15,6 +15,8 @@
 // TODO make static
 u32 gFlagsPreVBlank;
 
+u8 gNumHBlankIntrs;
+HBlankFunc gHBlankIntrs[4];
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);

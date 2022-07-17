@@ -8,7 +8,6 @@
 #include "task.h"
 #include "sprite.h"
 #include "save.h"
-#include "main.h"
 #include "data.h"
 #include "input.h"
 #include "input_recorder.h"
