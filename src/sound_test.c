@@ -782,7 +782,7 @@ static void Task_SoundTestScreenMain(void) {
         sub_8004558(backControlName); 
 
         SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
-        SoundTestScreenSetCreamAnim(2);
+        SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_RIGHT);
     }
 
     if (gPressedKeys & B_BUTTON) {
