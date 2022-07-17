@@ -403,8 +403,6 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER 1
 #define NAME_SCREEN_COMPLETE_ACTION_START_GAME 2
 
-#define LanguageIndex(lang) (lang - 1)
-
 #define TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE 0
 #define TIME_RECORDS_SCREEN_VIEW_COURSES 1
 #define TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK 2

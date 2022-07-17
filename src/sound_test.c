@@ -11,7 +11,7 @@
 #include "ui.h"
 #include "backgrounds.h"
 
-#define MAX_SONG_NAME_LENGTH 16
+#define MAX_SOUND_NAME_LENGTH 16
 #define NUM_SPEAKER_CONE_SECTIONS 4
 
 struct SoundTestScreen {
@@ -25,6 +25,7 @@ struct SoundTestScreen {
     struct UNK_0808B3FC_UNK240 title;
     struct UNK_0808B3FC_UNK240 titleTrimAndControls[2];
 
+    // maybe this was originally going to be the back button
     struct UNK_0808B3FC_UNK240 unused_unk158;
 
     struct UNK_0808B3FC_UNK240 scrollArrows;
@@ -34,11 +35,11 @@ struct SoundTestScreen {
     struct UNK_0808B3FC_UNK240* activeCream;
     struct UNK_0808B3FC_UNK240 danceStage;
     struct UNK_0808B3FC_UNK240 backControlName;
-    struct UNK_0808B3FC_UNK240 songNumDisplay[3];
+    struct UNK_0808B3FC_UNK240 numberDisplay[3];
 
     struct UNK_808D124_UNK180 speakerConeEffects[NUM_SPEAKER_CONE_SECTIONS];
 
-    struct UNK_0808B3FC_UNK240 songNameDisplay[MAX_SONG_NAME_LENGTH];
+    struct UNK_0808B3FC_UNK240 nameDisplay[MAX_SOUND_NAME_LENGTH];
 
     u8 animFrame;
 
@@ -49,10 +50,10 @@ struct SoundTestScreen {
 
     u8 creamDanceAnimStep;
 
-    u8 songNumber;
-    s8 songNumAnimSteps[2];
+    u8 soundNumber;
+    s8 soundNumAnimSteps[2];
 
-    s16 songNameTickerPos;
+    s16 nameTickerPos;
     s16 speakerSize;
     u8 speakerAnimFrame;
 
@@ -75,9 +76,9 @@ static void SoundTestScreenOnDestroy(struct Task* t);
 static void Task_SoundTestScreenCleanup(void);
 
 static void SoundTestScreenUpdateCreamAnim(void);
-static void SoundTestScreenSetSongNameDisplay(u8);
+static void SoundTestScreenSetNameDisplay(u8);
 static void SoundTestScreenSetCreamAnim(u8);
-static void SoundTestScreenSetSongNameDisplayPos(u8, s16, s16);
+static void SoundTestScreenSetNameDisplayPos(u8, s16, s16);
 
 #define SOUND_TEST_SCREEN_STOPPED 0
 #define SOUND_TEST_SCREEN_PLAYING 1
@@ -88,7 +89,7 @@ static void SoundTestScreenSetSongNameDisplayPos(u8, s16, s16);
 #define CREAM_ANIM_DANCE_RIGHT 2
 #define CREAM_ANIM_DANCE_MIDDLE 3
 #define CREAM_ANIM_DANCE_LEFT 4
-#define CREAM_ANIM_SONG_END 5
+#define CREAM_ANIM_SOUND_END 5
 
 #define IDLE_CREAM 0
 #define DANCING_CREAM 1
@@ -98,22 +99,409 @@ static void SoundTestScreenSetSongNameDisplayPos(u8, s16, s16);
 #define CREAM_DANCE_STEP_LEFT 2
 #define CREAM_DANCE_STEP_SECOND_MIDDLE 3
 
-extern const u8 gUnknown_080E0C38[12];
-extern const u8 gUnknown_08C8796C[140];
+#define LangOffset(lang) ((lang) * 3)
+#define TextOffset(langOffset, offset, segment, numSegments) (langOffset * numSegments + (segment * 3) + offset)
+#define Text(language, a, b, segment, numSegments) \
+    [TextOffset(LangOffset(LanguageIndex(language)), 0, segment, numSegments)] = a, \
+    [TextOffset(LangOffset(LanguageIndex(language)), 1, segment, numSegments)] = b, \
+    [TextOffset(LangOffset(LanguageIndex(language)), 2, segment, numSegments)] = segment
 
-extern const u32 gUnknown_080E0C44[NUM_LANGUAGES * 3];
-extern const u32 gUnknown_080E0C8C[NUM_LANGUAGES * 3];
-extern const u32 gUnknown_080E0CD4[NUM_LANGUAGES * 3 * 2];
+static const char sSoundNames[68][MAX_SOUND_NAME_LENGTH] = {
+    "OPENING         ",
+    "TITLE           ",
+    "CHARACTER SELECT",
+    "ZONE SELECT     ",
+    "ZONE SELECT 2   ",
+    "ZONE SELECT 3   ",
+    "TIMEATTACK 1    ",
+    "OPTIONS         ",
+    "ZONE 1-1        ",
+    "ZONE 1-2        ",
+    "ZONE 2-1        ",
+    "ZONE 2-2        ",
+    "ZONE 3-1        ",
+    "ZONE 3-2        ",
+    "ZONE 4-1        ",
+    "ZONE 4-2        ",
+    "ZONE 5-1        ",
+    "ZONE 5-2        ",
+    "ZONE 6-1        ",
+    "ZONE 6-2        ",
+    "ZONE 7-1        ",
+    "ZONE 7-2        ",
+    "FINAL ZONE      ",
+    "EXTRA ZONE      ",
+    "UNRIVAL         ",
+    "DROWN           ",
+    "BOSS            ",
+    "BOSS-PINCH      ",
+    "KNUCKLES BOSS   ",
+    "7-BOSS          ",
+    "7-BOSS-PINCH    ",
+    "FINAL BOSS      ",
+    "FINAL BOSS-PINCH",
+    "GAME OVER       ",
+    "FINAL ENDING    ",
+    "EXTRA ENDING    ",
+    "STAFF ROLL      ",
+    "DEMO 1          ",
+    "DEMO 2          ",
+    "EXTRA DEMO 1    ",
+    "EXTRA DEMO 2    ",
+    "IN SP STAGE     ",
+    "SP STAGE        ",
+    "SP STAGE-PINCH  ",
+    "ACHIEVEMENT     ",
+    "SP CLEAR        ",
+    "SP RESULT 1     ",
+    "SP RESULT 2     ",
+    "SP RESULT 3     ",
+    "VS 1            ",
+    "VS 2            ",
+    "VS 4            ",
+    "VS 3            ",
+    "VS WAIT         ",
+    "ACT CLEAR       ",
+    "BOSS CLEAR      ",
+    "FINAL CLEAR     ",
+    "EXTRA CLEAR     ",
+    "TIMEATTACK 2    ",
+    "TIMEATTACK 3    ",
+    "1_UP            ",
+    "CHARACTER       ",
+    "VS END          ",
+    "VS WAIT         ",
+    "VS WAIT         ",
+    "CAOS EMERALD 7  ",
+    "MESSAGE         ",
+    "FANFARE         ",
+};
 
-extern const u8 sSongNames[68][MAX_SONG_NAME_LENGTH];
+static const u16 sSoundNumberToSongMap[68] = {
+    MUS_INTRO,
+    MUS_TITLE_FANFARE,
+    MUS_CHARACTER_SELECTION,
+    MUS_TA_COURSE_SELECTION,
+    MUS_COURSE_SELECTION_2,
+    MUS_COURSE_SELECTION_3,
+    MUS_TIME_ATTACK_MENU,
+    MUS_OPTIONS,
+    MUS_LEAF_FOREST__ACT_1,
+    MUS_LEAF_FOREST__ACT_2,
+    MUS_HOT_CRATER__ACT_1,
+    MUS_HOT_CRATER__ACT_2,
+    MUS_MUSIC_PLANT__ACT_1,
+    MUS_MUSIC_PLANT__ACT_2,
+    MUS_ICE_PARADISE__ACT_1,
+    MUS_ICE_PARADISE__ACT_2,
+    MUS_SKY_CANYON__ACT_1,
+    MUS_SKY_CANYON__ACT_2,
+    MUS_TECHNO_BASE__ACT_1,
+    MUS_TECHNO_BASE__ACT_2,
+    MUS_EGG_UTOPIA__ACT_1,
+    MUS_EGG_UTOPIA__ACT_2,
+    MUS_XX__FINAL_ZONE,
+    MUS_TRUE_AREA_53,
+    MUS_INVINCIBILITY,
+    MUS_DROWNING,
+    MUS_BOSS,
+    MUS_BOSS_PINCH,
+    MUS_BOSS_KNUCKLES,
+    MUS_7_BOSS,
+    MUS_7_BOSS_PINCH,
+    MUS_FINAL_BOSS,
+    MUS_FINAL_BOSS_PINCH,
+    MUS_GAME_OVER,
+    MUS_FINAL_ENDING,
+    MUS_EXTRA_ENDING,
+    MUS_STAFF_CREDITS,
+    MUS_DEMO_1,
+    MUS_DEMO_2,
+    MUS_EXTRA_DEMO_1,
+    MUS_EXTRA_DEMO_2,
+    MUS_SPECIAL_STAGE_INTRO,
+    MUS_SPECIAL_STAGE,
+    MUS_SPECIAL_STAGE_PINCH,
+    MUS_ACHIEVEMENT,
+    MUS_SPECIAL_STAGE_CLEAR,
+    MUS_SPECIAL_STAGE_RESULT,
+    MUS_CHAOS_EMERALD,
+    MUS_SPECIAL_STAGE_RESULT_LOSE,
+    MUS_VS_SELECT_PAK_MODE,
+    MUS_VS_2,
+    MUS_VS_4,
+    MUS_VS_3,
+    MUS_CONNECTION_PENDING,
+    MUS_ACT_CLEAR,
+    MUS_BOSS_CLEAR,
+    MUS_FINAL_CLEAR,
+    MUS_EXTRA_CLEAR,
+    MUS_TIME_ATTACK_2,
+    MUS_TIME_ATTACK_3,
+    MUS_1_UP,
+    MUS_GOT_ALL_CHAOS_EMERALDS,
+    MUS_412,
+    MUS_VS_SUCCESS,
+    MUS_VS_MISS,
+    MUS_MESSAGE_2,
+    MUS_MESSAGE,
+    MUS_FANFARE,
+};
 
-extern const u8 sCompleteSongsList[63];
-extern const u8 sNonCompleteSongsList[57];
+static const u32 sSoundTempos[67] = {
+    71680, 
+    71680, 
+    65536, 
+    65792, 
+    68352, 
+    66560, 
+    62464, 
+    61440, 
+    84992, 
+    84992, 
+    86112, 
+    83712, 
+    68986, 
+    68986, 
+    77824, 
+    110592, 
+    72960, 
+    81920, 
+    83968, 
+    88064, 
+    82432, 
+    88064, 
+    84992, 
+    88064, 
+    68896, 
+    78848, 
+    87040, 
+    81920, 
+    83968, 
+    92160, 
+    97024, 
+    73728, 
+    78336, 
+    65536, 
+    69632, 
+    92160, 
+    77824, 
+    65536, 
+    60416, 
+    77312, 
+    78080, 
+    65536, 
+    86016, 
+    90112, 
+    86016, 
+    81920, 
+    107776, 
+    73728, 
+    97280, 
+    85248, 
+    81920, 
+    86016, 
+    69120, 
+    81920, 
+    73728, 
+    77824, 
+    86016, 
+    73728, 
+    73728, 
+    86016, 
+    65536, 
+    65536, 
+    65536, 
+    65536, 
+    73728, 
+    65536, 
+    81920, 
+};
 
-extern const u32 gUnknown_080E0AAC[67];
-extern const u16 sSongIdsList[68];
+static const u8 sCompletedGameSoundsOrder[63] = {
+    0, 
+    1, 
+    2, 
+    3, 
+    8, 
+    9, 
+    10, 
+    11, 
+    12, 
+    13, 
+    14, 
+    15, 
+    16, 
+    17, 
+    18, 
+    19, 
+    20, 
+    21, 
+    22, 
+    26, 
+    27, 
+    28, 
+    29, 
+    30, 
+    31, 
+    32, 
+    54, 
+    55, 
+    56, 
+    33, 
+    24, 
+    25, 
+    60, 
+    37, 
+    38, 
+    4, 
+    41, 
+    42, 
+    43, 
+    44, 
+    45, 
+    46, 
+    47, 
+    48, 
+    34, 
+    36, 
+    66, 
+    6, 
+    58, 
+    59, 
+    7, 
+    53, 
+    49, 
+    50, 
+    52, 
+    51, 
+    62, 
+    5, 
+    39, 
+    40, 
+    23, 
+    57, 
+    35,
+};
 
-extern const u8 sSongNumTransitionAnim[7];
+static const u8 sSoundsOrder[57] = {
+    0, 
+    1, 
+    2, 
+    3, 
+    8, 
+    9, 
+    10, 
+    11, 
+    12, 
+    13, 
+    14, 
+    15, 
+    16, 
+    17, 
+    18, 
+    19, 
+    20, 
+    21, 
+    22, 
+    26, 
+    27, 
+    28, 
+    29, 
+    30, 
+    31, 
+    32, 
+    54, 
+    55, 
+    56, 
+    33, 
+    24, 
+    25, 
+    60, 
+    37, 
+    38, 
+    4, 
+    41, 
+    42, 
+    43, 
+    44, 
+    45, 
+    46, 
+    47, 
+    48, 
+    34, 
+    36, 
+    66, 
+    6, 
+    58, 
+    59, 
+    7, 
+    53, 
+    49, 
+    50, 
+    52, 
+    51, 
+    62,
+};
+
+static const u8 sDigitTransitionAnim[8] = {
+    0,
+    1,
+    1,
+    1,
+    2,
+    2,
+    3,
+    4,
+};
+
+static const u8 gUnknown_080E0C38[12] = {
+    0, 
+    16, 
+    32, 
+    48, 
+    64, 
+    80, 
+    96, 
+    112, 
+    128, 
+    144, 
+    160,
+    0
+};
+
+static const u32 sTitleText[NUM_LANGUAGES * 3] = {
+    Text(LANG_JAPANESE, 42, 967, 0, 1),
+    Text(LANG_ENGLISH, 32, 1030, 0, 1),
+    Text(LANG_GERMAN, 32, 1030, 0, 1),
+    Text(LANG_FRENCH, 26, 1031, 0, 1),
+    Text(LANG_SPANISH, 48, 1032, 0, 1),
+    Text(LANG_ITALIAN, 34, 1033, 0, 1)
+};
+
+static const u32 sControlsText[NUM_LANGUAGES * 3] = {
+    Text(LANG_JAPANESE, 20, 966, 0, 1),
+    Text(LANG_ENGLISH, 20, 1039, 0, 1),
+    Text(LANG_GERMAN, 20, 1040, 0, 1),
+    Text(LANG_FRENCH, 20, 1041, 0, 1), 
+    Text(LANG_SPANISH, 20, 1042, 0, 1), 
+    Text(LANG_ITALIAN, 20, 1043, 0, 1),
+};
+
+static const u32 sBackButtonText[NUM_LANGUAGES * 3 * 2] = {
+    Text(LANG_JAPANESE, 10, 965, 0, 2),
+    Text(LANG_JAPANESE, 10, 965, 1, 2),
+    Text(LANG_ENGLISH, 8, 1034, 0, 2),
+    Text(LANG_ENGLISH, 8, 1034, 1, 2),
+    Text(LANG_GERMAN, 8, 1035, 0, 2),
+    Text(LANG_GERMAN, 12, 1035, 1, 2),
+    Text(LANG_FRENCH, 8, 1036, 0, 2),
+    Text(LANG_FRENCH, 12, 1036, 1, 2),
+    Text(LANG_SPANISH, 10, 1037, 0, 2),
+    Text(LANG_SPANISH, 10, 1037, 1, 2),
+    Text(LANG_ITALIAN, 8, 1038, 0, 2),
+    Text(LANG_ITALIAN, 12, 1038, 1, 2),
+};
 
 void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
@@ -121,7 +509,6 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     struct UNK_802D4CC_UNK270* unk4;
     struct UNK_3005B80_UNK4* unk10;
     u32 i;
-    
     
     unk4 = &soundTestScreen->unk4;
     unk10 = &soundTestScreen->unk10;
@@ -131,13 +518,13 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     soundTestScreen->animFrame = 0;
     soundTestScreen->barBeat = 0;
     soundTestScreen->songTempo = 0x10000;
-    soundTestScreen->songNumber = 1;
+    soundTestScreen->soundNumber = 1;
     soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
     soundTestScreen->scrollArrowAnimFrame = 0;
     soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
-    soundTestScreen->songNumAnimSteps[0] = 0;
-    soundTestScreen->songNumAnimSteps[1] = 0;
-    soundTestScreen->songNameTickerPos = 0;
+    soundTestScreen->soundNumAnimSteps[0] = 0;
+    soundTestScreen->soundNumAnimSteps[1] = 0;
+    soundTestScreen->nameTickerPos = 0;
     soundTestScreen->speakerSize = 0;
     soundTestScreen->speakerAnimFrame = 0;
     soundTestScreen->language = optionsScreen->language;
@@ -180,7 +567,7 @@ static void SoundTestScreenCreateUI(struct Task* t) {
     struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     struct UNK_0808B3FC_UNK240* backControlName = &soundTestScreen->backControlName;
     struct UNK_0808B3FC_UNK240* speakerCone = soundTestScreen->speakerCone;
-    struct UNK_0808B3FC_UNK240* songNumDisplayElement = soundTestScreen->songNumDisplay;
+    struct UNK_0808B3FC_UNK240* songNumDisplayElement = soundTestScreen->numberDisplay;
     struct UNK_0808B3FC_UNK240* danceStage = &soundTestScreen->danceStage;
     struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->creams;
     struct UNK_0808B3FC_UNK240* scrollArrows = &soundTestScreen->scrollArrows;
@@ -190,19 +577,19 @@ static void SoundTestScreenCreateUI(struct Task* t) {
 
     // jiang: "the language stuff is definitely fake but I don't want to waste my time experimenting expression elimination tricks"
     s8 *language = &soundTestScreen->language;
-    const u32 *r6 = gUnknown_080E0C44;
-    s32 langOffset = *language * 3;
+    const u32 *r6 = sTitleText;
+    s32 langOffset = LangOffset(*language);
 
     sub_806A568(
         title,
         RENDER_TARGET_SCREEN,
-        r6[langOffset],
-        gUnknown_080E0C44[langOffset + 1],
+        r6[TextOffset(langOffset, 0, 0, 1)],
+        sTitleText[TextOffset(langOffset, 1, 0, 1)],
         0x1000,
         10,
         0x10,
         5,
-        gUnknown_080E0C44[langOffset + 2],
+        sTitleText[TextOffset(langOffset, 2, 0, 1)],
         0
     );
     // Trim
@@ -213,10 +600,13 @@ static void SoundTestScreenCreateUI(struct Task* t) {
     sub_806A568(
         titleTrimAndControls,
         RENDER_TARGET_SCREEN,
-        gUnknown_080E0C8C[langOffset],
-        gUnknown_080E0C8C[langOffset + 1],
-        0x1000, 10, 0x86, 5,
-        gUnknown_080E0C8C[langOffset + 2],
+        sControlsText[TextOffset(langOffset, 0, 0, 1)],
+        sControlsText[TextOffset(langOffset, 1, 0, 1)],
+        0x1000, 
+        10, 
+        0x86, 
+        5,
+        sControlsText[TextOffset(langOffset, 2, 0, 1)],
         0
     );
     
@@ -224,13 +614,13 @@ static void SoundTestScreenCreateUI(struct Task* t) {
     sub_806A568(
         backControlName,
         RENDER_TARGET_SCREEN,
-        gUnknown_080E0CD4[langOffset * 2 + 3],
-        gUnknown_080E0CD4[langOffset * 2 + 4],
+        sBackButtonText[TextOffset(langOffset, 0, 1, 2)],
+        sBackButtonText[TextOffset(langOffset, 1, 1, 2)],
         0x1000, 
         0x5A, 
         0x86, 
         5,
-        gUnknown_080E0CD4[langOffset * 2 + 5],
+        sBackButtonText[TextOffset(langOffset, 2, 1, 2)],
         0
     );
     sub_806A568(scrollArrows,RENDER_TARGET_SCREEN,1,0x3C5,0x1000,0x5A,0x5A,5,2,0);
@@ -266,9 +656,9 @@ static void SoundTestScreenCreateUI(struct Task* t) {
     sub_806A568(animatedCream,RENDER_TARGET_SCREEN,0x48,0x3C8,0x1000,0xB4,0x74,5,0,0);
 
     
-    for (i = 0; i < MAX_SONG_NAME_LENGTH; i++) {
+    for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         sub_806A568(
-            &soundTestScreen->songNameDisplay[i],
+            &soundTestScreen->nameDisplay[i],
             RENDER_TARGET_SCREEN,
             2,
             0x45F,
@@ -276,7 +666,7 @@ static void SoundTestScreenCreateUI(struct Task* t) {
             0,
             0,
             5,
-            sSongNames[sCompleteSongsList[0]][i] - 0x20,
+            sSoundNames[sCompletedGameSoundsOrder[0]][i] - 0x20,
             0
         );
     }
@@ -285,82 +675,82 @@ static void SoundTestScreenCreateUI(struct Task* t) {
 static void Task_SoundTestScreenMain(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
 
-    struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->songNumDisplay;
+    struct UNK_0808B3FC_UNK240* numberDisplayDigit = soundTestScreen->numberDisplay;
     struct UNK_0808B3FC_UNK240* backControlName = &soundTestScreen->backControlName;
     struct UNK_802D4CC_UNK270* unk4 = &soundTestScreen->unk4;
 
-    const u8* songsList;
-    u8 numSongs;
+    const u8* soundsList;
+    u8 numSounds;
 
     if (gLoadedSaveGame->unk7[CHARACTER_SONIC] >= 30) {
-        songsList = sCompleteSongsList;
-        numSongs = ARRAY_COUNT(sCompleteSongsList);
+        soundsList = sCompletedGameSoundsOrder;
+        numSounds = ARRAY_COUNT(sCompletedGameSoundsOrder);
     } else {
-        songsList = sNonCompleteSongsList;
-        numSongs = ARRAY_COUNT(sNonCompleteSongsList);
+        soundsList = sSoundsOrder;
+        numSounds = ARRAY_COUNT(sSoundsOrder);
     }
 
     SoundTestScreenUpdateCreamAnim();
 
     if (gRepeatedKeys & DPAD_ANY) {
-        u8 prevSongNumber = soundTestScreen->songNumber;
+        u8 prevSongNumber = soundTestScreen->soundNumber;
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
         if (gRepeatedKeys & DPAD_LEFT) {
-            soundTestScreen->songNumber--;
+            soundTestScreen->soundNumber--;
         }
 
         if (gRepeatedKeys & DPAD_RIGHT) {
-            soundTestScreen->songNumber++;
+            soundTestScreen->soundNumber++;
         }
 
         if (gRepeatedKeys & DPAD_UP) {
-            soundTestScreen->songNumber += 10;
+            soundTestScreen->soundNumber += 10;
         }
         
         if (gRepeatedKeys & DPAD_DOWN) {
-            if (soundTestScreen->songNumber - 10 < 0) {
-                soundTestScreen->songNumber = numSongs;
+            if (soundTestScreen->soundNumber - 10 < 0) {
+                soundTestScreen->soundNumber = numSounds;
             } else {
-                soundTestScreen->songNumber -= 10;
+                soundTestScreen->soundNumber -= 10;
             }
         }
 
-        if (soundTestScreen->songNumber == 0) {
-            soundTestScreen->songNumber = numSongs;
+        if (soundTestScreen->soundNumber == 0) {
+            soundTestScreen->soundNumber = numSounds;
         }
         
-        if (soundTestScreen->songNumber > numSongs) {
-            soundTestScreen->songNumber = 1;
+        if (soundTestScreen->soundNumber > numSounds) {
+            soundTestScreen->soundNumber = 1;
         }
 
 
         // units
-        if (soundTestScreen->songNumber % 10 > prevSongNumber % 10) {
+        if (soundTestScreen->soundNumber % 10 > prevSongNumber % 10) {
             // Up transiton
-            soundTestScreen->songNumAnimSteps[0] = -7;
-        } else if (soundTestScreen->songNumber % 10 < prevSongNumber % 10) {
+            soundTestScreen->soundNumAnimSteps[0] = -7;
+        } else if (soundTestScreen->soundNumber % 10 < prevSongNumber % 10) {
             // down transition
-            soundTestScreen->songNumAnimSteps[0] = 7;
+            soundTestScreen->soundNumAnimSteps[0] = 7;
         }
 
         // tens
-        if ((soundTestScreen->songNumber / 10) % 10 > (prevSongNumber / 10) % 10) {
-            soundTestScreen->songNumAnimSteps[1] = -7;
-        } else if ((soundTestScreen->songNumber / 10) % 10 < (prevSongNumber / 10) % 10){
-            soundTestScreen->songNumAnimSteps[1] = 7;
+        if ((soundTestScreen->soundNumber / 10) % 10 > (prevSongNumber / 10) % 10) {
+            soundTestScreen->soundNumAnimSteps[1] = -7;
+        } else if ((soundTestScreen->soundNumber / 10) % 10 < (prevSongNumber / 10) % 10){
+            soundTestScreen->soundNumAnimSteps[1] = 7;
         }
 
-        unk33C[0].unk20 = soundTestScreen->songNumber % 10 + 16;
-        unk33C[1].unk20 = soundTestScreen->songNumber / 10 % 10 + 16;
-        unk33C[2].unk20 = soundTestScreen->songNumber / 100 % 10 + 16;
+        numberDisplayDigit[0].unk20 = soundTestScreen->soundNumber % 10 + 16;
+        numberDisplayDigit[1].unk20 = soundTestScreen->soundNumber / 10 % 10 + 16;
+        numberDisplayDigit[2].unk20 = soundTestScreen->soundNumber / 100 % 10 + 16;
 
-        sub_8004558(unk33C);
-        sub_8004558(&unk33C[1]);
-        sub_8004558(&unk33C[2]);
+        sub_8004558(&numberDisplayDigit[0]);
+        sub_8004558(&numberDisplayDigit[1]);
+        sub_8004558(&numberDisplayDigit[2]);
 
         if (soundTestScreen->state == SOUND_TEST_SCREEN_STOPPED) {
-            SoundTestScreenSetSongNameDisplay(songsList[soundTestScreen->songNumber - 1]);
+            SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
         }
     }
 
@@ -371,16 +761,16 @@ static void Task_SoundTestScreenMain(void) {
         m4aMPlayAllStop();
         soundTestScreen->animFrame = 0;
         soundTestScreen->barBeat = 0;
-        SoundTestScreenSetCreamAnim(CREAM_ANIM_SONG_END);
+        SoundTestScreenSetCreamAnim(CREAM_ANIM_SOUND_END);
     }
     
     if (gPressedKeys & A_BUTTON) {
         u32 songTempo;
-        soundTestScreen->songTempo = songTempo = gUnknown_080E0AAC[songsList[soundTestScreen->songNumber - 1]];
+        soundTestScreen->songTempo = songTempo = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
         soundTestScreen->creams[DANCING_CREAM].unk22 = songTempo >> 12;
         m4aMPlayAllStop();
 
-        MPlayStart(&gMPlayInfo_BGM, gSongTable[sSongIdsList[songsList[soundTestScreen->songNumber - 1]]].header);
+        MPlayStart(&gMPlayInfo_BGM, gSongTable[sSoundNumberToSongMap[soundsList[soundTestScreen->soundNumber - 1]]].header);
 
         soundTestScreen->state = SOUND_TEST_SCREEN_PLAYING;
         backControlName->unk20 = 0;
@@ -391,7 +781,7 @@ static void Task_SoundTestScreenMain(void) {
 
         sub_8004558(backControlName); 
 
-        SoundTestScreenSetSongNameDisplay(songsList[soundTestScreen->songNumber - 1]);
+        SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
         SoundTestScreenSetCreamAnim(2);
     }
 
@@ -403,7 +793,7 @@ static void Task_SoundTestScreenMain(void) {
             m4aMPlayAllStop();
             soundTestScreen->animFrame = 0;
             soundTestScreen->barBeat = 0;
-            SoundTestScreenSetCreamAnim(CREAM_ANIM_SONG_END);
+            SoundTestScreenSetCreamAnim(CREAM_ANIM_SOUND_END);
         } else {
             SoundTestScreenSetCreamAnim(CREAM_ANIM_BOW);
             m4aSongNumStart(SE_RETURN);
@@ -421,11 +811,11 @@ static void Task_SoundTestScreenMain(void) {
         }
     }
 
-    if (++soundTestScreen->songNameTickerPos > 400) {
-        soundTestScreen->songNameTickerPos = 0;
+    if (++soundTestScreen->nameTickerPos > 400) {
+        soundTestScreen->nameTickerPos = 0;
     }
 
-    SoundTestScreenSetSongNameDisplayPos(songsList[soundTestScreen->songNumber - 1], 0x100 - soundTestScreen->songNameTickerPos, 0x9E);
+    SoundTestScreenSetNameDisplayPos(soundsList[soundTestScreen->soundNumber - 1], 0x100 - soundTestScreen->nameTickerPos, 0x9E);
     SoundTestScreenRenderUI();
 }
 
@@ -434,7 +824,7 @@ static void SoundTestScreenRenderUI(void) {
     struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->title;
     struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     struct UNK_0808B3FC_UNK240* backCountrolName = &soundTestScreen->backControlName;
-    struct UNK_0808B3FC_UNK240* songNumDisplay = soundTestScreen->songNumDisplay;
+    struct UNK_0808B3FC_UNK240* numberDisplayDigit = soundTestScreen->numberDisplay;
     
     struct UNK_0808B3FC_UNK240* unk2DC = &soundTestScreen->danceStage;
     struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->activeCream;
@@ -455,22 +845,22 @@ static void SoundTestScreenRenderUI(void) {
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     
-    for (i = 0; i < 2; i++, songNumDisplay++) {
-        songNumDisplay->unk18 = 0x60;
+    for (i = 0; i < 2; i++, numberDisplayDigit++) {
+        numberDisplayDigit->unk18 = 0x60;
 
-        if (soundTestScreen->songNumAnimSteps[i] != 0) {
-            if (soundTestScreen->songNumAnimSteps[i] > 0) {
-                songNumDisplay->unk18 = sSongNumTransitionAnim[soundTestScreen->songNumAnimSteps[i]] + 0x60;
-                soundTestScreen->songNumAnimSteps[i]--;
+        if (soundTestScreen->soundNumAnimSteps[i] != 0) {
+            if (soundTestScreen->soundNumAnimSteps[i] > 0) {
+                numberDisplayDigit->unk18 = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 0x60;
+                soundTestScreen->soundNumAnimSteps[i]--;
             }
 
-            if (soundTestScreen->songNumAnimSteps[i] < 0) {
-                songNumDisplay->unk18 = 0x60 - sSongNumTransitionAnim[-soundTestScreen->songNumAnimSteps[i]];
-                soundTestScreen->songNumAnimSteps[i]++;
+            if (soundTestScreen->soundNumAnimSteps[i] < 0) {
+                numberDisplayDigit->unk18 = 0x60 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                soundTestScreen->soundNumAnimSteps[i]++;
             }
         }
 
-        sub_80051E8(songNumDisplay);
+        sub_80051E8(numberDisplayDigit);
     }
 
     for (i = 0; i < 2; i++, titleTrimAndControls++) {
@@ -656,7 +1046,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim) {
             animatedCream->unk20 = 0;
             animatedCream->unkA = 0x3C8;
             break;
-        case CREAM_ANIM_SONG_END:
+        case CREAM_ANIM_SOUND_END:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
@@ -739,26 +1129,26 @@ static void SoundTestScreenInitRegistersAndBackground(struct Task* t) {
     sub_806B854(soundTestScreen->background, 0, 7, 0xA9, 0x20, 0x20, 0, 0, 0, 0);
 }
 
-static void SoundTestScreenSetSongNameDisplayPos(u8 unused_, s16 x, s16 y) {
+static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
     u32 i;
     
-    for (i = 0; i < MAX_SONG_NAME_LENGTH; i++) {
-        u16 *pos = &soundTestScreen->songNameDisplay[i].unk16;
+    for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
+        u16 *pos = &soundTestScreen->nameDisplay[i].unk16;
         *pos = x + i * 10;
         pos++;
         *pos = y;
-        sub_80051E8(&soundTestScreen->songNameDisplay[i]);
+        sub_80051E8(&soundTestScreen->nameDisplay[i]);
     }
 }
 
-static void SoundTestScreenSetSongNameDisplay(u8 soundId) {
+static void SoundTestScreenSetNameDisplay(u8 soundId) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
     u32 i;
-    for (i = 0; i < 16; i++) {
-        u8 soundTextChar = sSongNames[soundId][i];
+    for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
+        u8 soundTextChar = sSoundNames[soundId][i];
 
-        u8* asset = &soundTestScreen->songNameDisplay[i].unk20;
+        u8* asset = &soundTestScreen->nameDisplay[i].unk20;
         asset[0] = soundTextChar - 0x20;
         asset[1] = 0xFF;
 
@@ -766,6 +1156,6 @@ static void SoundTestScreenSetSongNameDisplay(u8 soundId) {
             asset[0] = 0;
         }
 
-        sub_8004558(&soundTestScreen->songNameDisplay[i]);
+        sub_8004558(&soundTestScreen->nameDisplay[i]);
     }
 }

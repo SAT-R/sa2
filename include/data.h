@@ -144,6 +144,8 @@ extern u8 gUnknown_03002A80;
 
 extern void* gUnknown_03002878;
 
+extern const u8 gUnknown_08C8796C[0x140];
+
 // Possibly transition configuration?
 struct UNK_802D4CC_UNK270 {
     u16 unk0;

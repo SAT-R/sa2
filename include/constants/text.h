@@ -7,3 +7,5 @@
 #define LANG_FRENCH 4
 #define LANG_SPANISH 5
 #define LANG_ITALIAN 6
+
+#define LanguageIndex(lang) (lang - 1)
