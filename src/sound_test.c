@@ -8,6 +8,8 @@
 #include "constants/songs.h"
 #include "flags.h"
 #include "trig.h"
+#include "ui.h"
+#include "backgrounds.h"
 
 struct SoundTestScreen_UNK718 {
     u32 unk0;
@@ -19,7 +21,8 @@ struct SoundTestScreen {
     struct UNK_802D4CC_UNK270 unk4;
     struct UNK_3005B80_UNK4 unk10;
 
-    u8 filler48[128];
+    struct Unk_03002400 unk48[2];
+
     struct UNK_0808B3FC_UNK240 unkC8;
     struct UNK_0808B3FC_UNK240 unkF8[2];
     struct UNK_0808B3FC_UNK240 unk158;
@@ -65,13 +68,32 @@ struct SoundTestScreen {
     u8 unk758;
 }; /* size 0x75C */
 
-void sub_808AF74(void);
-void sub_808B2B0(struct Task* t);
-void sub_808B2F4(struct Task* t);
+static void sub_808AF74(void);
+static void sub_808B2B0(struct Task* t);
+static void sub_808B2F4(struct Task* t);
 static void sub_808A3B4(struct Task* t);
+static void sub_808B18C(void);
+static void sub_808B3A0(u8);
+static void sub_808B030(u8);
+static void sub_808B350(u8, s16, s16);
+static void sub_808AB08(void);
+static void sub_808B2C8(void);
 
 extern const u8 gUnknown_080E0C38[12];
 extern const u8 gUnknown_08C8796C[140];
+
+extern const u32 gUnknown_080E0C44[NUM_LANGUAGES * 3];
+extern const u32 gUnknown_080E0C8C[NUM_LANGUAGES * 3];
+extern const u32 gUnknown_080E0CD4[NUM_LANGUAGES * 3 * 2];
+
+extern const u8 gUnknown_080E05E4[68][16];
+extern const u8 gUnknown_080E0BB8[63];
+
+extern const u8 gUnknown_080E0BF7[57];
+extern const u32 gUnknown_080E0AAC[67];
+extern const u16 gUnknown_080E0A24[68];
+
+extern const u8 gUnknown_080E0C30[8];
 
 void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(sub_808AF74, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, sub_808B2B0);
@@ -131,14 +153,7 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     gUnknown_03005B80.unk0 = unk10;
 }
 
-extern const u32 gUnknown_080E0C44[NUM_LANGUAGES * 3];
-extern const u32 gUnknown_080E0C8C[NUM_LANGUAGES * 3];
-extern const u32 gUnknown_080E0CD4[NUM_LANGUAGES * 3 * 2];
-
-extern const u8 gUnknown_080E05E4[68][16];
-extern const u8 gUnknown_080E0BB8[63];
-
-void sub_808A3B4(struct Task* t) {
+static void sub_808A3B4(struct Task* t) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
 
     struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->unkC8;
@@ -243,19 +258,10 @@ void sub_808A3B4(struct Task* t) {
     }
 }
 
-extern const u8 gUnknown_080E0BF7[57];
-extern const u32 gUnknown_080E0AAC[67];
-extern const u16 gUnknown_080E0A24[68];
 
-void sub_808B18C(void);
 
-void sub_808B3A0(u8);
-void sub_808B030(u8);
 
-void sub_808B350(u8, s16, u8);
-void sub_808AB08();
-
-void sub_808A720(void) {
+static void sub_808A720(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
 
     struct UNK_0808B3FC_UNK240* unk33C = soundTestScreen->unk33C;
@@ -397,11 +403,7 @@ void sub_808A720(void) {
     sub_808AB08();
 }
 
-
-extern const u8 gUnknown_080E0C30[8];
-void sub_808DB2C(u8);
-
-void sub_808AB08(void) {
+static void sub_808AB08(void) {
     struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
     struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->unkC8;
     struct UNK_0808B3FC_UNK240* unkF8 = soundTestScreen->unkF8;
@@ -554,4 +556,187 @@ void sub_808AB08(void) {
     unk188->unk10 &= ~0x400;
 
     soundTestScreen->unk708++;
+}
+
+static void sub_808AF74(void) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct UNK_0808B3FC_UNK240* unk278 = &soundTestScreen->unk278;
+
+    soundTestScreen->unk6FC++;
+
+    if (soundTestScreen->unk709 == 2) {
+        sub_8004558(unk278);
+        if (soundTestScreen->unk6FC > 0x2C) {
+            sub_802D4CC(&soundTestScreen->unk4);
+        }
+    } else {
+        if (soundTestScreen->unk6FC > 0x14) {
+            sub_8004558(unk278);
+        }
+        sub_802D4CC(&soundTestScreen->unk4);
+    }
+
+    if (soundTestScreen->unk6FC > 0x3C) {
+        if (soundTestScreen->unk709 == 2) {
+            gCurTask->main = sub_808B2C8;
+        } else {
+            soundTestScreen->unk6FC = 0;
+            sub_808B030(1);
+            gCurTask->main = sub_808A720;
+        }
+    }
+    sub_808AB08();
+}
+
+static void sub_808B030(u8 mode) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->unk2D8;
+
+    switch (mode) {
+        case 0:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk21 = 0xFF;
+            unk2D8->unk20 = 0;
+            unk2D8->unkA = 0x3CA;
+            break;
+        case 1:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk21 = 0xFF;
+            unk2D8->unk20 = 0;
+            unk2D8->unkA = 0x3CD;
+            break;
+        case 2:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk10 &= ~0x400;
+            unk2D8->unk20 = 0;
+            unk2D8->unkA = 0x3C8;
+            break;
+        case 3:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk10 &= ~0x400;
+            unk2D8->unk20 = 1;
+            unk2D8->unkA = 0x3C8;
+            break;
+        case 4:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk2A8;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk10 |= 0x400;
+            unk2D8->unk20 = 0;
+            unk2D8->unkA = 0x3C8;
+            break;
+        case 5:
+            soundTestScreen->unk2D8 = &soundTestScreen->unk278;
+            unk2D8 = soundTestScreen->unk2D8;
+            unk2D8->unk21 = 0xFF;
+            unk2D8->unk20 = 0;
+            unk2D8->unkA = 0x3CB;
+            break;
+        default:
+            break;
+    }
+
+    sub_8004558(unk2D8);
+}
+
+static void sub_808B18C(void) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct UNK_0808B3FC_UNK240* unk2D8 = soundTestScreen->unk2D8;
+
+    switch(soundTestScreen->unk709) {
+        case 0:
+            if (unk2D8->unkA == 0x3CB) {
+                if (!sub_8004558(unk2D8)) {
+                    sub_808B030(1);
+                }
+            } else {
+                sub_8004558(unk2D8);
+            }
+            break;
+        case 1:
+            soundTestScreen->unk700 += soundTestScreen->unk704;
+            soundTestScreen->unk6FC = soundTestScreen->unk700 >> 0x10;
+            sub_8004558(unk2D8);
+
+            if (soundTestScreen->unk6FC >= 0x37 && soundTestScreen->unk70A == 0) {
+                soundTestScreen->unk70A = 1;
+                sub_808B030(3);
+                break;
+            }
+            if (soundTestScreen->unk6FC >= 0x3C && soundTestScreen->unk70A == 1) {
+                soundTestScreen->unk70A = 2;
+                sub_808B030(4);
+                break;
+            }
+
+            if (soundTestScreen->unk6FC >= 0x73 && soundTestScreen->unk70A == 2) {
+                soundTestScreen->unk70A = 3;
+                sub_808B030(3);
+                break;
+            }
+
+            if (soundTestScreen->unk6FC > 0x77 && soundTestScreen->unk70A == 3) {
+                soundTestScreen->unk70A = 0;
+                sub_808B030(2);
+                soundTestScreen->unk700 = 0;
+                soundTestScreen->unk6FC = 0;
+                break;
+            }
+    }    
+}
+
+static void sub_808B2B0(struct Task* t) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    soundTestScreen->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
+}
+
+static void sub_808B2C8(void) {
+    ResetProfileScreensVram();
+    TaskDestroy(gCurTask);
+}
+
+static void sub_808B2F4(struct Task* t) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    gDispCnt = 0x1141;
+    gBgCntRegs[0] = 0x703;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    
+    sub_806B854(soundTestScreen->unk48, 0, 7, 0xA9, 0x20, 0x20, 0, 0, 0, 0);
+}
+
+static void sub_808B350(u8 unused_, s16 x, s16 y) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    u32 i;
+    
+    for (i = 0; i < 16; i++) {
+        u16 *pos = &soundTestScreen->unk3FC[i].unk16;
+        *pos = x + i * 10;
+        pos++;
+        *pos = y;
+        sub_80051E8(&soundTestScreen->unk3FC[i]);
+    }
+}
+
+static void sub_808B3A0(u8 soundId) {
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    u32 i;
+    for (i = 0; i < 16; i++) {
+        u8 soundTextChar = gUnknown_080E05E4[soundId][i];
+
+        u8* asset = &soundTestScreen->unk3FC[i].unk20;
+        asset[0] = soundTextChar - 0x20;
+        asset[1] = 0xFF;
+
+        if (soundTextChar == 0) {
+            asset[0] = 0;
+        }
+
+        sub_8004558(&soundTestScreen->unk3FC[i]);
+    }
 }

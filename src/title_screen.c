@@ -20,6 +20,7 @@
 #include "zones.h"
 #include "recordings.h"
 #include "trig.h"
+#include "backgrounds.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -322,9 +323,6 @@ extern void sub_8087FC0(void);
 extern void sub_8009F94(void);
 extern void* sub_8007C10(u32);
 extern void sub_8007CF0(void*);
-
-// pallette?
-extern void sub_808DB2C(u8);
 
 void CreateTitleScreen(void) {
     struct Task* t;

@@ -14,6 +14,10 @@
 
 #define NUM_OPTIONS_MENU_ITEMS 8
 
+#define OPTIONS_SCREEN_STATE_ACTIVE 0
+#define OPTIONS_SCREEN_STATE_SUB_MENU_OPEN 1
+#define OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN 2
+
 struct OptionsScreenProfileData {
     // playerName
     u16 playerName[MAX_PLAYER_NAME_LENGTH];

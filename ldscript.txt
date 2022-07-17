@@ -49,7 +49,6 @@ SECTIONS
         build/sa2/asm/math.o(.text);
         build/sa2/asm/code4.o(.text);
         build/sa2/src/sound_test.o(.text);
-        build/sa2/asm/sound_test.o(.text);
         build/sa2/src/title_screen.o(.text);
         build/sa2/asm/code5.o(.text);
         build/sa2/asm/m4a0.o(.text);
