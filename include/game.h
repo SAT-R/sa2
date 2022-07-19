@@ -15,7 +15,7 @@ extern u8 gGameMode;
 extern u8 gCurrentLevel;
 extern u8 gSelectedCharacter;
 
-// Possibly CreateGameStage
+// Possibly CreateGameStageAtSelectedCourse
 void sub_801A770(void);
 
 #endif // GUARD_GAME_H

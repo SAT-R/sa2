@@ -320,7 +320,9 @@ static const u16 sLensFlareStartPositions[][2] = {
 
 // Don't know who these belong to yet
 
+// UpdateGamePlaySettings
 extern void sub_801A6D8(void);
+
 extern void sub_8087FC0(void);
 
 extern void sub_8009F94(void);

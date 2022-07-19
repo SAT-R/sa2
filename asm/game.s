@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+@; UpdateGamePlaySettings
 	thumb_func_start sub_801A6D8
 sub_801A6D8: @ 0x0801A6D8
 	push {lr}
@@ -78,6 +79,7 @@ _0801A766:
 	.align 2, 0
 _0801A76C: .4byte gLoadedSaveGame
 
+@; CreateGameStageAtSelectedCourse
 	thumb_func_start sub_801A770
 sub_801A770: @ 0x0801A770
 	push {lr}
@@ -165,6 +167,7 @@ _0801A826:
 _0801A830: .4byte gUnknown_03005490
 _0801A834: .4byte 0x00002A30
 
+@; CreateGameStage
 	thumb_func_start sub_801A838
 sub_801A838: @ 0x0801A838
 	push {r4, r5, r6, r7, lr}
