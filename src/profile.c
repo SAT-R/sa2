@@ -15,6 +15,7 @@
 #include "sound_test.h"
 #include "ui.h"
 #include "time.h"
+#include "multiplayer.h"
 
 #define NUM_PLAYER_DATA_MENU_ITEMS 4
 

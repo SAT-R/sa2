@@ -21,6 +21,7 @@
 #include "recordings.h"
 #include "trig.h"
 #include "backgrounds.h"
+#include "multiplayer.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -37,8 +38,9 @@ struct TitleScreen {
     // Used
     struct UNK_0808B3FC_UNK240 unk240;
 
-    // Some more configs
+    // fade config
     struct UNK_802D4CC_UNK270 unk270;
+
     struct UNK_3005B80_UNK4 unk27C;
 
     // Something to do with the wave effects
