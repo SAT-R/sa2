@@ -85,6 +85,8 @@ SECTIONS
         build/sa2/data/data1_1_2.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
+        build/sa2/data/math_data.o(.rodata);
+        build/sa2/data/data1_3.o(.rodata);
         build/sa2/src/sound_test.o(.rodata);
         build/sa2/src/title_screen.o(.rodata);
         build/sa2/data/data2.o(.rodata);
