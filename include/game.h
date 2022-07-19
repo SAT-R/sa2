@@ -18,8 +18,4 @@ extern u8 gSelectedCharacter;
 // Possibly CreateGameStage
 void sub_801A770(void);
 
-
-// CreateCharacterSelectionScreen
-void sub_803143C(u8 selectedCharacter, bool8 allUnlocked);
-
 #endif // GUARD_GAME_H

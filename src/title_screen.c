@@ -22,6 +22,7 @@
 #include "trig.h"
 #include "backgrounds.h"
 #include "multiplayer.h"
+#include "character_select.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?

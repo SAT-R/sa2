@@ -16,6 +16,7 @@
 #include "ui.h"
 #include "time.h"
 #include "multiplayer.h"
+#include "character_select.h"
 
 #define NUM_PLAYER_DATA_MENU_ITEMS 4
 
