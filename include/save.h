@@ -107,6 +107,10 @@ struct SaveGame {
     u32 unk374;
 };
 
+#define MULTIPLAYER_RESULT_WIN 0
+#define MULTIPLAYER_RESULT_LOSS 1
+#define MULTIPLAYER_RESULT_DRAW 2
+
 // Some sort of save data?
 struct SaveGame* gLoadedSaveGame;
 
