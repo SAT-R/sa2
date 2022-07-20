@@ -14,7 +14,7 @@
 
 // TODO: Work out what this is
 struct MultiplayerScore {
-    u8 filler0[4];
+    u32 unk0;
     // playerName
     u16 unk4[MAX_PLAYER_NAME_LENGTH];
 

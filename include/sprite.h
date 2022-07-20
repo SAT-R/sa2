@@ -123,7 +123,7 @@ void DrawToOamBuffer(void);
 void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
 void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
 
-
+extern const void* gUnknown_08097A74[12];
 // Probably a list of sprites to draw to screen
 extern struct Unk_03002EC0* gUnknown_030027A0[];
 

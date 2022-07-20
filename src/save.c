@@ -68,6 +68,7 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
 static u16 WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
 static u16 EraseSaveSector(s16 sectorNum);
 static bool16 HasChangesToSave(void);
+bool16 sub_807257C(u16* string1, u16* string2, s16 length);
 
 #define CalcChecksum(save) ({ \
     u32 j, checksum = 0; \
@@ -96,6 +97,37 @@ static bool16 HasChangesToSave(void);
 #define SECTOR_SECURITY_NUM 0x4547474D
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS 10
+
+// StoreMultiplayerResult
+void sub_807174C(u32 id, u16* name, s16 result) {
+    s16 i;
+    for (i = 0; i < 10; i++) {
+        struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
+        if (id == score->unk0 && sub_807257C(name, score->unk4, 6)) {
+            switch (result) {
+                case 0:
+                    if (score->unk11 > 0x62) {
+                        return;
+                    }
+                    score->unk11++;
+                    break;
+                case 1:
+                    if (score->unk12 > 0x62) {
+                        return;
+                    }
+                    score->unk12++;
+                    break;
+                case 2:
+                    if (score->unk13 > 0x62) {
+                        return;
+                    }
+                    score->unk13++;
+                    break;
+            } 
+            return;
+        }
+    }
+}
 
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
@@ -860,4 +892,15 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
     }
     
     return 1;
+}
+
+// StringEquals
+bool16 sub_807257C(u16* string1Char, u16* string2Char, s16 length) {
+    s16 i;
+    for (i = 0; i < length; i++, string1Char++, string2Char++) {
+        if (*string1Char != *string2Char) {
+            return FALSE;
+        }
+    }
+    return TRUE;
 }
