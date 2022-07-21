@@ -2512,7 +2512,7 @@ _0805B6C8:
 	mov r2, sb
 	ldr r0, [r2]
 	adds r1, r7, #0
-	bl sub_8071590
+	bl InsertMultiplayerProfile
 _0805B6DE:
 	subs r7, #0xc
 	movs r0, #0xc

@@ -37846,7 +37846,7 @@ _0801A2A8:
 	ldr r2, _0801A320 @ =gUnknown_03005460
 	adds r1, r1, r2
 	adds r2, r3, #0
-	bl sub_807174C
+	bl RecordMultiplayerResult
 _0801A2C2:
 	movs r1, #0x80
 	lsls r1, r1, #9
@@ -37856,7 +37856,7 @@ _0801A2C2:
 	cmp r0, #3
 	ble _0801A236
 	adds r0, r6, #0
-	bl sub_80716F0
+	bl RecordOwnMultiplayerResult
 	bl WriteSaveGame
 _0801A2DA:
 	ldr r1, _0801A324 @ =0x0000FFFF

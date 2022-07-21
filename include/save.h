@@ -14,7 +14,9 @@
 
 // TODO: Work out what this is
 struct MultiplayerScore {
+    // playerId
     u32 unk0;
+
     // playerName
     u16 unk4[MAX_PLAYER_NAME_LENGTH];
 
@@ -113,6 +115,10 @@ struct SaveGame {
 
 // Some sort of save data?
 struct SaveGame* gLoadedSaveGame;
+
+void InsertMultiplayerProfile(u32 playerId, u16* name);
+void RecordOwnMultiplayerResult(s16 result);
+void RecordMultiplayerResult(u32 id, u16* name, s16 result);
 
 void SaveInit(void);
 bool16 SaveGameExists(void);

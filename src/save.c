@@ -98,17 +98,16 @@ bool16 sub_807257C(u16* string1, u16* string2, s16 length);
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS 10
 
-void sub_8071590(u32 id, u16* name) {
-    s16 i;
-    s16 j;
+void InsertMultiplayerProfile(u32 playerId, u16* name) {
+    s16 i, j;
 
     for (i = 0; i < 10; i++) {
         struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
-        if (id == score->unk0 && sub_807257C(name, score->unk4, 6)) {
+        if (playerId == score->unk0 && sub_807257C(name, score->unk4, 6)) {
             struct MultiplayerScore scoreCopy;
             memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
             
-            for (j = i; j > 0; --j) {
+            for (j = i; j > 0; j--) {
                 gLoadedSaveGame->unk2AC[j] = gLoadedSaveGame->unk2AC[j-1];
             }
             memcpy(&gLoadedSaveGame->unk2AC[0], &scoreCopy, sizeof(struct MultiplayerScore));
@@ -117,11 +116,11 @@ void sub_8071590(u32 id, u16* name) {
     }
 
     // otherwise, insert the score at the beginning
-    for (i = 9; i > 0; --i) {
+    for (i = 9; i > 0; i--) {
         gLoadedSaveGame->unk2AC[i] = gLoadedSaveGame->unk2AC[i-1];
     }
 
-    gLoadedSaveGame->unk2AC[0].unk0 = id;
+    gLoadedSaveGame->unk2AC[0].unk0 = playerId;
     for (i = 0; i < 6; i++) {
         gLoadedSaveGame->unk2AC[0].unk4[i] = name[i];
     }
@@ -131,8 +130,7 @@ void sub_8071590(u32 id, u16* name) {
     gLoadedSaveGame->unk2AC[0].unk13 = 0;
 }
 
-// RecordPlayerMultiplayerResult
-void sub_80716F0(s16 result) {
+void RecordOwnMultiplayerResult(s16 result) {
     switch (result) {
         case MULTIPLAYER_RESULT_WIN:
             if (gLoadedSaveGame->unk1C < 99) {
@@ -152,8 +150,7 @@ void sub_80716F0(s16 result) {
     }
 }
 
-// RecordMultiplayerResult
-void sub_807174C(u32 id, u16* name, s16 result) {
+void RecordMultiplayerResult(u32 id, u16* name, s16 result) {
     s16 i;
 
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
