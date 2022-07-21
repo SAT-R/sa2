@@ -393,27 +393,3 @@ _0808DB72:
 	pop {r4, r5}
 	pop {r0}
 	bx r0
-
-	thumb_func_start sub_808DB78
-sub_808DB78: @ 0x0808DB78
-	push {r4, r5, lr}
-	adds r4, r1, #0
-	ldr r5, [sp, #0xc]
-	ldr r1, [sp, #0x10]
-	movs r0, #0
-	strb r0, [r1]
-	strb r0, [r1, #1]
-	strh r4, [r1, #2]
-	strh r0, [r1, #4]
-	strb r2, [r1, #6]
-	strb r3, [r1, #7]
-	strb r5, [r1, #8]
-	movs r0, #0xa0
-	lsls r0, r0, #0x13
-	adds r1, #0xc
-	movs r2, #0x80
-	bl CpuFastSet
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
