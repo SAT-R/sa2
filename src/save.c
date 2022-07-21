@@ -68,7 +68,7 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
 static u16 WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
 static u16 EraseSaveSector(s16 sectorNum);
 static bool16 HasChangesToSave(void);
-bool16 sub_807257C(u16* string1, u16* string2, s16 length);
+static bool16 StringEquals(u16* string1, u16* string2, s16 length);
 
 #define CalcChecksum(save) ({ \
     u32 j, checksum = 0; \
@@ -103,7 +103,7 @@ void InsertMultiplayerProfile(u32 playerId, u16* name) {
 
     for (i = 0; i < 10; i++) {
         struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
-        if (playerId == score->unk0 && sub_807257C(name, score->unk4, 6)) {
+        if (playerId == score->unk0 && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
             struct MultiplayerScore scoreCopy;
             memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
             
@@ -121,7 +121,7 @@ void InsertMultiplayerProfile(u32 playerId, u16* name) {
     }
 
     gLoadedSaveGame->unk2AC[0].unk0 = playerId;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
         gLoadedSaveGame->unk2AC[0].unk4[i] = name[i];
     }
     gLoadedSaveGame->unk2AC[0].unk10 = TRUE;
@@ -133,17 +133,17 @@ void InsertMultiplayerProfile(u32 playerId, u16* name) {
 void RecordOwnMultiplayerResult(s16 result) {
     switch (result) {
         case MULTIPLAYER_RESULT_WIN:
-            if (gLoadedSaveGame->unk1C < 99) {
+            if (gLoadedSaveGame->unk1C < MAX_MULTIPLAYER_SCORE) {
                 gLoadedSaveGame->unk1C++;
             }
             break;
         case MULTIPLAYER_RESULT_LOSS:
-            if (gLoadedSaveGame->unk1D < 99) {
+            if (gLoadedSaveGame->unk1D < MAX_MULTIPLAYER_SCORE) {
                 gLoadedSaveGame->unk1D++;
             }
             break;
         case MULTIPLAYER_RESULT_DRAW:
-            if (gLoadedSaveGame->unk1E < 99) {
+            if (gLoadedSaveGame->unk1E < MAX_MULTIPLAYER_SCORE) {
                 gLoadedSaveGame->unk1E++;
             }
             break;
@@ -155,21 +155,21 @@ void RecordMultiplayerResult(u32 id, u16* name, s16 result) {
 
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
         struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
-        if (id == score->unk0 && sub_807257C(name, score->unk4, 6)) {
+        if (id == score->unk0 && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
             switch (result) {
                 case MULTIPLAYER_RESULT_WIN:
-                    if (score->unk11 < 99) {
+                    if (score->unk11 < MAX_MULTIPLAYER_SCORE) {
                         score->unk11++;
                     }
                     
                     break;
                 case MULTIPLAYER_RESULT_LOSS:
-                    if (score->unk12 < 99) {
+                    if (score->unk12 < MAX_MULTIPLAYER_SCORE) {
                         score->unk12++;
                     }
                     break;
                 case MULTIPLAYER_RESULT_DRAW:
-                    if (score->unk13 < 99) {
+                    if (score->unk13 < MAX_MULTIPLAYER_SCORE) {
                         score->unk13++;
                     }
                     break;
@@ -195,9 +195,9 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 
     p3 = &gameState->unk2C;
     
-    p3->unk0 = 1;
-    p3->unk2 = 2;
-    p3->unk4 = 0x100;
+    p3->unk0 = A_BUTTON;
+    p3->unk2 = B_BUTTON;
+    p3->unk4 = R_BUTTON;
 
     record = (u16*)gameState->unk34.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
@@ -425,8 +425,6 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
 
     save->id = Random32();
     save->unk370 = gameState->unk374;
-
-    // Not sure why they chose to rewrite the checksum logic here
     
     checksum = CalcChecksum(save);
     save->checksum = checksum;
@@ -945,7 +943,7 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
 }
 
 // StringEquals
-bool16 sub_807257C(u16* string1Char, u16* string2Char, s16 length) {
+static bool16 StringEquals(u16* string1Char, u16* string2Char, s16 length) {
     s16 i;
     for (i = 0; i < length; i++, string1Char++, string2Char++) {
         if (*string1Char != *string2Char) {

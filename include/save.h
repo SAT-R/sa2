@@ -11,6 +11,7 @@
 
 #define MAX_PLAYER_NAME_LENGTH 6
 #define PLAYER_NAME_END_CHAR 0xFFFF
+#define MAX_MULTIPLAYER_SCORE 99
 
 // TODO: Work out what this is
 struct MultiplayerScore {
