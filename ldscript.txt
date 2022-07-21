@@ -46,7 +46,6 @@ SECTIONS
         build/sa2/src/profile.o(.text);
         build/sa2/src/ui.o(.text);
         build/sa2/asm/special_stage.o(.text);
-        build/sa2/asm/code2_1.o(.text);
         build/sa2/src/save.o(.text);
         build/sa2/asm/code3.o(.text);
         build/sa2/asm/multiplayer_connection.o(.text);

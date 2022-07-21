@@ -19,7 +19,7 @@ struct MultiplayerScore {
     u16 unk4[MAX_PLAYER_NAME_LENGTH];
 
     // slotFilled
-    u8 unk10;
+    bool8 unk10;
 
     // wins
     u8 unk11;
