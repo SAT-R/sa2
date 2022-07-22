@@ -17,7 +17,40 @@ struct UNK_808DB78 {
 
 struct UNK_3005B80 gUnknown_03005B80;
 
-void sub_808D988(u8 vcount) {
+// void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8* unk0) {
+//     u8 i;
+//     u16 array[256];
+
+//     for (i = 0; i < 256; i++) {
+//         u16 temp5 = 0;
+//         s16 temp3, temp2 = (unk0->unkC[i] & 0x1F) + unk0->unk1 * unk0->unk6;
+//         if (temp2 > 0x1F) {
+//             temp2 = 0x1F;
+//         }
+//         temp5 |= temp2;
+        
+
+//         temp3 = ((unk0->unkC[i] & 0x3E0) >> 5) + unk0->unk1 * unk0->unk7;
+//         if (temp3 > 0x1F) {
+//             temp3 = 0x1F;
+//         }
+//         temp5 |= temp3 << 5;
+        
+//         temp2 = ((unk0->unkC[i] & 0x7C00) >> 10) + unk0->unk1 * unk0->unk8;
+//         if (temp2 > 0x1F) {
+//             temp2 = 0x1F;
+//         }
+//         temp5 |= temp2 << 10;
+
+//         array[i] = temp5;
+//     }
+
+//     CpuFastSet(array, (void*)BG_PLTT, 0x80);
+//     unk0->unk4++;
+//     unk0->unk1 = unk0->unk4 >> 8;
+// }
+
+UNUSED void sub_808D988(u8 vcount) {
     u8 i;
     u16 array[16];
 
@@ -33,18 +66,18 @@ void sub_808D988(u8 vcount) {
         } else {
             for (i = 0; i < 16; i++) {
                 u16 temp5 = 0;
-                s16 temp3, temp2 = (unk0->unk14[i] & 0x1F) + unk0->unkF;
+                s16 temp2 = (unk0->unk14[i] & 0x1F) + unk0->unkF;
                 if (temp2 > 0x1F) {
                     temp2 = 0x1F;
                 }
                 temp5 |= temp2;
                 
 
-                temp3 = ((unk0->unk14[i] & 0x3E0) >> 5) + unk0->unk10;
-                if (temp3 > 0x1F) {
-                    temp3 = 0x1F;
+                temp2 = ((unk0->unk14[i] & 0x3E0) >> 5) + unk0->unk10;
+                if (temp2 > 0x1F) {
+                    temp2 = 0x1F;
                 }
-                temp5 |= temp3 << 5;
+                temp5 |= temp2 << 5;
                 
                 temp2 = ((unk0->unk14[i] & 0x7C00) >> 10) + unk0->unk11;
                 if (temp2 > 0x1F) {
