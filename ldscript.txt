@@ -55,7 +55,6 @@ SECTIONS
         build/sa2/asm/code4.o(.text);
         build/sa2/src/sound_test.o(.text);
         build/sa2/src/title_screen.o(.text);
-        build/sa2/asm/backgrounds.o(.text);
         build/sa2/src/backgrounds.o(.text);
         build/sa2/asm/cut_scenes.o(.text);
         build/sa2/asm/m4a0.o(.text);

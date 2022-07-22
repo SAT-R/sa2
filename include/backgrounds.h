@@ -7,12 +7,11 @@
 
 struct UNK_3005B80_UNK4_UNK8 {
     s8 unk0;
-    s8 unk1;
+    u8 unk1;
     u16 unk2;
 
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
+    u16 unk4;
+    s8 unk6;
     
     s8 unk7;
     s8 unk8;
@@ -21,7 +20,7 @@ struct UNK_3005B80_UNK4_UNK8 {
 
     u8 unkB;
 
-    u16 unkC[16];
+    u16 unkC[256];
 };
 
 struct UNK_3005B80_UNK4 {
