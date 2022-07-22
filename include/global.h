@@ -75,7 +75,7 @@
 #define GBA_FRAMES_PER_SECOND 60
 
 // TODO: Find better place for this
-typedef void (*HBlankFunc)(u8);
+typedef void (*HBlankFunc)(u8 vcount);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);

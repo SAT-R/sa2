@@ -553,7 +553,7 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     unk10->unk1 = 0;
 
     unk10->unk4 = gUnknown_080E0C38;
-    unk10->unk8 = gUnknown_08C8796C;
+    unk10->unk8 = (const struct UNK_3005B80_UNK4_UNK8*)gUnknown_08C8796C;
 
     unk10->unk34 = 0;
 

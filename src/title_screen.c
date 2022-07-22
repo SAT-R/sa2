@@ -108,11 +108,7 @@ struct LensFlare {
     u8 unk207;
 }; /* size 0x208 */
 
-// Might not be declared here
-struct UNK_3005B80 gUnknown_03005B80;
-
-// TODO: move this function to palette or whatever
-void sub_808D874(void);
+static void sub_808D874(void);
 
 static void InitTitleScreenBackgrounds(struct TitleScreen*);
 static void InitTitleScreenUI(struct TitleScreen*);
@@ -381,7 +377,7 @@ void CreateTitleScreen(void) {
     config27C->unk34 = titleScreen->wavesTopOffset;
     config27C->unk1 = 0xE;
     config27C->unk4 = sWavesVerticalBrightnessGradiant;
-    config27C->unk8 = sUnknown_080E0EF4;
+    config27C->unk8 = (const struct UNK_3005B80_UNK4_UNK8*)sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
     gUnknown_03005B80.unk0 = config27C;
@@ -1979,7 +1975,7 @@ UNUSED void sub_808D824(void) {
 }
 
 // Might not in title_screen
-void sub_808D874(void) {
+static void sub_808D874(void) {
     CpuFastSet(sUnknown_080E0EF4, (void*)(BG_PLTT + 0x1C0), 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }
