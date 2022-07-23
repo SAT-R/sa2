@@ -23,6 +23,7 @@
 #include "backgrounds.h"
 #include "multiplayer.h"
 #include "character_select.h"
+#include "malloc_vram.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -322,8 +323,8 @@ extern void sub_801A6D8(void);
 extern void sub_8087FC0(void);
 
 extern void sub_8009F94(void);
-extern void* sub_8007C10(u32);
-extern void sub_8007CF0(void*);
+
+
 
 void CreateTitleScreen(void) {
     struct Task* t;

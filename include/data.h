@@ -156,6 +156,64 @@ struct UNK_802D4CC_UNK270 {
     u16 unkA;
 };
 
+
+struct MultiSioData_0_0 {
+    u8 unk0;
+    u8 unk1;
+    u16 hword[6];
+    u8 unkE;
+    u32 unk10;
+};
+
+struct MultiSioData_0_1 {
+    u8 unk0;
+    u8 unk1;
+    u8 unk2;
+    u8 unk3;
+    u8 unk4[0x10];
+};
+
+struct Unk_020382A0_8_0
+{
+    u32 unk00;
+    u8 unk04;
+    u8 filler[3]; // must be here for matching
+};
+
+struct Unk_020382A0_8_1
+{
+    u16 unk00;
+    u8 unk02;
+    u16 unk04;
+};
+
+union Unk_020382A0_8
+{
+    struct Unk_020382A0_8_0 pat0;
+    struct Unk_020382A0_8_1 pat1;
+};
+
+struct MultiSioData_0_2 {
+    u8 unk0;
+    u8 unk1;
+    u16 unk2;
+    union Unk_020382A0_8 unk4;
+    u16 unkC;
+    u8 unkE;
+    u32 unk10;
+};
+
+union MultiSioData {
+    struct MultiSioData_0_0 pat0;
+    struct MultiSioData_0_1 pat1;
+    struct MultiSioData_0_2 pat2;
+}; /* size = MULTI_SIO_BLOCK_SIZE */
+
+extern union MultiSioData gMultiSioSend; // gMultiSioSend
+extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
+
+extern u32 gMultiSioStatusFlags;
+
 // Some sort of fade transition function?
 extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);
 

@@ -8,62 +8,6 @@
 extern u16 gPhysicalInput;
 
 
-struct Unk_020382A0_8_0
-{
-    u32 unk00;
-    u8 unk04;
-    u8 filler[3]; // must be here for matching
-};
-
-struct Unk_020382A0_8_1
-{
-    u16 unk00;
-    u8 unk02;
-    u16 unk04;
-};
-
-union Unk_020382A0_8
-{
-    struct Unk_020382A0_8_0 pat0;
-    struct Unk_020382A0_8_1 pat1;
-};
-
-struct MultiSioData_0_0 {
-    u8 unk0;
-    u8 unk1;
-    u16 hword[6];
-    u8 unkE;
-    u32 unk10;
-};
-
-struct MultiSioData_0_1 {
-    u8 unk0;
-    u8 unk1;
-    u8 unk2;
-    u8 unk3;
-    u8 unk4[0x10];
-};
-
-struct MultiSioData_0_2 {
-    u8 unk0;
-    u8 unk1;
-    u16 unk2;
-    union Unk_020382A0_8 unk4;
-    u16 unkC;
-    u8 unkE;
-    u32 unk10;
-};
-
-union MultiSioData {
-    struct MultiSioData_0_0 pat0;
-    struct MultiSioData_0_1 pat1;
-    struct MultiSioData_0_2 pat2;
-}; /* size = MULTI_SIO_BLOCK_SIZE */
-
-extern union MultiSioData gMultiSioSend; // gMultiSioSend
-extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
-
-extern u32 gMultiSioStatusFlags;
 
 extern u8 gUnknown_030026F4;
 extern u16 gUnknown_030017F4[2];
@@ -102,7 +46,5 @@ extern u8 gUnknown_03002874;
 
 extern IntrFunc gIntrTable[16];
 extern u32 gIntrMainBuf[0x80];
-
-extern void sub_8007CC8(void);
 
 #endif

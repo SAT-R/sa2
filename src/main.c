@@ -11,6 +11,7 @@
 #include "flags.h"
 #include "input.h"
 #include "input_recorder.h"
+#include "malloc_vram.h"
 
 // TODO make static
 u32 gFlagsPreVBlank;
