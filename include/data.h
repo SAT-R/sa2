@@ -209,6 +209,14 @@ union MultiSioData {
     struct MultiSioData_0_2 pat2;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
+struct UNK_080E0D64 {
+    // width
+    u32 unk0;
+    // caption ID
+    u16 unk4;
+    s8 unk6;
+};
+
 extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 

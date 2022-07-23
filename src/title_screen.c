@@ -81,14 +81,6 @@ struct BirdAnimation {
     u8 unk3F;
 };
 
-struct UNK_080E0D64 {
-    // width
-    u32 unk0;
-    // caption ID
-    u16 unk4;
-    s8 unk6;
-};
-
 struct MenuItemTransition {
     struct UNK_0808B3FC_UNK240* sprite;
     u8 filler4[12];
