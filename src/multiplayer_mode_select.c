@@ -1,5 +1,6 @@
 #include "global.h"
 #include "multiplayer_mode_select.h"
+#include "multiplayer.h"
 #include "save.h"
 #include "data.h"
 #include "multi_sio.h"
@@ -374,8 +375,6 @@ void sub_805A9B0(void) {
         gCurTask->main = sub_805A4F8;
     }
 }
-
-void sub_805AAD8(void);
 
 extern void sub_808129C(void);
 
