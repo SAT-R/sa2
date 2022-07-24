@@ -1,0 +1,6 @@
+#ifndef GUARD_MULTIPLAYER_H
+#define GUARD_MULTIPLAYER_H
+
+#include "global.h"
+
+#endif // GUARD_MULTIPLAYER_MODE_SELECT_H
