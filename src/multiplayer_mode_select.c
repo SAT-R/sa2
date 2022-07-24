@@ -147,8 +147,6 @@ void sub_805A1CC(void) {
     unk0->unkA = 0;
     unk0->unkC = BG_SCREEN_ADDR(20);
     unk0->unk18 = 0;
-    unk0->unk18 = 0;
-    unk0->unk18 = 0;
     unk0->unk1A = 0;
     unk0->unk1C = 0x6E;
     unk0->unk1E = 0;
