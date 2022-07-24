@@ -4,701 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_805A4F8
-sub_805A4F8: @ 0x0805A4F8
-	push {r4, r5, r6, lr}
-	ldr r5, _0805A574 @ =gCurTask
-	ldr r0, [r5]
-	ldrh r4, [r0, #6]
-	ldr r1, _0805A578 @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0805A57C @ =gUnknown_03002878
-	ldr r0, _0805A580 @ =0x04000042
-	str r0, [r1]
-	ldr r1, _0805A584 @ =gWinRegs
-	movs r6, #0
-	movs r0, #0x98
-	lsls r0, r0, #5
-	strh r0, [r1, #8]
-	movs r0, #0x11
-	strh r0, [r1, #0xa]
-	ldr r2, _0805A588 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r2]
-	movs r0, #0xf0
-	bl sub_802EFDC
-	movs r0, #0xc8
-	lsls r0, r0, #7
-	ldr r1, _0805A58C @ =IWRAM_START + 0x14C
-	adds r4, r4, r1
-	ldrb r1, [r4]
-	movs r2, #0x10
-	subs r2, r2, r1
-	lsls r1, r2, #2
-	adds r1, r1, r2
-	lsls r1, r1, #0x12
-	lsrs r1, r1, #0x10
-	bl sub_802E164
-	ldr r0, _0805A590 @ =gPressedKeys
-	ldrh r1, [r0]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0805A558
-	strb r6, [r4]
-	ldr r1, [r5]
-	ldr r0, _0805A594 @ =sub_805A598
-	str r0, [r1, #8]
-_0805A558:
-	ldrb r0, [r4]
-	subs r0, #1
-	strb r0, [r4]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0805A56C
-	strb r6, [r4]
-	ldr r1, [r5]
-	ldr r0, _0805A594 @ =sub_805A598
-	str r0, [r1, #8]
-_0805A56C:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805A574: .4byte gCurTask
-_0805A578: .4byte gUnknown_03002A80
-_0805A57C: .4byte gUnknown_03002878
-_0805A580: .4byte 0x04000042
-_0805A584: .4byte gWinRegs
-_0805A588: .4byte gFlags
-_0805A58C: .4byte IWRAM_START + 0x14C
-_0805A590: .4byte gPressedKeys
-_0805A594: .4byte sub_805A598
-
-	thumb_func_start sub_805A598
-sub_805A598: @ 0x0805A598
-	push {r4, r5, r6, lr}
-	ldr r2, _0805A620 @ =gCurTask
-	ldr r0, [r2]
-	ldrh r5, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r6, r5, r0
-	ldr r0, _0805A624 @ =IWRAM_START + 0x14C
-	adds r4, r5, r0
-	ldrb r0, [r4]
-	adds r0, #1
-	strb r0, [r4]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #0x20
-	bne _0805A5C6
-	ldr r0, _0805A628 @ =IWRAM_START + 0x14E
-	adds r1, r5, r0
-	movs r0, #1
-	strb r0, [r1]
-	ldr r1, [r2]
-	ldr r0, _0805A62C @ =sub_805A6C0
-	str r0, [r1, #8]
-_0805A5C6:
-	ldr r0, _0805A630 @ =gPressedKeys
-	ldrh r1, [r0]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0805A5D6
-	movs r0, #0x1f
-	strb r0, [r4]
-_0805A5D6:
-	ldr r1, _0805A634 @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0805A638 @ =gUnknown_03002878
-	ldr r0, _0805A63C @ =0x04000042
-	str r0, [r1]
-	ldr r1, _0805A640 @ =gWinRegs
-	movs r0, #0x98
-	lsls r0, r0, #5
-	strh r0, [r1, #8]
-	movs r0, #0x11
-	strh r0, [r1, #0xa]
-	ldr r2, _0805A644 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r2]
-	movs r0, #0xf0
-	bl sub_802EFDC
-	movs r0, #0xc8
-	lsls r0, r0, #7
-	movs r1, #0xa0
-	lsls r1, r1, #1
-	bl sub_802E164
-	ldr r1, _0805A648 @ =IWRAM_START + 0x80
-	adds r2, r5, r1
-	ldrb r0, [r4]
-	cmp r0, #9
-	bhi _0805A64C
-	adds r1, r0, #0
-	lsls r0, r1, #1
-	adds r0, r0, r1
-	lsls r0, r0, #2
-	subs r0, #0x14
-	b _0805A64E
-	.align 2, 0
-_0805A620: .4byte gCurTask
-_0805A624: .4byte IWRAM_START + 0x14C
-_0805A628: .4byte IWRAM_START + 0x14E
-_0805A62C: .4byte sub_805A6C0
-_0805A630: .4byte gPressedKeys
-_0805A634: .4byte gUnknown_03002A80
-_0805A638: .4byte gUnknown_03002878
-_0805A63C: .4byte 0x04000042
-_0805A640: .4byte gWinRegs
-_0805A644: .4byte gFlags
-_0805A648: .4byte IWRAM_START + 0x80
-_0805A64C:
-	movs r0, #0x64
-_0805A64E:
-	strh r0, [r2, #0x16]
-	movs r0, #0xa
-	strh r0, [r2, #0x18]
-	adds r2, r6, #0
-	adds r2, #0xb0
-	movs r0, #0xa6
-	lsls r0, r0, #1
-	adds r1, r6, r0
-	ldrb r0, [r1]
-	cmp r0, #9
-	bhi _0805A66C
-	ldr r0, _0805A668 @ =0x0000FFB0
-	b _0805A67A
-	.align 2, 0
-_0805A668: .4byte 0x0000FFB0
-_0805A66C:
-	cmp r0, #0x13
-	bhi _0805A678
-	ldrb r0, [r1]
-	lsls r0, r0, #4
-	subs r0, #0xf0
-	b _0805A67A
-_0805A678:
-	movs r0, #0x50
-_0805A67A:
-	strh r0, [r2, #0x16]
-	movs r0, #0x3c
-	strh r0, [r2, #0x18]
-	adds r2, r6, #0
-	adds r2, #0xe0
-	movs r0, #0xa6
-	lsls r0, r0, #1
-	adds r1, r6, r0
-	ldrb r0, [r1]
-	cmp r0, #0x13
-	bhi _0805A698
-	ldr r0, _0805A694 @ =0x0000FFA6
-	b _0805A6AE
-	.align 2, 0
-_0805A694: .4byte 0x0000FFA6
-_0805A698:
-	cmp r0, #0x1d
-	bhi _0805A6AC
-	ldrb r0, [r1]
-	lsls r0, r0, #4
-	ldr r1, _0805A6A8 @ =0xFFFFFE66
-	adds r0, r0, r1
-	b _0805A6AE
-	.align 2, 0
-_0805A6A8: .4byte 0xFFFFFE66
-_0805A6AC:
-	movs r0, #0x46
-_0805A6AE:
-	strh r0, [r2, #0x16]
-	movs r0, #0x55
-	strh r0, [r2, #0x18]
-	adds r0, r6, #0
-	bl sub_805AA50
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_805A6C0
-sub_805A6C0: @ 0x0805A6C0
-	push {r4, r5, r6, lr}
-	ldr r6, _0805A70C @ =gCurTask
-	ldr r0, [r6]
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r2, r0
-	ldr r0, _0805A710 @ =gPressedKeys
-	ldrh r3, [r0]
-	movs r5, #1
-	adds r1, r5, #0
-	ands r1, r3
-	cmp r1, #0
-	beq _0805A720
-	ldr r0, _0805A714 @ =IWRAM_START + 0x140
-	adds r2, r2, r0
-	movs r1, #0
-	strh r5, [r2]
-	strh r1, [r2, #4]
-	strh r5, [r2, #2]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r2, #6]
-	ldr r0, _0805A718 @ =0x00003FFF
-	strh r0, [r2, #8]
-	strh r1, [r2, #0xa]
-	movs r0, #0x6a
-	bl m4aSongNumStart
-	bl MultiSioStop
-	movs r0, #0
-	bl MultiSioInit
-	ldr r1, [r6]
-	ldr r0, _0805A71C @ =sub_805A878
-	b _0805A748
-	.align 2, 0
-_0805A70C: .4byte gCurTask
-_0805A710: .4byte gPressedKeys
-_0805A714: .4byte IWRAM_START + 0x140
-_0805A718: .4byte 0x00003FFF
-_0805A71C: .4byte sub_805A878
-_0805A720:
-	movs r0, #2
-	ands r0, r3
-	cmp r0, #0
-	beq _0805A74A
-	ldr r0, _0805A7E8 @ =IWRAM_START + 0x140
-	adds r2, r2, r0
-	strh r5, [r2]
-	strh r1, [r2, #4]
-	strh r5, [r2, #2]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r2, #6]
-	ldr r0, _0805A7EC @ =0x00003FFF
-	strh r0, [r2, #8]
-	strh r1, [r2, #0xa]
-	movs r0, #0x6b
-	bl m4aSongNumStart
-	ldr r1, [r6]
-	ldr r0, _0805A7F0 @ =sub_805A918
-_0805A748:
-	str r0, [r1, #8]
-_0805A74A:
-	ldr r1, _0805A7F4 @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0805A7F8 @ =gUnknown_03002878
-	ldr r0, _0805A7FC @ =0x04000042
-	str r0, [r1]
-	ldr r1, _0805A800 @ =gWinRegs
-	movs r5, #0
-	movs r0, #0x98
-	lsls r0, r0, #5
-	strh r0, [r1, #8]
-	movs r0, #0x11
-	strh r0, [r1, #0xa]
-	ldr r2, _0805A804 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r2]
-	movs r0, #0xf0
-	bl sub_802EFDC
-	movs r0, #0xc8
-	lsls r0, r0, #7
-	movs r1, #0xa0
-	lsls r1, r1, #1
-	bl sub_802E164
-	ldr r0, _0805A808 @ =gPressedKeys
-	ldrh r1, [r0]
-	movs r0, #0xc0
-	ands r0, r1
-	cmp r0, #0
-	beq _0805A79E
-	movs r0, #0x6c
-	bl m4aSongNumStart
-	ldr r1, _0805A80C @ =0x0000014D
-	adds r2, r4, r1
-	ldrb r0, [r2]
-	movs r1, #1
-	eors r0, r1
-	strb r0, [r2]
-_0805A79E:
-	ldr r2, _0805A80C @ =0x0000014D
-	adds r0, r4, r2
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0805A820
-	ldr r0, _0805A810 @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r0, [r0, #6]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x18
-	adds r2, r4, #0
-	adds r2, #0xd5
-	movs r1, #1
-	strb r1, [r2]
-	ldr r1, _0805A814 @ =0x00000105
-	adds r2, r4, r1
-	movs r1, #0xff
-	strb r1, [r2]
-	adds r1, #0x11
-	adds r2, r4, r1
-	ldr r1, _0805A818 @ =gUnknown_080D8F70
-	adds r0, #3
-	lsls r0, r0, #3
-	adds r0, r0, r1
-	ldrh r1, [r0, #4]
-	strh r1, [r2, #0xa]
-	ldrb r1, [r0, #6]
-	movs r2, #0x98
-	lsls r2, r2, #1
-	adds r0, r4, r2
-	strb r1, [r0]
-	ldr r0, _0805A81C @ =0x00000131
-	adds r1, r4, r0
-	movs r0, #1
-	rsbs r0, r0, #0
-	b _0805A858
-	.align 2, 0
-_0805A7E8: .4byte IWRAM_START + 0x140
-_0805A7EC: .4byte 0x00003FFF
-_0805A7F0: .4byte sub_805A918
-_0805A7F4: .4byte gUnknown_03002A80
-_0805A7F8: .4byte gUnknown_03002878
-_0805A7FC: .4byte 0x04000042
-_0805A800: .4byte gWinRegs
-_0805A804: .4byte gFlags
-_0805A808: .4byte gPressedKeys
-_0805A80C: .4byte 0x0000014D
-_0805A810: .4byte gLoadedSaveGame
-_0805A814: .4byte 0x00000105
-_0805A818: .4byte gUnknown_080D8F70
-_0805A81C: .4byte 0x00000131
-_0805A820:
-	ldr r0, _0805A868 @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r0, [r0, #6]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x18
-	adds r1, r4, #0
-	adds r1, #0xd5
-	strb r5, [r1]
-	ldr r2, _0805A86C @ =0x00000105
-	adds r1, r4, r2
-	strb r5, [r1]
-	movs r1, #0x88
-	lsls r1, r1, #1
-	adds r2, r4, r1
-	ldr r1, _0805A870 @ =gUnknown_080D8F70
-	adds r0, #2
-	lsls r0, r0, #3
-	adds r0, r0, r1
-	ldrh r1, [r0, #4]
-	strh r1, [r2, #0xa]
-	ldrb r1, [r0, #6]
-	movs r2, #0x98
-	lsls r2, r2, #1
-	adds r0, r4, r2
-	strb r1, [r0]
-	ldr r0, _0805A874 @ =0x00000131
-	adds r1, r4, r0
-	movs r0, #0xff
-_0805A858:
-	strb r0, [r1]
-	adds r0, r4, #0
-	bl sub_805AA50
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805A868: .4byte gLoadedSaveGame
-_0805A86C: .4byte 0x00000105
-_0805A870: .4byte gUnknown_080D8F70
-_0805A874: .4byte 0x00000131
-
-	thumb_func_start sub_805A878
-sub_805A878: @ 0x0805A878
-	push {r4, r5, lr}
-	ldr r4, _0805A8B0 @ =gCurTask
-	ldr r0, [r4]
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r5, r0, r1
-	ldr r1, _0805A8B4 @ =IWRAM_START + 0x140
-	adds r0, r0, r1
-	bl sub_802D4CC
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #1
-	bne _0805A8C4
-	ldr r2, _0805A8B8 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #5
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r2]
-	ldr r0, _0805A8BC @ =gUnknown_03001954
-	strb r3, [r0]
-	ldr r1, [r4]
-	ldr r0, _0805A8C0 @ =sub_805A9EC
-	str r0, [r1, #8]
-	b _0805A8FE
-	.align 2, 0
-_0805A8B0: .4byte gCurTask
-_0805A8B4: .4byte IWRAM_START + 0x140
-_0805A8B8: .4byte gFlags
-_0805A8BC: .4byte gUnknown_03001954
-_0805A8C0: .4byte sub_805A9EC
-_0805A8C4:
-	ldr r1, _0805A904 @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0805A908 @ =gUnknown_03002878
-	ldr r0, _0805A90C @ =0x04000042
-	str r0, [r1]
-	ldr r1, _0805A910 @ =gWinRegs
-	movs r0, #0xcc
-	lsls r0, r0, #6
-	strh r0, [r1, #8]
-	movs r0, #0x31
-	strh r0, [r1, #0xa]
-	ldr r2, _0805A914 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r2]
-	movs r0, #0xf0
-	bl sub_802EFDC
-	movs r0, #0xc8
-	lsls r0, r0, #7
-	movs r1, #0xa0
-	lsls r1, r1, #1
-	bl sub_802E164
-	adds r0, r5, #0
-	bl sub_805AA50
-_0805A8FE:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805A904: .4byte gUnknown_03002A80
-_0805A908: .4byte gUnknown_03002878
-_0805A90C: .4byte 0x04000042
-_0805A910: .4byte gWinRegs
-_0805A914: .4byte gFlags
-
-	thumb_func_start sub_805A918
-sub_805A918: @ 0x0805A918
-	push {r4, r5, lr}
-	ldr r4, _0805A950 @ =gCurTask
-	ldr r0, [r4]
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r5, r0, r1
-	ldr r1, _0805A954 @ =IWRAM_START + 0x140
-	adds r0, r0, r1
-	bl sub_802D4CC
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #1
-	bne _0805A95C
-	ldr r2, _0805A958 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #5
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r2]
-	bl CreateTitleScreenAtPlayModeMenu
-	ldr r0, [r4]
-	bl TaskDestroy
-	b _0805A996
-	.align 2, 0
-_0805A950: .4byte gCurTask
-_0805A954: .4byte IWRAM_START + 0x140
-_0805A958: .4byte gFlags
-_0805A95C:
-	ldr r1, _0805A99C @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0805A9A0 @ =gUnknown_03002878
-	ldr r0, _0805A9A4 @ =0x04000042
-	str r0, [r1]
-	ldr r1, _0805A9A8 @ =gWinRegs
-	movs r0, #0xcc
-	lsls r0, r0, #6
-	strh r0, [r1, #8]
-	movs r0, #0x31
-	strh r0, [r1, #0xa]
-	ldr r2, _0805A9AC @ =gFlags
-	ldr r0, [r2]
-	movs r1, #4
-	orrs r0, r1
-	str r0, [r2]
-	movs r0, #0xf0
-	bl sub_802EFDC
-	movs r0, #0xc8
-	lsls r0, r0, #7
-	movs r1, #0xa0
-	lsls r1, r1, #1
-	bl sub_802E164
-	adds r0, r5, #0
-	bl sub_805AA50
-_0805A996:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805A99C: .4byte gUnknown_03002A80
-_0805A9A0: .4byte gUnknown_03002878
-_0805A9A4: .4byte 0x04000042
-_0805A9A8: .4byte gWinRegs
-_0805A9AC: .4byte gFlags
-
-	thumb_func_start sub_805A9B0
-sub_805A9B0: @ 0x0805A9B0
-	push {r4, r5, lr}
-	ldr r5, _0805A9DC @ =gCurTask
-	ldr r0, [r5]
-	ldrh r4, [r0, #6]
-	ldr r1, _0805A9E0 @ =IWRAM_START + 0x140
-	adds r0, r4, r1
-	bl sub_802D4CC
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #1
-	bne _0805A9D6
-	ldr r0, _0805A9E4 @ =IWRAM_START + 0x14C
-	adds r1, r4, r0
-	movs r0, #0xf
-	strb r0, [r1]
-	ldr r1, [r5]
-	ldr r0, _0805A9E8 @ =sub_805A4F8
-	str r0, [r1, #8]
-_0805A9D6:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805A9DC: .4byte gCurTask
-_0805A9E0: .4byte IWRAM_START + 0x140
-_0805A9E4: .4byte IWRAM_START + 0x14C
-_0805A9E8: .4byte sub_805A4F8
-
-	thumb_func_start sub_805A9EC
-sub_805A9EC: @ 0x0805A9EC
-	push {r4, lr}
-	ldr r0, _0805AA24 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r0, [r0, #6]
-	ldr r1, _0805AA28 @ =IWRAM_START + 0x14D
-	adds r0, r0, r1
-	ldrb r4, [r0]
-	ldr r1, _0805AA2C @ =0x0000FFFF
-	movs r0, #0
-	bl TasksDestroyInPriorityRange
-	ldr r1, _0805AA30 @ =gUnknown_03002AE4
-	ldr r0, _0805AA34 @ =gUnknown_0300287C
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r1, _0805AA38 @ =gUnknown_03005390
-	movs r0, #0
-	strb r0, [r1]
-	ldr r1, _0805AA3C @ =gUnknown_03004D5C
-	ldr r0, _0805AA40 @ =gUnknown_03002A84
-	ldrb r0, [r0]
-	strb r0, [r1]
-	cmp r4, #0
-	bne _0805AA44
-	bl sub_805AAD8
-	b _0805AA48
-	.align 2, 0
-_0805AA24: .4byte gCurTask
-_0805AA28: .4byte IWRAM_START + 0x14D
-_0805AA2C: .4byte 0x0000FFFF
-_0805AA30: .4byte gUnknown_03002AE4
-_0805AA34: .4byte gUnknown_0300287C
-_0805AA38: .4byte gUnknown_03005390
-_0805AA3C: .4byte gUnknown_03004D5C
-_0805AA40: .4byte gUnknown_03002A84
-_0805AA44:
-	bl sub_808129C
-_0805AA48:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_805AA50
-sub_805AA50: @ 0x0805AA50
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	adds r4, r5, #0
-	adds r4, #0x80
-	adds r0, r4, #0
-	bl sub_80051E8
-	adds r4, #0x30
-	adds r0, r4, #0
-	bl sub_80051E8
-	adds r4, #0x30
-	adds r0, r4, #0
-	bl sub_80051E8
-	movs r1, #0xa7
-	lsls r1, r1, #1
-	adds r0, r5, r1
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0805AA8C
-	movs r0, #0x88
-	lsls r0, r0, #1
-	adds r4, r5, r0
-	adds r0, r4, #0
-	bl sub_8004558
-	adds r0, r4, #0
-	bl sub_80051E8
-_0805AA8C:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_805AA94
-sub_805AA94: @ 0x0805AA94
-	push {r4, lr}
-	ldrh r4, [r0, #6]
-	ldr r1, _0805AAC8 @ =IWRAM_START + 0x84
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl sub_8007CF0
-	ldr r1, _0805AACC @ =IWRAM_START + 0xB4
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl sub_8007CF0
-	ldr r1, _0805AAD0 @ =IWRAM_START + 0xE4
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl sub_8007CF0
-	ldr r0, _0805AAD4 @ =IWRAM_START + 0x114
-	adds r4, r4, r0
-	ldr r0, [r4]
-	bl sub_8007CF0
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805AAC8: .4byte IWRAM_START + 0x84
-_0805AACC: .4byte IWRAM_START + 0xB4
-_0805AAD0: .4byte IWRAM_START + 0xE4
-_0805AAD4: .4byte IWRAM_START + 0x114
-
 	thumb_func_start sub_805AAD8
 sub_805AAD8: @ 0x0805AAD8
 	push {r4, r5, r6, r7, lr}
@@ -1620,7 +925,7 @@ _0805B25C: .4byte gMultiSioSend
 _0805B260: .4byte gCurTask
 _0805B264: .4byte sub_805B454
 _0805B268:
-	ldr r0, _0805B29C @ =gUnknown_03001954
+	ldr r0, _0805B29C @ =gMultiSioEnabled
 	strb r4, [r0]
 	bl MultiSioStop
 	movs r0, #0
@@ -1643,7 +948,7 @@ _0805B268:
 	bl TaskDestroy
 	b _0805B42A
 	.align 2, 0
-_0805B29C: .4byte gUnknown_03001954
+_0805B29C: .4byte gMultiSioEnabled
 _0805B2A0: .4byte gMultiSioSend
 _0805B2A4: .4byte gUnknown_03004D80
 _0805B2A8: .4byte gUnknown_03002280
@@ -1869,7 +1174,7 @@ sub_805B454: @ 0x0805B454
 	lsrs r0, r0, #0x10
 	cmp r0, #4
 	bls _0805B4A0
-	ldr r0, _0805B4B4 @ =gUnknown_03001954
+	ldr r0, _0805B4B4 @ =gMultiSioEnabled
 	strb r4, [r0]
 	bl MultiSioStop
 	movs r0, #0
@@ -1894,7 +1199,7 @@ _0805B4A0:
 _0805B4A8: .4byte gCurTask
 _0805B4AC: .4byte gMultiSioSend
 _0805B4B0: .4byte IWRAM_START + 0xE8
-_0805B4B4: .4byte gUnknown_03001954
+_0805B4B4: .4byte gMultiSioEnabled
 _0805B4B8: .4byte gUnknown_03004D80
 _0805B4BC: .4byte gUnknown_03002280
 
@@ -1996,7 +1301,7 @@ _0805B576:
 	ands r5, r0
 	cmp r5, #0
 	bne _0805B5F0
-	ldr r0, _0805B5D0 @ =gUnknown_03001954
+	ldr r0, _0805B5D0 @ =gMultiSioEnabled
 	strb r5, [r0]
 	bl MultiSioStop
 	movs r0, #0
@@ -2027,7 +1332,7 @@ _0805B576:
 _0805B5C4: .4byte gMultiSioRecv
 _0805B5C8: .4byte 0x00004012
 _0805B5CC: .4byte 0x04000128
-_0805B5D0: .4byte gUnknown_03001954
+_0805B5D0: .4byte gMultiSioEnabled
 _0805B5D4: .4byte gMultiSioSend
 _0805B5D8: .4byte gUnknown_03004D80
 _0805B5DC: .4byte gUnknown_03002280
@@ -2184,7 +1489,7 @@ _0805B71C:
 	ldr r0, _0805B768 @ =0x00004010
 	cmp r1, r0
 	bne _0805B78C
-	ldr r1, _0805B76C @ =gUnknown_03001954
+	ldr r1, _0805B76C @ =gMultiSioEnabled
 	movs r0, #0
 	strb r0, [r1]
 	bl MultiSioStop
@@ -2217,7 +1522,7 @@ _0805B71C:
 	b _0805B7C0
 	.align 2, 0
 _0805B768: .4byte 0x00004010
-_0805B76C: .4byte gUnknown_03001954
+_0805B76C: .4byte gMultiSioEnabled
 _0805B770: .4byte gMultiSioSend
 _0805B774: .4byte gUnknown_03004D80
 _0805B778: .4byte gUnknown_03002280
@@ -2501,7 +1806,7 @@ sub_805B9A4: @ 0x0805B9A4
 	ldr r1, _0805B9F4 @ =gDispCnt
 	movs r0, #0x40
 	strh r0, [r1]
-	ldr r1, _0805B9F8 @ =gUnknown_03001954
+	ldr r1, _0805B9F8 @ =gMultiSioEnabled
 	movs r0, #0
 	strb r0, [r1]
 	bl MultiSioStop
@@ -2526,7 +1831,7 @@ sub_805B9A4: @ 0x0805B9A4
 	.align 2, 0
 _0805B9F0: .4byte gFlags
 _0805B9F4: .4byte gDispCnt
-_0805B9F8: .4byte gUnknown_03001954
+_0805B9F8: .4byte gMultiSioEnabled
 _0805B9FC: .4byte gUnknown_03002260
 _0805BA00: .4byte gMapHeaders
 _0805BA04: .4byte gUnknown_03002794
@@ -2963,7 +2268,7 @@ _0805BDB4: .4byte gUnknown_03002A84
 _0805BDB8: .4byte gSelectedCharacter
 _0805BDBC: .4byte gUnknown_03005594
 _0805BDC0:
-	ldr r0, _0805BDE0 @ =gUnknown_03001954
+	ldr r0, _0805BDE0 @ =gMultiSioEnabled
 	strb r6, [r0]
 	bl MultiSioStop
 	movs r0, #0
@@ -2977,7 +2282,7 @@ _0805BDD8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0805BDE0: .4byte gUnknown_03001954
+_0805BDE0: .4byte gMultiSioEnabled
 _0805BDE4: .4byte gUnknown_03002260
 _0805BDE8: .4byte gMapHeaders
 

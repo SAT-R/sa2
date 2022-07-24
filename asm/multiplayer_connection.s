@@ -303,7 +303,7 @@ _08081300:
 	ands r0, r1
 	cmp r0, #0
 	bne _080815B8
-	ldr r0, _080815AC @ =gUnknown_03001954
+	ldr r0, _080815AC @ =gMultiSioEnabled
 	movs r1, #0
 	strb r1, [r0]
 	ldr r0, _080815B0 @ =gUnknown_03002A90
@@ -357,7 +357,7 @@ _0808159C: .4byte IWRAM_START + 0x8D
 _080815A0: .4byte IWRAM_START + 0x9C
 _080815A4: .4byte 0x0600A000
 _080815A8: .4byte 0x04000128
-_080815AC: .4byte gUnknown_03001954
+_080815AC: .4byte gMultiSioEnabled
 _080815B0: .4byte gUnknown_03002A90
 _080815B4: .4byte gCurTask
 _080815B8:
@@ -1452,7 +1452,7 @@ sub_8081EC0: @ 0x08081EC0
 	strh r0, [r1, #6]
 	ldr r1, _08081F6C @ =gUnknown_03005424
 	strh r0, [r1]
-	ldr r1, _08081F70 @ =gUnknown_03001954
+	ldr r1, _08081F70 @ =gMultiSioEnabled
 	movs r0, #1
 	strb r0, [r1]
 	ldr r2, _08081F74 @ =gFlags
@@ -1507,7 +1507,7 @@ _08081F60: .4byte gUnknown_08C92208
 _08081F64: .4byte gUnknown_030054D4
 _08081F68: .4byte gWinRegs
 _08081F6C: .4byte gUnknown_03005424
-_08081F70: .4byte gUnknown_03001954
+_08081F70: .4byte gMultiSioEnabled
 _08081F74: .4byte gFlags
 _08081F78: .4byte 0xFFFFBFFF
 _08081F7C: .4byte gGameMode

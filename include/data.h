@@ -221,6 +221,7 @@ extern union MultiSioData gMultiSioSend; // gMultiSioSend
 extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
 
 extern u32 gMultiSioStatusFlags;
+extern bool8 gMultiSioEnabled;
 
 // Some sort of fade transition function?
 extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);

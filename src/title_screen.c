@@ -21,7 +21,7 @@
 #include "recordings.h"
 #include "trig.h"
 #include "backgrounds.h"
-#include "multiplayer.h"
+#include "multiplayer_mode_select.h"
 #include "character_select.h"
 #include "malloc_vram.h"
 

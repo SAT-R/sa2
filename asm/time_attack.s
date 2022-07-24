@@ -1333,7 +1333,7 @@ _08087738:
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _080877E4
-	ldr r0, _080877D0 @ =gUnknown_03001954
+	ldr r0, _080877D0 @ =gMultiSioEnabled
 	strb r4, [r0]
 	bl MultiSioStop
 	movs r0, #0
@@ -1374,7 +1374,7 @@ _080877C0: .4byte gMultiSioSend
 _080877C4: .4byte 0x0000010D
 _080877C8: .4byte 0x000040A0
 _080877CC: .4byte gCurTask
-_080877D0: .4byte gUnknown_03001954
+_080877D0: .4byte gMultiSioEnabled
 _080877D4: .4byte gUnknown_030055A0
 _080877D8: .4byte gUnknown_03005500
 _080877DC: .4byte gUnknown_030054B4
@@ -3211,7 +3211,7 @@ sub_80886C8: @ 0x080886C8
 	rsbs r1, r1, #0
 	ands r0, r1
 	str r0, [r2]
-	ldr r0, _0808870C @ =gUnknown_03001954
+	ldr r0, _0808870C @ =gMultiSioEnabled
 	strb r3, [r0]
 	ldr r1, [r4]
 	ldr r0, _08088710 @ =sub_808883C
@@ -3221,7 +3221,7 @@ sub_80886C8: @ 0x080886C8
 _08088700: .4byte gCurTask
 _08088704: .4byte IWRAM_START + 0x140
 _08088708: .4byte gFlags
-_0808870C: .4byte gUnknown_03001954
+_0808870C: .4byte gMultiSioEnabled
 _08088710: .4byte sub_808883C
 _08088714:
 	ldr r1, _08088754 @ =gUnknown_03002A80

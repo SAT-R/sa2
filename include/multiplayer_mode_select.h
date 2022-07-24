@@ -3,7 +3,6 @@
 
 #include "global.h"
 
-// CreateMultiplayerScreen
 void sub_805A1CC(void);
 
 #endif // GUARD_MULTIPLAYER_H

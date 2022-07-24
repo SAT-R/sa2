@@ -35,9 +35,6 @@ extern u32 gUnknown_030053B8;
 extern u16 gUnknown_03001888;
 extern u32 gUnknown_03001940;
 
-// likely `gMultiSioEnabled`
-extern u8 gUnknown_03001954;
-
 extern u32 gUnknown_0203B000;
 
 extern u8 gUnknown_03001948;

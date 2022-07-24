@@ -224,7 +224,7 @@ static void GameInit(void) {
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
     gMultiSioStatusFlags = 0;
-    gUnknown_03001954 = 0;
+    gMultiSioEnabled = FALSE;
 
     MultiSioInit(0);
 }
@@ -238,7 +238,7 @@ static void GameLoop(void) {
 
         if (gUnknown_030026F4 == 0xff) {
             GetInput();
-            if (gUnknown_03001954 != 0) {
+            if (gMultiSioEnabled) {
                 gMultiSioStatusFlags =
                     MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }

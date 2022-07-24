@@ -115,7 +115,7 @@
 . = 0x00001948; gUnknown_03001948 = .;
 . = 0x0000194C; gUnknown_0300194C = .;
 . = 0x00001950; gMultiSioStatusFlags = .;
-. = 0x00001954; gUnknown_03001954 = .;
+. = 0x00001954; gMultiSioEnabled = .;
 . = 0x00001960; gTaskPtrs = .;
 . = 0x00001B60; gUnknown_03001B60 = .;
 . = 0x00002060; gObjPalette = .;
