@@ -92,5 +92,6 @@ void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
 void sub_806A568(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused);
+void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i);
 
 #endif // GUARD_OPTION_SCREEN_H

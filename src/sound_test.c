@@ -8,7 +8,6 @@
 #include "constants/songs.h"
 #include "flags.h"
 #include "trig.h"
-#include "ui.h"
 #include "backgrounds.h"
 
 #define MAX_SOUND_NAME_LENGTH 16
