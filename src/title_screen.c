@@ -131,7 +131,7 @@ static void Task_SinglePlayerMenuMain(void);
 
 static void Task_StartTitleScreenDemo(void);
 static void Task_HandleTitleScreenExit(void);
-static void Task_LoadTinyChaoGarden(void);
+static void LoadTinyChaoGarden(void);
 
 static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240*, u8);
 
@@ -1288,7 +1288,7 @@ static void Task_HandleTitleScreenExit(void) {
                 CreateOptionsScreen(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
-                Task_LoadTinyChaoGarden();
+                LoadTinyChaoGarden();
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;
@@ -1740,7 +1740,7 @@ static void Task_LensFlareAnim(void) {
     };
 }
 
-static void Task_LoadTinyChaoGarden(void) {
+static void LoadTinyChaoGarden(void) {
     u32 chaoGardenLang;
     u32 unk374 = gLoadedSaveGame->unk374;
 
@@ -1777,7 +1777,7 @@ static void Task_LoadTinyChaoGarden(void) {
 
     *(u32*)(EWRAM_START + 0xC) = chaoGardenLang;
     // sessionId?
-    *(u32*)(EWRAM_START + 0x10) = (Random() + gFrameCount) * 0x100 + Random();
+    *(u32*)(EWRAM_START + 0x10) = ((Random() + gFrameCount) << 8) + Random();
     SoftResetExram(0);
 }
 
