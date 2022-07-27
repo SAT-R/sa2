@@ -602,7 +602,7 @@ _0805B268:
 	strb r0, [r1, #2]
 	movs r0, #0x20
 	strb r0, [r1, #3]
-	bl sub_805A1CC
+	bl CreateMultiplayerModeSelectScreen
 	ldr r0, _0805B2AC @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
@@ -848,7 +848,7 @@ sub_805B454: @ 0x0805B454
 	strb r0, [r1, #2]
 	movs r0, #0x20
 	strb r0, [r1, #3]
-	bl sub_805A1CC
+	bl CreateMultiplayerModeSelectScreen
 	ldr r0, [r5]
 	bl TaskDestroy
 _0805B4A0:

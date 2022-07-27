@@ -4288,8 +4288,7 @@ static void ProfileNameScreenFadeOutAndExit(void) {
     gUnknown_03004D5C = gUnknown_03002A84;
 
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
-        // Continue to multiplayer
-        sub_805A1CC();
+        CreateMultiplayerModeSelectScreen();
     } else {
         CreateTitleScreen();
     }

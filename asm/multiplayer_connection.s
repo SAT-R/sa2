@@ -588,7 +588,7 @@ _0808178C:
 	ldr r0, _080817D0 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	bl sub_805A1CC
+	bl CreateMultiplayerModeSelectScreen
 	b _08081896
 	.align 2, 0
 _080817BC: .4byte IWRAM_START + 0xF0

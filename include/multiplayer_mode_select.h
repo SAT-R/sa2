@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void sub_805A1CC(void);
+void CreateMultiplayerModeSelectScreen(void);
 
 #endif // GUARD_MULTIPLAYER_MODE_SELECT_H

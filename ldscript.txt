@@ -91,6 +91,8 @@ SECTIONS
         build/sa2/data/time_data.o(.rodata);
         build/sa2/src/time.o(.rodata);
         build/sa2/data/data1_1_2.o(.rodata);
+        build/sa2/src/multiplayer_mode_select.o(.rodata);
+        build/sa2/data/data1_1_3.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
         build/sa2/data/math_data.o(.rodata);

@@ -1294,7 +1294,7 @@ static void Task_HandleTitleScreenExit(void) {
                 gGameMode = GAME_MODE_MULTI_PLAYER;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk20[0] != PLAYER_NAME_END_CHAR) {
-                    sub_805A1CC();
+                    CreateMultiplayerModeSelectScreen();
                 } else {
                     // If we don't have a profile name
                     // show the profile creator screen
