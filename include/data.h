@@ -157,7 +157,7 @@ struct UNK_802D4CC_UNK270 {
 };
 
 
-struct MultiSioData_0_0 {
+struct MultiSioData_0_0_old {
     u8 unk0;
     u8 unk1;
     u16 hword[6];
@@ -165,7 +165,7 @@ struct MultiSioData_0_0 {
     u32 unk10;
 };
 
-struct MultiSioData_0_1 {
+struct MultiSioData_0_1_old {
     u8 unk0;
     u8 unk1;
     u8 unk2;
@@ -193,7 +193,7 @@ union Unk_020382A0_8
     struct Unk_020382A0_8_1 pat1;
 };
 
-struct MultiSioData_0_2 {
+struct MultiSioData_0_2_old {
     u8 unk0;
     u8 unk1;
     u16 unk2;
@@ -203,10 +203,19 @@ struct MultiSioData_0_2 {
     u32 unk10;
 };
 
+struct MultiSioData_0_0 {
+    u16 unk0;
+    u8 unk2;
+    u8 unk3;
+    u32 unk4;
+    u16 unk8[3];
+    u8 unkE;
+    u8 unkF;
+    u32 unk10;
+};
+
 union MultiSioData {
     struct MultiSioData_0_0 pat0;
-    struct MultiSioData_0_1 pat1;
-    struct MultiSioData_0_2 pat2;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
 struct UNK_080E0D64 {
