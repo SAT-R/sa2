@@ -191,8 +191,7 @@ void sub_805B454(void);
 
 #define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
 
-// https://decomp.me/scratch/EfwxS
-NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
+void sub_805ADAC(void) {
     s32 i;
     s32 x;
     s32 var1 = 0;
@@ -296,6 +295,8 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
         var2 = 1;
     }
 
+   
+    
     if (connectScreen->unkFA == 0) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
             TasksDestroyAll();
@@ -316,7 +317,6 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
             if ((gUnknown_030055B8 >> i) & 1) {
                 if (i == 0) {
                     gUnknown_03005410[0] = recv->unk4;
-                    // Reg swap on this, should be r4, but is r6
                     gUnknown_03005460[0][0] = recv->unk8[0];
                     gUnknown_03005460[0][1] = recv->unk8[1];
                     gUnknown_03005460[0][2] = recv->unk8[2];
@@ -327,7 +327,7 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
                     continue;
                 }
                 data = &gMultiSioRecv[i].pat0;
-#ifndef NONMATCHING
+#ifndef NON_MATCHING
                 asm("":::"r2");
 #endif
                 if (data->unk0 != 0x4010) {
@@ -337,7 +337,13 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
                 gUnknown_03005410[i] = data->unk4;
                 gUnknown_03005460[i][0] = data->unk8[0];
                 gUnknown_03005460[i][1] = data->unk8[1];
+#ifndef NON_MATCHING            
+                do {
+#endif
                 gUnknown_03005460[i][2] = data->unk8[2];
+#ifndef NON_MATCHING
+                } while(0);
+#endif
                 gUnknown_03005594 |= data->unkE;
                 if (gUnknown_030054D8 < data->unkF) {
                     gUnknown_030054D8 = data->unkF;
@@ -421,7 +427,13 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
             send->unkE = gUnknown_03005594;
             send->unkF = gUnknown_030054D8;
             connectScreen->unkF6 = 1;
+#ifndef NON_MATCHING            
+            do {
+#endif
             connectScreen->unkFC = 0;
+#ifndef NON_MATCHING            
+            } while(0);
+#endif
             return;
         }
     }
@@ -441,7 +453,6 @@ NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
     send->unkE = gUnknown_03005594;
     send->unkF = gUnknown_030054D8;
 }
-END_NONMATCH
 
 void sub_805B454(void) {
     struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
