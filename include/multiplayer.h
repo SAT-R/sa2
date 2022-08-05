@@ -3,6 +3,7 @@
 
 #include "global.h"
 
-void sub_805AAD8(void);
+void StartMultiPakConnect(void);
+void MultiPakCommunicationError(void);
 
 #endif // GUARD_MULTIPLAYER_MODE_SELECT_H

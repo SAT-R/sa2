@@ -1319,7 +1319,7 @@ _0803515E:
 	ldr r0, _080351C8 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08035540
 	.align 2, 0
 _0803519C: .4byte gCurTask
@@ -1826,7 +1826,7 @@ _08035582:
 	ldr r0, _080355EC @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _0803572C
 	.align 2, 0
 _080355C0: .4byte gCurTask
@@ -2064,7 +2064,7 @@ _0803577E:
 	ldr r0, _080357E8 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08035928
 	.align 2, 0
 _080357BC: .4byte gCurTask

@@ -420,7 +420,7 @@ static void Task_ExitAndInitSelectedPakMode(void) {
     gUnknown_03004D5C = gUnknown_03002A84;
 
     if (pakMode == PAK_MODE_MULTI) {
-        sub_805AAD8();
+        StartMultiPakConnect();
     } else {
         sub_808129C();
     }

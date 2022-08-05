@@ -375,7 +375,7 @@ _080815B8:
 	ldr r0, _08081600 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 _080815DA:
 	add sp, #8
 	pop {r3, r4, r5}
@@ -434,7 +434,7 @@ sub_8081604: @ 0x08081604
 	ldr r0, _0808174C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 _0808165E:
 	ldr r2, _08081750 @ =gUnknown_03002A90
 	mov r8, r2
@@ -632,7 +632,7 @@ _080817EC:
 	ands r0, r1
 	str r0, [r2]
 	bl m4aSoundVSyncOn
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08081896
 	.align 2, 0
 _08081824: .4byte gUnknown_03002A90
@@ -788,7 +788,7 @@ _08081936:
 	ands r1, r0
 	str r1, [r7]
 	bl m4aSoundVSyncOn
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08081A4C
 	.align 2, 0
 _08081978: .4byte gCurTask
@@ -1690,7 +1690,7 @@ _080820BE:
 	ldr r0, _08082124 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _080823EA
 	.align 2, 0
 _080820FC: .4byte gDispCnt
@@ -2546,7 +2546,7 @@ _080827B0:
 	ldr r0, _08082810 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08082A96
 	.align 2, 0
 _080827EC: .4byte gGameMode

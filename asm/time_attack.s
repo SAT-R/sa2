@@ -1239,7 +1239,7 @@ _0808766E:
 	ldr r0, _080876D4 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08087826
 	.align 2, 0
 _080876AC: .4byte gCurTask
@@ -1471,7 +1471,7 @@ _0808785A:
 	ldr r0, _080878C0 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08087AD0
 	.align 2, 0
 _08087898: .4byte gCurTask
@@ -1806,7 +1806,7 @@ _08087B10:
 	ldr r0, _08087B78 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08087C7A
 	.align 2, 0
 _08087B50: .4byte gCurTask
@@ -1940,7 +1940,7 @@ _08087C42:
 	ldr r0, _08087C94 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 _08087C7A:
 	add sp, #4
 	pop {r3}
@@ -2005,7 +2005,7 @@ _08087CC2:
 	ldr r0, _08087D28 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08087D90
 	.align 2, 0
 _08087D00: .4byte gCurTask
@@ -2341,7 +2341,7 @@ sub_8087F8C: @ 0x08087F8C
 	ldr r0, _08087FB4 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	movs r0, #1
 	b _08087FBA
 	.align 2, 0

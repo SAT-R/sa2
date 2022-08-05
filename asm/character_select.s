@@ -1296,7 +1296,7 @@ _08031EC6:
 	ldr r0, _08031F30 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _080324E8
 	.align 2, 0
 _08031F04: .4byte gCurTask
@@ -2058,7 +2058,7 @@ _08032528:
 	ldr r0, _0803258C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08032726
 	.align 2, 0
 _08032568: .4byte gGameMode
@@ -2332,7 +2332,7 @@ _0803276C:
 	ldr r0, _080327D0 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _0803296A
 	.align 2, 0
 _080327AC: .4byte gGameMode
@@ -2784,7 +2784,7 @@ _08032B26:
 	ldr r0, _08032B8C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08032D8E
 	.align 2, 0
 _08032B64: .4byte gCurTask
@@ -5308,7 +5308,7 @@ _08033F92:
 	ldr r0, _08033FFC @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _0803433C
 	.align 2, 0
 _08033FD0: .4byte gCurTask
@@ -5787,7 +5787,7 @@ _0803438C:
 	ldr r0, _080343F4 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_805B9A4
+	bl MultiPakCommunicationError
 	b _08034614
 	.align 2, 0
 _080343CC: .4byte gCurTask

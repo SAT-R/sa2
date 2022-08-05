@@ -9,6 +9,7 @@
 // #include "variables.h"
 #include "functions.h"
 
+#define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
 
 // helper macros
 

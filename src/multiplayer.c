@@ -26,8 +26,8 @@ struct MultiplayerConnectScreen {
     u8 fillerEA;
     u8 unkEB;
     u8 fillerEC[2];
-    u8 unkEE[4];
-    u8 unkF2[4];
+    u8 unkEE[MULTI_SIO_PLAYERS_MAX];
+    u8 unkF2[MULTI_SIO_PLAYERS_MAX];
 
     u8 unkF6;
     u8 fillerF7[3];
@@ -35,16 +35,28 @@ struct MultiplayerConnectScreen {
     u8 unkFB;
     u8 unkFC;
     u8 unkFD;
-    u8 fillerFE[2];
 }; /** size 0x100 */
 
-void sub_805ADAC(void);
-
-extern const struct UNK_080E0D64 gUnknown_080D9050[7];
 u8 gUnknown_03005594;
 u8 gUnknown_030054D8;
+u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
 
-void sub_805AAD8(void) {
+// gMultiplayerNames
+u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
+
+u32 gUnknown_03005434;
+u8 gUnknown_030055B8;
+
+static void sub_805ADAC(void);
+static void sub_805B4C0(void);
+static void sub_805B454(void);
+
+// CreateErrorScreen
+extern void sub_805BA10(u32);
+
+extern const struct UNK_080E0D64 gUnknown_080D9050[7];
+
+void StartMultiPakConnect(void) {
     struct Task* t;
     struct MultiplayerConnectScreen* connectScreen;
     struct UNK_802D4CC_UNK270* unk0;
@@ -67,13 +79,13 @@ void sub_805AAD8(void) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(sub_805ADAC, 0x100, 0x2000, 0, NULL);
+    t = TaskCreate(sub_805ADAC, sizeof(struct MultiplayerConnectScreen), 0x2000, 0, NULL);
     connectScreen = TaskGetStructPtr(t, connectScreen);
     connectScreen->unkEB = 0;
     connectScreen->unkFC = 1;
     connectScreen->unkFD = 0;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         connectScreen->unkEE[i] = 0;
         connectScreen->unkF2[i] = 0;
     }
@@ -177,21 +189,7 @@ void sub_805AAD8(void) {
     connectScreen->unkFA = 0;
 }
 
-
-void sub_805B9A4(void);
-u32 gUnknown_03005410[4];
-
-// multiplayerNames
-u16 gUnknown_03005460[4][6];
-
-u32 gUnknown_03005434;
-u8 gUnknown_030055B8;
-void sub_805B4C0(void);
-void sub_805B454(void);
-
-#define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
-
-void sub_805ADAC(void) {
+static void sub_805ADAC(void) {
     s32 i;
     s32 x;
     s32 var1 = 0;
@@ -215,7 +213,7 @@ void sub_805ADAC(void) {
                 gUnknown_03002AE4 = gUnknown_0300287C;
                 gUnknown_03005390 = 0;
                 gUnknown_03004D5C = gUnknown_03002A84;
-                sub_805B9A4();
+                MultiPakCommunicationError();
                 return;
             }
         } else {
@@ -236,14 +234,14 @@ void sub_805ADAC(void) {
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
             gUnknown_03004D5C = gUnknown_03002A84;
-            sub_805B9A4();
+            MultiPakCommunicationError();
             return;
         }
     } else {
         connectScreen->unkFD = 0;
     }
     
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         data = &gMultiSioRecv[i].pat0;
         connectScreen->unkEE[i] <<= 1;
         connectScreen->unkF2[i] <<= 1;
@@ -268,7 +266,7 @@ void sub_805ADAC(void) {
 
             
         } else {
-            u16 a = ((vu16 *)(REG_ADDR_SIOMULTI0))[i];
+            u16 a = (&REG_SIOMULTI0)[i];
             bool1 = TRUE;
             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i)) && a == 0) {
                 bool2 = TRUE;
@@ -295,15 +293,13 @@ void sub_805ADAC(void) {
         var2 = 1;
     }
 
-   
-    
     if (connectScreen->unkFA == 0) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
             gUnknown_03004D5C = gUnknown_03002A84;
-            sub_805B9A4();
+            MultiPakCommunicationError();
             return;
         }
         connectScreen->unkFA = 1;
@@ -312,8 +308,7 @@ void sub_805ADAC(void) {
     if (!bool2 && recv->unk0 == 0x4011 && connectScreen->unkFA != 0) {
         gUnknown_03005434 = recv->unk10;
         gUnknown_030055B8 = recv->unk2;
-        for (i = 0; i < 4; i++) {
-            
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if ((gUnknown_030055B8 >> i) & 1) {
                 if (i == 0) {
                     gUnknown_03005410[0] = recv->unk4;
@@ -327,9 +322,6 @@ void sub_805ADAC(void) {
                     continue;
                 }
                 data = &gMultiSioRecv[i].pat0;
-#ifndef NON_MATCHING
-                asm("":::"r2");
-#endif
                 if (data->unk0 != 0x4010) {
                     continue;
                 }
@@ -367,7 +359,7 @@ void sub_805ADAC(void) {
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
-        sub_805B9A4();
+        MultiPakCommunicationError();
         return;
     }
     
@@ -454,7 +446,7 @@ void sub_805ADAC(void) {
     send->unkF = gUnknown_030054D8;
 }
 
-void sub_805B454(void) {
+static void sub_805B454(void) {
     struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
     gMultiSioSend.pat0.unk0 = 0;
     if (++connectScreen->unkE8 > 4) {
@@ -469,4 +461,226 @@ void sub_805B454(void) {
         CreateMultiplayerModeSelectScreen();
         TaskDestroy(gCurTask);
     }
+}
+
+
+
+
+static void sub_805B4C0(void) {
+    struct MultiSioData_0_0* recv, *data, *send;
+    struct UNK_0808B3FC_UNK240* r4p;
+    s32 i, j;
+    
+    u8 recv2;
+    s32 count = 0;
+    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && (gUnknown_030055B8 >> i) & 1; i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 180) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                };
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
+    recv = &gMultiSioRecv[0].pat0;
+    recv2 = recv->unk2;
+
+    if (recv->unk0 == 0x4012) {
+        if (!((recv2 >> SIO_MULTI_CNT->id) & 1)) {
+            gMultiSioEnabled = FALSE;
+            MultiSioStop();
+            MultiSioInit(0);
+            send = &gMultiSioSend.pat0;
+            send->unk0 = 0;
+            gUnknown_03004D80[0] = 0;
+            gUnknown_03002280[0] = 0;
+            gUnknown_03002280[1] = 0;
+            gUnknown_03002280[2] = 0xFF;
+            gUnknown_03002280[3] = 32;
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            MultiPakCommunicationError();
+            return;
+        }
+
+        gGameMode = 3;
+        for (i = 3; i >= 0; i--) {
+            if ((gUnknown_030055B8 >> i) & 1) {
+                if (i == 0) {
+                    if (gUnknown_03005410[i] == recv->unk4) {
+                        gUnknown_03005460[i][3] = recv->unk8[0];
+                        gUnknown_03005460[i][4] = recv->unk8[1];
+                        gUnknown_03005460[i][5] = recv->unk8[2];
+                    } else {
+                        gUnknown_03005460[i][0] = PLAYER_NAME_END_CHAR;
+                    }
+                    gUnknown_03005594 |= recv->unkE;
+                    if (gUnknown_030054D8 < recv->unkF) {
+                        gUnknown_030054D8 = recv->unkF;
+                    }
+                } else {
+                    data = &gMultiSioRecv[i].pat0;
+                    if (data->unk0 == 0x4011) {
+                        if (gUnknown_03005410[i] == data->unk4) {
+                            gUnknown_03005460[i][3] = data->unk8[0];
+                            gUnknown_03005460[i][4] = data->unk8[1]; 
+                            gUnknown_03005460[i][5] = data->unk8[2];
+                        } else {
+                            gUnknown_03005460[i][0] = PLAYER_NAME_END_CHAR;
+                        }
+                        gUnknown_03005594 |= data->unkE;
+                        if (gUnknown_030054D8 < data->unkF) {
+                            gUnknown_030054D8 = data->unkF;
+                        }
+                    }
+                }
+
+                if (i != SIO_MULTI_CNT->id) {
+                    InsertMultiplayerProfile(gUnknown_03005410[i], gUnknown_03005460[i]);
+                }
+            } 
+        }
+        WriteSaveGame();
+        TaskDestroy(gCurTask);
+        sub_805BA10(0);
+        return;
+    } 
+    if (recv->unk0 == 0x4010) {
+        gMultiSioEnabled = FALSE;
+        MultiSioStop();
+        MultiSioInit(0);
+        send = &gMultiSioSend.pat0;
+        send->unk0 = 0;
+        gUnknown_03004D80[0] = 0;
+        gUnknown_03002280[0] = 0;
+        gUnknown_03002280[1] = 0;
+        gUnknown_03002280[2] = 0xFF;
+        gUnknown_03002280[3] = 32;
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        MultiPakCommunicationError();
+        return;
+    } else {
+        if (gMultiSioStatusFlags & MULTI_SIO_PARENT && connectScreen->unkFB++ >= 0x3D) {
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            MultiPakCommunicationError();
+            return;
+        }
+
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            u8 unkEE = connectScreen->unkEE[i];
+            connectScreen->unkEE[i] <<= 1;
+            if (unkEE << 0x19) {
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            count = 1;
+        }
+
+        if (count > 1) {
+            r4p = &connectScreen->unk6C;
+            r4p->unkA = 0x432;
+            r4p->unk20 = count + 6;
+            r4p->unk21 = 0xFF;
+            sub_8004558(r4p);
+            sub_80051E8(r4p);
+        }
+
+        if ((gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
+            send = &gMultiSioSend.pat0;
+            send->unk0 = 0x4012;
+            send->unk2 = recv2;
+            send->unk4 = gLoadedSaveGame->unk0;
+            for (j = 0; j < 3; j++) {
+                send->unk8[j] = gLoadedSaveGame->unk20[j + 3];
+            }
+            send->unkE = gUnknown_03005594;
+            send->unkF = gUnknown_030054D8;
+    
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                bool8 someBool = FALSE;
+
+                if (!((gUnknown_030055B8 >> i) & 1)) {
+                    if (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i)) {
+                        someBool = TRUE;
+                    } else {
+                        continue;
+                    }
+                }
+
+                if (i != 0) {
+                    if (!someBool && !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                        someBool = TRUE;
+                    }
+                    if (!someBool) {
+                        data = &gMultiSioRecv[i].pat0;
+                        if (data->unk0 != 0x4011) {
+                            someBool = TRUE;
+                        }
+                    }
+                    if (!someBool) {
+                        continue;
+                    }
+                    send->unk0 = 0x4011;
+                    for (j = 0; j < 3; j++) {
+                        send->unk8[j] = gLoadedSaveGame->unk20[j];
+                    };
+                    
+                    return;
+                }
+            }
+        } else {
+            send = &gMultiSioSend.pat0;
+            send->unk0 = 0x4011;
+            send->unk2 = recv2;
+            send->unk4 = gLoadedSaveGame->unk0;
+            for (j = 0; j < 3; j++) {
+                send->unk8[j] = gLoadedSaveGame->unk20[j + 3];
+            }
+            send->unkE = gUnknown_03005594;
+            send->unkF = gUnknown_030054D8;
+        }
+    }
+}
+
+UNUSED static void sub_805B98C(struct MultiplayerConnectScreen* connectScreen) {
+    struct UNK_0808B3FC_UNK240* unkC = &connectScreen->unkC;
+    sub_80051E8(unkC);
+    unkC++;
+    sub_80051E8(unkC);
+}
+
+// MultiPakCommunicationError
+void MultiPakCommunicationError(void) {
+    m4aMPlayAllStop();
+    gFlags &= ~0x4;
+    gDispCnt = 0x40;
+    gMultiSioEnabled = FALSE;
+    MultiSioStop();
+    MultiSioInit(0);
+    gUnknown_03002260 = gMapHeaders;
+    gUnknown_03002794 = &gUnknown_080F40D4;
+    gUnknown_030054D4[0] = 0;
+    gUnknown_030054D4[1] = 0;
+    gUnknown_030054D4[2] = 0;
+    gUnknown_030054D4[3] = 0;
+    sub_805BA10(1);
 }
