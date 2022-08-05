@@ -10,6 +10,9 @@
 #include "input.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "game.h"
+#include "flags.h"
+#include "zones.h"
 
 struct MultiplayerConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -177,276 +180,282 @@ void sub_805AAD8(void) {
 
 void sub_805B9A4(void);
 u32 gUnknown_03005410[4];
+
+// multiplayerNames
 u16 gUnknown_03005460[4][6];
+
 u32 gUnknown_03005434;
 u8 gUnknown_030055B8;
 void sub_805B4C0(void);
 void sub_805B454(void);
 
+#define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
+
 // https://decomp.me/scratch/EfwxS
-// void sub_805ADAC(void) {
-//     u8 i;
-//     u32 var1 = 0;
-//     u32 var2 = 0;
-//     u8 var3 = 0;
-//     u8 bool1 = FALSE;
-//     u8 bool2 = FALSE;
-//     u8 bool3 = FALSE;
-//     struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
-//     sub_802D4CC(&connectScreen->unk0);
+NONMATCH("asm/non_matching/sub_805ADAC.inc", void sub_805ADAC()) {
+    s32 i;
+    s32 x;
+    s32 var1 = 0;
+    s32 var2 = 0;
+    u8 var3 = 0;
+    bool8 r4 = FALSE;
+    bool8 bool1 = FALSE;
+    bool8 bool2 = FALSE;
+    bool8 bool3 = TRUE;
+    struct MultiplayerConnectScreen *connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    struct MultiSioData_0_0 *send, *recv;
+    struct MultiSioData_0_0 *data;
+    struct UNK_0808B3FC_UNK240 *r4p;
 
-//     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
-//         if (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(REG_SIOCNT >> 4)) {
-//             if (gUnknown_030054D4[REG_SIOCNT >> 4]++ > 180) {
-//                 TasksDestroyAll();
-//                 gUnknown_03002AE4 = gUnknown_0300287C;
-//                 gUnknown_03005390 = 0;
-//                 gUnknown_03004D5C = gUnknown_03002A84;
-//                 gUnknown_0300287C = gUnknown_03002AE4;
-//                 sub_805B9A4();
-//                 return;
-//             }
-//         } else {
-//             gUnknown_030054D4[REG_SIOCNT >> 4] = 0;
-//         }
-//     }
+    sub_802D4CC(&connectScreen->unk0);
 
-//     if (gMultiSioStatusFlags & MULTI_SIO_HARD_ERROR || 
-//         (gMultiSioStatusFlags & MULTI_SIO_CONNECTED_ID0 &&
-//         !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID0) && gMultiSioRecv[0].pat0.unk0 != 0)) {
-//         if (++connectScreen->unkFD >= 9) {
-//             TasksDestroyAll();
-//             gUnknown_03002AE4 = gUnknown_0300287C;
-//             gUnknown_03005390 = 0;
-//             gUnknown_03004D5C = gUnknown_03002A84;
-//             gUnknown_0300287C = gUnknown_03002AE4;
-//             sub_805B9A4();
-//             return;
-//         }
-//     } else {
-//         connectScreen->unkFD = 0;
-//     }
+    if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
+        if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {
+            if (gUnknown_030054D4[SIO_MULTI_CNT->id]++ > 180) {
+                TasksDestroyAll();
+                gUnknown_03002AE4 = gUnknown_0300287C;
+                gUnknown_03005390 = 0;
+                gUnknown_03004D5C = gUnknown_03002A84;
+                sub_805B9A4();
+                return;
+            }
+        } else {
+            gUnknown_030054D4[SIO_MULTI_CNT->id] = 0;
+        }
+    }
 
-
-//     for (i = 0; i < 4; i++) {
-//         connectScreen->unkEE[i] <<= 1;
-//         connectScreen->unkF2[i] <<= 1;
-//         if (i == REG_SIOCNT >> 4 || 
-//             (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && 
-//              gMultiSioRecv[i].pat0.unk0 < 0x400)) {
-//             connectScreen->unkEE[i] |= 1;
-//             var1++;
-//             var3 |= MULTI_SIO_RECV_ID(i);
-//             if (bool1) {
-//                 bool2 = TRUE;
-//             }
-//             gUnknown_03005410[i] = gMultiSioRecv[i].pat0.unk4;
-//             memcpy(&gUnknown_03005460[i], &gMultiSioRecv[i].pat0.unk8, sizeof(gMultiSioRecv[i].pat0.unk8));
-//             gUnknown_03005594 |= gMultiSioRecv[i].pat0.unkE;
-
-//             if (gMultiSioRecv[i].pat0.unkF > gUnknown_030054D8) {
-//                 gUnknown_030054D8 = gMultiSioRecv[i].pat0.unkF;
-//             }
-
-//             if (connectScreen->unkEE[i] != 0) {
-//                 var2++;
-//             }
-//         } else {
-//             bool1 = TRUE;
-//             if (gMultiSioStatusFlags & MULTI_SIO_CONNECTED_ID(i) || *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2) != 0) {
-//                 if (connectScreen->unkF2[i] != 0 || (gMultiSioStatusFlags & MULTI_SIO_CONNECTED_ID(i) && gMultiSioRecv[i].pat0.unk0 < 0x4010)) {
-//                     bool2 = TRUE;
-//                     bool3 = FALSE;
-//                 }
-//                 if (connectScreen->unkEE[i] != 0) {
-//                     var2++;
-//                 }
-//             } else {
-//                 bool2 = TRUE;
-//                 connectScreen->unkF2[i] |= 1;
-
-//                 if (connectScreen->unkEE[i] == 0) {
-//                     bool2 = TRUE;
-//                     bool3 = FALSE;
-//                     if (connectScreen->unkEE[i] != 0) {
-//                         var2++;
-//                     }
-//                 } else {
-//                     var2++;
-//                 }
-//             }
-//         }
-//     }
-
-//     if (var2 == 0) {
-//         var2 = 1;
-//     }
     
-//     if (connectScreen->unkFA == 0) {
-//         if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0) && gMultiSioRecv[i].pat0.unk0 > 0x4010) {
-//             TasksDestroyAll();
-//             gUnknown_03002AE4 = gUnknown_0300287C;
-//             gUnknown_03005390 = 0;
-//             gUnknown_03004D5C = gUnknown_03002A84;
-//             gUnknown_0300287C = gUnknown_03002AE4;
-//             return;
-//         }
-//         connectScreen->unkFA = 1;
-//     }
+    if (gMultiSioStatusFlags & MULTI_SIO_CONNECTED_ID0) {
+        r4 = TRUE;
+    }
+    
+    recv = &gMultiSioRecv[0].pat0;
+    if (gMultiSioStatusFlags & MULTI_SIO_HARD_ERROR
+        || (r4 && !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID0) && recv->unk0 != 0)) {
+        if (++connectScreen->unkFD >= 9) {
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            sub_805B9A4();
+            return;
+        }
+    } else {
+        connectScreen->unkFD = 0;
+    }
+    
+    for (i = 0; i < 4; i++) {
+        data = &gMultiSioRecv[i].pat0;
+        connectScreen->unkEE[i] <<= 1;
+        connectScreen->unkF2[i] <<= 1;
+        if (i == SIO_MULTI_CNT->id || 
+            (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && 
+             data->unk0 > 0x400F)) {
+            connectScreen->unkEE[i] |= 1;
+            var1++;
+            var3 |= MULTI_SIO_RECV_ID(i);
+            if (bool1) {
+                bool2 = TRUE;
+            }
+            gUnknown_03005410[i] = data->unk4;
+            gUnknown_03005460[i][0] = data->unk8[0];
+            gUnknown_03005460[i][1] = data->unk8[1];
+            gUnknown_03005460[i][2] = data->unk8[2];
+            gUnknown_03005594 |= data->unkE;
 
-//     if (!bool2 && gMultiSioRecv[0].pat0.unk0 == 0x4011 && connectScreen->unkFA != 0) {
-//         u8 j;
-//         gUnknown_03005434 = gMultiSioRecv[0].pat0.unk10;
-//         gUnknown_030055B8 = gMultiSioRecv[0].pat0.unk2;
-//         for (j = 0; j < 4; j++) {
-//             if ((gUnknown_030055B8 >> j) & 1) {
-//                 if (j == 0) {
-//                     gUnknown_03005410[0] = gMultiSioRecv[j].pat0.unk4;
-//                     memcpy(&gUnknown_03005460[0], &gMultiSioRecv[j].pat0.unk8, sizeof(gMultiSioRecv[j].pat0.unk8));
-//                     gUnknown_03005594 |= gMultiSioRecv[j].pat0.unkE;
-//                     if (gMultiSioRecv[j].pat0.unkF > gUnknown_030054D8) {
-//                         gUnknown_030054D8 = gMultiSioRecv[j].pat0.unkF;
-//                     }
-//                 } else {
-//                     if (gMultiSioRecv[j].pat0.unk0 != 0x4010) {
-//                         continue;
-//                     }
-//                     gUnknown_03005410[j] = gMultiSioRecv[j].pat0.unk4;
-//                     memcpy(&gUnknown_03005460[j], &gMultiSioRecv[j].pat0.unk8, sizeof(gMultiSioRecv[j].pat0.unk8));
-//                     gUnknown_03005594 |= gMultiSioRecv[j].pat0.unkE;
-//                     if (gMultiSioRecv[0].pat0.unkF > gUnknown_030054D8) {
-//                         gUnknown_030054D8 = gMultiSioRecv[0].pat0.unkF;
-//                     }
-//                 }
-//             }
-//         }
-//         connectScreen->unkE8 = 0;
-//         connectScreen->unkF6 = 0;
-//         gUnknown_030054D4[3] = 0;
-//         gUnknown_030054D4[2] = 0;
-//         gUnknown_030054D4[1] = 0;
-//         gUnknown_030054D4[0] = 0;
-//         connectScreen->unkFB = 0;
-//         gCurTask->main = sub_805B4C0;
-//         sub_805B4C0();
-//         return;
-//     }
+            if (gUnknown_030054D8 < data->unkF) {
+                gUnknown_030054D8 = data->unkF;
+            }
 
-//     if (gMultiSioRecv[0].pat0.unk0 < 0x4013) {
-//         if (gPressedKeys & B_BUTTON) {
-//             m4aSongNumStart(SE_RETURN);
-//             if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-//                 gMultiSioSend.pat0.unk0 = 0;
-//                 connectScreen->unkE8 = 0;
-//                 gCurTask->main = sub_805B454;
-//                 return;
-//             }
+            
+        } else {
+            u16 a = ((vu16 *)(REG_ADDR_SIOMULTI0))[i];
+            bool1 = TRUE;
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i)) && a == 0) {
+                bool2 = TRUE;
+                connectScreen->unkF2[i] |= 1;
 
-//             gMultiSioEnabled = FALSE;
-//             MultiSioStop();
-//             MultiSioInit(0);
-//             gMultiSioSend.pat0.unk0 = 0;
-//             gUnknown_03004D80[0] = 0;
+                if (connectScreen->unkEE[i] == 0) {
+                    bool2 = TRUE;
+                    bool3 = FALSE;
+                }
+            } else {
+                if (connectScreen->unkF2[i] != 0
+                    || (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && data->unk0 < 0x4010)) {
+                    bool2 = TRUE;
+                    bool3 = FALSE;
+                }
+            }
+        }
+        if (connectScreen->unkEE[i] != 0) {
+            var2++;
+        }
+    }
 
-//             gUnknown_03002280[0] = 0;
-//             gUnknown_03002280[1] = 0;
-//             gUnknown_03002280[2] = 0xff;
-//             gUnknown_03002280[3] = 32;
-//             sub_805A1CC();
-//             TaskDestroy(gCurTask);
-//             return;
-//         }
+    if (var2 == 0) {
+        var2 = 1;
+    }
 
-//         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
-//             if (var2 > 1) {
-//                 struct UNK_0808B3FC_UNK240* unk6C = &connectScreen->unk6C;
-//                 unk6C->unkA = 0x432;
-//                 unk6C->unk20 = 6;
-//                 unk6C->unk21 = 0xFF;
-//                 sub_8004558(unk6C);
-//                 sub_80051E8(unk6C);
-//             }
-//         } else if (var2 > 1) {
-//             if (bool3) {
-//                 struct UNK_0808B3FC_UNK240* unk3C = &connectScreen->unk3C;
-//                 sub_8004558(unk3C);
-//                 sub_80051E8(unk3C);
-//             }
-//             if (var2 > 1) {
-//                 struct UNK_0808B3FC_UNK240* unk6C = &connectScreen->unk6C;
-//                 unk6C->unkA = 0x432;
-//                 unk6C->unk20 = 6;
-//                 unk6C->unk21 = 0xFF;
-//                 sub_8004558(unk6C);
-//                 sub_80051E8(unk6C);
-//             }
-//         }
-//         sub_80051E8(&connectScreen->unkC);
+    if (connectScreen->unkFA == 0) {
+        if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            sub_805B9A4();
+            return;
+        }
+        connectScreen->unkFA = 1;
+    }
 
-//         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-//             if (!bool1 && var1 > 1 && gPressedKeys & START_BUTTON) {
-//                 u8 x;
-//                 u8* unkF6 = &connectScreen->unkF6;
-//                 gMultiSioSend.pat0.unk0 = 0x4011;
-//                 gMultiSioSend.pat0.unk2 = var3;
-//                 gMultiSioSend.pat0.unk4 = gLoadedSaveGame->unk0;
-//                 gMultiSioSend.pat0.unk10 = connectScreen->unkDC;
+    if (!bool2 && recv->unk0 == 0x4011 && connectScreen->unkFA != 0) {
+        gUnknown_03005434 = recv->unk10;
+        gUnknown_030055B8 = recv->unk2;
+        for (i = 0; i < 4; i++) {
+            
+            if ((gUnknown_030055B8 >> i) & 1) {
+                if (i == 0) {
+                    gUnknown_03005410[0] = recv->unk4;
+                    // Reg swap on this, should be r4, but is r6
+                    gUnknown_03005460[0][0] = recv->unk8[0];
+                    gUnknown_03005460[0][1] = recv->unk8[1];
+                    gUnknown_03005460[0][2] = recv->unk8[2];
+                    gUnknown_03005594 |= recv->unkE;
+                    if (gUnknown_030054D8 < recv->unkF) {
+                        gUnknown_030054D8 = recv->unkF;
+                    }
+                    continue;
+                }
+                data = &gMultiSioRecv[i].pat0;
+#ifndef NONMATCHING
+                asm("":::"r2");
+#endif
+                if (data->unk0 != 0x4010) {
+                    continue;
+                }
+    
+                gUnknown_03005410[i] = data->unk4;
+                gUnknown_03005460[i][0] = data->unk8[0];
+                gUnknown_03005460[i][1] = data->unk8[1];
+                gUnknown_03005460[i][2] = data->unk8[2];
+                gUnknown_03005594 |= data->unkE;
+                if (gUnknown_030054D8 < data->unkF) {
+                    gUnknown_030054D8 = data->unkF;
+                }
+            }
+        }
+        connectScreen->unkE8 = 0;
+        connectScreen->unkF6 = 0;
+        gUnknown_030054D4[3] = 0;
+        gUnknown_030054D4[2] = 0;
+        gUnknown_030054D4[1] = 0;
+        gUnknown_030054D4[0] = 0;
+        connectScreen->unkFB = 0;
+        gCurTask->main = sub_805B4C0;
+        sub_805B4C0();
+        return;
+    }
 
-//                 for (x = 0; x < 3; x++) {
-//                     gMultiSioSend.pat0.unk8[x] = gLoadedSaveGame->unk20[i];
-//                 }
-//                 gMultiSioSend.pat0.unkE = gUnknown_03005594;
-//                 gMultiSioSend.pat0.unkF = gUnknown_030054D8;
-//                 *unkF6 = 1;
-//                 connectScreen->unkFC = 0;
-//                 return;
-//             }
+    if (recv->unk0 >= 0x4013) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        sub_805B9A4();
+        return;
+    }
+    
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+            send = &gMultiSioSend.pat0;
+            send->unk0 = 0;
+            connectScreen->unkE8 = 0;
+            gCurTask->main = sub_805B454;
+            return;
+        }
 
-//             if (connectScreen->unkF6 != 0) {
-//                 if (!bool2 && var1 > 1) {
-//                     u8 x;
-//                     u8* unkF6 = &connectScreen->unkF6;
-//                     gMultiSioSend.pat0.unk0 = 0x4011;
-//                     gMultiSioSend.pat0.unk2 = var3;
-//                     gMultiSioSend.pat0.unk4 = gLoadedSaveGame->unk0;
-//                     gMultiSioSend.pat0.unk10 = connectScreen->unkDC;
+        gMultiSioEnabled = FALSE;
+        MultiSioStop();
+        MultiSioInit(0);
+        send = &gMultiSioSend.pat0;
+        send->unk0 = 0;
+        gUnknown_03004D80[0] = 0;
 
-//                     for (x = 0; x < 3; x++) {
-//                         gMultiSioSend.pat0.unk8[x] = gLoadedSaveGame->unk20[i];
-//                     }
-//                     gMultiSioSend.pat0.unkE = gUnknown_03005594;
-//                     gMultiSioSend.pat0.unkF = gUnknown_030054D8;
-//                     *unkF6 = 1;
-//                     connectScreen->unkFC = 0;
-//                     return;
-//                 }
-//             }
-//         } else {
-//             if (connectScreen->unkF6 != 0) {
-//                 connectScreen->unkF6 = 0;
-//                 if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-//                     connectScreen->unkFC = 1;
-//                 }
-//             }
-//         }
-        
+        gUnknown_03002280[0] = 0;
+        gUnknown_03002280[1] = 0;
+        gUnknown_03002280[2] = 0xff;
+        gUnknown_03002280[3] = 32;
+        CreateMultiplayerModeSelectScreen();
+        TaskDestroy(gCurTask);
+        return;
+    }
 
-//         {
-//             u8 x;
-//             gMultiSioSend.pat0.unk0 = 0x4010;
-//             gMultiSioSend.pat0.unk4 = gLoadedSaveGame->unk0;
-//             for (x = 0; x < 3; x++) {
-//                 gMultiSioSend.pat0.unk8[x] = gLoadedSaveGame->unk20[x];
-//             }
-//             gMultiSioSend.pat0.unkE = gUnknown_03005594;
-//             gMultiSioSend.pat0.unkF = gUnknown_030054D8;
-//             return;
-//         }
-//     }
-//     TasksDestroyAll();
-//     gUnknown_03005390 = 0;
-//     gUnknown_03002AE4 = gUnknown_0300287C;
-//     gUnknown_03004D5C = gUnknown_03002A84;
-//     gUnknown_0300287C = gUnknown_03002AE4;
-//     sub_805B9A4();
-// }
+    if ((gMultiSioStatusFlags & MULTI_SIO_PARENT) && var2 > 1 && bool3) {
+        r4p = &connectScreen->unk3C;
+        sub_8004558(r4p);
+        sub_80051E8(r4p);
+    }
+    
+    if (var2 > 1) {
+        r4p = &connectScreen->unk6C;
+        r4p->unkA = 0x432;
+        r4p->unk20 = var2 + 6;
+        r4p->unk21 = 0xFF;
+        sub_8004558(r4p);
+        sub_80051E8(r4p);
+    }
+    r4p = &connectScreen->unkC;
+    sub_80051E8(r4p);
+
+    if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+        if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON) || (connectScreen->unkF6 != 0 && !bool2 && var1 > 1)) {
+            send = &gMultiSioSend.pat0;
+            send->unk0 = 0x4011;
+            send->unk2 = var3;
+            send->unk4 = gLoadedSaveGame->unk0;
+            send->unk10 = connectScreen->unkDC;
+            for (x = 0; x < 3; x++) {
+                send->unk8[x] = gLoadedSaveGame->unk20[x];
+            }
+            send->unkE = gUnknown_03005594;
+            send->unkF = gUnknown_030054D8;
+            connectScreen->unkF6 = 1;
+            connectScreen->unkFC = 0;
+            return;
+        }
+    }
+
+    if (connectScreen->unkF6 != 0) {
+        connectScreen->unkF6 = 0;
+        if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+            connectScreen->unkFC = 1;
+        }
+    }
+    send = &gMultiSioSend.pat0;
+    send->unk0 = 0x4010;
+    send->unk4 = gLoadedSaveGame->unk0;
+    for (x = 0; x < 3; x++) {
+        send->unk8[x] = gLoadedSaveGame->unk20[x];
+    }
+    send->unkE = gUnknown_03005594;
+    send->unkF = gUnknown_030054D8;
+}
+END_NONMATCH
+
+void sub_805B454(void) {
+    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    gMultiSioSend.pat0.unk0 = 0;
+    if (++connectScreen->unkE8 > 4) {
+        gMultiSioEnabled = FALSE;
+        MultiSioStop();
+        MultiSioInit(0);
+        gUnknown_03004D80[0] = 0;
+        gUnknown_03002280[0] = 0;
+        gUnknown_03002280[1] = 0;
+        gUnknown_03002280[2] = 0xFF;
+        gUnknown_03002280[3] = 32;
+        CreateMultiplayerModeSelectScreen();
+        TaskDestroy(gCurTask);
+    }
+}

@@ -21,6 +21,17 @@
     }
 #endif
 
+#if NON_MATCHING
+#define NONMATCH(path, decl) decl
+#define END_NONMATCH
+#else
+#define NONMATCH(path, decl)    \
+    NAKED decl {                \
+        asm(".include " #path); \
+        if (0)
+#define END_NONMATCH }
+#endif
+
 /// IDE support
 #if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
 // We define these when using certain IDEs to fool preproc

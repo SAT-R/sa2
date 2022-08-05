@@ -8,10 +8,7 @@
 #include "player.h"
 #include "title_screen.h"
 #include "profile.h"
-
-// likely static data, needs to be extracted
-extern union Unk_03002E60 gMapHeaders[];
-extern u32 gUnknown_080F40D4;
+#include "zones.h"
 
 // Some sort of unused task variable
 struct Task *gUnknown_03005844;
