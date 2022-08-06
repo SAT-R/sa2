@@ -1271,9 +1271,9 @@ static void Task_HandleTitleScreenExit(void) {
                 sub_801A6D8();
                 // If all characters unlocked
                 if (gLoadedSaveGame->unk13 & (1 << (NUM_CHARACTERS - 1))) {
-                    sub_803143C(0, 1);
+                    CreateCharacterSelectionScreen(0, 1);
                 } else {
-                    sub_803143C(0, 0);
+                    CreateCharacterSelectionScreen(0, 0);
                 }
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):

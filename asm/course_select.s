@@ -3024,7 +3024,7 @@ sub_8035F60: @ 0x08035F60
 	ands r1, r2
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
-	bl sub_803143C
+	bl CreateCharacterSelectionScreen
 	ldr r0, [r6]
 	bl TaskDestroy
 	b _08035FBE

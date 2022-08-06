@@ -5240,7 +5240,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void) {
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
             gUnknown_03004D5C = gUnknown_03002A84;
-            sub_803143C(timeRecordsScreen->character, allCharactersUnlocked);
+            CreateCharacterSelectionScreen(timeRecordsScreen->character, allCharactersUnlocked);
             break;
     }
 }

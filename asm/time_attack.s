@@ -1387,7 +1387,7 @@ _080877E4:
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	movs r0, #0
-	bl sub_803143C
+	bl CreateCharacterSelectionScreen
 	b _08087826
 	.align 2, 0
 _080877F8: .4byte gUnknown_03005594
@@ -3404,7 +3404,7 @@ _08088864:
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	movs r0, #0
-	bl sub_803143C
+	bl CreateCharacterSelectionScreen
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -4032,7 +4032,7 @@ _08088DB4:
 	ands r1, r2
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
-	bl sub_803143C
+	bl CreateCharacterSelectionScreen
 	ldr r1, _08088DDC @ =gCurrentLevel
 	movs r0, #0
 	strb r0, [r1]

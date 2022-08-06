@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_803143C
-sub_803143C: @ 0x0803143C
+	thumb_func_start CreateCharacterSelectionScreen
+CreateCharacterSelectionScreen: @ 0x0803143C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
