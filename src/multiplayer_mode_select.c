@@ -1,6 +1,6 @@
 #include "global.h"
 #include "multiplayer_mode_select.h"
-#include "multiplayer.h"
+#include "multiplayer_multipak_connection.h"
 #include "save.h"
 #include "data.h"
 #include "multi_sio.h"
