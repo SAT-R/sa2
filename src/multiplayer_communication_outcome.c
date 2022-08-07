@@ -35,6 +35,7 @@ void sub_805BC40(void);
 
 extern const u16 gUnknown_080D9088[2];
 extern const u8 gUnknown_080D908C[2];
+extern const struct UNK_080E0D64 gUnknown_080D9090[14];
 
 void sub_805BA10(u8 outcome) {
     u8 i;
@@ -140,8 +141,6 @@ void sub_805BA10(u8 outcome) {
     }
 }
 
-extern const struct UNK_080E0D64 gUnknown_080D9090[];
-
 void sub_805BC40(void) {
     struct UNK_0808B3FC_UNK240* unkD0;
     struct CommunicationOutcomeScreen* outcomeScreen = TaskGetStructPtr(gCurTask, outcomeScreen);
@@ -156,7 +155,6 @@ void sub_805BC40(void) {
         unkD0 = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090;
         offset = gLoadedSaveGame->unk6 + 7;
-        
 
         unkD0->unkA = unk9090[offset].unk4;
         offset = gLoadedSaveGame->unk6 + 7;

@@ -44,6 +44,7 @@ SECTIONS
         build/sa2/src/multiplayer_mode_select.o(.text);
         build/sa2/src/multiplayer_multipak_connection.o(.text);
         build/sa2/src/multiplayer_communication_outcome.o(.text);
+        build/sa2/src/multiplayer.o(.text);
         build/sa2/asm/multiplayer.o(.text);
         build/sa2/asm/code2_0_1.o(.text);
         build/sa2/src/profile.o(.text);

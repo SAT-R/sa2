@@ -28,9 +28,10 @@ extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
+// multiplayer values
 extern u32 gUnknown_030055A0[4];
 extern u8 gUnknown_03005500[4];
-extern u8 gUnknown_030054B4[4];
+extern s8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054D4[4];
 
 extern u8 gUnknown_03002AE4;
