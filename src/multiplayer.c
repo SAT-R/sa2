@@ -163,3 +163,77 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
     }
 }
 END_NONMATCH
+
+
+void sub_805C30C(void);
+
+void sub_805C0F0(void) {
+    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+    u16* unk1884 = (u16*)gUnknown_03001884;
+    gDispCnt |= 0x1800;
+
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 0xB4) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                }
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
+
+    selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
+
+    if ((selectionResultsScreen->unk200 += 0x400) > 0xF000) {
+        selectionResultsScreen->unk200 = 0;
+
+        gCurTask->main = sub_805C30C;
+        sub_805C30C();
+    } else {
+        u32 i;
+        u16 j, x;
+        u16 unk200 = selectionResultsScreen->unk200 >> 8; 
+        gFlags |= 0x4;
+        gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
+        gUnknown_03002A80 = 4;
+
+        for (x = 0, i = 0; i < 0x20; i++, x++) {
+            *unk1884++ = 0;
+            *unk1884++ = selectionResultsScreen->unk204;
+        }
+    
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            if (!GetBit(gUnknown_030055B8, i)) {
+                for (j = 0; j < 0x20; j++) {
+                    *unk1884++ = 0;
+                    *unk1884++ = 0xC0 - x;
+                }
+                x += 0x20;
+                continue;
+            } 
+                
+            if (i & 1) {
+                for (j = 0; j < 0x20; j++) {
+                    *unk1884++ = 0xF0 - unk200;
+                    *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+                }
+                x += 0x20;
+                continue;
+            } 
+    
+            for (j = 0; j < 0x20; j++) {
+                *unk1884++ = unk200 - 0xF0;
+                *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+            }
+            x += 0x20;
+        }
+    }
+}
