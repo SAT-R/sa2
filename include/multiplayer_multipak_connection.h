@@ -5,6 +5,7 @@
 
 extern u8 gUnknown_03005594;
 extern u8 gUnknown_030055B8;
+extern u8 gUnknown_030054D8;
 
 void StartMultiPakConnect(void);
 void MultiPakCommunicationError(void);

@@ -13,7 +13,7 @@ extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
 extern u8 gCurrentLevel;
-extern u8 gSelectedCharacter;
+extern s8 gSelectedCharacter;
 
 // Possibly CreateGameStageAtSelectedCourse
 void sub_801A770(void);
