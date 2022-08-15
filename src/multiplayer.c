@@ -31,12 +31,13 @@ extern const u16 gUnknown_080D92A8[7];
 extern const struct UNK_080E0D64 gUnknown_080D9100[7][7];
 extern const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX];
 
-// https://decomp.me/scratch/soIOh
-NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
+void sub_805BDEC(u8 param) {
     struct Task* t;
     struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
     struct Unk_03002400* background;
     u32 i;
+    u32 b;
+    struct UNK_0808B3FC_UNK240* unk80;
     
     u32 count = 0;
     u32 lang = gLoadedSaveGame->unk6;
@@ -67,7 +68,6 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
     t = TaskCreate(sub_805C0F0, 0x208, 0x2000, 0, 0);
     selectionResultsScreen = TaskGetStructPtr(t, selectionResultsScreen);
 
-    
     selectionResultsScreen->unk200 = 0;
 
     for (i = 0; i < 4; i++) {
@@ -108,12 +108,13 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
         }
     }
 
-    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++, b+= 0x20) {
+        s32 temp2 = (i + 4) * 0x800;
         if (GetBit(gUnknown_030055B8, i)) {
-            s8 temp;
-            struct UNK_0808B3FC_UNK240* unk80 = &selectionResultsScreen->unk80[i];
+            s32 temp;
+            unk80 = &selectionResultsScreen->unk80[i];
             unk80->unk16 = 200;
-            unk80->unk18 = 0x33 + i * 0x20;
+            unk80->unk18 = 0x33 + (0x20 * i);
             unk80->unk4 = (void*)(OBJ_VRAM0 + (i * 0x800));
             unk80->unk1A = 0x400;
             unk80->unk8 = 0;
@@ -131,7 +132,6 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
                 unk80->unkA = gUnknown_080D9100[lang][3].unk4;
                 unk80->unk20 = gUnknown_080D9100[lang][3].unk6 + temp;
             }
-
             unk80->unk14 = 0;
             unk80->unk1C = 0;
             unk80->unk21 = 0xFF;
@@ -139,11 +139,11 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
             unk80->unk25 = 0;
             unk80->unk10 = 0x1000;
             sub_8004558(unk80);
-
+    
             unk80 = &selectionResultsScreen->unk140[i];
             unk80->unk16 = 0;
-            unk80->unk18 = 0x1F + i * 0x20;
-            unk80->unk4 = (void*)(OBJ_VRAM0 + (((i + 4) * 0x800)));
+            unk80->unk18 = 0x1F + (0x20 * i);
+            unk80->unk4 = (void*)(OBJ_VRAM0 + temp2);
             unk80->unk1A = 0x400;
             unk80->unk8 = 0;
             unk80->unkA = gUnknown_080D9288[i].unk4;
@@ -162,8 +162,6 @@ NONMATCH("asm/non_matching/sub_805BDEC.inc", void sub_805BDEC(u8 param)) {
         m4aSongNumStart(MUS_VS_3);
     }
 }
-END_NONMATCH
-
 
 void sub_805C30C(void);
 
