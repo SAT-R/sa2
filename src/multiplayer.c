@@ -235,3 +235,37 @@ void sub_805C0F0(void) {
         }
     }
 }
+
+void sub_805C30C(void);
+void sub_805C3D0(void);
+void sub_805C69C(void);
+void sub_805C504(void);
+
+void sub_805C30C(void) {
+    struct MultiplayerSelectionResultsScreen* selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
+    bool32 somebool = FALSE;
+
+    if (selectionResultsScreen->unk203 == 1) {
+        if (selectionResultsScreen->unk200++ > 300) {
+            somebool = TRUE;
+        }
+    } else {
+        if (selectionResultsScreen->unk200++ > 0x3C) {
+            somebool = TRUE;
+        }
+    }
+
+    if (somebool) {
+        selectionResultsScreen->unk200 = 0;
+        gBldRegs.bldCnt = 0xFF;
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, 0);
+        m4aMPlayFadeOut(&gMPlayInfo_SE1, 0);
+        m4aMPlayFadeOut(&gMPlayInfo_SE2, 0);
+        m4aMPlayFadeOut(&gMPlayInfo_SE3, 0);
+        gCurTask->main = sub_805C3D0;
+        sub_805C3D0();
+    } else {
+        sub_805C69C();
+        sub_805C504();
+    }
+}
