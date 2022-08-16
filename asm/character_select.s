@@ -2949,7 +2949,7 @@ _08032C76:
 	cmp r4, #2
 	bls _08032CE8
 	movs r0, #0
-	bl sub_805BDEC
+	bl CreateMultiplayerResultsScreen
 	b _08032D8E
 	.align 2, 0
 _08032CB8: .4byte 0x00004020

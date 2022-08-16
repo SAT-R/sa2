@@ -1,6 +1,6 @@
 #include "global.h"
 #include "data.h"
-#include "multiplayer.h"
+#include "multiplayer_results.h"
 #include "multiplayer_multipak_connection.h"
 #include "task.h"
 #include "sprite.h"
@@ -14,31 +14,36 @@
 #include "zones.h"
 #include "course_select.h"
 
-void sub_805C0F0(void);
-
-struct MultiplayerSelectionResultsScreen {
+struct MultiplayerResultsScreen {
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80[MULTI_SIO_PLAYERS_MAX];
-    struct UNK_0808B3FC_UNK240 unk140[MULTI_SIO_PLAYERS_MAX];
-    u16 unk200;
-    u8 unk202;
-    u8 unk203;
+    // TODO: these may be the wrong way around
+    struct UNK_0808B3FC_UNK240 resultRows[MULTI_SIO_PLAYERS_MAX];
+    struct UNK_0808B3FC_UNK240 characterRows[MULTI_SIO_PLAYERS_MAX];
+    u16 animStep;
+    u8 numPlayers;
+    u8 mode;
     u8 unk204;
-    u8 unk205[3];
 }; /* size 0x208 */
+
+extern void sub_8087400(void);
+
+static void sub_805C0F0(void);
+static void sub_805C30C(void);
+static void sub_805C3D0(void);
+static void sub_805C69C(void);
+static void sub_805C504(void);
 
 extern const u16 gUnknown_080D92A8[7];
 extern const struct UNK_080E0D64 gUnknown_080D9100[7][7];
 extern const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX];
 
-void sub_805BDEC(u8 param) {
+void CreateMultiplayerResultsScreen(u8 mode) {
     struct Task* t;
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+    struct MultiplayerResultsScreen* resultsScreen;
     struct Unk_03002400* background;
     u32 i;
-    u32 b;
-    struct UNK_0808B3FC_UNK240* unk80;
+    struct UNK_0808B3FC_UNK240* element;
     
     u32 count = 0;
     u32 lang = gLoadedSaveGame->unk6;
@@ -67,9 +72,9 @@ void sub_805BDEC(u8 param) {
 
     DmaFill32(3, 0, (void*)VRAM + 0x9fe0, 0x40);
     t = TaskCreate(sub_805C0F0, 0x208, 0x2000, 0, NULL);
-    selectionResultsScreen = TaskGetStructPtr(t, selectionResultsScreen);
+    resultsScreen = TaskGetStructPtr(t, resultsScreen);
 
-    selectionResultsScreen->unk200 = 0;
+    resultsScreen->animStep = 0;
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (!GetBit(gUnknown_030055B8, i)) {
@@ -77,16 +82,16 @@ void sub_805BDEC(u8 param) {
         }
     }
 
-    selectionResultsScreen->unk202 = i;
-    selectionResultsScreen->unk203 = param;
+    resultsScreen->numPlayers = i;
+    resultsScreen->mode = mode;
 
-    if (param != 0) {
-        selectionResultsScreen->unk204 = 0xDE;
+    if (mode != MULTIPLAYER_RESULTS_MODE_CHARACTER_SELECTION) {
+        resultsScreen->unk204 = 222;
     } else {
-         selectionResultsScreen->unk204 = param;
+        resultsScreen->unk204 = 0;
     }
 
-    background = &selectionResultsScreen->unk0;
+    background = &resultsScreen->unk0;
     background->unk4 = BG_SCREEN_ADDR(16);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(30);
@@ -109,65 +114,63 @@ void sub_805BDEC(u8 param) {
         }
     }
 
-    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++, b+= 0x20) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         s32 temp2 = (i + 4) * 0x800;
         if (GetBit(gUnknown_030055B8, i)) {
             s32 temp;
-            unk80 = &selectionResultsScreen->unk80[i];
-            unk80->unk16 = 200;
-            unk80->unk18 = 0x33 + (0x20 * i);
-            unk80->unk4 = (void*)(OBJ_VRAM0 + (i * 0x800));
-            unk80->unk1A = 0x400;
-            unk80->unk8 = 0;
+            element = &resultsScreen->resultRows[i];
+            element->unk16 = 200;
+            element->unk18 = 0x33 + (0x20 * i);
+            element->unk4 = (void*)(OBJ_VRAM0 + (i * 0x800));
+            element->unk1A = 0x400;
+            element->unk8 = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
-                unk80->unkA = gUnknown_080D9100[lang][1].unk4;
-                unk80->unk20 = gUnknown_080D9100[lang][1].unk6;
+                element->unkA = gUnknown_080D9100[lang][1].unk4;
+                element->unk20 = gUnknown_080D9100[lang][1].unk6;
             } else if (temp == 4) {
-                unk80->unkA = gUnknown_080D9100[lang][2].unk4;
-                unk80->unk20 = gUnknown_080D9100[lang][2].unk6;
+                element->unkA = gUnknown_080D9100[lang][2].unk4;
+                element->unk20 = gUnknown_080D9100[lang][2].unk6;
             } else if (count == 2 || gGameMode == 4) {
-                unk80->unkA = gUnknown_080D9100[lang][0].unk4;
-                unk80->unk20 = gUnknown_080D9100[lang][0].unk6 + temp;
+                element->unkA = gUnknown_080D9100[lang][0].unk4;
+                element->unk20 = gUnknown_080D9100[lang][0].unk6 + temp;
             } else {
-                unk80->unkA = gUnknown_080D9100[lang][3].unk4;
-                unk80->unk20 = gUnknown_080D9100[lang][3].unk6 + temp;
+                element->unkA = gUnknown_080D9100[lang][3].unk4;
+                element->unk20 = gUnknown_080D9100[lang][3].unk6 + temp;
             }
-            unk80->unk14 = 0;
-            unk80->unk1C = 0;
-            unk80->unk21 = 0xFF;
-            unk80->unk22 = 0x10;
-            unk80->unk25 = 0;
-            unk80->unk10 = 0x1000;
-            sub_8004558(unk80);
+            element->unk14 = 0;
+            element->unk1C = 0;
+            element->unk21 = 0xFF;
+            element->unk22 = 0x10;
+            element->unk25 = 0;
+            element->unk10 = 0x1000;
+            sub_8004558(element);
     
-            unk80 = &selectionResultsScreen->unk140[i];
-            unk80->unk16 = 0;
-            unk80->unk18 = 0x1F + (0x20 * i);
-            unk80->unk4 = (void*)(OBJ_VRAM0 + temp2);
-            unk80->unk1A = 0x400;
-            unk80->unk8 = 0;
-            unk80->unkA = gUnknown_080D9288[i].unk4;
-            unk80->unk20 = gUnknown_080D9288[i].unk6;
-            unk80->unk14 = 0;
-            unk80->unk1C = 0;
-            unk80->unk21 = 0xFF;
-            unk80->unk22 = 0x10;
-            unk80->unk25 = 0;
-            unk80->unk10 = 0x1000;
-            sub_8004558(unk80);
+            element = &resultsScreen->characterRows[i];
+            element->unk16 = 0;
+            element->unk18 = 0x1F + (0x20 * i);
+            element->unk4 = (void*)(OBJ_VRAM0 + temp2);
+            element->unk1A = 0x400;
+            element->unk8 = 0;
+            element->unkA = gUnknown_080D9288[i].unk4;
+            element->unk20 = gUnknown_080D9288[i].unk6;
+            element->unk14 = 0;
+            element->unk1C = 0;
+            element->unk21 = 0xFF;
+            element->unk22 = 0x10;
+            element->unk25 = 0;
+            element->unk10 = 0x1000;
+            sub_8004558(element);
         }
     }
 
-    if (param != 0) {
+    if (mode != MULTIPLAYER_RESULTS_MODE_CHARACTER_SELECTION) {
         m4aSongNumStart(MUS_VS_3);
     }
 }
 
-void sub_805C30C(void);
-
-void sub_805C0F0(void) {
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+static void sub_805C0F0(void) {
+    struct MultiplayerResultsScreen* selectionResultsScreen;
     u16* unk1884 = (u16*)gUnknown_03001884;
     gDispCnt |= 0x1800;
 
@@ -191,15 +194,15 @@ void sub_805C0F0(void) {
 
     selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
 
-    if ((selectionResultsScreen->unk200 += 0x400) > 0xF000) {
-        selectionResultsScreen->unk200 = 0;
+    if ((selectionResultsScreen->animStep += 0x400) > 0xF000) {
+        selectionResultsScreen->animStep = 0;
 
         gCurTask->main = sub_805C30C;
         sub_805C30C();
     } else {
         u32 i;
         u16 j, x;
-        u16 unk200 = selectionResultsScreen->unk200 >> 8; 
+        u16 unk200 = selectionResultsScreen->animStep >> 8; 
         gFlags |= 0x4;
         gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
@@ -237,27 +240,22 @@ void sub_805C0F0(void) {
     }
 }
 
-void sub_805C30C(void);
-void sub_805C3D0(void);
-void sub_805C69C(void);
-void sub_805C504(void);
-
-void sub_805C30C(void) {
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
+static void sub_805C30C(void) {
+    struct MultiplayerResultsScreen* selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
     bool32 somebool = FALSE;
 
-    if (selectionResultsScreen->unk203 == 1) {
-        if (selectionResultsScreen->unk200++ > 300) {
+    if (selectionResultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
+        if (selectionResultsScreen->animStep++ > 300) {
             somebool = TRUE;
         }
     } else {
-        if (selectionResultsScreen->unk200++ > 0x3C) {
+        if (selectionResultsScreen->animStep++ > 60) {
             somebool = TRUE;
         }
     }
 
     if (somebool) {
-        selectionResultsScreen->unk200 = 0;
+        selectionResultsScreen->animStep = 0;
         gBldRegs.bldCnt = 0xFF;
         m4aMPlayFadeOut(&gMPlayInfo_BGM, 0);
         m4aMPlayFadeOut(&gMPlayInfo_SE1, 0);
@@ -271,21 +269,19 @@ void sub_805C30C(void) {
     }
 }
 
-void sub_8087400(void);
+static void sub_805C3D0(void) {
+    struct MultiplayerResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask, resultsScreen);
+    resultsScreen->animStep += 0x200;
 
-void sub_805C3D0(void) {
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
-    selectionResultsScreen->unk200 += 0x200;
-
-    if (selectionResultsScreen->unk200 > 0x1000) {
-        selectionResultsScreen->unk200 = 0x1000;
+    if (resultsScreen->animStep > 0x1000) {
+        resultsScreen->animStep = 0x1000;
         gBldRegs.bldY = 0x10;
         gFlags &= ~0x4;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
-        if (selectionResultsScreen->unk203 == 1) {
+        if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
             sub_8087400();
         } else {
             if (gGameMode == 3) {
@@ -296,6 +292,9 @@ void sub_805C3D0(void) {
                     }
                 }
                 gGameMode = 3;
+
+                // TODO: show team play choice screen if numActivePlayers > 2
+                // with compiler flag enabled
                 sub_80346C8(0, gUnknown_030054D8, 0);
             } else if (gGameMode == 0 && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
@@ -307,15 +306,15 @@ void sub_805C3D0(void) {
         }
     } else {
         sub_805C504();
-        gBldRegs.bldY = selectionResultsScreen->unk200 >> 8;
+        gBldRegs.bldY = resultsScreen->animStep >> 8;
     }
 }
 
-void sub_805C504(void) {
+static void sub_805C504(void) {
     u32 i;
     u16 j, x;
 
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+    struct MultiplayerResultsScreen* selectionResultsScreen;
     u16* unk1884 = (u16*)gUnknown_03001884;
     
     // TODO: make macro or inline function
@@ -370,10 +369,10 @@ void sub_805C504(void) {
     }
 }
 
-void sub_805C69C(void) {
+static void sub_805C69C(void) {
     u32 i;
-    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
-    struct UNK_0808B3FC_UNK240* unk80;
+    struct MultiplayerResultsScreen* resultsScreen;
+    struct UNK_0808B3FC_UNK240* item;
 
     if (gGameMode > 2) {
         u32 i;
@@ -393,15 +392,15 @@ void sub_805C69C(void) {
         }
     }
 
-    selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
+    resultsScreen = TaskGetStructPtr(gCurTask, resultsScreen);
     
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gUnknown_030055B8, i)) {
-            unk80 = &selectionResultsScreen->unk140[i];
-            sub_80051E8(unk80);
-            if (selectionResultsScreen->unk203 == 1) {
-                unk80 = &selectionResultsScreen->unk80[i];
-                sub_80051E8(unk80);
+            item = &resultsScreen->characterRows[i];
+            sub_80051E8(item);
+            if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
+                item = &resultsScreen->resultRows[i];
+                sub_80051E8(item);
             }
         }
     }

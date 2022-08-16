@@ -47,6 +47,8 @@ u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
 u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 u32 gUnknown_03005434;
+
+// gMultiplayerConnections
 u8 gUnknown_030055B8;
 
 static void sub_805ADAC(void);

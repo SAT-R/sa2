@@ -37888,7 +37888,7 @@ _0801A2DA:
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
 	movs r0, #1
-	bl sub_805BDEC
+	bl CreateMultiplayerResultsScreen
 	b _0801A366
 	.align 2, 0
 _0801A31C: .4byte gUnknown_03005410
