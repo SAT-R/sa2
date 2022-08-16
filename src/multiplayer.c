@@ -370,36 +370,39 @@ void sub_805C504(void) {
     }
 }
 
-// void sub_805C69C(void) {
-//     u8 i;
-//     struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+void sub_805C69C(void) {
+    u32 i;
+    struct MultiplayerSelectionResultsScreen* selectionResultsScreen;
+    struct UNK_0808B3FC_UNK240* unk80;
 
-//     if (gGameMode > 2) {
-//         u32 i;
-//         for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-//             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-//                 if (gUnknown_030054D4[i]++ > 0xB4) {
-//                     TasksDestroyAll();
-//                     gUnknown_03002AE4 = gUnknown_0300287C;
-//                     gUnknown_03005390 = 0;
-//                     gUnknown_03004D5C = gUnknown_03002A84;
-//                     MultiPakCommunicationError();
-//                     return;
-//                 }
-//             } else {
-//                 gUnknown_030054D4[i] = 0;
-//             }
-//         }
-//     }
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 0xB4) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                }
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
 
-//     selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
-
-//     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-//         if (GetBit(gUnknown_030055B8, i)) {
-//             sub_80051E8(selectionResultsScreen->unk80[i]);
-//             if (selectionResultsScreen->unk203 == 1) {
-//                 sub_80051E8(selectionResultsScreen->unk140[i]);
-//             }
-//         }
-//     }
-// }
+    selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
+    
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+        if (GetBit(gUnknown_030055B8, i)) {
+            unk80 = &selectionResultsScreen->unk140[i];
+            sub_80051E8(unk80);
+            if (selectionResultsScreen->unk203 == 1) {
+                unk80 = &selectionResultsScreen->unk80[i];
+                sub_80051E8(unk80);
+            }
+        }
+    }
+}
