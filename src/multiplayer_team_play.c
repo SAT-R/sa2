@@ -13,6 +13,7 @@
 #include "constants/songs.h"
 #include "flags.h"
 #include "course_select.h"
+#include "trig.h"
 
 struct MultiplayerTeamPlayScreen {
     struct UNK_0808B3FC_UNK240 unk0[4];
@@ -23,8 +24,8 @@ struct MultiplayerTeamPlayScreen {
     struct Unk_03002400 unk250;
     struct Unk_03002400 unk290;
     struct Unk_03002400 unk2D0;
-    u16 unk310;
-    u16 unk312;
+    s16 unk310;
+    s16 unk312;
     u16 unk314;
     u8 unk316;
     u8 unk317;
@@ -38,7 +39,7 @@ void sub_805CB34(void);
 extern const struct UNK_080E0D64 gUnknown_080D92BC[4];
 extern const struct UNK_080E0D64 gUnknown_080D92DC[35];
 
-void sub_805C78C(void) {
+void CreateMultiplayerTeamPlayScreen(void) {
     struct Task* t;
     struct MultiplayerTeamPlayScreen* teamPlayScreen;
     struct UNK_0808B3FC_UNK240* element;
@@ -447,5 +448,29 @@ void sub_805CC34(void) {
         else
             msd->pat0.unk0 = 1;
         msd->pat0.unk2 = teamPlayScreen->unk316;
+    }
+}
+
+void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+    u16 i;
+    s16 unk312, unk310;
+    
+    u16* unk1884 = (u16*)gUnknown_03001884;
+    teamPlayScreen->unk314 = (teamPlayScreen->unk314 + 1) & 1023;
+    teamPlayScreen->unk310 += gSineTable[teamPlayScreen->unk314] >> 4;
+    teamPlayScreen->unk312 += gSineTable[teamPlayScreen->unk314 + 0x100] >> 4;
+
+    unk310 = teamPlayScreen->unk310 >> 8;
+    unk312 = teamPlayScreen->unk312 >> 8;
+
+    gFlags |= 0x4;
+    gUnknown_03002A80 = 4;
+    gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
+
+    for (i = 0; i < 160; i++) {
+        *unk1884 = (gSineTable[(gFrameCount + i * 4) & 1023] >> 0xB) + unk310;
+        unk1884++;
+        *unk1884 = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
+        unk1884++;
     }
 }
