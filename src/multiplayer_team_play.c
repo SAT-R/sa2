@@ -5,6 +5,14 @@
 #include "data.h"
 #include "task.h"
 #include "sprite.h"
+#include "multi_sio.h"
+#include "multiplayer_multipak_connection.h"
+#include "game.h"
+#include "input.h"
+#include "m4a.h"
+#include "constants/songs.h"
+#include "flags.h"
+#include "course_select.h"
 
 struct MultiplayerTeamPlayScreen {
     struct UNK_0808B3FC_UNK240 unk0[4];
@@ -20,7 +28,9 @@ struct MultiplayerTeamPlayScreen {
     u16 unk314;
     u8 unk316;
     u8 unk317;
-    u8 filler318[8];
+    u8 filler318[6];
+    u8 unk31E;
+    u8 filler31F;
 }; /* 0x320 */
 
 void sub_805CB34(void);
@@ -197,4 +207,245 @@ void sub_805C78C(void) {
     background->unk2A = 0;
     background->unk2E = 3;
     sub_8002A3C(background);
+}
+
+void sub_805CC34(void);
+
+void sub_805D118(struct MultiplayerTeamPlayScreen*);
+void sub_805D644(struct MultiplayerTeamPlayScreen*);
+
+void sub_805CB34(void) {
+    struct MultiplayerTeamPlayScreen* teamPlayScreen;
+
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 0xB4) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                }
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
+
+    teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
+    gWinRegs[5] = 0x3F;
+    gBldRegs.bldCnt = 0x3F48;
+    gBldRegs.bldAlpha = 0x810;
+    gWinRegs[2] = 0xA0;
+
+    if (gBgScrollRegs[1][1] < 0xA0) {
+        gBgScrollRegs[1][1] += 4;
+    } else {
+        gBgScrollRegs[1][1] = 0xA0;
+        gCurTask->main = sub_805CC34;
+    }
+
+    sub_805D118(teamPlayScreen);
+    sub_805D644(teamPlayScreen);
+}
+
+void sub_805D5C8(void);
+
+void sub_805CC34(void) {
+    u8 i, j;
+    u8 count;
+    struct Unk_03002400* background;
+    struct UNK_0808B3FC_UNK240* element;
+    struct MultiplayerTeamPlayScreen* teamPlayScreen;
+    union MultiSioData *msd;
+    gDispCnt |= 0x400;
+
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 0xB4) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                }
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
+
+    teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
+    
+    if (gMultiSioStatusFlags & MULTI_SIO_PARENT && !teamPlayScreen->unk317) {
+        if (gPressedKeys & DPAD_LEFT) {
+            if (teamPlayScreen->unk31E == 0) {
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+            }
+            teamPlayScreen->unk316 = 1;
+        } else {
+            if (gPressedKeys & DPAD_RIGHT) {
+                if (teamPlayScreen->unk31E != 0) {
+                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                }
+                teamPlayScreen->unk316 = 0;
+            }
+        }
+    }
+
+    count = 1;
+    for (i = 0; i < 4; i++) {
+        if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+            count++;
+            if (i == 0) {
+                msd = gMultiSioRecv;
+                if (teamPlayScreen->unk316 != msd->pat0.unk2) {
+                    m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+                }
+                teamPlayScreen->unk316 = msd->pat0.unk2;
+            }
+        }
+    }
+
+    if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+        if (gPressedKeys & A_BUTTON && teamPlayScreen->unk317 == 0) {
+            teamPlayScreen->unk317 = 1;
+            m4aSongNumStart(SE_SELECT);
+        } else if (teamPlayScreen->unk317 != 0) {
+            for (j = 1, i = 0; i < count; i++) {
+                if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+                    msd = &gMultiSioRecv[i];
+                    if (msd->pat0.unk0 > 1) j++;
+                }
+            }
+
+            if (count == j) {
+                if (teamPlayScreen->unk316 != 0) {
+                    struct Unk_03002400* background = &teamPlayScreen->unk290;
+
+                    gUnknown_03004D80[2] = 0;
+                    gUnknown_03002280[8] = 0;
+                    gUnknown_03002280[9] = 0;
+                    gUnknown_03002280[10] = 0xFF;
+                    gUnknown_03002280[11] = 32;
+
+                    background->unk4 = BG_SCREEN_ADDR(16);
+                    background->unkA = 0;
+                    background->unkC = BG_SCREEN_ADDR(22);
+                    background->unk18 = 0;
+                    background->unk1A = 0;
+                    background->unk1C = 0x7D;
+                    background->unk1E = 0;
+                    background->unk20 = 0;
+                    background->unk22 = 0;
+                    background->unk24 = 0;
+                    background->unk26 = 0x1E;
+                    background->unk28 = 7;
+                    background->unk2A = 0;
+                    background->unk2E = 3;
+                    sub_8002A3C(background);
+
+                    gMultiSioSend.pat0.unk0 = 0x4035;
+                    teamPlayScreen->unk317 = 0;
+                    gGameMode = 4;
+                    gCurTask->main = sub_805D5C8;
+                    return;
+                } else {
+                    TaskDestroy(gCurTask);
+                    gFlags &= ~0x4;
+                    gGameMode = 3;
+                    sub_80346C8(0, gUnknown_030054D8, 0);
+                    gMultiSioSend.pat0.unk0 = 0x4035;
+                    return;
+                }                
+            }
+        }
+    } else if ((msd = gMultiSioRecv)->pat0.unk0 == 1) {
+        m4aSongNumStart(SE_SELECT);
+        if (teamPlayScreen->unk316 != 0) {
+            background = &teamPlayScreen->unk290;
+            
+            gUnknown_03004D80[2] = 0;
+            gUnknown_03002280[8] = 0;
+            gUnknown_03002280[9] = 0;
+            gUnknown_03002280[10] = 0xFF;
+            gUnknown_03002280[11] = 32;
+
+            background->unk4 = BG_SCREEN_ADDR(16);
+            background->unkA = 0;
+            background->unkC = BG_SCREEN_ADDR(22);
+            background->unk18 = 0;
+            background->unk1A = 0;
+            background->unk1C = 0x7D;
+            background->unk1E = 0;
+            background->unk20 = 0;
+            background->unk22 = 0;
+            background->unk24 = 0;
+            background->unk26 = 0x1E;
+            background->unk28 = 7;
+            background->unk2A = 0;
+            background->unk2E = 3;
+            sub_8002A3C(background);
+
+            gMultiSioSend.pat0.unk0 = 0x4035;
+            teamPlayScreen->unk317 = 0;
+            gGameMode = 4;
+            gCurTask->main = sub_805D5C8;
+            return;
+        } else {
+            m4aSongNumStart(SE_SELECT);
+            TaskDestroy(gCurTask);
+            gFlags &= ~0x4;
+            gGameMode = 3;
+            sub_80346C8(0, gUnknown_030054D8, 0);
+            return;
+        }
+    }
+    sub_805D118(teamPlayScreen);
+    sub_805D644(teamPlayScreen);
+
+    element = &teamPlayScreen->unkC0[0];
+    element->unk16 = 0x78;
+    element->unk18 = 0x1C;
+    sub_80051E8(element);
+    
+    element = &teamPlayScreen->unkC0[2];
+    element->unk16 = 0x46;
+    element->unk18 = 0x34;
+    if (teamPlayScreen->unk316 != 0) {
+        element->unk25 = 0;
+    } else {
+        element->unk25 = 0xFF;
+    }
+    sub_80051E8(element);
+
+    element = &teamPlayScreen->unkC0[3];
+    element->unk16 = 0xAA;
+    element->unk18 = 0x34;
+    if (teamPlayScreen->unk316 != 0) {
+        element->unk25 = 0;
+    } else {
+        element->unk25 = 1;
+    }
+    sub_80051E8(element);
+
+    element = &teamPlayScreen->unkC0[4];
+    element->unk16 = 0x78;
+    element->unk18 = 0x34;
+    sub_80051E8(element);
+
+    if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+        union MultiSioData *msd = &gMultiSioSend;
+        if (!teamPlayScreen->unk317)
+            msd->pat0.unk0 = 0;
+        else
+            msd->pat0.unk0 = 1;
+        msd->pat0.unk2 = teamPlayScreen->unk316;
+    }
 }
