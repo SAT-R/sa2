@@ -31,7 +31,7 @@ struct MultiplayerTeamPlayScreen {
     u8 unk317;
     u8 filler318[6];
     u8 unk31E;
-    u8 filler31F;
+    u8 unk31F;
 }; /* 0x320 */
 
 void sub_805CB34(void);
@@ -472,5 +472,161 @@ void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
         unk1884++;
         *unk1884 = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
         unk1884++;
+    }
+}
+
+extern const u8 gUnknown_080D92B8[2];
+extern const u8 gUnknown_080D92BA[2];
+
+void sub_805D610(void);
+
+void sub_805D1F8(void) {
+    s32 i;
+    u8 count;
+    bool8 someVar = TRUE;
+    u8 pos[2] = { 0, 0 };
+    struct MultiplayerTeamPlayScreen* teamPlayScreen;
+    struct UNK_0808B3FC_UNK240* element;
+    union MultiSioData* packet;
+
+    teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
+    if (teamPlayScreen->unk31F == 0) {
+        if (gRepeatedKeys & DPAD_RIGHT) {
+            if (teamPlayScreen->unk31E == 0) {
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+            }
+            teamPlayScreen->unk31E = 1;
+        } else if (gRepeatedKeys & DPAD_LEFT) {
+            if (teamPlayScreen->unk31E == 1) {
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+            }
+            teamPlayScreen->unk31E = 0;
+        }
+    }
+
+    if (gGameMode > 2) {
+        u32 i;
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
+            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
+                if (gUnknown_030054D4[i]++ > 0xB4) {
+                    TasksDestroyAll();
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gUnknown_03004D5C = gUnknown_03002A84;
+                    MultiPakCommunicationError();
+                    return;
+                }
+            } else {
+                gUnknown_030054D4[i] = 0;
+            }
+        }
+    }
+
+    element = &teamPlayScreen->unkC0[1];
+    element->unk16 = 0x78;
+    element->unk18 = 0x1C;
+    sub_80051E8(element);
+
+    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+        packet = &gMultiSioRecv[i];
+        
+        if (i == 0) {
+            element = &teamPlayScreen->unk1B0;
+            sub_8004558(element);
+        }
+
+
+        if (packet->pat0.unk0 == 0x4040 || packet->pat0.unk0 == 0x4041) {
+            if (packet->pat0.unk0 != 0x4041) {
+                element = &teamPlayScreen->unk0[i];
+                element->unk18 = (i * 0x18) + 0x40;
+                element->unk16 = gUnknown_080D92B8[packet->pat0.unk2];
+                sub_80051E8(element);
+                
+                element = &teamPlayScreen->unk1B0;
+                element->unk18 = (i * 0x18) + 0x40;
+                element->unk16 = gUnknown_080D92BA[packet->pat0.unk2];
+
+                if (packet->pat0.unk2 == 0) {
+                    element->unk10 &= ~0x400;
+                    gUnknown_030055B8 &= ~(0x10 << (i));
+                } else {
+                    element->unk10 |= 0x400;
+                    gUnknown_030055B8 |= (0x10 << (i));
+                }
+                sub_80051E8(element);
+                someVar = FALSE;
+            } else {
+                s16 a;
+                element = &teamPlayScreen->unk0[i];
+                sub_80051E8(element);
+                a = element->unk16;
+
+                if (a == gUnknown_080D92B8[0]) {
+                    pos[0]++;
+                } else {
+                    pos[1]++;
+                }
+            }
+        } else {
+            someVar = FALSE;
+        }
+        
+    }
+    count = i;
+
+    if (someVar) {
+        if (pos[0] == 0 || pos[1] == 0) {
+            teamPlayScreen->unk31F = 0;
+        } else {
+            gCurTask->main = sub_805D610;
+            return;
+        }
+    }
+
+    sub_805D118(teamPlayScreen);
+
+    if (gPressedKeys & B_BUTTON) {
+        m4aSongNumStart(SE_RETURN);
+        teamPlayScreen->unk31F = 0;
+    }
+
+    if (
+        (
+            (!(gInput & (DPAD_LEFT | DPAD_RIGHT)) && (gPressedKeys & A_BUTTON)) 
+            && 
+            (
+                (teamPlayScreen->unk31E == 0 && (count - 1) != pos[0]) 
+                || 
+                (teamPlayScreen->unk31E == 1 && (count - 1) != pos[1])
+            )
+        ) || 
+            teamPlayScreen->unk31F != 0
+    ) {
+        if (teamPlayScreen->unk31F == 0) {
+            m4aSongNumStart(SE_SELECT);
+        }
+        packet = &gMultiSioSend;
+        gMultiSioSend.pat0.unk0 = 0x4041;
+        gMultiSioSend.pat0.unk2 = teamPlayScreen->unk31E;
+        teamPlayScreen->unk31F = 1;
+    } else {
+        packet = &gMultiSioSend;
+        packet->pat0.unk0 = 0x4040;
+        packet->pat0.unk2 = teamPlayScreen->unk31E;
+    }
+
+    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+        if (SIO_MULTI_CNT->id != i) {
+            packet = &gMultiSioRecv[i];
+            if (packet->pat0.unk0 > 0x4041) {
+                TasksDestroyAll();
+                gUnknown_03002AE4 = gUnknown_0300287C;
+                gUnknown_03005390 = 0;
+                gUnknown_03004D5C = gUnknown_03002A84;
+                MultiPakCommunicationError();
+                return;
+            }
+        }
     }
 }
