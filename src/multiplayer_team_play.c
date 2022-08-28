@@ -630,3 +630,31 @@ void sub_805D1F8(void) {
         }
     }
 }
+
+void sub_805D5C8(void) {
+    struct MultiplayerTeamPlayScreen* teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
+    teamPlayScreen->unk31E = SIO_MULTI_CNT->id & 1;
+    teamPlayScreen->unk31F = 0;
+    gCurTask->main = sub_805D1F8;
+    sub_805D1F8();
+}
+
+void sub_805D610(void) {
+    TaskDestroy(gCurTask);
+    gFlags &= ~0x4;
+    sub_80346C8(0, gUnknown_030054D8, 0);
+}
+
+void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+    u8 i;
+    struct UNK_0808B3FC_UNK240* element;
+    
+    for (i = 0; i < 4; i++) {
+        if (GetBit(gUnknown_030055B8, i)) {
+            element = &teamPlayScreen->unk0[i];
+            element->unk16 = gUnknown_080D92B8[i & 1];
+            element->unk18 = i * 0x18 + 0x40;
+            sub_80051E8(element);
+        }
+    }
+}
