@@ -56,7 +56,7 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     gBldRegs.bldCnt = 0xBF;
     gBldRegs.bldY = 0x10;
 
-    t = TaskCreate(sub_805BC40, 0x21C, 0x2000, 0, NULL);
+    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
     outcomeScreen = TaskGetStructPtr(t, outcomeScreen);
 
     outcomeScreen->unk203 = outcome;

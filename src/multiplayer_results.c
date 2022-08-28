@@ -75,7 +75,7 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     gUnknown_03002280[15] = 0x40;
 
     DmaFill32(3, 0, (void*)VRAM + 0x9fe0, 0x40);
-    t = TaskCreate(sub_805C0F0, 0x208, 0x2000, 0, NULL);
+    t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0, NULL);
     resultsScreen = TaskGetStructPtr(t, resultsScreen);
 
     resultsScreen->animStep = 0;

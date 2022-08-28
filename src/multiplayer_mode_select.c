@@ -103,7 +103,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(Task_FadeInAndStartEnterAnim, 0x150, 0x2000, 0, MultiplayerModeSelectScreenOnDestroy);
+    t = TaskCreate(Task_FadeInAndStartEnterAnim, sizeof(struct MultiplayerModeSelectScreen), 0x2000, 0, MultiplayerModeSelectScreenOnDestroy);
     modeScreen = TaskGetStructPtr(t, modeScreen);
     modeScreen->animFrame = 0;
     modeScreen->pakMode = PAK_MODE_MULTI;
