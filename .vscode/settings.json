@@ -41,7 +41,8 @@
         "random": "c",
         "multiplayer.h": "c",
         "malloc_vram.h": "c",
-        "multiplayer_multipak_connection.h": "c"
+        "multiplayer_multipak_connection.h": "c",
+        "multiplayer_team_play.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

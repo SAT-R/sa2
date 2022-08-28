@@ -34,10 +34,17 @@ struct MultiplayerTeamPlayScreen {
     u8 unk31F;
 }; /* 0x320 */
 
-void sub_805CB34(void);
 
 extern const struct UNK_080E0D64 gUnknown_080D92BC[4];
 extern const struct UNK_080E0D64 gUnknown_080D92DC[35];
+
+static void sub_805CB34(void);
+static void sub_805CC34(void);
+
+static void sub_805D118(struct MultiplayerTeamPlayScreen*);
+static void sub_805D644(struct MultiplayerTeamPlayScreen*);
+
+static void sub_805D5C8(void);
 
 void CreateMultiplayerTeamPlayScreen(void) {
     struct Task* t;
@@ -78,7 +85,7 @@ void CreateMultiplayerTeamPlayScreen(void) {
     gUnknown_03002280[10] = 0xff;
     gUnknown_03002280[11] = 32;
 
-    t = TaskCreate(sub_805CB34, 0x320, 0x3000, 0, NULL);
+    t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0, NULL);
     teamPlayScreen = TaskGetStructPtr(t, teamPlayScreen);
     teamPlayScreen->unk310 = 0;
     teamPlayScreen->unk312 = 0;
@@ -210,31 +217,10 @@ void CreateMultiplayerTeamPlayScreen(void) {
     sub_8002A3C(background);
 }
 
-void sub_805CC34(void);
-
-void sub_805D118(struct MultiplayerTeamPlayScreen*);
-void sub_805D644(struct MultiplayerTeamPlayScreen*);
-
-void sub_805CB34(void) {
+static void sub_805CB34(void) {
     struct MultiplayerTeamPlayScreen* teamPlayScreen;
 
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
     gWinRegs[5] = 0x3F;
@@ -253,9 +239,8 @@ void sub_805CB34(void) {
     sub_805D644(teamPlayScreen);
 }
 
-void sub_805D5C8(void);
 
-void sub_805CC34(void) {
+static void sub_805CC34(void) {
     u8 i, j;
     u8 count;
     struct Unk_03002400* background;
@@ -264,23 +249,7 @@ void sub_805CC34(void) {
     union MultiSioData *msd;
     gDispCnt |= 0x400;
 
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
     
@@ -367,45 +336,48 @@ void sub_805CC34(void) {
                 }                
             }
         }
-    } else if ((msd = gMultiSioRecv)->pat0.unk0 == 1) {
-        m4aSongNumStart(SE_SELECT);
-        if (teamPlayScreen->unk316 != 0) {
-            background = &teamPlayScreen->unk290;
-            
-            gUnknown_03004D80[2] = 0;
-            gUnknown_03002280[8] = 0;
-            gUnknown_03002280[9] = 0;
-            gUnknown_03002280[10] = 0xFF;
-            gUnknown_03002280[11] = 32;
-
-            background->unk4 = BG_SCREEN_ADDR(16);
-            background->unkA = 0;
-            background->unkC = BG_SCREEN_ADDR(22);
-            background->unk18 = 0;
-            background->unk1A = 0;
-            background->unk1C = 0x7D;
-            background->unk1E = 0;
-            background->unk20 = 0;
-            background->unk22 = 0;
-            background->unk24 = 0;
-            background->unk26 = 0x1E;
-            background->unk28 = 7;
-            background->unk2A = 0;
-            background->unk2E = 3;
-            sub_8002A3C(background);
-
-            gMultiSioSend.pat0.unk0 = 0x4035;
-            teamPlayScreen->unk317 = 0;
-            gGameMode = 4;
-            gCurTask->main = sub_805D5C8;
-            return;
-        } else {
+    } else {
+        msd = &gMultiSioRecv[0];
+        if (msd->pat0.unk0 == 1) {
             m4aSongNumStart(SE_SELECT);
-            TaskDestroy(gCurTask);
-            gFlags &= ~0x4;
-            gGameMode = 3;
-            sub_80346C8(0, gUnknown_030054D8, 0);
-            return;
+            if (teamPlayScreen->unk316 != 0) {
+                background = &teamPlayScreen->unk290;
+                
+                gUnknown_03004D80[2] = 0;
+                gUnknown_03002280[8] = 0;
+                gUnknown_03002280[9] = 0;
+                gUnknown_03002280[10] = 0xFF;
+                gUnknown_03002280[11] = 32;
+
+                background->unk4 = BG_SCREEN_ADDR(16);
+                background->unkA = 0;
+                background->unkC = BG_SCREEN_ADDR(22);
+                background->unk18 = 0;
+                background->unk1A = 0;
+                background->unk1C = 0x7D;
+                background->unk1E = 0;
+                background->unk20 = 0;
+                background->unk22 = 0;
+                background->unk24 = 0;
+                background->unk26 = 0x1E;
+                background->unk28 = 7;
+                background->unk2A = 0;
+                background->unk2E = 3;
+                sub_8002A3C(background);
+
+                gMultiSioSend.pat0.unk0 = 0x4035;
+                teamPlayScreen->unk317 = 0;
+                gGameMode = GAME_MODE_TEAM_PLAY;
+                gCurTask->main = sub_805D5C8;
+                return;
+            } else {
+                m4aSongNumStart(SE_SELECT);
+                TaskDestroy(gCurTask);
+                gFlags &= ~0x4;
+                gGameMode = GAME_MODE_MULTI_PLAYER;
+                sub_80346C8(0, gUnknown_030054D8, 0);
+                return;
+            }
         }
     }
     sub_805D118(teamPlayScreen);
@@ -451,7 +423,7 @@ void sub_805CC34(void) {
     }
 }
 
-void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+static void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
     u16 i;
     s16 unk312, unk310;
     
@@ -504,23 +476,7 @@ void sub_805D1F8(void) {
         }
     }
 
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     element = &teamPlayScreen->unkC0[1];
     element->unk16 = 0x78;
@@ -631,7 +587,7 @@ void sub_805D1F8(void) {
     }
 }
 
-void sub_805D5C8(void) {
+static void sub_805D5C8(void) {
     struct MultiplayerTeamPlayScreen* teamPlayScreen = TaskGetStructPtr(gCurTask, teamPlayScreen);
     teamPlayScreen->unk31E = SIO_MULTI_CNT->id & 1;
     teamPlayScreen->unk31F = 0;
@@ -645,7 +601,7 @@ void sub_805D610(void) {
     sub_80346C8(0, gUnknown_030054D8, 0);
 }
 
-void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+static void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
     

@@ -6,6 +6,7 @@
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
+#define GAME_MODE_TEAM_PLAY 4
 
 #include "global.h"
 

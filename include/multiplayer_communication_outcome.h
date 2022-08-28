@@ -6,6 +6,6 @@
 #define OUTCOME_CONNECTION_SUCCESS 0
 #define OUTCOME_CONNECTION_ERROR 1
 
-void sub_805BA10(u8 outcome);
+void CreateMultipackOutcomeScreen(u8 outcome);
 
 #endif // GUARD_MULTIPLAYER_COMMUNICATION_OUTCOME_H

@@ -14,6 +14,10 @@
 #include "zones.h"
 #include "course_select.h"
 
+#ifdef TEAMPLAY_AVAILABLE
+#include "multiplayer_team_play.h"
+#endif
+
 struct MultiplayerResultsScreen {
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
@@ -174,23 +178,7 @@ static void sub_805C0F0(void) {
     u16* unk1884 = (u16*)gUnknown_03001884;
     gDispCnt |= 0x1800;
 
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
 
@@ -293,15 +281,21 @@ static void sub_805C3D0(void) {
                 }
                 gGameMode = 3;
 
-                // TODO: show team play choice screen if numActivePlayers > 2
-                // with compiler flag enabled
-                sub_80346C8(0, gUnknown_030054D8, 0);
+#ifdef TEAMPLAY_AVAILABLE
+            CreateMultiplayerResultsScreen();
+#else
+            sub_80346C8(0, gUnknown_030054D8, 0);
+#endif
             } else if (gGameMode == 0 && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
                 sub_801A770();
                 return;
             } else {
+#ifdef TEAMPLAY_AVAILABLE
+                CreateMultiplayerResultsScreen();
+#else
                 sub_80346C8(0, gLoadedSaveGame->unk7[gSelectedCharacter], 0);
+#endif
             }
         }
     } else {
@@ -316,25 +310,7 @@ static void sub_805C504(void) {
 
     struct MultiplayerResultsScreen* selectionResultsScreen;
     u16* unk1884 = (u16*)gUnknown_03001884;
-    
-    // TODO: make macro or inline function
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     selectionResultsScreen = TaskGetStructPtr(gCurTask, selectionResultsScreen);
     gFlags |= 0x4;
@@ -374,23 +350,7 @@ static void sub_805C69C(void) {
     struct MultiplayerResultsScreen* resultsScreen;
     struct UNK_0808B3FC_UNK240* item;
 
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 0xB4) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                }
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
 
     resultsScreen = TaskGetStructPtr(gCurTask, resultsScreen);
     

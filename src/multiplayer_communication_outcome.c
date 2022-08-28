@@ -37,7 +37,7 @@ extern const u16 gUnknown_080D9088[2];
 extern const u8 gUnknown_080D908C[2];
 extern const struct UNK_080E0D64 gUnknown_080D9090[14];
 
-void sub_805BA10(u8 outcome) {
+void CreateMultipackOutcomeScreen(u8 outcome) {
     u8 i;
     u8 count;
     struct Task* t;

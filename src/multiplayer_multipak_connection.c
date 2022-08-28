@@ -55,9 +55,6 @@ static void sub_805ADAC(void);
 static void sub_805B4C0(void);
 static void sub_805B454(void);
 
-// CreateConnectionStateScreen
-extern void sub_805BA10(u8);
-
 extern const struct UNK_080E0D64 gUnknown_080D9050[7];
 
 void StartMultiPakConnect(void) {
@@ -478,28 +475,12 @@ static void sub_805B4C0(void) {
     u8 recv2;
     s32 count = 0;
     struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
-    if (gGameMode > 2) {
-        u32 i;
-        for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) {
-            if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {
-                if (gUnknown_030054D4[i]++ > 180) {
-                    TasksDestroyAll();
-                    gUnknown_03002AE4 = gUnknown_0300287C;
-                    gUnknown_03005390 = 0;
-                    gUnknown_03004D5C = gUnknown_03002A84;
-                    MultiPakCommunicationError();
-                    return;
-                };
-            } else {
-                gUnknown_030054D4[i] = 0;
-            }
-        }
-    }
+    MultiPakHeartbeat();
     recv = &gMultiSioRecv[0].pat0;
     recv2 = recv->unk2;
 
     if (recv->unk0 == 0x4012) {
-        if (!((recv2 >> SIO_MULTI_CNT->id) & 1)) {
+        if (!GetBit(recv2, SIO_MULTI_CNT->id)) {
             gMultiSioEnabled = FALSE;
             MultiSioStop();
             MultiSioInit(0);
@@ -557,7 +538,7 @@ static void sub_805B4C0(void) {
         }
         WriteSaveGame();
         TaskDestroy(gCurTask);
-        sub_805BA10(OUTCOME_CONNECTION_SUCCESS);
+        CreateMultipackOutcomeScreen(OUTCOME_CONNECTION_SUCCESS);
         return;
     } 
     if (recv->unk0 == 0x4010) {
@@ -686,5 +667,5 @@ void MultiPakCommunicationError(void) {
     gUnknown_030054D4[1] = 0;
     gUnknown_030054D4[2] = 0;
     gUnknown_030054D4[3] = 0;
-    sub_805BA10(OUTCOME_CONNECTION_ERROR);
+    CreateMultipackOutcomeScreen(OUTCOME_CONNECTION_ERROR);
 }
