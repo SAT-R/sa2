@@ -31,9 +31,7 @@ extern u16 gUnknown_03005398;
 extern s16 gUnknown_030026D0;
 extern u32 gUnknown_030053B8;
 
-
-extern u16 gUnknown_03001888;
-extern u32 gUnknown_03001940;
+extern void* gUnknown_03001940;
 
 extern u32 gUnknown_0203B000;
 

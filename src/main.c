@@ -202,7 +202,7 @@ static void GameInit(void) {
     EwramInitHeap();
 
     gUnknown_03001888 = 0x230;
-    gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
+    gUnknown_03001940 = (void*)(BG_VRAM + BG_VRAM_SIZE + 0x3a00);
     sub_8007CC8();
 
     errorIdentifying = IdentifyFlash();
