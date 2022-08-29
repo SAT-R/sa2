@@ -1534,7 +1534,7 @@ static void CreateBirdAnimation(u16 p1, s16 p2, u16 startStep, u16 p4, u16 p5) {
     struct Task* t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation* animation = TaskGetStructPtr(t, animation);
 
-    animation->sprite.unk4 = sub_8007C10(3);
+    animation->sprite.unk4 = VramMalloc(3);
     animation->sprite.unkA = 0x33F;
     animation->sprite.unk20 = 0;
     animation->sprite.unk21 = 0xFF;
@@ -1662,7 +1662,7 @@ static void CreateLensFlareAnimation(void) {
         sprite = &lensFlare->sprites[i];
         config180 = &lensFlare->unk180[i];
         
-        sprite->unk4 = sub_8007C10(0x40);
+        sprite->unk4 = VramMalloc(0x40);
 
         sprite->unkA = 0x340;
         sprite->unk20 = sLensFlareSizes[i];
@@ -1917,7 +1917,7 @@ static void ShowGameLogo(struct TitleScreen* _) {
 
 static void BirdAnimEnd(void) {
     struct BirdAnimation* animation = TaskGetStructPtr(gCurTask, animation);
-    sub_8007CF0(animation->sprite.unk4);
+    VramFree(animation->sprite.unk4);
     TaskDestroy(gCurTask);
 }
 
@@ -1945,7 +1945,7 @@ static void LensFlareAnimEnd(void) {
     
     u32 i;
     for (i = 0; i < 8; i++) {
-        sub_8007CF0(lensFlare->sprites[i].unk4);
+        VramFree(lensFlare->sprites[i].unk4);
     }
 
     TaskDestroy(gCurTask);

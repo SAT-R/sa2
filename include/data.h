@@ -43,9 +43,9 @@ extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03002280[16];
 extern u8 gUnknown_03004D80[16];
 
-extern u16 gUnknown_03001888;
+extern u16 gVramMaxEntities;
 
-extern void* gUnknown_03001940;
+extern u32 gVramHeapStartAddr;
 
 extern u16 gObjPalette[0x100];
 extern u16 gBgPalette[0x100];

@@ -201,9 +201,9 @@ static void GameInit(void) {
     TasksInit();
     EwramInitHeap();
 
-    gUnknown_03001888 = 0x230;
-    gUnknown_03001940 = (void*)(BG_VRAM + BG_VRAM_SIZE + 0x3a00);
-    sub_8007CC8();
+    gVramMaxEntities = 560;
+    gVramHeapStartAddr = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
+    VramResetHeap();
 
     errorIdentifying = IdentifyFlash();
     if (errorIdentifying) {

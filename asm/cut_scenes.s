@@ -108,7 +108,7 @@ sub_808DBA4: @ 0x0808DBA4
 	adds r0, r0, r6
 	ldr r0, [r0]
 	str r3, [sp, #0x3c]
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r7, #4]
 	adds r0, r4, #1
 	lsls r0, r0, #2
@@ -183,7 +183,7 @@ _0808DD16:
 	mov r7, sl
 	adds r7, #0x34
 	movs r0, #6
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r7, #4]
 	movs r1, #0
 	movs r0, #0xea
@@ -349,9 +349,9 @@ _0808DE34:
 	movs r0, #0x52
 	strh r0, [r1]
 	ldr r0, [r5, #8]
-	bl sub_8007CF0
+	bl VramFree
 	movs r0, #0x19
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r6, #4]
 	movs r0, #0x82
 	strh r0, [r6, #0xa]
@@ -560,9 +560,9 @@ _0808E006:
 	cmp r0, #0
 	bne _0808E052
 	ldr r0, [r5, #8]
-	bl sub_8007CF0
+	bl VramFree
 	movs r0, #0x24
-	bl sub_8007C10
+	bl VramMalloc
 	mov r1, r8
 	str r0, [r1, #4]
 	movs r0, #0xdf
@@ -1579,11 +1579,11 @@ sub_808E890: @ 0x0808E890
 	lsls r0, r0, #0x12
 	adds r4, r4, r0
 	ldr r0, [r4, #8]
-	bl sub_8007CF0
+	bl VramFree
 	ldr r0, [r4, #0x38]
 	cmp r0, #0
 	beq _0808E8AA
-	bl sub_8007CF0
+	bl VramFree
 _0808E8AA:
 	pop {r4}
 	pop {r0}

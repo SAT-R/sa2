@@ -242,7 +242,7 @@ _08085FF4:
 	mov r8, r1
 	str r1, [r7, #0x10]
 	movs r0, #0x10
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r7, #4]
 	movs r0, #0xb5
 	lsls r0, r0, #2
@@ -279,7 +279,7 @@ _08085FF4:
 	mov r1, r8
 	str r1, [r7, #0x10]
 	movs r0, #4
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r7, #4]
 	ldr r2, _08086164 @ =gUnknown_080E02AA
 	ldrb r0, [r6]
@@ -1149,9 +1149,9 @@ sub_80867E8: @ 0x080867E8
 	lsls r0, r0, #0x12
 	adds r4, r4, r0
 	ldr r0, [r4, #0x10]
-	bl sub_8007CF0
+	bl VramFree
 	ldr r0, [r4, #0x40]
-	bl sub_8007CF0
+	bl VramFree
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -1445,7 +1445,7 @@ _08086A20:
 	mov r1, r8
 	adds r4, r1, r0
 	movs r0, #0xa
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r4, #4]
 	mov r0, sb
 	strh r0, [r4, #0xa]
@@ -1788,7 +1788,7 @@ _08086CC6:
 	lsls r0, r0, #4
 	adds r0, r5, r0
 	ldr r0, [r0]
-	bl sub_8007CF0
+	bl VramFree
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18

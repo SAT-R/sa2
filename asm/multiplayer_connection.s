@@ -3266,7 +3266,7 @@ sub_8082D44: @ 0x08082D44
 	cmp r0, #5
 	bne _08082DB6
 	movs r0, #9
-	bl sub_8007C10
+	bl VramMalloc
 	str r0, [r4, #4]
 	ldr r0, _08082E28 @ =0x000002D9
 	strh r0, [r4, #0xa]
@@ -3312,7 +3312,7 @@ _08082DD2:
 	cmp r5, #0
 	bne _08082E40
 	movs r0, #0x16
-	bl sub_8007C10
+	bl VramMalloc
 	b _08082E48
 	.align 2, 0
 _08082E08: .4byte sub_808328C
@@ -3905,9 +3905,9 @@ sub_80832E0: @ 0x080832E0
 	lsls r0, r0, #0x12
 	adds r4, r4, r0
 	ldr r0, [r4, #4]
-	bl sub_8007CF0
+	bl VramFree
 	ldr r0, [r4, #0x34]
-	bl sub_8007CF0
+	bl VramFree
 	pop {r4}
 	pop {r0}
 	bx r0

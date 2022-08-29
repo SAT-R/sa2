@@ -119,7 +119,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     sub_802D4CC(unk140);
 
     unk80 = &modeScreen->unk80;
-    unk80->unk4 = sub_8007C10(0x32);
+    unk80->unk4 = VramMalloc(0x32);
     unk80->unkA = 0x431;
     unk80->unk20 = 0;
     unk80->unk21 = 0xFF;
@@ -136,7 +136,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     sub_8004558(unk80);
 
     unk80 = &modeScreen->unkB0;
-    unk80->unk4 = sub_8007C10(sMultiplayerModeSelectScreenText[lang].unk0);
+    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang].unk0);
     unk80->unkA = sMultiplayerModeSelectScreenText[lang].unk4;
     unk80->unk20 = sMultiplayerModeSelectScreenText[lang].unk6;
     unk80->unk21 = 0xFF;
@@ -154,7 +154,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     sub_8004558(unk80);
 
     unk80 = &modeScreen->unkE0;
-    unk80->unk4 = sub_8007C10(sMultiplayerModeSelectScreenText[lang + 1].unk0);
+    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].unk0);
     unk80->unkA = sMultiplayerModeSelectScreenText[lang + 1].unk4;
     unk80->unk20 = sMultiplayerModeSelectScreenText[lang + 1].unk6;
     unk80->unk21 = 0xFF;
@@ -172,7 +172,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     sub_8004558(unk80);
 
     unk80 = &modeScreen->subText;
-    unk80->unk4 = sub_8007C10(sMultiplayerModeSelectScreenText[lang + 2].unk0);
+    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].unk0);
     unk80->unkA = sMultiplayerModeSelectScreenText[lang + 2].unk4;
     unk80->unk20 = sMultiplayerModeSelectScreenText[lang + 2].unk6;
     unk80->unk21 = 0xFF;
@@ -442,8 +442,8 @@ static void RenderUI(struct MultiplayerModeSelectScreen* modeScreen) {
 
 static void MultiplayerModeSelectScreenOnDestroy(struct Task* t) {
     struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(t, modeScreen);
-    sub_8007CF0(modeScreen->unk80.unk4);
-    sub_8007CF0(modeScreen->unkB0.unk4);
-    sub_8007CF0(modeScreen->unkE0.unk4);
-    sub_8007CF0(modeScreen->subText.unk4);
+    VramFree(modeScreen->unk80.unk4);
+    VramFree(modeScreen->unkB0.unk4);
+    VramFree(modeScreen->unkE0.unk4);
+    VramFree(modeScreen->subText.unk4);
 }
