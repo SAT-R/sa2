@@ -102,12 +102,14 @@ void CreateMultiplayerTeamPlayScreen(void) {
         lang = LANG_JAPANESE;
     }
 
+    // TODO: make this a macro
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
     gUnknown_030054D4[3] = 0;
     gUnknown_030054D4[2] = 0;
     gUnknown_030054D4[1] = 0;
     gUnknown_030054D4[0] = 0;
+
     gDispCnt = 0x1B00;
     gDispCnt |= 0x40;
     gBgCntRegs[3] = 0x1e0d;
