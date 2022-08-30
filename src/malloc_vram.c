@@ -37,10 +37,10 @@ void VramResetHeapState(void) {
 }
 
 void VramFree(void* addr) {
-    u32 segmentId;
+    u16 segmentId;
+
     if (ewram_end != addr) {
-        // (addr - gVramHeapStartAddr) / VRAM_HEAP_SEGMENT_SIZE;
-        segmentId = ((u32)(addr - gVramHeapStartAddr) * 0x200) >> 0x10;
+        segmentId = (u32)(addr - gVramHeapStartAddr) / VRAM_HEAP_SEGMENT_SIZE;
         sVramHeapState[segmentId] = 0;
     }
 }
