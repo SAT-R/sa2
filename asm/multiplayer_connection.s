@@ -1470,7 +1470,7 @@ sub_8081EC0: @ 0x08081EC0
 	lsls r2, r2, #6
 	adds r0, r4, #0
 	bl CpuFastSet
-	ldr r4, _08081F80 @ =gUnknown_02033000
+	ldr r4, _08081F80 @ =EWRAM_START + 0x33000
 	movs r2, #0xd0
 	lsls r2, r2, #6
 	adds r0, r5, #0
@@ -1511,7 +1511,7 @@ _08081F70: .4byte gMultiSioEnabled
 _08081F74: .4byte gFlags
 _08081F78: .4byte 0xFFFFBFFF
 _08081F7C: .4byte gGameMode
-_08081F80: .4byte gUnknown_02033000
+_08081F80: .4byte EWRAM_START + 0x33000
 _08081F84: .4byte gUnknown_03002260
 _08081F88: .4byte gUnknown_030053EC
 _08081F8C: .4byte gLoadedSaveGame

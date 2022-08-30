@@ -12,14 +12,4 @@
 
 /* ewram_malloc */
 . = 0x00002650; gEwramHeap = .;
-. = 0x000226D0; gUnknown_020226D0 = .;
-
-. = 0x00033000; gUnknown_02033000 = .;
-. = 0x00033004; gUnknown_02033004 = .;
-. = 0x00033008; gUnknown_02033008 = .;
-. = 0x0003300C; gUnknown_0203300C = .;
-
-/* relates to code just after main.c */
-. = 0x0003B000; gUnknown_0203B000 = .;
-. = 0x0003F000; gUnknown_0203F000 = .;
-
+. = 0x000226D0; ewram_end = .;

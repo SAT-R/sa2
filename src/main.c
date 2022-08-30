@@ -75,7 +75,7 @@ static void GameInit(void) {
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
         gFlags = 0x200;
-        DmaSet(3, (void*)OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
+        DmaSet(3, (void*)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
     }
 
     // Skip the intro if these
@@ -163,12 +163,8 @@ static void GameInit(void) {
     }
 
     gInputRecorder.mode = RECORDER_DISABLED;
-    // This matches better when the params are inlined
-    asm("" ::: "sb");
     gPhysicalInput = 0;
     gInputPlaybackData = NULL;
-    asm("" ::: "sl");
-
     gFrameCount = 0;
 
     for (i = 0; i < 15; i++) {
@@ -200,10 +196,13 @@ static void GameInit(void) {
 
     TasksInit();
     EwramInitHeap();
+    
+    // 140 / 256 max useable segments
+    gVramHeapMaxTileSlots = 140 * VRAM_TILE_SLOTS_PER_SEGMENT;
+    // Would be good to know where this number comes from
+    gVramHeapStartAddr = OBJ_VRAM1 - (TILE_SIZE_4BPP * 48);
 
-    gVramMaxEntities = 560;
-    gVramHeapStartAddr = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
-    VramResetHeap();
+    VramResetHeapState();
 
     errorIdentifying = IdentifyFlash();
     if (errorIdentifying) {

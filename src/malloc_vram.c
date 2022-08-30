@@ -2,42 +2,45 @@
 #include "data.h"
 #include "malloc_vram.h"
 
-u16 gVramHeap[256];
+// TODO: make static
+u16 sVramHeapState[256];
 
-void* VramMalloc(u32 size) {
+void* VramMalloc(u32 numTiles) {
     u16 i, j;
-    u32 target = size;
-    target = (target + 3) >> 2;
+    u32 count = numTiles;
+    count = (count + (VRAM_TILE_SLOTS_PER_SEGMENT - 1)) / VRAM_TILE_SLOTS_PER_SEGMENT; // round up
 
-    for (i = 0; i < gVramMaxEntities / 4; i++) {
-        if (gVramHeap[i] == 0) {
-            for (j = 0; j < target; j++) {
-                if (i + j >= (gVramMaxEntities / 4)) {
-                    return gUnknown_020226D0;
+    for (i = 0; i < gVramHeapMaxTileSlots / VRAM_TILE_SLOTS_PER_SEGMENT; i++) {
+        if (sVramHeapState[i] == 0) {
+            for (j = 0; j < count; j++) {
+                if (i + j >= (gVramHeapMaxTileSlots / VRAM_TILE_SLOTS_PER_SEGMENT)) {
+                    return ewram_end;
                 }
-                if (gVramHeap[i + j] != 0) {
+                if (sVramHeapState[i + j] != 0) {
                     break;
                 }
             }
 
-            if (j == target) {
-                gVramHeap[i] = target;
-                return (void*)(gVramHeapStartAddr + i * 0x80);
+            if (j == count) {
+                sVramHeapState[i] = count;
+                return (void*)(gVramHeapStartAddr + i * VRAM_HEAP_SEGMENT_SIZE);
             }
         } else {
-            i = 0xFFFF + gVramHeap[i] + i;
+            i = (sVramHeapState[i] - 1) + i; // next slot to check, -1 because of ++i
         }
     }
-    return gUnknown_020226D0;
+    return ewram_end;
 }
 
-void VramResetHeap(void) {
-    DmaFill16(3, 0, gVramHeap, sizeof(gVramHeap));
+void VramResetHeapState(void) {
+    DmaFill16(3, 0, sVramHeapState, sizeof(sVramHeapState));
 }
 
 void VramFree(void* addr) {
-    if (gUnknown_020226D0 != addr) {
-        u32 segment = ((u32)(addr - gVramHeapStartAddr) * 0x200) >> 0x10;
-        gVramHeap[segment] = 0;
+    u32 segmentId;
+    if (ewram_end != addr) {
+        // (addr - gVramHeapStartAddr) / VRAM_HEAP_SEGMENT_SIZE;
+        segmentId = ((u32)(addr - gVramHeapStartAddr) * 0x200) >> 0x10;
+        sVramHeapState[segmentId] = 0;
     }
 }

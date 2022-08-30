@@ -73,7 +73,7 @@
 . = 0x00001870; gUnknown_03001870 = .;
 . = 0x00001880; gPhysicalInput = .;
 . = 0x00001884; gUnknown_03001884 = .;
-. = 0x00001888; gVramMaxEntities = .;
+. = 0x00001888; gVramHeapMaxTileSlots = .;
 . = 0x0000188C; gNumHBlankCallbacks = .;
 . = 0x00001890; gMultiSioRecv = .;
 . = 0x000018E0; gNumHBlankIntrs = .;
@@ -149,7 +149,7 @@
 . = 0x00004D96; gUnknown_03004D96 = .;
 . = 0x00005156; gUnknown_03005156 = .;
 . = 0x00005176; gUnknown_03005176 = .;
-. = 0x00005190; gVramHeap = .;
+. = 0x00005190; sVramHeapState = .;
 . = 0x00005390; gUnknown_03005390 = .;
 . = 0x00005394; gUnknown_03005394 = .;
 . = 0x00005398; gUnknown_03005398 = .;

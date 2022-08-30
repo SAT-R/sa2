@@ -43,7 +43,7 @@ extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03002280[16];
 extern u8 gUnknown_03004D80[16];
 
-extern u16 gVramMaxEntities;
+extern u16 gVramHeapMaxTileSlots;
 
 extern u32 gVramHeapStartAddr;
 

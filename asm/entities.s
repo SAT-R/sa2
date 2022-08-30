@@ -56,16 +56,16 @@ _08007E70:
 	movs r3, #0
 	bl TaskCreate
 	adds r7, r0, #0
-	ldr r0, _08007EF8 @ =gUnknown_0203300C
+	ldr r0, _08007EF8 @ =EWRAM_START + 0x3300C
 	ldr r0, [r0]
 	ldr r0, [r0]
 	lsrs r0, r0, #8
 	adds r0, #3
 	lsrs r0, r0, #2
 	lsls r0, r0, #4
-	ldr r1, _08007EFC @ =gUnknown_0203F000
+	ldr r1, _08007EFC @ =EWRAM_START + 0x3F000
 	adds r6, r0, r1
-	ldr r0, _08007F00 @ =gUnknown_02033008
+	ldr r0, _08007F00 @ =EWRAM_START + 0x33008
 	ldr r0, [r0]
 	adds r1, r6, #0
 	bl RLUnCompWram
@@ -114,9 +114,9 @@ _08007EA0:
 	bx r0
 	.align 2, 0
 _08007EF4: .4byte sub_8007F1C
-_08007EF8: .4byte gUnknown_0203300C
-_08007EFC: .4byte gUnknown_0203F000
-_08007F00: .4byte gUnknown_02033008
+_08007EF8: .4byte EWRAM_START + 0x3300C
+_08007EFC: .4byte EWRAM_START + 0x3F000
+_08007F00: .4byte EWRAM_START + 0x33008
 _08007F04: .4byte IWRAM_START + 0x30
 _08007F08: .4byte 0x06011F00
 _08007F0C: .4byte 0x000002D6
@@ -1483,8 +1483,8 @@ _08008980: .4byte gSpritePosData_Itemboxes
 _08008984: .4byte gSpritePosData_Enemies
 _08008988: .4byte gUnknown_080D50A0
 _0800898C:
-	ldr r6, _080089BC @ =gUnknown_0203F000
-	ldr r0, _080089C0 @ =gUnknown_0203300C
+	ldr r6, _080089BC @ =EWRAM_START + 0x3F000
+	ldr r0, _080089C0 @ =EWRAM_START + 0x3300C
 	ldr r0, [r0]
 	adds r1, r6, #0
 	bl RLUnCompWram
@@ -1507,8 +1507,8 @@ _0800899A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080089BC: .4byte gUnknown_0203F000
-_080089C0: .4byte gUnknown_0203300C
+_080089BC: .4byte EWRAM_START + 0x3F000
+_080089C0: .4byte EWRAM_START + 0x3300C
 _080089C4: .4byte gUnknown_03005960
 _080089C8: .4byte gUnknown_030054DC
 
@@ -5657,7 +5657,7 @@ _0800AA12:
 	ldr r0, [r0]
 	bl VramMalloc
 	adds r6, r0, #0
-	ldr r0, _0800AA84 @ =gUnknown_020226D0
+	ldr r0, _0800AA84 @ =ewram_end
 	ldr r0, [r0]
 	cmp r6, r0
 	beq _0800AAF8
@@ -5694,7 +5694,7 @@ _0800AA12:
 _0800AA78: .4byte gLoadedSaveGame
 _0800AA7C: .4byte gUnknown_03005424
 _0800AA80: .4byte gUnknown_080D5148
-_0800AA84: .4byte gUnknown_020226D0
+_0800AA84: .4byte ewram_end
 _0800AA88: .4byte sub_800ADAC
 _0800AA8C: .4byte 0x0000FFFE
 _0800AA90: .4byte sub_800AE44

@@ -3257,7 +3257,7 @@ _0801C20C: .4byte gUnknown_030059C8
 _0801C210: .4byte gUnknown_080D62D8
 _0801C214:
 	ldr r0, _0801C288 @ =gUnknown_030059C8
-	ldr r1, _0801C28C @ =gUnknown_02033004
+	ldr r1, _0801C28C @ =EWRAM_START + 0x33004
 _0801C218:
 	ldr r1, [r1]
 	str r1, [r0]
@@ -3318,7 +3318,7 @@ _0801C24E:
 	b _0801C304
 	.align 2, 0
 _0801C288: .4byte gUnknown_030059C8
-_0801C28C: .4byte gUnknown_02033004
+_0801C28C: .4byte EWRAM_START + 0x33004
 _0801C290: .4byte gCurrentLevel
 _0801C294: .4byte gUnknown_030054B0
 _0801C298: .4byte gUnknown_030059E0

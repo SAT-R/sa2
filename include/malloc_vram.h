@@ -3,10 +3,12 @@
 
 #include "global.h"
 
+#define VRAM_HEAP_SEGMENT_SIZE 0x80
+#define VRAM_TILE_SLOTS_PER_SEGMENT (VRAM_HEAP_SEGMENT_SIZE / TILE_SIZE_4BPP)
+
 void* VramMalloc(u32);
-void VramResetHeap(void);
+void VramResetHeapState(void);
 void VramFree(void*);
 
-extern void *gUnknown_020226D0;
 
 #endif // GUARD_MALLOC_VRAM_H

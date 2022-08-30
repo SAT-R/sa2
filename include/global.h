@@ -93,5 +93,6 @@ typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);
 
 extern void *iwram_end;
+extern void *ewram_end;
 
 #endif  // GUARD_GLOBAL_H
