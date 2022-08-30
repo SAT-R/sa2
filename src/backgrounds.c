@@ -15,7 +15,7 @@ struct UNK_808DB78 {
     u8 unkC[BG_PLTT_SIZE];
 };
 
-struct UNK_3005B80 gUnknown_03005B80;
+struct UNK_3005B80 gUnknown_03005B80 = {};
 
 UNUSED void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8* unk0) {
     u16 i;

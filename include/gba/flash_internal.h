@@ -47,12 +47,14 @@ extern u16 gFlashNumRemainingBytes;
 extern u16 (*ProgramFlashSector)(u16, void *);
 extern u16 (*EraseFlashChip)(void);
 extern u16 (*EraseFlashSector)(u16);
-extern u16 (*WaitForFlashWrite)(u8, u8 *, u8);
 extern const u16 *gFlashMaxTime;
 extern const struct FlashType *gFlash;
 
-extern u8 (*PollFlashStatus)(u8 *);
+
 extern u8 gFlashTimeoutFlag;
+extern u8 (*PollFlashStatus)(u8 *);
+
+extern u16 (*WaitForFlashWrite)(u8, u8 *, u8);
 
 extern const struct FlashSetupInfo LE39FW512;
 //extern const struct FlashSetupInfo AT29LV512;

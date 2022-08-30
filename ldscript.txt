@@ -8,7 +8,10 @@ SECTIONS
     EWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_ewram.txt"
+        build/sa2/data/sound_data.o(ewram_data); 
+        build/sa2/src/m4a.o(ewram_data);
+        build/sa2/src/malloc_ewram.o(ewram_data);
+        ewram_end = .;
     }
 
     . = 0x03000000;

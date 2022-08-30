@@ -48,9 +48,9 @@ struct SaveSectorData {
     u32 checksum;
 };
 
-struct SaveGame* gLastWrittenSaveGame;
-struct SaveGame* gLoadedSaveGame;
-struct SaveSectorData* gSaveSectorDataBuffer;
+struct SaveGame* gLastWrittenSaveGame = NULL;
+struct SaveGame* gLoadedSaveGame = NULL;
+struct SaveSectorData* gSaveSectorDataBuffer = NULL;
 
 static s16 FindNewestSaveGameSector(void);
 static s16 FindOldestSaveGameSector(void);

@@ -1,4 +1,4 @@
-build/sa2/src/m4a.o(COMMON);
+build/sa2/src/m4a.o(.bss.code);
 build/sa2/src/multi_boot.o(.bss);
 /* space 0x20 */
 . = 0x0000042C; 
@@ -6,11 +6,8 @@ build/sa2/src/agb_flash.o(.bss);
 /* space 0x8 */
 . = 0x00000440; 
 
-build/sa2/src/multi_sio.o(COMMON);
-/* TODO: understand why `gMultiSioRecvFuncBuf` doesn't match */
-. = 0x00000750; gMultiSioRecvFuncBuf = .;
-. = 0x00000790; 
-
+/* start of common */
+build/sa2/src/multi_sio.o(.data);
 build/sa2/src/sio32_multi_load.o(COMMON);
 
 /* data.o */
@@ -105,10 +102,10 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 . = 0x000053B0; gInputPlaybackData = .;
 . = 0x000053B4; gExecSoundMain = .;
 . = 0x000053B8; gUnknown_030053B8 = .;
+. = 0x000053C0;
 
 /* TODO: why is playback data not here */
-. = 0x000053C0; gInputRecorder = .;
-. = 0x000053CC; sTapeBuffer = .;
+build/sa2/src/input_recorder.o(.data);
 
 /* game.o */
 . = 0x000053E0; gUnknown_030053E0 = .;
@@ -203,39 +200,29 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 . = 0x00005B48; gUnknown_03005B48 = .;
 . = 0x00005B4C; gUnknown_03005B4C = .;
 . = 0x00005B50; 
-build/sa2/src/profile.o(COMMON);
+
+build/sa2/src/profile.o(.data);
 
 /* special_stage.o */
 . = 0x00005B58; gUnknown_03005B58 = .;
 . = 0x00005B5C; gUnknown_03005B5C = .;
 . = 0x00005B60; 
 
-build/sa2/src/save.o(COMMON);
-/* TODO: reference these in save.o */
-. = 0x00005B64; gLoadedSaveGame = .;
-. = 0x00005B68; gSaveSectorDataBuffer = .;
+build/sa2/src/save.o(.data);
 
 /* something in code3.s */
 . = 0x00005B6C; gUnknown_03005B6C = .;
 . = 0x00005B70; 
 
-build/sa2/src/random.o(.bss);
+build/sa2/src/random.o(.data);
 
 /* space 8 */
 . = 0x00005B80;
 
-build/sa2/src/backgrounds.o(COMMON);
+build/sa2/src/backgrounds.o(.data);
+
 /* space 8 */
-. = 0x00005B90; build/sa2/src/agb_flash.o(COMMON);
+. = 0x00005B90; 
 
-/* TODO: understand why these don't match when referenced
-   from agb_flash */
-. = 0x00005B98; WaitForFlashWrite = .;
-. = 0x00005B9C; ProgramFlashSector = .;
-. = 0x00005BA0; gFlash = .;
-. = 0x00005BA4; gFlashNumRemainingBytes = .;
-. = 0x00005BA8; EraseFlashChip = .;
-. = 0x00005BAC; EraseFlashSector = .;
-. = 0x00005BB0; gFlashMaxTime = .;
-
-. = 0x00005BB4; iwram_end = .;
+build/sa2/src/agb_flash.o(.data);
+iwram_end = .;

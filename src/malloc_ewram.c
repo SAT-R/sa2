@@ -4,7 +4,7 @@
 #define HEAP_SIZE 0x20080
 
 // TODO: reference in EWRAM
-u8 gEwramHeap[HEAP_SIZE];
+EWRAM_DATA u8 gEwramHeap[HEAP_SIZE] = {0};
 
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)

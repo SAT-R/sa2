@@ -4,7 +4,7 @@
 	.equiv NUM_TRACKS_SE2, 16
 	.equiv NUM_TRACKS_SE3, 16
 
-    .bss
+    .section ewram_data
 
 gMPlayTrack_BGM:
     .space TRACK_SIZE * NUM_TRACKS_BGM

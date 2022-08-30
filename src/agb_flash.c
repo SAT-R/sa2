@@ -7,17 +7,15 @@ static u16 sTimerCount;
 static vu16 *gTimerReg;
 static u16 gSavedIme;
 
-u8 gFlashTimeoutFlag;
-u8 (*PollFlashStatus)(u8 *);
-
-// TODO: do what's required to match these
-u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData);
-u16 (*ProgramFlashSector)(u16 sectorNum, void *src);
-const struct FlashType *gFlash;
-u16 gFlashNumRemainingBytes;
-u16 (*EraseFlashChip)();
-u16 (*EraseFlashSector)(u16 sectorNum);
-const u16 *gFlashMaxTime;
+u8 gFlashTimeoutFlag = 0;
+u8 (*PollFlashStatus)(u8 *) = NULL;
+u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData) = NULL;
+u16 (*ProgramFlashSector)(u16 sectorNum, void *src) = NULL;
+const struct FlashType *gFlash = NULL;
+u16 gFlashNumRemainingBytes = 0;
+u16 (*EraseFlashChip)() = NULL;
+u16 (*EraseFlashSector)(u16 sectorNum) = NULL;
+const u16 *gFlashMaxTime = NULL;
 
 void SetReadFlash1(u16 *dest);
 

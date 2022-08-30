@@ -114,7 +114,6 @@ struct SaveGame {
 #define MULTIPLAYER_RESULT_LOSS 1
 #define MULTIPLAYER_RESULT_DRAW 2
 
-// Some sort of save data?
 extern struct SaveGame* gLoadedSaveGame;
 
 void InsertMultiplayerProfile(u32 playerId, u16* name);

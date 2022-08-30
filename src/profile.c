@@ -223,8 +223,8 @@ struct UNK_806B908 {
 };
 
 // vram addresses
-void* gProfileScreenNextVramAddress;
-void* gProfileScreenSubMenuNextVramAddress;
+void* gProfileScreenNextVramAddress = NULL;
+void* gProfileScreenSubMenuNextVramAddress = NULL;
 
 static void Task_OptionsScreenShow(void);
 static void OptionsScreenTaskDestroyHandler(struct Task*);
