@@ -3,7 +3,6 @@
 #include "sprite.h"
 #include "flags.h"
 
-// TODO: use once all functions have been decomped
 extern void sub_8003800(void);
 extern void sub_8004314(void);
 extern void sub_8004380(void);
@@ -16,20 +15,20 @@ extern void sub_80043D8(void);
 extern void sub_80043F8(void);
 extern void sub_8004400(void);
 extern void sub_800440C(void);
-// const void* gUnknown_08097A74[12] = {
-//         sub_8003800,
-//         sub_8004314,
-//         sub_8004380,
-//         sub_800438C,
-//         sub_800439C,
-//         sub_8003870,
-//         sub_80043B0,
-//         sub_80043CC,
-//         sub_80043D8,
-//         sub_80043F8,
-//         sub_8004400,
-//         sub_800440C,
-// };
+void* const gUnknown_08097A74[12] = {
+        sub_8003800,
+        sub_8004314,
+        sub_8004380,
+        sub_800438C,
+        sub_800439C,
+        sub_8003870,
+        sub_80043B0,
+        sub_80043CC,
+        sub_80043D8,
+        sub_80043F8,
+        sub_8004400,
+        sub_800440C,
+};
 
 void sub_8002A3C(struct Unk_03002400 *r4) {
     struct MapHeader_Full *r6 = gUnknown_03002260[r4->unk1C].y;

@@ -88,7 +88,7 @@ SECTIONS
         build/sa2/src/multi_sio.o(.rodata);
         build/sa2/src/sio32_multi_load.o(.rodata);
         build/sa2/src/main.o(.rodata);
-        build/sa2/data/sprite_data.o(.rodata);
+        build/sa2/src/sprite.o(.rodata);
         build/sa2/src/trig.o(.rodata);
         build/sa2/data/data1.o(.rodata);
         build/sa2/data/multiboot_chao_garden.o(.rodata);

@@ -13,7 +13,6 @@
 #define PLAYER_NAME_END_CHAR 0xFFFF
 #define MAX_MULTIPLAYER_SCORE 99
 
-// TODO: Work out what this is
 struct MultiplayerScore {
     // playerId
     u32 unk0;
