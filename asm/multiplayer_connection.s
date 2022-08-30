@@ -306,7 +306,7 @@ _08081300:
 	ldr r0, _080815AC @ =gMultiSioEnabled
 	movs r1, #0
 	strb r1, [r0]
-	ldr r0, _080815B0 @ =gUnknown_03002A90
+	ldr r0, _080815B0 @ =IWRAM_START + 0x2A90
 	ldr r2, [sp, #4]
 	ldr r1, [r2]
 	str r1, [r0, #0x28]
@@ -358,7 +358,7 @@ _080815A0: .4byte IWRAM_START + 0x9C
 _080815A4: .4byte 0x0600A000
 _080815A8: .4byte 0x04000128
 _080815AC: .4byte gMultiSioEnabled
-_080815B0: .4byte gUnknown_03002A90
+_080815B0: .4byte IWRAM_START + 0x2A90
 _080815B4: .4byte gCurTask
 _080815B8:
 	ldr r1, _080815EC @ =0x0000FFFF
@@ -436,7 +436,7 @@ sub_8081604: @ 0x08081604
 	strb r0, [r1]
 	bl MultiPakCommunicationError
 _0808165E:
-	ldr r2, _08081750 @ =gUnknown_03002A90
+	ldr r2, _08081750 @ =IWRAM_START + 0x2A90
 	mov r8, r2
 	ldrb r0, [r2, #0x1e]
 	movs r1, #0xe
@@ -548,7 +548,7 @@ _08081740: .4byte gUnknown_0300287C
 _08081744: .4byte gUnknown_03005390
 _08081748: .4byte gUnknown_03004D5C
 _0808174C: .4byte gUnknown_03002A84
-_08081750: .4byte gUnknown_03002A90
+_08081750: .4byte IWRAM_START + 0x2A90
 _08081754: .4byte gPressedKeys
 _08081758: .4byte IWRAM_START + 0xF0
 _0808175C: .4byte gFlags
@@ -598,7 +598,7 @@ _080817C8: .4byte 0xFFFF7FFF
 _080817CC: .4byte gPressedKeys
 _080817D0: .4byte gCurTask
 _080817D4:
-	ldr r4, _08081824 @ =gUnknown_03002A90
+	ldr r4, _08081824 @ =IWRAM_START + 0x2A90
 	adds r0, r4, #0
 	bl MultiBootMain
 	cmp r0, #0x50
@@ -635,7 +635,7 @@ _080817EC:
 	bl MultiPakCommunicationError
 	b _08081896
 	.align 2, 0
-_08081824: .4byte gUnknown_03002A90
+_08081824: .4byte IWRAM_START + 0x2A90
 _08081828: .4byte 0x0000FFFF
 _0808182C: .4byte gUnknown_03002AE4
 _08081830: .4byte gUnknown_0300287C
@@ -1006,7 +1006,7 @@ sub_8081AD4: @ 0x08081AD4
 	bl sub_8002A3C
 	mov r0, sp
 	strh r4, [r0]
-	ldr r5, _08081BD8 @ =gUnknown_030028A2
+	ldr r5, _08081BD8 @ =IWRAM_START + 0x28A2
 	ldr r2, _08081BDC @ =0x0100000F
 	adds r1, r5, #0
 	bl CpuSet
@@ -1071,7 +1071,7 @@ _08081BC8: .4byte 0x00001E02
 _08081BCC: .4byte gBgScrollRegs
 _08081BD0: .4byte 0x0600F000
 _08081BD4: .4byte gUnknown_080E0218
-_08081BD8: .4byte gUnknown_030028A2
+_08081BD8: .4byte IWRAM_START + 0x28A2
 _08081BDC: .4byte 0x0100000F
 _08081BE0: .4byte 0x00001F01
 _08081BE4: .4byte gWinRegs
@@ -1260,7 +1260,7 @@ sub_8081D70: @ 0x08081D70
 	push {r4, r5, lr}
 	movs r2, #1
 	movs r1, #1
-	ldr r4, _08081DB0 @ =gUnknown_03002A90
+	ldr r4, _08081DB0 @ =IWRAM_START + 0x2A90
 	ldrb r5, [r4, #0x1d]
 	movs r3, #1
 _08081D7C:
@@ -1291,7 +1291,7 @@ _08081D9A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08081DB0: .4byte gUnknown_03002A90
+_08081DB0: .4byte IWRAM_START + 0x2A90
 
 	thumb_func_start sub_8081DB4
 sub_8081DB4: @ 0x08081DB4
@@ -1741,7 +1741,7 @@ _08082154:
 	movs r0, #0
 	strh r0, [r1]
 	strh r0, [r1, #4]
-	ldr r0, _080821DC @ =gTimerReg
+	ldr r0, _080821DC @ =IWRAM_START + 0x430
 	adds r1, r3, r0
 	ldrh r0, [r1]
 	adds r0, #1
@@ -1757,7 +1757,7 @@ _0808217E:
 	ldr r1, _080821E4 @ =0xFFFF7FFF
 	ands r0, r1
 	str r0, [r2]
-	ldr r1, _080821E8 @ =gSavedIme
+	ldr r1, _080821E8 @ =IWRAM_START + 0x434
 	adds r0, r3, r1
 	ldr r0, [r0]
 	cmp r0, #0
@@ -1795,10 +1795,10 @@ _080821CC: .4byte 0x00004010
 _080821D0: .4byte gUnknown_030053EC
 _080821D4: .4byte gCurTask
 _080821D8: .4byte gBldRegs
-_080821DC: .4byte gTimerReg
+_080821DC: .4byte IWRAM_START + 0x430
 _080821E0: .4byte gFlags
 _080821E4: .4byte 0xFFFF7FFF
-_080821E8: .4byte gSavedIme
+_080821E8: .4byte IWRAM_START + 0x434
 _080821EC: .4byte 0x0000044C
 _080821F0: .4byte 0x06012500
 _080821F4: .4byte IWRAM_START + 0x370
@@ -1924,7 +1924,7 @@ _080822E8:
 	movs r6, #0
 	movs r0, #1
 	mov r8, r0
-	ldr r1, _08082330 @ =gTimerReg
+	ldr r1, _08082330 @ =IWRAM_START + 0x430
 	adds r7, r3, r1
 _080822F2:
 	ldr r2, _08082334 @ =gMultiSioStatusFlags
@@ -1958,7 +1958,7 @@ _080822F2:
 	subs r3, r3, r0
 	b _08082354
 	.align 2, 0
-_08082330: .4byte gTimerReg
+_08082330: .4byte IWRAM_START + 0x430
 _08082334: .4byte gMultiSioStatusFlags
 _08082338: .4byte gUnknown_030054B4
 _0808233C:
@@ -2103,7 +2103,7 @@ _0808243C:
 	lsls r0, r0, #0x1a
 	lsrs r0, r0, #0x1e
 	strb r0, [r1]
-	ldr r5, _080824A0 @ =gSavedIme
+	ldr r5, _080824A0 @ =IWRAM_START + 0x434
 	adds r0, r4, r5
 	ldr r0, [r0]
 	cmp r0, #0
@@ -2140,7 +2140,7 @@ _08082490: .4byte gMultiSioRecv
 _08082494: .4byte 0x00004012
 _08082498: .4byte gSelectedCharacter
 _0808249C: .4byte 0x04000128
-_080824A0: .4byte gSavedIme
+_080824A0: .4byte IWRAM_START + 0x434
 _080824A4: .4byte IWRAM_START + 0x40
 _080824A8: .4byte gBgScrollRegs
 _080824AC: .4byte 0x0600C000
@@ -2222,7 +2222,7 @@ _08082544:
 	ands r0, r1
 	cmp r0, #0
 	beq _0808255A
-	ldr r1, _08082584 @ =gMultiBootRequiredData
+	ldr r1, _08082584 @ =IWRAM_START + 0x400
 	adds r0, r4, r1
 	bl sub_80051E8
 _0808255A:
@@ -2249,7 +2249,7 @@ _08082574:
 	str r5, [sp]
 	b _080825A4
 	.align 2, 0
-_08082584: .4byte gMultiBootRequiredData
+_08082584: .4byte IWRAM_START + 0x400
 _08082588: .4byte 0x00004010
 _0808258C:
 	mov r0, ip
@@ -2341,7 +2341,7 @@ sub_8082630: @ 0x08082630
 	ldr r5, _0808266C @ =gCurTask
 	ldr r0, [r5]
 	ldrh r0, [r0, #6]
-	ldr r1, _08082670 @ =gTimerReg
+	ldr r1, _08082670 @ =IWRAM_START + 0x430
 	adds r4, r0, r1
 	ldrh r0, [r4]
 	adds r0, #0x20
@@ -2369,7 +2369,7 @@ _0808265E:
 	bx r0
 	.align 2, 0
 _0808266C: .4byte gCurTask
-_08082670: .4byte gTimerReg
+_08082670: .4byte IWRAM_START + 0x430
 _08082674: .4byte gBldRegs
 _08082678: .4byte sub_808267C
 
@@ -2893,7 +2893,7 @@ sub_8082AA8: @ 0x08082AA8
 	ldr r0, [r5]
 	ldrh r4, [r0, #6]
 	bl sub_8082788
-	ldr r0, _08082B00 @ =gTimerReg
+	ldr r0, _08082B00 @ =IWRAM_START + 0x430
 	adds r4, r4, r0
 	ldrh r0, [r4]
 	adds r1, r0, #1
@@ -2928,7 +2928,7 @@ _08082AF6:
 	bx r0
 	.align 2, 0
 _08082AFC: .4byte gCurTask
-_08082B00: .4byte gTimerReg
+_08082B00: .4byte IWRAM_START + 0x430
 _08082B04: .4byte gMPlayInfo_BGM
 _08082B08: .4byte gMPlayInfo_SE1
 _08082B0C: .4byte gMPlayInfo_SE2
@@ -2956,19 +2956,19 @@ sub_8082B1C: @ 0x08082B1C
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r2, r0
-	ldr r3, _08082B70 @ =gSavedIme
+	ldr r3, _08082B70 @ =IWRAM_START + 0x434
 	adds r1, r2, r3
 	lsls r4, r4, #0x10
 	asrs r4, r4, #0x10
 	str r4, [r1]
-	ldr r4, _08082B74 @ =gTimerReg
+	ldr r4, _08082B74 @ =IWRAM_START + 0x430
 	adds r1, r2, r4
 	movs r3, #0
 	strh r5, [r1]
 	adds r4, #8
 	adds r1, r2, r4
 	strb r3, [r1]
-	ldr r1, _08082B78 @ =gUnknown_0300043C
+	ldr r1, _08082B78 @ =IWRAM_START + 0x43C
 	adds r2, r2, r1
 	ldr r1, _08082B7C @ =gFrameCount
 	ldr r1, [r1]
@@ -2979,9 +2979,9 @@ sub_8082B1C: @ 0x08082B1C
 	bx r1
 	.align 2, 0
 _08082B6C: .4byte sub_808207C
-_08082B70: .4byte gSavedIme
-_08082B74: .4byte gTimerReg
-_08082B78: .4byte gUnknown_0300043C
+_08082B70: .4byte IWRAM_START + 0x434
+_08082B74: .4byte IWRAM_START + 0x430
+_08082B78: .4byte IWRAM_START + 0x43C
 _08082B7C: .4byte gFrameCount
 
 	thumb_func_start sub_8082B80

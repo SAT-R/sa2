@@ -3,21 +3,19 @@
 #include "sprite.h"
 #include "flags.h"
 
-extern struct Unk_03002400 *gUnknown_03001800[];
-
 // TODO: use once all functions have been decomped
-// extern void sub_8003800(void);
-// extern void sub_8004314(void);
-// extern void sub_8004380(void);
-// extern void sub_800438C(void);
-// extern void sub_800439C(void);
-// extern void sub_8003870(void);
-// extern void sub_80043B0(void);
-// extern void sub_80043CC(void);
-// extern void sub_80043D8(void);
-// extern void sub_80043F8(void);
-// extern void sub_8004400(void);
-// extern void sub_800440C(void);
+extern void sub_8003800(void);
+extern void sub_8004314(void);
+extern void sub_8004380(void);
+extern void sub_800438C(void);
+extern void sub_800439C(void);
+extern void sub_8003870(void);
+extern void sub_80043B0(void);
+extern void sub_80043CC(void);
+extern void sub_80043D8(void);
+extern void sub_80043F8(void);
+extern void sub_8004400(void);
+extern void sub_800440C(void);
 // const void* gUnknown_08097A74[12] = {
 //         sub_8003800,
 //         sub_8004314,

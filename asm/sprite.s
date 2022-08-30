@@ -6142,7 +6142,7 @@ _0800596A:
 	beq _080059B2
 	ldr r4, _08005A08 @ =0x040000D4
 	mov r8, r1
-	ldr r0, _08005A0C @ =gUnknown_03002710
+	ldr r0, _08005A0C @ =IWRAM_START + 0x2710
 	mov ip, r0
 	ldr r7, _08005A10 @ =gUnknown_030022D0
 _08005988:
@@ -6211,7 +6211,7 @@ _080059FC: .4byte gOamBuffer
 _08005A00: .4byte gUnknown_03002AE0
 _08005A04: .4byte gUnknown_03001850
 _08005A08: .4byte 0x040000D4
-_08005A0C: .4byte gUnknown_03002710
+_08005A0C: .4byte IWRAM_START + 0x2710
 _08005A10: .4byte gUnknown_030022D0
 _08005A14: .4byte 0x80000003
 _08005A18: .4byte gFlags

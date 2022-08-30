@@ -5,7 +5,7 @@
 static const char sMultiSioLibVer[] = "Sio32MultiLoad010214";
 
 // COMMON
-// struct Sio32MultiLoadArea gSio32MultiLoadArea; // 32bit serial communication
+struct Sio32MultiLoadArea gSio32MultiLoadArea; // 32bit serial communication
 // multi-load work area
 
 /*------------------------------------------------------------------*/

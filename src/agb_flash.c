@@ -4,11 +4,20 @@
 
 static u8 sTimerNum;
 static u16 sTimerCount;
+static vu16 *gTimerReg;
+static u16 gSavedIme;
 
-// TODO: can't make gSavedIme static because
-// it comes after gTimerReg which is used globally
-vu16 *gTimerReg;
-u16 gSavedIme;
+u8 gFlashTimeoutFlag;
+u8 (*PollFlashStatus)(u8 *);
+
+// TODO: do what's required to match these
+u16 (*WaitForFlashWrite)(u8 phase, u8 *addr, u8 lastData);
+u16 (*ProgramFlashSector)(u16 sectorNum, void *src);
+const struct FlashType *gFlash;
+u16 gFlashNumRemainingBytes;
+u16 (*EraseFlashChip)();
+u16 (*EraseFlashSector)(u16 sectorNum);
+const u16 *gFlashMaxTime;
 
 void SetReadFlash1(u16 *dest);
 

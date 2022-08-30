@@ -6,9 +6,15 @@
 static const char sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
 
 #ifdef MULTI_SIO_DI_FUNC_FAST
-// u32 gMultiSioRecvFuncBuf[0x40 / 4];  // Receive Data/Check Buffer Change Routine RAM Execution Buffer
-// u32 gMultiSioIntrFuncBuf[0x180 / 4]; // Interrupt Routine RAM Execution Buffer
+u32 gMultiSioIntrFuncBuf[0x120 / 4]; // Interrupt Routine RAM Execution Buffer
 #endif
+
+struct MultiSioArea gMultiSioArea;
+
+#ifdef MULTI_SIO_DI_FUNC_FAST
+u32 gMultiSioRecvFuncBuf[0x40 / 4];  // Receive Data/Check Buffer Change Routine RAM Execution Buffer
+#endif
+
 
 /*------------------------------------------------------------------*/
 /*                      Multi-play Communication Initialization     */

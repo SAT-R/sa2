@@ -6,11 +6,7 @@ static s32 MultiBootSend(struct MultiBootParam *mp, u16 data);
 static s32 MultiBootHandShake(struct MultiBootParam *mp);
 static void MultiBootWaitSendDone(void);
 
-// TODO: convert to static and use
-// . = 0x00000400; src/multi_boot.o(.bss);
-// in iwram
-extern u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
-// static u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
+static u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
 
 #define MULTIBOOT_INIT(mp)                              \
     (mp)->client_bit = 0;                               \

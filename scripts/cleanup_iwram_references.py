@@ -1,9 +1,7 @@
 import os
 
 references = """
-. = 0x00000900; gUnknown_03000900 = .;
-. = 0x00000914; gUnknown_03000914 = .;
-. = 0x0000092A; gUnknown_0300092A = .;
+. = 0x0000043C; gUnknown_0300043C = .;
 """
 
 vars_to_iwram = {}

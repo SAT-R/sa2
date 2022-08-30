@@ -31,8 +31,6 @@ extern u16 gUnknown_03005398;
 extern s16 gUnknown_030026D0;
 extern u32 gUnknown_030053B8;
 
-extern u32 gUnknown_0203B000;
-
 extern u8 gUnknown_03001948;
 
 extern u8 gUnknown_03002874;

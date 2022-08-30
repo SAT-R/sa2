@@ -48,14 +48,8 @@ struct SaveSectorData {
     u32 checksum;
 };
 
-// TODO: Move refernce these in iwram
-// TODO: make static, only used here
 struct SaveGame* gLastWrittenSaveGame;
-
-// TODO: reference this iwram, but not static
 struct SaveGame* gLoadedSaveGame;
-
-// TODO: make static, only used here
 struct SaveSectorData* gSaveSectorDataBuffer;
 
 static s16 FindNewestSaveGameSector(void);
