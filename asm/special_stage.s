@@ -9038,7 +9038,7 @@ sub_80701D4: @ 0x080701D4
 	movs r1, #1
 	bl sub_806CA88
 	ldr r0, _08070278 @ =0x040000D4
-	ldr r2, _0807027C @ =gUnknown_03002252
+	ldr r2, _0807027C @ =gObjPalette + 0x1F2
 	str r2, [r0]
 	movs r3, #0xab
 	lsls r3, r3, #2
@@ -9069,7 +9069,7 @@ sub_80701D4: @ 0x080701D4
 _08070270: .4byte gLoadedSaveGame
 _08070274: .4byte gUnknown_080DF8F0
 _08070278: .4byte 0x040000D4
-_0807027C: .4byte gUnknown_03002252
+_0807027C: .4byte gObjPalette + 0x1F2
 _08070280: .4byte 0x80000003
 _08070284: .4byte 0x000002B2
 _08070288: .4byte 0x000002A9

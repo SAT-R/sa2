@@ -131,7 +131,7 @@ extern union Unk_03002E60 *gUnknown_03002260;
 
 extern OamData gOamBuffer[];
 extern u16 gBgCntRegs[4];
-extern OamData gUnknown_030022D0[];
+extern OamData gUnknown_030022D0[128];
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern u16 gDispCnt;  // gDispCnt
@@ -233,8 +233,8 @@ struct UNK_080E0D64 {
     s8 unk6;
 };
 
-extern union MultiSioData gMultiSioSend; // gMultiSioSend
-extern union MultiSioData gMultiSioRecv[4]; // gMultiSioRecv
+extern union MultiSioData gMultiSioSend;
+extern union MultiSioData gMultiSioRecv[4];
 
 extern u32 gMultiSioStatusFlags;
 extern bool8 gMultiSioEnabled;

@@ -13,6 +13,7 @@ static struct Task* TaskGetNextSlot(void);
 
 u32 TasksInit(void) {
     struct Task* cur;
+    struct IwramNode* heapRoot;
     s32 i;
     gCurTask = NULL;
     gNextTask = NULL;
@@ -52,8 +53,9 @@ u32 TasksInit(void) {
     gEmptyTask.next = 0;
     gEmptyTask.structOffset = (uintptr_t)iwram_end;
     // initialize IWRAM heap -- a huge node
-    gIwramHeap.next = 0;
-    gIwramHeap.state = 0x2204;
+    heapRoot = (struct IwramNode*)&gIwramHeap[0];
+    heapRoot->next = 0;
+    heapRoot->state = sizeof(gIwramHeap);
     return 1;
 }
 
@@ -183,7 +185,7 @@ void TasksExec(void) {
     gNextTask = NULL;
 }
 
-struct IwramNode* IwramMalloc(u16 req) {
+void* IwramMalloc(u16 req) {
     struct IwramNode *cur, *next;
     u16 size = req;
     size = (size + 3) >> 2;
@@ -191,7 +193,7 @@ struct IwramNode* IwramMalloc(u16 req) {
         return 0;
     }
     size = (size << 2) + sizeof(struct IwramNode);
-    cur = &gIwramHeap;
+    cur = (struct IwramNode*)&gIwramHeap[0];
     while (1) {
         s16 sizeSigned = size;
         if (sizeSigned <= cur->state) {
@@ -212,8 +214,8 @@ struct IwramNode* IwramMalloc(u16 req) {
             }
             cur->state = -size;
             
-            // Return the next node
-            return cur + 1;
+            // Return the space now allocated to the node
+            return cur->space;
         }
         if ((cur->next + IWRAM_START) == IWRAM_START) {
             return NULL;
@@ -230,7 +232,7 @@ static void IwramFree(void* p) {
     struct IwramNode* r1;
 #endif
     node--;
-    slow = &gIwramHeap;
+    slow = (struct IwramNode*)&gIwramHeap[0];
     fast = slow;
 
     if (node != slow) {
@@ -261,7 +263,7 @@ static void IwramFree(void* p) {
 
 /* The function is probably for cleaning up the IWRAM nodes, but it's not working. */
 UNUSED static void sub_80028DC(void) {
-    struct IwramNode* cur = &gIwramHeap;
+    struct IwramNode* cur = (struct IwramNode*)&gIwramHeap[0];
     s32 curStateBackup;
     s32 i;
     u16 nextNodeOffset;
@@ -278,8 +280,8 @@ UNUSED static void sub_80028DC(void) {
                 cur->next =
                     ((struct IwramNode*)(cur->next + IWRAM_START))->next;
             } else {
-                nextNodeSpace = cur->next + (void*)(IWRAM_START + sizeof(struct IwramNode));
-                space = cur + 1;
+                nextNodeSpace = cur->next + (void*)(IWRAM_START + offsetof(struct IwramNode, space));
+                space = cur->space;
                 curStateBackup = cur->state;
                 cur->state =
                     ((struct IwramNode*)(cur->next + IWRAM_START))->state;

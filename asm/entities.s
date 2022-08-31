@@ -6096,7 +6096,7 @@ _0800ADD6:
 	orrs r0, r1
 	str r0, [r2]
 	ldr r0, _0800AE34 @ =0x040000D4
-	ldr r2, _0800AE38 @ =gUnknown_03002252
+	ldr r2, _0800AE38 @ =gObjPalette + 0x1F2
 	str r2, [r0]
 	mov r1, r8
 	adds r1, #0x64
@@ -6126,7 +6126,7 @@ _0800AE28: .4byte gSongTable + (142 * 8) + 4
 _0800AE2C: .4byte gMPlayTable
 _0800AE30: .4byte gFlags
 _0800AE34: .4byte 0x040000D4
-_0800AE38: .4byte gUnknown_03002252
+_0800AE38: .4byte gObjPalette + 0x1F2
 _0800AE3C: .4byte 0x80000003
 _0800AE40: .4byte sub_800AB08
 
@@ -34635,7 +34635,7 @@ _0801898A:
 	ldr r1, _080189CC @ =0x040000D4
 	mov r0, sp
 	str r0, [r1]
-	ldr r0, _080189D0 @ =gUnknown_0300286E
+	ldr r0, _080189D0 @ =gMultiSioSend + 0xE
 	str r0, [r1, #4]
 	ldr r0, _080189D4 @ =0x81000003
 	str r0, [r1, #8]
@@ -34650,7 +34650,7 @@ _080189C0: .4byte gMultiSioRecv
 _080189C4: .4byte gUnknown_03005438
 _080189C8: .4byte gUnknown_03005420
 _080189CC: .4byte 0x040000D4
-_080189D0: .4byte gUnknown_0300286E
+_080189D0: .4byte gMultiSioSend + 0xE
 _080189D4: .4byte 0x81000003
 _080189D8:
 	ldr r2, _08018A18 @ =0x040000D4
@@ -34659,7 +34659,7 @@ _080189D8:
 	ldr r1, _08018A1C @ =gUnknown_03005510
 	adds r0, r0, r1
 	str r0, [r2]
-	ldr r0, _08018A20 @ =gUnknown_0300286E
+	ldr r0, _08018A20 @ =gMultiSioSend + 0xE
 	str r0, [r2, #4]
 	ldr r0, _08018A24 @ =0x80000003
 	str r0, [r2, #8]
@@ -34688,7 +34688,7 @@ _08018A06:
 	.align 2, 0
 _08018A18: .4byte 0x040000D4
 _08018A1C: .4byte gUnknown_03005510
-_08018A20: .4byte gUnknown_0300286E
+_08018A20: .4byte gMultiSioSend + 0xE
 _08018A24: .4byte 0x80000003
 
 	thumb_func_start sub_8018A28

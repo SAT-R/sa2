@@ -1,16 +1,14 @@
 #include "global.h"
 #include "malloc_ewram.h"
 
-#define HEAP_SIZE 0x20080
-
-EWRAM_DATA u8 gEwramHeap[HEAP_SIZE] = {0};
+EWRAM_DATA u8 gEwramHeap[0x20080] = {0};
 
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)
 {
     struct EwramNode* root = (struct EwramNode*)&gEwramHeap[0];
     root->next = NULL;
-    root->state = HEAP_SIZE;
+    root->state = sizeof(gEwramHeap);
 }
 
 void *EwramMalloc(u32 req)
@@ -21,7 +19,7 @@ void *EwramMalloc(u32 req)
     requestedSpace = (req + 3) / 4; // round up and get word count
     if (requestedSpace != 0)
     {
-        requestedSpace = requestedSpace * 4 + 8; // 8 is for next and state
+        requestedSpace = requestedSpace * 4 + sizeof(struct EwramNode);
         node = (struct EwramNode*)gEwramHeap;
         /* linear search */
         while (1)
@@ -44,7 +42,7 @@ void *EwramMalloc(u32 req)
                  * This means, we need to construct a new node so that space won't
                  * get wasted. 
                  */
-                if (requestedSpace + 8 <= node->state)
+                if (requestedSpace + (s32)sizeof(struct EwramNode) <= node->state)
                 {
                     struct EwramNode *addr = (void *)node + requestedSpace;
 
@@ -71,7 +69,7 @@ void EwramFree(void *p)
 
     if (p && ewram_end != p)
     {
-        node = p - 8;
+        node = p - offsetof(struct EwramNode, space);
 
         /* find parent of node */
         for (fast = slow = (struct EwramNode*)gEwramHeap;

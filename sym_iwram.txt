@@ -1,4 +1,5 @@
 build/sa2/src/m4a.o(.bss.code);
+
 build/sa2/src/multi_boot.o(.bss);
 /* space 0x20 */
 . = 0x0000042C; 
@@ -39,8 +40,6 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 . = 0x00001960; gTaskPtrs = .;
 . = 0x00001B60; gUnknown_03001B60 = .;
 . = 0x00002060; gObjPalette = .;
-. = 0x000020C0; gUnknown_030020C0 = .;
-. = 0x00002252; gUnknown_03002252 = .;
 . = 0x00002260; gUnknown_03002260 = .;
 . = 0x00002264; gFrameCount = .;
 . = 0x00002270; gWinRegs = .;
@@ -69,7 +68,6 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 . = 0x00002840; gDispCnt = .;
 . = 0x00002850; gKeysContinuedRepeatIntervals = .;
 . = 0x00002860; gMultiSioSend = .;
-. = 0x0000286E; gUnknown_0300286E = .;
 . = 0x00002874; gUnknown_03002874 = .;
 . = 0x00002878; gUnknown_03002878 = .;
 . = 0x0000287C; gUnknown_0300287C = .;

@@ -6510,7 +6510,7 @@ _08090FCC:
 	ldr r1, _08090FE4 @ =gUnknown_080E15C8
 	adds r0, r0, r1
 	str r0, [r2]
-	ldr r0, _08090FE8 @ =gUnknown_030020C0
+	ldr r0, _08090FE8 @ =gObjPalette + 0x60
 	str r0, [r2, #4]
 	ldr r0, _08090FEC @ =0x84000008
 	str r0, [r2, #8]
@@ -6519,7 +6519,7 @@ _08090FCC:
 	.align 2, 0
 _08090FE0: .4byte 0x040000D4
 _08090FE4: .4byte gUnknown_080E15C8
-_08090FE8: .4byte gUnknown_030020C0
+_08090FE8: .4byte gObjPalette + 0x60
 _08090FEC: .4byte 0x84000008
 _08090FF0:
 	ldr r4, _08091034 @ =0x0000037E
