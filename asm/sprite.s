@@ -3842,7 +3842,7 @@ sub_80047A0: @ 0x080047A0
 	lsrs r5, r5, #0x10
 	lsls r6, r6, #0x10
 	lsrs r6, r6, #0xb
-	ldr r0, _08004858 @ =gUnknown_03004D96
+	ldr r0, _08004858 @ =gOamBuffer + 0x6
 	adds r6, r6, r0
 	movs r0, #0x80
 	lsls r0, r0, #9
@@ -3915,7 +3915,7 @@ sub_80047A0: @ 0x080047A0
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08004858: .4byte gUnknown_03004D96
+_08004858: .4byte gOamBuffer + 0x6
 _0800485C: .4byte gSineTable
 
 	thumb_func_start sub_8004860
@@ -3944,7 +3944,7 @@ _0800487C:
 	strh r0, [r2]
 	ldrh r4, [r2]
 	lsls r4, r4, #5
-	ldr r0, _08004A14 @ =gUnknown_03004D96
+	ldr r0, _08004A14 @ =gOamBuffer + 0x6
 	adds r4, r4, r0
 	subs r2, #0x18
 	str r2, [sp, #0x28]
@@ -4137,7 +4137,7 @@ _0800497A:
 	ldrh r2, [r0, #4]
 	b _08004A2E
 	.align 2, 0
-_08004A14: .4byte gUnknown_03004D96
+_08004A14: .4byte gOamBuffer + 0x6
 _08004A18: .4byte gSineTable
 _08004A1C: .4byte 0x000003FF
 _08004A20:
@@ -4250,7 +4250,7 @@ _08004AD8:
 	strh r0, [r2]
 	ldrh r4, [r2]
 	lsls r4, r4, #5
-	ldr r0, _08004D58 @ =gUnknown_03004D96
+	ldr r0, _08004D58 @ =gOamBuffer + 0x6
 	adds r4, r4, r0
 	subs r2, #0x18
 	str r2, [sp, #0x28]
@@ -4559,7 +4559,7 @@ _08004C14:
 	ldrh r2, [r1, #4]
 	b _08004D86
 	.align 2, 0
-_08004D58: .4byte gUnknown_03004D96
+_08004D58: .4byte gOamBuffer + 0x6
 _08004D5C: .4byte gUnknown_03001944
 _08004D60: .4byte 0x000003FF
 _08004D64: .4byte gSineTable
@@ -4677,7 +4677,7 @@ _08004E30:
 	strh r0, [r2]
 	ldrh r4, [r2]
 	lsls r4, r4, #5
-	ldr r0, _08005128 @ =gUnknown_03004D96
+	ldr r0, _08005128 @ =gOamBuffer + 0x6
 	adds r4, r4, r0
 	subs r2, #0x18
 	str r2, [sp, #0x28]
@@ -5047,7 +5047,7 @@ _08004F6A:
 	ldrh r2, [r2, #4]
 	b _0800515A
 	.align 2, 0
-_08005128: .4byte gUnknown_03004D96
+_08005128: .4byte gOamBuffer + 0x6
 _0800512C: .4byte gUnknown_03001944
 _08005130: .4byte 0x000003FF
 _08005134: .4byte gSineTable
@@ -6142,7 +6142,7 @@ _0800596A:
 	beq _080059B2
 	ldr r4, _08005A08 @ =0x040000D4
 	mov r8, r1
-	ldr r0, _08005A0C @ =IWRAM_START + 0x2710
+	ldr r0, _08005A0C @ =gUnknown_03002710
 	mov ip, r0
 	ldr r7, _08005A10 @ =gUnknown_030022D0
 _08005988:
@@ -6211,7 +6211,7 @@ _080059FC: .4byte gOamBuffer
 _08005A00: .4byte gUnknown_03002AE0
 _08005A04: .4byte gUnknown_03001850
 _08005A08: .4byte 0x040000D4
-_08005A0C: .4byte IWRAM_START + 0x2710
+_08005A0C: .4byte gUnknown_03002710
 _08005A10: .4byte gUnknown_030022D0
 _08005A14: .4byte 0x80000003
 _08005A18: .4byte gFlags

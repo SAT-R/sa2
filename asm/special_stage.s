@@ -2768,7 +2768,7 @@ sub_806CF78: @ 0x0806CF78
 	bl sub_806D548
 	ldr r4, _0806D208 @ =IWRAM_START + 0x68
 	adds r2, r7, r4
-	ldr r4, _0806D20C @ =gUnknown_03005156
+	ldr r4, _0806D20C @ =gOamBuffer + 0x3C6
 	ldr r6, [sp, #0x1c]
 	ldr r0, [r6]
 	str r0, [r2, #4]
@@ -2941,7 +2941,7 @@ _0806D1FC: .4byte 0x000005CC
 _0806D200: .4byte IWRAM_START + 0x38
 _0806D204: .4byte gUnknown_080DF668
 _0806D208: .4byte IWRAM_START + 0x68
-_0806D20C: .4byte gUnknown_03005156
+_0806D20C: .4byte gOamBuffer + 0x3C6
 _0806D210: .4byte 0x0000037A
 _0806D214: .4byte 0x0000107E
 _0806D218: .4byte 0x0000FFFF
@@ -5153,7 +5153,7 @@ _0806E374:
 	adds r0, r6, #0
 	bl sub_806CD68
 	asrs r0, r5, #0xb
-	ldr r1, _0806E3B4 @ =gUnknown_03004D96
+	ldr r1, _0806E3B4 @ =gOamBuffer + 0x6
 	adds r0, r0, r1
 	ldrh r1, [r4, #0xc]
 	strh r1, [r0]
@@ -5178,7 +5178,7 @@ _0806E3A4: .4byte IWRAM_START + 0x64
 _0806E3A8: .4byte 0x000005CC
 _0806E3AC: .4byte IWRAM_START + 0xC4
 _0806E3B0: .4byte IWRAM_START + 0x34
-_0806E3B4: .4byte gUnknown_03004D96
+_0806E3B4: .4byte gOamBuffer + 0x6
 
 	thumb_func_start sub_806E3B8
 sub_806E3B8: @ 0x0806E3B8
@@ -5514,7 +5514,7 @@ _0806E63A:
 	adds r0, r5, #0
 	bl sub_806CD68
 	lsls r0, r6, #5
-	ldr r1, _0806E680 @ =gUnknown_03004D96
+	ldr r1, _0806E680 @ =gOamBuffer + 0x6
 	adds r0, r0, r1
 	ldrh r1, [r4, #0xc]
 	strh r1, [r0]
@@ -5541,7 +5541,7 @@ _0806E670: .4byte 0x000007B4
 _0806E674: .4byte IWRAM_START + 0x34
 _0806E678: .4byte 0x000C1060
 _0806E67C: .4byte 0x000005CC
-_0806E680: .4byte gUnknown_03004D96
+_0806E680: .4byte gOamBuffer + 0x6
 
 	thumb_func_start sub_806E684
 sub_806E684: @ 0x0806E684
@@ -10721,7 +10721,7 @@ sub_8070FA0: @ 0x08070FA0
 	mov r1, r8
 	adds r6, r1, r0
 	ldr r7, [r6]
-	ldr r5, _08071094 @ =gUnknown_03005176
+	ldr r5, _08071094 @ =gOamBuffer + 0x3E6
 	ldr r2, _08071098 @ =0x000005BA
 	adds r2, r2, r7
 	mov sb, r2
@@ -10830,7 +10830,7 @@ _08071082:
 	bx r0
 	.align 2, 0
 _08071090: .4byte gCurTask
-_08071094: .4byte gUnknown_03005176
+_08071094: .4byte gOamBuffer + 0x3E6
 _08071098: .4byte 0x000005BA
 _0807109C: .4byte IWRAM_START + 0x48
 _080710A0: .4byte 0x000003FF
@@ -11214,7 +11214,7 @@ sub_8071380: @ 0x08071380
 	mov sb, r3
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
-	ldr r5, _0807142C @ =gUnknown_03005176
+	ldr r5, _0807142C @ =gOamBuffer + 0x3E6
 	ldr r1, _08071430 @ =0x0000107F
 	ldrb r2, [r6, #7]
 	movs r0, #1
@@ -11286,7 +11286,7 @@ _080713C2:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807142C: .4byte gUnknown_03005176
+_0807142C: .4byte gOamBuffer + 0x3E6
 _08071430: .4byte 0x0000107F
 _08071434: .4byte 0x0000FFFF
 

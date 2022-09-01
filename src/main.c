@@ -9,132 +9,114 @@
 #include "task.h"
 #include "agb_flash.h"
 #include "flags.h"
-#include "input.h"
 #include "input_recorder.h"
 #include "malloc_vram.h"
 
 // TODO: the order of these vars has
 // been shuffled due to compilation losses.
 // It's possible to use `ramscrgen` to reorder
-// these variables in the source files and provide
+// these variables in here and provide
 // the matching order separately
-// IntrFunc gIntrTable[16] = {};
-// u32 gIntrMainBuf[0x80] = {};
-// struct Task gTasks[MAX_TASK_NUM] = {};
-// u16 gUnknown_030017F0 = 0;
-// u16 gUnknown_030017F4[2] = {};
-// struct Unk_03002400 *gUnknown_03001800[];
-// u16 gFlags = 0;
-// u8 gUnknown_03001850[32] = {};
-// FuncType_030053A0 gUnknown_03001870[4] = {};
-// u16 gPhysicalInput;
-// u32* gUnknown_03001884 = NULL;
-// u16 gVramHeapMaxTileSlots = 0;
-// u8 gNumHBlankCallbacks = 0;
-// union MultiSioData gMultiSioRecv[4] = {};
-// u8 gNumHBlankIntrs = 0;
-// struct BlendRegs gBldRegs = {};
-// u8 gUnknown_030018F0 = 0;
-// struct Task gEmptyTask = {};
-// struct BgAffineRegs gBgAffineRegs = {};
-// u32 gVramHeapStartAddr = 0;
-// u16 gUnknown_03001944 = 0;
-// u8 gUnknown_03001948 = 0;
-// u16 gUnknown_0300194C = 0;
+IntrFunc gIntrTable[] = {};
+u32 gIntrMainBuf[] = {};
+struct Task gTasks[] = {};
+u16 gUnknown_030017F0 ALIGNED(4) = 0;
+u16 gUnknown_030017F4[2] ALIGNED(4) = {};
+struct Unk_03002400* gUnknown_03001800[] ALIGNED(16) = {};
+u32 gFlags = 0;
+u8 gUnknown_03001850[] ALIGNED(16) = {};
+FuncType_030053A0 gUnknown_03001870[] = {};
+u16 gPhysicalInput = 0;
+u32* gUnknown_03001884 = NULL;
+u16 gVramHeapMaxTileSlots = 0;
+u8 gNumHBlankCallbacks ALIGNED(4) = 0;
+union MultiSioData gMultiSioRecv[4] = {};
+u8 gNumHBlankIntrs = 0;
+struct BlendRegs gBldRegs ALIGNED(8) = {};
+u8 gUnknown_030018F0 = 0;
+struct Task gEmptyTask ALIGNED(16) = {};
+struct BgAffineRegs gBgAffineRegs ALIGNED(8) = {};
+u32 gVramHeapStartAddr = 0;
+u16 gUnknown_03001944 ALIGNED(4) = 0;
+u8 gUnknown_03001948 ALIGNED(4) = 0;
+u16 gUnknown_0300194C ALIGNED(4) = 0;
 
-// u32 gMultiSioStatusFlags = 0;
-// bool8 gMultiSioEnabled = FALSE;
+u32 gMultiSioStatusFlags = 0;
+bool8 gMultiSioEnabled = FALSE;
 
-// struct Task* gTaskPtrs[MAX_TASK_NUM] = {};
-// u32 gUnknown_03001B60[2][160] = {};
-// u16 gObjPalette[0x100] = {};
-// union Unk_03002E60 *gUnknown_03002260 = NULL;
-// u32 gFrameCount = 0;
-// u16 gWinRegs[6] = {};
-// s32 gNumTasks = 0;
-// u8 gUnknown_03002280[16] = {};
-// u16 gInput = 0;
-// u8 gRepeatedKeysTestCounter[10] = {};
-// u32* gUnknown_030022AC = NULL;
-// u16 gBgCntRegs[4] = {};
-// u16 gRepeatedKeys = 0;
-// struct Task* gNextTask = NULL;
-// u32* gUnknown_030022C0 = NULL;
-// /* space 0x4 */
-// OamData gUnknown_030022C8 = {};
-// OamData gUnknown_030022D0[128] = {};
-// s16 gUnknown_030026D0 = 0;
-// HBlankFunc gHBlankCallbacks[4] = {};
-// struct Task* gCurTask = NULL;
-// u8 gUnknown_030026F4 = 0;
-// u8 gKeysFirstRepeatIntervals[10] = {};
-// u16 gReleasedKeys = 0;
-// u32 gFlagsPreVBlank = 0;
-// u32* gUnknown_03002794 = 0;
-// struct Unk_03002EC0* gUnknown_030027A0[128] = {};
-// s16 gBgScrollRegs[4][2] = {};
-// u16 gDispCnt = 0;
-// u8 gKeysContinuedRepeatIntervals[10] = {};
-// union MultiSioData gMultiSioSend = {};
-// u8 gUnknown_03002874 = 0;
-// void* gUnknown_03002878 = NULL;
-// u8 gUnknown_0300287C = 0;
-// u16 gBgPalette[0x100] = {};
-// u8 gUnknown_03002A80 = 0;
-// u8 gUnknown_03002A84 = 0;
-// u16 gPrevInput = 0;
-// u16 gUnknown_03002A8C = 0;
-// u16 gReleasedKeys = 0;
-// u8 gUnknown_03002AE0 = 0;
-// u8 gUnknown_03002AE4 = 0;
-// HBlankFunc gHBlankIntrs[4] = {};
-// struct u8 gIwramHeap[0x2204] = {};
-// /* space 0xC (12) */
-// u8 gUnknown_03004D10[0x40] = {};
+struct Task* gTaskPtrs[] ALIGNED(16) = {};
+u32 gUnknown_03001B60[][160] = {};
+u16 gObjPalette[] = {};
+union Unk_03002E60 *gUnknown_03002260 = NULL;
+u32 gFrameCount = 0;
+u16 gWinRegs[6] ALIGNED(16) = {};
+s32 gNumTasks = 0;
+u8 gUnknown_03002280[] = {};
+u16 gInput = 0;
+u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
+u32* gUnknown_030022AC = NULL;
+u16 gBgCntRegs[] = {};
+u16 gRepeatedKeys ALIGNED(4) = 0;
+struct Task* gNextTask = NULL;
+u32* gUnknown_030022C0 = NULL;
 
-u32* gUnknown_03001884;
-u32* gUnknown_03004D54;
-u32* gUnknown_030022C0;
-u32* gUnknown_030022AC;
+OamData gUnknown_030022C8 ALIGNED(8) = {};
+OamData gUnknown_030022D0[] = {};
+s16 gUnknown_030026D0 = 0;
 
-// set in init.c
-u32* gUnknown_03002794;
-u32 gUnknown_030059D8;
-u32 gUnknown_03005848;
-u32 gUnknown_030059D0[2];
-u8 gUnknown_0300543C;
+HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
+struct Task* gCurTask = NULL;
+u8 gUnknown_030026F4 = 0;
+u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 
-u32 gUnknown_030054DC;
-u8 gUnknown_03005B34;
+u16 gReleasedKeys ALIGNED(4) = 0;
+u8 gUnknown_03002710[] ALIGNED(16) = {};
+u32 gFlagsPreVBlank = 0;
+u32* gUnknown_03002794 = 0;
+struct Unk_03002EC0* gUnknown_030027A0[] ALIGNED(16) = {};
+u16 gUnknown_03002820 = 0;
+s16 gBgScrollRegs[][2] ALIGNED(16) = {};
+u16 gDispCnt = 0;
+u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
+union MultiSioData gMultiSioSend ALIGNED(8) = {};
+u8 gUnknown_03002874 = 0;
+void* gUnknown_03002878 ALIGNED(4) = NULL;
+u8 gUnknown_0300287C = 0;
+u16 gBgPalette[] ALIGNED(16) = {};
+u8 gUnknown_03002A80 ALIGNED(4) = 0;
+u8 gUnknown_03002A84 ALIGNED(4) = 0;
+u16 gPrevInput ALIGNED(4) = 0;
+u16 gUnknown_03002A8C ALIGNED(4) = 0;
 
-u8 gUnknown_030054E4;
-u16 gUnknown_03005424;
-u16 gUnknown_0300544C;
+// TODO: will be a struct
+u8 gUnknown_03002A90[] ALIGNED(8) = {};
 
-// multiplayer values
-u32 gUnknown_030055A0[4];
-s8 gUnknown_03005500[4];
-s8 gUnknown_030054B4[4];
+u16 gPressedKeys ALIGNED(4) = 0;
+u8 gUnknown_03002AE0 ALIGNED(4) = 0;
+u8 gUnknown_03002AE4 ALIGNED(4) = 0;
+HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
+u8 gIwramHeap[] = {};
+EWRAM_DATA u8 gEwramHeap[] = {};
 
-u8 gUnknown_03002AE4;
-u8 gUnknown_03005390;
-u8 gUnknown_03004D5C;
-
-u8 gUnknown_03002280[16];
-u8 gUnknown_03004D80[16];
-
-u16 gVramHeapMaxTileSlots;
-
-u32 gVramHeapStartAddr;
-
-
-u16 gBgPalette[0x100];
-u32 gFlagsPreVBlank;
-u8 gNumHBlankIntrs;
-HBlankFunc gHBlankIntrs[4];
-IntrFunc gIntrTable[16];
-u32 gIntrMainBuf[0x80];
+u8 gUnknown_03004D10[] ALIGNED(16) = {};
+u8 gUnknown_03004D50 ALIGNED(4) = 0;
+u32* gUnknown_03004D54 = NULL;
+u16 gUnknown_03004D58 ALIGNED(4) = 0;
+u8 gUnknown_03004D5C ALIGNED(4) = 0;
+u8 gUnknown_03004D60[] ALIGNED(16) = {};
+u8 gUnknown_03004D80[] = {};
+OamData gOamBuffer[] ALIGNED(16) = {};
+u16 gVramHeapState[] = {};
+u8 gUnknown_03005390 ALIGNED(4) = 0;
+u16 gUnknown_03005394 ALIGNED(4) = 0;
+u16 gUnknown_03005398 ALIGNED(4) = 0;
+FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
+const u8* gInputPlaybackData = NULL;
+bool8 gExecSoundMain ALIGNED(4) = FALSE;
+u32 gUnknown_030053B8 = 0;
+struct InputRecorder gInputRecorder ALIGNED(8) = {};
+u16* gInputRecorderTapeBuffer = NULL;
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
@@ -226,17 +208,17 @@ static void GameInit(void) {
 
     gDispCnt = DISPCNT_FORCED_BLANK;
 
-    DmaFill32(3, 0, gUnknown_030027A0, 0x80);
+    DmaFill32(3, 0, gUnknown_030027A0, sizeof(gUnknown_030027A0));
 
     gUnknown_030018F0 = 0;
     gUnknown_03002AE0 = 0;
 
-    DmaFill16(3, 0x200, gOamBuffer, OAM_SIZE);
-    DmaFill16(3, 0x200, gUnknown_030022D0, 0x400);
+    DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
+    DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
     DmaFill32(3, ~0, gUnknown_03001850, sizeof(gUnknown_03001850));
-    DmaFill32(3, ~0, gUnknown_03004D60, 0x20);
-    DmaFill32(3, 0, gObjPalette, OBJ_PLTT_SIZE);
-    DmaFill32(3, 0, gBgPalette, BG_PLTT_SIZE);
+    DmaFill32(3, ~0, gUnknown_03004D60, sizeof(gUnknown_03004D60));
+    DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
+    DmaFill32(3, 0, gBgPalette, sizeof(gBgPalette));
 
     gBgAffineRegs.bg2pa = 0x100;
     gBgAffineRegs.bg2pb = 0;
@@ -630,7 +612,7 @@ static u32 sub_80021C4(void) {
         }
 
         gUnknown_03004D5C++;
-        gUnknown_03004D5C &= 0x1f;
+        gUnknown_03004D5C &= ARRAY_COUNT(gUnknown_030027A0) - 1;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
             return 0;
@@ -737,7 +719,7 @@ static void ClearOamBufferCpuSet(void) {
         }
     }
     gFlags &= ~4;
-    CpuFastFill(0x200, gOamBuffer, OAM_SIZE);
+    CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
     gUnknown_03004D50 = 0;
     gFlags &= ~16;
 }

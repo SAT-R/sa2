@@ -839,9 +839,9 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
 // Exported functions
 
 void SaveInit(void) {
-    gLoadedSaveGame = EwramMallocStruct(struct SaveGame);
-    gLastWrittenSaveGame = EwramMallocStruct(struct SaveGame);
-    gSaveSectorDataBuffer =  EwramMallocStruct(struct SaveSectorData);
+    gLoadedSaveGame = EwramMalloc(sizeof(struct SaveGame));
+    gLastWrittenSaveGame = EwramMalloc(sizeof(struct SaveGame));
+    gSaveSectorDataBuffer =  EwramMalloc(sizeof(struct SaveSectorData));
 
     // Why not just generate for 1 and copy...
     GenerateNewSaveGame(gLoadedSaveGame);

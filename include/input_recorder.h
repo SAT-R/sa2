@@ -19,8 +19,6 @@ struct InputRecorder {
 // TODO: move to data.h
 const u8* gInputPlaybackData;
 
-extern struct InputRecorder gInputRecorder;
-
 void InputRecorderResetRecordHead(void);
 void InputRecorderResetPlaybackHead(void);
 void InputRecorderLoadTape(void);

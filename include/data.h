@@ -18,7 +18,7 @@ extern u32 gUnknown_03001B60[2][160];
 extern u32* gUnknown_03002794;
 extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
-extern u32 gUnknown_030059D0[];
+extern u32 gUnknown_030059D0[2];
 extern u8 gUnknown_0300543C;
 
 extern u32 gUnknown_030054DC;
@@ -232,12 +232,6 @@ struct UNK_080E0D64 {
     u16 unk4;
     s8 unk6;
 };
-
-extern union MultiSioData gMultiSioSend;
-extern union MultiSioData gMultiSioRecv[4];
-
-extern u32 gMultiSioStatusFlags;
-extern bool8 gMultiSioEnabled;
 
 // Some sort of fade transition function?
 extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);

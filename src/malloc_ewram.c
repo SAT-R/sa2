@@ -1,7 +1,6 @@
 #include "global.h"
+#include "main.h"
 #include "malloc_ewram.h"
-
-EWRAM_DATA u8 gEwramHeap[0x20080] = {0};
 
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)

@@ -2,7 +2,7 @@
 #include "multiplayer_mode_select.h"
 #include "multiplayer_multipak_connection.h"
 #include "save.h"
-#include "data.h"
+#include "main.h"
 #include "multi_sio.h"
 #include "task.h"
 #include "sprite.h"
@@ -11,7 +11,6 @@
 #include "m4a.h"
 #include "constants/songs.h"
 #include "flags.h"
-#include "input.h"
 #include "title_screen.h"
 #include "constants/text.h"
 

@@ -1,8 +1,8 @@
 #include "global.h"
+#include "main.h"
 #include "profile.h"
 #include "m4a.h"
 #include "task.h"
-#include "input.h"
 #include "save.h"
 #include "malloc_ewram.h"
 #include "random.h"
@@ -1196,7 +1196,7 @@ void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter) {
     ReadAvailableCharacters(i, gLoadedSaveGame->unk13);
 
     timeRecordsScreen->playerDataMenu = 0;
-    timeRecordsScreen->timeRecords = EwramMallocStruct(struct TimeRecords);
+    timeRecordsScreen->timeRecords = EwramMalloc(sizeof(struct TimeRecords));
     timeRecordsScreen->character = selectedCharacter;
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
@@ -5326,7 +5326,7 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu
     struct OptionsScreenProfileData* profileData;
     s16 i, j;
     
-    multiplayerRecordsScreen->table = EwramMallocStruct(struct MultiplayerRecordsTable);
+    multiplayerRecordsScreen->table = EwramMalloc(sizeof(struct MultiplayerRecordsTable));
     multiplayerRecordsScreen->playerDataMenu = playerDataMenu;
 
     multiplayerRecordsScreen->scrollAnimFrame = 0;

@@ -10,7 +10,7 @@ SECTIONS
     {
         build/sa2/data/sound_data.o(ewram_data); 
         build/sa2/src/m4a.o(ewram_data);
-        build/sa2/src/malloc_ewram.o(ewram_data);
+        build/sa2/src/main.o(ewram_data);
         ewram_end = .;
     }
 

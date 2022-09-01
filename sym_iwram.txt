@@ -1,112 +1,19 @@
+/**** bss ****/
 build/sa2/src/m4a.o(.bss.code);
-
 build/sa2/src/multi_boot.o(.bss);
 /* space 0x20 */
 . = 0x0000042C; 
 build/sa2/src/agb_flash.o(.bss);
-/* space 0x8 */
-. = 0x00000440; 
 
-/* start of common */
+/**** common ****/
+. = ALIGN(16); 
 build/sa2/src/multi_sio.o(.data);
 build/sa2/src/sio32_multi_load.o(COMMON);
+build/sa2/src/main.o(.data);
 
-/* data.o */
-. = 0x000007B0; gIntrTable = .;
-. = 0x000007F0; gIntrMainBuf = .;
-. = 0x000009F0; gTasks = .;
-. = 0x000017F0; gUnknown_030017F0 = .;
-. = 0x000017F4; gUnknown_030017F4 = .;
-. = 0x00001800; gUnknown_03001800 = .;
-. = 0x00001840; gFlags = .;
-. = 0x00001850; gUnknown_03001850 = .;
-. = 0x00001870; gUnknown_03001870 = .;
-. = 0x00001880; gPhysicalInput = .;
-. = 0x00001884; gUnknown_03001884 = .;
-. = 0x00001888; gVramHeapMaxTileSlots = .;
-. = 0x0000188C; gNumHBlankCallbacks = .;
-. = 0x00001890; gMultiSioRecv = .;
-. = 0x000018E0; gNumHBlankIntrs = .;
-. = 0x000018E8; gBldRegs = .;
-. = 0x000018F0; gUnknown_030018F0 = .;
-. = 0x00001900; gEmptyTask = .;
-. = 0x00001920; gBgAffineRegs = .;
-. = 0x00001940; gVramHeapStartAddr = .;
-. = 0x00001944; gUnknown_03001944 = .;
-. = 0x00001948; gUnknown_03001948 = .;
-. = 0x0000194C; gUnknown_0300194C = .;
-. = 0x00001950; gMultiSioStatusFlags = .;
-. = 0x00001954; gMultiSioEnabled = .;
-. = 0x00001960; gTaskPtrs = .;
-. = 0x00001B60; gUnknown_03001B60 = .;
-. = 0x00002060; gObjPalette = .;
-. = 0x00002260; gUnknown_03002260 = .;
-. = 0x00002264; gFrameCount = .;
-. = 0x00002270; gWinRegs = .;
-. = 0x0000227C; gNumTasks = .;
-. = 0x00002280; gUnknown_03002280 = .;
-. = 0x00002290; gInput = .;
-. = 0x000022A0; gRepeatedKeysTestCounter = .;
-. = 0x000022AC; gUnknown_030022AC = .;
-. = 0x000022B0; gBgCntRegs = .;
-. = 0x000022B8; gRepeatedKeys = .;
-. = 0x000022BC; gNextTask = .;
-. = 0x000022C0; gUnknown_030022C0 = .;
-. = 0x000022C8; gUnknown_030022C8 = .;
-. = 0x000022D0; gUnknown_030022D0 = .;
-. = 0x000026D0; gUnknown_030026D0 = .;
-. = 0x000026E0; gHBlankCallbacks = .;
-. = 0x000026F0; gCurTask = .;
-. = 0x000026F4; gUnknown_030026F4 = .;
-. = 0x00002700; gKeysFirstRepeatIntervals = .;
-. = 0x0000270C; gReleasedKeys = .;
-. = 0x00002790; gFlagsPreVBlank = .;
-. = 0x00002794; gUnknown_03002794 = .;
-. = 0x000027A0; gUnknown_030027A0 = .;
-. = 0x00002820; gUnknown_03002820 = .;
-. = 0x00002830; gBgScrollRegs = .;
-. = 0x00002840; gDispCnt = .;
-. = 0x00002850; gKeysContinuedRepeatIntervals = .;
-. = 0x00002860; gMultiSioSend = .;
-. = 0x00002874; gUnknown_03002874 = .;
-. = 0x00002878; gUnknown_03002878 = .;
-. = 0x0000287C; gUnknown_0300287C = .;
-. = 0x00002880; gBgPalette = .;
-. = 0x00002A80; gUnknown_03002A80 = .;
-. = 0x00002A84; gUnknown_03002A84 = .;
-. = 0x00002A88; gPrevInput = .;
-. = 0x00002A8C; gUnknown_03002A8C = .;
-. = 0x00002ADC; gPressedKeys = .;
-. = 0x00002AE0; gUnknown_03002AE0 = .;
-. = 0x00002AE4; gUnknown_03002AE4 = .;
-. = 0x00002AF0; gHBlankIntrs = .;
-. = 0x00002B00; gIwramHeap = .;
-. = 0x00004D10; gUnknown_03004D10 = .;
-. = 0x00004D50; gUnknown_03004D50 = .;
-. = 0x00004D54; gUnknown_03004D54 = .;
-. = 0x00004D58; gUnknown_03004D58 = .;
-. = 0x00004D5C; gUnknown_03004D5C = .;
-. = 0x00004D60; gUnknown_03004D60 = .;
-. = 0x00004D80; gUnknown_03004D80 = .;
-. = 0x00004D90; gOamBuffer = .;
-. = 0x00004D96; gUnknown_03004D96 = .;
-. = 0x00005156; gUnknown_03005156 = .;
-. = 0x00005176; gUnknown_03005176 = .;
-. = 0x00005190; sVramHeapState = .;
-. = 0x00005390; gUnknown_03005390 = .;
-. = 0x00005394; gUnknown_03005394 = .;
-. = 0x00005398; gUnknown_03005398 = .;
-. = 0x000053A0; gUnknown_030053A0 = .;
-. = 0x000053B0; gInputPlaybackData = .;
-. = 0x000053B4; gExecSoundMain = .;
-. = 0x000053B8; gUnknown_030053B8 = .;
-. = 0x000053C0;
-
-/* TODO: why is playback data not here */
-build/sa2/src/input_recorder.o(.data);
-
+. = ALIGN(32); 
 /* game.o */
-. = 0x000053E0; gUnknown_030053E0 = .;
+                gUnknown_030053E0 = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
 . = 0x000053EC; gUnknown_030053EC = .;
@@ -213,14 +120,9 @@ build/sa2/src/save.o(.data);
 . = 0x00005B70; 
 
 build/sa2/src/random.o(.data);
-
-/* space 8 */
-. = 0x00005B80;
-
+. = ALIGN(16); 
 build/sa2/src/backgrounds.o(.data);
-
-/* space 8 */
-. = 0x00005B90; 
-
+. = ALIGN(16);
 build/sa2/src/agb_flash.o(.data);
+
 iwram_end = .;

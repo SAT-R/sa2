@@ -2,7 +2,7 @@
 
 #include "global.h"
 
-__attribute__((section(".bss.code"))) ALIGNED(4) char SoundMainRAM_Buffer[0x400] = {0};
+__attribute__((section(".bss.code"))) char SoundMainRAM_Buffer[0x400] = {};
 
 EWRAM_DATA struct SoundInfo gSoundInfo = {};
 EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};

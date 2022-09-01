@@ -1,18 +1,13 @@
 #include "global.h"
+#include "main.h"
 #include "task.h"
 #include "malloc_ewram.h"
 #include "input_recorder.h"
 
 #define TAPE_LENGTH 0x800
 
-// Probably not declared here
-const u8* gInputPlaybackData;
-
 static void Task_InputRecorder(void);
 static void InputRecorderEject(struct Task*);
-
-struct InputRecorder gInputRecorder = {};
-u16* gInputRecorderTapeBuffer = NULL;
 
 void InputRecorderResetRecordHead(void) {
     gInputRecorder.recordHead = 0;
@@ -24,7 +19,7 @@ void InputRecorderResetPlaybackHead(void) {
 
 void InputRecorderLoadTape(void) {
     gInputRecorder.mode = RECORDER_DISABLED;
-    gInputRecorderTapeBuffer = (u16*)EwramMalloc(TAPE_LENGTH * sizeof(u16));
+    gInputRecorderTapeBuffer = EwramMalloc(TAPE_LENGTH * sizeof(u16));
 
     // Load the playback tape into the recorder
     LZ77UnCompWram(gInputPlaybackData, gInputRecorderTapeBuffer);

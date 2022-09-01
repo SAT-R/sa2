@@ -306,7 +306,7 @@ _08081300:
 	ldr r0, _080815AC @ =gMultiSioEnabled
 	movs r1, #0
 	strb r1, [r0]
-	ldr r0, _080815B0 @ =IWRAM_START + 0x2A90
+	ldr r0, _080815B0 @ =gUnknown_03002A90
 	ldr r2, [sp, #4]
 	ldr r1, [r2]
 	str r1, [r0, #0x28]
@@ -358,7 +358,7 @@ _080815A0: .4byte IWRAM_START + 0x9C
 _080815A4: .4byte 0x0600A000
 _080815A8: .4byte 0x04000128
 _080815AC: .4byte gMultiSioEnabled
-_080815B0: .4byte IWRAM_START + 0x2A90
+_080815B0: .4byte gUnknown_03002A90
 _080815B4: .4byte gCurTask
 _080815B8:
 	ldr r1, _080815EC @ =0x0000FFFF
@@ -436,7 +436,7 @@ sub_8081604: @ 0x08081604
 	strb r0, [r1]
 	bl MultiPakCommunicationError
 _0808165E:
-	ldr r2, _08081750 @ =IWRAM_START + 0x2A90
+	ldr r2, _08081750 @ =gUnknown_03002A90
 	mov r8, r2
 	ldrb r0, [r2, #0x1e]
 	movs r1, #0xe
@@ -548,7 +548,7 @@ _08081740: .4byte gUnknown_0300287C
 _08081744: .4byte gUnknown_03005390
 _08081748: .4byte gUnknown_03004D5C
 _0808174C: .4byte gUnknown_03002A84
-_08081750: .4byte IWRAM_START + 0x2A90
+_08081750: .4byte gUnknown_03002A90
 _08081754: .4byte gPressedKeys
 _08081758: .4byte IWRAM_START + 0xF0
 _0808175C: .4byte gFlags
@@ -598,7 +598,7 @@ _080817C8: .4byte 0xFFFF7FFF
 _080817CC: .4byte gPressedKeys
 _080817D0: .4byte gCurTask
 _080817D4:
-	ldr r4, _08081824 @ =IWRAM_START + 0x2A90
+	ldr r4, _08081824 @ =gUnknown_03002A90
 	adds r0, r4, #0
 	bl MultiBootMain
 	cmp r0, #0x50
@@ -635,7 +635,7 @@ _080817EC:
 	bl MultiPakCommunicationError
 	b _08081896
 	.align 2, 0
-_08081824: .4byte IWRAM_START + 0x2A90
+_08081824: .4byte gUnknown_03002A90
 _08081828: .4byte 0x0000FFFF
 _0808182C: .4byte gUnknown_03002AE4
 _08081830: .4byte gUnknown_0300287C
@@ -1260,7 +1260,7 @@ sub_8081D70: @ 0x08081D70
 	push {r4, r5, lr}
 	movs r2, #1
 	movs r1, #1
-	ldr r4, _08081DB0 @ =IWRAM_START + 0x2A90
+	ldr r4, _08081DB0 @ =gUnknown_03002A90
 	ldrb r5, [r4, #0x1d]
 	movs r3, #1
 _08081D7C:
@@ -1291,7 +1291,7 @@ _08081D9A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08081DB0: .4byte IWRAM_START + 0x2A90
+_08081DB0: .4byte gUnknown_03002A90
 
 	thumb_func_start sub_8081DB4
 sub_8081DB4: @ 0x08081DB4

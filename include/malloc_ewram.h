@@ -15,6 +15,4 @@ void EwramInitHeap(void);
 void *EwramMalloc(u32);
 void EwramFree(void *);
 
-#define EwramMallocStruct(s) (s*)EwramMalloc(sizeof(s))
-
 #endif // GUARD_MALLOC_EWRAM_H
