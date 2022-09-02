@@ -2,6 +2,7 @@
 #define GUARD_MAIN_H
 
 #include "global.h"
+#include "data.h"
 #include "task.h"
 #include "sprite.h"
 
@@ -131,7 +132,7 @@ extern u32* gUnknown_030022AC;
 extern u32* gUnknown_030022C0;
 extern s16 gUnknown_030026D0;
 extern u8 gUnknown_030026F4;
-extern u32* gUnknown_03002794;
+extern const struct SpriteTables* gUnknown_03002794;
 extern struct Unk_03002EC0* gUnknown_030027A0[32];
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;

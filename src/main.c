@@ -1,6 +1,7 @@
 #include "main.h"
 #include "init.h"
 #include "global.h"
+#include "data.h"
 #include "m4a.h"
 #include "malloc_ewram.h"
 #include "multi_sio.h"
@@ -71,7 +72,7 @@ u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
-u32* gUnknown_03002794 = 0;
+const struct SpriteTables* gUnknown_03002794 = NULL;
 struct Unk_03002EC0* gUnknown_030027A0[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};

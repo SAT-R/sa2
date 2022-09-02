@@ -1,5 +1,6 @@
 #include "global.h"
 #include "main.h"
+#include "data.h"
 #include "multiplayer_communication_outcome.h"
 #include "multiplayer_multipak_connection.h"
 #include "task.h"
@@ -11,7 +12,6 @@
 #include "constants/songs.h"
 #include "game.h"
 #include "flags.h"
-#include "zones.h"
 #include "character_select.h"
 
 struct CommunicationOutcomeScreen {

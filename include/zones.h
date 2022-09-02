@@ -18,8 +18,4 @@
 
 #define TO_LEVEL_INDEX(zone, act) ((zone) * (ACTS_PER_ZONE + 1)) + (act)
 
-// likely static data, needs to be extracted
-extern union Unk_03002E60 gMapHeaders[];
-extern u32 gUnknown_080F40D4;
-
 #endif // GUARD_ZONES_H

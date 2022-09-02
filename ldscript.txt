@@ -104,9 +104,11 @@ SECTIONS
         build/sa2/data/data1_3.o(.rodata);
         build/sa2/src/sound_test.o(.rodata);
         build/sa2/src/title_screen.o(.rodata);
-        build/sa2/data/data2.o(.rodata);
-        build/sa2/data/animations_data.o(.rodata);
-        build/sa2/data/data2_1.o(.rodata);
+        build/sa2/data/cut_scenes_data.o(.rodata);
+
+        build/sa2/data/sprite_data.o(.rodata);
+        build/sa2/data/map_data.o(.rodata);
+
         build/sa2/src/m4a_tables.o(.rodata);
         build/sa2/data/sound_data.o(.rodata);
 

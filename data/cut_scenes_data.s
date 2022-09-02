@@ -176,7 +176,3 @@ gUnknown_080E1C5C:
     .global gUnknown_080E1CA0
 gUnknown_080E1CA0:
     .incbin "baserom.gba", 0x000E1CA0, 0x12434
-
-    .global gUnknown_080F40D4
-gUnknown_080F40D4:
-    .incbin "baserom.gba", 0x000F40D4, 0x18

@@ -10,7 +10,6 @@
 #include "constants/songs.h"
 #include "game.h"
 #include "flags.h"
-#include "zones.h"
 #include "course_select.h"
 
 #ifdef TEAMPLAY_AVAILABLE

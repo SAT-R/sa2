@@ -1,5 +1,6 @@
 #include "global.h"
 #include "main.h"
+#include "data.h"
 #include "multiplayer_multipak_connection.h"
 #include "multiplayer_communication_outcome.h"
 #include "multiplayer_mode_select.h"
@@ -13,7 +14,6 @@
 #include "constants/songs.h"
 #include "game.h"
 #include "flags.h"
-#include "zones.h"
 #include "character_select.h"
 
 struct MultiplayerConnectScreen {
@@ -661,7 +661,7 @@ void MultiPakCommunicationError(void) {
     MultiSioStop();
     MultiSioInit(0);
     gUnknown_03002260 = gMapHeaders;
-    gUnknown_03002794 = &gUnknown_080F40D4;
+    gUnknown_03002794 = &gSpriteTables;
     gUnknown_030054D4[0] = 0;
     gUnknown_030054D4[1] = 0;
     gUnknown_030054D4[2] = 0;

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "main.h"
+#include "data.h"
 #include "game.h"
 #include "task.h"
 #include "init.h"
@@ -9,7 +10,6 @@
 #include "player.h"
 #include "title_screen.h"
 #include "profile.h"
-#include "zones.h"
 
 // Need to find what these mean
 extern void sub_8081C0C();
@@ -19,7 +19,7 @@ void GameStart(void) {
     bool32 hasProfile = FALSE;
 
     gUnknown_03002260 = gMapHeaders;
-    gUnknown_03002794 = &gUnknown_080F40D4;
+    gUnknown_03002794 = &gSpriteTables;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];
 

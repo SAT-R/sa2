@@ -1,5 +1,17 @@
 	.section .rodata
 
+    .global gSpriteTables
+gSpriteTables:
+    .4byte gAnimations
+    .4byte gSpriteDimensions
+    .4byte gSpriteOamData
+    .4byte gSpritePalettes
+    .4byte gSpriteImages
+    .4byte gUnknown_086E9E08
+    
+    .include "data/animations/animations.inc"
+    .include "data/animations/animations_table.inc"
+
     .global gUnknown_08137078 @ 0x08137078
  gUnknown_08137078:
     .incbin "baserom.gba", 0x00137078, 0x1614C
@@ -28,7 +40,3 @@ gSpriteImages:
     .global gUnknown_086E9E08
 gUnknown_086E9E08:
     .incbin "baserom.gba", 0x006E9E08, 0x600
-
-    .global gUnknown_086EA408
-gUnknown_086EA408:
-    .incbin "baserom.gba", 0x006EA408, 0x3E3870
