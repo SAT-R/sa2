@@ -11,4 +11,4 @@ gUnknown_08C88408:
 
     .global gUnknown_08C92208
 gUnknown_08C92208:
-    .incbin "baserom.gba", 0x00C92208, 0x36DDF8
+    .incbin "baserom.gba", 0x00C92208, 0x44448
