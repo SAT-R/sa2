@@ -56,7 +56,7 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     gBldRegs.bldY = 0x10;
 
     t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
-    outcomeScreen = TaskGetStructPtr(t, outcomeScreen);
+    outcomeScreen = TaskGetStructPtr(t);
 
     outcomeScreen->unk203 = outcome;
     outcomeScreen->unk200 = 0x78;
@@ -142,7 +142,7 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
 
 void sub_805BC40(void) {
     struct UNK_0808B3FC_UNK240* unkD0;
-    struct CommunicationOutcomeScreen* outcomeScreen = TaskGetStructPtr(gCurTask, outcomeScreen);
+    struct CommunicationOutcomeScreen* outcomeScreen = TaskGetStructPtr(gCurTask);
     unkD0 = &outcomeScreen->unkA0;
     sub_8004558(unkD0);
     sub_80051E8(unkD0);

@@ -103,7 +103,7 @@ void CreateMultiplayerModeSelectScreen(void) {
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(Task_FadeInAndStartEnterAnim, sizeof(struct MultiplayerModeSelectScreen), 0x2000, 0, MultiplayerModeSelectScreenOnDestroy);
-    modeScreen = TaskGetStructPtr(t, modeScreen);
+    modeScreen = TaskGetStructPtr(t);
     modeScreen->animFrame = 0;
     modeScreen->pakMode = PAK_MODE_MULTI;
     modeScreen->enterAnimDone = FALSE;
@@ -227,7 +227,7 @@ void CreateMultiplayerModeSelectScreen(void) {
 
 
 static void Task_EnterAnimPart1(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
@@ -248,7 +248,7 @@ static void Task_EnterAnimPart1(void) {
 
 static void Task_EnterAnimPart2(void) {
     struct UNK_0808B3FC_UNK240* unk80;
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     if (++modeScreen->animFrame == 32) {
         modeScreen->enterAnimDone = TRUE;
         gCurTask->main = Task_ScreenMain;
@@ -298,7 +298,7 @@ static void Task_EnterAnimPart2(void) {
 }
 
 static void Task_ScreenMain(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk140;
     if (gPressedKeys & A_BUTTON) {
         unk140 = &modeScreen->unk140;
@@ -362,7 +362,7 @@ static void Task_ScreenMain(void) {
 }
 
 static void Task_FadeOutToSelectedMode(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
@@ -382,7 +382,7 @@ static void Task_FadeOutToSelectedMode(void) {
 }
 
 static void Task_FadeOutAndExitToTitleScreen(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
@@ -402,7 +402,7 @@ static void Task_FadeOutAndExitToTitleScreen(void) {
 }
 
 static void Task_FadeInAndStartEnterAnim(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
@@ -410,7 +410,7 @@ static void Task_FadeInAndStartEnterAnim(void) {
 }
 
 static void Task_ExitAndInitSelectedPakMode(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
     u8 pakMode = modeScreen->pakMode;
     TasksDestroyAll();
 
@@ -440,7 +440,7 @@ static void RenderUI(struct MultiplayerModeSelectScreen* modeScreen) {
 }
 
 static void MultiplayerModeSelectScreenOnDestroy(struct Task* t) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(t, modeScreen);
+    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(t);
     VramFree(modeScreen->unk80.unk4);
     VramFree(modeScreen->unkB0.unk4);
     VramFree(modeScreen->unkE0.unk4);

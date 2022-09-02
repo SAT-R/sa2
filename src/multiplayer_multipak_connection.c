@@ -80,7 +80,7 @@ void StartMultiPakConnect(void) {
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(sub_805ADAC, sizeof(struct MultiplayerConnectScreen), 0x2000, 0, NULL);
-    connectScreen = TaskGetStructPtr(t, connectScreen);
+    connectScreen = TaskGetStructPtr(t);
     connectScreen->unkEB = 0;
     connectScreen->unkFC = 1;
     connectScreen->unkFD = 0;
@@ -199,7 +199,7 @@ static void sub_805ADAC(void) {
     bool8 bool1 = FALSE;
     bool8 bool2 = FALSE;
     bool8 bool3 = TRUE;
-    struct MultiplayerConnectScreen *connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    struct MultiplayerConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
     struct MultiSioData_0_0 *send, *recv;
     struct MultiSioData_0_0 *data;
     struct UNK_0808B3FC_UNK240 *r4p;
@@ -447,7 +447,7 @@ static void sub_805ADAC(void) {
 }
 
 static void sub_805B454(void) {
-    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
     gMultiSioSend.pat0.unk0 = 0;
     if (++connectScreen->unkE8 > 4) {
         gMultiSioEnabled = FALSE;
@@ -473,7 +473,7 @@ static void sub_805B4C0(void) {
     
     u8 recv2;
     s32 count = 0;
-    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask, connectScreen);
+    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
     MultiPakHeartbeat();
     recv = &gMultiSioRecv[0].pat0;
     recv2 = recv->unk2;

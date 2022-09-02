@@ -38,7 +38,7 @@ struct IwramNode {
     u8 space[0];
 };
 
-#define TaskGetStructPtr(taskp, dst) (typeof(dst))(IWRAM_START + (taskp)->structOffset)
+#define TaskGetStructPtr(taskp) (void*)(IWRAM_START + (taskp)->structOffset)
 #define TasksDestroyAll() TasksDestroyInPriorityRange(0, 0xFFFF)
 
 extern struct Task gTasks[MAX_TASK_NUM];

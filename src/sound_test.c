@@ -504,7 +504,7 @@ static const u32 sBackButtonText[NUM_LANGUAGES * 3 * 2] = {
 
 void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t);
     struct UNK_802D4CC_UNK270* unk4;
     struct UNK_3005B80_UNK4* unk10;
     u32 i;
@@ -560,7 +560,7 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
 }
 
 static void SoundTestScreenCreateUI(struct Task* t) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t);
 
     struct UNK_0808B3FC_UNK240* title = &soundTestScreen->title;
     struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
@@ -672,7 +672,7 @@ static void SoundTestScreenCreateUI(struct Task* t) {
 }
 
 static void Task_SoundTestScreenMain(void) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
 
     struct UNK_0808B3FC_UNK240* numberDisplayDigit = soundTestScreen->numberDisplay;
     struct UNK_0808B3FC_UNK240* backControlName = &soundTestScreen->backControlName;
@@ -819,7 +819,7 @@ static void Task_SoundTestScreenMain(void) {
 }
 
 static void SoundTestScreenRenderUI(void) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* unkC8 = &soundTestScreen->title;
     struct UNK_0808B3FC_UNK240* titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     struct UNK_0808B3FC_UNK240* backCountrolName = &soundTestScreen->backControlName;
@@ -974,7 +974,7 @@ static void SoundTestScreenRenderUI(void) {
 }
 
 static void Task_SoundTestScreenInOutTransition(void) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* idleCream = &soundTestScreen->creams[IDLE_CREAM];
 
     soundTestScreen->animFrame++;
@@ -1006,7 +1006,7 @@ static void Task_SoundTestScreenInOutTransition(void) {
 }
 
 static void SoundTestScreenSetCreamAnim(u8 anim) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->activeCream;
 
     switch (anim) {
@@ -1060,7 +1060,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim) {
 }
 
 static void SoundTestScreenUpdateCreamAnim(void) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* animatedCream = soundTestScreen->activeCream;
 
     switch(soundTestScreen->state) {
@@ -1107,7 +1107,7 @@ static void SoundTestScreenUpdateCreamAnim(void) {
 }
 
 static void SoundTestScreenOnDestroy(struct Task* t) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t);
     soundTestScreen->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
 }
 
@@ -1117,7 +1117,7 @@ static void Task_SoundTestScreenCleanup(void) {
 }
 
 static void SoundTestScreenInitRegistersAndBackground(struct Task* t) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(t);
     gDispCnt = 0x1141;
     gBgCntRegs[0] = 0x703;
     gBgScrollRegs[0][0] = 0;
@@ -1129,7 +1129,7 @@ static void SoundTestScreenInitRegistersAndBackground(struct Task* t) {
 }
 
 static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     u32 i;
     
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
@@ -1142,7 +1142,7 @@ static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y) {
 }
 
 static void SoundTestScreenSetNameDisplay(u8 soundId) {
-    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask, soundTestScreen);
+    struct SoundTestScreen* soundTestScreen = TaskGetStructPtr(gCurTask);
     u32 i;
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         u8 soundTextChar = sSoundNames[soundId][i];
