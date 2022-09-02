@@ -1,8 +1,7 @@
-#include "task.h"
-
-#include "data.h"
-#include "flags.h"
 #include "global.h"
+#include "task.h"
+#include "main.h"
+#include "flags.h"
 #include "m4a.h"
 
 static void TaskMainDummy1(void);

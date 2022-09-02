@@ -3,25 +3,6 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "data.h"
-
-struct UNK_3005B80_UNK4_UNK8 {
-    s8 unk0;
-    u8 unk1;
-    u16 unk2;
-
-    u16 unk4;
-    s8 unk6;
-    
-    s8 unk7;
-    s8 unk8;
-    s8 unk9;
-    s8 unkA;
-
-    u8 unkB;
-
-    u16 unkC[256];
-};
 
 struct UNK_3005B80_UNK4 {
     u8 unk0;

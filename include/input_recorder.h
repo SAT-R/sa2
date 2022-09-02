@@ -16,9 +16,6 @@ struct InputRecorder {
     u8 mode;
 };
 
-// TODO: move to data.h
-const u8* gInputPlaybackData;
-
 void InputRecorderResetRecordHead(void);
 void InputRecorderResetPlaybackHead(void);
 void InputRecorderLoadTape(void);

@@ -3,7 +3,6 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "data.h"
 
 // TODO: not sure why these were shared from here, may
 // not be

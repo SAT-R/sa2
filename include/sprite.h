@@ -2,8 +2,6 @@
 #define GUARD_SPRITE_H
 
 #include "global.h"
-#include "data.h"
-
 
 // TODO: move the struct declaration to a proper location
 // Background
@@ -110,6 +108,15 @@ struct UNK_808D124_UNK180 {
     u8 unkA;
     u8 unkB;
 }; /* size 0xC */
+
+// used for defining element data
+struct UNK_080E0D64 {
+    // width
+    u32 unk0;
+    // caption ID
+    u16 unk4;
+    s8 unk6;
+};
 
 // Register menu item
 u32 sub_8004558(struct UNK_0808B3FC_UNK240*);

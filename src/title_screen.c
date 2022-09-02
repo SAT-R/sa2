@@ -9,7 +9,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "save.h"
-#include "data.h"
+#include "transition.h"
 #include "input_recorder.h"
 #include "random.h"
 #include "math.h"
@@ -370,7 +370,7 @@ void CreateTitleScreen(void) {
     config27C->unk34 = titleScreen->wavesTopOffset;
     config27C->unk1 = 0xE;
     config27C->unk4 = sWavesVerticalBrightnessGradiant;
-    config27C->unk8 = (const struct UNK_3005B80_UNK4_UNK8*)sUnknown_080E0EF4;
+    config27C->unk8 = sUnknown_080E0EF4;
     config27C->unk36 = 0;
 
     gUnknown_03005B80.unk0 = config27C;

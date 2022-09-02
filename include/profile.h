@@ -4,6 +4,7 @@
 #include "global.h"
 #include "save.h"
 #include "sprite.h"
+#include "transition.h"
 #include "constants/text.h"
 
 #define RENDER_TARGET_SCREEN 0

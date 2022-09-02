@@ -2,7 +2,7 @@
 #define GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
 
 #include "global.h"
-#include "data.h"
+#include "game.h"
 #include "multi_sio.h"
 
 extern u8 gUnknown_03005594;

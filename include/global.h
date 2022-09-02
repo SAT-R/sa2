@@ -86,6 +86,27 @@
 // 60 is not exactly true as the GBA's FPS, but it's what they went with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+struct BlendRegs {
+    u16 bldCnt;
+    u16 bldAlpha;
+    u16 bldY;
+};
+
+struct BgAffineRegs {
+    u16 bg2pa;
+    u16 bg2pb;
+    u16 bg2pc;
+    u16 bg2pd;
+    u32 bg2x;
+    u32 bg2y;
+    u16 bg3pa;
+    u16 bg3pb;
+    u16 bg3pc;
+    u16 bg3pd;
+    u32 bg3x;
+    u32 bg3y;
+};
+
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8 vcount);
 typedef void (*IntrFunc)(void);

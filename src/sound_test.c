@@ -3,12 +3,13 @@
 #include "main.h"
 #include "profile.h"
 #include "task.h"
-#include "data.h"
 #include "m4a.h"
 #include "constants/songs.h"
 #include "flags.h"
 #include "trig.h"
 #include "backgrounds.h"
+#include "transition.h"
+#include "palettes.h"
 
 #define MAX_SOUND_NAME_LENGTH 16
 #define NUM_SPEAKER_CONE_SECTIONS 4
@@ -552,7 +553,7 @@ void CreateSoundTestScreen(struct OptionsScreen* optionsScreen) {
     unk10->unk1 = 0;
 
     unk10->unk4 = gUnknown_080E0C38;
-    unk10->unk8 = (const struct UNK_3005B80_UNK4_UNK8*)gUnknown_08C8796C;
+    unk10->unk8 = gUnknown_08C8796C;
 
     unk10->unk34 = 0;
 

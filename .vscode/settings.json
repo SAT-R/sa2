@@ -43,7 +43,11 @@
         "malloc_vram.h": "c",
         "multiplayer_multipak_connection.h": "c",
         "multiplayer_team_play.h": "c",
-        "multi_boot.h": "c"
+        "multi_boot.h": "c",
+        "character_select.h": "c",
+        "transition.h": "c",
+        "palettes.h": "c",
+        "multiplayer_mode_select.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

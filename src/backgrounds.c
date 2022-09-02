@@ -1,6 +1,25 @@
 #include "global.h"
 #include "backgrounds.h"
 
+struct UNK_3005B80_UNK4_UNK8 {
+    s8 unk0;
+    u8 unk1;
+    u16 unk2;
+
+    u16 unk4;
+    s8 unk6;
+    
+    s8 unk7;
+    s8 unk8;
+    s8 unk9;
+    s8 unkA;
+
+    u8 unkB;
+
+    u8 unkC[BG_PLTT_SIZE];
+};
+
+
 struct UNK_808DB78 {
     u8 unk0;
     u8 unk1;
@@ -19,13 +38,13 @@ struct UNK_3005B80 gUnknown_03005B80 = {};
 
 UNUSED void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8* unk0) {
     u16 i;
-    u16 array[256];
-    u16 *colors = unk0->unkC;
+    u16 array[BG_PLTT_SIZE / sizeof(u16)];
+    u16 *colors = (u16*)unk0->unkC;
     u16 temp5;
     s16 temp2;
     u16 color;
 
-    for (i = 0; i < 256; i++) {
+    for (i = 0; i < (BG_PLTT_SIZE / sizeof(u16)); i++) {
         if (i & 1)
             color = colors[i];
         else
@@ -64,7 +83,7 @@ UNUSED void sub_808D8A0(struct UNK_3005B80_UNK4_UNK8* unk0) {
         array[i] = temp5;
     }
 
-    CpuFastSet(array, (void*)BG_PLTT, 0x80);
+    CpuFastSet(array, (void*)BG_PLTT, (sizeof(array) / 4));
     unk0->unk4 += unk0->unk2;
     unk0->unk1 = unk0->unk4 >> 8;
 }

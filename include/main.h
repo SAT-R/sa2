@@ -5,6 +5,49 @@
 #include "task.h"
 #include "sprite.h"
 
+struct MultiSioData_0_0 {
+    u16 unk0;
+    u8 unk2;
+    u8 unk3;
+    u32 unk4;
+    u16 unk8[3];
+    u8 unkE;
+    u8 unkF;
+    u32 unk10;
+};
+
+union MultiSioData {
+    struct MultiSioData_0_0 pat0;
+}; /* size = MULTI_SIO_BLOCK_SIZE */
+
+// Used for the two background layers.
+struct MapHeader {
+    u16 X_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
+    u16 Y_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
+    u16 unk4;
+    u8 unk6;
+    u8 unk7;
+    void * Tileset;
+    u16 unkC;
+    u16 unkD;
+    u16 * Palette;
+    u16 unk14;
+    u16 unk16;
+    const u16 * Metatiles;
+    const u16 * Map;
+}; /* size = 0x20 */
+
+struct MapHeader_Full {
+    struct MapHeader unk0;
+    u16 Map_Width;  // in Metatiles
+    u16 Map_Height; // in Metatiles
+};
+
+union __attribute__((transparent_union)) Unk_03002E60 {
+    struct MapHeader *x;
+    struct MapHeader_Full *y;
+};
+
 extern u32 gFlags;
 extern u32 gFlagsPreVBlank;
 

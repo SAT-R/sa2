@@ -1,7 +1,6 @@
 #include "global.h"
 #include "agb_flash.h"
 #include "malloc_ewram.h"
-#include "data.h"
 #include "flags.h"
 #include "save.h"
 #include "m4a.h"

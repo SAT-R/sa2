@@ -1,5 +1,6 @@
 #include "global.h"
-#include "data.h"
+#include "main.h"
+#include "game.h"
 #include "task.h"
 #include "init.h"
 #include "flags.h"
@@ -9,9 +10,6 @@
 #include "title_screen.h"
 #include "profile.h"
 #include "zones.h"
-
-// Some sort of unused task variable
-struct Task *gUnknown_03005844;
 
 // Need to find what these mean
 extern void sub_8081C0C();

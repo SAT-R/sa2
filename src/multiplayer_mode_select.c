@@ -7,7 +7,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "malloc_vram.h"
-#include "data.h"
+#include "transition.h"
 #include "m4a.h"
 #include "constants/songs.h"
 #include "flags.h"

@@ -1,6 +1,5 @@
 #include "global.h"
 #include "main.h"
-#include "data.h"
 #include "malloc_vram.h"
 
 void* VramMalloc(u32 numTiles) {

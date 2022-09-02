@@ -8,6 +8,7 @@
 #include "save.h"
 #include "title_screen.h"
 #include "multi_sio.h"
+#include "transition.h"
 #include "m4a.h"
 #include "constants/songs.h"
 #include "game.h"
@@ -462,7 +463,6 @@ static void sub_805B454(void) {
         TaskDestroy(gCurTask);
     }
 }
-
 
 
 
