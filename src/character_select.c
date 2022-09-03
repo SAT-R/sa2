@@ -1,5 +1,7 @@
 #include "global.h"
-#include "data.h"
+#include "main.h"
+#include "transition.h"
+#include "game.h"
 #include "sprite.h"
 #include "character_select.h"
 #include "save.h"
@@ -50,34 +52,37 @@ struct CharacterSelectionScreen {
 }; /* size 0x3E0 */
 
 void sub_8031C64(void);
-void sub_8034638(void);
+void sub_8034638(struct Task*);
 
 extern const u16 gUnknown_080D71D4[6][2];
 extern const u16 gUnknown_080D71EC[6][2];
 extern const u16 gUnknown_080D725C[6][2];
 extern const u16 gUnknown_080D7204[6][2];
-extern const u16 gUnknown_080D722C[2][6][2];
+extern const u16 gUnknown_080D722C[12][2];
 
-void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
+// Pretty close: https://decomp.me/scratch/A2o3b
+NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked)) {
     struct Task* t;
     struct CharacterSelectionScreen* characterScreen;
     struct UNK_802D4CC_UNK270* screenFade;
     struct Unk_03002400* background;
     struct UNK_0808B3FC_UNK240* element;
+    u32 a;
 
-    u8 i;
-    bool8 something;
+    u8 i = 0;
+    s8 something;
     u32 character = selectedCharacter;
-    u8 lang;
+    s8 lang;
     lang = gLoadedSaveGame->unk6 - 1;
-    if ((gLoadedSaveGame->unk6 - 1) < 0) {
+    if (lang < 0) {
         lang = 0;
     }
 
-    something = lang != 0 && (s8)lang > -1;
-
-    
-
+    if (lang < 1) {
+        something = 0;
+    } else {
+        something = 1;
+    }
     // something missing to do with lang here
 
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
@@ -98,7 +103,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(sub_8031C64, 0x3E0, 0x4100, 0, sub_8034638);
-    characterScreen = TaskGetStructPtr(t, characterScreen);
+    characterScreen = TaskGetStructPtr(t);
 
     characterScreen->unk3CA = gLoadedSaveGame->unk13;
     characterScreen->unk3C1 = selectedCharacter;
@@ -114,20 +119,21 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     characterScreen->unk3C9 = 0;
     characterScreen->unk3CB = 0;
 
-    if (allUnlocked == FALSE) {
-        characterScreen->unk3D8 = ((selectedCharacter * -0x66 + 0x16E) & 0x3FF) * 0x100 + 4;
-        characterScreen->unk3C3 = 0;
-        characterScreen->unk3C0 = selectedCharacter;
-        if (selectedCharacter >= 4) {
-            characterScreen->unk3C0 = 3;
-        }
-    } else {
-        characterScreen->unk3D8 = ((selectedCharacter * -0x66 + 0x108) & 0x3FF) * 0x100 + 2;
+    if (allUnlocked != FALSE) {
+        characterScreen->unk3D8 = ((0x108 - (0x66 * selectedCharacter)) & 0x3FF) * 0x100 + 2;
         characterScreen->unk3C3 = 1;
         characterScreen->unk3C0 = selectedCharacter;
 
         if (selectedCharacter >= 5) {
             characterScreen->unk3C0 = 4;
+        }
+    } else {
+        
+        characterScreen->unk3D8 = ((0x16E - (selectedCharacter * 0x66)) & 0x3FF) * 0x100 + 4;
+        characterScreen->unk3C3 = 0;
+        characterScreen->unk3C0 = selectedCharacter;
+        if (selectedCharacter >= 4) {
+            characterScreen->unk3C0 = 3;
         }
     } 
 
@@ -141,9 +147,9 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     sub_802D4CC(screenFade);
 
     background = &characterScreen->unk8C;
-    background->unk4 = BG_SCREEN_ADDR(18);
+    background->unk4 = BG_SCREEN_ADDR(24);
     background->unkA = 0;
-    background->unkC = BG_SCREEN_ADDR(6);
+    background->unkC = BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 99;
@@ -160,7 +166,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     background = &characterScreen->unkC;
     background->unk4 = BG_SCREEN_ADDR(0);
     background->unkA = 0;
-    background->unkC = BG_SCREEN_ADDR(14);
+    background->unkC = BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x175;
@@ -177,7 +183,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     background = &characterScreen->unk4C;
     background->unk4 = BG_SCREEN_ADDR(8);
     background->unkA = 0;
-    background->unkC = BG_SCREEN_ADDR(15);
+    background->unkC = BG_SCREEN_ADDR(21);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x176;
@@ -191,7 +197,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     background->unk2E = 2;
     sub_8002A3C(background);
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 5; i++) {
         element = &characterScreen->unk1D4[i];
         element->unk16 = 0;
         element->unk18 = 0;
@@ -231,8 +237,8 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     element->unk16 = 0;
     element->unk18 = 0;
     element->unk4 = VramMalloc(0x24);
-    element->unkA = gUnknown_080D722C[something][characterScreen->unk3C0][0];
-    element->unk20 = gUnknown_080D722C[something][characterScreen->unk3C0][1];
+    element->unkA = gUnknown_080D722C[characterScreen->unk3C0 + (something * 6)][0];
+    element->unk20 = gUnknown_080D722C[characterScreen->unk3C0 + (something * 6)][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -332,7 +338,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     element = &characterScreen->unk360;
     element->unk16 = 0;
     element->unk18 = 0;
-    element->unk4 = BG_TILE_ADDR(8);
+    element->unk4 = (void*)(OBJ_VRAM0 + 0x400);
     element->unkA = 0x2e0;
     element->unk20 = 10;
     element->unk1A = 0x100;
@@ -349,7 +355,7 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     element = &characterScreen->unk390;
     element->unk16 = 0;
     element->unk18 = 0;
-    element->unk4 = BG_TILE_ADDR(75);
+    element->unk4 = (void*)(OBJ_VRAM0 + 0x2580);
     element->unkA = 0x2e6;
     element->unk20 = 0;
     element->unk1A = 0x40;
@@ -366,10 +372,10 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
     element = &characterScreen->unkFC;
     element->unk16 = 0;
     element->unk18 = 0;
-    element->unk4 = BG_TILE_ADDR(32);
+    element->unk4 = (void*)(OBJ_VRAM0 + 0x1000);
     element->unkA = gUnknown_080D7204[characterScreen->unk3C0][0];
     element->unk20 = gUnknown_080D7204[characterScreen->unk3C0][1];
-    element->unk1A = 0x40;
+    element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
@@ -386,3 +392,4 @@ void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked) {
 
     gFlags |= 0x2;
 }
+END_NONMATCH
