@@ -9,7 +9,11 @@
 #define GAME_MODE_TEAM_PLAY 4
 
 #include "global.h"
+#include "multi_sio.h"
+#include "save.h"
 #include "task.h"
+
+
 
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
@@ -62,7 +66,23 @@ struct SomeStruct_5660 {
 
 extern struct SomeStruct_5660 gUnknown_03005660;
 
+extern u8 gUnknown_03005594;
+extern u8 gUnknown_030054D8;
+extern u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
+
+// gMultiplayerNames
+extern u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
+
+extern u32 gUnknown_03005434;
+
+// gMultiplayerConnections
+extern u8 gUnknown_030055B8;
+
 // Possibly CreateGameStageAtSelectedCourse
 void sub_801A770(void);
+
+void sub_802EFDC(u32);
+void sub_802E164(u16, u16);
+void sub_808129C(void);
 
 #endif // GUARD_GAME_H

@@ -8,9 +8,11 @@
 #include "multi_sio.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "game.h"
 #include "flags.h"
 #include "course_select.h"
+#include "time_attack.h"
 
 #ifdef TEAMPLAY_AVAILABLE
 #include "multiplayer_team_play.h"
@@ -28,17 +30,94 @@ struct MultiplayerResultsScreen {
     u8 unk204;
 }; /* size 0x208 */
 
-extern void sub_8087400(void);
-
 static void sub_805C0F0(void);
 static void sub_805C30C(void);
 static void sub_805C3D0(void);
 static void sub_805C69C(void);
 static void sub_805C504(void);
 
-extern const u16 gUnknown_080D92A8[7];
-extern const struct UNK_080E0D64 gUnknown_080D9100[7][7];
-extern const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX];
+static const struct UNK_080E0D64 gUnknown_080D9100[][7] = {
+    [LANG_DEFAULT] = {
+        TextElementAlt3(0, 0, 1077),
+        TextElementAlt3(1, 0, 1077),
+        TextElementAlt3(2, 0, 1077),
+        TextElementAlt3(3, 0, 1077),
+        TextElementAlt3(4, 0, 1077),
+        TextElementAlt3(5, 0, 1077),
+        TextElementAlt3(6, 0, 1077),
+    },
+    [LANG_JAPANESE] = {
+        TextElementAlt3(0, 0, 1077),
+        TextElementAlt3(1, 0, 1077),
+        TextElementAlt3(2, 0, 1077),
+        TextElementAlt3(3, 0, 1077),
+        TextElementAlt3(4, 0, 1077),
+        TextElementAlt3(5, 0, 1077),
+        TextElementAlt3(6, 0, 1077),
+    },
+    [LANG_ENGLISH] = {
+        TextElementAlt3(0, 0, 1089),
+        TextElementAlt3(1, 0, 1089),
+        TextElementAlt3(2, 0, 1089),
+        TextElementAlt3(3, 0, 1089),
+        TextElementAlt3(4, 0, 1089),
+        TextElementAlt3(5, 0, 1089),
+        TextElementAlt3(6, 0, 1089),
+    },
+    [LANG_GERMAN] = {
+        TextElementAlt3(0, 0, 1090),
+        TextElementAlt3(1, 0, 1090),
+        TextElementAlt3(2, 0, 1090),
+        TextElementAlt3(3, 0, 1089),
+        TextElementAlt3(4, 0, 1089),
+        TextElementAlt3(5, 0, 1089),
+        TextElementAlt3(6, 0, 1089),
+    },
+    [LANG_FRENCH] = {
+        TextElementAlt3(0, 0, 1091),
+        TextElementAlt3(1, 0, 1091),
+        TextElementAlt3(2, 0, 1091),
+        TextElementAlt3(3, 0, 1089),
+        TextElementAlt3(4, 0, 1089),
+        TextElementAlt3(5, 0, 1089),
+        TextElementAlt3(6, 0, 1089),
+    },
+    [LANG_SPANISH] = {
+        TextElementAlt3(0, 0, 1092),
+        TextElementAlt3(1, 0, 1092),
+        TextElementAlt3(2, 0, 1092),
+        TextElementAlt3(3, 0, 1089),
+        TextElementAlt3(4, 0, 1089),
+        TextElementAlt3(5, 0, 1089),
+        TextElementAlt3(6, 0, 1089),
+    },
+    [LANG_ITALIAN] = {
+        TextElementAlt3(0, 0, 1093),
+        TextElementAlt3(1, 0, 1093),
+        TextElementAlt3(2, 0, 1093),
+        TextElementAlt3(3, 0, 1089),
+        TextElementAlt3(4, 0, 1089),
+        TextElementAlt3(5, 0, 1089),
+        TextElementAlt3(6, 0, 1089),
+    },
+};
+
+static const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX] = {
+    TextElementAlt4(13, 0, 1074),
+    TextElementAlt4(14, 0, 1074),
+    TextElementAlt4(15, 0, 1074),
+    TextElementAlt4(16, 0, 1074),
+};
+
+static const u16 gUnknown_080D92A8[] = {
+    [LANG_DEFAULT] = 116, 
+    [LANG_JAPANESE] = 116, 
+    [LANG_ENGLISH] = 117, 
+    [LANG_GERMAN] = 118, 
+    [LANG_FRENCH] = 119, 
+    [LANG_SPANISH] = 120, 
+    [LANG_ITALIAN] = 121,
+};
 
 void CreateMultiplayerResultsScreen(u8 mode) {
     struct Task* t;

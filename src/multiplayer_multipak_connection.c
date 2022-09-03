@@ -12,6 +12,7 @@
 #include "transition.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "game.h"
 #include "flags.h"
 #include "character_select.h"
@@ -39,23 +40,19 @@ struct MultiplayerConnectScreen {
     u8 unkFD;
 }; /** size 0x100 */
 
-u8 gUnknown_03005594;
-u8 gUnknown_030054D8;
-u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
-
-// gMultiplayerNames
-u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
-
-u32 gUnknown_03005434;
-
-// gMultiplayerConnections
-u8 gUnknown_030055B8;
-
 static void sub_805ADAC(void);
 static void sub_805B4C0(void);
 static void sub_805B454(void);
 
-extern const struct UNK_080E0D64 gUnknown_080D9050[7];
+static const struct UNK_080E0D64 gUnknown_080D9050[] = {
+    TextElement(1, LANG_DEFAULT, 0, 90, 1074),
+    TextElement(1, LANG_JAPANESE, 0, 90, 1074),
+    TextElement(1, LANG_ENGLISH, 0, 84, 1079),
+    TextElement(1, LANG_GERMAN, 0, 90, 1080),
+    TextElement(1, LANG_FRENCH, 0, 90, 1081),
+    TextElement(1, LANG_SPANISH, 0, 90, 1082),
+    TextElement(1, LANG_ITALIAN, 0, 45, 1083),
+};
 
 void StartMultiPakConnect(void) {
     struct Task* t;

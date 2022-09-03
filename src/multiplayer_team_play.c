@@ -34,16 +34,60 @@ struct MultiplayerTeamPlayScreen {
 }; /* 0x320 */
 
 
-extern const struct UNK_080E0D64 gUnknown_080D92BC[4];
-extern const struct UNK_080E0D64 gUnknown_080D92DC[35];
-
 static void sub_805CB34(void);
 static void sub_805CC34(void);
-
 static void sub_805D118(struct MultiplayerTeamPlayScreen*);
 static void sub_805D644(struct MultiplayerTeamPlayScreen*);
-
 static void sub_805D5C8(void);
+static void sub_805D610(void);
+
+static const u8 gUnknown_080D92B8[] = { 40, 174, };
+static const u8 gUnknown_080D92BA[] = { 80, 159, };
+
+static const struct UNK_080E0D64 gUnknown_080D92BC[] = {
+    TextElementAlt4(5, 8, 1076),
+    TextElementAlt4(6, 8, 1076),
+    TextElementAlt4(7, 8, 1076),
+    TextElementAlt4(8, 8, 1076),
+};
+
+static const struct UNK_080E0D64 gUnknown_080D92DC[] = {
+    TextElement(5, LANG_DEFAULT, 0, 46, 1076),
+    TextElement(5, LANG_DEFAULT, 1, 42, 1076),
+    TextElement(5, LANG_DEFAULT, 2, 12, 1076),
+    TextElement(5, LANG_DEFAULT, 3, 18, 1076),
+    TextElement(5, LANG_DEFAULT, 4, 6, 1076),
+    TextElement(5, LANG_JAPANESE, 0, 46, 1076),
+    TextElement(5, LANG_JAPANESE, 1, 42, 1076),
+    TextElement(5, LANG_JAPANESE, 2, 12, 1076),
+    TextElement(5, LANG_JAPANESE, 3, 18, 1076),
+    TextElement(5, LANG_JAPANESE, 4, 6, 1076),
+    TextElement(5, LANG_ENGLISH, 0, 38, 1084),
+    TextElement(5, LANG_ENGLISH, 1, 46, 1084),
+    TextElement(5, LANG_ENGLISH, 2, 14, 1084),
+    TextElement(5, LANG_ENGLISH, 3, 10, 1084),
+    TextElement(5, LANG_ENGLISH, 4, 6, 1076),
+    TextElement(5, LANG_GERMAN, 0, 57, 1085),
+    TextElement(5, LANG_GERMAN, 1, 46, 1085),
+    TextElement(5, LANG_GERMAN, 2, 10, 1085),
+    TextElement(5, LANG_GERMAN, 3, 14, 1085),
+    TextElement(5, LANG_GERMAN, 4, 6, 1076),
+    TextElement(5, LANG_FRENCH, 0, 51, 1086),
+    TextElement(5, LANG_FRENCH, 1, 72, 1086),
+    TextElement(5, LANG_FRENCH, 2, 10, 1086),
+    TextElement(5, LANG_FRENCH, 3, 14, 1086),
+    TextElement(5, LANG_FRENCH, 4, 6, 1076),
+    TextElement(5, LANG_SPANISH, 0, 75, 1087),
+    TextElement(5, LANG_SPANISH, 1, 69, 1087),
+    TextElement(5, LANG_SPANISH, 2, 9, 1087),
+    TextElement(5, LANG_SPANISH, 3, 15, 1087),
+    TextElement(5, LANG_SPANISH, 4, 6, 1076),
+    TextElement(5, LANG_ITALIAN, 0, 72, 1088),
+    TextElement(5, LANG_ITALIAN, 1, 75, 1088),
+    TextElement(5, LANG_ITALIAN, 2, 6, 1088),
+    TextElement(5, LANG_ITALIAN, 3, 10, 1088),
+    TextElement(5, LANG_ITALIAN, 4, 6, 1076),
+};
 
 void CreateMultiplayerTeamPlayScreen(void) {
     struct Task* t;
@@ -92,12 +136,12 @@ void CreateMultiplayerTeamPlayScreen(void) {
     teamPlayScreen->unk316 = 1;
     teamPlayScreen->unk317 = 0;
 
-    for (i = 0, vram = OBJ_VRAM0; i < 4; i++) {
+    for (i = 0, vram = OBJ_VRAM0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         element = &teamPlayScreen->unk0[i];
         element->unk16 = 0;
         element->unk18 = 0;
         element->unk4 = (void*)vram;
-        vram += gUnknown_080D92BC[i].unk0 * 0x20;
+        vram += gUnknown_080D92BC[i].unk0 * TILE_SIZE_4BPP;
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unkA = gUnknown_080D92BC[i].unk4;
@@ -117,11 +161,11 @@ void CreateMultiplayerTeamPlayScreen(void) {
         element->unk16 = 0;
         element->unk18 = 0;
         element->unk4 = (void*)vram;
-        vram += gUnknown_080D92DC[i + lang * 5].unk0 * 0x20;
+        vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk0 * TILE_SIZE_4BPP;
         element->unk1A = 0xC0;
         element->unk8 = 0;
-        element->unkA = gUnknown_080D92DC[i + lang * 5].unk4;
-        element->unk20 = gUnknown_080D92DC[i + lang * 5].unk6;
+        element->unkA = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk4;
+        element->unk20 = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk6;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
@@ -237,7 +281,6 @@ static void sub_805CB34(void) {
     sub_805D118(teamPlayScreen);
     sub_805D644(teamPlayScreen);
 }
-
 
 static void sub_805CC34(void) {
     u8 i, j;
@@ -446,12 +489,7 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
     }
 }
 
-extern const u8 gUnknown_080D92B8[2];
-extern const u8 gUnknown_080D92BA[2];
-
-void sub_805D610(void);
-
-void sub_805D1F8(void) {
+static void sub_805D1F8(void) {
     s32 i;
     u8 count;
     bool8 someVar = TRUE;
@@ -594,7 +632,7 @@ static void sub_805D5C8(void) {
     sub_805D1F8();
 }
 
-void sub_805D610(void) {
+static void sub_805D610(void) {
     TaskDestroy(gCurTask);
     gFlags &= ~0x4;
     sub_80346C8(0, gUnknown_030054D8, 0);

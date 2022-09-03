@@ -36,11 +36,16 @@ langs = [
 
 with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
-    for i in range(length // 8):
-        unk0 = read_u32(rom)
-        unk4 = read_u16(rom)
-        element = read_u8(rom)
-        print(f"TextElementAlt4({element}, {unk0}, {unk4}),")
-        
-        # unused
-        read_u8(rom)
+    for i in range(length // 8 // 7):
+        lang = langs[i]
+        # num elements
+        print("{")
+        for j in range(7): 
+            unk0 = read_u32(rom)
+            unk4 = read_u16(rom)
+            element = read_u8(rom)
+            print(f"    TextElementAlt2(LANG_{lang}, {element}, {unk0}, {unk4}),")
+            
+            # unused
+            read_u8(rom)
+        print("}")

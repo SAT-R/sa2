@@ -10,6 +10,7 @@
 #include "multi_sio.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "game.h"
 #include "flags.h"
 #include "character_select.h"
@@ -30,11 +31,30 @@ struct CommunicationOutcomeScreen {
     u8 unk207[21];
 }; /* size 0x21C */
 
-void sub_805BC40(void);
+static void sub_805BC40(void);
 
-extern const u16 gUnknown_080D9088[2];
-extern const u8 gUnknown_080D908C[2];
-extern const struct UNK_080E0D64 gUnknown_080D9090[14];
+static const u16 gUnknown_080D9088[2] = {1075, 1075};
+static const u8 gUnknown_080D908C[2] = { 0, 1 };
+static const struct UNK_080E0D64 gUnknown_080D9090[][7] = {
+    {
+        TextElementAlt2(LANG_DEFAULT, 1, 51, 1074),
+        TextElementAlt2(LANG_JAPANESE, 1, 51, 1074),
+        TextElementAlt2(LANG_ENGLISH, 1, 75, 1079),
+        TextElementAlt2(LANG_GERMAN, 1, 75, 1080),
+        TextElementAlt2(LANG_FRENCH, 1, 57, 1081),
+        TextElementAlt2(LANG_SPANISH, 1, 45, 1082),
+        TextElementAlt2(LANG_ITALIAN, 1, 51, 1083),
+    },
+    {
+        TextElementAlt2(LANG_DEFAULT, 3, 66, 1074),
+        TextElementAlt2(LANG_JAPANESE, 3, 66, 1074),
+        TextElementAlt2(LANG_ENGLISH, 3, 68, 1079),
+        TextElementAlt2(LANG_GERMAN, 3, 88, 1080),
+        TextElementAlt2(LANG_FRENCH, 3, 60, 1081),
+        TextElementAlt2(LANG_SPANISH, 3, 68, 1082),
+        TextElementAlt2(LANG_ITALIAN, 3, 60, 1083),
+    }
+};
 
 void CreateMultipackOutcomeScreen(u8 outcome) {
     u8 i;
@@ -140,7 +160,7 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     }
 }
 
-void sub_805BC40(void) {
+static void sub_805BC40(void) {
     struct UNK_0808B3FC_UNK240* unkD0;
     struct CommunicationOutcomeScreen* outcomeScreen = TaskGetStructPtr(gCurTask);
     unkD0 = &outcomeScreen->unkA0;
@@ -152,7 +172,7 @@ void sub_805BC40(void) {
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
         unkD0 = &outcomeScreen->unkD0;
-        unk9090 = gUnknown_080D9090;
+        unk9090 = gUnknown_080D9090[0];
         offset = gLoadedSaveGame->unk6 + 7;
 
         unkD0->unkA = unk9090[offset].unk4;
@@ -164,7 +184,7 @@ void sub_805BC40(void) {
     } else {
         const struct UNK_080E0D64* unk9090;
         unkD0 = &outcomeScreen->unkD0;
-        unk9090 = gUnknown_080D9090;
+        unk9090 = gUnknown_080D9090[0];
 
         unkD0->unkA = unk9090[gLoadedSaveGame->unk6].unk4;
         unkD0->unk20 = unk9090[gLoadedSaveGame->unk6].unk6;
