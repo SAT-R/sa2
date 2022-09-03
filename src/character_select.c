@@ -10,6 +10,7 @@
 #include "malloc_vram.h"
 #include "constants/songs.h"
 #include "flags.h"
+#include "trig.h"
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -47,7 +48,7 @@ struct CharacterSelectionScreen {
     u16 unk3D0;
     u8 filler3D2[2];
     u32 unk3D4;
-    u32 unk3D8;
+    s32 unk3D8;
     u32 unk3DC;
 }; /* size 0x3E0 */
 
@@ -59,6 +60,12 @@ extern const u16 gUnknown_080D71EC[6][2];
 extern const u16 gUnknown_080D725C[6][2];
 extern const u16 gUnknown_080D7204[6][2];
 extern const u16 gUnknown_080D722C[12][2];
+
+#define ScrollBackground() ({ \
+    gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF; \
+    gBgScrollRegs[2][0] = (gBgScrollRegs[2][0] - 1) & 0xFF; \
+    gBgScrollRegs[2][1] = (gBgScrollRegs[2][1] + 1) & 0xFF; \
+})
 
 // Pretty close: https://decomp.me/scratch/A2o3b
 NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateCharacterSelectionScreen(u8 selectedCharacter, bool8 allUnlocked)) {
@@ -393,3 +400,74 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
     gFlags |= 0x2;
 }
 END_NONMATCH
+
+void sub_8031CD8(void);
+
+void sub_8031C64(void) {
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    if (++characterScreen->unk3D4 > 0x17) {
+        characterScreen->unk3D4 = 0;
+        gCurTask->main = sub_8031CD8;
+    }
+
+    sub_802D4CC(&characterScreen->unk0);
+    sub_80051E8(&characterScreen->unk300);
+    sub_80051E8(&characterScreen->unk330);
+
+    ScrollBackground();
+}
+
+void sub_8031E10(void);
+void sub_8033078(struct CharacterSelectionScreen* characterScreen);
+void sub_8032E38(struct CharacterSelectionScreen* characterScreen);
+
+void sub_8031CD8(void) {
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    register u32 temp asm("r3") = ++characterScreen->unk3D4;
+    register u32 r0 asm("r0");
+
+    if (temp > 0x3C || ((gPressedKeys & A_BUTTON) && gGameMode < 3)) {
+        characterScreen->unk3C5++;
+        characterScreen->unk3D8 = characterScreen->unk3C0 * -0x6600;
+        if (characterScreen->unk3C3 != 0) {
+            characterScreen->unk3D8 += 2;
+        } else {
+            characterScreen->unk3D8 += 4;
+        }
+        characterScreen->unk3D8 &= 0x3FFFF;
+        characterScreen->unk3D4 = 0;
+        gCurTask->main = sub_8031E10;
+        sub_8033078(characterScreen);
+    } else {
+        characterScreen->unk3D8 -= Div(gSineTable[(((r0 = temp + 4) << 2) & 0x3FF) + (temp = 0x100)], 3);
+        if (characterScreen->unk3C3 != 0) {
+            characterScreen->unk3D8 += 6; 
+        } else {
+            characterScreen->unk3D8 += 0xC;
+        }
+        characterScreen->unk3D8 &= 0x3FFFF;
+        sub_8032E38(characterScreen);
+    }
+
+    ScrollBackground();
+}
+
+void sub_8031E84(void);
+void sub_803353C(struct CharacterSelectionScreen* characterScreen);
+
+void sub_8031E10(void) {
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    u32 var = ++characterScreen->unk3D4;
+    characterScreen->unk3C5++;
+    if (var >= 0x10) {
+        characterScreen->unk3C5++;
+        characterScreen->unk3D4 = 0;
+        gCurTask->main = sub_8031E84;
+        sub_803353C(characterScreen);
+        ScrollBackground();
+        return;
+    }
+
+    sub_8033078(characterScreen);
+    ScrollBackground();
+}
