@@ -11,6 +11,8 @@
 #include "constants/songs.h"
 #include "flags.h"
 #include "trig.h"
+#include "multiplayer_multipak_connection.h"
+#include "player.h"
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -33,7 +35,7 @@ struct CharacterSelectionScreen {
     struct UNK_0808B3FC_UNK240 unk390;
     u8 unk3C0;
     u8 unk3C1;
-    u8 filler3C2;
+    u8 unk3C2;
     u8 unk3C3;
     u8 unk3C4;
     u8 unk3C5;
@@ -439,7 +441,7 @@ void sub_8031CD8(void) {
         gCurTask->main = sub_8031E10;
         sub_8033078(characterScreen);
     } else {
-        characterScreen->unk3D8 -= Div(gSineTable[(((r0 = temp + 4) << 2) & 0x3FF) + (temp = 0x100)], 3);
+        characterScreen->unk3D8 -= Div(gSineTable[(((r0 = temp + 4) << 2) & 0x3FF) + 0x100], 3);
         if (characterScreen->unk3C3 != 0) {
             characterScreen->unk3D8 += 6; 
         } else {
@@ -471,3 +473,312 @@ void sub_8031E10(void) {
     sub_8033078(characterScreen);
     ScrollBackground();
 }
+
+
+extern const u16 gUnknown_080D7218[4][2];
+extern const u16 gUnknown_080D7278[5];
+
+extern const u8 gUnknown_080D7282[4][5];
+
+void sub_8032D9C(void);
+void sub_8032AF4(void);
+void sub_8033F38(void);
+void sub_8033C64(struct CharacterSelectionScreen*);
+void sub_8032508(void);
+void sub_803274C(void);
+
+void sub_8031E84(void) {
+    u8 i;
+    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_802D4CC_UNK270* unk0;
+    union MultiSioData* packet;
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    characterScreen->unk3C5 = (characterScreen->unk3C5 & 0x3F) + 1;
+
+    MultiPakHeartbeat();
+
+    if (gGameMode > 2) {
+        characterScreen->unk3DC = 0;
+        
+        for (i = 0; i < 4; i++) {
+            if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+                packet = &gMultiSioRecv[i];
+                if (packet->pat0.unk0 > 0x4020) {
+                    characterScreen->unk3DC |= CHARACTER_BIT(gMultiSioRecv[i].pat0.unk2);
+                }
+            }
+        }
+    } else if (gPressedKeys & B_BUTTON || characterScreen->unk3C9 != 0) {
+        unk0 = &characterScreen->unk0;
+        unk0->unk0 = 0;
+        unk0->unk4 = 0;
+        unk0->unk2 = 1;
+        unk0->unk6 = 0x180;
+        unk0->unk8 = 0xFF;
+        unk0->unkA = 0;
+        gCurTask->main = sub_8032D9C;
+
+        if (characterScreen->unk3C9 == 0) {
+            m4aSongNumStart(SE_RETURN);
+        }
+
+        sub_803353C(characterScreen);
+        return;
+    }
+
+    if (characterScreen->unk3C8 != 0) {
+        element = &characterScreen->unkFC;
+        element->unkA = gUnknown_080D7218[characterScreen->unk3C1][0];
+        element->unk20 = gUnknown_080D7218[characterScreen->unk3C1][1];
+        element->unk21 = 0xFF;
+        
+        element = &characterScreen->unk360;
+        element->unkA = 0x2E0;
+        element->unk20 = 0xB;
+        element->unk21 = 0xFF;
+        gSelectedCharacter = characterScreen->unk3C1;
+
+        characterScreen->unk3D4 = 0;
+
+        unk0 = &characterScreen->unk0;
+        unk0->unk0 = 0;
+        unk0->unk4 = 0;
+        unk0->unk2 = 1;
+        unk0->unk6 = 0x180;
+        unk0->unk8 = 0xFF;
+        unk0->unkA = 0;
+
+        m4aSongNumStart(gUnknown_080D7278[characterScreen->unk3C1]);
+
+        if (gGameMode >= 3) {
+            gCurTask->main = sub_8033F38;
+        } else {
+            gCurTask->main = sub_8032AF4;            
+        }
+        sub_8033C64(characterScreen);
+    } else {
+        if (gInput & (DPAD_LEFT | DPAD_UP)) {
+            if (characterScreen->unk3C1 == 0 && characterScreen->unk3C3 == 0) {
+                characterScreen->unk3D8 = 0x26800;
+            }
+
+            characterScreen->unk3C5 = 0;
+            characterScreen->unk3C6 = 0xC;
+            characterScreen->unk3C2 = characterScreen->unk3C1;
+            characterScreen->unk3C1 = gUnknown_080D7282[characterScreen->unk3C3 + 2][characterScreen->unk3C1];
+            characterScreen->unk3D4 = 0;
+            characterScreen->unk3C4 = 0;
+            characterScreen->unk3CB = 0;
+            element = &characterScreen->unk300;
+            element->unkA = 0x2E2;
+            element->unk20 = 1;
+            element->unk21 = 0xFF;
+            m4aSongNumStart(SE_SHIFT);
+            gCurTask->main = sub_8032508;
+            sub_803353C(characterScreen);
+        } else if (gInput & (DPAD_RIGHT | DPAD_DOWN)) {
+            characterScreen->unk3C5 = 0;
+            characterScreen->unk3C7 = 0xC;
+            characterScreen->unk3C2 = characterScreen->unk3C1;
+            characterScreen->unk3C1 = gUnknown_080D7282[characterScreen->unk3C3][characterScreen->unk3C1];
+            characterScreen->unk3D4 = 0;
+            characterScreen->unk3C4 = 0;
+            characterScreen->unk3CB = 1;
+
+            element = &characterScreen->unk330;
+            element->unkA = 0x2E2;
+            element->unk20 = 1;
+            element->unk21 = 0xFF;
+            m4aSongNumStart(SE_SHIFT);
+            gCurTask->main = sub_803274C;
+            sub_803353C(characterScreen);
+        } else {
+#ifndef NON_MATCHING
+            if (!(gGameMode <= 2 && !((gPressedKeys & A_BUTTON) && (characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1))))) {
+                goto code;
+            }
+            while (0) ;
+            goto label;
+            code:
+#else
+            if (gGameMode <= 2 && !((gPressedKeys & A_BUTTON) && (characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1))) {
+                sub_803353C(characterScreen);
+            } else
+#endif
+            if (gGameMode <= 2 // completely optimized out
+                || (gPressedKeys & A_BUTTON && !(characterScreen->unk3DC & CHARACTER_BIT(characterScreen->unk3C1)))) {
+                element = &characterScreen->unkFC;
+                element->unkA = gUnknown_080D7218[characterScreen->unk3C1][0];
+                element->unk20 = gUnknown_080D7218[characterScreen->unk3C1][1];
+                element->unk21 = 0xFF;
+                
+                element = &characterScreen->unk360;
+                element->unkA = 0x2E0;
+                element->unk20 = 0xB;
+                element->unk21 = 0xFF;
+
+                gSelectedCharacter = characterScreen->unk3C1;
+                characterScreen->unk3D4 = 0;
+
+                unk0 = &characterScreen->unk0;
+                unk0->unk0 = 0;
+                unk0->unk4 = 0;
+                unk0->unk2 = 1;
+                unk0->unk6 = 0x180;
+                unk0->unk8 = 0xFF;
+                unk0->unkA = 0;
+                m4aSongNumStart(gUnknown_080D7278[characterScreen->unk3C1]);
+
+                // Some sort of tail merge
+                if (gGameMode >= 3) {
+                    gCurTask->main = sub_8033F38;
+                } else {
+                    gCurTask->main = sub_8032AF4;
+                }
+                sub_8033C64(characterScreen);
+            }
+            else if (gGameMode > 2 && characterScreen->unk3DC & CHARACTER_BIT(characterScreen->unk3C1)) {
+                if (characterScreen->unk3CB) {
+                    characterScreen->unk3C5 = 0;
+                    characterScreen->unk3C7 = 0xC;
+                    characterScreen->unk3C2 = characterScreen->unk3C1;
+                    characterScreen->unk3C1 = gUnknown_080D7282[characterScreen->unk3C3][characterScreen->unk3C1];
+    
+                    characterScreen->unk3D4 = 0;
+                    characterScreen->unk3C4 = 0;
+                    element = &characterScreen->unk330;
+                    element->unkA = 0x2E2;
+                    element->unk20 = 1;
+                    element->unk21 = 0xFF;
+                    m4aSongNumStart(SE_SHIFT);
+                    gCurTask->main = sub_803274C;
+                } else {
+                    if (characterScreen->unk3C1 == 0 && characterScreen->unk3C3 == 0) {
+                        characterScreen->unk3D8 = 0x26800;
+                    }
+                    characterScreen->unk3C5 = 0;
+                    characterScreen->unk3C6 = 0xC;
+                    characterScreen->unk3C2 = characterScreen->unk3C1;
+    
+                    characterScreen->unk3C1 = gUnknown_080D7282[characterScreen->unk3C3 + 2][characterScreen->unk3C1];
+                    characterScreen->unk3D4 = 0;
+                    characterScreen->unk3C4 = 0;
+                    characterScreen->unk3CB = 0;
+                    element = &characterScreen->unk300;
+                    element->unkA = 0x2E2;
+                    element->unk20 = 1;
+                    element->unk21 = 0xFF;
+                    m4aSongNumStart(SE_SHIFT);
+                    gCurTask->main = sub_8032508;
+                }
+                sub_803353C(characterScreen);
+            }
+            else {
+#ifndef NON_MATCHING
+                label:
+#endif
+                sub_803353C(characterScreen);
+            }
+        }
+    }
+    if (gGameMode > 2) {
+        packet = &gMultiSioSend;
+        packet->pat0.unk0 = 0x4020;
+        packet->pat0.unk2 = characterScreen->unk3C1;
+    }
+
+    ScrollBackground();
+}
+
+extern const u16 gUnknown_080D7296[8];
+
+void sub_8032990(void);
+
+static inline void sub_8032508_inline(struct CharacterSelectionScreen* characterScreen) {
+    if (gGameMode <= 2) {
+        if ((gPressedKeys & A_BUTTON) && (characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1))) {
+#ifdef NON_MATCHING
+            characterScreen->unk3C8 = 1;
+#else
+            goto label;
+#endif
+            return;
+        }
+    } else {
+        if ((gPressedKeys & A_BUTTON) && !(characterScreen->unk3DC & CHARACTER_BIT(characterScreen->unk3C1))) {
+#ifndef NON_MATCHING
+label:
+#endif
+            characterScreen->unk3C8 = 1;
+            return;
+        } else if (gGameMode > 2) {
+            return;
+        }
+    }
+
+    if ((gPressedKeys & B_BUTTON)) {
+        if (!characterScreen->unk3C9) {
+            m4aSongNumStart(SE_RETURN);
+        }
+        characterScreen->unk3C9 = 1;
+    }
+}
+
+void sub_8032508(void) {
+    u32 unk3D4;
+    struct CharacterSelectionScreen* characterScreen;
+    struct UNK_0808B3FC_UNK240* element;
+    MultiPakHeartbeat();
+
+    characterScreen = TaskGetStructPtr(gCurTask);
+
+    unk3D4 = ++characterScreen->unk3D4;
+    characterScreen->unk3C4++;
+
+    if (characterScreen->unk3C6 != 0) {
+        characterScreen->unk3C6--;
+        if (characterScreen->unk3C6 == 0) {
+            element = &characterScreen->unk300;
+            element->unkA = 0x2E2;
+            element->unk20 = 0;
+            element->unk21 = 0xff;
+        }
+    }
+
+    characterScreen->unk3D8 += gUnknown_080D7296[unk3D4];
+    characterScreen->unk3D8 &= 0x3FFFF;
+
+    sub_8032508_inline(characterScreen);
+
+    if (unk3D4 > 9) {
+        characterScreen->unk3D4 = 0;
+        
+        if (characterScreen->unk3C1 == 0) {
+            characterScreen->unk3D8 = 0;
+        }
+
+        gCurTask->main = sub_8032990;
+    }
+
+    sub_803353C(characterScreen);
+
+    ScrollBackground();
+    if (gGameMode > 2) {
+        gMultiSioSend.pat0.unk0 = 0x4020;
+        gMultiSioSend.pat0.unk2 = characterScreen->unk3C1;
+    }
+}
+
+// void sub_803274C(void) {
+//     struct CharacterSelectionScreen* characterScreen;
+//     u32 unk3D4;
+//     MultiPakHeartbeat();
+
+//     characterScreen = TaskGetStructPtr(gCurTask);
+//     unk3D4 = ++characterScreen->unk3D4;
+//     characterScreen->unk3C4++;
+
+//     if ()
+
+
+// }

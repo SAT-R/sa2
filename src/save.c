@@ -180,7 +180,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     memset(gameState, 0, sizeof(struct SaveGame));
     
     gameState->unk0 = 0;
-    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
+    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
     gameState->unk4 = 0;
     gameState->unk5 = 0;
     gameState->unk6 = LANG_ENGLISH;
@@ -343,16 +343,16 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     save->unlocks = 0;
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_CREAM))) {
         save->unlocks |= UNLOCK_FLAG_CREAM;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_TAILS))) {
         save->unlocks |= UNLOCK_FLAG_TAILS;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_KNUCKLES))) {
         save->unlocks |= UNLOCK_FLAG_KNUCKLES;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_AMY))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_AMY))) {
         save->unlocks |= UNLOCK_FLAG_AMY;
     }
     if (gameState->unk11) {
@@ -638,19 +638,19 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
         gameState->unk18 = 1;
     }
 
-    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
+    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
 
     if (save->unlocks & UNLOCK_FLAG_CREAM) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_CREAM);
     }
     if (save->unlocks & UNLOCK_FLAG_TAILS) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_TAILS);
     }
     if (save->unlocks & UNLOCK_FLAG_KNUCKLES) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_KNUCKLES);
     }
     if (save->unlocks & UNLOCK_FLAG_AMY) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_AMY);
     }
 
     if (save->unlocks & UNLOCK_FLAG_SOUND_TEST) {
@@ -817,11 +817,11 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
     }
 
     gameState->unk13 = 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
+        CHARACTER_BIT(CHARACTER_SONIC) | 
+        CHARACTER_BIT(CHARACTER_CREAM) | 
+        CHARACTER_BIT(CHARACTER_TAILS) | 
+        CHARACTER_BIT(CHARACTER_KNUCKLES) | 
+        CHARACTER_BIT(CHARACTER_AMY);
     gameState->unk11 = TRUE;
     gameState->unk12 = TRUE;
     gameState->unk14 = TRUE;

@@ -9,6 +9,6 @@
 
 #define NUM_CHARACTERS 5
 
-#define CHARACTER_UNLOCKED_BIT(character) (1 << (character))
+#define CHARACTER_BIT(character) (1 << (character))
 
 #endif // GUARD_PLAYER_H
