@@ -3,6 +3,7 @@
 
 #define GAME_MODE_SINGLE_PLAYER 0
 #define GAME_MODE_TIME_ATTACK 1
+#define GAME_MODE_BOSS_TIME_ATTACK 2
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
@@ -12,8 +13,6 @@
 #include "multi_sio.h"
 #include "save.h"
 #include "task.h"
-
-
 
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
@@ -77,6 +76,8 @@ extern u32 gUnknown_03005434;
 
 // gMultiplayerConnections
 extern u8 gUnknown_030055B8;
+
+#define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 
 // Possibly CreateGameStageAtSelectedCourse
 void sub_801A770(void);

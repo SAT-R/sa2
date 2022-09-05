@@ -13,7 +13,7 @@ void StartMultiPakConnect(void);
 void MultiPakCommunicationError(void);
 
 #define MultiPakHeartbeat() ({ \
-    if (gGameMode > 2) { \
+    if (IsMultiplayer()) { \
         u32 i; \
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gUnknown_030055B8, i); i++) { \
             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) { \
