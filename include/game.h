@@ -86,4 +86,7 @@ void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
 void sub_808129C(void);
 
+// UpdateGamePlaySettings
+void sub_801A6D8(void);
+
 #endif // GUARD_GAME_H

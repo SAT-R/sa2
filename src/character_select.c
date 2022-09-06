@@ -16,6 +16,8 @@
 #include "player.h"
 #include "profile.h"
 #include "course_select.h"
+#include "title_screen.h"
+#include "time_attack.h"
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -848,7 +850,6 @@ void sub_8032990(void) {
 extern const u8 gUnknown_080D72AC[5];
 
 void sub_8032AF4(void) {
-    u32 unk3D4;
     union MultiSioData* packet;
     struct UNK_0808B3FC_UNK240* element;
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
@@ -908,7 +909,7 @@ void sub_8032AF4(void) {
 
         // Only 1 level available
         if (gLoadedSaveGame->unk7[gSelectedCharacter] < 3) {
-            gCurrentLevel = 0;
+            gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
             sub_801A770();
             return;
         }
@@ -924,4 +925,25 @@ void sub_8032AF4(void) {
 
     sub_8033C64(characterScreen);
     ScrollBackground();
+}
+
+void sub_8032D9C(void) {
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270* unk0 = &characterScreen->unk0;
+
+    if (sub_802D4CC(unk0) == 1) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
+            sub_8087FC0();
+        } else {
+            CreateTitleScreenAtSinglePlayerMenu();
+            
+        }
+    } else {
+        sub_803353C(characterScreen);
+        ScrollBackground();
+    }
 }
