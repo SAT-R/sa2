@@ -55,7 +55,7 @@ struct CharacterSelectionScreen {
     u16 unk3D0;
     u8 filler3D2[2];
     u32 unk3D4;
-    s32 unk3D8;
+    u32 unk3D8;
     u32 unk3DC;
 }; /* size 0x3E0 */
 
@@ -946,4 +946,55 @@ void sub_8032D9C(void) {
         sub_803353C(characterScreen);
         ScrollBackground();
     }
+}
+
+extern const u8 gUnknown_080D7274[4];
+
+void sub_8032E38(struct CharacterSelectionScreen* characterScreen) {
+    u8 i;
+    struct UNK_0808B3FC_UNK240* element;
+
+    if (characterScreen->unk3C3 != 0) {
+        for (i = 0; i < 10; i++) {
+            if ((characterScreen->unk3D4 > (i - characterScreen->unk3C0) * 5)
+                || (characterScreen->unk3C0 == 4 && i < 2 && (characterScreen->unk3D4 > 0x13))) {
+                u8 temp2 = i - Div(i, 5) * 5;
+                element = &characterScreen->unk1D4[temp2];
+
+                element->unk16 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66)) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                element->unk18 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66)) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    } else {
+        u16 temp = ((characterScreen->unk3D8 >> 8) + 0x330) & 0x3FF;
+
+        for (i = 0; i < 9; i++) {
+            if (characterScreen->unk3D4 > (s8)(i - characterScreen->unk3C0)) {
+                u32 temp2;
+                element = &characterScreen->unk1D4[(i + 2) & 3];
+                
+                temp2 = (temp + i * 0x66) & 0x3FF;
+                element->unk16 = ((gSineTable[temp2 + 0x100] * 0x5C) >> 0xE) + 10;
+                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+
+        if (characterScreen->unk3C0 > 0 && characterScreen->unk3C0 < 4 && characterScreen->unk3D4 > 0x13) {
+            for (; i < gUnknown_080D7274[characterScreen->unk3C0]; i++) {
+                u32 temp2;
+                element = &characterScreen->unk1D4[(i + 2) & 3];
+                temp2 = (temp + i * 0x66) & 0x3FF;
+                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    }
+
+    element = &characterScreen->unk300;
+    sub_80051E8(element);
+    element = &characterScreen->unk330;
+    sub_80051E8(element);
 }
