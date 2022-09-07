@@ -28,12 +28,12 @@ struct CharacterSelectionScreen {
     struct UNK_0808B3FC_UNK240 unkFC;
     struct UNK_0808B3FC_UNK240 unk12C;
     struct UNK_0808B3FC_UNK240 unk15C;
-    u8 filler18C[12];
+    struct UNK_808D124_UNK180 unk18C;
     struct UNK_0808B3FC_UNK240 unk198;
-    u8 filler1C8[12];
+    struct UNK_808D124_UNK180 unk1C8;
     struct UNK_0808B3FC_UNK240 unk1D4[5];
     struct UNK_0808B3FC_UNK240 unk2C4;
-    u8 filler2F4[12];
+    struct UNK_808D124_UNK180 unk2F4;
     struct UNK_0808B3FC_UNK240 unk300;
     struct UNK_0808B3FC_UNK240 unk330;
     struct UNK_0808B3FC_UNK240 unk360;
@@ -992,6 +992,162 @@ void sub_8032E38(struct CharacterSelectionScreen* characterScreen) {
             }
         }
     }
+
+    element = &characterScreen->unk300;
+    sub_80051E8(element);
+    element = &characterScreen->unk330;
+    sub_80051E8(element);
+}
+
+extern const u8 gUnknown_080D72B1[7];
+
+void sub_8033078(struct CharacterSelectionScreen* characterScreen) {
+    u8 i;
+    u16 temp4;
+    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_808D124_UNK180* config;
+
+    if (characterScreen->unk3C3 != 0) {
+        for (i = 0; i < 10; i++) {
+            u8 temp2 = i - Div(i, 5) * 5;
+            if (temp2 != characterScreen->unk3C1 || characterScreen->unk3C4 != 0x10) {
+                
+                element = &characterScreen->unk1D4[temp2];
+
+                element->unk16 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                element->unk18 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    } else {
+        u16 temp = ((characterScreen->unk3D8 >> 8) + 0x330) & 0x3FF;
+        for (i = 0; i < 8; i++) {
+            u32 temp2;
+            u32 temp3  = (i + 2) & 3;
+            if (temp3 != characterScreen->unk3C1 || characterScreen->unk3C4 < 0xD) {
+                element = &characterScreen->unk1D4[temp3];
+                temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
+                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    }
+    element = &characterScreen->unk2C4;
+    config = &characterScreen->unk2F4;
+    
+    element->unk16 = 0x65;
+    element->unk18 = 0x4F;
+    element->unk20 = characterScreen->unk3C1 + 5;
+    element->unk21 = 0xFF;
+    
+    config->unk0 = 0;
+    config->unk2 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+    config->unk4 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+    config->unk6[0] = element->unk16;
+    config->unk6[1] = element->unk18;
+
+    element->unk10 = gUnknown_030054B8++ | 0x60;
+    sub_8004558(element);
+    sub_8004860(element, config);
+    sub_80051E8(element);
+
+    
+    if (characterScreen->unk3D4 < 8) {
+        i = 0xA0;
+    } else {
+        i = ((0x10 - characterScreen->unk3D4) * 0x14);
+    }
+    element = &characterScreen->unkCC;
+    element->unk16 = i + 0xF0;
+    element->unk18 = 0x10;
+    sub_80051E8(element);
+
+    if (characterScreen->unk3D4 < 8) {
+        i = 8 - characterScreen->unk3D4;
+    } else {
+        i = 0;
+    }
+
+    element = &characterScreen->unkFC;
+    if (i != 0) {
+        element->unk16 = characterScreen->unk3CE + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
+    } else {
+        element->unk16 = characterScreen->unk3CE;
+    }
+
+    element->unk18 = 0x82;
+    temp4 = element->unk16;
+
+    if (!(characterScreen->unk3CA >> characterScreen->unk3C1 & 1) && !IsMultiplayer()) {
+        element->unk10 |= 0x40000;
+        element->unk25 = gUnknown_080D72B1[characterScreen->unk3C1];
+    } else {
+        element->unk10 &= ~0x40000;
+        element->unk25 = 0;
+    }
+    sub_80051E8(element);
+
+    if (characterScreen->unk3C1 == 1) {
+        element = &characterScreen->unk360;
+        element->unk16 = temp4;
+        element->unk18 = 0x82;
+
+        if (!(characterScreen->unk3CA >> characterScreen->unk3C1 & 1) && !IsMultiplayer()) {
+            element->unk10 |= 0x40000;
+            element->unk25 = gUnknown_080D72B1[5];
+        } else {
+            element->unk10 &= ~0x40000;
+            element->unk25 = 0;
+        }
+        sub_80051E8(element);
+    }
+
+    if (characterScreen->unk3D4 < 4) {
+        i = 8;
+    } else if (characterScreen->unk3D4 < 0xC) {
+        i = (0xC - characterScreen->unk3D4);
+    } else {
+        i = 0;
+    }
+    element = &characterScreen->unk12C;
+    element->unk16 = characterScreen->unk3D0 + i * 0x14;
+    element->unk18 = 0x90;
+    sub_80051E8(element);
+
+    element = &characterScreen->unk15C;
+    config = &characterScreen->unk18C;
+    
+    element->unk16 = 0x28;
+    element->unk18 = 0x4F;
+
+    config->unk0 = 0;
+    config->unk2 = 0x100;
+    config->unk4 = 0x100 - ((0x10 - characterScreen->unk3D4) * 0xF);
+    config->unk6[0] = element->unk16;
+    config->unk6[1] = element->unk18;
+
+    element->unk10 = gUnknown_030054B8++ | 0x20; 
+    sub_8004558(element);
+    sub_8004860(element, config);
+    sub_80051E8(element);
+
+    element = &characterScreen->unk198;
+    config = &characterScreen->unk1C8;
+    
+    element->unk16 = 0x28;
+    element->unk18 = 0x4F;
+    
+    config->unk0 = 0;
+    config->unk2 = 0x100;
+    config->unk4 = 0x100 - ((0x10 - characterScreen->unk3D4) * 0xF);
+    config->unk6[0] = element->unk16;
+    config->unk6[1] = element->unk18;
+
+    element->unk10 = gUnknown_030054B8++ | 0x20; 
+    sub_8004558(element);
+    sub_8004860(element, config);
+    sub_80051E8(element);
 
     element = &characterScreen->unk300;
     sub_80051E8(element);
