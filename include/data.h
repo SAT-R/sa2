@@ -9,6 +9,7 @@
 
 // TODO: extract this data
 extern union Unk_03002E60 gMapHeaders[];
+extern const u16 gUnknown_080D71D4[6][2];
 
 struct SpriteTables {
     void* animations;

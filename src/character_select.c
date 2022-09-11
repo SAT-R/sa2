@@ -1,5 +1,6 @@
 #include "global.h"
 #include "main.h"
+#include "data.h"
 #include "transition.h"
 #include "game.h"
 #include "sprite.h"
@@ -62,12 +63,32 @@ struct CharacterSelectionScreen {
 
 void sub_8031C64(void);
 void sub_8034638(struct Task*);
+void sub_8031E10(void);
+void sub_8031CD8(void);
+void sub_8033078(struct CharacterSelectionScreen* characterScreen);
+void sub_8032E38(struct CharacterSelectionScreen* characterScreen);
+void sub_8031E84(void);
+void sub_803353C(struct CharacterSelectionScreen* characterScreen);
+void sub_8032D9C(void);
+void sub_8032AF4(void);
+void sub_8033F38(void);
+void sub_8033C64(struct CharacterSelectionScreen*);
+void sub_8032508(void);
+void sub_803274C(void);
+void sub_8034358(void);
+void sub_8032990(void);
 
-extern const u16 gUnknown_080D71D4[6][2];
 extern const u16 gUnknown_080D71EC[6][2];
-extern const u16 gUnknown_080D725C[6][2];
 extern const u16 gUnknown_080D7204[6][2];
+extern const u16 gUnknown_080D7218[4][2];
 extern const u16 gUnknown_080D722C[12][2];
+extern const u16 gUnknown_080D725C[6][2];
+extern const u8 gUnknown_080D7274[4];
+extern const u16 gUnknown_080D7278[5];
+extern const u8 gUnknown_080D7282[4][5];
+extern const u16 gUnknown_080D7296[8];
+extern const u8 gUnknown_080D72AC[5];
+extern const u8 gUnknown_080D72B1[7];
 
 #define ScrollBackground() ({ \
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF; \
@@ -98,7 +119,6 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
     } else {
         something = 1;
     }
-    // something missing to do with lang here
 
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
@@ -117,7 +137,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(sub_8031C64, 0x3E0, 0x4100, 0, sub_8034638);
+    t = TaskCreate(sub_8031C64, sizeof(struct CharacterSelectionScreen), 0x4100, 0, sub_8034638);
     characterScreen = TaskGetStructPtr(t);
 
     characterScreen->unk3CA = gLoadedSaveGame->unk13;
@@ -409,8 +429,6 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
 }
 END_NONMATCH
 
-void sub_8031CD8(void);
-
 void sub_8031C64(void) {
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
     if (++characterScreen->unk3D4 > 0x17) {
@@ -424,10 +442,6 @@ void sub_8031C64(void) {
 
     ScrollBackground();
 }
-
-void sub_8031E10(void);
-void sub_8033078(struct CharacterSelectionScreen* characterScreen);
-void sub_8032E38(struct CharacterSelectionScreen* characterScreen);
 
 void sub_8031CD8(void) {
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
@@ -460,14 +474,11 @@ void sub_8031CD8(void) {
     ScrollBackground();
 }
 
-void sub_8031E84(void);
-void sub_803353C(struct CharacterSelectionScreen* characterScreen);
-
 void sub_8031E10(void) {
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
     u32 var = ++characterScreen->unk3D4;
     characterScreen->unk3C5++;
-    if (var >= 0x10) {
+    if (var >= 16) {
         characterScreen->unk3C5++;
         characterScreen->unk3D4 = 0;
         gCurTask->main = sub_8031E84;
@@ -480,21 +491,7 @@ void sub_8031E10(void) {
     ScrollBackground();
 }
 
-
-extern const u16 gUnknown_080D7218[4][2];
-extern const u16 gUnknown_080D7278[5];
-
-extern const u8 gUnknown_080D7282[4][5];
-
-void sub_8032D9C(void);
-void sub_8032AF4(void);
-void sub_8033F38(void);
-void sub_8033C64(struct CharacterSelectionScreen*);
-void sub_8032508(void);
-void sub_803274C(void);
-
 void sub_8031E84(void) {
-    
     struct UNK_0808B3FC_UNK240* element;
     struct UNK_802D4CC_UNK270* unk0;
     union MultiSioData* packet;
@@ -697,10 +694,6 @@ void sub_8031E84(void) {
     ScrollBackground();
 }
 
-extern const u16 gUnknown_080D7296[8];
-
-void sub_8032990(void);
-
 void sub_8032508(void) {
     u32 unk3D4;
     struct CharacterSelectionScreen* characterScreen;
@@ -847,9 +840,6 @@ void sub_8032990(void) {
     ScrollBackground();
 }
 
-
-extern const u8 gUnknown_080D72AC[5];
-
 void sub_8032AF4(void) {
     union MultiSioData* packet;
     struct UNK_0808B3FC_UNK240* element;
@@ -949,8 +939,6 @@ void sub_8032D9C(void) {
     }
 }
 
-extern const u8 gUnknown_080D7274[4];
-
 void sub_8032E38(struct CharacterSelectionScreen* characterScreen) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
@@ -999,8 +987,6 @@ void sub_8032E38(struct CharacterSelectionScreen* characterScreen) {
     element = &characterScreen->unk330;
     sub_80051E8(element);
 }
-
-extern const u8 gUnknown_080D72B1[7];
 
 void sub_8033078(struct CharacterSelectionScreen* characterScreen) {
     u8 i;
@@ -1494,8 +1480,6 @@ void sub_8033C64(struct CharacterSelectionScreen* characterScreen) {
     sub_8004558(element);
     sub_80051E8(element);
 }
-
-void sub_8034358(void);
 
 void sub_8033F38(void) {
     union MultiSioData* send, *recv;
