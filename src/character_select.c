@@ -50,7 +50,8 @@ struct CharacterSelectionScreen {
     u8 unk3C9;
     u8 unk3CA;
     u8 unk3CB;
-    u8 filler3CC[2];
+    u8 unk3CC;
+    u8 unk3CD;
     u16 unk3CE;
     u16 unk3D0;
     u8 filler3D2[2];
@@ -1153,4 +1154,583 @@ void sub_8033078(struct CharacterSelectionScreen* characterScreen) {
     sub_80051E8(element);
     element = &characterScreen->unk330;
     sub_80051E8(element);
+}
+
+// https://decomp.me/scratch/LpkD4
+// Same issues as the create function
+NONMATCH("asm/non_matching/sub_803353C.inc", void sub_803353C(struct CharacterSelectionScreen* characterScreen)) {
+    u8 a, b, d;
+    u16 c, e, f;
+    u8 i;
+    s8 somethinga;
+    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_808D124_UNK180* config;
+
+    s8 lang = gLoadedSaveGame->unk6 - 1;
+
+    if (lang < 0) {
+        lang = 0;
+    }
+
+    if (lang < 1) {
+        somethinga = 0;
+    } else {
+        somethinga = 1;
+    } 
+
+    
+
+    if (characterScreen->unk3C4 >= 8) {
+        a = characterScreen->unk3C1;
+        b = 0;
+        c = 8;
+    } else {
+        a = characterScreen->unk3C1;
+        b = 8 - characterScreen->unk3C4;
+        c = characterScreen->unk3C4;
+    }
+
+    if (characterScreen->unk3C4 < 4) {
+        d = 8;
+    } else if (characterScreen->unk3C4 < 12) {
+        d = 12 - characterScreen->unk3C4;
+    } else {
+        d = 0;
+    }
+
+    if (characterScreen->unk3C4 == 0) {
+        element = &characterScreen->unkFC;
+        element->unkA = gUnknown_080D7204[a][0];
+        element->unk20 = gUnknown_080D7204[a][1];
+        element->unk21 = 0xFF;
+
+        if (!(characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1)) && !IsMultiplayer()) {
+            element->unk10 |= 0x40000;
+            element->unk25 = gUnknown_080D72B1[gGameMode];
+        } else {
+            element->unk10 &= ~0x40000;
+            element->unk25 = 0;
+        }
+
+        sub_8004558(element);
+
+        if (!(characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1)) && !IsMultiplayer()) {
+            element = &characterScreen->unk12C;
+            element->unkA = gUnknown_080D722C[5][0];
+            element->unk20 = gUnknown_080D722C[5][1];
+            element->unk21 = 0xFF;
+            sub_8004558(element);
+
+            element = &characterScreen->unk15C;
+            element->unkA = gUnknown_080D71D4[5][0];
+            element->unk20 = gUnknown_080D71D4[5][1];
+            element->unk21 = 0xFF;
+            
+            element = &characterScreen->unk198;
+            element->unkA = gUnknown_080D71EC[5][0];
+            element->unk20 = gUnknown_080D71EC[5][1];
+            element->unk21 = 0xFF;
+        } else {
+            element = &characterScreen->unk12C;
+            element->unkA = gUnknown_080D722C[a + somethinga *  6][0];
+            element->unk20 = gUnknown_080D722C[a + somethinga *  6][1];
+            element->unk21 = 0xFF;
+            sub_8004558(element);
+
+            element = &characterScreen->unk15C;
+            element->unkA = gUnknown_080D71D4[a][0];
+            element->unk20 = gUnknown_080D71D4[a][1];
+            element->unk21 = 0xFF;
+
+            element = &characterScreen->unk198;
+            element->unkA = gUnknown_080D71EC[a][0];
+            element->unk20 = gUnknown_080D71EC[a][1];
+            element->unk21 = 0xFF;
+        }
+    }
+
+    if (characterScreen->unk3C3 != 0) {
+        for (i = 0; i < 10; i++) {
+            u8 temp2 = i - Div(i, 5) * 5;
+            if (temp2 != characterScreen->unk3C1 || characterScreen->unk3C4 < 0xD) {
+                
+                element = &characterScreen->unk1D4[temp2];
+
+                element->unk16 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                element->unk18 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    } else {
+        u16 temp = ((characterScreen->unk3D8 >> 8) + 0x330) & 0x3FF;
+        for (i = 0; i < 8; i++) {
+            u32 temp2;
+            u32 temp3  = (i + 2) & 3;
+            if (temp3 != characterScreen->unk3C1 || characterScreen->unk3C4 < 0xD) {
+                element = &characterScreen->unk1D4[temp3];
+                temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
+                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    }
+
+    if (characterScreen->unk3C4 > 9) {
+        element = &characterScreen->unk2C4;
+        config = &characterScreen->unk2F4;
+
+        element->unk16 = 0x65;
+        element->unk18 = 0x4F;
+        element->unk20 = characterScreen->unk3C1 + 5;
+        element->unk21 = 0xFF;
+
+        config->unk0 = 0;
+        config->unk2 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        config->unk4 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        config->unk6[0] = element->unk16;
+        config->unk6[1] = element->unk18;
+
+        element->unk10 = gUnknown_030054B8++ | 0x60;
+        sub_8004558(element);
+        sub_8004860(element, config);
+        sub_80051E8(element);
+    }
+
+    element = &characterScreen->unkFC;
+
+    if (b != 0) {
+        element->unk16 = characterScreen->unk3CE + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
+        f = element->unk16;
+        e = characterScreen->unk3CE + (b * 0x12);
+        
+    } else {
+        element->unk16 = characterScreen->unk3CE;
+        f = element->unk16;
+        e = element->unk16;
+    }
+    element->unk18 = 0x82;
+
+    if (!(characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1)) && !IsMultiplayer()) {
+        element->unk10 |= 0x40000;
+        element->unk25 = gUnknown_080D72B1[characterScreen->unk3C1];
+    } else {
+        element->unk10 &= ~0x40000;
+        element->unk25 = 0;
+    }
+    sub_80051E8(element);
+
+    if (characterScreen->unk3C1 == 1) {
+        element = &characterScreen->unk360;
+        element->unk16 = e;
+        element->unk18 = 0x82;
+
+        if (!(characterScreen->unk3CA & CHARACTER_BIT(characterScreen->unk3C1)) && !IsMultiplayer()) {
+            element->unk10 |= 0x40000;
+            element->unk25 = gUnknown_080D72B1[5];
+        } else {
+            element->unk10 &= ~0x40000;
+            element->unk25 = 0;
+        }
+
+        sub_80051E8(element);
+    }
+
+    if (IsMultiplayer() && characterScreen->unk3DC & CHARACTER_BIT(characterScreen->unk3C1)) {
+        element = &characterScreen->unk390;
+        element->unk16 = f;
+        element->unk18 = 0x82;
+        sub_80051E8(element);
+    }
+
+    element = &characterScreen->unk12C;
+    element->unk16 = characterScreen->unk3D0 + (d * 5) * 4;
+    element->unk18 = 0x90;
+    sub_80051E8(element);
+
+    element = &characterScreen->unkCC;
+    element->unk16 = 0xF0;
+    element->unk18 = 0x10;
+    sub_80051E8(element);
+
+    element = &characterScreen->unk15C;
+    config = &characterScreen->unk18C;
+    element->unk16 = 0x28;
+    element->unk18 = 0x4F;
+
+    if (c < 8) {
+        config->unk0 = 0;
+        config->unk2 = 0x100;
+        config->unk4 = 0x100 - ((8 - c) * 0x1E);
+        config->unk6[0] = element->unk16;
+        config->unk6[1] = element->unk18;
+
+        element->unk10 = gUnknown_030054B8++ | 0x20; 
+        sub_8004558(element);
+        sub_8004860(element, config);
+    } else {
+        element->unk10 = 0;
+    }
+
+    sub_80051E8(element);
+
+    element = &characterScreen->unk198;
+    config = &characterScreen->unk1C8;
+    element->unk16 = 0x28;
+    element->unk18 = 0x4F;
+
+    if (c < 8) {
+        config->unk0 = 0;
+        config->unk2 = 0x100;
+        config->unk4 = 0x100 - ((8 - c) * 0x1E);
+        config->unk6[0] = element->unk16;
+        config->unk6[1] = element->unk18;
+
+        element->unk10 = gUnknown_030054B8++ | 0x20; 
+        sub_8004558(element);
+        sub_8004860(element, config);
+    } else {
+        element->unk10 = 0;
+    }
+
+    sub_80051E8(element);
+    
+    element = &characterScreen->unk300;
+    sub_8004558(element);
+    sub_80051E8(element);
+    
+    element = &characterScreen->unk330;
+    sub_8004558(element);
+    sub_80051E8(element);
+}
+END_NONMATCH
+
+void sub_8033C64(struct CharacterSelectionScreen* characterScreen) {
+    struct UNK_808D124_UNK180* config;
+    struct UNK_0808B3FC_UNK240* element, *element2, *element3;
+    u8 i;
+    if (characterScreen->unk3C3 != 0) {
+        for (i = 0; i < 10; i++) {
+            u8 temp2 = i - Div(i, 5) * 5;
+            if (temp2 != characterScreen->unk3C1 || characterScreen->unk3C4 < 0xD) {
+                
+                element = &characterScreen->unk1D4[temp2];
+
+                element->unk16 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                element->unk18 = ((gSineTable[(((characterScreen->unk3D8 >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    } else {
+        u16 temp = ((characterScreen->unk3D8 >> 8) + 0x330) & 0x3FF;
+        for (i = 0; i < 8; i++) {
+            u32 temp2;
+            u32 temp3  = (i + 2) & 3;
+            if (temp3 != characterScreen->unk3C1 || characterScreen->unk3C4 < 0xD) {
+                element = &characterScreen->unk1D4[temp3];
+                temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
+                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                sub_80051E8(element);
+            }
+        }
+    }
+    
+    if (characterScreen->unk3C5 != 0) {
+        element = &characterScreen->unk2C4;
+        config = &characterScreen->unk2F4;
+
+        element->unk16 = 0x65;
+        element->unk18 = 0x4F;
+        element->unk20 = characterScreen->unk3C1 + 5;
+        element->unk21 = 0xFF;
+
+        config->unk0 = 0;
+        config->unk2 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        config->unk4 = (gSineTable[(characterScreen->unk3C5 * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        config->unk6[0] = element->unk16;
+        config->unk6[1] = element->unk18;
+
+        element->unk10 = gUnknown_030054B8++ | 0x60;
+        sub_8004558(element);
+        sub_8004860(element, config);
+        sub_80051E8(element);
+    }
+    sub_8004558(&characterScreen->unkFC);
+    sub_80051E8(&characterScreen->unkFC);
+
+    if (characterScreen->unk3C1 == 1) {
+        element2 = &characterScreen->unk360;
+        sub_8004558(element2);
+        sub_80051E8(element2);
+    }
+    if (IsMultiplayer() && (characterScreen->unk3DC & CHARACTER_BIT(characterScreen->unk3C1))) {
+        sub_80051E8(&characterScreen->unk390);
+    }
+    sub_80051E8(&characterScreen->unk12C);
+#ifndef NON_MATCHING
+    if (&characterScreen->unkCC)
+    {
+        element3 = &characterScreen->unkCC;
+        ++element3; --element3;
+    }
+    else
+    {
+        element3 = &characterScreen->unkCC;
+        ++element3; --element3;
+    }
+    sub_80051E8(element3);
+#else
+    sub_80051E8(&characterScreen->unkCC);
+#endif
+    sub_80051E8(&characterScreen->unk15C);
+    sub_80051E8(&characterScreen->unk198);
+
+    element = &characterScreen->unk300;
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    element = &characterScreen->unk330;
+    sub_8004558(element);
+    sub_80051E8(element);
+}
+
+void sub_8034358(void);
+
+void sub_8033F38(void) {
+    union MultiSioData* send, *recv;
+    u32 i, j;
+    struct UNK_0808B3FC_UNK240* element;
+    u8 someArray[5] = {0, 0, 0, 0, 0};
+
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    ScrollBackground();
+
+    MultiPakHeartbeat();
+
+    if (IsMultiplayer()) {
+        characterScreen->unk3DC = 0;
+        
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+                recv = &gMultiSioRecv[i];
+                if (recv->pat0.unk0 > 0x4020) {
+                    characterScreen->unk3DC |= CHARACTER_BIT(recv->pat0.unk2);
+                }
+            }
+        }
+    }
+
+    if (gPressedKeys & B_BUTTON) {
+        characterScreen->unk3C8 = 0;
+        gCurTask->main = sub_8031E84;
+        
+        element = &characterScreen->unkFC;
+        element->unkA = gUnknown_080D7204[characterScreen->unk3C1][0];
+        element->unk20 = gUnknown_080D7204[characterScreen->unk3C1][1];
+        element->unk21 = 0xFF;
+        
+        element = &characterScreen->unk360;
+        element->unkA = 0x2E0;
+        element->unk20 = 10;
+        element->unk21 = 0xFF;
+
+        sub_8033C64(characterScreen);
+
+        send = &gMultiSioSend;
+        send->pat0.unk0 = 0x4020;
+        send->pat0.unk2 = characterScreen->unk3C1;
+
+        m4aSongNumStart(SE_RETURN);
+    } else {
+        recv = &gMultiSioRecv[0];
+        if (recv->pat0.unk0 == 0x4022) {
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                if (GetBit(gUnknown_030055B8, i)) {
+                    recv = &gMultiSioRecv[i];
+                    gUnknown_03005500[i] = recv->pat0.unk2;
+                }
+            }
+
+            if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
+                send = &gMultiSioSend;
+                send->pat0.unk0 = 0x4022;
+                send->pat0.unk2 = characterScreen->unk3C1;
+            }
+            characterScreen->unk3CC = 0;
+            gCurTask->main = sub_8034358;
+            sub_8033C64(characterScreen);
+            return;
+        }
+    
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            if (GetBit(gUnknown_030055B8, i) && i != SIO_MULTI_CNT->id) {
+                recv = &gMultiSioRecv[i];
+                if (recv->pat0.unk0 == 0x4021 && recv->pat0.unk2 == characterScreen->unk3C1 && i < SIO_MULTI_CNT->id) {
+                    gCurTask->main = sub_8031E84;
+                    m4aSongNumStart(SE_RETURN);
+                    characterScreen->unk3C8 = 0;
+            
+                    element = &characterScreen->unkFC;
+                    element->unkA = gUnknown_080D7204[characterScreen->unk3C1][0];
+                    element->unk20 = gUnknown_080D7204[characterScreen->unk3C1][1];
+                    element->unk21 = 0xFF;
+                    sub_8004558(element);
+                
+                    element = &characterScreen->unk360;
+                    element->unkA = 0x2E0;
+                    element->unk20 = 10;
+                    element->unk21 = 0xFF;
+                    sub_8004558(element);
+
+                    send = &gMultiSioSend;
+                    send->pat0.unk0 = 0x4020;
+                    send->pat0.unk2 = characterScreen->unk3C1;
+                    sub_8033C64(characterScreen);
+                    return;
+                }
+            }
+        }
+        
+        
+        if ((gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
+            send = &gMultiSioSend;
+            send->pat0.unk0 = 0x4022;
+            send->pat0.unk2 = characterScreen->unk3C1;
+
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                u16 id;
+                if (GetBit(gUnknown_030055B8, i)) {
+                    recv = &gMultiSioRecv[i];
+                    if (recv->pat0.unk0 != 0x4021) {
+                        send->pat0.unk0 = 0x4021;
+                        break;
+                    }
+
+                    if (++someArray[recv->pat0.unk2] > 1) {
+                        send->pat0.unk0 = 0x4021;
+                        break;
+                    }
+                }
+            }
+        } else {
+            send = &gMultiSioSend;
+            send->pat0.unk0 = 0x4021;
+            send->pat0.unk2 = characterScreen->unk3C1;
+        }
+        sub_8033C64(characterScreen);
+    }
+}
+
+NONMATCH("asm/non_matching/sub_8034358.inc", void sub_8034358()) {
+    u32 i;
+    bool8 found;
+    union MultiSioData *send;
+    union MultiSioData *recv;
+    register struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
+    MultiPakHeartbeat();
+
+    for (i = 0, found = FALSE; i < MULTI_SIO_PLAYERS_MAX; i++) {
+        recv = &gMultiSioRecv[i];
+        if (GetBit(gUnknown_030055B8, i) && recv->pat0.unk0 < 0x4022) {
+            found = TRUE;
+        }
+    }
+
+    if (found) {
+        if (characterScreen->unk3CC != 0) {
+            characterScreen->unk3CC <<= 1;
+            if (characterScreen->unk3CC & 0x80) {
+                send = &gMultiSioSend;
+                send->pat0.unk0 = 0x4021;
+                gCurTask->main = sub_8033F38;
+            }
+        } else {
+            characterScreen->unk3CC = 1;
+        }
+        sub_8033C64(characterScreen);
+    } else {
+        characterScreen->unk3CC = 0;
+        recv = &gMultiSioRecv[0];
+        if (recv->pat0.unk0 == 0x4023) {
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                if (GetBit(gUnknown_030055B8, i)) {
+                    recv = &gMultiSioRecv[i];
+                    if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
+                        gUnknown_03005500[i] = recv->pat0.unk2;
+                    }
+                }
+            }
+            sub_8033C64(characterScreen);
+            gCurTask->main = sub_8032AF4;
+        } else if (recv->pat0.unk0 == 0x4021) {
+            send = &gMultiSioSend;
+            send->pat0.unk0 = 0x4020;
+            gCurTask->main = sub_8033F38;
+        } else {
+            u8 mostLevelsAvailable;
+            if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+                send = &gMultiSioSend;
+                send->pat0.unk0 = 0x4023;
+                send->pat0.unk2 = characterScreen->unk3C1;
+                mostLevelsAvailable = 0;
+    
+                for (i = 0; i < NUM_CHARACTERS; i++) {
+                    if (mostLevelsAvailable < gLoadedSaveGame->unk7[i]) {
+                        mostLevelsAvailable = gLoadedSaveGame->unk7[i];
+                    }
+                }
+
+                for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                    if (GetBit(gUnknown_030055B8, i) && i != 0) {
+                        recv = &gMultiSioRecv[i];
+                        gUnknown_03005500[i] = recv->pat0.unk2;
+                        if (recv->pat0.unk0 != 0x4022) {
+                            send->pat0.unk0 = 0x4022;
+                            if (gPressedKeys & B_BUTTON) {
+                                send->pat0.unk0 = 0x4021;
+                            }
+                            break;
+                        }
+                    }
+                }
+                
+           
+            } else {
+                send = &gMultiSioSend;
+                send->pat0.unk0 = 0x4022;
+                // Bug: should probably be set on the packet, not the recv data
+                recv->pat0.unk2 = characterScreen->unk3C1;
+                mostLevelsAvailable = 0;
+    
+                for (i = 0; i < NUM_CHARACTERS; i++) {
+                    if (mostLevelsAvailable < gLoadedSaveGame->unk7[i]) {
+                        mostLevelsAvailable = gLoadedSaveGame->unk7[i];
+                    }
+                }
+            }
+            
+            send->pat0.unk3 = mostLevelsAvailable;
+            sub_8033C64(characterScreen);
+            ScrollBackground();
+        }
+    }
+}
+END_NONMATCH
+
+void sub_8034638(struct Task* t) {
+    u8 i;
+    struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(t);
+    VramFree(characterScreen->unk12C.unk4);
+    VramFree(characterScreen->unk15C.unk4);
+    VramFree(characterScreen->unk198.unk4);
+    VramFree(characterScreen->unkCC.unk4);
+
+    for (i = 0; i < NUM_CHARACTERS; i++) {
+        VramFree(characterScreen->unk1D4[i].unk4);
+    }
+
+    VramFree(characterScreen->unk2C4.unk4);
+    VramFree(characterScreen->unk300.unk4);
+    VramFree(characterScreen->unk330.unk4);
 }
