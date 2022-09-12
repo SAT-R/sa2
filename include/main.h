@@ -7,8 +7,11 @@
 #include "sprite.h"
 
 struct MultiSioData_0_0 {
+    // id
     u16 unk0;
+    // value
     u8 unk2;
+
     u8 unk3;
     u32 unk4;
     u16 unk8[3];

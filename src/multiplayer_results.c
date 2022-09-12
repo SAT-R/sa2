@@ -361,7 +361,7 @@ static void sub_805C3D0(void) {
 #ifdef TEAMPLAY_AVAILABLE
             CreateMultiplayerResultsScreen();
 #else
-            sub_80346C8(0, gUnknown_030054D8, 0);
+            CreateCourseSelectionScreen(0, gUnknown_030054D8, 0);
 #endif
             } else if (gGameMode == 0 && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
@@ -371,7 +371,7 @@ static void sub_805C3D0(void) {
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
 #else
-                sub_80346C8(0, gLoadedSaveGame->unk7[gSelectedCharacter], 0);
+                CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], 0);
 #endif
             }
         }

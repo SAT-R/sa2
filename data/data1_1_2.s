@@ -124,8 +124,8 @@ gUnknown_080D725C:
 gUnknown_080D7274:
     .incbin "baserom.gba", 0x000D7274, 0x4
 
-    .global gUnknown_080D7278
-gUnknown_080D7278:
+    .global gCharacterAnnouncements
+gCharacterAnnouncements:
     .incbin "baserom.gba", 0x000D7278, 0xA
 
     .global gUnknown_080D7282

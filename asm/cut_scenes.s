@@ -1384,7 +1384,7 @@ sub_808E6B0: @ 0x0808E6B0
 	blt _0808E724
 	ldrb r0, [r3]
 	movs r2, #1
-	bl sub_80346C8
+	bl CreateCourseSelectionScreen
 	b _0808E72C
 	.align 2, 0
 _0808E70C: .4byte gCurTask
@@ -1396,7 +1396,7 @@ _0808E720: .4byte gSelectedCharacter
 _0808E724:
 	ldrb r0, [r3]
 	movs r2, #4
-	bl sub_80346C8
+	bl CreateCourseSelectionScreen
 _0808E72C:
 	ldr r0, _0808E73C @ =gCurTask
 	ldr r0, [r0]

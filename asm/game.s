@@ -46546,12 +46546,12 @@ _08030F5C:
 	adds r1, r1, r2
 	ldrb r1, [r1]
 	movs r2, #1
-	bl sub_80346C8
+	bl CreateCourseSelectionScreen
 	b _08030E16
 _08030F6A:
 	ldrb r0, [r4]
 	movs r2, #4
-	bl sub_80346C8
+	bl CreateCourseSelectionScreen
 	b _08030E16
 _08030F74:
 	adds r3, r1, #1

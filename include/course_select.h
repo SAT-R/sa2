@@ -4,6 +4,6 @@
 #include "global.h"
 
 // CreateCourseSelectionScreen
-void sub_80346C8(u8, u8, u8);
+void CreateCourseSelectionScreen(u8, u8, u8);
 
 #endif

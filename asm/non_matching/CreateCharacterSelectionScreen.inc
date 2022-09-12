@@ -78,12 +78,12 @@ _0803147A:
 	strh r7, [r0, #2]
 	strh r7, [r0, #4]
 	strh r7, [r0, #6]
-	ldr r0, _080315B0 @ =sub_8031C64
+	ldr r0, _080315B0 @ =Task_FadeInAndStartRollInAnim
 	movs r1, #0xf8
 	lsls r1, r1, #2
 	movs r2, #0x82
 	lsls r2, r2, #7
-	ldr r3, _080315B4 @ =sub_8034638
+	ldr r3, _080315B4 @ =CharacterSelectScreenOnDestroy
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
@@ -176,8 +176,8 @@ _080315A0: .4byte 0x00001507
 _080315A4: .4byte 0x0000160E
 _080315A8: .4byte 0x00001403
 _080315AC: .4byte gBgScrollRegs
-_080315B0: .4byte sub_8031C64
-_080315B4: .4byte sub_8034638
+_080315B0: .4byte Task_FadeInAndStartRollInAnim
+_080315B4: .4byte CharacterSelectScreenOnDestroy
 _080315B8: .4byte IWRAM_START + 0x3CA
 _080315BC: .4byte IWRAM_START + 0x3C1
 _080315C0: .4byte IWRAM_START + 0x3C5

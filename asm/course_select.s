@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_80346C8
-sub_80346C8: @ 0x080346C8
+	thumb_func_start CreateCourseSelectionScreen
+CreateCourseSelectionScreen: @ 0x080346C8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
