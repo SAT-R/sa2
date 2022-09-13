@@ -28,10 +28,10 @@ with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
     # for i in range(length // 2):
     #     print(str(read_u16(rom)) + ", ", end="")
-    # for i in range(length // 4 // 3):
+    # for i in range(length // 5):
     #     print("{ ", end="")
-    #     for j in range(3):
-    #         print(str(read_u32(rom)) + ", ", end="")
+    #     for j in range(5):
+    #         print(str(read_u8(rom)) + ", ", end="")
     #     print("},")
     print("{ ", end="")
     for i in range(length):

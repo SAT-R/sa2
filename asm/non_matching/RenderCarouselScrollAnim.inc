@@ -91,7 +91,7 @@ _080335D0:
 	b _08033782
 _080335E4:
 	adds r5, r3, #0
-	ldr r0, _08033640 @ =gUnknown_080D7204
+	ldr r0, _08033640 @ =sCharacterSpriteAssets
 	lsls r2, r6, #2
 	adds r1, r2, r0
 	ldrh r1, [r1]
@@ -129,7 +129,7 @@ _080335E4:
 	lsls r1, r1, #0xb
 	orrs r0, r1
 	str r0, [r5, #0x10]
-	ldr r1, _08033654 @ =gUnknown_080D72B1
+	ldr r1, _08033654 @ =sCharacterSilhouettes
 	ldrb r0, [r3]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -137,12 +137,12 @@ _080335E4:
 	adds r1, r7, r2
 	b _0803366A
 	.align 2, 0
-_08033640: .4byte gUnknown_080D7204
+_08033640: .4byte sCharacterSpriteAssets
 _08033644: .4byte 0x0000011D
 _08033648: .4byte 0x000003CA
 _0803364C: .4byte 0x000003C1
 _08033650: .4byte gGameMode
-_08033654: .4byte gUnknown_080D72B1
+_08033654: .4byte sCharacterSilhouettes
 _08033658: .4byte 0x00000121
 _0803365C:
 	ldr r0, [r5, #0x10]
@@ -174,7 +174,7 @@ _0803366A:
 	movs r6, #0x96
 	lsls r6, r6, #1
 	adds r5, r7, r6
-	ldr r1, _080336F0 @ =gUnknown_080D722C
+	ldr r1, _080336F0 @ =sCharacterNameSubTextAssets
 	ldrh r0, [r1, #0x14]
 	strh r0, [r5, #0xa]
 	ldrh r1, [r1, #0x16]
@@ -190,7 +190,7 @@ _0803366A:
 	bl sub_8004558
 	adds r6, #0x30
 	adds r5, r7, r6
-	ldr r1, _080336F8 @ =gUnknown_080D71D4
+	ldr r1, _080336F8 @ =sCharacterTitleLeftSideAssets
 	ldrh r0, [r1, #0x14]
 	strh r0, [r5, #0xa]
 	ldrh r1, [r1, #0x16]
@@ -205,7 +205,7 @@ _0803366A:
 	strb r0, [r1]
 	adds r6, #0x3c
 	adds r5, r7, r6
-	ldr r1, _08033700 @ =gUnknown_080D71EC
+	ldr r1, _08033700 @ =sCharacteTitleRightSideAssets
 	ldrh r0, [r1, #0x14]
 	strh r0, [r5, #0xa]
 	ldrh r1, [r1, #0x16]
@@ -215,16 +215,16 @@ _080336E0: .4byte 0xFFFBFFFF
 _080336E4: .4byte 0x000003CA
 _080336E8: .4byte 0x000003C1
 _080336EC: .4byte gGameMode
-_080336F0: .4byte gUnknown_080D722C
+_080336F0: .4byte sCharacterNameSubTextAssets
 _080336F4: .4byte 0x0000014D
-_080336F8: .4byte gUnknown_080D71D4
+_080336F8: .4byte sCharacterTitleLeftSideAssets
 _080336FC: .4byte 0x0000017D
-_08033700: .4byte gUnknown_080D71EC
+_08033700: .4byte sCharacteTitleRightSideAssets
 _08033704:
 	movs r0, #0x96
 	lsls r0, r0, #1
 	adds r5, r7, r0
-	ldr r2, _08033840 @ =gUnknown_080D722C
+	ldr r2, _08033840 @ =sCharacterNameSubTextAssets
 	mov r1, r8
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -250,7 +250,7 @@ _08033704:
 	movs r6, #0xae
 	lsls r6, r6, #1
 	adds r5, r7, r6
-	ldr r0, _08033848 @ =gUnknown_080D71D4
+	ldr r0, _08033848 @ =sCharacterTitleLeftSideAssets
 	adds r1, r4, r0
 	ldrh r1, [r1]
 	strh r1, [r5, #0xa]
@@ -268,7 +268,7 @@ _08033704:
 	strb r0, [r1]
 	adds r6, #0x3c
 	adds r5, r7, r6
-	ldr r0, _08033850 @ =gUnknown_080D71EC
+	ldr r0, _08033850 @ =sCharacteTitleRightSideAssets
 	adds r1, r4, r0
 	ldrh r1, [r1]
 	strh r1, [r5, #0xa]
@@ -381,11 +381,11 @@ _08033832:
 	bls _080337AC
 	b _08033904
 	.align 2, 0
-_08033840: .4byte gUnknown_080D722C
+_08033840: .4byte sCharacterNameSubTextAssets
 _08033844: .4byte 0x0000014D
-_08033848: .4byte gUnknown_080D71D4
+_08033848: .4byte sCharacterTitleLeftSideAssets
 _0803384C: .4byte 0x0000017D
-_08033850: .4byte gUnknown_080D71EC
+_08033850: .4byte sCharacteTitleRightSideAssets
 _08033854: .4byte 0x000003C3
 _08033858: .4byte gSineTable
 _0803385C: .4byte 0x000003FF
@@ -622,7 +622,7 @@ _08033A0C:
 	lsls r1, r1, #0xb
 	orrs r0, r1
 	str r0, [r5, #0x10]
-	ldr r1, _08033A58 @ =gUnknown_080D72B1
+	ldr r1, _08033A58 @ =sCharacterSilhouettes
 	ldrb r0, [r2]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -634,7 +634,7 @@ _08033A48: .4byte 0x000003CE
 _08033A4C: .4byte 0x000003CA
 _08033A50: .4byte 0x000003C1
 _08033A54: .4byte gGameMode
-_08033A58: .4byte gUnknown_080D72B1
+_08033A58: .4byte sCharacterSilhouettes
 _08033A5C:
 	ldr r0, [r5, #0x10]
 	ldr r1, _08033AB8 @ =0xFFFBFFFF
@@ -675,7 +675,7 @@ _08033A6A:
 	lsls r1, r1, #0xb
 	orrs r0, r1
 	str r0, [r5, #0x10]
-	ldr r0, _08033AC8 @ =gUnknown_080D72B1
+	ldr r0, _08033AC8 @ =sCharacterSilhouettes
 	ldrb r1, [r0, #5]
 	ldr r6, _08033ACC @ =0x00000385
 	adds r0, r7, r6
@@ -686,7 +686,7 @@ _08033AB8: .4byte 0xFFFBFFFF
 _08033ABC: .4byte 0x000003C1
 _08033AC0: .4byte 0x000003CA
 _08033AC4: .4byte gGameMode
-_08033AC8: .4byte gUnknown_080D72B1
+_08033AC8: .4byte sCharacterSilhouettes
 _08033ACC: .4byte 0x00000385
 _08033AD0:
 	ldr r0, [r5, #0x10]

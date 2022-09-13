@@ -535,7 +535,7 @@ _080317D8:
 	movs r0, #0x24
 	bl VramMalloc
 	str r0, [r7, #4]
-	ldr r3, _08031A3C @ =gUnknown_080D722C
+	ldr r3, _08031A3C @ =sCharacterNameSubTextAssets
 	movs r1, #0xf0
 	lsls r1, r1, #2
 	add r1, sl
@@ -589,7 +589,7 @@ _080317D8:
 	movs r0, #0x40
 	bl VramMalloc
 	str r0, [r7, #4]
-	ldr r1, _08031A40 @ =gUnknown_080D71D4
+	ldr r1, _08031A40 @ =sCharacterTitleLeftSideAssets
 	ldr r2, [sp, #0xc]
 	ldrb r0, [r2]
 	lsls r0, r0, #2
@@ -632,7 +632,7 @@ _080317D8:
 	movs r0, #0x40
 	bl VramMalloc
 	str r0, [r7, #4]
-	ldr r1, _08031A44 @ =gUnknown_080D71EC
+	ldr r1, _08031A44 @ =sCharacteTitleRightSideAssets
 	ldr r2, [sp, #0xc]
 	ldrb r0, [r2]
 	lsls r0, r0, #2
@@ -706,13 +706,13 @@ _08031A2C: .4byte 0x000003B2
 _08031A30: .4byte 0x000003B5
 _08031A34: .4byte 0x0000011D
 _08031A38: .4byte 0x000002E1
-_08031A3C: .4byte gUnknown_080D722C
-_08031A40: .4byte gUnknown_080D71D4
-_08031A44: .4byte gUnknown_080D71EC
+_08031A3C: .4byte sCharacterNameSubTextAssets
+_08031A40: .4byte sCharacterTitleLeftSideAssets
+_08031A44: .4byte sCharacteTitleRightSideAssets
 _08031A48:
 	bl VramMalloc
 	str r0, [r7, #4]
-	ldr r1, _08031C40 @ =gUnknown_080D725C
+	ldr r1, _08031C40 @ =sScreenTitleTextAssets
 	ldr r0, [sp, #0x74]
 	asrs r2, r0, #0x16
 	adds r0, r2, r1
@@ -890,7 +890,7 @@ _08031A48:
 	strh r4, [r7, #0x18]
 	ldr r0, _08031C54 @ =0x06011000
 	str r0, [r7, #4]
-	ldr r1, _08031C58 @ =gUnknown_080D7204
+	ldr r1, _08031C58 @ =sCharacterSpriteAssets
 	ldr r2, [sp, #0xc]
 	ldrb r0, [r2]
 	lsls r0, r0, #2
@@ -954,13 +954,13 @@ _08031C10:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08031C40: .4byte gUnknown_080D725C
+_08031C40: .4byte sScreenTitleTextAssets
 _08031C44: .4byte 0x000002E2
 _08031C48: .4byte 0x06010400
 _08031C4C: .4byte 0x06012580
 _08031C50: .4byte 0x000002E6
 _08031C54: .4byte 0x06011000
-_08031C58: .4byte gUnknown_080D7204
+_08031C58: .4byte sCharacterSpriteAssets
 _08031C5C: .4byte gObjPalette
 _08031C60: .4byte gFlags
 

@@ -100,10 +100,14 @@ struct Unk_03002EC0 {
     u8 fillerA[2];
 };
 
+// Transformer
 struct UNK_808D124_UNK180 {
     u16 unk0;
+    // width
     s16 unk2;
+    // height
     s16 unk4;
+    // pos
     s16 unk6[2];
     u8 unkA;
     u8 unkB;
@@ -127,7 +131,10 @@ u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);
 void DrawToOamBuffer(void);
+
+// TransformSprite
 void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
+
 void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
 
 // Probably a list of sprites to draw to screen
