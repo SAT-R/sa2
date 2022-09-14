@@ -1262,9 +1262,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen* characterS
     sub_80051E8(element);
 }
 
-// https://decomp.me/scratch/LpkD4
-// Same issues as the create function
-NONMATCH("asm/non_matching/RenderCarouselScrollAnim.inc", static void RenderCarouselScrollAnim(struct CharacterSelectionScreen* characterScreen)) {
+static void RenderCarouselScrollAnim(struct CharacterSelectionScreen* characterScreen) {
     u8 selectedCharacter, b, d;
     u16 c, e, f;
     u8 i;
@@ -1405,8 +1403,8 @@ NONMATCH("asm/non_matching/RenderCarouselScrollAnim.inc", static void RenderCaro
 
     element = &characterScreen->characterSprite;
 
-    if (b != 0) {
-        element->unk16 = characterScreen->characterBaseXPos + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
+    if (b > 0) {
+        element->unk16 = characterScreen->characterBaseXPos + (0x80 - (gSineTable[b * 0x10 + 0x100] >> 7)) * 2;
         f = element->unk16;
         e = characterScreen->characterBaseXPos + (b * 0x12);
         
@@ -1453,6 +1451,14 @@ NONMATCH("asm/non_matching/RenderCarouselScrollAnim.inc", static void RenderCaro
     element->unk16 = characterScreen->characterSubTextBaseXPos + (d * 5) * 4;
     element->unk18 = 0x90;
     sub_80051E8(element);
+
+#ifndef NON_MATCHING
+    if (&characterScreen->screenTitleText) {
+        element = &characterScreen->screenTitleText;
+    } else {
+        element = &characterScreen->screenTitleText;
+    }
+#endif
 
     element = &characterScreen->screenTitleText;
     element->unk16 = 0xF0;
@@ -1509,7 +1515,6 @@ NONMATCH("asm/non_matching/RenderCarouselScrollAnim.inc", static void RenderCaro
     sub_8004558(element);
     sub_80051E8(element);
 }
-END_NONMATCH
 
 static void RenderUI(struct CharacterSelectionScreen* characterScreen) {
     struct UNK_808D124_UNK180* transformOptions;
