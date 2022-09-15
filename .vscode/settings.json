@@ -48,7 +48,8 @@
         "transition.h": "c",
         "palettes.h": "c",
         "multiplayer_mode_select.h": "c",
-        "time_attack.h": "c"
+        "time_attack.h": "c",
+        "course_select.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

@@ -102,7 +102,7 @@ _0803477C:
 	bhi _0803479C
 	mov r0, r8
 	movs r1, #4
-	bl DivRem
+	bl Mod
 	movs r1, #2
 	ands r1, r0
 	cmp r1, #0

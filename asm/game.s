@@ -5702,7 +5702,7 @@ sub_801D534: @ 0x0801D534
 	ldr r0, [r0]
 	movs r1, #0xd0
 	lsls r1, r1, #3
-	bl DivRem
+	bl Mod
 	lsls r0, r0, #0x10
 	lsrs r6, r0, #0x10
 	movs r5, #0
@@ -35537,7 +35537,7 @@ _0802B964:
 	ldr r0, _0802B9F4 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0x3c
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0802BA72
 	ldr r1, _0802B9F8 @ =gUnknown_030053F0
@@ -36263,7 +36263,7 @@ _0802BF48:
 	ldr r0, _0802BFA4 @ =gUnknown_03005590
 	ldr r0, [r0]
 	adds r1, r4, #2
-	bl DivRem
+	bl Mod
 	adds r4, #1
 	cmp r0, #0
 	bne _0802BF8E
@@ -38120,7 +38120,7 @@ _0802CD74:
 	bls _0802CD9A
 	adds r0, r1, #0
 	movs r1, #0x3c
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0802CD9A
 	movs r0, #0x8b

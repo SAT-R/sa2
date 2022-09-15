@@ -184,7 +184,7 @@ _0806BB56:
 	movs r1, #0
 	ldrsh r0, [r6, r1]
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	ldr r2, _0806BCA0 @ =0x000005C4
 	adds r1, r7, r2
 	strb r0, [r1]

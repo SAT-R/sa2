@@ -11418,7 +11418,7 @@ _0803C256:
 	ldr r0, [r5]
 	adds r0, r0, r1
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0803C278
 	movs r0, #0x90
@@ -13481,7 +13481,7 @@ sub_803D2C0: @ 0x0803D2C0
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0x11
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0803D316
 	movs r0, #0x90
@@ -15787,7 +15787,7 @@ sub_803E520: @ 0x0803E520
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0x15
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0803E57A
 	movs r0, #0x90
@@ -15849,7 +15849,7 @@ sub_803E5B0: @ 0x0803E5B0
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0803E606
 	movs r0, #0x90
@@ -18649,7 +18649,7 @@ _0803FC2C:
 	ldr r3, _0803FDCC @ =gUnknown_03005590
 	ldr r0, [r3]
 	movs r1, #0xe
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _0803FD04
@@ -18722,7 +18722,7 @@ _0803FD04:
 	ldr r3, _0803FDCC @ =gUnknown_03005590
 	ldr r0, [r3]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _0803FD9A
@@ -19216,7 +19216,7 @@ _080400E2:
 	ldr r0, _080401A0 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #6
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	beq _0804010A
@@ -19518,7 +19518,7 @@ _08040360:
 	mov sb, r0
 	ldr r0, [r0]
 	movs r1, #0xe
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _08040400
@@ -19596,7 +19596,7 @@ _08040400:
 	mov r1, sb
 	ldr r0, [r1]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _0804049E
@@ -19885,7 +19885,7 @@ sub_804063C: @ 0x0804063C
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	movs r1, #3
-	bl DivRem
+	bl Mod
 	lsls r0, r0, #0x18
 	ldr r1, _080406CC @ =gUnknown_03005590
 	ldr r4, [r1]
@@ -21286,7 +21286,7 @@ sub_8041138: @ 0x08041138
 	ldr r0, _080411B0 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0804115A
 	movs r0, #0x90
@@ -21353,7 +21353,7 @@ sub_80411CC: @ 0x080411CC
 	ldr r0, _0804122C @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _080411EE
 	movs r0, #0x90
@@ -22095,7 +22095,7 @@ sub_80417A0: @ 0x080417A0
 	ldr r0, _0804186C @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _080417E4
 	movs r0, #0x90
@@ -22797,7 +22797,7 @@ sub_8041D34: @ 0x08041D34
 _08041D62:
 	adds r0, r2, #0
 	movs r1, #0xc
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _08041DFA
@@ -25828,7 +25828,7 @@ _080435EC:
 	ldr r0, _08043648 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _08043600
 	movs r0, #0x90
@@ -26970,7 +26970,7 @@ _08043EA2:
 	ldr r0, _08043FB4 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #3
-	bl DivRem
+	bl Mod
 	adds r6, r0, #0
 	cmp r6, #0
 	bne _08043F9A
@@ -29841,7 +29841,7 @@ _0804557A:
 	ldr r1, _08045868 @ =gUnknown_03005590
 	ldr r0, [r1]
 	movs r1, #7
-	bl DivRem
+	bl Mod
 	adds r5, r0, #0
 	cmp r5, #0
 	bne _0804563E
@@ -29938,7 +29938,7 @@ _0804563E:
 	ldr r2, _08045868 @ =gUnknown_03005590
 	ldr r0, [r2]
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	str r0, [sp, #0x24]
 	cmp r0, #0
 	bne _0804572E
@@ -29965,7 +29965,7 @@ _0804563E:
 	adds r1, r3, #0
 	ands r7, r1
 	movs r1, #6
-	bl DivRem
+	bl Mod
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	mov r4, sb
@@ -30056,7 +30056,7 @@ _0804572E:
 	ldr r3, _08045868 @ =gUnknown_03005590
 	ldr r0, [r3]
 	movs r1, #9
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _080457C4
@@ -30130,7 +30130,7 @@ _080457C4:
 	ldr r4, _08045868 @ =gUnknown_03005590
 	ldr r0, [r4]
 	movs r1, #0xb
-	bl DivRem
+	bl Mod
 	adds r7, r0, #0
 	cmp r7, #0
 	bne _08045858
@@ -31053,7 +31053,7 @@ _08045F34:
 _08045F36:
 	ldrh r0, [r4, #0x22]
 	movs r1, #0x1e
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _08045F78
 	ldr r2, _08045F80 @ =gUnknown_030059E0
@@ -31266,7 +31266,7 @@ sub_80460DC: @ 0x080460DC
 	ldr r0, _08046114 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0x15
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _080460FE
 	movs r0, #0x90
@@ -31353,7 +31353,7 @@ sub_8046198: @ 0x08046198
 	ldr r0, _0804622C @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0x11
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _080461BA
 	movs r0, #0x90
@@ -31440,7 +31440,7 @@ sub_8046244: @ 0x08046244
 	ldr r0, _08046310 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _08046288
 	movs r0, #0x90
@@ -32474,7 +32474,7 @@ _08046A84:
 	movs r5, #0xff
 	ands r0, r5
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	ldr r1, _08046B0C @ =gUnknown_080D8044
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -32490,7 +32490,7 @@ _08046A84:
 	str r0, [r4]
 	ands r0, r5
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	adds r1, r7, #0
 	adds r1, #0x26
 	strb r0, [r1]
@@ -33320,7 +33320,7 @@ sub_8047138: @ 0x08047138
 	ldr r0, _080471FC @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _080471EE
 	ldr r0, _08047200 @ =0x000001C1
@@ -35067,7 +35067,7 @@ sub_8047F0C: @ 0x08047F0C
 	ldr r4, _080480AC @ =gUnknown_03005590
 	ldr r0, [r4]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _08047F5E
 	movs r0, #0x90
@@ -35075,7 +35075,7 @@ sub_8047F0C: @ 0x08047F0C
 _08047F5E:
 	ldr r0, [r4]
 	movs r1, #7
-	bl DivRem
+	bl Mod
 	ldr r1, _080480B0 @ =IWRAM_START + 0x65
 	add r1, sb
 	mov sl, r1
@@ -40466,7 +40466,7 @@ _0804AA0A:
 _0804AA26:
 	ldr r0, [r5, #0x14]
 	movs r1, #0x1e
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0804AA68
 	ldr r4, _0804AAF0 @ =gUnknown_030059E0
@@ -46796,7 +46796,7 @@ sub_804DCF8: @ 0x0804DCF8
 	ldr r4, _0804DD80 @ =gUnknown_03005590
 	ldr r0, [r4]
 	movs r1, #0xd
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0804DD12
 	movs r0, #0x90
@@ -47285,7 +47285,7 @@ _0804E0C4:
 	ldr r0, _0804E134 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #3
-	bl DivRem
+	bl Mod
 	adds r0, #1
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
@@ -47632,7 +47632,7 @@ _0804E350:
 	adds r0, r0, r1
 	str r0, [r2]
 	movs r1, #8
-	bl DivRem
+	bl Mod
 	lsls r0, r0, #0x18
 	asrs r4, r0, #0x18
 	cmp r4, #0
@@ -48005,7 +48005,7 @@ _0804E68C:
 	ldr r0, _0804E73C @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #4
-	bl DivRem
+	bl Mod
 	movs r1, #0
 	mov sb, r1
 	cmp r0, #0
@@ -48220,7 +48220,7 @@ _0804E836:
 	ldr r0, _0804E8E4 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #4
-	bl DivRem
+	bl Mod
 	movs r2, #0
 	mov sb, r2
 	cmp r0, #0
@@ -49889,7 +49889,7 @@ _0804F496:
 	bl sub_80051E8
 	ldrh r0, [r7, #6]
 	movs r1, #0xa
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0804F588
 	ldrh r0, [r7, #6]
@@ -51063,7 +51063,7 @@ sub_804FE24: @ 0x0804FE24
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	movs r1, #7
-	bl DivRem
+	bl Mod
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	ldr r2, _0804FEEC @ =gUnknown_080D89AC
@@ -51157,7 +51157,7 @@ sub_804FEFC: @ 0x0804FEFC
 _0804FF22:
 	ldrh r0, [r7, #8]
 	movs r1, #6
-	bl DivRem
+	bl Mod
 	cmp r0, #0
 	bne _0804FF80
 	add r1, sp, #4
