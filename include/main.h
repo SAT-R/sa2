@@ -20,8 +20,26 @@ struct MultiSioData_0_0 {
     u32 unk10;
 };
 
+struct MultiSioData_0_1{
+    // id
+    u16 unk0;
+    // value
+    u8 unk2;
+
+    u8 unk3;
+    
+    u16 unk4;
+    u16 unk6;
+
+    u16 unk8[3];
+    u8 unkE;
+    u8 unkF;
+    u32 unk10;
+};
+
 union MultiSioData {
     struct MultiSioData_0_0 pat0;
+    struct MultiSioData_0_1 pat1;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
 // Used for the two background layers.
