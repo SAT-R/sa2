@@ -290,7 +290,7 @@ static void sub_805C0F0(void) {
             if (i & 1) {
                 for (j = 0; j < 0x20; j++) {
                     *unk1884++ = 0xF0 - unk200;
-                    *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+                    *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
                 }
                 x += 0x20;
                 continue;
@@ -298,7 +298,7 @@ static void sub_805C0F0(void) {
     
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = unk200 - 0xF0;
-                *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+                *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
             }
             x += 0x20;
         }
@@ -409,14 +409,14 @@ static void sub_805C504(void) {
             
         if (i & 1) {
             for (j = 0; j < 0x20; j++) {
-                *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+                *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
             }
             x += 0x20;
             continue;
         } 
 
         for (j = 0; j < 0x20; j++) {
-            *unk1884++ = (gUnknown_03005500[i] * 0x20 + 0x20) - x;
+            *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
         }
         x += 0x20;
     }

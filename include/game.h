@@ -35,7 +35,7 @@ extern u16 gUnknown_0300544C;
 // multiplayer values
 extern u32 gUnknown_030055A0[4];
 // gMultiplayerCharacters
-extern s8 gUnknown_03005500[4];
+extern s8 gMultiplayerCharacters[4];
 extern s8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054B8;
 
@@ -91,6 +91,7 @@ void sub_808129C(void);
 // UpdateGamePlaySettings
 void sub_801A6D8(void);
 
+// CreateTrueArea53
 void sub_8036C54(void);
 
 #endif // GUARD_GAME_H

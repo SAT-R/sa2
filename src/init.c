@@ -46,7 +46,7 @@ void GameStart(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gUnknown_03005500[i] = 0;
+        gMultiplayerCharacters[i] = 0;
         gUnknown_030054B4[i] = 0;
         gUnknown_030054D4[i] = 0;
     }

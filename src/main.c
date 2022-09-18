@@ -311,7 +311,7 @@ static void GameInit(void) {
     }
 
     // Setup interrupt table
-    DmaCopy32(3, IntrMain, gIntrMainBuf, 0x200);
+    DmaCopy32(3, IntrMain, gIntrMainBuf, sizeof(gIntrMainBuf));
     INTR_VECTOR = gIntrMainBuf;
 
     REG_IME = INTR_FLAG_VBLANK;

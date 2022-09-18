@@ -828,7 +828,7 @@ _080819B8:
 	ldr r7, _08081A20 @ =sub_8081D58
 	ldr r0, _08081A24 @ =gDispCnt
 	mov ip, r0
-	ldr r4, _08081A28 @ =gUnknown_03005500
+	ldr r4, _08081A28 @ =gMultiplayerCharacters
 	movs r2, #0
 	ldr r3, _08081A2C @ =gUnknown_03005428
 _080819E6:
@@ -859,7 +859,7 @@ _08081A18: .4byte gUnknown_030054B4
 _08081A1C: .4byte gUnknown_030054D4
 _08081A20: .4byte sub_8081D58
 _08081A24: .4byte gDispCnt
-_08081A28: .4byte gUnknown_03005500
+_08081A28: .4byte gMultiplayerCharacters
 _08081A2C: .4byte gUnknown_03005428
 _08081A30:
 	adds r0, r5, #1
@@ -1089,7 +1089,7 @@ _08081C08: .4byte gFlags
 sub_8081C0C: @ 0x08081C0C
 	push {r4, r5, r6, lr}
 	movs r1, #0
-	ldr r6, _08081C40 @ =gUnknown_03005500
+	ldr r6, _08081C40 @ =gMultiplayerCharacters
 	movs r2, #0
 	ldr r5, _08081C44 @ =gUnknown_03005428
 	ldr r4, _08081C48 @ =gUnknown_030054B4
@@ -1113,7 +1113,7 @@ _08081C1A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08081C40: .4byte gUnknown_03005500
+_08081C40: .4byte gMultiplayerCharacters
 _08081C44: .4byte gUnknown_03005428
 _08081C48: .4byte gUnknown_030054B4
 _08081C4C: .4byte gUnknown_030054D4
@@ -2394,7 +2394,7 @@ sub_808267C: @ 0x0808267C
 	str r0, [r1]
 	movs r1, #0
 	ldr r5, _080826E4 @ =gFlags
-	ldr r2, _080826E8 @ =gUnknown_03005500
+	ldr r2, _080826E8 @ =gMultiplayerCharacters
 	movs r4, #0
 	ldr r3, _080826EC @ =gUnknown_030054B4
 _080826A8:
@@ -2425,7 +2425,7 @@ _080826D8: .4byte gCurTask
 _080826DC: .4byte gMultiSioRecv
 _080826E0: .4byte gUnknown_03005434
 _080826E4: .4byte gFlags
-_080826E8: .4byte gUnknown_03005500
+_080826E8: .4byte gMultiplayerCharacters
 _080826EC: .4byte gUnknown_030054B4
 _080826F0: .4byte 0x00000434
 _080826F4:
@@ -2671,7 +2671,7 @@ _080828C8:
 	bl sub_8004558
 	adds r0, r5, #0
 	bl sub_80051E8
-	ldr r0, _080829E0 @ =gUnknown_03005500
+	ldr r0, _080829E0 @ =gMultiplayerCharacters
 	add r0, r8
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -2786,7 +2786,7 @@ _080829A4:
 	.align 2, 0
 _080829D8: .4byte gUnknown_030054B4
 _080829DC: .4byte 0x00000434
-_080829E0: .4byte gUnknown_03005500
+_080829E0: .4byte gMultiplayerCharacters
 _080829E4: .4byte gUnknown_030053E8
 _080829E8:
 	mov r2, r8

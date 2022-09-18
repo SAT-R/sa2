@@ -21,7 +21,7 @@
 #include "time_attack.h"
 
 struct CharacterSelectionScreen {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct UNK_802D4CC_UNK270 screenFade;
     struct Unk_03002400 unkC;
     struct Unk_03002400 unk4C;
     struct Unk_03002400 unk8C;
@@ -304,7 +304,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
         }
     } 
 
-    screenFade = &characterScreen->unk0;
+    screenFade = &characterScreen->screenFade;
     screenFade->unk0 = 0;
     screenFade->unk4 = 0;
     screenFade->unk2 = 2;
@@ -568,7 +568,7 @@ static void Task_FadeInAndStartRollInAnim(void) {
         gCurTask->main = Task_RollInAnim;
     }
 
-    sub_802D4CC(&characterScreen->unk0);
+    sub_802D4CC(&characterScreen->screenFade);
     sub_80051E8(&characterScreen->scrollUpArrow);
     sub_80051E8(&characterScreen->scrollDownArrow);
 
@@ -644,7 +644,7 @@ static void Task_CharacterSelectMain(void) {
     if (IsMultiplayer()) {
         ReadMultiplayerSelections(characterScreen, i, packet);
     } else if (gPressedKeys & B_BUTTON || characterScreen->exiting) {
-        unk0 = &characterScreen->unk0;
+        unk0 = &characterScreen->screenFade;
         unk0->unk0 = 0;
         unk0->unk4 = 0;
         unk0->unk2 = 1;
@@ -675,7 +675,7 @@ static void Task_CharacterSelectMain(void) {
 
         characterScreen->animFrame = 0;
 
-        unk0 = &characterScreen->unk0;
+        unk0 = &characterScreen->screenFade;
         unk0->unk0 = 0;
         unk0->unk4 = 0;
         unk0->unk2 = 1;
@@ -755,7 +755,7 @@ static void Task_CharacterSelectMain(void) {
                 gSelectedCharacter = characterScreen->selectedCharacter;
                 characterScreen->animFrame = 0;
 
-                unk0 = &characterScreen->unk0;
+                unk0 = &characterScreen->screenFade;
                 unk0->unk0 = 0;
                 unk0->unk4 = 0;
                 unk0->unk2 = 1;
@@ -975,7 +975,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void) {
     union MultiSioData* packet;
     struct UNK_0808B3FC_UNK240* element;
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270* unk0 = &characterScreen->unk0;
+    struct UNK_802D4CC_UNK270* unk0 = &characterScreen->screenFade;
     MultiPakHeartbeat();
 
     if (IsMultiplayer()) {
@@ -1019,18 +1019,18 @@ static void Task_SelectionCompleteFadeOutAndExit(void) {
         }
 
         // Only 1 zone available
-        if (gLoadedSaveGame->unk7[gSelectedCharacter] < 3) {
-            gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
+        if (gLoadedSaveGame->unk7[gSelectedCharacter] <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
+            gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
             sub_801A770();
             return;
         }
 
         if (gLoadedSaveGame->unk1A == 1 && gSelectedCharacter == CHARACTER_SONIC) {
-            CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_UNLOCK_TRUE_AREA_53);
+            CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1), gLoadedSaveGame->unk7[gSelectedCharacter], CUT_SCENE_UNLOCK_TRUE_AREA_53);
             return;
         }
 
-        CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_NONE);
+        CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1), gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_NONE);
         return;
     }
 
@@ -1040,7 +1040,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void) {
 
 static void Task_FadeOutAndExitToPrevious(void) {
     struct CharacterSelectionScreen* characterScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270* unk0 = &characterScreen->unk0;
+    struct UNK_802D4CC_UNK270* unk0 = &characterScreen->screenFade;
 
     if (sub_802D4CC(unk0) == 1) {
         TasksDestroyAll();
@@ -1651,7 +1651,7 @@ static void Task_MultiplayerWaitForSelections(void) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (GetBit(gUnknown_030055B8, i)) {
                 recv = &gMultiSioRecv[i];
-                gUnknown_03005500[i] = recv->pat0.unk2;
+                gMultiplayerCharacters[i] = recv->pat0.unk2;
             }
         }
 
@@ -1764,7 +1764,7 @@ static void Task_MultiplayerVerifySelections(void) {
             if (GetBit(gUnknown_030055B8, i)) {
                 recv = &gMultiSioRecv[i];
                 if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
-                    gUnknown_03005500[i] = recv->pat0.unk2;
+                    gMultiplayerCharacters[i] = recv->pat0.unk2;
                 }
             }
         }
@@ -1794,7 +1794,7 @@ static void Task_MultiplayerVerifySelections(void) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (GetBit(gUnknown_030055B8, i) && i != 0) {
                 recv = &gMultiSioRecv[i];
-                gUnknown_03005500[i] = recv->pat0.unk2;
+                gMultiplayerCharacters[i] = recv->pat0.unk2;
                 if (recv->pat0.unk0 != 0x4022) {
                     send->pat0.unk0 = 0x4022;
                     if (gPressedKeys & B_BUTTON) {

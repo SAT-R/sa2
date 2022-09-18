@@ -814,8 +814,8 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
     
     for (i = 0; i < 5; i++) {
         gameState->unk7[i] = i == CHARACTER_SONIC ? 
-            TO_LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53): 
-            TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
+            LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1: 
+            LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) + 1;
         gameState->unkC[i] = 0xff;
     }
 

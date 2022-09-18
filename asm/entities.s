@@ -745,7 +745,7 @@ _080083C4:
 _080083D2:
 	ldrb r1, [r4, #0xa]
 	ldr r3, _080084F8 @ =gUnknown_080D672C
-	ldr r2, _080084FC @ =gUnknown_03005500
+	ldr r2, _080084FC @ =gMultiplayerCharacters
 	adds r0, r4, #0
 	adds r0, #0x56
 	ldrb r0, [r0]
@@ -905,7 +905,7 @@ _080084EE:
 	b _08008642
 	.align 2, 0
 _080084F8: .4byte gUnknown_080D672C
-_080084FC: .4byte gUnknown_03005500
+_080084FC: .4byte gMultiplayerCharacters
 _08008500: .4byte gUnknown_03005960
 _08008504: .4byte gUnknown_030059E0
 _08008508: .4byte gGameMode
@@ -19278,7 +19278,7 @@ _08011370:
 	blo _08011382
 	b _080114B0
 _08011382:
-	ldr r0, _080113F8 @ =gUnknown_03005500
+	ldr r0, _080113F8 @ =gMultiplayerCharacters
 	adds r0, r4, r0
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -19333,7 +19333,7 @@ _080113E8: .4byte gAnimations
 _080113EC: .4byte gSpritePalettes
 _080113F0: .4byte IWRAM_START + 0x80
 _080113F4: .4byte gUnknown_030055B8
-_080113F8: .4byte gUnknown_03005500
+_080113F8: .4byte gMultiplayerCharacters
 _080113FC: .4byte gUnknown_080D550C
 _08011400:
 	ldr r3, _080115A8 @ =gUnknown_030059E0
@@ -25183,7 +25183,7 @@ _08014086:
 	movs r1, #0
 	cmp r1, r2
 	bhs _080140A0
-	ldr r3, _08014120 @ =gUnknown_03005500
+	ldr r3, _08014120 @ =gMultiplayerCharacters
 _0801408E:
 	adds r0, r1, r3
 	ldrb r0, [r0]
@@ -25259,7 +25259,7 @@ _08014112:
 	bx r0
 	.align 2, 0
 _0801411C: .4byte gUnknown_030055A0
-_08014120: .4byte gUnknown_03005500
+_08014120: .4byte gMultiplayerCharacters
 _08014124: .4byte gUnknown_030056A4
 _08014128: .4byte gUnknown_080D5548
 
@@ -29504,7 +29504,7 @@ _08016188:
 	lsls r0, r0, #1
 	strh r0, [r4, #0x3c]
 	ldr r2, _08016204 @ =gUnknown_080D672C
-	ldr r1, _08016208 @ =gUnknown_03005500
+	ldr r1, _08016208 @ =gMultiplayerCharacters
 	ldrb r0, [r7]
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -29532,7 +29532,7 @@ _08016188:
 	b _08016214
 	.align 2, 0
 _08016204: .4byte gUnknown_080D672C
-_08016208: .4byte gUnknown_03005500
+_08016208: .4byte gMultiplayerCharacters
 _0801620C: .4byte 0x04000128
 _08016210:
 	ldr r0, _08016234 @ =0x06010000
@@ -30351,7 +30351,7 @@ _08016838:
 	bne _08016870
 	b _08016A1A
 _08016870:
-	ldr r0, _080168BC @ =gUnknown_03005500
+	ldr r0, _080168BC @ =gMultiplayerCharacters
 	adds r0, r1, r0
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -30378,7 +30378,7 @@ _080168AC: .4byte gUnknown_03005424
 _080168B0: .4byte gUnknown_030059E0
 _080168B4: .4byte 0x80000004
 _080168B8: .4byte 0x00400080
-_080168BC: .4byte gUnknown_03005500
+_080168BC: .4byte gMultiplayerCharacters
 _080168C0: .4byte _080168C4
 _080168C4: @ jump table
 	.4byte _080168E4 @ case 0
@@ -30464,7 +30464,7 @@ _08016956:
 	lsrs r0, r0, #0x1e
 	cmp r1, r0
 	beq _080169BC
-	ldr r0, _080169E8 @ =gUnknown_03005500
+	ldr r0, _080169E8 @ =gMultiplayerCharacters
 	adds r0, r1, r0
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -30523,7 +30523,7 @@ _080169BC:
 _080169DC: .4byte gUnknown_030054B4
 _080169E0: .4byte gGameMode
 _080169E4: .4byte 0x04000128
-_080169E8: .4byte gUnknown_03005500
+_080169E8: .4byte gMultiplayerCharacters
 _080169EC: .4byte gUnknown_030059E0
 _080169F0: .4byte 0xFFBFFFFF
 _080169F4:
@@ -37709,7 +37709,7 @@ _0801A196:
 	movs r7, #0
 	mov r4, sb
 	ldr r6, _0801A1E8 @ =gUnknown_030054B4
-	ldr r5, _0801A1EC @ =gUnknown_03005500
+	ldr r5, _0801A1EC @ =gMultiplayerCharacters
 	mov r3, sp
 	mov r2, sp
 	ldr r1, _0801A1F0 @ =gUnknown_03005428
@@ -37738,7 +37738,7 @@ _0801A1DC: .4byte gGameMode
 _0801A1E0: .4byte gUnknown_080D57D8
 _0801A1E4: .4byte gUnknown_030053E8
 _0801A1E8: .4byte gUnknown_030054B4
-_0801A1EC: .4byte gUnknown_03005500
+_0801A1EC: .4byte gMultiplayerCharacters
 _0801A1F0: .4byte gUnknown_03005428
 _0801A1F4:
 	ldrb r1, [r4, #1]

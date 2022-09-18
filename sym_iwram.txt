@@ -58,7 +58,7 @@ build/sa2/src/main.o(.data);
 . = 0x000054F4; gUnknown_030054F4 = .;
 . = 0x000054F8; gUnknown_030054F8 = .;
 . = 0x000054FC; gUnknown_030054FC = .;
-. = 0x00005500; gUnknown_03005500 = .;
+. = 0x00005500; gMultiplayerCharacters = .;
 . = 0x00005510; gUnknown_03005510 = .;
 . = 0x00005590; gUnknown_03005590 = .;
 . = 0x00005594; gUnknown_03005594 = .;

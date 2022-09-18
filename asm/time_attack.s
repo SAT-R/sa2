@@ -97,7 +97,7 @@ _08086D8E:
 	str r0, [r7, #4]
 	ldr r0, _08086DE4 @ =0x00000465
 	strh r0, [r7, #0xa]
-	ldr r2, _08086DE8 @ =gUnknown_03005500
+	ldr r2, _08086DE8 @ =gMultiplayerCharacters
 	adds r2, r4, r2
 	movs r0, #0
 	ldrsb r0, [r2, r0]
@@ -128,7 +128,7 @@ _08086D8E:
 _08086DDC: .4byte gUnknown_080E02D4
 _08086DE0: .4byte 0x00000121
 _08086DE4: .4byte 0x00000465
-_08086DE8: .4byte gUnknown_03005500
+_08086DE8: .4byte gMultiplayerCharacters
 _08086DEC: .4byte gSelectedCharacter
 _08086DF0:
 	movs r0, #0xc0
@@ -1352,7 +1352,7 @@ _0808778E:
 	cmp r1, #3
 	bls _0808778E
 	movs r1, #0
-	ldr r5, _080877D8 @ =gUnknown_03005500
+	ldr r5, _080877D8 @ =gMultiplayerCharacters
 	movs r2, #0
 	ldr r4, _080877DC @ =gUnknown_030054B4
 	ldr r3, _080877E0 @ =gUnknown_030054D4
@@ -1376,7 +1376,7 @@ _080877C8: .4byte 0x000040A0
 _080877CC: .4byte gCurTask
 _080877D0: .4byte gMultiSioEnabled
 _080877D4: .4byte gUnknown_030055A0
-_080877D8: .4byte gUnknown_03005500
+_080877D8: .4byte gMultiplayerCharacters
 _080877DC: .4byte gUnknown_030054B4
 _080877E0: .4byte gUnknown_030054D4
 _080877E4:

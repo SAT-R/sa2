@@ -441,7 +441,7 @@ _0801AAA4:
 	adds r5, r0, #0
 	cmp r1, #5
 	bne _0801AABC
-	ldr r0, _0801AAE4 @ =gUnknown_03005500
+	ldr r0, _0801AAE4 @ =gMultiplayerCharacters
 	adds r0, r4, r0
 	strb r4, [r0]
 _0801AABC:
@@ -464,7 +464,7 @@ _0801AABC:
 	.align 2, 0
 _0801AADC: .4byte gUnknown_030054B4
 _0801AAE0: .4byte gGameMode
-_0801AAE4: .4byte gUnknown_03005500
+_0801AAE4: .4byte gMultiplayerCharacters
 _0801AAE8: .4byte gUnknown_030056A4
 _0801AAEC: .4byte gUnknown_030059E0
 _0801AAF0:
@@ -12171,7 +12171,7 @@ _08020714:
 	ldrb r1, [r0, #0xa]
 	ldr r2, _080207CC @ =gUnknown_080D672C
 	mov sl, r2
-	ldr r2, _080207D0 @ =gUnknown_03005500
+	ldr r2, _080207D0 @ =gMultiplayerCharacters
 	ldr r3, _080207D4 @ =IWRAM_START + 0x56
 	adds r0, r4, r3
 	ldrb r0, [r0]
@@ -12265,7 +12265,7 @@ _080207BA:
 	b _08020962
 	.align 2, 0
 _080207CC: .4byte gUnknown_080D672C
-_080207D0: .4byte gUnknown_03005500
+_080207D0: .4byte gMultiplayerCharacters
 _080207D4: .4byte IWRAM_START + 0x56
 _080207D8:
 	mov r0, r8
@@ -12756,7 +12756,7 @@ _08020B9C: .4byte gGameMode
 _08020BA0:
 	mov r3, ip
 	ldrb r1, [r3, #0xa]
-	ldr r2, _08020C58 @ =gUnknown_03005500
+	ldr r2, _08020C58 @ =gMultiplayerCharacters
 	ldr r3, _08020C5C @ =IWRAM_START + 0x56
 	adds r0, r4, r3
 	ldrb r0, [r0]
@@ -12851,7 +12851,7 @@ _08020C44:
 	movs r0, #0
 	b _08020DEA
 	.align 2, 0
-_08020C58: .4byte gUnknown_03005500
+_08020C58: .4byte gMultiplayerCharacters
 _08020C5C: .4byte IWRAM_START + 0x56
 _08020C60: .4byte gUnknown_080D672C
 _08020C64:
@@ -13395,7 +13395,7 @@ _08021090: .4byte gGameMode
 _08021094:
 	mov r3, ip
 	ldrb r1, [r3, #0xa]
-	ldr r2, _0802114C @ =gUnknown_03005500
+	ldr r2, _0802114C @ =gMultiplayerCharacters
 	ldr r3, _08021150 @ =IWRAM_START + 0x56
 	adds r0, r4, r3
 	ldrb r0, [r0]
@@ -13490,7 +13490,7 @@ _08021138:
 	movs r0, #0
 	b _0802131A
 	.align 2, 0
-_0802114C: .4byte gUnknown_03005500
+_0802114C: .4byte gMultiplayerCharacters
 _08021150: .4byte IWRAM_START + 0x56
 _08021154: .4byte gUnknown_080D672C
 _08021158:
@@ -44009,7 +44009,7 @@ _0802FB2A:
 	lsls r1, r2, #4
 	mov r8, r1
 	mov r7, ip
-	ldr r0, _0802FC3C @ =gUnknown_03005500
+	ldr r0, _0802FC3C @ =gMultiplayerCharacters
 	adds r2, r2, r0
 	mov ip, r2
 	ldr r3, _0802FC40 @ =gObjPalette
@@ -44133,7 +44133,7 @@ _0802FC12:
 	.align 2, 0
 _0802FC34: .4byte gUnknown_030055B8
 _0802FC38: .4byte gUnknown_080D6FF5
-_0802FC3C: .4byte gUnknown_03005500
+_0802FC3C: .4byte gMultiplayerCharacters
 _0802FC40: .4byte gObjPalette
 _0802FC44: .4byte gUnknown_080D6FF7
 _0802FC48: .4byte gUnknown_030056A4

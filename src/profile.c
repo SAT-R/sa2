@@ -6595,7 +6595,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void) {
         return;
     } 
 
-    gCurrentLevel = TO_LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? ACT_BOSS : timeRecordsScreen->act);
+    gCurrentLevel = LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? ACT_BOSS : timeRecordsScreen->act);
 
     EwramFree(timeRecordsScreen->timeRecords);
     TaskDestroy(gCurTask);

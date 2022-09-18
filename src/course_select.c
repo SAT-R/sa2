@@ -14,67 +14,104 @@
 #include "trig.h"
 
 struct CourseSelectionScreen {
-    struct UNK_802D4CC_UNK270 unk0;
-    struct Unk_03002400 unkC;
-    struct Unk_03002400 unk4C;
-    struct UNK_0808B3FC_UNK240 unk8C;
-    struct UNK_0808B3FC_UNK240 unkBC[8];
-    struct UNK_0808B3FC_UNK240 unk23C[2];
-    struct UNK_0808B3FC_UNK240 unk29C;
-    struct UNK_0808B3FC_UNK240 unk2CC;
-    struct UNK_0808B3FC_UNK240 unk2FC;
-    struct UNK_0808B3FC_UNK240 unk32C[8];
-    s32 unk4AC;
-    s32 unk4B0;
-    s32 unk4B4;
+    struct UNK_802D4CC_UNK270 screenFade;
+    struct Unk_03002400 worldMap;
+    struct Unk_03002400 headerBackground;
+    struct UNK_0808B3FC_UNK240 playerAvatar;
+    struct UNK_0808B3FC_UNK240 mapPaths[8];
+    struct UNK_0808B3FC_UNK240 zoneActUnits[2];
+    struct UNK_0808B3FC_UNK240 zoneType;
+    struct UNK_0808B3FC_UNK240 zoneName;
+    struct UNK_0808B3FC_UNK240 screenTitle;
+    struct UNK_0808B3FC_UNK240 chaosEmeralds[8];
+    s32 cameraScrollX;
+    s32 avatarTargetX;
+    s32 avatarTargetY;
     u8 filler4B8[2];
-    u8 unk4BA;
+    u8 zonePathsUnlocked;
     u8 currentCourse;
     u8 maxCourse;
-    u8 unk4BD;
-    u8 unk4BE;
-    u8 unk4BF;
-    u8 unk4C0;
+    u8 cutScenes;
+    u8 zoneNameAnimFrame;
+    u8 unlockedCourse;
+    bool8 levelChosen;
 };
 
-void sub_8034D70(void);
-void sub_8034E78(void);
-void sub_8036040(struct Task* t);
-void sub_8035FCC(struct CourseSelectionScreen* coursesScreen);
-void sub_8035124(void);
-void sub_80359D4(void);
-void sub_8034F64(void);
-void sub_8034FF0(void);
-bool8 sub_8035B44(struct CourseSelectionScreen*);
-void sub_80359D4(void);
-void sub_8035E70(void);
-void sub_8035554(void);
-void sub_8035750(void);
-void sub_8035EF0(void);
-void sub_8035F60(void);
-void sub_803594C(void);
+#define UNITS_PER_PIXEL 256
+#define CAMERA_FOV_WIDTH (DISPLAY_WIDTH * UNITS_PER_PIXEL)
+
+#define MIN_CAMERA_SCROLL_X 0
+#define MAX_CAMERA_SCROLL_X (DISPLAY_WIDTH * UNITS_PER_PIXEL)
+
+#define CAM_MAX_X_SPEED (UNITS_PER_PIXEL * 3)
+#define ZONE_NAME_SCROLL_SPEED (0x10)
+
+// divide by 256 (round down) 
+#define TO_SCREEN_COORD(val) ((val) >> 8)
+
+// Devide by 2, round down
+#define COURSE_INDEX_TO_ZONE_INDEX(courseIndex) ((courseIndex) >> 1)
+// Mod 1
+#define COURSE_INDEX_TO_ACT_INDEX(courseIndex) ((courseIndex) & 1)
+
+void Task_FadeIn(void);
+void Task_FadeInIntroAndStartUnlockCutScene(void);
+void CourseSelectionScreenOnDestroy(struct Task* t);
+void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen);
+void Task_CourseSelectMain(void);
+void Task_ScrollToNextCourseCutSceneAnim(void);
+void Task_UnlockCourseCutSceneNewPathAnim(void);
+void Task_UnlockCourseCutSceneScrollAnim(void);
+bool8 AnimateNewZonePath(struct CourseSelectionScreen*);
+void Task_FadeOutAndExitToSelectedLevel(void);
+void Task_ScrollToPreviousLevelAnim(void);
+void Task_ScrollToNextLevelAnim(void);
+void Task_FadeOutAndExitToSelectedMultiplayerLevel(void);
+void Task_FadeOutAndExitToCharacterSelect(void);
+void Task_DisplayZoneNameAnim(void);
 void sub_8035AF0(void);
-void sub_8035C00(struct CourseSelectionScreen* coursesScreen);
+void RenderUI(struct CourseSelectionScreen* coursesScreen);
 
-extern const u16 gUnknown_080D72B8[8][3];
-extern const u16 gUnknown_080D72E8[18][3];
+extern const u16 gZonePathAssets[8][3];
+extern const u16 gZonePathAnimatedAssets[18][3];
 
-extern const s16 gUnknown_080D7358[16][2];
+extern const s16 gZoneMapCameraTargets[16][2];
 extern const u16 gUnknown_080D7398[0x20][2];
 extern const u16 gUnknown_080D7418[0x10][2];
 extern const u16 gUnknown_080D7458[8][2];
 
-extern const u8 gUnknown_080D7478[16];
+extern const u8 gCourseIndexToZonePaths[16];
 
 extern const s16 gUnknown_080D7488[0x10];
-extern const u16 gUnknown_080D74A8[8][2];
+extern const u16 gZoneMapPathPositions[8][2];
 
-extern const u16 gUnknown_080D74C8[0x10];
+extern const u16 gZoneMapPathReverseAngles[0x10];
 extern const u16 gUnknown_080D74E8[0x10];
 
-extern const u8 gUnknown_080D7508[16];
+extern const u8 gCourseIndexToLevelIndex[16];
 
-void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
+#define Render(coursesScreen) ({ \
+    gBgScrollRegs[0][0] = TO_SCREEN_COORD((coursesScreen)->cameraScrollX); \
+    RenderZoneMapPathsAndUI(coursesScreen); \
+})
+
+#define SetCameraScrollX(coursesScreen, x) ({ \
+    (coursesScreen)->cameraScrollX = (x); \
+    if ((coursesScreen)->cameraScrollX < MIN_CAMERA_SCROLL_X) { \
+        (coursesScreen)->cameraScrollX = MIN_CAMERA_SCROLL_X; \
+    } else if ((coursesScreen)->cameraScrollX > MAX_CAMERA_SCROLL_X) { \
+        (coursesScreen)->cameraScrollX = MAX_CAMERA_SCROLL_X; \
+    } \
+})
+
+#define ScrollInZoneName(element, speed) ({ \
+    (element)->unk16 -= speed; \
+    if ((s16)(element)->unk16 < 0x50) { \
+        (element)->unk16 = 0x50; \
+    } \
+})
+
+void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     struct Task* t;
     struct UNK_802D4CC_UNK270* fadeTransition;
     struct Unk_03002400* background;
@@ -90,39 +127,40 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     gUnknown_030054D4[1] = 0;
     gUnknown_030054D4[0] = 0;
 
-    if (cutScene == COURSE_SELECT_CUT_SCENE_UNLOCK_TRUE_AREA_53) {
+    if (cutScenes == CUT_SCENE_UNLOCK_TRUE_AREA_53) {
         gLoadedSaveGame->unk1A = 2;
         WriteSaveGame();
     }
 
-    if (IsMultiplayer() && maxLevel > TO_LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
-        maxLevel = TO_LEVEL_INDEX(ZONE_7, ACT_BOSS);
+    if (IsMultiplayer() && maxLevel > LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
+        maxLevel = LEVEL_INDEX(ZONE_7, ACT_BOSS);
     }
 
-    if (maxLevel != TO_LEVEL_INDEX(ZONE_FINAL, ACT_1)) {
-        if (maxLevel < TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+    if (maxLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+        if (maxLevel < LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             maxLevel++;
         } else {
             if (gLoadedSaveGame->unk1A != 0 && gSelectedCharacter == CHARACTER_SONIC) {
-                maxLevel = TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
+                maxLevel = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
             } else {
-                maxLevel = TO_LEVEL_INDEX(ZONE_FINAL, ACT_1);
+                maxLevel = LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
             }
         }
     }
         
-    if (maxLevel == TO_LEVEL_INDEX(ZONE_FINAL, ACT_1)) {
+    if (maxLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         m4aSongNumStart(MUS_COURSE_SELECTION_2);
     } else {
-        if (maxLevel == TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+        if (maxLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             m4aSongNumStart(MUS_COURSE_SELECTION_3);
         } else {
             m4aSongNumStart(MUS_TA_COURSE_SELECTION);
         }
     }
 
-    if (!IsMultiplayer() && (Mod(maxLevel, ACTS_PER_ZONE + 1) & 2)) {
-        maxLevel &= ~0x3;
+    // make sure our level rounds to 3, or the screen will crash
+    if (!IsMultiplayer() && (Mod(maxLevel, ACTS_PER_ZONE + 1) & 2) != 0) {
+        maxLevel &= ~ACTS_PER_ZONE;
     }
 
     gDispCnt = 0x1340;
@@ -135,37 +173,37 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    if (cutScene & 3 && !IsMultiplayer()) {
-        t = TaskCreate(sub_8034E78, sizeof(struct CourseSelectionScreen), 0x3100, 0, sub_8036040);
+    if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53) && !IsMultiplayer()) {
+        t = TaskCreate(Task_FadeInIntroAndStartUnlockCutScene, sizeof(struct CourseSelectionScreen), 0x3100, 0, CourseSelectionScreenOnDestroy);
     } else {
-        t = TaskCreate(sub_8034D70, sizeof(struct CourseSelectionScreen), 0x3100, 0, sub_8036040);
+        t = TaskCreate(Task_FadeIn, sizeof(struct CourseSelectionScreen), 0x3100, 0, CourseSelectionScreenOnDestroy);
     }
 
     coursesScreen = TaskGetStructPtr(t);
-    coursesScreen->unk4AC = 0;
+    coursesScreen->cameraScrollX = 0;
 
     courseIndex = LEVEL_TO_COURSE_INDEX(currentLevel);
-    coursesScreen->unk4B0 = gUnknown_080D7358[courseIndex][0] << 8;
-    coursesScreen->unk4B4 = gUnknown_080D7358[courseIndex][1] << 8;
+    coursesScreen->avatarTargetX = gZoneMapCameraTargets[courseIndex][0] * UNITS_PER_PIXEL;
+    coursesScreen->avatarTargetY = gZoneMapCameraTargets[courseIndex][1] * UNITS_PER_PIXEL;
     coursesScreen->currentCourse = courseIndex;
-    coursesScreen->unk4BE = 0;
-    coursesScreen->unk4C0 = 0;
+    coursesScreen->zoneNameAnimFrame = 0;
+    coursesScreen->levelChosen = FALSE;
 
     maxCourseIndex = LEVEL_TO_COURSE_INDEX(maxLevel);
 
-    if (cutScene & 3) {
-        coursesScreen->unk4BF = maxCourseIndex;
+    if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53)) {
+        coursesScreen->unlockedCourse = maxCourseIndex;
     }
 
-    coursesScreen->unk4BA = gUnknown_080D7478[maxCourseIndex];
-    if (cutScene & 3 && coursesScreen->unk4BA != 0) {
-        coursesScreen->unk4BA--;
+    coursesScreen->zonePathsUnlocked = gCourseIndexToZonePaths[maxCourseIndex];
+    if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53) && coursesScreen->zonePathsUnlocked != 0) {
+        coursesScreen->zonePathsUnlocked--;
     }
 
-    coursesScreen->unk4BD = cutScene;
+    coursesScreen->cutScenes = cutScenes;
     coursesScreen->maxCourse = maxCourseIndex;
 
-    fadeTransition = &coursesScreen->unk0;
+    fadeTransition = &coursesScreen->screenFade;
     fadeTransition->unk0 = 0;
     fadeTransition->unk4 = 0;
     fadeTransition->unk2 = 2;
@@ -174,7 +212,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     fadeTransition->unkA = 0;
     sub_802D4CC(fadeTransition);
 
-    background = &coursesScreen->unk4C;
+    background = &coursesScreen->headerBackground;
     background->unk4 = BG_SCREEN_ADDR(24);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(28);
@@ -182,9 +220,9 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     background->unk1A = 0;
 
     if (!IsMultiplayer()) {
-        background->unk1C = gSelectedCharacter + 100;
+        background->unk1C = 100 + gSelectedCharacter;
     } else {
-        background->unk1C = gUnknown_03005500[0] + 100;   
+        background->unk1C = 100 + gMultiplayerCharacters[0];   
     }
     
     background->unk1E = 0;
@@ -197,7 +235,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     background->unk2E = 1;
     sub_8002A3C(background);
 
-    background = &coursesScreen->unkC;
+    background = &coursesScreen->worldMap;
     background->unk4 = BG_SCREEN_ADDR(0);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(16);
@@ -214,7 +252,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     background->unk2E = 0;
     sub_8002A3C(background);
 
-    element =&coursesScreen->unk8C;
+    element =&coursesScreen->playerAvatar;
     element->unk16 = 0;
     element->unk18 = 0;
     element->unk4 = VramMalloc(4);
@@ -222,7 +260,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     if (!IsMultiplayer()) {
         element->unk20 = gSelectedCharacter;
     } else {
-        element->unk20 = gUnknown_03005500[0];
+        element->unk20 = gMultiplayerCharacters[0];
     }
     element->unk1A = 0xC0;
     element->unk8 = 0;
@@ -235,17 +273,17 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    for (i = 0; i < 8; i++) {
-        element =&coursesScreen->unkBC[i];
+    for (i = 0; i < ARRAY_COUNT(coursesScreen->mapPaths); i++) {
+        element =&coursesScreen->mapPaths[i];
         element->unk16 = 0;
         element->unk18 = 0;
-        element->unk4 = VramMalloc(gUnknown_080D72B8[i][0]);
-        if ((cutScene & 3) && coursesScreen->unk4BA == i) {
-            element->unkA = gUnknown_080D72E8[i][1];
-            element->unk20 = gUnknown_080D72E8[i][2];
+        element->unk4 = VramMalloc(gZonePathAssets[i][0]);
+        if ((cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53)) && coursesScreen->zonePathsUnlocked == i) {
+            element->unkA = gZonePathAnimatedAssets[i][1];
+            element->unk20 = gZonePathAnimatedAssets[i][2];
         } else {
-            element->unkA =  gUnknown_080D72B8[i][1];
-            element->unk20 = gUnknown_080D72B8[i][2];
+            element->unkA =  gZonePathAssets[i][1];
+            element->unk20 = gZonePathAssets[i][2];
         }
         element->unk1A = 0x100;
         element->unk8 = 0;
@@ -258,8 +296,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
         element->unk10 = 0;
     }
 
-    for (i = 0; i < 2; i++) {
-        element =&coursesScreen->unk23C[i];
+    for (i = 0; i < ARRAY_COUNT(coursesScreen->zoneActUnits); i++) {
+        element = &coursesScreen->zoneActUnits[i];
         element->unk16 = i * 0x20 + 0xB8;
         element->unk18 = 0;
         element->unk4 = VramMalloc(4);
@@ -277,7 +315,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
         sub_8004558(element);
     }
 
-    element = &coursesScreen->unk29C;
+    element = &coursesScreen->zoneType;
     element->unk16 = 0x80;
     element->unk18 = 0;
     element->unk4 = VramMalloc(0x1A);
@@ -294,7 +332,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &coursesScreen->unk2CC;
+    element = &coursesScreen->zoneName;
     element->unk16 = 0xF0;
     element->unk18 = 0x18;
     element->unk4 = VramMalloc(0x26);
@@ -311,12 +349,14 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &coursesScreen->unk2FC;
+    element = &coursesScreen->screenTitle;
     element->unk16 = 0;
     element->unk18 = 0;
     if (gLoadedSaveGame->unk6 == LANG_JAPANESE) {
         element->unk4 = VramMalloc(0x18);
         element->unkA = 0x2FB;
+        // Set the background color based on the
+        // character
         if (!IsMultiplayer()) {
 #ifndef NONMATCHING
             s8 var = gSelectedCharacter;
@@ -325,7 +365,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
 #endif
             element->unk20 = gSelectedCharacter;
         } else {
-            element->unk20 = gUnknown_03005500[0];
+            element->unk20 = gMultiplayerCharacters[0];
         }
     } else {
         element->unk4 = VramMalloc(0x1C);
@@ -333,7 +373,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
         if (!IsMultiplayer()) {
             element->unk20 = gSelectedCharacter;
         } else {
-            element->unk20 = gUnknown_03005500[0];
+            element->unk20 = gMultiplayerCharacters[0];
         }
     }
     element->unk1A = 0x100;
@@ -347,8 +387,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    for (i = 0; i < 8; i++) {
-        element = &coursesScreen->unk32C[i];
+    for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
+        element = &coursesScreen->chaosEmeralds[i];
         element->unk16 = 0;
         element->unk18 = 0x88;
         element->unk4 = (void*)OBJ_VRAM0 + (i * 0x120);
@@ -366,144 +406,114 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     }
 }
 
-void sub_8034D70(void) {
+void Task_FadeIn(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    coursesScreen->unk4AC += 0x300;
-    
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
+    SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
-    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
-        if (coursesScreen->unk4AC == 0xF000 || coursesScreen->unk4AC >= coursesScreen->unk4B0 - 0x7800) {
-            coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
+    // Wait for fade
+    if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
+        if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X || coursesScreen->cameraScrollX >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
+            coursesScreen->cameraScrollX = coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2);
 
-            if ((coursesScreen->unk4BD & 4) && !IsMultiplayer()) {
+            if ((coursesScreen->cutScenes & 4) && !IsMultiplayer()) {
                 coursesScreen->currentCourse++;
-                gCurTask->main = sub_80359D4;
+                gCurTask->main = Task_ScrollToNextCourseCutSceneAnim;
             } else {
-                gCurTask->main = sub_8035124;
+                gCurTask->main = Task_CourseSelectMain;
             }
         }
-
-        
     }
 
-    if (coursesScreen->unk4AC >= coursesScreen->unk4B0 - 0x7800) {
-        coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-        if (coursesScreen->unk4AC < 0) {
-            coursesScreen->unk4AC = 0;
+    if (coursesScreen->cameraScrollX >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
+        coursesScreen->cameraScrollX = coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2);
+        if (coursesScreen->cameraScrollX < 0) {
+            coursesScreen->cameraScrollX = 0;
         }
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
-    return;
+    Render(coursesScreen);
 }
 
 
 
-void sub_8034E78(void) {
+void Task_FadeInIntroAndStartUnlockCutScene(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
-    element->unk16 -= 0x10;
+    ScrollInZoneName(zoneName, 16);
 
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
-
-    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
-        if (coursesScreen->unk4AC == 0xF000 || coursesScreen->unk4AC >= ((gUnknown_080D7488[coursesScreen->unk4BF] * 0x100) - 0x7800)) {
-            coursesScreen->unk4AC = (gUnknown_080D7488[coursesScreen->unk4BF] * 0x100) - 0x7800;
+    if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
+        if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X || coursesScreen->cameraScrollX >= ((gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2))) {
+            coursesScreen->cameraScrollX = (gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2);
             m4aSongNumStart(SE_MAP_214);
-            gCurTask->main = sub_8034F64;
+            gCurTask->main = Task_UnlockCourseCutSceneNewPathAnim;
         }
     }
-    coursesScreen->unk4AC = (gUnknown_080D7488[coursesScreen->unk4BF] * 0x100) - 0x7800;
 
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
-
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    SetCameraScrollX(coursesScreen, (gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2));
+    Render(coursesScreen);
 }
 
-void sub_8034F64(void) {
+void Task_UnlockCourseCutSceneNewPathAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
-    coursesScreen->unk4BE++;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
+    bool8 animDone;
+    coursesScreen->zoneNameAnimFrame++;
 
-    element->unk16 -= 0x10;
+    ScrollInZoneName(zoneName, 16);
+    gBgScrollRegs[0][0] = TO_SCREEN_COORD(coursesScreen->cameraScrollX);
 
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
-
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-
-    if (sub_8035B44(coursesScreen)) {
-        gCurTask->main = sub_8034FF0;
-        element->unk16 = 0xF0;
-        coursesScreen->unk4BA++;
+    animDone = AnimateNewZonePath(coursesScreen);
+    if (animDone) {
+        gCurTask->main = Task_UnlockCourseCutSceneScrollAnim;
+        zoneName->unk16 = 0xF0;
+        coursesScreen->zonePathsUnlocked++;
         coursesScreen->maxCourse++;
     }
 }
 
-void sub_8034FF0(void) {
+void Task_UnlockCourseCutSceneScrollAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    coursesScreen->unk4AC -= 0x300;
-    
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
+    SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX - CAM_MAX_X_SPEED);
 
-    if (coursesScreen->unk4AC == 0 || coursesScreen->unk4AC <= coursesScreen->unk4B0 - 0x7800) {
-        coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
+    if (coursesScreen->cameraScrollX == MIN_CAMERA_SCROLL_X || coursesScreen->cameraScrollX <= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
+        coursesScreen->cameraScrollX = coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2);
 
-        if (coursesScreen->unk4BD & 1) {
+        if (coursesScreen->cutScenes & CUT_SCENE_UNLOCK_NEXT_COURSE) {
             if (coursesScreen->currentCourse < coursesScreen->maxCourse) {
                 coursesScreen->currentCourse++;
             }
-            coursesScreen->unk4BE = 0;
+            coursesScreen->zoneNameAnimFrame = 0;
             m4aSongNumStart(SE_MAP_MOVE);
-            gCurTask->main = sub_80359D4;
+            gCurTask->main = Task_ScrollToNextCourseCutSceneAnim;
         } else {
-            if (coursesScreen->maxCourse == 0x10) {
+            if (coursesScreen->maxCourse == LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) + 1) {
                 struct UNK_0808B3FC_UNK240* element;
                 
-                coursesScreen->maxCourse = 0xF;
-                element = &coursesScreen->unkBC[7];
-                element->unkA = gUnknown_080D72B8[7][1];
-                element->unk20 = gUnknown_080D72B8[7][2];
+                coursesScreen->maxCourse = LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53));
+                element = &coursesScreen->mapPaths[7];
+                element->unkA = gZonePathAssets[7][1];
+                element->unk20 = gZonePathAssets[7][2];
             }
-            gCurTask->main = sub_8035124;            
+            gCurTask->main = Task_CourseSelectMain;            
         }
 
-        if (coursesScreen->unk4AC <= coursesScreen->unk4B0 - 0x7800) {
-            coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-            if (coursesScreen->unk4AC < 0) {
-                coursesScreen->unk4AC = 0;
+        if (coursesScreen->cameraScrollX <= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
+            coursesScreen->cameraScrollX = coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2);
+            if (coursesScreen->cameraScrollX < 0) {
+                coursesScreen->cameraScrollX = 0;
             }
         }
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_8035124(void) {
+void Task_CourseSelectMain(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
-    struct UNK_802D4CC_UNK270* fadeTransition = &coursesScreen->unk0;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
+    struct UNK_802D4CC_UNK270* fadeTransition = &coursesScreen->screenFade;
     union MultiSioData* recv, *send;
     MultiPakHeartbeat();
 
@@ -511,18 +521,15 @@ void sub_8035124(void) {
         recv = &gMultiSioRecv[0];
         if(!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && recv->pat1.unk0 > 0x404F) {
             coursesScreen->currentCourse = recv->pat1.unk2;
-            coursesScreen->unk4B0 = recv->pat1.unk4 << 8;
-            coursesScreen->unk4B4 = recv->pat1.unk3 << 8;
+            coursesScreen->avatarTargetX = recv->pat1.unk4 * UNITS_PER_PIXEL;
+            coursesScreen->avatarTargetY = recv->pat1.unk3 * UNITS_PER_PIXEL;
         }
     }
 
-    element->unk16 -= 0x10;
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
+    ScrollInZoneName(zoneName, 16);
 
     if (!IsMultiplayer() || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-        if (coursesScreen->unk4C0 && !IsMultiplayer()) {
+        if (coursesScreen->levelChosen && !IsMultiplayer()) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
@@ -530,26 +537,26 @@ void sub_8035124(void) {
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
-            gCurTask->main = sub_8035E70;
-        } else if (gInput & (DPAD_LEFT) && !coursesScreen->unk4C0) {
+            gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
+        } else if (gInput & (DPAD_LEFT) && !coursesScreen->levelChosen) {
             if (coursesScreen->currentCourse > 0) {
-                if (!(coursesScreen->currentCourse & 1) || coursesScreen->currentCourse > 0xD) {
-                    element->unk16 = 0xF0;
+                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 0 || coursesScreen->currentCourse > LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_7, ACT_2))) {
+                    zoneName->unk16 = 0xF0;
                 }
-                coursesScreen->unk4BE = 0;
+                coursesScreen->zoneNameAnimFrame = 0;
                 coursesScreen->currentCourse--;
                 m4aSongNumStart(SE_MAP_MOVE);
-                gCurTask->main = sub_8035554;
+                gCurTask->main = Task_ScrollToPreviousLevelAnim;
             }
-        } else if (gInput & DPAD_RIGHT && !coursesScreen->unk4C0) {
+        } else if (gInput & DPAD_RIGHT && !coursesScreen->levelChosen) {
             if (coursesScreen->currentCourse < coursesScreen->maxCourse) {
-                if (coursesScreen->currentCourse & 1 || coursesScreen->currentCourse > 0xD) {
-                    element->unk16 = 0xF0;
+                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 1 || coursesScreen->currentCourse > LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_7, ACT_2))) {
+                    zoneName->unk16 = 0xF0;
                 }
-                coursesScreen->unk4BE = 0;
+                coursesScreen->zoneNameAnimFrame = 0;
                 coursesScreen->currentCourse++;
                 m4aSongNumStart(SE_MAP_MOVE);
-                gCurTask->main = sub_8035750;
+                gCurTask->main = Task_ScrollToNextLevelAnim;
             }
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON) && !IsMultiplayer()) {
             fadeTransition->unk0 = 0;
@@ -559,7 +566,7 @@ void sub_8035124(void) {
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
-            gCurTask->main = sub_8035E70;
+            gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if ((gPressedKeys & B_BUTTON) && !IsMultiplayer()) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
@@ -568,8 +575,8 @@ void sub_8035124(void) {
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_RETURN);
-            gCurTask->main = sub_8035F60;
-        } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON) && gGameMode < 4) {
+            gCurTask->main = Task_FadeOutAndExitToCharacterSelect;
+        } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON) && gGameMode <= GAME_MODE_MULTI_PLAYER) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
@@ -577,7 +584,7 @@ void sub_8035124(void) {
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
-            gCurTask->main = sub_8035EF0;
+            gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
         }
     }
 
@@ -586,13 +593,13 @@ void sub_8035124(void) {
 
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
-        send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
-        send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
+        send->pat1.unk4 = TO_SCREEN_COORD(coursesScreen->avatarTargetX);
+        send->pat1.unk3 = TO_SCREEN_COORD(coursesScreen->avatarTargetY);
 
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT && 
-                (gPressedKeys & A_BUTTON || coursesScreen->unk4C0) && 
+                (gPressedKeys & A_BUTTON || coursesScreen->levelChosen) && 
                 !(gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT))) {
-            coursesScreen->unk4C0 = 1;
+            coursesScreen->levelChosen = TRUE;
             send->pat1.unk0 = 0x4051;
         }
         recv = &gMultiSioRecv[0];
@@ -604,212 +611,170 @@ void sub_8035124(void) {
             fadeTransition->unk6 = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
-            gCurTask->main = sub_8035EF0;
+            gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
             m4aSongNumStart(SE_SELECT);
         }
     }
 
-    coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
-
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    SetCameraScrollX(coursesScreen, coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2));
+    Render(coursesScreen);
 }
 
-void sub_8035554(void) {
+void Task_ScrollToPreviousLevelAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
     union MultiSioData* send;
     MultiPakHeartbeat();
 
-    element->unk16 -= 0x10;
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
+    ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74C8[coursesScreen->currentCourse] + 0x100] >> 5;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74C8[coursesScreen->currentCourse]] >> 5;
+    coursesScreen->avatarTargetX += gSineTable[gZoneMapPathReverseAngles[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->avatarTargetY += gSineTable[gZoneMapPathReverseAngles[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->unk4B0 < ((gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100))) {
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
+    if (coursesScreen->avatarTargetX < (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {
+        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
-        gCurTask->main = sub_803594C;
+        gCurTask->main = Task_DisplayZoneNameAnim;
     }
     
-    coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
+    SetCameraScrollX(coursesScreen, coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2));
 
     if (gInput & A_BUTTON) {
-        coursesScreen->unk4C0 = 1;
+        coursesScreen->levelChosen = TRUE;
     }
 
     if (IsMultiplayer()) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
-        send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
-        send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
+        send->pat1.unk4 = TO_SCREEN_COORD(coursesScreen->avatarTargetX);
+        send->pat1.unk3 = TO_SCREEN_COORD(coursesScreen->avatarTargetY);
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_8035750(void) {
+void Task_ScrollToNextLevelAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
     union MultiSioData* send;
 
     if (IsMultiplayer()) {
         MultiPakHeartbeat();
     }
 
-    element->unk16 -= 0x10;
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
+    ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 5;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 5;
+    coursesScreen->avatarTargetX += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->avatarTargetY += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->unk4B0 > (gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100)) {
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
+    if (coursesScreen->avatarTargetX > (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {
+        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
-        gCurTask->main = sub_803594C;
+        gCurTask->main = Task_DisplayZoneNameAnim;
     }
 
-    coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
+    SetCameraScrollX(coursesScreen, coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2));
 
     if (gInput & A_BUTTON) {
-        coursesScreen->unk4C0 = 1;
+        coursesScreen->levelChosen = TRUE;
     }
 
     if (IsMultiplayer()) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
-        send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
-        send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
+        send->pat1.unk4 = TO_SCREEN_COORD(coursesScreen->avatarTargetX);
+        send->pat1.unk3 = TO_SCREEN_COORD(coursesScreen->avatarTargetY);
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_803594C(void) {
+void Task_DisplayZoneNameAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
-    element->unk16 -= 0x10;
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
+    ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->unk4BE++;
+    coursesScreen->zoneNameAnimFrame++;
 
-    if (coursesScreen->unk4BE > 5) {
-        gCurTask->main = sub_8035124;
+    if (coursesScreen->zoneNameAnimFrame > 5) {
+        gCurTask->main = Task_CourseSelectMain;
     }
     
     if (gInput & A_BUTTON) {
-        coursesScreen->unk4C0 = 1;
+        coursesScreen->levelChosen = TRUE;
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_80359D4(void) {
+void Task_ScrollToNextCourseCutSceneAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
+    struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
-    element->unk16 -= 0x10;
-    if ((s16)element->unk16 < 0x50) {
-        element->unk16 = 0x50;
-    }
+    ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 6;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 6;
+    coursesScreen->avatarTargetX += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 6;
+    coursesScreen->avatarTargetY += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 6;
 
-    if (coursesScreen->unk4B0 > ((gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100))) {  
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
+    if (coursesScreen->avatarTargetX > (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {  
+        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = sub_8035AF0;
     }
 
-    coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
-
-    if (coursesScreen->unk4AC < 0) {
-        coursesScreen->unk4AC = 0;
-    } else if (coursesScreen->unk4AC > 0xF000) {
-        coursesScreen->unk4AC = 0xF000;
-    }
-
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    SetCameraScrollX(coursesScreen, coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2));
+    Render(coursesScreen);
 }
 
 void sub_8035AF0(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
-    s8 unk4BE = coursesScreen->unk4BE + 1;
-    struct UNK_802D4CC_UNK270* fadeTransition = &coursesScreen->unk0;
+    s8 unk4BE = coursesScreen->zoneNameAnimFrame + 1;
+    struct UNK_802D4CC_UNK270* fadeTransition = &coursesScreen->screenFade;
 
-    coursesScreen->unk4BE = unk4BE;
-    if (coursesScreen->unk4BE > 0x3C) {
+    coursesScreen->zoneNameAnimFrame = unk4BE;
+    if (coursesScreen->zoneNameAnimFrame > 0x3C) {
         fadeTransition->unk0 = 0;
         fadeTransition->unk4 = 0;
         fadeTransition->unk2 = 1;
         fadeTransition->unk6 = 0x180;
         fadeTransition->unk8 = 0xFF;
         fadeTransition->unkA = 0;
-        gCurTask->main = sub_8035E70;
+        gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
     }
 
-    sub_8035FCC(coursesScreen);
+    RenderZoneMapPathsAndUI(coursesScreen);
 }
 
-bool8 sub_8035B44(struct CourseSelectionScreen* coursesScreen) {
+bool8 AnimateNewZonePath(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
-    bool8 result;
+    bool8 animDone;
     struct UNK_0808B3FC_UNK240* element;
 
-    for (i = 0; i < coursesScreen->unk4BA; i++) {
-        element = &coursesScreen->unkBC[i];
-        element->unk16 = gUnknown_080D74A8[i][0] - (coursesScreen->unk4AC >> 8);
-        element->unk18 = gUnknown_080D74A8[i][1];
+    for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
+        element = &coursesScreen->mapPaths[i];
+        element->unk16 = gZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+        element->unk18 = gZoneMapPathPositions[i][1];
         sub_8004558(element);
         sub_80051E8(element);
     }
 
-    element = &coursesScreen->unkBC[coursesScreen->unk4BA];
-    element->unk16 = gUnknown_080D74A8[coursesScreen->unk4BA][0] - (coursesScreen->unk4AC >> 8);
-    element->unk18 = gUnknown_080D74A8[coursesScreen->unk4BA][1];
-    result = sub_8004558(element) == 0;
+    element = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
+    element->unk16 = gZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+    element->unk18 = gZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
+    animDone = sub_8004558(element) == 0;
     sub_80051E8(element);
-    sub_8035C00(coursesScreen);
+    RenderUI(coursesScreen);
 
-    return result;
+    return animDone;
 }
 
-void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
+void RenderUI(struct CourseSelectionScreen* coursesScreen) {
     struct UNK_0808B3FC_UNK240* element;
     s8 somethinga;
     s8 lang = gLoadedSaveGame->unk6;
@@ -820,53 +785,53 @@ void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
         somethinga = 1;
     }
 
-    element = &coursesScreen->unk8C;
-    element->unk16 = ((coursesScreen->unk4B0 - coursesScreen->unk4AC) >> 8) + 5;
-    element->unk18 = (coursesScreen->unk4B4 >> 8) + 6;
+    element = &coursesScreen->playerAvatar;
+    element->unk16 = TO_SCREEN_COORD(coursesScreen->avatarTargetX - coursesScreen->cameraScrollX) + 5;
+    element->unk18 = TO_SCREEN_COORD(coursesScreen->avatarTargetY) + 6;
     sub_80051E8(element);
 
     if (coursesScreen->currentCourse < 0xE) {
-        element = &coursesScreen->unk23C[0];
+        element = &coursesScreen->zoneActUnits[0];
         element->unkA = 0x2F6;
-        element->unk20 = coursesScreen->currentCourse >> 1;
+        element->unk20 = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
         element->unk21 = 0xFF;
         sub_8004558(element);
         sub_80051E8(element);
 
-        element = &coursesScreen->unk23C[1];
+        element = &coursesScreen->zoneActUnits[1];
         element->unkA = 0x2F6;
-        element->unk20 = coursesScreen->currentCourse & 1;
+        element->unk20 = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
         element->unk21 = 0xFF;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
-    element = &coursesScreen->unk29C;
+    element = &coursesScreen->zoneType;
     element->unkA = gUnknown_080D7418[coursesScreen->currentCourse][0];
     element->unk20 = gUnknown_080D7418[coursesScreen->currentCourse][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
 
-    element = &coursesScreen->unk2CC;
+    element = &coursesScreen->zoneName;
 #ifndef NON_MATCHING
     somethinga++; somethinga--;
 #endif
-    element->unkA = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga << 4)][0];
-    element->unk20 = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga << 4)][1];
+    element->unkA = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga * 16)][0];
+    element->unk20 = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga * 16)][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
-    element = &coursesScreen->unk2FC;
+    element = &coursesScreen->screenTitle;
     sub_80051E8(element);
 
     if (!IsMultiplayer()) {
         u8 i;
         for (i = 0; i < 7; i++) {
             if (GetBit(gLoadedSaveGame->unkC[gSelectedCharacter], i)) {
-                element = &coursesScreen->unk32C[i + 1];
+                element = &coursesScreen->chaosEmeralds[i + 1];
             } else {
-                element = &coursesScreen->unk32C[0];
+                element = &coursesScreen->chaosEmeralds[0];
             }
             element->unk16 = (((i * 3)) * 8) + 0x24;
             sub_8004558(element);
@@ -875,56 +840,56 @@ void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
     }
 }
 
-void sub_8035DC8(struct CourseSelectionScreen* coursesScreen) {
+void DestroyUI(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
 
-    if (coursesScreen->unk8C.unk4 != NULL) {
-        VramFree(coursesScreen->unk8C.unk4);
-        coursesScreen->unk8C.unk4 = NULL;
+    if (coursesScreen->playerAvatar.unk4 != NULL) {
+        VramFree(coursesScreen->playerAvatar.unk4);
+        coursesScreen->playerAvatar.unk4 = NULL;
     }
 
     for (i = 0; i < 8; i++) {
-        if (coursesScreen->unkBC[i].unk4 != NULL) {
-            VramFree(coursesScreen->unkBC[i].unk4);
-            coursesScreen->unkBC[i].unk4 = NULL;
+        if (coursesScreen->mapPaths[i].unk4 != NULL) {
+            VramFree(coursesScreen->mapPaths[i].unk4);
+            coursesScreen->mapPaths[i].unk4 = NULL;
         }
     }
 
-    if (coursesScreen->unk23C[0].unk4 != NULL) {
-        VramFree(coursesScreen->unk23C[0].unk4);
-        coursesScreen->unk23C[0].unk4 = NULL;
+    if (coursesScreen->zoneActUnits[0].unk4 != NULL) {
+        VramFree(coursesScreen->zoneActUnits[0].unk4);
+        coursesScreen->zoneActUnits[0].unk4 = NULL;
     }
 
-    if (coursesScreen->unk23C[1].unk4 != NULL) {
-        VramFree(coursesScreen->unk23C[1].unk4);
-        coursesScreen->unk23C[1].unk4 = NULL;
+    if (coursesScreen->zoneActUnits[1].unk4 != NULL) {
+        VramFree(coursesScreen->zoneActUnits[1].unk4);
+        coursesScreen->zoneActUnits[1].unk4 = NULL;
     }
 
-    if (coursesScreen->unk29C.unk4 != NULL) {
-        VramFree(coursesScreen->unk29C.unk4);
-        coursesScreen->unk29C.unk4 = NULL;
+    if (coursesScreen->zoneType.unk4 != NULL) {
+        VramFree(coursesScreen->zoneType.unk4);
+        coursesScreen->zoneType.unk4 = NULL;
     }
 
-    if (coursesScreen->unk2CC.unk4 != NULL) {
-        VramFree(coursesScreen->unk2CC.unk4);
-        coursesScreen->unk2CC.unk4 = NULL;
+    if (coursesScreen->zoneName.unk4 != NULL) {
+        VramFree(coursesScreen->zoneName.unk4);
+        coursesScreen->zoneName.unk4 = NULL;
     }
 
-    if (coursesScreen->unk2FC.unk4 != NULL) {
-        VramFree(coursesScreen->unk2FC.unk4);
-        coursesScreen->unk2FC.unk4 = NULL;
+    if (coursesScreen->screenTitle.unk4 != NULL) {
+        VramFree(coursesScreen->screenTitle.unk4);
+        coursesScreen->screenTitle.unk4 = NULL;
     }
 }
 
-void sub_8035E70(void) {
+void Task_FadeOutAndExitToSelectedLevel(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
-        sub_8035DC8(coursesScreen);
+    if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
+        DestroyUI(coursesScreen);
 
-        gCurrentLevel = gUnknown_080D7508[coursesScreen->currentCourse];
+        gCurrentLevel = gCourseIndexToLevelIndex[coursesScreen->currentCourse];
 
-        if (gCurrentLevel != 29) {
+        if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             sub_801A770();
         } else {
             sub_8036C54();
@@ -934,52 +899,50 @@ void sub_8035E70(void) {
         return;
     }
 
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_8035EF0(void) {
+void Task_FadeOutAndExitToSelectedMultiplayerLevel(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
-        sub_8035DC8(coursesScreen);
-        gCurrentLevel = gUnknown_080D7508[coursesScreen->currentCourse];
+    if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
+        DestroyUI(coursesScreen);
+        gCurrentLevel = gCourseIndexToLevelIndex[coursesScreen->currentCourse];
         sub_801A770();
         TaskDestroy(gCurTask);
         return;
     }
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+
+    Render(coursesScreen);
 }
 
-void sub_8035F60(void) {
+void Task_FadeOutAndExitToCharacterSelect(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
-        sub_8035DC8(coursesScreen);
+    if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
+        DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unk13 & 0x10);
         TaskDestroy(gCurTask);
         return;
     }
-    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(coursesScreen);
+    Render(coursesScreen);
 }
 
-void sub_8035FCC(struct CourseSelectionScreen* coursesScreen) {
+void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
 
-    for (i = 0; i < coursesScreen->unk4BA; i++) {
-        element = &coursesScreen->unkBC[i];
-        element->unk16 = gUnknown_080D74A8[i][0] - (coursesScreen->unk4AC >> 8);
-        element->unk18 = gUnknown_080D74A8[i][1];
+    for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
+        element = &coursesScreen->mapPaths[i];
+        element->unk16 = gZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+        element->unk18 = gZoneMapPathPositions[i][1];
         sub_8004558(element);
         sub_80051E8(element);
     }
 
-    sub_8035C00(coursesScreen);
+    RenderUI(coursesScreen);
 }
 
-void sub_8036040(struct Task* t) {
-    sub_8035DC8(TaskGetStructPtr(t));
+void CourseSelectionScreenOnDestroy(struct Task* t) {
+    DestroyUI(TaskGetStructPtr(t));
 }

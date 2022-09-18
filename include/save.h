@@ -82,7 +82,10 @@ struct SaveGame {
     u8 unk17;
     u8 unk18;
     u8 unk19;
+
+    // extraZoneStatus
     u8 unk1A;
+    
     u8 unk1B;
 
     // multiplayerWins
