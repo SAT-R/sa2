@@ -29,29 +29,52 @@ struct CourseSelectionScreen {
     s32 unk4B4;
     u8 filler4B8[2];
     u8 unk4BA;
-    u8 unk4BB;
-    u8 unk4BC;
+    u8 currentCourse;
+    u8 maxCourse;
     u8 unk4BD;
     u8 unk4BE;
     u8 unk4BF;
     u8 unk4C0;
-    u8 filler4C1[3];
 };
-
-extern const s16 gUnknown_080D7358[16][2];
-extern const u8 gUnknown_080D7478[16];
-
-// TODO: These sizes are wrong
-extern const u16 gUnknown_080D72B8[37][3];
-extern const u16 gUnknown_080D72E8[5][3];
-
-extern const u16 gUnknown_080D7458[8][2];
 
 void sub_8034D70(void);
 void sub_8034E78(void);
 void sub_8036040(struct Task* t);
+void sub_8035FCC(struct CourseSelectionScreen* coursesScreen);
+void sub_8035124(void);
+void sub_80359D4(void);
+void sub_8034F64(void);
+void sub_8034FF0(void);
+bool8 sub_8035B44(struct CourseSelectionScreen*);
+void sub_80359D4(void);
+void sub_8035E70(void);
+void sub_8035554(void);
+void sub_8035750(void);
+void sub_8035EF0(void);
+void sub_8035F60(void);
+void sub_803594C(void);
+void sub_8035AF0(void);
+void sub_8035C00(struct CourseSelectionScreen* coursesScreen);
 
-void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) {
+extern const u16 gUnknown_080D72B8[8][3];
+extern const u16 gUnknown_080D72E8[18][3];
+
+extern const s16 gUnknown_080D7358[16][2];
+extern const u16 gUnknown_080D7398[0x20][2];
+extern const u16 gUnknown_080D7418[0x10][2];
+extern const u16 gUnknown_080D7458[8][2];
+
+extern const u8 gUnknown_080D7478[16];
+
+extern const s16 gUnknown_080D7488[0x10];
+extern const u16 gUnknown_080D74A8[8][2];
+
+extern const u16 gUnknown_080D74C8[0x10];
+extern const u16 gUnknown_080D74E8[0x10];
+
+extern const u8 gUnknown_080D7508[16];
+
+void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScene) {
     struct Task* t;
     struct UNK_802D4CC_UNK270* fadeTransition;
     struct Unk_03002400* background;
@@ -60,46 +83,46 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
 
     u8 i;
     
-    u8 temp1;
-    u8 temp2;
+    u8 courseIndex, maxCourseIndex;
+
     gUnknown_030054D4[3] = 0;
     gUnknown_030054D4[2] = 0;
     gUnknown_030054D4[1] = 0;
     gUnknown_030054D4[0] = 0;
 
-    if (unknown2 == 2) {
+    if (cutScene == COURSE_SELECT_CUT_SCENE_UNLOCK_TRUE_AREA_53) {
         gLoadedSaveGame->unk1A = 2;
         WriteSaveGame();
     }
 
-    if (IsMultiplayer() && availableCourses > 0x1A) {
-        availableCourses = 0x1A;
+    if (IsMultiplayer() && maxLevel > TO_LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
+        maxLevel = TO_LEVEL_INDEX(ZONE_7, ACT_BOSS);
     }
 
-    if (availableCourses != 0x1C) {
-        if (availableCourses < 0x1D) {
-            availableCourses++;
+    if (maxLevel != TO_LEVEL_INDEX(ZONE_FINAL, ACT_1)) {
+        if (maxLevel < TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+            maxLevel++;
         } else {
-            if (gLoadedSaveGame->unk1A != 0 && gSelectedCharacter == 0) {
-                availableCourses = 0x1D;
+            if (gLoadedSaveGame->unk1A != 0 && gSelectedCharacter == CHARACTER_SONIC) {
+                maxLevel = TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
             } else {
-                availableCourses = 0x1C;
+                maxLevel = TO_LEVEL_INDEX(ZONE_FINAL, ACT_1);
             }
         }
     }
         
-    if (availableCourses == 0x1C) {
+    if (maxLevel == TO_LEVEL_INDEX(ZONE_FINAL, ACT_1)) {
         m4aSongNumStart(MUS_COURSE_SELECTION_2);
     } else {
-        if (availableCourses == 0x1D) {
+        if (maxLevel == TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
             m4aSongNumStart(MUS_COURSE_SELECTION_3);
         } else {
             m4aSongNumStart(MUS_TA_COURSE_SELECTION);
         }
     }
 
-    if (!IsMultiplayer() && (Mod(availableCourses, 4) & 2)) {
-        availableCourses &= 0xFC;
+    if (!IsMultiplayer() && (Mod(maxLevel, ACTS_PER_ZONE + 1) & 2)) {
+        maxLevel &= ~0x3;
     }
 
     gDispCnt = 0x1340;
@@ -112,7 +135,7 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    if (unknown2 & 3 && !IsMultiplayer()) {
+    if (cutScene & 3 && !IsMultiplayer()) {
         t = TaskCreate(sub_8034E78, sizeof(struct CourseSelectionScreen), 0x3100, 0, sub_8036040);
     } else {
         t = TaskCreate(sub_8034D70, sizeof(struct CourseSelectionScreen), 0x3100, 0, sub_8036040);
@@ -121,26 +144,26 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
     coursesScreen = TaskGetStructPtr(t);
     coursesScreen->unk4AC = 0;
 
-    temp1 = ((unknown1 >> 2) << 1) | (unknown1 & 1);
-    coursesScreen->unk4B0 = gUnknown_080D7358[temp1][0] << 8;
-    coursesScreen->unk4B4 = gUnknown_080D7358[temp1][1] << 8;
-    coursesScreen->unk4BB = temp1;
+    courseIndex = LEVEL_TO_COURSE_INDEX(currentLevel);
+    coursesScreen->unk4B0 = gUnknown_080D7358[courseIndex][0] << 8;
+    coursesScreen->unk4B4 = gUnknown_080D7358[courseIndex][1] << 8;
+    coursesScreen->currentCourse = courseIndex;
     coursesScreen->unk4BE = 0;
     coursesScreen->unk4C0 = 0;
 
-    temp2 = (((availableCourses >> 2) << 0x19) >> 0x18) | (availableCourses & 1);
+    maxCourseIndex = LEVEL_TO_COURSE_INDEX(maxLevel);
 
-    if (unknown2 & 3) {
-        coursesScreen->unk4BF = temp2;
+    if (cutScene & 3) {
+        coursesScreen->unk4BF = maxCourseIndex;
     }
 
-    coursesScreen->unk4BA = gUnknown_080D7478[temp2];
-    if (unknown2 & 3 && coursesScreen->unk4BA != 0) {
+    coursesScreen->unk4BA = gUnknown_080D7478[maxCourseIndex];
+    if (cutScene & 3 && coursesScreen->unk4BA != 0) {
         coursesScreen->unk4BA--;
     }
 
-    coursesScreen->unk4BD = unknown2;
-    coursesScreen->unk4BC = temp2;
+    coursesScreen->unk4BD = cutScene;
+    coursesScreen->maxCourse = maxCourseIndex;
 
     fadeTransition = &coursesScreen->unk0;
     fadeTransition->unk0 = 0;
@@ -217,7 +240,7 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
         element->unk16 = 0;
         element->unk18 = 0;
         element->unk4 = VramMalloc(gUnknown_080D72B8[i][0]);
-        if ((unknown2 & 3) && coursesScreen->unk4BA == i) {
+        if ((cutScene & 3) && coursesScreen->unk4BA == i) {
             element->unkA = gUnknown_080D72E8[i][1];
             element->unk20 = gUnknown_080D72E8[i][2];
         } else {
@@ -343,10 +366,6 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
     }
 }
 
-void sub_8035FCC(struct CourseSelectionScreen* coursesScreen);
-void sub_8035124(void);
-void sub_80359D4(void);
-
 void sub_8034D70(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     coursesScreen->unk4AC += 0x300;
@@ -362,7 +381,7 @@ void sub_8034D70(void) {
             coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
 
             if ((coursesScreen->unk4BD & 4) && !IsMultiplayer()) {
-                coursesScreen->unk4BB++;
+                coursesScreen->currentCourse++;
                 gCurTask->main = sub_80359D4;
             } else {
                 gCurTask->main = sub_8035124;
@@ -384,8 +403,7 @@ void sub_8034D70(void) {
     return;
 }
 
-extern const s16 gUnknown_080D7488[0x10];
-void sub_8034F64(void);
+
 
 void sub_8034E78(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
@@ -416,9 +434,6 @@ void sub_8034E78(void) {
     sub_8035FCC(coursesScreen);
 }
 
-void sub_8034FF0(void);
-bool8 sub_8035B44(struct CourseSelectionScreen*);
-
 void sub_8034F64(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
@@ -436,11 +451,9 @@ void sub_8034F64(void) {
         gCurTask->main = sub_8034FF0;
         element->unk16 = 0xF0;
         coursesScreen->unk4BA++;
-        coursesScreen->unk4BC++;
+        coursesScreen->maxCourse++;
     }
 }
-
-void sub_80359D4(void);
 
 void sub_8034FF0(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
@@ -456,17 +469,17 @@ void sub_8034FF0(void) {
         coursesScreen->unk4AC = coursesScreen->unk4B0 - 0x7800;
 
         if (coursesScreen->unk4BD & 1) {
-            if (coursesScreen->unk4BB < coursesScreen->unk4BC) {
-                coursesScreen->unk4BB++;
+            if (coursesScreen->currentCourse < coursesScreen->maxCourse) {
+                coursesScreen->currentCourse++;
             }
             coursesScreen->unk4BE = 0;
             m4aSongNumStart(SE_MAP_MOVE);
             gCurTask->main = sub_80359D4;
         } else {
-            if (coursesScreen->unk4BC == 0x10) {
+            if (coursesScreen->maxCourse == 0x10) {
                 struct UNK_0808B3FC_UNK240* element;
                 
-                coursesScreen->unk4BC = 0xF;
+                coursesScreen->maxCourse = 0xF;
                 element = &coursesScreen->unkBC[7];
                 element->unkA = gUnknown_080D72B8[7][1];
                 element->unk20 = gUnknown_080D72B8[7][2];
@@ -486,12 +499,6 @@ void sub_8034FF0(void) {
     sub_8035FCC(coursesScreen);
 }
 
-void sub_8035E70(void);
-void sub_8035554(void);
-void sub_8035750(void);
-void sub_8035EF0(void);
-void sub_8035F60(void);
-
 void sub_8035124(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     
@@ -503,7 +510,7 @@ void sub_8035124(void) {
     if (IsMultiplayer()) {
         recv = &gMultiSioRecv[0];
         if(!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && recv->pat1.unk0 > 0x404F) {
-            coursesScreen->unk4BB = recv->pat1.unk2;
+            coursesScreen->currentCourse = recv->pat1.unk2;
             coursesScreen->unk4B0 = recv->pat1.unk4 << 8;
             coursesScreen->unk4B4 = recv->pat1.unk3 << 8;
         }
@@ -525,22 +532,22 @@ void sub_8035124(void) {
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = sub_8035E70;
         } else if (gInput & (DPAD_LEFT) && !coursesScreen->unk4C0) {
-            if (coursesScreen->unk4BB > 0) {
-                if (!(coursesScreen->unk4BB & 1) || coursesScreen->unk4BB > 0xD) {
+            if (coursesScreen->currentCourse > 0) {
+                if (!(coursesScreen->currentCourse & 1) || coursesScreen->currentCourse > 0xD) {
                     element->unk16 = 0xF0;
                 }
                 coursesScreen->unk4BE = 0;
-                coursesScreen->unk4BB--;
+                coursesScreen->currentCourse--;
                 m4aSongNumStart(SE_MAP_MOVE);
                 gCurTask->main = sub_8035554;
             }
         } else if (gInput & DPAD_RIGHT && !coursesScreen->unk4C0) {
-            if (coursesScreen->unk4BB < coursesScreen->unk4BC) {
-                if (coursesScreen->unk4BB & 1 || coursesScreen->unk4BB > 0xD) {
+            if (coursesScreen->currentCourse < coursesScreen->maxCourse) {
+                if (coursesScreen->currentCourse & 1 || coursesScreen->currentCourse > 0xD) {
                     element->unk16 = 0xF0;
                 }
                 coursesScreen->unk4BE = 0;
-                coursesScreen->unk4BB++;
+                coursesScreen->currentCourse++;
                 m4aSongNumStart(SE_MAP_MOVE);
                 gCurTask->main = sub_8035750;
             }
@@ -578,7 +585,7 @@ void sub_8035124(void) {
         send = &gMultiSioSend;
 
         send->pat1.unk0 = 0x4050;
-        send->pat1.unk2 = coursesScreen->unk4BB;
+        send->pat1.unk2 = coursesScreen->currentCourse;
         send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
         send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
 
@@ -613,10 +620,6 @@ void sub_8035124(void) {
     sub_8035FCC(coursesScreen);
 }
 
-extern const u16 gUnknown_080D74C8[0x10];
-void sub_803594C(void);
-
-
 void sub_8035554(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
@@ -628,12 +631,12 @@ void sub_8035554(void) {
         element->unk16 = 0x50;
     }
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74C8[coursesScreen->unk4BB] + 0x100] >> 5;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74C8[coursesScreen->unk4BB]] >> 5;
+    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74C8[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74C8[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->unk4B0 < ((gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100))) {
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->unk4BB][1] << 8;
+    if (coursesScreen->unk4B0 < ((gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100))) {
+        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = sub_803594C;
     }
@@ -653,7 +656,7 @@ void sub_8035554(void) {
     if (IsMultiplayer()) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
-        send->pat1.unk2 = coursesScreen->unk4BB;
+        send->pat1.unk2 = coursesScreen->currentCourse;
         send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
         send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
     }
@@ -661,8 +664,6 @@ void sub_8035554(void) {
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
     sub_8035FCC(coursesScreen);
 }
-
-extern const u16 gUnknown_080D74E8[0x10];
 
 void sub_8035750(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
@@ -678,12 +679,12 @@ void sub_8035750(void) {
         element->unk16 = 0x50;
     }
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->unk4BB] + 0x100] >> 5;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->unk4BB]] >> 5;
+    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->unk4B0 > (gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100)) {
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->unk4BB][1] << 8;
+    if (coursesScreen->unk4B0 > (gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100)) {
+        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = sub_803594C;
     }
@@ -703,7 +704,7 @@ void sub_8035750(void) {
     if (IsMultiplayer()) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
-        send->pat1.unk2 = coursesScreen->unk4BB;
+        send->pat1.unk2 = coursesScreen->currentCourse;
         send->pat1.unk4 = coursesScreen->unk4B0 >> 8;
         send->pat1.unk3 = coursesScreen->unk4B4 >> 8;
     }
@@ -735,8 +736,6 @@ void sub_803594C(void) {
     sub_8035FCC(coursesScreen);
 }
 
-void sub_8035AF0(void);
-
 void sub_80359D4(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* element = &coursesScreen->unk2CC;
@@ -746,12 +745,12 @@ void sub_80359D4(void) {
         element->unk16 = 0x50;
     }
 
-    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->unk4BB] + 0x100] >> 6;
-    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->unk4BB]] >> 6;
+    coursesScreen->unk4B0 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 6;
+    coursesScreen->unk4B4 += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 6;
 
-    if (coursesScreen->unk4B0 > ((gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100))) {  
-        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->unk4BB][0] * 0x100;
-        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->unk4BB][1] << 8;
+    if (coursesScreen->unk4B0 > ((gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100))) {  
+        coursesScreen->unk4B0 = gUnknown_080D7358[coursesScreen->currentCourse][0] * 0x100;
+        coursesScreen->unk4B4 = gUnknown_080D7358[coursesScreen->currentCourse][1] << 8;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = sub_8035AF0;
     }
@@ -787,10 +786,6 @@ void sub_8035AF0(void) {
     sub_8035FCC(coursesScreen);
 }
 
-extern const u16 gUnknown_080D74A8[8][2];
-
-void sub_8035C00(struct CourseSelectionScreen* coursesScreen);
-
 bool8 sub_8035B44(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
     bool8 result;
@@ -814,9 +809,6 @@ bool8 sub_8035B44(struct CourseSelectionScreen* coursesScreen) {
     return result;
 }
 
-extern const u16 gUnknown_080D7418[0x10][2];
-extern const u16 gUnknown_080D7398[0x20][2];
-
 void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
     struct UNK_0808B3FC_UNK240* element;
     s8 somethinga;
@@ -833,25 +825,25 @@ void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
     element->unk18 = (coursesScreen->unk4B4 >> 8) + 6;
     sub_80051E8(element);
 
-    if (coursesScreen->unk4BB < 0xE) {
+    if (coursesScreen->currentCourse < 0xE) {
         element = &coursesScreen->unk23C[0];
         element->unkA = 0x2F6;
-        element->unk20 = coursesScreen->unk4BB >> 1;
+        element->unk20 = coursesScreen->currentCourse >> 1;
         element->unk21 = 0xFF;
         sub_8004558(element);
         sub_80051E8(element);
 
         element = &coursesScreen->unk23C[1];
         element->unkA = 0x2F6;
-        element->unk20 = coursesScreen->unk4BB & 1;
+        element->unk20 = coursesScreen->currentCourse & 1;
         element->unk21 = 0xFF;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     element = &coursesScreen->unk29C;
-    element->unkA = gUnknown_080D7418[coursesScreen->unk4BB][0];
-    element->unk20 = gUnknown_080D7418[coursesScreen->unk4BB][1];
+    element->unkA = gUnknown_080D7418[coursesScreen->currentCourse][0];
+    element->unk20 = gUnknown_080D7418[coursesScreen->currentCourse][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
@@ -860,8 +852,8 @@ void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
 #ifndef NON_MATCHING
     somethinga++; somethinga--;
 #endif
-    element->unkA = gUnknown_080D7398[coursesScreen->unk4BB + (somethinga << 4)][0];
-    element->unk20 = gUnknown_080D7398[coursesScreen->unk4BB + (somethinga << 4)][1];
+    element->unkA = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga << 4)][0];
+    element->unk20 = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga << 4)][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
@@ -924,15 +916,13 @@ void sub_8035DC8(struct CourseSelectionScreen* coursesScreen) {
     }
 }
 
-extern const u8 gUnknown_080D7508[16];
-
 void sub_8035E70(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&coursesScreen->unk0) == 1) {
         sub_8035DC8(coursesScreen);
 
-        gCurrentLevel = gUnknown_080D7508[coursesScreen->unk4BB];
+        gCurrentLevel = gUnknown_080D7508[coursesScreen->currentCourse];
 
         if (gCurrentLevel != 29) {
             sub_801A770();
@@ -953,7 +943,7 @@ void sub_8035EF0(void) {
 
     if (sub_802D4CC(&coursesScreen->unk0) == 1) {
         sub_8035DC8(coursesScreen);
-        gCurrentLevel = gUnknown_080D7508[coursesScreen->unk4BB];
+        gCurrentLevel = gUnknown_080D7508[coursesScreen->currentCourse];
         sub_801A770();
         TaskDestroy(gCurTask);
         return;

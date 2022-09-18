@@ -285,11 +285,11 @@ static const u8 sBirdAnimModeSequence[] = {
 // make the demos show different levels
 // atm only the first is used
 static const u8 sDemoLevels[] = {
-    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, BOSS_ACT), 
-    TO_LEVEL_INDEX(ZONE_2, ACT_1), TO_LEVEL_INDEX(ZONE_2, BOSS_ACT), 
+    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, ACT_BOSS), 
+    TO_LEVEL_INDEX(ZONE_2, ACT_1), TO_LEVEL_INDEX(ZONE_2, ACT_BOSS), 
     TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, ACT_2), 
     // This is really odd
-    3, TO_LEVEL_INDEX(ZONE_1, BOSS_ACT)
+    3, TO_LEVEL_INDEX(ZONE_1, ACT_BOSS)
 };
 
 static const u16 sLensFlareSizes[] = {

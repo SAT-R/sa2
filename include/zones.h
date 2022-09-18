@@ -8,14 +8,21 @@
 #define ZONE_5 4
 #define ZONE_6 5
 #define ZONE_7 6
+#define ZONE_FINAL 7
 
 #define ACT_1 0
 #define ACT_2 1
-#define BOSS_ACT 2
+#define ACT_BOSS 2
 
-#define NUM_ZONES 7
+#define ACT_XX_FINAL_ZONE ACT_2
+#define ACT_TRUE_AREA_53 ACT_BOSS
+
+#define NUM_COURSE_ZONES 7
 #define ACTS_PER_ZONE 3
 
 #define TO_LEVEL_INDEX(zone, act) ((zone) * (ACTS_PER_ZONE + 1)) + (act)
+
+// ((((level) / (ACTS_PER_ZONE + 1)) * 2) | ((level) & 1))
+#define LEVEL_TO_COURSE_INDEX(level) ((((level) / (ACTS_PER_ZONE + 1)) << 0x19 >> 0x18) | ((level) & 1))
 
 #endif // GUARD_ZONES_H

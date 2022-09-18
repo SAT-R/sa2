@@ -7,6 +7,7 @@
 #include "random.h"
 #include "constants/text.h"
 #include "time.h"
+#include "zones.h"
 
 struct SaveSectorHeader {
     u32 security, version;
@@ -29,7 +30,7 @@ struct SaveSectorData {
     u8 attackControl;
     u8 trickControl;
 
-    u8 unlockedCourses[NUM_CHARACTERS];
+    u8 unlockedLevels[NUM_CHARACTERS];
     u8 unk24[NUM_CHARACTERS];
 
     u8 multiplayerWins;
@@ -402,7 +403,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        save->unlockedCourses[i] = gameState->unk7[i];
+        save->unlockedLevels[i] = gameState->unk7[i];
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
@@ -706,7 +707,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     }
     
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        gameState->unk7[i] = save->unlockedCourses[i];
+        gameState->unk7[i] = save->unlockedLevels[i];
     }
 
     for (i = 0; i < 5; i++) {
@@ -812,7 +813,9 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
     gameState->unk374 = 0;
     
     for (i = 0; i < 5; i++) {
-        gameState->unk7[i] = i == 0 ? 0x1e : 0x1d;
+        gameState->unk7[i] = i == CHARACTER_SONIC ? 
+            TO_LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53): 
+            TO_LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
         gameState->unkC[i] = 0xff;
     }
 

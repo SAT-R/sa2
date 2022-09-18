@@ -43,10 +43,10 @@ struct ButtonConfig {
 };
 
 struct TimeRecords {
-    u16 table[NUM_CHARACTERS][NUM_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
+    u16 table[NUM_CHARACTERS][NUM_COURSE_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
 };
 
-#define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
+#define NUM_TIME_RECORD_ROWS NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
 
 struct SaveGame {
     u32 unk0;
@@ -60,7 +60,7 @@ struct SaveGame {
     // Language
     u8 unk6;
 
-    // character unlocked courses
+    // unlockedLevels
     u8 unk7[NUM_CHARACTERS];
 
     u8 unkC[5];

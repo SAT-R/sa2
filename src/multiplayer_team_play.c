@@ -374,7 +374,7 @@ static void sub_805CC34(void) {
                     TaskDestroy(gCurTask);
                     gFlags &= ~0x4;
                     gGameMode = 3;
-                    CreateCourseSelectionScreen(0, gUnknown_030054D8, 0);
+                    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     return;
                 }                
@@ -419,7 +419,7 @@ static void sub_805CC34(void) {
                 TaskDestroy(gCurTask);
                 gFlags &= ~0x4;
                 gGameMode = GAME_MODE_MULTI_PLAYER;
-                CreateCourseSelectionScreen(0, gUnknown_030054D8, 0);
+                CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
                 return;
             }
         }
@@ -637,7 +637,7 @@ static void sub_805D5C8(void) {
 static void sub_805D610(void) {
     TaskDestroy(gCurTask);
     gFlags &= ~0x4;
-    CreateCourseSelectionScreen(0, gUnknown_030054D8, 0);
+    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
 }
 
 static void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {

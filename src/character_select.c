@@ -1026,11 +1026,11 @@ static void Task_SelectionCompleteFadeOutAndExit(void) {
         }
 
         if (gLoadedSaveGame->unk1A == 1 && gSelectedCharacter == CHARACTER_SONIC) {
-            CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], 2);
+            CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_UNLOCK_TRUE_AREA_53);
             return;
         }
 
-        CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], 0);
+        CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_NONE);
         return;
     }
 

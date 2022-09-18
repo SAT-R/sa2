@@ -5032,7 +5032,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                 if (timeRecordsScreen->zone != 0) {
                     timeRecordsScreen->zone--;
                 } else {
-                    timeRecordsScreen->zone = NUM_ZONES - 1;
+                    timeRecordsScreen->zone = NUM_COURSE_ZONES - 1;
                 }
                 gCurTask->main = Task_TimeRecordsScreenHandleCourseChange;
                 return;
@@ -5048,7 +5048,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                     r5 = r1 != 1;
                     if (timeRecordsScreen->act > 0) {
                         timeRecordsScreen->act = 0;
-                        if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                        if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                             timeRecordsScreen->zone++;
                         } else {
                             timeRecordsScreen->zone = 0;
@@ -5078,7 +5078,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
 
                 if (timeRecordsScreen->act > 0) {
                     timeRecordsScreen->act = 0;
-                    if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                    if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                         timeRecordsScreen->zone++;
                     } else {
                          timeRecordsScreen->zone = 0;
@@ -5090,7 +5090,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                 }
                 
             } else {
-                if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                     timeRecordsScreen->zone++;
                 } else {
                      timeRecordsScreen->zone = 0;
@@ -6595,7 +6595,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void) {
         return;
     } 
 
-    gCurrentLevel = TO_LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? BOSS_ACT : timeRecordsScreen->act);
+    gCurrentLevel = TO_LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? ACT_BOSS : timeRecordsScreen->act);
 
     EwramFree(timeRecordsScreen->timeRecords);
     TaskDestroy(gCurTask);
