@@ -15,8 +15,8 @@
 
 struct CourseSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;
-    struct Unk_03002400 worldMap;
-    struct Unk_03002400 headerBackground;
+    struct Unk_03002400 zoneMap;
+    struct Unk_03002400 header;
     struct UNK_0808B3FC_UNK240 playerAvatar;
     struct UNK_0808B3FC_UNK240 mapPaths[8];
     struct UNK_0808B3FC_UNK240 zoneActUnits[2];
@@ -54,41 +54,223 @@ struct CourseSelectionScreen {
 // Mod 1
 #define COURSE_INDEX_TO_ACT_INDEX(courseIndex) ((courseIndex) & 1)
 
-void Task_FadeIn(void);
-void Task_FadeInIntroAndStartUnlockCutScene(void);
-void CourseSelectionScreenOnDestroy(struct Task* t);
-void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen);
-void Task_CourseSelectMain(void);
-void Task_ScrollToNextCourseCutSceneAnim(void);
-void Task_UnlockCourseCutSceneNewPathAnim(void);
-void Task_UnlockCourseCutSceneScrollAnim(void);
-bool8 AnimateNewZonePath(struct CourseSelectionScreen*);
-void Task_FadeOutAndExitToSelectedLevel(void);
-void Task_ScrollToPreviousLevelAnim(void);
-void Task_ScrollToNextLevelAnim(void);
-void Task_FadeOutAndExitToSelectedMultiplayerLevel(void);
-void Task_FadeOutAndExitToCharacterSelect(void);
-void Task_DisplayZoneNameAnim(void);
-void sub_8035AF0(void);
-void RenderUI(struct CourseSelectionScreen* coursesScreen);
+static void Task_FadeInIntro(void);
+static void Task_FadeInIntroAndStartUnlockCutScene(void);
 
-extern const u16 gZonePathAssets[8][3];
-extern const u16 gZonePathAnimatedAssets[18][3];
+static void Task_UnlockCutSceneScrollToNextCourseAnim(void);
+static void Task_UnlockCutSceneNewPathAnim(void);
+static void Task_UnlockCutSceneScrollAnim(void);
+static void Task_UnlockCutSceneNextCoursePause(void);
+static bool8 AnimateNewZonePath(struct CourseSelectionScreen*);
 
-extern const s16 gZoneMapCameraTargets[16][2];
-extern const u16 gUnknown_080D7398[0x20][2];
-extern const u16 gUnknown_080D7418[0x10][2];
-extern const u16 gUnknown_080D7458[8][2];
+static void Task_CourseSelectMain(void);
+static void Task_ScrollToPreviousLevelAnim(void);
+static void Task_ScrollToNextLevelAnim(void);
 
-extern const u8 gCourseIndexToZonePaths[16];
+static void Task_DisplayZoneNameAnim(void);
+static void Task_FadeOutAndExitToSelectedLevel(void);
+static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void);
+static void Task_FadeOutAndExitToCharacterSelect(void);
 
-extern const s16 gUnknown_080D7488[0x10];
-extern const u16 gZoneMapPathPositions[8][2];
+static void RenderUI(struct CourseSelectionScreen* coursesScreen);
+static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen);
 
-extern const u16 gZoneMapPathReverseAngles[0x10];
-extern const u16 gUnknown_080D74E8[0x10];
+static void CourseSelectionScreenOnDestroy(struct Task* t);
 
-extern const u8 gCourseIndexToLevelIndex[16];
+static const u16 sZoneMapPathAssets[][3] = {
+    [ZONE_1] = { 6, 749, 1, },
+    [ZONE_2] = { 12, 750, 1, },
+    [ZONE_3] = { 10, 751, 1, },
+    [ZONE_4] = { 6, 752, 1, },
+    [ZONE_5] = { 16, 753, 1, },
+    [ZONE_6] = { 21, 754, 1, },
+    [ZONE_7] = { 36, 755, 1, },
+    [ZONE_FINAL] = { 30, 756, 1, },
+};
+
+static const u16 sZoneMapPathAnimatedAssets[][3] = {
+    [ZONE_1] = { 6, 749, 0, },
+    [ZONE_2] = { 12, 750, 0, },
+    [ZONE_3] = { 10, 751, 0, },
+    [ZONE_4] = { 6, 752, 0, },
+    [ZONE_5] = { 16, 753, 0, },
+    [ZONE_6] = { 28, 754, 0, },
+    [ZONE_7] = { 36, 755, 0, },
+    [ZONE_FINAL] = { 30, 756, 0, },
+};
+
+static const s16 sUnused_080D7318[][2] = {
+    { 9, 106, },
+    { 25, 106, },
+    { 40, 76, },
+    { 56, 76, },
+    { 75, 114, },
+    { 91, 114, },
+    { 97, 66, },
+    { 113, 66, },
+    { 146, 77, },
+    { 162, 77, },
+    { 204, 97, },
+    { 220, 97, },
+    { 284, 77, },
+    { 300, 77, },
+    { 402, 72, },
+    { 455, 93, },
+};
+
+static const s16 sZoneMapCameraTargets[][2] = {
+    { 4, 100, },
+    { 20, 100, },
+    { 35, 70, },
+    { 51, 70, },
+    { 70, 108, },
+    { 86, 108, },
+    { 92, 60, },
+    { 108, 60, },
+    { 141, 71, },
+    { 157, 71, },
+    { 199, 91, },
+    { 215, 91, },
+    { 279, 71, },
+    { 295, 71, },
+    { 373, 93, },
+    { 449, 81, },
+};
+
+static const u16 sZoneNameAssets[][2] = {
+    // ENGLISH
+    { 761, 0, },
+    { 761, 0, },
+    { 761, 1, },
+    { 761, 1, },
+    { 761, 2, },
+    { 761, 2, },
+    { 761, 3, },
+    { 761, 3, },
+    { 761, 4, },
+    { 761, 4, },
+    { 761, 5, },
+    { 761, 5, },
+    { 761, 6, },
+    { 761, 6, },
+    { 761, 7, },
+    { 761, 8, },
+
+    // Japanese
+    { 762, 0, },
+    { 762, 0, },
+    { 762, 1, },
+    { 762, 1, },
+    { 762, 2, },
+    { 762, 2, },
+    { 762, 3, },
+    { 762, 3, },
+    { 762, 4, },
+    { 762, 4, },
+    { 762, 5, },
+    { 762, 5, },
+    { 762, 6, },
+    { 762, 6, },
+    { 762, 7, },
+    { 762, 8, },
+};
+
+static const u16 sZoneTypeAssets[][2] = {
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 0, },
+    { 757, 1, },
+    { 757, 2, },
+};
+
+static const u16 sChaoEmeraldAssets[][2] = {
+    { 760, 0, },
+    { 760, 1, },
+    { 760, 2, },
+    { 760, 3, },
+    { 760, 4, },
+    { 760, 5, },
+    { 760, 6, },
+    { 760, 7, },
+};
+
+static const u8 sCourseIndexToNumZonePaths[] = { 
+    0, 0, // ZONE_1
+    1, 1, // ZONE_2
+    2, 2, // ZONE_3
+    3, 3, // ZONE_4
+    4, 4, // ZONE_5
+    5, 5, // ZONE_6
+    6, 6, // ZONE_7
+    7, 8, // ZONE_FINAL
+};
+
+static const s16 sZoneMapCourseXPositions[] = { 
+    4, 20, // ZONE_1
+    35, 51, // ZONE_2
+    70, 86, // ZONE_3
+    92, 108, // ZONE_4
+    141, 157, // ZONE_5
+    199, 215, // ZONE_6
+    279, 295, // ZONE_7
+    397, 450, // ZONE_FINAL
+};
+
+static const u16 sZoneMapPathPositions[][2] = {
+    [ZONE_1] = { 24, 80, },
+    [ZONE_2] = { 56, 80, },
+    [ZONE_3] = { 88, 72, },
+    [ZONE_4] = { 120, 64, },
+    [ZONE_5] = { 168, 72, },
+    [ZONE_6] = { 224, 72, },
+    [ZONE_7] = { 304, 72, },
+    [ZONE_FINAL] = { 384, 80, },
+};
+
+static const u16 sZoneMapPathReverseAngles[] = { 
+    512, 330, // ZONE_1
+    512, 692, // ZONE_2
+    512, 276, // ZONE_3
+    512, 566, // ZONE_4
+    512, 584, // ZONE_5
+    512, 463, // ZONE_6
+    512, 557, // ZONE_7
+    484, 0, // ZONE_FINAL
+};
+
+static const u16 sZoneMapPathForwardAngles[] = { 
+    -1, 0, 
+    850, 0, 
+    180, 0, 
+    788, 0, 
+    56, 0, 
+    72, 0, 
+    976, 0, 
+    44, 1000, 
+};
+
+static const u8 sCourseIndexToLevelIndex[] = { 
+    LEVEL_INDEX(ZONE_1, ACT_1), LEVEL_INDEX(ZONE_1, ACT_2), 
+    LEVEL_INDEX(ZONE_2, ACT_1), LEVEL_INDEX(ZONE_2, ACT_2), 
+    LEVEL_INDEX(ZONE_3, ACT_1), LEVEL_INDEX(ZONE_3, ACT_2), 
+    LEVEL_INDEX(ZONE_4, ACT_1), LEVEL_INDEX(ZONE_4, ACT_2),
+    LEVEL_INDEX(ZONE_5, ACT_1), LEVEL_INDEX(ZONE_5, ACT_2), 
+    LEVEL_INDEX(ZONE_6, ACT_1), LEVEL_INDEX(ZONE_6, ACT_2), 
+    LEVEL_INDEX(ZONE_7, ACT_1), LEVEL_INDEX(ZONE_7, ACT_2), 
+    LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE), 
+    LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53), 
+};
 
 #define Render(coursesScreen) ({ \
     gBgScrollRegs[0][0] = TO_SCREEN_COORD((coursesScreen)->cameraScrollX); \
@@ -176,15 +358,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53) && !IsMultiplayer()) {
         t = TaskCreate(Task_FadeInIntroAndStartUnlockCutScene, sizeof(struct CourseSelectionScreen), 0x3100, 0, CourseSelectionScreenOnDestroy);
     } else {
-        t = TaskCreate(Task_FadeIn, sizeof(struct CourseSelectionScreen), 0x3100, 0, CourseSelectionScreenOnDestroy);
+        t = TaskCreate(Task_FadeInIntro, sizeof(struct CourseSelectionScreen), 0x3100, 0, CourseSelectionScreenOnDestroy);
     }
 
     coursesScreen = TaskGetStructPtr(t);
     coursesScreen->cameraScrollX = 0;
 
     courseIndex = LEVEL_TO_COURSE_INDEX(currentLevel);
-    coursesScreen->avatarTargetX = gZoneMapCameraTargets[courseIndex][0] * UNITS_PER_PIXEL;
-    coursesScreen->avatarTargetY = gZoneMapCameraTargets[courseIndex][1] * UNITS_PER_PIXEL;
+    coursesScreen->avatarTargetX = sZoneMapCameraTargets[courseIndex][0] * UNITS_PER_PIXEL;
+    coursesScreen->avatarTargetY = sZoneMapCameraTargets[courseIndex][1] * UNITS_PER_PIXEL;
     coursesScreen->currentCourse = courseIndex;
     coursesScreen->zoneNameAnimFrame = 0;
     coursesScreen->levelChosen = FALSE;
@@ -195,7 +377,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
         coursesScreen->unlockedCourse = maxCourseIndex;
     }
 
-    coursesScreen->zonePathsUnlocked = gCourseIndexToZonePaths[maxCourseIndex];
+    coursesScreen->zonePathsUnlocked = sCourseIndexToNumZonePaths[maxCourseIndex];
     if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53) && coursesScreen->zonePathsUnlocked != 0) {
         coursesScreen->zonePathsUnlocked--;
     }
@@ -212,7 +394,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     fadeTransition->unkA = 0;
     sub_802D4CC(fadeTransition);
 
-    background = &coursesScreen->headerBackground;
+    background = &coursesScreen->header;
     background->unk4 = BG_SCREEN_ADDR(24);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(28);
@@ -235,7 +417,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     background->unk2E = 1;
     sub_8002A3C(background);
 
-    background = &coursesScreen->worldMap;
+    background = &coursesScreen->zoneMap;
     background->unk4 = BG_SCREEN_ADDR(0);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(16);
@@ -277,13 +459,13 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
         element =&coursesScreen->mapPaths[i];
         element->unk16 = 0;
         element->unk18 = 0;
-        element->unk4 = VramMalloc(gZonePathAssets[i][0]);
+        element->unk4 = VramMalloc(sZoneMapPathAssets[i][0]);
         if ((cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53)) && coursesScreen->zonePathsUnlocked == i) {
-            element->unkA = gZonePathAnimatedAssets[i][1];
-            element->unk20 = gZonePathAnimatedAssets[i][2];
+            element->unkA = sZoneMapPathAnimatedAssets[i][1];
+            element->unk20 = sZoneMapPathAnimatedAssets[i][2];
         } else {
-            element->unkA =  gZonePathAssets[i][1];
-            element->unk20 = gZonePathAssets[i][2];
+            element->unkA =  sZoneMapPathAssets[i][1];
+            element->unk20 = sZoneMapPathAssets[i][2];
         }
         element->unk1A = 0x100;
         element->unk8 = 0;
@@ -392,8 +574,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
         element->unk16 = 0;
         element->unk18 = 0x88;
         element->unk4 = (void*)OBJ_VRAM0 + (i * 0x120);
-        element->unkA = gUnknown_080D7458[i][0];
-        element->unk20 = gUnknown_080D7458[i][1];
+        element->unkA = sChaoEmeraldAssets[i][0];
+        element->unk20 = sChaoEmeraldAssets[i][1];
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unk14 = 0;
@@ -406,7 +588,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     }
 }
 
-void Task_FadeIn(void) {
+static void Task_FadeInIntro(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
@@ -417,7 +599,7 @@ void Task_FadeIn(void) {
 
             if ((coursesScreen->cutScenes & 4) && !IsMultiplayer()) {
                 coursesScreen->currentCourse++;
-                gCurTask->main = Task_ScrollToNextCourseCutSceneAnim;
+                gCurTask->main = Task_UnlockCutSceneScrollToNextCourseAnim;
             } else {
                 gCurTask->main = Task_CourseSelectMain;
             }
@@ -436,25 +618,25 @@ void Task_FadeIn(void) {
 
 
 
-void Task_FadeInIntroAndStartUnlockCutScene(void) {
+static void Task_FadeInIntroAndStartUnlockCutScene(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
-        if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X || coursesScreen->cameraScrollX >= ((gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2))) {
-            coursesScreen->cameraScrollX = (gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2);
+        if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X || coursesScreen->cameraScrollX >= ((sZoneMapCourseXPositions[coursesScreen->unlockedCourse] * UNITS_PER_PIXEL) - (CAMERA_FOV_WIDTH / 2))) {
+            coursesScreen->cameraScrollX = (sZoneMapCourseXPositions[coursesScreen->unlockedCourse] * UNITS_PER_PIXEL) - (CAMERA_FOV_WIDTH / 2);
             m4aSongNumStart(SE_MAP_214);
-            gCurTask->main = Task_UnlockCourseCutSceneNewPathAnim;
+            gCurTask->main = Task_UnlockCutSceneNewPathAnim;
         }
     }
 
-    SetCameraScrollX(coursesScreen, (gUnknown_080D7488[coursesScreen->unlockedCourse] * 0x100) - (CAMERA_FOV_WIDTH / 2));
+    SetCameraScrollX(coursesScreen, (sZoneMapCourseXPositions[coursesScreen->unlockedCourse] * UNITS_PER_PIXEL) - (CAMERA_FOV_WIDTH / 2));
     Render(coursesScreen);
 }
 
-void Task_UnlockCourseCutSceneNewPathAnim(void) {
+static void Task_UnlockCutSceneNewPathAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
     bool8 animDone;
@@ -465,14 +647,14 @@ void Task_UnlockCourseCutSceneNewPathAnim(void) {
 
     animDone = AnimateNewZonePath(coursesScreen);
     if (animDone) {
-        gCurTask->main = Task_UnlockCourseCutSceneScrollAnim;
+        gCurTask->main = Task_UnlockCutSceneScrollAnim;
         zoneName->unk16 = 0xF0;
         coursesScreen->zonePathsUnlocked++;
         coursesScreen->maxCourse++;
     }
 }
 
-void Task_UnlockCourseCutSceneScrollAnim(void) {
+static void Task_UnlockCutSceneScrollAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX - CAM_MAX_X_SPEED);
 
@@ -485,15 +667,15 @@ void Task_UnlockCourseCutSceneScrollAnim(void) {
             }
             coursesScreen->zoneNameAnimFrame = 0;
             m4aSongNumStart(SE_MAP_MOVE);
-            gCurTask->main = Task_ScrollToNextCourseCutSceneAnim;
+            gCurTask->main = Task_UnlockCutSceneScrollToNextCourseAnim;
         } else {
             if (coursesScreen->maxCourse == LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) + 1) {
                 struct UNK_0808B3FC_UNK240* element;
                 
                 coursesScreen->maxCourse = LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53));
-                element = &coursesScreen->mapPaths[7];
-                element->unkA = gZonePathAssets[7][1];
-                element->unk20 = gZonePathAssets[7][2];
+                element = &coursesScreen->mapPaths[ZONE_FINAL];
+                element->unkA = sZoneMapPathAssets[ZONE_FINAL][1];
+                element->unk20 = sZoneMapPathAssets[ZONE_FINAL][2];
             }
             gCurTask->main = Task_CourseSelectMain;            
         }
@@ -509,7 +691,7 @@ void Task_UnlockCourseCutSceneScrollAnim(void) {
     Render(coursesScreen);
 }
 
-void Task_CourseSelectMain(void) {
+static void Task_CourseSelectMain(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
@@ -620,7 +802,7 @@ void Task_CourseSelectMain(void) {
     Render(coursesScreen);
 }
 
-void Task_ScrollToPreviousLevelAnim(void) {
+static void Task_ScrollToPreviousLevelAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
     union MultiSioData* send;
@@ -628,12 +810,12 @@ void Task_ScrollToPreviousLevelAnim(void) {
 
     ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->avatarTargetX += gSineTable[gZoneMapPathReverseAngles[coursesScreen->currentCourse] + 0x100] >> 5;
-    coursesScreen->avatarTargetY += gSineTable[gZoneMapPathReverseAngles[coursesScreen->currentCourse]] >> 5;
+    coursesScreen->avatarTargetX += gSineTable[sZoneMapPathReverseAngles[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->avatarTargetY += gSineTable[sZoneMapPathReverseAngles[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->avatarTargetX < (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {
-        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
+    if (coursesScreen->avatarTargetX < (sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL)) {
+        coursesScreen->avatarTargetX = sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL;
+        coursesScreen->avatarTargetY = sZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = Task_DisplayZoneNameAnim;
     }
@@ -655,7 +837,7 @@ void Task_ScrollToPreviousLevelAnim(void) {
     Render(coursesScreen);
 }
 
-void Task_ScrollToNextLevelAnim(void) {
+static void Task_ScrollToNextLevelAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
     union MultiSioData* send;
@@ -666,12 +848,12 @@ void Task_ScrollToNextLevelAnim(void) {
 
     ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->avatarTargetX += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 5;
-    coursesScreen->avatarTargetY += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 5;
+    coursesScreen->avatarTargetX += gSineTable[sZoneMapPathForwardAngles[coursesScreen->currentCourse] + 0x100] >> 5;
+    coursesScreen->avatarTargetY += gSineTable[sZoneMapPathForwardAngles[coursesScreen->currentCourse]] >> 5;
 
-    if (coursesScreen->avatarTargetX > (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {
-        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
+    if (coursesScreen->avatarTargetX > (sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL)) {
+        coursesScreen->avatarTargetX = sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL;
+        coursesScreen->avatarTargetY = sZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
         gCurTask->main = Task_DisplayZoneNameAnim;
     }
@@ -693,7 +875,7 @@ void Task_ScrollToNextLevelAnim(void) {
     Render(coursesScreen);
 }
 
-void Task_DisplayZoneNameAnim(void) {
+static void Task_DisplayZoneNameAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
@@ -712,33 +894,33 @@ void Task_DisplayZoneNameAnim(void) {
     Render(coursesScreen);
 }
 
-void Task_ScrollToNextCourseCutSceneAnim(void) {
+static void Task_UnlockCutSceneScrollToNextCourseAnim(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
-    coursesScreen->avatarTargetX += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse] + 0x100] >> 6;
-    coursesScreen->avatarTargetY += gSineTable[gUnknown_080D74E8[coursesScreen->currentCourse]] >> 6;
+    coursesScreen->avatarTargetX += gSineTable[sZoneMapPathForwardAngles[coursesScreen->currentCourse] + 0x100] >> 6;
+    coursesScreen->avatarTargetY += gSineTable[sZoneMapPathForwardAngles[coursesScreen->currentCourse]] >> 6;
 
-    if (coursesScreen->avatarTargetX > (gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100)) {  
-        coursesScreen->avatarTargetX = gZoneMapCameraTargets[coursesScreen->currentCourse][0] * 0x100;
-        coursesScreen->avatarTargetY = gZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
+    if (coursesScreen->avatarTargetX > (sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL)) {  
+        coursesScreen->avatarTargetX = sZoneMapCameraTargets[coursesScreen->currentCourse][0] * UNITS_PER_PIXEL;
+        coursesScreen->avatarTargetY = sZoneMapCameraTargets[coursesScreen->currentCourse][1] * UNITS_PER_PIXEL;
         m4aSongNumStart(SE_MAP_MOVE_END);
-        gCurTask->main = sub_8035AF0;
+        gCurTask->main = Task_UnlockCutSceneNextCoursePause;
     }
 
     SetCameraScrollX(coursesScreen, coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2));
     Render(coursesScreen);
 }
 
-void sub_8035AF0(void) {
+static void Task_UnlockCutSceneNextCoursePause(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
     s8 unk4BE = coursesScreen->zoneNameAnimFrame + 1;
     struct UNK_802D4CC_UNK270* fadeTransition = &coursesScreen->screenFade;
 
     coursesScreen->zoneNameAnimFrame = unk4BE;
-    if (coursesScreen->zoneNameAnimFrame > 0x3C) {
+    if (coursesScreen->zoneNameAnimFrame > 60) {
         fadeTransition->unk0 = 0;
         fadeTransition->unk4 = 0;
         fadeTransition->unk2 = 1;
@@ -751,22 +933,22 @@ void sub_8035AF0(void) {
     RenderZoneMapPathsAndUI(coursesScreen);
 }
 
-bool8 AnimateNewZonePath(struct CourseSelectionScreen* coursesScreen) {
+static bool8 AnimateNewZonePath(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
     bool8 animDone;
     struct UNK_0808B3FC_UNK240* element;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
         element = &coursesScreen->mapPaths[i];
-        element->unk16 = gZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-        element->unk18 = gZoneMapPathPositions[i][1];
+        element->unk16 = sZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+        element->unk18 = sZoneMapPathPositions[i][1];
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     element = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
-    element->unk16 = gZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-    element->unk18 = gZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
+    element->unk16 = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+    element->unk18 = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
     animDone = sub_8004558(element) == 0;
     sub_80051E8(element);
     RenderUI(coursesScreen);
@@ -774,7 +956,7 @@ bool8 AnimateNewZonePath(struct CourseSelectionScreen* coursesScreen) {
     return animDone;
 }
 
-void RenderUI(struct CourseSelectionScreen* coursesScreen) {
+static void RenderUI(struct CourseSelectionScreen* coursesScreen) {
     struct UNK_0808B3FC_UNK240* element;
     s8 somethinga;
     s8 lang = gLoadedSaveGame->unk6;
@@ -807,8 +989,8 @@ void RenderUI(struct CourseSelectionScreen* coursesScreen) {
     }
 
     element = &coursesScreen->zoneType;
-    element->unkA = gUnknown_080D7418[coursesScreen->currentCourse][0];
-    element->unk20 = gUnknown_080D7418[coursesScreen->currentCourse][1];
+    element->unkA = sZoneTypeAssets[coursesScreen->currentCourse][0];
+    element->unk20 = sZoneTypeAssets[coursesScreen->currentCourse][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
@@ -817,8 +999,8 @@ void RenderUI(struct CourseSelectionScreen* coursesScreen) {
 #ifndef NON_MATCHING
     somethinga++; somethinga--;
 #endif
-    element->unkA = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga * 16)][0];
-    element->unk20 = gUnknown_080D7398[coursesScreen->currentCourse + (somethinga * 16)][1];
+    element->unkA = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][0];
+    element->unk20 = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
     element->unk21 = 0xFF;
     sub_8004558(element);
     sub_80051E8(element);
@@ -881,13 +1063,13 @@ void DestroyUI(struct CourseSelectionScreen* coursesScreen) {
     }
 }
 
-void Task_FadeOutAndExitToSelectedLevel(void) {
+static void Task_FadeOutAndExitToSelectedLevel(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
         DestroyUI(coursesScreen);
 
-        gCurrentLevel = gCourseIndexToLevelIndex[coursesScreen->currentCourse];
+        gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             sub_801A770();
@@ -902,12 +1084,12 @@ void Task_FadeOutAndExitToSelectedLevel(void) {
     Render(coursesScreen);
 }
 
-void Task_FadeOutAndExitToSelectedMultiplayerLevel(void) {
+static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
         DestroyUI(coursesScreen);
-        gCurrentLevel = gCourseIndexToLevelIndex[coursesScreen->currentCourse];
+        gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
         sub_801A770();
         TaskDestroy(gCurTask);
         return;
@@ -916,7 +1098,7 @@ void Task_FadeOutAndExitToSelectedMultiplayerLevel(void) {
     Render(coursesScreen);
 }
 
-void Task_FadeOutAndExitToCharacterSelect(void) {
+static void Task_FadeOutAndExitToCharacterSelect(void) {
     struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
@@ -928,14 +1110,14 @@ void Task_FadeOutAndExitToCharacterSelect(void) {
     Render(coursesScreen);
 }
 
-void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen) {
+static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
         element = &coursesScreen->mapPaths[i];
-        element->unk16 = gZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-        element->unk18 = gZoneMapPathPositions[i][1];
+        element->unk16 = sZoneMapPathPositions[i][0] - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
+        element->unk18 = sZoneMapPathPositions[i][1];
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -943,6 +1125,6 @@ void RenderZoneMapPathsAndUI(struct CourseSelectionScreen* coursesScreen) {
     RenderUI(coursesScreen);
 }
 
-void CourseSelectionScreenOnDestroy(struct Task* t) {
+static void CourseSelectionScreenOnDestroy(struct Task* t) {
     DestroyUI(TaskGetStructPtr(t));
 }
