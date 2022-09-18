@@ -816,65 +816,68 @@ bool8 sub_8035B44(struct CourseSelectionScreen* coursesScreen) {
 extern const u16 gUnknown_080D7418[0x10][2];
 extern const u16 gUnknown_080D7398[0x20][2];
 
-// void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
-//     struct UNK_0808B3FC_UNK240* element;
-//     u8 somethinga;
-//     s8 lang = gLoadedSaveGame->unk6;
+void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
+    struct UNK_0808B3FC_UNK240* element;
+    s8 somethinga;
+    s8 lang = gLoadedSaveGame->unk6;
 
-//     if (lang <= 1) {
-//         somethinga = 0;
-//     } else {
-//         somethinga = 1;
-//     }
+    if (lang <= 1) {
+        somethinga = 0;
+    } else {
+        somethinga = 1;
+    }
 
-//     element = &coursesScreen->unk8C;
-//     element->unk16 = ((coursesScreen->unk4B0 - coursesScreen->unk4AC) >> 8) + 5;
-//     element->unk18 = (coursesScreen->unk4B4 >> 8) + 6;
-//     sub_80051E8(element);
+    element = &coursesScreen->unk8C;
+    element->unk16 = ((coursesScreen->unk4B0 - coursesScreen->unk4AC) >> 8) + 5;
+    element->unk18 = (coursesScreen->unk4B4 >> 8) + 6;
+    sub_80051E8(element);
 
-//     if (coursesScreen->unk4BB < 0xE) {
-//         element = &coursesScreen->unk23C[0];
-//         element->unkA = 0x2F6;
-//         element->unk20 = coursesScreen->unk4BB >> 1;
-//         element->unk21 = 0xFF;
-//         sub_8004558(element);
-//         sub_80051E8(element);
+    if (coursesScreen->unk4BB < 0xE) {
+        element = &coursesScreen->unk23C[0];
+        element->unkA = 0x2F6;
+        element->unk20 = coursesScreen->unk4BB >> 1;
+        element->unk21 = 0xFF;
+        sub_8004558(element);
+        sub_80051E8(element);
 
-//         element = &coursesScreen->unk23C[1];
-//         element->unkA = 0x2F6;
-//         element->unk20 = coursesScreen->unk4BB & 1;
-//         element->unk21 = 0xFF;
-//         sub_8004558(element);
-//         sub_80051E8(element);
-//     }
+        element = &coursesScreen->unk23C[1];
+        element->unkA = 0x2F6;
+        element->unk20 = coursesScreen->unk4BB & 1;
+        element->unk21 = 0xFF;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
 
-//     element = &coursesScreen->unk29C;
-//     element->unkA = gUnknown_080D7418[coursesScreen->unk4BB][0];
-//     element->unk20 = gUnknown_080D7418[coursesScreen->unk4BB][1];
-//     element->unk21 = 0xFF;
-//     sub_8004558(element);
-//     sub_80051E8(element);
+    element = &coursesScreen->unk29C;
+    element->unkA = gUnknown_080D7418[coursesScreen->unk4BB][0];
+    element->unk20 = gUnknown_080D7418[coursesScreen->unk4BB][1];
+    element->unk21 = 0xFF;
+    sub_8004558(element);
+    sub_80051E8(element);
 
-//     element = &coursesScreen->unk2CC;
-//     element->unkA = gUnknown_080D7398[coursesScreen->unk4BB + ((somethinga << 0x18) >> 0x14)][0];
-//     element->unk20 = gUnknown_080D7398[coursesScreen->unk4BB + ((somethinga << 0x18) >> 0x14)][1];
-//     element->unk21 = 0xFF;
-//     sub_8004558(element);
-//     sub_80051E8(element);
-//     element = &coursesScreen->unk2FC;
-//     sub_80051E8(element);
+    element = &coursesScreen->unk2CC;
+#ifndef NON_MATCHING
+    somethinga++; somethinga--;
+#endif
+    element->unkA = gUnknown_080D7398[coursesScreen->unk4BB + (somethinga << 4)][0];
+    element->unk20 = gUnknown_080D7398[coursesScreen->unk4BB + (somethinga << 4)][1];
+    element->unk21 = 0xFF;
+    sub_8004558(element);
+    sub_80051E8(element);
+    element = &coursesScreen->unk2FC;
+    sub_80051E8(element);
 
-//     if (!IsMultiplayer()) {
-//         u8 i;
-//         for (i = 0; i < 7; i++) {
-//             if (GetBit(gLoadedSaveGame->unkC[gSelectedCharacter], i)) {
-//                 element = &coursesScreen->unk32C[i + 1];
-//             } else {
-//                 element = &coursesScreen->unk32C[0];
-//             }
-//             element->unk16 = (((i * 3)) * 8) + 0x24;
-//             sub_8004558(element);
-//             sub_80051E8(element);
-//         }
-//     }
-// }
+    if (!IsMultiplayer()) {
+        u8 i;
+        for (i = 0; i < 7; i++) {
+            if (GetBit(gLoadedSaveGame->unkC[gSelectedCharacter], i)) {
+                element = &coursesScreen->unk32C[i + 1];
+            } else {
+                element = &coursesScreen->unk32C[0];
+            }
+            element->unk16 = (((i * 3)) * 8) + 0x24;
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
+    }
+}
