@@ -5,6 +5,7 @@
 #include "transition.h"
 #include "save.h"
 #include "m4a.h"
+#include "character_select.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 #include "task.h"
@@ -342,7 +343,7 @@ void CreateCourseSelectionScreen(u8 unknown1, u8 availableCourses, u8 unknown2) 
     }
 }
 
-void sub_8035FCC(struct UNK_802D4CC_UNK270* transition);
+void sub_8035FCC(struct CourseSelectionScreen* coursesScreen);
 void sub_8035124(void);
 void sub_80359D4(void);
 
@@ -379,7 +380,7 @@ void sub_8034D70(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
     return;
 }
 
@@ -412,7 +413,7 @@ void sub_8034E78(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 void sub_8034FF0(void);
@@ -482,7 +483,7 @@ void sub_8034FF0(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 void sub_8035E70(void);
@@ -609,7 +610,7 @@ void sub_8035124(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 extern const u16 gUnknown_080D74C8[0x10];
@@ -658,7 +659,7 @@ void sub_8035554(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 extern const u16 gUnknown_080D74E8[0x10];
@@ -708,7 +709,7 @@ void sub_8035750(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 void sub_803594C(void) {
@@ -731,7 +732,7 @@ void sub_803594C(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 void sub_8035AF0(void);
@@ -764,7 +765,7 @@ void sub_80359D4(void) {
     }
 
     gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
-    sub_8035FCC(&coursesScreen->unk0);
+    sub_8035FCC(coursesScreen);
 }
 
 void sub_8035AF0(void) {
@@ -783,7 +784,7 @@ void sub_8035AF0(void) {
         gCurTask->main = sub_8035E70;
     }
 
-    sub_8035FCC(fadeTransition);
+    sub_8035FCC(coursesScreen);
 }
 
 extern const u16 gUnknown_080D74A8[8][2];
@@ -880,4 +881,115 @@ void sub_8035C00(struct CourseSelectionScreen* coursesScreen) {
             sub_80051E8(element);
         }
     }
+}
+
+void sub_8035DC8(struct CourseSelectionScreen* coursesScreen) {
+    u8 i;
+
+    if (coursesScreen->unk8C.unk4 != NULL) {
+        VramFree(coursesScreen->unk8C.unk4);
+        coursesScreen->unk8C.unk4 = NULL;
+    }
+
+    for (i = 0; i < 8; i++) {
+        if (coursesScreen->unkBC[i].unk4 != NULL) {
+            VramFree(coursesScreen->unkBC[i].unk4);
+            coursesScreen->unkBC[i].unk4 = NULL;
+        }
+    }
+
+    if (coursesScreen->unk23C[0].unk4 != NULL) {
+        VramFree(coursesScreen->unk23C[0].unk4);
+        coursesScreen->unk23C[0].unk4 = NULL;
+    }
+
+    if (coursesScreen->unk23C[1].unk4 != NULL) {
+        VramFree(coursesScreen->unk23C[1].unk4);
+        coursesScreen->unk23C[1].unk4 = NULL;
+    }
+
+    if (coursesScreen->unk29C.unk4 != NULL) {
+        VramFree(coursesScreen->unk29C.unk4);
+        coursesScreen->unk29C.unk4 = NULL;
+    }
+
+    if (coursesScreen->unk2CC.unk4 != NULL) {
+        VramFree(coursesScreen->unk2CC.unk4);
+        coursesScreen->unk2CC.unk4 = NULL;
+    }
+
+    if (coursesScreen->unk2FC.unk4 != NULL) {
+        VramFree(coursesScreen->unk2FC.unk4);
+        coursesScreen->unk2FC.unk4 = NULL;
+    }
+}
+
+extern const u8 gUnknown_080D7508[16];
+
+void sub_8035E70(void) {
+    struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
+        sub_8035DC8(coursesScreen);
+
+        gCurrentLevel = gUnknown_080D7508[coursesScreen->unk4BB];
+
+        if (gCurrentLevel != 29) {
+            sub_801A770();
+        } else {
+            sub_8036C54();
+        }
+        
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
+    sub_8035FCC(coursesScreen);
+}
+
+void sub_8035EF0(void) {
+    struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
+        sub_8035DC8(coursesScreen);
+        gCurrentLevel = gUnknown_080D7508[coursesScreen->unk4BB];
+        sub_801A770();
+        TaskDestroy(gCurTask);
+        return;
+    }
+    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
+    sub_8035FCC(coursesScreen);
+}
+
+void sub_8035F60(void) {
+    struct CourseSelectionScreen* coursesScreen = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&coursesScreen->unk0) == 1) {
+        sub_8035DC8(coursesScreen);
+        CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unk13 & 0x10);
+        TaskDestroy(gCurTask);
+        return;
+    }
+    gBgScrollRegs[0][0] = coursesScreen->unk4AC >> 8;
+    sub_8035FCC(coursesScreen);
+}
+
+void sub_8035FCC(struct CourseSelectionScreen* coursesScreen) {
+    u8 i;
+    struct UNK_0808B3FC_UNK240* element;
+
+    for (i = 0; i < coursesScreen->unk4BA; i++) {
+        element = &coursesScreen->unkBC[i];
+        element->unk16 = gUnknown_080D74A8[i][0] - (coursesScreen->unk4AC >> 8);
+        element->unk18 = gUnknown_080D74A8[i][1];
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    sub_8035C00(coursesScreen);
+}
+
+void sub_8036040(struct Task* t) {
+    sub_8035DC8(TaskGetStructPtr(t));
 }

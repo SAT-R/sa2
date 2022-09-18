@@ -9,6 +9,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "flags.h"
 #include "trig.h"
 #include "multiplayer_multipak_connection.h"
