@@ -1188,7 +1188,7 @@ void CreateOptionsScreen(u16 p1) {
 // and selecting a time attack course is the same,
 // except the mode is TIME_ATTACK
 // so this is within the profile source.
-void CreateTimeAttackSelectionScreen(bool16 isBossView, s16 selectedCharacter, s8 unused_currentLevel) {
+void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter, s8 unused_currentLevel) {
     struct Task* t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, TASK_x0004, NULL);
     struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t);
     s16 i;

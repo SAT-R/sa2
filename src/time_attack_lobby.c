@@ -6,7 +6,12 @@
 #include "game.h"
 #include "malloc_vram.h"
 #include "m4a.h"
+#include "character_select.h"
+#include "course_select.h"
+#include "profile.h"
 #include "constants/songs.h"
+#include "title_screen.h"
+#include "zones.h"
 
 struct TimeAttackLobbyScreen {
     struct Unk_03002400 unk0;
@@ -23,6 +28,8 @@ struct TimeAttackLobbyScreen {
 extern const struct UNK_080E0D64 gUnknown_080E04D4[30];
 extern const struct UNK_080E0D64 gUnknown_080E0474[10];
 extern const struct UNK_080E0D64 gUnknown_080E04C4[2];
+
+#define IsBossTimeAttack() (GetBit(gGameMode, 1))
 
 void sub_8088944(struct TimeAttackLobbyScreen* lobbyScreen) {
     struct UNK_802D4CC_UNK270* transitionConfig;
@@ -195,4 +202,100 @@ void sub_8088944(struct TimeAttackLobbyScreen* lobbyScreen) {
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
     sub_802D4CC(transitionConfig);
+}
+
+void sub_8088EB4(void);
+
+void sub_8088CC4(void) {
+    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;    
+    u32 i;
+
+    for (i = 0; i < 4; i++) {
+        element = &lobbyScreen->unkB0[i + 1];
+        if (i == lobbyScreen->unk1AD) {
+            element->unk25 = 0;
+        } else {
+            element->unk25 = 1;
+        }
+        sub_80051E8(element);
+    }
+    element = &lobbyScreen->unk80;
+    sub_8004558(element);
+    sub_80051E8(element);
+    
+    if (lobbyScreen->unk1AC != 0) {
+        element = &lobbyScreen->unkB0[0];
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (sub_802D4CC(&lobbyScreen->unk1A0) == 1) {
+        gCurTask->main = sub_8088EB4;
+    }
+}
+
+void sub_8088D60(void) {
+    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;
+    u32 i;
+    // WTF?
+    u32 one = 1;
+
+    if (sub_802D4CC(&lobbyScreen->unk1A0) == 1) {
+        TaskDestroy(gCurTask);
+        switch(lobbyScreen->unk1AD) {
+            case 0:
+                sub_801A770();
+                return;
+            case 1:
+                CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY));
+                gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
+                return;
+            case 2:
+                CreateTimeAttackLevelSelectScreen(gGameMode >> 1 & one, gSelectedCharacter, gCurrentLevel);
+                return;
+            case 3:
+                CreateTitleScreenAndSkipIntro();
+                return;
+            default:
+                return;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        element = &lobbyScreen->unkB0[i + 1];
+        sub_80051E8(element);
+    }
+
+    element = &lobbyScreen->unk80;
+    switch(lobbyScreen->unk1AD) {
+        case 1:
+            element->unk16 -= 4;
+            break;
+        case 0:
+        case 2:
+            element->unk16 += 4;
+            break;
+    }
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (lobbyScreen->unk1AC == 0) {
+        return;
+    }
+
+    element = &lobbyScreen->unkB0[0];
+    switch (lobbyScreen->unk1AD) {
+        case 1:
+            element->unk16 -= 2;
+            break;
+        case 0:
+        case 2:
+            element->unk16 += 3;
+            break;
+    }
+
+    sub_8004558(element);
+    sub_80051E8(element);
 }
