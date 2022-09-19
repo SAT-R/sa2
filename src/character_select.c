@@ -19,6 +19,7 @@
 #include "course_select.h"
 #include "title_screen.h"
 #include "time_attack.h"
+#include "time_attack_mode_select.h"
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;
@@ -1048,7 +1049,7 @@ static void Task_FadeOutAndExitToPrevious(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
-            sub_8087FC0();
+            CreateTimeAttackModeSelectionScreen();
         } else {
             CreateTitleScreenAtSinglePlayerMenu();
             

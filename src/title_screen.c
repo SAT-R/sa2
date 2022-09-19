@@ -25,12 +25,13 @@
 #include "multiplayer_mode_select.h"
 #include "character_select.h"
 #include "malloc_vram.h"
+#include "time_attack_mode_select.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
-    struct Unk_03002400 unk80;
+    struct Unk_03002400 introSonicLogo;
 
     // Dunno what these are yet
     struct UNK_0808B3FC_UNK240 unkC0;
@@ -520,7 +521,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen* titleScreen) {
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    config80 = &titleScreen->unk80;
+    config80 = &titleScreen->introSonicLogo;
 
     config80->unk4 = BG_SCREEN_ADDR(8);
     config80->unkA = 0;
@@ -699,7 +700,7 @@ static void Task_IntroStartTeamSonicLogoAnim(void) {
 
     if (titleScreen->animFrame == 1) {
         // TODO: some macro for this
-        config80 = &titleScreen->unk80;
+        config80 = &titleScreen->introSonicLogo;
         config80->unk4 = BG_SCREEN_ADDR(8);
         config80->unkA = 0;
         config80->unkC = BG_SCREEN_ADDR(31);
@@ -1264,10 +1265,10 @@ static void Task_HandleTitleScreenExit(void) {
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_801A6D8();
                 // If all characters unlocked
-                if (gLoadedSaveGame->unk13 & (1 << (NUM_CHARACTERS - 1))) {
-                    CreateCharacterSelectionScreen(0, 1);
+                if (gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY)) {
+                    CreateCharacterSelectionScreen(CHARACTER_SONIC, TRUE);
                 } else {
-                    CreateCharacterSelectionScreen(0, 0);
+                    CreateCharacterSelectionScreen(CHARACTER_SONIC, FALSE);
                 }
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
@@ -1275,7 +1276,7 @@ static void Task_HandleTitleScreenExit(void) {
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 gSelectedCharacter = CHARACTER_SONIC;
                 gGameMode = GAME_MODE_TIME_ATTACK;
-                sub_8087FC0();
+                CreateTimeAttackModeSelectionScreen();
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
