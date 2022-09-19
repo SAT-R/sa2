@@ -201,3 +201,149 @@ void sub_80882F8(void) {
         gCurTask->main = sub_8088398;
     }
 }
+
+void sub_80884C0(void);
+
+void sub_80888BC(struct TimeAttackModeSelectionScreen* modeScreen);
+
+void sub_8088398(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;
+    if (++modeScreen->unk14C == 0x20) {
+        modeScreen->unk14E = 1;
+        gCurTask->main = sub_80884C0;
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        modeScreen->unk14C = 0x1F;
+    }
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+
+    gWinRegs[4] = 0x1300;
+    gWinRegs[5] = 0x11;
+    
+    gFlags |= 0x4;
+    sub_802EFDC(0xF0);
+    sub_802E044(0x6400, 700);
+
+    element = &modeScreen->unk80;
+    if (modeScreen->unk14C < 10) {
+        element->unk16 = modeScreen->unk14C * 10 - 0x32;
+    } else {
+        element->unk16 = 0x32;
+    }
+    element->unk18 = 10;
+
+    element = &modeScreen->unkB0;
+    if (modeScreen->unk14C < 10) {
+        element->unk16 = -0x50;
+    } else if (modeScreen->unk14C < 0x14) {
+        element->unk16 = (modeScreen->unk14C * 0x10) - 0xFA;
+    } else {
+        element->unk16 = 0x46;
+    }
+    element->unk18 = 0x3C;
+
+    element = &modeScreen->unkE0;
+    if (modeScreen->unk14C < 0x14) {
+        element->unk16 = -0x5A;
+    } else  if (modeScreen->unk14C < 0x1E) {
+        element->unk16 = (modeScreen->unk14C * 0x10) - 400;
+    } else {
+        element->unk16 = 0x50;
+    }
+    element->unk18 = 0x4C;
+    sub_80888BC(modeScreen);
+}
+
+void sub_80886C8(void);
+void sub_8088768(void);
+
+void sub_80884C0(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270* transitionConfig;
+    struct UNK_0808B3FC_UNK240* element;
+    s8 lang;
+    
+    if (gPressedKeys & A_BUTTON) {
+        if (modeScreen->unk14D && gLoadedSaveGame->unk12 == 0) {
+            m4aSongNumStart(SE_ABORT);
+        } else {
+            transitionConfig = &modeScreen->unk140;
+            transitionConfig->unk0 = 1;
+            transitionConfig->unk4 = 0;
+            transitionConfig->unk2 = 1;
+            transitionConfig->unk6 = 0x100;
+            transitionConfig->unk8 = 0x3FFF;
+            transitionConfig->unkA = 0;
+            m4aSongNumStart(SE_SELECT);
+            gCurTask->main = sub_80886C8;
+        }
+    } else if (gPressedKeys & B_BUTTON) {
+        transitionConfig = &modeScreen->unk140;
+        transitionConfig->unk0 = 1;
+        transitionConfig->unk4 = 0;
+        transitionConfig->unk2 = 1;
+        transitionConfig->unk6 = 0x100;
+        transitionConfig->unk8 = 0x3FFF;
+        transitionConfig->unkA = 0;
+        m4aSongNumStart(SE_RETURN);
+        gCurTask->main = sub_8088768;
+    }
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+
+    gWinRegs[4] = 0x1300;
+    gWinRegs[5] = 0x11;
+    
+    gFlags |= 0x4;
+    sub_802EFDC(0xF0);
+    sub_802E044(0x6400, 700);
+
+    if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+        modeScreen->unk14D ^= 1;
+    }
+
+    if (modeScreen->unk14D) {
+        lang = gLoadedSaveGame->unk6 - 1;
+        if (lang < 0) {
+            lang = 0;
+        }
+
+        element = &modeScreen->unkB0;
+        element->unk25 = 1;
+
+        element = &modeScreen->unkE0;
+        element->unk25 = 0xFF;
+
+        element = &modeScreen->unk110;
+        if (gLoadedSaveGame->unk12 != 0) {
+            element->unkA = gUnknown_080E0384[3 + lang * 5].unk4;
+            element->unk20 = gUnknown_080E0384[3 + lang * 5].unk6;
+        } else {
+            element->unkA = gUnknown_080E0384[4 + lang * 5].unk4;
+            element->unk20 = gUnknown_080E0384[4 + lang * 5].unk6;
+        }
+        element->unk21 = 0xFF;
+    } else {
+        lang = gLoadedSaveGame->unk6 - 1;
+        if (lang < 0) {
+            lang = 0;
+        }
+        element = &modeScreen->unkB0;
+        element->unk25 = 0;
+
+        element = &modeScreen->unkE0;
+        element->unk25 = 0;
+
+        element = &modeScreen->unk110;
+        element->unkA = gUnknown_080E0384[2 + lang * 5].unk4;
+        element->unk20 = gUnknown_080E0384[2 + lang * 5].unk6;
+        element->unk21 = 0xFF;
+    }
+    sub_80888BC(modeScreen);
+}
