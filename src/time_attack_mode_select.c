@@ -7,6 +7,9 @@
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "title_screen.h"
+#include "game.h"
+#include "character_select.h"
 
 struct TimeAttackModeSelectionScreen {
     struct Unk_03002400 unk0;
@@ -346,4 +349,99 @@ void sub_80884C0(void) {
         element->unk21 = 0xFF;
     }
     sub_80888BC(modeScreen);
+}
+
+void sub_808883C(void);
+
+void sub_80886C8(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+        gFlags &= ~0x4;
+        gMultiSioEnabled = TRUE;
+        gCurTask->main = sub_808883C;
+        return;
+    }
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+
+    gWinRegs[4] = 0x3300;
+    gWinRegs[5] = 0x31;
+    
+    gFlags |= 0x4;
+    sub_802EFDC(0xF0);
+    sub_802E044(0x6400, 700);
+    sub_80888BC(modeScreen);
+}
+
+
+void sub_8088768(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+        gFlags &= ~0x4;
+        CreateTitleScreenAtSinglePlayerMenu();
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+
+    gWinRegs[4] = 0x3300;
+    gWinRegs[5] = 0x31;
+    
+    gFlags |= 0x4;
+    sub_802EFDC(0xF0);
+    sub_802E044(0x6400, 700);
+    sub_80888BC(modeScreen);
+}
+
+void sub_8088800(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+     if (sub_802D4CC(&modeScreen->unk140) == 1) {
+        modeScreen->unk14C = 0xF;
+        gCurTask->main = sub_80882F8;
+     }
+}
+
+void sub_808883C(void) {
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
+
+    if (modeScreen->unk14D != 0) {
+        gGameMode = GAME_MODE_BOSS_TIME_ATTACK;
+    } else {
+        gGameMode = GAME_MODE_TIME_ATTACK;
+    }
+
+    TasksDestroyAll();
+    gUnknown_03002AE4 = gUnknown_0300287C;
+    gUnknown_03005390 = 0;
+    gUnknown_03004D5C = gUnknown_03002A84;
+    CreateCharacterSelectionScreen(0, gLoadedSaveGame->unk13 & 0x10);
+}
+
+void sub_80888BC(struct TimeAttackModeSelectionScreen* modeScreen) {
+    struct UNK_0808B3FC_UNK240* element;
+    element = &modeScreen->unk80;
+    sub_80051E8(element);
+    element = &modeScreen->unkB0;
+    sub_80051E8(element);
+    element = &modeScreen->unkE0;
+    sub_80051E8(element);
+
+    if (modeScreen->unk14E != 0) {
+        element = &modeScreen->unk110;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+}
+
+void sub_8088900(struct Task* t) {
+     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(t);
+    VramFree(modeScreen->unk80.unk4);
+    VramFree(modeScreen->unkB0.unk4);
+    VramFree(modeScreen->unkE0.unk4);
+    VramFree(modeScreen->unk110.unk4);
 }
