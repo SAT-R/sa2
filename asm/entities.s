@@ -5864,7 +5864,7 @@ _0800ABB8:
 	ldr r0, _0800AC14 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_80890BC
+	bl CreateTimeAttackLobbyScreen
 	b _0800AD8A
 	.align 2, 0
 _0800ABF8: .4byte gFlags

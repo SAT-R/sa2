@@ -552,7 +552,7 @@ _08036AA8:
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne _08036B1C
-	bl sub_80890BC
+	bl CreateTimeAttackLobbyScreen
 	b _08036B28
 	.align 2, 0
 _08036AE8: .4byte gCurTask

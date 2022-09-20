@@ -918,7 +918,7 @@ sub_801AE48: @ 0x0801AE48
 	ldr r0, _0801AEAC @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_80890BC
+	bl CreateTimeAttackLobbyScreen
 	ldr r1, _0801AEB0 @ =gUnknown_03005448
 	movs r0, #2
 	strb r0, [r1]
@@ -1886,7 +1886,7 @@ sub_801B6B4: @ 0x0801B6B4
 	ldr r0, _0801B714 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_80890BC
+	bl CreateTimeAttackLobbyScreen
 	ldr r1, _0801B718 @ =gUnknown_03005448
 	movs r0, #2
 	strb r0, [r1]

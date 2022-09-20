@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void sub_80890BC(void);
+void CreateTimeAttackLobbyScreen(void);
 
 #endif // GUARD_TIME_ATTACK_LOBBY_H

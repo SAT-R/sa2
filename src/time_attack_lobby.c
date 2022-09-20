@@ -12,6 +12,7 @@
 #include "constants/songs.h"
 #include "title_screen.h"
 #include "zones.h"
+#include "task.h"
 
 struct TimeAttackLobbyScreen {
     struct Unk_03002400 unk0;
@@ -294,4 +295,99 @@ void sub_8088D60(void) {
 
     sub_8004558(element);
     sub_80051E8(element);
+}
+
+void sub_8088EB4(void) {
+    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_802D4CC_UNK270* transitionConfig;
+    u32 i;
+
+    if (gRepeatedKeys & (DPAD_UP) && lobbyScreen->unk1AD != 0) {
+        lobbyScreen->unk1AD--;
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    } else if (gRepeatedKeys & DPAD_DOWN && lobbyScreen->unk1AD != 3) {
+        lobbyScreen->unk1AD++;
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    }
+
+    for (i = 0; i < 4; i++) {
+        element = &lobbyScreen->unkB0[i + 1];
+        if (i == lobbyScreen->unk1AD) {
+            element->unk25 = 0;
+        } else {
+            element->unk25 = 1;
+        }
+        sub_80051E8(element);
+    }
+    element = &lobbyScreen->unk80;
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (lobbyScreen->unk1AC != 0) {
+        element = &lobbyScreen->unkB0[0];
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (gRepeatedKeys & A_BUTTON) {
+        if (lobbyScreen->unk1AD != 3) {
+            element = &lobbyScreen->unk80;
+            VramFree(element->unk4);
+            element->unk4 = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].unk0);
+            element->unkA = gUnknown_080E0474[gSelectedCharacter + 5].unk4;
+            element->unk20 = gUnknown_080E0474[gSelectedCharacter + 5].unk6;
+            element->unk21 = 0xFF;
+            element->unk22 = 0x40;
+            if (lobbyScreen->unk1AD == 1) {
+                element->unk10 &= ~0x400;
+            }
+            sub_8004558(element);
+
+            if (lobbyScreen->unk1AC != 0) {
+                element = &lobbyScreen->unkB0[0];
+                VramFree(element->unk4);
+
+                element->unk4 = VramMalloc(gUnknown_080E04C4[1].unk0);
+                element->unkA = gUnknown_080E04C4[1].unk4;
+                element->unk20 = gUnknown_080E04C4[1].unk6;
+                element->unk21 = 0xFF;
+                element->unk22 = 0x40;
+                if (lobbyScreen->unk1AD == 1) {
+                    element->unk10 &= ~0x400;
+                }
+                sub_8004558(element);
+            }
+        }
+
+        lobbyScreen->unk1A0.unkA = 0;
+        lobbyScreen->unk1A0.unk4 = 0;
+        lobbyScreen->unk1A0.unk2 = 1;
+        m4aSongNumStart(SE_SELECT);
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, 0x1000);
+        gCurTask->main = sub_8088D60;
+    }
+}
+
+void sub_8089104(struct Task*);
+
+void CreateTimeAttackLobbyScreen() {
+    struct Task* t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
+    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+
+    lobbyScreen->unk1AD = 0;
+    lobbyScreen->unk1AC = 0;
+    sub_8088944(lobbyScreen);
+}
+
+void sub_8089104(struct Task* t) {
+    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+    VramFree(lobbyScreen->unkB0[1].unk4);
+    VramFree(lobbyScreen->unkB0[2].unk4);
+    VramFree(lobbyScreen->unkB0[3].unk4);
+    VramFree(lobbyScreen->unkB0[4].unk4);
+    VramFree(lobbyScreen->unk80.unk4);
+    if (lobbyScreen->unk1AC != 0) {
+        VramFree(lobbyScreen->unkB0[0].unk4);
+    }
 }
