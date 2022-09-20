@@ -29,7 +29,7 @@ extern const struct UNK_080E0D64 gUnknown_080E04D4[30];
 extern const struct UNK_080E0D64 gUnknown_080E0474[10];
 extern const struct UNK_080E0D64 gUnknown_080E04C4[2];
 
-#define IsBossTimeAttack() (GetBit(gGameMode, 1))
+#define IsBossTimeAttack() ((gGameMode / 2) % 2)
 
 void sub_8088944(struct TimeAttackLobbyScreen* lobbyScreen) {
     struct UNK_802D4CC_UNK270* transitionConfig;
@@ -239,28 +239,24 @@ void sub_8088D60(void) {
     struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* element;
     u32 i;
-    // WTF?
-    u32 one = 1;
-
     if (sub_802D4CC(&lobbyScreen->unk1A0) == 1) {
         TaskDestroy(gCurTask);
         switch(lobbyScreen->unk1AD) {
             case 0:
                 sub_801A770();
-                return;
+                break;
             case 1:
                 CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY));
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
-                return;
+                break;
             case 2:
-                CreateTimeAttackLevelSelectScreen(gGameMode >> 1 & one, gSelectedCharacter, gCurrentLevel);
-                return;
+                CreateTimeAttackLevelSelectScreen(IsBossTimeAttack(), gSelectedCharacter, gCurrentLevel);
+                break;
             case 3:
                 CreateTitleScreenAndSkipIntro();
-                return;
-            default:
-                return;
+                break;
         }
+        return;
     }
 
     for (i = 0; i < 4; i++) {
