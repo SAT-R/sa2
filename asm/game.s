@@ -27057,7 +27057,7 @@ _080278E8:
 	bne _08027918
 	ldr r0, _08027914 @ =gUnknown_03005490
 	ldr r0, [r0]
-	bl sub_808916C
+	bl CreateTimeAttackResultsCutScene
 	b _08027928
 	.align 2, 0
 _0802790C: .4byte gUnknown_03005960
@@ -27235,7 +27235,7 @@ _08027A4E:
 	bne _08027A74
 	ldr r0, _08027A70 @ =gUnknown_03005490
 	ldr r0, [r0]
-	bl sub_808916C
+	bl CreateTimeAttackResultsCutScene
 	b _08027A84
 	.align 2, 0
 _08027A68: .4byte 0x00007FFE
@@ -42345,7 +42345,7 @@ sub_802ED98: @ 0x0802ED98
 	bne _0802EDD8
 	ldr r0, _0802EDD4 @ =gUnknown_03005490
 	ldr r0, [r0]
-	bl sub_808916C
+	bl CreateTimeAttackResultsCutScene
 	b _0802EE64
 	.align 2, 0
 _0802EDCC: .4byte gCurTask

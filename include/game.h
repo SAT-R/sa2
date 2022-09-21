@@ -23,6 +23,9 @@ extern s8 gSelectedCharacter;
 extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[2];
+extern s16 gUnknown_030053F0;
+extern u8 gUnknown_030054A8;
+extern u16 gUnknown_03005A44;
 extern u8 gUnknown_0300543C;
 
 extern u32 gUnknown_030054DC;
@@ -47,7 +50,9 @@ extern struct Task *gUnknown_03005844;
 
 // Not sure what these are yet
 struct SomeStruct_59E0 {
-    u8 filler[140];
+    u8 filler[100];
+    u16 unk64;
+    u8 filler66[38];
     u32 unkA8;
 };
 

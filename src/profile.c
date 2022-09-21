@@ -465,10 +465,6 @@ static bool16 sub_806B988(u16*);
     }; \
 })
 
-#define DELIMINATOR_DIGIT 10
-#define TensDigit(number) ((number) / 10)
-#define UnitsDigit(number) ((number) % 10)
-
 static const s8 sMenuCursorMoveAnims[2][8] = {
     [OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS] = { 8, 4, 1, -1, -2, -1, 1, 0 },
     [OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS] = { 1, 2, 5, 7, 8, 8, 8, 8 },

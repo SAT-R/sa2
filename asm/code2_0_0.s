@@ -8480,7 +8480,7 @@ _0803AB84:
 	bne _0803ABC0
 	ldr r0, _0803ABBC @ =gUnknown_03005490
 	ldr r0, [r0]
-	bl sub_808916C
+	bl CreateTimeAttackResultsCutScene
 	b _0803ABFC
 	.align 2, 0
 _0803ABB4: .4byte gCurrentLevel
