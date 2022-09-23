@@ -17,7 +17,7 @@
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
-extern u8 gCurrentLevel;
+extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
 extern u32 gUnknown_030059D8;

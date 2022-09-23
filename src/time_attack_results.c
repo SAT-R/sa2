@@ -8,6 +8,8 @@
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "trig.h"
+
 
 struct TimeAttackResultsCutScene {
     struct UNK_802D4CC_UNK270 unk0;
@@ -29,9 +31,9 @@ struct TimeAttackResultsCutScene {
     u8 unk175;
     u8 filler176[2];
     struct UNK_0808B3FC_UNK240 unk178[7];
-    struct UNK_802D4CC_UNK270 unk2C8;
-    u16 unk2D4;
-    u16 unk2D6;
+    struct UNK_808D124_UNK180 unk2C8;
+    s16 unk2D4;
+    s16 unk2D6;
     u8 unk2D8;
 };
 
@@ -178,7 +180,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     sub_8004558(element);
 
     if (isBossLevel != 0) {
-        someVal = (gCurrentLevel << 0x18 >> 0x1A) + 2;
+        someVal = (gCurrentLevel >> 2) + 2;
         
     } else {
         someVal = gCurrentLevel & 1;
@@ -240,8 +242,8 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
 
     resultsCutScene->unk2C8.unk2 = 0;
     resultsCutScene->unk2C8.unk4 = 0x100;
-    resultsCutScene->unk2C8.unk6 = 0x78;
-    resultsCutScene->unk2C8.unk8 = 0x78;
+    resultsCutScene->unk2C8.unk6[0] = 0x78;
+    resultsCutScene->unk2C8.unk6[1] = 0x78;
     resultsCutScene->unk2C8.unk0 = 0;
 
     element = &resultsCutScene->unkFC;
@@ -281,4 +283,152 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     }
 
     return 600;
+}
+
+extern const s8 gUnknown_080E05C4[0x20];
+
+void sub_80897E8(void) {
+    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;
+    u32 unk168 = resultsCutScene->unk168;
+    u32 i;
+
+    if (unk168 < 0x18) {
+        s32 temp;
+        element = &resultsCutScene->unk12C;
+        temp = 0;
+        if (unk168 < 0x11) {
+            temp = (0x10 - unk168) * 0x18;
+        }
+
+        for (i = 0; i < 8; i++) {
+            element->unk16 = temp + i * 0x20;
+            sub_80051E8(element);
+        }
+    } else {
+        element = &resultsCutScene->unk12C;
+        for (i = 0; i < 8; i++) {
+            element->unk16 = i << 5;
+            sub_80051E8(element);
+        }
+    }
+
+    if (unk168 > 0x1C) {
+        s32 temp;
+        if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
+            temp = 2;
+        } else {
+            temp = 3;
+        }
+
+        for (i = 0; i < temp; i++) {
+            // TODO: fix type
+            element = &(&resultsCutScene->unkC)[i];
+            sub_80051E8(element);
+        }
+    }
+
+    if (unk168 > 0x59) {
+        element = &resultsCutScene->unk9C;
+        if ((unk168 - 0x5A) < 0xB) {
+            element->unk16 = (100 - unk168) * 0x10 + 0x28;
+        }
+        sub_80051E8(element);
+    }
+
+    if (unk168 > 0x77) {
+        s32 temp = (unk168 - 0x7F);
+        if (temp > 0x10) {
+            if (resultsCutScene->unk2D8) {
+                element = &resultsCutScene->unkCC;
+                resultsCutScene->unk2C8.unk2 = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
+                resultsCutScene->unk2D6 += resultsCutScene->unk2D4;
+
+                if (resultsCutScene->unk2D6 == 0) {
+                    if (resultsCutScene->unk2D4 == 0x800) {
+                        resultsCutScene->unk2D4 = 0x400;
+                    } else {
+                        resultsCutScene->unk2D4 = 0;
+                    }
+                }
+
+                if (resultsCutScene->unk2C8.unk2 == 0) {
+                    resultsCutScene->unk2C8.unk2 = 0x10;
+                }
+                sub_8004860(element, &resultsCutScene->unk2C8);
+                sub_80051E8(element);
+            }
+
+            if (resultsCutScene->unk2D8 == 1 && (unk168 & 0x20)) {
+                element = &resultsCutScene->unkFC;
+                sub_80051E8(element);
+            }
+
+           
+        }
+
+        for (i = 0; i < 7; i++) {
+            s32 index = (unk168 - 0x78) - i;
+            if (index < 0) {
+                break;
+            }
+
+            element = &resultsCutScene->unk178[i];
+            if (index < 0x14U) {
+                element->unk18 += gUnknown_080E05C4[index];
+            }
+
+            sub_80051E8(element);
+        }
+    }
+}
+
+// StoreRecord
+u8 sub_80899B8(u32 finishTime) {
+    u8 i;
+    u8 character = gSelectedCharacter;
+    u8 zone = gCurrentLevel >> 2;
+    s32 currentLevel = gCurrentLevel;
+    u8 act;
+    u8 rank;
+    u32 existingRecords[3];
+    struct TimeRecords* timeRecords;
+
+    act = currentLevel - currentLevel / 4 * 4;
+    rank = 0;
+
+    for (i = 0; i < 3; i++) {
+        existingRecords[i] = gLoadedSaveGame->unk34.table[character][zone][act][i];
+    }
+
+    for (i = 0; i < 3; i++) {
+        if (finishTime < existingRecords[i]) {
+            gLoadedSaveGame->unk34.table[character][zone][act][i] = finishTime;
+            rank = ++i;
+            break;
+        }
+    }
+
+    for (;i < 3; i++) {
+        gLoadedSaveGame->unk34.table[character][zone][act][i] = existingRecords[i - 1];
+    }
+
+    return rank;
+}
+
+void sub_80310F0(void);
+void sub_8031314(void);
+void sub_8089B40(void);
+
+void sub_8089AEC(void) {
+    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
+    u32 unk168 = resultsCutScene->unk168;
+    resultsCutScene->unk168 = ++unk168;
+    sub_80310F0();
+    sub_8031314();
+    sub_80897E8();
+
+    if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON))) || (unk168 > 600)) {
+        gCurTask->main = sub_8089B40;
+    }
 }
