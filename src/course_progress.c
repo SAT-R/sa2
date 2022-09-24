@@ -8,8 +8,7 @@
 
 struct CourseProgressIndicator {
     struct UNK_0808B3FC_UNK240 unk0[4];
-    struct UNK_0808B3FC_UNK240 unkC0;
-    struct UNK_0808B3FC_UNK240 unkF0;
+    struct UNK_0808B3FC_UNK240 unkC0[2];
     // course
     u8 unk120;
     // numLevels
@@ -68,7 +67,7 @@ void sub_8086D68(struct CourseProgressIndicator* progressIndicator) {
         sub_8004558(element);
     }
 
-    element = &progressIndicator->unkC0;
+    element = &progressIndicator->unkC0[0];
     element->unk4 = VramMalloc(4);
     element->unkA = 0x36F;
     element->unk20 = 0;
@@ -84,7 +83,7 @@ void sub_8086D68(struct CourseProgressIndicator* progressIndicator) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &progressIndicator->unkF0;
+    element = &progressIndicator->unkC0[1];
     element->unk4 = VramMalloc(4);
     element->unkA = 0x370;
     element->unk20 = 0;
@@ -118,4 +117,36 @@ void sub_8086EDC(void) {
     }
 
     sub_8086F6C(progressIndicator);
+}
+
+void sub_8086F6C(struct CourseProgressIndicator* progressIndicator) {
+    u8 i;
+    struct UNK_0808B3FC_UNK240* element;
+
+    if (gUnknown_030059E0.unk20 & 0x100000) {
+        return;
+    }
+
+    for (i = 0; i < progressIndicator->unk121; i++) {
+        element = &progressIndicator->unk0[i];
+        sub_80051E8(element);
+    }
+
+    for (i = 0; i < 2; i++) {
+        element = &progressIndicator->unkC0[i];
+        sub_80051E8(element);
+    }
+}
+
+void sub_8086FC8(struct Task* t) {
+    u8 i;
+    struct CourseProgressIndicator* progressIndicator = TaskGetStructPtr(t);
+
+    for (i = 0; i < progressIndicator->unk121; i++) {
+        VramFree(progressIndicator->unk0[i].unk4);
+    }
+
+    for (i = 0; i < 2; i++) {
+        VramFree(progressIndicator->unkC0[i].unk4);
+    }   
 }
