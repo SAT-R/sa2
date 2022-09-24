@@ -31326,7 +31326,7 @@ _08029940:
 	movs r0, #0x80
 	lsls r0, r0, #3
 	str r0, [r1, #8]
-	bl sub_8089C24
+	bl CreateBoostModeParticles
 	movs r0, #0xdd
 	bl m4aSongNumStart
 	b _0802998A
