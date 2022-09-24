@@ -60,7 +60,7 @@ SECTIONS
         build/sa2/src/math.o(.text);
         build/sa2/asm/math.o(.text);
         build/sa2/asm/code4.o(.text);
-        build/sa2/asm/time_attack_progress.o(.text);
+        build/sa2/asm/course_progress.o(.text);
         build/sa2/src/time_attack_mode_select.o(.text);
         build/sa2/src/time_attack_lobby.o(.text);
         build/sa2/src/time_attack_results.o(.text);

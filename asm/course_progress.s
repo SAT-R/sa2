@@ -4,9 +4,8 @@
 .syntax unified
 .arm
 
-@; CreateTimeAttackProgress
-	thumb_func_start sub_8086CE8
-sub_8086CE8: @ 0x08086CE8
+	thumb_func_start CourseProgressIndicator
+CourseProgressIndicator: @ 0x08086CE8
 	push {r4, lr}
 	sub sp, #4
 	ldr r0, _08086D50 @ =sub_8086EDC
