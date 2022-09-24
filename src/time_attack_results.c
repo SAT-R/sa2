@@ -9,16 +9,14 @@
 #include "m4a.h"
 #include "constants/songs.h"
 #include "trig.h"
+#include "task.h"
+#include "time_attack_lobby.h"
 
 
 struct TimeAttackResultsCutScene {
     struct UNK_802D4CC_UNK270 unk0;
-    struct UNK_0808B3FC_UNK240 unkC;
-    struct UNK_0808B3FC_UNK240 unk3C;
-    struct UNK_0808B3FC_UNK240 unk6C;
-    struct UNK_0808B3FC_UNK240 unk9C;
-    struct UNK_0808B3FC_UNK240 unkCC;
-    struct UNK_0808B3FC_UNK240 unkFC;
+    struct UNK_0808B3FC_UNK240 unkC[3];
+    struct UNK_0808B3FC_UNK240 unk9C[3];
     struct UNK_0808B3FC_UNK240 unk12C;
     u32 unk15C;
     u8 filler160[8];
@@ -53,7 +51,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     s16 millis, minutes, seconds;
     u8 i;
     u8 isBossLevel;
-    u8 someVal;
+    u8 level;
     gLoadedSaveGame->unk374 += gUnknown_030053F0;
 
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0, sub_8089BB0);
@@ -143,7 +141,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &resultsCutScene->unkC;
+    element = &resultsCutScene->unkC[0];
     element->unk16 = 0x100;
     element->unk18 = 0x29;
     element->unk4 = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
@@ -162,7 +160,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
 
     isBossLevel = (gCurrentLevel & 3) >> 1;
 
-    element = &resultsCutScene->unk3C;
+    element = &resultsCutScene->unkC[1];
     element->unk16 = 0x100;
     element->unk18 = 0x31;
     element->unk4 = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
@@ -180,17 +178,17 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     sub_8004558(element);
 
     if (isBossLevel != 0) {
-        someVal = (gCurrentLevel >> 2) + 2;
+        level = (gCurrentLevel >> 2) + ACT_BOSS;
         
     } else {
-        someVal = gCurrentLevel & 1;
+        level = gCurrentLevel & 1;
     }
-    element = &resultsCutScene->unk6C;
+    element = &resultsCutScene->unkC[2];
     element->unk16 = 0x100;
     element->unk18 = 0x31;
-    element->unk4 = VramMalloc(gUnknown_080D7178[someVal][0]);
-    element->unkA = gUnknown_080D7178[someVal][1];
-    element->unk20 = gUnknown_080D7178[someVal][2];
+    element->unk4 = VramMalloc(gUnknown_080D7178[level][0]);
+    element->unkA = gUnknown_080D7178[level][1];
+    element->unk20 = gUnknown_080D7178[level][2];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -202,7 +200,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &resultsCutScene->unk9C;
+    element = &resultsCutScene->unk9C[0];
     element->unk16 = 0x28;
     element->unk18 = 0x5A;
     element->unk4 = VramMalloc(8);
@@ -219,7 +217,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     element->unk10 = 0;
     sub_8004558(element);
 
-    element = &resultsCutScene->unkCC;
+    element = &resultsCutScene->unk9C[1];
     element->unk16 = 0x78;
     element->unk18 = 0x78;
     element->unk4 = VramMalloc(0x10);
@@ -246,7 +244,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     resultsCutScene->unk2C8.unk6[1] = 0x78;
     resultsCutScene->unk2C8.unk0 = 0;
 
-    element = &resultsCutScene->unkFC;
+    element = &resultsCutScene->unk9C[2];
     element->unk16 = 0x78;
     element->unk18 = 0x94;
     element->unk4 = VramMalloc(0x16);
@@ -323,13 +321,13 @@ void sub_80897E8(void) {
 
         for (i = 0; i < temp; i++) {
             // TODO: fix type
-            element = &(&resultsCutScene->unkC)[i];
+            element = &resultsCutScene->unkC[i];
             sub_80051E8(element);
         }
     }
 
     if (unk168 > 0x59) {
-        element = &resultsCutScene->unk9C;
+        element = &resultsCutScene->unk9C[0];
         if ((unk168 - 0x5A) < 0xB) {
             element->unk16 = (100 - unk168) * 0x10 + 0x28;
         }
@@ -340,7 +338,7 @@ void sub_80897E8(void) {
         s32 temp = (unk168 - 0x7F);
         if (temp > 0x10) {
             if (resultsCutScene->unk2D8) {
-                element = &resultsCutScene->unkCC;
+                element = &resultsCutScene->unk9C[1];
                 resultsCutScene->unk2C8.unk2 = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
                 resultsCutScene->unk2D6 += resultsCutScene->unk2D4;
 
@@ -360,7 +358,7 @@ void sub_80897E8(void) {
             }
 
             if (resultsCutScene->unk2D8 == 1 && (unk168 & 0x20)) {
-                element = &resultsCutScene->unkFC;
+                element = &resultsCutScene->unk9C[2];
                 sub_80051E8(element);
             }
 
@@ -385,17 +383,14 @@ void sub_80897E8(void) {
 
 // StoreRecord
 u8 sub_80899B8(u32 finishTime) {
+    u32 existingRecords[3];
     u8 i;
+
     u8 character = gSelectedCharacter;
     u8 zone = gCurrentLevel >> 2;
     s32 currentLevel = gCurrentLevel;
-    u8 act;
-    u8 rank;
-    u32 existingRecords[3];
-    struct TimeRecords* timeRecords;
-
-    act = currentLevel - currentLevel / 4 * 4;
-    rank = 0;
+    u8 act = currentLevel - currentLevel / (ACTS_PER_ZONE + 1) * (ACTS_PER_ZONE + 1);
+    u8 rank = 0;
 
     for (i = 0; i < 3; i++) {
         existingRecords[i] = gLoadedSaveGame->unk34.table[character][zone][act][i];
@@ -431,4 +426,41 @@ void sub_8089AEC(void) {
     if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON))) || (unk168 > 600)) {
         gCurTask->main = sub_8089B40;
     }
+}
+
+void sub_8089B40(void) {
+    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
+    if (sub_802D4CC(&resultsCutScene->unk0) == 1) {
+        WriteSaveGame();
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        CreateTimeAttackLobbyScreen();
+        return;
+    }
+
+    sub_80310F0();
+    sub_8031314();
+    sub_80897E8();
+}
+
+void sub_8089BB0(struct Task* t) {
+    u32 i;
+    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(t);
+    VramFree(resultsCutScene->unk12C.unk4);
+
+    for (i = 0; i < 3; i++) {
+        VramFree(resultsCutScene->unkC[i].unk4);
+    }
+
+    for (i = 0; i < 3; i++) {
+        VramFree(resultsCutScene->unk9C[i].unk4);
+    }
+
+    for (i = 0; i < 7; i++) {
+        VramFree(resultsCutScene->unk178[i].unk4);
+    }
+
+    gUnknown_03005424 &= ~0x200;
 }
