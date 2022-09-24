@@ -35,8 +35,13 @@ extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
+struct MultiplayerPlayer {
+    u8 filler[0x50];
+    s16 unk50;
+};
+
 // multiplayer values
-extern u32 gUnknown_030055A0[4];
+extern struct Task* gUnknown_030055A0[4];
 // gMultiplayerCharacters
 extern s8 gMultiplayerCharacters[4];
 extern s8 gUnknown_030054B4[4];

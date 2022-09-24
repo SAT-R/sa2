@@ -42,7 +42,7 @@ void GameStart(void) {
     gUnknown_030054E4 = 0;
 
     for (i = 0; i < 4; i++) {
-        gUnknown_030055A0[i] = 0;
+        gUnknown_030055A0[i] = NULL;
     }
 
     for (i = 0; i < 4; i++) {
