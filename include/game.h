@@ -55,9 +55,15 @@ extern struct Task *gUnknown_03005844;
 
 // Not sure what these are yet
 struct SomeStruct_59E0 {
-    u8 filler0[0x20];
+    u32 filler0;
+    u32 filler4;
+    s32 unk8;
+    s32 unkC;
+    u8 filler10[0x10];
     u32 unk20;
-    u8 filler24[100 - 0x24];
+    u8 filler24[0x13];
+    u8 unk37;
+    u8 filler38[100 - 0x14 - 0x24];
     u16 unk64;
     u8 filler66[38];
     u32 unkA8;
@@ -66,7 +72,9 @@ struct SomeStruct_59E0 {
 extern struct SomeStruct_59E0 gUnknown_030059E0;
 
 struct SomeStruct_5960 {
-    u8 filler[92];
+    u32 unk0;
+    u32 unk4;
+    u8 filler[92 - 8];
     u32 unk5C;
 };
 
