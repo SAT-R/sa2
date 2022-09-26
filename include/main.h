@@ -134,7 +134,7 @@ extern OamData gOamBuffer[128];
 extern u32 gUnknown_03001B60[2][160];
 extern struct Unk_03002400* gUnknown_03001800[16];
 
-extern u32* gUnknown_03001884;
+extern void* gUnknown_03001884;
 
 extern u16 gUnknown_030017F0;
 extern u16 gUnknown_030017F4[2];
@@ -149,8 +149,8 @@ extern u16 gUnknown_0300194C;
 union Unk_03002E60 *gUnknown_03002260;
 extern u8 gUnknown_03002280[16];
 extern u8 gUnknown_03004D80[16];
-extern u32* gUnknown_030022AC;
-extern u32* gUnknown_030022C0;
+extern void* gUnknown_030022AC;
+extern void* gUnknown_030022C0;
 extern s16 gUnknown_030026D0;
 extern u8 gUnknown_030026F4;
 extern const struct SpriteTables* gUnknown_03002794;
@@ -166,7 +166,7 @@ extern u8 gUnknown_03002AE0;
 extern u8 gUnknown_03002AE4;
 extern u8 gUnknown_03004D10[0x40];
 extern u8 gUnknown_03004D50;
-extern u32* gUnknown_03004D54;
+extern void* gUnknown_03004D54;
 extern u16 gUnknown_03004D58;
 extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03004D60[0x20];

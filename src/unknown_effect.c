@@ -10,7 +10,7 @@ struct UnknownEffect87028 {
 
 extern u32 sub_800CBA4(struct SomeStruct_59E0*);
 
-void sub_80871C4(s16, s16, u32);
+void sub_80871C4(s16, s16, s16);
 
 void sub_8087088(void);
 void sub_80870E8(void);
@@ -61,5 +61,86 @@ void sub_80870E8(void) {
         gBldRegs.bldY = 0;
         gDispCnt &= ~0x2000;
         TaskDestroy(gCurTask);
+    }
+}
+
+void sub_80871C4(s16 a, s16 b, s16 c) {
+    s16 d;
+    s16 e;
+    s16 f;
+    s16 g;
+    u8 i;
+
+    u8* unk1884 = gUnknown_03001884;
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void*)REG_ADDR_WIN0H;
+
+    gFlags |= 0x4;
+
+    d = b - c;
+    f = (b + c);
+    e = 0;
+    if (d < 0) {
+        e = d * -1;
+    }
+    
+
+    for (i = 0; i <= 0x9F; i++) {
+        u16 temp;
+        if (i >= d && i < f) {
+            if (i < b) {
+                g = a + e;
+                temp = g - 1;
+    
+                if (temp < 0xEF) {
+                    *unk1884++ = g;
+                } else if (g < 1) {
+                    *unk1884++ = 0;
+                } else {
+                    *unk1884++ = 0xEF;
+                }
+    
+                g = a - e;
+                temp = g - 1;
+                if (temp < 0xEF) {
+                    *unk1884++ = g;
+                } else if (g > 0xEF) {
+                    *unk1884++ = 0xEF;
+                } else {
+                    *unk1884++ = 0;
+                }
+    
+                if (e < 0xF0) {
+                    e++;
+                }
+            } else {
+                g = e + a;
+                temp = (g - 1);
+                if (temp < 0xEF) {
+                    *unk1884++ = g;
+                } else if (g < 1) {
+                    *unk1884++ = 0;
+                } else {
+                    *unk1884++ = 0xEF;
+                }
+    
+                g = a - e;
+                temp = g - 1;
+                if (temp < 0xEF) {
+                    *unk1884++ = g;
+                } else if (g > 0xEF) {
+                    *unk1884++ = 0xEF;
+                } else {
+                    *unk1884++ = 0;
+                }
+    
+                if (e > 0) {
+                    e--;
+                }
+            }
+        } else {
+            *unk1884++ = 0;
+            *unk1884++ = 0;
+        }
     }
 }

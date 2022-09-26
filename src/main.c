@@ -27,7 +27,10 @@ u32 gFlags = 0;
 u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
 u16 gPhysicalInput = 0;
-u32* gUnknown_03001884 = NULL;
+
+// gComputedBgBuffer
+void* gUnknown_03001884 = NULL;
+
 u16 gVramHeapMaxTileSlots = 0;
 u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
@@ -54,11 +57,11 @@ s32 gNumTasks = 0;
 u8 gUnknown_03002280[] = {};
 u16 gInput = 0;
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
-u32* gUnknown_030022AC = NULL;
+void* gUnknown_030022AC = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task* gNextTask = NULL;
-u32* gUnknown_030022C0 = NULL;
+void* gUnknown_030022C0 = NULL;
 
 OamData gUnknown_030022C8 ALIGNED(8) = {};
 OamData gUnknown_030022D0[] = {};
@@ -80,10 +83,16 @@ u16 gDispCnt = 0;
 u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
 union MultiSioData gMultiSioSend ALIGNED(8) = {};
 u8 gUnknown_03002874 = 0;
+
+// gComputedBgTarget
 void* gUnknown_03002878 ALIGNED(4) = NULL;
+
 u8 gUnknown_0300287C = 0;
 u16 gBgPalette[] ALIGNED(16) = {};
+
+// gComputedBgSectorSize
 u8 gUnknown_03002A80 ALIGNED(4) = 0;
+
 u8 gUnknown_03002A84 ALIGNED(4) = 0;
 u16 gPrevInput ALIGNED(4) = 0;
 u16 gUnknown_03002A8C ALIGNED(4) = 0;
@@ -101,7 +110,7 @@ EWRAM_DATA u8 gEwramHeap[] = {};
 
 u8 gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
-u32* gUnknown_03004D54 = NULL;
+void* gUnknown_03004D54 = NULL;
 u16 gUnknown_03004D58 ALIGNED(4) = 0;
 u8 gUnknown_03004D5C ALIGNED(4) = 0;
 u8 gUnknown_03004D60[] ALIGNED(16) = {};
@@ -544,8 +553,7 @@ static void VBlankIntr(void) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
-        // TODO: resolve this cast
-        DmaSet(0, (vu8*)gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+        DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
                 << 16) |
                    (gUnknown_03002A80 >> 1));
