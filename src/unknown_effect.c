@@ -115,7 +115,7 @@ void sub_80871C4(s16 a, s16 b, s16 c) {
                 }
             } else {
                 g = e + a;
-                temp = (g - 1);
+                temp = g - 1;
                 if (temp < 0xEF) {
                     *unk1884++ = g;
                 } else if (g < 1) {
@@ -143,4 +143,29 @@ void sub_80871C4(s16 a, s16 b, s16 c) {
             *unk1884++ = 0;
         }
     }
+}
+
+void sub_80873EC(struct Task*);
+void sub_80873A4(void);
+
+void sub_8087368(void) {
+    struct Task* t = TaskCreate(sub_8087028, sizeof(struct UnknownEffect87028), 0x8000, 0, sub_80873EC);
+    struct UnknownEffect87028* effect = TaskGetStructPtr(t);
+    effect->unk0 = 0;
+    sub_80873A4();
+    m4aSongNumStart(SE_219);
+}
+
+void sub_80873A4(void) {
+    gWinRegs[4] = 0x1F;
+    gWinRegs[5] |= 0x3F;
+    gBldRegs.bldCnt = 0x3FBF;
+    gBldRegs.bldY = 4;
+    gDispCnt |= DISPCNT_WIN0_ON;
+    gWinRegs[0] = 0xF0;
+    gWinRegs[2] = 0xA0;
+}
+
+void sub_80873EC(UNUSED struct Task* t) {
+    gFlags &= ~0x4;
 }

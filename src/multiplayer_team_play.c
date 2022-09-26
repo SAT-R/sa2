@@ -484,10 +484,8 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
     gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
 
     for (i = 0; i < 160; i++) {
-        *unk1884 = (gSineTable[(gFrameCount + i * 4) & 1023] >> 0xB) + unk310;
-        unk1884++;
-        *unk1884 = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
-        unk1884++;
+        *unk1884++ = (gSineTable[(gFrameCount + i * 4) & 1023] >> 0xB) + unk310;
+        *unk1884++ = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
     }
 }
 
