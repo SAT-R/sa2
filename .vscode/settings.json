@@ -114,7 +114,8 @@
         "time_attack_mode_select.h": "c",
         "time_attack_end_menu.h": "c",
         "time_attack_lobby.h": "c",
-        "course_progress.h": "c"
+        "course_progress.h": "c",
+        "multiplayer_lobby.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

@@ -320,7 +320,6 @@ void sub_80897E8(void) {
         }
 
         for (i = 0; i < temp; i++) {
-            // TODO: fix type
             element = &resultsCutScene->unkC[i];
             sub_80051E8(element);
         }
