@@ -63,11 +63,10 @@ SECTIONS
         build/sa2/src/course_progress.o(.text);
         build/sa2/src/unknown_effect.o(.text);
         build/sa2/src/multiplayer_lobby.o(.text);
-        build/sa2/asm/multiplayer_lobby.o(.text);
         build/sa2/src/time_attack_mode_select.o(.text);
         build/sa2/src/time_attack_lobby.o(.text);
         build/sa2/src/time_attack_results.o(.text);
-        build/sa2/asm/boost_mode.o(.text);
+        build/sa2/asm/boost_effect.o(.text);
         build/sa2/src/sound_test.o(.text);
         build/sa2/src/title_screen.o(.text);
         build/sa2/src/backgrounds.o(.text);

@@ -208,7 +208,11 @@ void sub_8087AE0(void);
 void sub_808782C(void) {
     u8 i;
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+#ifndef NON_MATCHING
     register union MultiSioData *recv asm("r4"), *send;
+#else
+    union MultiSioData *recv, *send;
+#endif
     struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
     MultiPakHeartbeat();
 
@@ -297,4 +301,179 @@ void sub_808782C(void) {
 
         sub_8087E10(lobbyScreen);
     };
+}
+
+
+void sub_8087F48(struct MultiplayerLobbyScreen*);
+void sub_8087DA0(struct MultiplayerLobbyScreen*);
+
+void sub_8087AE0(void) {
+    u8 i;
+    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+#ifndef NON_MATCHING
+    register union MultiSioData *send asm("r4");
+#else
+    union MultiSioData *send;
+#endif
+    MultiPakHeartbeat();
+
+    for (i = 1; i < 4; i++) {
+        if (GetBit(gUnknown_030055B8, i)) {
+            if (sub_8087F8C(&gMultiSioRecv[i])) {
+                return;
+            }
+            if (gMultiSioRecv[i].pat0.unk0 == 0x40A2) {
+                lobbyScreen->unk111 |= 1 << (i - 1);
+            }
+        }
+    }
+
+    if (lobbyScreen->unk111 == gUnknown_030055B8 >> 1) {
+        send = &gMultiSioSend;
+        send->pat0.unk3 = 0;
+        send->pat0.unk2 = lobbyScreen->unk10D;
+        send->pat0.unk0 = 0x40A3;
+
+        if (lobbyScreen->unk10D != 0) {
+            sub_8087DA0(lobbyScreen);
+        } else {
+            sub_8087F48(lobbyScreen);
+        }
+        sub_8087E10(lobbyScreen);
+    } else {
+        send = &gMultiSioSend;
+        send->pat0.unk2 = lobbyScreen->unk10D;
+        send->pat0.unk3 = 0;
+        send->pat0.unk0 = 0x40A1;
+        sub_8087E10(lobbyScreen);
+        if (++lobbyScreen->unk10E > 8) {
+            TaskDestroy(gCurTask);
+            MultiPakCommunicationError();
+        }
+    }
+}
+
+void sub_8087C98(void) {
+    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+#ifndef NON_MATCHING
+    register union MultiSioData* recv, *send asm("r4");
+#else
+    union MultiSioData* send;
+#endif
+
+    MultiPakHeartbeat();
+    recv = &gMultiSioRecv[0];
+    if (sub_8087F8C(recv) == 0) {
+        if (recv->pat0.unk0 == 0x40A3) {
+            if (lobbyScreen->unk10D != 0) {
+                sub_8087DA0(lobbyScreen);
+            } else {
+                sub_8087F48(lobbyScreen);
+            }
+        }
+        send = &gMultiSioSend;
+        send->pat0.unk3 = 0;
+        send->pat0.unk2 = 0;
+        send->pat0.unk0 = 0x40A2;
+        sub_8087E10(lobbyScreen);
+    }
+}
+
+void sub_8087DA0(struct MultiplayerLobbyScreen* lobbyScreen) {
+    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
+    lobbyScreen->unk100.unk4 = 0;
+    lobbyScreen->unk100.unk2 = 1;
+    lobbyScreen->unk100.unkA = 0;
+    lobbyScreen->unk100.unk6 = 0x100;
+    lobbyScreen->unk10E = 0x78;
+    m4aSongNumStop(MUS_VS_4);
+    m4aSongNumStart(MUS_412);
+    element->unkA = 0x44F;
+    element->unk20 = 0;
+    element->unk21 = 0xFF;
+    gCurTask->main = sub_8087644;
+}
+
+extern const s8 gUnknown_080E037C[8];
+
+void sub_8087E10(struct MultiplayerLobbyScreen* lobbyScreen) {
+    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
+    if (sub_8004558(element) == 0) {
+        if (lobbyScreen->unk10D != 0 && element->unkA == 0x44F) {
+           element->unk20 = 1;
+        } else {
+            if (element->unk20 == 6) {
+                element->unk20 = 3;
+            }
+
+            if (element->unk20 == 4) {
+                element->unk20 = 5;
+            }
+        }
+    }
+
+    sub_80051E8(element);
+
+    element = &lobbyScreen->unk30[0];
+    sub_80051E8(element);
+
+    element = &lobbyScreen->unk30[1];
+    if (lobbyScreen->unk10D != 0) {
+        element->unk16 = 0x2C;
+        element->unk25 = 1;
+    } else {
+        element->unk16 = gUnknown_080E037C[lobbyScreen->unk110] + 0x2C;
+        element->unk25 = 0;
+    }
+    element->unk18 = 0x6E;
+    sub_80051E8(element);
+
+    element = &lobbyScreen->unk30[2];
+
+    if (lobbyScreen->unk10D != 0) {
+        element->unk16 = gUnknown_080E037C[lobbyScreen->unk110] + 0xC0;
+        element->unk25 = 0xF;
+    } else {
+        element->unk16 = 0xC0;
+        element->unk25 = 0;
+    }
+    element->unk18 = 0x6E;
+    sub_80051E8(element);
+
+    if (lobbyScreen->unk110 != 0) {
+        lobbyScreen->unk110--;
+    }
+}
+
+void sub_8087F10(struct Task* t) {
+    u8 i;
+    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+    VramFree(lobbyScreen->unk0.unk4);
+
+    for (i = 0; i < 3; i++) {
+        VramFree(lobbyScreen->unk30[i].unk4);
+    }
+}
+
+void sub_8087F48(struct MultiplayerLobbyScreen* lobbyScreen) {
+    lobbyScreen->unk10E = 0;
+    lobbyScreen->unk100.unk4 = 0;
+    lobbyScreen->unk100.unk2 = 1; 
+    lobbyScreen->unk100.unk6 = 0x200;
+    lobbyScreen->unk100.unkA = 0;
+    gCurTask->main = sub_8087644;
+}
+
+bool8 sub_8087F8C(union MultiSioData* packet) {
+    if (packet->pat0.unk0 <= 0x40A3 && packet->pat0.unk0 >= 0x40A0) {
+        return FALSE;
+    }
+
+    if (packet->pat0.unk0 == 0) {
+        return FALSE;
+    }
+    
+    TaskDestroy(gCurTask);
+    MultiPakCommunicationError();
+    return TRUE;
 }
