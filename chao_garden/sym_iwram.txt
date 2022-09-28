@@ -161,7 +161,7 @@
 . = 0x00002F2C; gUnknown_03002F2C = .;
 . = 0x00003330; gUnknown_03003330 = .;
 . = 0x00003350; gUnknown_03003350 = .;
-. = 0x00003B60; gUnknown_03003B60 = .;
+. = 0x00003B60; gIntrTable = .;
 . = 0x00003B68; gUnknown_03003B68 = .;
 . = 0x00003B70; gUnknown_03003B70 = .;
 . = 0x00003B80; gUnknown_03003B80 = .;

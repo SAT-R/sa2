@@ -4,66 +4,6 @@
 .syntax unified
 .arm
 
-_entry: @ 0x02000000
-	b start_vector
-
-init_vars:
-	.byte 0x00, 0x00, 0x00, 0x00
-	.byte 0x00, 0x00, 0x00, 0x00 @; unk374 (0x8)
-	.byte 0x00, 0x00, 0x00, 0x00 @; lang   (0xC)
-	.byte 0x00, 0x00, 0x00, 0x00 @; random (0x10)
-	.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-
-	arm_func_start start_vector
-start_vector:
-	mov r0, #0x12
-	msr cpsr_fc, r0
-	ldr sp, sp_irq
-	mov r0, #0x1f
-	msr cpsr_fc, r0
-	ldr sp, sp_sys
-	ldr r1, _020000B8
-	add r0, pc, #0x18 @ =IntrMain
-	str r0, [r1]
-	ldr r1, _020000BC @ =AgbMain + 1
-	mov lr, pc
-	bx r1
-	b start_vector
-sp_sys: .word IWRAM_END - 0x100
-sp_irq: .word IWRAM_END - 0x60
-
-	arm_func_start IntrMain
-IntrMain: @ 0x0200005C
-	mov ip, #0x4000000
-	add r3, ip, #0x200
-	ldr r2, [r3]
-	and r1, r2, r2, lsr #16
-	mov r2, #0
-	ands r0, r1, #0x2000
-	strbne r0, [r3, #-0x17c]
-_02000078:
-	bne _02000078
-	ands r0, r1, #0x80
-	bne IntrMain_FoundIntr
-	add r2, r2, #4
-	ands r0, r1, #1
-	strhne r0, [ip, #-8]
-	bne IntrMain_FoundIntr
-	add r2, r2, #4
-	ands r0, r1, #0x20
-	bne IntrMain_FoundIntr
-	add r2, r2, #4
-IntrMain_FoundIntr:
-	strh r0, [r3, #2]
-	ldr r1, _020000C0 @ =gUnknown_03003B60
-	add r1, r1, r2
-	ldr r0, [r1]
-	bx r0
-	.align 2, 0
-_020000B8: .4byte INTR_VECTOR
-_020000BC: .4byte AgbMain + 1
-_020000C0: .4byte gUnknown_03003B60
-
 	thumb_func_start sub_020000c4
 sub_020000c4: @ 0x020000C4
 	push {lr}
@@ -154,7 +94,7 @@ sub_0200019c: @ 0x0200019C
 	bl sub_02011958
 	ldr r0, _020001EC @ =INTR_VECTOR
 	str r4, [r0]
-	ldr r1, _020001F0 @ =gUnknown_03003B60
+	ldr r1, _020001F0 @ =gIntrTable
 	ldr r2, _020001F4 @ =sub_02000244
 	adds r0, r1, #0
 	adds r0, #0xc
@@ -184,7 +124,7 @@ _020001E0: .4byte IntrMain
 _020001E4: .4byte gUnknown_03000000
 _020001E8: .4byte 0x04000020
 _020001EC: .4byte INTR_VECTOR
-_020001F0: .4byte gUnknown_03003B60
+_020001F0: .4byte gIntrTable
 _020001F4: .4byte sub_02000244
 _020001F8: .4byte 0x04000200
 _020001FC: .4byte 0x080000B2
@@ -216,13 +156,13 @@ sub_02000228: @ 0x02000228
 	bne _02000232
 	ldr r1, _0200023C @ =sub_02000244
 _02000232:
-	ldr r0, _02000240 @ =gUnknown_03003B60
+	ldr r0, _02000240 @ =gIntrTable
 	str r1, [r0, #4]
 	pop {r0}
 	bx r0
 	.align 2, 0
 _0200023C: .4byte sub_02000244
-_02000240: .4byte gUnknown_03003B60
+_02000240: .4byte gIntrTable
 
 	thumb_func_start sub_02000244
 sub_02000244: @ 0x02000244
@@ -485,7 +425,7 @@ sub_02000480: @ 0x02000480
 	ldr r2, _02000550 @ =0x04000148
 	adds r1, r4, #0
 	bl sub_02011958
-	ldr r0, _02000554 @ =gUnknown_03003B60
+	ldr r0, _02000554 @ =gIntrTable
 	adds r4, #1
 	str r4, [r0]
 	ldr r0, _02000558 @ =gUnknown_030043DC
@@ -546,7 +486,7 @@ _02000544: .4byte 0x04000140
 _02000548: .4byte sub_020006b8
 _0200054C: .4byte gUnknown_03000088
 _02000550: .4byte 0x04000148
-_02000554: .4byte gUnknown_03003B60
+_02000554: .4byte gIntrTable
 _02000558: .4byte gUnknown_030043DC
 _0200055C: .4byte gUnknown_030043EC
 _02000560: .4byte gUnknown_030005B1
@@ -17219,14 +17159,14 @@ sub_0200882C: @ 0x0200882C
 	ldr r0, _02008840 @ =gUnknown_03003330
 	movs r1, #0
 	strh r1, [r0, #0xc]
-	ldr r1, _02008844 @ =gUnknown_02001E01
+	ldr r1, _02008844 @ =sub_02001e00 + 1
 	str r1, [r0]
 	bl sub_02012310
 	pop {r0}
 	bx r0
 	.align 2, 0
 _02008840: .4byte gUnknown_03003330
-_02008844: .4byte gUnknown_02001E01
+_02008844: .4byte sub_02001e00 + 1
 
 	thumb_func_start sub_02008848
 sub_02008848: @ 0x02008848
@@ -32374,7 +32314,7 @@ _02010458: .4byte 0x68736D53
 	thumb_func_start sub_0201045c
 sub_0201045c: @ 0x0201045C
 	push {r4, r5, r6, lr}
-	ldr r0, _020104B0 @ =gUnknown_0200F831
+	ldr r0, _020104B0 @ =0x0200F830 + 1 @; sub_0200F830
 	movs r1, #2
 	rsbs r1, r1, #0
 	ands r0, r1
@@ -32413,7 +32353,7 @@ _020104AA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_020104B0: .4byte gUnknown_0200F831
+_020104B0: .4byte 0x0200F830 + 1
 _020104B4: .4byte gUnknown_03002F2C
 _020104B8: .4byte 0x04000100
 _020104BC: .4byte gUnknown_03005280

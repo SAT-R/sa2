@@ -3,7 +3,7 @@ SECTIONS {
     EWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_ewram.txt"
+        . = 0x00000008; gUnknown_02000008 = .;
     }
 
     . = 0x03000000;
@@ -17,6 +17,8 @@ SECTIONS {
 	.text :
 	ALIGN(4)
 	{
+		build/mb_chao_garden/asm/rom_header.o(.text);
+		build/mb_chao_garden/asm/crt0.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
 	} =0
 
