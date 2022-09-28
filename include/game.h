@@ -61,7 +61,8 @@ struct SomeStruct_59E0 {
     s32 unkC;
     u8 filler10[0x10];
     u32 unk20;
-    u8 filler24[0x13];
+    u8 unk24;
+    u8 filler24[0x12];
     u8 unk37;
     u8 filler38[100 - 0x14 - 0x24];
     u16 unk64;
@@ -76,7 +77,8 @@ struct SomeStruct_5960 {
     u32 unk4;
     u8 filler[92 - 8];
     u32 unk5C;
-};
+    u8 filler60[0x20];
+}; /* size 0x80 */
 
 extern struct SomeStruct_5960 gUnknown_03005960;
 
