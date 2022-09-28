@@ -20,6 +20,8 @@ SECTIONS {
 		build/mb_chao_garden/asm/rom_header.o(.text);
 		build/mb_chao_garden/asm/crt0.o(.text);
 		build/mb_chao_garden/asm/code.o(.text);
+		build/mb_chao_garden/asm/m4a0.o(.text);
+		build/mb_chao_garden/asm/m4a.o(.text);
 		build/mb_chao_garden/asm/libagbsyscall.o(.text);
 		build/mb_chao_garden/asm/libs.o(.text);
 		*libgcc.a:_call_via_rX.o(.text);

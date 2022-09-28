@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+@; Some sort of div
 	thumb_func_start sub_02012348
 sub_02012348: @ 0x02012348
 	cmp r1, #0

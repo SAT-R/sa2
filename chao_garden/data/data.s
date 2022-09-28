@@ -212,32 +212,32 @@ gUnknown_020199D0:
 gMPlayJumpTableTemplate:
     .incbin "data/rom_data.bin", 0x00019A58, 0x90
 
-    .global gUnknown_02019AE8
-gUnknown_02019AE8:
+    .global gScaleTable
+gScaleTable:
     .incbin "data/rom_data.bin", 0x00019AE8, 0xB4
 
-    .global gUnknown_02019B9C
-gUnknown_02019B9C:
+    .global gFreqTable
+gFreqTable:
     .incbin "data/rom_data.bin", 0x00019B9C, 0x30
 
-    .global gUnknown_02019BCC
-gUnknown_02019BCC:
+    .global gPcmSamplesPerVBlankTable
+gPcmSamplesPerVBlankTable:
     .incbin "data/rom_data.bin", 0x00019BCC, 0x18
 
-    .global gUnknown_02019BE4
-gUnknown_02019BE4:
+    .global gCgbScaleTable
+gCgbScaleTable:
     .incbin "data/rom_data.bin", 0x00019BE4, 0x84
 
-    .global gUnknown_02019C68
-gUnknown_02019C68:
+    .global gCgbFreqTable
+gCgbFreqTable:
     .incbin "data/rom_data.bin", 0x00019C68, 0x18
 
-    .global gUnknown_02019C80
-gUnknown_02019C80:
+    .global gNoiseTable
+gNoiseTable:
     .incbin "data/rom_data.bin", 0x00019C80, 0x3C
 
-    .global gUnknown_02019CBC
-gUnknown_02019CBC:
+    .global gCgb3Vol
+gCgb3Vol:
     .incbin "data/rom_data.bin", 0x00019CBC, 0x10
 
     .global gUnknown_02019CCC
@@ -248,12 +248,12 @@ gUnknown_02019CCC:
 gUnknown_02019D00:
     .incbin "data/rom_data.bin", 0x00019D00, 0x774
 
-    .global gUnknown_0201A474
-gUnknown_0201A474:
+    .global gMPlayTable
+gMPlayTable:
     .incbin "data/rom_data.bin", 0x0001A474, 0x30
 
-    .global gUnknown_0201A4A4
-gUnknown_0201A4A4:
+    .global gSongTable
+gSongTable:
     .incbin "data/rom_data.bin", 0x0001A4A4, 0x5470
 
     .global gUnknown_0201F914
