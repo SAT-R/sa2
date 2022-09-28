@@ -5,8 +5,8 @@
 .arm
 
 @; Some sort of div
-	thumb_func_start sub_02012348
-sub_02012348: @ 0x02012348
+	thumb_func_start __divsi3
+__divsi3: @ 0x02012348
 	cmp r1, #0
 	beq _020123D0
 	push {r4}

@@ -33,8 +33,7 @@ void m4aMPlayPitchControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits,
 void m4aMPlayPanpotControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits,
                            s8 pan);
 
-#define DEFAULT_SOUND_MODE                         \
-    (SOUND_MODE_DA_BIT_8 | SOUND_MODE_FREQ_10512 | \
-     (15 << SOUND_MODE_MASVOL_SHIFT) | (5 << SOUND_MODE_MAXCHN_SHIFT))
+// TODO: split this up
+#define DEFAULT_SOUND_MODE 0x93f400
 
 #endif  // GUARD_M4A_H

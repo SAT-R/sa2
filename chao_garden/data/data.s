@@ -244,8 +244,8 @@ gCgb3Vol:
 gUnknown_02019CCC:
     .incbin "data/rom_data.bin", 0x00019CCC, 0x34
 
-    .global gUnknown_02019D00
-gUnknown_02019D00:
+    .global gXcmdTable
+gXcmdTable:
     .incbin "data/rom_data.bin", 0x00019D00, 0x774
 
     .global gMPlayTable

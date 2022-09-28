@@ -158,7 +158,7 @@
 . = 0x00002F22; gUnknown_03002F22 = .;
 . = 0x00002F24; gUnknown_03002F24 = .;
 . = 0x00002F28; gUnknown_03002F28 = .;
-. = 0x00002F2C; gUnknown_03002F2C = .;
+. = 0x00002F2C; SoundMainRAM_Buffer = .;
 . = 0x00003330; gUnknown_03003330 = .;
 . = 0x00003350; gUnknown_03003350 = .;
 . = 0x00003B60; gIntrTable = .;
