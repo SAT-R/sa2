@@ -1,8 +1,19 @@
-ENTRY(start_vector)
-
 SECTIONS {
 	. = 0x2000000;
+    EWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_ewram.txt"
+    }
 
+    . = 0x03000000;
+    IWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_iwram.txt"
+    }
+
+	. = 0x2000000;
 	.text :
 	ALIGN(4)
 	{
