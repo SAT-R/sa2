@@ -4,72 +4,73 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_02011950
-sub_02011950: @ 0x02011950
+	.set SOFT_RESET_DIRECT_BUF, 0x03007FFA
+	.set RESET_EX_WRAM_FLAG,           0x1
+
+	thumb_func_start ArcTan2
+ArcTan2: @ 0x02011950
 	svc #0xa
 	bx lr
 
-	thumb_func_start sub_02011954
-sub_02011954: @ 0x02011954
+	thumb_func_start CpuFastSet
+CpuFastSet: @ 0x02011954
 	svc #0xc
 	bx lr
 
-	thumb_func_start sub_02011958
-sub_02011958: @ 0x02011958
+	thumb_func_start CpuSet
+CpuSet: @ 0x02011958
 	svc #0xb
 	bx lr
 
-	thumb_func_start sub_0201195c
-sub_0201195c: @ 0x0201195C
+	thumb_func_start Div
+Div: @ 0x0201195C
 	svc #6
 	bx lr
 
-	thumb_func_start sub_02011960
-sub_02011960: @ 0x02011960
+	thumb_func_start Mod
+Mod: @ 0x02011960
 	svc #6
 	adds r0, r1, #0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02011968
-sub_02011968: @ 0x02011968
+	thumb_func_start LZ77UnCompVram
+LZ77UnCompVram: @ 0x02011968
 	svc #0x12
 	bx lr
 
-	thumb_func_start sub_0201196c
-sub_0201196c: @ 0x0201196C
+	thumb_func_start LZ77UnCompWram
+LZ77UnCompWram: @ 0x0201196C
 	svc #0x11
 	bx lr
 
-	thumb_func_start sub_02011970
-sub_02011970: @ 0x02011970
+	thumb_func_start ObjAffineSet
+ObjAffineSet: @ 0x02011970
 	svc #0xf
 	bx lr
 
-	thumb_func_start sub_02011974
-sub_02011974: @ 0x02011974
+	thumb_func_start Sqrt
+Sqrt: @ 0x02011974
 	svc #8
 	bx lr
 
-	thumb_func_start sub_02011978
-sub_02011978: @ 0x02011978
+	thumb_func_start VBlankIntrWait
+VBlankIntrWait: @ 0x02011978
 	movs r2, #0
 	svc #5
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_02011980
-sub_02011980: @ 0x02011980
-	ldr r3, _02011994 @ =0x04000208
+	thumb_func_start SoftResetRom
+SoftResetRom:
+	ldr r3, =REG_IME
 	movs r2, #0
-	strb r2, [r3]
-	ldr r3, _02011998 @ =gUnknown_03007FFA
+	strb r2, [r3, #0]
+	ldr r3, =SOFT_RESET_DIRECT_BUF
 	movs r2, #0
-	strb r2, [r3]
-	subs r3, #0xfa
+	strb r2, [r3, #0]
+	subs r3, #SOFT_RESET_DIRECT_BUF - 0x3007f00
 	mov sp, r3
 	svc #1
 	svc #0
-	.align 2, 0
-_02011994: .4byte 0x04000208
-_02011998: .4byte gUnknown_03007FFA
+    .align 2, 0
