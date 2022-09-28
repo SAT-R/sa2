@@ -148,7 +148,7 @@ _020104C8: .4byte 0x00000004
 _020104CC: .4byte gMPlayTable
 _020104D0: .4byte gMPlayMemAccArea
 
-	arm_func_start m4aSoundMain
+	thumb_func_start m4aSoundMain
 m4aSoundMain: @ 0x020104D4
 _020104D4:
 	.byte 0x00, 0xB5, 0xFF, 0xF7, 0x69, 0xF9, 0x01, 0xBC, 0x00, 0x47, 0x00, 0x00

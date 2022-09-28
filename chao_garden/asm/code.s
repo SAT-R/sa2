@@ -4,86 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_020000c4
-sub_020000c4: @ 0x020000C4
-	push {lr}
-	ldr r0, _020000DC @ =gUnknown_02000008
-	ldr r1, [r0, #4]
-	adds r2, r0, #0
-	cmp r1, #4
-	bhi _020000F8
-	lsls r0, r1, #2
-	ldr r1, _020000E0 @ =_020000E4
-	adds r0, r0, r1
-	ldr r0, [r0]
-	mov pc, r0
-	.align 2, 0
-_020000DC: .4byte gUnknown_02000008
-_020000E0: .4byte _020000E4
-_020000E4: @ jump table
-	.4byte _020000F8 @ case 0
-	.4byte _02000104 @ case 1
-	.4byte _02000110 @ case 2
-	.4byte _0200011C @ case 3
-	.4byte _02000128 @ case 4
-_020000F8:
-	ldr r1, _02000100 @ =gUnknown_03003330
-	movs r0, #0
-	b _0200012C
-	.align 2, 0
-_02000100: .4byte gUnknown_03003330
-_02000104:
-	ldr r1, _0200010C @ =gUnknown_03003330
-	movs r0, #1
-	b _0200012C
-	.align 2, 0
-_0200010C: .4byte gUnknown_03003330
-_02000110:
-	ldr r1, _02000118 @ =gUnknown_03003330
-	movs r0, #2
-	b _0200012C
-	.align 2, 0
-_02000118: .4byte gUnknown_03003330
-_0200011C:
-	ldr r1, _02000124 @ =gUnknown_03003330
-	movs r0, #3
-	b _0200012C
-	.align 2, 0
-_02000124: .4byte gUnknown_03003330
-_02000128:
-	ldr r1, _02000164 @ =gUnknown_03003330
-	movs r0, #4
-_0200012C:
-	strb r0, [r1, #0x10]
-	ldr r0, [r2, #8]
-	bl sub_02001528
-	bl sub_0200019c
-	bl sub_02000248
-	bl sub_02000480
-	bl sub_02000c6c
-	bl sub_020018a0
-	bl sub_0200be24
-	bl sub_0200d27c
-	ldr r1, _02000164 @ =gUnknown_03003330
-	movs r0, #0
-	strb r0, [r1, #0xf]
-	movs r2, #0
-	strh r0, [r1, #0xc]
-	str r0, [r1, #8]
-	strb r2, [r1, #0xe]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_02000164: .4byte gUnknown_03003330
-
-	arm_func_start AgbMain
-AgbMain: @ 0x02000168
-_02000168:
-	.byte 0x30, 0xB5, 0xFF, 0xF7, 0xAB, 0xFF, 0x09, 0x49
-	.byte 0x09, 0x48, 0x08, 0x60, 0x0C, 0x1C, 0x01, 0x25, 0x11, 0xF0, 0xFE, 0xFB, 0x00, 0xF0, 0x28, 0xFD
-	.byte 0x20, 0x68, 0x12, 0xF0, 0xC3, 0xF8, 0x10, 0xF0, 0xA5, 0xF9, 0xA0, 0x68, 0x01, 0x30, 0xA0, 0x60
-	.byte 0xA5, 0x73, 0xF1, 0xE7, 0x30, 0x33, 0x00, 0x03, 0xC9, 0x18, 0x00, 0x02
-
 	thumb_func_start sub_0200019c
 sub_0200019c: @ 0x0200019C
 	push {r4, lr}
@@ -1271,7 +1191,9 @@ sub_02000bb0: @ 0x02000BB0
 _02000BC4: .4byte 0x04000150
 _02000BC8: .4byte 0x04000154
 _02000BCC: .4byte gUnknown_030005A8
-_02000BD0:
+
+	thumb_func_start sub_02000bd0
+sub_02000bd0:
 	.byte 0x70, 0xB5, 0x1B, 0x49, 0x0D, 0x88, 0x4E, 0x88, 0x1A, 0x48, 0x02, 0x88, 0xFC, 0x23, 0x1B, 0x02
 	.byte 0x18, 0x1C, 0x10, 0x43, 0x48, 0x80, 0xC2, 0x43, 0x0A, 0x80, 0x17, 0x48, 0xC1, 0x7B, 0x40, 0x20
 	.byte 0x08, 0x40, 0x00, 0x06, 0x04, 0x0E, 0x00, 0x2C, 0x12, 0xD1, 0x0F, 0x20, 0x02, 0x40, 0x0F, 0x2A

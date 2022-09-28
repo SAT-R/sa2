@@ -47,7 +47,7 @@ RAMSCRGEN := ../tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := ../tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc
+CPPFLAGS := -I ../tools/agbcc/include -iquote include -nostdinc
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
 
 
