@@ -208,8 +208,8 @@ gUnknown_020188D8:
 gUnknown_020199D0:
     .incbin "data/rom_data.bin", 0x000199D0, 0x88
 
-    .global gUnknown_02019A58
-gUnknown_02019A58:
+    .global gMPlayJumpTableTemplate
+gMPlayJumpTableTemplate:
     .incbin "data/rom_data.bin", 0x00019A58, 0x90
 
     .global gUnknown_02019AE8

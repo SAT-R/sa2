@@ -1590,7 +1590,7 @@ _02000EB2:
 	adds r4, r4, r5
 	ldr r1, [r4]
 	adds r0, r4, #0
-	bl sub_02012310
+	bl _call_via_r1
 	ldrb r0, [r4, #6]
 	cmp r0, #0
 	bne _02000EB2
@@ -7681,7 +7681,7 @@ _02003E78:
 	strb r0, [r5, #4]
 	str r6, [r3]
 	adds r0, r3, #0
-	bl sub_02012324
+	bl _call_via_r6
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -7758,7 +7758,7 @@ _02003EF4:
 	ldr r1, _02003F4C @ =sub_02003f68
 	str r1, [r4]
 	adds r0, r4, #0
-	bl sub_02012310
+	bl _call_via_r1
 	movs r0, #0x21
 	bl sub_020104e0
 	b _02003F62
@@ -7840,7 +7840,7 @@ _02003FB0:
 	ldr r1, _02003FE4 @ =sub_02003eb4
 	str r1, [r7]
 	adds r0, r7, #0
-	bl sub_02012310
+	bl _call_via_r1
 	b _02004120
 	.align 2, 0
 _02003FDC: .4byte gUnknown_03003330
@@ -8346,7 +8346,7 @@ _0200435C:
 	ldr r1, _02004414 @ =sub_02004418
 	str r1, [r7]
 	adds r0, r7, #0
-	bl sub_02012310
+	bl _call_via_r1
 _020043E2:
 	add sp, #4
 	pop {r3, r4}
@@ -13254,7 +13254,7 @@ sub_020069F8: @ 0x020069F8
 	strh r1, [r0, #0x20]
 	ldr r1, _02006A50 @ =sub_02006938
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -16428,7 +16428,7 @@ _02008230:
 	ldr r1, _020082A0 @ =sub_02008dec
 	str r1, [r5]
 	adds r0, r5, #0
-	bl sub_02012310
+	bl _call_via_r1
 	b _0200831A
 	.align 2, 0
 _02008294: .4byte gUnknown_03003B80
@@ -16588,7 +16588,7 @@ _020083B4:
 	strb r1, [r0]
 	str r5, [r3]
 	adds r0, r3, #0
-	bl sub_02012320
+	bl _call_via_r5
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -16724,7 +16724,7 @@ _020084C6:
 _020084D4:
 	str r5, [r4]
 	adds r0, r4, #0
-	bl sub_02012320
+	bl _call_via_r5
 	add sp, #0xc
 	pop {r4, r5, r6}
 	pop {r0}
@@ -16887,7 +16887,7 @@ sub_020085e0: @ 0x020085E0
 	ldr r1, _02008620 @ =sub_02008648
 	str r1, [r4]
 	adds r0, r4, #0
-	bl sub_02012310
+	bl _call_via_r1
 	b _02008638
 	.align 2, 0
 _02008620: .4byte sub_02008648
@@ -16900,7 +16900,7 @@ _02008624:
 	ldr r1, _02008644 @ =sub_02008d90
 	str r1, [r4]
 	adds r0, r4, #0
-	bl sub_02012310
+	bl _call_via_r1
 _02008638:
 	movs r0, #0x20
 	bl sub_020104e0
@@ -17033,7 +17033,7 @@ _020086DC:
 	ldr r1, _02008754 @ =sub_02008758
 	str r1, [r5]
 	adds r0, r5, #0
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r4, r5}
 	pop {r0}
 	bx r0
@@ -17161,7 +17161,7 @@ sub_0200882C: @ 0x0200882C
 	strh r1, [r0, #0xc]
 	ldr r1, _02008844 @ =sub_02001e00 + 1
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -17176,7 +17176,7 @@ sub_02008848: @ 0x02008848
 	strh r1, [r0, #0xc]
 	ldr r1, _02008860 @ =sub_02008864
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -17443,7 +17443,7 @@ _02008A5E:
 	ldr r1, _02008A70 @ =sub_020065ec
 	str r1, [r4]
 	adds r0, r4, #0
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r4}
 	pop {r0}
 	bx r0
@@ -17748,7 +17748,7 @@ sub_02008c9c: @ 0x02008C9C
 	strb r1, [r0, #0x18]
 	ldr r1, _02008CD0 @ =sub_02007DA0
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -17774,7 +17774,7 @@ _02008CE6:
 	ldr r1, _02008D00 @ =sub_02008010
 	str r1, [r2]
 	adds r0, r2, #0
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -17800,7 +17800,7 @@ sub_02008d04: @ 0x02008D04
 	strb r1, [r0, #0x18]
 	ldr r1, _02008D38 @ =sub_020080e0
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -19183,7 +19183,7 @@ sub_02009800: @ 0x02009800
 	strb r2, [r1]
 	ldr r1, _02009824 @ =sub_02009598
 	str r1, [r0]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -27700,7 +27700,7 @@ _0200DE3E:
 	ldr r1, _0200DE7C @ =sub_0200dcc0
 	str r1, [r5]
 	adds r0, r5, #0
-	bl sub_02012310
+	bl _call_via_r1
 	b _0200DE90
 	.align 2, 0
 _0200DE70: .4byte gUnknown_03001AD4
@@ -30972,17 +30972,19 @@ sub_0200F78C: @ 0x0200F78C
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0200f79c
-sub_0200f79c: @ 0x0200F79C
-	add r2, pc, #0x0 @ =sub_0200F7A0
+@; m4a
+	thumb_func_start umul3232H32
+umul3232H32: @ 0x0200F79C
+	add r2, pc, #0x0 @ =__umul3232H32
 	bx r2
 
-	arm_func_start sub_0200F7A0
-sub_0200F7A0: @ 0x0200F7A0
+	arm_func_start __umul3232H32
+__umul3232H32: @ 0x0200F7A0
 	umull r2, r3, r0, r1
 	add r0, r3, #0
 	bx lr
-_0200F7AC:
+
+_0200F7AC: @; SoundMain
 	.byte 0x1A, 0x48, 0x00, 0x68
 	.byte 0x1A, 0x4A, 0x03, 0x68, 0x9A, 0x42, 0x00, 0xD0, 0x70, 0x47, 0x01, 0x33, 0x03, 0x60, 0xF0, 0xB5
 	.byte 0x41, 0x46, 0x4A, 0x46, 0x53, 0x46, 0x5C, 0x46, 0x1F, 0xB4, 0x86, 0xB0, 0x01, 0x7B, 0x00, 0x29
@@ -31055,8 +31057,8 @@ _0200F7AC:
 sub_0200fbce: @ 0x0200FBCE
 	bx r3
 
-	thumb_func_start sub_0200FBD0
-sub_0200FBD0: @ 0x0200FBD0
+	thumb_func_start SoundMainBTM
+SoundMainBTM: @ 0x0200FBD0
 	ldr r3, [r2, #0x54]
 	ldr r3, [r6, #4]
 	mov ip, r4
@@ -31072,8 +31074,8 @@ sub_0200FBD0: @ 0x0200FBD0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_0200fbec
-sub_0200fbec: @ 0x0200FBEC
+	thumb_func_start RealClearChain
+RealClearChain: @ 0x0200FBEC
 	ldr r3, [r0, #0x2c]
 	cmp r3, #0
 	beq _0200FC0A
@@ -31094,7 +31096,9 @@ _0200FC06:
 	str r1, [r0, #0x2c]
 _0200FC0A:
 	bx lr
-_0200FC0C:
+
+	thumb_func_start ply_fine
+ply_fine:
 	push {r4, r5, lr}
 	adds r5, r1, #0
 	ldr r4, [r5, #0x20]
@@ -31110,7 +31114,7 @@ _0200FC16:
 	strb r1, [r4]
 _0200FC24:
 	adds r0, r4, #0
-	bl sub_0200fbec
+	bl RealClearChain
 	ldr r4, [r4, #0x34]
 	cmp r4, #0
 	bne _0200FC16
@@ -31122,11 +31126,11 @@ _0200FC30:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0200fc3c
-sub_0200fc3c: @ 0x0200FC3C
+	thumb_func_start MPlayJumpTableCopy
+MPlayJumpTableCopy: @ 0x0200FC3C
 	mov ip, lr
 	movs r1, #0x24
-	ldr r2, _0200FC6C @ =gUnknown_02019A58
+	ldr r2, _0200FC6C @ =gMPlayJumpTableTemplate
 _0200FC42:
 	ldr r3, [r2]
 	bl _0200FC56
@@ -31144,7 +31148,7 @@ _0200FC56:
 	push {r0}
 	lsrs r0, r2, #0x19
 	bne _0200FC68
-	ldr r0, _0200FC6C @ =gUnknown_02019A58
+	ldr r0, _0200FC6C @ =gMPlayJumpTableTemplate
 	cmp r2, r0
 	blo _0200FC66
 	lsrs r0, r2, #0xe
@@ -31155,7 +31159,7 @@ _0200FC68:
 	pop {r0}
 	bx lr
 	.align 2, 0
-_0200FC6C: .4byte gUnknown_02019A58
+_0200FC6C: .4byte gMPlayJumpTableTemplate
 
 	thumb_func_start sub_0200fc70
 sub_0200fc70: @ 0x0200FC70
@@ -31201,7 +31205,7 @@ sub_0200FC9C: @ 0x0200FC9C
 	strb r2, [r1, #2]
 	b _0200FC7C
 _0200FCB4:
-	b _0200FC0C
+	b ply_fine
 	.align 2, 0
 
 	thumb_func_start sub_0200FCB8
@@ -32258,11 +32262,11 @@ _020103CC:
 	ldr r4, [r1, #4]
 	subs r0, r0, r5
 	adds r1, r7, #0
-	bl sub_0200f79c
+	bl umul3232H32
 	adds r1, r0, #0
 	adds r1, r5, r1
 	adds r0, r4, #0
-	bl sub_0200f79c
+	bl umul3232H32
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
@@ -32813,7 +32817,7 @@ sub_02010834: @ 0x02010834
 	push {lr}
 	ldr r1, _02010844 @ =gUnknown_030062B8
 	ldr r1, [r1]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -32824,7 +32828,7 @@ sub_02010848: @ 0x02010848
 	push {lr}
 	ldr r1, _02010858 @ =gUnknown_030062BC
 	ldr r1, [r1]
-	bl sub_02012310
+	bl _call_via_r1
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -32912,7 +32916,7 @@ _02010886:
 	str r0, [r5, #0x3c]
 	ldr r4, _0201094C @ =gUnknown_03006230
 	adds r0, r4, #0
-	bl sub_0200fc3c
+	bl MPlayJumpTableCopy
 	str r4, [r5, #0x34]
 	movs r0, #0x80
 	lsls r0, r0, #0xb
@@ -33126,7 +33130,7 @@ _02010ABE:
 	lsls r0, r5, #0x18
 	lsrs r0, r0, #0x18
 	ldr r1, [r6, #0x2c]
-	bl sub_02012310
+	bl _call_via_r1
 	strb r7, [r4]
 	adds r5, #1
 	adds r4, #0x40
@@ -34973,7 +34977,7 @@ _0201180C:
 	ldr r2, [r0]
 	adds r0, r4, #0
 	adds r1, r6, #0
-	bl sub_02012314
+	bl _call_via_r2
 	b _02011826
 	.align 2, 0
 _0201181C: .4byte gUnknown_03006234
@@ -34997,7 +35001,7 @@ sub_0201182c: @ 0x0201182C
 	lsls r3, r3, #2
 	adds r3, r3, r2
 	ldr r2, [r3]
-	bl sub_02012314
+	bl _call_via_r2
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -35008,7 +35012,7 @@ sub_0201184c: @ 0x0201184C
 	push {lr}
 	ldr r2, _0201185C @ =gUnknown_03006230
 	ldr r2, [r2]
-	bl sub_02012314
+	bl _call_via_r2
 	pop {r0}
 	bx r0
 	.align 2, 0

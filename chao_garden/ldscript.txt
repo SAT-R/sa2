@@ -22,6 +22,9 @@ SECTIONS {
 		build/mb_chao_garden/asm/code.o(.text);
 		build/mb_chao_garden/asm/libagbsyscall.o(.text);
 		build/mb_chao_garden/asm/libs.o(.text);
+		*libgcc.a:_call_via_rX.o(.text);
+		build/mb_chao_garden/asm/libs2.o(.text);
+		*libc.a:memcpy.o(.text);
 	} =0
 
 	.rodata :

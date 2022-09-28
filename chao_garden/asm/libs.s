@@ -57,12 +57,12 @@ _020119F8:
 	cmp r0, #0
 	bne _020119F4
 	ldr r0, _02011A34 @ =0x0E000001
-	bl sub_02012320
+	bl _call_via_r5
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x10
 	movs r0, #0xe0
 	lsls r0, r0, #0x14
-	bl sub_02012320
+	bl _call_via_r5
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	orrs r4, r0
@@ -395,7 +395,7 @@ _02011C80:
 	adds r0, r0, r1
 	adds r1, r6, #0
 	adds r2, r7, #0
-	bl sub_02012318
+	bl _call_via_r3
 	add sp, #0x80
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -500,7 +500,7 @@ _02011D48:
 	adds r1, r1, r2
 	ldrh r2, [r0, #4]
 	adds r0, r5, #0
-	bl sub_02012318
+	bl _call_via_r3
 	add sp, #0x100
 	pop {r4, r5}
 	pop {r1}
@@ -575,7 +575,7 @@ _02011DE0:
 	adds r1, r1, r0
 	adds r0, r5, #0
 	adds r2, r6, #0
-	bl sub_02012318
+	bl _call_via_r3
 	add sp, #0x100
 	pop {r4, r5, r6}
 	pop {r1}
@@ -602,7 +602,7 @@ _02011E22:
 	ldr r2, [r0]
 	adds r0, r4, #0
 	adds r1, r5, #0
-	bl sub_02012314
+	bl _call_via_r2
 	lsls r0, r0, #0x10
 	lsrs r2, r0, #0x10
 	cmp r2, #0
@@ -641,7 +641,7 @@ _02011E68:
 	ldr r2, [r0]
 	adds r0, r4, #0
 	adds r1, r5, #0
-	bl sub_02012314
+	bl _call_via_r2
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10
 	cmp r3, #0
@@ -773,7 +773,7 @@ _02011F78: .4byte 0x0E005555
 _02011F7C:
 	ldr r1, [r7]
 	adds r0, r5, #0
-	bl sub_02012310
+	bl _call_via_r1
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, r6
@@ -784,7 +784,7 @@ _02011F7C:
 	beq _02011F7C
 	ldr r1, [r7]
 	adds r0, r5, #0
-	bl sub_02012310
+	bl _call_via_r1
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, r6
@@ -833,7 +833,7 @@ sub_02011fb8: @ 0x02011FB8
 	ldr r3, [r0]
 	movs r0, #3
 	movs r2, #0xff
-	bl sub_02012318
+	bl _call_via_r3
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	ldrh r1, [r5]
@@ -898,7 +898,7 @@ sub_0201202c: @ 0x0201202C
 	movs r0, #2
 	adds r1, r4, #0
 	movs r2, #0xff
-	bl sub_02012318
+	bl _call_via_r3
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	ldrh r1, [r6]
@@ -944,7 +944,7 @@ sub_020120c8: @ 0x020120C8
 	ldrb r2, [r0]
 	ldr r3, [r3]
 	movs r0, #1
-	bl sub_02012318
+	bl _call_via_r3
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	pop {r4}
@@ -1132,7 +1132,7 @@ _02012242:
 	thumb_func_start sub_02012248
 sub_02012248: @ 0x02012248
 	push {lr}
-	bl sub_02012310
+	bl _call_via_r1
 	cmp r0, #0
 	bne _02012256
 	movs r0, #0
@@ -1230,351 +1230,3 @@ _020122FC:
 	.align 2, 0
 _02012304: .4byte 0x04000204
 _02012308: .4byte 0x0000FFFC
-
-	thumb_func_start sub_0201230c
-sub_0201230c: @ 0x0201230C
-	bx r0
-	nop
-
-	thumb_func_start sub_02012310
-sub_02012310: @ 0x02012310
-	bx r1
-	nop
-
-	thumb_func_start sub_02012314
-sub_02012314: @ 0x02012314
-	bx r2
-	nop
-
-	thumb_func_start sub_02012318
-sub_02012318: @ 0x02012318
-	bx r3
-	nop
-
-	thumb_func_start sub_0201231C
-sub_0201231C: @ 0x0201231C
-	bx r4
-	nop
-
-	thumb_func_start sub_02012320
-sub_02012320: @ 0x02012320
-	bx r5
-	nop
-
-	thumb_func_start sub_02012324
-sub_02012324: @ 0x02012324
-	bx r6
-	nop
-
-	thumb_func_start sub_02012328
-sub_02012328: @ 0x02012328
-	bx r7
-	nop
-
-	thumb_func_start sub_0201232C
-sub_0201232C: @ 0x0201232C
-	bx r8
-	nop
-
-	thumb_func_start sub_02012330
-sub_02012330: @ 0x02012330
-	bx sb
-	nop
-
-	thumb_func_start sub_02012334
-sub_02012334: @ 0x02012334
-	bx sl
-	nop
-
-	thumb_func_start sub_02012338
-sub_02012338: @ 0x02012338
-	bx fp
-	nop
-
-	thumb_func_start sub_0201233C
-sub_0201233C: @ 0x0201233C
-	bx ip
-	nop
-
-	thumb_func_start sub_02012340
-sub_02012340: @ 0x02012340
-	bx sp
-	nop
-
-	thumb_func_start sub_02012344
-sub_02012344: @ 0x02012344
-	bx lr
-	nop
-
-	thumb_func_start sub_02012348
-sub_02012348: @ 0x02012348
-	cmp r1, #0
-	beq _020123D0
-	push {r4}
-	adds r4, r0, #0
-	eors r4, r1
-	mov ip, r4
-	movs r3, #1
-	movs r2, #0
-	cmp r1, #0
-	bpl _0201235E
-	rsbs r1, r1, #0
-_0201235E:
-	cmp r0, #0
-	bpl _02012364
-	rsbs r0, r0, #0
-_02012364:
-	cmp r0, r1
-	blo _020123C2
-	movs r4, #1
-	lsls r4, r4, #0x1c
-_0201236C:
-	cmp r1, r4
-	bhs _0201237A
-	cmp r1, r0
-	bhs _0201237A
-	lsls r1, r1, #4
-	lsls r3, r3, #4
-	b _0201236C
-_0201237A:
-	lsls r4, r4, #3
-_0201237C:
-	cmp r1, r4
-	bhs _0201238A
-	cmp r1, r0
-	bhs _0201238A
-	lsls r1, r1, #1
-	lsls r3, r3, #1
-	b _0201237C
-_0201238A:
-	cmp r0, r1
-	blo _02012392
-	subs r0, r0, r1
-	orrs r2, r3
-_02012392:
-	lsrs r4, r1, #1
-	cmp r0, r4
-	blo _0201239E
-	subs r0, r0, r4
-	lsrs r4, r3, #1
-	orrs r2, r4
-_0201239E:
-	lsrs r4, r1, #2
-	cmp r0, r4
-	blo _020123AA
-	subs r0, r0, r4
-	lsrs r4, r3, #2
-	orrs r2, r4
-_020123AA:
-	lsrs r4, r1, #3
-	cmp r0, r4
-	blo _020123B6
-	subs r0, r0, r4
-	lsrs r4, r3, #3
-	orrs r2, r4
-_020123B6:
-	cmp r0, #0
-	beq _020123C2
-	lsrs r3, r3, #4
-	beq _020123C2
-	lsrs r1, r1, #4
-	b _0201238A
-_020123C2:
-	adds r0, r2, #0
-	mov r4, ip
-	cmp r4, #0
-	bpl _020123CC
-	rsbs r0, r0, #0
-_020123CC:
-	pop {r4}
-	mov pc, lr
-_020123D0:
-	push {lr}
-	bl sub_020123dc
-	movs r0, #0
-	pop {pc}
-	.align 2, 0
-
-	thumb_func_start sub_020123dc
-sub_020123dc: @ 0x020123DC
-	mov pc, lr
-	.align 2, 0
-
-	thumb_func_start sub_020123e0
-sub_020123e0: @ 0x020123E0
-	movs r3, #1
-	cmp r1, #0
-	beq _020124A4
-	bpl _020123EA
-	rsbs r1, r1, #0
-_020123EA:
-	push {r4}
-	push {r0}
-	cmp r0, #0
-	bpl _020123F4
-	rsbs r0, r0, #0
-_020123F4:
-	cmp r0, r1
-	blo _02012498
-	movs r4, #1
-	lsls r4, r4, #0x1c
-_020123FC:
-	cmp r1, r4
-	bhs _0201240A
-	cmp r1, r0
-	bhs _0201240A
-	lsls r1, r1, #4
-	lsls r3, r3, #4
-	b _020123FC
-_0201240A:
-	lsls r4, r4, #3
-_0201240C:
-	cmp r1, r4
-	bhs _0201241A
-	cmp r1, r0
-	bhs _0201241A
-	lsls r1, r1, #1
-	lsls r3, r3, #1
-	b _0201240C
-_0201241A:
-	movs r2, #0
-	cmp r0, r1
-	blo _02012422
-	subs r0, r0, r1
-_02012422:
-	lsrs r4, r1, #1
-	cmp r0, r4
-	blo _02012434
-	subs r0, r0, r4
-	mov ip, r3
-	movs r4, #1
-	rors r3, r4
-	orrs r2, r3
-	mov r3, ip
-_02012434:
-	lsrs r4, r1, #2
-	cmp r0, r4
-	blo _02012446
-	subs r0, r0, r4
-	mov ip, r3
-	movs r4, #2
-	rors r3, r4
-	orrs r2, r3
-	mov r3, ip
-_02012446:
-	lsrs r4, r1, #3
-	cmp r0, r4
-	blo _02012458
-	subs r0, r0, r4
-	mov ip, r3
-	movs r4, #3
-	rors r3, r4
-	orrs r2, r3
-	mov r3, ip
-_02012458:
-	mov ip, r3
-	cmp r0, #0
-	beq _02012466
-	lsrs r3, r3, #4
-	beq _02012466
-	lsrs r1, r1, #4
-	b _0201241A
-_02012466:
-	movs r4, #0xe
-	lsls r4, r4, #0x1c
-	ands r2, r4
-	beq _02012498
-	mov r3, ip
-	movs r4, #3
-	rors r3, r4
-	tst r2, r3
-	beq _0201247C
-	lsrs r4, r1, #3
-	adds r0, r0, r4
-_0201247C:
-	mov r3, ip
-	movs r4, #2
-	rors r3, r4
-	tst r2, r3
-	beq _0201248A
-	lsrs r4, r1, #2
-	adds r0, r0, r4
-_0201248A:
-	mov r3, ip
-	movs r4, #1
-	rors r3, r4
-	tst r2, r3
-	beq _02012498
-	lsrs r4, r1, #1
-	adds r0, r0, r4
-_02012498:
-	pop {r4}
-	cmp r4, #0
-	bpl _020124A0
-	rsbs r0, r0, #0
-_020124A0:
-	pop {r4}
-	mov pc, lr
-_020124A4:
-	push {lr}
-	bl sub_020123dc
-	movs r0, #0
-	pop {pc}
-	.align 2, 0
-
-	thumb_func_start memcpy
-memcpy: @ 0x020124B0
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	adds r4, r5, #0
-	adds r3, r1, #0
-	cmp r2, #0xf
-	bls _020124F0
-	adds r0, r3, #0
-	orrs r0, r5
-	movs r1, #3
-	ands r0, r1
-	cmp r0, #0
-	bne _020124F0
-	adds r1, r5, #0
-_020124CA:
-	ldm r3!, {r0}
-	stm r1!, {r0}
-	ldm r3!, {r0}
-	stm r1!, {r0}
-	ldm r3!, {r0}
-	stm r1!, {r0}
-	ldm r3!, {r0}
-	stm r1!, {r0}
-	subs r2, #0x10
-	cmp r2, #0xf
-	bhi _020124CA
-	cmp r2, #3
-	bls _020124EE
-_020124E4:
-	ldm r3!, {r0}
-	stm r1!, {r0}
-	subs r2, #4
-	cmp r2, #3
-	bhi _020124E4
-_020124EE:
-	adds r4, r1, #0
-_020124F0:
-	subs r2, #1
-	movs r0, #1
-	rsbs r0, r0, #0
-	cmp r2, r0
-	beq _0201250A
-	adds r1, r0, #0
-_020124FC:
-	ldrb r0, [r3]
-	strb r0, [r4]
-	adds r3, #1
-	adds r4, #1
-	subs r2, #1
-	cmp r2, r1
-	bne _020124FC
-_0201250A:
-	adds r0, r5, #0
-	pop {r4, r5, pc}
-	.align 2, 0
