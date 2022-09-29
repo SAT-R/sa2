@@ -3,7 +3,7 @@
 
 extern char SoundMainRAM_Buffer[0x400];
 
-void sub_0201194C(void);
+static void DummyCallback(void);
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust) {
     u32 val1;
@@ -269,10 +269,10 @@ void SoundInit(struct SoundInfo *soundInfo) {
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
     soundInfo->plynote = (u32)ply_note;
-    soundInfo->CgbSound = sub_0201194C;
-    soundInfo->CgbOscOff = (void (*)(u8))sub_0201194C;
-    soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))sub_0201194C;
-    soundInfo->ExtVolPit = (u32)sub_0201194C;
+    soundInfo->CgbSound = DummyCallback;
+    soundInfo->CgbOscOff = (void (*)(u8))DummyCallback;
+    soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyCallback;
+    soundInfo->ExtVolPit = (u32)DummyCallback;
     MPlayJumpTableCopy(gMPlayJumpTable);
     soundInfo->MPlayJumpTable = (u32)gMPlayJumpTable;
     SampleFreqSet(SOUND_MODE_FREQ_13379);  // ???
@@ -1236,4 +1236,4 @@ void ply_xswee(struct MusicPlayerInfo *mplayInfo,
     ++track->cmdPtr;
 }
 
-void sub_0201194C(void) {}
+static void DummyCallback(void) {}

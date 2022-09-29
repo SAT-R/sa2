@@ -38,6 +38,8 @@ SECTIONS {
 	ALIGN(4)
 	{
 	    build/mb_chao_garden/data/data.o(.rodata);
+		build/mb_chao_garden/src/m4a_tables.o(.rodata);
+		build/mb_chao_garden/data/data2.o(.rodata);
 	} =0
 
     /* DWARF debug sections.

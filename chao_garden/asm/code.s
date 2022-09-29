@@ -2887,7 +2887,7 @@ _020018B0: .4byte sub_020018B4
 	thumb_func_start sub_020018B4
 sub_020018B4: @ 0x020018B4
 	push {lr}
-	bl sub_0200fe00
+	bl m4aSoundVSync
 	ldr r1, _020018C4 @ =gUnknown_03003330
 	movs r0, #0
 	strb r0, [r1, #0xe]

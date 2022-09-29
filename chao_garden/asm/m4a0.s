@@ -572,7 +572,9 @@ sub_0200fc72: @ 0x0200FC72
 	ldrb r3, [r2]
 	b _0200FC56
 	.align 2, 0
-_0200FC7C:
+
+	thumb_func_start ply_goto
+ply_goto:
 	push {lr}
 _0200FC7E:
 	ldr r2, [r1, #0x40]
@@ -590,8 +592,8 @@ _0200FC7E:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_0200FC9C
-sub_0200FC9C: @ 0x0200FC9C
+	thumb_func_start ply_patt
+ply_patt: @ 0x0200FC9C
 	ldrb r2, [r1, #2]
 	cmp r2, #3
 	bhs _0200FCB4
@@ -603,13 +605,13 @@ sub_0200FC9C: @ 0x0200FC9C
 	ldrb r2, [r1, #2]
 	adds r2, #1
 	strb r2, [r1, #2]
-	b _0200FC7C
+	b ply_goto
 _0200FCB4:
 	b ply_fine
 	.align 2, 0
 
-	thumb_func_start sub_0200FCB8
-sub_0200FCB8: @ 0x0200FCB8
+	thumb_func_start ply_pend
+ply_pend: @ 0x0200FCB8
 	ldrb r2, [r1, #2]
 	cmp r2, #0
 	beq _0200FCCA
@@ -622,8 +624,8 @@ sub_0200FCB8: @ 0x0200FCB8
 _0200FCCA:
 	bx lr
 
-	thumb_func_start sub_0200fccc
-sub_0200fccc: @ 0x0200FCCC
+	thumb_func_start ply_rept
+ply_rept: @ 0x0200FCCC
 	push {lr}
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -650,16 +652,16 @@ _0200FCEE:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_0200FCFC
-sub_0200FCFC: @ 0x0200FCFC
+	thumb_func_start ply_prio
+ply_prio: @ 0x0200FCFC
 	mov ip, lr
 	bl sub_0200fc70
 	strb r3, [r1, #0x1d]
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FD08
-sub_0200FD08: @ 0x0200FD08
+	thumb_func_start ply_tempo
+ply_tempo: @ 0x0200FD08
 	mov ip, lr
 	bl sub_0200fc70
 	lsls r3, r3, #1
@@ -670,8 +672,8 @@ sub_0200FD08: @ 0x0200FD08
 	strh r3, [r0, #0x20]
 	bx ip
 
-	thumb_func_start sub_0200FD1C
-sub_0200FD1C: @ 0x0200FD1C
+	thumb_func_start ply_keysh
+ply_keysh: @ 0x0200FD1C
 	mov ip, lr
 	bl sub_0200fc70
 	strb r3, [r1, #0xa]
@@ -682,8 +684,8 @@ sub_0200FD1C: @ 0x0200FD1C
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FD30
-sub_0200FD30: @ 0x0200FD30
+	thumb_func_start ply_voice
+ply_voice: @ 0x0200FD30
 	mov ip, lr
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -706,8 +708,8 @@ sub_0200FD30: @ 0x0200FD30
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FD60
-sub_0200FD60: @ 0x0200FD60
+	thumb_func_start ply_vol
+ply_vol: @ 0x0200FD60
 	mov ip, lr
 	bl sub_0200fc70
 	strb r3, [r1, #0x12]
@@ -718,8 +720,8 @@ sub_0200FD60: @ 0x0200FD60
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FD74
-sub_0200FD74: @ 0x0200FD74
+	thumb_func_start ply_pan
+ply_pan: @ 0x0200FD74
 	mov ip, lr
 	bl sub_0200fc70
 	subs r3, #0x40
@@ -730,8 +732,8 @@ sub_0200FD74: @ 0x0200FD74
 	strb r3, [r1]
 	bx ip
 
-	thumb_func_start sub_0200FD88
-sub_0200FD88: @ 0x0200FD88
+	thumb_func_start ply_bend
+ply_bend: @ 0x0200FD88
 	mov ip, lr
 	bl sub_0200fc70
 	subs r3, #0x40
@@ -742,8 +744,8 @@ sub_0200FD88: @ 0x0200FD88
 	strb r3, [r1]
 	bx ip
 
-	thumb_func_start sub_0200FD9C
-sub_0200FD9C: @ 0x0200FD9C
+	thumb_func_start ply_bendr
+ply_bendr: @ 0x0200FD9C
 	mov ip, lr
 	bl sub_0200fc70
 	strb r3, [r1, #0xf]
@@ -754,16 +756,16 @@ sub_0200FD9C: @ 0x0200FD9C
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FDB0
-sub_0200FDB0: @ 0x0200FDB0
+	thumb_func_start ply_lfodl
+ply_lfodl: @ 0x0200FDB0
 	mov ip, lr
 	bl sub_0200fc70
 	strb r3, [r1, #0x1b]
 	bx ip
 	.align 2, 0
 
-	thumb_func_start sub_0200FDBC
-sub_0200FDBC: @ 0x0200FDBC
+	thumb_func_start ply_modt
+ply_modt: @ 0x0200FDBC
 	mov ip, lr
 	bl sub_0200fc70
 	ldrb r0, [r1, #0x18]
@@ -777,8 +779,8 @@ sub_0200FDBC: @ 0x0200FDBC
 _0200FDD2:
 	bx ip
 
-	thumb_func_start sub_0200FDD4
-sub_0200FDD4: @ 0x0200FDD4
+	thumb_func_start ply_tune
+ply_tune: @ 0x0200FDD4
 	mov ip, lr
 	bl sub_0200fc70
 	subs r3, #0x40
@@ -789,8 +791,8 @@ sub_0200FDD4: @ 0x0200FDD4
 	strb r3, [r1]
 	bx ip
 
-	thumb_func_start sub_0200FDE8
-sub_0200FDE8: @ 0x0200FDE8
+	thumb_func_start ply_port
+ply_port: @ 0x0200FDE8
 	mov ip, lr
 	ldr r2, [r1, #0x40]
 	ldrb r3, [r2]
@@ -803,8 +805,8 @@ sub_0200FDE8: @ 0x0200FDE8
 	.align 2, 0
 _0200FDFC: .4byte 0x04000060
 
-	thumb_func_start sub_0200fe00
-sub_0200fe00: @ 0x0200FE00
+	thumb_func_start m4aSoundVSync
+m4aSoundVSync: @ 0x0200FE00
 	ldr r0, _020100AC @ =SOUND_INFO_PTR
 	ldr r0, [r0]
 	ldr r2, _020100B0 @ =0x68736D53
@@ -990,7 +992,7 @@ _0200FF34:
 	beq _0200FFBC
 	b _0200FF60
 _0200FF56:
-	ldr r0, _020100A8 @ =gUnknown_02019CCC
+	ldr r0, _020100A8 @ =gClockTable
 	subs r1, #0x80
 	adds r1, r1, r0
 	ldrb r0, [r1]
@@ -1179,7 +1181,7 @@ _02010094:
 sub_020100a4: @ 0x020100A4
 	bx r3
 	.align 2, 0
-_020100A8: .4byte gUnknown_02019CCC
+_020100A8: .4byte gClockTable
 _020100AC: .4byte SOUND_INFO_PTR
 _020100B0: .4byte 0x68736D53
 
@@ -1266,7 +1268,7 @@ ply_note: @ 0x02010128
 	ldr r1, _02010320 @ =SOUND_INFO_PTR
 	ldr r1, [r1]
 	str r1, [sp, #4]
-	ldr r1, _02010324 @ =gUnknown_02019CCC
+	ldr r1, _02010324 @ =gClockTable
 	adds r0, r0, r1
 	ldrb r0, [r0]
 	strb r0, [r5, #4]
@@ -1529,7 +1531,7 @@ _0201030E:
 	bx r0
 	.align 2, 0
 _02010320: .4byte SOUND_INFO_PTR
-_02010324: .4byte gUnknown_02019CCC
+_02010324: .4byte gClockTable
 
 	thumb_func_start ply_endtie
 ply_endtie: @ 0x02010328
