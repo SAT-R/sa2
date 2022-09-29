@@ -19175,7 +19175,7 @@ sub_02009894: @ 0x02009894
 	ldrsb r4, [r0, r4]
 	adds r0, r4, #0
 	movs r1, #0xa
-	bl sub_020123e0
+	bl __modsi3
 	lsls r0, r0, #0x18
 	asrs r5, r0, #0x18
 	adds r0, r4, #0
@@ -20835,14 +20835,14 @@ _0200A5B8:
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x17
 	movs r1, #5
-	bl sub_020123e0
+	bl __modsi3
 	lsls r0, r0, #0x10
 	asrs r4, r0, #0x10
 	bl sub_02001534
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x17
 	movs r1, #6
-	bl sub_020123e0
+	bl __modsi3
 	lsls r0, r0, #0x10
 	asrs r5, r0, #0x10
 	lsls r0, r4, #1
@@ -21092,7 +21092,7 @@ sub_0200a7ac: @ 0x0200A7AC
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x17
 	movs r1, #0x16
-	bl sub_020123e0
+	bl __modsi3
 	lsls r0, r0, #0x10
 	asrs r2, r0, #0x10
 	cmp r2, #5
@@ -23994,7 +23994,7 @@ _0200C05A:
 _0200C06A:
 	adds r0, r4, #0
 	movs r1, #0xa
-	bl sub_020123e0
+	bl __modsi3
 	adds r6, r0, #0
 	adds r0, r4, #0
 	movs r1, #0xa
@@ -24106,7 +24106,7 @@ _0200C0C2:
 _0200C14E:
 	adds r0, r4, #0
 	movs r1, #0xa
-	bl sub_020123e0
+	bl __modsi3
 	adds r6, r0, #0
 	adds r0, r4, #0
 	movs r1, #0xa
@@ -24161,7 +24161,7 @@ _0200C1BE:
 _0200C1D0:
 	adds r0, r4, #0
 	movs r1, #0xa
-	bl sub_020123e0
+	bl __modsi3
 	adds r6, r0, #0
 	adds r0, r4, #0
 	movs r1, #0xa
@@ -24545,7 +24545,7 @@ _0200C4C0:
 	movs r0, #0
 	ldrsb r0, [r2, r0]
 	movs r1, #0xa
-	bl sub_020123e0
+	bl __modsi3
 	adds r1, r0, #0
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18

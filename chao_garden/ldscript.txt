@@ -30,7 +30,9 @@ SECTIONS {
 		build/mb_chao_garden/asm/libagbsyscall.o(.text);
 		build/mb_chao_garden/asm/libs.o(.text);
 		*libgcc.a:_call_via_rX.o(.text);
-		build/mb_chao_garden/asm/libs2.o(.text);
+		*libgcc.a:_divsi3.o(.text);
+        *libgcc.a:_dvmd_tls.o(.text);
+        *libgcc.a:_modsi3.o(.text);
 		*libc.a:memcpy.o(.text);
 	} =0
 
