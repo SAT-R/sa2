@@ -28,7 +28,7 @@ void GameStart(void) {
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
-    gUnknown_030059E0.unkA8 = 0;
+    gUnknown_030059E0.unk8C = 0;
     gUnknown_03005960.unk5C = 0;
 
     gUnknown_030059D0[1] = 0;

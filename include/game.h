@@ -65,10 +65,12 @@ struct SomeStruct_59E0 {
     u8 unk24;
     u8 filler24[0x12];
     u8 unk37;
-    u8 filler38[100 - 0x14 - 0x24];
+    u8 filler38[100 - 0x14 - 0x24 - 8];
+    u16 unk5C;
+    u8 filler5E[6];
     u16 unk64;
     u8 filler66[38];
-    u32 unkA8;
+    u32 unk8C;
 };
 
 extern struct SomeStruct_59E0 gUnknown_030059E0;
@@ -90,6 +92,7 @@ struct SomeStruct_5660 {
 
 extern struct SomeStruct_5660 gUnknown_03005660;
 
+// gMultiplayerUnlockedCharacters
 extern u8 gUnknown_03005594;
 extern u8 gUnknown_030054D8;
 extern u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
@@ -102,6 +105,13 @@ extern u32 gUnknown_03005434;
 // gMultiplayerConnections
 extern u8 gUnknown_030055B8;
 
+struct UNK_3005B38 {
+    u16 unk0;
+    u16 unk2;
+};
+
+extern struct UNK_3005B38 gUnknown_03005B38;
+
 #define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 
 // Possibly CreateGameStageAtSelectedCourse
@@ -111,7 +121,7 @@ void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
 void sub_808129C(void);
 
-// UpdateGamePlaySettings
+// ApplyGamePlaySettings
 void sub_801A6D8(void);
 
 // CreateTrueArea53

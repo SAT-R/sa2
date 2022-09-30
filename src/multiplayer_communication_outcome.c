@@ -214,7 +214,7 @@ static void sub_805BC40(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
-            CreateCharacterSelectionScreen(gSelectedCharacter, gUnknown_03005594 & 0x10);
+            CreateCharacterSelectionScreen(gSelectedCharacter, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
         } else {
             gMultiSioEnabled = FALSE;
             MultiSioStop();

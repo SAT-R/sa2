@@ -54,7 +54,8 @@ SECTIONS
         build/sa2/src/profile.o(.text);
         build/sa2/asm/special_stage.o(.text);
         build/sa2/src/save.o(.text);
-        build/sa2/asm/code3.o(.text);
+        build/sa2/asm/unused_code3.o(.text);
+        build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/asm/multiplayer_connection.o(.text);
         build/sa2/src/random.o(.text);
         build/sa2/src/math.o(.text);

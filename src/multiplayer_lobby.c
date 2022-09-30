@@ -230,7 +230,7 @@ static void Task_FadeInOrHandleExit(void) {
                         gUnknown_030054D4[i] = 0;
                     }
                 } else {
-                    CreateCharacterSelectionScreen(0, gUnknown_03005594 & 0x10);
+                    CreateCharacterSelectionScreen(0, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
                 }
                 return;
             } else {
