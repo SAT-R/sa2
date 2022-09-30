@@ -11,6 +11,7 @@
 #define LanguageIndex(lang) (lang - 1)
 
 #define TextElementOffset(lang, elementsPerLang, element) (element + ((lang) * (elementsPerLang)))
+#define TextElementOffsetAlt(lang, elementsPerLang, element) (((lang) * (elementsPerLang)) + element)
 
 // TODO: move these to a better place
 

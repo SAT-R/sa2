@@ -11,6 +11,7 @@
 #include "multiplayer_multipak_connection.h"
 #include "title_screen.h"
 #include "character_select.h"
+#include "constants/text.h"
 
 struct MultiplayerLobbyScreen {
     struct UNK_0808B3FC_UNK240 chao;
@@ -25,8 +26,8 @@ struct MultiplayerLobbyScreen {
 } /* size 0x114 */;
 
 #define ELEMENT_TITLE 0
-#define ELEMENT_NO 1
-#define ELEMENT_YES 2
+#define ELEMENT_YES 1
+#define ELEMENT_NO 2
 
 #define CURSOR_YES 0
 #define CURSOR_NO 1
@@ -38,8 +39,32 @@ struct MultiplayerLobbyScreen {
 #define MSG_VS_LOBBY_CURSOR_MOVE 0x40A1
 #define MSG_VS_LOBBY_CURSOR_POS 0x40A0
 
-extern const struct UNK_080E0D64 gUiText[12];
-extern const s8 gShakeAnimPositions[8];
+static const struct UNK_080E0D64 sUiText[] = {
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 57, 1074),
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)] = TextElementAlt4(17, 12, 1074),
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)] = TextElementAlt4(18, 18, 1074),
+    
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 48, 1079),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_YES)] = TextElementAlt4(6, 10, 1079),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_NO)] = TextElementAlt4(7, 10, 1079),
+
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1080),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_YES)] = TextElementAlt4(6, 15, 1080),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_NO)] = TextElementAlt4(7, 21, 1080),
+
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 39, 1081),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_YES)] = TextElementAlt4(6, 18, 1081),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_NO)] = TextElementAlt4(7, 18, 1081),
+
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1082),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_YES)] = TextElementAlt4(6, 9, 1082),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_NO)] = TextElementAlt4(7, 15, 1082),
+
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1083),
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_YES)] = TextElementAlt4(6, 9, 1083),
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_NO)] = TextElementAlt4(7, 15, 1083),
+};
+static const s8 sShakeAnimPositions[] = { 0, 2, 4, 3, 0, -2, -4, -3, };
 
 static void Task_FadeInOrHandleExit(void);
 static void MultiplayerLobbyScreenOnDestroy(struct Task*);
@@ -143,9 +168,9 @@ static void CreateUI(struct MultiplayerLobbyScreen* lobbyScreen) {
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         element = &lobbyScreen->uiElements[i];
-        element->unk4 = VramMalloc(gUiText[lang * 3 + i].unk0);
-        element->unkA = gUiText[lang * 3 + i].unk4;
-        element->unk20 = gUiText[lang * 3 + i].unk6;
+        element->unk4 = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].unk0);
+        element->unkA = sUiText[TextElementOffsetAlt(lang, 3, i)].unk4;
+        element->unk20 = sUiText[TextElementOffsetAlt(lang, 3, i)].unk6;
         element->unk21 = 0xFF;
         element->unk16 = 0x78;
         element->unk18 = 0x24;
@@ -248,7 +273,7 @@ static void ScreenMain(void) {
         // cursor moved
         if (recv->pat0.unk3 != 0) {
             lobbyScreen->idleFrame = 0;
-            lobbyScreen->animFrame = 7;
+            lobbyScreen->animFrame = ARRAY_COUNT(sShakeAnimPositions) - 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
             
             if (lobbyScreen->cursor != CURSOR_YES) {
@@ -275,7 +300,7 @@ static void ScreenMain(void) {
         if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
             send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_MOVE;
         } else if (gPressedKeys & DPAD_LEFT) {
-            lobbyScreen->animFrame = 7;
+            lobbyScreen->animFrame = ARRAY_COUNT(sShakeAnimPositions) - 1;
             lobbyScreen->idleFrame = 0;
             lobbyScreen->cursor = 0;
 
@@ -287,7 +312,7 @@ static void ScreenMain(void) {
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         } else if (gPressedKeys & DPAD_RIGHT) {
-            lobbyScreen->animFrame = 7;
+            lobbyScreen->animFrame = ARRAY_COUNT(sShakeAnimPositions) - 1;
             lobbyScreen->idleFrame = 0;
             lobbyScreen->cursor = 1;
             
@@ -444,21 +469,21 @@ static void RenderUI(struct MultiplayerLobbyScreen* lobbyScreen) {
     element = &lobbyScreen->uiElements[ELEMENT_TITLE];
     sub_80051E8(element);
 
-    element = &lobbyScreen->uiElements[ELEMENT_NO];
+    element = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
         element->unk16 = 44;
         element->unk25 = 1;
     } else {
-        element->unk16 = gShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
+        element->unk16 = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
         element->unk25 = 0;
     }
     element->unk18 = 110;
     sub_80051E8(element);
 
-    element = &lobbyScreen->uiElements[ELEMENT_YES];
+    element = &lobbyScreen->uiElements[ELEMENT_NO];
 
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->unk16 = gShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
+        element->unk16 = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
         element->unk25 = 15;
     } else {
         element->unk16 = 192;

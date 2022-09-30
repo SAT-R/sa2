@@ -116,4 +116,7 @@ void sub_801A6D8(void);
 // CreateTrueArea53
 void sub_8036C54(void);
 
+// Sweep anim
+void sub_802E044(u16, u16);
+
 #endif // GUARD_GAME_H

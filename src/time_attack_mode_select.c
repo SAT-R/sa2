@@ -7,6 +7,7 @@
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "constants/text.h"
 #include "title_screen.h"
 #include "game.h"
 #include "character_select.h"
@@ -17,18 +18,63 @@ struct TimeAttackModeSelectionScreen {
     struct UNK_0808B3FC_UNK240 unk80;
     struct UNK_0808B3FC_UNK240 unkB0;
     struct UNK_0808B3FC_UNK240 unkE0;
-    struct UNK_0808B3FC_UNK240 unk110;
+    struct UNK_0808B3FC_UNK240 infoText;
     struct UNK_802D4CC_UNK270 unk140;
-    u8 unk14C;
+    u8 animFrame;
     u8 unk14D;
     u8 unk14E;
     u8 filler14F;
 };
 
-void sub_8088800(void);
-void sub_8088900(struct Task*);
+static void Task_FadeInAndStartIntro(void);
+static void Task_IntroUIAnim(void);
 
-extern const struct UNK_080E0D64 gUnknown_080E0384[30];
+static void Task_ScreenMain(void);
+static void RenderUI(struct TimeAttackModeSelectionScreen* modeScreen);
+
+static void Task_FadeOutModeSelected(void);
+static void Task_FadeOutToTitleScreen(void);
+static void Task_HandleModeSelectedExit(void);
+
+static void TimeAttackModeSelectionScreenOnDestroy(struct Task*);
+
+const struct UNK_080E0D64 gUnknown_080E0384[30] = {
+    TextElementAlt4(1, 12, 1057),
+    TextElementAlt4(2, 8, 1057),
+    TextElementAlt4(3, 168, 1057),
+    TextElementAlt4(4, 168, 1057),
+    TextElementAlt4(5, 168, 1057),
+
+    TextElementAlt4(3, 12, 1058),
+    TextElementAlt4(4, 12, 1058),
+    TextElementAlt4(0, 168, 1058),
+    TextElementAlt4(1, 168, 1058),
+    TextElementAlt4(2, 168, 1058),
+
+    TextElementAlt4(3, 12, 1058),
+    TextElementAlt4(4, 12, 1058),
+    TextElementAlt4(0, 168, 1059),
+    TextElementAlt4(1, 168, 1059),
+    TextElementAlt4(2, 168, 1059),
+
+    TextElementAlt4(3, 12, 1058),
+    TextElementAlt4(4, 12, 1058),
+    TextElementAlt4(0, 168, 1060),
+    TextElementAlt4(1, 168, 1060),
+    TextElementAlt4(2, 168, 1060),
+
+    TextElementAlt4(3, 12, 1058),
+    TextElementAlt4(4, 12, 1058),
+    TextElementAlt4(0, 168, 1061),
+    TextElementAlt4(1, 168, 1061),
+    TextElementAlt4(2, 168, 1061),
+
+    TextElementAlt4(3, 12, 1058),
+    TextElementAlt4(4, 12, 1058),
+    TextElementAlt4(0, 168, 1062),
+    TextElementAlt4(1, 168, 1062),
+    TextElementAlt4(2, 168, 1062),
+};
 
 void CreateTimeAttackModeSelectionScreen(void) {
     struct Task* t;
@@ -55,10 +101,10 @@ void CreateTimeAttackModeSelectionScreen(void) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
     
-    t = TaskCreate(sub_8088800, 0x150, 0x2000, 0, sub_8088900);
+    t = TaskCreate(Task_FadeInAndStartIntro, sizeof(struct TimeAttackModeSelectionScreen), 0x2000, 0, TimeAttackModeSelectionScreenOnDestroy);
     modeScreen = TaskGetStructPtr(t);
 
-    modeScreen->unk14C = 0;
+    modeScreen->animFrame = 0;
     modeScreen->unk14D = 0;
     modeScreen->unk14E = 0;
 
@@ -90,9 +136,9 @@ void CreateTimeAttackModeSelectionScreen(void) {
     sub_8004558(element);
 
     element = &modeScreen->unkB0;
-    element->unk4 = VramMalloc(gUnknown_080E0384[lang * 5].unk0);
-    element->unkA = gUnknown_080E0384[lang * 5].unk4;
-    element->unk20 = gUnknown_080E0384[lang * 5].unk6;
+    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk0);
+    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk4;
+    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk6;
     element->unk21 = 0xFF;
     element->unk16 = 0;
     element->unk18 = 0;
@@ -107,9 +153,9 @@ void CreateTimeAttackModeSelectionScreen(void) {
     sub_8004558(element);
 
     element = &modeScreen->unkE0;
-    element->unk4 = VramMalloc(gUnknown_080E0384[1 + lang * 5].unk0);
-    element->unkA = gUnknown_080E0384[1 + lang * 5].unk4;
-    element->unk20 = gUnknown_080E0384[1 + lang * 5].unk6;
+    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk0);
+    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk4;
+    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk6;
     element->unk21 = 0xFF;
     element->unk16 = 0;
     element->unk18 = 0;
@@ -123,10 +169,10 @@ void CreateTimeAttackModeSelectionScreen(void) {
     element->unk10 = 0x1000;
     sub_8004558(element);
 
-    element = &modeScreen->unk110;
-    element->unk4 = VramMalloc(gUnknown_080E0384[2 + lang * 5].unk0);
-    element->unkA = gUnknown_080E0384[2 + lang * 5].unk4;
-    element->unk20 = gUnknown_080E0384[2 + lang * 5].unk6;
+    element = &modeScreen->infoText;
+    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk0);
+    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk4;
+    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk6;
     element->unk21 = 0xFF;
     element->unk16 = 8;
     element->unk18 = 0x67;
@@ -176,12 +222,7 @@ void CreateTimeAttackModeSelectionScreen(void) {
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
 }
 
-void sub_802EFDC(u32);
-void sub_802E044(u16, u16);
-
-void sub_8088398(void);
-
-void sub_80882F8(void) {
+void Task_IntroSweepAnim(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
 
     gUnknown_03002A80 = 2;
@@ -192,33 +233,29 @@ void sub_80882F8(void) {
     
     gFlags |= 0x4;
     sub_802EFDC(0xF0);
-    sub_802E044(0x6400, modeScreen->unk14C * 20 + 700);
+    sub_802E044(0x6400, modeScreen->animFrame * 20 + 700);
 
     if (gPressedKeys & A_BUTTON) {
-        modeScreen->unk14C = 0;
-        gCurTask->main = sub_8088398;
+        modeScreen->animFrame = 0;
+        gCurTask->main = Task_IntroUIAnim;
     }
 
-    if (--modeScreen->unk14C == 0) {
-        modeScreen->unk14C = 0;
-        gCurTask->main = sub_8088398;
+    if (--modeScreen->animFrame == 0) {
+        modeScreen->animFrame = 0;
+        gCurTask->main = Task_IntroUIAnim;
     }
 }
 
-void sub_80884C0(void);
-
-void sub_80888BC(struct TimeAttackModeSelectionScreen* modeScreen);
-
-void sub_8088398(void) {
+static void Task_IntroUIAnim(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* element;
-    if (++modeScreen->unk14C == 0x20) {
+    if (++modeScreen->animFrame == 32) {
         modeScreen->unk14E = 1;
-        gCurTask->main = sub_80884C0;
+        gCurTask->main = Task_ScreenMain;
     }
 
     if (gPressedKeys & A_BUTTON) {
-        modeScreen->unk14C = 0x1F;
+        modeScreen->animFrame = 31;
     }
 
     gUnknown_03002A80 = 2;
@@ -232,46 +269,43 @@ void sub_8088398(void) {
     sub_802E044(0x6400, 700);
 
     element = &modeScreen->unk80;
-    if (modeScreen->unk14C < 10) {
-        element->unk16 = modeScreen->unk14C * 10 - 0x32;
+    if (modeScreen->animFrame < 10) {
+        element->unk16 = modeScreen->animFrame * 10 - 50;
     } else {
         element->unk16 = 0x32;
     }
     element->unk18 = 10;
 
     element = &modeScreen->unkB0;
-    if (modeScreen->unk14C < 10) {
+    if (modeScreen->animFrame < 10) {
         element->unk16 = -0x50;
-    } else if (modeScreen->unk14C < 0x14) {
-        element->unk16 = (modeScreen->unk14C * 0x10) - 0xFA;
+    } else if (modeScreen->animFrame < 0x14) {
+        element->unk16 = (modeScreen->animFrame * 16) - 250;
     } else {
         element->unk16 = 0x46;
     }
     element->unk18 = 0x3C;
 
     element = &modeScreen->unkE0;
-    if (modeScreen->unk14C < 0x14) {
+    if (modeScreen->animFrame < 0x14) {
         element->unk16 = -0x5A;
-    } else  if (modeScreen->unk14C < 0x1E) {
-        element->unk16 = (modeScreen->unk14C * 0x10) - 400;
+    } else  if (modeScreen->animFrame < 0x1E) {
+        element->unk16 = (modeScreen->animFrame * 16) - 400;
     } else {
         element->unk16 = 0x50;
     }
     element->unk18 = 0x4C;
-    sub_80888BC(modeScreen);
+    RenderUI(modeScreen);
 }
 
-void sub_80886C8(void);
-void sub_8088768(void);
-
-void sub_80884C0(void) {
+static void Task_ScreenMain(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig;
     struct UNK_0808B3FC_UNK240* element;
     s8 lang;
     
     if (gPressedKeys & A_BUTTON) {
-        if (modeScreen->unk14D && gLoadedSaveGame->unk12 == 0) {
+        if (modeScreen->unk14D && !gLoadedSaveGame->unk12) {
             m4aSongNumStart(SE_ABORT);
         } else {
             transitionConfig = &modeScreen->unk140;
@@ -282,7 +316,7 @@ void sub_80884C0(void) {
             transitionConfig->unk8 = 0x3FFF;
             transitionConfig->unkA = 0;
             m4aSongNumStart(SE_SELECT);
-            gCurTask->main = sub_80886C8;
+            gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
         transitionConfig = &modeScreen->unk140;
@@ -293,7 +327,7 @@ void sub_80884C0(void) {
         transitionConfig->unk8 = 0x3FFF;
         transitionConfig->unkA = 0;
         m4aSongNumStart(SE_RETURN);
-        gCurTask->main = sub_8088768;
+        gCurTask->main = Task_FadeOutToTitleScreen;
     }
 
     gUnknown_03002A80 = 2;
@@ -323,13 +357,13 @@ void sub_80884C0(void) {
         element = &modeScreen->unkE0;
         element->unk25 = 0xFF;
 
-        element = &modeScreen->unk110;
-        if (gLoadedSaveGame->unk12 != 0) {
-            element->unkA = gUnknown_080E0384[3 + lang * 5].unk4;
-            element->unk20 = gUnknown_080E0384[3 + lang * 5].unk6;
+        element = &modeScreen->infoText;
+        if (gLoadedSaveGame->unk12) {
+            element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].unk4;
+            element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].unk6;
         } else {
-            element->unkA = gUnknown_080E0384[4 + lang * 5].unk4;
-            element->unk20 = gUnknown_080E0384[4 + lang * 5].unk6;
+            element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].unk4;
+            element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].unk6;
         }
         element->unk21 = 0xFF;
     } else {
@@ -343,23 +377,21 @@ void sub_80884C0(void) {
         element = &modeScreen->unkE0;
         element->unk25 = 0;
 
-        element = &modeScreen->unk110;
-        element->unkA = gUnknown_080E0384[2 + lang * 5].unk4;
-        element->unk20 = gUnknown_080E0384[2 + lang * 5].unk6;
+        element = &modeScreen->infoText;
+        element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk4;
+        element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk6;
         element->unk21 = 0xFF;
     }
-    sub_80888BC(modeScreen);
+    RenderUI(modeScreen);
 }
 
-void sub_808883C(void);
-
-void sub_80886C8(void) {
+static void Task_FadeOutModeSelected(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
-        gCurTask->main = sub_808883C;
+        gCurTask->main = Task_HandleModeSelectedExit;
         return;
     }
 
@@ -372,11 +404,10 @@ void sub_80886C8(void) {
     gFlags |= 0x4;
     sub_802EFDC(0xF0);
     sub_802E044(0x6400, 700);
-    sub_80888BC(modeScreen);
+    RenderUI(modeScreen);
 }
 
-
-void sub_8088768(void) {
+static void Task_FadeOutToTitleScreen(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
@@ -395,18 +426,18 @@ void sub_8088768(void) {
     gFlags |= 0x4;
     sub_802EFDC(0xF0);
     sub_802E044(0x6400, 700);
-    sub_80888BC(modeScreen);
+    RenderUI(modeScreen);
 }
 
-void sub_8088800(void) {
+static void Task_FadeInAndStartIntro(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
      if (sub_802D4CC(&modeScreen->unk140) == 1) {
-        modeScreen->unk14C = 0xF;
-        gCurTask->main = sub_80882F8;
+        modeScreen->animFrame = 0xF;
+        gCurTask->main = Task_IntroSweepAnim;
      }
 }
 
-void sub_808883C(void) {
+static void Task_HandleModeSelectedExit(void) {
     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(gCurTask);
 
     if (modeScreen->unk14D != 0) {
@@ -422,7 +453,7 @@ void sub_808883C(void) {
     CreateCharacterSelectionScreen(0, gLoadedSaveGame->unk13 & 0x10);
 }
 
-void sub_80888BC(struct TimeAttackModeSelectionScreen* modeScreen) {
+static void RenderUI(struct TimeAttackModeSelectionScreen* modeScreen) {
     struct UNK_0808B3FC_UNK240* element;
     element = &modeScreen->unk80;
     sub_80051E8(element);
@@ -432,16 +463,16 @@ void sub_80888BC(struct TimeAttackModeSelectionScreen* modeScreen) {
     sub_80051E8(element);
 
     if (modeScreen->unk14E != 0) {
-        element = &modeScreen->unk110;
+        element = &modeScreen->infoText;
         sub_8004558(element);
         sub_80051E8(element);
     }
 }
 
-void sub_8088900(struct Task* t) {
+static void TimeAttackModeSelectionScreenOnDestroy(struct Task* t) {
      struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(t);
     VramFree(modeScreen->unk80.unk4);
     VramFree(modeScreen->unkB0.unk4);
     VramFree(modeScreen->unkE0.unk4);
-    VramFree(modeScreen->unk110.unk4);
+    VramFree(modeScreen->infoText.unk4);
 }
