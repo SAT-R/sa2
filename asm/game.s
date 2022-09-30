@@ -496,7 +496,7 @@ _0801AB1A:
 	bls _0801AB28
 	cmp r0, #5
 	beq _0801AB28
-	bl CourseProgressIndicator
+	bl RaceProgressIndicator
 _0801AB28:
 	add sp, #4
 	pop {r4, r5, r6, r7}

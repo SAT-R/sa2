@@ -37,6 +37,7 @@ extern u16 gUnknown_0300544C;
 
 struct MultiplayerPlayer {
     u8 filler[0x50];
+    // x
     s16 unk50;
 };
 

@@ -24,5 +24,8 @@
 
 // ((((level) / (ACTS_PER_ZONE + 1)) * 2) | ((level) & 1))
 #define LEVEL_TO_COURSE_INDEX(level) ((((level) / (ACTS_PER_ZONE + 1)) << 0x19 >> 0x18) | ((level) & 1))
+#define COURSE_LEVEL_TO_COURSE_INDEX(level) (((level) >> 1) + ((level) & 1))
+
+#define COURSE_INDEX(zone, act) (LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(zone, act)))
 
 #endif // GUARD_ZONES_H

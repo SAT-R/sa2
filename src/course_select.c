@@ -669,10 +669,10 @@ static void Task_UnlockCutSceneScrollAnim(void) {
             m4aSongNumStart(SE_MAP_MOVE);
             gCurTask->main = Task_UnlockCutSceneScrollToNextCourseAnim;
         } else {
-            if (coursesScreen->maxCourse == LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) + 1) {
+            if (coursesScreen->maxCourse == COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1) {
                 struct UNK_0808B3FC_UNK240* element;
                 
-                coursesScreen->maxCourse = LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53));
+                coursesScreen->maxCourse = COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 element = &coursesScreen->mapPaths[ZONE_FINAL];
                 element->unkA = sZoneMapPathAssets[ZONE_FINAL][1];
                 element->unk20 = sZoneMapPathAssets[ZONE_FINAL][2];
@@ -722,7 +722,7 @@ static void Task_CourseSelectMain(void) {
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if (gInput & (DPAD_LEFT) && !coursesScreen->levelChosen) {
             if (coursesScreen->currentCourse > 0) {
-                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 0 || coursesScreen->currentCourse > LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_7, ACT_2))) {
+                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 0 || coursesScreen->currentCourse > COURSE_INDEX(ZONE_7, ACT_2)) {
                     zoneName->unk16 = 0xF0;
                 }
                 coursesScreen->zoneNameAnimFrame = 0;
@@ -732,7 +732,7 @@ static void Task_CourseSelectMain(void) {
             }
         } else if (gInput & DPAD_RIGHT && !coursesScreen->levelChosen) {
             if (coursesScreen->currentCourse < coursesScreen->maxCourse) {
-                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 1 || coursesScreen->currentCourse > LEVEL_TO_COURSE_INDEX(LEVEL_INDEX(ZONE_7, ACT_2))) {
+                if (COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse) == 1 || coursesScreen->currentCourse > COURSE_INDEX(ZONE_7, ACT_2)) {
                     zoneName->unk16 = 0xF0;
                 }
                 coursesScreen->zoneNameAnimFrame = 0;

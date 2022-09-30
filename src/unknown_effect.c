@@ -42,7 +42,16 @@ void sub_8087088(void) {
     }
 }
 
-extern const s8 gUnknown_080E02DC[8][2];
+const s8 gUnknown_080E02DC[8][2] = {
+    { 0, 0, },
+    { 3, -1, },
+    { -2, -4, },
+    { 0, 3, },
+    { -4, -2, },
+    { 3, -4, },
+    { 1, 3, },
+    { -2, 2, },
+};
 
 void sub_80870E8(void) {
     s16 a = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
