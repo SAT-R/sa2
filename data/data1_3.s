@@ -24,12 +24,12 @@ gUnknown_080E02D4:
 gUnknown_080E02DC:
     .incbin "baserom.gba", 0x000E02DC, 0x10
 
-    .global gUnknown_080E02EC
-gUnknown_080E02EC:
+    .global gUiText
+gUiText:
     .incbin "baserom.gba", 0x000E02EC, 0x90
 
-    .global gUnknown_080E037C
-gUnknown_080E037C:
+    .global gShakeAnimPositions
+gShakeAnimPositions:
     .incbin "baserom.gba", 0x000E037C, 0x8
 
     .global gUnknown_080E0384

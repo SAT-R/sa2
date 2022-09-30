@@ -347,7 +347,7 @@ static void sub_805C3D0(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
-            sub_8087400();
+            CreateMultiplayerLobbyScreen();
         } else {
             if (gGameMode == 3) {
                 u8 i;

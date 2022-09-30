@@ -160,7 +160,7 @@ $(MID_SUBDIR)/mus_vs_3.s: %.s: %.mid
 $(MID_SUBDIR)/mus_connection_pending.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V110
     
-$(MID_SUBDIR)/mus_vs_4.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_lobby.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23  -V105
     
 $(MID_SUBDIR)/mus_vs_select_pak_mode.s: %.s: %.mid
@@ -757,7 +757,7 @@ $(MID_SUBDIR)/mus_got_all_chaos_emeralds.s: %.s: %.mid
 $(MID_SUBDIR)/mus_fanfare.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23 -P255 -V105
     
-$(MID_SUBDIR)/mus_412.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_exit.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V77
     
 $(MID_SUBDIR)/mus_vs_success.s: %.s: %.mid

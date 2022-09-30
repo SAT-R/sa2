@@ -181,7 +181,7 @@ SECTIONS
         build/sa2/sound/songs/midi/mus_vs_2.o(.rodata);
         build/sa2/sound/songs/midi/mus_vs_3.o(.rodata);
         build/sa2/sound/songs/midi/mus_connection_pending.o(.rodata);
-        build/sa2/sound/songs/midi/mus_vs_4.o(.rodata);
+        build/sa2/sound/songs/midi/mus_vs_lobby.o(.rodata);
         build/sa2/sound/songs/midi/mus_vs_select_pak_mode.o(.rodata);
         build/sa2/sound/songs/midi/se_ring.o(.rodata);
         build/sa2/sound/songs/midi/se_shift.o(.rodata);
@@ -380,7 +380,7 @@ SECTIONS
         build/sa2/sound/songs/midi/mus_message_2.o(.rodata);
         build/sa2/sound/songs/midi/mus_got_all_chaos_emeralds.o(.rodata);
         build/sa2/sound/songs/midi/mus_fanfare.o(.rodata);
-        build/sa2/sound/songs/midi/mus_412.o(.rodata);
+        build/sa2/sound/songs/midi/mus_vs_exit.o(.rodata);
         build/sa2/sound/songs/midi/mus_vs_success.o(.rodata);
         build/sa2/sound/songs/midi/mus_vs_miss.o(.rodata);
         build/sa2/sound/songs/midi/mus_message.o(.rodata);

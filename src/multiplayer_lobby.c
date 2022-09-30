@@ -13,38 +13,60 @@
 #include "character_select.h"
 
 struct MultiplayerLobbyScreen {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30[3];
-    struct Unk_03002400 unkC0;
-    struct UNK_802D4CC_UNK270 unk100;
-    u8 unk10C;
-    u8 unk10D;
-    u16 unk10E;
-    u8 unk110;
-    u8 unk111;
+    struct UNK_0808B3FC_UNK240 chao;
+    struct UNK_0808B3FC_UNK240 uiElements[3];
+    struct Unk_03002400 background;
+    struct UNK_802D4CC_UNK270 transitionConfig;
+    bool8 fadeInComplete;
+    u8 cursor;
+    u16 idleFrame;
+    u8 animFrame;
+    u8 playersWaiting;
 } /* size 0x114 */;
 
-extern const struct UNK_080E0D64 gUnknown_080E02EC[12];
+#define ELEMENT_TITLE 0
+#define ELEMENT_NO 1
+#define ELEMENT_YES 2
 
-void sub_8087644(void);
-void sub_8087F10(struct Task*);
-void sub_8087478(struct MultiplayerLobbyScreen*);
+#define CURSOR_YES 0
+#define CURSOR_NO 1
 
-void sub_8087400(void) {
-    struct Task* t = TaskCreate(sub_8087644, 0x114, 0x1000, 0, sub_8087F10);
+#define CHAO_EXIT_WAVE_ANIM_LENGTH 120
+
+#define MSG_VS_LOBBY_EXIT 0x40A3
+#define MSG_VS_LOBBY_WAITING_FOR_EXIT 0x40A2
+#define MSG_VS_LOBBY_CURSOR_MOVE 0x40A1
+#define MSG_VS_LOBBY_CURSOR_POS 0x40A0
+
+extern const struct UNK_080E0D64 gUiText[12];
+extern const s8 gShakeAnimPositions[8];
+
+static void Task_FadeInOrHandleExit(void);
+static void MultiplayerLobbyScreenOnDestroy(struct Task*);
+static void CreateUI(struct MultiplayerLobbyScreen*);
+static void ScreenMain(void);
+static void RenderUI(struct MultiplayerLobbyScreen*);
+static u8 CatchInvalidPacket(union MultiSioData*);
+static void Task_ListenForExit(void);
+static void Task_NotifyExit(void);
+static void ExitToCharacterSelect(struct MultiplayerLobbyScreen*);
+static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen*);
+
+void CreateMultiplayerLobbyScreen(void) {
+    struct Task* t = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen), 0x1000, 0, MultiplayerLobbyScreenOnDestroy);
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
 
-    lobbyScreen->unk10C = 0;
-    lobbyScreen->unk10D = 0;
-    lobbyScreen->unk10E = 0;
-    lobbyScreen->unk110 = 0;
-    lobbyScreen->unk111 = 0;
-    sub_8087478(lobbyScreen);
-    sub_802D4CC(&lobbyScreen->unk100);
-    m4aSongNumStart(MUS_VS_4);
+    lobbyScreen->fadeInComplete = FALSE;
+    lobbyScreen->cursor = CURSOR_YES;
+    lobbyScreen->idleFrame = 0;
+    lobbyScreen->animFrame = 0;
+    lobbyScreen->playersWaiting = 0;
+    CreateUI(lobbyScreen);
+    sub_802D4CC(&lobbyScreen->transitionConfig);
+    m4aSongNumStart(MUS_VS_LOBBY);
 }
 
-void sub_8087478(struct MultiplayerLobbyScreen* lobbyScreen) {
+static void CreateUI(struct MultiplayerLobbyScreen* lobbyScreen) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
     struct Unk_03002400* background;
@@ -86,7 +108,7 @@ void sub_8087478(struct MultiplayerLobbyScreen* lobbyScreen) {
     gBgScrollRegs[2][0] = 0;
     gBgScrollRegs[2][1] = 0;
 
-    background = &lobbyScreen->unkC0;
+    background = &lobbyScreen->background;
     background->unk4 = BG_SCREEN_ADDR(0);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(30);
@@ -103,7 +125,7 @@ void sub_8087478(struct MultiplayerLobbyScreen* lobbyScreen) {
     background->unk2E = 0;
     sub_8002A3C(background);
 
-    element = &lobbyScreen->unk0;
+    element = &lobbyScreen->chao;
     element->unk4 = VramMalloc(0x38);
     element->unkA = 0x450;
     element->unk20 = 3;
@@ -119,11 +141,11 @@ void sub_8087478(struct MultiplayerLobbyScreen* lobbyScreen) {
     element->unk10 = 0x1000;
     sub_8004558(element);
 
-    for (i = 0; i < 3; i++) {
-        element = &lobbyScreen->unk30[i];
-        element->unk4 = VramMalloc(gUnknown_080E02EC[lang * 3 + i].unk0);
-        element->unkA = gUnknown_080E02EC[lang * 3 + i].unk4;
-        element->unk20 = gUnknown_080E02EC[lang * 3 + i].unk6;
+    for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
+        element = &lobbyScreen->uiElements[i];
+        element->unk4 = VramMalloc(gUiText[lang * 3 + i].unk0);
+        element->unkA = gUiText[lang * 3 + i].unk4;
+        element->unk20 = gUiText[lang * 3 + i].unk6;
         element->unk21 = 0xFF;
         element->unk16 = 0x78;
         element->unk18 = 0x24;
@@ -137,46 +159,44 @@ void sub_8087478(struct MultiplayerLobbyScreen* lobbyScreen) {
         sub_8004558(element);
     }
 
-    lobbyScreen->unk100.unk0 = 1;
-    lobbyScreen->unk100.unk4 = 0;
-    lobbyScreen->unk100.unk2 = 2;
-    lobbyScreen->unk100.unk6 = 0x200;
-    lobbyScreen->unk100.unk8 = 0x3FFF;
-    lobbyScreen->unk100.unkA = 0;
+    lobbyScreen->transitionConfig.unk0 = 1;
+    lobbyScreen->transitionConfig.unk4 = 0;
+    lobbyScreen->transitionConfig.unk2 = 2;
+    lobbyScreen->transitionConfig.unk6 = 0x200;
+    lobbyScreen->transitionConfig.unk8 = 0x3FFF;
+    lobbyScreen->transitionConfig.unkA = 0;
 }
 
-void sub_808782C(void);
-void sub_8087E10(struct MultiplayerLobbyScreen*);
-
-void sub_8087644(void) {
+static void Task_FadeInOrHandleExit(void) {
     u8 i;
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
     union MultiSioData* send;
     MultiPakHeartbeat();
     
-    if (lobbyScreen->unk10C != 0 && gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+    if (lobbyScreen->fadeInComplete && gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
-        send->pat0.unk2 = lobbyScreen->unk10D;
-        send->pat0.unk0 = 0x40A3;
-    } else if (lobbyScreen->unk10C == 0) {
+        send->pat0.unk2 = lobbyScreen->cursor;
+        send->pat0.unk0 = MSG_VS_LOBBY_EXIT;
+    } else if (!lobbyScreen->fadeInComplete) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
-        send->pat0.unk2 = lobbyScreen->unk10D;
-        send->pat0.unk0 = 0x40A0; 
+        send->pat0.unk2 = lobbyScreen->cursor;
+        send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_POS; 
     }
 
-    if (lobbyScreen->unk10E == 0) {
-        if (sub_802D4CC(&lobbyScreen->unk100) == 1) {
-            if (lobbyScreen->unk10C != 0) {
+    // Wait for idle frame to reach 0
+    if (lobbyScreen->idleFrame == 0) {
+        if (sub_802D4CC(&lobbyScreen->transitionConfig) == 1) {
+            if (lobbyScreen->fadeInComplete) {
                 TaskDestroy(gCurTask);
-                if (lobbyScreen->unk10D != 0) {
+                if (lobbyScreen->cursor != CURSOR_YES) {
                     gMultiSioEnabled = FALSE;
                     MultiSioStop();
                     MultiSioInit(0);
                     CreateTitleScreenAndSkipIntro();
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                        gUnknown_030055A0[i] = 0;
+                        gUnknown_030055A0[i] = NULL;
                     }
 
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -184,28 +204,30 @@ void sub_8087644(void) {
                         gUnknown_030054B4[i] = 0;
                         gUnknown_030054D4[i] = 0;
                     }
-
-                    return;
+                } else {
+                    CreateCharacterSelectionScreen(0, gUnknown_03005594 & 0x10);
                 }
-                CreateCharacterSelectionScreen(0, gUnknown_03005594 & 0x10);
                 return;
+            } else {
+                gCurTask->main = ScreenMain;
+                lobbyScreen->fadeInComplete = TRUE;
             }
-
-            gCurTask->main = sub_808782C;
-            lobbyScreen->unk10C = 1;
         }
-    } else if (--lobbyScreen->unk10E > 0x78) {
-        lobbyScreen->unk10E = 0x78;
+        
+    } else {
+        // Otherwise, we are exiting, and there is an idle frame
+        // set so wait for exit anim to complete
+        lobbyScreen->idleFrame--;
+
+        if (lobbyScreen->idleFrame > CHAO_EXIT_WAVE_ANIM_LENGTH) {
+            lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
+        }
     }
 
-    sub_8087E10(lobbyScreen);
+    RenderUI(lobbyScreen);
 }
 
-u8 sub_8087F8C(union MultiSioData*);
-void sub_8087C98(void);
-void sub_8087AE0(void);
-
-void sub_808782C(void) {
+static void ScreenMain(void) {
     u8 i;
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
@@ -213,101 +235,101 @@ void sub_808782C(void) {
 #else
     union MultiSioData *recv, *send;
 #endif
-    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
+    struct UNK_0808B3FC_UNK240* chao = &lobbyScreen->chao;
     MultiPakHeartbeat();
 
     recv = &gMultiSioRecv[0];
-    if (sub_8087F8C(recv) != 0) {
+    if (CatchInvalidPacket(recv)) {
         return;
     }
 
-    if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && (recv->pat0.unk0 == 0x40A0 || recv->pat0.unk0 == 0x40A1)) {
-        lobbyScreen->unk10D = recv->pat0.unk2;
+    if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_POS || recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE)) {
+        lobbyScreen->cursor = recv->pat0.unk2;
+        // cursor moved
         if (recv->pat0.unk3 != 0) {
-            lobbyScreen->unk10E = 0;
-            lobbyScreen->unk110 = 7;
+            lobbyScreen->idleFrame = 0;
+            lobbyScreen->animFrame = 7;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
             
-            if (lobbyScreen->unk10D != 0) {
-                if (element->unk20 != 5) {
-                    element->unkA = 0x450;
-                    element->unk20 = 4;
-                    element->unk21 = 0xFF;
+            if (lobbyScreen->cursor != CURSOR_YES) {
+                if (chao->unk20 != 5) {
+                    chao->unkA = 0x450;
+                    chao->unk20 = 4;
+                    chao->unk21 = 0xFF;
                 }
 
             } else {
-                if (element->unk20 != 3) {
-                    element->unkA = 0x450;
-                    element->unk20 = 6;
-                    element->unk21 = 0xFF;
+                if (chao->unk20 != 3) {
+                    chao->unkA = 0x450;
+                    chao->unk20 = 6;
+                    chao->unk21 = 0xFF;
                 }
             }
         }
     }
     send = &gMultiSioSend;
     send->pat0.unk3 = 0;
-    send->pat0.unk0 = 0x40A0;
-    
+    send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_POS;
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
-            send->pat0.unk0 = 0x40A1;
+            send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_MOVE;
         } else if (gPressedKeys & DPAD_LEFT) {
-            lobbyScreen->unk110 = 7;
-            lobbyScreen->unk10E = 0;
-            lobbyScreen->unk10D = 0;
+            lobbyScreen->animFrame = 7;
+            lobbyScreen->idleFrame = 0;
+            lobbyScreen->cursor = 0;
 
-            if (element->unk20 != 3) {
-                element->unkA = 0x450;
-                element->unk20 = 6;
-                element->unk21 = 0xFF;
+            if (chao->unk20 != 3) {
+                chao->unkA = 0x450;
+                chao->unk20 = 6;
+                chao->unk21 = 0xFF;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         } else if (gPressedKeys & DPAD_RIGHT) {
-            lobbyScreen->unk110 = 7;
-            lobbyScreen->unk10E = 0;
-            lobbyScreen->unk10D = 1;
+            lobbyScreen->animFrame = 7;
+            lobbyScreen->idleFrame = 0;
+            lobbyScreen->cursor = 1;
             
-            if (element->unk20 != 5) {
-                element->unkA = 0x450;
-                element->unk20 = 4;
-                element->unk21 = 0xFF;
+            if (chao->unk20 != 5) {
+                chao->unkA = 0x450;
+                chao->unk20 = 4;
+                chao->unk21 = 0xFF;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
         }
     }
-    send->pat0.unk2 = lobbyScreen->unk10D;
+    send->pat0.unk2 = lobbyScreen->cursor;
+
     recv = &gMultiSioRecv[0];
-    if (sub_8087F8C(recv) == 0) {
-        if (recv->pat0.unk0 == 0x40A1) {
-            if (recv->pat0.unk2 > 1) {
-                recv->pat0.unk2 = 1;
-            }
-            m4aSongNumStart(SE_SELECT);
-            lobbyScreen->unk10E = 0;
+    if (CatchInvalidPacket(recv)) {
+        return;
+    }
 
-            if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-                gCurTask->main = sub_8087AE0;
-            } else {
-                gCurTask->main = sub_8087C98;
-            }
+    if (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE) {
+        if (recv->pat0.unk2 > 1) {
+            recv->pat0.unk2 = 1;
         }
+        m4aSongNumStart(SE_SELECT);
+        lobbyScreen->idleFrame = 0;
 
-        if (++lobbyScreen->unk10E == 600) {
-            element->unk20 = 1;
+        if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+            gCurTask->main = Task_NotifyExit;
+        } else {
+            gCurTask->main = Task_ListenForExit;
         }
+    }
 
-        sub_8087E10(lobbyScreen);
-    };
+    // 10 seconds
+    if (++lobbyScreen->idleFrame == 600) {
+        chao->unk20 = 1;
+    }
+
+    RenderUI(lobbyScreen);
 }
 
-
-void sub_8087F48(struct MultiplayerLobbyScreen*);
-void sub_8087DA0(struct MultiplayerLobbyScreen*);
-
-void sub_8087AE0(void) {
+static void Task_NotifyExit(void) {
     u8 i;
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
@@ -317,43 +339,45 @@ void sub_8087AE0(void) {
 #endif
     MultiPakHeartbeat();
 
-    for (i = 1; i < 4; i++) {
+    for (i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gUnknown_030055B8, i)) {
-            if (sub_8087F8C(&gMultiSioRecv[i])) {
+            if (CatchInvalidPacket(&gMultiSioRecv[i])) {
                 return;
             }
-            if (gMultiSioRecv[i].pat0.unk0 == 0x40A2) {
-                lobbyScreen->unk111 |= 1 << (i - 1);
+            if (gMultiSioRecv[i].pat0.unk0 == MSG_VS_LOBBY_WAITING_FOR_EXIT) {
+                lobbyScreen->playersWaiting |= 1 << (i - 1);
             }
         }
     }
 
-    if (lobbyScreen->unk111 == gUnknown_030055B8 >> 1) {
+    // All players waiting, notify
+    if (lobbyScreen->playersWaiting == gUnknown_030055B8 >> 1) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
-        send->pat0.unk2 = lobbyScreen->unk10D;
-        send->pat0.unk0 = 0x40A3;
+        send->pat0.unk2 = lobbyScreen->cursor;
+        send->pat0.unk0 = MSG_VS_LOBBY_EXIT;
 
-        if (lobbyScreen->unk10D != 0) {
-            sub_8087DA0(lobbyScreen);
+        if (lobbyScreen->cursor != CURSOR_YES) {
+            StartMultiplayerExitAnim(lobbyScreen);
         } else {
-            sub_8087F48(lobbyScreen);
+            ExitToCharacterSelect(lobbyScreen);
         }
-        sub_8087E10(lobbyScreen);
-    } else {
-        send = &gMultiSioSend;
-        send->pat0.unk2 = lobbyScreen->unk10D;
-        send->pat0.unk3 = 0;
-        send->pat0.unk0 = 0x40A1;
-        sub_8087E10(lobbyScreen);
-        if (++lobbyScreen->unk10E > 8) {
-            TaskDestroy(gCurTask);
-            MultiPakCommunicationError();
-        }
+        RenderUI(lobbyScreen);
+        return;
+    }
+
+    send = &gMultiSioSend;
+    send->pat0.unk2 = lobbyScreen->cursor;
+    send->pat0.unk3 = 0;
+    send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_MOVE;
+    RenderUI(lobbyScreen);
+    if (++lobbyScreen->idleFrame > 8) {
+        TaskDestroy(gCurTask);
+        MultiPakCommunicationError();
     }
 }
 
-void sub_8087C98(void) {
+static void Task_ListenForExit(void) {
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData* recv, *send asm("r4");
@@ -362,44 +386,47 @@ void sub_8087C98(void) {
 #endif
 
     MultiPakHeartbeat();
+
     recv = &gMultiSioRecv[0];
-    if (sub_8087F8C(recv) == 0) {
-        if (recv->pat0.unk0 == 0x40A3) {
-            if (lobbyScreen->unk10D != 0) {
-                sub_8087DA0(lobbyScreen);
-            } else {
-                sub_8087F48(lobbyScreen);
-            }
-        }
-        send = &gMultiSioSend;
-        send->pat0.unk3 = 0;
-        send->pat0.unk2 = 0;
-        send->pat0.unk0 = 0x40A2;
-        sub_8087E10(lobbyScreen);
+    if (CatchInvalidPacket(recv)) {
+        return;
     }
+
+    if (recv->pat0.unk0 == MSG_VS_LOBBY_EXIT) {
+        if (lobbyScreen->cursor != CURSOR_YES) {
+            StartMultiplayerExitAnim(lobbyScreen);
+        } else {
+            ExitToCharacterSelect(lobbyScreen);
+        }
+    }
+    send = &gMultiSioSend;
+    send->pat0.unk3 = 0;
+    send->pat0.unk2 = 0;
+    send->pat0.unk0 = MSG_VS_LOBBY_WAITING_FOR_EXIT;
+    RenderUI(lobbyScreen);
 }
 
-void sub_8087DA0(struct MultiplayerLobbyScreen* lobbyScreen) {
-    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
-    lobbyScreen->unk100.unk4 = 0;
-    lobbyScreen->unk100.unk2 = 1;
-    lobbyScreen->unk100.unkA = 0;
-    lobbyScreen->unk100.unk6 = 0x100;
-    lobbyScreen->unk10E = 0x78;
-    m4aSongNumStop(MUS_VS_4);
-    m4aSongNumStart(MUS_412);
-    element->unkA = 0x44F;
-    element->unk20 = 0;
-    element->unk21 = 0xFF;
-    gCurTask->main = sub_8087644;
+static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen* lobbyScreen) {
+    struct UNK_0808B3FC_UNK240* chao = &lobbyScreen->chao;
+    lobbyScreen->transitionConfig.unk4 = 0;
+    lobbyScreen->transitionConfig.unk2 = 1;
+    lobbyScreen->transitionConfig.unkA = 0;
+    lobbyScreen->transitionConfig.unk6 = 0x100;
+    lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
+    m4aSongNumStop(MUS_VS_LOBBY);
+    m4aSongNumStart(MUS_VS_EXIT);
+    // Waving chao
+    chao->unkA = 0x44F;
+    chao->unk20 = 0;
+    chao->unk21 = 0xFF;
+    gCurTask->main = Task_FadeInOrHandleExit;
 }
 
-extern const s8 gUnknown_080E037C[8];
-
-void sub_8087E10(struct MultiplayerLobbyScreen* lobbyScreen) {
-    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->unk0;
-    if (sub_8004558(element) == 0) {
-        if (lobbyScreen->unk10D != 0 && element->unkA == 0x44F) {
+static void RenderUI(struct MultiplayerLobbyScreen* lobbyScreen) {
+    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->chao;
+    // Chao anim finished
+    if (!sub_8004558(element)) {
+        if (lobbyScreen->cursor != CURSOR_YES && element->unkA == 0x44F) {
            element->unk20 = 1;
         } else {
             if (element->unk20 == 6) {
@@ -414,58 +441,58 @@ void sub_8087E10(struct MultiplayerLobbyScreen* lobbyScreen) {
 
     sub_80051E8(element);
 
-    element = &lobbyScreen->unk30[0];
+    element = &lobbyScreen->uiElements[ELEMENT_TITLE];
     sub_80051E8(element);
 
-    element = &lobbyScreen->unk30[1];
-    if (lobbyScreen->unk10D != 0) {
-        element->unk16 = 0x2C;
+    element = &lobbyScreen->uiElements[ELEMENT_NO];
+    if (lobbyScreen->cursor != CURSOR_YES) {
+        element->unk16 = 44;
         element->unk25 = 1;
     } else {
-        element->unk16 = gUnknown_080E037C[lobbyScreen->unk110] + 0x2C;
+        element->unk16 = gShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
         element->unk25 = 0;
     }
-    element->unk18 = 0x6E;
+    element->unk18 = 110;
     sub_80051E8(element);
 
-    element = &lobbyScreen->unk30[2];
+    element = &lobbyScreen->uiElements[ELEMENT_YES];
 
-    if (lobbyScreen->unk10D != 0) {
-        element->unk16 = gUnknown_080E037C[lobbyScreen->unk110] + 0xC0;
-        element->unk25 = 0xF;
+    if (lobbyScreen->cursor != CURSOR_YES) {
+        element->unk16 = gShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
+        element->unk25 = 15;
     } else {
-        element->unk16 = 0xC0;
+        element->unk16 = 192;
         element->unk25 = 0;
     }
-    element->unk18 = 0x6E;
+    element->unk18 = 110;
     sub_80051E8(element);
 
-    if (lobbyScreen->unk110 != 0) {
-        lobbyScreen->unk110--;
+    if (lobbyScreen->animFrame > 0) {
+        lobbyScreen->animFrame--;
     }
 }
 
-void sub_8087F10(struct Task* t) {
+static void MultiplayerLobbyScreenOnDestroy(struct Task* t) {
     u8 i;
     struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
-    VramFree(lobbyScreen->unk0.unk4);
+    VramFree(lobbyScreen->chao.unk4);
 
     for (i = 0; i < 3; i++) {
-        VramFree(lobbyScreen->unk30[i].unk4);
+        VramFree(lobbyScreen->uiElements[i].unk4);
     }
 }
 
-void sub_8087F48(struct MultiplayerLobbyScreen* lobbyScreen) {
-    lobbyScreen->unk10E = 0;
-    lobbyScreen->unk100.unk4 = 0;
-    lobbyScreen->unk100.unk2 = 1; 
-    lobbyScreen->unk100.unk6 = 0x200;
-    lobbyScreen->unk100.unkA = 0;
-    gCurTask->main = sub_8087644;
+static void ExitToCharacterSelect(struct MultiplayerLobbyScreen* lobbyScreen) {
+    lobbyScreen->idleFrame = 0;
+    lobbyScreen->transitionConfig.unk4 = 0;
+    lobbyScreen->transitionConfig.unk2 = 1; 
+    lobbyScreen->transitionConfig.unk6 = 0x200;
+    lobbyScreen->transitionConfig.unkA = 0;
+    gCurTask->main = Task_FadeInOrHandleExit;
 }
 
-bool8 sub_8087F8C(union MultiSioData* packet) {
-    if (packet->pat0.unk0 <= 0x40A3 && packet->pat0.unk0 >= 0x40A0) {
+static bool8 CatchInvalidPacket(union MultiSioData* packet) {
+    if (packet->pat0.unk0 <= MSG_VS_LOBBY_EXIT && packet->pat0.unk0 >= MSG_VS_LOBBY_CURSOR_POS) {
         return FALSE;
     }
 

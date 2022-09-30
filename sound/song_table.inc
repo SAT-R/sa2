@@ -65,7 +65,7 @@ gSongTable:	@ 0x08AD4F4C
 	song mus_connection_pending, 0, 0
 	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
-	song mus_vs_4, 0, 0
+	song mus_vs_lobby, 0, 0
 	song dummy_song_header, 0, 0
 	song mus_vs_select_pak_mode, 0, 0
 	song dummy_song_header, 0, 0
@@ -413,7 +413,7 @@ gSongTable:	@ 0x08AD4F4C
 	song dummy_song_header, 0, 0
 	song mus_got_all_chaos_emeralds, 0, 0
 	song mus_fanfare, 1, 1
-	song mus_412, 1, 1
+	song mus_vs_exit, 1, 1
 	song mus_vs_success, 1, 1
 	song mus_vs_miss, 1, 1
 	song mus_message, 1, 1
