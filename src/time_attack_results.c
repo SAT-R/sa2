@@ -283,7 +283,10 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     return 600;
 }
 
-extern const s8 gUnknown_080E05C4[0x20];
+const s8 gUnknown_080E05C4[] = {
+    3, 2, 1, 0, 0, -1, -2, -3, -4, -4, -3, -2, 1, 2, 3, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+};
 
 void sub_80897E8(void) {
     struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);

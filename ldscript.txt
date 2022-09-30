@@ -120,7 +120,8 @@ SECTIONS
         build/sa2/data/data1_3.o(.rodata);
         build/sa2/src/multiplayer_lobby.o(.rodata);
         build/sa2/src/time_attack_mode_select.o(.rodata);
-        build/sa2/data/data1_4.o(.rodata);
+        build/sa2/src/time_attack_lobby.o(.rodata);
+        build/sa2/src/time_attack_results.o(.rodata);
         build/sa2/src/sound_test.o(.rodata);
         build/sa2/src/title_screen.o(.rodata);
         build/sa2/data/cut_scenes_data.o(.rodata);

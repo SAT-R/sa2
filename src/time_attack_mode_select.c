@@ -470,7 +470,7 @@ static void RenderUI(struct TimeAttackModeSelectionScreen* modeScreen) {
 }
 
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task* t) {
-     struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(t);
+    struct TimeAttackModeSelectionScreen* modeScreen = TaskGetStructPtr(t);
     VramFree(modeScreen->unk80.unk4);
     VramFree(modeScreen->unkB0.unk4);
     VramFree(modeScreen->unkE0.unk4);
