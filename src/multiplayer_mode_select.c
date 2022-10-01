@@ -1,6 +1,7 @@
 #include "global.h"
 #include "multiplayer_mode_select.h"
 #include "multiplayer_multipak_connection.h"
+#include "multiplayer_singlepak_connection.h"
 #include "save.h"
 #include "main.h"
 #include "multi_sio.h"
@@ -414,7 +415,7 @@ static void Task_ExitAndInitSelectedPakMode(void) {
     if (pakMode == PAK_MODE_MULTI) {
         StartMultiPakConnect();
     } else {
-        sub_808129C();
+        StartSinglePakConnect();
     }
 }
 

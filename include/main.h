@@ -5,6 +5,7 @@
 #include "data.h"
 #include "task.h"
 #include "sprite.h"
+#include "input_recorder.h"
 
 struct MultiSioData_0_0 {
     // id
@@ -176,6 +177,6 @@ extern u16 gUnknown_03005398;
 extern FuncType_030053A0 gUnknown_030053A0[4];
 extern u32 gUnknown_030053B8;
 extern u8 gUnknown_03002710[128];
-u8 gUnknown_03002A90[74];
+extern struct MultiBootParam gUnknown_03002A90;
 
 #endif

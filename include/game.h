@@ -119,7 +119,6 @@ void sub_801A770(void);
 
 void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
-void sub_808129C(void);
 
 // ApplyGamePlaySettings
 void sub_801A6D8(void);

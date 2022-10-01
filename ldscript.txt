@@ -56,7 +56,7 @@ SECTIONS
         build/sa2/src/save.o(.text);
         build/sa2/asm/unused_code3.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
-        build/sa2/asm/multiplayer_connection.o(.text);
+        build/sa2/asm/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/random.o(.text);
         build/sa2/src/math.o(.text);
         build/sa2/asm/math.o(.text);

@@ -17,7 +17,7 @@
 #include "flags.h"
 #include "character_select.h"
 
-struct MultiplayerConnectScreen {
+struct MultiPakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
     struct UNK_0808B3FC_UNK240 unkC;
     struct UNK_0808B3FC_UNK240 unk3C;
@@ -56,7 +56,7 @@ static const struct UNK_080E0D64 gUnknown_080D9050[] = {
 
 void StartMultiPakConnect(void) {
     struct Task* t;
-    struct MultiplayerConnectScreen* connectScreen;
+    struct MultiPakConnectScreen* connectScreen;
     struct UNK_802D4CC_UNK270* unk0;
     struct UNK_0808B3FC_UNK240* unkC;
     struct Unk_03002400* unk9C;
@@ -77,7 +77,7 @@ void StartMultiPakConnect(void) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(sub_805ADAC, sizeof(struct MultiplayerConnectScreen), 0x2000, 0, NULL);
+    t = TaskCreate(sub_805ADAC, sizeof(struct MultiPakConnectScreen), 0x2000, 0, NULL);
     connectScreen = TaskGetStructPtr(t);
     connectScreen->unkEB = 0;
     connectScreen->unkFC = 1;
@@ -197,7 +197,7 @@ static void sub_805ADAC(void) {
     bool8 bool1 = FALSE;
     bool8 bool2 = FALSE;
     bool8 bool3 = TRUE;
-    struct MultiplayerConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
     struct MultiSioData_0_0 *send, *recv;
     struct MultiSioData_0_0 *data;
     struct UNK_0808B3FC_UNK240 *r4p;
@@ -445,7 +445,7 @@ static void sub_805ADAC(void) {
 }
 
 static void sub_805B454(void) {
-    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
     gMultiSioSend.pat0.unk0 = 0;
     if (++connectScreen->unkE8 > 4) {
         gMultiSioEnabled = FALSE;
@@ -470,7 +470,7 @@ static void sub_805B4C0(void) {
     
     u8 recv2;
     s32 count = 0;
-    struct MultiplayerConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
     MultiPakHeartbeat();
     recv = &gMultiSioRecv[0].pat0;
     recv2 = recv->unk2;
@@ -642,14 +642,13 @@ static void sub_805B4C0(void) {
     }
 }
 
-UNUSED static void sub_805B98C(struct MultiplayerConnectScreen* connectScreen) {
+UNUSED static void sub_805B98C(struct MultiPakConnectScreen* connectScreen) {
     struct UNK_0808B3FC_UNK240* unkC = &connectScreen->unkC;
     sub_80051E8(unkC);
     unkC++;
     sub_80051E8(unkC);
 }
 
-// MultiPakCommunicationError
 void MultiPakCommunicationError(void) {
     m4aMPlayAllStop();
     gFlags &= ~0x4;

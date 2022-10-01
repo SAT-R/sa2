@@ -2,6 +2,7 @@
 #define GUARD_MULTIPLAYER_SINGLEPAK_CONNECTION_H
 
 void sub_8081200(void);
+void StartSinglePakConnect(void);
 
 #endif // GUARD_MULTIPLAYER_SINGLEPAK_CONNECTION_H
 
