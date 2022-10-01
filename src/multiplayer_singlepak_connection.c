@@ -32,6 +32,8 @@ struct SinglePakConnectScreen {
     u8 fillerFB;
 };
 
+#define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
+
 void sub_8081200(void) {
     u8 i;
     u8* gameMode = &gGameMode;
@@ -176,7 +178,7 @@ void StartSinglePakConnect(void) {
     sub_8002A3C(background);
     m4aSongNumStart(MUS_CONNECTION_PENDING);
 
-    if (!((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)) {
+    if (!SomeSioCheck()) {
         gMultiSioEnabled = FALSE;
         mbParams = &gUnknown_03002A90;
         mbParams->masterp = (void*)connectScreen->unkDC;
@@ -189,5 +191,102 @@ void StartSinglePakConnect(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         MultiPakCommunicationError();
+    }
+}
+
+s8 sub_8081D70(struct SinglePakConnectScreen*);
+void sub_8081DF0(struct SinglePakConnectScreen*, u8);
+
+void sub_8081AD4(struct SinglePakConnectScreen*);
+void sub_8081C50(void);
+
+void sub_8081604(void) {
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    s8 result;
+    s32 result2;
+    struct MultiBootParam* params;
+    sub_802D4CC(&connectScreen->unk0);
+    sub_80051E8(&connectScreen->unkC);
+    result = sub_8081D70(connectScreen);
+
+    if (SomeSioCheck()) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        MultiPakCommunicationError();
+    }
+
+    if (gUnknown_03002A90.client_bit & 0xE) {
+        if (gUnknown_03002A90.probe_count == 0 && result > 1) {
+            sub_8081DF0(connectScreen, result);
+            if (gPressedKeys & START_BUTTON) {
+                connectScreen->unkF0 = 1;
+                gFlags |= 0x8000;
+                gFlags |= 0x4000;
+                m4aMPlayAllStop();
+                gFlags &= ~0x4;
+                m4aSoundVSyncOff();
+                DmaStop(0);
+                DmaStop(1);
+                DmaStop(2);
+                DmaStop(3);
+                MultiBootStartMaster(&gUnknown_03002A90, (void*)connectScreen->unkDC + 0xC0, connectScreen->unkE0 - 0xC0, 4, 1);
+            }
+        }
+    } else {
+        connectScreen->unkF0 = 0;
+        gFlags &= ~0x4000;
+        gFlags &= ~0x8000;
+        m4aSoundVSyncOn();
+    }
+
+    if (connectScreen->unkF0 == 0 && gPressedKeys & B_BUTTON) {
+        m4aSongNumStop(MUS_CONNECTION_PENDING);
+        m4aSongNumStart(SE_RETURN);
+        TaskDestroy(gCurTask);
+        CreateMultiplayerModeSelectScreen();
+        return;
+    }
+
+    result2 = MultiBootMain(&gUnknown_03002A90);
+    if (result2 == 0x50 || result2 == 0x60 || result2 == 0x70 || result2 == 0x71) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        gFlags &= ~0x4000;
+        gFlags &= ~0x8000;
+        m4aSoundVSyncOn();
+        MultiPakCommunicationError();
+        return;
+    }
+
+    if (MultiBootCheckComplete(&gUnknown_03002A90)) {
+        union MultiSioData *send, *recv, *recv0, *recv1, *recv2, *recv3;
+        sub_8081AD4(connectScreen);
+        connectScreen->unkF9 = 0;
+        send = &gMultiSioSend;
+        send->pat2.unk0 = 0;
+    
+        recv0 = &gMultiSioRecv[0];
+        recv0->pat2.unk0 = 0;
+        recv1 = &gMultiSioRecv[1];
+        recv1->pat2.unk0 = 0;
+        recv2 = &gMultiSioRecv[2];
+        recv2->pat2.unk0 = 0;
+        recv3 = &gMultiSioRecv[3];
+        recv3->pat2.unk0 = 0;
+        
+        send->pat0.unk2 = 0;
+        send->pat0.unk0 = 0xF001;
+        
+        recv0->pat2.unk2 = 0;
+        recv1--; recv1++;
+        recv0++;
+        recv1->pat2.unk2 = 0;
+        recv2->pat2.unk2 = 0;
+        recv3->pat2.unk2 = 0;
+        gCurTask->main = sub_8081C50;
     }
 }
