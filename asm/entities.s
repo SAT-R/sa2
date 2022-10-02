@@ -37915,7 +37915,7 @@ _0801A34C:
 	str r0, [r1, #8]
 	ldr r0, [r1, #8]
 	movs r0, #1
-	bl sub_8081EC0
+	bl CreateMultiplayerSinglePakResultsScreen
 _0801A366:
 	add sp, #0xc
 	pop {r3, r4, r5}

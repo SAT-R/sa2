@@ -2,6 +2,7 @@
 #include "main.h"
 #include "game.h"
 #include "multiplayer_singlepak_connection.h"
+#include "multiplayer_singlepak_results.h"
 #include "multiplayer_multipak_connection.h"
 #include "multiplayer_mode_select.h"
 #include "task.h"
@@ -296,7 +297,7 @@ void sub_8081604(void) {
 void sub_8081D04(void);
 void sub_8081D58(void);
 
-u32 sub_8081E38(struct SinglePakConnectScreen*, u32);
+bool32 sub_8081E38(struct SinglePakConnectScreen*, u16);
 
 void sub_80818B8(void) {
     u16 i, j;
@@ -321,7 +322,7 @@ void sub_80818B8(void) {
     temp = ((gMultiSioStatusFlags & (MULTI_SIO_CONNECTED_ID0 | MULTI_SIO_CONNECTED_ID1 | MULTI_SIO_CONNECTED_ID2 | MULTI_SIO_CONNECTED_ID3)) >> 8);
 
     for (i = 1; i < 4; i++) {
-        if (sub_8081E38(connectScreen, i) == 0) {
+        if (!sub_8081E38(connectScreen, i)) {
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
@@ -423,4 +424,123 @@ void sub_8081AD4(struct SinglePakConnectScreen* connectScreen) {
 
     gBgPalette[255] = 0x1F;
     gFlags |= 1;
+}
+
+void sub_8081C0C(void) {
+    u32 i;
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+        gMultiplayerCharacters[i] = 0;
+        gUnknown_03005428[i] = 0;
+        gUnknown_030054B4[i] = i;
+        gUnknown_030054D4[i] = 0;
+    }
+
+    MultiSioStart();
+    CreateMultiplayerSinglePakResultsScreen(0);
+}
+
+void sub_8081DB4(struct SinglePakConnectScreen*);
+
+void sub_8081C50(void) {
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    gUnknown_030054D4[3] = 0;
+    gUnknown_030054D4[2] = 0;
+    gUnknown_030054D4[1] = 0;
+    gUnknown_030054D4[0] = 0;
+    sub_8081DB4(connectScreen);
+    gCurTask->main = sub_80818B8;
+    MultiSioStart();
+}
+
+void sub_8081CC4(void);
+
+void sub_8081C8C(void) {
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    gUnknown_030054D4[3] = 0;
+    gUnknown_030054D4[2] = 0;
+    gUnknown_030054D4[1] = 0;
+    gUnknown_030054D4[0] = 0;
+    sub_8081DB4(connectScreen);
+    gCurTask->main = sub_8081CC4;
+}
+
+void sub_80818B8(void);
+
+void sub_8081CC4(void) {
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_ENABLE) {
+        if (gMultiSioStatusFlags & MULTI_SIO_LD_SUCCESS) {
+            gMultiSioSend.pat0.unk2+= 1;
+        }
+        gCurTask->main = sub_80818B8;
+    }
+
+    sub_80818B8();
+}
+
+extern void* const gUnknown_080E0168[9];
+
+void sub_8081D04(void) {
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    MultiSioStop();
+    gIntrTable[0] = Sio32MultiLoadIntr;
+    Sio32MultiLoadInit(gMultiSioStatusFlags & 0x80, gUnknown_080E0168[connectScreen->unkF9]);
+    gCurTask->main = sub_8081A5C;
+}
+
+void sub_8081D58(void) {
+    TaskDestroy(gCurTask);
+    CreateMultiplayerSinglePakResultsScreen(0);
+}
+
+s8 sub_8081D70(UNUSED struct SinglePakConnectScreen* connectScreen) {
+    u8 i;
+    s8 result;
+
+    for (result = 1, i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
+        if (GetBit(gUnknown_03002A90.response_bit, i) && GetBit(gUnknown_03002A90.client_bit, i)) {
+            result++;
+        }
+    }
+
+    return result;
+}
+
+void sub_8081DB4(struct SinglePakConnectScreen* connectScreen) {
+    gIntrTable[0] = (void*)gMultiSioIntrFuncBuf;
+    MultiSioInit((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    connectScreen->unkF8 = 0;
+    connectScreen->unkF4 = 0;
+    gMultiSioStatusFlags = 0;
+}
+
+void sub_8081DF0(struct SinglePakConnectScreen* connectScreen, u8 a) {
+    sub_8004558(&connectScreen->unk3C);
+    sub_80051E8(&connectScreen->unk3C);
+
+    connectScreen->unk6C.unkA = 0x432;
+    connectScreen->unk6C.unk20 = a + 6;
+    connectScreen->unk6C.unk21 = 0xFF;
+
+    sub_8004558(&connectScreen->unk6C);
+    sub_80051E8(&connectScreen->unk6C);
+}
+
+// HeartBeatClient
+bool32 sub_8081E38(struct SinglePakConnectScreen* connectScreen, u16 id) {
+    if (MULTI_SIO_RECV_ID(id + 8) & gMultiSioStatusFlags) {
+        if (!(MULTI_SIO_RECV_ID(id) & gMultiSioStatusFlags)) {
+            if (gUnknown_030054D4[id]++ > 180) {
+                return FALSE;
+            }
+        } else {
+            gUnknown_030054D4[id] = 0;
+        }
+    }
+
+    return TRUE;
+}
+
+void sub_8081E90(struct SinglePakConnectScreen* connectScreen) {
+    u8 val = (connectScreen->unkE4 * 0xA0) / 0x12000;
+    gWinRegs[0] = (val + 0x28) | 0x2800;
 }

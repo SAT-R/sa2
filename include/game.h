@@ -20,6 +20,7 @@ extern u8 gGameMode;
 extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
+extern u8 gUnknown_030053EC;
 extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[2];
