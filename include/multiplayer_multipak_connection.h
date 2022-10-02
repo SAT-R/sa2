@@ -12,6 +12,7 @@ extern u8 gUnknown_030054D8;
 void StartMultiPakConnect(void);
 void MultiPakCommunicationError(void);
 
+// TOOD: MultiSioHeartBeat
 #define MultiPakHeartbeat() ({ \
     if (IsMultiplayer()) { \
         u32 i; \

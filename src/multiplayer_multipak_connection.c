@@ -649,6 +649,8 @@ UNUSED static void sub_805B98C(struct MultiPakConnectScreen* connectScreen) {
     sub_80051E8(unkC);
 }
 
+
+// HandleLinkCommunicationError
 void MultiPakCommunicationError(void) {
     m4aMPlayAllStop();
     gFlags &= ~0x4;

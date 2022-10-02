@@ -117,7 +117,9 @@
         "course_progress.h": "c",
         "multiplayer_lobby.h": "c",
         "multiboot.h": "c",
-        "syscall.h": "c"
+        "syscall.h": "c",
+        "multiplayer_singlepak_connection.h": "c",
+        "multiplayer_singlepak_results.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"
