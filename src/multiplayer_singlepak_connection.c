@@ -13,6 +13,7 @@
 #include "constants/text.h"
 #include "constants/songs.h"
 #include "multi_boot.h"
+#include "sio32_multi_load.h"
 
 struct SinglePakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -20,13 +21,14 @@ struct SinglePakConnectScreen {
     struct UNK_0808B3FC_UNK240 unk3C;
     struct UNK_0808B3FC_UNK240 unk6C;
     struct Unk_03002400 unk9C;
-    u32 unkDC;
+    void* unkDC;
     u32 unkE0;
     u32 unkE4;
     u32 unkE8;
     u16 unkEC;
     u32 unkF0;
-    u8 fillerF4[5];
+    u32 unkF4;
+    u8 unkF8;
     u8 unkF9;
     u8 unkFA;
     u8 fillerFB;
@@ -60,7 +62,7 @@ void sub_8081200(void) {
 
 void sub_8081604(void);
 
-extern const u32 gUnknown_080E01E0[7][2];
+extern void* const gUnknown_080E01E0[7][2];
 extern const u16 gUnknown_080E018C[7][3];
 extern const u16 gUnknown_080E01B6[7][3];
 
@@ -92,7 +94,7 @@ void StartSinglePakConnect(void) {
     }
 
     connectScreen->unkDC = gUnknown_080E01E0[connectScreen->unkFA][0];
-    connectScreen->unkE0 = gUnknown_080E01E0[connectScreen->unkFA][1] - gUnknown_080E01E0[connectScreen->unkFA][0];
+    connectScreen->unkE0 = (u32)gUnknown_080E01E0[connectScreen->unkFA][1] - (u32)gUnknown_080E01E0[connectScreen->unkFA][0];
     connectScreen->unkF0 = 0;
     connectScreen->unkF9 = 0;
     connectScreen->unkE4 = 0;
@@ -181,7 +183,7 @@ void StartSinglePakConnect(void) {
     if (!SomeSioCheck()) {
         gMultiSioEnabled = FALSE;
         mbParams = &gUnknown_03002A90;
-        mbParams->masterp = (void*)connectScreen->unkDC;
+        mbParams->masterp = connectScreen->unkDC;
         mbParams->server_type = 0;
         MultiBootInit(mbParams);
         gCurTask->main = sub_8081604;
@@ -231,7 +233,7 @@ void sub_8081604(void) {
                 DmaStop(1);
                 DmaStop(2);
                 DmaStop(3);
-                MultiBootStartMaster(&gUnknown_03002A90, (void*)connectScreen->unkDC + 0xC0, connectScreen->unkE0 - 0xC0, 4, 1);
+                MultiBootStartMaster(&gUnknown_03002A90, connectScreen->unkDC + 0xC0, connectScreen->unkE0 - 0xC0, 4, 1);
             }
         }
     } else {
@@ -289,4 +291,136 @@ void sub_8081604(void) {
         recv3->pat2.unk2 = 0;
         gCurTask->main = sub_8081C50;
     }
+}
+
+void sub_8081D04(void);
+void sub_8081D58(void);
+
+u32 sub_8081E38(struct SinglePakConnectScreen*, u32);
+
+void sub_80818B8(void) {
+    u16 i, j;
+    u32 temp;
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST && connectScreen->unkF9 < 9) {
+        gCurTask->main = sub_8081D04;
+    }
+
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_ENABLE) {
+        connectScreen->unkF8 = 1;
+    }
+
+    gMultiSioSend.pat2.unk0 = connectScreen->unkFA;
+    gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, &gMultiSioRecv, connectScreen->unkF8);
+
+    if (connectScreen->unkF4 == 0) {
+        MultiSioStart();
+        connectScreen->unkF4 = 1;
+    }
+
+    temp = ((gMultiSioStatusFlags & (MULTI_SIO_CONNECTED_ID0 | MULTI_SIO_CONNECTED_ID1 | MULTI_SIO_CONNECTED_ID2 | MULTI_SIO_CONNECTED_ID3)) >> 8);
+
+    for (i = 1; i < 4; i++) {
+        if (sub_8081E38(connectScreen, i) == 0) {
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            gFlags &= ~0x4000;
+            gFlags &= ~0x8000;
+            m4aSoundVSyncOn();
+            MultiPakCommunicationError();
+            return;
+        }
+
+        if (temp << i) {
+            union MultiSioData* recv = &gMultiSioRecv[i];
+            if (recv->pat0.unk0 == 0x4010) {
+                for (j = 0; j < 4; j++) {
+                    gMultiplayerCharacters[j] = 0;
+                    gUnknown_03005428[j] = 0;
+                    gUnknown_030054B4[j] = j;
+                    gUnknown_030054D4[j] = 0;
+                }
+                gCurTask->main = sub_8081D58;
+                gDispCnt = 0x40;
+                return;
+            }
+        }
+    }
+
+    if (connectScreen->unkF9 != gMultiSioRecv[0].pat0.unk2) {
+        connectScreen->unkF9 = gMultiSioRecv[0].pat0.unk2;
+    }
+}
+
+void sub_8081C8C(void);
+void sub_8081E90(struct SinglePakConnectScreen*);
+
+extern const u32 gUnknown_080E0218[7];
+
+void sub_8081A5C(void) {
+    u32 progress = 0;
+    struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
+    if (Sio32MultiLoadMain(&progress) != 0) {
+        gCurTask->main = sub_8081C8C;
+    }
+
+    if (progress > connectScreen->unkE8) {
+        connectScreen->unkE4 = connectScreen->unkE4 + (progress - connectScreen->unkE8);
+        connectScreen->unkE8 = progress;
+    } else if (progress < connectScreen->unkE8) {
+        u32 temp;
+        temp = ((connectScreen->unkE4 + 0x2000));
+        temp -= connectScreen->unkE8;
+        connectScreen->unkE4 = temp;
+        connectScreen->unkE4 += progress;
+        connectScreen->unkE8 = progress;
+    }
+
+    sub_8081E90(connectScreen);
+}
+
+void sub_8081AD4(struct SinglePakConnectScreen* connectScreen) {
+    struct Unk_03002400* background;
+    u16 temp;
+    gDispCnt = 0x101;
+    gBgCntRegs[0] = 0x1e02;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    
+    background = &connectScreen->unk9C;
+    background->unk4 = BG_SCREEN_ADDR(0);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(30);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = gUnknown_080E0218[connectScreen->unkFA];
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x1E;
+    background->unk28 = 0x14;
+    background->unk2A = 0;
+    background->unk2E = 0;
+    sub_8002A3C(background);
+
+    CpuFill16(0, &gBgPalette[17], 30);
+
+    gDispCnt |= 0x2200;
+    temp = 0x1f01;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    gWinRegs[0] = 0x2828;
+    gWinRegs[2] = 0x8890;
+    gWinRegs[4] = 2;
+    gWinRegs[5] = 1;
+    gBgCntRegs[1] = temp;
+
+    CpuFill16(0xF3FF, (void*)BG_SCREEN_ADDR(31), 2049);
+    CpuFill16(0xFFFF, (void*)VRAM + 0x7FE0, 32);
+
+    gBgPalette[255] = 0x1F;
+    gFlags |= 1;
 }

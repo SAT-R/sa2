@@ -112,6 +112,8 @@ struct UNK_3005B38 {
 
 extern struct UNK_3005B38 gUnknown_03005B38;
 
+extern u8 gUnknown_03005428[4];
+
 #define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 
 // Possibly CreateGameStageAtSelectedCourse
