@@ -97,6 +97,7 @@ tidy:
 #### Recipes ####
 
 %.s: ;
+%.lz: % ; $(GFX) $< $@
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
