@@ -32,29 +32,25 @@ endif
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
-CC1       := tools/agbcc/bin/agbcc$(EXE)
-CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
+CC1       := ../tools/agbcc/bin/agbcc$(EXE)
+CC1_OLD   := ../tools/agbcc/bin/old_agbcc$(EXE)
 
 CPP       := $(PREFIX)cpp
 LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
-GFX 	  := tools/gbagfx/gbagfx$(EXE)
-AIF		  := tools/aif2pcm/aif2pcm$(EXE)
-MID2AGB   := tools/mid2agb/mid2agb$(EXE)
-SCANINC   := tools/scaninc/scaninc$(EXE)
-PREPROC	  := tools/preproc/preproc$(EXE)
-RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
-FIX 	  := tools/gbafix/gbafix$(EXE)
-
-TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
-TOOLBASE = $(TOOLDIRS:tools/%=%)
-TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
+GFX 	  := ../../tools/gbagfx/gbagfx$(EXE)
+AIF		  := ../../tools/aif2pcm/aif2pcm$(EXE)
+MID2AGB   := ../../tools/mid2agb/mid2agb$(EXE)
+SCANINC   := ../../tools/scaninc/scaninc$(EXE)
+PREPROC	  := ../../tools/preproc/preproc$(EXE)
+RAMSCRGEN := ../../tools/ramscrgen/ramscrgen$(EXE)
+FIX 	  := ../../tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
+CPPFLAGS := -I ../tools/agbcc/include -iquote include -nostdinc
+ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
 
 
 # Clear the default suffixes
@@ -67,20 +63,9 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 # Secondary expansion is required for dependency variables in object rules.
 .SECONDEXPANSION:
 
-# these commands will run regardless of deps being completed
-.PHONY: __rom clean tools clean-tools $(TOOLDIRS)
-
-# ensure that we don't scan deps if we are not running
-# any of these commands
-ifeq (,$(filter-out all rom __rom compare,$(MAKECMDGOALS)))
-$(call infoshell, $(MAKE) -f tools/Makefile)
-else
-NODEP ?= 1
-endif
-
 #### Files ####
-OBJ_DIR:= build/sa2
-ROM      := sa2.gba
+OBJ_DIR:= build/mb_collect_rings
+ROM      := mb_collect_rings.gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 LDSCRIPT := ldscript.txt
@@ -139,39 +124,18 @@ endif
 
 MAKEFLAGS += --no-print-directory
 
-all: compare
-
-# Ensure that tools are built before building the rom
-rom: tools
-	@$(MAKE) __rom
-__rom: $(ROM)
-# Dummy command to make sure we don't print
-# even when rom is already built
-	@echo > /dev/null
-
-tools: $(TOOLDIRS)
-
-$(TOOLDIRS):
-	@$(MAKE) -C $@
-
-compare: rom
+compare: $(ROM)
 	$(SHA1) checksum.sha1
 
-clean: tidy clean-tools
-	@$(MAKE) clean -C chao_garden
+clean: tidy
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
-
-clean-tools:
-	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
 
 tidy:
 	$(RM) -f $(ROM) $(ELF) $(MAP)
 	$(RM) -r build/*
 
 #### Recipes ####
-
-include songs.mk
 
 %.s: ;
 %.png: ;
@@ -182,8 +146,6 @@ include songs.mk
 %.8bpp: %.png  ; $(GFX) $< $@
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
-%.gba.lz: %.gba 
-	$(GFX) $< $@ -search 1
 %.bin.lz: %.bin 
 	$(GFX) $< $@
 %.lz: % ; $(GFX) $< $@
@@ -193,11 +155,11 @@ include songs.mk
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../tools/agbcc/lib/libgcc.a ../../tools/agbcc/lib/libc.a -o $@
 
-$(ROM): $(ELF)
-	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
-	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
+%.gba: %.elf
+	$(OBJCOPY) -O binary $< $@
+	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
 ifeq ($(NODEP),1)
 $(C_BUILDDIR)/%.o: c_dep :=
@@ -237,15 +199,3 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
-
-chao_garden/mb_chao_garden.gba: 
-	$(MAKE) -C chao_garden
-
-chao_garden: tools
-	$(MAKE) -C chao_garden
-
-multi_boot/collect_rings/mb_collect_rings.gba: 
-	$(MAKE) -C multi_boot/collect_rings
-
-collect_rings: tools
-	$(MAKE) -C multi_boot/collect_rings
