@@ -36,8 +36,8 @@ struct MultiplayerSinglePakResultsScreen {
     u32 unk43C;
 }; /* size 0x440 */
 
-extern const u8 gUnknown_08C88408[0x2000];
-extern const u8 gUnknown_08C92208[0x3400];
+extern const u8 gUnknown_08C88408[0x9E00];
+extern const u8 gUnknown_08C92208[0x8000];
 
 struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16);
 
@@ -73,8 +73,9 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a) {
     m4aSoundVSyncOn();
     gGameMode = 5;
 
-    CpuFastCopy(unk92208, (void*)VRAM, 0x80 << 0x8);
-    CpuFastCopy(unk408, (void*)EWRAM_START + 0x33000, 0xd0 << 0x8);
+    CpuFastCopy(unk92208, (void*)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
+    CpuFastCopy(unk408, (void*)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
+
     gUnknown_03002260 = ((struct UNK_02003300*)(EWRAM_START + 0x33000))->unk0;
     gUnknown_030053EC = gLoadedSaveGame->unk6;
 

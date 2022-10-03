@@ -68,7 +68,7 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 .SECONDEXPANSION:
 
 # these commands will run regardless of deps being completed
-.PHONY: __rom clean chao_garden tools clean-tools $(TOOLDIRS)
+.PHONY: __rom clean tools clean-tools $(TOOLDIRS)
 
 # ensure that we don't scan deps if we are not running
 # any of these commands

@@ -15,6 +15,7 @@
 #include "constants/songs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
+#include "mb_programs.h"
 
 struct SinglePakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -22,8 +23,8 @@ struct SinglePakConnectScreen {
     struct UNK_0808B3FC_UNK240 unk3C;
     struct UNK_0808B3FC_UNK240 unk6C;
     struct Unk_03002400 unk9C;
-    void* unkDC;
-    u32 unkE0;
+    void* mbProgStart;
+    u32 mbProgLength;
     u32 unkE4;
     u32 unkE8;
     u16 unkEC;
@@ -33,6 +34,30 @@ struct SinglePakConnectScreen {
     u8 unkF9;
     u8 unkFA;
     u8 fillerFB;
+};
+
+extern const u16 gUnknown_080E018C[7][3];
+extern const u16 gUnknown_080E01B6[7][3];
+
+#define MB_COLLECT_RINGS_SIZE 0x314c
+
+void* const gUnknown_080E01E0[7][2] = {
+    { NULL, NULL }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
+    { &gMultiBootProgram_CollectTheRings, &rom_footer },
+};
+static const u32 gUnknown_080E0218[7] = {
+    [LANG_DEFAULT] = 0, 
+    [LANG_JAPANESE] = 127, 
+    [LANG_ENGLISH] = 128, 
+    [LANG_GERMAN] = 129, 
+    [LANG_FRENCH] = 130, 
+    [LANG_SPANISH] = 131, 
+    [LANG_ITALIAN] = 132,
 };
 
 #define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
@@ -63,10 +88,6 @@ void sub_8081200(void) {
 
 void sub_8081604(void);
 
-extern void* const gUnknown_080E01E0[7][2];
-extern const u16 gUnknown_080E018C[7][3];
-extern const u16 gUnknown_080E01B6[7][3];
-
 void StartSinglePakConnect(void) {
     struct Task* t;
     struct SinglePakConnectScreen* connectScreen;
@@ -94,8 +115,8 @@ void StartSinglePakConnect(void) {
         connectScreen->unkFA = 1;
     }
 
-    connectScreen->unkDC = gUnknown_080E01E0[connectScreen->unkFA][0];
-    connectScreen->unkE0 = (u32)gUnknown_080E01E0[connectScreen->unkFA][1] - (u32)gUnknown_080E01E0[connectScreen->unkFA][0];
+    connectScreen->mbProgStart = gUnknown_080E01E0[connectScreen->unkFA][0];
+    connectScreen->mbProgLength = (u32)gUnknown_080E01E0[connectScreen->unkFA][1] - (u32)gUnknown_080E01E0[connectScreen->unkFA][0];
     connectScreen->unkF0 = 0;
     connectScreen->unkF9 = 0;
     connectScreen->unkE4 = 0;
@@ -183,8 +204,8 @@ void StartSinglePakConnect(void) {
 
     if (!SomeSioCheck()) {
         gMultiSioEnabled = FALSE;
-        mbParams = &gUnknown_03002A90;
-        mbParams->masterp = connectScreen->unkDC;
+        mbParams = &gMultiBootParam;
+        mbParams->masterp = connectScreen->mbProgStart;
         mbParams->server_type = 0;
         MultiBootInit(mbParams);
         gCurTask->main = sub_8081604;
@@ -206,7 +227,7 @@ void sub_8081C50(void);
 void sub_8081604(void) {
     struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
     s8 result;
-    s32 result2;
+    s32 multiBootFlags;
     struct MultiBootParam* params;
     sub_802D4CC(&connectScreen->unk0);
     sub_80051E8(&connectScreen->unkC);
@@ -220,8 +241,8 @@ void sub_8081604(void) {
         MultiPakCommunicationError();
     }
 
-    if (gUnknown_03002A90.client_bit & 0xE) {
-        if (gUnknown_03002A90.probe_count == 0 && result > 1) {
+    if (gMultiBootParam.client_bit & 0xE) {
+        if (gMultiBootParam.probe_count == 0 && result > 1) {
             sub_8081DF0(connectScreen, result);
             if (gPressedKeys & START_BUTTON) {
                 connectScreen->unkF0 = 1;
@@ -234,7 +255,7 @@ void sub_8081604(void) {
                 DmaStop(1);
                 DmaStop(2);
                 DmaStop(3);
-                MultiBootStartMaster(&gUnknown_03002A90, connectScreen->unkDC + 0xC0, connectScreen->unkE0 - 0xC0, 4, 1);
+                MultiBootStartMaster(&gMultiBootParam, connectScreen->mbProgStart + 0xC0, connectScreen->mbProgLength - 0xC0, 4, 1);
             }
         }
     } else {
@@ -252,8 +273,12 @@ void sub_8081604(void) {
         return;
     }
 
-    result2 = MultiBootMain(&gUnknown_03002A90);
-    if (result2 == 0x50 || result2 == 0x60 || result2 == 0x70 || result2 == 0x71) {
+    multiBootFlags = MultiBootMain(&gMultiBootParam);
+    if (multiBootFlags == MULTIBOOT_ERROR_NO_PROBE_TARGET || 
+        multiBootFlags == MULTIBOOT_ERROR_NO_DLREADY || 
+        multiBootFlags == MULTIBOOT_ERROR_BOOT_FAILURE || 
+        multiBootFlags == MULTIBOOT_ERROR_HANDSHAKE_FAILURE
+    ) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
@@ -265,7 +290,7 @@ void sub_8081604(void) {
         return;
     }
 
-    if (MultiBootCheckComplete(&gUnknown_03002A90)) {
+    if (MultiBootCheckComplete(&gMultiBootParam)) {
         union MultiSioData *send, *recv, *recv0, *recv1, *recv2, *recv3;
         sub_8081AD4(connectScreen);
         connectScreen->unkF9 = 0;
@@ -357,8 +382,6 @@ void sub_80818B8(void) {
 
 void sub_8081C8C(void);
 void sub_8081E90(struct SinglePakConnectScreen*);
-
-extern const u32 gUnknown_080E0218[7];
 
 void sub_8081A5C(void) {
     u32 progress = 0;
@@ -497,7 +520,7 @@ s8 sub_8081D70(UNUSED struct SinglePakConnectScreen* connectScreen) {
     s8 result;
 
     for (result = 1, i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_03002A90.response_bit, i) && GetBit(gUnknown_03002A90.client_bit, i)) {
+        if (GetBit(gMultiBootParam.response_bit, i) && GetBit(gMultiBootParam.client_bit, i)) {
             result++;
         }
     }

@@ -141,19 +141,3 @@ gUnknown_080E018C:
     .global gUnknown_080E01B6
 gUnknown_080E01B6:
     .incbin "baserom.gba", 0x000E01B6, 0x2A
-
-    .global gUnknown_080E01E0
-gUnknown_080E01E0:
-    .incbin "baserom.gba", 0x000E01E0, 0x38
-
-    .global gUnknown_080E0218
-gUnknown_080E0218:
-    .incbin "baserom.gba", 0x000E0218, 0x1C
-
-    .global gUnknown_080E0234
-gUnknown_080E0234:
-    .incbin "baserom.gba", 0x000E0234, 0x3C
-
-    .global gUnknown_080E0270
-gUnknown_080E0270:
-    .incbin "baserom.gba", 0x000E0270, 0x20

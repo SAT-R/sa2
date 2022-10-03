@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-// Tiny Chao Garden program
-extern const u8 gMultiBootProgram_TinyChaoGarden[0x25E8C];
+extern const u8 gMultiBootProgram_TinyChaoGarden[];
+extern const u8 gMultiBootProgram_CollectTheRings[];
 
 #endif // GUARD_MB_PROGRAMS_H

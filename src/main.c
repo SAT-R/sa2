@@ -97,7 +97,7 @@ u8 gUnknown_03002A84 ALIGNED(4) = 0;
 u16 gPrevInput ALIGNED(4) = 0;
 u16 gUnknown_03002A8C ALIGNED(4) = 0;
 
-struct MultiBootParam gUnknown_03002A90 ALIGNED(8) = {};
+struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
 
 u16 gPressedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002AE0 ALIGNED(4) = 0;

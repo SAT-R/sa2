@@ -214,6 +214,6 @@ extern u16 gUnknown_03005398;
 extern FuncType_030053A0 gUnknown_030053A0[4];
 extern u32 gUnknown_030053B8;
 extern u8 gUnknown_03002710[128];
-extern struct MultiBootParam gUnknown_03002A90;
+extern struct MultiBootParam gMultiBootParam;
 
 #endif
