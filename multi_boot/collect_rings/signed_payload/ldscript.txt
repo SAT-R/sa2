@@ -1,22 +1,14 @@
 SECTIONS {
-    . = 0x2000000;
+    . = 0x20001B0;
     .text :
     ALIGN(4) {
-        build/mb_collect_rings/asm/rom_header.o(.text);
-        build/mb_collect_rings/asm/loader.o(.text);
+        build/signed_payload/asm/rom_header.o(.text);
     }
 
     .rodata :
     ALIGN(4) {
-        build/mb_collect_rings/data/data.o(.rodata);
+        build/signed_payload/data/data.o(.rodata);
     }
-
-    . = 0x2000000;
-    EWRAM (NOLOAD) :
-    ALIGN(4) {
-        . = 0x003B000; gUnknown_0203B000 = .;
-    }
-
 
     /* DWARF debug sections.
        Symbols in the DWARF debugging sections are relative to the beginning

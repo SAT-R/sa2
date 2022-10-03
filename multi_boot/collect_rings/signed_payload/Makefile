@@ -36,12 +36,12 @@ LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
-GFX 	  := ../../tools/gbagfx/gbagfx$(EXE)
-AIF		  := ../../tools/aif2pcm/aif2pcm$(EXE)
-SCANINC   := ../../tools/scaninc/scaninc$(EXE)
-PREPROC	  := ../../tools/preproc/preproc$(EXE)
-RAMSCRGEN := ../../tools/ramscrgen/ramscrgen$(EXE)
-FIX 	  := ../../tools/gbafix/gbafix$(EXE)
+GFX 	  := ../../../tools/gbagfx/gbagfx$(EXE)
+AIF		  := ../../../tools/aif2pcm/aif2pcm$(EXE)
+SCANINC   := ../../../tools/scaninc/scaninc$(EXE)
+PREPROC	  := ../../../tools/preproc/preproc$(EXE)
+RAMSCRGEN := ../../../tools/ramscrgen/ramscrgen$(EXE)
+FIX 	  := ../../../tools/gbafix/gbafix$(EXE)
 
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
 
@@ -57,8 +57,8 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
 .SECONDEXPANSION:
 
 #### Files ####
-OBJ_DIR:= build/mb_collect_rings
-ROM      := mb_collect_rings.gba
+OBJ_DIR:= build/signed_payload
+ROM      := signed_payload.gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 LDSCRIPT := ldscript.txt
@@ -88,7 +88,6 @@ compare: $(ROM)
 	$(SHA1) checksum.sha1
 
 clean: tidy
-	@$(MAKE) clean -C signed_payload
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
 tidy:
@@ -101,7 +100,7 @@ tidy:
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../tools/agbcc/lib/libgcc.a ../../tools/agbcc/lib/libc.a -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@
@@ -127,9 +126,3 @@ endif
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
-
-signed_payload/signed_payload.gba: 
-	$(MAKE) -C signed_payload
-
-signed_payload:
-	$(MAKE) -C multi_boot/collect_rings

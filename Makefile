@@ -159,6 +159,8 @@ compare: rom
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
+	@$(MAKE) clean -C multi_boot/collect_rings
+
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 

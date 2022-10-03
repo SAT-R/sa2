@@ -1,3 +1,12 @@
+.include "../../../asm/macros/function.inc"
+.include "../../../constants/gba_constants.inc"
+
+.syntax unified
+.arm
+
+_entry: @ 0x020001B0
+	b space
+
 	.global RomHeaderNintendoLogo
 RomHeaderNintendoLogo:
 	.space 156
@@ -34,3 +43,6 @@ RomHeaderChecksum:
 
 RomHeaderReserved2:
 	.space 2
+
+space:
+	.space 0x100

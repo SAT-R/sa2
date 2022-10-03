@@ -1,16 +1,11 @@
-	.include "../../asm/macros/function.inc"
-	.include "../../constants/gba_constants.inc"
+.include "../../asm/macros/function.inc"
+.include "../../constants/gba_constants.inc"
 
-	.syntax unified
+.syntax unified
+.text
 
-	.text
-
-	.global _entry
-_entry: @ 0x02000000
-	b _020000C0
-_02000004:
-	.include "asm/rom_header.inc"
-_020000C0:
+	.global start_vector
+start_vector:
 	b _0200010C
 _020000C4:
 	.byte 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
