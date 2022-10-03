@@ -24,8 +24,7 @@ struct MultiplayerSinglePakResultsScreen {
     struct Unk_03002400 unk0;
     struct Unk_03002400 unk40;
     struct MultiplayerSinglePakResultsScreen_UNK80 unk80[4];
-    struct UNK_0808B3FC_UNK240 unk160[4];
-    u8 unk220[288];
+    struct UNK_0808B3FC_UNK240 unk160[10];
     struct UNK_0808B3FC_UNK240 unk340;
     struct UNK_0808B3FC_UNK240 unk370[3];
     struct UNK_0808B3FC_UNK240 unk400;
@@ -498,4 +497,81 @@ void sub_8082788(void) {
             }
         }
     }
+}
+
+void sub_8082AA8(void) {
+    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
+    
+    sub_8082788();
+    if (resultsScreen->unk430++ > 0x1E) {
+        resultsScreen->unk430 = 0;
+        m4aMPlayFadeOut(&gMPlayInfo_BGM, 8);
+        m4aMPlayFadeOut(&gMPlayInfo_SE1, 8);
+        m4aMPlayFadeOut(&gMPlayInfo_SE2, 8);
+        m4aMPlayFadeOut(&gMPlayInfo_SE3, 8);
+        gBldRegs.bldCnt = 0xFF;
+        gCurTask->main = sub_8082630;
+    }
+}
+
+struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16 mode) {
+    struct Task* t = TaskCreate(sub_808207C, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
+    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(t);
+
+    resultsScreen->unk434 = mode;
+    resultsScreen->unk430 = 0;
+    resultsScreen->unk438 = 0;
+    resultsScreen->unk43C = gFrameCount;
+
+    return resultsScreen;
+}
+
+extern const u16 gUnknown_080D672C[5];
+
+void sub_8082CEC(struct UNK_0808B3FC_UNK240*, u32, u16, u8, s16, s16, u16, u8, u32);
+
+void sub_8082B80(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+    s16 i;
+
+    for (i = 0; i < 4; i++) {
+        u16 val = gUnknown_080D672C[i];
+        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78, (i * 40) + 20, 0x400, i, 0x1000);
+    }
+}
+
+void sub_8082BF8(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+    s16 i;
+
+    for (i = 0; i < 10; i++) {
+        sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451, i, 0, 0, 0x100, 0, 0x1000);
+    }
+}
+
+void sub_8082C58(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+    s16 i;
+
+    for (i = 0; i < 3; i++) {
+        sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0, 0, 0x100, 0, 0x1000);
+    }
+}
+
+void sub_8082CB4(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0, 0x100, 0, 0x1000);
+}
+
+void sub_8082CEC(struct UNK_0808B3FC_UNK240* element, u32 vramAddr, u16 asset, u8 variant, s16 x, s16 y, u16 unk1A, u8 unk25, u32 unk10) {
+    element->unk16 = x;
+    element->unk18 = y;
+    element->unk4 = (void*)vramAddr;
+    element->unk1A = unk1A;
+    element->unk8 = 0;
+    element->unkA = asset;
+    element->unk20 = variant;
+    element->unk14 = 0;
+    element->unk1C = 0;
+    element->unk21 = 0xff;
+    element->unk22 = 0x10;
+    element->unk25 = unk25;
+    element->unk10 = unk10;
+    sub_8004558(element);
 }

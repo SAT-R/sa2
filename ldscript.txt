@@ -57,10 +57,11 @@ SECTIONS
         build/sa2/asm/unused_code3.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);
-        build/sa2/asm/multiplayer_singlepak_connection.o(.text);
+        build/sa2/asm/unknown_time_display.o(.text);
+        build/sa2/asm/math0.o(.text);
         build/sa2/src/random.o(.text);
         build/sa2/src/math.o(.text);
-        build/sa2/asm/math.o(.text);
+        build/sa2/asm/math1.o(.text);
         build/sa2/asm/code4.o(.text);
         build/sa2/src/race_progress.o(.text);
         build/sa2/src/unknown_effect.o(.text);

@@ -53,11 +53,11 @@ struct UNK_0808B3FC_UNK240 {
     void* unk4; // something vram
 
     u16 unk8;
+
+    // assetId
     u16 unkA;
 
     u32 unkC;
-
-    // assetId
     u32 unk10;
 
     u16 unk14;
