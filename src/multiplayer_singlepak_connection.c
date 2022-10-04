@@ -36,12 +36,30 @@ struct SinglePakConnectScreen {
     u8 fillerFB;
 };
 
-extern const u16 gUnknown_080E018C[7][3];
-extern const u16 gUnknown_080E01B6[7][3];
+#define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
+#define MB_COLLECT_RINGS_SIZE 0x314C
 
-#define MB_COLLECT_RINGS_SIZE 0x314c
+static const u16 gUnknown_080E018C[7][3] = {
+    { 0, 0, 0, },
+    { 1074, 0, 90, },
+    { 1079, 0, 84, },
+    { 1080, 0, 90, },
+    { 1081, 0, 90, },
+    { 1082, 0, 90, },
+    { 1083, 0, 45, },
+};
 
-void* const gUnknown_080E01E0[7][2] = {
+static const u16 gUnknown_080E01B6[7][3] = {
+    { 0, 0, 0, },
+    { 1106, 0, 46, },
+    { 1107, 0, 34, },
+    { 1109, 0, 38, },
+    { 1108, 0, 46, },
+    { 1111, 0, 30, },
+    { 1110, 0, 30, },
+};
+
+static void* const gUnknown_080E01E0[7][2] = {
     { NULL, NULL }, 
     { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
     { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
@@ -50,6 +68,7 @@ void* const gUnknown_080E01E0[7][2] = {
     { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
     { &gMultiBootProgram_CollectTheRings, &rom_footer },
 };
+
 static const u32 gUnknown_080E0218[7] = {
     [LANG_DEFAULT] = 0, 
     [LANG_JAPANESE] = 127, 
@@ -59,8 +78,6 @@ static const u32 gUnknown_080E0218[7] = {
     [LANG_SPANISH] = 131, 
     [LANG_ITALIAN] = 132,
 };
-
-#define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
 
 void sub_8081200(void) {
     u8 i;
