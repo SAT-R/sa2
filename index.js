@@ -9,7 +9,7 @@ const headings = [
 ];
 window.onload = async () => {
   const reportCsv = await (
-    await fetch("/reports/progress-sa2-nonmatching.csv")
+    await fetch("./reports/progress-sa2-nonmatching.csv")
   ).text();
   let matchingData = reportCsv
     .split("\n")
