@@ -1,11 +1,11 @@
-#include "starting_gun.h"
+#include "countdown.h"
 #include "main.h"
 #include "sprite.h"
 #include "game.h"
 #include "task.h"
 #include "malloc_vram.h"
 
-struct StartingGunEffect {
+struct CourseStartCountdown {
     struct UNK_0808B3FC_UNK240 unk0;
     struct UNK_0808B3FC_UNK240 unk30;
     u8 unk60[8];
@@ -17,9 +17,9 @@ struct StartingGunEffect {
 void sub_8036168(void);
 void sub_8036638(struct Task*);
 
-void sub_8036054(u8 mode) {
+void CreateCourseStartCountdown(u8 mode) {
     struct Task* t;
-    struct StartingGunEffect* effect;
+    struct CourseStartCountdown* effect;
     struct UNK_0808B3FC_UNK240* element;
 
     gUnknown_03005424 |= 0x100;

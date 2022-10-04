@@ -43794,7 +43794,7 @@ _0802F988:
 	cmp r0, #0
 	bne _0802F99C
 	ldrb r0, [r6, #4]
-	bl sub_8036054
+	bl CreateCourseStartCountdown
 	b _0802F9AC
 	.align 2, 0
 _0802F998: .4byte gUnknown_030055B0
