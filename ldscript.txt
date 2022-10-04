@@ -71,7 +71,6 @@ SECTIONS
         build/sa2/src/time_attack_lobby.o(.text);
         build/sa2/src/time_attack_results.o(.text);
         build/sa2/src/boost_effect.o(.text);
-        build/sa2/asm/boost_effect.o(.text);
         build/sa2/src/sound_test.o(.text);
         build/sa2/src/title_screen.o(.text);
         build/sa2/src/backgrounds.o(.text);

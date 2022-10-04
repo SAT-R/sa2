@@ -13,7 +13,9 @@ struct BoostModeParticles {
     u16 unk60;
     s16 unk62[16][2];
     s16 unkA2[16][2];
-    u8 fillerE2[6];
+    s16 unkE2;
+    s16 unkE4;
+    u16 fillerE6;
 };
 
 void sub_8089E54(void);
@@ -86,4 +88,105 @@ void CreateBoostModeParticles(void) {
         particles->unkA2[i][1] = ((gSineTable[temp1 * 4] >> 6)  * var) >> 8;
 #endif
     }
+}
+
+void sub_808A0A4(void);
+
+void sub_8089E54(void) {
+    s32 i;
+    struct BoostModeParticles* particles = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element;
+    sub_8004558(&particles->unk0);
+
+    for (i = 0; i < 8; i++) {
+        if (i & 1) {
+            particles->unk62[i][0] += particles->unkA2[i][0];
+            particles->unk62[i][1] += particles->unkA2[i][1];
+        } else {
+            particles->unk62[i][0] -= particles->unkA2[i][0];
+            particles->unk62[i][1] -= particles->unkA2[i][1];  
+        }
+
+        particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
+        particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
+        element = &particles->unk0;
+        element->unk16 = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0 + (particles->unk62[i][0] >> 8);
+        element->unk18 = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4 + (particles->unk62[i][1] >> 8);
+        sub_80051E8(element);
+    }
+
+    if (particles->unk60++ > 8) {
+        element->unk20 = 1;
+        SeedRng(gUnknown_030059E0.unk8, gUnknown_03005960.unk0);
+        
+        for (i = 0; i < 16; i++) {
+            u8 temp;
+            s16 rand;
+            particles->unkE2 = 0x80;
+            particles->unkE4 = 0;
+            if (gUnknown_030059E0.unk20 & 1) {
+                temp = Random();
+                temp += 64;
+                particles->unkE2 = (gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xFF) * 4 + 0x100] >> 6) << 2;
+                particles->unkE4 = (gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xFF) * 4] >> 6) << 2;
+            } else {
+                temp = Random();
+                particles->unkE2 = (gSineTable[(gUnknown_030059E0.unk24 * 4) + 0x100] >> 6) << 2;
+                particles->unkE4 = (gSineTable[gUnknown_030059E0.unk24 * 4] >> 6) << 2;
+            }
+
+            rand = (Random() & 0x3FF);
+            particles->unkA2[i][0] = ((gSineTable[temp * 4 + 0x100] >> 6) * (rand + 0x600)) >> 8;
+            particles->unkA2[i][1] = ((rand + 0x600) * (gSineTable[temp * 4] >> 6)) >> 8;
+        }
+
+        gCurTask->main = sub_808A0A4;
+    }
+}
+
+void sub_808A0A4(void) {
+    s32 i;
+    struct BoostModeParticles* particles = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240* element = &particles->unk0;
+
+    if (particles->unk60++ > 0x18) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    for (i = 0; i < 16; i++) {
+        particles->unk62[i][0] += particles->unkA2[i][0];
+        particles->unk62[i][1] += particles->unkA2[i][1];
+
+        particles->unk62[i][0] -= particles->unkE2;
+        particles->unk62[i][1] -= particles->unkE4;
+
+        particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
+        particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
+
+        particles->unkE2 = (particles->unkE2 * 0x101) >> 8;
+        particles->unkE4 = (particles->unkE4 * 0x101) >> 8;
+    }
+    
+    for (i = 0; i < 8; i++) {
+        element = &particles->unk0;
+        if (particles->unk60 & 1) {
+            element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i][0] >> 8);
+            element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i][1] >> 8);
+            sub_8004558(element);
+            
+        } else {
+            element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i + 8][0] >> 8);
+            element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i + 8][1] >> 8);
+        }
+        sub_80051E8(element);
+    }
+}
+
+void sub_808A234(struct Task* t) {
+    struct BoostModeParticles* particles = TaskGetStructPtr(t);
+    struct UNK_0808B3FC_UNK240* element = &particles->unk0;
+    VramFree(element->unk4);
+    element++;
+    VramFree(element->unk4);
 }
