@@ -1,10 +1,6 @@
 
 	.section .rodata
 
-    .global gUnknown_080D7518
-gUnknown_080D7518:
-    .incbin "baserom.gba", 0x000D7518, 0x28
-
     .global gUnknown_080D7540
 gUnknown_080D7540:
     .incbin "baserom.gba", 0x000D7540, 0x20

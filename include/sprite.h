@@ -119,7 +119,7 @@ struct UNK_080E0D64 {
     u32 unk0;
     // caption ID
     u16 unk4;
-    s8 unk6;
+    u8 unk6;
 };
 
 // Register menu item

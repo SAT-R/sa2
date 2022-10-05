@@ -98,6 +98,7 @@ struct SomeStruct_59E0 {
     struct UNK_3005A70* unk90;
 };
 
+// gPlayer
 extern struct SomeStruct_59E0 gUnknown_030059E0;
 
 struct SomeStruct_5960 {
