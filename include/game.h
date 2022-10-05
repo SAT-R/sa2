@@ -26,7 +26,18 @@ extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[2];
 extern s16 gUnknown_030053F0;
 extern u8 gUnknown_030054A8;
-extern u16 gUnknown_03005A44;
+
+struct UNK_3005A44 {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+    u16 unk8;
+    u16 unkA;
+    u16 unkC;
+};
+extern struct UNK_3005A44 gUnknown_03005A44;
+
 extern u8 gUnknown_0300543C;
 
 extern u32 gUnknown_030054DC;
@@ -55,13 +66,20 @@ extern u8 gUnknown_030054D4[4];
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
 
+struct UNK_3005A70 {
+    u8 unk0[0x31];
+    u8 unk31;
+};
+
 // Not sure what these are yet
 struct SomeStruct_59E0 {
     u32 filler0;
     u32 filler4;
     s32 unk8;
     s32 unkC;
-    u8 filler10[0x10];
+    u32 filler10;
+    u16 unk14;
+    u8 filler16[10];
     u32 unk20;
     u8 unk24;
     u8 filler24[0x12];
@@ -70,8 +88,14 @@ struct SomeStruct_59E0 {
     u16 unk5C;
     u8 filler5E[6];
     u16 unk64;
-    u8 filler66[38];
+    u16 unk66;
+    u16 unk68;
+    u16 unk6A;
+    u8 unk6C;
+    u8 unk6D;
+    u8 filler66[30];
     u32 unk8C;
+    struct UNK_3005A70* unk90;
 };
 
 extern struct SomeStruct_59E0 gUnknown_030059E0;

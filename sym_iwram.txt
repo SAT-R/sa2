@@ -91,7 +91,6 @@ build/sa2/src/main.o(.data);
 . = 0x000059D8; gUnknown_030059D8 = .;
 . = 0x000059E0; gUnknown_030059E0 = .;
 . = 0x000059E8; gUnknown_030059E8 = .;
-. = 0x00005A04; gUnknown_03005A04 = .;
 . = 0x00005A42; gUnknown_03005A42 = .;
 . = 0x00005A44; gUnknown_03005A44 = .;
 . = 0x00005A70; gUnknown_03005A70 = .;
