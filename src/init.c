@@ -10,9 +10,7 @@
 #include "player.h"
 #include "title_screen.h"
 #include "profile.h"
-
-// Need to find what these mean
-extern void sub_8081C0C();
+#include "multiplayer_singlepak_connection.h"
 
 void GameStart(void) {
     u32 i;
@@ -59,7 +57,7 @@ void GameStart(void) {
     }
 
     if (gFlags & 0x200) {
-        // TODO: find out what this does and what 0x200 means
+        // Show singlepak results
         sub_8081C0C();
         return;
     }

@@ -129,7 +129,3 @@ gUnknown_080E0136:
     .global gUnknown_080E0140
 gUnknown_080E0140:
     .incbin "baserom.gba", 0x000E0140, 0x28
-
-    .global gUnknown_080E0168
-gUnknown_080E0168:
-    .incbin "baserom.gba", 0x000E0168, 0x24

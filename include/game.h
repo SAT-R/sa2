@@ -139,6 +139,19 @@ struct UNK_3005B38 {
 extern struct UNK_3005B38 gUnknown_03005B38;
 
 extern u8 gUnknown_03005428[4];
+extern u8 gUnknown_030053E8[4];
+
+// rodata
+extern const u16 gUnknown_080D672C[5];
+extern const u16 gUnknown_080D713C[5][3];
+extern const u16 gUnknown_080D715A[5][3];
+extern const u16 gUnknown_080D7178[11][3];
+
+// collect rings data
+extern const u8 gUnknown_08C88408[0x9E00];
+extern const u8 gUnknown_08C92208[0x8000];
+
+
 
 #define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 

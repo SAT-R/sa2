@@ -39,6 +39,26 @@ struct SinglePakConnectScreen {
 #define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
 #define MB_COLLECT_RINGS_SIZE 0x314C
 
+extern const u8 gUnknown_08C90408[0x8000];
+extern const u8 gUnknown_08CA6760[0x6A7C];
+extern const u8 gUnknown_08CAD1DC[0x6fe4];
+extern const u8 gUnknown_08CB41C0[0x6a44];
+extern const u8 gUnknown_08CBAC04[0x8000];
+extern const u8 gUnknown_08CC2C04[0x8000];
+extern const u8 gUnknown_08CCAC04[0x8900];
+
+void* const gUnknown_080E0168[9] = {
+    &gUnknown_08CBAC04, 
+    &gUnknown_08CC2C04, 
+    &gUnknown_08CCAC04, 
+    &gUnknown_08C92208, 
+    &gUnknown_08CA6760, 
+    &gUnknown_08CAD1DC, 
+    &gUnknown_08CB41C0, 
+    &gUnknown_08C90408, 
+    &gUnknown_08C88408
+};
+
 static const u16 gUnknown_080E018C[7][3] = {
     { 0, 0, 0, },
     { 1074, 0, 90, },
@@ -345,7 +365,7 @@ void sub_80818B8(void) {
     u16 i, j;
     u32 temp;
     struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
-    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST && connectScreen->unkF9 < 9) {
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST && connectScreen->unkF9 < ARRAY_COUNT(gUnknown_080E0168)) {
         gCurTask->main = sub_8081D04;
     }
 
@@ -516,8 +536,6 @@ void sub_8081CC4(void) {
 
     sub_80818B8();
 }
-
-extern void* const gUnknown_080E0168[9];
 
 void sub_8081D04(void) {
     struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);

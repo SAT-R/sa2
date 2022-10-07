@@ -36,9 +36,6 @@ struct MultiplayerSinglePakResultsScreen {
     u32 unk43C;
 }; /* size 0x440 */
 
-extern const u8 gUnknown_08C88408[0x9E00];
-extern const u8 gUnknown_08C92208[0x8000];
-
 struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16);
 
 void sub_8081FB0(void);
@@ -411,8 +408,6 @@ void sub_808267C(void) {
     }
 }
 
-extern u8 gUnknown_030053E8[4];
-
 u32 sub_8004518(u8);
 
 void sub_8082788(void) {
@@ -526,8 +521,6 @@ struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16 mode) {
 
     return resultsScreen;
 }
-
-extern const u16 gUnknown_080D672C[5];
 
 void sub_8082CEC(struct UNK_0808B3FC_UNK240*, u32, u16, u8, s16, s16, u16, u8, u32);
 
