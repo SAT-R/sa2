@@ -4,183 +4,6 @@
 .syntax unified
 .arm
 
-_entry:
-	mov r0, #0x12
-	msr cpsr_fc, r0
-	ldr sp, _0203B038 @ =gUnknown_03007FA0
-	mov r0, #0x1f
-	msr cpsr_fc, r0
-	ldr sp, _0203B034 @ =gUnknown_03007F00
-	ldr r1, _0203B100 @ =gUnknown_03007FFC
-	add r0, pc, #0x18 @ =sub_0203b03c
-	str r0, [r1]
-	ldr r1, _0203B104 @ =sub_0203b26c
-	mov lr, pc
-	bx r1
-	b _entry
-	.align 2, 0
-_0203B034: .4byte gUnknown_03007F00
-_0203B038: .4byte gUnknown_03007FA0
-
-	arm_func_start sub_0203b03c
-sub_0203b03c: @ 0x0203B03C
-	mov r3, #0x4000000
-	add r3, r3, #0x200
-	ldr r2, [r3]
-	and r1, r2, r2, lsr #16
-	mov r2, #0
-	ands r0, r1, #0x2000
-_0203B054:
-	bne _0203B054
-	ands r0, r1, #0xc0
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #1
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #2
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #4
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #8
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x10
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x20
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x100
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x200
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x400
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x800
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x1000
-	bne _0203B0EC
-	add r2, r2, #4
-	ands r0, r1, #0x2000
-_0203B0EC:
-	strh r0, [r3, #2]
-	ldr r1, _0203B108 @ =gUnknown_03000000
-	add r1, r1, r2
-	ldr r0, [r1]
-	bx r0
-_0203B100: .4byte gUnknown_03007FFC
-_0203B104: .4byte sub_0203b26c
-_0203B108: .4byte gUnknown_03000000
-
-	arm_func_start sub_0203b10c
-sub_0203b10c: @ 0x0203B10C
-	push {r4, r5, r6, r7, r8, sb, sl, fp}
-	mov ip, #0x4000000
-	ldr fp, _0203B148 @ =gUnknown_030005E0
-	add sl, fp, #0x40
-	mov sb, #1
-	mov r8, #0
-	strb r8, [ip, #0x208]
-	ldm sl, {r0, r1, r2, r3, r4, r5, r6, r7}
-	stm sl!, {r4, r5, r6, r7}
-	stm sl!, {r0, r1, r2, r3}
-	ldr r0, [fp, #4]
-	str r8, [fp, #4]
-	strb sb, [ip, #0x208]
-	pop {r4, r5, r6, r7, r8, sb, sl, fp}
-	bx lr
-	.align 2, 0
-_0203B148: .4byte gUnknown_030005E0
-
-	arm_func_start sub_0203b14c
-sub_0203b14c: @ 0x0203B14C
-	mov ip, #0x4000000
-	add ip, ip, #0x120
-	ldm ip, {r0, r1}
-	push {r7, r8, sb, sl, fp}
-	ldr fp, _0203B264 @ =gUnknown_030005E0
-	mov sb, #0xfe
-	add sb, sb, #0xfe00
-	ldrh r3, [ip, #8]
-	and r3, r3, #0x40
-	strb r3, [fp, #9]
-	ldr sl, [fp, #0x14]
-	adds r3, sl, #1
-	blt _0203B1A8
-	bne _0203B19C
-	strh sb, [ip, #0xa]
-	add r8, fp, #0x28
-	ldm r8, {r2, r3}
-	mov r7, r2
-	stm r8, {r3, r7}
-	b _0203B1A8
-_0203B19C:
-	ldr r3, [fp, #0x2c]
-	ldr r2, [r3, sl, lsl #1]
-	strh r2, [ip, #0xa]
-_0203B1A8:
-	cmp sl, #0xd
-	addlt sl, sl, #1
-	strlt sl, [fp, #0x14]
-	push {r0, r1, r5, r6}
-	mov r6, #3
-_0203B1BC:
-	add r8, fp, #0x18
-	add r8, r8, r6, lsl #2
-	ldr sl, [r8]
-	lsl r3, r6, #1
-	ldrh r5, [sp, r3]
-	cmp r5, sb
-	bne _0203B1EC
-	cmp sl, #0xb
-	ble _0203B1EC
-	mov r0, #1
-	sub sl, r0, #2
-	b _0203B218
-_0203B1EC:
-	ldr r0, [r8, #0x18]
-	lsl r3, sl, #1
-	strh r5, [r0, r3]
-	cmp sl, #0xb
-	bne _0203B218
-	ldr r1, [r8, #0x28]
-	str r0, [r8, #0x28]
-	str r1, [r8, #0x18]
-	add r3, fp, #4
-	mov r0, #1
-	strb r0, [r3, r6]
-_0203B218:
-	cmp sl, #0xd
-	addlt sl, sl, #1
-	str sl, [r8]
-	subs r6, r6, #1
-	bge _0203B1BC
-	ldrb r0, [fp]
-	cmp r0, #0
-	beq _0203B258
-	ldr r7, _0203B268 @ =0x0400010E
-	mov r0, #0
-	strh r0, [r7]
-	ldrh r0, [ip, #8]
-	orr r0, r0, #0x80
-	strh r0, [ip, #8]
-	mov r0, #0xc0
-	strh r0, [r7]
-_0203B258:
-	add sp, sp, #8
-	pop {r5, r6, r7, r8, sb, sl, fp}
-	bx lr
-	.align 2, 0
-_0203B264: .4byte gUnknown_030005E0
-_0203B268: .4byte 0x0400010E
-
 	thumb_func_start sub_0203b26c
 sub_0203b26c: @ 0x0203B26C
 	push {lr}
@@ -973,16 +796,16 @@ sub_0203b8c4: @ 0x0203B8C4
 	strh r0, [r2]
 	movs r0, #0
 	str r0, [sp]
-	ldr r4, _0203B998 @ =gUnknown_030005E0
+	ldr r4, _0203B998 @ =gMultiSioArea
 	ldr r2, _0203B99C @ =0x0500007A
 	mov r0, sp
 	adds r1, r4, #0
 	bl CpuSet
-	ldr r0, _0203B9A0 @ =sub_0203b10c
+	ldr r0, _0203B9A0 @ =MultiSioRecvBufChange
 	ldr r1, _0203B9A4 @ =gUnknown_030007D0
 	ldr r2, _0203B9A8 @ =0x04000010
 	bl CpuSet
-	ldr r0, _0203B9AC @ =sub_0203b14c
+	ldr r0, _0203B9AC @ =MultiSioIntr
 	ldr r1, _0203B9B0 @ =gUnknown_030004C0
 	ldr r2, _0203B9B4 @ =0x04000048
 	bl CpuSet
@@ -1047,12 +870,12 @@ _0203B988: .4byte 0x04000200
 _0203B98C: .4byte 0x0000FF3F
 _0203B990: .4byte 0x04000134
 _0203B994: .4byte 0x00004003
-_0203B998: .4byte gUnknown_030005E0
+_0203B998: .4byte gMultiSioArea
 _0203B99C: .4byte 0x0500007A
-_0203B9A0: .4byte sub_0203b10c
+_0203B9A0: .4byte MultiSioRecvBufChange
 _0203B9A4: .4byte gUnknown_030007D0
 _0203B9A8: .4byte 0x04000010
-_0203B9AC: .4byte sub_0203b14c
+_0203B9AC: .4byte MultiSioIntr
 _0203B9B0: .4byte gUnknown_030004C0
 _0203B9B4: .4byte 0x04000048
 
@@ -1067,7 +890,7 @@ sub_0203b9b8: @ 0x0203B9B8
 	mov r8, r2
 	ldr r5, _0203B9D8 @ =0x04000128
 	ldr r6, [r5]
-	ldr r7, _0203B9DC @ =gUnknown_030005E0
+	ldr r7, _0203B9DC @ =gMultiSioArea
 	ldrb r0, [r7, #1]
 	cmp r0, #0
 	beq _0203B9E0
@@ -1076,7 +899,7 @@ sub_0203b9b8: @ 0x0203B9B8
 	b _0203BA56
 	.align 2, 0
 _0203B9D8: .4byte 0x04000128
-_0203B9DC: .4byte gUnknown_030005E0
+_0203B9DC: .4byte gMultiSioArea
 _0203B9E0:
 	movs r1, #0x30
 	adds r0, r6, #0
@@ -1128,7 +951,7 @@ _0203B9E0:
 	orrs r0, r1
 	strb r0, [r5]
 _0203BA42:
-	ldr r1, _0203BA9C @ =gUnknown_030005E0
+	ldr r1, _0203BA9C @ =gMultiSioArea
 	movs r0, #1
 	strb r0, [r1, #1]
 _0203BA48:
@@ -1138,7 +961,7 @@ _0203BA48:
 	mov r1, r8
 	bl sub_0203bad0
 _0203BA56:
-	ldr r1, _0203BA9C @ =gUnknown_030005E0
+	ldr r1, _0203BA9C @ =gMultiSioArea
 	ldrb r0, [r1, #0xb]
 	adds r0, #1
 	strb r0, [r1, #0xb]
@@ -1168,7 +991,7 @@ _0203BA8C: .4byte 0x04000200
 _0203BA90: .4byte 0x0000FF7F
 _0203BA94: .4byte 0x04000202
 _0203BA98: .4byte 0x0000BBBC
-_0203BA9C: .4byte gUnknown_030005E0
+_0203BA9C: .4byte gMultiSioArea
 _0203BAA0:
 	adds r0, r3, #0
 	orrs r0, r2
@@ -1202,7 +1025,7 @@ _0203BAC2:
 sub_0203bad0: @ 0x0203BAD0
 	push {r4, r5, r6, r7, lr}
 	movs r7, #0
-	ldr r5, _0203BB90 @ =gUnknown_030005E0
+	ldr r5, _0203BB90 @ =gMultiSioArea
 	ldr r4, [r5, #0x28]
 	movs r2, #1
 	ands r1, r2
@@ -1298,7 +1121,7 @@ _0203BB88:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0203BB90: .4byte gUnknown_030005E0
+_0203BB90: .4byte gMultiSioArea
 _0203BB94: .4byte gUnknown_03000810
 _0203BB98: .4byte 0x04000005
 _0203BB9C: .4byte 0x0400010E
@@ -1317,7 +1140,7 @@ sub_0203bba0: @ 0x0203BBA0
 	str r4, [sp]
 	bl _call_via_r0
 	str r0, [sp, #4]
-	ldr r0, _0203BCB0 @ =gUnknown_030005E0
+	ldr r0, _0203BCB0 @ =gMultiSioArea
 	strb r4, [r0, #3]
 	add r1, sp, #4
 	mov sl, r1
@@ -1399,7 +1222,7 @@ _0203BC42:
 	ldr r4, [sp, #0x10]
 	cmp r4, #3
 	ble _0203BBD0
-	ldr r0, _0203BCB0 @ =gUnknown_030005E0
+	ldr r0, _0203BCB0 @ =gMultiSioArea
 	ldrb r1, [r0, #2]
 	ldrb r2, [r0, #3]
 	adds r3, r1, #0
@@ -1441,7 +1264,7 @@ _0203BC90:
 	b _0203BCDA
 	.align 2, 0
 _0203BCAC: .4byte gUnknown_030007D0
-_0203BCB0: .4byte gUnknown_030005E0
+_0203BCB0: .4byte gMultiSioArea
 _0203BCB4: .4byte 0x04000005
 _0203BCB8: .4byte 0x05000005
 _0203BCBC:
@@ -1492,7 +1315,7 @@ _0203BCF8:
 	thumb_func_start sub_0203bd0c
 sub_0203bd0c: @ 0x0203BD0C
 	push {lr}
-	ldr r2, _0203BD24 @ =gUnknown_030005E0
+	ldr r2, _0203BD24 @ =gMultiSioArea
 	ldrb r0, [r2]
 	cmp r0, #0
 	beq _0203BD1E
@@ -1504,7 +1327,7 @@ _0203BD1E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0203BD24: .4byte gUnknown_030005E0
+_0203BD24: .4byte gMultiSioArea
 
 	thumb_func_start sub_0203bd28
 sub_0203bd28: @ 0x0203BD28
@@ -1528,7 +1351,7 @@ sub_0203bd28: @ 0x0203BD28
 	adds r1, #0xf6
 	movs r0, #0xc0
 	strh r0, [r1]
-	ldr r2, _0203BD74 @ =gUnknown_030005E0
+	ldr r2, _0203BD74 @ =gMultiSioArea
 	ldrb r1, [r2, #8]
 	movs r0, #0x7f
 	ands r0, r1
@@ -1541,7 +1364,7 @@ _0203BD64: .4byte 0x0000FF3F
 _0203BD68: .4byte 0x04000128
 _0203BD6C: .4byte 0x00002003
 _0203BD70: .4byte 0x0000BBBC
-_0203BD74: .4byte gUnknown_030005E0
+_0203BD74: .4byte gMultiSioArea
 
 	thumb_func_start sub_0203bd78
 sub_0203bd78: @ 0x0203BD78
