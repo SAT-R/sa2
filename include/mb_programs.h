@@ -4,6 +4,6 @@
 #include "global.h"
 
 extern const u8 gMultiBootProgram_TinyChaoGarden[];
-extern const u8 gMultiBootProgram_CollectTheRings[];
+extern const u8 gMultiBootProgram_SubgameLoader[];
 
 #endif // GUARD_MB_PROGRAMS_H

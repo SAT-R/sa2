@@ -37,7 +37,7 @@ struct SinglePakConnectScreen {
 };
 
 #define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
-#define MB_COLLECT_RINGS_SIZE 0x314C
+#define MB_SUBGAME_LOADER_SIZE 0x314C
 
 void* const gUnknown_080E0168[9] = {
     &gUnknown_08CBAC04, 
@@ -73,12 +73,12 @@ static const u16 gUnknown_080E01B6[7][3] = {
 
 static void* const gUnknown_080E01E0[7][2] = {
     { NULL, NULL }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer }, 
-    { &gMultiBootProgram_CollectTheRings, &rom_footer },
+    { &gMultiBootProgram_SubgameLoader, &rom_footer }, 
+    { &gMultiBootProgram_SubgameLoader, &rom_footer }, 
+    { &gMultiBootProgram_SubgameLoader, &rom_footer }, 
+    { &gMultiBootProgram_SubgameLoader, &rom_footer }, 
+    { &gMultiBootProgram_SubgameLoader, &rom_footer }, 
+    { &gMultiBootProgram_SubgameLoader, &rom_footer },
 };
 
 static const u32 gUnknown_080E0218[7] = {

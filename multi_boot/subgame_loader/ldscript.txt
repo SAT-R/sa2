@@ -2,13 +2,13 @@ SECTIONS {
     . = 0x2000000;
     .text :
     ALIGN(4) {
-        build/mb_collect_rings/asm/rom_header.o(.text);
-        build/mb_collect_rings/asm/loader.o(.text);
+        build/mb_subgame_loader/asm/rom_header.o(.text);
+        build/mb_subgame_loader/asm/loader.o(.text);
     }
 
     .rodata :
     ALIGN(4) {
-        build/mb_collect_rings/data/data.o(.rodata);
+        build/mb_subgame_loader/data/data.o(.rodata);
     }
 
     . = 0x2000000;
