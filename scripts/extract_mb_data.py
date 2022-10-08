@@ -1,9 +1,10 @@
-end_of_code = 0x02012510
-end_of_data = 0x0202EB6C
+rom_start = 0x0203B000
+end_of_code = 0x0203C206
+end_of_data = 0x0203f72c
 
 addresses = set()
 
-with open('chao_garden/asm/code.s') as code:
+with open('multi_boot/subgame_loader/signed_payload/payload/asm/code.s') as code:
     for line in code.readlines():
         line = line.strip()
         if ".4byte 0x02" in line:
@@ -36,7 +37,7 @@ for i in range(len(sorted_addresses)):
 
 summed = 0
 
-with open("chao_garden/data/new_data.s", "w") as data_file:
+with open("multi_boot/subgame_loader/signed_payload/payload/data/new_data.s", "w") as data_file:
     data_file.write('	.section .rodata\n')
     data_file.write('\n')
     for raw_addr, addr, size in addresses_with_size:
@@ -44,13 +45,13 @@ with open("chao_garden/data/new_data.s", "w") as data_file:
         var = to_var_name(addr)
         data_file.write(f"""    .global {var}
 {var}:
-    .incbin "data/rom_data.bin", 0x{f"{(raw_addr - 0x02000000):08x}".upper()}, {size}
+    .incbin "data/rom_data.bin", 0x{f"{(raw_addr - rom_start):08x}".upper()}, {size}
 
 """)
 
 print(hex(summed))
-with open("chao_garden/asm/new_code.s", "w") as new_rom:
-    existing_code = "".join(open("chao_garden/asm/code.s").readlines())
+with open("multi_boot/subgame_loader/signed_payload/payload/asm/new_code.s", "w") as new_rom:
+    existing_code = "".join(open("multi_boot/subgame_loader/signed_payload/payload/asm/code.s").readlines())
     for _, addr, __ in addresses_with_size:
         var = to_var_name(addr)
         existing_code = existing_code.replace(addr, to_var_name(addr))
