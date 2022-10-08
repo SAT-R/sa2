@@ -1735,6 +1735,8 @@ static void Task_LensFlareAnim(void) {
     };
 }
 
+#define TinyChaoGardenConfig ((u32*)(EWRAM_START + 0x8))
+
 static void LoadTinyChaoGarden(void) {
     u32 chaoGardenLang;
     u32 unk374 = gLoadedSaveGame->unk374;
@@ -1768,11 +1770,10 @@ static void LoadTinyChaoGarden(void) {
 
     // TODO: what is going on here, doesn't work as a struct
     // TODO: what's unk374
-    *(u32*)(EWRAM_START + 0x8) = unk374;
-
-    *(u32*)(EWRAM_START + 0xC) = chaoGardenLang;
+    TinyChaoGardenConfig[0] = unk374;
+    TinyChaoGardenConfig[1] = chaoGardenLang;
     // sessionId?
-    *(u32*)(EWRAM_START + 0x10) = ((Random() + gFrameCount) << 8) + Random();
+    TinyChaoGardenConfig[2] = ((Random() + gFrameCount) << 8) + Random();
     SoftResetExram(0);
 }
 
