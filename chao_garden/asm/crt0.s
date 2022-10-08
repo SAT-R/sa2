@@ -15,7 +15,7 @@ start_vector:
 	ldr r1, =INTR_VECTOR
 	adr r0, IntrMain
 	str r0, [r1]
-	ldr r1, =AgbMain + 1
+	ldr r1, =AgbMain
 	mov lr, pc
 	bx r1
 	b start_vector

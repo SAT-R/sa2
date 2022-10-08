@@ -148,10 +148,15 @@ extern const u16 gUnknown_080D715A[5][3];
 extern const u16 gUnknown_080D7178[11][3];
 
 // collect rings data
-extern const u8 gUnknown_08C88408[0x9E00];
+extern const u8 gUnknown_08C88408[0x8000];
+extern const u8 gUnknown_08C90408[0x8000];
 extern const u8 gUnknown_08C92208[0x8000];
-
-
+extern const u8 gUnknown_08CA6760[0x6A7C];
+extern const u8 gUnknown_08CAD1DC[0x6fe4];
+extern const u8 gUnknown_08CB41C0[0x6a44];
+extern const u8 gUnknown_08CBAC04[0x8000];
+extern const u8 gUnknown_08CC2C04[0x8000];
+extern const u8 gUnknown_08CCAC04[0x8900];
 
 #define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 

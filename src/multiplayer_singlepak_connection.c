@@ -39,14 +39,6 @@ struct SinglePakConnectScreen {
 #define SomeSioCheck() ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
 #define MB_COLLECT_RINGS_SIZE 0x314C
 
-extern const u8 gUnknown_08C90408[0x8000];
-extern const u8 gUnknown_08CA6760[0x6A7C];
-extern const u8 gUnknown_08CAD1DC[0x6fe4];
-extern const u8 gUnknown_08CB41C0[0x6a44];
-extern const u8 gUnknown_08CBAC04[0x8000];
-extern const u8 gUnknown_08CC2C04[0x8000];
-extern const u8 gUnknown_08CCAC04[0x8900];
-
 void* const gUnknown_080E0168[9] = {
     &gUnknown_08CBAC04, 
     &gUnknown_08CC2C04, 
