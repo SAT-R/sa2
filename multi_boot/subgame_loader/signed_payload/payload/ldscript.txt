@@ -1,4 +1,18 @@
 SECTIONS {
+    . = 0x2000000;
+    EWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        . = 0x00020000; gUnknown_02020000 = .;
+    }
+
+    . = 0x03000000;
+    IWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_iwram.txt"
+    }
+
     . = 0x203B000;
     .text :
     ALIGN(4) {

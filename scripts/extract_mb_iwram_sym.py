@@ -5,7 +5,7 @@ replace = {}
 
 max_ewram = "0x0202EB6C"
 
-with open("chao_garden/asm/code.s") as code_file:
+with open("multi_boot/subgame_loader/signed_payload/payload/asm/code.s") as code_file:
     for line in code_file.readlines():
         line = line.strip()
         if "0x030" in line and ":" not in line:
@@ -25,16 +25,16 @@ with open("chao_garden/asm/code.s") as code_file:
     for addr, sym in replace.items():
         code_content = code_content.replace(addr, sym)
     
-    with open("chao_garden/asm/new_code.s", "w") as new_code:
+    with open("multi_boot/subgame_loader/signed_payload/payload/asm/new_code.s", "w") as new_code:
         new_code.write(code_content)
 
-    with open("chao_garden/sym_iwram.txt", "w") as iwram_sym_file:
+    with open("multi_boot/subgame_loader/signed_payload/payload/sym_iwram.txt", "w") as iwram_sym_file:
         keys = sorted(iwram_syms.keys())
         for addr in keys:
             sym = iwram_syms[addr]
             iwram_sym_file.write(f". = {addr}; {sym} = .;\n")
     
-    with open("chao_garden/sym_ewram.txt", "w") as ewram_sym_file:
+    with open("multi_boot/subgame_loader/signed_payload/payload/sym_ewram.txt", "w") as ewram_sym_file:
         keys = sorted(ewram_syms.keys())
         for addr in keys:
             sym = ewram_syms[addr]
