@@ -7,13 +7,14 @@
 #include "task.h"
 #include "constants/songs.h"
 
+
 struct SpecialStage {
     struct Task* unk0;
     struct Task* unk4;
     struct Task* unk8;
     struct Task* unkC; // UNK_806CF78
     struct Task* unk10;
-    struct Task* unk14;
+    struct Task* unk14; // UNK_8071438
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
@@ -21,14 +22,18 @@ struct SpecialStage {
     u32 unk594;
     u32 unk598;
     u32 unk59C;
-    u16 unk5A0;
+
+    s16 unk5A0;
     s16 unk5A2;
-    u16 unk5A4;
+    s16 unk5A4;
 
     // time
     s16 unk5A6;
 
-    u8 unk5A8[12];
+    s32 unk5A8;
+    s32 unk5AC;
+    s32 unk5B0;
+
     u16 unk5B4;
     u8 unk5B6;
     u8 unk5B7;
@@ -49,7 +54,7 @@ struct SpecialStage {
     s8 unk5C3;
     u8 unk5C4;
 
-    u8 unk5C5;
+    s8 unk5C5;
     u8 unk5C6;
 
     s8 unk5C7;
@@ -82,6 +87,18 @@ struct UNK_806CF78 {
     u16 unkB4;
     u8 unkB6[82];
 }; /* size 0x108 */
+
+struct UNK_8071438 {
+    struct SpecialStage* unk0;
+    u8 filler4[56];
+    u16 unk3C;
+    u8 filler3E[26];
+}; /* size 0x58 */
+
+struct UNK_8070BF0 {
+    struct SpecialStage* unk0;
+    u8 unk4[1308];
+}; /* size 0x520 */
 
 u32 gUnknown_03005B5C;
 
@@ -338,5 +355,318 @@ void sub_806BE9C(void) {
                 m4aSongNumStart(MUS_SPECIAL_STAGE_PINCH);
             }
         }
+    }
+}
+
+void sub_806C050(void);
+
+void sub_806BFD0(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
+    struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
+    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+
+    unk1438->unk3C = 0;
+
+    transitionConfig->unk0 = 1;
+    transitionConfig->unk2 = 1;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unk6 = 0x40;
+    transitionConfig->unkA = 0;
+    transitionConfig->unk8 = 0xBF;
+    sub_802D4CC(transitionConfig);
+
+    gDispCnt = 0x9641;
+    gWinRegs[5] = 0x103F;
+
+    if (unkCF78->unkB4 == 0xD) {
+        m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);
+    }
+    gCurTask->main = sub_806C050;
+}
+
+void sub_806CEC4(struct Unk_03002400 *, u32 ,u32 ,u16 ,u16 ,u16 ,u8 ,u16 ,u16 ,u16);
+
+void sub_806CA18(void);
+void sub_806C158(void);
+
+void sub_806C050(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270* unk88 = &stage->unk88;
+    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+
+    if (sub_802D4CC(unk88) == 0) {
+        gDispCnt = 0x9641;
+        gWinRegs[5] = 0x103F;
+    } else {
+        if (stage->unk14 != NULL) {
+            TaskDestroy(stage->unk14);
+            stage->unk14 = NULL;
+        }
+
+        if (stage->unk0 != NULL) {
+            TaskDestroy(stage->unk0);
+            stage->unk0 = NULL;
+        }
+
+        if (stage->unk4 != NULL) {
+            TaskDestroy(stage->unk4);
+            stage->unk4 = NULL;
+        }
+
+        if (stage->unk8 != NULL) {
+            TaskDestroy(stage->unk8);
+            stage->unk8 = NULL;
+        }
+
+        if (stage->unk10 != NULL) {
+            TaskDestroy(stage->unk10);
+            stage->unk10 = NULL;
+        }
+
+        sub_806CEC4(&stage->unk48, 0, 7, 0x8B, 0x20, 0x20, 0, 1, 0, 0);
+        gBgScrollRegs[1][0] = 0;
+        gBgScrollRegs[1][1] = 0;
+        gDispCnt = 0x1240;
+
+        if (unkCF78->unkB4 == 0xD) {
+            stage->unk5A2 = 0;
+            unkCF78->unkB4 = 0x10;
+            gCurTask->main = sub_806CA18;
+        } else {
+            gCurTask->main = sub_806C158;
+        }
+    }
+}
+
+struct Task* sub_8070BF0(struct SpecialStage*);
+void sub_806CA54(void);
+
+void sub_806C158(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+
+    gBldRegs.bldY = 0;
+    gBldRegs.bldCnt = 0;
+    gBldRegs.bldAlpha = 0;
+
+    stage->unk10 = sub_8070BF0(stage);
+    stage->unk5A8 = stage->unk5A4 * 100;
+    
+    if (stage->unk5A8 > 0x1863C) {
+        stage->unk5A8 = 0x1863C;
+    }
+
+    stage->unk5AC = stage->unk5C5 ? 10000 : 0;
+    stage->unk5B0 = 0;
+
+    if (unkCF78->unkB4 == 0x10) {
+        if (stage->unk5C5 != 0) {
+            m4aSongNumStart(MUS_CHAOS_EMERALD);
+            stage->unk5C7 = 1;
+            stage->unk5C8 = 0x96;
+        } else {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = 0;
+            stage->unk5C8 = 0;
+           
+        }
+    } else {
+        m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT_LOSE);
+    }
+
+    stage->unk5A2 = 0;
+    gCurTask->main = sub_806CA54;
+}
+
+void sub_806C42C(void);
+void sub_806C338(void);
+
+void sub_806C25C(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    if (stage->unk5C7 == 1) {
+        s32 temp = --stage->unk5C8;
+        if (temp == 0) {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = temp;
+        }
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        gCurTask->main = sub_806C42C;
+        return;
+    }
+
+    if (stage->unk5A8 < 100) {
+        stage->unk5B0 += stage->unk5A8;
+        stage->unk5A8 = 0;
+    } else {
+        stage->unk5B0 += 100;
+        stage->unk5A8 -= 100;
+    }
+
+    if (stage->unk5B0  > 0x1863C) {
+        stage->unk5B0 = 0x1863C;
+    }
+
+    stage->unk5A2++;
+
+    if ((stage->unk5A2 & 3) == 0) {
+        m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
+    }
+
+    if (stage->unk5A8 == 0) {
+        stage->unk5A8 = 0;
+        gCurTask->main = sub_806C338;
+    }   
+}
+
+void sub_806C49C(void);
+
+void sub_806C338(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    if (stage->unk5C7 == 1) {
+        s32 temp = --stage->unk5C8;
+        if (temp == 0) {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = temp;
+        }
+    }
+
+    if (gPressedKeys & A_BUTTON) {
+        gCurTask->main = sub_806C42C;
+        return;
+    }
+
+    if (stage->unk5AC < 100) {
+        stage->unk5B0 += stage->unk5AC;
+        stage->unk5AC = 0;
+    } else {
+        stage->unk5B0 += 100;
+        stage->unk5AC -= 100;
+    }
+
+    if (stage->unk5B0  > 0x1863C) {
+        stage->unk5B0 = 0x1863C;
+    }
+
+    stage->unk5A2++;
+
+    if ((stage->unk5A2 & 3) == 0) {
+        m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
+    }
+
+    if (stage->unk5AC == 0) {
+        if (stage->unk5B0 != 0) {
+            m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
+        }
+    
+        stage->unk5AC = 0;
+        stage->unk5A2 = 0;
+        gCurTask->main = sub_806C49C;
+    }
+}
+
+void sub_806C42C(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    stage->unk5B0 += stage->unk5A8;
+    stage->unk5A8 = 0;
+    
+    stage->unk5B0 += stage->unk5AC;
+    stage->unk5AC = 0;
+
+    if (stage->unk5B0 > 0x1863C) {
+        stage->unk5B0 = 0x1863C;
+    }
+
+    if (stage->unk5B0 != 0) {
+        m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
+    }
+
+    stage->unk5A2 = 0;
+    gCurTask->main = sub_806C49C;
+}
+
+void sub_806C6A4(void);
+void sub_806C560(void);
+
+void sub_806C49C(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
+    stage->unk5A2++;
+
+    if (stage->unk5C7 == 1) {
+        s32 temp = --stage->unk5C8;
+        if (temp == 0) {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = temp;
+        }
+    }
+
+    if (gPressedKeys & A_BUTTON || stage->unk5A2 > 0x3C) {
+        transitionConfig->unk0 = 0;
+        transitionConfig->unk2 = 1;
+        transitionConfig->unk4 = 0;
+        transitionConfig->unk6 = 0x40;
+        transitionConfig->unkA = 0;
+        transitionConfig->unk8 = 0xBF;
+
+        stage->unk5A2 = 0;
+        if (stage->unk5C5 != 0) {
+            gCurTask->main = sub_806C560;
+        } else {
+            gCurTask->main = sub_806C6A4;
+        }
+    }
+}
+
+void sub_8070C30(struct SpecialStage*);
+void sub_806C638(void);
+
+void sub_806C560(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    u8 unk5B6 = stage->unk5B6;
+    u8 something = gLoadedSaveGame->unkC[unk5B6];
+
+    if (stage->unk5C7 == 1) {
+        s32 temp = --stage->unk5C8;
+        if (temp == 0) {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = temp;
+        }
+    }
+
+    if (!GetBit(something, stage->unk5B8)) {
+        sub_8070C30(stage);
+        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->unk5B8;
+        stage->unk5A2 = 0x78;
+    } else {
+        stage->unk5A2 = 0xC;
+    }
+
+    if ((gLoadedSaveGame->unkC[unk5B6] & 0x7F) == 0x7F) {
+        gLoadedSaveGame->unkC[unk5B6] = 0xFF;
+    }
+
+    gCurTask->main = sub_806C638;
+}
+
+void sub_806C638(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    if (stage->unk5C7 == 1) {
+        s32 temp = --stage->unk5C8;
+        if (temp == 0) {
+            m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
+            stage->unk5C7 = temp;
+        }
+    }
+
+    stage->unk5A2--;
+
+    if (stage->unk5A2 < 1) {
+        stage->unk5A2 = 0;
+        gCurTask->main = sub_806C6A4;
     }
 }
