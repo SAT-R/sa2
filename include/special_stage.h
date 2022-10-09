@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void sub_806BA84(u16, u16);
+void sub_806BA84(s16, s16);
 
 #endif
