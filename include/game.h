@@ -128,8 +128,12 @@ extern u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gUnknown_03005434;
 
+extern u32 gUnknown_03005450;
+extern u8 gUnknown_03005448;
+
 // gMultiplayerConnections
 extern u8 gUnknown_030055B8;
+
 
 struct UNK_3005B38 {
     u16 unk0;

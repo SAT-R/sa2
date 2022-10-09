@@ -6,6 +6,7 @@
 #include "m4a.h"
 #include "task.h"
 #include "constants/songs.h"
+#include "title_screen.h"
 
 
 struct SpecialStage {
@@ -43,9 +44,9 @@ struct SpecialStage {
 
     s8 unk5BB;
     s8 unk5BC;
+    s8 unk5BD;
+    s8 unk5BE;
 
-    u8 unk5BD;
-    u8 unk5BE;
     u8 unk5BF;
     u8 unk5C0;
     u8 unk5C1;
@@ -669,4 +670,132 @@ void sub_806C638(void) {
         stage->unk5A2 = 0;
         gCurTask->main = sub_806C6A4;
     }
+}
+
+void sub_806C6A4(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    if (sub_802D4CC(&stage->unk88) == 0) {
+        return;
+    }
+    
+    stage->unk5A2++;
+    if (stage->unk5A2 > 0x77) {
+        s32 temp2, temp3, temp4;
+        s32 temp = stage->unk5B0;
+
+        if (stage->unkC != NULL) {
+            TaskDestroy(stage->unkC);
+            stage->unkC = NULL;
+        }
+
+        if (stage->unk10 != NULL) {
+            TaskDestroy(stage->unk10);
+            stage->unk10 = NULL;
+        }
+
+        temp4 = gUnknown_03005450;
+        gUnknown_03005450 += temp;
+
+        temp2 = Div(gUnknown_03005450, 50000);
+        temp3 = Div(temp4, 50000);
+
+        if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+            u16 temp5 = (temp2 - temp3);
+            temp5 += gUnknown_03005448;
+
+            if (temp5 > 0xFF) {
+                temp5 = 0xFF;
+            }
+
+            gUnknown_03005448 = temp5;
+        }
+
+        gLoadedSaveGame->unk374 += stage->unk5A4;
+
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gUnknown_03004D5C = gUnknown_03002A84;
+        WriteSaveGame();
+        sub_801A770();
+    }
+}
+
+void sub_806C7B8(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    if (stage->unk5BE > 0) {
+        stage->unk5BE--;
+        return;
+    }
+
+    if (stage->unk5BD > 0) {
+        stage->unk5BD--;
+    } else if (stage->unk5BC > 0) {
+        stage->unk5BC--;
+        stage->unk5BD = 9;
+    } else if (stage->unk5BB > 0) {
+        stage->unk5BB--;
+        stage->unk5BC = 9;
+        stage->unk5BD = 9;
+    } else {
+        stage->unk5BB = 0;
+        stage->unk5BC = 0;
+        stage->unk5BD = 0;
+        stage->unk5BE = 0;
+
+        if (stage->unk5B4 != 7) {
+            stage->unk5B4 = 6;
+        }
+        return;
+    }
+
+    stage->unk5BE = 0x3B;
+}
+
+void sub_806C864(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    if (stage->unk5BA == 1) {
+        if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
+            u8 temp = stage->unk5C6;
+
+            if (gPressedKeys & DPAD_UP) {
+                stage->unk5C6 = 0;
+            }
+
+            if (gPressedKeys & DPAD_DOWN) {
+                stage->unk5C6 = 1;
+            }
+
+            if (temp != stage->unk5C6) {
+                m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+            }
+            return;
+        }
+
+        if (gPressedKeys & A_BUTTON) {
+            if (stage->unk5C6 == 0) {
+                stage->unk5BA = 0;
+                gPressedKeys &= ~A_BUTTON;
+                return;
+            }
+            TasksDestroyAll();
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gUnknown_03004D5C = gUnknown_03002A84;
+            CreateTitleScreenAndSkipIntro();
+            return;
+        }
+    }
+
+    if (gPressedKeys & START_BUTTON) {
+        stage->unk5BA = stage->unk5BA == 0 ? 1 : 0;
+        stage->unk5C6 = 0;
+    }
+}
+
+void sub_806C950(UNUSED struct Task* t) {
+    gUnknown_03004D54 = &gUnknown_03001B60[0];
+    gUnknown_030022C0 = &gUnknown_03001B60[1];
 }
