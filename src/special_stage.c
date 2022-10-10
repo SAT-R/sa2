@@ -7,11 +7,12 @@
 #include "task.h"
 #include "constants/songs.h"
 #include "title_screen.h"
+#include "trig.h"
 
 
 struct SpecialStage {
     struct Task* unk0;
-    struct Task* unk4;
+    struct Task* unk4; // UNK_806E6E8
     struct Task* unk8;
     struct Task* unkC; // UNK_806CF78
     struct Task* unk10;
@@ -19,12 +20,14 @@ struct SpecialStage {
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
-    u8 unk94[1280];
+    s32 unk94[60][2];
+    u8 unk274[796];
+    u32 unk590;
     u32 unk594;
     u32 unk598;
     u32 unk59C;
 
-    s16 unk5A0;
+    u16 unk5A0;
     s16 unk5A2;
     s16 unk5A4;
 
@@ -69,12 +72,42 @@ struct SpecialStage {
     u8 unk5D1;
     u8 unk5D2;
     u8 unk5D3;
-    u32 unk5D4;
+    void* unk5D4;
 }; /* size 0x5D8 */
+
+struct UNK_806BD94_old {
+    struct SpecialStage* unk0;
+    u8 unk4[2644];
+    u16 unkA58;
+    u16 unkA5A;
+}; /* size 0xA5C */
+
+struct UNK_806BD94_UNK874 {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u16 unkC;
+    u16 unkE;
+    u8 unk10[2];
+    u8 unk12;
+    u8 unk13;
+}; /* size 0x14 */
 
 struct UNK_806BD94 {
     struct SpecialStage* unk0;
-    u8 unk4[2644];
+    struct UNK_0808B3FC_UNK240 unk4;
+    struct UNK_0808B3FC_UNK240 unk34;
+    struct UNK_0808B3FC_UNK240 unk64;
+    struct UNK_0808B3FC_UNK240 unk94;
+    struct UNK_0808B3FC_UNK240 unkC4;
+    struct UNK_0808B3FC_UNK240 unkF4;
+    struct UNK_0808B3FC_UNK240 unk124;
+    struct UNK_0808B3FC_UNK240 unk154;
+    struct UNK_0808B3FC_UNK240 unk184;
+    u8 unk1B4[1536];
+    struct UNK_0808B3FC_UNK240 unk7B4[4];
+    struct UNK_806BD94_UNK874 unk874[4][2];
+    u8 unk914[324];
     u16 unkA58;
     u16 unkA5A;
 }; /* size 0xA5C */
@@ -101,7 +134,30 @@ struct UNK_8070BF0 {
     u8 unk4[1308];
 }; /* size 0x520 */
 
-u32 gUnknown_03005B5C;
+struct UNK_806E6E8 {
+    struct SpecialStage* unk0;
+    void* unk4; // size 0xA00
+    void* unk8; // size 0x280
+    u32* unkC; // size 0x280
+    struct Unk_03002400 unk10;
+    struct Unk_03002400 unk50;
+    u8 unk90[528];
+}; /* size 0x2A0 */
+
+void* gUnknown_03005B58;
+void* gUnknown_03005B5C;
+
+#define ResetSpecialStageScreenVram() ({ \
+    gUnknown_03005B5C = (void*)OBJ_VRAM0; \
+    gUnknown_03005B58 = NULL; \
+})
+
+#define ResetSpecialStateScreenSubMenuVram() ({ \
+    gUnknown_03005B58 = NULL; \
+})
+
+#define RENDER_TARGET_SCREEN 0
+#define RENDER_TARGET_SUB_MENU 1
 
 void sub_806CEA8(void);
 void sub_806C970(void);
@@ -799,3 +855,169 @@ void sub_806C950(UNUSED struct Task* t) {
     gUnknown_03004D54 = &gUnknown_03001B60[0];
     gUnknown_030022C0 = &gUnknown_03001B60[1];
 }
+
+void sub_806BCB8(void);
+void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused);
+
+void sub_806C970(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    sub_806BCB8();
+    sub_806CA88(&stage->unk18, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, 0x78, 0x50, 0, 0, 0);
+
+    stage->unk5B4 = 1;
+    m4aSongNumStart(MUS_SPECIAL_STAGE_INTRO);
+
+    gCurTask->main = sub_806BD28;
+}
+
+void sub_806C9CC(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    if (sub_802D4CC(&stage->unk88) != 0) {
+        stage->unk5A2 = 0;
+        stage->unk5B4 = 4;
+        m4aSongNumStart(MUS_SPECIAL_STAGE);
+        gCurTask->main = sub_806BE40;
+    }
+}
+
+void sub_806CA18(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+
+    gBldRegs.bldY = 0;
+    gBldRegs.bldCnt = 0;
+    gBldRegs.bldAlpha = 0;
+
+    stage->unk5A2++;
+
+    if (stage->unk5A2 > 0xb3) {
+        gCurTask->main = sub_806C158;
+    }
+}
+
+void sub_806CA54(void) {
+    struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
+    stage->unk5A2++;
+
+    if (stage->unk5A2 > 0x3B) {
+        stage->unk5A2 = 0;
+        gCurTask->main = sub_806C25C;
+    }
+}
+
+// same function in profile.c
+void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
+    struct UNK_0808B3FC_UNK240 newObj;
+    struct UNK_0808B3FC_UNK240* element;
+    element = &newObj;
+   
+    if (obj != NULL) {
+        element = obj;
+    }
+
+    if (target != 0) {
+        if (gUnknown_03005B58 == NULL) {
+            gUnknown_03005B58 = gUnknown_03005B5C;
+        }
+        element->unk4 = gUnknown_03005B58;
+    } else {
+        element->unk4 = gUnknown_03005B5C;
+    }
+    
+    element->unk8 = 0;
+    element->unkA = c;
+    element->unk10 = assetId;
+    element->unk16 = xPos;
+    element->unk18 = yPos;
+    element->unk1A = g << 6;
+    element->unk1C = 0;
+    element->unk1E = 0xffff;
+    element->unk20 = h;
+    element->unk21 = 0xff;
+    element->unk22 = 0x10;
+    element->unk25 = focused;
+    element->unk28 = -1;
+
+    sub_8004558(element);
+
+    switch(target) {
+        case RENDER_TARGET_SCREEN:
+            gUnknown_03005B5C += size * TILE_SIZE_4BPP;
+            // if we render to screen then the sub menu address should reset
+            ResetSpecialStateScreenSubMenuVram();
+            break;
+        case RENDER_TARGET_SUB_MENU:
+            gUnknown_03005B58 += size * TILE_SIZE_4BPP;
+            break;
+    }
+}
+
+struct UNK_806CB84 {
+    u8 unk0[2];
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
+    s16 unkA;
+    u16 unkC;
+    u16 unkE;
+    u16 unk10;
+    u16 unk12;
+};
+
+// u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
+//     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
+//     u32 val = -stage->unk5A0 & 0x3FF;
+//     s16 temp1 = ((gSineTable[val] * 4) >> 8) * ((stage->unk598 - unk874->unk4) >> 8) + ((((stage->unk594 - unk874->unk0) >> 8) * (gSineTable[val + 0x100] >> 6)) >> 2);
+//     s16 temp2 = ((((stage->unk598 - unk874->unk4) >> 8) * (gSineTable[val + 0x100] >> 6)) >> 1) - ((gSineTable[val] * 4) >> 8) * ((stage->unk594 - unk874->unk0) >> 8);
+
+//     if (stage->unk590 < temp2 && stage->unk94[stage->unk5D1][1] > temp2) {
+//         u32 val = stage->unk5D3;
+//         u32 val2 = stage->unk5D2;
+
+//         while (val2 != 0) {
+//             if (val < 0xA0) {
+//                 if (val < stage->unk5D1) {
+//                     val += (val2 >> 1);
+//                 } else {
+//                     s32 temp = stage->unk94[val][1];
+//                     if (temp2 < temp) {
+//                         val += (val2 >> 1);
+//                     } else {
+//                         val = val2;
+
+//                         if (temp2 <= temp) {
+//                             break;
+//                         }
+
+//                         val -= (val2 >> 1);
+//                     }
+//                 }
+//             } else {
+//                 val += val2 >> 1;
+//             }
+//             val2 >>= 1;
+//         }
+        
+//         temp2 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
+
+//         if (-temp2 < temp1 && temp2 > temp1) {
+//             u32 temp;
+//             a->unkA = val;
+//             a->unk4 = (val - unk874->unkE) - (unk874->unk12 << 0x10 / unkE6E8->unkC[val]);
+//             a->unk8 = (0x78 - ((temp1 * 0x87) / temp2));
+//             if (unk874->unk8 == 0) {
+//                 a->unk6 = 0;
+//             } else {
+//                 a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
+//             }
+
+//             a->unkC = unkE6E8->unkC[val] >> 8;
+//             a->unk12 = unkE6E8->unkC[val] >> 8;
+//             a->unk10 = 0;
+//             a->unkE;
+//             return 1;
+//         }
+//     }
+//     return 0;
+// }
