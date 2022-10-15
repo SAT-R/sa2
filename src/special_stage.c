@@ -85,13 +85,26 @@ struct UNK_806BD94_old {
 struct UNK_806BD94_UNK874 {
     u32 unk0;
     u32 unk4;
-    u32 unk8;
-    u16 unkC;
-    u16 unkE;
+    s32 unk8;
+    s16 unkC;
+    s16 unkE;
     u8 unk10[2];
-    u8 unk12;
-    u8 unk13;
+    s16 unk12;
 }; /* size 0x14 */
+
+
+struct UNK_806CB84 {
+    u8 unk0[2];
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
+    s16 unkA;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+};
 
 struct UNK_806BD94 {
     struct SpecialStage* unk0;
@@ -124,7 +137,7 @@ struct UNK_806CF78 {
 
 struct UNK_8071438 {
     struct SpecialStage* unk0;
-    u8 filler4[56];
+    u8 filletemp_r4[56];
     u16 unk3C;
     u8 filler3E[26];
 }; /* size 0x58 */
@@ -138,7 +151,7 @@ struct UNK_806E6E8 {
     struct SpecialStage* unk0;
     void* unk4; // size 0xA00
     void* unk8; // size 0x280
-    u32* unkC; // size 0x280
+    s32* unkC; // size 0x280
     struct Unk_03002400 unk10;
     struct Unk_03002400 unk50;
     u8 unk90[528];
@@ -952,72 +965,74 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
     }
 }
 
-struct UNK_806CB84 {
-    u8 unk0[2];
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    s16 unk8;
-    s16 unkA;
-    u16 unkC;
-    u16 unkE;
-    u16 unk10;
-    u16 unk12;
-};
+u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
+    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
+    s32 r9;
+    s32 r4;
+    s16 val2, val;
 
-// u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
-//     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
-//     u32 val = -stage->unk5A0 & 0x3FF;
-//     s16 temp1 = ((gSineTable[val] * 4) >> 8) * ((stage->unk598 - unk874->unk4) >> 8) + ((((stage->unk594 - unk874->unk0) >> 8) * (gSineTable[val + 0x100] >> 6)) >> 2);
-//     s16 temp2 = ((((stage->unk598 - unk874->unk4) >> 8) * (gSineTable[val + 0x100] >> 6)) >> 1) - ((gSineTable[val] * 4) >> 8) * ((stage->unk594 - unk874->unk0) >> 8);
+    {
+        u16 deg = -stage->unk5A0 & 0x3FF;
+        s32 r2 = (gSineTable[deg] * 4);
+        s32 r5 = gSineTable[(deg) + 0x100];
+        s32 temp_r4 = (-unk874->unk0 + stage->unk594);
+        s32 r3 = (-unk874->unk4 + stage->unk598);
+        r9 = (((r2 >> 8) * (r3 >> 8)) + ((r5 >> 6) * (temp_r4 >> 8))) >> 2;
+        r4 = (((-r2 >> 8) * (temp_r4 >> 8)) + ((r5 >> 6) * (r3 >> 8))) >> 1;
+    }
 
-//     if (stage->unk590 < temp2 && stage->unk94[stage->unk5D1][1] > temp2) {
-//         u32 val = stage->unk5D3;
-//         u32 val2 = stage->unk5D2;
+    {
+        s32 unk590 = stage->unk590;
+        s32 unk94 = stage->unk94[stage->unk5D1][1];
+    
+        if (r4 <= unk590 || r4 >= unk94) {
+            return 0;
+        }
+    }
 
-//         while (val2 != 0) {
-//             if (val < 0xA0) {
-//                 if (val < stage->unk5D1) {
-//                     val += (val2 >> 1);
-//                 } else {
-//                     s32 temp = stage->unk94[val][1];
-//                     if (temp2 < temp) {
-//                         val += (val2 >> 1);
-//                     } else {
-//                         val = val2;
+    val2 = stage->unk5D2;
+    val = stage->unk5D3;
 
-//                         if (temp2 <= temp) {
-//                             break;
-//                         }
+    while (val2 != 0) {
+        if (val >= 0xA0) {
+            val -= val2 >> 1;
+        } else if (val < stage->unk5D1) {
+            val += val2 >> 1;
+        } else if (stage->unk94[val][1] > r4) {
+            val += val2 >> 1;
+        } else if (stage->unk94[val][1] < r4) {
+            val -= val2 >> 1;
+        } else {
+            val = val2;
+            break;
+        }
+        val2 >>= 1;
+    }
+    
 
-//                         val -= (val2 >> 1);
-//                     }
-//                 }
-//             } else {
-//                 val += val2 >> 1;
-//             }
-//             val2 >>= 1;
-//         }
+    {
+        s32 r2 = (-(stage->unk94[val][0] >> 1) * 9) >> 3;
+        s32 r8 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
         
-//         temp2 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
+        if (r9 <= r2 || r9 >= r8) {
+            return 0;
+        }
+        a->unkA = val;
+        a->unk4 = (a->unkA - unk874->unkE) - ((unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
+        a->unk8 = (0x78 - ((r9 * 0x87) / r8));
+        a->unk2 = a->unk8 - unk874->unkC;
+        if (unk874->unk8 != 0) {
+            a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
+        } else {
+            a->unk6 = 0;
+        }
+    
+        a->unkC = unkE6E8->unkC[val] >> 8;
+        a->unk12 = a->unkC;
+    
+        a->unk10 = 0;
+        a->unkE = 0; 
+    }
 
-//         if (-temp2 < temp1 && temp2 > temp1) {
-//             u32 temp;
-//             a->unkA = val;
-//             a->unk4 = (val - unk874->unkE) - (unk874->unk12 << 0x10 / unkE6E8->unkC[val]);
-//             a->unk8 = (0x78 - ((temp1 * 0x87) / temp2));
-//             if (unk874->unk8 == 0) {
-//                 a->unk6 = 0;
-//             } else {
-//                 a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
-//             }
-
-//             a->unkC = unkE6E8->unkC[val] >> 8;
-//             a->unk12 = unkE6E8->unkC[val] >> 8;
-//             a->unk10 = 0;
-//             a->unkE;
-//             return 1;
-//         }
-//     }
-//     return 0;
-// }
+    return 1;
+}
