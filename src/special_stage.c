@@ -1036,3 +1036,47 @@ u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct
 
     return 1;
 }
+
+void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
+    u16* reference;
+    OamData* oam;
+    u32 unk16, unk18;
+    u16 unkC_6;
+    u16 unkC_4;
+    s16 unkC_2;
+
+    s16 i;
+    // Might be wrong, seems to make sense?
+    struct UNK_0808B3FC_UNK240_UNKC* unkC = (void*)element->unkC;
+    
+    element->unk24 = unkC->unk2;
+    unkC_4 = unkC->unk4;
+    unkC_6 = unkC->unk6;
+    unk16 = (s16)element->unk16 - (unkC_4 >> 1);
+    unk18 = (s16)element->unk18 - (unkC_6 >> 1);
+
+    unkC_2 = unkC->unk2;
+    for (i = 0; i < unkC_2; i++) {
+        u32 attr1_2;
+        reference = gUnknown_03002794->oamData[element->unkA];
+        oam = sub_80058B4((element->unk1A & 0x7C0) >> 6);
+        if (oam == iwram_end) {
+            return;
+        }
+
+        if (i == 0) {
+            element->unk23 = gUnknown_030018F0 - 1;
+        }
+
+        DmaCopy16(3, &reference[(unkC->unk1 + i) * 3], oam, 0x6);
+        attr1_2 = oam->all.attr1 & 0x1FF;
+        oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
+        oam->all.attr0 |=  0x300;
+        oam->all.attr1 &= 0xfe00;
+        oam->all.attr1 |= ((element->unk10 & 0x1f) << 9);
+        oam->all.attr1 |=  ((unk16 + attr1_2) & 0x1ff);
+        oam->all.attr2 += element->unk25 * 0x1000;
+        oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
+        oam->all.attr2 += (((u32)element->unk4 - OBJ_VRAM0) >> 5);
+    }
+}

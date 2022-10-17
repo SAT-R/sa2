@@ -45,6 +45,14 @@ struct Unk_03002400 {
     u16 unk3E;
 }; /* size = 0x40 */
 
+struct UNK_0808B3FC_UNK240_UNKC {
+    u8 unk0;
+    u8 unk1;
+    s16 unk2;
+    u16 unk4;
+    u16 unk6;
+};
+
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`
 struct UNK_0808B3FC_UNK240 {
@@ -62,6 +70,7 @@ struct UNK_0808B3FC_UNK240 {
 
     u16 unk14;
 
+    // TODO: should be signed
     // x
     u16 unk16;
     // y
@@ -131,6 +140,7 @@ u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);
 void DrawToOamBuffer(void);
+OamData* sub_80058B4(u8 size);
 
 // TransformSprite
 void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
