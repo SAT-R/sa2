@@ -1080,3 +1080,8 @@ void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
         oam->all.attr2 += (((u32)element->unk4 - OBJ_VRAM0) >> 5);
     }
 }
+
+void sub_806CEA8(void) {
+    gUnknown_03005B5C = (void*)OBJ_VRAM0;
+    gUnknown_03005B58 = NULL;
+}
