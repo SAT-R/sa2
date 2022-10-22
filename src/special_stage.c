@@ -53,9 +53,9 @@ struct SpecialStage {
     s8 unk5BD;
     s8 unk5BE;
 
-    u8 unk5BF;
-    u8 unk5C0;
-    u8 unk5C1;
+    s8 unk5BF;
+    s8 unk5C0;
+    s8 unk5C1;
 
     s8 unk5C2;
     s8 unk5C3;
@@ -1567,4 +1567,36 @@ void sub_806D830(struct UNK_0808B3FC_UNK240* element, s16 a, s16 b, const struct
 
     element->unk22 = a != -1 ? a : 0x10;
     sub_8004558(element);
+}
+
+void sub_806D890(struct SpecialStage* stage, s16 num) {
+    s16 i;
+    stage->unk5A4 += num;
+
+    if (stage->unk5A4 > 999) {
+        stage->unk5A4 = 999;
+    }
+
+    for (i = 0; i < num; i++) {
+        stage->unk5C1++;
+        if (stage->unk5C1 <= 9) {
+            continue;
+        }
+        stage->unk5C1 = 0;
+        
+        stage->unk5C0++;
+        if (stage->unk5C0 <= 9) {
+            continue;
+        }
+        stage->unk5C0 = 0;
+
+        stage->unk5BF++;
+        if (stage->unk5BF <= 9) {
+            continue;
+        }
+
+        stage->unk5BF = 9;
+        stage->unk5C0 = 9;
+        stage->unk5C1 = 9;
+    }
 }
