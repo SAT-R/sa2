@@ -125,6 +125,11 @@ struct UNK_806BD94 {
     u16 unkA5A;
 }; /* size 0xA5C */
 
+struct UNK_80DF670 {
+    u32 unk0;
+    u8 filler4[4];
+};
+
 struct UNK_806CF78 {
     struct SpecialStage* unk0;
     void* unk4;
@@ -135,11 +140,12 @@ struct UNK_806CF78 {
     void* unk9C;
     void* unkA0;
     u8 unkA4[4];
-    u32 unkA8;
-    u32 unkAC;
+    s32 unkA8;
+    s32 unkAC;
 
-    u16 unkB0;
-    u16 unkB2;
+    s16 unkB0;
+    s16 unkB2;
+
     u16 unkB4;
     u16 unkB6;
 
@@ -149,7 +155,7 @@ struct UNK_806CF78 {
     u16 unkBE;
     u16 unkC0;
     u16 unkC2;
-    u16 *unkC4;
+    struct UNK_80DF670* unkC4;
     u32 unkC8;
     u32 unkCC;
     u32 unkD0;
@@ -1164,110 +1170,119 @@ s16 sub_806CF44(u16* arr) {
 
 /** special_stage_unk_806CF78.c **/
 
-extern const u16 gUnknown_080DF670[5][2];
+extern const struct UNK_80DF670* gUnknown_080DF670[5];
 
-extern const u16 gUnknown_080DF9D8[7][3];
+extern const s16 gUnknown_080DF9D8[7][3];
 
-extern const u16 gUnknown_080DF668[4];
+extern const struct UNK_80DF670 gUnknown_080DF668;
 
-void sub_806D548(struct UNK_0808B3FC_UNK240* element, u32, u16, u8, u16*);
-// struct Task* sub_806CF78(struct SpecialStage* stage) {
-//     u16 unkF670[5][2];
-//     u8 lang;
-//     s16 result;
-//     u32 unk5B5C;
-//     void* ram;
-//     struct UNK_0808B3FC_UNK240* element;
-//     OamData* oam;
-//     struct Task* t;
-//     struct UNK_806CF78* unkCF78;
+void sub_806D2C8(void);
 
-//     memcpy(&unkF670, gUnknown_080DF670, sizeof(gUnknown_080DF670));
-//     lang = stage->unk5B8;
+void sub_806D548(struct UNK_0808B3FC_UNK240* element, void*, s16, u8, const struct UNK_80DF670*);
+struct Task* sub_806CF78(struct SpecialStage* stage) {
+    void* unkF670[5];
+    u8 lang;
+    s16 result;
+    u32 unk5B5C;
+    void* ram;
+    u32 temp;
 
-//     t = TaskCreate(sub_806BD28, 0x108, 0x9000, 0, NULL);
-//     unkCF78 = TaskGetStructPtr(t);
-//     unkCF78->unk0 = stage;
-//     unkCF78->unk4 = NULL;
-//     unkCF78->unkA8 = gUnknown_080DF9D8[lang][0] << 0x10;
-//     unkCF78->unkAC = gUnknown_080DF9D8[lang][1] << 0x10;
+    struct Task* t;
+    struct UNK_806CF78* unkCF78;
 
-//     unkCF78->unkB0 = 0;
-//     unkCF78->unkB2 = gUnknown_080DF9D8[lang][2];
-//     unkCF78->unkB4 = 0;
-//     unkCF78->unkB6 = 0x96;
-//     unkCF78->unkBC = 0;
-//     unkCF78->unkBE = 0;
-//     unkCF78->unkC0 = 0;
+    memcpy(&unkF670, &gUnknown_080DF670, 0x14);
+    lang = stage->unk5B8;
 
-//     unkCF78->unkC4 = unkF670[stage->unk5B6];
-//     result = sub_806CF44(unkCF78->unkC4);
-//     ram = gUnknown_03005B5C;
-//     unkCF78->unk98 = ram;
-//     ram += (result * TILE_SIZE_4BPP);
-//     unkCF78->unk9C = ram;
-//     unkCF78->unkA0 = ram + 0x40;
+    t = TaskCreate(sub_806D2C8, 0x108, 0x9000, 0, NULL);
+    unkCF78 = TaskGetStructPtr(t);
+    unkCF78->unk0 = stage;
+    unkCF78->unk4 = NULL;
+    unkCF78->unkA8 = gUnknown_080DF9D8[lang][0] << 0x10;
+    unkCF78->unkAC = gUnknown_080DF9D8[lang][1] << 0x10;
 
-//     gUnknown_03005B5C = ram + 0xC0;
-//     sub_806D548(&unkCF78->unk8, unkCF78->unk98, stage->unk5CC, 9, unkCF78->unkC4);
-//     sub_806D548(&unkCF78->unk38, unkCF78->unk9C, stage->unk5CC, 10, gUnknown_080DF668);
+    unkCF78->unkB0 = 0;
+    unkCF78->unkB2 = gUnknown_080DF9D8[lang][2];
+    unkCF78->unkB4 = 0;
+    unkCF78->unkB6 = 0x96;
+    unkCF78->unkBC = 0;
+    unkCF78->unkBE = 0;
+    unkCF78->unkC0 = 1;
 
-//     element = &unkCF78->unk68;
-//     oam = &gOamBuffer[120];
+    unkCF78->unkC4 = unkF670[stage->unk5B6];
+    result = sub_806CF44((u16*)unkCF78->unkC4);
+    unkCF78->unk98 = gUnknown_03005B5C;
+    gUnknown_03005B5C += (result * TILE_SIZE_4BPP);
+    unkCF78->unk9C = gUnknown_03005B5C;
+    unkCF78->unkA0 = gUnknown_03005B5C + 0x40;
+    temp = 2;
+    gUnknown_03005B5C += 0xC0;
 
-//     element->unk8 = 0;
-//     element->unkA = 0x37A;
-//     element->unk10 = 0x107E;
-//     element->unk16 = 0x78;
-//     element->unk18 = 0x50;
-//     element->unk1A = 0;
-//     element->unk1C = 0;
-//     element->unk1E = -1;
-//     element->unk20 = 2;
-//     element->unk21 = -1;
-//     element->unk22 = 0x10;
-//     element->unk25 = 0;
-//     element->unk28 = -1;
-//     if (stage->unk5BA == 0) {
-//         sub_8004558(element);
-//     }
+    sub_806D548(&unkCF78->unk8, unkCF78->unk98, stage->unk5CC, 9, unkCF78->unkC4);
+    sub_806D548(&unkCF78->unk38, unkCF78->unk9C, stage->unk5CC, 10, &gUnknown_080DF668);
 
-//     oam->all.affineParam = 0x100;
-//     oam++;
-//     oam->all.affineParam = 0;
-//     oam++;
-//     oam->all.affineParam = 0;
-//     oam++;
-//     oam->all.affineParam = 0x100;
+    {
+        struct UNK_0808B3FC_UNK240* element = &unkCF78->unk68;
+        u16* affine = &gOamBuffer[120].all.affineParam;
 
-//     if (stage->unk5B7 == 0) {
-//         unkCF78->unkC8 = 0;
-//         unkCF78->unkCC = 6;
-//         unkCF78->unkD0 = 0x10000;
-//         unkCF78->unkD4 = 0x10000;
-//         unkCF78->unkD8 = 0x28;
-//         unkCF78->unkDC = -42;
-//         unkCF78->unkE0 = -349;
-//         unkCF78->unkE4 = 0x2C80;
-//         unkCF78->unkE8 = 0x3F80;
-//         unkCF78->unkEC = 0x502;
-//         unkCF78->unkEE = 0x8C0;
-//         unkCF78->unkF0 = 0x14;
-//         unkCF78->unkF2 = 0xFFD8;
-//         unkCF78->unkF4 = 0xFFC8;
-//         unkCF78->unkF6 = 0xFFB8;
-//         unkCF78->unk100 = -15;
-//         unkCF78->unk104 = -7;
-//         unkCF78->unkF8 = 0x800;
-//         unkCF78->unkFA = 0xFF80;
-//         unkCF78->unkFC = 0x600;
-//         unkCF78->unkFE = 0xFFC0;
-//     } else {
-//         unkCF78->unkC8 = 0;
-//         unkCF78->unkCC = 6;
-//         unkCF78->unkD0 = 0xC00;
-//         unkCF78->unkD4 = 0x7FFF;
-//         unkCF78->unkD8 = 0x100;
-//         unkCF78->unkDC = 0x800;
-//     }
-// }
+        element->unk4 = unkCF78->unkA0;
+        element->unk8 = 0;
+        element->unkA = 0x37A;
+        element->unk10 = 0x107E;
+        element->unk16 = 0x78;
+        element->unk18 = 0x50;
+        element->unk1A = 0;
+        element->unk1C = 0;
+        element->unk1E = -1;
+        
+        element->unk20 = temp;
+        element->unk21 = -1;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk28 = -1;
+        
+        if (stage->unk5BA == 0) {
+            sub_8004558(element);
+        }
+
+        *affine = 0x100;
+        affine+=4;
+        *affine = 0;
+        affine+=4;
+        *affine = 0;
+        affine+=4;
+        *affine= 0x100;
+    }
+
+    if (stage->unk5B7 == 0) {
+        unkCF78->unkC8 = 0;
+        unkCF78->unkCC = 6;
+        unkCF78->unkD0 = 0x10000;
+        unkCF78->unkD4 = 0x10000;
+        unkCF78->unkD8 = 0x28;
+        unkCF78->unkDC = 0xffffffd5;
+        unkCF78->unkE0 = 0xfffffea2;
+        unkCF78->unkE4 = 0x2C80;
+        unkCF78->unkE8 = 0x3F80;
+        unkCF78->unkEC = 0x502;
+        unkCF78->unkEE = 0x8C0;
+        unkCF78->unkF0 = 0x14;
+        unkCF78->unkF2 = 0xFFD8;
+        unkCF78->unkF4 = 0xFFCA;
+        unkCF78->unkF6 = 0xFFB8;
+        unkCF78->unk100 = 0xfffffff0;
+        unkCF78->unk104 = 0xfffffff8;
+        unkCF78->unkF8 = 0x800;
+        unkCF78->unkFA = 0xFF80;
+        unkCF78->unkFC = 0x600;
+        unkCF78->unkFE = 0xFFC0;
+    } else {
+        unkCF78->unkC8 = 0;
+        unkCF78->unkCC = 0;
+        unkCF78->unkD0 = 0xC00;
+        unkCF78->unkD4 = 0x7FFF;
+        unkCF78->unkD8 = 0x100;
+        unkCF78->unkDC = 0x800;
+    }
+
+    return t;
+}
