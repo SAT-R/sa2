@@ -92,7 +92,8 @@ struct UNK_806BD94_UNK874 {
     s16 unkC;
     s16 unkE;
     u8 unk10[2];
-    s16 unk12;
+    u8 unk12;
+    u8 unk13;
 }; /* size 0x14 */
 
 
@@ -122,10 +123,10 @@ struct UNK_806BD94 {
     struct UNK_0808B3FC_UNK240 unk184;
     u8 unk1B4[1536];
     struct UNK_0808B3FC_UNK240 unk7B4[4];
-    struct UNK_806BD94_UNK874 unk874[4][2];
+    struct UNK_806BD94_UNK874 unk874[8];
     u8 unk914[324];
     u16 unkA58;
-    u16 unkA5A;
+    s16 unkA5A;
 }; /* size 0xA5C */
 
 struct UNK_80DF670 {
@@ -1083,7 +1084,8 @@ u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct
             return 0;
         }
         a->unkA = val;
-        a->unk4 = (a->unkA - unk874->unkE) - ((unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
+        // TODO: resolve `->unk12` cast
+        a->unk4 = (a->unkA - unk874->unkE) - ((*(s16*)&unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->unk2 = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
@@ -1569,6 +1571,8 @@ void sub_806D830(struct UNK_0808B3FC_UNK240* element, s16 a, s16 b, const struct
     sub_8004558(element);
 }
 
+/** special_stage_806BD94.c*/
+
 void sub_806D890(struct SpecialStage* stage, s16 num) {
     s16 i;
     stage->unk5A4 += num;
@@ -1599,4 +1603,107 @@ void sub_806D890(struct SpecialStage* stage, s16 num) {
         stage->unk5C0 = 9;
         stage->unk5C1 = 9;
     }
+}
+
+void sub_806E3B8(struct SpecialStage* stage, s32);
+
+void sub_806D924(struct SpecialStage* stage, s16 num) {
+    s16 i;
+    sub_806E3B8(stage, -1);
+    
+    stage->unk5A4 -= num; 
+    if (stage->unk5A4 < 0) {
+        stage->unk5A4 = 0;
+    }
+
+    for (i = num; i > 0; i--) {
+        stage->unk5C1--;
+        if (stage->unk5C1 >= 0) {
+            continue;
+        }
+        stage->unk5C1 = 9;
+        
+        stage->unk5C0--;
+        if (stage->unk5C0 >= 0) {
+            continue;
+        }
+        stage->unk5C0 = 9;
+
+        stage->unk5BF--;
+        if (stage->unk5BF >= 0) {
+            continue;
+        }
+
+        stage->unk5BF = 0;
+        stage->unk5C0 = 0;
+        stage->unk5C1 = 0;
+    }
+}
+
+void sub_806DB48(void);
+
+void sub_806D9B4(void) {
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    s16 i;
+
+    for (i = 0; i < 323; i++) {
+        unkBD94->unk914[i] = 1;
+    }
+
+    unkBD94->unkA5A = 0;
+
+    sub_806CA88(&unkBD94->unk4,0,4,0x372,0x3000,0x14,0x14,0xe,1,0);
+    sub_806CA88(&unkBD94->unk34,0,0x10,0x372,0x3000,0x14,0x14,0xe,0,0);
+    sub_806CA88(&unkBD94->unk64,0,4,0x374,0x3000,0x14,0x1e,0xf,1,0);
+    sub_806CA88(&unkBD94->unk94,0,4,0x372,0x3000,0x14,0x14,0xe,6,0);
+    sub_806CA88(&unkBD94->unkC4,0,4,0x372,0x3000,0x14,0x14,0xe,5,0);
+    sub_806CA88(&unkBD94->unkF4,0,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
+    sub_806CA88(&unkBD94->unk124,0,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
+    sub_806CA88(&unkBD94->unk154,0,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
+    sub_806CA88(&unkBD94->unk184,0,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
+
+    gCurTask->main = sub_806DB48;
+}
+
+void sub_806DC98(void);
+
+u16 sub_806DE10(void);
+void sub_806E4FC(struct SpecialStage* stage);
+void sub_806E584(s16, struct UNK_806BD94_UNK874*);
+void sub_806DEA4(void);
+
+void sub_806DB48(void) {
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+    struct UNK_806BD94_UNK874* unk874;
+    if (stage->unk5BA == 0) {
+        sub_8004558(&unkBD94->unk4);
+        sub_8004558(&unkBD94->unk64);
+        sub_8004558(&unkBD94->unk34);
+        sub_8004558(&unkBD94->unk94);
+        sub_8004558(&unkBD94->unkC4);
+
+        sub_806DC98();
+        
+        if (sub_806DE10() == 0 && stage->unk5B4 != 7) {
+            stage->unk5B4 = 6;
+        }
+
+        sub_806E4FC(stage);
+        unkBD94->unkA5A = (unkBD94->unkA5A + 1) & 1;
+        
+        if (unkBD94->unk874[unkBD94->unkA5A].unk12 == 1) {
+            sub_806E584(0, &unkBD94->unk874[unkBD94->unkA5A]);
+        }
+        if (unkBD94->unk874[unkBD94->unkA5A + 2].unk12 == 1) {
+            sub_806E584(1, &unkBD94->unk874[unkBD94->unkA5A + 2]);
+        }
+        if (unkBD94->unk874[unkBD94->unkA5A + 4].unk12 == 1) {
+            sub_806E584(2, &unkBD94->unk874[unkBD94->unkA5A + 4]);
+        }
+        if (unkBD94->unk874[unkBD94->unkA5A + 6].unk12 == 1) {
+            sub_806E584(3, &unkBD94->unk874[unkBD94->unkA5A + 6]);
+        }
+    }
+    sub_806DEA4();
 }
