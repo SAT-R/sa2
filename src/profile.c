@@ -6662,26 +6662,26 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void) {
     TaskDestroy(gCurTask);
 }
 
-void sub_806B854(struct Unk_03002400* unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
-    unk2400->unk4 = BG_CHAR_ADDR(a);
-    unk2400->unkA = 0;
-    unk2400->unkC = BG_SCREEN_ADDR(b);
-    unk2400->unk18 = 0;
-    unk2400->unk1A = 0;
-    unk2400->unk1C = assetId;
-    unk2400->unk1E = 0;
-    unk2400->unk20 = 0;
-    unk2400->unk22 = 0;
-    unk2400->unk24 = 0;
-    unk2400->unk26 = d;
-    unk2400->unk28 = e;
-    unk2400->unk2A = f;
-    unk2400->unk2B = 0;
-    unk2400->unk2C = 0;
-    unk2400->unk2E = g;
-    unk2400->unk30 = h;
-    unk2400->unk32 = i;
-    sub_8002A3C(unk2400);
+void sub_806B854(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
+    background->unk4 = BG_CHAR_ADDR(a);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(b);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = assetId;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = d;
+    background->unk28 = e;
+    background->unk2A = f;
+    background->unk2B = 0;
+    background->unk2C = 0;
+    background->unk2E = g;
+    background->unk30 = h;
+    background->unk32 = i;
+    sub_8002A3C(background);
 }
 
 // Finds the max unk4 of the item text array

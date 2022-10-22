@@ -126,13 +126,52 @@ struct UNK_806BD94 {
 }; /* size 0xA5C */
 
 struct UNK_806CF78 {
-    u8 unk0[8];
+    struct SpecialStage* unk0;
+    void* unk4;
     struct UNK_0808B3FC_UNK240 unk8;
     struct UNK_0808B3FC_UNK240 unk38;
     struct UNK_0808B3FC_UNK240 unk68;
-    u8 unk98[28];
+    void* unk98;
+    void* unk9C;
+    void* unkA0;
+    u8 unkA4[4];
+    u32 unkA8;
+    u32 unkAC;
+
+    u16 unkB0;
+    u16 unkB2;
     u16 unkB4;
-    u8 unkB6[82];
+    u16 unkB6;
+
+    u8 unkB8[4];
+
+    u16 unkBC;
+    u16 unkBE;
+    u16 unkC0;
+    u16 unkC2;
+    u16 *unkC4;
+    u32 unkC8;
+    u32 unkCC;
+    u32 unkD0;
+    u32 unkD4;
+    u32 unkD8;
+    u32 unkDC;
+    u32 unkE0;
+    u32 unkE4;
+    u32 unkE8;
+
+    u16 unkEC;
+    u16 unkEE;
+    u16 unkF0;
+    u16 unkF2;
+    u16 unkF4;
+    u16 unkF6;
+    u16 unkF8;
+    u16 unkFA;
+    u16 unkFC;
+    u16 unkFE;
+    u32 unk100;
+    u32 unk104;
 }; /* size 0x108 */
 
 struct UNK_8071438 {
@@ -455,7 +494,7 @@ void sub_806BFD0(void) {
     gCurTask->main = sub_806C050;
 }
 
-void sub_806CEC4(struct Unk_03002400 *, u32 ,u32 ,u16 ,u16 ,u16 ,u8 ,u16 ,u16 ,u16);
+void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i);
 
 void sub_806CA18(void);
 void sub_806C158(void);
@@ -918,6 +957,8 @@ void sub_806CA54(void) {
     }
 }
 
+/** special_stage_utils.c */
+
 // same function in profile.c
 void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
     struct UNK_0808B3FC_UNK240 newObj;
@@ -1085,3 +1126,148 @@ void sub_806CEA8(void) {
     gUnknown_03005B5C = (void*)OBJ_VRAM0;
     gUnknown_03005B58 = NULL;
 }
+
+void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
+    background->unk4 = BG_CHAR_ADDR(a);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(b);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = assetId;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = d;
+    background->unk28 = e;
+    background->unk2A = f;
+    background->unk2B = 0;
+    background->unk2C = 0;
+    background->unk2E = g;
+    background->unk30 = h;
+    background->unk32 = i;
+    sub_8002A3C(background);
+}
+
+s16 sub_806CF44(u16* arr) {
+    s16 result = 0;
+
+    while (arr[0] != 0xFFFF) {
+        if (result < arr[2]) {
+            result = arr[2];
+        }
+        arr += 4;
+    }
+
+    return result;
+}
+
+/** special_stage_unk_806CF78.c **/
+
+extern const u16 gUnknown_080DF670[5][2];
+
+extern const u16 gUnknown_080DF9D8[7][3];
+
+extern const u16 gUnknown_080DF668[4];
+
+void sub_806D548(struct UNK_0808B3FC_UNK240* element, u32, u16, u8, u16*);
+// struct Task* sub_806CF78(struct SpecialStage* stage) {
+//     u16 unkF670[5][2];
+//     u8 lang;
+//     s16 result;
+//     u32 unk5B5C;
+//     void* ram;
+//     struct UNK_0808B3FC_UNK240* element;
+//     OamData* oam;
+//     struct Task* t;
+//     struct UNK_806CF78* unkCF78;
+
+//     memcpy(&unkF670, gUnknown_080DF670, sizeof(gUnknown_080DF670));
+//     lang = stage->unk5B8;
+
+//     t = TaskCreate(sub_806BD28, 0x108, 0x9000, 0, NULL);
+//     unkCF78 = TaskGetStructPtr(t);
+//     unkCF78->unk0 = stage;
+//     unkCF78->unk4 = NULL;
+//     unkCF78->unkA8 = gUnknown_080DF9D8[lang][0] << 0x10;
+//     unkCF78->unkAC = gUnknown_080DF9D8[lang][1] << 0x10;
+
+//     unkCF78->unkB0 = 0;
+//     unkCF78->unkB2 = gUnknown_080DF9D8[lang][2];
+//     unkCF78->unkB4 = 0;
+//     unkCF78->unkB6 = 0x96;
+//     unkCF78->unkBC = 0;
+//     unkCF78->unkBE = 0;
+//     unkCF78->unkC0 = 0;
+
+//     unkCF78->unkC4 = unkF670[stage->unk5B6];
+//     result = sub_806CF44(unkCF78->unkC4);
+//     ram = gUnknown_03005B5C;
+//     unkCF78->unk98 = ram;
+//     ram += (result * TILE_SIZE_4BPP);
+//     unkCF78->unk9C = ram;
+//     unkCF78->unkA0 = ram + 0x40;
+
+//     gUnknown_03005B5C = ram + 0xC0;
+//     sub_806D548(&unkCF78->unk8, unkCF78->unk98, stage->unk5CC, 9, unkCF78->unkC4);
+//     sub_806D548(&unkCF78->unk38, unkCF78->unk9C, stage->unk5CC, 10, gUnknown_080DF668);
+
+//     element = &unkCF78->unk68;
+//     oam = &gOamBuffer[120];
+
+//     element->unk8 = 0;
+//     element->unkA = 0x37A;
+//     element->unk10 = 0x107E;
+//     element->unk16 = 0x78;
+//     element->unk18 = 0x50;
+//     element->unk1A = 0;
+//     element->unk1C = 0;
+//     element->unk1E = -1;
+//     element->unk20 = 2;
+//     element->unk21 = -1;
+//     element->unk22 = 0x10;
+//     element->unk25 = 0;
+//     element->unk28 = -1;
+//     if (stage->unk5BA == 0) {
+//         sub_8004558(element);
+//     }
+
+//     oam->all.affineParam = 0x100;
+//     oam++;
+//     oam->all.affineParam = 0;
+//     oam++;
+//     oam->all.affineParam = 0;
+//     oam++;
+//     oam->all.affineParam = 0x100;
+
+//     if (stage->unk5B7 == 0) {
+//         unkCF78->unkC8 = 0;
+//         unkCF78->unkCC = 6;
+//         unkCF78->unkD0 = 0x10000;
+//         unkCF78->unkD4 = 0x10000;
+//         unkCF78->unkD8 = 0x28;
+//         unkCF78->unkDC = -42;
+//         unkCF78->unkE0 = -349;
+//         unkCF78->unkE4 = 0x2C80;
+//         unkCF78->unkE8 = 0x3F80;
+//         unkCF78->unkEC = 0x502;
+//         unkCF78->unkEE = 0x8C0;
+//         unkCF78->unkF0 = 0x14;
+//         unkCF78->unkF2 = 0xFFD8;
+//         unkCF78->unkF4 = 0xFFC8;
+//         unkCF78->unkF6 = 0xFFB8;
+//         unkCF78->unk100 = -15;
+//         unkCF78->unk104 = -7;
+//         unkCF78->unkF8 = 0x800;
+//         unkCF78->unkFA = 0xFF80;
+//         unkCF78->unkFC = 0x600;
+//         unkCF78->unkFE = 0xFFC0;
+//     } else {
+//         unkCF78->unkC8 = 0;
+//         unkCF78->unkCC = 6;
+//         unkCF78->unkD0 = 0xC00;
+//         unkCF78->unkD4 = 0x7FFF;
+//         unkCF78->unkD8 = 0x100;
+//         unkCF78->unkDC = 0x800;
+//     }
+// }
