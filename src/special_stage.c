@@ -2132,3 +2132,52 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
         *affine = new_unkCB84.unk12;
     }
 }
+
+struct Task* sub_806E684(struct SpecialStage* stage) {
+    s16 unkF6CC[7];
+    struct Task* t;
+    struct UNK_806BD94* unkBD94;
+    memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
+    
+    t = TaskCreate(sub_806D9B4, 0xA5C, 0xB000, 0, NULL);
+    unkBD94 = TaskGetStructPtr(t);
+    unkBD94->unk0 = stage;
+    unkBD94->unkA58 = unkF6CC[stage->unk5B8];
+    unkBD94->unkA5A = 0;
+
+    return t;
+}
+
+/** special_stage_unk_806E6E8.c */
+
+extern const s16 gUnknown_080DF768[7];
+extern const s16 gUnknown_080DF776[7];
+
+void sub_806EA04(void);
+void sub_806E7C0(struct UNK_806E6E8* unkE6E8);
+void sub_806EBF4(struct Task*);
+
+struct Task* sub_806E6E8(struct SpecialStage* stage) {
+    s16 unkF768[7];
+    s16 unkF776[7];
+    struct Task* t;
+    struct UNK_806E6E8* unkE6E8;
+
+    memcpy(unkF768, gUnknown_080DF768, 0xE);
+    memcpy(unkF776, gUnknown_080DF776, 0xE);
+
+    t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
+    unkE6E8 = TaskGetStructPtr(t);
+    unkE6E8->unk0 = stage;
+    
+    unkE6E8->unk4 = NULL;
+    unkE6E8->unk8 = NULL;
+    unkE6E8->unkC = NULL;
+
+    sub_806CEC4(&unkE6E8->unk10, 1, 0x10, unkF776[stage->unk5B8], 0x80, 0x80, 0, 2, 0, 0);
+    sub_806CEC4(&unkE6E8->unk50, 0, 7, unkF768[stage->unk5B8], 0x20, 0x20, 0, 1, 0, 0);
+
+    sub_806E7C0(unkE6E8);
+
+    return t;
+}
