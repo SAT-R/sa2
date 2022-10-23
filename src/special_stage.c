@@ -8,12 +8,13 @@
 #include "constants/songs.h"
 #include "title_screen.h"
 #include "trig.h"
+#include "random.h"
 
 
 struct SpecialStage {
     struct Task* unk0;
     struct Task* unk4; // UNK_806E6E8
-    struct Task* unk8;
+    struct Task* unk8; // UNK_806BD94
 
     // playerTask
     struct Task* unkC; // UNK_806CF78
@@ -72,7 +73,7 @@ struct SpecialStage {
 
     u8 filler5C9;
     u16 unk5CA;
-    u16 unk5CC;
+    s16 unk5CC;
     u16 unk5CE;
     u8 unk5D0;
     u8 unk5D1;
@@ -88,10 +89,12 @@ struct UNK_806BD94_old {
     u16 unkA5A;
 }; /* size 0xA5C */
 
+// There is probably one of these which has different types
 struct UNK_806BD94_UNK874 {
     u32 unk0;
     u32 unk4;
-    s32 unk8;
+    s16 unk8;
+    s16 unkA;
     s16 unkC;
     s16 unkE;
     s16 unk10;
@@ -120,11 +123,11 @@ struct UNK_806BD94 {
     struct UNK_0808B3FC_UNK240 unk64;
     struct UNK_0808B3FC_UNK240 unk94;
     struct UNK_0808B3FC_UNK240 unkC4;
-    struct UNK_0808B3FC_UNK240 unkF4;
-    struct UNK_0808B3FC_UNK240 unk124;
-    struct UNK_0808B3FC_UNK240 unk154;
-    struct UNK_0808B3FC_UNK240 unk184;
-    u8 unk1B4[1536];
+    struct UNK_0808B3FC_UNK240 unkF4[4];
+
+    struct UNK_0808B3FC_UNK240 unk1B4[16];
+    struct UNK_0808B3FC_UNK240 unk4B4[16];
+    
     struct UNK_0808B3FC_UNK240 unk7B4[4];
     struct UNK_806BD94_UNK874 unk874[8];
     s8 unk914[324];
@@ -1034,6 +1037,7 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
     }
 }
 
+// TODO: UNK_806BD94_UNK874 is probably it's own type
 u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
     s32 r9;
@@ -1091,8 +1095,8 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct
         a->unk4 = (a->unkA - unk874->unkE) - ((*(s16*)&unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->unk2 = a->unk8 - unk874->unkC;
-        if (unk874->unk8 != 0) {
-            a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
+        if (*(s32*)&unk874->unk8 != 0) {
+            a->unk6 = (((*(s32*)&unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
         } else {
             a->unk6 = 0;
         }
@@ -1608,7 +1612,7 @@ void sub_806D890(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void sub_806E3B8(struct SpecialStage* stage, s32);
+void sub_806E3B8(struct SpecialStage* stage, s16);
 
 void sub_806D924(struct SpecialStage* stage, s16 num) {
     s16 i;
@@ -1660,10 +1664,10 @@ void sub_806D9B4(void) {
     sub_806CA88(&unkBD94->unk64,0,4,0x374,0x3000,0x14,0x1e,0xf,1,0);
     sub_806CA88(&unkBD94->unk94,0,4,0x372,0x3000,0x14,0x14,0xe,6,0);
     sub_806CA88(&unkBD94->unkC4,0,4,0x372,0x3000,0x14,0x14,0xe,5,0);
-    sub_806CA88(&unkBD94->unkF4,0,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
-    sub_806CA88(&unkBD94->unk124,0,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
-    sub_806CA88(&unkBD94->unk154,0,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
-    sub_806CA88(&unkBD94->unk184,0,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
+    sub_806CA88(&unkBD94->unkF4[0],0,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
+    sub_806CA88(&unkBD94->unkF4[1],0,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
+    sub_806CA88(&unkBD94->unkF4[2],0,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
+    sub_806CA88(&unkBD94->unkF4[3],0,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
 
     gCurTask->main = sub_806DB48;
 }
@@ -1678,7 +1682,6 @@ void sub_806DEA4(void);
 void sub_806DB48(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->unk0;
-    struct UNK_806BD94_UNK874* unk874;
     if (stage->unk5BA == 0) {
         sub_8004558(&unkBD94->unk4);
         sub_8004558(&unkBD94->unk64);
@@ -1799,14 +1802,17 @@ bool16 sub_806DE10(void) {
     return result;
 }
 
+// Maybe same as UNK_806BD94_UNK874 or UNK_806CB84
 struct UNK_806DEA4 {
     s16 unk0;
     s16 unk2;
     s16 unk4;
     s16 unk6;
     s32 unk8;
-    s32 unkC;
-    s32 unk10;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
 }; /* size 0x14 */
 
 s16 sub_806E038(s16 acc, const struct UNK_8C878E8*, struct UNK_806DEA4*);
@@ -1907,7 +1913,8 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
         if (unkBD94->unk914[val->unk0] != 0) {
             new_unk874.unk0 = val->unk2 << 0x10;
             new_unk874.unk4 = val->unk4 << 0x10;
-            new_unk874.unk8 = val->unk6 << 0x10;
+            // TODO: resolve
+            *(s32*)&new_unk874.unk8 = val->unk6 << 0x10;
             new_unk874.unkC = 8;
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
@@ -1950,4 +1957,178 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
     }
 
     return result;
+}
+
+void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+
+    struct UNK_0808B3FC_UNK240* element1 = &unkBD94->unk1B4[index];
+    struct UNK_0808B3FC_UNK240* element2 = &unkBD94->unk4B4[index];
+    u16* affine;
+
+    if (unkDEA4->unk0 > 2) {
+        s16 idx = unkDEA4->unk0 - 3;
+        memcpy(element1, &unkBD94->unkF4[idx >> 2], sizeof(struct UNK_0808B3FC_UNK240));
+
+        element1->unk10 = index | 0x1060 | 0xC0000;
+        element1->unk16 = unkDEA4->unk2;
+        element1->unk18 = unkDEA4->unk4 - unkDEA4->unk6;
+        element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+    } else {
+        s16 x, y;
+        struct UNK_0808B3FC_UNK240* reference;
+        if (unkDEA4->unk6 == 0) {
+            reference = unkDEA4->unk0 == 1 ? &unkBD94->unk4 : &unkBD94->unk94;
+            x = unkDEA4->unk2;
+            y = unkDEA4->unk4;
+        } else {
+            memcpy(element2, &unkBD94->unk64, sizeof(struct UNK_0808B3FC_UNK240));
+            element2->unk10 = index | 0x1060 | 0xC0000;
+            element2->unk16 = unkDEA4->unk2;
+            element2->unk18 = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
+            element2->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
+            sub_806CD68(element2);
+    
+            reference = unkDEA4->unk0 == 1 ? &unkBD94->unk34 : &unkBD94->unkC4;
+            x = unkDEA4->unk2;
+            y = unkDEA4->unk4 - unkDEA4->unk6;
+        }
+        memcpy(element1, reference, sizeof(struct UNK_0808B3FC_UNK240));
+        element1->unk10 = index | 0x1060 | 0xC0000;
+        element1->unk16 = x;
+        element1->unk18 = y;
+        element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+    }
+
+    sub_806CD68(element1);
+    affine = &gOamBuffer[index * 4].all.affineParam;
+    *affine = unkDEA4->unkC;
+    affine += 4;
+    *affine = unkDEA4->unkE;
+    affine += 4;
+    *affine = unkDEA4->unk10;
+    affine += 4;
+    *affine = unkDEA4->unk12;
+}
+
+void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
+    s16 i, j;
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(stage->unk8);
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+
+    s32 unkA8 = player->unkA8;
+    s32 unkAC = player->unkAC;
+    s32 unkB0 = player->unkB0;
+    s16 temp;
+
+    if (mode == -1) {
+        temp = stage->unk5A4 > 8 ? 8 : stage->unk5A4;
+    } else {
+        temp = mode;
+    }
+
+    for (i = 0; i < temp; i++) {
+        s32 rand1, rand2, rand3;
+        s32 sin1, sin2;
+        s32 temp3, temp4;
+        struct UNK_806BD94_UNK874* unk874 = &unkBD94->unk874[i];
+        unk874->unk0 = unkA8;
+        unk874->unk4 = unkAC;
+        unk874->unk8 = unkB0;
+
+        rand1 = Random() & 0x3FF;
+        rand2 = (Random() & 0x7F) + 0x40;
+        rand3 = (Random() & 0x3FF) | 0x400;
+
+        sin2 = gSineTable[rand1] << 2;
+        sin1 = gSineTable[rand1 + 0x100] << 2;
+        
+        temp3 = (rand2 * sin2) >> 0x10;
+        temp4 = (rand2 * sin1) >> 0x10;
+
+        unk874->unkA = temp3;
+        unk874->unkC = temp4;
+        unk874->unkE = rand3;
+        unk874->unk10 = 0xFF80;
+        unk874->unk12 = 1;
+        unk874->unk13 = 0;
+    }
+
+    for (j = i; j < 8; j++) {
+        struct UNK_806BD94_UNK874* unk874 = &unkBD94->unk874[j];
+        unk874->unk12 = 0;
+    }
+}
+
+void sub_806E4FC(struct SpecialStage* stage) {
+    s16 i;
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(stage->unk8);
+
+    for (i = 0; i < 8; i++) {
+        struct UNK_806BD94_UNK874* unk874 = &unkBD94->unk874[i];
+        if (unk874->unk12 != 0) {
+            unk874->unk0 += (unk874->unkA) * 0x100;
+            unk874->unk4 += (unk874->unkC) * 0x100;
+            unk874->unk8 += unk874->unkE;
+
+            if (unk874->unk8 < 1) {
+                s16 unkE;
+                unk874->unk8 = 0;
+                unkE = unk874->unkE;
+                unk874->unkE = -unkE;
+            }
+            unk874->unkE += unk874->unk10;
+            unk874->unk13++;
+
+            if (unk874->unk13 > 0x1D) {
+                unk874->unk12 = 0;
+            }
+        }
+    }
+}
+
+void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
+    u16* affine;
+    struct UNK_806BD94_UNK874 new_unk874;
+    struct UNK_806CB84 new_unkCB84;
+
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+
+    struct UNK_0808B3FC_UNK240* unk7B4 = &unkBD94->unk7B4[index];
+
+    new_unk874.unk0 = unk874->unk0;
+    new_unk874.unk4 = unk874->unk4;
+    // TODO: resolve
+    *(s32*)&new_unk874.unk8 = unk874->unk8 << 4;
+    new_unk874.unkC = 8;
+    new_unk874.unkE = 8;
+    new_unk874.unk10 = 0;
+    // TODO: resolve
+    *(s16*)&new_unk874.unk12 = 5;
+    
+
+    if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
+        s32 unk2 = new_unkCB84.unk2;
+        s32 unk4 = new_unkCB84.unk4;
+        s32 unk6 = unk4 - new_unkCB84.unk6;
+        
+        memcpy(unk7B4, &unkBD94->unk34, sizeof(unkBD94->unk34));
+        
+        unk7B4->unk10 = (index + 0x10) | 0x1060 | 0xC0000;
+        unk7B4->unk16 = unk2;
+        unk7B4->unk18 = unk6;
+        unk7B4->unk1A = (new_unkCB84.unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+        sub_806CD68(unk7B4);
+    
+        affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;
+        *affine = new_unkCB84.unkC;
+        affine += 4;
+        *affine = new_unkCB84.unkE;
+        affine += 4;
+        *affine = new_unkCB84.unk10;
+        affine += 4;
+        *affine = new_unkCB84.unk12;
+    }
 }
