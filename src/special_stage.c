@@ -94,7 +94,7 @@ struct UNK_806BD94_UNK874 {
     s32 unk8;
     s16 unkC;
     s16 unkE;
-    u8 unk10[2];
+    s16 unk10;
     u8 unk12;
     u8 unk13;
 }; /* size 0x14 */
@@ -1034,7 +1034,7 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
     }
 }
 
-u32 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
+u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
     s32 r9;
     s32 r4;
@@ -1890,4 +1890,64 @@ void sub_806DEA4(void) {
     for (i = 0; i < acc; i++, unkDEA4_1++) {
         sub_806E1AC(i, unkDEA4_1);
     }
+}
+
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* unkDEA4Arr) {
+    s16 i, result;
+
+    struct UNK_806BD94_UNK874 new_unk874;
+    struct UNK_806CB84 new_unkCB84;
+
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    const struct UNK_8C878E8* val = unk78E8;
+    struct UNK_806DEA4* found = NULL;
+
+    result = acc;
+    while (val->unk0 != -1) {
+        if (unkBD94->unk914[val->unk0] != 0) {
+            new_unk874.unk0 = val->unk2 << 0x10;
+            new_unk874.unk4 = val->unk4 << 0x10;
+            new_unk874.unk8 = val->unk6 << 0x10;
+            new_unk874.unkC = 8;
+            new_unk874.unkE = 8;
+            new_unk874.unk10 = 0;
+            // TODO: resolve
+            *(s16*)&new_unk874.unk12 = 5;
+            if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
+                if (result < 0x10) {
+                    memcpy(&unkDEA4Arr[result], &new_unkCB84, sizeof(new_unkCB84));
+
+                    if (unkBD94->unk914[val->unk0] >= 3) {
+                        unkDEA4Arr[result].unk0 = unkBD94->unk914[val->unk0];
+                    } else {
+                        unkDEA4Arr[result].unk0 = val->unk7 + 1;
+                    }
+                
+                    result++;
+                } else {
+                    s16 min;
+                    struct UNK_806DEA4* unkDEA4;
+
+                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10; i++, unkDEA4++) {
+                        if (unkDEA4->unk4 < min) {
+                            min = unkDEA4->unk4;
+                            found = unkDEA4;
+                        }
+                    }
+
+                    if (new_unkCB84.unk4 > min) {
+                        memcpy(found, &new_unkCB84, sizeof(new_unkCB84));
+                        if (unkBD94->unk914[val->unk0] >= 3) {
+                            found->unk0 = unkBD94->unk914[val->unk0];
+                        } else {
+                            found->unk0 = val->unk7 + 1;
+                        }
+                    }
+                }
+            }
+        }
+        val++;
+    }
+
+    return result;
 }
