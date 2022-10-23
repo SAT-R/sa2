@@ -44,7 +44,10 @@ struct SpecialStage {
     u16 unk5B4;
     u8 unk5B6;
     u8 unk5B7;
+    
+    // level
     u8 unk5B8;
+
     u8 unk5B9;
     u8 unk5BA;
 
@@ -124,7 +127,7 @@ struct UNK_806BD94 {
     u8 unk1B4[1536];
     struct UNK_0808B3FC_UNK240 unk7B4[4];
     struct UNK_806BD94_UNK874 unk874[8];
-    u8 unk914[324];
+    s8 unk914[324];
     u16 unkA58;
     s16 unkA5A;
 }; /* size 0xA5C */
@@ -169,7 +172,7 @@ struct UNK_806CF78 {
     s16 unkBC;  
     s16 unkBE;
 
-    u16 unkC0;
+    s16 unkC0;
     u16 unkC2;
 
     // sprites
@@ -1667,7 +1670,7 @@ void sub_806D9B4(void) {
 
 void sub_806DC98(void);
 
-u16 sub_806DE10(void);
+bool16 sub_806DE10(void);
 void sub_806E4FC(struct SpecialStage* stage);
 void sub_806E584(s16, struct UNK_806BD94_UNK874*);
 void sub_806DEA4(void);
@@ -1706,4 +1709,185 @@ void sub_806DB48(void) {
         }
     }
     sub_806DEA4();
+}
+
+
+struct UNK_8C878E8 {
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s8 unk6;
+    s8 unk7;
+}; /* size 0x8 */
+
+extern const struct UNK_8C878E8** const gUnknown_08C878E8[7];
+
+void sub_806DC98(void) {
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+
+    s32 val1 = player->unkA8 >> 0x10;
+    s32 val2 = player->unkAC >> 0x10;
+    s32 val3 = player->unkB0 >> 4;
+    u32 index = ((player->unkA8 >> 0x17) * 8) + (player->unkAC >> 0x17);
+    const struct UNK_8C878E8* unk78E8 = unk78E8_vals[index];
+
+    while (unk78E8->unk0 != -1) {
+        if (unkBD94->unk914[unk78E8->unk0] == 1) {
+            s16 temp2 = unk78E8->unk4;
+            s16 temp = unk78E8->unk6 << 4;
+            s16 temp3 = unk78E8->unk2;
+            if (
+                temp3 > (val1 - 5) && temp3 < (val1 + 5) && 
+                temp2 > (val2 - 5) && temp2 < (val2 + 5) && 
+                temp >= (val3 - 0xC) && temp <= (val3 + 0x14)
+            ) {
+                s16 before = player->unkC0;
+                if (unk78E8->unk7 == 0) {
+                    sub_806D890(stage, player->unkC0);
+                } else {
+                    sub_806D890(stage, player->unkC0 * 5);
+                }
+
+                if (player->unkC0 < 9) {
+                    player->unkBC = 0x3C;
+                    player->unkBE++;
+                    player->unkC0 = (player->unkBE / 6) + 1;
+                }
+
+                if (before != player->unkC0) {
+                    m4aSongNumStart(SE_274);
+                } else {
+                    m4aSongNumStart(SE_RING_COPY);
+                }
+
+                unkBD94->unk914[unk78E8->unk0] = 3;
+            }
+        }
+        unk78E8++;
+    }
+}
+
+extern const s16 gUnknown_080DF6CC[7];
+
+bool16 sub_806DE10(void) {
+    s16 i;
+    u16 result;
+    s16 unkF6CC[7];
+    s16 val;
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+    result = FALSE;
+    memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
+
+    val = unkF6CC[stage->unk5B8];
+    for (i = 0; i < val; i++) {
+        if (unkBD94->unk914[i] > 2) {
+            unkBD94->unk914[i]++;
+            if (unkBD94->unk914[i] > 17) {
+                unkBD94->unk914[i] = 0;
+            }
+        }
+
+        if (result == FALSE && unkBD94->unk914[i] != 0) {
+            result = TRUE;
+        }
+    }
+
+    return result;
+}
+
+struct UNK_806DEA4 {
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+}; /* size 0x14 */
+
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8*, struct UNK_806DEA4*);
+
+void sub_806E1AC(s16, struct UNK_806DEA4*);
+
+void sub_806DEA4(void) {
+    s16 i;
+
+    s16 val1;
+    s16 val2;
+    s16 acc;
+    s16 index;
+
+    struct UNK_806DEA4 DEA4_Arr[16];
+    struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkBD94->unk0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
+    const struct UNK_8C878E8** unk78E8;
+    const struct UNK_8C878E8* unk78E8_val = NULL;
+
+    struct UNK_806DEA4* unkDEA4_1;
+
+    acc = 0;
+    for (i = 0, unkDEA4_1 = DEA4_Arr; i < 16; i++, unkDEA4_1++) {
+        unkDEA4_1->unk0 = 0;
+    }
+
+    val1 = player->unkA8 >> 0x17;
+    val2 = player->unkAC >> 0x17;
+    index = (val1 * 8) + val2;
+
+    unk78E8_val = unk78E8_vals[index]; 
+    acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+
+    if (val2 != 7) {
+        unk78E8_val = unk78E8_vals[index + 1]; 
+        acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+    }
+
+    if (val2 != 0) {
+        unk78E8_val = unk78E8_vals[index - 1]; 
+        acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+    }
+
+    if (val1 != 7) {
+        s16 idx = index + 8;
+        unk78E8_val = unk78E8_vals[idx];
+        acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+
+        if (val2 != 7) {
+            unk78E8_val = unk78E8_vals[idx + 1];
+            acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+        }
+
+
+        if (val2 != 0) {
+            unk78E8_val = unk78E8_vals[idx - 1];
+            acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+        }
+    }
+
+    if (val1 != 0) {
+        s16 idx = index - 8;
+        unk78E8_val = unk78E8_vals[idx];
+        acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+
+        if (val2 != 7) {
+            unk78E8_val = unk78E8_vals[idx + 1];
+            acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+        }
+
+        if (val2 != 0) {
+            unk78E8_val = unk78E8_vals[idx - 1];
+            acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
+        }
+    }
+
+    unkDEA4_1 = DEA4_Arr;
+    for (i = 0; i < acc; i++, unkDEA4_1++) {
+        sub_806E1AC(i, unkDEA4_1);
+    }
 }
