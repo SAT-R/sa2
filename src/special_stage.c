@@ -9,6 +9,7 @@
 #include "title_screen.h"
 #include "trig.h"
 #include "random.h"
+#include "malloc_ewram.h"
 
 
 struct SpecialStage {
@@ -72,7 +73,7 @@ struct SpecialStage {
     s8 unk5C8;
 
     u8 filler5C9;
-    u16 unk5CA;
+    s16 unk5CA;
     s16 unk5CC;
     u16 unk5CE;
     u8 unk5D0;
@@ -2180,4 +2181,64 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
     sub_806E7C0(unkE6E8);
 
     return t;
+}
+
+extern const u8 gUnknown_080DF784[16];
+
+void sub_806E94C(struct UNK_806E6E8* unkE6E8);
+void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
+    s16 i;
+    struct SpecialStage* stage = unkE6E8->unk0;
+    s32 temp = (stage->unk5CC - stage->unk5D0) << 0x10;
+
+    u8 unkF784[16];
+    s16 unk5CE;
+    s32* unk94;
+    s32* unk8;
+    void* unk4;
+    s32* unkC;
+
+    unkE6E8->unkC = EwramMalloc(0x280);
+    for (i = 0, unkC = unkE6E8->unkC; i < 0xA0; i++, unkC++) {
+        s32 temp2 = (i - stage->unk5D0);
+        if (temp2 == 0) {
+            *unkC = 0;
+        } else {
+            *unkC = temp / temp2;
+        }
+    }
+
+    unkE6E8->unk8 = EwramMalloc(0x280);
+    for (i = 0, unk8 = unkE6E8->unk8; i < 0xA0; i++, unk8++) {
+        s32 temp2 = (i - stage->unk5D0);
+        if (temp == 0) {
+            *unk8 = 0;
+        } else {
+            *unk8 = temp2 / temp;
+        }
+    }
+
+    unk94 = &stage->unk94[stage->unk5D1][0];
+    unk5CE = stage->unk5CE;
+    for (i = stage->unk5D1; i < 0xA0; i++) {
+        s32 temp2 = (unkE6E8->unkC[i] * unk5CE) >> 8;
+        s32 temp3 = (-stage->unk5CA * temp2);
+        s32 temp4 = (((i - stage->unk5CC) * temp2));
+        *unk94++ = (-(temp3 << 1) >> 8) * unk5CE;
+        *unk94++ = (-(temp4 << 2) >> 8) * unk5CE;
+    }
+
+    unkE6E8->unk4 = EwramMalloc(0xA00);
+    gUnknown_03001884 = unkE6E8->unk4;
+    gUnknown_03004D54 = unkE6E8->unk4;
+    gUnknown_030022C0 = unkE6E8->unk4;
+    unk4 = unkE6E8->unk4;
+
+    memcpy(unkF784, gUnknown_080DF784, 0x10);
+    for (i = 0; i < 0xA0; i++, unk4 += 0x10) {
+        memcpy(unk4, unkF784, 0x10);
+        *(s16*)(unk4 + 4) = i << 8;
+    }
+
+    sub_806E94C(unkE6E8);
 }
