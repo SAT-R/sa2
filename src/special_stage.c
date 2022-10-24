@@ -11,9 +11,8 @@
 #include "random.h"
 #include "malloc_ewram.h"
 
-
 struct SpecialStage {
-    struct Task* unk0;
+    struct Task* unk0; // UNK_806F910
     struct Task* unk4; // UNK_806E6E8
     struct Task* unk8; // UNK_806BD94
 
@@ -225,8 +224,13 @@ struct UNK_806E6E8 {
     s32* unkC; // size 0x280
     struct Unk_03002400 unk10;
     struct Unk_03002400 unk50;
-    u8 unk90[528];
+    struct UNK_0808B3FC_UNK240 unk90[11];
 }; /* size 0x2A0 */
+
+struct UNK_806F910 {
+    struct SpecialStage* unk0;
+    u32 unk4;
+}; /* size 8 */
 
 void* gUnknown_03005B58;
 void* gUnknown_03005B5C;
@@ -2233,7 +2237,8 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     gUnknown_03004D54 = unkE6E8->unk4;
     gUnknown_030022C0 = unkE6E8->unk4;
     unk4 = unkE6E8->unk4;
-
+    
+    // TODO: what is unk4
     memcpy(unkF784, gUnknown_080DF784, 0x10);
     for (i = 0; i < 0xA0; i++, unk4 += 0x10) {
         memcpy(unk4, unkF784, 0x10);
@@ -2241,4 +2246,205 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     }
 
     sub_806E94C(unkE6E8);
+}
+
+extern const s16 gUnknown_080DF6DC[7];
+
+struct UNK_8C87920 {
+    u16 unk0;
+    u16 unk2;
+};
+
+extern const struct UNK_8C87920* const gUnknown_08C87920[7];
+
+void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
+    s16 i;
+    // Maybe some macro? Who knows...
+    u8* level = &unkE6E8->unk0->unk5B8;
+    const struct UNK_8C87920* assets = gUnknown_08C87920[*level];
+    s16 num = gUnknown_080DF6DC[*level];
+
+    for (i = 0; i < num; i++) {
+        struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];
+        element->unk4 = gUnknown_03005B5C;
+        element->unk8 = 0;
+        element->unkA = assets[i].unk0;
+        element->unk10 = 0x80000;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0;
+        element->unk1C = 0;
+        element->unk1E = 0xffff;
+        element->unk20 = assets[i].unk2;
+        element->unk21 = 0xff;
+        element->unk22 = 16;
+        element->unk25 = 0;
+        element->unk28 = -1;
+        sub_80036E0(element);
+    }
+}
+
+void sub_806EB74(void);
+
+void sub_806EA04(void) {
+    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkE6E8->unk0;
+    s32 sin1, sin2;
+    s16 unk5CE;
+    s32 unk5A0;
+    s16 i;
+    s16* unk1884;
+    gUnknown_03002A80 = 0x10;
+    gUnknown_03002878 = (void*)REG_ADDR_BG2PA;
+    gUnknown_03001884 = unkE6E8->unk4;
+
+    unk5A0 = stage->unk5A0;
+    sin1 = gSineTable[unk5A0] * 4;
+    sin2 = gSineTable[unk5A0 + 0x100] * 4;
+
+    unk5CE = stage->unk5CE;
+    gFlags |= 4;
+
+    i = stage->unk5D1;
+    unk1884 = gUnknown_03001884 + (stage->unk5D1 * 0x10);
+
+    for (; i < 0xA0; i++) {
+        s32* footer;
+        s32 temp = unkE6E8->unkC[i] * unk5CE;
+        s32 temp2 = (temp >> 8);
+       
+        s32 temp4, temp5;
+        s32 temp6, temp7;
+        temp4 = (0 - stage->unk5CA) * temp2;
+        temp5 = (i - stage->unk5CC) * temp2 * 2;
+        
+        *unk1884++ = ((temp >> 0x10) * sin2) >> 0x10;
+        *unk1884++ = ((temp >> 0x10) * sin1) >> 0x10;
+        *unk1884++ = ((temp >> 0x10) * -sin1) >> 0x10;
+        *unk1884++ = ((temp >> 0x10) * sin2) >> 0x10;
+
+        temp6 = ((temp5 >> 0x10) * sin1) + ((temp4 >> 0x10) * sin2) + stage->unk594;
+        temp7 = ((temp4 >> 0x10) * -sin1) + ((temp5 >> 0x10) * sin2) + stage->unk598;
+
+        footer = (s32*)unk1884;
+        *footer++ = temp6 >> 8;
+        *footer++ = temp7 >> 8;
+        
+        unk1884 += 4;
+    }
+
+    sub_806EB74();
+}
+
+void sub_806EB74(void) {
+    s16 i;
+    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkE6E8->unk0;
+    u8* level = &stage->unk5B8;
+    s16 num = gUnknown_080DF6DC[*level];
+    // Huh?
+    u8 *temp = (u8*)&stage->unk5A0;
+    gBgScrollRegs[1][0] = -*temp;
+    gBgScrollRegs[1][1] = 0x30;
+
+    if (stage->unk5BA != 1) {
+        for (i = 0; i < num; i++) {
+            struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];
+
+            sub_80036E0(element);
+            sub_8003914(element);
+        }
+    }
+}
+
+void sub_806EBF4(struct Task* t) {
+    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(t);
+
+    if (unkE6E8->unk8 != NULL) {
+        EwramFree(unkE6E8->unk8);
+    } 
+
+    if (unkE6E8->unkC != NULL) {
+        EwramFree(unkE6E8->unkC);
+    } 
+
+    if (unkE6E8->unk4 != NULL) {
+        EwramFree(unkE6E8->unk4);
+    } 
+}
+
+typedef void (*TaskFunc_80DF7A0)(void);
+
+extern const TaskFunc_80DF7A0 gUnknown_080DF7A0[18];
+
+s16 sub_806F69C(struct SpecialStage*);
+void sub_806FAA0(void);
+
+void sub_806EC24(void) {
+    s16* unkAC;
+    s32 temp5;
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkF910->unk0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    
+    TaskFunc_80DF7A0 funcs[18];
+    memcpy(funcs, gUnknown_080DF7A0, sizeof(gUnknown_080DF7A0));
+
+    switch (stage->unk5B4) {
+        case 4:
+        case 5:
+        case 6:
+            if (stage->unk5BA == 0) {
+                funcs[player->unkB4 + 1]();
+            }
+            break;
+        case 7:
+            if (player->unkB4 < 0xB) {
+                player->unkB4 = 0xB;
+            }
+            if (stage->unk5BA == 0) {
+                funcs[player->unkB4 + 1]();
+            }
+            break;
+    }
+
+    if (player->unkB4 < 0xB) {
+        s32 temp, temp2;
+        struct UNK_0808B3FC_UNK240* element;
+        s16 result = sub_806F69C(stage);
+        s32 sin2 = gSineTable[result] << 2;
+        s32 sin = gSineTable[result + 0x100] <<  2;
+
+        temp = sin2 * 0x14;
+        temp2 = sin * 0x14;
+    
+        temp = (temp >> 0x10) + 0x70;
+        temp2 = -(temp2 >> 0x11) + 0x78;
+        
+        player->unk68.unk16 = temp;
+        player->unk68.unk18 = temp2;
+
+        if ((u16)(result - 0x101) < 511) {
+            player->unk68.unk1A = 0;
+        } else {
+            player->unk68.unk1A = 0x280;
+        }
+
+        sub_80047A0(result, 0x100, 0x100, 0x1E);
+
+        if (stage->unk5BA == 0) {
+            sub_8004558(&player->unk68);
+        }
+        sub_80051E8(&player->unk68);
+    }
+
+    sub_806FAA0();
+    stage->unk594 = player->unkA8;
+    stage->unk598 = player->unkAC;
+    stage->unk5A0 = player->unkB2;
+
+    unkAC = (s16*)&player->unkAC;
+    gBgScrollRegs[2][1] = temp5 = -unkAC[1];
+    unkAC = (s16*)&player->unkA8;
+    gBgScrollRegs[2][0] = temp5 = -unkAC[1];
 }
