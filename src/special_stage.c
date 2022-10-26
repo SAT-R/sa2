@@ -163,7 +163,7 @@ struct UNK_806CF78 {
     s32 unkAC;
 
     s16 unkB0;
-    s16 unkB2;
+    u16 unkB2;
 
     u16 unkB4;
     s16 unkB6;
@@ -2533,5 +2533,25 @@ void sub_806EDB4(void) {
         s32 temp2 = (sin2 * c8) >> 10;
         player->unkA8 -= temp;
         player->unkAC -= temp2;
+    }
+}
+
+void sub_806EF44(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkF910->unk0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+
+    u16 b2 = player->unkB2;
+    
+    if (gInput & (DPAD_LEFT | DPAD_RIGHT)) {
+        if (gInput & DPAD_LEFT) {
+            b2 += player->unkCC;
+        }
+        if (gInput & DPAD_RIGHT) {
+            b2 -= player->unkCC;
+        }
+        
+        player->unkB2 = b2;
+        player->unkB2 &= 0x3FF;
     }
 }
