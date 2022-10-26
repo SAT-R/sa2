@@ -181,14 +181,14 @@ struct UNK_806CF78 {
     // sprites
     const struct UNK_80DF670* unkC4;
     
-    u32 unkC8;
+    s32 unkC8;
     u32 unkCC;
     u32 unkD0;
     u32 unkD4;
     u32 unkD8;
     s32 unkDC;
     s32 unkE0;
-    u32 unkE4;
+    s32 unkE4;
     u32 unkE8;
 
     u16 unkEC;
@@ -2424,7 +2424,7 @@ void sub_806EC24(void) {
         player->unk68.unk16 = temp;
         player->unk68.unk18 = temp2;
 
-        if ((u16)(result - 0x101) < 511) {
+        if (result > 0x100 && result < 0x300) {
             player->unk68.unk1A = 0;
         } else {
             player->unk68.unk1A = 0x280;
@@ -2447,4 +2447,91 @@ void sub_806EC24(void) {
     gBgScrollRegs[2][1] = temp5 = -unkAC[1];
     unkAC = (s16*)&player->unkA8;
     gBgScrollRegs[2][0] = temp5 = -unkAC[1];
+}
+
+void sub_806EDB4(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkF910->unk0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+
+    s32 c8 = player->unkC8;
+    s32 e4 = player->unkE4;
+
+    u16 b2 = player->unkB2;
+    s32 sin1 = gSineTable[b2];
+    s32 sin2 = gSineTable[b2 + 0x100];
+
+    if (gInput & DPAD_UP) {
+        s32 d8 = player->unkD8;
+        if (c8 < e4) {
+            if ((c8 + d8) < e4) {
+                player->unkC8 = c8 + d8;
+                c8 = player->unkC8;
+                
+                if (player->unkC8 > 0x2300) {
+                    player->unkB4 = 2;
+                } else {
+                    player->unkB4 = 1;
+                }
+            } else {
+                player->unkC8 = e4;
+                c8 = player->unkC8;
+                player->unkB4 = 2;
+            }
+        } else {
+            player->unkC8 = c8 + player->unkDC;
+            c8 = player->unkC8;
+            player->unkB4 = 2;
+        }
+        player->unkA4 = c8 >> 9;
+    } else if (gInput & DPAD_DOWN) {
+        s32 e0 = player->unkE0;
+        if (player->unkB4 == 0) {
+            player->unkB4 = 7;
+            return;
+        }
+
+        if ((c8 + e0) > 0) {
+            player->unkC8 = c8 + e0; 
+            c8 = player->unkC8;
+        } else {
+            player->unkC8 = 0;
+            c8 = 0;
+        }
+
+        if (c8 == 0) {
+            player->unkA4 = 0;
+            player->unkB4 = 8;
+        } else {
+            player->unkB4 = 3;
+        }
+    } else {
+        if (c8 + player->unkDC > 0) {
+            player->unkC8 = c8 + player->unkDC;
+            c8 = player->unkC8;
+        } else {
+            player->unkC8 = 0;
+            c8 = 0;
+            
+        }
+    
+        if (c8 == 0) {
+            player->unkA4 = 0;
+            player->unkB4 = 0;
+        } else {
+            if (c8 > 0x2300) {
+                player->unkB4 = 2;
+                player->unkA4 = c8 >> 9;
+            } else {
+                player->unkB4 = 1;
+                player->unkA4 = c8 >> 9;
+            }
+        }
+    }
+    {
+        s32 temp = (sin1 * c8) >> 10;
+        s32 temp2 = (sin2 * c8) >> 10;
+        player->unkA8 -= temp;
+        player->unkAC -= temp2;
+    }
 }
