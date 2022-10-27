@@ -170,7 +170,7 @@ struct UNK_806CF78 {
 
     s16 unkB8;
 
-    u16 unkBA;
+    s16 unkBA;
   
     s16 unkBC;  
     s16 unkBE;
@@ -229,7 +229,8 @@ struct UNK_806E6E8 {
 
 struct UNK_806F910 {
     struct SpecialStage* unk0;
-    u32 unk4;
+    s16 unk4;
+    u16 unk6;
 }; /* size 8 */
 
 void* gUnknown_03005B58;
@@ -2451,8 +2452,7 @@ void sub_806EC24(void) {
 
 void sub_806EDB4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkF910->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
 
     s32 c8 = player->unkC8;
     s32 e4 = player->unkE4;
@@ -2538,8 +2538,7 @@ void sub_806EDB4(void) {
 
 void sub_806EF44(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkF910->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
 
     u16 b2 = player->unkB2;
     
@@ -2553,5 +2552,200 @@ void sub_806EF44(void) {
         
         player->unkB2 = b2;
         player->unkB2 &= 0x3FF;
+    }
+}
+
+void sub_806F56C(void);
+
+void sub_806EFB4(void) { 
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    sub_806EF44();
+    sub_806F56C();
+
+    player->unkBA++;
+
+    player->unkB8 += player->unkF2;
+
+    if (player->unkBA >= player->unkF0 || !(gInput & gUnknown_03005B38.unk0)) {
+        player->unkB4 = 5;
+    }
+}
+
+void sub_806F034(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    sub_806EF44();
+    sub_806F56C();
+    
+    player->unkB8 += player->unkF4;
+
+    if (player->unkB0 < 1) {
+        s32 c8 = player->unkC8;
+        player->unkB0 = 0;
+        if (c8 < 1) {
+            player->unkB4 = 8;
+        } else if (c8 < 0x2301) {
+            player->unkB4 = 1;
+        } else {
+            player->unkB4 = 2;
+        }
+    }
+}
+
+void sub_806F604(void);
+
+void sub_806F0C4(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    sub_806EF44();
+    sub_806F604();
+    
+    player->unkB8 += player->unkF6;
+
+    if (player->unkB0 < 1) {
+        s32 c8 = player->unkC8;
+        player->unkB0 = 0;
+        if (c8 < 1) {
+            player->unkB4 = 8;
+        } else if (c8 < 0x2301) {
+            player->unkB4 = 1;
+        } else {
+            player->unkB4 = 2;
+        }
+    }
+}
+
+void sub_806F154(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    sub_806EF44();
+    sub_806F604();
+
+    player->unkA8 += player->unkD0;
+    player->unkAC += player->unkD4;
+    player->unkB8 += player->unkF4;
+
+    if (player->unkB0 < 1) {
+        player->unkC8 = 0x2000;
+        player->unkB0 = 0;
+        player->unkB4 = 1;
+    }
+}
+
+void sub_806F1E8(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    unkF910->unk4++;
+    player->unkB8 += player->unkFA;
+    sub_806F56C();
+
+    if (player->unkB0 < 1) {
+        unkF910->unk4 = 0;
+        player->unkB8 = 0;
+        player->unkB0 = 0;
+        
+        if (player->unkC8 == 0) {
+            player->unkB4 = 0xD;
+        } else {
+            player->unkB4 = 0xC;
+        }
+    }
+}
+
+void sub_806F268(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    s32 e0 = player->unkE0;
+    s32 c8 = player->unkC8;
+    u16 b2 = player->unkB2;
+
+    s32 sin1 = gSineTable[b2];
+    s32 sin2 = gSineTable[b2 + 0x100];
+    if ((c8 + e0) > 0) {
+        player->unkC8 = c8 + e0;
+        c8 += e0;
+    } else {
+        player->unkC8 = 0;
+        c8 = 0;
+    }
+
+    {
+        s32 temp2 = (sin1 * c8) >> 10;
+        s32 temp3 = (sin2 * c8) >> 10;
+        player->unkA8 -= temp2;
+        player->unkAC -= temp3;
+    }
+
+    if (c8 == 0) {
+        player->unkB4 = 0xD;
+    }
+}
+
+void sub_806F300(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    unkF910->unk4++;
+    player->unkB8 += player->unkFE;
+
+    if (player->unkB0 < -0x4000) {
+        unkF910->unk4 = 0;
+        player->unkB8 = 0;
+        player->unkB0 = -0x4000;
+        player->unkB4 = 0xF;
+    }
+}
+
+void sub_806F36C(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    u16 temp = (player->unkB2 + 0x10);
+    player->unkB2 = temp & 0x3FF;
+    unkF910->unk4++;
+
+    if (unkF910->unk4 > 0x1F) {
+        unkF910->unk4 = 0;
+        player->unkC8 = 0;
+        player->unkB4 = 8;
+    }
+}
+
+void sub_806F3C4(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    if (player->unkA8 <= 0x300000) {
+        player->unkA8 = 0x300000;
+    } 
+
+    if (player->unkA8 >= 0x3D00000) {
+        player->unkA8 = 0x3D00000;
+    }
+
+    if (player->unkAC <= 0x300000) {
+        player->unkAC = 0x300000;
+    }
+
+    if (player->unkAC >= 0x3D00000) {
+        player->unkAC = 0x3D00000;
+    }
+
+    unkF910->unk4++;
+
+    player->unkB8 += player->unkFA;
+
+    if (player->unkB0 < 0) {
+        player->unkB0 = 0;
+        player->unkB8 = 0;
+        unkF910->unk4 = 0;
+
+        // TODO: must be a macro
+        player->unkB8 = 0;
+        player->unkB0 = 0;
+        player->unkB4 = 0;
     }
 }
