@@ -2749,3 +2749,50 @@ void sub_806F3C4(void) {
         player->unkB4 = 0;
     }
 }
+
+struct UNK_8C87904 { 
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
+    s16 unkA;
+};
+
+extern const struct UNK_8C87904* const gUnknown_08C87904[7];
+
+void sub_806F468(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unkF910->unk0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->unk5B8];
+
+    s16 unkA8 = player->unkA8 >> 0x10;
+    s16 unkAC = player->unkAC >> 0x10;
+
+    while (unk7904->unk0 != -1) {
+        if (unkA8 >= unk7904->unk2 && unkA8 < (unk7904->unk2 + unk7904->unk6)) {
+            if (unkAC >= unk7904->unk4 && unkAC < (unk7904->unk4 + unk7904->unk8)) {
+                switch(unk7904->unk0) {
+                    case 0:
+                        player->unkC8 = player->unkE8;
+                        player->unkB4 = 2;
+                        m4aSongNumStart(SE_277);
+                        return;
+                    case 1:
+                        player->unkC8 = player->unkC8 < 0x600 ? 
+                            0x600 : 
+                            player->unkC8;
+            
+                        player->unkB4 = 9;
+                        player->unkB0 = 0;
+                        player->unkB8 = player->unkEE;
+                        player->unkBA = 0;
+                        m4aSongNumStart(SE_276);
+                        return;
+                }
+            }
+        }
+        unk7904++;
+    }
+}
