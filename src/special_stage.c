@@ -209,7 +209,10 @@ struct UNK_8071438 {
     struct SpecialStage* unk0;
     u8 filletemp_r4[56];
     u16 unk3C;
-    u8 filler3E[26];
+    u8 filler3E[2];
+    s32 unk40;
+    s32 unk44;
+    u8 unk48[0x10];
 }; /* size 0x58 */
 
 struct UNK_8070BF0 {
@@ -2795,4 +2798,151 @@ void sub_806F468(void) {
         }
         unk7904++;
     }
+}
+
+void sub_806F56C(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    s32 c8 = player->unkC8;
+    u16 b2 = player->unkB2;
+    s32 unk100 = player->unk100;
+
+    s32 sin1 = gSineTable[b2];
+    s32 sin2 = gSineTable[b2 + 0x100];
+
+    if ((c8 + unk100) > 0) {
+        player->unkC8 = (c8 + unk100);
+        c8 = (c8 + unk100);
+    } else {
+        player->unkC8 = 0;
+        c8 = 0;
+    }
+    {
+        s32 temp1 = (sin1 * c8) >> 10;
+        s32 temp2 = (sin2 * c8) >> 10;
+        player->unkA8 -= temp1;
+        player->unkAC -= temp2;
+    }
+}
+
+void sub_806F604(void) {
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
+    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+
+    s32 c8 = player->unkC8;
+    u16 b2 = player->unkB2;
+    s32 unk104 = player->unk104;
+
+    s32 sin1 = gSineTable[b2];
+    s32 sin2 = gSineTable[b2 + 0x100];
+
+    if ((c8 + unk104) > 0) {
+        player->unkC8 = c8 + unk104;
+        c8 += unk104;
+    } else {
+        player->unkC8 = 0;
+        c8 = 0;
+    }
+
+    {
+        s32 temp1 = (sin1 * c8)  >> 10;
+        s32 temp2 = (sin2 * c8) >> 10;
+        player->unkA8 -= temp1;
+        player->unkAC -= temp2;
+    }
+}
+
+struct UNK_80DF794 {
+    u16 unk0;
+    u16 unk2;
+};
+
+extern const struct UNK_80DF794 gUnknown_080DF794[3];
+
+s16 sub_806F69C(struct SpecialStage* stage) {
+    u32 i;
+    s32 sin14, sin16;
+    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
+
+    u32 temp1;
+    u32 temp2;
+    u16 temp3;
+    s32 unkA;
+    s32 unkB;
+    s16 unk40;
+    s16 ac;
+
+    u16 b2 = -player->unkB2 & 0x3FF;
+
+    unkA = unk1438->unk40 - player->unkA8;
+    unkB = unk1438->unk44 - player->unkAC;
+    unk40 = unkA >> 0x10;
+    ac = unkB  >> 0x10;
+
+    if ((u16)(unk40 + 15) < 0x1F && ac > -0x10 && ac < 0x10) {
+        temp1 = 0xC;
+    } else {
+        if ((u16)(unk40 + 255) <= 510 && ac > -0x100 && ac < 0x100) {
+            temp1 = 0x10;
+        } else {
+            temp1 = 0x14;
+        }
+    }
+    
+
+    if ((u16)(unk40 + 47) < 0x5F && ac > -0x30 && ac < 0x30) {
+        temp2 = 0;
+    } else {
+        if ((u16)(unk40 + 95) < 0xBF && ac > -0x60 && ac < 0x60) {
+            temp2 = 1;
+        } else {
+            temp2 = 2;
+        }
+    }
+
+    player->unk68.unk20 = gUnknown_080DF794[temp2].unk0;
+    player->unk68.unkA = gUnknown_080DF794[temp2].unk2;
+
+    temp3 = temp1;
+    unkA = unkA >> temp3;
+    unkB = unkB >> temp3;
+
+    sin16 = gSineTable[b2];
+    sin14 = gSineTable[b2 + 0x100];
+
+    {
+        s32 sin5 = sin16 * unkB;
+        s32 sin6 = sin14 * unkA;
+        s32 sin3 = -sin16 * unkA;
+        s32 sin4 = sin14 * unkB;
+    
+        unkA = sin5 + sin6;
+        unkB = sin3 + sin4;
+    }
+    
+    for (i = 0x100; i > 0; i >>= 1) {
+        sin16 = gSineTable[b2] >> 6;
+        sin14 = gSineTable[b2 + 0x100] >> 6;
+
+        if ((sin16 * unkB + sin14 * unkA) > 0) {
+            b2 = (b2 + i) & 0x3FF;
+        } else {
+            if ((sin16 * unkB + sin14 * unkA) >= 0) {
+                register s32 temp1 asm("r1") = -sin16 * unkA;
+                register s32 temp2 asm("r0") = sin14 * unkB;
+                s32 temp3 = temp1 + temp2;
+                if (temp3 >= 0) {
+                    b2 = (b2 + 0x200) & 0x3FF;
+                    return b2;
+                }
+                break;
+            }
+            b2 = (b2 - i) & 0x3FF;
+        }
+    }
+
+    return b2;
 }
