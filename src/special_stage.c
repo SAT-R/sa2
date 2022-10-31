@@ -2882,10 +2882,10 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     unk40 = unkA >> 0x10;
     ac = unkB  >> 0x10;
 
-    if ((u16)(unk40 + 15) < 0x1F && ac > -0x10 && ac < 0x10) {
+    if (unk40 > -0x10 && unk40 < 0x10 && ac > -0x10 && ac < 0x10) {
         temp1 = 0xC;
     } else {
-        if ((u16)(unk40 + 255) <= 510 && ac > -0x100 && ac < 0x100) {
+        if (unk40 > -0x100 && unk40 < 0x100 && ac > -0x100 && ac < 0x100) {
             temp1 = 0x10;
         } else {
             temp1 = 0x14;
@@ -2893,10 +2893,10 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     }
     
 
-    if ((u16)(unk40 + 47) < 0x5F && ac > -0x30 && ac < 0x30) {
+    if (unk40 > -0x30 && unk40 < 0x30 && ac > -0x30 && ac < 0x30) {
         temp2 = 0;
     } else {
-        if ((u16)(unk40 + 95) < 0xBF && ac > -0x60 && ac < 0x60) {
+        if (unk40 > -0x60 && unk40 < 0x60 && ac > -0x60 && ac < 0x60) {
             temp2 = 1;
         } else {
             temp2 = 2;
@@ -2931,12 +2931,11 @@ s16 sub_806F69C(struct SpecialStage* stage) {
             b2 = (b2 + i) & 0x3FF;
         } else {
             if ((sin16 * unkB + sin14 * unkA) >= 0) {
-                register s32 temp1 asm("r1") = -sin16 * unkA;
-                register s32 temp2 asm("r0") = sin14 * unkB;
-                s32 temp3 = temp1 + temp2;
-                if (temp3 >= 0) {
-                    b2 = (b2 + 0x200) & 0x3FF;
-                    return b2;
+                s32 a = -sin16 * unkA;
+                s32 b = sin14 * unkB;
+                b = a + sin14 * unkB;
+                if (b >= 0) {
+                    return (b2 + 0x200) & 0x3FF;
                 }
                 break;
             }
@@ -2945,4 +2944,57 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     }
 
     return b2;
+}
+
+s16 sub_806F84C(s32 a, s32 b) {
+    u32 r2, r3;
+    u16 r1, r3_2;
+    s32 r4;
+
+    s32 x = (a >> 8);
+    s32 y = (b >> 8);
+    s16 i = 0;
+
+    x *= x;
+    y *= y;
+    r4 = (x + y);
+
+    if (r4 == 0 || r4 == 1) {
+        return r4;
+    }
+
+    while (r4 > 0) {
+        r4 *= 2;
+        i++;
+    };
+
+    r2 = (u16)(~((u32)r4 >> 0x10));
+
+#ifndef NON_MATCHING
+    r2++; r2--;
+#endif
+
+    r3 = (r2 >> 1);
+    r1 = r3;
+    r3 = (r3 * r2) >> 0x12;
+    r1 += r3;
+    r3 = (r3 * r2) >> 0x11;
+    r1 += r3;
+    r3 = (r3 * r2) >> 0x10;
+    r3_2 = (r3 * 0xA000) >> 0x10;
+
+    r1 = r1 + r3_2;
+    r3_2 = (r3_2 * r2) >> 0x10;
+    r3_2 = (r3_2 * 0xB333) >> 0x10;
+    r1 += r3_2;
+    r3_2 = r1 ^ 0xFFFF;
+    r3_2 = r3_2 + ((r4 - (r3_2 * r3_2)) >> 0x11);
+
+    if (i & 1) {
+        r3_2 = (((r3_2 >> (i >> 1)) * 0xB505) + 0x8000) >> 0x10;
+    } else {
+        r3_2 = r3_2 >> (i >> 1);
+    }
+
+    return r3_2;
 }
