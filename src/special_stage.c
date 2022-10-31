@@ -19,7 +19,7 @@ struct SpecialStage {
     // playerTask
     struct Task* unkC; // UNK_806CF78
     
-    struct Task* unk10;
+    struct Task* unk10; // UNK_8070BF0
     struct Task* unk14; // UNK_8071438
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
@@ -2998,3 +2998,19 @@ s16 sub_806F84C(s32 a, s32 b) {
 
     return r3_2;
 }
+
+struct Task* sub_806F910(struct SpecialStage* stage) {
+    struct Task* t = TaskCreate(sub_806EC24, 8, 0x4000, 0, 0);
+    struct UNK_806F910* unkF910 = TaskGetStructPtr(t);
+
+    unkF910->unk0 = stage;
+    unkF910->unk4 = 0;
+    unkF910->unk6 = 0x3C;
+
+    return t;
+}
+
+/** special_stage_unk_8071438.c */
+
+
+/** special_stage_unk_8070BF0.c */

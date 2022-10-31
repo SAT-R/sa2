@@ -4,34 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_806F910
-sub_806F910: @ 0x0806F910
-	push {r4, r5, lr}
-	sub sp, #4
-	adds r5, r0, #0
-	ldr r0, _0806F940 @ =sub_806EC24
-	movs r2, #0x80
-	lsls r2, r2, #7
-	movs r4, #0
-	str r4, [sp]
-	movs r1, #8
-	movs r3, #0
-	bl TaskCreate
-	ldrh r1, [r0, #6]
-	movs r2, #0xc0
-	lsls r2, r2, #0x12
-	adds r1, r1, r2
-	str r5, [r1]
-	strh r4, [r1, #4]
-	movs r2, #0x3c
-	strh r2, [r1, #6]
-	add sp, #4
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0806F940: .4byte sub_806EC24
-
 	thumb_func_start sub_806F944
 sub_806F944: @ 0x0806F944
 	push {r4, r5, r6, lr}
