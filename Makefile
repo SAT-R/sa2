@@ -68,7 +68,7 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
 .SECONDEXPANSION:
 
 # these commands will run regardless of deps being completed
-.PHONY: __rom clean chao_garden tools clean-tools $(TOOLDIRS)
+.PHONY: __rom clean tools clean-tools $(TOOLDIRS)
 
 # ensure that we don't scan deps if we are not running
 # any of these commands
@@ -159,6 +159,8 @@ compare: rom
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
+	@$(MAKE) clean -C multi_boot/subgame_loader
+
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
@@ -243,3 +245,9 @@ chao_garden/mb_chao_garden.gba:
 
 chao_garden: tools
 	$(MAKE) -C chao_garden
+
+multi_boot/subgame_loader/mb_subgame_loader.gba: 
+	$(MAKE) -C multi_boot/subgame_loader
+
+subgame_loader: tools
+	$(MAKE) -C multi_boot/subgame_loader

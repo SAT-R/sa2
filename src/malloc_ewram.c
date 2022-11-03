@@ -1,41 +1,38 @@
 #include "global.h"
+#include "main.h"
 #include "malloc_ewram.h"
-#include "data.h"
-
-// TODO: reference in EWRAM
-struct EwramNode gEwramHeap;
-void *gUnknown_020226D0;
 
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)
 {
-    gEwramHeap.next = NULL;
-    gEwramHeap.state = 0x20080;
+    struct EwramNode* root = (struct EwramNode*)&gEwramHeap[0];
+    root->next = NULL;
+    root->state = sizeof(gEwramHeap);
 }
 
 void *EwramMalloc(u32 req)
 {
     struct EwramNode *node;
-    s32 count = req;
+    s32 requestedSpace = req;
 
-    count = (req + 3) >> 2; // round up and get word count
-    if (count)
+    requestedSpace = (req + 3) / 4; // round up and get word count
+    if (requestedSpace != 0)
     {
-        count = count * 4 + 8; // 8 is for next and state
-        node = &gEwramHeap;
+        requestedSpace = requestedSpace * 4 + sizeof(struct EwramNode);
+        node = (struct EwramNode*)gEwramHeap;
         /* linear search */
         while (1)
         {
-            if (count <= (u32)node->state)
+            if (requestedSpace <= (u32)node->state)
             {
                 /* 
                  * Space corresponding to the node matches requested size. 
                  * This means, we can directly use this node for the request
                  * w/o any adjustment. 
                  */
-                if (count == node->state)
+                if (requestedSpace == node->state)
                 {
-                    node->state = -count; // busy
+                    node->state = -requestedSpace; // busy
                     return node->space;
                 }
 
@@ -44,37 +41,37 @@ void *EwramMalloc(u32 req)
                  * This means, we need to construct a new node so that space won't
                  * get wasted. 
                  */
-                if (count + 8 <= node->state)
+                if (requestedSpace + (s32)sizeof(struct EwramNode) <= node->state)
                 {
-                    struct EwramNode *addr = (void *)&node->space[count - 8];
+                    struct EwramNode *addr = (void *)node + requestedSpace;
 
                     addr->next = node->next;
                     ++node; --node;
-                    addr->state = node->state - count; // Surplus space belongs to the new node. 
+                    addr->state = node->state - requestedSpace; // Surplus space belongs to the new node. 
                     node->next = addr;
-                    node->state = -count; // busy
+                    node->state = -requestedSpace; // busy
                     return node->space;
                 }
             }
-            ++count; --count;
+            ++requestedSpace; --requestedSpace;
             if (!node->next)
-                return gUnknown_020226D0;
+                return ewram_end;
             node = node->next;
         }
     }
-    return gUnknown_020226D0;
+    return ewram_end;
 }
 
 void EwramFree(void *p)
 {
     struct EwramNode *node, *slow, *fast, *tmp;
 
-    if (p && gUnknown_020226D0 != p)
+    if (p && ewram_end != p)
     {
-        node = p - 8;
+        node = p - offsetof(struct EwramNode, space);
 
         /* find parent of node */
-        for (fast = slow = &gEwramHeap;
+        for (fast = slow = (struct EwramNode*)gEwramHeap;
              node != fast;
              fast = fast->next)
             slow = fast;

@@ -207,6 +207,9 @@ extern u32 MultiSioMain(void *sendp, void *recvp, u32 loadRequest);
 #define MULTI_SIO_RECV_ID(x)            (0x0001<<(x))
 #define MULTI_SIO_CONNECTED_ID(x)       (0x0100<<(x))
 
+#define MULTI_SIO_ALL_CONNECTED (MULTI_SIO_CONNECTED_ID(0) | MULTI_SIO_CONNECTED_ID(1) | MULTI_SIO_CONNECTED_ID(2) | MULTI_SIO_CONNECTED_ID(3))
+
+
 // Return Value Structure
 struct MultiSioReturn
 {

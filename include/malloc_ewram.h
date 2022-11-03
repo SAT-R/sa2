@@ -11,12 +11,8 @@ struct EwramNode
     /* 0x8 */ u8 space[0];            // space for general purposes
 };
 
-void *gUnknown_020226D0;
-
 void EwramInitHeap(void);
 void *EwramMalloc(u32);
 void EwramFree(void *);
-
-#define EwramMallocStruct(s) (s*)EwramMalloc(sizeof(s))
 
 #endif // GUARD_MALLOC_EWRAM_H

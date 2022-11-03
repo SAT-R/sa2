@@ -9,6 +9,7 @@
 // #include "variables.h"
 #include "functions.h"
 
+#define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
 
 // helper macros
 
@@ -19,6 +20,17 @@
     NAKED decl {                \
         asm(".include " #path); \
     }
+#endif
+
+#if NON_MATCHING
+#define NONMATCH(path, decl) decl
+#define END_NONMATCH
+#else
+#define NONMATCH(path, decl)    \
+    NAKED decl {                \
+        asm(".include " #path); \
+        if (0)
+#define END_NONMATCH }
 #endif
 
 /// IDE support
@@ -74,12 +86,36 @@
 // 60 is not exactly true as the GBA's FPS, but it's what they went with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+struct BlendRegs {
+    u16 bldCnt;
+    u16 bldAlpha;
+    u16 bldY;
+};
+
+struct BgAffineRegs {
+    u16 bg2pa;
+    u16 bg2pb;
+    u16 bg2pc;
+    u16 bg2pd;
+    u32 bg2x;
+    u32 bg2y;
+    u16 bg3pa;
+    u16 bg3pb;
+    u16 bg3pc;
+    u16 bg3pd;
+    u32 bg3x;
+    u32 bg3y;
+};
+
 // TODO: Find better place for this
-typedef void (*HBlankFunc)(u8);
+typedef void (*HBlankFunc)(u8 vcount);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);
 
 extern void *iwram_end;
+extern void *ewram_end;
+
+extern void *rom_footer;
 
 #endif  // GUARD_GLOBAL_H

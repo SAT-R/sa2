@@ -8,7 +8,7 @@ struct Task;
 typedef void (*TaskMain)(void);
 typedef void (*TaskDestructor)(struct Task*);
 
-#define MAX_TASK_NUM                0x80
+#define MAX_TASK_NUM                128
 
 #define TASK_INACTIVE               0x0001
 #define TASK_DESTROY_DISABLED       0x0002
@@ -35,24 +35,25 @@ struct Task {
 struct IwramNode {
     u16 next;
     s16 state;
+    u8 space[0];
 };
 
-#define TaskGetStructPtr(taskp, dst) (typeof(dst))(IWRAM_START + (taskp)->structOffset)
+#define TaskGetStructPtr(taskp) (void*)(IWRAM_START + (taskp)->structOffset)
 #define TasksDestroyAll() TasksDestroyInPriorityRange(0, 0xFFFF)
 
-extern struct Task gTasks[];
+extern struct Task gTasks[MAX_TASK_NUM];
 extern struct Task gEmptyTask;
-extern struct Task* gTaskPtrs[];
+extern struct Task* gTaskPtrs[MAX_TASK_NUM];
 extern s32 gNumTasks;
 extern struct Task* gNextTask;
 extern struct Task* gCurTask;
-extern struct IwramNode gIwramHeap;
+extern u8 gIwramHeap[0x2204];
 
 u32 TasksInit(void);
 void TasksExec(void);
 struct Task* TaskCreate(TaskMain, u16, u16, u16, TaskDestructor);
 void TaskDestroy(struct Task*);
-struct IwramNode* IwramMalloc(u16);
+void* IwramMalloc(u16);
 void TasksDestroyInPriorityRange(u16, u16);
 
 #endif

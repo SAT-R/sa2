@@ -27,8 +27,3 @@ gUnknown_08C8793C:
     .global gUnknown_08C87960
 gUnknown_08C87960:
     .incbin "baserom.gba", 0x00C87960, 0xC
-
-    .global gUnknown_08C8796C
-gUnknown_08C8796C:
-    .incbin "baserom.gba", 0x00C8796C, 0x140
-

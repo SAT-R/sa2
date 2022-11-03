@@ -4,23 +4,24 @@
 #include "global.h"
 #include "zones.h"
 #include "player.h"
+#include "time.h"
 
-#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
-#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
 #define TIME_RECORDS_PER_COURSE 3
 #define NUM_MULTIPLAYER_SCORES 10
 
 #define MAX_PLAYER_NAME_LENGTH 6
 #define PLAYER_NAME_END_CHAR 0xFFFF
+#define MAX_MULTIPLAYER_SCORE 99
 
-// TODO: Work out what this is
 struct MultiplayerScore {
-    u8 filler0[4];
+    // playerId
+    u32 unk0;
+
     // playerName
     u16 unk4[MAX_PLAYER_NAME_LENGTH];
 
     // slotFilled
-    u8 unk10;
+    bool8 unk10;
 
     // wins
     u8 unk11;
@@ -42,10 +43,10 @@ struct ButtonConfig {
 };
 
 struct TimeRecords {
-    u16 table[NUM_CHARACTERS][NUM_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
+    u16 table[NUM_CHARACTERS][NUM_COURSE_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
 };
 
-#define NUM_TIME_RECORD_ROWS NUM_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
+#define NUM_TIME_RECORD_ROWS NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
 
 struct SaveGame {
     u32 unk0;
@@ -59,7 +60,7 @@ struct SaveGame {
     // Language
     u8 unk6;
 
-    // character unlocked courses
+    // unlockedLevels
     u8 unk7[NUM_CHARACTERS];
 
     u8 unkC[5];
@@ -81,7 +82,10 @@ struct SaveGame {
     u8 unk17;
     u8 unk18;
     u8 unk19;
+
+    // extraZoneStatus
     u8 unk1A;
+    
     u8 unk1B;
 
     // multiplayerWins
@@ -108,8 +112,15 @@ struct SaveGame {
     u32 unk374;
 };
 
-// Some sort of save data?
-struct SaveGame* gLoadedSaveGame;
+#define MULTIPLAYER_RESULT_WIN 0
+#define MULTIPLAYER_RESULT_LOSS 1
+#define MULTIPLAYER_RESULT_DRAW 2
+
+extern struct SaveGame* gLoadedSaveGame;
+
+void InsertMultiplayerProfile(u32 playerId, u16* name);
+void RecordOwnMultiplayerResult(s16 result);
+void RecordMultiplayerResult(u32 id, u16* name, s16 result);
 
 void SaveInit(void);
 bool16 SaveGameExists(void);

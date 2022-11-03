@@ -244,12 +244,12 @@ DirectSoundWaveData_61:
 	.incbin "sound/direct_sound_samples/unknown_061.bin"
 
 	.align 2
-DirectSoundWaveData_title_screen_announcement:
-	.incbin "sound/direct_sound_samples/title_screen_announcement.bin"
+DirectSoundWaveData_voice__announcer__sonic_advance_2:
+	.incbin "sound/direct_sound_samples/voice__announcer__sonic_advance_2.bin"
 
 	.align 2
-DirectSoundWaveData_sonic_selected_announcement:
-	.incbin "sound/direct_sound_samples/sonic_selected_announcement.bin"
+DirectSoundWaveData_voice__announcer__sonic:
+	.incbin "sound/direct_sound_samples/voice__announcer__sonic.bin"
 
 	.align 2
 DirectSoundWaveData_62:
@@ -264,8 +264,8 @@ DirectSoundWaveData_64:
 	.incbin "sound/direct_sound_samples/unknown_064.bin"
 
 	.align 2
-DirectSoundWaveData_cream_selected_announcement:
-	.incbin "sound/direct_sound_samples/cream_selected_announcement.bin"
+DirectSoundWaveData_voice__announcer__cream:
+	.incbin "sound/direct_sound_samples/voice__announcer__cream.bin"
 
 	.align 2
 DirectSoundWaveData_65:

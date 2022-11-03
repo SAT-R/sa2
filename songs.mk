@@ -10,172 +10,172 @@ $(MID_SUBDIR)/mus_intro.s: %.s: %.mid
 $(MID_SUBDIR)/mus_title_fanfare.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G11  -V120
     
-$(MID_SUBDIR)/song0003.s: %.s: %.mid
+$(MID_SUBDIR)/mus_character_selection.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V120
     
-$(MID_SUBDIR)/song0004.s: %.s: %.mid
+$(MID_SUBDIR)/mus_ta_course_selection.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V108
     
-$(MID_SUBDIR)/song0005.s: %.s: %.mid
+$(MID_SUBDIR)/mus_course_selection_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V115
     
-$(MID_SUBDIR)/song0006.s: %.s: %.mid
+$(MID_SUBDIR)/mus_course_selection_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V108
     
-$(MID_SUBDIR)/song0007.s: %.s: %.mid
+$(MID_SUBDIR)/mus_time_attack_menu.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V110
     
-$(MID_SUBDIR)/song0009.s: %.s: %.mid
+$(MID_SUBDIR)/mus_options.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V100
     
-$(MID_SUBDIR)/song0013.s: %.s: %.mid
+$(MID_SUBDIR)/mus_leaf_forest__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0014.s: %.s: %.mid
+$(MID_SUBDIR)/mus_leaf_forest__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0015.s: %.s: %.mid
+$(MID_SUBDIR)/mus_hot_crater__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0016.s: %.s: %.mid
+$(MID_SUBDIR)/mus_hot_crater__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0017.s: %.s: %.mid
+$(MID_SUBDIR)/mus_music_plant__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0018.s: %.s: %.mid
+$(MID_SUBDIR)/mus_music_plant__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0019.s: %.s: %.mid
+$(MID_SUBDIR)/mus_ice_paradise__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0020.s: %.s: %.mid
+$(MID_SUBDIR)/mus_ice_paradise__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0021.s: %.s: %.mid
+$(MID_SUBDIR)/mus_sky_canyon__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V110
     
-$(MID_SUBDIR)/song0022.s: %.s: %.mid
+$(MID_SUBDIR)/mus_sky_canyon__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V110
     
-$(MID_SUBDIR)/song0023.s: %.s: %.mid
+$(MID_SUBDIR)/mus_techno_base__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0024.s: %.s: %.mid
+$(MID_SUBDIR)/mus_techno_base__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V120
     
-$(MID_SUBDIR)/song0025.s: %.s: %.mid
+$(MID_SUBDIR)/mus_egg_utopia__act_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V110
     
-$(MID_SUBDIR)/song0026.s: %.s: %.mid
+$(MID_SUBDIR)/mus_egg_utopia__act_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V110
     
-$(MID_SUBDIR)/song0027.s: %.s: %.mid
+$(MID_SUBDIR)/mus_xx__final_zone.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0028.s: %.s: %.mid
+$(MID_SUBDIR)/mus_true_area_53.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V92
     
-$(MID_SUBDIR)/song0029.s: %.s: %.mid
+$(MID_SUBDIR)/mus_invincibility.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V110
     
-$(MID_SUBDIR)/song0031.s: %.s: %.mid
+$(MID_SUBDIR)/mus_drowning.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G9  -V86
     
-$(MID_SUBDIR)/song0032.s: %.s: %.mid
+$(MID_SUBDIR)/mus_boss.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0033.s: %.s: %.mid
+$(MID_SUBDIR)/mus_boss_pinch.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0034.s: %.s: %.mid
+$(MID_SUBDIR)/mus_boss_knuckles.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V110
     
-$(MID_SUBDIR)/song0035.s: %.s: %.mid
+$(MID_SUBDIR)/mus_7_boss.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V98
     
-$(MID_SUBDIR)/song0036.s: %.s: %.mid
+$(MID_SUBDIR)/mus_7_boss_pinch.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V98
     
-$(MID_SUBDIR)/song0037.s: %.s: %.mid
+$(MID_SUBDIR)/mus_final_boss.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V100
     
-$(MID_SUBDIR)/song0038.s: %.s: %.mid
+$(MID_SUBDIR)/mus_final_boss_pinch.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V100
     
-$(MID_SUBDIR)/song0041.s: %.s: %.mid
+$(MID_SUBDIR)/mus_game_over.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V110
     
-$(MID_SUBDIR)/song0042.s: %.s: %.mid
+$(MID_SUBDIR)/mus_final_ending.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G20  -V100
     
-$(MID_SUBDIR)/song0043.s: %.s: %.mid
+$(MID_SUBDIR)/mus_extra_ending.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V98
     
-$(MID_SUBDIR)/song0044.s: %.s: %.mid
+$(MID_SUBDIR)/mus_staff_credits.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V98
     
-$(MID_SUBDIR)/song0045.s: %.s: %.mid
+$(MID_SUBDIR)/mus_demo_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V100
     
-$(MID_SUBDIR)/song0046.s: %.s: %.mid
+$(MID_SUBDIR)/mus_demo_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G14  -V100
     
-$(MID_SUBDIR)/song0048.s: %.s: %.mid
+$(MID_SUBDIR)/mus_extra_demo_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0049.s: %.s: %.mid
+$(MID_SUBDIR)/mus_extra_demo_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V94
     
-$(MID_SUBDIR)/song0050.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage_intro.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V100
     
-$(MID_SUBDIR)/song0051.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V115
     
-$(MID_SUBDIR)/song0052.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage_pinch.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V115
     
-$(MID_SUBDIR)/song0053.s: %.s: %.mid
+$(MID_SUBDIR)/mus_achievement.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V115
     
-$(MID_SUBDIR)/song0054.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage_clear.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V120
     
-$(MID_SUBDIR)/song0055.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage_result.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G9  -V100
     
-$(MID_SUBDIR)/song0056.s: %.s: %.mid
+$(MID_SUBDIR)/mus_chaos_emerald.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G9  -V85
     
-$(MID_SUBDIR)/song0057.s: %.s: %.mid
+$(MID_SUBDIR)/mus_special_stage_result_lose.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V92
     
-$(MID_SUBDIR)/song0058.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23  -V105
     
-$(MID_SUBDIR)/song0059.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23  -V105
     
-$(MID_SUBDIR)/song0061.s: %.s: %.mid
+$(MID_SUBDIR)/mus_connection_pending.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V110
     
-$(MID_SUBDIR)/song0064.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_lobby.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23  -V105
     
-$(MID_SUBDIR)/song0066.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_select_pak_mode.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23  -V105
     
-$(MID_SUBDIR)/song0102.s: %.s: %.mid
+$(MID_SUBDIR)/se_ring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V100
     
-$(MID_SUBDIR)/song0103.s: %.s: %.mid
+$(MID_SUBDIR)/se_shift.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0104.s: %.s: %.mid
+$(MID_SUBDIR)/se_success.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0105.s: %.s: %.mid
+$(MID_SUBDIR)/se_abort.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
 $(MID_SUBDIR)/se_select.s: %.s: %.mid
@@ -187,593 +187,593 @@ $(MID_SUBDIR)/se_return.s: %.s: %.mid
 $(MID_SUBDIR)/se_menu_cursor_move.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0109.s: %.s: %.mid
+$(MID_SUBDIR)/se_spin_attack.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V110
     
-$(MID_SUBDIR)/song0110.s: %.s: %.mid
+$(MID_SUBDIR)/se_spin_dash_release.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V75
     
-$(MID_SUBDIR)/song0111.s: %.s: %.mid
+$(MID_SUBDIR)/se_sonic_skid_attack.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0112.s: %.s: %.mid
+$(MID_SUBDIR)/se_sonic_midair_somersault.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0113.s: %.s: %.mid
+$(MID_SUBDIR)/se_sonic_insta_shield.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V75
     
-$(MID_SUBDIR)/song0114.s: %.s: %.mid
+$(MID_SUBDIR)/se_114.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V100
     
-$(MID_SUBDIR)/song0115.s: %.s: %.mid
+$(MID_SUBDIR)/se_brake.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P15 -V75
     
-$(MID_SUBDIR)/song0116.s: %.s: %.mid
+$(MID_SUBDIR)/se_jump.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V75
     
-$(MID_SUBDIR)/song0117.s: %.s: %.mid
+$(MID_SUBDIR)/se_ring_copy.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V100
     
-$(MID_SUBDIR)/song0118.s: %.s: %.mid
+$(MID_SUBDIR)/se_rings_lost.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V127
     
-$(MID_SUBDIR)/song0119.s: %.s: %.mid
+$(MID_SUBDIR)/se_life_lost.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P40 -V127
     
-$(MID_SUBDIR)/song0120.s: %.s: %.mid
+$(MID_SUBDIR)/se_tails_propeller_flying.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V127
     
-$(MID_SUBDIR)/song0121.s: %.s: %.mid
+$(MID_SUBDIR)/se_tails_tail_swipe.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V107
     
-$(MID_SUBDIR)/song0125.s: %.s: %.mid
+$(MID_SUBDIR)/se_125.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P30 -V100
     
-$(MID_SUBDIR)/song0126.s: %.s: %.mid
+$(MID_SUBDIR)/se_126.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P30 -V110
     
-$(MID_SUBDIR)/song0127.s: %.s: %.mid
+$(MID_SUBDIR)/se_127.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P30 -V120
     
-$(MID_SUBDIR)/song0128.s: %.s: %.mid
+$(MID_SUBDIR)/se_amy_ground_hammer.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0129.s: %.s: %.mid
+$(MID_SUBDIR)/se_amy_super_hammer_attack.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0131.s: %.s: %.mid
+$(MID_SUBDIR)/se_amy_hammer_swirl.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0135.s: %.s: %.mid
+$(MID_SUBDIR)/se_sa1_goal_post.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0138.s: %.s: %.mid
+$(MID_SUBDIR)/se_item_box.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P50 -V127
     
-$(MID_SUBDIR)/song0139.s: %.s: %.mid
+$(MID_SUBDIR)/se_timer.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V70
     
-$(MID_SUBDIR)/song0140.s: %.s: %.mid
+$(MID_SUBDIR)/se_stage_result_counter.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0141.s: %.s: %.mid
+$(MID_SUBDIR)/se_stage_result_counter_done.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0142.s: %.s: %.mid
+$(MID_SUBDIR)/se_pause_screen.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V110
     
-$(MID_SUBDIR)/song0143.s: %.s: %.mid
+$(MID_SUBDIR)/se_143.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0144.s: %.s: %.mid
+$(MID_SUBDIR)/se_144.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0145.s: %.s: %.mid
+$(MID_SUBDIR)/se_145.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0146.s: %.s: %.mid
+$(MID_SUBDIR)/se_146.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V64
     
-$(MID_SUBDIR)/song0147.s: %.s: %.mid
+$(MID_SUBDIR)/se_spin.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V100
     
-$(MID_SUBDIR)/song0148.s: %.s: %.mid
+$(MID_SUBDIR)/se_148.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0149.s: %.s: %.mid
+$(MID_SUBDIR)/se_149.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V89
     
-$(MID_SUBDIR)/song0150.s: %.s: %.mid
+$(MID_SUBDIR)/se_item_box_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P50 -V127
     
-$(MID_SUBDIR)/song0151.s: %.s: %.mid
+$(MID_SUBDIR)/se_151.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V100
     
-$(MID_SUBDIR)/song0152.s: %.s: %.mid
+$(MID_SUBDIR)/se_checkpoint.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0153.s: %.s: %.mid
+$(MID_SUBDIR)/se_spring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V120
     
-$(MID_SUBDIR)/song0154.s: %.s: %.mid
+$(MID_SUBDIR)/se_spikes.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0155.s: %.s: %.mid
+$(MID_SUBDIR)/se_speed_booster.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0156.s: %.s: %.mid
+$(MID_SUBDIR)/se_156.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0157.s: %.s: %.mid
+$(MID_SUBDIR)/se_157.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V90
     
-$(MID_SUBDIR)/song0158.s: %.s: %.mid
+$(MID_SUBDIR)/se_air_bubble.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0 -P20 -V90
     
-$(MID_SUBDIR)/song0159.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0160.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0161.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0162.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_4.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0163.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_5.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0164.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_6.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0165.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_7.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0166.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_8.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0167.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_9.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0168.s: %.s: %.mid
+$(MID_SUBDIR)/se_alarm_10.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/song0169.s: %.s: %.mid
+$(MID_SUBDIR)/se_springy_pole.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V88
     
-$(MID_SUBDIR)/song0170.s: %.s: %.mid
+$(MID_SUBDIR)/se_springy_spring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V88
     
-$(MID_SUBDIR)/song0201.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__sonic_advance_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0202.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__sonic.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0203.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__tails.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0204.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__knuckles.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0205.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__amy.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0206.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__cream.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0208.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0209.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0210.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0211.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__go.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0212.s: %.s: %.mid
+$(MID_SUBDIR)/voice__announcer__congratulations.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V127
     
-$(MID_SUBDIR)/song0213.s: %.s: %.mid
+$(MID_SUBDIR)/se_map_move.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V96
     
-$(MID_SUBDIR)/song0214.s: %.s: %.mid
+$(MID_SUBDIR)/se_map_214.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0215.s: %.s: %.mid
+$(MID_SUBDIR)/se_map_move_end.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0216.s: %.s: %.mid
+$(MID_SUBDIR)/se_216.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0217.s: %.s: %.mid
+$(MID_SUBDIR)/se_217.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0218.s: %.s: %.mid
+$(MID_SUBDIR)/se_218.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0219.s: %.s: %.mid
+$(MID_SUBDIR)/se_219.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0220.s: %.s: %.mid
+$(MID_SUBDIR)/se_delete_game_data.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0221.s: %.s: %.mid
+$(MID_SUBDIR)/se_221.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0222.s: %.s: %.mid
+$(MID_SUBDIR)/se_222.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0223.s: %.s: %.mid
+$(MID_SUBDIR)/se_223.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0224.s: %.s: %.mid
+$(MID_SUBDIR)/se_224.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0225.s: %.s: %.mid
+$(MID_SUBDIR)/se_225.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P30 -V100
     
-$(MID_SUBDIR)/song0226.s: %.s: %.mid
+$(MID_SUBDIR)/se_226.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P30 -V100
     
-$(MID_SUBDIR)/song0227.s: %.s: %.mid
+$(MID_SUBDIR)/se_cream_flying.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0228.s: %.s: %.mid
+$(MID_SUBDIR)/se_228.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0229.s: %.s: %.mid
+$(MID_SUBDIR)/se_cream_cheese_attack.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0230.s: %.s: %.mid
+$(MID_SUBDIR)/se_230.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0231.s: %.s: %.mid
+$(MID_SUBDIR)/se_231.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0232.s: %.s: %.mid
+$(MID_SUBDIR)/se_long_brake.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P15 -V100
     
-$(MID_SUBDIR)/song0234.s: %.s: %.mid
+$(MID_SUBDIR)/se_234.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0235.s: %.s: %.mid
+$(MID_SUBDIR)/se_235.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0236.s: %.s: %.mid
+$(MID_SUBDIR)/se_236.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0237.s: %.s: %.mid
+$(MID_SUBDIR)/se_237.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V65
     
-$(MID_SUBDIR)/song0238.s: %.s: %.mid
+$(MID_SUBDIR)/se_238.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0239.s: %.s: %.mid
+$(MID_SUBDIR)/se_239.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0241.s: %.s: %.mid
+$(MID_SUBDIR)/se_241.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0242.s: %.s: %.mid
+$(MID_SUBDIR)/se_242.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0243.s: %.s: %.mid
+$(MID_SUBDIR)/se_243.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0244.s: %.s: %.mid
+$(MID_SUBDIR)/se_244.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0245.s: %.s: %.mid
+$(MID_SUBDIR)/se_245.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0246.s: %.s: %.mid
+$(MID_SUBDIR)/se_246.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0248.s: %.s: %.mid
+$(MID_SUBDIR)/se_248.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0249.s: %.s: %.mid
+$(MID_SUBDIR)/se_249.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0250.s: %.s: %.mid
+$(MID_SUBDIR)/se_250.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0251.s: %.s: %.mid
+$(MID_SUBDIR)/se_251.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0252.s: %.s: %.mid
+$(MID_SUBDIR)/se_252.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0253.s: %.s: %.mid
+$(MID_SUBDIR)/se_253.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0254.s: %.s: %.mid
+$(MID_SUBDIR)/se_254.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0255.s: %.s: %.mid
+$(MID_SUBDIR)/se_255.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V90
     
-$(MID_SUBDIR)/song0256.s: %.s: %.mid
+$(MID_SUBDIR)/se_256.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V92
     
-$(MID_SUBDIR)/song0257.s: %.s: %.mid
+$(MID_SUBDIR)/se_257.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0258.s: %.s: %.mid
+$(MID_SUBDIR)/se_258.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0259.s: %.s: %.mid
+$(MID_SUBDIR)/se_259.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0260.s: %.s: %.mid
+$(MID_SUBDIR)/se_260.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0261.s: %.s: %.mid
+$(MID_SUBDIR)/se_261.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0262.s: %.s: %.mid
+$(MID_SUBDIR)/se_262.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0263.s: %.s: %.mid
+$(MID_SUBDIR)/se_263.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0264.s: %.s: %.mid
+$(MID_SUBDIR)/se_264.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0265.s: %.s: %.mid
+$(MID_SUBDIR)/se_265.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0266.s: %.s: %.mid
+$(MID_SUBDIR)/se_266.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0267.s: %.s: %.mid
+$(MID_SUBDIR)/se_267.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0268.s: %.s: %.mid
+$(MID_SUBDIR)/se_268.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0269.s: %.s: %.mid
+$(MID_SUBDIR)/se_269.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0270.s: %.s: %.mid
+$(MID_SUBDIR)/se_270.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0271.s: %.s: %.mid
+$(MID_SUBDIR)/se_271.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0272.s: %.s: %.mid
+$(MID_SUBDIR)/se_272.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0273.s: %.s: %.mid
+$(MID_SUBDIR)/se_273.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0274.s: %.s: %.mid
+$(MID_SUBDIR)/se_274.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P30 -V100
     
-$(MID_SUBDIR)/song0275.s: %.s: %.mid
+$(MID_SUBDIR)/se_275.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0276.s: %.s: %.mid
+$(MID_SUBDIR)/se_276.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0277.s: %.s: %.mid
+$(MID_SUBDIR)/se_277.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0278.s: %.s: %.mid
+$(MID_SUBDIR)/se_278.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0279.s: %.s: %.mid
+$(MID_SUBDIR)/se_279.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0280.s: %.s: %.mid
+$(MID_SUBDIR)/se_280.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0281.s: %.s: %.mid
+$(MID_SUBDIR)/se_281.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V90
     
-$(MID_SUBDIR)/song0282.s: %.s: %.mid
+$(MID_SUBDIR)/se_282.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V90
     
-$(MID_SUBDIR)/song0283.s: %.s: %.mid
+$(MID_SUBDIR)/se_283.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0284.s: %.s: %.mid
+$(MID_SUBDIR)/se_284.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V98
     
-$(MID_SUBDIR)/song0285.s: %.s: %.mid
+$(MID_SUBDIR)/se_285.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0286.s: %.s: %.mid
+$(MID_SUBDIR)/se_286.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V90
     
-$(MID_SUBDIR)/song0287.s: %.s: %.mid
+$(MID_SUBDIR)/se_287.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0288.s: %.s: %.mid
+$(MID_SUBDIR)/se_288.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0289.s: %.s: %.mid
+$(MID_SUBDIR)/se_289.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0290.s: %.s: %.mid
+$(MID_SUBDIR)/se_290.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0291.s: %.s: %.mid
+$(MID_SUBDIR)/se_291.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0292.s: %.s: %.mid
+$(MID_SUBDIR)/se_ice_paradise_slide.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V90
     
-$(MID_SUBDIR)/song0293.s: %.s: %.mid
+$(MID_SUBDIR)/se_293.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0294.s: %.s: %.mid
+$(MID_SUBDIR)/se_294.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0295.s: %.s: %.mid
+$(MID_SUBDIR)/se_295.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0296.s: %.s: %.mid
+$(MID_SUBDIR)/se_296.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0297.s: %.s: %.mid
+$(MID_SUBDIR)/se_297.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/song0298.s: %.s: %.mid
+$(MID_SUBDIR)/se_special_ring.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P40 -V100
     
-$(MID_SUBDIR)/song0300.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_spring_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0301.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_spring_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0302.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_spring_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0303.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_spring_4.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0304.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_crash_hit.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0305.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0306.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0307.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0308.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_4.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0309.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_5.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0310.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_6.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0311.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_7.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0312.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_notes_8.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0313.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0314.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0315.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0316.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_4.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0317.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_5.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0318.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_glockenspiel_6.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0319.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_enter_horn.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0320.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_exit_horn.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0321.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_enter_horn2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0322.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_exit_horn2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0323.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_horn3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0324.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_guitar_string.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V127
     
-$(MID_SUBDIR)/song0325.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_piano.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0326.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_flute_1.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0327.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_flute_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0328.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_flute_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0329.s: %.s: %.mid
+$(MID_SUBDIR)/se_music_plant_flute_4.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0331.s: %.s: %.mid
+$(MID_SUBDIR)/se_331.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0332.s: %.s: %.mid
+$(MID_SUBDIR)/se_332.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G6 -P20 -V120
     
-$(MID_SUBDIR)/song0333.s: %.s: %.mid
+$(MID_SUBDIR)/se_333.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V120
     
-$(MID_SUBDIR)/song0401.s: %.s: %.mid
+$(MID_SUBDIR)/mus_act_clear.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G8  -V103
     
-$(MID_SUBDIR)/song0402.s: %.s: %.mid
+$(MID_SUBDIR)/mus_boss_clear.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G8  -V107
     
-$(MID_SUBDIR)/song0403.s: %.s: %.mid
+$(MID_SUBDIR)/mus_final_clear.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G8  -V110
     
-$(MID_SUBDIR)/song0404.s: %.s: %.mid
+$(MID_SUBDIR)/mus_extra_clear.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G8  -V100
     
-$(MID_SUBDIR)/song0405.s: %.s: %.mid
+$(MID_SUBDIR)/mus_time_attack_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V110
     
-$(MID_SUBDIR)/song0406.s: %.s: %.mid
+$(MID_SUBDIR)/mus_time_attack_3.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G22  -V99
     
-$(MID_SUBDIR)/song0407.s: %.s: %.mid
+$(MID_SUBDIR)/mus_1_up.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G7  -V120
     
-$(MID_SUBDIR)/song0408.s: %.s: %.mid
+$(MID_SUBDIR)/mus_message_2.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V105
     
-$(MID_SUBDIR)/song0410.s: %.s: %.mid
+$(MID_SUBDIR)/mus_got_all_chaos_emeralds.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V90
     
-$(MID_SUBDIR)/song0411.s: %.s: %.mid
+$(MID_SUBDIR)/mus_fanfare.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G23 -P255 -V105
     
-$(MID_SUBDIR)/song0412.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_exit.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V77
     
-$(MID_SUBDIR)/song0413.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_success.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V77
     
-$(MID_SUBDIR)/song0414.s: %.s: %.mid
+$(MID_SUBDIR)/mus_vs_miss.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V77
     
-$(MID_SUBDIR)/song0415.s: %.s: %.mid
+$(MID_SUBDIR)/mus_message.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G13  -V105
     
-$(MID_SUBDIR)/song0504.s: %.s: %.mid
+$(MID_SUBDIR)/mus_504.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V105
     
-$(MID_SUBDIR)/song0505.s: %.s: %.mid
+$(MID_SUBDIR)/mus_505.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V110
     
-$(MID_SUBDIR)/song0506.s: %.s: %.mid
+$(MID_SUBDIR)/mus_506.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G10  -V110

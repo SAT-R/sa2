@@ -2,12 +2,12 @@
 	.global voicegroup005
 voicegroup005:	@ 0x08ACED90
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACED90
-	voice_directsound 65, 0, DirectSoundWaveData_title_screen_announcement, 255, 0, 255, 0	@08ACED9C
-	voice_directsound 65, 0, DirectSoundWaveData_sonic_selected_announcement, 255, 0, 255, 0	@08ACEDA8
+	voice_directsound 65, 0, DirectSoundWaveData_voice__announcer__sonic_advance_2, 255, 0, 255, 0	@08ACED9C
+	voice_directsound 65, 0, DirectSoundWaveData_voice__announcer__sonic, 255, 0, 255, 0	@08ACEDA8
 	voice_directsound 65, 0, DirectSoundWaveData_62, 255, 0, 255, 0	@08ACEDB4
 	voice_directsound 65, 0, DirectSoundWaveData_63, 255, 0, 255, 0	@08ACEDC0
 	voice_directsound 65, 0, DirectSoundWaveData_64, 255, 0, 255, 0	@08ACEDCC
-	voice_directsound 65, 0, DirectSoundWaveData_cream_selected_announcement, 255, 0, 255, 0	@08ACEDD8
+	voice_directsound 65, 0, DirectSoundWaveData_voice__announcer__cream, 255, 0, 255, 0	@08ACEDD8
 	voice_square_1 0, 2, 0, 0, 15, 0	@08ACEDE4
 	voice_directsound 65, 0, DirectSoundWaveData_65, 255, 0, 255, 0	@08ACEDF0
 	voice_directsound 65, 0, DirectSoundWaveData_66, 255, 0, 255, 0	@08ACEDFC

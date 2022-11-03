@@ -1,12 +1,13 @@
 #include "global.h"
 #include "agb_flash.h"
 #include "malloc_ewram.h"
-#include "data.h"
 #include "flags.h"
 #include "save.h"
 #include "m4a.h"
 #include "random.h"
 #include "constants/text.h"
+#include "time.h"
+#include "zones.h"
 
 struct SaveSectorHeader {
     u32 security, version;
@@ -29,7 +30,7 @@ struct SaveSectorData {
     u8 attackControl;
     u8 trickControl;
 
-    u8 unlockedCourses[NUM_CHARACTERS];
+    u8 unlockedLevels[NUM_CHARACTERS];
     u8 unk24[NUM_CHARACTERS];
 
     u8 multiplayerWins;
@@ -47,15 +48,9 @@ struct SaveSectorData {
     u32 checksum;
 };
 
-// TODO: Move refernce these in iwram
-// TODO: make static, only used here
-struct SaveGame* gLastWrittenSaveGame;
-
-// TODO: reference this iwram, but not static
-struct SaveGame* gLoadedSaveGame;
-
-// TODO: make static, only used here
-struct SaveSectorData* gSaveSectorDataBuffer;
+struct SaveGame* gLastWrittenSaveGame = NULL;
+struct SaveGame* gLoadedSaveGame = NULL;
+struct SaveSectorData* gSaveSectorDataBuffer = NULL;
 
 static s16 FindNewestSaveGameSector(void);
 static s16 FindOldestSaveGameSector(void);
@@ -67,6 +62,7 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
 static u16 WriteToSaveSector(struct SaveSectorData* data, s16 sectorNum);
 static u16 EraseSaveSector(s16 sectorNum);
 static bool16 HasChangesToSave(void);
+static bool16 StringEquals(u16* string1, u16* string2, s16 length);
 
 #define CalcChecksum(save) ({ \
     u32 j, checksum = 0; \
@@ -96,6 +92,87 @@ static bool16 HasChangesToSave(void);
 #define SECTOR_CHECKSUM_OFFSET offsetof(struct SaveSectorData, checksum)
 #define NUM_SAVE_SECTORS 10
 
+void InsertMultiplayerProfile(u32 playerId, u16* name) {
+    s16 i, j;
+
+    for (i = 0; i < 10; i++) {
+        struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
+        if (playerId == score->unk0 && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+            struct MultiplayerScore scoreCopy;
+            memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
+            
+            for (j = i; j > 0; j--) {
+                gLoadedSaveGame->unk2AC[j] = gLoadedSaveGame->unk2AC[j-1];
+            }
+            memcpy(&gLoadedSaveGame->unk2AC[0], &scoreCopy, sizeof(struct MultiplayerScore));
+            return;
+        }
+    }
+
+    // otherwise, insert the score at the beginning
+    for (i = 9; i > 0; i--) {
+        gLoadedSaveGame->unk2AC[i] = gLoadedSaveGame->unk2AC[i-1];
+    }
+
+    gLoadedSaveGame->unk2AC[0].unk0 = playerId;
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        gLoadedSaveGame->unk2AC[0].unk4[i] = name[i];
+    }
+    gLoadedSaveGame->unk2AC[0].unk10 = TRUE;
+    gLoadedSaveGame->unk2AC[0].unk11 = 0;
+    gLoadedSaveGame->unk2AC[0].unk12 = 0;
+    gLoadedSaveGame->unk2AC[0].unk13 = 0;
+}
+
+void RecordOwnMultiplayerResult(s16 result) {
+    switch (result) {
+        case MULTIPLAYER_RESULT_WIN:
+            if (gLoadedSaveGame->unk1C < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->unk1C++;
+            }
+            break;
+        case MULTIPLAYER_RESULT_LOSS:
+            if (gLoadedSaveGame->unk1D < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->unk1D++;
+            }
+            break;
+        case MULTIPLAYER_RESULT_DRAW:
+            if (gLoadedSaveGame->unk1E < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->unk1E++;
+            }
+            break;
+    }
+}
+
+void RecordMultiplayerResult(u32 id, u16* name, s16 result) {
+    s16 i;
+
+    for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
+        struct MultiplayerScore* score = &gLoadedSaveGame->unk2AC[i];
+        if (id == score->unk0 && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+            switch (result) {
+                case MULTIPLAYER_RESULT_WIN:
+                    if (score->unk11 < MAX_MULTIPLAYER_SCORE) {
+                        score->unk11++;
+                    }
+                    
+                    break;
+                case MULTIPLAYER_RESULT_LOSS:
+                    if (score->unk12 < MAX_MULTIPLAYER_SCORE) {
+                        score->unk12++;
+                    }
+                    break;
+                case MULTIPLAYER_RESULT_DRAW:
+                    if (score->unk13 < MAX_MULTIPLAYER_SCORE) {
+                        score->unk13++;
+                    }
+                    break;
+            } 
+            return;
+        }
+    }
+}
+
 static void GenerateNewSaveGame(struct SaveGame* gameState) {
     s16 i, *record;
     struct MultiplayerScore* p2;
@@ -104,7 +181,7 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
     memset(gameState, 0, sizeof(struct SaveGame));
     
     gameState->unk0 = 0;
-    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
+    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
     gameState->unk4 = 0;
     gameState->unk5 = 0;
     gameState->unk6 = LANG_ENGLISH;
@@ -112,9 +189,9 @@ static void GenerateNewSaveGame(struct SaveGame* gameState) {
 
     p3 = &gameState->unk2C;
     
-    p3->unk0 = 1;
-    p3->unk2 = 2;
-    p3->unk4 = 0x100;
+    p3->unk0 = A_BUTTON;
+    p3->unk2 = B_BUTTON;
+    p3->unk4 = R_BUTTON;
 
     record = (u16*)gameState->unk34.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
@@ -267,16 +344,16 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     save->unlocks = 0;
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_CREAM))) {
         save->unlocks |= UNLOCK_FLAG_CREAM;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_TAILS))) {
         save->unlocks |= UNLOCK_FLAG_TAILS;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_KNUCKLES))) {
         save->unlocks |= UNLOCK_FLAG_KNUCKLES;
     }
-    if ((gameState->unk13 & CHARACTER_UNLOCKED_BIT(CHARACTER_AMY))) {
+    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_AMY))) {
         save->unlocks |= UNLOCK_FLAG_AMY;
     }
     if (gameState->unk11) {
@@ -326,7 +403,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        save->unlockedCourses[i] = gameState->unk7[i];
+        save->unlockedLevels[i] = gameState->unk7[i];
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
@@ -342,8 +419,6 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
 
     save->id = Random32();
     save->unk370 = gameState->unk374;
-
-    // Not sure why they chose to rewrite the checksum logic here
     
     checksum = CalcChecksum(save);
     save->checksum = checksum;
@@ -564,19 +639,19 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
         gameState->unk18 = 1;
     }
 
-    gameState->unk13 = CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC);
+    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
 
     if (save->unlocks & UNLOCK_FLAG_CREAM) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_CREAM);
     }
     if (save->unlocks & UNLOCK_FLAG_TAILS) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_TAILS);
     }
     if (save->unlocks & UNLOCK_FLAG_KNUCKLES) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_KNUCKLES);
     }
     if (save->unlocks & UNLOCK_FLAG_AMY) {
-        gameState->unk13 |= CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
+        gameState->unk13 |= CHARACTER_BIT(CHARACTER_AMY);
     }
 
     if (save->unlocks & UNLOCK_FLAG_SOUND_TEST) {
@@ -632,7 +707,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     }
     
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        gameState->unk7[i] = save->unlockedCourses[i];
+        gameState->unk7[i] = save->unlockedLevels[i];
     }
 
     for (i = 0; i < 5; i++) {
@@ -738,16 +813,18 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
     gameState->unk374 = 0;
     
     for (i = 0; i < 5; i++) {
-        gameState->unk7[i] = i == 0 ? 0x1e : 0x1d;
+        gameState->unk7[i] = i == CHARACTER_SONIC ? 
+            LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1: 
+            LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) + 1;
         gameState->unkC[i] = 0xff;
     }
 
     gameState->unk13 = 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_SONIC) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_CREAM) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_TAILS) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_KNUCKLES) | 
-        CHARACTER_UNLOCKED_BIT(CHARACTER_AMY);
+        CHARACTER_BIT(CHARACTER_SONIC) | 
+        CHARACTER_BIT(CHARACTER_CREAM) | 
+        CHARACTER_BIT(CHARACTER_TAILS) | 
+        CHARACTER_BIT(CHARACTER_KNUCKLES) | 
+        CHARACTER_BIT(CHARACTER_AMY);
     gameState->unk11 = TRUE;
     gameState->unk12 = TRUE;
     gameState->unk14 = TRUE;
@@ -764,9 +841,9 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
 // Exported functions
 
 void SaveInit(void) {
-    gLoadedSaveGame = EwramMallocStruct(struct SaveGame);
-    gLastWrittenSaveGame = EwramMallocStruct(struct SaveGame);
-    gSaveSectorDataBuffer =  EwramMallocStruct(struct SaveSectorData);
+    gLoadedSaveGame = EwramMalloc(sizeof(struct SaveGame));
+    gLastWrittenSaveGame = EwramMalloc(sizeof(struct SaveGame));
+    gSaveSectorDataBuffer =  EwramMalloc(sizeof(struct SaveSectorData));
 
     // Why not just generate for 1 and copy...
     GenerateNewSaveGame(gLoadedSaveGame);
@@ -859,4 +936,15 @@ static bool16 ReadSaveSectorAndVerifyChecksum(struct SaveSectorData* save, s16 s
     }
     
     return 1;
+}
+
+// StringEquals
+static bool16 StringEquals(u16* string1Char, u16* string2Char, s16 length) {
+    s16 i;
+    for (i = 0; i < length; i++, string1Char++, string2Char++) {
+        if (*string1Char != *string2Char) {
+            return FALSE;
+        }
+    }
+    return TRUE;
 }

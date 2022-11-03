@@ -1,23 +1,230 @@
 #include "global.h"
+#include "main.h"
 #include "profile.h"
 #include "m4a.h"
 #include "task.h"
-#include "input.h"
 #include "save.h"
 #include "malloc_ewram.h"
 #include "random.h"
 #include "sprite.h"
+#include "transition.h"
 #include "constants/songs.h"
 #include "constants/text.h"
-#include "data.h"
 #include "title_screen.h"
 #include "game.h"
 #include "sound_test.h"
-#include "ui.h"
+#include "time.h"
+#include "multiplayer_mode_select.h"
+#include "character_select.h"
+
+#define NUM_PLAYER_DATA_MENU_ITEMS 4
+
+struct TimeRecordDisplay {
+    struct UNK_0808B3FC_UNK240 deliminators[2];
+    struct UNK_0808B3FC_UNK240 minute;
+    struct UNK_0808B3FC_UNK240 seconds[2];
+    struct UNK_0808B3FC_UNK240 millis[2];
+};
+
+struct TimeRecordsScreen {
+    struct UNK_802D4CC_UNK270 unk0;
+    struct Unk_03002400 coursesViewBackground;
+    struct UNK_0808B3FC_UNK240 choiceViewItemsOrZoneTitle[2];
+    struct UNK_0808B3FC_UNK240 actTitle[2];
+    struct UNK_0808B3FC_UNK240 choiceViewTitleOrZoneSubtitle;
+    struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[4];
+
+    struct PlayerDataMenu* playerDataMenu;
+
+    struct TimeRecords* timeRecords;
+
+    struct Unk_03002400 coursesViewCharacterBackground;
+    struct Unk_03002400 coursesViewCharacter;
+    struct UNK_0808B3FC_UNK240 timeRecordDisplays[3];
+    struct TimeRecordDisplay timeDisplays[3];
+
+    u8 character;
+
+    u8 zone;
+    u8 act;
+
+    u8 animFrame;
+    bool8 unusedUnk708;
+    u8 availableCharacters;
+    u8 unlockedCourses[NUM_CHARACTERS];
+    u8 language;
+
+    bool8 isBossMode;
+
+    u8 view;
+}; /* size 0x714 */
+
+struct LanguageScreen {
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
+    struct UNK_0808B3FC_UNK240 languageOptions[NUM_LANGUAGES];
+    struct UNK_0808B3FC_UNK240 optionOutline;
+    struct Unk_03002400 unk1B0;
+    struct UNK_802D4CC_UNK270 unk1F0;
+
+    struct OptionsScreen* optionsScreen;
+
+    s8 menuCursor;
+
+    bool8 creatingNewProfile;
+}; /* size 0x204 */
+
+struct NameInputDisplay {
+    struct UNK_0808B3FC_UNK240 displayCursor;
+    struct UNK_0808B3FC_UNK240 characterDisplay[MAX_PLAYER_NAME_LENGTH];
+
+    u16 unk150;
+    u16 cursor;
+
+    u16 buffer[MAX_PLAYER_NAME_LENGTH];
+};
+
+struct ProfileNameScreen {
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 controls[3];
+    struct Unk_03002400 background;
+    struct Unk_03002400 charMatrixBackground;
+    
+    struct UNK_802D4CC_UNK270 unk140;
+    struct PlayerDataMenu* playerDataMenu;
+
+    struct UNK_0808B3FC_UNK240 focusedCell[2];
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct Unk_03002400 charMatrix;
+    u16 matrixPageIndex;
+
+    s8 cursorCol;
+    s8 cursorRow;
+
+    u8 filler254[4];
+    
+    struct NameInputDisplay nameInput;
+
+    u16 matrixCursorIndex;
+    u8 language;
+    u8 onCompleteAction;
+}; /* size 0x3BC */
+
+struct PlayerDataMenu {
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
+    struct UNK_0808B3FC_UNK240 menuItems[NUM_PLAYER_DATA_MENU_ITEMS];
+    struct UNK_0808B3FC_UNK240 menuItemOutline;
+
+    struct UNK_802D4CC_UNK270 unk150;
+    
+    struct OptionsScreen* optionsScreen;
+    s8 menuCursor;
+    s8 animFrame;
+
+    s8 language;
+    
+    s8 state;
+}; /* size 0x164 */
+
+struct SwitchMenu {
+    struct OptionsScreen* optionsScreen;
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
+    struct UNK_0808B3FC_UNK240 options[2];
+    struct UNK_0808B3FC_UNK240 switchValueOutline;
+    s8 switchValue;
+    s8 animFrame;
+    s8 language;
+}; /* size 0xF8 */
+
+struct ButtonConfigMenu {
+    struct OptionsScreen* optionsScreen;
+    struct UNK_0808B3FC_UNK240 staticElements[6];
+    struct UNK_0808B3FC_UNK240 buttonActions[3];
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct UNK_0808B3FC_UNK240 controlFocus;
+    u8 aButtonAction;
+    u8 bButtonAction;
+    u8 rShoulderAction;
+    u8 focus;
+    s8 animFrame;
+    s8 language;
+}; /* size 0x24C */
+
+struct DeleteScreen {
+    struct UNK_0808B3FC_UNK240 headerFooter[2];
+    struct UNK_0808B3FC_UNK240 options[2];
+    struct UNK_0808B3FC_UNK240 optionOutline;
+    struct Unk_03002400 background;
+    struct UNK_802D4CC_UNK270 unk130;
+    struct OptionsScreen* optionsScreen; 
+    s8 confirmationCursor;
+    bool8 unusedUnk141;
+    s8 language;
+    s8 deleteConfirmed;
+}; /* 0x144 */
+
+struct MultiplayerRecordRow {
+    u16 playerName[6];
+
+    bool8 slotFilled;
+    u8 wins;
+    u8 loses;
+    u8 draws;
+    struct UNK_0808B3FC_UNK240 nameDisplay[6];
+    struct UNK_0808B3FC_UNK240 winsDigits[2];
+    struct UNK_0808B3FC_UNK240 losesDigits[2];
+    struct UNK_0808B3FC_UNK240 defeatsDigits[2];
+}; /* size 0x250 */
+
+struct MultiplayerRecordsTable {
+   struct MultiplayerRecordRow rows[NUM_MULTIPLAYER_SCORES];
+}; /* size 0x1720 */
+
+struct MultiplayerRecordsScreen {
+    struct UNK_802D4CC_UNK270 unk0;
+
+    struct Unk_03002400 backgroundTrims;
+    struct Unk_03002400 background;
+
+    struct UNK_0808B3FC_UNK240 title;
+    struct UNK_0808B3FC_UNK240 columnHeaders;
+    struct UNK_0808B3FC_UNK240 scrollArrows[2];
+    struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
+    struct UNK_0808B3FC_UNK240 playerWinsDigits[2];
+    struct UNK_0808B3FC_UNK240 playerLosesDigits[2];
+    struct UNK_0808B3FC_UNK240 playerDrawsDigits[2];
+
+    struct PlayerDataMenu* playerDataMenu;
+
+    struct MultiplayerRecordsTable* table;
+    u8 scrollAnimFrame;
+    u8 playerWins;
+    u8 playerLoses;
+    u8 playerDraws;
+
+    u16 playerName[6];
+
+    u8 targetFirstVisibleRowIndex;
+    u8 currentFirstVisibleRowIndex;
+    u8 scrollIndex;
+
+    u8 language;
+}; /* size 0x3A8 */
+
+struct UNK_080D95E8 {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+};
+
+struct UNK_806B908 {
+    u32 unk0;
+    u16 unk4;
+    u16 unk6;
+};
 
 // vram addresses
-void* gProfileScreenNextVramAddress;
-void* gProfileScreenSubMenuNextVramAddress;
+void* gProfileScreenNextVramAddress = NULL;
+void* gProfileScreenSubMenuNextVramAddress = NULL;
 
 static void Task_OptionsScreenShow(void);
 static void OptionsScreenTaskDestroyHandler(struct Task*);
@@ -166,6 +373,12 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void);
 static void Task_MultiplayerRecordsScreenFadeIn(void);
 static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 
+static s32 MaxSpriteSize(const struct UNK_080D95E8*, s8);
+static struct UNK_806B908 sub_806B908(u16);
+static bool16 sub_806B9C8(u16);
+static bool16 sub_806BA14(s16, u16);
+static bool16 sub_806B988(u16*);
+
 #define OPTIONS_MENU_ITEM_PLAYER_DATA 0
 #define OPTIONS_MENU_ITEM_DIFFICULTY 1
 #define OPTIONS_MENU_ITEM_TIME_LIMIT 2
@@ -180,9 +393,8 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define OPTIONS_META_ITEM_TIME_LIMIT 2
 #define OPTIONS_META_ITEM_LANGUAGE 3
 
-#define OPTIONS_SCREEN_STATE_ACTIVE 0
-#define OPTIONS_SCREEN_STATE_SUB_MENU_OPEN 1
-#define OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN 2
+#define OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS 0
+#define OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS 1
 
 #define PLAYER_DATA_MENU_ITEM_CHANGE_NAME 0
 #define PLAYER_DATA_MENU_ITEM_TIME_RECORDS 1
@@ -210,14 +422,21 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
 #define NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER 1
 #define NAME_SCREEN_COMPLETE_ACTION_START_GAME 2
 
-#define LanguageIndex(lang) (lang - 1)
-
 #define TIME_RECORDS_SCREEN_VIEW_MODE_CHOICE 0
 #define TIME_RECORDS_SCREEN_VIEW_COURSES 1
 #define TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK 2
 
-#define RENDER_TARGET_SCREEN 0
-#define RENDER_TARGET_SUB_MENU 1
+#define TIME_RECORDS_CHOICE_BOSS 1
+#define TIME_RECORDS_CHOICE_ACTS 0
+
+#define ASSET_CHARACTER_BACKGROUND 0
+#define ASSET_CHARACTER 1
+
+#define DIFFICULTY_OPTION_NORMAL 0
+#define DIFFICULTY_OPTION_EASY 1
+
+#define TIME_LIMIT_OPTION_ON 0
+#define TIME_LIMIT_OPTION_OFF 1
 
 #define DELETE_SCREEN_CONFIRMATION_YES 0
 #define DELETE_SCREEN_CONFIRMATION_NO 1
@@ -246,60 +465,693 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void);
     }; \
 })
 
-#define DELIMINATOR_DIGIT 10
-#define TensDigit(number) ((number) / 10)
-#define UnitsDigit(number) ((number) % 10)
+static const s8 sMenuCursorMoveAnims[2][8] = {
+    [OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS] = { 8, 4, 1, -1, -2, -1, 1, 0 },
+    [OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS] = { 1, 2, 5, 7, 8, 8, 8, 8 },
+};
 
-extern const struct UNK_080D95E8 sOptionsScreenTitleText[6];
-extern const struct UNK_080D95E8 sOptionsScreenMenuItemsText[6][8];
-extern const struct UNK_080D95E8 sDifficultyLevelSwitchValues[6][2];
-extern const struct UNK_080D95E8 sTimeLimitMenuSwitchValues[6][2];
-extern const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[6];
-extern const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[6][3];
-extern const struct UNK_080D95E8 sButtonConfigButtonIcons[3];
-extern const struct UNK_080D95E8 sButtonConfigActionsText[6][3];
+static const s16 sSubMenuOpenAnim[16] = {
+    -16, -41, -66, -91, -116, -141, -166, -186, 
+    -201, -216, -228, -219, -210, -214, -217, -216,
+};
 
-extern const s16 sSubMenuOpenAnimFrames[16];
-extern const s8 sMenuCursorMoveAnims[2][8];
-extern const s16 sSubMenuCloseAnimFrames[16];
+static const s16 sSubMenuCloseAnim[16] = {
+    -216, -201, -186, -171, -156, -141, -126, -111, 
+    -96, -81, -66, -51, -36, -21, -6, 0,
+};
 
-extern const struct UNK_080D95E8 sPlayerDataMenuTitleText[6];
-extern const struct UNK_080D95E8 sPlayerDataMenuControlsText[6];
-extern const struct UNK_080D95E8 sPlayerDataMenuItemsText[6][4];
-extern const struct UNK_080D95E8 sDifficultyMenuTitleText[6];
-extern const struct UNK_080D95E8 sDifficultyMenuControlsText[6];
-extern const struct UNK_080D95E8 sTimeLimitMenuTitleText[6];
-extern const struct UNK_080D95E8 sTimeLimitMenuControlsText[6];
+static const u16 sTimeRecordsCharacterAssets[NUM_CHARACTERS][2] = {
+    [CHARACTER_SONIC] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 140, 
+        [ASSET_CHARACTER] = 141 
+    },
+    [CHARACTER_CREAM] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 148, 
+        [ASSET_CHARACTER] = 149 
+    },
+    [CHARACTER_TAILS] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 142, 
+        [ASSET_CHARACTER] = 143 
+    },
+    [CHARACTER_KNUCKLES] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 144, 
+        [ASSET_CHARACTER] = 145 
+    },
+    [CHARACTER_AMY] = { 
+        [ASSET_CHARACTER_BACKGROUND] = 146, 
+        [ASSET_CHARACTER] = 147 
+    },
+};
 
-extern const struct UNK_080D95E8 sLanguageScreenTitles[6];
-extern const struct UNK_080D95E8 sLanguageScreenNewControlsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenOptionsText[6];
-extern const struct UNK_080D95E8 sLanguageScreenEditControlsText[6];
+const u16 gUnknown_080D95A4[] = {
+    17, 19, 39, 41, 61, 63, 75, 76,
+    77, 109, 142, 174, 175, 208, 241, 65535, 
+};
 
-extern const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[6];
-extern const struct UNK_080D95E8 sDeleteScreenControlsText[6];
-extern const struct UNK_080D95E8 sDeleteScreenOptionsText[6][2];
+const u16 gUnknown_080D95C4[] = {
+    55, 65535,
+};
 
-extern const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[6];
+const u16 gUnknown_080D95C8[] = {
+    11, 22, 33, 55, 65535,
+};
 
-extern const struct UNK_080D95E8 sProfileNameScreenNewTitleText[6];
-extern const struct UNK_080D95E8 sProfileNameScreenEditTitleText[6];
-extern const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2];
-extern const struct UNK_080D95E8 sProfileNameScreenEndButtonText[6];
+const u16 gUnknown_080D95D2[] = {
+    55, 262,
+};
 
-extern const struct UNK_080D95E8 sScrollArrowTiles[2];
+const u16 gUnknown_080D95D6[4][2] = {
+    { 11, 242 },
+    { 22, 247 },
+    { 33, 252 },
+    { 55, 257 },
+};
 
-extern const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[6];
-extern const struct UNK_080D95E8 sTimeRecordsScreenChoices[6][2];
-extern const u16 sTimeRecordsCharacterBackgrounds[5][2];
-extern const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7];
-extern const struct UNK_080D95E8 sZoneNameTitles[6][7];
-extern const struct UNK_080D95E8 sZoneBossTitles[6][7];
-extern const struct UNK_080D95E8 sTimeRecordDigitTiles[11];
-extern const u8 gMillisLookup[60][2];
+static const u16 sUnused = 0;
 
-extern const struct UNK_080D95E8 sMultiplayerRecordsTitleAndColumnHeadersText[6][2];
-extern const struct UNK_080D95E8 sMultiplayerScoreDigitTiles[10];
+const struct UNK_080D95E8 sOptionsScreenTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 956, .unk2 = 8, .unk4 = 39 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 975, .unk2 = 8, .unk4 = 26 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 976, .unk2 = 8, .unk4 = 30 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 977, .unk2 = 8, .unk4 = 24,},
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 978, .unk2 = 8, .unk4 = 30 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 979, .unk2 = 8, .unk4 = 24 },
+};
+const struct UNK_080D95E8 sOptionsScreenMenuItemsText[NUM_LANGUAGES][8] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 956, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 956, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 956, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 956, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 956, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 956, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 956, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 956, .unk2 = 7, .unk4 = 50 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 975, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 975, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 975, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 975, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 975, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 975, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 975, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 975, .unk2 = 7, .unk4 = 50 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 976, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 976, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 976, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 976, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 976, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 976, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 976, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 976, .unk2 = 7, .unk4 = 50 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 977, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 977, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 977, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 977, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 977, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 977, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 977, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 977, .unk2 = 7, .unk4 = 50 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 978, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 978, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 978, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 978, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 978, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 978, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 978, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 978, .unk2 = 7, .unk4 = 50 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [OPTIONS_MENU_ITEM_PLAYER_DATA] = { .unk0 = 979, .unk2 = 0, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DIFFICULTY] = { .unk0 = 979, .unk2 = 1, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_TIME_LIMIT] = { .unk0 = 979, .unk2 = 2, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_LANGUAGE] = { .unk0 = 979, .unk2 = 3, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_BUTTON_CONFIG] = { .unk0 = 979, .unk2 = 4, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_SOUND_TEST] = { .unk0 = 979, .unk2 = 6, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_DELETE_GAME_DATA] = { .unk0 = 979, .unk2 = 5, .unk4 = 50 },
+        [OPTIONS_MENU_ITEM_EXIT] = { .unk0 = 979, .unk2 = 7, .unk4 = 50 },
+    },
+};
+
+const struct UNK_080D95E8 sDifficultyLevelSwitchText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 952, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 952, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 990, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 990, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 991, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 991, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 992, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 992, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 993, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 993, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [DIFFICULTY_OPTION_NORMAL] = { .unk0 = 994, .unk2 = 0, .unk4 = 16 },
+        [DIFFICULTY_OPTION_EASY] = { .unk0 = 994, .unk2 = 1, .unk4 = 16 },
+    },
+};
+
+const struct UNK_080D95E8 sTimeLimitMenuSwitchText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 960, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 960, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1020, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1020, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1021, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1021, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1022, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1022, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1023, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1023, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = {
+        [TIME_LIMIT_OPTION_ON] = { .unk0 = 1024, .unk2 = 0, .unk4 = 16 },
+        [TIME_LIMIT_OPTION_OFF] = { .unk0 = 1024, .unk2 = 1, .unk4 = 16 },
+    },
+};
+
+const struct UNK_080D95E8 sOptionsScreenSelectedLanguageText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 7, .unk4 = 16 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 953, .unk2 = 8, .unk4 = 16 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 953, .unk2 = 9, .unk4 = 16 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 953, .unk2 = 10, .unk4 = 16 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 953, .unk2 = 11, .unk4 = 16 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 953, .unk2 = 12, .unk4 = 16 },
+};
+
+const struct UNK_080D95E8 sDifficultyMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 952, .unk2 = 2, .unk4 = 42 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 990, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 991, .unk2 = 2, .unk4 = 50 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 992, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 993, .unk2 = 2, .unk4 = 28 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 994, .unk2 = 2, .unk4 = 45 },
+};
+const struct UNK_080D95E8 sDifficultyMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+
+const struct UNK_080D95E8 sTimeLimitMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 960, .unk2 = 2, .unk4 = 42 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1020, .unk2 = 2, .unk4 = 26 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1021, .unk2 = 2, .unk4 = 24 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1022, .unk2 = 2, .unk4 = 38 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1023, .unk2 = 2, .unk4 = 40 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1024, .unk2 = 2, .unk4 = 36 },
+};
+const struct UNK_080D95E8 sTimeLimitMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+
+const struct UNK_080D95E8 sButtonConfigTitleAndControlsText[NUM_LANGUAGES][3] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        { .unk0 = 950, .unk2 = 3, .unk4 = 51 }, // title
+        { .unk0 = 958, .unk2 = 0, .unk4 = 28 }, // controls line 1
+        { .unk0 = 950, .unk2 = 10, .unk4 = 14 }, // controls line 2
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        { .unk0 = 980, .unk2 = 3, .unk4 = 38 },
+        { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+        { .unk0 = 980, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        { .unk0 = 981, .unk2 = 3, .unk4 = 38 },
+        { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 981, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        { .unk0 = 982, .unk2 = 3, .unk4 = 44 },
+        { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 982, .unk2 = 4, .unk4 = 17 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        { .unk0 = 983, .unk2 = 3, .unk4 = 40 },
+        { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+        { .unk0 = 983, .unk2 = 4, .unk4 = 21 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        { .unk0 = 984, .unk2 = 3, .unk4 = 46 },
+        { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+        { .unk0 = 984, .unk2 = 4, .unk4 = 15 },
+    },
+};
+const struct UNK_080D95E8 sButtonConfigButtonIcons[] = {
+    [BUTTON_CONFIG_MENU_A_BUTTON] = { .unk0 = 950, .unk2 = 4, .unk4 = 12 },
+    [BUTTON_CONFIG_MENU_B_BUTTON] = { .unk0 = 950, .unk2 = 5, .unk4 = 12 },
+    [BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON] = { .unk0 = 950, .unk2 = 6, .unk4 = 12 },
+};
+const struct UNK_080D95E8 sButtonConfigActionsText[NUM_LANGUAGES][3] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 950, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 950, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 950, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 980, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 980, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 980, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 981, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 981, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 981, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 982, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 982, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 982, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 983, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 983, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 983, .unk2 = 2, .unk4 = 18 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [BUTTON_CONFIG_MENU_ACTION_JUMP] = { .unk0 = 984, .unk2 = 0, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_ATTACK] = { .unk0 = 984, .unk2 = 1, .unk4 = 18 },
+        [BUTTON_CONFIG_MENU_ACTION_TRICK] = { .unk0 = 984, .unk2 = 2, .unk4 = 18 },
+    },
+};
+
+const struct UNK_080D95E8 sLanguageScreenTitles[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 6, .unk4 = 45 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 995, .unk2 = 0, .unk4 = 50 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 996, .unk2 = 0, .unk4 = 46 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 997, .unk2 = 0, .unk4 = 60 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 998, .unk2 = 0, .unk4 = 38 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 999, .unk2 = 0, .unk4 = 46 },
+};
+const struct UNK_080D95E8 sLanguageScreenEditControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sLanguageScreenNewControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 13, .unk4 = 26 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 995, .unk2 = 1, .unk4 = 20 },
+};
+const struct UNK_080D95E8 sLanguageScreenOptionsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 953, .unk2 = 0, .unk4 = 40 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 953, .unk2 = 1, .unk4 = 40 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 953, .unk2 = 2, .unk4 = 40 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 953, .unk2 = 3, .unk4 = 40 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 953, .unk2 = 4, .unk4 = 40 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 953, .unk2 = 5, .unk4 = 40 },
+};
+
+const struct UNK_080D95E8 sDeleteScreenConfirmTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 951, .unk2 = 2, .unk4 = 54 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 985, .unk2 = 2, .unk4 = 46 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 986, .unk2 = 2, .unk4 = 48 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 987, .unk2 = 2, .unk4 = 80 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 988, .unk2 = 2, .unk4 = 68 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 989, .unk2 = 2, .unk4 = 60 },
+};
+const struct UNK_080D95E8 sDeleteScreenAbsoluteConfirmTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 951, .unk2 = 3, .unk4 = 39 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 985, .unk2 = 3, .unk4 = 38 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 986, .unk2 = 3, .unk4 = 44 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 987, .unk2 = 3, .unk4 = 42 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 988, .unk2 = 3, .unk4 = 63 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 989, .unk2 = 3, .unk4 = 22 },
+};
+const struct UNK_080D95E8 sDeleteScreenControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sDeleteScreenOptionsText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 951, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 951, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 985, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 985, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 986, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 986, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 987, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 987, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 988, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 988, .unk2 = 1, .unk4 = 16 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [DELETE_SCREEN_CONFIRMATION_YES] = { .unk0 = 989, .unk2 = 0, .unk4 = 16 },
+        [DELETE_SCREEN_CONFIRMATION_NO] = { .unk0 = 989, .unk2 = 1, .unk4 = 16 },
+    },
+};
+
+const struct UNK_080D95E8 sPlayerDataMenuTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 957, .unk2 = 4, .unk4 = 51 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1005, .unk2 = 4, .unk4 = 34 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1006, .unk2 = 4, .unk4 = 38 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1007, .unk2 = 4, .unk4 = 28 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1008, .unk2 = 4, .unk4 = 30 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1009, .unk2 = 4, .unk4 = 28 },
+};
+const struct UNK_080D95E8 sPlayerDataMenuControlsText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 958, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1010, .unk2 = 0, .unk4 = 22 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1011, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1012, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1013, .unk2 = 0, .unk4 = 26 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1014, .unk2 = 0, .unk4 = 28 },
+};
+
+const struct UNK_080D95E8 sPlayerDataMenuItemsText[NUM_LANGUAGES][4] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 957, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 957, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 957, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 957, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1005, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1005, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1005, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1005, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1006, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1006, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1006, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1006, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1007, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1007, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1007, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1007, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1008, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1008, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1008, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1008, .unk2 = 3, .unk4 = 40 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [PLAYER_DATA_MENU_ITEM_CHANGE_NAME] = { .unk0 = 1009, .unk2 = 0, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_TIME_RECORDS] = { .unk0 = 1009, .unk2 = 1, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_VS_RECORDS] = { .unk0 = 1009, .unk2 = 2, .unk4 = 40 },
+        [PLAYER_DATA_MENU_ITEM_EXIT] = { .unk0 = 1009, .unk2 = 3, .unk4 = 40 },
+    },
+};
+
+const struct UNK_080D95E8 sProfileNameScreenNewTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 2, .unk4 = 48 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1000, .unk2 = 1, .unk4 = 24 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1001, .unk2 = 1, .unk4 = 28 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1002, .unk2 = 1, .unk4 = 30 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1003, .unk2 = 1, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1004, .unk2 = 1, .unk4 = 26 },
+};
+const struct UNK_080D95E8 sProfileNameScreenEditTitleText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 1, .unk4 = 48 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1000, .unk2 = 0, .unk4 = 32 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1001, .unk2 = 0, .unk4 = 28 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1002, .unk2 = 0, .unk4 = 34 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1003, .unk2 = 0, .unk4 = 20 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1004, .unk2 = 0, .unk4 = 32 },
+};
+const struct UNK_080D95E8 sProfileNameScreenArrowTiles[2] = {
+    { .unk0 = 954, .unk2 = 4, .unk4 = 3 },
+    { .unk0 = 954, .unk2 = 3, .unk4 = 3 },
+};
+const struct UNK_080D95E8 sProfileNameScreenEndButtonText[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 954, .unk2 = 5, .unk4 = 8 },
+};
+
+const struct UNK_080D95E8 sProfileNameScreenScrollArrowTiles[2] = {
+    { .unk0 = 962, .unk2 = 0, .unk4 = 2 },
+    { .unk0 = 962, .unk2 = 1, .unk4 = 2 },
+};
+
+const struct UNK_080D95E8 sMultiplayerRecordsTitleAndColumnHeadersText[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        { .unk0 = 961, .unk2 = 0, .unk4 = 48 }, // title
+        { .unk0 = 961, .unk2 = 1, .unk4 = 28 }, // column headers
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        { .unk0 = 1025, .unk2 = 0, .unk4 = 42 },
+        { .unk0 = 1025, .unk2 = 1, .unk4 = 26 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        { .unk0 = 1026, .unk2 = 0, .unk4 = 28 },
+        { .unk0 = 1026, .unk2 = 1, .unk4 = 26 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        { .unk0 = 1027, .unk2 = 0, .unk4 = 42 },
+        { .unk0 = 1027, .unk2 = 1, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        { .unk0 = 1028, .unk2 = 0, .unk4 = 40 },
+        { .unk0 = 1028, .unk2 = 1, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        { .unk0 = 1029, .unk2 = 0, .unk4 = 40 },
+        { .unk0 = 1029, .unk2 = 1, .unk4 = 26 },
+    },
+};
+
+const struct UNK_080D95E8 sMultiplayerScoreDigitTiles[10] = {
+    { .unk0 = 1119, .unk2 = 16, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 17, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 18, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 19, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 20, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 21, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 22, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 23, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 24, .unk4 = 2 },
+    { .unk0 = 1119, .unk2 = 25, .unk4 = 2 },
+};
+
+const struct UNK_080D95E8 sTimeRecordsChoiceViewTitles[NUM_LANGUAGES] = {
+    [LanguageIndex(LANG_JAPANESE)] = { .unk0 = 959, .unk2 = 0, .unk4 = 66 },
+    [LanguageIndex(LANG_ENGLISH)] = { .unk0 = 1015, .unk2 = 0, .unk4 = 32 },
+    [LanguageIndex(LANG_GERMAN)] = { .unk0 = 1016, .unk2 = 0, .unk4 = 30 },
+    [LanguageIndex(LANG_FRENCH)] = { .unk0 = 1017, .unk2 = 0, .unk4 = 44 },
+    [LanguageIndex(LANG_SPANISH)] = { .unk0 = 1018, .unk2 = 0, .unk4 = 44 },
+    [LanguageIndex(LANG_ITALIAN)] = { .unk0 = 1019, .unk2 = 0, .unk4 = 36 },
+};
+const struct UNK_080D95E8 sTimeRecordsScreenChoices[NUM_LANGUAGES][2] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 959, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 959, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [TIME_RECORDS_CHOICE_ACTS] = { .unk0 = 1015, .unk2 = 1, .unk4 = 36 },
+        [TIME_RECORDS_CHOICE_BOSS] = { .unk0 = 1015, .unk2 = 2, .unk4 = 36 },
+    },
+};
+
+const struct UNK_080D95E8 sTimeRecordsZoneActTitleDigits[7] = {
+    { .unk0 = 1048, .unk2 = 2, .unk4 = 4 },
+    { .unk0 = 1048, .unk2 = 3, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 4, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 5, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 6, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 7, .unk4 = 6 },
+    { .unk0 = 1048, .unk2 = 8, .unk4 = 6 },
+};
+
+const struct UNK_080D95E8 sTimeRecordDigitTiles[11] = {
+    { .unk0 = 1047, .unk2 = 0, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 1, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 2, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 3, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 4, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 5, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 6, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 7, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 8, .unk4 = 4 },
+    { .unk0 = 1047, .unk2 = 9, .unk4 = 4 },
+    [DELIMINATOR_DIGIT] = { .unk0 = 1047, .unk2 = 10, .unk4 = 4 },
+};
+
+const struct UNK_080D95E8 sZoneNameTitles[NUM_LANGUAGES][7] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [ZONE_1] = { .unk0 = 1049, .unk2 = 0, .unk4 = 28 },
+        [ZONE_2] = { .unk0 = 1049, .unk2 = 1, .unk4 = 28 },
+        [ZONE_3] = { .unk0 = 1049, .unk2 = 2, .unk4 = 36 },
+        [ZONE_4] = { .unk0 = 1049, .unk2 = 3, .unk4 = 30 },
+        [ZONE_5] = { .unk0 = 1049, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1049, .unk2 = 5, .unk4 = 22 },
+        [ZONE_7] = { .unk0 = 1049, .unk2 = 6, .unk4 = 30 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [ZONE_1] = { .unk0 = 1063, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1063, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1063, .unk2 = 2, .unk4 = 34 },
+        [ZONE_4] = { .unk0 = 1063, .unk2 = 3, .unk4 = 36 },
+        [ZONE_5] = { .unk0 = 1063, .unk2 = 4, .unk4 = 34 },
+        [ZONE_6] = { .unk0 = 1063, .unk2 = 5, .unk4 = 36 },
+        [ZONE_7] = { .unk0 = 1063, .unk2 = 6, .unk4 = 32 },
+    },
+};
+const struct UNK_080D95E8 sZoneBossTitles[NUM_LANGUAGES][7] = {
+    [LanguageIndex(LANG_JAPANESE)] = { 
+        [ZONE_1] = { .unk0 = 1064, .unk2 = 0, .unk4 = 36 },
+        [ZONE_2] = { .unk0 = 1064, .unk2 = 1, .unk4 = 34 },
+        [ZONE_3] = { .unk0 = 1064, .unk2 = 2, .unk4 = 24 },
+        [ZONE_4] = { .unk0 = 1064, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1064, .unk2 = 4, .unk4 = 24 },
+        [ZONE_6] = { .unk0 = 1064, .unk2 = 5, .unk4 = 28 },
+        [ZONE_7] = { .unk0 = 1064, .unk2 = 6, .unk4 = 24 },
+    },
+    [LanguageIndex(LANG_ENGLISH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_GERMAN)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_FRENCH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_SPANISH)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+    [LanguageIndex(LANG_ITALIAN)] = { 
+        [ZONE_1] = { .unk0 = 1065, .unk2 = 0, .unk4 = 38 },
+        [ZONE_2] = { .unk0 = 1065, .unk2 = 1, .unk4 = 38 },
+        [ZONE_3] = { .unk0 = 1065, .unk2 = 2, .unk4 = 26 },
+        [ZONE_4] = { .unk0 = 1065, .unk2 = 3, .unk4 = 22 },
+        [ZONE_5] = { .unk0 = 1065, .unk2 = 4, .unk4 = 28 },
+        [ZONE_6] = { .unk0 = 1065, .unk2 = 5, .unk4 = 34 },
+        [ZONE_7] = { .unk0 = 1065, .unk2 = 6, .unk4 = 22 },
+    },
+};
 
 void CreateOptionsScreen(u16 p1) {
     struct Task* t;
@@ -309,7 +1161,7 @@ void CreateOptionsScreen(u16 p1) {
     m4aSongNumStart(MUS_OPTIONS);
 
     t = TaskCreate(Task_OptionsScreenShow, sizeof(struct OptionsScreen), 0x1000, TASK_x0004, OptionsScreenTaskDestroyHandler);
-    optionsScreen = TaskGetStructPtr(t, optionsScreen);
+    optionsScreen = TaskGetStructPtr(t);
 
     ReadProfileData(optionsScreen);
 
@@ -332,15 +1184,15 @@ void CreateOptionsScreen(u16 p1) {
 // and selecting a time attack course is the same,
 // except the mode is TIME_ATTACK
 // so this is within the profile source.
-void CreateTimeAttackSelectionScreen(bool16 isBossView, u16 selectedCharacter) {
+void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter, s8 unused_currentLevel) {
     struct Task* t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, TASK_x0004, NULL);
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t);
     s16 i;
 
     ReadAvailableCharacters(i, gLoadedSaveGame->unk13);
 
     timeRecordsScreen->playerDataMenu = 0;
-    timeRecordsScreen->timeRecords = EwramMallocStruct(struct TimeRecords);
+    timeRecordsScreen->timeRecords = EwramMalloc(sizeof(struct TimeRecords));
     timeRecordsScreen->character = selectedCharacter;
     timeRecordsScreen->zone = 0;
     timeRecordsScreen->act = 0;
@@ -377,7 +1229,7 @@ void CreateNewProfileScreen(void) {
     ShuffleRngSeed();
 
     t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, TASK_x0004, NULL);
-    languageScreen = TaskGetStructPtr(t, languageScreen);
+    languageScreen = TaskGetStructPtr(t);
 
     languageScreen->optionsScreen = NULL;
     languageScreen->menuCursor = LanguageIndex(gLoadedSaveGame->unk6);
@@ -396,7 +1248,7 @@ void CreateNewProfileScreen(void) {
 
 void CreateNewProfileNameScreen(s16 mode) {
     struct Task* t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, TASK_x0004, NULL);
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t);
     s16 i;
 
     profileNameScreen->playerDataMenu = NULL;
@@ -624,7 +1476,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
     }
 
     {
-        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][optionsScreen->difficultyLevel];
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchText[language][optionsScreen->difficultyLevel];
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_DIFFICULTY ? 152 : 160;
     
         sub_806A568(
@@ -643,7 +1495,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
     }
 
     {
-        const struct UNK_080D95E8 *timeLimitSwitchText = &sTimeLimitMenuSwitchValues[language][optionsScreen->timeLimitEnabled];
+        const struct UNK_080D95E8 *timeLimitSwitchText = &sTimeLimitMenuSwitchText[language][optionsScreen->timeLimitEnabled];
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_TIME_LIMIT ? 152 : 160;
     
         sub_806A568(
@@ -743,7 +1595,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen* optionsScreen, s16 state
 }
 
 static void Task_OptionsScreenMain(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
 
     OptionsScreenRenderUI();
 
@@ -845,7 +1697,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, 
     gBgScrollRegs[2][0] = baseXPos;    
 }
 
-static inline void PreviousMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, s8 baseXPos) {
+static inline void PrevMenuCursorAnimFrame(struct OptionsScreen* optionsScreen, s8 baseXPos) {
     struct UNK_0808B3FC_UNK240* item = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
 
     item->unk16 = baseXPos + 32;
@@ -868,11 +1720,11 @@ static inline void PreviousMenuCursorAnimFrame(struct OptionsScreen* optionsScre
 } 
 
 static void Task_OptionsScreenMenuCursorMoveAnim(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     s16 animFrame = optionsScreen->subMenuAnimFrame;
     
-    NextMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[0][animFrame]);
-    PreviousMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[1][animFrame]);
+    NextMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS][animFrame]);
+    PrevMenuCursorAnimFrame(optionsScreen, sMenuCursorMoveAnims[OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS][animFrame]);
 
     OptionsScreenRenderUI();
 
@@ -909,9 +1761,9 @@ static inline void SubMenuAnimFrame(struct OptionsScreen* optionsScreen, const s
 }
 
 static void Task_OptionsScreenSubMenuOpenAnim(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     
-    SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnimFrames);
+    SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnim);
     OptionsScreenRenderUI();
 
     if (++optionsScreen->subMenuAnimFrame >= 16) {
@@ -921,9 +1773,9 @@ static void Task_OptionsScreenSubMenuOpenAnim(void) {
 }
 
 static void Task_OptionsScreenSubMenuCloseAnim(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     
-    SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnimFrames);
+    SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnim);
     OptionsScreenRenderUI();
 
     if (++optionsScreen->subMenuAnimFrame >= 16) {
@@ -933,7 +1785,7 @@ static void Task_OptionsScreenSubMenuCloseAnim(void) {
 }
 
 static void Task_OptionsScreenWaitForLanguageScreenExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
@@ -957,7 +1809,7 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void) {
 }
 
 static void Task_OptionsScreenWaitForSoundTestExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
@@ -982,7 +1834,7 @@ static void Task_OptionsScreenWaitForSoundTestExit(void) {
 }
 
 static void Task_OptionsScreenWaitForDeleteScreenExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     u8 language = optionsScreen->language;
 
@@ -1018,7 +1870,7 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void) {
 }
 
 static void OptionsScreenRenderUI(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
     struct UNK_0808B3FC_UNK240 *menuItem = optionsScreen->menuItems;
     struct UNK_0808B3FC_UNK240 *metaItem = optionsScreen->metaItems;
@@ -1044,7 +1896,7 @@ static void OptionsScreenRenderUI(void) {
 
 static void CreatePlayerDataMenu(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_PlayerDataMenuOpenAnimWait, sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(t, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(t);
 
     s16 initialCursorPos;
     if (optionsScreen->initialSubMenuCursorPosition != -1) {
@@ -1139,7 +1991,7 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu* playerDataMenu) {
 }
 
 static void Task_PlayerDataMenuOpenAnimWait(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
     struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
@@ -1166,7 +2018,7 @@ static void Task_PlayerDataMenuOpenAnimWait(void) {
 }
 
 static void Task_PlayerDataMenuMain(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
     struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
     struct OptionsScreen* optionsScreen = playerDataMenu->optionsScreen;
@@ -1228,7 +2080,7 @@ static void Task_PlayerDataMenuMain(void) {
 }
 
 static void Task_PlayerDataMenuCloseAnim(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
     struct UNK_0808B3FC_UNK240* menuItemOutline = &playerDataMenu->menuItemOutline;
@@ -1276,7 +2128,7 @@ static inline void OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMen
 }
 
 static void Task_PlayerDataMenuWaitForProfileNameScreenExit(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == 0) {
@@ -1286,7 +2138,7 @@ static void Task_PlayerDataMenuWaitForProfileNameScreenExit(void) {
 }
 
 void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -1306,7 +2158,7 @@ void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void) {
 }
 
 static void Task_PlayerDataMenuWaitForTimeRecordsScreenExit(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == PLAYER_DATA_MENU_STATE_ACTIVE) {
@@ -1316,7 +2168,7 @@ static void Task_PlayerDataMenuWaitForTimeRecordsScreenExit(void) {
 }
 
 static void Task_PlayerDataMenuWaitForMultiplayerRecordsScreenExit(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == PLAYER_DATA_MENU_STATE_ACTIVE) {
@@ -1332,7 +2184,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu* difficultyMenu) {
 
     const struct UNK_080D95E8 *titleText = &sDifficultyMenuTitleText[difficultyMenu->language];
     const struct UNK_080D95E8 *footerText = &sDifficultyMenuControlsText[difficultyMenu->language];
-    const struct UNK_080D95E8 *difficultyLevelText = sDifficultyLevelSwitchValues[difficultyMenu->language];
+    const struct UNK_080D95E8 *difficultyLevelText = sDifficultyLevelSwitchText[difficultyMenu->language];
     
     s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 difficultyLevel = difficultyMenu->switchValue;
@@ -1414,7 +2266,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu* difficultyMenu) {
 } 
 
 void Task_DifficultyMenuOpenAnimWait(void) {
-    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -1433,14 +2285,14 @@ void Task_DifficultyMenuOpenAnimWait(void) {
     switchValueOutline->unk16 = baseXPos + (difficultyMenu->switchValue * 60 + 272);
     DifficultyMenuRenderUI();
 
-    if (++difficultyMenu->animFrame > 15) {
+    if (++difficultyMenu->animFrame >= 16) {
         difficultyMenu->animFrame = 0;
         gCurTask->main = Task_DifficultyMenuMain;
     }
 }
 
 static void Task_DifficultyMenuMain(void) {
-    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
     struct OptionsScreen* optionsScreen = difficultyMenu->optionsScreen;
@@ -1468,9 +2320,9 @@ static void Task_DifficultyMenuMain(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchValues[language][difficultyMenu->switchValue];
+        const struct UNK_080D95E8 *difficultyLevelText = &sDifficultyLevelSwitchText[language][difficultyMenu->switchValue];
 
-        difficultyOption = &optionsScreen->metaItems[1];
+        difficultyOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_DIFFICULTY_LEVEL];
         difficultyOption->unk20 = difficultyLevelText->unk2;
         difficultyOption->unkA = difficultyLevelText->unk0;
         sub_8004558(difficultyOption);
@@ -1491,7 +2343,7 @@ static void Task_DifficultyMenuMain(void) {
 }
 
 static void Task_DifficultyMenuCloseAnim(void) {
-    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -1526,7 +2378,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu* timeLimitMenu) {
 
     const struct UNK_080D95E8 *titleText = &sTimeLimitMenuTitleText[timeLimitMenu->language];
     const struct UNK_080D95E8 *footerText = &sTimeLimitMenuControlsText[timeLimitMenu->language];
-    const struct UNK_080D95E8 *timeLimitSwitchText = sTimeLimitMenuSwitchValues[timeLimitMenu->language];
+    const struct UNK_080D95E8 *timeLimitSwitchText = sTimeLimitMenuSwitchText[timeLimitMenu->language];
 
     s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
     s16 timeLimitEnabled = timeLimitMenu->switchValue;
@@ -1609,7 +2461,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu* timeLimitMenu) {
 }
 
 static void Task_TimeLimitMenuOpenAnimWait(void) {
-    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -1636,7 +2488,7 @@ static void Task_TimeLimitMenuOpenAnimWait(void) {
 
 static void Task_TimeLimitMenuMain(void) {
     // Same as sub_806548C
-    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
     struct OptionsScreen* optionsScreen = timeLimitMenu->optionsScreen;
@@ -1663,7 +2515,7 @@ static void Task_TimeLimitMenuMain(void) {
     }
 
     if (gPressedKeys & A_BUTTON) {
-        const struct UNK_080D95E8 *itemText3 = &sTimeLimitMenuSwitchValues[language][timeLimitMenu->switchValue];
+        const struct UNK_080D95E8 *itemText3 = &sTimeLimitMenuSwitchText[language][timeLimitMenu->switchValue];
         // Except this is different
         timeLimitOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_TIME_LIMIT];
         
@@ -1683,7 +2535,7 @@ static void Task_TimeLimitMenuMain(void) {
 }
 
 static void Task_TimeLimitMenuCloseAnim(void) {
-    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* timeLimitOption = timeLimitMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -1713,7 +2565,7 @@ static void Task_TimeLimitMenuCloseAnim(void) {
 
 void CreateButtonConfigMenu(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_ButtonConfigMenuOpenAnimWait, sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(t, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(t);
 
     buttonConfigMenu->optionsScreen = optionsScreen;
     
@@ -1948,7 +2800,7 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu* buttonConfigMenu) 
 }
 
 static void Task_ButtonConfigMenuOpenAnimWait(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* uiElement = buttonConfigMenu->staticElements;
     struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
     struct UNK_0808B3FC_UNK240* scrollArrow = buttonConfigMenu->scrollArrows;
@@ -1983,7 +2835,7 @@ static void Task_ButtonConfigMenuOpenAnimWait(void) {
 }
 
 static void Task_ButtonConfigMenuAButtonMain(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
     const struct UNK_080D95E8 *actionText;
@@ -2065,7 +2917,7 @@ static void Task_ButtonConfigMenuAButtonMain(void) {
 }
 
 void Task_ButtonConfigMenuBButtonMain(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* buttonAction;
     const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText4;
@@ -2192,7 +3044,7 @@ static inline void CommitButtonConfig(struct ButtonConfigMenu* buttonConfigMenu,
 }
 
 static void Task_ButtonConfigMenuRShoulderMain(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct OptionsScreen* optionsScreen = buttonConfigMenu->optionsScreen;
 
     ButtonConfigMenuRenderUI();
@@ -2222,7 +3074,7 @@ static void Task_ButtonConfigMenuRShoulderMain(void) {
 }
 
 static void ButtonConfigMenuStartOver(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct OptionsScreen* optionsScreen = buttonConfigMenu->optionsScreen;
     struct UNK_0808B3FC_UNK240* buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText = sButtonConfigActionsText[buttonConfigMenu->language];
@@ -2244,7 +3096,7 @@ static void ButtonConfigMenuStartOver(void) {
 }
 
 static void Task_ButtonMenuConfigCloseAnim(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->staticElements;
     struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->buttonActions;
     struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
@@ -2279,7 +3131,7 @@ static void Task_ButtonMenuConfigCloseAnim(void) {
 }
 
 static void ButtonConfigMenuRenderUI(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* unk4 = buttonConfigMenu->staticElements;
     struct UNK_0808B3FC_UNK240* unk124 = buttonConfigMenu->buttonActions;
     struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
@@ -2447,7 +3299,7 @@ static void LanguageScreenCreateUI(struct LanguageScreen* languageScreen) {
 }
 
 static void Task_LanguageScreenMain(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     ReseedRng();
 
     if (gRepeatedKeys & (DPAD_DOWN)) {
@@ -2496,7 +3348,7 @@ static void Task_LanguageScreenMain(void) {
 }
 
 static void LanguageScreenHandleLanguageChanged(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = languageScreen->headerFooter;
     struct UNK_0808B3FC_UNK240* menuItems = languageScreen->languageOptions;
     struct UNK_0808B3FC_UNK240* menuItemOutline = &languageScreen->optionOutline;
@@ -2529,7 +3381,7 @@ static void LanguageScreenHandleLanguageChanged(void) {
 
 static void CreateDeleteScreen(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_DeleteScreenFadeIn, sizeof(struct DeleteScreen), 0x2000, TASK_x0004, NULL);
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(t, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(t);
 
     deleteScreen->optionsScreen = optionsScreen;
     deleteScreen->confirmationCursor = 1;
@@ -2687,7 +3539,7 @@ static void DeleteScreenCreateUI(struct DeleteScreen* deleteScreen) {
 }
 
 static void Task_DeleteScreenConfrimationMain(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* option = deleteScreen->options;
     struct UNK_0808B3FC_UNK240* optionOutline = &deleteScreen->optionOutline;
     s16 i;
@@ -2725,7 +3577,7 @@ static void Task_DeleteScreenConfrimationMain(void) {
 }
 
 static void Task_DeleteScreenCreateAbsoluteConfirmation(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
 
     struct UNK_0808B3FC_UNK240* headerFooter = deleteScreen->headerFooter;
     struct UNK_0808B3FC_UNK240* option = deleteScreen->options;
@@ -2751,7 +3603,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void) {
 }
 
 static void Task_DeleteScreenAbsoluteConfirmMain(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* option = deleteScreen->options;
     struct UNK_0808B3FC_UNK240* optionOutline = &deleteScreen->optionOutline;
     s16 i;
@@ -2790,7 +3642,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void) {
 }
 
 void Task_DeleteScreenFadeOutAndExit(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
 
     if (!sub_802D4CC(&deleteScreen->unk130)) {
         DeleteScreenRenderUI();
@@ -2810,7 +3662,7 @@ void Task_DeleteScreenFadeOutAndExit(void) {
 
 void CreateEditProfileNameScreen(struct PlayerDataMenu* playerDataMenu) {
     struct Task* t = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(t);
     s16 i;
 
     profileNameScreen->playerDataMenu = playerDataMenu;
@@ -2997,7 +3849,7 @@ static void ProfileNameScreenCreateUIText(struct ProfileNameScreen* profileNameS
 static void ProfileNameScreenCreateUIContextElements(struct ProfileNameScreen* profileNameScreen) {
     struct UNK_0808B3FC_UNK240* focusedCell = profileNameScreen->focusedCell;
     struct UNK_0808B3FC_UNK240* scrollArrow = profileNameScreen->scrollArrows;
-    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
+    const struct UNK_080D95E8* scrollArrowTile = sProfileNameScreenScrollArrowTiles;
     struct UNK_806B908 nameCharTile;
     
     // background
@@ -3104,7 +3956,7 @@ static void ProfileNameScreenCreateInputDisplayUI(struct ProfileNameScreen* prof
 }
 
 static void Task_ProfileNameScreenMain(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
     struct NameInputDisplay* nameInput = &profileNameScreen->nameInput;
 
     ProfileNameScreenRenderUI();
@@ -3247,7 +4099,7 @@ static void Task_ProfileNameScreenMain(void) {
 }
 
 static bool16 ProfileNameScreenHandleShoulderInput(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
 
     if (gRepeatedKeys & L_BUTTON) {
         if (profileNameScreen->nameInput.cursor > 0) {
@@ -3280,9 +4132,9 @@ static bool16 ProfileNameScreenHandleShoulderInput(void) {
 }
 
 static bool16 ProfileNameScreenHandleDpadInput(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
 
-    if (!(gRepeatedKeys & (DPAD_DOWN | DPAD_UP | DPAD_LEFT | DPAD_RIGHT))) {
+    if (!(gRepeatedKeys & (DPAD_ANY))) {
         return FALSE;
     }
 
@@ -3377,7 +4229,7 @@ static bool16 ProfileNameScreenHandleDpadInput(void) {
 }
 
 static void ProfileNameScreenInputComplete(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
     struct NameInputDisplay* nameInput = &profileNameScreen->nameInput;
     s16 i;
@@ -3401,7 +4253,7 @@ static void ProfileNameScreenInputComplete(void) {
 }
 
 static void ProfileNameScreenFadeOutAndExit(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
     struct NameInputDisplay* nameInput = &profileNameScreen->nameInput;
     s16 onCompleteAction = profileNameScreen->onCompleteAction;
@@ -3432,15 +4284,14 @@ static void ProfileNameScreenFadeOutAndExit(void) {
     gUnknown_03004D5C = gUnknown_03002A84;
 
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
-        // Continue to multiplayer
-        sub_805A1CC();
+        CreateMultiplayerModeSelectScreen();
     } else {
         CreateTitleScreen();
     }
 }
 
 static void ProfileNameScreenRenderUI(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
 
     struct UNK_0808B3FC_UNK240* title = &profileNameScreen->title;
     struct UNK_0808B3FC_UNK240* controls = profileNameScreen->controls;
@@ -3528,7 +4379,7 @@ static void ProfileNameScreenRenderUI(void) {
 
 static void CreateTimeRecordsScreen(struct PlayerDataMenu* playerDataMenu) {
     struct Task* t = TaskCreate(Task_TimeRecordsScreenChoiceViewFadeIn, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t);
     s16 availableCharacters;
 
     ReadAvailableCharacters(availableCharacters, gLoadedSaveGame->unk13);
@@ -3686,7 +4537,7 @@ static void TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen* timeRe
 }
 
 static void Task_TimeRecordsScreenModeChoiceMain(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* unk4C = timeRecordsScreen->choiceViewItemsOrZoneTitle;
     
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
@@ -3725,7 +4576,7 @@ static void Task_TimeRecordsScreenModeChoiceMain(void) {
 
 static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu* playerDataMenu) {
     struct Task* t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI, sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(t);
     s16 i;
 
     ReadAvailableCharacters(i, gLoadedSaveGame->unk13);
@@ -3803,8 +4654,8 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(struct TimeRecordsSc
     unk270->unk8 = 0xFF;
 
     sub_806B854(&timeRecordsScreen->coursesViewBackground,0,7,0x8B,0x1e,0x14,0,0,0,0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,1,0x16,sTimeRecordsCharacterBackgrounds[character][0],9,0x14,0,1,0,0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacter,2,0x1E,sTimeRecordsCharacterBackgrounds[character][1],9,0x14,0,2,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground,1,0x16,sTimeRecordsCharacterAssets[character][ASSET_CHARACTER_BACKGROUND],9,0x14,0,1,0,0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter,2,0x1E,sTimeRecordsCharacterAssets[character][ASSET_CHARACTER],9,0x14,0,2,0,0);
 }
 
 static void TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen* timeRecordsScreen) {
@@ -3903,7 +4754,7 @@ static inline u16* LoadCourseTimes(struct TimeRecordsScreen* timeRecordsScreen) 
 static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen* timeRecordsScreen) {
     struct TimeRecordDisplay* timeRecordDisplay = timeRecordsScreen->timeDisplays;
     // interesting optimistation, as I guess they are all the same size
-    s16 digitSize = sTimeRecordDigitTiles[10].unk4;
+    s16 digitSize = sTimeRecordDigitTiles[DELIMINATOR_DIGIT].unk4;
     struct UNK_0808B3FC_UNK240* minuteDigit, *secondDigit, *milliDigit, *deliminator;
 
     u16* courseTimes = LoadCourseTimes(timeRecordsScreen);
@@ -3923,8 +4774,8 @@ static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen* timeRecords
         if (timeValue < MAX_COURSE_TIME) {
             s16 temp = timeValue % 60;
             u16 temp2 = timeValue - temp;
-            millis = gMillisLookup[temp][0] * 10;
-            millis += gMillisLookup[temp][1];
+            millis = gMillisUnpackTable[temp][0] * 10;
+            millis += gMillisUnpackTable[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -3983,7 +4834,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen* timeRecord
             u16 temp2 = timeValue - temp;
             // This logic is the same as the above function but required to be
             // inline instead of split, but required to be split in the other function
-            millis = gMillisLookup[temp][0] * 10 + gMillisLookup[temp][1];
+            millis = gMillisUnpackTable[temp][0] * 10 + gMillisUnpackTable[temp][1];
             seconds = temp2 / 60;
             minutes = seconds / 60;
             seconds += minutes * -60;
@@ -4034,7 +4885,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen* timeRecord
 }
 
 static void Task_TimeRecordsScreenHandleCharacterChange(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     u32 character;
 
     if (timeRecordsScreen->character != 0xFF) {
@@ -4049,14 +4900,14 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void) {
     gBgScrollRegs[2][0] = 0xFF10;
     gBgScrollRegs[2][1] = 0x10;
 
-    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, sTimeRecordsCharacterBackgrounds[character][0], 9, 0x14, 0, 1, 0, 0);
-    sub_806B854(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E, sTimeRecordsCharacterBackgrounds[character][1], 9, 0x14, 0, 2, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, sTimeRecordsCharacterAssets[character][0], 9, 0x14, 0, 1, 0, 0);
+    sub_806B854(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E, sTimeRecordsCharacterAssets[character][1], 9, 0x14, 0, 2, 0, 0);
 
     gCurTask->main = Task_TimeRecordsScreenCharacterChangeAnimIn;
 }
 
 static void Task_TimeRecordsScreenCharacterChangeAnimIn(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
 
     if (++timeRecordsScreen->animFrame < 5) {
         gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - 240;
@@ -4075,7 +4926,7 @@ static void Task_TimeRecordsScreenCharacterChangeAnimIn(void) {
 }
 
 static void Task_TimeRecordsScreenCourseChangeAnim(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     s16 i;
 
     timeRecordsScreen->animFrame++;
@@ -4125,7 +4976,7 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame) {
 }
 
 static void Task_TimeRecordsScreenCoursesViewMain(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     s16 availableCourses = timeRecordsScreen->unlockedCourses[timeRecordsScreen->character];
     s32 temp;
     if (availableCourses == 0) {
@@ -4177,7 +5028,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                 if (timeRecordsScreen->zone != 0) {
                     timeRecordsScreen->zone--;
                 } else {
-                    timeRecordsScreen->zone = NUM_ZONES - 1;
+                    timeRecordsScreen->zone = NUM_COURSE_ZONES - 1;
                 }
                 gCurTask->main = Task_TimeRecordsScreenHandleCourseChange;
                 return;
@@ -4193,7 +5044,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                     r5 = r1 != 1;
                     if (timeRecordsScreen->act > 0) {
                         timeRecordsScreen->act = 0;
-                        if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                        if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                             timeRecordsScreen->zone++;
                         } else {
                             timeRecordsScreen->zone = 0;
@@ -4223,7 +5074,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
 
                 if (timeRecordsScreen->act > 0) {
                     timeRecordsScreen->act = 0;
-                    if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                    if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                         timeRecordsScreen->zone++;
                     } else {
                          timeRecordsScreen->zone = 0;
@@ -4235,7 +5086,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
                 }
                 
             } else {
-                if (timeRecordsScreen->zone < NUM_ZONES - 1) {
+                if (timeRecordsScreen->zone < NUM_COURSE_ZONES - 1) {
                     timeRecordsScreen->zone++;
                 } else {
                      timeRecordsScreen->zone = 0;
@@ -4290,7 +5141,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void) {
 }
 
 static void Task_TimeRecordsScreenCharacterChangeAnimOut(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
 
     timeRecordsScreen->animFrame--;
 
@@ -4308,7 +5159,7 @@ static void Task_TimeRecordsScreenCharacterChangeAnimOut(void) {
 }
 
 static void Task_TimeRecordsScreenHandleCourseChange(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* zoneNumber = &timeRecordsScreen->choiceViewItemsOrZoneTitle[1];
     struct UNK_0808B3FC_UNK240* unkDC = &timeRecordsScreen->actTitle[1];
     struct UNK_0808B3FC_UNK240* zoneSubtitle = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
@@ -4346,7 +5197,7 @@ static void Task_TimeRecordsScreenHandleCourseChange(void) {
 }
 
 static void Task_TimeRecordsScreenFadeToPrevious(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
     struct PlayerDataMenu* playerDataMenu = timeRecordsScreen->playerDataMenu;
     
@@ -4385,13 +5236,13 @@ static void Task_TimeRecordsScreenFadeToPrevious(void) {
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
             gUnknown_03004D5C = gUnknown_03002A84;
-            sub_803143C(timeRecordsScreen->character, allCharactersUnlocked);
+            CreateCharacterSelectionScreen(timeRecordsScreen->character, allCharactersUnlocked);
             break;
     }
 }
 
 static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct TimeRecordDisplay* timeRecord = timeRecordsScreen->timeDisplays;
     struct UNK_0808B3FC_UNK240* timeRecordDisplay = timeRecordsScreen->timeRecordDisplays;
     struct UNK_0808B3FC_UNK240* zoneTitleElement = timeRecordsScreen->choiceViewItemsOrZoneTitle;
@@ -4465,13 +5316,13 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a) {
 
 static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu* playerDataMenu) {
     struct Task* t = TaskCreate(Task_MultiplayerRecordsScreenCreateNextTableRowUI, sizeof(struct MultiplayerRecordsScreen), 0x2000, 4, NULL);
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(t, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(t);
     
     struct MultiplayerRecordRow* rows;
     struct OptionsScreenProfileData* profileData;
     s16 i, j;
     
-    multiplayerRecordsScreen->table = EwramMallocStruct(struct MultiplayerRecordsTable);
+    multiplayerRecordsScreen->table = EwramMalloc(sizeof(struct MultiplayerRecordsTable));
     multiplayerRecordsScreen->playerDataMenu = playerDataMenu;
 
     multiplayerRecordsScreen->scrollAnimFrame = 0;
@@ -4556,7 +5407,7 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(struct MultiplayerRecordsS
     struct UNK_0808B3FC_UNK240* playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
 
     const struct UNK_080D95E8* titleAndColumnHeadersText = sMultiplayerRecordsTitleAndColumnHeadersText[multiplayerRecordsScreen->language];
-    const struct UNK_080D95E8* scrollArrowTile = sScrollArrowTiles;
+    const struct UNK_080D95E8* scrollArrowTile = sProfileNameScreenScrollArrowTiles;
     // The data is made into a pointer here but then another pointer is used for
     // the actual reference
     const struct UNK_080D95E8* digitTile, *digitTiles = sMultiplayerScoreDigitTiles;
@@ -4683,7 +5534,7 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex) {
 }
 
 static void Task_MultiplayerRecordsScreenMain(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     struct MultiplayerRecordRow* rows = multiplayerRecordsScreen->table->rows;
 
     MultiplayerRecordsScreenRenderUI();
@@ -4725,7 +5576,7 @@ static void Task_MultiplayerRecordsScreenMain(void) {
 
 static void Task_MultiplayerRecordsScreenScrollAnim(void) {
     struct MultiplayerRecordRow* row;
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     
     // assume that we are going to need to render the next row or previous row
     s16 numVisibleRows = MULTIPLAYER_RECORDS_SCREEN_NUM_VISIBLE_ROWS + 1;
@@ -4784,7 +5635,7 @@ static void Task_MultiplayerRecordsScreenScrollAnim(void) {
 }
 
 static void MultiplayerRecordsScreenRenderUI(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* title = &multiplayerRecordsScreen->title;
     struct UNK_0808B3FC_UNK240* columnHeaders = &multiplayerRecordsScreen->columnHeaders;
     struct UNK_0808B3FC_UNK240* playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
@@ -4988,7 +5839,7 @@ static void OptionsScreenTaskDestroyHandler(struct Task* optionsScreenTask) {
 }
 
 static void Task_OptionsScreenShow(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
@@ -5002,7 +5853,7 @@ static void SetupOptionScreenBackgroundsUI(struct OptionsScreen* optionsScreen) 
 }
 
 static void Task_OptionScreenFadeIn(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5012,7 +5863,7 @@ static void Task_OptionScreenFadeIn(void) {
 }
 
 static void OptionsScreenOpenSelectedSubMenu(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
 
     switch (optionsScreen->menuCursor) {
         case OPTIONS_MENU_ITEM_PLAYER_DATA:
@@ -5040,7 +5891,7 @@ static void OptionsScreenOpenSelectedSubMenu(void) {
 }
 
 static void Task_OptionsScreenWaitForSubMenuExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     if (optionsScreen->state < OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN) {
         OptionsScreenRenderUI();
     }
@@ -5054,7 +5905,7 @@ static void Task_OptionsScreenWaitForSubMenuExit(void) {
 /** Menu 1 **/
 
 static void OptionsScreenShowLanguageScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5067,7 +5918,7 @@ static void OptionsScreenShowLanguageScreen(void) {
 }
 
 static void Task_OptionsScreenFadeOutToLanguageScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5079,7 +5930,7 @@ static void Task_OptionsScreenFadeOutToLanguageScreen(void) {
 }
 
 static void Task_OptionsScreenFadeInFromLanguageScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5091,7 +5942,7 @@ static void Task_OptionsScreenFadeInFromLanguageScreen(void) {
 /** Menu 2 **/
 
 static void OptionsScreenShowSoundTestScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5104,7 +5955,7 @@ static void OptionsScreenShowSoundTestScreen(void) {
 }
 
 static void Task_OptionScreenFadeOutToSoundTest(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5116,7 +5967,7 @@ static void Task_OptionScreenFadeOutToSoundTest(void) {
 }
 
 static void Task_OptionsScreenFadeInFromSoundTest(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5128,7 +5979,7 @@ static void Task_OptionsScreenFadeInFromSoundTest(void) {
 /** Menu 3 **/
 
 static void OptionsScreenShowDeleteScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5141,7 +5992,7 @@ static void OptionsScreenShowDeleteScreen(void) {
 }
 
 static void Task_OptionsScreenFadeOutToDeleteScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5153,7 +6004,7 @@ static void Task_OptionsScreenFadeOutToDeleteScreen(void) {
 }
 
 static void Task_OptionsScreenFadeInFromDeleteScreen(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5165,7 +6016,7 @@ static void Task_OptionsScreenFadeInFromDeleteScreen(void) {
 /** Player Data Menu 1 **/
 
 static void PlayerDataMenuShowProfileNameScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5178,7 +6029,7 @@ static void PlayerDataMenuShowProfileNameScreen(void) {
 }
 
 static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5191,7 +6042,7 @@ static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void) {
 }
 
 static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5203,7 +6054,7 @@ static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void) {
 /** Player Data Menu 2 **/
 
 static void PlayerDataMenuShowTimeRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5216,7 +6067,7 @@ static void PlayerDataMenuShowTimeRecordsScreen(void) {
 }
 
 static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5228,7 +6079,7 @@ static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void) {
 /** Player Data Menu 3 **/
 
 static void PlayerDataMenuShowMultiplayerRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5241,7 +6092,7 @@ static void PlayerDataMenuShowMultiplayerRecordsScreen(void) {
 }
 
 static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5254,7 +6105,7 @@ static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void) {
 }
 
 static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5264,7 +6115,7 @@ static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void) {
 }
 
 static void OptionsScreenHandleExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5277,7 +6128,7 @@ static void OptionsScreenHandleExit(void) {
 }
 
 static void Task_OptionsScreenFadeOutAndExit(void) {
-    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask, optionsScreen);
+    struct OptionsScreen* optionsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk270 = &optionsScreen->unk774;
     if (!sub_802D4CC(unk270)) {
         OptionsScreenRenderUI();
@@ -5294,7 +6145,7 @@ static void Task_OptionsScreenFadeOutAndExit(void) {
 }
 
 static void PlayerDataMenuRenderUI(void) {
-    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask, playerDataMenu);
+    struct PlayerDataMenu* playerDataMenu = TaskGetStructPtr(gCurTask);
 
     struct UNK_0808B3FC_UNK240* headerFooter = playerDataMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* menuItem = playerDataMenu->menuItems;
@@ -5315,7 +6166,7 @@ static void PlayerDataMenuRenderUI(void) {
 
 static void CreateDifficultyMenu(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_DifficultyMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, NULL);
-    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(t, difficultyMenu);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(t);
     
     difficultyMenu->optionsScreen = optionsScreen;
     difficultyMenu->switchValue = optionsScreen->difficultyLevel;
@@ -5326,7 +6177,7 @@ static void CreateDifficultyMenu(struct OptionsScreen* optionsScreen) {
 }
 
 static void DifficultyMenuRenderUI(void) {
-    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask, difficultyMenu);
+    struct SwitchMenu* difficultyMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = difficultyMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* difficultyOption = difficultyMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -5346,7 +6197,7 @@ static void DifficultyMenuRenderUI(void) {
 
 static void CreateTimeLimitMenu(struct OptionsScreen* optionsScreen) {
     struct Task* t = TaskCreate(Task_TimeLimitMenuOpenAnimWait, sizeof(struct SwitchMenu), 0x2000, 4, 0);
-    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(t, timeLimitMenu);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(t);
 
     timeLimitMenu->optionsScreen = optionsScreen;
     timeLimitMenu->switchValue = optionsScreen->timeLimitEnabled;
@@ -5356,7 +6207,7 @@ static void CreateTimeLimitMenu(struct OptionsScreen* optionsScreen) {
 }
 
 static void TimeLimitMenuRenderUI(void) {
-    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask, timeLimitMenu);
+    struct SwitchMenu* timeLimitMenu = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* headerFooter = timeLimitMenu->headerFooter;
     struct UNK_0808B3FC_UNK240* option = timeLimitMenu->options;
     struct UNK_0808B3FC_UNK240* switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -5375,7 +6226,7 @@ static void TimeLimitMenuRenderUI(void) {
 }
 
 static void Task_ButtonConfigMenuHandleStartOver(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* scrollArrow = buttonConfigMenu->scrollArrows;
     struct UNK_0808B3FC_UNK240* controlFocus = &buttonConfigMenu->controlFocus;
@@ -5391,7 +6242,7 @@ static void Task_ButtonConfigMenuHandleStartOver(void) {
 }
 
 static void Task_ButtonConfigMenuHandleAButtonComplete(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
     struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
@@ -5406,7 +6257,7 @@ static void Task_ButtonConfigMenuHandleAButtonComplete(void) {
 }
 
 static void Task_ButtonConfigMenuHandleBButtonComplete(void) {
-    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask, buttonConfigMenu);
+    struct ButtonConfigMenu* buttonConfigMenu = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* unk1B4 = buttonConfigMenu->scrollArrows;
     struct UNK_0808B3FC_UNK240* unk214 = &buttonConfigMenu->controlFocus;
@@ -5423,7 +6274,7 @@ static void Task_ButtonConfigMenuHandleBButtonComplete(void) {
 
 static void CreateEditLanguageScreen(struct OptionsScreen* optionScreen) {
     struct Task* t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000, 4, NULL);
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(t, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(t);
 
     languageScreen->optionsScreen = optionScreen;
     languageScreen->menuCursor = optionScreen->language;
@@ -5441,7 +6292,7 @@ static void LanguageScreenCreateBackgroundsUI(struct LanguageScreen* languageScr
 }
 
 static void Task_LanguageScreenFadeIn(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk1F0 = &languageScreen->unk1F0;
 
     LanguageScreenRenderUI();
@@ -5454,7 +6305,7 @@ static void Task_LanguageScreenFadeIn(void) {
 
 
 static void LanguageScreenHandleExit(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk1F0 = &languageScreen->unk1F0;
     unk1F0->unk0 = 0;
     unk1F0->unk2 = 1;
@@ -5468,7 +6319,7 @@ static void LanguageScreenHandleExit(void) {
 }
 
 static void Task_LanguageScreenFadeOutAndExit(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk1F0 = &languageScreen->unk1F0;
     ReseedRng();
 
@@ -5492,7 +6343,7 @@ static void ReseedRng(void) {
 }
 
 static void LanguageScreenRenderUI(void) {
-    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask, languageScreen);
+    struct LanguageScreen* languageScreen = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* headerFooter = languageScreen->headerFooter;
     struct UNK_0808B3FC_UNK240* languageOption = languageScreen->languageOptions;
@@ -5516,7 +6367,7 @@ static void DeleteScreenCreateBackgroundsUI(struct DeleteScreen* deleteScreen) {
 }
 
 static void Task_DeleteScreenFadeIn(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk130 = &deleteScreen->unk130;
     DeleteScreenRenderUI();
     if (sub_802D4CC(unk130)) {
@@ -5525,7 +6376,7 @@ static void Task_DeleteScreenFadeIn(void) {
 }
 
 static void Task_DeleteScreenHandleExit(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk130 = &deleteScreen->unk130;
 
     DeleteScreenRenderUI();
@@ -5542,7 +6393,7 @@ static void Task_DeleteScreenHandleExit(void) {
 }
 
 static void DeleteScreenRenderUI(void) {
-    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask, deleteScreen);
+    struct DeleteScreen* deleteScreen = TaskGetStructPtr(gCurTask);
     
     struct UNK_0808B3FC_UNK240* headerFooter = deleteScreen->headerFooter;
     struct UNK_0808B3FC_UNK240* unk60 = deleteScreen->options;
@@ -5562,7 +6413,7 @@ static void DeleteScreenRenderUI(void) {
 }
 
 static void Task_ProfileNameScreenFadeIn(void) {
-    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask, profileNameScreen);
+    struct ProfileNameScreen* profileNameScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk140 = &profileNameScreen->unk140;
 
     ProfileNameScreenRenderUI();
@@ -5587,7 +6438,7 @@ UNUSED static void TimeRecordsScreenShowChoiceView(struct TimeRecordsScreen* tim
 }
 
 static void Task_TimeRecordsScreenChoiceViewFadeIn(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     TimeRecordsScreenRenderModeChoiceUI();
@@ -5598,7 +6449,7 @@ static void Task_TimeRecordsScreenChoiceViewFadeIn(void) {
 }
 
 static void TimeRecordsScreenHandleExit(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5612,7 +6463,7 @@ static void TimeRecordsScreenHandleExit(void) {
 }
 
 static void Task_TimeRecordsScreenFadeOutAndExit(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
     struct PlayerDataMenu* playerDataMenu = timeRecordsScreen->playerDataMenu;
 
@@ -5626,7 +6477,7 @@ static void Task_TimeRecordsScreenFadeOutAndExit(void) {
 }
 
 static void TimeRecordsScreenShowCoursesView(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5640,7 +6491,7 @@ static void TimeRecordsScreenShowCoursesView(void) {
 }
 
 static void TimeRecordsScreenFadeOutToCoursesView(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     if (!sub_802D4CC(unk0)) {
@@ -5652,7 +6503,7 @@ static void TimeRecordsScreenFadeOutToCoursesView(void) {
 }
 
 static void TimeRecordsScreenRenderModeChoiceUI(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
 
     struct UNK_0808B3FC_UNK240* title = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
     struct UNK_0808B3FC_UNK240* scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
@@ -5683,14 +6534,14 @@ static void TimeRecordsScreenCreateCoursesView(struct TimeRecordsScreen* timeRec
 }
 
 static void Task_TimeRecordsScreenCreateTimesUI(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     TimeRecordsScreenCreateTimesUI(timeRecordsScreen);
 
     gCurTask->main = Task_TimeRecordsScreenCoursesViewFadeIn;
 }
 
 static void Task_TimeRecordsScreenCoursesViewFadeIn(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
     TimeRecordsScreenRenderCoursesViewUI(0);
     
@@ -5701,7 +6552,7 @@ static void Task_TimeRecordsScreenCoursesViewFadeIn(void) {
 }
 
 static void Task_TimeRecordsScreenHandleActChange(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* unkDC = &timeRecordsScreen->actTitle[1];
 
     const struct UNK_080D95E8* unk5E8 = &sTimeRecordsZoneActTitleDigits[timeRecordsScreen->act];
@@ -5718,7 +6569,7 @@ static void Task_TimeRecordsScreenHandleActChange(void) {
 }
 
 static void Task_TimeRecordsScreenHandleCourseSelected(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5732,7 +6583,7 @@ static void Task_TimeRecordsScreenHandleCourseSelected(void) {
 }
 
 static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0; 
 
     if (!sub_802D4CC(unk0)) {
@@ -5740,7 +6591,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void) {
         return;
     } 
 
-    gCurrentLevel = TO_LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? BOSS_ACT : timeRecordsScreen->act);
+    gCurrentLevel = LEVEL_INDEX(timeRecordsScreen->zone, timeRecordsScreen->isBossMode ? ACT_BOSS : timeRecordsScreen->act);
 
     EwramFree(timeRecordsScreen->timeRecords);
     TaskDestroy(gCurTask);
@@ -5748,7 +6599,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void) {
 }
 
 static void TimeRecordsScreenHandleReturn(void) {
-    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask, timeRecordsScreen);
+    struct TimeRecordsScreen* timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5762,7 +6613,7 @@ static void TimeRecordsScreenHandleReturn(void) {
 }
 
 static void Task_MultiplayerRecordsScreenCreateNextTableRowUI(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
 
     MultiplayerRecordsScreenCreateTableRowUI(multiplayerRecordsScreen->scrollAnimFrame);
 
@@ -5773,7 +6624,7 @@ static void Task_MultiplayerRecordsScreenCreateNextTableRowUI(void) {
 }
 
 static void Task_MultiplayerRecordsScreenFadeIn(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
     MultiplayerRecordsScreenRenderUI();
 
@@ -5783,7 +6634,7 @@ static void Task_MultiplayerRecordsScreenFadeIn(void) {
 }
 
 static void Task_MultiplayerRecordsScreenHandleExit(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -5797,7 +6648,7 @@ static void Task_MultiplayerRecordsScreenHandleExit(void) {
 }
 
 static void Task_MultiplayerRecordsScreenFadeOutAndExit(void) {
-    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask, multiplayerRecordsScreen);
+    struct MultiplayerRecordsScreen* multiplayerRecordsScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk0 = &multiplayerRecordsScreen->unk0;
     struct PlayerDataMenu* playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 
@@ -5809,4 +6660,119 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void) {
     EwramFree(multiplayerRecordsScreen->table);
     playerDataMenu->state = PLAYER_DATA_MENU_STATE_ACTIVE;
     TaskDestroy(gCurTask);
+}
+
+void sub_806B854(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
+    background->unk4 = BG_CHAR_ADDR(a);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(b);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = assetId;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = d;
+    background->unk28 = e;
+    background->unk2A = f;
+    background->unk2B = 0;
+    background->unk2C = 0;
+    background->unk2E = g;
+    background->unk30 = h;
+    background->unk32 = i;
+    sub_8002A3C(background);
+}
+
+// Finds the max unk4 of the item text array
+static s32 MaxSpriteSize(const struct UNK_080D95E8* itemText, s8 length) {
+    s32 result = 0;
+    s16 i;
+
+    for (i = 0; i < length; i++, itemText++) {
+        if (itemText->unk4 > result) {
+            result = itemText->unk4;
+        }
+    }
+
+    return result;
+}
+
+static struct UNK_806B908 sub_806B908(u16 nameChar) {
+    struct UNK_806B908 charTile;
+    
+    if (nameChar >= 0x10C) {
+        charTile.unk4 = 0x3BB;
+        charTile.unk6 = 0x11;
+    } else {
+        if ((nameChar & 0x100)) {
+            charTile.unk4 = 0x3C3;
+        } else {
+            charTile.unk4 = 0x3BB;
+        }
+
+        charTile.unk6 = nameChar & 0xFF;   
+    }
+
+    charTile.unk0 = 4;
+
+    return charTile;
+}
+
+static bool16 sub_806B988(u16* playerName) {
+    s16 i;
+
+    for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
+        if (playerName[i] == PLAYER_NAME_END_CHAR) {
+            return FALSE;
+        }
+
+        if (sub_806B9C8(playerName[i])) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+static bool16 sub_806B9C8(u16 nameChar) {
+    u16 localD95A4[16], *cursor;  
+    memcpy(localD95A4, gUnknown_080D95A4, sizeof(gUnknown_080D95A4));
+    
+    for (cursor = localD95A4; *cursor != PLAYER_NAME_END_CHAR; cursor++) {
+        if (nameChar == *cursor) {
+            return FALSE;
+        }
+    }
+
+    if (nameChar >= 0x10C) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+}
+
+static bool16 sub_806BA14(s16 a, u16 b) {
+    u16 unk5C4[2], unk5C8[5], *cursor; 
+
+    memcpy(unk5C4, gUnknown_080D95C4, sizeof(gUnknown_080D95C4));
+    memcpy(unk5C8, gUnknown_080D95C8, sizeof(gUnknown_080D95C8));
+
+    if (a == 1) {
+        cursor = unk5C8;
+    } else {
+        cursor = unk5C4;
+    }
+
+    if (a == 1 && b == 2) {
+        return TRUE;
+    }
+
+    for (; *cursor != PLAYER_NAME_END_CHAR; cursor++) {
+        if (b >= *cursor && b <= *cursor + 4) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }

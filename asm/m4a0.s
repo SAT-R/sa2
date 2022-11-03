@@ -17,7 +17,7 @@ __umul3232H32: @ 0x080945EC
 
 	thumb_func_start SoundMain
 SoundMain: @ 0x080945F8
-	ldr r0, _08094664 @ =0x03007ff0
+	ldr r0, _08094664 @ =SOUND_INFO_PTR
 	ldr r0, [r0]
 	ldr r2, _08094668 @ =0x68736D53
 	ldr r3, [r0]
@@ -74,7 +74,7 @@ _0809465A:
 	ldr r3, _0809466C @ =SoundMainRAM_Buffer + 1
 	bx r3
 	.align 2, 0
-_08094664: .4byte 0x03007ff0
+_08094664: .4byte SOUND_INFO_PTR
 _08094668: .4byte 0x68736D53
 _0809466C: .4byte SoundMainRAM_Buffer + 1
 _08094670: .4byte 0x04000006
@@ -810,7 +810,7 @@ _08094C48: .4byte 0x04000060
 
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync: @ 0x08094C4C
-	ldr r0, _08094EF8 @ =0x03007ff0
+	ldr r0, _08094EF8 @ =SOUND_INFO_PTR
 	ldr r0, [r0]
 	ldr r2, _08094EFC @ =0x68736D53
 	ldr r3, [r0]
@@ -880,7 +880,7 @@ _08094CB4:
 	bge _08094CCC
 	b _08094EE0
 _08094CCC:
-	ldr r0, _08094EF8 @ =0x03007ff0
+	ldr r0, _08094EF8 @ =SOUND_INFO_PTR
 	ldr r0, [r0]
 	mov r8, r0
 	adds r0, r7, #0
@@ -1185,7 +1185,7 @@ sub_08094EF0: @ 0x08094EF0
 	bx r3
 	.align 2, 0
 _08094EF4: .4byte gClockTable
-_08094EF8: .4byte 0x03007ff0
+_08094EF8: .4byte SOUND_INFO_PTR
 _08094EFC: .4byte 0x68736D53
 
 	thumb_func_start TrackStop
@@ -1208,7 +1208,7 @@ _08094F14:
 	movs r3, #7
 	ands r0, r3
 	beq _08094F2C
-	ldr r3, _08094F40 @ =0x03007ff0
+	ldr r3, _08094F40 @ =SOUND_INFO_PTR
 	ldr r3, [r3]
 	ldr r3, [r3, #0x2c]
 	bl sub_08094EF0
@@ -1226,7 +1226,7 @@ _08094F38:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08094F40: .4byte 0x03007ff0
+_08094F40: .4byte SOUND_INFO_PTR
 
 	thumb_func_start sub_8094F44
 sub_8094F44: @ 0x08094F44
@@ -1268,7 +1268,7 @@ ply_note: @ 0x08094F74
 	sub sp, #0x18
 	str r1, [sp]
 	adds r5, r2, #0
-	ldr r1, _0809516C @ =0x03007ff0
+	ldr r1, _0809516C @ =SOUND_INFO_PTR
 	ldr r1, [r1]
 	str r1, [sp, #4]
 	ldr r1, _08095170 @ =gClockTable
@@ -1533,7 +1533,7 @@ _0809515A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0809516C: .4byte 0x03007ff0
+_0809516C: .4byte SOUND_INFO_PTR
 _08095170: .4byte gClockTable
 
 	thumb_func_start ply_endtie

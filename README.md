@@ -17,11 +17,10 @@ It so far builds the following ROM:
 
 ### Current state
 
-- Assembly code [extracted and disassembled](./asm/)
-- Some assembly code categorised
+- Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, save game logic, whole title screen (including intro), and most of the profile options have been decompiled
-- All songs have been extracted to [matching MIDI files](./sound/songs/midi)
+- Initialisation of game state, main task logic, save game logic, nearly all UI, some Multi Link code
+- All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
 - :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
 
 ### Setting up the repository

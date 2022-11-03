@@ -1,8 +1,9 @@
 #include "global.h"
 #include "random.h"
 
-static u32 sPrevRngValue;
-static u32 sRngValue;
+// Only used in here
+u32 gRngPrevValue = 0;
+u32 gRngValue = 0;
 
 #define RAND_CONST 0x37119371;
 
@@ -11,11 +12,11 @@ u16 Random(void) {
     // These need to be loaded
     // and referenced as pointers to
     // match asm
-    u32* pPrev = &sPrevRngValue;
-    u32* pCurrent = &sRngValue;
+    u32* pPrev = &gRngPrevValue;
+    u32* pCurrent = &gRngValue;
 
     u32 prev = *pPrev;
-    sPrevRngValue = *pCurrent;
+    gRngPrevValue = *pCurrent;
     
     // This calculation has to be done
     // in 2 stages to match asm
@@ -24,13 +25,13 @@ u16 Random(void) {
 
     // Could use the pointer here
     // but it's more clear when we assign
-    sRngValue = new;
+    gRngValue = new;
 
     // Take the top 16 bits
-    return ((u16*)&sRngValue)[1];
+    return ((u16*)&gRngValue)[1];
 }
 
 void SeedRng(u32 a, u32 b) {
-    sPrevRngValue = a;
-    sRngValue = b;
+    gRngPrevValue = a;
+    gRngValue = b;
 }

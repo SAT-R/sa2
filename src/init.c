@@ -1,5 +1,7 @@
 #include "global.h"
+#include "main.h"
 #include "data.h"
+#include "game.h"
 #include "task.h"
 #include "init.h"
 #include "flags.h"
@@ -8,23 +10,14 @@
 #include "player.h"
 #include "title_screen.h"
 #include "profile.h"
-
-// likely static data, needs to be extracted
-extern union Unk_03002E60 gMapHeaders[];
-extern u32 gUnknown_080F40D4;
-
-// Some sort of unused task variable
-struct Task *gUnknown_03005844;
-
-// Need to find what these mean
-extern void sub_8081C0C();
+#include "multiplayer_singlepak_connection.h"
 
 void GameStart(void) {
     u32 i;
     bool32 hasProfile = FALSE;
 
     gUnknown_03002260 = gMapHeaders;
-    gUnknown_03002794 = &gUnknown_080F40D4;
+    gUnknown_03002794 = &gSpriteTables;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];
 
@@ -33,7 +26,7 @@ void GameStart(void) {
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
-    gUnknown_030059E0.unkA8 = 0;
+    gUnknown_030059E0.unk8C = 0;
     gUnknown_03005960.unk5C = 0;
 
     gUnknown_030059D0[1] = 0;
@@ -47,11 +40,11 @@ void GameStart(void) {
     gUnknown_030054E4 = 0;
 
     for (i = 0; i < 4; i++) {
-        gUnknown_030055A0[i] = 0;
+        gUnknown_030055A0[i] = NULL;
     }
 
     for (i = 0; i < 4; i++) {
-        gUnknown_03005500[i] = 0;
+        gMultiplayerCharacters[i] = 0;
         gUnknown_030054B4[i] = 0;
         gUnknown_030054D4[i] = 0;
     }
@@ -64,7 +57,7 @@ void GameStart(void) {
     }
 
     if (gFlags & 0x200) {
-        // TODO: find out what this does and what 0x200 means
+        // Show singlepak results
         sub_8081C0C();
         return;
     }

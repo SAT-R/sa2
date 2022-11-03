@@ -16,10 +16,6 @@ struct InputRecorder {
     u8 mode;
 };
 
-const u8* gInputPlaybackData;
-struct InputRecorder gInputRecorder;
-
-
 void InputRecorderResetRecordHead(void);
 void InputRecorderResetPlaybackHead(void);
 void InputRecorderLoadTape(void);

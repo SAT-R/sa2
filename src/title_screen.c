@@ -1,26 +1,73 @@
 #include "title_screen.h"
-
+#include "main.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 #include "flags.h"
 #include "global.h"
+#include "main.h"
 #include "m4a.h"
 #include "task.h"
 #include "sprite.h"
 #include "save.h"
-#include "main.h"
-#include "data.h"
-#include "input.h"
+#include "transition.h"
 #include "input_recorder.h"
 #include "random.h"
 #include "math.h"
 #include "mb_programs.h"
 #include "profile.h"
 #include "game.h"
+#include "time_attack.h"
 #include "player.h"
 #include "zones.h"
 #include "recordings.h"
 #include "trig.h"
+#include "backgrounds.h"
+#include "multiplayer_mode_select.h"
+#include "character_select.h"
+#include "malloc_vram.h"
+#include "time_attack_mode_select.h"
+
+struct TitleScreen {
+    // Possibly an array of ui elements?
+    struct Unk_03002400 unk0;
+    struct Unk_03002400 unk40;
+    struct Unk_03002400 introSonicLogo;
+
+    // Dunno what these are yet
+    struct UNK_0808B3FC_UNK240 unkC0;
+    struct UNK_0808B3FC_UNK240 unkF0;
+
+    struct UNK_0808B3FC_UNK240 menuItems[6];
+
+    // Used
+    struct UNK_0808B3FC_UNK240 unk240;
+
+    // fade config
+    struct UNK_802D4CC_UNK270 unk270;
+
+    struct UNK_3005B80_UNK4 unk27C;
+
+    // Something to do with the wave effects
+    u16 wavesTranslationX[0xA0];
+    u32 unk3F4[0xA0][4];
+    u16 wavesTranslationY[0xA0];
+
+    u16 unkF34;
+    u16 unkF36;
+    u16 wavesTopOffset;
+
+    s16 unkF3A;
+
+    u8 introTransitionStep;
+    u8 introPanUpVelocity;
+
+    u16 animFrame;
+    u16 startScreenTimer;
+    u8 menuCursor;
+
+    u8 unkF43;
+    u16 unkF44[16];
+}; /* size 0xF64 */
 
 struct BirdAnimation {
     struct UNK_0808B3FC_UNK240 sprite;
@@ -34,14 +81,6 @@ struct BirdAnimation {
     u8 unk3D;
     u8 sequenceStep;
     u8 unk3F;
-};
-
-struct UNK_080E0D64 {
-    // width
-    u32 unk0;
-    // caption ID
-    u16 unk4;
-    s8 unk6;
 };
 
 struct MenuItemTransition {
@@ -64,11 +103,7 @@ struct LensFlare {
     u8 unk207;
 }; /* size 0x208 */
 
-// Might not be declared here
-struct UNK_3005B80 gUnknown_03005B80;
-
-// TODO: move this function to palette or whatever
-void sub_808D874(void);
+static void sub_808D874(void);
 
 static void InitTitleScreenBackgrounds(struct TitleScreen*);
 static void InitTitleScreenUI(struct TitleScreen*);
@@ -98,7 +133,7 @@ static void Task_SinglePlayerMenuMain(void);
 
 static void Task_StartTitleScreenDemo(void);
 static void Task_HandleTitleScreenExit(void);
-static void Task_LoadTinyChaoGarden(void);
+static void LoadTinyChaoGarden(void);
 
 static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240*, u8);
 
@@ -251,11 +286,11 @@ static const u8 sBirdAnimModeSequence[] = {
 // make the demos show different levels
 // atm only the first is used
 static const u8 sDemoLevels[] = {
-    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, BOSS_ACT), 
-    TO_LEVEL_INDEX(ZONE_2, ACT_1), TO_LEVEL_INDEX(ZONE_2, BOSS_ACT), 
-    TO_LEVEL_INDEX(ZONE_1, ACT_1), TO_LEVEL_INDEX(ZONE_1, ACT_2), 
+    LEVEL_INDEX(ZONE_1, ACT_1), LEVEL_INDEX(ZONE_1, ACT_BOSS), 
+    LEVEL_INDEX(ZONE_2, ACT_1), LEVEL_INDEX(ZONE_2, ACT_BOSS), 
+    LEVEL_INDEX(ZONE_1, ACT_1), LEVEL_INDEX(ZONE_1, ACT_2), 
     // This is really odd
-    3, TO_LEVEL_INDEX(ZONE_1, BOSS_ACT)
+    3, LEVEL_INDEX(ZONE_1, ACT_BOSS)
 };
 
 static const u16 sLensFlareSizes[] = {
@@ -276,26 +311,18 @@ static const u16 sLensFlareStartPositions[][2] = {
 
 // Don't know who these belong to yet
 
-extern void sub_801A6D8(void);
-extern void sub_8087FC0(void);
-
 extern void sub_8009F94(void);
-extern void* sub_8007C10(u32);
-extern void sub_8007CF0(void*);
-
-// pallette?
-extern void sub_808DB2C(u8);
 
 void CreateTitleScreen(void) {
     struct Task* t;
     struct TitleScreen* titleScreen;
     struct UNK_802D4CC_UNK270* config270;
-    struct TitleScreen_UNK27C* config27C;
+    struct UNK_3005B80_UNK4* config27C;
     s32 i, val;
     s16 denom;
 
     t = TaskCreate(Task_IntroStartSegaLogoAnim, sizeof(struct TitleScreen), 0x1000, 0, NULL);
-    titleScreen = TaskGetStructPtr(t, titleScreen);
+    titleScreen = TaskGetStructPtr(t);
 
     titleScreen->unkF34 = 512;
     titleScreen->unkF36 = 0x100;
@@ -342,7 +369,7 @@ void CreateTitleScreen(void) {
     config27C->unk36 = 0;
 
     gUnknown_03005B80.unk0 = config27C;
-    gUnknown_03005B80.unk4 = titleScreen;
+    gUnknown_03005B80.unk4 = &titleScreen->unk0;
 
     InitTitleScreenBackgrounds(titleScreen);
     m4aSongNumStart(MUS_INTRO);
@@ -494,7 +521,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen* titleScreen) {
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    config80 = &titleScreen->unk80;
+    config80 = &titleScreen->introSonicLogo;
 
     config80->unk4 = BG_SCREEN_ADDR(8);
     config80->unkA = 0;
@@ -632,7 +659,7 @@ static void InitTitleScreenUI(struct TitleScreen* titleScreen) {
 }
 
 static void Task_IntroFadeInSegaLogoAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
     gBldRegs.bldAlpha = FadeInBlend(titleScreen->animFrame);
@@ -649,7 +676,7 @@ static void Task_IntroFadeInSegaLogoAnim(void) {
 }
 
 static void Task_IntroFadeOutSegaLogoAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
     gBldRegs.bldAlpha = FadeOutBlend(titleScreen->animFrame * 2);
@@ -666,14 +693,14 @@ static void Task_IntroFadeOutSegaLogoAnim(void) {
 }
 
 static void Task_IntroStartTeamSonicLogoAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct Unk_03002400* config80;
     
     WavesBackgroundAnim(titleScreen);
 
     if (titleScreen->animFrame == 1) {
         // TODO: some macro for this
-        config80 = &titleScreen->unk80;
+        config80 = &titleScreen->introSonicLogo;
         config80->unk4 = BG_SCREEN_ADDR(8);
         config80->unkA = 0;
         config80->unkC = BG_SCREEN_ADDR(31);
@@ -703,7 +730,7 @@ static void Task_IntroStartTeamSonicLogoAnim(void) {
 
 static void Task_IntroFadeInSonicTeamLogoAnim(void) {
     // Wondering if this is some inline function
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
     gBldRegs.bldAlpha = FadeInBlend(titleScreen->animFrame);
@@ -721,7 +748,7 @@ static void Task_IntroFadeInSonicTeamLogoAnim(void) {
 }
 
 static void Task_IntroFadeOutSonicTeamLogoAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
     gBldRegs.bldAlpha = FadeOutBlend(titleScreen->animFrame * 2);
@@ -738,7 +765,7 @@ static void Task_IntroFadeOutSonicTeamLogoAnim(void) {
 }
 
 static void Task_IntroStartSkyTransition(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct Unk_03002400* config40;
     WavesBackgroundAnim(titleScreen);
 
@@ -785,7 +812,7 @@ static void Task_IntroStartSkyTransition(void) {
 
 static void Task_IntroPanSkyAnim(void) {
     struct Unk_03002400* config0;
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
         SkipIntro(titleScreen);
@@ -863,7 +890,7 @@ static void Task_IntroPanSkyAnim(void) {
 
 static void Task_IntroSkyAnim(void) {
     struct Unk_03002400* config0;
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
         SkipIntro(titleScreen);
@@ -965,7 +992,7 @@ static void Task_IntroSkyAnim(void) {
 }
 
 static void Task_IntroFadeInTitleScreenAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
         SkipIntro(titleScreen);
@@ -985,7 +1012,7 @@ static void Task_IntroFadeInTitleScreenAnim(void) {
 }
 
 static void Task_PressStartMenuMain(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     // Show the press start text for 2/3 of a second
     if (titleScreen->animFrame < 40) {
@@ -1016,7 +1043,7 @@ static void Task_PressStartMenuMain(void) {
 }
 
 static void Task_StartPressedTransitionAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     // Flash the start button
     if ((titleScreen->animFrame & 7) > 3) {
@@ -1053,7 +1080,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen* titleScreen)
 }
 
 static void Task_PlayModeMenuMain(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* config270;
     
     sub_80051E8(&titleScreen->unkC0);
@@ -1107,7 +1134,7 @@ static void Task_PlayModeMenuMain(void) {
 }
 
 static void Task_SinglePlayerSelectedTransitionAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* menuItems = titleScreen->menuItems;
     
     // Flash the previous selected single player menu item
@@ -1172,7 +1199,7 @@ static void Task_SinglePlayerMenuMain(void) {
         numMenuItems = 4;
     }
 
-    titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    titleScreen = TaskGetStructPtr(gCurTask);
     SinglePlayerMenuHighlightFocused(titleScreen, numMenuItems);
 
     ShowGameLogo(titleScreen);
@@ -1224,13 +1251,13 @@ static void Task_SinglePlayerMenuMain(void) {
 }
 
 static void Task_HandleTitleScreenExit(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* menuItem;
     u8 i;
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
         gUnknown_03005424 = 0;
-        gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
+        gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
         
         switch(titleScreen->menuCursor) {
@@ -1238,31 +1265,31 @@ static void Task_HandleTitleScreenExit(void) {
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 sub_801A6D8();
                 // If all characters unlocked
-                if (gLoadedSaveGame->unk13 & (1 << (NUM_CHARACTERS - 1))) {
-                    sub_803143C(0, 1);
+                if (gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY)) {
+                    CreateCharacterSelectionScreen(CHARACTER_SONIC, TRUE);
                 } else {
-                    sub_803143C(0, 0);
+                    CreateCharacterSelectionScreen(CHARACTER_SONIC, FALSE);
                 }
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
                 sub_801A6D8();
-                gCurrentLevel = TO_LEVEL_INDEX(ZONE_1, ACT_1);
+                gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 gSelectedCharacter = CHARACTER_SONIC;
                 gGameMode = GAME_MODE_TIME_ATTACK;
-                sub_8087FC0();
+                CreateTimeAttackModeSelectionScreen();
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_OPTIONS):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 CreateOptionsScreen(0);
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN):
-                Task_LoadTinyChaoGarden();
+                LoadTinyChaoGarden();
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;
                 sub_801A6D8();
                 if (gLoadedSaveGame->unk20[0] != PLAYER_NAME_END_CHAR) {
-                    sub_805A1CC();
+                    CreateMultiplayerModeSelectScreen();
                 } else {
                     // If we don't have a profile name
                     // show the profile creator screen
@@ -1296,7 +1323,7 @@ static void Task_HandleTitleScreenExit(void) {
 }
 
 static void Task_ShowTitleScreenIntroSkipped(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     struct Unk_03002400* config0 = &titleScreen->unk0;
     struct Unk_03002400* config40;
 
@@ -1370,7 +1397,7 @@ static void Task_ShowTitleScreenIntroSkipped(void) {
 }
 
 static void Task_JumpToPlayModeMenu(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     PlayModeMenuHighlightFocused(titleScreen);
 
     sub_80051E8(&titleScreen->unkC0);
@@ -1392,7 +1419,7 @@ static void Task_JumpToSinglePlayerMenu(void) {
         numMenuItems = 4;
     }
 
-    titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    titleScreen = TaskGetStructPtr(gCurTask);
     SinglePlayerMenuHighlightFocused(titleScreen, numMenuItems);
 
     ShowGameLogo(titleScreen);
@@ -1500,9 +1527,9 @@ UNUSED static void sub_808CDB0(struct TitleScreen* titleScreen, s8 index) {
 
 static void CreateBirdAnimation(u16 p1, s16 p2, u16 startStep, u16 p4, u16 p5) {
     struct Task* t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
-    struct BirdAnimation* animation = TaskGetStructPtr(t, animation);
+    struct BirdAnimation* animation = TaskGetStructPtr(t);
 
-    animation->sprite.unk4 = sub_8007C10(3);
+    animation->sprite.unk4 = VramMalloc(3);
     animation->sprite.unkA = 0x33F;
     animation->sprite.unk20 = 0;
     animation->sprite.unk21 = 0xFF;
@@ -1528,7 +1555,7 @@ static void CreateBirdAnimation(u16 p1, s16 p2, u16 startStep, u16 p4, u16 p5) {
 }
 
 static void Task_BirdAnim(void) {
-    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask, animation);
+    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* sprite = &animation->sprite;
     u16 temp;
 
@@ -1579,7 +1606,7 @@ static void Task_BirdAnim(void) {
 }
 
 static void Task_MenuItemTransitionOutAnim(void) {
-    struct MenuItemTransition* transition = TaskGetStructPtr(gCurTask, transition);
+    struct MenuItemTransition* transition = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* sprite = transition->sprite;
 
     sprite->unk16 -= sMenuItemTransitionKeyFrames[transition->animFrame];
@@ -1596,7 +1623,7 @@ static void Task_MenuItemTransitionOutAnim(void) {
 }
 
 static void Task_MenuItemTransitionInAnim(void) {
-    struct MenuItemTransition* transition = TaskGetStructPtr(gCurTask, transition);
+    struct MenuItemTransition* transition = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* sprite = transition->sprite;
     s32 i;
     s16 sum = 0;
@@ -1620,7 +1647,7 @@ static void Task_MenuItemTransitionInAnim(void) {
 
 static void CreateLensFlareAnimation(void) {
     struct Task* t = TaskCreate(Task_LensFlareAnim, sizeof(struct LensFlare), 0x2000, 0, 0);
-    struct LensFlare* lensFlare = TaskGetStructPtr(t, lensFlare);
+    struct LensFlare* lensFlare = TaskGetStructPtr(t);
     struct UNK_0808B3FC_UNK240* sprite;
     struct UNK_808D124_UNK180* config180;
     u16 posX;
@@ -1630,7 +1657,7 @@ static void CreateLensFlareAnimation(void) {
         sprite = &lensFlare->sprites[i];
         config180 = &lensFlare->unk180[i];
         
-        sprite->unk4 = sub_8007C10(0x40);
+        sprite->unk4 = VramMalloc(0x40);
 
         sprite->unkA = 0x340;
         sprite->unk20 = sLensFlareSizes[i];
@@ -1661,7 +1688,7 @@ static void CreateLensFlareAnimation(void) {
 }
 
 static void Task_LensFlareAnim(void) {
-    struct LensFlare* lensFlare = TaskGetStructPtr(gCurTask, lensFlare);
+    struct LensFlare* lensFlare = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240* sprite;
     struct UNK_808D124_UNK180* config180;
     u32 i;
@@ -1708,7 +1735,9 @@ static void Task_LensFlareAnim(void) {
     };
 }
 
-static void Task_LoadTinyChaoGarden(void) {
+#define TinyChaoGardenConfig ((u32*)(EWRAM_START + 0x8))
+
+static void LoadTinyChaoGarden(void) {
     u32 chaoGardenLang;
     u32 unk374 = gLoadedSaveGame->unk374;
 
@@ -1741,11 +1770,10 @@ static void Task_LoadTinyChaoGarden(void) {
 
     // TODO: what is going on here, doesn't work as a struct
     // TODO: what's unk374
-    *(u32*)(EWRAM_START + 0x8) = unk374;
-
-    *(u32*)(EWRAM_START + 0xC) = chaoGardenLang;
+    TinyChaoGardenConfig[0] = unk374;
+    TinyChaoGardenConfig[1] = chaoGardenLang;
     // sessionId?
-    *(u32*)(EWRAM_START + 0x10) = (Random() + gFrameCount) * 0x100 + Random();
+    TinyChaoGardenConfig[2] = ((Random() + gFrameCount) << 8) + Random();
     SoftResetExram(0);
 }
 
@@ -1754,7 +1782,7 @@ void CreateTitleScreenAndSkipIntro(void) {
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_ShowPressStartMenu, sizeof(struct TitleScreen), 0x1000, 0, 0);
-    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t, struct TitleScreen*));
+    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t));
 }
 
 void CreateTitleScreenAtPlayModeMenu(void) {
@@ -1762,7 +1790,7 @@ void CreateTitleScreenAtPlayModeMenu(void) {
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_JumpToPlayModeMenu, sizeof(struct TitleScreen), 0x1000, 0, 0);
-    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t, struct TitleScreen*));
+    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t));
 }
 
 void CreateTitleScreenAtSinglePlayerMenu(void) {
@@ -1770,7 +1798,7 @@ void CreateTitleScreenAtSinglePlayerMenu(void) {
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
     t = TaskCreate(Task_JumpToSinglePlayerMenu, sizeof(struct TitleScreen), 0x1000, 0, 0);
-    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t, struct TitleScreen*));
+    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t));
 }
 
 static void SkipIntro(struct TitleScreen* titleScreen) {
@@ -1793,7 +1821,7 @@ static void SkipIntro(struct TitleScreen* titleScreen) {
 }
 
 static void Task_ShowPressStartMenu(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     
     sub_80051E8(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
@@ -1806,7 +1834,7 @@ static void Task_ShowPressStartMenu(void) {
 }
 
 static void Task_IntroStartSegaLogoAnim(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
@@ -1820,7 +1848,7 @@ static void Task_IntroStartSegaLogoAnim(void) {
 }
 
 static void Task_IntroShowSegaLogo(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
     
     if (titleScreen->animFrame > FRAME_TIME_SECONDS(2)) {
@@ -1831,7 +1859,7 @@ static void Task_IntroShowSegaLogo(void) {
 }
 
 static void Task_IntroShowSonicTeamLogo(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
     
     // After 120 frames
@@ -1843,7 +1871,7 @@ static void Task_IntroShowSonicTeamLogo(void) {
 }
 
 static void Task_IntroWaitUntilTitleScreenFanfare(void) {
-    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask, titleScreen);
+    struct TitleScreen* titleScreen = TaskGetStructPtr(gCurTask);
 
     // Wait for the fanfare to start on the intro music
     // before playing annoucement
@@ -1884,8 +1912,8 @@ static void ShowGameLogo(struct TitleScreen* _) {
 }
 
 static void BirdAnimEnd(void) {
-    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask, animation);
-    sub_8007CF0(animation->sprite.unk4);
+    struct BirdAnimation* animation = TaskGetStructPtr(gCurTask);
+    VramFree(animation->sprite.unk4);
     TaskDestroy(gCurTask);
 }
 
@@ -1900,7 +1928,7 @@ static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240* sprite, u8 type
     } else {
         return;
     }
-    transition = TaskGetStructPtr(t, transition);
+    transition = TaskGetStructPtr(t);
 
     sprite->unk10 |= 0x80;
     transition->sprite = sprite;
@@ -1909,11 +1937,11 @@ static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240* sprite, u8 type
 }
 
 static void LensFlareAnimEnd(void) {
-    struct LensFlare* lensFlare = TaskGetStructPtr(gCurTask, lensFlare);
+    struct LensFlare* lensFlare = TaskGetStructPtr(gCurTask);
     
     u32 i;
     for (i = 0; i < 8; i++) {
-        sub_8007CF0(lensFlare->sprites[i].unk4);
+        VramFree(lensFlare->sprites[i].unk4);
     }
 
     TaskDestroy(gCurTask);
@@ -1922,7 +1950,7 @@ static void LensFlareAnimEnd(void) {
 // TODO: understand why this is inline
 static inline void inline_CreateTitleScreenTaskWithoutIntro(TaskMain main) {
     struct Task* t = TaskCreate(main, sizeof(struct TitleScreen), 0x1000, 0, 0);
-    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t, struct TitleScreen*));
+    CreateTitleScreenWithoutIntro(TaskGetStructPtr(t));
 }
 
 UNUSED void sub_808D824(void) {
@@ -1936,7 +1964,7 @@ UNUSED void sub_808D824(void) {
 }
 
 // Might not in title_screen
-void sub_808D874(void) {
+static void sub_808D874(void) {
     CpuFastSet(sUnknown_080E0EF4, (void*)(BG_PLTT + 0x1C0), 1);
     REG_SIOCNT |= SIO_INTR_ENABLE;
 }

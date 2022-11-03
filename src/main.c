@@ -1,7 +1,7 @@
 #include "main.h"
 #include "init.h"
-#include "data.h"
 #include "global.h"
+#include "data.h"
 #include "m4a.h"
 #include "malloc_ewram.h"
 #include "multi_sio.h"
@@ -9,12 +9,122 @@
 #include "task.h"
 #include "agb_flash.h"
 #include "flags.h"
-#include "input.h"
 #include "input_recorder.h"
+#include "malloc_vram.h"
 
-// TODO make static
-u32 gFlagsPreVBlank;
+// TODO: the order of these vars has
+// been shuffled due to compilation losses.
+// It's possible to use `ramscrgen` to reorder
+// these variables in here and provide
+// the matching order separately
+IntrFunc gIntrTable[] = {};
+u32 gIntrMainBuf[] = {};
+struct Task gTasks[] = {};
+u16 gUnknown_030017F0 ALIGNED(4) = 0;
+u16 gUnknown_030017F4[2] ALIGNED(4) = {};
+struct Unk_03002400* gUnknown_03001800[] ALIGNED(16) = {};
+u32 gFlags = 0;
+u8 gUnknown_03001850[] ALIGNED(16) = {};
+FuncType_030053A0 gUnknown_03001870[] = {};
+u16 gPhysicalInput = 0;
 
+// gComputedBgBuffer
+void* gUnknown_03001884 = NULL;
+
+u16 gVramHeapMaxTileSlots = 0;
+u8 gNumHBlankCallbacks ALIGNED(4) = 0;
+union MultiSioData gMultiSioRecv[4] = {};
+u8 gNumHBlankIntrs = 0;
+struct BlendRegs gBldRegs ALIGNED(8) = {};
+u8 gUnknown_030018F0 = 0;
+struct Task gEmptyTask ALIGNED(16) = {};
+struct BgAffineRegs gBgAffineRegs ALIGNED(8) = {};
+u32 gVramHeapStartAddr = 0;
+u16 gUnknown_03001944 ALIGNED(4) = 0;
+u8 gUnknown_03001948 ALIGNED(4) = 0;
+u16 gUnknown_0300194C ALIGNED(4) = 0;
+
+u32 gMultiSioStatusFlags = 0;
+bool8 gMultiSioEnabled = FALSE;
+
+struct Task* gTaskPtrs[] ALIGNED(16) = {};
+u32 gUnknown_03001B60[][160] = {};
+u16 gObjPalette[] = {};
+union Unk_03002E60 *gUnknown_03002260 = NULL;
+u32 gFrameCount = 0;
+u16 gWinRegs[6] ALIGNED(16) = {};
+s32 gNumTasks = 0;
+u8 gUnknown_03002280[] = {};
+u16 gInput = 0;
+u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
+void* gUnknown_030022AC = NULL;
+u16 gBgCntRegs[] = {};
+u16 gRepeatedKeys ALIGNED(4) = 0;
+struct Task* gNextTask = NULL;
+void* gUnknown_030022C0 = NULL;
+
+OamData gUnknown_030022C8 ALIGNED(8) = {};
+OamData gUnknown_030022D0[] = {};
+s16 gUnknown_030026D0 = 0;
+
+HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
+struct Task* gCurTask = NULL;
+u8 gUnknown_030026F4 = 0;
+u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
+
+u16 gReleasedKeys ALIGNED(4) = 0;
+u8 gUnknown_03002710[] ALIGNED(16) = {};
+u32 gFlagsPreVBlank = 0;
+const struct SpriteTables* gUnknown_03002794 = NULL;
+struct Unk_03002EC0* gUnknown_030027A0[] ALIGNED(16) = {};
+u16 gUnknown_03002820 = 0;
+s16 gBgScrollRegs[][2] ALIGNED(16) = {};
+u16 gDispCnt = 0;
+u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
+union MultiSioData gMultiSioSend ALIGNED(8) = {};
+u8 gUnknown_03002874 = 0;
+
+// gComputedBgTarget
+void* gUnknown_03002878 ALIGNED(4) = NULL;
+
+u8 gUnknown_0300287C = 0;
+u16 gBgPalette[] ALIGNED(16) = {};
+
+// gComputedBgSectorSize
+u8 gUnknown_03002A80 ALIGNED(4) = 0;
+
+u8 gUnknown_03002A84 ALIGNED(4) = 0;
+u16 gPrevInput ALIGNED(4) = 0;
+u16 gUnknown_03002A8C ALIGNED(4) = 0;
+
+struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
+
+u16 gPressedKeys ALIGNED(4) = 0;
+u8 gUnknown_03002AE0 ALIGNED(4) = 0;
+u8 gUnknown_03002AE4 ALIGNED(4) = 0;
+HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
+
+u8 gIwramHeap[] = {};
+EWRAM_DATA u8 gEwramHeap[] = {};
+
+u8 gUnknown_03004D10[] ALIGNED(16) = {};
+u8 gUnknown_03004D50 ALIGNED(4) = 0;
+void* gUnknown_03004D54 = NULL;
+u16 gUnknown_03004D58 ALIGNED(4) = 0;
+u8 gUnknown_03004D5C ALIGNED(4) = 0;
+u8 gUnknown_03004D60[] ALIGNED(16) = {};
+u8 gUnknown_03004D80[] = {};
+OamData gOamBuffer[] ALIGNED(16) = {};
+u16 gVramHeapState[] = {};
+u8 gUnknown_03005390 ALIGNED(4) = 0;
+u16 gUnknown_03005394 ALIGNED(4) = 0;
+u16 gUnknown_03005398 ALIGNED(4) = 0;
+FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
+const u8* gInputPlaybackData = NULL;
+bool8 gExecSoundMain ALIGNED(4) = FALSE;
+u32 gUnknown_030053B8 = 0;
+struct InputRecorder gInputRecorder ALIGNED(8) = {};
+u16* gInputRecorderTapeBuffer = NULL;
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
@@ -72,7 +182,7 @@ static void GameInit(void) {
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
         gFlags = 0x200;
-        DmaSet(3, (void*)OBJ_VRAM0, &gUnknown_0203B000, 0x80002800);
+        DmaSet(3, (void*)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
     }
 
     // Skip the intro if these
@@ -106,17 +216,17 @@ static void GameInit(void) {
 
     gDispCnt = DISPCNT_FORCED_BLANK;
 
-    DmaFill32(3, 0, gUnknown_030027A0, 0x80);
+    DmaFill32(3, 0, gUnknown_030027A0, sizeof(gUnknown_030027A0));
 
     gUnknown_030018F0 = 0;
     gUnknown_03002AE0 = 0;
 
-    DmaFill16(3, 0x200, gOamBuffer, OAM_SIZE);
-    DmaFill16(3, 0x200, gUnknown_030022D0, 0x400);
-    DmaFill32(3, ~0, gUnknown_03001850, 0x20);
-    DmaFill32(3, ~0, gUnknown_03004D60, 0x20);
-    DmaFill32(3, 0, gObjPalette, OBJ_PLTT_SIZE);
-    DmaFill32(3, 0, gBgPalette, BG_PLTT_SIZE);
+    DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
+    DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
+    DmaFill32(3, ~0, gUnknown_03001850, sizeof(gUnknown_03001850));
+    DmaFill32(3, ~0, gUnknown_03004D60, sizeof(gUnknown_03004D60));
+    DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
+    DmaFill32(3, 0, gBgPalette, sizeof(gBgPalette));
 
     gBgAffineRegs.bg2pa = 0x100;
     gBgAffineRegs.bg2pb = 0;
@@ -160,12 +270,8 @@ static void GameInit(void) {
     }
 
     gInputRecorder.mode = RECORDER_DISABLED;
-    // This matches better when the params are inlined
-    asm("" ::: "sb");
     gPhysicalInput = 0;
     gInputPlaybackData = NULL;
-    asm("" ::: "sl");
-
     gFrameCount = 0;
 
     for (i = 0; i < 15; i++) {
@@ -197,10 +303,13 @@ static void GameInit(void) {
 
     TasksInit();
     EwramInitHeap();
+    
+    // 140 / 256 max useable segments
+    gVramHeapMaxTileSlots = 140 * VRAM_TILE_SLOTS_PER_SEGMENT;
+    // Would be good to know where this number comes from
+    gVramHeapStartAddr = OBJ_VRAM1 - (TILE_SIZE_4BPP * 48);
 
-    gUnknown_03001888 = 0x230;
-    gUnknown_03001940 = BG_VRAM + BG_VRAM_SIZE + 0x3a00;
-    sub_8007CC8();
+    VramResetHeapState();
 
     errorIdentifying = IdentifyFlash();
     if (errorIdentifying) {
@@ -210,7 +319,7 @@ static void GameInit(void) {
     }
 
     // Setup interrupt table
-    DmaCopy32(3, IntrMain, gIntrMainBuf, 0x200);
+    DmaCopy32(3, IntrMain, gIntrMainBuf, sizeof(gIntrMainBuf));
     INTR_VECTOR = gIntrMainBuf;
 
     REG_IME = INTR_FLAG_VBLANK;
@@ -221,7 +330,7 @@ static void GameInit(void) {
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
     gMultiSioStatusFlags = 0;
-    gUnknown_03001954 = 0;
+    gMultiSioEnabled = FALSE;
 
     MultiSioInit(0);
 }
@@ -235,7 +344,7 @@ static void GameLoop(void) {
 
         if (gUnknown_030026F4 == 0xff) {
             GetInput();
-            if (gUnknown_03001954 != 0) {
+            if (gMultiSioEnabled) {
                 gMultiSioStatusFlags =
                     MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
@@ -443,8 +552,7 @@ static void VBlankIntr(void) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
-        // TODO: resolve this cast
-        DmaSet(0, (vu8*)gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+        DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
                 << 16) |
                    (gUnknown_03002A80 >> 1));
@@ -511,7 +619,7 @@ static u32 sub_80021C4(void) {
         }
 
         gUnknown_03004D5C++;
-        gUnknown_03004D5C &= 0x1f;
+        gUnknown_03004D5C &= ARRAY_COUNT(gUnknown_030027A0) - 1;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
             return 0;
@@ -618,7 +726,7 @@ static void ClearOamBufferCpuSet(void) {
         }
     }
     gFlags &= ~4;
-    CpuFastFill(0x200, gOamBuffer, OAM_SIZE);
+    CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
     gUnknown_03004D50 = 0;
     gFlags &= ~16;
 }

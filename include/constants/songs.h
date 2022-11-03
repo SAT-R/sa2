@@ -65,7 +65,7 @@
 #define MUS_CONNECTION_PENDING 61
 // 62
 // 63
-#define MUS_VS_4 64
+#define MUS_VS_LOBBY 64
 // 65
 #define MUS_VS_SELECT_PAK_MODE 66
 
@@ -189,7 +189,7 @@
 #define SE_244 244
 #define SE_245 245
 #define SE_246 246
-#define SE_247 247
+// 247
 #define SE_248 248
 #define SE_249 249
 #define SE_250 250
@@ -292,7 +292,7 @@
 
 #define MUS_GOT_ALL_CHAOS_EMERALDS 410
 #define MUS_FANFARE 411
-#define MUS_412 412
+#define MUS_VS_EXIT 412
 #define MUS_VS_SUCCESS 413
 #define MUS_VS_MISS 414
 #define MUS_MESSAGE 415
