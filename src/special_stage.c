@@ -26,9 +26,7 @@ struct SpecialStage {
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
-    s32 unk94[60][2];
-    u8 unk274[796];
-    u32 unk590;
+    s32 unk94[160][2];
     u32 unk594;
     u32 unk598;
     u32 unk59C;
@@ -229,7 +227,7 @@ struct UNK_8070B90 {
     struct UNK_0808B3FC_UNK240 unk214;
     struct UNK_0808B3FC_UNK240 unk244;
     struct UNK_0808B3FC_UNK240 unk274;
-    u8 unk2A4[4];
+    void* unk2A4;
     s8 unk2A8;
     s8 unk2A9;
     s16 unk2AA;
@@ -1101,7 +1099,7 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct
     }
 
     {
-        s32 unk590 = stage->unk590;
+        s32 unk590 = stage->unk94[DISPLAY_HEIGHT - 1][1];
         s32 unk94 = stage->unk94[stage->unk5D1][1];
     
         if (r4 <= unk590 || r4 >= unk94) {
@@ -3123,7 +3121,9 @@ void sub_806FB00(void) {
 
 }
 
+/** special_stage_unk_8071438.c */
 /** special_stage_unk_8070B90.c */
+/** special_stage_ui.c */
 
 void sub_8070C58(void);
 void sub_806FFC8(void);
@@ -3389,7 +3389,6 @@ void sub_80701D4(struct UNK_8070B90* unk0B90) {
     m4aSongNumStart(SE_PAUSE_SCREEN);
 }
 
-/** special_stage_unk_8071438.c */
 
 extern const struct UNK_80DF670 gUnknown_080DF880[5];
 extern const struct UNK_80DF670 gUnknown_080DF8E0[2];
@@ -3611,6 +3610,257 @@ void sub_8070814(void) {
         element->unk20 = gUnknown_080DF8A8[level2].unk2;
         gCurTask->main = sub_8070EE4;
     }
+}
+
+void sub_807087C(void) {
+    struct UNK_0808B3FC_UNK240* element;
+
+    struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unk0BF0->unk0;
+
+    s16 i;
+    s16 a[5], b[5], c[5];
+    bool8 found;
+
+    s32 unk5A8 = stage->unk5A8;
+    s32 unk5AC = stage->unk5AC;
+    s32 unk5B0 = stage->unk5B0;
+
+    a[4] = unk5A8 % 10;
+    unk5A8 /= 10;
+    a[3] = unk5A8 % 10;
+    unk5A8 /= 10;
+    a[2] = unk5A8 % 10;
+    unk5A8 /= 10;
+    a[1] = unk5A8 % 10;
+    unk5A8 /= 10;
+    a[0] = unk5A8 % 10;
+
+    b[4] = unk5AC % 10;
+    unk5AC /= 10;
+    b[3] = unk5AC % 10;
+    unk5AC /= 10;
+    b[2] = unk5AC % 10;
+    unk5AC /= 10;
+    b[1] = unk5AC % 10;
+    unk5AC /= 10;
+    b[0] = unk5AC % 10;
+
+    c[4] = unk5B0 % 10;
+    unk5B0 /= 10;
+    c[3] = unk5B0 % 10;
+    unk5B0 /= 10;
+    c[2] = unk5B0 % 10;
+    unk5B0 /= 10;
+    c[1] = unk5B0 % 10;
+    unk5B0 /= 10;
+    c[0] = unk5B0 % 10;
+
+    sub_80051E8(&unk0BF0->unk4);
+
+    if (stage->unk5C5 != 0) {
+        sub_80051E8(&unk0BF0->unk34);
+    }
+
+    for (i = 0; i < 7; i++) {
+        sub_8004558(&unk0BF0->unk64[i]);
+        sub_80051E8(&unk0BF0->unk64[i]);
+    }
+
+    sub_80051E8(&unk0BF0->unk1B4);
+    sub_80051E8(&unk0BF0->unk1E4);
+    sub_80051E8(&unk0BF0->unk214);
+
+    for (i = 0, found = FALSE; i < 5; i++) {
+        if (found || a[i] != 0 || i == 4) {
+            found = TRUE;
+            element = &unk0BF0->unk244[i];
+            element->unkA = gUnknown_080DF7E8[a[i]].unk0;
+            element->unk20 = gUnknown_080DF7E8[a[i]].unk2;
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
+    }
+
+    for (i = 0, found = FALSE; i < 5; i++) {
+        if (found || b[i] != 0 || i == 4) {
+            found = TRUE;
+            element = &unk0BF0->unk334[i];
+            element->unkA = gUnknown_080DF7E8[b[i]].unk0;
+            element->unk20 = gUnknown_080DF7E8[b[i]].unk2;
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
+    }
+
+    for (i = 0, found = FALSE; i < 5; i++) {
+        if (found || c[i] != 0 || i == 4) {
+            found = TRUE;
+            element = &unk0BF0->unk424[i];
+            element->unkA = gUnknown_080DF7E8[c[i]].unk0;
+            element->unk20 = gUnknown_080DF7E8[c[i]].unk2;
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
+    }
+}
+
+void sub_8070BEC(struct Task*);
+void sub_8070C3C(struct UNK_8070B90*);
+
+struct Task* sub_8070B90(struct SpecialStage* stage) {
+    struct Task* t = TaskCreate(sub_806FB04, 0x2B8, 0xD000, 0, sub_8070BEC);
+    struct UNK_8070B90* unk0B90 = TaskGetStructPtr(t);
+    unk0B90->unk0 = stage;
+    unk0B90->unk2A4 = NULL;
+    
+    unk0B90->unk2A8 = 0;
+    unk0B90->unk2A9 = 0;
+    sub_8070C3C(unk0B90);
+
+    return t;
+}
+
+void sub_8070BEC(struct Task* t) {
+    // Unused logic
+}
+
+void sub_8070C2C(struct Task*);
+
+struct Task* sub_8070BF0(struct SpecialStage* stage) {
+    struct Task* t = TaskCreate(sub_8070590, 0x520, 0xD000, 0, sub_8070C2C);
+    struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(t);
+    unk0BF0->unk0 = stage;
+    sub_807028C(unk0BF0);
+
+    return t;
+}
+
+void sub_8070C2C(struct Task* t) {
+    // Unsued logic
+}
+
+void sub_8070E88(void);
+
+void sub_8070C30(struct SpecialStage* stage) {
+    stage->unk10->main = sub_8070E88;
+}
+
+void sub_8070CD8(struct UNK_8070B90*);
+
+void sub_8070C3C(struct UNK_8070B90* unk0B90) {
+    sub_806FBD0(unk0B90);
+    sub_806FE2C(unk0B90);
+    sub_8070CD8(unk0B90);
+}
+
+void sub_8070C58(void) {
+    struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unk0B90->unk0;
+
+    if (stage->unk5BA == 0) {
+        sub_806FCF8();
+    }
+
+    sub_80051E8(&unk0B90->unk4);
+
+    if (stage->unk5BB != 0) {
+        sub_80051E8(&unk0B90->unk34);
+    }
+
+    if ((stage->unk5BB | stage->unk5BC) != 0) {
+        sub_80051E8(&unk0B90->unk64);
+    }
+
+    sub_80051E8(&unk0B90->unk94);
+}
+
+extern const struct UNK_80DF670 gUnknown_080DF840[8];
+
+void sub_8070CD8(struct UNK_8070B90* unk0B90) {
+    const struct UNK_80DF670* unkF840 = &gUnknown_080DF840[0];
+    sub_806CA88(&unk0B90->unk214,0,unkF840->unk4,unkF840->unk0,0x1000,0x70,100,2,unkF840->unk2,0);
+}
+
+extern const struct UNK_80DF670 gUnknown_080DF830[2];
+
+void sub_8070D14(void) {
+    struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unk0B90->unk0;
+    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+    s16 unkC0 = unkCF78->unkC0;
+
+    if (unkC0 > 1) {
+        const struct UNK_80DF670* unkF830 = &gUnknown_080DF830[unkC0];
+        struct UNK_0808B3FC_UNK240* element = &unk0B90->unk214;
+        if (stage->unk5BA == 0) {
+            element->unkA = unkF830->unk0;
+            element->unk20 = unkF830->unk2;
+            sub_8004558(element);
+        }
+        sub_80051E8(element);
+    }
+}
+
+void sub_8070D80(struct UNK_8070B90* unk0B90) {
+    struct UNK_0808B3FC_UNK240* element = &unk0B90->unk244;
+    unk0B90->unk2A8 = 1;
+    unk0B90->unk2A4 = gUnknown_03005B5C;
+    sub_806CA88(element,0,0x14,0x376,0x1000,0x78,0x50,1,0,0);
+}
+
+void sub_8070DD0(struct UNK_8070B90* unk0B90) {
+    sub_80051E8(&unk0B90->unk244);
+}
+
+void sub_8070DE0(struct UNK_8070B90* unk0B90) {
+    gUnknown_03005B5C = unk0B90->unk2A4;
+    unk0B90->unk2A4 = NULL;
+    unk0B90->unk2A8 = 0;
+}
+
+void sub_8070E00(struct UNK_8070B90* unk0B90) {
+    struct UNK_0808B3FC_UNK240* element = &unk0B90->unk274;
+    struct SpecialStage* stage = unk0B90->unk0;
+    void *a, *b;
+    
+    if (stage->unk5C6 == 0) {
+        b = (void*)OBJ_PLTT + 0x1F8;
+        a = (void*)OBJ_PLTT + 0x1F2;
+    } else {
+        b = (void*)OBJ_PLTT + 0x1F2;
+        a = (void*)OBJ_PLTT + 0x1F8;
+    }
+
+    DmaCopy16(3, unk0B90->unk2B2, b, 6);
+    DmaCopy16(3, unk0B90->unk2AC, a, 6);
+    sub_80051E8(element);
+}
+
+void sub_8070E68(struct UNK_8070B90* unk0B90) {
+    unk0B90->unk2A9 = 0;
+    gUnknown_03005B58 = NULL;
+    m4aMPlayAllContinue();
+}
+
+void sub_8070E88(void) {
+    struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = unk0BF0->unk0;
+    struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->unk5B8];
+    
+    element->unkA = gUnknown_080DF8A8[8].unk0;
+    element->unk20 = gUnknown_080DF8A8[8].unk2;
+    sub_807087C();
+    unk0BF0->unk514 = 0;
+    gCurTask->main = sub_8070814;
+}
+
+void sub_8070EE4(void) {
+    sub_807087C();
+}
+
+void sub_8070EF0(void) {
+    sub_807087C();
 }
 
 /** special_stage_unk_8071438.c */
