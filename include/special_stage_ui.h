@@ -51,5 +51,6 @@ struct UNK_8070BF0 {
 
 struct Task* sub_8070B90(struct SpecialStage*);
 struct Task* sub_8070BF0(struct SpecialStage*);
+void sub_8070C30(struct SpecialStage*);
 
 #endif

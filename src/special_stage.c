@@ -15,7 +15,6 @@
 #include "title_screen.h"
 #include "constants/songs.h"
 
-void sub_806CEA8(void);
 void sub_806C970(void);
 void sub_806C950(struct Task*);
 
@@ -526,7 +525,6 @@ void sub_806C49C(void) {
     }
 }
 
-void sub_8070C30(struct SpecialStage*);
 void sub_806C638(void);
 
 void sub_806C560(void) {
