@@ -2,6 +2,8 @@
 #define GUARD_SPECIAL_STAGE_UTILS_H
 
 #include "global.h"
+#include "special_stage.h"
+#include "sprite.h"
 
 void* gUnknown_03005B58;
 void* gUnknown_03005B5C;
@@ -20,5 +22,7 @@ void* gUnknown_03005B5C;
 
 void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused);
 void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i);
+u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage);
+void sub_806CD68(struct UNK_0808B3FC_UNK240* element);
 
 #endif

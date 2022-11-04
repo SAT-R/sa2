@@ -122,7 +122,12 @@
         "multiplayer_singlepak_results.h": "c",
         "mb_programs.h": "c",
         "sio32_multi_load.h": "c",
-        "special_stage.h": "c"
+        "special_stage.h": "c",
+        "special_stage_utils.h": "c",
+        "special_stage_unk_806bd94.h": "c",
+        "special_stage_player.h": "c",
+        "special_stage_unk_806f910.h": "c",
+        "special_stage_unk_8071438.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

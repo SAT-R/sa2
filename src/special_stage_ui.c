@@ -1,54 +1,11 @@
 #include "main.h"
 #include "special_stage.h"
+#include "special_stage_player.h"
+#include "special_stage_ui.h"
 #include "special_stage_utils.h"
 #include "m4a.h"
 #include "save.h"
 #include "constants/songs.h"
-
-
-struct UNK_8070B90 {
-    struct SpecialStage* unk0;
-    struct UNK_0808B3FC_UNK240 unk4;
-    struct UNK_0808B3FC_UNK240 unk34;
-    struct UNK_0808B3FC_UNK240 unk64;
-    struct UNK_0808B3FC_UNK240 unk94;
-    struct UNK_0808B3FC_UNK240 unkC4;
-    struct UNK_0808B3FC_UNK240 unkF4;
-    struct UNK_0808B3FC_UNK240 unk124;
-    struct UNK_0808B3FC_UNK240 unk154;
-    struct UNK_0808B3FC_UNK240 unk184;
-    struct UNK_0808B3FC_UNK240 unk1B4;
-    struct UNK_0808B3FC_UNK240 unk1E4;
-    struct UNK_0808B3FC_UNK240 unk214;
-    struct UNK_0808B3FC_UNK240 unk244;
-    struct UNK_0808B3FC_UNK240 unk274;
-    void* unk2A4;
-    s8 unk2A8;
-    s8 unk2A9;
-    s16 unk2AA;
-    u8 unk2AC[6];
-    u8 unk2B2[6];
-}; /* size 0x2B8 */
-
-struct UNK_8070BF0 {
-    struct SpecialStage* unk0;
-    struct UNK_0808B3FC_UNK240 unk4;
-    struct UNK_0808B3FC_UNK240 unk34;
-    struct UNK_0808B3FC_UNK240 unk64[7];
-    struct UNK_0808B3FC_UNK240 unk1B4;
-    struct UNK_0808B3FC_UNK240 unk1E4;
-    struct UNK_0808B3FC_UNK240 unk214;
-    struct UNK_0808B3FC_UNK240 unk244[5];
-    struct UNK_0808B3FC_UNK240 unk334[5];
-    struct UNK_0808B3FC_UNK240 unk424[5];
-    s16 unk514;
-
-    u16 unk516;
-    u16 unk518;
-    u16 unk51A;
-    u16 unk51C;
-    u16 unk51E;
-}; /* size 0x520 */
 
 void sub_8070C58(void);
 void sub_806FFC8(void);
@@ -313,7 +270,6 @@ void sub_80701D4(struct UNK_8070B90* unk0B90) {
     m4aMPlayAllStop();
     m4aSongNumStart(SE_PAUSE_SCREEN);
 }
-
 
 extern const struct UNK_80DF670 gUnknown_080DF880[5];
 extern const struct UNK_80DF670 gUnknown_080DF8E0[2];
@@ -712,8 +668,8 @@ extern const struct UNK_80DF670 gUnknown_080DF830[2];
 void sub_8070D14(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0B90->unk0;
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
-    s16 unkC0 = unkCF78->unkC0;
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    s16 unkC0 = player->unkC0;
 
     if (unkC0 > 1) {
         const struct UNK_80DF670* unkF830 = &gUnknown_080DF830[unkC0];

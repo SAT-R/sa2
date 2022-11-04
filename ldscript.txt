@@ -53,8 +53,13 @@ SECTIONS
         build/sa2/asm/unused_objects.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);
+        build/sa2/src/special_stage_utils.o(.text);
+        build/sa2/src/special_stage_player.o(.text);
+        build/sa2/src/special_stage_unk_806BD94.o(.text);
         build/sa2/src/special_stage_unk_806E6E8.o(.text);
+        build/sa2/src/special_stage_unk_806F910.o(.text);
         build/sa2/src/special_stage_ui.o(.text);
+        build/sa2/src/special_stage_unk_8071438.o(.text);
         build/sa2/asm/special_stage.o(.text);
         build/sa2/src/save.o(.text);
         build/sa2/asm/unused_code3.o(.text);
