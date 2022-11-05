@@ -52,7 +52,7 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
 }
 
 // TODO: UNK_806BD94_UNK874 is probably it's own type
-u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct SpecialStage* stage) {
+u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, struct SpecialStage* stage) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
     s32 r9;
     s32 r4;
@@ -105,12 +105,11 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874* unk874, struct
             return 0;
         }
         a->unkA = val;
-        // TODO: resolve `->unk12` cast
-        a->unk4 = (a->unkA - unk874->unkE) - ((*(s16*)&unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
+        a->unk4 = (a->unkA - unk874->unkE) - ((unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->unk2 = a->unk8 - unk874->unkC;
-        if (*(s32*)&unk874->unk8 != 0) {
-            a->unk6 = (((*(s32*)&unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
+        if (unk874->unk8 != 0) {
+            a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
         } else {
             a->unk6 = 0;
         }
@@ -194,4 +193,17 @@ void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 
     background->unk30 = h;
     background->unk32 = i;
     sub_8002A3C(background);
+}
+
+s16 sub_806CF44(const struct UNK_80DF670 *spriteConfig) {
+    s16 result = 0;
+
+    while (spriteConfig->unk0 != 0xFFFF) {
+        if (result < spriteConfig->unk4) {
+            result = spriteConfig->unk4;
+        }
+        spriteConfig++;
+    }
+
+    return result;
 }

@@ -92,6 +92,16 @@ struct UNK_806BD94_UNK874 {
     u8 unk13;
 }; /* size 0x14 */
 
+struct UNK_806BD94_UNK874_2 {
+    u32 unk0;
+    u32 unk4;
+    s32 unk8;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+}; /* size 0x14 */
+
 struct UNK_806CB84 {
     u8 unk0[2];
     s16 unk2;

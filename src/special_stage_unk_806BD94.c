@@ -330,7 +330,7 @@ void sub_806DEA4(void) {
 s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* unkDEA4Arr) {
     s16 i, result;
 
-    struct UNK_806BD94_UNK874 new_unk874;
+    struct UNK_806BD94_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
@@ -342,13 +342,11 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
         if (unkBD94->unk914[val->unk0] != 0) {
             new_unk874.unk0 = val->unk2 << 0x10;
             new_unk874.unk4 = val->unk4 << 0x10;
-            // TODO: resolve
-            *(s32*)&new_unk874.unk8 = val->unk6 << 0x10;
+            new_unk874.unk8 = val->unk6 << 0x10;
             new_unk874.unkC = 8;
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
-            // TODO: resolve
-            *(s16*)&new_unk874.unk12 = 5;
+            new_unk874.unk12 = 5;
             if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
                 if (result < 0x10) {
                     memcpy(&unkDEA4Arr[result], &new_unkCB84, sizeof(new_unkCB84));
@@ -519,7 +517,7 @@ void sub_806E4FC(struct SpecialStage* stage) {
 
 void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
     u16* affine;
-    struct UNK_806BD94_UNK874 new_unk874;
+    struct UNK_806BD94_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
@@ -529,14 +527,11 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
 
     new_unk874.unk0 = unk874->unk0;
     new_unk874.unk4 = unk874->unk4;
-    // TODO: resolve
-    *(s32*)&new_unk874.unk8 = unk874->unk8 << 4;
+    new_unk874.unk8 = unk874->unk8 << 4;
     new_unk874.unkC = 8;
     new_unk874.unkE = 8;
     new_unk874.unk10 = 0;
-    // TODO: resolve
-    *(s16*)&new_unk874.unk12 = 5;
-    
+    new_unk874.unk12 = 5;
 
     if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
         s32 unk2 = new_unkCB84.unk2;

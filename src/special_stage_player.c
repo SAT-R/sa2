@@ -3,19 +3,6 @@
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
 
-s16 sub_806CF44(const struct UNK_80DF670 *spriteConfig) {
-    s16 result = 0;
-
-    while (spriteConfig->unk0 != 0xFFFF) {
-        if (result < spriteConfig->unk4) {
-            result = spriteConfig->unk4;
-        }
-        spriteConfig++;
-    }
-
-    return result;
-}
-
 // character sprites
 extern const struct UNK_80DF670* const gUnknown_080DF670[5];
 
