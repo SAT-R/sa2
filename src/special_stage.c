@@ -269,7 +269,7 @@ void sub_806BFD0(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
     struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
 
     unk1438->unk3C = 0;
 
@@ -284,7 +284,7 @@ void sub_806BFD0(void) {
     gDispCnt = 0x9641;
     gWinRegs[5] = 0x103F;
 
-    if (unkCF78->unkB4 == 0xD) {
+    if (player->unkB4 == 0xD) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);
     }
     gCurTask->main = sub_806C050;
@@ -298,7 +298,7 @@ void sub_806C158(void);
 void sub_806C050(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk88 = &stage->unk88;
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(stage->unkC);
+    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
 
     if (sub_802D4CC(unk88) == 0) {
         gDispCnt = 0x9641;
@@ -334,9 +334,9 @@ void sub_806C050(void) {
         gBgScrollRegs[1][1] = 0;
         gDispCnt = 0x1240;
 
-        if (unkCF78->unkB4 == 0xD) {
+        if (player->unkB4 == 0xD) {
             stage->unk5A2 = 0;
-            unkCF78->unkB4 = 0x10;
+            player->unkB4 = 0x10;
             gCurTask->main = sub_806CA18;
         } else {
             gCurTask->main = sub_806C158;
