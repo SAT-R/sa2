@@ -125,6 +125,7 @@ SECTIONS
         build/sa2/src/multiplayer_team_play.o(.rodata);
         build/sa2/data/unused_objects_data.o(.rodata);
         build/sa2/src/profile.o(.rodata);
+        build/sa2/src/special_stage_data.o(.rodata);
         build/sa2/data/special_stage_data.o(.rodata);
         build/sa2/data/special_stage_player_data.o(.rodata);
         build/sa2/data/special_stage_unk_806BD94_data.o(.rodata);
@@ -422,6 +423,8 @@ SECTIONS
 
         /* Asset data */
         build/sa2/data/data3.o(.rodata);
+        build/sa2/data/special_stage_levels.o(.rodata);
+        build/sa2/data/data3_1.o(.rodata);
         build/sa2/src/palettes.o(.rodata);
         build/sa2/src/recordings.o(.rodata);
         build/sa2/data/data4.o(.rodata);

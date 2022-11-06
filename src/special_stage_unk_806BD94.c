@@ -3,6 +3,7 @@
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
 #include "special_stage_unk_806BD94.h"
+#include "special_stage_data.h"
 #include "task.h"
 #include "m4a.h"
 #include "trig.h"
@@ -143,17 +144,6 @@ void sub_806DB48(void) {
     sub_806DEA4();
 }
 
-
-struct UNK_8C878E8 {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s8 unk6;
-    s8 unk7;
-}; /* size 0x8 */
-
-extern const struct UNK_8C878E8** const gUnknown_08C878E8[7];
-
 void sub_806DC98(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->unk0;
@@ -174,7 +164,7 @@ void sub_806DC98(void) {
             if (
                 temp3 > (val1 - 5) && temp3 < (val1 + 5) && 
                 temp2 > (val2 - 5) && temp2 < (val2 + 5) && 
-                temp >= (val3 - 0xC) && temp <= (val3 + 0x14)
+                temp >= (val3 - 12) && temp <= (val3 + 20)
             ) {
                 s16 before = player->unkC0;
                 if (unk78E8->unk7 == 0) {
