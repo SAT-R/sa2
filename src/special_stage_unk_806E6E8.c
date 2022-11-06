@@ -4,16 +4,85 @@
 #include "special_stage_utils.h"
 #include "special_stage_unk_806E6E8.h"
 #include "special_stage_gamma.h"
+#include "special_stage_data.h"
 #include "task.h"
 #include "m4a.h"
 #include "save.h"
 #include "trig.h"
 #include "game.h"
 #include "malloc_ewram.h"
+#include "zones.h"
 #include "constants/songs.h"
 
-extern const s16 gUnknown_080DF768[7];
-extern const s16 gUnknown_080DF776[7];
+// No idea why this has to be specified as, should be by default
+ALIGNED(4) static const s16 gUnknown_080DF6DC[8] = {
+    [ZONE_1] = 1,
+    [ZONE_2] = 7, 
+    [ZONE_3] = 5, 
+    [ZONE_4] = 1,
+    [ZONE_5] = 7, 
+    [ZONE_6] = 5,
+    [ZONE_7] = 5,
+};
+
+// used in gUnknown_08C87920, maybe incbinned?
+const struct UNK_8C87920 gUnknown_080DF6EC[] = {
+/** ZONE_1 (0) **/
+    { 909, 0, },
+
+/** ZONE_2 (1) **/
+    { 915, 0, },
+    { 916, 0, },
+    { 917, 0, },
+    { 918, 0, },
+    { 919, 0, },
+    { 920, 0, },
+    { 921, 0, },
+
+/** ZONE_3 (8) **/
+    { 935, 0, },
+    { 936, 0, },
+    { 937, 0, },
+    { 938, 0, },
+    { 939, 0, },
+
+/** ZONE_4 (13) **/
+    { 922, 0, },
+
+/** ZONE_5 (14) **/
+    { 923, 0, },
+    { 924, 0, },
+    { 925, 0, },
+    { 926, 0, },
+    { 927, 0, },
+    { 928, 0, },
+    { 929, 0, },
+
+/** ZONE_6 (21) **/
+    { 930, 0, },
+    { 931, 0, },
+    { 932, 0, },
+    { 933, 0, },
+    { 934, 0, },
+
+/** ZONE_7 (26) **/
+    { 910, 0, },
+    { 911, 0, },
+    { 912, 0, },
+    { 913, 0, },
+    { 914, 0, },
+};
+
+static const s16 gUnknown_080DF768[7] = {
+    154, 156, 158, 160, 162, 164, 166,
+};
+static const s16 gUnknown_080DF776[7] = {
+    153, 155, 157, 159, 161, 163, 165,
+};
+
+static const s16 gUnknown_080DF784[8] = {
+    0, 256, 0, 0, 0, 256, 0, 256,
+};
 
 void sub_806EA04(void);
 void sub_806E7C0(struct UNK_806E6E8* unkE6E8);
@@ -25,8 +94,8 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
     struct Task* t;
     struct UNK_806E6E8* unkE6E8;
 
-    memcpy(unkF768, gUnknown_080DF768, 0xE);
-    memcpy(unkF776, gUnknown_080DF776, 0xE);
+    memcpy(unkF768, gUnknown_080DF768, sizeof(gUnknown_080DF768));
+    memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
     t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
     unkE6E8 = TaskGetStructPtr(t);
@@ -44,19 +113,17 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
     return t;
 }
 
-extern const u8 gUnknown_080DF784[16];
-
 void sub_806E94C(struct UNK_806E6E8* unkE6E8);
 void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     struct SpecialStage* stage = unkE6E8->stage;
     s32 temp = (stage->unk5CC - stage->unk5D0) << 0x10;
 
-    u8 unkF784[16];
+    s16 unkF784[8];
     s16 unk5CE;
     s32* unk94;
     s32* unk8;
-    void* unk4;
+    s16* unk4;
     s32* unkC;
 
     unkE6E8->unkC = EwramMalloc(0x280);
@@ -94,32 +161,22 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     gUnknown_03004D54 = unkE6E8->unk4;
     gUnknown_030022C0 = unkE6E8->unk4;
     unk4 = unkE6E8->unk4;
-    
-    // TODO: what is unk4
-    memcpy(unkF784, gUnknown_080DF784, 0x10);
-    for (i = 0; i < 0xA0; i++, unk4 += 0x10) {
-        memcpy(unk4, unkF784, 0x10);
-        *(s16*)(unk4 + 4) = i << 8;
+
+    memcpy(unkF784, gUnknown_080DF784, sizeof(gUnknown_080DF784));
+    for (i = 0; i < 0xA0; i++, unk4 += ARRAY_COUNT(unkF784)) {
+        memcpy(unk4, unkF784, sizeof(unkF784));
+        *(unk4 + 2) = i << 8;
     }
 
     sub_806E94C(unkE6E8);
 }
 
-extern const s16 gUnknown_080DF6DC[7];
-
-struct UNK_8C87920 {
-    u16 unk0;
-    u16 unk2;
-};
-
-extern const struct UNK_8C87920* const gUnknown_08C87920[7];
-
 void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     // Maybe some macro? Who knows...
-    u8* level = &unkE6E8->stage->zone;
-    const struct UNK_8C87920* assets = gUnknown_08C87920[*level];
-    s16 num = gUnknown_080DF6DC[*level];
+    u8* zone = &unkE6E8->stage->zone;
+    const struct UNK_8C87920* assets = gUnknown_08C87920[*zone];
+    s16 num = gUnknown_080DF6DC[*zone];
 
     for (i = 0; i < num; i++) {
         struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];

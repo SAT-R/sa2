@@ -19,6 +19,66 @@ void sub_80701D4(struct UNK_8070B90*);
 void sub_8070E68(struct UNK_8070B90*);
 void sub_8070E00(struct UNK_8070B90*);
 
+static const struct UNK_80DF670 gUnknown_080DF7E8[] = {
+    { 1119, 16, 2, 0, 0, },
+    { 1119, 17, 2, 0, 0, },
+    { 1119, 18, 2, 0, 0, },
+    { 1119, 19, 2, 0, 0, },
+    { 1119, 20, 2, 0, 0, },
+    { 1119, 21, 2, 0, 0, },
+    { 1119, 22, 2, 0, 0, },
+    { 1119, 23, 2, 0, 0, },
+    { 1119, 24, 2, 0, 0, },
+};
+
+static const struct UNK_80DF670 gUnknown_080DF830[] = {
+    { 1119, 25, 2, 0, 0, },
+    { 1119, 26, 2, 0, 0, },
+};
+
+static const struct UNK_80DF670 gUnknown_080DF840[] = {
+    { 885, 0, 2, 0, 0, },
+    { 885, 1, 2, 0, 0, },
+    { 885, 2, 2, 0, 0, },
+    { 885, 3, 2, 0, 0, },
+    { 885, 4, 2, 0, 0, },
+    { 885, 5, 2, 0, 0, },
+    { 885, 6, 2, 0, 0, },
+    { 885, 7, 2, 0, 0, },
+};
+
+static const struct UNK_80DF670 gUnknown_080DF880[] = {
+    { 1121, 0, 24, 0, 0, },
+    { 1121, 4, 27, 0, 0, },
+    { 1121, 1, 24, 0, 0, },
+    { 1121, 2, 27, 0, 0, },
+    { 1121, 3, 18, 0, 0, },
+};
+
+static const struct UNK_80DF670 gUnknown_080DF8A8[] = {
+    { 895, 0, 9, 0, 0, },
+    { 895, 1, 9, 0, 0, },
+    { 895, 2, 9, 0, 0, },
+    { 895, 3, 9, 0, 0, },
+    { 895, 4, 9, 0, 0, },
+    { 895, 5, 9, 0, 0, },
+    { 895, 6, 9, 0, 0, },
+};
+
+static const struct UNK_80DF670 gUnknown_080DF8E0[2] = {
+    { 895, 7, 9, 0, 0, },
+    { 895, 8, 9, 0, 0, },
+};
+
+static const u16 gUnknown_080DF8F0[6][3] = {
+    { 40, 1066, 0, },
+    { 40, 1067, 0, },
+    { 40, 1068, 0, },
+    { 40, 1069, 0, },
+    { 40, 1070, 0, },
+    { 40, 1071, 0, },
+};
+
 void sub_806FB04(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0B90->stage;
@@ -57,8 +117,6 @@ void sub_806FB04(void) {
         }
     }
 }
-
-extern const struct UNK_80DF670 gUnknown_080DF7E8[9];
 
 void sub_806FBD0(struct UNK_8070B90* unk0B90) {
     struct SpecialStage* stage = unk0B90->stage;
@@ -254,8 +312,6 @@ void sub_8070078(void) {
     }
 }
 
-extern const u16 gUnknown_080DF8F0[6][3];
-
 void sub_80701D4(struct UNK_8070B90* unk0B90) {
     struct UNK_0808B3FC_UNK240* element = &unk0B90->unk274;
     s16 langIndex = gLoadedSaveGame->unk6 - 1;
@@ -272,10 +328,6 @@ void sub_80701D4(struct UNK_8070B90* unk0B90) {
     m4aSongNumStart(SE_PAUSE_SCREEN);
 }
 
-extern const struct UNK_80DF670 gUnknown_080DF880[5];
-extern const struct UNK_80DF670 gUnknown_080DF8E0[2];
-extern const struct UNK_80DF670 gUnknown_080DF8A8[7];
-
 #define SomeMacro807028C(i) ({ ((i) * 8) + 0x100; })
 
 void sub_807028C(struct UNK_8070BF0* unk0BF0) {
@@ -291,7 +343,7 @@ void sub_807028C(struct UNK_8070BF0* unk0BF0) {
     s16 temp3;
     
     u8 val = gLoadedSaveGame->unkC[stage->character];
-    u8 unk5B6 = stage->character;
+    u8 character = stage->character;
 
     gUnknown_03005B5C = stage->unk5D4;
     gUnknown_03005B58 = 0;
@@ -299,7 +351,7 @@ void sub_807028C(struct UNK_8070BF0* unk0BF0) {
     unk5C5 = stage->unk5C5;
     if (stage->unk5C5 != 0) {
         sub_806CA88(&unk0BF0->unk4,1,0x28,0x37d,0,0x100 + a,0x20,0,1,0);
-        sub_806CA88(&unk0BF0->unk34,1,gUnknown_080DF880[unk5B6].unk4,gUnknown_080DF880[unk5B6].unk0,0,0x100 + a,0x18,0,gUnknown_080DF880[unk5B6].unk2,0);
+        sub_806CA88(&unk0BF0->unk34,1,gUnknown_080DF880[character].unk4,gUnknown_080DF880[character].unk0,0,0x100 + a,0x18,0,gUnknown_080DF880[character].unk2,0);
     } else {
         sub_806CA88(&unk0BF0->unk4,1,0x20,0x37d,0,0x100 + a,0x20,0,0,0);
     }
@@ -657,14 +709,10 @@ void sub_8070C58(void) {
     sub_80051E8(&unk0B90->unk94);
 }
 
-extern const struct UNK_80DF670 gUnknown_080DF840[8];
-
 void sub_8070CD8(struct UNK_8070B90* unk0B90) {
     const struct UNK_80DF670* unkF840 = &gUnknown_080DF840[0];
     sub_806CA88(&unk0B90->unk214,0,unkF840->unk4,unkF840->unk0,0x1000,0x70,100,2,unkF840->unk2,0);
 }
-
-extern const struct UNK_80DF670 gUnknown_080DF830[2];
 
 void sub_8070D14(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);

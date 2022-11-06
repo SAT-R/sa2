@@ -477,8 +477,6 @@ gUnknown_08C87904:
     .4byte gUnknown_080DF040 + (36 * 12)
     .4byte gUnknown_080DF040 + (49 * 12)
 
-@; references data in gUnknown_080DF6DC
-@; special stage something
     .global gUnknown_08C87920
 gUnknown_08C87920:
     .4byte gUnknown_080DF6EC + (0 * 4)

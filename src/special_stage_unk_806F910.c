@@ -10,12 +10,54 @@
 #include "m4a.h"
 #include "constants/songs.h"
 
-typedef void (*TaskFunc_80DF7A0)(void);
-
-extern const TaskFunc_80DF7A0 gUnknown_080DF7A0[18];
+void sub_806F9CC(void);
+void sub_806F9CC(void);
+void sub_806F9CC(void);
+void sub_806F9CC(void);
+void sub_806EFB4(void);
+void sub_806F034(void);
+void sub_806F3C4(void);
+void sub_806F36C(void);
+void sub_806F9E4(void);
+void sub_806F0C4(void);
+void sub_806F154(void);
+void sub_806F1E8(void);
+void sub_806F268(void);
+void sub_806FB00(void);
+void sub_806F300(void);
+void sub_806F300(void);
 
 s16 sub_806F69C(struct SpecialStage*);
 void sub_806FAA0(void);
+
+static const struct UNK_8C87920 gUnknown_080DF794[3] = {
+    { 2, 890, },
+    { 1, 890, },
+    { 0, 890, },
+};
+
+typedef void (*TaskFunc_80DF7A0)(void);
+
+static TaskFunc_80DF7A0 const gUnknown_080DF7A0[18] = {
+    NULL,
+    sub_806F9CC,
+    sub_806F9CC,
+    sub_806F9CC,
+    sub_806F9CC,
+    sub_806EFB4,
+    sub_806F034,
+    sub_806F3C4,
+    sub_806F36C,
+    sub_806F9E4,
+    sub_806F0C4,
+    sub_806F154,
+    sub_806F1E8,
+    sub_806F268,
+    sub_806FB00,
+    sub_806F300,
+    sub_806F300,
+    NULL,
+};
 
 void sub_806EC24(void) {
     s32 temp5;
@@ -48,8 +90,8 @@ void sub_806EC24(void) {
         s32 temp, temp2;
         struct UNK_0808B3FC_UNK240* element;
         s16 result = sub_806F69C(stage);
-        s32 sin2 = gSineTable[result] << 2;
-        s32 sin = gSineTable[result + 0x100] <<  2;
+        s32 sin2 = gSineTable[result] * 4;
+        s32 sin = gSineTable[result + 0x100] * 4;
 
         temp = sin2 * 0x14;
         temp2 = sin * 0x14;
@@ -471,13 +513,6 @@ void sub_806F604(void) {
         player->y -= temp2;
     }
 }
-
-struct UNK_80DF794 {
-    u16 unk0;
-    u16 unk2;
-};
-
-extern const struct UNK_80DF794 gUnknown_080DF794[3];
 
 // handle collision
 s16 sub_806F69C(struct SpecialStage* stage) {
