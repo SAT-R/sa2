@@ -86,7 +86,7 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
     struct SpecialStagePlayer* player;
 
     memcpy(&unkF670, &gUnknown_080DF670, 0x14);
-    lang = stage->level;
+    lang = stage->zone;
 
     t = TaskCreate(sub_806D2C8, 0x108, 0x9000, 0, NULL);
     player = TaskGetStructPtr(t);

@@ -1,5 +1,7 @@
     .section .rodata
 
+    .align 2
+
     .global gUnknown_080DF6DC
 gUnknown_080DF6DC:
     .incbin "baserom.gba", 0x000DF6DC, 0x10

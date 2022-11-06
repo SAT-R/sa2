@@ -387,7 +387,7 @@ void sub_806F468(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkF910->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->level];
+    const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->zone];
 
     s16 playerX = player->x >> 0x10;
     s16 playerY = player->y >> 0x10;

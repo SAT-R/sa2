@@ -8,6 +8,7 @@ gUnknown_080DF914:
 gUnknown_080DF95C:
     .incbin "baserom.gba", 0x000DF95C, 0xC
 
+@; levels
     .global gUnknown_080DF968
 gUnknown_080DF968:
     .incbin "baserom.gba", 0x000DF968, 0x38

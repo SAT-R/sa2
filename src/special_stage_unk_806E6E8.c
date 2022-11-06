@@ -36,8 +36,8 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
     unkE6E8->unk8 = NULL;
     unkE6E8->unkC = NULL;
 
-    sub_806CEC4(&unkE6E8->unk10, 1, 0x10, unkF776[stage->level], 0x80, 0x80, 0, 2, 0, 0);
-    sub_806CEC4(&unkE6E8->unk50, 0, 7, unkF768[stage->level], 0x20, 0x20, 0, 1, 0, 0);
+    sub_806CEC4(&unkE6E8->unk10, 1, 0x10, unkF776[stage->zone], 0x80, 0x80, 0, 2, 0, 0);
+    sub_806CEC4(&unkE6E8->unk50, 0, 7, unkF768[stage->zone], 0x20, 0x20, 0, 1, 0, 0);
 
     sub_806E7C0(unkE6E8);
 
@@ -117,7 +117,7 @@ extern const struct UNK_8C87920* const gUnknown_08C87920[7];
 void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     // Maybe some macro? Who knows...
-    u8* level = &unkE6E8->stage->level;
+    u8* level = &unkE6E8->stage->zone;
     const struct UNK_8C87920* assets = gUnknown_08C87920[*level];
     s16 num = gUnknown_080DF6DC[*level];
 
@@ -197,7 +197,7 @@ void sub_806EB74(void) {
     s16 i;
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkE6E8->stage;
-    u8* level = &stage->level;
+    u8* level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
     // Huh?
     u8 *temp = (u8*)&stage->unk5A0;

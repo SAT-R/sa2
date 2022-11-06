@@ -480,7 +480,7 @@ void sub_8070EE4(void);
 void sub_8070814(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0BF0->stage;
-    u8 level = stage->level;
+    u8 level = stage->zone;
     sub_807087C();
 
     unk0BF0->unk514++;
@@ -728,7 +728,7 @@ void sub_8070E68(struct UNK_8070B90* unk0B90) {
 void sub_8070E88(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0BF0->stage;
-    struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->level];
+    struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->zone];
     
     element->unkA = gUnknown_080DF8A8[8].unk0;
     element->unk20 = gUnknown_080DF8A8[8].unk2;

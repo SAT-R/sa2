@@ -20,7 +20,7 @@ void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a,
 void sub_8071530(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
 
 void sub_8070EFC(struct SpecialStageGamma* gamma) {
-    u8 level = gamma->stage->level;
+    u8 level = gamma->stage->zone;
     const struct UNK_80DF670* unkF914 = &gUnknown_080DF914[0];
     s16 result = sub_806CF44(unkF914);
     void* vramOld = gUnknown_03005B5C;

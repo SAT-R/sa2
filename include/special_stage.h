@@ -49,9 +49,9 @@ struct SpecialStage {
     
     u8 unk5B7;
 
-    u8 level;
+    u8 zone;
 
-    u8 unk5B9;
+    u8 level;
     u8 unk5BA;
 
     s8 unk5BB;

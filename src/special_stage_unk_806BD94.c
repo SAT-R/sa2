@@ -9,6 +9,17 @@
 #include "trig.h"
 #include "random.h"
 #include "constants/songs.h"
+#include "zones.h"
+
+const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
+    [ZONE_1] = 0x130,
+    [ZONE_2] = 0x128,
+    [ZONE_3] = 0x110,
+    [ZONE_4] = 0x128,
+    [ZONE_5] = 0x143,
+    [ZONE_6] = 0x11C,
+    [ZONE_7] = 0x10B,
+};
 
 void sub_806D890(struct SpecialStage* stage, s16 num) {
     s16 i;
@@ -147,7 +158,7 @@ void sub_806DB48(void) {
 void sub_806DC98(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->level];
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->zone];
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
     s32 val1 = player->x >> 0x10;
@@ -192,19 +203,17 @@ void sub_806DC98(void) {
     }
 }
 
-extern const s16 gUnknown_080DF6CC[7];
-
 bool16 sub_806DE10(void) {
     s16 i;
     u16 result;
-    s16 unkF6CC[7];
+    s16 unkF6CC[NUM_COURSE_ZONES];
     s16 val;
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
     result = FALSE;
-    memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
+    memcpy(unkF6CC, gUnknown_080DF6CC, sizeof(gUnknown_080DF6CC));
 
-    val = unkF6CC[stage->level];
+    val = unkF6CC[stage->zone];
     for (i = 0; i < val; i++) {
         if (unkBD94->unk914[i] > 2) {
             unkBD94->unk914[i]++;
@@ -250,7 +259,7 @@ void sub_806DEA4(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->level];
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->zone];
     const struct UNK_8C878E8** unk78E8;
     const struct UNK_8C878E8* unk78E8_val = NULL;
 
@@ -556,7 +565,7 @@ struct Task* sub_806E684(struct SpecialStage* stage) {
     t = TaskCreate(sub_806D9B4, 0xA5C, 0xB000, 0, NULL);
     unkBD94 = TaskGetStructPtr(t);
     unkBD94->stage = stage;
-    unkBD94->unkA58 = unkF6CC[stage->level];
+    unkBD94->unkA58 = unkF6CC[stage->zone];
     unkBD94->unkA5A = 0;
 
     return t;

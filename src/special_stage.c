@@ -20,20 +20,20 @@ void sub_806C950(struct Task*);
 
 extern const s16 gSpecialStageLevelTimes[7];
 
-void sub_806BA84(s16 selectedCharacter, s16 selectedLevel) {
+void sub_806BA84(s16 selectedCharacter, s16 level) {
     struct Task* t;
     struct SpecialStage* stage;
     
-    s16 level, character, temp, i, target;
+    s16 zone, character, temp, i, target;
     
     m4aMPlayAllStop();
 
-    if (selectedLevel != -1) {
-        temp = selectedLevel >> 2;
+    if (level != -1) {
+        temp = level >> 2;
     } else {
         temp = gCurrentLevel >> 2;
     }
-    level = temp;
+    zone = temp;
 
     if (selectedCharacter == -1) {
         character = gSelectedCharacter;
@@ -58,8 +58,8 @@ void sub_806BA84(s16 selectedCharacter, s16 selectedLevel) {
         stage->unk5B7 = 1;
     }
 
+    stage->zone = zone;
     stage->level = level;
-    stage->unk5B9 = selectedLevel;
     stage->unk5A2 = 0;
     
     stage->unk5BB = 1;
@@ -68,7 +68,7 @@ void sub_806BA84(s16 selectedCharacter, s16 selectedLevel) {
     stage->unk5BE = 0;
 
     stage->elapsedTime = 0;
-    stage->levelTime = gSpecialStageLevelTimes[level];
+    stage->levelTime = gSpecialStageLevelTimes[zone];
 
     stage->unk5B4 = 0;
     stage->unk5BA = 0;
@@ -540,9 +540,9 @@ void sub_806C560(void) {
         }
     }
 
-    if (!GetBit(something, stage->level)) {
+    if (!GetBit(something, stage->zone)) {
         sub_8070C30(stage);
-        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->level;
+        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->zone;
         stage->unk5A2 = 0x78;
     } else {
         stage->unk5A2 = 0xC;
