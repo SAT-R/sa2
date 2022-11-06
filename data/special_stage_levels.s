@@ -471,6 +471,7 @@ gUnknown_08C878E8:
 gUnknown_08C87904:
     .incbin "baserom.gba", 0x00C87904, 0x1C
 
+@; references data in gUnknown_080DF6DC
 @; special stage something
     .global gUnknown_08C87920
 gUnknown_08C87920:

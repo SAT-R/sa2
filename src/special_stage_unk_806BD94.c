@@ -111,7 +111,7 @@ void sub_806DEA4(void);
 
 void sub_806DB48(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
+    struct SpecialStage* stage = unkBD94->stage;
     if (stage->unk5BA == 0) {
         sub_8004558(&unkBD94->unk4);
         sub_8004558(&unkBD94->unk64);
@@ -146,14 +146,14 @@ void sub_806DB48(void) {
 
 void sub_806DC98(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
+    struct SpecialStage* stage = unkBD94->stage;
     const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    s32 val1 = player->unkA8 >> 0x10;
-    s32 val2 = player->unkAC >> 0x10;
+    s32 val1 = player->x >> 0x10;
+    s32 val2 = player->y >> 0x10;
     s32 val3 = player->unkB0 >> 4;
-    u32 index = ((player->unkA8 >> 0x17) * 8) + (player->unkAC >> 0x17);
+    u32 index = ((player->x >> 0x17) * 8) + (player->y >> 0x17);
     const struct UNK_8C878E8* unk78E8 = unk78E8_vals[index];
 
     while (unk78E8->unk0 != -1) {
@@ -200,7 +200,7 @@ bool16 sub_806DE10(void) {
     s16 unkF6CC[7];
     s16 val;
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
+    struct SpecialStage* stage = unkBD94->stage;
     result = FALSE;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
 
@@ -248,8 +248,8 @@ void sub_806DEA4(void) {
 
     struct UNK_806DEA4 DEA4_Arr[16];
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStage* stage = unkBD94->stage;
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
     const struct UNK_8C878E8** unk78E8;
     const struct UNK_8C878E8* unk78E8_val = NULL;
@@ -261,8 +261,8 @@ void sub_806DEA4(void) {
         unkDEA4_1->unk0 = 0;
     }
 
-    val1 = player->unkA8 >> 0x17;
-    val2 = player->unkAC >> 0x17;
+    val1 = player->x >> 0x17;
+    val2 = player->y >> 0x17;
     index = (val1 * 8) + val2;
 
     unk78E8_val = unk78E8_vals[index]; 
@@ -337,7 +337,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
             new_unk874.unk12 = 5;
-            if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
+            if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->stage)) {
                 if (result < 0x10) {
                     memcpy(&unkDEA4Arr[result], &new_unkCB84, sizeof(new_unkCB84));
 
@@ -378,7 +378,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
 
 void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
+    struct SpecialStage* stage = unkBD94->stage;
 
     struct UNK_0808B3FC_UNK240* element1 = &unkBD94->unk1B4[index];
     struct UNK_0808B3FC_UNK240* element2 = &unkBD94->unk4B4[index];
@@ -432,10 +432,10 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
 void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
     s16 i, j;
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(stage->unk8);
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    s32 unkA8 = player->unkA8;
-    s32 unkAC = player->unkAC;
+    s32 x = player->x;
+    s32 y = player->y;
     s32 unkB0 = player->unkB0;
     s16 temp;
 
@@ -450,8 +450,8 @@ void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
         s32 sin1, sin2;
         s32 temp3, temp4;
         struct UNK_806BD94_UNK874* unk874 = &unkBD94->unk874[i];
-        unk874->unk0 = unkA8;
-        unk874->unk4 = unkAC;
+        unk874->unk0 = x;
+        unk874->unk4 = y;
         unk874->unk8 = unkB0;
 
         rand1 = Random() & 0x3FF;
@@ -511,7 +511,7 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
     struct UNK_806CB84 new_unkCB84;
 
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkBD94->unk0;
+    struct SpecialStage* stage = unkBD94->stage;
 
     struct UNK_0808B3FC_UNK240* unk7B4 = &unkBD94->unk7B4[index];
 
@@ -523,7 +523,7 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
     new_unk874.unk10 = 0;
     new_unk874.unk12 = 5;
 
-    if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->unk0)) {
+    if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->stage)) {
         s32 unk2 = new_unkCB84.unk2;
         s32 unk4 = new_unkCB84.unk4;
         s32 unk6 = unk4 - new_unkCB84.unk6;
@@ -555,7 +555,7 @@ struct Task* sub_806E684(struct SpecialStage* stage) {
     
     t = TaskCreate(sub_806D9B4, 0xA5C, 0xB000, 0, NULL);
     unkBD94 = TaskGetStructPtr(t);
-    unkBD94->unk0 = stage;
+    unkBD94->stage = stage;
     unkBD94->unkA58 = unkF6CC[stage->unk5B8];
     unkBD94->unkA5A = 0;
 

@@ -5,7 +5,7 @@
 #include "special_stage_ui.h"
 #include "special_stage_unk_806E6E8.h"
 #include "special_stage_unk_806BD94.h"
-#include "special_stage_unk_8071438.h"
+#include "special_stage_gamma.h"
 #include "special_stage_unk_806F910.h"
 #include "game.h"
 #include "sprite.h"
@@ -163,9 +163,9 @@ void sub_806BD94(void) {
     switch(stage->unk5A2) {
         case 0:
             stage->unk0 = sub_806F910(stage);
-            stage->unkC = sub_806CF78(stage);
+            stage->playerTask = CreatePlayer(stage);
             stage->unk5D4 = gUnknown_03005B5C;
-            stage->unk14 = sub_8071438(stage);
+            stage->gammaTask = CreateGamma(stage);
             break;
         case 1:
             stage->unk8 = sub_806E684(stage);
@@ -206,7 +206,7 @@ void sub_806BE40(void) {
 
 void sub_806BE9C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
     if (stage->unk5B4 == 6) {
 #ifndef NON_MATCHING
@@ -268,10 +268,10 @@ void sub_806C050(void);
 void sub_806BFD0(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
-    struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    unk1438->unk3C = 0;
+    gamma->unk3C = 0;
 
     transitionConfig->unk0 = 1;
     transitionConfig->unk2 = 1;
@@ -298,15 +298,15 @@ void sub_806C158(void);
 void sub_806C050(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* unk88 = &stage->unk88;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
     if (sub_802D4CC(unk88) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[5] = 0x103F;
     } else {
-        if (stage->unk14 != NULL) {
-            TaskDestroy(stage->unk14);
-            stage->unk14 = NULL;
+        if (stage->gammaTask != NULL) {
+            TaskDestroy(stage->gammaTask);
+            stage->gammaTask = NULL;
         }
 
         if (stage->unk0 != NULL) {
@@ -348,7 +348,7 @@ void sub_806CA54(void);
 
 void sub_806C158(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
     gBldRegs.bldY = 0;
     gBldRegs.bldCnt = 0;
@@ -585,9 +585,9 @@ void sub_806C6A4(void) {
         s32 temp2, temp3, temp4;
         s32 temp = stage->unk5B0;
 
-        if (stage->unkC != NULL) {
-            TaskDestroy(stage->unkC);
-            stage->unkC = NULL;
+        if (stage->playerTask != NULL) {
+            TaskDestroy(stage->playerTask);
+            stage->playerTask = NULL;
         }
 
         if (stage->unk10 != NULL) {

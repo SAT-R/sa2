@@ -2,7 +2,7 @@
 #include "special_stage.h"
 #include "special_stage_player.h"
 #include "special_stage_unk_806F910.h"
-#include "special_stage_unk_8071438.h"
+#include "special_stage_gamma.h"
 #include "task.h"
 #include "trig.h"
 #include "game.h"
@@ -17,11 +17,10 @@ s16 sub_806F69C(struct SpecialStage*);
 void sub_806FAA0(void);
 
 void sub_806EC24(void) {
-    s16* unkAC;
     s32 temp5;
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkF910->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStage* stage = unkF910->stage;
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     
     TaskFunc_80DF7A0 funcs[18];
     memcpy(funcs, gUnknown_080DF7A0, sizeof(gUnknown_080DF7A0));
@@ -75,19 +74,17 @@ void sub_806EC24(void) {
     }
 
     sub_806FAA0();
-    stage->unk594 = player->unkA8;
-    stage->unk598 = player->unkAC;
+    stage->unk594 = player->x;
+    stage->unk598 = player->y;
     stage->unk5A0 = player->unkB2;
 
-    unkAC = (s16*)&player->unkAC;
-    gBgScrollRegs[2][1] = temp5 = -unkAC[1];
-    unkAC = (s16*)&player->unkA8;
-    gBgScrollRegs[2][0] = temp5 = -unkAC[1];
+    gBgScrollRegs[2][1] = temp5 = -(player->y >> 0x10);
+    gBgScrollRegs[2][0] = temp5 = -(player->x >> 0x10);
 }
 
 void sub_806EDB4(UNUSED u32 unused) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     s32 c8 = player->unkC8;
     s32 e4 = player->unkE4;
@@ -166,14 +163,14 @@ void sub_806EDB4(UNUSED u32 unused) {
     {
         s32 temp = (sin1 * c8) >> 10;
         s32 temp2 = (sin2 * c8) >> 10;
-        player->unkA8 -= temp;
-        player->unkAC -= temp2;
+        player->x -= temp;
+        player->y -= temp2;
     }
 }
 
 void sub_806EF44(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     u16 b2 = player->unkB2;
     
@@ -194,7 +191,7 @@ void sub_806F56C(void);
 
 void sub_806EFB4(void) { 
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
     sub_806EF44();
     sub_806F56C();
 
@@ -209,7 +206,7 @@ void sub_806EFB4(void) {
 
 void sub_806F034(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
     sub_806EF44();
     sub_806F56C();
     
@@ -232,7 +229,7 @@ void sub_806F604(void);
 
 void sub_806F0C4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
     sub_806EF44();
     sub_806F604();
     
@@ -253,13 +250,13 @@ void sub_806F0C4(void) {
 
 void sub_806F154(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     sub_806EF44();
     sub_806F604();
 
-    player->unkA8 += player->unkD0;
-    player->unkAC += player->unkD4;
+    player->x += player->unkD0;
+    player->y += player->unkD4;
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
@@ -271,7 +268,7 @@ void sub_806F154(void) {
 
 void sub_806F1E8(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
     unkF910->unk4++;
     player->unkB8 += player->unkFA;
     sub_806F56C();
@@ -291,7 +288,7 @@ void sub_806F1E8(void) {
 
 void sub_806F268(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     s32 e0 = player->unkE0;
     s32 c8 = player->unkC8;
@@ -310,8 +307,8 @@ void sub_806F268(void) {
     {
         s32 temp2 = (sin1 * c8) >> 10;
         s32 temp3 = (sin2 * c8) >> 10;
-        player->unkA8 -= temp2;
-        player->unkAC -= temp3;
+        player->x -= temp2;
+        player->y -= temp3;
     }
 
     if (c8 == 0) {
@@ -321,7 +318,7 @@ void sub_806F268(void) {
 
 void sub_806F300(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     unkF910->unk4++;
     player->unkB8 += player->unkFE;
@@ -336,7 +333,7 @@ void sub_806F300(void) {
 
 void sub_806F36C(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     u16 temp = (player->unkB2 + 0x10);
     player->unkB2 = temp & 0x3FF;
@@ -351,22 +348,22 @@ void sub_806F36C(void) {
 
 void sub_806F3C4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->unkA8 <= 0x300000) {
-        player->unkA8 = 0x300000;
+    if (player->x <= MIN_SPECIAL_STAGE_X << 0x10) {
+        player->x = MIN_SPECIAL_STAGE_X << 0x10;
     } 
 
-    if (player->unkA8 >= 0x3D00000) {
-        player->unkA8 = 0x3D00000;
+    if (player->x >= MAX_SPECIAL_STAGE_X << 0x10) {
+        player->x = MAX_SPECIAL_STAGE_X << 0x10;
     }
 
-    if (player->unkAC <= 0x300000) {
-        player->unkAC = 0x300000;
+    if (player->y <= MIN_SPECIAL_STAGE_Y << 0x10) {
+        player->y = MIN_SPECIAL_STAGE_Y << 0x10;
     }
 
-    if (player->unkAC >= 0x3D00000) {
-        player->unkAC = 0x3D00000;
+    if (player->y >= MAX_SPECIAL_STAGE_Y << 0x10) {
+        player->y = MAX_SPECIAL_STAGE_Y << 0x10;
     }
 
     unkF910->unk4++;
@@ -398,16 +395,16 @@ extern const struct UNK_8C87904* const gUnknown_08C87904[7];
 
 void sub_806F468(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkF910->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStage* stage = unkF910->stage;
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->unk5B8];
 
-    s16 unkA8 = player->unkA8 >> 0x10;
-    s16 unkAC = player->unkAC >> 0x10;
+    s16 playerX = player->x >> 0x10;
+    s16 playerY = player->y >> 0x10;
 
     while (unk7904->unk0 != -1) {
-        if (unkA8 >= unk7904->unk2 && unkA8 < (unk7904->unk2 + unk7904->unk6)) {
-            if (unkAC >= unk7904->unk4 && unkAC < (unk7904->unk4 + unk7904->unk8)) {
+        if (playerX >= unk7904->unk2 && playerX < (unk7904->unk2 + unk7904->unk6)) {
+            if (playerY >= unk7904->unk4 && playerY < (unk7904->unk4 + unk7904->unk8)) {
                 switch(unk7904->unk0) {
                     case 0:
                         player->unkC8 = player->unkE8;
@@ -434,7 +431,7 @@ void sub_806F468(void) {
 
 void sub_806F56C(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     s32 c8 = player->unkC8;
     u16 b2 = player->unkB2;
@@ -453,14 +450,14 @@ void sub_806F56C(void) {
     {
         s32 temp1 = (sin1 * c8) >> 10;
         s32 temp2 = (sin2 * c8) >> 10;
-        player->unkA8 -= temp1;
-        player->unkAC -= temp2;
+        player->x -= temp1;
+        player->y -= temp2;
     }
 }
 
 void sub_806F604(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     s32 c8 = player->unkC8;
     u16 b2 = player->unkB2;
@@ -480,8 +477,8 @@ void sub_806F604(void) {
     {
         s32 temp1 = (sin1 * c8)  >> 10;
         s32 temp2 = (sin2 * c8) >> 10;
-        player->unkA8 -= temp1;
-        player->unkAC -= temp2;
+        player->x -= temp1;
+        player->y -= temp2;
     }
 }
 
@@ -492,32 +489,33 @@ struct UNK_80DF794 {
 
 extern const struct UNK_80DF794 gUnknown_080DF794[3];
 
+// handle collision
 s16 sub_806F69C(struct SpecialStage* stage) {
     u32 i;
     s32 sin14, sin16;
     struct UNK_0808B3FC_UNK240* element;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
-    struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
 
     u32 temp1;
     u32 temp2;
     u16 temp3;
-    s32 unkA;
-    s32 unkB;
-    s16 unk40;
-    s16 ac;
+    s32 f_dX;
+    s32 f_dY;
+    s16 dX;
+    s16 dY;
 
     u16 b2 = -player->unkB2 & 0x3FF;
 
-    unkA = unk1438->unk40 - player->unkA8;
-    unkB = unk1438->unk44 - player->unkAC;
-    unk40 = unkA >> 0x10;
-    ac = unkB  >> 0x10;
+    f_dX = gamma->x - player->x;
+    f_dY = gamma->y - player->y;
+    dX = f_dX >> 0x10;
+    dY = f_dY  >> 0x10;
 
-    if (unk40 > -0x10 && unk40 < 0x10 && ac > -0x10 && ac < 0x10) {
+    if (dX > -16 && dX < 16 && dY > -16 && dY < 16) {
         temp1 = 0xC;
     } else {
-        if (unk40 > -0x100 && unk40 < 0x100 && ac > -0x100 && ac < 0x100) {
+        if (dX > -256 && dX < 256 && dY > -256 && dY < 256) {
             temp1 = 0x10;
         } else {
             temp1 = 0x14;
@@ -525,10 +523,10 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     }
     
 
-    if (unk40 > -0x30 && unk40 < 0x30 && ac > -0x30 && ac < 0x30) {
+    if (dX > -48 && dX < 48 && dY > -48 && dY < 48) {
         temp2 = 0;
     } else {
-        if (unk40 > -0x60 && unk40 < 0x60 && ac > -0x60 && ac < 0x60) {
+        if (dX > -96 && dX < 96 && dY > -96 && dY < 96) {
             temp2 = 1;
         } else {
             temp2 = 2;
@@ -539,33 +537,33 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     player->unk68.unkA = gUnknown_080DF794[temp2].unk2;
 
     temp3 = temp1;
-    unkA = unkA >> temp3;
-    unkB = unkB >> temp3;
+    f_dX = f_dX >> temp3;
+    f_dY = f_dY >> temp3;
 
     sin16 = gSineTable[b2];
     sin14 = gSineTable[b2 + 0x100];
 
     {
-        s32 sin5 = sin16 * unkB;
-        s32 sin6 = sin14 * unkA;
-        s32 sin3 = -sin16 * unkA;
-        s32 sin4 = sin14 * unkB;
+        s32 sin5 = sin16 * f_dY;
+        s32 sin6 = sin14 * f_dX;
+        s32 sin3 = -sin16 * f_dX;
+        s32 sin4 = sin14 * f_dY;
     
-        unkA = sin5 + sin6;
-        unkB = sin3 + sin4;
+        f_dX = sin5 + sin6;
+        f_dY = sin3 + sin4;
     }
     
-    for (i = 0x100; i > 0; i >>= 1) {
+    for (i = 256; i > 0; i >>= 1) {
         sin16 = gSineTable[b2] >> 6;
         sin14 = gSineTable[b2 + 0x100] >> 6;
 
-        if ((sin16 * unkB + sin14 * unkA) > 0) {
+        if ((sin16 * f_dY + sin14 * f_dX) > 0) {
             b2 = (b2 + i) & 0x3FF;
         } else {
-            if ((sin16 * unkB + sin14 * unkA) >= 0) {
-                s32 a = -sin16 * unkA;
-                s32 b = sin14 * unkB;
-                b = a + sin14 * unkB;
+            if ((sin16 * f_dY + sin14 * f_dX) >= 0) {
+                s32 a = -sin16 * f_dX;
+                s32 b = sin14 * f_dY;
+                b = a + sin14 * f_dY;
                 if (b >= 0) {
                     return (b2 + 0x200) & 0x3FF;
                 }
@@ -635,7 +633,7 @@ struct Task* sub_806F910(struct SpecialStage* stage) {
     struct Task* t = TaskCreate(sub_806EC24, 8, 0x4000, 0, 0);
     struct UNK_806F910* unkF910 = TaskGetStructPtr(t);
 
-    unkF910->unk0 = stage;
+    unkF910->stage = stage;
     unkF910->unk4 = 0;
     unkF910->unk6 = 0x3C;
 
@@ -643,13 +641,13 @@ struct Task* sub_806F910(struct SpecialStage* stage) {
 }
 
 void sub_806F944(struct SpecialStage* stage) {
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
-    struct UNK_8071438* unk1438 = TaskGetStructPtr(stage->unk14);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
 
-    s32 a8 = player->unkA8;
-    s32 ac = player->unkAC;
-    s32 unk40 = unk1438->unk40;
-    s32 unk44 = unk1438->unk44;
+    s32 a8 = player->x;
+    s32 ac = player->y;
+    s32 unk40 = gamma->x;
+    s32 unk44 = gamma->y;
 
     s16 result = sub_806F84C((a8 - unk40) >> 4, (ac - unk44) >> 4);
     player->unkD0 = ((a8 - unk40) * 0x20) / result;
@@ -669,7 +667,7 @@ void sub_806F9CC(void) {
 
 void sub_806F9E4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     sub_806EDB4(1);
     sub_806EF44();
@@ -682,7 +680,7 @@ void sub_806F9E4(void) {
 
 void sub_806FA34(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     if (gPressedKeys & gUnknown_03005B38.unk0) {
         player->unkB4 = 4;
@@ -695,22 +693,22 @@ void sub_806FA34(void) {
 
 void sub_806FAA0(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
-    struct UNK_806CF78* player = TaskGetStructPtr(unkF910->unk0->unkC);
+    struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->unkA8 < 0x300000) {
-        player->unkA8 = 0x300000;
+    if (player->x < MIN_SPECIAL_STAGE_X << 0x10) {
+        player->x = MIN_SPECIAL_STAGE_X << 0x10;
     }
 
-    if (player->unkA8 > 0x3D00000) {
-        player->unkA8 = 0x3D00000;
+    if (player->x > MAX_SPECIAL_STAGE_X << 0x10) {
+        player->x = MAX_SPECIAL_STAGE_X << 0x10;
     }
 
-    if (player->unkAC < 0x300000) {
-        player->unkAC = 0x300000;
+    if (player->y < MIN_SPECIAL_STAGE_Y << 0x10) {
+        player->y = MIN_SPECIAL_STAGE_Y << 0x10;
     }
 
-    if (player->unkAC > 0x3D00000) {
-        player->unkAC = 0x3D00000;
+    if (player->y > MAX_SPECIAL_STAGE_Y << 0x10) {
+        player->y = MAX_SPECIAL_STAGE_Y << 0x10;
     }
 }
 

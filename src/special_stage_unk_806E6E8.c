@@ -3,7 +3,7 @@
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
 #include "special_stage_unk_806E6E8.h"
-#include "special_stage_unk_8071438.h"
+#include "special_stage_gamma.h"
 #include "task.h"
 #include "m4a.h"
 #include "save.h"
@@ -30,7 +30,7 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
 
     t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
     unkE6E8 = TaskGetStructPtr(t);
-    unkE6E8->unk0 = stage;
+    unkE6E8->stage = stage;
     
     unkE6E8->unk4 = NULL;
     unkE6E8->unk8 = NULL;
@@ -49,7 +49,7 @@ extern const u8 gUnknown_080DF784[16];
 void sub_806E94C(struct UNK_806E6E8* unkE6E8);
 void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     s16 i;
-    struct SpecialStage* stage = unkE6E8->unk0;
+    struct SpecialStage* stage = unkE6E8->stage;
     s32 temp = (stage->unk5CC - stage->unk5D0) << 0x10;
 
     u8 unkF784[16];
@@ -117,7 +117,7 @@ extern const struct UNK_8C87920* const gUnknown_08C87920[7];
 void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     // Maybe some macro? Who knows...
-    u8* level = &unkE6E8->unk0->unk5B8;
+    u8* level = &unkE6E8->stage->unk5B8;
     const struct UNK_8C87920* assets = gUnknown_08C87920[*level];
     s16 num = gUnknown_080DF6DC[*level];
 
@@ -145,7 +145,7 @@ void sub_806EB74(void);
 
 void sub_806EA04(void) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkE6E8->unk0;
+    struct SpecialStage* stage = unkE6E8->stage;
     s32 sin1, sin2;
     s16 unk5CE;
     s32 unk5A0;
@@ -196,7 +196,7 @@ void sub_806EA04(void) {
 void sub_806EB74(void) {
     s16 i;
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkE6E8->unk0;
+    struct SpecialStage* stage = unkE6E8->stage;
     u8* level = &stage->unk5B8;
     s16 num = gUnknown_080DF6DC[*level];
     // Huh?

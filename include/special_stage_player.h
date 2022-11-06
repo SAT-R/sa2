@@ -5,7 +5,7 @@
 #include "special_stage.h"
 
 // Player
-struct UNK_806CF78 {
+struct SpecialStagePlayer {
     struct SpecialStage* unk0;
     void* unk4;
     struct UNK_0808B3FC_UNK240 unk8;
@@ -20,8 +20,8 @@ struct UNK_806CF78 {
     s16 unkA4;
     u8 unkA6;
 
-    s32 unkA8;
-    s32 unkAC;
+    s32 x;
+    s32 y;
 
     s16 unkB0;
     u16 unkB2;
@@ -67,6 +67,6 @@ struct UNK_806CF78 {
     s32 unk104;
 }; /* size 0x108 */
 
-struct Task* sub_806CF78(struct SpecialStage*);
+struct Task* CreatePlayer(struct SpecialStage*);
 
 #endif

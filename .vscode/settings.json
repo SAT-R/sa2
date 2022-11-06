@@ -127,7 +127,7 @@
         "special_stage_unk_806bd94.h": "c",
         "special_stage_player.h": "c",
         "special_stage_unk_806f910.h": "c",
-        "special_stage_unk_8071438.h": "c",
+        "special_stage_gamma.h": "c",
         "special_stage_data.h": "c"
     },
     "yaml.schemas": {

@@ -5,7 +5,7 @@
 #include "special_stage.h"
 
 struct UNK_806E6E8 {
-    struct SpecialStage* unk0;
+    struct SpecialStage* stage;
     void* unk4; // size 0xA00
     void* unk8; // size 0x280
     s32* unkC; // size 0x280

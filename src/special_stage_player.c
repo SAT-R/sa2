@@ -13,7 +13,7 @@ extern const struct UNK_80DF670 gUnknown_080DF668;
 void sub_806D2C8(void);
 
 void sub_806D548(struct UNK_0808B3FC_UNK240* element, void*, s16, u8, const struct UNK_80DF670*);
-struct Task* sub_806CF78(struct SpecialStage* stage) {
+struct Task* CreatePlayer(struct SpecialStage* stage) {
     const struct UNK_80DF670* unkF670[5];
     u8 lang;
     s16 result;
@@ -22,7 +22,7 @@ struct Task* sub_806CF78(struct SpecialStage* stage) {
     u32 temp;
 
     struct Task* t;
-    struct UNK_806CF78* unkCF78;
+    struct SpecialStagePlayer* unkCF78;
 
     memcpy(&unkF670, &gUnknown_080DF670, 0x14);
     lang = stage->unk5B8;
@@ -31,8 +31,8 @@ struct Task* sub_806CF78(struct SpecialStage* stage) {
     unkCF78 = TaskGetStructPtr(t);
     unkCF78->unk0 = stage;
     unkCF78->unk4 = NULL;
-    unkCF78->unkA8 = gUnknown_080DF9D8[lang][0] << 0x10;
-    unkCF78->unkAC = gUnknown_080DF9D8[lang][1] << 0x10;
+    unkCF78->x = gUnknown_080DF9D8[lang][0] << 0x10;
+    unkCF78->y = gUnknown_080DF9D8[lang][1] << 0x10;
 
     unkCF78->unkB0 = 0;
     unkCF78->unkB2 = gUnknown_080DF9D8[lang][2];
@@ -134,7 +134,7 @@ void sub_806D2C8(void) {
     TaskFunc_80DF684 funcs[18];
     struct UNK_0808B3FC_UNK240 *unk8, *unk38;
     
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
 
     memcpy(funcs, gUnknown_080DF684, sizeof(gUnknown_080DF684));
@@ -171,7 +171,7 @@ void sub_806D830(struct UNK_0808B3FC_UNK240* element, s16, s16, const struct UNK
 
 // Stopped?
 void sub_806D388(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     const struct UNK_80DF670* unkC4;
     struct UNK_0808B3FC_UNK240* unk8;
@@ -198,7 +198,7 @@ void sub_806D388(void) {
 
 // Moving?
 void sub_806D424(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
 
     const struct UNK_80DF670* unkC4;
@@ -218,7 +218,7 @@ void sub_806D424(void) {
 
 // Running?
 void sub_806D484(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
 
     const struct UNK_80DF670* unkC4;
@@ -238,7 +238,7 @@ void sub_806D484(void) {
 
 // Sprinting?
 void sub_806D4E4(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
 
     const struct UNK_80DF670* unkC4;
@@ -290,7 +290,7 @@ UNUSED static void sub_806D5CC(void) {}
 })\
 
 void sub_806D5D0(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     
     const struct UNK_80DF670* unkC4 = &unkCF78->unkC4[12];
@@ -300,7 +300,7 @@ void sub_806D5D0(void) {
 }
 
 void sub_806D634(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     const struct UNK_80DF670* unkC4 = &unkCF78->unkC4[15];
 
@@ -310,7 +310,7 @@ void sub_806D634(void) {
 }
 
 void sub_806D698(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     const struct UNK_80DF670* unkC4 = &unkCF78->unkC4[18];
 
@@ -318,7 +318,7 @@ void sub_806D698(void) {
 }
 
 void sub_806D6DC(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     const struct UNK_80DF670* unkC4 = &unkCF78->unkC4[19];
 
@@ -328,7 +328,7 @@ void sub_806D6DC(void) {
 }
 
 void sub_806D740(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkCF78->unk0;
     const struct UNK_80DF670* unkC4 = &unkCF78->unkC4[20];
 
@@ -336,7 +336,7 @@ void sub_806D740(void) {
 }
 
 void sub_806D788(void) {
-    struct UNK_806CF78* unkCF78 = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer* unkCF78 = TaskGetStructPtr(gCurTask);
     if (unkCF78->unkBC != 0) {
         s32 temp = --unkCF78->unkBC;
         if (temp == 0) {

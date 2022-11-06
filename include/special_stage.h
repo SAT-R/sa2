@@ -5,18 +5,25 @@
 #include "sprite.h"
 #include "transition.h"
 
+#define SPECIAL_STAGE_ZONE_SIZE 8
+
+#define MIN_SPECIAL_STAGE_X 48
+#define MAX_SPECIAL_STAGE_X 976
+
+#define MIN_SPECIAL_STAGE_Y 48
+#define MAX_SPECIAL_STAGE_Y 976
+
 struct SpecialStage {
     struct Task* unk0; // UNK_806F910
     struct Task* unk4; // UNK_806E6E8
     struct Task* unk8; // UNK_806BD94
 
-    // playerTask
-    struct Task* unkC; // UNK_806CF78
+    struct Task* playerTask;
 
     // uiTask?
     struct Task* unk10; // UNK_8070B90 or UNK_8070BF0
 
-    struct Task* unk14; // UNK_8071438
+    struct Task* gammaTask;
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;

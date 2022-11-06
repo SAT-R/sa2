@@ -20,7 +20,7 @@ void sub_8070E00(struct UNK_8070B90*);
 
 void sub_806FB04(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     sub_8070C58();
     sub_806FFC8();
@@ -60,7 +60,7 @@ void sub_806FB04(void) {
 extern const struct UNK_80DF670 gUnknown_080DF7E8[9];
 
 void sub_806FBD0(struct UNK_8070B90* unk0B90) {
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
     const struct UNK_80DF670* unkF7E8;
     struct UNK_0808B3FC_UNK240 newElement;
 
@@ -84,7 +84,7 @@ void sub_806FBD0(struct UNK_8070B90* unk0B90) {
 
 void sub_806FCF8(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     struct UNK_0808B3FC_UNK240* element;
     const struct UNK_80DF670* unkF7E8;
@@ -142,7 +142,7 @@ void sub_806FCF8(void) {
 }
 
 void sub_806FE2C(struct UNK_8070B90* unk0B90) {
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     struct UNK_0808B3FC_UNK240* element;
     const struct UNK_80DF670* unkF7E8;
@@ -172,7 +172,7 @@ void sub_8070078(void);
 
 void sub_806FFC8(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     if (stage->unk5BA == 0) {
         sub_8070078();
@@ -202,7 +202,7 @@ void sub_806FFC8(void) {
 
 void sub_8070078(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     struct UNK_0808B3FC_UNK240* element;
     const struct UNK_80DF670* unkF7E8;
@@ -279,7 +279,7 @@ extern const struct UNK_80DF670 gUnknown_080DF8A8[7];
 
 void sub_807028C(struct UNK_8070BF0* unk0BF0) {
     const struct UNK_80DF670* unkF880;
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
     s16 a = 0x30, b = 0x30, c = 0x30;
     s16 d = 0x9E, e = 0x9E, f = 0x9E;
     s16 i;
@@ -383,7 +383,7 @@ void sub_8070590(void) {
 
 void sub_807061C(s16 a) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
     struct UNK_0808B3FC_UNK240* element;
     
 
@@ -403,7 +403,7 @@ void sub_807061C(s16 a) {
 void sub_8070680(s16 a) {
     s16 i;
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
 
     unk0BF0->unk518 = (0xB - a) * 0x16;
 
@@ -421,7 +421,7 @@ void sub_80706D8(s16 a) {
     
     struct UNK_0808B3FC_UNK240* element;
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
 
     unk0BF0->unk51A = (0xB - a) * 0x16;
     element = &unk0BF0->unk1B4;
@@ -442,7 +442,7 @@ void sub_8070740(s16 a) {
     s32 temp2, temp;
     struct UNK_0808B3FC_UNK240* element;
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
 
     unk0BF0->unk51C = (0xB - a) * 0x16;
     element = &unk0BF0->unk1E4;
@@ -461,7 +461,7 @@ void sub_80707A8(s16 a) {
     s32 temp2, temp;
     struct UNK_0808B3FC_UNK240* element;
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
 
     unk0BF0->unk51E = (0xB - a) * 0x16;
     element = &unk0BF0->unk214;
@@ -478,7 +478,7 @@ void sub_80707A8(s16 a) {
 void sub_8070EE4(void);
 void sub_8070814(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
     u8 level = stage->unk5B8;
     sub_807087C();
 
@@ -497,7 +497,7 @@ void sub_807087C(void) {
     struct UNK_0808B3FC_UNK240* element;
 
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
 
     s16 i;
     s16 a[5], b[5], c[5];
@@ -592,7 +592,7 @@ void sub_8070C3C(struct UNK_8070B90*);
 struct Task* sub_8070B90(struct SpecialStage* stage) {
     struct Task* t = TaskCreate(sub_806FB04, 0x2B8, 0xD000, 0, sub_8070BEC);
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(t);
-    unk0B90->unk0 = stage;
+    unk0B90->stage = stage;
     unk0B90->unk2A4 = NULL;
     
     unk0B90->unk2A8 = 0;
@@ -611,7 +611,7 @@ void sub_8070C2C(struct Task*);
 struct Task* sub_8070BF0(struct SpecialStage* stage) {
     struct Task* t = TaskCreate(sub_8070590, 0x520, 0xD000, 0, sub_8070C2C);
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(t);
-    unk0BF0->unk0 = stage;
+    unk0BF0->stage = stage;
     sub_807028C(unk0BF0);
 
     return t;
@@ -637,7 +637,7 @@ void sub_8070C3C(struct UNK_8070B90* unk0B90) {
 
 void sub_8070C58(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
 
     if (stage->unk5BA == 0) {
         sub_806FCF8();
@@ -667,8 +667,8 @@ extern const struct UNK_80DF670 gUnknown_080DF830[2];
 
 void sub_8070D14(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0B90->unk0;
-    struct UNK_806CF78* player = TaskGetStructPtr(stage->unkC);
+    struct SpecialStage* stage = unk0B90->stage;
+    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     s16 unkC0 = player->unkC0;
 
     if (unkC0 > 1) {
@@ -702,7 +702,7 @@ void sub_8070DE0(struct UNK_8070B90* unk0B90) {
 
 void sub_8070E00(struct UNK_8070B90* unk0B90) {
     struct UNK_0808B3FC_UNK240* element = &unk0B90->unk274;
-    struct SpecialStage* stage = unk0B90->unk0;
+    struct SpecialStage* stage = unk0B90->stage;
     void *a, *b;
     
     if (stage->unk5C6 == 0) {
@@ -726,7 +726,7 @@ void sub_8070E68(struct UNK_8070B90* unk0B90) {
 
 void sub_8070E88(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unk0BF0->unk0;
+    struct SpecialStage* stage = unk0BF0->stage;
     struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->unk5B8];
     
     element->unkA = gUnknown_080DF8A8[8].unk0;

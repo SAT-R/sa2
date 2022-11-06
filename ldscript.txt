@@ -59,7 +59,7 @@ SECTIONS
         build/sa2/src/special_stage_unk_806E6E8.o(.text);
         build/sa2/src/special_stage_unk_806F910.o(.text);
         build/sa2/src/special_stage_ui.o(.text);
-        build/sa2/src/special_stage_unk_8071438.o(.text);
+        build/sa2/src/special_stage_gamma.o(.text);
         build/sa2/src/save.o(.text);
         build/sa2/asm/unused_code3.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
@@ -132,7 +132,7 @@ SECTIONS
         build/sa2/data/special_stage_unk_806E6E8_data.o(.rodata);
         build/sa2/data/special_stage_unk_806F910_data.o(.rodata);
         build/sa2/data/special_stage_ui_data.o(.rodata);
-        build/sa2/data/special_stage_unk_8071438_data.o(.rodata);
+        build/sa2/data/special_stage_gamma_data.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
         build/sa2/data/unknown_time_display_data.o(.rodata);

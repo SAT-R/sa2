@@ -6,7 +6,7 @@
 #include "special_stage.h"
 
 struct UNK_8070B90 {
-    struct SpecialStage* unk0;
+    struct SpecialStage* stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_0808B3FC_UNK240 unk64;
@@ -30,7 +30,7 @@ struct UNK_8070B90 {
 }; /* size 0x2B8 */
 
 struct UNK_8070BF0 {
-    struct SpecialStage* unk0;
+    struct SpecialStage* stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_0808B3FC_UNK240 unk64[7];
