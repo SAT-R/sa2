@@ -21,7 +21,7 @@ gSpritePosData_Itemboxes:
 gSpritePosData_Enemies:
     .incbin "baserom.gba", 0x000D4D94, 0x88
 
-
+@; gSpriteFunctions ?
     .global gUnknown_080D4E1C
 gUnknown_080D4E1C:
     .incbin "baserom.gba", 0x000D4E1C, 0x1A8

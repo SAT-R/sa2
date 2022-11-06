@@ -5,8 +5,8 @@
 #include "special_stage.h"
 #include "sprite.h"
 
-void* gUnknown_03005B58;
-void* gUnknown_03005B5C;
+extern void* gUnknown_03005B58;
+extern void* gUnknown_03005B5C;
 
 #define ResetSpecialStageScreenVram() ({ \
     gUnknown_03005B5C = (void*)OBJ_VRAM0; \

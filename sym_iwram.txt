@@ -106,12 +106,7 @@ build/sa2/src/main.o(.data);
 . = 0x00005B50; 
 
 build/sa2/src/profile.o(.data);
-
-/* special_stage.o */
-. = 0x00005B58; gUnknown_03005B58 = .;
-. = 0x00005B5C; gUnknown_03005B5C = .;
-. = 0x00005B60; 
-
+build/sa2/src/special_stage_utils.o(.data);
 build/sa2/src/save.o(.data);
 
 /* something in code3.s */

@@ -5,6 +5,9 @@
 #include "sprite.h"
 #include "trig.h"
 
+void* gUnknown_03005B58 = NULL;
+void* gUnknown_03005B5C = NULL;
+
 void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
     struct UNK_0808B3FC_UNK240 newObj;
     struct UNK_0808B3FC_UNK240* element;
