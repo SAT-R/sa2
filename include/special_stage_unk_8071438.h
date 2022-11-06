@@ -16,14 +16,14 @@ struct UNK_8071438 {
     s32 unk40;
     s32 unk44;
     u16 unk48;
-    s16 unk4A;
+    u16 unk4A;
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
     s16 unk52;
     s16 unk54;
     s16 filler56;
-} /* 0x58 */;
+}; /* 0x58 */
 
 struct Task* sub_8071438(struct SpecialStage*);
 

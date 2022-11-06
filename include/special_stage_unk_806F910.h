@@ -11,5 +11,6 @@ struct UNK_806F910 {
 }; /* size 8 */
 
 struct Task* sub_806F910(struct SpecialStage*);
+void sub_806F944(struct SpecialStage* stage);
 
 #endif

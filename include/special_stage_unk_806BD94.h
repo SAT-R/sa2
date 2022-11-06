@@ -25,5 +25,6 @@ struct UNK_806BD94 {
 }; /* size 0xA5C */
 
 struct Task* sub_806E684(struct SpecialStage*);
+void sub_806D924(struct SpecialStage* stage, s16 num);
 
 #endif
