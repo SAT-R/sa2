@@ -5,6 +5,7 @@
 #include "global.h"
 #include "task.h"
 #include "special_stage.h"
+#include "special_stage_data.h"
 
 struct SpecialStageGamma {
     struct SpecialStage* stage;
@@ -26,5 +27,7 @@ struct SpecialStageGamma {
 }; /* 0x58 */
 
 struct Task* CreateGamma(struct SpecialStage*);
+
+extern const s16 gUnknown_080DF9D8[][3];
 
 #endif

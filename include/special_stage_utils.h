@@ -3,15 +3,11 @@
 
 #include "global.h"
 #include "special_stage.h"
+#include "special_stage_data.h"
 #include "sprite.h"
 
 extern void* gUnknown_03005B58;
 extern void* gUnknown_03005B5C;
-
-#define ResetSpecialStageScreenVram() ({ \
-    gUnknown_03005B5C = (void*)OBJ_VRAM0; \
-    gUnknown_03005B58 = NULL; \
-})
 
 #define ResetSpecialStateScreenSubMenuVram() ({ \
     gUnknown_03005B58 = NULL; \

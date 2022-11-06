@@ -6,6 +6,7 @@
 #include "special_stage_gamma.h"
 #include "special_stage_unk_806F910.h"
 #include "special_stage_unk_806BD94.h"
+#include "special_stage_data.h"
 #include "trig.h"
 #include "m4a.h"
 #include "constants/songs.h"
@@ -19,7 +20,7 @@ void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a,
 void sub_8071530(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
 
 void sub_8070EFC(struct SpecialStageGamma* gamma) {
-    u8 level = gamma->stage->unk5B8;
+    u8 level = gamma->stage->level;
     const struct UNK_80DF670* unkF914 = &gUnknown_080DF914[0];
     s16 result = sub_806CF44(unkF914);
     void* vramOld = gUnknown_03005B5C;
@@ -191,7 +192,7 @@ void sub_807120C(struct SpecialStageGamma* gamma) {
                 sub_806F944(stage);
                 player->unkB4 = 10;
                 m4aSongNumStart(SE_275);
-            } else if (stage->unk5A4 == 0) {
+            } else if (stage->elapsedTime == 0) {
                 if (player->unkB6 == 0) {
                     player->unkB8 = player->unkFC;
                     player->unkB4 = 0xE;

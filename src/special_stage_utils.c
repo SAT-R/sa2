@@ -2,6 +2,7 @@
 #include "special_stage.h"
 #include "special_stage_unk_806E6E8.h"
 #include "special_stage_utils.h"
+#include "special_stage_data.h"
 #include "sprite.h"
 #include "trig.h"
 

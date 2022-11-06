@@ -18,9 +18,9 @@
 void sub_806C970(void);
 void sub_806C950(struct Task*);
 
-extern const s16 gUnknown_080DFA02[7];
+extern const s16 gSpecialStageLevelTimes[7];
 
-void sub_806BA84(s16 a, s16 b) {
+void sub_806BA84(s16 selectedCharacter, s16 selectedLevel) {
     struct Task* t;
     struct SpecialStage* stage;
     
@@ -28,22 +28,22 @@ void sub_806BA84(s16 a, s16 b) {
     
     m4aMPlayAllStop();
 
-    if (b != -1) {
-        temp = b >> 2;
+    if (selectedLevel != -1) {
+        temp = selectedLevel >> 2;
     } else {
         temp = gCurrentLevel >> 2;
     }
     level = temp;
 
-    if (a == -1) {
+    if (selectedCharacter == -1) {
         character = gSelectedCharacter;
     } else {
-        character = a;
+        character = selectedCharacter;
     }
 
     sub_806CEA8();
 
-    t = TaskCreate(sub_806C970, 0x5D8, 0x2000, 0, sub_806C950);
+    t = TaskCreate(sub_806C970, sizeof(struct SpecialStage), 0x2000, 0, sub_806C950);
     stage = TaskGetStructPtr(t);
     stage->unk594 = 0x1000000;
     stage->unk598 = 0x1000000;
@@ -51,15 +51,15 @@ void sub_806BA84(s16 a, s16 b) {
     stage->unk5A0 = 0x200;
 
     if (character < 5) {
-        stage->unk5B6 = character;
+        stage->character = character;
         stage->unk5B7 = 0;
     } else {
-        stage->unk5B6 = 2;
+        stage->character = 2;
         stage->unk5B7 = 1;
     }
 
-    stage->unk5B8 = level;
-    stage->unk5B9 = b;
+    stage->level = level;
+    stage->unk5B9 = selectedLevel;
     stage->unk5A2 = 0;
     
     stage->unk5BB = 1;
@@ -67,8 +67,8 @@ void sub_806BA84(s16 a, s16 b) {
     stage->unk5BD = 0;
     stage->unk5BE = 0;
 
-    stage->unk5A4 = 0;
-    stage->unk5A6 = gUnknown_080DFA02[level];
+    stage->elapsedTime = 0;
+    stage->levelTime = gSpecialStageLevelTimes[level];
 
     stage->unk5B4 = 0;
     stage->unk5BA = 0;
@@ -77,9 +77,9 @@ void sub_806BA84(s16 a, s16 b) {
     stage->unk5C0 = 0;
     stage->unk5C1 = 0;
 
-    stage->unk5C2 = Div(stage->unk5A6, 100);
-    stage->unk5C3 = Div(stage->unk5A6, 10) - (stage->unk5C2 * 10);
-    stage->unk5C4 = Mod(stage->unk5A6, 10);
+    stage->unk5C2 = Div(stage->levelTime, 100);
+    stage->unk5C3 = Div(stage->levelTime, 10) - (stage->unk5C2 * 10);
+    stage->unk5C4 = Mod(stage->levelTime, 10);
 
     stage->unk5C5 = 0;
     stage->unk5C5 = 0;
@@ -355,7 +355,7 @@ void sub_806C158(void) {
     gBldRegs.bldAlpha = 0;
 
     stage->unk10 = sub_8070BF0(stage);
-    stage->unk5A8 = stage->unk5A4 * 100;
+    stage->unk5A8 = stage->elapsedTime * 100;
     
     if (stage->unk5A8 > 0x1863C) {
         stage->unk5A8 = 0x1863C;
@@ -529,7 +529,7 @@ void sub_806C638(void);
 
 void sub_806C560(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    u8 unk5B6 = stage->unk5B6;
+    u8 unk5B6 = stage->character;
     u8 something = gLoadedSaveGame->unkC[unk5B6];
 
     if (stage->unk5C7 == 1) {
@@ -540,9 +540,9 @@ void sub_806C560(void) {
         }
     }
 
-    if (!GetBit(something, stage->unk5B8)) {
+    if (!GetBit(something, stage->level)) {
         sub_8070C30(stage);
-        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->unk5B8;
+        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->level;
         stage->unk5A2 = 0x78;
     } else {
         stage->unk5A2 = 0xC;
@@ -612,7 +612,7 @@ void sub_806C6A4(void) {
             gUnknown_03005448 = temp5;
         }
 
-        gLoadedSaveGame->unk374 += stage->unk5A4;
+        gLoadedSaveGame->unk374 += stage->elapsedTime;
 
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

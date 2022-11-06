@@ -3,6 +3,7 @@
 #include "special_stage_player.h"
 #include "special_stage_ui.h"
 #include "special_stage_utils.h"
+#include "special_stage_data.h"
 #include "m4a.h"
 #include "save.h"
 #include "constants/songs.h"
@@ -226,7 +227,7 @@ void sub_8070078(void) {
     sub_8004558(element);
 
     if (stage->unk5C5 == 0) {
-        if (stage->unk5A4 >= stage->unk5A6) {
+        if (stage->elapsedTime >= stage->levelTime) {
             stage->unk5C5 = 1;
             m4aSongNumStart(MUS_ACHIEVEMENT);
             stage->unk5C7 = 1;
@@ -240,7 +241,7 @@ void sub_8070078(void) {
         return;
     } 
     
-    if (stage->unk5A4 < stage->unk5A6) {
+    if (stage->elapsedTime < stage->levelTime) {
         stage->unk5C5 = 0;
 
         element = &unk0B90->unk154;
@@ -289,8 +290,8 @@ void sub_807028C(struct UNK_8070BF0* unk0BF0) {
     s32 temp1;
     s16 temp3;
     
-    u8 val = gLoadedSaveGame->unkC[stage->unk5B6];
-    u8 unk5B6 = stage->unk5B6;
+    u8 val = gLoadedSaveGame->unkC[stage->character];
+    u8 unk5B6 = stage->character;
 
     gUnknown_03005B5C = stage->unk5D4;
     gUnknown_03005B58 = 0;
@@ -479,7 +480,7 @@ void sub_8070EE4(void);
 void sub_8070814(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0BF0->stage;
-    u8 level = stage->unk5B8;
+    u8 level = stage->level;
     sub_807087C();
 
     unk0BF0->unk514++;
@@ -727,7 +728,7 @@ void sub_8070E68(struct UNK_8070B90* unk0B90) {
 void sub_8070E88(void) {
     struct UNK_8070BF0* unk0BF0 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0BF0->stage;
-    struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->unk5B8];
+    struct UNK_0808B3FC_UNK240* element = &unk0BF0->unk64[stage->level];
     
     element->unkA = gUnknown_080DF8A8[8].unk0;
     element->unk20 = gUnknown_080DF8A8[8].unk2;

@@ -20,6 +20,15 @@ struct UNK_8C87904 {
     s16 unkA;
 } /* size 0xC */;
 
+struct UNK_80DF670 {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u8 unk6;
+    u8 unk7;
+} /* size 0x8 */;
+
+extern const struct UNK_80DF670 gUnknown_080DF2F8[];
 
 /* This is at the end of the rom */
 extern const struct UNK_8C878E8** const gUnknown_08C878E8[7];

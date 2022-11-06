@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "special_stage.h"
+#include "special_stage_data.h"
 
 // Player
 struct SpecialStagePlayer {

@@ -12,10 +12,10 @@
 
 void sub_806D890(struct SpecialStage* stage, s16 num) {
     s16 i;
-    stage->unk5A4 += num;
+    stage->elapsedTime += num;
 
-    if (stage->unk5A4 > 999) {
-        stage->unk5A4 = 999;
+    if (stage->elapsedTime > 999) {
+        stage->elapsedTime = 999;
     }
 
     for (i = 0; i < num; i++) {
@@ -48,9 +48,9 @@ void sub_806D924(struct SpecialStage* stage, s16 num) {
     s16 i;
     sub_806E3B8(stage, -1);
     
-    stage->unk5A4 -= num; 
-    if (stage->unk5A4 < 0) {
-        stage->unk5A4 = 0;
+    stage->elapsedTime -= num; 
+    if (stage->elapsedTime < 0) {
+        stage->elapsedTime = 0;
     }
 
     for (i = num; i > 0; i--) {
@@ -147,7 +147,7 @@ void sub_806DB48(void) {
 void sub_806DC98(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->level];
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
     s32 val1 = player->x >> 0x10;
@@ -204,7 +204,7 @@ bool16 sub_806DE10(void) {
     result = FALSE;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
 
-    val = unkF6CC[stage->unk5B8];
+    val = unkF6CC[stage->level];
     for (i = 0; i < val; i++) {
         if (unkBD94->unk914[i] > 2) {
             unkBD94->unk914[i]++;
@@ -250,7 +250,7 @@ void sub_806DEA4(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->unk5B8];
+    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->level];
     const struct UNK_8C878E8** unk78E8;
     const struct UNK_8C878E8* unk78E8_val = NULL;
 
@@ -440,7 +440,7 @@ void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
     s16 temp;
 
     if (mode == -1) {
-        temp = stage->unk5A4 > 8 ? 8 : stage->unk5A4;
+        temp = stage->elapsedTime > 8 ? 8 : stage->elapsedTime;
     } else {
         temp = mode;
     }
@@ -556,7 +556,7 @@ struct Task* sub_806E684(struct SpecialStage* stage) {
     t = TaskCreate(sub_806D9B4, 0xA5C, 0xB000, 0, NULL);
     unkBD94 = TaskGetStructPtr(t);
     unkBD94->stage = stage;
-    unkBD94->unkA58 = unkF6CC[stage->unk5B8];
+    unkBD94->unkA58 = unkF6CC[stage->level];
     unkBD94->unkA5A = 0;
 
     return t;

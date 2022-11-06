@@ -126,7 +126,7 @@ SECTIONS
         build/sa2/data/unused_objects_data.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/src/special_stage_data.o(.rodata);
-        build/sa2/data/special_stage_player_data.o(.rodata);
+        build/sa2/src/special_stage_player.o(.rodata);
         build/sa2/data/special_stage_unk_806BD94_data.o(.rodata);
         build/sa2/data/special_stage_unk_806E6E8_data.o(.rodata);
         build/sa2/data/special_stage_unk_806F910_data.o(.rodata);

@@ -20,6 +20,6 @@ gUnknown_080DF9A0:
 gUnknown_080DF9D8:
     .incbin "baserom.gba", 0x000DF9D8, 0x2A
 
-    .global gUnknown_080DFA02
-gUnknown_080DFA02:
+    .global gSpecialStageLevelTimes
+gSpecialStageLevelTimes:
     .incbin "baserom.gba", 0x000DFA02, 0xE

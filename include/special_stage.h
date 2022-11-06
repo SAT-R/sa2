@@ -34,10 +34,10 @@ struct SpecialStage {
 
     u16 unk5A0;
     s16 unk5A2;
-    s16 unk5A4;
+    s16 elapsedTime;
 
     // time
-    s16 unk5A6;
+    s16 levelTime;
 
     s32 unk5A8;
     s32 unk5AC;
@@ -45,13 +45,11 @@ struct SpecialStage {
 
     u16 unk5B4;
 
-    // character
-    u8 unk5B6;
+    u8 character;
     
     u8 unk5B7;
-    
-    // level
-    u8 unk5B8;
+
+    u8 level;
 
     u8 unk5B9;
     u8 unk5BA;
@@ -121,14 +119,6 @@ struct UNK_806CB84 {
     s16 unk10;
     s16 unk12;
 };
-
-struct UNK_80DF670 {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u8 unk6;
-    u8 unk7;
-} /* size 0x8 */;
 
 void sub_806BA84(s16, s16);
 
