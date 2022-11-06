@@ -2,7 +2,11 @@
 
     .global gUnknown_080DF6DC
 gUnknown_080DF6DC:
-    .incbin "baserom.gba", 0x000DF6DC, 0x8C
+    .incbin "baserom.gba", 0x000DF6DC, 0x10
+
+    .global gUnknown_080DF6EC
+gUnknown_080DF6EC:
+    .incbin "baserom.gba", 0x000DF6EC, 0x7C
 
     .global gUnknown_080DF768
 gUnknown_080DF768:

@@ -3,6 +3,7 @@
 #include "special_stage_player.h"
 #include "special_stage_unk_806F910.h"
 #include "special_stage_gamma.h"
+#include "special_stage_data.h"
 #include "task.h"
 #include "trig.h"
 #include "game.h"
@@ -381,17 +382,6 @@ void sub_806F3C4(void) {
         player->unkB4 = 0;
     }
 }
-
-struct UNK_8C87904 { 
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    s16 unk8;
-    s16 unkA;
-};
-
-extern const struct UNK_8C87904* const gUnknown_08C87904[7];
 
 void sub_806F468(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);

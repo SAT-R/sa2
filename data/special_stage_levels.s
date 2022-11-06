@@ -466,13 +466,25 @@ gUnknown_08C878E8:
     .4byte gUnknown_08C876E8
     .4byte gUnknown_08C877E8
 
-@; special stage something
+
     .global gUnknown_08C87904
 gUnknown_08C87904:
-    .incbin "baserom.gba", 0x00C87904, 0x1C
+    .4byte gUnknown_080DF040 + (0 * 12)
+    .4byte gUnknown_080DF040 + (8 * 12)
+    .4byte gUnknown_080DF040 + (13 * 12)
+    .4byte gUnknown_080DF040 + (20 * 12)
+    .4byte gUnknown_080DF040 + (25 * 12)
+    .4byte gUnknown_080DF040 + (36 * 12)
+    .4byte gUnknown_080DF040 + (49 * 12)
 
 @; references data in gUnknown_080DF6DC
 @; special stage something
     .global gUnknown_08C87920
 gUnknown_08C87920:
-    .incbin "baserom.gba", 0x00C87920, 0x1C
+    .4byte gUnknown_080DF6EC + (0 * 4)
+    .4byte gUnknown_080DF6EC + (1 * 4)
+    .4byte gUnknown_080DF6EC + (8 * 4)
+    .4byte gUnknown_080DF6EC + (13 * 4)
+    .4byte gUnknown_080DF6EC + (14 * 4)
+    .4byte gUnknown_080DF6EC + (21 * 4)
+    .4byte gUnknown_080DF6EC + (26 * 4)
