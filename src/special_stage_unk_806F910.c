@@ -96,8 +96,8 @@ void sub_806EC24(void) {
         temp = sin2 * 0x14;
         temp2 = sin * 0x14;
     
-        temp = (temp >> 0x10) + 0x70;
-        temp2 = -(temp2 >> 0x11) + 0x78;
+        temp = Q_16_16_TO_INT(temp) + 0x70;
+        temp2 = -(Q_16_16_TO_INT(temp2) >> 1) + 0x78;
         
         player->unk68.unk16 = temp;
         player->unk68.unk18 = temp2;
@@ -121,8 +121,8 @@ void sub_806EC24(void) {
     stage->unk598 = player->y;
     stage->unk5A0 = player->unkB2;
 
-    gBgScrollRegs[2][1] = temp5 = -(player->y >> 0x10);
-    gBgScrollRegs[2][0] = temp5 = -(player->x >> 0x10);
+    gBgScrollRegs[2][1] = temp5 = -Q_16_16_TO_INT(player->y);
+    gBgScrollRegs[2][0] = temp5 = -Q_16_16_TO_INT(player->x);
 }
 
 void sub_806EDB4(UNUSED u32 unused) {
@@ -393,20 +393,20 @@ void sub_806F3C4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->x <= MIN_SPECIAL_STAGE_PLAYER_X << 0x10) {
-        player->x = MIN_SPECIAL_STAGE_PLAYER_X << 0x10;
+    if (player->x <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
+        player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
     } 
 
-    if (player->x >= MAX_SPECIAL_STAGE_PLAYER_X << 0x10) {
-        player->x = MAX_SPECIAL_STAGE_PLAYER_X << 0x10;
+    if (player->x >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
+        player->x = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->y <= MIN_SPECIAL_STAGE_PLAYER_Y << 0x10) {
-        player->y = MIN_SPECIAL_STAGE_PLAYER_Y << 0x10;
+    if (player->y <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
+        player->y = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
     }
 
-    if (player->y >= MAX_SPECIAL_STAGE_PLAYER_Y << 0x10) {
-        player->y = MAX_SPECIAL_STAGE_PLAYER_Y << 0x10;
+    if (player->y >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
+        player->y = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
     }
 
     unkF910->unk4++;
@@ -431,8 +431,8 @@ void sub_806F468(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->zone];
 
-    s16 playerX = player->x >> 0x10;
-    s16 playerY = player->y >> 0x10;
+    s16 playerX = Q_16_16_TO_INT(player->x);
+    s16 playerY = Q_16_16_TO_INT(player->y);
 
     while (unk7904->unk0 != -1) {
         if (playerX >= unk7904->unk2 && playerX < (unk7904->unk2 + unk7904->unk6)) {
@@ -623,7 +623,7 @@ s16 sub_806F84C(s32 a, s32 b) {
         i++;
     };
 
-    r2 = (u16)(~((u32)r4 >> 0x10));
+    r2 = (u16)(~Q_16_16_TO_INT((u32)r4));
 
 #ifndef NON_MATCHING
     r2++; r2--;
@@ -720,20 +720,20 @@ void sub_806FAA0(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->x < MIN_SPECIAL_STAGE_PLAYER_X << 0x10) {
-        player->x = MIN_SPECIAL_STAGE_PLAYER_X << 0x10;
+    if (player->x < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
+        player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->x > MAX_SPECIAL_STAGE_PLAYER_X << 0x10) {
-        player->x = MAX_SPECIAL_STAGE_PLAYER_X << 0x10;
+    if (player->x > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
+        player->x = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
     }
 
-    if (player->y < MIN_SPECIAL_STAGE_PLAYER_Y << 0x10) {
-        player->y = MIN_SPECIAL_STAGE_PLAYER_Y << 0x10;
+    if (player->y < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y)) {
+        player->y = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_Y);
     }
 
-    if (player->y > MAX_SPECIAL_STAGE_PLAYER_Y << 0x10) {
-        player->y = MAX_SPECIAL_STAGE_PLAYER_Y << 0x10;
+    if (player->y > Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y)) {
+        player->y = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_Y);
     }
 }
 

@@ -117,7 +117,7 @@ void sub_806E94C(struct UNK_806E6E8* unkE6E8);
 void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     struct SpecialStage* stage = unkE6E8->stage;
-    s32 temp = (stage->unk5CC - stage->unk5D0) << 0x10;
+    s32 temp = Q_16_16((stage->unk5CC - stage->unk5D0));
 
     s16 unkF784[8];
     s16 unk5CE;
@@ -232,13 +232,13 @@ void sub_806EA04(void) {
         temp4 = (0 - stage->unk5CA) * temp2;
         temp5 = (i - stage->unk5CC) * temp2 * 2;
         
-        *unk1884++ = ((temp >> 0x10) * sin2) >> 0x10;
-        *unk1884++ = ((temp >> 0x10) * sin1) >> 0x10;
-        *unk1884++ = ((temp >> 0x10) * -sin1) >> 0x10;
-        *unk1884++ = ((temp >> 0x10) * sin2) >> 0x10;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * sin1) >> 0x10;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * -sin1) >> 0x10;
+        *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
 
-        temp6 = ((temp5 >> 0x10) * sin1) + ((temp4 >> 0x10) * sin2) + stage->unk594;
-        temp7 = ((temp4 >> 0x10) * -sin1) + ((temp5 >> 0x10) * sin2) + stage->unk598;
+        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2) + stage->unk594;
+        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2) + stage->unk598;
 
         footer = (s32*)unk1884;
         *footer++ = temp6 >> 8;

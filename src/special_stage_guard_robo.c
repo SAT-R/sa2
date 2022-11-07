@@ -175,10 +175,10 @@ void sub_807120C(struct SpecialStageGuardRobo* guardRobo) {
     struct SpecialStage* stage = guardRobo->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(guardRobo->stage->playerTask);
 
-    s16 unk40 = (guardRobo->x >> 0x10);
-    s16 unk44 = (guardRobo->y >> 0x10);
-    s16 playerX = player->x >> 0x10;
-    s16 playerY = player->y >> 0x10;
+    s16 guardRoboX = Q_16_16_TO_INT(guardRobo->x);
+    s16 guardRoboY = Q_16_16_TO_INT(guardRobo->y);
+    s16 playerX = Q_16_16_TO_INT(player->x);
+    s16 playerY = Q_16_16_TO_INT(player->y);
     s16 unkB0 = player->unkB0 >> 8;
     s16 unkB4 = player->unkB4;
 
@@ -193,8 +193,8 @@ void sub_807120C(struct SpecialStageGuardRobo* guardRobo) {
             return;
     }
 
-    if ((unk40 - 5) < playerX && (unk40 + 5) > playerX) {
-        if (((unk44) - 5) < playerY && (unk44 + 5) > playerY) {
+    if ((guardRoboX - 5) < playerX && (guardRoboX + 5) > playerX) {
+        if (((guardRoboY) - 5) < playerY && (guardRoboY + 5) > playerY) {
 #ifndef NON_MATCHING
             s16 r1 = 0;
             asm(""::"r"(r1));

@@ -161,10 +161,10 @@ void sub_806DC98(void) {
     const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->zone];
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    s32 val1 = player->x >> 0x10;
-    s32 val2 = player->y >> 0x10;
+    s32 val1 = Q_16_16_TO_INT(player->x);
+    s32 val2 = Q_16_16_TO_INT(player->y);
     s32 val3 = player->unkB0 >> 4;
-    u32 index = ((player->x >> 0x17) * 8) + (player->y >> 0x17);
+    u32 index = ((Q_16_16_TO_INT(player->x) >> 7) * 8) + (Q_16_16_TO_INT(player->y) >> 7);
     const struct UNK_8C878E8* unk78E8 = unk78E8_vals[index];
 
     while (unk78E8->unk0 != -1) {
@@ -339,9 +339,9 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
     result = acc;
     while (val->unk0 != -1) {
         if (unkBD94->unk914[val->unk0] != 0) {
-            new_unk874.unk0 = val->unk2 << 0x10;
-            new_unk874.unk4 = val->unk4 << 0x10;
-            new_unk874.unk8 = val->unk6 << 0x10;
+            new_unk874.unk0 = Q_16_16(val->unk2);
+            new_unk874.unk4 = Q_16_16(val->unk4);
+            new_unk874.unk8 = Q_16_16(val->unk6);
             new_unk874.unkC = 8;
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
@@ -470,8 +470,8 @@ void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
         sin2 = gSineTable[rand1] << 2;
         sin1 = gSineTable[rand1 + 0x100] << 2;
         
-        temp3 = (rand2 * sin2) >> 0x10;
-        temp4 = (rand2 * sin1) >> 0x10;
+        temp3 = Q_16_16_TO_INT(rand2 * sin2);
+        temp4 = Q_16_16_TO_INT(rand2 * sin1);
 
         unk874->unkA = temp3;
         unk874->unkC = temp4;

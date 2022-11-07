@@ -91,8 +91,8 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
     player = TaskGetStructPtr(t);
     player->unk0 = stage;
     player->unk4 = NULL;
-    player->x = gUnknown_080DF9D8[lang][0] << 0x10;
-    player->y = gUnknown_080DF9D8[lang][1] << 0x10;
+    player->x = Q_16_16(gUnknown_080DF9D8[lang][0]);
+    player->y = Q_16_16(gUnknown_080DF9D8[lang][1]);
 
     player->unkB0 = 0;
     player->unkB2 = gUnknown_080DF9D8[lang][2];
