@@ -73,8 +73,8 @@ static PlayerStateHandler const gUnknown_080DF684[] = {
     sub_806D740,
 };
 
-struct Task* CreatePlayer(struct SpecialStage* stage) {
-    const struct UNK_80DF670* unkF670[5];
+struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
+    const struct UNK_80DF670* characterSprites[5];
     u8 lang;
     s16 result;
     u32 unk5B5C;
@@ -84,10 +84,10 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
     struct Task* t;
     struct SpecialStagePlayer* player;
 
-    memcpy(&unkF670, &gUnknown_080DF670, 0x14);
+    memcpy(&characterSprites, &gUnknown_080DF670, 0x14);
     lang = stage->zone;
 
-    t = TaskCreate(sub_806D2C8, 0x108, 0x9000, 0, NULL);
+    t = TaskCreate(sub_806D2C8, sizeof(struct SpecialStagePlayer), 0x9000, 0, NULL);
     player = TaskGetStructPtr(t);
     player->unk0 = stage;
     player->unk4 = NULL;
@@ -102,19 +102,19 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
     player->unkBE = 0;
     player->unkC0 = 1;
 
-    player->unkC4 = unkF670[stage->character];
-    result = sub_806CF44(player->unkC4);
+    player->sprites = characterSprites[stage->character];
+    result = sub_806CF44(player->sprites);
     player->unk98 = gUnknown_03005B5C;
     gUnknown_03005B5C += (result * TILE_SIZE_4BPP);
     player->unk9C = gUnknown_03005B5C;
-    player->unkA0 = gUnknown_03005B5C + 0x40;
+    player->unkA0 = gUnknown_03005B5C + (TILE_SIZE_4BPP * 2);
 
     // required for match
     temp = 2;
 
     gUnknown_03005B5C += 0xC0;
 
-    sub_806D548(&player->unk8, player->unk98, stage->unk5CC, 9, player->unkC4);
+    sub_806D548(&player->unk8, player->unk98, stage->unk5CC, 9, player->sprites);
     sub_806D548(&player->unk38, player->unk9C, stage->unk5CC, 10, &gUnknown_080DF668);
 
     {
@@ -150,7 +150,7 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
         *affine= 0x100;
     }
 
-    if (stage->unk5B7 == 0) {
+    if (stage->unk5B7 == FALSE) {
         player->unkC8 = 0;
         player->unkCC = 6;
         player->unkD0 = 0x10000;
@@ -183,7 +183,6 @@ struct Task* CreatePlayer(struct SpecialStage* stage) {
 
     return t;
 }
-
 
 void sub_806D2C8(void) {
     PlayerStateHandler stateHandlers[18];
@@ -237,7 +236,7 @@ void sub_806D388(void) {
         }
     }
 
-    unkC4 = &player->unkC4[index];
+    unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
 
     sub_806D7D0(unk8, -1, stage->unk5CC, unkC4);
@@ -263,7 +262,7 @@ void sub_806D424(void) {
         index = 5;
     }
 
-    unkC4 = &player->unkC4[index];
+    unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
     sub_806D7D0(unk8, player->unkA4, stage->unk5CC, unkC4);
 }
@@ -283,7 +282,7 @@ void sub_806D484(void) {
         index = 8;
     }
 
-    unkC4 = &player->unkC4[index];
+    unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
     sub_806D7D0(unk8, player->unkA4, stage->unk5CC, unkC4);
 }
@@ -303,7 +302,7 @@ void sub_806D4E4(void) {
         index = 11;
     }
 
-    unkC4 = &player->unkC4[index];
+    unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
     sub_806D7D0(unk8, player->unkA4 >> 1, stage->unk5CC, unkC4);
 }
@@ -345,7 +344,7 @@ void sub_806D5D0(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
     
-    const struct UNK_80DF670* unkC4 = &player->unkC4[12];
+    const struct UNK_80DF670* unkC4 = &player->sprites[12];
     player->unkB0 += player->unkB8 >> 4;
 
     sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 0xF), unkC4);
@@ -354,7 +353,7 @@ void sub_806D5D0(void) {
 void sub_806D634(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->unkC4[15];
+    const struct UNK_80DF670* unkC4 = &player->sprites[15];
 
     player->unkB0 += player->unkB8 >> 4;
 
@@ -364,7 +363,7 @@ void sub_806D634(void) {
 void sub_806D698(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->unkC4[18];
+    const struct UNK_80DF670* unkC4 = &player->sprites[18];
 
     sub_806D7D0(&player->unk8, -1, stage->unk5CC, unkC4);
 }
@@ -372,7 +371,7 @@ void sub_806D698(void) {
 void sub_806D6DC(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->unkC4[19];
+    const struct UNK_80DF670* unkC4 = &player->sprites[19];
 
     player->unkB0 += player->unkB8 >> 4;
 
@@ -382,7 +381,7 @@ void sub_806D6DC(void) {
 void sub_806D740(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->unkC4[20];
+    const struct UNK_80DF670* unkC4 = &player->sprites[20];
 
     sub_806D7D0(&player->unk8, -1, stage->unk5CC - 0xC, unkC4);
 }

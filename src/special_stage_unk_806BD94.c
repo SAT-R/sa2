@@ -11,6 +11,29 @@
 #include "constants/songs.h"
 #include "zones.h"
 
+// Maybe same as UNK_806BD94_UNK874 or UNK_806CB84
+struct UNK_806DEA4 {
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    s16 unk6;
+    s32 unk8;
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+}; /* size 0x14 */
+
+void sub_806E3B8(struct SpecialStage* stage, s16);
+void sub_806DB48(void);
+void sub_806DC98(void);
+bool16 sub_806DE10(void);
+void sub_806E4FC(struct SpecialStage* stage);
+void sub_806E584(s16, struct UNK_806BD94_UNK874*);
+void sub_806DEA4(void);
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8*, struct UNK_806DEA4*);
+void sub_806E1AC(s16, struct UNK_806DEA4*);
+
 const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
     [ZONE_1] = 0x130,
     [ZONE_2] = 0x128,
@@ -53,8 +76,6 @@ void sub_806D890(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void sub_806E3B8(struct SpecialStage* stage, s16);
-
 void sub_806D924(struct SpecialStage* stage, s16 num) {
     s16 i;
     sub_806E3B8(stage, -1);
@@ -88,8 +109,6 @@ void sub_806D924(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void sub_806DB48(void);
-
 void sub_806D9B4(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     s16 i;
@@ -112,13 +131,6 @@ void sub_806D9B4(void) {
 
     gCurTask->main = sub_806DB48;
 }
-
-void sub_806DC98(void);
-
-bool16 sub_806DE10(void);
-void sub_806E4FC(struct SpecialStage* stage);
-void sub_806E584(s16, struct UNK_806BD94_UNK874*);
-void sub_806DEA4(void);
 
 void sub_806DB48(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
@@ -230,30 +242,13 @@ bool16 sub_806DE10(void) {
     return result;
 }
 
-// Maybe same as UNK_806BD94_UNK874 or UNK_806CB84
-struct UNK_806DEA4 {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    s32 unk8;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
-}; /* size 0x14 */
-
-s16 sub_806E038(s16 acc, const struct UNK_8C878E8*, struct UNK_806DEA4*);
-
-void sub_806E1AC(s16, struct UNK_806DEA4*);
-
 void sub_806DEA4(void) {
     s16 i;
 
-    s16 val1;
-    s16 val2;
+    s16 stageZoneX;
+    s16 stageZoneY;
     s16 acc;
-    s16 index;
+    s16 cell;
 
     struct UNK_806DEA4 DEA4_Arr[16];
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
@@ -270,51 +265,51 @@ void sub_806DEA4(void) {
         unkDEA4_1->unk0 = 0;
     }
 
-    val1 = player->x >> 0x17;
-    val2 = player->y >> 0x17;
-    index = (val1 * 8) + val2;
+    stageZoneX = Q_16_16_TO_INT(player->x) >> 7;
+    stageZoneY = Q_16_16_TO_INT(player->y) >> 7;
+    cell = (stageZoneX * 8) + stageZoneY;
 
-    unk78E8_val = unk78E8_vals[index]; 
+    unk78E8_val = unk78E8_vals[cell]; 
     acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
 
-    if (val2 != 7) {
-        unk78E8_val = unk78E8_vals[index + 1]; 
+    if (stageZoneY != 7) {
+        unk78E8_val = unk78E8_vals[cell + 1]; 
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
     }
 
-    if (val2 != 0) {
-        unk78E8_val = unk78E8_vals[index - 1]; 
+    if (stageZoneY != 0) {
+        unk78E8_val = unk78E8_vals[cell - 1]; 
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
     }
 
-    if (val1 != 7) {
-        s16 idx = index + 8;
+    if (stageZoneX != 7) {
+        s16 idx = cell + 8;
         unk78E8_val = unk78E8_vals[idx];
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
 
-        if (val2 != 7) {
+        if (stageZoneY != 7) {
             unk78E8_val = unk78E8_vals[idx + 1];
             acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
         }
 
 
-        if (val2 != 0) {
+        if (stageZoneY != 0) {
             unk78E8_val = unk78E8_vals[idx - 1];
             acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
         }
     }
 
-    if (val1 != 0) {
-        s16 idx = index - 8;
+    if (stageZoneX != 0) {
+        s16 idx = cell - 8;
         unk78E8_val = unk78E8_vals[idx];
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
 
-        if (val2 != 7) {
+        if (stageZoneY != 7) {
             unk78E8_val = unk78E8_vals[idx + 1];
             acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
         }
 
-        if (val2 != 0) {
+        if (stageZoneY != 0) {
             unk78E8_val = unk78E8_vals[idx - 1];
             acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
         }

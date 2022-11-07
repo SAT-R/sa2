@@ -21,11 +21,12 @@ struct SpecialStagePlayer {
     s16 unkA4;
     u8 unkA6;
 
+    // x and y may be flipped
     s32 x;
     s32 y;
 
     s16 unkB0;
-    u16 unkB2;
+    s16 unkB2;
 
     u16 unkB4;
     s16 unkB6;
@@ -40,8 +41,7 @@ struct SpecialStagePlayer {
     s16 unkC0;
     u16 unkC2;
 
-    // sprites
-    const struct UNK_80DF670* unkC4;
+    const struct UNK_80DF670* sprites;
     
     s32 unkC8;
     u32 unkCC;
@@ -68,6 +68,6 @@ struct SpecialStagePlayer {
     s32 unk104;
 }; /* size 0x108 */
 
-struct Task* CreatePlayer(struct SpecialStage*);
+struct Task* CreateSpecialStagePlayer(struct SpecialStage*);
 
 #endif

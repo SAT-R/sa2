@@ -29,6 +29,9 @@ void sub_806F300(void);
 
 s16 sub_806F69C(struct SpecialStage*);
 void sub_806FAA0(void);
+void sub_806F56C(void);
+void sub_806F604(void);
+void sub_806FA34(void);
 
 static const struct UNK_8C87920 gUnknown_080DF794[3] = {
     { 2, 890, },
@@ -230,8 +233,6 @@ void sub_806EF44(void) {
     }
 }
 
-void sub_806F56C(void);
-
 void sub_806EFB4(void) { 
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
@@ -267,8 +268,6 @@ void sub_806F034(void) {
         }
     }
 }
-
-void sub_806F604(void);
 
 void sub_806F0C4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
@@ -680,8 +679,6 @@ void sub_806F944(struct SpecialStage* stage) {
 
     player->unkB8 = 0x300;
 }
-
-void sub_806FA34(void);
 
 void sub_806F9CC(void) {
     sub_806EDB4(0);

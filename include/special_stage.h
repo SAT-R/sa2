@@ -34,9 +34,9 @@ struct SpecialStage {
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
     s32 unk94[DISPLAY_HEIGHT][2];
-    u32 unk594;
-    u32 unk598;
-    u32 unk59C;
+    s32 unk594;
+    s32 unk598;
+    s32 unk59C;
 
     u16 unk5A0;
     s16 unk5A2;
@@ -52,7 +52,7 @@ struct SpecialStage {
 
     u8 character;
     
-    u8 unk5B7;
+    bool8 unk5B7;
 
     u8 zone;
 
@@ -111,6 +111,6 @@ struct UNK_806CB84 {
     s16 unk12;
 };
 
-void sub_806BA84(s16, s16);
+void CreateSpecialStage(s16, s16);
 
 #endif

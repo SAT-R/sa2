@@ -99,7 +99,6 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, stru
         }
         val2 >>= 1;
     }
-    
 
     {
         s32 r2 = (-(stage->unk94[val][0] >> 1) * 9) >> 3;
@@ -109,7 +108,7 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, stru
             return 0;
         }
         a->unkA = val;
-        a->unk4 = (a->unkA - unk874->unkE) - ((unk874->unk12 << 0x10) / unkE6E8->unkC[val]);
+        a->unk4 = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / unkE6E8->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->unk2 = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {

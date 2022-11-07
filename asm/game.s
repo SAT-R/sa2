@@ -46598,7 +46598,7 @@ _08030F94:
 	movs r1, #1
 	rsbs r1, r1, #0
 	adds r0, r1, #0
-	bl sub_806BA84
+	bl CreateSpecialStage
 	ldr r2, _08031024 @ =gDispCnt
 	ldrh r0, [r2]
 	movs r3, #0x80

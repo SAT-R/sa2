@@ -17,11 +17,26 @@
 #include "constants/songs.h"
 
 void sub_806C970(void);
-void sub_806C950(struct Task*);
+void SpecialStageOnDestroy(struct Task*);
+void sub_806BD94(void);
+void sub_806C864(void);
+void sub_806C7B8(void);
+void sub_806BE9C(void);
+void sub_806BFD0(void);
+void sub_806C9CC(void);
+void sub_806C050(void);
+void sub_806BCB8(void);
+void sub_806C638(void);
+void sub_806C6A4(void);
+void sub_806C560(void);
+void sub_806C49C(void);
+void sub_806C42C(void);
+void sub_806C338(void);
+void sub_806CA54(void);
+void sub_806CA18(void);
+void sub_806C158(void);
 
-
-
-void sub_806BA84(s16 selectedCharacter, s16 level) {
+void CreateSpecialStage(s16 selectedCharacter, s16 level) {
     struct Task* t;
     struct SpecialStage* stage;
     
@@ -44,19 +59,20 @@ void sub_806BA84(s16 selectedCharacter, s16 level) {
 
     sub_806CEA8();
 
-    t = TaskCreate(sub_806C970, sizeof(struct SpecialStage), 0x2000, 0, sub_806C950);
+    t = TaskCreate(sub_806C970, sizeof(struct SpecialStage), 0x2000, 0, SpecialStageOnDestroy);
     stage = TaskGetStructPtr(t);
-    stage->unk594 = 0x1000000;
-    stage->unk598 = 0x1000000;
+    stage->unk594 = Q_16_16(256);
+    stage->unk598 = Q_16_16(256);
     stage->unk59C = 0;
-    stage->unk5A0 = 0x200;
 
-    if (character < 5) {
+    stage->unk5A0 = 512;
+
+    if (character <= CHARACTER_AMY) {
         stage->character = character;
-        stage->unk5B7 = 0;
+        stage->unk5B7 = FALSE;
     } else {
-        stage->character = 2;
-        stage->unk5B7 = 1;
+        stage->character = CHARACTER_TAILS;
+        stage->unk5B7 = TRUE;
     }
 
     stage->zone = zone;
@@ -88,12 +104,12 @@ void sub_806BA84(s16 selectedCharacter, s16 level) {
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;
 
-    stage->unk5CA = 0x78;
-    stage->unk5CC = 0x8C;
-    stage->unk5CE = 0x40;
+    stage->unk5CA = 120;
+    stage->unk5CC = 140;
+    stage->unk5CE = 64;
     
-    stage->unk5D0 = 0x28;
-    stage->unk5D1 = 0x3C;
+    stage->unk5D0 = 40;
+    stage->unk5D1 = 60;
 
     // wtf, all this stuff is const
     target = 0x31;
@@ -102,7 +118,7 @@ void sub_806BA84(s16 selectedCharacter, s16 level) {
     for (i = 1; i < stage->unk5D2; i *= 2);
 
     stage->unk5D2 = i;
-    stage->unk5D3 = ((0x9F - stage->unk5D1) >> 1) + stage->unk5D1;
+    stage->unk5D3 = ((159 - stage->unk5D1) >> 1) + stage->unk5D1;
 }
 
 void sub_806BCB8(void) {
@@ -129,8 +145,6 @@ void sub_806BCB8(void) {
     gUnknown_03002280[11] = 0x80;
 }
 
-void sub_806BD94(void);
-
 void sub_806BD28(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
@@ -155,8 +169,6 @@ void sub_806BD28(void) {
     }
 }
 
-void sub_806C9CC(void);
-
 void sub_806BD94(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     stage->unk5B4 = 2;
@@ -164,7 +176,7 @@ void sub_806BD94(void) {
     switch(stage->unk5A2) {
         case 0:
             stage->unk0 = sub_806F910(stage);
-            stage->playerTask = CreatePlayer(stage);
+            stage->playerTask = CreateSpecialStagePlayer(stage);
             stage->unk5D4 = gUnknown_03005B5C;
             stage->guardRoboTask = CreateGuardRobo(stage);
             break;
@@ -183,11 +195,6 @@ void sub_806BD94(void) {
 
     stage->unk5A2++;
 }
-
-void sub_806C864(void);
-void sub_806C7B8(void);
-void sub_806BE9C(void);
-void sub_806BFD0(void);
 
 void sub_806BE40(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
@@ -264,8 +271,6 @@ void sub_806BE9C(void) {
     }
 }
 
-void sub_806C050(void);
-
 void sub_806BFD0(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
@@ -290,11 +295,6 @@ void sub_806BFD0(void) {
     }
     gCurTask->main = sub_806C050;
 }
-
-void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i);
-
-void sub_806CA18(void);
-void sub_806C158(void);
 
 void sub_806C050(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
@@ -345,8 +345,6 @@ void sub_806C050(void) {
     }
 }
 
-void sub_806CA54(void);
-
 void sub_806C158(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
@@ -383,9 +381,6 @@ void sub_806C158(void) {
     stage->unk5A2 = 0;
     gCurTask->main = sub_806CA54;
 }
-
-void sub_806C42C(void);
-void sub_806C338(void);
 
 void sub_806C25C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
@@ -426,8 +421,6 @@ void sub_806C25C(void) {
         gCurTask->main = sub_806C338;
     }   
 }
-
-void sub_806C49C(void);
 
 void sub_806C338(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
@@ -493,9 +486,6 @@ void sub_806C42C(void) {
     gCurTask->main = sub_806C49C;
 }
 
-void sub_806C6A4(void);
-void sub_806C560(void);
-
 void sub_806C49C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
@@ -525,8 +515,6 @@ void sub_806C49C(void) {
         }
     }
 }
-
-void sub_806C638(void);
 
 void sub_806C560(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
@@ -698,12 +686,10 @@ void sub_806C864(void) {
     }
 }
 
-void sub_806C950(UNUSED struct Task* t) {
+void SpecialStageOnDestroy(UNUSED struct Task* t) {
     gUnknown_03004D54 = &gUnknown_03001B60[0];
     gUnknown_030022C0 = &gUnknown_03001B60[1];
 }
-
-void sub_806BCB8(void);
 
 void sub_806C970(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
