@@ -3,7 +3,7 @@
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
 #include "special_stage_unk_806E6E8.h"
-#include "special_stage_gamma.h"
+#include "special_stage_guard_robo.h"
 #include "special_stage_data.h"
 #include "task.h"
 #include "m4a.h"

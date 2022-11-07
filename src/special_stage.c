@@ -5,7 +5,7 @@
 #include "special_stage_ui.h"
 #include "special_stage_unk_806E6E8.h"
 #include "special_stage_unk_806BD94.h"
-#include "special_stage_gamma.h"
+#include "special_stage_guard_robo.h"
 #include "special_stage_unk_806F910.h"
 #include "special_stage_tables.h"
 #include "game.h"
@@ -166,7 +166,7 @@ void sub_806BD94(void) {
             stage->unk0 = sub_806F910(stage);
             stage->playerTask = CreatePlayer(stage);
             stage->unk5D4 = gUnknown_03005B5C;
-            stage->gammaTask = CreateGamma(stage);
+            stage->guardRoboTask = CreateGuardRobo(stage);
             break;
         case 1:
             stage->unk8 = sub_806E684(stage);
@@ -269,10 +269,10 @@ void sub_806C050(void);
 void sub_806BFD0(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
-    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
+    struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    gamma->unk3C = 0;
+    guardRobo->unk3C = 0;
 
     transitionConfig->unk0 = 1;
     transitionConfig->unk2 = 1;
@@ -305,9 +305,9 @@ void sub_806C050(void) {
         gDispCnt = 0x9641;
         gWinRegs[5] = 0x103F;
     } else {
-        if (stage->gammaTask != NULL) {
-            TaskDestroy(stage->gammaTask);
-            stage->gammaTask = NULL;
+        if (stage->guardRoboTask != NULL) {
+            TaskDestroy(stage->guardRoboTask);
+            stage->guardRoboTask = NULL;
         }
 
         if (stage->unk0 != NULL) {

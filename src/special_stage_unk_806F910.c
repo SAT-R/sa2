@@ -2,7 +2,7 @@
 #include "special_stage.h"
 #include "special_stage_player.h"
 #include "special_stage_unk_806F910.h"
-#include "special_stage_gamma.h"
+#include "special_stage_guard_robo.h"
 #include "special_stage_data.h"
 #include "task.h"
 #include "trig.h"
@@ -520,7 +520,7 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     s32 sin14, sin16;
     struct UNK_0808B3FC_UNK240* element;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
+    struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 
     u32 temp1;
     u32 temp2;
@@ -532,8 +532,8 @@ s16 sub_806F69C(struct SpecialStage* stage) {
 
     u16 b2 = -player->unkB2 & 0x3FF;
 
-    f_dX = gamma->x - player->x;
-    f_dY = gamma->y - player->y;
+    f_dX = guardRobo->x - player->x;
+    f_dY = guardRobo->y - player->y;
     dX = f_dX >> 0x10;
     dY = f_dY  >> 0x10;
 
@@ -667,12 +667,12 @@ struct Task* sub_806F910(struct SpecialStage* stage) {
 
 void sub_806F944(struct SpecialStage* stage) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    struct SpecialStageGamma* gamma = TaskGetStructPtr(stage->gammaTask);
+    struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 
     s32 a8 = player->x;
     s32 ac = player->y;
-    s32 unk40 = gamma->x;
-    s32 unk44 = gamma->y;
+    s32 unk40 = guardRobo->x;
+    s32 unk44 = guardRobo->y;
 
     s16 result = sub_806F84C((a8 - unk40) >> 4, (ac - unk44) >> 4);
     player->unkD0 = ((a8 - unk40) * 0x20) / result;

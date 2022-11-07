@@ -13,11 +13,11 @@
 #define MIN_SPECIAL_STAGE_PLAYER_Y 48
 #define MAX_SPECIAL_STAGE_PLAYER_Y 976
 
-#define MIN_SPECIAL_STAGE_GAMMA_X 42
-#define MAX_SPECIAL_STAGE_GAMMA_X 982
+#define MIN_SPECIAL_STAGE_GUARD_ROBO_X 42
+#define MAX_SPECIAL_STAGE_GUARD_ROBO_X 982
 
-#define MIN_SPECIAL_STAGE_GAMMA_Y 42
-#define MAX_SPECIAL_STAGE_GAMMA_Y 982
+#define MIN_SPECIAL_STAGE_GUARD_ROBO_Y 42
+#define MAX_SPECIAL_STAGE_GUARD_ROBO_Y 982
 
 struct SpecialStage {
     struct Task* unk0; // UNK_806F910
@@ -29,7 +29,7 @@ struct SpecialStage {
     // uiTask?
     struct Task* unk10; // UNK_8070B90 or UNK_8070BF0
 
-    struct Task* gammaTask;
+    struct Task* guardRoboTask;
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;

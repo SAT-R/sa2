@@ -1,13 +1,13 @@
 
-#ifndef GUARD_SPECIAL_GAMMA_H
-#define GUARD_SPECIAL_GAMMA_H
+#ifndef GUARD_SPECIAL_GUARD_ROBO_H
+#define GUARD_SPECIAL_GUARD_ROBO_H
 
 #include "global.h"
 #include "task.h"
 #include "special_stage.h"
 #include "special_stage_data.h"
 
-struct SpecialStageGamma {
+struct SpecialStageGuardRobo {
     struct SpecialStage* stage;
     struct UNK_0808B3FC_UNK240 unk4;
     void* unk34;
@@ -26,6 +26,6 @@ struct SpecialStageGamma {
     s16 filler56;
 }; /* 0x58 */
 
-struct Task* CreateGamma(struct SpecialStage*);
+struct Task* CreateGuardRobo(struct SpecialStage*);
 
 #endif
