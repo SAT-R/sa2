@@ -6,20 +6,40 @@
 #include "special_stage_gamma.h"
 #include "special_stage_unk_806F910.h"
 #include "special_stage_unk_806BD94.h"
+#include "special_stage_tables.h"
 #include "special_stage_data.h"
 #include "trig.h"
 #include "m4a.h"
 #include "constants/songs.h"
 
-extern const struct UNK_80DF670 gUnknown_080DF914[9];
+void sub_80714C4(void);
+void sub_80710B0(void);
+void sub_80714C8(void);
 
-extern const u32 gUnknown_080DF9A0[7][2];
-extern const u16 gUnknown_080DF968[7][4];
+static const struct UNK_80DF670 gUnknown_080DF914[9] = {
+    { 883, 4, 64, 16, 0, },
+    { 883, 5, 64, 16, 0, },
+    { 883, 6, 64, 16, 0, },
+    { 883, 7, 64, 16, 0, },
+    { 883, 0, 64, 16, 0, },
+    { 883, 1, 64, 16, 0, },
+    { 883, 2, 64, 16, 0, },
+    { 883, 3, 64, 16, 0, },
+    SPRITE_ARRAY_END,
+};
+
+typedef void (*TaskFunc_8071478)(void);
+
+static const TaskFunc_8071478 gUnknown_080DF95C[3] = {
+    sub_80714C4,
+    sub_80710B0,
+    sub_80714C8,
+};
 
 void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
 void sub_8071530(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
 
-void sub_8070EFC(struct SpecialStageGamma* gamma) {
+void GammaInit(struct SpecialStageGamma* gamma) {
     u8 level = gamma->stage->zone;
     const struct UNK_80DF670* unkF914 = &gUnknown_080DF914[0];
     s16 result = sub_806CF44(unkF914);
@@ -253,17 +273,13 @@ struct Task* CreateGamma(struct SpecialStage* stage) {
     struct Task* t = TaskCreate(sub_8070FA0, 0x58, 0xA000, 0, sub_8071474);
     struct SpecialStageGamma* gamma = TaskGetStructPtr(t);
     gamma->stage = stage;
-    sub_8070EFC(gamma);
+    GammaInit(gamma);
     return t;
 }
 
 void sub_8071474(struct Task* t) {
     // unused logic
 }
-
-typedef void (*TaskFunc_8071478)(void);
-
-extern const TaskFunc_8071478 gUnknown_080DF95C[3];
 
 void sub_8071478(void) {
     struct SpecialStageGamma* gamma = TaskGetStructPtr(gCurTask);
@@ -292,20 +308,20 @@ void sub_80714C8(void) {
 }
 
 void sub_80714F4(struct SpecialStageGamma* gamma) {
-    if (gamma->x < 0x2A0000) {
-        gamma->x = 0x2A0000;
+    if (gamma->x < Q_16_16(MIN_SPECIAL_STAGE_GAMMA_X)) {
+        gamma->x = Q_16_16(MIN_SPECIAL_STAGE_GAMMA_X);
     }
 
-    if (gamma->x > 0x3D60000) {
-        gamma->x = 0x3D60000;   
+    if (gamma->x > Q_16_16(MAX_SPECIAL_STAGE_GAMMA_X)) {
+        gamma->x = Q_16_16(MAX_SPECIAL_STAGE_GAMMA_X);   
     }
 
-    if (gamma->y < 0x2A0000) {
-        gamma->y = 0x2A0000;
+    if (gamma->y < Q_16_16(MIN_SPECIAL_STAGE_GAMMA_Y)) {
+        gamma->y = Q_16_16(MIN_SPECIAL_STAGE_GAMMA_Y);
     }
 
-    if (gamma->y > 0x3D60000) {
-        gamma->y = 0x3D60000;
+    if (gamma->y > Q_16_16(MAX_SPECIAL_STAGE_GAMMA_Y)) {
+        gamma->y = Q_16_16(MAX_SPECIAL_STAGE_GAMMA_Y);
     }
 }
 

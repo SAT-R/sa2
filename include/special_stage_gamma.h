@@ -28,6 +28,4 @@ struct SpecialStageGamma {
 
 struct Task* CreateGamma(struct SpecialStage*);
 
-extern const s16 gUnknown_080DF9D8[][3];
-
 #endif

@@ -7,6 +7,7 @@
 #include "special_stage_unk_806BD94.h"
 #include "special_stage_gamma.h"
 #include "special_stage_unk_806F910.h"
+#include "special_stage_tables.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
@@ -18,7 +19,7 @@
 void sub_806C970(void);
 void sub_806C950(struct Task*);
 
-extern const s16 gSpecialStageLevelTimes[7];
+
 
 void sub_806BA84(s16 selectedCharacter, s16 level) {
     struct Task* t;

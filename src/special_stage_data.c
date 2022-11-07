@@ -3473,8 +3473,6 @@ const struct UNK_8C87904 gUnknown_080DF040[] = {
     ARRAY_END,
 };
 
-#define SPRITE_ARRAY_END { 65535, 65535, 65535,}
-
 const struct UNK_80DF670 gUnknown_080DF2F8[] = {
 /** 0 **/
     { 85, 0, 20, 16, 0, },

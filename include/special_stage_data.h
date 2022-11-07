@@ -4,6 +4,8 @@
 #include "global.h"
 #include "zones.h"
 
+#define SPRITE_ARRAY_END { 65535, 65535, 65535,}
+
 struct UNK_8C878E8 {
     s16 unk0;
     s16 unk2;

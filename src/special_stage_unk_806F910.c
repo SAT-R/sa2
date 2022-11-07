@@ -393,20 +393,20 @@ void sub_806F3C4(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->x <= MIN_SPECIAL_STAGE_X << 0x10) {
-        player->x = MIN_SPECIAL_STAGE_X << 0x10;
+    if (player->x <= MIN_SPECIAL_STAGE_PLAYER_X << 0x10) {
+        player->x = MIN_SPECIAL_STAGE_PLAYER_X << 0x10;
     } 
 
-    if (player->x >= MAX_SPECIAL_STAGE_X << 0x10) {
-        player->x = MAX_SPECIAL_STAGE_X << 0x10;
+    if (player->x >= MAX_SPECIAL_STAGE_PLAYER_X << 0x10) {
+        player->x = MAX_SPECIAL_STAGE_PLAYER_X << 0x10;
     }
 
-    if (player->y <= MIN_SPECIAL_STAGE_Y << 0x10) {
-        player->y = MIN_SPECIAL_STAGE_Y << 0x10;
+    if (player->y <= MIN_SPECIAL_STAGE_PLAYER_Y << 0x10) {
+        player->y = MIN_SPECIAL_STAGE_PLAYER_Y << 0x10;
     }
 
-    if (player->y >= MAX_SPECIAL_STAGE_Y << 0x10) {
-        player->y = MAX_SPECIAL_STAGE_Y << 0x10;
+    if (player->y >= MAX_SPECIAL_STAGE_PLAYER_Y << 0x10) {
+        player->y = MAX_SPECIAL_STAGE_PLAYER_Y << 0x10;
     }
 
     unkF910->unk4++;
@@ -720,20 +720,20 @@ void sub_806FAA0(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    if (player->x < MIN_SPECIAL_STAGE_X << 0x10) {
-        player->x = MIN_SPECIAL_STAGE_X << 0x10;
+    if (player->x < MIN_SPECIAL_STAGE_PLAYER_X << 0x10) {
+        player->x = MIN_SPECIAL_STAGE_PLAYER_X << 0x10;
     }
 
-    if (player->x > MAX_SPECIAL_STAGE_X << 0x10) {
-        player->x = MAX_SPECIAL_STAGE_X << 0x10;
+    if (player->x > MAX_SPECIAL_STAGE_PLAYER_X << 0x10) {
+        player->x = MAX_SPECIAL_STAGE_PLAYER_X << 0x10;
     }
 
-    if (player->y < MIN_SPECIAL_STAGE_Y << 0x10) {
-        player->y = MIN_SPECIAL_STAGE_Y << 0x10;
+    if (player->y < MIN_SPECIAL_STAGE_PLAYER_Y << 0x10) {
+        player->y = MIN_SPECIAL_STAGE_PLAYER_Y << 0x10;
     }
 
-    if (player->y > MAX_SPECIAL_STAGE_Y << 0x10) {
-        player->y = MAX_SPECIAL_STAGE_Y << 0x10;
+    if (player->y > MAX_SPECIAL_STAGE_PLAYER_Y << 0x10) {
+        player->y = MAX_SPECIAL_STAGE_PLAYER_Y << 0x10;
     }
 }
 

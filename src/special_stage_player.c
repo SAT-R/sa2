@@ -2,10 +2,9 @@
 #include "special_stage.h"
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
-#include "special_stage_gamma.h"
+#include "special_stage_tables.h"
 #include "special_stage_data.h"
 #include "player.h"
-
 
 void sub_806D788(void);
 void sub_806D2C8(void);

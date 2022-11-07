@@ -21,18 +21,25 @@ def read_s16(rom: BufferedReader):
 def read_u32(rom: BufferedReader):
     return struct.unpack('I', rom.read(4))[0]
 
+def read_s32(rom: BufferedReader):
+    return struct.unpack('i', rom.read(4))[0]
+
+
 def format_hex(val):
     return f"0x{hex(val)[2:].upper()}"
 
 with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
-    # for i in range(length // 2):
-    #     print(f"{read_s16(rom)}, ", end="")
-    for i in range(length // 2 // 3):
-        print("{ ", end="")
-        for j in range(3):
-            print(str(read_u16(rom)) + ", ", end="")
-        print("},")
+    for i in range(length // 2):
+        print(f"{read_s16(rom)}, ", end="")
+    # for i in range(length // 2 // 3):
+    #     print("{ ", end="")
+    #     for j in range(2):
+    #         print(f"{read_s16(rom)}" + ", ", end="")
+    #     print("},")
+    
+    print(read_s16(rom))
+
     # print("{ ", end="")
     # for i in range(length):
     #     print(str(read_u8(rom)) + ", ", end="")

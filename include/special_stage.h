@@ -7,11 +7,17 @@
 
 #define SPECIAL_STAGE_ZONE_SIZE 8
 
-#define MIN_SPECIAL_STAGE_X 48
-#define MAX_SPECIAL_STAGE_X 976
+#define MIN_SPECIAL_STAGE_PLAYER_X 48
+#define MAX_SPECIAL_STAGE_PLAYER_X 976
 
-#define MIN_SPECIAL_STAGE_Y 48
-#define MAX_SPECIAL_STAGE_Y 976
+#define MIN_SPECIAL_STAGE_PLAYER_Y 48
+#define MAX_SPECIAL_STAGE_PLAYER_Y 976
+
+#define MIN_SPECIAL_STAGE_GAMMA_X 42
+#define MAX_SPECIAL_STAGE_GAMMA_X 982
+
+#define MIN_SPECIAL_STAGE_GAMMA_Y 42
+#define MAX_SPECIAL_STAGE_GAMMA_Y 982
 
 struct SpecialStage {
     struct Task* unk0; // UNK_806F910
@@ -27,16 +33,15 @@ struct SpecialStage {
     struct UNK_0808B3FC_UNK240 unk18;
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
-    s32 unk94[160][2];
+    s32 unk94[DISPLAY_HEIGHT][2];
     u32 unk594;
     u32 unk598;
     u32 unk59C;
 
     u16 unk5A0;
     s16 unk5A2;
-    s16 elapsedTime;
 
-    // time
+    s16 elapsedTime;
     s16 levelTime;
 
     s32 unk5A8;
@@ -73,7 +78,6 @@ struct SpecialStage {
     s8 unk5C7;
     s8 unk5C8;
 
-    u8 filler5C9;
     s16 unk5CA;
     s16 unk5CC;
     u16 unk5CE;
@@ -83,19 +87,6 @@ struct SpecialStage {
     u8 unk5D3;
     void* unk5D4;
 }; /* size 0x5D8 */
-
-// There is probably one of these which has different types
-struct UNK_806BD94_UNK874 {
-    u32 unk0;
-    u32 unk4;
-    s16 unk8;
-    s16 unkA;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    u8 unk12;
-    u8 unk13;
-}; /* size 0x14 */
 
 struct UNK_806BD94_UNK874_2 {
     u32 unk0;
