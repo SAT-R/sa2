@@ -20,19 +20,19 @@
 #define MAX_SPECIAL_STAGE_GUARD_ROBO_Y 982
 
 struct SpecialStage {
-    struct Task* unk0; // UNK_806F910
-    struct Task* unk4; // UNK_806E6E8
-    struct Task* unk8; // UNK_806BD94
+    struct Task* physicsTask; // UNK_806F910
+    struct Task* worldTask; // UNK_806E6E8
 
+    struct Task* collectablesTask;
     struct Task* playerTask;
 
     // uiTask?
-    struct Task* unk10; // UNK_8070B90 or UNK_8070BF0
-
+    struct Task* uiTask; // UNK_8070B90 or UNK_8070BF0
     struct Task* guardRoboTask;
-    struct UNK_0808B3FC_UNK240 unk18;
+
+    struct UNK_0808B3FC_UNK240 introText;
     struct Unk_03002400 unk48;
-    struct UNK_802D4CC_UNK270 unk88;
+    struct UNK_802D4CC_UNK270 transition;
     s32 unk94[DISPLAY_HEIGHT][2];
     s32 cameraX;
     s32 cameraY;
@@ -48,7 +48,7 @@ struct SpecialStage {
     s32 unk5AC;
     s32 unk5B0;
 
-    u16 unk5B4;
+    u16 state;
 
     u8 character;
     
@@ -73,7 +73,7 @@ struct SpecialStage {
     s8 ringsTargetUnits;
 
     s8 unk5C5;
-    u8 unk5C6;
+    u8 pauseMenuCursor;
 
     s8 unk5C7;
     s8 unk5C8;
@@ -88,7 +88,7 @@ struct SpecialStage {
     void* unk5D4;
 }; /* size 0x5D8 */
 
-struct UNK_806BD94_UNK874_2 {
+struct SpecialStageCollectables_UNK874_2 {
     u32 unk0;
     u32 unk4;
     s32 unk8;

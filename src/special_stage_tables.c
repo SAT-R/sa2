@@ -2,6 +2,7 @@
 #include "special_stage_tables.h"
 #include "zones.h"
 
+// bearing, acceleration, rotateSpeed, maxSpeed
 const u16 gUnknown_080DF968[][4] = {
     { 128, 16, 12, 256, },
     { 0, 32, 12, 304, },

@@ -2,7 +2,7 @@
 #include "special_stage.h"
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
-#include "special_stage_unk_806E6E8.h"
+#include "special_stage_world.h"
 #include "special_stage_guard_robo.h"
 #include "special_stage_data.h"
 #include "task.h"
@@ -15,9 +15,9 @@
 #include "constants/songs.h"
 
 void sub_806EA04(void);
-void sub_806E7C0(struct UNK_806E6E8* unkE6E8);
+void sub_806E7C0(struct SpecialStageWorld* world);
 void sub_806EBF4(struct Task*);
-void sub_806E94C(struct UNK_806E6E8* unkE6E8);
+void sub_806E94C(struct SpecialStageWorld* world);
 void sub_806EB74(void);
 
 // No idea why this has to be specified as, should be by default
@@ -90,34 +90,34 @@ static const s16 gUnknown_080DF784[8] = {
     0, 256, 0, 0, 0, 256, 0, 256,
 };
 
-struct Task* sub_806E6E8(struct SpecialStage* stage) {
+struct Task* CreateSpecialStageWorld(struct SpecialStage* stage) {
     s16 unkF768[7];
     s16 unkF776[7];
     struct Task* t;
-    struct UNK_806E6E8* unkE6E8;
+    struct SpecialStageWorld* world;
 
     memcpy(unkF768, gUnknown_080DF768, sizeof(gUnknown_080DF768));
     memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
     t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
-    unkE6E8 = TaskGetStructPtr(t);
-    unkE6E8->stage = stage;
+    world = TaskGetStructPtr(t);
+    world->stage = stage;
     
-    unkE6E8->unk4 = NULL;
-    unkE6E8->unk8 = NULL;
-    unkE6E8->unkC = NULL;
+    world->unk4 = NULL;
+    world->unk8 = NULL;
+    world->unkC = NULL;
 
-    sub_806CEC4(&unkE6E8->unk10, 1, 0x10, unkF776[stage->zone], 0x80, 0x80, 0, 2, 0, 0);
-    sub_806CEC4(&unkE6E8->unk50, 0, 7, unkF768[stage->zone], 0x20, 0x20, 0, 1, 0, 0);
+    sub_806CEC4(&world->unk10, 1, 0x10, unkF776[stage->zone], 0x80, 0x80, 0, 2, 0, 0);
+    sub_806CEC4(&world->unk50, 0, 7, unkF768[stage->zone], 0x20, 0x20, 0, 1, 0, 0);
 
-    sub_806E7C0(unkE6E8);
+    sub_806E7C0(world);
 
     return t;
 }
 
-void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
+void sub_806E7C0(struct SpecialStageWorld* world) {
     s16 i;
-    struct SpecialStage* stage = unkE6E8->stage;
+    struct SpecialStage* stage = world->stage;
     s32 temp = Q_16_16((stage->unk5CC - stage->unk5D0));
 
     s16 unkF784[8];
@@ -127,8 +127,8 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     s16* unk4;
     s32* unkC;
 
-    unkE6E8->unkC = EwramMalloc(0x280);
-    for (i = 0, unkC = unkE6E8->unkC; i < 0xA0; i++, unkC++) {
+    world->unkC = EwramMalloc(0x280);
+    for (i = 0, unkC = world->unkC; i < 0xA0; i++, unkC++) {
         s32 temp2 = (i - stage->unk5D0);
         if (temp2 == 0) {
             *unkC = 0;
@@ -137,8 +137,8 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
         }
     }
 
-    unkE6E8->unk8 = EwramMalloc(0x280);
-    for (i = 0, unk8 = unkE6E8->unk8; i < 0xA0; i++, unk8++) {
+    world->unk8 = EwramMalloc(0x280);
+    for (i = 0, unk8 = world->unk8; i < 0xA0; i++, unk8++) {
         s32 temp2 = (i - stage->unk5D0);
         if (temp == 0) {
             *unk8 = 0;
@@ -150,18 +150,18 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     unk94 = &stage->unk94[stage->unk5D1][0];
     unk5CE = stage->unk5CE;
     for (i = stage->unk5D1; i < 0xA0; i++) {
-        s32 temp2 = (unkE6E8->unkC[i] * unk5CE) >> 8;
+        s32 temp2 = (world->unkC[i] * unk5CE) >> 8;
         s32 temp3 = (-stage->unk5CA * temp2);
         s32 temp4 = (((i - stage->unk5CC) * temp2));
         *unk94++ = (-(temp3 << 1) >> 8) * unk5CE;
         *unk94++ = (-(temp4 << 2) >> 8) * unk5CE;
     }
 
-    unkE6E8->unk4 = EwramMalloc(0xA00);
-    gUnknown_03001884 = unkE6E8->unk4;
-    gUnknown_03004D54 = unkE6E8->unk4;
-    gUnknown_030022C0 = unkE6E8->unk4;
-    unk4 = unkE6E8->unk4;
+    world->unk4 = EwramMalloc(0xA00);
+    gUnknown_03001884 = world->unk4;
+    gUnknown_03004D54 = world->unk4;
+    gUnknown_030022C0 = world->unk4;
+    unk4 = world->unk4;
 
     memcpy(unkF784, gUnknown_080DF784, sizeof(gUnknown_080DF784));
     for (i = 0; i < 0xA0; i++, unk4 += ARRAY_COUNT(unkF784)) {
@@ -169,18 +169,18 @@ void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
         *(unk4 + 2) = i << 8;
     }
 
-    sub_806E94C(unkE6E8);
+    sub_806E94C(world);
 }
 
-void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
+void sub_806E94C(struct SpecialStageWorld* world) {
     s16 i;
     // Maybe some macro? Who knows...
-    u8* zone = &unkE6E8->stage->zone;
+    u8* zone = &world->stage->zone;
     const struct UNK_8C87920* assets = gUnknown_08C87920[*zone];
     s16 num = gUnknown_080DF6DC[*zone];
 
     for (i = 0; i < num; i++) {
-        struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];
+        struct UNK_0808B3FC_UNK240* element = &world->unk90[i];
         element->unk4 = gUnknown_03005B5C;
         element->unk8 = 0;
         element->unkA = assets[i].unk0;
@@ -201,8 +201,8 @@ void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
 
 
 void sub_806EA04(void) {
-    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkE6E8->stage;
+    struct SpecialStageWorld* world = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = world->stage;
     s32 sin1, sin2;
     s16 unk5CE;
     s32 unk5A0;
@@ -210,7 +210,7 @@ void sub_806EA04(void) {
     s16* unk1884;
     gUnknown_03002A80 = 0x10;
     gUnknown_03002878 = (void*)REG_ADDR_BG2PA;
-    gUnknown_03001884 = unkE6E8->unk4;
+    gUnknown_03001884 = world->unk4;
 
     unk5A0 = stage->cameraBearing;
     sin1 = gSineTable[unk5A0] * 4;
@@ -224,7 +224,7 @@ void sub_806EA04(void) {
 
     for (; i < 0xA0; i++) {
         s32* footer;
-        s32 temp = unkE6E8->unkC[i] * unk5CE;
+        s32 temp = world->unkC[i] * unk5CE;
         s32 temp2 = (temp >> 8);
        
         s32 temp4, temp5;
@@ -252,8 +252,8 @@ void sub_806EA04(void) {
 
 void sub_806EB74(void) {
     s16 i;
-    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = unkE6E8->stage;
+    struct SpecialStageWorld* world = TaskGetStructPtr(gCurTask);
+    struct SpecialStage* stage = world->stage;
     u8* level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
     // Huh?
@@ -263,7 +263,7 @@ void sub_806EB74(void) {
 
     if (stage->paused != TRUE) {
         for (i = 0; i < num; i++) {
-            struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];
+            struct UNK_0808B3FC_UNK240* element = &world->unk90[i];
 
             sub_80036E0(element);
             sub_8003914(element);
@@ -272,17 +272,17 @@ void sub_806EB74(void) {
 }
 
 void sub_806EBF4(struct Task* t) {
-    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(t);
+    struct SpecialStageWorld* world = TaskGetStructPtr(t);
 
-    if (unkE6E8->unk8 != NULL) {
-        EwramFree(unkE6E8->unk8);
+    if (world->unk8 != NULL) {
+        EwramFree(world->unk8);
     } 
 
-    if (unkE6E8->unkC != NULL) {
-        EwramFree(unkE6E8->unkC);
+    if (world->unkC != NULL) {
+        EwramFree(world->unkC);
     } 
 
-    if (unkE6E8->unk4 != NULL) {
-        EwramFree(unkE6E8->unk4);
+    if (world->unk4 != NULL) {
+        EwramFree(world->unk4);
     } 
 }

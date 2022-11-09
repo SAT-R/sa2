@@ -99,7 +99,7 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     player->unkB6 = 0x96;
     player->unkBC = 0;
     player->unkBE = 0;
-    player->unkC0 = 1;
+    player->multiplier = 1;
 
     player->sprites = characterSprites[stage->character];
     result = MaxSpriteSize(player->sprites);
@@ -227,7 +227,7 @@ void sub_806D388(void) {
     struct UNK_0808B3FC_UNK240* unk8;
     u32 index = 0;
     
-    if (stage->unk5B4 != 8) {
+    if (stage->state != 8) {
         if (gInput & DPAD_LEFT) {
             index = 1;
         } else if (gInput & DPAD_RIGHT) {
@@ -240,7 +240,7 @@ void sub_806D388(void) {
 
     sub_806D7D0(unk8, -1, stage->unk5CC, unkC4);
 
-    if (stage->unk5B4 == 8) {
+    if (stage->state == 8) {
         sub_80051E8(unk8);
         sub_806D830(unk8, -1, stage->unk5CC, unkC4);
     }
@@ -391,7 +391,7 @@ void sub_806D788(void) {
         s32 temp = --player->unkBC;
         if (temp == 0) {
             player->unkBE = temp;
-            player->unkC0 = 1;
+            player->multiplier = 1;
         }
     }
 }

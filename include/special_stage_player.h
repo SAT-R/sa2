@@ -38,7 +38,7 @@ struct SpecialStagePlayer {
     s16 unkBC;  
     s16 unkBE;
 
-    s16 unkC0;
+    s16 multiplier;
     u16 unkC2;
 
     const struct UNK_80DF670* sprites;

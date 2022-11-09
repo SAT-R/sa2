@@ -55,9 +55,9 @@ SECTIONS
         build/sa2/src/special_stage.o(.text);
         build/sa2/src/special_stage_utils.o(.text);
         build/sa2/src/special_stage_player.o(.text);
-        build/sa2/src/special_stage_unk_806BD94.o(.text);
-        build/sa2/src/special_stage_unk_806E6E8.o(.text);
-        build/sa2/src/special_stage_unk_806F910.o(.text);
+        build/sa2/src/special_stage_collectables.o(.text);
+        build/sa2/src/special_stage_world.o(.text);
+        build/sa2/src/special_stage_physics.o(.text);
         build/sa2/src/special_stage_ui.o(.text);
         build/sa2/src/special_stage_guard_robo.o(.text);
         build/sa2/src/save.o(.text);
@@ -127,9 +127,9 @@ SECTIONS
         build/sa2/src/profile.o(.rodata);
         build/sa2/src/special_stage_data.o(.rodata);
         build/sa2/src/special_stage_player.o(.rodata);
-        build/sa2/src/special_stage_unk_806BD94.o(.rodata);
-        build/sa2/src/special_stage_unk_806E6E8.o(.rodata);
-        build/sa2/src/special_stage_unk_806F910.o(.rodata);
+        build/sa2/src/special_stage_collectables.o(.rodata);
+        build/sa2/src/special_stage_world.o(.rodata);
+        build/sa2/src/special_stage_physics.o(.rodata);
         build/sa2/src/special_stage_ui.o(.rodata);
         build/sa2/src/special_stage_guard_robo.o(.rodata);
         build/sa2/src/special_stage_tables.o(.rodata);

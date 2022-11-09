@@ -1,12 +1,15 @@
-#ifndef GUARD_SPECIAL_UNK_806BD94_H
-#define GUARD_SPECIAL_UNK_806BD94_H
+#ifndef GUARD_SPECIAL_COLLECTABLES_H
+#define GUARD_SPECIAL_COLLECTABLES_H
 
 #include "global.h"
 #include "task.h"
 #include "special_stage.h"
 
+#define MAX_RING_PARTICLES 8
+#define MAX_OBJECTS 323
+
 // There is probably one of these which has different types
-struct UNK_806BD94_UNK874 {
+struct SpecialStageCollectables_UNK874 {
     u32 unk0;
     u32 unk4;
     s16 unk8;
@@ -18,7 +21,7 @@ struct UNK_806BD94_UNK874 {
     u8 unk13;
 }; /* size 0x14 */
 
-struct UNK_806BD94 {
+struct SpecialStageCollectables {
     struct SpecialStage* stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
@@ -31,13 +34,13 @@ struct UNK_806BD94 {
     struct UNK_0808B3FC_UNK240 unk4B4[16];
     
     struct UNK_0808B3FC_UNK240 unk7B4[4];
-    struct UNK_806BD94_UNK874 unk874[8];
-    s8 unk914[324];
+    struct SpecialStageCollectables_UNK874 unk874[MAX_RING_PARTICLES];
+    s8 objStates[MAX_OBJECTS];
     u16 unkA58;
-    s16 unkA5A;
+    s16 animFrame;
 }; /* size 0xA5C */
 
-struct Task* sub_806E684(struct SpecialStage*);
-void sub_806D924(struct SpecialStage* stage, s16 num);
+struct Task* CreateSpecialStageCollectables(struct SpecialStage*);
+void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num);
 
 #endif

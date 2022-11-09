@@ -124,9 +124,9 @@
         "sio32_multi_load.h": "c",
         "special_stage.h": "c",
         "special_stage_utils.h": "c",
-        "special_stage_unk_806bd94.h": "c",
+        "special_stage_collectables.h": "c",
         "special_stage_player.h": "c",
-        "special_stage_unk_806f910.h": "c",
+        "special_stage_physics.h": "c",
         "special_stage_guard_robo.h": "c",
         "special_stage_data.h": "c",
         "special_stage_tables.h": "c"

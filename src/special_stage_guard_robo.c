@@ -4,8 +4,8 @@
 #include "special_stage_player.h"
 #include "special_stage_utils.h"
 #include "special_stage_guard_robo.h"
-#include "special_stage_unk_806F910.h"
-#include "special_stage_unk_806BD94.h"
+#include "special_stage_physics.h"
+#include "special_stage_collectables.h"
 #include "special_stage_tables.h"
 #include "special_stage_data.h"
 #include "trig.h"
@@ -66,8 +66,8 @@ static void GuardRoboInit(struct SpecialStageGuardRobo* guardRobo) {
     guardRobo->unk54 = 60;
 }
 
-void sub_8070FA0(void) {
-    struct UNK_806BD94_UNK874_2 unk874;
+static void Task_GuardRoboMain(void) {
+    struct SpecialStageCollectables_UNK874_2 unk874;
     struct UNK_806CB84 unkCBB4;
     u8 temp;
     u16* oam;
@@ -214,7 +214,7 @@ void sub_807120C(struct SpecialStageGuardRobo* guardRobo) {
                 player->speed = 0;
                 m4aSongNumStart(SE_146);
             } else if (player->unkB6 == 0) {
-                sub_806D924(stage, 10);
+                SpecialStageHandleLoseRings(stage, 10);
                 player->unkB8 = player->unkF8;
                 player->state = 6;
                 player->speed = 0;
@@ -262,7 +262,7 @@ void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a,
 }
 
 struct Task* CreateSpecialStageGuardRobo(struct SpecialStage* stage) {
-    struct Task* t = TaskCreate(sub_8070FA0, 0x58, 0xA000, 0, SpecialStageGuardRoboOnDestroy);
+    struct Task* t = TaskCreate(Task_GuardRoboMain, 0x58, 0xA000, 0, SpecialStageGuardRoboOnDestroy);
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(t);
     guardRobo->stage = stage;
     GuardRoboInit(guardRobo);
@@ -280,7 +280,7 @@ void sub_8071478(void) {
     GuardRoboStateHandler stateHandlers[ARRAY_COUNT(sGuardRoboStateHandlers)];
     memcpy(&stateHandlers, sGuardRoboStateHandlers, sizeof(sGuardRoboStateHandlers));
 
-    if (stage->unk5B4 > 3 && stage->unk5B4 < 6) {
+    if (stage->state > 3 && stage->state < 6) {
         stateHandlers[guardRobo->state]();
     }
 }

@@ -1,6 +1,6 @@
 #include "main.h"
 #include "special_stage.h"
-#include "special_stage_unk_806E6E8.h"
+#include "special_stage_world.h"
 #include "special_stage_utils.h"
 #include "special_stage_data.h"
 #include "sprite.h"
@@ -55,9 +55,9 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
     }
 }
 
-// TODO: UNK_806BD94_UNK874 is probably it's own type
-bool16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, struct SpecialStage* stage) {
-    struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
+// TODO: SpecialStageCollectables_UNK874 is probably it's own type
+bool16 sub_806CB84(struct UNK_806CB84* a, struct SpecialStageCollectables_UNK874_2* unk874, struct SpecialStage* stage) {
+    struct SpecialStageWorld* world = TaskGetStructPtr(stage->worldTask);
     s32 r9;
     s32 r4;
     s16 val2, val;
@@ -108,16 +108,16 @@ bool16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, s
             return FALSE;
         }
         a->unkA = val;
-        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / unkE6E8->unkC[val]);
+        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
-            a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
+            a->unk6 = (((unk874->unk8 << 3) / world->unkC[val]) * 9) >> 2;
         } else {
             a->unk6 = 0;
         }
     
-        a->unkC = unkE6E8->unkC[val] >> 8;
+        a->unkC = world->unkC[val] >> 8;
         a->unk12 = a->unkC;
     
         a->unk10 = 0;
@@ -171,7 +171,7 @@ void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
     }
 }
 
-void sub_806CEA8(void) {
+void InitSpecialStageScreenVram(void) {
     gUnknown_03005B5C = (void*)OBJ_VRAM0;
     gUnknown_03005B58 = NULL;
 }

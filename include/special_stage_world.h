@@ -1,10 +1,10 @@
-#ifndef GUARD_SPECIAL_UNK_806E6E8_H
-#define GUARD_SPECIAL_UNK_806E6E8_H
+#ifndef GUARD_SPECIAL_WORLD_H
+#define GUARD_SPECIAL_WORLD_H
 
 #include "global.h"
 #include "special_stage.h"
 
-struct UNK_806E6E8 {
+struct SpecialStageWorld {
     struct SpecialStage* stage;
     void* unk4; // size 0xA00
     void* unk8; // size 0x280
@@ -14,6 +14,6 @@ struct UNK_806E6E8 {
     struct UNK_0808B3FC_UNK240 unk90[11];
 }; /* size 0x2A0 */
 
-struct Task* sub_806E6E8(struct SpecialStage*);
+struct Task* CreateSpecialStageWorld(struct SpecialStage*);
 
 #endif

@@ -88,13 +88,13 @@ void sub_806FB04(void) {
     sub_8070D14();
 
     if (unk0B90->unk2A8 == 0) {
-        if (stage->unk5B4 == 4) {
+        if (stage->state == 4) {
             sub_8070D80(unk0B90);
         }
     } 
 
     if (unk0B90->unk2A8 != 0) {
-        if (stage->unk5B4 != 4) {
+        if (stage->state != 4) {
             sub_8070DE0(unk0B90);
         } else {
             if (stage->animFrame < 0x1E || stage->animFrame & 2) {
@@ -676,7 +676,7 @@ void sub_8070C2C(struct Task* t) {
 void sub_8070E88(void);
 
 void sub_8070C30(struct SpecialStage* stage) {
-    stage->unk10->main = sub_8070E88;
+    stage->uiTask->main = sub_8070E88;
 }
 
 void sub_8070CD8(struct UNK_8070B90*);
@@ -717,7 +717,7 @@ void sub_8070D14(void) {
     struct UNK_8070B90* unk0B90 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unk0B90->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    s16 unkC0 = player->unkC0;
+    s16 unkC0 = player->multiplier;
 
     if (unkC0 > 1) {
         const struct UNK_80DF670* unkF830 = &gUnknown_080DF830[unkC0];
@@ -753,7 +753,7 @@ void sub_8070E00(struct UNK_8070B90* unk0B90) {
     struct SpecialStage* stage = unk0B90->stage;
     void *a, *b;
     
-    if (stage->unk5C6 == 0) {
+    if (stage->pauseMenuCursor == 0) {
         b = (void*)OBJ_PLTT + 0x1F8;
         a = (void*)OBJ_PLTT + 0x1F2;
     } else {
