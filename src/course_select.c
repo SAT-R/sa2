@@ -1009,8 +1009,8 @@ static void RenderUI(struct CourseSelectionScreen* coursesScreen) {
 
     if (!IsMultiplayer()) {
         u8 i;
-        for (i = 0; i < 7; i++) {
-            if (GetBit(gLoadedSaveGame->unkC[gSelectedCharacter], i)) {
+        for (i = 0; i < NUM_COURSE_ZONES; i++) {
+            if (gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALD(i)) {
                 element = &coursesScreen->chaosEmeralds[i + 1];
             } else {
                 element = &coursesScreen->chaosEmeralds[0];

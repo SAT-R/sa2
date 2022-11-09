@@ -12,7 +12,7 @@ const u16 gUnknown_080DF968[][4] = {
     { 256, 64, 12, 544, },
 };
 
-const s32 gUnknown_080DF9A0[][2] = {
+const s32 gSpecialStageGuardRoboStartPositions[][2] = {
     { Q_16_16(928), Q_16_16(928), },
     { Q_16_16(144), Q_16_16(736), },
     { Q_16_16(80), Q_16_16(600), },
@@ -32,7 +32,7 @@ const s16 gUnknown_080DF9D8[][3] = {
     { 960, 800, 0, },
 };
 
-const s16 gSpecialStageLevelTimes[] = {
+const s16 gSpecialStageScoreTargets[] = {
     300, 
     300, 
     300, 

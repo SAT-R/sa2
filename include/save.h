@@ -63,6 +63,7 @@ struct SaveGame {
     // unlockedLevels
     u8 unk7[NUM_CHARACTERS];
 
+    // chaosEmeralds
     u8 unkC[5];
 
     // soundTestUnlocked
@@ -109,6 +110,7 @@ struct SaveGame {
     // multiplayerScores
     struct MultiplayerScore unk2AC[NUM_MULTIPLAYER_SCORES];
 
+    // score
     u32 unk374;
 };
 

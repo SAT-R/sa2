@@ -56,18 +56,18 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
 }
 
 // TODO: UNK_806BD94_UNK874 is probably it's own type
-u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, struct SpecialStage* stage) {
+bool16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, struct SpecialStage* stage) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(stage->unk4);
     s32 r9;
     s32 r4;
     s16 val2, val;
 
     {
-        u16 deg = -stage->unk5A0 & 0x3FF;
+        u16 deg = -stage->cameraBearing & 0x3FF;
         s32 r2 = (gSineTable[deg] * 4);
         s32 r5 = gSineTable[(deg) + 0x100];
-        s32 temp_r4 = (-unk874->unk0 + stage->unk594);
-        s32 r3 = (-unk874->unk4 + stage->unk598);
+        s32 temp_r4 = (-unk874->unk0 + stage->cameraX);
+        s32 r3 = (-unk874->unk4 + stage->cameraY);
         r9 = (((r2 >> 8) * (r3 >> 8)) + ((r5 >> 6) * (temp_r4 >> 8))) >> 2;
         r4 = (((-r2 >> 8) * (temp_r4 >> 8)) + ((r5 >> 6) * (r3 >> 8))) >> 1;
     }
@@ -77,7 +77,7 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, stru
         s32 unk94 = stage->unk94[stage->unk5D1][1];
     
         if (r4 <= unk590 || r4 >= unk94) {
-            return 0;
+            return FALSE;
         }
     }
 
@@ -105,12 +105,12 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, stru
         s32 r8 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
         
         if (r9 <= r2 || r9 >= r8) {
-            return 0;
+            return FALSE;
         }
         a->unkA = val;
-        a->unk4 = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / unkE6E8->unkC[val]);
+        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / unkE6E8->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
-        a->unk2 = a->unk8 - unk874->unkC;
+        a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
             a->unk6 = (((unk874->unk8 << 3) / unkE6E8->unkC[val]) * 9) >> 2;
         } else {
@@ -124,7 +124,7 @@ u16 sub_806CB84(struct UNK_806CB84* a, struct UNK_806BD94_UNK874_2* unk874, stru
         a->unkE = 0; 
     }
 
-    return 1;
+    return TRUE;
 }
 
 void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
@@ -198,7 +198,7 @@ void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 
     sub_8002A3C(background);
 }
 
-s16 sub_806CF44(const struct UNK_80DF670 *spriteConfig) {
+s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig) {
     s16 result = 0;
 
     while (spriteConfig->unk0 != 0xFFFF) {

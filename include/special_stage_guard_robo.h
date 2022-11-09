@@ -9,23 +9,23 @@
 
 struct SpecialStageGuardRobo {
     struct SpecialStage* stage;
-    struct UNK_0808B3FC_UNK240 unk4;
+    struct UNK_0808B3FC_UNK240 sprite;
     void* unk34;
-    const struct UNK_80DF670* unk38;
-    s16 unk3C;
+    const struct UNK_80DF670* sprites;
+    s16 state;
     u8 filler3E[2];
     s32 x;
     s32 y;
-    u16 unk48;
-    u16 unk4A;
-    s16 unk4C;
-    s16 unk4E;
-    s16 unk50;
-    s16 unk52;
+    u16 bearing;
+    u16 speed;
+    s16 animFrame;
+    s16 acceleration;
+    s16 rotateSpeed;
+    s16 maxSpeed;
     s16 unk54;
     s16 filler56;
 }; /* 0x58 */
 
-struct Task* CreateGuardRobo(struct SpecialStage*);
+struct Task* CreateSpecialStageGuardRobo(struct SpecialStage*);
 
 #endif

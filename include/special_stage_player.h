@@ -18,7 +18,7 @@ struct SpecialStagePlayer {
     void* unk9C;
     void* unkA0;
 
-    s16 unkA4;
+    s16 animSpeed;
     u8 unkA6;
 
     // x and y may be flipped
@@ -26,9 +26,9 @@ struct SpecialStagePlayer {
     s32 y;
 
     s16 unkB0;
-    s16 unkB2;
+    s16 bearing;
 
-    u16 unkB4;
+    u16 state;
     s16 unkB6;
 
     s16 unkB8;
@@ -43,15 +43,15 @@ struct SpecialStagePlayer {
 
     const struct UNK_80DF670* sprites;
     
-    s32 unkC8;
-    u32 unkCC;
+    s32 speed;
+    u32 rotateSpeed;
     u32 unkD0;
     u32 unkD4;
-    u32 unkD8;
+    u32 acceleration;
     
-    s32 unkDC;
-    s32 unkE0;
-    s32 unkE4;
+    s32 coastResistence;
+    s32 deceleration;
+    s32 maxSpeed;
     u32 unkE8;
 
     u16 unkEC;

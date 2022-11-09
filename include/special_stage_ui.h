@@ -11,13 +11,13 @@ struct UNK_8070B90 {
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_0808B3FC_UNK240 unk64;
     struct UNK_0808B3FC_UNK240 unk94;
-    struct UNK_0808B3FC_UNK240 unkC4;
-    struct UNK_0808B3FC_UNK240 unkF4;
-    struct UNK_0808B3FC_UNK240 unk124;
+    struct UNK_0808B3FC_UNK240 ringsHundredsDigit;
+    struct UNK_0808B3FC_UNK240 ringsTensDigit;
+    struct UNK_0808B3FC_UNK240 ringsUnitsDigit;
     struct UNK_0808B3FC_UNK240 unk154;
-    struct UNK_0808B3FC_UNK240 unk184;
-    struct UNK_0808B3FC_UNK240 unk1B4;
-    struct UNK_0808B3FC_UNK240 unk1E4;
+    struct UNK_0808B3FC_UNK240 ringsTargetHundredsDigit;
+    struct UNK_0808B3FC_UNK240 ringsTargetTensDigit;
+    struct UNK_0808B3FC_UNK240 ringsTargetUnitsDigit;
     struct UNK_0808B3FC_UNK240 unk214;
     struct UNK_0808B3FC_UNK240 unk244;
     struct UNK_0808B3FC_UNK240 unk274;
@@ -33,7 +33,7 @@ struct UNK_8070BF0 {
     struct SpecialStage* stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
-    struct UNK_0808B3FC_UNK240 unk64[7];
+    struct UNK_0808B3FC_UNK240 chaosEmerald[7];
     struct UNK_0808B3FC_UNK240 unk1B4;
     struct UNK_0808B3FC_UNK240 unk1E4;
     struct UNK_0808B3FC_UNK240 unk214;

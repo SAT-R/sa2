@@ -434,7 +434,7 @@ _0808DEC0:
 	bne _0808DF30
 	ldr r0, _0808DF7C @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0808DF80 @ =gUnknown_030053F0
+	ldr r1, _0808DF80 @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0808DF84 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -465,7 +465,7 @@ _0808DF70: .4byte 0x000001D3
 _0808DF74: .4byte IWRAM_START + 0x54
 _0808DF78: .4byte IWRAM_START + 0x55
 _0808DF7C: .4byte gUnknown_03005490
-_0808DF80: .4byte gUnknown_030053F0
+_0808DF80: .4byte gCourseTime
 _0808DF84: .4byte gUnknown_030054F4
 
 	thumb_func_start sub_808DF88
@@ -641,7 +641,7 @@ _0808E0CC:
 	bne _0808E0FA
 	ldr r0, _0808E108 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0808E10C @ =gUnknown_030053F0
+	ldr r1, _0808E10C @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0808E110 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -656,7 +656,7 @@ _0808E0FA:
 	bx r0
 	.align 2, 0
 _0808E108: .4byte gUnknown_03005490
-_0808E10C: .4byte gUnknown_030053F0
+_0808E10C: .4byte gCourseTime
 _0808E110: .4byte gUnknown_030054F4
 
 	thumb_func_start sub_808E114
@@ -807,7 +807,7 @@ _0808E22A:
 	bne _0808E240
 	ldr r0, _0808E268 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0808E26C @ =gUnknown_030053F0
+	ldr r1, _0808E26C @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0808E270 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -830,7 +830,7 @@ _0808E25C: .4byte gUnknown_03005960
 _0808E260: .4byte 0xFFFFC000
 _0808E264: .4byte sub_801EC3C
 _0808E268: .4byte gUnknown_03005490
-_0808E26C: .4byte gUnknown_030053F0
+_0808E26C: .4byte gCourseTime
 _0808E270: .4byte gUnknown_030054F4
 
 	thumb_func_start sub_808E274

@@ -14,6 +14,7 @@
 #include "m4a.h"
 #include "task.h"
 #include "title_screen.h"
+#include "zones.h"
 #include "constants/songs.h"
 
 void sub_806C970(void);
@@ -61,11 +62,11 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level) {
 
     t = TaskCreate(sub_806C970, sizeof(struct SpecialStage), 0x2000, 0, SpecialStageOnDestroy);
     stage = TaskGetStructPtr(t);
-    stage->unk594 = Q_16_16(256);
-    stage->unk598 = Q_16_16(256);
+    stage->cameraX = Q_16_16(256);
+    stage->cameraY = Q_16_16(256);
     stage->unk59C = 0;
 
-    stage->unk5A0 = 512;
+    stage->cameraBearing = 512;
 
     if (character <= CHARACTER_AMY) {
         stage->character = character;
@@ -77,26 +78,26 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level) {
 
     stage->zone = zone;
     stage->level = level;
-    stage->unk5A2 = 0;
+    stage->animFrame = 0;
     
     stage->unk5BB = 1;
     stage->unk5BC = 2;
     stage->unk5BD = 0;
     stage->unk5BE = 0;
 
-    stage->elapsedTime = 0;
-    stage->levelTime = gSpecialStageLevelTimes[zone];
+    stage->rings = 0;
+    stage->ringsTarget = gSpecialStageScoreTargets[zone];
 
     stage->unk5B4 = 0;
-    stage->unk5BA = 0;
-    stage->unk5BF = 0;
+    stage->paused = 0;
+    stage->ringsHundreds = 0;
 
-    stage->unk5C0 = 0;
-    stage->unk5C1 = 0;
+    stage->ringsTens = 0;
+    stage->ringsUnits = 0;
 
-    stage->unk5C2 = Div(stage->levelTime, 100);
-    stage->unk5C3 = Div(stage->levelTime, 10) - (stage->unk5C2 * 10);
-    stage->unk5C4 = Mod(stage->levelTime, 10);
+    stage->ringsTargetHundreds = Div(stage->ringsTarget, 100);
+    stage->ringsTargetTens = Div(stage->ringsTarget, 10) - (stage->ringsTargetHundreds * 10);
+    stage->ringsTargetUnits = Mod(stage->ringsTarget, 10);
 
     stage->unk5C5 = 0;
     stage->unk5C5 = 0;
@@ -112,13 +113,13 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level) {
     stage->unk5D1 = 60;
 
     // wtf, all this stuff is const
-    target = 0x31;
+    target = 49;
     stage->unk5D2 = target;
 
     for (i = 1; i < stage->unk5D2; i *= 2);
 
     stage->unk5D2 = i;
-    stage->unk5D3 = ((159 - stage->unk5D1) >> 1) + stage->unk5D1;
+    stage->unk5D3 = (((DISPLAY_HEIGHT - 1) - stage->unk5D1) >> 1) + stage->unk5D1;
 }
 
 void sub_806BCB8(void) {
@@ -152,9 +153,9 @@ void sub_806BD28(void) {
     sub_80051E8(&stage->unk18);
     gBldRegs.bldCnt = 0xAF;
     
-    stage->unk5A2++;
+    stage->animFrame++;
 
-    if (stage->unk5A2 > 0x8B) {
+    if (stage->animFrame > 0x8B) {
         gBldRegs.bldCnt = 0xBF;
         gBldRegs.bldY = 0x10;
         
@@ -164,7 +165,7 @@ void sub_806BD28(void) {
         transitionConfig->unk6 = 0x100;
         transitionConfig->unkA = 0;
         transitionConfig->unk8 = 0xBF;
-        stage->unk5A2 = 0;
+        stage->animFrame = 0;
         gCurTask->main = sub_806BD94;
     }
 }
@@ -173,12 +174,12 @@ void sub_806BD94(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     stage->unk5B4 = 2;
     
-    switch(stage->unk5A2) {
+    switch(stage->animFrame) {
         case 0:
             stage->unk0 = sub_806F910(stage);
             stage->playerTask = CreateSpecialStagePlayer(stage);
             stage->unk5D4 = gUnknown_03005B5C;
-            stage->guardRoboTask = CreateGuardRobo(stage);
+            stage->guardRoboTask = CreateSpecialStageGuardRobo(stage);
             break;
         case 1:
             stage->unk8 = sub_806E684(stage);
@@ -193,20 +194,20 @@ void sub_806BD94(void) {
             return;
     }
 
-    stage->unk5A2++;
+    stage->animFrame++;
 }
 
 void sub_806BE40(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     sub_806C864();
 
-    if (stage->unk5BA == 0) {
+    if (stage->paused == FALSE) {
         sub_806C7B8();
-        stage->unk5A2++;
+        stage->animFrame++;
     }
 
-    if (stage->unk5A2 > 0x3B) {
-        stage->unk5A2 = 0;
+    if (stage->animFrame > 59) {
+        stage->animFrame = 0;
         stage->unk5B4 = 5;
         gCurTask->main = sub_806BE9C;
     }
@@ -220,8 +221,8 @@ void sub_806BE9C(void) {
 #ifndef NON_MATCHING
         do 
 #endif
-        if (player->unkB4 != 0xE && player->unkB4 != 0xF) {
-            player->unkB4 = 0xB;
+        if (player->state != 14 && player->state != 15) {
+            player->state = 11;
         }
 #ifndef NON_MATCHING
         while (0);
@@ -230,33 +231,33 @@ void sub_806BE9C(void) {
     }
 
     if (stage->unk5B4 == 6 || stage->unk5B4 == 7) {
-        if (player->unkB4 != 0xB && player->unkB4 != 0xC && player->unkB4 != 0xD) {
-            player->unkB4 = 0xB;
+        if (player->state != 11 && player->state != 12 && player->state != 13) {
+            player->state = 11;
         }
     }
 
-    switch (player->unkB4) {
-        case 0xD:
-             stage->unk5B4 = 8;
+    switch (player->state) {
+        case 13:
+            stage->unk5B4 = 8;
             gCurTask->main = sub_806BFD0;
             return;
-        case 0xF:
-             stage->unk5B4 = 8;
+        case 15:
+            stage->unk5B4 = 8;
             gCurTask->main = sub_806BFD0;
             return;
-        case 0xE:
+        case 14:
             break;
         default:
             sub_806C864();
             break;
     }
     
-    if (stage->unk5BA == 0) {
+    if (stage->paused == FALSE) {
         sub_806C7B8();
         if (stage->unk5C7) {
             s32 temp = --stage->unk5C8;
             if (temp == 0) {
-                stage->unk5C7 = temp;
+                stage->unk5C7 = 0;
                 if (stage->unk5BB == 0 && stage->unk5BC < 3) {
                     m4aSongNumStart(MUS_SPECIAL_STAGE_PINCH);
                 } else {
@@ -277,7 +278,7 @@ void sub_806BFD0(void) {
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    guardRobo->unk3C = 0;
+    guardRobo->state = 0;
 
     transitionConfig->unk0 = 1;
     transitionConfig->unk2 = 1;
@@ -290,7 +291,7 @@ void sub_806BFD0(void) {
     gDispCnt = 0x9641;
     gWinRegs[5] = 0x103F;
 
-    if (player->unkB4 == 0xD) {
+    if (player->state == 0xD) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);
     }
     gCurTask->main = sub_806C050;
@@ -335,9 +336,9 @@ void sub_806C050(void) {
         gBgScrollRegs[1][1] = 0;
         gDispCnt = 0x1240;
 
-        if (player->unkB4 == 0xD) {
-            stage->unk5A2 = 0;
-            player->unkB4 = 0x10;
+        if (player->state == 0xD) {
+            stage->animFrame = 0;
+            player->state = 0x10;
             gCurTask->main = sub_806CA18;
         } else {
             gCurTask->main = sub_806C158;
@@ -354,7 +355,7 @@ void sub_806C158(void) {
     gBldRegs.bldAlpha = 0;
 
     stage->unk10 = sub_8070BF0(stage);
-    stage->unk5A8 = stage->elapsedTime * 100;
+    stage->unk5A8 = stage->rings * 100;
     
     if (stage->unk5A8 > 0x1863C) {
         stage->unk5A8 = 0x1863C;
@@ -363,11 +364,11 @@ void sub_806C158(void) {
     stage->unk5AC = stage->unk5C5 ? 10000 : 0;
     stage->unk5B0 = 0;
 
-    if (player->unkB4 == 0x10) {
+    if (player->state == 16) {
         if (stage->unk5C5 != 0) {
             m4aSongNumStart(MUS_CHAOS_EMERALD);
             stage->unk5C7 = 1;
-            stage->unk5C8 = 0x96;
+            stage->unk5C8 = 150;
         } else {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
             stage->unk5C7 = 0;
@@ -378,7 +379,7 @@ void sub_806C158(void) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT_LOSE);
     }
 
-    stage->unk5A2 = 0;
+    stage->animFrame = 0;
     gCurTask->main = sub_806CA54;
 }
 
@@ -386,10 +387,9 @@ void sub_806C25C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
     if (stage->unk5C7 == 1) {
-        s32 temp = --stage->unk5C8;
-        if (temp == 0) {
+        if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
-            stage->unk5C7 = temp;
+            stage->unk5C7 = 0;
         }
     }
 
@@ -410,9 +410,9 @@ void sub_806C25C(void) {
         stage->unk5B0 = 0x1863C;
     }
 
-    stage->unk5A2++;
+    stage->animFrame++;
 
-    if ((stage->unk5A2 & 3) == 0) {
+    if ((stage->animFrame & 3) == 0) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
     }
 
@@ -425,10 +425,9 @@ void sub_806C25C(void) {
 void sub_806C338(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     if (stage->unk5C7 == 1) {
-        s32 temp = --stage->unk5C8;
-        if (temp == 0) {
+        if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
-            stage->unk5C7 = temp;
+            stage->unk5C7 = 0;
         }
     }
 
@@ -449,9 +448,9 @@ void sub_806C338(void) {
         stage->unk5B0 = 0x1863C;
     }
 
-    stage->unk5A2++;
+    stage->animFrame++;
 
-    if ((stage->unk5A2 & 3) == 0) {
+    if ((stage->animFrame & 3) == 0) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
     }
 
@@ -461,7 +460,7 @@ void sub_806C338(void) {
         }
     
         stage->unk5AC = 0;
-        stage->unk5A2 = 0;
+        stage->animFrame = 0;
         gCurTask->main = sub_806C49C;
     }
 }
@@ -482,24 +481,23 @@ void sub_806C42C(void) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
     }
 
-    stage->unk5A2 = 0;
+    stage->animFrame = 0;
     gCurTask->main = sub_806C49C;
 }
 
 void sub_806C49C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270* transitionConfig = &stage->unk88;
-    stage->unk5A2++;
+    stage->animFrame++;
 
     if (stage->unk5C7 == 1) {
-        s32 temp = --stage->unk5C8;
-        if (temp == 0) {
+        if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
-            stage->unk5C7 = temp;
+            stage->unk5C7 = 0;
         }
     }
 
-    if (gPressedKeys & A_BUTTON || stage->unk5A2 > 0x3C) {
+    if (gPressedKeys & A_BUTTON || stage->animFrame > 60) {
         transitionConfig->unk0 = 0;
         transitionConfig->unk2 = 1;
         transitionConfig->unk4 = 0;
@@ -507,7 +505,7 @@ void sub_806C49C(void) {
         transitionConfig->unkA = 0;
         transitionConfig->unk8 = 0xBF;
 
-        stage->unk5A2 = 0;
+        stage->animFrame = 0;
         if (stage->unk5C5 != 0) {
             gCurTask->main = sub_806C560;
         } else {
@@ -518,27 +516,26 @@ void sub_806C49C(void) {
 
 void sub_806C560(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    u8 unk5B6 = stage->character;
-    u8 something = gLoadedSaveGame->unkC[unk5B6];
+    u8 character = stage->character;
+    u8 chaosEmeralds = gLoadedSaveGame->unkC[character];
 
     if (stage->unk5C7 == 1) {
-        s32 temp = --stage->unk5C8;
-        if (temp == 0) {
+        if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
-            stage->unk5C7 = temp;
+            stage->unk5C7 = 0;
         }
     }
 
-    if (!GetBit(something, stage->zone)) {
+    if (!(chaosEmeralds & CHAOS_EMERALD(stage->zone))) {
         sub_8070C30(stage);
-        gLoadedSaveGame->unkC[unk5B6] |= 1 << stage->zone;
-        stage->unk5A2 = 0x78;
+        gLoadedSaveGame->unkC[character] |= CHAOS_EMERALD(stage->zone);
+        stage->animFrame = 120;
     } else {
-        stage->unk5A2 = 0xC;
+        stage->animFrame = 12;
     }
 
-    if ((gLoadedSaveGame->unkC[unk5B6] & 0x7F) == 0x7F) {
-        gLoadedSaveGame->unkC[unk5B6] = 0xFF;
+    if ((gLoadedSaveGame->unkC[character] & ALL_ZONE_CHAOS_EMERALDS) == ALL_ZONE_CHAOS_EMERALDS) {
+        gLoadedSaveGame->unkC[character] = ALL_CHAOS_EMERALDS;
     }
 
     gCurTask->main = sub_806C638;
@@ -548,17 +545,16 @@ void sub_806C638(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
     if (stage->unk5C7 == 1) {
-        s32 temp = --stage->unk5C8;
-        if (temp == 0) {
+        if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
-            stage->unk5C7 = temp;
+            stage->unk5C7 = 0;
         }
     }
 
-    stage->unk5A2--;
+    stage->animFrame--;
 
-    if (stage->unk5A2 < 1) {
-        stage->unk5A2 = 0;
+    if (stage->animFrame < 1) {
+        stage->animFrame = 0;
         gCurTask->main = sub_806C6A4;
     }
 }
@@ -569,8 +565,8 @@ void sub_806C6A4(void) {
         return;
     }
     
-    stage->unk5A2++;
-    if (stage->unk5A2 > 0x77) {
+    stage->animFrame++;
+    if (stage->animFrame > 119) {
         s32 temp2, temp3, temp4;
         s32 temp = stage->unk5B0;
 
@@ -601,7 +597,7 @@ void sub_806C6A4(void) {
             gUnknown_03005448 = temp5;
         }
 
-        gLoadedSaveGame->unk374 += stage->elapsedTime;
+        gLoadedSaveGame->unk374 += stage->rings;
 
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -647,9 +643,9 @@ void sub_806C7B8(void) {
 void sub_806C864(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
-    if (stage->unk5BA == 1) {
+    if (stage->paused == TRUE) {
         if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
-            u8 temp = stage->unk5C6;
+            u8 prev = stage->unk5C6;
 
             if (gPressedKeys & DPAD_UP) {
                 stage->unk5C6 = 0;
@@ -659,7 +655,7 @@ void sub_806C864(void) {
                 stage->unk5C6 = 1;
             }
 
-            if (temp != stage->unk5C6) {
+            if (prev != stage->unk5C6) {
                 m4aSongNumStart(SE_MENU_CURSOR_MOVE);
             }
             return;
@@ -667,7 +663,7 @@ void sub_806C864(void) {
 
         if (gPressedKeys & A_BUTTON) {
             if (stage->unk5C6 == 0) {
-                stage->unk5BA = 0;
+                stage->paused = 0;
                 gPressedKeys &= ~A_BUTTON;
                 return;
             }
@@ -681,7 +677,7 @@ void sub_806C864(void) {
     }
 
     if (gPressedKeys & START_BUTTON) {
-        stage->unk5BA = stage->unk5BA == 0 ? 1 : 0;
+        stage->paused = stage->paused == FALSE ? TRUE : FALSE;
         stage->unk5C6 = 0;
     }
 }
@@ -706,7 +702,7 @@ void sub_806C9CC(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
     if (sub_802D4CC(&stage->unk88) != 0) {
-        stage->unk5A2 = 0;
+        stage->animFrame = 0;
         stage->unk5B4 = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);
         gCurTask->main = sub_806BE40;
@@ -720,19 +716,19 @@ void sub_806CA18(void) {
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
 
-    stage->unk5A2++;
+    stage->animFrame++;
 
-    if (stage->unk5A2 > 0xb3) {
+    if (stage->animFrame > 0xb3) {
         gCurTask->main = sub_806C158;
     }
 }
 
 void sub_806CA54(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    stage->unk5A2++;
+    stage->animFrame++;
 
-    if (stage->unk5A2 > 0x3B) {
-        stage->unk5A2 = 0;
+    if (stage->animFrame > 0x3B) {
+        stage->animFrame = 0;
         gCurTask->main = sub_806C25C;
     }
 }

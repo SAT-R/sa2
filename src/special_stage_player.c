@@ -51,8 +51,7 @@ static const struct UNK_80DF670* const gUnknown_080DF670[5] = {
 
 typedef void (*PlayerStateHandler)(void);
 
-// state handlers
-static PlayerStateHandler const gUnknown_080DF684[] = {
+static PlayerStateHandler const sPlayerStateHandlers[] = {
     sub_806D5CC,
     sub_806D388,
     sub_806D424,
@@ -95,15 +94,15 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     player->y = Q_16_16(gUnknown_080DF9D8[lang][1]);
 
     player->unkB0 = 0;
-    player->unkB2 = gUnknown_080DF9D8[lang][2];
-    player->unkB4 = 0;
+    player->bearing = gUnknown_080DF9D8[lang][2];
+    player->state = 0;
     player->unkB6 = 0x96;
     player->unkBC = 0;
     player->unkBE = 0;
     player->unkC0 = 1;
 
     player->sprites = characterSprites[stage->character];
-    result = sub_806CF44(player->sprites);
+    result = MaxSpriteSize(player->sprites);
     player->unk98 = gUnknown_03005B5C;
     gUnknown_03005B5C += (result * TILE_SIZE_4BPP);
     player->unk9C = gUnknown_03005B5C;
@@ -137,7 +136,7 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
         element->unk25 = 0;
         element->unk28 = -1;
         
-        if (stage->unk5BA == 0) {
+        if (stage->paused == FALSE) {
             sub_8004558(element);
         }
 
@@ -151,14 +150,14 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     }
 
     if (stage->unk5B7 == FALSE) {
-        player->unkC8 = 0;
-        player->unkCC = 6;
+        player->speed = 0;
+        player->rotateSpeed = 6;
         player->unkD0 = 0x10000;
         player->unkD4 = 0x10000;
-        player->unkD8 = 0x28;
-        player->unkDC = -0x2B;
-        player->unkE0 = -0x15E;
-        player->unkE4 = 0x2C80;
+        player->acceleration = 40;
+        player->coastResistence = -43;
+        player->deceleration = -350;
+        player->maxSpeed = 0x2C80;
         player->unkE8 = 0x3F80;
         player->unkEC = 0x502;
         player->unkEE = 0x8C0;
@@ -173,12 +172,12 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
         player->unkFC = 0x600;
         player->unkFE = -0x40;
     } else {
-        player->unkC8 = 0;
-        player->unkCC = 0;
+        player->speed = 0;
+        player->rotateSpeed = 0;
         player->unkD0 = 0xC00;
         player->unkD4 = 0x7FFF;
-        player->unkD8 = 0x100;
-        player->unkDC = 0x800;
+        player->acceleration = 256;
+        player->coastResistence = 0x800;
     }
 
     return t;
@@ -191,10 +190,10 @@ void sub_806D2C8(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = player->unk0;
 
-    memcpy(stateHandlers, gUnknown_080DF684, sizeof(gUnknown_080DF684));
+    memcpy(stateHandlers, sPlayerStateHandlers, sizeof(sPlayerStateHandlers));
 
-    if (stage->unk5BA == 0) {
-        stateHandlers[player->unkB4 + 1]();
+    if (stage->paused == FALSE) {
+        stateHandlers[player->state + 1]();
         sub_806D788();
     } else {
         stateHandlers[0]();
@@ -203,16 +202,16 @@ void sub_806D2C8(void) {
     unk8 = &player->unk8;
     unk38 = &player->unk38;
     
-    if (player->unkB6 != 0 && stage->unk5BA == 0) {
+    if (player->unkB6 != 0 && stage->paused == FALSE) {
         if ((--player->unkB6) & 2) {
             sub_80051E8(unk8);
-            if (player->unkB4 < 14) {
+            if (player->state < 14) {
                 sub_80051E8(unk38);
             }
         }
     } else {
         sub_80051E8(unk8);
-        if (player->unkB4 < 14) {
+        if (player->state < 14) {
             sub_80051E8(unk38);
         }
     }
@@ -264,7 +263,7 @@ void sub_806D424(void) {
 
     unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
-    sub_806D7D0(unk8, player->unkA4, stage->unk5CC, unkC4);
+    sub_806D7D0(unk8, player->animSpeed, stage->unk5CC, unkC4);
 }
 
 // Running?
@@ -284,7 +283,7 @@ void sub_806D484(void) {
 
     unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
-    sub_806D7D0(unk8, player->unkA4, stage->unk5CC, unkC4);
+    sub_806D7D0(unk8, player->animSpeed, stage->unk5CC, unkC4);
 }
 
 // Sprinting?
@@ -304,7 +303,7 @@ void sub_806D4E4(void) {
 
     unkC4 = &player->sprites[index];
     unk8 = &player->unk8;
-    sub_806D7D0(unk8, player->unkA4 >> 1, stage->unk5CC, unkC4);
+    sub_806D7D0(unk8, player->animSpeed >> 1, stage->unk5CC, unkC4);
 }
 
 void sub_806D548(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a, u8 b, const struct UNK_80DF670* c4) {
@@ -397,7 +396,7 @@ void sub_806D788(void) {
     }
 }
 
-void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16 a, s16 b, const struct UNK_80DF670* anim) {
+void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16 animSpeed, s16 b, const struct UNK_80DF670* anim) {
     u32 unk10 = 0x1000;
     if (anim->unk7 & 1) {
         unk10 |= 0x400;
@@ -411,7 +410,7 @@ void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16 a, s16 b, const struct
     element->unk18 = b;
     element->unk20 = anim->unk2;
 
-    element->unk22 = a != -1 ? a : 0x10;
+    element->unk22 = animSpeed != -1 ? animSpeed : 0x10;
     sub_8004558(element);
 }
 

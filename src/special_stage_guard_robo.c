@@ -15,6 +15,12 @@
 void sub_80714C4(void);
 void sub_80710B0(void);
 void sub_80714C8(void);
+void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
+static void RenderGuardRobo(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
+void sub_8071478(void);
+void sub_80714F4(struct SpecialStageGuardRobo*);
+void sub_807120C(struct SpecialStageGuardRobo*);
+static void SpecialStageGuardRoboOnDestroy(struct Task*);
 
 static const struct UNK_80DF670 gUnknown_080DF914[9] = {
     { 883, 4, 64, 16, 0, },
@@ -28,55 +34,50 @@ static const struct UNK_80DF670 gUnknown_080DF914[9] = {
     SPRITE_ARRAY_END,
 };
 
-typedef void (*TaskFunc_8071478)(void);
+typedef void (*GuardRoboStateHandler)(void);
 
-static const TaskFunc_8071478 gUnknown_080DF95C[3] = {
+static const GuardRoboStateHandler sGuardRoboStateHandlers[3] = {
     sub_80714C4,
     sub_80710B0,
     sub_80714C8,
 };
 
-void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
-void sub_8071530(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4);
-
-void GuardRoboInit(struct SpecialStageGuardRobo* guardRobo) {
+static void GuardRoboInit(struct SpecialStageGuardRobo* guardRobo) {
     u8 level = guardRobo->stage->zone;
-    const struct UNK_80DF670* unkF914 = &gUnknown_080DF914[0];
-    s16 result = sub_806CF44(unkF914);
+    const struct UNK_80DF670* sprites = gUnknown_080DF914;
+    s16 maxSize = MaxSpriteSize(sprites);
     void* vramOld = gUnknown_03005B5C;
 
     guardRobo->unk34 = gUnknown_03005B5C;
-    gUnknown_03005B5C += result << 5;
+    gUnknown_03005B5C += maxSize * TILE_SIZE_4BPP;
 
-    sub_8071380(&guardRobo->unk4, vramOld, 0x78, 0x3C, 7, unkF914);
-    guardRobo->unk38 = unkF914;
-    guardRobo->unk3C = 1;
+    sub_8071380(&guardRobo->sprite, vramOld, 0x78, 0x3C, 7, sprites);
+    guardRobo->sprites = sprites;
+    guardRobo->state = 1;
 
-    guardRobo->x = gUnknown_080DF9A0[level][0];
-    guardRobo->y = gUnknown_080DF9A0[level][1];
+    guardRobo->x = gSpecialStageGuardRoboStartPositions[level][0];
+    guardRobo->y = gSpecialStageGuardRoboStartPositions[level][1];
 
-    guardRobo->unk48 = gUnknown_080DF968[level][0];
-    guardRobo->unk4A = 0;
-    guardRobo->unk4E = gUnknown_080DF968[level][1];
-    guardRobo->unk50 = gUnknown_080DF968[level][2];
-    guardRobo->unk52 = gUnknown_080DF968[level][3];
-    guardRobo->unk54 = 0x3C;
+    guardRobo->bearing = gUnknown_080DF968[level][0];
+    guardRobo->speed = 0;
+    guardRobo->acceleration = gUnknown_080DF968[level][1];
+    guardRobo->rotateSpeed = gUnknown_080DF968[level][2];
+    guardRobo->maxSpeed = gUnknown_080DF968[level][3];
+    guardRobo->unk54 = 60;
 }
 
-void sub_8071478(void);
 void sub_8070FA0(void) {
     struct UNK_806BD94_UNK874_2 unk874;
     struct UNK_806CB84 unkCBB4;
     u8 temp;
     u16* oam;
-    s32 result;
-    
+    bool16 visible;
 
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = guardRobo->stage;
     oam = &gOamBuffer[124].all.affineParam;
     
-    if (stage->unk5BA == 0) {
+    if (stage->paused == FALSE) {
         sub_8071478();
     }
 
@@ -89,11 +90,10 @@ void sub_8070FA0(void) {
     unk874.unk10 = 0;
     unk874.unk12 = 0x1D;
 
-    result = sub_806CB84(&unkCBB4, &unk874, guardRobo->stage);
-    if (result != 0) {
-        u16 temp3;
-        s16 temp4;
-        
+    visible = sub_806CB84(&unkCBB4, &unk874, guardRobo->stage);
+    if (visible) {
+        u16 angle;
+
         *oam = unkCBB4.unkC;
         oam+=4;
         *oam = unkCBB4.unkE;
@@ -102,27 +102,22 @@ void sub_8070FA0(void) {
         oam+=4;
         *oam = unkCBB4.unk12;
 
-        temp3 = ((guardRobo->unk48 - stage->unk5A0) + 0x40) & 0x3FF;
-        temp4 = unkCBB4.unk4;
-        if (temp4 < (stage->unk5CC - 0x3C)) {
+        angle = ((guardRobo->bearing - stage->cameraBearing) + 64) & 0x3FF;
+        if (unkCBB4.screenY < (stage->unk5CC - 0x3C)) {
             temp = 0xC;
         } else {
-             temp = 5;
+            temp = 5;
         }
 
-        if (stage->unk5BA == 0) {
-            const struct UNK_80DF670* unk38;
-            sub_8071530(&guardRobo->unk4, unkCBB4.unk2, temp4, temp, &guardRobo->unk38[temp3 >> 0x7]);
+        if (stage->paused == FALSE) {
+            RenderGuardRobo(&guardRobo->sprite, unkCBB4.screenX, unkCBB4.screenY, temp, &guardRobo->sprites[angle >> 7]);
         }
 
-        if (guardRobo->unk3C != 2 || !(guardRobo->unk4C & 2) || stage->unk5BA != 0) {
-            sub_80051E8(&guardRobo->unk4);
+        if (guardRobo->state != 2 || !(guardRobo->animFrame & 2) || stage->paused != 0) {
+            sub_80051E8(&guardRobo->sprite);
         }
     }
 }
-
-void sub_80714F4(struct SpecialStageGuardRobo*);
-void sub_807120C(struct SpecialStageGuardRobo*);
 
 void sub_80710B0(void) {
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(gCurTask);
@@ -131,43 +126,44 @@ void sub_80710B0(void) {
     s32 sin3;
     s32 sin4;
 
-    s32 temp3, temp4;
+    s32 temp3, bearingToPlayer;
 
-    u16 index = (-guardRobo->unk48 & 0x3FF);
-    s32 sin1 = gSineTable[index] * 4;
-    s32 sin2 = gSineTable[index + 0x100];
+    u16 angle = (-guardRobo->bearing & 0x3FF);
+    s32 sin = SIN(angle) * 4;
+    s32 cos = COS(angle);
 
-    s32 temp1, temp2; 
-    temp1 = player->x - guardRobo->x;
-    temp2 = player->y - guardRobo->y;
+    s32 dX, dY; 
+    dX = player->x - guardRobo->x;
+    dY = player->y - guardRobo->y;
 
-    temp4 = (sin1 >> 8) * (temp2 >> 8) + (sin2 >> 6) * (temp1 >> 8);
+    bearingToPlayer = (sin >> 8) * (dY >> 8) + (cos >> 6) * (dX >> 8);
     // required for match, probably wrong
-    sin4 = (temp1 >> 8);
-    temp3 = (-sin1 >> 8) * sin4 + (sin2 >> 6) * (temp2 >> 8);
+    sin4 = (dX >> 8);
+    temp3 = (-sin >> 8) * sin4 + (cos >> 6) * (dY >> 8);
 
-    if (temp4 > 0) {
-        guardRobo->unk48 = (guardRobo->unk48 - guardRobo->unk50) & 0x3FF;
-    } else if (temp4 < 0) {
-        guardRobo->unk48 = (guardRobo->unk48 + guardRobo->unk50) & 0x3FF;
+    if (bearingToPlayer > 0) {
+        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & 0x3FF;
+    } else if (bearingToPlayer < 0) {
+        guardRobo->bearing = (guardRobo->bearing + guardRobo->rotateSpeed) & 0x3FF;
     } else if (temp3 < 0) {
-        guardRobo->unk48 = (guardRobo->unk48 - guardRobo->unk50) & 0x3FF;
+        guardRobo->bearing = (guardRobo->bearing - guardRobo->rotateSpeed) & 0x3FF;
     }
 
-    index = guardRobo->unk48;
-    sin1 = gSineTable[index] * 4;
-    sin4 = gSineTable[index + 0x100] * 4;
+    angle = guardRobo->bearing;
+    sin = SIN(angle) * 4;
+    sin4 = COS(angle) * 4;
 
-    guardRobo->x -= (sin1 * guardRobo->unk4A) >> 8;
-    guardRobo->y -= (sin4 * guardRobo->unk4A) >> 8;
+    guardRobo->x -= (sin * guardRobo->speed) >> 8;
+    guardRobo->y -= (sin4 * guardRobo->speed) >> 8;
 
     sub_80714F4(guardRobo);
     sub_807120C(guardRobo);
 
-    guardRobo->unk4A += guardRobo->unk52;
+    // BUG: I believe this should be += acceleration
+    guardRobo->speed += guardRobo->maxSpeed;
 
-    if (guardRobo->unk4A > guardRobo->unk52) {
-        guardRobo->unk4A = guardRobo->unk52;
+    if (guardRobo->speed > guardRobo->maxSpeed) {
+        guardRobo->speed = guardRobo->maxSpeed;
     }
 }
 
@@ -180,9 +176,9 @@ void sub_807120C(struct SpecialStageGuardRobo* guardRobo) {
     s16 playerX = Q_16_16_TO_INT(player->x);
     s16 playerY = Q_16_16_TO_INT(player->y);
     s16 unkB0 = player->unkB0 >> 8;
-    s16 unkB4 = player->unkB4;
+    s16 state = player->state;
 
-    switch (unkB4) {
+    switch (state) {
         case 6:
             return;
         case -1:
@@ -206,24 +202,22 @@ void sub_807120C(struct SpecialStageGuardRobo* guardRobo) {
                 return;
             }
 #endif
-            if ((unkB4 > 3 && unkB4 < 6) || unkB4 == 9) {
-                guardRobo->unk4C = guardRobo->unk54;
-                guardRobo->unk3C = 2;
+            if ((state > 3 && state < 6) || state == 9) {
+                guardRobo->animFrame = guardRobo->unk54;
+                guardRobo->state = 2;
                 sub_806F944(stage);
-                player->unkB4 = 10;
+                player->state = 10;
                 m4aSongNumStart(SE_275);
-            } else if (stage->elapsedTime == 0) {
-                if (player->unkB6 == 0) {
-                    player->unkB8 = player->unkFC;
-                    player->unkB4 = 0xE;
-                    player->unkC8 = 0;
-                    m4aSongNumStart(SE_146);
-                }
+            } else if (stage->rings == 0 && player->unkB6 == 0) {
+                player->unkB8 = player->unkFC;
+                player->state = 0xE;
+                player->speed = 0;
+                m4aSongNumStart(SE_146);
             } else if (player->unkB6 == 0) {
                 sub_806D924(stage, 10);
                 player->unkB8 = player->unkF8;
-                player->unkB4 = 6;
-                player->unkC8 = 0;
+                player->state = 6;
+                player->speed = 0;
                 player->unkB6 = 0x96;
                 m4aSongNumStart(SE_RINGS_LOST);
             }
@@ -267,17 +261,15 @@ void sub_8071380(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a1, s16 a,
     *oam = 0x100;
 }
 
-void sub_8071474(struct Task*);
-
-struct Task* CreateGuardRobo(struct SpecialStage* stage) {
-    struct Task* t = TaskCreate(sub_8070FA0, 0x58, 0xA000, 0, sub_8071474);
+struct Task* CreateSpecialStageGuardRobo(struct SpecialStage* stage) {
+    struct Task* t = TaskCreate(sub_8070FA0, 0x58, 0xA000, 0, SpecialStageGuardRoboOnDestroy);
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(t);
     guardRobo->stage = stage;
     GuardRoboInit(guardRobo);
     return t;
 }
 
-void sub_8071474(struct Task* t) {
+void SpecialStageGuardRoboOnDestroy(UNUSED struct Task* t) {
     // unused logic
 }
 
@@ -285,14 +277,13 @@ void sub_8071478(void) {
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = guardRobo->stage;
 
-    TaskFunc_8071478 funcs[3];
-    memcpy(&funcs, gUnknown_080DF95C, 0xC);
+    GuardRoboStateHandler stateHandlers[ARRAY_COUNT(sGuardRoboStateHandlers)];
+    memcpy(&stateHandlers, sGuardRoboStateHandlers, sizeof(sGuardRoboStateHandlers));
 
     if (stage->unk5B4 > 3 && stage->unk5B4 < 6) {
-        funcs[guardRobo->unk3C]();
+        stateHandlers[guardRobo->state]();
     }
 }
-
 
 void sub_80714C4(void) {
     // unused logic
@@ -300,10 +291,10 @@ void sub_80714C4(void) {
 
 void sub_80714C8(void) {
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(gCurTask);
-    guardRobo->unk4C--;
+    guardRobo->animFrame--;
 
-    if (guardRobo->unk4C < 1) {
-        guardRobo->unk3C = 1;
+    if (guardRobo->animFrame < 1) {
+        guardRobo->state = 1;
     }
 }
 
@@ -325,22 +316,22 @@ void sub_80714F4(struct SpecialStageGuardRobo* guardRobo) {
     }
 }
 
-void sub_8071530(struct UNK_0808B3FC_UNK240* element, s16 a1, s16 a, u8 b, const struct UNK_80DF670* c4) {
-    u32 unk10 = 0x107F;
-    if (c4->unk7 & 1) {
-        unk10 |= 0x400;
+static void RenderGuardRobo(struct UNK_0808B3FC_UNK240* element, s16 x, s16 y, u8 b, const struct UNK_80DF670* spriteConfig) {
+    u32 flags = 0x107F;
+    if (spriteConfig->unk7 & 1) {
+        flags |= 0x400;
     }
 
-    if (c4->unk7 & 2) {
-        unk10 |= 0x800;
+    if (spriteConfig->unk7 & 2) {
+        flags |= 0x800;
     }
 
-    element->unkA = c4->unk0;
-    element->unk10 = unk10;
-    element->unk16 = a1;
-    element->unk18 = a;
+    element->unkA = spriteConfig->unk0;
+    element->unk10 = flags;
+    element->unk16 = x;
+    element->unk18 = y;
     element->unk1A = b << 6;
-    element->unk20 = c4->unk2;
-    element->unk22 = c4->unk6;
+    element->unk20 = spriteConfig->unk2;
+    element->unk22 = spriteConfig->unk6;
     sub_8004558(element);
 }

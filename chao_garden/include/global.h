@@ -76,9 +76,6 @@
 
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
-#define SIN(aAngle) (gSineTable[(aAngle&0xFF)])
-#define COS(aAngle) (gSineTable[0x40 + (aAngle&0xFF)])
-
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))
 
 #define GetBit(x, y) ((x) >> (y)&1)

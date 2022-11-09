@@ -14,6 +14,12 @@
 #include "zones.h"
 #include "constants/songs.h"
 
+void sub_806EA04(void);
+void sub_806E7C0(struct UNK_806E6E8* unkE6E8);
+void sub_806EBF4(struct Task*);
+void sub_806E94C(struct UNK_806E6E8* unkE6E8);
+void sub_806EB74(void);
+
 // No idea why this has to be specified as, should be by default
 ALIGNED(4) static const s16 gUnknown_080DF6DC[8] = {
     [ZONE_1] = 1,
@@ -84,10 +90,6 @@ static const s16 gUnknown_080DF784[8] = {
     0, 256, 0, 0, 0, 256, 0, 256,
 };
 
-void sub_806EA04(void);
-void sub_806E7C0(struct UNK_806E6E8* unkE6E8);
-void sub_806EBF4(struct Task*);
-
 struct Task* sub_806E6E8(struct SpecialStage* stage) {
     s16 unkF768[7];
     s16 unkF776[7];
@@ -113,7 +115,6 @@ struct Task* sub_806E6E8(struct SpecialStage* stage) {
     return t;
 }
 
-void sub_806E94C(struct UNK_806E6E8* unkE6E8);
 void sub_806E7C0(struct UNK_806E6E8* unkE6E8) {
     s16 i;
     struct SpecialStage* stage = unkE6E8->stage;
@@ -198,7 +199,6 @@ void sub_806E94C(struct UNK_806E6E8* unkE6E8) {
     }
 }
 
-void sub_806EB74(void);
 
 void sub_806EA04(void) {
     struct UNK_806E6E8* unkE6E8 = TaskGetStructPtr(gCurTask);
@@ -212,7 +212,7 @@ void sub_806EA04(void) {
     gUnknown_03002878 = (void*)REG_ADDR_BG2PA;
     gUnknown_03001884 = unkE6E8->unk4;
 
-    unk5A0 = stage->unk5A0;
+    unk5A0 = stage->cameraBearing;
     sin1 = gSineTable[unk5A0] * 4;
     sin2 = gSineTable[unk5A0 + 0x100] * 4;
 
@@ -237,8 +237,8 @@ void sub_806EA04(void) {
         *unk1884++ = (Q_16_16_TO_INT(temp) * -sin1) >> 0x10;
         *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
 
-        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2) + stage->unk594;
-        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2) + stage->unk598;
+        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2) + stage->cameraX;
+        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2) + stage->cameraY;
 
         footer = (s32*)unk1884;
         *footer++ = temp6 >> 8;
@@ -257,11 +257,11 @@ void sub_806EB74(void) {
     u8* level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
     // Huh?
-    u8 *temp = (u8*)&stage->unk5A0;
+    u8 *temp = (u8*)&stage->cameraBearing;
     gBgScrollRegs[1][0] = -*temp;
     gBgScrollRegs[1][1] = 0x30;
 
-    if (stage->unk5BA != 1) {
+    if (stage->paused != TRUE) {
         for (i = 0; i < num; i++) {
             struct UNK_0808B3FC_UNK240* element = &unkE6E8->unk90[i];
 

@@ -795,7 +795,7 @@ _08086516:
 	bl __umodsi3
 	adds r0, r0, r4
 	ldrb r0, [r0]
-	ldr r1, _080865A4 @ =gUnknown_030053F0
+	ldr r1, _080865A4 @ =gCourseTime
 	ldrh r5, [r1]
 	adds r0, r5, r0
 	strh r0, [r1]
@@ -834,7 +834,7 @@ _08086576:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _0808658A
-	ldr r1, _080865A4 @ =gUnknown_030053F0
+	ldr r1, _080865A4 @ =gCourseTime
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _0808658A
@@ -849,7 +849,7 @@ _08086594: .4byte gUnknown_080E0294
 _08086598: .4byte gUnknown_030053B8
 _0808659C: .4byte 0x00196225
 _080865A0: .4byte 0x3C6EF35F
-_080865A4: .4byte gUnknown_030053F0
+_080865A4: .4byte gCourseTime
 _080865A8: .4byte gCurrentLevel
 _080865AC: .4byte gGameMode
 _080865B0: .4byte gUnknown_03005448

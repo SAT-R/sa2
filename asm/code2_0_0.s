@@ -546,7 +546,7 @@ _08036AA8:
 	ldr r0, _08036B10 @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	ldr r0, _08036B14 @ =gUnknown_030053F0
+	ldr r0, _08036B14 @ =gCourseTime
 	strh r5, [r0]
 	ldr r0, _08036B18 @ =gGameMode
 	ldrb r0, [r0]
@@ -566,7 +566,7 @@ _08036B04: .4byte gUnknown_0300287C
 _08036B08: .4byte gUnknown_03005390
 _08036B0C: .4byte gUnknown_03004D5C
 _08036B10: .4byte gUnknown_03002A84
-_08036B14: .4byte gUnknown_030053F0
+_08036B14: .4byte gCourseTime
 _08036B18: .4byte gGameMode
 _08036B1C:
 	bl sub_801A838
@@ -8509,7 +8509,7 @@ _0803ABE8: .4byte gLoadedSaveGame
 _0803ABEC:
 	ldr r0, _0803AC08 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0803AC0C @ =gUnknown_030053F0
+	ldr r1, _0803AC0C @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0803AC10 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -8521,7 +8521,7 @@ _0803ABFC:
 	b _0803AC22
 	.align 2, 0
 _0803AC08: .4byte gUnknown_03005490
-_0803AC0C: .4byte gUnknown_030053F0
+_0803AC0C: .4byte gCourseTime
 _0803AC10: .4byte gUnknown_030054F4
 _0803AC14: .4byte gCurTask
 _0803AC18:
@@ -44794,7 +44794,7 @@ sub_804CC30: @ 0x0804CC30
 	bl sub_802D4CC
 	ldr r0, _0804CC84 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0804CC88 @ =gUnknown_030053F0
+	ldr r1, _0804CC88 @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0804CC8C @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -44815,7 +44815,7 @@ _0804CC78: .4byte gCurTask
 _0804CC7C: .4byte IWRAM_START + 0x4C
 _0804CC80: .4byte IWRAM_START + 0x48
 _0804CC84: .4byte gUnknown_03005490
-_0804CC88: .4byte gUnknown_030053F0
+_0804CC88: .4byte gCourseTime
 _0804CC8C: .4byte gUnknown_030054F4
 _0804CC90: .4byte gMPlayInfo_SE3
 _0804CC94: .4byte 0x0000FFFF
@@ -46762,7 +46762,7 @@ sub_804DC60: @ 0x0804DC60
 	bl sub_802C9E4
 	ldr r0, _0804DCE4 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0804DCE8 @ =gUnknown_030053F0
+	ldr r1, _0804DCE8 @ =gCourseTime
 	ldrh r1, [r1]
 	ldr r2, _0804DCEC @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -46783,7 +46783,7 @@ _0804DCD8: .4byte gUnknown_03004D5C
 _0804DCDC: .4byte gUnknown_03002A84
 _0804DCE0: .4byte gUnknown_03005424
 _0804DCE4: .4byte gUnknown_03005490
-_0804DCE8: .4byte gUnknown_030053F0
+_0804DCE8: .4byte gCourseTime
 _0804DCEC: .4byte gUnknown_030054F4
 _0804DCF0: .4byte gBldRegs
 _0804DCF4: .4byte 0x00003FBF
@@ -49902,7 +49902,7 @@ _0804F496:
 	strb r0, [r7, #4]
 	ldr r0, _0804F5B0 @ =0x0000010F
 	bl m4aSongNumStart
-	ldr r1, _0804F5B4 @ =gUnknown_030053F0
+	ldr r1, _0804F5B4 @ =gCourseTime
 	ldrh r0, [r1]
 	cmp r0, #0
 	beq _0804F588
@@ -49928,7 +49928,7 @@ _0804F5A4: .4byte 0x000003FF
 _0804F5A8: .4byte gSineTable
 _0804F5AC: .4byte gUnknown_03005960
 _0804F5B0: .4byte 0x0000010F
-_0804F5B4: .4byte gUnknown_030053F0
+_0804F5B4: .4byte gCourseTime
 _0804F5B8: .4byte 0xFFFFF800
 
 	thumb_func_start sub_804F5BC

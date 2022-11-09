@@ -75,35 +75,35 @@ void sub_806EC24(void) {
         case 4:
         case 5:
         case 6:
-            if (stage->unk5BA == 0) {
-                funcs[player->unkB4 + 1]();
+            if (stage->paused == FALSE) {
+                funcs[player->state + 1]();
             }
             break;
         case 7:
-            if (player->unkB4 < 0xB) {
-                player->unkB4 = 0xB;
+            if (player->state < 0xB) {
+                player->state = 0xB;
             }
-            if (stage->unk5BA == 0) {
-                funcs[player->unkB4 + 1]();
+            if (stage->paused == FALSE) {
+                funcs[player->state + 1]();
             }
             break;
     }
 
-    if (player->unkB4 < 0xB) {
-        s32 temp, temp2;
+    if (player->state < 0xB) {
+        s32 screenX, screenY;
         struct UNK_0808B3FC_UNK240* element;
         s16 result = sub_806F69C(stage);
-        s32 sin2 = gSineTable[result] * 4;
-        s32 sin = gSineTable[result + 0x100] * 4;
+        s32 sin = SIN(result) * 4;
+        s32 cos = COS(result) * 4;
 
-        temp = sin2 * 0x14;
-        temp2 = sin * 0x14;
+        screenX = sin * 0x14;
+        screenY = cos * 0x14;
     
-        temp = Q_16_16_TO_INT(temp) + 0x70;
-        temp2 = -(Q_16_16_TO_INT(temp2) >> 1) + 0x78;
+        screenX = Q_16_16_TO_INT(screenX) + 0x70;
+        screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 0x78;
         
-        player->unk68.unk16 = temp;
-        player->unk68.unk18 = temp2;
+        player->unk68.unk16 = screenX;
+        player->unk68.unk18 = screenY;
 
         if (result > 0x100 && result < 0x300) {
             player->unk68.unk1A = 0;
@@ -113,16 +113,16 @@ void sub_806EC24(void) {
 
         sub_80047A0(result, 0x100, 0x100, 0x1E);
 
-        if (stage->unk5BA == 0) {
+        if (stage->paused == FALSE) {
             sub_8004558(&player->unk68);
         }
         sub_80051E8(&player->unk68);
     }
 
     sub_806FAA0();
-    stage->unk594 = player->x;
-    stage->unk598 = player->y;
-    stage->unk5A0 = player->unkB2;
+    stage->cameraX = player->x;
+    stage->cameraY = player->y;
+    stage->cameraBearing = player->bearing;
 
     gBgScrollRegs[2][1] = temp5 = -Q_16_16_TO_INT(player->y);
     gBgScrollRegs[2][0] = temp5 = -Q_16_16_TO_INT(player->x);
@@ -132,85 +132,85 @@ void sub_806EDB4(UNUSED u32 unused) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    s32 c8 = player->unkC8;
-    s32 e4 = player->unkE4;
+    s32 speed = player->speed;
+    s32 maxSpeed = player->maxSpeed;
 
-    u16 b2 = player->unkB2;
-    s32 sin1 = gSineTable[b2];
-    s32 sin2 = gSineTable[b2 + 0x100];
+    u16 bearing = player->bearing;
+    s32 sin = SIN(bearing);
+    s32 cos = COS(bearing);
 
     if (gInput & DPAD_UP) {
-        s32 d8 = player->unkD8;
-        if (c8 < e4) {
-            if ((c8 + d8) < e4) {
-                player->unkC8 = c8 + d8;
-                c8 = player->unkC8;
+        s32 acceleration = player->acceleration;
+        if (speed < maxSpeed) {
+            if ((speed + acceleration) < maxSpeed) {
+                player->speed = speed + acceleration;
+                speed = player->speed;
                 
-                if (player->unkC8 > 0x2300) {
-                    player->unkB4 = 2;
+                if (player->speed > 0x2300) {
+                    player->state = 2;
                 } else {
-                    player->unkB4 = 1;
+                    player->state = 1;
                 }
             } else {
-                player->unkC8 = e4;
-                c8 = player->unkC8;
-                player->unkB4 = 2;
+                player->speed = maxSpeed;
+                speed = player->speed;
+                player->state = 2;
             }
         } else {
-            player->unkC8 = c8 + player->unkDC;
-            c8 = player->unkC8;
-            player->unkB4 = 2;
+            player->speed = speed + player->coastResistence;
+            speed = player->speed;
+            player->state = 2;
         }
-        player->unkA4 = c8 >> 9;
+        player->animSpeed = speed >> 9;
     } else if (gInput & DPAD_DOWN) {
-        s32 e0 = player->unkE0;
-        if (player->unkB4 == 0) {
-            player->unkB4 = 7;
+        s32 deceleration = player->deceleration;
+        if (player->state == 0) {
+            player->state = 7;
             return;
         }
 
-        if ((c8 + e0) > 0) {
-            player->unkC8 = c8 + e0; 
-            c8 = player->unkC8;
+        if ((speed + deceleration) > 0) {
+            player->speed = speed + deceleration; 
+            speed = player->speed;
         } else {
-            player->unkC8 = 0;
-            c8 = 0;
+            player->speed = 0;
+            speed = 0;
         }
 
-        if (c8 == 0) {
-            player->unkA4 = 0;
-            player->unkB4 = 8;
+        if (speed == 0) {
+            player->animSpeed = 0;
+            player->state = 8;
         } else {
-            player->unkB4 = 3;
+            player->state = 3;
         }
     } else {
-        if (c8 + player->unkDC > 0) {
-            player->unkC8 = c8 + player->unkDC;
-            c8 = player->unkC8;
+        if (speed + player->coastResistence > 0) {
+            player->speed = speed + player->coastResistence;
+            speed = player->speed;
         } else {
-            player->unkC8 = 0;
-            c8 = 0;
+            player->speed = 0;
+            speed = 0;
             
         }
     
-        if (c8 == 0) {
-            player->unkA4 = 0;
-            player->unkB4 = 0;
+        if (speed == 0) {
+            player->animSpeed = 0;
+            player->state = 0;
         } else {
-            if (c8 > 0x2300) {
-                player->unkB4 = 2;
-                player->unkA4 = c8 >> 9;
+            if (speed > 0x2300) {
+                player->state = 2;
+                player->animSpeed = speed >> 9;
             } else {
-                player->unkB4 = 1;
-                player->unkA4 = c8 >> 9;
+                player->state = 1;
+                player->animSpeed = speed >> 9;
             }
         }
     }
     {
-        s32 temp = (sin1 * c8) >> 10;
-        s32 temp2 = (sin2 * c8) >> 10;
-        player->x -= temp;
-        player->y -= temp2;
+        s32 dX = (sin * speed) >> 10;
+        s32 dY = (cos * speed) >> 10;
+        player->x -= dX;
+        player->y -= dY;
     }
 }
 
@@ -218,18 +218,18 @@ void sub_806EF44(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    u16 b2 = player->unkB2;
+    u16 bearing = player->bearing;
     
     if (gInput & (DPAD_LEFT | DPAD_RIGHT)) {
         if (gInput & DPAD_LEFT) {
-            b2 += player->unkCC;
+            bearing += player->rotateSpeed;
         }
         if (gInput & DPAD_RIGHT) {
-            b2 -= player->unkCC;
+            bearing -= player->rotateSpeed;
         }
         
-        player->unkB2 = b2;
-        player->unkB2 &= 0x3FF;
+        player->bearing = bearing;
+        player->bearing &= 0x3FF;
     }
 }
 
@@ -244,7 +244,7 @@ void sub_806EFB4(void) {
     player->unkB8 += player->unkF2;
 
     if (player->unkBA >= player->unkF0 || !(gInput & gUnknown_03005B38.unk0)) {
-        player->unkB4 = 5;
+        player->state = 5;
     }
 }
 
@@ -257,14 +257,14 @@ void sub_806F034(void) {
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
-        s32 c8 = player->unkC8;
+        s32 speed = player->speed;
         player->unkB0 = 0;
-        if (c8 < 1) {
-            player->unkB4 = 8;
-        } else if (c8 < 0x2301) {
-            player->unkB4 = 1;
+        if (speed < 1) {
+            player->state = 8;
+        } else if (speed < 0x2301) {
+            player->state = 1;
         } else {
-            player->unkB4 = 2;
+            player->state = 2;
         }
     }
 }
@@ -278,14 +278,14 @@ void sub_806F0C4(void) {
     player->unkB8 += player->unkF6;
 
     if (player->unkB0 < 1) {
-        s32 c8 = player->unkC8;
+        s32 speed = player->speed;
         player->unkB0 = 0;
-        if (c8 < 1) {
-            player->unkB4 = 8;
-        } else if (c8 < 0x2301) {
-            player->unkB4 = 1;
+        if (speed < 1) {
+            player->state = 8;
+        } else if (speed < 0x2301) {
+            player->state = 1;
         } else {
-            player->unkB4 = 2;
+            player->state = 2;
         }
     }
 }
@@ -302,9 +302,9 @@ void sub_806F154(void) {
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
-        player->unkC8 = 0x2000;
+        player->speed = 0x2000;
         player->unkB0 = 0;
-        player->unkB4 = 1;
+        player->state = 1;
     }
 }
 
@@ -320,10 +320,10 @@ void sub_806F1E8(void) {
         player->unkB8 = 0;
         player->unkB0 = 0;
         
-        if (player->unkC8 == 0) {
-            player->unkB4 = 0xD;
+        if (player->speed == 0) {
+            player->state = 0xD;
         } else {
-            player->unkB4 = 0xC;
+            player->state = 0xC;
         }
     }
 }
@@ -332,29 +332,29 @@ void sub_806F268(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    s32 e0 = player->unkE0;
-    s32 c8 = player->unkC8;
-    u16 b2 = player->unkB2;
+    s32 deceleration = player->deceleration;
+    s32 speed = player->speed;
+    u16 bearing = player->bearing;
 
-    s32 sin1 = gSineTable[b2];
-    s32 sin2 = gSineTable[b2 + 0x100];
-    if ((c8 + e0) > 0) {
-        player->unkC8 = c8 + e0;
-        c8 += e0;
+    s32 sin = SIN(bearing);
+    s32 cos = COS(bearing);
+    if ((speed + deceleration) > 0) {
+        player->speed = speed + deceleration;
+        speed += deceleration;
     } else {
-        player->unkC8 = 0;
-        c8 = 0;
+        player->speed = 0;
+        speed = 0;
     }
 
     {
-        s32 temp2 = (sin1 * c8) >> 10;
-        s32 temp3 = (sin2 * c8) >> 10;
+        s32 temp2 = (sin * speed) >> 10;
+        s32 temp3 = (cos * speed) >> 10;
         player->x -= temp2;
         player->y -= temp3;
     }
 
-    if (c8 == 0) {
-        player->unkB4 = 0xD;
+    if (speed == 0) {
+        player->state = 0xD;
     }
 }
 
@@ -369,7 +369,7 @@ void sub_806F300(void) {
         unkF910->unk4 = 0;
         player->unkB8 = 0;
         player->unkB0 = -0x4000;
-        player->unkB4 = 0xF;
+        player->state = 0xF;
     }
 }
 
@@ -377,14 +377,14 @@ void sub_806F36C(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    u16 temp = (player->unkB2 + 0x10);
-    player->unkB2 = temp & 0x3FF;
+    u16 bearing = (player->bearing + 0x10);
+    player->bearing = bearing & 0x3FF;
     unkF910->unk4++;
 
     if (unkF910->unk4 > 0x1F) {
         unkF910->unk4 = 0;
-        player->unkC8 = 0;
-        player->unkB4 = 8;
+        player->speed = 0;
+        player->state = 8;
     }
 }
 
@@ -420,7 +420,7 @@ void sub_806F3C4(void) {
         // TODO: must be a macro
         player->unkB8 = 0;
         player->unkB0 = 0;
-        player->unkB4 = 0;
+        player->state = 0;
     }
 }
 
@@ -438,16 +438,16 @@ void sub_806F468(void) {
             if (playerY >= unk7904->unk4 && playerY < (unk7904->unk4 + unk7904->unk8)) {
                 switch(unk7904->unk0) {
                     case 0:
-                        player->unkC8 = player->unkE8;
-                        player->unkB4 = 2;
+                        player->speed = player->unkE8;
+                        player->state = 2;
                         m4aSongNumStart(SE_277);
                         return;
                     case 1:
-                        player->unkC8 = player->unkC8 < 0x600 ? 
+                        player->speed = player->speed < 0x600 ? 
                             0x600 : 
-                            player->unkC8;
+                            player->speed;
             
-                        player->unkB4 = 9;
+                        player->state = 9;
                         player->unkB0 = 0;
                         player->unkB8 = player->unkEE;
                         player->unkBA = 0;
@@ -464,23 +464,23 @@ void sub_806F56C(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    s32 c8 = player->unkC8;
-    u16 b2 = player->unkB2;
+    s32 speed = player->speed;
+    u16 bearing = player->bearing;
     s32 unk100 = player->unk100;
 
-    s32 sin1 = gSineTable[b2];
-    s32 sin2 = gSineTable[b2 + 0x100];
+    s32 sin1 = gSineTable[bearing];
+    s32 sin2 = gSineTable[bearing + 0x100];
 
-    if ((c8 + unk100) > 0) {
-        player->unkC8 = (c8 + unk100);
-        c8 = (c8 + unk100);
+    if ((speed + unk100) > 0) {
+        player->speed = (speed + unk100);
+        speed = (speed + unk100);
     } else {
-        player->unkC8 = 0;
-        c8 = 0;
+        player->speed = 0;
+        speed = 0;
     }
     {
-        s32 temp1 = (sin1 * c8) >> 10;
-        s32 temp2 = (sin2 * c8) >> 10;
+        s32 temp1 = (sin1 * speed) >> 10;
+        s32 temp2 = (sin2 * speed) >> 10;
         player->x -= temp1;
         player->y -= temp2;
     }
@@ -490,18 +490,18 @@ void sub_806F604(void) {
     struct UNK_806F910* unkF910 = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
-    s32 c8 = player->unkC8;
-    u16 b2 = player->unkB2;
+    s32 c8 = player->speed;
+    u16 b2 = player->bearing;
     s32 unk104 = player->unk104;
 
     s32 sin1 = gSineTable[b2];
     s32 sin2 = gSineTable[b2 + 0x100];
 
     if ((c8 + unk104) > 0) {
-        player->unkC8 = c8 + unk104;
+        player->speed = c8 + unk104;
         c8 += unk104;
     } else {
-        player->unkC8 = 0;
+        player->speed = 0;
         c8 = 0;
     }
 
@@ -529,7 +529,7 @@ s16 sub_806F69C(struct SpecialStage* stage) {
     s16 dX;
     s16 dY;
 
-    u16 b2 = -player->unkB2 & 0x3FF;
+    u16 b2 = -player->bearing & 0x3FF;
 
     f_dX = guardRobo->x - player->x;
     f_dY = guardRobo->y - player->y;
@@ -668,14 +668,14 @@ void sub_806F944(struct SpecialStage* stage) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
     struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 
-    s32 a8 = player->x;
-    s32 ac = player->y;
-    s32 unk40 = guardRobo->x;
-    s32 unk44 = guardRobo->y;
+    s32 playerX = player->x;
+    s32 playerY = player->y;
+    s32 guardRoboX = guardRobo->x;
+    s32 guardRoboY = guardRobo->y;
 
-    s16 result = sub_806F84C((a8 - unk40) >> 4, (ac - unk44) >> 4);
-    player->unkD0 = ((a8 - unk40) * 0x20) / result;
-    player->unkD4 = ((ac - unk44) * 0x20) / result;
+    s16 result = sub_806F84C((playerX - guardRoboX) >> 4, (playerY - guardRoboY) >> 4);
+    player->unkD0 = ((playerX - guardRoboX) * 0x20) / result;
+    player->unkD4 = ((playerY - guardRoboY) * 0x20) / result;
 
     player->unkB8 = 0x300;
 }
@@ -695,7 +695,7 @@ void sub_806F9E4(void) {
     sub_806EF44();
     sub_806FA34();
     if (!(gInput & DPAD_DOWN)) {
-        player->unkB4 = 0;
+        player->state = 0;
     }
     sub_806F468();
 }
@@ -705,7 +705,7 @@ void sub_806FA34(void) {
     struct SpecialStagePlayer* player = TaskGetStructPtr(unkF910->stage->playerTask);
 
     if (gPressedKeys & gUnknown_03005B38.unk0) {
-        player->unkB4 = 4;
+        player->state = 4;
         player->unkB0 = 0;
         player->unkB8 = player->unkEC;
         player->unkBA = 0;

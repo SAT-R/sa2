@@ -46,33 +46,33 @@ const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
 
 void sub_806D890(struct SpecialStage* stage, s16 num) {
     s16 i;
-    stage->elapsedTime += num;
+    stage->rings += num;
 
-    if (stage->elapsedTime > 999) {
-        stage->elapsedTime = 999;
+    if (stage->rings > 999) {
+        stage->rings = 999;
     }
 
     for (i = 0; i < num; i++) {
-        stage->unk5C1++;
-        if (stage->unk5C1 <= 9) {
+        stage->ringsUnits++;
+        if (stage->ringsUnits <= 9) {
             continue;
         }
-        stage->unk5C1 = 0;
+        stage->ringsUnits = 0;
         
-        stage->unk5C0++;
-        if (stage->unk5C0 <= 9) {
+        stage->ringsTens++;
+        if (stage->ringsTens <= 9) {
             continue;
         }
-        stage->unk5C0 = 0;
+        stage->ringsTens = 0;
 
-        stage->unk5BF++;
-        if (stage->unk5BF <= 9) {
+        stage->ringsHundreds++;
+        if (stage->ringsHundreds <= 9) {
             continue;
         }
 
-        stage->unk5BF = 9;
-        stage->unk5C0 = 9;
-        stage->unk5C1 = 9;
+        stage->ringsHundreds = 9;
+        stage->ringsTens = 9;
+        stage->ringsUnits = 9;
     }
 }
 
@@ -80,32 +80,32 @@ void sub_806D924(struct SpecialStage* stage, s16 num) {
     s16 i;
     sub_806E3B8(stage, -1);
     
-    stage->elapsedTime -= num; 
-    if (stage->elapsedTime < 0) {
-        stage->elapsedTime = 0;
+    stage->rings -= num; 
+    if (stage->rings < 0) {
+        stage->rings = 0;
     }
 
     for (i = num; i > 0; i--) {
-        stage->unk5C1--;
-        if (stage->unk5C1 >= 0) {
+        stage->ringsUnits--;
+        if (stage->ringsUnits >= 0) {
             continue;
         }
-        stage->unk5C1 = 9;
+        stage->ringsUnits = 9;
         
-        stage->unk5C0--;
-        if (stage->unk5C0 >= 0) {
+        stage->ringsTens--;
+        if (stage->ringsTens >= 0) {
             continue;
         }
-        stage->unk5C0 = 9;
+        stage->ringsTens = 9;
 
-        stage->unk5BF--;
-        if (stage->unk5BF >= 0) {
+        stage->ringsHundreds--;
+        if (stage->ringsHundreds >= 0) {
             continue;
         }
 
-        stage->unk5BF = 0;
-        stage->unk5C0 = 0;
-        stage->unk5C1 = 0;
+        stage->ringsHundreds = 0;
+        stage->ringsTens = 0;
+        stage->ringsUnits = 0;
     }
 }
 
@@ -135,7 +135,7 @@ void sub_806D9B4(void) {
 void sub_806DB48(void) {
     struct UNK_806BD94* unkBD94 = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = unkBD94->stage;
-    if (stage->unk5BA == 0) {
+    if (stage->paused == FALSE) {
         sub_8004558(&unkBD94->unk4);
         sub_8004558(&unkBD94->unk64);
         sub_8004558(&unkBD94->unk34);
@@ -363,7 +363,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
                         }
                     }
 
-                    if (new_unkCB84.unk4 > min) {
+                    if (new_unkCB84.screenY > min) {
                         memcpy(found, &new_unkCB84, sizeof(new_unkCB84));
                         if (unkBD94->unk914[val->unk0] >= 3) {
                             found->unk0 = unkBD94->unk914[val->unk0];
@@ -444,7 +444,7 @@ void sub_806E3B8(struct SpecialStage* stage, s16 mode) {
     s16 temp;
 
     if (mode == -1) {
-        temp = stage->elapsedTime > 8 ? 8 : stage->elapsedTime;
+        temp = stage->rings > 8 ? 8 : stage->rings;
     } else {
         temp = mode;
     }
@@ -528,8 +528,8 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
     new_unk874.unk12 = 5;
 
     if (sub_806CB84(&new_unkCB84, &new_unk874, unkBD94->stage)) {
-        s32 unk2 = new_unkCB84.unk2;
-        s32 unk4 = new_unkCB84.unk4;
+        s32 unk2 = new_unkCB84.screenX;
+        s32 unk4 = new_unkCB84.screenY;
         s32 unk6 = unk4 - new_unkCB84.unk6;
         
         memcpy(unk7B4, &unkBD94->unk34, sizeof(unkBD94->unk34));
@@ -537,7 +537,7 @@ void sub_806E584(s16 index, struct UNK_806BD94_UNK874* unk874) {
         unk7B4->unk10 = (index + 0x10) | 0x1060 | 0xC0000;
         unk7B4->unk16 = unk2;
         unk7B4->unk18 = unk6;
-        unk7B4->unk1A = (new_unkCB84.unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+        unk7B4->unk1A = (new_unkCB84.screenY < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
         sub_806CD68(unk7B4);
     
         affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;

@@ -48,7 +48,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     u8 i;
     u8 isBossLevel;
     u8 level;
-    gLoadedSaveGame->unk374 += gUnknown_030053F0;
+    gLoadedSaveGame->unk374 += gCourseTime;
 
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0, sub_8089BB0);
     resultsCutScene = TaskGetStructPtr(t);

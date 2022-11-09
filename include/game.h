@@ -24,7 +24,10 @@ extern u8 gUnknown_030053EC;
 extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[2];
-extern s16 gUnknown_030053F0;
+
+// might be wrong
+extern s16 gCourseTime;
+
 extern u8 gUnknown_030054A8;
 
 struct UNK_3005A44 {

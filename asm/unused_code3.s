@@ -29074,7 +29074,7 @@ _0808045C:
 	bls _08080468
 	movs r1, #0xa
 _08080468:
-	ldr r2, _080804D8 @ =gUnknown_030053F0
+	ldr r2, _080804D8 @ =gCourseTime
 	ldrh r6, [r2]
 	adds r0, r1, r6
 	strh r0, [r2]
@@ -29113,7 +29113,7 @@ _080804AE:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _080804C2
-	ldr r1, _080804D8 @ =gUnknown_030053F0
+	ldr r1, _080804D8 @ =gCourseTime
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _080804C2
@@ -29130,7 +29130,7 @@ _080804C2:
 	str r7, [r0]
 	b _08080502
 	.align 2, 0
-_080804D8: .4byte gUnknown_030053F0
+_080804D8: .4byte gCourseTime
 _080804DC: .4byte gCurrentLevel
 _080804E0: .4byte gGameMode
 _080804E4: .4byte gUnknown_03005448

@@ -34,15 +34,15 @@ struct SpecialStage {
     struct Unk_03002400 unk48;
     struct UNK_802D4CC_UNK270 unk88;
     s32 unk94[DISPLAY_HEIGHT][2];
-    s32 unk594;
-    s32 unk598;
+    s32 cameraX;
+    s32 cameraY;
     s32 unk59C;
 
-    u16 unk5A0;
-    s16 unk5A2;
+    u16 cameraBearing;
+    s16 animFrame;
 
-    s16 elapsedTime;
-    s16 levelTime;
+    s16 rings;
+    s16 ringsTarget;
 
     s32 unk5A8;
     s32 unk5AC;
@@ -57,20 +57,20 @@ struct SpecialStage {
     u8 zone;
 
     u8 level;
-    u8 unk5BA;
+    bool8 paused;
 
     s8 unk5BB;
     s8 unk5BC;
     s8 unk5BD;
     s8 unk5BE;
 
-    s8 unk5BF;
-    s8 unk5C0;
-    s8 unk5C1;
+    s8 ringsHundreds;
+    s8 ringsTens;
+    s8 ringsUnits;
 
-    s8 unk5C2;
-    s8 unk5C3;
-    s8 unk5C4;
+    s8 ringsTargetHundreds;
+    s8 ringsTargetTens;
+    s8 ringsTargetUnits;
 
     s8 unk5C5;
     u8 unk5C6;
@@ -100,8 +100,8 @@ struct UNK_806BD94_UNK874_2 {
 
 struct UNK_806CB84 {
     u8 unk0[2];
-    s16 unk2;
-    s16 unk4;
+    s16 screenX;
+    s16 screenY;
     s16 unk6;
     s16 unk8;
     s16 unkA;

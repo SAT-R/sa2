@@ -31,7 +31,7 @@ struct SaveSectorData {
     u8 trickControl;
 
     u8 unlockedLevels[NUM_CHARACTERS];
-    u8 unk24[NUM_CHARACTERS];
+    u8 chaosEmeralds[NUM_CHARACTERS];
 
     u8 multiplayerWins;
     u8 multiplayerLoses;
@@ -44,7 +44,7 @@ struct SaveSectorData {
 
     u32 id;
 
-    u32 unk370;
+    u32 score;
     u32 checksum;
 };
 
@@ -257,7 +257,7 @@ static void InitSaveGameSectorData(struct SaveSectorData* save) {
         p2->unk4[0] = PLAYER_NAME_END_CHAR;
     }
 
-    save->unk370 = 0;
+    save->score = 0;
 }
 
 static s16 TryWriteSaveGame(void) {
@@ -294,7 +294,7 @@ static s16 TryWriteSaveGame(void) {
         }
     }
    
-    return FALSE;   
+    return FALSE;
 }
 
 static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* gameState) {
@@ -407,7 +407,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        save->unk24[i] = gameState->unkC[i];
+        save->chaosEmeralds[i] = gameState->unkC[i];
     }
 
     save->multiplayerWins = gameState->unk1C;
@@ -418,7 +418,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData* save, struct SaveGame* g
     memcpy(save->multiplayerScores, gameState->unk2AC, sizeof(gameState->unk2AC));
 
     save->id = Random32();
-    save->unk370 = gameState->unk374;
+    save->score = gameState->unk374;
     
     checksum = CalcChecksum(save);
     save->checksum = checksum;
@@ -711,7 +711,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     }
 
     for (i = 0; i < 5; i++) {
-        gameState->unkC[i] = save->unk24[i];
+        gameState->unkC[i] = save->chaosEmeralds[i];
     }
 
     gameState->unk1C = save->multiplayerWins;
@@ -719,7 +719,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     gameState->unk1E = save->multiplayerDraws;
     memcpy(&gameState->unk34, &save->timeRecords, sizeof(save->timeRecords));
     memcpy(gameState->unk2AC, save->multiplayerScores, sizeof(save->multiplayerScores));
-    gameState->unk374 = save->unk370;
+    gameState->unk374 = save->score;
     return TRUE;
 }
 
@@ -732,12 +732,12 @@ static s16 CreateAndTryWriteNewSaveGame(void) {
     struct SaveSectorData *save = gSaveSectorDataBuffer;
     
     u8 language = gameState->unk6;
-    u32 prevUnk374 = gameState->unk374;
+    u32 score = gameState->unk374;
 
     GenerateNewSaveGame(gameState);
 
     gameState->unk6 = language;
-    gameState->unk374 = prevUnk374;
+    gameState->unk374 = score;
 
     memcpy(lastWrittenGameState, gameState, sizeof(struct SaveGame));
 
@@ -816,7 +816,7 @@ static void GenerateCompletedSaveGame(struct SaveGame* gameState) {
         gameState->unk7[i] = i == CHARACTER_SONIC ? 
             LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1: 
             LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) + 1;
-        gameState->unkC[i] = 0xff;
+        gameState->unkC[i] = ALL_CHAOS_EMERALDS;
     }
 
     gameState->unk13 = 
