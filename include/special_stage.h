@@ -20,14 +20,11 @@
 #define MAX_SPECIAL_STAGE_GUARD_ROBO_Y 982
 
 struct SpecialStage {
-    struct Task* physicsTask; // UNK_806F910
-    struct Task* worldTask; // UNK_806E6E8
-
+    struct Task* physicsTask;
+    struct Task* worldTask;
     struct Task* collectablesTask;
     struct Task* playerTask;
-
-    // uiTask?
-    struct Task* uiTask; // UNK_8070B90 or UNK_8070BF0
+    struct Task* uiTask; 
     struct Task* guardRoboTask;
 
     struct UNK_0808B3FC_UNK240 introText;
@@ -44,7 +41,7 @@ struct SpecialStage {
     s16 rings;
     s16 ringsTarget;
 
-    s32 unk5A8;
+    s32 points;
     s32 unk5AC;
     s32 unk5B0;
 
@@ -59,10 +56,10 @@ struct SpecialStage {
     u8 level;
     bool8 paused;
 
-    s8 unk5BB;
-    s8 unk5BC;
-    s8 unk5BD;
-    s8 unk5BE;
+    s8 timeHundreds;
+    s8 timeTens;
+    s8 timeUnits;
+    s8 timeTicks;
 
     s8 ringsHundreds;
     s8 ringsTens;
@@ -85,7 +82,7 @@ struct SpecialStage {
     u8 unk5D1;
     u8 unk5D2;
     u8 unk5D3;
-    void* unk5D4;
+    void* screenVram;
 }; /* size 0x5D8 */
 
 struct SpecialStageCollectables_UNK874_2 {

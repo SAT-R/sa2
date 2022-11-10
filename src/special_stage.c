@@ -21,11 +21,11 @@ static void Task_ShowIntroScreen(void);
 static void SpecialStageOnDestroy(struct Task*);
 static void Task_InitComponents(void);
 static void SpecialStagePauseMenuMain(void);
-void sub_806C7B8(void);
-void sub_806BE9C(void);
+static void TickStageTimer(void);
+void Task_SpecialStageMain(void);
 void sub_806BFD0(void);
 void Task_FadeInSpecialStage(void);
-void sub_806C050(void);
+void Task_FadeToResultScreen(void);
 static void SetupIntroScreenRegisters(void);
 void sub_806C638(void);
 void sub_806C6A4(void);
@@ -80,10 +80,10 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level) {
     stage->level = level;
     stage->animFrame = 0;
     
-    stage->unk5BB = 1;
-    stage->unk5BC = 2;
-    stage->unk5BD = 0;
-    stage->unk5BE = 0;
+    stage->timeHundreds = 1;
+    stage->timeTens = 2;
+    stage->timeUnits = 0;
+    stage->timeTicks = 0;
 
     stage->rings = 0;
     stage->ringsTarget = gSpecialStageScoreTargets[zone];
@@ -178,7 +178,7 @@ void Task_InitComponents(void) {
         case 0:
             stage->physicsTask = CreateSpecialStagePhysics(stage);
             stage->playerTask = CreateSpecialStagePlayer(stage);
-            stage->unk5D4 = gUnknown_03005B5C;
+            stage->screenVram = gUnknown_03005B5C;
             stage->guardRoboTask = CreateSpecialStageGuardRobo(stage);
             break;
         case 1:
@@ -186,7 +186,7 @@ void Task_InitComponents(void) {
             break;
         case 2:
             stage->worldTask = CreateSpecialStageWorld(stage);
-            stage->uiTask = sub_8070B90(stage);
+            stage->uiTask = CreateSpecialStageUI(stage);
             break;
         case 3:
             stage->state = 3;
@@ -197,23 +197,23 @@ void Task_InitComponents(void) {
     stage->animFrame++;
 }
 
-void sub_806BE40(void) {
+void Task_SpecialStageStartDelay(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     SpecialStagePauseMenuMain();
 
     if (!stage->paused) {
-        sub_806C7B8();
+        TickStageTimer();
         stage->animFrame++;
     }
 
     if (stage->animFrame > 59) {
         stage->animFrame = 0;
         stage->state = 5;
-        gCurTask->main = sub_806BE9C;
+        gCurTask->main = Task_SpecialStageMain;
     }
 }
 
-void sub_806BE9C(void) {
+void Task_SpecialStageMain(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
@@ -253,19 +253,19 @@ void sub_806BE9C(void) {
     }
     
     if (stage->paused == FALSE) {
-        sub_806C7B8();
+        TickStageTimer();
         if (stage->unk5C7) {
             s32 temp = --stage->unk5C8;
             if (temp == 0) {
                 stage->unk5C7 = 0;
-                if (stage->unk5BB == 0 && stage->unk5BC < 3) {
+                if (stage->timeHundreds == 0 && stage->timeTens < 3) {
                     m4aSongNumStart(MUS_SPECIAL_STAGE_PINCH);
                 } else {
                     m4aSongNumStart(MUS_SPECIAL_STAGE);
                 }
             }
         } else {
-            if (stage->unk5BB == 0 && stage->unk5BC == 3 && stage->unk5BD == 0 && stage->unk5BE == 0) {
+            if (stage->timeHundreds == 0 && stage->timeTens == 3 && stage->timeUnits == 0 && stage->timeTicks == 0) {
                 m4aSongNumStart(MUS_SPECIAL_STAGE_PINCH);
             }
         }
@@ -291,58 +291,59 @@ void sub_806BFD0(void) {
     gDispCnt = 0x9641;
     gWinRegs[5] = 0x103F;
 
-    if (player->state == 0xD) {
+    if (player->state == 13) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);
     }
-    gCurTask->main = sub_806C050;
+    gCurTask->main = Task_FadeToResultScreen;
 }
 
-void sub_806C050(void) {
+void Task_FadeToResultScreen(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270* unk88 = &stage->transition;
+    struct UNK_802D4CC_UNK270* transitionConfig = &stage->transition;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
 
-    if (sub_802D4CC(unk88) == 0) {
+    if (sub_802D4CC(transitionConfig) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[5] = 0x103F;
+        return;
+    }
+
+    if (stage->guardRoboTask != NULL) {
+        TaskDestroy(stage->guardRoboTask);
+        stage->guardRoboTask = NULL;
+    }
+
+    if (stage->physicsTask != NULL) {
+        TaskDestroy(stage->physicsTask);
+        stage->physicsTask = NULL;
+    }
+
+    if (stage->worldTask != NULL) {
+        TaskDestroy(stage->worldTask);
+        stage->worldTask = NULL;
+    }
+
+    if (stage->collectablesTask != NULL) {
+        TaskDestroy(stage->collectablesTask);
+        stage->collectablesTask = NULL;
+    }
+
+    if (stage->uiTask != NULL) {
+        TaskDestroy(stage->uiTask);
+        stage->uiTask = NULL;
+    }
+
+    sub_806CEC4(&stage->unk48, 0, 7, 0x8B, 0x20, 0x20, 0, 1, 0, 0);
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    gDispCnt = 0x1240;
+
+    if (player->state == 13) {
+        stage->animFrame = 0;
+        player->state = 0x10;
+        gCurTask->main = sub_806CA18;
     } else {
-        if (stage->guardRoboTask != NULL) {
-            TaskDestroy(stage->guardRoboTask);
-            stage->guardRoboTask = NULL;
-        }
-
-        if (stage->physicsTask != NULL) {
-            TaskDestroy(stage->physicsTask);
-            stage->physicsTask = NULL;
-        }
-
-        if (stage->worldTask != NULL) {
-            TaskDestroy(stage->worldTask);
-            stage->worldTask = NULL;
-        }
-
-        if (stage->collectablesTask != NULL) {
-            TaskDestroy(stage->collectablesTask);
-            stage->collectablesTask = NULL;
-        }
-
-        if (stage->uiTask != NULL) {
-            TaskDestroy(stage->uiTask);
-            stage->uiTask = NULL;
-        }
-
-        sub_806CEC4(&stage->unk48, 0, 7, 0x8B, 0x20, 0x20, 0, 1, 0, 0);
-        gBgScrollRegs[1][0] = 0;
-        gBgScrollRegs[1][1] = 0;
-        gDispCnt = 0x1240;
-
-        if (player->state == 0xD) {
-            stage->animFrame = 0;
-            player->state = 0x10;
-            gCurTask->main = sub_806CA18;
-        } else {
-            gCurTask->main = sub_806C158;
-        }
+        gCurTask->main = sub_806C158;
     }
 }
 
@@ -354,11 +355,11 @@ void sub_806C158(void) {
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
 
-    stage->uiTask = sub_8070BF0(stage);
-    stage->unk5A8 = stage->rings * 100;
+    stage->uiTask = CreateSpecialStageResultsScreen(stage);
+    stage->points = stage->rings * 100;
     
-    if (stage->unk5A8 > 0x1863C) {
-        stage->unk5A8 = 0x1863C;
+    if (stage->points > 99900) {
+        stage->points = 99900;
     }
 
     stage->unk5AC = stage->unk5C5 ? 10000 : 0;
@@ -398,12 +399,12 @@ void sub_806C25C(void) {
         return;
     }
 
-    if (stage->unk5A8 < 100) {
-        stage->unk5B0 += stage->unk5A8;
-        stage->unk5A8 = 0;
+    if (stage->points < 100) {
+        stage->unk5B0 += stage->points;
+        stage->points = 0;
     } else {
         stage->unk5B0 += 100;
-        stage->unk5A8 -= 100;
+        stage->points -= 100;
     }
 
     if (stage->unk5B0  > 0x1863C) {
@@ -416,8 +417,8 @@ void sub_806C25C(void) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
     }
 
-    if (stage->unk5A8 == 0) {
-        stage->unk5A8 = 0;
+    if (stage->points == 0) {
+        stage->points = 0;
         gCurTask->main = sub_806C338;
     }   
 }
@@ -467,8 +468,8 @@ void sub_806C338(void) {
 
 void sub_806C42C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    stage->unk5B0 += stage->unk5A8;
-    stage->unk5A8 = 0;
+    stage->unk5B0 += stage->points;
+    stage->points = 0;
     
     stage->unk5B0 += stage->unk5AC;
     stage->unk5AC = 0;
@@ -527,7 +528,7 @@ void sub_806C560(void) {
     }
 
     if (!(chaosEmeralds & CHAOS_EMERALD(stage->zone))) {
-        sub_8070C30(stage);
+        SpecialStageResultsScreenNewEmeraldSequence(stage);
         gLoadedSaveGame->unkC[character] |= CHAOS_EMERALD(stage->zone);
         stage->animFrame = 120;
     } else {
@@ -608,28 +609,28 @@ void sub_806C6A4(void) {
     }
 }
 
-void sub_806C7B8(void) {
+static void TickStageTimer(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
 
-    if (stage->unk5BE > 0) {
-        stage->unk5BE--;
+    if (stage->timeTicks > 0) {
+        stage->timeTicks--;
         return;
     }
 
-    if (stage->unk5BD > 0) {
-        stage->unk5BD--;
-    } else if (stage->unk5BC > 0) {
-        stage->unk5BC--;
-        stage->unk5BD = 9;
-    } else if (stage->unk5BB > 0) {
-        stage->unk5BB--;
-        stage->unk5BC = 9;
-        stage->unk5BD = 9;
+    if (stage->timeUnits > 0) {
+        stage->timeUnits--;
+    } else if (stage->timeTens > 0) {
+        stage->timeTens--;
+        stage->timeUnits = 9;
+    } else if (stage->timeHundreds > 0) {
+        stage->timeHundreds--;
+        stage->timeTens = 9;
+        stage->timeUnits = 9;
     } else {
-        stage->unk5BB = 0;
-        stage->unk5BC = 0;
-        stage->unk5BD = 0;
-        stage->unk5BE = 0;
+        stage->timeHundreds = 0;
+        stage->timeTens = 0;
+        stage->timeUnits = 0;
+        stage->timeTicks = 0;
 
         if (stage->state != 7) {
             stage->state = 6;
@@ -637,7 +638,7 @@ void sub_806C7B8(void) {
         return;
     }
 
-    stage->unk5BE = 0x3B;
+    stage->timeTicks = GBA_FRAMES_PER_SECOND - 1;
 }
 
 void SpecialStagePauseMenuMain(void) {
@@ -706,7 +707,7 @@ void Task_FadeInSpecialStage(void) {
         stage->animFrame = 0;
         stage->state = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);
-        gCurTask->main = sub_806BE40;
+        gCurTask->main = Task_SpecialStageStartDelay;
     }
 }
 
@@ -719,7 +720,7 @@ void sub_806CA18(void) {
 
     stage->animFrame++;
 
-    if (stage->animFrame > 0xb3) {
+    if (stage->animFrame > 179) {
         gCurTask->main = sub_806C158;
     }
 }
@@ -728,7 +729,7 @@ void sub_806CA54(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
     stage->animFrame++;
 
-    if (stage->animFrame > 0x3B) {
+    if (stage->animFrame > 59) {
         stage->animFrame = 0;
         gCurTask->main = sub_806C25C;
     }
