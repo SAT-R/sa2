@@ -96,7 +96,7 @@ sub_808DBA4: @ 0x0808DBA4
 	ldr r2, _0808DCF4 @ =IWRAM_START + 0x76
 	adds r0, r5, r2
 	strh r1, [r0]
-	ldr r0, _0808DCF8 @ =gUnknown_030059E0
+	ldr r0, _0808DCF8 @ =gPlayer
 	mov r4, sl
 	str r0, [r4]
 	ldr r6, _0808DCFC @ =IWRAM_START+4
@@ -162,7 +162,7 @@ _0808DCE8: .4byte IWRAM_START + 0x7A
 _0808DCEC: .4byte IWRAM_START + 0x72
 _0808DCF0: .4byte IWRAM_START + 0x74
 _0808DCF4: .4byte IWRAM_START + 0x76
-_0808DCF8: .4byte gUnknown_030059E0
+_0808DCF8: .4byte gPlayer
 _0808DCFC: .4byte IWRAM_START+4
 _0808DD00: .4byte gUnknown_080E11E4
 _0808DD04: .4byte IWRAM_START + 0x24

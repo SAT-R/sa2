@@ -17,6 +17,8 @@
 #include "zones.h"
 #include "constants/songs.h"
 
+#define MAX_POINTS 99900
+
 static void Task_ShowIntroScreen(void);
 static void SpecialStageOnDestroy(struct Task*);
 static void Task_InitComponents(void);
@@ -99,8 +101,8 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level) {
     stage->ringsTargetTens = Div(stage->ringsTarget, 10) - (stage->ringsTargetHundreds * 10);
     stage->ringsTargetUnits = Mod(stage->ringsTarget, 10);
 
-    stage->unk5C5 = 0;
-    stage->unk5C5 = 0;
+    stage->targetReached = 0;
+    stage->targetReached = 0;
     stage->pauseMenuCursor = 0;
     stage->unk5C7 = 0;
     stage->unk5C8 = 0;
@@ -358,15 +360,15 @@ void sub_806C158(void) {
     stage->uiTask = CreateSpecialStageResultsScreen(stage);
     stage->points = stage->rings * 100;
     
-    if (stage->points > 99900) {
-        stage->points = 99900;
+    if (stage->points > MAX_POINTS) {
+        stage->points = MAX_POINTS;
     }
 
-    stage->unk5AC = stage->unk5C5 ? 10000 : 0;
-    stage->unk5B0 = 0;
+    stage->bonusPoints = stage->targetReached ? 10000 : 0;
+    stage->finalScore = 0;
 
     if (player->state == 16) {
-        if (stage->unk5C5 != 0) {
+        if (stage->targetReached) {
             m4aSongNumStart(MUS_CHAOS_EMERALD);
             stage->unk5C7 = 1;
             stage->unk5C8 = 150;
@@ -400,15 +402,15 @@ void sub_806C25C(void) {
     }
 
     if (stage->points < 100) {
-        stage->unk5B0 += stage->points;
+        stage->finalScore += stage->points;
         stage->points = 0;
     } else {
-        stage->unk5B0 += 100;
+        stage->finalScore += 100;
         stage->points -= 100;
     }
 
-    if (stage->unk5B0  > 0x1863C) {
-        stage->unk5B0 = 0x1863C;
+    if (stage->finalScore > MAX_POINTS) {
+        stage->finalScore = MAX_POINTS;
     }
 
     stage->animFrame++;
@@ -437,16 +439,16 @@ void sub_806C338(void) {
         return;
     }
 
-    if (stage->unk5AC < 100) {
-        stage->unk5B0 += stage->unk5AC;
-        stage->unk5AC = 0;
+    if (stage->bonusPoints < 100) {
+        stage->finalScore += stage->bonusPoints;
+        stage->bonusPoints = 0;
     } else {
-        stage->unk5B0 += 100;
-        stage->unk5AC -= 100;
+        stage->finalScore += 100;
+        stage->bonusPoints -= 100;
     }
 
-    if (stage->unk5B0  > 0x1863C) {
-        stage->unk5B0 = 0x1863C;
+    if (stage->finalScore > MAX_POINTS) {
+        stage->finalScore = MAX_POINTS;
     }
 
     stage->animFrame++;
@@ -455,12 +457,12 @@ void sub_806C338(void) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
     }
 
-    if (stage->unk5AC == 0) {
-        if (stage->unk5B0 != 0) {
+    if (stage->bonusPoints == 0) {
+        if (stage->finalScore != 0) {
             m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
         }
     
-        stage->unk5AC = 0;
+        stage->bonusPoints = 0;
         stage->animFrame = 0;
         gCurTask->main = sub_806C49C;
     }
@@ -468,17 +470,17 @@ void sub_806C338(void) {
 
 void sub_806C42C(void) {
     struct SpecialStage* stage = TaskGetStructPtr(gCurTask);
-    stage->unk5B0 += stage->points;
+    stage->finalScore += stage->points;
     stage->points = 0;
     
-    stage->unk5B0 += stage->unk5AC;
-    stage->unk5AC = 0;
+    stage->finalScore += stage->bonusPoints;
+    stage->bonusPoints = 0;
 
-    if (stage->unk5B0 > 0x1863C) {
-        stage->unk5B0 = 0x1863C;
+    if (stage->finalScore > MAX_POINTS) {
+        stage->finalScore = MAX_POINTS;
     }
 
-    if (stage->unk5B0 != 0) {
+    if (stage->finalScore != 0) {
         m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
     }
 
@@ -507,7 +509,7 @@ void sub_806C49C(void) {
         transitionConfig->unk8 = 0xBF;
 
         stage->animFrame = 0;
-        if (stage->unk5C5 != 0) {
+        if (stage->targetReached) {
             gCurTask->main = sub_806C560;
         } else {
             gCurTask->main = sub_806C6A4;
@@ -569,7 +571,7 @@ void sub_806C6A4(void) {
     stage->animFrame++;
     if (stage->animFrame > 119) {
         s32 temp2, temp3, temp4;
-        s32 temp = stage->unk5B0;
+        s32 temp = stage->finalScore;
 
         if (stage->playerTask != NULL) {
             TaskDestroy(stage->playerTask);

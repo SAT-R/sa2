@@ -717,7 +717,8 @@ static bool16 UnpackSaveSectorData(struct SaveGame* gameState, struct SaveSector
     gameState->unk1C = save->multiplayerWins;
     gameState->unk1D = save->multiplayerLoses;
     gameState->unk1E = save->multiplayerDraws;
-    memcpy(&gameState->unk34, &save->timeRecords, sizeof(save->timeRecords));
+    gameState->unk34 = save->timeRecords;
+
     memcpy(gameState->unk2AC, save->multiplayerScores, sizeof(save->multiplayerScores));
     gameState->unk374 = save->score;
     return TRUE;

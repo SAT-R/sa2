@@ -26,7 +26,7 @@ void GameStart(void) {
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
-    gUnknown_030059E0.unk8C = 0;
+    gPlayer.unk8C = 0;
     gUnknown_03005960.unk5C = 0;
 
     gUnknown_030059D0[1] = 0;
@@ -40,13 +40,13 @@ void GameStart(void) {
     gUnknown_030054E4 = 0;
 
     for (i = 0; i < 4; i++) {
-        gUnknown_030055A0[i] = NULL;
+        gMultiplayerPlayerTasks[i] = NULL;
     }
 
     for (i = 0; i < 4; i++) {
         gMultiplayerCharacters[i] = 0;
         gUnknown_030054B4[i] = 0;
-        gUnknown_030054D4[i] = 0;
+        gMultiplayerMissingHeartbeats[i] = 0;
     }
 
     SaveInit();
@@ -86,10 +86,10 @@ void GameStart(void) {
 }
 
 static void Task_DummyFunc(void);
-static void Task_DummyTeardown(struct Task*);
+static void DummyTaskOnDestroy(struct Task*);
 
 UNUSED static void CreateDummyTask(void){
-  gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, Task_DummyTeardown);
+  gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
 }
 
 UNUSED static void DestroyDummyTask(void) {
@@ -99,6 +99,6 @@ UNUSED static void DestroyDummyTask(void) {
 
 UNUSED static void Task_DummyFunc(void) {}
 
-UNUSED static void Task_DummyTeardown(struct Task* task) {
+UNUSED static void DummyTaskOnDestroy(struct Task* task) {
     gUnknown_03005844 = NULL;
 }

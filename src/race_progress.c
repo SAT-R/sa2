@@ -53,7 +53,7 @@ void RaceProgressIndicator(void) {
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
 
     for (i = 0; i < 4; i++) {
-        if (gUnknown_030055A0[i] == NULL) {
+        if (gMultiplayerPlayerTasks[i] == NULL) {
             break;
         }
     }
@@ -131,7 +131,7 @@ static void Task_UpdateAvatarPositions(void) {
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
-        player = TaskGetStructPtr(gUnknown_030055A0[i]);
+        player = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
         avatar->unk16 = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10) + 6;
     }
 
@@ -142,7 +142,7 @@ static void RenderUI(struct RaceProgressIndicator* progressIndicator) {
     u8 i;
     struct UNK_0808B3FC_UNK240* element;
 
-    if (gUnknown_030059E0.unk20 & 0x100000) {
+    if (gPlayer.unk20 & 0x100000) {
         return;
     }
 

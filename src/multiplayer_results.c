@@ -139,10 +139,10 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
 
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     gUnknown_03004D80[3] = 0;
 
@@ -158,7 +158,7 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     resultsScreen->animStep = 0;
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gUnknown_030055B8, i)) {
+        if (!GetBit(gMultiplayerConnections, i)) {
             break;
         }
     }
@@ -197,7 +197,7 @@ void CreateMultiplayerResultsScreen(u8 mode) {
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         s32 temp2 = (i + 4) * 0x800;
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             s32 temp;
             element = &resultsScreen->resultRows[i];
             element->unk16 = 200;
@@ -278,7 +278,7 @@ static void sub_805C0F0(void) {
         }
     
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (!GetBit(gUnknown_030055B8, i)) {
+            if (!GetBit(gMultiplayerConnections, i)) {
                 for (j = 0; j < 0x20; j++) {
                     *unk1884++ = 0;
                     *unk1884++ = 0xC0 - x;
@@ -352,7 +352,7 @@ static void sub_805C3D0(void) {
             if (gGameMode == 3) {
                 u8 i;
                 for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                    if (!GetBit(gUnknown_030055B8, i)) {
+                    if (!GetBit(gMultiplayerConnections, i)) {
                         break;
                     }
                 }
@@ -361,7 +361,7 @@ static void sub_805C3D0(void) {
 #ifdef TEAMPLAY_AVAILABLE
             CreateMultiplayerResultsScreen();
 #else
-            CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+            CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
 #endif
             } else if (gGameMode == 0 && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
@@ -399,7 +399,7 @@ static void sub_805C504(void) {
     }
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gUnknown_030055B8, i)) {
+        if (!GetBit(gMultiplayerConnections, i)) {
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = 0xC0 - x;
             }
@@ -432,7 +432,7 @@ static void sub_805C69C(void) {
     resultsScreen = TaskGetStructPtr(gCurTask);
     
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             item = &resultsScreen->characterRows[i];
             sub_80051E8(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {

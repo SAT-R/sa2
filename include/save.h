@@ -40,6 +40,8 @@ struct ButtonConfig {
     u16 unk2;
     // trick
     u16 unk4;
+    // unused
+    u16 unk6;
 };
 
 struct TimeRecords {

@@ -105,10 +105,10 @@ void CreateMultiplayerTeamPlayScreen(void) {
     // TODO: make this a macro
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     gDispCnt = 0x1B00;
     gDispCnt |= 0x40;
@@ -315,7 +315,7 @@ static void sub_805CC34(void) {
 
     count = 1;
     for (i = 0; i < 4; i++) {
-        if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+        if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
             count++;
             if (i == 0) {
                 msd = gMultiSioRecv;
@@ -333,7 +333,7 @@ static void sub_805CC34(void) {
             m4aSongNumStart(SE_SELECT);
         } else if (teamPlayScreen->unk317 != 0) {
             for (j = 1, i = 0; i < count; i++) {
-                if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+                if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
                     msd = &gMultiSioRecv[i];
                     if (msd->pat0.unk0 > 1) j++;
                 }
@@ -374,7 +374,7 @@ static void sub_805CC34(void) {
                     TaskDestroy(gCurTask);
                     gFlags &= ~0x4;
                     gGameMode = 3;
-                    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+                    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     return;
                 }                
@@ -419,7 +419,7 @@ static void sub_805CC34(void) {
                 TaskDestroy(gCurTask);
                 gFlags &= ~0x4;
                 gGameMode = GAME_MODE_MULTI_PLAYER;
-                CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
                 return;
             }
         }
@@ -520,7 +520,7 @@ static void sub_805D1F8(void) {
     element->unk18 = 0x1C;
     sub_80051E8(element);
 
-    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         packet = &gMultiSioRecv[i];
         
         if (i == 0) {
@@ -542,10 +542,10 @@ static void sub_805D1F8(void) {
 
                 if (packet->pat0.unk2 == 0) {
                     element->unk10 &= ~0x400;
-                    gUnknown_030055B8 &= ~(0x10 << (i));
+                    gMultiplayerConnections &= ~(0x10 << (i));
                 } else {
                     element->unk10 |= 0x400;
-                    gUnknown_030055B8 |= (0x10 << (i));
+                    gMultiplayerConnections |= (0x10 << (i));
                 }
                 sub_80051E8(element);
                 someVar = FALSE;
@@ -609,7 +609,7 @@ static void sub_805D1F8(void) {
         packet->pat0.unk2 = teamPlayScreen->unk31E;
     }
 
-    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         if (SIO_MULTI_CNT->id != i) {
             packet = &gMultiSioRecv[i];
             if (packet->pat0.unk0 > 0x4041) {
@@ -635,7 +635,7 @@ static void sub_805D5C8(void) {
 static void sub_805D610(void) {
     TaskDestroy(gCurTask);
     gFlags &= ~0x4;
-    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
 }
 
 static void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
@@ -643,7 +643,7 @@ static void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
     struct UNK_0808B3FC_UNK240* element;
     
     for (i = 0; i < 4; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             element = &teamPlayScreen->unk0[i];
             element->unk16 = gUnknown_080D92B8[i & 1];
             element->unk18 = i * 0x18 + 0x40;

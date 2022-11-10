@@ -285,9 +285,9 @@ void sub_8070078(void) {
     element->unk20 = sprite->unk2;
     sub_8004558(element);
 
-    if (stage->unk5C5 == 0) {
+    if (stage->targetReached == FALSE) {
         if (stage->rings >= stage->ringsTarget) {
-            stage->unk5C5 = 1;
+            stage->targetReached = TRUE;
             m4aSongNumStart(MUS_ACHIEVEMENT);
             stage->unk5C7 = 1;
             stage->unk5C8 = 0x78;
@@ -301,7 +301,7 @@ void sub_8070078(void) {
     } 
     
     if (stage->rings < stage->ringsTarget) {
-        stage->unk5C5 = 0;
+        stage->targetReached = FALSE;
 
         element = &ui->unk154;
         element->unkA = 0x378;
@@ -344,7 +344,7 @@ static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen* 
     gUnknown_03005B5C = stage->screenVram;
     gUnknown_03005B58 = NULL;
 
-    if (stage->unk5C5 != 0) {
+    if (stage->targetReached) {
         sub_806CA88(&resultsScreen->unk4,1,0x28,0x37d,0,0x100 + a,0x20,0,1,0);
         sub_806CA88(&resultsScreen->unk34,1,gUnknown_080DF880[character].unk4,gUnknown_080DF880[character].unk0,0,0x100 + a,0x18,0,gUnknown_080DF880[character].unk2,0);
     } else {
@@ -438,7 +438,7 @@ void sub_807061C(s16 a) {
 
     element = &resultsScreen->unk4;
 
-    if (stage->unk5C5 != 0) {
+    if (stage->targetReached) {
         element->unk16 = resultsScreen->unk516 + 0x4C;
         element = &resultsScreen->unk34;
         element->unk16 = resultsScreen->unk516 + 4;
@@ -551,8 +551,8 @@ static void RenderScoresAnim(void) {
     bool8 found;
 
     s32 points = stage->points;
-    s32 unk5AC = stage->unk5AC;
-    s32 unk5B0 = stage->unk5B0;
+    s32 bonusPoints = stage->bonusPoints;
+    s32 finalScore = stage->finalScore;
 
     a[4] = points % 10;
     points /= 10;
@@ -564,29 +564,29 @@ static void RenderScoresAnim(void) {
     points /= 10;
     a[0] = points % 10;
 
-    b[4] = unk5AC % 10;
-    unk5AC /= 10;
-    b[3] = unk5AC % 10;
-    unk5AC /= 10;
-    b[2] = unk5AC % 10;
-    unk5AC /= 10;
-    b[1] = unk5AC % 10;
-    unk5AC /= 10;
-    b[0] = unk5AC % 10;
+    b[4] = bonusPoints % 10;
+    bonusPoints /= 10;
+    b[3] = bonusPoints % 10;
+    bonusPoints /= 10;
+    b[2] = bonusPoints % 10;
+    bonusPoints /= 10;
+    b[1] = bonusPoints % 10;
+    bonusPoints /= 10;
+    b[0] = bonusPoints % 10;
 
-    c[4] = unk5B0 % 10;
-    unk5B0 /= 10;
-    c[3] = unk5B0 % 10;
-    unk5B0 /= 10;
-    c[2] = unk5B0 % 10;
-    unk5B0 /= 10;
-    c[1] = unk5B0 % 10;
-    unk5B0 /= 10;
-    c[0] = unk5B0 % 10;
+    c[4] = finalScore % 10;
+    finalScore /= 10;
+    c[3] = finalScore % 10;
+    finalScore /= 10;
+    c[2] = finalScore % 10;
+    finalScore /= 10;
+    c[1] = finalScore % 10;
+    finalScore /= 10;
+    c[0] = finalScore % 10;
 
     sub_80051E8(&resultsScreen->unk4);
 
-    if (stage->unk5C5 != 0) {
+    if (stage->targetReached) {
         sub_80051E8(&resultsScreen->unk34);
     }
 

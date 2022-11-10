@@ -99,20 +99,20 @@ void sub_8081200(void) {
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
-    gUnknown_030059E0.unk8C = 0;
+    gPlayer.unk8C = 0;
     gUnknown_03005960.unk5C = 0;
     gUnknown_0300543C = 0;
     *gameMode = val;
     gUnknown_030054DC = 0;
 
     for (i = 0; i < 4; i++) {
-        gUnknown_030055A0[i] = NULL;
+        gMultiplayerPlayerTasks[i] = NULL;
     };
 
     sub_801A6D8();
     gUnknown_03005424 &= ~0x1;
-    gUnknown_030059E0.unk20 &= ~0x200000;
-    gUnknown_030059E0.unk5C |= gUnknown_03005B38.unk0 | gUnknown_03005B38.unk2;
+    gPlayer.unk20 &= ~0x200000;
+    gPlayer.unk5C |= gPlayerControls.unk0 | gPlayerControls.unk2;
 }
 
 void sub_8081604(void);
@@ -125,10 +125,10 @@ void StartSinglePakConnect(void) {
     struct Unk_03002400* background;
     struct MultiBootParam* mbParams;
     u32 ram;
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
     gDispCnt = 0x1141;
     gBgCntRegs[0] = 0x1401;
     gBgScrollRegs[0][0] = 0;
@@ -395,7 +395,7 @@ void sub_80818B8(void) {
                     gMultiplayerCharacters[j] = 0;
                     gUnknown_03005428[j] = 0;
                     gUnknown_030054B4[j] = j;
-                    gUnknown_030054D4[j] = 0;
+                    gMultiplayerMissingHeartbeats[j] = 0;
                 }
                 gCurTask->main = sub_8081D58;
                 gDispCnt = 0x40;
@@ -484,7 +484,7 @@ void sub_8081C0C(void) {
         gMultiplayerCharacters[i] = 0;
         gUnknown_03005428[i] = 0;
         gUnknown_030054B4[i] = i;
-        gUnknown_030054D4[i] = 0;
+        gMultiplayerMissingHeartbeats[i] = 0;
     }
 
     MultiSioStart();
@@ -495,10 +495,10 @@ void sub_8081DB4(struct SinglePakConnectScreen*);
 
 void sub_8081C50(void) {
     struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
     sub_8081DB4(connectScreen);
     gCurTask->main = sub_80818B8;
     MultiSioStart();
@@ -508,10 +508,10 @@ void sub_8081CC4(void);
 
 void sub_8081C8C(void) {
     struct SinglePakConnectScreen* connectScreen = TaskGetStructPtr(gCurTask);
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
     sub_8081DB4(connectScreen);
     gCurTask->main = sub_8081CC4;
 }
@@ -579,11 +579,11 @@ void sub_8081DF0(struct SinglePakConnectScreen* connectScreen, u8 a) {
 bool32 sub_8081E38(struct SinglePakConnectScreen* connectScreen, u16 id) {
     if (MULTI_SIO_RECV_ID(id + 8) & gMultiSioStatusFlags) {
         if (!(MULTI_SIO_RECV_ID(id) & gMultiSioStatusFlags)) {
-            if (gUnknown_030054D4[id]++ > 180) {
+            if (gMultiplayerMissingHeartbeats[id]++ > 180) {
                 return FALSE;
             }
         } else {
-            gUnknown_030054D4[id] = 0;
+            gMultiplayerMissingHeartbeats[id] = 0;
         }
     }
 

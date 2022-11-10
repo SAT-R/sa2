@@ -83,7 +83,7 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     outcomeScreen->unk1FC = 0;
 
     for (i = 0, count = 0; i < 4; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             count++;
         }
     }
@@ -214,7 +214,7 @@ static void sub_805BC40(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
-            CreateCharacterSelectionScreen(gSelectedCharacter, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
+            CreateCharacterSelectionScreen(gSelectedCharacter, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
         } else {
             gMultiSioEnabled = FALSE;
             MultiSioStop();

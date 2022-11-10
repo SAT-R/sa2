@@ -52,27 +52,27 @@ void CreateBoostModeParticles(void) {
     element->unk22 = 0x10;
     element->unk25 = 0;
 
-    SeedRng(gUnknown_030059E0.unk8, gUnknown_03005960.unk0);
+    SeedRng(gPlayer.unk8, gUnknown_03005960.unk0);
 
     for (i = 0; i < 16; i++) {
         u8 temp1;
         s32 rand, var;
         particles->unk62[i][1] = (Random() & 0x7FF) + 0x1000;
-        if (gUnknown_030059E0.unk20 & 1) {
+        if (gPlayer.unk20 & 1) {
 #ifndef NON_MATCHING
-            u32 z = (u32)gUnknown_030059E0.unk24 << 0x18;
+            u32 z = (u32)gPlayer.unk24 << 0x18;
             temp1 = (z + 0xC0000000) >> 0x18;
             asm("":::"memory");
 #else
-            temp1 = gUnknown_030059E0.unk24 + 0xC0;
+            temp1 = gPlayer.unk24 + 0xC0;
 #endif
-            particles->unk62[i][0] = ((gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xff) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
-            particles->unk62[i][1] = ((gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xff) * 4] >> 6) * particles->unk62[i][1]) >> 8;
+            particles->unk62[i][0] = ((gSineTable[((gPlayer.unk24 + 0x80) & 0xff) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
+            particles->unk62[i][1] = ((gSineTable[((gPlayer.unk24 + 0x80) & 0xff) * 4] >> 6) * particles->unk62[i][1]) >> 8;
             
         } else {
-            temp1 = gUnknown_030059E0.unk24 + 0x40;
-            particles->unk62[i][0] = ((gSineTable[(gUnknown_030059E0.unk24) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
-            particles->unk62[i][1] = ((gSineTable[(gUnknown_030059E0.unk24) * 4] >> 6) * particles->unk62[i][1]) >> 8;
+            temp1 = gPlayer.unk24 + 0x40;
+            particles->unk62[i][0] = ((gSineTable[(gPlayer.unk24) * 4 + 0x100] >> 6) * particles->unk62[i][1]) >> 8;
+            particles->unk62[i][1] = ((gSineTable[(gPlayer.unk24) * 4] >> 6) * particles->unk62[i][1]) >> 8;
         }
 #ifndef NON_MATCHING
         {
@@ -110,29 +110,29 @@ void sub_8089E54(void) {
         particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
         particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
         element = &particles->unk0;
-        element->unk16 = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0 + (particles->unk62[i][0] >> 8);
-        element->unk18 = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4 + (particles->unk62[i][1] >> 8);
+        element->unk16 = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0 + (particles->unk62[i][0] >> 8);
+        element->unk18 = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4 + (particles->unk62[i][1] >> 8);
         sub_80051E8(element);
     }
 
     if (particles->unk60++ > 8) {
         element->unk20 = 1;
-        SeedRng(gUnknown_030059E0.unk8, gUnknown_03005960.unk0);
+        SeedRng(gPlayer.unk8, gUnknown_03005960.unk0);
         
         for (i = 0; i < 16; i++) {
             u8 temp;
             s16 rand;
             particles->unkE2 = 0x80;
             particles->unkE4 = 0;
-            if (gUnknown_030059E0.unk20 & 1) {
+            if (gPlayer.unk20 & 1) {
                 temp = Random();
                 temp += 64;
-                particles->unkE2 = (gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xFF) * 4 + 0x100] >> 6) << 2;
-                particles->unkE4 = (gSineTable[((gUnknown_030059E0.unk24 + 0x80) & 0xFF) * 4] >> 6) << 2;
+                particles->unkE2 = (gSineTable[((gPlayer.unk24 + 0x80) & 0xFF) * 4 + 0x100] >> 6) << 2;
+                particles->unkE4 = (gSineTable[((gPlayer.unk24 + 0x80) & 0xFF) * 4] >> 6) << 2;
             } else {
                 temp = Random();
-                particles->unkE2 = (gSineTable[(gUnknown_030059E0.unk24 * 4) + 0x100] >> 6) << 2;
-                particles->unkE4 = (gSineTable[gUnknown_030059E0.unk24 * 4] >> 6) << 2;
+                particles->unkE2 = (gSineTable[(gPlayer.unk24 * 4) + 0x100] >> 6) << 2;
+                particles->unkE4 = (gSineTable[gPlayer.unk24 * 4] >> 6) << 2;
             }
 
             rand = (Random() & 0x3FF);
@@ -171,13 +171,13 @@ void sub_808A0A4(void) {
     for (i = 0; i < 8; i++) {
         element = &particles->unk0;
         if (particles->unk60 & 1) {
-            element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i][0] >> 8);
-            element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i][1] >> 8);
+            element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i][0] >> 8);
+            element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i][1] >> 8);
             sub_8004558(element);
             
         } else {
-            element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i + 8][0] >> 8);
-            element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i + 8][1] >> 8);
+            element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0) + (particles->unk62[i + 8][0] >> 8);
+            element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4) + (particles->unk62[i + 8][1] >> 8);
         }
         sub_80051E8(element);
     }

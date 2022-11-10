@@ -304,10 +304,10 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes) {
     
     u8 courseIndex, maxCourseIndex;
 
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     if (cutScenes == CUT_SCENE_UNLOCK_TRUE_AREA_53) {
         gLoadedSaveGame->unk1A = 2;
@@ -1074,7 +1074,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void) {
         if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             sub_801A770();
         } else {
-            sub_8036C54();
+            CreateTrueArea53();
         }
         
         TaskDestroy(gCurTask);

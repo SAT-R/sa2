@@ -373,7 +373,7 @@ sub_8083040: @ 0x08083040
 	sub sp, #4
 	mov sb, r0
 	movs r2, #0
-	ldr r0, _080830F8 @ =gUnknown_030055B8
+	ldr r0, _080830F8 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	movs r1, #1
 	ands r0, r1
@@ -440,7 +440,7 @@ _0808309E:
 	lsrs r2, r0, #0x10
 	cmp r2, #3
 	bhi _080830E6
-	ldr r0, _080830F8 @ =gUnknown_030055B8
+	ldr r0, _080830F8 @ =gMultiplayerConnections
 	ldrb r0, [r0]
 	asrs r0, r2
 	movs r1, #1
@@ -457,7 +457,7 @@ _080830E6:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080830F8: .4byte gUnknown_030055B8
+_080830F8: .4byte gMultiplayerConnections
 _080830FC: .4byte gUnknown_030053E8
 _08083100: .4byte 0xFFF80000
 

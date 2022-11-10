@@ -220,7 +220,7 @@ static const u8 sCharacterSilhouettes[] = {
 #define ReadMultiplayerSelections(characterScreen, i, packet) ({ \
     (characterScreen)->multiplayerSelections = 0; \
     for ((i) = 0; (i) < MULTI_SIO_PLAYERS_MAX; (i)++) { \
-        if ((i) != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, (i))) { \
+        if ((i) != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, (i))) { \
             (packet) = &gMultiSioRecv[(i)]; \
             if ((packet)->pat0.unk0 > 0x4020) { \
                 (characterScreen)->multiplayerSelections |= CHARACTER_BIT(packet->pat0.unk2); \
@@ -255,10 +255,10 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc", void CreateChara
 
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     m4aSongNumStart(MUS_CHARACTER_SELECTION);
     gDispCnt = 0x1740;
@@ -1650,7 +1650,7 @@ static void Task_MultiplayerWaitForSelections(void) {
     recv = &gMultiSioRecv[0];
     if (recv->pat0.unk0 == 0x4022) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gUnknown_030055B8, i)) {
+            if (GetBit(gMultiplayerConnections, i)) {
                 recv = &gMultiSioRecv[i];
                 gMultiplayerCharacters[i] = recv->pat0.unk2;
             }
@@ -1668,7 +1668,7 @@ static void Task_MultiplayerWaitForSelections(void) {
     }
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_030055B8, i) && i != SIO_MULTI_CNT->id) {
+        if (GetBit(gMultiplayerConnections, i) && i != SIO_MULTI_CNT->id) {
             recv = &gMultiSioRecv[i];
             // Conflict
             if (recv->pat0.unk0 == 0x4021 && recv->pat0.unk2 == characterScreen->selectedCharacter && i < SIO_MULTI_CNT->id) {
@@ -1704,7 +1704,7 @@ static void Task_MultiplayerWaitForSelections(void) {
         send->pat0.unk2 = characterScreen->selectedCharacter;
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gUnknown_030055B8, i)) {
+            if (GetBit(gMultiplayerConnections, i)) {
                 recv = &gMultiSioRecv[i];
                 if (recv->pat0.unk0 != 0x4021) {
                     send->pat0.unk0 = 0x4021;
@@ -1736,7 +1736,7 @@ static void Task_MultiplayerVerifySelections(void) {
 
     for (i = 0, someoneNotConfirmed = FALSE; i < MULTI_SIO_PLAYERS_MAX; i++) {
         recv = &gMultiSioRecv[i];
-        if (GetBit(gUnknown_030055B8, i) && recv->pat0.unk0 < 0x4022) {
+        if (GetBit(gMultiplayerConnections, i) && recv->pat0.unk0 < 0x4022) {
             someoneNotConfirmed = TRUE;
             // Why not break here...
         }
@@ -1762,7 +1762,7 @@ static void Task_MultiplayerVerifySelections(void) {
     recv = &gMultiSioRecv[0];
     if (recv->pat0.unk0 == 0x4023) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gUnknown_030055B8, i)) {
+            if (GetBit(gMultiplayerConnections, i)) {
                 recv = &gMultiSioRecv[i];
                 if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
                     gMultiplayerCharacters[i] = recv->pat0.unk2;
@@ -1793,7 +1793,7 @@ static void Task_MultiplayerVerifySelections(void) {
         }
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (GetBit(gUnknown_030055B8, i) && i != 0) {
+            if (GetBit(gMultiplayerConnections, i) && i != 0) {
                 recv = &gMultiSioRecv[i];
                 gMultiplayerCharacters[i] = recv->pat0.unk2;
                 if (recv->pat0.unk0 != 0x4022) {

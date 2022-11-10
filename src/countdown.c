@@ -98,20 +98,20 @@ void sub_8036168(void) {
     }
 
     if (--countdown->unk68 == 0) {
-        gUnknown_030059E0.unk20 &= ~0x200000;
+        gPlayer.unk20 &= ~0x200000;
         gUnknown_03005424 &= ~1;
         gUnknown_03005424 &= ~0x100;
-        gUnknown_030059E0.unk64 = 9;
+        gPlayer.unk64 = 9;
         if (countdown->unk6A != 0) {
-            gUnknown_030059E0.unk14 = 0x900;
+            gPlayer.unk14 = 0x900;
         } else {
-            gUnknown_030059E0.unk14 = 0x400;
+            gPlayer.unk14 = 0x400;
         }
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = gUnknown_030059E0.unk8 >> 8;
-        countdown->unk64 = gUnknown_030059E0.unkC >> 8;
+        countdown->unk60 = gPlayer.unk8 >> 8;
+        countdown->unk64 = gPlayer.unkC >> 8;
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -127,8 +127,8 @@ void sub_8036168(void) {
     }
 
     element = &countdown->unk0;
-    element->unk16 = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
-    element->unk18 = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4;
+    element->unk16 = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
+    element->unk18 = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -136,21 +136,21 @@ void sub_8036168(void) {
         element = &countdown->unk30;
         element->unk20 = 2 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
-        element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + 0x18;
-        element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) - 0x18;
+        element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0) + 0x18;
+        element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4) - 0x18;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     if ((u16)(countdown->unk68 - 0x46) < 0x6E) {
-        gUnknown_030059E0.unk68 = gUnknown_080D7518[gSelectedCharacter].unk4;
-        gUnknown_030059E0.unk6A = gUnknown_080D7518[gSelectedCharacter].unk6;
-        gUnknown_030059E0.unk6C = 1;
+        gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].unk4;
+        gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].unk6;
+        gPlayer.unk6C = 1;
 
         if (IsMultiplayer()) {
-            gUnknown_030059E0.unk90->unk31 = (SIO_MULTI_CNT)->id;
+            gPlayer.unk90->unk31 = (SIO_MULTI_CNT)->id;
         } else {
-            gUnknown_030059E0.unk90->unk31 = 0;
+            gPlayer.unk90->unk31 = 0;
         }
     }
 }

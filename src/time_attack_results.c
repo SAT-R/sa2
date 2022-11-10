@@ -267,7 +267,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     gUnknown_030054A8 = 0xFF;
 #endif
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-        gUnknown_030059E0.unk64 = 0x20;
+        gPlayer.unk64 = 0x20;
     }
 
     if (resultsCutScene->unk2D8 == 1) {

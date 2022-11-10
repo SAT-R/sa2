@@ -16,8 +16,8 @@ void sub_8087088(void);
 void sub_80870E8(void);
 
 void sub_8087028(void) {
-    s16 a = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
     struct UnknownEffect87028* effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a, b, 0xA0 - effect->unk0);
@@ -29,8 +29,8 @@ void sub_8087028(void) {
 }
 
 void sub_8087088(void) {
-    s16 a = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
     struct UnknownEffect87028* effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
@@ -54,8 +54,8 @@ const s8 gUnknown_080E02DC[8][2] = {
 };
 
 void sub_80870E8(void) {
-    s16 a = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
     struct UnknownEffect87028* effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0], b + gUnknown_080E02DC[effect->unk0 & 7][1], 0xA0 - effect->unk0);
@@ -64,7 +64,7 @@ void sub_80870E8(void) {
 
     effect->unk0 += 1;
     if (effect->unk0 > 0xA0) {
-        if (!(gUnknown_030059E0.unk20 & 0x40600000) && !(gUnknown_030059E0.unk37 & 0x82) && sub_800CBA4(&gUnknown_030059E0) != 0) {
+        if (!(gPlayer.unk20 & 0x40600000) && !(gPlayer.unk37 & 0x82) && sub_800CBA4(&gPlayer) != 0) {
             m4aSongNumStart(SE_SPIKES);
         }
         gBldRegs.bldY = 0;

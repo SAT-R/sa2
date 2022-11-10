@@ -221,16 +221,16 @@ static void Task_FadeInOrHandleExit(void) {
                     MultiSioInit(0);
                     CreateTitleScreenAndSkipIntro();
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                        gUnknown_030055A0[i] = NULL;
+                        gMultiplayerPlayerTasks[i] = NULL;
                     }
 
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                         gMultiplayerCharacters[i] = 0;
                         gUnknown_030054B4[i] = 0;
-                        gUnknown_030054D4[i] = 0;
+                        gMultiplayerMissingHeartbeats[i] = 0;
                     }
                 } else {
-                    CreateCharacterSelectionScreen(0, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
+                    CreateCharacterSelectionScreen(0, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
                 }
                 return;
             } else {
@@ -365,7 +365,7 @@ static void Task_NotifyExit(void) {
     MultiPakHeartbeat();
 
     for (i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             if (CatchInvalidPacket(&gMultiSioRecv[i])) {
                 return;
             }
@@ -376,7 +376,7 @@ static void Task_NotifyExit(void) {
     }
 
     // All players waiting, notify
-    if (lobbyScreen->playersWaiting == gUnknown_030055B8 >> 1) {
+    if (lobbyScreen->playersWaiting == gMultiplayerConnections >> 1) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
         send->pat0.unk2 = lobbyScreen->cursor;

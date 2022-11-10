@@ -117,7 +117,7 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     sub_806D548(&player->unk38, player->unk9C, stage->unk5CC, 10, &gUnknown_080DF668);
 
     {
-        struct UNK_0808B3FC_UNK240* element = &player->unk68;
+        struct UNK_0808B3FC_UNK240* element = &player->roboArrow;
         u16* affine = &gOamBuffer[120].all.affineParam;
 
         element->unk4 = player->unkA0;

@@ -1346,15 +1346,16 @@ static void StoreProfileData(struct OptionsScreen* optionsScreen) {
     struct OptionsScreenProfileData* profile = &optionsScreen->profileData;
 
     memcpy(saveGame->unk20, profile->playerName, sizeof(profile->playerName));
-    memcpy(&saveGame->unk34, &profile->timeRecords, sizeof(profile->timeRecords));
+    saveGame->unk34 = profile->timeRecords;
 
-    memcpy(&saveGame->unk2AC[0], &profile->multiplayerScores[0], sizeof(profile->multiplayerScores[0]));
+    memcpy(saveGame->unk2AC, profile->multiplayerScores, sizeof(struct MultiplayerScore));
 
     saveGame->unk1C = profile->multiplayerWins;
     saveGame->unk1D = profile->multiplayerLoses;
     saveGame->unk1E = profile->multiplayerDraws;
 
-    memcpy(&saveGame->unk2C, &profile->buttonConfig, 8);
+    // Doesn't match when assigned, not sure
+    memcpy(&saveGame->unk2C, &profile->buttonConfig, sizeof(struct ButtonConfig));
 
     saveGame->unk4 = optionsScreen->difficultyLevel;
     saveGame->unk5 = optionsScreen->timeLimitEnabled;

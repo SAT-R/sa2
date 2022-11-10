@@ -42,8 +42,8 @@ struct SpecialStage {
     s16 ringsTarget;
 
     s32 points;
-    s32 unk5AC;
-    s32 unk5B0;
+    s32 bonusPoints;
+    s32 finalScore;
 
     u16 state;
 
@@ -69,7 +69,7 @@ struct SpecialStage {
     s8 ringsTargetTens;
     s8 ringsTargetUnits;
 
-    s8 unk5C5;
+    s8 targetReached;
     u8 pauseMenuCursor;
 
     s8 unk5C7;

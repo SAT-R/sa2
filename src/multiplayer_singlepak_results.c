@@ -54,10 +54,10 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a) {
     const u8* unk408 = gUnknown_08C88408;
     const u8* unk92208 = gUnknown_08C92208;
 
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
     gWinRegs[4] = 0;
     gWinRegs[5] = 0;
     gWinRegs[0] = 0;
@@ -142,7 +142,7 @@ void sub_808207C(void) {
     struct UNK_0808B3FC_UNK240* element;
     struct MultiplayerSinglePakResultsScreen* resultsScreen;
     gDispCnt |= 0x1800;
-    gUnknown_030055B8 = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     MultiPakHeartbeat();
 
 
@@ -261,7 +261,7 @@ void sub_80823FC(void) {
     struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
     union MultiSioData* packet;
 
-    gUnknown_030055B8 = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     packet = &gMultiSioRecv[0];
     if (packet->pat0.unk0 == 0x4012) {
         gSelectedCharacter = SIO_MULTI_CNT->id;
@@ -317,7 +317,7 @@ void sub_80823FC(void) {
         }
 
 
-        for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+        for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
             if (!(MULTI_SIO_RECV_ID(i) & gMultiSioStatusFlags)) {
                 val = TRUE;
             } else {
@@ -395,7 +395,7 @@ void sub_808267C(void) {
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         u8 i;
         for (i = 0; i < 4; i++) {
-            if (GetBit(gUnknown_030055B8, i)) {
+            if (GetBit(gMultiplayerConnections, i)) {
                 packet = &gMultiSioRecv[i];
                 if (packet->pat0.unk0 != 0x4051) {
                     return;
