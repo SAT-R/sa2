@@ -3399,12 +3399,17 @@ const struct UNK_8C878E8 gUnknown_080DA270[] = {
     ARRAY_END,
 };
 
+// gSpecialStageWorldElements
 const struct UNK_8C87904 gUnknown_080DF040[] = {
 /** 0 **/
+    // booster
     { 0, 464, 96, 32, 32, 0, },
     { 0, 96, 400, 32, 32, 0, },
+
+    // trampoline
     { 1, 464, 400, 32, 32, 0, },
     { 1, 464, 864, 32, 32, 0, },
+
     { 0, 800, 80, 32, 32, 0, },
     { 0, 824, 352, 32, 32, 0, },
     { 0, 928, 624, 32, 32, 0, },

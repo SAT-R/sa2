@@ -15,11 +15,14 @@ struct UNK_8C878E8 {
 }; /* size 0x8 */
 
 struct UNK_8C87904 { 
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    s16 unk8;
+    s16 type;
+    s16 x;
+    s16 y;
+
+    // maybe need to confirm
+    s16 width;
+    s16 length;
+
     s16 unkA;
 } /* size 0xC */;
 

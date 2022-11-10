@@ -10,6 +10,8 @@
 #include "m4a.h"
 #include "constants/songs.h"
 
+#define MIN_BOUNCE_SPEED 1536
+
 void sub_806F9CC(void);
 void sub_806F9CC(void);
 void sub_806F9CC(void);
@@ -426,26 +428,29 @@ void sub_806F468(void) {
     struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
     struct SpecialStage* stage = physics->stage;
     struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C87904* unk7904 = gUnknown_08C87904[stage->zone];
+    const struct UNK_8C87904* worldElements = gUnknown_08C87904[stage->zone];
 
     s16 playerX = Q_16_16_TO_INT(player->x);
     s16 playerY = Q_16_16_TO_INT(player->y);
 
-    while (unk7904->unk0 != -1) {
-        if (playerX >= unk7904->unk2 && playerX < (unk7904->unk2 + unk7904->unk6)) {
-            if (playerY >= unk7904->unk4 && playerY < (unk7904->unk4 + unk7904->unk8)) {
-                switch(unk7904->unk0) {
+    while (worldElements->type != -1) {
+        if (playerX >= worldElements->x && playerX < (worldElements->x + worldElements->width)) {
+            if (playerY >= worldElements->y && playerY < (worldElements->y + worldElements->length)) {
+                switch(worldElements->type) {
                     case 0:
                         player->speed = player->unkE8;
+                        // BOOSTING
                         player->state = 2;
                         m4aSongNumStart(SE_277);
                         return;
                     case 1:
-                        player->speed = player->speed < 0x600 ? 
-                            0x600 : 
+                        player->speed = player->speed < MIN_BOUNCE_SPEED ? 
+                            MIN_BOUNCE_SPEED : 
                             player->speed;
             
+                        // BOUNCING
                         player->state = 9;
+
                         player->unkB0 = 0;
                         player->unkB8 = player->unkEE;
                         player->unkBA = 0;
@@ -454,7 +459,7 @@ void sub_806F468(void) {
                 }
             }
         }
-        unk7904++;
+        worldElements++;
     }
 }
 
@@ -504,7 +509,7 @@ void HandleBoost2(void) {
     }
 
     {
-        s32 temp1 = (sin * c8)  >> 10;
+        s32 temp1 = (sin * c8) >> 10;
         s32 temp2 = (cos * c8) >> 10;
         player->x -= temp1;
         player->y -= temp2;
