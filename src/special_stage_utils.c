@@ -9,7 +9,7 @@
 void* gUnknown_03005B58 = NULL;
 void* gUnknown_03005B5C = NULL;
 
-void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
+void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 assetId, u32 unk10, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
     struct UNK_0808B3FC_UNK240 newObj;
     struct UNK_0808B3FC_UNK240* element;
     element = &newObj;
@@ -28,8 +28,8 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 c, u3
     }
     
     element->unk8 = 0;
-    element->unkA = c;
-    element->unk10 = assetId;
+    element->unkA = assetId;
+    element->unk10 = unk10;
     element->unk16 = xPos;
     element->unk18 = yPos;
     element->unk1A = g << 6;

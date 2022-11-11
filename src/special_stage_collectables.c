@@ -109,7 +109,7 @@ void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void sub_806D9B4(void) {
+void Task_InitObjects(void) {
     struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
     s16 i;
 
@@ -119,15 +119,15 @@ void sub_806D9B4(void) {
 
     collectables->animFrame = 0;
 
-    sub_806CA88(&collectables->unk4,0,4,0x372,0x3000,0x14,0x14,0xe,1,0);
-    sub_806CA88(&collectables->unk34,0,0x10,0x372,0x3000,0x14,0x14,0xe,0,0);
-    sub_806CA88(&collectables->unk64,0,4,0x374,0x3000,0x14,0x1e,0xf,1,0);
-    sub_806CA88(&collectables->unk94,0,4,0x372,0x3000,0x14,0x14,0xe,6,0);
-    sub_806CA88(&collectables->unkC4,0,4,0x372,0x3000,0x14,0x14,0xe,5,0);
-    sub_806CA88(&collectables->unkF4[0],0,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
-    sub_806CA88(&collectables->unkF4[1],0,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
-    sub_806CA88(&collectables->unkF4[2],0,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
-    sub_806CA88(&collectables->unkF4[3],0,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
+    sub_806CA88(&collectables->unk4,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,1,0);
+    sub_806CA88(&collectables->unk34,RENDER_TARGET_SCREEN,0x10,0x372,0x3000,0x14,0x14,0xe,0,0);
+    sub_806CA88(&collectables->unk64,RENDER_TARGET_SCREEN,4,0x374,0x3000,0x14,0x1e,0xf,1,0);
+    sub_806CA88(&collectables->unk94,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,6,0);
+    sub_806CA88(&collectables->unkC4,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,5,0);
+    sub_806CA88(&collectables->unkF4[0],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
+    sub_806CA88(&collectables->unkF4[1],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
+    sub_806CA88(&collectables->unkF4[2],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
+    sub_806CA88(&collectables->unkF4[3],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
 
     gCurTask->main = sub_806DB48;
 }
@@ -328,27 +328,27 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
     struct UNK_806CB84 new_unkCB84;
 
     struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    const struct UNK_8C878E8* val = unk78E8;
+    const struct UNK_8C878E8* object = unk78E8;
     struct UNK_806DEA4* found = NULL;
 
     result = acc;
-    while (val->id != -1) {
-        if (collectables->objStates[val->id] != 0) {
-            new_unk874.unk0 = Q_16_16(val->x);
-            new_unk874.unk4 = Q_16_16(val->y);
-            new_unk874.unk8 = Q_16_16(val->unk6);
+    while (object->id != -1) {
+        if (collectables->objStates[object->id] != 0) {
+            new_unk874.unk0 = Q_16_16(object->x);
+            new_unk874.unk4 = Q_16_16(object->y);
+            new_unk874.unk8 = Q_16_16(object->unk6);
             new_unk874.unkC = 8;
             new_unk874.unkE = 8;
             new_unk874.unk10 = 0;
             new_unk874.unk12 = 5;
             if (sub_806CB84(&new_unkCB84, &new_unk874, collectables->stage)) {
-                if (result < 0x10) {
+                if (result < 16) {
                     memcpy(&unkDEA4Arr[result], &new_unkCB84, sizeof(new_unkCB84));
 
-                    if (collectables->objStates[val->id] >= 3) {
-                        unkDEA4Arr[result].unk0 = collectables->objStates[val->id];
+                    if (collectables->objStates[object->id] >= 3) {
+                        unkDEA4Arr[result].unk0 = collectables->objStates[object->id];
                     } else {
-                        unkDEA4Arr[result].unk0 = val->unk7 + 1;
+                        unkDEA4Arr[result].unk0 = object->unk7 + 1;
                     }
                 
                     result++;
@@ -365,16 +365,16 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
 
                     if (new_unkCB84.screenY > min) {
                         memcpy(found, &new_unkCB84, sizeof(new_unkCB84));
-                        if (collectables->objStates[val->id] >= 3) {
-                            found->unk0 = collectables->objStates[val->id];
+                        if (collectables->objStates[object->id] >= 3) {
+                            found->unk0 = collectables->objStates[object->id];
                         } else {
-                            found->unk0 = val->unk7 + 1;
+                            found->unk0 = object->unk7 + 1;
                         }
                     }
                 }
             }
         }
-        val++;
+        object++;
     }
 
     return result;
@@ -559,7 +559,7 @@ struct Task* CreateSpecialStageCollectables(struct SpecialStage* stage) {
     struct SpecialStageCollectables* collectables;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
     
-    t = TaskCreate(sub_806D9B4, 0xA5C, 0xB000, 0, NULL);
+    t = TaskCreate(Task_InitObjects, 0xA5C, 0xB000, 0, NULL);
     collectables = TaskGetStructPtr(t);
     collectables->stage = stage;
     collectables->unkA58 = unkF6CC[stage->zone];

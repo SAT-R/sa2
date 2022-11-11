@@ -252,7 +252,7 @@ static void sub_805ADAC(void) {
             if (bool1) {
                 bool2 = TRUE;
             }
-            gMultiplayeIds[i] = data->unk4;
+            gMultiplayerIds[i] = data->unk4;
             gMultiplayerNames[i][0] = data->unk8[0];
             gMultiplayerNames[i][1] = data->unk8[1];
             gMultiplayerNames[i][2] = data->unk8[2];
@@ -309,7 +309,7 @@ static void sub_805ADAC(void) {
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (GetBit(gMultiplayerConnections, i)) {
                 if (i == 0) {
-                    gMultiplayeIds[0] = recv->unk4;
+                    gMultiplayerIds[0] = recv->unk4;
                     gMultiplayerNames[0][0] = recv->unk8[0];
                     gMultiplayerNames[0][1] = recv->unk8[1];
                     gMultiplayerNames[0][2] = recv->unk8[2];
@@ -324,7 +324,7 @@ static void sub_805ADAC(void) {
                     continue;
                 }
     
-                gMultiplayeIds[i] = data->unk4;
+                gMultiplayerIds[i] = data->unk4;
                 gMultiplayerNames[i][0] = data->unk8[0];
                 gMultiplayerNames[i][1] = data->unk8[1];
 #ifndef NON_MATCHING            
@@ -499,7 +499,7 @@ static void sub_805B4C0(void) {
         for (i = 3; i >= 0; i--) {
             if (GetBit(gMultiplayerConnections, i)) {
                 if (i == 0) {
-                    if (gMultiplayeIds[i] == recv->unk4) {
+                    if (gMultiplayerIds[i] == recv->unk4) {
                         gMultiplayerNames[i][3] = recv->unk8[0];
                         gMultiplayerNames[i][4] = recv->unk8[1];
                         gMultiplayerNames[i][5] = recv->unk8[2];
@@ -513,7 +513,7 @@ static void sub_805B4C0(void) {
                 } else {
                     data = &gMultiSioRecv[i].pat0;
                     if (data->unk0 == 0x4011) {
-                        if (gMultiplayeIds[i] == data->unk4) {
+                        if (gMultiplayerIds[i] == data->unk4) {
                             gMultiplayerNames[i][3] = data->unk8[0];
                             gMultiplayerNames[i][4] = data->unk8[1]; 
                             gMultiplayerNames[i][5] = data->unk8[2];
@@ -528,7 +528,7 @@ static void sub_805B4C0(void) {
                 }
 
                 if (i != SIO_MULTI_CNT->id) {
-                    InsertMultiplayerProfile(gMultiplayeIds[i], gMultiplayerNames[i]);
+                    InsertMultiplayerProfile(gMultiplayerIds[i], gMultiplayerNames[i]);
                 }
             } 
         }

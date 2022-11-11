@@ -123,7 +123,7 @@ extern struct SomeStruct_5660 gUnknown_03005660;
 
 extern u8 gMultiplayerUnlockedCharacters;
 extern u8 gMultiplayerUnlockedLevels;
-extern u32 gMultiplayeIds[MULTI_SIO_PLAYERS_MAX];
+extern u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX];
 extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gUnknown_03005434;

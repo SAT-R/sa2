@@ -19,7 +19,7 @@ build/sa2/src/main.o(.data);
 . = 0x000053EC; gUnknown_030053EC = .;
 . = 0x000053F0; gCourseTime = .;
 . = 0x0000540C; gUnknown_0300540C = .;
-. = 0x00005410; gMultiplayeIds = .;
+. = 0x00005410; gMultiplayerIds = .;
 . = 0x00005420; gUnknown_03005420 = .;
 . = 0x00005424; gUnknown_03005424 = .;
 . = 0x00005428; gUnknown_03005428 = .;

@@ -37835,7 +37835,7 @@ _0801A2A0:
 	beq _0801A2A8
 	movs r6, #2
 _0801A2A8:
-	ldr r1, _0801A31C @ =gMultiplayeIds
+	ldr r1, _0801A31C @ =gMultiplayerIds
 	asrs r2, r5, #0x10
 	lsls r0, r2, #2
 	adds r0, r0, r1
@@ -37891,7 +37891,7 @@ _0801A2DA:
 	bl CreateMultiplayerResultsScreen
 	b _0801A366
 	.align 2, 0
-_0801A31C: .4byte gMultiplayeIds
+_0801A31C: .4byte gMultiplayerIds
 _0801A320: .4byte gMultiplayerNames
 _0801A324: .4byte 0x0000FFFF
 _0801A328: .4byte gUnknown_03002AE4
