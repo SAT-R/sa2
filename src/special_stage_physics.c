@@ -36,18 +36,9 @@ void HandleBoost2(void);
 static void HandleJumpControls(void);
 
 static const struct UNK_8C87920 gUnknown_080DF794[3] = {
-    {
-        2,
-        890,
-    },
-    {
-        1,
-        890,
-    },
-    {
-        0,
-        890,
-    },
+    { 2, 890 },
+    { 1, 890 },
+    { 0, 890 },
 };
 
 typedef void (*PlayerStatePhysicsHandler)(void);

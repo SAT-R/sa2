@@ -138,5 +138,6 @@
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "xaver.clang-format"
+    "editor.defaultFormatter": "xaver.clang-format",
+    "clang-format.executable": "clang-format-14"
 }
