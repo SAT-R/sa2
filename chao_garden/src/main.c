@@ -25,7 +25,6 @@ void sub_020000c4(void);
 void sub_020018c8(void);
 void sub_02000bd0(void);
 
-
 extern struct UNK_03003330 gUnknown_03003330;
 
 extern void sub_02001528(u32);
@@ -37,7 +36,8 @@ extern void sub_0200be24(void);
 extern void sub_0200d27c(void);
 extern void sub_020018a0(void);
 
-void sub_020000c4(void) {
+void sub_020000c4(void)
+{
     switch (gUnknown_02000008.unk4) {
         default:
         case 0:
@@ -71,7 +71,8 @@ void sub_020000c4(void) {
     gUnknown_03003330.unkE = 0;
 }
 
-void AgbMain() {
+void AgbMain()
+{
     sub_020000c4();
     gUnknown_03003330.unk0 = sub_020018c8;
     while (TRUE) {

@@ -21,14 +21,14 @@ struct MultiSioData_0_0 {
     u32 unk10;
 };
 
-struct MultiSioData_0_1{
+struct MultiSioData_0_1 {
     // id
     u16 unk0;
     // value
     u8 unk2;
 
     u8 unk3;
-    
+
     u16 unk4;
     u16 unk6;
 
@@ -37,7 +37,7 @@ struct MultiSioData_0_1{
     u8 unkF;
     u32 unk10;
 };
-struct MultiSioData_0_2{
+struct MultiSioData_0_2 {
     // id
     u8 unk0;
     u8 filler1;
@@ -45,7 +45,7 @@ struct MultiSioData_0_2{
     u8 unk2;
 
     u8 unk3;
-    
+
     u16 unk4;
     u16 unk6;
 
@@ -55,14 +55,14 @@ struct MultiSioData_0_2{
     u32 unk10;
 };
 
-struct MultiSioData_0_3{
+struct MultiSioData_0_3 {
     // id
     u16 unk0;
     // value
     u8 unk2;
 
     u8 unk3;
-    
+
     u16 unk4;
     u16 unk6;
 
@@ -87,19 +87,19 @@ struct MapHeader {
     u16 unk4;
     u8 unk6;
     u8 unk7;
-    void * Tileset;
+    void *Tileset;
     u16 unkC;
     u16 unkD;
-    u16 * Palette;
+    u16 *Palette;
     u16 unk14;
     u16 unk16;
-    const u16 * Metatiles;
-    const u16 * Map;
+    const u16 *Metatiles;
+    const u16 *Map;
 }; /* size = 0x20 */
 
 struct MapHeader_Full {
     struct MapHeader unk0;
-    u16 Map_Width;  // in Metatiles
+    u16 Map_Width; // in Metatiles
     u16 Map_Height; // in Metatiles
 };
 
@@ -116,10 +116,10 @@ extern u32 gFrameCount;
 extern IntrFunc gIntrTable[16];
 extern u32 gIntrMainBuf[0x80];
 
-extern struct Task* gCurTask;
+extern struct Task *gCurTask;
 extern struct Task gTasks[MAX_TASK_NUM];
-extern struct Task* gTaskPtrs[MAX_TASK_NUM];
-extern struct Task* gNextTask;
+extern struct Task *gTaskPtrs[MAX_TASK_NUM];
+extern struct Task *gNextTask;
 extern struct Task gEmptyTask;
 extern s32 gNumTasks;
 
@@ -133,9 +133,9 @@ extern u8 gKeysFirstRepeatIntervals[10];
 extern u8 gRepeatedKeysTestCounter[10];
 extern u8 gKeysContinuedRepeatIntervals[10];
 
-extern const u8* gInputPlaybackData;
+extern const u8 *gInputPlaybackData;
 extern struct InputRecorder gInputRecorder;
-extern u16* gInputRecorderTapeBuffer;
+extern u16 *gInputRecorderTapeBuffer;
 
 extern union MultiSioData gMultiSioSend;
 extern union MultiSioData gMultiSioRecv[4];
@@ -170,9 +170,9 @@ extern OamData gUnknown_030022D0[128];
 extern OamData gOamBuffer[128];
 
 extern u32 gUnknown_03001B60[2][160];
-extern struct Unk_03002400* gUnknown_03001800[16];
+extern struct Unk_03002400 *gUnknown_03001800[16];
 
-extern void* gUnknown_03001884;
+extern void *gUnknown_03001884;
 
 extern u16 gUnknown_030017F0;
 extern u16 gUnknown_030017F4[2];
@@ -187,15 +187,15 @@ extern u16 gUnknown_0300194C;
 union Unk_03002E60 *gUnknown_03002260;
 extern u8 gUnknown_03002280[16];
 extern u8 gUnknown_03004D80[16];
-extern void* gUnknown_030022AC;
-extern void* gUnknown_030022C0;
+extern void *gUnknown_030022AC;
+extern void *gUnknown_030022C0;
 extern s16 gUnknown_030026D0;
 extern u8 gUnknown_030026F4;
-extern const struct SpriteTables* gUnknown_03002794;
-extern struct Unk_03002EC0* gUnknown_030027A0[32];
+extern const struct SpriteTables *gUnknown_03002794;
+extern struct Unk_03002EC0 *gUnknown_030027A0[32];
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;
-extern void* gUnknown_03002878;
+extern void *gUnknown_03002878;
 extern u8 gUnknown_0300287C;
 extern u8 gUnknown_03002A80;
 extern u8 gUnknown_03002A84;
@@ -204,7 +204,7 @@ extern u8 gUnknown_03002AE0;
 extern u8 gUnknown_03002AE4;
 extern u8 gUnknown_03004D10[0x40];
 extern u8 gUnknown_03004D50;
-extern void* gUnknown_03004D54;
+extern void *gUnknown_03004D54;
 extern u16 gUnknown_03004D58;
 extern u8 gUnknown_03004D5C;
 extern u8 gUnknown_03004D60[0x20];

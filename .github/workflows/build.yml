@@ -7,6 +7,26 @@ on:
   pull_request_target:
 
 jobs:
+  format:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+      
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install clang-format
+      
+      - name: Check formatting
+        run: |
+          make check_format
+
   build:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-latest
@@ -33,14 +53,6 @@ jobs:
         with:
           path: agbcc
           repository: pret/agbcc
-
-      - name: Install tools
-        run: |
-          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
-          python3 -m pip install gitpython
-        # build-essential, git, and libpng-dev are already installed
-        # gcc-arm-none-eabi is only needed for the modern build
-        # as an alternative to dkP
 
       - name: Install agbcc
         run: |

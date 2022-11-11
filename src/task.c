@@ -7,19 +7,20 @@
 static void TaskMainDummy1(void);
 static void TaskMainDummy2(void);
 static void TaskMainDummy3(void);
-static void IwramFree(void*);
-static struct Task* TaskGetNextSlot(void);
+static void IwramFree(void *);
+static struct Task *TaskGetNextSlot(void);
 
-u32 TasksInit(void) {
-    struct Task* cur;
-    struct IwramNode* heapRoot;
+u32 TasksInit(void)
+{
+    struct Task *cur;
+    struct IwramNode *heapRoot;
     s32 i;
     gCurTask = NULL;
     gNextTask = NULL;
     gNumTasks = 0;
 
     // 0x4 * MAX_TASK_NUM = 0x200, but that woud assume gTasks is an array of pointers
-    DmaFill32(3, 0, gTasks, 0x200); 
+    DmaFill32(3, 0, gTasks, 0x200);
 
     for (i = 0; i < MAX_TASK_NUM; ++i)
         gTaskPtrs[i] = &gTasks[i];
@@ -40,8 +41,8 @@ u32 TasksInit(void) {
         return 0;
     }
 
-    ((struct Task*)(cur->next + IWRAM_START))->prev = (u32)cur;
-    cur = (struct Task*)(cur->next + IWRAM_START);
+    ((struct Task *)(cur->next + IWRAM_START))->prev = (u32)cur;
+    cur = (struct Task *)(cur->next + IWRAM_START);
     cur->main = TaskMainDummy2;
     cur->priority = 0xffff;
     cur->flags = 0;
@@ -52,18 +53,19 @@ u32 TasksInit(void) {
     gEmptyTask.next = 0;
     gEmptyTask.structOffset = (uintptr_t)iwram_end;
     // initialize IWRAM heap -- a huge node
-    heapRoot = (struct IwramNode*)&gIwramHeap[0];
+    heapRoot = (struct IwramNode *)&gIwramHeap[0];
     heapRoot->next = 0;
     heapRoot->state = sizeof(gIwramHeap);
     return 1;
 }
 
-struct Task* TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
-                        TaskDestructor taskDestructor) {
-    struct Task* slow;
-    struct Task* task;
+struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
+                        TaskDestructor taskDestructor)
+{
+    struct Task *slow;
+    struct Task *task;
     u16 fast;
-    struct EwramNode* temp;
+    struct EwramNode *temp;
 
     // ???
     do
@@ -74,7 +76,7 @@ struct Task* TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     slow = NULL;
 
     if (gNumTasks < MAX_TASK_NUM) {
-        struct Task* nextSlot = gTaskPtrs[gNumTasks++];
+        struct Task *nextSlot = gTaskPtrs[gNumTasks++];
         task = nextSlot;
     }
 
@@ -96,20 +98,21 @@ struct Task* TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     slow = gTaskPtrs[0];
     fast = slow->next;
     while ((fast + IWRAM_START) != IWRAM_START) {
-        if (((struct Task*)(fast + IWRAM_START))->priority > priority) {
-            ((struct Task*)(fast + IWRAM_START))->prev = (uintptr_t)task;
+        if (((struct Task *)(fast + IWRAM_START))->priority > priority) {
+            ((struct Task *)(fast + IWRAM_START))->prev = (uintptr_t)task;
             task->next = slow->next;
             task->prev = (uintptr_t)slow;
             slow->next = (uintptr_t)task;
             break;
         }
-        slow = (struct Task*)(fast + IWRAM_START);
-        fast = ((struct Task*)(fast + IWRAM_START))->next;
+        slow = (struct Task *)(fast + IWRAM_START);
+        fast = ((struct Task *)(fast + IWRAM_START))->next;
     }
     return task;
 }
 
-void TaskDestroy(struct Task* task) {
+void TaskDestroy(struct Task *task)
+{
     u32 next, prev;
     if (!(task->flags & TASK_DESTROY_DISABLED)) {
         prev = task->prev + IWRAM_START;
@@ -121,16 +124,16 @@ void TaskDestroy(struct Task* task) {
                 }
 
                 if (task == gNextTask) {
-                    gNextTask = (struct Task*)(task->next + IWRAM_START);
+                    gNextTask = (struct Task *)(task->next + IWRAM_START);
                 }
 
                 prev = task->prev + IWRAM_START;
                 next = task->next + IWRAM_START;
-                ((struct Task*)prev)->next = next;
-                ((struct Task*)next)->prev = prev;
+                ((struct Task *)prev)->next = next;
+                ((struct Task *)next)->prev = prev;
 
                 if (task->structOffset != 0) {
-                    IwramFree(task->structOffset + (void*)IWRAM_START);
+                    IwramFree(task->structOffset + (void *)IWRAM_START);
                 }
 
                 gTaskPtrs[--gNumTasks] = task;
@@ -149,11 +152,12 @@ void TaskDestroy(struct Task* task) {
     }
 }
 
-void TasksExec(void) {
+void TasksExec(void)
+{
     gCurTask = gTaskPtrs[0];
-    if (!(gFlags & 0x800) && (gTaskPtrs[0] != (struct Task*)IWRAM_START)) {
-        while (gCurTask != (struct Task*)IWRAM_START) {
-            gNextTask = (struct Task*)(IWRAM_START + gCurTask->next);
+    if (!(gFlags & 0x800) && (gTaskPtrs[0] != (struct Task *)IWRAM_START)) {
+        while (gCurTask != (struct Task *)IWRAM_START) {
+            gNextTask = (struct Task *)(IWRAM_START + gCurTask->next);
 
             if (!(gCurTask->flags & 1)) {
                 gCurTask->main();
@@ -165,9 +169,9 @@ void TasksExec(void) {
                 gExecSoundMain = FALSE;
             }
         }
-    } else if (gTaskPtrs[0] != (struct Task*)IWRAM_START) {
-        while (gCurTask != (struct Task*)IWRAM_START) {
-            gNextTask = (struct Task*)(IWRAM_START + gCurTask->next);
+    } else if (gTaskPtrs[0] != (struct Task *)IWRAM_START) {
+        while (gCurTask != (struct Task *)IWRAM_START) {
+            gNextTask = (struct Task *)(IWRAM_START + gCurTask->next);
 
             if ((gCurTask->flags & TASK_x0004) && !(gCurTask->flags & TASK_INACTIVE)) {
                 gCurTask->main();
@@ -184,7 +188,8 @@ void TasksExec(void) {
     gNextTask = NULL;
 }
 
-void* IwramMalloc(u16 req) {
+void *IwramMalloc(u16 req)
+{
     struct IwramNode *cur, *next;
     u16 size = req;
     size = (size + 3) >> 2;
@@ -192,7 +197,7 @@ void* IwramMalloc(u16 req) {
         return 0;
     }
     size = (size << 2) + sizeof(struct IwramNode);
-    cur = (struct IwramNode*)&gIwramHeap[0];
+    cur = (struct IwramNode *)&gIwramHeap[0];
     while (1) {
         s16 sizeSigned = size;
         if (sizeSigned <= cur->state) {
@@ -202,57 +207,59 @@ void* IwramMalloc(u16 req) {
                     if ((cur->next + IWRAM_START) == IWRAM_START) {
                         return NULL;
                     }
-                    cur = (struct IwramNode*)(cur->next + IWRAM_START);
+                    cur = (struct IwramNode *)(cur->next + IWRAM_START);
                     continue;
                 }
                 // shrink the original node
-                next = (struct IwramNode*)((void*)cur + size);
+                next = (struct IwramNode *)((void *)cur + size);
                 next->next = cur->next;
                 next->state = cur->state - size;
                 cur->next = (uintptr_t)next;
             }
             cur->state = -size;
-            
+
             // Return the space now allocated to the node
             return cur->space;
         }
         if ((cur->next + IWRAM_START) == IWRAM_START) {
             return NULL;
         }
-        cur = (struct IwramNode*)(cur->next + IWRAM_START);
+        cur = (struct IwramNode *)(cur->next + IWRAM_START);
     };
 }
 
-static void IwramFree(void* p) {
+static void IwramFree(void *p)
+{
     struct IwramNode *node = p, *fast;
 #ifndef NON_MATCHING
-    register struct IwramNode* slow asm("r1");
+    register struct IwramNode *slow asm("r1");
 #else
-    struct IwramNode* r1;
+    struct IwramNode *r1;
 #endif
     node--;
-    slow = (struct IwramNode*)&gIwramHeap[0];
+    slow = (struct IwramNode *)&gIwramHeap[0];
     fast = slow;
 
     if (node != slow) {
         do {
             slow = fast;
-            fast = (struct IwramNode*)(IWRAM_START + slow->next);
+            fast = (struct IwramNode *)(IWRAM_START + slow->next);
         } while (node != fast);
     }
     if (node->state < 0) {
         node->state = -node->state;
     }
-    if ((struct IwramNode*)(slow->state + (void*)slow) == node) {
-        u16 state = slow->state;  // not actual code. only for handling side effect of inline asm
+    if ((struct IwramNode *)(slow->state + (void *)slow) == node) {
+        u16 state = slow->state; // not actual code. only for handling side effect of
+                                 // inline asm
         if (slow->state > 0) {
             slow->next = fast->next;
             slow->state = state + node->state;
             node = slow;
         }
     }
-    fast = (struct IwramNode*)((void*)node + node->state);
-    if (fast == (struct IwramNode*)(IWRAM_START + node->next)) {
+    fast = (struct IwramNode *)((void *)node + node->state);
+    if (fast == (struct IwramNode *)(IWRAM_START + node->next)) {
         if (fast->state > 0) {
             node->state += fast->state;
             node->next = fast->next;
@@ -261,35 +268,34 @@ static void IwramFree(void* p) {
 }
 
 /* The function is probably for cleaning up the IWRAM nodes, but it's not working. */
-UNUSED static void sub_80028DC(void) {
-    struct IwramNode* cur = (struct IwramNode*)&gIwramHeap[0];
+UNUSED static void sub_80028DC(void)
+{
+    struct IwramNode *cur = (struct IwramNode *)&gIwramHeap[0];
     s32 curStateBackup;
     s32 i;
     u16 nextNodeOffset;
-    void* nextNodeSpace;
-    void* space;
+    void *nextNodeSpace;
+    void *space;
 
     while ((cur->next + IWRAM_START) != IWRAM_START) {
         if (cur->state >= 0) {
-            cur->next += 0;  // load again pls
+            cur->next += 0; // load again pls
             nextNodeOffset = cur->next;
-            if (((struct IwramNode*)(cur->next + IWRAM_START))->state >= 0) {
-                cur->state +=
-                    ((struct IwramNode*)(cur->next + IWRAM_START))->state;
-                cur->next =
-                    ((struct IwramNode*)(cur->next + IWRAM_START))->next;
+            if (((struct IwramNode *)(cur->next + IWRAM_START))->state >= 0) {
+                cur->state += ((struct IwramNode *)(cur->next + IWRAM_START))->state;
+                cur->next = ((struct IwramNode *)(cur->next + IWRAM_START))->next;
             } else {
-                nextNodeSpace = cur->next + (void*)(IWRAM_START + offsetof(struct IwramNode, space));
+                nextNodeSpace = cur->next
+                    + (void *)(IWRAM_START + offsetof(struct IwramNode, space));
                 space = cur->space;
                 curStateBackup = cur->state;
-                cur->state =
-                    ((struct IwramNode*)(cur->next + IWRAM_START))->state;
+                cur->state = ((struct IwramNode *)(cur->next + IWRAM_START))->state;
 
 #ifndef NON_MATCHING
-                ++nextNodeOffset, --nextNodeOffset;  // why do you insist on loading here?
+                ++nextNodeOffset, --nextNodeOffset; // why do you insist on loading here?
 #endif
 
-                cur->next = ((struct IwramNode*)(nextNodeOffset + IWRAM_START))->next;
+                cur->next = ((struct IwramNode *)(nextNodeOffset + IWRAM_START))->next;
                 for (i = 0; i < MAX_TASK_NUM; i++) {
                     if (gTasks[i].structOffset == (u16)(uintptr_t)nextNodeSpace) {
                         gTasks[i].structOffset = (u32)space;
@@ -297,9 +303,10 @@ UNUSED static void sub_80028DC(void) {
                     }
                 }
 
-                DmaCopy32(3, nextNodeSpace, space, cur->state + sizeof(struct IwramNode));
+                DmaCopy32(3, nextNodeSpace, space,
+                          cur->state + sizeof(struct IwramNode));
                 {
-                    struct IwramNode* newLoc = (void*)cur + cur->state;
+                    struct IwramNode *newLoc = (void *)cur + cur->state;
                     newLoc->next = cur->next;
                     newLoc->state = curStateBackup;
                     cur = newLoc;
@@ -307,12 +314,13 @@ UNUSED static void sub_80028DC(void) {
                 }
             }
         } else {
-            cur = (struct IwramNode*)(cur->next + IWRAM_START);
+            cur = (struct IwramNode *)(cur->next + IWRAM_START);
         }
     }
 }
 
-static struct Task* TaskGetNextSlot(void) {
+static struct Task *TaskGetNextSlot(void)
+{
     if (gNumTasks >= MAX_TASK_NUM) {
         return NULL;
     } else {
@@ -320,7 +328,8 @@ static struct Task* TaskGetNextSlot(void) {
     }
 }
 
-void TasksDestroyInPriorityRange(u16 lbound, u16 rbound) {
+void TasksDestroyInPriorityRange(u16 lbound, u16 rbound)
+{
     struct Task *cur = gTaskPtrs[0];
     u32 curOffset = (u16)(uintptr_t)cur;
 
@@ -329,13 +338,13 @@ void TasksDestroyInPriorityRange(u16 lbound, u16 rbound) {
         if (priority >= lbound) {
             while (priority < rbound) {
                 struct Task *prev = cur;
-                cur = (struct Task*)(prev->next + IWRAM_START);
+                cur = (struct Task *)(prev->next + IWRAM_START);
 
                 if (prev != gTaskPtrs[0] && prev != gTaskPtrs[1]) {
                     TaskDestroy(prev);
                 }
 
-                if (cur == (struct Task*)IWRAM_START) {
+                if (cur == (struct Task *)IWRAM_START) {
                     break;
                 } else if (1) {
                     priority = cur->priority;
@@ -346,12 +355,12 @@ void TasksDestroyInPriorityRange(u16 lbound, u16 rbound) {
             return;
         }
         curOffset = cur->next;
-        cur = (struct Task*)(curOffset + IWRAM_START);
+        cur = (struct Task *)(curOffset + IWRAM_START);
     }
 }
 
-static void TaskMainDummy1(void) {}
+static void TaskMainDummy1(void) { }
 
-static void TaskMainDummy2(void) {}
+static void TaskMainDummy2(void) { }
 
-static void TaskMainDummy3(void) {}
+static void TaskMainDummy3(void) { }

@@ -8,10 +8,12 @@
 
 void sub_806D788(void);
 void sub_806D2C8(void);
-void sub_806D548(struct UNK_0808B3FC_UNK240* element, void*, s16, u8, const struct UNK_80DF670*);
-void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16, s16, const struct UNK_80DF670*);
-void sub_806D830(struct UNK_0808B3FC_UNK240* element, s16, s16, const struct UNK_80DF670*);
-
+void sub_806D548(struct UNK_0808B3FC_UNK240 *element, void *, s16, u8,
+                 const struct UNK_80DF670 *);
+void sub_806D7D0(struct UNK_0808B3FC_UNK240 *element, s16, s16,
+                 const struct UNK_80DF670 *);
+void sub_806D830(struct UNK_0808B3FC_UNK240 *element, s16, s16,
+                 const struct UNK_80DF670 *);
 
 void sub_806D5CC(void);
 void sub_806D388(void);
@@ -32,16 +34,16 @@ void sub_806D6DC(void);
 void sub_806D5CC(void);
 void sub_806D740(void);
 
-static const struct UNK_80DF670 gUnknown_080DF668 = { 
-    .unk0 = 884, 
-    .unk2 = 0, 
-    .unk4 = 2, 
-    .unk6 = 16, 
-    .unk7 = 0, 
+static const struct UNK_80DF670 gUnknown_080DF668 = {
+    .unk0 = 884,
+    .unk2 = 0,
+    .unk4 = 2,
+    .unk6 = 16,
+    .unk7 = 0,
 };
 
 // character sprites
-static const struct UNK_80DF670* const gUnknown_080DF670[5] = {
+static const struct UNK_80DF670 *const gUnknown_080DF670[5] = {
     [CHARACTER_SONIC] = &gUnknown_080DF2F8[0],
     [CHARACTER_CREAM] = &gUnknown_080DF2F8[22],
     [CHARACTER_TAILS] = &gUnknown_080DF2F8[44],
@@ -52,36 +54,22 @@ static const struct UNK_80DF670* const gUnknown_080DF670[5] = {
 typedef void (*PlayerStateHandler)(void);
 
 static PlayerStateHandler const sPlayerStateHandlers[] = {
-    sub_806D5CC,
-    sub_806D388,
-    sub_806D424,
-    sub_806D484,
-    sub_806D4E4,
-    sub_806D5D0,
-    sub_806D5D0,
-    sub_806D634,
-    sub_806D698,
-    sub_806D388,
-    sub_806D5D0,
-    sub_806D5D0,
-    sub_806D5D0,
-    sub_806D4E4,
-    sub_806D388,
-    sub_806D6DC,
-    sub_806D5CC,
-    sub_806D740,
+    sub_806D5CC, sub_806D388, sub_806D424, sub_806D484, sub_806D4E4, sub_806D5D0,
+    sub_806D5D0, sub_806D634, sub_806D698, sub_806D388, sub_806D5D0, sub_806D5D0,
+    sub_806D5D0, sub_806D4E4, sub_806D388, sub_806D6DC, sub_806D5CC, sub_806D740,
 };
 
-struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
-    const struct UNK_80DF670* characterSprites[5];
+struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
+{
+    const struct UNK_80DF670 *characterSprites[5];
     u8 lang;
     s16 result;
     u32 unk5B5C;
-    void* ram;
+    void *ram;
     u32 temp;
 
-    struct Task* t;
-    struct SpecialStagePlayer* player;
+    struct Task *t;
+    struct SpecialStagePlayer *player;
 
     memcpy(&characterSprites, &gUnknown_080DF670, 0x14);
     lang = stage->zone;
@@ -117,8 +105,8 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     sub_806D548(&player->unk38, player->unk9C, stage->unk5CC, 10, &gUnknown_080DF668);
 
     {
-        struct UNK_0808B3FC_UNK240* element = &player->roboArrow;
-        u16* affine = &gOamBuffer[120].all.affineParam;
+        struct UNK_0808B3FC_UNK240 *element = &player->roboArrow;
+        u16 *affine = &gOamBuffer[120].all.affineParam;
 
         element->unk4 = player->unkA0;
         element->unk8 = 0;
@@ -129,24 +117,24 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
         element->unk1A = 0;
         element->unk1C = 0;
         element->unk1E = -1;
-        
+
         element->unk20 = temp;
         element->unk21 = -1;
         element->unk22 = 0x10;
         element->unk25 = 0;
         element->unk28 = -1;
-        
+
         if (stage->paused == FALSE) {
             sub_8004558(element);
         }
 
         *affine = 0x100;
-        affine+=4;
+        affine += 4;
         *affine = 0;
-        affine+=4;
+        affine += 4;
         *affine = 0;
-        affine+=4;
-        *affine= 0x100;
+        affine += 4;
+        *affine = 0x100;
     }
 
     if (stage->unk5B7 == FALSE) {
@@ -183,12 +171,13 @@ struct Task* CreateSpecialStagePlayer(struct SpecialStage* stage) {
     return t;
 }
 
-void sub_806D2C8(void) {
+void sub_806D2C8(void)
+{
     PlayerStateHandler stateHandlers[18];
     struct UNK_0808B3FC_UNK240 *unk8, *unk38;
-    
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
+
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
 
     memcpy(stateHandlers, sPlayerStateHandlers, sizeof(sPlayerStateHandlers));
 
@@ -201,7 +190,7 @@ void sub_806D2C8(void) {
 
     unk8 = &player->unk8;
     unk38 = &player->unk38;
-    
+
     if (player->unkB6 != 0 && stage->paused == FALSE) {
         if ((--player->unkB6) & 2) {
             sub_80051E8(unk8);
@@ -220,13 +209,14 @@ void sub_806D2C8(void) {
 // Animations for different player speeds
 
 // Stopped?
-void sub_806D388(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4;
-    struct UNK_0808B3FC_UNK240* unk8;
+void sub_806D388(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+    const struct UNK_80DF670 *unkC4;
+    struct UNK_0808B3FC_UNK240 *unk8;
     u32 index = 0;
-    
+
     if (stage->state != 8) {
         if (gInput & DPAD_LEFT) {
             index = 1;
@@ -247,12 +237,13 @@ void sub_806D388(void) {
 }
 
 // Moving?
-void sub_806D424(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
+void sub_806D424(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
 
-    const struct UNK_80DF670* unkC4;
-    struct UNK_0808B3FC_UNK240* unk8;
+    const struct UNK_80DF670 *unkC4;
+    struct UNK_0808B3FC_UNK240 *unk8;
 
     u32 index = 3;
     if (gInput & DPAD_LEFT) {
@@ -267,12 +258,13 @@ void sub_806D424(void) {
 }
 
 // Running?
-void sub_806D484(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
+void sub_806D484(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
 
-    const struct UNK_80DF670* unkC4;
-    struct UNK_0808B3FC_UNK240* unk8;
+    const struct UNK_80DF670 *unkC4;
+    struct UNK_0808B3FC_UNK240 *unk8;
 
     u32 index = 6;
     if (gInput & DPAD_LEFT) {
@@ -287,12 +279,13 @@ void sub_806D484(void) {
 }
 
 // Sprinting?
-void sub_806D4E4(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
+void sub_806D4E4(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
 
-    const struct UNK_80DF670* unkC4;
-    struct UNK_0808B3FC_UNK240* unk8;
+    const struct UNK_80DF670 *unkC4;
+    struct UNK_0808B3FC_UNK240 *unk8;
 
     u32 index = 9;
     if (gInput & DPAD_LEFT) {
@@ -306,7 +299,9 @@ void sub_806D4E4(void) {
     sub_806D7D0(unk8, player->animSpeed >> 1, stage->unk5CC, unkC4);
 }
 
-void sub_806D548(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a, u8 b, const struct UNK_80DF670* c4) {
+void sub_806D548(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 a, u8 b,
+                 const struct UNK_80DF670 *c4)
+{
     u32 unk10 = 0x1000;
     if (c4->unk7 & 1) {
         unk10 |= 0x400;
@@ -333,60 +328,67 @@ void sub_806D548(struct UNK_0808B3FC_UNK240* element, void* vram, s16 a, u8 b, c
     sub_8004558(element);
 }
 
-UNUSED void sub_806D5CC(void) {}
+UNUSED void sub_806D5CC(void) { }
 
-#define Macro_806D4E(val, val2) ({\
-    ((val) >> 4) + (val2); \
-})\
+#define Macro_806D4E(val, val2) ({ ((val) >> 4) + (val2); })
 
-void sub_806D5D0(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    
-    const struct UNK_80DF670* unkC4 = &player->sprites[12];
+void sub_806D5D0(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+
+    const struct UNK_80DF670 *unkC4 = &player->sprites[12];
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 0xF), unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 0xF),
+                unkC4);
 }
 
-void sub_806D634(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->sprites[15];
+void sub_806D634(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+    const struct UNK_80DF670 *unkC4 = &player->sprites[15];
 
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10), unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10),
+                unkC4);
 }
 
-void sub_806D698(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->sprites[18];
+void sub_806D698(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+    const struct UNK_80DF670 *unkC4 = &player->sprites[18];
 
     sub_806D7D0(&player->unk8, -1, stage->unk5CC, unkC4);
 }
 
-void sub_806D6DC(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->sprites[19];
+void sub_806D6DC(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+    const struct UNK_80DF670 *unkC4 = &player->sprites[19];
 
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10), unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10),
+                unkC4);
 }
 
-void sub_806D740(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = player->unk0;
-    const struct UNK_80DF670* unkC4 = &player->sprites[20];
+void sub_806D740(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = player->unk0;
+    const struct UNK_80DF670 *unkC4 = &player->sprites[20];
 
     sub_806D7D0(&player->unk8, -1, stage->unk5CC - 0xC, unkC4);
 }
 
-void sub_806D788(void) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(gCurTask);
+void sub_806D788(void)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
     if (player->unkBC != 0) {
         s32 temp = --player->unkBC;
         if (temp == 0) {
@@ -396,7 +398,9 @@ void sub_806D788(void) {
     }
 }
 
-void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16 animSpeed, s16 b, const struct UNK_80DF670* anim) {
+void sub_806D7D0(struct UNK_0808B3FC_UNK240 *element, s16 animSpeed, s16 b,
+                 const struct UNK_80DF670 *anim)
+{
     u32 unk10 = 0x1000;
     if (anim->unk7 & 1) {
         unk10 |= 0x400;
@@ -414,7 +418,9 @@ void sub_806D7D0(struct UNK_0808B3FC_UNK240* element, s16 animSpeed, s16 b, cons
     sub_8004558(element);
 }
 
-void sub_806D830(struct UNK_0808B3FC_UNK240* element, s16 a, s16 b, const struct UNK_80DF670* anim) {
+void sub_806D830(struct UNK_0808B3FC_UNK240 *element, s16 a, s16 b,
+                 const struct UNK_80DF670 *anim)
+{
     u8 unk22;
     u32 unk10 = 0x1100;
     if (anim->unk7 & 1) {

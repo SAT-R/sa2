@@ -129,10 +129,14 @@
         "special_stage_physics.h": "c",
         "special_stage_guard_robo.h": "c",
         "special_stage_data.h": "c",
-        "special_stage_tables.h": "c"
+        "special_stage_tables.h": "c",
+        "isagbprint.h": "c",
+        "types.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"
     },
-    "asm-code-lens.donated": true
+    "asm-code-lens.donated": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "xaver.clang-format"
 }

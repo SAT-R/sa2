@@ -6,14 +6,16 @@
 #include "sprite.h"
 #include "trig.h"
 
-void* gUnknown_03005B58 = NULL;
-void* gUnknown_03005B5C = NULL;
+void *gUnknown_03005B58 = NULL;
+void *gUnknown_03005B5C = NULL;
 
-void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 assetId, u32 unk10, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused) {
+void sub_806CA88(struct UNK_0808B3FC_UNK240 *obj, s8 target, u32 size, u16 assetId,
+                 u32 unk10, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused)
+{
     struct UNK_0808B3FC_UNK240 newObj;
-    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_0808B3FC_UNK240 *element;
     element = &newObj;
-   
+
     if (obj != NULL) {
         element = obj;
     }
@@ -26,7 +28,7 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 asset
     } else {
         element->unk4 = gUnknown_03005B5C;
     }
-    
+
     element->unk8 = 0;
     element->unkA = assetId;
     element->unk10 = unk10;
@@ -43,7 +45,7 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 asset
 
     sub_8004558(element);
 
-    switch(target) {
+    switch (target) {
         case RENDER_TARGET_SCREEN:
             gUnknown_03005B5C += size * TILE_SIZE_4BPP;
             // if we render to screen then the sub menu address should reset
@@ -56,8 +58,11 @@ void sub_806CA88(struct UNK_0808B3FC_UNK240* obj, s8 target, u32 size, u16 asset
 }
 
 // TODO: SpecialStageCollectables_UNK874 is probably it's own type
-bool16 sub_806CB84(struct UNK_806CB84* a, struct SpecialStageCollectables_UNK874_2* unk874, struct SpecialStage* stage) {
-    struct SpecialStageWorld* world = TaskGetStructPtr(stage->worldTask);
+bool16 sub_806CB84(struct UNK_806CB84 *a,
+                   struct SpecialStageCollectables_UNK874_2 *unk874,
+                   struct SpecialStage *stage)
+{
+    struct SpecialStageWorld *world = TaskGetStructPtr(stage->worldTask);
     s32 r9;
     s32 r4;
     s16 val2, val;
@@ -75,7 +80,7 @@ bool16 sub_806CB84(struct UNK_806CB84* a, struct SpecialStageCollectables_UNK874
     {
         s32 unk590 = stage->unk94[DISPLAY_HEIGHT - 1][1];
         s32 unk94 = stage->unk94[stage->unk5D1][1];
-    
+
         if (r4 <= unk590 || r4 >= unk94) {
             return FALSE;
         }
@@ -103,12 +108,13 @@ bool16 sub_806CB84(struct UNK_806CB84* a, struct SpecialStageCollectables_UNK874
     {
         s32 r2 = (-(stage->unk94[val][0] >> 1) * 9) >> 3;
         s32 r8 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
-        
+
         if (r9 <= r2 || r9 >= r8) {
             return FALSE;
         }
         a->unkA = val;
-        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
+        a->screenY
+            = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
@@ -116,20 +122,21 @@ bool16 sub_806CB84(struct UNK_806CB84* a, struct SpecialStageCollectables_UNK874
         } else {
             a->unk6 = 0;
         }
-    
+
         a->unkC = world->unkC[val] >> 8;
         a->unk12 = a->unkC;
-    
+
         a->unk10 = 0;
-        a->unkE = 0; 
+        a->unkE = 0;
     }
 
     return TRUE;
 }
 
-void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
-    u16* reference;
-    OamData* oam;
+void sub_806CD68(struct UNK_0808B3FC_UNK240 *element)
+{
+    u16 *reference;
+    OamData *oam;
     u32 unk16, unk18;
     u16 unkC_6;
     u16 unkC_4;
@@ -137,8 +144,8 @@ void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
 
     s16 i;
     // Might be wrong, seems to make sense?
-    struct UNK_0808B3FC_UNK240_UNKC* unkC = (void*)element->unkC;
-    
+    struct UNK_0808B3FC_UNK240_UNKC *unkC = (void *)element->unkC;
+
     element->unk24 = unkC->unk2;
     unkC_4 = unkC->unk4;
     unkC_6 = unkC->unk6;
@@ -161,22 +168,25 @@ void sub_806CD68(struct UNK_0808B3FC_UNK240* element) {
         DmaCopy16(3, &reference[(unkC->unk1 + i) * 3], oam, 0x6);
         attr1_2 = oam->all.attr1 & 0x1FF;
         oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
-        oam->all.attr0 |=  0x300;
+        oam->all.attr0 |= 0x300;
         oam->all.attr1 &= 0xfe00;
         oam->all.attr1 |= ((element->unk10 & 0x1f) << 9);
-        oam->all.attr1 |=  ((unk16 + attr1_2) & 0x1ff);
+        oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
         oam->all.attr2 += element->unk25 * 0x1000;
         oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
         oam->all.attr2 += (((u32)element->unk4 - OBJ_VRAM0) >> 5);
     }
 }
 
-void InitSpecialStageScreenVram(void) {
-    gUnknown_03005B5C = (void*)OBJ_VRAM0;
+void InitSpecialStageScreenVram(void)
+{
+    gUnknown_03005B5C = (void *)OBJ_VRAM0;
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f, u8 g, u16 h, u16 i) {
+void sub_806CEC4(struct Unk_03002400 *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
+                 u16 f, u8 g, u16 h, u16 i)
+{
     background->unk4 = BG_CHAR_ADDR(a);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(b);
@@ -198,7 +208,8 @@ void sub_806CEC4(struct Unk_03002400* background, u32 a, u32 b, u8 assetId, u16 
     sub_8002A3C(background);
 }
 
-s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig) {
+s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)
+{
     s16 result = 0;
 
     while (spriteConfig->unk0 != 0xFFFF) {

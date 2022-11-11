@@ -15,7 +15,7 @@
 #include "title_screen.h"
 #include "constants/text.h"
 
-#define PAK_MODE_MULTI 0
+#define PAK_MODE_MULTI  0
 #define PAK_MODE_SINGLE 1
 
 struct MultiplayerModeSelectScreen {
@@ -37,10 +37,10 @@ struct MultiplayerModeSelectScreen {
 };
 
 static void Task_FadeInAndStartEnterAnim(void);
-static void MultiplayerModeSelectScreenOnDestroy(struct Task*);
+static void MultiplayerModeSelectScreenOnDestroy(struct Task *);
 static void Task_EnterAnimPart2(void);
 static void Task_ScreenMain(void);
-static void RenderUI(struct MultiplayerModeSelectScreen*);
+static void RenderUI(struct MultiplayerModeSelectScreen *);
 static void Task_FadeOutToSelectedMode(void);
 static void Task_FadeOutAndExitToTitleScreen(void);
 static void Task_ExitAndInitSelectedPakMode(void);
@@ -76,12 +76,13 @@ static const struct UNK_080E0D64 sMultiplayerModeSelectScreenText[] = {
     TextElement(4, LANG_ITALIAN, 3, 168, 1098),
 };
 
-void CreateMultiplayerModeSelectScreen(void) {
-    struct Task* t;
-    struct MultiplayerModeSelectScreen* modeScreen;
-    struct UNK_802D4CC_UNK270* unk140;
-    struct UNK_0808B3FC_UNK240* unk80;
-    struct Unk_03002400* unk0;
+void CreateMultiplayerModeSelectScreen(void)
+{
+    struct Task *t;
+    struct MultiplayerModeSelectScreen *modeScreen;
+    struct UNK_802D4CC_UNK270 *unk140;
+    struct UNK_0808B3FC_UNK240 *unk80;
+    struct Unk_03002400 *unk0;
 
     u8 lang = gLoadedSaveGame->unk6 * 4;
     gDispCnt = 0;
@@ -96,7 +97,9 @@ void CreateMultiplayerModeSelectScreen(void) {
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(Task_FadeInAndStartEnterAnim, sizeof(struct MultiplayerModeSelectScreen), 0x2000, 0, MultiplayerModeSelectScreenOnDestroy);
+    t = TaskCreate(Task_FadeInAndStartEnterAnim,
+                   sizeof(struct MultiplayerModeSelectScreen), 0x2000, 0,
+                   MultiplayerModeSelectScreenOnDestroy);
     modeScreen = TaskGetStructPtr(t);
     modeScreen->animFrame = 0;
     modeScreen->pakMode = PAK_MODE_MULTI;
@@ -219,11 +222,11 @@ void CreateMultiplayerModeSelectScreen(void) {
     m4aSongNumStart(MUS_VS_SELECT_PAK_MODE);
 }
 
-
-static void Task_EnterAnimPart1(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_EnterAnimPart1(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
@@ -240,9 +243,10 @@ static void Task_EnterAnimPart1(void) {
     }
 }
 
-static void Task_EnterAnimPart2(void) {
-    struct UNK_0808B3FC_UNK240* unk80;
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_EnterAnimPart2(void)
+{
+    struct UNK_0808B3FC_UNK240 *unk80;
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     if (++modeScreen->animFrame == 32) {
         modeScreen->enterAnimDone = TRUE;
         gCurTask->main = Task_ScreenMain;
@@ -254,7 +258,7 @@ static void Task_EnterAnimPart2(void) {
 
     // TODO: make a macro
     gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
@@ -279,7 +283,7 @@ static void Task_EnterAnimPart2(void) {
     unk80->unk18 = 0x3C;
 
     unk80 = &modeScreen->unkE0;
-    
+
     if (modeScreen->animFrame < 20) {
         unk80->unk16 = -0x5A;
     } else if (modeScreen->animFrame < 30) {
@@ -291,9 +295,10 @@ static void Task_EnterAnimPart2(void) {
     RenderUI(modeScreen);
 }
 
-static void Task_ScreenMain(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270* unk140;
+static void Task_ScreenMain(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *unk140;
     if (gPressedKeys & A_BUTTON) {
         unk140 = &modeScreen->unk140;
         unk140->unk0 = 1;
@@ -319,7 +324,7 @@ static void Task_ScreenMain(void) {
     }
 
     gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
@@ -332,7 +337,7 @@ static void Task_ScreenMain(void) {
     }
 
     if (modeScreen->pakMode != PAK_MODE_MULTI) {
-        struct UNK_0808B3FC_UNK240* subText;
+        struct UNK_0808B3FC_UNK240 *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
         modeScreen->unkB0.unk25 = 1;
         modeScreen->unkE0.unk25 = 0xFF;
@@ -342,21 +347,22 @@ static void Task_ScreenMain(void) {
         subText->unk20 = sMultiplayerModeSelectScreenText[lang + 3].unk6;
         subText->unk21 = 0xFF;
     } else {
-        struct UNK_0808B3FC_UNK240* subText;
+        struct UNK_0808B3FC_UNK240 *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
         modeScreen->unkB0.unk25 = 0;
         modeScreen->unkE0.unk25 = 0;
         subText = &modeScreen->subText;
         subText->unkA = sMultiplayerModeSelectScreenText[lang + 2].unk4;
-        subText->unk20 = sMultiplayerModeSelectScreenText[lang +2].unk6;
-        subText->unk21 = 0xFF;   
+        subText->unk20 = sMultiplayerModeSelectScreenText[lang + 2].unk6;
+        subText->unk21 = 0xFF;
     }
-    
+
     RenderUI(modeScreen);
 }
 
-static void Task_FadeOutToSelectedMode(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_FadeOutToSelectedMode(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
@@ -365,7 +371,7 @@ static void Task_FadeOutToSelectedMode(void) {
     }
 
     gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
@@ -375,8 +381,9 @@ static void Task_FadeOutToSelectedMode(void) {
     RenderUI(modeScreen);
 }
 
-static void Task_FadeOutAndExitToTitleScreen(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_FadeOutAndExitToTitleScreen(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
@@ -385,7 +392,7 @@ static void Task_FadeOutAndExitToTitleScreen(void) {
     }
 
     gUnknown_03002A80 = 2;
-    gUnknown_03002878 = (void*)REG_ADDR_WIN1H;
+    gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
@@ -395,16 +402,18 @@ static void Task_FadeOutAndExitToTitleScreen(void) {
     RenderUI(modeScreen);
 }
 
-static void Task_FadeInAndStartEnterAnim(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_FadeInAndStartEnterAnim(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&modeScreen->unk140) == 1) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }
 }
 
-static void Task_ExitAndInitSelectedPakMode(void) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(gCurTask);
+static void Task_ExitAndInitSelectedPakMode(void)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     u8 pakMode = modeScreen->pakMode;
     TasksDestroyAll();
 
@@ -419,8 +428,9 @@ static void Task_ExitAndInitSelectedPakMode(void) {
     }
 }
 
-static void RenderUI(struct MultiplayerModeSelectScreen* modeScreen) {
-    struct UNK_0808B3FC_UNK240* unk80 = &modeScreen->unk80; 
+static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
+{
+    struct UNK_0808B3FC_UNK240 *unk80 = &modeScreen->unk80;
     sub_80051E8(unk80);
     unk80++;
     sub_80051E8(unk80);
@@ -433,8 +443,9 @@ static void RenderUI(struct MultiplayerModeSelectScreen* modeScreen) {
     };
 }
 
-static void MultiplayerModeSelectScreenOnDestroy(struct Task* t) {
-    struct MultiplayerModeSelectScreen* modeScreen = TaskGetStructPtr(t);
+static void MultiplayerModeSelectScreenOnDestroy(struct Task *t)
+{
+    struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(t);
     VramFree(modeScreen->unk80.unk4);
     VramFree(modeScreen->unkB0.unk4);
     VramFree(modeScreen->unkE0.unk4);

@@ -14,6 +14,6 @@ struct UNK_802D4CC_UNK270 {
 };
 
 // Some sort of fade transition function?
-extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270*);
+extern u8 sub_802D4CC(struct UNK_802D4CC_UNK270 *);
 
 #endif // GUARD_TRANSITION_H

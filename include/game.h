@@ -1,13 +1,13 @@
 #ifndef GUARD_GAME_H
 #define GUARD_GAME_H
 
-#define GAME_MODE_SINGLE_PLAYER 0
-#define GAME_MODE_TIME_ATTACK 1
+#define GAME_MODE_SINGLE_PLAYER    0
+#define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
-#define GAME_MODE_TEAM_PLAY 4
+#define GAME_MODE_TEAM_PLAY    4
 
 #include "global.h"
 #include "multi_sio.h"
@@ -56,7 +56,7 @@ struct MultiplayerPlayer {
     s16 unk50;
 };
 
-extern struct Task* gMultiplayerPlayerTasks[4];
+extern struct Task *gMultiplayerPlayerTasks[4];
 extern s8 gMultiplayerCharacters[4];
 extern s8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054B8;
@@ -99,7 +99,7 @@ struct SomeStruct_59E0 {
     u8 unk6D;
     u8 filler66[30];
     u32 unk8C;
-    struct UNK_3005A70* unk90;
+    struct UNK_3005A70 *unk90;
 };
 
 extern struct SomeStruct_59E0 gPlayer;

@@ -40,6 +40,8 @@ LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
+FORMAT    := clang-format
+
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
 MID2AGB   := tools/mid2agb/mid2agb$(EXE)
@@ -150,6 +152,14 @@ __rom: $(ROM)
 	@echo > /dev/null
 
 tools: $(TOOLDIRS)
+
+format:
+	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
+	@$(FORMAT) -i -style=file $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
+
+check_format:
+	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
+	@$(FORMAT) -i -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
 
 $(TOOLDIRS):
 	@$(MAKE) -C $@

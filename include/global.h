@@ -16,19 +16,18 @@
 #if NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
-#define ASM_FUNC(path, decl)    \
-    NAKED decl {                \
-        asm(".include " #path); \
-    }
+#define ASM_FUNC(path, decl)                                                            \
+    NAKED decl { asm(".include " #path); }
 #endif
 
 #if NON_MATCHING
 #define NONMATCH(path, decl) decl
 #define END_NONMATCH
 #else
-#define NONMATCH(path, decl)    \
-    NAKED decl {                \
-        asm(".include " #path); \
+#define NONMATCH(path, decl)                                                            \
+    NAKED decl                                                                          \
+    {                                                                                   \
+        asm(".include " #path);                                                         \
         if (0)
 #define END_NONMATCH }
 #endif
@@ -36,39 +35,42 @@
 /// IDE support
 #if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
 // We define these when using certain IDEs to fool preproc
-#define _(x)        (x)
-#define __(x)       (x)
-#define INCBIN(...) {0}
-#define INCBIN_U8   INCBIN
-#define INCBIN_U16  INCBIN
-#define INCBIN_U32  INCBIN
-#define INCBIN_S8   INCBIN
-#define INCBIN_S16  INCBIN
-#define INCBIN_S32  INCBIN
+#define _(x)  (x)
+#define __(x) (x)
+#define INCBIN(...)                                                                     \
+    {                                                                                   \
+        0                                                                               \
+    }
+#define INCBIN_U8  INCBIN
+#define INCBIN_U16 INCBIN
+#define INCBIN_U32 INCBIN
+#define INCBIN_S8  INCBIN
+#define INCBIN_S16 INCBIN
+#define INCBIN_S32 INCBIN
 #endif // IDE support
 
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 // Converts a number to Q8.8 fixed-point format
-#define Q_8_8(n) ((s16)((n) * 256))
+#define Q_8_8(n) ((s16)((n)*256))
 
 // Converts a number to Q16.16 fixed-point format (<< 0x10)
-#define Q_16_16(n) ((s32)((n) * 0x10000))
+#define Q_16_16(n) ((s32)((n)*0x10000))
 
 // Converts a number to Q4.12 fixed-point format
-#define Q_4_12(n)  ((s16)((n) * 4096))
+#define Q_4_12(n) ((s16)((n)*4096))
 
 // Converts a number to Q2.14 fixed-point format
-#define Q_2_14(n) ((s16)((n) * 0x4000))
+#define Q_2_14(n) ((s16)((n)*0x4000))
 
 // Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n)  ((s32)((n) << 8))
+#define Q_24_8(n) ((s32)((n) << 8))
 
 // Converts a Q8.8 fixed-point format number to a regular integer
 #define Q_8_8_TO_INT(n) ((int)((n) / 256))
 
 // Converts a Q4.12 fixed-point format number to a regular integer
-#define Q_4_12_TO_INT(n)  ((int)((n) / 4096))
+#define Q_4_12_TO_INT(n) ((int)((n) / 4096))
 
 // Converts a Q24.8 fixed-point format number to a regular integer
 #define Q_24_8_TO_INT(n) ((int)((n) >> 8))
@@ -76,9 +78,9 @@
 // Converts a Q16.16 fixed-point format number to a regular integer
 #define Q_16_16_TO_INT(n) ((int)((n) >> 0x10))
 
-#define RED_VALUE(color) ((color) & 0x1F)
+#define RED_VALUE(color)   ((color)&0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
-#define BLUE_VALUE(color) (((color) >> 10) & 0x1F)
+#define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
@@ -86,7 +88,8 @@
 
 #define GetBit(x, y) ((x) >> (y)&1)
 
-// 60 is not exactly true as the GBA's FPS, but it's what they went with for the calculation
+// 60 is not exactly true as the GBA's FPS, but it's what they went
+// with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
 struct BlendRegs {
@@ -121,4 +124,4 @@ extern void *ewram_end;
 
 extern void *rom_footer;
 
-#endif  // GUARD_GLOBAL_H
+#endif // GUARD_GLOBAL_H

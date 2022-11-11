@@ -19,20 +19,18 @@ struct CourseStartCountdown {
 };
 
 const struct UNK_080E0D64 gUnknown_080D7518[5] = {
-    TextElementAlt4(1, 0, 30),
-    TextElementAlt4(1, 0, 121),
-    TextElementAlt4(1, 0, 212),
-    TextElementAlt4(1, 0, 303),
-    TextElementAlt4(1, 0, 394),
+    TextElementAlt4(1, 0, 30),  TextElementAlt4(1, 0, 121), TextElementAlt4(1, 0, 212),
+    TextElementAlt4(1, 0, 303), TextElementAlt4(1, 0, 394),
 };
 
 void sub_8036168(void);
-void sub_8036638(struct Task*);
+void sub_8036638(struct Task *);
 
-void CreateCourseStartCountdown(u8 mode) {
-    struct Task* t;
-    struct CourseStartCountdown* countdown;
-    struct UNK_0808B3FC_UNK240* element;
+void CreateCourseStartCountdown(u8 mode)
+{
+    struct Task *t;
+    struct CourseStartCountdown *countdown;
+    struct UNK_0808B3FC_UNK240 *element;
 
     gUnknown_03005424 |= 0x100;
     t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
@@ -46,7 +44,7 @@ void CreateCourseStartCountdown(u8 mode) {
     } else {
         countdown->unk68 = 0xB4;
     }
-    
+
     element = &countdown->unk30;
     element->unk4 = VramMalloc(4);
     element->unkA = 0x469;
@@ -80,12 +78,14 @@ void sub_8018818(void);
 void CreateRaceStartMessage(void);
 void sub_8036398(void);
 
-void sub_8036168(void) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;
+void sub_8036168(void)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
 
     // Skip intro
-    if (!IsMultiplayer() && countdown->unk68 > 0xB4 && gPressedKeys & (A_BUTTON | B_BUTTON)) {
+    if (!IsMultiplayer() && countdown->unk68 > 0xB4
+        && gPressedKeys & (A_BUTTON | B_BUTTON)) {
         countdown->unk68 = 0xB4;
     }
 
@@ -155,14 +155,16 @@ void sub_8036168(void) {
     }
 }
 
-void sub_8036398(void) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &countdown->unk0;
+void sub_8036398(void)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element = &countdown->unk0;
 
     element->unk16 = countdown->unk60 - gUnknown_03005960.unk0;
     element->unk18 = countdown->unk64 - gUnknown_03005960.unk4;
 
-    if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0 || (s16)element->unk18 > 288) {
+    if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0
+        || (s16)element->unk18 > 288) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -172,21 +174,22 @@ void sub_8036398(void) {
 }
 
 void sub_8036524(void);
-void sub_8036654(struct Task*);
+void sub_8036654(struct Task *);
 
 struct RaceStartMessage {
-      struct UNK_0808B3FC_UNK240 unk0;
-      struct UNK_808D124_UNK180 unk30;
-      struct UNK_0808B3FC_UNK240 unk3C;
-      struct UNK_808D124_UNK180 unk6C;
-      u16 unk78;
-      u16 filler7A;
+    struct UNK_0808B3FC_UNK240 unk0;
+    struct UNK_808D124_UNK180 unk30;
+    struct UNK_0808B3FC_UNK240 unk3C;
+    struct UNK_808D124_UNK180 unk6C;
+    u16 unk78;
+    u16 filler7A;
 }; /* 0x7C */
 
-void CreateRaceStartMessage(void) {
-    struct Task* t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240* element;
+void CreateRaceStartMessage(void)
+{
+    struct Task *t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
+    struct UNK_0808B3FC_UNK240 *element;
 
     startMessage->unk78 = 0x3C;
     element = &startMessage->unk0;
@@ -218,10 +221,11 @@ void CreateRaceStartMessage(void) {
     element->unk10 = gUnknown_030054B8++ | 0x60;
 }
 
-void sub_8036524(void) {
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element, *element2;
-    struct UNK_808D124_UNK180* transformConfig;
+void sub_8036524(void)
+{
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element, *element2;
+    struct UNK_808D124_UNK180 *transformConfig;
     s16 unk78;
     startMessage->unk78--;
 
@@ -275,14 +279,16 @@ void sub_8036524(void) {
     sub_80051E8(element);
 }
 
-void sub_8036638(struct Task* t) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(t);
+void sub_8036638(struct Task *t)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(t);
     VramFree(countdown->unk0.unk4);
     VramFree(countdown->unk30.unk4);
 }
 
-void sub_8036654(struct Task* t) {
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(t);
+void sub_8036654(struct Task *t)
+{
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
     VramFree(startMessage->unk3C.unk4);
     VramFree(startMessage->unk0.unk4);
 }
