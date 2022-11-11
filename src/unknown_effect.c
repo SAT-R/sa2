@@ -159,7 +159,7 @@ void sub_80873A4(void);
 void sub_8087368(void)
 {
     struct Task *t = TaskCreate(sub_8087028, sizeof(struct UnknownEffect87028), 0x8000,
-                                NULL, sub_80873EC);
+                                0, sub_80873EC);
     struct UnknownEffect87028 *effect = TaskGetStructPtr(t);
     effect->unk0 = 0;
     sub_80873A4();
