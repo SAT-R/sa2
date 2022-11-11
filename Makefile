@@ -40,7 +40,7 @@ LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
-FORMAT    := clang-format
+FORMAT    := clang-format-14
 
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
