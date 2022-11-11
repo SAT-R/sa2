@@ -3,4 +3,4 @@
 
 void IntrMain(void);
 
-#endif  // GUARD_FUNCTIONS_H
+#endif // GUARD_FUNCTIONS_H

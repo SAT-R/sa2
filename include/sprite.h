@@ -58,7 +58,7 @@ struct UNK_0808B3FC_UNK240_UNKC {
 struct UNK_0808B3FC_UNK240 {
     // These values are part of some other struct
     u32 unk0;
-    void* unk4; // something vram
+    void *unk4; // something vram
 
     u16 unk8;
 
@@ -80,7 +80,7 @@ struct UNK_0808B3FC_UNK240 {
 
     u16 unk1C;
     u16 unk1E;
-    
+
     // variant
     u8 unk20;
 
@@ -103,8 +103,8 @@ struct UNK_0808B3FC_UNK240 {
 
 struct Unk_03002EC0 {
     /* TODO: fixing types breaks sub_80021C4. */
-    u32 unk0;  // const void *
-    u32 unk4;  // void *
+    u32 unk0; // const void *
+    u32 unk4; // void *
     u16 unk8;
     u8 fillerA[2];
 };
@@ -132,26 +132,26 @@ struct UNK_080E0D64 {
 };
 
 // Register menu item
-u32 sub_8004558(struct UNK_0808B3FC_UNK240*);
+u32 sub_8004558(struct UNK_0808B3FC_UNK240 *);
 
-void sub_80051E8(struct UNK_0808B3FC_UNK240*);
+void sub_80051E8(struct UNK_0808B3FC_UNK240 *);
 void sub_8002A3C(struct Unk_03002400 *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);
 void DrawToOamBuffer(void);
-OamData* sub_80058B4(u8 size);
+OamData *sub_80058B4(u8 size);
 
 // TransformSprite
-void sub_8004860(struct UNK_0808B3FC_UNK240*, struct UNK_808D124_UNK180*);
+void sub_8004860(struct UNK_0808B3FC_UNK240 *, struct UNK_808D124_UNK180 *);
 
-void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs*);
+void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs *);
 
-void sub_80036E0(struct UNK_0808B3FC_UNK240*);
-void sub_8003914(struct UNK_0808B3FC_UNK240*);
+void sub_80036E0(struct UNK_0808B3FC_UNK240 *);
+void sub_8003914(struct UNK_0808B3FC_UNK240 *);
 void sub_80047A0(u16, u16, u16, u16);
 
 // Probably a list of sprites to draw to screen
-extern struct Unk_03002EC0* gUnknown_030027A0[];
+extern struct Unk_03002EC0 *gUnknown_030027A0[];
 
 #endif

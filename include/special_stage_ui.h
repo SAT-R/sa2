@@ -6,7 +6,7 @@
 #include "special_stage.h"
 
 struct SpecialStageUI {
-    struct SpecialStage* stage;
+    struct SpecialStage *stage;
     struct UNK_0808B3FC_UNK240 timeSymbol;
     struct UNK_0808B3FC_UNK240 timeHundreds;
     struct UNK_0808B3FC_UNK240 timeTens;
@@ -21,7 +21,7 @@ struct SpecialStageUI {
     struct UNK_0808B3FC_UNK240 multiplier;
     struct UNK_0808B3FC_UNK240 unk244;
     struct UNK_0808B3FC_UNK240 pauseMenu;
-    void* unk2A4;
+    void *unk2A4;
     s8 unk2A8;
     s8 wasPaused;
     s16 unk2AA;
@@ -30,7 +30,7 @@ struct SpecialStageUI {
 }; /* size 0x2B8 */
 
 struct SpecialStageResultsScreen {
-    struct SpecialStage* stage;
+    struct SpecialStage *stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_0808B3FC_UNK240 chaosEmerald[7];
@@ -49,8 +49,8 @@ struct SpecialStageResultsScreen {
     u16 unk51E;
 }; /* size 0x520 */
 
-struct Task* CreateSpecialStageUI(struct SpecialStage*);
-struct Task* CreateSpecialStageResultsScreen(struct SpecialStage*);
-void SpecialStageResultsScreenNewEmeraldSequence(struct SpecialStage*);
+struct Task *CreateSpecialStageUI(struct SpecialStage *);
+struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *);
+void SpecialStageResultsScreenNewEmeraldSequence(struct SpecialStage *);
 
 #endif

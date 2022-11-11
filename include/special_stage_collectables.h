@@ -6,7 +6,7 @@
 #include "special_stage.h"
 
 #define MAX_RING_PARTICLES 8
-#define MAX_OBJECTS 323
+#define MAX_OBJECTS        323
 
 // There is probably one of these which has different types
 struct SpecialStageCollectables_UNK874 {
@@ -22,7 +22,7 @@ struct SpecialStageCollectables_UNK874 {
 }; /* size 0x14 */
 
 struct SpecialStageCollectables {
-    struct SpecialStage* stage;
+    struct SpecialStage *stage;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_0808B3FC_UNK240 unk64;
@@ -32,7 +32,7 @@ struct SpecialStageCollectables {
 
     struct UNK_0808B3FC_UNK240 unk1B4[16];
     struct UNK_0808B3FC_UNK240 unk4B4[16];
-    
+
     struct UNK_0808B3FC_UNK240 unk7B4[4];
     struct SpecialStageCollectables_UNK874 unk874[MAX_RING_PARTICLES];
     s8 objStates[MAX_OBJECTS];
@@ -40,7 +40,7 @@ struct SpecialStageCollectables {
     s16 animFrame;
 }; /* size 0xA5C */
 
-struct Task* CreateSpecialStageCollectables(struct SpecialStage*);
-void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num);
+struct Task *CreateSpecialStageCollectables(struct SpecialStage *);
+void SpecialStageHandleLoseRings(struct SpecialStage *stage, s16 num);
 
 #endif

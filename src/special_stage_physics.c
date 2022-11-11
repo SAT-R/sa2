@@ -29,48 +29,41 @@ void sub_806FB00(void);
 void sub_806F300(void);
 void sub_806F300(void);
 
-static s16 CalcGuardRoboPointerAngle(struct SpecialStage*);
+static s16 CalcGuardRoboPointerAngle(struct SpecialStage *);
 void sub_806FAA0(void);
 static void HandleBoost1(void);
 void HandleBoost2(void);
 static void HandleJumpControls(void);
 
 static const struct UNK_8C87920 gUnknown_080DF794[3] = {
-    { 2, 890, },
-    { 1, 890, },
-    { 0, 890, },
+    { 2, 890 },
+    { 1, 890 },
+    { 0, 890 },
 };
 
 typedef void (*PlayerStatePhysicsHandler)(void);
 
 static PlayerStatePhysicsHandler const sPlayerStatePhysicsHandlers[18] = {
-    NULL,
-    sub_806F9CC,
-    sub_806F9CC,
-    sub_806F9CC,
-    sub_806F9CC,
-    sub_806EFB4,
-    sub_806F034,
-    sub_806F3C4,
-    sub_806F36C,
-    sub_806F9E4,
-    sub_806F0C4,
-    sub_806F154,
-    sub_806F1E8,
-    PlayerStatePhysics_SlowToStop,
-    sub_806FB00,
-    sub_806F300,
-    sub_806F300,
-    NULL,
+    NULL,        sub_806F9CC,
+    sub_806F9CC, sub_806F9CC,
+    sub_806F9CC, sub_806EFB4,
+    sub_806F034, sub_806F3C4,
+    sub_806F36C, sub_806F9E4,
+    sub_806F0C4, sub_806F154,
+    sub_806F1E8, PlayerStatePhysics_SlowToStop,
+    sub_806FB00, sub_806F300,
+    sub_806F300, NULL,
 };
 
-static void Task_PhysicsMain(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = physics->stage;
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    
+static void Task_PhysicsMain(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = physics->stage;
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+
     PlayerStatePhysicsHandler stateHandlers[18];
-    memcpy(stateHandlers, sPlayerStatePhysicsHandlers, sizeof(sPlayerStatePhysicsHandlers));
+    memcpy(stateHandlers, sPlayerStatePhysicsHandlers,
+           sizeof(sPlayerStatePhysicsHandlers));
 
     switch (stage->state) {
         case 4:
@@ -98,10 +91,10 @@ static void Task_PhysicsMain(void) {
 
         screenX = sin * 20;
         screenY = cos * 20;
-    
+
         screenX = Q_16_16_TO_INT(screenX) + 112;
         screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120;
-        
+
         player->roboArrow.unk16 = screenX;
         player->roboArrow.unk18 = screenY;
 
@@ -128,9 +121,10 @@ static void Task_PhysicsMain(void) {
     gBgScrollRegs[2][0] = -Q_16_16_TO_INT(player->x);
 }
 
-void HandleMovementControls(UNUSED u32 unused) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void HandleMovementControls(UNUSED u32 unused)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     s32 speed = player->speed;
     s32 maxSpeed = player->maxSpeed;
@@ -145,7 +139,7 @@ void HandleMovementControls(UNUSED u32 unused) {
             if ((speed + acceleration) < maxSpeed) {
                 player->speed = speed + acceleration;
                 speed = player->speed;
-                
+
                 if (player->speed > 0x2300) {
                     player->state = 2;
                 } else {
@@ -170,7 +164,7 @@ void HandleMovementControls(UNUSED u32 unused) {
         }
 
         if ((speed + deceleration) > 0) {
-            player->speed = speed + deceleration; 
+            player->speed = speed + deceleration;
             speed = player->speed;
         } else {
             player->speed = 0;
@@ -190,9 +184,8 @@ void HandleMovementControls(UNUSED u32 unused) {
         } else {
             player->speed = 0;
             speed = 0;
-            
         }
-    
+
         if (speed == 0) {
             player->animSpeed = 0;
             player->state = 0;
@@ -214,12 +207,13 @@ void HandleMovementControls(UNUSED u32 unused) {
     }
 }
 
-void HandleRotationControls(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void HandleRotationControls(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     u16 bearing = player->bearing;
-    
+
     if (gInput & (DPAD_LEFT | DPAD_RIGHT)) {
         if (gInput & DPAD_LEFT) {
             bearing += player->rotateSpeed;
@@ -227,15 +221,16 @@ void HandleRotationControls(void) {
         if (gInput & DPAD_RIGHT) {
             bearing -= player->rotateSpeed;
         }
-        
+
         player->bearing = bearing;
         player->bearing &= 0x3FF;
     }
 }
 
-void sub_806EFB4(void) { 
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806EFB4(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
     HandleRotationControls();
     HandleBoost1();
 
@@ -248,12 +243,13 @@ void sub_806EFB4(void) {
     }
 }
 
-void sub_806F034(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F034(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
     HandleRotationControls();
     HandleBoost1();
-    
+
     player->unkB8 += player->unkF4;
 
     if (player->unkB0 < 1) {
@@ -269,12 +265,13 @@ void sub_806F034(void) {
     }
 }
 
-void sub_806F0C4(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F0C4(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
     HandleRotationControls();
     HandleBoost2();
-    
+
     player->unkB8 += player->unkF6;
 
     if (player->unkB0 < 1) {
@@ -290,9 +287,10 @@ void sub_806F0C4(void) {
     }
 }
 
-void sub_806F154(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F154(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     HandleRotationControls();
     HandleBoost2();
@@ -308,9 +306,10 @@ void sub_806F154(void) {
     }
 }
 
-void sub_806F1E8(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F1E8(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
     physics->animFrame++;
     player->unkB8 += player->unkFA;
     HandleBoost1();
@@ -319,7 +318,7 @@ void sub_806F1E8(void) {
         physics->animFrame = 0;
         player->unkB8 = 0;
         player->unkB0 = 0;
-        
+
         if (player->speed == 0) {
             player->state = 13;
         } else {
@@ -328,9 +327,10 @@ void sub_806F1E8(void) {
     }
 }
 
-static void PlayerStatePhysics_SlowToStop(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+static void PlayerStatePhysics_SlowToStop(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     s32 deceleration = player->deceleration;
     s32 speed = player->speed;
@@ -358,9 +358,10 @@ static void PlayerStatePhysics_SlowToStop(void) {
     }
 }
 
-void sub_806F300(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F300(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     physics->animFrame++;
     player->unkB8 += player->unkFE;
@@ -373,9 +374,10 @@ void sub_806F300(void) {
     }
 }
 
-void sub_806F36C(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F36C(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     u16 bearing = (player->bearing + 0x10);
     player->bearing = bearing & 0x3FF;
@@ -388,13 +390,14 @@ void sub_806F36C(void) {
     }
 }
 
-void sub_806F3C4(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F3C4(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     if (player->x <= Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
         player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
-    } 
+    }
 
     if (player->x >= Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X)) {
         player->x = Q_16_16(MAX_SPECIAL_STAGE_PLAYER_X);
@@ -424,19 +427,22 @@ void sub_806F3C4(void) {
     }
 }
 
-void sub_806F468(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = physics->stage;
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C87904* worldElements = gUnknown_08C87904[stage->zone];
+void sub_806F468(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = physics->stage;
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    const struct UNK_8C87904 *worldElements = gUnknown_08C87904[stage->zone];
 
     s16 playerX = Q_16_16_TO_INT(player->x);
     s16 playerY = Q_16_16_TO_INT(player->y);
 
     while (worldElements->type != -1) {
-        if (playerX >= worldElements->x && playerX < (worldElements->x + worldElements->width)) {
-            if (playerY >= worldElements->y && playerY < (worldElements->y + worldElements->length)) {
-                switch(worldElements->type) {
+        if (playerX >= worldElements->x
+            && playerX < (worldElements->x + worldElements->width)) {
+            if (playerY >= worldElements->y
+                && playerY < (worldElements->y + worldElements->length)) {
+                switch (worldElements->type) {
                     case 0:
                         player->speed = player->unkE8;
                         // BOOSTING
@@ -444,10 +450,10 @@ void sub_806F468(void) {
                         m4aSongNumStart(SE_277);
                         return;
                     case 1:
-                        player->speed = player->speed < MIN_BOUNCE_SPEED ? 
-                            MIN_BOUNCE_SPEED : 
-                            player->speed;
-            
+                        player->speed = player->speed < MIN_BOUNCE_SPEED
+                            ? MIN_BOUNCE_SPEED
+                            : player->speed;
+
                         // BOUNCING
                         player->state = 9;
 
@@ -463,9 +469,10 @@ void sub_806F468(void) {
     }
 }
 
-static void HandleBoost1(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+static void HandleBoost1(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     s32 speed = player->speed;
     u16 bearing = player->bearing;
@@ -489,9 +496,10 @@ static void HandleBoost1(void) {
     }
 }
 
-void HandleBoost2(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void HandleBoost2(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     s32 c8 = player->speed;
     u16 b2 = player->bearing;
@@ -516,12 +524,13 @@ void HandleBoost2(void) {
     }
 }
 
-static s16 CalcGuardRoboPointerAngle(struct SpecialStage* stage) {
+static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
+{
     u32 i;
     s32 cos, sin;
-    struct UNK_0808B3FC_UNK240* element;
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
+    struct UNK_0808B3FC_UNK240 *element;
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 
     u32 temp1;
     u32 temp2;
@@ -536,7 +545,7 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage* stage) {
     f_dX = guardRobo->x - player->x;
     f_dY = guardRobo->y - player->y;
     dX = f_dX >> 0x10;
-    dY = f_dY  >> 0x10;
+    dY = f_dY >> 0x10;
 
     if (dX > -16 && dX < 16 && dY > -16 && dY < 16) {
         temp1 = 0xC;
@@ -547,7 +556,6 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage* stage) {
             temp1 = 0x14;
         }
     }
-    
 
     if (dX > -48 && dX < 48 && dY > -48 && dY < 48) {
         temp2 = 0;
@@ -574,11 +582,11 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage* stage) {
         s32 sin6 = cos * f_dX;
         s32 sin3 = -sin * f_dX;
         s32 sin4 = cos * f_dY;
-    
+
         f_dX = sin5 + sin6;
         f_dY = sin3 + sin4;
     }
-    
+
     for (i = 256; i > 0; i >>= 1) {
         sin = SIN(bearing) >> 6;
         cos = COS(bearing) >> 6;
@@ -602,7 +610,8 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage* stage) {
     return bearing;
 }
 
-s16 sub_806F84C(s32 dX, s32 dY) {
+s16 sub_806F84C(s32 dX, s32 dY)
+{
     u32 r2, r3;
     u16 r1, r3_2;
     s32 r4;
@@ -627,7 +636,8 @@ s16 sub_806F84C(s32 dX, s32 dY) {
     r2 = (u16)(~Q_16_16_TO_INT((u32)r4));
 
 #ifndef NON_MATCHING
-    r2++; r2--;
+    r2++;
+    r2--;
 #endif
 
     r3 = (r2 >> 1);
@@ -655,9 +665,11 @@ s16 sub_806F84C(s32 dX, s32 dY) {
     return r3_2;
 }
 
-struct Task* CreateSpecialStagePhysics(struct SpecialStage* stage) {
-    struct Task* t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics), 0x4000, 0, NULL);
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(t);
+struct Task *CreateSpecialStagePhysics(struct SpecialStage *stage)
+{
+    struct Task *t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics),
+                                0x4000, 0, NULL);
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(t);
 
     physics->stage = stage;
     physics->animFrame = 0;
@@ -666,9 +678,10 @@ struct Task* CreateSpecialStagePhysics(struct SpecialStage* stage) {
     return t;
 }
 
-void sub_806F944(struct SpecialStage* stage) {
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    struct SpecialStageGuardRobo* guardRobo = TaskGetStructPtr(stage->guardRoboTask);
+void sub_806F944(struct SpecialStage *stage)
+{
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 
     s32 playerX = player->x;
     s32 playerY = player->y;
@@ -682,16 +695,18 @@ void sub_806F944(struct SpecialStage* stage) {
     player->unkB8 = 0x300;
 }
 
-void sub_806F9CC(void) {
+void sub_806F9CC(void)
+{
     HandleMovementControls(0);
     HandleRotationControls();
     HandleJumpControls();
     sub_806F468();
 }
 
-void sub_806F9E4(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806F9E4(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     HandleMovementControls(1);
     HandleRotationControls();
@@ -702,9 +717,10 @@ void sub_806F9E4(void) {
     sub_806F468();
 }
 
-static void HandleJumpControls(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+static void HandleJumpControls(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     if (gPressedKeys & gPlayerControls.unk0) {
         player->state = 4;
@@ -715,9 +731,10 @@ static void HandleJumpControls(void) {
     }
 }
 
-void sub_806FAA0(void) {
-    struct SpecialStagePhysics* physics = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(physics->stage->playerTask);
+void sub_806FAA0(void)
+{
+    struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
     if (player->x < Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X)) {
         player->x = Q_16_16(MIN_SPECIAL_STAGE_PLAYER_X);
@@ -736,6 +753,4 @@ void sub_806FAA0(void) {
     }
 }
 
-void sub_806FB00(void) {
-
-}
+void sub_806FB00(void) { }

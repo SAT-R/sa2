@@ -12,7 +12,8 @@
 #include "profile.h"
 #include "multiplayer_singlepak_connection.h"
 
-void GameStart(void) {
+void GameStart(void)
+{
     u32 i;
     bool32 hasProfile = FALSE;
 
@@ -61,18 +62,18 @@ void GameStart(void) {
         sub_8081C0C();
         return;
     }
-    
+
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();
         LoadCompletedSaveGame();
         return;
     }
-    
+
     if (!hasProfile) {
         CreateNewProfileScreen();
         return;
     }
-    
+
     // When a special button combination is pressed
     // skip the intro and go straight to the
     // title screen
@@ -81,24 +82,24 @@ void GameStart(void) {
         gFlags &= ~FLAGS_SKIP_INTRO;
         return;
     }
-    
+
     CreateTitleScreen();
 }
 
 static void Task_DummyFunc(void);
-static void DummyTaskOnDestroy(struct Task*);
+static void DummyTaskOnDestroy(struct Task *);
 
-UNUSED static void CreateDummyTask(void){
-  gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
+UNUSED static void CreateDummyTask(void)
+{
+    gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
 }
 
-UNUSED static void DestroyDummyTask(void) {
-  TaskDestroy(gUnknown_03005844);
-  gUnknown_03005844 = NULL;
-}
-
-UNUSED static void Task_DummyFunc(void) {}
-
-UNUSED static void DummyTaskOnDestroy(struct Task* task) {
+UNUSED static void DestroyDummyTask(void)
+{
+    TaskDestroy(gUnknown_03005844);
     gUnknown_03005844 = NULL;
 }
+
+UNUSED static void Task_DummyFunc(void) { }
+
+UNUSED static void DummyTaskOnDestroy(struct Task *task) { gUnknown_03005844 = NULL; }

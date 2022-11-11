@@ -8,10 +8,10 @@
 #include "special_stage_data.h"
 
 struct SpecialStageGuardRobo {
-    struct SpecialStage* stage;
+    struct SpecialStage *stage;
     struct UNK_0808B3FC_UNK240 sprite;
-    void* unk34;
-    const struct UNK_80DF670* sprites;
+    void *unk34;
+    const struct UNK_80DF670 *sprites;
     s16 state;
     u8 filler3E[2];
     s32 x;
@@ -26,6 +26,6 @@ struct SpecialStageGuardRobo {
     s16 filler56;
 }; /* 0x58 */
 
-struct Task* CreateSpecialStageGuardRobo(struct SpecialStage*);
+struct Task *CreateSpecialStageGuardRobo(struct SpecialStage *);
 
 #endif

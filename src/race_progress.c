@@ -13,42 +13,40 @@ struct RaceProgressIndicator {
     u8 numPlayers;
 };
 
-#define START_FLAG 0
+#define START_FLAG  0
 #define FINISH_FLAG 1
 
 static void Task_UpdateAvatarPositions(void);
-static void CreateUI(struct RaceProgressIndicator*);
-static void RenderUI(struct RaceProgressIndicator*);
-static void RaceProgressIndicatorOnDestroy(struct Task*);
+static void CreateUI(struct RaceProgressIndicator *);
+static void RenderUI(struct RaceProgressIndicator *);
+static void RaceProgressIndicatorOnDestroy(struct Task *);
 
 static const u16 sCourseStepSizes[] = {
-    [COURSE_INDEX(ZONE_1, ACT_1)] = 816, 
-    [COURSE_INDEX(ZONE_1, ACT_2)] = 845,
+    [COURSE_INDEX(ZONE_1, ACT_1)] = 816,  [COURSE_INDEX(ZONE_1, ACT_2)] = 845,
 
-    [COURSE_INDEX(ZONE_2, ACT_1)] = 560, 
-    [COURSE_INDEX(ZONE_2, ACT_2)] = 637,
- 
-    [COURSE_INDEX(ZONE_3, ACT_1)] = 618,
-    [COURSE_INDEX(ZONE_3, ACT_2)] = 578,
+    [COURSE_INDEX(ZONE_2, ACT_1)] = 560,  [COURSE_INDEX(ZONE_2, ACT_2)] = 637,
 
-    [COURSE_INDEX(ZONE_4, ACT_1)] = 557, 
-    [COURSE_INDEX(ZONE_4, ACT_2)] = 748, 
+    [COURSE_INDEX(ZONE_3, ACT_1)] = 618,  [COURSE_INDEX(ZONE_3, ACT_2)] = 578,
 
-    [COURSE_INDEX(ZONE_5, ACT_1)] = 1024, 
-    [COURSE_INDEX(ZONE_5, ACT_2)] = 800,
+    [COURSE_INDEX(ZONE_4, ACT_1)] = 557,  [COURSE_INDEX(ZONE_4, ACT_2)] = 748,
 
-    [COURSE_INDEX(ZONE_6, ACT_1)] = 512, 
-    [COURSE_INDEX(ZONE_6, ACT_2)] = 744, 
+    [COURSE_INDEX(ZONE_5, ACT_1)] = 1024, [COURSE_INDEX(ZONE_5, ACT_2)] = 800,
 
-    [COURSE_INDEX(ZONE_7, ACT_1)] = 448, 
-    [COURSE_INDEX(ZONE_7, ACT_2)] = 464,
+    [COURSE_INDEX(ZONE_6, ACT_1)] = 512,  [COURSE_INDEX(ZONE_6, ACT_2)] = 744,
+
+    [COURSE_INDEX(ZONE_7, ACT_1)] = 448,  [COURSE_INDEX(ZONE_7, ACT_2)] = 464,
 };
-static const u8 sCharacterAvatars[] = { 0, 3, 1, 2, 4, 0, 0, 0};
+static const u8 sCharacterAvatars[] = {
+    0, 3, 1, 2, 4, 0, 0, 0,
+};
 
-void RaceProgressIndicator(void) {
+void RaceProgressIndicator(void)
+{
     u8 i;
-    struct Task* t = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator), 0x1000, 0, RaceProgressIndicatorOnDestroy);
-    struct RaceProgressIndicator* progressIndicator = TaskGetStructPtr(t);
+    struct Task *t
+        = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator),
+                     0x1000, 0, RaceProgressIndicatorOnDestroy);
+    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
 
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
 
@@ -61,9 +59,10 @@ void RaceProgressIndicator(void) {
     CreateUI(progressIndicator);
 }
 
-static void CreateUI(struct RaceProgressIndicator* progressIndicator) {
+static void CreateUI(struct RaceProgressIndicator *progressIndicator)
+{
     u8 i;
-    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_0808B3FC_UNK240 *element;
     u8 avatarVariants[6];
 
     memcpy(avatarVariants, sCharacterAvatars, 6);
@@ -123,24 +122,28 @@ static void CreateUI(struct RaceProgressIndicator* progressIndicator) {
     sub_8004558(element);
 }
 
-static void Task_UpdateAvatarPositions(void) {
+static void Task_UpdateAvatarPositions(void)
+{
     u8 i;
-    struct UNK_0808B3FC_UNK240* avatar;
-    struct MultiplayerPlayer* player;
-    struct RaceProgressIndicator* progressIndicator = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *avatar;
+    struct MultiplayerPlayer *player;
+    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(gCurTask);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
         player = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
-        avatar->unk16 = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10) + 6;
+        avatar->unk16
+            = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10)
+            + 6;
     }
 
     RenderUI(progressIndicator);
 }
 
-static void RenderUI(struct RaceProgressIndicator* progressIndicator) {
+static void RenderUI(struct RaceProgressIndicator *progressIndicator)
+{
     u8 i;
-    struct UNK_0808B3FC_UNK240* element;
+    struct UNK_0808B3FC_UNK240 *element;
 
     if (gPlayer.unk20 & 0x100000) {
         return;
@@ -157,9 +160,10 @@ static void RenderUI(struct RaceProgressIndicator* progressIndicator) {
     }
 }
 
-static void RaceProgressIndicatorOnDestroy(struct Task* t) {
+static void RaceProgressIndicatorOnDestroy(struct Task *t)
+{
     u8 i;
-    struct RaceProgressIndicator* progressIndicator = TaskGetStructPtr(t);
+    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         VramFree(progressIndicator->avatars[i].unk4);
@@ -167,5 +171,5 @@ static void RaceProgressIndicatorOnDestroy(struct Task* t) {
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
         VramFree(progressIndicator->flags[i].unk4);
-    }   
+    }
 }

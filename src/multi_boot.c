@@ -8,22 +8,23 @@ static void MultiBootWaitSendDone(void);
 
 static u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
 
-#define MULTIBOOT_INIT(mp)                              \
-    (mp)->client_bit = 0;                               \
-    (mp)->probe_count = 0;                              \
-    (mp)->response_bit = 0;                             \
-    (mp)->check_wait = MULTIBOOT_CONNECTION_CHECK_WAIT; \
-    (mp)->sendflag = 0;                                 \
-    (mp)->handshake_timeout = 0;                        \
-    REG_RCNT = 0;                                       \
-    REG_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;       \
+#define MULTIBOOT_INIT(mp)                                                              \
+    (mp)->client_bit = 0;                                                               \
+    (mp)->probe_count = 0;                                                              \
+    (mp)->response_bit = 0;                                                             \
+    (mp)->check_wait = MULTIBOOT_CONNECTION_CHECK_WAIT;                                 \
+    (mp)->sendflag = 0;                                                                 \
+    (mp)->handshake_timeout = 0;                                                        \
+    REG_RCNT = 0;                                                                       \
+    REG_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;                                       \
     REG_SIODATA8 = 0;
 
 /*------------------------------------------------------------------*/
 /*                   Multi-play Boot Main                           */
 /*------------------------------------------------------------------*/
 
-s32 MultiBootMain(struct MultiBootParam *mp) {
+s32 MultiBootMain(struct MultiBootParam *mp)
+{
     s32 i, j, k;
 
     if (MultiBootCheckComplete(mp))
@@ -45,8 +46,8 @@ output_burst:
          * When the connection ID is not 00 or there is a problem with the SD or
          * SI terminals an error occurs.
          */
-        i = REG_SIOCNT &
-            (SIO_MULTI_BUSY | SIO_ERROR | SIO_ID | SIO_MULTI_SD | SIO_MULTI_SI);
+        i = REG_SIOCNT
+            & (SIO_MULTI_BUSY | SIO_ERROR | SIO_ID | SIO_MULTI_SD | SIO_MULTI_SI);
         if (i != SIO_MULTI_SD) {
             MULTIBOOT_INIT(mp);
             return i ^ SIO_MULTI_SD;
@@ -55,13 +56,14 @@ output_burst:
     if (mp->probe_count >= 0xe0) {
         /* Check(handshake) to see if all slaves booted properly. */
         i = MultiBootHandShake(mp);
-        if (i) return i;
+        if (i)
+            return i;
         /* If Low speed recognition mode, handshake also 2bytes communication,
          * call If High speed recognition mode, handshake also high speed
          * communication.
          */
-        if (mp->server_type == MULTIBOOT_SERVER_TYPE_QUICK &&
-            mp->probe_count > 0xe1 && MultiBootCheckComplete(mp) == 0) {
+        if (mp->server_type == MULTIBOOT_SERVER_TYPE_QUICK && mp->probe_count > 0xe1
+            && MultiBootCheckComplete(mp) == 0) {
             MultiBootWaitSendDone();
             goto output_burst;
         }
@@ -84,14 +86,14 @@ output_burst:
              */
             k = 0x0e;
             for (i = MULTIBOOT_NCHILD; i != 0; --i) {
-                if (*(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2) !=
-                    0xffff) {  // braces are required to match on my machine,
-                               // but works fine on SBird's CE :/
+                if (*(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2)
+                    != 0xffff) { // braces are required to match on my machine,
+                                 // but works fine on SBird's CE :/
                     break;
                 }
                 k >>= 1;
             }
-            k &= 0x0e;            /* 4P-2P: d3-d1 is 1 */
+            k &= 0x0e; /* 4P-2P: d3-d1 is 1 */
             mp->response_bit = k; /* mark connected slaves */
             /* Machine recognized as client,
              * must be CLIENT_INFO 000 0 ccc 0.
@@ -126,8 +128,7 @@ output_burst:
             }
         output_master_info:
             /* Output MASTER_INFO 000 0 ccc 0. */
-            return MultiBootSend(mp,
-                                 (MULTIBOOT_MASTER_INFO << 8) | mp->client_bit);
+            return MultiBootSend(mp, (MULTIBOOT_MASTER_INFO << 8) | mp->client_bit);
         case 1:
         case_1:
             /* Start recognition.
@@ -144,8 +145,8 @@ output_burst:
                      * If 2P, 0x02
                      * If not so, invalid.
                      */
-                    gMultiBootRequiredData[i - 1] =
-                        j; /* During processing next time must be same value */
+                    gMultiBootRequiredData[i - 1]
+                        = j; /* During processing next time must be same value */
                     j &= 0xff;
                     if (j == (1 << i))
                         mp->probe_target_bit |= j; /* recognized */
@@ -189,8 +190,8 @@ output_burst:
                  */
                 mp->client_data[i - 1] = j;
                 if (mp->probe_target_bit & (1 << i)) {
-                    if ((j >> 8) != MULTIBOOT_CLIENT_INFO &&
-                        (j >> 8) != MULTIBOOT_CLIENT_DLREADY) {
+                    if ((j >> 8) != MULTIBOOT_CLIENT_INFO
+                        && (j >> 8) != MULTIBOOT_CLIENT_DLREADY) {
                         MULTIBOOT_INIT(mp);
                         return MULTIBOOT_ERROR_NO_DLREADY; /* No response saying
                                                               ready to do
@@ -209,16 +210,14 @@ output_burst:
                  * Send request for download preparation
                  */
                 return MultiBootSend(
-                    mp,
-                    (MULTIBOOT_MASTER_REQUEST_DLREADY << 8) | mp->palette_data);
+                    mp, (MULTIBOOT_MASTER_REQUEST_DLREADY << 8) | mp->palette_data);
             /* All machines ready to download */
             mp->probe_count = 0xd1;
             k = 0x11;
             for (i = MULTIBOOT_NCHILD; i != 0; --i) /* handshake data */
                 k += mp->client_data[i - 1];
             mp->handshake_data = k;
-            return MultiBootSend(mp,
-                                 (MULTIBOOT_MASTER_START_DL << 8) | (k & 0xff));
+            return MultiBootSend(mp, (MULTIBOOT_MASTER_START_DL << 8) | (k & 0xff));
         case 0xd1:
             /* Send MASTER_START_DL
              * Should be CLIENT_DLREADY.
@@ -270,9 +269,10 @@ output_burst:
             for (i = MULTIBOOT_NCHILD; i != 0; --i) {
                 if (mp->probe_target_bit & (1 << i)) {
                     j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
-                    if ((j >> 8) != (MULTIBOOT_MASTER_START_PROBE + 1 -
-                                     (mp->probe_count >> 1)) ||
-                        ((j & 0xff) != (1 << i)))
+                    if ((j >> 8)
+                            != (MULTIBOOT_MASTER_START_PROBE + 1
+                                - (mp->probe_count >> 1))
+                        || ((j & 0xff) != (1 << i)))
                         /* Problem with client recognition */
                         mp->probe_target_bit ^= 1 << i;
                 }
@@ -298,9 +298,11 @@ output_burst:
                  * If do not problem with timing.
                  */
                 goto output_master_info;
-            i = MultiBootSend(mp, (mp->masterp[mp->probe_count - 4 + 1] << 8) |
-                                      mp->masterp[mp->probe_count - 4]);
-            if (i) return i;
+            i = MultiBootSend(mp,
+                              (mp->masterp[mp->probe_count - 4 + 1] << 8)
+                                  | mp->masterp[mp->probe_count - 4]);
+            if (i)
+                return i;
             /* If Low speed recognition mode, for each frame of call, 2 bytes of
              * communication.
              * If High speed recognition mode,
@@ -324,7 +326,8 @@ output_burst:
 /*
  * If connection has problem, non-0
  */
-static s32 MultiBootSend(struct MultiBootParam *mp, u16 data) {
+static s32 MultiBootSend(struct MultiBootParam *mp, u16 data)
+{
     s32 i;
 
     /* If SC7 is on, problem has occurred.
@@ -348,7 +351,8 @@ static s32 MultiBootSend(struct MultiBootParam *mp, u16 data) {
 /*                    Start recognition of client                   */
 /*------------------------------------------------------------------*/
 
-void MultiBootStartProbe(struct MultiBootParam *mp) {
+void MultiBootStartProbe(struct MultiBootParam *mp)
+{
     if (mp->probe_count != 0) {
         MULTIBOOT_INIT(mp);
         return;
@@ -363,7 +367,8 @@ void MultiBootStartProbe(struct MultiBootParam *mp) {
 /*------------------------------------------------------------------*/
 
 void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
-                          u8 palette_color, s8 palette_speed) {
+                          u8 palette_color, s8 palette_speed)
+{
     s32 i;
 
     if (mp->probe_count != 0 || mp->client_bit == 0 || mp->check_wait != 0) {
@@ -371,14 +376,14 @@ void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
         MULTIBOOT_INIT(mp);
         return;
     }
-    mp->boot_srcp = (u8*)srcp;
+    mp->boot_srcp = (u8 *)srcp;
     length = (length + 15) & ~15; /* 16 byte units */
     if (length < MULTIBOOT_SEND_SIZE_MIN || length > MULTIBOOT_SEND_SIZE_MAX) {
         /* More than number or transfer bytes */
         MULTIBOOT_INIT(mp);
         return;
     }
-    mp->boot_endp = (u8*)(srcp + length);
+    mp->boot_endp = (u8 *)(srcp + length);
     switch (palette_speed) {
         case -4:
         case -3:
@@ -404,7 +409,8 @@ void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
 /*                  Handshake (final confirmation of boot)          */
 /*------------------------------------------------------------------*/
 
-static s32 MultiBootHandShake(struct MultiBootParam *mp) {
+static s32 MultiBootHandShake(struct MultiBootParam *mp)
+{
     s32 i, j;
 
 #define send_data (mp->system_work[0])
@@ -481,7 +487,8 @@ void MultiBootInit(struct MultiBootParam *mp) { MULTIBOOT_INIT(mp); }
 /*                       Check transfer completion                  */
 /*------------------------------------------------------------------*/
 
-s32 MultiBootCheckComplete(struct MultiBootParam *mp) {
+s32 MultiBootCheckComplete(struct MultiBootParam *mp)
+{
     if (mp->probe_count == 0xe9) /* Transfer complete status */
         return 1;
     /* middle of recognition, haven't started transfer, or transfer failure */
@@ -492,7 +499,8 @@ s32 MultiBootCheckComplete(struct MultiBootParam *mp) {
 /*                     Wait Cycle                                   */
 /*------------------------------------------------------------------*/
 
-static inline void MultiBootWaitCycles(u32 cycles) {
+static inline void MultiBootWaitCycles(u32 cycles)
+{
     /* Depending on if this is in CPU internal working, CPU external
      * working, ROM, the CPU cycles used for one of this function's wait
      * loops is different.
@@ -530,7 +538,8 @@ static inline void MultiBootWaitCycles(u32 cycles) {
 /*             Check if communication completed within fixed time   */
 /*------------------------------------------------------------------*/
 
-static void MultiBootWaitSendDone(void) {
+static void MultiBootWaitSendDone(void)
+{
     s32 i;
 
     /* If cannot detect communication end within fixed time(1 frame),
@@ -543,7 +552,8 @@ static void MultiBootWaitSendDone(void) {
      * = approximately 31069 (loops/frame)
      */
     for (i = 0; i < 31069; ++i)
-        if ((REG_SIOCNT & SIO_START) == 0) break;
+        if ((REG_SIOCNT & SIO_START) == 0)
+            break;
     /* Sufficient time for slave's interrupt processing */
     MultiBootWaitCycles(600);
 }

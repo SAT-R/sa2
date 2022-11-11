@@ -24,27 +24,23 @@ struct UNK_806DEA4 {
     s16 unk12;
 }; /* size 0x14 */
 
-static void AnimateRingsLost(struct SpecialStage* stage, s16);
+static void AnimateRingsLost(struct SpecialStage *stage, s16);
 void sub_806DB48(void);
 void sub_806DC98(void);
 bool16 sub_806DE10(void);
-void sub_806E4FC(struct SpecialStage* stage);
-void sub_806E584(s16, struct SpecialStageCollectables_UNK874*);
+void sub_806E4FC(struct SpecialStage *stage);
+void sub_806E584(s16, struct SpecialStageCollectables_UNK874 *);
 void sub_806DEA4(void);
-s16 sub_806E038(s16 acc, const struct UNK_8C878E8*, struct UNK_806DEA4*);
-void sub_806E1AC(s16, struct UNK_806DEA4*);
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *, struct UNK_806DEA4 *);
+void sub_806E1AC(s16, struct UNK_806DEA4 *);
 
 const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
-    [ZONE_1] = 0x130,
-    [ZONE_2] = 0x128,
-    [ZONE_3] = 0x110,
-    [ZONE_4] = 0x128,
-    [ZONE_5] = 0x143,
-    [ZONE_6] = 0x11C,
-    [ZONE_7] = 0x10B,
+    [ZONE_1] = 0x130, [ZONE_2] = 0x128, [ZONE_3] = 0x110, [ZONE_4] = 0x128,
+    [ZONE_5] = 0x143, [ZONE_6] = 0x11C, [ZONE_7] = 0x10B,
 };
 
-void SpecialStageHandleCollectRings(struct SpecialStage* stage, s16 num) {
+void SpecialStageHandleCollectRings(struct SpecialStage *stage, s16 num)
+{
     s16 i;
     stage->rings += num;
 
@@ -58,7 +54,7 @@ void SpecialStageHandleCollectRings(struct SpecialStage* stage, s16 num) {
             continue;
         }
         stage->ringsUnits = 0;
-        
+
         stage->ringsTens++;
         if (stage->ringsTens <= 9) {
             continue;
@@ -76,11 +72,12 @@ void SpecialStageHandleCollectRings(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num) {
+void SpecialStageHandleLoseRings(struct SpecialStage *stage, s16 num)
+{
     s16 i;
     AnimateRingsLost(stage, -1);
-    
-    stage->rings -= num; 
+
+    stage->rings -= num;
     if (stage->rings < 0) {
         stage->rings = 0;
     }
@@ -91,7 +88,7 @@ void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num) {
             continue;
         }
         stage->ringsUnits = 9;
-        
+
         stage->ringsTens--;
         if (stage->ringsTens >= 0) {
             continue;
@@ -109,8 +106,9 @@ void SpecialStageHandleLoseRings(struct SpecialStage* stage, s16 num) {
     }
 }
 
-void Task_InitObjects(void) {
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
+void Task_InitObjects(void)
+{
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
     s16 i;
 
     for (i = 0; i < MAX_OBJECTS; i++) {
@@ -119,22 +117,32 @@ void Task_InitObjects(void) {
 
     collectables->animFrame = 0;
 
-    sub_806CA88(&collectables->unk4,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,1,0);
-    sub_806CA88(&collectables->unk34,RENDER_TARGET_SCREEN,0x10,0x372,0x3000,0x14,0x14,0xe,0,0);
-    sub_806CA88(&collectables->unk64,RENDER_TARGET_SCREEN,4,0x374,0x3000,0x14,0x1e,0xf,1,0);
-    sub_806CA88(&collectables->unk94,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,6,0);
-    sub_806CA88(&collectables->unkC4,RENDER_TARGET_SCREEN,4,0x372,0x3000,0x14,0x14,0xe,5,0);
-    sub_806CA88(&collectables->unkF4[0],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,0,0);
-    sub_806CA88(&collectables->unkF4[1],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,1,0);
-    sub_806CA88(&collectables->unkF4[2],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,2,0);
-    sub_806CA88(&collectables->unkF4[3],RENDER_TARGET_SCREEN,4,0x37b,0x3000,0x14,0x14,0xe,3,0);
+    sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
+                0xe, 1, 0);
+    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 0x10, 0x372, 0x3000, 0x14,
+                0x14, 0xe, 0, 0);
+    sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 0x14, 0x1e,
+                0xf, 1, 0);
+    sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
+                0xe, 6, 0);
+    sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
+                0xe, 5, 0);
+    sub_806CA88(&collectables->unkF4[0], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
+                0x14, 0xe, 0, 0);
+    sub_806CA88(&collectables->unkF4[1], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
+                0x14, 0xe, 1, 0);
+    sub_806CA88(&collectables->unkF4[2], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
+                0x14, 0xe, 2, 0);
+    sub_806CA88(&collectables->unkF4[3], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
+                0x14, 0xe, 3, 0);
 
     gCurTask->main = sub_806DB48;
 }
 
-void sub_806DB48(void) {
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
+void sub_806DB48(void)
+{
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
     if (stage->paused == FALSE) {
         sub_8004558(&collectables->unk4);
         sub_8004558(&collectables->unk64);
@@ -143,14 +151,14 @@ void sub_806DB48(void) {
         sub_8004558(&collectables->unkC4);
 
         sub_806DC98();
-        
+
         if (sub_806DE10() == FALSE && stage->state != 7) {
             stage->state = 6;
         }
 
         sub_806E4FC(stage);
         collectables->animFrame = (collectables->animFrame + 1) & 1;
-        
+
         if (collectables->unk874[collectables->animFrame].unk12 == 1) {
             sub_806E584(0, &collectables->unk874[collectables->animFrame]);
         }
@@ -167,28 +175,27 @@ void sub_806DB48(void) {
     sub_806DEA4();
 }
 
-void sub_806DC98(void) {
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->zone];
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
+void sub_806DC98(void)
+{
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
+    const struct UNK_8C878E8 **unk78E8_vals = gUnknown_08C878E8[stage->zone];
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
 
     s32 playerX = Q_16_16_TO_INT(player->x);
     s32 playerY = Q_16_16_TO_INT(player->y);
     s32 val3 = player->unkB0 >> 4;
-    u32 cell = ((Q_16_16_TO_INT(player->x) >> 7) * SPECIAL_STAGE_ZONE_SIZE) + (Q_16_16_TO_INT(player->y) >> 7);
-    const struct UNK_8C878E8* object = unk78E8_vals[cell];
+    u32 cell = ((Q_16_16_TO_INT(player->x) >> 7) * SPECIAL_STAGE_ZONE_SIZE)
+        + (Q_16_16_TO_INT(player->y) >> 7);
+    const struct UNK_8C878E8 *object = unk78E8_vals[cell];
 
     while (object->id != -1) {
         if (collectables->objStates[object->id] == 1) {
             s16 temp2 = object->y;
             s16 temp = object->unk6 << 4;
             s16 temp3 = object->x;
-            if (
-                temp3 > (playerX - 5) && temp3 < (playerX + 5) && 
-                temp2 > (playerY - 5) && temp2 < (playerY + 5) && 
-                temp >= (val3 - 12) && temp <= (val3 + 20)
-            ) {
+            if (temp3 > (playerX - 5) && temp3 < (playerX + 5) && temp2 > (playerY - 5)
+                && temp2 < (playerY + 5) && temp >= (val3 - 12) && temp <= (val3 + 20)) {
                 s16 prevMultiplier = player->multiplier;
                 if (object->unk7 == 0) {
                     SpecialStageHandleCollectRings(stage, player->multiplier);
@@ -215,13 +222,14 @@ void sub_806DC98(void) {
     }
 }
 
-bool16 sub_806DE10(void) {
+bool16 sub_806DE10(void)
+{
     s16 i;
     u16 result;
     s16 unkF6CC[NUM_COURSE_ZONES];
     s16 val;
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
     result = FALSE;
     memcpy(unkF6CC, gUnknown_080DF6CC, sizeof(gUnknown_080DF6CC));
 
@@ -242,7 +250,8 @@ bool16 sub_806DE10(void) {
     return result;
 }
 
-void sub_806DEA4(void) {
+void sub_806DEA4(void)
+{
     s16 i;
 
     s16 stageZoneX;
@@ -251,14 +260,14 @@ void sub_806DEA4(void) {
     s16 cell;
 
     struct UNK_806DEA4 DEA4_Arr[16];
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
-    const struct UNK_8C878E8** unk78E8_vals = gUnknown_08C878E8[stage->zone];
-    const struct UNK_8C878E8** unk78E8;
-    const struct UNK_8C878E8* unk78E8_val = NULL;
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    const struct UNK_8C878E8 **unk78E8_vals = gUnknown_08C878E8[stage->zone];
+    const struct UNK_8C878E8 **unk78E8;
+    const struct UNK_8C878E8 *unk78E8_val = NULL;
 
-    struct UNK_806DEA4* unkDEA4_1;
+    struct UNK_806DEA4 *unkDEA4_1;
 
     acc = 0;
     for (i = 0, unkDEA4_1 = DEA4_Arr; i < 16; i++, unkDEA4_1++) {
@@ -269,16 +278,16 @@ void sub_806DEA4(void) {
     stageZoneY = Q_16_16_TO_INT(player->y) >> 7;
     cell = (stageZoneX * 8) + stageZoneY;
 
-    unk78E8_val = unk78E8_vals[cell]; 
+    unk78E8_val = unk78E8_vals[cell];
     acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
 
     if (stageZoneY != 7) {
-        unk78E8_val = unk78E8_vals[cell + 1]; 
+        unk78E8_val = unk78E8_vals[cell + 1];
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
     }
 
     if (stageZoneY != 0) {
-        unk78E8_val = unk78E8_vals[cell - 1]; 
+        unk78E8_val = unk78E8_vals[cell - 1];
         acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
     }
 
@@ -291,7 +300,6 @@ void sub_806DEA4(void) {
             unk78E8_val = unk78E8_vals[idx + 1];
             acc = sub_806E038(acc, unk78E8_val, DEA4_Arr);
         }
-
 
         if (stageZoneY != 0) {
             unk78E8_val = unk78E8_vals[idx - 1];
@@ -321,15 +329,17 @@ void sub_806DEA4(void) {
     }
 }
 
-s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* unkDEA4Arr) {
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8,
+                struct UNK_806DEA4 *unkDEA4Arr)
+{
     s16 i, result;
 
     struct SpecialStageCollectables_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    const struct UNK_8C878E8* object = unk78E8;
-    struct UNK_806DEA4* found = NULL;
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    const struct UNK_8C878E8 *object = unk78E8;
+    struct UNK_806DEA4 *found = NULL;
 
     result = acc;
     while (object->id != -1) {
@@ -350,13 +360,14 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
                     } else {
                         unkDEA4Arr[result].unk0 = object->unk7 + 1;
                     }
-                
+
                     result++;
                 } else {
                     s16 min;
-                    struct UNK_806DEA4* unkDEA4;
+                    struct UNK_806DEA4 *unkDEA4;
 
-                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10; i++, unkDEA4++) {
+                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10;
+                         i++, unkDEA4++) {
                         if (unkDEA4->unk4 < min) {
                             min = unkDEA4->unk4;
                             found = unkDEA4;
@@ -380,17 +391,19 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8* unk78E8, struct UNK_806DEA4* 
     return result;
 }
 
-void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
+void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
+{
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
 
-    struct UNK_0808B3FC_UNK240* element1 = &collectables->unk1B4[index];
-    struct UNK_0808B3FC_UNK240* element2 = &collectables->unk4B4[index];
-    u16* affine;
+    struct UNK_0808B3FC_UNK240 *element1 = &collectables->unk1B4[index];
+    struct UNK_0808B3FC_UNK240 *element2 = &collectables->unk4B4[index];
+    u16 *affine;
 
     if (unkDEA4->unk0 > 2) {
         s16 idx = unkDEA4->unk0 - 3;
-        memcpy(element1, &collectables->unkF4[idx >> 2], sizeof(struct UNK_0808B3FC_UNK240));
+        memcpy(element1, &collectables->unkF4[idx >> 2],
+               sizeof(struct UNK_0808B3FC_UNK240));
 
         element1->unk10 = index | 0x1060 | 0xC0000;
         element1->unk16 = unkDEA4->unk2;
@@ -398,7 +411,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
         element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
     } else {
         s16 x, y;
-        struct UNK_0808B3FC_UNK240* reference;
+        struct UNK_0808B3FC_UNK240 *reference;
         if (unkDEA4->unk6 == 0) {
             reference = unkDEA4->unk0 == 1 ? &collectables->unk4 : &collectables->unk94;
             x = unkDEA4->unk2;
@@ -407,10 +420,11 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
             memcpy(element2, &collectables->unk64, sizeof(struct UNK_0808B3FC_UNK240));
             element2->unk10 = index | 0x1060 | 0xC0000;
             element2->unk16 = unkDEA4->unk2;
-            element2->unk18 = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
+            element2->unk18
+                = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
             element2->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
             sub_806CD68(element2);
-    
+
             reference = unkDEA4->unk0 == 1 ? &collectables->unk34 : &collectables->unkC4;
             x = unkDEA4->unk2;
             y = unkDEA4->unk4 - unkDEA4->unk6;
@@ -433,10 +447,12 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4* unkDEA4) {
     *affine = unkDEA4->unk12;
 }
 
-static void AnimateRingsLost(struct SpecialStage* stage, s16 numLost) {
+static void AnimateRingsLost(struct SpecialStage *stage, s16 numLost)
+{
     s16 i, j;
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(stage->collectablesTask);
-    struct SpecialStagePlayer* player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageCollectables *collectables
+        = TaskGetStructPtr(stage->collectablesTask);
+    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
 
     s32 x = player->x;
     s32 y = player->y;
@@ -453,7 +469,7 @@ static void AnimateRingsLost(struct SpecialStage* stage, s16 numLost) {
         s32 rand1, rand2, rand3;
         s32 cos, sin;
         s32 temp3, temp4;
-        struct SpecialStageCollectables_UNK874* unk874 = &collectables->unk874[i];
+        struct SpecialStageCollectables_UNK874 *unk874 = &collectables->unk874[i];
         unk874->unk0 = x;
         unk874->unk4 = y;
         unk874->unk8 = unkB0;
@@ -464,7 +480,7 @@ static void AnimateRingsLost(struct SpecialStage* stage, s16 numLost) {
 
         sin = SIN(rand1) * 4;
         cos = COS(rand1) * 4;
-        
+
         temp3 = Q_16_16_TO_INT(rand2 * sin);
         temp4 = Q_16_16_TO_INT(rand2 * cos);
 
@@ -477,17 +493,19 @@ static void AnimateRingsLost(struct SpecialStage* stage, s16 numLost) {
     }
 
     for (j = i; j < 8; j++) {
-        struct SpecialStageCollectables_UNK874* unk874 = &collectables->unk874[j];
+        struct SpecialStageCollectables_UNK874 *unk874 = &collectables->unk874[j];
         unk874->unk12 = 0;
     }
 }
 
-void sub_806E4FC(struct SpecialStage* stage) {
+void sub_806E4FC(struct SpecialStage *stage)
+{
     s16 i;
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(stage->collectablesTask);
+    struct SpecialStageCollectables *collectables
+        = TaskGetStructPtr(stage->collectablesTask);
 
     for (i = 0; i < 8; i++) {
-        struct SpecialStageCollectables_UNK874* unk874 = &collectables->unk874[i];
+        struct SpecialStageCollectables_UNK874 *unk874 = &collectables->unk874[i];
         if (unk874->unk12 != 0) {
             unk874->unk0 += (unk874->unkA) * 0x100;
             unk874->unk4 += (unk874->unkC) * 0x100;
@@ -509,16 +527,17 @@ void sub_806E4FC(struct SpecialStage* stage) {
     }
 }
 
-void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874* unk874) {
-    u16* affine;
+void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
+{
+    u16 *affine;
     bool16 visible;
     struct SpecialStageCollectables_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
-    struct SpecialStageCollectables* collectables = TaskGetStructPtr(gCurTask);
-    struct SpecialStage* stage = collectables->stage;
+    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = collectables->stage;
 
-    struct UNK_0808B3FC_UNK240* unk7B4 = &collectables->unk7B4[index];
+    struct UNK_0808B3FC_UNK240 *unk7B4 = &collectables->unk7B4[index];
 
     new_unk874.unk0 = unk874->unk0;
     new_unk874.unk4 = unk874->unk4;
@@ -533,15 +552,15 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874* unk874) {
         s32 screenX = new_unkCB84.screenX;
         s32 unk4 = new_unkCB84.screenY;
         s32 screenY = unk4 - new_unkCB84.unk6;
-        
+
         *unk7B4 = collectables->unk34;
-        
+
         unk7B4->unk10 = (index + 0x10) | 0x1060 | 0xC0000;
         unk7B4->unk16 = screenX;
         unk7B4->unk18 = screenY;
         unk7B4->unk1A = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? 0x340 : 0x180;
         sub_806CD68(unk7B4);
-    
+
         affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;
         *affine = new_unkCB84.unkC;
         affine += 4;
@@ -553,12 +572,13 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874* unk874) {
     }
 }
 
-struct Task* CreateSpecialStageCollectables(struct SpecialStage* stage) {
+struct Task *CreateSpecialStageCollectables(struct SpecialStage *stage)
+{
     s16 unkF6CC[7];
-    struct Task* t;
-    struct SpecialStageCollectables* collectables;
+    struct Task *t;
+    struct SpecialStageCollectables *collectables;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
-    
+
     t = TaskCreate(Task_InitObjects, 0xA5C, 0xB000, 0, NULL);
     collectables = TaskGetStructPtr(t);
     collectables->stage = stage;

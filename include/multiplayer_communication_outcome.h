@@ -4,7 +4,7 @@
 #include "global.h"
 
 #define OUTCOME_CONNECTION_SUCCESS 0
-#define OUTCOME_CONNECTION_ERROR 1
+#define OUTCOME_CONNECTION_ERROR   1
 
 void CreateMultipackOutcomeScreen(u8 outcome);
 

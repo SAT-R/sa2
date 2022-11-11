@@ -27,16 +27,11 @@ struct TimeAttackLobbyScreen {
 };
 
 const struct UNK_080E0D64 gUnknown_080E0474[] = {
-    TextElementAlt4(0, 20, 0),
-    TextElementAlt4(0, 16, 91),
-    TextElementAlt4(0, 30, 182),
-    TextElementAlt4(0, 20, 273),
-    TextElementAlt4(0, 20, 364),
-    TextElementAlt4(3, 64, 9),
-    TextElementAlt4(3, 64, 100),
-    TextElementAlt4(3, 64, 191),
-    TextElementAlt4(3, 64, 282),
-    TextElementAlt4(3, 64, 373),
+    TextElementAlt4(0, 20, 0),   TextElementAlt4(0, 16, 91),
+    TextElementAlt4(0, 30, 182), TextElementAlt4(0, 20, 273),
+    TextElementAlt4(0, 20, 364), TextElementAlt4(3, 64, 9),
+    TextElementAlt4(3, 64, 100), TextElementAlt4(3, 64, 191),
+    TextElementAlt4(3, 64, 282), TextElementAlt4(3, 64, 373),
 };
 
 const struct UNK_080E0D64 gUnknown_080E04C4[] = {
@@ -45,44 +40,30 @@ const struct UNK_080E0D64 gUnknown_080E04C4[] = {
 };
 
 const struct UNK_080E0D64 gUnknown_080E04D4[] = {
-    TextElementAlt4(0, 22, 1051),
-    TextElementAlt4(1, 32, 1051),
-    TextElementAlt4(2, 22, 1051),
-    TextElementAlt4(3, 22, 1051),
-    TextElementAlt4(4, 10, 1051),
-    TextElementAlt4(0, 24, 1052),
-    TextElementAlt4(1, 42, 1052),
-    TextElementAlt4(2, 36, 1052),
-    TextElementAlt4(3, 30, 1052),
-    TextElementAlt4(4, 8, 1052),
-    TextElementAlt4(0, 24, 1053),
-    TextElementAlt4(1, 36, 1053),
-    TextElementAlt4(2, 42, 1053),
-    TextElementAlt4(3, 36, 1053),
-    TextElementAlt4(4, 20, 1053),
-    TextElementAlt4(0, 24, 1054),
-    TextElementAlt4(1, 48, 1054),
-    TextElementAlt4(2, 36, 1054),
-    TextElementAlt4(3, 32, 1054),
-    TextElementAlt4(4, 8, 1054),
-    TextElementAlt4(0, 44, 1055),
-    TextElementAlt4(1, 44, 1055),
-    TextElementAlt4(2, 38, 1055),
-    TextElementAlt4(3, 32, 1055),
-    TextElementAlt4(4, 8, 1055),
-    TextElementAlt4(0, 20, 1056),
-    TextElementAlt4(1, 44, 1056),
-    TextElementAlt4(2, 40, 1056),
-    TextElementAlt4(3, 28, 1056),
-    TextElementAlt4(4, 12, 1056),
+    TextElementAlt4(0, 22, 1051), TextElementAlt4(1, 32, 1051),
+    TextElementAlt4(2, 22, 1051), TextElementAlt4(3, 22, 1051),
+    TextElementAlt4(4, 10, 1051), TextElementAlt4(0, 24, 1052),
+    TextElementAlt4(1, 42, 1052), TextElementAlt4(2, 36, 1052),
+    TextElementAlt4(3, 30, 1052), TextElementAlt4(4, 8, 1052),
+    TextElementAlt4(0, 24, 1053), TextElementAlt4(1, 36, 1053),
+    TextElementAlt4(2, 42, 1053), TextElementAlt4(3, 36, 1053),
+    TextElementAlt4(4, 20, 1053), TextElementAlt4(0, 24, 1054),
+    TextElementAlt4(1, 48, 1054), TextElementAlt4(2, 36, 1054),
+    TextElementAlt4(3, 32, 1054), TextElementAlt4(4, 8, 1054),
+    TextElementAlt4(0, 44, 1055), TextElementAlt4(1, 44, 1055),
+    TextElementAlt4(2, 38, 1055), TextElementAlt4(3, 32, 1055),
+    TextElementAlt4(4, 8, 1055),  TextElementAlt4(0, 20, 1056),
+    TextElementAlt4(1, 44, 1056), TextElementAlt4(2, 40, 1056),
+    TextElementAlt4(3, 28, 1056), TextElementAlt4(4, 12, 1056),
 };
 
 #define IsBossTimeAttack() ((gGameMode / 2) % 2)
 
-void sub_8088944(struct TimeAttackLobbyScreen* lobbyScreen) {
-    struct UNK_802D4CC_UNK270* transitionConfig;
-    struct Unk_03002400* background;
-    struct UNK_0808B3FC_UNK240* element;
+void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
+{
+    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct Unk_03002400 *background;
+    struct UNK_0808B3FC_UNK240 *element;
     s8 lang = gLoadedSaveGame->unk6 - 1;
     u32 i;
 
@@ -254,9 +235,10 @@ void sub_8088944(struct TimeAttackLobbyScreen* lobbyScreen) {
 
 void sub_8088EB4(void);
 
-void sub_8088CC4(void) {
-    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;    
+void sub_8088CC4(void)
+{
+    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
     u32 i;
 
     for (i = 0; i < 4; i++) {
@@ -271,7 +253,7 @@ void sub_8088CC4(void) {
     element = &lobbyScreen->unk80;
     sub_8004558(element);
     sub_80051E8(element);
-    
+
     if (lobbyScreen->unk1AC != 0) {
         element = &lobbyScreen->unkB0[0];
         sub_8004558(element);
@@ -283,22 +265,26 @@ void sub_8088CC4(void) {
     }
 }
 
-void sub_8088D60(void) {
-    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;
+void sub_8088D60(void)
+{
+    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
     u32 i;
     if (sub_802D4CC(&lobbyScreen->unk1A0) == 1) {
         TaskDestroy(gCurTask);
-        switch(lobbyScreen->unk1AD) {
+        switch (lobbyScreen->unk1AD) {
             case 0:
                 sub_801A770();
                 break;
             case 1:
-                CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY));
+                CreateCharacterSelectionScreen(gSelectedCharacter,
+                                               gLoadedSaveGame->unk13
+                                                   & CHARACTER_BIT(CHARACTER_AMY));
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 break;
             case 2:
-                CreateTimeAttackLevelSelectScreen(IsBossTimeAttack(), gSelectedCharacter, gCurrentLevel);
+                CreateTimeAttackLevelSelectScreen(IsBossTimeAttack(), gSelectedCharacter,
+                                                  gCurrentLevel);
                 break;
             case 3:
                 CreateTitleScreenAndSkipIntro();
@@ -313,7 +299,7 @@ void sub_8088D60(void) {
     }
 
     element = &lobbyScreen->unk80;
-    switch(lobbyScreen->unk1AD) {
+    switch (lobbyScreen->unk1AD) {
         case 1:
             element->unk16 -= 4;
             break;
@@ -344,10 +330,11 @@ void sub_8088D60(void) {
     sub_80051E8(element);
 }
 
-void sub_8088EB4(void) {
-    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;
-    struct UNK_802D4CC_UNK270* transitionConfig;
+void sub_8088EB4(void)
+{
+    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
+    struct UNK_802D4CC_UNK270 *transitionConfig;
     u32 i;
 
     if (gRepeatedKeys & (DPAD_UP) && lobbyScreen->unk1AD != 0) {
@@ -416,19 +403,22 @@ void sub_8088EB4(void) {
     }
 }
 
-void sub_8089104(struct Task*);
+void sub_8089104(struct Task *);
 
-void CreateTimeAttackLobbyScreen() {
-    struct Task* t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
-    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+void CreateTimeAttackLobbyScreen()
+{
+    struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen),
+                                0x1000, 0, sub_8089104);
+    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
 
     lobbyScreen->unk1AD = 0;
     lobbyScreen->unk1AC = 0;
     sub_8088944(lobbyScreen);
 }
 
-void sub_8089104(struct Task* t) {
-    struct TimeAttackLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+void sub_8089104(struct Task *t)
+{
+    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
     VramFree(lobbyScreen->unkB0[1].unk4);
     VramFree(lobbyScreen->unkB0[2].unk4);
     VramFree(lobbyScreen->unkB0[3].unk4);

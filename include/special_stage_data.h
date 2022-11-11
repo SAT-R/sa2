@@ -4,7 +4,10 @@
 #include "global.h"
 #include "zones.h"
 
-#define SPRITE_ARRAY_END { 65535, 65535, 65535,}
+#define SPRITE_ARRAY_END                                                                \
+    {                                                                                   \
+        65535, 65535, 65535,                                                            \
+    }
 
 struct UNK_8C878E8 {
     s16 id;
@@ -14,7 +17,7 @@ struct UNK_8C878E8 {
     s8 unk7;
 }; /* size 0x8 */
 
-struct UNK_8C87904 { 
+struct UNK_8C87904 {
     s16 type;
     s16 x;
     s16 y;
@@ -43,8 +46,8 @@ struct UNK_8C87920 {
 extern const struct UNK_80DF670 gUnknown_080DF2F8[];
 
 /* This is at the end of the rom */
-extern const struct UNK_8C878E8** const gUnknown_08C878E8[NUM_COURSE_ZONES];
-extern const struct UNK_8C87904* const gUnknown_08C87904[NUM_COURSE_ZONES];
-extern const struct UNK_8C87920* const gUnknown_08C87920[NUM_COURSE_ZONES];
+extern const struct UNK_8C878E8 **const gUnknown_08C878E8[NUM_COURSE_ZONES];
+extern const struct UNK_8C87904 *const gUnknown_08C87904[NUM_COURSE_ZONES];
+extern const struct UNK_8C87920 *const gUnknown_08C87920[NUM_COURSE_ZONES];
 
 #endif

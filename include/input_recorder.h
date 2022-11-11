@@ -4,7 +4,7 @@
 #include "global.h"
 
 #define RECORDER_DISABLED 0
-#define RECORDER_RECORD 1
+#define RECORDER_RECORD   1
 
 // Maybe `RECORDER_PLAY`
 #define RECORDER_PLAYBACK 2
@@ -21,6 +21,5 @@ void InputRecorderResetPlaybackHead(void);
 void InputRecorderLoadTape(void);
 u16 InputRecorderRead(void);
 void InputRecorderWrite(u16);
-
 
 #endif // INPUT_RECORDER_H

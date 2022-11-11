@@ -7,16 +7,16 @@
 
 // Player
 struct SpecialStagePlayer {
-    struct SpecialStage* unk0;
-    void* unk4;
+    struct SpecialStage *unk0;
+    void *unk4;
     struct UNK_0808B3FC_UNK240 unk8;
     struct UNK_0808B3FC_UNK240 unk38;
     struct UNK_0808B3FC_UNK240 roboArrow;
 
     // vram stuff
-    void* unk98;
-    void* unk9C;
-    void* unkA0;
+    void *unk98;
+    void *unk9C;
+    void *unkA0;
 
     s16 animSpeed;
     u8 unkA6;
@@ -34,21 +34,21 @@ struct SpecialStagePlayer {
     s16 unkB8;
 
     s16 unkBA;
-  
-    s16 unkBC;  
+
+    s16 unkBC;
     s16 unkBE;
 
     s16 multiplier;
     u16 unkC2;
 
-    const struct UNK_80DF670* sprites;
-    
+    const struct UNK_80DF670 *sprites;
+
     s32 speed;
     u32 rotateSpeed;
     u32 unkD0;
     u32 unkD4;
     u32 acceleration;
-    
+
     s32 coastResistence;
     s32 deceleration;
     s32 maxSpeed;
@@ -68,6 +68,6 @@ struct SpecialStagePlayer {
     s32 unk104;
 }; /* size 0x108 */
 
-struct Task* CreateSpecialStagePlayer(struct SpecialStage*);
+struct Task *CreateSpecialStagePlayer(struct SpecialStage *);
 
 #endif

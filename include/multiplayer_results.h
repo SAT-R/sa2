@@ -5,7 +5,7 @@
 
 // TODO: possibly the wrong way around
 #define MULTIPLAYER_RESULTS_MODE_CHARACTER_SELECTION 0
-#define MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE 1
+#define MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE     1
 
 void CreateMultiplayerResultsScreen(u8 mode);
 

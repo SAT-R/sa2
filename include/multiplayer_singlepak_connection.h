@@ -8,4 +8,3 @@ void StartSinglePakConnect(void);
 void sub_8081C0C(void);
 
 #endif // GUARD_MULTIPLAYER_SINGLEPAK_CONNECTION_H
-
