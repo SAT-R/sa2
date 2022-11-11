@@ -202,12 +202,29 @@ static const u16 sSoundNumberToSongMap[68] = {
 };
 
 static const u32 sSoundTempos[67] = {
-    71680, 71680, 65536, 65792,  68352, 66560, 62464, 61440, 84992, 84992, 86112,  83712,
-    68986, 68986, 77824, 110592, 72960, 81920, 83968, 88064, 82432, 88064, 84992,  88064,
-    68896, 78848, 87040, 81920,  83968, 92160, 97024, 73728, 78336, 65536, 69632,  92160,
-    77824, 65536, 60416, 77312,  78080, 65536, 86016, 90112, 86016, 81920, 107776, 73728,
-    97280, 85248, 81920, 86016,  69120, 81920, 73728, 77824, 86016, 73728, 73728,  86016,
-    65536, 65536, 65536, 65536,  73728, 65536, 81920,
+    Q_20_12(17.5),           Q_20_12(17.5),           Q_20_12(16.0),
+    Q_20_12(16.0625),        Q_20_12(16.6875),        Q_20_12(16.25),
+    Q_20_12(15.25),          Q_20_12(15.0),           Q_20_12(20.75),
+    Q_20_12(20.75),          Q_20_12(21.0234375),     Q_20_12(20.4375),
+    Q_20_12(16.84228515625), Q_20_12(16.84228515625), Q_20_12(19.0),
+    Q_20_12(27.0),           Q_20_12(17.8125),        Q_20_12(20.0),
+    Q_20_12(20.5),           Q_20_12(21.5),           Q_20_12(20.125),
+    Q_20_12(21.5),           Q_20_12(20.75),          Q_20_12(21.5),
+    Q_20_12(16.8203125),     Q_20_12(19.25),          Q_20_12(21.25),
+    Q_20_12(20.0),           Q_20_12(20.5),           Q_20_12(22.5),
+    Q_20_12(23.6875),        Q_20_12(18.0),           Q_20_12(19.125),
+    Q_20_12(16.0),           Q_20_12(17.0),           Q_20_12(22.5),
+    Q_20_12(19.0),           Q_20_12(16.0),           Q_20_12(14.75),
+    Q_20_12(18.875),         Q_20_12(19.0625),        Q_20_12(16.0),
+    Q_20_12(21.0),           Q_20_12(22.0),           Q_20_12(21.0),
+    Q_20_12(20.0),           Q_20_12(26.3125),        Q_20_12(18.0),
+    Q_20_12(23.75),          Q_20_12(20.8125),        Q_20_12(20.0),
+    Q_20_12(21.0),           Q_20_12(16.875),         Q_20_12(20.0),
+    Q_20_12(18.0),           Q_20_12(19.0),           Q_20_12(21.0),
+    Q_20_12(18.0),           Q_20_12(18.0),           Q_20_12(21.0),
+    Q_20_12(16.0),           Q_20_12(16.0),           Q_20_12(16.0),
+    Q_20_12(16.0),           Q_20_12(18.0),           Q_20_12(16.0),
+    Q_20_12(20.0),
 };
 
 static const u8 sCompletedGameSoundsOrder[63] = {
@@ -497,7 +514,7 @@ static void Task_SoundTestScreenMain(void)
         u32 songTempo;
         soundTestScreen->songTempo = songTempo
             = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
-        soundTestScreen->creams[DANCING_CREAM].unk22 = songTempo >> 12;
+        soundTestScreen->creams[DANCING_CREAM].unk22 = Q_20_12_TO_INT(songTempo);
         m4aMPlayAllStop();
 
         MPlayStart(
@@ -698,7 +715,7 @@ static void SoundTestScreenRenderUI(void)
     }
 
     soundTestScreen->speakerSize
-        -= gSineTable[256 - (soundTestScreen->speakerAnimFrame * 4)] >> 8;
+        -= SIN(0x100 - (soundTestScreen->speakerAnimFrame * 4)) >> 8;
 
     if (soundTestScreen->speakerAnimFrame > 0) {
         soundTestScreen->speakerAnimFrame--;
@@ -715,15 +732,11 @@ static void SoundTestScreenRenderUI(void)
     sub_80051E8(unk2D8);
 
     scrollArrows->unk16
-        = ((gSineTable[(soundTestScreen->scrollArrowAnimFrame & 15) * 0x10 + 256] >> 6)
-               * 5
-           >> 7)
+        = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
         + 94;
     sub_80051E8(scrollArrows);
     scrollArrows->unk16 = 58
-        - ((gSineTable[(soundTestScreen->scrollArrowAnimFrame & 15) * 0x10 + 256] >> 6)
-               * 5
-           >> 7);
+        - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     scrollArrows->unk10 |= 0x400;
     sub_80051E8(scrollArrows);
     scrollArrows->unk10 &= ~0x400;

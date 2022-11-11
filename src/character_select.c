@@ -1101,19 +1101,18 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 u8 temp = i - Div(i, 5) * 5;
                 element = &characterScreen->carouselBlobs[temp];
 
-                element->unk16 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66))
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->unk16
+                    = Q_2_14_TO_INT(
+                          COS(((characterScreen->carouselPosition >> 8) + (i * 0x66))
+                              & 0x3FF)
+                          * 92)
                     + 10;
-                element->unk18 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66))
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
-                    + 0x50;
+                element->unk18
+                    = Q_2_14_TO_INT(
+                          SIN((((characterScreen->carouselPosition >> 8) + (i * 0x66))
+                               & 0x3FF))
+                          * 92)
+                    + 80;
                 sub_80051E8(element);
             }
         }
@@ -1127,8 +1126,8 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 element = &characterScreen->carouselBlobs[(i + 2) & 3];
 
                 temp2 = (temp + i * 0x66) & 0x3FF;
-                element->unk16 = ((gSineTable[temp2 + 0x100] * 0x5C) >> 0xE) + 10;
-                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                element->unk16 = Q_2_14_TO_INT(COS(temp2) * 92) + 10;
+                element->unk18 = Q_2_14_TO_INT(SIN(temp2) * 92) + 80;
                 sub_80051E8(element);
             }
         }
