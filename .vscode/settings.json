@@ -139,5 +139,5 @@
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "xaver.clang-format",
-    "clang-format.executable": "clang-format-14"
+    "clang-format.executable": "clang-format-13"
 }

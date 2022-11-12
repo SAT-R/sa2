@@ -22,7 +22,7 @@ jobs:
       
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install clang-format-14
+          sudo apt update && sudo apt install clang-format-13
       
       - name: Check formatting
         run: |

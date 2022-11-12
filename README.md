@@ -19,7 +19,7 @@ It so far builds the following ROM:
 
 - Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, save game logic, nearly all UI, some Multi Link code
+- Initialisation of game state, main task logic, save game logic, nearly all UI, Multiplayer code, Special Stage
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
 - :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
 
@@ -64,6 +64,12 @@ If the rom built successfully you will see this output
 ```bash
 sa2.gba: OK
 ```
+
+### Code formatting
+
+All C code in this repo is formatted with `clang-format-13`. If using the Dev Container this is installed automatically.
+
+To format code run `make format`
 
 ### Notes
 
