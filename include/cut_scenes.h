@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void CreateCourseResultsCutScene(u32 mode);
+void CreateCourseResultsCutScene(u8 mode);
 
 #endif

@@ -29,6 +29,8 @@ extern u32 gUnknown_030059D0[2];
 extern s16 gCourseTime;
 
 extern u8 gUnknown_030054A8;
+extern u32 gUnknown_03005490;
+extern u8 gUnknown_030054F4;
 
 struct UNK_3005A44 {
     u16 unk0;
@@ -105,8 +107,8 @@ struct SomeStruct_59E0 {
 extern struct SomeStruct_59E0 gPlayer;
 
 struct SomeStruct_5960 {
-    u32 unk0;
-    u32 unk4;
+    s32 unk0;
+    s32 unk4;
     u8 filler[92 - 8];
     u32 unk5C;
     u8 filler60[0x20];
