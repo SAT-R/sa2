@@ -4,9 +4,9 @@
 .syntax unified
 .arm
 
-@; CreateCourseFinishScores
-	thumb_func_start sub_808DBA4
-sub_808DBA4: @ 0x0808DBA4
+@; CreateCourseResultsCutScene
+	thumb_func_start CreateCourseResultsCutScene
+CreateCourseResultsCutScene: @ 0x0808DBA4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

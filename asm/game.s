@@ -42388,15 +42388,15 @@ _0802EE18:
 	b _0802EE36
 _0802EE1E:
 	movs r0, #0
-	bl sub_808DBA4
+	bl CreateCourseResultsCutScene
 	b _0802EE64
 _0802EE26:
 	movs r0, #1
-	bl sub_808DBA4
+	bl CreateCourseResultsCutScene
 	b _0802EE64
 _0802EE2E:
 	movs r0, #2
-	bl sub_808DBA4
+	bl CreateCourseResultsCutScene
 	b _0802EE64
 _0802EE36:
 	ldr r0, _0802EE48 @ =gUnknown_03005490

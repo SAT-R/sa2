@@ -25,63 +25,9 @@ void sub_807120C(struct SpecialStageGuardRobo *);
 static void SpecialStageGuardRoboOnDestroy(struct Task *);
 
 static const struct UNK_80DF670 gUnknown_080DF914[9] = {
-    {
-        883,
-        4,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        5,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        6,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        7,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        0,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        1,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        2,
-        64,
-        16,
-        0,
-    },
-    {
-        883,
-        3,
-        64,
-        16,
-        0,
-    },
-    SPRITE_ARRAY_END,
+    { 883, 4, 64, 16, 0 }, { 883, 5, 64, 16, 0 }, { 883, 6, 64, 16, 0 },
+    { 883, 7, 64, 16, 0 }, { 883, 0, 64, 16, 0 }, { 883, 1, 64, 16, 0 },
+    { 883, 2, 64, 16, 0 }, { 883, 3, 64, 16, 0 }, SPRITE_ARRAY_END,
 };
 
 typedef void (*GuardRoboStateHandler)(void);
@@ -117,7 +63,7 @@ static void GuardRoboInit(struct SpecialStageGuardRobo *guardRobo)
     guardRobo->unk54 = 60;
 }
 
-static void Task_GuardRoboMain(void)
+void Task_GuardRoboMain(void)
 {
     struct SpecialStageCollectables_UNK874_2 unk874;
     struct UNK_806CB84 unkCBB4;

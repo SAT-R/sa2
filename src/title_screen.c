@@ -279,8 +279,7 @@ static const u16 sLensFlareStartPositions[][2] = {
 };
 
 // Don't know who these belong to yet
-
-extern void sub_8009F94(void);
+void sub_8009F94(void);
 
 void CreateTitleScreen(void)
 {

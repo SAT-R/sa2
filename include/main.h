@@ -108,6 +108,31 @@ union __attribute__((transparent_union)) Unk_03002E60 {
     struct MapHeader_Full *y;
 };
 
+struct Unk_03003674_1_Sub {
+    u16 unk0, unk2, unk4, unk6;
+    s16 unk8, unkA;
+}; /* size = 0xC */
+
+struct Unk_03003674_1_Full {
+    struct Unk_03003674_1_Sub sub;
+    u32 unkC;
+}; /* size = 0x10 */
+
+union __attribute__((transparent_union)) Unk_03003674_1 {
+    const struct Unk_03003674_1_Sub *sub;
+    const struct Unk_03003674_1_Full *full;
+};
+
+struct Unk_03003674 {
+    const union Unk_03003674_0 *const *unk0;
+    const union Unk_03003674_1 *unk4;
+    const u16 *const *unk8;
+    const void *unkC;
+    const void *unk10;
+    const void *unk14;
+    const s32 *unk18;
+}; /* size = 0x1C */
+
 extern u32 gFlags;
 extern u32 gFlagsPreVBlank;
 
@@ -175,7 +200,7 @@ extern struct Unk_03002400 *gUnknown_03001800[16];
 extern void *gUnknown_03001884;
 
 extern u16 gUnknown_030017F0;
-extern u16 gUnknown_030017F4[2];
+extern s16 gUnknown_030017F4[2];
 extern u8 gUnknown_03001850[32];
 extern FuncType_030053A0 gUnknown_03001870[4];
 

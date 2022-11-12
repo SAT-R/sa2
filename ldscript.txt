@@ -33,8 +33,10 @@ SECTIONS
         build/sa2/src/sio32_multi_load.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
-        build/sa2/src/sprite.o(.text);
+        build/sa2/src/sprite_1.o(.text);
         build/sa2/asm/sprite.o(.text);
+        build/sa2/src/sprite_3.o(.text);
+        build/sa2/asm/sprite_3.o(.text);
         build/sa2/src/malloc_ewram.o(.text);
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
@@ -106,7 +108,7 @@ SECTIONS
         build/sa2/src/multi_sio.o(.rodata);
         build/sa2/src/sio32_multi_load.o(.rodata);
         build/sa2/src/main.o(.rodata);
-        build/sa2/src/sprite.o(.rodata);
+        build/sa2/src/sprite_1.o(.rodata);
         build/sa2/src/trig.o(.rodata);
         build/sa2/data/data1.o(.rodata);
         build/sa2/data/multiboot_chao_garden.o(.rodata);

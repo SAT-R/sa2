@@ -48,9 +48,11 @@ struct Unk_03002400 {
 struct UNK_0808B3FC_UNK240_UNKC {
     u8 unk0;
     u8 unk1;
-    s16 unk2;
+    u16 unk2;
     u16 unk4;
     u16 unk6;
+    s16 unk8;
+    s16 unkA;
 };
 
 // TODO: work out what makes this struct different from the above
@@ -65,7 +67,7 @@ struct UNK_0808B3FC_UNK240 {
     // assetId
     u16 unkA;
 
-    u32 unkC;
+    struct UNK_0808B3FC_UNK240_UNKC *unkC;
     u32 unk10;
 
     u16 unk14;
