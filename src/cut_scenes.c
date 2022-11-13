@@ -945,4 +945,99 @@ void sub_808ED60(u8 a, u8 b, u8 c)
     }
 }
 
-// void sub_808EF38(void) { struct CreditsCutScene2 *scene = NULL; }
+void sub_808F10C(void);
+
+void sub_808EF38(void)
+{
+    struct CreditsCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+
+    transitionConfig->unk2 = 1;
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        scene->unk50++;
+
+        if (scene->unk50 < scene->unk51) {
+            if (gUnknown_080E1278[scene->unk50] != 0) {
+                struct Unk_03002400 *background = &scene->unk0;
+                background->unk4 = BG_SCREEN_ADDR(8);
+                background->unkA = 0;
+                background->unkC = BG_SCREEN_ADDR(28);
+                background->unk18 = 0;
+                background->unk1A = 0;
+                background->unk1C = gUnknown_080E1278[scene->unk50];
+                background->unk1E = 0;
+                background->unk20 = 0;
+                background->unk22 = 0;
+                background->unk24 = 0;
+                background->unk26 = 0x1E;
+                background->unk28 = 0x14;
+                background->unk2A = 0;
+                background->unk2E = 1;
+                sub_8002A3C(background);
+            }
+            gCurTask->main = sub_808F004;
+        } else {
+            gCurTask->main = sub_808F10C;
+        }
+    }
+}
+
+void sub_808F0BC(void);
+void sub_808F068(void);
+
+void sub_808F004(void)
+{
+    struct CreditsCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    transitionConfig->unk2 = 2;
+
+    if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
+        gCurTask->main = sub_808F0BC;
+    }
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_808F068;
+    }
+}
+
+void sub_808F068(void)
+{
+    struct CreditsCutScene2 *scene = TaskGetStructPtr(gCurTask);
+
+    if (scene->unk54 != 0) {
+        scene->unk54--;
+    } else {
+        scene->unk54 = 0x96;
+        gCurTask->main = sub_808EF38;
+    }
+
+    if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
+        gCurTask->main = sub_808F0BC;
+    }
+}
+
+void sub_808F0BC(void)
+{
+    struct CreditsCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    transitionConfig->unk2 = 1;
+    m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        sub_808F14C(scene->unk4C);
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_808F10C(void)
+{
+    struct CreditsCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    scene->unk4F++;
+    sub_808EA50(scene->unk4C, scene->unk4E, scene->unk4F);
+    TaskDestroy(gCurTask);
+}
+
+void sub_808F148(UNUSED struct Task *t) { }
