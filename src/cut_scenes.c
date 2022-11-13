@@ -10,6 +10,7 @@
 #include "constants/songs.h"
 #include "trig.h"
 #include "course_select.h"
+#include "save.h"
 
 /** cut_scenes_courses */
 
@@ -592,7 +593,7 @@ void sub_808E890(struct Task *t)
 
 /** cut_scenes_endings **/
 
-struct FinalEndingCutScene {
+struct EndingCutScene {
     u8 unk0[0x6C];
     u8 unk6C;
     u8 unk6D;
@@ -607,9 +608,341 @@ void sub_808E9F8(struct Task *);
 void sub_808E8B0(void)
 {
     struct Task *t = TaskCreate(sub_808E9AC, 0x74, 0x3100, 0, sub_808E9F8);
-    struct FinalEndingCutScene *scene = TaskGetStructPtr(t);
+    struct EndingCutScene *scene = TaskGetStructPtr(t);
 
     scene->unk6C = 0;
     scene->unk6D = 0;
     scene->unk6E = 0xB4;
 }
+
+void sub_808E8F8(s16 *ptr, s16 a, u8 b)
+{
+    if (*ptr != a) {
+        *ptr = a;
+    } else {
+        u16 temp;
+        gUnknown_030053B8 = (gUnknown_030053B8 * 0x196225) + 0x3C6EF35F;
+
+        temp = gUnknown_030053B8;
+        if (temp >> 8 != 0) {
+            *ptr += ((temp) >> ((0x10 - b)));
+        } else {
+            *ptr -= ((temp) >> ((8 - b)));
+        }
+    }
+}
+
+void sub_808E95C(s32 *ptr, s32 a, u8 b)
+{
+    if (*ptr != a) {
+        *ptr = a;
+    } else {
+        u16 temp;
+        gUnknown_030053B8 = (gUnknown_030053B8 * 0x196225) + 0x3C6EF35F;
+
+        temp = gUnknown_030053B8;
+        if (temp >> 8 != 0) {
+            *ptr += ((temp) >> ((8 - b)));
+        } else {
+            *ptr -= (temp);
+        }
+    }
+}
+
+void sub_808FC78(void);
+void sub_8091684(void);
+
+void sub_808E9AC(void)
+{
+    struct EndingCutScene *scene = TaskGetStructPtr(gCurTask);
+
+    if (scene->unk6E != 0) {
+        scene->unk6E--;
+    } else {
+        if (gCurrentLevel == (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1)) {
+            sub_808FC78();
+        } else {
+            sub_8091684();
+        }
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_808E9F8(UNUSED struct Task *t) { }
+
+void sub_808E9FC(void)
+{
+    struct EndingCutScene *scene = TaskGetStructPtr(gCurTask);
+    if (gLoadedSaveGame->unk7[gSelectedCharacter]
+        > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
+        scene->unk6D = 2;
+    } else {
+        scene->unk6D = 1;
+    }
+
+    gCurTask->main = sub_808E9AC;
+}
+
+struct CreditsCutScene {
+    struct Unk_03002400 unk0;
+    struct UNK_802D4CC_UNK270 unk40;
+
+    u8 unk4C;
+    u8 unk4D;
+
+    u8 unk4E;
+
+    u8 unk4F;
+    u8 unk50;
+    u16 unk52;
+    u32 unk54;
+}; /* 0x58 */
+
+void sub_808ED5C(struct Task *);
+void sub_808EBC4(void);
+
+extern const u16 gUnknown_080E1244[26];
+
+// CreateCreditsCutScene
+void sub_808EA50(u8 a, u8 b, u8 c)
+{
+    struct Task *t;
+    struct CreditsCutScene *scene = NULL;
+    struct Unk_03002400 *background;
+    struct UNK_802D4CC_UNK270 *transitionConfig;
+
+    gDispCnt = 0x1140;
+    gBgCntRegs[0] = 0x5c00;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xff;
+    gUnknown_03002280[3] = 0x20;
+
+    t = TaskCreate(sub_808EBC4, 0x58, 0x3100, 0, sub_808ED5C);
+
+    // BUG: assigning to null pointer
+    scene->unk52 = 0;
+
+    scene = TaskGetStructPtr(t);
+    scene->unk4C = a;
+    scene->unk4E = b;
+    scene->unk4F = c;
+    scene->unk54 = 0xB4;
+
+    if (scene->unk4C == 2) {
+        scene->unk50 = 5;
+    } else {
+        scene->unk50 = 0;
+    }
+
+    if ((scene->unk4C == 1 && gLoadedSaveGame->unk19 != 0)) {
+        scene->unk4D = 1;
+    } else if (scene->unk4C == 2 && gLoadedSaveGame->unk1B != 0) {
+        scene->unk4D = 2;
+    } else {
+        scene->unk4D = 0;
+    }
+
+    transitionConfig = &scene->unk40;
+    transitionConfig->unk0 = 0;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unkA = 0;
+    transitionConfig->unk6 = 0x100;
+    transitionConfig->unk8 = 0x3FFF;
+
+    background = &scene->unk0;
+    background->unk4 = BG_SCREEN_ADDR(0);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(28);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = gUnknown_080E1244[scene->unk50 + scene->unk4E];
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x1E;
+    background->unk28 = 0x14;
+    background->unk2A = 0;
+    background->unk2E = 0;
+    sub_8002A3C(background);
+}
+
+void sub_808ECB4(void);
+
+void sub_808EC64(void);
+
+void sub_808EBC4(void)
+{
+    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+
+    transitionConfig->unk2 = 2;
+
+    if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
+        gCurTask->main = sub_808ECB4;
+    }
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_808EC64;
+    }
+}
+
+void sub_808ED04(void);
+
+void sub_808EC28(void)
+{
+    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    transitionConfig->unk2 = 1;
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_808ED04;
+    }
+}
+
+void sub_808EC64(void)
+{
+    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+
+    if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
+        gCurTask->main = sub_808ECB4;
+    }
+
+    if (scene->unk54 != 0) {
+        scene->unk54--;
+    } else {
+        gCurTask->main = sub_808EC28;
+    }
+}
+
+void sub_808F14C(u8);
+
+void sub_808ECB4(void)
+{
+    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    transitionConfig->unk2 = 1;
+    m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        sub_808F14C(scene->unk4C);
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_808ED60(u8, u8, u8);
+
+void sub_808ED04(void)
+{
+    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    scene->unk4E++;
+    if (scene->unk4F < 4) {
+        sub_808ED60(scene->unk4C, scene->unk4E, scene->unk4F);
+    } else {
+        sub_808F14C(scene->unk4C);
+    }
+    TaskDestroy(gCurTask);
+}
+
+void sub_808ED5C(UNUSED struct Task *t) { }
+
+struct CreditsCutScene2 {
+    struct Unk_03002400 unk0;
+    struct UNK_802D4CC_UNK270 unk40;
+
+    u8 unk4C;
+    u8 unk4D;
+
+    u8 unk4E;
+
+    u8 unk4F;
+    u8 unk50;
+    u8 unk51;
+    u8 unk52;
+    u32 unk54;
+    u32 unk58;
+};
+
+void sub_808F004(void);
+void sub_808F148(struct Task *);
+
+extern const u8 gUnknown_080E12AA[6];
+extern const u16 gUnknown_080E1278[25];
+
+void sub_808ED60(u8 a, u8 b, u8 c)
+{
+    struct Task *t;
+    struct CreditsCutScene2 *scene = NULL;
+    struct Unk_03002400 *background;
+    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    u8 i;
+
+    gDispCnt = 0x1241;
+    gBgCntRegs[1] = 0x1C04;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0;
+    gUnknown_03004D80[1] = 0;
+    gUnknown_03002280[4] = 0;
+    gUnknown_03002280[5] = 0;
+    gUnknown_03002280[6] = 0xff;
+    gUnknown_03002280[7] = 0x20;
+
+    t = TaskCreate(sub_808F004, 0x5C, 0x3100, 0, sub_808F148);
+    scene = TaskGetStructPtr(t);
+    scene->unk4C = a;
+    scene->unk4E = b;
+    scene->unk4F = c;
+    scene->unk52 = 0;
+    scene->unk54 = 0x96;
+    scene->unk50 = 0;
+
+    if (scene->unk4C == 1 && gLoadedSaveGame->unk19 != 0) {
+        scene->unk4D = 1;
+    } else if (scene->unk4C == 2 && gLoadedSaveGame->unk1B != 0) {
+        scene->unk4D = 2;
+    } else {
+        scene->unk4D = 0;
+    }
+
+    for (i = 0; i < scene->unk4F; i++) {
+        scene->unk50 += gUnknown_080E12AA[i];
+    }
+
+    scene->unk51 = scene->unk50 + gUnknown_080E12AA[scene->unk4F];
+
+    transitionConfig = &scene->unk40;
+    transitionConfig->unk0 = 1;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unkA = 0;
+    transitionConfig->unk6 = 0x200;
+    transitionConfig->unk8 = 0x3FFF;
+
+    if (gUnknown_080E1278[scene->unk50] != 0) {
+        background = &scene->unk0;
+        background->unk4 = BG_SCREEN_ADDR(8);
+        background->unkA = 0;
+        background->unkC = BG_SCREEN_ADDR(28);
+        background->unk18 = 0;
+        background->unk1A = 0;
+        background->unk1C = gUnknown_080E1278[scene->unk50];
+        background->unk1E = 0;
+        background->unk20 = 0;
+        background->unk22 = 0;
+        background->unk24 = 0;
+        background->unk26 = 0x1E;
+        background->unk28 = 0x14;
+        background->unk2A = 0;
+        background->unk2E = 1;
+        sub_8002A3C(background);
+    }
+}
+
+// void sub_808EF38(void) { struct CreditsCutScene2 *scene = NULL; }
