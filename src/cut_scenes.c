@@ -8,6 +8,10 @@
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "constants/songs.h"
+#include "trig.h"
+#include "course_select.h"
+
+/** cut_scenes_courses */
 
 struct ResultsCutScene {
     struct SomeStruct_59E0 *unk0;
@@ -21,7 +25,7 @@ struct ResultsCutScene {
     u16 unk78;
     u8 unk7A;
     u8 unk7B;
-    u8 unk7C;
+    s8 unk7C;
 } /* 0x80 */;
 
 extern const TaskMain gUnknown_080E1208[3];
@@ -119,8 +123,6 @@ void CreateCourseResultsCutScene(u8 mode)
     transitionConfig->unk8 = 0;
 }
 
-void sub_808E890(struct Task *);
-
 extern void sub_80304DC(u32, u16, u8);
 
 void sub_808DD9C(void)
@@ -192,4 +194,422 @@ void sub_808DD9C(void)
     if (scene->unk78 == 200) {
         sub_80304DC(gUnknown_03005490, gCourseTime, gUnknown_030054F4);
     }
+}
+
+void sub_808DF88(void)
+{
+    struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
+    struct SomeStruct_59E0 *player = scene->unk0;
+
+    scene->unk70 -= scene->unk74;
+    scene->unk72 += scene->unk76;
+
+    if (scene->unk74 > 0x60) {
+        scene->unk74 = (scene->unk74 * 0x7F) >> 7;
+    }
+
+    if (scene->unk76 > 0x60) {
+        scene->unk76 = (scene->unk76 * 0x7F) >> 7;
+    }
+
+    if (scene->unk70 < (player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00)) {
+        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00;
+    }
+
+    if (scene->unk72 > (player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0x1400)) {
+        scene->unk72 = player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0x1400;
+        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00;
+
+        if (scene->unk7A == 0) {
+            VramFree(scene->unk4.unk4);
+
+            element->unk4 = VramMalloc(0x24);
+            element->unkA = 0xDF;
+            scene->unk4.unk20 = 1;
+            scene->unk7A = 1;
+            scene->unk7A = 1;
+        }
+    }
+
+    element->unk16 = scene->unk70 >> 8;
+
+    if (scene->unk7A != 0) {
+        s16 sin;
+        scene->unk7B += 4;
+        sin = SIN(scene->unk7B * 4) >> 12;
+        element->unk18 = (scene->unk72 >> 8) + sin;
+    } else {
+        element->unk18 = scene->unk72 >> 8;
+    }
+
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    scene->unk78++;
+
+    if (scene->unk78 == 200) {
+        sub_80304DC(gUnknown_03005490, gCourseTime, gUnknown_030054F4);
+    }
+}
+
+extern s32 sub_801F100(u32, u32, u8, u8, TaskMain);
+void sub_801EC3C(void);
+
+void sub_808E114(void)
+{
+    s32 result;
+    struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
+    struct SomeStruct_59E0 *player = scene->unk0;
+
+    if (scene->unk78 < 0x2E) {
+        scene->unk70 += scene->unk74;
+    } else {
+        s16 sin = SIN(((scene->unk78 - 0x2D) * 2 & 0xFF) * 4) >> 6;
+        scene->unk7C = (sin * 5) >> 7;
+    }
+
+    if (scene->unk74 > 0x60) {
+        scene->unk74 = (scene->unk74 * 0x7F) >> 7;
+    }
+
+    if (scene->unk70 > (player->unk8 - (gUnknown_03005960.unk0 * 256) - 0x4000)) {
+        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 256) - 0x4000;
+    }
+
+    result = sub_801F100((scene->unk72 >> 8) + gUnknown_03005960.unk4,
+                         (scene->unk70 >> 8) + gUnknown_03005960.unk0 + scene->unk7C, 1,
+                         8, sub_801EC3C);
+
+    if (result < 0) {
+        scene->unk72 += result * 0x100;
+    }
+
+    if (result > 0) {
+        scene->unk72 += 0x100;
+    }
+
+    element->unk16 = (scene->unk70 >> 8) + scene->unk7C;
+    element->unk18 = (scene->unk72 >> 8) - 0xE;
+
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (scene->unk78 == 0x28) {
+        player->unk64 = 0x52;
+    }
+
+    if (scene->unk78 == 200) {
+        sub_80304DC(gUnknown_03005490, gCourseTime, gUnknown_030054F4);
+    }
+
+    scene->unk78++;
+}
+
+struct CutScene {
+    struct Unk_03002400 unk0;
+    struct Unk_03002400 unk40;
+    struct Unk_03002400 unk80;
+    struct Unk_03002400 unkC0;
+    struct UNK_802D4CC_UNK270 unk100;
+
+    // slide
+    u16 unk10C;
+
+    // caption
+    u16 unk10E;
+
+    u16 unk110;
+    u8 unk112;
+} /** size 0x114*/;
+
+void sub_808E35C(struct CutScene *scene);
+
+void sub_808E274(struct CutScene *scene)
+{
+    struct UNK_802D4CC_UNK270 *transitionConfig;
+    gDispCnt = 0x1600;
+    gDispCnt |= 0x40;
+
+    gBgCntRegs[0] = 0x1c00;
+    gBgCntRegs[1] = 0x1d05;
+    gBgCntRegs[2] = 0x5e0a;
+    DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xff;
+    gUnknown_03002280[3] = 0x20;
+    gUnknown_03004D80[1] = 0xff;
+    gUnknown_03002280[4] = 0;
+    gUnknown_03002280[5] = 0;
+    gUnknown_03002280[6] = 0xff;
+    gUnknown_03002280[7] = 0x20;
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[8] = 0;
+    gUnknown_03002280[9] = 0;
+    gUnknown_03002280[10] = 0xff;
+    gUnknown_03002280[11] = 0x20;
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0xff88;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_808E35C(scene);
+
+    transitionConfig = &scene->unk100;
+    transitionConfig->unk0 = 1;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unk2 = 2;
+    transitionConfig->unk6 = 0x200;
+    transitionConfig->unk8 = 0x3FFF;
+    transitionConfig->unkA = 0;
+
+    sub_802D4CC(transitionConfig);
+}
+
+extern const u16 gUnknown_080E1130[90];
+extern const u16 gUnknown_080E1118[24];
+
+void sub_808E35C(struct CutScene *scene)
+{
+    struct Unk_03002400 *background;
+    s8 lang = gLoadedSaveGame->unk6 - 1;
+    if (lang < 0) {
+        lang = 0;
+    }
+
+    background = &scene->unk80;
+    background->unk4 = BG_SCREEN_ADDR(8);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(29);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = gUnknown_080E1130[scene->unk10E + (lang * 15)];
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x1e;
+    background->unk28 = 5;
+    background->unk2A = 0;
+    background->unk2E = 1;
+    sub_8002A3C(background);
+
+    background = &scene->unk0;
+    background->unk4 = BG_SCREEN_ADDR(16);
+    background->unkA = 0;
+    background->unkC = BG_SCREEN_ADDR(30);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = gUnknown_080E1118[scene->unk10C];
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x1e;
+    background->unk28 = 0x14;
+    background->unk2A = 0;
+    background->unk2E = 2;
+    sub_8002A3C(background);
+}
+
+void sub_808E4C8(void);
+
+void sub_808E424(void)
+{
+    struct CutScene *scene = TaskGetStructPtr(gCurTask);
+
+    if (scene->unk110 == 0) {
+        scene->unk110 = 1;
+        switch (scene->unk112) {
+            case 0:
+            case 2:
+                m4aSongNumStart(MUS_DEMO_1);
+                break;
+            case 1:
+                m4aSongNumStart(MUS_DEMO_2);
+                break;
+        }
+    }
+
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    if (sub_802D4CC(&scene->unk100) == 1) {
+        scene->unk110 = 0;
+        gCurTask->main = sub_808E4C8;
+    }
+}
+
+void sub_808E63C(void);
+
+void sub_808E4C8(void)
+{
+    struct CutScene *scene;
+    s8 lang = gLoadedSaveGame->unk6 - 1;
+
+    if (lang < 0) {
+        lang = 0;
+    }
+
+    scene = TaskGetStructPtr(gCurTask);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+
+    if (scene->unk110++ > 0x154) {
+        scene->unk110 = 0;
+
+        if ((scene->unk10C & 3) == 3) {
+            struct Unk_03002400 *background;
+            gBgScrollRegs[0][1] = 0xFFDC;
+
+            background = &scene->unk40;
+            background->unk4 = BG_SCREEN_ADDR(0);
+            background->unkA = 0;
+            background->unkC = BG_SCREEN_ADDR(28);
+            background->unk18 = 0;
+            background->unk1A = 0;
+            background->unk1C = gUnknown_080E1130[scene->unk10E + 1 + (lang * 15)];
+            background->unk1E = 0;
+            background->unk20 = 0;
+            background->unk22 = 0;
+            background->unk24 = 0;
+            background->unk26 = 0x1e;
+            background->unk28 = 5;
+            background->unk2A = 0;
+            background->unk2E = 0x10;
+            sub_8002A3C(background);
+            gDispCnt |= 0x100;
+            m4aSongNumStart(MUS_GOT_ALL_CHAOS_EMERALDS);
+            gCurTask->main = sub_808E63C;
+        } else {
+            scene->unk10C++;
+            scene->unk10E++;
+            sub_808E35C(scene);
+            gCurTask->main = sub_808E4C8;
+        }
+    }
+
+    if (gPressedKeys & START_BUTTON && scene->unk110 > 8) {
+        scene->unk110 = 0x154;
+    }
+}
+
+void sub_808E6B0(void);
+
+void sub_808E63C(void)
+{
+    struct CutScene *scene = TaskGetStructPtr(gCurTask);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+
+    if (scene->unk110++ > 300) {
+        struct UNK_802D4CC_UNK270 *transitionConfig;
+        scene->unk110 = 0;
+        transitionConfig = &scene->unk100;
+        transitionConfig->unk0 = 1;
+        transitionConfig->unk8 = 0x3FFF;
+        transitionConfig->unk4 = 0;
+        transitionConfig->unk2 = 1;
+        transitionConfig->unkA = 0;
+
+        gCurTask->main = sub_808E6B0;
+    }
+}
+
+void sub_808E6B0(void)
+{
+    struct CutScene *scene = TaskGetStructPtr(gCurTask);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+
+    if (sub_802D4CC(&scene->unk100) == 1) {
+        if (gCurrentLevel >= gLoadedSaveGame->unk7[gSelectedCharacter]) {
+            CreateCourseSelectionScreen(gCurrentLevel,
+                                        gLoadedSaveGame->unk7[gSelectedCharacter], 1);
+        } else {
+            CreateCourseSelectionScreen(gCurrentLevel,
+                                        gLoadedSaveGame->unk7[gSelectedCharacter], 4);
+        }
+        TaskDestroy(gCurTask);
+    }
+}
+
+// CreateCreamCutScene
+void sub_808E740(u8 variant)
+{
+    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct CutScene *scene = TaskGetStructPtr(t);
+    scene->unk10C = variant * 4;
+    scene->unk10E = variant * 5;
+    scene->unk110 = 0;
+    scene->unk112 = variant;
+    sub_808E274(scene);
+}
+
+// CreateCreamCutScene2
+void sub_808E79C(void)
+{
+    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct CutScene *scene = TaskGetStructPtr(t);
+    scene->unk10C = 0;
+    scene->unk10E = 0;
+    scene->unk110 = 0;
+    sub_808E274(scene);
+}
+
+// CreateTailsCutScene
+void sub_808E7E8(void)
+{
+    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct CutScene *scene = TaskGetStructPtr(t);
+    scene->unk10C = 8;
+    scene->unk10E = 10;
+    scene->unk110 = 0;
+    sub_808E274(scene);
+}
+
+// CreateKnucklesCutScene
+void sub_808E83C(void)
+{
+    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct CutScene *scene = TaskGetStructPtr(t);
+    scene->unk10C = 4;
+    scene->unk10E = 5;
+    scene->unk110 = 0;
+    sub_808E274(scene);
+}
+
+void sub_808E890(struct Task *t)
+{
+    struct ResultsCutScene *scene = TaskGetStructPtr(t);
+    VramFree(scene->unk4.unk4);
+
+    if (scene->unk34.unk4 != 0) {
+        VramFree(scene->unk34.unk4);
+    }
+}
+
+/** cut_scenes_endings **/
+
+struct FinalEndingCutScene {
+    u8 unk0[0x6C];
+    u8 unk6C;
+    u8 unk6D;
+    u16 unk6E;
+    u8 filler[4];
+} /* 0x74 */;
+
+void sub_808E9AC(void);
+void sub_808E9F8(struct Task *);
+
+// CreateEndingCutScene
+void sub_808E8B0(void)
+{
+    struct Task *t = TaskCreate(sub_808E9AC, 0x74, 0x3100, 0, sub_808E9F8);
+    struct FinalEndingCutScene *scene = TaskGetStructPtr(t);
+
+    scene->unk6C = 0;
+    scene->unk6D = 0;
+    scene->unk6E = 0xB4;
 }

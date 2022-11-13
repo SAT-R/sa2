@@ -1037,7 +1037,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     }
 }
 
-void DestroyUI(struct CourseSelectionScreen *coursesScreen)
+static void DestroyUI(struct CourseSelectionScreen *coursesScreen)
 {
     u8 i;
 

@@ -5,7 +5,7 @@ ARG VARIANT
 FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev build-essential clang-format-14
+    && apt-get -y install --no-install-recommends binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev build-essential clang-format-13
 
 WORKDIR /deps
 RUN git clone https://github.com/pret/agbcc.git && cd agbcc && ./build.sh
