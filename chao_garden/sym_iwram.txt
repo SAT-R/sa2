@@ -154,10 +154,9 @@
 . = 0x00001B10; gUnknown_03001B10 = .;
 . = 0x00001B18; gUnknown_03001B18 = .;
 . = 0x00001B1C; gUnknown_03001B1C = .;
-. = 0x00002F20; gUnknown_03002F20 = .;
-. = 0x00002F22; gUnknown_03002F22 = .;
-. = 0x00002F24; gUnknown_03002F24 = .;
-. = 0x00002F28; gUnknown_03002F28 = .;
+
+. = 0x00002F20; build/mb_chao_garden/src/agb_flash.o(.bss);
+
 . = 0x00002F2C; SoundMainRAM_Buffer = .;
 . = 0x00003330; gUnknown_03003330 = .;
 . = 0x00003350; gUnknown_03003350 = .;
@@ -200,14 +199,8 @@
 . = 0x000062C0; gCgbChans = .;
 . = 0x000063C0; gUnknown_030063C0 = .;
 . = 0x00006480; gMPlayMemAccArea = .;
-. = 0x000064D0; gUnknown_030064D0 = .;
-. = 0x000064D4; gUnknown_030064D4 = .;
-. = 0x000064D8; gUnknown_030064D8 = .;
-. = 0x000064DC; gUnknown_030064DC = .;
-. = 0x000064E0; gUnknown_030064E0 = .;
-. = 0x000064E4; gUnknown_030064E4 = .;
-. = 0x000064E8; gUnknown_030064E8 = .;
-. = 0x000064EC; gUnknown_030064EC = .;
-. = 0x000064F0; gUnknown_030064F0 = .;
+
+. = 0x000064D0; build/mb_chao_garden/src/agb_flash.o(.data);
+
 . = 0x00007000; gUnknown_03007000 = .;
 . = 0x00007FFA; gUnknown_03007FFA = .;

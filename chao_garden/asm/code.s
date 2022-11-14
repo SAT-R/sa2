@@ -95,10 +95,10 @@ sub_02000248: @ 0x02000248
 	mov r7, sb
 	mov r6, r8
 	push {r6, r7}
-	bl sub_02011e9c
+	bl IdentifyFlash
 	ldr r1, _020002A8 @ =gUnknown_03003B68
 	movs r0, #2
-	bl sub_02011a84
+	bl SetFlashTimerIntr
 	movs r6, #0
 	movs r0, #0xff
 	mov r8, r0
@@ -115,7 +115,7 @@ _0200026C:
 	movs r1, #0
 	adds r2, r4, #0
 	ldr r3, _020002B4 @ =0x00000858
-	bl sub_02011c14
+	bl ReadFlash
 	ldrh r0, [r4, #2]
 	cmp r0, sb
 	bne _020002C8
@@ -192,7 +192,7 @@ _0200030C:
 	ldr r3, _02000350 @ =0x00000858
 	movs r1, #0
 	adds r2, r4, #0
-	bl sub_02011c14
+	bl ReadFlash
 	ldr r0, [r4, #0x18]
 	bl sub_02001528
 _0200032C:
@@ -299,7 +299,7 @@ _020003FA:
 	adds r0, #0xa
 	ldr r1, _02000420 @ =gUnknown_03003B80
 	ldr r2, _02000438 @ =0x00000858
-	bl sub_02011e54
+	bl ProgramFlashSectorAndVerifyNBytes
 	cmp r0, #0
 	beq _02000410
 	adds r5, #1
