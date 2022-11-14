@@ -197,7 +197,7 @@ _08086B04:
 	movs r0, #0
 	strh r0, [r4]
 _08086B16:
-	ldr r0, _08086B34 @ =gUnknown_030059E0
+	ldr r0, _08086B34 @ =gPlayer
 	adds r0, #0x64
 	movs r1, #0
 	ldrsh r0, [r0, r1]
@@ -212,7 +212,7 @@ _08086B26:
 	.align 2, 0
 _08086B2C: .4byte gCurTask
 _08086B30: .4byte gUnknown_03005A70
-_08086B34: .4byte gUnknown_030059E0
+_08086B34: .4byte gPlayer
 
 	thumb_func_start sub_8086B38
 sub_8086B38: @ 0x08086B38
@@ -321,7 +321,7 @@ sub_8086BE8: @ 0x08086BE8
 	ldr r1, _08086C74 @ =IWRAM_START + 0xC4
 	adds r0, r3, r1
 	adds r5, r0, r2
-	ldr r1, _08086C78 @ =gUnknown_030059E0
+	ldr r1, _08086C78 @ =gPlayer
 	ldr r0, [r1, #8]
 	str r0, [r5]
 	ldr r6, _08086C7C @ =IWRAM_START + 0xD4
@@ -381,7 +381,7 @@ _08086C34:
 	.align 2, 0
 _08086C70: .4byte gCurTask
 _08086C74: .4byte IWRAM_START + 0xC4
-_08086C78: .4byte gUnknown_030059E0
+_08086C78: .4byte gPlayer
 _08086C7C: .4byte IWRAM_START + 0xD4
 _08086C80: .4byte IWRAM_START + 0xD8
 _08086C84: .4byte IWRAM_START + 0xE0

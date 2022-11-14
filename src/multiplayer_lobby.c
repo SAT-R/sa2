@@ -26,60 +26,83 @@ struct MultiplayerLobbyScreen {
 } /* size 0x114 */;
 
 #define ELEMENT_TITLE 0
-#define ELEMENT_YES 1
-#define ELEMENT_NO 2
+#define ELEMENT_YES   1
+#define ELEMENT_NO    2
 
 #define CURSOR_YES 0
-#define CURSOR_NO 1
+#define CURSOR_NO  1
 
 #define CHAO_EXIT_WAVE_ANIM_LENGTH 120
 
-#define MSG_VS_LOBBY_EXIT 0x40A3
+#define MSG_VS_LOBBY_EXIT             0x40A3
 #define MSG_VS_LOBBY_WAITING_FOR_EXIT 0x40A2
-#define MSG_VS_LOBBY_CURSOR_MOVE 0x40A1
-#define MSG_VS_LOBBY_CURSOR_POS 0x40A0
+#define MSG_VS_LOBBY_CURSOR_MOVE      0x40A1
+#define MSG_VS_LOBBY_CURSOR_POS       0x40A0
 
 static const struct UNK_080E0D64 sUiText[] = {
-    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 57, 1074),
-    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)] = TextElementAlt4(17, 12, 1074),
-    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)] = TextElementAlt4(18, 18, 1074),
-    
-    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 48, 1079),
-    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_YES)] = TextElementAlt4(6, 10, 1079),
-    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_NO)] = TextElementAlt4(7, 10, 1079),
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 57, 1074),
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)]
+    = TextElementAlt4(17, 12, 1074),
+    [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)]
+    = TextElementAlt4(18, 18, 1074),
 
-    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1080),
-    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_YES)] = TextElementAlt4(6, 15, 1080),
-    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_NO)] = TextElementAlt4(7, 21, 1080),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 48, 1079),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_YES)]
+    = TextElementAlt4(6, 10, 1079),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_NO)]
+    = TextElementAlt4(7, 10, 1079),
 
-    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 39, 1081),
-    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_YES)] = TextElementAlt4(6, 18, 1081),
-    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_NO)] = TextElementAlt4(7, 18, 1081),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 69, 1080),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_YES)]
+    = TextElementAlt4(6, 15, 1080),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_NO)]
+    = TextElementAlt4(7, 21, 1080),
 
-    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1082),
-    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_YES)] = TextElementAlt4(6, 9, 1082),
-    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_NO)] = TextElementAlt4(7, 15, 1082),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 39, 1081),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_YES)]
+    = TextElementAlt4(6, 18, 1081),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_NO)]
+    = TextElementAlt4(7, 18, 1081),
 
-    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, 1083),
-    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_YES)] = TextElementAlt4(6, 9, 1083),
-    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_NO)] = TextElementAlt4(7, 15, 1083),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 69, 1082),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_YES)]
+    = TextElementAlt4(6, 9, 1082),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_NO)]
+    = TextElementAlt4(7, 15, 1082),
+
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(2, 69, 1083),
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_YES)]
+    = TextElementAlt4(6, 9, 1083),
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_NO)]
+    = TextElementAlt4(7, 15, 1083),
 };
-static const s8 sShakeAnimPositions[] = { 0, 2, 4, 3, 0, -2, -4, -3, };
+static const s8 sShakeAnimPositions[] = {
+    0, 2, 4, 3, 0, -2, -4, -3,
+};
 
 static void Task_FadeInOrHandleExit(void);
-static void MultiplayerLobbyScreenOnDestroy(struct Task*);
-static void CreateUI(struct MultiplayerLobbyScreen*);
+static void MultiplayerLobbyScreenOnDestroy(struct Task *);
+static void CreateUI(struct MultiplayerLobbyScreen *);
 static void ScreenMain(void);
-static void RenderUI(struct MultiplayerLobbyScreen*);
-static u8 CatchInvalidPacket(union MultiSioData*);
+static void RenderUI(struct MultiplayerLobbyScreen *);
+static u8 CatchInvalidPacket(union MultiSioData *);
 static void Task_ListenForExit(void);
 static void Task_NotifyExit(void);
-static void ExitToCharacterSelect(struct MultiplayerLobbyScreen*);
-static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen*);
+static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *);
+static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *);
 
-void CreateMultiplayerLobbyScreen(void) {
-    struct Task* t = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen), 0x1000, 0, MultiplayerLobbyScreenOnDestroy);
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+void CreateMultiplayerLobbyScreen(void)
+{
+    struct Task *t
+        = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen),
+                     0x1000, 0, MultiplayerLobbyScreenOnDestroy);
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
 
     lobbyScreen->fadeInComplete = FALSE;
     lobbyScreen->cursor = CURSOR_YES;
@@ -91,11 +114,12 @@ void CreateMultiplayerLobbyScreen(void) {
     m4aSongNumStart(MUS_VS_LOBBY);
 }
 
-static void CreateUI(struct MultiplayerLobbyScreen* lobbyScreen) {
+static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
+{
     u8 i;
-    struct UNK_0808B3FC_UNK240* element;
-    struct Unk_03002400* background;
-    struct UNK_802D4CC_UNK270* transitionConfig;
+    struct UNK_0808B3FC_UNK240 *element;
+    struct Unk_03002400 *background;
+    struct UNK_802D4CC_UNK270 *transitionConfig;
     s8 lang = gLoadedSaveGame->unk6 - 1;
 
     if (lang < 0) {
@@ -129,7 +153,7 @@ static void CreateUI(struct MultiplayerLobbyScreen* lobbyScreen) {
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[1][0] = 0;
-    gBgScrollRegs[1][1] = 0;    
+    gBgScrollRegs[1][1] = 0;
     gBgScrollRegs[2][0] = 0;
     gBgScrollRegs[2][1] = 0;
 
@@ -192,12 +216,13 @@ static void CreateUI(struct MultiplayerLobbyScreen* lobbyScreen) {
     lobbyScreen->transitionConfig.unkA = 0;
 }
 
-static void Task_FadeInOrHandleExit(void) {
+static void Task_FadeInOrHandleExit(void)
+{
     u8 i;
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
-    union MultiSioData* send;
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    union MultiSioData *send;
     MultiPakHeartbeat();
-    
+
     if (lobbyScreen->fadeInComplete && gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
@@ -207,7 +232,7 @@ static void Task_FadeInOrHandleExit(void) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
         send->pat0.unk2 = lobbyScreen->cursor;
-        send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_POS; 
+        send->pat0.unk0 = MSG_VS_LOBBY_CURSOR_POS;
     }
 
     // Wait for idle frame to reach 0
@@ -221,16 +246,18 @@ static void Task_FadeInOrHandleExit(void) {
                     MultiSioInit(0);
                     CreateTitleScreenAndSkipIntro();
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                        gUnknown_030055A0[i] = NULL;
+                        gMultiplayerPlayerTasks[i] = NULL;
                     }
 
                     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                         gMultiplayerCharacters[i] = 0;
                         gUnknown_030054B4[i] = 0;
-                        gUnknown_030054D4[i] = 0;
+                        gMultiplayerMissingHeartbeats[i] = 0;
                     }
                 } else {
-                    CreateCharacterSelectionScreen(0, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
+                    CreateCharacterSelectionScreen(0,
+                                                   gMultiplayerUnlockedCharacters
+                                                       & CHARACTER_BIT(CHARACTER_AMY));
                 }
                 return;
             } else {
@@ -238,7 +265,7 @@ static void Task_FadeInOrHandleExit(void) {
                 lobbyScreen->fadeInComplete = TRUE;
             }
         }
-        
+
     } else {
         // Otherwise, we are exiting, and there is an idle frame
         // set so wait for exit anim to complete
@@ -252,15 +279,16 @@ static void Task_FadeInOrHandleExit(void) {
     RenderUI(lobbyScreen);
 }
 
-static void ScreenMain(void) {
+static void ScreenMain(void)
+{
     u8 i;
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *recv asm("r4"), *send;
 #else
     union MultiSioData *recv, *send;
 #endif
-    struct UNK_0808B3FC_UNK240* chao = &lobbyScreen->chao;
+    struct UNK_0808B3FC_UNK240 *chao = &lobbyScreen->chao;
     MultiPakHeartbeat();
 
     recv = &gMultiSioRecv[0];
@@ -268,14 +296,16 @@ static void ScreenMain(void) {
         return;
     }
 
-    if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_POS || recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE)) {
+    if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)
+        && (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_POS
+            || recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE)) {
         lobbyScreen->cursor = recv->pat0.unk2;
         // cursor moved
         if (recv->pat0.unk3 != 0) {
             lobbyScreen->idleFrame = 0;
             lobbyScreen->animFrame = ARRAY_COUNT(sShakeAnimPositions) - 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-            
+
             if (lobbyScreen->cursor != CURSOR_YES) {
                 if (chao->unk20 != 5) {
                     chao->unkA = 0x450;
@@ -315,7 +345,7 @@ static void ScreenMain(void) {
             lobbyScreen->animFrame = ARRAY_COUNT(sShakeAnimPositions) - 1;
             lobbyScreen->idleFrame = 0;
             lobbyScreen->cursor = 1;
-            
+
             if (chao->unk20 != 5) {
                 chao->unkA = 0x450;
                 chao->unk20 = 4;
@@ -354,9 +384,10 @@ static void ScreenMain(void) {
     RenderUI(lobbyScreen);
 }
 
-static void Task_NotifyExit(void) {
+static void Task_NotifyExit(void)
+{
     u8 i;
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *send asm("r4");
 #else
@@ -365,7 +396,7 @@ static void Task_NotifyExit(void) {
     MultiPakHeartbeat();
 
     for (i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             if (CatchInvalidPacket(&gMultiSioRecv[i])) {
                 return;
             }
@@ -376,7 +407,7 @@ static void Task_NotifyExit(void) {
     }
 
     // All players waiting, notify
-    if (lobbyScreen->playersWaiting == gUnknown_030055B8 >> 1) {
+    if (lobbyScreen->playersWaiting == gMultiplayerConnections >> 1) {
         send = &gMultiSioSend;
         send->pat0.unk3 = 0;
         send->pat0.unk2 = lobbyScreen->cursor;
@@ -402,12 +433,13 @@ static void Task_NotifyExit(void) {
     }
 }
 
-static void Task_ListenForExit(void) {
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(gCurTask);
+static void Task_ListenForExit(void)
+{
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
-    register union MultiSioData* recv, *send asm("r4");
+    register union MultiSioData *recv, *send asm("r4");
 #else
-    union MultiSioData* send;
+    union MultiSioData *send;
 #endif
 
     MultiPakHeartbeat();
@@ -431,8 +463,9 @@ static void Task_ListenForExit(void) {
     RenderUI(lobbyScreen);
 }
 
-static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen* lobbyScreen) {
-    struct UNK_0808B3FC_UNK240* chao = &lobbyScreen->chao;
+static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
+{
+    struct UNK_0808B3FC_UNK240 *chao = &lobbyScreen->chao;
     lobbyScreen->transitionConfig.unk4 = 0;
     lobbyScreen->transitionConfig.unk2 = 1;
     lobbyScreen->transitionConfig.unkA = 0;
@@ -447,12 +480,13 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen* lobbyScreen)
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 
-static void RenderUI(struct MultiplayerLobbyScreen* lobbyScreen) {
-    struct UNK_0808B3FC_UNK240* element = &lobbyScreen->chao;
+static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
+{
+    struct UNK_0808B3FC_UNK240 *element = &lobbyScreen->chao;
     // Chao anim finished
     if (!sub_8004558(element)) {
         if (lobbyScreen->cursor != CURSOR_YES && element->unkA == 0x44F) {
-           element->unk20 = 1;
+            element->unk20 = 1;
         } else {
             if (element->unk20 == 6) {
                 element->unk20 = 3;
@@ -497,9 +531,10 @@ static void RenderUI(struct MultiplayerLobbyScreen* lobbyScreen) {
     }
 }
 
-static void MultiplayerLobbyScreenOnDestroy(struct Task* t) {
+static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
+{
     u8 i;
-    struct MultiplayerLobbyScreen* lobbyScreen = TaskGetStructPtr(t);
+    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
     VramFree(lobbyScreen->chao.unk4);
 
     for (i = 0; i < 3; i++) {
@@ -507,24 +542,27 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task* t) {
     }
 }
 
-static void ExitToCharacterSelect(struct MultiplayerLobbyScreen* lobbyScreen) {
+static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
+{
     lobbyScreen->idleFrame = 0;
     lobbyScreen->transitionConfig.unk4 = 0;
-    lobbyScreen->transitionConfig.unk2 = 1; 
+    lobbyScreen->transitionConfig.unk2 = 1;
     lobbyScreen->transitionConfig.unk6 = 0x200;
     lobbyScreen->transitionConfig.unkA = 0;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 
-static bool8 CatchInvalidPacket(union MultiSioData* packet) {
-    if (packet->pat0.unk0 <= MSG_VS_LOBBY_EXIT && packet->pat0.unk0 >= MSG_VS_LOBBY_CURSOR_POS) {
+static bool8 CatchInvalidPacket(union MultiSioData *packet)
+{
+    if (packet->pat0.unk0 <= MSG_VS_LOBBY_EXIT
+        && packet->pat0.unk0 >= MSG_VS_LOBBY_CURSOR_POS) {
         return FALSE;
     }
 
     if (packet->pat0.unk0 == 0) {
         return FALSE;
     }
-    
+
     TaskDestroy(gCurTask);
     MultiPakCommunicationError();
     return TRUE;

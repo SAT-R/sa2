@@ -36,28 +36,29 @@ struct MultiplayerSinglePakResultsScreen {
     u32 unk43C;
 }; /* size 0x440 */
 
-struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16);
+struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16);
 
 void sub_8081FB0(void);
-void sub_8082038(struct MultiplayerSinglePakResultsScreen*);
-void sub_8082B80(struct MultiplayerSinglePakResultsScreen*);
-void sub_8082C58(struct MultiplayerSinglePakResultsScreen*);
-void sub_8082CB4(struct MultiplayerSinglePakResultsScreen*);
-void sub_8082BF8(struct MultiplayerSinglePakResultsScreen*);
+void sub_8082038(struct MultiplayerSinglePakResultsScreen *);
+void sub_8082B80(struct MultiplayerSinglePakResultsScreen *);
+void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
+void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
+void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
 struct UNK_02003300 {
-    union Unk_03002E60* unk0;
+    union Unk_03002E60 *unk0;
 } /* Unknown length */;
 
-void CreateMultiplayerSinglePakResultsScreen(u32 a) {
-    struct MultiplayerSinglePakResultsScreen* resultsScreen;
-    const u8* unk408 = gUnknown_08C88408;
-    const u8* unk92208 = gUnknown_08C92208;
+void CreateMultiplayerSinglePakResultsScreen(u32 a)
+{
+    struct MultiplayerSinglePakResultsScreen *resultsScreen;
+    const u8 *unk408 = gUnknown_08C88408;
+    const u8 *unk92208 = gUnknown_08C92208;
 
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
     gWinRegs[4] = 0;
     gWinRegs[5] = 0;
     gWinRegs[0] = 0;
@@ -70,10 +71,10 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a) {
     m4aSoundVSyncOn();
     gGameMode = 5;
 
-    CpuFastCopy(unk92208, (void*)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
-    CpuFastCopy(unk408, (void*)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
+    CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
+    CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gUnknown_03002260 = ((struct UNK_02003300*)(EWRAM_START + 0x33000))->unk0;
+    gUnknown_03002260 = ((struct UNK_02003300 *)(EWRAM_START + 0x33000))->unk0;
     gUnknown_030053EC = gLoadedSaveGame->unk6;
 
     sub_8081FB0();
@@ -95,7 +96,8 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a) {
     gBldRegs.bldY = 0;
 }
 
-void sub_8081FB0(void) {
+void sub_8081FB0(void)
+{
     gDispCnt = 0x40;
     gBgCntRegs[3] = 0x5e0b;
     gBgCntRegs[2] = 0x1c0c;
@@ -110,12 +112,13 @@ void sub_8081FB0(void) {
     gUnknown_03002280[14] = 0xff;
     gUnknown_03002280[15] = 64;
 
-    DmaFill32(3, 0, (void*)VRAM + 0x9FE0, 65);
-    DmaFill32(3, 0, (void*)VRAM + 0xCFE0, 65);
+    DmaFill32(3, 0, (void *)VRAM + 0x9FE0, 65);
+    DmaFill32(3, 0, (void *)VRAM + 0xCFE0, 65);
 }
 
-void sub_8082038(struct MultiplayerSinglePakResultsScreen* screen) {
-    struct Unk_03002400* background = &screen->unk0;
+void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
+{
+    struct Unk_03002400 *background = &screen->unk0;
     background->unk4 = BG_SCREEN_ADDR(16);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(30);
@@ -137,14 +140,14 @@ extern void sub_80078D4(u8, u8, u8, u16, u16);
 
 void sub_80823FC(void);
 
-void sub_808207C(void) {
+void sub_808207C(void)
+{
     u32 i;
-    struct UNK_0808B3FC_UNK240* element;
-    struct MultiplayerSinglePakResultsScreen* resultsScreen;
+    struct UNK_0808B3FC_UNK240 *element;
+    struct MultiplayerSinglePakResultsScreen *resultsScreen;
     gDispCnt |= 0x1800;
-    gUnknown_030055B8 = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     MultiPakHeartbeat();
-
 
     gMultiSioSend.pat0.unk0 = 0x4010;
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
@@ -153,7 +156,8 @@ void sub_808207C(void) {
 
     resultsScreen = TaskGetStructPtr(gCurTask);
 #ifndef NON_MATCHING
-    while(0);
+    while (0)
+        ;
 #endif
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
@@ -167,7 +171,7 @@ void sub_808207C(void) {
                 s32 var;
 #endif
                 element = &resultsScreen->unk370[i];
-                element->unk4 = (void*)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
+                element->unk4 = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
 
                 element->unk16 = 0;
                 element->unk18 = 0;
@@ -175,14 +179,14 @@ void sub_808207C(void) {
                 element->unk8 = 0;
 #ifndef NONMATCHING
                 var = 0x44c;
-                asm(""::"r"(var));
+                asm("" ::"r"(var));
 #endif
                 if (gUnknown_030053EC == 1) {
                     element->unkA = 0x44B;
                 } else {
                     element->unkA = 0x44C;
                 }
-                
+
                 element->unk20 = i;
                 element->unk14 = 0;
                 element->unk1C = 0;
@@ -226,23 +230,32 @@ void sub_808207C(void) {
     } else {
 #ifndef NON_MATCHING
         // This is wrong, just here to make asm correct here
-        resultsScreen++; 
-        while(0);
+        resultsScreen++;
+        while (0)
+            ;
         resultsScreen--;
 #endif
-    
+
         for (i = 0; i < 4; i++) {
             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
                 if (gUnknown_030054B4[i] & 1) {
-                    sub_80078D4(3, i * 40, (i + 1) * 40, 0xF0 - resultsScreen->unk430, 0xA0 - i * 0x28);
+                    sub_80078D4(3, i * 40, (i + 1) * 40, 0xF0 - resultsScreen->unk430,
+                                0xA0 - i * 0x28);
                 } else {
-                    sub_80078D4(3, i * 40, (i + 1) * 40, resultsScreen->unk430 - 0xF0, 0xA0 - i * 0x28);
+                    sub_80078D4(3, i * 40, (i + 1) * 40, resultsScreen->unk430 - 0xF0,
+                                0xA0 - i * 0x28);
                 }
             } else {
-                 if (gUnknown_030054B4[i] & 1) {
-                    sub_80078D4(3, gUnknown_030054B4[i] * 40, (gUnknown_030054B4[i] + 1) * 40, 0xF0 - resultsScreen->unk430, (i * 5 - gUnknown_030054B4[i] * 5) * 8);
+                if (gUnknown_030054B4[i] & 1) {
+                    sub_80078D4(3, gUnknown_030054B4[i] * 40,
+                                (gUnknown_030054B4[i] + 1) * 40,
+                                0xF0 - resultsScreen->unk430,
+                                (i * 5 - gUnknown_030054B4[i] * 5) * 8);
                 } else {
-                    sub_80078D4(3, gUnknown_030054B4[i] * 40, (gUnknown_030054B4[i] + 1) * 40, resultsScreen->unk430 - 0xF0, (i * 5 - gUnknown_030054B4[i] * 5) * 8);
+                    sub_80078D4(3, gUnknown_030054B4[i] * 40,
+                                (gUnknown_030054B4[i] + 1) * 40,
+                                resultsScreen->unk430 - 0xF0,
+                                (i * 5 - gUnknown_030054B4[i] * 5) * 8);
                 }
             }
         }
@@ -253,15 +266,16 @@ void sub_8082AA8(void);
 void sub_8082630(void);
 void sub_8082788(void);
 
-void sub_80823FC(void) {
-    struct Unk_03002400* background;
+void sub_80823FC(void)
+{
+    struct Unk_03002400 *background;
     u32 i;
     s32 val2 = 0;
     u8 val = FALSE;
-    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
-    union MultiSioData* packet;
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    union MultiSioData *packet;
 
-    gUnknown_030055B8 = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
+    gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
     packet = &gMultiSioRecv[0];
     if (packet->pat0.unk0 == 0x4012) {
         gSelectedCharacter = SIO_MULTI_CNT->id;
@@ -316,8 +330,7 @@ void sub_80823FC(void) {
             sub_80051E8(&resultsScreen->unk400);
         }
 
-
-        for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+        for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
             if (!(MULTI_SIO_RECV_ID(i) & gMultiSioStatusFlags)) {
                 val = TRUE;
             } else {
@@ -333,7 +346,9 @@ void sub_80823FC(void) {
             packet->pat0.unk3 = gUnknown_030053EC;
         }
 
-        if ((gMultiSioStatusFlags & MULTI_SIO_PARENT && gPressedKeys & START_BUTTON && !val && val2 > 1) || resultsScreen->unk438) {
+        if ((gMultiSioStatusFlags & MULTI_SIO_PARENT && gPressedKeys & START_BUTTON
+             && !val && val2 > 1)
+            || resultsScreen->unk438) {
             resultsScreen->unk438 = 1;
             packet->pat0.unk0 = 0x4012;
         }
@@ -343,8 +358,9 @@ void sub_80823FC(void) {
 void sub_808267C(void);
 void sub_8082788(void);
 
-void sub_8082630(void) {
-    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
+void sub_8082630(void)
+{
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     resultsScreen->unk430 += 0x20;
     sub_8082788();
 
@@ -358,9 +374,10 @@ void sub_8082630(void) {
     gBldRegs.bldY = resultsScreen->unk430 >> 8;
 }
 
-void sub_808267C(void) {
-    union MultiSioData* packet;
-    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
+void sub_808267C(void)
+{
+    union MultiSioData *packet;
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
 
     packet = &gMultiSioRecv[0];
 
@@ -368,7 +385,7 @@ void sub_808267C(void) {
         u32 i;
         gUnknown_03005434 = packet->pat3.unk8;
 
-         for (i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             gMultiplayerCharacters[i] = 0;
             gUnknown_030054B4[i] = i;
         }
@@ -385,7 +402,7 @@ void sub_808267C(void) {
             sub_801A770();
         }
         return;
-    } 
+    }
 
     sub_8082788();
     packet = &gMultiSioSend;
@@ -395,7 +412,7 @@ void sub_808267C(void) {
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         u8 i;
         for (i = 0; i < 4; i++) {
-            if (GetBit(gUnknown_030055B8, i)) {
+            if (GetBit(gMultiplayerConnections, i)) {
                 packet = &gMultiSioRecv[i];
                 if (packet->pat0.unk0 != 0x4051) {
                     return;
@@ -410,11 +427,12 @@ void sub_808267C(void) {
 
 u32 sub_8004518(u8);
 
-void sub_8082788(void) {
+void sub_8082788(void)
+{
     u32 i;
-    
-    struct UNK_0808B3FC_UNK240* element;
-    struct MultiplayerSinglePakResultsScreen* resultsScreen;
+
+    struct UNK_0808B3FC_UNK240 *element;
+    struct MultiplayerSinglePakResultsScreen *resultsScreen;
 
     MultiPakHeartbeat();
     resultsScreen = TaskGetStructPtr(gCurTask);
@@ -423,12 +441,13 @@ void sub_8082788(void) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
             sub_80078D4(3, i * 40, (i + 1) * 40, 0, 0xA0 - i * 0x28);
         } else {
-            sub_80078D4(3, gUnknown_030054B4[i] * 40, (gUnknown_030054B4[i] + 1) * 40, 0, i * 0x28 - gUnknown_030054B4[i] * 0x28);
+            sub_80078D4(3, gUnknown_030054B4[i] * 40, (gUnknown_030054B4[i] + 1) * 40, 0,
+                        i * 0x28 - gUnknown_030054B4[i] * 0x28);
             if (resultsScreen->unk434) {
                 u16 temp;
-                
+
                 element = &resultsScreen->unk80[i].unk0;
-                element->unk16 = 0x78; 
+                element->unk16 = 0x78;
                 element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
                 sub_8004558(element);
                 sub_80051E8(element);
@@ -441,7 +460,7 @@ void sub_8082788(void) {
                 // TODO: Fix type
                 temp = sub_8004518(gUnknown_030053E8[i]);
                 element = &resultsScreen->unk160[((temp) >> 8) & 0xF];
-                
+
                 if (element != &resultsScreen->unk160[0]) {
                     element->unk16 = 0xA0;
                     element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
@@ -456,7 +475,7 @@ void sub_8082788(void) {
                     sub_80051E8(element);
                 }
 
-                element = &resultsScreen->unk160[(temp) & 0xF];
+                element = &resultsScreen->unk160[(temp)&0xF];
                 element->unk16 = 0xB6;
                 element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
                 sub_80051E8(element);
@@ -471,7 +490,7 @@ void sub_8082788(void) {
                 if (gUnknown_03005428[i] > 99) {
                     temp = 99;
                 } else {
-                    temp = sub_8004518(gUnknown_03005428[i]);   
+                    temp = sub_8004518(gUnknown_03005428[i]);
                 }
 
                 element = &resultsScreen->unk160[((temp) >> 4)];
@@ -495,9 +514,10 @@ void sub_8082788(void) {
     }
 }
 
-void sub_8082AA8(void) {
-    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
-    
+void sub_8082AA8(void)
+{
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+
     sub_8082788();
     if (resultsScreen->unk430++ > 0x1E) {
         resultsScreen->unk430 = 0;
@@ -510,9 +530,11 @@ void sub_8082AA8(void) {
     }
 }
 
-struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16 mode) {
-    struct Task* t = TaskCreate(sub_808207C, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
-    struct MultiplayerSinglePakResultsScreen* resultsScreen = TaskGetStructPtr(t);
+struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
+{
+    struct Task *t = TaskCreate(
+        sub_808207C, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(t);
 
     resultsScreen->unk434 = mode;
     resultsScreen->unk430 = 0;
@@ -522,41 +544,51 @@ struct MultiplayerSinglePakResultsScreen* sub_8082B1C(s16 mode) {
     return resultsScreen;
 }
 
-void sub_8082CEC(struct UNK_0808B3FC_UNK240*, u32, u16, u8, s16, s16, u16, u8, u32);
+void sub_8082CEC(struct UNK_0808B3FC_UNK240 *, u32, u16, u8, s16, s16, u16, u8, u32);
 
-void sub_8082B80(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
+{
     s16 i;
 
     for (i = 0; i < 4; i++) {
         u16 val = gUnknown_080D672C[i];
-        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78, (i * 40) + 20, 0x400, i, 0x1000);
+        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78,
+                    (i * 40) + 20, 0x400, i, 0x1000);
     }
 }
 
-void sub_8082BF8(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *resultsScreen)
+{
     s16 i;
 
     for (i = 0; i < 10; i++) {
-        sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451, i, 0, 0, 0x100, 0, 0x1000);
+        sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451,
+                    i, 0, 0, 0x100, 0, 0x1000);
     }
 }
 
-void sub_8082C58(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
+void sub_8082C58(struct MultiplayerSinglePakResultsScreen *resultsScreen)
+{
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0, 0, 0x100, 0, 0x1000);
+        sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0,
+                    0, 0x100, 0, 0x1000);
     }
 }
 
-void sub_8082CB4(struct MultiplayerSinglePakResultsScreen* resultsScreen) {
-    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0, 0x100, 0, 0x1000);
+void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
+{
+    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0, 0x100, 0,
+                0x1000);
 }
 
-void sub_8082CEC(struct UNK_0808B3FC_UNK240* element, u32 vramAddr, u16 asset, u8 variant, s16 x, s16 y, u16 unk1A, u8 unk25, u32 unk10) {
+void sub_8082CEC(struct UNK_0808B3FC_UNK240 *element, u32 vramAddr, u16 asset,
+                 u8 variant, s16 x, s16 y, u16 unk1A, u8 unk25, u32 unk10)
+{
     element->unk16 = x;
     element->unk18 = y;
-    element->unk4 = (void*)vramAddr;
+    element->unk4 = (void *)vramAddr;
     element->unk1A = unk1A;
     element->unk8 = 0;
     element->unkA = asset;

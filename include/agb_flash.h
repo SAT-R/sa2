@@ -10,4 +10,4 @@ u32 ProgramFlashSectorAndVerifyNBytes(u16 sectorNum, void *dataSrc, u32 n);
 u16 SetFlashTimerIntr(u8 timerNum, void (**intrFunc)(void));
 extern u16 (*EraseFlashSector)(u16);
 
-#endif  // GUARD_AGB_FLASH_512k_H
+#endif // GUARD_AGB_FLASH_512k_H

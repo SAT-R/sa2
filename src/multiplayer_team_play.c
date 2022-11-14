@@ -33,16 +33,15 @@ struct MultiplayerTeamPlayScreen {
     u8 unk31F;
 }; /* 0x320 */
 
-
 static void sub_805CB34(void);
 static void sub_805CC34(void);
-static void sub_805D118(struct MultiplayerTeamPlayScreen*);
-static void sub_805D644(struct MultiplayerTeamPlayScreen*);
+static void sub_805D118(struct MultiplayerTeamPlayScreen *);
+static void sub_805D644(struct MultiplayerTeamPlayScreen *);
 static void sub_805D5C8(void);
 static void sub_805D610(void);
 
-static const u8 gUnknown_080D92B8[] = { 40, 174, };
-static const u8 gUnknown_080D92BA[] = { 80, 159, };
+static const u8 gUnknown_080D92B8[] = { 40, 174 };
+static const u8 gUnknown_080D92BA[] = { 80, 159 };
 
 static const struct UNK_080E0D64 gUnknown_080D92BC[] = {
     TextElementAlt4(5, 8, 1076),
@@ -89,14 +88,15 @@ static const struct UNK_080E0D64 gUnknown_080D92DC[] = {
     TextElement(5, LANG_ITALIAN, 4, 6, 1076),
 };
 
-void CreateMultiplayerTeamPlayScreen(void) {
-    struct Task* t;
-    struct MultiplayerTeamPlayScreen* teamPlayScreen;
-    struct UNK_0808B3FC_UNK240* element;
-    struct Unk_03002400* background;
+void CreateMultiplayerTeamPlayScreen(void)
+{
+    struct Task *t;
+    struct MultiplayerTeamPlayScreen *teamPlayScreen;
+    struct UNK_0808B3FC_UNK240 *element;
+    struct Unk_03002400 *background;
     u32 lang, vram;
     u8 i;
-    
+
     lang = gLoadedSaveGame->unk6;
     if (lang > NUM_LANGUAGES) {
         lang = LANG_JAPANESE;
@@ -105,10 +105,10 @@ void CreateMultiplayerTeamPlayScreen(void) {
     // TODO: make this a macro
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
     DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     gDispCnt = 0x1B00;
     gDispCnt |= 0x40;
@@ -130,7 +130,8 @@ void CreateMultiplayerTeamPlayScreen(void) {
     gUnknown_03002280[10] = 0xff;
     gUnknown_03002280[11] = 32;
 
-    t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0, NULL);
+    t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0,
+                   NULL);
     teamPlayScreen = TaskGetStructPtr(t);
     teamPlayScreen->unk310 = 0;
     teamPlayScreen->unk312 = 0;
@@ -142,7 +143,7 @@ void CreateMultiplayerTeamPlayScreen(void) {
         element = &teamPlayScreen->unk0[i];
         element->unk16 = 0;
         element->unk18 = 0;
-        element->unk4 = (void*)vram;
+        element->unk4 = (void *)vram;
         vram += gUnknown_080D92BC[i].unk0 * TILE_SIZE_4BPP;
         element->unk1A = 0x100;
         element->unk8 = 0;
@@ -162,7 +163,7 @@ void CreateMultiplayerTeamPlayScreen(void) {
         element = &teamPlayScreen->unkC0[i];
         element->unk16 = 0;
         element->unk18 = 0;
-        element->unk4 = (void*)vram;
+        element->unk4 = (void *)vram;
         vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk0 * TILE_SIZE_4BPP;
         element->unk1A = 0xC0;
         element->unk8 = 0;
@@ -180,7 +181,7 @@ void CreateMultiplayerTeamPlayScreen(void) {
     element = &teamPlayScreen->unk1B0;
     element->unk16 = 0;
     element->unk18 = 0;
-    element->unk4 = (void*)vram;
+    element->unk4 = (void *)vram;
     element->unk1A = 0xC0;
     element->unk8 = 0;
     element->unkA = 0x434;
@@ -262,8 +263,9 @@ void CreateMultiplayerTeamPlayScreen(void) {
     sub_8002A3C(background);
 }
 
-static void sub_805CB34(void) {
-    struct MultiplayerTeamPlayScreen* teamPlayScreen;
+static void sub_805CB34(void)
+{
+    struct MultiplayerTeamPlayScreen *teamPlayScreen;
 
     MultiPakHeartbeat();
 
@@ -284,19 +286,20 @@ static void sub_805CB34(void) {
     sub_805D644(teamPlayScreen);
 }
 
-static void sub_805CC34(void) {
+static void sub_805CC34(void)
+{
     u8 i, j;
     u8 count;
-    struct Unk_03002400* background;
-    struct UNK_0808B3FC_UNK240* element;
-    struct MultiplayerTeamPlayScreen* teamPlayScreen;
+    struct Unk_03002400 *background;
+    struct UNK_0808B3FC_UNK240 *element;
+    struct MultiplayerTeamPlayScreen *teamPlayScreen;
     union MultiSioData *msd;
     gDispCnt |= 0x400;
 
     MultiPakHeartbeat();
 
     teamPlayScreen = TaskGetStructPtr(gCurTask);
-    
+
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT && !teamPlayScreen->unk317) {
         if (gPressedKeys & DPAD_LEFT) {
             if (teamPlayScreen->unk31E == 0) {
@@ -315,7 +318,7 @@ static void sub_805CC34(void) {
 
     count = 1;
     for (i = 0; i < 4; i++) {
-        if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+        if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
             count++;
             if (i == 0) {
                 msd = gMultiSioRecv;
@@ -333,15 +336,16 @@ static void sub_805CC34(void) {
             m4aSongNumStart(SE_SELECT);
         } else if (teamPlayScreen->unk317 != 0) {
             for (j = 1, i = 0; i < count; i++) {
-                if (i != SIO_MULTI_CNT->id && GetBit(gUnknown_030055B8, i)) {
+                if (i != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, i)) {
                     msd = &gMultiSioRecv[i];
-                    if (msd->pat0.unk0 > 1) j++;
+                    if (msd->pat0.unk0 > 1)
+                        j++;
                 }
             }
 
             if (count == j) {
                 if (teamPlayScreen->unk316 != 0) {
-                    struct Unk_03002400* background = &teamPlayScreen->unk290;
+                    struct Unk_03002400 *background = &teamPlayScreen->unk290;
 
                     gUnknown_03004D80[2] = 0;
                     gUnknown_03002280[8] = 0;
@@ -374,10 +378,11 @@ static void sub_805CC34(void) {
                     TaskDestroy(gCurTask);
                     gFlags &= ~0x4;
                     gGameMode = 3;
-                    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+                    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
+                                                COURSE_SELECT_CUT_SCENE_NONE);
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     return;
-                }                
+                }
             }
         }
     } else {
@@ -386,7 +391,7 @@ static void sub_805CC34(void) {
             m4aSongNumStart(SE_SELECT);
             if (teamPlayScreen->unk316 != 0) {
                 background = &teamPlayScreen->unk290;
-                
+
                 gUnknown_03004D80[2] = 0;
                 gUnknown_03002280[8] = 0;
                 gUnknown_03002280[9] = 0;
@@ -419,7 +424,8 @@ static void sub_805CC34(void) {
                 TaskDestroy(gCurTask);
                 gFlags &= ~0x4;
                 gGameMode = GAME_MODE_MULTI_PLAYER;
-                CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
+                                            COURSE_SELECT_CUT_SCENE_NONE);
                 return;
             }
         }
@@ -431,7 +437,7 @@ static void sub_805CC34(void) {
     element->unk16 = 0x78;
     element->unk18 = 0x1C;
     sub_80051E8(element);
-    
+
     element = &teamPlayScreen->unkC0[2];
     element->unk16 = 0x46;
     element->unk18 = 0x34;
@@ -467,11 +473,12 @@ static void sub_805CC34(void) {
     }
 }
 
-static void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+static void sub_805D118(struct MultiplayerTeamPlayScreen *teamPlayScreen)
+{
     u16 i;
     s16 unk312, unk310;
-    
-    u16* unk1884 = gUnknown_03001884;
+
+    u16 *unk1884 = gUnknown_03001884;
     teamPlayScreen->unk314 = (teamPlayScreen->unk314 + 1) & 1023;
     teamPlayScreen->unk310 += gSineTable[teamPlayScreen->unk314] >> 4;
     teamPlayScreen->unk312 += gSineTable[teamPlayScreen->unk314 + 0x100] >> 4;
@@ -481,22 +488,24 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
 
     gFlags |= 0x4;
     gUnknown_03002A80 = 4;
-    gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
+    gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
 
     for (i = 0; i < 160; i++) {
         *unk1884++ = (gSineTable[(gFrameCount + i * 4) & 1023] >> 0xB) + unk310;
-        *unk1884++ = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
+        *unk1884++
+            = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
     }
 }
 
-static void sub_805D1F8(void) {
+static void sub_805D1F8(void)
+{
     s32 i;
     u8 count;
     bool8 someVar = TRUE;
     u8 pos[2] = { 0, 0 };
-    struct MultiplayerTeamPlayScreen* teamPlayScreen;
-    struct UNK_0808B3FC_UNK240* element;
-    union MultiSioData* packet;
+    struct MultiplayerTeamPlayScreen *teamPlayScreen;
+    struct UNK_0808B3FC_UNK240 *element;
+    union MultiSioData *packet;
 
     teamPlayScreen = TaskGetStructPtr(gCurTask);
     if (teamPlayScreen->unk31F == 0) {
@@ -520,14 +529,13 @@ static void sub_805D1F8(void) {
     element->unk18 = 0x1C;
     sub_80051E8(element);
 
-    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         packet = &gMultiSioRecv[i];
-        
+
         if (i == 0) {
             element = &teamPlayScreen->unk1B0;
             sub_8004558(element);
         }
-
 
         if (packet->pat0.unk0 == 0x4040 || packet->pat0.unk0 == 0x4041) {
             if (packet->pat0.unk0 != 0x4041) {
@@ -535,17 +543,17 @@ static void sub_805D1F8(void) {
                 element->unk18 = (i * 0x18) + 0x40;
                 element->unk16 = gUnknown_080D92B8[packet->pat0.unk2];
                 sub_80051E8(element);
-                
+
                 element = &teamPlayScreen->unk1B0;
                 element->unk18 = (i * 0x18) + 0x40;
                 element->unk16 = gUnknown_080D92BA[packet->pat0.unk2];
 
                 if (packet->pat0.unk2 == 0) {
                     element->unk10 &= ~0x400;
-                    gUnknown_030055B8 &= ~(0x10 << (i));
+                    gMultiplayerConnections &= ~(0x10 << (i));
                 } else {
                     element->unk10 |= 0x400;
-                    gUnknown_030055B8 |= (0x10 << (i));
+                    gMultiplayerConnections |= (0x10 << (i));
                 }
                 sub_80051E8(element);
                 someVar = FALSE;
@@ -564,7 +572,6 @@ static void sub_805D1F8(void) {
         } else {
             someVar = FALSE;
         }
-        
     }
     count = i;
 
@@ -584,18 +591,10 @@ static void sub_805D1F8(void) {
         teamPlayScreen->unk31F = 0;
     }
 
-    if (
-        (
-            (!(gInput & (DPAD_LEFT | DPAD_RIGHT)) && (gPressedKeys & A_BUTTON)) 
-            && 
-            (
-                (teamPlayScreen->unk31E == 0 && (count - 1) != pos[0]) 
-                || 
-                (teamPlayScreen->unk31E == 1 && (count - 1) != pos[1])
-            )
-        ) || 
-            teamPlayScreen->unk31F != 0
-    ) {
+    if (((!(gInput & (DPAD_LEFT | DPAD_RIGHT)) && (gPressedKeys & A_BUTTON))
+         && ((teamPlayScreen->unk31E == 0 && (count - 1) != pos[0])
+             || (teamPlayScreen->unk31E == 1 && (count - 1) != pos[1])))
+        || teamPlayScreen->unk31F != 0) {
         if (teamPlayScreen->unk31F == 0) {
             m4aSongNumStart(SE_SELECT);
         }
@@ -609,7 +608,7 @@ static void sub_805D1F8(void) {
         packet->pat0.unk2 = teamPlayScreen->unk31E;
     }
 
-    for (i = 0; i < 4 && GetBit(gUnknown_030055B8, i); i++) {
+    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         if (SIO_MULTI_CNT->id != i) {
             packet = &gMultiSioRecv[i];
             if (packet->pat0.unk0 > 0x4041) {
@@ -624,26 +623,30 @@ static void sub_805D1F8(void) {
     }
 }
 
-static void sub_805D5C8(void) {
-    struct MultiplayerTeamPlayScreen* teamPlayScreen = TaskGetStructPtr(gCurTask);
+static void sub_805D5C8(void)
+{
+    struct MultiplayerTeamPlayScreen *teamPlayScreen = TaskGetStructPtr(gCurTask);
     teamPlayScreen->unk31E = SIO_MULTI_CNT->id & 1;
     teamPlayScreen->unk31F = 0;
     gCurTask->main = sub_805D1F8;
     sub_805D1F8();
 }
 
-static void sub_805D610(void) {
+static void sub_805D610(void)
+{
     TaskDestroy(gCurTask);
     gFlags &= ~0x4;
-    CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
+                                COURSE_SELECT_CUT_SCENE_NONE);
 }
 
-static void sub_805D644(struct MultiplayerTeamPlayScreen* teamPlayScreen) {
+static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
+{
     u8 i;
-    struct UNK_0808B3FC_UNK240* element;
-    
+    struct UNK_0808B3FC_UNK240 *element;
+
     for (i = 0; i < 4; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             element = &teamPlayScreen->unk0[i];
             element->unk16 = gUnknown_080D92B8[i & 1];
             element->unk18 = i * 0x18 + 0x40;

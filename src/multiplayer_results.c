@@ -110,22 +110,19 @@ static const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX] = {
 };
 
 static const u16 gUnknown_080D92A8[] = {
-    [LANG_DEFAULT] = 116, 
-    [LANG_JAPANESE] = 116, 
-    [LANG_ENGLISH] = 117, 
-    [LANG_GERMAN] = 118, 
-    [LANG_FRENCH] = 119, 
-    [LANG_SPANISH] = 120, 
+    [LANG_DEFAULT] = 116, [LANG_JAPANESE] = 116, [LANG_ENGLISH] = 117,
+    [LANG_GERMAN] = 118,  [LANG_FRENCH] = 119,   [LANG_SPANISH] = 120,
     [LANG_ITALIAN] = 121,
 };
 
-void CreateMultiplayerResultsScreen(u8 mode) {
-    struct Task* t;
-    struct MultiplayerResultsScreen* resultsScreen;
-    struct Unk_03002400* background;
+void CreateMultiplayerResultsScreen(u8 mode)
+{
+    struct Task *t;
+    struct MultiplayerResultsScreen *resultsScreen;
+    struct Unk_03002400 *background;
     u32 i;
-    struct UNK_0808B3FC_UNK240* element;
-    
+    struct UNK_0808B3FC_UNK240 *element;
+
     u32 count = 0;
     u32 lang = gLoadedSaveGame->unk6;
     gWinRegs[4] = 0;
@@ -139,10 +136,10 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
 
-    gUnknown_030054D4[3] = 0;
-    gUnknown_030054D4[2] = 0;
-    gUnknown_030054D4[1] = 0;
-    gUnknown_030054D4[0] = 0;
+    gMultiplayerMissingHeartbeats[3] = 0;
+    gMultiplayerMissingHeartbeats[2] = 0;
+    gMultiplayerMissingHeartbeats[1] = 0;
+    gMultiplayerMissingHeartbeats[0] = 0;
 
     gUnknown_03004D80[3] = 0;
 
@@ -151,14 +148,15 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     gUnknown_03002280[14] = 0xFF;
     gUnknown_03002280[15] = 0x40;
 
-    DmaFill32(3, 0, (void*)VRAM + 0x9fe0, 0x40);
-    t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0, NULL);
+    DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
+    t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0,
+                   NULL);
     resultsScreen = TaskGetStructPtr(t);
 
     resultsScreen->animStep = 0;
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gUnknown_030055B8, i)) {
+        if (!GetBit(gMultiplayerConnections, i)) {
             break;
         }
     }
@@ -197,12 +195,12 @@ void CreateMultiplayerResultsScreen(u8 mode) {
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         s32 temp2 = (i + 4) * 0x800;
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             s32 temp;
             element = &resultsScreen->resultRows[i];
             element->unk16 = 200;
             element->unk18 = 0x33 + (0x20 * i);
-            element->unk4 = (void*)(OBJ_VRAM0 + (i * 0x800));
+            element->unk4 = (void *)(OBJ_VRAM0 + (i * 0x800));
             element->unk1A = 0x400;
             element->unk8 = 0;
             temp = gUnknown_030054B4[i];
@@ -226,11 +224,11 @@ void CreateMultiplayerResultsScreen(u8 mode) {
             element->unk25 = 0;
             element->unk10 = 0x1000;
             sub_8004558(element);
-    
+
             element = &resultsScreen->characterRows[i];
             element->unk16 = 0;
             element->unk18 = 0x1F + (0x20 * i);
-            element->unk4 = (void*)(OBJ_VRAM0 + temp2);
+            element->unk4 = (void *)(OBJ_VRAM0 + temp2);
             element->unk1A = 0x400;
             element->unk8 = 0;
             element->unkA = gUnknown_080D9288[i].unk4;
@@ -250,9 +248,10 @@ void CreateMultiplayerResultsScreen(u8 mode) {
     }
 }
 
-static void sub_805C0F0(void) {
-    struct MultiplayerResultsScreen* selectionResultsScreen;
-    u16* unk1884 = gUnknown_03001884;
+static void sub_805C0F0(void)
+{
+    struct MultiplayerResultsScreen *selectionResultsScreen;
+    u16 *unk1884 = gUnknown_03001884;
     gDispCnt |= 0x1800;
 
     MultiPakHeartbeat();
@@ -267,26 +266,26 @@ static void sub_805C0F0(void) {
     } else {
         u32 i;
         u16 j, x;
-        u16 unk200 = selectionResultsScreen->animStep >> 8; 
+        u16 unk200 = selectionResultsScreen->animStep >> 8;
         gFlags |= 0x4;
-        gUnknown_03002878 = (void*)REG_ADDR_BG3HOFS;
+        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
 
         for (x = 0, i = 0; i < 0x20; i++, x++) {
             *unk1884++ = 0;
             *unk1884++ = selectionResultsScreen->unk204;
         }
-    
+
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            if (!GetBit(gUnknown_030055B8, i)) {
+            if (!GetBit(gMultiplayerConnections, i)) {
                 for (j = 0; j < 0x20; j++) {
                     *unk1884++ = 0;
                     *unk1884++ = 0xC0 - x;
                 }
                 x += 0x20;
                 continue;
-            } 
-                
+            }
+
             if (i & 1) {
                 for (j = 0; j < 0x20; j++) {
                     *unk1884++ = 0xF0 - unk200;
@@ -294,8 +293,8 @@ static void sub_805C0F0(void) {
                 }
                 x += 0x20;
                 continue;
-            } 
-    
+            }
+
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = unk200 - 0xF0;
                 *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
@@ -305,8 +304,9 @@ static void sub_805C0F0(void) {
     }
 }
 
-static void sub_805C30C(void) {
-    struct MultiplayerResultsScreen* selectionResultsScreen = TaskGetStructPtr(gCurTask);
+static void sub_805C30C(void)
+{
+    struct MultiplayerResultsScreen *selectionResultsScreen = TaskGetStructPtr(gCurTask);
     bool32 somebool = FALSE;
 
     if (selectionResultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
@@ -334,8 +334,9 @@ static void sub_805C30C(void) {
     }
 }
 
-static void sub_805C3D0(void) {
-    struct MultiplayerResultsScreen* resultsScreen = TaskGetStructPtr(gCurTask);
+static void sub_805C3D0(void)
+{
+    struct MultiplayerResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     resultsScreen->animStep += 0x200;
 
     if (resultsScreen->animStep > 0x1000) {
@@ -352,18 +353,20 @@ static void sub_805C3D0(void) {
             if (gGameMode == 3) {
                 u8 i;
                 for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                    if (!GetBit(gUnknown_030055B8, i)) {
+                    if (!GetBit(gMultiplayerConnections, i)) {
                         break;
                     }
                 }
                 gGameMode = 3;
 
 #ifdef TEAMPLAY_AVAILABLE
-            CreateMultiplayerResultsScreen();
+                CreateMultiplayerResultsScreen();
 #else
-            CreateCourseSelectionScreen(0, gUnknown_030054D8, COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
+                                            COURSE_SELECT_CUT_SCENE_NONE);
 #endif
-            } else if (gGameMode == 0 && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
+            } else if (gGameMode == 0
+                       && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
                 sub_801A770();
                 return;
@@ -371,7 +374,8 @@ static void sub_805C3D0(void) {
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
 #else
-                CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter],
+                                            COURSE_SELECT_CUT_SCENE_NONE);
 #endif
             }
         }
@@ -381,17 +385,18 @@ static void sub_805C3D0(void) {
     }
 }
 
-static void sub_805C504(void) {
+static void sub_805C504(void)
+{
     u32 i;
     u16 j, x;
 
-    struct MultiplayerResultsScreen* selectionResultsScreen;
-    u16* unk1884 = gUnknown_03001884;
+    struct MultiplayerResultsScreen *selectionResultsScreen;
+    u16 *unk1884 = gUnknown_03001884;
     MultiPakHeartbeat();
 
     selectionResultsScreen = TaskGetStructPtr(gCurTask);
     gFlags |= 0x4;
-    gUnknown_03002878 = (void*)REG_ADDR_BG3VOFS;
+    gUnknown_03002878 = (void *)REG_ADDR_BG3VOFS;
     gUnknown_03002A80 = 2;
 
     for (x = 0, i = 0; i < 0x20; i++, x++) {
@@ -399,21 +404,21 @@ static void sub_805C504(void) {
     }
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (!GetBit(gUnknown_030055B8, i)) {
+        if (!GetBit(gMultiplayerConnections, i)) {
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = 0xC0 - x;
             }
             x += 0x20;
             continue;
-        } 
-            
+        }
+
         if (i & 1) {
             for (j = 0; j < 0x20; j++) {
                 *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
             }
             x += 0x20;
             continue;
-        } 
+        }
 
         for (j = 0; j < 0x20; j++) {
             *unk1884++ = (gMultiplayerCharacters[i] * 0x20 + 0x20) - x;
@@ -422,17 +427,18 @@ static void sub_805C504(void) {
     }
 }
 
-static void sub_805C69C(void) {
+static void sub_805C69C(void)
+{
     u32 i;
-    struct MultiplayerResultsScreen* resultsScreen;
-    struct UNK_0808B3FC_UNK240* item;
+    struct MultiplayerResultsScreen *resultsScreen;
+    struct UNK_0808B3FC_UNK240 *item;
 
     MultiPakHeartbeat();
 
     resultsScreen = TaskGetStructPtr(gCurTask);
-    
+
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             item = &resultsScreen->characterRows[i];
             sub_80051E8(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {

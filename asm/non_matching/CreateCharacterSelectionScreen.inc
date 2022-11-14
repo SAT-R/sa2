@@ -53,7 +53,7 @@ _0803147A:
 	ldr r1, _08031590 @ =0x85000014
 	str r1, [r0, #8]
 	ldr r0, [r0, #8]
-	ldr r0, _08031594 @ =gUnknown_030054D4
+	ldr r0, _08031594 @ =gMultiplayerMissingHeartbeats
 	strb r7, [r0, #3]
 	strb r7, [r0, #2]
 	strb r7, [r0, #1]
@@ -169,7 +169,7 @@ _08031584: .4byte gMultiSioSend
 _08031588: .4byte 0x85000005
 _0803158C: .4byte gMultiSioRecv
 _08031590: .4byte 0x85000014
-_08031594: .4byte gUnknown_030054D4
+_08031594: .4byte gMultiplayerMissingHeartbeats
 _08031598: .4byte gDispCnt
 _0803159C: .4byte gBgCntRegs
 _080315A0: .4byte 0x00001507

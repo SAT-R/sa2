@@ -12,7 +12,6 @@
 #include "task.h"
 #include "time_attack_lobby.h"
 
-
 struct TimeAttackResultsCutScene {
     struct UNK_802D4CC_UNK270 unk0;
     struct UNK_0808B3FC_UNK240 unkC[3];
@@ -36,24 +35,26 @@ struct TimeAttackResultsCutScene {
 };
 
 void sub_8089AEC(void);
-void sub_8089BB0(struct Task*);
+void sub_8089BB0(struct Task *);
 u8 sub_80899B8(u32 finishTime);
 
-u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
-    struct Task* t;
-    struct TimeAttackResultsCutScene* resultsCutScene;
-    struct UNK_802D4CC_UNK270* transitionConfig;
-    struct UNK_0808B3FC_UNK240* element = NULL;
+u32 CreateTimeAttackResultsCutScene(u32 finishTime)
+{
+    struct Task *t;
+    struct TimeAttackResultsCutScene *resultsCutScene;
+    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct UNK_0808B3FC_UNK240 *element = NULL;
     s16 millis, minutes, seconds;
     u8 i;
     u8 isBossLevel;
     u8 level;
-    gLoadedSaveGame->unk374 += gUnknown_030053F0;
+    gLoadedSaveGame->unk374 += gCourseTime;
 
-    t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0, sub_8089BB0);
+    t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
+                   sub_8089BB0);
     resultsCutScene = TaskGetStructPtr(t);
     transitionConfig = &resultsCutScene->unk0;
-    
+
     resultsCutScene->unk168 = 0;
     resultsCutScene->unk2D4 = 0x800;
     resultsCutScene->unk2D6 = 0x4000;
@@ -175,7 +176,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
 
     if (isBossLevel != 0) {
         level = (gCurrentLevel >> 2) + ACT_BOSS;
-        
+
     } else {
         level = gCurrentLevel & 1;
     }
@@ -267,7 +268,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
     gUnknown_030054A8 = 0xFF;
 #endif
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-        gUnknown_030059E0.unk64 = 0x20;
+        gPlayer.unk64 = 0x20;
     }
 
     if (resultsCutScene->unk2D8 == 1) {
@@ -280,13 +281,14 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime) {
 }
 
 const s8 gUnknown_080E05C4[] = {
-    3, 2, 1, 0, 0, -1, -2, -3, -4, -4, -3, -2, 1, 2, 3, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    3, 2, 1, 0, 0, -1, -2, -3, -4, -4, -3, -2, 1, 2, 3, 0,
+    0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0,
 };
 
-void sub_80897E8(void) {
-    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;
+void sub_80897E8(void)
+{
+    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
     u32 unk168 = resultsCutScene->unk168;
     u32 i;
 
@@ -337,7 +339,8 @@ void sub_80897E8(void) {
         if (temp > 0x10) {
             if (resultsCutScene->unk2D8) {
                 element = &resultsCutScene->unk9C[1];
-                resultsCutScene->unk2C8.unk2 = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
+                resultsCutScene->unk2C8.unk2
+                    = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
                 resultsCutScene->unk2D6 += resultsCutScene->unk2D4;
 
                 if (resultsCutScene->unk2D6 == 0) {
@@ -359,8 +362,6 @@ void sub_80897E8(void) {
                 element = &resultsCutScene->unk9C[2];
                 sub_80051E8(element);
             }
-
-           
         }
 
         for (i = 0; i < 7; i++) {
@@ -380,7 +381,8 @@ void sub_80897E8(void) {
 }
 
 // StoreRecord
-u8 sub_80899B8(u32 finishTime) {
+u8 sub_80899B8(u32 finishTime)
+{
     u32 existingRecords[3];
     u8 i;
 
@@ -402,7 +404,7 @@ u8 sub_80899B8(u32 finishTime) {
         }
     }
 
-    for (;i < 3; i++) {
+    for (; i < 3; i++) {
         gLoadedSaveGame->unk34.table[character][zone][act][i] = existingRecords[i - 1];
     }
 
@@ -413,21 +415,24 @@ void sub_80310F0(void);
 void sub_8031314(void);
 void sub_8089B40(void);
 
-void sub_8089AEC(void) {
-    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
+void sub_8089AEC(void)
+{
+    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
     u32 unk168 = resultsCutScene->unk168;
     resultsCutScene->unk168 = ++unk168;
     sub_80310F0();
     sub_8031314();
     sub_80897E8();
 
-    if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON))) || (unk168 > 600)) {
+    if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
+        || (unk168 > 600)) {
         gCurTask->main = sub_8089B40;
     }
 }
 
-void sub_8089B40(void) {
-    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(gCurTask);
+void sub_8089B40(void)
+{
+    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
     if (sub_802D4CC(&resultsCutScene->unk0) == 1) {
         WriteSaveGame();
         TasksDestroyAll();
@@ -443,9 +448,10 @@ void sub_8089B40(void) {
     sub_80897E8();
 }
 
-void sub_8089BB0(struct Task* t) {
+void sub_8089BB0(struct Task *t)
+{
     u32 i;
-    struct TimeAttackResultsCutScene* resultsCutScene = TaskGetStructPtr(t);
+    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(t);
     VramFree(resultsCutScene->unk12C.unk4);
 
     for (i = 0; i < 3; i++) {

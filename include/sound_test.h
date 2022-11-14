@@ -4,6 +4,6 @@
 #include "global.h"
 #include "profile.h"
 
-void CreateSoundTestScreen(struct OptionsScreen*);
+void CreateSoundTestScreen(struct OptionsScreen *);
 
 #endif

@@ -77,6 +77,8 @@ typedef union {
         u16 attr2;
         u16 affineParam;
     } all;
+
+    u16 raw[4];
 } OamData;
 
 #define ST_OAM_HFLIP     0x08

@@ -2,18 +2,18 @@
 #include "gba/flash_internal.h"
 
 static const char AgbLibFlash512KVersion[] = "FLASH512_V130";
-const struct FlashSetupInfo * const gSetup512KInfos[] = {
+const struct FlashSetupInfo *const gSetup512KInfos[] = {
     &LE39FW512,
     &MN63F805MNP,
-    &MX29L512, 
-    &DefaultFlash512K
+    &MX29L512,
+    &DefaultFlash512K,
 };
 
 u16 IdentifyFlash(void)
 {
     u16 result;
     u16 flashId;
-    const struct FlashSetupInfo * const *setupInfo;
+    const struct FlashSetupInfo *const *setupInfo;
 
     REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | WAITCNT_SRAM_8;
 
@@ -22,13 +22,11 @@ u16 IdentifyFlash(void)
     setupInfo = gSetup512KInfos;
     result = 1;
 
-    for (;;)
-    {
+    for (;;) {
         if ((*setupInfo)->type.ids.separate.makerId == 0)
             break;
 
-        if (flashId == (*setupInfo)->type.ids.joined)
-        {
+        if (flashId == (*setupInfo)->type.ids.joined) {
             result = 0;
             break;
         }
@@ -53,10 +51,8 @@ u16 WaitForFlashWrite512K_Common(u8 phase, u8 *addr, u8 lastData)
 
     StartFlashTimer(phase);
 
-    while ((status = PollFlashStatus(addr)) != lastData)
-    {
-        if (gFlashTimeoutFlag)
-        {
+    while ((status = PollFlashStatus(addr)) != lastData) {
+        if (gFlashTimeoutFlag) {
             if (PollFlashStatus(addr) == lastData)
                 break;
 
@@ -72,5 +68,3 @@ u16 WaitForFlashWrite512K_Common(u8 phase, u8 *addr, u8 lastData)
 
     return result;
 }
-
-

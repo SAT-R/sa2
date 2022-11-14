@@ -33,8 +33,10 @@ SECTIONS
         build/sa2/src/sio32_multi_load.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
-        build/sa2/src/sprite.o(.text);
+        build/sa2/src/sprite_1.o(.text);
         build/sa2/asm/sprite.o(.text);
+        build/sa2/src/sprite_3.o(.text);
+        build/sa2/asm/sprite_3.o(.text);
         build/sa2/src/malloc_ewram.o(.text);
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
@@ -53,7 +55,13 @@ SECTIONS
         build/sa2/asm/unused_objects.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);
-        build/sa2/asm/special_stage.o(.text);
+        build/sa2/src/special_stage_utils.o(.text);
+        build/sa2/src/special_stage_player.o(.text);
+        build/sa2/src/special_stage_collectables.o(.text);
+        build/sa2/src/special_stage_world.o(.text);
+        build/sa2/src/special_stage_physics.o(.text);
+        build/sa2/src/special_stage_ui.o(.text);
+        build/sa2/src/special_stage_guard_robo.o(.text);
         build/sa2/src/save.o(.text);
         build/sa2/asm/unused_code3.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
@@ -75,6 +83,7 @@ SECTIONS
         build/sa2/src/sound_test.o(.text);
         build/sa2/src/title_screen.o(.text);
         build/sa2/src/backgrounds.o(.text);
+        build/sa2/src/cut_scenes.o(.text);
         build/sa2/asm/cut_scenes.o(.text);
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/m4a.o(.text);
@@ -100,7 +109,7 @@ SECTIONS
         build/sa2/src/multi_sio.o(.rodata);
         build/sa2/src/sio32_multi_load.o(.rodata);
         build/sa2/src/main.o(.rodata);
-        build/sa2/src/sprite.o(.rodata);
+        build/sa2/src/sprite_1.o(.rodata);
         build/sa2/src/trig.o(.rodata);
         build/sa2/data/data1.o(.rodata);
         build/sa2/data/multiboot_chao_garden.o(.rodata);
@@ -119,7 +128,14 @@ SECTIONS
         build/sa2/src/multiplayer_team_play.o(.rodata);
         build/sa2/data/unused_objects_data.o(.rodata);
         build/sa2/src/profile.o(.rodata);
-        build/sa2/data/special_stage_data.o(.rodata);
+        build/sa2/src/special_stage_data.o(.rodata);
+        build/sa2/src/special_stage_player.o(.rodata);
+        build/sa2/src/special_stage_collectables.o(.rodata);
+        build/sa2/src/special_stage_world.o(.rodata);
+        build/sa2/src/special_stage_physics.o(.rodata);
+        build/sa2/src/special_stage_ui.o(.rodata);
+        build/sa2/src/special_stage_guard_robo.o(.rodata);
+        build/sa2/src/special_stage_tables.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
         build/sa2/data/unknown_time_display_data.o(.rodata);
@@ -410,6 +426,8 @@ SECTIONS
 
         /* Asset data */
         build/sa2/data/data3.o(.rodata);
+        build/sa2/data/special_stage_levels.o(.rodata);
+        build/sa2/data/data3_1.o(.rodata);
         build/sa2/src/palettes.o(.rodata);
         build/sa2/src/recordings.o(.rodata);
         build/sa2/data/data4.o(.rodata);

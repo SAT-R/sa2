@@ -7,17 +7,14 @@
 #define TAPE_LENGTH 0x800
 
 static void Task_InputRecorder(void);
-static void InputRecorderEject(struct Task*);
+static void InputRecorderEject(struct Task *);
 
-void InputRecorderResetRecordHead(void) {
-    gInputRecorder.recordHead = 0;
-}
+void InputRecorderResetRecordHead(void) { gInputRecorder.recordHead = 0; }
 
-void InputRecorderResetPlaybackHead(void) {
-    gInputRecorder.playbackHead = 0;
-}
+void InputRecorderResetPlaybackHead(void) { gInputRecorder.playbackHead = 0; }
 
-void InputRecorderLoadTape(void) {
+void InputRecorderLoadTape(void)
+{
     gInputRecorder.mode = RECORDER_DISABLED;
     gInputRecorderTapeBuffer = EwramMalloc(TAPE_LENGTH * sizeof(u16));
 
@@ -30,7 +27,8 @@ void InputRecorderLoadTape(void) {
     gInputRecorder.playbackHead = 0;
 }
 
-u16 InputRecorderRead(void) {
+u16 InputRecorderRead(void)
+{
     if (gInputRecorder.playbackHead < TAPE_LENGTH) {
         return gInputRecorderTapeBuffer[gInputRecorder.playbackHead++];
     }
@@ -38,17 +36,20 @@ u16 InputRecorderRead(void) {
     return 0;
 }
 
-void InputRecorderWrite(u16 input) {
+void InputRecorderWrite(u16 input)
+{
     if (gInputRecorder.recordHead < TAPE_LENGTH) {
         gInputRecorderTapeBuffer[gInputRecorder.recordHead++] = input;
     }
 }
 
-static void Task_InputRecorder(void) {
+static void Task_InputRecorder(void)
+{
     // Potentially generate input ??
 }
 
-static void InputRecorderEject(struct Task* _) {
+static void InputRecorderEject(struct Task *_)
+{
     EwramFree(gInputRecorderTapeBuffer);
 
     gInputRecorder.mode = RECORDER_DISABLED;

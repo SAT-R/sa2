@@ -21,15 +21,15 @@ IntrFunc gIntrTable[] = {};
 u32 gIntrMainBuf[] = {};
 struct Task gTasks[] = {};
 u16 gUnknown_030017F0 ALIGNED(4) = 0;
-u16 gUnknown_030017F4[2] ALIGNED(4) = {};
-struct Unk_03002400* gUnknown_03001800[] ALIGNED(16) = {};
+s16 gUnknown_030017F4[2] ALIGNED(4) = {};
+struct Unk_03002400 *gUnknown_03001800[] ALIGNED(16) = {};
 u32 gFlags = 0;
 u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
 u16 gPhysicalInput = 0;
 
 // gComputedBgBuffer
-void* gUnknown_03001884 = NULL;
+void *gUnknown_03001884 = NULL;
 
 u16 gVramHeapMaxTileSlots = 0;
 u8 gNumHBlankCallbacks ALIGNED(4) = 0;
@@ -47,7 +47,7 @@ u16 gUnknown_0300194C ALIGNED(4) = 0;
 u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
-struct Task* gTaskPtrs[] ALIGNED(16) = {};
+struct Task *gTaskPtrs[] ALIGNED(16) = {};
 u32 gUnknown_03001B60[][160] = {};
 u16 gObjPalette[] = {};
 union Unk_03002E60 *gUnknown_03002260 = NULL;
@@ -57,26 +57,26 @@ s32 gNumTasks = 0;
 u8 gUnknown_03002280[] = {};
 u16 gInput = 0;
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
-void* gUnknown_030022AC = NULL;
+void *gUnknown_030022AC = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
-struct Task* gNextTask = NULL;
-void* gUnknown_030022C0 = NULL;
+struct Task *gNextTask = NULL;
+void *gUnknown_030022C0 = NULL;
 
 OamData gUnknown_030022C8 ALIGNED(8) = {};
 OamData gUnknown_030022D0[] = {};
 s16 gUnknown_030026D0 = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
-struct Task* gCurTask = NULL;
+struct Task *gCurTask = NULL;
 u8 gUnknown_030026F4 = 0;
 u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 
 u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
-const struct SpriteTables* gUnknown_03002794 = NULL;
-struct Unk_03002EC0* gUnknown_030027A0[] ALIGNED(16) = {};
+const struct SpriteTables *gUnknown_03002794 = NULL;
+struct Unk_03002EC0 *gUnknown_030027A0[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
@@ -85,7 +85,7 @@ union MultiSioData gMultiSioSend ALIGNED(8) = {};
 u8 gUnknown_03002874 = 0;
 
 // gComputedBgTarget
-void* gUnknown_03002878 ALIGNED(4) = NULL;
+void *gUnknown_03002878 ALIGNED(4) = NULL;
 
 u8 gUnknown_0300287C = 0;
 u16 gBgPalette[] ALIGNED(16) = {};
@@ -109,7 +109,7 @@ EWRAM_DATA u8 gEwramHeap[] = {};
 
 u8 gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
-void* gUnknown_03004D54 = NULL;
+void *gUnknown_03004D54 = NULL;
 u16 gUnknown_03004D58 ALIGNED(4) = 0;
 u8 gUnknown_03004D5C ALIGNED(4) = 0;
 u8 gUnknown_03004D60[] ALIGNED(16) = {};
@@ -120,11 +120,11 @@ u8 gUnknown_03005390 ALIGNED(4) = 0;
 u16 gUnknown_03005394 ALIGNED(4) = 0;
 u16 gUnknown_03005398 ALIGNED(4) = 0;
 FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
-const u8* gInputPlaybackData = NULL;
+const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
 u32 gUnknown_030053B8 = 0;
 struct InputRecorder gInputRecorder ALIGNED(8) = {};
-u16* gInputRecorderTapeBuffer = NULL;
+u16 *gInputRecorderTapeBuffer = NULL;
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
@@ -172,7 +172,8 @@ static SpriteUpdateFunc const spriteUpdateFuncs[] = {
     sub_8002B20,
 };
 
-static void GameInit(void) {
+static void GameInit(void)
+{
     s16 i;
     u16 errorIdentifying;
 
@@ -182,7 +183,7 @@ static void GameInit(void) {
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
         gFlags = 0x200;
-        DmaSet(3, (void*)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
+        DmaSet(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
     }
 
     // Skip the intro if these
@@ -207,7 +208,7 @@ static void GameInit(void) {
     DmaFill32(3, 0, gUnknown_03002280, 0x10);
 
     // TODO: sort out this type
-    *(u32*)gUnknown_03004D80 = 0;
+    *(u32 *)gUnknown_03004D80 = 0;
 
     DmaFill32(3, 0, gBgScrollRegs, sizeof(gBgScrollRegs));
 
@@ -303,7 +304,7 @@ static void GameInit(void) {
 
     TasksInit();
     EwramInitHeap();
-    
+
     // 140 / 256 max useable segments
     gVramHeapMaxTileSlots = 140 * VRAM_TILE_SLOTS_PER_SEGMENT;
     // Would be good to know where this number comes from
@@ -335,7 +336,8 @@ static void GameInit(void) {
     MultiSioInit(0);
 }
 
-static void GameLoop(void) {
+static void GameLoop(void)
+{
     while (TRUE) {
         gExecSoundMain = FALSE;
         if (!(gFlags & 0x4000)) {
@@ -345,8 +347,7 @@ static void GameLoop(void) {
         if (gUnknown_030026F4 == 0xff) {
             GetInput();
             if (gMultiSioEnabled) {
-                gMultiSioStatusFlags =
-                    MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
+                gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
             TasksExec();
         }
@@ -376,7 +377,8 @@ static void GameLoop(void) {
     };
 }
 
-static void UpdateScreenDma(void) {
+static void UpdateScreenDma(void)
+{
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
     DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
@@ -394,8 +396,7 @@ static void UpdateScreenDma(void) {
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
     DmaCopy16(3, &gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
-    DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS,
-              sizeof(gBgScrollRegs));
+    DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
     if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
@@ -452,7 +453,8 @@ static void UpdateScreenDma(void) {
     }
 }
 
-static void ClearOamBufferDma(void) {
+static void ClearOamBufferDma(void)
+{
     gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
@@ -475,7 +477,8 @@ static void ClearOamBufferDma(void) {
     gFlags &= ~16;
 }
 
-static void UpdateScreenCpuSet(void) {
+static void UpdateScreenCpuSet(void)
+{
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
     CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
@@ -541,7 +544,8 @@ static void UpdateScreenCpuSet(void) {
     }
 }
 
-static void VBlankIntr(void) {
+static void VBlankIntr(void)
+{
     u16 keys;
     DmaStop(0);
     m4aSoundVSync();
@@ -553,9 +557,8 @@ static void VBlankIntr(void) {
         DmaWait(0);
         DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
         DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
-               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD)
-                << 16) |
-                   (gUnknown_03002A80 >> 1));
+               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16)
+                   | (gUnknown_03002A80 >> 1));
     } else if (gUnknown_03002878) {
         REG_IE &= ~INTR_FLAG_HBLANK;
         gUnknown_03002878 = NULL;
@@ -575,8 +578,7 @@ static void VBlankIntr(void) {
     }
 
     if (!(gFlagsPreVBlank & 0x8000)) {
-        keys = ~REG_KEYINPUT &
-               (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
+        keys = ~REG_KEYINPUT & (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
             gFlags |= 0x8000;
             REG_IE = 0;
@@ -598,7 +600,8 @@ static void VBlankIntr(void) {
     REG_IF = INTR_FLAG_VBLANK;
 }
 
-static u32 sub_80021C4(void) {
+static u32 sub_80021C4(void)
+{
     u32 i;
     struct Unk_03002EC0 *current;
 
@@ -611,8 +614,7 @@ static u32 sub_80021C4(void) {
                     DmaCopy16(3, current->unk0 + i, current->unk4 + i, 0x400);
                     current->unk8 -= 0x400;
                 } else {
-                    DmaCopy16(3, current->unk0 + i, current->unk4 + i,
-                              current->unk8);
+                    DmaCopy16(3, current->unk0 + i, current->unk4 + i, current->unk8);
                     current->unk8 = 0;
                 }
             }
@@ -628,9 +630,10 @@ static u32 sub_80021C4(void) {
     return 1;
 }
 
-static void GetInput(void) {
+static void GetInput(void)
+{
     s8 i;
-    u8 *repeatKeyCounters = gRepeatedKeysTestCounter, 
+    u8 *repeatKeyCounters = gRepeatedKeysTestCounter,
        *firstIntervals = gKeysFirstRepeatIntervals,
        *continuedHoldIntervals = gKeysContinuedRepeatIntervals;
 
@@ -638,7 +641,7 @@ static void GetInput(void) {
 
     // My guess is that whilst the input recorder
     // is running we still want to know the actual
-    // input. For example; to be able to know when 
+    // input. For example; to be able to know when
     // to exit the demo
     gPhysicalInput = gInput;
 
@@ -651,7 +654,7 @@ static void GetInput(void) {
     gPressedKeys = (gInput ^ gPrevInput) & gInput;
     gReleasedKeys = (gInput ^ gPrevInput) & gPrevInput;
     gPrevInput = gInput;
-    
+
     // Repeated keys will be the currently pressed keys
     gRepeatedKeys = gPressedKeys;
 
@@ -659,7 +662,7 @@ static void GetInput(void) {
     for (i = 0; i < 10; i++) {
         if (!GetBit(gInput, i)) {
             // If a key is not pressed, reset its counter
-            // to the settings for that key's 
+            // to the settings for that key's
             // first repeat interval
             repeatKeyCounters[i] = firstIntervals[i];
         } else if (repeatKeyCounters[i] > 0) {
@@ -667,7 +670,7 @@ static void GetInput(void) {
             // continue to wait
             repeatKeyCounters[i]--;
         } else {
-            // If the key is ready to be repeated, 
+            // If the key is ready to be repeated,
             // add the key to the repeated keys
             gRepeatedKeys |= 1 << i;
             // And reset its counter to the settings
@@ -677,7 +680,8 @@ static void GetInput(void) {
     }
 }
 
-static void HBlankIntr(void) {
+static void HBlankIntr(void)
+{
     u8 i;
     u8 vcount = *(vu8 *)REG_ADDR_VCOUNT;
 
@@ -712,7 +716,8 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
 static void DummyFunc(void) { }
 
-static void ClearOamBufferCpuSet(void) {
+static void ClearOamBufferCpuSet(void)
+{
     gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
@@ -731,7 +736,8 @@ static void ClearOamBufferCpuSet(void) {
     gFlags &= ~16;
 }
 
-void AgbMain(void) {
+void AgbMain(void)
+{
     GameInit();
     GameStart();
     GameLoop();

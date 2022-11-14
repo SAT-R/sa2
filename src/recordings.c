@@ -5,7 +5,7 @@ static const u8 demo2[];
 static const u8 demo3[];
 static const u8 demo4[];
 
-const u8* const gDemoRecordings[] = {
+const u8 *const gDemoRecordings[] = {
     demo1,
     demo2,
     demo4,

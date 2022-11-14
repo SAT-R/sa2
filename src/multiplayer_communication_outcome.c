@@ -33,7 +33,7 @@ struct CommunicationOutcomeScreen {
 
 static void sub_805BC40(void);
 
-static const u16 gUnknown_080D9088[2] = {1075, 1075};
+static const u16 gUnknown_080D9088[2] = { 1075, 1075 };
 static const u8 gUnknown_080D908C[2] = { 0, 1 };
 static const struct UNK_080E0D64 gUnknown_080D9090[][7] = {
     {
@@ -53,16 +53,17 @@ static const struct UNK_080E0D64 gUnknown_080D9090[][7] = {
         TextElementAlt2(LANG_FRENCH, 3, 60, 1081),
         TextElementAlt2(LANG_SPANISH, 3, 68, 1082),
         TextElementAlt2(LANG_ITALIAN, 3, 60, 1083),
-    }
+    },
 };
 
-void CreateMultipackOutcomeScreen(u8 outcome) {
+void CreateMultipackOutcomeScreen(u8 outcome)
+{
     u8 i;
     u8 count;
-    struct Task* t;
-    struct CommunicationOutcomeScreen* outcomeScreen; 
-    struct UNK_0808B3FC_UNK240* unk100;
-    struct Unk_03002400* background;
+    struct Task *t;
+    struct CommunicationOutcomeScreen *outcomeScreen;
+    struct UNK_0808B3FC_UNK240 *unk100;
+    struct Unk_03002400 *background;
     gDispCnt = 0x3140;
     gBgCntRegs[0] = 0x803;
     gBgScrollRegs[0][0] = 0x100;
@@ -75,7 +76,8 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     gBldRegs.bldCnt = 0xBF;
     gBldRegs.bldY = 0x10;
 
-    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
+    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0,
+                   NULL);
     outcomeScreen = TaskGetStructPtr(t);
 
     outcomeScreen->unk203 = outcome;
@@ -83,18 +85,18 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     outcomeScreen->unk1FC = 0;
 
     for (i = 0, count = 0; i < 4; i++) {
-        if (GetBit(gUnknown_030055B8, i)) {
+        if (GetBit(gMultiplayerConnections, i)) {
             count++;
         }
     }
 
     outcomeScreen->unk206 = count;
-    
+
     unk100 = &outcomeScreen->unk100;
     unk100->unk16 = 0x78;
     unk100->unk18 = 0x8C;
-    unk100->unk4 = (void*)OBJ_VRAM0;
-    unk100->unk1A= 0x3C0;
+    unk100->unk4 = (void *)OBJ_VRAM0;
+    unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
     unk100->unkA = 0x432;
     unk100->unk20 = outcome + 6;
@@ -104,12 +106,12 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     unk100->unk22 = 0x10;
     unk100->unk25 = 0;
     unk100->unk10 = 0x2000;
-    
+
     unk100 = &outcomeScreen->unkD0;
     unk100->unk16 = 0x78;
     unk100->unk18 = 0x24;
-    unk100->unk4 = (void*)OBJ_VRAM0 + 0x2000;
-    unk100->unk1A= 0x3C0;
+    unk100->unk4 = (void *)OBJ_VRAM0 + 0x2000;
+    unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
     unk100->unkA = gUnknown_080D9088[outcome];
     unk100->unk20 = gUnknown_080D908C[outcome];
@@ -123,8 +125,8 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     unk100 = &outcomeScreen->unkA0;
     unk100->unk16 = 0x78;
     unk100->unk18 = 0x78;
-    unk100->unk4 = (void*)OBJ_VRAM0 + 0x4000;
-    unk100->unk1A= 0x3C0;
+    unk100->unk4 = (void *)OBJ_VRAM0 + 0x4000;
+    unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
     unk100->unkA = gUnknown_080D9088[outcome];
     unk100->unk20 = gUnknown_080D908C[outcome];
@@ -154,21 +156,21 @@ void CreateMultipackOutcomeScreen(u8 outcome) {
     m4aMPlayAllStop();
     if (outcome != OUTCOME_CONNECTION_SUCCESS) {
         m4aSongNumStart(MUS_VS_MISS);
-    } else { 
+    } else {
         m4aSongNumStart(MUS_VS_SUCCESS);
-        
     }
 }
 
-static void sub_805BC40(void) {
-    struct UNK_0808B3FC_UNK240* unkD0;
-    struct CommunicationOutcomeScreen* outcomeScreen = TaskGetStructPtr(gCurTask);
+static void sub_805BC40(void)
+{
+    struct UNK_0808B3FC_UNK240 *unkD0;
+    struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
     unkD0 = &outcomeScreen->unkA0;
     sub_8004558(unkD0);
     sub_80051E8(unkD0);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
-        const struct UNK_080E0D64* unk9090;
+        const struct UNK_080E0D64 *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
         unkD0 = &outcomeScreen->unkD0;
@@ -182,7 +184,7 @@ static void sub_805BC40(void) {
         sub_8004558(unkD0);
         sub_80051E8(unkD0);
     } else {
-        const struct UNK_080E0D64* unk9090;
+        const struct UNK_080E0D64 *unk9090;
         unkD0 = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
 
@@ -198,12 +200,12 @@ static void sub_805BC40(void) {
     sub_80051E8(unkD0);
 
     if (outcomeScreen->unk200 != 0) {
-         outcomeScreen->unk200--;
+        outcomeScreen->unk200--;
         if (gBldRegs.bldY != 0) {
             gBldRegs.bldY--;
         }
         return;
-    } 
+    }
 
     if (gBldRegs.bldY != 0x10) {
         gBldRegs.bldY++;
@@ -214,7 +216,9 @@ static void sub_805BC40(void) {
         gUnknown_03005390 = 0;
         gUnknown_03004D5C = gUnknown_03002A84;
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
-            CreateCharacterSelectionScreen(gSelectedCharacter, gUnknown_03005594 & CHARACTER_BIT(CHARACTER_AMY));
+            CreateCharacterSelectionScreen(gSelectedCharacter,
+                                           gMultiplayerUnlockedCharacters
+                                               & CHARACTER_BIT(CHARACTER_AMY));
         } else {
             gMultiSioEnabled = FALSE;
             MultiSioStop();

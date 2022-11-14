@@ -7,11 +7,11 @@
 #include "time.h"
 
 #define TIME_RECORDS_PER_COURSE 3
-#define NUM_MULTIPLAYER_SCORES 10
+#define NUM_MULTIPLAYER_SCORES  10
 
 #define MAX_PLAYER_NAME_LENGTH 6
-#define PLAYER_NAME_END_CHAR 0xFFFF
-#define MAX_MULTIPLAYER_SCORE 99
+#define PLAYER_NAME_END_CHAR   0xFFFF
+#define MAX_MULTIPLAYER_SCORE  99
 
 struct MultiplayerScore {
     // playerId
@@ -25,7 +25,7 @@ struct MultiplayerScore {
 
     // wins
     u8 unk11;
-    
+
     // loses
     u8 unk12;
 
@@ -40,13 +40,16 @@ struct ButtonConfig {
     u16 unk2;
     // trick
     u16 unk4;
+    // unused
+    u16 unk6;
 };
 
 struct TimeRecords {
     u16 table[NUM_CHARACTERS][NUM_COURSE_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
 };
 
-#define NUM_TIME_RECORD_ROWS NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE
+#define NUM_TIME_RECORD_ROWS                                                            \
+    NUM_COURSE_ZONES *ACTS_PER_ZONE *NUM_CHARACTERS *TIME_RECORDS_PER_COURSE
 
 struct SaveGame {
     u32 unk0;
@@ -56,13 +59,14 @@ struct SaveGame {
 
     // timeLimitEnabled
     bool8 unk5;
-    
+
     // Language
     u8 unk6;
 
     // unlockedLevels
     u8 unk7[NUM_CHARACTERS];
 
+    // chaosEmeralds
     u8 unkC[5];
 
     // soundTestUnlocked
@@ -76,7 +80,7 @@ struct SaveGame {
 
     // chaoGardenUnlocked
     bool8 unk14;
-    
+
     u8 unk15;
     u8 unk16;
     u8 unk17;
@@ -85,7 +89,7 @@ struct SaveGame {
 
     // extraZoneStatus
     u8 unk1A;
-    
+
     u8 unk1B;
 
     // multiplayerWins
@@ -109,18 +113,19 @@ struct SaveGame {
     // multiplayerScores
     struct MultiplayerScore unk2AC[NUM_MULTIPLAYER_SCORES];
 
+    // score
     u32 unk374;
 };
 
-#define MULTIPLAYER_RESULT_WIN 0
+#define MULTIPLAYER_RESULT_WIN  0
 #define MULTIPLAYER_RESULT_LOSS 1
 #define MULTIPLAYER_RESULT_DRAW 2
 
-extern struct SaveGame* gLoadedSaveGame;
+extern struct SaveGame *gLoadedSaveGame;
 
-void InsertMultiplayerProfile(u32 playerId, u16* name);
+void InsertMultiplayerProfile(u32 playerId, u16 *name);
 void RecordOwnMultiplayerResult(s16 result);
-void RecordMultiplayerResult(u32 id, u16* name, s16 result);
+void RecordMultiplayerResult(u32 id, u16 *name, s16 result);
 
 void SaveInit(void);
 bool16 SaveGameExists(void);

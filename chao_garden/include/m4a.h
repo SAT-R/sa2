@@ -26,14 +26,11 @@ void m4aMPlayFadeIn(struct MusicPlayerInfo *mplayInfo, u16 speed);
 void m4aMPlayImmInit(struct MusicPlayerInfo *mplayInfo);
 
 void m4aMPlayTempoControl(struct MusicPlayerInfo *mplayInfo, u16 tempo);
-void m4aMPlayVolumeControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits,
-                           u16 volume);
-void m4aMPlayPitchControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits,
-                          s16 pitch);
-void m4aMPlayPanpotControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits,
-                           s8 pan);
+void m4aMPlayVolumeControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u16 volume);
+void m4aMPlayPitchControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, s16 pitch);
+void m4aMPlayPanpotControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, s8 pan);
 
 // TODO: split this up
 #define DEFAULT_SOUND_MODE 0x93f400
 
-#endif  // GUARD_M4A_H
+#endif // GUARD_M4A_H

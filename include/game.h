@@ -1,13 +1,13 @@
 #ifndef GUARD_GAME_H
 #define GUARD_GAME_H
 
-#define GAME_MODE_SINGLE_PLAYER 0
-#define GAME_MODE_TIME_ATTACK 1
+#define GAME_MODE_SINGLE_PLAYER    0
+#define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER 3
-#define GAME_MODE_TEAM_PLAY 4
+#define GAME_MODE_TEAM_PLAY    4
 
 #include "global.h"
 #include "multi_sio.h"
@@ -24,8 +24,13 @@ extern u8 gUnknown_030053EC;
 extern u32 gUnknown_030059D8;
 extern u32 gUnknown_03005848;
 extern u32 gUnknown_030059D0[2];
-extern s16 gUnknown_030053F0;
+
+// might be wrong
+extern s16 gCourseTime;
+
 extern u8 gUnknown_030054A8;
+extern u32 gUnknown_03005490;
+extern u8 gUnknown_030054F4;
 
 struct UNK_3005A44 {
     u16 unk0;
@@ -53,15 +58,12 @@ struct MultiplayerPlayer {
     s16 unk50;
 };
 
-// multiplayer values
-extern struct Task* gUnknown_030055A0[4];
-// gMultiplayerCharacters
+extern struct Task *gMultiplayerPlayerTasks[4];
 extern s8 gMultiplayerCharacters[4];
 extern s8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054B8;
 
-// Time since heartbeat
-extern u8 gUnknown_030054D4[4];
+extern u8 gMultiplayerMissingHeartbeats[4];
 
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
@@ -75,8 +77,12 @@ struct UNK_3005A70 {
 struct SomeStruct_59E0 {
     u32 filler0;
     u32 filler4;
+
+    // x
     s32 unk8;
+    // y
     s32 unkC;
+
     u32 filler10;
     u16 unk14;
     u8 filler16[10];
@@ -95,15 +101,14 @@ struct SomeStruct_59E0 {
     u8 unk6D;
     u8 filler66[30];
     u32 unk8C;
-    struct UNK_3005A70* unk90;
+    struct UNK_3005A70 *unk90;
 };
 
-// gPlayer
-extern struct SomeStruct_59E0 gUnknown_030059E0;
+extern struct SomeStruct_59E0 gPlayer;
 
 struct SomeStruct_5960 {
-    u32 unk0;
-    u32 unk4;
+    s32 unk0;
+    s32 unk4;
     u8 filler[92 - 8];
     u32 unk5C;
     u8 filler60[0x20];
@@ -118,29 +123,19 @@ struct SomeStruct_5660 {
 
 extern struct SomeStruct_5660 gUnknown_03005660;
 
-// gMultiplayerUnlockedCharacters
-extern u8 gUnknown_03005594;
-extern u8 gUnknown_030054D8;
-extern u32 gUnknown_03005410[MULTI_SIO_PLAYERS_MAX];
-
-// gMultiplayerNames
-extern u16 gUnknown_03005460[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
+extern u8 gMultiplayerUnlockedCharacters;
+extern u8 gMultiplayerUnlockedLevels;
+extern u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX];
+extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gUnknown_03005434;
 
 extern u32 gUnknown_03005450;
 extern u8 gUnknown_03005448;
 
-// gMultiplayerConnections
-extern u8 gUnknown_030055B8;
+extern u8 gMultiplayerConnections;
 
-
-struct UNK_3005B38 {
-    u16 unk0;
-    u16 unk2;
-};
-
-extern struct UNK_3005B38 gUnknown_03005B38;
+extern struct ButtonConfig gPlayerControls;
 
 extern u8 gUnknown_03005428[4];
 extern u8 gUnknown_030053E8[4];
@@ -173,8 +168,7 @@ void sub_802E164(u16, u16);
 // ApplyGamePlaySettings
 void sub_801A6D8(void);
 
-// CreateTrueArea53
-void sub_8036C54(void);
+void CreateTrueArea53(void);
 
 // Sweep anim
 void sub_802E044(u16, u16);

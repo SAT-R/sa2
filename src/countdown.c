@@ -19,20 +19,18 @@ struct CourseStartCountdown {
 };
 
 const struct UNK_080E0D64 gUnknown_080D7518[5] = {
-    TextElementAlt4(1, 0, 30),
-    TextElementAlt4(1, 0, 121),
-    TextElementAlt4(1, 0, 212),
-    TextElementAlt4(1, 0, 303),
-    TextElementAlt4(1, 0, 394),
+    TextElementAlt4(1, 0, 30),  TextElementAlt4(1, 0, 121), TextElementAlt4(1, 0, 212),
+    TextElementAlt4(1, 0, 303), TextElementAlt4(1, 0, 394),
 };
 
 void sub_8036168(void);
-void sub_8036638(struct Task*);
+void sub_8036638(struct Task *);
 
-void CreateCourseStartCountdown(u8 mode) {
-    struct Task* t;
-    struct CourseStartCountdown* countdown;
-    struct UNK_0808B3FC_UNK240* element;
+void CreateCourseStartCountdown(u8 mode)
+{
+    struct Task *t;
+    struct CourseStartCountdown *countdown;
+    struct UNK_0808B3FC_UNK240 *element;
 
     gUnknown_03005424 |= 0x100;
     t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
@@ -46,7 +44,7 @@ void CreateCourseStartCountdown(u8 mode) {
     } else {
         countdown->unk68 = 0xB4;
     }
-    
+
     element = &countdown->unk30;
     element->unk4 = VramMalloc(4);
     element->unkA = 0x469;
@@ -80,12 +78,14 @@ void sub_8018818(void);
 void CreateRaceStartMessage(void);
 void sub_8036398(void);
 
-void sub_8036168(void) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element;
+void sub_8036168(void)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element;
 
     // Skip intro
-    if (!IsMultiplayer() && countdown->unk68 > 0xB4 && gPressedKeys & (A_BUTTON | B_BUTTON)) {
+    if (!IsMultiplayer() && countdown->unk68 > 0xB4
+        && gPressedKeys & (A_BUTTON | B_BUTTON)) {
         countdown->unk68 = 0xB4;
     }
 
@@ -98,20 +98,20 @@ void sub_8036168(void) {
     }
 
     if (--countdown->unk68 == 0) {
-        gUnknown_030059E0.unk20 &= ~0x200000;
+        gPlayer.unk20 &= ~0x200000;
         gUnknown_03005424 &= ~1;
         gUnknown_03005424 &= ~0x100;
-        gUnknown_030059E0.unk64 = 9;
+        gPlayer.unk64 = 9;
         if (countdown->unk6A != 0) {
-            gUnknown_030059E0.unk14 = 0x900;
+            gPlayer.unk14 = 0x900;
         } else {
-            gUnknown_030059E0.unk14 = 0x400;
+            gPlayer.unk14 = 0x400;
         }
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = gUnknown_030059E0.unk8 >> 8;
-        countdown->unk64 = gUnknown_030059E0.unkC >> 8;
+        countdown->unk60 = gPlayer.unk8 >> 8;
+        countdown->unk64 = gPlayer.unkC >> 8;
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -127,8 +127,8 @@ void sub_8036168(void) {
     }
 
     element = &countdown->unk0;
-    element->unk16 = (gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0;
-    element->unk18 = (gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4;
+    element->unk16 = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
+    element->unk18 = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -136,33 +136,35 @@ void sub_8036168(void) {
         element = &countdown->unk30;
         element->unk20 = 2 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
-        element->unk16 = ((gUnknown_030059E0.unk8 >> 8) - gUnknown_03005960.unk0) + 0x18;
-        element->unk18 = ((gUnknown_030059E0.unkC >> 8) - gUnknown_03005960.unk4) - 0x18;
+        element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0) + 0x18;
+        element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4) - 0x18;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     if ((u16)(countdown->unk68 - 0x46) < 0x6E) {
-        gUnknown_030059E0.unk68 = gUnknown_080D7518[gSelectedCharacter].unk4;
-        gUnknown_030059E0.unk6A = gUnknown_080D7518[gSelectedCharacter].unk6;
-        gUnknown_030059E0.unk6C = 1;
+        gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].unk4;
+        gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].unk6;
+        gPlayer.unk6C = 1;
 
         if (IsMultiplayer()) {
-            gUnknown_030059E0.unk90->unk31 = (SIO_MULTI_CNT)->id;
+            gPlayer.unk90->unk31 = (SIO_MULTI_CNT)->id;
         } else {
-            gUnknown_030059E0.unk90->unk31 = 0;
+            gPlayer.unk90->unk31 = 0;
         }
     }
 }
 
-void sub_8036398(void) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element = &countdown->unk0;
+void sub_8036398(void)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element = &countdown->unk0;
 
     element->unk16 = countdown->unk60 - gUnknown_03005960.unk0;
     element->unk18 = countdown->unk64 - gUnknown_03005960.unk4;
 
-    if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0 || (s16)element->unk18 > 288) {
+    if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0
+        || (s16)element->unk18 > 288) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -172,21 +174,22 @@ void sub_8036398(void) {
 }
 
 void sub_8036524(void);
-void sub_8036654(struct Task*);
+void sub_8036654(struct Task *);
 
 struct RaceStartMessage {
-      struct UNK_0808B3FC_UNK240 unk0;
-      struct UNK_808D124_UNK180 unk30;
-      struct UNK_0808B3FC_UNK240 unk3C;
-      struct UNK_808D124_UNK180 unk6C;
-      u16 unk78;
-      u16 filler7A;
+    struct UNK_0808B3FC_UNK240 unk0;
+    struct UNK_808D124_UNK180 unk30;
+    struct UNK_0808B3FC_UNK240 unk3C;
+    struct UNK_808D124_UNK180 unk6C;
+    u16 unk78;
+    u16 filler7A;
 }; /* 0x7C */
 
-void CreateRaceStartMessage(void) {
-    struct Task* t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240* element;
+void CreateRaceStartMessage(void)
+{
+    struct Task *t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
+    struct UNK_0808B3FC_UNK240 *element;
 
     startMessage->unk78 = 0x3C;
     element = &startMessage->unk0;
@@ -218,10 +221,11 @@ void CreateRaceStartMessage(void) {
     element->unk10 = gUnknown_030054B8++ | 0x60;
 }
 
-void sub_8036524(void) {
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240* element, *element2;
-    struct UNK_808D124_UNK180* transformConfig;
+void sub_8036524(void)
+{
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *element, *element2;
+    struct UNK_808D124_UNK180 *transformConfig;
     s16 unk78;
     startMessage->unk78--;
 
@@ -275,14 +279,16 @@ void sub_8036524(void) {
     sub_80051E8(element);
 }
 
-void sub_8036638(struct Task* t) {
-    struct CourseStartCountdown* countdown = TaskGetStructPtr(t);
+void sub_8036638(struct Task *t)
+{
+    struct CourseStartCountdown *countdown = TaskGetStructPtr(t);
     VramFree(countdown->unk0.unk4);
     VramFree(countdown->unk30.unk4);
 }
 
-void sub_8036654(struct Task* t) {
-    struct RaceStartMessage* startMessage = TaskGetStructPtr(t);
+void sub_8036654(struct Task *t)
+{
+    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
     VramFree(startMessage->unk3C.unk4);
     VramFree(startMessage->unk0.unk4);
 }

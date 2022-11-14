@@ -5,7 +5,7 @@
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)
 {
-    struct EwramNode* root = (struct EwramNode*)&gEwramHeap[0];
+    struct EwramNode *root = (struct EwramNode *)&gEwramHeap[0];
     root->next = NULL;
     root->state = sizeof(gEwramHeap);
 }
@@ -16,44 +16,42 @@ void *EwramMalloc(u32 req)
     s32 requestedSpace = req;
 
     requestedSpace = (req + 3) / 4; // round up and get word count
-    if (requestedSpace != 0)
-    {
+    if (requestedSpace != 0) {
         requestedSpace = requestedSpace * 4 + sizeof(struct EwramNode);
-        node = (struct EwramNode*)gEwramHeap;
+        node = (struct EwramNode *)gEwramHeap;
         /* linear search */
-        while (1)
-        {
-            if (requestedSpace <= (u32)node->state)
-            {
-                /* 
-                 * Space corresponding to the node matches requested size. 
+        while (1) {
+            if (requestedSpace <= (u32)node->state) {
+                /*
+                 * Space corresponding to the node matches requested size.
                  * This means, we can directly use this node for the request
-                 * w/o any adjustment. 
+                 * w/o any adjustment.
                  */
-                if (requestedSpace == node->state)
-                {
+                if (requestedSpace == node->state) {
                     node->state = -requestedSpace; // busy
                     return node->space;
                 }
 
                 /*
-                 * Node has too much space. 
+                 * Node has too much space.
                  * This means, we need to construct a new node so that space won't
-                 * get wasted. 
+                 * get wasted.
                  */
-                if (requestedSpace + (s32)sizeof(struct EwramNode) <= node->state)
-                {
+                if (requestedSpace + (s32)sizeof(struct EwramNode) <= node->state) {
                     struct EwramNode *addr = (void *)node + requestedSpace;
 
                     addr->next = node->next;
-                    ++node; --node;
-                    addr->state = node->state - requestedSpace; // Surplus space belongs to the new node. 
+                    ++node;
+                    --node;
+                    addr->state = node->state
+                        - requestedSpace; // Surplus space belongs to the new node.
                     node->next = addr;
                     node->state = -requestedSpace; // busy
                     return node->space;
                 }
             }
-            ++requestedSpace; --requestedSpace;
+            ++requestedSpace;
+            --requestedSpace;
             if (!node->next)
                 return ewram_end;
             node = node->next;
@@ -66,38 +64,34 @@ void EwramFree(void *p)
 {
     struct EwramNode *node, *slow, *fast, *tmp;
 
-    if (p && ewram_end != p)
-    {
+    if (p && ewram_end != p) {
         node = p - offsetof(struct EwramNode, space);
 
         /* find parent of node */
-        for (fast = slow = (struct EwramNode*)gEwramHeap;
-             node != fast;
+        for (fast = slow = (struct EwramNode *)gEwramHeap; node != fast;
              fast = fast->next)
             slow = fast;
-        
-        if (node->state < 0) // It should always be true if the function is called properly. 
+
+        if (node->state
+            < 0) // It should always be true if the function is called properly.
             node->state = -node->state; // free
 
         /*
-         * Parent node and child node are adjacent. 
-         * In this case we simply merge child into parent. 
+         * Parent node and child node are adjacent.
+         * In this case we simply merge child into parent.
          */
-        if ((void *)slow + slow->state == node && slow->state > 0)
-        {
+        if ((void *)slow + slow->state == node && slow->state > 0) {
             slow->next = fast->next;
             slow->state += node->state;
             node = slow;
         }
 
         /*
-         * Similar to above check, but different direction. 
-         * Merge if the next node is adjacent. 
+         * Similar to above check, but different direction.
+         * Merge if the next node is adjacent.
          */
         tmp = (void *)node + node->state;
-        if (tmp == node->next
-            && tmp->state > 0)
-        {
+        if (tmp == node->next && tmp->state > 0) {
             node->state += tmp->state;
             node->next = tmp->next;
         }
