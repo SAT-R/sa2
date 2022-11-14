@@ -27,7 +27,10 @@ SECTIONS {
 		build/mb_chao_garden/asm/m4a0.o(.text);
 		build/mb_chao_garden/src/m4a.o(.text);
 		build/mb_chao_garden/asm/libagbsyscall.o(.text);
-		build/mb_chao_garden/asm/libs.o(.text);
+		build/mb_chao_garden/src/agb_flash.o(.text);
+		build/mb_chao_garden/src/agb_flash_512k.o(.text);
+		build/mb_chao_garden/src/agb_flash_le_512k.o(.text);
+		build/mb_chao_garden/src/agb_flash_mx_512k.o(.text);
 		*libgcc.a:_call_via_rX.o(.text);
 		*libgcc.a:_divsi3.o(.text);
         *libgcc.a:_dvmd_tls.o(.text);
@@ -41,6 +44,12 @@ SECTIONS {
 	    build/mb_chao_garden/data/data.o(.rodata);
 		build/mb_chao_garden/src/m4a_tables.o(.rodata);
 		build/mb_chao_garden/data/data2.o(.rodata);
+
+		build/mb_chao_garden/src/agb_flash_512k.o(.rodata);
+		build/mb_chao_garden/src/agb_flash_le_512k.o(.rodata);
+		build/mb_chao_garden/src/agb_flash_mx_512k.o(.rodata);
+        
+		build/mb_chao_garden/data/data3.o(.rodata);
 	} =0
 
     /* DWARF debug sections.
