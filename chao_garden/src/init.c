@@ -32,7 +32,7 @@ void sub_0200019c(void)
     IntrFunc *base, *table, dummy;
 
     // Init IntrMain_RAM
-    CPU_COPY(IntrMain, IntrMain_RAM, sizeof(IntrMain_RAM), 32);
+    CpuCopy32(IntrMain, IntrMain_RAM, sizeof(IntrMain_RAM));
     INTR_VECTOR = IntrMain_RAM;
 
     // Init IntrTable
