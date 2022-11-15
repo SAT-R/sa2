@@ -86,4 +86,9 @@
 // with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+// TODO: Find better place for this
+typedef void (*HBlankFunc)(u8 vcount);
+typedef void (*IntrFunc)(void);
+typedef u32 (*SpriteUpdateFunc)(void);
+
 #endif // GUARD_GLOBAL_H

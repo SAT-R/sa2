@@ -77,4 +77,6 @@
 
 #define SYSTEM_CLOCK           (16 * 1024 * 1024)   // System Clock
 
+#define ROM_BASE 0x08000000
+
 #endif // GUARD_GBA_DEFINES
