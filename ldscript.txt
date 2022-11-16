@@ -52,7 +52,8 @@ SECTIONS
         build/sa2/src/multiplayer_communication_outcome.o(.text);
         build/sa2/src/multiplayer_results.o(.text);
         build/sa2/src/multiplayer_team_play.o(.text);
-        build/sa2/asm/unused_objects.o(.text);
+        build/sa2/src/misc_sprites.o(.text);
+        build/sa2/asm/misc_sprites.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);
         build/sa2/src/special_stage_utils.o(.text);
