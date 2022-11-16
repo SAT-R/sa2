@@ -24,66 +24,64 @@ gSpritePosData_Enemies:
 @; gSpriteFunctions ?
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
-    .4byte initSprite_Interactable000
-    .4byte initSprite_Interactable000
+    .4byte initSprite_Interactable_ChangePlayerLayer
+    .4byte initSprite_Interactable_ChangePlayerLayer
     .4byte initSprite_Interactable002
-    .4byte initSprite_Interactable_Spring0
-    .4byte initSprite_Interactable_Spring1
-    .4byte initSprite_Interactable_Spring2
-    .4byte initSprite_Interactable_Spring3
-    .4byte initSprite_Interactable_Spring4
-    .4byte initSprite_Interactable_Spring5
+    .4byte initSprite_Interactable_Spring_Normal_Up
+    .4byte initSprite_Interactable_Spring_Normal_Down
+    .4byte initSprite_Interactable_Spring_Normal_Right
+    .4byte initSprite_Interactable_Spring_Normal_Left
+    .4byte initSprite_Interactable_Spring_Big_UpLeft
+    .4byte initSprite_Interactable_Spring_Big_UpRight
     .4byte initSprite_Interactable_Spring6
     .4byte initSprite_Interactable_Spring7
-    .4byte initSprite_Interactable_Spring8
-    .4byte initSprite_Interactable_Spring9
+    .4byte initSprite_Interactable_Spring_Small_UpRight
+    .4byte initSprite_Interactable_Spring_Small_UpLeft
     .4byte initSprite_Interactable013
     .4byte initSprite_Interactable_YellowFlower
     .4byte initSprite_Interactable_Ramp
     .4byte initSprite_Interactable_Booster
-    .4byte initSprite_Interactable017
-    .4byte initSprite_Interactable018
+    .4byte initSprite_Interactable_RoundUpSlope @ Like the one at the end of Leaf Forest Act 1
+    .4byte initSprite_Interactable_BouncySpring
     .4byte initSprite_Interactable019
     .4byte initSprite_Interactable_RotatingHandle
-    .4byte initSprite_Interactable021
-    .4byte initSprite_Interactable022
+    .4byte initSprite_Interactable_LoopGap_Start
+    .4byte initSprite_Interactable_LoopGap_End
 
-@ Spikes
-    .4byte initSprite_Interactable023
-    .4byte initSprite_Interactable024
-    .4byte initSprite_Interactable025
-    .4byte initSprite_Interactable025
-@ Hiding Spikes
-    .4byte initSprite_Interactable027
-    .4byte initSprite_Interactable028
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Down
+    .4byte initSprite_Interactable_Spikes_LeftRight @ Left
+    .4byte initSprite_Interactable_Spikes_LeftRight @ Right
+    .4byte initSprite_Interactable_Spikes_HidingUp
+    .4byte initSprite_Interactable_Spikes_HidingDown
 
-    .4byte initSprite_Interactable029
-    .4byte initSprite_Interactable030
-    .4byte initSprite_Interactable031
-    .4byte initSprite_Interactable032
-    .4byte initSprite_Interactable033
-    .4byte initSprite_Interactable034
+    .4byte initSprite_Interactable_CorkScrew_Start
+    .4byte initSprite_Interactable_CorkScrew_End
+    .4byte initSprite_Interactable_BouncyBar
+    .4byte initSprite_Interactable_GrindRail_Start
+    .4byte initSprite_Interactable_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
+    .4byte initSprite_Interactable_GrindRail_End
     .4byte initSprite_Interactable035
-    .4byte initSprite_Interactable036
-    .4byte initSprite_Interactable037
+    .4byte initSprite_Interactable_GrindRail_EndAlt
+    .4byte initSprite_Interactable_GrindRail_EndAir
     .4byte initSprite_Interactable038
     .4byte initSprite_Interactable039
-    .4byte initSprite_Interactable040
-    .4byte initSprite_Interactable041
-    .4byte initSprite_Interactable042
-    .4byte initSprite_Interactable043
-    .4byte initSprite_Interactable044
-    .4byte initSprite_Interactable045
-    .4byte initSprite_Interactable046
-    .4byte initSprite_Interactable047
+    .4byte initSprite_Interactable_Corkscrew3D_Start
+    .4byte initSprite_Interactable_Corkscrew3D_End
+    .4byte initSprite_Interactable_StageGoal
+    .4byte initSprite_Interactable_Checkpoint
+    .4byte initSprite_Interactable044    @ Used at layer transitions on 3/4 - type loops
+    .4byte initSprite_Interactable_Toggle_Checkpoint
+    .4byte initSprite_Interactable_Toggle_StageGoal
+    .4byte initSprite_Interactable_WindupStick @ Character rotates a bit around it, then shoots up/down
     .4byte initSprite_Interactable048
-    .4byte initSprite_Interactable049
-    .4byte initSprite_Interactable050
+    .4byte initSprite_Interactable_HookRail_Start
+    .4byte initSprite_Interactable_HookRail_End
     .4byte initSprite_Interactable051
     .4byte initSprite_Interactable052
-    .4byte initSprite_Interactable053
-    .4byte initSprite_Interactable054
-    .4byte initSprite_Interactable055
+    .4byte initSprite_Interactable_HotCrater_Crane
+    .4byte initSprite_Interactable_LaunchRing
+    .4byte initSprite_Interactable_HotCrater_Spring_Up
     .4byte initSprite_Interactable056
     .4byte initSprite_Interactable057
     .4byte initSprite_Interactable058
@@ -100,8 +98,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable069
     .4byte initSprite_Interactable070
     .4byte initSprite_Interactable044
-    .4byte initSprite_Interactable072
-    .4byte initSprite_Interactable073
+    .4byte initSprite_Interactable_HotCrater_ClearPipe_Start
+    .4byte initSprite_Interactable_HotCrater_ClearPipe_End
     .4byte initSprite_Interactable074
     .4byte initSprite_Interactable075
     .4byte initSprite_Interactable076
@@ -131,7 +129,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable100
     .4byte initSprite_Interactable101
     .4byte initSprite_Interactable102
-    .4byte initSprite_Interactable103
+    .4byte initSprite_Interactable_SpecialRing
     .4byte initSprite_Interactable104
     .4byte initSprite_Interactable105
 

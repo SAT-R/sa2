@@ -815,8 +815,8 @@ _0805DCE8: .4byte 0xFFFFFC00
 _0805DCEC: .4byte gUnknown_03005960
 _0805DCF0: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable017
-initSprite_Interactable017: @ 0x0805DCF4
+	thumb_func_start initSprite_Interactable_RoundUpSlope
+initSprite_Interactable_RoundUpSlope: @ 0x0805DCF4
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -856,8 +856,8 @@ initSprite_Interactable017: @ 0x0805DCF4
 	.align 2, 0
 _0805DD40: .4byte sub_805DB14
 
-	thumb_func_start initSprite_Interactable018
-initSprite_Interactable018: @ 0x0805DD44
+	thumb_func_start initSprite_Interactable_BouncySpring
+initSprite_Interactable_BouncySpring: @ 0x0805DD44
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -2384,8 +2384,8 @@ _0805E93E:
 _0805E944: .4byte 0xFEFFFFFF
 _0805E948: .4byte gUnknown_03005960
 
-	thumb_func_start initSprite_Interactable000
-initSprite_Interactable000: @ 0x0805E94C
+	thumb_func_start initSprite_Interactable_ChangePlayerLayer
+initSprite_Interactable_ChangePlayerLayer: @ 0x0805E94C
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -3896,8 +3896,8 @@ _0805F53C: .4byte 0x000003B6
 _0805F540: .4byte 0xFFBFFFFF
 _0805F544: .4byte sub_805F2E8
 
-	thumb_func_start initSprite_Interactable021
-initSprite_Interactable021: @ 0x0805F548
+	thumb_func_start initSprite_Interactable_LoopGap_Start
+initSprite_Interactable_LoopGap_Start: @ 0x0805F548
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -3949,8 +3949,8 @@ initSprite_Interactable021: @ 0x0805F548
 	.align 2, 0
 _0805F5AC: .4byte sub_805F098
 
-	thumb_func_start initSprite_Interactable022
-initSprite_Interactable022: @ 0x0805F5B0
+	thumb_func_start initSprite_Interactable_LoopGap_End
+initSprite_Interactable_LoopGap_End: @ 0x0805F5B0
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -4002,8 +4002,8 @@ initSprite_Interactable022: @ 0x0805F5B0
 	.align 2, 0
 _0805F614: .4byte sub_805F2E8
 
-	thumb_func_start initSprite_Interactable023
-initSprite_Interactable023: @ 0x0805F618
+	thumb_func_start initSprite_Interactable_Spikes_Up
+initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	push {r4, r5, r6, lr}
 	mov r6, sb
 	mov r5, r8
@@ -4124,8 +4124,8 @@ _0805F6CA:
 	.align 2, 0
 _0805F710: .4byte 0x0000021E
 
-	thumb_func_start initSprite_Interactable024
-initSprite_Interactable024: @ 0x0805F714
+	thumb_func_start initSprite_Interactable_Spikes_Down
+initSprite_Interactable_Spikes_Down: @ 0x0805F714
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -4545,8 +4545,8 @@ _0805FA66:
 	.align 2, 0
 _0805FA6C: .4byte gUnknown_030053E0
 
-	thumb_func_start initSprite_Interactable025
-initSprite_Interactable025: @ 0x0805FA70
+	thumb_func_start initSprite_Interactable_Spikes_LeftRight
+initSprite_Interactable_Spikes_LeftRight: @ 0x0805FA70
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5045,8 +5045,8 @@ _0805FE5C:
 	.align 2, 0
 _0805FE6C: .4byte gUnknown_030053E0
 
-	thumb_func_start initSprite_Interactable027
-initSprite_Interactable027: @ 0x0805FE70
+	thumb_func_start initSprite_Interactable_Spikes_HidingUp
+initSprite_Interactable_Spikes_HidingUp: @ 0x0805FE70
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5264,8 +5264,8 @@ _08060028:
 	.align 2, 0
 _08060030: .4byte gPlayer
 
-	thumb_func_start initSprite_Interactable028
-initSprite_Interactable028: @ 0x08060034
+	thumb_func_start initSprite_Interactable_Spikes_HidingDown
+initSprite_Interactable_Spikes_HidingDown: @ 0x08060034
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -7818,8 +7818,8 @@ _080613CE:
 _080613DC: .4byte gUnknown_080D672C
 _080613E0: .4byte 0xFFFFFEE6
 
-	thumb_func_start initSprite_Interactable029
-initSprite_Interactable029: @ 0x080613E4
+	thumb_func_start initSprite_Interactable_CorkScrew_Start
+initSprite_Interactable_CorkScrew_Start: @ 0x080613E4
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -7862,8 +7862,8 @@ initSprite_Interactable029: @ 0x080613E4
 	.align 2, 0
 _08061434: .4byte sub_8060D34
 
-	thumb_func_start initSprite_Interactable030
-initSprite_Interactable030: @ 0x08061438
+	thumb_func_start initSprite_Interactable_CorkScrew_End
+initSprite_Interactable_CorkScrew_End: @ 0x08061438
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -7951,8 +7951,8 @@ _080614E0: .4byte 0x000003FF
 _080614E4: .4byte gSineTable
 _080614E8: .4byte 0xFFFFE400
 
-	thumb_func_start initSprite_Interactable031
-initSprite_Interactable031: @ 0x080614EC
+	thumb_func_start initSprite_Interactable_BouncyBar
+initSprite_Interactable_BouncyBar: @ 0x080614EC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -10080,8 +10080,8 @@ _080625BE:
 _080625CC: .4byte gUnknown_080D672C
 _080625D0: .4byte 0xFFFFFEE6
 
-	thumb_func_start initSprite_Interactable040
-initSprite_Interactable040: @ 0x080625D4
+	thumb_func_start initSprite_Interactable_Corkscrew3D_Start
+initSprite_Interactable_Corkscrew3D_Start: @ 0x080625D4
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -10124,8 +10124,8 @@ initSprite_Interactable040: @ 0x080625D4
 	.align 2, 0
 _08062624: .4byte sub_8061914
 
-	thumb_func_start initSprite_Interactable041
-initSprite_Interactable041: @ 0x08062628
+	thumb_func_start initSprite_Interactable_Corkscrew3D_End
+initSprite_Interactable_Corkscrew3D_End: @ 0x08062628
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -10215,8 +10215,8 @@ _080626D0: .4byte 0x000003FF
 _080626D4: .4byte gSineTable
 _080626D8: .4byte 0xFFFFE400
 
-	thumb_func_start initSprite_Interactable042
-initSprite_Interactable042: @ 0x080626DC
+	thumb_func_start initSprite_Interactable_StageGoal
+initSprite_Interactable_StageGoal: @ 0x080626DC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -11135,8 +11135,8 @@ _08062E24: .4byte gGameMode
 _08062E28: .4byte gPlayer
 _08062E2C: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable046
-initSprite_Interactable046: @ 0x08062E30
+	thumb_func_start initSprite_Interactable_Toggle_StageGoal
+initSprite_Interactable_Toggle_StageGoal: @ 0x08062E30
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -11186,8 +11186,8 @@ sub_8062E7C: @ 0x08062E7C
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable043
-initSprite_Interactable043: @ 0x08062E90
+	thumb_func_start initSprite_Interactable_Checkpoint
+initSprite_Interactable_Checkpoint: @ 0x08062E90
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -11809,8 +11809,8 @@ _08063396:
 	.align 2, 0
 _0806339C: .4byte gUnknown_030055B0
 
-	thumb_func_start initSprite_Interactable045
-initSprite_Interactable045: @ 0x080633A0
+	thumb_func_start initSprite_Interactable_Toggle_Checkpoint
+initSprite_Interactable_Toggle_Checkpoint: @ 0x080633A0
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	adds r4, r0, #0

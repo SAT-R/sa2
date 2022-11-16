@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable047
-initSprite_Interactable047: @ 0x080725B4
+	thumb_func_start initSprite_Interactable_WindupStick
+initSprite_Interactable_WindupStick: @ 0x080725B4
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}
@@ -1724,8 +1724,8 @@ initSprite_Interactable048: @ 0x0807329C
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable049
-initSprite_Interactable049: @ 0x080732C8
+	thumb_func_start initSprite_Interactable_HookRail_Start
+initSprite_Interactable_HookRail_Start: @ 0x080732C8
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -1748,8 +1748,8 @@ initSprite_Interactable049: @ 0x080732C8
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable050
-initSprite_Interactable050: @ 0x080732F4
+	thumb_func_start initSprite_Interactable_HookRail_End
+initSprite_Interactable_HookRail_End: @ 0x080732F4
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -2446,8 +2446,8 @@ _0807386C:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start initSprite_Interactable053
-initSprite_Interactable053: @ 0x08073874
+	thumb_func_start initSprite_Interactable_HotCrater_Crane
+initSprite_Interactable_HotCrater_Crane: @ 0x08073874
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -4255,8 +4255,8 @@ sub_8074604: @ 0x08074604
 	.align 2, 0
 _08074628: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable054
-initSprite_Interactable054: @ 0x0807462C
+	thumb_func_start initSprite_Interactable_LaunchRing
+initSprite_Interactable_LaunchRing: @ 0x0807462C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5080,8 +5080,8 @@ sub_8074C98: @ 0x08074C98
 	.align 2, 0
 _08074CB0: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable055
-initSprite_Interactable055: @ 0x08074CB4
+	thumb_func_start initSprite_Interactable_HotCrater_Spring_Up
+initSprite_Interactable_HotCrater_Spring_Up: @ 0x08074CB4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -30433,8 +30433,8 @@ _08080F20:
 	.align 2, 0
 _08080F24: .4byte gUnknown_080E0140
 
-	thumb_func_start initSprite_Interactable103
-initSprite_Interactable103: @ 0x08080F28
+	thumb_func_start initSprite_Interactable_SpecialRing
+initSprite_Interactable_SpecialRing: @ 0x08080F28
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
