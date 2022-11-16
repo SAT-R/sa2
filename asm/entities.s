@@ -1727,7 +1727,7 @@ _08008B1E:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08008B72
-	ldr r1, _08008CCC @ =gUnknown_080D4E1C
+	ldr r1, _08008CCC @ =gSpriteInits_Interactables
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -1918,7 +1918,7 @@ _08008CBC: .4byte gUnknown_03005424
 _08008CC0: .4byte gCurTask
 _08008CC4: .4byte gGameMode
 _08008CC8: .4byte gUnknown_03005960
-_08008CCC: .4byte gUnknown_080D4E1C
+_08008CCC: .4byte gSpriteInits_Interactables
 _08008CD0: .4byte gUnknown_080D4FC4
 _08008CD4:
 	lsls r0, r7, #2
@@ -2403,7 +2403,7 @@ _08009018:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08009066
-	ldr r1, _0800909C @ =gUnknown_080D4E1C
+	ldr r1, _0800909C @ =gSpriteInits_Interactables
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -2445,7 +2445,7 @@ _0800907C:
 	ldrsb r0, [r4, r0]
 	b _080090F2
 	.align 2, 0
-_0800909C: .4byte gUnknown_080D4E1C
+_0800909C: .4byte gSpriteInits_Interactables
 _080090A0:
 	lsls r0, r1, #0x18
 	asrs r0, r0, #0x18
@@ -2782,7 +2782,7 @@ _080092E4:
 	ldr r0, [sp, #0x1c]
 	cmp r1, r0
 	bgt _08009332
-	ldr r1, _0800944C @ =gUnknown_080D4E1C
+	ldr r1, _0800944C @ =gSpriteInits_Interactables
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -2943,7 +2943,7 @@ _08009438:
 	bne _080093EE
 	b _080094DE
 	.align 2, 0
-_0800944C: .4byte gUnknown_080D4E1C
+_0800944C: .4byte gSpriteInits_Interactables
 _08009450: .4byte gUnknown_080D4FC4
 _08009454:
 	lsls r0, r7, #2
@@ -13330,8 +13330,8 @@ _0800E568:
 _0800E56C: .4byte gCurrentLevel
 _0800E570: .4byte IWRAM_START + 0x3C
 
-	thumb_func_start sub_800E574
-sub_800E574: @ 0x0800E574
+	thumb_func_start initSprite_Interactable_Spring7
+initSprite_Interactable_Spring7: @ 0x0800E574
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13354,8 +13354,8 @@ sub_800E574: @ 0x0800E574
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E5A0
-sub_800E5A0: @ 0x0800E5A0
+	thumb_func_start initSprite_Interactable_Spring1
+initSprite_Interactable_Spring1: @ 0x0800E5A0
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13378,8 +13378,8 @@ sub_800E5A0: @ 0x0800E5A0
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E5CC
-sub_800E5CC: @ 0x0800E5CC
+	thumb_func_start initSprite_Interactable_Spring6
+initSprite_Interactable_Spring6: @ 0x0800E5CC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13402,8 +13402,8 @@ sub_800E5CC: @ 0x0800E5CC
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E5F8
-sub_800E5F8: @ 0x0800E5F8
+	thumb_func_start initSprite_Interactable_Spring3
+initSprite_Interactable_Spring3: @ 0x0800E5F8
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13426,8 +13426,8 @@ sub_800E5F8: @ 0x0800E5F8
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E624
-sub_800E624: @ 0x0800E624
+	thumb_func_start initSprite_Interactable_Spring2
+initSprite_Interactable_Spring2: @ 0x0800E624
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13450,8 +13450,8 @@ sub_800E624: @ 0x0800E624
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E650
-sub_800E650: @ 0x0800E650
+	thumb_func_start initSprite_Interactable_Spring4
+initSprite_Interactable_Spring4: @ 0x0800E650
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13474,8 +13474,8 @@ sub_800E650: @ 0x0800E650
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E67C
-sub_800E67C: @ 0x0800E67C
+	thumb_func_start initSprite_Interactable_Spring0
+initSprite_Interactable_Spring0: @ 0x0800E67C
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13498,8 +13498,8 @@ sub_800E67C: @ 0x0800E67C
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E6A8
-sub_800E6A8: @ 0x0800E6A8
+	thumb_func_start initSprite_Interactable_Spring5
+initSprite_Interactable_Spring5: @ 0x0800E6A8
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13522,8 +13522,8 @@ sub_800E6A8: @ 0x0800E6A8
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E6D4
-sub_800E6D4: @ 0x0800E6D4
+	thumb_func_start initSprite_Interactable_Spring9
+initSprite_Interactable_Spring9: @ 0x0800E6D4
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13546,8 +13546,8 @@ sub_800E6D4: @ 0x0800E6D4
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E700
-sub_800E700: @ 0x0800E700
+	thumb_func_start initSprite_Interactable_Spring8
+initSprite_Interactable_Spring8: @ 0x0800E700
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13570,8 +13570,8 @@ sub_800E700: @ 0x0800E700
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_800E72C
-sub_800E72C: @ 0x0800E72C
+	thumb_func_start initSprite_Interactable002
+initSprite_Interactable002: @ 0x0800E72C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -14070,8 +14070,8 @@ _0800EB12:
 	.align 2, 0
 _0800EB24: .4byte gSineTable
 
-	thumb_func_start sub_800EB28
-sub_800EB28: @ 0x0800EB28
+	thumb_func_start initSprite_Interactable079
+initSprite_Interactable079: @ 0x0800EB28
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -14913,8 +14913,8 @@ sub_800F1B0: @ 0x0800F1B0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_800F1BC
-sub_800F1BC: @ 0x0800F1BC
+	thumb_func_start initSprite_Interactable081
+initSprite_Interactable081: @ 0x0800F1BC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -15956,8 +15956,8 @@ sub_800F9AC: @ 0x0800F9AC
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_800F9D8
-sub_800F9D8: @ 0x0800F9D8
+	thumb_func_start initSprite_Interactable_Ramp
+initSprite_Interactable_Ramp: @ 0x0800F9D8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -17376,8 +17376,8 @@ _0801048C:
 	.align 2, 0
 _08010494: .4byte gCurTask
 
-	thumb_func_start sub_8010498
-sub_8010498: @ 0x08010498
+	thumb_func_start initSprite_Interactable033
+initSprite_Interactable033: @ 0x08010498
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17394,8 +17394,8 @@ sub_8010498: @ 0x08010498
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80104B8
-sub_80104B8: @ 0x080104B8
+	thumb_func_start initSprite_Interactable035
+initSprite_Interactable035: @ 0x080104B8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17412,8 +17412,8 @@ sub_80104B8: @ 0x080104B8
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80104D8
-sub_80104D8: @ 0x080104D8
+	thumb_func_start initSprite_Interactable032
+initSprite_Interactable032: @ 0x080104D8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17430,8 +17430,8 @@ sub_80104D8: @ 0x080104D8
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80104F8
-sub_80104F8: @ 0x080104F8
+	thumb_func_start initSprite_Interactable034
+initSprite_Interactable034: @ 0x080104F8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17448,8 +17448,8 @@ sub_80104F8: @ 0x080104F8
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8010518
-sub_8010518: @ 0x08010518
+	thumb_func_start initSprite_Interactable037
+initSprite_Interactable037: @ 0x08010518
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17466,8 +17466,8 @@ sub_8010518: @ 0x08010518
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8010538
-sub_8010538: @ 0x08010538
+	thumb_func_start initSprite_Interactable039
+initSprite_Interactable039: @ 0x08010538
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17484,8 +17484,8 @@ sub_8010538: @ 0x08010538
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8010558
-sub_8010558: @ 0x08010558
+	thumb_func_start initSprite_Interactable036
+initSprite_Interactable036: @ 0x08010558
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17502,8 +17502,8 @@ sub_8010558: @ 0x08010558
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8010578
-sub_8010578: @ 0x08010578
+	thumb_func_start initSprite_Interactable038
+initSprite_Interactable038: @ 0x08010578
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17651,8 +17651,8 @@ _08010688:
 	.align 2, 0
 _08010694: .4byte gUnknown_03005960
 
-	thumb_func_start sub_8010698
-sub_8010698: @ 0x08010698
+	thumb_func_start initSprite_Interactable044
+initSprite_Interactable044: @ 0x08010698
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -17951,8 +17951,8 @@ _080108E0: .4byte 0xFFF7FDFD
 _080108E4: .4byte 0xFFFFCFFF
 _080108E8: .4byte gUnknown_03005960
 
-	thumb_func_start sub_80108EC
-sub_80108EC: @ 0x080108EC
+	thumb_func_start initSprite_Interactable072
+initSprite_Interactable072: @ 0x080108EC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -17990,8 +17990,8 @@ sub_80108EC: @ 0x080108EC
 _08010930: .4byte sub_80106E8
 _08010934: .4byte 0x00002010
 
-	thumb_func_start sub_8010938
-sub_8010938: @ 0x08010938
+	thumb_func_start initSprite_Interactable073
+initSprite_Interactable073: @ 0x08010938
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -18029,8 +18029,8 @@ sub_8010938: @ 0x08010938
 _0801097C: .4byte sub_80107EC
 _08010980: .4byte 0x00002010
 
-	thumb_func_start sub_8010984
-sub_8010984: @ 0x08010984
+	thumb_func_start initSprite_Interactable013
+initSprite_Interactable013: @ 0x08010984
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -19189,8 +19189,8 @@ _080112D0: .4byte gCurTask
 _080112D4: .4byte gPlayer
 _080112D8: .4byte gUnknown_03005960
 
-	thumb_func_start sub_80112DC
-sub_80112DC: @ 0x080112DC
+	thumb_func_start initSprite_Interactable083
+initSprite_Interactable083: @ 0x080112DC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0

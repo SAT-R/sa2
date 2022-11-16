@@ -22,9 +22,118 @@ gSpritePosData_Enemies:
     .incbin "baserom.gba", 0x000D4D94, 0x88
 
 @; gSpriteFunctions ?
-    .global gUnknown_080D4E1C
-gUnknown_080D4E1C:
-    .incbin "baserom.gba", 0x000D4E1C, 0x1A8
+    .global gSpriteInits_Interactables @ 080D4E1C
+gSpriteInits_Interactables:
+    .4byte initSprite_Interactable000
+    .4byte initSprite_Interactable000
+    .4byte initSprite_Interactable002
+    .4byte initSprite_Interactable_Spring0
+    .4byte initSprite_Interactable_Spring1
+    .4byte initSprite_Interactable_Spring2
+    .4byte initSprite_Interactable_Spring3
+    .4byte initSprite_Interactable_Spring4
+    .4byte initSprite_Interactable_Spring5
+    .4byte initSprite_Interactable_Spring6
+    .4byte initSprite_Interactable_Spring7
+    .4byte initSprite_Interactable_Spring8
+    .4byte initSprite_Interactable_Spring9
+    .4byte initSprite_Interactable013
+    .4byte initSprite_Interactable_YellowFlower
+    .4byte initSprite_Interactable_Ramp
+    .4byte initSprite_Interactable_Booster
+    .4byte initSprite_Interactable017
+    .4byte initSprite_Interactable018
+    .4byte initSprite_Interactable019
+    .4byte initSprite_Interactable_RotatingHandle
+    .4byte initSprite_Interactable021
+    .4byte initSprite_Interactable022
+
+@ Spikes
+    .4byte initSprite_Interactable023
+    .4byte initSprite_Interactable024
+    .4byte initSprite_Interactable025
+    .4byte initSprite_Interactable025
+@ Hiding Spikes
+    .4byte initSprite_Interactable027
+    .4byte initSprite_Interactable028
+
+    .4byte initSprite_Interactable029
+    .4byte initSprite_Interactable030
+    .4byte initSprite_Interactable031
+    .4byte initSprite_Interactable032
+    .4byte initSprite_Interactable033
+    .4byte initSprite_Interactable034
+    .4byte initSprite_Interactable035
+    .4byte initSprite_Interactable036
+    .4byte initSprite_Interactable037
+    .4byte initSprite_Interactable038
+    .4byte initSprite_Interactable039
+    .4byte initSprite_Interactable040
+    .4byte initSprite_Interactable041
+    .4byte initSprite_Interactable042
+    .4byte initSprite_Interactable043
+    .4byte initSprite_Interactable044
+    .4byte initSprite_Interactable045
+    .4byte initSprite_Interactable046
+    .4byte initSprite_Interactable047
+    .4byte initSprite_Interactable048
+    .4byte initSprite_Interactable049
+    .4byte initSprite_Interactable050
+    .4byte initSprite_Interactable051
+    .4byte initSprite_Interactable052
+    .4byte initSprite_Interactable053
+    .4byte initSprite_Interactable054
+    .4byte initSprite_Interactable055
+    .4byte initSprite_Interactable056
+    .4byte initSprite_Interactable057
+    .4byte initSprite_Interactable058
+    .4byte initSprite_Interactable059
+    .4byte initSprite_Interactable060
+    .4byte initSprite_Interactable061
+    .4byte initSprite_Interactable062
+    .4byte initSprite_Interactable063
+    .4byte initSprite_Interactable064
+    .4byte initSprite_Interactable065
+    .4byte initSprite_Interactable066
+    .4byte initSprite_Interactable067
+    .4byte initSprite_Interactable068
+    .4byte initSprite_Interactable069
+    .4byte initSprite_Interactable070
+    .4byte initSprite_Interactable044
+    .4byte initSprite_Interactable072
+    .4byte initSprite_Interactable073
+    .4byte initSprite_Interactable074
+    .4byte initSprite_Interactable075
+    .4byte initSprite_Interactable076
+    .4byte initSprite_Interactable077
+    .4byte initSprite_Interactable078
+    .4byte initSprite_Interactable079
+    .4byte initSprite_Interactable080
+    .4byte initSprite_Interactable081
+    .4byte initSprite_Interactable082
+    .4byte initSprite_Interactable083
+    .4byte initSprite_Interactable084
+    .4byte initSprite_Interactable085
+    .4byte initSprite_Interactable086
+    .4byte initSprite_Interactable087
+    .4byte initSprite_Interactable088
+    .4byte initSprite_Interactable089
+    .4byte initSprite_Interactable090
+    .4byte initSprite_Interactable091
+    .4byte initSprite_Interactable092
+    .4byte initSprite_Interactable093
+    .4byte initSprite_Interactable094
+    .4byte initSprite_Interactable095
+    .4byte initSprite_Interactable096
+    .4byte initSprite_Interactable097
+    .4byte initSprite_Interactable098
+    .4byte initSprite_Interactable099
+    .4byte initSprite_Interactable100
+    .4byte initSprite_Interactable101
+    .4byte initSprite_Interactable102
+    .4byte initSprite_Interactable103
+    .4byte initSprite_Interactable104
+    .4byte initSprite_Interactable105
 
     .global gUnknown_080D4FC4
 gUnknown_080D4FC4:
