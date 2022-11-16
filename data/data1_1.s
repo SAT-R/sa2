@@ -33,11 +33,11 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Spring_Normal_Left
     .4byte initSprite_Interactable_Spring_Big_UpLeft
     .4byte initSprite_Interactable_Spring_Big_UpRight
-    .4byte initSprite_Interactable_Spring6
-    .4byte initSprite_Interactable_Spring7
+    .4byte initSprite_Interactable_Spring_Big_DownRight
+    .4byte initSprite_Interactable_Spring_Big_DownLeft
     .4byte initSprite_Interactable_Spring_Small_UpRight
     .4byte initSprite_Interactable_Spring_Small_UpLeft
-    .4byte initSprite_Interactable013
+    .4byte initSprite_Interactable_CommonThinPlatform
     .4byte initSprite_Interactable_YellowFlower
     .4byte initSprite_Interactable_Ramp
     .4byte initSprite_Interactable_Booster
@@ -60,12 +60,12 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_BouncyBar
     .4byte initSprite_Interactable_GrindRail_Start
     .4byte initSprite_Interactable_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
-    .4byte initSprite_Interactable_GrindRail_End
-    .4byte initSprite_Interactable035
-    .4byte initSprite_Interactable_GrindRail_EndAlt
+    .4byte initSprite_Interactable_GrindRail_EndGround
+    .4byte initSprite_Interactable_GrindRail_End_ForcedJump
+    .4byte initSprite_Interactable_GrindRail_EndAlternate
     .4byte initSprite_Interactable_GrindRail_EndAir
-    .4byte initSprite_Interactable038
-    .4byte initSprite_Interactable039
+    .4byte initSprite_Interactable_GrindRail_EndGround_Left
+    .4byte initSprite_Interactable_GrindRail_EndAir_Left
     .4byte initSprite_Interactable_Corkscrew3D_Start
     .4byte initSprite_Interactable_Corkscrew3D_End
     .4byte initSprite_Interactable_StageGoal
@@ -81,25 +81,25 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable052
     .4byte initSprite_Interactable_HotCrater_Crane
     .4byte initSprite_Interactable_LaunchRing
-    .4byte initSprite_Interactable_HotCrater_Spring_Up
-    .4byte initSprite_Interactable056
-    .4byte initSprite_Interactable057
-    .4byte initSprite_Interactable058
-    .4byte initSprite_Interactable059
-    .4byte initSprite_Interactable060
-    .4byte initSprite_Interactable061
-    .4byte initSprite_Interactable062
-    .4byte initSprite_Interactable063
-    .4byte initSprite_Interactable064
-    .4byte initSprite_Interactable065
-    .4byte initSprite_Interactable066
-    .4byte initSprite_Interactable067
-    .4byte initSprite_Interactable068
+    .4byte initSprite_Interactable_CommonFloatingSpring_Up
+    .4byte initSprite_Interactable_MusicPlant_Note_Sphere
+    .4byte initSprite_Interactable_MusicPlant_Note_Block
+    .4byte initSprite_Interactable_MusicPlant_GuitarString
+    .4byte initSprite_Interactable_MusicPlant_Keyboard_Vertical
+    .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft
+    .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight
+    .4byte initSprite_Interactable_MusicPlant_GermanFlute
+    .4byte initSprite_Interactable_MusicPlant_Trumpet_Entry
+    .4byte initSprite_Interactable_MusicPlant_PipeInstrument_Entry
+    .4byte initSprite_Interactable_IceParadise_SlowingSnow
+    .4byte initSprite_Interactable_IceParadise_FunnelSphere
+    .4byte initSprite_Interactable_IceParadise_HalfPipe_End     @ Like in SA1 Neo Green Hill
+    .4byte initSprite_Interactable_IceParadise_HalfPipe_Start   @ Like in SA1 Neo Green Hill
     .4byte initSprite_Interactable069
     .4byte initSprite_Interactable070
     .4byte initSprite_Interactable044
-    .4byte initSprite_Interactable_HotCrater_ClearPipe_Start
-    .4byte initSprite_Interactable_HotCrater_ClearPipe_End
+    .4byte initSprite_Interactable_Common_ClearPipe_Start
+    .4byte initSprite_Interactable_Common_ClearPipe_End
     .4byte initSprite_Interactable074
     .4byte initSprite_Interactable075
     .4byte initSprite_Interactable076
@@ -108,9 +108,9 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable079
     .4byte initSprite_Interactable080
     .4byte initSprite_Interactable081
-    .4byte initSprite_Interactable082
-    .4byte initSprite_Interactable083
-    .4byte initSprite_Interactable084
+    .4byte initSprite_Interactable_SkyCanyon_GiantPropeller
+    .4byte initSprite_Interactable_IceParadise_SlidyIce
+    .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
     .4byte initSprite_Interactable085
     .4byte initSprite_Interactable086
     .4byte initSprite_Interactable087
@@ -122,7 +122,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable093
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
-    .4byte initSprite_Interactable096
+    .4byte initSprite_Interactable_SkyCanyon_FlyingHandle
     .4byte initSprite_Interactable097
     .4byte initSprite_Interactable098
     .4byte initSprite_Interactable099

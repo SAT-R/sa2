@@ -5080,8 +5080,8 @@ sub_8074C98: @ 0x08074C98
 	.align 2, 0
 _08074CB0: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable_HotCrater_Spring_Up
-initSprite_Interactable_HotCrater_Spring_Up: @ 0x08074CB4
+	thumb_func_start initSprite_Interactable_CommonFloatingSpring_Up
+initSprite_Interactable_CommonFloatingSpring_Up: @ 0x08074CB4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5963,8 +5963,8 @@ sub_8075334: @ 0x08075334
 _08075368: .4byte gCurTask
 _0807536C: .4byte sub_80750A8
 
-	thumb_func_start initSprite_Interactable056
-initSprite_Interactable056: @ 0x08075370
+	thumb_func_start initSprite_Interactable_MusicPlant_Note_Sphere
+initSprite_Interactable_MusicPlant_Note_Sphere: @ 0x08075370
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -6697,8 +6697,8 @@ sub_8075924: @ 0x08075924
 	.align 2, 0
 _08075938: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable057
-initSprite_Interactable057: @ 0x0807593C
+	thumb_func_start initSprite_Interactable_MusicPlant_Note_Block
+initSprite_Interactable_MusicPlant_Note_Block: @ 0x0807593C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -7306,8 +7306,8 @@ sub_8075DE8: @ 0x08075DE8
 	.align 2, 0
 _08075DFC: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable058
-initSprite_Interactable058: @ 0x08075E00
+	thumb_func_start initSprite_Interactable_MusicPlant_GuitarString
+initSprite_Interactable_MusicPlant_GuitarString: @ 0x08075E00
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -8722,8 +8722,8 @@ sub_80768AC: @ 0x080768AC
 	.align 2, 0
 _080768C4: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable059
-initSprite_Interactable059: @ 0x080768C8
+	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Vertical
+initSprite_Interactable_MusicPlant_Keyboard_Vertical: @ 0x080768C8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -8740,8 +8740,8 @@ initSprite_Interactable059: @ 0x080768C8
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable060
-initSprite_Interactable060: @ 0x080768E8
+	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft
+initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft: @ 0x080768E8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -8758,8 +8758,8 @@ initSprite_Interactable060: @ 0x080768E8
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable061
-initSprite_Interactable061: @ 0x08076908
+	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight
+initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight: @ 0x08076908
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -9304,8 +9304,8 @@ _08076D20: .4byte 0xFFBFFFFF
 _08076D24: .4byte gCurTask
 _08076D28: .4byte sub_8076DB0
 
-	thumb_func_start initSprite_Interactable062
-initSprite_Interactable062: @ 0x08076D2C
+	thumb_func_start initSprite_Interactable_MusicPlant_GermanFlute
+initSprite_Interactable_MusicPlant_GermanFlute: @ 0x08076D2C
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}
@@ -10931,8 +10931,8 @@ sub_8077994: @ 0x08077994
 	.align 2, 0
 _080779AC: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable064
-initSprite_Interactable064: @ 0x080779B0
+	thumb_func_start initSprite_Interactable_MusicPlant_PipeInstrument_Entry
+initSprite_Interactable_MusicPlant_PipeInstrument_Entry: @ 0x080779B0
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -11372,8 +11372,8 @@ sub_8077CF8: @ 0x08077CF8
 	.align 2, 0
 _08077D10: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable063
-initSprite_Interactable063: @ 0x08077D14
+	thumb_func_start initSprite_Interactable_MusicPlant_Trumpet_Entry
+initSprite_Interactable_MusicPlant_Trumpet_Entry: @ 0x08077D14
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -11444,8 +11444,8 @@ sub_8077DA0: @ 0x08077DA0
 	bx lr
 	.align 2, 0
 
-	thumb_func_start initSprite_Interactable065
-initSprite_Interactable065: @ 0x08077DA4
+	thumb_func_start initSprite_Interactable_IceParadise_SlowingSnow
+initSprite_Interactable_IceParadise_SlowingSnow: @ 0x08077DA4
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}
@@ -12485,8 +12485,8 @@ sub_8078594: @ 0x08078594
 	.align 2, 0
 _080785AC: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable066
-initSprite_Interactable066: @ 0x080785B0
+	thumb_func_start initSprite_Interactable_IceParadise_FunnelSphere
+initSprite_Interactable_IceParadise_FunnelSphere: @ 0x080785B0
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -13184,8 +13184,8 @@ sub_8078AC4: @ 0x08078AC4
 	.align 2, 0
 _08078AD8: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable067
-initSprite_Interactable067: @ 0x08078ADC
+	thumb_func_start initSprite_Interactable_IceParadise_HalfPipe_End
+initSprite_Interactable_IceParadise_HalfPipe_End: @ 0x08078ADC
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -13202,8 +13202,8 @@ initSprite_Interactable067: @ 0x08078ADC
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable068
-initSprite_Interactable068: @ 0x08078AFC
+	thumb_func_start initSprite_Interactable_IceParadise_HalfPipe_Start
+initSprite_Interactable_IceParadise_HalfPipe_Start: @ 0x08078AFC
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -19384,8 +19384,8 @@ sub_807BA70: @ 0x0807BA70
 _0807BA90: .4byte gCurTask
 _0807BA94: .4byte IWRAM_START + 0x62
 
-	thumb_func_start initSprite_Interactable082
-initSprite_Interactable082: @ 0x0807BA98
+	thumb_func_start initSprite_Interactable_SkyCanyon_GiantPropeller
+initSprite_Interactable_SkyCanyon_GiantPropeller: @ 0x0807BA98
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}
@@ -19451,8 +19451,8 @@ sub_807BB14: @ 0x0807BB14
 	bx lr
 	.align 2, 0
 
-	thumb_func_start initSprite_Interactable084
-initSprite_Interactable084: @ 0x0807BB18
+	thumb_func_start initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
+initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill: @ 0x0807BB18
 	push {r4, r5, r6, lr}
 	mov r6, sl
 	mov r5, sb
@@ -26637,8 +26637,8 @@ sub_807F1B4: @ 0x0807F1B4
 	.align 2, 0
 _0807F1C8: .4byte gCurTask
 
-	thumb_func_start initSprite_Interactable096
-initSprite_Interactable096: @ 0x0807F1CC
+	thumb_func_start initSprite_Interactable_SkyCanyon_FlyingHandle
+initSprite_Interactable_SkyCanyon_FlyingHandle: @ 0x0807F1CC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

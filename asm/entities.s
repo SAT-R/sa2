@@ -13330,8 +13330,8 @@ _0800E568:
 _0800E56C: .4byte gCurrentLevel
 _0800E570: .4byte IWRAM_START + 0x3C
 
-	thumb_func_start initSprite_Interactable_Spring7
-initSprite_Interactable_Spring7: @ 0x0800E574
+	thumb_func_start initSprite_Interactable_Spring_Big_DownLeft
+initSprite_Interactable_Spring_Big_DownLeft: @ 0x0800E574
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -13378,8 +13378,8 @@ initSprite_Interactable_Spring_Normal_Down: @ 0x0800E5A0
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable_Spring6
-initSprite_Interactable_Spring6: @ 0x0800E5CC
+	thumb_func_start initSprite_Interactable_Spring_Big_DownRight
+initSprite_Interactable_Spring_Big_DownRight: @ 0x0800E5CC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -17394,8 +17394,8 @@ initSprite_Interactable_GrindRail_StartAir: @ 0x08010498
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable035
-initSprite_Interactable035: @ 0x080104B8
+	thumb_func_start initSprite_Interactable_GrindRail_End_ForcedJump
+initSprite_Interactable_GrindRail_End_ForcedJump: @ 0x080104B8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17430,8 +17430,8 @@ initSprite_Interactable_GrindRail_Start: @ 0x080104D8
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable_GrindRail_End
-initSprite_Interactable_GrindRail_End: @ 0x080104F8
+	thumb_func_start initSprite_Interactable_GrindRail_EndGround
+initSprite_Interactable_GrindRail_EndGround: @ 0x080104F8
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17466,8 +17466,8 @@ initSprite_Interactable_GrindRail_EndAir: @ 0x08010518
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable039
-initSprite_Interactable039: @ 0x08010538
+	thumb_func_start initSprite_Interactable_GrindRail_EndAir_Left
+initSprite_Interactable_GrindRail_EndAir_Left: @ 0x08010538
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17484,8 +17484,8 @@ initSprite_Interactable039: @ 0x08010538
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable_GrindRail_EndAlt
-initSprite_Interactable_GrindRail_EndAlt: @ 0x08010558
+	thumb_func_start initSprite_Interactable_GrindRail_EndAlternate
+initSprite_Interactable_GrindRail_EndAlternate: @ 0x08010558
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17502,8 +17502,8 @@ initSprite_Interactable_GrindRail_EndAlt: @ 0x08010558
 	pop {r0}
 	bx r0
 
-	thumb_func_start initSprite_Interactable038
-initSprite_Interactable038: @ 0x08010578
+	thumb_func_start initSprite_Interactable_GrindRail_EndGround_Left
+initSprite_Interactable_GrindRail_EndGround_Left: @ 0x08010578
 	push {r4, lr}
 	sub sp, #4
 	lsls r1, r1, #0x10
@@ -17951,8 +17951,8 @@ _080108E0: .4byte 0xFFF7FDFD
 _080108E4: .4byte 0xFFFFCFFF
 _080108E8: .4byte gUnknown_03005960
 
-	thumb_func_start initSprite_Interactable_HotCrater_ClearPipe_Start
-initSprite_Interactable_HotCrater_ClearPipe_Start: @ 0x080108EC
+	thumb_func_start initSprite_Interactable_Common_ClearPipe_Start
+initSprite_Interactable_Common_ClearPipe_Start: @ 0x080108EC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -17990,8 +17990,8 @@ initSprite_Interactable_HotCrater_ClearPipe_Start: @ 0x080108EC
 _08010930: .4byte sub_80106E8
 _08010934: .4byte 0x00002010
 
-	thumb_func_start initSprite_Interactable_HotCrater_ClearPipe_End
-initSprite_Interactable_HotCrater_ClearPipe_End: @ 0x08010938
+	thumb_func_start initSprite_Interactable_Common_ClearPipe_End
+initSprite_Interactable_Common_ClearPipe_End: @ 0x08010938
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
@@ -18029,8 +18029,8 @@ initSprite_Interactable_HotCrater_ClearPipe_End: @ 0x08010938
 _0801097C: .4byte sub_80107EC
 _08010980: .4byte 0x00002010
 
-	thumb_func_start initSprite_Interactable013
-initSprite_Interactable013: @ 0x08010984
+	thumb_func_start initSprite_Interactable_CommonThinPlatform
+initSprite_Interactable_CommonThinPlatform: @ 0x08010984
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -19189,8 +19189,8 @@ _080112D0: .4byte gCurTask
 _080112D4: .4byte gPlayer
 _080112D8: .4byte gUnknown_03005960
 
-	thumb_func_start initSprite_Interactable083
-initSprite_Interactable083: @ 0x080112DC
+	thumb_func_start initSprite_Interactable_IceParadise_SlidyIce
+initSprite_Interactable_IceParadise_SlidyIce: @ 0x080112DC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	adds r6, r0, #0
