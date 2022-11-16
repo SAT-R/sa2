@@ -1416,3 +1416,86 @@ void sub_808F704(void)
         }
     }
 }
+
+void sub_808F824(void)
+{
+    u8 sum = 0;
+    u8 unlockedLevels = 0;
+    u8 i;
+    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+
+#ifndef NON_MATCHING
+    u16 var = unlockedLevels;
+    asm("" ::"r"(&var));
+#endif
+
+    if (scene->unk15C == 1) {
+        if (gLoadedSaveGame->unk15[4] == 0) {
+            gLoadedSaveGame->unk15[4] = 1;
+            WriteSaveGame();
+        }
+
+        for (i = 0; i < NUM_CHARACTERS; i++) {
+            if (gLoadedSaveGame->unk7[i] > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+                unlockedLevels |= 1 << i;
+            }
+        }
+
+        if (unlockedLevels > 0xE && (gLoadedSaveGame->unkC[0] & 0x80)
+            && gLoadedSaveGame->unk1A == 0) {
+            gLoadedSaveGame->unk1A |= 1;
+            WriteSaveGame();
+        }
+
+        if (gSelectedCharacter != CHARACTER_AMY) {
+            if ((gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80)) {
+                gLoadedSaveGame->unk15[gSelectedCharacter] = 1;
+
+                for (i = 0; i < 4; i++) {
+                    if (gLoadedSaveGame->unk15[i] != 0) {
+                        sum++;
+                    }
+                }
+
+                if ((sum == 1 && gLoadedSaveGame->unk14)
+                    || (sum == 2 && gLoadedSaveGame->unk11)
+                    || (sum == 3 && gLoadedSaveGame->unk12)
+                    || (sum >= 4 && gLoadedSaveGame->unk13 >= 0x10)) {
+                    scene->unk161 = 1;
+                    scene->unk164 = 0xB4;
+                } else {
+                    if (sum == 1) {
+                        gLoadedSaveGame->unk14 = 1;
+                    } else if (sum == 2) {
+                        gLoadedSaveGame->unk11 = 1;
+                    } else if (sum == 3) {
+                        gLoadedSaveGame->unk12 = 1;
+                    } else if (sum == 4) {
+                        gLoadedSaveGame->unk13 |= 0x10;
+                    }
+                    WriteSaveGame();
+                    scene->unk161 = 0;
+                    scene->unk164 = 0x69;
+                    scene->unk150.unk8 = 0x3FFF;
+                }
+            } else {
+                scene->unk161 = 0;
+                scene->unk150.unk8 = 0x3FFF;
+                scene->unk164 = 0x69;
+            }
+        } else {
+            scene->unk161 = 1;
+            scene->unk164 = 0xB4;
+        }
+    } else {
+        if (gLoadedSaveGame->unk1B == 0) {
+            gLoadedSaveGame->unk1B = 1;
+            WriteSaveGame();
+        }
+        scene->unk161 = 1;
+        scene->unk164 = 0xB4;
+    }
+
+    scene->unk15D = 3;
+    gCurTask->main = sub_808F544;
+}
