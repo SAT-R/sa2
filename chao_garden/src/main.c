@@ -120,3 +120,17 @@ void sub_0200019c(void)
     REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
     REG_IME = INTR_FLAG_VBLANK;
 }
+
+void SetVBlankIntr(IntrFunc func)
+{
+    IntrFunc toInsert;
+
+    if (func == NULL)
+        toInsert = &IntrDummy;
+    else
+        toInsert = func;
+
+    gIntrTable[1] = toInsert;
+}
+
+void IntrDummy(void) { }

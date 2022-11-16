@@ -20,17 +20,3 @@ struct TCG_SaveSectorData {
 #define TCG_SAVE_SECTOR_COUNT 6
 
 extern struct TCG_SaveSectorData gUnknown_03003B80;
-
-void SetVBlankIntr(IntrFunc func)
-{
-    IntrFunc toInsert;
-
-    if (func == NULL)
-        toInsert = &IntrDummy;
-    else
-        toInsert = func;
-
-    gIntrTable[1] = toInsert;
-}
-
-void IntrDummy(void) { }
