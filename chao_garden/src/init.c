@@ -21,7 +21,7 @@ struct TCG_SaveSectorData {
 
 extern struct TCG_SaveSectorData gUnknown_03003B80;
 
-void sub_02000228(IntrFunc func)
+void SetVBlankIntr(IntrFunc func)
 {
     IntrFunc toInsert;
 

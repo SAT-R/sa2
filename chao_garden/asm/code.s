@@ -2880,7 +2880,7 @@ sub_020018a0: @ 0x020018a0
 	push {lr}
 	bl m4aSoundInit
 	ldr r0, _020018B0 @ =sub_020018B4
-	bl sub_02000228
+	bl SetVBlankIntr
 	pop {r0}
 	bx r0
 	.align 2, 0
