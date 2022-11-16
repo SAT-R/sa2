@@ -224,14 +224,14 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
     }
 
     gameState->unk374 = 0;
-    gameState->unk19 = 0;
+    gameState->unk15[4] = 0;
     gameState->unk1A = 0;
     gameState->unk1B = 0;
 
-    gameState->unk15 = 0;
-    gameState->unk16 = 0;
-    gameState->unk17 = 0;
-    gameState->unk18 = 0;
+    gameState->unk15[0] = 0;
+    gameState->unk15[1] = 0;
+    gameState->unk15[2] = 0;
+    gameState->unk15[3] = 0;
 }
 
 static void InitSaveGameSectorData(struct SaveSectorData *save)
@@ -336,7 +336,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
     }
 
     save->unk1A = 0;
-    if (gameState->unk19) {
+    if (gameState->unk15[4]) {
         save->unk1A |= 1;
     }
     if (gameState->unk1A) {
@@ -345,16 +345,16 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
     if (gameState->unk1B) {
         save->unk1A |= 8;
     }
-    if (gameState->unk15) {
+    if (gameState->unk15[0]) {
         save->unk1A |= 0x10;
     }
-    if (gameState->unk16) {
+    if (gameState->unk15[1]) {
         save->unk1A |= 0x20;
     }
-    if (gameState->unk17) {
+    if (gameState->unk15[2]) {
         save->unk1A |= 0x40;
     }
-    if (gameState->unk18) {
+    if (gameState->unk15[3]) {
         save->unk1A |= 0x80;
     }
 
@@ -640,7 +640,7 @@ static bool16 UnpackSaveSectorData(struct SaveGame *gameState,
     }
 
     if ((save->unk1A & 1)) {
-        gameState->unk19 = 1;
+        gameState->unk15[4] = 1;
     }
     if ((save->unk1A & 6)) {
         gameState->unk1A = (save->unk1A & 6) >> 1;
@@ -649,16 +649,16 @@ static bool16 UnpackSaveSectorData(struct SaveGame *gameState,
         gameState->unk1B = 1;
     }
     if ((save->unk1A & 0x10)) {
-        gameState->unk15 = 1;
+        gameState->unk15[0] = 1;
     }
     if ((save->unk1A & 0x20)) {
-        gameState->unk16 = 1;
+        gameState->unk15[1] = 1;
     }
     if ((save->unk1A & 0x40)) {
-        gameState->unk17 = 1;
+        gameState->unk15[2] = 1;
     }
     if ((save->unk1A & 0x80)) {
-        gameState->unk18 = 1;
+        gameState->unk15[3] = 1;
     }
 
     gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
@@ -852,13 +852,13 @@ static void GenerateCompletedSaveGame(struct SaveGame *gameState)
     gameState->unk12 = TRUE;
     gameState->unk14 = TRUE;
 
-    gameState->unk19 = 1;
+    gameState->unk15[4] = 1;
     gameState->unk1A = 2;
     gameState->unk1B = 1;
-    gameState->unk15 = 1;
-    gameState->unk16 = 1;
-    gameState->unk17 = 1;
-    gameState->unk18 = 1;
+    gameState->unk15[0] = 1;
+    gameState->unk15[1] = 1;
+    gameState->unk15[2] = 1;
+    gameState->unk15[3] = 1;
 }
 
 // Exported functions

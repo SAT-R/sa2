@@ -67,7 +67,7 @@ struct SaveGame {
     u8 unk7[NUM_CHARACTERS];
 
     // chaosEmeralds
-    u8 unkC[5];
+    u8 unkC[NUM_CHARACTERS];
 
     // soundTestUnlocked
     bool8 unk11;
@@ -81,11 +81,7 @@ struct SaveGame {
     // chaoGardenUnlocked
     bool8 unk14;
 
-    u8 unk15;
-    u8 unk16;
-    u8 unk17;
-    u8 unk18;
-    u8 unk19;
+    u8 unk15[NUM_CHARACTERS];
 
     // extraZoneStatus
     u8 unk1A;
