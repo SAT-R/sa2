@@ -25,7 +25,7 @@ void sub_02000228(IntrFunc func)
 {
     IntrFunc toInsert;
 
-    if (!func)
+    if (func == NULL)
         toInsert = &IntrDummy;
     else
         toInsert = func;
