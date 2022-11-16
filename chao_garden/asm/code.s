@@ -4,91 +4,6 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_0200019c
-sub_0200019c: @ 0x0200019c
-	push {r4, lr}
-	ldr r0, _020001E0 @ =IntrMain
-	ldr r4, _020001E4 @ =0x03000000
-	ldr r2, _020001E8 @ =0x04000020
-	adds r1, r4, #0
-	bl CpuSet
-	ldr r0, _020001EC @ =0x03007FFC
-	str r4, [r0]
-	ldr r1, _020001F0 @ =gIntrTable
-	ldr r2, _020001F4 @ =sub_02000244
-	adds r0, r1, #0
-	adds r0, #0xc
-_020001B6:
-	str r2, [r0]
-	subs r0, #4
-	cmp r0, r1
-	bge _020001B6
-	ldr r2, _020001F8 @ =0x04000200
-	movs r0, #1
-	strh r0, [r2]
-	ldr r0, _020001FC @ =0x080000B2
-	ldrb r0, [r0]
-	cmp r0, #0x96
-	bne _02000204
-	ldrh r0, [r2]
-	movs r3, #0x80
-	lsls r3, r3, #6
-	adds r1, r3, #0
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r0, _02000200 @ =gUnknown_03003B70
-	strh r1, [r0]
-	b _0200020A
-	.align 2, 0
-_020001E0: .4byte IntrMain
-_020001E4: .4byte 0x03000000
-_020001E8: .4byte 0x04000020
-_020001EC: .4byte 0x03007FFC
-_020001F0: .4byte gIntrTable
-_020001F4: .4byte sub_02000244
-_020001F8: .4byte 0x04000200
-_020001FC: .4byte 0x080000B2
-_02000200: .4byte gUnknown_03003B70
-_02000204:
-	ldr r1, _0200021C @ =gUnknown_03003B70
-	movs r0, #0
-	strh r0, [r1]
-_0200020A:
-	ldr r1, _02000220 @ =0x04000004
-	movs r0, #8
-	strh r0, [r1]
-	ldr r1, _02000224 @ =0x04000208
-	movs r0, #1
-	strh r0, [r1]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200021C: .4byte gUnknown_03003B70
-_02000220: .4byte 0x04000004
-_02000224: .4byte 0x04000208
-
-	thumb_func_start sub_02000228
-sub_02000228: @ 0x02000228
-	push {lr}
-	adds r1, r0, #0
-	cmp r1, #0
-	bne _02000232
-	ldr r1, _0200023C @ =sub_02000244
-_02000232:
-	ldr r0, _02000240 @ =gIntrTable
-	str r1, [r0, #4]
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0200023C: .4byte sub_02000244
-_02000240: .4byte gIntrTable
-
-	thumb_func_start sub_02000244
-sub_02000244: @ 0x02000244
-	bx lr
-	.align 2, 0
-
 	thumb_func_start sub_02000248
 sub_02000248: @ 0x02000248
 	push {r4, r5, r6, r7, lr}
@@ -96,7 +11,7 @@ sub_02000248: @ 0x02000248
 	mov r6, r8
 	push {r6, r7}
 	bl IdentifyFlash
-	ldr r1, _020002A8 @ =gUnknown_03003B68
+	ldr r1, _020002A8 @ =gIntrTable+2*4
 	movs r0, #2
 	bl SetFlashTimerIntr
 	movs r6, #0
@@ -136,7 +51,7 @@ _0200026C:
 	ldr r6, [r4, #4]
 	b _020002C8
 	.align 2, 0
-_020002A8: .4byte gUnknown_03003B68
+_020002A8: .4byte gIntrTable+2*4
 _020002AC: .4byte gUnknown_03003B80
 _020002B0: .4byte 0x00001965
 _020002B4: .4byte 0x00000858
@@ -2965,7 +2880,7 @@ sub_020018a0: @ 0x020018a0
 	push {lr}
 	bl m4aSoundInit
 	ldr r0, _020018B0 @ =sub_020018B4
-	bl sub_02000228
+	bl SetVBlankIntr
 	pop {r0}
 	bx r0
 	.align 2, 0

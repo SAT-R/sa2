@@ -17,6 +17,13 @@ struct UNK_03003330 {
     u8 unk10;
 };
 
+#define GBA_ROM_HEADER_FIXED_VALUE_ADDR ((vu8 *)(ROM_BASE + 0xB2))
+#define FIXED_HEADER_VALUE              0x96
+
+extern u8 IntrMain_RAM[0x80];
+extern IntrFunc gIntrTable[4];
+extern u16 gUnknown_03003B70;
+
 extern struct GameConfig gUnknown_02000008;
 extern struct UNK_03003330 gUnknown_03003330;
 
@@ -84,3 +91,46 @@ void AgbMain()
         gUnknown_03003330.unkE = 1;
     }
 }
+
+void sub_0200019c(void)
+{
+    IntrFunc *base, *table, dummy;
+
+    // Init IntrMain_RAM
+    CpuCopy32(IntrMain, IntrMain_RAM, sizeof(IntrMain_RAM));
+    INTR_VECTOR = IntrMain_RAM;
+
+    // Init IntrTable
+    base = gIntrTable;
+    dummy = &IntrDummy;
+    table = &base[3];
+    do {
+        *table = dummy;
+    } while ((s32)--table >= (s32)base);
+
+    REG_IE = INTR_FLAG_VBLANK;
+
+    if (*GBA_ROM_HEADER_FIXED_VALUE_ADDR == FIXED_HEADER_VALUE) {
+        REG_IE |= INTR_FLAG_GAMEPAK;
+        gUnknown_03003B70 = INTR_FLAG_GAMEPAK;
+    } else {
+        gUnknown_03003B70 = 0;
+    }
+
+    REG_DISPSTAT = DISPSTAT_VBLANK_INTR;
+    REG_IME = INTR_FLAG_VBLANK;
+}
+
+void SetVBlankIntr(IntrFunc func)
+{
+    IntrFunc toInsert;
+
+    if (func == NULL)
+        toInsert = &IntrDummy;
+    else
+        toInsert = func;
+
+    gIntrTable[1] = toInsert;
+}
+
+void IntrDummy(void) { }
