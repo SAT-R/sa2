@@ -38,10 +38,10 @@ void sub_0200019c(void)
     // Init IntrTable
     base = gIntrTable;
     dummy = &IntrDummy;
-    table = base + 3;
+    table = &base[3];
     do {
         *table = dummy;
-    } while ((signed)--table >= (signed)base);
+    } while ((s32)--table >= (s32)base);
 
     REG_IE = INTR_FLAG_VBLANK;
 
