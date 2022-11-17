@@ -76,25 +76,32 @@ void initSprite_Interactable_Decoration(void *inEntity, u16 regionX, u16 regionY
         deco->unk10 = 0x2000;
     }
 }
-#if 0
-// Task_InteractableDectorationMain
+
 void Task_Interactable_Decoration(void)
 {
-    register Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
+    Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *deco = &decoBase->main;
     Interactable *entity = decoBase->base.entity;
-    s32 screenX, screenY;
-    screenX = SpriteGetScreenPos(decoBase->base.spriteX, decoBase->base.regionX);
-    screenY = SpriteGetScreenPos(entity->y, decoBase->base.regionY);
+    s32 screenX;
+
+#ifndef NON_MATCHING
+    register s32 screenY asm("r2");
+#else
+    s32 screenX;
+#endif
+
+    screenX = (decoBase->base.spriteX) * TILE_WIDTH;
+    screenX += (decoBase->base.regionX) * CAM_REGION_WIDTH;
+    screenY = (entity->y) * TILE_WIDTH;
+    screenY += (decoBase->base.regionY) * CAM_REGION_WIDTH;
 
     screenX -= gCamera.unk0;
     deco->unk16 = screenX;
     screenY -= gCamera.unk4;
     deco->unk18 = screenY;
 
-    if (((u16)(screenX + (CAM_REGION_WIDTH / 2)) > 496)
-        || (((s16)deco->unk18 + (CAM_REGION_WIDTH / 2)) < 0)
-        || ((s16)(screenY) > 288)) {
+    if ((u16)(screenX + (CAM_REGION_WIDTH / 2)) > 496
+        || ((s16)deco->unk18 + (CAM_REGION_WIDTH / 2)) < 0 || (s16)deco->unk18 > 288) {
         entity->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -102,15 +109,12 @@ void Task_Interactable_Decoration(void)
         sub_80051E8(deco);
     }
 }
-#endif
 
 // InteractableDecorationOnDestroy
-#if 0 // matches
 void TaskDestructor_Interactable_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
     VramFree(deco->main.unk4);
 }
-#endif
 
 #undef decoId
