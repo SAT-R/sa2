@@ -40,7 +40,11 @@ SECTIONS
         build/sa2/src/malloc_ewram.o(.text);
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
-        build/sa2/asm/entities.o(.text);
+        build/sa2/asm/entities_0.o(.text);
+        build/sa2/asm/interactables_spring.o(.text);
+        build/sa2/asm/interactables.o(.text);
+        build/sa2/asm/interactables.o(.text);
+        build/sa2/asm/entities_1.o(.text);
         build/sa2/src/init.o(.text);
         build/sa2/asm/game.o(.text);
         build/sa2/src/character_select.o(.text);
