@@ -836,7 +836,7 @@ _08008472:
 	bhi _0800847E
 	b _08008238
 _0800847E:
-	ldr r2, _08008500 @ =gUnknown_03005960
+	ldr r2, _08008500 @ =gCamera
 	ldr r3, [r2, #4]
 	lsls r0, r3, #8
 	lsrs r0, r0, #0x10
@@ -869,7 +869,7 @@ _080084B0:
 	blo _080084B8
 	b _0800884A
 _080084B8:
-	ldr r4, _08008500 @ =gUnknown_03005960
+	ldr r4, _08008500 @ =gCamera
 	ldr r0, [r4]
 	lsls r1, r0, #8
 	lsrs r1, r1, #0x10
@@ -906,7 +906,7 @@ _080084EE:
 	.align 2, 0
 _080084F8: .4byte gUnknown_080D672C
 _080084FC: .4byte gMultiplayerCharacters
-_08008500: .4byte gUnknown_03005960
+_08008500: .4byte gCamera
 _08008504: .4byte gPlayer
 _08008508: .4byte gGameMode
 _0800850C:
@@ -923,7 +923,7 @@ _0800850C:
 	mov r2, sl
 	lsls r0, r2, #8
 	adds r7, r1, r0
-	ldr r3, _08008588 @ =gUnknown_03005960
+	ldr r3, _08008588 @ =gCamera
 	ldr r0, [r3]
 	mov r4, r8
 	subs r0, r4, r0
@@ -972,7 +972,7 @@ _08008582:
 	adds r5, #2
 	b _08008642
 	.align 2, 0
-_08008588: .4byte gUnknown_03005960
+_08008588: .4byte gCamera
 _0800858C: .4byte gPlayer
 _08008590:
 	adds r5, #2
@@ -987,7 +987,7 @@ _08008590:
 _080085A2:
 	movs r0, #0xff
 	strb r0, [r2]
-	ldr r1, _080085C0 @ =gUnknown_03005960
+	ldr r1, _080085C0 @ =gCamera
 	ldr r0, [r1]
 	mov r2, r8
 	subs r0, r2, r0
@@ -1000,7 +1000,7 @@ _080085A2:
 	bl sub_80051E8
 	b _08008638
 	.align 2, 0
-_080085C0: .4byte gUnknown_03005960
+_080085C0: .4byte gCamera
 _080085C4:
 	ldrb r1, [r2]
 	lsls r1, r1, #3
@@ -1039,7 +1039,7 @@ _080085EA:
 	adds r0, r1, #0
 	ands r2, r0
 	strh r2, [r4]
-	ldr r6, _080086AC @ =gUnknown_03005960
+	ldr r6, _080086AC @ =gCamera
 	ldr r0, [r6, #4]
 	subs r0, r7, r0
 	ldr r6, [sp, #0x20]
@@ -1049,7 +1049,7 @@ _080085EA:
 	ands r0, r1
 	adds r2, r2, r0
 	strh r2, [r4]
-	ldr r1, _080086AC @ =gUnknown_03005960
+	ldr r1, _080086AC @ =gCamera
 	ldr r0, [r1]
 	mov r2, r8
 	subs r0, r2, r0
@@ -1079,7 +1079,7 @@ _0800864C:
 	lsrs r0, r0, #0x10
 	mov sb, r0
 	lsls r1, r0, #8
-	ldr r2, _080086AC @ =gUnknown_03005960
+	ldr r2, _080086AC @ =gCamera
 	ldr r0, [r2]
 	adds r0, #0xf0
 	cmp r1, r0
@@ -1103,7 +1103,7 @@ _0800867A:
 	lsrs r0, r0, #0x10
 	mov sl, r0
 	lsls r1, r0, #8
-	ldr r2, _080086AC @ =gUnknown_03005960
+	ldr r2, _080086AC @ =gCamera
 	ldr r0, [r2, #4]
 	adds r0, #0xa0
 	cmp r1, r0
@@ -1121,12 +1121,12 @@ _0800869C: .4byte gUnknown_030022D0
 _080086A0: .4byte iwram_end
 _080086A4: .4byte 0x040000D4
 _080086A8: .4byte 0x80000003
-_080086AC: .4byte gUnknown_03005960
+_080086AC: .4byte gCamera
 _080086B0: .4byte 0x000001FF
 _080086B4:
 	mov r4, sl
 	lsls r1, r4, #8
-	ldr r6, _08008708 @ =gUnknown_03005960
+	ldr r6, _08008708 @ =gCamera
 	ldr r0, [r6, #4]
 	adds r0, #0xa0
 	cmp r1, r0
@@ -1138,7 +1138,7 @@ _080086C4:
 	blo _080086CC
 	b _0800884A
 _080086CC:
-	ldr r1, _08008708 @ =gUnknown_03005960
+	ldr r1, _08008708 @ =gCamera
 	ldr r0, [r1]
 	lsls r1, r0, #8
 	lsrs r1, r1, #0x10
@@ -1172,7 +1172,7 @@ _08008702:
 	adds r5, r6, r0
 	b _08008804
 	.align 2, 0
-_08008708: .4byte gUnknown_03005960
+_08008708: .4byte gCamera
 _0800870C:
 	cmp r1, #0xfe
 	beq _08008746
@@ -1187,7 +1187,7 @@ _0800870C:
 	mov r3, sl
 	lsls r0, r3, #8
 	adds r7, r1, r0
-	ldr r4, _0800874C @ =gUnknown_03005960
+	ldr r4, _0800874C @ =gCamera
 	ldr r0, [r4]
 	mov r6, r8
 	subs r0, r6, r0
@@ -1207,7 +1207,7 @@ _08008746:
 	adds r5, #2
 	b _08008804
 	.align 2, 0
-_0800874C: .4byte gUnknown_03005960
+_0800874C: .4byte gCamera
 _08008750:
 	adds r5, #2
 	ldr r2, [sp, #0x18]
@@ -1222,7 +1222,7 @@ _08008750:
 _08008764:
 	movs r0, #0xff
 	strb r0, [r2]
-	ldr r1, _08008784 @ =gUnknown_03005960
+	ldr r1, _08008784 @ =gCamera
 	ldr r0, [r1]
 	mov r2, r8
 	subs r0, r2, r0
@@ -1235,7 +1235,7 @@ _08008764:
 	bl sub_80051E8
 	b _080087FA
 	.align 2, 0
-_08008784: .4byte gUnknown_03005960
+_08008784: .4byte gCamera
 _08008788:
 	ldrb r1, [r1]
 	lsls r1, r1, #3
@@ -1272,7 +1272,7 @@ _08008788:
 	adds r0, r1, #0
 	ands r2, r0
 	strh r2, [r4]
-	ldr r6, _0800886C @ =gUnknown_03005960
+	ldr r6, _0800886C @ =gCamera
 	ldr r0, [r6, #4]
 	subs r0, r7, r0
 	ldr r6, [sp, #0x20]
@@ -1282,7 +1282,7 @@ _08008788:
 	ands r0, r1
 	adds r2, r2, r0
 	strh r2, [r4]
-	ldr r1, _0800886C @ =gUnknown_03005960
+	ldr r1, _0800886C @ =gCamera
 	ldr r0, [r1]
 	mov r2, r8
 	subs r0, r2, r0
@@ -1312,7 +1312,7 @@ _0800880E:
 	lsrs r0, r0, #0x10
 	mov sb, r0
 	lsls r1, r0, #8
-	ldr r2, _0800886C @ =gUnknown_03005960
+	ldr r2, _0800886C @ =gCamera
 	ldr r0, [r2]
 	adds r0, #0xf0
 	cmp r1, r0
@@ -1328,7 +1328,7 @@ _0800882C:
 	lsrs r0, r0, #0x10
 	mov sl, r0
 	lsls r1, r0, #8
-	ldr r4, _0800886C @ =gUnknown_03005960
+	ldr r4, _0800886C @ =gCamera
 	ldr r0, [r4, #4]
 	adds r0, #0xa0
 	cmp r1, r0
@@ -1351,7 +1351,7 @@ _0800885C: .4byte gUnknown_030022D0
 _08008860: .4byte iwram_end
 _08008864: .4byte 0x040000D4
 _08008868: .4byte 0x80000003
-_0800886C: .4byte gUnknown_03005960
+_0800886C: .4byte gCamera
 _08008870: .4byte 0x000001FF
 
 	thumb_func_start sub_8008874
@@ -1490,7 +1490,7 @@ _0800898C:
 	bl RLUnCompWram
 	str r6, [r7]
 _0800899A:
-	ldr r1, _080089C4 @ =gUnknown_03005960
+	ldr r1, _080089C4 @ =gCamera
 	ldr r0, [r1]
 	str r0, [r7, #0xc]
 	ldr r0, [r1, #4]
@@ -1509,7 +1509,7 @@ _0800899A:
 	.align 2, 0
 _080089BC: .4byte EWRAM_START + 0x3F000
 _080089C0: .4byte EWRAM_START + 0x3300C
-_080089C4: .4byte gUnknown_03005960
+_080089C4: .4byte gCamera
 _080089C8: .4byte gUnknown_030054DC
 
 	thumb_func_start sub_80089CC
@@ -1561,7 +1561,7 @@ _08008A10:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x14]
-	ldr r1, _08008CC8 @ =gUnknown_03005960
+	ldr r1, _08008CC8 @ =gCamera
 	ldr r0, [r1]
 	adds r2, r0, #0
 	subs r2, #0x80
@@ -1917,7 +1917,7 @@ _08008CA4:
 _08008CBC: .4byte gUnknown_03005424
 _08008CC0: .4byte gCurTask
 _08008CC4: .4byte gGameMode
-_08008CC8: .4byte gUnknown_03005960
+_08008CC8: .4byte gCamera
 _08008CCC: .4byte gSpriteInits_Interactables
 _08008CD0: .4byte gUnknown_080D4FC4
 _08008CD4:
@@ -2021,7 +2021,7 @@ _08008D82:
 	bhs _08008D94
 	b _08008AAE
 _08008D94:
-	ldr r1, _08008DC0 @ =gUnknown_03005960
+	ldr r1, _08008DC0 @ =gCamera
 	ldr r0, [r1]
 	ldr r3, [sp, #0x18]
 	str r0, [r3, #0xc]
@@ -2044,7 +2044,7 @@ _08008DAC:
 	bx r0
 	.align 2, 0
 _08008DBC: .4byte gUnknown_080D502C
-_08008DC0: .4byte gUnknown_03005960
+_08008DC0: .4byte gCamera
 _08008DC4: .4byte gCurTask
 _08008DC8: .4byte sub_8008DCC
 
@@ -2074,7 +2074,7 @@ _08008DE6:
 	ldrb r0, [r1, #0x14]
 	cmp r0, #0
 	bne _08008E9E
-	ldr r1, _08008E1C @ =gUnknown_03005960
+	ldr r1, _08008E1C @ =gCamera
 	ldr r3, [r1]
 	ldr r2, [sp, #0x28]
 	ldr r0, [r2, #0xc]
@@ -2089,7 +2089,7 @@ _08008DE6:
 	.align 2, 0
 _08008E14: .4byte gUnknown_03005424
 _08008E18: .4byte gCurTask
-_08008E1C: .4byte gUnknown_03005960
+_08008E1C: .4byte gCamera
 _08008E20:
 	subs r0, r1, r3
 	cmp r0, #0xf8
@@ -2670,7 +2670,7 @@ _08009236:
 	bhs _08009248
 	b _08008FB4
 _08009248:
-	ldr r0, _08009280 @ =gUnknown_03005960
+	ldr r0, _08009280 @ =gCamera
 	ldr r1, [r0, #4]
 	ldr r5, [sp, #0x28]
 	ldr r0, [r5, #0x10]
@@ -2701,7 +2701,7 @@ _08009278:
 	b _08009504
 	.align 2, 0
 _0800927C: .4byte gUnknown_080D502C
-_08009280: .4byte gUnknown_03005960
+_08009280: .4byte gCamera
 _08009284:
 	ldr r0, [sp, #0x10]
 	lsls r0, r0, #8
@@ -3043,7 +3043,7 @@ _08009504:
 	bhs _0800950C
 	b _08009284
 _0800950C:
-	ldr r0, _0800952C @ =gUnknown_03005960
+	ldr r0, _0800952C @ =gCamera
 	ldr r1, [r0]
 	ldr r2, [sp, #0x28]
 	str r1, [r2, #0xc]
@@ -3060,7 +3060,7 @@ _08009518:
 	bx r0
 	.align 2, 0
 _08009528: .4byte gUnknown_080D502C
-_0800952C: .4byte gUnknown_03005960
+_0800952C: .4byte gCamera
 
 	thumb_func_start sub_8009530
 sub_8009530: @ 0x08009530
@@ -4274,7 +4274,7 @@ sub_8009EB0: @ 0x08009EB0
 	ldrh r2, [r4, #0x30]
 	adds r2, #1
 	strh r2, [r4, #0x30]
-	ldr r3, _08009F04 @ =gUnknown_03005960
+	ldr r3, _08009F04 @ =gCamera
 	ldr r1, [r3]
 	ldrh r0, [r4, #0x16]
 	subs r0, r0, r1
@@ -4303,7 +4303,7 @@ sub_8009EB0: @ 0x08009EB0
 	b _08009F16
 	.align 2, 0
 _08009F00: .4byte gCurTask
-_08009F04: .4byte gUnknown_03005960
+_08009F04: .4byte gCamera
 _08009F08: .4byte sub_8009F1C
 _08009F0C:
 	adds r0, r4, #0
@@ -4326,7 +4326,7 @@ sub_8009F1C: @ 0x08009F1C
 	adds r4, r1, r0
 	ldrh r5, [r4, #0x16]
 	ldrh r6, [r4, #0x18]
-	ldr r2, _08009F58 @ =gUnknown_03005960
+	ldr r2, _08009F58 @ =gCamera
 	ldr r0, [r2]
 	subs r0, r5, r0
 	strh r0, [r4, #0x16]
@@ -4346,7 +4346,7 @@ sub_8009F1C: @ 0x08009F1C
 	b _08009F7A
 	.align 2, 0
 _08009F54: .4byte gCurTask
-_08009F58: .4byte gUnknown_03005960
+_08009F58: .4byte gCamera
 _08009F5C:
 	ldr r1, [r2]
 	lsls r0, r5, #0x10
@@ -5155,7 +5155,7 @@ sub_800A5F8: @ 0x0800A5F8
 	adds r1, r1, r2
 	str r1, [r5, #0x34]
 	asrs r0, r0, #8
-	ldr r3, _0800A680 @ =gUnknown_03005960
+	ldr r3, _0800A680 @ =gCamera
 	ldr r2, [r3]
 	subs r0, r0, r2
 	strh r0, [r5, #0x16]
@@ -5196,7 +5196,7 @@ _0800A672:
 	b _0800A68E
 	.align 2, 0
 _0800A67C: .4byte gCurTask
-_0800A680: .4byte gUnknown_03005960
+_0800A680: .4byte gCamera
 _0800A684: .4byte IWRAM_START + 0x40
 _0800A688:
 	adds r0, r5, #0
@@ -6322,7 +6322,7 @@ sub_800AFD0: @ 0x0800AFD0
 	ldrh r0, [r4, #0x16]
 	adds r6, r0, #0
 	ldrh r7, [r4, #0x18]
-	ldr r1, _0800B034 @ =gUnknown_03005960
+	ldr r1, _0800B034 @ =gCamera
 	ldr r0, [r1]
 	subs r0, r6, r0
 	strh r0, [r4, #0x16]
@@ -6355,7 +6355,7 @@ _0800B01C:
 	bx r0
 	.align 2, 0
 _0800B030: .4byte gCurTask
-_0800B034: .4byte gUnknown_03005960
+_0800B034: .4byte gCamera
 _0800B038: .4byte gUnknown_0300540C
 
 	thumb_func_start sub_800B03C
@@ -7371,7 +7371,7 @@ sub_800B860: @ 0x0800B860
 	push {r4, lr}
 	adds r4, r0, #0
 	ldr r3, [r4, #0x6c]
-	ldr r2, _0800B8A8 @ =gUnknown_03005960
+	ldr r2, _0800B8A8 @ =gCamera
 	ldr r0, [r2]
 	subs r3, r3, r0
 	strh r3, [r4, #0x22]
@@ -7404,13 +7404,13 @@ _0800B89A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800B8A8: .4byte gUnknown_03005960
+_0800B8A8: .4byte gCamera
 
 	thumb_func_start sub_800B8AC
 sub_800B8AC: @ 0x0800B8AC
 	push {lr}
 	ldr r1, [r0, #0x6c]
-	ldr r3, _0800B8E8 @ =gUnknown_03005960
+	ldr r3, _0800B8E8 @ =gCamera
 	ldr r2, [r3]
 	subs r1, r1, r2
 	ldr r0, [r0, #0x70]
@@ -7440,7 +7440,7 @@ _0800B8E4:
 	movs r0, #1
 	b _0800B8EE
 	.align 2, 0
-_0800B8E8: .4byte gUnknown_03005960
+_0800B8E8: .4byte gCamera
 _0800B8EC:
 	movs r0, #0
 _0800B8EE:
@@ -7642,7 +7642,7 @@ sub_800BA58: @ 0x0800BA58
 	ldrh r0, [r4, #0x16]
 	adds r5, r0, #0
 	ldrh r6, [r4, #0x18]
-	ldr r1, _0800BAA8 @ =gUnknown_03005960
+	ldr r1, _0800BAA8 @ =gCamera
 	ldr r0, [r1]
 	subs r0, r5, r0
 	strh r0, [r4, #0x16]
@@ -7668,7 +7668,7 @@ _0800BA92:
 	bx r0
 	.align 2, 0
 _0800BAA4: .4byte gCurTask
-_0800BAA8: .4byte gUnknown_03005960
+_0800BAA8: .4byte gCamera
 
 	thumb_func_start sub_800BAAC
 sub_800BAAC: @ 0x0800BAAC
@@ -7941,7 +7941,7 @@ _0800BCCC: .4byte gGameMode
 _0800BCD0: .4byte gUnknown_03005448
 _0800BCD4: .4byte gUnknown_030054A8
 _0800BCD8:
-	ldr r2, _0800BD0C @ =gUnknown_03005960
+	ldr r2, _0800BD0C @ =gCamera
 	ldr r1, [r2]
 	ldrh r0, [r5, #0x16]
 	subs r0, r0, r1
@@ -7967,7 +7967,7 @@ _0800BCFE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800BD0C: .4byte gUnknown_03005960
+_0800BD0C: .4byte gCamera
 
 	thumb_func_start sub_800BD10
 sub_800BD10: @ 0x0800BD10
@@ -9892,7 +9892,7 @@ _0800CB58:
 	ldrh r0, [r2, #0x12]
 	rsbs r0, r0, #0
 	strh r0, [r2, #0x12]
-	ldr r0, _0800CB7C @ =gUnknown_03005960
+	ldr r0, _0800CB7C @ =gCamera
 	ldr r0, [r0, #0x38]
 	lsls r0, r0, #8
 	subs r1, r1, r0
@@ -9901,7 +9901,7 @@ _0800CB58:
 	.align 2, 0
 _0800CB74: .4byte gCurrentLevel
 _0800CB78: .4byte gUnknown_030054B0
-_0800CB7C: .4byte gUnknown_03005960
+_0800CB7C: .4byte gCamera
 _0800CB80:
 	ldrh r1, [r2, #0x12]
 	movs r3, #0x12
@@ -10183,7 +10183,7 @@ _0800CD90:
 	cmp r1, #0x1d
 	bne _0800CDA0
 _0800CD94:
-	ldr r0, _0800CDB8 @ =gUnknown_03005960
+	ldr r0, _0800CDB8 @ =gCamera
 	ldr r1, [r0, #0x38]
 	lsls r1, r1, #8
 	ldrh r0, [r5, #0x14]
@@ -10202,7 +10202,7 @@ _0800CDA2:
 	.align 2, 0
 _0800CDB0: .4byte gCurrentLevel
 _0800CDB4: .4byte gUnknown_030054B0
-_0800CDB8: .4byte gUnknown_03005960
+_0800CDB8: .4byte gCamera
 
 	thumb_func_start sub_800CDBC
 sub_800CDBC: @ 0x0800CDBC
@@ -10298,7 +10298,7 @@ _0800CE68:
 	cmp r1, #0x1d
 	bne _0800CE78
 _0800CE6C:
-	ldr r0, _0800CE90 @ =gUnknown_03005960
+	ldr r0, _0800CE90 @ =gCamera
 	ldr r1, [r0, #0x38]
 	lsls r1, r1, #8
 	ldrh r0, [r5, #0x14]
@@ -10316,7 +10316,7 @@ _0800CE7A:
 	.align 2, 0
 _0800CE88: .4byte gCurrentLevel
 _0800CE8C: .4byte gUnknown_030054B0
-_0800CE90: .4byte gUnknown_03005960
+_0800CE90: .4byte gCamera
 
 	thumb_func_start sub_800CE94
 sub_800CE94: @ 0x0800CE94
@@ -13229,7 +13229,7 @@ sub_800E490: @ 0x0800E490
 	ldrh r0, [r4, #6]
 	lsls r0, r0, #8
 	adds r1, r1, r0
-	ldr r3, _0800E51C @ =gUnknown_03005960
+	ldr r3, _0800E51C @ =gCamera
 	ldr r0, [r3]
 	lsls r2, r2, #0x10
 	asrs r7, r2, #0x10
@@ -13283,7 +13283,7 @@ sub_800E490: @ 0x0800E490
 	bl m4aSongNumStart
 	b _0800E532
 	.align 2, 0
-_0800E51C: .4byte gUnknown_03005960
+_0800E51C: .4byte gCamera
 _0800E520: .4byte gUnknown_080D53D0
 _0800E524: .4byte gCurrentLevel
 _0800E528: .4byte gUnknown_080D53DA
@@ -13848,7 +13848,7 @@ _0800E944:
 	lsls r0, r0, #8
 	adds r2, r2, r0
 	lsls r2, r2, #0x10
-	ldr r3, _0800E9DC @ =gUnknown_03005960
+	ldr r3, _0800E9DC @ =gCamera
 	ldr r0, [r3]
 	lsrs r4, r1, #0x10
 	asrs r1, r1, #0x10
@@ -13903,7 +13903,7 @@ _0800E9CC: .4byte gSineTable
 _0800E9D0: .4byte gUnknown_03005590
 _0800E9D4: .4byte 0x000003FF
 _0800E9D8: .4byte IWRAM_START + 0x4A
-_0800E9DC: .4byte gUnknown_03005960
+_0800E9DC: .4byte gCamera
 _0800E9E0: .4byte gUnknown_03005424
 _0800E9E4:
 	mov r2, sb
@@ -13947,7 +13947,7 @@ _0800E9F0:
 	str r0, [r2, #0xc]
 _0800EA32:
 	asrs r0, r4, #0x10
-	ldr r2, _0800EA70 @ =gUnknown_03005960
+	ldr r2, _0800EA70 @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	adds r0, #0x80
@@ -13977,7 +13977,7 @@ _0800EA5C:
 	b _0800EB12
 	.align 2, 0
 _0800EA6C: .4byte 0xFFFFFE00
-_0800EA70: .4byte gUnknown_03005960
+_0800EA70: .4byte gCamera
 _0800EA74: .4byte gCurTask
 _0800EA78:
 	ldr r2, _0800EAAC @ =gPlayer
@@ -14250,7 +14250,7 @@ _0800EC84:
 	lsls r0, r0, #8
 	adds r2, r2, r0
 	lsls r2, r2, #0x10
-	ldr r3, _0800ED78 @ =gUnknown_03005960
+	ldr r3, _0800ED78 @ =gCamera
 	ldr r0, [r3]
 	lsrs r5, r1, #0x10
 	mov sb, r5
@@ -14305,7 +14305,7 @@ _0800ED02:
 	mov r5, sb
 	lsls r0, r5, #0x10
 	asrs r1, r0, #0x10
-	ldr r3, _0800ED78 @ =gUnknown_03005960
+	ldr r3, _0800ED78 @ =gCamera
 	ldr r2, [r3]
 	movs r5, #0xb8
 	lsls r5, r5, #1
@@ -14359,7 +14359,7 @@ _0800ED5C:
 _0800ED6C: .4byte gCurTask
 _0800ED70: .4byte IWRAM_START + 0xC
 _0800ED74: .4byte gGameMode
-_0800ED78: .4byte gUnknown_03005960
+_0800ED78: .4byte gCamera
 _0800ED7C: .4byte gPlayer
 _0800ED80: .4byte sub_800EDF8
 _0800ED84: .4byte sub_800EFD0
@@ -14458,7 +14458,7 @@ _0800EE24:
 	lsls r0, r0, #8
 	adds r2, r2, r0
 	lsls r2, r2, #0x10
-	ldr r3, _0800EEA4 @ =gUnknown_03005960
+	ldr r3, _0800EEA4 @ =gCamera
 	ldr r0, [r3]
 	lsrs r5, r1, #0x10
 	mov sb, r5
@@ -14508,7 +14508,7 @@ _0800EE76:
 _0800EE98: .4byte gCurTask
 _0800EE9C: .4byte IWRAM_START + 0xC
 _0800EEA0: .4byte gGameMode
-_0800EEA4: .4byte gUnknown_03005960
+_0800EEA4: .4byte gCamera
 _0800EEA8: .4byte gPlayer
 _0800EEAC: .4byte sub_800EFD0
 _0800EEB0:
@@ -14542,7 +14542,7 @@ _0800EEE6:
 	mov r1, sb
 	lsls r0, r1, #0x10
 	asrs r1, r0, #0x10
-	ldr r3, _0800EF5C @ =gUnknown_03005960
+	ldr r3, _0800EF5C @ =gCamera
 	ldr r2, [r3]
 	movs r5, #0xb8
 	lsls r5, r5, #1
@@ -14596,7 +14596,7 @@ _0800EF40:
 _0800EF50: .4byte gCurTask
 _0800EF54: .4byte sub_800EFD0
 _0800EF58: .4byte gGameMode
-_0800EF5C: .4byte gUnknown_03005960
+_0800EF5C: .4byte gCamera
 _0800EF60:
 	ldr r2, _0800EF88 @ =gPlayer
 	ldr r0, [r2, #0x20]
@@ -14702,7 +14702,7 @@ _0800EFF8:
 	adds r0, r0, r1
 	lsls r0, r0, #0x10
 	lsrs r3, r0, #0x10
-	ldr r1, _0800F054 @ =gUnknown_03005960
+	ldr r1, _0800F054 @ =gCamera
 	ldr r0, [r1]
 	lsrs r4, r2, #0x10
 	mov ip, r4
@@ -14722,7 +14722,7 @@ _0800EFF8:
 _0800F048: .4byte gCurTask
 _0800F04C: .4byte gGameMode
 _0800F050: .4byte IWRAM_START + 0x4A
-_0800F054: .4byte gUnknown_03005960
+_0800F054: .4byte gCamera
 _0800F058:
 	ldr r0, [r1, #4]
 	lsls r2, r3, #0x10
@@ -15263,7 +15263,7 @@ _0800F450:
 	ldrb r0, [r5]
 	cmp r0, #2
 	bls _0800F4CC
-	ldr r2, _0800F4C8 @ =gUnknown_03005960
+	ldr r2, _0800F4C8 @ =gCamera
 	ldr r0, [r2]
 	lsls r3, r3, #0x10
 	asrs r1, r3, #0x10
@@ -15294,9 +15294,9 @@ _0800F4B8: .4byte gSineTable
 _0800F4BC: .4byte gUnknown_03005590
 _0800F4C0: .4byte 0x000003FF
 _0800F4C4: .4byte IWRAM_START + 0x4A
-_0800F4C8: .4byte gUnknown_03005960
+_0800F4C8: .4byte gCamera
 _0800F4CC:
-	ldr r2, _0800F52C @ =gUnknown_03005960
+	ldr r2, _0800F52C @ =gCamera
 	ldr r0, [r2]
 	lsls r3, r3, #0x10
 	asrs r1, r3, #0x10
@@ -15348,7 +15348,7 @@ _0800F50A:
 	adds r0, r0, r3
 	b _0800F53E
 	.align 2, 0
-_0800F52C: .4byte gUnknown_03005960
+_0800F52C: .4byte gCamera
 _0800F530: .4byte gUnknown_03005424
 _0800F534:
 	ldr r0, [r6, #0xc]
@@ -15841,7 +15841,7 @@ _0800F8F6:
 _0800F8FE:
 	ldr r2, [sp, #0x14]
 	asrs r0, r2, #0x10
-	ldr r2, _0800F944 @ =gUnknown_03005960
+	ldr r2, _0800F944 @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	adds r0, #0x80
@@ -15873,7 +15873,7 @@ _0800F92A:
 	.align 2, 0
 _0800F93C: .4byte sub_801EC3C
 _0800F940: .4byte sub_801EB44
-_0800F944: .4byte gUnknown_03005960
+_0800F944: .4byte gCamera
 _0800F948: .4byte gCurTask
 _0800F94C:
 	mov r0, sl
@@ -16127,7 +16127,7 @@ sub_800FAF4: @ 0x0800FAF4
 	lsls r0, r0, #8
 	adds r1, r1, r0
 	lsls r1, r1, #0x10
-	ldr r3, _0800FBF0 @ =gUnknown_03005960
+	ldr r3, _0800FBF0 @ =gCamera
 	ldr r0, [r3]
 	lsrs r4, r2, #0x10
 	str r4, [sp, #4]
@@ -16223,7 +16223,7 @@ _0800FBCA:
 _0800FBE4: .4byte gPlayer
 _0800FBE8: .4byte gCurTask
 _0800FBEC: .4byte IWRAM_START + 0xC
-_0800FBF0: .4byte gUnknown_03005960
+_0800FBF0: .4byte gCamera
 _0800FBF4:
 	movs r0, #2
 	mov sl, r0
@@ -16476,7 +16476,7 @@ _0800FDC2:
 	ldr r1, [sp, #4]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
-	ldr r2, _0800FE04 @ =gUnknown_03005960
+	ldr r2, _0800FE04 @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	adds r0, #0x80
@@ -16507,7 +16507,7 @@ _0800FDF2:
 	bl TaskDestroy
 	b _0800FE12
 	.align 2, 0
-_0800FE04: .4byte gUnknown_03005960
+_0800FE04: .4byte gCamera
 _0800FE08: .4byte gCurTask
 _0800FE0C:
 	mov r0, r8
@@ -16894,7 +16894,7 @@ _080100CE:
 	ands r0, r2
 	strb r0, [r1]
 _080100D6:
-	ldr r2, _08010140 @ =gUnknown_03005960
+	ldr r2, _08010140 @ =gCamera
 	ldr r0, [r2]
 	ldr r3, [sp]
 	lsls r1, r3, #0x10
@@ -16947,7 +16947,7 @@ _08010128:
 	.align 2, 0
 _08010138: .4byte gCurTask
 _0801013C: .4byte IWRAM_START + 0x9
-_08010140: .4byte gUnknown_03005960
+_08010140: .4byte gCamera
 
 	thumb_func_start sub_8010144
 sub_8010144: @ 0x08010144
@@ -17147,7 +17147,7 @@ _080102C0:
 _080102C6:
 	strb r0, [r1]
 _080102C8:
-	ldr r2, _0801032C @ =gUnknown_03005960
+	ldr r2, _0801032C @ =gCamera
 	ldr r0, [r2]
 	mov r3, sl
 	lsls r1, r3, #0x10
@@ -17198,7 +17198,7 @@ _0801031A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801032C: .4byte gUnknown_03005960
+_0801032C: .4byte gCamera
 _08010330: .4byte gCurTask
 
 	thumb_func_start sub_8010334
@@ -17616,7 +17616,7 @@ _08010650:
 	movs r0, #0
 	strb r0, [r4, #9]
 _08010654:
-	ldr r1, _08010694 @ =gUnknown_03005960
+	ldr r1, _08010694 @ =gCamera
 	ldr r0, [r1]
 	mov r6, ip
 	subs r6, r6, r0
@@ -17649,7 +17649,7 @@ _08010688:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08010694: .4byte gUnknown_03005960
+_08010694: .4byte gCamera
 
 	thumb_func_start initSprite_Interactable044
 initSprite_Interactable044: @ 0x08010698
@@ -17782,7 +17782,7 @@ sub_80106E8: @ 0x080106E8
 	lsls r1, r1, #1
 	bl m4aMPlayTempoControl
 _0801079A:
-	ldr r1, _080107E8 @ =gUnknown_03005960
+	ldr r1, _080107E8 @ =gCamera
 	ldr r0, [r1]
 	subs r6, r6, r0
 	ldr r0, [r1, #4]
@@ -17819,7 +17819,7 @@ _080107CE:
 _080107DC: .4byte gCurTask
 _080107E0: .4byte gPlayer
 _080107E4: .4byte gMPlayInfo_BGM
-_080107E8: .4byte gUnknown_03005960
+_080107E8: .4byte gCamera
 
 	thumb_func_start sub_80107EC
 sub_80107EC: @ 0x080107EC
@@ -17913,7 +17913,7 @@ _08010884:
 _08010898:
 	bl sub_802A004
 _0801089C:
-	ldr r1, _080108E8 @ =gUnknown_03005960
+	ldr r1, _080108E8 @ =gCamera
 	ldr r0, [r1]
 	subs r5, r5, r0
 	ldr r0, [r1, #4]
@@ -17949,7 +17949,7 @@ _080108D8: .4byte gCurTask
 _080108DC: .4byte gPlayer
 _080108E0: .4byte 0xFFF7FDFD
 _080108E4: .4byte 0xFFFFCFFF
-_080108E8: .4byte gUnknown_03005960
+_080108E8: .4byte gCamera
 
 	thumb_func_start initSprite_Interactable_Common_ClearPipe_Start
 initSprite_Interactable_Common_ClearPipe_Start: @ 0x080108EC
@@ -18209,7 +18209,7 @@ sub_8010AB4: @ 0x08010AB4
 	lsls r0, r0, #8
 	adds r1, r1, r0
 	lsls r1, r1, #0x10
-	ldr r3, _08010B64 @ =gUnknown_03005960
+	ldr r3, _08010B64 @ =gCamera
 	ldr r0, [r3]
 	lsrs r4, r2, #0x10
 	str r4, [sp, #0xc]
@@ -18261,7 +18261,7 @@ _08010B48:
 _08010B58: .4byte gPlayer
 _08010B5C: .4byte gCurTask
 _08010B60: .4byte IWRAM_START + 0xC
-_08010B64: .4byte gUnknown_03005960
+_08010B64: .4byte gCamera
 _08010B68: .4byte gGameMode
 _08010B6C:
 	ldr r7, [r6, #0x20]
@@ -18436,7 +18436,7 @@ _08010CB8:
 	ldr r4, [sp, #0xc]
 	lsls r0, r4, #0x10
 	asrs r0, r0, #0x10
-	ldr r2, _08010CFC @ =gUnknown_03005960
+	ldr r2, _08010CFC @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	adds r0, #0x80
@@ -18468,7 +18468,7 @@ _08010CF0:
 	bl TaskDestroy
 	b _08010D0A
 	.align 2, 0
-_08010CFC: .4byte gUnknown_03005960
+_08010CFC: .4byte gCamera
 _08010D00: .4byte gCurTask
 _08010D04:
 	ldr r0, [sp]
@@ -18811,7 +18811,7 @@ _08010FB8:
 	ldrh r5, [r6, #6]
 	ldrh r3, [r6, #8]
 	mov sb, r3
-	ldr r1, _080111A0 @ =gUnknown_03005960
+	ldr r1, _080111A0 @ =gCamera
 	ldr r2, [r1]
 	subs r2, r5, r2
 	strh r2, [r6, #6]
@@ -18876,7 +18876,7 @@ _08011006:
 	ldrh r5, [r6, #6]
 	ldrh r3, [r6, #8]
 	mov sb, r3
-	ldr r1, _080111A0 @ =gUnknown_03005960
+	ldr r1, _080111A0 @ =gCamera
 	ldr r2, [r1]
 	subs r2, r5, r2
 	strh r2, [r6, #6]
@@ -18928,7 +18928,7 @@ _08011006:
 	ldrh r5, [r6, #6]
 	ldrh r3, [r6, #8]
 	mov sb, r3
-	ldr r1, _080111A0 @ =gUnknown_03005960
+	ldr r1, _080111A0 @ =gCamera
 	ldr r2, [r1]
 	subs r2, r5, r2
 	strh r2, [r6, #6]
@@ -18981,7 +18981,7 @@ _08011006:
 	ldrh r5, [r6, #6]
 	ldrh r3, [r6, #8]
 	mov sb, r3
-	ldr r1, _080111A0 @ =gUnknown_03005960
+	ldr r1, _080111A0 @ =gCamera
 	ldr r2, [r1]
 	subs r2, r5, r2
 	strh r2, [r6, #6]
@@ -19031,7 +19031,7 @@ _08011188:
 	.align 2, 0
 _08011198: .4byte IWRAM_START + 0xF2
 _0801119C: .4byte IWRAM_START + 0xC0
-_080111A0: .4byte gUnknown_03005960
+_080111A0: .4byte gCamera
 _080111A4: .4byte gUnknown_030054B8
 _080111A8: .4byte IWRAM_START + 0x30
 _080111AC: .4byte IWRAM_START + 0xCC
@@ -19153,7 +19153,7 @@ sub_801121C: @ 0x0801121C
 	orrs r4, r0
 	str r4, [r3, #0x20]
 _08011292:
-	ldr r1, _080112D8 @ =gUnknown_03005960
+	ldr r1, _080112D8 @ =gCamera
 	ldr r0, [r1]
 	subs r7, r7, r0
 	ldr r0, [r1, #4]
@@ -19187,7 +19187,7 @@ _080112C4:
 	.align 2, 0
 _080112D0: .4byte gCurTask
 _080112D4: .4byte gPlayer
-_080112D8: .4byte gUnknown_03005960
+_080112D8: .4byte gCamera
 
 	thumb_func_start initSprite_Interactable_IceParadise_SlidyIce
 initSprite_Interactable_IceParadise_SlidyIce: @ 0x080112DC
@@ -19638,7 +19638,7 @@ _0801165C: .4byte sub_8011A20
 sub_8011660: @ 0x08011660
 	push {r4, r5, r6, r7, lr}
 	ldr r6, _08011688 @ =gUnknown_03005660
-	ldr r7, _0801168C @ =gUnknown_03005960
+	ldr r7, _0801168C @ =gCamera
 	ldr r0, _08011690 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -19658,7 +19658,7 @@ sub_8011660: @ 0x08011660
 	b _080116A2
 	.align 2, 0
 _08011688: .4byte gUnknown_03005660
-_0801168C: .4byte gUnknown_03005960
+_0801168C: .4byte gCamera
 _08011690: .4byte gCurrentLevel
 _08011694: .4byte gPlayer
 _08011698: .4byte 0x00001A09
@@ -19924,7 +19924,7 @@ _080118A4:
 	movs r2, #4
 	ldrsh r0, [r0, r2]
 	str r0, [r3, #4]
-	ldr r2, _080118D8 @ =gUnknown_03005960
+	ldr r2, _080118D8 @ =gCamera
 	ldr r0, [r2]
 	subs r1, r1, r0
 	strh r1, [r4, #0x16]
@@ -19943,7 +19943,7 @@ _080118A4:
 	b _080118E8
 	.align 2, 0
 _080118D4: .4byte gUnknown_03005660
-_080118D8: .4byte gUnknown_03005960
+_080118D8: .4byte gCamera
 _080118DC: .4byte 0xFFFFFBFF
 _080118E0:
 	ldr r0, [r4, #0x10]
@@ -20940,7 +20940,7 @@ _08012080:
 	bl sub_80157C8
 	ldr r0, [sp]
 	asrs r0, r0, #8
-	ldr r2, _080120BC @ =gUnknown_03005960
+	ldr r2, _080120BC @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	strh r0, [r4, #0x16]
@@ -20957,7 +20957,7 @@ _080120B2:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080120BC: .4byte gUnknown_03005960
+_080120BC: .4byte gCamera
 
 	thumb_func_start sub_80120C0
 sub_80120C0: @ 0x080120C0
@@ -21822,7 +21822,7 @@ _08012750:
 	adds r0, #8
 	strh r0, [r4, #0x12]
 _08012756:
-	ldr r0, _080127AC @ =gUnknown_03005960
+	ldr r0, _080127AC @ =gCamera
 	ldr r0, [r0, #0x28]
 	lsls r1, r0, #8
 	ldr r0, [r4, #0xc]
@@ -21866,7 +21866,7 @@ _0801278E:
 	b _080127BA
 	.align 2, 0
 _080127A8: .4byte gPlayerControls
-_080127AC: .4byte gUnknown_03005960
+_080127AC: .4byte gCamera
 _080127B0: .4byte gUnknown_080D552C
 _080127B4:
 	ldr r0, [r4, #0x48]
@@ -22525,7 +22525,7 @@ _08012CAE:
 	adds r0, #8
 	strh r0, [r4, #0x12]
 _08012CB4:
-	ldr r0, _08012CFC @ =gUnknown_03005960
+	ldr r0, _08012CFC @ =gCamera
 	ldr r0, [r0, #0x28]
 	lsls r1, r0, #8
 	ldr r0, [r4, #0xc]
@@ -22559,7 +22559,7 @@ _08012CCE:
 	b _08012D14
 	.align 2, 0
 _08012CF8: .4byte gPlayerControls
-_08012CFC: .4byte gUnknown_03005960
+_08012CFC: .4byte gCamera
 _08012D00:
 	movs r0, #0x40
 	ands r1, r0
@@ -24392,14 +24392,14 @@ _08013AB0:
 	mov r3, ip
 _08013AB6:
 	strh r0, [r3, #0x12]
-	ldr r1, _08013AC4 @ =gUnknown_03005960
+	ldr r1, _08013AC4 @ =gCamera
 	ldr r0, [r1, #0x4c]
 	cmp r0, #0
 	ble _08013AC8
 	subs r0, #2
 	b _08013ACE
 	.align 2, 0
-_08013AC4: .4byte gUnknown_03005960
+_08013AC4: .4byte gCamera
 _08013AC8:
 	cmp r0, #0
 	bge _08013AD0
@@ -25308,7 +25308,7 @@ sub_801412C: @ 0x0801412C
 _0801417C:
 	ldr r0, [r4]
 	asrs r0, r0, #8
-	ldr r2, _08014200 @ =gUnknown_03005960
+	ldr r2, _08014200 @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	strh r0, [r5, #0x16]
@@ -25373,7 +25373,7 @@ _080141F4:
 	bx r0
 	.align 2, 0
 _080141FC: .4byte gUnknown_080D5548
-_08014200: .4byte gUnknown_03005960
+_08014200: .4byte gCamera
 _08014204: .4byte 0xFFFFF3FF
 _08014208: .4byte 0xFFFFCFFF
 
@@ -26662,7 +26662,7 @@ _08014BF2:
 	strb r0, [r1]
 	ldr r0, [r5, #0x34]
 	asrs r0, r0, #8
-	ldr r2, _08014C5C @ =gUnknown_03005960
+	ldr r2, _08014C5C @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	strh r0, [r5, #0x16]
@@ -26691,7 +26691,7 @@ _08014BF2:
 	bx r0
 	.align 2, 0
 _08014C58: .4byte 0x000001D5
-_08014C5C: .4byte gUnknown_03005960
+_08014C5C: .4byte gCamera
 
 	thumb_func_start sub_8014C60
 sub_8014C60: @ 0x08014C60
@@ -26727,7 +26727,7 @@ _08014C8C:
 	adds r1, r1, r2
 	str r1, [r4, #0x38]
 	asrs r0, r0, #8
-	ldr r3, _08014CC4 @ =gUnknown_03005960
+	ldr r3, _08014CC4 @ =gCamera
 	ldr r2, [r3]
 	subs r0, r0, r2
 	strh r0, [r4, #0x16]
@@ -26744,7 +26744,7 @@ _08014CBC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08014CC4: .4byte gUnknown_03005960
+_08014CC4: .4byte gCamera
 
 	thumb_func_start sub_8014CC8
 sub_8014CC8: @ 0x08014CC8
@@ -27423,7 +27423,7 @@ _08015180:
 	ldrsh r0, [r3, r1]
 	lsls r0, r0, #8
 	str r0, [r4, #4]
-	ldr r6, _080151C8 @ =gUnknown_03005960
+	ldr r6, _080151C8 @ =gCamera
 	ldr r1, [r6]
 	ldrh r0, [r2]
 	subs r0, r0, r1
@@ -27449,7 +27449,7 @@ _080151C4:
 	movs r0, #1
 	b _080152E2
 	.align 2, 0
-_080151C8: .4byte gUnknown_03005960
+_080151C8: .4byte gCamera
 _080151CC:
 	movs r1, #0
 	movs r2, #1
@@ -28572,7 +28572,7 @@ _08015A46:
 	bl sub_80157C8
 	ldr r2, [r6, #0x44]
 	asrs r2, r2, #8
-	ldr r1, _08015AE8 @ =gUnknown_03005960
+	ldr r1, _08015AE8 @ =gCamera
 	ldr r0, [r1]
 	subs r2, r2, r0
 	strh r2, [r5, #0x16]
@@ -28615,7 +28615,7 @@ _08015A46:
 	lsls r0, r0, #1
 	b _08015AF4
 	.align 2, 0
-_08015AE8: .4byte gUnknown_03005960
+_08015AE8: .4byte gCamera
 _08015AEC: .4byte gUnknown_030054B8
 _08015AF0:
 	movs r0, #0xff
@@ -28980,7 +28980,7 @@ _08015D56:
 	strh r0, [r4]
 _08015DBE:
 	movs r5, #0
-	ldr r7, _08015E24 @ =gUnknown_03005960
+	ldr r7, _08015E24 @ =gCamera
 _08015DC2:
 	lsls r2, r5, #4
 	adds r0, r6, r2
@@ -29028,7 +29028,7 @@ _08015E10:
 _08015E18: .4byte gUnknown_080D5684
 _08015E1C: .4byte 0x0000FFFF
 _08015E20: .4byte gPlayer
-_08015E24: .4byte gUnknown_03005960
+_08015E24: .4byte gCamera
 
 	thumb_func_start sub_8015E28
 sub_8015E28: @ 0x08015E28
@@ -30160,7 +30160,7 @@ _080166F0:
 	adds r5, r7, #0
 	adds r5, #0x54
 	str r5, [sp, #0xc]
-	ldr r4, _08016890 @ =gUnknown_03005960
+	ldr r4, _08016890 @ =gCamera
 	cmp r0, r1
 	ble _08016722
 _08016706:
@@ -30367,7 +30367,7 @@ _08016880:
 	mov pc, r0
 	.align 2, 0
 _0801688C: .4byte gUnknown_080D672C
-_08016890: .4byte gUnknown_03005960
+_08016890: .4byte gCamera
 _08016894: .4byte gGameMode
 _08016898: .4byte gUnknown_030054B4
 _0801689C: .4byte 0x04000128
@@ -30828,7 +30828,7 @@ _08016C38:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _08016CE8
-	ldr r0, _08016C7C @ =gUnknown_03005960
+	ldr r0, _08016C7C @ =gCamera
 	movs r5, #0x16
 	ldrsh r1, [r6, r5]
 	ldr r0, [r0]
@@ -30858,7 +30858,7 @@ _08016C38:
 	b _08016CB0
 	.align 2, 0
 _08016C78: .4byte gGameMode
-_08016C7C: .4byte gUnknown_03005960
+_08016C7C: .4byte gCamera
 _08016C80: .4byte 0xFFFFFA60
 _08016C84: .4byte 0xFFFFFCA0
 _08016C88:
@@ -31829,7 +31829,7 @@ _080173D8:
 	mov r3, r8
 	ldr r0, [r3, #8]
 	asrs r1, r0, #8
-	ldr r2, _08017474 @ =gUnknown_03005960
+	ldr r2, _08017474 @ =gCamera
 	ldr r0, [r2, #0x30]
 	cmp r1, r0
 	ble _08017426
@@ -31900,7 +31900,7 @@ _0801746E:
 	strh r0, [r4, #0x2c]
 	b _080175A4
 	.align 2, 0
-_08017474: .4byte gUnknown_03005960
+_08017474: .4byte gCamera
 _08017478: .4byte gUnknown_03005424
 _0801747C: .4byte gPlayer
 _08017480: .4byte 0xFFBFFFFF
@@ -32597,7 +32597,7 @@ _080179C4:
 	bhi _08017A14
 	ldr r0, [r6, #8]
 	asrs r1, r0, #8
-	ldr r2, _08017A64 @ =gUnknown_03005960
+	ldr r2, _08017A64 @ =gCamera
 	ldr r0, [r2, #0x30]
 	cmp r1, r0
 	ble _08017A14
@@ -32666,7 +32666,7 @@ _08017A54:
 	.align 2, 0
 _08017A5C: .4byte 0xFFFFFEDC
 _08017A60: .4byte gUnknown_03005424
-_08017A64: .4byte gUnknown_03005960
+_08017A64: .4byte gCamera
 _08017A68: .4byte gPlayer
 _08017A6C: .4byte 0xFFBFFFFF
 _08017A70:
@@ -34978,7 +34978,7 @@ _08018C04:
 	ldr r0, [r1, #0x1c]
 	orrs r0, r3
 	str r0, [r1, #0x1c]
-	ldr r3, _08018CCC @ =gUnknown_03005960
+	ldr r3, _08018CCC @ =gCamera
 	adds r2, r3, #0
 	adds r2, #0x50
 	ldrh r1, [r2]
@@ -35024,7 +35024,7 @@ _08018CBC: .4byte 0x04000128
 _08018CC0: .4byte 0x40600000
 _08018CC4: .4byte gMPlayInfo_BGM
 _08018CC8: .4byte 0xFFFFCFFF
-_08018CCC: .4byte gUnknown_03005960
+_08018CCC: .4byte gCamera
 _08018CD0: .4byte 0x0000FFFC
 _08018CD4:
 	ldr r0, [r5, #0x20]
@@ -36086,7 +36086,7 @@ sub_801951C: @ 0x0801951C
 	adds r0, r4, r5
 	movs r2, #0
 	ldrsh r1, [r0, r2]
-	ldr r2, _080195C4 @ =gUnknown_03005960
+	ldr r2, _080195C4 @ =gCamera
 	ldr r0, [r2]
 	subs r1, r1, r0
 	cmp r1, #0xf0
@@ -36137,7 +36137,7 @@ _080195B4: .4byte gMultiplayerPlayerTasks
 _080195B8: .4byte IWRAM_START + 0x10
 _080195BC: .4byte IWRAM_START+4
 _080195C0: .4byte IWRAM_START + 0x50
-_080195C4: .4byte gUnknown_03005960
+_080195C4: .4byte gCamera
 _080195C8:
 	lsls r0, r1, #0x10
 	asrs r2, r0, #0x10
@@ -36546,7 +36546,7 @@ sub_8019898: @ 0x08019898
 	adds r0, r4, r3
 	movs r2, #0
 	ldrsh r1, [r0, r2]
-	ldr r2, _08019938 @ =gUnknown_03005960
+	ldr r2, _08019938 @ =gCamera
 	ldr r0, [r2]
 	subs r1, r1, r0
 	adds r5, r2, #0
@@ -36595,7 +36595,7 @@ _08019928: .4byte gCurTask
 _0801992C: .4byte gMultiplayerPlayerTasks
 _08019930: .4byte IWRAM_START + 0x10
 _08019934: .4byte IWRAM_START+4
-_08019938: .4byte gUnknown_03005960
+_08019938: .4byte gCamera
 _0801993C: .4byte 0xFFFFFA60
 _08019940: .4byte 0xFFFFFCA0
 _08019944:
@@ -37318,7 +37318,7 @@ sub_8019E70: @ 0x08019E70
 	ldrh r2, [r0, #6]
 	ldr r1, _08019EC4 @ =IWRAM_START + 0x50
 	adds r0, r2, r1
-	ldr r4, _08019EC8 @ =gUnknown_03005960
+	ldr r4, _08019EC8 @ =gCamera
 	ldr r1, [r4]
 	ldrh r0, [r0]
 	subs r0, r0, r1
@@ -37341,7 +37341,7 @@ _08019EB8: .4byte gCurTask
 _08019EBC: .4byte gMultiplayerPlayerTasks
 _08019EC0: .4byte IWRAM_START + 0x30
 _08019EC4: .4byte IWRAM_START + 0x50
-_08019EC8: .4byte gUnknown_03005960
+_08019EC8: .4byte gCamera
 _08019ECC: .4byte gUnknown_03005424
 _08019ED0: .4byte IWRAM_START + 0x52
 _08019ED4:

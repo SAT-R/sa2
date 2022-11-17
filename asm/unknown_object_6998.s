@@ -243,7 +243,7 @@ _08086B68:
 	movs r6, #0
 	adds r7, r5, #0
 	adds r7, #0xc0
-	ldr r1, _08086BC0 @ =gUnknown_03005960
+	ldr r1, _08086BC0 @ =gCamera
 	mov sb, r1
 _08086B72:
 	ldrb r0, [r7]
@@ -284,7 +284,7 @@ _08086B72:
 	strb r0, [r7]
 	b _08086BCA
 	.align 2, 0
-_08086BC0: .4byte gUnknown_03005960
+_08086BC0: .4byte gCamera
 _08086BC4:
 	adds r0, r4, #0
 	bl sub_80051E8
@@ -358,7 +358,7 @@ _08086C34:
 	strb r0, [r1]
 	ldr r0, [r5]
 	asrs r0, r0, #8
-	ldr r2, _08086C8C @ =gUnknown_03005960
+	ldr r2, _08086C8C @ =gCamera
 	ldr r1, [r2]
 	subs r0, r0, r1
 	strh r0, [r3, #0x16]
@@ -386,7 +386,7 @@ _08086C7C: .4byte IWRAM_START + 0xD4
 _08086C80: .4byte IWRAM_START + 0xD8
 _08086C84: .4byte IWRAM_START + 0xE0
 _08086C88: .4byte 0xFFFFF800
-_08086C8C: .4byte gUnknown_03005960
+_08086C8C: .4byte gCamera
 _08086C90: .4byte gUnknown_03005424
 _08086C94:
 	ldr r0, [r3, #0x10]

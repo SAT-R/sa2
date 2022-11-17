@@ -106,15 +106,15 @@ struct SomeStruct_59E0 {
 
 extern struct SomeStruct_59E0 gPlayer;
 
-struct SomeStruct_5960 {
-    s32 unk0;
-    s32 unk4;
+struct Camera {
+    s32 unk0; // x
+    s32 unk4; // y
     u8 filler[92 - 8];
     u32 unk5C;
     u8 filler60[0x20];
 }; /* size 0x80 */
 
-extern struct SomeStruct_5960 gUnknown_03005960;
+extern struct Camera gCamera;
 
 struct SomeStruct_5660 {
     u8 filler[16];

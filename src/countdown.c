@@ -127,8 +127,8 @@ void sub_8036168(void)
     }
 
     element = &countdown->unk0;
-    element->unk16 = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
-    element->unk18 = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
+    element->unk16 = (gPlayer.unk8 >> 8) - gCamera.unk0;
+    element->unk18 = (gPlayer.unkC >> 8) - gCamera.unk4;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -136,8 +136,8 @@ void sub_8036168(void)
         element = &countdown->unk30;
         element->unk20 = 2 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
-        element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0) + 0x18;
-        element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4) - 0x18;
+        element->unk16 = ((gPlayer.unk8 >> 8) - gCamera.unk0) + 0x18;
+        element->unk18 = ((gPlayer.unkC >> 8) - gCamera.unk4) - 0x18;
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -160,8 +160,8 @@ void sub_8036398(void)
     struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *element = &countdown->unk0;
 
-    element->unk16 = countdown->unk60 - gUnknown_03005960.unk0;
-    element->unk18 = countdown->unk64 - gUnknown_03005960.unk4;
+    element->unk16 = countdown->unk60 - gCamera.unk0;
+    element->unk18 = countdown->unk64 - gCamera.unk4;
 
     if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0
         || (s16)element->unk18 > 288) {

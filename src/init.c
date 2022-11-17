@@ -28,7 +28,7 @@ void GameStart(void)
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
     gPlayer.unk8C = 0;
-    gUnknown_03005960.unk5C = 0;
+    gCamera.unk5C = 0;
 
     gUnknown_030059D0[1] = 0;
     gUnknown_03005660.unk10 = 0;

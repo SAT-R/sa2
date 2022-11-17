@@ -1,6 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "task.h"
+#include "game.h"
 
 #include "constants/animations.h"
 #include "interactable.h"
@@ -22,8 +23,8 @@ typedef struct {
     /* 0x0C */ u8 padding_C[0x4];
     /* 0x10 */ u32 v10;
     /* 0x14 */ u16 v14;
-    /* 0x16 */ u16 mapX;
-    /* 0x18 */ u16 mapY;
+    /* 0x16 */ s16 mapX;
+    /* 0x18 */ s16 mapY;
     /* 0x1A */ u16 v1A;
     /* 0x1C */ u16 v1C;
     /* 0x1E */ u8 padding_1E[2];
@@ -48,7 +49,7 @@ typedef struct {
     /* 0x07 */ u8 v7;
 } TileInfo;
 
-extern void Task_Interactable_Decoration(void);
+void Task_Interactable_Decoration(void);
 void TaskDestructor_Interactable_Decoration(struct Task *);
 
 static const TileInfo sDecoTileAnimInfo[7]
@@ -102,6 +103,32 @@ void initSprite_Interactable_Decoration(void *inEntity, u16 regionX, u16 regionY
         deco->v10 = 0x2000;
     }
 }
+
+#if 0 // registers don't match
+void Task_Interactable_Decoration(void)
+{
+    Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
+    Decoration *deco = &decoBase->main;
+    Interactable *entity = decoBase->base.entity;
+    int mapX, mapY;
+    mapX = SpriteGetMapPos(decoBase->base.spriteX, decoBase->base.regionX);
+    mapY = SpriteGetMapPos(entity->y, decoBase->base.regionY);
+
+    mapX -= gCamera.unk0;
+    deco->mapX = mapX;
+    mapY -= gCamera.unk4;
+    deco->mapY = mapY;
+
+    if (((u16)(mapX + (CAM_REGION_WIDTH / 2)) > 496)
+        || ((deco->mapX + (CAM_REGION_WIDTH / 2)) < 0) || ((u16)mapY > 288)) {
+        entity->x = decoBase->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        sub_8004558((void *)deco);
+        sub_80051E8((void *)deco);
+    }
+}
+#endif
 
 #if 0 // matches
 void TaskDestructor_Interactable_Decoration(struct Task *t)
