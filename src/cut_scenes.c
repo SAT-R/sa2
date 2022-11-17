@@ -1058,9 +1058,9 @@ struct CreditsEndCutScene {
     u8 unk161;
     u16 unk162;
     u32 unk164;
-    u16 unk168;
+    s16 unk168;
     vu32 unk16C;
-    u32 unk170[3][2];
+    s32 unk170[3][2];
 }; /* size: 0x188 */
 
 extern const u16 gUnknown_080E12B0[0x20];
@@ -1497,4 +1497,49 @@ void sub_808F824(void)
 
     scene->unk15D = 3;
     gCurTask->main = sub_808F544;
+}
+
+void sub_808FA24(struct CreditsEndCutScene *scene)
+{
+    struct UNK_0808B3FC_UNK240 *element;
+    if (scene->unk15C != 2) {
+        return;
+    }
+
+    if (scene->unk15F > 0xB) {
+        return;
+    }
+
+    if (scene->unk168 >= 1) {
+        element = &scene->unkC0;
+        element->unkA = gUnknown_080E12D0[0].unk4;
+        element->unk20 = gUnknown_080E12D0[0].unk6;
+        element->unk16 = scene->unk170[0][0];
+        element->unk18 = scene->unk170[0][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+        scene->unk168--;
+    } else if (scene->unk168 > -0xF && scene->unk168 < 1) {
+        scene->unk168--;
+    } else if (scene->unk168 <= -0xF) {
+        scene->unk168 = 0x1E;
+    }
+
+    if (scene->unk15F == 11) {
+        element = &scene->unkF0;
+        element->unkA = gUnknown_080E12D0[1].unk4;
+        element->unk20 = gUnknown_080E12D0[1].unk6;
+        element->unk16 = scene->unk170[1][0];
+        element->unk18 = scene->unk170[1][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+
+        element = &scene->unk120;
+        element->unkA = gUnknown_080E12D0[2].unk4;
+        element->unk20 = gUnknown_080E12D0[2].unk6;
+        element->unk16 = scene->unk170[2][0];
+        element->unk18 = scene->unk170[2][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
 }
