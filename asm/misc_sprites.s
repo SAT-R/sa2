@@ -4,132 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable_YellowFlower
-initSprite_Interactable_YellowFlower: @ 0x0805D690
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	adds r7, r0, #0
-	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov sl, r2
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	mov sb, r3
-	movs r0, #3
-	ldrsb r0, [r7, r0]
-	cmp r0, #0
-	blt _0805D762
-	ldr r0, _0805D774 @ =sub_805D794
-	ldr r2, _0805D778 @ =0x00002010
-	ldr r1, _0805D77C @ =sub_805D814
-	str r1, [sp]
-	movs r1, #0x3c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r6, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r6, r0
-	ldr r1, _0805D780 @ =IWRAM_START + 0xC
-	adds r4, r6, r1
-	movs r2, #0
-	mov r8, r2
-	strh r5, [r0, #4]
-	mov r1, sl
-	strh r1, [r0, #6]
-	str r7, [r0]
-	ldrb r1, [r7]
-	strb r1, [r0, #8]
-	mov r2, sb
-	strb r2, [r0, #9]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	lsls r1, r5, #8
-	adds r0, r0, r1
-	strh r0, [r4, #0x16]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	mov r2, sl
-	lsls r1, r2, #8
-	adds r0, r0, r1
-	strh r0, [r4, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r7]
-	ldr r5, _0805D784 @ =gUnknown_080D93F4
-	movs r0, #3
-	ldrsb r0, [r7, r0]
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	ldr r0, [r0]
-	bl VramMalloc
-	str r0, [r4, #4]
-	movs r0, #3
-	ldrsb r0, [r7, r0]
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	ldrh r0, [r0, #4]
-	strh r0, [r4, #0xa]
-	movs r0, #3
-	ldrsb r0, [r7, r0]
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	ldrb r1, [r0, #6]
-	ldr r2, _0805D788 @ =IWRAM_START + 0x2C
-	adds r0, r6, r2
-	strb r1, [r0]
-	movs r0, #0xe0
-	lsls r0, r0, #3
-	strh r0, [r4, #0x1a]
-	mov r0, r8
-	strh r0, [r4, #8]
-	strh r0, [r4, #0x14]
-	strh r0, [r4, #0x1c]
-	adds r2, #1
-	adds r1, r6, r2
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, _0805D78C @ =IWRAM_START + 0x2E
-	adds r1, r6, r0
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r1, _0805D790 @ =IWRAM_START + 0x31
-	adds r6, r6, r1
-	movs r2, #0
-	strb r2, [r6]
-	subs r0, #0x11
-	str r0, [r4, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r4, #0x10]
-_0805D762:
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805D774: .4byte sub_805D794
-_0805D778: .4byte 0x00002010
-_0805D77C: .4byte sub_805D814
-_0805D780: .4byte IWRAM_START + 0xC
-_0805D784: .4byte gUnknown_080D93F4
-_0805D788: .4byte IWRAM_START + 0x2C
-_0805D78C: .4byte IWRAM_START + 0x2E
-_0805D790: .4byte IWRAM_START + 0x31
-
-	thumb_func_start sub_805D794
-sub_805D794: @ 0x0805D794
+	thumb_func_start Task_Interactable_Decoration
+Task_Interactable_Decoration: @ 0x0805D794
 	push {r4, r5, r6, r7, lr}
 	ldr r4, _0805D7F8 @ =gCurTask
 	ldr r0, [r4]
@@ -193,8 +69,8 @@ _0805D80C:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_805D814
-sub_805D814: @ 0x0805D814
+	thumb_func_start TaskDestructor_Interactable_Decoration
+TaskDestructor_Interactable_Decoration: @ 0x0805D814
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

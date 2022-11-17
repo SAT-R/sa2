@@ -38,7 +38,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Spring_Small_UpRight
     .4byte initSprite_Interactable_Spring_Small_UpLeft
     .4byte initSprite_Interactable_CommonThinPlatform
-    .4byte initSprite_Interactable_YellowFlower
+    .4byte initSprite_Interactable_Decoration
     .4byte initSprite_Interactable_Ramp
     .4byte initSprite_Interactable_Booster
     .4byte initSprite_Interactable_RoundUpSlope @ Like the one at the end of Leaf Forest Act 1

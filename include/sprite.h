@@ -3,6 +3,22 @@
 
 #include "global.h"
 
+// After a sprite is initialized, its x-value in the layout-data gets set to -2.
+#define SPRITE_STATE_POS_INITIALIZED (-2)
+#define SET_SPRITE_INITIALIZED(target)                                                  \
+    {                                                                                   \
+        s32 negativeTwo;                                                                \
+        s16 forMatching;                                                                \
+        negativeTwo = SPRITE_STATE_POS_INITIALIZED;                                     \
+        forMatching = negativeTwo;                                                      \
+        target->x = forMatching;                                                        \
+    }
+
+#define TILE_WIDTH       8
+#define CAM_REGION_WIDTH 256
+#define SpriteGetMapPos(spritePos, regionPos)                                           \
+    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {
