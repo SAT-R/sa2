@@ -145,15 +145,14 @@ void sub_808DD9C(void)
         scene->unk76 = (scene->unk76 * 0x43) >> 6;
     }
 
-    if (scene->unk70 < (player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1400)) {
-        scene->unk70 = (player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1400);
+    if (scene->unk70 < (player->unk8 - (gCamera.unk0 * 0x100) - 0x1400)) {
+        scene->unk70 = (player->unk8 - (gCamera.unk0 * 0x100) - 0x1400);
     }
 
-    if (scene->unk72 > (player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0xA00)) {
+    if (scene->unk72 > (player->unkC - (gCamera.unk4 * 0x100) - 0xA00)) {
         // Required for match
-        scene->unk72 = scene->unk72
-            = player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0xA00;
-        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1400;
+        scene->unk72 = scene->unk72 = player->unkC - (gCamera.unk4 * 0x100) - 0xA00;
+        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1400;
 
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
@@ -215,13 +214,13 @@ void sub_808DF88(void)
         scene->unk76 = (scene->unk76 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 < (player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00)) {
-        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00;
+    if (scene->unk70 < (player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00)) {
+        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00;
     }
 
-    if (scene->unk72 > (player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0x1400)) {
-        scene->unk72 = player->unkC - (gUnknown_03005960.unk4 * 0x100) - 0x1400;
-        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 0x100) - 0x1C00;
+    if (scene->unk72 > (player->unkC - (gCamera.unk4 * 0x100) - 0x1400)) {
+        scene->unk72 = player->unkC - (gCamera.unk4 * 0x100) - 0x1400;
+        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00;
 
         if (scene->unk7A == 0) {
             VramFree(scene->unk4.unk4);
@@ -276,13 +275,13 @@ void sub_808E114(void)
         scene->unk74 = (scene->unk74 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 > (player->unk8 - (gUnknown_03005960.unk0 * 256) - 0x4000)) {
-        scene->unk70 = player->unk8 - (gUnknown_03005960.unk0 * 256) - 0x4000;
+    if (scene->unk70 > (player->unk8 - (gCamera.unk0 * 256) - 0x4000)) {
+        scene->unk70 = player->unk8 - (gCamera.unk0 * 256) - 0x4000;
     }
 
-    result = sub_801F100((scene->unk72 >> 8) + gUnknown_03005960.unk4,
-                         (scene->unk70 >> 8) + gUnknown_03005960.unk0 + scene->unk7C, 1,
-                         8, sub_801EC3C);
+    result = sub_801F100((scene->unk72 >> 8) + gCamera.unk4,
+                         (scene->unk70 >> 8) + gCamera.unk0 + scene->unk7C, 1, 8,
+                         sub_801EC3C);
 
     if (result < 0) {
         scene->unk72 += result * 0x100;

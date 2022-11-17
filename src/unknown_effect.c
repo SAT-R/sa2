@@ -17,8 +17,8 @@ void sub_80870E8(void);
 
 void sub_8087028(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a, b, 0xA0 - effect->unk0);
@@ -31,8 +31,8 @@ void sub_8087028(void)
 
 void sub_8087088(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
@@ -51,8 +51,8 @@ const s8 gUnknown_080E02DC[8][2] = {
 
 void sub_80870E8(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4;
+    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
+    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0],

@@ -52,7 +52,8 @@ SECTIONS
         build/sa2/src/multiplayer_communication_outcome.o(.text);
         build/sa2/src/multiplayer_results.o(.text);
         build/sa2/src/multiplayer_team_play.o(.text);
-        build/sa2/asm/unused_objects.o(.text);
+        build/sa2/src/interactable_decoration.o(.text);
+        build/sa2/asm/misc_sprites.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);
         build/sa2/src/special_stage_utils.o(.text);
@@ -126,6 +127,7 @@ SECTIONS
         build/sa2/src/multiplayer_communication_outcome.o(.rodata);
         build/sa2/src/multiplayer_results.o(.rodata);
         build/sa2/src/multiplayer_team_play.o(.rodata);
+        build/sa2/src/interactable_decoration.o(.rodata);
         build/sa2/data/unused_objects_data.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/src/special_stage_data.o(.rodata);

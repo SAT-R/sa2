@@ -53,7 +53,7 @@ void CreateBoostModeParticles(void)
     element->unk22 = 0x10;
     element->unk25 = 0;
 
-    SeedRng(gPlayer.unk8, gUnknown_03005960.unk0);
+    SeedRng(gPlayer.unk8, gCamera.unk0);
 
     for (i = 0; i < 16; i++) {
         u8 temp1;
@@ -125,16 +125,16 @@ void sub_8089E54(void)
         particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
         particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
         element = &particles->unk0;
-        element->unk16 = (gPlayer.unk8 >> 8) - gUnknown_03005960.unk0
-            + (particles->unk62[i][0] >> 8);
-        element->unk18 = (gPlayer.unkC >> 8) - gUnknown_03005960.unk4
-            + (particles->unk62[i][1] >> 8);
+        element->unk16
+            = (gPlayer.unk8 >> 8) - gCamera.unk0 + (particles->unk62[i][0] >> 8);
+        element->unk18
+            = (gPlayer.unkC >> 8) - gCamera.unk4 + (particles->unk62[i][1] >> 8);
         sub_80051E8(element);
     }
 
     if (particles->unk60++ > 8) {
         element->unk20 = 1;
-        SeedRng(gPlayer.unk8, gUnknown_03005960.unk0);
+        SeedRng(gPlayer.unk8, gCamera.unk0);
 
         for (i = 0; i < 16; i++) {
             u8 temp;
@@ -193,16 +193,16 @@ void sub_808A0A4(void)
     for (i = 0; i < 8; i++) {
         element = &particles->unk0;
         if (particles->unk60 & 1) {
-            element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0)
-                + (particles->unk62[i][0] >> 8);
-            element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4)
-                + (particles->unk62[i][1] >> 8);
+            element->unk16
+                = ((gPlayer.unk8 >> 8) - gCamera.unk0) + (particles->unk62[i][0] >> 8);
+            element->unk18
+                = ((gPlayer.unkC >> 8) - gCamera.unk4) + (particles->unk62[i][1] >> 8);
             sub_8004558(element);
 
         } else {
-            element->unk16 = ((gPlayer.unk8 >> 8) - gUnknown_03005960.unk0)
+            element->unk16 = ((gPlayer.unk8 >> 8) - gCamera.unk0)
                 + (particles->unk62[i + 8][0] >> 8);
-            element->unk18 = ((gPlayer.unkC >> 8) - gUnknown_03005960.unk4)
+            element->unk18 = ((gPlayer.unkC >> 8) - gCamera.unk4)
                 + (particles->unk62[i + 8][1] >> 8);
         }
         sub_80051E8(element);

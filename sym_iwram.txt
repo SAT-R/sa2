@@ -85,7 +85,7 @@ build/sa2/src/main.o(.data);
 . = 0x00005890; gUnknown_03005890 = .;
 . = 0x000058D0; gUnknown_030058D0 = .;
 . = 0x00005910; gUnknown_03005910 = .;
-. = 0x00005960; gUnknown_03005960 = .;
+. = 0x00005960; gCamera = .;
 . = 0x000059C8; gUnknown_030059C8 = .;
 . = 0x000059D0; gUnknown_030059D0 = .;
 . = 0x000059D8; gUnknown_030059D8 = .;

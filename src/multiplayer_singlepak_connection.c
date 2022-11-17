@@ -81,7 +81,7 @@ void sub_8081200(void)
     gUnknown_03005844 = NULL;
     gUnknown_03005848 = 0;
     gPlayer.unk8C = 0;
-    gUnknown_03005960.unk5C = 0;
+    gCamera.unk5C = 0;
     gUnknown_0300543C = 0;
     *gameMode = val;
     gUnknown_030054DC = 0;

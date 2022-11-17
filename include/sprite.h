@@ -3,6 +3,22 @@
 
 #include "global.h"
 
+// After a sprite is initialized, its x-value in the layout-data gets set to -2.
+#define SPRITE_STATE_POS_INITIALIZED (-2)
+#define SET_SPRITE_INITIALIZED(target)                                                  \
+    {                                                                                   \
+        s32 negativeTwo;                                                                \
+        s16 forMatching;                                                                \
+        negativeTwo = SPRITE_STATE_POS_INITIALIZED;                                     \
+        forMatching = negativeTwo;                                                      \
+        target->x = forMatching;                                                        \
+    }
+
+#define TILE_WIDTH       8
+#define CAM_REGION_WIDTH 256
+#define SpriteGetScreenPos(spritePos, regionPos)                                        \
+    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {
@@ -64,7 +80,7 @@ struct UNK_0808B3FC_UNK240 {
 
     u16 unk8;
 
-    // assetId
+    // assetId or animIndex, not sure
     u16 unkA;
 
     struct UNK_0808B3FC_UNK240_UNKC *unkC;
@@ -125,10 +141,11 @@ struct UNK_808D124_UNK180 {
 }; /* size 0xC */
 
 // used for defining element data
+// TileInfo
 struct UNK_080E0D64 {
-    // width
+    // numTiles
     u32 unk0;
-    // caption ID
+    // assetId/animIndex
     u16 unk4;
     u8 unk6;
 };
