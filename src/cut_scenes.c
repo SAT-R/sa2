@@ -12,6 +12,7 @@
 #include "trig.h"
 #include "course_select.h"
 #include "save.h"
+#include "title_screen.h"
 
 /** cut_scenes_courses */
 
@@ -1541,5 +1542,72 @@ void sub_808FA24(struct CreditsEndCutScene *scene)
         element->unk18 = scene->unk170[2][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
+    }
+}
+
+void sub_808FB2C(void)
+{
+    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk150;
+    transitionConfig->unk2 = 2;
+
+    if (scene->unk15C == 2) {
+        sub_808FBE8(scene);
+        sub_808FC00(scene);
+        sub_808FC3C(scene);
+    }
+
+    sub_808FA24(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_808F704;
+    }
+}
+
+void sub_8094118(void);
+
+void sub_808FB94(void)
+{
+    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    if (scene->unk164 != 0) {
+        scene->unk164--;
+        return;
+    }
+
+    if (scene->unk161 == 0) {
+        sub_8094118();
+        TaskDestroy(gCurTask);
+    } else if (scene->unk161 == 1) {
+        CreateTitleScreen();
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_808FBE4(struct Task *t) { }
+
+void sub_808FBE8(struct CreditsEndCutScene *scene)
+{
+    scene->unk170[0][0] = 0x78;
+    scene->unk170[0][1] = 0xA00;
+}
+
+void sub_808FC00(struct CreditsEndCutScene *scene)
+{
+    if (scene->unk15F == 11) {
+        scene->unk170[1][0] = 0x78;
+        if (scene->unk170[1][1] > 0x8200) {
+            scene->unk170[1][1] -= 0x300;
+        }
+    }
+}
+
+void sub_808FC3C(struct CreditsEndCutScene *scene)
+{
+    if (scene->unk15F == 11) {
+        scene->unk170[2][0] = 0x78;
+        if (scene->unk170[2][1] > 0x9400) {
+            scene->unk170[2][1] -= 0x300;
+        }
     }
 }
