@@ -13,6 +13,7 @@
 #include "course_select.h"
 #include "save.h"
 #include "title_screen.h"
+#include "random.h"
 
 /** cut_scenes_courses */
 
@@ -1609,5 +1610,384 @@ void sub_808FC3C(struct CreditsEndCutScene *scene)
         if (scene->unk170[2][1] > 0x9400) {
             scene->unk170[2][1] -= 0x300;
         }
+    }
+}
+
+struct ExtraEndingCutScene {
+    struct Unk_03002400 unk0;
+    struct UNK_0808B3FC_UNK240 unk40;
+    struct UNK_0808B3FC_UNK240 unk70;
+    struct UNK_0808B3FC_UNK240 unkA0;
+    struct UNK_0808B3FC_UNK240 unkD0[6];
+
+    struct UNK_0808B3FC_UNK240 unk1F0;
+    struct UNK_0808B3FC_UNK240 unk220;
+    struct UNK_0808B3FC_UNK240 unk250;
+    struct UNK_0808B3FC_UNK240 unk280[4];
+    struct UNK_0808B3FC_UNK240 unk340;
+
+    struct UNK_802D4CC_UNK270 unk370;
+
+    u8 unk37C;
+    u8 unk37D;
+    u8 unk37E;
+    u8 unk37F;
+    u8 unk380;
+
+    u8 unk381[6];
+    u8 unk387[6];
+
+    u8 filler1;
+
+    u16 unk38E;
+    u16 unk390;
+    u16 unk392;
+    u16 unk394;
+    u16 unk396;
+
+    // vramPtr
+    vu32 unk398;
+
+    u32 unk39C;
+
+    u32 unk3A0[8][2];
+    u32 unk3E0[2];
+
+    u32 unk3E8[10][3];
+    u8 filler460[16];
+    u32 unk470[2];
+    u32 unk478;
+    u32 unk47C[6][5];
+    u32 unk4F4[12][3];
+    u32 unk584[6][3];
+}; /* size 0x5CC */
+
+void sub_8090480(void);
+void sub_8091480(struct Task *);
+
+extern const u32 gUnknown_080E1484[12][3];
+extern const u32 gUnknown_080E13AC[12][3];
+extern const u32 gUnknown_080E143C[6][3];
+
+extern const u16 gUnknown_080E1514[14];
+
+// TODO: these are the wrong length
+extern const u16 gUnknown_080E1530[10];
+extern const u8 gUnknown_080E154A[10];
+extern const struct UNK_080E0D64 gUnknown_080E12FC[9];
+
+// CreateExtraEndingCutScene
+void sub_808FC78(void)
+{
+    u8 j, i;
+    struct Task *t;
+    struct ExtraEndingCutScene *scene = NULL;
+    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+
+    SeedRng(0, 0xFFFF);
+    gDispCnt = 0x1140;
+    gBgCntRegs[0] = 0x9C03;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xff;
+    gUnknown_03002280[3] = 64;
+
+    m4aMPlayAllStop();
+    m4aSongNumStart(MUS_EXTRA_ENDING);
+
+    t = TaskCreate(sub_8090480, 0x5CC, 0x3100, 0, sub_8091480);
+    scene = TaskGetStructPtr(t);
+    scene->unk37C = 0;
+    scene->unk390 = gUnknown_080E1514[0];
+    scene->unk398 = 0;
+    scene->unk39C = 0;
+    scene->unk37D = gUnknown_080E1530[0];
+    scene->unk37F = gUnknown_080E154A[0];
+    scene->unk37E = 0;
+    scene->unk380 = 5;
+    scene->unk38E = 3;
+    scene->unk392 = 0xA0;
+    scene->unk394 = 0;
+    scene->unk396 = 0;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 8; j++) {
+            scene->unk3A0[j][i] = 0;
+        }
+        scene->unk3E0[i] = 0;
+        scene->unk470[i] = 0;
+    }
+
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 6; j++) {
+            if (i < 2) {
+                scene->unk47C[j][i] = gUnknown_080E1484[j][i] << 8;
+            } else if (i == 2) {
+                scene->unk47C[j][i] = gUnknown_080E1484[j][i];
+            } else {
+                scene->unk47C[j][i] = 0;
+            }
+        }
+    }
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 12; j++) {
+            scene->unk4F4[j][i] = gUnknown_080E13AC[j][i] << 8;
+        }
+
+        for (j = 0; j < 6; j++) {
+            scene->unk584[j][i] = gUnknown_080E143C[j][i] << 8;
+        }
+    }
+
+    for (j = 0; j < 12; j++) {
+        scene->unk4F4[j][i] = gUnknown_080E13AC[j][i];
+    }
+
+    for (j = 0; j < 6; j++) {
+        scene->unk584[j][i] = gUnknown_080E143C[j][i];
+    }
+
+    for (j = 0; j < 6; j++) {
+        scene->unk381[j] = 0;
+        scene->unk387[j] = 0;
+    }
+
+    for (j = 0; j < 10; j++) {
+        scene->unk3E8[j][0] = Random() & 0xFF;
+        scene->unk3E8[j][1] = 0;
+        scene->unk3E8[j][2] = (1 << ((Random() & 3) + 0xB));
+    }
+
+    scene->unk478 = -1;
+    // move this
+    transitionConfig = &scene->unk370;
+
+    transitionConfig->unk0 = 1;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unk6 = 0x80;
+    transitionConfig->unk8 = 0x3FBF;
+    transitionConfig->unkA = 0;
+
+    scene->unk398 = OBJ_VRAM0;
+
+    for (i = 0; i < 4; i++) {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk280[i];
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += 0xA00;
+        element->unkA = gUnknown_080E12FC[i + 3].unk4;
+        element->unk20 = gUnknown_080E12FC[i + 3].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+
+        if (i < 2) {
+            element->unk1A = (i + 1) << 6;
+        } else {
+            element->unk1A = (i + 10) << 6;
+        }
+
+        element->unk10 = 0;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk40;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += 0x540;
+        element->unkA = gUnknown_080E12FC[0].unk4;
+        element->unk20 = gUnknown_080E12FC[0].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x100;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk70;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[7].unk0 << 5;
+        element->unkA = gUnknown_080E12FC[7].unk4;
+        element->unk20 = gUnknown_080E12FC[7].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x1C0;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+
+        element = &scene->unkA0;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += 0x800;
+        element->unkA = gUnknown_080E12FC[10].unk4;
+        element->unk20 = gUnknown_080E12FC[10].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x240;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    for (i = 0; i < 6; i++) {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unkD0[i];
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[i + 0xD].unk0 * 0x20;
+        element->unkA = gUnknown_080E12FC[i + 0xD].unk4;
+        element->unk20 = gUnknown_080E12FC[i + 0xD].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x180;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk1F0;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[19].unk0 << 5;
+        element->unkA = gUnknown_080E12FC[19].unk4;
+        element->unk20 = gUnknown_080E12FC[19].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x140;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 1;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk220;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[20].unk0 << 5;
+        element->unkA = gUnknown_080E12FC[20].unk4;
+        element->unk20 = gUnknown_080E12FC[20].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0xC0;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk340;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[9].unk0 << 6;
+        element->unkA = gUnknown_080E12FC[9].unk4;
+        element->unk20 = gUnknown_080E12FC[9].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk250;
+        element->unk4 = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[8].unk0 << 5;
+        element->unkA = gUnknown_080E12FC[8].unk4;
+        element->unk20 = gUnknown_080E12FC[8].unk6;
+        element->unk21 = 0xFF;
+        element->unk16 = 0;
+        element->unk18 = 0;
+        element->unk1A = 0x200;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct Unk_03002400 *background;
+        background = &scene->unk0;
+        background->unk4 = BG_SCREEN_ADDR(0);
+        background->unkA = 0;
+        background->unkC = BG_SCREEN_ADDR(28);
+        background->unk18 = 0;
+        background->unk1A = 0;
+        background->unk1C = 0xAA;
+        background->unk1E = 0;
+        background->unk20 = 0;
+        background->unk22 = 0;
+        background->unk24 = 0;
+        background->unk26 = 0x20;
+        background->unk28 = 0x40;
+        background->unk2A = 0;
+        background->unk2E = 0;
+        sub_8002A3C(background);
     }
 }
