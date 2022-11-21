@@ -1651,11 +1651,12 @@ struct ExtraEndingCutScene {
     u32 unk39C;
 
     u32 unk3A0[8][2];
-    u32 unk3E0[2];
+    s32 unk3E0[2];
 
     u32 unk3E8[10][3];
-    u8 filler460[16];
-    u32 unk470[2];
+    u32 unk460;
+    u8 filler464[12];
+    s32 unk470[2];
     u32 unk478;
     u32 unk47C[6][5];
     u32 unk4F4[12][3];
@@ -1764,9 +1765,8 @@ void sub_808FC78(void)
     }
 
     scene->unk478 = -1;
-    // move this
-    transitionConfig = &scene->unk370;
 
+    transitionConfig = &scene->unk370;
     transitionConfig->unk0 = 1;
     transitionConfig->unk4 = 0;
     transitionConfig->unk6 = 0x80;
@@ -1989,5 +1989,174 @@ void sub_808FC78(void)
         background->unk2A = 0;
         background->unk2E = 0;
         sub_8002A3C(background);
+    }
+}
+
+void sub_8090E18(struct ExtraEndingCutScene *scene);
+void sub_8091484(struct ExtraEndingCutScene *scene);
+void sub_8090EB4(struct ExtraEndingCutScene *scene);
+void sub_809066C(struct ExtraEndingCutScene *scene);
+void sub_8090904(struct ExtraEndingCutScene *scene);
+void sub_8090800(struct ExtraEndingCutScene *scene);
+void sub_8090C24(struct ExtraEndingCutScene *scene);
+void sub_8090CA0(struct ExtraEndingCutScene *scene);
+void sub_8090D60(struct ExtraEndingCutScene *scene);
+void sub_8091044(struct ExtraEndingCutScene *scene);
+void sub_8090F6C(struct ExtraEndingCutScene *scene);
+void sub_80913DC(void);
+
+void sub_8090480(void)
+{
+    struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
+    transitionConfig->unk2 = 2;
+
+    sub_8090E18(scene);
+    sub_8091484(scene);
+
+    if (gBgScrollRegs[0][1] > 0x6D) {
+        sub_8090EB4(scene);
+    }
+
+    sub_809066C(scene);
+    sub_8090904(scene);
+    sub_8090800(scene);
+
+    if (scene->unk37C < 0xF) {
+        sub_8090C24(scene);
+        sub_8090CA0(scene);
+        sub_8090D60(scene);
+    }
+
+    sub_8091044(scene);
+    sub_8090F6C(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_80913DC;
+    }
+}
+
+void sub_8091468(void);
+
+void sub_8090520(void)
+{
+    struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
+
+    transitionConfig->unk8 = 0x3FFF;
+    transitionConfig->unk2 = 1;
+
+    sub_8090E18(scene);
+    sub_8091484(scene);
+
+    if (gBgScrollRegs[0][1] > 0x6D) {
+        sub_8090EB4(scene);
+    }
+
+    sub_809066C(scene);
+    sub_8090904(scene);
+    sub_8090800(scene);
+
+    if (scene->unk37C < 0xF) {
+        sub_8090C24(scene);
+        sub_8090CA0(scene);
+        sub_8090D60(scene);
+    }
+
+    sub_8091044(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_8091468;
+    }
+}
+
+void sub_80905C0(void)
+{
+    struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
+    sub_8090E18(scene);
+    sub_8091484(scene);
+
+    if (gBgScrollRegs[0][1] > 0x6D) {
+        sub_8090EB4(scene);
+    }
+
+    sub_809066C(scene);
+    sub_8090904(scene);
+    sub_8090800(scene);
+
+    if (scene->unk37C < 0xF) {
+        sub_8090C24(scene);
+        sub_8090CA0(scene);
+        sub_8090D60(scene);
+    }
+
+    sub_8091044(scene);
+    sub_8090F6C(scene);
+
+    if (scene->unk390 != 0) {
+        scene->unk390--;
+        return;
+    }
+
+    scene->unk37C++;
+    scene->unk390 = gUnknown_080E1514[scene->unk37C];
+    gCurTask->main = sub_80913DC;
+}
+
+void sub_809066C(struct ExtraEndingCutScene *scene)
+{
+    if (scene->unk37C < 0xD) {
+        scene->unk3E0[0] = scene->unk460 << 8;
+        scene->unk3E0[1] = 0x5000;
+    } else if (scene->unk37C == 0xD) {
+        if (scene->unk3E0[1] > -0x3200) {
+            scene->unk3E0[1] -= 0x100;
+
+            if (scene->unk3E0[0] < 0xAA00) {
+                if (scene->unk38E < 0x400) {
+                    scene->unk38E++;
+                }
+                scene->unk3E0[0] += SIN(scene->unk38E);
+            }
+        } else {
+            scene->unk3E0[0] = 0x7800;
+            scene->unk37C++;
+        }
+    } else if (scene->unk37C == 0xF) {
+        if (scene->unk3E0[1] <= 0x54FF) {
+            scene->unk3E0[1] += 0x50;
+        } else {
+            scene->unk37C++;
+            scene->unk394 = 0x3C;
+        }
+    } else if (scene->unk37C < 0x11) {
+        u32 val = 1;
+
+        if (scene->unk394 > 0xDB) {
+            val = 0;
+        }
+
+        scene->unk3E0[1] += (SIN(((scene->unk394 << 1) & 0xFF) * 4) >> 6) >> val;
+
+        if (scene->unk394 < 300) {
+            scene->unk394++;
+        } else {
+            scene->unk37C++;
+        }
+    } else {
+        if ((scene->unk3E0[1] > (scene->unk470[1] - 0x3C00))
+            && (scene->unk37C == 0x11)) {
+            scene->unk37C++;
+        }
+        if (scene->unk3E0[1] < (scene->unk470[1] - 0x2800)) {
+            scene->unk3E0[1] += 0x100;
+        }
+    }
+
+    if (scene->unk37C > 0xD) {
+        sub_808E95C(scene->unk3E0, 0x7800, 2);
     }
 }
