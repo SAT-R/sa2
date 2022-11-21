@@ -99,7 +99,8 @@ struct SomeStruct_59E0 {
     u16 unk6A;
     u8 unk6C;
     u8 unk6D;
-    u8 filler66[30];
+    u8 unk6E;
+    u8 filler6F[29];
     u32 unk8C;
     struct UNK_3005A70 *unk90;
 };

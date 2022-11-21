@@ -195,11 +195,16 @@ gUnknown_080D52E0:
 
     .global gUnknown_080D53D0
 gUnknown_080D53D0:
-    .incbin "baserom.gba", 0x000D53D0, 0xA
+    .byte 14, 15, 16, 17, 18, 19, 20, 21, 18, 19
 
     .global gUnknown_080D53DA
 gUnknown_080D53DA:
-    .incbin "baserom.gba", 0x000D53DA, 0xA
+@ Soundeffects for springs in Music Plant
+    .2byte 300
+    .2byte 301
+    .2byte 302
+    .2byte 303
+    .2byte 0
 
     .global gUnknown_080D53E4
 gUnknown_080D53E4:

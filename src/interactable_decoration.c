@@ -8,14 +8,6 @@
 #include "sprite.h"
 
 typedef struct {
-    /* 0x00 */ Interactable *entity;
-    /* 0x04 */ u16 regionX;
-    /* 0x06 */ u16 regionY;
-    /* 0x08 */ u8 spriteX;
-    /* 0x09 */ u8 spriteY;
-} SpriteBase;
-
-typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ struct UNK_0808B3FC_UNK240 main;
 } Sprite_Decoration;

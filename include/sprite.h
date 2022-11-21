@@ -71,6 +71,11 @@ struct UNK_0808B3FC_UNK240_UNKC {
     s16 unkA;
 };
 
+struct UNK_0808B3FC_UNK240_UNK30 {
+    u8 unk0;
+    u8 unk1;
+}; // size unknown, used in interactable_spring.c
+
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`
 struct UNK_0808B3FC_UNK240 {

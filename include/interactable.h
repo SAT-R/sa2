@@ -17,4 +17,12 @@ typedef struct {
     s8 data[INTERACTABLE_DATA_SIZE];
 } Interactable;
 
+typedef struct {
+    /* 0x00 */ Interactable *entity;
+    /* 0x04 */ u16 regionX;
+    /* 0x06 */ u16 regionY;
+    /* 0x08 */ u8 spriteX;
+    /* 0x09 */ u8 spriteY;
+} SpriteBase;
+
 #endif // GUARD_INTERACTABLE_H
