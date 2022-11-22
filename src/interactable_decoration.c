@@ -92,8 +92,7 @@ void Task_Interactable_Decoration(void)
     screenY -= gCamera.unk4;
     deco->unk18 = screenY;
 
-    if ((u16)(screenX + (CAM_REGION_WIDTH / 2)) > 496
-        || ((s16)deco->unk18 + (CAM_REGION_WIDTH / 2)) < 0 || (s16)deco->unk18 > 288) {
+    if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->unk18)) {
         entity->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

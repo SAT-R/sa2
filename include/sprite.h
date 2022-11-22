@@ -22,6 +22,13 @@
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
+// NOTE(Jace): The u16-cast is u32 in SA3(?)
+#define IS_OUT_OF_RANGE(x, y, dim)                                                      \
+    (((u16)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)                \
+     || (y > DISPLAY_HEIGHT + (dim / 2)))
+
+#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(x, y, CAM_REGION_WIDTH)
+
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {

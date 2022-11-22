@@ -25,7 +25,8 @@ extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
                           struct SomeStruct_59E0 *);
 
 // TODO: make static
-void sub_800E3D0(void);
+void Task_Interactable_Spring(void)(void);
+static void sub_800E3D0(void);
 void sub_800E31C(void);
 
 // TODO: make static
@@ -48,10 +49,10 @@ void initSprite_Interactable_Spring(u8 dirType, void *inEntity, u16 spriteRegion
 #endif
 
 // @HACK
-#define TO_S16(p, index) (((s16 *)(p))[index])
+#define TO_TYPE(type, p, index) (((type *)(p))[index])
 
 // TODO: make static
-void sub_800E3D0(void)
+static void sub_800E3D0(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *main = &spring->main;
@@ -59,12 +60,9 @@ void sub_800E3D0(void)
 
     sub_800E490(main, entity, spring, &gPlayer);
 #ifndef NON_MATCHING
-    if ((u16)(main->unk16 + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X
-        || (TO_S16(main, 12) + (CAM_REGION_WIDTH / 2)) < 0
-        || TO_S16(main, 12) > CAM_BOUND_Y)
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, TO_TYPE(s16, main, 12)))
 #else
-    if ((u16)(main->unk16 + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X
-        || (main->unk18 + (CAM_REGION_WIDTH / 2)) < 0 || main->unk18 > CAM_BOUND_Y)
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, main->unk18))
 #endif
     {
         entity->x = spring->base.spriteX;
