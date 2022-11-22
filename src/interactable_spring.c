@@ -24,6 +24,14 @@ extern void sub_800E19C(u8, void *, u16, u16, u8);
 extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
                           struct SomeStruct_59E0 *);
 
+// TODO: make static
+void sub_800E3D0(void);
+void sub_800E31C(void);
+
+// TODO: make static
+bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
+                   Sprite_Spring *spring, struct SomeStruct_59E0 *player);
+
 extern const u8 gUnknown_080D53D0[10];
 // static const u8 gUnknown_080D53D0[10] = {14, 15, 16, 17, 18, 19, 20, 21, 18, 19};
 
@@ -39,6 +47,48 @@ void initSprite_Interactable_Spring(u8 dirType, void *inEntity, u16 spriteRegion
 }
 #endif
 
+// @HACK
+#define TO_S16(p, index) (((s16 *)(p))[index])
+
+// TODO: make static
+void sub_800E3D0(void)
+{
+    Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *main = &spring->main;
+    Interactable *entity = spring->base.entity;
+
+    sub_800E490(main, entity, spring, &gPlayer);
+#ifndef NON_MATCHING
+    if ((u16)(main->unk16 + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X
+        || (TO_S16(main, 12) + (CAM_REGION_WIDTH / 2)) < 0
+        || TO_S16(main, 12) > CAM_BOUND_Y)
+#else
+    if ((u16)(main->unk16 + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X
+        || (main->unk18 + (CAM_REGION_WIDTH / 2)) < 0 || main->unk18 > CAM_BOUND_Y)
+#endif
+    {
+        entity->x = spring->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        if (sub_8004558(main) == 0) {
+            main->unk20--;
+
+            if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3)
+                && (spring->sub.unk0 / 2) == 0) {
+                main->unk4 = (void *)(VRAM + 0x00012980);
+            }
+
+            sub_8004558(main);
+            gCurTask->main = &sub_800E31C;
+        }
+
+        sub_80051E8(main);
+    }
+}
+
+#undef TO_S16
+
+// TODO: make static
 bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
                    Sprite_Spring *spring, struct SomeStruct_59E0 *player)
 {
@@ -66,6 +116,7 @@ bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
     }
 }
 
+// TODO: Make it static
 void TaskDestructor_Interactable_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TaskGetStructPtr(t);

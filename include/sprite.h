@@ -19,6 +19,9 @@
 #define SpriteGetScreenPos(spritePos, regionPos)                                        \
     ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
 
+#define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
+#define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
+
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {
