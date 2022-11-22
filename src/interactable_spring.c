@@ -11,7 +11,6 @@
 
 #include "constants/songs.h"
 
-
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ struct UNK_0808B3FC_UNK240 main;
@@ -21,16 +20,16 @@ typedef struct {
 #define INITIALIZE_SPRING(dirType)                                                      \
     sub_800E19C(dirType, entity, spriteRegionX, spriteRegionY, param3)
 
-
 extern void sub_800E19C(u8, void *, u16, u16, u8);
 extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
                           struct SomeStruct_59E0 *);
 
 extern const u8 gUnknown_080D53D0[10];
-//static const u8 gUnknown_080D53D0[10] = {14, 15, 16, 17, 18, 19, 20, 21, 18, 19};
+// static const u8 gUnknown_080D53D0[10] = {14, 15, 16, 17, 18, 19, 20, 21, 18, 19};
 
 extern const u16 gUnknown_080D53DA[5];
-//static const u16 gUnknown_080D53DA[5] = {SE_300, SE_301, SE_302, SE_303, 0};
+// static const u16 gUnknown_080D53DA[5] = {SE_MUSIC_PLANT_SPRING_1,
+// SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3, SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY};
 
 #if 0
 void initSprite_Interactable_Spring(u8 dirType, void *inEntity, u16 spriteRegionX,
@@ -40,7 +39,6 @@ void initSprite_Interactable_Spring(u8 dirType, void *inEntity, u16 spriteRegion
 }
 #endif
 
-#if 0
 bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
                    Sprite_Spring *spring, struct SomeStruct_59E0 *player)
 {
@@ -51,29 +49,27 @@ bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
 
     if (((player->unk20 & 0x00400000) == 0)
         && sub_800CDBC(p0, xPos, yPos, player) != 0) {
-        
+
         player->unk6D = gUnknown_080D53D0[spring->sub.unk0];
         player->unk6E = spring->sub.unk1;
-        spring->main.filler2C[0] = 1;
+        player->unk6C = 1;
 
-        if ((gCurrentLevel >> 2) == ZONE_3) { 
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
             m4aSongNumStart(gUnknown_080D53DA[spring->sub.unk1]);
         } else {
             m4aSongNumStart(SE_SPRING);
         }
-
 
         return TRUE;
     } else {
         return FALSE;
     }
 }
-#endif
 
 void TaskDestructor_Interactable_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TaskGetStructPtr(t);
-    if (((gCurrentLevel >> 2) != ZONE_3) || (spring->sub.unk0 / 2 != 0)) {
+    if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->sub.unk0 / 2 != 0)) {
         VramFree(spring->main.unk4);
     }
 }
