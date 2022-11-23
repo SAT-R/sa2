@@ -151,8 +151,9 @@ gUnknown_080D50A0:
 
     .global gUnknown_080D5128
 gUnknown_080D5128:
-    .incbin "baserom.gba", 0x000D5128, 0x8
+    .asciz "STAGE"
 
+    .align 2 , 0
     .global gUnknown_080D5130
 gUnknown_080D5130:
     .incbin "baserom.gba", 0x000D5130, 0x18
