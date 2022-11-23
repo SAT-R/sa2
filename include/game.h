@@ -112,6 +112,7 @@ struct SomeStruct_59E0 {
 
 extern struct SomeStruct_59E0 gPlayer;
 
+
 struct Camera {
     s32 unk0; // x
     s32 unk4; // y
@@ -121,6 +122,22 @@ struct Camera {
 }; /* size 0x80 */
 
 extern struct Camera gCamera;
+
+#define TILE_WIDTH       8
+#define CAM_REGION_WIDTH 256
+#define SpriteGetScreenPos(spritePos, regionPos)                                        \
+    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
+#define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
+#define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
+
+// NOTE(Jace): The u16-cast is u32 in SA3(?)
+#define IS_OUT_OF_RANGE(x, y, dim)                                                      \
+    (((u16)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)                \
+     || (y > DISPLAY_HEIGHT + (dim / 2)))
+
+#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(x, y, CAM_REGION_WIDTH)
+
 
 struct SomeStruct_5660 {
     u8 filler[16];
