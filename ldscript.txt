@@ -41,7 +41,6 @@ SECTIONS
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
         build/sa2/asm/entities_0.o(.text);
-        build/sa2/asm/interactables_spring.o(.text);
         build/sa2/src/interactable_spring.o(.text);
         build/sa2/asm/interactables.o(.text);
         build/sa2/asm/interactables.o(.text);
