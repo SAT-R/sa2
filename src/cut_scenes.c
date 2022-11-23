@@ -2160,3 +2160,119 @@ void sub_809066C(struct ExtraEndingCutScene *scene)
         sub_808E95C(scene->unk3E0, 0x7800, 2);
     }
 }
+
+void sub_8090800(struct ExtraEndingCutScene *scene)
+{
+    if (scene->unk37C < 0xD) {
+        scene->unk470[0] = 0x7800;
+        scene->unk470[1] = 0x4600;
+    } else if (scene->unk37C == 0xD && scene->unk470[1] < 0x8C00) {
+        scene->unk470[1] += 0x80;
+    } else if (scene->unk37C == 0xE) {
+        if (scene->unk470[1] >= 0x5501) {
+            scene->unk470[1] -= 0x40;
+        } else {
+            scene->unk37C++;
+        }
+    } else if (scene->unk37C < 0x11) {
+        if (scene->unk470[1] < 0x8700) {
+            scene->unk470[1] += 0x40;
+        }
+    } else {
+        scene->unk470[1] -= 8;
+    }
+
+    if (scene->unk37C > 0xD) {
+        if (scene->unk396 < 0x400) {
+            scene->unk396 += 0x20;
+        } else {
+            scene->unk396 = 0;
+        }
+
+        scene->unk470[1] += SIN((scene->unk396 & 0xFF) * 4) >> 6;
+    }
+}
+
+// void sub_8090904(struct ExtraEndingCutScene *scene)
+// {
+//     u8 i;
+//     if ((scene->unk37C - 0xD) < 2) {
+//         for (i = 0; i < 6; i++) {
+//             if ((scene->unk47C[i][0] + 0x9FF) < 0x103FF
+//                 || (scene->unk47C[i][1] + 0x9FF < 0xB3FF)) {
+//                 if (i < 3) {
+//                     scene->unk47C[i][0] -= scene->unk47C[i][2] * 0x100;
+//                 } else {
+//                     scene->unk47C[i][0] += scene->unk47C[i][2] * 0x100;
+//                 }
+//                 scene->unk47C[i][1] -= scene->unk47C[i][2] * 0x100;
+//             }
+//         }
+//     }
+
+//     if (scene->unk37C > 0xE) {
+//         for (i = 0; i < 6; i++) {
+//             if (scene->unk381[i] < 0x11) {
+//                 if (i < 3) {
+//                     if (scene->unk47C[i][0] < scene->unk470[0] + 0x3C00) {
+//                         scene->unk47C[i][0] += scene->unk47C[i][2] * 0x80;
+//                     } else {
+//                         scene->unk381[i] |= 0x10;
+//                     }
+
+//                     if ((scene->unk381[i] & 1) == 0) {
+//                         if (scene->unk47C[i][1] < (scene->unk470[0] - 0x1E00)) {
+//                             scene->unk47C[i][1] += scene->unk47C[i][2] * 0x80;
+//                         } else {
+//                             scene->unk381[i] |= 1;
+//                         }
+//                         scene->unk387[i] = 2;
+//                     }
+//                 } else {
+//                     if (scene->unk47C[i][0] > (scene->unk470[0] - 0x3C00)) {
+//                         scene->unk47C[i][0] -= scene->unk47C[i][2] * 0x80;
+//                     } else {
+//                         scene->unk381[i] |= 0x10;
+//                     }
+
+//                     if ((scene->unk381[i] & 1) == 0) {
+//                         if (scene->unk47C[i][1] < (scene->unk470[0] - 0x1E00)) {
+//                             scene->unk47C[i][1] += scene->unk47C[i][2] * 0x80;
+//                         } else {
+//                             scene->unk381[i] |= 1;
+//                         }
+//                     }
+//                     scene->unk381[i] = 1;
+//                 }
+
+//                 if (scene->unk381[i] > 0xF) {
+//                     scene->unk47C[i][3] += scene->unk47C[i][2] * 2;
+
+//                     if (scene->unk47C[i][3] > 0x3FF00) {
+//                         scene->unk47C[i][3] = 0;
+//                     }
+
+//                     if (COS(((scene->unk47C[i][3] >> 2) & 0xFF) * 4) < 0) {
+//                         scene->unk387[i] = 1;
+//                     } else {
+//                         scene->unk387[i] = 2;
+//                     }
+
+//                     scene->unk47C[i][0]
+//                         += COS((scene->unk47C[i][3] >> 2 & 0xFF) * 4) >> 8;
+//                 }
+
+//                 if ((scene->unk381[i] & 1) != 0) {
+//                     scene->unk47C[i][4] += scene->unk47C[i][2] * 2;
+
+//                     if (scene->unk47C[i][4] > 0x3FF00) {
+//                         scene->unk47C[i][4] = 0;
+//                     }
+
+//                     scene->unk47C[i][1] = scene->unk470[0]
+//                         + ((SIN(scene->unk47C[i][4] * 4) >> 6) * 8) - 0x1E00;
+//                 }
+//             }
+//         }
+//     }
+// }
