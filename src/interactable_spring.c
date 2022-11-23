@@ -147,9 +147,6 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
     sub_8004558(main);
 }
 
-// @HACK
-#define TO_TYPE(type, p, index) (((type *)(p))[index])
-
 // TODO: make static
 static void Task_Interactable_Spring(void)
 {
@@ -165,11 +162,7 @@ static void Task_Interactable_Spring(void)
             main->unk4 = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
-#ifndef NON_MATCHING
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, TO_TYPE(s16, main, 12)))
-#else
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, main->unk18))
-#endif
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18))
     {
         entity->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
@@ -185,11 +178,8 @@ static void sub_800E3D0(void)
     Interactable *entity = spring->base.entity;
 
     sub_800E490(main, entity, spring, &gPlayer);
-#ifndef NON_MATCHING
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, TO_TYPE(s16, main, 12)))
-#else
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, main->unk18))
-#endif
+
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18))
     {
         entity->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
@@ -208,8 +198,6 @@ static void sub_800E3D0(void)
         sub_80051E8(main);
     }
 }
-
-#undef TO_S16
 
 static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
                           Sprite_Spring *spring, struct SomeStruct_59E0 *player)
