@@ -11,10 +11,18 @@
 
 PACKED
 typedef struct {
-    u8 x;
-    u8 y;
-    u8 index;
-    s8 data[INTERACTABLE_DATA_SIZE];
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+    /* 0x03 */ s8 data[INTERACTABLE_DATA_SIZE];
 } Interactable;
+
+typedef struct {
+    /* 0x00 */ Interactable *entity;
+    /* 0x04 */ u16 regionX;
+    /* 0x06 */ u16 regionY;
+    /* 0x08 */ u8 spriteX;
+    /* 0x09 */ u8 spriteY;
+} SpriteBase;
 
 #endif // GUARD_INTERACTABLE_H

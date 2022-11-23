@@ -8,14 +8,6 @@
 #include "sprite.h"
 
 typedef struct {
-    /* 0x00 */ Interactable *entity;
-    /* 0x04 */ u16 regionX;
-    /* 0x06 */ u16 regionY;
-    /* 0x08 */ u8 spriteX;
-    /* 0x09 */ u8 spriteY;
-} SpriteBase;
-
-typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ struct UNK_0808B3FC_UNK240 main;
 } Sprite_Decoration;
@@ -100,8 +92,7 @@ void Task_Interactable_Decoration(void)
     screenY -= gCamera.unk4;
     deco->unk18 = screenY;
 
-    if ((u16)(screenX + (CAM_REGION_WIDTH / 2)) > 496
-        || ((s16)deco->unk18 + (CAM_REGION_WIDTH / 2)) < 0 || (s16)deco->unk18 > 288) {
+    if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->unk18)) {
         entity->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

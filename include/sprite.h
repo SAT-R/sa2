@@ -14,11 +14,6 @@
         target->x = forMatching;                                                        \
     }
 
-#define TILE_WIDTH       8
-#define CAM_REGION_WIDTH 256
-#define SpriteGetScreenPos(spritePos, regionPos)                                        \
-    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
-
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {

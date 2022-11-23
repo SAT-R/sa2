@@ -86,7 +86,7 @@ struct SomeStruct_59E0 {
     u32 filler10;
     u16 unk14;
     u8 filler16[10];
-    u32 unk20;
+    u32 unk20; // moveState - set/compare to values in "include/constants/move_states.h"
     u8 unk24;
     u8 filler24[0x12];
     u8 unk37;
@@ -98,8 +98,14 @@ struct SomeStruct_59E0 {
     u16 unk68;
     u16 unk6A;
     u8 unk6C;
+    /* 0x6D Some player state, cleared after usage
+     *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
+     *  0x0E = Hit an up-spring
+     * */
     u8 unk6D;
-    u8 filler66[30];
+    // 0x6E = Parameter for 0x6D-state(?)
+    u8 unk6E;
+    u8 filler6F[29];
     u32 unk8C;
     struct UNK_3005A70 *unk90;
 };
@@ -115,6 +121,21 @@ struct Camera {
 }; /* size 0x80 */
 
 extern struct Camera gCamera;
+
+#define TILE_WIDTH       8
+#define CAM_REGION_WIDTH 256
+#define SpriteGetScreenPos(spritePos, regionPos)                                        \
+    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
+#define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
+#define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
+
+// NOTE(Jace): The u16-cast is u32 in SA3(?)
+#define IS_OUT_OF_RANGE(x, y, dim)                                                      \
+    (((u16)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)                \
+     || (y > DISPLAY_HEIGHT + (dim / 2)))
+
+#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(x, y, CAM_REGION_WIDTH)
 
 struct SomeStruct_5660 {
     u8 filler[16];

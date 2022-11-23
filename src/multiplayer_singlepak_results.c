@@ -177,7 +177,7 @@ void sub_808207C(void)
                 element->unk18 = 0;
                 element->unk1A = 0x100;
                 element->unk8 = 0;
-#ifndef NONMATCHING
+#ifndef NON_MATCHING
                 var = 0x44c;
                 asm("" ::"r"(var));
 #endif
