@@ -9,6 +9,7 @@
 #include "task.h"
 #include "zones.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
@@ -44,14 +45,53 @@ static void TaskDestructor_Interactable_Spring(struct Task *t);
 extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
                           struct SomeStruct_59E0 *);
 
-extern const u16 gUnknown_080D52E0[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4];
+static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
+    {
+        { SA2_ANIM_SPRING, 0, 20, 0x0000 },
+        { SA2_ANIM_SPRING, 0, 20, 0x0800 },
+        { SA2_ANIM_SPRING, 2, 20, 0x0400 },
+        { SA2_ANIM_SPRING, 2, 20, 0x0000 },
+        { SA2_ANIM_SPRING, 4, 20, 0x0400 },
+        { SA2_ANIM_SPRING, 4, 20, 0x0000 },
+        { SA2_ANIM_SPRING, 4, 20, 0x0C00 },
+        { SA2_ANIM_SPRING, 4, 20, 0x0800 },
+        { SA2_ANIM_SPRING, 6, 15, 0x0400 },
+        { SA2_ANIM_SPRING, 6, 15, 0x0000 },
+    },
+    {
+        { SA2_ANIM_SPRING_MUS_PLA, 0, 20, 0x0000 },
+        { SA2_ANIM_SPRING_MUS_PLA, 0, 20, 0x0800 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, 0x0400 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, 0x0000 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0400 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0000 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0C00 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0800 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, 0x0400 },
+        { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, 0x0000 },
+    },
+    {
+        { SA2_ANIM_SPIKES_TEC_BAS, 0, 20, 0x0000 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 0, 20, 0x0800 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 2, 20, 0x0400 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 2, 20, 0x0000 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 4, 16, 0x0400 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 4, 16, 0x0000 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 4, 16, 0x0C00 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 4, 16, 0x0800 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 6, 12, 0x0400 },
+        { SA2_ANIM_SPIKES_TEC_BAS, 6, 12, 0x0000 },
+    },
+};
 
-extern const u8 gUnknown_080D53D0[10];
-// static const u8 gUnknown_080D53D0[10] = {14, 15, 16, 17, 18, 19, 20, 21, 18, 19};
+// Effects applied onto the player-state.
+// These trigger the player acceleration when touching each of the spring directions
+static const u8 gUnknown_080D53D0[SPRINGTYPE_COUNT]
+    = { 14, 15, 16, 17, 18, 19, 20, 21, 18, 19 };
 
-extern const u16 gUnknown_080D53DA[5];
-// static const u16 gUnknown_080D53DA[5] = {SE_MUSIC_PLANT_SPRING_1,
-// SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3, SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY};
+static const u16 sSpring_MusicPlant_Soundeffects[5]
+    = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3,
+        SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY };
 
 // Finished, but doesn't match.
 static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity,
@@ -92,16 +132,16 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
         springKind = SPRING_KIND_TECHNO_BASE;
 
     if (((s16)springKind != SPRING_KIND_MUSIC_PLANT) || ((springType / 2) != 0)) {
-        u16 tileCount = gUnknown_080D52E0[springKind][springType][2];
+        u16 tileCount = sSpringAnimationData[springKind][springType][2];
         main->unk4 = VramMalloc(tileCount);
     } else {
         main->unk4 = (void *)(OBJ_VRAM0 + 0x2980);
     }
 
-    main->unkA = gUnknown_080D52E0[springKind][springType][0];
-    main->unk20 = gUnknown_080D52E0[springKind][springType][1];
+    main->unkA = sSpringAnimationData[springKind][springType][0];
+    main->unk20 = sSpringAnimationData[springKind][springType][1];
 
-    main->unk10 |= gUnknown_080D52E0[springKind][springType][3];
+    main->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
     spring->unk3E = inEntity->data[0] & 0x3;
     sub_8004558(main);
@@ -187,7 +227,7 @@ static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity
         player->unk6C = 1;
 
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            m4aSongNumStart(gUnknown_080D53DA[spring->unk3E]);
+            m4aSongNumStart(sSpring_MusicPlant_Soundeffects[spring->unk3E]);
         } else {
             m4aSongNumStart(SE_SPRING);
         }
@@ -206,62 +246,64 @@ static void TaskDestructor_Interactable_Spring(struct Task *t)
     }
 }
 
-void initSprite_Interactable_Spring_Big_DownLeft(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_DownLeft(Interactable *entity, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(6);
 }
 
-void initSprite_Interactable_Spring_Normal_Down(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Down(Interactable *entity, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_DOWN);
 }
 
-void initSprite_Interactable_Spring_Big_DownRight(void *entity, u16 spriteRegionX,
-                                                  u16 spriteRegionY, u8 param3)
+void initSprite_Interactable_Spring_Big_DownRight(Interactable *entity,
+                                                  u16 spriteRegionX, u16 spriteRegionY,
+                                                  u8 param3)
 {
     INITIALIZE_SPRING(7);
 }
 
-void initSprite_Interactable_Spring_Normal_Left(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Left(Interactable *entity, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(2);
 }
 
-void initSprite_Interactable_Spring_Normal_Right(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Right(Interactable *entity, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(3);
 }
 
-void initSprite_Interactable_Spring_Big_UpLeft(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_UpLeft(Interactable *entity, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(4);
 }
 
-void initSprite_Interactable_Spring_Normal_Up(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Up(Interactable *entity, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_UP);
 }
 
-void initSprite_Interactable_Spring_Big_UpRight(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_UpRight(Interactable *entity, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(5);
 }
 
-void initSprite_Interactable_Spring_Small_UpLeft(void *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Small_UpLeft(Interactable *entity, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(8);
 }
 
-void initSprite_Interactable_Spring_Small_UpRight(void *entity, u16 spriteRegionX,
-                                                  u16 spriteRegionY, u8 param3)
+void initSprite_Interactable_Spring_Small_UpRight(Interactable *entity,
+                                                  u16 spriteRegionX, u16 spriteRegionY,
+                                                  u8 param3)
 {
     INITIALIZE_SPRING(9);
 }

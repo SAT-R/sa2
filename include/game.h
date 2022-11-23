@@ -86,7 +86,7 @@ struct SomeStruct_59E0 {
     u32 filler10;
     u16 unk14;
     u8 filler16[10];
-    u32 unk20; // moveState - set/compare to values in "include/constants/moveStates.h"
+    u32 unk20; // moveState - set/compare to values in "include/constants/move_states.h"
     u8 unk24;
     u8 filler24[0x12];
     u8 unk37;
@@ -98,7 +98,12 @@ struct SomeStruct_59E0 {
     u16 unk68;
     u16 unk6A;
     u8 unk6C;
+    /* 0x6D Some player state, cleared after usage
+     *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
+     *  0x0E = Hit an up-spring
+     * */
     u8 unk6D;
+    // 0x6E = Parameter for 0x6D-state(?)
     u8 unk6E;
     u8 filler6F[29];
     u32 unk8C;
