@@ -99,8 +99,8 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
                                            u8 spriteY)
 {
     s16 springKind = SPRING_KIND_NORMAL;
-    struct Task *t = TaskCreate(&Task_Interactable_Spring, sizeof(Sprite_Spring), 0x2010,
-                                0, &TaskDestructor_Interactable_Spring);
+    struct Task *t = TaskCreate(Task_Interactable_Spring, sizeof(Sprite_Spring), 0x2010,
+                                0, TaskDestructor_Interactable_Spring);
     Sprite_Spring *spring = TaskGetStructPtr(t);
     struct UNK_0808B3FC_UNK240 *main = &spring->main;
 
@@ -155,7 +155,7 @@ static void Task_Interactable_Spring(void)
     Interactable *entity = spring->base.entity;
 
     if (sub_800E490(main, entity, spring, &gPlayer) != 0) {
-        gCurTask->main = &sub_800E3D0;
+        gCurTask->main = sub_800E3D0;
         main->unk20++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
@@ -192,7 +192,7 @@ static void sub_800E3D0(void)
             }
 
             sub_8004558(main);
-            gCurTask->main = &Task_Interactable_Spring;
+            gCurTask->main = Task_Interactable_Spring;
         }
 
         sub_80051E8(main);
