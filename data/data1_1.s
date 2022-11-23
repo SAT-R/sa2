@@ -189,10 +189,12 @@ gUnknown_080D5204:
 gUnknown_080D5254:
     .incbin "baserom.gba", 0x000D5254, 0x8C
 
+@ Spring_TileInfo data for springs
     .global gUnknown_080D52E0
 gUnknown_080D52E0:
     .incbin "baserom.gba", 0x000D52E0, 0xF0
 
+@ Springs stuff
     .global gUnknown_080D53D0
 gUnknown_080D53D0:
     .byte 14, 15, 16, 17, 18, 19, 20, 21, 18, 19

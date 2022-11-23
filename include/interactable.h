@@ -11,10 +11,10 @@
 
 PACKED
 typedef struct {
-    u8 x;
-    u8 y;
-    u8 index;
-    s8 data[INTERACTABLE_DATA_SIZE];
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+    /* 0x03 */ s8 data[INTERACTABLE_DATA_SIZE];
 } Interactable;
 
 typedef struct {

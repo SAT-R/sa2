@@ -4,31 +4,33 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_800E19C
-sub_800E19C: @ 0x0800E19C
+.if 1
+
+	thumb_func_start initSprite_Interactable_Spring
+initSprite_Interactable_Spring: @ 0x0800E19C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0xc
-	mov sb, r1
+	mov sb, r1              @ sb = inEntity
 	adds r4, r2, #0
 	adds r5, r3, #0
 	ldr r6, [sp, #0x2c]
 	lsls r0, r0, #0x18
-	str r0, [sp, #8]
+	str r0, [sp, #8]        @ sp+8 = (dirType << 24)
 	lsrs r0, r0, #0x18
-	str r0, [sp, #4]
+	str r0, [sp, #4]        @ sp+4 = dirType
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ R4 = spriteRegionX
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ R5 = spriteRegionY
 	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
+	lsrs r6, r6, #0x18      @ R6 = spriteY
 	movs r1, #0
-	mov sl, r1
-	ldr r0, _0800E290 @ =sub_800E31C
+	mov sl, r1              @ springKind = 0
+	ldr r0, _0800E290 @ =Task_Interactable_Spring
 	ldr r2, _0800E294 @ =0x00002010
 	ldr r1, _0800E298 @ =TaskDestructor_Interactable_Spring
 	str r1, [sp]
@@ -39,9 +41,9 @@ sub_800E19C: @ 0x0800E19C
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r2
-	mov r8, r0
+	mov r8, r0              @ R8 = spring
 	ldr r0, _0800E29C @ =IWRAM_START + 0xC
-	adds r7, r2, r0
+	adds r7, r2, r0         @ R7 = main
 	movs r3, #0
 	mov r1, r8
 	strh r4, [r1, #4]
@@ -106,8 +108,8 @@ _0800E256:
 _0800E25E:
 	mov r1, sl
 	lsls r0, r1, #0x10
-	asrs r2, r0, #0x10
-	adds r5, r0, #0
+	asrs r2, r0, #0x10      @ R2 = (s16)springKind
+	adds r5, r0, #0         @ R5 = ((s16)springKind << 16)
 	cmp r2, #1
 	bne _0800E272
 	ldr r1, [sp, #8]
@@ -117,7 +119,7 @@ _0800E25E:
 _0800E272:
 	ldr r1, _0800E2B0 @ =gUnknown_080D52E0
 	ldr r0, [sp, #4]
-	lsls r4, r0, #3
+	lsls r4, r0, #3     
 	lsls r0, r2, #2
 	adds r0, r0, r2
 	lsls r0, r0, #4
@@ -129,7 +131,7 @@ _0800E272:
 	str r0, [r7, #4]
 	b _0800E2BC
 	.align 2, 0
-_0800E290: .4byte sub_800E31C
+_0800E290: .4byte Task_Interactable_Spring
 _0800E294: .4byte 0x00002010
 _0800E298: .4byte TaskDestructor_Interactable_Spring
 _0800E29C: .4byte IWRAM_START + 0xC
@@ -191,90 +193,4 @@ _0800E2BC:
 _0800E314: .4byte 0x06012980
 _0800E318: .4byte gUnknown_080D52E0
 
-	thumb_func_start sub_800E31C
-sub_800E31C: @ 0x0800E31C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r7, _0800E3A4 @ =gCurTask
-	ldr r0, [r7]
-	ldrh r4, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r6, r4, r0
-	adds r0, #0xc
-	adds r5, r4, r0
-	ldr r1, [r6]
-	mov r8, r1
-	ldr r3, _0800E3A8 @ =gPlayer
-	adds r0, r5, #0
-	adds r2, r6, #0
-	bl sub_800E490
-	cmp r0, #0
-	beq _0800E370
-	ldr r1, [r7]
-	ldr r0, _0800E3AC @ =sub_800E3D0
-	str r0, [r1, #8]
-	ldr r0, _0800E3B0 @ =IWRAM_START + 0x2C
-	adds r1, r4, r0
-	ldrb r0, [r1]
-	adds r0, #1
-	strb r0, [r1]
-	ldr r0, _0800E3B4 @ =gCurrentLevel
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x1a
-	cmp r0, #2
-	bne _0800E370
-	ldr r1, _0800E3B8 @ =IWRAM_START + 0x3C
-	adds r0, r4, r1
-	ldrb r0, [r0]
-	lsrs r0, r0, #1
-	cmp r0, #0
-	bne _0800E370
-	ldr r0, _0800E3BC @ =0x06012B00
-	str r0, [r5, #4]
-_0800E370:
-	ldrh r0, [r5, #0x16]
-	adds r0, #0x80
-	lsls r0, r0, #0x10
-	movs r1, #0xf8
-	lsls r1, r1, #0x11
-	cmp r0, r1
-	bhi _0800E394
-	movs r1, #0x18
-	ldrsh r0, [r5, r1]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _0800E394
-	movs r0, #0x18
-	ldrsh r1, [r5, r0]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _0800E3C0
-_0800E394:
-	ldrb r0, [r6, #8]
-	mov r1, r8
-	strb r0, [r1]
-	ldr r0, _0800E3A4 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _0800E3C6
-	.align 2, 0
-_0800E3A4: .4byte gCurTask
-_0800E3A8: .4byte gPlayer
-_0800E3AC: .4byte sub_800E3D0
-_0800E3B0: .4byte IWRAM_START + 0x2C
-_0800E3B4: .4byte gCurrentLevel
-_0800E3B8: .4byte IWRAM_START + 0x3C
-_0800E3BC: .4byte 0x06012B00
-_0800E3C0:
-	adds r0, r5, #0
-	bl sub_80051E8
-_0800E3C6:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
+.endif
