@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 1
 	thumb_func_start initSprite_Interactable_Booster
 initSprite_Interactable_Booster: @ 0x0805D828
 	push {r4, r5, r6, r7, lr}
@@ -22,11 +23,11 @@ initSprite_Interactable_Booster: @ 0x0805D828
 	lsrs r5, r5, #0x10
 	lsls r6, r6, #0x18
 	lsrs r6, r6, #0x18
-	ldr r0, _0805D950 @ =sub_805D96C
+	ldr r0, _0805D950 @ =Task_Interactable_Booster
 	movs r1, #0x80
 	lsls r1, r1, #6
 	mov sl, r1
-	ldr r1, _0805D954 @ =sub_80095E8
+	ldr r1, _0805D954 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x3c
 	mov r2, sl
@@ -156,16 +157,17 @@ _0805D940:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0805D950: .4byte sub_805D96C
-_0805D954: .4byte sub_80095E8
+_0805D950: .4byte Task_Interactable_Booster
+_0805D954: .4byte TaskDestructor_80095E8
 _0805D958: .4byte IWRAM_START + 0xC
 _0805D95C: .4byte gCurrentLevel
 _0805D960: .4byte gUnknown_080D942C
 _0805D964: .4byte IWRAM_START + 0x2C
 _0805D968: .4byte IWRAM_START + 0x2E
+.endif
 
-	thumb_func_start sub_805D96C
-sub_805D96C: @ 0x0805D96C
+	thumb_func_start Task_Interactable_Booster
+Task_Interactable_Booster: @ 0x0805D96C
 	push {r4, r5, r6, r7, lr}
 	sub sp, #8
 	ldr r0, _0805D9EC @ =gCurTask
@@ -2246,7 +2248,7 @@ initSprite_Interactable_RotatingHandle: @ 0x0805E998
 	blt _0805EA5E
 	ldr r0, _0805EA70 @ =sub_805EA94
 	ldr r2, _0805EA74 @ =0x00002010
-	ldr r1, _0805EA78 @ =sub_80095E8
+	ldr r1, _0805EA78 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
@@ -2333,7 +2335,7 @@ _0805EA5E:
 	.align 2, 0
 _0805EA70: .4byte sub_805EA94
 _0805EA74: .4byte 0x00002010
-_0805EA78: .4byte sub_80095E8
+_0805EA78: .4byte TaskDestructor_80095E8
 _0805EA7C: .4byte IWRAM_START + 0xC
 _0805EA80: .4byte IWRAM_START + 0x40
 _0805EA84: .4byte 0x00000222
@@ -7773,7 +7775,7 @@ initSprite_Interactable_BouncyBar: @ 0x080614EC
 	mov r8, r0
 	ldr r0, _080615E4 @ =sub_806160C
 	ldr r2, _080615E8 @ =0x00002010
-	ldr r1, _080615EC @ =sub_80095E8
+	ldr r1, _080615EC @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
@@ -7877,7 +7879,7 @@ _080615D2:
 	.align 2, 0
 _080615E4: .4byte sub_806160C
 _080615E8: .4byte 0x00002010
-_080615EC: .4byte sub_80095E8
+_080615EC: .4byte TaskDestructor_80095E8
 _080615F0: .4byte IWRAM_START + 0xC
 _080615F4: .4byte IWRAM_START + 0x3C
 _080615F8: .4byte IWRAM_START + 0x40

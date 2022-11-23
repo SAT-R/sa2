@@ -53562,7 +53562,7 @@ sub_8051214: @ 0x08051214
 	mov sb, r0
 	ldr r0, _08051314 @ =sub_805133C
 	ldr r2, _08051318 @ =0x00004010
-	ldr r1, _0805131C @ =sub_80095E8
+	ldr r1, _0805131C @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x4c
 	movs r3, #0
@@ -53670,7 +53670,7 @@ sub_8051214: @ 0x08051214
 	.align 2, 0
 _08051314: .4byte sub_805133C
 _08051318: .4byte 0x00004010
-_0805131C: .4byte sub_80095E8
+_0805131C: .4byte TaskDestructor_80095E8
 _08051320: .4byte IWRAM_START + 0xC
 _08051324: .4byte sub_801EE64
 _08051328: .4byte IWRAM_START + 0x2E
@@ -58240,7 +58240,7 @@ sub_8053784: @ 0x08053784
 	mov sb, r1
 	ldr r0, _08053878 @ =sub_80538A0
 	ldr r2, _0805387C @ =0x00004020
-	ldr r1, _08053880 @ =sub_80095E8
+	ldr r1, _08053880 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x40
 	movs r3, #0
@@ -58339,7 +58339,7 @@ sub_8053784: @ 0x08053784
 	.align 2, 0
 _08053878: .4byte sub_80538A0
 _0805387C: .4byte 0x00004020
-_08053880: .4byte sub_80095E8
+_08053880: .4byte TaskDestructor_80095E8
 _08053884: .4byte IWRAM_START + 0xC
 _08053888: .4byte IWRAM_START + 0x3C
 _0805388C: .4byte IWRAM_START + 0x3D
@@ -59352,7 +59352,7 @@ sub_8054068: @ 0x08054068
 	lsrs r4, r4, #0x18
 	ldr r0, _080540D0 @ =sub_8054224
 	ldr r2, _080540D4 @ =0x000040B0
-	ldr r1, _080540D8 @ =sub_80095E8
+	ldr r1, _080540D8 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x5c
 	movs r3, #0
@@ -59387,7 +59387,7 @@ sub_8054068: @ 0x08054068
 	.align 2, 0
 _080540D0: .4byte sub_8054224
 _080540D4: .4byte 0x000040B0
-_080540D8: .4byte sub_80095E8
+_080540D8: .4byte TaskDestructor_80095E8
 _080540DC: .4byte IWRAM_START + 0x54
 _080540E0:
 	cmp r2, #0
@@ -60670,7 +60670,7 @@ sub_8054AF0: @ 0x08054AF0
 	ldr r0, _08054BD4 @ =sub_8054BF4
 	movs r2, #0x81
 	lsls r2, r2, #7
-	ldr r1, _08054BD8 @ =sub_80095E8
+	ldr r1, _08054BD8 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x50
 	movs r3, #0
@@ -60763,7 +60763,7 @@ sub_8054AF0: @ 0x08054AF0
 	bx r0
 	.align 2, 0
 _08054BD4: .4byte sub_8054BF4
-_08054BD8: .4byte sub_80095E8
+_08054BD8: .4byte TaskDestructor_80095E8
 _08054BDC: .4byte IWRAM_START + 0xC
 _08054BE0: .4byte IWRAM_START + 0x4C
 _08054BE4: .4byte 0x000001ED
@@ -63125,7 +63125,7 @@ sub_8055EDC: @ 0x08055EDC
 	lsrs r4, r4, #0x18
 	ldr r0, _08055F38 @ =sub_8056014
 	ldr r2, _08055F3C @ =0x00004040
-	ldr r1, _08055F40 @ =sub_80095E8
+	ldr r1, _08055F40 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x54
 	movs r3, #0
@@ -63155,7 +63155,7 @@ sub_8055EDC: @ 0x08055EDC
 	.align 2, 0
 _08055F38: .4byte sub_8056014
 _08055F3C: .4byte 0x00004040
-_08055F40: .4byte sub_80095E8
+_08055F40: .4byte TaskDestructor_80095E8
 _08055F44: .4byte IWRAM_START + 0x50
 _08055F48:
 	ldr r2, _08056004 @ =IWRAM_START + 0x50
@@ -64104,7 +64104,7 @@ sub_8056684: @ 0x08056684
 _080566B2:
 	ldr r0, _080567C0 @ =sub_8056964
 	ldr r2, _080567C4 @ =0x00004040
-	ldr r1, _080567C8 @ =sub_80095E8
+	ldr r1, _080567C8 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x58
 	movs r3, #0
@@ -64237,7 +64237,7 @@ _080567B8: .4byte gGameMode
 _080567BC: .4byte gUnknown_030054EC
 _080567C0: .4byte sub_8056964
 _080567C4: .4byte 0x00004040
-_080567C8: .4byte sub_80095E8
+_080567C8: .4byte TaskDestructor_80095E8
 _080567CC: .4byte IWRAM_START + 0xC
 _080567D0: .4byte gUnknown_030053B8
 _080567D4: .4byte 0x00196225
@@ -65177,7 +65177,7 @@ sub_8056F28: @ 0x08056F28
 	mov sb, r0
 	ldr r0, _08057004 @ =sub_8057024
 	ldr r2, _08057008 @ =0x00004040
-	ldr r1, _0805700C @ =sub_80095E8
+	ldr r1, _0805700C @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x4c
 	movs r3, #0
@@ -65268,7 +65268,7 @@ sub_8056F28: @ 0x08056F28
 	.align 2, 0
 _08057004: .4byte sub_8057024
 _08057008: .4byte 0x00004040
-_0805700C: .4byte sub_80095E8
+_0805700C: .4byte TaskDestructor_80095E8
 _08057010: .4byte IWRAM_START + 0xC
 _08057014: .4byte 0x00000202
 _08057018: .4byte IWRAM_START + 0x2C
@@ -65505,7 +65505,7 @@ sub_80571B4: @ 0x080571B4
 _080571E4:
 	ldr r0, _08057228 @ =sub_8057348
 	ldr r2, _0805722C @ =0x00004040
-	ldr r1, _08057230 @ =sub_80095E8
+	ldr r1, _08057230 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x54
 	movs r3, #0
@@ -65537,7 +65537,7 @@ _08057220: .4byte gGameMode
 _08057224: .4byte gUnknown_030054EC
 _08057228: .4byte sub_8057348
 _0805722C: .4byte 0x00004040
-_08057230: .4byte sub_80095E8
+_08057230: .4byte TaskDestructor_80095E8
 _08057234: .4byte IWRAM_START + 0x50
 _08057238:
 	ldr r2, _08057278 @ =IWRAM_START + 0x50
@@ -66339,7 +66339,7 @@ sub_8057854: @ 0x08057854
 	lsrs r4, r4, #0x18
 	ldr r0, _080578B0 @ =sub_8057980
 	ldr r2, _080578B4 @ =0x00004040
-	ldr r1, _080578B8 @ =sub_80095E8
+	ldr r1, _080578B8 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x54
 	movs r3, #0
@@ -66369,7 +66369,7 @@ sub_8057854: @ 0x08057854
 	.align 2, 0
 _080578B0: .4byte sub_8057980
 _080578B4: .4byte 0x00004040
-_080578B8: .4byte sub_80095E8
+_080578B8: .4byte TaskDestructor_80095E8
 _080578BC: .4byte IWRAM_START + 0x50
 _080578C0:
 	ldr r2, _08057978 @ =IWRAM_START + 0x50
@@ -67914,7 +67914,7 @@ sub_805849C: @ 0x0805849C
 _080584CA:
 	ldr r0, _080585B4 @ =sub_80585DC
 	ldr r2, _080585B8 @ =0x00004040
-	ldr r1, _080585BC @ =sub_80095E8
+	ldr r1, _080585BC @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x60
 	movs r3, #0
@@ -68029,7 +68029,7 @@ _080585AC: .4byte gGameMode
 _080585B0: .4byte gUnknown_030054EC
 _080585B4: .4byte sub_80585DC
 _080585B8: .4byte 0x00004040
-_080585BC: .4byte sub_80095E8
+_080585BC: .4byte TaskDestructor_80095E8
 _080585C0: .4byte IWRAM_START + 0xC
 _080585C4: .4byte IWRAM_START + 0x5E
 _080585C8: .4byte IWRAM_START + 0x5C
@@ -69789,7 +69789,7 @@ sub_80593B4: @ 0x080593B4
 	mov r8, r0
 	ldr r0, _080594B8 @ =sub_80594E0
 	ldr r2, _080594BC @ =0x00004040
-	ldr r1, _080594C0 @ =sub_80095E8
+	ldr r1, _080594C0 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x5c
 	movs r3, #0
@@ -69899,7 +69899,7 @@ sub_80593B4: @ 0x080593B4
 	.align 2, 0
 _080594B8: .4byte sub_80594E0
 _080594BC: .4byte 0x00004040
-_080594C0: .4byte sub_80095E8
+_080594C0: .4byte TaskDestructor_80095E8
 _080594C4: .4byte IWRAM_START + 0xC
 _080594C8: .4byte IWRAM_START + 0x58
 _080594CC: .4byte IWRAM_START + 0x59
@@ -70207,7 +70207,7 @@ sub_805971C: @ 0x0805971C
 	mov sb, r0
 	ldr r0, _0805982C @ =sub_8059858
 	ldr r2, _08059830 @ =0x00004040
-	ldr r1, _08059834 @ =sub_80095E8
+	ldr r1, _08059834 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x60
 	movs r3, #0
@@ -70323,7 +70323,7 @@ sub_805971C: @ 0x0805971C
 	.align 2, 0
 _0805982C: .4byte sub_8059858
 _08059830: .4byte 0x00004040
-_08059834: .4byte sub_80095E8
+_08059834: .4byte TaskDestructor_80095E8
 _08059838: .4byte IWRAM_START + 0xC
 _0805983C: .4byte IWRAM_START + 0x5A
 _08059840: .4byte IWRAM_START + 0x5C
@@ -70892,7 +70892,7 @@ sub_8059C9C: @ 0x08059C9C
 	mov r8, r0
 	ldr r0, _08059D7C @ =sub_8059D9C
 	ldr r2, _08059D80 @ =0x00004050
-	ldr r1, _08059D84 @ =sub_80095E8
+	ldr r1, _08059D84 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x48
 	movs r3, #0
@@ -70985,7 +70985,7 @@ sub_8059C9C: @ 0x08059C9C
 	.align 2, 0
 _08059D7C: .4byte sub_8059D9C
 _08059D80: .4byte 0x00004050
-_08059D84: .4byte sub_80095E8
+_08059D84: .4byte TaskDestructor_80095E8
 _08059D88: .4byte IWRAM_START + 0xC
 _08059D8C: .4byte IWRAM_START + 0x44
 _08059D90: .4byte 0x000001FF
