@@ -86,7 +86,7 @@ struct SomeStruct_59E0 {
     u32 filler10;
     u16 unk14;
     u8 filler16[10];
-    u32 unk20;
+    u32 unk20; // moveState - set/compare to values in "include/constants/moveStates.h"
     u8 unk24;
     u8 filler24[0x12];
     u8 unk37;
