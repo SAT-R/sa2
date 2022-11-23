@@ -112,7 +112,6 @@ struct SomeStruct_59E0 {
 
 extern struct SomeStruct_59E0 gPlayer;
 
-
 struct Camera {
     s32 unk0; // x
     s32 unk4; // y
@@ -137,7 +136,6 @@ extern struct Camera gCamera;
      || (y > DISPLAY_HEIGHT + (dim / 2)))
 
 #define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(x, y, CAM_REGION_WIDTH)
-
 
 struct SomeStruct_5660 {
     u8 filler[16];

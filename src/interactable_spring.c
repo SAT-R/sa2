@@ -162,8 +162,7 @@ static void Task_Interactable_Spring(void)
             main->unk4 = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18))
-    {
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18)) {
         entity->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -179,8 +178,7 @@ static void sub_800E3D0(void)
 
     sub_800E490(main, entity, spring, &gPlayer);
 
-    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18))
-    {
+    if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18)) {
         entity->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
