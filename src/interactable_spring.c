@@ -32,13 +32,12 @@ typedef struct {
 #define NUM_SPRING_KINDS        3
 
 #define INITIALIZE_SPRING(springType)                                                   \
-    initSprite_Interactable_Spring(springType, entity, spriteRegionX, spriteRegionY,    \
-                                   param3)
+    initSprite_Interactable_Spring(springType, ia, spriteRegionX, spriteRegionY, param3)
 
 static void initSprite_Interactable_Spring(u8, Interactable *, u16, u16, u8);
 static void Task_Interactable_Spring(void);
 static void sub_800E3D0(void);
-static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
+static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
                           Sprite_Spring *spring, struct SomeStruct_59E0 *player);
 static void TaskDestructor_Interactable_Spring(struct Task *t);
 
@@ -94,7 +93,7 @@ static const u16 sSpring_MusicPlant_Soundeffects[5]
         SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY };
 
 // Finished, but doesn't match.
-static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity,
+static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
                                            u16 spriteRegionX, u16 spriteRegionY,
                                            u8 spriteY)
 {
@@ -106,13 +105,13 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
 
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
-    spring->base.entity = inEntity;
-    spring->base.spriteX = inEntity->x;
+    spring->base.ia = ia;
+    spring->base.spriteX = ia->x;
     spring->base.spriteY = spriteY;
 
-    main->unk16 = SpriteGetScreenPos(inEntity->x, spriteRegionX);
-    main->unk18 = SpriteGetScreenPos(inEntity->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(inEntity);
+    main->unk16 = SpriteGetScreenPos(ia->x, spriteRegionX);
+    main->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(ia);
 
     main->unk1A = 0x480;
     main->unk8 = springKind;
@@ -143,7 +142,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
 
     main->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
-    spring->unk3E = inEntity->d.sData[0] & 0x3;
+    spring->unk3E = ia->d.sData[0] & 0x3;
     sub_8004558(main);
 }
 
@@ -152,9 +151,9 @@ static void Task_Interactable_Spring(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *main = &spring->main;
-    Interactable *entity = spring->base.entity;
+    Interactable *ia = spring->base.ia;
 
-    if (sub_800E490(main, entity, spring, &gPlayer) != 0) {
+    if (sub_800E490(main, ia, spring, &gPlayer) != 0) {
         gCurTask->main = sub_800E3D0;
         main->unk20++;
 
@@ -163,7 +162,7 @@ static void Task_Interactable_Spring(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18)) {
-        entity->x = spring->base.spriteX;
+        ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(main);
@@ -174,12 +173,12 @@ static void sub_800E3D0(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *main = &spring->main;
-    Interactable *entity = spring->base.entity;
+    Interactable *ia = spring->base.ia;
 
-    sub_800E490(main, entity, spring, &gPlayer);
+    sub_800E490(main, ia, spring, &gPlayer);
 
     if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18)) {
-        entity->x = spring->base.spriteX;
+        ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         if (sub_8004558(main) == 0) {
@@ -197,11 +196,11 @@ static void sub_800E3D0(void)
     }
 }
 
-static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *inEntity,
+static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
                           Sprite_Spring *spring, struct SomeStruct_59E0 *player)
 {
     s16 xPos = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    s16 yPos = SpriteGetScreenPos(inEntity->y, spring->base.regionY);
+    s16 yPos = SpriteGetScreenPos(ia->y, spring->base.regionY);
     p0->unk16 = xPos - gCamera.unk0;
     p0->unk18 = yPos - gCamera.unk4;
 
@@ -232,64 +231,62 @@ static void TaskDestructor_Interactable_Spring(struct Task *t)
     }
 }
 
-void initSprite_Interactable_Spring_Big_DownLeft(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_DownLeft(Interactable *ia, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(6);
 }
 
-void initSprite_Interactable_Spring_Normal_Down(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Down(Interactable *ia, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_DOWN);
 }
 
-void initSprite_Interactable_Spring_Big_DownRight(Interactable *entity,
-                                                  u16 spriteRegionX, u16 spriteRegionY,
-                                                  u8 param3)
+void initSprite_Interactable_Spring_Big_DownRight(Interactable *ia, u16 spriteRegionX,
+                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(7);
 }
 
-void initSprite_Interactable_Spring_Normal_Left(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Left(Interactable *ia, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(2);
 }
 
-void initSprite_Interactable_Spring_Normal_Right(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Right(Interactable *ia, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(3);
 }
 
-void initSprite_Interactable_Spring_Big_UpLeft(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_UpLeft(Interactable *ia, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(4);
 }
 
-void initSprite_Interactable_Spring_Normal_Up(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Normal_Up(Interactable *ia, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_UP);
 }
 
-void initSprite_Interactable_Spring_Big_UpRight(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Big_UpRight(Interactable *ia, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(5);
 }
 
-void initSprite_Interactable_Spring_Small_UpLeft(Interactable *entity, u16 spriteRegionX,
+void initSprite_Interactable_Spring_Small_UpLeft(Interactable *ia, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(8);
 }
 
-void initSprite_Interactable_Spring_Small_UpRight(Interactable *entity,
-                                                  u16 spriteRegionX, u16 spriteRegionY,
-                                                  u8 param3)
+void initSprite_Interactable_Spring_Small_UpRight(Interactable *ia, u16 spriteRegionX,
+                                                  u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(9);
 }

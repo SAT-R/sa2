@@ -21,7 +21,7 @@ typedef struct {
 } Interactable;
 
 typedef struct {
-    /* 0x00 */ Interactable *entity;
+    /* 0x00 */ Interactable *ia;
     /* 0x04 */ u16 regionX;
     /* 0x06 */ u16 regionY;
     /* 0x08 */ u8 spriteX;
