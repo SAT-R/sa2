@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 1
+.if 0
 	thumb_func_start initSprite_Interactable_Booster
 initSprite_Interactable_Booster: @ 0x0805D828
 	push {r4, r5, r6, r7, lr}
@@ -36,9 +36,9 @@ initSprite_Interactable_Booster: @ 0x0805D828
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r0, r2, r0
+	adds r0, r2, r0     @ R0 = booster
 	ldr r3, _0805D958 @ =IWRAM_START + 0xC
-	adds r7, r2, r3
+	adds r7, r2, r3     @R7 = main
 	movs r1, #0
 	mov sb, r1
 	strh r4, [r0, #4]
@@ -85,6 +85,7 @@ _0805D8A0:
 	str r2, [sp, #4]
 	bl VramMalloc
 	str r0, [r7, #4]
+
 	mov r1, r8
 	movs r0, #3
 	ldrsb r0, [r1, r0]
