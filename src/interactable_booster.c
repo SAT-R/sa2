@@ -43,7 +43,6 @@ void initSprite_Interactable_Booster(Interactable *interactable, u16 spriteRegio
 
     SET_SPRITE_INITIALIZED(interactable);
 
-
     main->unk4 = VramMalloc(gUnknown_080D942C[value][interactable->d.sData[0]].unk0);
     main->unkA = gUnknown_080D942C[value][interactable->d.sData[0]].unk4;
     main->unk20 = gUnknown_080D942C[value][interactable->d.sData[0]].unk6;
