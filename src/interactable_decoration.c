@@ -25,7 +25,7 @@ static const struct UNK_080E0D64 sDecoTileAnimInfo[7] = {
     { 12, SA2_ANIM_WATER_GROUND_SPLASH, 0 },
 };
 
-#define decoId data[0]
+#define decoId d.sData[0]
 
 // InteractableDecorationInit
 void initSprite_Interactable_Decoration(void *inEntity, u16 regionX, u16 regionY,

@@ -14,7 +14,10 @@ typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
-    /* 0x03 */ s8 data[INTERACTABLE_DATA_SIZE];
+    union PACKED {
+        /* 0x03 */ s8 sData[INTERACTABLE_DATA_SIZE];
+        /* 0x03 */ u8 uData[INTERACTABLE_DATA_SIZE];
+    } d;
 } Interactable;
 
 typedef struct {

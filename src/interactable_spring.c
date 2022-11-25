@@ -143,7 +143,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *inEntity
 
     main->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
-    spring->unk3E = inEntity->data[0] & 0x3;
+    spring->unk3E = inEntity->d.sData[0] & 0x3;
     sub_8004558(main);
 }
 

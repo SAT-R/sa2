@@ -17,7 +17,6 @@ extern void TaskDestructor_80095E8(struct Task *);
 
 extern const struct UNK_080E0D64 gUnknown_080D942C[2][6];
 
-#if 1
 void initSprite_Interactable_Booster(Interactable *interactable, u16 spriteRegionX,
                                      u16 spriteRegionY, u8 spriteY)
 {
@@ -45,7 +44,24 @@ void initSprite_Interactable_Booster(Interactable *interactable, u16 spriteRegio
     SET_SPRITE_INITIALIZED(interactable);
 
 
-    main->unk4 = VramMalloc(gUnknown_080D942C[value][interactable->data[0]].unk0);
-    
+    main->unk4 = VramMalloc(gUnknown_080D942C[value][interactable->d.sData[0]].unk0);
+    main->unkA = gUnknown_080D942C[value][interactable->d.sData[0]].unk4;
+    main->unk20 = gUnknown_080D942C[value][interactable->d.sData[0]].unk6;
+    main->unk1A = 0x480;
+    main->unk8 = 0;
+    main->unk14 = 0;
+    main->unk1C = 0;
+    main->unk21 = 0xFF;
+    main->unk22 = 0x10;
+    main->unk25 = 0;
+    main->unk28 = -1;
+    main->unk10 = 0x2000;
+
+    if (interactable->d.uData[2] != 0) {
+        main->unk10 |= 0x800;
+    }
+
+    if (interactable->d.sData[1] != 0) {
+        main->unk10 |= 0x400;
+    }
 }
-#endif
