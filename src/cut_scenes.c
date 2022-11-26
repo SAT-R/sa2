@@ -1650,18 +1650,18 @@ struct ExtraEndingCutScene {
 
     u32 unk39C;
 
-    u32 unk3A0[8][2];
+    s32 unk3A0[8][2];
     s32 unk3E0[2];
 
-    u32 unk3E8[10][3];
+    s32 unk3E8[10][3];
     s32 unk460;
     s32 unk464;
     u8 filler468[8];
     s32 unk470[2];
     u32 unk478;
     s32 unk47C[6][5];
-    u32 unk4F4[12][3];
-    u32 unk584[6][3];
+    s32 unk4F4[12][3];
+    s32 unk584[6][3];
 }; /* size 0x5CC */
 
 void sub_8090480(void);
@@ -2214,9 +2214,6 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
 
     if (scene->unk37C > 0xE) {
         for (i = 0; i < 6; i++) {
-#ifndef NON_MATCHING
-            s32 var = 0x474;
-#endif
             if (scene->unk381[i] < 0x11) {
                 if (i < 3) {
                     if (scene->unk47C[i][0] < (scene->unk470[0] + 0x3C00)) {
@@ -2281,8 +2278,6 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
                     + ((SIN((scene->unk47C[i][4] & 0xFF) * 4) >> 6) * 8);
             }
 #ifndef NON_MATCHING
-            if (var != 0x474)
-                break;
             ++i;
             --i;
 #endif
@@ -2311,22 +2306,261 @@ void sub_8090C24(struct ExtraEndingCutScene *scene)
 
 extern const u32 gUnknown_080E1444[18];
 
-// void sub_8090CA0(struct ExtraEndingCutScene *scene)
+void sub_8090CA0(struct ExtraEndingCutScene *scene)
+{
+    u8 i;
+    if (scene->unk37C > 0xC) {
+        for (i = 0; i < 6; i++) {
+            if ((scene->unk584[i][0] > -0xA00 && scene->unk584[i][0] < 0xFA00)
+                || (scene->unk584[i][1] > -0xA00 && scene->unk584[i][1] < 0xAA00)) {
+
+                if (i < 3) {
+                    scene->unk584[i][0] -= scene->unk584[i][2] >> 6;
+                } else {
+                    scene->unk584[i][0] += scene->unk584[i][2] >> 6;
+                }
+
+                scene->unk584[i][1] -= scene->unk584[i][2] >> 7;
+#ifndef NON_MATCHING
+                if (gUnknown_080E1444 != gUnknown_080E1444)
+                    break;
+#endif
+                scene->unk584[i][2] += gUnknown_080E1444[i * 3];
+            }
+        }
+    }
+}
+
+void sub_8090D60(struct ExtraEndingCutScene *scene)
+{
+    u8 i;
+
+    if (scene->unk37C < 0xD) {
+        for (i = 0; i < scene->unk37C; i++) {
+            if (scene->unk4F4[i][1] > -0xA00 && scene->unk4F4[i][1] < 0xAA00) {
+                scene->unk4F4[i][0] = gUnknown_080E13AC[i][0] << 8;
+                scene->unk4F4[i][1] -= scene->unk4F4[i][2] >> 3;
+                scene->unk4F4[i][2] += gUnknown_080E13AC[i][2];
+            } else {
+                scene->unk4F4[i][2] = 0;
+                scene->unk4F4[i][1] = gUnknown_080E13AC[i][1] << 8;
+            }
+        }
+    }
+}
+
+void sub_8090E18(struct ExtraEndingCutScene *scene)
+{
+    u8 i;
+    u32 max;
+    if (scene->unk37C == 13) {
+        max = 4;
+    } else {
+        max = 10;
+    }
+
+    for (i = 0; i < max; i++) {
+        if (scene->unk3E8[i][1] < -0x5A00) {
+            scene->unk3E8[i][1] = 0xE600;
+            scene->unk3E8[i][2] = (1 << ((Random() & 3) + 0xB)) + 0x100;
+            scene->unk3E8[i][0] = Random() & 0xFF;
+        }
+
+        scene->unk3E8[i][1] -= scene->unk3E8[i][2];
+    }
+}
+
+extern const u32 gUnknown_080E15A8[8];
+
+void sub_8090EB4(struct ExtraEndingCutScene *scene)
+{
+    u8 i;
+    for (i = 0; i < 8; i++) {
+        if (scene->unk3A0[i][1] < -0x14) {
+            scene->unk3A0[i][1] = 0xE600;
+            scene->unk3A0[i][0] -= 0x5000;
+
+            if (scene->unk3A0[i][0] < 0) {
+                scene->unk3A0[i][0] = 0xF000;
+            }
+        }
+
+        scene->unk3A0[i][1] -= gUnknown_080E15A8[i] * 2;
+
+        if (scene->unk37C == 0xE && scene->unk470[1] > 0x5000) {
+            scene->unk3A0[i][1] -= 0x40;
+        }
+        if (scene->unk37C == 0xF && scene->unk470[1] < 0x8C00) {
+            scene->unk3A0[i][1] += 0x20;
+        }
+    }
+}
+
+extern const u8 gUnknown_080E15C8[4][0x20];
+
+void sub_8090F6C(struct ExtraEndingCutScene *scene)
+{
+    if (scene->unk37C < 0xD) {
+        if (scene->unk37D != 0 && scene->unk37E == 0) {
+            scene->unk37D--;
+            return;
+        }
+
+        if (scene->unk37F != 0) {
+            scene->unk37F--;
+            if (scene->unk37E <= 3) {
+                DmaCopy32(3, gUnknown_080E15C8[scene->unk37E], &gObjPalette[0x30], 0x20);
+            } else {
+                DmaCopy32(3, gUnknown_080E15C8[6 - scene->unk37E], &gObjPalette[0x30],
+                          0x20);
+            }
+        } else {
+            scene->unk37E++;
+            scene->unk37F = gUnknown_080E154A[scene->unk37C];
+        }
+
+        if (scene->unk37E == 7) {
+            scene->unk37E = 0;
+            scene->unk37D = gUnknown_080E1530[scene->unk37C];
+        }
+    }
+}
+
+// void sub_8091044(struct ExtraEndingCutScene *scene)
 // {
-//     if (scene->unk37C > 0xC) {
-//         u8 i;
+//     u8 i;
+//     u32 max;
+//     struct UNK_0808B3FC_UNK240 *element;
+//     if (scene->unk37C == 13) {
+//         max = 4;
+//     } else {
+//         max = 10;
+//     }
+
+//     for (i = 0; i < max; i++) {
+//         element = &scene->unk340;
+//         element->unkA = 0x337;
+//         element->unk20 = 0;
+
+//         element->unk16 = scene->unk3E8[i][0];
+//         element->unk18 = scene->unk3E8[i][1];
+//         sub_80051E8(element);
+//     }
+
+//     if (gBgScrollRegs[0][1] > 0x6D) {
+//         u32 someVar = 0;
+//         for (i = 0; i < 8; i++) {
+//             element = &scene->unk280[i & 3];
+//             element->unkA = gUnknown_080E12FC[(i & 3) + 3].unk4;
+//             element->unk20 = gUnknown_080E12FC[(i & 3) + 3].unk6;
+
+//             if (someVar > 4) {
+//                 someVar = 1;
+//             }
+
+//             element->unk16 = scene->unk3A0[i][0] >> 8 - (someVar * 100);
+//             element->unk18 = scene->unk3A0[i][1] >> 8;
+
+//             sub_80051E8(element);
+//         }
+//     }
+
+//     element = &scene->unk40;
+//     if (scene->unk37C == 0xD) {
+//         element->unkA = 0x333;
+//         element->unk20 = 0;
+//     } else if ((u8)(scene->unk37C - 0xE) < 3) {
+//         element->unkA = 0x336;
+//         element->unk20 = 0;
+//     } else if (scene->unk37C >= 0x11) {
+//         element->unkA = 0x336;
+//         element->unk20 = 1;
+//     }
+//     element->unk16 = scene->unk3E0[0] >> 8;
+//     element->unk18 = scene->unk3E0[1] >> 8;
+//     sub_8004558(element);
+//     sub_80051E8(element);
+
+//     if (scene->unk37C < 0xE) {
+//         element = &scene->unkA0;
+//         element->unk16 = scene->unk460;
+//         element->unk18 = scene->unk464;
+
+//         if (scene->unk37C == 1) {
+//             element->unkA = 0x317;
+//             element->unk20 = 1;
+//             sub_8004558(element);
+//         } else if (scene->unk37C == 0xD) {
+//             element->unkA = 0x317;
+//             element->unk20 = 2;
+//             sub_8004558(element);
+//         }
+//         sub_80051E8(element);
+//     }
+
+//     if (scene->unk37C < 0xD) {
+//         for (i = 0; i < scene->unk37C; i++) {
+//             element = &scene->unk1F0;
+//             element->unk16 = scene->unk4F4[i][0] >> 8;
+//             element->unk16 = scene->unk4F4[i][1] >> 8;
+//             sub_8004558(element);
+//             sub_80051E8(element);
+//         }
+//     } else {
 //         for (i = 0; i < 6; i++) {
-//             if ((u32)(scene->unk584[i][0] + 0x9FF) < 0x103FF
-//                 || (u32)(scene->unk584[i][1] + 0x9FF) < 0xB3FF) {
-//                 if (i < 3) {
-//                     scene->unk584[i][0] -= scene->unk584[i][2] >> 6;
-//                 } else {
-//                     scene->unk584[i][0] += scene->unk584[i][2] >> 6;
+//             element = &scene->unkD0[i];
+//             element->unkA = gUnknown_080E12FC[i].unk4;
+//             element->unk20 = gUnknown_080E12FC[i].unk6;
+//             element->unk16 = scene->unk584[i][0] >> 8;
+//             element->unk18 = scene->unk584[i][1] >> 8;
+//             sub_80051E8(scene);
+//         }
+//     }
+
+//     if (gBgScrollRegs[0][1] < 0x6E) {
+//         element = &scene->unk220;
+//         element->unk16 = scene->unk460;
+//         element->unk18 = scene->unk464 + 0x1E;
+//         sub_8004558(element);
+
+//         if (scene->unk380 != 0) {
+//             scene->unk380--;
+//             sub_80051E8(element);
+//         } else {
+//             scene->unk380 = 2;
+//         }
+//     }
+//     if (scene->unk37C > 0xC) {
+//         for (i = 0; i < 6; i++) {
+//             element = &scene->unk70;
+//             element->unk16 = scene->unk47C[i][0] >> 8;
+//             element->unk18 = scene->unk47C[i][1] >> 8;
+
+//             if (scene->unk37C >= 0xF) {
+//                 if (scene->unk387[i] == 1) {
+//                     element->unk20 &= ~0x400;
 //                 }
 
-//                 scene->unk584[i][1] -= scene->unk584[i][2] >> 7;
-//                 scene->unk584[i][2] += gUnknown_080E1444[i * 3];
+//                 if (scene->unk387[i] == 2) {
+//                     element->unk20 |= 0x400;
+//                 }
+//             } else {
+//                 if (i < 3) {
+//                     element->unk20 |= 0x400;
+//                 } else {
+//                     element->unk20 &= ~0x400;
+//                 }
 //             }
+
+//             sub_8004558(element);
+//             sub_80051E8(element);
 //         }
+
+//         element = &scene->unk250;
+//         element->unk16 = scene->unk470 >> 8;
+//         element->unk18 = scene->unk474 >> 8;
+
+//         sub_8004558(element);
+//         sub_80051E8(element);
 //     }
 // }
