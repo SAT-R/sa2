@@ -3149,8 +3149,8 @@ _080095DC: .4byte gGameMode
 _080095E0: .4byte gUnknown_03005448
 _080095E4: .4byte gUnknown_030054A8
 
-	thumb_func_start sub_80095E8
-sub_80095E8: @ 0x080095E8
+	thumb_func_start TaskDestructor_80095E8
+TaskDestructor_80095E8: @ 0x080095E8
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

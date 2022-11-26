@@ -84,15 +84,21 @@ struct SomeStruct_59E0 {
     s32 unkC;
 
     u32 filler10;
-    u16 unk14;
-    u8 filler16[10];
+    s16 unk14; // ground speed?
+    u8 unk16;
+    u8 unk17;
+    u8 filler18[8];
     u32 unk20; // moveState - set/compare to values in "include/constants/move_states.h"
     u8 unk24;
     u8 filler24[0x12];
     u8 unk37;
-    u8 filler38[100 - 0x14 - 0x24 - 8];
+    u8 filler38[100 - 0x14 - 0x24 - 6 - 4];
+    u8 unk5A;
+    u8 unk5B;
     u16 unk5C;
-    u8 filler5E[6];
+    u8 filler5E[4];
+    u8 unk62;
+    u8 unk63;
     u16 unk64;
     u16 unk66;
     u16 unk68;

@@ -9,7 +9,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 main;
+    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_Decoration;
 
 void Task_Interactable_Decoration(void);
@@ -25,37 +25,36 @@ static const struct UNK_080E0D64 sDecoTileAnimInfo[7] = {
     { 12, SA2_ANIM_WATER_GROUND_SPLASH, 0 },
 };
 
-#define decoId data[0]
+#define decoId d.sData[0]
 
 // InteractableDecorationInit
-void initSprite_Interactable_Decoration(void *inEntity, u16 regionX, u16 regionY,
+void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regionY,
                                         u8 spriteY)
 {
     struct Task *t;
     Sprite_Decoration *decoBase;
     struct UNK_0808B3FC_UNK240 *deco;
-    Interactable *entity = inEntity;
 
-    if (entity->decoId >= 0) {
+    if (ia->decoId >= 0) {
         t = TaskCreate(Task_Interactable_Decoration, sizeof(Sprite_Decoration), 0x2010,
                        0, TaskDestructor_Interactable_Decoration);
         decoBase = TaskGetStructPtr(t);
-        deco = &decoBase->main;
+        deco = &decoBase->displayed;
 
         decoBase->base.regionX = regionX;
         decoBase->base.regionY = regionY;
 
-        decoBase->base.entity = entity;
-        decoBase->base.spriteX = entity->x;
+        decoBase->base.ia = ia;
+        decoBase->base.spriteX = ia->x;
         decoBase->base.spriteY = spriteY;
 
-        deco->unk16 = SpriteGetScreenPos(entity->x, regionX);
-        deco->unk18 = SpriteGetScreenPos(entity->y, regionY);
-        SET_SPRITE_INITIALIZED(entity);
+        deco->unk16 = SpriteGetScreenPos(ia->x, regionX);
+        deco->unk18 = SpriteGetScreenPos(ia->y, regionY);
+        SET_SPRITE_INITIALIZED(ia);
 
-        deco->unk4 = VramMalloc(sDecoTileAnimInfo[entity->decoId].unk0);
-        deco->unkA = sDecoTileAnimInfo[entity->decoId].unk4;
-        deco->unk20 = sDecoTileAnimInfo[entity->decoId].unk6;
+        deco->unk4 = VramMalloc(sDecoTileAnimInfo[ia->decoId].unk0);
+        deco->unkA = sDecoTileAnimInfo[ia->decoId].unk4;
+        deco->unk20 = sDecoTileAnimInfo[ia->decoId].unk6;
 
         deco->unk1A = 0x700;
         deco->unk8 = 0;
@@ -72,8 +71,8 @@ void initSprite_Interactable_Decoration(void *inEntity, u16 regionX, u16 regionY
 void Task_Interactable_Decoration(void)
 {
     Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *deco = &decoBase->main;
-    Interactable *entity = decoBase->base.entity;
+    struct UNK_0808B3FC_UNK240 *deco = &decoBase->displayed;
+    Interactable *ia = decoBase->base.ia;
     s32 screenX;
 
 #ifndef NON_MATCHING
@@ -84,7 +83,7 @@ void Task_Interactable_Decoration(void)
 
     screenX = (decoBase->base.spriteX) * TILE_WIDTH;
     screenX += (decoBase->base.regionX) * CAM_REGION_WIDTH;
-    screenY = (entity->y) * TILE_WIDTH;
+    screenY = (ia->y) * TILE_WIDTH;
     screenY += (decoBase->base.regionY) * CAM_REGION_WIDTH;
 
     screenX -= gCamera.unk0;
@@ -93,7 +92,7 @@ void Task_Interactable_Decoration(void)
     deco->unk18 = screenY;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->unk18)) {
-        entity->x = decoBase->base.spriteX;
+        ia->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_8004558(deco);
@@ -105,7 +104,7 @@ void Task_Interactable_Decoration(void)
 void TaskDestructor_Interactable_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
-    VramFree(deco->main.unk4);
+    VramFree(deco->displayed.unk4);
 }
 
 #undef decoId

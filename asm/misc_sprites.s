@@ -4,380 +4,7 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable_Booster
-initSprite_Interactable_Booster: @ 0x0805D828
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	mov r8, r0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	adds r6, r3, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
-	ldr r0, _0805D950 @ =sub_805D96C
-	movs r1, #0x80
-	lsls r1, r1, #6
-	mov sl, r1
-	ldr r1, _0805D954 @ =sub_80095E8
-	str r1, [sp]
-	movs r1, #0x3c
-	mov r2, sl
-	movs r3, #0
-	bl TaskCreate
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r2, r0
-	ldr r3, _0805D958 @ =IWRAM_START + 0xC
-	adds r7, r2, r3
-	movs r1, #0
-	mov sb, r1
-	strh r4, [r0, #4]
-	strh r5, [r0, #6]
-	mov r3, r8
-	str r3, [r0]
-	ldrb r1, [r3]
-	strb r1, [r0, #8]
-	strb r6, [r0, #9]
-	ldrb r0, [r3]
-	lsls r0, r0, #3
-	lsls r4, r4, #8
-	adds r0, r0, r4
-	strh r0, [r7, #0x16]
-	ldrb r0, [r3, #1]
-	lsls r0, r0, #3
-	lsls r5, r5, #8
-	adds r0, r0, r5
-	strh r0, [r7, #0x18]
-	ldr r0, _0805D95C @ =gCurrentLevel
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x1a
-	movs r1, #0
-	cmp r0, #5
-	bne _0805D8A0
-	movs r1, #1
-_0805D8A0:
-	movs r3, #2
-	rsbs r3, r3, #0
-	adds r0, r3, #0
-	mov r3, r8
-	strb r0, [r3]
-	ldr r5, _0805D960 @ =gUnknown_080D942C
-	movs r0, #3
-	ldrsb r0, [r3, r0]
-	lsls r0, r0, #3
-	lsls r4, r1, #1
-	adds r4, r4, r1
-	lsls r4, r4, #4
-	adds r0, r0, r4
-	adds r0, r0, r5
-	ldr r0, [r0]
-	str r2, [sp, #4]
-	bl VramMalloc
-	str r0, [r7, #4]
-	mov r1, r8
-	movs r0, #3
-	ldrsb r0, [r1, r0]
-	lsls r0, r0, #3
-	adds r0, r0, r4
-	adds r0, r0, r5
-	ldrh r0, [r0, #4]
-	strh r0, [r7, #0xa]
-	movs r0, #3
-	ldrsb r0, [r1, r0]
-	lsls r0, r0, #3
-	adds r0, r0, r4
-	adds r0, r0, r5
-	ldrb r1, [r0, #6]
-	ldr r2, [sp, #4]
-	ldr r3, _0805D964 @ =IWRAM_START + 0x2C
-	adds r0, r2, r3
-	strb r1, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r7, #0x1a]
-	mov r0, sb
-	strh r0, [r7, #8]
-	strh r0, [r7, #0x14]
-	strh r0, [r7, #0x1c]
-	adds r3, #1
-	adds r1, r2, r3
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, _0805D968 @ =IWRAM_START + 0x2E
-	adds r1, r2, r0
-	movs r0, #0x10
-	strb r0, [r1]
-	adds r3, #4
-	adds r1, r2, r3
-	movs r0, #0
-	strb r0, [r1]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r7, #0x28]
-	mov r0, sl
-	str r0, [r7, #0x10]
-	mov r1, r8
-	ldrb r0, [r1, #5]
-	cmp r0, #0
-	beq _0805D92C
-	movs r0, #0x80
-	lsls r0, r0, #4
-	mov r3, sl
-	orrs r0, r3
-	str r0, [r7, #0x10]
-_0805D92C:
-	mov r1, r8
-	movs r0, #4
-	ldrsb r0, [r1, r0]
-	cmp r0, #0
-	beq _0805D940
-	ldr r0, [r7, #0x10]
-	movs r1, #0x80
-	lsls r1, r1, #3
-	orrs r0, r1
-	str r0, [r7, #0x10]
-_0805D940:
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805D950: .4byte sub_805D96C
-_0805D954: .4byte sub_80095E8
-_0805D958: .4byte IWRAM_START + 0xC
-_0805D95C: .4byte gCurrentLevel
-_0805D960: .4byte gUnknown_080D942C
-_0805D964: .4byte IWRAM_START + 0x2C
-_0805D968: .4byte IWRAM_START + 0x2E
-
-	thumb_func_start sub_805D96C
-sub_805D96C: @ 0x0805D96C
-	push {r4, r5, r6, r7, lr}
-	sub sp, #8
-	ldr r0, _0805D9EC @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r6, r1, r0
-	adds r0, #0xc
-	adds r5, r1, r0
-	ldr r7, [r6]
-	ldrb r1, [r6, #8]
-	lsls r1, r1, #3
-	ldrh r0, [r6, #4]
-	lsls r0, r0, #8
-	adds r1, r1, r0
-	ldrb r2, [r7, #1]
-	lsls r2, r2, #3
-	ldrh r0, [r6, #6]
-	lsls r0, r0, #8
-	adds r2, r2, r0
-	ldr r3, _0805D9F0 @ =gCamera
-	ldr r0, [r3]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	subs r0, r1, r0
-	strh r0, [r5, #0x16]
-	ldr r0, [r3, #4]
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	subs r0, r2, r0
-	strh r0, [r5, #0x18]
-	ldr r4, _0805D9F4 @ =gPlayer
-	ldr r3, [r4, #0x20]
-	movs r0, #0x82
-	ands r3, r0
-	cmp r3, #0
-	beq _0805D9BA
-	b _0805DAC4
-_0805D9BA:
-	str r4, [sp]
-	str r3, [sp, #4]
-	adds r0, r5, #0
-	movs r3, #0
-	bl sub_800C204
-	cmp r0, #1
-	beq _0805D9CC
-	b _0805DAC4
-_0805D9CC:
-	adds r0, r4, #0
-	bl sub_80218E4
-	ldr r0, [r4, #0x20]
-	movs r1, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0805D9F8
-	adds r0, r4, #0
-	movs r1, #9
-	bl sub_8023B5C
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #9
-	b _0805DA06
-	.align 2, 0
-_0805D9EC: .4byte gCurTask
-_0805D9F0: .4byte gCamera
-_0805D9F4: .4byte gPlayer
-_0805D9F8:
-	adds r0, r4, #0
-	movs r1, #0xe
-	bl sub_8023B5C
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #0xe
-_0805DA06:
-	strb r0, [r4, #0x17]
-	movs r0, #0x9b
-	bl m4aSongNumStart
-	ldr r2, _0805DA58 @ =gPlayer
-	adds r1, r2, #0
-	adds r1, #0x62
-	movs r0, #0
-	strb r0, [r1]
-	adds r0, r2, #0
-	adds r0, #0x5a
-	movs r3, #1
-	strb r3, [r0]
-	ldr r0, _0805DA5C @ =gUnknown_03005424
-	ldrh r1, [r0]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _0805DA70
-	ldr r1, [r5, #0x10]
-	movs r0, #0x80
-	lsls r0, r0, #4
-	ands r0, r1
-	cmp r0, #0
-	bne _0805DA64
-	movs r0, #0x80
-	lsls r0, r0, #3
-	ands r1, r0
-	cmp r1, #0
-	bne _0805DAAC
-	ldr r0, [r2, #0x20]
-	orrs r0, r3
-	str r0, [r2, #0x20]
-	movs r0, #0x14
-	ldrsh r1, [r2, r0]
-	ldr r0, _0805DA60 @ =0xFFFFF400
-	cmp r1, r0
-	ble _0805DAC4
-	movs r0, #0xf4
-	lsls r0, r0, #8
-	b _0805DAC2
-	.align 2, 0
-_0805DA58: .4byte gPlayer
-_0805DA5C: .4byte gUnknown_03005424
-_0805DA60: .4byte 0xFFFFF400
-_0805DA64:
-	movs r0, #0x80
-	lsls r0, r0, #3
-	ands r1, r0
-	cmp r1, #0
-	bne _0805DA92
-	b _0805DAAC
-_0805DA70:
-	ldr r1, [r5, #0x10]
-	movs r0, #0x80
-	lsls r0, r0, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _0805DA88
-	movs r0, #0x80
-	lsls r0, r0, #3
-	ands r1, r0
-	cmp r1, #0
-	beq _0805DA92
-	b _0805DAAC
-_0805DA88:
-	movs r0, #0x80
-	lsls r0, r0, #3
-	ands r1, r0
-	cmp r1, #0
-	beq _0805DAAC
-_0805DA92:
-	ldr r0, [r2, #0x20]
-	orrs r0, r3
-	str r0, [r2, #0x20]
-	movs r1, #0x14
-	ldrsh r0, [r2, r1]
-	ldr r1, _0805DAA8 @ =0xFFFFF400
-	cmp r0, r1
-	ble _0805DAC4
-	strh r1, [r2, #0x14]
-	b _0805DAC4
-	.align 2, 0
-_0805DAA8: .4byte 0xFFFFF400
-_0805DAAC:
-	ldr r0, [r2, #0x20]
-	movs r1, #2
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r2, #0x20]
-	movs r0, #0x14
-	ldrsh r1, [r2, r0]
-	ldr r0, _0805DAF8 @ =0x00000BFF
-	cmp r1, r0
-	bgt _0805DAC4
-	adds r0, #1
-_0805DAC2:
-	strh r0, [r2, #0x14]
-_0805DAC4:
-	ldrh r0, [r5, #0x16]
-	adds r0, #0x80
-	lsls r0, r0, #0x10
-	movs r1, #0xf8
-	lsls r1, r1, #0x11
-	cmp r0, r1
-	bhi _0805DAE8
-	movs r1, #0x18
-	ldrsh r0, [r5, r1]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _0805DAE8
-	movs r0, #0x18
-	ldrsh r1, [r5, r0]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _0805DB00
-_0805DAE8:
-	ldrb r0, [r6, #8]
-	strb r0, [r7]
-	ldr r0, _0805DAFC @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _0805DB0C
-	.align 2, 0
-_0805DAF8: .4byte 0x00000BFF
-_0805DAFC: .4byte gCurTask
-_0805DB00:
-	adds r0, r5, #0
-	bl sub_8004558
-	adds r0, r5, #0
-	bl sub_80051E8
-_0805DB0C:
-	add sp, #8
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-
+.if 1
 	thumb_func_start sub_805DB14
 sub_805DB14: @ 0x0805DB14
 	push {r4, r5, r6, r7, lr}
@@ -613,6 +240,7 @@ _0805DCDA:
 _0805DCE8: .4byte 0xFFFFFC00
 _0805DCEC: .4byte gCamera
 _0805DCF0: .4byte gCurTask
+.endif
 
 	thumb_func_start initSprite_Interactable_RoundUpSlope
 initSprite_Interactable_RoundUpSlope: @ 0x0805DCF4
@@ -2246,7 +1874,7 @@ initSprite_Interactable_RotatingHandle: @ 0x0805E998
 	blt _0805EA5E
 	ldr r0, _0805EA70 @ =sub_805EA94
 	ldr r2, _0805EA74 @ =0x00002010
-	ldr r1, _0805EA78 @ =sub_80095E8
+	ldr r1, _0805EA78 @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
@@ -2333,7 +1961,7 @@ _0805EA5E:
 	.align 2, 0
 _0805EA70: .4byte sub_805EA94
 _0805EA74: .4byte 0x00002010
-_0805EA78: .4byte sub_80095E8
+_0805EA78: .4byte TaskDestructor_80095E8
 _0805EA7C: .4byte IWRAM_START + 0xC
 _0805EA80: .4byte IWRAM_START + 0x40
 _0805EA84: .4byte 0x00000222
@@ -7773,7 +7401,7 @@ initSprite_Interactable_BouncyBar: @ 0x080614EC
 	mov r8, r0
 	ldr r0, _080615E4 @ =sub_806160C
 	ldr r2, _080615E8 @ =0x00002010
-	ldr r1, _080615EC @ =sub_80095E8
+	ldr r1, _080615EC @ =TaskDestructor_80095E8
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
@@ -7877,7 +7505,7 @@ _080615D2:
 	.align 2, 0
 _080615E4: .4byte sub_806160C
 _080615E8: .4byte 0x00002010
-_080615EC: .4byte sub_80095E8
+_080615EC: .4byte TaskDestructor_80095E8
 _080615F0: .4byte IWRAM_START + 0xC
 _080615F4: .4byte IWRAM_START + 0x3C
 _080615F8: .4byte IWRAM_START + 0x40
