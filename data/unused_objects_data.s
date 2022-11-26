@@ -1,9 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_080D942C
-gUnknown_080D942C:
-    .incbin "baserom.gba", 0x000D942C, 0x60
-
     .global gUnknown_080D948C
 gUnknown_080D948C:
     .incbin "baserom.gba", 0x000D948C, 0x18

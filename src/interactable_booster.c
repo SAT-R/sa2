@@ -8,6 +8,7 @@
 #include "interactable.h"
 #include "sprite.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
@@ -24,7 +25,24 @@ extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16,
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
 
-extern const struct UNK_080E0D64 gUnknown_080D942C[2][6];
+const struct UNK_080E0D64 gUnknown_080D942C[2][6] = {
+    {
+        { 8, SA2_ANIM_BOOSTER, 0 },
+        { 12, SA2_ANIM_BOOSTER, 1 },
+        { 12, SA2_ANIM_BOOSTER, 2 },
+        { 16, SA2_ANIM_BOOSTER, 3 },
+        { 12, SA2_ANIM_BOOSTER, 4 },
+        { 8, SA2_ANIM_BOOSTER, 5 },
+    },
+    {
+        { 8, SA2_ANIM_DIR_ARROW_TEC_BAS, 0},
+        { 12, SA2_ANIM_DIR_ARROW_TEC_BAS, 1},
+        { 12, SA2_ANIM_DIR_ARROW_TEC_BAS, 2},
+        { 16, SA2_ANIM_DIR_ARROW_TEC_BAS, 3},
+        { 16, SA2_ANIM_DIR_ARROW_TEC_BAS, 4},
+        { 8, SA2_ANIM_DIR_ARROW_TEC_BAS, 5},
+    }
+};
 
 #define BOOSTER_SPEED 3072
 
@@ -47,7 +65,7 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
                                 0x2000, 0, TaskDestructor_80095E8);
     Sprite_Booster *booster = TaskGetStructPtr(t);
     struct UNK_0808B3FC_UNK240 *main = &booster->main;
-    int value;
+    u32 value;
 
     booster->base.regionX = spriteRegionX;
     booster->base.regionY = spriteRegionY;
