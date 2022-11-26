@@ -2426,141 +2426,148 @@ void sub_8090F6C(struct ExtraEndingCutScene *scene)
     }
 }
 
-// void sub_8091044(struct ExtraEndingCutScene *scene)
-// {
-//     u8 i;
-//     u32 max;
-//     struct UNK_0808B3FC_UNK240 *element;
-//     if (scene->unk37C == 13) {
-//         max = 4;
-//     } else {
-//         max = 10;
-//     }
+struct UNK_80E1348 {
+    u16 unk0;
+    u8 unk2;
+};
+extern const struct UNK_80E1348 gUnknown_080E1348[2];
 
-//     for (i = 0; i < max; i++) {
-//         element = &scene->unk340;
-//         element->unkA = 0x337;
-//         element->unk20 = 0;
+void sub_8091044(struct ExtraEndingCutScene *scene)
+{
+    u8 i;
+    u32 max;
+    struct UNK_0808B3FC_UNK240 *element;
+    if (scene->unk37C == 13) {
+        max = 4;
+    } else {
+        max = 10;
+    }
+    element = &scene->unk340;
+    for (i = 0; i < max; i++) {
+        element->unkA = gUnknown_080E1348[0].unk0;
+#ifndef NON_MATCHING
+        while (0)
+            ;
+#endif
+        element->unk20 = gUnknown_080E1348[0].unk2;
+        element->unk16 = scene->unk3E8[i][0];
+        element->unk18 = scene->unk3E8[i][1] >> 8;
+        sub_80051E8(element);
+    }
 
-//         element->unk16 = scene->unk3E8[i][0];
-//         element->unk18 = scene->unk3E8[i][1];
-//         sub_80051E8(element);
-//     }
+    if (gBgScrollRegs[0][1] > 0x6D) {
+        max = 0;
+        for (i = 0; i < 8; i++) {
+            element = &scene->unk280[i & 3];
+            element->unkA = gUnknown_080E12FC[(i & 3) + 3].unk4;
+            element->unk20 = gUnknown_080E12FC[(i & 3) + 3].unk6;
 
-//     if (gBgScrollRegs[0][1] > 0x6D) {
-//         u32 someVar = 0;
-//         for (i = 0; i < 8; i++) {
-//             element = &scene->unk280[i & 3];
-//             element->unkA = gUnknown_080E12FC[(i & 3) + 3].unk4;
-//             element->unk20 = gUnknown_080E12FC[(i & 3) + 3].unk6;
+            if (i > 4) {
+                max = 1;
+            }
 
-//             if (someVar > 4) {
-//                 someVar = 1;
-//             }
+            element->unk16 = (scene->unk3A0[i][0] >> 8) - (max * 100);
+            element->unk18 = scene->unk3A0[i][1] >> 8;
 
-//             element->unk16 = scene->unk3A0[i][0] >> 8 - (someVar * 100);
-//             element->unk18 = scene->unk3A0[i][1] >> 8;
+            sub_80051E8(element);
+        }
+    }
 
-//             sub_80051E8(element);
-//         }
-//     }
+    element = &scene->unk40;
+    if (scene->unk37C == 0xD) {
+        element->unkA = gUnknown_080E12FC[1].unk4;
+        element->unk20 = gUnknown_080E12FC[1].unk6;
+    } else if (scene->unk37C == 0xE || scene->unk37C == 0xF || scene->unk37C == 0x10) {
+        element->unkA = gUnknown_080E12FC[2].unk4;
+        element->unk20 = gUnknown_080E12FC[2].unk6;
+    } else if (scene->unk37C >= 0x11) {
+        element->unkA = gUnknown_080E12FC[21].unk4;
+        element->unk20 = gUnknown_080E12FC[21].unk6;
+    }
+    element->unk16 = scene->unk3E0[0] >> 8;
+    element->unk18 = scene->unk3E0[1] >> 8;
+    sub_8004558(element);
+    sub_80051E8(element);
 
-//     element = &scene->unk40;
-//     if (scene->unk37C == 0xD) {
-//         element->unkA = 0x333;
-//         element->unk20 = 0;
-//     } else if ((u8)(scene->unk37C - 0xE) < 3) {
-//         element->unkA = 0x336;
-//         element->unk20 = 0;
-//     } else if (scene->unk37C >= 0x11) {
-//         element->unkA = 0x336;
-//         element->unk20 = 1;
-//     }
-//     element->unk16 = scene->unk3E0[0] >> 8;
-//     element->unk18 = scene->unk3E0[1] >> 8;
-//     sub_8004558(element);
-//     sub_80051E8(element);
+    if (scene->unk37C < 0xE) {
+        element = &scene->unkA0;
+        element->unk16 = scene->unk460;
+        element->unk18 = scene->unk464;
 
-//     if (scene->unk37C < 0xE) {
-//         element = &scene->unkA0;
-//         element->unk16 = scene->unk460;
-//         element->unk18 = scene->unk464;
+        if (scene->unk37C == 10) {
+            element->unkA = gUnknown_080E12FC[11].unk4;
+            element->unk20 = gUnknown_080E12FC[11].unk6;
+            sub_8004558(element);
+        } else if (scene->unk37C == 0xD) {
+            element->unkA = gUnknown_080E12FC[12].unk4;
+            element->unk20 = gUnknown_080E12FC[12].unk6;
+            sub_8004558(element);
+        }
+        sub_80051E8(element);
+    }
 
-//         if (scene->unk37C == 1) {
-//             element->unkA = 0x317;
-//             element->unk20 = 1;
-//             sub_8004558(element);
-//         } else if (scene->unk37C == 0xD) {
-//             element->unkA = 0x317;
-//             element->unk20 = 2;
-//             sub_8004558(element);
-//         }
-//         sub_80051E8(element);
-//     }
+    if (scene->unk37C < 0xD) {
+        element = &scene->unk1F0;
+        for (i = 0; i < scene->unk37C; i++) {
+            element->unk16 = scene->unk4F4[i][0] >> 8;
+            element->unk18 = scene->unk4F4[i][1] >> 8;
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
+    } else {
+        for (i = 0; i < 6; i++) {
+            element = &scene->unkD0[i];
+            element->unkA = gUnknown_080E12FC[i + 0xD].unk4;
+            element->unk20 = gUnknown_080E12FC[i + 0xD].unk6;
+            element->unk16 = scene->unk584[i][0] >> 8;
+            element->unk18 = scene->unk584[i][1] >> 8;
+            sub_80051E8(element);
+        }
+    }
 
-//     if (scene->unk37C < 0xD) {
-//         for (i = 0; i < scene->unk37C; i++) {
-//             element = &scene->unk1F0;
-//             element->unk16 = scene->unk4F4[i][0] >> 8;
-//             element->unk16 = scene->unk4F4[i][1] >> 8;
-//             sub_8004558(element);
-//             sub_80051E8(element);
-//         }
-//     } else {
-//         for (i = 0; i < 6; i++) {
-//             element = &scene->unkD0[i];
-//             element->unkA = gUnknown_080E12FC[i].unk4;
-//             element->unk20 = gUnknown_080E12FC[i].unk6;
-//             element->unk16 = scene->unk584[i][0] >> 8;
-//             element->unk18 = scene->unk584[i][1] >> 8;
-//             sub_80051E8(scene);
-//         }
-//     }
+    if (gBgScrollRegs[0][1] < 0x6E) {
+        element = &scene->unk220;
+        element->unk16 = scene->unk460;
+        element->unk18 = scene->unk464 + 0x1E;
+        sub_8004558(element);
 
-//     if (gBgScrollRegs[0][1] < 0x6E) {
-//         element = &scene->unk220;
-//         element->unk16 = scene->unk460;
-//         element->unk18 = scene->unk464 + 0x1E;
-//         sub_8004558(element);
+        if (scene->unk380 != 0) {
+            scene->unk380--;
+            sub_80051E8(element);
+        } else {
+            scene->unk380 = 2;
+        }
+    }
+    if (scene->unk37C > 0xC) {
+        for (i = 0; i < 6; i++) {
+            element = &scene->unk70;
+            element->unk16 = scene->unk47C[i][0] >> 8;
+            element->unk18 = scene->unk47C[i][1] >> 8;
 
-//         if (scene->unk380 != 0) {
-//             scene->unk380--;
-//             sub_80051E8(element);
-//         } else {
-//             scene->unk380 = 2;
-//         }
-//     }
-//     if (scene->unk37C > 0xC) {
-//         for (i = 0; i < 6; i++) {
-//             element = &scene->unk70;
-//             element->unk16 = scene->unk47C[i][0] >> 8;
-//             element->unk18 = scene->unk47C[i][1] >> 8;
+            if (scene->unk37C >= 0xF) {
+                if (scene->unk387[i] == 1) {
+                    element->unk10 &= ~0x400;
+                } else if (scene->unk387[i] == 2) {
+                    element->unk10 |= 0x400;
+                }
+            } else {
+                if (i < 3) {
+                    element->unk10 &= ~0x400;
 
-//             if (scene->unk37C >= 0xF) {
-//                 if (scene->unk387[i] == 1) {
-//                     element->unk20 &= ~0x400;
-//                 }
+                } else {
+                    element->unk10 |= 0x400;
+                }
+            }
 
-//                 if (scene->unk387[i] == 2) {
-//                     element->unk20 |= 0x400;
-//                 }
-//             } else {
-//                 if (i < 3) {
-//                     element->unk20 |= 0x400;
-//                 } else {
-//                     element->unk20 &= ~0x400;
-//                 }
-//             }
+            sub_8004558(element);
+            sub_80051E8(element);
+        }
 
-//             sub_8004558(element);
-//             sub_80051E8(element);
-//         }
+        element = &scene->unk250;
+        element->unk16 = scene->unk470[0] >> 8;
+        element->unk18 = scene->unk470[1] >> 8;
 
-//         element = &scene->unk250;
-//         element->unk16 = scene->unk470 >> 8;
-//         element->unk18 = scene->unk474 >> 8;
-
-//         sub_8004558(element);
-//         sub_80051E8(element);
-//     }
-// }
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+}
