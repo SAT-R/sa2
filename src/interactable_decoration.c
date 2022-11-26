@@ -9,7 +9,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 main;
+    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_Decoration;
 
 void Task_Interactable_Decoration(void);
@@ -39,7 +39,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
         t = TaskCreate(Task_Interactable_Decoration, sizeof(Sprite_Decoration), 0x2010,
                        0, TaskDestructor_Interactable_Decoration);
         decoBase = TaskGetStructPtr(t);
-        deco = &decoBase->main;
+        deco = &decoBase->displayed;
 
         decoBase->base.regionX = regionX;
         decoBase->base.regionY = regionY;
@@ -71,7 +71,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
 void Task_Interactable_Decoration(void)
 {
     Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *deco = &decoBase->main;
+    struct UNK_0808B3FC_UNK240 *deco = &decoBase->displayed;
     Interactable *ia = decoBase->base.ia;
     s32 screenX;
 
@@ -104,7 +104,7 @@ void Task_Interactable_Decoration(void)
 void TaskDestructor_Interactable_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
-    VramFree(deco->main.unk4);
+    VramFree(deco->displayed.unk4);
 }
 
 #undef decoId
