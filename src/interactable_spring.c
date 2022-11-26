@@ -154,7 +154,7 @@ static void Task_Interactable_Spring(void)
     Interactable *ia = spring->base.ia;
 
     if (sub_800E490(displayed, ia, spring, &gPlayer) != 0) {
-        gCurTask->displayed = sub_800E3D0;
+        gCurTask->main = sub_800E3D0;
         displayed->unk20++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
@@ -189,7 +189,7 @@ static void sub_800E3D0(void)
             }
 
             sub_8004558(displayed);
-            gCurTask->displayed = Task_Interactable_Spring;
+            gCurTask->main = Task_Interactable_Spring;
         }
 
         sub_80051E8(displayed);
