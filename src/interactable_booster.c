@@ -26,7 +26,6 @@ extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
 
 extern const struct UNK_080E0D64 gUnknown_080D942C[2][6];
 
-
 #define BOOSTER_SPEED 3072
 
 // Look left and accelerate
@@ -40,7 +39,6 @@ extern const struct UNK_080E0D64 gUnknown_080D942C[2][6];
     (player).unk20 &= ~MOVESTATE_FACING_LEFT;                                           \
     if (gPlayer.unk14 < BOOSTER_SPEED)                                                  \
         gPlayer.unk14 = BOOSTER_SPEED;
-
 
 void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
                                      u16 spriteRegionY, u8 spriteY)
@@ -89,7 +87,6 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
     }
 }
 
-
 void Task_Interactable_Booster(void)
 {
     Sprite_Booster *booster = TaskGetStructPtr(gCurTask);
@@ -104,8 +101,7 @@ void Task_Interactable_Booster(void)
     main->unk18 = screenY - gCamera.unk4;
 
     if (!(gPlayer.unk20 & (MOVESTATE_DEAD | MOVESTATE_IN_AIR))
-    && (sub_800C204(main, screenX, screenY, 0, &gPlayer, 0) == 1))
-    {
+        && (sub_800C204(main, screenX, screenY, 0, &gPlayer, 0) == 1)) {
         sub_80218E4(&gPlayer);
 
         if (gPlayer.unk20 & MOVESTATE_4) {
@@ -131,7 +127,6 @@ void Task_Interactable_Booster(void)
                     BOOSTER_ACCEL_RIGHT(gPlayer);
                 }
             } else {
-                // _0805DA64
                 if ((main->unk10 & 0x400) != 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
@@ -139,8 +134,7 @@ void Task_Interactable_Booster(void)
                 }
             }
         } else {
-            //_0805DA70
-            if (main->unk10 & 0x800) {
+            if ((main->unk10 & 0x800) != 0) {
                 if ((main->unk10 & 0x400) == 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
@@ -153,11 +147,9 @@ void Task_Interactable_Booster(void)
                     BOOSTER_ACCEL_RIGHT(gPlayer);
                 }
             }
-
-        }        
+        }
     }
 
-    // _0805DAC4
     if (IS_OUT_OF_CAM_RANGE(main->unk16, (s16)main->unk18)) {
         ia->x = booster->base.spriteX;
         TaskDestroy(gCurTask);
