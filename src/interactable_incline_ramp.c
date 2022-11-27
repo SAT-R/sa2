@@ -39,7 +39,7 @@ static void Task_Interactable_InclineRamp(void)
     if (!(moveState & MOVESTATE_DEAD) && (screenX <= TO_SCREEN(gPlayer.unk8))
         && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= TO_SCREEN(gPlayer.unk8))
         && (screenY <= TO_SCREEN(gPlayer.unkC))
-        && ((screenX + ia->d.uData[3] * TILE_WIDTH) >= TO_SCREEN(gPlayer.unkC))
+        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= TO_SCREEN(gPlayer.unkC))
         && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == ia->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.spriteY) == 0) {
