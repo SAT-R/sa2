@@ -1,14 +1,12 @@
 #include "global.h"
 #include "gba/types.h"
 #include "m4a.h"
-//#include "malloc_vram.h"
 
 #include "game.h"
 #include "interactable.h"
 #include "sprite.h"
 #include "task.h"
 
-#include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
@@ -19,9 +17,6 @@ typedef struct {
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023260(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
-
-// ((pos) / CAM_REGION_WIDTH)
-#define TO_SCREEN(pos) ((pos) >> 8)
 
 static void Task_Interactable_InclineRamp(void)
 {
@@ -36,10 +31,10 @@ static void Task_Interactable_InclineRamp(void)
     screenY = SpriteGetScreenPos(ia->y, ramp->base.regionX);
 
     moveState = gPlayer.unk20;
-    if (!(moveState & MOVESTATE_DEAD) && (screenX <= TO_SCREEN(gPlayer.unk8))
-        && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= TO_SCREEN(gPlayer.unk8))
-        && (screenY <= TO_SCREEN(gPlayer.unkC))
-        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= TO_SCREEN(gPlayer.unkC))
+    if (!(moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.unk8))
+        && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.unk8))
+        && (screenY <= Q_24_8_TO_INT(gPlayer.unkC))
+        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.unkC))
         && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == ia->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.spriteY) == 0) {
