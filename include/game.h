@@ -83,8 +83,9 @@ struct SomeStruct_59E0 {
     // y
     s32 unkC;
 
-    u32 filler10;
-    s16 unk14; // ground speed?
+    s16 unk10; // air speed X
+    s16 unk12; // air speed Y
+    s16 unk14; // ground speed
     u8 unk16;
     u8 unk17;
     u8 filler18[8];
