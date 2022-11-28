@@ -3,10 +3,10 @@
 
 .syntax unified
 .arm
-.if 1
+.if 0
 
-	thumb_func_start sub_805DE60
-sub_805DE60: @ 0x0805DE60
+	thumb_func_start Task_Interactable_BouncySpring_
+Task_Interactable_BouncySpring_: @ 0x0805DE60
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -15,33 +15,33 @@ sub_805DE60: @ 0x0805DE60
 	sub sp, #4
 	ldr r0, _0805DF44 @ =gCurTask
 	ldr r0, [r0]
-	ldrh r7, [r0, #6]
+	ldrh r7, [r0, #6]   @ r7 = task-offset
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r7
-	mov sl, r0
+	mov sl, r0          @ sl = spring
 	ldr r0, _0805DF48 @ =IWRAM_START + 0xC
 	adds r0, r0, r7
-	mov sb, r0
+	mov sb, r0          @ sb = displayed
 	mov r1, sl
 	ldr r1, [r1]
-	str r1, [sp]
-	mov r2, sl
+	str r1, [sp]        @ sp = ia
+	mov r2, sl          @ r2 = spring
 	ldrb r1, [r2, #8]
 	lsls r1, r1, #3
 	ldrh r0, [r2, #4]
 	lsls r0, r0, #8
-	adds r3, r1, r0
+	adds r3, r1, r0     @ r3 = screenX
 	ldr r4, [sp]
 	ldrb r1, [r4, #1]
 	lsls r1, r1, #3
 	ldrh r0, [r2, #6]
 	lsls r0, r0, #8
-	adds r2, r1, r0
+	adds r2, r1, r0     @ r2 = screenY
 	ldr r1, _0805DF4C @ =gCamera
 	ldr r0, [r1]
 	subs r0, r3, r0
-	mov r4, sb
+	mov r4, sb          @ r4 = displayed
 	strh r0, [r4, #0x16]
 	ldr r0, [r1, #4]
 	subs r0, r2, r0
@@ -170,10 +170,10 @@ _0805DF7A:
 	bl m4aSongNumStart
 	ldr r0, _0805E008 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805E00C @ =sub_805E02C
+	ldr r0, _0805E00C @ =Task_805E02C
 	str r0, [r1, #8]
 _0805DFBA:
-	mov r1, sb
+	mov r1, sb              @ r1 = displayed
 	ldrh r0, [r1, #0x16]
 	adds r0, #0x80
 	lsls r0, r0, #0x10
@@ -194,7 +194,7 @@ _0805DFBA:
 	cmp r1, r0
 	ble _0805E010
 _0805DFE2:
-	mov r1, sl
+	mov r1, sl          @ r1 = spring
 	ldrb r0, [r1, #8]
 	ldr r2, [sp]
 	strb r0, [r2]
@@ -209,7 +209,7 @@ _0805DFFC: .4byte IWRAM_START + 0x2D
 _0805E000: .4byte gPlayer
 _0805E004: .4byte 0x0000FFFF
 _0805E008: .4byte gCurTask
-_0805E00C: .4byte sub_805E02C
+_0805E00C: .4byte Task_805E02C
 _0805E010:
 	mov r0, sb
 	bl sub_8004558
@@ -226,8 +226,8 @@ _0805E01C:
 	bx r0
 .endif
 
-	thumb_func_start sub_805E02C
-sub_805E02C: @ 0x0805E02C
+	thumb_func_start Task_805E02C
+Task_805E02C: @ 0x0805E02C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -294,7 +294,7 @@ _0805E0A8:
 	cmp r0, #0
 	bne _0805E0F4
 	ldr r1, [r7]
-	ldr r0, _0805E0C8 @ =sub_805DE60
+	ldr r0, _0805E0C8 @ =Task_Interactable_BouncySpring
 	str r0, [r1, #8]
 	ldr r0, _0805E0CC @ =gCurrentLevel
 	ldrb r0, [r0]
@@ -305,7 +305,7 @@ _0805E0A8:
 	ldr r0, _0805E0D0 @ =0x0000023A
 	b _0805E0E2
 	.align 2, 0
-_0805E0C8: .4byte sub_805DE60
+_0805E0C8: .4byte Task_Interactable_BouncySpring
 _0805E0CC: .4byte gCurrentLevel
 _0805E0D0: .4byte 0x0000023A
 _0805E0D4:
@@ -340,8 +340,8 @@ _0805E0FA:
 _0805E104: .4byte 0x00000219
 _0805E108: .4byte IWRAM_START + 0x2C
 
-	thumb_func_start sub_805E10C
-sub_805E10C: @ 0x0805E10C
+	thumb_func_start TaskDestructor_Interactable_BouncySpring
+TaskDestructor_Interactable_BouncySpring: @ 0x0805E10C
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
