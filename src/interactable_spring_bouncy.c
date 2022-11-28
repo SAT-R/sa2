@@ -110,8 +110,7 @@ void Task_Interactable_BouncySpring()
             if (index > (ARRAY_COUNT(gUnknown_080D948C) - 1))
                 index = (ARRAY_COUNT(gUnknown_080D948C) - 1);
 
-            airSpeed = (airSpeed >> 3);
-            gPlayer.unk12 = -airSpeed;
+            gPlayer.unk12 = -(airSpeed + (airSpeed >> 3));
 
             if (gPlayer.unk12 > Q_8_8(-7.5))
                 gPlayer.unk12 = Q_8_8(-7.5);
