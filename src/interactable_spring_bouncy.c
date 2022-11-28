@@ -21,7 +21,7 @@ typedef struct {
 extern void Task_Interactable_BouncySpring(void);
 extern void Task_805E02C(void);
 extern void TaskDestructor_Interactable_BouncySpring(struct Task *);
-extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s16, s16);
+extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
 
@@ -93,65 +93,64 @@ void Task_Interactable_BouncySpring()
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
-    s16 screenX, screenY;
+    s32 screenX, screenY;
     s16 airSpeed;
-    u8 index, subAnim;
 
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
 
     displayed->unk16 = screenX - gCamera.unk0;
     displayed->unk18 = screenY - gCamera.unk4;
-
-    if (!(gPlayer.unk20 & (MOVESTATE_400000 | MOVESTATE_DEAD))
-        && (sub_800CCB8(displayed, screenX, screenY) != 0)) {
+    if (!(gPlayer.unk20 & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         airSpeed = gPlayer.unk12;
+        if ((sub_800CCB8(displayed, screenX, screenY, &gPlayer) != 0)) {
+            u8 index;
 
-        index = Div((s16)airSpeed, 400);
-        if (index > (ARRAY_COUNT(gUnknown_080D948C) - 1))
-            index = (ARRAY_COUNT(gUnknown_080D948C) - 1);
+            index = Div(airSpeed, 400);
+            if (index > (ARRAY_COUNT(gUnknown_080D948C) - 1))
+                index = (ARRAY_COUNT(gUnknown_080D948C) - 1);
 
-        airSpeed = -(airSpeed / 8);
-        gPlayer.unk12 = airSpeed;
+            airSpeed = (airSpeed >> 3);
+            gPlayer.unk12 = -airSpeed;
 
-        if (airSpeed > Q_8_8(-8.5))
-            gPlayer.unk12 = Q_8_8(-8.5);
+            if (gPlayer.unk12 > Q_8_8(-7.5))
+                gPlayer.unk12 = Q_8_8(-7.5);
 
-        if (airSpeed < Q_8_8(-12))
-            gPlayer.unk12 = Q_8_8(-12);
+            if (gPlayer.unk12 < Q_8_8(-12))
+                gPlayer.unk12 = Q_8_8(-12);
 
-        gPlayer.unk36 = 3;
+            gPlayer.unk36 = 3;
 
-        sub_80218E4(&gPlayer);
-        sub_8023B5C(&gPlayer, 14);
+            sub_80218E4(&gPlayer);
+            sub_8023B5C(&gPlayer, 14);
 
-        gPlayer.unk16 = 6;
-        gPlayer.unk17 = 14;
+            gPlayer.unk16 = 6;
+            gPlayer.unk17 = 14;
 
-        gPlayer.unk20 = (gPlayer.unk20 | MOVESTATE_IN_AIR) & ~MOVESTATE_100;
+            gPlayer.unk20 = (gPlayer.unk20 | MOVESTATE_IN_AIR) & ~MOVESTATE_100;
 
-        {
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
                 displayed->unkA = gUnknown_080D94A4[index].unk4;
-                subAnim = gUnknown_080D94A4[index].unk6;
+                spring->displayed.unk20 = gUnknown_080D94A4[index].unk6;
+                spring->displayed.unk21 = 0xFF;
             } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
                 displayed->unkA = gUnknown_080D94BC[index].unk4;
-                subAnim = gUnknown_080D94BC[index].unk6;
+                spring->displayed.unk20 = gUnknown_080D94BC[index].unk6;
+                spring->displayed.unk21 = 0xFF;
             } else {
                 displayed->unkA = gUnknown_080D948C[index].unk4;
-                subAnim = gUnknown_080D948C[index].unk6;
+                spring->displayed.unk20 = gUnknown_080D948C[index].unk6;
+                spring->displayed.unk21 = 0xFF;
             }
-            spring->displayed.unk20 = subAnim;
-            spring->displayed.unk21 = 0xFF;
+
+            gPlayer.unk64 = 38;
+            gPlayer.unk6D = 7;
+            gPlayer.unk66 = -1;
+
+            m4aSongNumStart(SE_SPRINGY_SPRING);
+
+            gCurTask->main = Task_805E02C;
         }
-
-        gPlayer.unk64 = 38;
-        gPlayer.unk6D = 7;
-        gPlayer.unk66 = -1;
-
-        m4aSongNumStart(SE_SPRINGY_SPRING);
-
-        gCurTask->main = Task_805E02C;
     }
     // _0805DFBA
     if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
