@@ -18,12 +18,16 @@ typedef struct {
     /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_BouncySpring;
 
-static void Task_Interactable_BouncySpring(void);
-static void Task_805E02C(void);
-static void TaskDestructor_Interactable_BouncySpring(struct Task *);
+
 extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
+
+
+static void Task_Interactable_BouncySpring(void);
+static void Task_805E02C(void);
+static void TaskDestructor_Interactable_BouncySpring(struct Task *);
+
 
 const struct UNK_080E0D64 gUnknown_080D948C[3] = {
     { 24, SA2_ANIM_SPRING_BOUNCY, 1 },
@@ -42,6 +46,7 @@ const struct UNK_080E0D64 gUnknown_080D94BC[3] = {
     { 16, SA2_ANIM_603, 2 },
     { 24, SA2_ANIM_603, 3 },
 };
+
 
 void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
                                           u16 spriteRegionY, u8 spriteY)
