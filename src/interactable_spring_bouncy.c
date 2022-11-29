@@ -26,19 +26,19 @@ static void Task_Interactable_BouncySpring(void);
 static void Task_805E02C(void);
 static void TaskDestructor_Interactable_BouncySpring(struct Task *);
 
-const struct UNK_080E0D64 gUnknown_080D948C[3] = {
+static const struct UNK_080E0D64 gUnknown_080D948C[3] = {
     { 24, SA2_ANIM_SPRING_BOUNCY, 1 },
     { 24, SA2_ANIM_SPRING_BOUNCY, 2 },
     { 24, SA2_ANIM_SPRING_BOUNCY, 3 },
 };
 
-const struct UNK_080E0D64 gUnknown_080D94A4[3] = {
+static const struct UNK_080E0D64 gUnknown_080D94A4[3] = {
     { 16, SA2_ANIM_570, 1 },
     { 16, SA2_ANIM_570, 2 },
     { 16, SA2_ANIM_570, 3 },
 };
 
-const struct UNK_080E0D64 gUnknown_080D94BC[3] = {
+static const struct UNK_080E0D64 gUnknown_080D94BC[3] = {
     { 16, SA2_ANIM_603, 1 },
     { 16, SA2_ANIM_603, 2 },
     { 24, SA2_ANIM_603, 3 },
