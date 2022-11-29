@@ -17,13 +17,14 @@ typedef struct {
     /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_Booster;
 
-extern void Task_Interactable_Booster(void);
 extern void TaskDestructor_80095E8(struct Task *);
 
 extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16,
                           struct SomeStruct_59E0 *, u32);
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
+
+static void Task_Interactable_Booster(void);
 
 const struct UNK_080E0D64 sBoosterAnimationData[2][6] = {
     {
