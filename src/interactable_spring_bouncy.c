@@ -160,3 +160,52 @@ void Task_Interactable_BouncySpring()
         sub_80051E8(displayed);
     }
 }
+
+void Task_805E02C()
+{
+    Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
+    register struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Interactable *ia = spring->base.ia;
+    s32 screenX, screenY;
+    register u8 r8/* asm("r8")*/;
+
+    screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
+
+    displayed->unk16 = screenX - gCamera.unk0;
+    displayed->unk18 = screenY - gCamera.unk4;
+
+    r8 = 0;
+
+    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+        ia->x = spring->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        if (sub_8004558(displayed) == 0) {
+            gCurTask->main = Task_Interactable_BouncySpring;
+
+            if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+                displayed->unkA = SA2_ANIM_570;
+                spring->displayed.unk20 = r8;
+                spring->displayed.unk21 = 0xFF;
+            } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
+                displayed->unkA = SA2_ANIM_603;
+                spring->displayed.unk20 = r8;
+                spring->displayed.unk21 = 0xFF;
+            } else {
+                displayed->unkA = SA2_ANIM_SPRING_BOUNCY;
+                spring->displayed.unk20 = r8;
+                spring->displayed.unk21 = 0xFF;
+            }
+        }
+        // _805E0F4
+        sub_80051E8(displayed);
+    }
+}
+
+#if 0 // Matches
+void TaskDestructor_Interactable_BouncySpring(struct Task *t) {
+    Sprite_BouncySpring *spring = TaskGetStructPtr(t);
+    VramFree(spring->displayed.unk4);
+}
+#endif
