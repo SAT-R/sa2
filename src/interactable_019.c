@@ -92,18 +92,20 @@ void Task_Interactable_019(void)
     }
 
     if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && (ia->x == (u8)SPRITE_STATE_UNK_MINUS_THREE)) {
+        && ((s8)ia->x == SPRITE_STATE_UNK_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     }
 
     // _0805E2C2
 
-    if (((screenX <= gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-          && (screenX >= gCamera.unk0 - (CAM_REGION_WIDTH / 2))
-          && (screenY <= gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)))
-         && (screenY >= gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
-        || (IS_OUT_OF_CAM_RANGE(screenX, screenY))) {
+    if (!(screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+          || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
+          || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+          || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))) {
+        ia->x = base->spriteX;
+        TaskDestroy(gCurTask);
+    } else if(IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
         ia->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
