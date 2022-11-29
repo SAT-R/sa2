@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 .if 0
-	thumb_func_start sub_805E234
-sub_805E234: @ 0x0805E234
+	thumb_func_start Task_Interactable_019
+Task_Interactable_019: @ 0x0805E234
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -16,10 +16,10 @@ sub_805E234: @ 0x0805E234
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r5, r1, r0
+	adds r5, r1, r0             @ r5 = platform / base
 	ldr r3, _0805E330 @ =IWRAM_START + 0xC
-	adds r4, r1, r3
-	ldr r6, [r5]
+	adds r4, r1, r3             @ r4 = displayed
+	ldr r6, [r5]                @ r6 = ia
 	ldrb r1, [r5, #8]
 	lsls r1, r1, #3
 	ldrh r0, [r5, #4]
@@ -35,15 +35,15 @@ sub_805E234: @ 0x0805E234
 	ldr r3, _0805E334 @ =gCamera
 	ldr r0, [r3]
 	lsrs r7, r1, #0x10
-	mov sb, r7
+	mov sb, r7                  @ sb = screenX
 	asrs r1, r1, #0x10
 	subs r0, r1, r0
 	movs r7, #0
-	mov r8, r7
+	mov r8, r7                  @ r8 = 0
 	strh r0, [r4, #0x16]
 	ldr r0, [r3, #4]
 	lsrs r3, r2, #0x10
-	mov sl, r3
+	mov sl, r3                  @ sl = screenY
 	asrs r2, r2, #0x10
 	subs r0, r2, r0
 	strh r0, [r4, #0x18]
@@ -56,7 +56,7 @@ sub_805E234: @ 0x0805E234
 	beq _0805E2A2
 	ldr r7, _0805E32C @ =gCurTask
 	ldr r1, [r7]
-	ldr r0, _0805E33C @ =sub_805E35C
+	ldr r0, _0805E33C @ =Task_805E35C
 	str r0, [r1, #8]
 	mov r0, r8
 	strh r0, [r5, #0x3c]
@@ -75,7 +75,7 @@ _0805E2A2:
 	strh r1, [r5, #0x3c]
 	ldr r3, _0805E32C @ =gCurTask
 	ldr r1, [r3]
-	ldr r0, _0805E344 @ =sub_805E480
+	ldr r0, _0805E344 @ =Task_805E480
 	str r0, [r1, #8]
 _0805E2C2:
 	mov r7, sb
@@ -136,9 +136,9 @@ _0805E32C: .4byte gCurTask
 _0805E330: .4byte IWRAM_START + 0xC
 _0805E334: .4byte gCamera
 _0805E338: .4byte gPlayer
-_0805E33C: .4byte sub_805E35C
+_0805E33C: .4byte Task_805E35C
 _0805E340: .4byte gGameMode
-_0805E344: .4byte sub_805E480
+_0805E344: .4byte Task_805E480
 _0805E348:
 	adds r0, r4, #0
 	bl sub_80051E8
@@ -152,8 +152,8 @@ _0805E34E:
 	bx r0
 .endif
 
-	thumb_func_start sub_805E35C
-sub_805E35C: @ 0x0805E35C
+	thumb_func_start Task_805E35C
+Task_805E35C: @ 0x0805E35C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -228,7 +228,7 @@ _0805E3E0:
 	ldr r0, _0805E460 @ =gCurTask
 _0805E3F4:
 	ldr r1, [r0]
-	ldr r0, _0805E464 @ =sub_805E480
+	ldr r0, _0805E464 @ =Task_805E480
 	str r0, [r1, #8]
 _0805E3FA:
 	lsls r0, r7, #0x10
@@ -285,7 +285,7 @@ _0805E452:
 	b _0805E472
 	.align 2, 0
 _0805E460: .4byte gCurTask
-_0805E464: .4byte sub_805E480
+_0805E464: .4byte Task_805E480
 _0805E468: .4byte gCamera
 _0805E46C:
 	adds r0, r5, #0
@@ -299,8 +299,8 @@ _0805E472:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_805E480
-sub_805E480: @ 0x0805E480
+	thumb_func_start Task_805E480
+Task_805E480: @ 0x0805E480
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

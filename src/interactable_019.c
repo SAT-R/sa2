@@ -17,15 +17,21 @@ typedef struct {
 // array
 extern u16 gUnknown_080D94D4[];
 
-extern void sub_805E234(void);
+extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
+
+// TODO: static
+extern void Task_Interactable_019(void);
+extern void Task_805E35C(void);
+extern void Task_805E480(void);
 extern void TaskDestructor_Interactable019(struct Task *);
 
+// @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
 
-void initSprite_Interactable019(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+                                 u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_805E234, sizeof(Sprite_019), 0x2000, 0,
+    struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0,
                                 TaskDestructor_Interactable019);
     Sprite_019 *platform = TaskGetStructPtr(t);
     SpriteBase *base = &platform->base;
@@ -65,3 +71,44 @@ void initSprite_Interactable019(Interactable *ia, u16 spriteRegionX, u16 spriteR
 
     sub_8004558(displayed);
 }
+#if 1
+void Task_Interactable_019(void)
+{
+    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    SpriteBase *base = &platform->base;
+    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Interactable *ia = base->ia;
+    s16 screenX, screenY;
+
+    screenX = SpriteGetScreenPos(base->spriteX, base->regionX);
+    screenY = SpriteGetScreenPos(ia->y, base->regionX);
+
+    displayed->unk16 = screenX - gCamera.unk0;
+    displayed->unk18 = screenY - gCamera.unk4;
+
+    if (sub_800C060(displayed, screenX, screenY, &gPlayer) & 0x8) {
+        gCurTask->main = Task_805E35C;
+        platform->unk3C = 0;
+    }
+
+    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
+        && (ia->x == (u8)SPRITE_STATE_UNK_MINUS_THREE)) {
+        platform->unk3C = 0;
+        gCurTask->main = Task_805E480;
+    }
+
+    // _0805E2C2
+    // <some range stuff here>
+
+    if (((screenX <= gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+          && (screenX >= gCamera.unk0 - (CAM_REGION_WIDTH / 2))
+          && (screenY <= gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)))
+         && (screenY >= gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
+        || (IS_OUT_OF_CAM_RANGE(screenX, screenY))) {
+        ia->x = base->spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        sub_80051E8(displayed);
+    }
+}
+#endif

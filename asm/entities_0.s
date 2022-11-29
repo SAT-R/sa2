@@ -8399,6 +8399,8 @@ _0800C054:
 	bx r1
 	.align 2, 0
 
+    @ Returns flags/a bitarray
+    @ Maybe collision-hit test?
 	thumb_func_start sub_800C060
 sub_800C060: @ 0x0800C060
 	push {r4, r5, r6, r7, lr}

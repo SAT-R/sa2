@@ -43,7 +43,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Booster
     .4byte initSprite_Interactable_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
     .4byte initSprite_Interactable_BouncySpring
-    .4byte initSprite_Interactable019
+    .4byte initSprite_Interactable_019
     .4byte initSprite_Interactable_RotatingHandle
     .4byte initSprite_Interactable_LoopGap_Start
     .4byte initSprite_Interactable_LoopGap_End
