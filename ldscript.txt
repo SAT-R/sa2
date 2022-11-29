@@ -59,7 +59,6 @@ SECTIONS
         build/sa2/src/interactable_booster.o(.text);
         build/sa2/src/interactable_incline_ramp.o(.text);
         build/sa2/src/interactable_spring_bouncy.o(.text);
-        build/sa2/asm/interactable_spring_bouncy.o(.text);
         build/sa2/asm/misc_sprites.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);

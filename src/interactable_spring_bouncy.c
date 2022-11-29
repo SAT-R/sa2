@@ -18,9 +18,9 @@ typedef struct {
     /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_BouncySpring;
 
-extern void Task_Interactable_BouncySpring(void);
-extern void Task_805E02C(void);
-extern void TaskDestructor_Interactable_BouncySpring(struct Task *);
+static void Task_Interactable_BouncySpring(void);
+static void Task_805E02C(void);
+static void TaskDestructor_Interactable_BouncySpring(struct Task *);
 extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
 extern void sub_80218E4(struct SomeStruct_59E0 *);
 extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
@@ -88,7 +88,7 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
     displayed->unk10 = 0x2000;
 }
 
-void Task_Interactable_BouncySpring()
+static void Task_Interactable_BouncySpring()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
@@ -161,21 +161,19 @@ void Task_Interactable_BouncySpring()
     }
 }
 
-void Task_805E02C()
+static void Task_805E02C()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
-    register struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
     s32 screenX, screenY;
-    u8 r8;
+    u32 variant = 0;
 
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
 
     displayed->unk16 = screenX - gCamera.unk0;
     displayed->unk18 = screenY - gCamera.unk4;
-
-    r8 = 0;
 
     if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
         ia->x = spring->base.spriteX;
@@ -186,22 +184,22 @@ void Task_805E02C()
 
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
                 displayed->unkA = SA2_ANIM_570;
-                displayed->unk20 = r8;
+                displayed->unk20 = variant;
             } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
                 displayed->unkA = SA2_ANIM_603;
-                displayed->unk20 = r8;
+                displayed->unk20 = variant;
             } else {
                 displayed->unkA = SA2_ANIM_SPRING_BOUNCY;
-                displayed->unk20 = r8;
+                displayed->unk20 = variant;
             }
             displayed->unk21 = -1;
         }
-        // _805E0F4
+
         sub_80051E8(displayed);
     }
 }
 
-void TaskDestructor_Interactable_BouncySpring(struct Task *t)
+static void TaskDestructor_Interactable_BouncySpring(struct Task *t)
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(t);
     VramFree(spring->displayed.unk4);
