@@ -98,7 +98,6 @@ void Task_Interactable_019(void)
     }
 
     // _0805E2C2
-    // <some range stuff here>
 
     if (((screenX <= gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
           && (screenX >= gCamera.unk0 - (CAM_REGION_WIDTH / 2))
