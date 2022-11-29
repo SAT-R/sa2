@@ -5,6 +5,7 @@
 
 // After a sprite is initialized, its x-value in the layout-data gets set to -2.
 #define SPRITE_STATE_POS_INITIALIZED (-2)
+#define SPRITE_STATE_UNK_MINUS_THREE (-3)
 #define SET_SPRITE_INITIALIZED(target)                                                  \
     {                                                                                   \
         s32 negativeTwo;                                                                \

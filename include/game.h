@@ -1,12 +1,13 @@
 #ifndef GUARD_GAME_H
 #define GUARD_GAME_H
 
-#define GAME_MODE_SINGLE_PLAYER    0
-#define GAME_MODE_TIME_ATTACK      1
-#define GAME_MODE_BOSS_TIME_ATTACK 2
+#define GAME_MODE_SINGLE_PLAYER      0
+#define GAME_MODE_TIME_ATTACK        1
+#define GAME_MODE_BOSS_TIME_ATTACK   2
+#define NUM_SINGLE_PLAYER_GAME_MODES 3
 
 // May be multiplayer time attack
-#define GAME_MODE_MULTI_PLAYER 3
+#define GAME_MODE_MULTI_PLAYER NUM_SINGLE_PLAYER_GAME_MODES
 #define GAME_MODE_TEAM_PLAY    4
 
 #include "global.h"
