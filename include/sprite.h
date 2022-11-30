@@ -90,7 +90,7 @@ struct UNK_0808B3FC_UNK240 {
     // y
     u16 unk18;
 
-    u16 unk1A;
+    u16 unk1A; // might be a bitfield?
 
     u16 unk1C;
     u16 unk1E;

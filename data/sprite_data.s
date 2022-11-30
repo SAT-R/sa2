@@ -1,7 +1,7 @@
 	.section .rodata
 
     .global gSpriteTables
-gSpriteTables:
+gSpriteTables: @ 0x080F40D4
     .4byte gAnimations
     .4byte gSpriteDimensions
     .4byte gSpriteOamData
