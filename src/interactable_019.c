@@ -19,8 +19,9 @@ extern u16 gUnknown_080D94D4[];
 
 extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
 
+static void Task_Interactable_019(void);
+
 // TODO: static
-extern void Task_Interactable_019(void);
 extern void Task_805E35C(void);
 extern void Task_805E480(void);
 extern void TaskDestructor_Interactable019(struct Task *);
@@ -71,7 +72,7 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
 
     sub_8004558(displayed);
 }
-#if 1
+
 void Task_Interactable_019(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
@@ -81,7 +82,7 @@ void Task_Interactable_019(void)
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(base->spriteX, base->regionX);
-    screenY = SpriteGetScreenPos(ia->y, base->regionX);
+    screenY = SpriteGetScreenPos(ia->y, base->regionY);
 
     displayed->unk16 = screenX - gCamera.unk0;
     displayed->unk18 = screenY - gCamera.unk4;
@@ -99,17 +100,14 @@ void Task_Interactable_019(void)
 
     // _0805E2C2
 
-    if (!(screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+    if ((screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
           || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
           || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-          || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))) {
-        ia->x = base->spriteX;
-        TaskDestroy(gCurTask);
-    } else if(IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+          || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
+        && (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18))) {
         ia->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(displayed);
     }
 }
-#endif
