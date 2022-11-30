@@ -101,11 +101,47 @@ void Task_Interactable_019(void)
     // _0805E2C2
 
     if ((screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-          || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
-          || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-          || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
+         || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+         || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18))) {
         ia->x = base->spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        sub_80051E8(displayed);
+    }
+}
+
+void Task_805E35C(void)
+{
+    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Interactable *ia = platform->base.ia;
+    s16 screenX, screenY;
+
+    screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
+
+    displayed->unk16 = screenX - gCamera.unk0;
+    displayed->unk18 = screenY - gCamera.unk4;
+
+    sub_800C060(displayed, screenX, screenY, &gPlayer);
+
+    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
+        && ((s8)ia->x == SPRITE_STATE_UNK_MINUS_THREE)) {
+        platform->unk3C = 0;
+        gCurTask->main = Task_805E480;
+    } else if (platform->unk3C++ > 30) {
+        platform->unk3C = 0;
+        gCurTask->main = Task_805E480;
+    }
+
+    if ((screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+         || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+         || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
+        && (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18))) {
+        ia->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(displayed);
