@@ -3,7 +3,7 @@
 
 .syntax unified
 .arm
-.if 1
+.if 0
 	thumb_func_start Task_805E480
 Task_805E480: @ 0x0805E480
 	push {r4, r5, r6, r7, lr}
@@ -19,33 +19,33 @@ Task_805E480: @ 0x0805E480
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r1
-	mov r8, r0
+	mov r8, r0              @ r8 = platform
 	ldr r2, _0805E520 @ =IWRAM_START + 0xC
-	adds r5, r1, r2
-	ldr r7, [r0]
+	adds r5, r1, r2         @ r5 = displayed
+	ldr r7, [r0]            @ r7 = ia
 	ldrb r1, [r0, #8]
 	lsls r1, r1, #3
 	ldrh r0, [r0, #4]
 	lsls r0, r0, #8
-	adds r1, r1, r0
+	adds r1, r1, r0             @ r1 = screenX
 	ldrb r2, [r7, #1]
 	lsls r2, r2, #3
-	mov r3, r8
+	mov r3, r8                  @ r3 = platform / base
 	ldrh r0, [r3, #6]
 	lsls r0, r0, #8
 	adds r2, r2, r0
 	ldr r4, _0805E524 @ =gCamera
 	ldr r0, [r4, #4]
 	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
+	asrs r2, r2, #0x10          @ r2 = screenY
 	subs r0, r0, r2
 	adds r0, #0xa0
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp]
+	str r0, [sp]                @ sp = otherPos
 	ldr r0, [r4]
 	lsls r1, r1, #0x10
-	asrs r6, r1, #0x10
+	asrs r6, r1, #0x10          @ r6 = screenX
 	subs r0, r6, r0
 	strh r0, [r5, #0x16]
 	ldr r0, [r4, #4]
@@ -58,7 +58,7 @@ Task_805E480: @ 0x0805E480
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_800C060
-	ldr r4, [r4]
+	ldr r4, [r4]                @ r4 = gCamera.x
 	movs r1, #0xb8
 	lsls r1, r1, #1
 	adds r0, r4, r1
@@ -76,13 +76,13 @@ _0805E4FE:
 	lsls r1, r1, #0x11
 	cmp r0, r1
 	bls _0805E52C
-	mov r2, r8
+	mov r2, r8                  @ r8 = platform
 	ldrb r0, [r2, #8]
 	strb r0, [r7]
 	mov r3, sb
 	ldr r0, [r3]
 	bl TaskDestroy
-	b _0805E688
+	b Task_805E480_Return
 	.align 2, 0
 _0805E51C: .4byte gCurTask
 _0805E520: .4byte IWRAM_START + 0xC
@@ -102,11 +102,11 @@ _0805E52C:
 	adds r0, r0, r1
 	lsls r0, r0, #1
 	adds r2, r2, r0
-	mov sl, r2
-	movs r6, #0
-	mov sb, r6
+	mov sl, r2          @ sl =oam
+	movs r6, #0         @ r6 = r6
+	mov sb, r6          @ sb = i
 _0805E54C:
-	movs r7, #0
+	movs r7, #0         @ r7 = j
 _0805E54E:
 	ldr r1, _0805E5BC @ =0x0000FFE1
 	adds r0, r6, r1
@@ -114,7 +114,7 @@ _0805E54E:
 	ldrh r2, [r2, #0x3c]
 	adds r0, r0, r2
 	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
+	lsrs r3, r0, #0x10          @ r3 = value
 	asrs r0, r0, #0x10
 	cmp r0, #0
 	ble _0805E5CC
@@ -140,7 +140,7 @@ _0805E54E:
 _0805E588:
 	ldr r0, _0805E5C4 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805E5C8 @ =sub_805E6A4
+	ldr r0, _0805E5C8 @ =Task_805E6A4
 	str r0, [r1, #8]
 _0805E590:
 	lsls r1, r3, #0x10
@@ -157,17 +157,17 @@ _0805E590:
 	cmp r1, r0
 	ble _0805E5CE
 	cmp r6, #0
-	bne _0805E688
+	bne Task_805E480_Return
 	ldr r0, _0805E5C4 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	b _0805E688
+	b Task_805E480_Return
 	.align 2, 0
 _0805E5B8: .4byte gUnknown_03002794
 _0805E5BC: .4byte 0x0000FFE1
 _0805E5C0: .4byte gPlayer
 _0805E5C4: .4byte gCurTask
-_0805E5C8: .4byte sub_805E6A4
+_0805E5C8: .4byte Task_805E6A4
 _0805E5CC:
 	movs r4, #0
 _0805E5CE:
@@ -182,8 +182,8 @@ _0805E5CE:
 	ldr r0, _0805E624 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r3
-	beq _0805E688
-	mov r0, sb
+	beq Task_805E480_Return
+	mov r0, sb              @ r0 = sb = i
 	lsls r1, r0, #3
 	ldrh r2, [r5, #0x18]
 	adds r1, r1, r2
@@ -262,9 +262,9 @@ _0805E678:
 	lsrs r0, r0, #0x18
 	mov sb, r0
 	cmp r0, #3
-	bhi _0805E688
+	bhi Task_805E480_Return
 	b _0805E54C
-_0805E688:
+Task_805E480_Return:
 	add sp, #4
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -279,8 +279,8 @@ _0805E69C: .4byte 0xFFFFF000
 _0805E6A0: .4byte 0xF9FF0000
 .endif
 
-	thumb_func_start sub_805E6A4
-sub_805E6A4: @ 0x0805E6A4
+	thumb_func_start Task_805E6A4
+Task_805E6A4: @ 0x0805E6A4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

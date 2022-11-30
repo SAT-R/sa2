@@ -95,7 +95,9 @@ struct SomeStruct_59E0 {
     u8 filler24[0x11];
     u8 unk36;
     u8 unk37;
-    u8 filler38[100 - 0x14 - 0x24 - 6 - 4];
+    u8 filler38[4];
+    void *unk3C; // the object player collides with this frame?
+    u8 filler40[0x1A];
     u8 unk5A;
     u8 unk5B;
     u16 unk5C;
