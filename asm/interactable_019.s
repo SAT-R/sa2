@@ -3,155 +3,7 @@
 
 .syntax unified
 .arm
-.if 0
-	thumb_func_start Task_Interactable_019
-Task_Interactable_019: @ 0x0805E234
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	ldr r1, _0805E32C @ =gCurTask
-	ldr r0, [r1]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r5, r1, r0             @ r5 = platform / base
-	ldr r3, _0805E330 @ =IWRAM_START + 0xC
-	adds r4, r1, r3             @ r4 = displayed
-	ldr r6, [r5]                @ r6 = ia
-	ldrb r1, [r5, #8]
-	lsls r1, r1, #3
-	ldrh r0, [r5, #4]
-	lsls r0, r0, #8
-	adds r1, r1, r0
-	lsls r1, r1, #0x10
-	ldrb r2, [r6, #1]
-	lsls r2, r2, #3
-	ldrh r0, [r5, #6]
-	lsls r0, r0, #8
-	adds r2, r2, r0
-	lsls r2, r2, #0x10
-	ldr r3, _0805E334 @ =gCamera
-	ldr r0, [r3]
-	lsrs r7, r1, #0x10
-	mov sb, r7                  @ sb = screenX
-	asrs r1, r1, #0x10
-	subs r0, r1, r0
-	movs r7, #0
-	mov r8, r7                  @ r8 = 0
-	strh r0, [r4, #0x16]
-	ldr r0, [r3, #4]
-	lsrs r3, r2, #0x10
-	mov sl, r3                  @ sl = screenY
-	asrs r2, r2, #0x10
-	subs r0, r2, r0
-	strh r0, [r4, #0x18]
-	ldr r3, _0805E338 @ =gPlayer
-	adds r0, r4, #0
-	bl sub_800C060
-	movs r1, #8
-	ands r1, r0
-	cmp r1, #0
-	beq _0805E2A2
-	ldr r7, _0805E32C @ =gCurTask
-	ldr r1, [r7]
-	ldr r0, _0805E33C @ =Task_805E35C
-	str r0, [r1, #8]
-	mov r0, r8
-	strh r0, [r5, #0x3c]
-_0805E2A2:
-	ldr r0, _0805E340 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0805E2C2
-	movs r1, #0
-	ldrsb r1, [r6, r1]
-	movs r0, #3
-	rsbs r0, r0, #0
-	cmp r1, r0
-	bne _0805E2C2
-	mov r1, r8
-	strh r1, [r5, #0x3c]
-	ldr r3, _0805E32C @ =gCurTask
-	ldr r1, [r3]
-	ldr r0, _0805E344 @ =Task_805E480
-	str r0, [r1, #8]
-_0805E2C2:
-	mov r7, sb
-	lsls r0, r7, #0x10
-	asrs r1, r0, #0x10
-	ldr r3, _0805E334 @ =gCamera
-	ldr r2, [r3]
-	movs r7, #0xb8
-	lsls r7, r7, #1
-	adds r0, r2, r7
-	cmp r1, r0
-	bgt _0805E2F8
-	adds r0, r2, #0
-	subs r0, #0x80
-	cmp r1, r0
-	blt _0805E2F8
-	mov r1, sl
-	lsls r0, r1, #0x10
-	asrs r2, r0, #0x10
-	ldr r1, [r3, #4]
-	movs r3, #0x90
-	lsls r3, r3, #1
-	adds r0, r1, r3
-	cmp r2, r0
-	bgt _0805E2F8
-	adds r0, r1, #0
-	subs r0, #0x80
-	cmp r2, r0
-	bge _0805E348
-_0805E2F8:
-	ldrh r0, [r4, #0x16]
-	adds r0, #0x80
-	lsls r0, r0, #0x10
-	movs r1, #0xf8
-	lsls r1, r1, #0x11
-	cmp r0, r1
-	bhi _0805E31C
-	movs r7, #0x18
-	ldrsh r0, [r4, r7]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _0805E31C
-	movs r0, #0x18
-	ldrsh r1, [r4, r0]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _0805E348
-_0805E31C:
-	ldrb r0, [r5, #8]
-	strb r0, [r6]
-	ldr r0, _0805E32C @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _0805E34E
-	.align 2, 0
-_0805E32C: .4byte gCurTask
-_0805E330: .4byte IWRAM_START + 0xC
-_0805E334: .4byte gCamera
-_0805E338: .4byte gPlayer
-_0805E33C: .4byte Task_805E35C
-_0805E340: .4byte gGameMode
-_0805E344: .4byte Task_805E480
-_0805E348:
-	adds r0, r4, #0
-	bl sub_80051E8
-_0805E34E:
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-.endif
-
+.if 1
 	thumb_func_start Task_805E35C
 Task_805E35C: @ 0x0805E35C
 	push {r4, r5, r6, r7, lr}
@@ -298,6 +150,8 @@ _0805E472:
 	pop {r0}
 	bx r0
 	.align 2, 0
+.endif
+
 
 	thumb_func_start Task_805E480
 Task_805E480: @ 0x0805E480
