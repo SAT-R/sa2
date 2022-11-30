@@ -92,10 +92,10 @@ _0805E52C:
 	ldr r0, _0805E5B8 @ =gUnknown_03002794
 	ldr r1, [r0]
 	ldrh r0, [r5, #0xa]
-	ldr r1, [r1, #8]
+	ldr r1, [r1, #8]        @ r1 = u16** OamData
 	lsls r0, r0, #2
 	adds r0, r0, r1
-	ldr r2, [r0]
+	ldr r2, [r0]            @ r2 = oam*
 	ldr r0, [r5, #0xc]
 	ldrb r1, [r0, #1]
 	lsls r0, r1, #1
