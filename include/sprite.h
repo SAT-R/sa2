@@ -15,6 +15,8 @@
         target->x = forMatching;                                                        \
     }
 
+typedef u16 AnimId;
+
 // TODO: move the struct declaration to a proper location
 // Background
 struct Unk_03002400 {
@@ -76,8 +78,8 @@ struct UNK_0808B3FC_UNK240 {
 
     u16 unk8;
 
-    // assetId or animIndex, not sure
-    u16 unkA;
+    // anim
+    AnimId unkA;
 
     struct UNK_0808B3FC_UNK240_UNKC *unkC;
     u32 unk10;
