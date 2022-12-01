@@ -153,7 +153,7 @@ void Task_805E35C(void)
         sub_80051E8(displayed);
     }
 }
-#if 1
+
 void Task_805E480(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
@@ -162,6 +162,7 @@ void Task_805E480(void)
     s16 screenX, screenY;
     s16 otherPos;
     u8 r6, x, y;
+    u16 *oam_ptr;
     u16 *oam;
 
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
@@ -185,7 +186,8 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam = &gUnknown_03002794->oamData[displayed->unkA][displayed->unkC->unk1 * 3];
+    oam_ptr = gUnknown_03002794->oamData[displayed->unkA];
+    oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     // _0805E54C
     r6 = 0;
@@ -219,7 +221,7 @@ void Task_805E480(void)
             }
             // _0805E5CE
             pointer = sub_80058B4((displayed->unk1A & 0x7C0) >> 6);
-            if (pointer == iwram_end)
+            if (iwram_end == pointer)
                 return;
 
 #if NON_MATCHING
@@ -249,8 +251,91 @@ void Task_805E480(void)
         }
     }
 }
+
+void Task_805E6A4(void)
+{
+    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Interactable *ia = platform->base.ia;
+
+    s16 screenX, screenY;
+    s16 otherPos;
+    u8 r6, x, y;
+    u16 *oam_ptr;
+    u16 *oam;
+
+    screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
+
+    otherPos = (gCamera.unk4 - screenY) + DISPLAY_HEIGHT;
+
+    displayed->unk16 = screenX - gCamera.unk0;
+    displayed->unk18 = screenY - gCamera.unk4;
+    platform->unk3C++;
+
+    if (screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+        || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))) {
+        if ((u16)(displayed->unk16 + (CAM_REGION_WIDTH / 2))
+            > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
+            ia->x = platform->base.spriteX;
+            TaskDestroy(gCurTask);
+            return;
+        }
+    }
+
+    oam_ptr = gUnknown_03002794->oamData[displayed->unkA];
+    oam = &oam_ptr[displayed->unkC->unk1 * 3];
+
+    r6 = 0;
+    for (y = 0; y < 4; y++) {
+        for (x = 0; x < 8; r6++, x++) {
+            s16 r4;
+            OamData *pointer;
+            s16 value = -31;
+            value = r6 + value + platform->unk3C;
+
+            r4 = (((((s16)value * 42) * (s16)value) << 8) >> 16);
+
+            if (r4 > otherPos) {
+                if (r6 == 0) {
+                    TaskDestroy(gCurTask);
+                    ia->x = platform->base.spriteX;
+                }
+                return;
+            }
+
+            pointer = sub_80058B4((displayed->unk1A & 0x7C0) >> 6);
+            if (iwram_end == pointer) {
+                return;
+            }
+
+#if NON_MATCHING
+            pointer->split.y = (s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18));
+            pointer->split.affineMode = ST_OAM_AFFINE_OFF;
+            pointer->split.objMode = ST_OAM_OBJ_NORMAL;
+            pointer->split.mosaic = 0;
+            pointer->split.bpp = ST_OAM_4BPP;
+            pointer->split.shape = SPRITE_SHAPE(8x8);
+#else
+            pointer->all.attr0
+                = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18))) & 0xFF;
 #endif
-#if 0 // Matches
+
+            if (displayed->unk10 & 0x400) {
+                pointer->all.attr1
+                    = ((displayed->unk16 - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
+            } else {
+                pointer->all.attr1 = (displayed->unk16 + x * TILE_WIDTH) & 0x1FF;
+            }
+
+            pointer->all.attr2 = (((oam[2] + displayed->unk25) & ~0xFFF)
+                                  | ((displayed->unk10 & 0x3000) >> 2)
+                                  | (u16)(((u32)(displayed->unk4 - OBJ_VRAM0) >> 5)
+                                          + r6)); // (>> 5) = offset -> tilecount?
+        }
+    }
+}
+
 void TaskDestructor_Interactable019(struct Task *t)
 {
     Sprite_019 *platform = TaskGetStructPtr(t);

@@ -2778,13 +2778,13 @@ struct FinalEndingCutScene2 {
     u32 unk3A8;
     s32 unk3AC;
     u32 unk3B0;
-    u32 unk3B4;
-    u32 unk3B8;
+    s32 unk3B4;
+    s32 unk3B8;
     u32 unk3BC;
     s32 unk3C0;
     s32 unk3C4;
 
-    u32 unk3C8[6][2];
+    s32 unk3C8[6][2];
 
     s32 unk3F8[10][3];
 
@@ -3100,7 +3100,7 @@ void sub_80921E8(struct FinalEndingCutScene2 *);
 void sub_8092850(struct FinalEndingCutScene2 *);
 void sub_80923AC(struct FinalEndingCutScene2 *);
 
-void sub_80928C8(struct FinalEndingCutScene2 *);
+u32 sub_80928C8(struct FinalEndingCutScene2 *);
 
 void sub_8091E60(void);
 
@@ -3360,3 +3360,229 @@ void sub_80921E8(struct FinalEndingCutScene2 *scene)
         sub_808E8F8((s16 *)&scene->unk378[i][0], gUnknown_080E1782[i][0], 2);
     }
 }
+
+void sub_80923AC(struct FinalEndingCutScene2 *scene)
+{
+    u8 i;
+    struct UNK_0808B3FC_UNK240 *element;
+    u32 variant = 0;
+
+    element = &scene->unk80;
+    for (i = 0; i < 10; i++) {
+        element->unkA = gUnknown_080E1650[0].unk4;
+        element->unk20 = gUnknown_080E1650[0].unk6;
+
+        element->unk16 = scene->unk3F8[i][0];
+        element->unk18 = scene->unk3F8[i][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk35C > 8) {
+        variant = 1;
+    }
+
+    element = &scene->unk1A0;
+    element->unkA = gUnknown_080E1650[variant + 1].unk4;
+    element->unk20 = gUnknown_080E1650[variant + 1].unk6;
+    element->unk16 = scene->unk3C0;
+    element->unk18 = scene->unk3C4 >> 8;
+
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (scene->unk35C < 10) {
+        for (i = 0; i < 6; i++) {
+            if (((scene->unk3C4 >> 8) + gBgScrollRegs[1][1]) < 0xE4) {
+                element = &scene->unk1D0[i & 1];
+                element->unkA = gUnknown_080E1650[(i & 1) + 3].unk4;
+                element->unk20 = gUnknown_080E1650[(i & 1) + 3].unk6;
+                element->unk16 = scene->unk378[i][0];
+                element->unk18 = scene->unk378[i][1] >> 8;
+                sub_8004558(element);
+                sub_80051E8(element);
+            }
+
+            if (scene->unk365[i] != 0) {
+                element = &scene->unk230[i];
+                element->unkA = gUnknown_080E1650[2].unk4;
+                element->unk20 = gUnknown_080E1650[2].unk6;
+                element->unk16 = scene->unk3C8[i][0];
+                element->unk18 = scene->unk3C8[i][1] >> 8;
+
+                if (sub_8004558(element) != 1) {
+                    element->unk14 = 0;
+                    element->unk1C = 0;
+                    element->unk10 &= ~0x4000;
+                }
+                sub_80051E8(element);
+            }
+        }
+    }
+
+    if (scene->unk35C > 0xB) {
+        variant = 1;
+    }
+    element = &scene->unk110;
+    element->unkA = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].unk4;
+    element->unk20 = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].unk6;
+    element->unk16 = scene->unk3A8;
+    element->unk18 = scene->unk3AC >> 8;
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (scene->unk35C > 10) {
+        variant = 1;
+    }
+
+    element = &scene->unk140;
+    element->unkA = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].unk4;
+    element->unk20 = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].unk6;
+    element->unk16 = scene->unk3B4;
+    element->unk18 = scene->unk3B8 >> 8;
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if (gSelectedCharacter == CHARACTER_CREAM) {
+        element = &scene->unk170;
+        element->unkA = gUnknown_080E1650[variant + 0x1B].unk4;
+        element->unk20 = gUnknown_080E1650[variant + 0x1B].unk6;
+        element->unk16 = scene->unk3B4;
+        element->unk18 = scene->unk3B8 >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk35C > 10) {
+        for (i = 0; i < 2; i++) {
+            sub_8004558(&scene->unkB0[i]);
+        }
+        scene->unk370++;
+    }
+}
+
+void sub_8092780(void);
+
+void sub_8092690(void)
+{
+    struct FinalEndingCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk350;
+    transitionConfig->unk2 = 2;
+
+    sub_8091F68(scene);
+    sub_809205C(scene);
+    sub_80920E4(scene);
+    sub_8092804(scene);
+    sub_80921E8(scene);
+    sub_8092850(scene);
+    sub_80923AC(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        if (scene->unk35C == 0) {
+            gCurTask->main = sub_8092780;
+        } else {
+            gCurTask->main = sub_8091CB0;
+        }
+    }
+}
+
+void sub_8092714(void)
+{
+    struct FinalEndingCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk350;
+    transitionConfig->unk2 = 1;
+
+    sub_8091F68(scene);
+    sub_809205C(scene);
+    sub_80920E4(scene);
+    sub_8092804(scene);
+    sub_80921E8(scene);
+    sub_8092850(scene);
+    sub_80923AC(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_8091CB0;
+    }
+}
+
+void sub_8092780(void)
+{
+    struct FinalEndingCutScene2 *scene = TaskGetStructPtr(gCurTask);
+    sub_8091F68(scene);
+    sub_809205C(scene);
+    sub_80920E4(scene);
+    sub_8092804(scene);
+    sub_80921E8(scene);
+    sub_8092850(scene);
+    sub_80923AC(scene);
+
+    if (((scene->unk3C4 >> 8) + gBgScrollRegs[1][1]) > 0xDB) {
+        gCurTask->main = sub_8091CB0;
+    }
+}
+
+// Non matching onwards
+
+void sub_80928F8(void);
+
+void sub_80927E8(void)
+{
+    struct Task *t = gCurTask;
+    sub_80928F8();
+    TaskDestroy(gCurTask);
+}
+
+void sub_8092800(struct Task *t)
+{
+    // unused logic
+}
+
+void sub_8092804(struct FinalEndingCutScene2 *scene)
+{
+    if (scene->unk35C < 10) {
+        scene->unk3C0 = 0xD2;
+        if ((scene->unk3C4 >> 8) + gBgScrollRegs[1][1] < 0xE7) {
+            scene->unk3C4 += 0x20;
+        }
+        sub_808E8F8((s16 *)&scene->unk3C0, 0xD2, 1);
+    }
+}
+
+void sub_8092850(struct FinalEndingCutScene2 *scene)
+{
+    u8 i;
+
+    for (i = 0; i < 6; i++) {
+        if (scene->unk365[i] != 0) {
+            scene->unk3C8[i][0] = scene->unk378[i][0];
+            scene->unk3C8[i][1] = scene->unk378[i][1];
+        }
+    }
+}
+
+void sub_809289C(UNUSED struct FinalEndingCutScene2 *scene)
+{
+    CpuFastSet((void *)OBJ_PLTT + 0x100, (void *)PLTT + 0x100, 1);
+    CpuFastSet((void *)OBJ_PLTT + 0x120, (void *)PLTT + 0x120, 1);
+}
+
+u32 sub_80928C8(struct FinalEndingCutScene2 *scene)
+{
+    struct Unk_03002400 *background;
+
+    background = &scene->unk0;
+    background->unk1C = gUnknown_080E1648[3];
+    background->unk2E = 0;
+    sub_8002A3C(background);
+
+    background = &scene->unk40;
+    background->unk1C = gUnknown_080E1648[2];
+    background->unk2E = 1;
+    sub_8002A3C(background);
+    return 0;
+}
+
+// struct FinalEndingLandingCutScene {
+// }
