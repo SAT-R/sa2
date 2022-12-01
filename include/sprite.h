@@ -5,6 +5,7 @@
 
 // After a sprite is initialized, its x-value in the layout-data gets set to -2.
 #define SPRITE_STATE_POS_INITIALIZED (-2)
+#define SPRITE_STATE_UNK_MINUS_THREE (-3)
 #define SET_SPRITE_INITIALIZED(target)                                                  \
     {                                                                                   \
         s32 negativeTwo;                                                                \
@@ -13,6 +14,8 @@
         forMatching = negativeTwo;                                                      \
         target->x = forMatching;                                                        \
     }
+
+typedef u16 AnimId;
 
 // TODO: move the struct declaration to a proper location
 // Background
@@ -75,8 +78,8 @@ struct UNK_0808B3FC_UNK240 {
 
     u16 unk8;
 
-    // assetId or animIndex, not sure
-    u16 unkA;
+    // anim
+    AnimId unkA;
 
     struct UNK_0808B3FC_UNK240_UNKC *unkC;
     u32 unk10;
@@ -89,7 +92,7 @@ struct UNK_0808B3FC_UNK240 {
     // y
     u16 unk18;
 
-    u16 unk1A;
+    u16 unk1A; // might be a bitfield?
 
     u16 unk1C;
     u16 unk1E;
@@ -140,8 +143,8 @@ struct UNK_808D124_UNK180 {
 struct UNK_080E0D64 {
     // numTiles
     u32 unk0;
-    // assetId/animIndex
-    u16 unk4;
+    // anim
+    AnimId unk4;
     u8 unk6;
 };
 
