@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "data.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 
 typedef struct {
@@ -16,9 +17,11 @@ typedef struct {
     s16 unk3C;
 } Sprite_019;
 
-// NOTE: This does not only have 2 entries, gUnknown_080D94D8 should be part of this
-// array
-extern u16 gUnknown_080D94D4[];
+// @NOTE/@BUG: This only has 2 entries, so using this Interactable in
+// anything beyond Leaf Forest Act 2 will use a wrong AnimID.
+static const u16 sInt019_AnimationIds[]
+    = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE,
+        [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
 
 extern const struct SpriteTables *gUnknown_03002794;
 
@@ -26,7 +29,6 @@ extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct
 
 static void Task_Interactable_019(void);
 
-// TODO: static
 static void Task_805E35C(void);
 static void Task_805E480(void);
 static void Task_805E6A4(void);
@@ -59,8 +61,12 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
     displayed->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
     displayed->unk4 = VramMalloc(IA_019_NUM_TILES);
 
-    displayed->unkA = gUnknown_080D94D4[gCurrentLevel];
-
+#ifdef UBFIX
+    // Prevent overflow
+    displayed->unkA = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
+#else
+    displayed->unkA = sInt019_AnimationIds[gCurrentLevel];
+#endif
     displayed->unk20 = 0;
     displayed->unk1A = 1152;
     displayed->unk8 = 0;
@@ -224,17 +230,8 @@ void Task_805E480(void)
             if (iwram_end == pointer)
                 return;
 
-#if NON_MATCHING
-            pointer->split.y = (s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18));
-            pointer->split.affineMode = ST_OAM_AFFINE_OFF;
-            pointer->split.objMode = ST_OAM_OBJ_NORMAL;
-            pointer->split.mosaic = 0;
-            pointer->split.bpp = ST_OAM_4BPP;
-            pointer->split.shape = SPRITE_SHAPE(8x8);
-#else
             pointer->all.attr0
                 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18))) & 0xFF;
-#endif
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1
@@ -309,17 +306,8 @@ void Task_805E6A4(void)
                 return;
             }
 
-#if NON_MATCHING
-            pointer->split.y = (s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18));
-            pointer->split.affineMode = ST_OAM_AFFINE_OFF;
-            pointer->split.objMode = ST_OAM_OBJ_NORMAL;
-            pointer->split.mosaic = 0;
-            pointer->split.bpp = ST_OAM_4BPP;
-            pointer->split.shape = SPRITE_SHAPE(8x8);
-#else
             pointer->all.attr0
                 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18))) & 0xFF;
-#endif
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1
