@@ -153,7 +153,7 @@ void Task_805E35C(void)
         sub_80051E8(displayed);
     }
 }
-#if 1
+
 void Task_805E480(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
@@ -162,6 +162,7 @@ void Task_805E480(void)
     s16 screenX, screenY;
     s16 otherPos;
     u8 r6, x, y;
+    u16 *oam_ptr;
     u16 *oam;
 
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
@@ -185,7 +186,8 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam = &gUnknown_03002794->oamData[displayed->unkA][displayed->unkC->unk1 * 3];
+    oam_ptr = gUnknown_03002794->oamData[displayed->unkA];
+    oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     // _0805E54C
     r6 = 0;
@@ -219,7 +221,7 @@ void Task_805E480(void)
             }
             // _0805E5CE
             pointer = sub_80058B4((displayed->unk1A & 0x7C0) >> 6);
-            if (pointer == iwram_end)
+            if (iwram_end == pointer)
                 return;
 
 #if NON_MATCHING
@@ -249,7 +251,7 @@ void Task_805E480(void)
         }
     }
 }
-#endif
+
 #if 0 // Matches
 void TaskDestructor_Interactable019(struct Task *t)
 {
