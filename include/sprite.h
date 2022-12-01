@@ -143,8 +143,8 @@ struct UNK_808D124_UNK180 {
 struct UNK_080E0D64 {
     // numTiles
     u32 unk0;
-    // assetId/animIndex
-    u16 unk4;
+    // anim
+    AnimId unk4;
     u8 unk6;
 };
 
