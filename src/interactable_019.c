@@ -63,7 +63,8 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
 
 #ifdef UBFIX
     // Prevent overflow
-    displayed->unkA = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
+    displayed->unkA
+        = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
 #else
     displayed->unkA = sInt019_AnimationIds[gCurrentLevel];
 #endif
