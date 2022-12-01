@@ -27,10 +27,10 @@ extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct
 static void Task_Interactable_019(void);
 
 // TODO: static
-extern void Task_805E35C(void);
-extern void Task_805E480(void);
-extern void Task_805E6A4(void);
-extern void TaskDestructor_Interactable019(struct Task *);
+static void Task_805E35C(void);
+static void Task_805E480(void);
+static void Task_805E6A4(void);
+static void TaskDestructor_Interactable019(struct Task *);
 
 // @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
@@ -341,4 +341,3 @@ void TaskDestructor_Interactable019(struct Task *t)
     Sprite_019 *platform = TaskGetStructPtr(t);
     VramFree(platform->displayed.unk4);
 }
-#endif
