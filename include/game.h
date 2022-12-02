@@ -95,7 +95,7 @@ struct SomeStruct_59E0 {
     u8 filler24[0x11];
     u8 unk36;
     u8 unk37;
-    u8 unk38;
+    u8 unk38; // bitfield, 0x1 determines layer
     u8 unk39;
     u8 filler3A[2];
     void *unk3C; // the object player collides with this frame?
