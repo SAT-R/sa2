@@ -37,7 +37,7 @@ static void Task_Interactable_SetPlayerLayer(void)
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.
-        if (ia->index == IA__CHANGE_PLAYER_LAYER__FOREGROUND) {
+        if (ia->index == IA__SET_PLAYER_LAYER__FOREGROUND) {
             gPlayer.unk38 &= ~1;
         } else {
             gPlayer.unk38 |= 1;
