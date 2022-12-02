@@ -11,7 +11,8 @@
 
 PACKED
 typedef struct {
-    /* 0x00 */ u8 x;
+    /* 0x00 */ u8 x; // While an interactable is active, x gets repurposed as a "state"
+                     // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
     union PACKED {

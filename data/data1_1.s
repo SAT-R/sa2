@@ -24,8 +24,8 @@ gSpritePosData_Enemies:
 @; gSpriteFunctions ?
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
-    .4byte initSprite_Interactable_ChangePlayerLayer
-    .4byte initSprite_Interactable_ChangePlayerLayer
+    .4byte initSprite_Interactable_SetPlayerLayer
+    .4byte initSprite_Interactable_SetPlayerLayer
     .4byte initSprite_Interactable002
     .4byte initSprite_Interactable_Spring_Normal_Up
     .4byte initSprite_Interactable_Spring_Normal_Down
@@ -70,7 +70,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Corkscrew3D_End
     .4byte initSprite_Interactable_StageGoal
     .4byte initSprite_Interactable_Checkpoint
-    .4byte initSprite_Interactable044    @ Used at layer transitions on 3/4 - type loops
+    .4byte initSprite_Interactable044    @ Used at layer transitions on three-quarter-type loops
     .4byte initSprite_Interactable_Toggle_Checkpoint
     .4byte initSprite_Interactable_Toggle_StageGoal
     .4byte initSprite_Interactable_WindupStick @ Character rotates a bit around it, then shoots up/down

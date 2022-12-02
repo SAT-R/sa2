@@ -95,7 +95,9 @@ struct SomeStruct_59E0 {
     u8 filler24[0x11];
     u8 unk36;
     u8 unk37;
-    u8 filler38[4];
+    u8 unk38;
+    u8 unk39;
+    u8 filler3A[2];
     void *unk3C; // the object player collides with this frame?
     u8 filler40[0x1A];
     u8 unk5A;
@@ -142,11 +144,15 @@ extern struct Camera gCamera;
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
 // NOTE(Jace): The u16-cast is u32 in SA3(?)
-#define IS_OUT_OF_RANGE(x, y, dim)                                                      \
-    (((u16)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)                \
+#define IS_OUT_OF_RANGE(castType, x, y, dim)                                            \
+    (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
      || (y > DISPLAY_HEIGHT + (dim / 2)))
 
-#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(x, y, CAM_REGION_WIDTH)
+// @NOTE/INVESTIGATE: Some places match with u16, some with u32,
+// but u16 is more common, so it's the default.
+#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(u16, x, y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
+    IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
 
 struct SomeStruct_5660 {
     u8 filler[16];
