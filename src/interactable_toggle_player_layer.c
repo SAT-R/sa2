@@ -17,7 +17,7 @@ typedef struct {
 #define splWidth  d.uData[2]
 #define splHeight d.uData[3]
 
-static void Task_Interactable_SetPlayerLayer(void)
+static void Task_Interactable_Toggle_PlayerLayer(void)
 {
     Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &layerChanger->base;
@@ -37,7 +37,7 @@ static void Task_Interactable_SetPlayerLayer(void)
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.
-        if (ia->index == IA__SET_PLAYER_LAYER__FOREGROUND) {
+        if (ia->index == IA__TOGGLE_PLAYER_LAYER__FOREGROUND) {
             gPlayer.unk38 &= ~1;
         } else {
             gPlayer.unk38 |= 1;
@@ -58,10 +58,10 @@ static void Task_Interactable_SetPlayerLayer(void)
 #undef splHeight
 #undef splWidth
 
-void initSprite_Interactable_SetPlayerLayer(Interactable *ia, u16 spriteRegionX,
-                                            u16 spriteRegionY, UNUSED u8 spriteY)
+void initSprite_Interactable_Toggle_PlayerLayer(Interactable *ia, u16 spriteRegionX,
+                                                u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_SetPlayerLayer,
+    struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer,
                                 sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);
     Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(t);
     SpriteBase *base = &layerChanger->base;

@@ -24,8 +24,8 @@ gSpritePosData_Enemies:
 @; gSpriteFunctions ?
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
-    .4byte initSprite_Interactable_SetPlayerLayer
-    .4byte initSprite_Interactable_SetPlayerLayer
+    .4byte initSprite_Interactable_Toggle_PlayerLayer
+    .4byte initSprite_Interactable_Toggle_PlayerLayer
     .4byte initSprite_Interactable002
     .4byte initSprite_Interactable_Spring_Normal_Up
     .4byte initSprite_Interactable_Spring_Normal_Down
