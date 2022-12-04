@@ -3616,11 +3616,11 @@ struct FinalEndingLandingCutScene {
     u16 unk344;
     u16 unk346;
     u16 unk348;
-    u16 unk34A;
+    s16 unk34A;
 
-    u32 unk34C[20][5];
-    u32 unk4DC[13][5];
-    u32 unk5E0[7][2];
+    s32 unk34C[20][5];
+    s32 unk4DC[13][5];
+    s32 unk5E0[7][2];
 
     // vramPtr
     vu32 unk618;
@@ -4030,5 +4030,433 @@ void sub_80928F8(void)
     if (!(gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80)) {
         memcpy(unk1AF4, gUnknown_080E1AF4, 0x20);
         DmaCopy32(3, unk1AF4, &gBgPalette[0x20], 0x20);
+    }
+}
+
+void sub_8093FA0(struct FinalEndingLandingCutScene *);
+void sub_8093FF0(struct FinalEndingLandingCutScene *);
+void sub_80934B8(struct FinalEndingLandingCutScene *);
+void sub_8093638(struct FinalEndingLandingCutScene *);
+void sub_8093740(struct FinalEndingLandingCutScene *);
+void sub_809401C(struct FinalEndingLandingCutScene *);
+void sub_8094044(struct FinalEndingLandingCutScene *);
+void sub_8094060(struct FinalEndingLandingCutScene *);
+void sub_80940BC(struct FinalEndingLandingCutScene *);
+void sub_8093868(struct FinalEndingLandingCutScene *);
+void sub_8093F54(void);
+
+void sub_80932C8(void)
+{
+    struct FinalEndingLandingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk32C;
+
+    transitionConfig->unk2 = 1;
+    transitionConfig->unk8 = 0x3FFF;
+    sub_8093FA0(scene);
+    sub_8093FF0(scene);
+    sub_80934B8(scene);
+    sub_8093638(scene);
+    sub_8093740(scene);
+    sub_809401C(scene);
+    sub_8094044(scene);
+    sub_8094060(scene);
+    sub_80940BC(scene);
+    sub_8093868(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_8093F54;
+    }
+}
+
+extern const u16 gUnknown_080E1944[4][8];
+extern const u16 gUnknown_080E1B14[2][7];
+
+void sub_809334C(void)
+{
+    struct FinalEndingLandingCutScene *scene = TaskGetStructPtr(gCurTask);
+
+    sub_8093FA0(scene);
+    sub_8093FF0(scene);
+    sub_80934B8(scene);
+    sub_8093638(scene);
+    sub_8093740(scene);
+    sub_809401C(scene);
+    sub_8094044(scene);
+    sub_8094060(scene);
+    sub_80940BC(scene);
+    sub_8093868(scene);
+
+    if ((scene->unk5E0[0][1]
+             == ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
+                 * 0x100)
+         || (scene->unk33B == 0 && scene->unk338 > 3))
+        || (scene->unk33B == 1 && scene->unk338 > 4)) {
+        if ((scene->unk33B == 0 && scene->unk338 < 6)
+            || (scene->unk33B == 1 && scene->unk338 < 7)) {
+            if (scene->unk342 != 0) {
+                scene->unk342--;
+            } else {
+                scene->unk342 = gUnknown_080E1B14[scene->unk33B][scene->unk338];
+                scene->unk338++;
+                if (scene->unk33B != 0) {
+                    if (scene->unk338 == 1) {
+                        scene->unk33A = 1;
+                    } else if ((u8)(scene->unk338 - 3) < 2) {
+                        scene->unk33A++;
+                    } else if (scene->unk338 > 4) {
+                        scene->unk33A = 4;
+                    }
+                }
+            }
+        } else {
+            gCurTask->main = sub_80932C8;
+        }
+    }
+}
+
+extern const u32 gUnknown_080E1B30[35][2];
+
+void sub_80934B8(struct FinalEndingLandingCutScene *scene)
+{
+    if (scene->unk5E0[0][1]
+            < ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
+               * 0x100)
+        && scene->unk338 == 0) {
+        scene->unk5E0[0][1] += 0x320;
+        scene->unk5E0[0][0] = 0x7800;
+    } else if (scene->unk338 == 0) {
+        scene->unk5E0[0][1]
+            = ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
+               * 0x100);
+        scene->unk5E0[0][0] = 0x7800;
+    } else if (scene->unk338 == 1) {
+        scene->unk5E0[0][1]
+            = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
+            * 0x100;
+        scene->unk5E0[0][0] = 0x7800;
+    } else {
+        if ((gSelectedCharacter == 1 && scene->unk338 == 5)
+            || (gSelectedCharacter != 1 && scene->unk338 == 4)) {
+            if (scene->unk342 & 1) {
+                if (scene->unk33E < 0x23) {
+                    scene->unk33E++;
+                }
+
+                scene->unk5E0[0][0] = gUnknown_080E1B30[scene->unk33E][0] + 0x7800;
+                scene->unk5E0[0][1] = gUnknown_080E1B30[scene->unk33E][1] + 0x8200;
+            }
+
+            if (scene->unk342 < 0x32) {
+                scene->unk340 += 4;
+                scene->unk320.unk0 += 3;
+            } else {
+                scene->unk340 += 8;
+                scene->unk320.unk0 += 0x14;
+            }
+
+            if (scene->unk342 == 1) {
+                m4aSongNumStart(VOICE__ANNOUNCER__CONGRATULATIONS);
+            }
+            return;
+        }
+        scene->unk5E0[0][1]
+            = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
+            * 0x100;
+        scene->unk5E0[0][0] = 0x7800;
+    }
+}
+
+extern const u32 gUnknown_080E1964[20][5];
+
+void sub_8093638(struct FinalEndingLandingCutScene *scene)
+{
+    u8 i;
+
+    for (i = 0; i < (0x14 - scene->unk33C); i++) {
+        scene->unk34C[i][2] += gUnknown_080E1964[i][0] * 2;
+        if ((u32)scene->unk34C[i][2] <= 0x20000) {
+            scene->unk34C[i][4] = 0;
+        } else {
+            scene->unk34C[i][4] = 1;
+        }
+
+        if (scene->unk34C[i][2] > 0x3FFFF) {
+            scene->unk34C[i][2] = 0;
+        }
+
+        scene->unk34C[i][0] = COS(scene->unk34C[i][2] >> 8);
+        scene->unk34C[i][3] += gUnknown_080E1964[i][1] * 8;
+
+        if (scene->unk34C[i][3] > 0x3FFFF) {
+            scene->unk34C[i][3] = 0;
+        }
+
+        scene->unk34C[i][1] = (SIN(((scene->unk34C[i][3] >> 8) & 0xFF) * 4) >> 6) * 8;
+    }
+}
+
+void sub_8093740(struct FinalEndingLandingCutScene *scene)
+{
+    u8 i;
+    for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
+        s32 sin, temp, unused;
+        if (scene->unk4DC[i][1] == ((0xBE - gBgScrollRegs[1][1]) * 0x100)) {
+            gUnknown_030053B8 = gUnknown_030053B8 * 0x196225 + 0x3C6EF35F;
+            if (gUnknown_030053B8 < 0) {
+                scene->unk4DC[i][4] = -1;
+            } else {
+                scene->unk4DC[i][4] = 1;
+            }
+        }
+
+        scene->unk4DC[i][0] += scene->unk4DC[i][4] * 0x80;
+
+        if (scene->unk4DC[i][0] > 0x10000) {
+            scene->unk4DC[i][0] = -10;
+        } else if (scene->unk4DC[i][0] < -10) {
+            scene->unk4DC[i][0] = 0x10000;
+        }
+
+#ifndef NON_MATCHING
+        unused = scene->unk4DC[i][1];
+#endif
+
+        temp = (0xBE - gBgScrollRegs[1][1]) * 0x100;
+        sin = SIN((((scene->unk4DC[i][0] >> 7) * 8) & 0xFF) * 4) >> 6;
+
+        if (sin < 0) {
+            sin = -sin;
+        };
+
+        scene->unk4DC[i][1] = temp - (sin * 8);
+    }
+}
+
+extern const u8 gUnknown_080E1C48[6];
+extern const u8 gUnknown_080E1C4E[6];
+
+extern const u8 gUnknown_080E1C55[7];
+
+void sub_8093868(struct FinalEndingLandingCutScene *scene)
+{
+    u8 i;
+    struct UNK_808D124_UNK180 *transformer;
+    struct UNK_0808B3FC_UNK240 *element = NULL;
+
+    transformer = &scene->unk320;
+
+    if ((gSelectedCharacter == 1 && scene->unk338 < 5)
+        || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
+        element = &scene->unk80;
+
+        if (scene->unk338 < 3) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk6;
+
+        } else if (gSelectedCharacter == 1) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        } else {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        }
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+    }
+
+    if ((gSelectedCharacter != 1 && scene->unk338 == 4)
+        || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
+        element = &scene->unkB0;
+
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+
+        transformer->unk2 = scene->unk340;
+        transformer->unk4 = scene->unk340;
+        transformer->unk6[0] = element->unk16;
+        transformer->unk6[1] = element->unk18;
+        sub_8004860(element, transformer);
+    }
+
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if ((gSelectedCharacter != 1 && scene->unk338 > 4)
+        || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
+        element = &scene->unkE0;
+        if (gSelectedCharacter != 1) {
+            element->unkA
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk4;
+            element->unk20
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk6;
+        } else {
+            element->unkA
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk4;
+            element->unk20
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk6;
+        }
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk338 != 0 && scene->unk33D == 0) {
+        element = &scene->unk1A0;
+        element->unkA = gUnknown_080E17A4[35].unk4;
+        element->unk20 = gUnknown_080E17A4[35].unk6;
+        element->unk10 |= 0x400;
+        element->unk16 = scene->unk80.unk16;
+        element->unk18 = scene->unk80.unk18 + 0x19;
+        sub_80051E8(element);
+
+        element->unk10 &= ~0x400;
+        element->unk16 = scene->unk80.unk16;
+        element->unk18 = scene->unk80.unk18 + 0x19;
+
+        if (sub_8004558(element) != 1) {
+            scene->unk33D = 1;
+        }
+
+        sub_80051E8(element);
+    }
+
+    for (i = 0; i < (0x14 - scene->unk33C); i++) {
+        element = &scene->unk260[i & 1];
+        element->unkA = gUnknown_080E17A4[(i & 1) + 0x24].unk4;
+        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x24].unk6;
+
+        if (scene->unk34C[i][4] != 0) {
+            element->unk10 |= 0x400;
+        } else {
+            element->unk10 &= ~0x400;
+        }
+
+        element->unk16 = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
+        element->unk18 = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
+            + (scene->unk34C[i][1] >> 8);
+
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
+        element = &scene->unk2C0[i & 1];
+        element->unkA = gUnknown_080E17A4[(i & 1) + 0x26].unk4;
+        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x26].unk6;
+
+        if (scene->unk4DC[i][4] > 0) {
+            element->unk10 |= 0x400;
+        } else {
+            element->unk10 &= ~0x400;
+        }
+
+        element->unk16 = scene->unk4DC[i][0] >> 8;
+        element->unk18 = scene->unk4DC[i][1] >> 8;
+
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk34A >= 1) {
+        element = &scene->unk1D0;
+        element->unkA = gUnknown_080E17A4[40].unk4;
+        element->unk20 = gUnknown_080E17A4[40].unk6;
+        element->unk16 = scene->unk5E0[0][4];
+        element->unk18 = scene->unk5E0[0][5] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+        scene->unk34A--;
+    } else {
+        if ((u16)(scene->unk34A + 0x1D) < 0x1E) {
+            scene->unk34A--;
+        } else if (scene->unk34A <= -0x1E) {
+            scene->unk34A = 0x32;
+        }
+    }
+
+    if ((gSelectedCharacter == 1 && scene->unk338 > 5)
+        || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
+        element = &scene->unk200;
+        element->unkA = gUnknown_080E17A4[41].unk4;
+        element->unk20 = gUnknown_080E17A4[41].unk6;
+        element->unk16 = scene->unk5E0[0][6];
+        element->unk18 = scene->unk5E0[0][7] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+
+        element = &scene->unk230;
+        element->unkA = gUnknown_080E17A4[42].unk4;
+        element->unk20 = gUnknown_080E17A4[42].unk6;
+        element->unk16 = scene->unk5E0[0][8];
+        element->unk18 = scene->unk5E0[0][9] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (gSelectedCharacter == 1) {
+        element = &scene->unk110;
+        element->unkA = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk4;
+        element->unk20 = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk6;
+        element->unk16 = scene->unk5E0[0][2];
+        element->unk18 = scene->unk5E0[0][3] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+
+        if (scene->unk338 < 6) {
+            element = &scene->unk140;
+            element->unkA = gUnknown_080E17A4[0x2B + scene->unk338].unk4;
+            element->unk20 = gUnknown_080E17A4[0x2B + scene->unk338].unk6;
+            element->unk10 |= 0x400;
+            element->unk16 = ((scene->unk5E0[0][0] >> 8) - 0x14);
+            element->unk18 = (scene->unk5E0[0][1] >> 8) - 0x14;
+        } else {
+            element = &scene->unk170;
+            element->unkA = gUnknown_080E17A4[49].unk4;
+            element->unk20 = gUnknown_080E17A4[49].unk6;
+            element->unk10 &= ~0x400;
+            element->unk16 = scene->unk5E0[0][0] >> 8;
+            element->unk18 = scene->unk5E0[0][1] >> 8;
+        }
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+}
+
+void sub_8093EDC(void)
+{
+    struct FinalEndingLandingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk32C;
+
+    sub_8093FA0(scene);
+    sub_8093FF0(scene);
+    sub_80934B8(scene);
+    sub_8093638(scene);
+    sub_8093740(scene);
+    sub_809401C(scene);
+    sub_8094044(scene);
+    sub_8094060(scene);
+    sub_80940BC(scene);
+    sub_8093868(scene);
+
+    if (sub_802D4CC(&scene->unk32C) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_809334C;
     }
 }
