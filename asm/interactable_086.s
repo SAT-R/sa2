@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable
-initSprite_Interactable: @ 0x0807C7B8
+	thumb_func_start initSprite_Interactable086
+initSprite_Interactable086: @ 0x0807C7B8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1375,7 +1375,7 @@ initSprite_Interactable086_0: @ 0x0807D228
 	lsrs r3, r3, #0x18
 	movs r4, #0
 	str r4, [sp]
-	bl initSprite_Interactable
+	bl initSprite_Interactable086
 	add sp, #4
 	pop {r4}
 	pop {r0}
@@ -1393,7 +1393,7 @@ initSprite_Interactable086_1: @ 0x0807D248
 	lsrs r3, r3, #0x18
 	movs r4, #1
 	str r4, [sp]
-	bl initSprite_Interactable
+	bl initSprite_Interactable086
 	add sp, #4
 	pop {r4}
 	pop {r0}
