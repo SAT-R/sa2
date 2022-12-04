@@ -98,8 +98,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable069
     .4byte initSprite_Interactable070
     .4byte initSprite_Interactable044
-    .4byte initSprite_Interactable_Common_ClearPipe_Start
-    .4byte initSprite_Interactable_Common_ClearPipe_End
+    .4byte initSprite_Interactable_ClearPipe_Start
+    .4byte initSprite_Interactable_ClearPipe_End
     .4byte initSprite_Interactable074
     .4byte initSprite_Interactable075
     .4byte initSprite_Interactable076
