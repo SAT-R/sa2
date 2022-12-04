@@ -42,17 +42,26 @@ gUnknown_080DFC88:
 gUnknown_080DFC94:
     .incbin "baserom.gba", 0x000DFC94, 0xC
 
+    @ These might be Q_8_8 values, actually.
     .global gUnknown_080DFCA0
 gUnknown_080DFCA0:
-    .incbin "baserom.gba", 0x000DFCA0, 0x8
+    .2byte 0x700, 0x800, 0x900, 0xA00
 
     .global gUnknown_080DFCA8
 gUnknown_080DFCA8:
-    .incbin "baserom.gba", 0x000DFCA8, 0x8
+    .2byte 0x146 @ SE_MUSIC_PLANT_FLUTE_1
+    .2byte 0x147 @ SE_MUSIC_PLANT_FLUTE_2
+    .2byte 0x148 @ SE_MUSIC_PLANT_FLUTE_3
+    .2byte 0x149 @ SE_MUSIC_PLANT_FLUTE_4
 
+    @; These functions control the character when they enter
+    @; one of the trumpets(/horns(?)) or pipes in Music Plant.
     .global gUnknown_080DFCB0
 gUnknown_080DFCB0:
-    .incbin "baserom.gba", 0x000DFCB0, 0x1E0
+    .4byte Handler_MusicPlant_Pipe_0, Handler_MusicPlant_Pipe_1, Handler_MusicPlant_Pipe_2, Handler_MusicPlant_Pipe_3
+    .4byte Handler_MusicPlant_Pipe_4, Handler_MusicPlant_Pipe_5, Handler_MusicPlant_Pipe_6, Handler_MusicPlant_Pipe_7
+    .4byte Handler_MusicPlant_Pipe_8, Handler_MusicPlant_Pipe_9, Handler_MusicPlant_Pipe_10
+    .incbin "baserom.gba", 0x000DFCDC, 0x1B4
 
     .global gUnknown_080DFE90
 gUnknown_080DFE90:
