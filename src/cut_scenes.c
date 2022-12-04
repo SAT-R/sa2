@@ -3616,7 +3616,7 @@ struct FinalEndingLandingCutScene {
     u16 unk344;
     u16 unk346;
     u16 unk348;
-    u16 unk34A;
+    s16 unk34A;
 
     s32 unk34C[20][5];
     s32 unk4DC[13][5];
@@ -4167,7 +4167,7 @@ void sub_80934B8(struct FinalEndingLandingCutScene *scene)
     }
 }
 
-extern const u32 gUnknown_080E1964[][5];
+extern const u32 gUnknown_080E1964[20][5];
 
 void sub_8093638(struct FinalEndingLandingCutScene *scene)
 {
@@ -4229,6 +4229,234 @@ void sub_8093740(struct FinalEndingLandingCutScene *scene)
             sin = -sin;
         };
 
-        scene->unk4DC[i][1] = ((0xBE - gBgScrollRegs[1][1]) * 0x100) - (sin * 8);
+        scene->unk4DC[i][1] = temp - (sin * 8);
+    }
+}
+
+extern const u8 gUnknown_080E1C48[6];
+extern const u8 gUnknown_080E1C4E[6];
+
+extern const u8 gUnknown_080E1C55[7];
+
+void sub_8093868(struct FinalEndingLandingCutScene *scene)
+{
+    u8 i;
+    struct UNK_808D124_UNK180 *transformer;
+    struct UNK_0808B3FC_UNK240 *element = NULL;
+
+    transformer = &scene->unk320;
+
+    if ((gSelectedCharacter == 1 && scene->unk338 < 5)
+        || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
+        element = &scene->unk80;
+
+        if (scene->unk338 < 3) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk6;
+
+        } else if (gSelectedCharacter == 1) {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        } else {
+            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                              + gSelectedCharacter]
+                                .unk4;
+            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                               + gSelectedCharacter]
+                                 .unk6;
+        }
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+    }
+
+    if ((gSelectedCharacter != 1 && scene->unk338 == 4)
+        || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
+        element = &scene->unkB0;
+
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+
+        transformer->unk2 = scene->unk340;
+        transformer->unk4 = scene->unk340;
+        transformer->unk6[0] = element->unk16;
+        transformer->unk6[1] = element->unk18;
+        sub_8004860(element, transformer);
+    }
+
+    sub_8004558(element);
+    sub_80051E8(element);
+
+    if ((gSelectedCharacter != 1 && scene->unk338 > 4)
+        || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
+        element = &scene->unkE0;
+        if (gSelectedCharacter != 1) {
+            element->unkA
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk4;
+            element->unk20
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk6;
+        } else {
+            element->unkA
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk4;
+            element->unk20
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk6;
+        }
+        element->unk16 = scene->unk5E0[0][0] >> 8;
+        element->unk18 = scene->unk5E0[0][1] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk338 != 0 && scene->unk33D == 0) {
+        element = &scene->unk1A0;
+        element->unkA = gUnknown_080E17A4[35].unk4;
+        element->unk20 = gUnknown_080E17A4[35].unk6;
+        element->unk10 |= 0x400;
+        element->unk16 = scene->unk80.unk16;
+        element->unk18 = scene->unk80.unk18 + 0x19;
+        sub_80051E8(element);
+
+        element->unk10 &= ~0x400;
+        element->unk16 = scene->unk80.unk16;
+        element->unk18 = scene->unk80.unk18 + 0x19;
+
+        if (sub_8004558(element) != 1) {
+            scene->unk33D = 1;
+        }
+
+        sub_80051E8(element);
+    }
+
+    for (i = 0; i < (0x14 - scene->unk33C); i++) {
+        element = &scene->unk260[i & 1];
+        element->unkA = gUnknown_080E17A4[(i & 1) + 0x24].unk4;
+        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x24].unk6;
+
+        if (scene->unk34C[i][4] != 0) {
+            element->unk10 |= 0x400;
+        } else {
+            element->unk10 &= ~0x400;
+        }
+
+        element->unk16 = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
+        element->unk18 = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
+            + (scene->unk34C[i][1] >> 8);
+
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
+        element = &scene->unk2C0[i & 1];
+        element->unkA = gUnknown_080E17A4[(i & 1) + 0x26].unk4;
+        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x26].unk6;
+
+        if (scene->unk4DC[i][4] > 0) {
+            element->unk10 |= 0x400;
+        } else {
+            element->unk10 &= ~0x400;
+        }
+
+        element->unk16 = scene->unk4DC[i][0] >> 8;
+        element->unk18 = scene->unk4DC[i][1] >> 8;
+
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (scene->unk34A >= 1) {
+        element = &scene->unk1D0;
+        element->unkA = gUnknown_080E17A4[40].unk4;
+        element->unk20 = gUnknown_080E17A4[40].unk6;
+        element->unk16 = scene->unk5E0[0][4];
+        element->unk18 = scene->unk5E0[0][5] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+        scene->unk34A--;
+    } else {
+        if ((u16)(scene->unk34A + 0x1D) < 0x1E) {
+            scene->unk34A--;
+        } else if (scene->unk34A <= -0x1E) {
+            scene->unk34A = 0x32;
+        }
+    }
+
+    if ((gSelectedCharacter == 1 && scene->unk338 > 5)
+        || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
+        element = &scene->unk200;
+        element->unkA = gUnknown_080E17A4[41].unk4;
+        element->unk20 = gUnknown_080E17A4[41].unk6;
+        element->unk16 = scene->unk5E0[0][6];
+        element->unk18 = scene->unk5E0[0][7] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+
+        element = &scene->unk230;
+        element->unkA = gUnknown_080E17A4[42].unk4;
+        element->unk20 = gUnknown_080E17A4[42].unk6;
+        element->unk16 = scene->unk5E0[0][8];
+        element->unk18 = scene->unk5E0[0][9] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+
+    if (gSelectedCharacter == 1) {
+        element = &scene->unk110;
+        element->unkA = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk4;
+        element->unk20 = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk6;
+        element->unk16 = scene->unk5E0[0][2];
+        element->unk18 = scene->unk5E0[0][3] >> 8;
+        sub_8004558(element);
+        sub_80051E8(element);
+
+        if (scene->unk338 < 6) {
+            element = &scene->unk140;
+            element->unkA = gUnknown_080E17A4[0x2B + scene->unk338].unk4;
+            element->unk20 = gUnknown_080E17A4[0x2B + scene->unk338].unk6;
+            element->unk10 |= 0x400;
+            element->unk16 = ((scene->unk5E0[0][0] >> 8) - 0x14);
+            element->unk18 = (scene->unk5E0[0][1] >> 8) - 0x14;
+        } else {
+            element = &scene->unk170;
+            element->unkA = gUnknown_080E17A4[49].unk4;
+            element->unk20 = gUnknown_080E17A4[49].unk6;
+            element->unk10 &= ~0x400;
+            element->unk16 = scene->unk5E0[0][0] >> 8;
+            element->unk18 = scene->unk5E0[0][1] >> 8;
+        }
+        sub_8004558(element);
+        sub_80051E8(element);
+    }
+}
+
+void sub_8093EDC(void)
+{
+    struct FinalEndingLandingCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk32C;
+
+    sub_8093FA0(scene);
+    sub_8093FF0(scene);
+    sub_80934B8(scene);
+    sub_8093638(scene);
+    sub_8093740(scene);
+    sub_809401C(scene);
+    sub_8094044(scene);
+    sub_8094060(scene);
+    sub_80940BC(scene);
+    sub_8093868(scene);
+
+    if (sub_802D4CC(&scene->unk32C) == 1) {
+        transitionConfig->unk4 = 0;
+        gCurTask->main = sub_809334C;
     }
 }
