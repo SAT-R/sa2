@@ -76,9 +76,9 @@
 #define IA__COMMON_CLEAR_PIPE__START               72
 #define IA__COMMON_CLEAR_PIPE__END                 73
 #define IA__074                                    74
-#define IA__075                                    75
-#define IA__076                                    76
-#define IA__077                                    77
+#define IA__075_0                                  75
+#define IA__075_1                                  76
+#define IA__075_2                                  77
 #define IA__078                                    78
 #define IA__079                                    79
 #define IA__080                                    80
