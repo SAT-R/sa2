@@ -133,15 +133,34 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable086_1
     .4byte initSprite_Interactable105
 
-    @ Enemy code?
+    @ Enemy code
+    @ TODO: Some names might be wrong?
+    @       Should be in line with Encyclospeedia (mostly)
     .global gUnknown_080D4FC4
 gUnknown_080D4FC4:
-    .4byte sub_8051214, sub_8053784, sub_8052F94
-    .4byte sub_8051788, sub_8051E3C, sub_8052288, sub_80554C0
-    .4byte sub_8054AF0, sub_8054E0C, sub_80557F0, sub_8054068
-    .4byte sub_8055EDC, sub_8056684, sub_8056BF8, sub_8056F28
-    .4byte sub_80571B4, sub_8057854, sub_8057D84, sub_805849C
-    .4byte sub_8058920, sub_80593B4, sub_8059C9C, sub_805971C
+    .4byte initSprite_Enemy_Mon
+    .4byte initSprite_Enemy_Kiki
+    .4byte initSprite_Enemy_Buzzer
+    .4byte initSprite_Enemy_Gohla
+    .4byte initSprite_Enemy_KuraKura
+    .4byte initSprite_Enemy_Kobinaga
+    .4byte initSprite_Enemy_PikoPiko
+    .4byte initSprite_Enemy_Bell
+    .4byte initSprite_Enemy_Yado
+    .4byte initSprite_Enemy_Circus
+    .4byte initSprite_Enemy_Koura
+    .4byte initSprite_Enemy_Madillo
+    .4byte initSprite_Enemy_Straw
+    .4byte initSprite_Enemy_Hammerhead
+    .4byte initSprite_Enemy_Spinner
+    .4byte initSprite_Enemy_Mouse
+    .4byte initSprite_Enemy_Pen
+    .4byte initSprite_Enemy_GejiGeji
+    .4byte initSprite_Enemy_Balloon
+    .4byte initSprite_Enemy_Flickey
+    .4byte initSprite_Enemy_Kyura
+    .4byte initSprite_Enemy_Star
+    .4byte initSprite_Enemy_BulletBuzzer
 
     .global gUnknown_080D5020
 gUnknown_080D5020:

@@ -53540,8 +53540,8 @@ sub_8051200: @ 0x08051200
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8051214
-sub_8051214: @ 0x08051214
+	thumb_func_start initSprite_Enemy_Mon
+initSprite_Enemy_Mon: @ 0x08051214
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -53560,7 +53560,7 @@ sub_8051214: @ 0x08051214
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	mov sb, r0
-	ldr r0, _08051314 @ =sub_805133C
+	ldr r0, _08051314 @ =Task_Enemy_Mon
 	ldr r2, _08051318 @ =0x00004010
 	ldr r1, _0805131C @ =TaskDestructor_80095E8
 	str r1, [sp]
@@ -53668,7 +53668,7 @@ sub_8051214: @ 0x08051214
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08051314: .4byte sub_805133C
+_08051314: .4byte Task_Enemy_Mon
 _08051318: .4byte 0x00004010
 _0805131C: .4byte TaskDestructor_80095E8
 _08051320: .4byte IWRAM_START + 0xC
@@ -53679,8 +53679,8 @@ _08051330: .4byte 0xFFFFFA80
 _08051334: .4byte IWRAM_START + 0x2C
 _08051338: .4byte IWRAM_START + 0x2D
 
-	thumb_func_start sub_805133C
-sub_805133C: @ 0x0805133C
+	thumb_func_start Task_Enemy_Mon
+Task_Enemy_Mon: @ 0x0805133C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -54204,7 +54204,7 @@ _08051754:
 	strb r0, [r1]
 	ldr r0, _08051780 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08051784 @ =sub_805133C
+	ldr r0, _08051784 @ =Task_Enemy_Mon
 _08051770:
 	str r0, [r1, #8]
 _08051772:
@@ -54216,10 +54216,10 @@ _08051778:
 	bx r0
 	.align 2, 0
 _08051780: .4byte gCurTask
-_08051784: .4byte sub_805133C
+_08051784: .4byte Task_Enemy_Mon
 
-	thumb_func_start sub_8051788
-sub_8051788: @ 0x08051788
+	thumb_func_start initSprite_Enemy_Gohla
+initSprite_Enemy_Gohla: @ 0x08051788
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -55069,8 +55069,8 @@ sub_8051E20: @ 0x08051E20
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8051E3C
-sub_8051E3C: @ 0x08051E3C
+	thumb_func_start initSprite_Enemy_KuraKura
+initSprite_Enemy_KuraKura: @ 0x08051E3C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -55589,8 +55589,8 @@ sub_8052264: @ 0x08052264
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8052288
-sub_8052288: @ 0x08052288
+	thumb_func_start initSprite_Enemy_Kobinaga
+initSprite_Enemy_Kobinaga: @ 0x08052288
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -57218,8 +57218,8 @@ sub_8052F70: @ 0x08052F70
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8052F94
-sub_8052F94: @ 0x08052F94
+	thumb_func_start initSprite_Enemy_Buzzer
+initSprite_Enemy_Buzzer: @ 0x08052F94
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -58216,8 +58216,8 @@ sub_8053770: @ 0x08053770
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8053784
-sub_8053784: @ 0x08053784
+	thumb_func_start initSprite_Enemy_Kiki
+initSprite_Enemy_Kiki: @ 0x08053784
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -59332,8 +59332,8 @@ sub_8054054: @ 0x08054054
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8054068
-sub_8054068: @ 0x08054068
+	thumb_func_start initSprite_Enemy_Koura
+initSprite_Enemy_Koura: @ 0x08054068
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -60647,8 +60647,8 @@ _08054AE4: .4byte gUnknown_080D8F38
 _08054AE8: .4byte gCurTask
 _08054AEC: .4byte sub_8054224
 
-	thumb_func_start sub_8054AF0
-sub_8054AF0: @ 0x08054AF0
+	thumb_func_start initSprite_Enemy_Bell
+initSprite_Enemy_Bell: @ 0x08054AF0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -61030,8 +61030,8 @@ _08054E00: .4byte IWRAM_START + 0x2C
 _08054E04: .4byte IWRAM_START + 0x2D
 _08054E08: .4byte sub_8054BF4
 
-	thumb_func_start sub_8054E0C
-sub_8054E0C: @ 0x08054E0C
+	thumb_func_start initSprite_Enemy_Yado
+initSprite_Enemy_Yado: @ 0x08054E0C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -61877,8 +61877,8 @@ sub_80554AC: @ 0x080554AC
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80554C0
-sub_80554C0: @ 0x080554C0
+	thumb_func_start initSprite_Enemy_PikoPiko
+initSprite_Enemy_PikoPiko: @ 0x080554C0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -62278,8 +62278,8 @@ sub_80557DC: @ 0x080557DC
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80557F0
-sub_80557F0: @ 0x080557F0
+	thumb_func_start initSprite_Enemy_Circus
+initSprite_Enemy_Circus: @ 0x080557F0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -63106,8 +63106,8 @@ sub_8055EC0: @ 0x08055EC0
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8055EDC
-sub_8055EDC: @ 0x08055EDC
+	thumb_func_start initSprite_Enemy_Madillo
+initSprite_Enemy_Madillo: @ 0x08055EDC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -64076,8 +64076,8 @@ _08056678: .4byte gCurTask
 _0805667C: .4byte sub_8056014
 _08056680: .4byte 0x000001F7
 
-	thumb_func_start sub_8056684
-sub_8056684: @ 0x08056684
+	thumb_func_start initSprite_Enemy_Straw
+initSprite_Enemy_Straw: @ 0x08056684
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -64756,8 +64756,8 @@ _08056BE8:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8056BF8
-sub_8056BF8: @ 0x08056BF8
+	thumb_func_start initSprite_Enemy_Hammerhead
+initSprite_Enemy_Hammerhead: @ 0x08056BF8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -65155,8 +65155,8 @@ _08056F18:
 _08056F20: .4byte IWRAM_START + 0xC
 _08056F24: .4byte gPlayer
 
-	thumb_func_start sub_8056F28
-sub_8056F28: @ 0x08056F28
+	thumb_func_start initSprite_Enemy_Spinner
+initSprite_Enemy_Spinner: @ 0x08056F28
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -65476,8 +65476,8 @@ _080571A4:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80571B4
-sub_80571B4: @ 0x080571B4
+	thumb_func_start initSprite_Enemy_Mouse
+initSprite_Enemy_Mouse: @ 0x080571B4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -66320,8 +66320,8 @@ _08057848: .4byte 0x00000201
 _0805784C: .4byte gCurTask
 _08057850: .4byte sub_8057348
 
-	thumb_func_start sub_8057854
-sub_8057854: @ 0x08057854
+	thumb_func_start initSprite_Enemy_Pen
+initSprite_Enemy_Pen: @ 0x08057854
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -66984,8 +66984,8 @@ _08057D6C:
 _08057D7C: .4byte gCurTask
 _08057D80: .4byte sub_8057980
 
-	thumb_func_start sub_8057D84
-sub_8057D84: @ 0x08057D84
+	thumb_func_start initSprite_Enemy_GejiGeji
+initSprite_Enemy_GejiGeji: @ 0x08057D84
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -67886,8 +67886,8 @@ sub_8058480: @ 0x08058480
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_805849C
-sub_805849C: @ 0x0805849C
+	thumb_func_start initSprite_Enemy_Balloon
+initSprite_Enemy_Balloon: @ 0x0805849C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -68449,8 +68449,8 @@ _08058914: .4byte 0x000001F5
 _08058918: .4byte gCurTask
 _0805891C: .4byte sub_80585DC
 
-	thumb_func_start sub_8058920
-sub_8058920: @ 0x08058920
+	thumb_func_start initSprite_Enemy_Flickey
+initSprite_Enemy_Flickey: @ 0x08058920
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -69767,8 +69767,8 @@ sub_8059398: @ 0x08059398
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80593B4
-sub_80593B4: @ 0x080593B4
+	thumb_func_start initSprite_Enemy_Kyura
+initSprite_Enemy_Kyura: @ 0x080593B4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -70185,8 +70185,8 @@ _08059710: .4byte IWRAM_START + 0x5A
 _08059714: .4byte 0x000003FF
 _08059718: .4byte sub_80594E0
 
-	thumb_func_start sub_805971C
-sub_805971C: @ 0x0805971C
+	thumb_func_start initSprite_Enemy_BulletBuzzer
+initSprite_Enemy_BulletBuzzer: @ 0x0805971C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -70870,8 +70870,8 @@ _08059C8A:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8059C9C
-sub_8059C9C: @ 0x08059C9C
+	thumb_func_start initSprite_Enemy_Star
+initSprite_Enemy_Star: @ 0x08059C9C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
