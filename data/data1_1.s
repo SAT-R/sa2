@@ -73,15 +73,15 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable044    @ Used at layer transitions on three-quarter-type loops
     .4byte initSprite_Interactable_Toggle_Checkpoint
     .4byte initSprite_Interactable_Toggle_StageGoal
-    .4byte initSprite_Interactable_WindupStick @ Character rotates a bit around it, then shoots up/down
+    .4byte initSprite_Interactable_WindUpStick @ Character rotates a bit around it, then shoots up/down
     .4byte initSprite_Interactable048
     .4byte initSprite_Interactable_HookRail_Start
     .4byte initSprite_Interactable_HookRail_End
     .4byte initSprite_Interactable051
     .4byte initSprite_Interactable052
     .4byte initSprite_Interactable_HotCrater_Crane
-    .4byte initSprite_Interactable_LaunchRing
-    .4byte initSprite_Interactable_CommonFloatingSpring_Up
+    .4byte initSprite_Interactable_DashRing
+    .4byte initSprite_Interactable_FloatingSpring_Up
     .4byte initSprite_Interactable_MusicPlant_Note_Sphere
     .4byte initSprite_Interactable_MusicPlant_Note_Block
     .4byte initSprite_Interactable_MusicPlant_GuitarString

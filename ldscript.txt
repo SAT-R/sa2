@@ -87,6 +87,18 @@ SECTIONS
         build/sa2/src/special_stage_ui.o(.text);
         build/sa2/src/special_stage_guard_robo.o(.text);
         build/sa2/src/save.o(.text);
+        build/sa2/asm/interactable_wind_up_stick.o(.text);
+        build/sa2/asm/interactable_hook_rail.o(.text);
+        build/sa2/asm/interactable_052.o(.text);
+        build/sa2/asm/interactable_hot_crater_crane.o(.text);
+        build/sa2/asm/interactable_dash_ring.o(.text);
+        build/sa2/asm/interactable_floating_spring.o(.text);
+        build/sa2/asm/interactable_music_plant_note_sphere.o(.text);
+        build/sa2/asm/interactable_music_plant_note_block.o(.text);
+        build/sa2/asm/interactable_music_plant_guitar_string.o(.text);
+        build/sa2/asm/interactable_music_plant_keyboard.o(.text);
+        build/sa2/asm/interactable_music_plant_german_flute.o(.text);
+        build/sa2/asm/interactable_music_plant_pipe_horn.o(.text);
         build/sa2/asm/unused_code3.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);

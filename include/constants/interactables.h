@@ -49,13 +49,13 @@
 #define IA__TOGGLE__CHECKPOINT                     45
 #define IA__TOGGLE__STAGE_GOAL                     46
 #define IA__WINDUP_STICK                           47
-#define IA__048                                    48
+#define IA__HOOK_RAIL_UNUSED                       48
 #define IA__HOOK_RAIL_START                        49
 #define IA__HOOK_RAIL_END                          50
 #define IA__051                                    51
 #define IA__052                                    52
 #define IA__HOT_CRATER__CRANE                      53
-#define IA__LAUNCH_RING                            54
+#define IA__DASH_RING                              54
 #define IA__FLOATING_SPRING                        55
 #define IA__MUSIC_PLANT__NOTE_SPHERE               56
 #define IA__MUSIC_PLANT__NOTE_BLOCK                57
