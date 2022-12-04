@@ -87,13 +87,13 @@
 #define IA__ICE_PARADISE__SLIDY_ICE                83
 #define IA__SKY_CANYON__SMALL_SPINNY_WINDMILL      84
 #define IA__085                                    85
-#define IA__086                                    86
-#define IA__087                                    87
-#define IA__088                                    88
-#define IA__089                                    89
-#define IA__090                                    90
-#define IA__091                                    91
-#define IA__092                                    92
+#define IA__086_0                                  86
+#define IA__087_0                                  87
+#define IA__087_1                                  88
+#define IA__087_2                                  89
+#define IA__087_3                                  90
+#define IA__091_0                                  91
+#define IA__091_1                                  92
 #define IA__093                                    93
 #define IA__094                                    94
 #define IA__095                                    95
@@ -102,10 +102,10 @@
 #define IA__098                                    98
 #define IA__099                                    99
 #define IA__100                                    100
-#define IA__101                                    101
-#define IA__102                                    102
+#define IA__087_2                                  101
+#define IA__087_3                                  102
 #define IA__SPECIAL_RING                           103
-#define IA__104                                    104
+#define IA__086_1                                  104
 #define IA__105                                    105
 
 #endif // GUARD_CONSTANTS_INTERACTABLES_H

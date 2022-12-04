@@ -112,8 +112,8 @@ sub_8085F84: @ 0x08085F84
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8085F88
-sub_8085F88: @ 0x08085F88
+	thumb_func_start initSprite_80806F4
+initSprite_80806F4: @ 0x08085F88
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

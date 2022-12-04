@@ -112,42 +112,84 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_IceParadise_SlidyIce
     .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
     .4byte initSprite_Interactable085
-    .4byte initSprite_Interactable086
-    .4byte initSprite_Interactable087
-    .4byte initSprite_Interactable088
-    .4byte initSprite_Interactable089
-    .4byte initSprite_Interactable090
-    .4byte initSprite_Interactable091
-    .4byte initSprite_Interactable092
+    .4byte initSprite_Interactable086_0
+    .4byte initSprite_Interactable087_0
+    .4byte initSprite_Interactable087_1
+    .4byte initSprite_Interactable087_2
+    .4byte initSprite_Interactable087_3
+    .4byte initSprite_Interactable091_0
+    .4byte initSprite_Interactable091_1
     .4byte initSprite_Interactable093
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
     .4byte initSprite_Interactable_SkyCanyon_FlyingHandle
     .4byte initSprite_Interactable097
-    .4byte initSprite_Interactable098
-    .4byte initSprite_Interactable099
-    .4byte initSprite_Interactable100
-    .4byte initSprite_Interactable101
-    .4byte initSprite_Interactable102
+    .4byte initSprite_Interactable098_0
+    .4byte initSprite_Interactable098_1
+    .4byte initSprite_Interactable098_2
+    .4byte initSprite_Interactable091_2
+    .4byte initSprite_Interactable091_3
     .4byte initSprite_Interactable_SpecialRing
-    .4byte initSprite_Interactable104
+    .4byte initSprite_Interactable086_1
     .4byte initSprite_Interactable105
 
+    @ Enemy code?
     .global gUnknown_080D4FC4
 gUnknown_080D4FC4:
-    .incbin "baserom.gba", 0x000D4FC4, 0x5C
+    .4byte sub_8051214, sub_8053784, sub_8052F94
+    .4byte sub_8051788, sub_8051E3C, sub_8052288, sub_80554C0
+    .4byte sub_8054AF0, sub_8054E0C, sub_80557F0, sub_8054068
+    .4byte sub_8055EDC, sub_8056684, sub_8056BF8, sub_8056F28
+    .4byte sub_80571B4, sub_8057854, sub_8057D84, sub_805849C
+    .4byte sub_8058920, sub_80593B4, sub_8059C9C, sub_805971C
 
     .global gUnknown_080D5020
 gUnknown_080D5020:
-    .incbin "baserom.gba", 0x000D5020, 0xC
+    .2byte 100, 200, 400, 800, 1000, 0
 
     .global gUnknown_080D502C
 gUnknown_080D502C:
-    .incbin "baserom.gba", 0x000D502C, 0x74
+    .4byte initSprite_Interactable_Toggle_PlayerLayer
+    .4byte initSprite_Interactable_Toggle_PlayerLayer
+    .4byte initSprite_Interactable_Spring_Normal_Up
+    .4byte initSprite_Interactable_Spring_Normal_Down
+    .4byte initSprite_Interactable_Spring_Normal_Right
+    .4byte initSprite_Interactable_Spring_Normal_Left
+    .4byte initSprite_Interactable_Spring_Big_UpLeft
+    .4byte initSprite_Interactable_Spring_Big_UpRight
+    .4byte initSprite_Interactable_Spring_Big_DownLeft
+    .4byte initSprite_Interactable_Spring_Big_DownRight
+    .4byte initSprite_Interactable_Spring_Small_UpLeft
+    .4byte initSprite_Interactable_Spring_Small_UpRight
+    .4byte initSprite_Interactable_Ramp
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_Spikes_Up
+    .4byte initSprite_Interactable_GrindRail_Start
+    .4byte initSprite_Interactable_GrindRail_StartAir
+    .4byte initSprite_Interactable_GrindRail_EndGround
+    .4byte initSprite_Interactable_GrindRail_End_ForcedJump
+    .4byte initSprite_Interactable_GrindRail_EndAlternate
+    .4byte initSprite_Interactable_GrindRail_EndAir
+    .4byte initSprite_Interactable_GrindRail_EndGround_Left
+    .4byte initSprite_Interactable_GrindRail_EndAir_Left
+    .4byte initSprite_80806F4
+    .4byte initSprite_8080368
 
     .global gUnknown_080D50A0
 gUnknown_080D50A0:
-    .incbin "baserom.gba", 0x000D50A0, 0x88
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte sub_80807CC, sub_80807CC, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0, 0, 0
+    .4byte 0, 0
 
     .global gUnknown_080D5128
 gUnknown_080D5128:
