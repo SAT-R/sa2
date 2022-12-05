@@ -4460,3 +4460,223 @@ void sub_8093EDC(void)
         gCurTask->main = sub_809334C;
     }
 }
+
+void sub_8093F54(void)
+{
+    struct FinalEndingLandingCutScene *scene = TaskGetStructPtr(gCurTask);
+    if (scene->unk344 != 0) {
+        if (scene->unk344-- == 0x3D) {
+            m4aSongNumStart(MUS_STAFF_CREDITS);
+        }
+    } else {
+        sub_808EA50(1, 0, 0);
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_8093F9C(UNUSED struct Task *t)
+{
+    // unused logic
+}
+
+void sub_8093FA0(struct FinalEndingLandingCutScene *scene)
+{
+    if (gBgScrollRegs[0][1] < 0x4C) {
+        scene->unk5E0[6][1] += 0x300;
+    } else {
+        scene->unk5E0[6][1] += 0x180;
+    }
+
+    if (gBgScrollRegs[0][1] < 0x60) {
+        gBgScrollRegs[0][1] = scene->unk5E0[6][1] >> 8;
+    }
+}
+
+void sub_8093FF0(struct FinalEndingLandingCutScene *scene)
+{
+    scene->unk5E0[5][1] += 0x180;
+    if (gBgScrollRegs[1][1] < 0x42) {
+        gBgScrollRegs[1][1] = scene->unk5E0[5][1] >> 8;
+    }
+}
+
+void sub_809401C(struct FinalEndingLandingCutScene *scene)
+{
+    scene->unk5E0[1][0] = 0x78;
+    scene->unk5E0[1][1] = (0xC2 - gBgScrollRegs[1][1]) * 0x100;
+}
+
+void sub_8094044(struct FinalEndingLandingCutScene *scene)
+{
+    scene->unk5E0[2][0] = 0x78;
+    scene->unk5E0[2][1] = 0xA00;
+}
+
+void sub_8094060(struct FinalEndingLandingCutScene *scene)
+{
+    if ((gSelectedCharacter != 1 && scene->unk338 == 5)
+        || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+        scene->unk5E0[3][0] = 0x78;
+        if (scene->unk5E0[3][1] > 0x8200) {
+            scene->unk5E0[3][1] -= 0x300;
+        }
+    }
+}
+
+void sub_80940BC(struct FinalEndingLandingCutScene *scene)
+{
+    if ((gSelectedCharacter != 1 && scene->unk338 == 5)
+        || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+        scene->unk5E0[4][0] = 0x78;
+        if (scene->unk5E0[4][1] > 0x9600) {
+            scene->unk5E0[4][1] -= 0x300;
+        }
+    }
+}
+
+void sub_8094360(void);
+void sub_80945A0(struct Task *);
+
+struct MissingChaosEmaraldsCutScene {
+    struct Unk_03002400 unk0;
+    struct Unk_03002400 unk40;
+    struct UNK_0808B3FC_UNK240 unk80;
+    struct UNK_802D4CC_UNK270 unkB0;
+
+    u8 unkBC;
+    u8 unkBD;
+    u8 unkBE;
+    u8 unkBF;
+
+    u32 unkC0;
+    vu32 unkC4;
+};
+
+// TODO: unknown length
+extern const struct UNK_080E0D64 gUnknown_080E1CA0[5];
+
+// CreateMissingChaosEmaraldsCutScene
+void sub_8094118(void)
+{
+    u8 i;
+    struct Task *t;
+    struct MissingChaosEmaraldsCutScene *scene = NULL;
+    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+
+    gDispCnt = 0x1040;
+    gBgCntRegs[0] = 0x1e03;
+    gBgCntRegs[1] = 0x1c05;
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0] = 0;
+    gUnknown_03002280[1] = 0;
+    gUnknown_03002280[2] = 0xff;
+    gUnknown_03002280[3] = 0x20;
+    gUnknown_03004D80[1] = 0xff;
+    gUnknown_03002280[4] = 0;
+    gUnknown_03002280[5] = 0;
+    gUnknown_03002280[6] = 0xff;
+    gUnknown_03002280[7] = 0x20;
+
+    DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
+
+    t = TaskCreate(sub_8094360, 0xC8, 0x3100, 0, sub_80945A0);
+    scene = TaskGetStructPtr(t);
+
+    scene->unkBC = 0;
+    scene->unkC0 = 0xF0;
+    scene->unkBD = 0;
+    scene->unkBF = 0xFF;
+    scene->unkBE = 0;
+    scene->unkBF = gLoadedSaveGame->unk6;
+
+    if (gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80) {
+        scene->unkBC = 1;
+        for (i = 0; i < 4; i++) {
+            if (gLoadedSaveGame->unk15[i] != 0) {
+                scene->unkBD++;
+            }
+        }
+    }
+    m4aMPlayAllStop();
+
+    if (scene->unkBD == 0) {
+        m4aSongNumStart(MUS_MESSAGE);
+    } else {
+        m4aSongNumStart(MUS_MESSAGE_2);
+    }
+    transitionConfig = &scene->unkB0;
+    transitionConfig->unk0 = 1;
+    transitionConfig->unk4 = 0;
+    transitionConfig->unk6 = 0x80;
+    transitionConfig->unk8 = 0x3FFF;
+    transitionConfig->unkA = 0;
+
+    scene->unkC4 = OBJ_VRAM0;
+
+    {
+        struct UNK_0808B3FC_UNK240 *element;
+        element = &scene->unk80;
+        element->unk4 = (void *)OBJ_VRAM0;
+        if (scene->unkBD < 4) {
+            scene->unkC4 += gUnknown_080E1CA0[0].unk0 * 0x20;
+            element->unkA = gUnknown_080E1CA0[0].unk4;
+            element->unk20 = gUnknown_080E1CA0[0].unk6;
+            element->unk18 = 0x55;
+        } else {
+            scene->unkC4 += 0xA00;
+            element->unkA = gUnknown_080E1CA0[1].unk4;
+            element->unk20 = gUnknown_080E1CA0[1].unk6;
+            element->unk18 = 0x5A;
+        }
+        element->unk21 = 0xFF;
+        element->unk16 = 0x78;
+        element->unk1A = 0;
+        element->unk8 = 0;
+        element->unk14 = 0;
+        element->unk1C = 0;
+        element->unk22 = 0x10;
+        element->unk25 = 0;
+        element->unk10 = 0;
+        element->unk28 = -1;
+        sub_8004558(element);
+    }
+
+    {
+        struct Unk_03002400 *background;
+        background = &scene->unk0;
+        background->unk4 = BG_SCREEN_ADDR(0);
+        background->unkA = 0;
+        background->unkC = BG_SCREEN_ADDR(30);
+        background->unk18 = 0;
+        background->unk1A = 0;
+        background->unk1E = 0;
+        background->unk20 = 0;
+        background->unk22 = 0;
+        background->unk24 = 0;
+        background->unk26 = 0x1E;
+        background->unk28 = 0x14;
+        background->unk2A = 0;
+        background->unk2E = 0;
+    }
+    {
+        struct Unk_03002400 *background;
+        background = &scene->unk40;
+        background->unk4 = BG_SCREEN_ADDR(8);
+        background->unkA = 0;
+        background->unkC = BG_SCREEN_ADDR(28);
+        background->unk18 = 0;
+        background->unk1A = 0;
+        background->unk1E = 0;
+        background->unk20 = 0;
+        background->unk22 = 0;
+        background->unk24 = 0;
+        background->unk26 = 0x1E;
+        if (scene->unkBD != 0) {
+            background->unk28 = 7;
+        } else {
+            background->unk28 = 6;
+        }
+        background->unk2A = 0;
+        background->unk2E = 1;
+    }
+}
