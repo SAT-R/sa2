@@ -1,17 +1,10 @@
 #include "global.h"
 #include "gba/types.h"
-#include "m4a.h"
-#include "malloc_vram.h"
 
 #include "game.h"
 #include "interactable.h"
 #include "sprite.h"
 #include "task.h"
-#include "zones.h"
-
-#include "constants/animations.h"
-#include "constants/move_states.h"
-#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
