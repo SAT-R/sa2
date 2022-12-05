@@ -4,10 +4,10 @@
 .syntax unified
 .arm
     @ sub_80807CC has something to do with sprites.
-    @ It is pointed to by 'gSpriteInits_PreStageEntry' inside data/data1_1.s
+    @ It is pointed to by 'gSpriteTileInits_PreStageEntry' inside data/data1_1.s
     @ Which itself is referenced by 'sub_800888C' inside data/entities_0.s.
     @ It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
-    @ the other pointers inside 'gSpriteInits_PreStageEntry' are empty.
+    @ the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.
 
 	thumb_func_start sub_80807CC
 sub_80807CC: @ 0x080807CC
