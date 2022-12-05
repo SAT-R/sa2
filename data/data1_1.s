@@ -133,15 +133,34 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable086_1
     .4byte initSprite_Interactable105
 
-    @ Enemy code?
-    .global gUnknown_080D4FC4
-gUnknown_080D4FC4:
-    .4byte sub_8051214, sub_8053784, sub_8052F94
-    .4byte sub_8051788, sub_8051E3C, sub_8052288, sub_80554C0
-    .4byte sub_8054AF0, sub_8054E0C, sub_80557F0, sub_8054068
-    .4byte sub_8055EDC, sub_8056684, sub_8056BF8, sub_8056F28
-    .4byte sub_80571B4, sub_8057854, sub_8057D84, sub_805849C
-    .4byte sub_8058920, sub_80593B4, sub_8059C9C, sub_805971C
+    @ Enemy code
+    @ TODO: Some names might be wrong?
+    @       Should be in line with Encyclospeedia (mostly)
+    .global gSpriteInits_Enemies
+gSpriteInits_Enemies:
+    .4byte initSprite_Enemy_Mon
+    .4byte initSprite_Enemy_Kiki
+    .4byte initSprite_Enemy_Buzzer
+    .4byte initSprite_Enemy_Gohla
+    .4byte initSprite_Enemy_KuraKura
+    .4byte initSprite_Enemy_Kobinaga
+    .4byte initSprite_Enemy_PikoPiko
+    .4byte initSprite_Enemy_Bell
+    .4byte initSprite_Enemy_Yado
+    .4byte initSprite_Enemy_Circus
+    .4byte initSprite_Enemy_Koura
+    .4byte initSprite_Enemy_Madillo
+    .4byte initSprite_Enemy_Straw
+    .4byte initSprite_Enemy_Hammerhead
+    .4byte initSprite_Enemy_Spinner
+    .4byte initSprite_Enemy_Mouse
+    .4byte initSprite_Enemy_Pen
+    .4byte initSprite_Enemy_GejiGeji
+    .4byte initSprite_Enemy_Balloon
+    .4byte initSprite_Enemy_Flickey
+    .4byte initSprite_Enemy_Kyura
+    .4byte initSprite_Enemy_Star
+    .4byte initSprite_Enemy_BulletBuzzer
 
     .global gUnknown_080D5020
 gUnknown_080D5020:
@@ -179,17 +198,17 @@ gUnknown_080D502C:
     .4byte initSprite_80806F4
     .4byte initSprite_8080368
 
-    .global gUnknown_080D50A0
-gUnknown_080D50A0:
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte sub_80807CC, sub_80807CC, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0
+    .global gSpriteTileInits_PreStageEntry
+gSpriteTileInits_PreStageEntry:
+    .4byte 0, 0, 0, 0                     @ Leaf Forest
+    .4byte 0, 0, 0, 0                     @ Hot Crater
+    .4byte 0, 0, 0, 0                     @ Music Plant
+    .4byte 0, 0, 0, 0                     @ Ice Paradise
+    .4byte sub_80807CC, sub_80807CC, 0, 0 @ Sky Canyon
+    .4byte 0, 0, 0, 0                     @ Techno Base
+    .4byte 0, 0, 0, 0                     @ Egg Utopia
+    .4byte 0, 0, 0, 0                     @ Final Zone
+    .4byte 0, 0                           @ (Multiplayer?)
 
     .global gUnknown_080D5128
 gUnknown_080D5128:

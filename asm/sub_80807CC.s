@@ -4,10 +4,10 @@
 .syntax unified
 .arm
     @ sub_80807CC has something to do with sprites.
-    @ It is pointed to by 'gUnknown_080D50A0' inside data/data1_1.s
+    @ It is pointed to by 'gSpriteTileInits_PreStageEntry' inside data/data1_1.s
     @ Which itself is referenced by 'sub_800888C' inside data/entities_0.s.
     @ It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
-    @ the other pointers inside 'gUnknown_080D50A0' are empty.
+    @ the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.
 
 	thumb_func_start sub_80807CC
 sub_80807CC: @ 0x080807CC
@@ -63,9 +63,9 @@ sub_80807CC: @ 0x080807CC
 	lsls r2, r2, #6
 	mov r8, r2
 	str r2, [r0, #0x10]
-	ldr r1, _080808B8 @ =0x06013040
+	ldr r1, _080808B8 @ =0x06013040 @ Tiles of flying spring get preloaded into 0x06013040
 	str r1, [r0, #4]
-	ldr r1, _080808BC @ =0x0000024E
+	ldr r1, _080808BC @ =0x0000024E @ SA2_ANIM_SPRING_FLYING
 	strh r1, [r0, #0xa]
 	ldr r2, _080808C0 @ =IWRAM_START + 0x20
 	adds r1, r4, r2

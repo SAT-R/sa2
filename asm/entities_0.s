@@ -1463,7 +1463,7 @@ _080088BC:
 	str r6, [r7, #8]
 	movs r0, #0
 	str r0, [r7, #0x18]
-	ldr r1, _08008988 @ =gUnknown_080D50A0
+	ldr r1, _08008988 @ =gSpriteTileInits_PreStageEntry
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1481,7 +1481,7 @@ _08008978: .4byte gSpritePosData_Interactables
 _0800897C: .4byte gCurrentLevel
 _08008980: .4byte gSpritePosData_Itemboxes
 _08008984: .4byte gSpritePosData_Enemies
-_08008988: .4byte gUnknown_080D50A0
+_08008988: .4byte gSpriteTileInits_PreStageEntry
 _0800898C:
 	ldr r6, _080089BC @ =EWRAM_START + 0x3F000
 	ldr r0, _080089C0 @ =EWRAM_START + 0x3300C
@@ -1886,7 +1886,7 @@ _08008C50:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08008CA4
-	ldr r1, _08008CD0 @ =gUnknown_080D4FC4
+	ldr r1, _08008CD0 @ =gSpriteInits_Enemies
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -1919,7 +1919,7 @@ _08008CC0: .4byte gCurTask
 _08008CC4: .4byte gGameMode
 _08008CC8: .4byte gCamera
 _08008CCC: .4byte gSpriteInits_Interactables
-_08008CD0: .4byte gUnknown_080D4FC4
+_08008CD0: .4byte gSpriteInits_Enemies
 _08008CD4:
 	lsls r0, r7, #2
 	ldr r5, [sp, #0x28]
@@ -2546,7 +2546,7 @@ _0800912A:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08009174
-	ldr r1, _0800918C @ =gUnknown_080D4FC4
+	ldr r1, _0800918C @ =gSpriteInits_Enemies
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -2571,7 +2571,7 @@ _08009174:
 	bne _0800912A
 	b _0800921E
 	.align 2, 0
-_0800918C: .4byte gUnknown_080D4FC4
+_0800918C: .4byte gSpriteInits_Enemies
 _08009190:
 	lsls r0, r7, #2
 	ldr r5, [sp, #0x38]
@@ -2920,7 +2920,7 @@ _080093EE:
 	ldr r0, [sp, #0x1c]
 	cmp r1, r0
 	bgt _08009438
-	ldr r1, _08009450 @ =gUnknown_080D4FC4
+	ldr r1, _08009450 @ =gSpriteInits_Enemies
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -2944,7 +2944,7 @@ _08009438:
 	b _080094DE
 	.align 2, 0
 _0800944C: .4byte gSpriteInits_Interactables
-_08009450: .4byte gUnknown_080D4FC4
+_08009450: .4byte gSpriteInits_Enemies
 _08009454:
 	lsls r0, r7, #2
 	ldr r3, [sp, #0x3c]
