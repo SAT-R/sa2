@@ -63,9 +63,9 @@ sub_80807CC: @ 0x080807CC
 	lsls r2, r2, #6
 	mov r8, r2
 	str r2, [r0, #0x10]
-	ldr r1, _080808B8 @ =0x06013040
+	ldr r1, _080808B8 @ =0x06013040 @ Tiles of flying spring get preloaded into 0x06013040
 	str r1, [r0, #4]
-	ldr r1, _080808BC @ =0x0000024E
+	ldr r1, _080808BC @ =0x0000024E @ SA2_ANIM_SPRING_FLYING
 	strh r1, [r0, #0xa]
 	ldr r2, _080808C0 @ =IWRAM_START + 0x20
 	adds r1, r4, r2
