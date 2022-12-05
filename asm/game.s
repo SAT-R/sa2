@@ -1203,14 +1203,14 @@ _0801AF78: .4byte gSelectedCharacter
 _0801AF7C: .4byte gLoadedSaveGame
 _0801AF80: .4byte gUnknown_030054A8
 _0801AF84:
-	ldr r0, _0801AF94 @ =gUnknown_080D5204
+	ldr r0, _0801AF94 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801AF9E
 	.align 2, 0
-_0801AF94: .4byte gUnknown_080D5204
+_0801AF94: .4byte gLevelSongs
 _0801AF98:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1275,14 +1275,14 @@ _0801B010: .4byte gSelectedCharacter
 _0801B014: .4byte gLoadedSaveGame
 _0801B018: .4byte gUnknown_030054A8
 _0801B01C:
-	ldr r0, _0801B02C @ =gUnknown_080D5204
+	ldr r0, _0801B02C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B036
 	.align 2, 0
-_0801B02C: .4byte gUnknown_080D5204
+_0801B02C: .4byte gLevelSongs
 _0801B030:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1347,14 +1347,14 @@ _0801B0A8: .4byte gSelectedCharacter
 _0801B0AC: .4byte gLoadedSaveGame
 _0801B0B0: .4byte gUnknown_030054A8
 _0801B0B4:
-	ldr r0, _0801B0C4 @ =gUnknown_080D5204
+	ldr r0, _0801B0C4 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B0CE
 	.align 2, 0
-_0801B0C4: .4byte gUnknown_080D5204
+_0801B0C4: .4byte gLevelSongs
 _0801B0C8:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1425,14 +1425,14 @@ _0801B154: .4byte gSelectedCharacter
 _0801B158: .4byte gLoadedSaveGame
 _0801B15C: .4byte gUnknown_030054A8
 _0801B160:
-	ldr r0, _0801B170 @ =gUnknown_080D5204
+	ldr r0, _0801B170 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B17A
 	.align 2, 0
-_0801B170: .4byte gUnknown_080D5204
+_0801B170: .4byte gLevelSongs
 _0801B174:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1503,14 +1503,14 @@ _0801B200: .4byte gSelectedCharacter
 _0801B204: .4byte gLoadedSaveGame
 _0801B208: .4byte gUnknown_030054A8
 _0801B20C:
-	ldr r0, _0801B21C @ =gUnknown_080D5204
+	ldr r0, _0801B21C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B226
 	.align 2, 0
-_0801B21C: .4byte gUnknown_080D5204
+_0801B21C: .4byte gLevelSongs
 _0801B220:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1615,14 +1615,14 @@ _0801B2F8: .4byte gSelectedCharacter
 _0801B2FC: .4byte gLoadedSaveGame
 _0801B300: .4byte gUnknown_030054A8
 _0801B304:
-	ldr r0, _0801B314 @ =gUnknown_080D5204
+	ldr r0, _0801B314 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B31E
 	.align 2, 0
-_0801B314: .4byte gUnknown_080D5204
+_0801B314: .4byte gLevelSongs
 _0801B318:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1727,14 +1727,14 @@ _0801B3F0: .4byte gSelectedCharacter
 _0801B3F4: .4byte gLoadedSaveGame
 _0801B3F8: .4byte gUnknown_030054A8
 _0801B3FC:
-	ldr r0, _0801B40C @ =gUnknown_080D5204
+	ldr r0, _0801B40C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B416
 	.align 2, 0
-_0801B40C: .4byte gUnknown_080D5204
+_0801B40C: .4byte gLevelSongs
 _0801B410:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1818,14 +1818,14 @@ _0801B4C0: .4byte gSelectedCharacter
 _0801B4C4: .4byte gLoadedSaveGame
 _0801B4C8: .4byte gUnknown_030054A8
 _0801B4CC:
-	ldr r0, _0801B4DC @ =gUnknown_080D5204
+	ldr r0, _0801B4DC @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B4E6
 	.align 2, 0
-_0801B4DC: .4byte gUnknown_080D5204
+_0801B4DC: .4byte gLevelSongs
 _0801B4E0:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -1909,14 +1909,14 @@ _0801B590: .4byte gSelectedCharacter
 _0801B594: .4byte gLoadedSaveGame
 _0801B598: .4byte gUnknown_030054A8
 _0801B59C:
-	ldr r0, _0801B5AC @ =gUnknown_080D5204
+	ldr r0, _0801B5AC @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B5B6
 	.align 2, 0
-_0801B5AC: .4byte gUnknown_080D5204
+_0801B5AC: .4byte gLevelSongs
 _0801B5B0:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2000,14 +2000,14 @@ _0801B660: .4byte gSelectedCharacter
 _0801B664: .4byte gLoadedSaveGame
 _0801B668: .4byte gUnknown_030054A8
 _0801B66C:
-	ldr r0, _0801B67C @ =gUnknown_080D5204
+	ldr r0, _0801B67C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B686
 	.align 2, 0
-_0801B67C: .4byte gUnknown_080D5204
+_0801B67C: .4byte gLevelSongs
 _0801B680:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2199,14 +2199,14 @@ _0801B810: .4byte gSelectedCharacter
 _0801B814: .4byte gLoadedSaveGame
 _0801B818: .4byte gUnknown_030054A8
 _0801B81C:
-	ldr r0, _0801B82C @ =gUnknown_080D5204
+	ldr r0, _0801B82C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B836
 	.align 2, 0
-_0801B82C: .4byte gUnknown_080D5204
+_0801B82C: .4byte gLevelSongs
 _0801B830:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2252,14 +2252,14 @@ _0801B87C: .4byte gSelectedCharacter
 _0801B880: .4byte gLoadedSaveGame
 _0801B884: .4byte gUnknown_030054A8
 _0801B888:
-	ldr r0, _0801B898 @ =gUnknown_080D5204
+	ldr r0, _0801B898 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B8A2
 	.align 2, 0
-_0801B898: .4byte gUnknown_080D5204
+_0801B898: .4byte gLevelSongs
 _0801B89C:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2305,14 +2305,14 @@ _0801B8E8: .4byte gSelectedCharacter
 _0801B8EC: .4byte gLoadedSaveGame
 _0801B8F0: .4byte gUnknown_030054A8
 _0801B8F4:
-	ldr r0, _0801B904 @ =gUnknown_080D5204
+	ldr r0, _0801B904 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B90E
 	.align 2, 0
-_0801B904: .4byte gUnknown_080D5204
+_0801B904: .4byte gLevelSongs
 _0801B908:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2358,14 +2358,14 @@ _0801B954: .4byte gSelectedCharacter
 _0801B958: .4byte gLoadedSaveGame
 _0801B95C: .4byte gUnknown_030054A8
 _0801B960:
-	ldr r0, _0801B970 @ =gUnknown_080D5204
+	ldr r0, _0801B970 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B97A
 	.align 2, 0
-_0801B970: .4byte gUnknown_080D5204
+_0801B970: .4byte gLevelSongs
 _0801B974:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2411,14 +2411,14 @@ _0801B9C0: .4byte gSelectedCharacter
 _0801B9C4: .4byte gLoadedSaveGame
 _0801B9C8: .4byte gUnknown_030054A8
 _0801B9CC:
-	ldr r0, _0801B9DC @ =gUnknown_080D5204
+	ldr r0, _0801B9DC @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801B9E6
 	.align 2, 0
-_0801B9DC: .4byte gUnknown_080D5204
+_0801B9DC: .4byte gLevelSongs
 _0801B9E0:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2464,14 +2464,14 @@ _0801BA2C: .4byte gSelectedCharacter
 _0801BA30: .4byte gLoadedSaveGame
 _0801BA34: .4byte gUnknown_030054A8
 _0801BA38:
-	ldr r0, _0801BA48 @ =gUnknown_080D5204
+	ldr r0, _0801BA48 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BA52
 	.align 2, 0
-_0801BA48: .4byte gUnknown_080D5204
+_0801BA48: .4byte gLevelSongs
 _0801BA4C:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2517,14 +2517,14 @@ _0801BA98: .4byte gSelectedCharacter
 _0801BA9C: .4byte gLoadedSaveGame
 _0801BAA0: .4byte gUnknown_030054A8
 _0801BAA4:
-	ldr r0, _0801BAB4 @ =gUnknown_080D5204
+	ldr r0, _0801BAB4 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BABE
 	.align 2, 0
-_0801BAB4: .4byte gUnknown_080D5204
+_0801BAB4: .4byte gLevelSongs
 _0801BAB8:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2570,14 +2570,14 @@ _0801BB04: .4byte gSelectedCharacter
 _0801BB08: .4byte gLoadedSaveGame
 _0801BB0C: .4byte gUnknown_030054A8
 _0801BB10:
-	ldr r0, _0801BB20 @ =gUnknown_080D5204
+	ldr r0, _0801BB20 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BB2A
 	.align 2, 0
-_0801BB20: .4byte gUnknown_080D5204
+_0801BB20: .4byte gLevelSongs
 _0801BB24:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2623,14 +2623,14 @@ _0801BB70: .4byte gSelectedCharacter
 _0801BB74: .4byte gLoadedSaveGame
 _0801BB78: .4byte gUnknown_030054A8
 _0801BB7C:
-	ldr r0, _0801BB8C @ =gUnknown_080D5204
+	ldr r0, _0801BB8C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BB96
 	.align 2, 0
-_0801BB8C: .4byte gUnknown_080D5204
+_0801BB8C: .4byte gLevelSongs
 _0801BB90:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2683,14 +2683,14 @@ _0801BBF0: .4byte gSelectedCharacter
 _0801BBF4: .4byte gLoadedSaveGame
 _0801BBF8: .4byte gUnknown_030054A8
 _0801BBFC:
-	ldr r0, _0801BC0C @ =gUnknown_080D5204
+	ldr r0, _0801BC0C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BC16
 	.align 2, 0
-_0801BC0C: .4byte gUnknown_080D5204
+_0801BC0C: .4byte gLevelSongs
 _0801BC10:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2736,14 +2736,14 @@ _0801BC5C: .4byte gSelectedCharacter
 _0801BC60: .4byte gLoadedSaveGame
 _0801BC64: .4byte gUnknown_030054A8
 _0801BC68:
-	ldr r0, _0801BC78 @ =gUnknown_080D5204
+	ldr r0, _0801BC78 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BC82
 	.align 2, 0
-_0801BC78: .4byte gUnknown_080D5204
+_0801BC78: .4byte gLevelSongs
 _0801BC7C:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2796,14 +2796,14 @@ _0801BCDC: .4byte gSelectedCharacter
 _0801BCE0: .4byte gLoadedSaveGame
 _0801BCE4: .4byte gUnknown_030054A8
 _0801BCE8:
-	ldr r0, _0801BCF8 @ =gUnknown_080D5204
+	ldr r0, _0801BCF8 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BD02
 	.align 2, 0
-_0801BCF8: .4byte gUnknown_080D5204
+_0801BCF8: .4byte gLevelSongs
 _0801BCFC:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2849,14 +2849,14 @@ _0801BD48: .4byte gSelectedCharacter
 _0801BD4C: .4byte gLoadedSaveGame
 _0801BD50: .4byte gUnknown_030054A8
 _0801BD54:
-	ldr r0, _0801BD64 @ =gUnknown_080D5204
+	ldr r0, _0801BD64 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BD6E
 	.align 2, 0
-_0801BD64: .4byte gUnknown_080D5204
+_0801BD64: .4byte gLevelSongs
 _0801BD68:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2902,14 +2902,14 @@ _0801BDB4: .4byte gSelectedCharacter
 _0801BDB8: .4byte gLoadedSaveGame
 _0801BDBC: .4byte gUnknown_030054A8
 _0801BDC0:
-	ldr r0, _0801BDD0 @ =gUnknown_080D5204
+	ldr r0, _0801BDD0 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BDDA
 	.align 2, 0
-_0801BDD0: .4byte gUnknown_080D5204
+_0801BDD0: .4byte gLevelSongs
 _0801BDD4:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -2955,14 +2955,14 @@ _0801BE20: .4byte gSelectedCharacter
 _0801BE24: .4byte gLoadedSaveGame
 _0801BE28: .4byte gUnknown_030054A8
 _0801BE2C:
-	ldr r0, _0801BE3C @ =gUnknown_080D5204
+	ldr r0, _0801BE3C @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BE46
 	.align 2, 0
-_0801BE3C: .4byte gUnknown_080D5204
+_0801BE3C: .4byte gLevelSongs
 _0801BE40:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -3008,14 +3008,14 @@ _0801BE8C: .4byte gSelectedCharacter
 _0801BE90: .4byte gLoadedSaveGame
 _0801BE94: .4byte gUnknown_030054A8
 _0801BE98:
-	ldr r0, _0801BEA8 @ =gUnknown_080D5204
+	ldr r0, _0801BEA8 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BEB2
 	.align 2, 0
-_0801BEA8: .4byte gUnknown_080D5204
+_0801BEA8: .4byte gLevelSongs
 _0801BEAC:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -3061,14 +3061,14 @@ _0801BEF8: .4byte gSelectedCharacter
 _0801BEFC: .4byte gLoadedSaveGame
 _0801BF00: .4byte gUnknown_030054A8
 _0801BF04:
-	ldr r0, _0801BF14 @ =gUnknown_080D5204
+	ldr r0, _0801BF14 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BF1E
 	.align 2, 0
-_0801BF14: .4byte gUnknown_080D5204
+_0801BF14: .4byte gLevelSongs
 _0801BF18:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -3114,14 +3114,14 @@ _0801BF64: .4byte gSelectedCharacter
 _0801BF68: .4byte gLoadedSaveGame
 _0801BF6C: .4byte gUnknown_030054A8
 _0801BF70:
-	ldr r0, _0801BF80 @ =gUnknown_080D5204
+	ldr r0, _0801BF80 @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BF8A
 	.align 2, 0
-_0801BF80: .4byte gUnknown_080D5204
+_0801BF80: .4byte gLevelSongs
 _0801BF84:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -3167,14 +3167,14 @@ _0801BFD0: .4byte gSelectedCharacter
 _0801BFD4: .4byte gLoadedSaveGame
 _0801BFD8: .4byte gUnknown_030054A8
 _0801BFDC:
-	ldr r0, _0801BFEC @ =gUnknown_080D5204
+	ldr r0, _0801BFEC @ =gLevelSongs
 	lsls r1, r1, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801BFF6
 	.align 2, 0
-_0801BFEC: .4byte gUnknown_080D5204
+_0801BFEC: .4byte gLevelSongs
 _0801BFF0:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -3219,14 +3219,14 @@ _0801C03C: .4byte gLoadedSaveGame
 _0801C040: .4byte gCurrentLevel
 _0801C044: .4byte gUnknown_030054A8
 _0801C048:
-	ldr r0, _0801C058 @ =gUnknown_080D5204
+	ldr r0, _0801C058 @ =gLevelSongs
 	lsls r1, r3, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
 	bl m4aSongNumStart
 	b _0801C062
 	.align 2, 0
-_0801C058: .4byte gUnknown_080D5204
+_0801C058: .4byte gLevelSongs
 _0801C05C:
 	movs r0, #0x3a
 	bl m4aSongNumStart
@@ -18869,7 +18869,7 @@ _080237FE:
 	ldr r0, [r0]
 	cmp r1, r0
 	bne _08023822
-	ldr r1, _08023864 @ =gUnknown_080D5204
+	ldr r1, _08023864 @ =gLevelSongs
 	ldr r0, _08023868 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -18910,7 +18910,7 @@ _08023850:
 _08023858: .4byte gPlayer
 _0802385C: .4byte gMPlayTable
 _08023860: .4byte gSongTable
-_08023864: .4byte gUnknown_080D5204
+_08023864: .4byte gLevelSongs
 _08023868: .4byte gCurrentLevel
 _0802386C: .4byte gDispCnt
 _08023870: .4byte 0x00007FFF
@@ -19221,7 +19221,7 @@ _08023AC2:
 	asrs r0, r0, #0x18
 	cmp r0, #0
 	bne _08023B02
-	ldr r1, _08023B24 @ =gUnknown_080D5204
+	ldr r1, _08023B24 @ =gLevelSongs
 	ldr r0, _08023B28 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -19247,7 +19247,7 @@ _08023B02:
 	.align 2, 0
 _08023B1C: .4byte gMPlayTable
 _08023B20: .4byte gSongTable
-_08023B24: .4byte gUnknown_080D5204
+_08023B24: .4byte gLevelSongs
 _08023B28: .4byte gCurrentLevel
 _08023B2C:
 	movs r0, #0x10
@@ -20078,7 +20078,7 @@ _08024156:
 	ldr r0, [r0]
 	cmp r1, r0
 	bne _080241A0
-	ldr r1, _08024214 @ =gUnknown_080D5204
+	ldr r1, _08024214 @ =gLevelSongs
 	ldr r0, _08024218 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -20095,7 +20095,7 @@ _080241A0:
 	ldr r0, [r1]
 	cmp r2, r0
 	bne _080241C2
-	ldr r1, _08024214 @ =gUnknown_080D5204
+	ldr r1, _08024214 @ =gLevelSongs
 	ldr r0, _08024218 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -20139,7 +20139,7 @@ _08024204: .4byte gUnknown_03005424
 _08024208: .4byte 0xFFFFCFFF
 _0802420C: .4byte gMPlayTable
 _08024210: .4byte gSongTable
-_08024214: .4byte gUnknown_080D5204
+_08024214: .4byte gLevelSongs
 _08024218: .4byte gCurrentLevel
 _0802421C:
 	movs r0, #0x77
@@ -32382,7 +32382,7 @@ sub_8029F4C: @ 0x08029F4C
 	asrs r0, r0, #0x18
 	cmp r0, #0
 	bne _08029F90
-	ldr r1, _08029F9C @ =gUnknown_080D5204
+	ldr r1, _08029F9C @ =gLevelSongs
 	ldr r0, _08029FA0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -32397,7 +32397,7 @@ _08029F90:
 	.align 2, 0
 _08029F94: .4byte gMPlayTable
 _08029F98: .4byte gSongTable
-_08029F9C: .4byte gUnknown_080D5204
+_08029F9C: .4byte gLevelSongs
 _08029FA0: .4byte gCurrentLevel
 
 	thumb_func_start sub_8029FA4
