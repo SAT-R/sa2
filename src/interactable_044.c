@@ -19,7 +19,8 @@ typedef struct {
 #define sBottom ((sTop) + ia->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
-    SpriteBase *object = TaskGetStructPtr(gCurTask);
+    Sprite_IA044 *ia044 = TaskGetStructPtr(gCurTask);
+    SpriteBase *object = &ia044->base;
     Interactable *ia = object->ia;
     s32 screenX, screenY;
     u32 regionY, regionX;
@@ -46,13 +47,11 @@ void Task_Interactable_044(void)
                 && (gPlayer.unk12 < 0)) {
                 if (moveState & MOVESTATE_10000000) {
                     object->spriteY = 1;
-
-                    // Wat?
-                    if (gPlayer.unk20 & MOVESTATE_10000000)
-                        goto TaskI044_out;
                 }
 
-                if (object->spriteY == 0) {
+                if ((!(moveState & MOVESTATE_10000000)
+                     || !(gPlayer.unk20 & MOVESTATE_10000000))
+                    && object->spriteY == 0) {
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
 
@@ -66,7 +65,6 @@ void Task_Interactable_044(void)
     } else {
         object->spriteY = 0;
     }
-TaskI044_out:
 
     screenX -= gCamera.unk0;
     screenY -= gCamera.unk4;
@@ -76,6 +74,10 @@ TaskI044_out:
         TaskDestroy(gCurTask);
     }
 }
+#undef sBottom
+#undef sTop
+#undef sRight
+#undef sLeft
 
 void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
