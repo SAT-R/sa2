@@ -2,10 +2,6 @@
 
 
     
-    .global gUnknown_080D53E4
-gUnknown_080D53E4:
-    .incbin "baserom.gba", 0x000D53E4, 0x4C
-
     .global gUnknown_080D5430
 gUnknown_080D5430:
     .incbin "baserom.gba", 0x000D5430, 0x38

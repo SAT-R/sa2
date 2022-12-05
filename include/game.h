@@ -114,6 +114,7 @@ struct SomeStruct_59E0 {
     /* 0x6D Some player state, cleared after usage
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
+     *  0x17 = Used in Interactable 044
      * */
     u8 unk6D;
     // 0x6E = Parameter for 0x6D-state(?)

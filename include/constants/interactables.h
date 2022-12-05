@@ -99,11 +99,11 @@
 #define IA__095                                    95
 #define IA__SKY_CANYON__FLYING_HANDLE              96
 #define IA__097                                    97
-#define IA__098                                    98
-#define IA__099                                    99
-#define IA__100                                    100
-#define IA__087_2                                  101
-#define IA__087_3                                  102
+#define IA__098_0                                  98
+#define IA__098_1                                  99
+#define IA__098_2                                  100
+#define IA__091_2                                  101
+#define IA__091_3                                  102
 #define IA__SPECIAL_RING                           103
 #define IA__086_1                                  104
 #define IA__105                                    105
