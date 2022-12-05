@@ -13,13 +13,17 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_IA044;
 
+#define sLeft   (screenX + ia->d.sData[0] * TILE_WIDTH)
+#define sRight  ((sLeft) + ia->d.uData[2] * TILE_WIDTH)
+#define sTop    (screenY + ia->d.sData[1] * TILE_WIDTH)
+#define sBottom ((sTop) + ia->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
     Sprite_IA044 *object = TaskGetStructPtr(gCurTask);
     Interactable *ia = object->base.ia;
     s32 screenX, screenY;
     u32 regionY, regionX;
-    s32 someX, someY;
+    s32 left, top;
     s32 playerX, playerY;
     s32 spriteX;
 
@@ -29,13 +33,14 @@ void Task_Interactable_044(void)
     screenX = SpriteGetScreenPos(spriteX, regionX);
     screenY = SpriteGetScreenPos(ia->y, regionY);
 
-    someX = screenX + ia->d.sData[0] * TILE_WIDTH;
+    left = sLeft;
     playerX = Q_24_8_TO_INT(gPlayer.unk8);
-    if ((someX <= playerX) && (someX + ia->d.uData[2] * TILE_WIDTH) >= playerX) {
-        someY = screenY + ia->d.sData[1] * TILE_WIDTH;
+
+    if ((left <= playerX) && sRight >= playerX) {
+        top = sTop;
         playerY = Q_24_8_TO_INT(gPlayer.unkC);
 
-        if ((someY <= playerY) && (someY + ia->d.uData[3] * TILE_WIDTH) >= playerY) {
+        if ((top <= playerY) && sBottom >= playerY) {
             u32 moveState = gPlayer.unk20;
             if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
                 && (gPlayer.unk12 < 0)) {
