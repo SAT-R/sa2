@@ -3,9 +3,9 @@
 
 .syntax unified
 .arm
-
-	thumb_func_start sub_8010598
-sub_8010598: @ 0x08010598
+.if 1
+	thumb_func_start Task_Interactable_044
+Task_Interactable_044: @ 0x08010598
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -14,28 +14,28 @@ sub_8010598: @ 0x08010598
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r5, [r4]
+	adds r4, r1, r0         @ r4 = object
+	ldr r5, [r4]            @ r5 = ia
 	ldrb r0, [r4, #8]
-	mov r8, r0
+	mov r8, r0              @ r8 = spriteX
 	ldrh r0, [r4, #4]
 	ldrh r1, [r4, #6]
 	mov r6, r8
 	lsls r2, r6, #3
 	lsls r0, r0, #8
-	adds r2, r2, r0
-	mov ip, r2
+	adds r2, r2, r0         @ r2 = screenX
+	mov ip, r2              @ ip = r2
 	ldrb r0, [r5, #1]
 	lsls r0, r0, #3
 	lsls r1, r1, #8
-	adds r7, r0, r1
+	adds r7, r0, r1         @ r7 = screenY
 	movs r0, #3
 	ldrsb r0, [r5, r0]
 	lsls r0, r0, #3
-	adds r2, r2, r0
+	adds r2, r2, r0         @ r2 = width
 	ldr r6, _08010648 @ =gPlayer
 	ldr r0, [r6, #8]
-	asrs r1, r0, #8
+	asrs r1, r0, #8         @ r1 = gPlayer.x
 	cmp r2, r1
 	bgt _08010650
 	ldrb r0, [r5, #5]
@@ -103,10 +103,10 @@ _08010654:
 	ldr r1, _08010694 @ =gCamera
 	ldr r0, [r1]
 	mov r6, ip
-	subs r6, r6, r0
+	subs r6, r6, r0     @ r6 = screenX - cam.x
 	mov ip, r6
 	ldr r0, [r1, #4]
-	subs r7, r7, r0
+	subs r7, r7, r0     @ r7 = screenY - cam.y
 	mov r1, ip
 	adds r1, #0x80
 	movs r0, #0xf8
@@ -134,44 +134,4 @@ _08010688:
 	bx r0
 	.align 2, 0
 _08010694: .4byte gCamera
-
-	thumb_func_start initSprite_Interactable044
-initSprite_Interactable044: @ 0x08010698
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _080106E0 @ =sub_8010598
-	ldr r2, _080106E4 @ =0x00002010
-	movs r1, #0
-	str r1, [sp]
-	movs r1, #0xc
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	movs r2, #0
-	strh r4, [r0, #4]
-	strh r5, [r0, #6]
-	str r6, [r0]
-	ldrb r1, [r6]
-	strb r1, [r0, #8]
-	strb r2, [r0, #9]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080106E0: .4byte sub_8010598
-_080106E4: .4byte 0x00002010
+.endif

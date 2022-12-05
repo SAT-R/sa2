@@ -6,16 +6,75 @@
 #include "sprite.h"
 #include "task.h"
 
+#include "constants/interactables.h"
+#include "constants/move_states.h"
+
 typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_IA044;
 
-extern void sub_8010598(void);
+extern void Task_Interactable_044(void);
+#if 0
+void Task_Interactable_044(void) {
+    Sprite_IA044 *object = TaskGetStructPtr(gCurTask);
+    Interactable *ia = object->base.ia;
+    s32 screenX, screenY;
+    s32 someX, someY;
+    s32 playerX, playerY;
+    s32 spriteX;
+    
+    spriteX = object->base.spriteX;
+    screenX = SpriteGetScreenPos(spriteX, object->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, object->base.regionY);
+    
+    someX = screenX + ia->d.sData[0] * TILE_WIDTH;
+    playerX = Q_24_8_TO_INT(gPlayer.unk8);
+    if((someX <= playerX)
+    && (someX + ia->d.uData[2] * TILE_WIDTH) >= playerX) {
+        someY = screenY + ia->d.sData[1] * TILE_WIDTH;
+        playerY = Q_24_8_TO_INT(gPlayer.unkC);
 
+        if((someY <= playerY) && (someY + ia->d.uData[3] * TILE_WIDTH) >= playerY) {
+            u32 moveState = gPlayer.unk20;
+            if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
+                && (gPlayer.unk12 < 0)) {
+                if (moveState & MOVESTATE_10000000) {
+                    object->base.spriteY = 1;
+
+                    // Wat?
+                    if (gPlayer.unk20 & MOVESTATE_10000000)
+                        goto TaskI044_out;
+                }
+
+                if (object->base.spriteY == 0) {
+                    gPlayer.unk6D = 0x17;
+                    gPlayer.unk6E = 0;
+
+                    if (ia->index != IA__044)
+                        gPlayer.unk6E = 1;
+                }
+            }
+        }
+    } else {
+        object->base.spriteY = 0;
+    }
+TaskI044_out:
+    
+    screenX -= gCamera.unk0;
+    screenY -= gCamera.unk4;
+
+    
+    if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
+        ia->x = spriteX;
+        TaskDestroy(gCurTask);
+    }
+}
+#endif
 void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_8010598, sizeof(Sprite_IA044), 0x2010, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);
     Sprite_IA044 *ia044 = TaskGetStructPtr(t);
 
     ia044->base.regionX = spriteRegionX;

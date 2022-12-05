@@ -70,7 +70,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Corkscrew3D_End
     .4byte initSprite_Interactable_StageGoal
     .4byte initSprite_Interactable_Checkpoint
-    .4byte initSprite_Interactable044    @ Used at layer transitions on three-quarter-type loops
+    .4byte initSprite_Interactable_044    @ Used at layer transitions on three-quarter-type loops
     .4byte initSprite_Interactable_Toggle_Checkpoint
     .4byte initSprite_Interactable_Toggle_StageGoal
     .4byte initSprite_Interactable_WindUpStick @ Character rotates a bit around it, then shoots up/down
@@ -97,7 +97,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_IceParadise_HalfPipe_Start   @ Like in SA1 Neo Green Hill
     .4byte initSprite_Interactable069
     .4byte initSprite_Interactable070
-    .4byte initSprite_Interactable044
+    .4byte initSprite_Interactable_044
     .4byte initSprite_Interactable_ClearPipe_Start
     .4byte initSprite_Interactable_ClearPipe_End
     .4byte initSprite_Interactable074
