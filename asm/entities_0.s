@@ -24,7 +24,6 @@ gSpritePosData_Itemboxes:
 gSpritePosData_Enemies:
     .incbin "baserom.gba", 0x000D4D94, 0x88
 
-@; gSpriteFunctions ?
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Toggle_PlayerLayer
@@ -221,11 +220,40 @@ gUnknown_080D5128:
     .global gUnknown_080D5130
 gUnknown_080D5130:
     .ascii "FLASH"
-    .byte 0xC5, 0xB2, 0xC4, 0x2C, 0xBE, 0xB0, 0xCC, 0xDE, 0xC3, 0xDE, 0xB7, 0xC5, 0xB2, 0xC3, 0xDE
-
+    .byte 0xC5, 0xB2, 0xC4, 0x2C, 0xBE, 0xB0, 0xCC, 0xDE, 0xC3, 0xDE, 0xB7, 0xC5, 0xB2, 0xC3, 0xDE, 0xBD
+    
+.align 2 , 0
     .global gUnknown_080D5148
 gUnknown_080D5148:
-    .incbin "baserom.gba", 0x000D5148, 0x30
+    .4byte 40
+    .2byte 0x42A
+    .byte  0x00
+.align 2 , 0
+
+    .4byte 40
+    .2byte 0x42B
+    .byte  0x00
+.align 2 , 0
+
+    .4byte 40
+    .2byte 0x42C
+    .byte  0x00
+.align 2 , 0
+
+    .4byte 40
+    .2byte 0x42D
+    .byte  0x00
+.align 2 , 0
+
+    .4byte 40
+    .2byte 0x42E
+    .byte  0x00
+.align 2 , 0
+
+    .4byte 40
+    .2byte 0x42F
+    .byte  0x00
+.align 2 , 0
 
     .global gUnknown_080D5178
 gUnknown_080D5178:
