@@ -9,19 +9,19 @@
 @;             Even though it is about SA3, all 3 games do share quite a bit.
 @;             https://twitter.com/JaceCear/status/1362912485951610881
     .global gSpritePosData_Rings
-gSpritePosData_Rings:
+gSpritePosData_Rings: @ 080D4BFC
     .incbin "baserom.gba", 0x000D4BFC, 0x88
 
     .global gSpritePosData_Interactables
-gSpritePosData_Interactables:
+gSpritePosData_Interactables: @ 080D4C84
     .incbin "baserom.gba", 0x000D4C84, 0x88
 
     .global gSpritePosData_Itemboxes
-gSpritePosData_Itemboxes:
+gSpritePosData_Itemboxes: @ 080D4D0C
     .incbin "baserom.gba", 0x000D4D0C, 0x88
 
     .global gSpritePosData_Enemies
-gSpritePosData_Enemies:
+gSpritePosData_Enemies: @ 080D4D94
     .incbin "baserom.gba", 0x000D4D94, 0x88
 
     .global gSpriteInits_Interactables @ 080D4E1C
