@@ -19,17 +19,17 @@ typedef struct {
 #define sBottom ((sTop) + ia->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
-    Sprite_IA044 *object = TaskGetStructPtr(gCurTask);
-    Interactable *ia = object->base.ia;
+    SpriteBase *object = TaskGetStructPtr(gCurTask);
+    Interactable *ia = object->ia;
     s32 screenX, screenY;
     u32 regionY, regionX;
     s32 left, top;
     s32 playerX, playerY;
     s32 spriteX;
 
-    spriteX = object->base.spriteX;
-    regionX = object->base.regionX;
-    regionY = object->base.regionY;
+    spriteX = object->spriteX;
+    regionX = object->regionX;
+    regionY = object->regionY;
     screenX = SpriteGetScreenPos(spriteX, regionX);
     screenY = SpriteGetScreenPos(ia->y, regionY);
 
@@ -45,14 +45,14 @@ void Task_Interactable_044(void)
             if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
                 && (gPlayer.unk12 < 0)) {
                 if (moveState & MOVESTATE_10000000) {
-                    object->base.spriteY = 1;
+                    object->spriteY = 1;
 
                     // Wat?
                     if (gPlayer.unk20 & MOVESTATE_10000000)
                         goto TaskI044_out;
                 }
 
-                if (object->base.spriteY == 0) {
+                if (object->spriteY == 0) {
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
 
@@ -61,10 +61,10 @@ void Task_Interactable_044(void)
                 }
             }
         } else {
-            object->base.spriteY = 0;
+            object->spriteY = 0;
         }
     } else {
-        object->base.spriteY = 0;
+        object->spriteY = 0;
     }
 TaskI044_out:
 
