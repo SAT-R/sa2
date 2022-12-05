@@ -132,7 +132,7 @@ _0800E806:
 	movs r0, #0x12
 	bl VramMalloc
 	str r0, [r6, #4]
-	ldr r1, _0800E894 @ =gUnknown_080D53E4
+	ldr r1, _0800E894 @ =sPlatformLevelAnims
 	ldr r0, _0800E898 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -178,7 +178,7 @@ _0800E806:
 	.align 2, 0
 _0800E88C: .4byte IWRAM_START + 0x48
 _0800E890: .4byte IWRAM_START + 0x4A
-_0800E894: .4byte gUnknown_080D53E4
+_0800E894: .4byte sPlatformLevelAnims
 _0800E898: .4byte gCurrentLevel
 
 	thumb_func_start sub_800E89C
@@ -588,7 +588,7 @@ initSprite_Interactable079: @ 0x0800EB28
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _0800EC08
-	ldr r1, _0800EC00 @ =gUnknown_080D53E4
+	ldr r1, _0800EC00 @ =sPlatformLevelAnims
 	ldr r0, _0800EC04 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -605,7 +605,7 @@ _0800EBF0: .4byte IWRAM_START + 0xC
 _0800EBF4: .4byte IWRAM_START + 0x4C
 _0800EBF8: .4byte IWRAM_START + 0x2C
 _0800EBFC: .4byte gGameMode
-_0800EC00: .4byte gUnknown_080D53E4
+_0800EC00: .4byte sPlatformLevelAnims
 _0800EC04: .4byte gCurrentLevel
 _0800EC08:
 	ldr r0, _0800EC54 @ =0x0000021D

@@ -10,9 +10,10 @@
 #define ZONE_7     6
 #define ZONE_FINAL 7
 
-#define ACT_1    0
-#define ACT_2    1
-#define ACT_BOSS 2
+#define ACT_1      0
+#define ACT_2      1
+#define ACT_BOSS   2
+#define ACT_UNUSED 3
 
 #define ACT_XX_FINAL_ZONE ACT_1
 #define ACT_TRUE_AREA_53  ACT_2
