@@ -46,13 +46,11 @@ void Task_Interactable_044(void)
                 && (gPlayer.unk12 < 0)) {
                 if (moveState & MOVESTATE_10000000) {
                     object->spriteY = 1;
-
-                    // Wat?
-                    if (gPlayer.unk20 & MOVESTATE_10000000)
-                        goto TaskI044_out;
                 }
 
-                if (object->spriteY == 0) {
+                if ((!(moveState & MOVESTATE_10000000)
+                     || !(gPlayer.unk20 & MOVESTATE_10000000))
+                    && object->spriteY == 0) {
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
 
@@ -66,7 +64,6 @@ void Task_Interactable_044(void)
     } else {
         object->spriteY = 0;
     }
-TaskI044_out:
 
     screenX -= gCamera.unk0;
     screenY -= gCamera.unk4;
