@@ -1,6 +1,65 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+    .global gUnknown_080D550C
+gUnknown_080D550C:
+    .incbin "baserom.gba", 0x000D550C, 0xC
+
+    .global gUnknown_080D5518
+gUnknown_080D5518:
+    .incbin "baserom.gba", 0x000D5518, 0x14
+
+    .global gUnknown_080D552C
+gUnknown_080D552C:
+    .incbin "baserom.gba", 0x000D552C, 0xC
+
+    .global gUnknown_080D5538
+gUnknown_080D5538:
+    .incbin "baserom.gba", 0x000D5538, 0x4
+
+    .global gUnknown_080D553C
+gUnknown_080D553C:
+    .incbin "baserom.gba", 0x000D553C, 0xC
+
+    .global gUnknown_080D5548
+gUnknown_080D5548:
+    .incbin "baserom.gba", 0x000D5548, 0x48
+
+    .global gUnknown_080D5590
+gUnknown_080D5590:
+    .incbin "baserom.gba", 0x000D5590, 0x98
+
+    .global gUnknown_080D5628
+gUnknown_080D5628:
+    .incbin "baserom.gba", 0x000D5628, 0x4C
+
+    .global gUnknown_080D5674
+gUnknown_080D5674:
+    .incbin "baserom.gba", 0x000D5674, 0x4
+
+    .global gUnknown_080D5678
+gUnknown_080D5678:
+    .incbin "baserom.gba", 0x000D5678, 0xC
+
+    .global gUnknown_080D5684
+gUnknown_080D5684:
+    .incbin "baserom.gba", 0x000D5684, 0xC0
+
+    .global gUnknown_080D5744
+gUnknown_080D5744:
+    .incbin "baserom.gba", 0x000D5744, 0x24
+
+    .global gUnknown_080D5768
+gUnknown_080D5768:
+    .incbin "baserom.gba", 0x000D5768, 0x70
+
+    .global gUnknown_080D57D8
+gUnknown_080D57D8:
+    .byte 0, 1, 2, 3
+
+.text
 .syntax unified
 .arm
 
