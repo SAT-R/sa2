@@ -57,6 +57,7 @@ SECTIONS
         build/sa2/src/course_select.o(.text);
         build/sa2/src/countdown.o(.text);
         build/sa2/asm/code2_0_0.o(.text);
+        build/sa2/asm/enemies.o(.text);
         build/sa2/src/multiplayer_mode_select.o(.text);
         build/sa2/src/multiplayer_multipak_connection.o(.text);
         build/sa2/src/multiplayer_communication_outcome.o(.text);
