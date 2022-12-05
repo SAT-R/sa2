@@ -13,28 +13,29 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_IA044;
 
-extern void Task_Interactable_044(void);
-#if 0
-void Task_Interactable_044(void) {
+void Task_Interactable_044(void)
+{
     Sprite_IA044 *object = TaskGetStructPtr(gCurTask);
     Interactable *ia = object->base.ia;
     s32 screenX, screenY;
+    u32 regionY, regionX;
     s32 someX, someY;
     s32 playerX, playerY;
     s32 spriteX;
-    
+
     spriteX = object->base.spriteX;
-    screenX = SpriteGetScreenPos(spriteX, object->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, object->base.regionY);
-    
+    regionX = object->base.regionX;
+    regionY = object->base.regionY;
+    screenX = SpriteGetScreenPos(spriteX, regionX);
+    screenY = SpriteGetScreenPos(ia->y, regionY);
+
     someX = screenX + ia->d.sData[0] * TILE_WIDTH;
     playerX = Q_24_8_TO_INT(gPlayer.unk8);
-    if((someX <= playerX)
-    && (someX + ia->d.uData[2] * TILE_WIDTH) >= playerX) {
+    if ((someX <= playerX) && (someX + ia->d.uData[2] * TILE_WIDTH) >= playerX) {
         someY = screenY + ia->d.sData[1] * TILE_WIDTH;
         playerY = Q_24_8_TO_INT(gPlayer.unkC);
 
-        if((someY <= playerY) && (someY + ia->d.uData[3] * TILE_WIDTH) >= playerY) {
+        if ((someY <= playerY) && (someY + ia->d.uData[3] * TILE_WIDTH) >= playerY) {
             u32 moveState = gPlayer.unk20;
             if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
                 && (gPlayer.unk12 < 0)) {
@@ -54,22 +55,23 @@ void Task_Interactable_044(void) {
                         gPlayer.unk6E = 1;
                 }
             }
+        } else {
+            object->base.spriteY = 0;
         }
     } else {
         object->base.spriteY = 0;
     }
 TaskI044_out:
-    
+
     screenX -= gCamera.unk0;
     screenY -= gCamera.unk4;
 
-    
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
         ia->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
-#endif
+
 void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
