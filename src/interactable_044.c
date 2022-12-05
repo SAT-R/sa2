@@ -74,6 +74,10 @@ void Task_Interactable_044(void)
         TaskDestroy(gCurTask);
     }
 }
+#undef sBottom
+#undef sTop
+#undef sRight
+#undef sLeft
 
 void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
