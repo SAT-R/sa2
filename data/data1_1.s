@@ -136,8 +136,8 @@ gSpriteInits_Interactables:
     @ Enemy code
     @ TODO: Some names might be wrong?
     @       Should be in line with Encyclospeedia (mostly)
-    .global gUnknown_080D4FC4
-gUnknown_080D4FC4:
+    .global gSpriteInits_Enemies
+gSpriteInits_Enemies:
     .4byte initSprite_Enemy_Mon
     .4byte initSprite_Enemy_Kiki
     .4byte initSprite_Enemy_Buzzer
@@ -198,17 +198,17 @@ gUnknown_080D502C:
     .4byte initSprite_80806F4
     .4byte initSprite_8080368
 
-    .global gUnknown_080D50A0
-gUnknown_080D50A0:
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte sub_80807CC, sub_80807CC, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0, 0, 0
-    .4byte 0, 0
+    .global gSpriteTileInits_PreStageEntry
+gSpriteTileInits_PreStageEntry:
+    .4byte 0, 0, 0, 0                     @ Leaf Forest
+    .4byte 0, 0, 0, 0                     @ Hot Crater
+    .4byte 0, 0, 0, 0                     @ Music Plant
+    .4byte 0, 0, 0, 0                     @ Ice Paradise
+    .4byte sub_80807CC, sub_80807CC, 0, 0 @ Sky Canyon
+    .4byte 0, 0, 0, 0                     @ Techno Base
+    .4byte 0, 0, 0, 0                     @ Egg Utopia
+    .4byte 0, 0, 0, 0                     @ Final Zone
+    .4byte 0, 0                           @ (Multiplayer?)
 
     .global gUnknown_080D5128
 gUnknown_080D5128:
