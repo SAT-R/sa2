@@ -19,7 +19,8 @@ typedef struct {
 #define sBottom ((sTop) + ia->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
-    SpriteBase *object = TaskGetStructPtr(gCurTask);
+    Sprite_IA044 *ia044 = TaskGetStructPtr(gCurTask);
+    SpriteBase *object = &ia044->base;
     Interactable *ia = object->ia;
     s32 screenX, screenY;
     u32 regionY, regionX;
