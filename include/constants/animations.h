@@ -157,78 +157,127 @@
 
 /* -- Sonic Advance 2 -- */
 
-#define SA2_ANIM_SONIC_IDLE    0
-#define SA2_ANIM_CREAM_IDLE    91
-#define SA2_ANIM_TAILS_IDLE    182
-#define SA2_ANIM_KNUCKLES_IDLE 273
-#define SA2_ANIM_AMY_IDLE      364
+// TODO: Is possible, make player animations macros, so there's no redundancy
+#define SA2_ANIM_SONIC_IDLE                  0
+#define SA2_ANIM_CREAM_IDLE                  91
+#define SA2_ANIM_TAILS_IDLE                  182
+#define SA2_ANIM_KNUCKLES_IDLE               273
+#define SA2_ANIM_AMY_IDLE                    364
+#define SA2_ANIM_CHEESE_HOVERING             455
+#define SA2_ANIM_CHEESE_SIDEWAYS             456
+#define SA2_ANIM_CHEESE_BACKFLIP             457
+#define SA2_ANIM_CHEESE_NERVOUS              458
+#define SA2_ANIM_CHEESE_PIROUETTE            459
+#define SA2_ANIM_CHEESE_EATING               460 // Not sure about this one. They put their hand to their mouth, but it doesn't have an eating animation
+#define SA2_ANIM_CHEESE_LIFTING              461
+#define SA2_ANIM_CHEESE_CELEBRATING          462
+#define SA2_ANIM_CHEESE_STOMPING             463 // alternatively: SA2_ANIM_CHEESE_CANNON_BALL ?
+#define SA2_ANIM_CHEESE_SKY_UPPERCUT         464
+#define SA2_ANIM_CHEESE_DYING                465
+#define SA2_ANIM_CHEESE_STRUGGLING           466
+#define SA2_ANIM_CHEESE_SIDEWAYS_2           467
+#define SA2_ANIM_CHEESE_DOWNWARDS            468
+#define SA2_ANIM_CHEESE_469                  469
+#define SA2_ANIM_CHEESE_WAVING_PLAYER        470
+#define SA2_ANIM_SONIC_GOING_SUPER_0         471
+#define SA2_ANIM_SONIC_GOING_SUPER_1         472
+#define SA2_ANIM_SUPER_SONIC_SIDEWAYS        473
+#define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
+#define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
+#define SA2_ANIM_SUPER_SONIC_FROZEN          476
+#define SA2_ANIM_CLOUD                       477
 
-#define SA2_ANIM_APE  478
-#define SA2_ANIM_KIKI 479
+// Enemies
+#define SA2_ANIM_APE                         478
+#define SA2_ANIM_KIKI                        479
+#define SA2_ANIM_KIKI_PROJ                   480
+#define SA2_ANIM_KIKI_PROJ_EXPLOSION         481
+#define SA2_ANIM_BUZZER                      482
+#define SA2_ANIM_GOHLA                       483
+#define SA2_ANIM_GOHLA_PROJ                  484
+#define SA2_ANIM_KURAKURA                    485
+#define SA2_ANIM_KURAKURA_PROJ               486
+#define SA2_ANIM_KURAKURA_PROJ_FIREBALL      487
+#define SA2_ANIM_KUBINAGA                    488
+#define SA2_ANIM_KUBINAGA_NECK               489
+#define SA2_ANIM_KUBINAGA_BASE               490
+#define SA2_ANIM_KUBINAGA_PROJ               491
+#define SA2_ANIM_KOURA                       492
+#define SA2_ANIM_BELL                        493
+#define SA2_ANIM_PIKOPIKO                    494
+#define SA2_ANIM_CIRCUS                      495
+#define SA2_ANIM_CIRCUS_PROJ                 496
+#define SA2_ANIM_YADO                        497
+#define SA2_ANIM_YADO_PROJ                   498
+#define SA2_ANIM_HAMMERHEAD                  499
+#define SA2_ANIM_PEN                         500
+#define SA2_ANIM_BALLOON                     501
+#define SA2_ANIM_BALLOON_PROJ                502
+#define SA2_ANIM_MADILLO                     503
+#define SA2_ANIM_STRAW                       504
+#define SA2_ANIM_BULLETBUZZER                505
+#define SA2_ANIM_BUZZER_PROJ                 506
+#define SA2_ANIM_FLICKEY                     507
+#define SA2_ANIM_FLICKEY_PROJ                508
+#define SA2_ANIM_KYURA                       509
+#define SA2_ANIM_KYURA_PROJ                  510
+#define SA2_ANIM_STAR                        511
+#define SA2_ANIM_GEJIGEJI                    512
+#define SA2_ANIM_MOUSE                       513
+#define SA2_ANIM_SPINNER                     514
 
-#define SA2_ANIM_BUZZER     482
-#define SA2_ANIM_GOHLA      483
-#define SA2_ANIM_GOHLA_PROJ 484
-#define SA2_ANIM_KURAKURA   485
-
-#define SA2_ANIM_KUBINAGA      488
-#define SA2_ANIM_KUBINAGA_NECK 489
-#define SA2_ANIM_KUBINAGA_BASE 490
-
-#define SA2_ANIM_KOURA        492
-#define SA2_ANIM_BELL         493
-#define SA2_ANIM_PIKOPIKO     494
-#define SA2_ANIM_CIRCUS       495
-#define SA2_ANIM_CIRCUS_PROJ  496
-#define SA2_ANIM_YADO         497
-#define SA2_ANIM_YADO_PROJ    498
-#define SA2_ANIM_HAMMERHEAD   499
-#define SA2_ANIM_PEN          500
-#define SA2_ANIM_BALLOON      501
-#define SA2_ANIM_BALLOON_PROJ 502
-#define SA2_ANIM_MADILLO      503
-#define SA2_ANIM_STRAW        504
-#define SA2_ANIM_BULLETBUZZER 505
-#define SA2_ANIM_BUZZER_PROJ  506
-#define SA2_ANIM_FLICKEY      507
-#define SA2_ANIM_FLICKEY_PROJ 508
-#define SA2_ANIM_KYURA        509
-#define SA2_ANIM_KYURA_PROJ   510
-#define SA2_ANIM_STAR         511
-#define SA2_ANIM_GEJIGEJI     512
-#define SA2_ANIM_MOUSE        513
-#define SA2_ANIM_SPINNER      514
+// Animals
+#define SA2_ANIM_ANIMAL_SEAL                 515
+#define SA2_ANIM_ANIMAL_GORILLA              516
+#define SA2_ANIM_ANIMAL_PEACOCK              517
+#define SA2_ANIM_ANIMAL_LION                 518
+#define SA2_ANIM_ANIMAL_MOLE                 519
+#define SA2_ANIM_ANIMAL_PARROT               520
+#define SA2_ANIM_ANIMAL_PENGUIN              521
+#define SA2_ANIM_ANIMAL_RABBIT               522
+#define SA2_ANIM_ANIMAL_SEA_OTTER            523
+#define SA2_ANIM_ANIMAL_DEER                 524
+#define SA2_ANIM_ANIMAL_SKUNK                525
+#define SA2_ANIM_ANIMAL_ROBIN                526
+#define SA2_ANIM_ANIMAL_KANGAROO             527
+#define SA2_ANIM_ANIMAL_KOALA                528
+#define SA2_ANIM_ANIMAL_ELEPHANT             529
 
 // Interactable
-#define SA2_ANIM_CHECKPOINT 531
-#define SA2_ANIM_GOAL_LEVER 532
+#define SA2_ANIM_LEVEL_START_MACHINE         530
+#define SA2_ANIM_CHECKPOINT                  531
+#define SA2_ANIM_GOAL_LEVER                  532
+#define SA2_ANIM_WATER_SPLASH                533
+#define SA2_ANIM_534                         534
 
-#define SA2_ANIM_SPRING           536
-#define SA2_ANIM_SPRING_BOUNCY    537
-#define SA2_ANIM_BOUNCY_BAR       538
-#define SA2_ANIM_PLATFORM_LF_WIDE 539
-#define SA2_ANIM_BOOSTER          540
-#define SA2_ANIM_PLATFORM_LF      541
-#define SA2_ANIM_SPIKES           542
-#define SA2_ANIM_RAMP             543
+#define SA2_ANIM_LEAF_FOREST_GROUND_TILE     535
+#define SA2_ANIM_SPRING                      536
+#define SA2_ANIM_SPRING_BOUNCY               537
+#define SA2_ANIM_BOUNCY_BAR                  538
+#define SA2_ANIM_PLATFORM_LF_WIDE            539
+#define SA2_ANIM_BOOSTER                     540
+#define SA2_ANIM_PLATFORM_LF                 541
+#define SA2_ANIM_SPIKES                      542
+#define SA2_ANIM_RAMP                        543
 
-#define SA2_ANIM_ROTATING_HANDLE   546
-#define SA2_ANIM_FLOWER_YELLOW     547
-#define SA2_ANIM_FLOWER_RED_SMALL  548
-#define SA2_ANIM_FLOWER_BLUE       549
-#define SA2_ANIM_FLOWER_BLUE_SMALL 550
-#define SA2_ANIM_ROCK              551
-#define SA2_ANIM_552               552
+#define SA2_ANIM_ROTATING_HANDLE             546
+#define SA2_ANIM_FLOWER_YELLOW               547
+#define SA2_ANIM_FLOWER_RED_SMALL            548
+#define SA2_ANIM_FLOWER_BLUE                 549
+#define SA2_ANIM_FLOWER_BLUE_SMALL           550
+#define SA2_ANIM_ROCK                        551
+#define SA2_ANIM_552                         552
 
-#define SA2_ANIM_WATER_GROUND_SPLASH 560
+#define SA2_ANIM_WATER_GROUND_SPLASH         560
 
-#define SA2_ANIM_THROW_CRANE     565
-#define SA2_ANIM_PLATFORM_METAL  566
-#define SA2_ANIM_TURNAROUND_BAR  567
-#define SA2_ANIM_SPRING_PLATFORM 568
+#define SA2_ANIM_THROW_CRANE_HOOK            564
+#define SA2_ANIM_THROW_CRANE                 565
+#define SA2_ANIM_PLATFORM_HOT_CRATER         566
+#define SA2_ANIM_TURNAROUND_BAR              567
+#define SA2_ANIM_SPRING_PLATFORM             568
 
-#define SA2_ANIM_570 570
-
+#define SA2_ANIM_DRUM             570
+#define SA2_ANIM_SPRING_UNKNOWN   571
 #define SA2_ANIM_SPRING_MUS_PLA   572
 #define SA2_ANIM_SPRING_MUS_PLA_2 573
 #define SA2_ANIM_DICE             574
@@ -265,9 +314,18 @@
 
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
 
+#define SA2_ANIM_TAILS_CAPTURED   659
+
 #define SA2_ANIM_ITEMBOX      724
 #define SA2_ANIM_ITEMBOX_TYPE 725
 #define SA2_ANIM_RING_STATIC  726
+
+#define SA2_ANIM_SCORE        728   // variant: 0 = 100 | 1 = 200 | 2 = 400 | 3 = 800 | 4 = 1000
+#define SA2_ANIM_VARIANT_SCORE_100    0
+#define SA2_ANIM_VARIANT_SCORE_200    1
+#define SA2_ANIM_VARIANT_SCORE_400    2
+#define SA2_ANIM_VARIANT_SCORE_800    3
+#define SA2_ANIM_VARIANT_SCORE_1000   4
 
 #define SA2_ANIM_SPECIAL_EMBLEM 730
 
@@ -276,7 +334,7 @@
 #define SA2_ANIM_TRIANGLE_RED 866
 
 #define SA2_ANIM_RING       882
-#define SA2_ANIM_E102_GAMMA 883
+#define SA2_ANIM_E100_ALPHA 883
 
 /* -- Sonic Advance 3 -- */
 
