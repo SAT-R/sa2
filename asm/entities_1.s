@@ -1,6 +1,111 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+    .global gUnknown_080D550C
+gUnknown_080D550C:
+    .2byte 0x22B @ 
+    .2byte 0x22E @ 
+    .2byte 0x22C @ 
+    .2byte 0x22D @ 
+    .2byte 0x22F @ 
+    .2byte 0
+
+    .global gUnknown_080D5518
+gUnknown_080D5518:
+    .2byte 15, 16, 3
+    .2byte 16, 17, 1
+    .2byte 16, 51, 3
+    .2byte 0
+
+    .global gUnknown_080D552C
+gUnknown_080D552C:
+    .2byte 0x0200, 0x0400, 0x0600, 0x0800, 0x0A00, 0x0000
+
+    .global gUnknown_080D5538
+gUnknown_080D5538:
+    .byte 0x60, 0x61, 0x62, 0x63
+
+    .global gUnknown_080D553C
+gUnknown_080D553C:
+    .2byte 30
+    .2byte 0x121
+    .2byte 2
+
+    .2byte 25
+    .2byte 0x144
+    .2byte 3
+
+    .global gUnknown_080D5548
+gUnknown_080D5548:
+    .2byte 0x1C7, 0
+    .2byte 0x1C8, 0
+    .2byte 0x1C9, 0
+    .2byte 0x1C7, 0
+    .2byte 0x1C8, 0
+    .2byte 0x1C9, 0
+    .2byte 0x1C9, 1
+    .2byte 0x1CA, 0
+    .2byte 0x1CB, 0
+    .2byte 0x1CC, 0
+    .2byte 0x1CC, 1
+    .2byte 0x1CD, 0
+    .2byte 0x1CE, 0
+    .2byte 0x1CF, 0
+    .2byte 0x1CF, 1
+    .2byte 0x1D0, 0
+    .2byte 0x1D1, 0
+    .2byte 0x1D6, 0
+
+    .global gUnknown_080D5590
+gUnknown_080D5590:
+    .incbin "baserom.gba", 0x000D5590, 0x98
+
+    .global gUnknown_080D5628
+gUnknown_080D5628:
+    .incbin "baserom.gba", 0x000D5628, 0x4C
+
+    .global gUnknown_080D5674
+gUnknown_080D5674:
+    .byte 2, 4, 6, 0
+
+    @; Some character Animation IDs.
+    @; Player character AnimIDs are 91 apart from eachother
+    .global gUnknown_080D5678
+gUnknown_080D5678:
+    .2byte 74 + 0*91 @ Sonic
+    .2byte 74 + 1*91 @ Cream
+    .2byte 74 + 2*91 @ Tails
+    .2byte 74 + 3*91 @ Knuckles
+    .2byte 74 + 4*91 @ Amy
+    .2byte 0
+
+    .global gUnknown_080D5684
+gUnknown_080D5684:
+    .incbin "baserom.gba", 0x000D5684, 0xC0
+
+    .global gUnknown_080D5744
+gUnknown_080D5744:
+    .4byte sub_8019240
+    .4byte sub_80192A8
+    .4byte sub_80192FC
+    .4byte sub_8019350
+    .4byte sub_8019368
+    .4byte sub_8018AD8
+    .4byte sub_8018E00
+    .4byte sub_80193B8
+    .4byte 0
+
+    .global gUnknown_080D5768
+gUnknown_080D5768:
+    .incbin "baserom.gba", 0x000D5768, 0x70
+
+    .global gUnknown_080D57D8
+gUnknown_080D57D8:
+    .byte 0, 1, 2, 3
+
+.text
 .syntax unified
 .arm
 
@@ -16673,9 +16778,15 @@ _080193AC:
 	bx r0
 	.align 2, 0
 _080193B4: .4byte gUnknown_030054DC
-_080193B8:
-	.byte 0x01, 0x48, 0x00, 0x68, 0x70, 0x47, 0x00, 0x00
-	.byte 0x28, 0x01, 0x00, 0x04
+
+    thumb_func_start sub_80193B8
+sub_80193B8:
+    ldr r0, _80193C0 @ =REG_SIOCNT
+    ldr r0, [r0]
+    bx r14
+    .align 2 , 0
+_80193C0:
+	.4byte 0x04000128
 
 	thumb_func_start sub_80193C4
 sub_80193C4: @ 0x080193C4
