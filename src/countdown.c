@@ -5,14 +5,17 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "m4a.h"
+
+#include "constants/animations.h"
+#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 
 struct CourseStartCountdown {
     struct UNK_0808B3FC_UNK240 unk0;
     struct UNK_0808B3FC_UNK240 unk30;
-    u32 unk60;
-    u32 unk64;
+    u32 unk60; // x ?
+    u32 unk64; // y ?
     s16 unk68;
     u8 unk6A;
     u8 unk6B;
@@ -46,30 +49,30 @@ void CreateCourseStartCountdown(u8 mode)
     }
 
     element = &countdown->unk30;
-    element->unk4 = VramMalloc(4);
-    element->unkA = 0x469;
-    element->unk20 = 0;
+    element->vram = VramMalloc(4);
+    element->anim = SA2_ANIM_COUNTDOWN;
+    element->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
 
     element = &countdown->unk0;
-    element->unk4 = VramMalloc(0xE);
-    element->unkA = 0x212;
-    element->unk20 = 0;
+    element->vram = VramMalloc(0xE);
+    element->anim = SA2_ANIM_LEVEL_START_MACHINE;
+    element->variant = 0;
     element->unk1A = 0x480;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x2400;
 }
@@ -84,9 +87,9 @@ void sub_8036168(void)
     struct UNK_0808B3FC_UNK240 *element;
 
     // Skip intro
-    if (!IsMultiplayer() && countdown->unk68 > 0xB4
+    if (!IsMultiplayer() && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
         && gPressedKeys & (A_BUTTON | B_BUTTON)) {
-        countdown->unk68 = 0xB4;
+        countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
 
     if (countdown->unk68 == GBA_FRAMES_PER_SECOND * 3) {
@@ -98,20 +101,20 @@ void sub_8036168(void)
     }
 
     if (--countdown->unk68 == 0) {
-        gPlayer.unk20 &= ~0x200000;
+        gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gUnknown_03005424 &= ~1;
         gUnknown_03005424 &= ~0x100;
         gPlayer.unk64 = 9;
         if (countdown->unk6A != 0) {
-            gPlayer.unk14 = 0x900;
+            gPlayer.speedGroundX = Q_8_8(9);
         } else {
-            gPlayer.unk14 = 0x400;
+            gPlayer.speedGroundX = Q_8_8(4);
         }
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = gPlayer.unk8 >> 8;
-        countdown->unk64 = gPlayer.unkC >> 8;
+        countdown->unk60 = gPlayer.x >> 8;
+        countdown->unk64 = gPlayer.y >> 8;
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -127,24 +130,25 @@ void sub_8036168(void)
     }
 
     element = &countdown->unk0;
-    element->unk16 = (gPlayer.unk8 >> 8) - gCamera.unk0;
-    element->unk18 = (gPlayer.unkC >> 8) - gCamera.unk4;
+    element->x = (gPlayer.x >> 8) - gCamera.x;
+    element->y = (gPlayer.y >> 8) - gCamera.y;
     sub_8004558(element);
     sub_80051E8(element);
 
-    if (countdown->unk68 < 0xB4) {
+    if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
         element = &countdown->unk30;
-        element->unk20 = 2 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
+        element->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
-        element->unk16 = ((gPlayer.unk8 >> 8) - gCamera.unk0) + 0x18;
-        element->unk18 = ((gPlayer.unkC >> 8) - gCamera.unk4) - 0x18;
+        element->x = ((gPlayer.x >> 8) - gCamera.x) + 0x18;
+        element->y = ((gPlayer.y >> 8) - gCamera.y) - 0x18;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
-    if ((u16)(countdown->unk68 - 0x46) < 0x6E) {
-        gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].unk4;
-        gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].unk6;
+    if (countdown->unk68 >= (int)((1 + 1./6.) * GBA_FRAMES_PER_SECOND)
+        && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
+        gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].anim;
+        gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
 
         if (IsMultiplayer()) {
@@ -160,11 +164,10 @@ void sub_8036398(void)
     struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *element = &countdown->unk0;
 
-    element->unk16 = countdown->unk60 - gCamera.unk0;
-    element->unk18 = countdown->unk64 - gCamera.unk4;
+    element->x = countdown->unk60 - gCamera.x;
+    element->y = countdown->unk64 - gCamera.y;
 
-    if ((u16)(element->unk16 + 0x80) > 496 || ((s16)(element->unk18) + 0x80) < 0
-        || (s16)element->unk18 > 288) {
+    if (IS_OUT_OF_CAM_RANGE(element->x, (s16)element->y)) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -193,30 +196,30 @@ void CreateRaceStartMessage(void)
 
     startMessage->unk78 = 0x3C;
     element = &startMessage->unk0;
-    element->unk4 = VramMalloc(0x40);
-    element->unkA = 0x46A;
-    element->unk20 = 0;
+    element->vram = VramMalloc(0x40);
+    element->anim = SA2_ANIM_COUNTDOWN_START;
+    element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 
     element = &startMessage->unk3C;
-    element->unk4 = VramMalloc(0x40);
-    element->unkA = 0x46A;
-    element->unk20 = 1;
+    element->vram = VramMalloc(0x40);
+    element->anim = SA2_ANIM_COUNTDOWN_START;
+    element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 }
@@ -237,8 +240,8 @@ void sub_8036524(void)
     element = &startMessage->unk0;
     transformConfig = &startMessage->unk30;
 
-    element->unk16 = 0x78;
-    element->unk18 = 0x28;
+    element->x = (DISPLAY_WIDTH/2);
+    element->y = (DISPLAY_HEIGHT/4);
     element->unk10 = gUnknown_030054B8++ | 0x60;
     transformConfig->unk0 = 0;
     unk78 = startMessage->unk78;
@@ -250,8 +253,8 @@ void sub_8036524(void)
         transformConfig->unk4 = 0x100;
     }
 
-    transformConfig->unk6[0] = element->unk16;
-    transformConfig->unk6[1] = element->unk18;
+    transformConfig->unk6[0] = element->x;
+    transformConfig->unk6[1] = element->y;
     sub_8004558(element);
     sub_8004860(element, transformConfig);
     sub_80051E8(element);
@@ -259,8 +262,8 @@ void sub_8036524(void)
     element = &startMessage->unk3C;
     transformConfig = &startMessage->unk6C;
 
-    element->unk16 = 0x78;
-    element->unk18 = 0x28;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT / 4);
     element->unk10 = gUnknown_030054B8++ | 0x60;
     transformConfig->unk0 = 0;
     unk78 = startMessage->unk78;
@@ -272,8 +275,8 @@ void sub_8036524(void)
         transformConfig->unk4 = 0x100;
     }
 
-    transformConfig->unk6[0] = element->unk16;
-    transformConfig->unk6[1] = element->unk18;
+    transformConfig->unk6[0] = element->x;
+    transformConfig->unk6[1] = element->y;
     sub_8004558(element);
     sub_8004860(element, transformConfig);
     sub_80051E8(element);
@@ -282,13 +285,13 @@ void sub_8036524(void)
 void sub_8036638(struct Task *t)
 {
     struct CourseStartCountdown *countdown = TaskGetStructPtr(t);
-    VramFree(countdown->unk0.unk4);
-    VramFree(countdown->unk30.unk4);
+    VramFree(countdown->unk0.vram);
+    VramFree(countdown->unk30.vram);
 }
 
 void sub_8036654(struct Task *t)
 {
     struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
-    VramFree(startMessage->unk3C.unk4);
-    VramFree(startMessage->unk0.unk4);
+    VramFree(startMessage->unk3C.vram);
+    VramFree(startMessage->unk0.vram);
 }
