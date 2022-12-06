@@ -11,6 +11,8 @@
 #include "multiplayer_multipak_connection.h"
 #include "title_screen.h"
 #include "character_select.h"
+
+#include "constants/animations.h"
 #include "constants/text.h"
 
 struct MultiplayerLobbyScreen {
@@ -41,46 +43,46 @@ struct MultiplayerLobbyScreen {
 
 static const struct UNK_080E0D64 sUiText[] = {
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 57, 1074),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_2, 57, SA2_ANIM_MP_MSG),
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)]
-    = TextElementAlt4(17, 12, 1074),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_8, 12, SA2_ANIM_MP_MSG),
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)]
-    = TextElementAlt4(18, 18, 1074),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_9, 18, SA2_ANIM_MP_MSG),
 
-    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 48, 1079),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)] = TextElementAlt4(
+        SA2_ANIM_VARIANT_MP_COMM_MSG_PLAY_AGAIN, 48, SA2_ANIM_MP_COMM_MSG_EN),
     [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_YES)]
-    = TextElementAlt4(6, 10, 1079),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 10, SA2_ANIM_MP_COMM_MSG_EN),
     [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_NO)]
-    = TextElementAlt4(7, 10, 1079),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 10, SA2_ANIM_MP_COMM_MSG_EN),
 
     [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, 1080),
+    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_DE),
     [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_YES)]
-    = TextElementAlt4(6, 15, 1080),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 15, SA2_ANIM_MP_COMM_MSG_DE),
     [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_NO)]
-    = TextElementAlt4(7, 21, 1080),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 21, SA2_ANIM_MP_COMM_MSG_DE),
 
     [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 39, 1081),
+    = TextElementAlt4(2, 39, SA2_ANIM_MP_COMM_MSG_FR),
     [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_YES)]
-    = TextElementAlt4(6, 18, 1081),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 18, SA2_ANIM_MP_COMM_MSG_FR),
     [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_NO)]
-    = TextElementAlt4(7, 18, 1081),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 18, SA2_ANIM_MP_COMM_MSG_FR),
 
     [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, 1082),
+    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_ES),
     [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_YES)]
-    = TextElementAlt4(6, 9, 1082),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 9, SA2_ANIM_MP_COMM_MSG_ES),
     [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_NO)]
-    = TextElementAlt4(7, 15, 1082),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 15, SA2_ANIM_MP_COMM_MSG_ES),
 
     [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, 1083),
+    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_IT),
     [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_YES)]
-    = TextElementAlt4(6, 9, 1083),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 9, SA2_ANIM_MP_COMM_MSG_IT),
     [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_NO)]
-    = TextElementAlt4(7, 15, 1083),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 15, SA2_ANIM_MP_COMM_MSG_IT),
 };
 static const s8 sShakeAnimPositions[] = {
     0, 2, 4, 3, 0, -2, -4, -3,
@@ -175,35 +177,35 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     sub_8002A3C(background);
 
     element = &lobbyScreen->chao;
-    element->unk4 = VramMalloc(0x38);
-    element->unkA = 0x450;
-    element->unk20 = 3;
+    element->vram = VramMalloc(0x38);
+    element->anim = 0x450;
+    element->variant = 3;
     element->unk21 = 0xFF;
-    element->unk16 = 0x78;
-    element->unk18 = 0x6E;
+    element->x = (DISPLAY_WIDTH/2);
+    element->y = (DISPLAY_HEIGHT) - 50;
     element->unk1A = 0xC0;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         element = &lobbyScreen->uiElements[i];
-        element->unk4 = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].unk0);
-        element->unkA = sUiText[TextElementOffsetAlt(lang, 3, i)].unk4;
-        element->unk20 = sUiText[TextElementOffsetAlt(lang, 3, i)].unk6;
+        element->vram = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
+        element->anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
+        element->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0x24;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = (DISPLAY_HEIGHT / 4) - 4;
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         sub_8004558(element);
     }
@@ -307,16 +309,16 @@ static void ScreenMain(void)
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
 
             if (lobbyScreen->cursor != CURSOR_YES) {
-                if (chao->unk20 != 5) {
-                    chao->unkA = 0x450;
-                    chao->unk20 = 4;
+                if (chao->variant != 5) {
+                    chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                    chao->variant = 4;
                     chao->unk21 = 0xFF;
                 }
 
             } else {
-                if (chao->unk20 != 3) {
-                    chao->unkA = 0x450;
-                    chao->unk20 = 6;
+                if (chao->variant != 3) {
+                    chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                    chao->variant = 6;
                     chao->unk21 = 0xFF;
                 }
             }
@@ -334,9 +336,9 @@ static void ScreenMain(void)
             lobbyScreen->idleFrame = 0;
             lobbyScreen->cursor = 0;
 
-            if (chao->unk20 != 3) {
-                chao->unkA = 0x450;
-                chao->unk20 = 6;
+            if (chao->variant != 3) {
+                chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                chao->variant = 6;
                 chao->unk21 = 0xFF;
             }
             send->pat0.unk3 = 1;
@@ -346,9 +348,9 @@ static void ScreenMain(void)
             lobbyScreen->idleFrame = 0;
             lobbyScreen->cursor = 1;
 
-            if (chao->unk20 != 5) {
-                chao->unkA = 0x450;
-                chao->unk20 = 4;
+            if (chao->variant != 5) {
+                chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                chao->variant = 4;
                 chao->unk21 = 0xFF;
             }
             send->pat0.unk3 = 1;
@@ -378,7 +380,7 @@ static void ScreenMain(void)
 
     // 10 seconds
     if (++lobbyScreen->idleFrame == 600) {
-        chao->unk20 = 1;
+        chao->variant = 1;
     }
 
     RenderUI(lobbyScreen);
@@ -473,9 +475,10 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
     lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
     m4aSongNumStop(MUS_VS_LOBBY);
     m4aSongNumStart(MUS_VS_EXIT);
-    // Waving chao
-    chao->unkA = 0x44F;
-    chao->unk20 = 0;
+
+    // Cheese waves at the Player
+    chao->anim = SA2_ANIM_MP_CHEESE_WAVING;
+    chao->variant = 0;
     chao->unk21 = 0xFF;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
@@ -485,15 +488,16 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
     struct UNK_0808B3FC_UNK240 *element = &lobbyScreen->chao;
     // Chao anim finished
     if (!sub_8004558(element)) {
-        if (lobbyScreen->cursor != CURSOR_YES && element->unkA == 0x44F) {
-            element->unk20 = 1;
+        if (lobbyScreen->cursor != CURSOR_YES
+            && element->anim == SA2_ANIM_MP_CHEESE_WAVING) {
+            element->variant = 1;
         } else {
-            if (element->unk20 == 6) {
-                element->unk20 = 3;
+            if (element->variant == 6) {
+                element->variant = 3;
             }
 
-            if (element->unk20 == 4) {
-                element->unk20 = 5;
+            if (element->variant == 4) {
+                element->variant = 5;
             }
         }
     }
@@ -505,25 +509,25 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     element = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->unk16 = 44;
-        element->unk25 = 1;
+        element->x = (DISPLAY_WIDTH / 6) + 4;
+        element->focused = 1;
     } else {
-        element->unk16 = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
-        element->unk25 = 0;
+        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
+        element->focused = 0;
     }
-    element->unk18 = 110;
+    element->y = DISPLAY_HEIGHT - 50;
     sub_80051E8(element);
 
     element = &lobbyScreen->uiElements[ELEMENT_NO];
 
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->unk16 = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
-        element->unk25 = 15;
+        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
+        element->focused = 15;
     } else {
-        element->unk16 = 192;
-        element->unk25 = 0;
+        element->x = (DISPLAY_WIDTH - 48);
+        element->focused = 0;
     }
-    element->unk18 = 110;
+    element->y = DISPLAY_HEIGHT  - 50;
     sub_80051E8(element);
 
     if (lobbyScreen->animFrame > 0) {
@@ -535,10 +539,10 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 {
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
-    VramFree(lobbyScreen->chao.unk4);
+    VramFree(lobbyScreen->chao.vram);
 
     for (i = 0; i < 3; i++) {
-        VramFree(lobbyScreen->uiElements[i].unk4);
+        VramFree(lobbyScreen->uiElements[i].vram);
     }
 }
 
