@@ -35,22 +35,22 @@ void Task_Interactable_044(void)
     screenY = SpriteGetScreenPos(ia->y, regionY);
 
     left = sLeft;
-    playerX = Q_24_8_TO_INT(gPlayer.unk8);
+    playerX = Q_24_8_TO_INT(gPlayer.x);
 
     if ((left <= playerX) && sRight >= playerX) {
         top = sTop;
-        playerY = Q_24_8_TO_INT(gPlayer.unkC);
+        playerY = Q_24_8_TO_INT(gPlayer.y);
 
         if ((top <= playerY) && sBottom >= playerY) {
-            u32 moveState = gPlayer.unk20;
+            u32 moveState = gPlayer.moveState;
             if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
-                && (gPlayer.unk12 < 0)) {
+                && (gPlayer.speedAirY < 0)) {
                 if (moveState & MOVESTATE_10000000) {
                     object->spriteY = 1;
                 }
 
                 if ((!(moveState & MOVESTATE_10000000)
-                     || !(gPlayer.unk20 & MOVESTATE_10000000))
+                     || !(gPlayer.moveState & MOVESTATE_10000000))
                     && object->spriteY == 0) {
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
@@ -66,8 +66,8 @@ void Task_Interactable_044(void)
         object->spriteY = 0;
     }
 
-    screenX -= gCamera.unk0;
-    screenY -= gCamera.unk4;
+    screenX -= gCamera.x;
+    screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
         ia->x = spriteX;
