@@ -113,8 +113,8 @@ void sub_8036168(void)
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = gPlayer.x >> 8;
-        countdown->unk64 = gPlayer.y >> 8;
+        countdown->unk60 = Q_24_8_TO_INT(gPlayer.x);
+        countdown->unk64 = Q_24_8_TO_INT(gPlayer.y);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -130,8 +130,8 @@ void sub_8036168(void)
     }
 
     element = &countdown->unk0;
-    element->x = (gPlayer.x >> 8) - gCamera.x;
-    element->y = (gPlayer.y >> 8) - gCamera.y;
+    element->x = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    element->y = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -139,8 +139,8 @@ void sub_8036168(void)
         element = &countdown->unk30;
         element->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
-        element->x = ((gPlayer.x >> 8) - gCamera.x) + 0x18;
-        element->y = ((gPlayer.y >> 8) - gCamera.y) - 0x18;
+        element->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
+        element->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
         sub_8004558(element);
         sub_80051E8(element);
     }

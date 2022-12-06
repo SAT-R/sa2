@@ -4,12 +4,14 @@
 #include "profile.h"
 #include "task.h"
 #include "m4a.h"
-#include "constants/songs.h"
 #include "flags.h"
 #include "trig.h"
 #include "backgrounds.h"
 #include "transition.h"
 #include "palettes.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
 
 #define MAX_SOUND_NAME_LENGTH     16
 #define NUM_SPEAKER_CONE_SECTIONS 4
@@ -486,9 +488,9 @@ static void Task_SoundTestScreenMain(void)
             soundTestScreen->soundNumAnimSteps[1] = 7;
         }
 
-        numberDisplayDigit[0].unk20 = soundTestScreen->soundNumber % 10 + 16;
-        numberDisplayDigit[1].unk20 = soundTestScreen->soundNumber / 10 % 10 + 16;
-        numberDisplayDigit[2].unk20 = soundTestScreen->soundNumber / 100 % 10 + 16;
+        numberDisplayDigit[0].variant = soundTestScreen->soundNumber % 10 + 16;
+        numberDisplayDigit[1].variant = soundTestScreen->soundNumber / 10 % 10 + 16;
+        numberDisplayDigit[2].variant = soundTestScreen->soundNumber / 100 % 10 + 16;
 
         sub_8004558(&numberDisplayDigit[0]);
         sub_8004558(&numberDisplayDigit[1]);
@@ -502,7 +504,7 @@ static void Task_SoundTestScreenMain(void)
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING
         && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
         soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
-        backControlName->unk20 = 1;
+        backControlName->variant = 1;
         sub_8004558(backControlName);
         m4aMPlayAllStop();
         soundTestScreen->animFrame = 0;
@@ -524,7 +526,7 @@ static void Task_SoundTestScreenMain(void)
                     .header);
 
         soundTestScreen->state = SOUND_TEST_SCREEN_PLAYING;
-        backControlName->unk20 = 0;
+        backControlName->variant = 0;
         soundTestScreen->animFrame = 0;
         soundTestScreen->barBeat = 0;
         soundTestScreen->scrollArrowAnimFrame = 0;
@@ -539,7 +541,7 @@ static void Task_SoundTestScreenMain(void)
     if (gPressedKeys & B_BUTTON) {
         if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
             soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
-            backControlName->unk20 = 1;
+            backControlName->variant = 1;
             sub_8004558(backControlName);
             m4aMPlayAllStop();
             soundTestScreen->animFrame = 0;
@@ -599,18 +601,17 @@ static void SoundTestScreenRenderUI(void)
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
     for (i = 0; i < 2; i++, numberDisplayDigit++) {
-        numberDisplayDigit->unk18 = 0x60;
+        numberDisplayDigit->y = 96;
 
         if (soundTestScreen->soundNumAnimSteps[i] != 0) {
             if (soundTestScreen->soundNumAnimSteps[i] > 0) {
-                numberDisplayDigit->unk18
-                    = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 0x60;
+                numberDisplayDigit->y
+                    = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 96;
                 soundTestScreen->soundNumAnimSteps[i]--;
             }
 
             if (soundTestScreen->soundNumAnimSteps[i] < 0) {
-                numberDisplayDigit->unk18 = 0x60
-                    - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                numberDisplayDigit->y = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
                 soundTestScreen->soundNumAnimSteps[i]++;
             }
         }
@@ -705,7 +706,7 @@ static void SoundTestScreenRenderUI(void)
     }
 
     for (i = 0; i < 4; i++) {
-        if (unk2D8->unkA != 0x3CA) {
+        if (unk2D8->anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].unk0 = i << 8;
             speakerConeEffects[i].unk4 = speakerConeEffects[i].unk2
                 = soundTestScreen->speakerSize + 0x100;
@@ -731,11 +732,11 @@ static void SoundTestScreenRenderUI(void)
 
     sub_80051E8(unk2D8);
 
-    scrollArrows->unk16
+    scrollArrows->x
         = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
         + 94;
     sub_80051E8(scrollArrows);
-    scrollArrows->unk16 = 58
+    scrollArrows->x = 58
         - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     scrollArrows->unk10 |= 0x400;
     sub_80051E8(scrollArrows);
@@ -787,43 +788,43 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
-            animatedCream->unk20 = 0;
-            animatedCream->unkA = 0x3CA;
+            animatedCream->variant = 0;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_BOW;
             break;
         case CREAM_ANIM_IDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
-            animatedCream->unk20 = 0;
-            animatedCream->unkA = 0x3CD;
+            animatedCream->variant = 0;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CLAP_FORWARD;
             break;
         case CREAM_ANIM_DANCE_RIGHT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 &= ~0x400;
-            animatedCream->unk20 = 0;
-            animatedCream->unkA = 0x3C8;
+            animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_MIDDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 &= ~0x400;
-            animatedCream->unk20 = 1;
-            animatedCream->unkA = 0x3C8;
+            animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_HOLDING;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_LEFT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 |= 0x400;
-            animatedCream->unk20 = 0;
-            animatedCream->unkA = 0x3C8;
+            animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_SOUND_END:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
-            animatedCream->unk20 = 0;
-            animatedCream->unkA = 0x3CB;
+            animatedCream->variant = 0;
+            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_WAITING;
             break;
         default:
             break;
@@ -840,7 +841,7 @@ static void SoundTestScreenUpdateCreamAnim(void)
     switch (soundTestScreen->state) {
         case SOUND_TEST_SCREEN_STOPPED:
             // If current animation is song end, set to anim idle
-            if (animatedCream->unkA == 0x3CB) {
+            if (animatedCream->anim == SA2_ANIM_SOUNDTEST_CREAM_WAITING) {
                 if (!sub_8004558(animatedCream)) {
                     SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
                 }
@@ -917,7 +918,7 @@ static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)
     u32 i;
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
-        u16 *pos = &soundTestScreen->nameDisplay[i].unk16;
+        u16 *pos = &soundTestScreen->nameDisplay[i].x;
         *pos = x + i * 10;
         pos++;
         *pos = y;
@@ -932,7 +933,7 @@ static void SoundTestScreenSetNameDisplay(u8 soundId)
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         u8 soundTextChar = sSoundNames[soundId][i];
 
-        u8 *asset = &soundTestScreen->nameDisplay[i].unk20;
+        u8 *asset = &soundTestScreen->nameDisplay[i].variant;
         asset[0] = soundTextChar - 0x20;
         asset[1] = 0xFF;
 
