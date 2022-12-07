@@ -1,6 +1,8 @@
 #ifndef GUARDS_ANIMATIONS_H
 #define GUARDS_ANIMATIONS_H
 
+#include "constants/text.h" // for language-specific stuff
+
 /* Collection of animation indices for Sonic Advance 1, 2 and 3.
  * - By JaceCear
  */
@@ -160,6 +162,9 @@
 
 
 /* -- Sonic Advance 2 -- */
+// In here, Cheese is sometimes treated like a player character, so have an ID for them.
+#define SA2_ANIM_CHAR_ID_CHEESE        5
+
 #define SA2_NUM_PLAYER_CHAR_ANIMATIONS (91) // TODO: Don't use constant here
 #define SA2_ANIM_CHAR(anim, character) ((anim) + character * SA2_NUM_PLAYER_CHAR_ANIMATIONS)
 
@@ -346,6 +351,22 @@
 
 #define SA2_ANIM_SPECIAL_EMBLEM 730
 
+#define SA2_ANIM_CHAR_SELECT_CHARACTER                  736
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC   0
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED 1
+#define SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS 2
+#define SA2_ANIM_VARIANT_SELECT_CHARACTER(character, type) ((character) * SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS + type)
+
+#define SA2_ANIM_CHAR_SELECT_CIRCLE 737
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE 0
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE (SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + NUM_CHARACTERS)
+
+#define SA2_ANIM_CHAR_SELECT_ARROW        738
+#define SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC     0
+#define SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING  1
+
+#define SA2_ANIM_CHAR_SELECT_RED_CROSS_BOX 742
+
 #define SA2_ANIM_ZONEX_NAME 762
 
 #define SA2_ANIM_TITLE_COPYRIGHT 830
@@ -361,6 +382,8 @@
 #define SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 7
 
 #define SA2_ANIM_BOOST_EFFECT 873
+#define SA2_ANIM_MAIN_MENU 874
+#define SA2_ANIM_VARIANT_MAIN_MENU_OPTIONS 3
 
 #define SA2_ANIM_RACE_START_ICON 879
 #define SA2_ANIM_RACE_FINISH_ICON 880
@@ -381,8 +404,62 @@
 #define SA2_ANIM_SOUNDTEST_PLATFORM 972
 #define SA2_ANIM_SOUNDTEST_CLAP_FORWARD 973
 
+#define SA2_ANIM_TIME_ATTACK_DIGITS               1047
+#define SA2_ANIM_VARIANT_TA_DIGITS_0              0
+#define SA2_ANIM_VARIANT_TA_DIGITS_1              1
+#define SA2_ANIM_VARIANT_TA_DIGITS_2              2
+#define SA2_ANIM_VARIANT_TA_DIGITS_3              3
+#define SA2_ANIM_VARIANT_TA_DIGITS_4              4
+#define SA2_ANIM_VARIANT_TA_DIGITS_5              5
+#define SA2_ANIM_VARIANT_TA_DIGITS_6              6
+#define SA2_ANIM_VARIANT_TA_DIGITS_7              7
+#define SA2_ANIM_VARIANT_TA_DIGITS_8              8
+#define SA2_ANIM_VARIANT_TA_DIGITS_9              9
+#define SA2_ANIM_VARIANT_TA_DIGITS_COLON          10
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_GOLD   11
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_SILVER 12
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_BRONZE 13
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD   14
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_SILVER 15
+#define SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_BRONZE 16
+
 #define SA2_ANIM_MSG_JP_TRY_AGAIN                1051
 #define SA2_ANIM_MSG_EN_TRY_AGAIN                1052
+
+#define SA2_ANIM_TIME_ATTACK                     1057 + LanguageIndex(LANG_JAPANESE) // 1057
+#define SA2_ANIM_TIME_ATTACK_JP                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_JAPANESE)) // 1057 - WARNING: Different layout!
+#define SA2_ANIM_TIME_ATTACK_EN                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ENGLISH)) // 1058
+#define SA2_ANIM_TIME_ATTACK_DE                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_GERMAN))  // 1059
+#define SA2_ANIM_TIME_ATTACK_FR                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_FRENCH))  // 1060
+#define SA2_ANIM_TIME_ATTACK_ES                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_SPANISH)) // 1061
+#define SA2_ANIM_TIME_ATTACK_IT                  (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ITALIAN)) // 1062
+#define SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP       0
+#define SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP      1
+#define SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET    2
+#define SA2_ANIM_VARIANT_TA_ZONE                  3 // "ZONE" - only in SA2_ANIM_TIME_ATTACK_EN
+#define SA2_ANIM_VARIANT_TA_BOSS                  4 // "BOSS" - only in SA2_ANIM_TIME_ATTACK_EN
+
+#define SA2_ANIM_VARIANT_TA_TITLE        0 // variant of only SA2_ANIM_TIME_ATTACK
+#define SA2_ANIM_VARIANT_TA_JP_ZONE      1
+#define SA2_ANIM_VARIANT_TA_JP_BOSS      2
+#define SA2_ANIM_VARIANT_TA_JP_CLEAR              (3 + SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP)
+#define SA2_ANIM_VARIANT_TA_JP_DEFEAT             (3 + SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP)
+#define SA2_ANIM_VARIANT_TA_JP_CANT_PLAY          (3 + SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET)
+
+#define SA2_ANIM_TIME_ATTACK_ZONE_NAME            1063
+#define SA2_ANIM_VARIANT_TA_ZONE_1                0
+#define SA2_ANIM_VARIANT_TA_ZONE_2                1
+#define SA2_ANIM_VARIANT_TA_ZONE_3                2
+#define SA2_ANIM_VARIANT_TA_ZONE_4                3
+#define SA2_ANIM_VARIANT_TA_ZONE_5                4
+#define SA2_ANIM_VARIANT_TA_ZONE_6                5
+#define SA2_ANIM_VARIANT_TA_ZONE_7                6
+#define SA2_ANIM_VARIANT_TA_ZONE_FINAL            7
+#define SA2_ANIM_VARIANT_TA_ZONE_EXTRA            8
+
+#define SA2_ANIM_TA_RECORD                       1072
+#define SA2_ANIM_VARIANT_TA_NEW_RECORD           0
+#define SA2_ANIM_VARIANT_TA_TIME                 1
 
 // TODO: Translate Japanese texts
 #define SA2_ANIM_MP_MSG                          1074
@@ -405,6 +482,9 @@
 #define SA2_ANIM_VARIANT_MP_MSG_4P               16
 #define SA2_ANIM_VARIANT_MP_MSG_JAPANESE_8       17
 #define SA2_ANIM_VARIANT_MP_MSG_JAPANESE_9       18
+
+#define SA2_ANIM_MULTIPLAYER_UNKNOWN                     1076
+#define SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS      9
 
 #define SA2_ANIM_MP_COMM_MSG_EN                          1079
 #define SA2_ANIM_MP_COMM_MSG_DE                          1080
@@ -436,6 +516,8 @@
 #define SA2_ANIM_PRESS_START_MSG_FR                      1109
 #define SA2_ANIM_PRESS_START_MSG_ES                      1110
 #define SA2_ANIM_PRESS_START_MSG_IT                      1111
+
+#define SA2_ANIM_TA_WHITE_BAR                            1120
 
 #define SA2_ANIM_STAGE       1123
 #define SA2_ANIM_VARIANT_STAGE_ACT_1 0

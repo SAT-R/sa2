@@ -6,11 +6,13 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "m4a.h"
-#include "constants/songs.h"
-#include "constants/text.h"
 #include "title_screen.h"
 #include "game.h"
 #include "character_select.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct TimeAttackModeSelectionScreen {
     struct Unk_03002400 unk0;
@@ -39,29 +41,41 @@ static void Task_HandleModeSelectedExit(void);
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *);
 
 const struct UNK_080E0D64 gUnknown_080E0384[30] = {
-    TextElementAlt4(1, 12, 1057),  TextElementAlt4(2, 8, 1057),
-    TextElementAlt4(3, 168, 1057), TextElementAlt4(4, 168, 1057),
-    TextElementAlt4(5, 168, 1057),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_ZONE, 12, SA2_ANIM_TIME_ATTACK_JP),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_BOSS, 8, SA2_ANIM_TIME_ATTACK_JP),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_CLEAR, 168, SA2_ANIM_TIME_ATTACK_JP),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_DEFEAT, 168, SA2_ANIM_TIME_ATTACK_JP),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_CANT_PLAY, 168, SA2_ANIM_TIME_ATTACK_JP),
 
-    TextElementAlt4(3, 12, 1058),  TextElementAlt4(4, 12, 1058),
-    TextElementAlt4(0, 168, 1058), TextElementAlt4(1, 168, 1058),
-    TextElementAlt4(2, 168, 1058),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_EN),
 
-    TextElementAlt4(3, 12, 1058),  TextElementAlt4(4, 12, 1058),
-    TextElementAlt4(0, 168, 1059), TextElementAlt4(1, 168, 1059),
-    TextElementAlt4(2, 168, 1059),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_DE),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_DE),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_DE),
 
-    TextElementAlt4(3, 12, 1058),  TextElementAlt4(4, 12, 1058),
-    TextElementAlt4(0, 168, 1060), TextElementAlt4(1, 168, 1060),
-    TextElementAlt4(2, 168, 1060),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_FR),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_FR),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_FR),
 
-    TextElementAlt4(3, 12, 1058),  TextElementAlt4(4, 12, 1058),
-    TextElementAlt4(0, 168, 1061), TextElementAlt4(1, 168, 1061),
-    TextElementAlt4(2, 168, 1061),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_ES),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_ES),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_ES),
 
-    TextElementAlt4(3, 12, 1058),  TextElementAlt4(4, 12, 1058),
-    TextElementAlt4(0, 168, 1062), TextElementAlt4(1, 168, 1062),
-    TextElementAlt4(2, 168, 1062),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_IT),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_IT),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_IT),
 };
 
 void CreateTimeAttackModeSelectionScreen(void)
@@ -110,69 +124,69 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_802D4CC(transitionConfig);
 
     element = &modeScreen->unk80;
-    element->unk4 = VramMalloc(0x6C);
-    element->unkA = 0x421;
-    element->unk20 = 0;
+    element->vram = VramMalloc(0x6C);
+    element->anim = SA2_ANIM_TIME_ATTACK;
+    element->variant = SA2_ANIM_VARIANT_TA_TITLE;
     element->unk21 = 0xFF;
-    element->unk16 = 0;
-    element->unk18 = 0;
+    element->x = 0;
+    element->y = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
     element = &modeScreen->unkB0;
-    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk0);
-    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk4;
-    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].unk6;
+    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
+    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
+    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
     element->unk21 = 0xFF;
-    element->unk16 = 0;
-    element->unk18 = 0;
+    element->x = 0;
+    element->y = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
     element = &modeScreen->unkE0;
-    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk0);
-    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk4;
-    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].unk6;
+    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
+    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
+    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
     element->unk21 = 0xFF;
-    element->unk16 = 0;
-    element->unk18 = 0;
+    element->x = 0;
+    element->y = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
     element = &modeScreen->infoText;
-    element->unk4 = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk0);
-    element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk4;
-    element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk6;
+    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
+    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
     element->unk21 = 0xFF;
-    element->unk16 = 8;
-    element->unk18 = 0x67;
+    element->x = 8;
+    element->y = 103;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
 
@@ -263,31 +277,31 @@ static void Task_IntroUIAnim(void)
 
     element = &modeScreen->unk80;
     if (modeScreen->animFrame < 10) {
-        element->unk16 = modeScreen->animFrame * 10 - 50;
+        element->x = modeScreen->animFrame * 10 - 50;
     } else {
-        element->unk16 = 0x32;
+        element->x = 50;
     }
-    element->unk18 = 10;
+    element->y = 10;
 
     element = &modeScreen->unkB0;
     if (modeScreen->animFrame < 10) {
-        element->unk16 = -0x50;
-    } else if (modeScreen->animFrame < 0x14) {
-        element->unk16 = (modeScreen->animFrame * 16) - 250;
+        element->x = -80;
+    } else if (modeScreen->animFrame < 20) {
+        element->x = (modeScreen->animFrame * 16) - 250;
     } else {
-        element->unk16 = 0x46;
+        element->x = 70;
     }
-    element->unk18 = 0x3C;
+    element->y = 60;
 
     element = &modeScreen->unkE0;
-    if (modeScreen->animFrame < 0x14) {
-        element->unk16 = -0x5A;
-    } else if (modeScreen->animFrame < 0x1E) {
-        element->unk16 = (modeScreen->animFrame * 16) - 400;
+    if (modeScreen->animFrame < 20) {
+        element->x = -90;
+    } else if (modeScreen->animFrame < 30) {
+        element->x = (modeScreen->animFrame * 16) - 400;
     } else {
-        element->unk16 = 0x50;
+        element->x = 80;
     }
-    element->unk18 = 0x4C;
+    element->y = 76;
     RenderUI(modeScreen);
 }
 
@@ -346,18 +360,18 @@ static void Task_ScreenMain(void)
         }
 
         element = &modeScreen->unkB0;
-        element->unk25 = 1;
+        element->focused = 1;
 
         element = &modeScreen->unkE0;
-        element->unk25 = 0xFF;
+        element->focused = 0xFF;
 
         element = &modeScreen->infoText;
         if (gLoadedSaveGame->unk12) {
-            element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].unk4;
-            element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].unk6;
+            element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
+            element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].variant;
         } else {
-            element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].unk4;
-            element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].unk6;
+            element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
+            element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].variant;
         }
         element->unk21 = 0xFF;
     } else {
@@ -366,14 +380,14 @@ static void Task_ScreenMain(void)
             lang = 0;
         }
         element = &modeScreen->unkB0;
-        element->unk25 = 0;
+        element->focused = 0;
 
         element = &modeScreen->unkE0;
-        element->unk25 = 0;
+        element->focused = 0;
 
         element = &modeScreen->infoText;
-        element->unkA = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk4;
-        element->unk20 = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].unk6;
+        element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+        element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
         element->unk21 = 0xFF;
     }
     RenderUI(modeScreen);
@@ -471,8 +485,8 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(t);
-    VramFree(modeScreen->unk80.unk4);
-    VramFree(modeScreen->unkB0.unk4);
-    VramFree(modeScreen->unkE0.unk4);
-    VramFree(modeScreen->infoText.unk4);
+    VramFree(modeScreen->unk80.vram);
+    VramFree(modeScreen->unkB0.vram);
+    VramFree(modeScreen->unkE0.vram);
+    VramFree(modeScreen->infoText.vram);
 }

@@ -1,7 +1,6 @@
 #include "global.h"
 #include "multiplayer_team_play.h"
 #include "save.h"
-#include "constants/text.h"
 #include "main.h"
 #include "task.h"
 #include "sprite.h"
@@ -9,10 +8,13 @@
 #include "multiplayer_multipak_connection.h"
 #include "game.h"
 #include "m4a.h"
-#include "constants/songs.h"
 #include "flags.h"
 #include "course_select.h"
 #include "trig.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct MultiplayerTeamPlayScreen {
     struct UNK_0808B3FC_UNK240 unk0[4];
@@ -44,10 +46,10 @@ static const u8 gUnknown_080D92B8[] = { 40, 174 };
 static const u8 gUnknown_080D92BA[] = { 80, 159 };
 
 static const struct UNK_080E0D64 gUnknown_080D92BC[] = {
-    TextElementAlt4(5, 8, 1076),
-    TextElementAlt4(6, 8, 1076),
-    TextElementAlt4(7, 8, 1076),
-    TextElementAlt4(8, 8, 1076),
+    TextElementAlt4(5, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
+    TextElementAlt4(6, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
+    TextElementAlt4(7, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
+    TextElementAlt4(8, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
 };
 
 static const struct UNK_080E0D64 gUnknown_080D92DC[] = {
@@ -141,19 +143,19 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     for (i = 0, vram = OBJ_VRAM0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         element = &teamPlayScreen->unk0[i];
-        element->unk16 = 0;
-        element->unk18 = 0;
-        element->unk4 = (void *)vram;
-        vram += gUnknown_080D92BC[i].unk0 * TILE_SIZE_4BPP;
+        element->x = 0;
+        element->y = 0;
+        element->vram = (void *)vram;
+        vram += gUnknown_080D92BC[i].numTiles * TILE_SIZE_4BPP;
         element->unk1A = 0x100;
         element->unk8 = 0;
-        element->unkA = gUnknown_080D92BC[i].unk4;
-        element->unk20 = gUnknown_080D92BC[i].unk6;
+        element->anim = gUnknown_080D92BC[i].anim;
+        element->variant = gUnknown_080D92BC[i].variant;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         element->unk10 = 0x1000;
         sub_8004558(element);
@@ -161,36 +163,37 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     for (i = 0; i < 5; i++) {
         element = &teamPlayScreen->unkC0[i];
-        element->unk16 = 0;
-        element->unk18 = 0;
-        element->unk4 = (void *)vram;
-        vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk0 * TILE_SIZE_4BPP;
+        element->x = 0;
+        element->y = 0;
+        element->vram = (void *)vram;
+        vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles
+            * TILE_SIZE_4BPP;
         element->unk1A = 0xC0;
         element->unk8 = 0;
-        element->unkA = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk4;
-        element->unk20 = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].unk6;
+        element->anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
+        element->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         element->unk10 = 0;
         sub_8004558(element);
     }
     element = &teamPlayScreen->unk1B0;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = (void *)vram;
+    element->x = 0;
+    element->y = 0;
+    element->vram = (void *)vram;
     element->unk1A = 0xC0;
     element->unk8 = 0;
-    element->unkA = 0x434;
-    element->unk20 = 9;
+    element->anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
+    element->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
 
@@ -434,33 +437,33 @@ static void sub_805CC34(void)
     sub_805D644(teamPlayScreen);
 
     element = &teamPlayScreen->unkC0[0];
-    element->unk16 = 0x78;
-    element->unk18 = 0x1C;
+    element->x = (DISPLAY_WIDTH/2);
+    element->y = 28;
     sub_80051E8(element);
 
     element = &teamPlayScreen->unkC0[2];
-    element->unk16 = 0x46;
-    element->unk18 = 0x34;
+    element->x = 70;
+    element->y = 52;
     if (teamPlayScreen->unk316 != 0) {
-        element->unk25 = 0;
+        element->focused = 0;
     } else {
-        element->unk25 = 0xFF;
+        element->focused = 0xFF;
     }
     sub_80051E8(element);
 
     element = &teamPlayScreen->unkC0[3];
-    element->unk16 = 0xAA;
-    element->unk18 = 0x34;
+    element->x = 0xAA;
+    element->y = 0x34;
     if (teamPlayScreen->unk316 != 0) {
-        element->unk25 = 0;
+        element->focused = 0;
     } else {
-        element->unk25 = 1;
+        element->focused = 1;
     }
     sub_80051E8(element);
 
     element = &teamPlayScreen->unkC0[4];
-    element->unk16 = 0x78;
-    element->unk18 = 0x34;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = 52;
     sub_80051E8(element);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
@@ -525,8 +528,8 @@ static void sub_805D1F8(void)
     MultiPakHeartbeat();
 
     element = &teamPlayScreen->unkC0[1];
-    element->unk16 = 0x78;
-    element->unk18 = 0x1C;
+    element->x = (DISPLAY_WIDTH/2);
+    element->y = 28;
     sub_80051E8(element);
 
     for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
@@ -540,13 +543,13 @@ static void sub_805D1F8(void)
         if (packet->pat0.unk0 == 0x4040 || packet->pat0.unk0 == 0x4041) {
             if (packet->pat0.unk0 != 0x4041) {
                 element = &teamPlayScreen->unk0[i];
-                element->unk18 = (i * 0x18) + 0x40;
-                element->unk16 = gUnknown_080D92B8[packet->pat0.unk2];
+                element->y = (i * 24) + 64;
+                element->x = gUnknown_080D92B8[packet->pat0.unk2];
                 sub_80051E8(element);
 
                 element = &teamPlayScreen->unk1B0;
-                element->unk18 = (i * 0x18) + 0x40;
-                element->unk16 = gUnknown_080D92BA[packet->pat0.unk2];
+                element->y = (i * 24) + 64;
+                element->x = gUnknown_080D92BA[packet->pat0.unk2];
 
                 if (packet->pat0.unk2 == 0) {
                     element->unk10 &= ~0x400;
@@ -561,7 +564,7 @@ static void sub_805D1F8(void)
                 s16 a;
                 element = &teamPlayScreen->unk0[i];
                 sub_80051E8(element);
-                a = element->unk16;
+                a = element->x;
 
                 if (a == gUnknown_080D92B8[0]) {
                     pos[0]++;
@@ -648,8 +651,8 @@ static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
     for (i = 0; i < 4; i++) {
         if (GetBit(gMultiplayerConnections, i)) {
             element = &teamPlayScreen->unk0[i];
-            element->unk16 = gUnknown_080D92B8[i & 1];
-            element->unk18 = i * 0x18 + 0x40;
+            element->x = gUnknown_080D92B8[i & 1];
+            element->y = i * 0x18 + 0x40;
             sub_80051E8(element);
         }
     }

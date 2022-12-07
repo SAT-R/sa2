@@ -7,10 +7,12 @@
 #include "time.h"
 #include "malloc_vram.h"
 #include "m4a.h"
-#include "constants/songs.h"
 #include "trig.h"
 #include "task.h"
 #include "time_attack_lobby.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
 
 struct TimeAttackResultsCutScene {
     struct UNK_802D4CC_UNK270 unk0;
@@ -91,29 +93,29 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
 
     for (i = 0; i < 7; i++) {
         element = &resultsCutScene->unk178[i];
-        element->unk16 = i * 0xE + 0x48;
-        element->unk18 = 0x58;
-        element->unk4 = VramMalloc(4);
-        element->unkA = 0x417;
-        element->unk20 = 0;
+        element->x = i * 14 + 72;
+        element->y = (DISPLAY_HEIGHT/2) + 8;
+        element->vram = VramMalloc(4);
+        element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
+        element->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         element->unk10 = 0;
     }
 
-    resultsCutScene->unk178[0].unk20 += resultsCutScene->unk171;
-    resultsCutScene->unk178[1].unk20 = DELIMINATOR_DIGIT;
-    resultsCutScene->unk178[2].unk20 += resultsCutScene->unk172;
-    resultsCutScene->unk178[3].unk20 += resultsCutScene->unk173;
-    resultsCutScene->unk178[4].unk20 = DELIMINATOR_DIGIT;
-    resultsCutScene->unk178[5].unk20 += resultsCutScene->unk174;
-    resultsCutScene->unk178[6].unk20 += resultsCutScene->unk175;
+    resultsCutScene->unk178[0].variant += resultsCutScene->unk171;
+    resultsCutScene->unk178[1].variant = DELIMINATOR_DIGIT;
+    resultsCutScene->unk178[2].variant += resultsCutScene->unk172;
+    resultsCutScene->unk178[3].variant += resultsCutScene->unk173;
+    resultsCutScene->unk178[4].variant = DELIMINATOR_DIGIT;
+    resultsCutScene->unk178[5].variant += resultsCutScene->unk174;
+    resultsCutScene->unk178[6].variant += resultsCutScene->unk175;
 
     for (i = 0; i < 7; i++) {
         sub_8004558(&resultsCutScene->unk178[i]);
@@ -122,35 +124,35 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     resultsCutScene->unk2D8 = sub_80899B8(finishTime);
 
     element = &resultsCutScene->unk12C;
-    element->unk16 = 0x100;
-    element->unk18 = 0x50;
-    element->unk4 = VramMalloc(4);
-    element->unkA = 0x460;
-    element->unk20 = 0;
+    element->x = 256;
+    element->y = (DISPLAY_HEIGHT/2);
+    element->vram = VramMalloc(4);
+    element->anim = SA2_ANIM_TA_WHITE_BAR;
+    element->variant = 0;
     element->unk1A = 0x140;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &resultsCutScene->unkC[0];
-    element->unk16 = 0x100;
-    element->unk18 = 0x29;
-    element->unk4 = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
-    element->unkA = gUnknown_080D713C[gSelectedCharacter][1];
-    element->unk20 = gUnknown_080D713C[gSelectedCharacter][2];
+    element->x = 256;
+    element->y = 41;
+    element->vram = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
+    element->anim = gUnknown_080D713C[gSelectedCharacter][1];
+    element->variant = gUnknown_080D713C[gSelectedCharacter][2];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -158,18 +160,18 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     isBossLevel = (gCurrentLevel & 3) >> 1;
 
     element = &resultsCutScene->unkC[1];
-    element->unk16 = 0x100;
-    element->unk18 = 0x31;
-    element->unk4 = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
-    element->unkA = gUnknown_080D715A[isBossLevel][1];
-    element->unk20 = gUnknown_080D715A[isBossLevel][2];
+    element->x = 256;
+    element->y = 49;
+    element->vram = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
+    element->anim = gUnknown_080D715A[isBossLevel][1];
+    element->variant = gUnknown_080D715A[isBossLevel][2];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -181,48 +183,48 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         level = gCurrentLevel & 1;
     }
     element = &resultsCutScene->unkC[2];
-    element->unk16 = 0x100;
-    element->unk18 = 0x31;
-    element->unk4 = VramMalloc(gUnknown_080D7178[level][0]);
-    element->unkA = gUnknown_080D7178[level][1];
-    element->unk20 = gUnknown_080D7178[level][2];
+    element->x = 256;
+    element->y = 49;
+    element->vram = VramMalloc(gUnknown_080D7178[level][0]);
+    element->anim = gUnknown_080D7178[level][1];
+    element->variant = gUnknown_080D7178[level][2];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &resultsCutScene->unk9C[0];
-    element->unk16 = 0x28;
-    element->unk18 = 0x5A;
-    element->unk4 = VramMalloc(8);
-    element->unkA = 0x430;
-    element->unk20 = 1;
+    element->x = 40;
+    element->y = 90;
+    element->vram = VramMalloc(8);
+    element->anim = SA2_ANIM_TA_RECORD;
+    element->variant = SA2_ANIM_VARIANT_TA_TIME;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &resultsCutScene->unk9C[1];
-    element->unk16 = 0x78;
-    element->unk18 = 0x78;
-    element->unk4 = VramMalloc(0x10);
-    element->unkA = 0x417;
+    element->x = (DISPLAY_WIDTH/2);
+    element->y = (DISPLAY_HEIGHT * (3./4.));
+    element->vram = VramMalloc(16);
+    element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
     if (resultsCutScene->unk2D8 != 0) {
-        element->unk20 = resultsCutScene->unk2D8 + 13;
+        element->variant = resultsCutScene->unk2D8 + SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_BRONZE;
     } else {
-        element->unk20 = 14;
+        element->variant = SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD;
     }
     element->unk1A = 0x100;
     element->unk8 = 0;
@@ -230,30 +232,30 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
 
     resultsCutScene->unk2C8.unk2 = 0;
     resultsCutScene->unk2C8.unk4 = 0x100;
-    resultsCutScene->unk2C8.unk6[0] = 0x78;
-    resultsCutScene->unk2C8.unk6[1] = 0x78;
+    resultsCutScene->unk2C8.unk6[0] = 120;
+    resultsCutScene->unk2C8.unk6[1] = 120;
     resultsCutScene->unk2C8.unk0 = 0;
 
     element = &resultsCutScene->unk9C[2];
-    element->unk16 = 0x78;
-    element->unk18 = 0x94;
-    element->unk4 = VramMalloc(0x16);
-    element->unkA = 0x430;
-    element->unk20 = 0;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT - 12);
+    element->vram = VramMalloc(0x16);
+    element->anim = SA2_ANIM_TA_RECORD;
+    element->variant = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -301,13 +303,13 @@ void sub_80897E8(void)
         }
 
         for (i = 0; i < 8; i++) {
-            element->unk16 = temp + i * 0x20;
+            element->x = temp + i * 0x20;
             sub_80051E8(element);
         }
     } else {
         element = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
-            element->unk16 = i << 5;
+            element->x = i << 5; // TODO: Does (i * 32) match?
             sub_80051E8(element);
         }
     }
@@ -329,7 +331,7 @@ void sub_80897E8(void)
     if (unk168 > 0x59) {
         element = &resultsCutScene->unk9C[0];
         if ((unk168 - 0x5A) < 0xB) {
-            element->unk16 = (100 - unk168) * 0x10 + 0x28;
+            element->x = (100 - unk168) * 16 + 40;
         }
         sub_80051E8(element);
     }
@@ -372,7 +374,7 @@ void sub_80897E8(void)
 
             element = &resultsCutScene->unk178[i];
             if (index < 0x14U) {
-                element->unk18 += gUnknown_080E05C4[index];
+                element->y += gUnknown_080E05C4[index];
             }
 
             sub_80051E8(element);
@@ -452,18 +454,18 @@ void sub_8089BB0(struct Task *t)
 {
     u32 i;
     struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(t);
-    VramFree(resultsCutScene->unk12C.unk4);
+    VramFree(resultsCutScene->unk12C.vram);
 
     for (i = 0; i < 3; i++) {
-        VramFree(resultsCutScene->unkC[i].unk4);
+        VramFree(resultsCutScene->unkC[i].vram);
     }
 
     for (i = 0; i < 3; i++) {
-        VramFree(resultsCutScene->unk9C[i].unk4);
+        VramFree(resultsCutScene->unk9C[i].vram);
     }
 
     for (i = 0; i < 7; i++) {
-        VramFree(resultsCutScene->unk178[i].unk4);
+        VramFree(resultsCutScene->unk178[i].vram);
     }
 
     gUnknown_03005424 &= ~0x200;
