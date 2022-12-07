@@ -14,9 +14,9 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_InclineRamp;
 
-extern void sub_80218E4(struct SomeStruct_59E0 *);
-extern void sub_8023260(struct SomeStruct_59E0 *);
-extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
+extern void sub_80218E4(Player *);
+extern void sub_8023260(Player *);
+extern void sub_8023B5C(Player *, s8);
 
 static void Task_Interactable_InclineRamp(void)
 {
@@ -30,27 +30,27 @@ static void Task_Interactable_InclineRamp(void)
     // @BUG - Same as inside initSprite func (regionX used instead of regionY)
     screenY = SpriteGetScreenPos(ia->y, ramp->base.regionX);
 
-    moveState = gPlayer.unk20;
-    if (!(moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.unk8))
-        && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.unk8))
-        && (screenY <= Q_24_8_TO_INT(gPlayer.unkC))
-        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.unkC))
+    moveState = gPlayer.moveState;
+    if (!(moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
+        && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
+        && (screenY <= Q_24_8_TO_INT(gPlayer.y))
+        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))
         && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == ia->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.spriteY) == 0) {
-            if (gPlayer.unk10 > Q_24_8(4)) {
+            if (gPlayer.speedAirX > Q_24_8(4)) {
                 moveState &= ~MOVESTATE_8;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
                 moveState &= ~MOVESTATE_4;
-                gPlayer.unk20 = moveState;
+                gPlayer.moveState = moveState;
 
                 sub_8023B5C(&gPlayer, 14);
                 gPlayer.unk16 = 6;
                 gPlayer.unk17 = 14;
-                gPlayer.unk12 = Q_8_8(-3);
-                gPlayer.unk14 = Q_8_8(17);
-                gPlayer.unk10 += Q_8_8(17);
+                gPlayer.speedAirY = Q_8_8(-3);
+                gPlayer.speedGroundX = Q_8_8(17);
+                gPlayer.speedAirX += Q_8_8(17);
 
                 sub_8023260(&gPlayer);
                 sub_80218E4(&gPlayer);
@@ -64,19 +64,19 @@ static void Task_Interactable_InclineRamp(void)
             }
         } else {
             // _0805DC20
-            if (gPlayer.unk10 < Q_8_8(-4)) {
+            if (gPlayer.speedAirX < Q_8_8(-4)) {
                 moveState &= ~MOVESTATE_8;
                 moveState |= MOVESTATE_IN_AIR;
                 moveState &= ~MOVESTATE_100;
                 moveState &= ~MOVESTATE_4;
-                gPlayer.unk20 = moveState;
+                gPlayer.moveState = moveState;
 
                 sub_8023B5C(&gPlayer, 14);
                 gPlayer.unk16 = 6;
                 gPlayer.unk17 = 14;
-                gPlayer.unk12 = Q_8_8(-3);
-                gPlayer.unk14 = Q_8_8(-17);
-                gPlayer.unk10 += Q_8_8(-17);
+                gPlayer.speedAirY = Q_8_8(-3);
+                gPlayer.speedGroundX = Q_8_8(-17);
+                gPlayer.speedAirX += Q_8_8(-17);
 
                 sub_8023260(&gPlayer);
                 sub_80218E4(&gPlayer);
@@ -92,8 +92,8 @@ static void Task_Interactable_InclineRamp(void)
     }
     // _8085DC8A
 
-    screenX -= gCamera.unk0;
-    screenY -= gCamera.unk4;
+    screenX -= gCamera.x;
+    screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, screenY)) {
         ia->x = ramp->base.spriteX;

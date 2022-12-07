@@ -38,11 +38,10 @@ static void initSprite_Interactable_Spring(u8, Interactable *, u16, u16, u8);
 static void Task_Interactable_Spring(void);
 static void sub_800E3D0(void);
 static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
-                          Sprite_Spring *spring, struct SomeStruct_59E0 *player);
+                          Sprite_Spring *spring, Player *player);
 static void TaskDestructor_Interactable_Spring(struct Task *t);
 
-extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
-                          struct SomeStruct_59E0 *);
+extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16, Player *);
 
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
     {
@@ -109,8 +108,8 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
     spring->base.spriteX = ia->x;
     spring->base.spriteY = spriteY;
 
-    displayed->unk16 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
     SET_SPRITE_INITIALIZED(ia);
 
     displayed->unk1A = 0x480;
@@ -120,7 +119,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
 
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->unk25 = 0;
+    displayed->focused = 0;
     displayed->unk28 = -1;
     displayed->unk10 = 0x2200;
 
@@ -132,13 +131,13 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
 
     if (((s16)springKind != SPRING_KIND_MUSIC_PLANT) || ((springType / 2) != 0)) {
         u16 tileCount = sSpringAnimationData[springKind][springType][2];
-        displayed->unk4 = VramMalloc(tileCount);
+        displayed->vram = VramMalloc(tileCount);
     } else {
-        displayed->unk4 = (void *)(OBJ_VRAM0 + 0x2980);
+        displayed->vram = (void *)(OBJ_VRAM0 + 0x2980);
     }
 
-    displayed->unkA = sSpringAnimationData[springKind][springType][0];
-    displayed->unk20 = sSpringAnimationData[springKind][springType][1];
+    displayed->anim = sSpringAnimationData[springKind][springType][0];
+    displayed->variant = sSpringAnimationData[springKind][springType][1];
 
     displayed->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
@@ -155,13 +154,13 @@ static void Task_Interactable_Spring(void)
 
     if (sub_800E490(displayed, ia, spring, &gPlayer) != 0) {
         gCurTask->main = sub_800E3D0;
-        displayed->unk20++;
+        displayed->variant++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
-            displayed->unk4 = (void *)(OBJ_VRAM0 + 0x2B00);
+            displayed->vram = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -177,15 +176,15 @@ static void sub_800E3D0(void)
 
     sub_800E490(displayed, ia, spring, &gPlayer);
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         if (sub_8004558(displayed) == 0) {
-            displayed->unk20--;
+            displayed->variant--;
 
             if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->unk3D / 2) == 0) {
-                displayed->unk4 = (void *)(OBJ_VRAM0 + 0x2980);
+                displayed->vram = (void *)(OBJ_VRAM0 + 0x2980);
             }
 
             sub_8004558(displayed);
@@ -196,16 +195,16 @@ static void sub_800E3D0(void)
     }
 }
 
-static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
-                          Sprite_Spring *spring, struct SomeStruct_59E0 *player)
+static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *displayed, Interactable *ia,
+                          Sprite_Spring *spring, Player *player)
 {
     s16 xPos = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     s16 yPos = SpriteGetScreenPos(ia->y, spring->base.regionY);
-    p0->unk16 = xPos - gCamera.unk0;
-    p0->unk18 = yPos - gCamera.unk4;
+    displayed->x = xPos - gCamera.x;
+    displayed->y = yPos - gCamera.y;
 
-    if (((player->unk20 & MOVESTATE_400000) == 0)
-        && sub_800CDBC(p0, xPos, yPos, player) != 0) {
+    if (((player->moveState & MOVESTATE_400000) == 0)
+        && sub_800CDBC(displayed, xPos, yPos, player) != 0) {
 
         player->unk6D = gUnknown_080D53D0[spring->unk3D];
         player->unk6E = spring->unk3E;
@@ -227,7 +226,7 @@ static void TaskDestructor_Interactable_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TaskGetStructPtr(t);
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->unk3D / 2 != 0)) {
-        VramFree(spring->displayed.unk4);
+        VramFree(spring->displayed.vram);
     }
 }
 

@@ -8,6 +8,8 @@
 #include "trig.h"
 #include "game.h"
 #include "m4a.h"
+
+#include "constants/animations.h"
 #include "constants/songs.h"
 
 #define MIN_BOUNCE_SPEED 1536
@@ -35,10 +37,10 @@ static void HandleBoost1(void);
 void HandleBoost2(void);
 static void HandleJumpControls(void);
 
-static const struct UNK_8C87920 gUnknown_080DF794[3] = {
-    { 2, 890 },
-    { 1, 890 },
-    { 0, 890 },
+static const struct UNK_8C87920_SWAPPED gUnknown_080DF794[3] = {
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_RED, SA2_ANIM_SP_STAGE_ARROW },
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_YELLOW, SA2_ANIM_SP_STAGE_ARROW },
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_GREEN, SA2_ANIM_SP_STAGE_ARROW },
 };
 
 typedef void (*PlayerStatePhysicsHandler)(void);
@@ -95,8 +97,8 @@ static void Task_PhysicsMain(void)
         screenX = Q_16_16_TO_INT(screenX) + 112;
         screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120;
 
-        player->roboArrow.unk16 = screenX;
-        player->roboArrow.unk18 = screenY;
+        player->roboArrow.x = screenX;
+        player->roboArrow.y = screenY;
 
         if (arrowAngle > 256 && arrowAngle < 768) {
             player->roboArrow.unk1A = 0;
@@ -567,8 +569,8 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
         }
     }
 
-    player->roboArrow.unk20 = gUnknown_080DF794[temp2].unk0;
-    player->roboArrow.unkA = gUnknown_080DF794[temp2].unk2;
+    player->roboArrow.variant = gUnknown_080DF794[temp2].variant;
+    player->roboArrow.anim = gUnknown_080DF794[temp2].anim;
 
     temp3 = temp1;
     f_dX >>= temp3;

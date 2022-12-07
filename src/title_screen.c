@@ -1,7 +1,5 @@
 #include "title_screen.h"
 #include "main.h"
-#include "constants/songs.h"
-#include "constants/text.h"
 #include "flags.h"
 #include "global.h"
 #include "main.h"
@@ -26,6 +24,10 @@
 #include "character_select.h"
 #include "malloc_vram.h"
 #include "time_attack_mode_select.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -229,7 +231,7 @@ static const struct UNK_080E0D64 sMenuTiles[] = {
     [MenuTextIdx(LANG_ITALIAN, MENU_ITEM_TINY_CHAO_GARDEN)] = { 0x26, 0x36E, 0x4 },
 
     // TODO: What's this text
-    { 0x28, 0x364, 0x7 },
+    { 0x28, SA2_ANIM_SOME_JAPANESE_TXT, SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 },
 };
 
 static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
@@ -551,37 +553,39 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     // TODO: make these into macros maybe?
     config = &titleScreen->unkC0;
 
-    config->unk4 = objAddr;
+    config->vram = objAddr;
     objAddr += (90 * TILE_SIZE_4BPP);
 
-    config->unkA = 0x33e;
-    config->unk20 = 1;
+    // Copyright screen
+    config->anim = SA2_ANIM_TITLE_COPYRIGHT;
+    config->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
     config->unk21 = 0xFF;
-    config->unk16 = 0;
-    config->unk18 = 0x82;
+    config->x = 0;
+    config->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     config->unk8 = 0;
     config->unk1A = 0x100;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->unk25 = 0;
+    config->focused = 0;
     config->unk10 = 0;
     sub_8004558(config);
 
     config = &titleScreen->unkF0;
 
-    config->unk4 = objAddr;
-    objAddr += (gPressStartTiles[language].unk0 * TILE_SIZE_4BPP);
+    config->vram = objAddr;
+    objAddr += (gPressStartTiles[language].numTiles * TILE_SIZE_4BPP);
 
-    config->unkA = gPressStartTiles[language].unk4;
-    config->unk20 = gPressStartTiles[language].unk6;
+    // "PRESS START" text
+    config->anim = gPressStartTiles[language].anim;
+    config->variant = gPressStartTiles[language].variant;
     config->unk21 = 0xFF;
-    config->unk16 = 0x78;
-    config->unk18 = 0x6E;
+    config->x = (DISPLAY_WIDTH / 2);
+    config->y = (DISPLAY_HEIGHT / 2) + 30;
     config->unk8 = 0;
     config->unk1A = 0xC0;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->unk25 = 0;
+    config->focused = 0;
     config->unk10 = 0;
     sub_8004558(config);
 
@@ -589,49 +593,50 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
          menuItemId++) {
         config = &titleScreen->menuItems[menuItemId];
 
-        config->unk4 = objAddr;
-        objAddr += (sMenuTiles[MenuTextIdx(language, menuItemId)].unk0 * TILE_SIZE_4BPP);
+        config->vram = objAddr;
+        objAddr
+            += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
 
-        config->unkA = sMenuTiles[MenuTextIdx(language, menuItemId)].unk4;
-        config->unk20 = sMenuTiles[MenuTextIdx(language, menuItemId)].unk6;
+        config->anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
+        config->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
         config->unk21 = 0xFF;
-        config->unk16 = 0x78;
+        config->x = (DISPLAY_WIDTH / 2);
 
         // Generate menu item y positions
         // position * lineHeight + topPadding
         if (menuItemId < SinglePlayerMenuItem(0)) {
             // PlayModeMenu positions
-            config->unk18 = (PlayModeMenuIndex(menuItemId) * 0x12) + 0x60;
+            config->y = (PlayModeMenuIndex(menuItemId) * 0x12) + 96;
         } else if (gLoadedSaveGame->unk14) {
             // SinglePlayerMenu positions if we have the chao garden available
-            config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 0x60;
+            config->y = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 96;
         } else {
             // SinglePlayerMenu positions if we don't have the chao garden
-            config->unk18 = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 0x64;
+            config->y = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 100;
         }
 
         config->unk8 = 0;
         config->unk1A = 0xc0;
         config->unk1C = 0;
         config->unk22 = 0x10;
-        config->unk25 = 0;
+        config->focused = 0;
         config->unk10 = 0;
         sub_8004558(config);
     };
 
     config = &titleScreen->unk240;
-    config->unk4 = objAddr;
+    config->vram = objAddr;
     // Uses last value for this one
-    config->unkA = sMenuTiles[42].unk4;
-    config->unk20 = sMenuTiles[42].unk6;
+    config->anim = sMenuTiles[42].anim;
+    config->variant = sMenuTiles[42].variant;
     config->unk21 = 0xFF;
-    config->unk16 = 0x78;
-    config->unk18 = 0x50;
+    config->x = (DISPLAY_WIDTH / 2);
+    config->y = (DISPLAY_HEIGHT / 2);
     config->unk8 = 0;
     config->unk1A = 0x780;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->unk25 = 0;
+    config->focused = 0;
     config->unk10 = 0x3000;
     sub_8004558(config);
 }
@@ -1069,7 +1074,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen *titleScreen)
     // Highlight the menu items from cursor position
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &titleScreen->menuItems[menuIndex ^ 1];
-        menuItem->unk25 = (menuIndex ^ titleScreen->menuCursor);
+        menuItem->focused = (menuIndex ^ titleScreen->menuCursor);
         sub_80051E8(menuItem);
     };
 }
@@ -1100,7 +1105,7 @@ static void Task_PlayModeMenuMain(void)
         m4aSongNumStart(SE_SELECT);
 
         if (titleScreen->menuCursor == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
-            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].unk16 = 0x78;
+            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = (DISPLAY_WIDTH / 2);
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER],
                                      TRANSITION_OUT);
 
@@ -1183,9 +1188,9 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen *titleScr
     for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
         menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)];
         if (titleScreen->menuCursor == menuIndex) {
-            menuItem->unk25 = 1;
+            menuItem->focused = 1;
         } else {
-            menuItem->unk25 = 0;
+            menuItem->focused = 0;
         }
         sub_80051E8(menuItem);
     }
@@ -1312,7 +1317,7 @@ static void Task_HandleTitleScreenExit(void)
             // obvious
             for (i = 0; i < 1; i++) {
                 menuItem = &titleScreen->menuItems[i ^ 1];
-                menuItem->unk25 = i ^ 1;
+                menuItem->focused = i ^ 1;
                 if ((++titleScreen->animFrame & 7) > 3) {
                     sub_80051E8(menuItem);
                 }
@@ -1321,7 +1326,7 @@ static void Task_HandleTitleScreenExit(void)
         } else {
             menuItem
                 = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
-            menuItem->unk25 = 1;
+            menuItem->focused = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
                 sub_80051E8(menuItem);
             }
@@ -1540,29 +1545,29 @@ UNUSED static void sub_808CDB0(struct TitleScreen *titleScreen, s8 index)
     titleScreen->unkF44[6] = pal[6];
 }
 
-static void CreateBirdAnimation(u16 p1, s16 p2, u16 startStep, u16 p4, u16 p5)
+static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
 {
     struct Task *t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation *animation = TaskGetStructPtr(t);
 
-    animation->sprite.unk4 = VramMalloc(3);
-    animation->sprite.unkA = 0x33F;
-    animation->sprite.unk20 = 0;
+    animation->sprite.vram = VramMalloc(3);
+    animation->sprite.anim = SA2_ANIM_TITLE_SEAGULL;
+    animation->sprite.variant = 0;
     animation->sprite.unk21 = 0xFF;
-    animation->sprite.unk16 = p1;
-    animation->sprite.unk18 = p2;
+    animation->sprite.x = x;
+    animation->sprite.y = y;
     animation->sprite.unk8 = 0;
     animation->sprite.unk1A = 0xC0;
     animation->sprite.unk1C = 0;
     animation->sprite.unk22 = 0x10;
-    animation->sprite.unk25 = 0;
+    animation->sprite.focused = 0;
     animation->sprite.unk10 = 0;
     sub_8004558(&animation->sprite);
 
     animation->unk30 = gBgScrollRegs[1][0];
     animation->unk32 = gBgScrollRegs[1][1];
-    animation->unk38 = p1 * 128;
-    animation->unk3A = p2 * 128;
+    animation->unk38 = x * 128;
+    animation->unk3A = y * 128;
     animation->unk34 = p4;
     animation->unk36 = p5;
     animation->unk3C = 0;
@@ -1593,23 +1598,23 @@ static void Task_BirdAnim(void)
     } else {
         temp = (animation->unk38) >> 7;
     }
-    sprite->unk16 = (temp << 0x10 >> 0x10) + animation->unk30 - gBgScrollRegs[1][0];
+    sprite->x = (temp << 0x10 >> 0x10) + animation->unk30 - gBgScrollRegs[1][0];
 
     if (animation->unk3A & 0x8000) {
         temp = animation->unk3A >> 7 | 0xE000;
     } else {
         temp = animation->unk3A >> 7;
     }
-    sprite->unk18 = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
+    sprite->y = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
 
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
-    if ((u16)(sprite->unk16 + 64) > 368) {
+    if ((u16)(sprite->x + 64) > 368) {
         BirdAnimEnd();
     }
 
-    if ((u16)(sprite->unk18 + 64) > 308) {
+    if ((u16)(sprite->y + 64) > 308) {
         BirdAnimEnd();
     }
 
@@ -1626,13 +1631,13 @@ static void Task_MenuItemTransitionOutAnim(void)
     struct MenuItemTransition *transition = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *sprite = transition->sprite;
 
-    sprite->unk16 -= sMenuItemTransitionKeyFrames[transition->animFrame];
+    sprite->x -= sMenuItemTransitionKeyFrames[transition->animFrame];
     gBldRegs.bldAlpha = FadeOutBlend(transition->animFrame * 2);
 
     sub_80051E8(sprite);
 
     if (++transition->animFrame > 8) {
-        sprite->unk16 = transition->unk12;
+        sprite->x = transition->unk12;
 
         sprite->unk10 &= ~0x80;
         TaskDestroy(gCurTask);
@@ -1650,13 +1655,13 @@ static void Task_MenuItemTransitionInAnim(void)
         sum += sMenuItemTransitionKeyFrames[i];
     };
 
-    sprite->unk16 = sum + transition->unk12;
+    sprite->x = sum + transition->unk12;
 
     gBldRegs.bldAlpha = FadeInBlend(transition->animFrame * 2);
     sub_80051E8(sprite);
 
     if (++transition->animFrame > 8) {
-        sprite->unk16 = transition->unk12;
+        sprite->x = transition->unk12;
 
         sprite->unk10 &= ~0x80;
         TaskDestroy(gCurTask);
@@ -1677,10 +1682,10 @@ static void CreateLensFlareAnimation(void)
         sprite = &lensFlare->sprites[i];
         config180 = &lensFlare->unk180[i];
 
-        sprite->unk4 = VramMalloc(0x40);
+        sprite->vram = VramMalloc(0x40);
 
-        sprite->unkA = 0x340;
-        sprite->unk20 = sLensFlareSizes[i];
+        sprite->anim = SA2_ANIM_TITLE_LENS_FLARE;
+        sprite->variant = sLensFlareSizes[i];
         sprite->unk21 = 0xFF;
 
         lensFlare->posSequenceX[i] = posX = sLensFlareStartPositions[i][0];
@@ -1690,7 +1695,7 @@ static void CreateLensFlareAnimation(void)
         sprite->unk1A = (8 - i) * 0x40;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
-        sprite->unk25 = 0;
+        sprite->focused = 0;
         sprite->unk10 = i | 96;
 
         config180->unk0 = 0;
@@ -1939,7 +1944,7 @@ static void ShowGameLogo(struct TitleScreen *_)
 static void BirdAnimEnd(void)
 {
     struct BirdAnimation *animation = TaskGetStructPtr(gCurTask);
-    VramFree(animation->sprite.unk4);
+    VramFree(animation->sprite.vram);
     TaskDestroy(gCurTask);
 }
 
@@ -1961,7 +1966,7 @@ static void CreateMenuItemTransition(struct UNK_0808B3FC_UNK240 *sprite, u8 type
 
     sprite->unk10 |= 0x80;
     transition->sprite = sprite;
-    transition->unk12 = sprite->unk16;
+    transition->unk12 = sprite->x;
     transition->animFrame = 0;
 }
 
@@ -1971,7 +1976,7 @@ static void LensFlareAnimEnd(void)
 
     u32 i;
     for (i = 0; i < 8; i++) {
-        VramFree(lensFlare->sprites[i].unk4);
+        VramFree(lensFlare->sprites[i].vram);
     }
 
     TaskDestroy(gCurTask);

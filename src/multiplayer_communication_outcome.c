@@ -9,11 +9,13 @@
 #include "title_screen.h"
 #include "multi_sio.h"
 #include "m4a.h"
-#include "constants/songs.h"
-#include "constants/text.h"
 #include "game.h"
 #include "flags.h"
 #include "character_select.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct CommunicationOutcomeScreen {
     struct Unk_03002400 unk0;
@@ -93,48 +95,48 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     outcomeScreen->unk206 = count;
 
     unk100 = &outcomeScreen->unk100;
-    unk100->unk16 = 0x78;
-    unk100->unk18 = 0x8C;
-    unk100->unk4 = (void *)OBJ_VRAM0;
+    unk100->x = (DISPLAY_WIDTH / 2);
+    unk100->y = DISPLAY_HEIGHT - 20;
+    unk100->vram = (void *)OBJ_VRAM0;
     unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
-    unk100->unkA = 0x432;
-    unk100->unk20 = outcome + 6;
+    unk100->anim = SA2_ANIM_MP_MSG;
+    unk100->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
     unk100->unk14 = 0;
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->unk25 = 0;
+    unk100->focused = 0;
     unk100->unk10 = 0x2000;
 
     unk100 = &outcomeScreen->unkD0;
-    unk100->unk16 = 0x78;
-    unk100->unk18 = 0x24;
-    unk100->unk4 = (void *)OBJ_VRAM0 + 0x2000;
+    unk100->x = (DISPLAY_WIDTH / 2);
+    unk100->y = 36;
+    unk100->vram = (void *)OBJ_VRAM0 + 0x2000;
     unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
-    unk100->unkA = gUnknown_080D9088[outcome];
-    unk100->unk20 = gUnknown_080D908C[outcome];
+    unk100->anim = gUnknown_080D9088[outcome];
+    unk100->variant = gUnknown_080D908C[outcome];
     unk100->unk14 = 0;
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->unk25 = 0;
+    unk100->focused = 0;
     unk100->unk10 = 0x2000;
 
     unk100 = &outcomeScreen->unkA0;
-    unk100->unk16 = 0x78;
-    unk100->unk18 = 0x78;
-    unk100->unk4 = (void *)OBJ_VRAM0 + 0x4000;
+    unk100->x = (DISPLAY_WIDTH / 2);
+    unk100->y = DISPLAY_HEIGHT - 40;
+    unk100->vram = (void *)OBJ_VRAM0 + 0x4000;
     unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;
-    unk100->unkA = gUnknown_080D9088[outcome];
-    unk100->unk20 = gUnknown_080D908C[outcome];
+    unk100->anim = gUnknown_080D9088[outcome];
+    unk100->variant = gUnknown_080D908C[outcome];
     unk100->unk14 = 0;
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->unk25 = 0;
+    unk100->focused = 0;
     unk100->unk10 = 0x2000;
 
     background = &outcomeScreen->unk0;
@@ -163,41 +165,41 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void sub_805BC40(void)
 {
-    struct UNK_0808B3FC_UNK240 *unkD0;
+    struct UNK_0808B3FC_UNK240 *element;
     struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
-    unkD0 = &outcomeScreen->unkA0;
-    sub_8004558(unkD0);
-    sub_80051E8(unkD0);
+    element = &outcomeScreen->unkA0;
+    sub_8004558(element);
+    sub_80051E8(element);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
         const struct UNK_080E0D64 *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
-        unkD0 = &outcomeScreen->unkD0;
+        element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
         offset = gLoadedSaveGame->unk6 + 7;
 
-        unkD0->unkA = unk9090[offset].unk4;
+        element->anim = unk9090[offset].anim;
         offset = gLoadedSaveGame->unk6 + 7;
-        unkD0->unk20 = unk9090[offset].unk6 + unk206 - 2;
-        unkD0->unk21 = 0xFF;
-        sub_8004558(unkD0);
-        sub_80051E8(unkD0);
+        element->variant = unk9090[offset].variant + unk206 - 2;
+        element->unk21 = 0xFF;
+        sub_8004558(element);
+        sub_80051E8(element);
     } else {
         const struct UNK_080E0D64 *unk9090;
-        unkD0 = &outcomeScreen->unkD0;
+        element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
 
-        unkD0->unkA = unk9090[gLoadedSaveGame->unk6].unk4;
-        unkD0->unk20 = unk9090[gLoadedSaveGame->unk6].unk6;
-        unkD0->unk21 = 0xFF;
-        sub_8004558(unkD0);
-        sub_80051E8(unkD0);
+        element->anim = unk9090[gLoadedSaveGame->unk6].anim;
+        element->variant = unk9090[gLoadedSaveGame->unk6].variant;
+        element->unk21 = 0xFF;
+        sub_8004558(element);
+        sub_80051E8(element);
     }
 
-    unkD0 = &outcomeScreen->unk100;
-    sub_8004558(unkD0);
-    sub_80051E8(unkD0);
+    element = &outcomeScreen->unk100;
+    sub_8004558(element);
+    sub_80051E8(element);
 
     if (outcomeScreen->unk200 != 0) {
         outcomeScreen->unk200--;

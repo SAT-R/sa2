@@ -226,7 +226,7 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
     }
 }
 
-void sub_8071380(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 a1, s16 a, u8 b,
+void sub_8071380(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 x, s16 y, u8 b,
                  const struct UNK_80DF670 *c4)
 {
     u16 *oam = &gOamBuffer[124].all.affineParam;
@@ -239,19 +239,19 @@ void sub_8071380(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 a1, s16 a,
         unk10 |= 0x800;
     }
 
-    element->unk4 = vram;
+    element->vram = vram;
     element->unk8 = 0;
-    element->unkA = c4->unk0;
+    element->anim = c4->anim;
     element->unk10 = unk10;
-    element->unk16 = a1;
-    element->unk18 = a;
+    element->x = x;
+    element->y = y;
     element->unk1A = b << 6;
     element->unk1C = 0;
     element->unk1E = 0xffff;
-    element->unk20 = c4->unk2;
+    element->variant = c4->variant;
     element->unk21 = 0xff;
     element->unk22 = c4->unk6;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     sub_8004558(element);
 
@@ -338,12 +338,12 @@ static void RenderGuardRobo(struct UNK_0808B3FC_UNK240 *element, s16 x, s16 y, u
         flags |= 0x800;
     }
 
-    element->unkA = spriteConfig->unk0;
+    element->anim = spriteConfig->anim;
     element->unk10 = flags;
-    element->unk16 = x;
-    element->unk18 = y;
+    element->x = x;
+    element->y = y;
     element->unk1A = b << 6;
-    element->unk20 = spriteConfig->unk2;
+    element->variant = spriteConfig->variant;
     element->unk22 = spriteConfig->unk6;
     sub_8004558(element);
 }

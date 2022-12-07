@@ -8,8 +8,6 @@
 #include "m4a.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "constants/songs.h"
-#include "constants/text.h"
 #include "flags.h"
 #include "trig.h"
 #include "multiplayer_multipak_connection.h"
@@ -20,6 +18,10 @@
 #include "title_screen.h"
 #include "time_attack.h"
 #include "time_attack_mode_select.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;
@@ -338,191 +340,194 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
         element = &characterScreen->carouselBlobs[i];
-        element->unk16 = 0;
-        element->unk18 = 0;
-        element->unk4 = VramMalloc(0x10);
-        element->unkA = 0x2E1;
-        element->unk20 = i;
+        element->x = 0;
+        element->y = 0;
+        element->vram = VramMalloc(0x10);
+        element->anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
+        element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + i;
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         element->unk10 = 0;
         sub_8004558(element);
     }
 
     element = &characterScreen->selectedCarouselBlob;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = VramMalloc(0x40);
-    element->unkA = 0x2E1;
-    element->unk20 = 5;
+    element->x = 0;
+    element->y = 0;
+    element->vram = VramMalloc(0x40);
+    element->anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
+    element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     element->unk1A = 0xC0;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->characterNameSubText;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = VramMalloc(0x24);
-    element->unkA = sCharacterNameSubTextAssets[characterScreen->initialSelection
+    element->x = 0;
+    element->y = 0;
+    element->vram = VramMalloc(0x24);
+    element->anim = sCharacterNameSubTextAssets[characterScreen->initialSelection
                                                 + (something * 6)][0];
-    element->unk20 = sCharacterNameSubTextAssets[characterScreen->initialSelection
-                                                 + (something * 6)][1];
+    element->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection
+                                                   + (something * 6)][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->characterTitleTextLeft;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = VramMalloc(0x40);
-    element->unkA = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
-    element->unk20 = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
+    element->x = 0;
+    element->y = 0;
+    element->vram = VramMalloc(0x40);
+    element->anim = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
+    element->variant
+        = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->characterTitleTextRight;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = VramMalloc(0x40);
-    element->unkA = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
-    element->unk20 = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
+    element->x = 0;
+    element->y = 0;
+    element->vram = VramMalloc(0x40);
+    element->anim = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
+    element->variant
+        = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->screenTitleText;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = VramMalloc(0x36);
-    element->unkA = sScreenTitleTextAssets[lang][0];
-    element->unk20 = sScreenTitleTextAssets[lang][1];
+    element->x = 0;
+    element->y = 0;
+    element->vram = VramMalloc(0x36);
+    element->anim = sScreenTitleTextAssets[lang][0];
+    element->variant = sScreenTitleTextAssets[lang][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->scrollUpArrow;
-    element->unk16 = 0x11;
-    element->unk18 = 0x12;
-    element->unk4 = VramMalloc(0x18);
-    element->unkA = 0x2e2;
-    element->unk20 = 0;
+    element->x = 17;
+    element->y = 18;
+    element->vram = VramMalloc(0x18);
+    element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+    element->variant = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->scrollDownArrow;
-    element->unk16 = 0x11;
-    element->unk18 = 0x8E;
-    element->unk4 = VramMalloc(0x18);
-    element->unkA = 0x2e2;
-    element->unk20 = 0;
+    element->x = 17;
+    element->y = 142;
+    element->vram = VramMalloc(0x18);
+    element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+    element->variant = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x800;
     sub_8004558(element);
 
     element = &characterScreen->characterSecondarySprite;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = (void *)(OBJ_VRAM0 + 0x400);
-    element->unkA = 0x2e0;
-    element->unk20 = 10;
+    element->x = 0;
+    element->y = 0;
+    element->vram = (void *)(OBJ_VRAM0 + 0x400);
+    element->anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+    element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+        SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->characterUnavailableIndicator;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = (void *)(OBJ_VRAM0 + 0x2580);
-    element->unkA = 0x2e6;
-    element->unk20 = 0;
+    element->x = 0;
+    element->y = 0;
+    element->vram = (void *)(OBJ_VRAM0 + 0x2580);
+    element->anim = SA2_ANIM_CHAR_SELECT_RED_CROSS_BOX;
+    element->variant = 0;
     element->unk1A = 0x40;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &characterScreen->characterSprite;
-    element->unk16 = 0;
-    element->unk18 = 0;
-    element->unk4 = (void *)(OBJ_VRAM0 + 0x1000);
-    element->unkA = sCharacterSpriteAssets[characterScreen->initialSelection][0];
-    element->unk20 = sCharacterSpriteAssets[characterScreen->initialSelection][1];
+    element->x = 0;
+    element->y = 0;
+    element->vram = (void *)(OBJ_VRAM0 + 0x1000);
+    element->anim = sCharacterSpriteAssets[characterScreen->initialSelection][0];
+    element->variant = sCharacterSpriteAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -643,15 +648,16 @@ static void Task_CharacterSelectMain(void)
 
     if (characterScreen->selectionComplete) {
         element = &characterScreen->characterSprite;
-        element->unkA
+        element->anim
             = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][0];
-        element->unk20
+        element->variant
             = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][1];
         element->unk21 = 0xFF;
 
         element = &characterScreen->characterSecondarySprite;
-        element->unkA = 0x2E0;
-        element->unk20 = 0xB;
+        element->anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+        element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+            SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
         element->unk21 = 0xFF;
         gSelectedCharacter = characterScreen->selectedCharacter;
 
@@ -690,8 +696,8 @@ static void Task_CharacterSelectMain(void)
             characterScreen->unk3C4 = 0;
             characterScreen->scrollingDown = FALSE;
             element = &characterScreen->scrollUpArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 1;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
             element->unk21 = 0xFF;
             m4aSongNumStart(SE_SHIFT);
             gCurTask->main = Task_HandleCarouselScrollUp;
@@ -708,8 +714,8 @@ static void Task_CharacterSelectMain(void)
             characterScreen->scrollingDown = TRUE;
 
             element = &characterScreen->scrollDownArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 1;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
             element->unk21 = 0xFF;
             m4aSongNumStart(SE_SHIFT);
             gCurTask->main = Task_HandleCarouselScrollDown;
@@ -736,17 +742,19 @@ static void Task_CharacterSelectMain(void)
                     && !(characterScreen->multiplayerSelections
                          & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
                 element = &characterScreen->characterSprite;
-                element->unkA
+                element->anim
                     = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter]
                                                     [0];
-                element->unk20
+                element->variant
                     = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter]
                                                     [1];
                 element->unk21 = 0xFF;
 
                 element = &characterScreen->characterSecondarySprite;
-                element->unkA = 0x2E0;
-                element->unk20 = 0xB;
+                element->anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+                element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+                    SA2_ANIM_CHAR_ID_CHEESE,
+                    SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
                 element->unk21 = 0xFF;
 
                 gSelectedCharacter = characterScreen->selectedCharacter;
@@ -783,8 +791,8 @@ static void Task_CharacterSelectMain(void)
                     characterScreen->animFrame = 0;
                     characterScreen->unk3C4 = 0;
                     element = &characterScreen->scrollDownArrow;
-                    element->unkA = 0x2E2;
-                    element->unk20 = 1;
+                    element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+                    element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
                     element->unk21 = 0xFF;
                     m4aSongNumStart(SE_SHIFT);
                     gCurTask->main = Task_HandleCarouselScrollDown;
@@ -805,8 +813,8 @@ static void Task_CharacterSelectMain(void)
                     characterScreen->unk3C4 = 0;
                     characterScreen->scrollingDown = FALSE;
                     element = &characterScreen->scrollUpArrow;
-                    element->unkA = 0x2E2;
-                    element->unk20 = 1;
+                    element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+                    element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
                     element->unk21 = 0xFF;
                     m4aSongNumStart(SE_SHIFT);
                     gCurTask->main = Task_HandleCarouselScrollUp;
@@ -845,8 +853,8 @@ static void Task_HandleCarouselScrollUp(void)
         characterScreen->upArrowActviteFrames--;
         if (characterScreen->upArrowActviteFrames == 0) {
             element = &characterScreen->scrollUpArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -903,8 +911,8 @@ static void Task_HandleCarouselScrollDown(void)
         characterScreen->downArrowActiveFrames--;
         if (characterScreen->downArrowActiveFrames == 0) {
             element = &characterScreen->scrollDownArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -956,8 +964,8 @@ static void Task_CarouselScrollCompleteAnim(void)
         characterScreen->upArrowActviteFrames--;
         if (characterScreen->upArrowActviteFrames == 0) {
             element = &characterScreen->scrollUpArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -966,8 +974,8 @@ static void Task_CarouselScrollCompleteAnim(void)
         characterScreen->downArrowActiveFrames--;
         if (characterScreen->downArrowActiveFrames == 0) {
             element = &characterScreen->scrollDownArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -1010,8 +1018,8 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         characterScreen->upArrowActviteFrames--;
         if (characterScreen->upArrowActviteFrames == 0) {
             element = &characterScreen->scrollUpArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -1020,8 +1028,8 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         characterScreen->downArrowActiveFrames--;
         if (characterScreen->downArrowActiveFrames == 0) {
             element = &characterScreen->scrollDownArrow;
-            element->unkA = 0x2E2;
-            element->unk20 = 0;
+            element->anim = SA2_ANIM_CHAR_SELECT_ARROW;
+            element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
             element->unk21 = 0xff;
         }
     }
@@ -1101,13 +1109,12 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 u8 temp = i - Div(i, 5) * 5;
                 element = &characterScreen->carouselBlobs[temp];
 
-                element->unk16
-                    = Q_2_14_TO_INT(
-                          COS(((characterScreen->carouselPosition >> 8) + (i * 0x66))
-                              & 0x3FF)
-                          * 92)
+                element->x = Q_2_14_TO_INT(COS(((characterScreen->carouselPosition >> 8)
+                                                + (i * 0x66))
+                                               & 0x3FF)
+                                           * 92)
                     + 10;
-                element->unk18
+                element->y
                     = Q_2_14_TO_INT(
                           SIN((((characterScreen->carouselPosition >> 8) + (i * 0x66))
                                & 0x3FF))
@@ -1126,8 +1133,8 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 element = &characterScreen->carouselBlobs[(i + 2) & 3];
 
                 temp2 = (temp + i * 0x66) & 0x3FF;
-                element->unk16 = Q_2_14_TO_INT(COS(temp2) * 92) + 10;
-                element->unk18 = Q_2_14_TO_INT(SIN(temp2) * 92) + 80;
+                element->x = Q_2_14_TO_INT(COS(temp2) * 92) + 10;
+                element->y = Q_2_14_TO_INT(SIN(temp2) * 92) + 80;
                 sub_80051E8(element);
             }
         }
@@ -1139,8 +1146,8 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 u32 temp2;
                 element = &characterScreen->carouselBlobs[(i + 2) & 3];
                 temp2 = (temp + i * 0x66) & 0x3FF;
-                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
-                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                element->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->y = (gSineTable[temp2] * 0x5C >> 0xE) + 80;
                 sub_80051E8(element);
             }
         }
@@ -1167,18 +1174,18 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
                 element = &characterScreen->carouselBlobs[temp2];
 
-                element->unk16 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
-                element->unk18 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }
@@ -1192,8 +1199,8 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
                 || characterScreen->unk3C4 < 0xD) {
                 element = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
-                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
-                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                element->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
                 sub_80051E8(element);
             }
         }
@@ -1201,9 +1208,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element = &characterScreen->selectedCarouselBlob;
     transformOptions = &characterScreen->selectedBlobTransform;
 
-    element->unk16 = 0x65;
-    element->unk18 = 0x4F;
-    element->unk20 = characterScreen->selectedCharacter + 5;
+    element->x = 101;
+    element->y = 79;
+    element->variant = characterScreen->selectedCharacter
+        + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     element->unk21 = 0xFF;
 
     transformOptions->unk0 = 0;
@@ -1213,8 +1221,8 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transformOptions->unk4
         = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
         + 0xC0;
-    transformOptions->unk6[0] = element->unk16;
-    transformOptions->unk6[1] = element->unk18;
+    transformOptions->unk6[0] = element->x;
+    transformOptions->unk6[1] = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x60;
     sub_8004558(element);
@@ -1227,8 +1235,8 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         i = ((0x10 - characterScreen->animFrame) * 0x14);
     }
     element = &characterScreen->screenTitleText;
-    element->unk16 = i + 0xF0;
-    element->unk18 = 0x10;
+    element->x = i + 0xF0;
+    element->y = 0x10;
     sub_80051E8(element);
 
     if (characterScreen->animFrame < 8) {
@@ -1239,40 +1247,40 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     element = &characterScreen->characterSprite;
     if (i > 0) {
-        element->unk16 = characterScreen->characterBaseXPos
+        element->x = characterScreen->characterBaseXPos
             + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
     } else {
-        element->unk16 = characterScreen->characterBaseXPos;
+        element->x = characterScreen->characterBaseXPos;
     }
 
-    element->unk18 = 0x82;
-    x = element->unk16;
+    element->y = 0x82;
+    x = element->x;
 
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && !IsMultiplayer()) {
         element->unk10 |= 0x40000;
-        element->unk25 = sCharacterSilhouettes[characterScreen->selectedCharacter];
+        element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
         element->unk10 &= ~0x40000;
-        element->unk25 = 0;
+        element->focused = 0;
     }
     sub_80051E8(element);
 
     if (characterScreen->selectedCharacter == CHARACTER_CREAM) {
         element = &characterScreen->characterSecondarySprite;
-        element->unk16 = x;
-        element->unk18 = 0x82;
+        element->x = x;
+        element->y = 0x82;
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && !IsMultiplayer()) {
             // make shadow mode
             element->unk10 |= 0x40000;
-            element->unk25 = sCharacterSilhouettes[CHEESE_SILHOUETTE];
+            element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
             element->unk10 &= ~0x40000;
-            element->unk25 = 0;
+            element->focused = 0;
         }
         sub_80051E8(element);
     }
@@ -1285,21 +1293,21 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         i = 0;
     }
     element = &characterScreen->characterNameSubText;
-    element->unk16 = characterScreen->characterSubTextBaseXPos + i * 0x14;
-    element->unk18 = 0x90;
+    element->x = characterScreen->characterSubTextBaseXPos + i * 0x14;
+    element->y = 0x90;
     sub_80051E8(element);
 
     element = &characterScreen->characterTitleTextLeft;
     transformOptions = &characterScreen->characterTitleLeftTransform;
 
-    element->unk16 = 0x28;
-    element->unk18 = 0x4F;
+    element->x = 0x28;
+    element->y = 0x4F;
 
     transformOptions->unk0 = 0;
     transformOptions->unk2 = 0x100;
     transformOptions->unk4 = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->unk6[0] = element->unk16;
-    transformOptions->unk6[1] = element->unk18;
+    transformOptions->unk6[0] = element->x;
+    transformOptions->unk6[1] = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
@@ -1309,14 +1317,14 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element = &characterScreen->characterTitleTextRight;
     transformOptions = &characterScreen->characterTitleRightTransform;
 
-    element->unk16 = 0x28;
-    element->unk18 = 0x4F;
+    element->x = 0x28;
+    element->y = 0x4F;
 
     transformOptions->unk0 = 0;
     transformOptions->unk2 = 0x100;
     transformOptions->unk4 = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->unk6[0] = element->unk16;
-    transformOptions->unk6[1] = element->unk18;
+    transformOptions->unk6[0] = element->x;
+    transformOptions->unk6[1] = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
@@ -1370,18 +1378,18 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     if (characterScreen->unk3C4 == 0) {
         element = &characterScreen->characterSprite;
-        element->unkA = sCharacterSpriteAssets[selectedCharacter][0];
-        element->unk20 = sCharacterSpriteAssets[selectedCharacter][1];
+        element->anim = sCharacterSpriteAssets[selectedCharacter][0];
+        element->variant = sCharacterSpriteAssets[selectedCharacter][1];
         element->unk21 = 0xFF;
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && !IsMultiplayer()) {
             element->unk10 |= 0x40000;
-            element->unk25 = sCharacterSilhouettes[characterScreen->selectedCharacter];
+            element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
         } else {
             element->unk10 &= ~0x40000;
-            element->unk25 = 0;
+            element->focused = 0;
         }
 
         sub_8004558(element);
@@ -1390,37 +1398,37 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && !IsMultiplayer()) {
             element = &characterScreen->characterNameSubText;
-            element->unkA = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][0];
-            element->unk20 = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][1];
+            element->anim = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][0];
+            element->variant = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][1];
             element->unk21 = 0xFF;
             sub_8004558(element);
 
             element = &characterScreen->characterTitleTextLeft;
-            element->unkA = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][0];
-            element->unk20 = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][1];
+            element->anim = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][0];
+            element->variant = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][1];
             element->unk21 = 0xFF;
 
             element = &characterScreen->characterTitleTextRight;
-            element->unkA = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][0];
-            element->unk20 = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][1];
+            element->anim = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][0];
+            element->variant = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][1];
             element->unk21 = 0xFF;
         } else {
             element = &characterScreen->characterNameSubText;
-            element->unkA
+            element->anim
                 = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][0];
-            element->unk20
+            element->variant
                 = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][1];
             element->unk21 = 0xFF;
             sub_8004558(element);
 
             element = &characterScreen->characterTitleTextLeft;
-            element->unkA = sCharacterTitleLeftSideAssets[selectedCharacter][0];
-            element->unk20 = sCharacterTitleLeftSideAssets[selectedCharacter][1];
+            element->anim = sCharacterTitleLeftSideAssets[selectedCharacter][0];
+            element->variant = sCharacterTitleLeftSideAssets[selectedCharacter][1];
             element->unk21 = 0xFF;
 
             element = &characterScreen->characterTitleTextRight;
-            element->unkA = sCharacteTitleRightSideAssets[selectedCharacter][0];
-            element->unk20 = sCharacteTitleRightSideAssets[selectedCharacter][1];
+            element->anim = sCharacteTitleRightSideAssets[selectedCharacter][0];
+            element->variant = sCharacteTitleRightSideAssets[selectedCharacter][1];
             element->unk21 = 0xFF;
         }
     }
@@ -1433,18 +1441,18 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
                 element = &characterScreen->carouselBlobs[temp2];
 
-                element->unk16 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
-                element->unk18 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }
@@ -1458,8 +1466,8 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
                 || characterScreen->unk3C4 < 0xD) {
                 element = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
-                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
-                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                element->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
                 sub_80051E8(element);
             }
         }
@@ -1469,9 +1477,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         element = &characterScreen->selectedCarouselBlob;
         transformOptions = &characterScreen->selectedBlobTransform;
 
-        element->unk16 = 0x65;
-        element->unk18 = 0x4F;
-        element->unk20 = characterScreen->selectedCharacter + 5;
+        element->x = 0x65;
+        element->y = 0x4F;
+        element->variant = characterScreen->selectedCharacter
+            + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         element->unk21 = 0xFF;
 
         transformOptions->unk0 = 0;
@@ -1483,8 +1492,8 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk6[0] = element->unk16;
-        transformOptions->unk6[1] = element->unk18;
+        transformOptions->unk6[0] = element->x;
+        transformOptions->unk6[1] = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x60;
         sub_8004558(element);
@@ -1495,42 +1504,42 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     element = &characterScreen->characterSprite;
 
     if (b > 0) {
-        element->unk16 = characterScreen->characterBaseXPos
+        element->x = characterScreen->characterBaseXPos
             + (0x80 - (gSineTable[b * 0x10 + 0x100] >> 7)) * 2;
-        f = element->unk16;
+        f = element->x;
         e = characterScreen->characterBaseXPos + (b * 0x12);
 
     } else {
-        element->unk16 = characterScreen->characterBaseXPos;
-        f = element->unk16;
-        e = element->unk16;
+        element->x = characterScreen->characterBaseXPos;
+        f = element->x;
+        e = element->x;
     }
-    element->unk18 = 0x82;
+    element->y = 0x82;
 
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && !IsMultiplayer()) {
         element->unk10 |= 0x40000;
-        element->unk25 = sCharacterSilhouettes[characterScreen->selectedCharacter];
+        element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
         element->unk10 &= ~0x40000;
-        element->unk25 = 0;
+        element->focused = 0;
     }
     sub_80051E8(element);
 
     if (characterScreen->selectedCharacter == CHARACTER_CREAM) {
         element = &characterScreen->characterSecondarySprite;
-        element->unk16 = e;
-        element->unk18 = 0x82;
+        element->x = e;
+        element->y = 0x82;
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && !IsMultiplayer()) {
             element->unk10 |= 0x40000;
-            element->unk25 = sCharacterSilhouettes[CHEESE_SILHOUETTE];
+            element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
             element->unk10 &= ~0x40000;
-            element->unk25 = 0;
+            element->focused = 0;
         }
 
         sub_80051E8(element);
@@ -1540,14 +1549,14 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         && characterScreen->multiplayerSelections
             & CHARACTER_BIT(characterScreen->selectedCharacter)) {
         element = &characterScreen->characterUnavailableIndicator;
-        element->unk16 = f;
-        element->unk18 = 0x82;
+        element->x = f;
+        element->y = 130;
         sub_80051E8(element);
     }
 
     element = &characterScreen->characterNameSubText;
-    element->unk16 = characterScreen->characterSubTextBaseXPos + (d * 5) * 4;
-    element->unk18 = 0x90;
+    element->x = characterScreen->characterSubTextBaseXPos + (d * 5) * 4;
+    element->y = 144;
     sub_80051E8(element);
 
 #ifndef NON_MATCHING
@@ -1559,21 +1568,21 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 #endif
 
     element = &characterScreen->screenTitleText;
-    element->unk16 = 0xF0;
-    element->unk18 = 0x10;
+    element->x = DISPLAY_WIDTH;
+    element->y = 16;
     sub_80051E8(element);
 
     element = &characterScreen->characterTitleTextLeft;
     transformOptions = &characterScreen->characterTitleLeftTransform;
-    element->unk16 = 0x28;
-    element->unk18 = 0x4F;
+    element->x = 40;
+    element->y = 79;
 
     if (c < 8) {
         transformOptions->unk0 = 0;
         transformOptions->unk2 = 0x100;
         transformOptions->unk4 = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->unk6[0] = element->unk16;
-        transformOptions->unk6[1] = element->unk18;
+        transformOptions->unk6[0] = element->x;
+        transformOptions->unk6[1] = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x20;
         sub_8004558(element);
@@ -1586,15 +1595,15 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     element = &characterScreen->characterTitleTextRight;
     transformOptions = &characterScreen->characterTitleRightTransform;
-    element->unk16 = 0x28;
-    element->unk18 = 0x4F;
+    element->x = 40;
+    element->y = 79;
 
     if (c < 8) {
         transformOptions->unk0 = 0;
         transformOptions->unk2 = 0x100;
         transformOptions->unk4 = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->unk6[0] = element->unk16;
-        transformOptions->unk6[1] = element->unk18;
+        transformOptions->unk6[0] = element->x;
+        transformOptions->unk6[1] = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x20;
         sub_8004558(element);
@@ -1627,18 +1636,18 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 
                 element = &characterScreen->carouselBlobs[temp2];
 
-                element->unk16 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
-                element->unk18 = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }
@@ -1652,8 +1661,8 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
                 || characterScreen->unk3C4 < 0xD) {
                 element = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
-                element->unk16 = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
-                element->unk18 = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
+                element->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
+                element->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
                 sub_80051E8(element);
             }
         }
@@ -1663,9 +1672,10 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         element = &characterScreen->selectedCarouselBlob;
         transformOptions = &characterScreen->selectedBlobTransform;
 
-        element->unk16 = 0x65;
-        element->unk18 = 0x4F;
-        element->unk20 = characterScreen->selectedCharacter + 5;
+        element->x = 101;
+        element->y = 79;
+        element->variant = characterScreen->selectedCharacter
+            + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         element->unk21 = 0xFF;
 
         transformOptions->unk0 = 0;
@@ -1677,8 +1687,8 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk6[0] = element->unk16;
-        transformOptions->unk6[1] = element->unk18;
+        transformOptions->unk6[0] = element->x;
+        transformOptions->unk6[1] = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x60;
         sub_8004558(element);
@@ -1746,13 +1756,14 @@ static void Task_MultiplayerWaitForSelections(void)
         gCurTask->main = Task_CharacterSelectMain;
 
         element = &characterScreen->characterSprite;
-        element->unkA = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
-        element->unk20 = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
+        element->anim = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
+        element->variant = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
         element->unk21 = 0xFF;
 
         element = &characterScreen->characterSecondarySprite;
-        element->unkA = 0x2E0;
-        element->unk20 = 10;
+        element->anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+        element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+            SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
         element->unk21 = 0xFF;
 
         RenderUI(characterScreen);
@@ -1797,16 +1808,18 @@ static void Task_MultiplayerWaitForSelections(void)
                 characterScreen->selectionComplete = FALSE;
 
                 element = &characterScreen->characterSprite;
-                element->unkA
+                element->anim
                     = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
-                element->unk20
+                element->variant
                     = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
                 element->unk21 = 0xFF;
                 sub_8004558(element);
 
                 element = &characterScreen->characterSecondarySprite;
-                element->unkA = 0x2E0;
-                element->unk20 = 10;
+                element->anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+                element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+                    SA2_ANIM_CHAR_ID_CHEESE,
+                    SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
                 element->unk21 = 0xFF;
                 sub_8004558(element);
 
@@ -1951,16 +1964,16 @@ static void CharacterSelectScreenOnDestroy(struct Task *t)
 {
     u8 i;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(t);
-    VramFree(characterScreen->characterNameSubText.unk4);
-    VramFree(characterScreen->characterTitleTextLeft.unk4);
-    VramFree(characterScreen->characterTitleTextRight.unk4);
-    VramFree(characterScreen->screenTitleText.unk4);
+    VramFree(characterScreen->characterNameSubText.vram);
+    VramFree(characterScreen->characterTitleTextLeft.vram);
+    VramFree(characterScreen->characterTitleTextRight.vram);
+    VramFree(characterScreen->screenTitleText.vram);
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        VramFree(characterScreen->carouselBlobs[i].unk4);
+        VramFree(characterScreen->carouselBlobs[i].vram);
     }
 
-    VramFree(characterScreen->selectedCarouselBlob.unk4);
-    VramFree(characterScreen->scrollUpArrow.unk4);
-    VramFree(characterScreen->scrollDownArrow.unk4);
+    VramFree(characterScreen->selectedCarouselBlob.vram);
+    VramFree(characterScreen->scrollUpArrow.vram);
+    VramFree(characterScreen->scrollDownArrow.vram);
 }

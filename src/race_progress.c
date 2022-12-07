@@ -6,6 +6,9 @@
 #include "transition.h"
 #include "malloc_vram.h"
 
+#include "constants/animations.h"
+#include "constants/move_states.h"
+
 struct RaceProgressIndicator {
     struct UNK_0808B3FC_UNK240 avatars[4];
     struct UNK_0808B3FC_UNK240 flags[2];
@@ -37,7 +40,13 @@ static const u16 sCourseStepSizes[] = {
     [COURSE_INDEX(ZONE_7, ACT_1)] = 448,  [COURSE_INDEX(ZONE_7, ACT_2)] = 464,
 };
 static const u8 sCharacterAvatars[] = {
-    0, 3, 1, 2, 4, 0, 0, 0,
+    [CHARACTER_SONIC] = SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC,
+    [CHARACTER_CREAM] = SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM,
+    [CHARACTER_TAILS] = SA2_ANIM_VARIANT_LIFE_COUNTER_TAILS,
+    [CHARACTER_KNUCKLES] = SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES,
+    [CHARACTER_AMY] = SA2_ANIM_VARIANT_LIFE_COUNTER_AMY,
+
+    [NUM_CHARACTERS] = 0,
 };
 
 void RaceProgressIndicator(void)
@@ -59,22 +68,25 @@ void RaceProgressIndicator(void)
     CreateUI(progressIndicator);
 }
 
+#define RACE_ICON_INDENT 14
+#define RACE_ICON_Y      (DISPLAY_HEIGHT * (15. / 16.))
 static void CreateUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
     struct UNK_0808B3FC_UNK240 *element;
     u8 avatarVariants[6];
 
-    memcpy(avatarVariants, sCharacterAvatars, 6);
+    memcpy(avatarVariants, sCharacterAvatars, sizeof(sCharacterAvatars));
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
+        // Life Counter
         element = &progressIndicator->avatars[i];
-        element->unk4 = VramMalloc(4);
-        element->unkA = 0x465;
-        element->unk20 = avatarVariants[gMultiplayerCharacters[i]];
+        element->vram = VramMalloc(4);
+        element->anim = SA2_ANIM_LIFE_COUNTER;
+        element->variant = avatarVariants[gMultiplayerCharacters[i]];
         element->unk21 = 0xFF;
-        element->unk16 = 6;
-        element->unk18 = 0x8E;
+        element->x = 6;
+        element->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
             element->unk1A = 0x80;
         } else {
@@ -84,43 +96,44 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = i;
+        element->focused = i;
         element->unk10 = 0;
         sub_8004558(element);
     }
 
     element = &progressIndicator->flags[START_FLAG];
-    element->unk4 = VramMalloc(4);
-    element->unkA = 0x36F;
-    element->unk20 = 0;
+    element->vram = VramMalloc(4);
+    element->anim = SA2_ANIM_RACE_START_ICON;
+    element->variant = 0;
     element->unk21 = 0xFF;
-    element->unk16 = 0xE;
-    element->unk18 = 0x96;
+    element->x = 0 + RACE_ICON_INDENT;
+    element->y = RACE_ICON_Y;
     element->unk1A = 0x140;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk10 = 0;
     sub_8004558(element);
 
     element = &progressIndicator->flags[FINISH_FLAG];
-    element->unk4 = VramMalloc(4);
-    element->unkA = 0x370;
-    element->unk20 = 0;
+    element->vram = VramMalloc(4);
+    element->anim = SA2_ANIM_RACE_FINISH_ICON;
+    element->variant = 0;
     element->unk21 = 0xFF;
-    element->unk16 = 0xE2;
-    element->unk18 = 0x96;
+    element->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
+    element->y = RACE_ICON_Y;
     element->unk1A = 0x140;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk10 = 0;
     sub_8004558(element);
 }
+#undef RACE_ICON_INDENT
 
 static void Task_UpdateAvatarPositions(void)
 {
@@ -132,7 +145,7 @@ static void Task_UpdateAvatarPositions(void)
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
         player = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
-        avatar->unk16
+        avatar->x
             = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10)
             + 6;
     }
@@ -145,7 +158,7 @@ static void RenderUI(struct RaceProgressIndicator *progressIndicator)
     u8 i;
     struct UNK_0808B3FC_UNK240 *element;
 
-    if (gPlayer.unk20 & 0x100000) {
+    if (gPlayer.moveState & MOVESTATE_100000) {
         return;
     }
 
@@ -166,10 +179,10 @@ static void RaceProgressIndicatorOnDestroy(struct Task *t)
     struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
-        VramFree(progressIndicator->avatars[i].unk4);
+        VramFree(progressIndicator->avatars[i].vram);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
-        VramFree(progressIndicator->flags[i].unk4);
+        VramFree(progressIndicator->flags[i].vram);
     }
 }

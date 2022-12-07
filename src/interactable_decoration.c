@@ -48,13 +48,13 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
         decoBase->base.spriteX = ia->x;
         decoBase->base.spriteY = spriteY;
 
-        deco->unk16 = SpriteGetScreenPos(ia->x, regionX);
-        deco->unk18 = SpriteGetScreenPos(ia->y, regionY);
+        deco->x = SpriteGetScreenPos(ia->x, regionX);
+        deco->y = SpriteGetScreenPos(ia->y, regionY);
         SET_SPRITE_INITIALIZED(ia);
 
-        deco->unk4 = VramMalloc(sDecoTileAnimInfo[ia->decoId].unk0);
-        deco->unkA = sDecoTileAnimInfo[ia->decoId].unk4;
-        deco->unk20 = sDecoTileAnimInfo[ia->decoId].unk6;
+        deco->vram = VramMalloc(sDecoTileAnimInfo[ia->decoId].numTiles);
+        deco->anim = sDecoTileAnimInfo[ia->decoId].anim;
+        deco->variant = sDecoTileAnimInfo[ia->decoId].variant;
 
         deco->unk1A = 0x700;
         deco->unk8 = 0;
@@ -62,7 +62,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
         deco->unk1C = 0;
         deco->unk21 = 0xFF;
         deco->unk22 = 0x10;
-        deco->unk25 = 0;
+        deco->focused = 0;
         deco->unk28 = -1;
         deco->unk10 = 0x2000;
     }
@@ -86,12 +86,12 @@ void Task_Interactable_Decoration(void)
     screenY = (ia->y) * TILE_WIDTH;
     screenY += (decoBase->base.regionY) * CAM_REGION_WIDTH;
 
-    screenX -= gCamera.unk0;
-    deco->unk16 = screenX;
-    screenY -= gCamera.unk4;
-    deco->unk18 = screenY;
+    screenX -= gCamera.x;
+    deco->x = screenX;
+    screenY -= gCamera.y;
+    deco->y = screenY;
 
-    if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->y)) {
         ia->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -104,7 +104,7 @@ void Task_Interactable_Decoration(void)
 void TaskDestructor_Interactable_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
-    VramFree(deco->displayed.unk4);
+    VramFree(deco->displayed.vram);
 }
 
 #undef decoId

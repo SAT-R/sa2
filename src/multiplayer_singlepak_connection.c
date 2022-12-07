@@ -11,11 +11,14 @@
 #include "title_screen.h"
 #include "transition.h"
 #include "m4a.h"
-#include "constants/text.h"
-#include "constants/songs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
 #include "mb_programs.h"
+
+#include "constants/animations.h"
+#include "constants/move_states.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct SinglePakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
@@ -46,13 +49,25 @@ void *const gUnknown_080E0168[9] = {
 };
 
 static const u16 gUnknown_080E018C[7][3] = {
-    { 0, 0, 0 },     { 1074, 0, 90 }, { 1079, 0, 84 }, { 1080, 0, 90 },
-    { 1081, 0, 90 }, { 1082, 0, 90 }, { 1083, 0, 45 },
+    [LANG_DEFAULT] = { 0, 0, 0 },
+    [LANG_JAPANESE] = { SA2_ANIM_MP_MSG, 0, 90 },
+    [LANG_ENGLISH] = { SA2_ANIM_MP_COMM_MSG_EN, 0, 84 },
+    [LANG_GERMAN] = { SA2_ANIM_MP_COMM_MSG_DE, 0, 90 },
+    [LANG_FRENCH] = { SA2_ANIM_MP_COMM_MSG_FR, 0, 90 },
+    [LANG_SPANISH] = { SA2_ANIM_MP_COMM_MSG_ES, 0, 90 },
+    [LANG_ITALIAN] = { SA2_ANIM_MP_COMM_MSG_IT, 0, 45 },
 };
 
+// TODO/BUG: gUnknown_080E01B6 is (likely) in the wrong order!
+//           But maybe this was fixed in the PAL release?
 static const u16 gUnknown_080E01B6[7][3] = {
-    { 0, 0, 0 },     { 1106, 0, 46 }, { 1107, 0, 34 }, { 1109, 0, 38 },
-    { 1108, 0, 46 }, { 1111, 0, 30 }, { 1110, 0, 30 },
+    [LANG_DEFAULT] = { 0, 0, 0 },
+    [LANG_JAPANESE] = { SA2_ANIM_PRESS_START_MSG_JP, 0, 46 },
+    [LANG_ENGLISH] = { SA2_ANIM_PRESS_START_MSG_EN, 0, 34 },
+    [LANG_GERMAN] = { SA2_ANIM_PRESS_START_MSG_FR, 0, 38 },
+    [LANG_FRENCH] = { SA2_ANIM_PRESS_START_MSG_DE, 0, 46 },
+    [LANG_SPANISH] = { SA2_ANIM_PRESS_START_MSG_IT, 0, 30 },
+    [LANG_ITALIAN] = { SA2_ANIM_PRESS_START_MSG_ES, 0, 30 },
 };
 
 static void *const gUnknown_080E01E0[7][2] = {
@@ -92,7 +107,7 @@ void sub_8081200(void)
 
     sub_801A6D8();
     gUnknown_03005424 &= ~0x1;
-    gPlayer.unk20 &= ~0x200000;
+    gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
     gPlayer.unk5C |= gPlayerControls.unk0 | gPlayerControls.unk2;
 }
 
@@ -146,55 +161,55 @@ void StartSinglePakConnect(void)
 
     ram = OBJ_VRAM0;
     element = &connectScreen->unkC;
-    element->unk16 = 8;
-    element->unk18 = 0x18;
+    element->x = 8;
+    element->y = 24;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
-    element->unkA = gUnknown_080E018C[connectScreen->unkFA][0];
-    element->unk20 = gUnknown_080E018C[connectScreen->unkFA][1];
+    element->anim = gUnknown_080E018C[connectScreen->unkFA][0];
+    element->variant = gUnknown_080E018C[connectScreen->unkFA][1];
     element->unk21 = 0xFF;
-    element->unk4 = (void *)ram;
+    element->vram = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
     sub_8004558(element);
 
     element = &connectScreen->unk3C;
-    element->unk16 = 0x78;
-    element->unk18 = 0x7A;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT - 38);
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
-    element->unkA = gUnknown_080E01B6[connectScreen->unkFA][0];
-    element->unk20 = gUnknown_080E01B6[connectScreen->unkFA][1];
+    element->anim = gUnknown_080E01B6[connectScreen->unkFA][0];
+    element->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
     element->unk21 = 0xFF;
-    element->unk4 = (void *)ram;
+    element->vram = (void *)ram;
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
     element = &connectScreen->unk6C;
-    element->unk16 = 0x78;
-    element->unk18 = 0x8C;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT * (7. / 8.));
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
-    element->unkA = 0x432;
-    element->unk20 = 8;
+    element->anim = SA2_ANIM_MP_MSG;
+    element->variant = SA2_ANIM_VARIANT_MP_MSG_2;
     element->unk21 = 0xFF;
-    element->unk4 = (void *)ram;
+    element->vram = (void *)ram;
 
     background = &connectScreen->unk9C;
     background->unk4 = BG_SCREEN_ADDR(0);
@@ -571,8 +586,8 @@ void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
     sub_8004558(&connectScreen->unk3C);
     sub_80051E8(&connectScreen->unk3C);
 
-    connectScreen->unk6C.unkA = 0x432;
-    connectScreen->unk6C.unk20 = a + 6;
+    connectScreen->unk6C.anim = SA2_ANIM_MP_MSG;
+    connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
     connectScreen->unk6C.unk21 = 0xFF;
 
     sub_8004558(&connectScreen->unk6C);

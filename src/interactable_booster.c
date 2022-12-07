@@ -19,10 +19,9 @@ typedef struct {
 
 extern void TaskDestructor_80095E8(struct Task *);
 
-extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16,
-                          struct SomeStruct_59E0 *, u32);
-extern void sub_80218E4(struct SomeStruct_59E0 *);
-extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
+extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16, Player *, u32);
+extern void sub_80218E4(Player *);
+extern void sub_8023B5C(Player *, s8);
 
 static void Task_Interactable_Booster(void);
 
@@ -49,15 +48,15 @@ const struct UNK_080E0D64 sBoosterAnimationData[2][6] = {
 
 // Look left and accelerate
 #define BOOSTER_ACCEL_LEFT(player)                                                      \
-    (player).unk20 |= MOVESTATE_FACING_LEFT;                                            \
-    if (gPlayer.unk14 > -BOOSTER_SPEED)                                                 \
-        gPlayer.unk14 = -BOOSTER_SPEED;
+    (player).moveState |= MOVESTATE_FACING_LEFT;                                        \
+    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                          \
+        gPlayer.speedGroundX = -BOOSTER_SPEED;
 
 // Look right and accelerate
 #define BOOSTER_ACCEL_RIGHT(player)                                                     \
-    (player).unk20 &= ~MOVESTATE_FACING_LEFT;                                           \
-    if (gPlayer.unk14 < BOOSTER_SPEED)                                                  \
-        gPlayer.unk14 = BOOSTER_SPEED;
+    (player).moveState &= ~MOVESTATE_FACING_LEFT;                                       \
+    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                           \
+        gPlayer.speedGroundX = BOOSTER_SPEED;
 
 void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
                                      u16 spriteRegionY, u8 spriteY)
@@ -74,8 +73,8 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
     booster->base.spriteX = ia->x;
     booster->base.spriteY = spriteY;
 
-    displayed->unk16 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
         value = 1;
@@ -84,16 +83,16 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
 
     SET_SPRITE_INITIALIZED(ia);
 
-    displayed->unk4 = VramMalloc(sBoosterAnimationData[value][ia->d.sData[0]].unk0);
-    displayed->unkA = sBoosterAnimationData[value][ia->d.sData[0]].unk4;
-    displayed->unk20 = sBoosterAnimationData[value][ia->d.sData[0]].unk6;
+    displayed->vram = VramMalloc(sBoosterAnimationData[value][ia->d.sData[0]].numTiles);
+    displayed->anim = sBoosterAnimationData[value][ia->d.sData[0]].anim;
+    displayed->variant = sBoosterAnimationData[value][ia->d.sData[0]].variant;
     displayed->unk1A = 0x480;
     displayed->unk8 = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->unk25 = 0;
+    displayed->focused = 0;
     displayed->unk28 = -1;
     displayed->unk10 = 0x2000;
 
@@ -116,14 +115,14 @@ void Task_Interactable_Booster(void)
 
     screenX = SpriteGetScreenPos(booster->base.spriteX, booster->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, booster->base.regionY);
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
 
-    if (!(gPlayer.unk20 & (MOVESTATE_DEAD | MOVESTATE_IN_AIR))
+    if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR))
         && (sub_800C204(displayed, screenX, screenY, 0, &gPlayer, 0) == 1)) {
         sub_80218E4(&gPlayer);
 
-        if (gPlayer.unk20 & MOVESTATE_4) {
+        if (gPlayer.moveState & MOVESTATE_4) {
             sub_8023B5C(&gPlayer, 9);
             gPlayer.unk16 = 6;
             gPlayer.unk17 = 9;
@@ -169,7 +168,7 @@ void Task_Interactable_Booster(void)
         }
     }
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = booster->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

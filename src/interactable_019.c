@@ -25,7 +25,7 @@ static const u16 sInt019_AnimationIds[]
 
 extern const struct SpriteTables *gUnknown_03002794;
 
-extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
+extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, Player *);
 
 static void Task_Interactable_019(void);
 
@@ -57,26 +57,26 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
     platform->unk3C = 0;
 
     // @BUG Loads the -2 set through SET_SPRITE_INITIALIZED
-    displayed->unk16 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
-    displayed->unk4 = VramMalloc(IA_019_NUM_TILES);
+    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->vram = VramMalloc(IA_019_NUM_TILES);
 
 #ifdef UBFIX
     // Prevent overflow
-    displayed->unkA
+    displayed->anim
         = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
 #else
-    displayed->unkA = sInt019_AnimationIds[gCurrentLevel];
+    displayed->anim = sInt019_AnimationIds[gCurrentLevel];
 #endif
-    displayed->unk20 = 0;
-    displayed->unk1A = 1152;
+    displayed->variant = 0;
+    displayed->unk1A = 0x480;
     displayed->unk8 = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
 
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->unk25 = 0;
+    displayed->focused = FALSE;
     displayed->unk10 = 0x2000;
 
     if (ia->d.sData[0] != 0) {
@@ -97,8 +97,8 @@ void Task_Interactable_019(void)
     screenX = SpriteGetScreenPos(base->spriteX, base->regionX);
     screenY = SpriteGetScreenPos(ia->y, base->regionY);
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
 
     if (sub_800C060(displayed, screenX, screenY, &gPlayer) & 0x8) {
         gCurTask->main = Task_805E35C;
@@ -113,11 +113,11 @@ void Task_Interactable_019(void)
 
     // _0805E2C2
 
-    if ((screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-         || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
-         || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-         || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18))) {
+    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+         || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
+        && (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y))) {
         ia->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -135,8 +135,8 @@ void Task_805E35C(void)
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
 
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
@@ -149,11 +149,11 @@ void Task_805E35C(void)
         gCurTask->main = Task_805E480;
     }
 
-    if ((screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-         || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))
-         || (screenY > gCamera.unk4 + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-         || (screenY < gCamera.unk4 - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18))) {
+    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+         || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
+        && (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y))) {
         ia->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -175,17 +175,17 @@ void Task_805E480(void)
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
 
-    otherPos = (gCamera.unk4 - screenY) + DISPLAY_HEIGHT;
+    otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
     platform->unk3C++;
 
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
-    if (screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-        || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(displayed->unk16 + (CAM_REGION_WIDTH / 2))
+    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+        || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
+        if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             ia->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
@@ -193,7 +193,7 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam_ptr = gUnknown_03002794->oamData[displayed->unkA];
+    oam_ptr = gUnknown_03002794->oamData[displayed->anim];
     oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     // _0805E54C
@@ -207,9 +207,10 @@ void Task_805E480(void)
 
             if (value > 0) {
                 if (r6 == 0 && value == 1) {
-                    if ((gPlayer.unk20 & MOVESTATE_8) && gPlayer.unk3C == displayed) {
-                        gPlayer.unk20
-                            = ((gPlayer.unk20 & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
+                    if ((gPlayer.moveState & MOVESTATE_8)
+                        && gPlayer.unk3C == displayed) {
+                        gPlayer.moveState
+                            = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
                     }
 
                     gCurTask->main = Task_805E6A4;
@@ -231,20 +232,19 @@ void Task_805E480(void)
             if (iwram_end == pointer)
                 return;
 
-            pointer->all.attr0
-                = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1
-                    = ((displayed->unk16 - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
+                    = ((displayed->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
                 // _0805E62C
-                pointer->all.attr1 = (displayed->unk16 + x * TILE_WIDTH) & 0x1FF;
+                pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
             }
 
-            pointer->all.attr2 = (((oam[2] + displayed->unk25) & ~0xFFF)
+            pointer->all.attr2 = (((oam[2] + displayed->focused) & ~0xFFF)
                                   | ((displayed->unk10 & 0x3000) >> 2)
-                                  | (u16)(((u32)(displayed->unk4 - OBJ_VRAM0) >> 5)
+                                  | (u16)(((u32)(displayed->vram - OBJ_VRAM0) >> 5)
                                           + r6)); // (>> 5) = offset -> tilecount?
         }
     }
@@ -265,15 +265,15 @@ void Task_805E6A4(void)
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
 
-    otherPos = (gCamera.unk4 - screenY) + DISPLAY_HEIGHT;
+    otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
     platform->unk3C++;
 
-    if (screenX > gCamera.unk0 + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-        || (screenX < gCamera.unk0 - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(displayed->unk16 + (CAM_REGION_WIDTH / 2))
+    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+        || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
+        if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             ia->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
@@ -281,7 +281,7 @@ void Task_805E6A4(void)
         }
     }
 
-    oam_ptr = gUnknown_03002794->oamData[displayed->unkA];
+    oam_ptr = gUnknown_03002794->oamData[displayed->anim];
     oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     r6 = 0;
@@ -307,19 +307,18 @@ void Task_805E6A4(void)
                 return;
             }
 
-            pointer->all.attr0
-                = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->unk18))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1
-                    = ((displayed->unk16 - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
+                    = ((displayed->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
-                pointer->all.attr1 = (displayed->unk16 + x * TILE_WIDTH) & 0x1FF;
+                pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
             }
 
-            pointer->all.attr2 = (((oam[2] + displayed->unk25) & ~0xFFF)
+            pointer->all.attr2 = (((oam[2] + displayed->focused) & ~0xFFF)
                                   | ((displayed->unk10 & 0x3000) >> 2)
-                                  | (u16)(((u32)(displayed->unk4 - OBJ_VRAM0) >> 5)
+                                  | (u16)(((u32)(displayed->vram - OBJ_VRAM0) >> 5)
                                           + r6)); // (>> 5) = offset -> tilecount?
         }
     }
@@ -328,5 +327,5 @@ void Task_805E6A4(void)
 void TaskDestructor_Interactable019(struct Task *t)
 {
     Sprite_019 *platform = TaskGetStructPtr(t);
-    VramFree(platform->displayed.unk4);
+    VramFree(platform->displayed.vram);
 }

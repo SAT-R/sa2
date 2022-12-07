@@ -115,72 +115,72 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_802D4CC(unk140);
 
     unk80 = &modeScreen->unk80;
-    unk80->unk4 = VramMalloc(0x32);
-    unk80->unkA = 0x431;
-    unk80->unk20 = 0;
+    unk80->vram = VramMalloc(0x32);
+    unk80->anim = 0x431;
+    unk80->variant = 0;
     unk80->unk21 = 0xFF;
-    unk80->unk16 = 0;
-    unk80->unk18 = 0;
+    unk80->x = 0;
+    unk80->y = 0;
     unk80->unk1A = 0x100;
     unk80->unk8 = 0;
     unk80->unk14 = 0;
     unk80->unk1C = 0;
     unk80->unk22 = 0x10;
-    unk80->unk25 = 0;
+    unk80->focused = 0;
     unk80->unk28 = -1;
     unk80->unk10 = 0x1000;
     sub_8004558(unk80);
 
     unk80 = &modeScreen->unkB0;
-    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang].unk0);
-    unk80->unkA = sMultiplayerModeSelectScreenText[lang].unk4;
-    unk80->unk20 = sMultiplayerModeSelectScreenText[lang].unk6;
+    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
+    unk80->anim = sMultiplayerModeSelectScreenText[lang].anim;
+    unk80->variant = sMultiplayerModeSelectScreenText[lang].variant;
     unk80->unk21 = 0xFF;
 
-    unk80->unk16 = 0;
-    unk80->unk18 = 0;
+    unk80->x = 0;
+    unk80->y = 0;
     unk80->unk1A = 0x100;
     unk80->unk8 = 0;
     unk80->unk14 = 0;
     unk80->unk1C = 0;
     unk80->unk22 = 0x10;
-    unk80->unk25 = 0;
+    unk80->focused = 0;
     unk80->unk28 = -1;
     unk80->unk10 = 0x1000;
     sub_8004558(unk80);
 
     unk80 = &modeScreen->unkE0;
-    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].unk0);
-    unk80->unkA = sMultiplayerModeSelectScreenText[lang + 1].unk4;
-    unk80->unk20 = sMultiplayerModeSelectScreenText[lang + 1].unk6;
+    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
+    unk80->anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
+    unk80->variant = sMultiplayerModeSelectScreenText[lang + 1].variant;
     unk80->unk21 = 0xFF;
 
-    unk80->unk16 = 0;
-    unk80->unk18 = 0;
+    unk80->x = 0;
+    unk80->y = 0;
     unk80->unk1A = 0x100;
     unk80->unk8 = 0;
     unk80->unk14 = 0;
     unk80->unk1C = 0;
     unk80->unk22 = 0x10;
-    unk80->unk25 = 0;
+    unk80->focused = 0;
     unk80->unk28 = -1;
     unk80->unk10 = 0x1000;
     sub_8004558(unk80);
 
     unk80 = &modeScreen->subText;
-    unk80->unk4 = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].unk0);
-    unk80->unkA = sMultiplayerModeSelectScreenText[lang + 2].unk4;
-    unk80->unk20 = sMultiplayerModeSelectScreenText[lang + 2].unk6;
+    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
+    unk80->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
+    unk80->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
     unk80->unk21 = 0xFF;
 
-    unk80->unk16 = 8;
-    unk80->unk18 = 0x67;
+    unk80->x = 8;
+    unk80->y = 103;
     unk80->unk1A = 0x100;
     unk80->unk8 = 0;
     unk80->unk14 = 0;
     unk80->unk1C = 0;
     unk80->unk22 = 0x10;
-    unk80->unk25 = 0;
+    unk80->focused = 0;
     unk80->unk28 = -1;
     unk80->unk10 = 0;
 
@@ -267,31 +267,31 @@ static void Task_EnterAnimPart2(void)
 
     unk80 = &modeScreen->unk80;
     if (modeScreen->animFrame < 10) {
-        unk80->unk16 = modeScreen->animFrame * 0xC - 0x14;
+        unk80->x = modeScreen->animFrame * 0xC - 0x14;
     } else {
-        unk80->unk16 = 100;
+        unk80->x = 100;
     }
-    unk80->unk18 = 10;
+    unk80->y = 10;
     unk80 = &modeScreen->unkB0;
     if (modeScreen->animFrame < 10) {
-        unk80->unk16 = -0x50;
+        unk80->x = -(DISPLAY_WIDTH / 3);
     } else if (modeScreen->animFrame < 20) {
-        unk80->unk16 = modeScreen->animFrame * 0x10 - 0xF0;
+        unk80->x = modeScreen->animFrame * 0x10 - DISPLAY_WIDTH;
     } else {
-        unk80->unk16 = 0x50;
+        unk80->x = (DISPLAY_WIDTH / 3);
     }
-    unk80->unk18 = 0x3C;
+    unk80->y = (DISPLAY_HEIGHT * (3. / 8.));
 
     unk80 = &modeScreen->unkE0;
 
     if (modeScreen->animFrame < 20) {
-        unk80->unk16 = -0x5A;
+        unk80->x = -90;
     } else if (modeScreen->animFrame < 30) {
-        unk80->unk16 = modeScreen->animFrame * 0x10 - 0x19A;
+        unk80->x = modeScreen->animFrame * 0x10 - 410;
     } else {
-        unk80->unk16 = 0x46;
+        unk80->x = 70;
     }
-    unk80->unk18 = 0x55;
+    unk80->y = 0x55;
     RenderUI(modeScreen);
 }
 
@@ -339,21 +339,21 @@ static void Task_ScreenMain(void)
     if (modeScreen->pakMode != PAK_MODE_MULTI) {
         struct UNK_0808B3FC_UNK240 *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
-        modeScreen->unkB0.unk25 = 1;
-        modeScreen->unkE0.unk25 = 0xFF;
+        modeScreen->unkB0.focused = 1;
+        modeScreen->unkE0.focused = 0xFF;
 
         subText = &modeScreen->subText;
-        subText->unkA = sMultiplayerModeSelectScreenText[lang + 3].unk4;
-        subText->unk20 = sMultiplayerModeSelectScreenText[lang + 3].unk6;
+        subText->anim = sMultiplayerModeSelectScreenText[lang + 3].anim;
+        subText->variant = sMultiplayerModeSelectScreenText[lang + 3].variant;
         subText->unk21 = 0xFF;
     } else {
         struct UNK_0808B3FC_UNK240 *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
-        modeScreen->unkB0.unk25 = 0;
-        modeScreen->unkE0.unk25 = 0;
+        modeScreen->unkB0.focused = 0;
+        modeScreen->unkE0.focused = 0;
         subText = &modeScreen->subText;
-        subText->unkA = sMultiplayerModeSelectScreenText[lang + 2].unk4;
-        subText->unk20 = sMultiplayerModeSelectScreenText[lang + 2].unk6;
+        subText->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
+        subText->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
         subText->unk21 = 0xFF;
     }
 
@@ -446,8 +446,8 @@ static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
 static void MultiplayerModeSelectScreenOnDestroy(struct Task *t)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(t);
-    VramFree(modeScreen->unk80.unk4);
-    VramFree(modeScreen->unkB0.unk4);
-    VramFree(modeScreen->unkE0.unk4);
-    VramFree(modeScreen->subText.unk4);
+    VramFree(modeScreen->unk80.vram);
+    VramFree(modeScreen->unkB0.vram);
+    VramFree(modeScreen->unkE0.vram);
+    VramFree(modeScreen->subText.vram);
 }

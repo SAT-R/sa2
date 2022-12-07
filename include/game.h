@@ -75,63 +75,61 @@ struct UNK_3005A70 {
 };
 
 // Not sure what these are yet
-struct SomeStruct_59E0 {
-    u32 filler0;
-    u32 filler4;
+typedef struct {
+    /* 0x00 */ u32 filler0;
+    /* 0x04 */ u32 filler4;
 
-    // x
-    s32 unk8;
-    // y
-    s32 unkC;
+    /* 0x08 */ s32 x;
+    /* 0x0C */ s32 y;
 
-    s16 unk10; // air speed X
-    s16 unk12; // air speed Y
-    s16 unk14; // ground speed
-    u8 unk16;
-    u8 unk17;
-    u8 filler18[8];
-    u32 unk20; // moveState - set/compare to values in "include/constants/move_states.h"
-    u8 unk24;
-    u8 filler24[0x11];
-    u8 unk36;
-    u8 unk37;
-    u8 unk38; // bitfield, 0x1 determines layer
-    u8 unk39;
-    u8 filler3A[2];
-    void *unk3C; // the object player collides with this frame?
-    u8 filler40[0x1A];
-    u8 unk5A;
-    u8 unk5B;
-    u16 unk5C;
-    u8 filler5E[4];
-    u8 unk62;
-    u8 unk63;
-    u16 unk64;
-    u16 unk66;
-    u16 unk68;
-    u16 unk6A;
-    u8 unk6C;
+    /* 0x10 */ s16 speedAirX;
+    /* 0x12 */ s16 speedAirY;
+    /* 0x14 */ s16 speedGroundX;
+    /* 0x16 */ u8 unk16;
+    /* 0x17 */ u8 unk17;
+    /* 0x18 */ u8 filler18[8];
+    /* 0x20 */ u32
+        moveState; // set/compare to values in "include/constants/move_states.h"
+    /* 0x24 */ u8 unk24;
+    /* 0x25 */ u8 filler25[0x11];
+    /* 0x36 */ u8 unk36;
+    /* 0x37 */ u8 unk37;
+    /* 0x38 */ u8 unk38; // bitfield, 0x1 determines layer
+    /* 0x39 */ u8 unk39;
+    /* 0x3A */ u8 filler3A[2];
+    /* 0x3C */ void *unk3C; // the object player collides with this frame?
+    /* 0x40 */ u8 filler40[0x1A];
+    /* 0x5A */ u8 unk5A;
+    /* 0x5B */ u8 unk5B;
+    /* 0x5C */ u16 unk5C;
+    /* 0x5E */ u8 filler5E[4];
+    /* 0x62 */ u8 unk62;
+    /* 0x63 */ u8 unk63;
+    /* 0x64 */ u16 unk64;
+    /* 0x66 */ u16 unk66;
+    /* 0x68 */ u16 unk68; // anim?
+    /* 0x6A */ u16 unk6A; // variant?
+    /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
      *  0x17 = Used in Interactable 044
      * */
-    u8 unk6D;
-    // 0x6E = Parameter for 0x6D-state(?)
-    u8 unk6E;
-    u8 filler6F[29];
-    u32 unk8C;
-    struct UNK_3005A70 *unk90;
-};
+    /* 0x6D */ u8 unk6D;
+    /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
+    /* 0x6F */ u8 filler6F[29];
+    /* 0x8C */ u32 unk8C;
+    /* 0x90 */ struct UNK_3005A70 *unk90;
+} Player;
 
-extern struct SomeStruct_59E0 gPlayer;
+extern Player gPlayer;
 
 struct Camera {
-    s32 unk0; // x
-    s32 unk4; // y
-    u8 filler[92 - 8];
-    u32 unk5C;
-    u8 filler60[0x20];
+    /* 0x00 */ s32 x; // x
+    /* 0x04 */ s32 y; // y
+    /* 0x08 */ u8 filler[92 - 8];
+    /* 0x5C */ u32 unk5C;
+    /* 0x60 */ u8 filler60[0x20];
 }; /* size 0x80 */
 
 extern struct Camera gCamera;

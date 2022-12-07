@@ -19,16 +19,16 @@
 
 #define TextElementAlt(elementsPerLang, lang, element, a, b)                            \
     [(lang) * (elementsPerLang) + (element - 1)]                                        \
-        = { .unk0 = (a), .unk4 = (b), .unk6 = (element) }
+        = { .numTiles = (a), .anim = (b), .variant = (element) }
 #define TextElement(elementsPerLang, lang, element, a, b)                               \
     [TextElementOffset(lang, elementsPerLang, element)]                                 \
-        = { .unk0 = (a), .unk4 = (b), .unk6 = (element) }
+        = { .numTiles = (a), .anim = (b), .variant = (element) }
 
 #define TextElementAlt2(lang, element, a, b)                                            \
-    [lang] = { .unk0 = (a), .unk4 = (b), .unk6 = (element) }
+    [lang] = { .numTiles = (a), .anim = (b), .variant = (element) }
 #define TextElementAlt3(element, a, b)                                                  \
-    [element] = { .unk0 = (a), .unk4 = (b), .unk6 = (element) }
-#define TextElementAlt4(element, a, b)                                                  \
+    [element] = { .numTiles = (a), .anim = (b), .variant = (element) }
+#define TextElementAlt4(_variant, _numTiles, _anim)                                     \
     {                                                                                   \
-        .unk0 = (a), .unk4 = (b), .unk6 = (element)                                     \
+        .numTiles = (_numTiles), .anim = (_anim), .variant = (_variant)                 \
     }

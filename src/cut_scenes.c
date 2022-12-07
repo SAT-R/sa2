@@ -7,18 +7,20 @@
 #include "cut_scenes.h"
 #include "malloc_vram.h"
 #include "m4a.h"
-#include "constants/songs.h"
-#include "constants/text.h"
 #include "trig.h"
 #include "course_select.h"
 #include "save.h"
 #include "title_screen.h"
 #include "random.h"
 
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
+
 /** cut_scenes_courses */
 
 struct ResultsCutScene {
-    struct SomeStruct_59E0 *unk0;
+    Player *unk0;
     struct UNK_0808B3FC_UNK240 unk4;
     struct UNK_0808B3FC_UNK240 unk34;
     struct UNK_802D4CC_UNK270 unk64;
@@ -75,19 +77,19 @@ void CreateCourseResultsCutScene(u8 mode)
 
     element = &scene->unk4;
 
-    element->unk4 = VramMalloc(gUnknown_080E11E4[mode * 3]);
-    element->unkA = gUnknown_080E11E4[(mode * 3) + 1];
-    element->unk20 = gUnknown_080E11E4[(mode * 3) + 2];
+    element->vram = VramMalloc(gUnknown_080E11E4[mode * 3]);
+    element->anim = gUnknown_080E11E4[(mode * 3) + 1];
+    element->variant = gUnknown_080E11E4[(mode * 3) + 2];
     element->unk21 = 0xFF;
 
-    element->unk16 = 0;
-    element->unk18 = 0;
+    element->x = 0;
+    element->y = 0;
     element->unk8 = 0;
     element->unk1A = 0x280;
     element->unk1C = 0;
 
     element->unk22 = 0x10;
-    element->unk25 = unk122C[mode];
+    element->focused = unk122C[mode];
 
     if (mode != 2) {
         element->unk10 = 0x400;
@@ -97,23 +99,23 @@ void CreateCourseResultsCutScene(u8 mode)
 
     sub_8004558(element);
 
-    scene->unk34.unk4 = NULL;
+    scene->unk34.vram = NULL;
 
     if (mode == 0) {
         element = &scene->unk34;
-        element->unk4 = VramMalloc(6);
-        element->unkA = 0x1D4;
-        element->unk20 = 0;
+        element->vram = VramMalloc(6);
+        element->anim = SA2_ANIM_CHEESE_DOWNWARDS;
+        element->variant = 0;
         element->unk21 = 0xFF;
 
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk8 = 0;
         element->unk1A = 0x240;
         element->unk1C = 0;
 
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0x400;
         sub_8004558(element);
         m4aSongNumStart(SE_236);
@@ -133,7 +135,7 @@ void sub_808DD9C(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
-    struct SomeStruct_59E0 *player = scene->unk0;
+    Player *player = scene->unk0;
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk64;
 
     scene->unk70 -= scene->unk74;
@@ -147,29 +149,29 @@ void sub_808DD9C(void)
         scene->unk76 = (scene->unk76 * 0x43) >> 6;
     }
 
-    if (scene->unk70 < (player->unk8 - (gCamera.unk0 * 0x100) - 0x1400)) {
-        scene->unk70 = (player->unk8 - (gCamera.unk0 * 0x100) - 0x1400);
+    if (scene->unk70 < (player->x - (gCamera.x * 0x100) - 0x1400)) {
+        scene->unk70 = (player->x - (gCamera.x * 0x100) - 0x1400);
     }
 
-    if (scene->unk72 > (player->unkC - (gCamera.unk4 * 0x100) - 0xA00)) {
+    if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0xA00)) {
         // Required for match
-        scene->unk72 = scene->unk72 = player->unkC - (gCamera.unk4 * 0x100) - 0xA00;
-        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1400;
+        scene->unk72 = scene->unk72 = player->y - (gCamera.y * 0x100) - 0xA00;
+        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1400;
 
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
 
-            VramFree(scene->unk4.unk4);
+            VramFree(scene->unk4.vram);
 
-            element->unk4 = VramMalloc(0x19);
-            element->unkA = 0x82;
-            scene->unk4.unk20 = 0;
+            element->vram = VramMalloc(0x19);
+            element->anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
+            scene->unk4.variant = 0;
             scene->unk4.unk21 = 0xFF;
 
             scene->unk7A = 1;
 
-            scene->unk34.unkA = 0x1D3;
-            scene->unk34.unk20 = 0;
+            scene->unk34.anim = SA2_ANIM_CHEESE_SIDEWAYS_2;
+            scene->unk34.variant = 0;
             scene->unk34.unk21 = 0xFF;
         }
     }
@@ -178,8 +180,8 @@ void sub_808DD9C(void)
         transitionConfig->unk0 = scene->unk0->unk24 << 2;
     }
 
-    element->unk16 = scene->unk70 >> 8;
-    element->unk18 = scene->unk72 >> 8;
+    element->x = scene->unk70 >> 8;
+    element->y = scene->unk72 >> 8;
 
     transitionConfig->unk6 = scene->unk70 >> 8;
     transitionConfig->unk8 = scene->unk72 >> 8;
@@ -187,8 +189,8 @@ void sub_808DD9C(void)
     sub_8004558(element);
     sub_80051E8(element);
 
-    scene->unk34.unk16 = element->unk16;
-    scene->unk34.unk18 = element->unk18;
+    scene->unk34.x = element->x;
+    scene->unk34.y = element->y;
     sub_8004558(&scene->unk34);
     sub_80051E8(&scene->unk34);
 
@@ -203,7 +205,7 @@ void sub_808DF88(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
-    struct SomeStruct_59E0 *player = scene->unk0;
+    Player *player = scene->unk0;
 
     scene->unk70 -= scene->unk74;
     scene->unk72 += scene->unk76;
@@ -216,34 +218,34 @@ void sub_808DF88(void)
         scene->unk76 = (scene->unk76 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 < (player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00)) {
-        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00;
+    if (scene->unk70 < (player->x - (gCamera.x * 0x100) - 0x1C00)) {
+        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1C00;
     }
 
-    if (scene->unk72 > (player->unkC - (gCamera.unk4 * 0x100) - 0x1400)) {
-        scene->unk72 = player->unkC - (gCamera.unk4 * 0x100) - 0x1400;
-        scene->unk70 = player->unk8 - (gCamera.unk0 * 0x100) - 0x1C00;
+    if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0x1400)) {
+        scene->unk72 = player->y - (gCamera.y * 0x100) - 0x1400;
+        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1C00;
 
         if (scene->unk7A == 0) {
-            VramFree(scene->unk4.unk4);
+            VramFree(scene->unk4.vram);
 
-            element->unk4 = VramMalloc(0x24);
-            element->unkA = 0xDF;
-            scene->unk4.unk20 = 1;
+            element->vram = VramMalloc(0x24);
+            element->anim = SA2_ANIM_TAILS_FLYING;
+            scene->unk4.variant = SA2_ANIM_VARIANT_TAILS_FLYING_WAVING_AT_PLAYER;
             scene->unk7A = 1;
             scene->unk7A = 1;
         }
     }
 
-    element->unk16 = scene->unk70 >> 8;
+    element->x = scene->unk70 >> 8;
 
     if (scene->unk7A != 0) {
         s16 sin;
         scene->unk7B += 4;
         sin = SIN(scene->unk7B * 4) >> 12;
-        element->unk18 = (scene->unk72 >> 8) + sin;
+        element->y = (scene->unk72 >> 8) + sin;
     } else {
-        element->unk18 = scene->unk72 >> 8;
+        element->y = (scene->unk72 >> 8);
     }
 
     sub_8004558(element);
@@ -264,7 +266,7 @@ void sub_808E114(void)
     s32 result;
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
-    struct SomeStruct_59E0 *player = scene->unk0;
+    Player *player = scene->unk0;
 
     if (scene->unk78 < 0x2E) {
         scene->unk70 += scene->unk74;
@@ -277,13 +279,13 @@ void sub_808E114(void)
         scene->unk74 = (scene->unk74 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 > (player->unk8 - (gCamera.unk0 * 256) - 0x4000)) {
-        scene->unk70 = player->unk8 - (gCamera.unk0 * 256) - 0x4000;
+    if (scene->unk70 > (player->x - (gCamera.x * 256) - 0x4000)) {
+        scene->unk70 = player->x - (gCamera.x * 256) - 0x4000;
     }
 
-    result = sub_801F100((scene->unk72 >> 8) + gCamera.unk4,
-                         (scene->unk70 >> 8) + gCamera.unk0 + scene->unk7C, 1, 8,
-                         sub_801EC3C);
+    result
+        = sub_801F100((scene->unk72 >> 8) + gCamera.y,
+                      (scene->unk70 >> 8) + gCamera.x + scene->unk7C, 1, 8, sub_801EC3C);
 
     if (result < 0) {
         scene->unk72 += result * 0x100;
@@ -293,8 +295,8 @@ void sub_808E114(void)
         scene->unk72 += 0x100;
     }
 
-    element->unk16 = (scene->unk70 >> 8) + scene->unk7C;
-    element->unk18 = (scene->unk72 >> 8) - 0xE;
+    element->x = (scene->unk70 >> 8) + scene->unk7C;
+    element->y = (scene->unk72 >> 8) - 0xE;
 
     sub_8004558(element);
     sub_80051E8(element);
@@ -586,10 +588,10 @@ void sub_808E83C(void)
 void sub_808E890(struct Task *t)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(t);
-    VramFree(scene->unk4.unk4);
+    VramFree(scene->unk4.vram);
 
-    if (scene->unk34.unk4 != 0) {
-        VramFree(scene->unk34.unk4);
+    if (scene->unk34.vram != 0) {
+        VramFree(scene->unk34.vram);
     }
 }
 
@@ -1061,6 +1063,7 @@ struct CreditsEndCutScene {
     u16 unk162;
     u32 unk164;
     s16 unk168;
+    // vram
     vu32 unk16C;
     s32 unk170[3][2];
 }; /* size: 0x188 */
@@ -1160,19 +1163,19 @@ void sub_808F14C(u8 mode)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unkC0;
-            element->unk4 = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[0].unk0 << 5);
-            element->unkA = gUnknown_080E12D0[0].unk4;
-            element->unk20 = gUnknown_080E12D0[0].unk6;
+            element->vram = (void *)scene->unk16C;
+            scene->unk16C += (gUnknown_080E12D0[0].numTiles << 5);
+            element->anim = gUnknown_080E12D0[0].anim;
+            element->variant = gUnknown_080E12D0[0].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 0x78;
-            element->unk18 = -0x14;
+            element->x = (DISPLAY_WIDTH / 2);
+            element->y = -20;
             element->unk1A = 0;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk10 = 0;
             element->unk28 = -1;
             sub_8004558(element);
@@ -1181,19 +1184,19 @@ void sub_808F14C(u8 mode)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unkF0;
-            element->unk4 = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[1].unk0 << 5);
-            element->unkA = gUnknown_080E12D0[1].unk4;
-            element->unk20 = gUnknown_080E12D0[1].unk6;
+            element->vram = (void *)scene->unk16C;
+            scene->unk16C += (gUnknown_080E12D0[1].numTiles << 5);
+            element->anim = gUnknown_080E12D0[1].anim;
+            element->variant = gUnknown_080E12D0[1].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 0x78;
-            element->unk18 = 0x100;
+            element->x = (DISPLAY_WIDTH / 2);
+            element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             element->unk1A = 0;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk10 = 0;
             element->unk28 = -1;
             sub_8004558(element);
@@ -1202,19 +1205,19 @@ void sub_808F14C(u8 mode)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unk120;
-            element->unk4 = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[2].unk0 << 5);
-            element->unkA = gUnknown_080E12D0[2].unk4;
-            element->unk20 = gUnknown_080E12D0[2].unk6;
+            element->vram = (void *)scene->unk16C;
+            scene->unk16C += (gUnknown_080E12D0[2].numTiles << 5);
+            element->anim = gUnknown_080E12D0[2].anim;
+            element->variant = gUnknown_080E12D0[2].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 0x78;
-            element->unk18 = 0x100;
+            element->x = (DISPLAY_WIDTH / 2);
+            element->y = DISPLAY_HEIGHT + 96;
             element->unk1A = 0;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk10 = 0;
             element->unk28 = -1;
             sub_8004558(element);
@@ -1514,10 +1517,10 @@ void sub_808FA24(struct CreditsEndCutScene *scene)
 
     if (scene->unk168 >= 1) {
         element = &scene->unkC0;
-        element->unkA = gUnknown_080E12D0[0].unk4;
-        element->unk20 = gUnknown_080E12D0[0].unk6;
-        element->unk16 = scene->unk170[0][0];
-        element->unk18 = scene->unk170[0][1] >> 8;
+        element->anim = gUnknown_080E12D0[0].anim;
+        element->variant = gUnknown_080E12D0[0].variant;
+        element->x = scene->unk170[0][0];
+        element->y = scene->unk170[0][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
         scene->unk168--;
@@ -1529,18 +1532,18 @@ void sub_808FA24(struct CreditsEndCutScene *scene)
 
     if (scene->unk15F == 11) {
         element = &scene->unkF0;
-        element->unkA = gUnknown_080E12D0[1].unk4;
-        element->unk20 = gUnknown_080E12D0[1].unk6;
-        element->unk16 = scene->unk170[1][0];
-        element->unk18 = scene->unk170[1][1] >> 8;
+        element->anim = gUnknown_080E12D0[1].anim;
+        element->variant = gUnknown_080E12D0[1].variant;
+        element->x = scene->unk170[1][0];
+        element->y = scene->unk170[1][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
 
         element = &scene->unk120;
-        element->unkA = gUnknown_080E12D0[2].unk4;
-        element->unk20 = gUnknown_080E12D0[2].unk6;
-        element->unk16 = scene->unk170[2][0];
-        element->unk18 = scene->unk170[2][1] >> 8;
+        element->anim = gUnknown_080E12D0[2].anim;
+        element->variant = gUnknown_080E12D0[2].variant;
+        element->x = scene->unk170[2][0];
+        element->y = scene->unk170[2][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -1779,13 +1782,13 @@ void sub_808FC78(void)
     for (i = 0; i < 4; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk280[i];
-        element->unk4 = (void *)scene->unk398;
+        element->vram = (void *)scene->unk398;
         scene->unk398 += 0xA00;
-        element->unkA = gUnknown_080E12FC[i + 3].unk4;
-        element->unk20 = gUnknown_080E12FC[i + 3].unk6;
+        element->anim = gUnknown_080E12FC[i + 3].anim;
+        element->variant = gUnknown_080E12FC[i + 3].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
 
         if (i < 2) {
             element->unk1A = (i + 1) << 6;
@@ -1798,7 +1801,7 @@ void sub_808FC78(void)
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         sub_8004558(element);
     }
@@ -1806,19 +1809,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk40;
-        element->unk4 = (void *)scene->unk398;
+        element->vram = (void *)scene->unk398;
         scene->unk398 += 0x540;
-        element->unkA = gUnknown_080E12FC[0].unk4;
-        element->unk20 = gUnknown_080E12FC[0].unk6;
+        element->anim = gUnknown_080E12FC[0].anim;
+        element->variant = gUnknown_080E12FC[0].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x100;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1827,19 +1830,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk70;
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[7].unk0 << 5;
-        element->unkA = gUnknown_080E12FC[7].unk4;
-        element->unk20 = gUnknown_080E12FC[7].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[7].numTiles << 5;
+        element->anim = gUnknown_080E12FC[7].anim;
+        element->variant = gUnknown_080E12FC[7].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x1C0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1849,19 +1852,19 @@ void sub_808FC78(void)
         struct UNK_0808B3FC_UNK240 *element;
 
         element = &scene->unkA0;
-        element->unk4 = (void *)scene->unk398;
+        element->vram = (void *)scene->unk398;
         scene->unk398 += 0x800;
-        element->unkA = gUnknown_080E12FC[10].unk4;
-        element->unk20 = gUnknown_080E12FC[10].unk6;
+        element->anim = gUnknown_080E12FC[10].anim;
+        element->variant = gUnknown_080E12FC[10].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x240;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1870,19 +1873,19 @@ void sub_808FC78(void)
     for (i = 0; i < 6; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unkD0[i];
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[i + 0xD].unk0 * 0x20;
-        element->unkA = gUnknown_080E12FC[i + 0xD].unk4;
-        element->unk20 = gUnknown_080E12FC[i + 0xD].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * 0x20;
+        element->anim = gUnknown_080E12FC[i + 0xD].anim;
+        element->variant = gUnknown_080E12FC[i + 0xD].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x180;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1891,19 +1894,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk1F0;
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[19].unk0 << 5;
-        element->unkA = gUnknown_080E12FC[19].unk4;
-        element->unk20 = gUnknown_080E12FC[19].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[19].numTiles << 5;
+        element->anim = gUnknown_080E12FC[19].anim;
+        element->variant = gUnknown_080E12FC[19].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x140;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 1;
+        element->focused = 1;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1912,19 +1915,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk220;
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[20].unk0 << 5;
-        element->unkA = gUnknown_080E12FC[20].unk4;
-        element->unk20 = gUnknown_080E12FC[20].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[20].numTiles << 5;
+        element->anim = gUnknown_080E12FC[20].anim;
+        element->variant = gUnknown_080E12FC[20].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0xC0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1933,19 +1936,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk340;
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[9].unk0 << 6;
-        element->unkA = gUnknown_080E12FC[9].unk4;
-        element->unk20 = gUnknown_080E12FC[9].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[9].numTiles << 6;
+        element->anim = gUnknown_080E12FC[9].anim;
+        element->variant = gUnknown_080E12FC[9].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -1954,19 +1957,19 @@ void sub_808FC78(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk250;
-        element->unk4 = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[8].unk0 << 5;
-        element->unkA = gUnknown_080E12FC[8].unk4;
-        element->unk20 = gUnknown_080E12FC[8].unk6;
+        element->vram = (void *)scene->unk398;
+        scene->unk398 += gUnknown_080E12FC[8].numTiles << 5;
+        element->anim = gUnknown_080E12FC[8].anim;
+        element->variant = gUnknown_080E12FC[8].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x200;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -2427,8 +2430,8 @@ void sub_8090F6C(struct ExtraEndingCutScene *scene)
 }
 
 struct UNK_80E1348 {
-    u16 unk0;
-    u8 unk2;
+    AnimId anim;
+    u8 variant;
 };
 extern const struct UNK_80E1348 gUnknown_080E1348[2];
 
@@ -2444,14 +2447,14 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     }
     element = &scene->unk340;
     for (i = 0; i < max; i++) {
-        element->unkA = gUnknown_080E1348[0].unk0;
+        element->anim = gUnknown_080E1348[0].anim;
 #ifndef NON_MATCHING
         while (0)
             ;
 #endif
-        element->unk20 = gUnknown_080E1348[0].unk2;
-        element->unk16 = scene->unk3E8[i][0];
-        element->unk18 = scene->unk3E8[i][1] >> 8;
+        element->variant = gUnknown_080E1348[0].variant;
+        element->x = scene->unk3E8[i][0];
+        element->y = scene->unk3E8[i][1] >> 8;
         sub_80051E8(element);
     }
 
@@ -2459,15 +2462,16 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         max = 0;
         for (i = 0; i < 8; i++) {
             element = &scene->unk280[i & 3];
-            element->unkA = gUnknown_080E12FC[(i & 3) + 3].unk4;
-            element->unk20 = gUnknown_080E12FC[(i & 3) + 3].unk6;
+            element->anim = gUnknown_080E12FC[(i & 3) + 3].anim;
+            element->variant = gUnknown_080E12FC[(i & 3) + 3].variant;
 
             if (i > 4) {
                 max = 1;
             }
 
-            element->unk16 = (scene->unk3A0[i][0] >> 8) - (max * 100);
-            element->unk18 = scene->unk3A0[i][1] >> 8;
+            // TODO: Might be able to use Q_24_8_TO_INT() here
+            element->x = (scene->unk3A0[i][0] >> 8) - (max * 100);
+            element->y = scene->unk3A0[i][1] >> 8;
 
             sub_80051E8(element);
         }
@@ -2475,32 +2479,32 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 
     element = &scene->unk40;
     if (scene->unk37C == 0xD) {
-        element->unkA = gUnknown_080E12FC[1].unk4;
-        element->unk20 = gUnknown_080E12FC[1].unk6;
+        element->anim = gUnknown_080E12FC[1].anim;
+        element->variant = gUnknown_080E12FC[1].variant;
     } else if (scene->unk37C == 0xE || scene->unk37C == 0xF || scene->unk37C == 0x10) {
-        element->unkA = gUnknown_080E12FC[2].unk4;
-        element->unk20 = gUnknown_080E12FC[2].unk6;
+        element->anim = gUnknown_080E12FC[2].anim;
+        element->variant = gUnknown_080E12FC[2].variant;
     } else if (scene->unk37C >= 0x11) {
-        element->unkA = gUnknown_080E12FC[21].unk4;
-        element->unk20 = gUnknown_080E12FC[21].unk6;
+        element->anim = gUnknown_080E12FC[21].anim;
+        element->variant = gUnknown_080E12FC[21].variant;
     }
-    element->unk16 = scene->unk3E0[0] >> 8;
-    element->unk18 = scene->unk3E0[1] >> 8;
+    element->x = scene->unk3E0[0] >> 8;
+    element->y = scene->unk3E0[1] >> 8;
     sub_8004558(element);
     sub_80051E8(element);
 
     if (scene->unk37C < 0xE) {
         element = &scene->unkA0;
-        element->unk16 = scene->unk460;
-        element->unk18 = scene->unk464;
+        element->x = scene->unk460;
+        element->y = scene->unk464;
 
         if (scene->unk37C == 10) {
-            element->unkA = gUnknown_080E12FC[11].unk4;
-            element->unk20 = gUnknown_080E12FC[11].unk6;
+            element->anim = gUnknown_080E12FC[11].anim;
+            element->variant = gUnknown_080E12FC[11].variant;
             sub_8004558(element);
         } else if (scene->unk37C == 0xD) {
-            element->unkA = gUnknown_080E12FC[12].unk4;
-            element->unk20 = gUnknown_080E12FC[12].unk6;
+            element->anim = gUnknown_080E12FC[12].anim;
+            element->variant = gUnknown_080E12FC[12].variant;
             sub_8004558(element);
         }
         sub_80051E8(element);
@@ -2509,26 +2513,26 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     if (scene->unk37C < 0xD) {
         element = &scene->unk1F0;
         for (i = 0; i < scene->unk37C; i++) {
-            element->unk16 = scene->unk4F4[i][0] >> 8;
-            element->unk18 = scene->unk4F4[i][1] >> 8;
+            element->x = scene->unk4F4[i][0] >> 8;
+            element->y = scene->unk4F4[i][1] >> 8;
             sub_8004558(element);
             sub_80051E8(element);
         }
     } else {
         for (i = 0; i < 6; i++) {
             element = &scene->unkD0[i];
-            element->unkA = gUnknown_080E12FC[i + 0xD].unk4;
-            element->unk20 = gUnknown_080E12FC[i + 0xD].unk6;
-            element->unk16 = scene->unk584[i][0] >> 8;
-            element->unk18 = scene->unk584[i][1] >> 8;
+            element->anim = gUnknown_080E12FC[i + 0xD].anim;
+            element->variant = gUnknown_080E12FC[i + 0xD].variant;
+            element->x = scene->unk584[i][0] >> 8;
+            element->y = scene->unk584[i][1] >> 8;
             sub_80051E8(element);
         }
     }
 
     if (gBgScrollRegs[0][1] < 0x6E) {
         element = &scene->unk220;
-        element->unk16 = scene->unk460;
-        element->unk18 = scene->unk464 + 0x1E;
+        element->x = scene->unk460;
+        element->y = scene->unk464 + 0x1E;
         sub_8004558(element);
 
         if (scene->unk380 != 0) {
@@ -2541,8 +2545,8 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     if (scene->unk37C > 0xC) {
         for (i = 0; i < 6; i++) {
             element = &scene->unk70;
-            element->unk16 = scene->unk47C[i][0] >> 8;
-            element->unk18 = scene->unk47C[i][1] >> 8;
+            element->x = scene->unk47C[i][0] >> 8;
+            element->y = scene->unk47C[i][1] >> 8;
 
             if (scene->unk37C >= 0xF) {
                 if (scene->unk387[i] == 1) {
@@ -2564,8 +2568,8 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         }
 
         element = &scene->unk250;
-        element->unk16 = scene->unk470[0] >> 8;
-        element->unk18 = scene->unk470[1] >> 8;
+        element->x = scene->unk470[0] >> 8;
+        element->y = scene->unk470[1] >> 8;
 
         sub_8004558(element);
         sub_80051E8(element);
@@ -2902,19 +2906,19 @@ void sub_8091684(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk80;
-        element->unk4 = (void *)OBJ_VRAM0;
-        scene->unk494 += gUnknown_080E1650[0].unk0 * 0x20;
-        element->unkA = gUnknown_080E1650[0].unk4;
-        element->unk20 = gUnknown_080E1650[0].unk6;
+        element->vram = (void *)OBJ_VRAM0;
+        scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
+        element->anim = gUnknown_080E1650[0].anim;
+        element->variant = gUnknown_080E1650[0].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -2923,17 +2927,17 @@ void sub_8091684(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk110;
-        element->unk4 = (void *)scene->unk494;
+        element->vram = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0x50;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
     }
@@ -2942,17 +2946,17 @@ void sub_8091684(void)
         struct UNK_0808B3FC_UNK240 *element;
 
         element = &scene->unk140;
-        element->unk4 = (void *)scene->unk494;
+        element->vram = (void *)scene->unk494;
         scene->unk494 += 0xC00;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0x50;
+        element->x = 0x78;
+        element->y = 0x50;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
     }
@@ -2960,19 +2964,19 @@ void sub_8091684(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk1A0;
-        element->unk4 = (void *)scene->unk494;
+        element->vram = (void *)scene->unk494;
         scene->unk494 += 0x3C0;
-        element->unkA = gUnknown_080E1650[1].unk4;
-        element->unk20 = gUnknown_080E1650[1].unk6;
+        element->anim = gUnknown_080E1650[1].anim;
+        element->variant = gUnknown_080E1650[1].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x80;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 2;
+        element->focused = 2;
         element->unk10 = 0x2000;
         element->unk28 = -1;
         sub_8004558(element);
@@ -2981,17 +2985,17 @@ void sub_8091684(void)
     for (i = 0; i < 2; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk1D0[i];
-        element->unk4 = (void *)scene->unk494;
-        scene->unk494 += gUnknown_080E1650[(i + 3)].unk0 * 0x20;
+        element->vram = (void *)scene->unk494;
+        scene->unk494 += gUnknown_080E1650[(i + 3)].numTiles * 0x20;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x40;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 2;
+        element->focused = 2;
         element->unk10 = 0x2000;
         element->unk28 = -1;
     }
@@ -3000,17 +3004,17 @@ void sub_8091684(void)
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk230[i];
 
-        element->unk4 = (void *)scene->unk494;
-        scene->unk494 += gUnknown_080E1650[2].unk0 * 0x20;
+        element->vram = (void *)scene->unk494;
+        scene->unk494 += gUnknown_080E1650[2].numTiles * 0x20;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 2;
+        element->focused = 2;
         element->unk10 = 0x2000;
         element->unk28 = -1;
     }
@@ -3018,19 +3022,19 @@ void sub_8091684(void)
     if (gSelectedCharacter == 1) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk170;
-        element->unk4 = (void *)scene->unk494;
-        scene->unk494 += gUnknown_080E1650[27].unk0 * 0x20;
-        element->unkA = gUnknown_080E1650[27].unk4;
-        element->unk20 = gUnknown_080E1650[27].unk6;
+        element->vram = (void *)scene->unk494;
+        scene->unk494 += gUnknown_080E1650[27].numTiles * 0x20;
+        element->anim = gUnknown_080E1650[27].anim;
+        element->variant = gUnknown_080E1650[27].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 2;
+        element->focused = 2;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3039,19 +3043,19 @@ void sub_8091684(void)
     for (i = 0; i < 2; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unkB0[i];
-        element->unk4 = (void *)scene->unk494;
+        element->vram = (void *)scene->unk494;
         scene->unk494 += 1;
-        element->unkA = gUnknown_080E1650[(i + 5)].unk4;
-        element->unk20 = gUnknown_080E1650[(i + 5)].unk6;
+        element->anim = gUnknown_080E1650[(i + 5)].anim;
+        element->variant = gUnknown_080E1650[(i + 5)].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3369,11 +3373,11 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
 
     element = &scene->unk80;
     for (i = 0; i < 10; i++) {
-        element->unkA = gUnknown_080E1650[0].unk4;
-        element->unk20 = gUnknown_080E1650[0].unk6;
+        element->anim = gUnknown_080E1650[0].anim;
+        element->variant = gUnknown_080E1650[0].variant;
 
-        element->unk16 = scene->unk3F8[i][0];
-        element->unk18 = scene->unk3F8[i][1] >> 8;
+        element->x = scene->unk3F8[i][0];
+        element->y = scene->unk3F8[i][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -3383,10 +3387,10 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
     }
 
     element = &scene->unk1A0;
-    element->unkA = gUnknown_080E1650[variant + 1].unk4;
-    element->unk20 = gUnknown_080E1650[variant + 1].unk6;
-    element->unk16 = scene->unk3C0;
-    element->unk18 = scene->unk3C4 >> 8;
+    element->anim = gUnknown_080E1650[variant + 1].anim;
+    element->variant = gUnknown_080E1650[variant + 1].variant;
+    element->x = scene->unk3C0;
+    element->y = scene->unk3C4 >> 8;
 
     sub_8004558(element);
     sub_80051E8(element);
@@ -3395,20 +3399,20 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
         for (i = 0; i < 6; i++) {
             if (((scene->unk3C4 >> 8) + gBgScrollRegs[1][1]) < 0xE4) {
                 element = &scene->unk1D0[i & 1];
-                element->unkA = gUnknown_080E1650[(i & 1) + 3].unk4;
-                element->unk20 = gUnknown_080E1650[(i & 1) + 3].unk6;
-                element->unk16 = scene->unk378[i][0];
-                element->unk18 = scene->unk378[i][1] >> 8;
+                element->anim = gUnknown_080E1650[(i & 1) + 3].anim;
+                element->variant = gUnknown_080E1650[(i & 1) + 3].variant;
+                element->x = scene->unk378[i][0];
+                element->y = scene->unk378[i][1] >> 8;
                 sub_8004558(element);
                 sub_80051E8(element);
             }
 
             if (scene->unk365[i] != 0) {
                 element = &scene->unk230[i];
-                element->unkA = gUnknown_080E1650[2].unk4;
-                element->unk20 = gUnknown_080E1650[2].unk6;
-                element->unk16 = scene->unk3C8[i][0];
-                element->unk18 = scene->unk3C8[i][1] >> 8;
+                element->anim = gUnknown_080E1650[2].anim;
+                element->variant = gUnknown_080E1650[2].variant;
+                element->x = scene->unk3C8[i][0];
+                element->y = scene->unk3C8[i][1] >> 8;
 
                 if (sub_8004558(element) != 1) {
                     element->unk14 = 0;
@@ -3424,10 +3428,10 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
         variant = 1;
     }
     element = &scene->unk110;
-    element->unkA = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].unk4;
-    element->unk20 = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].unk6;
-    element->unk16 = scene->unk3A8;
-    element->unk18 = scene->unk3AC >> 8;
+    element->anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].anim;
+    element->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].variant;
+    element->x = scene->unk3A8;
+    element->y = scene->unk3AC >> 8;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -3436,19 +3440,20 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
     }
 
     element = &scene->unk140;
-    element->unkA = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].unk4;
-    element->unk20 = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].unk6;
-    element->unk16 = scene->unk3B4;
-    element->unk18 = scene->unk3B8 >> 8;
+    element->anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
+    element->variant
+        = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
+    element->x = scene->unk3B4;
+    element->y = scene->unk3B8 >> 8;
     sub_8004558(element);
     sub_80051E8(element);
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         element = &scene->unk170;
-        element->unkA = gUnknown_080E1650[variant + 0x1B].unk4;
-        element->unk20 = gUnknown_080E1650[variant + 0x1B].unk6;
-        element->unk16 = scene->unk3B4;
-        element->unk18 = scene->unk3B8 >> 8;
+        element->anim = gUnknown_080E1650[variant + 0x1B].anim;
+        element->variant = gUnknown_080E1650[variant + 0x1B].variant;
+        element->x = scene->unk3B4;
+        element->y = scene->unk3B8 >> 8;
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -3727,19 +3732,19 @@ void sub_80928F8(void)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unk110;
-            element->unk4 = (void *)scene->unk618;
+            element->vram = (void *)scene->unk618;
             scene->unk618 += 0x300;
-            element->unkA = gUnknown_080E17A4[32].unk4;
-            element->unk20 = gUnknown_080E17A4[32].unk6;
+            element->anim = gUnknown_080E17A4[32].anim;
+            element->variant = gUnknown_080E17A4[32].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 200;
-            element->unk18 = 100;
+            element->x = 200;
+            element->y = 100;
             element->unk1A = 0x80;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 1;
+            element->focused = 1;
             element->unk10 = 0;
             element->unk28 = -1;
             sub_8004558(element);
@@ -3748,17 +3753,17 @@ void sub_80928F8(void)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unk140;
-            element->unk4 = (void *)scene->unk618;
+            element->vram = (void *)scene->unk618;
             scene->unk618 += 0x120;
             element->unk21 = 0xFF;
-            element->unk16 = 0x6E;
-            element->unk18 = 0xFFEC;
+            element->x = (DISPLAY_WIDTH / 2) - 10;
+            element->y = -20;
             element->unk1A = 0x40;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk10 = 0;
             element->unk28 = -1;
         }
@@ -3766,19 +3771,19 @@ void sub_80928F8(void)
         {
             struct UNK_0808B3FC_UNK240 *element;
             element = &scene->unk170;
-            element->unk4 = (void *)scene->unk618;
-            scene->unk618 += gUnknown_080E17A4[49].unk0 * 0x20;
-            element->unkA = gUnknown_080E17A4[49].unk4;
-            element->unk20 = gUnknown_080E17A4[49].unk6;
+            element->vram = (void *)scene->unk618;
+            scene->unk618 += gUnknown_080E17A4[49].numTiles * 0x20;
+            element->anim = gUnknown_080E17A4[49].anim;
+            element->variant = gUnknown_080E17A4[49].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 0;
-            element->unk18 = 0;
+            element->x = 0;
+            element->y = 0;
             element->unk1A = 0x40;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 2;
+            element->focused = 2;
             element->unk10 = 0;
             element->unk28 = -1;
             sub_8004558(element);
@@ -3788,19 +3793,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk80;
-        element->unk4 = (void *)scene->unk618;
+        element->vram = (void *)scene->unk618;
         scene->unk618 += 0x800;
-        element->unkA = gUnknown_080E17A4[gSelectedCharacter].unk4;
-        element->unk20 = gUnknown_080E17A4[gSelectedCharacter].unk6;
+        element->anim = gUnknown_080E17A4[gSelectedCharacter].anim;
+        element->variant = gUnknown_080E17A4[gSelectedCharacter].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0xFFEC;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = -20;
         element->unk1A = 0x40;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3811,27 +3816,27 @@ void sub_80928F8(void)
         transformer = &scene->unk320;
 
         element = &scene->unkB0;
-        element->unk4 = (void *)scene->unk618;
+        element->vram = (void *)scene->unk618;
         scene->unk618 += 0x800;
-        element->unkA = gUnknown_080E17A4[gSelectedCharacter + 0x14].unk4;
-        element->unk20 = gUnknown_080E17A4[gSelectedCharacter + 0x14].unk6;
+        element->anim = gUnknown_080E17A4[gSelectedCharacter + 0x14].anim;
+        element->variant = gUnknown_080E17A4[gSelectedCharacter + 0x14].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0x40;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0x60;
         element->unk28 = -1;
 
         transformer->unk0 = 0;
         transformer->unk2 = scene->unk340;
         transformer->unk4 = scene->unk340;
-        transformer->unk6[0] = element->unk16;
-        transformer->unk6[1] = element->unk18;
+        transformer->unk6[0] = element->x;
+        transformer->unk6[1] = element->y;
 
         sub_8004558(element);
     }
@@ -3839,19 +3844,19 @@ void sub_80928F8(void)
     for (i = 0; i < 2; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk260[i];
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[0x24 + i].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[36].unk4;
-        element->unk20 = gUnknown_080E17A4[36].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[0x24 + i].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[36].anim;
+        element->variant = gUnknown_080E17A4[36].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0;
+        element->x = 0;
+        element->y = 0;
         element->unk1A = 0xC0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3860,19 +3865,19 @@ void sub_80928F8(void)
     for (i = 0; i < 2; i++) {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk2C0[i];
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[0x26 + i].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[38].unk4;
-        element->unk20 = gUnknown_080E17A4[38].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[0x26 + i].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[38].anim;
+        element->variant = gUnknown_080E17A4[38].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x1E;
-        element->unk18 = 0x1E;
+        element->x = 30;
+        element->y = 30;
         element->unk1A = 0xC0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3881,19 +3886,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk1A0;
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[35].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[35].unk4;
-        element->unk20 = gUnknown_080E17A4[35].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[35].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[35].anim;
+        element->variant = gUnknown_080E17A4[35].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0;
-        element->unk18 = 0x1E;
+        element->x = 0;
+        element->y = 30;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3902,19 +3907,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk1D0;
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[40].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[40].unk4;
-        element->unk20 = gUnknown_080E17A4[40].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[40].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[40].anim;
+        element->variant = gUnknown_080E17A4[40].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0xFFEC;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = -20;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3923,19 +3928,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk200;
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[41].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[41].unk4;
-        element->unk20 = gUnknown_080E17A4[41].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[41].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[41].anim;
+        element->variant = gUnknown_080E17A4[41].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0x100;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3944,19 +3949,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk230;
-        element->unk4 = (void *)scene->unk618;
-        scene->unk618 += gUnknown_080E17A4[42].unk0 * 0x20;
-        element->unkA = gUnknown_080E17A4[42].unk4;
-        element->unk20 = gUnknown_080E17A4[42].unk6;
+        element->vram = (void *)scene->unk618;
+        scene->unk618 += gUnknown_080E17A4[42].numTiles * 0x20;
+        element->anim = gUnknown_080E17A4[42].anim;
+        element->variant = gUnknown_080E17A4[42].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0x100;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -3965,19 +3970,19 @@ void sub_80928F8(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unkE0;
-        element->unk4 = (void *)scene->unk618;
+        element->vram = (void *)scene->unk618;
         scene->unk618 += 0x1500;
-        element->unkA = gUnknown_080E17A4[gSelectedCharacter + 0x19].unk4;
-        element->unk20 = gUnknown_080E17A4[gSelectedCharacter + 0x19].unk6;
+        element->anim = gUnknown_080E17A4[gSelectedCharacter + 0x19].anim;
+        element->variant = gUnknown_080E17A4[gSelectedCharacter + 0x19].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
-        element->unk18 = 0;
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = 0;
         element->unk1A = 0x40;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 1;
+        element->focused = 1;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);
@@ -4251,46 +4256,47 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
         element = &scene->unk80;
 
         if (scene->unk338 < 3) {
-            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+            element->anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
                                               + gSelectedCharacter]
-                                .unk4;
-            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .unk6;
+                                .anim;
+            element->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                                 + gSelectedCharacter]
+                                   .variant;
         } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
-            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk4;
-            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].unk6;
+            element->anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].anim;
+            element->variant
+                = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].variant;
 
         } else if (gSelectedCharacter == 1) {
-            element->unkA = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+            element->anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
                                               + gSelectedCharacter]
-                                .unk4;
-            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .unk6;
+                                .anim;
+            element->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
+                                                 + gSelectedCharacter]
+                                   .variant;
         } else {
-            element->unkA = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+            element->anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
                                               + gSelectedCharacter]
-                                .unk4;
-            element->unk20 = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .unk6;
+                                .anim;
+            element->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
+                                                 + gSelectedCharacter]
+                                   .variant;
         }
-        element->unk16 = scene->unk5E0[0][0] >> 8;
-        element->unk18 = scene->unk5E0[0][1] >> 8;
+        element->x = scene->unk5E0[0][0] >> 8;
+        element->y = scene->unk5E0[0][1] >> 8;
     }
 
     if ((gSelectedCharacter != 1 && scene->unk338 == 4)
         || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
         element = &scene->unkB0;
 
-        element->unk16 = scene->unk5E0[0][0] >> 8;
-        element->unk18 = scene->unk5E0[0][1] >> 8;
+        element->x = scene->unk5E0[0][0] >> 8;
+        element->y = scene->unk5E0[0][1] >> 8;
 
         transformer->unk2 = scene->unk340;
         transformer->unk4 = scene->unk340;
-        transformer->unk6[0] = element->unk16;
-        transformer->unk6[1] = element->unk18;
+        transformer->unk6[0] = element->x;
+        transformer->unk6[1] = element->y;
         sub_8004860(element, transformer);
     }
 
@@ -4301,34 +4307,34 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
         || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
         element = &scene->unkE0;
         if (gSelectedCharacter != 1) {
-            element->unkA
-                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk4;
-            element->unk20
-                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].unk6;
+            element->anim
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].anim;
+            element->variant
+                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].variant;
         } else {
-            element->unkA
-                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk4;
-            element->unk20
-                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].unk6;
+            element->anim
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].anim;
+            element->variant
+                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].variant;
         }
-        element->unk16 = scene->unk5E0[0][0] >> 8;
-        element->unk18 = scene->unk5E0[0][1] >> 8;
+        element->x = scene->unk5E0[0][0] >> 8;
+        element->y = scene->unk5E0[0][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     if (scene->unk338 != 0 && scene->unk33D == 0) {
         element = &scene->unk1A0;
-        element->unkA = gUnknown_080E17A4[35].unk4;
-        element->unk20 = gUnknown_080E17A4[35].unk6;
+        element->anim = gUnknown_080E17A4[35].anim;
+        element->variant = gUnknown_080E17A4[35].variant;
         element->unk10 |= 0x400;
-        element->unk16 = scene->unk80.unk16;
-        element->unk18 = scene->unk80.unk18 + 0x19;
+        element->x = scene->unk80.x;
+        element->y = scene->unk80.y + 0x19;
         sub_80051E8(element);
 
         element->unk10 &= ~0x400;
-        element->unk16 = scene->unk80.unk16;
-        element->unk18 = scene->unk80.unk18 + 0x19;
+        element->x = scene->unk80.x;
+        element->y = scene->unk80.y + 0x19;
 
         if (sub_8004558(element) != 1) {
             scene->unk33D = 1;
@@ -4339,8 +4345,8 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
 
     for (i = 0; i < (0x14 - scene->unk33C); i++) {
         element = &scene->unk260[i & 1];
-        element->unkA = gUnknown_080E17A4[(i & 1) + 0x24].unk4;
-        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x24].unk6;
+        element->anim = gUnknown_080E17A4[(i & 1) + 0x24].anim;
+        element->variant = gUnknown_080E17A4[(i & 1) + 0x24].variant;
 
         if (scene->unk34C[i][4] != 0) {
             element->unk10 |= 0x400;
@@ -4348,8 +4354,8 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
             element->unk10 &= ~0x400;
         }
 
-        element->unk16 = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
-        element->unk18 = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
+        element->x = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
+        element->y = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
             + (scene->unk34C[i][1] >> 8);
 
         sub_8004558(element);
@@ -4358,8 +4364,8 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
 
     for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
         element = &scene->unk2C0[i & 1];
-        element->unkA = gUnknown_080E17A4[(i & 1) + 0x26].unk4;
-        element->unk20 = gUnknown_080E17A4[(i & 1) + 0x26].unk6;
+        element->anim = gUnknown_080E17A4[(i & 1) + 0x26].anim;
+        element->variant = gUnknown_080E17A4[(i & 1) + 0x26].variant;
 
         if (scene->unk4DC[i][4] > 0) {
             element->unk10 |= 0x400;
@@ -4367,8 +4373,8 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
             element->unk10 &= ~0x400;
         }
 
-        element->unk16 = scene->unk4DC[i][0] >> 8;
-        element->unk18 = scene->unk4DC[i][1] >> 8;
+        element->x = scene->unk4DC[i][0] >> 8;
+        element->y = scene->unk4DC[i][1] >> 8;
 
         sub_8004558(element);
         sub_80051E8(element);
@@ -4376,10 +4382,10 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
 
     if (scene->unk34A >= 1) {
         element = &scene->unk1D0;
-        element->unkA = gUnknown_080E17A4[40].unk4;
-        element->unk20 = gUnknown_080E17A4[40].unk6;
-        element->unk16 = scene->unk5E0[0][4];
-        element->unk18 = scene->unk5E0[0][5] >> 8;
+        element->anim = gUnknown_080E17A4[40].anim;
+        element->variant = gUnknown_080E17A4[40].variant;
+        element->x = scene->unk5E0[0][4];
+        element->y = scene->unk5E0[0][5] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
         scene->unk34A--;
@@ -4394,45 +4400,45 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
     if ((gSelectedCharacter == 1 && scene->unk338 > 5)
         || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
         element = &scene->unk200;
-        element->unkA = gUnknown_080E17A4[41].unk4;
-        element->unk20 = gUnknown_080E17A4[41].unk6;
-        element->unk16 = scene->unk5E0[0][6];
-        element->unk18 = scene->unk5E0[0][7] >> 8;
+        element->anim = gUnknown_080E17A4[41].anim;
+        element->variant = gUnknown_080E17A4[41].variant;
+        element->x = scene->unk5E0[0][6];
+        element->y = scene->unk5E0[0][7] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
 
         element = &scene->unk230;
-        element->unkA = gUnknown_080E17A4[42].unk4;
-        element->unk20 = gUnknown_080E17A4[42].unk6;
-        element->unk16 = scene->unk5E0[0][8];
-        element->unk18 = scene->unk5E0[0][9] >> 8;
+        element->anim = gUnknown_080E17A4[42].anim;
+        element->variant = gUnknown_080E17A4[42].variant;
+        element->x = scene->unk5E0[0][8];
+        element->y = scene->unk5E0[0][9] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
     }
 
     if (gSelectedCharacter == 1) {
         element = &scene->unk110;
-        element->unkA = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk4;
-        element->unk20 = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].unk6;
-        element->unk16 = scene->unk5E0[0][2];
-        element->unk18 = scene->unk5E0[0][3] >> 8;
+        element->anim = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].anim;
+        element->variant = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].variant;
+        element->x = scene->unk5E0[0][2];
+        element->y = scene->unk5E0[0][3] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
 
         if (scene->unk338 < 6) {
             element = &scene->unk140;
-            element->unkA = gUnknown_080E17A4[0x2B + scene->unk338].unk4;
-            element->unk20 = gUnknown_080E17A4[0x2B + scene->unk338].unk6;
+            element->anim = gUnknown_080E17A4[0x2B + scene->unk338].anim;
+            element->variant = gUnknown_080E17A4[0x2B + scene->unk338].variant;
             element->unk10 |= 0x400;
-            element->unk16 = ((scene->unk5E0[0][0] >> 8) - 0x14);
-            element->unk18 = (scene->unk5E0[0][1] >> 8) - 0x14;
+            element->x = ((scene->unk5E0[0][0] >> 8) - 0x14);
+            element->y = (scene->unk5E0[0][1] >> 8) - 0x14;
         } else {
             element = &scene->unk170;
-            element->unkA = gUnknown_080E17A4[49].unk4;
-            element->unk20 = gUnknown_080E17A4[49].unk6;
+            element->anim = gUnknown_080E17A4[49].anim;
+            element->variant = gUnknown_080E17A4[49].variant;
             element->unk10 &= ~0x400;
-            element->unk16 = scene->unk5E0[0][0] >> 8;
-            element->unk18 = scene->unk5E0[0][1] >> 8;
+            element->x = scene->unk5E0[0][0] >> 8;
+            element->y = scene->unk5E0[0][1] >> 8;
         }
         sub_8004558(element);
         sub_80051E8(element);
@@ -4616,26 +4622,26 @@ void sub_8094118(void)
     {
         struct UNK_0808B3FC_UNK240 *element;
         element = &scene->unk80;
-        element->unk4 = (void *)OBJ_VRAM0;
+        element->vram = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
-            scene->unkC4 += gUnknown_080E1CA0[0].unk0 * 0x20;
-            element->unkA = gUnknown_080E1CA0[0].unk4;
-            element->unk20 = gUnknown_080E1CA0[0].unk6;
-            element->unk18 = 0x55;
+            scene->unkC4 += gUnknown_080E1CA0[0].numTiles * 0x20;
+            element->anim = gUnknown_080E1CA0[0].anim;
+            element->variant = gUnknown_080E1CA0[0].variant;
+            element->y = 85;
         } else {
             scene->unkC4 += 0xA00;
-            element->unkA = gUnknown_080E1CA0[1].unk4;
-            element->unk20 = gUnknown_080E1CA0[1].unk6;
-            element->unk18 = 0x5A;
+            element->anim = gUnknown_080E1CA0[1].anim;
+            element->variant = gUnknown_080E1CA0[1].variant;
+            element->y = 90;
         }
         element->unk21 = 0xFF;
-        element->unk16 = 0x78;
+        element->x = (DISPLAY_WIDTH / 2);
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk10 = 0;
         element->unk28 = -1;
         sub_8004558(element);

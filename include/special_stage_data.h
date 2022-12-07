@@ -2,6 +2,7 @@
 #define GUARD_SPECIAL_STAGE_DATA_H
 
 #include "global.h"
+#include "sprite.h" // for the 'AnimId' type
 #include "zones.h"
 
 #define SPRITE_ARRAY_END                                                                \
@@ -30,16 +31,22 @@ struct UNK_8C87904 {
 } /* size 0xC */;
 
 struct UNK_80DF670 {
-    u16 unk0;
-    u16 unk2;
+    /* 0x00 */ AnimId anim;
+    /* 0x02 */ u16 variant;
     u16 unk4;
     u8 unk6;
     u8 unk7;
 } /* size 0x8 */;
 
 struct UNK_8C87920 {
-    u16 unk0;
-    u16 unk2;
+    /* 0x00 */ AnimId anim;
+    /* 0x02 */ u16 variant;
+};
+
+// They used a different struct with the same content..?
+struct UNK_8C87920_SWAPPED {
+    /* 0x00 */ u16 variant;
+    /* 0x02 */ AnimId anim;
 };
 
 // sprites
