@@ -202,8 +202,8 @@ void sub_808207C(void)
 
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             element = &resultsScreen->unk400;
-            element->x = (DISPLAY_WIDTH/2);
-            element->y = (DISPLAY_HEIGHT/2);
+            element->x = (DISPLAY_WIDTH / 2);
+            element->y = (DISPLAY_HEIGHT / 2);
 
             if (resultsScreen->unk434) {
                 element->vram = resultsScreen->unk370[2].vram + 0x180;
@@ -449,7 +449,7 @@ void sub_8082788(void)
                 u16 temp;
 
                 element = &resultsScreen->unk80[i].unk0;
-                element->x = (DISPLAY_WIDTH/2);
+                element->x = (DISPLAY_WIDTH / 2);
                 element->y = gUnknown_030054B4[i] * 40 + 20;
                 sub_8004558(element);
                 sub_80051E8(element);
@@ -484,7 +484,7 @@ void sub_8082788(void)
             } else {
                 u16 temp;
                 element = &resultsScreen->unk80[i].unk0;
-                element->x = (DISPLAY_WIDTH/2);
+                element->x = (DISPLAY_WIDTH / 2);
                 element->y = i * 40 + 20;
                 sub_8004558(element);
                 sub_80051E8(element);

@@ -51,31 +51,36 @@ const struct UNK_080E0D64 gUnknown_080E0384[30] = {
     TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_EN),
-    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_EN),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168,
+                    SA2_ANIM_TIME_ATTACK_EN),
 
     TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_DE),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_DE),
-    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_DE),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168,
+                    SA2_ANIM_TIME_ATTACK_DE),
 
     TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_FR),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_FR),
-    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_FR),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168,
+                    SA2_ANIM_TIME_ATTACK_FR),
 
     TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_ES),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_ES),
-    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_ES),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168,
+                    SA2_ANIM_TIME_ATTACK_ES),
 
     TextElementAlt4(SA2_ANIM_VARIANT_TA_ZONE, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_BOSS, 12, SA2_ANIM_TIME_ATTACK_EN),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP, 168, SA2_ANIM_TIME_ATTACK_IT),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP, 168, SA2_ANIM_TIME_ATTACK_IT),
-    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168, SA2_ANIM_TIME_ATTACK_IT),
+    TextElementAlt4(SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET, 168,
+                    SA2_ANIM_TIME_ATTACK_IT),
 };
 
 void CreateTimeAttackModeSelectionScreen(void)
@@ -141,7 +146,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkB0;
-    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
+    element->vram
+        = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
     element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
     element->unk21 = 0xFF;
@@ -158,7 +164,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkE0;
-    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
+    element->vram
+        = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
     element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
     element->unk21 = 0xFF;
@@ -175,7 +182,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->infoText;
-    element->vram = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
+    element->vram
+        = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
     element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
     element->unk21 = 0xFF;

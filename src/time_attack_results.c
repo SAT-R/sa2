@@ -94,7 +94,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     for (i = 0; i < 7; i++) {
         element = &resultsCutScene->unk178[i];
         element->x = i * 14 + 72;
-        element->y = (DISPLAY_HEIGHT/2) + 8;
+        element->y = (DISPLAY_HEIGHT / 2) + 8;
         element->vram = VramMalloc(4);
         element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
         element->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
@@ -125,7 +125,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
 
     element = &resultsCutScene->unk12C;
     element->x = 256;
-    element->y = (DISPLAY_HEIGHT/2);
+    element->y = (DISPLAY_HEIGHT / 2);
     element->vram = VramMalloc(4);
     element->anim = SA2_ANIM_TA_WHITE_BAR;
     element->variant = 0;
@@ -217,12 +217,13 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     sub_8004558(element);
 
     element = &resultsCutScene->unk9C[1];
-    element->x = (DISPLAY_WIDTH/2);
-    element->y = (DISPLAY_HEIGHT * (3./4.));
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT * (3. / 4.));
     element->vram = VramMalloc(16);
     element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
     if (resultsCutScene->unk2D8 != 0) {
-        element->variant = resultsCutScene->unk2D8 + SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_BRONZE;
+        element->variant
+            = resultsCutScene->unk2D8 + SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_BRONZE;
     } else {
         element->variant = SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD;
     }

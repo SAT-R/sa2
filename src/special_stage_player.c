@@ -114,8 +114,8 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         element->unk8 = 0;
         element->anim = SA2_ANIM_SP_STAGE_ARROW;
         element->unk10 = 0x107E;
-        element->x = (DISPLAY_WIDTH/2);
-        element->y = (DISPLAY_HEIGHT/2);
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
         element->unk1C = 0;
         element->unk1E = -1;
@@ -317,7 +317,7 @@ void sub_806D548(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 a, u8 b,
     element->unk8 = 0;
     element->anim = c4->anim;
     element->unk10 = unk10;
-    element->x = (DISPLAY_WIDTH/2);
+    element->x = (DISPLAY_WIDTH / 2);
     element->y = a;
     element->unk1A = b << 6;
     element->unk1C = 0;

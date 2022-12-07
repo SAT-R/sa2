@@ -128,10 +128,8 @@ void sub_8089E54(void)
         particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
         particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
         element = &particles->unk0;
-        element->x
-            = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
-        element->y
-            = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
+        element->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
+        element->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
         sub_80051E8(element);
     }
 
@@ -196,17 +194,15 @@ void sub_808A0A4(void)
     for (i = 0; i < 8; i++) {
         element = &particles->unk0;
         if (particles->unk60 & 1) {
-            element->x
-                = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
-            element->y
-                = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
+            element->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
+            element->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
             sub_8004558(element);
 
         } else {
-            element->x = ((gPlayer.x >> 8) - gCamera.x)
-                + (particles->unk62[i + 8][0] >> 8);
-            element->y = ((gPlayer.y >> 8) - gCamera.y)
-                + (particles->unk62[i + 8][1] >> 8);
+            element->x
+                = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
+            element->y
+                = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
         }
         sub_80051E8(element);
     }

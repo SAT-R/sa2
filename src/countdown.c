@@ -149,7 +149,8 @@ void sub_8036168(void)
 
     if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
         element = &countdown->unk30;
-        element->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
+        element->variant = SA2_ANIM_VARIANT_COUNTDOWN_1
+            - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         element->unk21 = 0xFF;
         element->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
         element->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
@@ -157,7 +158,7 @@ void sub_8036168(void)
         sub_80051E8(element);
     }
 
-    if (countdown->unk68 >= (int)((1 + 1./6.) * GBA_FRAMES_PER_SECOND)
+    if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND)
         && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
         gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].anim;
         gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].variant;
@@ -252,8 +253,8 @@ void sub_8036524(void)
     element = &startMessage->unk0;
     transformConfig = &startMessage->unk30;
 
-    element->x = (DISPLAY_WIDTH/2);
-    element->y = (DISPLAY_HEIGHT/4);
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT / 4);
     element->unk10 = gUnknown_030054B8++ | 0x60;
     transformConfig->unk0 = 0;
     unk78 = startMessage->unk78;

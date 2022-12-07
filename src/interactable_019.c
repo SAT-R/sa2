@@ -114,9 +114,9 @@ void Task_Interactable_019(void)
     // _0805E2C2
 
     if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-     || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
-     || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-     || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
+         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
+         || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y))) {
         ia->x = base->spriteX;
         TaskDestroy(gCurTask);
@@ -207,7 +207,8 @@ void Task_805E480(void)
 
             if (value > 0) {
                 if (r6 == 0 && value == 1) {
-                    if ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == displayed) {
+                    if ((gPlayer.moveState & MOVESTATE_8)
+                        && gPlayer.unk3C == displayed) {
                         gPlayer.moveState
                             = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
                     }
@@ -231,8 +232,7 @@ void Task_805E480(void)
             if (iwram_end == pointer)
                 return;
 
-            pointer->all.attr0
-                = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1
@@ -307,8 +307,7 @@ void Task_805E6A4(void)
                 return;
             }
 
-            pointer->all.attr0
-                = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
 
             if (displayed->unk10 & 0x400) {
                 pointer->all.attr1

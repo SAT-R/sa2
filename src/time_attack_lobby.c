@@ -116,7 +116,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             element->anim = gUnknown_080E04D4[lang * 5 + i].anim;
             element->variant = gUnknown_080E04D4[lang * 5 + i].variant;
             element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH/2);
+            element->x = (DISPLAY_WIDTH / 2);
             element->y = i * 16 + 24;
             if (i > 2) {
                 element->y -= 16;
@@ -156,7 +156,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     element->variant = gUnknown_080E0474[gSelectedCharacter].variant;
     element->unk21 = 0xFF;
     element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT * (13./16.));
+    element->y = (DISPLAY_HEIGHT * (13. / 16.));
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -176,8 +176,8 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         element->anim = gUnknown_080E04C4[0].anim;
         element->variant = gUnknown_080E04C4[0].variant;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH * (5./12.));
-        element->y = (DISPLAY_HEIGHT * (11./16.));
+        element->x = (DISPLAY_WIDTH * (5. / 12.));
+        element->y = (DISPLAY_HEIGHT * (11. / 16.));
         element->unk1A = 0x140;
         element->unk8 = 0;
         element->unk14 = 0;
@@ -370,7 +370,8 @@ void sub_8088EB4(void)
         if (lobbyScreen->unk1AD != 3) {
             element = &lobbyScreen->unk80;
             VramFree(element->vram);
-            element->vram = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
+            element->vram
+                = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
             element->anim = gUnknown_080E0474[gSelectedCharacter + 5].anim;
             element->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
             element->unk21 = 0xFF;

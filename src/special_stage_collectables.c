@@ -420,8 +420,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             memcpy(element2, &collectables->unk64, sizeof(struct UNK_0808B3FC_UNK240));
             element2->unk10 = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
-            element2->y
-                = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
+            element2->y = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
             element2->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
             sub_806CD68(element2);
 

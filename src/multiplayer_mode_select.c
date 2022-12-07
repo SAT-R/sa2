@@ -280,7 +280,7 @@ static void Task_EnterAnimPart2(void)
     } else {
         unk80->x = (DISPLAY_WIDTH / 3);
     }
-    unk80->y = (DISPLAY_HEIGHT * (3./8.));
+    unk80->y = (DISPLAY_HEIGHT * (3. / 8.));
 
     unk80 = &modeScreen->unkE0;
 

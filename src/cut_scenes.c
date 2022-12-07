@@ -283,9 +283,9 @@ void sub_808E114(void)
         scene->unk70 = player->x - (gCamera.x * 256) - 0x4000;
     }
 
-    result = sub_801F100((scene->unk72 >> 8) + gCamera.y,
-                         (scene->unk70 >> 8) + gCamera.x + scene->unk7C, 1, 8,
-                         sub_801EC3C);
+    result
+        = sub_801F100((scene->unk72 >> 8) + gCamera.y,
+                      (scene->unk70 >> 8) + gCamera.x + scene->unk7C, 1, 8, sub_801EC3C);
 
     if (result < 0) {
         scene->unk72 += result * 0x100;
@@ -1168,7 +1168,7 @@ void sub_808F14C(u8 mode)
             element->anim = gUnknown_080E12D0[0].anim;
             element->variant = gUnknown_080E12D0[0].variant;
             element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH/2);
+            element->x = (DISPLAY_WIDTH / 2);
             element->y = -20;
             element->unk1A = 0;
             element->unk8 = 0;
@@ -1189,7 +1189,7 @@ void sub_808F14C(u8 mode)
             element->anim = gUnknown_080E12D0[1].anim;
             element->variant = gUnknown_080E12D0[1].variant;
             element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH/2);
+            element->x = (DISPLAY_WIDTH / 2);
             element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             element->unk1A = 0;
             element->unk8 = 0;
@@ -2930,8 +2930,8 @@ void sub_8091684(void)
         element->vram = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
-        element->y = (DISPLAY_HEIGHT/2);
+        element->x = (DISPLAY_WIDTH / 2);
+        element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;
@@ -3441,7 +3441,8 @@ void sub_80923AC(struct FinalEndingCutScene2 *scene)
 
     element = &scene->unk140;
     element->anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
-    element->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
+    element->variant
+        = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
     element->x = scene->unk3B4;
     element->y = scene->unk3B8 >> 8;
     sub_8004558(element);
@@ -3797,7 +3798,7 @@ void sub_80928F8(void)
         element->anim = gUnknown_080E17A4[gSelectedCharacter].anim;
         element->variant = gUnknown_080E17A4[gSelectedCharacter].variant;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
+        element->x = (DISPLAY_WIDTH / 2);
         element->y = -20;
         element->unk1A = 0x40;
         element->unk8 = 0;
@@ -3911,7 +3912,7 @@ void sub_80928F8(void)
         element->anim = gUnknown_080E17A4[40].anim;
         element->variant = gUnknown_080E17A4[40].variant;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
+        element->x = (DISPLAY_WIDTH / 2);
         element->y = -20;
         element->unk1A = 0;
         element->unk8 = 0;
@@ -3932,7 +3933,7 @@ void sub_80928F8(void)
         element->anim = gUnknown_080E17A4[41].anim;
         element->variant = gUnknown_080E17A4[41].variant;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
+        element->x = (DISPLAY_WIDTH / 2);
         element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
         element->unk8 = 0;
@@ -3974,7 +3975,7 @@ void sub_80928F8(void)
         element->anim = gUnknown_080E17A4[gSelectedCharacter + 0x19].anim;
         element->variant = gUnknown_080E17A4[gSelectedCharacter + 0x19].variant;
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
+        element->x = (DISPLAY_WIDTH / 2);
         element->y = 0;
         element->unk1A = 0x40;
         element->unk8 = 0;
@@ -4259,26 +4260,27 @@ void sub_8093868(struct FinalEndingLandingCutScene *scene)
                                               + gSelectedCharacter]
                                 .anim;
             element->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .variant;
+                                                 + gSelectedCharacter]
+                                   .variant;
         } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
             element->anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].anim;
-            element->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].variant;
+            element->variant
+                = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].variant;
 
         } else if (gSelectedCharacter == 1) {
             element->anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
                                               + gSelectedCharacter]
                                 .anim;
             element->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .variant;
+                                                 + gSelectedCharacter]
+                                   .variant;
         } else {
             element->anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
                                               + gSelectedCharacter]
                                 .anim;
             element->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                               + gSelectedCharacter]
-                                 .variant;
+                                                 + gSelectedCharacter]
+                                   .variant;
         }
         element->x = scene->unk5E0[0][0] >> 8;
         element->y = scene->unk5E0[0][1] >> 8;
@@ -4633,7 +4635,7 @@ void sub_8094118(void)
             element->y = 90;
         }
         element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH/2);
+        element->x = (DISPLAY_WIDTH / 2);
         element->unk1A = 0;
         element->unk8 = 0;
         element->unk14 = 0;

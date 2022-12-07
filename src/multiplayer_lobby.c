@@ -181,8 +181,8 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     element->anim = 0x450;
     element->variant = 3;
     element->unk21 = 0xFF;
-    element->x = (DISPLAY_WIDTH/2);
-    element->y = (DISPLAY_HEIGHT) - 50;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT)-50;
     element->unk1A = 0xC0;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -527,7 +527,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         element->x = (DISPLAY_WIDTH - 48);
         element->focused = 0;
     }
-    element->y = DISPLAY_HEIGHT  - 50;
+    element->y = DISPLAY_HEIGHT - 50;
     sub_80051E8(element);
 
     if (lobbyScreen->animFrame > 0) {

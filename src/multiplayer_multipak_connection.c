@@ -124,7 +124,7 @@ void StartMultiPakConnect(void)
     unkC->anim = gPressStartTiles[gLoadedSaveGame->unk6].anim;
     unkC->variant = gPressStartTiles[gLoadedSaveGame->unk6].variant;
     unkC->unk21 = 0xFF;
-    unkC->x = (DISPLAY_WIDTH/2);
+    unkC->x = (DISPLAY_WIDTH / 2);
     unkC->y = 122;
     unkC->unk1A = 0x100;
     unkC->unk8 = 0;
@@ -141,7 +141,7 @@ void StartMultiPakConnect(void)
     unkC->variant = SA2_ANIM_VARIANT_MP_MSG_2;
     unkC->unk21 = 0xFF;
     unkC->x = (DISPLAY_WIDTH / 2);
-    unkC->y = (DISPLAY_HEIGHT * (7./8.));
+    unkC->y = (DISPLAY_HEIGHT * (7. / 8.));
     unkC->unk1A = 0x100;
     unkC->unk8 = 0;
     unkC->unk14 = 0;

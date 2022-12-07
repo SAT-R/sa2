@@ -49,25 +49,25 @@ void *const gUnknown_080E0168[9] = {
 };
 
 static const u16 gUnknown_080E018C[7][3] = {
-    [LANG_DEFAULT]  = { 0, 0, 0 },
+    [LANG_DEFAULT] = { 0, 0, 0 },
     [LANG_JAPANESE] = { SA2_ANIM_MP_MSG, 0, 90 },
-    [LANG_ENGLISH]  = { SA2_ANIM_MP_COMM_MSG_EN, 0, 84 },
-    [LANG_GERMAN]   = { SA2_ANIM_MP_COMM_MSG_DE, 0, 90 },
-    [LANG_FRENCH]   = { SA2_ANIM_MP_COMM_MSG_FR, 0, 90 },
-    [LANG_SPANISH]  = { SA2_ANIM_MP_COMM_MSG_ES, 0, 90 },
-    [LANG_ITALIAN]  = { SA2_ANIM_MP_COMM_MSG_IT, 0, 45 },
+    [LANG_ENGLISH] = { SA2_ANIM_MP_COMM_MSG_EN, 0, 84 },
+    [LANG_GERMAN] = { SA2_ANIM_MP_COMM_MSG_DE, 0, 90 },
+    [LANG_FRENCH] = { SA2_ANIM_MP_COMM_MSG_FR, 0, 90 },
+    [LANG_SPANISH] = { SA2_ANIM_MP_COMM_MSG_ES, 0, 90 },
+    [LANG_ITALIAN] = { SA2_ANIM_MP_COMM_MSG_IT, 0, 45 },
 };
 
 // TODO/BUG: gUnknown_080E01B6 is (likely) in the wrong order!
 //           But maybe this was fixed in the PAL release?
 static const u16 gUnknown_080E01B6[7][3] = {
-    [LANG_DEFAULT]  = { 0, 0, 0 },
+    [LANG_DEFAULT] = { 0, 0, 0 },
     [LANG_JAPANESE] = { SA2_ANIM_PRESS_START_MSG_JP, 0, 46 },
-    [LANG_ENGLISH]  = { SA2_ANIM_PRESS_START_MSG_EN, 0, 34 },
-    [LANG_GERMAN]   = { SA2_ANIM_PRESS_START_MSG_FR, 0, 38 },
-    [LANG_FRENCH]   = { SA2_ANIM_PRESS_START_MSG_DE, 0, 46 },
-    [LANG_SPANISH]  = { SA2_ANIM_PRESS_START_MSG_IT, 0, 30 },
-    [LANG_ITALIAN]  = { SA2_ANIM_PRESS_START_MSG_ES, 0, 30 },
+    [LANG_ENGLISH] = { SA2_ANIM_PRESS_START_MSG_EN, 0, 34 },
+    [LANG_GERMAN] = { SA2_ANIM_PRESS_START_MSG_FR, 0, 38 },
+    [LANG_FRENCH] = { SA2_ANIM_PRESS_START_MSG_DE, 0, 46 },
+    [LANG_SPANISH] = { SA2_ANIM_PRESS_START_MSG_IT, 0, 30 },
+    [LANG_ITALIAN] = { SA2_ANIM_PRESS_START_MSG_ES, 0, 30 },
 };
 
 static void *const gUnknown_080E01E0[7][2] = {
@@ -179,7 +179,7 @@ void StartSinglePakConnect(void)
     sub_8004558(element);
 
     element = &connectScreen->unk3C;
-    element->x = (DISPLAY_WIDTH/2);
+    element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT - 38);
     element->unk1A = 0x100;
     element->unk8 = 0;
@@ -196,8 +196,8 @@ void StartSinglePakConnect(void)
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
     element = &connectScreen->unk6C;
-    element->x = (DISPLAY_WIDTH/2);
-    element->y = (DISPLAY_HEIGHT * (7./8.));
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT * (7. / 8.));
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;

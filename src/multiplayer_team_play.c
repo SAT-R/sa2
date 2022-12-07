@@ -437,7 +437,7 @@ static void sub_805CC34(void)
     sub_805D644(teamPlayScreen);
 
     element = &teamPlayScreen->unkC0[0];
-    element->x = (DISPLAY_WIDTH/2);
+    element->x = (DISPLAY_WIDTH / 2);
     element->y = 28;
     sub_80051E8(element);
 
@@ -528,7 +528,7 @@ static void sub_805D1F8(void)
     MultiPakHeartbeat();
 
     element = &teamPlayScreen->unkC0[1];
-    element->x = (DISPLAY_WIDTH/2);
+    element->x = (DISPLAY_WIDTH / 2);
     element->y = 28;
     sub_80051E8(element);
 

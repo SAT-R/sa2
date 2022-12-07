@@ -41,8 +41,7 @@ static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
                           Sprite_Spring *spring, Player *player);
 static void TaskDestructor_Interactable_Spring(struct Task *t);
 
-extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16,
-                          Player *);
+extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16, Player *);
 
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
     {

@@ -19,8 +19,7 @@ typedef struct {
 
 extern void TaskDestructor_80095E8(struct Task *);
 
-extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16,
-                          Player *, u32);
+extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16, Player *, u32);
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, s8);
 
@@ -49,14 +48,14 @@ const struct UNK_080E0D64 sBoosterAnimationData[2][6] = {
 
 // Look left and accelerate
 #define BOOSTER_ACCEL_LEFT(player)                                                      \
-    (player).moveState |= MOVESTATE_FACING_LEFT;                                            \
-    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                                 \
+    (player).moveState |= MOVESTATE_FACING_LEFT;                                        \
+    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                          \
         gPlayer.speedGroundX = -BOOSTER_SPEED;
 
 // Look right and accelerate
 #define BOOSTER_ACCEL_RIGHT(player)                                                     \
-    (player).moveState &= ~MOVESTATE_FACING_LEFT;                                           \
-    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                                  \
+    (player).moveState &= ~MOVESTATE_FACING_LEFT;                                       \
+    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                           \
         gPlayer.speedGroundX = BOOSTER_SPEED;
 
 void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,

@@ -95,7 +95,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     outcomeScreen->unk206 = count;
 
     unk100 = &outcomeScreen->unk100;
-    unk100->x = (DISPLAY_WIDTH/2);
+    unk100->x = (DISPLAY_WIDTH / 2);
     unk100->y = DISPLAY_HEIGHT - 20;
     unk100->vram = (void *)OBJ_VRAM0;
     unk100->unk1A = 0x3C0;
@@ -125,8 +125,8 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100->unk10 = 0x2000;
 
     unk100 = &outcomeScreen->unkA0;
-    unk100->x = (DISPLAY_WIDTH/2);
-    unk100->y = DISPLAY_HEIGHT-40;
+    unk100->x = (DISPLAY_WIDTH / 2);
+    unk100->y = DISPLAY_HEIGHT - 40;
     unk100->vram = (void *)OBJ_VRAM0 + 0x4000;
     unk100->unk1A = 0x3C0;
     unk100->unk8 = 0;

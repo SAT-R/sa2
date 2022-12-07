@@ -28,7 +28,7 @@
     [lang] = { .numTiles = (a), .anim = (b), .variant = (element) }
 #define TextElementAlt3(element, a, b)                                                  \
     [element] = { .numTiles = (a), .anim = (b), .variant = (element) }
-#define TextElementAlt4(_variant, _numTiles, _anim)                                                  \
+#define TextElementAlt4(_variant, _numTiles, _anim)                                     \
     {                                                                                   \
-        .numTiles = (_numTiles), .anim = (_anim), .variant = (_variant)                                     \
+        .numTiles = (_numTiles), .anim = (_anim), .variant = (_variant)                 \
     }

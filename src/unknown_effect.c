@@ -67,8 +67,7 @@ void sub_80870E8(void)
     if (effect->unk0 > 160) {
         if (!(gPlayer.moveState
               & (MOVESTATE_40000000 | MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT))
-            && !(gPlayer.unk37 & 0x82)
-            && sub_800CBA4(&gPlayer) != 0) {
+            && !(gPlayer.unk37 & 0x82) && sub_800CBA4(&gPlayer) != 0) {
             m4aSongNumStart(SE_SPIKES);
         }
         gBldRegs.bldY = 0;

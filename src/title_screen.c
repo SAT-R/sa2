@@ -579,8 +579,8 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     config->anim = gPressStartTiles[language].anim;
     config->variant = gPressStartTiles[language].variant;
     config->unk21 = 0xFF;
-    config->x = (DISPLAY_WIDTH/2);
-    config->y = (DISPLAY_HEIGHT/2) + 30;
+    config->x = (DISPLAY_WIDTH / 2);
+    config->y = (DISPLAY_HEIGHT / 2) + 30;
     config->unk8 = 0;
     config->unk1A = 0xC0;
     config->unk1C = 0;
@@ -594,12 +594,13 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         config = &titleScreen->menuItems[menuItemId];
 
         config->vram = objAddr;
-        objAddr += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
+        objAddr
+            += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
 
         config->anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
         config->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
         config->unk21 = 0xFF;
-        config->x = (DISPLAY_WIDTH/2);
+        config->x = (DISPLAY_WIDTH / 2);
 
         // Generate menu item y positions
         // position * lineHeight + topPadding
@@ -629,7 +630,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     config->anim = sMenuTiles[42].anim;
     config->variant = sMenuTiles[42].variant;
     config->unk21 = 0xFF;
-    config->x = (DISPLAY_WIDTH/2);
+    config->x = (DISPLAY_WIDTH / 2);
     config->y = (DISPLAY_HEIGHT / 2);
     config->unk8 = 0;
     config->unk1A = 0x780;
@@ -1104,7 +1105,7 @@ static void Task_PlayModeMenuMain(void)
         m4aSongNumStart(SE_SELECT);
 
         if (titleScreen->menuCursor == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
-            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = (DISPLAY_WIDTH/2);
+            titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = (DISPLAY_WIDTH / 2);
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER],
                                      TRANSITION_OUT);
 

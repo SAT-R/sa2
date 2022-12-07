@@ -381,7 +381,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->anim = sCharacterNameSubTextAssets[characterScreen->initialSelection
                                                 + (something * 6)][0];
     element->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection
-                                                 + (something * 6)][1];
+                                                   + (something * 6)][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -398,7 +398,8 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->y = 0;
     element->vram = VramMalloc(0x40);
     element->anim = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
-    element->variant = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
+    element->variant
+        = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -415,7 +416,8 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->y = 0;
     element->vram = VramMalloc(0x40);
     element->anim = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
-    element->variant = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
+    element->variant
+        = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
@@ -1107,11 +1109,10 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 u8 temp = i - Div(i, 5) * 5;
                 element = &characterScreen->carouselBlobs[temp];
 
-                element->x
-                    = Q_2_14_TO_INT(
-                          COS(((characterScreen->carouselPosition >> 8) + (i * 0x66))
-                              & 0x3FF)
-                          * 92)
+                element->x = Q_2_14_TO_INT(COS(((characterScreen->carouselPosition >> 8)
+                                                + (i * 0x66))
+                                               & 0x3FF)
+                                           * 92)
                     + 10;
                 element->y
                     = Q_2_14_TO_INT(
@@ -1174,17 +1175,17 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
                 element = &characterScreen->carouselBlobs[temp2];
 
                 element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
                 element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }
@@ -1441,17 +1442,17 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
                 element = &characterScreen->carouselBlobs[temp2];
 
                 element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
                 element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }
@@ -1636,17 +1637,17 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
                 element = &characterScreen->carouselBlobs[temp2];
 
                 element->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)
-                                              + 0x100]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)
+                                          + 0x100]
+                               * 0x5C)
+                              >> 0xE)
                     + 10;
                 element->y = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                                + (i * 0x66) + 2)
-                                               & 0x3FF)]
-                                   * 0x5C)
-                                  >> 0xE)
+                                            + (i * 0x66) + 2)
+                                           & 0x3FF)]
+                               * 0x5C)
+                              >> 0xE)
                     + 0x50;
                 sub_80051E8(element);
             }

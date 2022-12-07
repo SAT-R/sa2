@@ -611,7 +611,8 @@ static void SoundTestScreenRenderUI(void)
             }
 
             if (soundTestScreen->soundNumAnimSteps[i] < 0) {
-                numberDisplayDigit->y = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                numberDisplayDigit->y
+                    = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
                 soundTestScreen->soundNumAnimSteps[i]++;
             }
         }
