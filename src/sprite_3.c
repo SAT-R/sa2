@@ -18,8 +18,8 @@ void sub_80051E8(struct UNK_0808B3FC_UNK240 *sprite)
         struct UNK_0808B3FC_UNK240_UNKC *unkC = sprite->unkC;
 
         sprite->unk24 = unkC->unk2;
-        x = (s16)sprite->unk16;
-        y = (s16)sprite->unk18;
+        x = (s16)sprite->x;
+        y = (s16)sprite->y;
         if (sprite->unk10 & 0x20000) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
@@ -52,7 +52,7 @@ void sub_80051E8(struct UNK_0808B3FC_UNK240 *sprite)
             u8 unk6D0 = gUnknown_030026D0 >> 8;
 
             for (sp0C = 0; sp0C < unkC->unk2; sp0C++) {
-                oamData = gUnknown_03002794->oamData[sprite->unkA];
+                oamData = gUnknown_03002794->oamData[sprite->anim];
 
                 r4 = sub_80058B4((sprite->unk1A & 0x7C0) >> 6);
                 if (iwram_end == r4) {
@@ -69,7 +69,7 @@ void sub_80051E8(struct UNK_0808B3FC_UNK240 *sprite)
                 r4->all.attr1 &= 0xFE00;
                 r4->all.attr0 &= 0xFE00;
 
-                r4->all.attr2 += sprite->unk25 * 0x1000;
+                r4->all.attr2 += sprite->focused * 0x1000;
                 if (sprite->unk10 & 0x20) {
                     r4->all.attr0 |= 0x100;
                     if (sprite->unk10 & 0x40) {
@@ -108,7 +108,7 @@ void sub_80051E8(struct UNK_0808B3FC_UNK240 *sprite)
                 if (r4->all.attr0 & 0x2000) {
                     r4->all.attr2 += r4->all.attr2 & 0x3FF;
                 }
-                r4->all.attr2 += ((u32)sprite->unk4 - OBJ_VRAM0) >> 5;
+                r4->all.attr2 += GET_TILE_NUM(sprite->vram);
             }
         }
     }

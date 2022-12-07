@@ -2,13 +2,15 @@
 #include "game.h"
 #include "unknown_effect.h"
 #include "m4a.h"
+
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 struct UnknownEffect87028 {
-    u8 unk0;
+    /* 0x00 */ u8 unk0;
 } /* size 0x4 */;
 
-extern u32 sub_800CBA4(struct SomeStruct_59E0 *);
+extern u32 sub_800CBA4(Player *);
 
 void sub_80871C4(s16, s16, s16);
 
@@ -17,11 +19,12 @@ void sub_80870E8(void);
 
 void sub_8087028(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
+    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
-    sub_80871C4(a, b, 0xA0 - effect->unk0);
+    // 160 = DISPLAY_HEIGHT?
+    sub_80871C4(a, b, 160 - effect->unk0);
 
     effect->unk0 += 4;
     if (effect->unk0 > 0x32) {
@@ -31,38 +34,40 @@ void sub_8087028(void)
 
 void sub_8087088(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
+    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
 
     effect->unk0 += 1;
-    if (effect->unk0 > 0x78) {
-        effect->unk0 = 0x32;
+    if (effect->unk0 > 120) {
+        effect->unk0 = 50;
         gCurTask->main = sub_80870E8;
     }
 }
 
-const s8 gUnknown_080E02DC[8][2] = {
+static const ALIGNED(4) s8 gUnknown_080E02DC[8][2] = {
     { 0, 0 },   { 3, -1 }, { -2, -4 }, { 0, 3 },
     { -4, -2 }, { 3, -4 }, { 1, 3 },   { -2, 2 },
 };
 
 void sub_80870E8(void)
 {
-    s16 a = (gPlayer.unk8 >> 8) - gCamera.unk0;
-    s16 b = (gPlayer.unkC >> 8) - gCamera.unk4;
+    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0],
-                b + gUnknown_080E02DC[effect->unk0 & 7][1], 0xA0 - effect->unk0);
+                b + gUnknown_080E02DC[effect->unk0 & 7][1], 160 - effect->unk0);
 
     gBldRegs.bldY = (effect->unk0 >> 4) + 4;
 
     effect->unk0 += 1;
-    if (effect->unk0 > 0xA0) {
-        if (!(gPlayer.unk20 & 0x40600000) && !(gPlayer.unk37 & 0x82)
+    if (effect->unk0 > 160) {
+        if (!(gPlayer.moveState
+              & (MOVESTATE_40000000 | MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT))
+            && !(gPlayer.unk37 & 0x82)
             && sub_800CBA4(&gPlayer) != 0) {
             m4aSongNumStart(SE_SPIKES);
         }
@@ -93,7 +98,7 @@ void sub_80871C4(s16 a, s16 b, s16 c)
         e = d * -1;
     }
 
-    for (i = 0; i <= 0x9F; i++) {
+    for (i = 0; i < 160; i++) {
         u16 temp;
         if (i >= d && i < f) {
             if (i < b) {

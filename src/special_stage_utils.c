@@ -174,7 +174,7 @@ void sub_806CD68(struct UNK_0808B3FC_UNK240 *element)
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
         oam->all.attr2 += element->focused * 0x1000;
         oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
-        oam->all.attr2 += (((u32)element->vram - OBJ_VRAM0) >> 5);
+        oam->all.attr2 += GET_TILE_NUM(element->vram);
     }
 }
 

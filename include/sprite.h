@@ -73,48 +73,44 @@ struct UNK_0808B3FC_UNK240_UNKC {
 // Maybe `struct Sprite`
 struct UNK_0808B3FC_UNK240 {
     // These values are part of some other struct
-    u32 unk0;
-    void *unk4; // something vram
+    /* 0x00 */ u32 unk0;
 
-    u16 unk8;
+    /* 0x04 */ void *vram;
 
-    // anim
-    AnimId unkA;
+    /* 0x08 */ u16 unk8;
 
-    struct UNK_0808B3FC_UNK240_UNKC *unkC;
-    u32 unk10;
+    /* 0x0A */ AnimId anim;
 
-    u16 unk14;
+    /* 0x0C */ struct UNK_0808B3FC_UNK240_UNKC *unkC;
+    /* 0x10 */ u32 unk10; // bitfield
+
+    /* 0x14 */ u16 unk14;
 
     // TODO: should be signed
-    // x
-    u16 unk16;
-    // y
-    u16 unk18;
+    /* 0x16 */ u16 x;
+    /* 0x18 */ u16 y;
 
-    u16 unk1A; // might be a bitfield?
+    /* 0x1A */ u16 unk1A; // might be a bitfield?
 
-    u16 unk1C;
-    u16 unk1E;
+    /* 0x1C */ u16 unk1C;
+    /* 0x1E */ u16 unk1E;
 
-    // variant
-    u8 unk20;
+    /* 0x20 */ u8 variant;
 
-    u8 unk21;
+    /* 0x21 */ u8 unk21;
 
     // something to do with animation speed
-    u8 unk22;
+    /* 0x22 */ u8 unk22;
 
     // TODO: these values are only used within some
     // sort of menu functions. Split out the shared stuff
-    u8 unk23;
-    u8 unk24;
-    // focused
-    u8 unk25;
+    /* 0x23 */ u8 unk23;
+    /* 0x24 */ u8 unk24;
+    /* 0x25 */ u8 focused;
 
-    u8 filler26[2];
-    s32 unk28;
-    u8 filler2C[4];
+    /* 0x26 */ u8 filler26[2];
+    /* 0x28 */ s32 unk28;
+    /* 0x2C */ u8 filler2C[4];
 } /* size = 0x30 */;
 
 struct Unk_03002EC0 {
@@ -141,11 +137,9 @@ struct UNK_808D124_UNK180 {
 // used for defining element data
 // TileInfo
 struct UNK_080E0D64 {
-    // numTiles
-    u32 unk0;
-    // anim
-    AnimId unk4;
-    u8 unk6;
+    /* 0x00 */ u32 numTiles;
+    /* 0x04 */ AnimId anim;
+    /* 0x06 */ u8 variant;
 };
 
 // Register menu item

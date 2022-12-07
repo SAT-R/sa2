@@ -95,8 +95,8 @@ static void Task_PhysicsMain(void)
         screenX = Q_16_16_TO_INT(screenX) + 112;
         screenY = -(Q_16_16_TO_INT(screenY) >> 1) + 120;
 
-        player->roboArrow.unk16 = screenX;
-        player->roboArrow.unk18 = screenY;
+        player->roboArrow.x = screenX;
+        player->roboArrow.y = screenY;
 
         if (arrowAngle > 256 && arrowAngle < 768) {
             player->roboArrow.unk1A = 0;
@@ -567,8 +567,8 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
         }
     }
 
-    player->roboArrow.unk20 = gUnknown_080DF794[temp2].unk0;
-    player->roboArrow.unkA = gUnknown_080DF794[temp2].unk2;
+    player->roboArrow.variant = gUnknown_080DF794[temp2].variant;
+    player->roboArrow.anim = gUnknown_080DF794[temp2].anim;
 
     temp3 = temp1;
     f_dX >>= temp3;

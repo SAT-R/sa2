@@ -18,9 +18,9 @@ typedef struct {
     /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
 } Sprite_BouncySpring;
 
-extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, struct SomeStruct_59E0 *);
-extern void sub_80218E4(struct SomeStruct_59E0 *);
-extern void sub_8023B5C(struct SomeStruct_59E0 *, s8);
+extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, Player *);
+extern void sub_80218E4(Player *);
+extern void sub_8023B5C(Player *, s8);
 
 static void Task_Interactable_BouncySpring(void);
 static void Task_805E02C(void);
@@ -33,9 +33,9 @@ static const struct UNK_080E0D64 gUnknown_080D948C[3] = {
 };
 
 static const struct UNK_080E0D64 gUnknown_080D94A4[3] = {
-    { 16, SA2_ANIM_570, 1 },
-    { 16, SA2_ANIM_570, 2 },
-    { 16, SA2_ANIM_570, 3 },
+    { 16, SA2_ANIM_DRUM, 1 },
+    { 16, SA2_ANIM_DRUM, 2 },
+    { 16, SA2_ANIM_DRUM, 3 },
 };
 
 static const struct UNK_080E0D64 gUnknown_080D94BC[3] = {
@@ -60,22 +60,22 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
     spring->base.spriteX = ia->x;
     spring->base.spriteY = spriteY;
 
-    displayed->unk16 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->unk18 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
     SET_SPRITE_INITIALIZED(ia);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-        displayed->unk4 = VramMalloc(16);
-        displayed->unkA = SA2_ANIM_570;
-        displayed->unk20 = variant;
+        displayed->vram = VramMalloc(16);
+        displayed->anim = SA2_ANIM_DRUM;
+        displayed->variant = variant;
     } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-        displayed->unk4 = VramMalloc(24);
-        displayed->unkA = SA2_ANIM_603;
-        displayed->unk20 = variant;
+        displayed->vram = VramMalloc(24);
+        displayed->anim = SA2_ANIM_603;
+        displayed->variant = variant;
     } else {
-        displayed->unk4 = VramMalloc(24);
-        displayed->unkA = SA2_ANIM_SPRING_BOUNCY;
-        displayed->unk20 = variant;
+        displayed->vram = VramMalloc(24);
+        displayed->anim = SA2_ANIM_SPRING_BOUNCY;
+        displayed->variant = variant;
     }
 
     displayed->unk1A = 0x480;
@@ -84,7 +84,7 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->unk25 = 0;
+    displayed->focused = FALSE;
     displayed->unk28 = -1;
     displayed->unk10 = 0x2000;
 }
@@ -100,10 +100,10 @@ static void Task_Interactable_BouncySpring()
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
-    if (!(gPlayer.unk20 & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
-        airSpeed = gPlayer.unk12;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
+    if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
+        airSpeed = gPlayer.speedAirY;
         if ((sub_800CCB8(displayed, screenX, screenY, &gPlayer) != 0)) {
             u8 index;
 
@@ -111,13 +111,13 @@ static void Task_Interactable_BouncySpring()
             if (index > (ARRAY_COUNT(gUnknown_080D948C) - 1))
                 index = (ARRAY_COUNT(gUnknown_080D948C) - 1);
 
-            gPlayer.unk12 = -(airSpeed + (airSpeed >> 3));
+            gPlayer.speedAirY = -(airSpeed + (airSpeed >> 3));
 
-            if (gPlayer.unk12 > Q_8_8(-7.5))
-                gPlayer.unk12 = Q_8_8(-7.5);
+            if (gPlayer.speedAirY > Q_8_8(-7.5))
+                gPlayer.speedAirY = Q_8_8(-7.5);
 
-            if (gPlayer.unk12 < Q_8_8(-12))
-                gPlayer.unk12 = Q_8_8(-12);
+            if (gPlayer.speedAirY < Q_8_8(-12))
+                gPlayer.speedAirY = Q_8_8(-12);
 
             gPlayer.unk36 = 3;
 
@@ -127,19 +127,19 @@ static void Task_Interactable_BouncySpring()
             gPlayer.unk16 = 6;
             gPlayer.unk17 = 14;
 
-            gPlayer.unk20 = (gPlayer.unk20 | MOVESTATE_IN_AIR) & ~MOVESTATE_100;
+            gPlayer.moveState = (gPlayer.moveState | MOVESTATE_IN_AIR) & ~MOVESTATE_100;
 
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                displayed->unkA = gUnknown_080D94A4[index].unk4;
-                spring->displayed.unk20 = gUnknown_080D94A4[index].unk6;
+                displayed->anim = gUnknown_080D94A4[index].anim;
+                spring->displayed.variant = gUnknown_080D94A4[index].variant;
                 spring->displayed.unk21 = 0xFF;
             } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                displayed->unkA = gUnknown_080D94BC[index].unk4;
-                spring->displayed.unk20 = gUnknown_080D94BC[index].unk6;
+                displayed->anim = gUnknown_080D94BC[index].anim;
+                spring->displayed.variant = gUnknown_080D94BC[index].variant;
                 spring->displayed.unk21 = 0xFF;
             } else {
-                displayed->unkA = gUnknown_080D948C[index].unk4;
-                spring->displayed.unk20 = gUnknown_080D948C[index].unk6;
+                displayed->anim = gUnknown_080D948C[index].anim;
+                spring->displayed.variant = gUnknown_080D948C[index].variant;
                 spring->displayed.unk21 = 0xFF;
             }
 
@@ -153,7 +153,7 @@ static void Task_Interactable_BouncySpring()
         }
     }
     // _0805DFBA
-    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -173,10 +173,10 @@ static void Task_805E02C()
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
 
-    displayed->unk16 = screenX - gCamera.unk0;
-    displayed->unk18 = screenY - gCamera.unk4;
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->unk16, (s16)displayed->unk18)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -184,14 +184,14 @@ static void Task_805E02C()
             gCurTask->main = Task_Interactable_BouncySpring;
 
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                displayed->unkA = SA2_ANIM_570;
-                displayed->unk20 = variant;
+                displayed->anim = SA2_ANIM_DRUM;
+                displayed->variant = variant;
             } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-                displayed->unkA = SA2_ANIM_603;
-                displayed->unk20 = variant;
+                displayed->anim = SA2_ANIM_603;
+                displayed->variant = variant;
             } else {
-                displayed->unkA = SA2_ANIM_SPRING_BOUNCY;
-                displayed->unk20 = variant;
+                displayed->anim = SA2_ANIM_SPRING_BOUNCY;
+                displayed->variant = variant;
             }
             displayed->unk21 = -1;
         }
@@ -203,5 +203,5 @@ static void Task_805E02C()
 static void TaskDestructor_Interactable_BouncySpring(struct Task *t)
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(t);
-    VramFree(spring->displayed.unk4);
+    VramFree(spring->displayed.vram);
 }
