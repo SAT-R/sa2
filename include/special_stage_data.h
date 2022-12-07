@@ -31,7 +31,6 @@ struct UNK_8C87904 {
 } /* size 0xC */;
 
 struct UNK_80DF670 {
-    // anim
     /* 0x00 */ AnimId anim;
     /* 0x02 */ u16 variant;
     u16 unk4;
@@ -40,6 +39,12 @@ struct UNK_80DF670 {
 } /* size 0x8 */;
 
 struct UNK_8C87920 {
+    /* 0x00 */ AnimId anim;
+    /* 0x02 */ u16 variant;
+};
+
+// They used a different struct with the same content...
+struct UNK_8C87920_SWAPPED {
     /* 0x00 */ u16 variant;
     /* 0x02 */ AnimId anim;
 };

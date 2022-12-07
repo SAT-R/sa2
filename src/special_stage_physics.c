@@ -8,6 +8,8 @@
 #include "trig.h"
 #include "game.h"
 #include "m4a.h"
+
+#include "constants/animations.h"
 #include "constants/songs.h"
 
 #define MIN_BOUNCE_SPEED 1536
@@ -35,10 +37,10 @@ static void HandleBoost1(void);
 void HandleBoost2(void);
 static void HandleJumpControls(void);
 
-static const struct UNK_8C87920 gUnknown_080DF794[3] = {
-    { 2, 890 },
-    { 1, 890 },
-    { 0, 890 },
+static const struct UNK_8C87920_SWAPPED gUnknown_080DF794[3] = {
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_RED, SA2_ANIM_SP_STAGE_ARROW },
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_YELLOW, SA2_ANIM_SP_STAGE_ARROW },
+    { SA2_ANIM_VARIANT_SP_STAGE_ARROW_GREEN, SA2_ANIM_SP_STAGE_ARROW },
 };
 
 typedef void (*PlayerStatePhysicsHandler)(void);
