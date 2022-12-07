@@ -9,10 +9,12 @@
 #include "character_select.h"
 #include "course_select.h"
 #include "profile.h"
-#include "constants/songs.h"
 #include "title_screen.h"
 #include "zones.h"
 #include "task.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
 
 struct TimeAttackLobbyScreen {
     struct Unk_03002400 unk0;
@@ -110,21 +112,21 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
                 element = &lobbyScreen->unkB0[3];
                 i = 3;
             }
-            element->unk4 = VramMalloc(gUnknown_080E04D4[lang * 5 + i].unk0);
-            element->unkA = gUnknown_080E04D4[lang * 5 + i].unk4;
-            element->unk20 = gUnknown_080E04D4[lang * 5 + i].unk6;
+            element->vram = VramMalloc(gUnknown_080E04D4[lang * 5 + i].numTiles);
+            element->anim = gUnknown_080E04D4[lang * 5 + i].anim;
+            element->variant = gUnknown_080E04D4[lang * 5 + i].variant;
             element->unk21 = 0xFF;
-            element->unk16 = 0x78;
-            element->unk18 = i * 0x10 + 0x18;
+            element->x = (DISPLAY_WIDTH/2);
+            element->y = i * 16 + 24;
             if (i > 2) {
-                element->unk18 -= 0x10;
+                element->y -= 16;
             }
             element->unk1A = 0x100;
             element->unk8 = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk28 = -1;
             element->unk10 = 0x1000;
             sub_8004558(element);
@@ -132,56 +134,56 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     }
 
     element = &lobbyScreen->unk80;
-    element->unk4 = NULL;
-    element->unkA = 0x41B;
-    element->unk20 = 5;
+    element->vram = NULL;
+    element->anim = SA2_ANIM_MSG_JP_TRY_AGAIN;
+    element->variant = 5;
     element->unk21 = 0xFF;
-    element->unk16 = 0;
-    element->unk18 = 0;
+    element->x = 0;
+    element->y = 0;
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
     element = &lobbyScreen->unk80;
-    element->unk4 = VramMalloc(gUnknown_080E0474[gSelectedCharacter].unk0);
-    element->unkA = gUnknown_080E0474[gSelectedCharacter].unk4;
-    element->unk20 = gUnknown_080E0474[gSelectedCharacter].unk6;
+    element->vram = VramMalloc(gUnknown_080E0474[gSelectedCharacter].numTiles);
+    element->anim = gUnknown_080E0474[gSelectedCharacter].anim;
+    element->variant = gUnknown_080E0474[gSelectedCharacter].variant;
     element->unk21 = 0xFF;
-    element->unk16 = 0x78;
-    element->unk18 = 0x82;
+    element->x = (DISPLAY_WIDTH / 2);
+    element->y = (DISPLAY_HEIGHT * (13./16.));
     element->unk1A = 0x100;
     element->unk8 = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->unk25 = 0;
+    element->focused = 0;
     element->unk28 = -1;
     element->unk10 = 0x1400;
     sub_8004558(element);
 
-    lobbyScreen->unkB0[0].unk4 = 0;
+    lobbyScreen->unkB0[0].vram = 0;
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         lobbyScreen->unk1AC = 1;
         element = &lobbyScreen->unkB0[0];
-        element->unk4 = VramMalloc(gUnknown_080E04C4[0].unk0);
-        element->unkA = gUnknown_080E04C4[0].unk4;
-        element->unk20 = gUnknown_080E04C4[0].unk6;
+        element->vram = VramMalloc(gUnknown_080E04C4[0].numTiles);
+        element->anim = gUnknown_080E04C4[0].anim;
+        element->variant = gUnknown_080E04C4[0].variant;
         element->unk21 = 0xFF;
-        element->unk16 = 100;
-        element->unk18 = 0x6E;
+        element->x = (DISPLAY_WIDTH * (5./12.));
+        element->y = (DISPLAY_HEIGHT * (11./16.));
         element->unk1A = 0x140;
         element->unk8 = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->unk25 = 0;
+        element->focused = 0;
         element->unk28 = -1;
         element->unk10 = 0x1400;
         sub_8004558(element);
@@ -244,9 +246,9 @@ void sub_8088CC4(void)
     for (i = 0; i < 4; i++) {
         element = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->unk25 = 0;
+            element->focused = 0;
         } else {
-            element->unk25 = 1;
+            element->focused = 1;
         }
         sub_80051E8(element);
     }
@@ -301,11 +303,11 @@ void sub_8088D60(void)
     element = &lobbyScreen->unk80;
     switch (lobbyScreen->unk1AD) {
         case 1:
-            element->unk16 -= 4;
+            element->x -= 4;
             break;
         case 0:
         case 2:
-            element->unk16 += 4;
+            element->x += 4;
             break;
     }
     sub_8004558(element);
@@ -318,11 +320,11 @@ void sub_8088D60(void)
     element = &lobbyScreen->unkB0[0];
     switch (lobbyScreen->unk1AD) {
         case 1:
-            element->unk16 -= 2;
+            element->x -= 2;
             break;
         case 0:
         case 2:
-            element->unk16 += 3;
+            element->x += 3;
             break;
     }
 
@@ -348,9 +350,9 @@ void sub_8088EB4(void)
     for (i = 0; i < 4; i++) {
         element = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->unk25 = 0;
+            element->focused = 0;
         } else {
-            element->unk25 = 1;
+            element->focused = 1;
         }
         sub_80051E8(element);
     }
@@ -367,10 +369,10 @@ void sub_8088EB4(void)
     if (gRepeatedKeys & A_BUTTON) {
         if (lobbyScreen->unk1AD != 3) {
             element = &lobbyScreen->unk80;
-            VramFree(element->unk4);
-            element->unk4 = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].unk0);
-            element->unkA = gUnknown_080E0474[gSelectedCharacter + 5].unk4;
-            element->unk20 = gUnknown_080E0474[gSelectedCharacter + 5].unk6;
+            VramFree(element->vram);
+            element->vram = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
+            element->anim = gUnknown_080E0474[gSelectedCharacter + 5].anim;
+            element->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
             element->unk21 = 0xFF;
             element->unk22 = 0x40;
             if (lobbyScreen->unk1AD == 1) {
@@ -380,11 +382,11 @@ void sub_8088EB4(void)
 
             if (lobbyScreen->unk1AC != 0) {
                 element = &lobbyScreen->unkB0[0];
-                VramFree(element->unk4);
+                VramFree(element->vram);
 
-                element->unk4 = VramMalloc(gUnknown_080E04C4[1].unk0);
-                element->unkA = gUnknown_080E04C4[1].unk4;
-                element->unk20 = gUnknown_080E04C4[1].unk6;
+                element->vram = VramMalloc(gUnknown_080E04C4[1].numTiles);
+                element->anim = gUnknown_080E04C4[1].anim;
+                element->variant = gUnknown_080E04C4[1].variant;
                 element->unk21 = 0xFF;
                 element->unk22 = 0x40;
                 if (lobbyScreen->unk1AD == 1) {
@@ -419,12 +421,12 @@ void CreateTimeAttackLobbyScreen()
 void sub_8089104(struct Task *t)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
-    VramFree(lobbyScreen->unkB0[1].unk4);
-    VramFree(lobbyScreen->unkB0[2].unk4);
-    VramFree(lobbyScreen->unkB0[3].unk4);
-    VramFree(lobbyScreen->unkB0[4].unk4);
-    VramFree(lobbyScreen->unk80.unk4);
+    VramFree(lobbyScreen->unkB0[1].vram);
+    VramFree(lobbyScreen->unkB0[2].vram);
+    VramFree(lobbyScreen->unkB0[3].vram);
+    VramFree(lobbyScreen->unkB0[4].vram);
+    VramFree(lobbyScreen->unk80.vram);
     if (lobbyScreen->unk1AC != 0) {
-        VramFree(lobbyScreen->unkB0[0].unk4);
+        VramFree(lobbyScreen->unkB0[0].vram);
     }
 }
