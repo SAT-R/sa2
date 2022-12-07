@@ -298,39 +298,39 @@
 #define SA2_ANIM_TURNAROUND_BAR              567
 #define SA2_ANIM_SPRING_PLATFORM             568
 
-#define SA2_ANIM_DRUM             570
-#define SA2_ANIM_SPRING_UNKNOWN   571
-#define SA2_ANIM_SPRING_MUS_PLA   572
-#define SA2_ANIM_SPRING_MUS_PLA_2 573
-#define SA2_ANIM_DICE             574
-#define SA2_ANIM_NOTE_BLOCK       575
-#define SA2_ANIM_LONE_NOTE        576
-#define SA2_ANIM_YELLOW_STAR      577
-#define SA2_ANIM_SMOKE            578
+#define SA2_ANIM_DRUM                        570
+#define SA2_ANIM_SPRING_UNKNOWN              571
+#define SA2_ANIM_SPRING_MUS_PLA              572
+#define SA2_ANIM_SPRING_MUS_PLA_2            573
+#define SA2_ANIM_DICE                        574
+#define SA2_ANIM_NOTE_BLOCK                  575
+#define SA2_ANIM_LONE_NOTE                   576
+#define SA2_ANIM_YELLOW_STAR                 577
+#define SA2_ANIM_SMOKE                       578
 
-#define SA2_ANIM_SPIKES_MUS_PLA   580
-#define SA2_ANIM_PLATFORM_ICE_PAR 581
-#define SA2_ANIM_SNOWBALL         582
+#define SA2_ANIM_SPIKES_MUS_PLA              580
+#define SA2_ANIM_PLATFORM_ICE_PAR            581
+#define SA2_ANIM_SNOWBALL                    582
 
-#define SA2_ANIM_LAUNCH_RING      584
-#define SA2_ANIM_CROSS_SKY_CAN    585
-#define SA2_ANIM_PLATFORM_SKY_CAN 586
+#define SA2_ANIM_LAUNCH_RING                 584
+#define SA2_ANIM_CROSS_SKY_CAN               585
+#define SA2_ANIM_PLATFORM_SKY_CAN            586
 
-#define SA2_ANIM_PROPELLOR               589
-#define SA2_ANIM_SPRING_FLYING           590
-#define SA2_ANIM_MINI_PROPELLOR          591
-#define SA2_ANIM_FLYING_HANDLE           592
-#define SA2_ANIM_PLATFORM_SKY_CAN_2      593
-#define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN 594
+#define SA2_ANIM_PROPELLOR                   589
+#define SA2_ANIM_SPRING_FLYING               590
+#define SA2_ANIM_MINI_PROPELLOR              591
+#define SA2_ANIM_FLYING_HANDLE               592
+#define SA2_ANIM_PLATFORM_SKY_CAN_2          593
+#define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN     594
 
-#define SA2_ANIM_ARROW_SCREEN     595
-#define SA2_ANIM_SPIKE_SCREEN     596
-#define SA2_ANIM_PLATFORM_TEC_BAS 597
+#define SA2_ANIM_ARROW_SCREEN                595
+#define SA2_ANIM_SPIKE_SCREEN                596
+#define SA2_ANIM_PLATFORM_TEC_BAS            597
 
-#define SA2_ANIM_603                 603
-#define SA2_ANIM_SPIKES_TEC_BAS      604
-#define SA2_ANIM_LAUNCH_RING_TEC_BAS 605
-#define SA2_ANIM_DIR_ARROW_TEC_BAS   606
+#define SA2_ANIM_603                         603
+#define SA2_ANIM_SPIKES_TEC_BAS              604
+#define SA2_ANIM_LAUNCH_RING_TEC_BAS         605
+#define SA2_ANIM_DIR_ARROW_TEC_BAS           606
 
 #define SA2_ANIM_SPEEDING_PLATFORM 612
 
@@ -390,6 +390,11 @@
 
 #define SA2_ANIM_RING       882
 #define SA2_ANIM_E100_ALPHA 883
+#define SA2_ANIM_SP_STAGE_HOLE 884
+#define SA2_ANIM_VARIANT_SP_STAGE_HOLE_0 0
+#define SA2_ANIM_VARIANT_SP_STAGE_HOLE_1 1
+#define SA2_ANIM_VARIANT_SP_STAGE_HOLE_2 2
+#define SA2_ANIM_VARIANT_SP_STAGE_HOLE_3 3
 
 #define SA2_ANIM_SP_STAGE_ARROW 890
 #define SA2_ANIM_VARIANT_SP_STAGE_ARROW_GREEN 0
@@ -505,6 +510,17 @@
 #define SA2_ANIM_MP_TEAM_PLAY_MSG_FR                     1086
 #define SA2_ANIM_MP_TEAM_PLAY_MSG_ES                     1086
 #define SA2_ANIM_MP_TEAM_PLAY_MSG_IT                     1087
+
+#define SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE                 1099
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_CUMULATIVE_0       0
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_CUMULATIVE_1       1
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_CUMULATIVE_2       2
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_CUMULATIVE_WINS    3 // "win(s)"
+
+#define SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND                      1100
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_WIN          0
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_LOSE         1
+#define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_DRAW         2
 
 // We can infer this Chao is Cheese, since they have a red bow
 #define SA2_ANIM_MP_CHEESE_WAVING                        1103

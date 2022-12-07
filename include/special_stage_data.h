@@ -43,7 +43,7 @@ struct UNK_8C87920 {
     /* 0x02 */ u16 variant;
 };
 
-// They used a different struct with the same content...
+// They used a different struct with the same content..?
 struct UNK_8C87920_SWAPPED {
     /* 0x00 */ u16 variant;
     /* 0x02 */ AnimId anim;

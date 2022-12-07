@@ -10,10 +10,12 @@
 #include "title_screen.h"
 #include "transition.h"
 #include "m4a.h"
-#include "constants/text.h"
-#include "constants/songs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
 
 struct MultiplayerSinglePakResultsScreen_UNK80 {
     struct UNK_0808B3FC_UNK240 unk0;
@@ -171,10 +173,10 @@ void sub_808207C(void)
                 s32 var;
 #endif
                 element = &resultsScreen->unk370[i];
-                element->unk4 = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
+                element->vram = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
 
-                element->unk16 = 0;
-                element->unk18 = 0;
+                element->x = 0;
+                element->y = 0;
                 element->unk1A = 0x100;
                 element->unk8 = 0;
 #ifndef NON_MATCHING
@@ -182,17 +184,17 @@ void sub_808207C(void)
                 asm("" ::"r"(var));
 #endif
                 if (gUnknown_030053EC == 1) {
-                    element->unkA = 0x44B;
+                    element->anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
                 } else {
-                    element->unkA = 0x44C;
+                    element->anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
                 }
 
-                element->unk20 = i;
+                element->variant = i;
                 element->unk14 = 0;
                 element->unk1C = 0;
                 element->unk21 = 0xFF;
                 element->unk22 = 0x10;
-                element->unk25 = 0;
+                element->focused = 0;
                 element->unk10 = 0x1000;
                 sub_8004558(element);
             }
@@ -200,27 +202,27 @@ void sub_808207C(void)
 
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
             element = &resultsScreen->unk400;
-            element->unk16 = 0x78;
-            element->unk18 = 0x50;
+            element->x = (DISPLAY_WIDTH/2);
+            element->y = (DISPLAY_HEIGHT/2);
 
             if (resultsScreen->unk434) {
-                element->unk4 = resultsScreen->unk370[2].unk4 + 0x180;
+                element->vram = resultsScreen->unk370[2].vram + 0x180;
             } else {
-                element->unk4 = resultsScreen->unk340.unk4 + 0x180;
+                element->vram = resultsScreen->unk340.vram + 0x180;
             }
             element->unk1A = 0;
             element->unk8 = 0;
             if (gUnknown_030053EC == 1) {
-                element->unkA = 0x452;
+                element->anim = SA2_ANIM_PRESS_START_MSG_JP;
             } else {
-                element->unkA = 0x453;
+                element->anim = SA2_ANIM_PRESS_START_MSG_EN;
             }
-            element->unk20 = 0;
+            element->variant = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
-            element->unk25 = 0;
+            element->focused = 0;
             element->unk10 = 0;
             sub_8004558(element);
         }
@@ -447,14 +449,14 @@ void sub_8082788(void)
                 u16 temp;
 
                 element = &resultsScreen->unk80[i].unk0;
-                element->unk16 = 0x78;
-                element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
+                element->x = (DISPLAY_WIDTH/2);
+                element->y = gUnknown_030054B4[i] * 40 + 20;
                 sub_8004558(element);
                 sub_80051E8(element);
 
                 element = &resultsScreen->unk370[gMultiplayerCharacters[i]];
-                element->unk16 = 0x34;
-                element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
+                element->x = 52;
+                element->y = gUnknown_030054B4[i] * 40 + 20;
                 sub_80051E8(element);
 
                 // TODO: Fix type
@@ -462,28 +464,28 @@ void sub_8082788(void)
                 element = &resultsScreen->unk160[((temp) >> 8) & 0xF];
 
                 if (element != &resultsScreen->unk160[0]) {
-                    element->unk16 = 0xA0;
-                    element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
+                    element->x = 160;
+                    element->y = gUnknown_030054B4[i] * 40 + 20;
                     sub_80051E8(element);
                 }
 
                 element = &resultsScreen->unk160[((temp) >> 4) & 0xF];
 
                 if (element != &resultsScreen->unk160[0] || (temp > 0xFF)) {
-                    element->unk16 = 0xAB;
-                    element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
+                    element->x = 171;
+                    element->y = gUnknown_030054B4[i] * 40 + 20;
                     sub_80051E8(element);
                 }
 
                 element = &resultsScreen->unk160[(temp)&0xF];
-                element->unk16 = 0xB6;
-                element->unk18 = gUnknown_030054B4[i] * 0x28 + 0x14;
+                element->x = 182;
+                element->y = gUnknown_030054B4[i] * 40 + 20;
                 sub_80051E8(element);
             } else {
                 u16 temp;
                 element = &resultsScreen->unk80[i].unk0;
-                element->unk16 = 0x78;
-                element->unk18 = i * 0x28 + 0x14;
+                element->x = (DISPLAY_WIDTH/2);
+                element->y = i * 40 + 20;
                 sub_8004558(element);
                 sub_80051E8(element);
 
@@ -496,18 +498,18 @@ void sub_8082788(void)
                 element = &resultsScreen->unk160[((temp) >> 4)];
 
                 if (element != &resultsScreen->unk160[0]) {
-                    element->unk16 = 0xA0;
-                    element->unk18 = i * 0x28 + 0x14;
+                    element->x = 160;
+                    element->y = i * 40 + 20;
                     sub_80051E8(element);
                 }
                 element = &resultsScreen->unk160[temp & 0xF];
-                element->unk16 = 0xAB;
-                element->unk18 = i * 0x28 + 0x14;
+                element->x = 171;
+                element->y = i * 40 + 20;
                 sub_80051E8(element);
 
                 element = &resultsScreen->unk340;
-                element->unk16 = 0xC5;
-                element->unk18 = i * 0x28 + 0x14;
+                element->x = 197;
+                element->y = i * 40 + 20;
                 sub_80051E8(element);
             }
         }
@@ -586,18 +588,18 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 void sub_8082CEC(struct UNK_0808B3FC_UNK240 *element, u32 vramAddr, u16 asset,
                  u8 variant, s16 x, s16 y, u16 unk1A, u8 unk25, u32 unk10)
 {
-    element->unk16 = x;
-    element->unk18 = y;
-    element->unk4 = (void *)vramAddr;
+    element->x = x;
+    element->y = y;
+    element->vram = (void *)vramAddr;
     element->unk1A = unk1A;
     element->unk8 = 0;
-    element->unkA = asset;
-    element->unk20 = variant;
+    element->anim = asset;
+    element->variant = variant;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xff;
     element->unk22 = 0x10;
-    element->unk25 = unk25;
+    element->focused = unk25;
     element->unk10 = unk10;
     sub_8004558(element);
 }
