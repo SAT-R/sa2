@@ -10,10 +10,6 @@
 .equ AnimCmd_10,				-10
 .equ AnimCmd_11,				-11
 .equ AnimCmd_12,				-12
-@; TODO(Jace):
-@; - Find out what the remaining AnimCmds do (some might have been for debugging?)
-@; - calculate GetTileIndex indices by using the actual graphics' pointers, not hardcoded values
-@; - do JumpBack calls relatively, not with hardcoded numbers
 
 .align 2, 0
 	anim_data__0000_0:
