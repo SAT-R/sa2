@@ -37,7 +37,6 @@ for filename in search_directories('./src/**/*.h', './include/**/*.h'):
                 depends_on[header_name].add("gba/multiboot.h")
                 
         data[header_name] = ""
-
         for line in header.readlines():
             if "#include" in line and not line.startswith("//") and '<' not in line:
                 requires = line.split('"')[1]
