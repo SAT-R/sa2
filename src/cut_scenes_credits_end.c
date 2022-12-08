@@ -1,10 +1,11 @@
 #include "global.h"
+#include "cut_scenes_credits_end.h"
+#include "cut_scenes_missing_emeralds.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "trig.h"
@@ -44,8 +45,6 @@ extern const struct UNK_080E0D64 gUnknown_080E12D0[4];
 
 void sub_808FB2C(void);
 void sub_808FBE4(struct Task *);
-
-extern void sub_8003638(struct Unk_03002400 *);
 
 void CreateCreditsEndCutScene(u8 variant)
 {
@@ -543,8 +542,6 @@ void sub_808FB2C(void)
         gCurTask->main = sub_808F704;
     }
 }
-
-void CreateMissingChaosEmaraldsCutScene(void);
 
 void sub_808FB94(void)
 {

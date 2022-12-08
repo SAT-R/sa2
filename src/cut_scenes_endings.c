@@ -1,10 +1,12 @@
 #include "global.h"
+#include "cut_scenes_endings.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
+#include "cut_scenes_extra_ending_fall.h"
+#include "cut_scenes_final_ending_fall.h"
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "trig.h"
@@ -18,7 +20,7 @@
 #include "constants/text.h"
 
 struct EndingCutSceneTransition {
-    u8 unk0[0x6C];
+    u8 filler0[0x6C];
     u8 unk6C;
     u8 unk6D;
     u16 unk6E;
@@ -71,9 +73,6 @@ void sub_808E95C(s32 *ptr, s32 a, u8 b)
         }
     }
 }
-
-void CreateExtraEndingFallCutScene(void);
-void CreateFinalEndingFallCutScene(void);
 
 void sub_808E9AC(void)
 {

@@ -1,10 +1,11 @@
 #include "global.h"
+#include "cut_scenes_endings.h"
+#include "cut_scenes_extra_ending_slides.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "trig.h"
@@ -16,9 +17,6 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
-
-extern void sub_808E8F8(s16 *ptr, s16 a, u8 b);
-extern void sub_808E95C(s32 *ptr, s32 a, u8 b);
 
 struct ExtraEndingCutScene {
     struct Unk_03002400 unk0;
@@ -1009,8 +1007,6 @@ void sub_80913DC(void)
         }
     }
 }
-
-void CreateExtraEndingSlidesCutScene(void);
 
 void sub_8091468(void)
 {

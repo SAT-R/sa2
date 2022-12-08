@@ -162,6 +162,8 @@ void sub_80036E0(struct UNK_0808B3FC_UNK240 *);
 void sub_8003914(struct UNK_0808B3FC_UNK240 *);
 void sub_80047A0(u16, u16, u16, u16);
 
+void sub_8003638(struct Unk_03002400 *);
+
 // Probably a list of sprites to draw to screen
 extern struct Unk_03002EC0 *gUnknown_030027A0[];
 
