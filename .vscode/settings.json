@@ -132,7 +132,8 @@
         "special_stage_tables.h": "c",
         "isagbprint.h": "c",
         "types.h": "c",
-        "animations.h": "c"
+        "animations.h": "c",
+        "cut_scenes.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

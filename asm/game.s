@@ -46522,7 +46522,7 @@ _08030D68:
 	ldr r0, _08030DCC @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808E8B0
+	bl StartEndingCutScenes
 	b _080310E6
 	.align 2, 0
 _08030DA4: .4byte 0x00000135
@@ -46570,7 +46570,7 @@ _08030DE0:
 	ldr r0, _08030E3C @ =gUnknown_03002A84
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_808E8B0
+	bl StartEndingCutScenes
 _08030E16:
 	bl WriteSaveGame
 	b _080310E6
@@ -46679,7 +46679,7 @@ _08030EFE:
 	orrs r1, r2
 	strb r1, [r0, #0x13]
 	movs r0, #0
-	bl sub_808E740
+	bl CreateCharacterUnlockCutScene
 	b _08030E16
 _08030F10:
 	ldr r0, [r6]
@@ -46688,7 +46688,7 @@ _08030F10:
 	orrs r1, r2
 	strb r1, [r0, #0x13]
 	movs r0, #2
-	bl sub_808E740
+	bl CreateCharacterUnlockCutScene
 	b _08030E16
 _08030F22:
 	ldr r0, [r6]
@@ -46697,7 +46697,7 @@ _08030F22:
 	orrs r1, r2
 	strb r1, [r0, #0x13]
 	movs r0, #1
-	bl sub_808E740
+	bl CreateCharacterUnlockCutScene
 	b _08030E16
 _08030F34:
 	ldr r0, _08030F48 @ =gCurrentLevel
