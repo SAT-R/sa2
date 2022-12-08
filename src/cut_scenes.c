@@ -4552,7 +4552,7 @@ struct MissingChaosEmaraldsCutScene {
     u8 unkBC;
     u8 unkBD;
     u8 unkBE;
-    u8 unkBF;
+    s8 unkBF;
 
     u32 unkC0;
     vu32 unkC4;
@@ -4684,5 +4684,132 @@ void sub_8094118(void)
         }
         background->unk2A = 0;
         background->unk2E = 1;
+    }
+}
+
+extern const u16 gUnknown_080E1C5C[34];
+void sub_809449C(void);
+
+void sub_8094360(void)
+{
+    struct Unk_03002400 *background = NULL;
+    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+
+    if (scene->unkBD == 0) {
+        if (scene->unkBF > 1) {
+            gDispCnt |= 0x200;
+            gBgScrollRegs[1][0] = 0;
+            gBgScrollRegs[1][1] = 400;
+            background = &scene->unk40;
+            background->unk1C = gUnknown_080E1C5C[scene->unkBF - 1];
+            sub_8002A3C(background);
+        }
+
+        gDispCnt |= 0x100;
+        gBgScrollRegs[0][0] = 0;
+        gBgScrollRegs[0][1] = 0;
+        background = &scene->unk0;
+        background->unk1C = gUnknown_080E1C5C[0];
+        sub_8002A3C(background);
+    } else {
+        s32 base;
+        u16 index;
+        gDispCnt |= 0x100;
+        gBgScrollRegs[0][0] = 0;
+        gBgScrollRegs[0][1] = 0;
+
+        background = &scene->unk0;
+        background->unk1C = gUnknown_080E1C5C[7];
+        sub_8002A3C(background);
+
+        if (scene->unkBD > 1 || scene->unkBF > 1) {
+            gDispCnt |= 0x200;
+            gBgScrollRegs[1][0] = 0;
+            gBgScrollRegs[1][1] = 0xA0;
+
+            background = &scene->unk40;
+            base = scene->unkBF;
+            index = (base + 6 + ((scene->unkBD - 1) * 7));
+            background->unk1C = gUnknown_080E1C5C[index];
+            sub_8002A3C(background);
+        }
+    }
+
+    gCurTask->main = sub_809449C;
+}
+
+void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene);
+void sub_8094530(void);
+
+void sub_809449C(void)
+{
+    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unkB0;
+    transitionConfig->unk2 = 2;
+
+    sub_80945A4(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+        scene->unkBE = 1;
+        gCurTask->main = sub_8094530;
+    }
+}
+
+void sub_8094570(void);
+
+void sub_80944EC(void)
+{
+    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unkB0;
+    transitionConfig->unk2 = 1;
+
+    sub_80945A4(scene);
+
+    if (sub_802D4CC(transitionConfig) == 1) {
+        transitionConfig->unk4 = 0;
+
+        gCurTask->main = sub_8094570;
+    }
+}
+
+void sub_8094530(void)
+{
+    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    sub_80945A4(scene);
+    if (scene->unkC0 != 0) {
+        scene->unkC0--;
+    } else {
+        scene->unkC0 = 0xB4;
+        gCurTask->main = sub_80944EC;
+    }
+}
+
+void sub_8094570(void)
+{
+    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    if (scene->unkC0 != 0) {
+        scene->unkC0--;
+    } else {
+        CreateTitleScreen();
+        TaskDestroy(gCurTask);
+    }
+}
+
+void sub_80945A0(struct Task *t)
+{
+    // unused logic
+}
+
+void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
+{
+    if (scene->unkBD != 0) {
+        struct UNK_0808B3FC_UNK240 *element = &scene->unk80;
+        if (scene->unkBD > 3 && scene->unkBE != 0) {
+            element->anim = gUnknown_080E1CA0[2].anim;
+            element->variant = gUnknown_080E1CA0[2].variant;
+        }
+        sub_8004558(element);
+        sub_80051E8(element);
     }
 }

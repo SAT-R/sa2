@@ -510,9 +510,9 @@
       // | "ESPERE POR FAVOR..."   | "ASPETTARE..."            |
 #define SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR                                \
     1 // "COMMUNICATION ERROR"        | "KOMMUNIKATIONSFEHLER" | "ERREUR DE
-      // COMMUNICATION" | "ERROR DE COMUNICACIÓN" | "ERRORE DI COMUNICAZIONE" |
+      // COMMUNICATION" | "ERROR DE COMUNICACIÃ“N" | "ERRORE DI COMUNICAZIONE" |
 #define SA2_ANIM_VARIANT_MP_COMM_MSG_PLAY_AGAIN                                         \
-    2 // "PLAY AGAIN?"                | "NOCHMAL SPIELEN?"     | "REJOUER?" | "¿JUGAR DE
+    2 // "PLAY AGAIN?"                | "NOCHMAL SPIELEN?"     | "REJOUER?" | "Â¿JUEGA DE
       // NUEVO?"      | "GIOCARE DI NUOVO?"       |
 #define SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P                                  \
     3 // "LET'S PLAY WITH 2 PLAYERS!" |
