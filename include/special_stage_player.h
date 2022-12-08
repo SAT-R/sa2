@@ -9,9 +9,9 @@
 struct SpecialStagePlayer {
     struct SpecialStage *unk0;
     void *unk4;
-    struct UNK_0808B3FC_UNK240 unk8;
-    struct UNK_0808B3FC_UNK240 unk38;
-    struct UNK_0808B3FC_UNK240 roboArrow;
+    Sprite unk8;
+    Sprite unk38;
+    Sprite roboArrow;
 
     // vram stuff
     void *unk98;

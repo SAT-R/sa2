@@ -17,9 +17,17 @@
 
 typedef u16 AnimId;
 
-// TODO: move the struct declaration to a proper location
-// Background
-struct Unk_03002400 {
+// BgHeader
+struct BgHeader {
+    /* TODO: fixing types breaks sub_80021C4. */
+    u32 unk0; // const void *
+    u32 unk4; // void *
+    u16 unk8;
+};
+
+typedef struct {
+    // TODO: struct Unk_03002EC0 unk0;
+    // and remove the below 3 values
     u32 unk0;
     u32 unk4; // vram
 
@@ -57,7 +65,7 @@ struct Unk_03002400 {
     const u16 *unk38;
     u16 unk3C;
     u16 unk3E;
-}; /* size = 0x40 */
+} Background; /* size = 0x40 */
 
 struct UNK_0808B3FC_UNK240_UNKC {
     u8 unk0;
@@ -71,7 +79,7 @@ struct UNK_0808B3FC_UNK240_UNKC {
 
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`
-struct UNK_0808B3FC_UNK240 {
+typedef struct {
     // These values are part of some other struct
     /* 0x00 */ u32 unk0;
 
@@ -111,15 +119,7 @@ struct UNK_0808B3FC_UNK240 {
     /* 0x26 */ u8 filler26[2];
     /* 0x28 */ s32 unk28;
     /* 0x2C */ u8 filler2C[4];
-} /* size = 0x30 */;
-
-struct Unk_03002EC0 {
-    /* TODO: fixing types breaks sub_80021C4. */
-    u32 unk0; // const void *
-    u32 unk4; // void *
-    u16 unk8;
-    u8 fillerA[2];
-};
+} Sprite /* size = 0x30 */;
 
 // Transformer
 struct UNK_808D124_UNK180 {
@@ -134,19 +134,17 @@ struct UNK_808D124_UNK180 {
     u8 unkB;
 }; /* size 0xC */
 
-// used for defining element data
-// TileInfo
-struct UNK_080E0D64 {
+typedef struct {
     /* 0x00 */ u32 numTiles;
     /* 0x04 */ AnimId anim;
     /* 0x06 */ u8 variant;
-};
+} TileInfo;
 
 // Register menu item
-u32 sub_8004558(struct UNK_0808B3FC_UNK240 *);
+u32 sub_8004558(Sprite *);
 
-void sub_80051E8(struct UNK_0808B3FC_UNK240 *);
-void sub_8002A3C(struct Unk_03002400 *);
+void sub_80051E8(Sprite *);
+void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 u32 sub_8002B20(void);
@@ -154,17 +152,14 @@ void DrawToOamBuffer(void);
 OamData *sub_80058B4(u8 size);
 
 // TransformSprite
-void sub_8004860(struct UNK_0808B3FC_UNK240 *, struct UNK_808D124_UNK180 *);
+void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
 
 void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs *);
 
-void sub_80036E0(struct UNK_0808B3FC_UNK240 *);
-void sub_8003914(struct UNK_0808B3FC_UNK240 *);
+void sub_80036E0(Sprite *);
+void sub_8003914(Sprite *);
 void sub_80047A0(u16, u16, u16, u16);
 
-void sub_8003638(struct Unk_03002400 *);
-
-// Probably a list of sprites to draw to screen
-extern struct Unk_03002EC0 *gUnknown_030027A0[];
+void sub_8003638(Background *);
 
 #endif

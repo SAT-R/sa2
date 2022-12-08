@@ -6,7 +6,7 @@
 
 // TODO: not sure why these were shared from here, may
 // not be
-extern const struct UNK_080E0D64 gPressStartTiles[];
+extern const TileInfo gPressStartTiles[];
 
 void CreateTitleScreen(void);
 void CreateTitleScreenAndSkipIntro(void);

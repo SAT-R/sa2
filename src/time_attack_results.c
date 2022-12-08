@@ -16,9 +16,9 @@
 
 struct TimeAttackResultsCutScene {
     struct UNK_802D4CC_UNK270 unk0;
-    struct UNK_0808B3FC_UNK240 unkC[3];
-    struct UNK_0808B3FC_UNK240 unk9C[3];
-    struct UNK_0808B3FC_UNK240 unk12C;
+    Sprite unkC[3];
+    Sprite unk9C[3];
+    Sprite unk12C;
     u32 unk15C;
     u8 filler160[8];
     u32 unk168;
@@ -29,7 +29,7 @@ struct TimeAttackResultsCutScene {
     u8 unk174;
     u8 unk175;
     u8 filler176[2];
-    struct UNK_0808B3FC_UNK240 unk178[7];
+    Sprite unk178[7];
     struct UNK_808D124_UNK180 unk2C8;
     s16 unk2D4;
     s16 unk2D6;
@@ -45,7 +45,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     struct Task *t;
     struct TimeAttackResultsCutScene *resultsCutScene;
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    struct UNK_0808B3FC_UNK240 *element = NULL;
+    Sprite *element = NULL;
     s16 millis, minutes, seconds;
     u8 i;
     u8 isBossLevel;
@@ -291,7 +291,7 @@ const s8 gUnknown_080E05C4[] = {
 void sub_80897E8(void)
 {
     struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u32 unk168 = resultsCutScene->unk168;
     u32 i;
 

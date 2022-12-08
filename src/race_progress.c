@@ -10,8 +10,8 @@
 #include "constants/move_states.h"
 
 struct RaceProgressIndicator {
-    struct UNK_0808B3FC_UNK240 avatars[4];
-    struct UNK_0808B3FC_UNK240 flags[2];
+    Sprite avatars[4];
+    Sprite flags[2];
     u8 course;
     u8 numPlayers;
 };
@@ -73,7 +73,7 @@ void RaceProgressIndicator(void)
 static void CreateUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u8 avatarVariants[6];
 
     memcpy(avatarVariants, sCharacterAvatars, sizeof(sCharacterAvatars));
@@ -138,7 +138,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
 static void Task_UpdateAvatarPositions(void)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *avatar;
+    Sprite *avatar;
     struct MultiplayerPlayer *player;
     struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(gCurTask);
 
@@ -156,7 +156,7 @@ static void Task_UpdateAvatarPositions(void)
 static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     if (gPlayer.moveState & MOVESTATE_100000) {
         return;

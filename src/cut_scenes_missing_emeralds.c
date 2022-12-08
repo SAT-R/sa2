@@ -16,9 +16,9 @@ void sub_8094360(void);
 void sub_80945A0(struct Task *);
 
 struct MissingChaosEmaraldsCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
     struct UNK_802D4CC_UNK270 unkB0;
 
     u8 unkBC;
@@ -31,7 +31,7 @@ struct MissingChaosEmaraldsCutScene {
 };
 
 // TODO: unknown length
-extern const struct UNK_080E0D64 gUnknown_080E1CA0[5];
+extern const TileInfo gUnknown_080E1CA0[5];
 
 void CreateMissingChaosEmaraldsCutScene(void)
 {
@@ -91,7 +91,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene->unkC4 = OBJ_VRAM0;
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk80;
         element->vram = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
@@ -119,7 +119,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk0;
         background->unk4 = BG_SCREEN_ADDR(0);
         background->unkA = 0;
@@ -136,7 +136,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background->unk2E = 0;
     }
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk40;
         background->unk4 = BG_SCREEN_ADDR(8);
         background->unkA = 0;
@@ -163,7 +163,7 @@ void sub_809449C(void);
 
 void sub_8094360(void)
 {
-    struct Unk_03002400 *background = NULL;
+    Background *background = NULL;
     struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
 
     if (scene->unkBD == 0) {
@@ -275,7 +275,7 @@ void sub_80945A0(struct Task *t)
 void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
 {
     if (scene->unkBD != 0) {
-        struct UNK_0808B3FC_UNK240 *element = &scene->unk80;
+        Sprite *element = &scene->unk80;
         if (scene->unkBD > 3 && scene->unkBE != 0) {
             element->anim = gUnknown_080E1CA0[2].anim;
             element->variant = gUnknown_080E1CA0[2].variant;

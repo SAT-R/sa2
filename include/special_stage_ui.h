@@ -7,20 +7,20 @@
 
 struct SpecialStageUI {
     struct SpecialStage *stage;
-    struct UNK_0808B3FC_UNK240 timeSymbol;
-    struct UNK_0808B3FC_UNK240 timeHundreds;
-    struct UNK_0808B3FC_UNK240 timeTens;
-    struct UNK_0808B3FC_UNK240 timeUnits;
-    struct UNK_0808B3FC_UNK240 ringsHundredsDigit;
-    struct UNK_0808B3FC_UNK240 ringsTensDigit;
-    struct UNK_0808B3FC_UNK240 ringsUnitsDigit;
-    struct UNK_0808B3FC_UNK240 unk154;
-    struct UNK_0808B3FC_UNK240 ringsTargetHundredsDigit;
-    struct UNK_0808B3FC_UNK240 ringsTargetTensDigit;
-    struct UNK_0808B3FC_UNK240 ringsTargetUnitsDigit;
-    struct UNK_0808B3FC_UNK240 multiplier;
-    struct UNK_0808B3FC_UNK240 unk244;
-    struct UNK_0808B3FC_UNK240 pauseMenu;
+    Sprite timeSymbol;
+    Sprite timeHundreds;
+    Sprite timeTens;
+    Sprite timeUnits;
+    Sprite ringsHundredsDigit;
+    Sprite ringsTensDigit;
+    Sprite ringsUnitsDigit;
+    Sprite unk154;
+    Sprite ringsTargetHundredsDigit;
+    Sprite ringsTargetTensDigit;
+    Sprite ringsTargetUnitsDigit;
+    Sprite multiplier;
+    Sprite unk244;
+    Sprite pauseMenu;
     void *unk2A4;
     s8 unk2A8;
     s8 wasPaused;
@@ -31,15 +31,15 @@ struct SpecialStageUI {
 
 struct SpecialStageResultsScreen {
     struct SpecialStage *stage;
-    struct UNK_0808B3FC_UNK240 unk4;
-    struct UNK_0808B3FC_UNK240 unk34;
-    struct UNK_0808B3FC_UNK240 chaosEmerald[7];
-    struct UNK_0808B3FC_UNK240 unk1B4;
-    struct UNK_0808B3FC_UNK240 unk1E4;
-    struct UNK_0808B3FC_UNK240 unk214;
-    struct UNK_0808B3FC_UNK240 unk244[5];
-    struct UNK_0808B3FC_UNK240 unk334[5];
-    struct UNK_0808B3FC_UNK240 unk424[5];
+    Sprite unk4;
+    Sprite unk34;
+    Sprite chaosEmerald[7];
+    Sprite unk1B4;
+    Sprite unk1E4;
+    Sprite unk214;
+    Sprite unk244[5];
+    Sprite unk334[5];
+    Sprite unk424[5];
     s16 animFrame;
 
     u16 unk516;

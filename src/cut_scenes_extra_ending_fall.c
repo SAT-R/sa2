@@ -15,17 +15,17 @@
 #include "constants/songs.h"
 
 struct ExtraEndingCutScene {
-    struct Unk_03002400 unk0;
-    struct UNK_0808B3FC_UNK240 unk40;
-    struct UNK_0808B3FC_UNK240 unk70;
-    struct UNK_0808B3FC_UNK240 unkA0;
-    struct UNK_0808B3FC_UNK240 unkD0[6];
+    Background unk0;
+    Sprite unk40;
+    Sprite unk70;
+    Sprite unkA0;
+    Sprite unkD0[6];
 
-    struct UNK_0808B3FC_UNK240 unk1F0;
-    struct UNK_0808B3FC_UNK240 unk220;
-    struct UNK_0808B3FC_UNK240 unk250;
-    struct UNK_0808B3FC_UNK240 unk280[4];
-    struct UNK_0808B3FC_UNK240 unk340;
+    Sprite unk1F0;
+    Sprite unk220;
+    Sprite unk250;
+    Sprite unk280[4];
+    Sprite unk340;
 
     struct UNK_802D4CC_UNK270 unk370;
 
@@ -77,7 +77,7 @@ extern const u16 gUnknown_080E1514[14];
 // TODO: these are the wrong length
 extern const u16 gUnknown_080E1530[10];
 extern const u8 gUnknown_080E154A[10];
-extern const struct UNK_080E0D64 gUnknown_080E12FC[9];
+extern const TileInfo gUnknown_080E12FC[9];
 
 void CreateExtraEndingFallCutScene(void)
 {
@@ -177,7 +177,7 @@ void CreateExtraEndingFallCutScene(void)
     scene->unk398 = OBJ_VRAM0;
 
     for (i = 0; i < 4; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk280[i];
         element->vram = (void *)scene->unk398;
         scene->unk398 += 0xA00;
@@ -204,7 +204,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk40;
         element->vram = (void *)scene->unk398;
         scene->unk398 += 0x540;
@@ -225,7 +225,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk70;
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[7].numTiles << 5;
@@ -246,7 +246,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
 
         element = &scene->unkA0;
         element->vram = (void *)scene->unk398;
@@ -268,7 +268,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     for (i = 0; i < 6; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unkD0[i];
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * 0x20;
@@ -289,7 +289,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1F0;
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[19].numTiles << 5;
@@ -310,7 +310,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk220;
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[20].numTiles << 5;
@@ -331,7 +331,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk340;
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[9].numTiles << 6;
@@ -352,7 +352,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk250;
         element->vram = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[8].numTiles << 5;
@@ -373,7 +373,7 @@ void CreateExtraEndingFallCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk0;
         background->unk4 = BG_SCREEN_ADDR(0);
         background->unkA = 0;
@@ -836,7 +836,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 {
     u8 i;
     u32 max;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     if (scene->unk37C == 13) {
         max = 4;
     } else {

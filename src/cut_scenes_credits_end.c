@@ -15,12 +15,12 @@
 #include "constants/text.h"
 
 struct CreditsEndCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct Unk_03002400 unk80;
-    struct UNK_0808B3FC_UNK240 unkC0;
-    struct UNK_0808B3FC_UNK240 unkF0;
-    struct UNK_0808B3FC_UNK240 unk120;
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Sprite unkC0;
+    Sprite unkF0;
+    Sprite unk120;
     struct UNK_802D4CC_UNK270 unk150;
     u8 unk15C;
     u8 unk15D;
@@ -37,7 +37,7 @@ struct CreditsEndCutScene {
 }; /* size: 0x188 */
 
 extern const u16 gUnknown_080E12B0[0x20];
-extern const struct UNK_080E0D64 gUnknown_080E12D0[4];
+extern const TileInfo gUnknown_080E12D0[4];
 
 void sub_808FB2C(void);
 void sub_808FBE4(struct Task *);
@@ -107,7 +107,7 @@ void CreateCreditsEndCutScene(u8 variant)
     scene->unk16C = OBJ_VRAM0;
 
     if (scene->unk15C == 2) {
-        struct Unk_03002400 *background = &scene->unk40;
+        Background *background = &scene->unk40;
         {
             gDispCnt |= 0x100;
             gBgScrollRegs[0][0] = 0;
@@ -131,7 +131,7 @@ void CreateCreditsEndCutScene(u8 variant)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unkC0;
             element->vram = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[0].numTiles << 5);
@@ -152,7 +152,7 @@ void CreateCreditsEndCutScene(u8 variant)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unkF0;
             element->vram = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[1].numTiles << 5);
@@ -173,7 +173,7 @@ void CreateCreditsEndCutScene(u8 variant)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk120;
             element->vram = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[2].numTiles << 5);
@@ -216,7 +216,7 @@ void CreateCreditsEndCutScene(u8 variant)
     }
 
     if (scene->unk15C == 1) {
-        struct Unk_03002400 *background;
+        Background *background;
         gDispCnt |= 0x200;
         gBgScrollRegs[1][0] = 0;
         gBgScrollRegs[1][1] = 0;
@@ -283,7 +283,7 @@ void sub_808F5C4(void)
         return;
     }
     {
-        struct Unk_03002400 *background = &scene->unk40;
+        Background *background = &scene->unk40;
         gDispCnt &= ~0x200;
         gDispCnt |= 0x100;
         gBgScrollRegs[0][0] = 0;
@@ -307,7 +307,7 @@ void sub_808F5C4(void)
     }
 
     {
-        struct Unk_03002400 *background = &scene->unk80;
+        Background *background = &scene->unk80;
         gDispCnt |= 0x400;
         gBgScrollRegs[2][0] = 0;
         gBgScrollRegs[2][1] = 0xD190;
@@ -353,7 +353,7 @@ void sub_808F704(void)
             if (scene->unk15E != 0) {
                 scene->unk15E--;
             } else {
-                struct Unk_03002400 *background = &scene->unk40;
+                Background *background = &scene->unk40;
                 gDispCnt |= 0x100;
                 gBgScrollRegs[0][0] = 0;
                 gBgScrollRegs[0][1] = 0;
@@ -476,7 +476,7 @@ void sub_808F824(void)
 
 void sub_808FA24(struct CreditsEndCutScene *scene)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     if (scene->unk15C != 2) {
         return;
     }

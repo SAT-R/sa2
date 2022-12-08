@@ -52,14 +52,14 @@ struct OptionsScreen {
 
     s16 subMenuXPos;
     s16 unk362;
-    struct Unk_03002400 background;
-    struct Unk_03002400 subMenuBackground;
-    struct UNK_0808B3FC_UNK240 title;
-    struct UNK_0808B3FC_UNK240 menuItems[NUM_OPTIONS_MENU_ITEMS];
+    Background background;
+    Background subMenuBackground;
+    Sprite title;
+    Sprite menuItems[NUM_OPTIONS_MENU_ITEMS];
 
-    struct UNK_0808B3FC_UNK240 metaItems[4];
+    Sprite metaItems[4];
 
-    struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
+    Sprite playerNameDisplay[6];
     struct UNK_802D4CC_UNK270 unk774;
     s8 menuCursor;
     s8 prevCursorPosition;
@@ -93,9 +93,9 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
-void sub_806A568(struct UNK_0808B3FC_UNK240 *obj, s8 target, u32 size, u16 c,
-                 u32 assetId, s16 xPos, s16 yPos, u16 g, u8 h, u8 focused);
-void sub_806B854(struct Unk_03002400 *unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e,
-                 u16 f, u8 g, u16 h, u16 i);
+void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
+                 s16 yPos, u16 g, u8 h, u8 focused);
+void sub_806B854(Background *unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
+                 u8 g, u16 h, u16 i);
 
 #endif // GUARD_OPTION_SCREEN_H

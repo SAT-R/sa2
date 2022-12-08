@@ -22,10 +22,10 @@
 
 struct SinglePakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
-    struct UNK_0808B3FC_UNK240 unkC;
-    struct UNK_0808B3FC_UNK240 unk3C;
-    struct UNK_0808B3FC_UNK240 unk6C;
-    struct Unk_03002400 unk9C;
+    Sprite unkC;
+    Sprite unk3C;
+    Sprite unk6C;
+    Background unk9C;
     void *mbProgStart;
     u32 mbProgLength;
     u32 unkE4;
@@ -118,8 +118,8 @@ void StartSinglePakConnect(void)
     struct Task *t;
     struct SinglePakConnectScreen *connectScreen;
     struct UNK_802D4CC_UNK270 *transition;
-    struct UNK_0808B3FC_UNK240 *element;
-    struct Unk_03002400 *background;
+    Sprite *element;
+    Background *background;
     struct MultiBootParam *mbParams;
     u32 ram;
     gMultiplayerMissingHeartbeats[3] = 0;
@@ -443,7 +443,7 @@ void sub_8081A5C(void)
 
 void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
 {
-    struct Unk_03002400 *background;
+    Background *background;
     u16 temp;
     gDispCnt = 0x101;
     gBgCntRegs[0] = 0x1e02;

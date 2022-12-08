@@ -17,14 +17,14 @@
 #include "constants/text.h"
 
 struct MultiplayerTeamPlayScreen {
-    struct UNK_0808B3FC_UNK240 unk0[4];
-    struct UNK_0808B3FC_UNK240 unkC0[5];
-    struct UNK_0808B3FC_UNK240 unk1B0;
-    struct UNK_0808B3FC_UNK240 unk1E0;
-    struct Unk_03002400 unk210;
-    struct Unk_03002400 unk250;
-    struct Unk_03002400 unk290;
-    struct Unk_03002400 unk2D0;
+    Sprite unk0[4];
+    Sprite unkC0[5];
+    Sprite unk1B0;
+    Sprite unk1E0;
+    Background unk210;
+    Background unk250;
+    Background unk290;
+    Background unk2D0;
     s16 unk310;
     s16 unk312;
     u16 unk314;
@@ -45,14 +45,14 @@ static void sub_805D610(void);
 static const u8 gUnknown_080D92B8[] = { 40, 174 };
 static const u8 gUnknown_080D92BA[] = { 80, 159 };
 
-static const struct UNK_080E0D64 gUnknown_080D92BC[] = {
+static const TileInfo gUnknown_080D92BC[] = {
     TextElementAlt4(5, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
     TextElementAlt4(6, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
     TextElementAlt4(7, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
     TextElementAlt4(8, 8, SA2_ANIM_MULTIPLAYER_UNKNOWN),
 };
 
-static const struct UNK_080E0D64 gUnknown_080D92DC[] = {
+static const TileInfo gUnknown_080D92DC[] = {
     TextElement(5, LANG_DEFAULT, 0, 46, 1076),
     TextElement(5, LANG_DEFAULT, 1, 42, 1076),
     TextElement(5, LANG_DEFAULT, 2, 12, 1076),
@@ -94,8 +94,8 @@ void CreateMultiplayerTeamPlayScreen(void)
 {
     struct Task *t;
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
-    struct UNK_0808B3FC_UNK240 *element;
-    struct Unk_03002400 *background;
+    Sprite *element;
+    Background *background;
     u32 lang, vram;
     u8 i;
 
@@ -293,8 +293,8 @@ static void sub_805CC34(void)
 {
     u8 i, j;
     u8 count;
-    struct Unk_03002400 *background;
-    struct UNK_0808B3FC_UNK240 *element;
+    Background *background;
+    Sprite *element;
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
     union MultiSioData *msd;
     gDispCnt |= 0x400;
@@ -348,7 +348,7 @@ static void sub_805CC34(void)
 
             if (count == j) {
                 if (teamPlayScreen->unk316 != 0) {
-                    struct Unk_03002400 *background = &teamPlayScreen->unk290;
+                    Background *background = &teamPlayScreen->unk290;
 
                     gUnknown_03004D80[2] = 0;
                     gUnknown_03002280[8] = 0;
@@ -507,7 +507,7 @@ static void sub_805D1F8(void)
     bool8 someVar = TRUE;
     u8 pos[2] = { 0, 0 };
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     union MultiSioData *packet;
 
     teamPlayScreen = TaskGetStructPtr(gCurTask);
@@ -646,7 +646,7 @@ static void sub_805D610(void)
 static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     for (i = 0; i < 4; i++) {
         if (GetBit(gMultiplayerConnections, i)) {

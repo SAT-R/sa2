@@ -17,8 +17,8 @@
 
 struct ResultsCutScene {
     Player *unk0;
-    struct UNK_0808B3FC_UNK240 unk4;
-    struct UNK_0808B3FC_UNK240 unk34;
+    Sprite unk4;
+    Sprite unk34;
     struct UNK_802D4CC_UNK270 unk64;
     u16 unk70;
     u16 unk72;
@@ -31,10 +31,10 @@ struct ResultsCutScene {
 } /* 0x80 */;
 
 struct CharacterUnlockCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct Unk_03002400 unk80;
-    struct Unk_03002400 unkC0;
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
     struct UNK_802D4CC_UNK270 unk100;
 
     // slide
@@ -65,7 +65,7 @@ void CreateCourseResultsCutScene(u8 mode)
 
     struct Task *t;
     struct ResultsCutScene *scene;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct UNK_802D4CC_UNK270 *transitionConfig;
     memcpy(mains, gUnknown_080E1208, 0xC);
     memcpy(unk1214, gUnknown_080E1214, 0xC);
@@ -145,7 +145,7 @@ void CreateCourseResultsCutScene(u8 mode)
 void sub_808DD9C(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
+    Sprite *element = &scene->unk4;
     Player *player = scene->unk0;
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk64;
 
@@ -215,7 +215,7 @@ void sub_808DD9C(void)
 void sub_808DF88(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
+    Sprite *element = &scene->unk4;
     Player *player = scene->unk0;
 
     scene->unk70 -= scene->unk74;
@@ -276,7 +276,7 @@ void sub_808E114(void)
 {
     s32 result;
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element = &scene->unk4;
+    Sprite *element = &scene->unk4;
     Player *player = scene->unk0;
 
     if (scene->unk78 < 0x2E) {
@@ -376,7 +376,7 @@ extern const u16 gUnknown_080E1118[24];
 
 void sub_808E35C(struct CharacterUnlockCutScene *scene)
 {
-    struct Unk_03002400 *background;
+    Background *background;
     s8 lang = gLoadedSaveGame->unk6 - 1;
     if (lang < 0) {
         lang = 0;
@@ -461,7 +461,7 @@ void sub_808E4C8(void)
         scene->unk110 = 0;
 
         if ((scene->unk10C & 3) == 3) {
-            struct Unk_03002400 *background;
+            Background *background;
             gBgScrollRegs[0][1] = 0xFFDC;
 
             background = &scene->unk40;

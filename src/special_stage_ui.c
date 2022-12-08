@@ -100,7 +100,7 @@ static void CreateStageTime(struct SpecialStageUI *ui)
 {
     struct SpecialStage *stage = ui->stage;
     const struct UNK_80DF670 *unkF7E8;
-    struct UNK_0808B3FC_UNK240 newElement;
+    Sprite newElement;
 
     s16 timeHundreds = stage->timeHundreds;
     s16 timeTens = stage->timeTens;
@@ -129,7 +129,7 @@ void sub_806FCF8(void)
     struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     const struct UNK_80DF670 *unkF7E8;
 
     u32 temp;
@@ -188,7 +188,7 @@ static void CreateRingCounter(struct SpecialStageUI *ui)
 {
     struct SpecialStage *stage = ui->stage;
 
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     const struct UNK_80DF670 *sprite;
 
     sprite = &sDigitSprites[stage->ringsHundreds];
@@ -256,7 +256,7 @@ void sub_8070078(void)
     struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     const struct UNK_80DF670 *sprite;
 
     sprite = &sDigitSprites[stage->ringsHundreds];
@@ -307,7 +307,7 @@ void sub_8070078(void)
 
 static void HandlePaused(struct SpecialStageUI *ui)
 {
-    struct UNK_0808B3FC_UNK240 *element = &ui->pauseMenu;
+    Sprite *element = &ui->pauseMenu;
     s16 lang = LanguageIndex(gLoadedSaveGame->unk6);
 
     const u16 pauseMenuSprites[6][3];
@@ -437,7 +437,7 @@ void sub_807061C(s16 a)
 {
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     resultsScreen->unk516 = (0xB - a) * 0x16;
 
@@ -461,7 +461,7 @@ void sub_8070680(s16 a)
     resultsScreen->unk518 = (0xB - a) * 0x16;
 
     for (i = 0; i < 7; i++) {
-        struct UNK_0808B3FC_UNK240 *element = &resultsScreen->chaosEmerald[i];
+        Sprite *element = &resultsScreen->chaosEmerald[i];
         s32 temp2 = (i * 0x18);
         s32 temp = resultsScreen->unk518 + 0x24;
         temp2 += temp;
@@ -473,7 +473,7 @@ void sub_80706D8(s16 a)
 {
     s16 i;
 
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
@@ -495,7 +495,7 @@ void sub_8070740(s16 a)
 {
     s16 i;
     s32 temp2, temp;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
@@ -515,7 +515,7 @@ void sub_80707A8(s16 xPos)
 {
     s16 i;
     s32 temp2, temp;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
@@ -543,7 +543,7 @@ void Task_ResultsScreenNewEmeraldSequencePart1(void)
 
     if (resultsScreen->animFrame > 11) {
         s16 emeraldIndex = zone;
-        struct UNK_0808B3FC_UNK240 *element = &resultsScreen->chaosEmerald[emeraldIndex];
+        Sprite *element = &resultsScreen->chaosEmerald[emeraldIndex];
         element->anim = sChaosEmeraldUnlockedSprites[emeraldIndex].anim;
         element->variant = sChaosEmeraldUnlockedSprites[emeraldIndex].variant;
         gCurTask->main = Task_ResultsScreenNewEmeraldSequencePart2;
@@ -552,7 +552,7 @@ void Task_ResultsScreenNewEmeraldSequencePart1(void)
 
 static void RenderScoresAnim(void)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
@@ -738,7 +738,7 @@ void sub_8070D14(void)
 
     if (unkC0 > 1) {
         const struct UNK_80DF670 *unkF830 = &gUnknown_080DF830[unkC0];
-        struct UNK_0808B3FC_UNK240 *element = &ui->multiplier;
+        Sprite *element = &ui->multiplier;
         if (stage->paused == FALSE) {
             element->anim = unkF830->anim;
             element->variant = unkF830->variant;
@@ -750,7 +750,7 @@ void sub_8070D14(void)
 
 void sub_8070D80(struct SpecialStageUI *ui)
 {
-    struct UNK_0808B3FC_UNK240 *element = &ui->unk244;
+    Sprite *element = &ui->unk244;
     ui->unk2A8 = 1;
     ui->unk2A4 = gUnknown_03005B5C;
     sub_806CA88(element, 0, 0x14, 0x376, 0x1000, 0x78, 0x50, 1, 0, 0);
@@ -767,7 +767,7 @@ void sub_8070DE0(struct SpecialStageUI *ui)
 
 static void RenderPauseMenu(struct SpecialStageUI *ui)
 {
-    struct UNK_0808B3FC_UNK240 *element = &ui->pauseMenu;
+    Sprite *element = &ui->pauseMenu;
     struct SpecialStage *stage = ui->stage;
     void *a, *b;
 
@@ -795,7 +795,7 @@ static void Task_ResultsScreenStartNewEmeraldSequence(void)
 {
     struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
-    struct UNK_0808B3FC_UNK240 *element = &resultsScreen->chaosEmerald[stage->zone];
+    Sprite *element = &resultsScreen->chaosEmerald[stage->zone];
 
     element->anim = sChaosEmeraldUnlockedSprites[8].anim;
     element->variant = sChaosEmeraldUnlockedSprites[8].variant;

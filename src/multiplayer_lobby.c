@@ -16,9 +16,9 @@
 #include "constants/text.h"
 
 struct MultiplayerLobbyScreen {
-    struct UNK_0808B3FC_UNK240 chao;
-    struct UNK_0808B3FC_UNK240 uiElements[3];
-    struct Unk_03002400 background;
+    Sprite chao;
+    Sprite uiElements[3];
+    Background background;
     struct UNK_802D4CC_UNK270 transitionConfig;
     bool8 fadeInComplete;
     u8 cursor;
@@ -41,7 +41,7 @@ struct MultiplayerLobbyScreen {
 #define MSG_VS_LOBBY_CURSOR_MOVE      0x40A1
 #define MSG_VS_LOBBY_CURSOR_POS       0x40A0
 
-static const struct UNK_080E0D64 sUiText[] = {
+static const TileInfo sUiText[] = {
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_2, 57, SA2_ANIM_MP_MSG),
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)]
@@ -119,8 +119,8 @@ void CreateMultiplayerLobbyScreen(void)
 static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
-    struct Unk_03002400 *background;
+    Sprite *element;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig;
     s8 lang = gLoadedSaveGame->unk6 - 1;
 
@@ -290,7 +290,7 @@ static void ScreenMain(void)
 #else
     union MultiSioData *recv, *send;
 #endif
-    struct UNK_0808B3FC_UNK240 *chao = &lobbyScreen->chao;
+    Sprite *chao = &lobbyScreen->chao;
     MultiPakHeartbeat();
 
     recv = &gMultiSioRecv[0];
@@ -467,7 +467,7 @@ static void Task_ListenForExit(void)
 
 static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 {
-    struct UNK_0808B3FC_UNK240 *chao = &lobbyScreen->chao;
+    Sprite *chao = &lobbyScreen->chao;
     lobbyScreen->transitionConfig.unk4 = 0;
     lobbyScreen->transitionConfig.unk2 = 1;
     lobbyScreen->transitionConfig.unkA = 0;
@@ -485,7 +485,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 
 static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
-    struct UNK_0808B3FC_UNK240 *element = &lobbyScreen->chao;
+    Sprite *element = &lobbyScreen->chao;
     // Chao anim finished
     if (!sub_8004558(element)) {
         if (lobbyScreen->cursor != CURSOR_YES

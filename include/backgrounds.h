@@ -33,7 +33,7 @@ struct UNK_3005B80_UNK4 {
 
 struct UNK_3005B80 {
     struct UNK_3005B80_UNK4 *unk0;
-    struct Unk_03002400 *unk4;
+    Background *unk4;
 };
 
 // Used outside of this module I think, so declared here

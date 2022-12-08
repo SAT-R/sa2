@@ -20,27 +20,27 @@
 #define NUM_PLAYER_DATA_MENU_ITEMS 4
 
 struct TimeRecordDisplay {
-    struct UNK_0808B3FC_UNK240 deliminators[2];
-    struct UNK_0808B3FC_UNK240 minute;
-    struct UNK_0808B3FC_UNK240 seconds[2];
-    struct UNK_0808B3FC_UNK240 millis[2];
+    Sprite deliminators[2];
+    Sprite minute;
+    Sprite seconds[2];
+    Sprite millis[2];
 };
 
 struct TimeRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
-    struct Unk_03002400 coursesViewBackground;
-    struct UNK_0808B3FC_UNK240 choiceViewItemsOrZoneTitle[2];
-    struct UNK_0808B3FC_UNK240 actTitle[2];
-    struct UNK_0808B3FC_UNK240 choiceViewTitleOrZoneSubtitle;
-    struct UNK_0808B3FC_UNK240 choiceViewScrollArrows[4];
+    Background coursesViewBackground;
+    Sprite choiceViewItemsOrZoneTitle[2];
+    Sprite actTitle[2];
+    Sprite choiceViewTitleOrZoneSubtitle;
+    Sprite choiceViewScrollArrows[4];
 
     struct PlayerDataMenu *playerDataMenu;
 
     struct TimeRecords *timeRecords;
 
-    struct Unk_03002400 coursesViewCharacterBackground;
-    struct Unk_03002400 coursesViewCharacter;
-    struct UNK_0808B3FC_UNK240 timeRecordDisplays[3];
+    Background coursesViewCharacterBackground;
+    Background coursesViewCharacter;
+    Sprite timeRecordDisplays[3];
     struct TimeRecordDisplay timeDisplays[3];
 
     u8 character;
@@ -60,10 +60,10 @@ struct TimeRecordsScreen {
 }; /* size 0x714 */
 
 struct LanguageScreen {
-    struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 languageOptions[NUM_LANGUAGES];
-    struct UNK_0808B3FC_UNK240 optionOutline;
-    struct Unk_03002400 unk1B0;
+    Sprite headerFooter[2];
+    Sprite languageOptions[NUM_LANGUAGES];
+    Sprite optionOutline;
+    Background unk1B0;
     struct UNK_802D4CC_UNK270 unk1F0;
 
     struct OptionsScreen *optionsScreen;
@@ -74,8 +74,8 @@ struct LanguageScreen {
 }; /* size 0x204 */
 
 struct NameInputDisplay {
-    struct UNK_0808B3FC_UNK240 displayCursor;
-    struct UNK_0808B3FC_UNK240 characterDisplay[MAX_PLAYER_NAME_LENGTH];
+    Sprite displayCursor;
+    Sprite characterDisplay[MAX_PLAYER_NAME_LENGTH];
 
     u16 unk150;
     u16 cursor;
@@ -84,17 +84,17 @@ struct NameInputDisplay {
 };
 
 struct ProfileNameScreen {
-    struct UNK_0808B3FC_UNK240 title;
-    struct UNK_0808B3FC_UNK240 controls[3];
-    struct Unk_03002400 background;
-    struct Unk_03002400 charMatrixBackground;
+    Sprite title;
+    Sprite controls[3];
+    Background background;
+    Background charMatrixBackground;
 
     struct UNK_802D4CC_UNK270 unk140;
     struct PlayerDataMenu *playerDataMenu;
 
-    struct UNK_0808B3FC_UNK240 focusedCell[2];
-    struct UNK_0808B3FC_UNK240 scrollArrows[2];
-    struct Unk_03002400 charMatrix;
+    Sprite focusedCell[2];
+    Sprite scrollArrows[2];
+    Background charMatrix;
     u16 matrixPageIndex;
 
     s8 cursorCol;
@@ -110,9 +110,9 @@ struct ProfileNameScreen {
 }; /* size 0x3BC */
 
 struct PlayerDataMenu {
-    struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 menuItems[NUM_PLAYER_DATA_MENU_ITEMS];
-    struct UNK_0808B3FC_UNK240 menuItemOutline;
+    Sprite headerFooter[2];
+    Sprite menuItems[NUM_PLAYER_DATA_MENU_ITEMS];
+    Sprite menuItemOutline;
 
     struct UNK_802D4CC_UNK270 unk150;
 
@@ -127,9 +127,9 @@ struct PlayerDataMenu {
 
 struct SwitchMenu {
     struct OptionsScreen *optionsScreen;
-    struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 options[2];
-    struct UNK_0808B3FC_UNK240 switchValueOutline;
+    Sprite headerFooter[2];
+    Sprite options[2];
+    Sprite switchValueOutline;
     s8 switchValue;
     s8 animFrame;
     s8 language;
@@ -137,10 +137,10 @@ struct SwitchMenu {
 
 struct ButtonConfigMenu {
     struct OptionsScreen *optionsScreen;
-    struct UNK_0808B3FC_UNK240 staticElements[6];
-    struct UNK_0808B3FC_UNK240 buttonActions[3];
-    struct UNK_0808B3FC_UNK240 scrollArrows[2];
-    struct UNK_0808B3FC_UNK240 controlFocus;
+    Sprite staticElements[6];
+    Sprite buttonActions[3];
+    Sprite scrollArrows[2];
+    Sprite controlFocus;
     u8 aButtonAction;
     u8 bButtonAction;
     u8 rShoulderAction;
@@ -150,10 +150,10 @@ struct ButtonConfigMenu {
 }; /* size 0x24C */
 
 struct DeleteScreen {
-    struct UNK_0808B3FC_UNK240 headerFooter[2];
-    struct UNK_0808B3FC_UNK240 options[2];
-    struct UNK_0808B3FC_UNK240 optionOutline;
-    struct Unk_03002400 background;
+    Sprite headerFooter[2];
+    Sprite options[2];
+    Sprite optionOutline;
+    Background background;
     struct UNK_802D4CC_UNK270 unk130;
     struct OptionsScreen *optionsScreen;
     s8 confirmationCursor;
@@ -169,10 +169,10 @@ struct MultiplayerRecordRow {
     u8 wins;
     u8 loses;
     u8 draws;
-    struct UNK_0808B3FC_UNK240 nameDisplay[6];
-    struct UNK_0808B3FC_UNK240 winsDigits[2];
-    struct UNK_0808B3FC_UNK240 losesDigits[2];
-    struct UNK_0808B3FC_UNK240 defeatsDigits[2];
+    Sprite nameDisplay[6];
+    Sprite winsDigits[2];
+    Sprite losesDigits[2];
+    Sprite defeatsDigits[2];
 }; /* size 0x250 */
 
 struct MultiplayerRecordsTable {
@@ -182,16 +182,16 @@ struct MultiplayerRecordsTable {
 struct MultiplayerRecordsScreen {
     struct UNK_802D4CC_UNK270 unk0;
 
-    struct Unk_03002400 backgroundTrims;
-    struct Unk_03002400 background;
+    Background backgroundTrims;
+    Background background;
 
-    struct UNK_0808B3FC_UNK240 title;
-    struct UNK_0808B3FC_UNK240 columnHeaders;
-    struct UNK_0808B3FC_UNK240 scrollArrows[2];
-    struct UNK_0808B3FC_UNK240 playerNameDisplay[6];
-    struct UNK_0808B3FC_UNK240 playerWinsDigits[2];
-    struct UNK_0808B3FC_UNK240 playerLosesDigits[2];
-    struct UNK_0808B3FC_UNK240 playerDrawsDigits[2];
+    Sprite title;
+    Sprite columnHeaders;
+    Sprite scrollArrows[2];
+    Sprite playerNameDisplay[6];
+    Sprite playerWinsDigits[2];
+    Sprite playerLosesDigits[2];
+    Sprite playerDrawsDigits[2];
 
     struct PlayerDataMenu *playerDataMenu;
 
@@ -1404,10 +1404,10 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
 {
     u8 language = optionsScreen->language;
 
-    struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
-    struct UNK_0808B3FC_UNK240 *menuItem = optionsScreen->menuItems;
-    struct UNK_0808B3FC_UNK240 *metaItem = optionsScreen->metaItems;
-    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar = optionsScreen->playerNameDisplay;
+    Sprite *title = &optionsScreen->title;
+    Sprite *menuItem = optionsScreen->menuItems;
+    Sprite *metaItem = optionsScreen->metaItems;
+    Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
     struct UNK_806B908 nameCharTile;
     s16 i, xPos, yPos;
@@ -1613,7 +1613,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
                                            s8 subMenuAnimPos)
 {
     s16 baseXPos;
-    struct UNK_0808B3FC_UNK240 *item;
+    Sprite *item;
 
     optionsScreen->subMenuXPos = subMenuAnimPos;
     baseXPos = subMenuAnimPos;
@@ -1629,8 +1629,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 
         if (optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
-            struct UNK_0808B3FC_UNK240 *playerNameDisplayChar
-                = optionsScreen->playerNameDisplay;
+            Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
@@ -1646,8 +1645,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
                                            s8 baseXPos)
 {
-    struct UNK_0808B3FC_UNK240 *item
-        = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
+    Sprite *item = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
 
     item->x = baseXPos + 32;
     item->focused = 1;
@@ -1659,8 +1657,7 @@ static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 
         if (optionsScreen->prevCursorPosition == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
-            struct UNK_0808B3FC_UNK240 *playerNameDisplayChar
-                = optionsScreen->playerNameDisplay;
+            Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
                 playerNameDisplayChar->focused = 8;
@@ -1693,22 +1690,19 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
 {
     s16 baseXPos = optionsScreen->subMenuXPos
         = animFrames[optionsScreen->subMenuAnimFrame];
-    struct UNK_0808B3FC_UNK240 *item
-        = &optionsScreen->menuItems[optionsScreen->menuCursor];
+    Sprite *item = &optionsScreen->menuItems[optionsScreen->menuCursor];
 
     item->x = baseXPos + 32;
     item->focused = 0;
 
     if (optionsScreen->menuCursor < 4) {
-        struct UNK_0808B3FC_UNK240 *item
-            = &optionsScreen->metaItems[optionsScreen->menuCursor];
+        Sprite *item = &optionsScreen->metaItems[optionsScreen->menuCursor];
         item->x = baseXPos + 152;
         item->focused = 0;
 
         if (optionsScreen->menuCursor == 0) {
             s16 i;
-            struct UNK_0808B3FC_UNK240 *playerNameDisplayChar
-                = optionsScreen->playerNameDisplay;
+            Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
@@ -1841,10 +1835,10 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void)
 static void OptionsScreenRenderUI(void)
 {
     struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *title = &optionsScreen->title;
-    struct UNK_0808B3FC_UNK240 *menuItem = optionsScreen->menuItems;
-    struct UNK_0808B3FC_UNK240 *metaItem = optionsScreen->metaItems;
-    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar = optionsScreen->playerNameDisplay;
+    Sprite *title = &optionsScreen->title;
+    Sprite *menuItem = optionsScreen->menuItems;
+    Sprite *metaItem = optionsScreen->metaItems;
+    Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
     s16 i;
 
     sub_80051E8(title);
@@ -1887,9 +1881,9 @@ static void CreatePlayerDataMenu(struct OptionsScreen *optionsScreen)
 
 static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
 {
-    struct UNK_0808B3FC_UNK240 *headerFooter = playerDataMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *menuItem = playerDataMenu->menuItems;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &playerDataMenu->menuItemOutline;
+    Sprite *headerFooter = playerDataMenu->headerFooter;
+    Sprite *menuItem = playerDataMenu->menuItems;
+    Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
 
     const struct UNK_080D95E8 *titleText
         = &sPlayerDataMenuTitleText[playerDataMenu->language];
@@ -1931,9 +1925,9 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
 static void Task_PlayerDataMenuOpenAnimWait(void)
 {
     struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = playerDataMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *menuItem = playerDataMenu->menuItems;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &playerDataMenu->menuItemOutline;
+    Sprite *headerFooter = playerDataMenu->headerFooter;
+    Sprite *menuItem = playerDataMenu->menuItems;
+    Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
 
     s16 baseXPos = playerDataMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -1959,8 +1953,8 @@ static void Task_PlayerDataMenuOpenAnimWait(void)
 static void Task_PlayerDataMenuMain(void)
 {
     struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *menuItem = playerDataMenu->menuItems;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &playerDataMenu->menuItemOutline;
+    Sprite *menuItem = playerDataMenu->menuItems;
+    Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
     struct OptionsScreen *optionsScreen = playerDataMenu->optionsScreen;
     s16 i;
 
@@ -2022,9 +2016,9 @@ static void Task_PlayerDataMenuMain(void)
 static void Task_PlayerDataMenuCloseAnim(void)
 {
     struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = playerDataMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *menuItem = playerDataMenu->menuItems;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &playerDataMenu->menuItemOutline;
+    Sprite *headerFooter = playerDataMenu->headerFooter;
+    Sprite *menuItem = playerDataMenu->menuItems;
+    Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
 
     s16 baseXPos = playerDataMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2129,9 +2123,9 @@ static void Task_PlayerDataMenuWaitForMultiplayerRecordsScreenExit(void)
 
 static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 {
-    struct UNK_0808B3FC_UNK240 *headerFooter = difficultyMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *difficultyOption = difficultyMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &difficultyMenu->switchValueOutline;
+    Sprite *headerFooter = difficultyMenu->headerFooter;
+    Sprite *difficultyOption = difficultyMenu->options;
+    Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
 
     const struct UNK_080D95E8 *titleText
         = &sDifficultyMenuTitleText[difficultyMenu->language];
@@ -2175,9 +2169,9 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 void Task_DifficultyMenuOpenAnimWait(void)
 {
     struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = difficultyMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *difficultyOption = difficultyMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &difficultyMenu->switchValueOutline;
+    Sprite *headerFooter = difficultyMenu->headerFooter;
+    Sprite *difficultyOption = difficultyMenu->options;
+    Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
 
     s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2202,8 +2196,8 @@ void Task_DifficultyMenuOpenAnimWait(void)
 static void Task_DifficultyMenuMain(void)
 {
     struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *difficultyOption = difficultyMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &difficultyMenu->switchValueOutline;
+    Sprite *difficultyOption = difficultyMenu->options;
+    Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
     struct OptionsScreen *optionsScreen = difficultyMenu->optionsScreen;
 
     s16 baseXPos = optionsScreen->subMenuXPos;
@@ -2254,9 +2248,9 @@ static void Task_DifficultyMenuMain(void)
 static void Task_DifficultyMenuCloseAnim(void)
 {
     struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = difficultyMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *difficultyOption = difficultyMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &difficultyMenu->switchValueOutline;
+    Sprite *headerFooter = difficultyMenu->headerFooter;
+    Sprite *difficultyOption = difficultyMenu->options;
+    Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
 
     s16 unk360 = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i = 0;
@@ -2283,9 +2277,9 @@ static void Task_DifficultyMenuCloseAnim(void)
 static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 {
     // same function as sub_806525C
-    struct UNK_0808B3FC_UNK240 *headerFooter = timeLimitMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *timeLimitOption = timeLimitMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &timeLimitMenu->switchValueOutline;
+    Sprite *headerFooter = timeLimitMenu->headerFooter;
+    Sprite *timeLimitOption = timeLimitMenu->options;
+    Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
 
     const struct UNK_080D95E8 *titleText
         = &sTimeLimitMenuTitleText[timeLimitMenu->language];
@@ -2330,9 +2324,9 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 static void Task_TimeLimitMenuOpenAnimWait(void)
 {
     struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = timeLimitMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *timeLimitOption = timeLimitMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &timeLimitMenu->switchValueOutline;
+    Sprite *headerFooter = timeLimitMenu->headerFooter;
+    Sprite *timeLimitOption = timeLimitMenu->options;
+    Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
 
     s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2358,8 +2352,8 @@ static void Task_TimeLimitMenuMain(void)
 {
     // Same as sub_806548C
     struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *timeLimitOption = timeLimitMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &timeLimitMenu->switchValueOutline;
+    Sprite *timeLimitOption = timeLimitMenu->options;
+    Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
     struct OptionsScreen *optionsScreen = timeLimitMenu->optionsScreen;
 
     s16 baseXPos = optionsScreen->subMenuXPos;
@@ -2407,9 +2401,9 @@ static void Task_TimeLimitMenuMain(void)
 static void Task_TimeLimitMenuCloseAnim(void)
 {
     struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = timeLimitMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *timeLimitOption = timeLimitMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &timeLimitMenu->switchValueOutline;
+    Sprite *headerFooter = timeLimitMenu->headerFooter;
+    Sprite *timeLimitOption = timeLimitMenu->options;
+    Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
 
     s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2486,10 +2480,10 @@ void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
 
 static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu *buttonConfigMenu)
 {
-    struct UNK_0808B3FC_UNK240 *uiElement = buttonConfigMenu->staticElements;
-    struct UNK_0808B3FC_UNK240 *buttonAction = buttonConfigMenu->buttonActions;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *controlFocus = &buttonConfigMenu->controlFocus;
+    Sprite *uiElement = buttonConfigMenu->staticElements;
+    Sprite *buttonAction = buttonConfigMenu->buttonActions;
+    Sprite *scrollArrow = buttonConfigMenu->scrollArrows;
+    Sprite *controlFocus = &buttonConfigMenu->controlFocus;
 
     const struct UNK_080D95E8 *titleControlsText
         = sButtonConfigTitleAndControlsText[buttonConfigMenu->language];
@@ -2570,10 +2564,10 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu *buttonConfigMenu)
 static void Task_ButtonConfigMenuOpenAnimWait(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *uiElement = buttonConfigMenu->staticElements;
-    struct UNK_0808B3FC_UNK240 *buttonAction = buttonConfigMenu->buttonActions;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *controlFocus = &buttonConfigMenu->controlFocus;
+    Sprite *uiElement = buttonConfigMenu->staticElements;
+    Sprite *buttonAction = buttonConfigMenu->buttonActions;
+    Sprite *scrollArrow = buttonConfigMenu->scrollArrows;
+    Sprite *controlFocus = &buttonConfigMenu->controlFocus;
 
     s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2606,7 +2600,7 @@ static void Task_ButtonConfigMenuOpenAnimWait(void)
 static void Task_ButtonConfigMenuAButtonMain(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *buttonAction = buttonConfigMenu->buttonActions;
+    Sprite *buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText
         = sButtonConfigActionsText[buttonConfigMenu->language];
     const struct UNK_080D95E8 *actionText;
@@ -2695,7 +2689,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
 void Task_ButtonConfigMenuBButtonMain(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *buttonAction;
+    Sprite *buttonAction;
     const struct UNK_080D95E8 *actionsText
         = sButtonConfigActionsText[buttonConfigMenu->language];
     const struct UNK_080D95E8 *itemText4;
@@ -2865,7 +2859,7 @@ static void ButtonConfigMenuStartOver(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
     struct OptionsScreen *optionsScreen = buttonConfigMenu->optionsScreen;
-    struct UNK_0808B3FC_UNK240 *buttonAction = buttonConfigMenu->buttonActions;
+    Sprite *buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText
         = sButtonConfigActionsText[buttonConfigMenu->language];
     s16 i;
@@ -2888,10 +2882,10 @@ static void ButtonConfigMenuStartOver(void)
 static void Task_ButtonMenuConfigCloseAnim(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *unk4 = buttonConfigMenu->staticElements;
-    struct UNK_0808B3FC_UNK240 *unk124 = buttonConfigMenu->buttonActions;
-    struct UNK_0808B3FC_UNK240 *unk1B4 = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *unk214 = &buttonConfigMenu->controlFocus;
+    Sprite *unk4 = buttonConfigMenu->staticElements;
+    Sprite *unk124 = buttonConfigMenu->buttonActions;
+    Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
+    Sprite *unk214 = &buttonConfigMenu->controlFocus;
 
     s16 baseXPos = buttonConfigMenu->optionsScreen->subMenuXPos;
     s16 i;
@@ -2924,10 +2918,10 @@ static void Task_ButtonMenuConfigCloseAnim(void)
 static void ButtonConfigMenuRenderUI(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *unk4 = buttonConfigMenu->staticElements;
-    struct UNK_0808B3FC_UNK240 *unk124 = buttonConfigMenu->buttonActions;
-    struct UNK_0808B3FC_UNK240 *unk1B4 = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *unk214 = &buttonConfigMenu->controlFocus;
+    Sprite *unk4 = buttonConfigMenu->staticElements;
+    Sprite *unk124 = buttonConfigMenu->buttonActions;
+    Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
+    Sprite *unk214 = &buttonConfigMenu->controlFocus;
     s16 i;
 
     for (i = 0; i < 6; i++, unk4++) {
@@ -2977,9 +2971,9 @@ static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
 static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
 {
     s16 selectedLanguage = languageScreen->menuCursor;
-    struct UNK_0808B3FC_UNK240 *headerFooter = languageScreen->headerFooter;
-    struct UNK_0808B3FC_UNK240 *languageOption = languageScreen->languageOptions;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &languageScreen->optionOutline;
+    Sprite *headerFooter = languageScreen->headerFooter;
+    Sprite *languageOption = languageScreen->languageOptions;
+    Sprite *optionOutline = &languageScreen->optionOutline;
 
     const struct UNK_080D95E8 *languageScreenTitles = sLanguageScreenTitles;
     const struct UNK_080D95E8 *optionText = sLanguageScreenOptionsText;
@@ -3074,9 +3068,9 @@ static void Task_LanguageScreenMain(void)
 static void LanguageScreenHandleLanguageChanged(void)
 {
     struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = languageScreen->headerFooter;
-    struct UNK_0808B3FC_UNK240 *menuItems = languageScreen->languageOptions;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &languageScreen->optionOutline;
+    Sprite *headerFooter = languageScreen->headerFooter;
+    Sprite *menuItems = languageScreen->languageOptions;
+    Sprite *menuItemOutline = &languageScreen->optionOutline;
 
     const struct UNK_080D95E8 *titleText
         = &sLanguageScreenTitles[languageScreen->menuCursor];
@@ -3155,8 +3149,8 @@ static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
 static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
 {
     s16 language = deleteScreen->language;
-    struct UNK_0808B3FC_UNK240 *option = deleteScreen->options;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &deleteScreen->optionOutline;
+    Sprite *option = deleteScreen->options;
+    Sprite *optionOutline = &deleteScreen->optionOutline;
 
     const struct UNK_080D95E8 *titleText = &sDeleteScreenConfirmTitleText[language];
     const struct UNK_080D95E8 *controlsText = &sDeleteScreenControlsText[language];
@@ -3188,8 +3182,8 @@ static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
 static void Task_DeleteScreenConfrimationMain(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *option = deleteScreen->options;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &deleteScreen->optionOutline;
+    Sprite *option = deleteScreen->options;
+    Sprite *optionOutline = &deleteScreen->optionOutline;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
@@ -3228,9 +3222,9 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *headerFooter = deleteScreen->headerFooter;
-    struct UNK_0808B3FC_UNK240 *option = deleteScreen->options;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &deleteScreen->optionOutline;
+    Sprite *headerFooter = deleteScreen->headerFooter;
+    Sprite *option = deleteScreen->options;
+    Sprite *optionOutline = &deleteScreen->optionOutline;
     const struct UNK_080D95E8 *titleText
         = &sDeleteScreenAbsoluteConfirmTitleText[deleteScreen->language];
     s16 i;
@@ -3255,8 +3249,8 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
 static void Task_DeleteScreenAbsoluteConfirmMain(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *option = deleteScreen->options;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &deleteScreen->optionOutline;
+    Sprite *option = deleteScreen->options;
+    Sprite *optionOutline = &deleteScreen->optionOutline;
     s16 i;
 
     if (gRepeatedKeys & (DPAD_RIGHT | DPAD_LEFT)) {
@@ -3400,8 +3394,8 @@ ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen *profileNameScreen
 
 static void ProfileNameScreenCreateUIText(struct ProfileNameScreen *profileNameScreen)
 {
-    struct UNK_0808B3FC_UNK240 *title = &profileNameScreen->title;
-    struct UNK_0808B3FC_UNK240 *control = profileNameScreen->controls;
+    Sprite *title = &profileNameScreen->title;
+    Sprite *control = profileNameScreen->controls;
 
     u8 *language = &profileNameScreen->language;
     const struct UNK_080D95E8 *arrowTile = sProfileNameScreenArrowTiles;
@@ -3437,8 +3431,8 @@ static void ProfileNameScreenCreateUIText(struct ProfileNameScreen *profileNameS
 static void
 ProfileNameScreenCreateUIContextElements(struct ProfileNameScreen *profileNameScreen)
 {
-    struct UNK_0808B3FC_UNK240 *focusedCell = profileNameScreen->focusedCell;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = profileNameScreen->scrollArrows;
+    Sprite *focusedCell = profileNameScreen->focusedCell;
+    Sprite *scrollArrow = profileNameScreen->scrollArrows;
     const struct UNK_080D95E8 *scrollArrowTile = sProfileNameScreenScrollArrowTiles;
     struct UNK_806B908 nameCharTile;
 
@@ -3464,10 +3458,8 @@ static void
 ProfileNameScreenCreateInputDisplayUI(struct ProfileNameScreen *profileNameScreen)
 {
     struct UNK_806B908 nameCharTile;
-    struct UNK_0808B3FC_UNK240 *inputDisplayChar
-        = profileNameScreen->nameInput.characterDisplay;
-    struct UNK_0808B3FC_UNK240 *inputDisplayCursor
-        = &profileNameScreen->nameInput.displayCursor;
+    Sprite *inputDisplayChar = profileNameScreen->nameInput.characterDisplay;
+    Sprite *inputDisplayCursor = &profileNameScreen->nameInput.displayCursor;
 
     s16 i, xPos;
     u16 nameChar;
@@ -3860,14 +3852,12 @@ static void ProfileNameScreenRenderUI(void)
 {
     struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *title = &profileNameScreen->title;
-    struct UNK_0808B3FC_UNK240 *controls = profileNameScreen->controls;
-    struct UNK_0808B3FC_UNK240 *focusedCell = profileNameScreen->focusedCell;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = profileNameScreen->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *inputDisplayChar
-        = profileNameScreen->nameInput.characterDisplay;
-    struct UNK_0808B3FC_UNK240 *inputDisplayCursor
-        = &profileNameScreen->nameInput.displayCursor;
+    Sprite *title = &profileNameScreen->title;
+    Sprite *controls = profileNameScreen->controls;
+    Sprite *focusedCell = profileNameScreen->focusedCell;
+    Sprite *scrollArrow = profileNameScreen->scrollArrows;
+    Sprite *inputDisplayChar = profileNameScreen->nameInput.characterDisplay;
+    Sprite *inputDisplayCursor = &profileNameScreen->nameInput.displayCursor;
     struct UNK_806B908 charMatrixCursorTile;
     struct UNK_806B908 nameCharTile;
 
@@ -4028,11 +4018,9 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
 static void
 TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen *timeRecordsScreen)
 {
-    struct UNK_0808B3FC_UNK240 *title
-        = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = timeRecordsScreen->choiceViewScrollArrows;
-    struct UNK_0808B3FC_UNK240 *choiceItem
-        = timeRecordsScreen->choiceViewItemsOrZoneTitle;
+    Sprite *title = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
+    Sprite *scrollArrow = timeRecordsScreen->choiceViewScrollArrows;
+    Sprite *choiceItem = timeRecordsScreen->choiceViewItemsOrZoneTitle;
     const struct UNK_080D95E8 *titleText
         = &sTimeRecordsChoiceViewTitles[timeRecordsScreen->language];
     const struct UNK_080D95E8 *choiceText
@@ -4092,7 +4080,7 @@ TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen *timeRecordsScreen)
 static void Task_TimeRecordsScreenModeChoiceMain(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *unk4C = timeRecordsScreen->choiceViewItemsOrZoneTitle;
+    Sprite *unk4C = timeRecordsScreen->choiceViewItemsOrZoneTitle;
 
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -4225,12 +4213,11 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
 static void
 TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen *timeRecordsScreen)
 {
-    struct UNK_0808B3FC_UNK240 *unk284 = timeRecordsScreen->timeRecordDisplays;
-    struct UNK_0808B3FC_UNK240 *zoneText = timeRecordsScreen->choiceViewItemsOrZoneTitle;
-    struct UNK_0808B3FC_UNK240 *actText = timeRecordsScreen->actTitle;
-    struct UNK_0808B3FC_UNK240 *zoneSubTitle
-        = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
-    struct UNK_0808B3FC_UNK240 *scrollArrow = timeRecordsScreen->choiceViewScrollArrows;
+    Sprite *unk284 = timeRecordsScreen->timeRecordDisplays;
+    Sprite *zoneText = timeRecordsScreen->choiceViewItemsOrZoneTitle;
+    Sprite *actText = timeRecordsScreen->actTitle;
+    Sprite *zoneSubTitle = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
+    Sprite *scrollArrow = timeRecordsScreen->choiceViewScrollArrows;
 
     u8 language = timeRecordsScreen->language;
     u8 zone = timeRecordsScreen->zone;
@@ -4336,7 +4323,7 @@ static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen *timeRecords
     struct TimeRecordDisplay *timeRecordDisplay = timeRecordsScreen->timeDisplays;
     // interesting optimistation, as I guess they are all the same size
     s16 digitSize = sTimeRecordDigitTiles[DELIMINATOR_DIGIT].unk4;
-    struct UNK_0808B3FC_UNK240 *minuteDigit, *secondDigit, *milliDigit, *deliminator;
+    Sprite *minuteDigit, *secondDigit, *milliDigit, *deliminator;
 
     u16 *courseTimes = LoadCourseTimes(timeRecordsScreen);
     s16 i;
@@ -4402,7 +4389,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
 {
     // Stack has to be declared in this order to match
     struct TimeRecordDisplay *timeDisplay = timeRecordsScreen->timeDisplays;
-    struct UNK_0808B3FC_UNK240 *minuteDigit, *secondDigit, *milliDigit, *deliminator;
+    Sprite *minuteDigit, *secondDigit, *milliDigit, *deliminator;
 
     u16 *courseTimes = LoadCourseTimes(timeRecordsScreen);
     s16 i;
@@ -4554,10 +4541,10 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
 #endif
 
     if (frame > 0 && frame < 9) {
-        struct UNK_0808B3FC_UNK240 *deliminator = timeDisplay->deliminators;
-        struct UNK_0808B3FC_UNK240 *minuteDigit = &timeDisplay->minute;
-        struct UNK_0808B3FC_UNK240 *secondDigit = timeDisplay->seconds;
-        struct UNK_0808B3FC_UNK240 *milliDigit = timeDisplay->millis;
+        Sprite *deliminator = timeDisplay->deliminators;
+        Sprite *minuteDigit = &timeDisplay->minute;
+        Sprite *secondDigit = timeDisplay->seconds;
+        Sprite *milliDigit = timeDisplay->millis;
 
         s16 baseXPos = (8 - frame) * 30 + (rowIndex * 8);
         minuteDigit->x = baseXPos + 0x20;
@@ -4764,11 +4751,9 @@ static void Task_TimeRecordsScreenCharacterChangeAnimOut(void)
 static void Task_TimeRecordsScreenHandleCourseChange(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneNumber
-        = &timeRecordsScreen->choiceViewItemsOrZoneTitle[1];
-    struct UNK_0808B3FC_UNK240 *unkDC = &timeRecordsScreen->actTitle[1];
-    struct UNK_0808B3FC_UNK240 *zoneSubtitle
-        = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
+    Sprite *zoneNumber = &timeRecordsScreen->choiceViewItemsOrZoneTitle[1];
+    Sprite *unkDC = &timeRecordsScreen->actTitle[1];
+    Sprite *zoneSubtitle = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
 
     u16 language = timeRecordsScreen->language;
     // zone number
@@ -4854,16 +4839,13 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct TimeRecordDisplay *timeRecord = timeRecordsScreen->timeDisplays;
-    struct UNK_0808B3FC_UNK240 *timeRecordDisplay
-        = timeRecordsScreen->timeRecordDisplays;
-    struct UNK_0808B3FC_UNK240 *zoneTitleElement
-        = timeRecordsScreen->choiceViewItemsOrZoneTitle;
-    struct UNK_0808B3FC_UNK240 *actTitleElement = timeRecordsScreen->actTitle;
-    struct UNK_0808B3FC_UNK240 *zoneSubtitle
-        = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
-    struct UNK_0808B3FC_UNK240 *scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
+    Sprite *timeRecordDisplay = timeRecordsScreen->timeRecordDisplays;
+    Sprite *zoneTitleElement = timeRecordsScreen->choiceViewItemsOrZoneTitle;
+    Sprite *actTitleElement = timeRecordsScreen->actTitle;
+    Sprite *zoneSubtitle = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
+    Sprite *scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
 
-    struct UNK_0808B3FC_UNK240 *minute, *secondDigit, *milliDigit, *deliminator;
+    Sprite *minute, *secondDigit, *milliDigit, *deliminator;
 
     s16 visibleScrollArrows, i, j;
     s16 availableCourses
@@ -5022,17 +5004,13 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
     struct UNK_806B908 nameCharTile;
     s16 wins, loses, draws;
 
-    struct UNK_0808B3FC_UNK240 *title = &multiplayerRecordsScreen->title;
-    struct UNK_0808B3FC_UNK240 *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
-    struct UNK_0808B3FC_UNK240 *scrollArrows = multiplayerRecordsScreen->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar
-        = multiplayerRecordsScreen->playerNameDisplay;
-    struct UNK_0808B3FC_UNK240 *playerWinsDigit
-        = multiplayerRecordsScreen->playerWinsDigits;
-    struct UNK_0808B3FC_UNK240 *playerLosesDigit
-        = multiplayerRecordsScreen->playerLosesDigits;
-    struct UNK_0808B3FC_UNK240 *playerDrawsDigit
-        = multiplayerRecordsScreen->playerDrawsDigits;
+    Sprite *title = &multiplayerRecordsScreen->title;
+    Sprite *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
+    Sprite *scrollArrows = multiplayerRecordsScreen->scrollArrows;
+    Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
+    Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
+    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
 
     const struct UNK_080D95E8 *titleAndColumnHeadersText
         = sMultiplayerRecordsTitleAndColumnHeadersText[multiplayerRecordsScreen
@@ -5107,7 +5085,7 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
 static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex)
 {
     s16 loses, draws, wins, j, xPos, yPos;
-    struct UNK_0808B3FC_UNK240 *nameDisplayChar;
+    Sprite *nameDisplayChar;
 
     struct UNK_806B908 nameCharTile;
 
@@ -5249,7 +5227,7 @@ static void Task_MultiplayerRecordsScreenScrollAnim(void)
                ->rows[multiplayerRecordsScreen->targetFirstVisibleRowIndex];
 
     for (i = 0; i < numVisibleRows; i++, yPos += 18, row++) {
-        struct UNK_0808B3FC_UNK240 *unk10, *unk130, *unk190, *unk1F0;
+        Sprite *unk10, *unk130, *unk190, *unk1F0;
 
         unk10 = row->nameDisplay;
         for (j = 0; j < 6; j++, unk10++) {
@@ -5284,17 +5262,13 @@ static void MultiplayerRecordsScreenRenderUI(void)
 {
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen
         = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *title = &multiplayerRecordsScreen->title;
-    struct UNK_0808B3FC_UNK240 *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
-    struct UNK_0808B3FC_UNK240 *playerNameDisplayChar
-        = multiplayerRecordsScreen->playerNameDisplay;
-    struct UNK_0808B3FC_UNK240 *playerWinsDigit
-        = multiplayerRecordsScreen->playerWinsDigits;
-    struct UNK_0808B3FC_UNK240 *playerLosesDigit
-        = multiplayerRecordsScreen->playerLosesDigits;
-    struct UNK_0808B3FC_UNK240 *playerDrawsDigit
-        = multiplayerRecordsScreen->playerDrawsDigits;
-    struct UNK_0808B3FC_UNK240 *scrollArrow;
+    Sprite *title = &multiplayerRecordsScreen->title;
+    Sprite *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
+    Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
+    Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
+    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
+    Sprite *scrollArrow;
 
     // recordsTable completely unused in this var, but needs to be assigned to match
     struct MultiplayerRecordsTable *recordsTable = multiplayerRecordsScreen->table;
@@ -5382,11 +5356,11 @@ static void MultiplayerRecordsScreenRenderUI(void)
 
 // Some sort of register menu item function
 // used in sound test, but wonder why it wasn't split out
-void sub_806A568(struct UNK_0808B3FC_UNK240 *obj, s8 target, u32 size, u16 c,
-                 u32 assetId, s16 xPos, s16 yPos, u16 g, u8 variant, u8 focused)
+void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
+                 s16 yPos, u16 g, u8 variant, u8 focused)
 {
-    struct UNK_0808B3FC_UNK240 newObj;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite newObj;
+    Sprite *element;
     element = &newObj;
 
     if (obj != NULL) {
@@ -5836,9 +5810,9 @@ static void PlayerDataMenuRenderUI(void)
 {
     struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *headerFooter = playerDataMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *menuItem = playerDataMenu->menuItems;
-    struct UNK_0808B3FC_UNK240 *menuItemOutline = &playerDataMenu->menuItemOutline;
+    Sprite *headerFooter = playerDataMenu->headerFooter;
+    Sprite *menuItem = playerDataMenu->menuItems;
+    Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
 
     s16 i;
 
@@ -5870,9 +5844,9 @@ static void CreateDifficultyMenu(struct OptionsScreen *optionsScreen)
 static void DifficultyMenuRenderUI(void)
 {
     struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = difficultyMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *difficultyOption = difficultyMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &difficultyMenu->switchValueOutline;
+    Sprite *headerFooter = difficultyMenu->headerFooter;
+    Sprite *difficultyOption = difficultyMenu->options;
+    Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
 
     s16 i;
 
@@ -5903,9 +5877,9 @@ static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
 static void TimeLimitMenuRenderUI(void)
 {
     struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *headerFooter = timeLimitMenu->headerFooter;
-    struct UNK_0808B3FC_UNK240 *option = timeLimitMenu->options;
-    struct UNK_0808B3FC_UNK240 *switchValueOutline = &timeLimitMenu->switchValueOutline;
+    Sprite *headerFooter = timeLimitMenu->headerFooter;
+    Sprite *option = timeLimitMenu->options;
+    Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
 
     s16 i;
 
@@ -5924,8 +5898,8 @@ static void Task_ButtonConfigMenuHandleStartOver(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *scrollArrow = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *controlFocus = &buttonConfigMenu->controlFocus;
+    Sprite *scrollArrow = buttonConfigMenu->scrollArrows;
+    Sprite *controlFocus = &buttonConfigMenu->controlFocus;
 
     controlFocus->y = 42;
 
@@ -5941,8 +5915,8 @@ static void Task_ButtonConfigMenuHandleAButtonComplete(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *unk1B4 = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *unk214 = &buttonConfigMenu->controlFocus;
+    Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
+    Sprite *unk214 = &buttonConfigMenu->controlFocus;
 
     unk214->y = 66;
     unk1B4->y = 77;
@@ -5957,8 +5931,8 @@ static void Task_ButtonConfigMenuHandleBButtonComplete(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *unk1B4 = buttonConfigMenu->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *unk214 = &buttonConfigMenu->controlFocus;
+    Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
+    Sprite *unk214 = &buttonConfigMenu->controlFocus;
 
     unk214->y = 90;
 
@@ -6047,9 +6021,9 @@ static void LanguageScreenRenderUI(void)
 {
     struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *headerFooter = languageScreen->headerFooter;
-    struct UNK_0808B3FC_UNK240 *languageOption = languageScreen->languageOptions;
-    struct UNK_0808B3FC_UNK240 *optionOutline = &languageScreen->optionOutline;
+    Sprite *headerFooter = languageScreen->headerFooter;
+    Sprite *languageOption = languageScreen->languageOptions;
+    Sprite *optionOutline = &languageScreen->optionOutline;
 
     s16 i;
 
@@ -6101,9 +6075,9 @@ static void DeleteScreenRenderUI(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *headerFooter = deleteScreen->headerFooter;
-    struct UNK_0808B3FC_UNK240 *unk60 = deleteScreen->options;
-    struct UNK_0808B3FC_UNK240 *unkC0 = &deleteScreen->optionOutline;
+    Sprite *headerFooter = deleteScreen->headerFooter;
+    Sprite *unk60 = deleteScreen->options;
+    Sprite *unkC0 = &deleteScreen->optionOutline;
 
     s16 i;
 
@@ -6220,11 +6194,9 @@ static void TimeRecordsScreenRenderModeChoiceUI(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *title
-        = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
-    struct UNK_0808B3FC_UNK240 *scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
-    struct UNK_0808B3FC_UNK240 *choiceItem
-        = timeRecordsScreen->choiceViewItemsOrZoneTitle;
+    Sprite *title = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
+    Sprite *scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
+    Sprite *choiceItem = timeRecordsScreen->choiceViewItemsOrZoneTitle;
     s16 i;
 
     sub_80051E8(title);
@@ -6275,7 +6247,7 @@ static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
 static void Task_TimeRecordsScreenHandleActChange(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *unkDC = &timeRecordsScreen->actTitle[1];
+    Sprite *unkDC = &timeRecordsScreen->actTitle[1];
 
     const struct UNK_080D95E8 *unk5E8
         = &sTimeRecordsZoneActTitleDigits[timeRecordsScreen->act];
@@ -6398,8 +6370,8 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
     TaskDestroy(gCurTask);
 }
 
-void sub_806B854(struct Unk_03002400 *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
-                 u16 f, u8 g, u16 h, u16 i)
+void sub_806B854(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
+                 u8 g, u16 h, u16 i)
 {
     background->unk4 = BG_CHAR_ADDR(a);
     background->unkA = 0;

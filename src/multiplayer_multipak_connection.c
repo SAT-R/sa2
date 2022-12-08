@@ -21,10 +21,10 @@
 
 struct MultiPakConnectScreen {
     struct UNK_802D4CC_UNK270 unk0;
-    struct UNK_0808B3FC_UNK240 unkC;
-    struct UNK_0808B3FC_UNK240 unk3C;
-    struct UNK_0808B3FC_UNK240 unk6C;
-    struct Unk_03002400 unk9C;
+    Sprite unkC;
+    Sprite unk3C;
+    Sprite unk6C;
+    Background unk9C;
     u32 unkDC;
     u8 fillerDC[8];
     u16 unkE8;
@@ -46,7 +46,7 @@ static void sub_805ADAC(void);
 static void sub_805B4C0(void);
 static void sub_805B454(void);
 
-static const struct UNK_080E0D64 gUnknown_080D9050[] = {
+static const TileInfo gUnknown_080D9050[] = {
     TextElement(1, LANG_DEFAULT, 0, 90, SA2_ANIM_MP_MSG),
     TextElement(1, LANG_JAPANESE, 0, 90, SA2_ANIM_MP_MSG),
     TextElement(1, LANG_ENGLISH, 0, 84, SA2_ANIM_MP_COMM_MSG_EN),
@@ -61,9 +61,9 @@ void StartMultiPakConnect(void)
     struct Task *t;
     struct MultiPakConnectScreen *connectScreen;
     struct UNK_802D4CC_UNK270 *unk0;
-    struct UNK_0808B3FC_UNK240 *unkC;
-    struct Unk_03002400 *unk9C;
-    const struct UNK_080E0D64 *unkD64;
+    Sprite *unkC;
+    Background *unk9C;
+    const TileInfo *unkD64;
     void *vramAddr = (void *)OBJ_VRAM0;
     u8 i;
 
@@ -204,7 +204,7 @@ static void sub_805ADAC(void)
     struct MultiPakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
     struct MultiSioData_0_0 *send, *recv;
     struct MultiSioData_0_0 *data;
-    struct UNK_0808B3FC_UNK240 *r4p;
+    Sprite *r4p;
 
     sub_802D4CC(&connectScreen->unk0);
 
@@ -469,7 +469,7 @@ static void sub_805B454(void)
 static void sub_805B4C0(void)
 {
     struct MultiSioData_0_0 *recv, *data, *send;
-    struct UNK_0808B3FC_UNK240 *r4p;
+    Sprite *r4p;
     s32 i, j;
 
     u8 recv2;
@@ -648,7 +648,7 @@ static void sub_805B4C0(void)
 
 UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
 {
-    struct UNK_0808B3FC_UNK240 *unkC = &connectScreen->unkC;
+    Sprite *unkC = &connectScreen->unkC;
     sub_80051E8(unkC);
     unkC++;
     sub_80051E8(unkC);

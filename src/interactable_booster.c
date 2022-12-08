@@ -14,18 +14,18 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
+    /* 0x0C */ Sprite displayed;
 } Sprite_Booster;
 
 extern void TaskDestructor_80095E8(struct Task *);
 
-extern bool32 sub_800C204(struct UNK_0808B3FC_UNK240 *, s16, s16, s16, Player *, u32);
+extern bool32 sub_800C204(Sprite *, s16, s16, s16, Player *, u32);
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, s8);
 
 static void Task_Interactable_Booster(void);
 
-const struct UNK_080E0D64 sBoosterAnimationData[2][6] = {
+const TileInfo sBoosterAnimationData[2][6] = {
     {
         { 8, SA2_ANIM_BOOSTER, 0 },
         { 12, SA2_ANIM_BOOSTER, 1 },
@@ -64,7 +64,7 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
     struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster),
                                 0x2000, 0, TaskDestructor_80095E8);
     Sprite_Booster *booster = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *displayed = &booster->displayed;
+    Sprite *displayed = &booster->displayed;
     u32 value;
 
     booster->base.regionX = spriteRegionX;
@@ -108,7 +108,7 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
 void Task_Interactable_Booster(void)
 {
     Sprite_Booster *booster = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &booster->displayed;
+    Sprite *displayed = &booster->displayed;
     Interactable *ia = booster->base.ia;
 
     s16 screenX, screenY;
