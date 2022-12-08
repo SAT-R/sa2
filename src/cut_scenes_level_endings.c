@@ -10,8 +10,6 @@
 #include "trig.h"
 #include "course_select.h"
 #include "save.h"
-#include "title_screen.h"
-#include "random.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

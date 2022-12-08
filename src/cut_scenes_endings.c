@@ -10,14 +10,9 @@
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "trig.h"
-#include "course_select.h"
 #include "save.h"
-#include "title_screen.h"
-#include "random.h"
 
-#include "constants/animations.h"
 #include "constants/songs.h"
-#include "constants/text.h"
 
 struct EndingCutSceneTransition {
     u8 filler0[0x6C];

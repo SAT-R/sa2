@@ -5,9 +5,7 @@
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "malloc_vram.h"
 #include "m4a.h"
-#include "trig.h"
 #include "save.h"
 #include "title_screen.h"
 
