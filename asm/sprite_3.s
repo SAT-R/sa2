@@ -802,8 +802,8 @@ _08005B30: .4byte gUnknown_03001850
 _08005B34: .4byte 0x85000008
 _08005B38: .4byte gUnknown_03004D60
 
-	thumb_func_start sub_8005B3C
-sub_8005B3C: @ 0x08005B3C
+	thumb_func_start animCmd_GetPalette
+animCmd_GetPalette: @ 0x08005B3C
 	push {r4, lr}
 	adds r4, r0, #0
 	adds r3, r1, #0
@@ -857,8 +857,8 @@ _08005B9C: .4byte gUnknown_03002794
 _08005BA0: .4byte gObjPalette
 _08005BA4: .4byte gFlags
 
-	thumb_func_start sub_8005BA8
-sub_8005BA8: @ 0x08005BA8
+	thumb_func_start animCmd_JumpBack
+animCmd_JumpBack: @ 0x08005BA8
 	ldr r2, [r0, #4]
 	ldrh r0, [r1, #0x14]
 	subs r0, r0, r2
@@ -866,8 +866,8 @@ sub_8005BA8: @ 0x08005BA8
 	movs r0, #1
 	bx lr
 
-	thumb_func_start sub_8005BB4
-sub_8005BB4: @ 0x08005BB4
+	thumb_func_start animCmd_4
+animCmd_4: @ 0x08005BB4
 	ldr r0, [r1, #0x10]
 	movs r2, #0x80
 	lsls r2, r2, #7
@@ -877,8 +877,9 @@ sub_8005BB4: @ 0x08005BB4
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8005BC4
-sub_8005BC4: @ 0x08005BC4
+    @ Cmd (-5)
+	thumb_func_start animCmd_PlaySoundEffect
+animCmd_PlaySoundEffect: @ 0x08005BC4
 	push {lr}
 	ldrh r2, [r1, #0x14]
 	adds r2, #2
@@ -889,8 +890,8 @@ sub_8005BC4: @ 0x08005BC4
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_8005BD8
-sub_8005BD8: @ 0x08005BD8
+	thumb_func_start animCmd_7
+animCmd_7: @ 0x08005BD8
 	ldrh r2, [r1, #0x14]
 	adds r2, #2
 	strh r2, [r1, #0x14]
@@ -906,8 +907,8 @@ sub_8005BD8: @ 0x08005BD8
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8005BF4
-sub_8005BF4: @ 0x08005BF4
+	thumb_func_start animCmd_8
+animCmd_8: @ 0x08005BF4
 	ldrh r0, [r1, #0x14]
 	adds r0, #3
 	strh r0, [r1, #0x14]
@@ -915,8 +916,8 @@ sub_8005BF4: @ 0x08005BF4
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8005C00
-sub_8005C00: @ 0x08005C00
+	thumb_func_start animCmd_9
+animCmd_9: @ 0x08005C00
 	ldrh r2, [r1, #0x14]
 	adds r2, #2
 	strh r2, [r1, #0x14]
@@ -934,15 +935,15 @@ sub_8005C00: @ 0x08005C00
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8005C20
-sub_8005C20: @ 0x08005C20
+	thumb_func_start animCmd_10
+animCmd_10: @ 0x08005C20
 	ldrh r2, [r1, #0x14]
 	adds r2, #4
 	strh r2, [r1, #0x14]
 	bx lr
 
-	thumb_func_start sub_8005C28
-sub_8005C28: @ 0x08005C28
+	thumb_func_start animCmd_11
+animCmd_11: @ 0x08005C28
 	ldrh r2, [r1, #0x14]
 	adds r2, #2
 	strh r2, [r1, #0x14]
@@ -958,8 +959,8 @@ sub_8005C28: @ 0x08005C28
 	.align 2, 0
 _08005C40: .4byte 0xFFFFCFFF
 
-	thumb_func_start sub_8005C44
-sub_8005C44: @ 0x08005C44
+	thumb_func_start animCmd_12
+animCmd_12: @ 0x08005C44
 	ldrh r2, [r1, #0x14]
 	adds r2, #2
 	strh r2, [r1, #0x14]
