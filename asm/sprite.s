@@ -3657,7 +3657,7 @@ _08004628:
 	b _08004672
 	.align 2, 0
 _08004664: .4byte gUnknown_03002794
-_08004668: .4byte gUnknown_080984AC
+_08004668: .4byte animCmdTable
 _0800466C:
 	adds r0, r1, #0
 	b _0800467A
@@ -3674,8 +3674,8 @@ _0800467A:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_8004680
-sub_8004680: @ 0x08004680
+	thumb_func_start animCmd_GetTileIndex
+animCmd_GetTileIndex: @ 0x08004680
 	push {lr}
 	adds r2, r0, #0
 	adds r3, r1, #0
@@ -3733,8 +3733,8 @@ _080046E4: .4byte gUnknown_03002794
 _080046E8: .4byte gUnknown_030027A0
 _080046EC: .4byte gUnknown_03002A84
 
-	thumb_func_start sub_80046F0
-sub_80046F0: @ 0x080046F0
+	thumb_func_start animCmd_6
+animCmd_6: @ 0x080046F0
 	push {r4, r5, lr}
 	adds r4, r1, #0
 	ldr r3, [r0, #4]
