@@ -26,7 +26,7 @@ struct BgHeader {
 };
 
 typedef struct {
-    // TODO: struct Unk_03002EC0 unk0;
+    // TODO: BgHeader unk0;
     // and remove the below 3 values
     u32 unk0;
     u32 unk4; // vram
