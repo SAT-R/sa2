@@ -34,6 +34,14 @@ typedef struct {
     /* 0x04 */ u16 songId;
 } ACmd_PlaySoundEffect;
 
+// TODO: param types unknown
+typedef struct {
+    /* 0x00 */ s32 cmdId; // -6
+
+    /* 0x04 */ s32 unk4;
+    /* 0x08 */ s32 unk8;
+} ACmd_6;
+
 typedef struct {
     /* 0x00 */ s32 cmdId; // -7
 
