@@ -1,12 +1,12 @@
 @; TODO(Jace):
 @; - Find out what the remaining AnimCmds do (some might have been for debugging?)
-@; - calculate GetTileIndex indices by using the actual graphics' pointers, not hardcoded values
+@; - calculate GetTiles indices by using the actual graphics' pointers, not hardcoded values
 @; - do JumpBack calls relatively, not with hardcoded numbers
 
 @ The default behavior of some commands (when AnimCmd_6 didn't squeeze itself inbetween):
-@ AnimCmd_GetTileIndex:    (u32)<Tile Index> (u32)<numTilesToCopy> (u32)<unk0> (u32)<unk1>
+@ AnimCmd_GetTiles:    (u32)<Tile Index> (u32)<numTilesToCopy>
 @ AnimCmd_GetPalette:      (u32)<Palette ID> (u16)<numColorsToCopy> (u16)<insertOffset>
-@ AnimCmd_PlaySoundEffect: (u32)<SongID> (u32)<unk0> (u32)<unk1>
+@ AnimCmd_PlaySoundEffect: (u32)<SongID>
 
 @ AnimCmd_JumpBack:        (u32)<backIndex>
 @    Basically each sprite has a "animation progress cursor" (a u16).
