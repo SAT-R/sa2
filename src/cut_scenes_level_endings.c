@@ -1,17 +1,15 @@
 #include "global.h"
+#include "cut_scenes_level_endings.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
 #include "malloc_vram.h"
 #include "m4a.h"
 #include "trig.h"
 #include "course_select.h"
 #include "save.h"
-#include "title_screen.h"
-#include "random.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -143,8 +141,6 @@ void CreateCourseResultsCutScene(u8 mode)
     transitionConfig->unk6 = 0;
     transitionConfig->unk8 = 0;
 }
-
-extern void sub_80304DC(u32, u16, u8);
 
 void sub_808DD9C(void)
 {
@@ -549,8 +545,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
     sub_808E274(scene);
 }
 
-// CreateCreamUnlockCutScene
-UNUSED void sub_808E79C(void)
+void CreateCreamUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
@@ -560,8 +555,7 @@ UNUSED void sub_808E79C(void)
     sub_808E274(scene);
 }
 
-// CreateTailsUnlockCutScene
-UNUSED void sub_808E7E8(void)
+void CreateTailsUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
@@ -571,8 +565,7 @@ UNUSED void sub_808E7E8(void)
     sub_808E274(scene);
 }
 
-// CreateKnucklesUnlockCutScene
-UNUSED void sub_808E83C(void)
+void CreateKnucklesUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);

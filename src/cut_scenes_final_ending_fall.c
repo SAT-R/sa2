@@ -1,23 +1,17 @@
 #include "global.h"
+#include "cut_scenes_endings.h"
+#include "cut_scenes_extra_ending_slides.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
-#include "malloc_vram.h"
 #include "m4a.h"
-#include "trig.h"
-#include "course_select.h"
 #include "save.h"
-#include "title_screen.h"
 #include "random.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
-#include "constants/text.h"
-
-extern void sub_808E8F8(s16 *ptr, s16 a, u8 b);
 
 struct FinalEndingFallCutScene {
     struct Unk_03002400 unk0;

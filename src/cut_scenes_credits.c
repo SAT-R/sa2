@@ -1,23 +1,13 @@
 #include "global.h"
+#include "cut_scenes_credits.h"
+#include "cut_scenes_credits_end.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "cut_scenes.h"
-#include "malloc_vram.h"
 #include "m4a.h"
-#include "trig.h"
-#include "course_select.h"
 #include "save.h"
-#include "title_screen.h"
-#include "random.h"
-
-#include "constants/animations.h"
-#include "constants/songs.h"
-#include "constants/text.h"
-
-extern void CreateCreditsEndCutScene(u8);
 
 struct CreditsCutScene {
     struct Unk_03002400 unk0;
