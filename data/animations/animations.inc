@@ -1,15 +1,15 @@
-.equ AnimCmd_GetTileIndex,		-1
-.equ AnimCmd_GetPalette,		-2
-.equ AnimCmd_JumpBack,			-3
-.equ AnimCmd_4,					-4
-.equ AnimCmd_PlaySoundEffect,	-5
-.equ AnimCmd_6,					-6
-.equ AnimCmd_7,					-7
-.equ AnimCmd_8,					-8
-.equ AnimCmd_9,					-9
-.equ AnimCmd_10,				-10
-.equ AnimCmd_11,				-11
-.equ AnimCmd_12,				-12
+.equ AnimCmd_GetTileIndex,		  -1
+.equ AnimCmd_GetPalette,		  -2
+.equ AnimCmd_JumpBack,			  -3
+.equ AnimCmd_4,					  -4
+.equ AnimCmd_PlaySoundEffect,	  -5
+.equ AnimCmd_6,					  -6
+.equ AnimCmd_TranslateSprite,  	  -7
+.equ AnimCmd_8,					  -8
+.equ AnimCmd_SetAnimIdAndVariant, -9
+.equ AnimCmd_10,				  -10
+.equ AnimCmd_11,				  -11
+.equ AnimCmd_12,				  -12
 
 .align 2, 0
 	anim_data__0000_0:
@@ -16240,7 +16240,7 @@
 		.4byte	AnimCmd_GetTileIndex, 0x1BBD0, 0x8, 0x6, 0x2
 		.4byte	AnimCmd_GetTileIndex, 0x1BBC8, 0x8, 0x6, 0x1
 		.4byte	AnimCmd_GetTileIndex, 0x1BBD0, 0x8, 0x6, 0x2
-		.4byte	AnimCmd_9, 0x275
+		.4byte	AnimCmd_SetAnimIdAndVariant, 0x275
 	anim_data__0629_2:
 		.4byte	AnimCmd_GetPalette, 0x86, 0xC00010
 		.4byte	AnimCmd_GetTileIndex, 0x1BBD8, 0x8, 0x8, 0x3
@@ -16249,7 +16249,7 @@
 		.4byte	AnimCmd_GetTileIndex, 0x1BBE0, 0x8, 0x4, 0x4
 		.4byte	AnimCmd_GetTileIndex, 0x1BBD8, 0x8, 0x8, 0x3
 		.4byte	AnimCmd_GetTileIndex, 0x1BBE0, 0x8, 0x4, 0x4
-		.4byte	AnimCmd_9, 0x275
+		.4byte	AnimCmd_SetAnimIdAndVariant, 0x275
 	anim_data__0629_3:
 		.4byte	AnimCmd_GetPalette, 0x86, 0xC00010
 		.4byte	AnimCmd_GetTileIndex, 0x1BBE8, 0x8, 0x1, 0x5

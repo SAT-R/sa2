@@ -13,3 +13,5 @@
 @    That cursor gets multiplied by sizeof(s32) and added to the base address of the animation variant.
 @    When the game reaches a 'AnimCmd_JumpBack', the index is on that very command-indicating address.
 @    So the parameter 'backIndex' makes the cursor go back that address by 4*backIndex, by simply subtracting from it.
+
+@ AnimCmd_SetAnimIdAndVariant:               (u16)<animId> (u16)<variant>
