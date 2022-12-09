@@ -179,7 +179,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
     s16 num = gUnknown_080DF6DC[*zone];
 
     for (i = 0; i < num; i++) {
-        struct UNK_0808B3FC_UNK240 *element = &world->unk90[i];
+        Sprite *element = &world->unk90[i];
         element->vram = gUnknown_03005B5C;
         element->unk8 = 0;
         element->anim = assets[i].anim;
@@ -265,7 +265,7 @@ void sub_806EB74(void)
 
     if (stage->paused != TRUE) {
         for (i = 0; i < num; i++) {
-            struct UNK_0808B3FC_UNK240 *element = &world->unk90[i];
+            Sprite *element = &world->unk90[i];
 
             sub_80036E0(element);
             sub_8003914(element);

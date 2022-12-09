@@ -12,7 +12,7 @@
 #include "constants/animations.h"
 
 struct CreditsSlidesCutScene {
-    struct Unk_03002400 unk0;
+    Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
 
     u8 unk4C;
@@ -38,7 +38,7 @@ void CreateCreditsSlidesCutScene(u8 endingVariant, u8 b, u8 c)
 {
     struct Task *t;
     struct CreditsSlidesCutScene *scene = NULL;
-    struct Unk_03002400 *background;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
     u8 i;
 
@@ -116,7 +116,7 @@ void sub_808EF38(void)
 
         if (scene->unk50 < scene->unk51) {
             if (gUnknown_080E1278[scene->unk50] != 0) {
-                struct Unk_03002400 *background = &scene->unk0;
+                Background *background = &scene->unk0;
                 background->unk4 = BG_SCREEN_ADDR(8);
                 background->unkA = 0;
                 background->unkC = BG_SCREEN_ADDR(28);

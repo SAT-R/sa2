@@ -12,7 +12,7 @@
 #include "constants/songs.h"
 
 struct ExtraEndingCutSceneSlides {
-    struct Unk_03002400 unk0;
+    Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
     u16 unk4C;
 }; /* 0x50 */
@@ -24,7 +24,7 @@ void CreateExtraEndingSlidesCutScene(void)
 {
     struct Task *t = NULL;
     struct ExtraEndingCutSceneSlides *scene;
-    struct Unk_03002400 *background;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
 
     gDispCnt = 0x1140;

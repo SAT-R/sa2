@@ -10,7 +10,7 @@
 #include "save.h"
 
 struct CreditsCutScene {
-    struct Unk_03002400 unk0;
+    Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
 
     u8 endingVariant;
@@ -33,7 +33,7 @@ void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
 {
     struct Task *t;
     struct CreditsCutScene *scene = NULL;
-    struct Unk_03002400 *background;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig;
 
     gDispCnt = 0x1140;

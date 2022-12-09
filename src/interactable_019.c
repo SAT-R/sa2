@@ -13,7 +13,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
+    /* 0x0C */ Sprite displayed;
     s16 unk3C;
 } Sprite_019;
 
@@ -25,7 +25,7 @@ static const u16 sInt019_AnimationIds[]
 
 extern const struct SpriteTables *gUnknown_03002794;
 
-extern u32 sub_800C060(struct UNK_0808B3FC_UNK240 *, s32, s32, Player *);
+extern u32 sub_800C060(Sprite *, s32, s32, Player *);
 
 static void Task_Interactable_019(void);
 
@@ -44,7 +44,7 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
                                 TaskDestructor_Interactable019);
     Sprite_019 *platform = TaskGetStructPtr(t);
     SpriteBase *base = &platform->base;
-    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Sprite *displayed = &platform->displayed;
     // s16 screenX, screenY;
 
     base->regionX = spriteRegionX;
@@ -90,7 +90,7 @@ void Task_Interactable_019(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &platform->base;
-    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Sprite *displayed = &platform->displayed;
     Interactable *ia = base->ia;
     s16 screenX, screenY;
 
@@ -128,7 +128,7 @@ void Task_Interactable_019(void)
 void Task_805E35C(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Sprite *displayed = &platform->displayed;
     Interactable *ia = platform->base.ia;
     s16 screenX, screenY;
 
@@ -164,7 +164,7 @@ void Task_805E35C(void)
 void Task_805E480(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Sprite *displayed = &platform->displayed;
     Interactable *ia = platform->base.ia;
     s16 screenX, screenY;
     s16 otherPos;
@@ -253,7 +253,7 @@ void Task_805E480(void)
 void Task_805E6A4(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &platform->displayed;
+    Sprite *displayed = &platform->displayed;
     Interactable *ia = platform->base.ia;
 
     s16 screenX, screenY;

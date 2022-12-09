@@ -15,9 +15,9 @@
 void sub_80714C4(void);
 void sub_80710B0(void);
 void sub_80714C8(void);
-void sub_8071380(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 a1, s16 a, u8 b,
+void sub_8071380(Sprite *element, void *vram, s16 a1, s16 a, u8 b,
                  const struct UNK_80DF670 *c4);
-static void RenderGuardRobo(struct UNK_0808B3FC_UNK240 *element, s16 a1, s16 a, u8 b,
+static void RenderGuardRobo(Sprite *element, s16 a1, s16 a, u8 b,
                             const struct UNK_80DF670 *c4);
 void sub_8071478(void);
 void sub_80714F4(struct SpecialStageGuardRobo *);
@@ -226,7 +226,7 @@ void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
     }
 }
 
-void sub_8071380(struct UNK_0808B3FC_UNK240 *element, void *vram, s16 x, s16 y, u8 b,
+void sub_8071380(Sprite *element, void *vram, s16 x, s16 y, u8 b,
                  const struct UNK_80DF670 *c4)
 {
     u16 *oam = &gOamBuffer[124].all.affineParam;
@@ -326,7 +326,7 @@ void sub_80714F4(struct SpecialStageGuardRobo *guardRobo)
     }
 }
 
-static void RenderGuardRobo(struct UNK_0808B3FC_UNK240 *element, s16 x, s16 y, u8 b,
+static void RenderGuardRobo(Sprite *element, s16 x, s16 y, u8 b,
                             const struct UNK_80DF670 *spriteConfig)
 {
     u32 flags = 0x107F;

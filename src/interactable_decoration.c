@@ -9,13 +9,13 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
+    /* 0x0C */ Sprite displayed;
 } Sprite_Decoration;
 
 void Task_Interactable_Decoration(void);
 void TaskDestructor_Interactable_Decoration(struct Task *);
 
-static const struct UNK_080E0D64 sDecoTileAnimInfo[7] = {
+static const TileInfo sDecoTileAnimInfo[7] = {
     { 2, SA2_ANIM_FLOWER_BLUE_SMALL, 0 },
     { 4, SA2_ANIM_FLOWER_BLUE, 0 },
     { 2, SA2_ANIM_FLOWER_RED_SMALL, 0 },
@@ -33,7 +33,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
 {
     struct Task *t;
     Sprite_Decoration *decoBase;
-    struct UNK_0808B3FC_UNK240 *deco;
+    Sprite *deco;
 
     if (ia->decoId >= 0) {
         t = TaskCreate(Task_Interactable_Decoration, sizeof(Sprite_Decoration), 0x2010,
@@ -71,7 +71,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
 void Task_Interactable_Decoration(void)
 {
     Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *deco = &decoBase->displayed;
+    Sprite *deco = &decoBase->displayed;
     Interactable *ia = decoBase->base.ia;
     s32 screenX;
 

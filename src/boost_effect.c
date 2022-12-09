@@ -11,8 +11,8 @@
 #include "constants/move_states.h"
 
 struct BoostModeParticles {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30;
+    Sprite unk0;
+    Sprite unk30;
     u16 unk60;
     s16 unk62[16][2];
     s16 unkA2[16][2];
@@ -29,7 +29,7 @@ void CreateBoostModeParticles(void)
     s32 i;
     struct Task *t = TaskCreate(sub_8089E54, 0xE8, 0x5050, 0, sub_808A234);
     struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *element = &particles->unk0;
+    Sprite *element = &particles->unk0;
 
     particles->unk60 = 0;
     element->vram = VramMalloc(1);
@@ -113,7 +113,7 @@ void sub_8089E54(void)
 {
     s32 i;
     struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     sub_8004558(&particles->unk0);
 
     for (i = 0; i < 8; i++) {
@@ -170,7 +170,7 @@ void sub_808A0A4(void)
 {
     s32 i;
     struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element = &particles->unk0;
+    Sprite *element = &particles->unk0;
 
     if (particles->unk60++ > 0x18) {
         TaskDestroy(gCurTask);
@@ -211,7 +211,7 @@ void sub_808A0A4(void)
 void sub_808A234(struct Task *t)
 {
     struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *element = &particles->unk0;
+    Sprite *element = &particles->unk0;
     VramFree(element->vram);
     element++;
     VramFree(element->vram);

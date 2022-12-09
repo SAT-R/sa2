@@ -19,13 +19,13 @@
 #define PAK_MODE_SINGLE 1
 
 struct MultiplayerModeSelectScreen {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
+    Background unk0;
+    Background unk40;
 
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0;
-    struct UNK_0808B3FC_UNK240 unkE0;
-    struct UNK_0808B3FC_UNK240 subText;
+    Sprite unk80;
+    Sprite unkB0;
+    Sprite unkE0;
+    Sprite subText;
 
     struct UNK_802D4CC_UNK270 unk140;
 
@@ -45,7 +45,7 @@ static void Task_FadeOutToSelectedMode(void);
 static void Task_FadeOutAndExitToTitleScreen(void);
 static void Task_ExitAndInitSelectedPakMode(void);
 
-static const struct UNK_080E0D64 sMultiplayerModeSelectScreenText[] = {
+static const TileInfo sMultiplayerModeSelectScreenText[] = {
     TextElementAlt(4, LANG_DEFAULT, 1, 38, 1073),
     TextElementAlt(4, LANG_DEFAULT, 2, 32, 1073),
     TextElementAlt(4, LANG_DEFAULT, 3, 168, 1073),
@@ -81,8 +81,8 @@ void CreateMultiplayerModeSelectScreen(void)
     struct Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
     struct UNK_802D4CC_UNK270 *unk140;
-    struct UNK_0808B3FC_UNK240 *unk80;
-    struct Unk_03002400 *unk0;
+    Sprite *unk80;
+    Background *unk0;
 
     u8 lang = gLoadedSaveGame->unk6 * 4;
     gDispCnt = 0;
@@ -245,7 +245,7 @@ static void Task_EnterAnimPart1(void)
 
 static void Task_EnterAnimPart2(void)
 {
-    struct UNK_0808B3FC_UNK240 *unk80;
+    Sprite *unk80;
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
     if (++modeScreen->animFrame == 32) {
         modeScreen->enterAnimDone = TRUE;
@@ -337,7 +337,7 @@ static void Task_ScreenMain(void)
     }
 
     if (modeScreen->pakMode != PAK_MODE_MULTI) {
-        struct UNK_0808B3FC_UNK240 *subText;
+        Sprite *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
         modeScreen->unkB0.focused = 1;
         modeScreen->unkE0.focused = 0xFF;
@@ -347,7 +347,7 @@ static void Task_ScreenMain(void)
         subText->variant = sMultiplayerModeSelectScreenText[lang + 3].variant;
         subText->unk21 = 0xFF;
     } else {
-        struct UNK_0808B3FC_UNK240 *subText;
+        Sprite *subText;
         u8 lang = gLoadedSaveGame->unk6 * 4;
         modeScreen->unkB0.focused = 0;
         modeScreen->unkE0.focused = 0;
@@ -430,7 +430,7 @@ static void Task_ExitAndInitSelectedPakMode(void)
 
 static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
 {
-    struct UNK_0808B3FC_UNK240 *unk80 = &modeScreen->unk80;
+    Sprite *unk80 = &modeScreen->unk80;
     sub_80051E8(unk80);
     unk80++;
     sub_80051E8(unk80);

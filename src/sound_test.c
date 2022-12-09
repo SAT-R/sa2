@@ -22,26 +22,26 @@ struct SoundTestScreen {
     struct UNK_3005B80_UNK4 unk10;
 
     // Only 1 used, but fits 2
-    struct Unk_03002400 background[2];
+    Background background[2];
 
-    struct UNK_0808B3FC_UNK240 title;
-    struct UNK_0808B3FC_UNK240 titleTrimAndControls[2];
+    Sprite title;
+    Sprite titleTrimAndControls[2];
 
     // maybe this was originally going to be the back button
-    struct UNK_0808B3FC_UNK240 unused_unk158;
+    Sprite unused_unk158;
 
-    struct UNK_0808B3FC_UNK240 scrollArrows;
-    struct UNK_0808B3FC_UNK240 speakerCone[NUM_SPEAKER_CONE_SECTIONS];
+    Sprite scrollArrows;
+    Sprite speakerCone[NUM_SPEAKER_CONE_SECTIONS];
 
-    struct UNK_0808B3FC_UNK240 creams[2];
-    struct UNK_0808B3FC_UNK240 *activeCream;
-    struct UNK_0808B3FC_UNK240 danceStage;
-    struct UNK_0808B3FC_UNK240 backControlName;
-    struct UNK_0808B3FC_UNK240 numberDisplay[3];
+    Sprite creams[2];
+    Sprite *activeCream;
+    Sprite danceStage;
+    Sprite backControlName;
+    Sprite numberDisplay[3];
 
     struct UNK_808D124_UNK180 speakerConeEffects[NUM_SPEAKER_CONE_SECTIONS];
 
-    struct UNK_0808B3FC_UNK240 nameDisplay[MAX_SOUND_NAME_LENGTH];
+    Sprite nameDisplay[MAX_SOUND_NAME_LENGTH];
 
     u8 animFrame;
 
@@ -334,15 +334,14 @@ static void SoundTestScreenCreateUI(struct Task *t)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
 
-    struct UNK_0808B3FC_UNK240 *title = &soundTestScreen->title;
-    struct UNK_0808B3FC_UNK240 *titleTrimAndControls
-        = soundTestScreen->titleTrimAndControls;
-    struct UNK_0808B3FC_UNK240 *backControlName = &soundTestScreen->backControlName;
-    struct UNK_0808B3FC_UNK240 *speakerCone = soundTestScreen->speakerCone;
-    struct UNK_0808B3FC_UNK240 *songNumDisplayElement = soundTestScreen->numberDisplay;
-    struct UNK_0808B3FC_UNK240 *danceStage = &soundTestScreen->danceStage;
-    struct UNK_0808B3FC_UNK240 *animatedCream = soundTestScreen->creams;
-    struct UNK_0808B3FC_UNK240 *scrollArrows = &soundTestScreen->scrollArrows;
+    Sprite *title = &soundTestScreen->title;
+    Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
+    Sprite *backControlName = &soundTestScreen->backControlName;
+    Sprite *speakerCone = soundTestScreen->speakerCone;
+    Sprite *songNumDisplayElement = soundTestScreen->numberDisplay;
+    Sprite *danceStage = &soundTestScreen->danceStage;
+    Sprite *animatedCream = soundTestScreen->creams;
+    Sprite *scrollArrows = &soundTestScreen->scrollArrows;
     struct UNK_808D124_UNK180 *unk3CC = soundTestScreen->speakerConeEffects;
 
     s16 i, xPos, yPos;
@@ -422,8 +421,8 @@ static void Task_SoundTestScreenMain(void)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *numberDisplayDigit = soundTestScreen->numberDisplay;
-    struct UNK_0808B3FC_UNK240 *backControlName = &soundTestScreen->backControlName;
+    Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
+    Sprite *backControlName = &soundTestScreen->backControlName;
     struct UNK_802D4CC_UNK270 *unk4 = &soundTestScreen->unk4;
 
     const u8 *soundsList;
@@ -576,17 +575,16 @@ static void Task_SoundTestScreenMain(void)
 static void SoundTestScreenRenderUI(void)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *unkC8 = &soundTestScreen->title;
-    struct UNK_0808B3FC_UNK240 *titleTrimAndControls
-        = soundTestScreen->titleTrimAndControls;
-    struct UNK_0808B3FC_UNK240 *backCountrolName = &soundTestScreen->backControlName;
-    struct UNK_0808B3FC_UNK240 *numberDisplayDigit = soundTestScreen->numberDisplay;
+    Sprite *unkC8 = &soundTestScreen->title;
+    Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
+    Sprite *backCountrolName = &soundTestScreen->backControlName;
+    Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
 
-    struct UNK_0808B3FC_UNK240 *unk2DC = &soundTestScreen->danceStage;
-    struct UNK_0808B3FC_UNK240 *unk2D8 = soundTestScreen->activeCream;
+    Sprite *unk2DC = &soundTestScreen->danceStage;
+    Sprite *unk2D8 = soundTestScreen->activeCream;
 
-    struct UNK_0808B3FC_UNK240 *scrollArrows = &soundTestScreen->scrollArrows;
-    struct UNK_0808B3FC_UNK240 *speakerConeElement = soundTestScreen->speakerCone;
+    Sprite *scrollArrows = &soundTestScreen->scrollArrows;
+    Sprite *speakerConeElement = soundTestScreen->speakerCone;
     struct UNK_808D124_UNK180 *speakerConeEffects = soundTestScreen->speakerConeEffects;
 
     struct SoundInfo *soundInfo;
@@ -749,7 +747,7 @@ static void SoundTestScreenRenderUI(void)
 static void Task_SoundTestScreenInOutTransition(void)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *idleCream = &soundTestScreen->creams[IDLE_CREAM];
+    Sprite *idleCream = &soundTestScreen->creams[IDLE_CREAM];
 
     soundTestScreen->animFrame++;
 
@@ -782,7 +780,7 @@ static void Task_SoundTestScreenInOutTransition(void)
 static void SoundTestScreenSetCreamAnim(u8 anim)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *animatedCream = soundTestScreen->activeCream;
+    Sprite *animatedCream = soundTestScreen->activeCream;
 
     switch (anim) {
         case CREAM_ANIM_BOW:
@@ -837,7 +835,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
 static void SoundTestScreenUpdateCreamAnim(void)
 {
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *animatedCream = soundTestScreen->activeCream;
+    Sprite *animatedCream = soundTestScreen->activeCream;
 
     switch (soundTestScreen->state) {
         case SOUND_TEST_SCREEN_STOPPED:

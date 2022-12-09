@@ -15,7 +15,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
+    /* 0x0C */ Sprite displayed;
     /* 0x3D */ u8 unk3D;
     /* 0x3E */ u8 unk3E;
 } Sprite_Spring;
@@ -37,11 +37,11 @@ typedef struct {
 static void initSprite_Interactable_Spring(u8, Interactable *, u16, u16, u8);
 static void Task_Interactable_Spring(void);
 static void sub_800E3D0(void);
-static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *p0, Interactable *ia,
-                          Sprite_Spring *spring, Player *player);
+static bool32 sub_800E490(Sprite *p0, Interactable *ia, Sprite_Spring *spring,
+                          Player *player);
 static void TaskDestructor_Interactable_Spring(struct Task *t);
 
-extern bool32 sub_800CDBC(struct UNK_0808B3FC_UNK240 *, s16, s16, Player *);
+extern bool32 sub_800CDBC(Sprite *, s16, s16, Player *);
 
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
     {
@@ -100,7 +100,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
     struct Task *t = TaskCreate(Task_Interactable_Spring, sizeof(Sprite_Spring), 0x2010,
                                 0, TaskDestructor_Interactable_Spring);
     Sprite_Spring *spring = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
 
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
@@ -149,7 +149,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
 static void Task_Interactable_Spring(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
 
     if (sub_800E490(displayed, ia, spring, &gPlayer) != 0) {
@@ -171,7 +171,7 @@ static void Task_Interactable_Spring(void)
 static void sub_800E3D0(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
 
     sub_800E490(displayed, ia, spring, &gPlayer);
@@ -195,8 +195,8 @@ static void sub_800E3D0(void)
     }
 }
 
-static bool32 sub_800E490(struct UNK_0808B3FC_UNK240 *displayed, Interactable *ia,
-                          Sprite_Spring *spring, Player *player)
+static bool32 sub_800E490(Sprite *displayed, Interactable *ia, Sprite_Spring *spring,
+                          Player *player)
 {
     s16 xPos = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
     s16 yPos = SpriteGetScreenPos(ia->y, spring->base.regionY);

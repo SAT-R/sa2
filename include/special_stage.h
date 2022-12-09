@@ -27,8 +27,8 @@ struct SpecialStage {
     struct Task *uiTask;
     struct Task *guardRoboTask;
 
-    struct UNK_0808B3FC_UNK240 introText;
-    struct Unk_03002400 unk48;
+    Sprite introText;
+    Background unk48;
     struct UNK_802D4CC_UNK270 transition;
     s32 unk94[DISPLAY_HEIGHT][2];
     s32 cameraX;

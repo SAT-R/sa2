@@ -17,20 +17,20 @@
 #include "constants/text.h"
 
 struct FinalEndingLandCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0;
-    struct UNK_0808B3FC_UNK240 unkE0;
-    struct UNK_0808B3FC_UNK240 unk110;
-    struct UNK_0808B3FC_UNK240 unk140;
-    struct UNK_0808B3FC_UNK240 unk170;
-    struct UNK_0808B3FC_UNK240 unk1A0;
-    struct UNK_0808B3FC_UNK240 unk1D0;
-    struct UNK_0808B3FC_UNK240 unk200;
-    struct UNK_0808B3FC_UNK240 unk230;
-    struct UNK_0808B3FC_UNK240 unk260[2];
-    struct UNK_0808B3FC_UNK240 unk2C0[2];
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
+    Sprite unkB0;
+    Sprite unkE0;
+    Sprite unk110;
+    Sprite unk140;
+    Sprite unk170;
+    Sprite unk1A0;
+    Sprite unk1D0;
+    Sprite unk200;
+    Sprite unk230;
+    Sprite unk260[2];
+    Sprite unk2C0[2];
 
     struct UNK_808D124_UNK180 unk320;
     struct UNK_802D4CC_UNK270 unk32C;
@@ -61,7 +61,7 @@ struct FinalEndingLandCutScene {
 void sub_8093EDC(void);
 void sub_8093F9C(struct Task *);
 
-extern const struct UNK_080E0D64 gUnknown_080E17A4[52];
+extern const TileInfo gUnknown_080E17A4[52];
 extern const u16 gUnknown_080E179C[4];
 extern const u16 gUnknown_080E1AF4[0x10];
 
@@ -156,7 +156,7 @@ void CreateFinalEndingLandingCutScene(void)
     transitionConfig->unk8 = 0x3FBF;
     if (gSelectedCharacter == 1) {
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk110;
             element->vram = (void *)scene->unk618;
             scene->unk618 += 0x300;
@@ -177,7 +177,7 @@ void CreateFinalEndingLandingCutScene(void)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk140;
             element->vram = (void *)scene->unk618;
             scene->unk618 += 0x120;
@@ -195,7 +195,7 @@ void CreateFinalEndingLandingCutScene(void)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk170;
             element->vram = (void *)scene->unk618;
             scene->unk618 += gUnknown_080E17A4[49].numTiles * 0x20;
@@ -217,7 +217,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk80;
         element->vram = (void *)scene->unk618;
         scene->unk618 += 0x800;
@@ -238,7 +238,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         transformer = &scene->unk320;
 
         element = &scene->unkB0;
@@ -268,7 +268,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk260[i];
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[0x24 + i].numTiles * 0x20;
@@ -289,7 +289,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk2C0[i];
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[0x26 + i].numTiles * 0x20;
@@ -310,7 +310,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1A0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[35].numTiles * 0x20;
@@ -331,7 +331,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1D0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[40].numTiles * 0x20;
@@ -352,7 +352,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk200;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[41].numTiles * 0x20;
@@ -373,7 +373,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk230;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[42].numTiles * 0x20;
@@ -394,7 +394,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unkE0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += 0x1500;
@@ -415,7 +415,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk40;
         background->unk4 = BG_SCREEN_ADDR(0);
         background->unkA = 0;
@@ -439,7 +439,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk0;
         background->unk4 = BG_SCREEN_ADDR(8);
         background->unkA = 0;
@@ -673,7 +673,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
 {
     u8 i;
     struct UNK_808D124_UNK180 *transformer;
-    struct UNK_0808B3FC_UNK240 *element = NULL;
+    Sprite *element = NULL;
 
     transformer = &scene->unk320;
 
