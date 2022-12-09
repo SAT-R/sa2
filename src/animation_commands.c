@@ -2,6 +2,7 @@
 #include "m4a.h"
 
 #include "data.h"
+#include "flags.h"
 #include "sprite.h"
 
 typedef int (*AnimationCommandFunc)(s32 *variantCursor,
@@ -54,7 +55,7 @@ int animCmd_GetPalette(s32 *variantCursor, struct UNK_0808B3FC_UNK240 *sprite) {
                   &gObjPalette[sprite->focused * 16 + ((u16 *)variantCursor)[5]],
                   ((u16 *)variantCursor)[4] * 2);
 
-        gFlags |= 0x2;
+        gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
     return 1;
