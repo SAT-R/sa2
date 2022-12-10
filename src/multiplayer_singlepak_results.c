@@ -18,18 +18,18 @@
 #include "constants/text.h"
 
 struct MultiplayerSinglePakResultsScreen_UNK80 {
-    struct UNK_0808B3FC_UNK240 unk0;
+    Sprite unk0;
     u8 filler30[8];
 };
 
 struct MultiplayerSinglePakResultsScreen {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
+    Background unk0;
+    Background unk40;
     struct MultiplayerSinglePakResultsScreen_UNK80 unk80[4];
-    struct UNK_0808B3FC_UNK240 unk160[10];
-    struct UNK_0808B3FC_UNK240 unk340;
-    struct UNK_0808B3FC_UNK240 unk370[3];
-    struct UNK_0808B3FC_UNK240 unk400;
+    Sprite unk160[10];
+    Sprite unk340;
+    Sprite unk370[3];
+    Sprite unk400;
     u16 unk430;
     u16 unk432;
     u32 unk434;
@@ -120,7 +120,7 @@ void sub_8081FB0(void)
 
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
 {
-    struct Unk_03002400 *background = &screen->unk0;
+    Background *background = &screen->unk0;
     background->unk4 = BG_SCREEN_ADDR(16);
     background->unkA = 0;
     background->unkC = BG_SCREEN_ADDR(30);
@@ -145,7 +145,7 @@ void sub_80823FC(void);
 void sub_808207C(void)
 {
     u32 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
     gDispCnt |= 0x1800;
     gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
@@ -270,7 +270,7 @@ void sub_8082788(void);
 
 void sub_80823FC(void)
 {
-    struct Unk_03002400 *background;
+    Background *background;
     u32 i;
     s32 val2 = 0;
     u8 val = FALSE;
@@ -433,7 +433,7 @@ void sub_8082788(void)
 {
     u32 i;
 
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
 
     MultiPakHeartbeat();
@@ -546,7 +546,7 @@ struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
     return resultsScreen;
 }
 
-void sub_8082CEC(struct UNK_0808B3FC_UNK240 *, u32, u16, u8, s16, s16, u16, u8, u32);
+void sub_8082CEC(Sprite *, u32, u16, u8, s16, s16, u16, u8, u32);
 
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
@@ -585,8 +585,8 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
                 0x1000);
 }
 
-void sub_8082CEC(struct UNK_0808B3FC_UNK240 *element, u32 vramAddr, u16 asset,
-                 u8 variant, s16 x, s16 y, u16 unk1A, u8 unk25, u32 unk10)
+void sub_8082CEC(Sprite *element, u32 vramAddr, u16 asset, u8 variant, s16 x, s16 y,
+                 u16 unk1A, u8 unk25, u32 unk10)
 {
     element->x = x;
     element->y = y;

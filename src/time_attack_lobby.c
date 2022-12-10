@@ -17,10 +17,10 @@
 #include "constants/songs.h"
 
 struct TimeAttackLobbyScreen {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0[5];
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
+    Sprite unkB0[5];
     struct UNK_802D4CC_UNK270 unk1A0;
     u8 unk1AC;
     u8 unk1AD;
@@ -28,7 +28,7 @@ struct TimeAttackLobbyScreen {
     u8 unk1AF;
 };
 
-const struct UNK_080E0D64 gUnknown_080E0474[] = {
+const TileInfo gUnknown_080E0474[] = {
     TextElementAlt4(0, 20, 0),   TextElementAlt4(0, 16, 91),
     TextElementAlt4(0, 30, 182), TextElementAlt4(0, 20, 273),
     TextElementAlt4(0, 20, 364), TextElementAlt4(3, 64, 9),
@@ -36,12 +36,12 @@ const struct UNK_080E0D64 gUnknown_080E0474[] = {
     TextElementAlt4(3, 64, 282), TextElementAlt4(3, 64, 373),
 };
 
-const struct UNK_080E0D64 gUnknown_080E04C4[] = {
+const TileInfo gUnknown_080E04C4[] = {
     TextElementAlt4(0, 9, 455),
     TextElementAlt4(0, 9, 456),
 };
 
-const struct UNK_080E0D64 gUnknown_080E04D4[] = {
+const TileInfo gUnknown_080E04D4[] = {
     TextElementAlt4(0, 22, 1051), TextElementAlt4(1, 32, 1051),
     TextElementAlt4(2, 22, 1051), TextElementAlt4(3, 22, 1051),
     TextElementAlt4(4, 10, 1051), TextElementAlt4(0, 24, 1052),
@@ -64,8 +64,8 @@ const struct UNK_080E0D64 gUnknown_080E04D4[] = {
 void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
 {
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    struct Unk_03002400 *background;
-    struct UNK_0808B3FC_UNK240 *element;
+    Background *background;
+    Sprite *element;
     s8 lang = gLoadedSaveGame->unk6 - 1;
     u32 i;
 
@@ -240,7 +240,7 @@ void sub_8088EB4(void);
 void sub_8088CC4(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u32 i;
 
     for (i = 0; i < 4; i++) {
@@ -270,7 +270,7 @@ void sub_8088CC4(void)
 void sub_8088D60(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u32 i;
     if (sub_802D4CC(&lobbyScreen->unk1A0) == 1) {
         TaskDestroy(gCurTask);
@@ -335,7 +335,7 @@ void sub_8088D60(void)
 void sub_8088EB4(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct UNK_802D4CC_UNK270 *transitionConfig;
     u32 i;
 

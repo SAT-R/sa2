@@ -530,7 +530,7 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
 {
     u32 i;
     s32 cos, sin;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
     struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(stage->guardRoboTask);
 

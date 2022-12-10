@@ -5,7 +5,7 @@
 
 extern const u8 gUnknown_080984DC[][2];
 
-void sub_80051E8(struct UNK_0808B3FC_UNK240 *sprite)
+void sub_80051E8(Sprite *sprite)
 {
     OamData *r4;
     s32 y, x, sp04, sp08;

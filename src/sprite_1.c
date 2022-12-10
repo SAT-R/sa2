@@ -20,7 +20,7 @@ void *const gUnknown_08097A74[12] = {
     sub_80043B0, sub_80043CC, sub_80043D8, sub_80043F8, sub_8004400, sub_800440C,
 };
 
-void sub_8002A3C(struct Unk_03002400 *r4)
+void sub_8002A3C(Background *r4)
 {
     struct MapHeader_Full *r6 = gUnknown_03002260[r4->unk1C].y;
     u32 a;
@@ -32,7 +32,7 @@ void sub_8002A3C(struct Unk_03002400 *r4)
     r4->unk8 = r6->unk0.unkC;
 
     if (!(r4->unk2E & 8)) {
-        gUnknown_030027A0[gUnknown_03002A84] = (struct Unk_03002EC0 *)r4;
+        gUnknown_030027A0[gUnknown_03002A84] = (struct BgHeader *)r4;
         gUnknown_03002A84 = (gUnknown_03002A84 + 1) & 0x1F;
         r4->unk2E ^= 8;
     }

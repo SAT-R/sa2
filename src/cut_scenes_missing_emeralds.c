@@ -16,9 +16,9 @@ void sub_8094360(void);
 void sub_80945A0(struct Task *);
 
 struct MissingChaosEmaraldsCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
     struct UNK_802D4CC_UNK270 unkB0;
 
     u8 unkBC;
@@ -30,8 +30,16 @@ struct MissingChaosEmaraldsCutScene {
     vu32 unkC4;
 };
 
-// TODO: unknown length
-extern const struct UNK_080E0D64 gUnknown_080E1CA0[5];
+static const u16 gUnknown_080E1C5C[34] = {
+    175, 176, 178, 177, 180, 179, 181, 181, 182, 184, 183, 186, 185, 187, 187, 188, 190,
+    189, 192, 191, 193, 193, 194, 196, 195, 198, 197, 199, 199, 200, 202, 201, 204, 203,
+};
+
+static const TileInfo gUnknown_080E1CA0[3] = {
+    { 48, 1075, 0 },
+    { 63, 810, 0 },
+    { 80, 810, 1 },
+};
 
 void CreateMissingChaosEmaraldsCutScene(void)
 {
@@ -91,7 +99,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene->unkC4 = OBJ_VRAM0;
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk80;
         element->vram = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
@@ -119,7 +127,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk0;
         background->unk4 = BG_SCREEN_ADDR(0);
         background->unkA = 0;
@@ -136,7 +144,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background->unk2E = 0;
     }
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk40;
         background->unk4 = BG_SCREEN_ADDR(8);
         background->unkA = 0;
@@ -158,12 +166,11 @@ void CreateMissingChaosEmaraldsCutScene(void)
     }
 }
 
-extern const u16 gUnknown_080E1C5C[34];
 void sub_809449C(void);
 
 void sub_8094360(void)
 {
-    struct Unk_03002400 *background = NULL;
+    Background *background = NULL;
     struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
 
     if (scene->unkBD == 0) {
@@ -275,7 +282,7 @@ void sub_80945A0(struct Task *t)
 void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
 {
     if (scene->unkBD != 0) {
-        struct UNK_0808B3FC_UNK240 *element = &scene->unk80;
+        Sprite *element = &scene->unk80;
         if (scene->unkBD > 3 && scene->unkBE != 0) {
             element->anim = gUnknown_080E1CA0[2].anim;
             element->variant = gUnknown_080E1CA0[2].variant;

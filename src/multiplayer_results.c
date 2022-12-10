@@ -19,11 +19,11 @@
 #endif
 
 struct MultiplayerResultsScreen {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
+    Background unk0;
+    Background unk40;
     // TODO: these may be the wrong way around
-    struct UNK_0808B3FC_UNK240 resultRows[MULTI_SIO_PLAYERS_MAX];
-    struct UNK_0808B3FC_UNK240 characterRows[MULTI_SIO_PLAYERS_MAX];
+    Sprite resultRows[MULTI_SIO_PLAYERS_MAX];
+    Sprite characterRows[MULTI_SIO_PLAYERS_MAX];
     u16 animStep;
     u8 numPlayers;
     u8 mode;
@@ -36,7 +36,7 @@ static void sub_805C3D0(void);
 static void sub_805C69C(void);
 static void sub_805C504(void);
 
-static const struct UNK_080E0D64 gUnknown_080D9100[][7] = {
+static const TileInfo gUnknown_080D9100[][7] = {
     [LANG_DEFAULT] = {
         TextElementAlt3(0, 0, 1077),
         TextElementAlt3(1, 0, 1077),
@@ -102,7 +102,7 @@ static const struct UNK_080E0D64 gUnknown_080D9100[][7] = {
     },
 };
 
-static const struct UNK_080E0D64 gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX] = {
+static const TileInfo gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX] = {
     TextElementAlt4(13, 0, 1074),
     TextElementAlt4(14, 0, 1074),
     TextElementAlt4(15, 0, 1074),
@@ -119,9 +119,9 @@ void CreateMultiplayerResultsScreen(u8 mode)
 {
     struct Task *t;
     struct MultiplayerResultsScreen *resultsScreen;
-    struct Unk_03002400 *background;
+    Background *background;
     u32 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     u32 count = 0;
     u32 lang = gLoadedSaveGame->unk6;
@@ -431,7 +431,7 @@ static void sub_805C69C(void)
 {
     u32 i;
     struct MultiplayerResultsScreen *resultsScreen;
-    struct UNK_0808B3FC_UNK240 *item;
+    Sprite *item;
 
     MultiPakHeartbeat();
 

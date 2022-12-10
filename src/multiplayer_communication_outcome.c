@@ -18,11 +18,11 @@
 #include "constants/text.h"
 
 struct CommunicationOutcomeScreen {
-    struct Unk_03002400 unk0;
+    Background unk0;
     u8 filler40[96];
-    struct UNK_0808B3FC_UNK240 unkA0;
-    struct UNK_0808B3FC_UNK240 unkD0;
-    struct UNK_0808B3FC_UNK240 unk100;
+    Sprite unkA0;
+    Sprite unkD0;
+    Sprite unk100;
     u8 filler130[204];
     u32 unk1FC;
     u16 unk200;
@@ -37,7 +37,7 @@ static void sub_805BC40(void);
 
 static const u16 gUnknown_080D9088[2] = { 1075, 1075 };
 static const u8 gUnknown_080D908C[2] = { 0, 1 };
-static const struct UNK_080E0D64 gUnknown_080D9090[][7] = {
+static const TileInfo gUnknown_080D9090[][7] = {
     {
         TextElementAlt2(LANG_DEFAULT, 1, 51, 1074),
         TextElementAlt2(LANG_JAPANESE, 1, 51, 1074),
@@ -64,8 +64,8 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     u8 count;
     struct Task *t;
     struct CommunicationOutcomeScreen *outcomeScreen;
-    struct UNK_0808B3FC_UNK240 *unk100;
-    struct Unk_03002400 *background;
+    Sprite *unk100;
+    Background *background;
     gDispCnt = 0x3140;
     gBgCntRegs[0] = 0x803;
     gBgScrollRegs[0][0] = 0x100;
@@ -165,14 +165,14 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void sub_805BC40(void)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
     element = &outcomeScreen->unkA0;
     sub_8004558(element);
     sub_80051E8(element);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
-        const struct UNK_080E0D64 *unk9090;
+        const TileInfo *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
         element = &outcomeScreen->unkD0;
@@ -186,7 +186,7 @@ static void sub_805BC40(void)
         sub_8004558(element);
         sub_80051E8(element);
     } else {
-        const struct UNK_080E0D64 *unk9090;
+        const TileInfo *unk9090;
         element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
 

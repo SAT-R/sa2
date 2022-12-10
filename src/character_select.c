@@ -25,28 +25,28 @@
 
 struct CharacterSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;
-    struct Unk_03002400 unkC;
-    struct Unk_03002400 unk4C;
-    struct Unk_03002400 unk8C;
-    struct UNK_0808B3FC_UNK240 screenTitleText;
-    struct UNK_0808B3FC_UNK240 characterSprite;
-    struct UNK_0808B3FC_UNK240 characterNameSubText;
+    Background unkC;
+    Background unk4C;
+    Background unk8C;
+    Sprite screenTitleText;
+    Sprite characterSprite;
+    Sprite characterNameSubText;
 
-    struct UNK_0808B3FC_UNK240 characterTitleTextLeft;
+    Sprite characterTitleTextLeft;
     struct UNK_808D124_UNK180 characterTitleLeftTransform;
 
-    struct UNK_0808B3FC_UNK240 characterTitleTextRight;
+    Sprite characterTitleTextRight;
     struct UNK_808D124_UNK180 characterTitleRightTransform;
 
-    struct UNK_0808B3FC_UNK240 carouselBlobs[NUM_CHARACTERS];
-    struct UNK_0808B3FC_UNK240 selectedCarouselBlob;
+    Sprite carouselBlobs[NUM_CHARACTERS];
+    Sprite selectedCarouselBlob;
     struct UNK_808D124_UNK180 selectedBlobTransform;
 
-    struct UNK_0808B3FC_UNK240 scrollUpArrow;
-    struct UNK_0808B3FC_UNK240 scrollDownArrow;
+    Sprite scrollUpArrow;
+    Sprite scrollDownArrow;
 
-    struct UNK_0808B3FC_UNK240 characterSecondarySprite;
-    struct UNK_0808B3FC_UNK240 characterUnavailableIndicator;
+    Sprite characterSecondarySprite;
+    Sprite characterUnavailableIndicator;
     u8 initialSelection;
     u8 selectedCharacter;
     u8 previousSelection;
@@ -203,8 +203,8 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     struct Task *t;
     struct CharacterSelectionScreen *characterScreen;
     struct UNK_802D4CC_UNK270 *screenFade;
-    struct Unk_03002400 *background;
-    struct UNK_0808B3FC_UNK240 *element;
+    Background *background;
+    Sprite *element;
     u32 a;
 
     u8 i = 0;
@@ -618,7 +618,7 @@ static void Task_TransitionInUIAnim(void)
 static void Task_CharacterSelectMain(void)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct UNK_802D4CC_UNK270 *unk0;
     union MultiSioData *packet;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
@@ -841,7 +841,7 @@ static void Task_HandleCarouselScrollUp(void)
 {
     u32 animFrame;
     struct CharacterSelectionScreen *characterScreen;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     MultiPakHeartbeat();
 
     characterScreen = TaskGetStructPtr(gCurTask);
@@ -899,7 +899,7 @@ static void Task_HandleCarouselScrollDown(void)
 {
     u32 animFrame;
     struct CharacterSelectionScreen *characterScreen;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     MultiPakHeartbeat();
 
     characterScreen = TaskGetStructPtr(gCurTask);
@@ -955,7 +955,7 @@ static void Task_HandleCarouselScrollDown(void)
 
 static void Task_CarouselScrollCompleteAnim(void)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
     u32 animFrame = ++characterScreen->animFrame;
     characterScreen->unk3C4++;
@@ -1002,7 +1002,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 {
     u8 i;
     union MultiSioData *packet;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *unk0 = &characterScreen->screenFade;
     MultiPakHeartbeat();
@@ -1098,7 +1098,7 @@ static void Task_FadeOutAndExitToPrevious(void)
 static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterScreen)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
@@ -1163,7 +1163,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 {
     u8 i;
     u16 x;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct UNK_808D124_UNK180 *transformOptions;
 
     if (characterScreen->amyUnlocked) {
@@ -1343,7 +1343,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     u16 c, e, f;
     u8 i;
     s8 somethinga;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     struct UNK_808D124_UNK180 *transformOptions;
 
     s8 lang = gLoadedSaveGame->unk6 - 1;
@@ -1626,7 +1626,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 {
     struct UNK_808D124_UNK180 *transformOptions;
-    struct UNK_0808B3FC_UNK240 *element, *element2, *element3;
+    Sprite *element, *element2, *element3;
     u8 i;
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < NUM_CHARACTERS * 2; i++) {
@@ -1739,7 +1739,7 @@ static void Task_MultiplayerWaitForSelections(void)
 {
     union MultiSioData *send, *recv;
     u32 i, j;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u8 charactersSelected[NUM_CHARACTERS] = { 0, 0, 0, 0, 0 };
 
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);

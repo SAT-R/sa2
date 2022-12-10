@@ -12,7 +12,7 @@
 #include "constants/animations.h"
 
 struct CreditsSlidesCutScene {
-    struct Unk_03002400 unk0;
+    Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
 
     u8 unk4C;
@@ -31,14 +31,18 @@ struct CreditsSlidesCutScene {
 void sub_808F004(void);
 void sub_808F148(struct Task *);
 
-extern const u8 gUnknown_080E12AA[6];
-extern const u16 gUnknown_080E1278[25];
+static const u16 gUnknown_080E1278[] = {
+    234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246,
+    247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258,
+};
+
+static const u8 gUnknown_080E12AA[] = { 6, 6, 8, 5, 0, 0 };
 
 void CreateCreditsSlidesCutScene(u8 endingVariant, u8 b, u8 c)
 {
     struct Task *t;
     struct CreditsSlidesCutScene *scene = NULL;
-    struct Unk_03002400 *background;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
     u8 i;
 
@@ -116,7 +120,7 @@ void sub_808EF38(void)
 
         if (scene->unk50 < scene->unk51) {
             if (gUnknown_080E1278[scene->unk50] != 0) {
-                struct Unk_03002400 *background = &scene->unk0;
+                Background *background = &scene->unk0;
                 background->unk4 = BG_SCREEN_ADDR(8);
                 background->unkA = 0;
                 background->unkC = BG_SCREEN_ADDR(28);

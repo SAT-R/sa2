@@ -12,8 +12,8 @@
 #include "constants/text.h"
 
 struct CourseStartCountdown {
-    struct UNK_0808B3FC_UNK240 unk0;
-    struct UNK_0808B3FC_UNK240 unk30;
+    Sprite unk0;
+    Sprite unk30;
     u32 unk60; // x ?
     u32 unk64; // y ?
     s16 unk68;
@@ -21,7 +21,7 @@ struct CourseStartCountdown {
     u8 unk6B;
 };
 
-const struct UNK_080E0D64 gUnknown_080D7518[NUM_CHARACTERS] = {
+const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
     TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
                     SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC)),
 
@@ -45,7 +45,7 @@ void CreateCourseStartCountdown(u8 mode)
 {
     struct Task *t;
     struct CourseStartCountdown *countdown;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     gUnknown_03005424 |= 0x100;
     t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
@@ -96,7 +96,7 @@ void sub_8036398(void);
 void sub_8036168(void)
 {
     struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     // Skip intro
     if (!IsMultiplayer() && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
@@ -175,7 +175,7 @@ void sub_8036168(void)
 void sub_8036398(void)
 {
     struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element = &countdown->unk0;
+    Sprite *element = &countdown->unk0;
 
     element->x = countdown->unk60 - gCamera.x;
     element->y = countdown->unk64 - gCamera.y;
@@ -193,9 +193,9 @@ void sub_8036524(void);
 void sub_8036654(struct Task *);
 
 struct RaceStartMessage {
-    struct UNK_0808B3FC_UNK240 unk0;
+    Sprite unk0;
     struct UNK_808D124_UNK180 unk30;
-    struct UNK_0808B3FC_UNK240 unk3C;
+    Sprite unk3C;
     struct UNK_808D124_UNK180 unk6C;
     u16 unk78;
     u16 filler7A;
@@ -205,7 +205,7 @@ void CreateRaceStartMessage(void)
 {
     struct Task *t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
     struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     startMessage->unk78 = 0x3C;
     element = &startMessage->unk0;
@@ -240,7 +240,7 @@ void CreateRaceStartMessage(void)
 void sub_8036524(void)
 {
     struct RaceStartMessage *startMessage = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element, *element2;
+    Sprite *element, *element2;
     struct UNK_808D124_UNK180 *transformConfig;
     s16 unk78;
     startMessage->unk78--;

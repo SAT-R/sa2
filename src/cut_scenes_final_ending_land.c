@@ -17,20 +17,20 @@
 #include "constants/text.h"
 
 struct FinalEndingLandCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0;
-    struct UNK_0808B3FC_UNK240 unkE0;
-    struct UNK_0808B3FC_UNK240 unk110;
-    struct UNK_0808B3FC_UNK240 unk140;
-    struct UNK_0808B3FC_UNK240 unk170;
-    struct UNK_0808B3FC_UNK240 unk1A0;
-    struct UNK_0808B3FC_UNK240 unk1D0;
-    struct UNK_0808B3FC_UNK240 unk200;
-    struct UNK_0808B3FC_UNK240 unk230;
-    struct UNK_0808B3FC_UNK240 unk260[2];
-    struct UNK_0808B3FC_UNK240 unk2C0[2];
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
+    Sprite unkB0;
+    Sprite unkE0;
+    Sprite unk110;
+    Sprite unk140;
+    Sprite unk170;
+    Sprite unk1A0;
+    Sprite unk1D0;
+    Sprite unk200;
+    Sprite unk230;
+    Sprite unk260[2];
+    Sprite unk2C0[2];
 
     struct UNK_808D124_UNK180 unk320;
     struct UNK_802D4CC_UNK270 unk32C;
@@ -61,9 +61,73 @@ struct FinalEndingLandCutScene {
 void sub_8093EDC(void);
 void sub_8093F9C(struct Task *);
 
-extern const struct UNK_080E0D64 gUnknown_080E17A4[52];
-extern const u16 gUnknown_080E179C[4];
-extern const u16 gUnknown_080E1AF4[0x10];
+static const u16 gUnknown_080E179C[4] = {
+    205,
+    206,
+    207,
+    208,
+};
+
+static const TileInfo gUnknown_080E17A4[52] = {
+    { 42, 765, 0 },  { 24, 766, 0 },  { 28, 767, 0 },  { 35, 768, 0 },  { 24, 769, 0 },
+    { 16, 765, 1 },  { 16, 766, 1 },  { 24, 767, 1 },  { 16, 768, 1 },  { 16, 769, 1 },
+    { 20, 0, 0 },    { 16, 91, 0 },   { 30, 182, 0 },  { 20, 273, 0 },  { 20, 364, 0 },
+    { 30, 771, 0 },  { 20, 772, 0 },  { 30, 773, 0 },  { 24, 774, 0 },  { 24, 775, 0 },
+    { 64, 776, 0 },  { 64, 777, 0 },  { 64, 778, 0 },  { 64, 779, 0 },  { 64, 780, 0 },
+    { 168, 804, 0 }, { 140, 808, 0 }, { 210, 806, 0 }, { 192, 805, 0 }, { 176, 807, 0 },
+    { 20, 782, 0 },  { 20, 782, 1 },  { 20, 783, 0 },  { 24, 784, 0 },  { 24, 784, 1 },
+    { 16, 770, 0 },  { 4, 526, 0 },   { 4, 517, 0 },   { 4, 516, 0 },   { 4, 524, 0 },
+    { 48, 781, 0 },  { 26, 781, 1 },  { 32, 781, 2 },  { 9, 457, 0 },   { 9, 455, 0 },
+    { 9, 460, 0 },   { 9, 465, 0 },   { 9, 462, 0 },   { 9, 459, 0 },   { 30, 809, 0 },
+    { 24, 783, 1 },  { 24, 784, 2 },
+};
+
+static const u16 gUnknown_080E1944[][8] = {
+    { 171, 177, 177, 177, 180, 140, 140, 0 },
+    { 171, 177, 177, 177, 177, 180, 140, 140 },
+};
+
+static const u32 gUnknown_080E1964[20][5] = {
+    { 298, 96, 1, 50, 170 },   { 384, 32, 2, 180, 130 }, { 480, 64, 0, 60, 115 },
+    { 608, 32, 3, 130, 140 },  { 576, 64, 1, 190, 120 }, { 224, 64, 0, 50, 155 },
+    { 256, 128, 0, 180, 140 }, { 416, 96, 1, 80, 120 },  { 224, 32, 2, 70, 150 },
+    { 544, 96, 1, 70, 140 },   { 352, 32, 2, 50, 160 },  { 320, 96, 1, 170, 128 },
+    { 224, 32, 2, 100, 130 },  { 416, 96, 1, 160, 170 }, { 256, 32, 2, 180, 150 },
+    { 416, 96, 1, 70, 140 },   { 352, 32, 2, 50, 160 },  { 256, 96, 1, 170, 128 },
+    { 224, 32, 2, 100, 130 },  { 544, 96, 1, 160, 170 },
+};
+
+static const u16 gUnknown_080E1AF4[0x10] = {
+    992,   32400, 1022, 32494, 9081,  14133, 17136, 21128,
+    23104, 0,     0,    20478, 17328, 22327, 25329, 28298,
+};
+
+static const u16 gUnknown_080E1B14[][7] = {
+    { 18, 80, 150, 70, 300, 0, 0 },
+    { 18, 30, 112, 88, 70, 300, 0 },
+};
+
+static const s32 gUnknown_080E1B30[35][2] = {
+    { -2086, -3844 },  { -2086, -5244 },  { -4298, -6129 },  { -5976, -9111 },
+    { -5976, -10536 }, { -7056, -12505 }, { -7524, -13461 }, { -7524, -14975 },
+    { -7415, -16825 }, { -7415, -18194 }, { -6806, -19801 }, { -6806, -20929 },
+    { -5806, -22206 }, { -5806, -23029 }, { -4548, -23921 }, { -4548, -24399 },
+    { -3171, -24898 }, { -3171, -25025 }, { -1815, -25159 }, { -1183, -25045 },
+    { -600, -24788 },  { -77, -24406 },   { 375, -23921 },   { 752, -23355 },
+    { 1048, -22731 },  { 1260, -22073 },  { 1260, -21817 },  { 1389, -21087 },
+    { 1389, -20767 },  { 1409, -19499 },  { 1409, -18859 },  { 1152, -17816 },
+    { 1152, -16536 },  { 693, -14573 },   { 0, -12013 },
+};
+
+static const u8 gUnknown_080E1C48[6] = {
+    0, 5, 10, 15, 20, 25,
+};
+static const u8 gUnknown_080E1C4E[7] = {
+    0, 5, 15, 30, 31, 20, 25,
+};
+static const u8 gUnknown_080E1C55[] = {
+    32, 50, 33, 34, 51, 0, 0,
+};
 
 void CreateFinalEndingLandingCutScene(void)
 {
@@ -156,7 +220,7 @@ void CreateFinalEndingLandingCutScene(void)
     transitionConfig->unk8 = 0x3FBF;
     if (gSelectedCharacter == 1) {
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk110;
             element->vram = (void *)scene->unk618;
             scene->unk618 += 0x300;
@@ -177,7 +241,7 @@ void CreateFinalEndingLandingCutScene(void)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk140;
             element->vram = (void *)scene->unk618;
             scene->unk618 += 0x120;
@@ -195,7 +259,7 @@ void CreateFinalEndingLandingCutScene(void)
         }
 
         {
-            struct UNK_0808B3FC_UNK240 *element;
+            Sprite *element;
             element = &scene->unk170;
             element->vram = (void *)scene->unk618;
             scene->unk618 += gUnknown_080E17A4[49].numTiles * 0x20;
@@ -217,7 +281,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk80;
         element->vram = (void *)scene->unk618;
         scene->unk618 += 0x800;
@@ -238,7 +302,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         transformer = &scene->unk320;
 
         element = &scene->unkB0;
@@ -268,7 +332,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk260[i];
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[0x24 + i].numTiles * 0x20;
@@ -289,7 +353,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk2C0[i];
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[0x26 + i].numTiles * 0x20;
@@ -310,7 +374,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1A0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[35].numTiles * 0x20;
@@ -331,7 +395,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1D0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[40].numTiles * 0x20;
@@ -352,7 +416,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk200;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[41].numTiles * 0x20;
@@ -373,7 +437,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk230;
         element->vram = (void *)scene->unk618;
         scene->unk618 += gUnknown_080E17A4[42].numTiles * 0x20;
@@ -394,7 +458,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unkE0;
         element->vram = (void *)scene->unk618;
         scene->unk618 += 0x1500;
@@ -415,7 +479,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk40;
         background->unk4 = BG_SCREEN_ADDR(0);
         background->unkA = 0;
@@ -439,7 +503,7 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     {
-        struct Unk_03002400 *background;
+        Background *background;
         background = &scene->unk0;
         background->unk4 = BG_SCREEN_ADDR(8);
         background->unkA = 0;
@@ -500,9 +564,6 @@ void sub_80932C8(void)
     }
 }
 
-extern const u16 gUnknown_080E1944[4][8];
-extern const u16 gUnknown_080E1B14[2][7];
-
 void sub_809334C(void)
 {
     struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
@@ -545,8 +606,6 @@ void sub_809334C(void)
         }
     }
 }
-
-extern const u32 gUnknown_080E1B30[35][2];
 
 void sub_80934B8(struct FinalEndingLandCutScene *scene)
 {
@@ -597,8 +656,6 @@ void sub_80934B8(struct FinalEndingLandCutScene *scene)
         scene->unk5E0[0][0] = 0x7800;
     }
 }
-
-extern const u32 gUnknown_080E1964[20][5];
 
 void sub_8093638(struct FinalEndingLandCutScene *scene)
 {
@@ -664,16 +721,11 @@ void sub_8093740(struct FinalEndingLandCutScene *scene)
     }
 }
 
-extern const u8 gUnknown_080E1C48[6];
-extern const u8 gUnknown_080E1C4E[6];
-
-extern const u8 gUnknown_080E1C55[7];
-
 void sub_8093868(struct FinalEndingLandCutScene *scene)
 {
     u8 i;
     struct UNK_808D124_UNK180 *transformer;
-    struct UNK_0808B3FC_UNK240 *element = NULL;
+    Sprite *element = NULL;
 
     transformer = &scene->unk320;
 

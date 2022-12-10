@@ -22,7 +22,7 @@ u32 gIntrMainBuf[] = {};
 struct Task gTasks[] = {};
 u16 gUnknown_030017F0 ALIGNED(4) = 0;
 s16 gUnknown_030017F4[2] ALIGNED(4) = {};
-struct Unk_03002400 *gUnknown_03001800[] ALIGNED(16) = {};
+Background *gUnknown_03001800[] ALIGNED(16) = {};
 u32 gFlags = 0;
 u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
@@ -76,7 +76,7 @@ u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
 /* 0x03002794 */ const struct SpriteTables *gUnknown_03002794 = NULL;
-struct Unk_03002EC0 *gUnknown_030027A0[] ALIGNED(16) = {};
+struct BgHeader *gUnknown_030027A0[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
@@ -603,7 +603,7 @@ static void VBlankIntr(void)
 static u32 sub_80021C4(void)
 {
     u32 i;
-    struct Unk_03002EC0 *current;
+    struct BgHeader *current;
 
     while (gUnknown_03004D5C != gUnknown_03002A84) {
         current = gUnknown_030027A0[gUnknown_03004D5C];

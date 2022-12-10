@@ -232,8 +232,16 @@ SECTIONS
         build/sa2/src/time_attack_results.o(.rodata);
         build/sa2/src/sound_test.o(.rodata);
         build/sa2/src/title_screen.o(.rodata);
-        build/sa2/data/cut_scenes_data.o(.rodata);
+        build/sa2/src/cut_scenes_level_endings.o(.rodata);
+        build/sa2/src/cut_scenes_credits.o(.rodata);
+        build/sa2/src/cut_scenes_credits_slides.o(.rodata);
+        build/sa2/src/cut_scenes_credits_end.o(.rodata);
+        build/sa2/src/cut_scenes_extra_ending_fall.o(.rodata);
+        build/sa2/src/cut_scenes_final_ending_fall.o(.rodata);
+        build/sa2/src/cut_scenes_final_ending_land.o(.rodata);
+        build/sa2/src/cut_scenes_missing_emeralds.o(.rodata);
 
+        build/sa2/data/data5.o(.rodata);
         build/sa2/data/sprite_data.o(.rodata);
         build/sa2/data/map_data.o(.rodata);
 

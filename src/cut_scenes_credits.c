@@ -10,7 +10,7 @@
 #include "save.h"
 
 struct CreditsCutScene {
-    struct Unk_03002400 unk0;
+    Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
 
     u8 endingVariant;
@@ -27,13 +27,29 @@ struct CreditsCutScene {
 void sub_808ED5C(struct Task *);
 void sub_808EBC4(void);
 
-extern const u16 gUnknown_080E1244[26];
+static const u16 gUnknown_080E1244[] = {
+    // 0 or 1
+    227,
+    228,
+    229,
+    230,
+    231,
+    // 2
+    211,
+    212,
+    213,
+    214,
+    215,
+};
+
+UNUSED static const u16 gUnknown_080E124E[]
+    = { 56, 0, 828, 0, 78, 0, 828, 1, 60, 0, 828, 2, 96, 0, 828, 3 };
 
 void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
 {
     struct Task *t;
     struct CreditsCutScene *scene = NULL;
-    struct Unk_03002400 *background;
+    Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig;
 
     gDispCnt = 0x1140;

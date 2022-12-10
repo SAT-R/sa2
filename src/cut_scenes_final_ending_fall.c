@@ -14,19 +14,19 @@
 #include "constants/songs.h"
 
 struct FinalEndingFallCutScene {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
+    Background unk0;
+    Background unk40;
 
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0[2];
+    Sprite unk80;
+    Sprite unkB0[2];
 
-    struct UNK_0808B3FC_UNK240 unk110;
-    struct UNK_0808B3FC_UNK240 unk140;
-    struct UNK_0808B3FC_UNK240 unk170;
-    struct UNK_0808B3FC_UNK240 unk1A0;
+    Sprite unk110;
+    Sprite unk140;
+    Sprite unk170;
+    Sprite unk1A0;
 
-    struct UNK_0808B3FC_UNK240 unk1D0[2];
-    struct UNK_0808B3FC_UNK240 unk230[6];
+    Sprite unk1D0[2];
+    Sprite unk230[6];
 
     struct UNK_802D4CC_UNK270 unk350;
 
@@ -73,13 +73,45 @@ struct FinalEndingFallCutScene {
 void sub_8092690(void);
 void sub_8092800(struct Task *);
 
-extern const struct UNK_080E0D64 gUnknown_080E1650[29];
-extern const u16 gUnknown_080E1648[4];
+static const u16 gUnknown_080E1648[4] = {
+    171,
+    172,
+    173,
+    174,
+};
+static const TileInfo gUnknown_080E1650[29] = {
+    { 15, 823, 0 }, { 30, 815, 0 }, { 9, 817, 0 },   { 4, 816, 0 },   { 4, 816, 1 },
+    { 0, 907, 0 },  { 0, 908, 0 },  { 104, 785, 0 }, { 104, 785, 2 }, { 80, 786, 0 },
+    { 80, 786, 2 }, { 99, 787, 0 }, { 99, 787, 2 },  { 72, 788, 0 },  { 72, 788, 2 },
+    { 56, 789, 0 }, { 56, 789, 2 }, { 48, 785, 1 },  { 48, 785, 3 },  { 80, 786, 1 },
+    { 80, 786, 3 }, { 80, 787, 1 }, { 80, 787, 3 },  { 64, 788, 1 },  { 64, 788, 3 },
+    { 42, 789, 1 }, { 42, 789, 3 }, { 30, 790, 0 },  { 30, 790, 1 },
+};
+
+static const u8 gUnknown_080E1738[] = {
+    4, 8, 2, 4, 8, 4, 8, 2, 4, 1,
+};
+
+static const u8 gUnknown_080E1742[0x10] = {
+    6, 6, 6, 6, 6, 6, 6, 5, 4, 4, 3, 2, 2, 1, 1, 1,
+};
+static const u8 gUnknown_080E1752[0x10] = {
+    6, 6, 6, 6, 6, 5, 5, 4, 3, 3, 2, 1, 1, 1, 1, 1,
+};
+
+static const s16 gUnknown_080E1762[][2] = {
+    { 15, 20 }, { 10, 5 },   { 50, 20 },  { 80, 10 },
+    { 100, 5 }, { 130, 10 }, { 200, 15 }, { 230, 8 },
+};
+
+static const s16 gUnknown_080E1782[][2] = {
+    { 195, 50 }, { 200, 60 }, { 210, 68 }, { 205, 70 }, { 225, 78 }, { 215, 80 },
+};
 
 void CreateFinalEndingFallCutScene(void)
 {
 
-    struct Unk_03002400 *background;
+    Background *background;
     struct Task *t;
     struct FinalEndingFallCutScene *scene = NULL;
     struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
@@ -170,7 +202,7 @@ void CreateFinalEndingFallCutScene(void)
 
     scene->unk494 = OBJ_VRAM0;
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk80;
         element->vram = (void *)OBJ_VRAM0;
         scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
@@ -191,7 +223,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk110;
         element->vram = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
@@ -209,7 +241,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
 
         element = &scene->unk140;
         element->vram = (void *)scene->unk494;
@@ -228,7 +260,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1A0;
         element->vram = (void *)scene->unk494;
         scene->unk494 += 0x3C0;
@@ -249,7 +281,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk1D0[i];
         element->vram = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[(i + 3)].numTiles * 0x20;
@@ -267,7 +299,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     for (i = 0; i < 6; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk230[i];
 
         element->vram = (void *)scene->unk494;
@@ -286,7 +318,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     if (gSelectedCharacter == 1) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unk170;
         element->vram = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[27].numTiles * 0x20;
@@ -307,7 +339,7 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     for (i = 0; i < 2; i++) {
-        struct UNK_0808B3FC_UNK240 *element;
+        Sprite *element;
         element = &scene->unkB0[i];
         element->vram = (void *)scene->unk494;
         scene->unk494 += 1;
@@ -373,8 +405,6 @@ void sub_80923AC(struct FinalEndingFallCutScene *);
 u32 sub_80928C8(struct FinalEndingFallCutScene *);
 
 void sub_8091E60(void);
-
-extern const u8 gUnknown_080E1738[10];
 
 void sub_8091CB0(void)
 {
@@ -485,9 +515,6 @@ void sub_8091E60(void)
     }
 }
 
-extern const u8 gUnknown_080E1752[0x30];
-extern const u8 gUnknown_080E1742[0x10];
-
 void sub_8091F68(struct FinalEndingFallCutScene *scene)
 {
     u32 val = 1;
@@ -574,8 +601,6 @@ end:
     scene->unk3B8 = scene->unk3AC;
 }
 
-extern const s16 gUnknown_080E1782[13][2];
-
 void sub_80921E8(struct FinalEndingFallCutScene *scene)
 {
     u8 i;
@@ -634,7 +659,7 @@ void sub_80921E8(struct FinalEndingFallCutScene *scene)
 void sub_80923AC(struct FinalEndingFallCutScene *scene)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     u32 variant = 0;
 
     element = &scene->unk80;
@@ -841,7 +866,7 @@ void sub_809289C(UNUSED struct FinalEndingFallCutScene *scene)
 
 u32 sub_80928C8(struct FinalEndingFallCutScene *scene)
 {
-    struct Unk_03002400 *background;
+    Background *background;
 
     background = &scene->unk0;
     background->unk1C = gUnknown_080E1648[3];

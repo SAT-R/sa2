@@ -15,12 +15,12 @@
 #include "constants/text.h"
 
 struct TimeAttackModeSelectionScreen {
-    struct Unk_03002400 unk0;
-    struct Unk_03002400 unk40;
-    struct UNK_0808B3FC_UNK240 unk80;
-    struct UNK_0808B3FC_UNK240 unkB0;
-    struct UNK_0808B3FC_UNK240 unkE0;
-    struct UNK_0808B3FC_UNK240 infoText;
+    Background unk0;
+    Background unk40;
+    Sprite unk80;
+    Sprite unkB0;
+    Sprite unkE0;
+    Sprite infoText;
     struct UNK_802D4CC_UNK270 unk140;
     u8 animFrame;
     u8 unk14D;
@@ -40,7 +40,7 @@ static void Task_HandleModeSelectedExit(void);
 
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *);
 
-const struct UNK_080E0D64 gUnknown_080E0384[30] = {
+const TileInfo gUnknown_080E0384[30] = {
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_ZONE, 12, SA2_ANIM_TIME_ATTACK_JP),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_BOSS, 8, SA2_ANIM_TIME_ATTACK_JP),
     TextElementAlt4(SA2_ANIM_VARIANT_TA_JP_CLEAR, 168, SA2_ANIM_TIME_ATTACK_JP),
@@ -88,8 +88,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     struct Task *t;
     struct TimeAttackModeSelectionScreen *modeScreen;
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    struct UNK_0808B3FC_UNK240 *element;
-    struct Unk_03002400 *background;
+    Sprite *element;
+    Background *background;
 
     s8 lang = gLoadedSaveGame->unk6 - 1;
     if (lang < 0) {
@@ -263,7 +263,7 @@ void Task_IntroSweepAnim(void)
 static void Task_IntroUIAnim(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     if (++modeScreen->animFrame == 32) {
         modeScreen->unk14E = 1;
         gCurTask->main = Task_ScreenMain;
@@ -317,7 +317,7 @@ static void Task_ScreenMain(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     s8 lang;
 
     if (gPressedKeys & A_BUTTON) {
@@ -475,7 +475,7 @@ static void Task_HandleModeSelectedExit(void)
 
 static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     element = &modeScreen->unk80;
     sub_80051E8(element);
     element = &modeScreen->unkB0;

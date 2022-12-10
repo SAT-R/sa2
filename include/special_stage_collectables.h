@@ -23,17 +23,17 @@ struct SpecialStageCollectables_UNK874 {
 
 struct SpecialStageCollectables {
     struct SpecialStage *stage;
-    struct UNK_0808B3FC_UNK240 unk4;
-    struct UNK_0808B3FC_UNK240 unk34;
-    struct UNK_0808B3FC_UNK240 unk64;
-    struct UNK_0808B3FC_UNK240 unk94;
-    struct UNK_0808B3FC_UNK240 unkC4;
-    struct UNK_0808B3FC_UNK240 unkF4[4];
+    Sprite unk4;
+    Sprite unk34;
+    Sprite unk64;
+    Sprite unk94;
+    Sprite unkC4;
+    Sprite unkF4[4];
 
-    struct UNK_0808B3FC_UNK240 unk1B4[16];
-    struct UNK_0808B3FC_UNK240 unk4B4[16];
+    Sprite unk1B4[16];
+    Sprite unk4B4[16];
 
-    struct UNK_0808B3FC_UNK240 unk7B4[4];
+    Sprite unk7B4[4];
     struct SpecialStageCollectables_UNK874 unk874[MAX_RING_PARTICLES];
     s8 objStates[MAX_OBJECTS];
     u16 unkA58;

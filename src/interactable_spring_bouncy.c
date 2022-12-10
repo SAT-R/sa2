@@ -15,10 +15,10 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ struct UNK_0808B3FC_UNK240 displayed;
+    /* 0x0C */ Sprite displayed;
 } Sprite_BouncySpring;
 
-extern u32 sub_800CCB8(struct UNK_0808B3FC_UNK240 *, s32, s32, Player *);
+extern u32 sub_800CCB8(Sprite *, s32, s32, Player *);
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, s8);
 
@@ -26,19 +26,19 @@ static void Task_Interactable_BouncySpring(void);
 static void Task_805E02C(void);
 static void TaskDestructor_Interactable_BouncySpring(struct Task *);
 
-static const struct UNK_080E0D64 gUnknown_080D948C[3] = {
+static const TileInfo gUnknown_080D948C[3] = {
     { 24, SA2_ANIM_SPRING_BOUNCY, 1 },
     { 24, SA2_ANIM_SPRING_BOUNCY, 2 },
     { 24, SA2_ANIM_SPRING_BOUNCY, 3 },
 };
 
-static const struct UNK_080E0D64 gUnknown_080D94A4[3] = {
+static const TileInfo gUnknown_080D94A4[3] = {
     { 16, SA2_ANIM_DRUM, 1 },
     { 16, SA2_ANIM_DRUM, 2 },
     { 16, SA2_ANIM_DRUM, 3 },
 };
 
-static const struct UNK_080E0D64 gUnknown_080D94BC[3] = {
+static const TileInfo gUnknown_080D94BC[3] = {
     { 16, SA2_ANIM_603, 1 },
     { 16, SA2_ANIM_603, 2 },
     { 24, SA2_ANIM_603, 3 },
@@ -51,7 +51,7 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
         = TaskCreate(Task_Interactable_BouncySpring, sizeof(Sprite_BouncySpring), 0x2010,
                      0, TaskDestructor_Interactable_BouncySpring);
     Sprite_BouncySpring *spring = TaskGetStructPtr(t);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
     u32 variant = 0;
 
     spring->base.regionX = spriteRegionX;
@@ -92,7 +92,7 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
 static void Task_Interactable_BouncySpring()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
     s32 screenX, screenY;
     s16 airSpeed;
@@ -165,7 +165,7 @@ static void Task_Interactable_BouncySpring()
 static void Task_805E02C()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *displayed = &spring->displayed;
+    Sprite *displayed = &spring->displayed;
     Interactable *ia = spring->base.ia;
     s32 screenX, screenY;
     u32 variant = 0;

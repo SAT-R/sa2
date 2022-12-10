@@ -15,15 +15,15 @@
 
 struct CourseSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;
-    struct Unk_03002400 zoneMap;
-    struct Unk_03002400 header;
-    struct UNK_0808B3FC_UNK240 playerAvatar;
-    struct UNK_0808B3FC_UNK240 mapPaths[8];
-    struct UNK_0808B3FC_UNK240 zoneActUnits[2];
-    struct UNK_0808B3FC_UNK240 zoneType;
-    struct UNK_0808B3FC_UNK240 zoneName;
-    struct UNK_0808B3FC_UNK240 screenTitle;
-    struct UNK_0808B3FC_UNK240 chaosEmeralds[8];
+    Background zoneMap;
+    Background header;
+    Sprite playerAvatar;
+    Sprite mapPaths[8];
+    Sprite zoneActUnits[2];
+    Sprite zoneType;
+    Sprite zoneName;
+    Sprite screenTitle;
+    Sprite chaosEmeralds[8];
     s32 cameraScrollX;
     s32 avatarTargetX;
     s32 avatarTargetY;
@@ -241,8 +241,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 {
     struct Task *t;
     struct UNK_802D4CC_UNK270 *fadeTransition;
-    struct Unk_03002400 *background;
-    struct UNK_0808B3FC_UNK240 *element = NULL;
+    Background *background;
+    Sprite *element = NULL;
     struct CourseSelectionScreen *coursesScreen;
 
     u8 i;
@@ -579,7 +579,7 @@ static void Task_FadeInIntro(void)
 static void Task_FadeInIntroAndStartUnlockCutScene(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
@@ -608,7 +608,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 static void Task_UnlockCutSceneNewPathAnim(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
     bool8 animDone;
     coursesScreen->zoneNameAnimFrame++;
 
@@ -645,7 +645,7 @@ static void Task_UnlockCutSceneScrollAnim(void)
         } else {
             if (coursesScreen->maxCourse
                 == COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1) {
-                struct UNK_0808B3FC_UNK240 *element;
+                Sprite *element;
 
                 coursesScreen->maxCourse = COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 element = &coursesScreen->mapPaths[ZONE_FINAL];
@@ -672,7 +672,7 @@ static void Task_CourseSelectMain(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
 
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
     struct UNK_802D4CC_UNK270 *fadeTransition = &coursesScreen->screenFade;
     union MultiSioData *recv, *send;
     MultiPakHeartbeat();
@@ -788,7 +788,7 @@ static void Task_CourseSelectMain(void)
 static void Task_ScrollToPreviousLevelAnim(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
     MultiPakHeartbeat();
 
@@ -831,7 +831,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
 static void Task_ScrollToNextLevelAnim(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
 
     if (IsMultiplayer()) {
@@ -877,7 +877,7 @@ static void Task_ScrollToNextLevelAnim(void)
 static void Task_DisplayZoneNameAnim(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
@@ -897,7 +897,7 @@ static void Task_DisplayZoneNameAnim(void)
 static void Task_UnlockCutSceneScrollToNextCourseAnim(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_0808B3FC_UNK240 *zoneName = &coursesScreen->zoneName;
+    Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
@@ -946,7 +946,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
 {
     u8 i;
     bool8 animDone;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
         element = &coursesScreen->mapPaths[i];
@@ -970,7 +970,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
 
 static void RenderUI(struct CourseSelectionScreen *coursesScreen)
 {
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
     s8 somethinga;
     s8 lang = gLoadedSaveGame->unk6;
 
@@ -1135,7 +1135,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
 static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
 {
     u8 i;
-    struct UNK_0808B3FC_UNK240 *element;
+    Sprite *element;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
         element = &coursesScreen->mapPaths[i];
