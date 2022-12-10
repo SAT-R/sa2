@@ -1,6 +1,7 @@
-     .align 2, 0
+	.align 2, 0
 
-    .global gAnimations
+.align 2, 0
+.global gAnimations
 gAnimations:
 	.4byte anim_0000
 	.4byte anim_0001
@@ -1135,3 +1136,5 @@ gAnimations:
 	.4byte anim_1130
 	.4byte anim_1131
 	.4byte anim_1132
+.size gAnimations,.-gAnimations
+
