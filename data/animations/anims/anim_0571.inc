@@ -1,65 +1,64 @@
 
-.align 2, 0
-	anim_data__0571_0:
-		mGetPalette 0x34 16 0x70
-		mGetTiles 0x1AD21 20
-		mAnimCmd6 0x0 0x130DF0F3
-		.4byte	1, 0
 
-		mAnimCmd4 
+anim_data__0571_0:
+	mGetPalette 0x34 16 0x70
+	mGetTiles 0x1AD21 20
+	mAnimCmd6 0x0 0x130DF0F3
+	.4byte	1, 0
 
-	anim_data__0571_1:
-		mGetPalette 0x34 16 0x70
-		mGetTiles 0x1AD21 20
-		mAnimCmd6 0x0 0x130DF0F3
-		.4byte	1, 0
+	mAnimCmd4 
 
-		mGetTiles 0x1AD35 20
-		.4byte	2, 1
+anim_data__0571_1:
+	mGetPalette 0x34 16 0x70
+	mGetTiles 0x1AD21 20
+	mAnimCmd6 0x0 0x130DF0F3
+	.4byte	1, 0
 
-		mGetTiles 0x1AD49 28
-		.4byte	1, 2
+	mGetTiles 0x1AD35 20
+	.4byte	2, 1
 
-		mGetTiles 0x1AD65 28
-		.4byte	5, 3
+	mGetTiles 0x1AD49 28
+	.4byte	1, 2
 
-		mGetTiles 0x1AD81 28
-		.4byte	3, 4
+	mGetTiles 0x1AD65 28
+	.4byte	5, 3
 
-		mAnimCmd4 
+	mGetTiles 0x1AD81 28
+	.4byte	3, 4
 
-	anim_data__0571_2:
-		mGetPalette 0x68 16 0x50
-		mGetTiles 0x1AD9D 20
-		mAnimCmd6 0x0 0x130DF0F3
-		.4byte	1, 5
+	mAnimCmd4 
 
-		mAnimCmd4 
+anim_data__0571_2:
+	mGetPalette 0x68 16 0x50
+	mGetTiles 0x1AD9D 20
+	mAnimCmd6 0x0 0x130DF0F3
+	.4byte	1, 5
 
-	anim_data__0571_3:
-		mGetPalette 0x68 16 0x50
-		mGetTiles 0x1AD9D 20
-		mAnimCmd6 0x0 0x130DF0F3
-		.4byte	1, 5
+	mAnimCmd4 
 
-		mGetTiles 0x1ADB1 20
-		.4byte	2, 6
+anim_data__0571_3:
+	mGetPalette 0x68 16 0x50
+	mGetTiles 0x1AD9D 20
+	mAnimCmd6 0x0 0x130DF0F3
+	.4byte	1, 5
 
-		mGetTiles 0x1ADC5 28
-		.4byte	1, 7
+	mGetTiles 0x1ADB1 20
+	.4byte	2, 6
 
-		mGetTiles 0x1ADE1 28
-		.4byte	5, 8
+	mGetTiles 0x1ADC5 28
+	.4byte	1, 7
 
-		mGetTiles 0x1ADFD 28
-		.4byte	3, 9
+	mGetTiles 0x1ADE1 28
+	.4byte	5, 8
 
-		mAnimCmd4 
+	mGetTiles 0x1ADFD 28
+	.4byte	3, 9
+
+	mAnimCmd4 
 
 
-.align 2, 0
-	anim_0571:
-		.4byte anim_data__0571_0
-		.4byte anim_data__0571_1
-		.4byte anim_data__0571_2
-		.4byte anim_data__0571_3
+anim_0571:
+	.4byte anim_data__0571_0
+	.4byte anim_data__0571_1
+	.4byte anim_data__0571_2
+	.4byte anim_data__0571_3

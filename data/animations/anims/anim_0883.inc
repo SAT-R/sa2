@@ -1,93 +1,92 @@
 
-.align 2, 0
-	anim_data__0883_0:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x23EBA 64
-		.4byte	3, 0
 
-		mGetTiles 0x23EFA 64
-		.4byte	3, 1
+anim_data__0883_0:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x23EBA 64
+	.4byte	3, 0
 
-		mJumpBack 0xD
+	mGetTiles 0x23EFA 64
+	.4byte	3, 1
 
-	anim_data__0883_1:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x23F3A 64
-		.4byte	3, 2
+	mJumpBack 0xD
 
-		mGetTiles 0x23F7A 64
-		.4byte	3, 3
+anim_data__0883_1:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x23F3A 64
+	.4byte	3, 2
 
-		mJumpBack 0xD
+	mGetTiles 0x23F7A 64
+	.4byte	3, 3
 
-	anim_data__0883_2:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x23FBA 64
-		.4byte	3, 4
+	mJumpBack 0xD
 
-		mGetTiles 0x23FFA 64
-		.4byte	3, 5
+anim_data__0883_2:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x23FBA 64
+	.4byte	3, 4
 
-		mJumpBack 0xD
+	mGetTiles 0x23FFA 64
+	.4byte	3, 5
 
-	anim_data__0883_3:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x2403A 64
-		.4byte	3, 6
+	mJumpBack 0xD
 
-		mGetTiles 0x2407A 64
-		.4byte	3, 7
+anim_data__0883_3:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x2403A 64
+	.4byte	3, 6
 
-		mJumpBack 0xD
+	mGetTiles 0x2407A 64
+	.4byte	3, 7
 
-	anim_data__0883_4:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x240BA 64
-		.4byte	3, 8
+	mJumpBack 0xD
 
-		mGetTiles 0x240FA 64
-		.4byte	3, 9
+anim_data__0883_4:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x240BA 64
+	.4byte	3, 8
 
-		mJumpBack 0xD
+	mGetTiles 0x240FA 64
+	.4byte	3, 9
 
-	anim_data__0883_5:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x2413A 64
-		.4byte	3, 10
+	mJumpBack 0xD
 
-		mGetTiles 0x2417A 64
-		.4byte	3, 11
+anim_data__0883_5:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x2413A 64
+	.4byte	3, 10
 
-		mJumpBack 0xD
+	mGetTiles 0x2417A 64
+	.4byte	3, 11
 
-	anim_data__0883_6:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x241BA 64
-		.4byte	3, 12
+	mJumpBack 0xD
 
-		mGetTiles 0x241FA 64
-		.4byte	3, 13
+anim_data__0883_6:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x241BA 64
+	.4byte	3, 12
 
-		mJumpBack 0xD
+	mGetTiles 0x241FA 64
+	.4byte	3, 13
 
-	anim_data__0883_7:
-		mGetPalette 0xEC 16 0x10
-		mGetTiles 0x2423A 64
-		.4byte	3, 14
+	mJumpBack 0xD
 
-		mGetTiles 0x2427A 64
-		.4byte	3, 15
+anim_data__0883_7:
+	mGetPalette 0xEC 16 0x10
+	mGetTiles 0x2423A 64
+	.4byte	3, 14
 
-		mJumpBack 0xD
+	mGetTiles 0x2427A 64
+	.4byte	3, 15
+
+	mJumpBack 0xD
 
 
-.align 2, 0
-	anim_0883:
-		.4byte anim_data__0883_0
-		.4byte anim_data__0883_1
-		.4byte anim_data__0883_2
-		.4byte anim_data__0883_3
-		.4byte anim_data__0883_4
-		.4byte anim_data__0883_5
-		.4byte anim_data__0883_6
-		.4byte anim_data__0883_7
+anim_0883:
+	.4byte anim_data__0883_0
+	.4byte anim_data__0883_1
+	.4byte anim_data__0883_2
+	.4byte anim_data__0883_3
+	.4byte anim_data__0883_4
+	.4byte anim_data__0883_5
+	.4byte anim_data__0883_6
+	.4byte anim_data__0883_7

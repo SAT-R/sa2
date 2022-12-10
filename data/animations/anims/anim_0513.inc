@@ -1,41 +1,40 @@
 
-.align 2, 0
-	anim_data__0513_0:
-		mGetPalette 0x42 16 0xD0
-		mGetTiles 0x1A371 10
-		mAnimCmd6 0x0 0xBF3F1
-		.4byte	4, 0
 
-		mGetTiles 0x1A37B 15
-		.4byte	4, 1
+anim_data__0513_0:
+	mGetPalette 0x42 16 0xD0
+	mGetTiles 0x1A371 10
+	mAnimCmd6 0x0 0xBF3F1
+	.4byte	4, 0
 
-		mGetTiles 0x1A38A 10
-		.4byte	4, 2
+	mGetTiles 0x1A37B 15
+	.4byte	4, 1
 
-		mGetTiles 0x1A394 15
-		.4byte	4, 3
+	mGetTiles 0x1A38A 10
+	.4byte	4, 2
 
-		mJumpBack 0x1A
+	mGetTiles 0x1A394 15
+	.4byte	4, 3
 
-	anim_data__0513_1:
-		mGetPalette 0x42 16 0xD0
-		mGetTiles 0x1A3A3 8
-		mAnimCmd6 0x0 0xDF3F4
-		.4byte	2, 4
+	mJumpBack 0x1A
 
-		mGetTiles 0x1A3AB 8
-		.4byte	2, 5
+anim_data__0513_1:
+	mGetPalette 0x42 16 0xD0
+	mGetTiles 0x1A3A3 8
+	mAnimCmd6 0x0 0xDF3F4
+	.4byte	2, 4
 
-		mGetTiles 0x1A3B3 8
-		.4byte	2, 6
+	mGetTiles 0x1A3AB 8
+	.4byte	2, 5
 
-		mGetTiles 0x1A3BB 8
-		.4byte	2, 7
+	mGetTiles 0x1A3B3 8
+	.4byte	2, 6
 
-		mAnimCmd4 
+	mGetTiles 0x1A3BB 8
+	.4byte	2, 7
+
+	mAnimCmd4 
 
 
-.align 2, 0
-	anim_0513:
-		.4byte anim_data__0513_0
-		.4byte anim_data__0513_1
+anim_0513:
+	.4byte anim_data__0513_0
+	.4byte anim_data__0513_1
