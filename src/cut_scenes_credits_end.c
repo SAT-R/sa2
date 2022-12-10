@@ -36,11 +36,23 @@ struct CreditsEndCutScene {
     s32 unk170[3][2];
 }; /* size: 0x188 */
 
-extern const u16 gUnknown_080E12B0[0x20];
-extern const TileInfo gUnknown_080E12D0[4];
-
 void sub_808FB2C(void);
 void sub_808FBE4(struct Task *);
+
+static const u16 gUnknown_080E12B0[] = {
+    232, 233, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 260, 259,
+};
+
+static const TileInfo gUnknown_080E12D0[4] = {
+    { 48, 781, 0 },
+    { 26, 781, 1 },
+    { 32, 781, 2 },
+    { 63, 829, 0 },
+};
+
+static const u8 gUnknown_080E12F0[] = {
+    42, 3, 3, 3, 3, 3, 3, 3, 12, 4, 4, 0,
+};
 
 void CreateCreditsEndCutScene(u8 variant)
 {
@@ -55,9 +67,9 @@ void CreateCreditsEndCutScene(u8 variant)
     gBgCntRegs[1] = 0x5480;
     gBgCntRegs[2] = 0x1504;
 #ifndef NON_MATCHING
-    DmaFill32(3, 0, 0x6000000 + (++r6, --r6) * 0x4000, 0x4000);
+    DmaFill32(3, 0, BG_CHAR_ADDR((++r6, --r6)), 0x4000);
 #else
-    DmaFill32(3, 0, 0x6000000 + r6 * 0x4000, 0x4000);
+    DmaFill32(3, 0, BG_CHAR_ADDR(r6), 0x4000);
 #endif
     gUnknown_03004D80[2] = 0x5a;
     gUnknown_03002280[8] = 0;
@@ -134,7 +146,7 @@ void CreateCreditsEndCutScene(u8 variant)
             Sprite *element;
             element = &scene->unkC0;
             element->vram = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[0].numTiles << 5);
+            scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
             element->anim = gUnknown_080E12D0[0].anim;
             element->variant = gUnknown_080E12D0[0].variant;
             element->unk21 = 0xFF;
@@ -155,7 +167,7 @@ void CreateCreditsEndCutScene(u8 variant)
             Sprite *element;
             element = &scene->unkF0;
             element->vram = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[1].numTiles << 5);
+            scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
             element->anim = gUnknown_080E12D0[1].anim;
             element->variant = gUnknown_080E12D0[1].variant;
             element->unk21 = 0xFF;
@@ -176,7 +188,7 @@ void CreateCreditsEndCutScene(u8 variant)
             Sprite *element;
             element = &scene->unk120;
             element->vram = (void *)scene->unk16C;
-            scene->unk16C += (gUnknown_080E12D0[2].numTiles << 5);
+            scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
             element->anim = gUnknown_080E12D0[2].anim;
             element->variant = gUnknown_080E12D0[2].variant;
             element->unk21 = 0xFF;
@@ -337,8 +349,6 @@ void sub_808F5C4(void)
 
 void sub_808FBE8(struct CreditsEndCutScene *);
 void sub_808F824(void);
-
-extern const u8 gUnknown_080E12F0[12];
 
 void sub_808F704(void)
 {

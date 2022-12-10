@@ -47,30 +47,114 @@ struct CharacterUnlockCutScene {
     u8 unk112;
 } /** size 0x114*/;
 
-extern const TaskMain gUnknown_080E1208[3];
-extern const u16 gUnknown_080E1214[6];
-extern const u16 gUnknown_080E1220[6];
-extern const u16 gUnknown_080E122C[3];
-extern const u32 gUnknown_080E11E4[9];
+static void sub_808DD9C(void);
+static void sub_808DF88(void);
+static void sub_808E114(void);
+
+// slides
+static const u16 gUnknown_080E1118[] = {
+    266, 267, 268, 269, 300, 301, 302, 303, 334, 335, 336, 337,
+};
+
+#define SLIDES_GROUP(i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14)   \
+    i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14
+
+static const u16 gUnknown_080E1130[] = {
+    /* LANG_JAPANESE */
+    SLIDES_GROUP(270, 271, 272, 273, 274, 304, 305, 306, 307, 308, 338, 339, 340, 341,
+                 342),
+
+    /* LANG_ENGLISH */
+    SLIDES_GROUP(275, 276, 277, 278, 279, 309, 310, 311, 312, 313, 343, 344, 345, 346,
+                 347),
+
+    /* LANG_FRENCH */
+    SLIDES_GROUP(285, 286, 287, 288, 289, 319, 320, 321, 322, 323, 353, 354, 355, 356,
+                 357),
+
+    /* LANG_GERMAN */
+    SLIDES_GROUP(280, 281, 282, 283, 284, 314, 315, 316, 317, 318, 348, 349, 350, 351,
+                 352),
+
+    /* LANG_SPANISH */
+    SLIDES_GROUP(295, 296, 297, 298, 299, 329, 330, 331, 332, 333, 363, 364, 365, 366,
+                 367),
+
+    /* LANG_ITALIAN */
+    SLIDES_GROUP(290, 291, 292, 293, 294, 324, 325, 326, 327, 328, 358, 359, 360, 361,
+                 362),
+};
+
+static const u32 gUnknown_080E11E4[] = {
+    // 0
+    20,
+    135,
+    0,
+
+    // 1
+    30,
+    223,
+    0,
+
+    // 2
+    35,
+    316,
+    0,
+};
+
+static const TaskMain gUnknown_080E1208[] = {
+    sub_808DD9C,
+    sub_808DF88,
+    sub_808E114,
+};
+
+static const u16 gUnknown_080E1214[] = {
+    // 0
+    37888,
+    0,
+    // 1
+    47104,
+    0,
+    // 2
+    0,
+    34816,
+};
+
+static const u16 gUnknown_080E1220[] = {
+    // 0
+    208,
+    288,
+
+    // 1
+    224,
+    288,
+
+    // 2
+    256,
+    0,
+};
+
+static const u16 gUnknown_080E122C[3] = { 0, 5, 4 };
+
+UNUSED static const u16 gUnknown_080E1232[] = {
+    0, 26, 0, 757, 1, 26, 0, 757, 2,
+};
 
 void sub_808E890(struct Task *);
 
 void CreateCourseResultsCutScene(u8 mode)
 {
     TaskMain mains[3];
-    u16 unk1214[6];
-
-    u16 unk1220[6];
-    u16 unk122C[3];
+    u16 unk1214[6], unk1220[6], unk122C[3];
 
     struct Task *t;
     struct ResultsCutScene *scene;
     Sprite *element;
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    memcpy(mains, gUnknown_080E1208, 0xC);
-    memcpy(unk1214, gUnknown_080E1214, 0xC);
-    memcpy(unk1220, gUnknown_080E1220, 0xC);
-    memcpy(unk122C, gUnknown_080E122C, 6);
+    memcpy(mains, gUnknown_080E1208, sizeof(gUnknown_080E1208));
+    memcpy(unk1214, gUnknown_080E1214, sizeof(gUnknown_080E1214));
+    memcpy(unk1220, gUnknown_080E1220, sizeof(gUnknown_080E1220));
+    memcpy(unk122C, gUnknown_080E122C, sizeof(gUnknown_080E122C));
 
     t = TaskCreate(mains[mode], 0x80, 0x5000, 0, sub_808E890);
     scene = TaskGetStructPtr(t);
@@ -142,7 +226,7 @@ void CreateCourseResultsCutScene(u8 mode)
     transitionConfig->unk8 = 0;
 }
 
-void sub_808DD9C(void)
+static void sub_808DD9C(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     Sprite *element = &scene->unk4;
@@ -212,7 +296,7 @@ void sub_808DD9C(void)
     }
 }
 
-void sub_808DF88(void)
+static void sub_808DF88(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     Sprite *element = &scene->unk4;
@@ -272,7 +356,7 @@ void sub_808DF88(void)
 extern s32 sub_801F100(u32, u32, u8, u8, TaskMain);
 void sub_801EC3C(void);
 
-void sub_808E114(void)
+static void sub_808E114(void)
 {
     s32 result;
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
@@ -370,9 +454,6 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
 
     sub_802D4CC(transitionConfig);
 }
-
-extern const u16 gUnknown_080E1130[90];
-extern const u16 gUnknown_080E1118[24];
 
 void sub_808E35C(struct CharacterUnlockCutScene *scene)
 {

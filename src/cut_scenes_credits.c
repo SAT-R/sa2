@@ -27,7 +27,23 @@ struct CreditsCutScene {
 void sub_808ED5C(struct Task *);
 void sub_808EBC4(void);
 
-extern const u16 gUnknown_080E1244[26];
+static const u16 gUnknown_080E1244[] = {
+    // 0 or 1
+    227,
+    228,
+    229,
+    230,
+    231,
+    // 2
+    211,
+    212,
+    213,
+    214,
+    215,
+};
+
+UNUSED static const u16 gUnknown_080E124E[]
+    = { 56, 0, 828, 0, 78, 0, 828, 1, 60, 0, 828, 2, 96, 0, 828, 3 };
 
 void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
 {

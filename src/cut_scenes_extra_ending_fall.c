@@ -68,16 +68,69 @@ struct ExtraEndingCutScene {
 void sub_8090480(void);
 void sub_8091480(struct Task *);
 
-extern const u32 gUnknown_080E1484[12][3];
-extern const u32 gUnknown_080E13AC[12][3];
-extern const u32 gUnknown_080E143C[6][3];
+static const TileInfo gUnknown_080E12FC[] = {
+    { 24, 818, 0 }, { 30, 819, 0 }, { 35, 822, 0 }, { 80, 824, 3 }, { 30, 824, 2 },
+    { 21, 824, 1 }, { 10, 824, 0 }, { 4, 821, 0 },  { 35, 820, 0 }, { 15, 823, 0 },
+    { 42, 791, 0 }, { 42, 791, 1 }, { 64, 791, 2 }, { 15, 792, 0 }, { 6, 793, 0 },
+    { 6, 794, 0 },  { 15, 795, 0 }, { 6, 796, 0 },  { 6, 797, 0 },  { 4, 798, 0 },
+    { 24, 799, 0 }, { 42, 822, 1 },
+};
 
-extern const u16 gUnknown_080E1514[14];
+static const u32 gUnknown_080E13AC[12][3] = {
+    { 110, 90, 704 }, { 110, 75, 448 }, { 125, 98, 640 }, { 130, 80, 768 },
+    { 128, 82, 512 }, { 132, 85, 480 }, { 130, 70, 320 }, { 135, 76, 640 },
+    { 130, 63, 448 }, { 135, 71, 480 }, { 130, 68, 404 }, { 125, 87, 768 },
+};
 
-// TODO: these are the wrong length
-extern const u16 gUnknown_080E1530[10];
-extern const u8 gUnknown_080E154A[10];
-extern const TileInfo gUnknown_080E12FC[9];
+static const u32 gUnknown_080E143C[6][3] = {
+    { 120, 80, 704 }, { 120, 80, 448 }, { 120, 80, 640 },
+    { 120, 80, 768 }, { 120, 80, 512 }, { 120, 80, 480 },
+};
+
+static const u32 gUnknown_080E1484[12][3] = {
+    { 110, 80, 3 }, { 115, 80, 3 }, { 120, 80, 2 }, { 125, 80, 3 },
+    { 130, 80, 2 }, { 135, 80, 3 }, { 140, 80, 2 }, { 135, 80, 5 },
+    { 130, 80, 4 }, { 125, 80, 3 }, { 120, 80, 4 }, { 115, 80, 2 },
+};
+
+static const u16 gUnknown_080E1514[14] = {
+    100, 100, 90, 80, 75, 75, 60, 60, 56, 56, 10, 38, 150, 300,
+};
+
+static const u16 gUnknown_080E1530[] = {
+    50, 50, 30, 20, 15, 15, 10, 10, 8, 8, 6, 6, 5,
+};
+static const u8 gUnknown_080E154A[] = {
+    3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0,
+};
+
+UNUSED static const u32 gUnknown_080E155C[] = {
+    32,  128,     112,    640,     192,    768,    896,    288,    736,    608,
+    448, 1310735, 327690, 1310770, 655440, 327780, 655490, 983240, 524518,
+};
+static const u32 gUnknown_080E15A8[8] = {
+    512, 256, 128, 64, 640, 192, 96, 32,
+};
+
+// TODO: extract these palettes?
+static const u8 gUnknown_080E15C8[][0x20] = {
+    {
+        96,  110, 127, 1,  94,  2,  215, 1, 85,  0, 68, 8,   255, 127, 8,   33,
+        123, 111, 16,  66, 214, 90, 191, 3, 255, 2, 57, 103, 115, 78,  140, 49,
+    },
+    {
+        96, 110, 63,  1,  31,  2,  157, 1, 27,  0, 10,  0,  191, 115, 206, 20,
+        63, 99,  214, 53, 156, 78, 127, 3, 191, 2, 255, 90, 57,  66,  82,  37,
+    },
+    {
+        96,  110, 255, 0,  223, 1,  95, 1, 31,  0, 16,  0,  127, 103, 148, 8,
+        255, 86,  156, 41, 95,  66, 63, 3, 127, 2, 191, 78, 255, 53,  24,  25,
+    },
+    {
+        96,  110, 191, 0,  159, 1,  31,  1, 31, 0, 22,  0,  63,  91, 90,  0,
+        191, 74,  95,  29, 31,  54, 255, 2, 63, 2, 127, 66, 191, 41, 222, 12,
+    },
+};
 
 void CreateExtraEndingFallCutScene(void)
 {
@@ -704,8 +757,6 @@ void sub_8090C24(struct ExtraEndingCutScene *scene)
     sub_808E8F8((s16 *)&scene->unk460, 0x78, 2);
 }
 
-extern const u32 gUnknown_080E1444[18];
-
 void sub_8090CA0(struct ExtraEndingCutScene *scene)
 {
     u8 i;
@@ -721,11 +772,7 @@ void sub_8090CA0(struct ExtraEndingCutScene *scene)
                 }
 
                 scene->unk584[i][1] -= scene->unk584[i][2] >> 7;
-#ifndef NON_MATCHING
-                if (gUnknown_080E1444 != gUnknown_080E1444)
-                    break;
-#endif
-                scene->unk584[i][2] += gUnknown_080E1444[i * 3];
+                scene->unk584[i][2] += gUnknown_080E143C[i][2];
             }
         }
     }
@@ -770,8 +817,6 @@ void sub_8090E18(struct ExtraEndingCutScene *scene)
     }
 }
 
-extern const u32 gUnknown_080E15A8[8];
-
 void sub_8090EB4(struct ExtraEndingCutScene *scene)
 {
     u8 i;
@@ -796,8 +841,6 @@ void sub_8090EB4(struct ExtraEndingCutScene *scene)
     }
 }
 
-extern const u8 gUnknown_080E15C8[4][0x20];
-
 void sub_8090F6C(struct ExtraEndingCutScene *scene)
 {
     if (scene->unk37C < 0xD) {
@@ -809,10 +852,11 @@ void sub_8090F6C(struct ExtraEndingCutScene *scene)
         if (scene->unk37F != 0) {
             scene->unk37F--;
             if (scene->unk37E <= 3) {
-                DmaCopy32(3, gUnknown_080E15C8[scene->unk37E], &gObjPalette[0x30], 0x20);
+                DmaCopy32(3, gUnknown_080E15C8[scene->unk37E], &gObjPalette[0x30],
+                          sizeof(gUnknown_080E15C8[0]));
             } else {
                 DmaCopy32(3, gUnknown_080E15C8[6 - scene->unk37E], &gObjPalette[0x30],
-                          0x20);
+                          sizeof(gUnknown_080E15C8[0]));
             }
         } else {
             scene->unk37E++;
@@ -826,12 +870,6 @@ void sub_8090F6C(struct ExtraEndingCutScene *scene)
     }
 }
 
-struct UNK_80E1348 {
-    AnimId anim;
-    u8 variant;
-};
-extern const struct UNK_80E1348 gUnknown_080E1348[2];
-
 void sub_8091044(struct ExtraEndingCutScene *scene)
 {
     u8 i;
@@ -844,12 +882,8 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     }
     element = &scene->unk340;
     for (i = 0; i < max; i++) {
-        element->anim = gUnknown_080E1348[0].anim;
-#ifndef NON_MATCHING
-        while (0)
-            ;
-#endif
-        element->variant = gUnknown_080E1348[0].variant;
+        element->anim = gUnknown_080E12FC[9].anim;
+        element->variant = gUnknown_080E12FC[9].variant;
         element->x = scene->unk3E8[i][0];
         element->y = scene->unk3E8[i][1] >> 8;
         sub_80051E8(element);

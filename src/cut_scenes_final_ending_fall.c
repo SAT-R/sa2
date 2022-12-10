@@ -73,8 +73,40 @@ struct FinalEndingFallCutScene {
 void sub_8092690(void);
 void sub_8092800(struct Task *);
 
-extern const TileInfo gUnknown_080E1650[29];
-extern const u16 gUnknown_080E1648[4];
+static const u16 gUnknown_080E1648[4] = {
+    171,
+    172,
+    173,
+    174,
+};
+static const TileInfo gUnknown_080E1650[29] = {
+    { 15, 823, 0 }, { 30, 815, 0 }, { 9, 817, 0 },   { 4, 816, 0 },   { 4, 816, 1 },
+    { 0, 907, 0 },  { 0, 908, 0 },  { 104, 785, 0 }, { 104, 785, 2 }, { 80, 786, 0 },
+    { 80, 786, 2 }, { 99, 787, 0 }, { 99, 787, 2 },  { 72, 788, 0 },  { 72, 788, 2 },
+    { 56, 789, 0 }, { 56, 789, 2 }, { 48, 785, 1 },  { 48, 785, 3 },  { 80, 786, 1 },
+    { 80, 786, 3 }, { 80, 787, 1 }, { 80, 787, 3 },  { 64, 788, 1 },  { 64, 788, 3 },
+    { 42, 789, 1 }, { 42, 789, 3 }, { 30, 790, 0 },  { 30, 790, 1 },
+};
+
+static const u8 gUnknown_080E1738[] = {
+    4, 8, 2, 4, 8, 4, 8, 2, 4, 1,
+};
+
+static const u8 gUnknown_080E1742[0x10] = {
+    6, 6, 6, 6, 6, 6, 6, 5, 4, 4, 3, 2, 2, 1, 1, 1,
+};
+static const u8 gUnknown_080E1752[0x10] = {
+    6, 6, 6, 6, 6, 5, 5, 4, 3, 3, 2, 1, 1, 1, 1, 1,
+};
+
+static const s16 gUnknown_080E1762[][2] = {
+    { 15, 20 }, { 10, 5 },   { 50, 20 },  { 80, 10 },
+    { 100, 5 }, { 130, 10 }, { 200, 15 }, { 230, 8 },
+};
+
+static const s16 gUnknown_080E1782[][2] = {
+    { 195, 50 }, { 200, 60 }, { 210, 68 }, { 205, 70 }, { 225, 78 }, { 215, 80 },
+};
 
 void CreateFinalEndingFallCutScene(void)
 {
@@ -374,8 +406,6 @@ u32 sub_80928C8(struct FinalEndingFallCutScene *);
 
 void sub_8091E60(void);
 
-extern const u8 gUnknown_080E1738[10];
-
 void sub_8091CB0(void)
 {
     struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
@@ -485,9 +515,6 @@ void sub_8091E60(void)
     }
 }
 
-extern const u8 gUnknown_080E1752[0x30];
-extern const u8 gUnknown_080E1742[0x10];
-
 void sub_8091F68(struct FinalEndingFallCutScene *scene)
 {
     u32 val = 1;
@@ -573,8 +600,6 @@ afterlab:
 end:
     scene->unk3B8 = scene->unk3AC;
 }
-
-extern const s16 gUnknown_080E1782[13][2];
 
 void sub_80921E8(struct FinalEndingFallCutScene *scene)
 {
