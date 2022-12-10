@@ -7,20 +7,20 @@
 
 #include "animation_commands.h"
 
-typedef s32 (*AnimationCommandFunc)(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
+typedef s32 (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
 
-extern s32 animCmd_GetTileIndex(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_GetPalette(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_JumpBack(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_4(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_PlaySoundEffect(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-extern s32 animCmd_6(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_TranslateSprite(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_8(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_SetIdAndVariant(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-s32 animCmd_10(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_11(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
-static s32 animCmd_12(void *cursor, struct UNK_0808B3FC_UNK240 *sprite);
+extern s32 animCmd_GetTileIndex(void *cursor, Sprite *sprite);
+static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);
+static s32 animCmd_JumpBack(void *cursor, Sprite *sprite);
+static s32 animCmd_4(void *cursor, Sprite *sprite);
+static s32 animCmd_PlaySoundEffect(void *cursor, Sprite *sprite);
+extern s32 animCmd_6(void *cursor, Sprite *sprite);
+static s32 animCmd_TranslateSprite(void *cursor, Sprite *sprite);
+static s32 animCmd_8(void *cursor, Sprite *sprite);
+static s32 animCmd_SetIdAndVariant(void *cursor, Sprite *sprite);
+s32 animCmd_10(void *cursor, Sprite *sprite);
+static s32 animCmd_11(void *cursor, Sprite *sprite);
+static s32 animCmd_12(void *cursor, Sprite *sprite);
 
 extern struct SpriteTables *gUnknown_03002794;
 extern u16 gObjPalette[];
@@ -44,7 +44,7 @@ const AnimationCommandFunc animCmdTable[] = {
 };
 
 // (-2)
-s32 animCmd_GetPalette(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_GetPalette(void *cursor, Sprite *sprite)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
@@ -63,7 +63,7 @@ s32 animCmd_GetPalette(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-3)
-s32 animCmd_JumpBack(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_JumpBack(void *cursor, Sprite *sprite)
 {
     ACmd_JumpBack *cmd = cursor;
     sprite->unk14 -= cmd->offset;
@@ -73,7 +73,7 @@ s32 animCmd_JumpBack(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 
 // (-4)
 // Command "End"?
-s32 animCmd_4(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_4(void *cursor, Sprite *sprite)
 {
     sprite->unk10 |= 0x4000;
 
@@ -81,7 +81,7 @@ s32 animCmd_4(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-5)
-s32 animCmd_PlaySoundEffect(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_PlaySoundEffect(void *cursor, Sprite *sprite)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
@@ -92,7 +92,7 @@ s32 animCmd_PlaySoundEffect(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-7)
-s32 animCmd_TranslateSprite(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_TranslateSprite(void *cursor, Sprite *sprite)
 {
     ACmd_TranslateSprite *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
@@ -104,7 +104,7 @@ s32 animCmd_TranslateSprite(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-8)
-s32 animCmd_8(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_8(void *cursor, Sprite *sprite)
 {
     ACmd_8 *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_8);
@@ -113,7 +113,7 @@ s32 animCmd_8(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-9)
-s32 animCmd_SetIdAndVariant(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_SetIdAndVariant(void *cursor, Sprite *sprite)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
@@ -126,7 +126,7 @@ s32 animCmd_SetIdAndVariant(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-10)
-s32 animCmd_10(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_10(void *cursor, Sprite *sprite)
 {
     ACmd_10 *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
@@ -139,7 +139,7 @@ s32 animCmd_10(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-11)
-s32 animCmd_11(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_11(void *cursor, Sprite *sprite)
 {
     ACmd_11 *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_11);
@@ -150,7 +150,7 @@ s32 animCmd_11(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
 }
 
 // (-12)
-s32 animCmd_12(void *cursor, struct UNK_0808B3FC_UNK240 *sprite)
+s32 animCmd_12(void *cursor, Sprite *sprite)
 {
     ACmd_12 *cmd = cursor;
 
