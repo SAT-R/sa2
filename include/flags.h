@@ -4,6 +4,8 @@
 #include "global.h"
 
 // Needs a better name
+#define FLAGS_UPDATE_SPRITE_PALETTES 0x2
+
 #define FLAGS_EXECUTE_HBLANK_CALLBACKS 0x8
 
 #define FLAGS_NO_FLASH_MEMORY 0x100

@@ -92,7 +92,7 @@ typedef struct {
     /* 0x0C */ struct UNK_0808B3FC_UNK240_UNKC *unkC;
     /* 0x10 */ u32 unk10; // bitfield
 
-    /* 0x14 */ u16 unk14;
+    /* 0x14 */ u16 unk14; // animation cursor
 
     // TODO: should be signed
     /* 0x16 */ u16 x;

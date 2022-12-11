@@ -37,6 +37,8 @@ SECTIONS
         build/sa2/asm/sprite.o(.text);
         build/sa2/src/sprite_3.o(.text);
         build/sa2/asm/sprite_3.o(.text);
+        build/sa2/src/animation_commands.o(.text);
+        build/sa2/asm/sprite_4.o(.text);
         build/sa2/src/malloc_ewram.o(.text);
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
@@ -180,7 +182,9 @@ SECTIONS
         build/sa2/src/main.o(.rodata);
         build/sa2/src/sprite_1.o(.rodata);
         build/sa2/src/trig.o(.rodata);
-        build/sa2/data/data1.o(.rodata);
+        build/sa2/asm/sprite_3.o(.rodata);
+        build/sa2/src/animation_commands.o(.rodata);
+        build/sa2/asm/sprite_4.o(.rodata);
         build/sa2/data/multiboot_chao_garden.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/interactable_spring.o(.rodata);

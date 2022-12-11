@@ -12,9 +12,9 @@ extern union Unk_03002E60 gMapHeaders[];
 
 struct SpriteTables {
     void *animations; /* 0x00 */
-    void *dimentions; /* 0x04 */
+    void *dimensions; /* 0x04 */
     u16 **oamData; /* 0x08 */
-    void *palettes; /* 0xC */
+    u16 *palettes; /* 0xC */
     void *graphics; /* 0x10 */
     void *unk20; /* 0x14 */
 };
