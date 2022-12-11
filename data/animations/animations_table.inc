@@ -1,9 +1,7 @@
 	.align 2, 0
-
-.align 2, 0
-.global gAnimations
+	.global gAnimations
 gAnimations:
-	.4byte anim_0000
+	.4byte anim_sonic_idle
 	.4byte anim_0001
 	.4byte anim_0002
 	.4byte anim_0003
@@ -94,7 +92,7 @@ gAnimations:
 	.4byte anim_0088
 	.4byte anim_0089
 	.4byte anim_0090
-	.4byte anim_0091
+	.4byte anim_cream_idle
 	.4byte anim_0092
 	.4byte anim_0093
 	.4byte anim_0094
@@ -133,7 +131,7 @@ gAnimations:
 	.4byte anim_0127
 	.4byte 0
 	.4byte anim_0129
-	.4byte anim_0130
+	.4byte anim_cream_holding_onto_sonic
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -185,7 +183,7 @@ gAnimations:
 	.4byte anim_0179
 	.4byte anim_0180
 	.4byte anim_0181
-	.4byte anim_0182
+	.4byte anim_tails_idle
 	.4byte anim_0183
 	.4byte anim_0184
 	.4byte anim_0185
@@ -225,8 +223,8 @@ gAnimations:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte anim_0222
-	.4byte anim_0223
+	.4byte anim_tails_captured
+	.4byte anim_tails_flying
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -276,7 +274,7 @@ gAnimations:
 	.4byte anim_0270
 	.4byte anim_0271
 	.4byte anim_0272
-	.4byte anim_0273
+	.4byte anim_knuckles_idle
 	.4byte anim_0274
 	.4byte anim_0275
 	.4byte anim_0276
@@ -367,7 +365,7 @@ gAnimations:
 	.4byte anim_0361
 	.4byte anim_0362
 	.4byte anim_0363
-	.4byte anim_0364
+	.4byte anim_amy_idle
 	.4byte anim_0365
 	.4byte anim_0366
 	.4byte anim_0367
@@ -458,104 +456,104 @@ gAnimations:
 	.4byte anim_0452
 	.4byte anim_0453
 	.4byte anim_0454
-	.4byte anim_0455
-	.4byte anim_0456
-	.4byte anim_0457
-	.4byte anim_0458
-	.4byte anim_0459
+	.4byte anim_cheese_hovering
+	.4byte anim_cheese_sideways
+	.4byte anim_cheese_backflip
+	.4byte anim_cheese_nervous
+	.4byte anim_cheese_pirouette
 	.4byte anim_0460
-	.4byte anim_0461
-	.4byte anim_0462
-	.4byte anim_0463
-	.4byte anim_0464
-	.4byte anim_0465
-	.4byte anim_0466
-	.4byte anim_0467
-	.4byte anim_0468
-	.4byte anim_0469
-	.4byte anim_0470
-	.4byte anim_0471
-	.4byte anim_0472
-	.4byte anim_0473
-	.4byte anim_0474
-	.4byte anim_0475
-	.4byte anim_0476
-	.4byte anim_0477
-	.4byte anim_0478
-	.4byte anim_0479
-	.4byte anim_0480
-	.4byte anim_0481
-	.4byte anim_0482
-	.4byte anim_0483
-	.4byte anim_0484
-	.4byte anim_0485
-	.4byte anim_0486
-	.4byte anim_0487
-	.4byte anim_0488
-	.4byte anim_0489
-	.4byte anim_0490
-	.4byte anim_0491
-	.4byte anim_0492
-	.4byte anim_0493
-	.4byte anim_0494
-	.4byte anim_0495
-	.4byte anim_0496
-	.4byte anim_0497
-	.4byte anim_0498
-	.4byte anim_0499
-	.4byte anim_0500
-	.4byte anim_0501
-	.4byte anim_0502
-	.4byte anim_0503
-	.4byte anim_0504
-	.4byte anim_0505
-	.4byte anim_0506
-	.4byte anim_0507
-	.4byte anim_0508
-	.4byte anim_0509
-	.4byte anim_0510
-	.4byte anim_0511
-	.4byte anim_0512
-	.4byte anim_0513
-	.4byte anim_0514
-	.4byte anim_0515
-	.4byte anim_0516
-	.4byte anim_0517
-	.4byte anim_0518
-	.4byte anim_0519
-	.4byte anim_0520
-	.4byte anim_0521
-	.4byte anim_0522
-	.4byte anim_0523
-	.4byte anim_0524
-	.4byte anim_0525
-	.4byte anim_0526
-	.4byte anim_0527
-	.4byte anim_0528
-	.4byte anim_0529
-	.4byte anim_0530
-	.4byte anim_0531
-	.4byte anim_0532
-	.4byte anim_0533
-	.4byte anim_0534
-	.4byte anim_0535
-	.4byte anim_0536
-	.4byte anim_0537
-	.4byte anim_0538
-	.4byte anim_0539
-	.4byte anim_0540
-	.4byte anim_0541
-	.4byte anim_0542
-	.4byte anim_0543
+	.4byte anim_cheese_lifting
+	.4byte anim_cheese_celebrating
+	.4byte anim_cheese_stomping
+	.4byte anim_cheese_sky_uppercut
+	.4byte anim_cheese_dying
+	.4byte anim_cheese_struggling
+	.4byte anim_cheese_sideways_2
+	.4byte anim_cheese_downwards
+	.4byte anim_cheese_469
+	.4byte anim_cheese_waving_player
+	.4byte anim_sonic_going_super_0
+	.4byte anim_sonic_going_super_1
+	.4byte anim_super_sonic_sideways
+	.4byte anim_super_sonic_attack_cloud
+	.4byte anim_super_sonic_stopping_rocket
+	.4byte anim_super_sonic_frozen
+	.4byte anim_cloud
+	.4byte anim_ape
+	.4byte anim_kiki
+	.4byte anim_kiki_proj
+	.4byte anim_kiki_proj_explosion
+	.4byte anim_buzzer
+	.4byte anim_gohla
+	.4byte anim_gohla_proj
+	.4byte anim_kurakura
+	.4byte anim_kurakura_proj
+	.4byte anim_kurakura_proj_fireball
+	.4byte anim_kubinaga
+	.4byte anim_kubinaga_neck
+	.4byte anim_kubinaga_base
+	.4byte anim_kubinaga_proj
+	.4byte anim_koura
+	.4byte anim_bell
+	.4byte anim_pikopiko
+	.4byte anim_circus
+	.4byte anim_circus_proj
+	.4byte anim_yado
+	.4byte anim_yado_proj
+	.4byte anim_hammerhead
+	.4byte anim_pen
+	.4byte anim_balloon
+	.4byte anim_balloon_proj
+	.4byte anim_madillo
+	.4byte anim_straw
+	.4byte anim_bulletbuzzer
+	.4byte anim_buzzer_proj
+	.4byte anim_flickey
+	.4byte anim_flickey_proj
+	.4byte anim_kyura
+	.4byte anim_kyura_proj
+	.4byte anim_star
+	.4byte anim_gejigeji
+	.4byte anim_mouse
+	.4byte anim_spinner
+	.4byte anim_animal_seal
+	.4byte anim_animal_gorilla
+	.4byte anim_animal_peacock
+	.4byte anim_animal_lion
+	.4byte anim_animal_mole
+	.4byte anim_animal_parrot
+	.4byte anim_animal_penguin
+	.4byte anim_animal_rabbit
+	.4byte anim_animal_sea_otter
+	.4byte anim_animal_deer
+	.4byte anim_animal_skunk
+	.4byte anim_animal_robin
+	.4byte anim_animal_kangaroo
+	.4byte anim_animal_koala
+	.4byte anim_animal_elephant
+	.4byte anim_level_start_machine
+	.4byte anim_checkpoint
+	.4byte anim_goal_lever
+	.4byte anim_water_splash
+	.4byte anim_534
+	.4byte anim_leaf_forest_ground_tile
+	.4byte anim_spring
+	.4byte anim_spring_bouncy
+	.4byte anim_bouncy_bar
+	.4byte anim_platform_lf_wide
+	.4byte anim_booster
+	.4byte anim_platform_lea_for
+	.4byte anim_spikes
+	.4byte anim_ramp
 	.4byte anim_0544
 	.4byte anim_0545
-	.4byte anim_0546
-	.4byte anim_0547
-	.4byte anim_0548
-	.4byte anim_0549
-	.4byte anim_0550
-	.4byte anim_0551
-	.4byte anim_0552
+	.4byte anim_rotating_handle
+	.4byte anim_flower_yellow
+	.4byte anim_flower_red_small
+	.4byte anim_flower_blue
+	.4byte anim_flower_blue_small
+	.4byte anim_rock
+	.4byte anim_552
 	.4byte anim_0553
 	.4byte anim_0554
 	.4byte anim_0555
@@ -563,64 +561,64 @@ gAnimations:
 	.4byte anim_0557
 	.4byte anim_0558
 	.4byte anim_0559
-	.4byte anim_0560
+	.4byte anim_water_ground_splash
 	.4byte anim_0561
 	.4byte anim_0562
 	.4byte anim_0563
-	.4byte anim_0564
-	.4byte anim_0565
-	.4byte anim_0566
-	.4byte anim_0567
-	.4byte anim_0568
+	.4byte anim_throw_crane_hook
+	.4byte anim_throw_crane
+	.4byte anim_platform_hot_cra
+	.4byte anim_turnaround_bar
+	.4byte anim_spring_platform
 	.4byte anim_0569
-	.4byte anim_0570
-	.4byte anim_0571
-	.4byte anim_0572
-	.4byte anim_0573
-	.4byte anim_0574
-	.4byte anim_0575
-	.4byte anim_0576
-	.4byte anim_0577
-	.4byte anim_0578
+	.4byte anim_drum
+	.4byte anim_spring_unknown
+	.4byte anim_spring_mus_pla
+	.4byte anim_spring_mus_pla_2
+	.4byte anim_dice
+	.4byte anim_note_block
+	.4byte anim_lone_note
+	.4byte anim_yellow_star
+	.4byte anim_smoke
 	.4byte anim_0579
-	.4byte anim_0580
-	.4byte anim_0581
-	.4byte anim_0582
+	.4byte anim_spikes_mus_pla
+	.4byte anim_platform_ice_par
+	.4byte anim_snowball
 	.4byte anim_0583
-	.4byte anim_0584
-	.4byte anim_0585
-	.4byte anim_0586
+	.4byte anim_launch_ring
+	.4byte anim_cross_sky_can
+	.4byte anim_platform_sky_can
 	.4byte anim_0587
 	.4byte anim_0588
-	.4byte anim_0589
-	.4byte anim_0590
-	.4byte anim_0591
-	.4byte anim_0592
-	.4byte anim_0593
-	.4byte anim_0594
-	.4byte anim_0595
-	.4byte anim_0596
-	.4byte anim_0597
+	.4byte anim_propellor
+	.4byte anim_spring_flying
+	.4byte anim_mini_propellor
+	.4byte anim_flying_handle
+	.4byte anim_platform_sky_can_2
+	.4byte anim_platform_square_sky_can
+	.4byte anim_arrow_screen
+	.4byte anim_spike_screen
+	.4byte anim_platform_tec_bas
 	.4byte anim_0598
 	.4byte anim_0599
 	.4byte anim_0600
 	.4byte anim_0601
 	.4byte anim_0602
-	.4byte anim_0603
-	.4byte anim_0604
-	.4byte anim_0605
-	.4byte anim_0606
+	.4byte anim_603
+	.4byte anim_spikes_tec_bas
+	.4byte anim_launch_ring_tec_bas
+	.4byte anim_dir_arrow_tec_bas
 	.4byte anim_0607
 	.4byte anim_0608
 	.4byte anim_0609
 	.4byte anim_0610
 	.4byte anim_0611
-	.4byte anim_0612
+	.4byte anim_speeding_platform
 	.4byte anim_0613
 	.4byte anim_0614
 	.4byte anim_0615
 	.4byte anim_0616
-	.4byte anim_0617
+	.4byte anim_platform_egg_uto
 	.4byte anim_0618
 	.4byte anim_0619
 	.4byte anim_0620
@@ -662,7 +660,7 @@ gAnimations:
 	.4byte anim_0656
 	.4byte anim_0657
 	.4byte anim_0658
-	.4byte anim_0659
+	.4byte anim_tails_captured_copy
 	.4byte anim_0660
 	.4byte anim_0661
 	.4byte anim_0662
@@ -727,13 +725,13 @@ gAnimations:
 	.4byte anim_0721
 	.4byte anim_0722
 	.4byte anim_0723
-	.4byte anim_0724
-	.4byte anim_0725
-	.4byte anim_0726
+	.4byte anim_itembox
+	.4byte anim_itembox_type
+	.4byte anim_ring_static
 	.4byte anim_0727
-	.4byte anim_0728
+	.4byte anim_score
 	.4byte anim_0729
-	.4byte anim_0730
+	.4byte anim_special_emblem
 	.4byte anim_0731
 	.4byte anim_0732
 	.4byte anim_0733
@@ -765,7 +763,7 @@ gAnimations:
 	.4byte anim_0759
 	.4byte anim_0760
 	.4byte anim_0761
-	.4byte anim_0762
+	.4byte anim_zonex_name
 	.4byte anim_0763
 	.4byte anim_0764
 	.4byte anim_0765
@@ -831,11 +829,11 @@ gAnimations:
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte anim_0828
-	.4byte anim_0829
-	.4byte anim_0830
-	.4byte anim_0831
-	.4byte anim_0832
+	.4byte anim_company_logo
+	.4byte anim_credits_copyright
+	.4byte anim_title_copyright
+	.4byte anim_title_seagull
+	.4byte anim_title_lens_flare
 	.4byte anim_0833
 	.4byte anim_0834
 	.4byte anim_0835
@@ -869,31 +867,31 @@ gAnimations:
 	.4byte anim_0863
 	.4byte anim_0864
 	.4byte anim_0865
-	.4byte anim_0866
+	.4byte anim_triangle_red
 	.4byte anim_0867
-	.4byte anim_0868
+	.4byte anim_some_japanese_txt
 	.4byte anim_0869
 	.4byte anim_0870
 	.4byte anim_0871
 	.4byte anim_0872
-	.4byte anim_0873
-	.4byte anim_0874
+	.4byte anim_boost_effect
+	.4byte anim_main_menu
 	.4byte anim_0875
 	.4byte anim_0876
 	.4byte anim_0877
 	.4byte anim_0878
-	.4byte anim_0879
-	.4byte anim_0880
+	.4byte anim_race_start_icon
+	.4byte anim_race_finish_icon
 	.4byte anim_0881
-	.4byte anim_0882
-	.4byte anim_0883
-	.4byte anim_0884
+	.4byte anim_ring
+	.4byte anim_e100_alpha
+	.4byte anim_sp_stage_hole
 	.4byte anim_0885
 	.4byte anim_0886
 	.4byte anim_0887
 	.4byte anim_0888
 	.4byte anim_0889
-	.4byte anim_0890
+	.4byte anim_sp_stage_arrow
 	.4byte anim_0891
 	.4byte anim_0892
 	.4byte anim_0893
@@ -971,12 +969,12 @@ gAnimations:
 	.4byte anim_0965
 	.4byte anim_0966
 	.4byte anim_0967
-	.4byte anim_0968
+	.4byte anim_soundtest_cream_clap_up
 	.4byte anim_0969
-	.4byte anim_0970
-	.4byte anim_0971
-	.4byte anim_0972
-	.4byte anim_0973
+	.4byte anim_soundtest_cream_bow
+	.4byte anim_soundtest_cream_waiting
+	.4byte anim_soundtest_platform
+	.4byte anim_soundtest_clap_forward
 	.4byte anim_0974
 	.4byte anim_0975
 	.4byte anim_0976
@@ -1050,23 +1048,23 @@ gAnimations:
 	.4byte anim_1044
 	.4byte anim_1045
 	.4byte anim_1046
-	.4byte anim_1047
+	.4byte anim_time_attack_digits
 	.4byte anim_1048
 	.4byte anim_1049
 	.4byte anim_1050
-	.4byte anim_1051
-	.4byte anim_1052
+	.4byte anim_msg_jp_try_again
+	.4byte anim_msg_en_try_again
 	.4byte anim_1053
 	.4byte anim_1054
 	.4byte anim_1055
 	.4byte anim_1056
-	.4byte anim_1057
-	.4byte anim_1058
-	.4byte anim_1059
-	.4byte anim_1060
-	.4byte anim_1061
-	.4byte anim_1062
-	.4byte anim_1063
+	.4byte anim_time_attack_jp
+	.4byte anim_time_attack_en
+	.4byte anim_time_attack_de
+	.4byte anim_time_attack_fr
+	.4byte anim_time_attack_es
+	.4byte anim_time_attack_it
+	.4byte anim_time_attack_zone_name
 	.4byte anim_1064
 	.4byte anim_1065
 	.4byte anim_1066
@@ -1075,22 +1073,22 @@ gAnimations:
 	.4byte anim_1069
 	.4byte anim_1070
 	.4byte anim_1071
-	.4byte anim_1072
+	.4byte anim_ta_record
 	.4byte anim_1073
-	.4byte anim_1074
+	.4byte anim_mp_msg
 	.4byte anim_1075
-	.4byte anim_1076
+	.4byte anim_multiplayer_unknown
 	.4byte anim_1077
 	.4byte anim_1078
-	.4byte anim_1079
-	.4byte anim_1080
-	.4byte anim_1081
-	.4byte anim_1082
-	.4byte anim_1083
-	.4byte anim_1084
-	.4byte anim_1085
-	.4byte anim_1086
-	.4byte anim_1087
+	.4byte anim_mp_comm_msg_en
+	.4byte anim_mp_comm_msg_de
+	.4byte anim_mp_comm_msg_fr
+	.4byte anim_mp_comm_msg_es
+	.4byte anim_mp_comm_msg_it
+	.4byte anim_mp_team_play_msg_en
+	.4byte anim_mp_team_play_msg_de
+	.4byte anim_mp_team_play_msg_fr
+	.4byte anim_mp_team_play_msg_it
 	.4byte anim_1088
 	.4byte anim_1089
 	.4byte anim_1090
@@ -1102,19 +1100,19 @@ gAnimations:
 	.4byte anim_1096
 	.4byte anim_1097
 	.4byte anim_1098
-	.4byte anim_1099
-	.4byte anim_1100
+	.4byte anim_mp_single_pak_results_cumulative
+	.4byte anim_mp_single_pak_results_round
 	.4byte anim_1101
 	.4byte anim_1102
-	.4byte anim_1103
-	.4byte anim_1104
-	.4byte anim_1105
-	.4byte anim_1106
-	.4byte anim_1107
-	.4byte anim_1108
-	.4byte anim_1109
-	.4byte anim_1110
-	.4byte anim_1111
+	.4byte anim_mp_cheese_waving
+	.4byte anim_mp_cheese_sitting
+	.4byte anim_digits
+	.4byte anim_press_start_msg_jp
+	.4byte anim_press_start_msg_en
+	.4byte anim_press_start_msg_de
+	.4byte anim_press_start_msg_fr
+	.4byte anim_press_start_msg_es
+	.4byte anim_press_start_msg_it
 	.4byte anim_1112
 	.4byte anim_1113
 	.4byte anim_1114
@@ -1123,18 +1121,17 @@ gAnimations:
 	.4byte anim_1117
 	.4byte anim_1118
 	.4byte anim_1119
-	.4byte anim_1120
+	.4byte anim_ta_white_bar
 	.4byte anim_1121
 	.4byte anim_1122
-	.4byte anim_1123
+	.4byte anim_stage
 	.4byte anim_1124
-	.4byte anim_1125
+	.4byte anim_life_counter
 	.4byte anim_1126
 	.4byte anim_1127
 	.4byte anim_1128
-	.4byte anim_1129
-	.4byte anim_1130
+	.4byte anim_countdown
+	.4byte anim_countdown_start
 	.4byte anim_1131
 	.4byte anim_1132
 .size gAnimations,.-gAnimations
-
