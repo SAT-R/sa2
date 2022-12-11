@@ -172,6 +172,12 @@
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 
+// #define SA2_ANIM_SONIC_IDLE                            0
+// #define SA2_ANIM_CREAM_IDLE                            91
+// #define SA2_ANIM_TAILS_IDLE                            182
+// #define SA2_ANIM_KNUCKLES_IDLE                         273
+// #define SA2_ANIM_AMY_IDLE                              364
+
 // Example usage of the macro
 #define SA2_ANIM_SONIC_IDLE                            SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC)
 #define SA2_ANIM_CREAM_IDLE                            SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM)
@@ -440,6 +446,13 @@
 
 #define SA2_ANIM_MSG_JP_TRY_AGAIN 1051
 #define SA2_ANIM_MSG_EN_TRY_AGAIN 1052
+
+// #define SA2_ANIM_TIME_ATTACK_JP                1057
+// #define SA2_ANIM_TIME_ATTACK_EN                1058
+// #define SA2_ANIM_TIME_ATTACK_DE                1059
+// #define SA2_ANIM_TIME_ATTACK_FR                1060
+// #define SA2_ANIM_TIME_ATTACK_ES                1061
+// #define SA2_ANIM_TIME_ATTACK_IT                1062
 
 #define SA2_ANIM_TIME_ATTACK 1057 + LanguageIndex(LANG_JAPANESE) // 1057
 #define SA2_ANIM_TIME_ATTACK_JP                                                         \
