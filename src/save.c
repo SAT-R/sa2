@@ -22,7 +22,7 @@ struct SaveSectorData {
     u8 language;
     u8 gamePlayOptions;
 
-    u8 unk1A;
+    u8 completions;
 
     u8 unlocks;
 
@@ -166,7 +166,6 @@ void RecordMultiplayerResult(u32 id, u16 *name, s16 result)
                     if (score->unk11 < MAX_MULTIPLAYER_SCORE) {
                         score->unk11++;
                     }
-
                     break;
                 case MULTIPLAYER_RESULT_LOSS:
                     if (score->unk12 < MAX_MULTIPLAYER_SCORE) {
@@ -187,8 +186,8 @@ void RecordMultiplayerResult(u32 id, u16 *name, s16 result)
 static void GenerateNewSaveGame(struct SaveGame *gameState)
 {
     s16 i, *record;
-    struct MultiplayerScore *p2;
-    struct ButtonConfig *p3;
+    struct MultiplayerScore *multiplayerScore;
+    struct ButtonConfig *buttonConfig;
 
     memset(gameState, 0, sizeof(struct SaveGame));
 
@@ -199,13 +198,13 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
     gameState->unk6 = LANG_ENGLISH;
     gameState->unk20[0] = PLAYER_NAME_END_CHAR;
 
-    p3 = &gameState->unk2C;
+    buttonConfig = &gameState->unk2C;
 
-    p3->unk0 = A_BUTTON;
-    p3->unk2 = B_BUTTON;
-    p3->unk4 = R_BUTTON;
+    buttonConfig->unk0 = A_BUTTON;
+    buttonConfig->unk2 = B_BUTTON;
+    buttonConfig->unk4 = R_BUTTON;
 
-    record = (u16 *)gameState->unk34.table;
+    record = (void *)gameState->unk34.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
         *record = MAX_COURSE_TIME;
     }
@@ -214,24 +213,24 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
     gameState->unk1D = 0;
     gameState->unk1E = 0;
 
-    p2 = gameState->unk2AC;
-    for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++, p2++) {
-        p2->unk10 = FALSE;
-        p2->unk11 = 0;
-        p2->unk12 = 0;
-        p2->unk13 = 0;
-        p2->unk4[0] = PLAYER_NAME_END_CHAR;
+    multiplayerScore = gameState->unk2AC;
+    for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++, multiplayerScore++) {
+        multiplayerScore->unk10 = FALSE;
+        multiplayerScore->unk11 = 0;
+        multiplayerScore->unk12 = 0;
+        multiplayerScore->unk13 = 0;
+        multiplayerScore->unk4[0] = PLAYER_NAME_END_CHAR;
     }
 
     gameState->unk374 = 0;
-    gameState->unk15[4] = 0;
+    gameState->unk15[CHARACTER_AMY] = FALSE;
     gameState->unk1A = 0;
     gameState->unk1B = 0;
 
-    gameState->unk15[0] = 0;
-    gameState->unk15[1] = 0;
-    gameState->unk15[2] = 0;
-    gameState->unk15[3] = 0;
+    gameState->unk15[CHARACTER_SONIC] = FALSE;
+    gameState->unk15[CHARACTER_CREAM] = FALSE;
+    gameState->unk15[CHARACTER_TAILS] = FALSE;
+    gameState->unk15[CHARACTER_KNUCKLES] = FALSE;
 }
 
 static void InitSaveGameSectorData(struct SaveSectorData *save)
@@ -247,7 +246,7 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
     save->playerName[0] = PLAYER_NAME_END_CHAR;
     save->language = LANG_ENGLISH;
     save->unlocks = 0;
-    save->unk1A = 0;
+    save->completions = 0;
     save->gamePlayOptions = 0;
     save->jumpControl = 1;
     save->attackControl = 2;
@@ -335,27 +334,27 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
         save->gamePlayOptions |= GAME_PLAY_OPTION_TIME_LIMIT_ENABLED;
     }
 
-    save->unk1A = 0;
-    if (gameState->unk15[4]) {
-        save->unk1A |= 1;
+    save->completions = 0;
+    if (gameState->unk15[CHARACTER_AMY]) {
+        save->completions |= 1;
     }
     if (gameState->unk1A) {
-        save->unk1A |= (gameState->unk1A << 1) & 6;
+        save->completions |= (gameState->unk1A << 1) & 6;
     }
     if (gameState->unk1B) {
-        save->unk1A |= 8;
+        save->completions |= 8;
     }
-    if (gameState->unk15[0]) {
-        save->unk1A |= 0x10;
+    if (gameState->unk15[CHARACTER_SONIC]) {
+        save->completions |= 0x10;
     }
-    if (gameState->unk15[1]) {
-        save->unk1A |= 0x20;
+    if (gameState->unk15[CHARACTER_CREAM]) {
+        save->completions |= 0x20;
     }
-    if (gameState->unk15[2]) {
-        save->unk1A |= 0x40;
+    if (gameState->unk15[CHARACTER_TAILS]) {
+        save->completions |= 0x40;
     }
-    if (gameState->unk15[3]) {
-        save->unk1A |= 0x80;
+    if (gameState->unk15[CHARACTER_KNUCKLES]) {
+        save->completions |= 0x80;
     }
 
     save->unlocks = 0;
@@ -639,25 +638,25 @@ static bool16 UnpackSaveSectorData(struct SaveGame *gameState,
         gameState->unk5 = TRUE;
     }
 
-    if ((save->unk1A & 1)) {
+    if ((save->completions & 1)) {
         gameState->unk15[4] = 1;
     }
-    if ((save->unk1A & 6)) {
-        gameState->unk1A = (save->unk1A & 6) >> 1;
+    if ((save->completions & 6)) {
+        gameState->unk1A = (save->completions & 6) >> 1;
     }
-    if ((save->unk1A & 8)) {
+    if ((save->completions & 8)) {
         gameState->unk1B = 1;
     }
-    if ((save->unk1A & 0x10)) {
+    if ((save->completions & 0x10)) {
         gameState->unk15[0] = 1;
     }
-    if ((save->unk1A & 0x20)) {
+    if ((save->completions & 0x20)) {
         gameState->unk15[1] = 1;
     }
-    if ((save->unk1A & 0x40)) {
+    if ((save->completions & 0x40)) {
         gameState->unk15[2] = 1;
     }
-    if ((save->unk1A & 0x80)) {
+    if ((save->completions & 0x80)) {
         gameState->unk15[3] = 1;
     }
 
@@ -842,23 +841,21 @@ static void GenerateCompletedSaveGame(struct SaveGame *gameState)
         gameState->unk7[i] = i == CHARACTER_SONIC
             ? LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1
             : LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) + 1;
-        gameState->unkC[i] = ALL_CHAOS_EMERALDS;
+        gameState->unkC[i] = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
     }
 
-    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)
-        | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES)
-        | CHARACTER_BIT(CHARACTER_AMY);
+    gameState->unk13 = MAIN_CHARACTERS | CHARACTER_BIT(CHARACTER_AMY);
     gameState->unk11 = TRUE;
     gameState->unk12 = TRUE;
     gameState->unk14 = TRUE;
 
-    gameState->unk15[4] = 1;
+    gameState->unk15[CHARACTER_AMY] = TRUE;
     gameState->unk1A = 2;
     gameState->unk1B = 1;
-    gameState->unk15[0] = 1;
-    gameState->unk15[1] = 1;
-    gameState->unk15[2] = 1;
-    gameState->unk15[3] = 1;
+    gameState->unk15[CHARACTER_SONIC] = TRUE;
+    gameState->unk15[CHARACTER_CREAM] = TRUE;
+    gameState->unk15[CHARACTER_TAILS] = TRUE;
+    gameState->unk15[CHARACTER_KNUCKLES] = TRUE;
 }
 
 // Exported functions

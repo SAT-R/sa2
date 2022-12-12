@@ -74,7 +74,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene->unkBE = 0;
     scene->unkBF = gLoadedSaveGame->unk6;
 
-    if (gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80) {
+    if (gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED) {
         scene->unkBC = 1;
         for (i = 0; i < 4; i++) {
             if (gLoadedSaveGame->unk15[i] != 0) {

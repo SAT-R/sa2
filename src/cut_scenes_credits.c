@@ -1,6 +1,7 @@
 #include "global.h"
 #include "cut_scenes_credits.h"
 #include "cut_scenes_credits_end.h"
+#include "cut_scenes_credits_slides.h"
 #include "main.h"
 #include "game.h"
 #include "sprite.h"
@@ -13,7 +14,7 @@ struct CreditsCutScene {
     Background unk0;
     struct UNK_802D4CC_UNK270 unk40;
 
-    u8 endingVariant;
+    u8 variant;
     u8 unk4D;
 
     u8 unk4E;
@@ -24,8 +25,12 @@ struct CreditsCutScene {
     u32 unk54;
 }; /* 0x58 */
 
-void sub_808ED5C(struct Task *);
-void sub_808EBC4(void);
+static void TaskDestroy_CreditsCutScene(struct Task *);
+static void sub_808EBC4(void);
+static void sub_808ECB4(void);
+
+static void sub_808EC64(void);
+static void sub_808ED04(void);
 
 static const u16 gUnknown_080E1244[] = {
     // 0 or 1
@@ -45,7 +50,7 @@ static const u16 gUnknown_080E1244[] = {
 UNUSED static const u16 gUnknown_080E124E[]
     = { 56, 0, 828, 0, 78, 0, 828, 1, 60, 0, 828, 2, 96, 0, 828, 3 };
 
-void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
+void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 {
     struct Task *t;
     struct CreditsCutScene *scene = NULL;
@@ -62,26 +67,28 @@ void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
     gUnknown_03002280[2] = 0xff;
     gUnknown_03002280[3] = 0x20;
 
-    t = TaskCreate(sub_808EBC4, 0x58, 0x3100, 0, sub_808ED5C);
+    t = TaskCreate(sub_808EBC4, 0x58, 0x3100, 0, TaskDestroy_CreditsCutScene);
 
     // BUG: assigning to null pointer
     scene->unk52 = 0;
 
     scene = TaskGetStructPtr(t);
-    scene->endingVariant = endingVariant;
+    scene->variant = creditsVariant;
     scene->unk4E = b;
     scene->unk4F = c;
     scene->unk54 = 0xB4;
 
-    if (scene->endingVariant == 2) {
+    if (scene->variant == CREDITS_VARIANT_EXTRA_ENDING) {
         scene->unk50 = 5;
     } else {
         scene->unk50 = 0;
     }
 
-    if ((scene->endingVariant == 1 && gLoadedSaveGame->unk15[4] != 0)) {
+    if ((scene->variant == CREDITS_VARIANT_FINAL_ENDING
+         && gLoadedSaveGame->unk15[4] != 0)) {
         scene->unk4D = 1;
-    } else if (scene->endingVariant == 2 && gLoadedSaveGame->unk1B != 0) {
+    } else if (scene->variant == CREDITS_VARIANT_EXTRA_ENDING
+               && gLoadedSaveGame->unk1B != 0) {
         scene->unk4D = 2;
     } else {
         scene->unk4D = 0;
@@ -112,11 +119,7 @@ void CreateCreditsCutScene(u8 endingVariant, u8 b, u8 c)
     sub_8002A3C(background);
 }
 
-void sub_808ECB4(void);
-
-void sub_808EC64(void);
-
-void sub_808EBC4(void)
+static void sub_808EBC4(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
@@ -133,9 +136,7 @@ void sub_808EBC4(void)
     }
 }
 
-void sub_808ED04(void);
-
-void sub_808EC28(void)
+static void sub_808EC28(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
@@ -147,7 +148,7 @@ void sub_808EC28(void)
     }
 }
 
-void sub_808EC64(void)
+static void sub_808EC64(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
@@ -163,7 +164,7 @@ void sub_808EC64(void)
     }
 }
 
-void sub_808ECB4(void)
+static void sub_808ECB4(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
@@ -172,23 +173,21 @@ void sub_808ECB4(void)
 
     if (sub_802D4CC(transitionConfig) == 1) {
         transitionConfig->unk4 = 0;
-        CreateCreditsEndCutScene(scene->endingVariant);
+        CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }
 }
 
-void CreateCreditsSlidesCutScene(u8, u8, u8);
-
-void sub_808ED04(void)
+static void sub_808ED04(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
     scene->unk4E++;
     if (scene->unk4F < 4) {
-        CreateCreditsSlidesCutScene(scene->endingVariant, scene->unk4E, scene->unk4F);
+        CreateCreditsSlidesCutScene(scene->variant, scene->unk4E, scene->unk4F);
     } else {
-        CreateCreditsEndCutScene(scene->endingVariant);
+        CreateCreditsEndCutScene(scene->variant);
     }
     TaskDestroy(gCurTask);
 }
 
-void sub_808ED5C(UNUSED struct Task *t) { }
+static void TaskDestroy_CreditsCutScene(UNUSED struct Task *t) { }

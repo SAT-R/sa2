@@ -75,13 +75,14 @@ struct SaveGame {
     // bossTimeAttackUnlocked
     bool8 unk12;
 
-    // unlocked characters
+    // unlockedCharacters
     u8 unk13;
 
     // chaoGardenUnlocked
     bool8 unk14;
 
-    u8 unk15[NUM_CHARACTERS];
+    // completedCharacters
+    bool8 unk15[NUM_CHARACTERS];
 
     // extraZoneStatus
     u8 unk1A;

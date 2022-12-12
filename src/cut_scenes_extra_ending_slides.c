@@ -118,7 +118,7 @@ void sub_8091638(void)
             m4aSongNumStart(MUS_STAFF_CREDITS);
         }
     } else {
-        CreateCreditsCutScene(2, 0, 0);
+        CreateCreditsCutScene(CREDITS_VARIANT_EXTRA_ENDING, 0, 0);
         TaskDestroy(gCurTask);
     }
 }

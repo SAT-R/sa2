@@ -522,7 +522,7 @@ void CreateFinalEndingLandingCutScene(void)
         sub_8002A3C(background);
     }
 
-    if (!(gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80)) {
+    if (!(gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
         memcpy(unk1AF4, gUnknown_080E1AF4, 0x20);
         DmaCopy32(3, unk1AF4, &gBgPalette[0x20], 0x20);
     }
@@ -953,7 +953,7 @@ void sub_8093F54(void)
             m4aSongNumStart(MUS_STAFF_CREDITS);
         }
     } else {
-        CreateCreditsCutScene(1, 0, 0);
+        CreateCreditsCutScene(CREDITS_VARIANT_FINAL_ENDING, 0, 0);
         TaskDestroy(gCurTask);
     }
 }

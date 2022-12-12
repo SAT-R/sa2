@@ -11,4 +11,8 @@
 
 #define CHARACTER_BIT(character) (1 << (character))
 
+#define MAIN_CHARACTERS                                                                 \
+    (CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)                    \
+     | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES))
+
 #endif // GUARD_PLAYER_H

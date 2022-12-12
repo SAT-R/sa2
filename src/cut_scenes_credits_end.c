@@ -1,4 +1,5 @@
 #include "global.h"
+#include "cut_scenes_credits.h"
 #include "cut_scenes_credits_end.h"
 #include "cut_scenes_missing_emeralds.h"
 #include "main.h"
@@ -21,23 +22,37 @@ struct CreditsEndCutScene {
     Sprite unkC0;
     Sprite unkF0;
     Sprite unk120;
-    struct UNK_802D4CC_UNK270 unk150;
-    u8 unk15C;
-    u8 unk15D;
+    struct UNK_802D4CC_UNK270 transitionConfig;
+    u8 creditsVariant;
+    u8 sequence;
     u8 unk15E;
-    u8 unk15F;
+    u8 sonicAnimFrame;
     u8 unk160;
-    u8 unk161;
-    u16 unk162;
-    u32 unk164;
-    s16 unk168;
+    bool8 hasAllEmeralds;
+    s16 unk162;
+    u32 delayFrames;
+    s16 congratsAnimFrame;
     // vram
     vu32 unk16C;
     s32 unk170[3][2];
 }; /* size: 0x188 */
 
-void sub_808FB2C(void);
-void sub_808FBE4(struct Task *);
+#define SEQUENCE_GAME_END_SCREEN          0
+#define SEQUENCE_FADE_TO_COPYRIGHT_SCREEN 1
+#define SEQUENCE_COPYRIGHT_SCREEN         2
+#define SEQUENCE_END                      3
+
+static void Task_FadeIn(void);
+static void TaskDestroy_CreditsEndCutScene(struct Task *);
+static void UpdateCongratsMessagePos(struct CreditsEndCutScene *);
+static void UpdateMessageLine1Pos(struct CreditsEndCutScene *);
+static void UpdateMessageLine2Pos(struct CreditsEndCutScene *);
+static void RenderExtraEndingElements(struct CreditsEndCutScene *);
+static void Task_HandleGameCompletion(void);
+
+static void Task_CreateCopyrightScreen(void);
+static void Task_SequenceEnd(void);
+static void Task_FadeIn(void);
 
 static const u16 gUnknown_080E12B0[] = {
     232, 233, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 260, 259,
@@ -47,14 +62,14 @@ static const TileInfo gUnknown_080E12D0[4] = {
     { 48, 781, 0 },
     { 26, 781, 1 },
     { 32, 781, 2 },
-    { 63, 829, 0 },
+    { 63, SA2_ANIM_CREDITS_COPYRIGHT, 0 },
 };
 
 static const u8 gUnknown_080E12F0[] = {
     42, 3, 3, 3, 3, 3, 3, 3, 12, 4, 4, 0,
 };
 
-void CreateCreditsEndCutScene(u8 variant)
+void CreateCreditsEndCutScene(u8 creditsVariant)
 {
     u8 i;
     s32 r6 = 1;
@@ -87,28 +102,31 @@ void CreateCreditsEndCutScene(u8 variant)
     gUnknown_03002280[6] = 0xff;
     gUnknown_03002280[7] = 0x20;
 
-    t = TaskCreate(sub_808FB2C, 0x188, 0x3100, 0, sub_808FBE4);
+    t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0,
+                   TaskDestroy_CreditsEndCutScene);
     scene = TaskGetStructPtr(t);
-    scene->unk164 = 0x10E;
-    scene->unk15C = variant;
-    scene->unk15D = 0;
+    scene->delayFrames = 270;
+    scene->creditsVariant = creditsVariant;
+    scene->sequence = SEQUENCE_GAME_END_SCREEN;
     scene->unk15E = 0;
-    scene->unk15F = 0;
-    scene->unk168 = 0x1E;
+    scene->sonicAnimFrame = 0;
+    scene->congratsAnimFrame = 0x1E;
     scene->unk160 = 0;
-    scene->unk161 = 0;
-    scene->unk162 = 0xFFFF; // -1?
+    scene->hasAllEmeralds = FALSE;
+    scene->unk162 = -1;
     if (gLoadedSaveGame->unk6 != LANG_JAPANESE) {
         scene->unk160 = 1;
     }
 
     for (i = 0; i < 2; i++) {
         scene->unk170[0][i] = 0;
-        scene->unk170[1][i] = 0xB400;
-        scene->unk170[2][i] = 0xC800;
+        scene->unk170[1][i] = Q_24_8(180);
+
+        // NOTE: set but never used
+        scene->unk170[2][i] = Q_24_8(200);
     }
 
-    transitionConfig = &scene->unk150;
+    transitionConfig = &scene->transitionConfig;
     transitionConfig->unk0 = 1;
     transitionConfig->unk4 = 0;
     transitionConfig->unk2 = 2;
@@ -118,7 +136,7 @@ void CreateCreditsEndCutScene(u8 variant)
 
     scene->unk16C = OBJ_VRAM0;
 
-    if (scene->unk15C == 2) {
+    if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         Background *background = &scene->unk40;
         {
             gDispCnt |= 0x100;
@@ -214,7 +232,7 @@ void CreateCreditsEndCutScene(u8 variant)
         background->unkC = BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E12B0[scene->unk15F + 2];
+        background->unk1C = gUnknown_080E12B0[scene->sonicAnimFrame + 2];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -227,7 +245,7 @@ void CreateCreditsEndCutScene(u8 variant)
         sub_8003638(background);
     }
 
-    if (scene->unk15C == 1) {
+    if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING) {
         Background *background;
         gDispCnt |= 0x200;
         gBgScrollRegs[1][0] = 0;
@@ -252,46 +270,36 @@ void CreateCreditsEndCutScene(u8 variant)
     }
 }
 
-void sub_808FBE8(struct CreditsEndCutScene *);
-void sub_808FC00(struct CreditsEndCutScene *);
-void sub_808FC3C(struct CreditsEndCutScene *);
-void sub_808FA24(struct CreditsEndCutScene *);
-
-void sub_808F5C4(void);
-void sub_808FB94(void);
-
-void sub_808F544(void)
+static void Task_FadeOut(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk150;
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->transitionConfig;
     transitionConfig->unk2 = 1;
-    if (scene->unk15C == 2) {
-        sub_808FBE8(scene);
-        sub_808FC00(scene);
-        sub_808FC3C(scene);
+    if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
+        UpdateCongratsMessagePos(scene);
+        UpdateMessageLine1Pos(scene);
+        UpdateMessageLine2Pos(scene);
     }
 
-    sub_808FA24(scene);
+    RenderExtraEndingElements(scene);
 
     if (sub_802D4CC(transitionConfig) == 1) {
         transitionConfig->unk4 = 0;
 
-        if (scene->unk15D == 1) {
-            gCurTask->main = sub_808F5C4;
+        if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
+            gCurTask->main = Task_CreateCopyrightScreen;
         } else {
-            gCurTask->main = sub_808FB94;
+            gCurTask->main = Task_SequenceEnd;
         }
     }
 }
 
-void sub_808FB2C(void);
-
-void sub_808F5C4(void)
+static void Task_CreateCopyrightScreen(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
 
-    if (scene->unk164 != 0) {
-        scene->unk164--;
+    if (scene->delayFrames > 0) {
+        scene->delayFrames--;
         return;
     }
     {
@@ -340,27 +348,24 @@ void sub_808F5C4(void)
         background->unk2E = 2;
         sub_8002A3C(background);
 
-        scene->unk15D = 2;
-        scene->unk15F++;
-        scene->unk164 = 0x10E;
-        gCurTask->main = sub_808FB2C;
+        scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
+        scene->sonicAnimFrame++;
+        scene->delayFrames = 270;
+        gCurTask->main = Task_FadeIn;
     }
 }
 
-void sub_808FBE8(struct CreditsEndCutScene *);
-void sub_808F824(void);
-
-void sub_808F704(void)
+static void Task_SequenceMain(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
 
-    if (scene->unk15C == 2) {
-        sub_808FBE8(scene);
-        sub_808FC00(scene);
-        sub_808FC3C(scene);
+    if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
+        UpdateCongratsMessagePos(scene);
+        UpdateMessageLine1Pos(scene);
+        UpdateMessageLine2Pos(scene);
 
-        if (scene->unk15F < 0xB) {
-            if (scene->unk15E != 0) {
+        if (scene->sonicAnimFrame < 11) {
+            if (scene->unk15E > 0) {
                 scene->unk15E--;
             } else {
                 Background *background = &scene->unk40;
@@ -368,52 +373,50 @@ void sub_808F704(void)
                 gBgScrollRegs[0][0] = 0;
                 gBgScrollRegs[0][1] = 0;
 
-                background->unk1C = gUnknown_080E12B0[scene->unk15F + 2];
+                background->unk1C = gUnknown_080E12B0[scene->sonicAnimFrame + 2];
                 background->unk26 = 0x1E;
                 background->unk28 = 0x14;
                 background->unk2E = 0;
                 sub_8002A3C(background);
-                scene->unk15F++;
+                scene->sonicAnimFrame++;
 
-                scene->unk15E = gUnknown_080E12F0[scene->unk15F];
+                scene->unk15E = gUnknown_080E12F0[scene->sonicAnimFrame];
 
-                if (scene->unk15F == 9) {
+                if (scene->sonicAnimFrame == 9) {
                     m4aSongNumStart(VOICE__ANNOUNCER__CONGRATULATIONS);
                 }
             }
         }
     }
 
-    sub_808FA24(scene);
-    if (scene->unk164 != 0) {
-        scene->unk164--;
+    RenderExtraEndingElements(scene);
+    if (scene->delayFrames > 0) {
+        scene->delayFrames--;
         return;
     }
 
-    if (scene->unk15D == 0) {
-        scene->unk15D = 1;
-        scene->unk164 = 0x1E;
-        gCurTask->main = sub_808F544;
-    } else {
-        if (scene->unk15D == 2) {
-            gCurTask->main = sub_808F824;
-        }
+    if (scene->sequence == SEQUENCE_GAME_END_SCREEN) {
+        scene->sequence = SEQUENCE_FADE_TO_COPYRIGHT_SCREEN;
+        scene->delayFrames = 30;
+        gCurTask->main = Task_FadeOut;
+    } else if (scene->sequence == SEQUENCE_COPYRIGHT_SCREEN) {
+        gCurTask->main = Task_HandleGameCompletion;
     }
 }
 
-void sub_808F824(void)
+static void Task_HandleGameCompletion(void)
 {
-    u8 sum = 0;
-    u8 unlockedLevels = 0;
+    u8 charactersCompleted = 0;
+    u8 zonesCompleteCharacters = 0;
     u8 i;
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
 
 #ifndef NON_MATCHING
-    u16 var = unlockedLevels;
+    u16 var = zonesCompleteCharacters;
     asm("" ::"r"(&var));
 #endif
 
-    if (scene->unk15C == 1) {
+    if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING) {
         if (gLoadedSaveGame->unk15[4] == 0) {
             gLoadedSaveGame->unk15[4] = 1;
             WriteSaveGame();
@@ -421,81 +424,87 @@ void sub_808F824(void)
 
         for (i = 0; i < NUM_CHARACTERS; i++) {
             if (gLoadedSaveGame->unk7[i] > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-                unlockedLevels |= 1 << i;
+                zonesCompleteCharacters |= CHARACTER_BIT(i);
             }
         }
 
-        if (unlockedLevels > 0xE && (gLoadedSaveGame->unkC[0] & 0x80)
+        // sonic, cream, tails, knuckles, all completed, and all chaos emeralds
+        // unlock true area 53.
+        if (zonesCompleteCharacters >= MAIN_CHARACTERS
+            && (gLoadedSaveGame->unkC[0] & CHAOS_EMERALDS_COMPLETED)
             && gLoadedSaveGame->unk1A == 0) {
             gLoadedSaveGame->unk1A |= 1;
             WriteSaveGame();
         }
 
         if (gSelectedCharacter != CHARACTER_AMY) {
-            if ((gLoadedSaveGame->unkC[gSelectedCharacter] & 0x80)) {
+            if ((gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
                 gLoadedSaveGame->unk15[gSelectedCharacter] = 1;
 
                 for (i = 0; i < 4; i++) {
                     if (gLoadedSaveGame->unk15[i] != 0) {
-                        sum++;
+                        charactersCompleted++;
                     }
                 }
 
-                if ((sum == 1 && gLoadedSaveGame->unk14)
-                    || (sum == 2 && gLoadedSaveGame->unk11)
-                    || (sum == 3 && gLoadedSaveGame->unk12)
-                    || (sum >= 4 && gLoadedSaveGame->unk13 >= 0x10)) {
-                    scene->unk161 = 1;
-                    scene->unk164 = 0xB4;
+                if ((charactersCompleted == 1 && gLoadedSaveGame->unk14)
+                    || (charactersCompleted == 2 && gLoadedSaveGame->unk11)
+                    || (charactersCompleted == 3 && gLoadedSaveGame->unk12)
+                    || (charactersCompleted >= 4
+                        && gLoadedSaveGame->unk13 > MAIN_CHARACTERS)) {
+                    scene->hasAllEmeralds = TRUE;
+                    scene->delayFrames = 180;
                 } else {
-                    if (sum == 1) {
-                        gLoadedSaveGame->unk14 = 1;
-                    } else if (sum == 2) {
-                        gLoadedSaveGame->unk11 = 1;
-                    } else if (sum == 3) {
-                        gLoadedSaveGame->unk12 = 1;
-                    } else if (sum == 4) {
-                        gLoadedSaveGame->unk13 |= 0x10;
+                    if (charactersCompleted == 1) {
+                        gLoadedSaveGame->unk14 = TRUE;
+                    } else if (charactersCompleted == 2) {
+                        gLoadedSaveGame->unk11 = TRUE;
+                    } else if (charactersCompleted == 3) {
+                        gLoadedSaveGame->unk12 = TRUE;
+                    } else if (charactersCompleted == 4) {
+                        gLoadedSaveGame->unk13 |= CHARACTER_BIT(CHARACTER_AMY);
                     }
                     WriteSaveGame();
-                    scene->unk161 = 0;
-                    scene->unk164 = 0x69;
-                    scene->unk150.unk8 = 0x3FFF;
+                    scene->hasAllEmeralds = FALSE;
+                    scene->delayFrames = 105;
+                    scene->transitionConfig.unk8 = 0x3FFF;
                 }
             } else {
-                scene->unk161 = 0;
-                scene->unk150.unk8 = 0x3FFF;
-                scene->unk164 = 0x69;
+                scene->hasAllEmeralds = FALSE;
+                scene->transitionConfig.unk8 = 0x3FFF;
+                scene->delayFrames = 105;
             }
         } else {
-            scene->unk161 = 1;
-            scene->unk164 = 0xB4;
+            // if amy we have to have collected all emeralds
+            scene->hasAllEmeralds = TRUE;
+            scene->delayFrames = 180;
         }
     } else {
         if (gLoadedSaveGame->unk1B == 0) {
             gLoadedSaveGame->unk1B = 1;
             WriteSaveGame();
         }
-        scene->unk161 = 1;
-        scene->unk164 = 0xB4;
+        scene->hasAllEmeralds = TRUE;
+        scene->delayFrames = 180;
     }
 
-    scene->unk15D = 3;
-    gCurTask->main = sub_808F544;
+    scene->sequence = SEQUENCE_END;
+    gCurTask->main = Task_FadeOut;
 }
 
-void sub_808FA24(struct CreditsEndCutScene *scene)
+static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 {
     Sprite *element;
-    if (scene->unk15C != 2) {
+    if (scene->creditsVariant != CREDITS_VARIANT_EXTRA_ENDING) {
         return;
     }
 
-    if (scene->unk15F > 0xB) {
+    if (scene->sonicAnimFrame > 11) {
         return;
     }
 
-    if (scene->unk168 >= 1) {
+    // on for 30 frames
+    if (scene->congratsAnimFrame >= 1) {
         element = &scene->unkC0;
         element->anim = gUnknown_080E12D0[0].anim;
         element->variant = gUnknown_080E12D0[0].variant;
@@ -503,14 +512,16 @@ void sub_808FA24(struct CreditsEndCutScene *scene)
         element->y = scene->unk170[0][1] >> 8;
         sub_8004558(element);
         sub_80051E8(element);
-        scene->unk168--;
-    } else if (scene->unk168 > -0xF && scene->unk168 < 1) {
-        scene->unk168--;
-    } else if (scene->unk168 <= -0xF) {
-        scene->unk168 = 0x1E;
+        scene->congratsAnimFrame--;
+    } else if (scene->congratsAnimFrame > -15 && scene->congratsAnimFrame < 1) {
+        // off for 15 frames
+        scene->congratsAnimFrame--;
+    } else if (scene->congratsAnimFrame <= -15) {
+        // reset
+        scene->congratsAnimFrame = 30;
     }
 
-    if (scene->unk15F == 11) {
+    if (scene->sonicAnimFrame == 11) {
         element = &scene->unkF0;
         element->anim = gUnknown_080E12D0[1].anim;
         element->variant = gUnknown_080E12D0[1].variant;
@@ -529,70 +540,70 @@ void sub_808FA24(struct CreditsEndCutScene *scene)
     }
 }
 
-void sub_808FB2C(void)
+static void Task_FadeIn(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk150;
+    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->transitionConfig;
     transitionConfig->unk2 = 2;
 
-    if (scene->unk15C == 2) {
-        sub_808FBE8(scene);
-        sub_808FC00(scene);
-        sub_808FC3C(scene);
+    if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
+        UpdateCongratsMessagePos(scene);
+        UpdateMessageLine1Pos(scene);
+        UpdateMessageLine2Pos(scene);
     }
 
-    sub_808FA24(scene);
+    RenderExtraEndingElements(scene);
 
     if (sub_802D4CC(transitionConfig) == 1) {
         transitionConfig->unk4 = 0;
-        gCurTask->main = sub_808F704;
+        gCurTask->main = Task_SequenceMain;
     }
 }
 
-void sub_808FB94(void)
+static void Task_SequenceEnd(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    if (scene->unk164 != 0) {
-        scene->unk164--;
+    if (scene->delayFrames > 0) {
+        scene->delayFrames--;
         return;
     }
 
-    if (scene->unk161 == 0) {
+    if (scene->hasAllEmeralds == FALSE) {
         CreateMissingChaosEmaraldsCutScene();
         TaskDestroy(gCurTask);
-    } else if (scene->unk161 == 1) {
+    } else if (scene->hasAllEmeralds == TRUE) {
         CreateTitleScreen();
         TaskDestroy(gCurTask);
     }
 }
 
-void sub_808FBE4(struct Task *t)
+static void TaskDestroy_CreditsEndCutScene(UNUSED struct Task *t)
 {
     // unused logic
 }
 
-void sub_808FBE8(struct CreditsEndCutScene *scene)
+static void UpdateCongratsMessagePos(struct CreditsEndCutScene *scene)
 {
-    scene->unk170[0][0] = 0x78;
-    scene->unk170[0][1] = 0xA00;
+    scene->unk170[0][0] = 120;
+    scene->unk170[0][1] = Q_24_8(10);
 }
 
-void sub_808FC00(struct CreditsEndCutScene *scene)
+static void UpdateMessageLine1Pos(struct CreditsEndCutScene *scene)
 {
-    if (scene->unk15F == 11) {
-        scene->unk170[1][0] = 0x78;
-        if (scene->unk170[1][1] > 0x8200) {
-            scene->unk170[1][1] -= 0x300;
+    if (scene->sonicAnimFrame == 11) {
+        scene->unk170[1][0] = 120;
+        if (scene->unk170[1][1] > Q_24_8(130)) {
+            scene->unk170[1][1] -= Q_24_8(3);
         }
     }
 }
 
-void sub_808FC3C(struct CreditsEndCutScene *scene)
+static void UpdateMessageLine2Pos(struct CreditsEndCutScene *scene)
 {
-    if (scene->unk15F == 11) {
-        scene->unk170[2][0] = 0x78;
-        if (scene->unk170[2][1] > 0x9400) {
-            scene->unk170[2][1] -= 0x300;
+    if (scene->sonicAnimFrame == 11) {
+        scene->unk170[2][0] = 120;
+        if (scene->unk170[2][1] > Q_24_8(148)) {
+            scene->unk170[2][1] -= Q_24_8(3);
         }
     }
 }

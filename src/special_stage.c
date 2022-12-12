@@ -556,7 +556,8 @@ void sub_806C560(void)
 
     if ((gLoadedSaveGame->unkC[character] & ALL_ZONE_CHAOS_EMERALDS)
         == ALL_ZONE_CHAOS_EMERALDS) {
-        gLoadedSaveGame->unkC[character] = ALL_CHAOS_EMERALDS;
+        gLoadedSaveGame->unkC[character]
+            = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
     }
 
     gCurTask->main = sub_806C638;

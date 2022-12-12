@@ -1260,8 +1260,6 @@ static void Task_SinglePlayerMenuMain(void)
     }
 }
 
-void CreateFinalEndingFallCutScene(void);
-
 static void Task_HandleTitleScreenExit(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
