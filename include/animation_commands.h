@@ -6,7 +6,10 @@
 typedef struct {
     /* 0x00 */ s32 cmdId; // -2
 
-    /* 0x04 */ u32 tileIndex;
+    // Note(Jace): This needs to be signed, since a
+    //             negative value infers that it's using 8bit-colors
+    /* 0x04 */ s32 tileIndex;
+
     /* 0x08 */ u32 numTilesToCopy;
 } ACmd_GetTiles;
 

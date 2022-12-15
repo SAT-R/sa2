@@ -81,6 +81,7 @@ struct UNK_0808B3FC_UNK240_UNKC {
 // Maybe `struct Sprite`
 typedef struct {
     // These values are part of some other struct
+    // Note(Jace): Isn't this a u8* to the tile data in the ROM?
     /* 0x00 */ u32 unk0;
 
     /* 0x04 */ void *vram;
