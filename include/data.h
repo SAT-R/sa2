@@ -13,8 +13,8 @@ extern union Unk_03002E60 gMapHeaders[];
 struct SpriteTables {
     /* 0x00 */ void *animations;
     /* 0x04 */ void *dimensions;
-    /* 0x08 */ u16 **oamData; 
-    /* 0x0C */ u16 *palettes; 
+    /* 0x08 */ u16 **oamData;
+    /* 0x0C */ u16 *palettes;
     /* 0x10 */ u8 *graphics; // @TODO: Rename to 'tiles_4bpp'
     /* 0x14 */ u8 *tiles_8bpp;
 };
