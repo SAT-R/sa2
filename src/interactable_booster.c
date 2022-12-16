@@ -93,7 +93,7 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
     displayed->focused = 0;
-    displayed->unk28 = -1;
+    displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2000;
 
     if (ia->d.uData[2] != 0) {

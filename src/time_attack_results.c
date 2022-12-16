@@ -105,7 +105,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
         element->focused = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         element->unk10 = 0;
     }
 
@@ -136,7 +136,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -153,7 +153,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -172,7 +172,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -195,7 +195,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -212,7 +212,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -234,7 +234,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
 
@@ -257,7 +257,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->focused = 0;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 

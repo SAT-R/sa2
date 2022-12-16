@@ -127,7 +127,6 @@ typedef struct {
 
     /* 0x26 */ u8 filler26[2];
     /* 0x28 */ Sprite_UNK28 unk28[1];
-    /* 0x2C */ u8 filler2C[1];
 } Sprite /* size = 0x30 */;
 
 // Transformer

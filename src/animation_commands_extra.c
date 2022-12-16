@@ -40,30 +40,21 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
 s32 animCmd_6(void *cursor, Sprite *sprite)
 {
     ACmd_6 *cmd = (ACmd_6 *)cursor;
-    s32 r3 = cmd->unk4 & 0xF;
+    s32 r3 = cmd->unk4.unk0 & 0xF;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_6);
 
-    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3], 8);
+    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3].unk0, 8);
 
-    if (cmd->unk8 == 0) {
+    if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
+        && (cmd->unk4.unk7 == 0)) {
         sprite->unk28[r3].unk0 = -1;
     } else {
         if (sprite->unk10 & 0x00000800) {
-            sprite->unk28[r3].unk5 ^= sprite->unk28[r3].unk7;
-            sprite->unk28[r3].unk7 ^= sprite->unk28[r3].unk5;
-
-            sprite->unk28[r3].unk5
-                = (sprite->unk28[r3].unk7 ^ sprite->unk28[r3].unk5) * -1;
-            sprite->unk28[r3].unk7 *= -1;
+            SWAP_AND_NEGATE(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
         }
-        // _08004768
-        if (sprite->unk10 & 0x00000400) {
-            sprite->unk28[r3].unk4 ^= sprite->unk28[r3].unk6;
-            sprite->unk28[r3].unk6 ^= sprite->unk28[r3].unk4;
 
-            sprite->unk28[r3].unk4
-                = (sprite->unk28[r3].unk6 ^ sprite->unk28[r3].unk4) * -1;
-            sprite->unk28[r3].unk6 *= -1;
+        if (sprite->unk10 & 0x00000400) {
+            SWAP_AND_NEGATE(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
         }
     }
 

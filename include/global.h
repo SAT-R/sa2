@@ -101,6 +101,12 @@
 // with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+#define SWAP_AND_NEGATE(a, b)                                                           \
+    a ^= b;                                                                             \
+    b ^= a;                                                                             \
+    a = (b ^ a) * -1;                                                                   \
+    b *= -1;
+
 struct BlendRegs {
     u16 bldCnt;
     u16 bldAlpha;

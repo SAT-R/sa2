@@ -193,7 +193,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         element->unk21 = 0xff;
         element->unk22 = 16;
         element->focused = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_80036E0(element);
     }
 }

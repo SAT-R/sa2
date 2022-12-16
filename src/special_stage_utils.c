@@ -41,7 +41,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
     element->unk21 = 0xff;
     element->unk22 = 0x10;
     element->focused = focused;
-    element->unk28 = -1;
+    element->unk28[0].unk0 = -1;
 
     sub_8004558(element);
 
