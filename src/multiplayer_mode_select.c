@@ -10,9 +10,11 @@
 #include "malloc_vram.h"
 #include "transition.h"
 #include "m4a.h"
-#include "constants/songs.h"
 #include "flags.h"
 #include "title_screen.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
 #include "constants/text.h"
 
 #define PAK_MODE_MULTI  0
@@ -116,7 +118,7 @@ void CreateMultiplayerModeSelectScreen(void)
 
     element = &modeScreen->unk80;
     element->vram = VramMalloc(0x32);
-    element->anim = 0x431;
+    element->anim = SA2_ANIM_VS;
     element->variant = 0;
     element->unk21 = 0xFF;
     element->x = 0;
