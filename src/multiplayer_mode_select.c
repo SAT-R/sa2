@@ -10,9 +10,11 @@
 #include "malloc_vram.h"
 #include "transition.h"
 #include "m4a.h"
-#include "constants/songs.h"
 #include "flags.h"
 #include "title_screen.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
 #include "constants/text.h"
 
 #define PAK_MODE_MULTI  0
@@ -81,7 +83,7 @@ void CreateMultiplayerModeSelectScreen(void)
     struct Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
     struct UNK_802D4CC_UNK270 *unk140;
-    Sprite *unk80;
+    Sprite *element;
     Background *unk0;
 
     u8 lang = gLoadedSaveGame->unk6 * 4;
@@ -114,75 +116,75 @@ void CreateMultiplayerModeSelectScreen(void)
     unk140->unkA = 0;
     sub_802D4CC(unk140);
 
-    unk80 = &modeScreen->unk80;
-    unk80->vram = VramMalloc(0x32);
-    unk80->anim = 0x431;
-    unk80->variant = 0;
-    unk80->unk21 = 0xFF;
-    unk80->x = 0;
-    unk80->y = 0;
-    unk80->unk1A = 0x100;
-    unk80->unk8 = 0;
-    unk80->unk14 = 0;
-    unk80->unk1C = 0;
-    unk80->unk22 = 0x10;
-    unk80->focused = 0;
-    unk80->unk28 = -1;
-    unk80->unk10 = 0x1000;
-    sub_8004558(unk80);
+    element = &modeScreen->unk80;
+    element->vram = VramMalloc(0x32);
+    element->anim = SA2_ANIM_VS;
+    element->variant = 0;
+    element->unk21 = 0xFF;
+    element->x = 0;
+    element->y = 0;
+    element->unk1A = 0x100;
+    element->unk8 = 0;
+    element->unk14 = 0;
+    element->unk1C = 0;
+    element->unk22 = 0x10;
+    element->focused = 0;
+    element->unk28[0].unk0 = -1;
+    element->unk10 = 0x1000;
+    sub_8004558(element);
 
-    unk80 = &modeScreen->unkB0;
-    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
-    unk80->anim = sMultiplayerModeSelectScreenText[lang].anim;
-    unk80->variant = sMultiplayerModeSelectScreenText[lang].variant;
-    unk80->unk21 = 0xFF;
+    element = &modeScreen->unkB0;
+    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
+    element->anim = sMultiplayerModeSelectScreenText[lang].anim;
+    element->variant = sMultiplayerModeSelectScreenText[lang].variant;
+    element->unk21 = 0xFF;
 
-    unk80->x = 0;
-    unk80->y = 0;
-    unk80->unk1A = 0x100;
-    unk80->unk8 = 0;
-    unk80->unk14 = 0;
-    unk80->unk1C = 0;
-    unk80->unk22 = 0x10;
-    unk80->focused = 0;
-    unk80->unk28 = -1;
-    unk80->unk10 = 0x1000;
-    sub_8004558(unk80);
+    element->x = 0;
+    element->y = 0;
+    element->unk1A = 0x100;
+    element->unk8 = 0;
+    element->unk14 = 0;
+    element->unk1C = 0;
+    element->unk22 = 0x10;
+    element->focused = 0;
+    element->unk28[0].unk0 = -1;
+    element->unk10 = 0x1000;
+    sub_8004558(element);
 
-    unk80 = &modeScreen->unkE0;
-    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
-    unk80->anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
-    unk80->variant = sMultiplayerModeSelectScreenText[lang + 1].variant;
-    unk80->unk21 = 0xFF;
+    element = &modeScreen->unkE0;
+    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
+    element->anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
+    element->variant = sMultiplayerModeSelectScreenText[lang + 1].variant;
+    element->unk21 = 0xFF;
 
-    unk80->x = 0;
-    unk80->y = 0;
-    unk80->unk1A = 0x100;
-    unk80->unk8 = 0;
-    unk80->unk14 = 0;
-    unk80->unk1C = 0;
-    unk80->unk22 = 0x10;
-    unk80->focused = 0;
-    unk80->unk28 = -1;
-    unk80->unk10 = 0x1000;
-    sub_8004558(unk80);
+    element->x = 0;
+    element->y = 0;
+    element->unk1A = 0x100;
+    element->unk8 = 0;
+    element->unk14 = 0;
+    element->unk1C = 0;
+    element->unk22 = 0x10;
+    element->focused = 0;
+    element->unk28[0].unk0 = -1;
+    element->unk10 = 0x1000;
+    sub_8004558(element);
 
-    unk80 = &modeScreen->subText;
-    unk80->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
-    unk80->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
-    unk80->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
-    unk80->unk21 = 0xFF;
+    element = &modeScreen->subText;
+    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
+    element->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
+    element->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
+    element->unk21 = 0xFF;
 
-    unk80->x = 8;
-    unk80->y = 103;
-    unk80->unk1A = 0x100;
-    unk80->unk8 = 0;
-    unk80->unk14 = 0;
-    unk80->unk1C = 0;
-    unk80->unk22 = 0x10;
-    unk80->focused = 0;
-    unk80->unk28 = -1;
-    unk80->unk10 = 0;
+    element->x = 8;
+    element->y = 103;
+    element->unk1A = 0x100;
+    element->unk8 = 0;
+    element->unk14 = 0;
+    element->unk1C = 0;
+    element->unk22 = 0x10;
+    element->focused = 0;
+    element->unk28[0].unk0 = -1;
+    element->unk10 = 0;
 
     unk0 = &modeScreen->unk0;
     unk0->unk4 = BG_SCREEN_ADDR(0);

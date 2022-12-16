@@ -63,7 +63,7 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
         deco->unk21 = 0xFF;
         deco->unk22 = 0x10;
         deco->focused = 0;
-        deco->unk28 = -1;
+        deco->unk28[0].unk0 = -1;
         deco->unk10 = 0x2000;
     }
 }

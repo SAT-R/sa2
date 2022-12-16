@@ -252,7 +252,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->focused = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -273,7 +273,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -294,7 +294,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -316,7 +316,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -337,7 +337,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -358,7 +358,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 1;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -379,7 +379,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -400,7 +400,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -421,7 +421,7 @@ void CreateExtraEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 

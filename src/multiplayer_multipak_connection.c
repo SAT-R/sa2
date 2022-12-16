@@ -114,7 +114,7 @@ void StartMultiPakConnect(void)
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
     unkC->focused = 0;
-    unkC->unk28 = -1;
+    unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
     sub_8004558(unkC);
 
@@ -132,7 +132,7 @@ void StartMultiPakConnect(void)
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
     unkC->focused = 0;
-    unkC->unk28 = -1;
+    unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
 
     unkC = &connectScreen->unk6C;
@@ -148,7 +148,7 @@ void StartMultiPakConnect(void)
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
     unkC->focused = 0;
-    unkC->unk28 = -1;
+    unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
 
     // TODO: make macro

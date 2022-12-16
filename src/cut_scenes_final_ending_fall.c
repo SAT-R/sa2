@@ -218,7 +218,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -237,7 +237,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
     }
 
     {
@@ -256,7 +256,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
     }
 
     {
@@ -276,7 +276,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 2;
         element->unk10 = 0x2000;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -295,7 +295,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 2;
         element->unk10 = 0x2000;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
     }
 
     for (i = 0; i < 6; i++) {
@@ -314,7 +314,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 2;
         element->unk10 = 0x2000;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
     }
 
     if (gSelectedCharacter == 1) {
@@ -334,7 +334,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 2;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -355,7 +355,7 @@ void CreateFinalEndingFallCutScene(void)
         element->unk22 = 0x10;
         element->focused = 0;
         element->unk10 = 0;
-        element->unk28 = -1;
+        element->unk28[0].unk0 = -1;
         sub_8004558(element);
     }
 

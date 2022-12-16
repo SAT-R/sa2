@@ -9,7 +9,7 @@
 
 typedef s32 (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
 
-extern s32 animCmd_GetTileIndex(void *cursor, Sprite *sprite);
+extern s32 animCmd_GetTiles(void *cursor, Sprite *sprite);
 static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);
 static s32 animCmd_JumpBack(void *cursor, Sprite *sprite);
 static s32 animCmd_4(void *cursor, Sprite *sprite);
@@ -29,7 +29,7 @@ extern u32 gFlags;
 // make static
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
-    animCmd_GetTileIndex,
+    animCmd_GetTiles,
     animCmd_GetPalette,
     animCmd_JumpBack,
     animCmd_4,

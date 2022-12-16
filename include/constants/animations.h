@@ -496,6 +496,8 @@
 #define SA2_ANIM_VARIANT_TA_NEW_RECORD 0
 #define SA2_ANIM_VARIANT_TA_TIME       1
 
+#define SA2_ANIM_VS 1073
+
 // TODO: Translate Japanese texts
 #define SA2_ANIM_MP_MSG                    1074
 #define SA2_ANIM_VARIANT_MP_MSG_JAPANESE_0 0

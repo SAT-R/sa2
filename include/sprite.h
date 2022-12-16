@@ -77,10 +77,19 @@ struct UNK_0808B3FC_UNK240_UNKC {
     s16 unkA;
 };
 
+typedef struct {
+    s32 unk0;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+} Sprite_UNK28;
+
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`
 typedef struct {
     // These values are part of some other struct
+    // Note(Jace): Isn't this a u8* to the tile data in the ROM?
     /* 0x00 */ u32 unk0;
 
     /* 0x04 */ void *vram;
@@ -117,8 +126,7 @@ typedef struct {
     /* 0x25 */ u8 focused;
 
     /* 0x26 */ u8 filler26[2];
-    /* 0x28 */ s32 unk28;
-    /* 0x2C */ u8 filler2C[4];
+    /* 0x28 */ Sprite_UNK28 unk28[1];
 } Sprite /* size = 0x30 */;
 
 // Transformer
