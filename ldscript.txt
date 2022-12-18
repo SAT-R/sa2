@@ -78,7 +78,6 @@ SECTIONS
         build/sa2/asm/interactable_spikes.o(.text);
         build/sa2/asm/interactable_corkscrew.o(.text);
         build/sa2/src/interactable_bouncy_bar.o(.text);
-        build/sa2/asm/interactable_bouncy_bar.o(.text);
         build/sa2/asm/interactable_corkscrew_3D.o(.text);
         build/sa2/asm/interactable_stage_goal.o(.text);
         build/sa2/asm/interactable_checkpoint.o(.text);
@@ -213,6 +212,8 @@ SECTIONS
         build/sa2/src/interactable_spring_bouncy.o(.rodata);
         build/sa2/src/interactable_019.o(.rodata);
         build/sa2/data/unused_objects_data.o(.rodata);
+        build/sa2/src/interactable_bouncy_bar.o(.rodata);
+        build/sa2/data/unused_objects_data_2.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/src/special_stage_data.o(.rodata);
         build/sa2/src/special_stage_player.o(.rodata);

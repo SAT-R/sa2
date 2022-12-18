@@ -34,4 +34,6 @@ typedef struct {
 
 bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
 
+void TaskDestructor_80095E8(struct Task *);
+
 #endif // GUARD_INTERACTABLE_H

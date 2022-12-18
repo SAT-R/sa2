@@ -12,16 +12,22 @@
 
 typedef struct {
     /* 0x0 */ SpriteBase base;
-    /* 0xC */ Sprite displayed;
+    /* 0xA */ Sprite displayed;
     /* 0x3C */ u8 unk3C;
     /* 0x3D */ u8 unk3D;
-    /* 0x3E */ u16 unk3E;
-    /* 0x40 */ u16 unk40;
+    /* 0x3E */ s16 unk3E;
+    /* 0x40 */ s16 unk40;
 } BouncyBar;
 
 void sub_806160C(void);
+void sub_80617A4(void);
 
-void TaskDestructor_80095E8(struct Task *);
+const u16 gUnknown_080D94E8[] = { 9, 9, 9 };
+
+const s8 gUnknown_080D94EE[] = { -16, -18, -20 };
+
+const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
+
 void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
@@ -64,10 +70,6 @@ void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
         displayed->unk10 |= 0x400;
     }
 }
-
-extern const u16 gUnknown_080D94E8[];
-
-void sub_80617A4(void);
 
 void sub_806160C(void)
 {
@@ -117,5 +119,55 @@ void sub_806160C(void)
     }
 
     sub_8004558(displayed);
+    sub_80051E8(displayed);
+}
+
+void sub_80617A4(void)
+{
+    BouncyBar *bar = TaskGetStructPtr(gCurTask);
+    Sprite *displayed = &bar->displayed;
+    Interactable *ia = bar->base.ia;
+
+    s32 screenX, screenY;
+
+    screenX = SpriteGetScreenPos(bar->base.spriteX, bar->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, bar->base.regionY);
+    displayed->x = screenX - gCamera.x;
+    displayed->y = screenY - gCamera.y;
+
+    if (bar->unk3D != 0) {
+        s8 temp;
+        bar->unk3D--;
+        gPlayer.y += bar->unk40 * bar->unk3E;
+        gPlayer.speedAirY = 0;
+
+        if (bar->unk3D == 0) {
+            temp = (bar->unk40 >> 1) + (bar->unk40 >> 2);
+
+            if (temp > 0x18) {
+                temp = 0x18;
+            }
+
+            gPlayer.speedAirY = gUnknown_080D94F2[bar->unk3C];
+            gPlayer.speedAirY
+                += ((temp * bar->unk3E) * gUnknown_080D94EE[bar->unk3C]) >> 1;
+            gPlayer.moveState &= ~MOVESTATE_400000;
+            gPlayer.moveState &= ~MOVESTATE_100;
+        }
+    }
+
+    if ((u16)(displayed->x + 128) > 496 || ((s16)displayed->y + 128) < 0
+        || ((s16)displayed->y) > 288) {
+        ia->x = bar->base.spriteX;
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (sub_8004558(displayed) == 0) {
+        displayed->anim = 538;
+        displayed->variant = 0;
+        displayed->unk21 = 0xFF;
+        gCurTask->main = sub_806160C;
+    }
     sub_80051E8(displayed);
 }

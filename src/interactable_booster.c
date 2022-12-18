@@ -17,7 +17,6 @@ typedef struct {
     /* 0x0C */ Sprite displayed;
 } Sprite_Booster;
 
-extern void TaskDestructor_80095E8(struct Task *);
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, s8);
 
