@@ -135,7 +135,10 @@
         "animations.h": "c",
         "cut_scenes.h": "c",
         "cut_scenes_credits.h": "c",
-        "cut_scenes_extra_ending_slides.h": "c"
+        "cut_scenes_extra_ending_slides.h": "c",
+        "interactables.h": "c",
+        "interactable.h": "c",
+        "move_states.h": "c"
     },
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/oliverbell/Documents/Repos/SoAdvance2/.github/workflows/build.yml"

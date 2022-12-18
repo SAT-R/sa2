@@ -1,6 +1,9 @@
 #ifndef GUARD_ANIMATION_COMMANDS_H
 #define GUARD_ANIMATION_COMMANDS_H
 
+#include "global.h"
+#include "sprite.h"
+
 #define AnimCommandSizeInWords(_structType) ((sizeof(_structType)) / sizeof(s32))
 
 typedef struct {
