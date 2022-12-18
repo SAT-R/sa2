@@ -30,7 +30,7 @@ gSpriteOamData:
 
     .global gSpritePalettes @ 0x0816ADC8
 gSpritePalettes:
-    .incbin "baserom.gba", 0x0016ADC8, 0x5BE0
+    .include "graphics/obj_palettes.inc"
     
 @; TODO: Maybe just call it "gSprites"?
     .global gSpriteImages @ 0x081709A8
