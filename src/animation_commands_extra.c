@@ -69,7 +69,6 @@ s32 sub_8004558(Sprite *sprite)
             }
         }
 
-        //sprite->unkC = (void*)0;
         sprite->unk14 += 2;
     }
     return 1;
