@@ -6,13 +6,14 @@
 #define GUARD_DATA_H
 
 #include "global.h"
+#include "animation_commands.h"
 
 // TODO: extract this data
 extern union Unk_03002E60 gMapHeaders[];
 
 struct SpriteTables {
-    /* 0x00 */ void *animations;
-    /* 0x04 */ void *dimensions;
+    /* 0x00 */ ACmd ***animations;
+    /* 0x04 */ SpriteOffset **dimensions;
     /* 0x08 */ u16 **oamData;
     /* 0x0C */ u16 *palettes;
     /* 0x10 */ u8 *tiles_4bpp;

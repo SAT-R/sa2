@@ -3513,6 +3513,7 @@ _08004522:
 	bx r1
 	.align 2, 0
 
+.if 0
 @ matched as sub_08153D78 in katam
 	thumb_func_start sub_8004558
 sub_8004558: @ 0x08004558
@@ -3569,9 +3570,9 @@ _080045A0:
 	b _08004678
 _080045B8:
 	ldr r0, _08004664 @ =gUnknown_03002794
-	ldr r1, [r0]
+	ldr r1, [r0]                @ r1 = spriteTables
 	ldrh r0, [r4, #0xa]
-	ldr r1, [r1]
+	ldr r1, [r1]                @ r1 = animations
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r2, [r0]
@@ -3583,10 +3584,10 @@ _080045B8:
 	ldr r5, [r0]
 	ldrh r0, [r4, #0x14]
 	lsls r0, r0, #2
-	adds r3, r5, r0
+	adds r3, r5, r0     
 	ldr r0, [r3]
 	adds r6, r1, #0
-	cmp r0, #0
+	cmp r0, #0          @ r0 = cmd
 	bge _08004628
 	ldr r7, _08004668 @ =gUnknown_080984AC
 _080045E2:
@@ -3626,7 +3627,7 @@ _0800461C:
 	cmp r0, #0
 	blt _080045E2
 _08004628:
-	ldr r0, [r3]
+	ldr r0, [r3]            @r3 = cmd
 	lsls r0, r0, #8
 	ldrh r1, [r4, #0x1c]
 	adds r0, r0, r1
@@ -3673,3 +3674,4 @@ _0800467A:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
+.endif
