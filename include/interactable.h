@@ -3,6 +3,8 @@
 
 #include "gba/defines.h"
 #include "gba/types.h"
+#include "sprite.h"
+#include "game.h"
 
 #define INTERACTABLE_DATA_SIZE_SA1 4
 #define INTERACTABLE_DATA_SIZE_SA2 4
@@ -29,5 +31,9 @@ typedef struct {
     /* 0x08 */ u8 spriteX;
     /* 0x09 */ u8 spriteY;
 } SpriteBase;
+
+bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
+
+void TaskDestructor_80095E8(struct Task *);
 
 #endif // GUARD_INTERACTABLE_H
