@@ -90,7 +90,6 @@ typedef struct {
     s16 offsetY;
 } SpriteOffset;
 
-
 typedef struct {
     s32 unk0;
     u8 unk4;
@@ -98,7 +97,6 @@ typedef struct {
     u8 unk6;
     u8 unk7;
 } Sprite_UNK28;
-
 
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`

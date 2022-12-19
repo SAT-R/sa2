@@ -91,7 +91,6 @@ typedef struct {
     /* 0x04 */ s32 unk4;
 } ACmd_12;
 
-
 typedef struct {
     // number of frames this will be displayed
     s32 delay;
