@@ -1,3 +1,5 @@
+	.section .rodata
+
 .incbin "graphics/obj_palettes/pal_000.gbapal"
 .incbin "graphics/obj_palettes/pal_001.gbapal"
 .incbin "graphics/obj_palettes/pal_002.gbapal"
