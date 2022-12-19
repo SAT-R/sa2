@@ -15,10 +15,9 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
-#if 0 // Matches
-u32 sub_8004518_(u16 num)
+u32 sub_8004518(u16 num)
 {
-    u8  i;
+    u8 i;
     u16 result;
     u8 lowDigit;
     u16 remainder = num;
@@ -28,16 +27,14 @@ u32 sub_8004518_(u16 num)
         s32 divisor = Div(remainder, 10);
         lowDigit = remainder - divisor * 10;
         remainder = ((divisor << 16) >> 16);
-        
+
         result |= lowDigit << (i << 2);
     }
 
     return result;
 }
-#endif
 
-#if 1
-s32 sub_8004558(Sprite *sprite)
+NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
 {
     if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->anim) {
         sprite->unk8 = 0;
@@ -61,10 +58,7 @@ s32 sub_8004558(Sprite *sprite)
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[sprite->anim];
         cursor = &variants[sprite->variant];
-        for (cmd = cursor[sprite->unk14];
-             cmd->id < 0;
-             cmd = cursor[sprite->unk14])
-        {
+        for (cmd = cursor[sprite->unk14]; cmd->id < 0; cmd = cursor[sprite->unk14]) {
             ret = animCmdTable[~cmd->id](cmd, sprite);
             if (ret != +1) {
                 if (ret != -1)
@@ -86,9 +80,10 @@ s32 sub_8004558(Sprite *sprite)
                 const struct SpriteTables *sprTables = gUnknown_03002794;
 
                 // TODO: Remove cast
-                sprite->unkC = (struct UNK_0808B3FC_UNK240_UNKC*)&sprTables->dimensions[sprite->anim][frame];
+                sprite->unkC = (struct UNK_0808B3FC_UNK240_UNKC *)&sprTables
+                                   ->dimensions[sprite->anim][frame];
             } else {
-                sprite->unkC = (void*)-1;
+                sprite->unkC = (void *)-1;
             }
         }
 
@@ -96,7 +91,7 @@ s32 sub_8004558(Sprite *sprite)
     }
     return 1;
 }
-#endif
+END_NONMATCH
 
 // (-1)
 s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
