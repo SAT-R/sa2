@@ -1074,7 +1074,7 @@ gAnimations:
 	.4byte anim_1070
 	.4byte anim_1071
 	.4byte anim_ta_record
-	.4byte anim_1073
+	.4byte anim_vs
 	.4byte anim_mp_msg
 	.4byte anim_1075
 	.4byte anim_multiplayer_unknown

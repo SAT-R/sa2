@@ -85,3 +85,4 @@ To format code run `make format`
 - [Pokemon Reverse Engineering Team](https://github.com/pret) for their help with the project, and tooling for GBA decompilations
 - [Kermalis](https://github.com/Kermalis) for [their tool](https://github.com/Kermalis/VGMusicStudio) which was used to dump the game midis
 - [琪姬](https://github.com/laqieer) for their exellent work [documenting](https://github.com/FireEmblemUniverse/fireemblem8u/pull/137) all the quirks of matching midis
+- [JaceCear](https://github.com/JaceCear) for their dedication to understanding the internals of the graphics engine and writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter)

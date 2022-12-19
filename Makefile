@@ -90,10 +90,13 @@ LDSCRIPT := ldscript.txt
 C_SUBDIR = src
 ASM_SUBDIR = asm
 DATA_ASM_SUBDIR = data
+
 SONG_SUBDIR = sound/songs
 SOUND_ASM_SUBDIR = sound
 MID_SUBDIR = sound/songs/midi
 SAMPLE_SUBDIR = sound/direct_sound_samples
+
+OBJ_TILES_4BPP_SUBDIR = graphics/obj_tiles/4bpp
 
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
@@ -184,6 +187,7 @@ tidy:
 #### Recipes ####
 
 include songs.mk
+include graphics.mk
 
 %.s: ;
 %.png: ;

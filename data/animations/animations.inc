@@ -932,7 +932,7 @@
 .include "data/animations/anims/anim_1070.inc"
 .include "data/animations/anims/anim_1071.inc"
 .include "data/animations/anims/anim_ta_record.inc"
-.include "data/animations/anims/anim_1073.inc"
+.include "data/animations/anims/anim_vs.inc"
 .include "data/animations/anims/anim_mp_msg.inc"
 .include "data/animations/anims/anim_1075.inc"
 .include "data/animations/anims/anim_multiplayer_unknown.inc"

@@ -130,7 +130,7 @@ void CreateTimeAttackModeSelectionScreen(void)
 
     element = &modeScreen->unk80;
     element->vram = VramMalloc(0x6C);
-    element->anim = SA2_ANIM_TIME_ATTACK;
+    element->anim = SA2_ANIM_TIME_ATTACK_JP;
     element->variant = SA2_ANIM_VARIANT_TA_TITLE;
     element->unk21 = 0xFF;
     element->x = 0;

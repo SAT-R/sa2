@@ -70,3 +70,5 @@ reports
 *.lz
 *.gba
 maps
+*.4bpp
+*.8bpp

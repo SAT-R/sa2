@@ -6,8 +6,8 @@ gSpriteTables: @ 0x080F40D4
     .4byte gSpriteDimensions
     .4byte gSpriteOamData
     .4byte gSpritePalettes
-    .4byte gSpriteImages
-    .4byte gUnknown_086E9E08
+    .4byte gObjTiles_4bpp
+    .4byte gObjTiles_8bpp
     
     .include "data/animations/animations.inc"
     .include "data/animations/animations_table.inc"
@@ -30,13 +30,12 @@ gSpriteOamData:
 
     .global gSpritePalettes @ 0x0816ADC8
 gSpritePalettes:
-    .incbin "baserom.gba", 0x0016ADC8, 0x5BE0
-    
-@; TODO: Maybe just call it "gSprites"?
-    .global gSpriteImages @ 0x081709A8
-gSpriteImages:
-    .incbin "baserom.gba", 0x001709A8, 0x579460
+    .include "graphics/obj_palettes.inc"
 
-    .global gUnknown_086E9E08
-gUnknown_086E9E08:
+    .global gObjTiles_4bpp @ 0x081709A8
+gObjTiles_4bpp:
+    .include "graphics/obj_tiles_4bpp.inc"
+
+    .global gObjTiles_8bpp
+gObjTiles_8bpp: @ 0x086E9E08
     .incbin "baserom.gba", 0x006E9E08, 0x600
