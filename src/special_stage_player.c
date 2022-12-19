@@ -107,9 +107,9 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         Sprite *element = &player->roboArrow;
         u16 *affine = &gOamBuffer[120].all.affineParam;
 
-        element->vram = player->unkA0;
-        element->unk8 = 0;
-        element->anim = SA2_ANIM_SP_STAGE_ARROW;
+        element->graphics.dest = player->unkA0;
+        element->graphics.size = 0;
+        element->graphics.anim = SA2_ANIM_SP_STAGE_ARROW;
         element->unk10 = 0x107E;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = (DISPLAY_HEIGHT / 2);
@@ -309,9 +309,9 @@ void sub_806D548(Sprite *element, void *vram, s16 a, u8 b, const struct UNK_80DF
         unk10 |= 0x800;
     }
 
-    element->vram = vram;
-    element->unk8 = 0;
-    element->anim = c4->anim;
+    element->graphics.dest = vram;
+    element->graphics.size = 0;
+    element->graphics.anim = c4->anim;
     element->unk10 = unk10;
     element->x = (DISPLAY_WIDTH / 2);
     element->y = a;
@@ -407,7 +407,7 @@ void sub_806D7D0(Sprite *element, s16 animSpeed, s16 spriteY,
     if (anim->unk7 & 2) {
         unk10 |= 0x800;
     }
-    element->anim = anim->anim;
+    element->graphics.anim = anim->anim;
     element->unk10 = unk10;
     element->y = spriteY;
     element->variant = anim->variant;
@@ -427,7 +427,7 @@ void sub_806D830(Sprite *element, s16 a, s16 spriteY, const struct UNK_80DF670 *
     if (anim->unk7 & 2) {
         unk10 |= 0x800;
     }
-    element->anim = anim->anim;
+    element->graphics.anim = anim->anim;
     element->unk10 = unk10;
     element->y = spriteY;
     element->variant = anim->variant;

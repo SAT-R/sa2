@@ -76,7 +76,7 @@ u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
 /* 0x03002794 */ const struct SpriteTables *gUnknown_03002794 = NULL;
-struct BgHeader *gUnknown_030027A0[] ALIGNED(16) = {};
+struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
@@ -93,7 +93,7 @@ u16 gBgPalette[] ALIGNED(16) = {};
 // gComputedBgSectorSize
 u8 gUnknown_03002A80 ALIGNED(4) = 0;
 
-u8 gUnknown_03002A84 ALIGNED(4) = 0;
+u8 gVramGraphicsCopyQueueIndex ALIGNED(4) = 0;
 u16 gPrevInput ALIGNED(4) = 0;
 u16 gUnknown_03002A8C ALIGNED(4) = 0;
 
@@ -111,7 +111,7 @@ u8 gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
 void *gUnknown_03004D54 = NULL;
 u16 gUnknown_03004D58 ALIGNED(4) = 0;
-u8 gUnknown_03004D5C ALIGNED(4) = 0;
+u8 gVramGraphicsCopyCursor ALIGNED(4) = 0;
 u8 gUnknown_03004D60[] ALIGNED(16) = {};
 u8 gUnknown_03004D80[] = {};
 OamData gOamBuffer[] ALIGNED(16) = {};
@@ -131,7 +131,7 @@ static void UpdateScreenCpuSet(void);
 static void ClearOamBufferCpuSet(void);
 static void ClearOamBufferDma(void);
 static void GetInput(void);
-static u32 sub_80021C4(void);
+static u32 ProcessVramGraphicsCopyQueue(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -166,7 +166,7 @@ IntrFunc const gIntrTableTemplate[] = {
 };
 
 static SpriteUpdateFunc const spriteUpdateFuncs[] = {
-    sub_80021C4,
+    ProcessVramGraphicsCopyQueue,
     sub_8004010,
     sub_80039E4,
     sub_8002B20,
@@ -202,8 +202,8 @@ static void GameInit(void)
     gUnknown_03002AE4 = 0;
     gUnknown_0300287C = 0;
     gUnknown_03005390 = 0;
-    gUnknown_03004D5C = 0;
-    gUnknown_03002A84 = 0;
+    gVramGraphicsCopyCursor = 0;
+    gVramGraphicsCopyQueueIndex = 0;
 
     DmaFill32(3, 0, gUnknown_03002280, 0x10);
 
@@ -217,7 +217,7 @@ static void GameInit(void)
 
     gDispCnt = DISPCNT_FORCED_BLANK;
 
-    DmaFill32(3, 0, gUnknown_030027A0, sizeof(gUnknown_030027A0));
+    DmaFill32(3, 0, gVramGraphicsCopyQueue, sizeof(gVramGraphicsCopyQueue));
 
     gUnknown_030018F0 = 0;
     gUnknown_03002AE0 = 0;
@@ -600,28 +600,40 @@ static void VBlankIntr(void)
     REG_IF = INTR_FLAG_VBLANK;
 }
 
-static u32 sub_80021C4(void)
+// TODO: Fix ProcessVramGraphicsCopyQueue so no need to cast
+struct GraphicsData_Hack {
+    u32 src;
+    u32 dest;
+    u16 remainingBytes;
+};
+
+#define COPY_CHUNK_SIZE 1024
+
+static u32 ProcessVramGraphicsCopyQueue(void)
 {
-    u32 i;
-    struct BgHeader *current;
+    u32 offset;
+    struct GraphicsData_Hack *graphics;
 
-    while (gUnknown_03004D5C != gUnknown_03002A84) {
-        current = gUnknown_030027A0[gUnknown_03004D5C];
+    while (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex) {
+        graphics = (struct GraphicsData_Hack *)
+            gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
 
-        if (current->unk8) {
-            for (i = 0; current->unk8 != 0; i += 0x400) {
-                if (current->unk8 > 0x400) {
-                    DmaCopy16(3, current->unk0 + i, current->unk4 + i, 0x400);
-                    current->unk8 -= 0x400;
+        if (graphics->remainingBytes != 0) {
+            for (offset = 0; graphics->remainingBytes > 0; offset += COPY_CHUNK_SIZE) {
+                if (graphics->remainingBytes > COPY_CHUNK_SIZE) {
+                    DmaCopy16(3, graphics->src + offset, graphics->dest + offset,
+                              COPY_CHUNK_SIZE);
+                    graphics->remainingBytes -= COPY_CHUNK_SIZE;
                 } else {
-                    DmaCopy16(3, current->unk0 + i, current->unk4 + i, current->unk8);
-                    current->unk8 = 0;
+                    DmaCopy16(3, graphics->src + offset, graphics->dest + offset,
+                              graphics->remainingBytes);
+                    graphics->remainingBytes = 0;
                 }
             }
         }
 
-        gUnknown_03004D5C++;
-        gUnknown_03004D5C &= ARRAY_COUNT(gUnknown_030027A0) - 1;
+        gVramGraphicsCopyCursor++;
+        gVramGraphicsCopyCursor &= ARRAY_COUNT(gVramGraphicsCopyQueue) - 1;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
             return 0;

@@ -180,9 +180,9 @@ void sub_806E94C(struct SpecialStageWorld *world)
 
     for (i = 0; i < num; i++) {
         Sprite *element = &world->unk90[i];
-        element->vram = gUnknown_03005B5C;
-        element->unk8 = 0;
-        element->anim = assets[i].anim;
+        element->graphics.dest = gUnknown_03005B5C;
+        element->graphics.size = 0;
+        element->graphics.anim = assets[i].anim;
         element->unk10 = 0x80000;
         element->x = 0;
         element->y = 0;

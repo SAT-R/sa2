@@ -160,8 +160,8 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     gBgScrollRegs[2][1] = 0;
 
     background = &lobbyScreen->background;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -177,14 +177,14 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     sub_8002A3C(background);
 
     element = &lobbyScreen->chao;
-    element->vram = VramMalloc(0x38);
-    element->anim = 0x450;
+    element->graphics.dest = VramMalloc(0x38);
+    element->graphics.anim = 0x450;
     element->variant = 3;
     element->unk21 = 0xFF;
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT)-50;
     element->unk1A = 0xC0;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -194,14 +194,15 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         element = &lobbyScreen->uiElements[i];
-        element->vram = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
-        element->anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
+        element->graphics.dest
+            = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
+        element->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
         element->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
         element->unk21 = 0xFF;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = (DISPLAY_HEIGHT / 4) - 4;
         element->unk1A = 0x100;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -310,14 +311,14 @@ static void ScreenMain(void)
 
             if (lobbyScreen->cursor != CURSOR_YES) {
                 if (chao->variant != 5) {
-                    chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                    chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 4;
                     chao->unk21 = 0xFF;
                 }
 
             } else {
                 if (chao->variant != 3) {
-                    chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                    chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 6;
                     chao->unk21 = 0xFF;
                 }
@@ -337,7 +338,7 @@ static void ScreenMain(void)
             lobbyScreen->cursor = 0;
 
             if (chao->variant != 3) {
-                chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 6;
                 chao->unk21 = 0xFF;
             }
@@ -349,7 +350,7 @@ static void ScreenMain(void)
             lobbyScreen->cursor = 1;
 
             if (chao->variant != 5) {
-                chao->anim = SA2_ANIM_MP_CHEESE_SITTING;
+                chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 4;
                 chao->unk21 = 0xFF;
             }
@@ -477,7 +478,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
     m4aSongNumStart(MUS_VS_EXIT);
 
     // Cheese waves at the Player
-    chao->anim = SA2_ANIM_MP_CHEESE_WAVING;
+    chao->graphics.anim = SA2_ANIM_MP_CHEESE_WAVING;
     chao->variant = 0;
     chao->unk21 = 0xFF;
     gCurTask->main = Task_FadeInOrHandleExit;
@@ -489,7 +490,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
     // Chao anim finished
     if (!sub_8004558(element)) {
         if (lobbyScreen->cursor != CURSOR_YES
-            && element->anim == SA2_ANIM_MP_CHEESE_WAVING) {
+            && element->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
             element->variant = 1;
         } else {
             if (element->variant == 6) {
@@ -539,10 +540,10 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 {
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
-    VramFree(lobbyScreen->chao.vram);
+    VramFree(lobbyScreen->chao.graphics.dest);
 
     for (i = 0; i < 3; i++) {
-        VramFree(lobbyScreen->uiElements[i].vram);
+        VramFree(lobbyScreen->uiElements[i].graphics.dest);
     }
 }
 

@@ -705,7 +705,7 @@ static void SoundTestScreenRenderUI(void)
     }
 
     for (i = 0; i < 4; i++) {
-        if (unk2D8->anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
+        if (unk2D8->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].unk0 = i << 8;
             speakerConeEffects[i].unk4 = speakerConeEffects[i].unk2
                 = soundTestScreen->speakerSize + 0x100;
@@ -788,42 +788,42 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
             animatedCream->variant = 0;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_BOW;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_BOW;
             break;
         case CREAM_ANIM_IDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
             animatedCream->variant = 0;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CLAP_FORWARD;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CLAP_FORWARD;
             break;
         case CREAM_ANIM_DANCE_RIGHT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 &= ~0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_MIDDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 &= ~0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_HOLDING;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_LEFT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk10 |= 0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_SOUND_END:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
             animatedCream->unk21 = 0xFF;
             animatedCream->variant = 0;
-            animatedCream->anim = SA2_ANIM_SOUNDTEST_CREAM_WAITING;
+            animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_WAITING;
             break;
         default:
             break;
@@ -840,7 +840,7 @@ static void SoundTestScreenUpdateCreamAnim(void)
     switch (soundTestScreen->state) {
         case SOUND_TEST_SCREEN_STOPPED:
             // If current animation is song end, set to anim idle
-            if (animatedCream->anim == SA2_ANIM_SOUNDTEST_CREAM_WAITING) {
+            if (animatedCream->graphics.anim == SA2_ANIM_SOUNDTEST_CREAM_WAITING) {
                 if (!sub_8004558(animatedCream)) {
                     SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
                 }

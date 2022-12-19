@@ -102,8 +102,8 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     transitionConfig->unk8 = 0x3FFF;
 
     background = &scene->unk0;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;

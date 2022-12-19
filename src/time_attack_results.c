@@ -95,11 +95,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         element = &resultsCutScene->unk178[i];
         element->x = i * 14 + 72;
         element->y = (DISPLAY_HEIGHT / 2) + 8;
-        element->vram = VramMalloc(4);
-        element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
+        element->graphics.dest = VramMalloc(4);
+        element->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
         element->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
         element->unk1A = 0x100;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
@@ -126,11 +126,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unk12C;
     element->x = 256;
     element->y = (DISPLAY_HEIGHT / 2);
-    element->vram = VramMalloc(4);
-    element->anim = SA2_ANIM_TA_WHITE_BAR;
+    element->graphics.dest = VramMalloc(4);
+    element->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     element->variant = 0;
     element->unk1A = 0x140;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -143,11 +143,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unkC[0];
     element->x = 256;
     element->y = 41;
-    element->vram = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
-    element->anim = gUnknown_080D713C[gSelectedCharacter][1];
+    element->graphics.dest = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
+    element->graphics.anim = gUnknown_080D713C[gSelectedCharacter][1];
     element->variant = gUnknown_080D713C[gSelectedCharacter][2];
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -162,11 +162,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unkC[1];
     element->x = 256;
     element->y = 49;
-    element->vram = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
-    element->anim = gUnknown_080D715A[isBossLevel][1];
+    element->graphics.dest = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
+    element->graphics.anim = gUnknown_080D715A[isBossLevel][1];
     element->variant = gUnknown_080D715A[isBossLevel][2];
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -185,11 +185,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unkC[2];
     element->x = 256;
     element->y = 49;
-    element->vram = VramMalloc(gUnknown_080D7178[level][0]);
-    element->anim = gUnknown_080D7178[level][1];
+    element->graphics.dest = VramMalloc(gUnknown_080D7178[level][0]);
+    element->graphics.anim = gUnknown_080D7178[level][1];
     element->variant = gUnknown_080D7178[level][2];
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -202,11 +202,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unk9C[0];
     element->x = 40;
     element->y = 90;
-    element->vram = VramMalloc(8);
-    element->anim = SA2_ANIM_TA_RECORD;
+    element->graphics.dest = VramMalloc(8);
+    element->graphics.anim = SA2_ANIM_TA_RECORD;
     element->variant = SA2_ANIM_VARIANT_TA_TIME;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -219,8 +219,8 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unk9C[1];
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT * (3. / 4.));
-    element->vram = VramMalloc(16);
-    element->anim = SA2_ANIM_TIME_ATTACK_DIGITS;
+    element->graphics.dest = VramMalloc(16);
+    element->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
     if (resultsCutScene->unk2D8 != 0) {
         element->variant
             = resultsCutScene->unk2D8 + SA2_ANIM_VARIANT_TA_DIGITS_PLATE_0_BRONZE;
@@ -228,7 +228,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         element->variant = SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD;
     }
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -247,11 +247,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unk9C[2];
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT - 12);
-    element->vram = VramMalloc(0x16);
-    element->anim = SA2_ANIM_TA_RECORD;
+    element->graphics.dest = VramMalloc(0x16);
+    element->graphics.anim = SA2_ANIM_TA_RECORD;
     element->variant = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -441,7 +441,7 @@ void sub_8089B40(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         CreateTimeAttackLobbyScreen();
         return;
     }
@@ -455,18 +455,18 @@ void sub_8089BB0(struct Task *t)
 {
     u32 i;
     struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(t);
-    VramFree(resultsCutScene->unk12C.vram);
+    VramFree(resultsCutScene->unk12C.graphics.dest);
 
     for (i = 0; i < 3; i++) {
-        VramFree(resultsCutScene->unkC[i].vram);
+        VramFree(resultsCutScene->unkC[i].graphics.dest);
     }
 
     for (i = 0; i < 3; i++) {
-        VramFree(resultsCutScene->unk9C[i].vram);
+        VramFree(resultsCutScene->unk9C[i].graphics.dest);
     }
 
     for (i = 0; i < 7; i++) {
-        VramFree(resultsCutScene->unk178[i].vram);
+        VramFree(resultsCutScene->unk178[i].graphics.dest);
     }
 
     gUnknown_03005424 &= ~0x200;

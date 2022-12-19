@@ -80,11 +80,12 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
 
     SET_SPRITE_INITIALIZED(ia);
 
-    displayed->vram = VramMalloc(sBoosterAnimationData[value][ia->d.sData[0]].numTiles);
-    displayed->anim = sBoosterAnimationData[value][ia->d.sData[0]].anim;
+    displayed->graphics.dest
+        = VramMalloc(sBoosterAnimationData[value][ia->d.sData[0]].numTiles);
+    displayed->graphics.anim = sBoosterAnimationData[value][ia->d.sData[0]].anim;
     displayed->variant = sBoosterAnimationData[value][ia->d.sData[0]].variant;
     displayed->unk1A = 0x480;
-    displayed->unk8 = 0;
+    displayed->graphics.size = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;

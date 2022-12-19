@@ -570,7 +570,7 @@ static s16 CalcGuardRoboPointerAngle(struct SpecialStage *stage)
     }
 
     player->roboArrow.variant = gUnknown_080DF794[temp2].variant;
-    player->roboArrow.anim = gUnknown_080DF794[temp2].anim;
+    player->roboArrow.graphics.anim = gUnknown_080DF794[temp2].anim;
 
     temp3 = temp1;
     f_dX >>= temp3;

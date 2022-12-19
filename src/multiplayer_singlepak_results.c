@@ -121,8 +121,8 @@ void sub_8081FB0(void)
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
 {
     Background *background = &screen->unk0;
-    background->unk4 = BG_SCREEN_ADDR(16);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -173,20 +173,20 @@ void sub_808207C(void)
                 s32 var;
 #endif
                 element = &resultsScreen->unk370[i];
-                element->vram = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
+                element->graphics.dest = (void *)(OBJ_VRAM0 + 0x2500 + (i * 0x180));
 
                 element->x = 0;
                 element->y = 0;
                 element->unk1A = 0x100;
-                element->unk8 = 0;
+                element->graphics.size = 0;
 #ifndef NON_MATCHING
                 var = 0x44c;
                 asm("" ::"r"(var));
 #endif
                 if (gUnknown_030053EC == 1) {
-                    element->anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
+                    element->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
                 } else {
-                    element->anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
+                    element->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
                 }
 
                 element->variant = i;
@@ -206,16 +206,16 @@ void sub_808207C(void)
             element->y = (DISPLAY_HEIGHT / 2);
 
             if (resultsScreen->unk434) {
-                element->vram = resultsScreen->unk370[2].vram + 0x180;
+                element->graphics.dest = resultsScreen->unk370[2].graphics.dest + 0x180;
             } else {
-                element->vram = resultsScreen->unk340.vram + 0x180;
+                element->graphics.dest = resultsScreen->unk340.graphics.dest + 0x180;
             }
             element->unk1A = 0;
-            element->unk8 = 0;
+            element->graphics.size = 0;
             if (gUnknown_030053EC == 1) {
-                element->anim = SA2_ANIM_PRESS_START_MSG_JP;
+                element->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
             } else {
-                element->anim = SA2_ANIM_PRESS_START_MSG_EN;
+                element->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
             }
             element->variant = 0;
             element->unk14 = 0;
@@ -285,8 +285,8 @@ void sub_80823FC(void)
             background = &resultsScreen->unk40;
             gBgScrollRegs[2][0] = 0;
             gBgScrollRegs[2][1] = 0;
-            background->unk4 = BG_SCREEN_ADDR(24);
-            background->unkA = 0;
+            background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+            background->graphics.anim = 0;
             background->unkC = BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
@@ -590,10 +590,10 @@ void sub_8082CEC(Sprite *element, u32 vramAddr, u16 asset, u8 variant, s16 x, s1
 {
     element->x = x;
     element->y = y;
-    element->vram = (void *)vramAddr;
+    element->graphics.dest = (void *)vramAddr;
     element->unk1A = unk1A;
-    element->unk8 = 0;
-    element->anim = asset;
+    element->graphics.size = 0;
+    element->graphics.anim = asset;
     element->variant = variant;
     element->unk14 = 0;
     element->unk1C = 0;

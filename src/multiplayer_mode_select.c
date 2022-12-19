@@ -117,14 +117,14 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_802D4CC(unk140);
 
     element = &modeScreen->unk80;
-    element->vram = VramMalloc(0x32);
-    element->anim = SA2_ANIM_VS;
+    element->graphics.dest = VramMalloc(0x32);
+    element->graphics.anim = SA2_ANIM_VS;
     element->variant = 0;
     element->unk21 = 0xFF;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -134,15 +134,15 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkB0;
-    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
-    element->anim = sMultiplayerModeSelectScreenText[lang].anim;
+    element->graphics.dest = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
+    element->graphics.anim = sMultiplayerModeSelectScreenText[lang].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang].variant;
     element->unk21 = 0xFF;
 
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -152,15 +152,16 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkE0;
-    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
-    element->anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
+    element->graphics.dest
+        = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
+    element->graphics.anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang + 1].variant;
     element->unk21 = 0xFF;
 
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -170,15 +171,16 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->subText;
-    element->vram = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
-    element->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
+    element->graphics.dest
+        = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
+    element->graphics.anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
     element->unk21 = 0xFF;
 
     element->x = 8;
     element->y = 103;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -187,8 +189,8 @@ void CreateMultiplayerModeSelectScreen(void)
     element->unk10 = 0;
 
     unk0 = &modeScreen->unk0;
-    unk0->unk4 = BG_SCREEN_ADDR(0);
-    unk0->unkA = 0;
+    unk0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    unk0->graphics.anim = 0;
     unk0->unkC = BG_SCREEN_ADDR(20);
     unk0->unk18 = 0;
     unk0->unk1A = 0;
@@ -204,8 +206,8 @@ void CreateMultiplayerModeSelectScreen(void)
     sub_8002A3C(unk0);
 
     unk0 = &modeScreen->unk40;
-    unk0->unk4 = BG_SCREEN_ADDR(24);
-    unk0->unkA = 0;
+    unk0->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    unk0->graphics.anim = 0;
     unk0->unkC = BG_SCREEN_ADDR(22);
     unk0->unk18 = 0;
     unk0->unk18 = 0;
@@ -345,7 +347,7 @@ static void Task_ScreenMain(void)
         modeScreen->unkE0.focused = 0xFF;
 
         subText = &modeScreen->subText;
-        subText->anim = sMultiplayerModeSelectScreenText[lang + 3].anim;
+        subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 3].anim;
         subText->variant = sMultiplayerModeSelectScreenText[lang + 3].variant;
         subText->unk21 = 0xFF;
     } else {
@@ -354,7 +356,7 @@ static void Task_ScreenMain(void)
         modeScreen->unkB0.focused = 0;
         modeScreen->unkE0.focused = 0;
         subText = &modeScreen->subText;
-        subText->anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
+        subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
         subText->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
         subText->unk21 = 0xFF;
     }
@@ -421,7 +423,7 @@ static void Task_ExitAndInitSelectedPakMode(void)
 
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gUnknown_03004D5C = gUnknown_03002A84;
+    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
 
     if (pakMode == PAK_MODE_MULTI) {
         StartMultiPakConnect();
@@ -448,8 +450,8 @@ static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
 static void MultiplayerModeSelectScreenOnDestroy(struct Task *t)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(t);
-    VramFree(modeScreen->unk80.vram);
-    VramFree(modeScreen->unkB0.vram);
-    VramFree(modeScreen->unkE0.vram);
-    VramFree(modeScreen->subText.vram);
+    VramFree(modeScreen->unk80.graphics.dest);
+    VramFree(modeScreen->unkB0.graphics.dest);
+    VramFree(modeScreen->unkE0.graphics.dest);
+    VramFree(modeScreen->subText.graphics.dest);
 }

@@ -129,14 +129,14 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_802D4CC(transitionConfig);
 
     element = &modeScreen->unk80;
-    element->vram = VramMalloc(0x6C);
-    element->anim = SA2_ANIM_TIME_ATTACK_JP;
+    element->graphics.dest = VramMalloc(0x6C);
+    element->graphics.anim = SA2_ANIM_TIME_ATTACK_JP;
     element->variant = SA2_ANIM_VARIANT_TA_TITLE;
     element->unk21 = 0xFF;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -146,15 +146,15 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkB0;
-    element->vram
+    element->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
-    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
+    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
     element->unk21 = 0xFF;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -164,15 +164,15 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->unkE0;
-    element->vram
+    element->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
-    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
+    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
     element->unk21 = 0xFF;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -182,15 +182,15 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8004558(element);
 
     element = &modeScreen->infoText;
-    element->vram
+    element->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
-    element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
     element->unk21 = 0xFF;
     element->x = 8;
     element->y = 103;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -199,8 +199,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->unk10 = 0;
 
     background = &modeScreen->unk0;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -216,8 +216,8 @@ void CreateTimeAttackModeSelectionScreen(void)
     sub_8002A3C(background);
 
     background = &modeScreen->unk40;
-    background->unk4 = BG_SCREEN_ADDR(24);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -375,10 +375,12 @@ static void Task_ScreenMain(void)
 
         element = &modeScreen->infoText;
         if (gLoadedSaveGame->unk12) {
-            element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
+            element->graphics.anim
+                = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
             element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].variant;
         } else {
-            element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
+            element->graphics.anim
+                = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
             element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].variant;
         }
         element->unk21 = 0xFF;
@@ -394,7 +396,7 @@ static void Task_ScreenMain(void)
         element->focused = 0;
 
         element = &modeScreen->infoText;
-        element->anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+        element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
         element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
         element->unk21 = 0xFF;
     }
@@ -469,7 +471,7 @@ static void Task_HandleModeSelectedExit(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gUnknown_03004D5C = gUnknown_03002A84;
+    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
     CreateCharacterSelectionScreen(0, gLoadedSaveGame->unk13 & 0x10);
 }
 
@@ -493,8 +495,8 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(t);
-    VramFree(modeScreen->unk80.vram);
-    VramFree(modeScreen->unkB0.vram);
-    VramFree(modeScreen->unkE0.vram);
-    VramFree(modeScreen->infoText.vram);
+    VramFree(modeScreen->unk80.graphics.dest);
+    VramFree(modeScreen->unkB0.graphics.dest);
+    VramFree(modeScreen->unkE0.graphics.dest);
+    VramFree(modeScreen->infoText.graphics.dest);
 }

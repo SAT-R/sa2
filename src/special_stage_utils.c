@@ -24,13 +24,13 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
         if (gUnknown_03005B58 == NULL) {
             gUnknown_03005B58 = gUnknown_03005B5C;
         }
-        element->vram = gUnknown_03005B58;
+        element->graphics.dest = gUnknown_03005B58;
     } else {
-        element->vram = gUnknown_03005B5C;
+        element->graphics.dest = gUnknown_03005B5C;
     }
 
-    element->unk8 = 0;
-    element->anim = anim;
+    element->graphics.size = 0;
+    element->graphics.anim = anim;
     element->unk10 = unk10;
     element->x = xPos;
     element->y = yPos;
@@ -155,7 +155,7 @@ void sub_806CD68(Sprite *element)
     unkC_2 = unkC->unk2;
     for (i = 0; i < unkC_2; i++) {
         u32 attr1_2;
-        reference = gUnknown_03002794->oamData[element->anim];
+        reference = gUnknown_03002794->oamData[element->graphics.anim];
         oam = sub_80058B4((element->unk1A & 0x7C0) >> 6);
         if (oam == iwram_end) {
             return;
@@ -174,7 +174,7 @@ void sub_806CD68(Sprite *element)
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
         oam->all.attr2 += element->focused * 0x1000;
         oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
-        oam->all.attr2 += GET_TILE_NUM(element->vram);
+        oam->all.attr2 += GET_TILE_NUM(element->graphics.dest);
     }
 }
 
@@ -187,8 +187,8 @@ void InitSpecialStageScreenVram(void)
 void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
                  u8 g, u16 h, u16 i)
 {
-    background->unk4 = BG_CHAR_ADDR(a);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_CHAR_ADDR(a);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;

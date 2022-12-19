@@ -239,9 +239,9 @@ void sub_8071380(Sprite *element, void *vram, s16 x, s16 y, u8 b,
         unk10 |= 0x800;
     }
 
-    element->vram = vram;
-    element->unk8 = 0;
-    element->anim = c4->anim;
+    element->graphics.dest = vram;
+    element->graphics.size = 0;
+    element->graphics.anim = c4->anim;
     element->unk10 = unk10;
     element->x = x;
     element->y = y;
@@ -338,7 +338,7 @@ static void RenderGuardRobo(Sprite *element, s16 x, s16 y, u8 b,
         flags |= 0x800;
     }
 
-    element->anim = spriteConfig->anim;
+    element->graphics.anim = spriteConfig->anim;
     element->unk10 = flags;
     element->x = x;
     element->y = y;

@@ -143,8 +143,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             gBgScrollRegs[0][0] = 0;
             gBgScrollRegs[0][1] = 0;
 
-            background->unk4 = BG_SCREEN_ADDR(24);
-            background->unkA = 0;
+            background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+            background->graphics.anim = 0;
             background->unkC = BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
@@ -163,15 +163,15 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *element;
             element = &scene->unkC0;
-            element->vram = (void *)scene->unk16C;
+            element->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
-            element->anim = gUnknown_080E12D0[0].anim;
+            element->graphics.anim = gUnknown_080E12D0[0].anim;
             element->variant = gUnknown_080E12D0[0].variant;
             element->unk21 = 0xFF;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = -20;
             element->unk1A = 0;
-            element->unk8 = 0;
+            element->graphics.size = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
@@ -184,15 +184,15 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *element;
             element = &scene->unkF0;
-            element->vram = (void *)scene->unk16C;
+            element->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
-            element->anim = gUnknown_080E12D0[1].anim;
+            element->graphics.anim = gUnknown_080E12D0[1].anim;
             element->variant = gUnknown_080E12D0[1].variant;
             element->unk21 = 0xFF;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             element->unk1A = 0;
-            element->unk8 = 0;
+            element->graphics.size = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
@@ -205,15 +205,15 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *element;
             element = &scene->unk120;
-            element->vram = (void *)scene->unk16C;
+            element->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
-            element->anim = gUnknown_080E12D0[2].anim;
+            element->graphics.anim = gUnknown_080E12D0[2].anim;
             element->variant = gUnknown_080E12D0[2].variant;
             element->unk21 = 0xFF;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = DISPLAY_HEIGHT + 96;
             element->unk1A = 0;
-            element->unk8 = 0;
+            element->graphics.size = 0;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
@@ -227,8 +227,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
 
-        background->unk4 = BG_SCREEN_ADDR(24);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -252,8 +252,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         gBgScrollRegs[1][1] = 0;
 
         background = &scene->unk0;
-        background->unk4 = BG_SCREEN_ADDR(0);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -309,8 +309,8 @@ static void Task_CreateCopyrightScreen(void)
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
 
-        background->unk4 = BG_SCREEN_ADDR(24);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -332,8 +332,8 @@ static void Task_CreateCopyrightScreen(void)
         gBgScrollRegs[2][0] = 0;
         gBgScrollRegs[2][1] = 0xD190;
 
-        background->unk4 = BG_SCREEN_ADDR(8);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -506,7 +506,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
     // on for 30 frames
     if (scene->congratsAnimFrame >= 1) {
         element = &scene->unkC0;
-        element->anim = gUnknown_080E12D0[0].anim;
+        element->graphics.anim = gUnknown_080E12D0[0].anim;
         element->variant = gUnknown_080E12D0[0].variant;
         element->x = scene->unk170[0][0];
         element->y = scene->unk170[0][1] >> 8;
@@ -523,7 +523,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 
     if (scene->sonicAnimFrame == 11) {
         element = &scene->unkF0;
-        element->anim = gUnknown_080E12D0[1].anim;
+        element->graphics.anim = gUnknown_080E12D0[1].anim;
         element->variant = gUnknown_080E12D0[1].variant;
         element->x = scene->unk170[1][0];
         element->y = scene->unk170[1][1] >> 8;
@@ -531,7 +531,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         sub_80051E8(element);
 
         element = &scene->unk120;
-        element->anim = gUnknown_080E12D0[2].anim;
+        element->graphics.anim = gUnknown_080E12D0[2].anim;
         element->variant = gUnknown_080E12D0[2].variant;
         element->x = scene->unk170[2][0];
         element->y = scene->unk170[2][1] >> 8;

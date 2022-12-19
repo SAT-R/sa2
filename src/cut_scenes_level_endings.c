@@ -174,14 +174,14 @@ void CreateCourseResultsCutScene(u8 mode)
 
     element = &scene->unk4;
 
-    element->vram = VramMalloc(gUnknown_080E11E4[mode * 3]);
-    element->anim = gUnknown_080E11E4[(mode * 3) + 1];
+    element->graphics.dest = VramMalloc(gUnknown_080E11E4[mode * 3]);
+    element->graphics.anim = gUnknown_080E11E4[(mode * 3) + 1];
     element->variant = gUnknown_080E11E4[(mode * 3) + 2];
     element->unk21 = 0xFF;
 
     element->x = 0;
     element->y = 0;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk1A = 0x280;
     element->unk1C = 0;
 
@@ -196,18 +196,18 @@ void CreateCourseResultsCutScene(u8 mode)
 
     sub_8004558(element);
 
-    scene->unk34.vram = NULL;
+    scene->unk34.graphics.dest = NULL;
 
     if (mode == 0) {
         element = &scene->unk34;
-        element->vram = VramMalloc(6);
-        element->anim = SA2_ANIM_CHEESE_DOWNWARDS;
+        element->graphics.dest = VramMalloc(6);
+        element->graphics.anim = SA2_ANIM_CHEESE_DOWNWARDS;
         element->variant = 0;
         element->unk21 = 0xFF;
 
         element->x = 0;
         element->y = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk1A = 0x240;
         element->unk1C = 0;
 
@@ -256,16 +256,16 @@ static void sub_808DD9C(void)
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
 
-            VramFree(scene->unk4.vram);
+            VramFree(scene->unk4.graphics.dest);
 
-            element->vram = VramMalloc(0x19);
-            element->anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
+            element->graphics.dest = VramMalloc(0x19);
+            element->graphics.anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
             scene->unk4.variant = 0;
             scene->unk4.unk21 = 0xFF;
 
             scene->unk7A = 1;
 
-            scene->unk34.anim = SA2_ANIM_CHEESE_SIDEWAYS_2;
+            scene->unk34.graphics.anim = SA2_ANIM_CHEESE_SIDEWAYS_2;
             scene->unk34.variant = 0;
             scene->unk34.unk21 = 0xFF;
         }
@@ -322,10 +322,10 @@ static void sub_808DF88(void)
         scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1C00;
 
         if (scene->unk7A == 0) {
-            VramFree(scene->unk4.vram);
+            VramFree(scene->unk4.graphics.dest);
 
-            element->vram = VramMalloc(0x24);
-            element->anim = SA2_ANIM_TAILS_FLYING;
+            element->graphics.dest = VramMalloc(0x24);
+            element->graphics.anim = SA2_ANIM_TAILS_FLYING;
             scene->unk4.variant = SA2_ANIM_VARIANT_TAILS_FLYING_WAVING_AT_PLAYER;
             scene->unk7A = 1;
             scene->unk7A = 1;
@@ -464,8 +464,8 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     }
 
     background = &scene->unk80;
-    background->unk4 = BG_SCREEN_ADDR(8);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -481,8 +481,8 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     sub_8002A3C(background);
 
     background = &scene->unk0;
-    background->unk4 = BG_SCREEN_ADDR(16);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -546,8 +546,8 @@ void sub_808E4C8(void)
             gBgScrollRegs[0][1] = 0xFFDC;
 
             background = &scene->unk40;
-            background->unk4 = BG_SCREEN_ADDR(0);
-            background->unkA = 0;
+            background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+            background->graphics.anim = 0;
             background->unkC = BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
@@ -659,9 +659,9 @@ void CreateKnucklesUnlockCutScene(void)
 void sub_808E890(struct Task *t)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(t);
-    VramFree(scene->unk4.vram);
+    VramFree(scene->unk4.graphics.dest);
 
-    if (scene->unk34.vram != 0) {
-        VramFree(scene->unk34.vram);
+    if (scene->unk34.graphics.dest != 0) {
+        VramFree(scene->unk34.graphics.dest);
     }
 }

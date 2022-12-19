@@ -52,12 +52,12 @@ void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
     displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
     SET_SPRITE_INITIALIZED(ia);
 
-    displayed->vram = VramMalloc(0x18);
-    displayed->anim = 0x21A;
+    displayed->graphics.dest = VramMalloc(0x18);
+    displayed->graphics.anim = 0x21A;
     displayed->variant = 0;
 
     displayed->unk1A = 0x480;
-    displayed->unk8 = 0;
+    displayed->graphics.size = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;
@@ -106,7 +106,7 @@ void sub_806160C(void)
         gPlayer.moveState |= MOVESTATE_400000;
 
         bar->unk3C = 2 - bar->unk3C;
-        displayed->anim = 538;
+        displayed->graphics.anim = 538;
         displayed->variant = bar->unk3C + 1;
         displayed->unk21 = 0xFF;
         bar->unk3C = 2 - bar->unk3C;
@@ -164,7 +164,7 @@ void sub_80617A4(void)
     }
 
     if (sub_8004558(displayed) == 0) {
-        displayed->anim = 538;
+        displayed->graphics.anim = 538;
         displayed->variant = 0;
         displayed->unk21 = 0xFF;
         gCurTask->main = sub_806160C;

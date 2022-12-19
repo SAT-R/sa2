@@ -411,8 +411,8 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     gBgScrollRegs[1][1] = 512;
 
     config0 = &titleScreen->unk0;
-    config0->unk4 = BG_SCREEN_ADDR(0);
-    config0->unkA = 0;
+    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    config0->graphics.anim = 0;
     config0->unkC = BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
@@ -441,8 +441,8 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     gFlags &= ~0x8000;
 
     config40 = &titleScreen->unk40;
-    config40->unk4 = BG_SCREEN_ADDR(16);
-    config40->unkA = 0;
+    config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    config40->graphics.anim = 0;
     config40->unkC = BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
@@ -501,8 +501,8 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
 
     config80 = &titleScreen->introSonicLogo;
 
-    config80->unk4 = BG_SCREEN_ADDR(8);
-    config80->unkA = 0;
+    config80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    config80->graphics.anim = 0;
     config80->unkC = BG_SCREEN_ADDR(31);
     config80->unk18 = 0;
     config80->unk1A = 0;
@@ -520,8 +520,8 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
 
     config0 = &titleScreen->unk0;
 
-    config0->unk4 = BG_SCREEN_ADDR(0);
-    config0->unkA = 0;
+    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    config0->graphics.anim = 0;
     config0->unkC = BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
@@ -553,16 +553,16 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     // TODO: make these into macros maybe?
     config = &titleScreen->unkC0;
 
-    config->vram = objAddr;
+    config->graphics.dest = objAddr;
     objAddr += (90 * TILE_SIZE_4BPP);
 
     // Copyright screen
-    config->anim = SA2_ANIM_TITLE_COPYRIGHT;
+    config->graphics.anim = SA2_ANIM_TITLE_COPYRIGHT;
     config->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
     config->unk21 = 0xFF;
     config->x = 0;
     config->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
-    config->unk8 = 0;
+    config->graphics.size = 0;
     config->unk1A = 0x100;
     config->unk1C = 0;
     config->unk22 = 0x10;
@@ -572,16 +572,16 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
 
     config = &titleScreen->unkF0;
 
-    config->vram = objAddr;
+    config->graphics.dest = objAddr;
     objAddr += (gPressStartTiles[language].numTiles * TILE_SIZE_4BPP);
 
     // "PRESS START" text
-    config->anim = gPressStartTiles[language].anim;
+    config->graphics.anim = gPressStartTiles[language].anim;
     config->variant = gPressStartTiles[language].variant;
     config->unk21 = 0xFF;
     config->x = (DISPLAY_WIDTH / 2);
     config->y = (DISPLAY_HEIGHT / 2) + 30;
-    config->unk8 = 0;
+    config->graphics.size = 0;
     config->unk1A = 0xC0;
     config->unk1C = 0;
     config->unk22 = 0x10;
@@ -593,11 +593,11 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
          menuItemId++) {
         config = &titleScreen->menuItems[menuItemId];
 
-        config->vram = objAddr;
+        config->graphics.dest = objAddr;
         objAddr
             += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
 
-        config->anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
+        config->graphics.anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
         config->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
         config->unk21 = 0xFF;
         config->x = (DISPLAY_WIDTH / 2);
@@ -615,7 +615,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
             config->y = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 100;
         }
 
-        config->unk8 = 0;
+        config->graphics.size = 0;
         config->unk1A = 0xc0;
         config->unk1C = 0;
         config->unk22 = 0x10;
@@ -625,14 +625,14 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     };
 
     config = &titleScreen->unk240;
-    config->vram = objAddr;
+    config->graphics.dest = objAddr;
     // Uses last value for this one
-    config->anim = sMenuTiles[42].anim;
+    config->graphics.anim = sMenuTiles[42].anim;
     config->variant = sMenuTiles[42].variant;
     config->unk21 = 0xFF;
     config->x = (DISPLAY_WIDTH / 2);
     config->y = (DISPLAY_HEIGHT / 2);
-    config->unk8 = 0;
+    config->graphics.size = 0;
     config->unk1A = 0x780;
     config->unk1C = 0;
     config->unk22 = 0x10;
@@ -687,8 +687,8 @@ static void Task_IntroStartTeamSonicLogoAnim(void)
     if (titleScreen->animFrame == 1) {
         // TODO: some macro for this
         config80 = &titleScreen->introSonicLogo;
-        config80->unk4 = BG_SCREEN_ADDR(8);
-        config80->unkA = 0;
+        config80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        config80->graphics.anim = 0;
         config80->unkC = BG_SCREEN_ADDR(31);
         config80->unk18 = 0;
         config80->unk1A = 0;
@@ -767,8 +767,8 @@ static void Task_IntroStartSkyTransition(void)
     // Preload the island sprite
     if (titleScreen->animFrame == 59) {
         config40 = &titleScreen->unk40;
-        config40->unk4 = BG_SCREEN_ADDR(16);
-        config40->unkA = 0;
+        config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+        config40->graphics.anim = 0;
         config40->unkC = BG_SCREEN_ADDR(29);
         config40->unk18 = 0;
         config40->unk1A = 0;
@@ -845,8 +845,8 @@ static void Task_IntroPanSkyAnim(void)
         gBldRegs.bldCnt = 0;
 
         config0 = &titleScreen->unk0;
-        config0->unk4 = BG_SCREEN_ADDR(8);
-        config0->unkA = 0;
+        config0->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        config0->graphics.anim = 0;
         config0->unkC = BG_SCREEN_ADDR(31);
         config0->unk18 = 0;
         config0->unk1A = 0;
@@ -943,8 +943,8 @@ static void Task_IntroSkyAnim(void)
         gUnknown_03002280[10] = 0xff;
         gUnknown_03002280[11] = 0x20;
 
-        config0->unk4 = BG_SCREEN_ADDR(0);
-        config0->unkA = 0;
+        config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+        config0->graphics.anim = 0;
         config0->unkC = BG_SCREEN_ADDR(26);
         config0->unk18 = 0;
         config0->unk1A = 0;
@@ -1352,8 +1352,8 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     gUnknown_03002280[10] = 0xFF;
     gUnknown_03002280[11] = 32;
 
-    config0->unk4 = BG_SCREEN_ADDR(0);
-    config0->unkA = 0;
+    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    config0->graphics.anim = 0;
     config0->unkC = BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
@@ -1376,8 +1376,8 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     sub_8002A3C(config0);
 
     config40 = &titleScreen->unk40;
-    config40->unk4 = BG_SCREEN_ADDR(16);
-    config40->unkA = 0;
+    config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    config40->graphics.anim = 0;
     config40->unkC = BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
@@ -1550,13 +1550,13 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     struct Task *t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation *animation = TaskGetStructPtr(t);
 
-    animation->sprite.vram = VramMalloc(3);
-    animation->sprite.anim = SA2_ANIM_TITLE_SEAGULL;
+    animation->sprite.graphics.dest = VramMalloc(3);
+    animation->sprite.graphics.anim = SA2_ANIM_TITLE_SEAGULL;
     animation->sprite.variant = 0;
     animation->sprite.unk21 = 0xFF;
     animation->sprite.x = x;
     animation->sprite.y = y;
-    animation->sprite.unk8 = 0;
+    animation->sprite.graphics.size = 0;
     animation->sprite.unk1A = 0xC0;
     animation->sprite.unk1C = 0;
     animation->sprite.unk22 = 0x10;
@@ -1682,16 +1682,16 @@ static void CreateLensFlareAnimation(void)
         sprite = &lensFlare->sprites[i];
         config180 = &lensFlare->unk180[i];
 
-        sprite->vram = VramMalloc(0x40);
+        sprite->graphics.dest = VramMalloc(0x40);
 
-        sprite->anim = SA2_ANIM_TITLE_LENS_FLARE;
+        sprite->graphics.anim = SA2_ANIM_TITLE_LENS_FLARE;
         sprite->variant = sLensFlareSizes[i];
         sprite->unk21 = 0xFF;
 
         lensFlare->posSequenceX[i] = posX = sLensFlareStartPositions[i][0];
         lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
 
-        sprite->unk8 = 0;
+        sprite->graphics.size = 0;
         sprite->unk1A = (8 - i) * 0x40;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
@@ -1944,7 +1944,7 @@ static void ShowGameLogo(struct TitleScreen *_)
 static void BirdAnimEnd(void)
 {
     struct BirdAnimation *animation = TaskGetStructPtr(gCurTask);
-    VramFree(animation->sprite.vram);
+    VramFree(animation->sprite.graphics.dest);
     TaskDestroy(gCurTask);
 }
 
@@ -1976,7 +1976,7 @@ static void LensFlareAnimEnd(void)
 
     u32 i;
     for (i = 0; i < 8; i++) {
-        VramFree(lensFlare->sprites[i].vram);
+        VramFree(lensFlare->sprites[i].graphics.dest);
     }
 
     TaskDestroy(gCurTask);

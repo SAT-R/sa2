@@ -40,11 +40,11 @@ void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 sprit
     temp = ia->d.sData[0] & 3;
     ramp->unk3C = temp;
 
-    displayed->vram = VramMalloc(0x14);
-    displayed->anim = SA2_ANIM_RAMP;
+    displayed->graphics.dest = VramMalloc(0x14);
+    displayed->graphics.anim = SA2_ANIM_RAMP;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == 5) {
-        displayed->anim = 608;
+        displayed->graphics.anim = 608;
     }
 
     // required for match
@@ -52,7 +52,7 @@ void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 sprit
 
     displayed->variant = temp2 & 1;
     displayed->unk1A = 0x480;
-    displayed->unk8 = 0;
+    displayed->graphics.size = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
     displayed->unk21 = -1;

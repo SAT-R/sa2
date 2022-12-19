@@ -81,8 +81,8 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         // Life Counter
         element = &progressIndicator->avatars[i];
-        element->vram = VramMalloc(4);
-        element->anim = SA2_ANIM_LIFE_COUNTER;
+        element->graphics.dest = VramMalloc(4);
+        element->graphics.anim = SA2_ANIM_LIFE_COUNTER;
         element->variant = avatarVariants[gMultiplayerCharacters[i]];
         element->unk21 = 0xFF;
         element->x = 6;
@@ -92,7 +92,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         } else {
             element->unk1A = 0xC0;
         }
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -102,14 +102,14 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     }
 
     element = &progressIndicator->flags[START_FLAG];
-    element->vram = VramMalloc(4);
-    element->anim = SA2_ANIM_RACE_START_ICON;
+    element->graphics.dest = VramMalloc(4);
+    element->graphics.anim = SA2_ANIM_RACE_START_ICON;
     element->variant = 0;
     element->unk21 = 0xFF;
     element->x = 0 + RACE_ICON_INDENT;
     element->y = RACE_ICON_Y;
     element->unk1A = 0x140;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -118,14 +118,14 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     sub_8004558(element);
 
     element = &progressIndicator->flags[FINISH_FLAG];
-    element->vram = VramMalloc(4);
-    element->anim = SA2_ANIM_RACE_FINISH_ICON;
+    element->graphics.dest = VramMalloc(4);
+    element->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
     element->variant = 0;
     element->unk21 = 0xFF;
     element->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
     element->y = RACE_ICON_Y;
     element->unk1A = 0x140;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -179,10 +179,10 @@ static void RaceProgressIndicatorOnDestroy(struct Task *t)
     struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
-        VramFree(progressIndicator->avatars[i].vram);
+        VramFree(progressIndicator->avatars[i].graphics.dest);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
-        VramFree(progressIndicator->flags[i].vram);
+        VramFree(progressIndicator->flags[i].graphics.dest);
     }
 }
