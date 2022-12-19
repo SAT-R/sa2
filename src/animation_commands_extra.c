@@ -15,6 +15,22 @@ extern struct BgHeader *gUnknown_030027A0[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+void sub_80044D8(u8 *p0, u16 p1)
+{
+    u8 i;
+
+    for (i = 0; i < 4; p1 <<= 4, i++) {
+        u16 value = ((p1 & 0xF000) >> 12);
+        if (value > 9) {
+            p0[i] = value + 87;
+        } else {
+            p0[i] = value + 48;
+        }
+    }
+
+    p0[i] = 0;
+}
+
 u32 sub_8004518(u16 num)
 {
     u8 i;
