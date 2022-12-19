@@ -11,6 +11,71 @@ extern const struct SpriteTables *gUnknown_03002794;
 extern u8 gUnknown_03002A84;
 extern struct BgHeader *gUnknown_030027A0[];
 
+extern const AnimationCommandFunc animCmdTable[];
+
+#if 1
+s32 sub_8004558(Sprite *sprite)
+{
+    if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->anim) {
+        sprite->unk8 = 0;
+        sprite->unk21 = sprite->variant;
+        sprite->unk1E = sprite->anim;
+        sprite->unk14 = 0;
+        sprite->unk1C = 0;
+        sprite->unk10 &= ~0x4000;
+    }
+    if (sprite->unk10 & 0x4000)
+        return 0;
+    if (sprite->unk1C > 0)
+        sprite->unk1C -= 16 * sprite->unk22;
+    else {
+        // _080045B8
+        s32 ret;
+        ACmd *cmd;
+        ACmd **cursor;
+        ACmd **variants;
+
+        // Handle all the "regular" Animation commands with an ID < 0
+        variants = gUnknown_03002794->animations[sprite->anim];
+        cursor = &variants[sprite->variant];
+        for (cmd = cursor[sprite->unk14];
+             cmd->id < 0;
+             cmd = cursor[sprite->unk14])
+        {
+            ret = animCmdTable[~cmd->id](cmd, sprite);
+            if (ret != +1) {
+                if (ret != -1)
+                    return ret;
+
+                variants = gUnknown_03002794->animations[sprite->anim];
+                cursor = &variants[sprite->variant];
+                sprite->unk14 = 0;
+            }
+        }
+        // _08004628
+
+        // Display the image 'index' for 'delay' frames
+        sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        sprite->unk1C -= sprite->unk22 * 16;
+        {
+            int frame = ((ACmd_ShowFrame *)cmd)->index;
+            if (frame != -1) {
+                const struct SpriteTables *sprTables = gUnknown_03002794;
+
+                // TODO: Remove cast
+                sprite->unkC = (struct UNK_0808B3FC_UNK240_UNKC*)&sprTables->dimensions[sprite->anim][frame];
+            } else {
+                sprite->unkC = (void*)-1;
+            }
+        }
+
+        //sprite->unkC = (void*)0;
+        sprite->unk14 += 2;
+    }
+    return 1;
+}
+#endif
+
 // (-1)
 s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
 {

@@ -7,8 +7,6 @@
 
 #include "animation_commands.h"
 
-typedef s32 (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
-
 extern s32 animCmd_GetTiles(void *cursor, Sprite *sprite);
 static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);
 static s32 animCmd_JumpBack(void *cursor, Sprite *sprite);

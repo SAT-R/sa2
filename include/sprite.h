@@ -67,6 +67,7 @@ typedef struct {
     u16 unk3E;
 } Background; /* size = 0x40 */
 
+// TODO: This is actually 'SpriteOffset' (see below)
 struct UNK_0808B3FC_UNK240_UNKC {
     u8 unk0;
     u8 unk1;
@@ -76,6 +77,19 @@ struct UNK_0808B3FC_UNK240_UNKC {
     s16 unk8;
     s16 unkA;
 };
+typedef struct {
+    u8 flip;
+    u8 oamIndex; // every animation has an oamData pointer, oamIndex starts at 0 for
+                 // every new animation and ends at variantCount-1
+    u16 numSubframes; // some sprite frames consist of multiple images (of the same size
+                      // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
+
+    u16 width;
+    u16 height;
+    s16 offsetX;
+    s16 offsetY;
+} SpriteOffset;
+
 
 typedef struct {
     s32 unk0;
@@ -84,6 +98,7 @@ typedef struct {
     u8 unk6;
     u8 unk7;
 } Sprite_UNK28;
+
 
 // TODO: work out what makes this struct different from the above
 // Maybe `struct Sprite`
@@ -109,8 +124,8 @@ typedef struct {
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 
-    /* 0x1C */ u16 unk1C;
-    /* 0x1E */ u16 unk1E;
+    /* 0x1C */ s16 unk1C;
+    /* 0x1E */ u16 unk1E; // prevAnimId?
 
     /* 0x20 */ u8 variant;
 
@@ -149,7 +164,7 @@ typedef struct {
 } TileInfo;
 
 // Register menu item
-u32 sub_8004558(Sprite *);
+s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);
 void sub_8002A3C(Background *);
