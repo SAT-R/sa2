@@ -1,62 +1,62 @@
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f006_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f006_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f007_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f007_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f007_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f007_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f008_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f008_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f009_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f009_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f010_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f010_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f011_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f011_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f011_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f011_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f012_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f012_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0000/f012_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_sonic_idle/f012_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0001/f000_0.4bpp: %.4bpp: %.png
@@ -5147,70 +5147,70 @@ $(OBJ_TILES_4BPP_SUBDIR)/anim_0090/f010_0.4bpp: %.4bpp: %.png
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0090/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f006_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f006_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f006_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f006_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f007_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f007_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f007_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f007_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f008_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f008_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f008_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f008_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f009_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f009_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f010_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f010_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f011_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f011_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f011_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f011_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f012_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f012_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0091/f012_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_cream_idle/f012_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0092/f000_0.4bpp: %.4bpp: %.png
@@ -10040,88 +10040,88 @@ $(OBJ_TILES_4BPP_SUBDIR)/anim_0181/f009_0.4bpp: %.4bpp: %.png
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0181/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 2
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f003_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f003_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f006_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f006_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f006_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f006_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f006_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f006_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f006_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f006_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 2
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f007_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f007_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f007_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f007_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f008_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f008_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f008_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f008_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f009_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f009_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f009_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f009_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f009_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f009_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f009_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f009_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 2
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f010_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0182/f010_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_tails_idle/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0183/f000_0.4bpp: %.4bpp: %.png
@@ -16181,82 +16181,82 @@ $(OBJ_TILES_4BPP_SUBDIR)/anim_0272/f009_0.4bpp: %.4bpp: %.png
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0272/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f006_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f006_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f006_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f006_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f007_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f007_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f008_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f008_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f008_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f008_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f009_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f009_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f009_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f009_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f010_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f010_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f011_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f011_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f011_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f011_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f012_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f012_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f012_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f012_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f013_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f013_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0273/f013_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_knuckles_idle/f013_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0274/f000_0.4bpp: %.4bpp: %.png
@@ -21830,70 +21830,70 @@ $(OBJ_TILES_4BPP_SUBDIR)/anim_0363/f010_0.4bpp: %.4bpp: %.png
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0363/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f003_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f003_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f006_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f006_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f006_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f006_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f007_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f007_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f007_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f007_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f008_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f008_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f008_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f008_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f009_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f009_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f009_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f009_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f010_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f010_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_0364/f010_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_amy_idle/f010_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_0365/f000_0.4bpp: %.4bpp: %.png
@@ -50483,643 +50483,643 @@ $(OBJ_TILES_4BPP_SUBDIR)/anim_1056/f004_0.4bpp: %.4bpp: %.png
 $(OBJ_TILES_4BPP_SUBDIR)/anim_1056/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f003_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f003_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f004_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f004_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1057/f005_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_jp/f005_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f000_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f000_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f001_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f001_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f002_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f002_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f003_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f003_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f003_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f003_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f004_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f004_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1058/f004_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_en/f004_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 4
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f000_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f000_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f001_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f001_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1059/f002_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_de/f002_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f000_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f000_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f001_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f001_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1060/f002_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_fr/f002_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f000_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f000_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f001_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f001_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1061/f002_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_es/f002_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f000_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f000_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f001_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f001_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_0.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_0.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_1.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_1.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_2.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_2.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_3.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_3.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_4.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_4.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_5.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_5.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_6.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_6.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 32
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_7.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_7.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_8.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_8.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_9.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_9.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 16
 
-$(OBJ_TILES_4BPP_SUBDIR)/anim_1062/f002_10.4bpp: %.4bpp: %.png
+$(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_it/f002_10.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8
 
 $(OBJ_TILES_4BPP_SUBDIR)/anim_time_attack_zone_name/f000_0.4bpp: %.4bpp: %.png

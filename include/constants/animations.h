@@ -172,18 +172,19 @@
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 
-// #define SA2_ANIM_SONIC_IDLE                            0
-// #define SA2_ANIM_CREAM_IDLE                            91
-// #define SA2_ANIM_TAILS_IDLE                            182
-// #define SA2_ANIM_KNUCKLES_IDLE                         273
-// #define SA2_ANIM_AMY_IDLE                              364
+#define SA2_ANIM_SONIC_IDLE    0
+#define SA2_ANIM_CREAM_IDLE    91
+#define SA2_ANIM_TAILS_IDLE    182
+#define SA2_ANIM_KNUCKLES_IDLE 273
+#define SA2_ANIM_AMY_IDLE      364
 
 // Example usage of the macro
-#define SA2_ANIM_SONIC_IDLE                            SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC)
-#define SA2_ANIM_CREAM_IDLE                            SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM)
-#define SA2_ANIM_TAILS_IDLE                            SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS)
-#define SA2_ANIM_KNUCKLES_IDLE                         SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES)
-#define SA2_ANIM_AMY_IDLE                              SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY)
+// #define SA2_ANIM_SONIC_IDLE    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC)
+// #define SA2_ANIM_CREAM_IDLE    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM)
+// #define SA2_ANIM_TAILS_IDLE    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS)
+// #define SA2_ANIM_KNUCKLES_IDLE SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES)
+// #define SA2_ANIM_AMY_IDLE      SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY)
+
 #define SA2_ANIM_CREAM_HOLDING_ONTO_SONIC              130
 #define SA2_ANIM_TAILS_CAPTURED                        222
 #define SA2_ANIM_TAILS_FLYING                          223
@@ -447,27 +448,28 @@
 #define SA2_ANIM_MSG_JP_TRY_AGAIN 1051
 #define SA2_ANIM_MSG_EN_TRY_AGAIN 1052
 
-// #define SA2_ANIM_TIME_ATTACK_JP                1057
-// #define SA2_ANIM_TIME_ATTACK_EN                1058
-// #define SA2_ANIM_TIME_ATTACK_DE                1059
-// #define SA2_ANIM_TIME_ATTACK_FR                1060
-// #define SA2_ANIM_TIME_ATTACK_ES                1061
-// #define SA2_ANIM_TIME_ATTACK_IT                1062
+#define SA2_ANIM_TIME_ATTACK_JP 1057
+#define SA2_ANIM_TIME_ATTACK_EN 1058
+#define SA2_ANIM_TIME_ATTACK_DE 1059
+#define SA2_ANIM_TIME_ATTACK_FR 1060
+#define SA2_ANIM_TIME_ATTACK_ES 1061
+#define SA2_ANIM_TIME_ATTACK_IT 1062
 
-#define SA2_ANIM_TIME_ATTACK 1057 + LanguageIndex(LANG_JAPANESE) // 1057
-#define SA2_ANIM_TIME_ATTACK_JP                                                         \
-    (SA2_ANIM_TIME_ATTACK                                                               \
-     + LanguageIndex(LANG_JAPANESE)) // 1057 - WARNING: Different layout!
-#define SA2_ANIM_TIME_ATTACK_EN                                                         \
-    (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ENGLISH)) // 1058
-#define SA2_ANIM_TIME_ATTACK_DE                                                         \
-    (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_GERMAN)) // 1059
-#define SA2_ANIM_TIME_ATTACK_FR                                                         \
-    (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_FRENCH)) // 1060
-#define SA2_ANIM_TIME_ATTACK_ES                                                         \
-    (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_SPANISH)) // 1061
-#define SA2_ANIM_TIME_ATTACK_IT                                                         \
-    (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ITALIAN)) // 1062
+// #define SA2_ANIM_TIME_ATTACK 1057 + LanguageIndex(LANG_JAPANESE) // 1057
+// #define SA2_ANIM_TIME_ATTACK_JP \
+//     (SA2_ANIM_TIME_ATTACK \
+//      + LanguageIndex(LANG_JAPANESE)) // 1057 - WARNING: Different layout!
+// #define SA2_ANIM_TIME_ATTACK_EN \
+//     (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ENGLISH)) // 1058
+// #define SA2_ANIM_TIME_ATTACK_DE \
+//     (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_GERMAN)) // 1059
+// #define SA2_ANIM_TIME_ATTACK_FR \
+//     (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_FRENCH)) // 1060
+// #define SA2_ANIM_TIME_ATTACK_ES \
+//     (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_SPANISH)) // 1061
+// #define SA2_ANIM_TIME_ATTACK_IT \
+//     (SA2_ANIM_TIME_ATTACK + LanguageIndex(LANG_ITALIAN)) // 1062
+
 #define SA2_ANIM_VARIANT_TA_CLEAR_ZONE_ASAP    0
 #define SA2_ANIM_VARIANT_TA_DEFEAT_BOSS_ASAP   1
 #define SA2_ANIM_VARIANT_TA_CANT_PLAY_THIS_YET 2
