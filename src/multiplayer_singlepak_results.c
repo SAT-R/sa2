@@ -77,7 +77,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
     gUnknown_03002260 = ((struct UNK_02003300 *)(EWRAM_START + 0x33000))->unk0;
-    gUnknown_030053EC = gLoadedSaveGame->unk6;
+    gMultiplayerLanguage = gLoadedSaveGame->unk6;
 
     sub_8081FB0();
     resultsScreen = sub_8082B1C(a);
@@ -153,7 +153,7 @@ void sub_808207C(void)
 
     gMultiSioSend.pat0.unk0 = 0x4010;
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-        gMultiSioSend.pat0.unk3 = gUnknown_030053EC;
+        gMultiSioSend.pat0.unk3 = gMultiplayerLanguage;
     }
 
     resultsScreen = TaskGetStructPtr(gCurTask);
@@ -183,7 +183,7 @@ void sub_808207C(void)
                 var = 0x44c;
                 asm("" ::"r"(var));
 #endif
-                if (gUnknown_030053EC == 1) {
+                if (gMultiplayerLanguage == 1) {
                     element->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
                 } else {
                     element->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
@@ -212,7 +212,7 @@ void sub_808207C(void)
             }
             element->unk1A = 0;
             element->graphics.size = 0;
-            if (gUnknown_030053EC == 1) {
+            if (gMultiplayerLanguage == 1) {
                 element->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
             } else {
                 element->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
@@ -291,7 +291,7 @@ void sub_80823FC(void)
             background->unk18 = 0;
             background->unk1A = 0;
             background->unk1C = 6;
-            switch (gUnknown_030053EC) {
+            switch (gMultiplayerLanguage) {
                 case 0:
                     background->unk1E = 0;
                     background->unk20 = 4;
@@ -345,7 +345,7 @@ void sub_80823FC(void)
         packet = &gMultiSioSend;
         packet->pat0.unk0 = 0x4010;
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-            packet->pat0.unk3 = gUnknown_030053EC;
+            packet->pat0.unk3 = gMultiplayerLanguage;
         }
 
         if ((gMultiSioStatusFlags & MULTI_SIO_PARENT && gPressedKeys & START_BUTTON

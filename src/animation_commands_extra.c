@@ -25,7 +25,7 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
             sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             sprite->graphics.src
-                = &gUnknown_03002794->graphics[cmd->tileIndex * TILE_SIZE_4BPP];
+                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
             sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
