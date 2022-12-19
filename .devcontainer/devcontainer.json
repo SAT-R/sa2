@@ -25,5 +25,7 @@
 	"features": {
 		"python": "3.9"
 	},
-	"postCreateCommand": ".devcontainer/postinstall.sh"
+	"postCreateCommand": ".devcontainer/postinstall.sh",
+	"workspaceMount": "source=sa2,target=/workspace/sa2,type=volume",
+	"workspaceFolder": "/workspace/sa2"
 }
