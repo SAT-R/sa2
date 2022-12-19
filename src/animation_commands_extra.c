@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/syscall.h"
+
 #include "m4a.h"
 
 #include "data.h"
@@ -12,6 +14,27 @@ extern u8 gUnknown_03002A84;
 extern struct BgHeader *gUnknown_030027A0[];
 
 extern const AnimationCommandFunc animCmdTable[];
+
+#if 0 // Matches
+u32 sub_8004518_(u16 num)
+{
+    u8  i;
+    u16 result;
+    u8 lowDigit;
+    u16 remainder = num;
+
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        s32 divisor = Div(remainder, 10);
+        lowDigit = remainder - divisor * 10;
+        remainder = ((divisor << 16) >> 16);
+        
+        result |= lowDigit << (i << 2);
+    }
+
+    return result;
+}
+#endif
 
 #if 1
 s32 sub_8004558(Sprite *sprite)
