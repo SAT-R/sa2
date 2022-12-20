@@ -17,24 +17,19 @@
 
 typedef u16 AnimId;
 
-// BgHeader
-struct BgHeader {
-    /* TODO: fixing types breaks sub_80021C4. */
-    u32 unk0; // const void *
-    u32 unk4; // void *
-    u16 unk8;
+struct GraphicsData {
+    /* 0x00 */ const void *src;
+    /* 0x04 */ void *dest;
+    /* 0x08 */ u16 size;
+    /* 0x0A */ AnimId anim;
 };
 
 typedef struct {
     // TODO: BgHeader unk0;
     // and remove the below 3 values
-    u32 unk0;
-    u32 unk4; // vram
+    /* 0x00 */ struct GraphicsData graphics;
 
-    u16 unk8;
-    u16 unkA;
-
-    u32 unkC; // vram
+    u32 unkC;
     // Don't think this is right in sa2
     const u16 *unk10;
 
@@ -103,13 +98,7 @@ typedef struct {
 typedef struct {
     // These values are part of some other struct
     // Note(Jace): Isn't this a u8* to the tile data in the ROM?
-    /* 0x00 */ u32 unk0;
-
-    /* 0x04 */ void *vram;
-
-    /* 0x08 */ u16 unk8;
-
-    /* 0x0A */ AnimId anim;
+    /* 0x00 */ struct GraphicsData graphics;
 
     /* 0x0C */ struct UNK_0808B3FC_UNK240_UNKC *unkC;
     /* 0x10 */ u32 unk10; // bitfield

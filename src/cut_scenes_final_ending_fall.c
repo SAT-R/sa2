@@ -204,15 +204,15 @@ void CreateFinalEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk80;
-        element->vram = (void *)OBJ_VRAM0;
+        element->graphics.dest = (void *)OBJ_VRAM0;
         scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
-        element->anim = gUnknown_080E1650[0].anim;
+        element->graphics.anim = gUnknown_080E1650[0].anim;
         element->variant = gUnknown_080E1650[0].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -225,13 +225,13 @@ void CreateFinalEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk110;
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
         element->unk21 = 0xFF;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -244,13 +244,13 @@ void CreateFinalEndingFallCutScene(void)
         Sprite *element;
 
         element = &scene->unk140;
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0xC00;
         element->unk21 = 0xFF;
         element->x = 0x78;
         element->y = 0x50;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -262,15 +262,15 @@ void CreateFinalEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk1A0;
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x3C0;
-        element->anim = gUnknown_080E1650[1].anim;
+        element->graphics.anim = gUnknown_080E1650[1].anim;
         element->variant = gUnknown_080E1650[1].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x80;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -283,13 +283,13 @@ void CreateFinalEndingFallCutScene(void)
     for (i = 0; i < 2; i++) {
         Sprite *element;
         element = &scene->unk1D0[i];
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[(i + 3)].numTiles * 0x20;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x40;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -302,13 +302,13 @@ void CreateFinalEndingFallCutScene(void)
         Sprite *element;
         element = &scene->unk230[i];
 
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[2].numTiles * 0x20;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -320,15 +320,15 @@ void CreateFinalEndingFallCutScene(void)
     if (gSelectedCharacter == 1) {
         Sprite *element;
         element = &scene->unk170;
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[27].numTiles * 0x20;
-        element->anim = gUnknown_080E1650[27].anim;
+        element->graphics.anim = gUnknown_080E1650[27].anim;
         element->variant = gUnknown_080E1650[27].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -341,15 +341,15 @@ void CreateFinalEndingFallCutScene(void)
     for (i = 0; i < 2; i++) {
         Sprite *element;
         element = &scene->unkB0[i];
-        element->vram = (void *)scene->unk494;
+        element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 1;
-        element->anim = gUnknown_080E1650[(i + 5)].anim;
+        element->graphics.anim = gUnknown_080E1650[(i + 5)].anim;
         element->variant = gUnknown_080E1650[(i + 5)].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -360,8 +360,8 @@ void CreateFinalEndingFallCutScene(void)
     }
 
     background = &scene->unk0;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -377,8 +377,8 @@ void CreateFinalEndingFallCutScene(void)
     sub_8002A3C(background);
 
     background = &scene->unk40;
-    background->unk4 = BG_SCREEN_ADDR(8);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(24);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -664,7 +664,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
 
     element = &scene->unk80;
     for (i = 0; i < 10; i++) {
-        element->anim = gUnknown_080E1650[0].anim;
+        element->graphics.anim = gUnknown_080E1650[0].anim;
         element->variant = gUnknown_080E1650[0].variant;
 
         element->x = scene->unk3F8[i][0];
@@ -678,7 +678,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     }
 
     element = &scene->unk1A0;
-    element->anim = gUnknown_080E1650[variant + 1].anim;
+    element->graphics.anim = gUnknown_080E1650[variant + 1].anim;
     element->variant = gUnknown_080E1650[variant + 1].variant;
     element->x = scene->unk3C0;
     element->y = scene->unk3C4 >> 8;
@@ -690,7 +690,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
         for (i = 0; i < 6; i++) {
             if (((scene->unk3C4 >> 8) + gBgScrollRegs[1][1]) < 0xE4) {
                 element = &scene->unk1D0[i & 1];
-                element->anim = gUnknown_080E1650[(i & 1) + 3].anim;
+                element->graphics.anim = gUnknown_080E1650[(i & 1) + 3].anim;
                 element->variant = gUnknown_080E1650[(i & 1) + 3].variant;
                 element->x = scene->unk378[i][0];
                 element->y = scene->unk378[i][1] >> 8;
@@ -700,7 +700,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
 
             if (scene->unk365[i] != 0) {
                 element = &scene->unk230[i];
-                element->anim = gUnknown_080E1650[2].anim;
+                element->graphics.anim = gUnknown_080E1650[2].anim;
                 element->variant = gUnknown_080E1650[2].variant;
                 element->x = scene->unk3C8[i][0];
                 element->y = scene->unk3C8[i][1] >> 8;
@@ -719,7 +719,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
         variant = 1;
     }
     element = &scene->unk110;
-    element->anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].anim;
+    element->graphics.anim
+        = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].anim;
     element->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].variant;
     element->x = scene->unk3A8;
     element->y = scene->unk3AC >> 8;
@@ -731,7 +732,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     }
 
     element = &scene->unk140;
-    element->anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
+    element->graphics.anim
+        = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
     element->variant
         = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
     element->x = scene->unk3B4;
@@ -741,7 +743,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         element = &scene->unk170;
-        element->anim = gUnknown_080E1650[variant + 0x1B].anim;
+        element->graphics.anim = gUnknown_080E1650[variant + 0x1B].anim;
         element->variant = gUnknown_080E1650[variant + 0x1B].variant;
         element->x = scene->unk3B4;
         element->y = scene->unk3B8 >> 8;

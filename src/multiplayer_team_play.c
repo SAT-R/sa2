@@ -145,11 +145,11 @@ void CreateMultiplayerTeamPlayScreen(void)
         element = &teamPlayScreen->unk0[i];
         element->x = 0;
         element->y = 0;
-        element->vram = (void *)vram;
+        element->graphics.dest = (void *)vram;
         vram += gUnknown_080D92BC[i].numTiles * TILE_SIZE_4BPP;
         element->unk1A = 0x100;
-        element->unk8 = 0;
-        element->anim = gUnknown_080D92BC[i].anim;
+        element->graphics.size = 0;
+        element->graphics.anim = gUnknown_080D92BC[i].anim;
         element->variant = gUnknown_080D92BC[i].variant;
         element->unk14 = 0;
         element->unk1C = 0;
@@ -165,12 +165,12 @@ void CreateMultiplayerTeamPlayScreen(void)
         element = &teamPlayScreen->unkC0[i];
         element->x = 0;
         element->y = 0;
-        element->vram = (void *)vram;
+        element->graphics.dest = (void *)vram;
         vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles
             * TILE_SIZE_4BPP;
         element->unk1A = 0xC0;
-        element->unk8 = 0;
-        element->anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
+        element->graphics.size = 0;
+        element->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
         element->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
         element->unk14 = 0;
         element->unk1C = 0;
@@ -184,10 +184,10 @@ void CreateMultiplayerTeamPlayScreen(void)
     element = &teamPlayScreen->unk1B0;
     element->x = 0;
     element->y = 0;
-    element->vram = (void *)vram;
+    element->graphics.dest = (void *)vram;
     element->unk1A = 0xC0;
-    element->unk8 = 0;
-    element->anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
+    element->graphics.size = 0;
+    element->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
     element->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
     element->unk14 = 0;
     element->unk1C = 0;
@@ -198,8 +198,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     element->unk10 = 0;
 
     background = &teamPlayScreen->unk210;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -215,8 +215,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk250;
-    background->unk4 = BG_SCREEN_ADDR(8);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -232,8 +232,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk290;
-    background->unk4 = BG_SCREEN_ADDR(16);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -249,8 +249,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk2D0;
-    background->unk4 = BG_SCREEN_ADDR(24);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -356,8 +356,8 @@ static void sub_805CC34(void)
                     gUnknown_03002280[10] = 0xFF;
                     gUnknown_03002280[11] = 32;
 
-                    background->unk4 = BG_SCREEN_ADDR(16);
-                    background->unkA = 0;
+                    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+                    background->graphics.anim = 0;
                     background->unkC = BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
@@ -401,8 +401,8 @@ static void sub_805CC34(void)
                 gUnknown_03002280[10] = 0xFF;
                 gUnknown_03002280[11] = 32;
 
-                background->unk4 = BG_SCREEN_ADDR(16);
-                background->unkA = 0;
+                background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+                background->graphics.anim = 0;
                 background->unkC = BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
@@ -618,7 +618,7 @@ static void sub_805D1F8(void)
                 TasksDestroyAll();
                 gUnknown_03002AE4 = gUnknown_0300287C;
                 gUnknown_03005390 = 0;
-                gUnknown_03004D5C = gUnknown_03002A84;
+                gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
                 MultiPakCommunicationError();
                 return;
             }

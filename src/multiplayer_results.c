@@ -171,8 +171,8 @@ void CreateMultiplayerResultsScreen(u8 mode)
     }
 
     background = &resultsScreen->unk0;
-    background->unk4 = BG_SCREEN_ADDR(16);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -200,21 +200,21 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element = &resultsScreen->resultRows[i];
             element->x = 200;
             element->y = 0x33 + (0x20 * i);
-            element->vram = (void *)(OBJ_VRAM0 + (i * 0x800));
+            element->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
             element->unk1A = 0x400;
-            element->unk8 = 0;
+            element->graphics.size = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
-                element->anim = gUnknown_080D9100[lang][1].anim;
+                element->graphics.anim = gUnknown_080D9100[lang][1].anim;
                 element->variant = gUnknown_080D9100[lang][1].variant;
             } else if (temp == 4) {
-                element->anim = gUnknown_080D9100[lang][2].anim;
+                element->graphics.anim = gUnknown_080D9100[lang][2].anim;
                 element->variant = gUnknown_080D9100[lang][2].variant;
             } else if (count == 2 || gGameMode == 4) {
-                element->anim = gUnknown_080D9100[lang][0].anim;
+                element->graphics.anim = gUnknown_080D9100[lang][0].anim;
                 element->variant = gUnknown_080D9100[lang][0].variant + temp;
             } else {
-                element->anim = gUnknown_080D9100[lang][3].anim;
+                element->graphics.anim = gUnknown_080D9100[lang][3].anim;
                 element->variant = gUnknown_080D9100[lang][3].variant + temp;
             }
             element->unk14 = 0;
@@ -228,10 +228,10 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element = &resultsScreen->characterRows[i];
             element->x = 0;
             element->y = 0x1F + (0x20 * i);
-            element->vram = (void *)(OBJ_VRAM0 + temp2);
+            element->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
             element->unk1A = 0x400;
-            element->unk8 = 0;
-            element->anim = gUnknown_080D9288[i].anim;
+            element->graphics.size = 0;
+            element->graphics.anim = gUnknown_080D9288[i].anim;
             element->variant = gUnknown_080D9288[i].variant;
             element->unk14 = 0;
             element->unk1C = 0;
@@ -346,7 +346,7 @@ static void sub_805C3D0(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
             CreateMultiplayerLobbyScreen();
         } else {

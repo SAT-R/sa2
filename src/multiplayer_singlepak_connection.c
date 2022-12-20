@@ -164,17 +164,17 @@ void StartSinglePakConnect(void)
     element->x = 8;
     element->y = 24;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->focused = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
-    element->anim = gUnknown_080E018C[connectScreen->unkFA][0];
+    element->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
     element->variant = gUnknown_080E018C[connectScreen->unkFA][1];
     element->unk21 = 0xFF;
-    element->vram = (void *)ram;
+    element->graphics.dest = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
     sub_8004558(element);
 
@@ -182,38 +182,38 @@ void StartSinglePakConnect(void)
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT - 38);
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->focused = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
-    element->anim = gUnknown_080E01B6[connectScreen->unkFA][0];
+    element->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
     element->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
     element->unk21 = 0xFF;
-    element->vram = (void *)ram;
+    element->graphics.dest = (void *)ram;
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
     element = &connectScreen->unk6C;
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT * (7. / 8.));
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->focused = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
-    element->anim = SA2_ANIM_MP_MSG;
+    element->graphics.anim = SA2_ANIM_MP_MSG;
     element->variant = SA2_ANIM_VARIANT_MP_MSG_2;
     element->unk21 = 0xFF;
-    element->vram = (void *)ram;
+    element->graphics.dest = (void *)ram;
 
     background = &connectScreen->unk9C;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -240,7 +240,7 @@ void StartSinglePakConnect(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         MultiPakCommunicationError();
     }
 }
@@ -265,7 +265,7 @@ void sub_8081604(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         MultiPakCommunicationError();
     }
 
@@ -310,7 +310,7 @@ void sub_8081604(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         gFlags &= ~0x4000;
         gFlags &= ~0x8000;
         m4aSoundVSyncOn();
@@ -386,7 +386,7 @@ void sub_80818B8(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gUnknown_03004D5C = gUnknown_03002A84;
+            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
             gFlags &= ~0x4000;
             gFlags &= ~0x8000;
             m4aSoundVSyncOn();
@@ -451,8 +451,8 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     gBgScrollRegs[0][1] = 0;
 
     background = &connectScreen->unk9C;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -586,7 +586,7 @@ void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
     sub_8004558(&connectScreen->unk3C);
     sub_80051E8(&connectScreen->unk3C);
 
-    connectScreen->unk6C.anim = SA2_ANIM_MP_MSG;
+    connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
     connectScreen->unk6C.unk21 = 0xFF;
 

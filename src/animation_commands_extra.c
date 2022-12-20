@@ -10,8 +10,8 @@
 #include "animation_commands.h"
 
 extern const struct SpriteTables *gUnknown_03002794;
-extern u8 gUnknown_03002A84;
-extern struct BgHeader *gUnknown_030027A0[];
+extern u8 gVramGraphicsCopyQueueIndex;
+extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
@@ -188,17 +188,17 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
     if ((sprite->unk10 & 0x80000) == 0) {
         // @TODO: Change sprite's unk0 to be a pointer
         if (cmd->tileIndex < 0) {
-            sprite->unk0
-                = (u32)&gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
-            sprite->unk8 = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
-            sprite->unk0
-                = (u32)&gUnknown_03002794->graphics[cmd->tileIndex * TILE_SIZE_4BPP];
-            sprite->unk8 = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
-        gUnknown_030027A0[gUnknown_03002A84] = (struct BgHeader *)sprite;
-        gUnknown_03002A84 = (gUnknown_03002A84 + 1) & 0x1F;
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &sprite->graphics;
+        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
     }
 
     return 1;

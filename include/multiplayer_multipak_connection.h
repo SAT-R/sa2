@@ -25,7 +25,7 @@ void MultiPakCommunicationError(void);
                         TasksDestroyAll();                                              \
                         gUnknown_03002AE4 = gUnknown_0300287C;                          \
                         gUnknown_03005390 = 0;                                          \
-                        gUnknown_03004D5C = gUnknown_03002A84;                          \
+                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;          \
                         MultiPakCommunicationError();                                   \
                         return;                                                         \
                     }                                                                   \

@@ -232,9 +232,9 @@ void CreateExtraEndingFallCutScene(void)
     for (i = 0; i < 4; i++) {
         Sprite *element;
         element = &scene->unk280[i];
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0xA00;
-        element->anim = gUnknown_080E12FC[i + 3].anim;
+        element->graphics.anim = gUnknown_080E12FC[i + 3].anim;
         element->variant = gUnknown_080E12FC[i + 3].variant;
         element->unk21 = 0xFF;
         element->x = 0;
@@ -247,7 +247,7 @@ void CreateExtraEndingFallCutScene(void)
         }
 
         element->unk10 = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -259,15 +259,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk40;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0x540;
-        element->anim = gUnknown_080E12FC[0].anim;
+        element->graphics.anim = gUnknown_080E12FC[0].anim;
         element->variant = gUnknown_080E12FC[0].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x100;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -280,15 +280,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk70;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[7].numTiles << 5;
-        element->anim = gUnknown_080E12FC[7].anim;
+        element->graphics.anim = gUnknown_080E12FC[7].anim;
         element->variant = gUnknown_080E12FC[7].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x1C0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -302,15 +302,15 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *element;
 
         element = &scene->unkA0;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0x800;
-        element->anim = gUnknown_080E12FC[10].anim;
+        element->graphics.anim = gUnknown_080E12FC[10].anim;
         element->variant = gUnknown_080E12FC[10].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x240;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -323,15 +323,15 @@ void CreateExtraEndingFallCutScene(void)
     for (i = 0; i < 6; i++) {
         Sprite *element;
         element = &scene->unkD0[i];
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * 0x20;
-        element->anim = gUnknown_080E12FC[i + 0xD].anim;
+        element->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
         element->variant = gUnknown_080E12FC[i + 0xD].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x180;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -344,15 +344,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk1F0;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[19].numTiles << 5;
-        element->anim = gUnknown_080E12FC[19].anim;
+        element->graphics.anim = gUnknown_080E12FC[19].anim;
         element->variant = gUnknown_080E12FC[19].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x140;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -365,15 +365,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk220;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[20].numTiles << 5;
-        element->anim = gUnknown_080E12FC[20].anim;
+        element->graphics.anim = gUnknown_080E12FC[20].anim;
         element->variant = gUnknown_080E12FC[20].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0xC0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -386,15 +386,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk340;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[9].numTiles << 6;
-        element->anim = gUnknown_080E12FC[9].anim;
+        element->graphics.anim = gUnknown_080E12FC[9].anim;
         element->variant = gUnknown_080E12FC[9].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -407,15 +407,15 @@ void CreateExtraEndingFallCutScene(void)
     {
         Sprite *element;
         element = &scene->unk250;
-        element->vram = (void *)scene->unk398;
+        element->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[8].numTiles << 5;
-        element->anim = gUnknown_080E12FC[8].anim;
+        element->graphics.anim = gUnknown_080E12FC[8].anim;
         element->variant = gUnknown_080E12FC[8].variant;
         element->unk21 = 0xFF;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x200;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -428,8 +428,8 @@ void CreateExtraEndingFallCutScene(void)
     {
         Background *background;
         background = &scene->unk0;
-        background->unk4 = BG_SCREEN_ADDR(0);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -882,7 +882,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     }
     element = &scene->unk340;
     for (i = 0; i < max; i++) {
-        element->anim = gUnknown_080E12FC[9].anim;
+        element->graphics.anim = gUnknown_080E12FC[9].anim;
         element->variant = gUnknown_080E12FC[9].variant;
         element->x = scene->unk3E8[i][0];
         element->y = scene->unk3E8[i][1] >> 8;
@@ -893,7 +893,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         max = 0;
         for (i = 0; i < 8; i++) {
             element = &scene->unk280[i & 3];
-            element->anim = gUnknown_080E12FC[(i & 3) + 3].anim;
+            element->graphics.anim = gUnknown_080E12FC[(i & 3) + 3].anim;
             element->variant = gUnknown_080E12FC[(i & 3) + 3].variant;
 
             if (i > 4) {
@@ -910,13 +910,13 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 
     element = &scene->unk40;
     if (scene->unk37C == 0xD) {
-        element->anim = gUnknown_080E12FC[1].anim;
+        element->graphics.anim = gUnknown_080E12FC[1].anim;
         element->variant = gUnknown_080E12FC[1].variant;
     } else if (scene->unk37C == 0xE || scene->unk37C == 0xF || scene->unk37C == 0x10) {
-        element->anim = gUnknown_080E12FC[2].anim;
+        element->graphics.anim = gUnknown_080E12FC[2].anim;
         element->variant = gUnknown_080E12FC[2].variant;
     } else if (scene->unk37C >= 0x11) {
-        element->anim = gUnknown_080E12FC[21].anim;
+        element->graphics.anim = gUnknown_080E12FC[21].anim;
         element->variant = gUnknown_080E12FC[21].variant;
     }
     element->x = scene->unk3E0[0] >> 8;
@@ -930,11 +930,11 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         element->y = scene->unk464;
 
         if (scene->unk37C == 10) {
-            element->anim = gUnknown_080E12FC[11].anim;
+            element->graphics.anim = gUnknown_080E12FC[11].anim;
             element->variant = gUnknown_080E12FC[11].variant;
             sub_8004558(element);
         } else if (scene->unk37C == 0xD) {
-            element->anim = gUnknown_080E12FC[12].anim;
+            element->graphics.anim = gUnknown_080E12FC[12].anim;
             element->variant = gUnknown_080E12FC[12].variant;
             sub_8004558(element);
         }
@@ -952,7 +952,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     } else {
         for (i = 0; i < 6; i++) {
             element = &scene->unkD0[i];
-            element->anim = gUnknown_080E12FC[i + 0xD].anim;
+            element->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
             element->variant = gUnknown_080E12FC[i + 0xD].variant;
             element->x = scene->unk584[i][0] >> 8;
             element->y = scene->unk584[i][1] >> 8;

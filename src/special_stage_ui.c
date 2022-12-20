@@ -158,7 +158,7 @@ void sub_806FCF8(void)
     if (timeHundreds != 0) {
         unkF7E8 = &sDigitSprites[timeHundreds];
         element = &ui->timeHundreds;
-        element->anim = unkF7E8->anim;
+        element->graphics.anim = unkF7E8->anim;
         element->variant = unkF7E8->variant;
         element->unk10 |= 0x40000;
         element->focused = temp;
@@ -168,7 +168,7 @@ void sub_806FCF8(void)
     if ((timeHundreds | timeTens) != 0) {
         unkF7E8 = &sDigitSprites[timeTens];
         element = &ui->timeTens;
-        element->anim = unkF7E8->anim;
+        element->graphics.anim = unkF7E8->anim;
         element->variant = unkF7E8->variant;
         element->unk10 |= 0x40000;
         element->focused = temp;
@@ -177,7 +177,7 @@ void sub_806FCF8(void)
 
     unkF7E8 = &sDigitSprites[timeUnits];
     element = &ui->timeUnits;
-    element->anim = unkF7E8->anim;
+    element->graphics.anim = unkF7E8->anim;
     element->variant = unkF7E8->variant;
     element->unk10 |= 0x40000;
     element->focused = temp;
@@ -261,19 +261,19 @@ void sub_8070078(void)
 
     sprite = &sDigitSprites[stage->ringsHundreds];
     element = &ui->ringsHundredsDigit;
-    element->anim = sprite->anim;
+    element->graphics.anim = sprite->anim;
     element->variant = sprite->variant;
     sub_8004558(element);
 
     sprite = &sDigitSprites[stage->ringsTens];
     element = &ui->ringsTensDigit;
-    element->anim = sprite->anim;
+    element->graphics.anim = sprite->anim;
     element->variant = sprite->variant;
     sub_8004558(element);
 
     sprite = &sDigitSprites[stage->ringsUnits];
     element = &ui->ringsUnitsDigit;
-    element->anim = sprite->anim;
+    element->graphics.anim = sprite->anim;
     element->variant = sprite->variant;
     sub_8004558(element);
 
@@ -285,7 +285,7 @@ void sub_8070078(void)
             stage->unk5C8 = 0x78;
 
             element = &ui->unk154;
-            element->anim = 0x378;
+            element->graphics.anim = 0x378;
             element->variant = 1;
             sub_8004558(element);
         }
@@ -296,7 +296,7 @@ void sub_8070078(void)
         stage->targetReached = FALSE;
 
         element = &ui->unk154;
-        element->anim = 0x378;
+        element->graphics.anim = 0x378;
         element->variant = 0;
         sub_8004558(element);
     } else {
@@ -544,7 +544,7 @@ void Task_ResultsScreenNewEmeraldSequencePart1(void)
     if (resultsScreen->animFrame > 11) {
         s16 emeraldIndex = zone;
         Sprite *element = &resultsScreen->chaosEmerald[emeraldIndex];
-        element->anim = sChaosEmeraldUnlockedSprites[emeraldIndex].anim;
+        element->graphics.anim = sChaosEmeraldUnlockedSprites[emeraldIndex].anim;
         element->variant = sChaosEmeraldUnlockedSprites[emeraldIndex].variant;
         gCurTask->main = Task_ResultsScreenNewEmeraldSequencePart2;
     }
@@ -614,7 +614,7 @@ static void RenderScoresAnim(void)
         if (found || a[i] != 0 || i == 4) {
             found = TRUE;
             element = &resultsScreen->unk244[i];
-            element->anim = sDigitSprites[a[i]].anim;
+            element->graphics.anim = sDigitSprites[a[i]].anim;
             element->variant = sDigitSprites[a[i]].variant;
             sub_8004558(element);
             sub_80051E8(element);
@@ -625,7 +625,7 @@ static void RenderScoresAnim(void)
         if (found || b[i] != 0 || i == 4) {
             found = TRUE;
             element = &resultsScreen->unk334[i];
-            element->anim = sDigitSprites[b[i]].anim;
+            element->graphics.anim = sDigitSprites[b[i]].anim;
             element->variant = sDigitSprites[b[i]].variant;
             sub_8004558(element);
             sub_80051E8(element);
@@ -636,7 +636,7 @@ static void RenderScoresAnim(void)
         if (found || c[i] != 0 || i == 4) {
             found = TRUE;
             element = &resultsScreen->unk424[i];
-            element->anim = sDigitSprites[c[i]].anim;
+            element->graphics.anim = sDigitSprites[c[i]].anim;
             element->variant = sDigitSprites[c[i]].variant;
             sub_8004558(element);
             sub_80051E8(element);
@@ -740,7 +740,7 @@ void sub_8070D14(void)
         const struct UNK_80DF670 *unkF830 = &gUnknown_080DF830[unkC0];
         Sprite *element = &ui->multiplier;
         if (stage->paused == FALSE) {
-            element->anim = unkF830->anim;
+            element->graphics.anim = unkF830->anim;
             element->variant = unkF830->variant;
             sub_8004558(element);
         }
@@ -797,7 +797,7 @@ static void Task_ResultsScreenStartNewEmeraldSequence(void)
     struct SpecialStage *stage = resultsScreen->stage;
     Sprite *element = &resultsScreen->chaosEmerald[stage->zone];
 
-    element->anim = sChaosEmeraldUnlockedSprites[8].anim;
+    element->graphics.anim = sChaosEmeraldUnlockedSprites[8].anim;
     element->variant = sChaosEmeraldUnlockedSprites[8].variant;
     RenderScoresAnim();
     resultsScreen->animFrame = 0;

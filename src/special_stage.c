@@ -626,7 +626,7 @@ void sub_806C6A4(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         WriteSaveGame();
         sub_801A770();
     }
@@ -697,7 +697,7 @@ void SpecialStagePauseMenuMain(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gUnknown_03004D5C = gUnknown_03002A84;
+            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
             CreateTitleScreenAndSkipIntro();
             return;
         }

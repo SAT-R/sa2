@@ -113,7 +113,7 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
     SET_SPRITE_INITIALIZED(ia);
 
     displayed->unk1A = 0x480;
-    displayed->unk8 = springKind;
+    displayed->graphics.size = springKind;
     displayed->unk14 = springKind;
     displayed->unk1C = springKind;
 
@@ -131,12 +131,12 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
 
     if (((s16)springKind != SPRING_KIND_MUSIC_PLANT) || ((springType / 2) != 0)) {
         u16 tileCount = sSpringAnimationData[springKind][springType][2];
-        displayed->vram = VramMalloc(tileCount);
+        displayed->graphics.dest = VramMalloc(tileCount);
     } else {
-        displayed->vram = (void *)(OBJ_VRAM0 + 0x2980);
+        displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
     }
 
-    displayed->anim = sSpringAnimationData[springKind][springType][0];
+    displayed->graphics.anim = sSpringAnimationData[springKind][springType][0];
     displayed->variant = sSpringAnimationData[springKind][springType][1];
 
     displayed->unk10 |= sSpringAnimationData[springKind][springType][3];
@@ -157,7 +157,7 @@ static void Task_Interactable_Spring(void)
         displayed->variant++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
-            displayed->vram = (void *)(OBJ_VRAM0 + 0x2B00);
+            displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
     if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
@@ -184,7 +184,7 @@ static void sub_800E3D0(void)
             displayed->variant--;
 
             if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->unk3D / 2) == 0) {
-                displayed->vram = (void *)(OBJ_VRAM0 + 0x2980);
+                displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
             }
 
             sub_8004558(displayed);
@@ -226,7 +226,7 @@ static void TaskDestructor_Interactable_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TaskGetStructPtr(t);
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->unk3D / 2 != 0)) {
-        VramFree(spring->displayed.vram);
+        VramFree(spring->displayed.graphics.dest);
     }
 }
 

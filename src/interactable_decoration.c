@@ -52,12 +52,12 @@ void initSprite_Interactable_Decoration(Interactable *ia, u16 regionX, u16 regio
         deco->y = SpriteGetScreenPos(ia->y, regionY);
         SET_SPRITE_INITIALIZED(ia);
 
-        deco->vram = VramMalloc(sDecoTileAnimInfo[ia->decoId].numTiles);
-        deco->anim = sDecoTileAnimInfo[ia->decoId].anim;
+        deco->graphics.dest = VramMalloc(sDecoTileAnimInfo[ia->decoId].numTiles);
+        deco->graphics.anim = sDecoTileAnimInfo[ia->decoId].anim;
         deco->variant = sDecoTileAnimInfo[ia->decoId].variant;
 
         deco->unk1A = 0x700;
-        deco->unk8 = 0;
+        deco->graphics.size = 0;
         deco->unk14 = 0;
         deco->unk1C = 0;
         deco->unk21 = 0xFF;
@@ -104,7 +104,7 @@ void Task_Interactable_Decoration(void)
 void TaskDestructor_Interactable_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
-    VramFree(deco->displayed.vram);
+    VramFree(deco->displayed.graphics.dest);
 }
 
 #undef decoId

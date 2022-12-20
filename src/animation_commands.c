@@ -116,7 +116,7 @@ s32 animCmd_SetIdAndVariant(void *cursor, Sprite *sprite)
     ACmd_SetIdAndVariant *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
 
-    sprite->anim = cmd->animId;
+    sprite->graphics.anim = cmd->animId;
     sprite->unk21 = 0xFF;
     sprite->variant = cmd->variant;
 

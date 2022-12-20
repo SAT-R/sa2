@@ -61,12 +61,12 @@ void CreateCourseStartCountdown(u8 mode)
     }
 
     element = &countdown->unk30;
-    element->vram = VramMalloc(4);
-    element->anim = SA2_ANIM_COUNTDOWN;
+    element->graphics.dest = VramMalloc(4);
+    element->graphics.anim = SA2_ANIM_COUNTDOWN;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -75,11 +75,11 @@ void CreateCourseStartCountdown(u8 mode)
     element->unk10 = 0;
 
     element = &countdown->unk0;
-    element->vram = VramMalloc(0xE);
-    element->anim = SA2_ANIM_LEVEL_START_MACHINE;
+    element->graphics.dest = VramMalloc(0xE);
+    element->graphics.anim = SA2_ANIM_LEVEL_START_MACHINE;
     element->variant = 0;
     element->unk1A = 0x480;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
@@ -209,12 +209,12 @@ void CreateRaceStartMessage(void)
 
     startMessage->unk78 = 0x3C;
     element = &startMessage->unk0;
-    element->vram = VramMalloc(0x40);
-    element->anim = SA2_ANIM_COUNTDOWN_START;
+    element->graphics.dest = VramMalloc(0x40);
+    element->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -223,12 +223,12 @@ void CreateRaceStartMessage(void)
     element->unk10 = gUnknown_030054B8++ | 0x60;
 
     element = &startMessage->unk3C;
-    element->vram = VramMalloc(0x40);
-    element->anim = SA2_ANIM_COUNTDOWN_START;
+    element->graphics.dest = VramMalloc(0x40);
+    element->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
     element->unk21 = 0xFF;
     element->unk1A = 0x100;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
@@ -298,13 +298,13 @@ void sub_8036524(void)
 void sub_8036638(struct Task *t)
 {
     struct CourseStartCountdown *countdown = TaskGetStructPtr(t);
-    VramFree(countdown->unk0.vram);
-    VramFree(countdown->unk30.vram);
+    VramFree(countdown->unk0.graphics.dest);
+    VramFree(countdown->unk30.graphics.dest);
 }
 
 void sub_8036654(struct Task *t)
 {
     struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
-    VramFree(startMessage->unk3C.vram);
-    VramFree(startMessage->unk0.vram);
+    VramFree(startMessage->unk3C.graphics.dest);
+    VramFree(startMessage->unk0.graphics.dest);
 }

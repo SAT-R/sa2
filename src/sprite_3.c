@@ -52,7 +52,7 @@ void sub_80051E8(Sprite *sprite)
             u8 unk6D0 = gUnknown_030026D0 >> 8;
 
             for (sp0C = 0; sp0C < unkC->unk2; sp0C++) {
-                oamData = gUnknown_03002794->oamData[sprite->anim];
+                oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
 
                 r4 = sub_80058B4((sprite->unk1A & 0x7C0) >> 6);
                 if (iwram_end == r4) {
@@ -108,7 +108,7 @@ void sub_80051E8(Sprite *sprite)
                 if (r4->all.attr0 & 0x2000) {
                     r4->all.attr2 += r4->all.attr2 & 0x3FF;
                 }
-                r4->all.attr2 += GET_TILE_NUM(sprite->vram);
+                r4->all.attr2 += GET_TILE_NUM(sprite->graphics.dest);
             }
         }
     }

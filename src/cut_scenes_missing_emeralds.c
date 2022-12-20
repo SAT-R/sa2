@@ -101,22 +101,22 @@ void CreateMissingChaosEmaraldsCutScene(void)
     {
         Sprite *element;
         element = &scene->unk80;
-        element->vram = (void *)OBJ_VRAM0;
+        element->graphics.dest = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
             scene->unkC4 += gUnknown_080E1CA0[0].numTiles * 0x20;
-            element->anim = gUnknown_080E1CA0[0].anim;
+            element->graphics.anim = gUnknown_080E1CA0[0].anim;
             element->variant = gUnknown_080E1CA0[0].variant;
             element->y = 85;
         } else {
             scene->unkC4 += 0xA00;
-            element->anim = gUnknown_080E1CA0[1].anim;
+            element->graphics.anim = gUnknown_080E1CA0[1].anim;
             element->variant = gUnknown_080E1CA0[1].variant;
             element->y = 90;
         }
         element->unk21 = 0xFF;
         element->x = (DISPLAY_WIDTH / 2);
         element->unk1A = 0;
-        element->unk8 = 0;
+        element->graphics.size = 0;
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
@@ -129,8 +129,8 @@ void CreateMissingChaosEmaraldsCutScene(void)
     {
         Background *background;
         background = &scene->unk0;
-        background->unk4 = BG_SCREEN_ADDR(0);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(30);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -146,8 +146,8 @@ void CreateMissingChaosEmaraldsCutScene(void)
     {
         Background *background;
         background = &scene->unk40;
-        background->unk4 = BG_SCREEN_ADDR(8);
-        background->unkA = 0;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        background->graphics.anim = 0;
         background->unkC = BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
@@ -284,7 +284,7 @@ void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
     if (scene->unkBD != 0) {
         Sprite *element = &scene->unk80;
         if (scene->unkBD > 3 && scene->unkBE != 0) {
-            element->anim = gUnknown_080E1CA0[2].anim;
+            element->graphics.anim = gUnknown_080E1CA0[2].anim;
             element->variant = gUnknown_080E1CA0[2].variant;
         }
         sub_8004558(element);

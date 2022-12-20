@@ -59,18 +59,18 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
     // @BUG Loads the -2 set through SET_SPRITE_INITIALIZED
     displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    displayed->vram = VramMalloc(IA_019_NUM_TILES);
+    displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
 #ifdef UBFIX
     // Prevent overflow
-    displayed->anim
+    displayed->graphics.anim
         = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
 #else
-    displayed->anim = sInt019_AnimationIds[gCurrentLevel];
+    displayed->graphics.anim = sInt019_AnimationIds[gCurrentLevel];
 #endif
     displayed->variant = 0;
     displayed->unk1A = 0x480;
-    displayed->unk8 = 0;
+    displayed->graphics.size = 0;
     displayed->unk14 = 0;
     displayed->unk1C = 0;
 
@@ -193,7 +193,7 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam_ptr = gUnknown_03002794->oamData[displayed->anim];
+    oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
     oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     // _0805E54C
@@ -242,10 +242,11 @@ void Task_805E480(void)
                 pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
             }
 
-            pointer->all.attr2 = (((oam[2] + displayed->focused) & ~0xFFF)
-                                  | ((displayed->unk10 & 0x3000) >> 2)
-                                  | (u16)(((u32)(displayed->vram - OBJ_VRAM0) >> 5)
-                                          + r6)); // (>> 5) = offset -> tilecount?
+            pointer->all.attr2
+                = (((oam[2] + displayed->focused) & ~0xFFF)
+                   | ((displayed->unk10 & 0x3000) >> 2)
+                   | (u16)(((u32)(displayed->graphics.dest - OBJ_VRAM0) >> 5)
+                           + r6)); // (>> 5) = offset -> tilecount?
         }
     }
 }
@@ -281,7 +282,7 @@ void Task_805E6A4(void)
         }
     }
 
-    oam_ptr = gUnknown_03002794->oamData[displayed->anim];
+    oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
     oam = &oam_ptr[displayed->unkC->unk1 * 3];
 
     r6 = 0;
@@ -316,10 +317,11 @@ void Task_805E6A4(void)
                 pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
             }
 
-            pointer->all.attr2 = (((oam[2] + displayed->focused) & ~0xFFF)
-                                  | ((displayed->unk10 & 0x3000) >> 2)
-                                  | (u16)(((u32)(displayed->vram - OBJ_VRAM0) >> 5)
-                                          + r6)); // (>> 5) = offset -> tilecount?
+            pointer->all.attr2
+                = (((oam[2] + displayed->focused) & ~0xFFF)
+                   | ((displayed->unk10 & 0x3000) >> 2)
+                   | (u16)(((u32)(displayed->graphics.dest - OBJ_VRAM0) >> 5)
+                           + r6)); // (>> 5) = offset -> tilecount?
         }
     }
 }
@@ -327,5 +329,5 @@ void Task_805E6A4(void)
 void TaskDestructor_Interactable019(struct Task *t)
 {
     Sprite_019 *platform = TaskGetStructPtr(t);
-    VramFree(platform->displayed.vram);
+    VramFree(platform->displayed.graphics.dest);
 }

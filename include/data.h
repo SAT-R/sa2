@@ -16,7 +16,7 @@ struct SpriteTables {
     /* 0x04 */ SpriteOffset **dimensions;
     /* 0x08 */ u16 **oamData;
     /* 0x0C */ u16 *palettes;
-    /* 0x10 */ u8 *graphics; // @TODO: Rename to 'tiles_4bpp'
+    /* 0x10 */ u8 *tiles_4bpp;
     /* 0x14 */ u8 *tiles_8bpp;
 };
 

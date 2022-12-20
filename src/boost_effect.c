@@ -32,10 +32,10 @@ void CreateBoostModeParticles(void)
     Sprite *element = &particles->unk0;
 
     particles->unk60 = 0;
-    element->vram = VramMalloc(1);
-    element->anim = SA2_ANIM_BOOST_EFFECT;
+    element->graphics.dest = VramMalloc(1);
+    element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
     element->variant = 0;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk21 = 0xFF;
     element->unk1A = 0x200;
     element->unk10 = 0x2000;
@@ -45,10 +45,10 @@ void CreateBoostModeParticles(void)
     sub_8004558(element);
 
     element = &particles->unk30;
-    element->vram = VramMalloc(1);
-    element->anim = SA2_ANIM_BOOST_EFFECT;
+    element->graphics.dest = VramMalloc(1);
+    element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
     element->variant = 1;
-    element->unk8 = 0;
+    element->graphics.size = 0;
     element->unk21 = 0xFF;
     element->unk1A = 0x200;
     element->unk10 = 0x2000;
@@ -212,7 +212,7 @@ void sub_808A234(struct Task *t)
 {
     struct BoostModeParticles *particles = TaskGetStructPtr(t);
     Sprite *element = &particles->unk0;
-    VramFree(element->vram);
+    VramFree(element->graphics.dest);
     element++;
-    VramFree(element->vram);
+    VramFree(element->graphics.dest);
 }

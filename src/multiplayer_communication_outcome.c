@@ -97,10 +97,10 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100 = &outcomeScreen->unk100;
     unk100->x = (DISPLAY_WIDTH / 2);
     unk100->y = DISPLAY_HEIGHT - 20;
-    unk100->vram = (void *)OBJ_VRAM0;
+    unk100->graphics.dest = (void *)OBJ_VRAM0;
     unk100->unk1A = 0x3C0;
-    unk100->unk8 = 0;
-    unk100->anim = SA2_ANIM_MP_MSG;
+    unk100->graphics.size = 0;
+    unk100->graphics.anim = SA2_ANIM_MP_MSG;
     unk100->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
     unk100->unk14 = 0;
     unk100->unk1C = 0;
@@ -112,10 +112,10 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100 = &outcomeScreen->unkD0;
     unk100->x = (DISPLAY_WIDTH / 2);
     unk100->y = 36;
-    unk100->vram = (void *)OBJ_VRAM0 + 0x2000;
+    unk100->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
     unk100->unk1A = 0x3C0;
-    unk100->unk8 = 0;
-    unk100->anim = gUnknown_080D9088[outcome];
+    unk100->graphics.size = 0;
+    unk100->graphics.anim = gUnknown_080D9088[outcome];
     unk100->variant = gUnknown_080D908C[outcome];
     unk100->unk14 = 0;
     unk100->unk1C = 0;
@@ -127,10 +127,10 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100 = &outcomeScreen->unkA0;
     unk100->x = (DISPLAY_WIDTH / 2);
     unk100->y = DISPLAY_HEIGHT - 40;
-    unk100->vram = (void *)OBJ_VRAM0 + 0x4000;
+    unk100->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
     unk100->unk1A = 0x3C0;
-    unk100->unk8 = 0;
-    unk100->anim = gUnknown_080D9088[outcome];
+    unk100->graphics.size = 0;
+    unk100->graphics.anim = gUnknown_080D9088[outcome];
     unk100->variant = gUnknown_080D908C[outcome];
     unk100->unk14 = 0;
     unk100->unk1C = 0;
@@ -140,8 +140,8 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100->unk10 = 0x2000;
 
     background = &outcomeScreen->unk0;
-    background->unk4 = BG_SCREEN_ADDR(0);
-    background->unkA = 0;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
     background->unkC = BG_SCREEN_ADDR(8);
     background->unk18 = 0;
     background->unk1A = 0;
@@ -179,7 +179,7 @@ static void sub_805BC40(void)
         unk9090 = gUnknown_080D9090[0];
         offset = gLoadedSaveGame->unk6 + 7;
 
-        element->anim = unk9090[offset].anim;
+        element->graphics.anim = unk9090[offset].anim;
         offset = gLoadedSaveGame->unk6 + 7;
         element->variant = unk9090[offset].variant + unk206 - 2;
         element->unk21 = 0xFF;
@@ -190,7 +190,7 @@ static void sub_805BC40(void)
         element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
 
-        element->anim = unk9090[gLoadedSaveGame->unk6].anim;
+        element->graphics.anim = unk9090[gLoadedSaveGame->unk6].anim;
         element->variant = unk9090[gLoadedSaveGame->unk6].variant;
         element->unk21 = 0xFF;
         sub_8004558(element);
@@ -216,7 +216,7 @@ static void sub_805BC40(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gUnknown_03004D5C = gUnknown_03002A84;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
             CreateCharacterSelectionScreen(gSelectedCharacter,
                                            gMultiplayerUnlockedCharacters
