@@ -122,10 +122,10 @@ u32 sub_8004518(u16 num)
 
 NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
 {
-    if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->anim) {
-        sprite->unk8 = 0;
+    if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->graphics.anim) {
+        sprite->graphics.size = 0;
         sprite->unk21 = sprite->variant;
-        sprite->unk1E = sprite->anim;
+        sprite->unk1E = sprite->graphics.anim;
         sprite->unk14 = 0;
         sprite->unk1C = 0;
         sprite->unk10 &= ~0x4000;
@@ -142,7 +142,7 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
         ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gUnknown_03002794->animations[sprite->anim];
+        variants = gUnknown_03002794->animations[sprite->graphics.anim];
         cursor = &variants[sprite->variant];
         for (cmd = cursor[sprite->unk14]; cmd->id < 0; cmd = cursor[sprite->unk14]) {
             ret = animCmdTable[~cmd->id](cmd, sprite);
@@ -150,7 +150,7 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
                 if (ret != -1)
                     return ret;
 
-                variants = gUnknown_03002794->animations[sprite->anim];
+                variants = gUnknown_03002794->animations[sprite->graphics.anim];
                 cursor = &variants[sprite->variant];
                 sprite->unk14 = 0;
             }
@@ -167,7 +167,7 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
 
                 // TODO: Remove cast
                 sprite->unkC = (struct UNK_0808B3FC_UNK240_UNKC *)&sprTables
-                                   ->dimensions[sprite->anim][frame];
+                                   ->dimensions[sprite->graphics.anim][frame];
             } else {
                 sprite->unkC = (void *)-1;
             }
