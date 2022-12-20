@@ -2,6 +2,7 @@
 #include "main.h"
 #include "gba/syscall.h"
 
+#include "gba/syscall.h"
 #include "m4a.h"
 
 #include "data.h"
@@ -15,6 +16,33 @@ extern u8 gVramGraphicsCopyQueueIndex;
 extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
+
+s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
+                u8 *tileCounts, u8 param6)
+{
+    u8 i = 0;
+
+    u16 tileBase = gBgCntRegs[bgCtrlIndex] & BGCNT_CHARBASE(0x3);
+    u16 *vramTiles = (u16 *)(VRAM + (tileBase << 12));
+
+    u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
+                       | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
+        & gBgCntRegs[bgCtrlIndex];
+    u16 *vramBlend = (u16 *)(VRAM + (blendTarget * 8));
+    vramBlend += param3 * 32;
+    vramBlend += param2;
+
+    for (; tileCounts[i] != 0; i++) {
+        u16 *copyDest = &param0[i * 16];
+        u16 offset;
+        CpuFastSet(&cpuFastSetSrc[tileCounts[i] * 16], copyDest, 8);
+
+        offset = (u16)(((copyDest - vramTiles) << 12) >> 16);
+        vramBlend[i] = (param6 << 12) | offset;
+    }
+
+    return i * 32;
+}
 
 // (-2)
 // This is different to animCmd_GetPalette in that:

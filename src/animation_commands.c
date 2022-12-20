@@ -27,18 +27,9 @@ extern u32 gFlags;
 // make static
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
-    animCmd_GetTiles,
-    animCmd_GetPalette,
-    animCmd_JumpBack,
-    animCmd_End,
-    animCmd_PlaySoundEffect,
-    animCmd_6,
-    animCmd_TranslateSprite,
-    animCmd_8,
-    animCmd_SetIdAndVariant,
-    animCmd_10,
-    animCmd_SetSpritePriority,
-    animCmd_12,
+    animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,          animCmd_End,
+    animCmd_PlaySoundEffect, animCmd_6,          animCmd_TranslateSprite,   animCmd_8,
+    animCmd_SetIdAndVariant, animCmd_10,         animCmd_SetSpritePriority, animCmd_12,
 };
 
 // (-2)
