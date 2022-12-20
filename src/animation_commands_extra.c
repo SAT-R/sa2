@@ -16,14 +16,14 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 extern const AnimationCommandFunc animCmdTable[];
 
 const u8 sUnknown_080984A4[] = {
-    /* 0x00 */ Q_24_8_TO_INT(Q_8_8(0.5 * 2)),
-    /* 0x01 */ Q_24_8_TO_INT(Q_8_8(0.0 * 2)),
-    /* 0x02 */ Q_24_8_TO_INT(Q_8_8(1.0 * 2)),
-    /* 0x03 */ Q_24_8_TO_INT(Q_8_8(1.5 * 2)),
-    /* 0x04 */ Q_24_8_TO_INT(Q_8_8(3.0 * 2)),
-    /* 0x05 */ Q_24_8_TO_INT(Q_8_8(3.5 * 2)),
-    /* 0x06 */ Q_24_8_TO_INT(Q_8_8(2.5 * 2)),
-    /* 0x07 */ Q_24_8_TO_INT(Q_8_8(2.0 * 2)),
+    /* 0x00 */ Q_24_8_TO_INT(Q_24_8(0.5 * 2)),
+    /* 0x01 */ Q_24_8_TO_INT(Q_24_8(0.0 * 2)),
+    /* 0x02 */ Q_24_8_TO_INT(Q_24_8(1.0 * 2)),
+    /* 0x03 */ Q_24_8_TO_INT(Q_24_8(1.5 * 2)),
+    /* 0x04 */ Q_24_8_TO_INT(Q_24_8(3.0 * 2)),
+    /* 0x05 */ Q_24_8_TO_INT(Q_24_8(3.5 * 2)),
+    /* 0x06 */ Q_24_8_TO_INT(Q_24_8(2.5 * 2)),
+    /* 0x07 */ Q_24_8_TO_INT(Q_24_8(2.0 * 2)),
 };
 
 // This function gets called as long as an enemy is on-screen.
