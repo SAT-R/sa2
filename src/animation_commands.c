@@ -10,14 +10,14 @@
 extern s32 animCmd_GetTiles(void *cursor, Sprite *sprite);
 static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);
 static s32 animCmd_JumpBack(void *cursor, Sprite *sprite);
-static s32 animCmd_4(void *cursor, Sprite *sprite);
+static s32 animCmd_End(void *cursor, Sprite *sprite);
 static s32 animCmd_PlaySoundEffect(void *cursor, Sprite *sprite);
 extern s32 animCmd_6(void *cursor, Sprite *sprite);
 static s32 animCmd_TranslateSprite(void *cursor, Sprite *sprite);
 static s32 animCmd_8(void *cursor, Sprite *sprite);
 static s32 animCmd_SetIdAndVariant(void *cursor, Sprite *sprite);
 s32 animCmd_10(void *cursor, Sprite *sprite);
-static s32 animCmd_11(void *cursor, Sprite *sprite);
+static s32 animCmd_SetSpritePriority(void *cursor, Sprite *sprite);
 static s32 animCmd_12(void *cursor, Sprite *sprite);
 
 extern struct SpriteTables *gUnknown_03002794;
@@ -30,14 +30,14 @@ const AnimationCommandFunc animCmdTable[] = {
     animCmd_GetTiles,
     animCmd_GetPalette,
     animCmd_JumpBack,
-    animCmd_4,
+    animCmd_End,
     animCmd_PlaySoundEffect,
     animCmd_6,
     animCmd_TranslateSprite,
     animCmd_8,
     animCmd_SetIdAndVariant,
     animCmd_10,
-    animCmd_11,
+    animCmd_SetSpritePriority,
     animCmd_12,
 };
 
@@ -70,8 +70,7 @@ s32 animCmd_JumpBack(void *cursor, Sprite *sprite)
 }
 
 // (-4)
-// Command "End"?
-s32 animCmd_4(void *cursor, Sprite *sprite)
+s32 animCmd_End(void *cursor, Sprite *sprite)
 {
     sprite->unk10 |= 0x4000;
 
@@ -137,7 +136,7 @@ s32 animCmd_10(void *cursor, Sprite *sprite)
 }
 
 // (-11)
-s32 animCmd_11(void *cursor, Sprite *sprite)
+s32 animCmd_SetSpritePriority(void *cursor, Sprite *sprite)
 {
     ACmd_11 *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_11);

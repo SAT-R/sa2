@@ -17,7 +17,7 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 extern const AnimationCommandFunc animCmdTable[];
 
 // (-2)
-// This is differnt to animCmd_GetPalette in that:
+// This is different to animCmd_GetPalette in that:
 // - gBgPalette is used instead of gObjPalette
 // - gFlags ->  FLAGS_UPDATE_BACKGROUND_PALETTES
 //   instead of FLAGS_UPDATE_SPRITE_PALETTES
@@ -112,12 +112,14 @@ s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
 #endif
 }
 
-s32 animCmd_11_COPY(void *cursor, Sprite *sprite)
+// This is not a NOP-instruction in the regular version
+s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *sprite)
 {
     sprite->unk14 += AnimCommandSizeInWords(ACmd_11);
     return 1;
 }
 
+// This is not a NOP-instruction in the regular version
 s32 animCmd_12_COPY(void *cursor, Sprite *sprite)
 {
     sprite->unk14 += AnimCommandSizeInWords(ACmd_12);

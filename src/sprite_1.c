@@ -13,7 +13,7 @@ extern void animCmd_TranslateSprite_COPY(void);
 extern void animCmd_8_COPY(void);
 extern void animCmd_SetIdAndVariant_COPY(void);
 extern void animCmd_10_COPY(void);
-extern void animCmd_11_COPY(void);
+extern void animCmd_SetSpritePriority_COPY(void);
 extern void animCmd_12_COPY(void);
 
 void *const gUnknown_08097A74[12] = {
@@ -27,7 +27,7 @@ void *const gUnknown_08097A74[12] = {
     animCmd_8_COPY,
     animCmd_SetIdAndVariant_COPY,
     animCmd_10_COPY,
-    animCmd_11_COPY,
+    animCmd_SetSpritePriority_COPY,
     animCmd_12_COPY,
 };
 
