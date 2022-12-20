@@ -3334,24 +3334,24 @@ sub_800440C: @ 0x0800440C
 	bx lr
 	.align 2, 0
     
-.if 1
+.if 0
 	thumb_func_start sub_8004418
 sub_8004418: @ 0x08004418
 	push {r4, r5, r6, lr}
 	sub sp, #8
 	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
+	lsrs r4, r0, #0x10      @ r4 = param0 = p0
 	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	movs r6, #0
-	ldr r1, _08004448 @ =gUnknown_080984A4
-	mov r0, sp
+	lsrs r5, r1, #0x10      @ r5 = param1 = p1
+	movs r6, #0             @ r6 = 0
+	ldr r1, _08004448 @ =sUnknown_080984A4
+	mov r0, sp              @ sp = array
 	movs r2, #8
 	bl memcpy
 	lsls r0, r4, #0x10
-	asrs r1, r0, #0x10
+	asrs r1, r0, #0x10      @ r1 = p0
 	lsls r0, r5, #0x10
-	asrs r2, r0, #0x10
+	asrs r2, r0, #0x10      @ r2 = p1
 	adds r0, r1, #0
 	orrs r0, r2
 	cmp r0, #0
@@ -3360,47 +3360,47 @@ sub_8004418: @ 0x08004418
 	rsbs r0, r0, #0
 	b _080044CE
 	.align 2, 0
-_08004448: .4byte gUnknown_080984A4
+_08004448: .4byte sUnknown_080984A4
 _0800444C:
 	cmp r1, #0
 	bgt _08004458
 	rsbs r0, r1, #0
 	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	movs r6, #4
+	lsrs r4, r0, #0x10      @ r4 = -param0
+	movs r6, #4             @ r6 = 4
 _08004458:
 	cmp r2, #0
 	bgt _08004468
 	rsbs r0, r2, #0
 	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
+	lsrs r5, r0, #0x10      @ r5 = -param1
 	adds r0, r6, #2
 	lsls r0, r0, #0x18
-	lsrs r6, r0, #0x18
+	lsrs r6, r0, #0x18      @ r6 += 2
 _08004468:
 	lsls r0, r4, #0x10
-	asrs r2, r0, #0x10
+	asrs r2, r0, #0x10      @ r2 = param0
 	lsls r0, r5, #0x10
-	asrs r1, r0, #0x10
+	asrs r1, r0, #0x10      @ r1 = -param1
 	cmp r2, r1
-	blt _08004488
+	blt _08004488           @ (param1 >= param0)
 	lsls r0, r1, #0x17
-	lsrs r5, r0, #0x10
-	cmp r2, #0
+	lsrs r5, r0, #0x10      @ r5 = -param1 * 256
+	cmp r2, #0              @ r2 = param0
 	bne _08004480
-	adds r2, r5, #0
+	adds r2, r5, #0         @ r2 = param1 * 256
 	b _080044A6
 _08004480:
 	lsls r0, r5, #0x10
-	asrs r0, r0, #0x10
-	adds r1, r2, #0
+	asrs r0, r0, #0x10      @ r0 = param1 * 256
+	adds r1, r2, #0         @ r1 = param0
 	b _0800449E
 _08004488:
-	adds r0, r6, #1
+	adds r0, r6, #1         @ r6 += 1
 	lsls r0, r0, #0x18
 	lsrs r6, r0, #0x18
 	lsls r0, r2, #0x17
-	lsrs r4, r0, #0x10
+	lsrs r4, r0, #0x10      @ r4 = param0 * 256
 	cmp r1, #0
 	bne _0800449A
 	adds r2, r4, #0
@@ -3411,7 +3411,7 @@ _0800449A:
 _0800449E:
 	bl __divsi3
 	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
+	lsrs r2, r0, #0x10      @ r2 = (param1 * 256) / param0 - (from _08004480)
 _080044A6:
 	mov r0, sp
 	adds r3, r0, r6
