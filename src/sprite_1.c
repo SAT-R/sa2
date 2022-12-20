@@ -4,20 +4,31 @@
 #include "flags.h"
 
 extern void sub_8003800(void);
-extern void sub_8004314(void);
-extern void sub_8004380(void);
-extern void sub_800438C(void);
-extern void sub_800439C(void);
+extern void animCmd_GetPalette_COPY(void);
+extern void animCmd_JumpBack_COPY(void);
+extern void animCmd_End_COPY(void);
+extern void animCmd_PlaySoundEffect_COPY(void);
 extern void sub_8003870(void);
-extern void sub_80043B0(void);
-extern void sub_80043CC(void);
-extern void sub_80043D8(void);
-extern void sub_80043F8(void);
-extern void sub_8004400(void);
-extern void sub_800440C(void);
+extern void animCmd_TranslateSprite_COPY(void);
+extern void animCmd_8_COPY(void);
+extern void animCmd_SetIdAndVariant_COPY(void);
+extern void animCmd_10_COPY(void);
+extern void animCmd_11_COPY(void);
+extern void animCmd_12_COPY(void);
+
 void *const gUnknown_08097A74[12] = {
-    sub_8003800, sub_8004314, sub_8004380, sub_800438C, sub_800439C, sub_8003870,
-    sub_80043B0, sub_80043CC, sub_80043D8, sub_80043F8, sub_8004400, sub_800440C,
+    sub_8003800,
+    animCmd_GetPalette_COPY,
+    animCmd_JumpBack_COPY,
+    animCmd_End_COPY,
+    animCmd_PlaySoundEffect_COPY,
+    sub_8003870,
+    animCmd_TranslateSprite_COPY,
+    animCmd_8_COPY,
+    animCmd_SetIdAndVariant_COPY,
+    animCmd_10_COPY,
+    animCmd_11_COPY,
+    animCmd_12_COPY,
 };
 
 void sub_8002A3C(Background *background)

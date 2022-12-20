@@ -1,4 +1,5 @@
 #include "global.h"
+#include "main.h"
 #include "gba/syscall.h"
 
 #include "m4a.h"
@@ -15,6 +16,114 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+// (-2)
+// This is differnt to animCmd_GetPalette in that:
+// - gBgPalette is used instead of gObjPalette
+// - gFlags ->  FLAGS_UPDATE_BACKGROUND_PALETTES
+//   instead of FLAGS_UPDATE_SPRITE_PALETTES
+s32 animCmd_GetPalette_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
+
+    if (!(sprite->unk10 & 0x40000)) {
+        s32 paletteIndex = cmd->palId;
+
+        DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
+                  &gBgPalette[sprite->focused * 16 + cmd->insertOffset],
+                  cmd->numColors * 2);
+
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+    }
+
+    return 1;
+}
+
+// (-3)
+s32 animCmd_JumpBack_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_JumpBack *cmd = cursor;
+    sprite->unk14 -= cmd->offset;
+
+    return 1;
+}
+
+// (-4)
+// Command "End"?
+s32 animCmd_End_COPY(void *cursor, Sprite *sprite)
+{
+    sprite->unk10 |= 0x4000;
+
+    return 0;
+}
+
+// (-5)
+s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_PlaySoundEffect *cmd = cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+
+    m4aSongNumStart(cmd->songId);
+
+    return 1;
+}
+
+// (-7)
+s32 animCmd_TranslateSprite_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_TranslateSprite *cmd = cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
+
+    sprite->x += cmd->x;
+    sprite->y += cmd->y;
+
+    return 1;
+}
+
+// (-8)
+s32 animCmd_8_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_8 *cmd = cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_8);
+
+    return 1;
+}
+
+s32 animCmd_SetIdAndVariant_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_SetIdAndVariant *cmd = cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+
+    sprite->graphics.anim = cmd->animId;
+    sprite->unk21 = 0xFF;
+    sprite->variant = cmd->variant;
+
+    return -1;
+}
+
+s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
+{
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
+
+#ifdef UBFIX
+    return 1; // I think this should be the correct behavior?
+#else
+    return (s32)cursor;
+#endif
+}
+
+s32 animCmd_11_COPY(void *cursor, Sprite *sprite)
+{
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_11);
+    return 1;
+}
+
+s32 animCmd_12_COPY(void *cursor, Sprite *sprite)
+{
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_12);
+    return 1;
+}
+
 const u8 sUnknown_080984A4[] = {
     /* 0x00 */ Q_24_8_TO_INT(Q_24_8(0.5 * 2)),
     /* 0x01 */ Q_24_8_TO_INT(Q_24_8(0.0 * 2)),
@@ -28,7 +137,8 @@ const u8 sUnknown_080984A4[] = {
 
 // This function gets called as long as an enemy is on-screen.
 // Potentially something to do with collision/distance?
-s32 sub_8004418(s16 x, s16 y) {
+s32 sub_8004418(s16 x, s16 y)
+{
     u8 index = 0;
     u8 array[ARRAY_COUNT(sUnknown_080984A4)];
 
@@ -70,7 +180,7 @@ s32 sub_8004418(s16 x, s16 y) {
                 fraction = (s32)((s32)x / (s32)y);
             }
         }
-        
+
         // If array[index] is odd,
         if (array[index] & 0x01) {
             fraction = Q_8_8(0.5) - fraction;
@@ -106,13 +216,13 @@ u32 sub_8004518(u16 num)
     u8 i;
     u16 result;
     u8 lowDigit;
-    u16 remainder = num;
+    u32 remainder = num;
 
     result = 0;
     for (i = 0; i < 4; i++) {
         s32 divisor = Div(remainder, 10);
         lowDigit = remainder - divisor * 10;
-        remainder = ((divisor << 16) >> 16);
+        remainder = (u16)divisor;
 
         result |= lowDigit << (i << 2);
     }
