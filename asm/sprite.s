@@ -1728,8 +1728,8 @@ _080037FA:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_8003800
-sub_8003800: @ 0x08003800
+	thumb_func_start animCmd_GetTiles_COPY
+animCmd_GetTiles_COPY: @ 0x08003800
 	push {lr}
 	adds r2, r0, #0
 	adds r3, r1, #0
@@ -1787,8 +1787,8 @@ _08003864: .4byte gUnknown_03002794
 _08003868: .4byte gVramGraphicsCopyQueue
 _0800386C: .4byte gVramGraphicsCopyQueueIndex
 
-	thumb_func_start sub_8003870
-sub_8003870: @ 0x08003870
+	thumb_func_start animCmd_6_COPY
+animCmd_6_COPY: @ 0x08003870
 	push {r4, lr}
 	adds r4, r1, #0
 	ldr r3, [r0, #4]
@@ -3093,6 +3093,7 @@ _08004268: .4byte 0x040000D4
 _0800426C: .4byte gUnknown_03002280
 _08004270: .4byte 0x85000001
 
+.if 0
 	thumb_func_start sub_8004274
 sub_8004274: @ 0x08004274
 	push {r4, r5, r6, r7, lr}
@@ -3101,38 +3102,38 @@ sub_8004274: @ 0x08004274
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #4
-	str r0, [sp]
-	mov sl, r1
-	ldr r0, [sp, #0x24]
-	ldr r7, [sp, #0x28]
-	ldr r1, [sp, #0x2c]
-	lsls r2, r2, #0x10
-	lsls r3, r3, #0x10
-	lsls r0, r0, #0x18
+	str r0, [sp]        @ sp = param0
+	mov sl, r1          @ sl = param1
+	ldr r0, [sp, #0x24] @ param4
+	ldr r7, [sp, #0x28] @ tileCounts
+	ldr r1, [sp, #0x2c] @ u8 param6
+	lsls r2, r2, #0x10  @ r2 = param2 << 16
+	lsls r3, r3, #0x10  @ r3 = param3 << 16
+	lsls r0, r0, #0x18  @ r0 = param4 << 16
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
-	mov sb, r1
+	mov sb, r1          @ sb = (u8)param6
 	movs r5, #0
 	ldr r1, _08004310 @ =gBgCntRegs
 	lsrs r0, r0, #0x17
 	adds r0, r0, r1
-	ldrh r4, [r0]
+	ldrh r4, [r0]       @ r4 = gBgCntRegs[bgControlReg]
 	movs r0, #0xc
-	ands r0, r4
+	ands r0, r4         @ r0 = r4 & BGCNT_TXT512x512
 	lsls r0, r0, #0xc
 	movs r1, #0xc0
 	lsls r1, r1, #0x13
 	adds r0, r0, r1
-	mov r8, r0
+	mov r8, r0          @ r8 = vramTxtMode = (VRAM + (textMode << 12))
 	movs r0, #0xf8
 	lsls r0, r0, #5
-	ands r0, r4
-	lsls r0, r0, #3
+	ands r0, r4         
+	lsls r0, r0, #3     @ r0 = blendTarget = bgReg & (BLDCNT_TGT2_OBJ +_BG3 +_BG2 +_BG1 +_BG0)
 	adds r0, r0, r1
-	lsrs r3, r3, #0xa
+	lsrs r3, r3, #0xa   @ r3 = vramBlend = param3 * 64 (32 as u16*)
 	adds r0, r0, r3
-	lsrs r2, r2, #0xf
-	adds r6, r0, r2
+	lsrs r2, r2, #0xf   @ r2 = param2 * 2
+	adds r6, r0, r2     @ r6 = [param2]
 	ldrb r0, [r7]
 	cmp r0, #0
 	beq _080042FE
@@ -3148,12 +3149,12 @@ _080042C6:
 	movs r2, #8
 	bl CpuFastSet
 	mov r2, r8
-	subs r4, r4, r2
+	subs r4, r4, r2     @ r4 = offset = copyDest - txtMode
 	lsls r4, r4, #0xb
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10  @ r4 = offset * 64
 	lsls r1, r5, #1
-	adds r1, r6, r1
-	mov r2, sb
+	adds r1, r6, r1     @ r1 = &vramBlend[i]
+	mov r2, sb          @ r2 = param6
 	lsls r0, r2, #0xc
 	orrs r4, r0
 	strh r4, [r1]
@@ -3176,3 +3177,4 @@ _080042FE:
 	bx r1
 	.align 2, 0
 _08004310: .4byte gBgCntRegs
+.endif

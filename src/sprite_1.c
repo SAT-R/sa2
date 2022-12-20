@@ -3,12 +3,12 @@
 #include "sprite.h"
 #include "flags.h"
 
-extern void sub_8003800(void);
+extern void animCmd_GetTiles_COPY(void);
 extern void animCmd_GetPalette_COPY(void);
 extern void animCmd_JumpBack_COPY(void);
 extern void animCmd_End_COPY(void);
 extern void animCmd_PlaySoundEffect_COPY(void);
-extern void sub_8003870(void);
+extern void animCmd_6_COPY(void);
 extern void animCmd_TranslateSprite_COPY(void);
 extern void animCmd_8_COPY(void);
 extern void animCmd_SetIdAndVariant_COPY(void);
@@ -17,18 +17,12 @@ extern void animCmd_SetSpritePriority_COPY(void);
 extern void animCmd_12_COPY(void);
 
 void *const gUnknown_08097A74[12] = {
-    sub_8003800,
-    animCmd_GetPalette_COPY,
-    animCmd_JumpBack_COPY,
-    animCmd_End_COPY,
-    animCmd_PlaySoundEffect_COPY,
-    sub_8003870,
-    animCmd_TranslateSprite_COPY,
-    animCmd_8_COPY,
-    animCmd_SetIdAndVariant_COPY,
-    animCmd_10_COPY,
-    animCmd_SetSpritePriority_COPY,
-    animCmd_12_COPY,
+    animCmd_GetTiles_COPY,          animCmd_GetPalette_COPY,
+    animCmd_JumpBack_COPY,          animCmd_End_COPY,
+    animCmd_PlaySoundEffect_COPY,   animCmd_6_COPY,
+    animCmd_TranslateSprite_COPY,   animCmd_8_COPY,
+    animCmd_SetIdAndVariant_COPY,   animCmd_10_COPY,
+    animCmd_SetSpritePriority_COPY, animCmd_12_COPY,
 };
 
 void sub_8002A3C(Background *background)
