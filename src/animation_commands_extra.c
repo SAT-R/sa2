@@ -15,6 +15,66 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+const u8 sUnknown_080984A4[] = { 0x01, 0x00, 0x02, 0x03, 0x06, 0x07, 0x05, 0x04 };
+
+// This function gets called as long as an enemy is on-screen.
+// Potentially something to do with collision/distance?
+s32 sub_8004418(s16 x, s16 y) {
+    u8 index = 0;
+    u8 array[ARRAY_COUNT(sUnknown_080984A4)];
+
+    s16 theValue;
+    s32 result;
+
+    memcpy(&array, sUnknown_080984A4, ARRAY_COUNT(sUnknown_080984A4));
+
+    if ((x | y) == 0) {
+        result = -1;
+    } else {
+        // _0800444C
+        if (x <= 0) {
+            x = -x;
+            index = 4;
+        }
+        if (y <= 0) {
+            y = -y;
+            index += 2;
+        }
+        if (x >= y) {
+            y *= 128;
+            if (x == 0) {
+                // _0800447C
+                theValue = (s32)y;
+            } else {
+                // _08004480
+                theValue = (s32)((s32)y / (s32)x);
+            }
+        } else {
+            // _08004488
+            index += 1;
+
+            x *= 128;
+            if (y == 0) {
+                theValue = (s32)x;
+            } else {
+                theValue = (s32)((s32)x / (s32)y);
+            }
+        }
+        
+        // If array[index] is odd,
+        if (array[index] & 0x01) {
+            theValue = 128 - (s16)theValue;
+        }
+
+        {
+            s32 val = array[index] * 128;
+            theValue += val;
+            result = ((u32)(theValue << 22) >> 22);
+        }
+    }
+    return result;
+}
+
 void sub_80044D8(u8 *p0, u16 p1)
 {
     u8 i;
