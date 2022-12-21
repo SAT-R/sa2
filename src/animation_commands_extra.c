@@ -14,7 +14,7 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
-
+#if 0
 u32 sub_8004010(void) {
     int i;
 
@@ -24,6 +24,7 @@ u32 sub_8004010(void) {
 
     return 1;
 }
+#endif
 
 NONMATCH("asm/non_matching/sub_8004274.inc",
          s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3,
@@ -152,7 +153,7 @@ s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
 // This is not a NOP-instruction in the regular version
 s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *sprite)
 {
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_11);
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
     return 1;
 }
 
@@ -269,7 +270,7 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-#define ReadInstruction(script, cursor) ((void*)(script) + (cursor * sizeof(s32)))
+#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 s32 sub_8004558(Sprite *sprite)
 {
@@ -286,7 +287,7 @@ s32 sub_8004558(Sprite *sprite)
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {
-        
+
         // _080045B8
         s32 ret;
         ACmd *cmd;
@@ -301,9 +302,9 @@ s32 sub_8004558(Sprite *sprite)
             ret = animCmdTable[~cmd->id](cmd, sprite);
             if (ret != 1) {
 #ifndef NON_MATCHING
-                register ACmd* newScript asm("r2");
+                register ACmd *newScript asm("r2");
 #else
-                ACmd* newScript;
+                ACmd *newScript;
 #endif
                 if (ret != -1) {
                     return ret;
@@ -329,11 +330,10 @@ s32 sub_8004558(Sprite *sprite)
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gUnknown_03002794;
 
-                // TODO: Remove cast
-                sprite->unkC = (struct UNK_0808B3FC_UNK240_UNKC *)&sprTables
-                                   ->dimensions[sprite->graphics.anim][frame];
+                sprite->dimensions
+                    = &sprTables->dimensions[sprite->graphics.anim][frame];
             } else {
-                sprite->unkC = (void *)-1;
+                sprite->dimensions = (void *)-1;
             }
         }
 
@@ -349,7 +349,6 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
     sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
 
     if ((sprite->unk10 & 0x80000) == 0) {
-        // @TODO: Change sprite's unk0 to be a pointer
         if (cmd->tileIndex < 0) {
             sprite->graphics.src
                 = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];

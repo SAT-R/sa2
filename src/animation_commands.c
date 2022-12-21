@@ -129,10 +129,10 @@ s32 animCmd_10(void *cursor, Sprite *sprite)
 // (-11)
 s32 animCmd_SetSpritePriority(void *cursor, Sprite *sprite)
 {
-    ACmd_11 *cmd = cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_11);
+    ACmd_SetSpritePriority *cmd = cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
 
-    sprite->unk10 = ((sprite->unk10 & ~0x3000) | (cmd->unk4 << 3 * 4));
+    sprite->unk10 = ((sprite->unk10 & ~0x3000) | (cmd->priority << 12));
 
     return 1;
 }

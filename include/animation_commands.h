@@ -81,9 +81,8 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 cmdId; // -11
 
-    /* 0x04 */ s32 unk4; // the logic of animCmd_11 suggests that only values of 0-3 make
-                         // sense here.
-} ACmd_11;
+    /* 0x04 */ s32 priority;
+} ACmd_SetSpritePriority;
 
 typedef struct {
     /* 0x00 */ s32 cmdId; // -12
@@ -112,7 +111,7 @@ typedef union {
     ACmd_8 _8;
     ACmd_SetIdAndVariant setAnimId;
     ACmd_10 _10;
-    ACmd_11 _11;
+    ACmd_SetSpritePriority _11;
     ACmd_12 _12;
 
     ACmd_ShowFrame show;
