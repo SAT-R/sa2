@@ -73,8 +73,11 @@ typedef struct {
     // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
     /* 0x02 */ u16 numSubframes;
 
+    // In pixels
     /* 0x04 */ u16 width;
+    // In pixels
     /* 0x06 */ u16 height;
+
     /* 0x08 */ s16 offsetX;
     /* 0x0A */ s16 offsetY;
 } SpriteOffset;
@@ -88,10 +91,7 @@ typedef struct {
 } Sprite_UNK28;
 
 // TODO: work out what makes this struct different from the above
-// Maybe `struct Sprite`
 typedef struct {
-    // These values are part of some other struct
-    // Note(Jace): Isn't this a u8* to the tile data in the ROM?
     /* 0x00 */ struct GraphicsData graphics;
     /* 0x0C */ SpriteOffset *dimensions;
 
