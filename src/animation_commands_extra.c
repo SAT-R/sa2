@@ -17,6 +17,17 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+
+u32 sub_8004010(void) {
+    int i;
+
+    for (i = 0; i < 4; i++) {
+
+    }
+
+    return 1;
+}
+
 NONMATCH("asm/non_matching/sub_8004274.inc",
          s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3,
                          u8 bgCtrlIndex, u8 *tileCounts, u8 param6))
@@ -79,7 +90,6 @@ s32 animCmd_JumpBack_COPY(void *cursor, Sprite *sprite)
 }
 
 // (-4)
-// Command "End"?
 s32 animCmd_End_COPY(void *cursor, Sprite *sprite)
 {
     sprite->unk10 |= 0x4000;

@@ -2796,10 +2796,10 @@ sub_8004010: @ 0x08004010
 	push {r5, r6, r7}
 	sub sp, #0x18
 	movs r0, #0
-	mov r8, r0
+	mov r8, r0          @ r8 = 0
 	mov r1, sp
-	str r1, [sp, #0x10]
-_08004024:
+	str r1, [sp, #0x10] @ sp+0x10 = sp
+sub_8004010_loop:
 	mov r2, r8
 	lsls r0, r2, #2
 	ldr r1, _080040DC @ =gUnknown_03002280
@@ -2824,7 +2824,7 @@ _08004024:
 	ldrb r1, [r1]
 	cmp r0, r1
 	bne _08004056
-	b _08004242
+	b sub_8004010_continue
 _08004056:
 	ldr r2, _080040E8 @ =gBgCntRegs
 	mov r6, r8
@@ -3069,14 +3069,14 @@ _0800422C:
 	ldr r0, _08004270 @ =0x85000001
 	str r0, [r2, #8]
 	ldr r0, [r2, #8]
-_08004242:
+sub_8004010_continue:
 	lsls r0, r7, #0x18
 	lsrs r0, r0, #0x18
 	mov r8, r0
 	cmp r0, #3
-	bhi _0800424E
-	b _08004024
-_0800424E:
+	bhi sub_8004010_return
+	b sub_8004010_loop
+sub_8004010_return:
 	movs r0, #1
 	add sp, #0x18
 	pop {r3, r4, r5}
