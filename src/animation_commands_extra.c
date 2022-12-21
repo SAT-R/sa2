@@ -1,8 +1,5 @@
 #include "global.h"
 #include "main.h"
-#include "gba/syscall.h"
-
-#include "gba/syscall.h"
 #include "m4a.h"
 
 #include "data.h"
@@ -262,7 +259,9 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
+#define ReadInstruction(script, cursor) ((void*)(script) + (cursor * sizeof(s32)))
+
+s32 sub_8004558(Sprite *sprite)
 {
     if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->graphics.anim) {
         sprite->graphics.size = 0;
@@ -277,25 +276,38 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {
+        
         // _080045B8
         s32 ret;
         ACmd *cmd;
-        ACmd **cursor;
+        ACmd *script;
         ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[sprite->graphics.anim];
-        cursor = &variants[sprite->variant];
-        for (cmd = cursor[sprite->unk14]; cmd->id < 0; cmd = cursor[sprite->unk14]) {
+        script = variants[sprite->variant];
+        cmd = ReadInstruction(script, sprite->unk14);
+        while (cmd->id < 0) {
             ret = animCmdTable[~cmd->id](cmd, sprite);
-            if (ret != +1) {
-                if (ret != -1)
+            if (ret != 1) {
+#ifndef NON_MATCHING
+                register ACmd* newScript asm("r2");
+#else
+                ACmd* newScript;
+#endif
+                if (ret != -1) {
                     return ret;
+                }
 
+                // animation has changed
                 variants = gUnknown_03002794->animations[sprite->graphics.anim];
-                cursor = &variants[sprite->variant];
+                newScript = variants[sprite->variant];
+                // reset cursor
                 sprite->unk14 = 0;
+                // load the new script
+                script = newScript;
             }
+            cmd = ReadInstruction(script, sprite->unk14);
         }
         // _08004628
 
@@ -303,7 +315,7 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
         sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
         sprite->unk1C -= sprite->unk22 * 16;
         {
-            int frame = ((ACmd_ShowFrame *)cmd)->index;
+            s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gUnknown_03002794;
 
@@ -319,7 +331,6 @@ NONMATCH("asm/non_matching/sub_8004558.inc", s32 sub_8004558(Sprite *sprite))
     }
     return 1;
 }
-END_NONMATCH
 
 // (-1)
 s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
