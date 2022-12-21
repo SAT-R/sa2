@@ -138,22 +138,21 @@ void sub_806CD68(Sprite *element)
     u16 *reference;
     OamData *oam;
     u32 unk16, unk18;
-    u16 unkC_6;
-    u16 unkC_4;
-    s16 unkC_2;
+    u16 sprHeight;
+    u16 sprWidth;
+    s16 numSubframes;
 
     s16 i;
-    // Might be wrong, seems to make sense?
-    struct UNK_0808B3FC_UNK240_UNKC *unkC = (void *)element->unkC;
+    SpriteOffset *sprDims = (void *)element->dimensions;
 
-    element->unk24 = unkC->unk2;
-    unkC_4 = unkC->unk4;
-    unkC_6 = unkC->unk6;
-    unk16 = (s16)element->x - (unkC_4 >> 1);
-    unk18 = (s16)element->y - (unkC_6 >> 1);
+    element->unk24 = sprDims->numSubframes;
+    sprWidth = sprDims->width;
+    sprHeight = sprDims->height;
+    unk16 = (s16)element->x - (sprWidth / 2);
+    unk18 = (s16)element->y - (sprHeight / 2);
 
-    unkC_2 = unkC->unk2;
-    for (i = 0; i < unkC_2; i++) {
+    numSubframes = sprDims->numSubframes;
+    for (i = 0; i < numSubframes; i++) {
         u32 attr1_2;
         reference = gUnknown_03002794->oamData[element->graphics.anim];
         oam = sub_80058B4((element->unk1A & 0x7C0) >> 6);
@@ -165,7 +164,7 @@ void sub_806CD68(Sprite *element)
             element->unk23 = gUnknown_030018F0 - 1;
         }
 
-        DmaCopy16(3, &reference[(unkC->unk1 + i) * 3], oam, 0x6);
+        DmaCopy16(3, &reference[(sprDims->oamIndex + i) * 3], oam, 0x6);
         attr1_2 = oam->all.attr1 & 0x1FF;
         oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
         oam->all.attr0 |= 0x300;

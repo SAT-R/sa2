@@ -62,27 +62,21 @@ typedef struct {
     u16 unk3E;
 } Background; /* size = 0x40 */
 
-// TODO: This is actually 'SpriteOffset' (see below)
-struct UNK_0808B3FC_UNK240_UNKC {
-    u8 unk0;
-    u8 unk1;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    s16 unk8;
-    s16 unkA;
-};
 typedef struct {
-    u8 flip;
-    u8 oamIndex; // every animation has an oamData pointer, oamIndex starts at 0 for
-                 // every new animation and ends at variantCount-1
-    u16 numSubframes; // some sprite frames consist of multiple images (of the same size
-                      // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
+    /* 0x00 */ u8 flip;
 
-    u16 width;
-    u16 height;
-    s16 offsetX;
-    s16 offsetY;
+    // every animation has an associated oamData pointer, oamIndex starts at
+    // 0 for every new animation and ends at variantCount-1
+    /* 0x01 */ u8 oamIndex;
+
+    // some sprite frames consist of multiple images (of the same size
+    // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
+    /* 0x02 */ u16 numSubframes;
+
+    /* 0x04 */ u16 width;
+    /* 0x06 */ u16 height;
+    /* 0x08 */ s16 offsetX;
+    /* 0x0A */ s16 offsetY;
 } SpriteOffset;
 
 typedef struct {
@@ -99,9 +93,23 @@ typedef struct {
     // These values are part of some other struct
     // Note(Jace): Isn't this a u8* to the tile data in the ROM?
     /* 0x00 */ struct GraphicsData graphics;
+    /* 0x0C */ SpriteOffset *dimensions;
 
-    /* 0x0C */ struct UNK_0808B3FC_UNK240_UNKC *unkC;
-    /* 0x10 */ u32 unk10; // bitfield
+    // Bitfield description from KATAM decomp
+    /* 0x10 */ u32 unk10; // bit 0-4: rotscale param selection
+                          // bit 5: rotscale enable
+                          // bit 6: rotscale double-size
+                          // bit 7-8: obj mode
+                          // bit 9
+                          // bit 10
+                          // bit 11
+                          // bit 12-13: priority
+                          // bit 14
+                          // bit 15-16: bg id (?)
+                          // bit 17
+                          // bit 18-25
+                          // bit 26
+                          // bit 27-31
 
     /* 0x14 */ u16 unk14; // animation cursor
 

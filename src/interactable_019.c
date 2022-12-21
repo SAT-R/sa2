@@ -194,7 +194,7 @@ void Task_805E480(void)
     }
     // _0805E52C
     oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
-    oam = &oam_ptr[displayed->unkC->unk1 * 3];
+    oam = &oam_ptr[displayed->dimensions->oamIndex * 3];
 
     // _0805E54C
     r6 = 0;
@@ -283,7 +283,7 @@ void Task_805E6A4(void)
     }
 
     oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
-    oam = &oam_ptr[displayed->unkC->unk1 * 3];
+    oam = &oam_ptr[displayed->dimensions->oamIndex * 3];
 
     r6 = 0;
     for (y = 0; y < 4; y++) {
