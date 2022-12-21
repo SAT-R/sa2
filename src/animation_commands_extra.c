@@ -17,8 +17,9 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
-s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                u8 *tileCounts, u8 param6)
+NONMATCH("asm/non_matching/sub_8004274.inc",
+         s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3,
+                         u8 bgCtrlIndex, u8 *tileCounts, u8 param6))
 {
     u8 i = 0;
 
@@ -28,7 +29,7 @@ s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCt
     u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
                        | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
         & gBgCntRegs[bgCtrlIndex];
-    u16 *vramBlend = (u16 *)(VRAM + (blendTarget * 8));
+    u16 *vramBlend = &((u16 *)VRAM)[blendTarget * 4];
     vramBlend += param3 * 32;
     vramBlend += param2;
 
@@ -38,11 +39,12 @@ s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCt
         CpuFastSet(&cpuFastSetSrc[tileCounts[i] * 16], copyDest, 8);
 
         offset = (u16)(((copyDest - vramTiles) << 12) >> 16);
-        vramBlend[i] = (param6 << 12) | offset;
+        vramBlend[i] = (param6 * 4096) | offset;
     }
 
     return i * 32;
 }
+END_NONMATCH
 
 // (-2)
 // This is different to animCmd_GetPalette in that:
