@@ -17,18 +17,54 @@ extern const AnimationCommandFunc animCmdTable[];
 #if 0
 u32 sub_8004010(void) {
     int i;
+    u16 sp00[2];
+    u16 *sp10 = &sp00;
 
     for (i = 0; i < 4; i++) {
+        u8 *p1 = &gUnknown_03002280[i*4 + 1];
+        u8 *p3 = &gUnknown_03002280[i*4 + 3];
+        u8 p3Value = *p3;
 
+        if((*p1 == *p3) 
+        && (gUnknown_03002280[i*4] == gUnknown_03002280[i*4 + 2]))
+                continue;
+        
+        { // _08004056
+            u16 bgCtrl = gBgCntRegs[i];
+            u16 target = (bgCtrl & (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0));
+            u16 *vramBgCtrl = (u16*)(VRAM + target * 8);
+
+            u8 r4 = *p1;
+            u32 sp08 = gUnknown_03002280[i * 4];
+
+            if ((i > 1)
+                && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
+                // _0800408E
+                u16 *spVramPtr = &vramBgCtrl[sp08];
+                u16 bgSize_TxtOrAff = (0x100000 << (bgCtrl >> 14)) >> 16;
+
+                if (p3Value == 0xFF) {
+                    // _080040A2
+                    u16 v = gUnknown_03004D80[i];
+                    v |= v << 8;
+                    u16 *lol = &spVramPtr[bgSize_TxtOrAff * r4];
+                    sp10 = gUnknown_03004D80;
+                } else {
+                    // _080040F8
+                }
+
+            } else {
+                // _08004168
+
+            }
+        }
     }
 
     return 1;
 }
 #endif
 
-NONMATCH("asm/non_matching/sub_8004274.inc",
-         s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3,
-                         u8 bgCtrlIndex, u8 *tileCounts, u8 param6))
+s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCtrlIndex, u8 *tileCounts, u8 param6)
 {
     u8 i = 0;
 
@@ -38,22 +74,27 @@ NONMATCH("asm/non_matching/sub_8004274.inc",
     u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
                        | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
         & gBgCntRegs[bgCtrlIndex];
-    u16 *vramBlend = &((u16 *)VRAM)[blendTarget * 4];
-    vramBlend += param3 * 32;
-    vramBlend += param2;
+    u16 *vramBlend = ({ (u16 *)(VRAM + (blendTarget * 8)); }) + param3 * 32 + param2;
 
     for (; tileCounts[i] != 0; i++) {
         u16 *copyDest = &param0[i * 16];
         u16 offset;
+        u16 *addr;
         CpuFastSet(&cpuFastSetSrc[tileCounts[i] * 16], copyDest, 8);
 
         offset = (u16)(((copyDest - vramTiles) << 12) >> 16);
-        vramBlend[i] = (param6 * 4096) | offset;
+        
+        // For matching
+        vramBlend++;
+        vramBlend--;
+        addr = vramBlend;
+        addr += i;
+
+        *addr = (param6 * 4096) | offset;
     }
 
     return i * 32;
 }
-END_NONMATCH
 
 // (-2)
 // This is different to animCmd_GetPalette in that:
