@@ -83,10 +83,12 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           mkdir -p gh-pages/reports
+          mkdir -p gh-pages/maps
           python3 scripts/progress.py csv >> gh-pages/reports/progress-sa2-nonmatching.csv
           python3 scripts/progress.py csv -m >> gh-pages/reports/progress-sa2-matching.csv
           python3 scripts/progress.py shield-json > gh-pages/reports/progress-sa2-shield.json
           echo "REPORTS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+          cp sa2.map gh-pages/maps/${GITHUB_SHA}.map
 
       - name: Update reports
         if: ${{ github.event_name == 'push' }}
@@ -94,7 +96,7 @@ jobs:
         with:
           branch: gh-pages
           cwd: "./gh-pages"
-          add: "reports"
+          add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
 
       # - name: Modern
