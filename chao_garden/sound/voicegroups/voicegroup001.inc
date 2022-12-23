@@ -53,3 +53,4 @@ voicegroup001:	@ 0x0201A180
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3B4
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3C0
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3CC
+	voice_directsound_no_resample 60, 0, DirectSoundData_0201DBEC, 255, 0, 255, 0	@0201A3D8

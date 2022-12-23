@@ -6,10 +6,6 @@
 .include "sound/voicegroups/voicegroup000.inc"
 .include "sound/voicegroups/voicegroup001.inc"
 
-	.global gUnknown_0201A3D8
-gUnknown_0201A3D8:
-	.incbin "data/rom_data.bin", 0x001a3d8, 0xC
-
 	.align 2
 	.global ProgrammableWaveData_201A3E4
 ProgrammableWaveData_201A3E4:
@@ -142,6 +138,7 @@ DirectSoundData_0201CE90:
 DirectSoundData_0201D2B4:
 	.incbin "sound/direct_sound_samples/0201D2B4.bin"
 
-	.global gUnknown_0201DBE9
-gUnknown_0201DBE9:
-	.incbin "data/rom_data.bin", 0x001dbe9, 0x314
+	.align 2
+	.global DirectSoundData_0201DBEC
+DirectSoundData_0201DBEC:
+	.incbin "sound/direct_sound_samples/0201DBEC.bin"

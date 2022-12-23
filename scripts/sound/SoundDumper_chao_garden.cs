@@ -18,7 +18,7 @@ namespace dump_sound
         static int SongTableAdr = 0x0201A4A4;
         static int NumSongs = 37;
 
-        static int VoiceGroupEndAdr = 0x0201A3D8;
+        static int VoiceGroupEndAdr = 0x0201A3E4;
 
         static SortedDictionary<int, string> soundInfo = new SortedDictionary<int, string>();
         static byte[] rom;
