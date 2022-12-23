@@ -154,6 +154,10 @@
 . = 0x00001B10; gUnknown_03001B10 = .;
 . = 0x00001B18; gUnknown_03001B18 = .;
 . = 0x00001B1C; gUnknown_03001B1C = .;
+. = 0x00001B20; gUnknown_03001B20 = .;
+. = 0x00002020; gUnknown_03002020 = .;
+. = 0x00002520; gUnknown_03002520 = .;
+. = 0x00002A20; gUnknown_03002A20 = .;
 
 . = 0x00002F20; build/mb_chao_garden/src/agb_flash.o(.bss);
 
@@ -196,8 +200,12 @@
 . = 0x000062B8; gUnknown_030062B8 = .;
 . = 0x000062BC; gUnknown_030062BC = .;
 . = 0x000062C0; gCgbChans = .;
+
 . = 0x000063C0; gUnknown_030063C0 = .;
+. = 0x00006400; gUnknown_03006400 = .;
+. = 0x00006440; gUnknown_03006440 = .;
 . = 0x00006480; gMPlayMemAccArea = .;
+. = 0x00006490; gUnknown_03006490 = .;
 
 . = 0x000064D0; build/mb_chao_garden/src/agb_flash.o(.data);
 
