@@ -111,8 +111,7 @@ void sub_806160C(void)
         displayed->unk21 = 0xFF;
         bar->unk3C = 2 - bar->unk3C;
         m4aSongNumStart(SE_279);
-    } else if ((u16)(displayed->x + 128) > 496 || ((s16)displayed->y + 128) < 0
-               || ((s16)displayed->y) > 288) {
+    } else if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;
@@ -156,8 +155,7 @@ void sub_80617A4(void)
         }
     }
 
-    if ((u16)(displayed->x + 128) > 496 || ((s16)displayed->y + 128) < 0
-        || ((s16)displayed->y) > 288) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
         ia->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;

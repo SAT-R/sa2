@@ -86,7 +86,7 @@ typedef struct {
     /* 0x12 */ s16 speedAirY;
     /* 0x14 */ s16 speedGroundX;
     /* 0x16 */ u8 unk16;
-    /* 0x17 */ u8 unk17;
+    /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
     /* 0x20 */ u32
         moveState; // set/compare to values in "include/constants/move_states.h"
@@ -102,7 +102,8 @@ typedef struct {
     /* 0x5A */ u8 unk5A;
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C;
-    /* 0x5E */ u8 filler5E[4];
+    /* 0x5E */ u16 unk5E; // input ?
+    u8 a[2];
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
     /* 0x64 */ u16 unk64;

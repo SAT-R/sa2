@@ -49,7 +49,6 @@ SECTIONS
         build/sa2/asm/interactable_platform.o(.text);
         build/sa2/asm/interactable_081.o(.text);
         build/sa2/src/interactable_ramp.o(.text);
-        build/sa2/asm/interactable_ramp.o(.text);
         build/sa2/asm/interactable_grind_rail.o(.text);
         build/sa2/src/interactable_044.o(.text);
         build/sa2/asm/interactable_clear_pipe.o(.text);
