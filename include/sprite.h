@@ -94,7 +94,7 @@ typedef struct {
 
     // TODO: should be signed
     /* 0x16 */ u16 x;
-    /* 0x18 */ u16 y;
+    /* 0x18 */ s16 y;
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 

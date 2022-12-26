@@ -109,10 +109,11 @@ void sub_800FAF4(void)
             } else if (!(ramp->unk3C & 2)) {
                 s32 temp8 = screenX + displayed->unk28[0].unk4;
                 s32 temp2 = displayed->unk28[0].unk6 - displayed->unk28[0].unk4;
-                s32 temp9 = ((player->x >> 8) - temp8);
+                s32 temp9 = Q_24_8_TO_INT(player->x) - temp8;
                 if (temp9 > 0) {
                     if (temp9 > temp2) {
-                        if (!(player->moveState & 2) && (player->speedGroundX > 0x400)) {
+                        if (!(player->moveState & MOVESTATE_IN_AIR)
+                            && (player->speedGroundX > 0x400)) {
                             player->unk6D = 0x16;
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
@@ -120,13 +121,12 @@ void sub_800FAF4(void)
                         player->moveState &= ~MOVESTATE_8;
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
-                        s32 temp4 = (player->y >> 8) + player->unk17 - screenY;
-                        s32 temp6
-                            = ((displayed->unk28[0].unk5) * ((temp9 * 256) / temp2))
-                            >> 8;
+                        s32 temp4 = Q_24_8_TO_INT(player->y) + player->unk17 - screenY;
+                        s32 temp6 = Q_24_8_TO_INT(displayed->unk28[0].unk5
+                                                  * (Q_24_8(temp9) / temp2));
 
                         if (temp4 >= temp6) {
-                            if (!(player->moveState & 2)
+                            if (!(player->moveState & MOVESTATE_IN_AIR)
                                 && (player->speedGroundX > 0x400)
                                 && (player->unk5E & gPlayerControls.unk0)) {
                                 if (temp9 < (temp2 / 2)) {
@@ -137,7 +137,7 @@ void sub_800FAF4(void)
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
-                                player->y += (temp6 - temp4) * 256;
+                                player->y += Q_24_8(temp6 - temp4);
                                 player->unk24 = 0;
 
                                 player->moveState |= MOVESTATE_8;
@@ -155,17 +155,19 @@ void sub_800FAF4(void)
             }
         } else {
             if (var) {
-                if (((ramp->unk3C & 2) != 0 && (player->x >> 8) < (s16)displayed->x)
+                if (((ramp->unk3C & 2) != 0
+                     && Q_24_8_TO_INT(player->x) < (s16)displayed->x)
                     || ((ramp->unk3C & 2) == 0
-                        && (player->x >> 8) > (s16)displayed->x)) {
-                    if ((player->moveState & 2) == 0 && player->speedGroundX > 0x400) {
+                        && Q_24_8_TO_INT(player->x) > (s16)displayed->x)) {
+                    if (!(player->moveState & MOVESTATE_IN_AIR)
+                        && player->speedGroundX > 0x400) {
                         player->unk6D = 0x16;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
                 } else if (((ramp->unk3C & 2) != 0
-                            && (player->x >> 8) > (s16)displayed->x)
+                            && Q_24_8_TO_INT(player->x) > (s16)displayed->x)
                            || ((ramp->unk3C & 2) == 0
-                               && (player->x >> 8) < (s16)displayed->x)) {
+                               && Q_24_8_TO_INT(player->x) < (s16)displayed->x)) {
                     player->moveState &= ~MOVESTATE_8;
                     player->unk3C = NULL;
                 }
