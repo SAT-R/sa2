@@ -62,17 +62,17 @@ gMPlayTable:	@ 0x0201A474
 	.align 2
 	.global gSongTable
 gSongTable:	@ 0x0201A4A4
-	song song0000, 0, 0
+	song dummy_song_header, 0, 0
 	song song0001, 0, 0
 	song song0002, 0, 0
-	song song0000, 0, 0
+	song dummy_song_header, 0, 0
 	song song0004, 0, 0
-	song song0000, 0, 0
-	song song0000, 0, 0
-	song song0000, 0, 0
-	song song0000, 0, 0
-	song song0000, 0, 0
-	song song0000, 0, 0
+	song dummy_song_header, 0, 0
+	song dummy_song_header, 0, 0
+	song dummy_song_header, 0, 0
+	song dummy_song_header, 0, 0
+	song dummy_song_header, 0, 0
+	song dummy_song_header, 0, 0
 	song song0011, 2, 2
 	song song0012, 2, 2
 	song song0013, 2, 2
@@ -101,12 +101,8 @@ gSongTable:	@ 0x0201A4A4
 	song song0036, 2, 2
 
 	.align 2
-	.global song0000
-song0000:	@ 0x0201A5CC
-	.byte	0		@ trackCount
-	.byte	0		@ blockCount
-	.byte	0		@ priority
-	.byte	0		@ reverb
+dummy_song_header:
+	.byte 0, 0, 0, 0
 
 	.align 2
 	.global DirectSoundData_0201A5D0

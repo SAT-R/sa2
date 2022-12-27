@@ -135,6 +135,8 @@ tidy:
 
 #### Recipes ####
 
+include songs.mk
+
 %.s: ;
 %.png: ;
 %.pal: ;
