@@ -101,11 +101,12 @@
 // with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+// TODO: fix casts here
 #define SWAP_AND_NEGATE(a, b)                                                           \
-    a ^= b;                                                                             \
-    b ^= a;                                                                             \
-    a = (b ^ a) * -1;                                                                   \
-    b *= -1;
+    a ^= (u8)b;                                                                         \
+    b ^= (u8)a;                                                                         \
+    a = ((u8)b ^ (u8)a) * -1;                                                           \
+    b = (u8)b * -1;
 
 struct BlendRegs {
     u16 bldCnt;

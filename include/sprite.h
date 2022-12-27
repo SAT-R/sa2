@@ -83,11 +83,11 @@ typedef struct {
 } SpriteOffset;
 
 typedef struct {
-    s32 unk0;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
-    u8 unk7;
+    /* 0x28 */ s32 unk0;
+    /* 0x2C */ s8 unk4;
+    /* 0x2D */ s8 unk5;
+    /* 0x2E */ s8 unk6;
+    /* 0x2F */ s8 unk7;
 } Sprite_UNK28;
 
 // TODO: work out what makes this struct different from the above
@@ -115,7 +115,7 @@ typedef struct {
 
     // TODO: should be signed
     /* 0x16 */ u16 x;
-    /* 0x18 */ u16 y;
+    /* 0x18 */ s16 y;
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 

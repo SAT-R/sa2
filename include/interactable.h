@@ -33,6 +33,7 @@ typedef struct {
 } SpriteBase;
 
 bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
+u32 sub_800CDBC(Sprite *, s16, s16, Player *);
 
 void TaskDestructor_80095E8(struct Task *);
 

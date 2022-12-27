@@ -44,7 +44,39 @@ SECTIONS {
 	{
 	    build/mb_chao_garden/data/data.o(.rodata);
 		build/mb_chao_garden/src/m4a_tables.o(.rodata);
-		build/mb_chao_garden/data/data2.o(.rodata);
+		build/mb_chao_garden/data/sound.o(.rodata);
+
+        build/mb_chao_garden/sound/songs/midi/song0001.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0002.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0004.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0011.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0012.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0013.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0014.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0015.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0016.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0017.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0018.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0019.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0020.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0021.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0022.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0023.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0024.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0025.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0026.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0027.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0028.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0029.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0030.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0031.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0032.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0033.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0034.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0035.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0036.o(.rodata);
+
+        build/mb_chao_garden/data/data4.o(.rodata);
 
 		build/mb_chao_garden/src/agb_flash_512k.o(.rodata);
 		build/mb_chao_garden/src/agb_flash_le_512k.o(.rodata);
