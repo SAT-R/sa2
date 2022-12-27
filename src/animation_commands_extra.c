@@ -94,7 +94,7 @@ u32 sub_8004010(void)
                         u16 r1 = gUnknown_03004D80[bgIndex];
                         u8 *p1p = &p1[r4 * tileSize];
                         sp00[0] = r1;
-                        Dma3CopyLarge32_(&sp00, p1p, (0) | 0x81000000);
+                        Dma3CopyLarge32_(&sp00, p1p, 0x85000001);
                     }
                 }
             }

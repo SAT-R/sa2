@@ -101,6 +101,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     lang = gLoadedSaveGame->unk6;
     if (lang > NUM_LANGUAGES) {
+        // NOTE(Jace): LANG_ENGLISH in the PAL version
         lang = LANG_JAPANESE;
     }
 
