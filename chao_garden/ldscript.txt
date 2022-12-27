@@ -47,7 +47,7 @@ SECTIONS {
 		build/mb_chao_garden/data/sound.o(.rodata);
 
         build/mb_chao_garden/sound/songs/midi/song0001.o(.rodata);
-        build/mb_chao_garden/sound/songs/song0002.o(.rodata);
+        build/mb_chao_garden/sound/songs/midi/song0002.o(.rodata);
         build/mb_chao_garden/sound/songs/midi/song0004.o(.rodata);
         build/mb_chao_garden/sound/songs/midi/song0011.o(.rodata);
         build/mb_chao_garden/sound/songs/midi/song0012.o(.rodata);

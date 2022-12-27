@@ -62,7 +62,7 @@ Temporary Items
 *.dump
 build
 tools/agbcc
-sound/songs/midi/*.s
+**/sound/songs/midi/*.s
 /ctx.c
 reports
 .vscode/*.log
