@@ -430,8 +430,8 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
     gUnknown_03002280[1][2] = 0xff;
     gUnknown_03002280[1][3] = 0x20;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0]= 0;
-    gUnknown_03002280[2][1]= 0;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
     gUnknown_03002280[2][2] = 0xff;
     gUnknown_03002280[2][3] = 0x20;
     gBgScrollRegs[2][0] = 0;

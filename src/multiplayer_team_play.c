@@ -127,8 +127,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[2][0]= 0;
-    gUnknown_03002280[2][1]= 0;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
     gUnknown_03002280[2][2] = 0xff;
     gUnknown_03002280[2][3] = 32;
 
@@ -353,8 +353,8 @@ static void sub_805CC34(void)
                     gUnknown_03004D80[2] = 0;
                     gUnknown_03002280[2][0] = 0;
                     gUnknown_03002280[2][1] = 0;
-                    gUnknown_03002280[2][2]  = 0xFF;
-                    gUnknown_03002280[2][3]  = 32;
+                    gUnknown_03002280[2][2] = 0xFF;
+                    gUnknown_03002280[2][3] = 32;
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
@@ -396,8 +396,8 @@ static void sub_805CC34(void)
                 background = &teamPlayScreen->unk290;
 
                 gUnknown_03004D80[2] = 0;
-                gUnknown_03002280[2][0]= 0;
-                gUnknown_03002280[2][1]= 0;
+                gUnknown_03002280[2][0] = 0;
+                gUnknown_03002280[2][1] = 0;
                 gUnknown_03002280[2][2] = 0xFF;
                 gUnknown_03002280[2][3] = 32;
 

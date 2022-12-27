@@ -104,8 +104,8 @@ void sub_8081FB0(void)
     gBgCntRegs[3] = 0x5e0b;
     gBgCntRegs[2] = 0x1c0c;
     gUnknown_03004D80[2] = 0x7f;
-    gUnknown_03002280[2][0]= 0;
-    gUnknown_03002280[2][1]= 0;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
     gUnknown_03002280[2][2] = 0xff;
     gUnknown_03002280[2][3] = 32;
     gUnknown_03004D80[3] = 0xff;
