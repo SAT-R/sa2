@@ -137,20 +137,20 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     gBgCntRegs[0] = 0x1E01;
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 0x20;
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xFF;
-    gUnknown_03002280[7] = 0x20;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xFF;
+    gUnknown_03002280[1][3] = 0x20;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xFF;
-    gUnknown_03002280[11] = 0x20;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xFF;
+    gUnknown_03002280[2][3] = 0x20;
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

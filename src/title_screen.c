@@ -392,20 +392,20 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 0x20;
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xff;
-    gUnknown_03002280[7] = 0x20;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xff;
+    gUnknown_03002280[1][3] = 0x20;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xFF;
-    gUnknown_03002280[11] = 0x20;
+    gUnknown_03002280[2][0]= 0;
+    gUnknown_03002280[2][1]= 0;
+    gUnknown_03002280[2][2] = 0xFF;
+    gUnknown_03002280[2][3] = 0x20;
 
     gBgScrollRegs[1][0] = 8;
     gBgScrollRegs[1][1] = 512;
@@ -475,20 +475,20 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     gBgCntRegs[1] = 0x9d0a;
     gBgCntRegs[2] = 0x7a81;
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 0x20;
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xFF;
-    gUnknown_03002280[7] = 0x20;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xFF;
+    gUnknown_03002280[1][3] = 0x20;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xFF;
-    gUnknown_03002280[11] = 0x20;
+    gUnknown_03002280[2][0]= 0;
+    gUnknown_03002280[2][1]= 0;
+    gUnknown_03002280[2][2] = 0xFF;
+    gUnknown_03002280[2][3] = 0x20;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
@@ -837,10 +837,10 @@ static void Task_IntroPanSkyAnim(void)
         gBgCntRegs[2] &= ~BGCNT_WRAP;
 
         gUnknown_03004D80[0] = 2;
-        gUnknown_03002280[0] = 0;
-        gUnknown_03002280[1] = 0;
-        gUnknown_03002280[2] = 0x20;
-        gUnknown_03002280[3] = 0x20;
+        gUnknown_03002280[0][0] = 0;
+        gUnknown_03002280[0][1] = 0;
+        gUnknown_03002280[0][2] = 0x20;
+        gUnknown_03002280[0][3] = 0x20;
 
         gBldRegs.bldCnt = 0;
 
@@ -933,15 +933,15 @@ static void Task_IntroSkyAnim(void)
         DmaFill32(3, 0, (void *)VRAM, OBJ_VRAM1_SIZE);
 
         gUnknown_03004D80[0] = 2;
-        gUnknown_03002280[0] = 0;
-        gUnknown_03002280[1] = 0;
-        gUnknown_03002280[2] = 0xff;
-        gUnknown_03002280[3] = 0x20;
+        gUnknown_03002280[0][0] = 0;
+        gUnknown_03002280[0][1] = 0;
+        gUnknown_03002280[0][2] = 0xff;
+        gUnknown_03002280[0][3] = 0x20;
         gUnknown_03004D80[2] = 0;
-        gUnknown_03002280[8] = 0;
-        gUnknown_03002280[9] = 0;
-        gUnknown_03002280[10] = 0xff;
-        gUnknown_03002280[11] = 0x20;
+        gUnknown_03002280[2][0]= 0;
+        gUnknown_03002280[2][1]= 0;
+        gUnknown_03002280[2][2] = 0xff;
+        gUnknown_03002280[2][3] = 0x20;
 
         config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         config0->graphics.anim = 0;
@@ -1342,15 +1342,15 @@ static void Task_ShowTitleScreenIntroSkipped(void)
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 32;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 32;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xFF;
-    gUnknown_03002280[11] = 32;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xFF;
+    gUnknown_03002280[2][3] = 32;
 
     config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     config0->graphics.anim = 0;

@@ -4170,18 +4170,18 @@ static void TimeRecordsScreenInitRegisters(void)
     gBgScrollRegs[3][1] = 0;
 
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xFF;
-    gUnknown_03002280[7] = 64;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xFF;
+    gUnknown_03002280[1][3] = 64;
 
     DmaFill32(3, 0, (void *)BG_CHAR_ADDR(1), 0x40);
 
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xFF;
-    gUnknown_03002280[11] = 64;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xFF;
+    gUnknown_03002280[2][3] = 64;
 
     DmaFill32(3, 0, (void *)BG_CHAR_ADDR(2), 0x40);
 }

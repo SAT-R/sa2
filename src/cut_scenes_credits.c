@@ -62,10 +62,10 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xff;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xff;
+    gUnknown_03002280[0][3] = 0x20;
 
     t = TaskCreate(sub_808EBC4, 0x58, 0x3100, 0, TaskDestroy_CreditsCutScene);
 
