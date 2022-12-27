@@ -14,29 +14,32 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
-#if 0
-u32 sub_8004010(void) {
-    int i;
+#if 1
+u32 sub_8004010(void)
+{
+    int bgIndex;
     u16 sp00[2];
 
-    for (i = 0; i < 4; i++) {
-        u8 *p1 = &gUnknown_03002280[i*4 + 1];
-        u8 *p3 = &gUnknown_03002280[i*4 + 3];
+    for (bgIndex = 0; bgIndex < 4; bgIndex++) {
+        u8 *p1 = &gUnknown_03002280[bgIndex][1];
+        u8 *p3 = &gUnknown_03002280[bgIndex][3];
         u8 p3Value = *p3;
 
-        if((*p1 == *p3) 
-        && (gUnknown_03002280[i*4] == gUnknown_03002280[i*4 + 2]))
-                continue;
-        
+        if ((*p1 == *p3)
+            && (gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][2]))
+            continue;
+
         { // _08004056
-            u16 bgCtrl = gBgCntRegs[i];
-            u16 target = (bgCtrl & (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0));
-            u16 *vramBgCtrl = (u16*)(VRAM + target * 8);
+            u16 bgCtrl = gBgCntRegs[bgIndex];
+            u16 target = (bgCtrl
+                          & (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
+                             | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0));
+            u16 *vramBgCtrl = (u16 *)(VRAM + target * 8);
 
             u8 r4 = *p1;
-            u32 sp08 = gUnknown_03002280[i * 4];
+            u32 sp08 = gUnknown_03002280[bgIndex][0];
 
-            if ((i > 1)
+            if ((bgIndex > 1)
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
                 u16 *spVramPtr = &vramBgCtrl[sp08];
@@ -44,7 +47,7 @@ u32 sub_8004010(void) {
 
                 if (p3Value == 0xFF) {
                     // _080040A2
-                    u16 v = gUnknown_03004D80[i];
+                    u16 v = gUnknown_03004D80[bgIndex];
                     u16 *otherPtr;
                     u32 value;
                     v |= v << 8;
@@ -56,45 +59,46 @@ u32 sub_8004010(void) {
                                      (((s32)(value + (value >> 31))) / 2) | 0x81000000);
                 } else {
                     // _080040F8
-                    //u8 i2 = i + 1;
+                    // u8 i2 = i + 1;
                     while (r4 < *p3) {
-                        u16 v = gUnknown_03004D80[i];
+                        u16 v = gUnknown_03004D80[bgIndex];
                         u16 *otherPtr;
                         u32 value;
                         v |= v << 8;
-                        otherPtr = &spVramPtr[i * r4];
+                        otherPtr = &spVramPtr[bgIndex * r4];
                         sp00[0] = v;
 
-                        Dma3CopyLarge32_(&sp00, otherPtr, ((((s32)(i*4-sp08 +1)) / 2) | 0x81000000));
+                        Dma3CopyLarge32_(
+                            &sp00, otherPtr,
+                            ((((s32)(bgIndex * 4 - sp08 + 1)) / 2) | 0x81000000));
                     }
                 }
                 // then -> _0800422C
             } else {
                 // _08004168
                 int tileSize = 32;
-                
-                if (((gBgCntRegs[i * 2] >> 14) - 2) <= 1)
+
+                if (((gBgCntRegs[bgIndex] >> 14) - 2) <= 1)
                     tileSize = 64;
 
-                if (gUnknown_03002280[2 + i * 4] == 0xFF) {
-                    u8 r1 = gUnknown_03004D80[i];
+                if (gUnknown_03002280[bgIndex][2] == 0xFF) {
+                    u8 r1 = gUnknown_03004D80[bgIndex];
                     u8 *p1p = &p1[r4 * tileSize];
                     sp00[0] = r1;
 
                     Dma3CopyLarge32_(&sp00, p1p,
-                                     (gUnknown_03002280[3 + i * 4]) | 0x81000000);
+                                     (gUnknown_03002280[bgIndex][3]) | 0x81000000);
                 } else {
                     // _080041D8
-                    if (r4 <= gUnknown_03002280[3 + i * 4]) {
-                        u16 r1 = gUnknown_03004D80[i];
+                    if (r4 <= gUnknown_03002280[bgIndex][3]) {
+                        u16 r1 = gUnknown_03004D80[bgIndex];
                         u8 *p1p = &p1[r4 * tileSize];
                         sp00[0] = r1;
-                        Dma3CopyLarge32_(&sp00, p1p, () | 0x81000000);
+                        Dma3CopyLarge32_(&sp00, p1p, (0) | 0x81000000);
                     }
                 }
             }
             // _0800422C
-
         }
     }
 
@@ -107,7 +111,7 @@ s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCt
 {
     u8 i = 0;
 
-    u16 tileBase   = gBgCntRegs[bgCtrlIndex] & BGCNT_CHARBASE(0x3);
+    u16 tileBase = gBgCntRegs[bgCtrlIndex] & BGCNT_CHARBASE(0x3);
     u16 *vramTiles = (u16 *)(VRAM + (tileBase << 12));
 
     u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
