@@ -7124,7 +7124,7 @@ _02003A90:
 	ands r1, r0
 	cmp r1, #0
 	bne _02003AF8
-	ldr r0, _02003AD0 @ =gUnknown_030063C0
+	ldr r0, _02003AD0 @ =gMPlayInfo_BGM
 	movs r1, #1
 	bl m4aMPlayFadeOut
 	movs r0, #0xc
@@ -7141,7 +7141,7 @@ _02003AC0: .4byte gUnknown_03004E20
 _02003AC4: .4byte gUnknown_03004400
 _02003AC8: .4byte gUnknown_020206FC
 _02003ACC: .4byte gUnknown_03003330
-_02003AD0: .4byte gUnknown_030063C0
+_02003AD0: .4byte gMPlayInfo_BGM
 _02003AD4: .4byte sub_0200d294
 _02003AD8:
 	ldr r0, _02003AEC @ =sub_0200a8a4
@@ -20223,14 +20223,14 @@ _0200A0E0:
 	strb r0, [r3]
 	movs r0, #0
 	strh r0, [r7]
-	ldr r0, _0200A0FC @ =gUnknown_030063C0
+	ldr r0, _0200A0FC @ =gMPlayInfo_BGM
 	movs r1, #1
 	bl m4aMPlayFadeOut
 	b _0200A14E
 	.align 2, 0
 _0200A0F4: .4byte gUnknown_030043F0
 _0200A0F8: .4byte gUnknown_03001988
-_0200A0FC: .4byte gUnknown_030063C0
+_0200A0FC: .4byte gMPlayInfo_BGM
 _0200A100:
 	ldr r0, _0200A114 @ =0x04000054
 	ldr r2, _0200A118 @ =gUnknown_03001988
@@ -20665,7 +20665,7 @@ sub_0200a434: @ 0x0200a434
 	ldr r1, _0200A454 @ =gUnknown_03001988
 	movs r0, #0
 	strh r0, [r1]
-	ldr r0, _0200A458 @ =gUnknown_030063C0
+	ldr r0, _0200A458 @ =gMPlayInfo_BGM
 	movs r1, #1
 	bl m4aMPlayFadeOut
 	pop {r0}
@@ -20673,7 +20673,7 @@ sub_0200a434: @ 0x0200a434
 	.align 2, 0
 _0200A450: .4byte gUnknown_03001986
 _0200A454: .4byte gUnknown_03001988
-_0200A458: .4byte gUnknown_030063C0
+_0200A458: .4byte gMPlayInfo_BGM
 
 	thumb_func_start sub_0200a45c
 sub_0200a45c: @ 0x0200a45c
@@ -30708,7 +30708,7 @@ _0200F5F4:
 	movs r0, #0x50
 	movs r1, #0xbf
 	bl sub_02001698
-	ldr r0, _0200F614 @ =gUnknown_030063C0
+	ldr r0, _0200F614 @ =gMPlayInfo_BGM
 	movs r1, #1
 	bl m4aMPlayFadeOut
 _0200F604:
@@ -30721,7 +30721,7 @@ _0200F60E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0200F614: .4byte gUnknown_030063C0
+_0200F614: .4byte gMPlayInfo_BGM
 _0200F618: .4byte gUnknown_03003330
 _0200F61C: .4byte sub_0200F620
 
