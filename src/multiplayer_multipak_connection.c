@@ -381,10 +381,10 @@ static void sub_805ADAC(void)
         send->unk0 = 0;
         gUnknown_03004D80[0] = 0;
 
-        gUnknown_03002280[0] = 0;
-        gUnknown_03002280[1] = 0;
-        gUnknown_03002280[2] = 0xff;
-        gUnknown_03002280[3] = 32;
+        gUnknown_03002280[0][0] = 0;
+        gUnknown_03002280[0][1] = 0;
+        gUnknown_03002280[0][2] = 0xff;
+        gUnknown_03002280[0][3] = 32;
         CreateMultiplayerModeSelectScreen();
         TaskDestroy(gCurTask);
         return;
@@ -457,10 +457,10 @@ static void sub_805B454(void)
         MultiSioStop();
         MultiSioInit(0);
         gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0] = 0;
-        gUnknown_03002280[1] = 0;
-        gUnknown_03002280[2] = 0xFF;
-        gUnknown_03002280[3] = 32;
+        gUnknown_03002280[0][0] = 0;
+        gUnknown_03002280[0][1] = 0;
+        gUnknown_03002280[0][2] = 0xFF;
+        gUnknown_03002280[0][3] = 32;
         CreateMultiplayerModeSelectScreen();
         TaskDestroy(gCurTask);
     }
@@ -487,10 +487,10 @@ static void sub_805B4C0(void)
             send = &gMultiSioSend.pat0;
             send->unk0 = 0;
             gUnknown_03004D80[0] = 0;
-            gUnknown_03002280[0] = 0;
-            gUnknown_03002280[1] = 0;
-            gUnknown_03002280[2] = 0xFF;
-            gUnknown_03002280[3] = 32;
+            gUnknown_03002280[0][0] = 0;
+            gUnknown_03002280[0][1] = 0;
+            gUnknown_03002280[0][2] = 0xFF;
+            gUnknown_03002280[0][3] = 32;
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
@@ -548,10 +548,10 @@ static void sub_805B4C0(void)
         send = &gMultiSioSend.pat0;
         send->unk0 = 0;
         gUnknown_03004D80[0] = 0;
-        gUnknown_03002280[0] = 0;
-        gUnknown_03002280[1] = 0;
-        gUnknown_03002280[2] = 0xFF;
-        gUnknown_03002280[3] = 32;
+        gUnknown_03002280[0][0] = 0;
+        gUnknown_03002280[0][1] = 0;
+        gUnknown_03002280[0][2] = 0xFF;
+        gUnknown_03002280[0][3] = 32;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

@@ -32,10 +32,10 @@ void CreateExtraEndingSlidesCutScene(void)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 0x20;
 
     t = TaskCreate(sub_8091590, 0x50, 0x3100, 0, sub_8091680);
     scene = TaskGetStructPtr(t);
