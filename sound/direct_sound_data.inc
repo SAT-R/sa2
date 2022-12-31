@@ -1,247 +1,260 @@
 	.align 2
     .global DirectSoundWaveData_1
 DirectSoundWaveData_1:
-	.incbin "sound/direct_sound_samples/unknown_001.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_charselect_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_2
 DirectSoundWaveData_2:
-	.incbin "sound/direct_sound_samples/unknown_002.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_charselect_2.bin"
 
 	.align 2
+    .global DirectSoundWaveData_3
 DirectSoundWaveData_3:
-	.incbin "sound/direct_sound_samples/unknown_003.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_4
 DirectSoundWaveData_4:
-	.incbin "sound/direct_sound_samples/unknown_004.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_2.bin"
 
 	.align 2
+    .global DirectSoundWaveData_5
 DirectSoundWaveData_5:
-	.incbin "sound/direct_sound_samples/unknown_005.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__stereo_brass_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_6
 DirectSoundWaveData_6:
-	.incbin "sound/direct_sound_samples/unknown_006.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__synth_brass2_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_7
 DirectSoundWaveData_7:
-	.incbin "sound/direct_sound_samples/unknown_007.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_3.bin"
 
 	.align 2
+    .global DirectSoundWaveData_8
 DirectSoundWaveData_8:
-	.incbin "sound/direct_sound_samples/unknown_008.bin"
+	.incbin "sound/direct_sound_samples/unknown_8ade918.bin"
 
 	.align 2
+    .global DirectSoundWaveData_9
 DirectSoundWaveData_9:
-	.incbin "sound/direct_sound_samples/unknown_009.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__stereo_brass_2.bin"
 
 	.align 2
+    .global DirectSoundWaveData_10
 DirectSoundWaveData_10:
-	.incbin "sound/direct_sound_samples/unknown_010.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__synth_brass2_2.bin"
 
 	.align 2
+    .global DirectSoundWaveData_11
 DirectSoundWaveData_11:
-	.incbin "sound/direct_sound_samples/unknown_011.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_4.bin"
 
 	.align 2
+    .global DirectSoundWaveData_12
 DirectSoundWaveData_12:
-	.incbin "sound/direct_sound_samples/unknown_012.bin"
+	 .incbin "sound/direct_sound_samples/roland_sr_jv80_02__bassoon_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_13
 DirectSoundWaveData_13:
-	.incbin "sound/direct_sound_samples/unknown_013.bin"
+	.incbin "sound/direct_sound_samples/unknown_8ae9bb4.bin"
 
 	.align 2
+    .global DirectSoundWaveData_14
 DirectSoundWaveData_14:
-	.incbin "sound/direct_sound_samples/unknown_014.bin"
+	.incbin "sound/direct_sound_samples/unknown_8aea788.bin"
 
 	.align 2
 DirectSoundWaveData_15:
-	.incbin "sound/direct_sound_samples/unknown_015.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__30303_mega_bass_1.bin"
 
 	.align 2
 DirectSoundWaveData_16:
-	.incbin "sound/direct_sound_samples/unknown_016.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__30303_mega_bass_2.bin"
 
 	.align 2
 DirectSoundWaveData_17:
-	.incbin "sound/direct_sound_samples/unknown_017.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_5.bin"
 
 	.align 2
 DirectSoundWaveData_18:
-	.incbin "sound/direct_sound_samples/unknown_018.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__alto_sax.bin"
 
 	.align 2
 DirectSoundWaveData_19:
-	.incbin "sound/direct_sound_samples/unknown_019.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__timpani.bin"
 
 	.align 2
 DirectSoundWaveData_20:
-	.incbin "sound/direct_sound_samples/unknown_020.bin"
+	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__harp_1.bin"
 
 	.align 2
 DirectSoundWaveData_21:
-	.incbin "sound/direct_sound_samples/unknown_021.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_6.bin"
 
 	.align 2
 DirectSoundWaveData_22:
-	.incbin "sound/direct_sound_samples/unknown_022.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__piano_2.bin"
 
 	.align 2
 DirectSoundWaveData_23:
-	.incbin "sound/direct_sound_samples/unknown_023.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__music_box_sw1.bin"
 
 	.align 2
 DirectSoundWaveData_24:
-	.incbin "sound/direct_sound_samples/unknown_024.bin"
+	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__french_horn_sc_x4.bin"
 
 	.align 2
 DirectSoundWaveData_25:
-	.incbin "sound/direct_sound_samples/unknown_025.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__orchestra_hit.bin"
 
 	.align 2
 DirectSoundWaveData_26:
-	.incbin "sound/direct_sound_samples/unknown_026.bin"
+	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__vi_sect_mono.bin"
 
 	.align 2
 DirectSoundWaveData_27:
-	.incbin "sound/direct_sound_samples/unknown_027.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__16_piano.bin"
 
 	.align 2
 DirectSoundWaveData_28:
-	.incbin "sound/direct_sound_samples/unknown_028.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B04840.bin"
 
 	.align 2
 DirectSoundWaveData_29:
-	.incbin "sound/direct_sound_samples/unknown_029.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__vs_bells_1.bin"
 
 	.align 2
 DirectSoundWaveData_30:
-	.incbin "sound/direct_sound_samples/unknown_030.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B0C95C.bin"
 
 	.align 2
 DirectSoundWaveData_31:
-	.incbin "sound/direct_sound_samples/unknown_031.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B0F724_sa1_final_boss_choir.bin"
 
 	.align 2
-DirectSoundWaveData_32:
-	.incbin "sound/direct_sound_samples/unknown_032.bin"
+DirectSoundWaveData_32: @ 0x8B109B8
+	.incbin "sound/direct_sound_samples/sfx__sa1_intro_wind.bin"
 
 	.align 2
-DirectSoundWaveData_33:
-	.incbin "sound/direct_sound_samples/unknown_033.bin"
+DirectSoundWaveData_33: @ 0x8B18DD0
+	.incbin "sound/direct_sound_samples/sfx__sa1_intro_emerald.bin"
 
 	.align 2
-DirectSoundWaveData_34:
-	.incbin "sound/direct_sound_samples/unknown_034.bin"
+DirectSoundWaveData_34: @ 0x8B1E9F0
+	.incbin "sound/direct_sound_samples/korg_trinity__dads_jazz_guitar.bin"
 
 	.align 2
-DirectSoundWaveData_35:
-	.incbin "sound/direct_sound_samples/unknown_035.bin"
+DirectSoundWaveData_35: @ 0x8B20204
+	.incbin "sound/direct_sound_samples/unknown_8B20204.bin"
 
 	.align 2
-DirectSoundWaveData_36:
-	.incbin "sound/direct_sound_samples/unknown_036.bin"
+DirectSoundWaveData_36: @ 0x8B21DC8
+	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit_1.bin"
 
 	.align 2
-DirectSoundWaveData_37:
-	.incbin "sound/direct_sound_samples/unknown_037.bin"
+DirectSoundWaveData_37: @ 0x8B22678
+	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit_2.bin"
 
 	.align 2
-DirectSoundWaveData_38:
-	.incbin "sound/direct_sound_samples/unknown_038.bin"
+DirectSoundWaveData_38: @ 0x8B232F0
+	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit_3.bin"
 
 	.align 2
-DirectSoundWaveData_39:
-	.incbin "sound/direct_sound_samples/unknown_039.bin"
+DirectSoundWaveData_39: @ 0x8B24488
+	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit_4.bin"
 
 	.align 2
 DirectSoundWaveData_40:
-	.incbin "sound/direct_sound_samples/unknown_040.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit_5.bin"
 
 	.align 2
 DirectSoundWaveData_41:
-	.incbin "sound/direct_sound_samples/unknown_041.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B257FC__maybe_roland_jv2080_jazz_drum_set1.bin"
 
 	.align 2
 DirectSoundWaveData_42:
-	.incbin "sound/direct_sound_samples/unknown_042.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1_1.bin"
 
 	.align 2
 DirectSoundWaveData_43:
-	.incbin "sound/direct_sound_samples/unknown_043.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1_2.bin"
 
 	.align 2
 DirectSoundWaveData_44:
-	.incbin "sound/direct_sound_samples/unknown_044.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__mega_mix_kit_1.bin"
 
 	.align 2
 DirectSoundWaveData_45:
-	.incbin "sound/direct_sound_samples/unknown_045.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__mega_mix_kit_2.bin"
 
 	.align 2
 DirectSoundWaveData_46:
-	.incbin "sound/direct_sound_samples/unknown_046.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B2EEB8.bin"
 
 	.align 2
 DirectSoundWaveData_47:
-	.incbin "sound/direct_sound_samples/unknown_047.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080_power_drum_set.bin"
 
 	.align 2
 DirectSoundWaveData_48:
-	.incbin "sound/direct_sound_samples/unknown_048.bin"
+	.incbin "sound/direct_sound_samples/sfx__spin_attack.bin"
 
 	.align 2
 DirectSoundWaveData_49:
-	.incbin "sound/direct_sound_samples/unknown_049.bin"
+	.incbin "sound/direct_sound_samples/sfx__score_count_complete.bin"
 
 	.align 2
 DirectSoundWaveData_50:
-	.incbin "sound/direct_sound_samples/unknown_050.bin"
+	.incbin "sound/direct_sound_samples/sfx__ring.bin"
 
 	.align 2
 DirectSoundWaveData_51:
-	.incbin "sound/direct_sound_samples/unknown_051.bin"
+	.incbin "sound/direct_sound_samples/sfx__rings_lost.bin"
 
 	.align 2
 DirectSoundWaveData_52:
-	.incbin "sound/direct_sound_samples/unknown_052.bin"
+	.incbin "sound/direct_sound_samples/sfx__sa1_goal.bin"
 
 	.align 2
 DirectSoundWaveData_53:
-	.incbin "sound/direct_sound_samples/unknown_053.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__wheewopog.bin"
 
 	.align 2
 DirectSoundWaveData_54:
-	.incbin "sound/direct_sound_samples/unknown_054.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__baa.bin"
 
 	.align 2
 DirectSoundWaveData_55:
-	.incbin "sound/direct_sound_samples/unknown_055.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__ooooh.bin"
 
 	.align 2
 DirectSoundWaveData_56:
-	.incbin "sound/direct_sound_samples/unknown_056.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__attack.bin"
 
 	.align 2
 DirectSoundWaveData_57:
-	.incbin "sound/direct_sound_samples/unknown_057.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__hmm_huh.bin"
 
 	.align 2
 DirectSoundWaveData_58:
-	.incbin "sound/direct_sound_samples/unknown_058.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__huh.bin"
 
 	.align 2
 DirectSoundWaveData_59:
-	.incbin "sound/direct_sound_samples/unknown_059.bin"
+	.incbin "sound/direct_sound_samples/voice__cheese__hihihi.bin"
 
 	.align 2
 DirectSoundWaveData_60:
-	.incbin "sound/direct_sound_samples/unknown_060.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__jazz_brush_kits.bin"
 
 	.align 2
 DirectSoundWaveData_61:
-	.incbin "sound/direct_sound_samples/unknown_061.bin"
+	.incbin "sound/direct_sound_samples/sfx__8B51EBC.bin"
 
 	.align 2
 DirectSoundWaveData_voice__announcer__sonic_advance_2:
@@ -253,15 +266,15 @@ DirectSoundWaveData_voice__announcer__sonic:
 
 	.align 2
 DirectSoundWaveData_62:
-	.incbin "sound/direct_sound_samples/unknown_062.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__tails.bin"
 
 	.align 2
 DirectSoundWaveData_63:
-	.incbin "sound/direct_sound_samples/unknown_063.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__knuckles.bin"
 
 	.align 2
 DirectSoundWaveData_64:
-	.incbin "sound/direct_sound_samples/unknown_064.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__amy.bin"
 
 	.align 2
 DirectSoundWaveData_voice__announcer__cream:
@@ -269,23 +282,23 @@ DirectSoundWaveData_voice__announcer__cream:
 
 	.align 2
 DirectSoundWaveData_65:
-	.incbin "sound/direct_sound_samples/unknown_065.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__3.bin"
 
 	.align 2
 DirectSoundWaveData_66:
-	.incbin "sound/direct_sound_samples/unknown_066.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__2.bin"
 
 	.align 2
 DirectSoundWaveData_67:
-	.incbin "sound/direct_sound_samples/unknown_067.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__1.bin"
 
 	.align 2
 DirectSoundWaveData_68:
-	.incbin "sound/direct_sound_samples/unknown_068.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__go.bin"
 
 	.align 2
 DirectSoundWaveData_69:
-	.incbin "sound/direct_sound_samples/unknown_069.bin"
+	.incbin "sound/direct_sound_samples/voice__announcer__congratulations.bin"
 
 	.align 2
 DirectSoundWaveData_70:
