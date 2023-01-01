@@ -126,7 +126,7 @@ DirectSoundWaveData_28:
 
 	.align 2
 DirectSoundWaveData_29:
-	.incbin "sound/direct_sound_samples/korg_01_w__vs_bells_1.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__vs_bells_1_1.bin"
 
 	.align 2
 DirectSoundWaveData_30:
@@ -300,413 +300,417 @@ DirectSoundWaveData_68:
 DirectSoundWaveData_69:
 	.incbin "sound/direct_sound_samples/voice__announcer__congratulations.bin"
 
+    @ Music Plant - Springs
 	.align 2
 DirectSoundWaveData_70:
-	.incbin "sound/direct_sound_samples/unknown_070.bin"
+	.incbin "sound/direct_sound_samples/sfx__8B6BA40.bin"
 
+    @ Music Plant - 
 	.align 2
 DirectSoundWaveData_71:
-	.incbin "sound/direct_sound_samples/unknown_071.bin"
+	.incbin "sound/direct_sound_samples/sfx__8B6FA94.bin"
 
+    @ Music Plant - Note
 	.align 2
 DirectSoundWaveData_72:
-	.incbin "sound/direct_sound_samples/unknown_072.bin"
+	.incbin "sound/direct_sound_samples/sfx__8B70C1C.bin"
 
+    @ Music Plant - Note Block
 	.align 2
 DirectSoundWaveData_73:
-	.incbin "sound/direct_sound_samples/unknown_073.bin"
+	.incbin "sound/direct_sound_samples/sfx__8B72E4C.bin"
 
 	.align 2
 DirectSoundWaveData_74:
-	.incbin "sound/direct_sound_samples/unknown_074.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B756E4.bin"
 
 	.align 2
 DirectSoundWaveData_75:
-	.incbin "sound/direct_sound_samples/unknown_075.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B78148.bin"
 
 	.align 2
 DirectSoundWaveData_76:
-	.incbin "sound/direct_sound_samples/unknown_076.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B7A79C__music_plant_guitar.bin"
 
 	.align 2
 DirectSoundWaveData_77:
-	.incbin "sound/direct_sound_samples/unknown_077.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B7E428.bin"
 
 	.align 2
 DirectSoundWaveData_78:
-	.incbin "sound/direct_sound_samples/unknown_078.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B80688.bin"
 
 	.align 2
 DirectSoundWaveData_79:
-	.incbin "sound/direct_sound_samples/unknown_079.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B84450.bin"
 
 	.align 2
 DirectSoundWaveData_80:
-	.incbin "sound/direct_sound_samples/unknown_080.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__vs_bells_1_2.bin"
 
 	.align 2
 DirectSoundWaveData_81:
-	.incbin "sound/direct_sound_samples/unknown_081.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B91D70.bin"
 
 	.align 2
 DirectSoundWaveData_82:
-	.incbin "sound/direct_sound_samples/unknown_082.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B940F0.bin"
 
 	.align 2
 DirectSoundWaveData_83:
-	.incbin "sound/direct_sound_samples/unknown_083.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__expecting.bin"
 
 	.align 2
 DirectSoundWaveData_84:
-	.incbin "sound/direct_sound_samples/unknown_084.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9A988.bin"
 
 	.align 2
 DirectSoundWaveData_85:
-	.incbin "sound/direct_sound_samples/unknown_085.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9AD68.bin"
 
 	.align 2
 DirectSoundWaveData_86:
-	.incbin "sound/direct_sound_samples/unknown_086.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9B1C0.bin"
 
 	.align 2
 DirectSoundWaveData_87:
-	.incbin "sound/direct_sound_samples/unknown_087.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9BB3C.bin"
 
 	.align 2
 DirectSoundWaveData_88:
-	.incbin "sound/direct_sound_samples/unknown_088.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9BF9C.bin"
 
 	.align 2
 DirectSoundWaveData_89:
-	.incbin "sound/direct_sound_samples/unknown_089.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9C408.bin"
 
 	.align 2
 DirectSoundWaveData_90:
-	.incbin "sound/direct_sound_samples/unknown_090.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9C894.bin"
 
 	.align 2
 DirectSoundWaveData_91:
-	.incbin "sound/direct_sound_samples/unknown_091.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9D1C0.bin"
 
 	.align 2
 DirectSoundWaveData_92:
-	.incbin "sound/direct_sound_samples/unknown_092.bin"
+	.incbin "sound/direct_sound_samples/unknown_8B9D718.bin"
 
 	.align 2
 DirectSoundWaveData_93:
-	.incbin "sound/direct_sound_samples/unknown_093.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__spectrum.bin"
 
 	.align 2
 DirectSoundWaveData_94:
-	.incbin "sound/direct_sound_samples/unknown_094.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__harmonica.bin"
 
 	.align 2
 DirectSoundWaveData_95:
-	.incbin "sound/direct_sound_samples/unknown_095.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_7.bin"
 
 	.align 2
 DirectSoundWaveData_96:
-	.incbin "sound/direct_sound_samples/unknown_096.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_8.bin"
 
 	.align 2
 DirectSoundWaveData_97:
-	.incbin "sound/direct_sound_samples/unknown_097.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BA62E0.bin"
 
 	.align 2
 DirectSoundWaveData_98:
-	.incbin "sound/direct_sound_samples/unknown_098.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BA6AA0.bin"
 
 	.align 2
 DirectSoundWaveData_99:
-	.incbin "sound/direct_sound_samples/unknown_099.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BAA2DC_e_mu_morpheus.bin"
 
 	.align 2
 DirectSoundWaveData_100:
-	.incbin "sound/direct_sound_samples/unknown_100.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BAFDC0.bin"
 
 	.align 2
 DirectSoundWaveData_101:
-	.incbin "sound/direct_sound_samples/unknown_101.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BB152C.bin"
 
 	.align 2
 DirectSoundWaveData_102:
-	.incbin "sound/direct_sound_samples/unknown_102.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BB2CAC.bin"
 
 	.align 2
 DirectSoundWaveData_103:
-	.incbin "sound/direct_sound_samples/unknown_103.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BB4C60.bin"
 
 	.align 2
 DirectSoundWaveData_104:
-	.incbin "sound/direct_sound_samples/unknown_104.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BB672C.bin"
 
 	.align 2
 DirectSoundWaveData_105:
-	.incbin "sound/direct_sound_samples/unknown_105.bin"
+	.incbin "sound/direct_sound_samples/unknown_BB8F2C.bin"
 
 	.align 2
 DirectSoundWaveData_106:
-	.incbin "sound/direct_sound_samples/unknown_106.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__organ_3_9.bin"
 
 	.align 2
 DirectSoundWaveData_107:
-	.incbin "sound/direct_sound_samples/unknown_107.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__pan_flute.bin"
 
 	.align 2
 DirectSoundWaveData_108:
-	.incbin "sound/direct_sound_samples/unknown_108.bin"
+	.incbin "sound/direct_sound_samples/korg_trinity__studio_strato.bin"
 
 	.align 2
 DirectSoundWaveData_109:
-	.incbin "sound/direct_sound_samples/unknown_109.bin"
+	.incbin "sound/direct_sound_samples/unknown_8bbd0e4.bin"
 
 	.align 2
 DirectSoundWaveData_110:
-	.incbin "sound/direct_sound_samples/unknown_110.bin"
+	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__oboe_1.bin"
 
 	.align 2
 DirectSoundWaveData_111:
-	.incbin "sound/direct_sound_samples/unknown_111.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BC311C.bin"
 
 	.align 2
 DirectSoundWaveData_112:
-	.incbin "sound/direct_sound_samples/unknown_112.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BC3DD4__roland_sr_jv80_02__someTubular.bin"
 
 	.align 2
 DirectSoundWaveData_113:
-	.incbin "sound/direct_sound_samples/unknown_113.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BC6304.bin"
 
 	.align 2
 DirectSoundWaveData_114:
-	.incbin "sound/direct_sound_samples/unknown_114.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BC7C58.bin"
 
 	.align 2
 DirectSoundWaveData_115:
-	.incbin "sound/direct_sound_samples/unknown_115.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCCBD4.bin"
 
 	.align 2
 DirectSoundWaveData_116:
-	.incbin "sound/direct_sound_samples/unknown_116.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCD1DC.bin"
 
 	.align 2
 DirectSoundWaveData_117:
-	.incbin "sound/direct_sound_samples/unknown_117.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCD85C.bin"
 
 	.align 2
 DirectSoundWaveData_118:
-	.incbin "sound/direct_sound_samples/unknown_118.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCDF04.bin"
 
 	.align 2
 DirectSoundWaveData_119:
-	.incbin "sound/direct_sound_samples/unknown_119.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCF078.bin"
 
 	.align 2
 DirectSoundWaveData_120:
-	.incbin "sound/direct_sound_samples/unknown_120.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BCFC30.bin"
 
 	.align 2
 DirectSoundWaveData_121:
-	.incbin "sound/direct_sound_samples/unknown_121.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD0EC0.bin"
 
 	.align 2
 DirectSoundWaveData_122:
-	.incbin "sound/direct_sound_samples/unknown_122.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD154C.bin"
 
 	.align 2
 DirectSoundWaveData_123:
-	.incbin "sound/direct_sound_samples/unknown_123.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD26FC.bin"
 
 	.align 2
 DirectSoundWaveData_124:
-	.incbin "sound/direct_sound_samples/unknown_124.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD2F00.bin"
 
 	.align 2
 DirectSoundWaveData_125:
-	.incbin "sound/direct_sound_samples/unknown_125.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD3704.bin"
 
 	.align 2
 DirectSoundWaveData_126:
-	.incbin "sound/direct_sound_samples/unknown_126.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD4838.bin"
 
 	.align 2
 DirectSoundWaveData_127:
-	.incbin "sound/direct_sound_samples/unknown_127.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BD554C.bin"
 
 	.align 2
 DirectSoundWaveData_128:
-	.incbin "sound/direct_sound_samples/unknown_128.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_1.bin"
 
 	.align 2
 DirectSoundWaveData_129:
-	.incbin "sound/direct_sound_samples/unknown_129.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_2.bin"
 
 	.align 2
 DirectSoundWaveData_130:
-	.incbin "sound/direct_sound_samples/unknown_130.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_3.bin"
 
 	.align 2
 DirectSoundWaveData_131:
-	.incbin "sound/direct_sound_samples/unknown_131.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_4.bin"
 
 	.align 2
 DirectSoundWaveData_132:
-	.incbin "sound/direct_sound_samples/unknown_132.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_5.bin"
 
 	.align 2
 DirectSoundWaveData_133:
-	.incbin "sound/direct_sound_samples/unknown_133.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_6.bin"
 
 	.align 2
 DirectSoundWaveData_134:
-	.incbin "sound/direct_sound_samples/unknown_134.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_7.bin"
 
 	.align 2
 DirectSoundWaveData_135:
-	.incbin "sound/direct_sound_samples/unknown_135.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_8.bin"
 
 	.align 2
 DirectSoundWaveData_136:
-	.incbin "sound/direct_sound_samples/unknown_136.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_9.bin"
 
 	.align 2
 DirectSoundWaveData_137:
-	.incbin "sound/direct_sound_samples/unknown_137.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_4_loop_10.bin"
 
 	.align 2
 DirectSoundWaveData_138:
-	.incbin "sound/direct_sound_samples/unknown_138.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_0.bin"
 
 	.align 2
 DirectSoundWaveData_139:
-	.incbin "sound/direct_sound_samples/unknown_139.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_1.bin"
 
 	.align 2
 DirectSoundWaveData_140:
-	.incbin "sound/direct_sound_samples/unknown_140.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_2.bin"
 
 	.align 2
 DirectSoundWaveData_141:
-	.incbin "sound/direct_sound_samples/unknown_141.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_3.bin"
 
 	.align 2
 DirectSoundWaveData_142:
-	.incbin "sound/direct_sound_samples/unknown_142.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_4.bin"
 
 	.align 2
 DirectSoundWaveData_143:
-	.incbin "sound/direct_sound_samples/unknown_143.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_5.bin"
 
 	.align 2
 DirectSoundWaveData_144:
-	.incbin "sound/direct_sound_samples/unknown_144.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_6.bin"
 
 	.align 2
 DirectSoundWaveData_145:
-	.incbin "sound/direct_sound_samples/unknown_145.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_7.bin"
 
 	.align 2
 DirectSoundWaveData_146:
-	.incbin "sound/direct_sound_samples/unknown_146.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_8.bin"
 
 	.align 2
 DirectSoundWaveData_147:
-	.incbin "sound/direct_sound_samples/unknown_147.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_9.bin"
 
 	.align 2
 DirectSoundWaveData_148:
-	.incbin "sound/direct_sound_samples/unknown_148.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_10.bin"
 
 	.align 2
 DirectSoundWaveData_149:
-	.incbin "sound/direct_sound_samples/unknown_149.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_11.bin"
 
 	.align 2
 DirectSoundWaveData_150:
-	.incbin "sound/direct_sound_samples/unknown_150.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_12.bin"
 
 	.align 2
 DirectSoundWaveData_151:
-	.incbin "sound/direct_sound_samples/unknown_151.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_13.bin"
 
 	.align 2
 DirectSoundWaveData_152:
-	.incbin "sound/direct_sound_samples/unknown_152.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_14.bin"
 
 	.align 2
 DirectSoundWaveData_153:
-	.incbin "sound/direct_sound_samples/unknown_153.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pH_v1__84_5_loop_15.bin"
 
 	.align 2
 DirectSoundWaveData_154:
-	.incbin "sound/direct_sound_samples/unknown_154.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_1.bin"
 
 	.align 2
 DirectSoundWaveData_155:
-	.incbin "sound/direct_sound_samples/unknown_155.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_2.bin"
 
 	.align 2
 DirectSoundWaveData_156:
-	.incbin "sound/direct_sound_samples/unknown_156.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_3.bin"
 
 	.align 2
 DirectSoundWaveData_157:
-	.incbin "sound/direct_sound_samples/unknown_157.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_4.bin"
 
 	.align 2
 DirectSoundWaveData_158:
-	.incbin "sound/direct_sound_samples/unknown_158.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_5.bin"
 
 	.align 2
 DirectSoundWaveData_159:
-	.incbin "sound/direct_sound_samples/unknown_159.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_6.bin"
 
 	.align 2
 DirectSoundWaveData_160:
-	.incbin "sound/direct_sound_samples/unknown_160.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_7.bin"
 
 	.align 2
 DirectSoundWaveData_161:
-	.incbin "sound/direct_sound_samples/unknown_161.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_8.bin"
 
 	.align 2
 DirectSoundWaveData_162:
-	.incbin "sound/direct_sound_samples/unknown_162.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_9.bin"
 
 	.align 2
 DirectSoundWaveData_163:
-	.incbin "sound/direct_sound_samples/unknown_163.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_10.bin"
 
 	.align 2
 DirectSoundWaveData_164:
-	.incbin "sound/direct_sound_samples/unknown_164.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_11.bin"
 
 	.align 2
 DirectSoundWaveData_165:
-	.incbin "sound/direct_sound_samples/unknown_165.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_12.bin"
 
 	.align 2
 DirectSoundWaveData_166:
-	.incbin "sound/direct_sound_samples/unknown_166.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_13.bin"
 
 	.align 2
 DirectSoundWaveData_167:
-	.incbin "sound/direct_sound_samples/unknown_167.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_14.bin"
 
 	.align 2
 DirectSoundWaveData_168:
-	.incbin "sound/direct_sound_samples/unknown_168.bin"
+	.incbin "sound/direct_sound_samples/eastwest_techno__industrial_pG_v5__83_5_loop_15.bin"
 
 	.align 2
 DirectSoundWaveData_169:
-	.incbin "sound/direct_sound_samples/unknown_169.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BE84CC.bin"
 
 	.align 2
 DirectSoundWaveData_170:
-	.incbin "sound/direct_sound_samples/unknown_170.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BE8B70.bin"
 
 	.align 2
 DirectSoundWaveData_171:
-	.incbin "sound/direct_sound_samples/unknown_171.bin"
+	.incbin "sound/direct_sound_samples/unknown_8BE8F8C.bin"
 
 	.align 2
 DirectSoundWaveData_172:
@@ -1294,151 +1298,151 @@ DirectSoundWaveData_317:
 
 	.align 2
 DirectSoundWaveData_318:
-	.incbin "sound/direct_sound_samples/unknown_318.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C1F268.bin"
 
 	.align 2
 DirectSoundWaveData_319:
-	.incbin "sound/direct_sound_samples/unknown_319.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C1FD70.bin"
 
 	.align 2
 DirectSoundWaveData_320:
-	.incbin "sound/direct_sound_samples/unknown_320.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C202D0.bin"
 
 	.align 2
 DirectSoundWaveData_321:
-	.incbin "sound/direct_sound_samples/unknown_321.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C207D0.bin"
 
 	.align 2
 DirectSoundWaveData_322:
-	.incbin "sound/direct_sound_samples/unknown_322.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C212B8.bin"
 
 	.align 2
 DirectSoundWaveData_323:
-	.incbin "sound/direct_sound_samples/unknown_323.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C218C0.bin"
 
 	.align 2
 DirectSoundWaveData_324:
-	.incbin "sound/direct_sound_samples/unknown_324.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C21D18.bin"
 
 	.align 2
 DirectSoundWaveData_325:
-	.incbin "sound/direct_sound_samples/unknown_325.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C22298.bin"
 
 	.align 2
 DirectSoundWaveData_326:
-	.incbin "sound/direct_sound_samples/unknown_326.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C22760.bin"
 
 	.align 2
 DirectSoundWaveData_327:
-	.incbin "sound/direct_sound_samples/unknown_327.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C23218.bin"
 
 	.align 2
 DirectSoundWaveData_328:
-	.incbin "sound/direct_sound_samples/unknown_328.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C23CA8.bin"
 
 	.align 2
 DirectSoundWaveData_329:
-	.incbin "sound/direct_sound_samples/unknown_329.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C242A8.bin"
 
 	.align 2
 DirectSoundWaveData_330:
-	.incbin "sound/direct_sound_samples/unknown_330.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C24730.bin"
 
 	.align 2
 DirectSoundWaveData_331:
-	.incbin "sound/direct_sound_samples/unknown_331.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C24C80.bin"
 
 	.align 2
 DirectSoundWaveData_332:
-	.incbin "sound/direct_sound_samples/unknown_332.bin"
+	.incbin "sound/direct_sound_samples/unknown_8C2572C.bin"
 
 	.align 2
 DirectSoundWaveData_333:
-	.incbin "sound/direct_sound_samples/unknown_333.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C25D2C.bin"
 
 	.align 2
 DirectSoundWaveData_334:
-	.incbin "sound/direct_sound_samples/unknown_334.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C261B4.bin"
 
 	.align 2
 DirectSoundWaveData_335:
-	.incbin "sound/direct_sound_samples/unknown_335.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C26724.bin"
 
 	.align 2
 DirectSoundWaveData_336:
-	.incbin "sound/direct_sound_samples/unknown_336.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C26CA0.bin"
 
 	.align 2
 DirectSoundWaveData_337:
-	.incbin "sound/direct_sound_samples/unknown_337.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C271B8.bin"
 
 	.align 2
 DirectSoundWaveData_338:
-	.incbin "sound/direct_sound_samples/unknown_338.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C27770.bin"
 
 	.align 2
 DirectSoundWaveData_339:
-	.incbin "sound/direct_sound_samples/unknown_339.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C27C58.bin"
 
 	.align 2
 DirectSoundWaveData_340:
-	.incbin "sound/direct_sound_samples/unknown_340.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C281A8.bin"
 
 	.align 2
 DirectSoundWaveData_341:
-	.incbin "sound/direct_sound_samples/unknown_341.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C28CFC.bin"
 
 	.align 2
 DirectSoundWaveData_342:
-	.incbin "sound/direct_sound_samples/unknown_342.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C295D0.bin"
 
 	.align 2
 DirectSoundWaveData_343:
-	.incbin "sound/direct_sound_samples/unknown_343.bin"
+	.incbin "sound/direct_sound_samples/unknown_8C29BF0.bin"
 
 	.align 2
 DirectSoundWaveData_344:
-	.incbin "sound/direct_sound_samples/unknown_344.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2A158.bin"
 
 	.align 2
 DirectSoundWaveData_345:
-	.incbin "sound/direct_sound_samples/unknown_345.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2AC00.bin"
 
 	.align 2
 DirectSoundWaveData_346:
-	.incbin "sound/direct_sound_samples/unknown_346.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2B22C.bin"
 
 	.align 2
 DirectSoundWaveData_347:
-	.incbin "sound/direct_sound_samples/unknown_347.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2B6EC.bin"
 
 	.align 2
 DirectSoundWaveData_348:
-	.incbin "sound/direct_sound_samples/unknown_348.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2BC58.bin"
 
 	.align 2
 DirectSoundWaveData_349:
-	.incbin "sound/direct_sound_samples/unknown_349.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2C0F8.bin"
 
 	.align 2
 DirectSoundWaveData_350:
-	.incbin "sound/direct_sound_samples/unknown_350.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2CBC4.bin"
 
 	.align 2
 DirectSoundWaveData_351:
-	.incbin "sound/direct_sound_samples/unknown_351.bin"
+	.incbin "sound/direct_sound_samples/amen_break_8C2D494.bin"
 
 	.align 2
 DirectSoundWaveData_352:
-	.incbin "sound/direct_sound_samples/unknown_352.bin"
+	.incbin "sound/direct_sound_samples/unknown_8C2DEF4.bin"
 
 	.align 2
 DirectSoundWaveData_353:
-	.incbin "sound/direct_sound_samples/unknown_353.bin"
+	.incbin "sound/direct_sound_samples/unknown_8C2E44C.bin"
 
 	.align 2
 DirectSoundWaveData_354:
-	.incbin "sound/direct_sound_samples/unknown_354.bin"
+	.incbin "sound/direct_sound_samples/unknown_8C2E8CC.bin"
 
 	.align 2
 DirectSoundWaveData_355:
