@@ -21,8 +21,8 @@ DirectSoundData_roland_jv2080__pr_d__019_organ_3__5: @ 0x201C77C
 	.incbin "sound/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__5.bin"
 
 	.align 2
-	.global DirectSoundData_korg_trinity__standard_kit_1__shortened
-DirectSoundData_korg_trinity__standard_kit_1__shortened: @ 0x201CE90
+	.global DirectSoundData_korg_trinity__standard_kit__1__shortened
+DirectSoundData_korg_trinity__standard_kit__1__shortened: @ 0x201CE90
 	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit__1__shortened.bin"
 
 	.align 2
@@ -31,6 +31,6 @@ DirectSoundData_korg_trinity__standard_kit__2__shortened: @ 0x201D2B4
 	.incbin "sound/direct_sound_samples/korg_trinity__standard_kit__2__shortened.bin"
 
 	.align 2
-	.global DirectSoundData_roland_jv2080__jazz_drum_set1__2
-DirectSoundData_roland_jv2080__jazz_drum_set1__2: @ 0x201DBEC
-	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1__2.bin"
+	.global DirectSoundData_roland_jv2080__pr_e__jazz_drum_set1__2
+DirectSoundData_roland_jv2080__pr_e__jazz_drum_set1__2: @ 0x201DBEC
+	.incbin "sound/direct_sound_samples/roland_jv2080__pr_e__jazz_drum_set1__2.bin"

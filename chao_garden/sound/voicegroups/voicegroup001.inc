@@ -39,7 +39,7 @@ voicegroup001:	@ 0x0201A180
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A30C
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A318
 	voice_keysplit_all voicegroup001	@0201A324
-	voice_directsound_no_resample 60, 0, DirectSoundData_korg_trinity__standard_kit_1__shortened, 255, 255, 255, 0	@0201A330
+	voice_directsound_no_resample 60, 0, DirectSoundData_korg_trinity__standard_kit__1__shortened, 255, 255, 255, 0	@0201A330
 	voice_directsound_no_resample 60, 0, DirectSoundData_korg_trinity__standard_kit__2__shortened, 255, 0, 255, 0	@0201A33C
 	voice_noise 84, 0, 192, 0, 0, 1, 0, 0	@0201A348
 	voice_noise 84, 0, 192, 0, 0, 2, 0, 0	@0201A354
@@ -53,4 +53,4 @@ voicegroup001:	@ 0x0201A180
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3B4
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3C0
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A3CC
-	voice_directsound_no_resample 60, 0, DirectSoundData_roland_jv2080__jazz_drum_set1__2, 255, 0, 255, 0	@0201A3D8
+	voice_directsound_no_resample 60, 0, DirectSoundData_roland_jv2080__pr_e__jazz_drum_set1__2, 255, 0, 255, 0	@0201A3D8
