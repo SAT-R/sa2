@@ -58,7 +58,7 @@ voicegroup000:	@ 0x02019D30
 	voice_noise 60, 0, 0, 0, 0, 0, 15, 4	@02019FA0
 	voice_programmable_wave_alt ProgrammableWaveData_201A3F4, 0, 6, 1, 0	@02019FAC
 	voice_square_2_alt 2, 0, 4, 1, 0	@02019FB8
-	voice_directsound 60, 0, DirectSoundData_0201A5D0, 255, 242, 25, 0	@02019FC4
+	voice_directsound 60, 0, DirectSoundData_roland_sr_jv80_02__186_harp_1, 255, 242, 25, 0	@02019FC4
 	voice_square_1 0, 2, 0, 0, 15, 0	@02019FD0
 	voice_square_1 0, 2, 0, 0, 15, 0	@02019FDC
 	voice_square_1 0, 2, 0, 0, 15, 0	@02019FE8
@@ -74,8 +74,8 @@ voicegroup000:	@ 0x02019D30
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A060
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A06C
 	voice_square_2_alt 2, 1, 5, 7, 0	@0201A078
-	voice_directsound 60, 0, DirectSoundData_0201AC64, 255, 246, 51, 127	@0201A084
-	voice_directsound 60, 0, DirectSoundData_0201B3E4, 255, 246, 128, 127	@0201A090
+	voice_directsound 60, 0, DirectSoundData_roland_jv2080__pr_d__banjo, 255, 246, 51, 127	@0201A084
+	voice_directsound 60, 0, DirectSoundData_roland_jv2080__pr_d__harmonica, 255, 246, 128, 127	@0201A090
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A09C
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A0A8
 	voice_square_1 0, 2, 0, 0, 15, 0	@0201A0B4
