@@ -69,14 +69,17 @@ DirectSoundWaveData_14:
 	.incbin "sound/direct_sound_samples/unknown_8aea788.bin"
 
 	.align 2
+    .global DirectSoundWaveData_15
 DirectSoundWaveData_15:
 	.incbin "sound/direct_sound_samples/korg_trinity__30303_mega_bass_1.bin"
 
 	.align 2
+    .global DirectSoundWaveData_16
 DirectSoundWaveData_16:
 	.incbin "sound/direct_sound_samples/korg_trinity__30303_mega_bass_2.bin"
 
 	.align 2
+    .global DirectSoundWaveData_17
 DirectSoundWaveData_17:
 	.incbin "sound/direct_sound_samples/roland_jv2080__pr_d__019_organ_3__5.bin"
 
@@ -90,7 +93,7 @@ DirectSoundWaveData_19:
 
 	.align 2
 DirectSoundWaveData_20:
-	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__harp_1.bin"
+	.incbin "sound/direct_sound_samples/roland_sr_jv80_02__186_harp_1.bin"
 
 	.align 2
 DirectSoundWaveData_21:
@@ -178,11 +181,11 @@ DirectSoundWaveData_41:
 
 	.align 2
 DirectSoundWaveData_42:
-	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1_1.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1__1.bin"
 
 	.align 2
 DirectSoundWaveData_43:
-	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1_2.bin"
+	.incbin "sound/direct_sound_samples/roland_jv2080__jazz_drum_set1__2.bin"
 
 	.align 2
 DirectSoundWaveData_44:
