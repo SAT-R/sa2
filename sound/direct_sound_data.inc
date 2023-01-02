@@ -418,8 +418,8 @@ DirectSoundWaveData_98:
 	.incbin "sound/direct_sound_samples/unknown_8BA6AA0.bin"
 
 	.align 2
-DirectSoundWaveData_99:
-	.incbin "sound/direct_sound_samples/unknown_8BAA2DC_e_mu_morpheus.bin"
+DirectSoundWaveData_99: @ 0x8BAA2DC
+	.incbin "sound/direct_sound_samples/e_mu_morpheus__factory_rom_presets__bank_0__PAD__45_mechanik.bin"
 
 	.align 2
 DirectSoundWaveData_100:
@@ -474,8 +474,8 @@ DirectSoundWaveData_112:
 	.incbin "sound/direct_sound_samples/unknown_8BC3DD4__roland_sr_jv80_02__someTubular.bin"
 
 	.align 2
-DirectSoundWaveData_113:
-	.incbin "sound/direct_sound_samples/unknown_8BC6304.bin"
+DirectSoundWaveData_113: @ 0x8BC6304
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__electric_guitar__ultra_ii__punish.bin"
 
 	.align 2
 DirectSoundWaveData_114:
@@ -495,23 +495,23 @@ DirectSoundWaveData_117:
 
 	.align 2
 DirectSoundWaveData_118:
-	.incbin "sound/direct_sound_samples/unknown_8BCDF04.bin"
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__acoustic_guitar__teenie__ringing_1.bin"
 
 	.align 2
 DirectSoundWaveData_119:
-	.incbin "sound/direct_sound_samples/unknown_8BCF078.bin"
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__acoustic_guitar__teenie__ringing_2.bin"
 
 	.align 2
 DirectSoundWaveData_120:
-	.incbin "sound/direct_sound_samples/unknown_8BCFC30.bin"
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__acoustic_guitar__teenie__ringing_3.bin"
 
 	.align 2
 DirectSoundWaveData_121:
-	.incbin "sound/direct_sound_samples/unknown_8BD0EC0.bin"
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__acoustic_guitar__teenie__ringing_4.bin"
 
 	.align 2
 DirectSoundWaveData_122:
-	.incbin "sound/direct_sound_samples/unknown_8BD154C.bin"
+	.incbin "sound/direct_sound_samples/steinberg_virtual_guitarist__acoustic_guitar__teenie__ringing_5.bin"
 
 	.align 2
 DirectSoundWaveData_123:
@@ -1352,7 +1352,7 @@ DirectSoundWaveData_331:
 
 	.align 2
 DirectSoundWaveData_332:
-	.incbin "sound/direct_sound_samples/unknown_8C2572C.bin"
+	.incbin "sound/direct_sound_samples/amen_break/amen_break_8C2572C.bin"
 
 	.align 2
 DirectSoundWaveData_333:
@@ -1396,7 +1396,7 @@ DirectSoundWaveData_342:
 
 	.align 2
 DirectSoundWaveData_343:
-	.incbin "sound/direct_sound_samples/unknown_8C29BF0.bin"
+	.incbin "sound/direct_sound_samples/amen_break/amen_break_8C29BF0.bin"
 
 	.align 2
 DirectSoundWaveData_344:
@@ -1452,11 +1452,11 @@ DirectSoundWaveData_356:
 
 	.align 2
 DirectSoundWaveData_357: @ 0x8C2F978
-	.incbin "sound/direct_sound_samples/korg_01_w__flute.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__a81_flute.bin"
 
 	.align 2
 DirectSoundWaveData_358:
-	.incbin "sound/direct_sound_samples/unknown_358.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__combi__bank_a__a14_whammy_and_pad.bin"
 
 	.align 2
 DirectSoundWaveData_359:
@@ -1467,8 +1467,8 @@ DirectSoundWaveData_360:
 	.incbin "sound/direct_sound_samples/unknown_360.bin"
 
 	.align 2
-DirectSoundWaveData_361:
-	.incbin "sound/direct_sound_samples/unknown_361.bin"
+DirectSoundWaveData_361: @ 0x8C37240
+	.incbin "sound/direct_sound_samples/roland_u220__p11_heavy_guitar_011.bin"
 
 	.align 2
 DirectSoundWaveData_362:
@@ -1499,8 +1499,8 @@ DirectSoundWaveData_368:
 	.incbin "sound/direct_sound_samples/unknown_368.bin"
 
 	.align 2
-DirectSoundWaveData_369:
-	.incbin "sound/direct_sound_samples/unknown_369.bin"
+DirectSoundWaveData_369: @ 0x8C41820
+	.incbin "sound/direct_sound_samples/korg_01_w__b_b22_brass1.bin"
 
 	.align 2
 DirectSoundWaveData_370:
@@ -1516,7 +1516,7 @@ DirectSoundWaveData_372:
 
 	.align 2
 DirectSoundWaveData_373:
-	.incbin "sound/direct_sound_samples/unknown_373.bin"
+	.incbin "sound/direct_sound_samples/korg_01_w__prog__bank_a__a83_flute__b83_englishHm.bin"
 
 	.align 2
 DirectSoundWaveData_374:
