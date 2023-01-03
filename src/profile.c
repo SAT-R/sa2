@@ -471,6 +471,9 @@ static bool16 sub_806B988(u16 *);
         };                                                                              \
     })
 
+// Required for match in all uses
+#define UI_COLUMN(c, cSize) ({ (c) * (cSize); })
+
 static const s8 sMenuCursorMoveAnims[2][8] = {
     [OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS] = { 8, 4, 1, -1, -2, -1, 1, 0 },
     [OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS] = { 1, 2, 5, 7, 8, 8, 8, 8 },
@@ -1632,7 +1635,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = (u16)(baseXPos + (i * 10 + 163));
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 7;
             }
         }
@@ -1659,7 +1662,7 @@ static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
             s16 i;
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = (u16)(baseXPos + (i * 10 + 163));
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 8;
             }
         }
@@ -1705,7 +1708,7 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = (u16)(baseXPos + (i * 10 + 163));
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 7;
             }
         }
@@ -2176,16 +2179,14 @@ static void Task_DifficultyMenuOpenAnimWait(void)
     s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
     s16 i;
 
-    // u16 casts required for match, surprising
-    // maybe this is a macro or something
     for (i = 0; i < 2; i++, headerFooter++) {
-        headerFooter->x = (u16)(baseXPos + 336);
+        headerFooter->x = baseXPos + 336;
     }
 
-    difficultyOption->x = (u16)(baseXPos + 274);
+    difficultyOption->x = baseXPos + 274;
     difficultyOption++;
-    difficultyOption->x = (u16)(baseXPos + 334);
-    switchValueOutline->x = (u16)(baseXPos + (difficultyMenu->switchValue * 60 + 272));
+    difficultyOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
 
     DifficultyMenuRenderUI();
 
@@ -2215,7 +2216,7 @@ static void Task_DifficultyMenuMain(void)
         }
 
         switchValueOutline->x
-            = (u16)(baseXPos + (difficultyMenu->switchValue * 60 + 272));
+            = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
     }
 
     DifficultyMenuRenderUI();
@@ -2259,13 +2260,13 @@ static void Task_DifficultyMenuCloseAnim(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        headerFooter->x = (u16)(baseXPos + 336);
+        headerFooter->x = baseXPos + 336;
     }
 
-    difficultyOption->x = (u16)(baseXPos + 274);
+    difficultyOption->x = baseXPos + 274;
     difficultyOption++;
-    difficultyOption->x = (u16)(baseXPos + 334);
-    switchValueOutline->x = (u16)(baseXPos + (difficultyMenu->switchValue * 60 + 272));
+    difficultyOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
 
     if (++difficultyMenu->animFrame < 0xF) {
         DifficultyMenuRenderUI();
@@ -2332,13 +2333,13 @@ static void Task_TimeLimitMenuOpenAnimWait(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        headerFooter->x = (u16)(baseXPos + 336);
+        headerFooter->x = baseXPos + 336;
     }
 
-    timeLimitOption->x = (u16)(baseXPos + 274);
+    timeLimitOption->x = baseXPos + 274;
     timeLimitOption++;
-    timeLimitOption->x = (u16)(baseXPos + 334);
-    switchValueOutline->x = (u16)(baseXPos + (timeLimitMenu->switchValue * 60 + 272));
+    timeLimitOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
 
     TimeLimitMenuRenderUI();
 
@@ -2369,7 +2370,7 @@ static void Task_TimeLimitMenuMain(void)
         }
 
         switchValueOutline->x
-            = (u16)(baseXPos + (timeLimitMenu->switchValue * 60 + 272));
+            = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
     }
 
     TimeLimitMenuRenderUI();
@@ -2410,14 +2411,13 @@ static void Task_TimeLimitMenuCloseAnim(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        headerFooter->x = (u16)(baseXPos + 336);
+        headerFooter->x = baseXPos + 336;
     }
 
-    timeLimitOption->x = (u16)(baseXPos + 274);
+    timeLimitOption->x = baseXPos + 274;
     timeLimitOption++;
-    timeLimitOption->x = (u16)(baseXPos + 334);
-
-    switchValueOutline->x = (u16)(timeLimitMenu->switchValue * 60 + 272 + baseXPos);
+    timeLimitOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
 
     if (++timeLimitMenu->animFrame < 15) {
         TimeLimitMenuRenderUI();
