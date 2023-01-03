@@ -17,35 +17,36 @@ extern const AnimationCommandFunc animCmdTable[];
 #if 1
 u32 sub_8004010(void)
 {
-    int bgIndex;
+    u8 bgIndex;
     u16 sp00[2];
+    u8 r4;
+    u32 sp08;
+    u16 *spVramPtr;
+    u16 bgSize_TxtOrAff;
 
     for (bgIndex = 0; bgIndex < 4; bgIndex++) {
-        u8 *p1 = &gUnknown_03002280[bgIndex][1];
-        u8 *p3 = &gUnknown_03002280[bgIndex][3];
-        u8 p3Value = *p3;
 
-        if ((*p1 == *p3)
-            && (gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][2]))
+        if ((gUnknown_03002280[bgIndex][1] == gUnknown_03002280[bgIndex][3])
+            && (gUnknown_03002280[bgIndex][2] == gUnknown_03002280[bgIndex][0]))
             continue;
 
         { // _08004056
-            u16 bgCtrl = gBgCntRegs[bgIndex];
-            u16 target = (bgCtrl
-                          & (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
-                             | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0));
-            u16 *vramBgCtrl = (u16 *)(VRAM + target * 8);
+            u16 target = gBgCntRegs[bgIndex];
+            u16 *vramBgCtrl = (u16 *)VRAM;
+            target &= (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
+                       | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0);
+            vramBgCtrl += target * 4;
 
-            u8 r4 = *p1;
-            u32 sp08 = gUnknown_03002280[bgIndex][0];
+            r4 = gUnknown_03002280[bgIndex][1];
+            sp08 = gUnknown_03002280[bgIndex][0];
 
             if ((bgIndex > 1)
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
-                u16 *spVramPtr = &vramBgCtrl[sp08];
-                u16 bgSize_TxtOrAff = (0x100000 << (bgCtrl >> 14)) >> 16;
+                spVramPtr = &vramBgCtrl[sp08];
+                bgSize_TxtOrAff = 0x10 << (gBgCntRegs[bgIndex] >> 14);
 
-                if (p3Value == 0xFF) {
+                if (gUnknown_03002280[bgIndex][3] == 0xFF) {
                     // _080040A2
                     u16 v = gUnknown_03004D80[bgIndex];
                     u16 *otherPtr;
@@ -54,13 +55,13 @@ u32 sub_8004010(void)
                     otherPtr = &spVramPtr[bgSize_TxtOrAff * r4];
                     sp00[0] = v;
 
-                    value = ((*p3 - r4) * bgSize_TxtOrAff);
+                    value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
                     Dma3CopyLarge16_(&sp00, otherPtr,
-                                     (((s32)(value + (value >> 31))) / 2) | 0x81000000);
+                                     (((s32)(value + (value >> 31))) / 2));
                 } else {
                     // _080040F8
                     // u8 i2 = i + 1;
-                    while (r4 < *p3) {
+                    while (r4 < gUnknown_03002280[bgIndex][3]) {
                         u16 v = gUnknown_03004D80[bgIndex];
                         u16 *otherPtr;
                         u32 value;
@@ -68,9 +69,7 @@ u32 sub_8004010(void)
                         otherPtr = &spVramPtr[bgIndex * r4];
                         sp00[0] = v;
 
-                        Dma3CopyLarge32_(
-                            &sp00, otherPtr,
-                            ((((s32)(bgIndex * 4 - sp08 + 1)) / 2) | 0x81000000));
+                        Dma3CopyLarge32_(&sp00, otherPtr, (s32)(bgIndex * 4 - sp08 + 1));
                     }
                 }
                 // then -> _0800422C
@@ -83,22 +82,23 @@ u32 sub_8004010(void)
 
                 if (gUnknown_03002280[bgIndex][2] == 0xFF) {
                     u8 r1 = gUnknown_03004D80[bgIndex];
-                    u8 *p1p = &p1[r4 * tileSize];
+                    u8 *p1p = &gUnknown_03002280[bgIndex][r4 * tileSize];
                     sp00[0] = r1;
 
-                    Dma3CopyLarge32_(&sp00, p1p,
-                                     (gUnknown_03002280[bgIndex][3]) | 0x81000000);
+                    Dma3CopyLarge32_(&sp00, &gUnknown_03002280[bgIndex][r4 * tileSize],
+                                     gUnknown_03002280[bgIndex][3]);
                 } else {
                     // _080041D8
                     if (r4 <= gUnknown_03002280[bgIndex][3]) {
                         u16 r1 = gUnknown_03004D80[bgIndex];
-                        u8 *p1p = &p1[r4 * tileSize];
                         sp00[0] = r1;
-                        Dma3CopyLarge32_(&sp00, p1p, 0x85000001);
+                        Dma3CopyLarge32_(&sp00,
+                                         &gUnknown_03002280[bgIndex][r4 * tileSize], 4);
                     }
                 }
             }
             // _0800422C
+            Dma3FillLarge32_(0, spVramPtr, 4);
         }
     }
 
