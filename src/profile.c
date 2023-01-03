@@ -471,6 +471,9 @@ static bool16 sub_806B988(u16 *);
         };                                                                              \
     })
 
+// Required for match in all uses
+#define UI_COLUMN(c, cSize) ({ (c) * (cSize); })
+
 static const s8 sMenuCursorMoveAnims[2][8] = {
     [OPTIONS_SCREEN_NEXT_CURSOR_MOVE_ANIMS] = { 8, 4, 1, -1, -2, -1, 1, 0 },
     [OPTIONS_SCREEN_PREV_CURSOR_MOVE_ANIMS] = { 1, 2, 5, 7, 8, 8, 8, 8 },
@@ -1632,7 +1635,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 7;
             }
         }
@@ -1659,7 +1662,7 @@ static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
             s16 i;
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 8;
             }
         }
@@ -1705,7 +1708,7 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-                playerNameDisplayChar->x = baseXPos + (i * 10 + 163);
+                playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
                 playerNameDisplayChar->focused = 7;
             }
         }
@@ -2078,7 +2081,7 @@ static void Task_PlayerDataMenuWaitForProfileNameScreenExit(void)
     }
 }
 
-void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
+static void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
 {
     struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
     struct UNK_802D4CC_UNK270 *unk150 = &playerDataMenu->unk150;
@@ -2166,7 +2169,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
     }
 }
 
-void Task_DifficultyMenuOpenAnimWait(void)
+static void Task_DifficultyMenuOpenAnimWait(void)
 {
     struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
     Sprite *headerFooter = difficultyMenu->headerFooter;
@@ -2183,8 +2186,8 @@ void Task_DifficultyMenuOpenAnimWait(void)
     difficultyOption->x = baseXPos + 274;
     difficultyOption++;
     difficultyOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
 
-    switchValueOutline->x = baseXPos + (difficultyMenu->switchValue * 60 + 272);
     DifficultyMenuRenderUI();
 
     if (++difficultyMenu->animFrame >= 16) {
@@ -2212,7 +2215,8 @@ static void Task_DifficultyMenuMain(void)
             difficultyOption->focused = !!(difficultyMenu->switchValue ^ i);
         }
 
-        switchValueOutline->x = baseXPos + (difficultyMenu->switchValue * 60 + 272);
+        switchValueOutline->x
+            = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
     }
 
     DifficultyMenuRenderUI();
@@ -2252,20 +2256,17 @@ static void Task_DifficultyMenuCloseAnim(void)
     Sprite *difficultyOption = difficultyMenu->options;
     Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
 
-    s16 unk360 = difficultyMenu->optionsScreen->subMenuXPos;
-    s16 i = 0;
+    s16 baseXPos = difficultyMenu->optionsScreen->subMenuXPos;
+    s16 i;
 
-    while (i < 2) {
-        headerFooter->x = unk360 + 0x150;
-        i++;
-        headerFooter++;
+    for (i = 0; i < 2; i++, headerFooter++) {
+        headerFooter->x = baseXPos + 336;
     }
 
-    difficultyOption->x = unk360 + 0x112;
+    difficultyOption->x = baseXPos + 274;
     difficultyOption++;
-    difficultyOption->x = unk360 + 0x14E;
-
-    switchValueOutline->x = difficultyMenu->switchValue * 0x3C + 0x110 + unk360;
+    difficultyOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(difficultyMenu->switchValue, 60);
 
     if (++difficultyMenu->animFrame < 0xF) {
         DifficultyMenuRenderUI();
@@ -2338,8 +2339,8 @@ static void Task_TimeLimitMenuOpenAnimWait(void)
     timeLimitOption->x = baseXPos + 274;
     timeLimitOption++;
     timeLimitOption->x = baseXPos + 334;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
 
-    switchValueOutline->x = baseXPos + (timeLimitMenu->switchValue * 60 + 272);
     TimeLimitMenuRenderUI();
 
     if (++timeLimitMenu->animFrame > 15) {
@@ -2368,7 +2369,8 @@ static void Task_TimeLimitMenuMain(void)
             timeLimitOption->focused = !!(timeLimitMenu->switchValue ^ i);
         }
 
-        switchValueOutline->x = baseXPos + (timeLimitMenu->switchValue * 60 + 272);
+        switchValueOutline->x
+            = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
     }
 
     TimeLimitMenuRenderUI();
@@ -2415,8 +2417,7 @@ static void Task_TimeLimitMenuCloseAnim(void)
     timeLimitOption->x = baseXPos + 274;
     timeLimitOption++;
     timeLimitOption->x = baseXPos + 334;
-
-    switchValueOutline->x = timeLimitMenu->switchValue * 60 + 272 + baseXPos;
+    switchValueOutline->x = baseXPos + 272 + UI_COLUMN(timeLimitMenu->switchValue, 60);
 
     if (++timeLimitMenu->animFrame < 15) {
         TimeLimitMenuRenderUI();
@@ -2428,7 +2429,7 @@ static void Task_TimeLimitMenuCloseAnim(void)
 
 /** Button Config Menu **/
 
-void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
+static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_ButtonConfigMenuOpenAnimWait,
                                 sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
@@ -2688,7 +2689,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
     }
 }
 
-void Task_ButtonConfigMenuBButtonMain(void)
+static void Task_ButtonConfigMenuBButtonMain(void)
 {
     struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
     Sprite *buttonAction;
@@ -3290,7 +3291,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void)
     }
 }
 
-void Task_DeleteScreenFadeOutAndExit(void)
+static void Task_DeleteScreenFadeOutAndExit(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
 
@@ -3310,7 +3311,7 @@ void Task_DeleteScreenFadeOutAndExit(void)
     TaskDestroy(gCurTask);
 }
 
-void CreateEditProfileNameScreen(struct PlayerDataMenu *playerDataMenu)
+static void CreateEditProfileNameScreen(struct PlayerDataMenu *playerDataMenu)
 {
     struct Task *t = TaskCreate(Task_ProfileNameScreenFadeIn,
                                 sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
