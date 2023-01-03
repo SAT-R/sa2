@@ -93,7 +93,7 @@ typedef struct {
     /* 0x14 */ u16 unk14; // animation cursor
 
     // TODO: should be signed
-    /* 0x16 */ u16 x;
+    /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
