@@ -115,18 +115,18 @@ struct BlendRegs {
 };
 
 struct BgAffineRegs {
-    u16 bg2pa;
-    u16 bg2pb;
-    u16 bg2pc;
-    u16 bg2pd;
-    u32 bg2x;
-    u32 bg2y;
-    u16 bg3pa;
-    u16 bg3pb;
-    u16 bg3pc;
-    u16 bg3pd;
-    u32 bg3x;
-    u32 bg3y;
+    /* 0x00 */ u16 bg2pa;
+    /* 0x02 */ u16 bg2pb;
+    /* 0x04 */ u16 bg2pc;
+    /* 0x06 */ u16 bg2pd;
+    /* 0x08 */ u32 bg2x;
+    /* 0x0C */ u32 bg2y;
+    /* 0x10 */ u16 bg3pa;
+    /* 0x12 */ u16 bg3pb;
+    /* 0x14 */ u16 bg3pc;
+    /* 0x16 */ u16 bg3pd;
+    /* 0x18 */ u32 bg3x;
+    /* 0x1C */ u32 bg3y;
 };
 
 // TODO: Find better place for this

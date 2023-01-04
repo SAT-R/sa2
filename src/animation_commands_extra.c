@@ -1,6 +1,8 @@
 #include "global.h"
+#include "gba/syscall.h"
 #include "main.h"
 #include "m4a.h"
+#include "trig.h"
 
 #include "data.h"
 #include "flags.h"
@@ -15,7 +17,46 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 extern const AnimationCommandFunc animCmdTable[];
 
 #if 1
-u32 sub_8004010(void)
+void sub_8003EE4(u16 p0, u16 p1, u16 p2, u16 p3, u16 p4, u16 p5, u16 p6, struct BgAffineRegs *affine) {
+    //s32 r7 = 0x10000;
+
+    s16 cosP0, sinP0;
+    {
+        s32 p1Fraction = Div(0x10000, p1);
+        cosP0 = gSineTable[p0 + 0x100] >> 6;
+        affine->bg2pa = (cosP0 * (s16)p1Fraction) >> 8;
+    }
+    {
+        s32 p1Fraction = Div(0x10000, p1);
+        sinP0 = gSineTable[p0] >> 6;
+        affine->bg2pb = (sinP0 * (s16)p1Fraction) >> 8;
+    }
+    {
+        s32 p2Fraction = Div(0x10000, p2);
+        affine->bg2pc = (((-gSineTable[p0]) >> 6) * p2Fraction) >> 8;
+    }
+    {
+        s32 p2Fraction = Div(0x10000, p2);
+        affine->bg2pd = (cosP0 * (s16)p2Fraction) >> 8;
+    }
+    {
+        s32 r1 = -(s16)p5 * (s16)affine->bg2pa;
+        s32 r3 = (s16)affine->bg2pb * -(s16)p6;
+        r1 += r3;
+        r1 += p3 >> 8;
+        affine->bg2x = r1;
+    }
+    {
+        s32 r1 = -(s16)p5 * (s16)affine->bg2pc;
+        s32 r3 = (s16)affine->bg2pd * -(s16)p6;
+        r1 += r3;
+        r1 += p3 >> 8;
+        affine->bg2y = r1;
+    }
+}
+#endif
+
+NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex;
     u16 sp00[2];
@@ -59,7 +100,7 @@ u32 sub_8004010(void)
                 } else {
                     // _080040F8
                     // u8 i2 = i + 1;
-                    while (r4 < gUnknown_03002280[bgIndex][3]) {
+                    for (; r4 < gUnknown_03002280[bgIndex][3]; r4++) {
                         u16 v = gUnknown_03004D80[bgIndex];
                         u32 value;
                         v |= v << 8;
@@ -86,7 +127,7 @@ u32 sub_8004010(void)
                                      gUnknown_03002280[bgIndex][3]);
                 } else {
                     // _080041D8
-                    while (r4 <= gUnknown_03002280[bgIndex][3]) {
+                    for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
                         u16 r1 = gUnknown_03004D80[bgIndex];
                         sp00[0] = r1;
                         DmaCopy32(3, &sp00,
@@ -102,7 +143,7 @@ u32 sub_8004010(void)
 
     return 1;
 }
-#endif
+END_NONMATCH
 
 s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
                 u8 *tileCounts, u8 param6)
