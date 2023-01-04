@@ -2639,7 +2639,7 @@ _08003EDC: .4byte 0x0000F3FF
 _08003EE0: .4byte gUnknown_03005390
 
 .if 0
-	thumb_func_start sub_8003EE4
+thumb_func_start sub_8003EE4
 sub_8003EE4: @ 0x08003EE4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
@@ -2737,7 +2737,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r1, [sp, #8]
 	muls r0, r1, r0
 	asrs r0, r0, #8
-	ldr r2, [sp, #0x38]
+	ldr r2, [sp, #0x38]     @ r2 = affine
 	strh r0, [r2, #6]
 
 	lsls r6, r6, #0x10      @ r6 = p5
@@ -2751,6 +2751,7 @@ sub_8003EE4: @ 0x08003EE4
 	asrs r6, r6, #0x10      @ -p5
 	adds r1, r0, #0
 	muls r1, r6, r1         @ r1 = -p5 * affine->bg2pa;
+
 	movs r3, #2
 	ldrsh r0, [r2, r3]
 	mov r2, r8
@@ -2777,7 +2778,7 @@ sub_8003EE4: @ 0x08003EE4
 	muls r2, r0, r2
 	adds r0, r2, #0
 	adds r1, r1, r0
-	ldr r3, [sp, #4]
+	ldr r3, [sp, #4]        @ r3 = p4
 	lsls r0, r3, #0x10
 	asrs r0, r0, #8
 	adds r1, r1, r0

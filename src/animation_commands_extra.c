@@ -17,8 +17,11 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 extern const AnimationCommandFunc animCmdTable[];
 
 #if 1
-void sub_8003EE4(u16 p0, u16 p1, u16 p2, u16 p3, u16 p4, u16 p5, u16 p6, struct BgAffineRegs *affine) {
-    //s32 r7 = 0x10000;
+// Appears to be sub_081548A8 in KATAM
+void sub_8003EE4(u16 p0, s16 p1, s16 p2, u16 p3, s16 p4, s16 p5, s16 p6,
+                 struct BgAffineRegs *affine)
+{
+    // s32 r7 = 0x10000;
 
     s16 cosP0, sinP0;
     {
@@ -29,7 +32,7 @@ void sub_8003EE4(u16 p0, u16 p1, u16 p2, u16 p3, u16 p4, u16 p5, u16 p6, struct 
     {
         s32 p1Fraction = Div(0x10000, p1);
         sinP0 = gSineTable[p0] >> 6;
-        affine->bg2pb = (sinP0 * (s16)p1Fraction) >> 8;
+        affine->bg2pb = ((s16)p1Fraction * sinP0) >> 8;
     }
     {
         s32 p2Fraction = Div(0x10000, p2);
@@ -40,18 +43,18 @@ void sub_8003EE4(u16 p0, u16 p1, u16 p2, u16 p3, u16 p4, u16 p5, u16 p6, struct 
         affine->bg2pd = (cosP0 * (s16)p2Fraction) >> 8;
     }
     {
-        s32 r1 = -(s16)p5 * (s16)affine->bg2pa;
-        s32 r3 = (s16)affine->bg2pb * -(s16)p6;
+        s32 r1 = -p5 * (s16)affine->bg2pa;
+        s32 r3 = (s16)affine->bg2pb * -p6;
         r1 += r3;
         r1 += p3 >> 8;
         affine->bg2x = r1;
     }
     {
-        s32 r1 = -(s16)p5 * (s16)affine->bg2pc;
-        s32 r3 = (s16)affine->bg2pd * -(s16)p6;
+        s32 r1 = -p5 * (s16)affine->bg2pc;
+        s32 r3 = (s16)affine->bg2pd * -p6;
         r1 += r3;
         r1 += p3 >> 8;
-        affine->bg2y = r1;
+        affine->bg2y = r1 + p4 * 256;
     }
 }
 #endif
@@ -84,7 +87,7 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
             if ((bgIndex > 1)
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
-                spVramPtr = (u8*)&vramBgCtrl[sp08];
+                spVramPtr = (u8 *)&vramBgCtrl[sp08];
                 bgSize_TxtOrAff = 0x10 << (gBgCntRegs[bgIndex] >> 14);
 
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
@@ -96,7 +99,7 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
                     DmaCopy16(3, &sp00, &spVramPtr[bgSize_TxtOrAff * r4],
-                                     (((s32)(value + (value >> 31))) / 2));
+                              (((s32)(value + (value >> 31))) / 2));
                 } else {
                     // _080040F8
                     // u8 i2 = i + 1;
@@ -124,15 +127,14 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
                     sp00[0] = r1;
 
                     DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][r4 * tileSize],
-                                     gUnknown_03002280[bgIndex][3]);
+                              gUnknown_03002280[bgIndex][3]);
                 } else {
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
                         u16 r1 = gUnknown_03004D80[bgIndex];
                         sp00[0] = r1;
-                        DmaCopy32(3, &sp00,
-                                         &gUnknown_03002280[bgIndex][r4 * tileSize],
-                                         ARRAY_COUNT(gUnknown_03002280[0]));
+                        DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][r4 * tileSize],
+                                  ARRAY_COUNT(gUnknown_03002280[0]));
                     }
                 }
             }

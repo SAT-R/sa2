@@ -172,7 +172,8 @@ OamData *sub_80058B4(u8 size);
 // TransformSprite
 void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
 
-void sub_8003EE4(u16, u16, u16, u16, u16, u16, u16, struct BgAffineRegs *);
+void sub_8003EE4(u16 p0, s16 p1, s16 p2, u16 p3, s16 p4, s16 p5, s16 p6,
+                 struct BgAffineRegs *affine);
 
 void sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
