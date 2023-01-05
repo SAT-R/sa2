@@ -21,23 +21,11 @@ extern const AnimationCommandFunc animCmdTable[];
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
 {
-    s32 r7 = 0x10000;
-    {
-        // __sub_8003F2A
-        affine->bg2pa = ((gSineTable[p0 + 256] >> 6) * (s16)Div(r7, p1)) >> 8;
-    }
-    {
-        // __sub_8003F54
-        affine->bg2pb = ((gSineTable[p0] >> 6) * (s16)Div(r7, p1)) >> 8;
-    }
-    {
-        // __sub_8003F72
-        affine->bg2pc = ((-gSineTable[p0] >> 6) * (s16)Div(r7, p2)) >> 8;
-    }
-    {
-        // __sub_8003F92
-        affine->bg2pd = ((gSineTable[p0 + 256] >> 6) * (s16)Div(r7, p2)) >> 8;
-    }
+    affine->bg2pa = ((gSineTable[p0 + 256] >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->bg2pb = ((gSineTable[p0] >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->bg2pc = ((-gSineTable[p0] >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->bg2pd = ((gSineTable[p0 + 256] >> 6) * (s16)Div(0x10000, p2)) >> 8;
+
     p5 *= -1;
     p6 *= -1;
     {
