@@ -1057,7 +1057,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         // Only 1 zone available
         if (gLoadedSaveGame->unk7[gSelectedCharacter] <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
             gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
-            sub_801A770();
+            GameStageStart();
             return;
         }
 

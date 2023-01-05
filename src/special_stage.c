@@ -628,7 +628,7 @@ void sub_806C6A4(void)
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         WriteSaveGame();
-        sub_801A770();
+        GameStageStart();
     }
 }
 

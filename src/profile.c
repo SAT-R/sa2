@@ -6299,7 +6299,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
 
     EwramFree(timeRecordsScreen->timeRecords);
     TaskDestroy(gCurTask);
-    sub_801A770();
+    GameStageStart();
 }
 
 static void TimeRecordsScreenHandleReturn(void)

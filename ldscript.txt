@@ -56,11 +56,14 @@ SECTIONS
         build/sa2/asm/interactable_slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
         build/sa2/src/init.o(.text);
+        build/sa2/src/game.o(.text);
         build/sa2/asm/game.o(.text);
         build/sa2/src/character_select.o(.text);
         build/sa2/src/course_select.o(.text);
         build/sa2/src/countdown.o(.text);
-        build/sa2/asm/code2_0_0.o(.text);
+        build/sa2/asm/game_over.o(.text);
+        build/sa2/asm/cut_scenes_true_area_53.o(.text);
+        build/sa2/asm/true_area_53.o(.text);
         build/sa2/asm/enemies.o(.text);
         build/sa2/src/multiplayer_mode_select.o(.text);
         build/sa2/src/multiplayer_multipak_connection.o(.text);

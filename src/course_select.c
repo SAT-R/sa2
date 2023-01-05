@@ -1092,7 +1092,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_801A770();
+            GameStageStart();
         } else {
             CreateTrueArea53();
         }
@@ -1111,7 +1111,7 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
         DestroyUI(coursesScreen);
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
-        sub_801A770();
+        GameStageStart();
         TaskDestroy(gCurTask);
         return;
     }

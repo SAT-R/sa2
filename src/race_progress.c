@@ -49,7 +49,7 @@ static const u8 sCharacterAvatars[] = {
     [NUM_CHARACTERS] = 0,
 };
 
-void RaceProgressIndicator(void)
+void CreateRaceProgressIndicator(void)
 {
     u8 i;
     struct Task *t

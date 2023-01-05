@@ -401,7 +401,7 @@ void sub_808267C(void)
             gBldRegs.bldCnt = 0;
             gBldRegs.bldY = 0;
             sub_8081200();
-            sub_801A770();
+            GameStageStart();
         }
         return;
     }

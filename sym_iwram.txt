@@ -80,7 +80,7 @@ build/sa2/src/main.o(.data);
 . = 0x0000583C; gUnknown_0300583C = .;
 . = 0x00005840; gUnknown_03005840 = .;
 . = 0x00005844; gUnknown_03005844 = .;
-. = 0x00005848; gUnknown_03005848 = .;
+. = 0x00005848; gGameStageTask = .;
 . = 0x00005850; gUnknown_03005850 = .;
 . = 0x00005890; gUnknown_03005890 = .;
 . = 0x000058D0; gUnknown_030058D0 = .;
