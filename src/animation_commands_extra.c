@@ -16,8 +16,6 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
-#if 1
-// Appears to be sub_081548A8 in KATAM
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
 {
@@ -43,7 +41,6 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
         affine->bg2y = r1 + p4 * 256;
     }
 }
-#endif
 
 NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 {
