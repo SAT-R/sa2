@@ -18,42 +18,42 @@ extern const AnimationCommandFunc animCmdTable[];
 
 #if 1
 // Appears to be sub_081548A8 in KATAM
-void sub_8003EE4(u16 p0, s16 p1, s16 p2, u16 p3, s16 p4, s16 p5, s16 p6,
+void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
 {
-    // s32 r7 = 0x10000;
-
-    s16 cosP0, sinP0;
+    s32 r7 = 0x10000;
     {
-        s32 p1Fraction = Div(0x10000, p1);
-        cosP0 = gSineTable[p0 + 0x100] >> 6;
-        affine->bg2pa = (cosP0 * (s16)p1Fraction) >> 8;
+        // __sub_8003F2A
+        s16 quot = Div(r7, p1);
+        affine->bg2pa = (quot * (gSineTable[p0 + 256] >> 6)) >> 8;
     }
     {
-        s32 p1Fraction = Div(0x10000, p1);
-        sinP0 = gSineTable[p0] >> 6;
-        affine->bg2pb = ((s16)p1Fraction * sinP0) >> 8;
+        // __sub_8003F54
+        s16 quot = Div(r7, p1);
+        affine->bg2pb = (quot * (gSineTable[p0] >> 6)) >> 8;
     }
     {
-        s32 p2Fraction = Div(0x10000, p2);
-        affine->bg2pc = (((-gSineTable[p0]) >> 6) * p2Fraction) >> 8;
+        // __sub_8003F72
+        s16 quot = Div(r7, p2);
+        affine->bg2pc = (quot * (-gSineTable[p0] >> 6)) >> 8;
     }
     {
-        s32 p2Fraction = Div(0x10000, p2);
-        affine->bg2pd = (cosP0 * (s16)p2Fraction) >> 8;
+        // __sub_8003F92
+        s16 quot = Div(r7, p2);
+        affine->bg2pd = (quot * (gSineTable[p0 + 256] >> 6)) >> 8;
     }
     {
-        s32 r1 = -p5 * (s16)affine->bg2pa;
+        // __sub_8003FA8
+        s32 r1 = (s16)affine->bg2pa * -p5;
         s32 r3 = (s16)affine->bg2pb * -p6;
         r1 += r3;
-        r1 += p3 >> 8;
-        affine->bg2x = r1;
+        affine->bg2x = r1 + p3 * 256;
     }
     {
-        s32 r1 = -p5 * (s16)affine->bg2pc;
+        // __sub_8003FBE
+        s32 r1 = (s16)affine->bg2pc * -p5;
         s32 r3 = (s16)affine->bg2pd * -p6;
         r1 += r3;
-        r1 += p3 >> 8;
         affine->bg2y = r1 + p4 * 256;
     }
 }
