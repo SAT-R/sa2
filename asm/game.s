@@ -181,508 +181,8 @@ gUnknown_080D6AF0:
 .syntax unified
 .arm
 
-@; UpdateGamePlaySettings
-	thumb_func_start sub_801A6D8
-sub_801A6D8: @ 0x0801A6D8
-	push {lr}
-	ldr r0, _0801A714 @ =gUnknown_03005450
-	movs r3, #0
-	str r3, [r0]
-	ldr r0, _0801A718 @ =gUnknown_030054B0
-	strb r3, [r0]
-	ldr r2, _0801A71C @ =gUnknown_03005448
-	movs r0, #3
-	strb r0, [r2]
-	ldr r0, _0801A720 @ =gGameMode
-	ldrb r1, [r0]
-	cmp r1, #2
-	bls _0801A6F6
-	movs r0, #1
-	strb r0, [r2]
-_0801A6F6:
-	subs r0, r1, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	ldr r2, _0801A724 @ =gUnknown_03005424
-	cmp r0, #3
-	bls _0801A70C
-	ldrh r1, [r2]
-	movs r0, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0801A72C
-_0801A70C:
-	ldr r0, _0801A728 @ =gUnknown_030054EC
-	strb r3, [r0]
-	b _0801A736
-	.align 2, 0
-_0801A714: .4byte gUnknown_03005450
-_0801A718: .4byte gUnknown_030054B0
-_0801A71C: .4byte gUnknown_03005448
-_0801A720: .4byte gGameMode
-_0801A724: .4byte gUnknown_03005424
-_0801A728: .4byte gUnknown_030054EC
-_0801A72C:
-	ldr r1, _0801A750 @ =gUnknown_030054EC
-	ldr r0, _0801A754 @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r0, [r0, #4]
-	strb r0, [r1]
-_0801A736:
-	ldrh r1, [r2]
-	movs r0, #0x40
-	ands r0, r1
-	cmp r0, #0
-	beq _0801A758
-	movs r2, #0x80
-	lsls r2, r2, #1
-	movs r0, #1
-	movs r1, #2
-	bl sub_802B61C
-	b _0801A766
-	.align 2, 0
-_0801A750: .4byte gUnknown_030054EC
-_0801A754: .4byte gLoadedSaveGame
-_0801A758:
-	ldr r0, _0801A76C @ =gLoadedSaveGame
-	ldr r2, [r0]
-	ldrh r0, [r2, #0x2c]
-	ldrh r1, [r2, #0x2e]
-	ldrh r2, [r2, #0x30]
-	bl sub_802B61C
-_0801A766:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801A76C: .4byte gLoadedSaveGame
-
 @; CreateGameStageAtSelectedCourse
-	thumb_func_start sub_801A770
-sub_801A770: @ 0x0801A770
-	push {lr}
-	ldr r0, _0801A7E0 @ =gUnknown_03005444
-	movs r1, #0
-	strb r1, [r0]
-	ldr r0, _0801A7E4 @ =gUnknown_030055B0
-	strb r1, [r0]
-	ldr r1, _0801A7E8 @ =gCourseTime
-	movs r0, #0
-	strh r0, [r1]
-	ldr r1, _0801A7EC @ =gUnknown_030054F8
-	movs r0, #1
-	strb r0, [r1]
-	ldr r1, _0801A7F0 @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r1, r0]
-	cmp r0, #0x1d
-	beq _0801A7AE
-	ldr r0, _0801A7F4 @ =gSelectedCharacter
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	ldrb r1, [r1]
-	lsls r1, r1, #0x18
-	asrs r1, r1, #0x18
-	ldr r3, _0801A7F8 @ =gPlayer
-	movs r2, #0
-	bl sub_80299F0
-	ldr r1, _0801A7FC @ =gUnknown_030056A4
-	movs r0, #0
-	str r0, [r1]
-_0801A7AE:
-	ldr r0, _0801A800 @ =gUnknown_03005590
-	movs r3, #0
-	str r3, [r0]
-	ldr r2, _0801A804 @ =gUnknown_03005424
-	ldrh r1, [r2]
-	ldr r0, _0801A808 @ =0x0000FF7F
-	ands r0, r1
-	strh r0, [r2]
-	ldr r2, _0801A80C @ =gGameMode
-	ldrb r0, [r2]
-	cmp r0, #2
-	bls _0801A7CE
-	ldr r0, _0801A810 @ =gUnknown_030054A0
-	ldr r1, _0801A814 @ =gFrameCount
-	ldr r1, [r1]
-	str r1, [r0]
-_0801A7CE:
-	ldr r0, _0801A818 @ =gUnknown_030053E4
-	str r3, [r0]
-	ldrb r0, [r2]
-	cmp r0, #5
-	beq _0801A820
-	ldr r0, _0801A81C @ =gUnknown_03005490
-	str r3, [r0]
-	b _0801A826
-	.align 2, 0
-_0801A7E0: .4byte gUnknown_03005444
-_0801A7E4: .4byte gUnknown_030055B0
-_0801A7E8: .4byte gCourseTime
-_0801A7EC: .4byte gUnknown_030054F8
-_0801A7F0: .4byte gCurrentLevel
-_0801A7F4: .4byte gSelectedCharacter
-_0801A7F8: .4byte gPlayer
-_0801A7FC: .4byte gUnknown_030056A4
-_0801A800: .4byte gUnknown_03005590
-_0801A804: .4byte gUnknown_03005424
-_0801A808: .4byte 0x0000FF7F
-_0801A80C: .4byte gGameMode
-_0801A810: .4byte gUnknown_030054A0
-_0801A814: .4byte gFrameCount
-_0801A818: .4byte gUnknown_030053E4
-_0801A81C: .4byte gUnknown_03005490
-_0801A820:
-	ldr r1, _0801A830 @ =gUnknown_03005490
-	ldr r0, _0801A834 @ =0x00002A30
-	str r0, [r1]
-_0801A826:
-	bl sub_801A838
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801A830: .4byte gUnknown_03005490
-_0801A834: .4byte 0x00002A30
-
 @; CreateGameStage
-	thumb_func_start sub_801A838
-sub_801A838: @ 0x0801A838
-	push {r4, r5, r6, r7, lr}
-	sub sp, #4
-	ldr r0, _0801A928 @ =sub_801AB3C
-	movs r2, #0xff
-	lsls r2, r2, #8
-	ldr r1, _0801A92C @ =sub_801B7A8
-	str r1, [sp]
-	movs r1, #0
-	movs r3, #0
-	bl TaskCreate
-	ldr r1, _0801A930 @ =gUnknown_03005848
-	str r0, [r1]
-	ldr r0, _0801A934 @ =gUnknown_0300540C
-	movs r4, #0
-	strb r4, [r0]
-	ldr r0, _0801A938 @ =gUnknown_030054F4
-	strb r4, [r0]
-	ldr r5, _0801A93C @ =gUnknown_030054B0
-	strb r4, [r5]
-	ldr r2, _0801A940 @ =gUnknown_03005424
-	ldrh r0, [r2]
-	movs r1, #0x21
-	orrs r0, r1
-	ldr r1, _0801A944 @ =0x0000FF7F
-	ands r0, r1
-	strh r0, [r2]
-	ldr r0, _0801A948 @ =gUnknown_03005430
-	strb r4, [r0]
-	ldr r1, _0801A94C @ =gUnknown_0300542C
-	movs r0, #0xa
-	strb r0, [r1]
-	ldr r0, _0801A950 @ =gUnknown_030055BC
-	strb r4, [r0]
-	bl sub_801F044
-	ldr r0, _0801A954 @ =gUnknown_030053E0
-	strb r4, [r0]
-	ldr r4, _0801A958 @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r4, r0]
-	cmp r0, #0x1d
-	beq _0801A8A0
-	ldr r0, _0801A95C @ =gSelectedCharacter
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	movs r1, #0
-	ldrsb r1, [r4, r1]
-	ldr r2, _0801A960 @ =gPlayer
-	bl sub_80213C0
-_0801A8A0:
-	ldrb r1, [r4]
-	movs r0, #3
-	ands r0, r1
-	cmp r0, #2
-	beq _0801A8BC
-	lsls r0, r1, #0x18
-	asrs r1, r0, #0x18
-	cmp r1, #0x1c
-	bne _0801A8B8
-	ldrb r0, [r5]
-	cmp r0, #0
-	beq _0801A8BC
-_0801A8B8:
-	cmp r1, #0x1d
-	bne _0801A8FC
-_0801A8BC:
-	ldr r7, _0801A964 @ =gUnknown_03005440
-	ldr r4, _0801A968 @ =gUnknown_080D5964
-	ldr r6, _0801A958 @ =gCurrentLevel
-	ldrb r0, [r6]
-	lsls r0, r0, #0x18
-	asrs r2, r0, #0x18
-	asrs r0, r0, #0x1a
-	lsls r0, r0, #2
-	adds r1, r0, r4
-	ldrh r1, [r1]
-	strh r1, [r7]
-	ldr r5, _0801A96C @ =gUnknown_030054BC
-	adds r1, r4, #2
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	strh r0, [r5]
-	cmp r2, #0x1c
-	bne _0801A8E8
-	ldr r0, _0801A970 @ =gUnknown_030055B0
-	ldrb r0, [r0]
-	bl sub_80498CC
-_0801A8E8:
-	movs r0, #0
-	ldrsb r0, [r6, r0]
-	cmp r0, #0x1d
-	bne _0801A8FC
-	bl sub_802B708
-	ldrh r0, [r4, #0x20]
-	strh r0, [r7]
-	ldrh r0, [r4, #0x22]
-	strh r0, [r5]
-_0801A8FC:
-	ldr r0, _0801A974 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _0801A97C
-	bl sub_800BEF8
-	bl sub_802F0A8
-	ldr r4, _0801A958 @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r4, r0]
-	bl sub_801C068
-	ldr r1, _0801A978 @ =gUnknown_080D57DC
-	movs r0, #0
-	ldrsb r0, [r4, r0]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r0, [r0]
-	bl _call_via_r0
-	b _0801A99E
-	.align 2, 0
-_0801A928: .4byte sub_801AB3C
-_0801A92C: .4byte sub_801B7A8
-_0801A930: .4byte gUnknown_03005848
-_0801A934: .4byte gUnknown_0300540C
-_0801A938: .4byte gUnknown_030054F4
-_0801A93C: .4byte gUnknown_030054B0
-_0801A940: .4byte gUnknown_03005424
-_0801A944: .4byte 0x0000FF7F
-_0801A948: .4byte gUnknown_03005430
-_0801A94C: .4byte gUnknown_0300542C
-_0801A950: .4byte gUnknown_030055BC
-_0801A954: .4byte gUnknown_030053E0
-_0801A958: .4byte gCurrentLevel
-_0801A95C: .4byte gSelectedCharacter
-_0801A960: .4byte gPlayer
-_0801A964: .4byte gUnknown_03005440
-_0801A968: .4byte gUnknown_080D5964
-_0801A96C: .4byte gUnknown_030054BC
-_0801A970: .4byte gUnknown_030055B0
-_0801A974: .4byte gGameMode
-_0801A978: .4byte gUnknown_080D57DC
-_0801A97C:
-	movs r0, #0
-	bl sub_801C068
-	bl sub_801BF90
-	bl sub_8082D44
-	ldr r2, _0801AA50 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	ldr r1, _0801AA54 @ =0xFF9FFFFF
-	ands r0, r1
-	str r0, [r2, #0x20]
-	ldr r2, _0801AA58 @ =gUnknown_03005424
-	ldrh r1, [r2]
-	ldr r0, _0801AA5C @ =0x0000FFFE
-	ands r0, r1
-	strh r0, [r2]
-_0801A99E:
-	ldr r0, _0801AA60 @ =gCurrentLevel
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #0
-	beq _0801A9B6
-	movs r0, #1
-	rsbs r0, r0, #0
-	movs r1, #0
-	movs r2, #0
-	bl sub_80115D0
-_0801A9B6:
-	ldr r3, _0801AA58 @ =gUnknown_03005424
-	ldrh r0, [r3]
-	ldr r2, _0801AA64 @ =0x0000FFFD
-	ands r2, r0
-	ldr r0, _0801AA68 @ =0x0000FFFB
-	ands r2, r0
-	strh r2, [r3]
-	ldr r5, _0801AA6C @ =gGameMode
-	ldrb r0, [r5]
-	cmp r0, #5
-	bne _0801A9D4
-	movs r1, #4
-	adds r0, r2, #0
-	orrs r0, r1
-	strh r0, [r3]
-_0801A9D4:
-	bl sub_8007E10
-	bl sub_800888C
-	ldr r0, _0801AA70 @ =gUnknown_03001944
-	movs r4, #0
-	strh r4, [r0]
-	ldr r0, _0801AA74 @ =gUnknown_030017F0
-	movs r2, #0x80
-	lsls r2, r2, #1
-	adds r1, r2, #0
-	strh r1, [r0]
-	ldr r0, _0801AA78 @ =gUnknown_03005394
-	strh r1, [r0]
-	ldr r0, _0801AA7C @ =gUnknown_03002A8C
-	movs r2, #0x78
-	strh r2, [r0]
-	ldr r0, _0801AA80 @ =gUnknown_03004D58
-	movs r1, #0x50
-	strh r1, [r0]
-	ldr r0, _0801AA84 @ =gUnknown_0300194C
-	strh r2, [r0]
-	ldr r0, _0801AA88 @ =gUnknown_03002820
-	strh r1, [r0]
-	ldr r1, _0801AA8C @ =gUnknown_03005398
-	movs r0, #0x80
-	strh r0, [r1]
-	ldrb r0, [r5]
-	cmp r0, #2
-	bls _0801AAF0
-	bl sub_80191A4
-	bl sub_8019120
-	ldr r0, _0801AA90 @ =gUnknown_030054E8
-	strb r4, [r0]
-	movs r4, #0
-_0801AA1E:
-	ldr r0, _0801AA94 @ =gUnknown_030053E8
-	adds r0, r4, r0
-	movs r1, #0
-	strb r1, [r0]
-	ldr r0, _0801AA98 @ =gMultiplayerConnections
-	ldrb r0, [r0]
-	asrs r0, r4
-	movs r1, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0801AAA4
-	adds r0, r4, #0
-	bl sub_8016028
-	ldr r0, _0801AA9C @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	cmp r4, r0
-	beq _0801AAA0
-	adds r0, r4, #0
-	bl sub_80193C4
-	b _0801AAA4
-	.align 2, 0
-_0801AA50: .4byte gPlayer
-_0801AA54: .4byte 0xFF9FFFFF
-_0801AA58: .4byte gUnknown_03005424
-_0801AA5C: .4byte 0x0000FFFE
-_0801AA60: .4byte gCurrentLevel
-_0801AA64: .4byte 0x0000FFFD
-_0801AA68: .4byte 0x0000FFFB
-_0801AA6C: .4byte gGameMode
-_0801AA70: .4byte gUnknown_03001944
-_0801AA74: .4byte gUnknown_030017F0
-_0801AA78: .4byte gUnknown_03005394
-_0801AA7C: .4byte gUnknown_03002A8C
-_0801AA80: .4byte gUnknown_03004D58
-_0801AA84: .4byte gUnknown_0300194C
-_0801AA88: .4byte gUnknown_03002820
-_0801AA8C: .4byte gUnknown_03005398
-_0801AA90: .4byte gUnknown_030054E8
-_0801AA94: .4byte gUnknown_030053E8
-_0801AA98: .4byte gMultiplayerConnections
-_0801AA9C: .4byte 0x04000128
-_0801AAA0:
-	bl sub_8019498
-_0801AAA4:
-	ldr r0, _0801AADC @ =gUnknown_030054B4
-	adds r0, r4, r0
-	movs r1, #0xff
-	strb r1, [r0]
-	ldr r0, _0801AAE0 @ =gGameMode
-	ldrb r1, [r0]
-	adds r5, r0, #0
-	cmp r1, #5
-	bne _0801AABC
-	ldr r0, _0801AAE4 @ =gMultiplayerCharacters
-	adds r0, r4, r0
-	strb r4, [r0]
-_0801AABC:
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #3
-	bls _0801AA1E
-	ldrb r0, [r5]
-	ldr r6, _0801AAE8 @ =gUnknown_030056A4
-	cmp r0, #5
-	beq _0801AB0A
-	ldr r0, _0801AAEC @ =gPlayer
-	adds r0, #0x37
-	ldrb r2, [r0]
-	movs r1, #0x80
-	orrs r1, r2
-	strb r1, [r0]
-	b _0801AB0A
-	.align 2, 0
-_0801AADC: .4byte gUnknown_030054B4
-_0801AAE0: .4byte gGameMode
-_0801AAE4: .4byte gMultiplayerCharacters
-_0801AAE8: .4byte gUnknown_030056A4
-_0801AAEC: .4byte gPlayer
-_0801AAF0:
-	movs r4, #0
-	ldr r6, _0801AB30 @ =gUnknown_030056A4
-	ldr r3, _0801AB34 @ =gUnknown_030054B4
-	movs r2, #0xff
-_0801AAF8:
-	adds r0, r4, r3
-	ldrb r1, [r0]
-	orrs r1, r2
-	strb r1, [r0]
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #3
-	bls _0801AAF8
-_0801AB0A:
-	movs r0, #0
-	str r0, [r6]
-	ldrb r0, [r5]
-	cmp r0, #5
-	beq _0801AB1A
-	ldr r0, _0801AB38 @ =gPlayer
-	bl sub_8013FAC
-_0801AB1A:
-	ldrb r0, [r5]
-	cmp r0, #2
-	bls _0801AB28
-	cmp r0, #5
-	beq _0801AB28
-	bl RaceProgressIndicator
-_0801AB28:
-	add sp, #4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801AB30: .4byte gUnknown_030056A4
-_0801AB34: .4byte gUnknown_030054B4
-_0801AB38: .4byte gPlayer
 
 	thumb_func_start sub_801AB3C
 sub_801AB3C: @ 0x0801AB3C
@@ -1141,7 +641,7 @@ _0801AED4:
 	ldr r0, _0801AF10 @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_801A838
+	bl CreateGameStage
 _0801AEF6:
 	pop {r0}
 	bx r0
@@ -2019,7 +1519,7 @@ _0801B686:
 	thumb_func_start sub_801B68C
 sub_801B68C: @ 0x0801B68C
 	push {r4, lr}
-	ldr r4, _0801B6AC @ =gUnknown_03005848
+	ldr r4, _0801B6AC @ =gGameStageTask
 	ldr r0, [r4]
 	bl TaskDestroy
 	movs r0, #0
@@ -2031,7 +1531,7 @@ sub_801B68C: @ 0x0801B68C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801B6AC: .4byte gUnknown_03005848
+_0801B6AC: .4byte gGameStageTask
 _0801B6B0: .4byte gPlayer
 
 	thumb_func_start sub_801B6B4
@@ -2129,7 +1629,7 @@ sub_801B744: @ 0x0801B744
 	asrs r0, r0, #0x18
 	cmp r0, #0x21
 	bgt _0801B784
-	bl sub_801A770
+	bl GameStageStart
 _0801B784:
 	pop {r0}
 	bx r0
@@ -2146,14 +1646,14 @@ _0801B7A4: .4byte gCurrentLevel
 	thumb_func_start sub_801B7A8
 sub_801B7A8: @ 0x0801B7A8
 	push {lr}
-	ldr r1, _0801B7B8 @ =gUnknown_03005848
+	ldr r1, _0801B7B8 @ =gGameStageTask
 	movs r0, #0
 	str r0, [r1]
 	bl m4aMPlayAllStop
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801B7B8: .4byte gUnknown_03005848
+_0801B7B8: .4byte gGameStageTask
 
 	thumb_func_start sub_801B7BC
 sub_801B7BC: @ 0x0801B7BC
@@ -36099,7 +35599,7 @@ _0802BCA4: .4byte gUnknown_03005448
 _0802BCA8: .4byte gUnknown_03005490
 _0802BCAC: .4byte 0x00008C9F
 _0802BCB0:
-	bl sub_801A770
+	bl GameStageStart
 	b _0802BCC4
 _0802BCB6:
 	movs r0, #1
@@ -46828,7 +46328,7 @@ _08031030:
 	ldr r0, _08031068 @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	bl sub_801A770
+	bl GameStageStart
 	b _08030E16
 	.align 2, 0
 _08031054: .4byte 0x0000FFFF

@@ -368,7 +368,7 @@ static void sub_805C3D0(void)
             } else if (gGameMode == 0
                        && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
-                sub_801A770();
+                GameStageStart();
                 return;
             } else {
 #ifdef TEAMPLAY_AVAILABLE

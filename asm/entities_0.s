@@ -3838,7 +3838,7 @@ sub_80098C0: @ 0x080098C0
 	bne _080098EC
 	ldr r0, _080098E8 @ =gCurrentLevel
 	strb r4, [r0]
-	bl sub_801A770
+	bl GameStageStart
 	b _08009900
 	.align 2, 0
 _080098E4: .4byte gCurTask
@@ -3852,7 +3852,7 @@ _080098EC:
 	ldr r1, _0800990C @ =gCurrentLevel
 	subs r0, r5, #1
 	strb r0, [r1]
-	bl sub_801A770
+	bl GameStageStart
 _08009900:
 	pop {r4, r5}
 	pop {r0}

@@ -277,7 +277,7 @@ void sub_8088D60(void)
         TaskDestroy(gCurTask);
         switch (lobbyScreen->unk1AD) {
             case 0:
-                sub_801A770();
+                GameStageStart();
                 break;
             case 1:
                 CreateCharacterSelectionScreen(gSelectedCharacter,

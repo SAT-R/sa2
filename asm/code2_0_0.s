@@ -569,7 +569,7 @@ _08036B10: .4byte gVramGraphicsCopyQueueIndex
 _08036B14: .4byte gCourseTime
 _08036B18: .4byte gGameMode
 _08036B1C:
-	bl sub_801A838
+	bl CreateGameStage
 	b _08036B28
 _08036B22:
 	adds r0, r4, #0
@@ -3124,8 +3124,8 @@ _08037F88:
 	ldr r1, _08038028 @ =gCurrentLevel
 	movs r0, #0x1d
 	strb r0, [r1]
-	bl sub_801A6D8
-	bl sub_801A770
+	bl ApplyGameStageSettings
+	bl GameStageStart
 	b _080380A2
 	.align 2, 0
 _08037FF0: .4byte gCurTask
@@ -6439,8 +6439,8 @@ sub_8039AD4: @ 0x08039AD4
 	ldr r1, _08039B4C @ =gCurrentLevel
 	movs r0, #0x1d
 	strb r0, [r1]
-	bl sub_801A6D8
-	bl sub_801A770
+	bl ApplyGameStageSettings
+	bl GameStageStart
 	ldr r0, _08039B50 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy

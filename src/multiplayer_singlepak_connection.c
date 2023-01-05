@@ -94,7 +94,7 @@ void sub_8081200(void)
 
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
-    gUnknown_03005848 = 0;
+    gGameStageTask = NULL;
     gPlayer.unk8C = 0;
     gCamera.unk5C = 0;
     gUnknown_0300543C = 0;
@@ -105,7 +105,7 @@ void sub_8081200(void)
         gMultiplayerPlayerTasks[i] = NULL;
     };
 
-    sub_801A6D8();
+    ApplyGameStageSettings();
     gUnknown_03005424 &= ~0x1;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
     gPlayer.unk5C |= gPlayerControls.unk0 | gPlayerControls.unk2;

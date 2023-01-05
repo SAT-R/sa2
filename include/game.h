@@ -1,14 +1,14 @@
 #ifndef GUARD_GAME_H
 #define GUARD_GAME_H
 
-#define GAME_MODE_SINGLE_PLAYER      0
-#define GAME_MODE_TIME_ATTACK        1
-#define GAME_MODE_BOSS_TIME_ATTACK   2
-#define NUM_SINGLE_PLAYER_GAME_MODES 3
+#define GAME_MODE_SINGLE_PLAYER    0
+#define GAME_MODE_TIME_ATTACK      1
+#define GAME_MODE_BOSS_TIME_ATTACK 2
 
 // May be multiplayer time attack
-#define GAME_MODE_MULTI_PLAYER NUM_SINGLE_PLAYER_GAME_MODES
-#define GAME_MODE_TEAM_PLAY    4
+#define GAME_MODE_MULTI_PLAYER               3
+#define GAME_MODE_TEAM_PLAY                  4
+#define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
 
 #include "global.h"
 #include "multi_sio.h"
@@ -23,7 +23,7 @@ extern s8 gSelectedCharacter;
 
 extern u8 gMultiplayerLanguage;
 extern u32 gUnknown_030059D8;
-extern u32 gUnknown_03005848;
+extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
 // might be wrong
@@ -32,6 +32,10 @@ extern s16 gCourseTime;
 extern u8 gUnknown_030054A8;
 extern u32 gUnknown_03005490;
 extern u8 gUnknown_030054F4;
+extern u16 gUnknown_03005440;
+extern u16 gUnknown_030054BC;
+extern u8 gUnknown_030054E8;
+extern u8 gUnknown_030053E0;
 
 struct UNK_3005A44 {
     u16 unk0;
@@ -52,6 +56,25 @@ extern u8 gUnknown_03005B34;
 extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
+
+extern u8 gUnknown_030054EC;
+
+extern u8 gUnknown_03005444;
+
+extern u8 gUnknown_030055B0;
+extern u8 gUnknown_030054F8;
+extern u32 gUnknown_030056A4;
+extern u32 gUnknown_03005590;
+
+extern u32 gUnknown_030054A0;
+
+extern u32 gUnknown_030053E4;
+
+extern u8 gUnknown_0300540C;
+
+extern u8 gUnknown_03005430;
+extern u8 gUnknown_0300542C;
+extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
     u8 filler[0x50];
@@ -170,6 +193,7 @@ extern u32 gUnknown_03005434;
 
 extern u32 gUnknown_03005450;
 extern u8 gUnknown_03005448;
+extern u8 gUnknown_030054B0;
 
 extern u8 gMultiplayerConnections;
 
@@ -198,13 +222,13 @@ extern const u8 gUnknown_08CCAC04[0x8900];
 #define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 
 // Possibly CreateGameStageAtSelectedCourse
-void sub_801A770(void);
+void GameStageStart(void);
 
 void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
 
 // ApplyGamePlaySettings
-void sub_801A6D8(void);
+void ApplyGameStageSettings(void);
 
 void CreateTrueArea53(void);
 

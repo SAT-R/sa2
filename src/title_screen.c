@@ -1274,7 +1274,7 @@ static void Task_HandleTitleScreenExit(void)
         switch (titleScreen->menuCursor) {
             case SinglePlayerMenuIndex(MENU_ITEM_GAME_START):
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
-                sub_801A6D8();
+                ApplyGameStageSettings();
                 // If all characters unlocked
                 if (gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY)) {
                     CreateCharacterSelectionScreen(CHARACTER_SONIC, TRUE);
@@ -1283,7 +1283,7 @@ static void Task_HandleTitleScreenExit(void)
                 }
                 break;
             case SinglePlayerMenuIndex(MENU_ITEM_TIME_ATTACK):
-                sub_801A6D8();
+                ApplyGameStageSettings();
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 gSelectedCharacter = CHARACTER_SONIC;
                 gGameMode = GAME_MODE_TIME_ATTACK;
@@ -1298,7 +1298,7 @@ static void Task_HandleTitleScreenExit(void)
                 break;
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;
-                sub_801A6D8();
+                ApplyGameStageSettings();
                 if (gLoadedSaveGame->unk20[0] != PLAYER_NAME_END_CHAR) {
                     CreateMultiplayerModeSelectScreen();
                 } else {
@@ -1929,8 +1929,8 @@ static void Task_StartTitleScreenDemo(void)
     gGameMode = GAME_MODE_SINGLE_PLAYER;
 
     sub_8009F94();
-    sub_801A6D8();
-    sub_801A770();
+    ApplyGameStageSettings();
+    GameStageStart();
 
     TaskDestroy(gCurTask);
 }

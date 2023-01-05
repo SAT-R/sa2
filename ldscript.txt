@@ -56,6 +56,7 @@ SECTIONS
         build/sa2/asm/interactable_slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
         build/sa2/src/init.o(.text);
+        build/sa2/src/game.o(.text);
         build/sa2/asm/game.o(.text);
         build/sa2/src/character_select.o(.text);
         build/sa2/src/course_select.o(.text);

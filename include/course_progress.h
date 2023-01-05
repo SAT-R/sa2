@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void RaceProgressIndicator(void);
+void CreateRaceProgressIndicator(void);
 
 #endif // GUARD_COURSE_PROGRESS_H
