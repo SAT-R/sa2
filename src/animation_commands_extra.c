@@ -38,17 +38,19 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
         // __sub_8003F92
         affine->bg2pd = ((gSineTable[p0 + 256] >> 6) * (s16)Div(r7, p2)) >> 8;
     }
+    p5 *= -1;
+    p6 *= -1;
     {
         // __sub_8003FA8
-        s32 r1 = (s16)affine->bg2pa * -p5;
-        s32 r3 = (s16)affine->bg2pb * -p6;
+        s32 r1 = (s16)affine->bg2pa * p5;
+        s32 r3 = (s16)affine->bg2pb * p6;
         r1 += r3;
         affine->bg2x = r1 + p3 * 256;
     }
     {
         // __sub_8003FBE
-        s32 r1 = (s16)affine->bg2pc * -p5;
-        s32 r3 = (s16)affine->bg2pd * -p6;
+        s32 r1 = (s16)affine->bg2pc * p5;
+        s32 r3 = (s16)affine->bg2pd * p6;
         r1 += r3;
         affine->bg2y = r1 + p4 * 256;
     }
