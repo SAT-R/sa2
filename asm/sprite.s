@@ -2677,6 +2677,7 @@ sub_8003EE4: @ 0x08003EE4
 	asrs r3, r3, #0x10
 	mov sb, r3              @ sb = p1
 
+__sub_8003F2A:
 	adds r0, r7, #0
 	mov r1, sb
 	bl Div
@@ -2698,6 +2699,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r3, [sp, #0x38]     @ r3 = [sp, #0x38] = affine
 	strh r0, [r3]
 
+__sub_8003F54:
 	adds r0, r7, #0
 	mov r1, sb
 	bl Div
@@ -2713,6 +2715,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r1, [sp, #0x38]
 	strh r0, [r1, #2]
 
+__sub_8003F72:
 	lsls r5, r5, #0x10
 	asrs r5, r5, #0x10      @ r5 = p2
 	adds r0, r7, #0
@@ -2729,6 +2732,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r3, [sp, #0x38]
 	strh r0, [r3, #4]
 
+__sub_8003F92:
 	adds r0, r7, #0
 	adds r1, r5, #0
 	bl Div
@@ -2740,6 +2744,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r2, [sp, #0x38]     @ r2 = affine
 	strh r0, [r2, #6]
 
+__sub_8003FA8:
 	lsls r6, r6, #0x10      @ r6 = p5
 	rsbs r6, r6, #0         @ r6 = -(p5 << 16)
 	mov r3, r8              @ r8 = p6
@@ -2752,6 +2757,7 @@ sub_8003EE4: @ 0x08003EE4
 	adds r1, r0, #0
 	muls r1, r6, r1         @ r1 = -p5 * affine->bg2pa;
 
+__sub_8003FBE:
 	movs r3, #2
 	ldrsh r0, [r2, r3]
 	mov r2, r8
@@ -2768,6 +2774,7 @@ sub_8003EE4: @ 0x08003EE4
 	ldr r2, [sp, #0x38]
 	str r1, [r2, #8]
 
+__sub_8003FDC:
 	movs r3, #4
 	ldrsh r0, [r2, r3]
 	adds r1, r0, #0
@@ -2784,6 +2791,7 @@ sub_8003EE4: @ 0x08003EE4
 	adds r1, r1, r0
 	ldr r0, [sp, #0x38]
 	str r1, [r0, #0xc]
+
 	add sp, #0xc
 	pop {r3, r4, r5}
 	mov r8, r3
