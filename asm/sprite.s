@@ -24,9 +24,9 @@ sub_8002B20: @ 0x08002B20
 	bne _08002B44
 	bl _08003616
 _08002B44:
-	ldr r0, _08002B60 @ =0x04000004
+	ldr r0, _08002B60 @ =REG_DISPSTAT
 	ldrh r1, [r0]
-	movs r0, #1
+	movs r0, #1    @ DISPSTAT_VBLANK
 	ands r0, r1
 	cmp r0, #0
 	bne _08002B64
@@ -35,9 +35,9 @@ _08002B44:
 	.align 2, 0
 _08002B58: .4byte gUnknown_03002AE4
 _08002B5C: .4byte gUnknown_0300287C
-_08002B60: .4byte 0x04000004
+_08002B60: .4byte REG_DISPSTAT
 _08002B64:
-	ldr r0, _08002BC8 @ =0x04000006
+	ldr r0, _08002BC8 @ =REG_VCOUNT
 	ldrh r0, [r0]
 	ldr r2, _08002BCC @ =gUnknown_03001800
 	ldrb r1, [r3]
@@ -87,7 +87,7 @@ _08002B90:
 	str r7, [sp, #8]
 	b _08002BF8
 	.align 2, 0
-_08002BC8: .4byte 0x04000006
+_08002BC8: .4byte REG_VCOUNT
 _08002BCC: .4byte gUnknown_03001800
 _08002BD0: .4byte gDispCnt
 _08002BD4: .4byte gBgCntRegs
@@ -1450,7 +1450,7 @@ _080035F0:
 	cmp sl, r4
 	blt _08003500
 _080035FA:
-	ldr r0, _0800362C @ =0x04000006
+	ldr r0, _0800362C @ =REG_VCOUNT
 	ldrh r0, [r0]
 	ldrh r0, [r6, #0x30]
 	strh r0, [r6, #0x34]
@@ -1477,7 +1477,7 @@ _08003618:
 	bx r1
 	.align 2, 0
 _08003628: .4byte 0x040000D4
-_0800362C: .4byte 0x04000006
+_0800362C: .4byte REG_VCOUNT
 _08003630: .4byte gUnknown_03002AE4
 _08003634: .4byte gUnknown_0300287C
 
@@ -1984,22 +1984,22 @@ sub_80039E4: @ 0x080039E4
 	sub sp, #0x44
 	movs r0, #5
 	str r0, [sp, #0x28]
-	ldr r0, _08003A04 @ =0x04000004
+	ldr r0, _08003A04 @ =REG_DISPSTAT
 	ldrh r1, [r0]
-	movs r0, #1
+	movs r0, #1       @ DISPSTAT_VBLANK
 	ands r0, r1
 	cmp r0, #0
 	bne _08003A08
 	movs r0, #0
-	b _08003ECA
+	b sub_80039E4_return
 	.align 2, 0
-_08003A04: .4byte 0x04000004
+_08003A04: .4byte REG_DISPSTAT
 _08003A08:
 	ldr r0, _08003BA4 @ =gUnknown_03005390
 	ldrb r1, [r0]
 	cmp r1, #0
 	bne _08003A12
-	b _08003EC8
+	b sub_80039E4_return_1
 _08003A12:
 	movs r5, #0
 	cmp r5, r1
@@ -2623,9 +2623,9 @@ _08003EC2:
 	movs r0, #0
 	ldr r7, _08003EE0 @ =gUnknown_03005390
 	strb r0, [r7]
-_08003EC8:
+sub_80039E4_return_1:
 	movs r0, #1
-_08003ECA:
+sub_80039E4_return:
 	add sp, #0x44
 	pop {r3, r4, r5}
 	mov r8, r3
