@@ -24,23 +24,19 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
     s32 r7 = 0x10000;
     {
         // __sub_8003F2A
-        s16 quot = Div(r7, p1);
-        affine->bg2pa = (quot * (gSineTable[p0 + 256] >> 6)) >> 8;
+        affine->bg2pa = ((gSineTable[p0 + 256] >> 6) * (s16)Div(r7, p1)) >> 8;
     }
     {
         // __sub_8003F54
-        s16 quot = Div(r7, p1);
-        affine->bg2pb = (quot * (gSineTable[p0] >> 6)) >> 8;
+        affine->bg2pb = ((gSineTable[p0] >> 6) * (s16)Div(r7, p1)) >> 8;
     }
     {
         // __sub_8003F72
-        s16 quot = Div(r7, p2);
-        affine->bg2pc = (quot * (-gSineTable[p0] >> 6)) >> 8;
+        affine->bg2pc = ((-gSineTable[p0] >> 6) * (s16)Div(r7, p2)) >> 8;
     }
     {
         // __sub_8003F92
-        s16 quot = Div(r7, p2);
-        affine->bg2pd = (quot * (gSineTable[p0 + 256] >> 6)) >> 8;
+        affine->bg2pd = ((gSineTable[p0 + 256] >> 6) * (s16)Div(r7, p2)) >> 8;
     }
     {
         // __sub_8003FA8
