@@ -393,7 +393,7 @@ _08078E5E:
 	movs r5, #0
 	adds r2, #0xf0
 	mov r8, r2
-	ldr r7, _08078E9C @ =gUnknown_030053B8
+	ldr r7, _08078E9C @ =gPseudoRandom
 	ldr r6, _08078EA0 @ =0x00196225
 	ldr r4, _08078EA4 @ =0x3C6EF35F
 _08078E7A:
@@ -414,7 +414,7 @@ _08078E7A:
 	muls r0, r6, r0
 	b _08078EBC
 	.align 2, 0
-_08078E9C: .4byte gUnknown_030053B8
+_08078E9C: .4byte gPseudoRandom
 _08078EA0: .4byte 0x00196225
 _08078EA4: .4byte 0x3C6EF35F
 _08078EA8:
@@ -441,7 +441,7 @@ _08078EBC:
 	cmp r5, #1
 	bls _08078E7A
 	movs r5, #0
-	ldr r7, _08078F0C @ =gUnknown_030053B8
+	ldr r7, _08078F0C @ =gPseudoRandom
 	ldr r6, _08078F10 @ =0x00196225
 	ldr r4, _08078F14 @ =0x3C6EF35F
 	ldr r1, _08078F08 @ =0xFFFFF000
@@ -470,7 +470,7 @@ _08078EDE:
 	b _08078F36
 	.align 2, 0
 _08078F08: .4byte 0xFFFFF000
-_08078F0C: .4byte gUnknown_030053B8
+_08078F0C: .4byte gPseudoRandom
 _08078F10: .4byte 0x00196225
 _08078F14: .4byte 0x3C6EF35F
 _08078F18:
@@ -498,7 +498,7 @@ _08078F36:
 	cmp r5, #1
 	bls _08078EDE
 	movs r5, #0
-	ldr r6, _08079014 @ =gUnknown_030053B8
+	ldr r6, _08079014 @ =gPseudoRandom
 	ldr r4, _08079018 @ =0x00196225
 	ldr r2, _0807901C @ =0x3C6EF35F
 	ldr r7, _08079020 @ =0xFFFFE000
@@ -524,7 +524,7 @@ _08078F4E:
 	cmp r5, #3
 	bls _08078F4E
 	movs r5, #0
-	ldr r6, _08079014 @ =gUnknown_030053B8
+	ldr r6, _08079014 @ =gPseudoRandom
 	ldr r4, _08079018 @ =0x00196225
 	ldr r2, _0807901C @ =0x3C6EF35F
 	ldr r7, _08079020 @ =0xFFFFE000
@@ -566,7 +566,7 @@ _08078FB2:
 	cmp r5, #0
 	beq _08078FB2
 	movs r5, #0
-	ldr r7, _08079014 @ =gUnknown_030053B8
+	ldr r7, _08079014 @ =gPseudoRandom
 	mov ip, r7
 	ldr r7, _08079018 @ =0x00196225
 	ldr r6, _0807901C @ =0x3C6EF35F
@@ -605,7 +605,7 @@ _08078FDC:
 	b _0807905C
 	.align 2, 0
 _08079010: .4byte 0xFFFFF800
-_08079014: .4byte gUnknown_030053B8
+_08079014: .4byte gPseudoRandom
 _08079018: .4byte 0x00196225
 _0807901C: .4byte 0x3C6EF35F
 _08079020: .4byte 0xFFFFE000
@@ -646,7 +646,7 @@ _0807905C:
 	cmp r5, #1
 	bls _08078FDC
 	movs r5, #0
-	ldr r1, _080790B8 @ =gUnknown_030053B8
+	ldr r1, _080790B8 @ =gPseudoRandom
 	mov ip, r1
 	ldr r7, _080790BC @ =0x00196225
 	ldr r6, _080790C0 @ =0x3C6EF35F
@@ -684,7 +684,7 @@ _08079084:
 	adds r0, #0x30
 	b _080790FC
 	.align 2, 0
-_080790B8: .4byte gUnknown_030053B8
+_080790B8: .4byte gPseudoRandom
 _080790BC: .4byte 0x00196225
 _080790C0: .4byte 0x3C6EF35F
 _080790C4: .4byte 0x00001FFF
@@ -724,7 +724,7 @@ _080790FC:
 	cmp r5, #1
 	bls _08079084
 	movs r5, #0
-	ldr r1, _0807915C @ =gUnknown_030053B8
+	ldr r1, _0807915C @ =gPseudoRandom
 	mov r8, r1
 	ldr r4, _08079160 @ =0x00196225
 	ldr r2, _08079164 @ =0x3C6EF35F
@@ -757,14 +757,14 @@ _08079120:
 	muls r0, r4, r0
 	ldr r1, _08079164 @ =0x3C6EF35F
 	adds r0, r0, r1
-	ldr r2, _0807915C @ =gUnknown_030053B8
+	ldr r2, _0807915C @ =gPseudoRandom
 	str r0, [r2]
 	mov r7, sb
 	ands r0, r7
 	adds r0, #0x40
 	b _0807918C
 	.align 2, 0
-_0807915C: .4byte gUnknown_030053B8
+_0807915C: .4byte gPseudoRandom
 _08079160: .4byte 0x00196225
 _08079164: .4byte 0x3C6EF35F
 _08079168: .4byte 0x0000FDC0
@@ -776,7 +776,7 @@ _08079178:
 	muls r0, r4, r0
 	ldr r1, _080791AC @ =0x3C6EF35F
 	adds r0, r0, r1
-	ldr r2, _080791B0 @ =gUnknown_030053B8
+	ldr r2, _080791B0 @ =gPseudoRandom
 	str r0, [r2]
 	mov r7, sb
 	ands r0, r7
@@ -800,7 +800,7 @@ _0807918C:
 	bx r0
 	.align 2, 0
 _080791AC: .4byte 0x3C6EF35F
-_080791B0: .4byte gUnknown_030053B8
+_080791B0: .4byte gPseudoRandom
 
 	thumb_func_start sub_80791B4
 sub_80791B4: @ 0x080791B4
@@ -876,7 +876,7 @@ _08079234:
 	movs r3, #0
 	ldr r7, _08079294 @ =0xFFFFA000
 	mov ip, r7
-	ldr r6, _08079298 @ =gUnknown_030053B8
+	ldr r6, _08079298 @ =gPseudoRandom
 	ldr r5, _0807929C @ =0x00196225
 	ldr r4, _080792A0 @ =0x3C6EF35F
 _08079250:
@@ -917,7 +917,7 @@ _0807928C:
 	bx r0
 	.align 2, 0
 _08079294: .4byte 0xFFFFA000
-_08079298: .4byte gUnknown_030053B8
+_08079298: .4byte gPseudoRandom
 _0807929C: .4byte 0x00196225
 _080792A0: .4byte 0x3C6EF35F
 _080792A4: .4byte 0xFFFFFE00

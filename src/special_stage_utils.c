@@ -149,8 +149,8 @@ void sub_806CD68(Sprite *element)
     element->unk24 = unkC->unk2;
     unkC_4 = unkC->unk4;
     unkC_6 = unkC->unk6;
-    unk16 = (s16)element->x - (unkC_4 >> 1);
-    unk18 = (s16)element->y - (unkC_6 >> 1);
+    unk16 = element->x - (unkC_4 >> 1);
+    unk18 = element->y - (unkC_6 >> 1);
 
     unkC_2 = unkC->unk2;
     for (i = 0; i < unkC_2; i++) {

@@ -690,8 +690,7 @@ void sub_8093740(struct FinalEndingLandCutScene *scene)
     for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
         s32 sin, temp, unused;
         if (scene->unk4DC[i][1] == ((0xBE - gBgScrollRegs[1][1]) * 0x100)) {
-            gUnknown_030053B8 = gUnknown_030053B8 * 0x196225 + 0x3C6EF35F;
-            if (gUnknown_030053B8 < 0) {
+            if (PseudoRandom32() < 0) {
                 scene->unk4DC[i][4] = -1;
             } else {
                 scene->unk4DC[i][4] = 1;

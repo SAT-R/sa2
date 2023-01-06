@@ -7837,7 +7837,7 @@ _08054C90:
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _08054CF0
-	ldr r2, _08054CC0 @ =gUnknown_030053B8
+	ldr r2, _08054CC0 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _08054CC4 @ =0x00196225
 	muls r0, r1, r0
@@ -7852,7 +7852,7 @@ _08054C90:
 	b _08054CCE
 	.align 2, 0
 _08054CBC: .4byte IWRAM_START + 0x4C
-_08054CC0: .4byte gUnknown_030053B8
+_08054CC0: .4byte gPseudoRandom
 _08054CC4: .4byte 0x00196225
 _08054CC8: .4byte 0x3C6EF35F
 _08054CCC:
@@ -11125,7 +11125,7 @@ _080566B2:
 	movs r0, #0
 	str r0, [r2, #0x44]
 	str r0, [r2, #0x48]
-	ldr r3, _080567D0 @ =gUnknown_030053B8
+	ldr r3, _080567D0 @ =gPseudoRandom
 	ldr r1, [r3]
 	ldr r0, _080567D4 @ =0x00196225
 	muls r0, r1, r0
@@ -11221,7 +11221,7 @@ _080567C0: .4byte sub_8056964
 _080567C4: .4byte 0x00004040
 _080567C8: .4byte TaskDestructor_80095E8
 _080567CC: .4byte IWRAM_START + 0xC
-_080567D0: .4byte gUnknown_030053B8
+_080567D0: .4byte gPseudoRandom
 _080567D4: .4byte 0x00196225
 _080567D8: .4byte 0x3C6EF35F
 _080567DC: .4byte 0x000003FF
@@ -11346,7 +11346,7 @@ _080568CC:
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _08056924
-	ldr r2, _08056948 @ =gUnknown_030053B8
+	ldr r2, _08056948 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0805694C @ =0x00196225
 	muls r0, r1, r0
@@ -11399,7 +11399,7 @@ _08056938:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08056948: .4byte gUnknown_030053B8
+_08056948: .4byte gPseudoRandom
 _0805694C: .4byte 0x00196225
 _08056950: .4byte 0x3C6EF35F
 _08056954: .4byte 0x000003FF
@@ -17057,7 +17057,7 @@ _0805960C:
 	bne _08059680
 	movs r0, #0xc
 	strb r0, [r4]
-	ldr r2, _080596B0 @ =gUnknown_030053B8
+	ldr r2, _080596B0 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _080596B4 @ =0x00196225
 	muls r0, r1, r0
@@ -17118,7 +17118,7 @@ _080596A0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080596B0: .4byte gUnknown_030053B8
+_080596B0: .4byte gPseudoRandom
 _080596B4: .4byte 0x00196225
 _080596B8: .4byte 0x3C6EF35F
 _080596BC: .4byte gCurTask

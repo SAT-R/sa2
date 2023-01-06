@@ -91,7 +91,7 @@ void Task_Interactable_Decoration(void)
     screenY -= gCamera.y;
     deco->y = screenY;
 
-    if (IS_OUT_OF_CAM_RANGE(screenX, (s16)deco->y)) {
+    if (IS_OUT_OF_CAM_RANGE(screenX, deco->y)) {
         ia->x = decoBase->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

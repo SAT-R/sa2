@@ -18,8 +18,8 @@ void sub_80051E8(Sprite *sprite)
         struct UNK_0808B3FC_UNK240_UNKC *unkC = sprite->unkC;
 
         sprite->unk24 = unkC->unk2;
-        x = (s16)sprite->x;
-        y = (s16)sprite->y;
+        x = sprite->x;
+        y = sprite->y;
         if (sprite->unk10 & 0x20000) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];

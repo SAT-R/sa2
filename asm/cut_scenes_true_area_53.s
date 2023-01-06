@@ -822,7 +822,7 @@ sub_80372C8: @ 0x080372C8
 	movs r1, #0x40
 	movs r3, #0
 	bl TaskCreate
-	ldr r6, _080373AC @ =gUnknown_030053B8
+	ldr r6, _080373AC @ =gPseudoRandom
 	ldr r1, [r6]
 	ldr r2, _080373B0 @ =0x00196225
 	mov sb, r2
@@ -919,7 +919,7 @@ sub_80372C8: @ 0x080372C8
 	bx r0
 	.align 2, 0
 _080373A8: .4byte sub_80373CC
-_080373AC: .4byte gUnknown_030053B8
+_080373AC: .4byte gPseudoRandom
 _080373B0: .4byte 0x00196225
 _080373B4: .4byte 0x3C6EF35F
 _080373B8: .4byte IWRAM_START + 0x10

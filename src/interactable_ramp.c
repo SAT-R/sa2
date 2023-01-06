@@ -155,19 +155,18 @@ void sub_800FAF4(void)
             }
         } else {
             if (var) {
-                if (((ramp->unk3C & 2) != 0
-                     && Q_24_8_TO_INT(player->x) < (s16)displayed->x)
+                if (((ramp->unk3C & 2) != 0 && Q_24_8_TO_INT(player->x) < displayed->x)
                     || ((ramp->unk3C & 2) == 0
-                        && Q_24_8_TO_INT(player->x) > (s16)displayed->x)) {
+                        && Q_24_8_TO_INT(player->x) > displayed->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR)
                         && player->speedGroundX > 0x400) {
                         player->unk6D = 0x16;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
                 } else if (((ramp->unk3C & 2) != 0
-                            && Q_24_8_TO_INT(player->x) > (s16)displayed->x)
+                            && Q_24_8_TO_INT(player->x) > displayed->x)
                            || ((ramp->unk3C & 2) == 0
-                               && Q_24_8_TO_INT(player->x) < (s16)displayed->x)) {
+                               && Q_24_8_TO_INT(player->x) < displayed->x)) {
                     player->moveState &= ~MOVESTATE_8;
                     player->unk3C = NULL;
                 }

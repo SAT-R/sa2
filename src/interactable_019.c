@@ -117,7 +117,7 @@ void Task_Interactable_019(void)
          || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y))) {
+        && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
         ia->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -153,7 +153,7 @@ void Task_805E35C(void)
          || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y))) {
+        && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
         ia->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
