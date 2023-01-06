@@ -101,6 +101,12 @@
 // with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+// TODO: fix casts here(?)
+#define XOR_SWAP(a, b)                                                                  \
+    a ^= (u8)b;                                                                         \
+    b ^= (u8)a;                                                                         \
+    a = ((u8)b ^ (u8)a);
+
 // TODO: fix casts here
 #define SWAP_AND_NEGATE(a, b)                                                           \
     a ^= (u8)b;                                                                         \

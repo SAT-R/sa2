@@ -16,6 +16,41 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+// (-6)
+// Differences to animCmd_6:
+// - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
+s32 animCmd_6_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_6 *cmd = (ACmd_6 *)cursor;
+    s32 r3 = cmd->unk4.unk0 & 0xF;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_6);
+
+    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3].unk0, 8);
+
+    if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
+        && (cmd->unk4.unk7 == 0)) {
+        sprite->unk28[r3].unk0 = -1;
+    } else {
+        if (sprite->unk10 & 0x00000800) {
+            XOR_SWAP(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
+        }
+
+        if (sprite->unk10 & 0x00000400) {
+            XOR_SWAP(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
+        }
+    }
+
+    return 1;
+}
+
+NONMATCH("asm/non_matching/sprite__sub_8003914.inc", void sub_8003914(Sprite *sprite)) {
+}
+END_NONMATCH
+
+// Some VBlank function
+NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", u32 sub_80039E4(void)) { }
+END_NONMATCH
+
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
 {
