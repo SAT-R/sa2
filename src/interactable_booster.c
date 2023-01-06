@@ -166,7 +166,7 @@ void Task_Interactable_Booster(void)
         }
     }
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
         ia->x = booster->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

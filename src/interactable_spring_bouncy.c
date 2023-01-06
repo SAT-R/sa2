@@ -153,7 +153,7 @@ static void Task_Interactable_BouncySpring()
         }
     }
     // _0805DFBA
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
@@ -176,7 +176,7 @@ static void Task_805E02C()
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, (s16)displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
         ia->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {

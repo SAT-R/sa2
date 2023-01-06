@@ -133,6 +133,15 @@ struct Unk_03003674 {
     const s32 *unk18;
 }; /* size = 0x1C */
 
+// No idea why this exists when there is a
+// better random number generator in the math
+// module
+#define PseudoRandom32()                                                                \
+    ({                                                                                  \
+        gPseudoRandom = (gPseudoRandom * 0x196225) + 0x3C6EF35F;                        \
+        gPseudoRandom;                                                                  \
+    })
+
 extern u32 gFlags;
 extern u32 gFlagsPreVBlank;
 
@@ -237,7 +246,7 @@ extern u8 gUnknown_03005390;
 extern u16 gUnknown_03005394;
 extern u16 gUnknown_03005398;
 extern FuncType_030053A0 gUnknown_030053A0[4];
-extern s32 gUnknown_030053B8;
+extern s32 gPseudoRandom;
 extern u8 gUnknown_03002710[128];
 extern struct MultiBootParam gMultiBootParam;
 

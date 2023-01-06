@@ -784,7 +784,7 @@ sub_8086504: @ 0x08086504
 	b _080865C4
 _08086516:
 	ldr r4, _08086594 @ =gUnknown_080E0294
-	ldr r2, _08086598 @ =gUnknown_030053B8
+	ldr r2, _08086598 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0808659C @ =0x00196225
 	muls r0, r1, r0
@@ -846,7 +846,7 @@ _0808658A:
 	b _080865C4
 	.align 2, 0
 _08086594: .4byte gUnknown_080E0294
-_08086598: .4byte gUnknown_030053B8
+_08086598: .4byte gPseudoRandom
 _0808659C: .4byte 0x00196225
 _080865A0: .4byte 0x3C6EF35F
 _080865A4: .4byte gCourseTime

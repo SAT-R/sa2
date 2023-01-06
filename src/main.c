@@ -122,7 +122,7 @@ u16 gUnknown_03005398 ALIGNED(4) = 0;
 FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
-s32 gUnknown_030053B8 = 0;
+s32 gPseudoRandom = 0;
 struct InputRecorder gInputRecorder ALIGNED(8) = {};
 u16 *gInputRecorderTapeBuffer = NULL;
 
@@ -263,7 +263,7 @@ static void GameInit(void)
     gBldRegs.bldY = 0;
 
     gUnknown_030026D0 = 0;
-    gUnknown_030053B8 = 0;
+    gPseudoRandom = 0;
 
     for (i = 0; i < 10; i++) {
         gKeysFirstRepeatIntervals[i] = 20;

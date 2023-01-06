@@ -232,7 +232,7 @@ static const u8 sCourseIndexToLevelIndex[] = {
 #define ScrollInZoneName(element, speed)                                                \
     ({                                                                                  \
         (element)->x -= speed;                                                          \
-        if ((s16)(element)->x < CS_LOCAL_ZONE_TEXT_X) {                                 \
+        if ((element)->x < CS_LOCAL_ZONE_TEXT_X) {                                      \
             (element)->x = CS_LOCAL_ZONE_TEXT_X;                                        \
         }                                                                               \
     })

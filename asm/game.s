@@ -7224,7 +7224,7 @@ sub_801E3F0: @ 0x0801E3F0
 	ands r0, r1
 	cmp r0, #0
 	beq _0801E41A
-	ldr r2, _0801E428 @ =gUnknown_030053B8
+	ldr r2, _0801E428 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0801E42C @ =0x00196225
 	muls r0, r1, r0
@@ -7243,7 +7243,7 @@ _0801E41A:
 	.align 2, 0
 _0801E420: .4byte gCamera
 _0801E424: .4byte gUnknown_03005590
-_0801E428: .4byte gUnknown_030053B8
+_0801E428: .4byte gPseudoRandom
 _0801E42C: .4byte 0x00196225
 _0801E430: .4byte 0x3C6EF35F
 
@@ -9741,7 +9741,7 @@ _0801F668:
 	movs r3, #0x80
 	lsls r3, r3, #6
 	str r3, [r4, #0x10]
-	ldr r2, _0801F6D4 @ =gUnknown_030053B8
+	ldr r2, _0801F6D4 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0801F6D8 @ =0x00196225
 	muls r0, r1, r0
@@ -9784,7 +9784,7 @@ _0801F6BE:
 	.align 2, 0
 _0801F6CC: .4byte 0x06012300
 _0801F6D0: .4byte IWRAM_START + 0x28
-_0801F6D4: .4byte gUnknown_030053B8
+_0801F6D4: .4byte gPseudoRandom
 _0801F6D8: .4byte 0x00196225
 _0801F6DC: .4byte 0x3C6EF35F
 
@@ -10624,7 +10624,7 @@ _0801FD72:
 	mov ip, r0
 	ldr r1, _0801FDC8 @ =gSineTable
 	mov sl, r1
-	ldr r0, _0801FDCC @ =gUnknown_030053B8
+	ldr r0, _0801FDCC @ =gPseudoRandom
 	mov sb, r0
 _0801FD8A:
 	ldrh r0, [r4, #0xc]
@@ -10656,7 +10656,7 @@ _0801FDBC: .4byte IWRAM_START + 0x30
 _0801FDC0: .4byte gPlayer
 _0801FDC4: .4byte gGameMode
 _0801FDC8: .4byte gSineTable
-_0801FDCC: .4byte gUnknown_030053B8
+_0801FDCC: .4byte gPseudoRandom
 _0801FDD0:
 	adds r0, r2, #0
 _0801FDD2:
@@ -18612,7 +18612,7 @@ _08023A00:
 	ands r0, r1
 	cmp r0, #0
 	bne _08023B02
-	ldr r2, _08023A50 @ =gUnknown_030053B8
+	ldr r2, _08023A50 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _08023A54 @ =0x00196225
 	muls r0, r1, r0
@@ -18645,7 +18645,7 @@ _08023A34:
 	.align 2, 0
 _08023A48: .4byte 0xFFFFF400
 _08023A4C: .4byte gUnknown_03005590
-_08023A50: .4byte gUnknown_030053B8
+_08023A50: .4byte gPseudoRandom
 _08023A54: .4byte 0x00196225
 _08023A58: .4byte 0x3C6EF35F
 _08023A5C: .4byte 0xFFFFFC00
@@ -34097,7 +34097,7 @@ _0802B0B8:
 	ldr r1, _0802B108 @ =IWRAM_START + 0x3C
 	adds r0, r2, r1
 	strb r6, [r0]
-	ldr r2, _0802B10C @ =gUnknown_030053B8
+	ldr r2, _0802B10C @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0802B110 @ =0x00196225
 	muls r0, r1, r0
@@ -34132,7 +34132,7 @@ _0802B0F2:
 _0802B100: .4byte 0x06012AC0
 _0802B104: .4byte 0x00000356
 _0802B108: .4byte IWRAM_START + 0x3C
-_0802B10C: .4byte gUnknown_030053B8
+_0802B10C: .4byte gPseudoRandom
 _0802B110: .4byte 0x00196225
 _0802B114: .4byte 0x3C6EF35F
 
@@ -34147,7 +34147,7 @@ sub_802B118: @ 0x0802B118
 	ands r0, r1
 	cmp r0, #0
 	bne _0802B192
-	ldr r7, _0802B1A0 @ =gUnknown_030053B8
+	ldr r7, _0802B1A0 @ =gPseudoRandom
 	ldr r0, [r7]
 	ldr r6, _0802B1A4 @ =0x00196225
 	muls r0, r6, r0
@@ -34206,7 +34206,7 @@ _0802B192:
 	bx r1
 	.align 2, 0
 _0802B19C: .4byte gUnknown_03005590
-_0802B1A0: .4byte gUnknown_030053B8
+_0802B1A0: .4byte gPseudoRandom
 _0802B1A4: .4byte 0x00196225
 _0802B1A8: .4byte 0x3C6EF35F
 
@@ -34392,7 +34392,7 @@ _0802B308:
 	ands r0, r1
 	cmp r0, #0
 	bne _0802B392
-	ldr r2, _0802B3A4 @ =gUnknown_030053B8
+	ldr r2, _0802B3A4 @ =gPseudoRandom
 	ldr r0, [r2]
 	ldr r3, _0802B3A8 @ =0x00196225
 	muls r0, r3, r0
@@ -34465,7 +34465,7 @@ _0802B392:
 	bx r0
 	.align 2, 0
 _0802B3A0: .4byte gUnknown_03005590
-_0802B3A4: .4byte gUnknown_030053B8
+_0802B3A4: .4byte gPseudoRandom
 _0802B3A8: .4byte 0x00196225
 _0802B3AC: .4byte 0x3C6EF35F
 _0802B3B0: .4byte 0x0007FF00
@@ -34535,7 +34535,7 @@ _0802B424:
 	ands r0, r1
 	cmp r0, #0
 	beq _0802B458
-	ldr r2, _0802B44C @ =gUnknown_030053B8
+	ldr r2, _0802B44C @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0802B450 @ =0x00196225
 	muls r0, r1, r0
@@ -34549,7 +34549,7 @@ _0802B424:
 	b _0802B466
 	.align 2, 0
 _0802B448: .4byte gCamera
-_0802B44C: .4byte gUnknown_030053B8
+_0802B44C: .4byte gPseudoRandom
 _0802B450: .4byte 0x00196225
 _0802B454: .4byte 0x3C6EF35F
 _0802B458:
@@ -36836,7 +36836,7 @@ _0802C60C:
 	ble _0802C64C
 	movs r0, #0
 	strb r0, [r1]
-	ldr r6, _0802C654 @ =gUnknown_030053B8
+	ldr r6, _0802C654 @ =gPseudoRandom
 	ldr r0, [r6]
 	ldr r5, _0802C658 @ =0x00196225
 	adds r1, r0, #0
@@ -36861,7 +36861,7 @@ _0802C64C:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802C654: .4byte gUnknown_030053B8
+_0802C654: .4byte gPseudoRandom
 _0802C658: .4byte 0x00196225
 _0802C65C: .4byte 0x3C6EF35F
 _0802C660: .4byte 0x00000FFF

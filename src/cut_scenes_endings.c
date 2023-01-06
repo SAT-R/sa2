@@ -40,14 +40,11 @@ void sub_808E8F8(s16 *ptr, s16 a, u8 b)
     if (*ptr != a) {
         *ptr = a;
     } else {
-        u16 temp;
-        gUnknown_030053B8 = (gUnknown_030053B8 * 0x196225) + 0x3C6EF35F;
-
-        temp = gUnknown_030053B8;
-        if (temp >> 8 != 0) {
-            *ptr += ((temp) >> ((0x10 - b)));
+        u16 rand = PseudoRandom32();
+        if (rand >> 8 != 0) {
+            *ptr += ((rand) >> ((16 - b)));
         } else {
-            *ptr -= ((temp) >> ((8 - b)));
+            *ptr -= ((rand) >> ((8 - b)));
         }
     }
 }
@@ -57,14 +54,11 @@ void sub_808E95C(s32 *ptr, s32 a, u8 b)
     if (*ptr != a) {
         *ptr = a;
     } else {
-        u16 temp;
-        gUnknown_030053B8 = (gUnknown_030053B8 * 0x196225) + 0x3C6EF35F;
-
-        temp = gUnknown_030053B8;
-        if (temp >> 8 != 0) {
-            *ptr += ((temp) >> ((8 - b)));
+        u16 rand = PseudoRandom32();
+        if (rand >> 8 != 0) {
+            *ptr += ((rand) >> ((8 - b)));
         } else {
-            *ptr -= (temp);
+            *ptr -= (rand);
         }
     }
 }

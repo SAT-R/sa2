@@ -7111,7 +7111,7 @@ _0800B3B4: .4byte gMPlayInfo_BGM
 _0800B3B8: .4byte gGameMode
 _0800B3BC:
 	ldr r4, _0800B3E0 @ =gUnknown_080D51FC
-	ldr r2, _0800B3E4 @ =gUnknown_030053B8
+	ldr r2, _0800B3E4 @ =gPseudoRandom
 	ldr r1, [r2]
 	ldr r0, _0800B3E8 @ =0x00196225
 	muls r0, r1, r0
@@ -7128,7 +7128,7 @@ _0800B3BC:
 	b _0800B408
 	.align 2, 0
 _0800B3E0: .4byte gUnknown_080D51FC
-_0800B3E4: .4byte gUnknown_030053B8
+_0800B3E4: .4byte gPseudoRandom
 _0800B3E8: .4byte 0x00196225
 _0800B3EC: .4byte 0x3C6EF35F
 _0800B3F0: .4byte gCourseTime
