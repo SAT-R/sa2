@@ -16,6 +16,31 @@ extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
 
+// (-1)
+// No differences to animCmd_GetTiles
+s32 animCmd_GetTiles_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+
+    if ((sprite->unk10 & 0x80000) == 0) {
+        if (cmd->tileIndex < 0) {
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+        } else {
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+        }
+
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &sprite->graphics;
+        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
+    }
+
+    return 1;
+}
+
 // (-6)
 // Differences to animCmd_6:
 // - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
