@@ -32,7 +32,6 @@ void sub_8003638(Background *bg)
             if (header->unk6 <= ++bg->unk2B)
                 bg->unk2B = 0;
 
-            // _0800367A
             unk4 = header->unk4;
 
             if (!(bg->unk2E & 0x200)) {
@@ -46,13 +45,11 @@ void sub_8003638(Background *bg)
                     bg->graphics.src = ts;
                 }
             } else {
-                // 080036AA
                 u8 *ts = bg->graphics.dest;
                 ts += header->unkC;
                 ts += (bg->unk2B * unk4);
                 bg->graphics.src = ts;
             }
-            // _080036B8
             { // TODO: Create: Graphics-Copy-Queue-Count = 32
                 u32 queueIndex;
                 bg->graphics.size = unk4;
@@ -83,7 +80,6 @@ s32 sub_80036E0(Sprite *sprite)
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {
-        // _080045B8
         s32 ret;
         ACmd *cmd;
         ACmd *script;
@@ -115,7 +111,6 @@ s32 sub_80036E0(Sprite *sprite)
             }
             cmd = ReadInstruction(script, sprite->unk14);
         }
-        // _08004628
 
         // Display the image 'index' for 'delay' frames
         sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
