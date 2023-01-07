@@ -15,6 +15,82 @@ extern u8 gVramGraphicsCopyQueueIndex;
 extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
+extern const AnimationCommandFunc animCmdTable_2[];
+
+#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
+
+#if 1
+// Differences to sub_8004558:
+// - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
+// - Uses animCmdTable_2 instead of animCmdTable
+s32 sub_80036E0(Sprite *sprite)
+{
+    ACmd **variants;
+    ACmd *script;
+    ACmd *cmd;
+
+    if (sprite->unk10 & 0x4000)
+        return 0;
+
+    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+
+    if (sprite->unk1C > 0)
+        sprite->unk1C -= 16 * sprite->unk22;
+    else {
+        // _080045B8
+        s32 ret;
+        ACmd *cmd;
+        ACmd *script;
+        ACmd **variants;
+
+        // Handle all the "regular" Animation commands with an ID < 0
+        variants = gUnknown_03002794->animations[sprite->graphics.anim];
+        script = variants[sprite->variant];
+        cmd = ReadInstruction(script, sprite->unk14);
+        while (cmd->id < 0) {
+            ret = animCmdTable_2[~cmd->id](cmd, sprite);
+            if (ret != 1) {
+#ifndef NON_MATCHING
+                register ACmd *newScript asm("r1");
+#else
+                ACmd *newScript;
+#endif
+                if (ret != -1) {
+                    return ret;
+                }
+
+                // animation has changed
+                variants = gUnknown_03002794->animations[sprite->graphics.anim];
+                newScript = variants[sprite->variant];
+                // reset cursor
+                sprite->unk14 = 0;
+                // load the new script
+                script = newScript;
+            }
+            cmd = ReadInstruction(script, sprite->unk14);
+        }
+        // _08004628
+
+        // Display the image 'index' for 'delay' frames
+        sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        sprite->unk1C -= sprite->unk22 * 16;
+        {
+            s32 frame = ((ACmd_ShowFrame *)cmd)->index;
+            if (frame != -1) {
+                const struct SpriteTables *sprTables = gUnknown_03002794;
+
+                sprite->dimensions
+                    = &sprTables->dimensions[sprite->graphics.anim][frame];
+            } else {
+                sprite->dimensions = (void *)-1;
+            }
+        }
+
+        sprite->unk14 += 2;
+    }
+    return 1;
+}
+#endif
 
 // (-1)
 // No differences to animCmd_GetTiles
@@ -479,20 +555,13 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
-
 s32 sub_8004558(Sprite *sprite)
 {
-    if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->graphics.anim) {
-        sprite->graphics.size = 0;
-        sprite->unk21 = sprite->variant;
-        sprite->unk1E = sprite->graphics.anim;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk10 &= ~0x4000;
-    }
+    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+
     if (sprite->unk10 & 0x4000)
         return 0;
+
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {

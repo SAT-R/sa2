@@ -1571,25 +1571,26 @@ _080036D0:
 _080036D8: .4byte gVramGraphicsCopyQueue
 _080036DC: .4byte gVramGraphicsCopyQueueIndex
 
+.if 0
 	thumb_func_start sub_80036E0
 sub_80036E0: @ 0x080036E0
 	push {r4, r5, r6, r7, lr}
-	adds r4, r0, #0
+	adds r4, r0, #0         @ r4 = sprite
 	ldr r2, [r4, #0x10]
 	movs r0, #0x80
 	lsls r0, r0, #7
-	ands r2, r0
+	ands r2, r0             @ r2 = sprite->unk10 & 0x4000
 	cmp r2, #0
 	beq _080036F4
 	movs r0, #0
 	b _080037FA
-_080036F4:
+_080036F4:                  @ r2 = 0
 	adds r3, r4, #0
-	adds r3, #0x21
+	adds r3, #0x21          @ r3 = sprite->unk21
 	adds r0, r4, #0
 	adds r0, #0x20
 	ldrb r1, [r3]
-	adds r6, r0, #0
+	adds r6, r0, #0         @ r6 = sprite->variant
 	ldrb r0, [r6]
 	cmp r1, r0
 	bne _0800370E
@@ -1621,7 +1622,7 @@ _08003724:
 	lsls r0, r0, #4
 	subs r0, r1, r0
 	strh r0, [r4, #0x1c]
-	b _080037F8
+	b _sub_8002B20_return_1
 	.align 2, 0
 _0800373C: .4byte 0xFFFFBFFF
 _08003740:
@@ -1631,18 +1632,18 @@ _08003740:
 	ldr r1, [r1]
 	lsls r0, r0, #2
 	adds r0, r0, r1
-	ldr r1, [r0]
+	ldr r1, [r0]        @ r1 = anim
 	ldrb r0, [r6]
 	lsls r0, r0, #2
 	adds r0, r0, r1
-	ldr r5, [r0]
+	ldr r5, [r0]        @ r5 = cmd
 	ldrh r0, [r4, #0x14]
 	lsls r0, r0, #2
 	adds r3, r5, r0
 	ldr r0, [r3]
 	cmp r0, #0
 	bge _080037AA
-	ldr r7, _080037E8 @ =gUnknown_08097A74
+	ldr r7, _080037E8 @ =animCmdTable_2
 _08003764:
 	mvns r0, r0
 	lsls r0, r0, #2
@@ -1711,7 +1712,7 @@ _080037AA:
 	b _080037F2
 	.align 2, 0
 _080037E4: .4byte gUnknown_03002794
-_080037E8: .4byte gUnknown_08097A74
+_080037E8: .4byte animCmdTable_2
 _080037EC:
 	adds r0, r1, #0
 	b _080037FA
@@ -1721,9 +1722,10 @@ _080037F2:
 	ldrh r0, [r4, #0x14]
 	adds r0, #2
 	strh r0, [r4, #0x14]
-_080037F8:
+_sub_8002B20_return_1:
 	movs r0, #1
 _080037FA:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
+.endif
