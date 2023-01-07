@@ -143,6 +143,7 @@ typedef struct {
 } BgAffineReg;
 
 /*** TODO: Replace 'BgAffineRegs' with this! ***/
+// Should we introduce "#define NUM_AFFINE_BACKGROUNDS 2"?
 typedef struct {
     /* 0x00 */ BgAffineReg regs[2];
 } BgAffineRegs_Alt;
