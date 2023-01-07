@@ -104,15 +104,15 @@ void sub_8081FB0(void)
     gBgCntRegs[3] = 0x5e0b;
     gBgCntRegs[2] = 0x1c0c;
     gUnknown_03004D80[2] = 0x7f;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xff;
-    gUnknown_03002280[11] = 32;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xff;
+    gUnknown_03002280[2][3] = 32;
     gUnknown_03004D80[3] = 0xff;
-    gUnknown_03002280[12] = 0;
-    gUnknown_03002280[13] = 0;
-    gUnknown_03002280[14] = 0xff;
-    gUnknown_03002280[15] = 64;
+    gUnknown_03002280[3][0] = 0;
+    gUnknown_03002280[3][1] = 0;
+    gUnknown_03002280[3][2] = 0xff;
+    gUnknown_03002280[3][3] = 64;
 
     DmaFill32(3, 0, (void *)VRAM + 0x9FE0, 65);
     DmaFill32(3, 0, (void *)VRAM + 0xCFE0, 65);

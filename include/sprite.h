@@ -62,15 +62,25 @@ typedef struct {
     u16 unk3E;
 } Background; /* size = 0x40 */
 
-struct UNK_0808B3FC_UNK240_UNKC {
-    u8 unk0;
-    u8 unk1;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    s16 unk8;
-    s16 unkA;
-};
+typedef struct {
+    /* 0x00 */ u8 flip;
+
+    // every animation has an associated oamData pointer, oamIndex starts at
+    // 0 for every new animation and ends at variantCount-1
+    /* 0x01 */ u8 oamIndex;
+
+    // some sprite frames consist of multiple images (of the same size
+    // as GBA's Object Attribute Memory, e.g. 8x8, 8x32, 32x64, ...)
+    /* 0x02 */ u16 numSubframes;
+
+    // In pixels
+    /* 0x04 */ u16 width;
+    // In pixels
+    /* 0x06 */ u16 height;
+
+    /* 0x08 */ s16 offsetX;
+    /* 0x0A */ s16 offsetY;
+} SpriteOffset;
 
 typedef struct {
     /* 0x28 */ s32 unk0;
@@ -81,14 +91,25 @@ typedef struct {
 } Sprite_UNK28;
 
 // TODO: work out what makes this struct different from the above
-// Maybe `struct Sprite`
 typedef struct {
-    // These values are part of some other struct
-    // Note(Jace): Isn't this a u8* to the tile data in the ROM?
     /* 0x00 */ struct GraphicsData graphics;
+    /* 0x0C */ SpriteOffset *dimensions;
 
-    /* 0x0C */ struct UNK_0808B3FC_UNK240_UNKC *unkC;
-    /* 0x10 */ u32 unk10; // bitfield
+    // Bitfield description from KATAM decomp
+    /* 0x10 */ u32 unk10; // bit 0-4: rotscale param selection
+                          // bit 5: rotscale enable
+                          // bit 6: rotscale double-size
+                          // bit 7-8: obj mode
+                          // bit 9
+                          // bit 10
+                          // bit 11
+                          // bit 12-13: priority
+                          // bit 14
+                          // bit 15-16: bg id (?)
+                          // bit 17
+                          // bit 18-25
+                          // bit 26
+                          // bit 27-31
 
     /* 0x14 */ u16 unk14; // animation cursor
 
@@ -98,8 +119,8 @@ typedef struct {
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 
-    /* 0x1C */ u16 unk1C;
-    /* 0x1E */ u16 unk1E;
+    /* 0x1C */ s16 unk1C;
+    /* 0x1E */ u16 unk1E; // prevAnimId?
 
     /* 0x20 */ u8 variant;
 
@@ -138,7 +159,7 @@ typedef struct {
 } TileInfo;
 
 // Register menu item
-u32 sub_8004558(Sprite *);
+s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);
 void sub_8002A3C(Background *);
@@ -151,7 +172,8 @@ OamData *sub_80058B4(u8 size);
 // TransformSprite
 void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
 
-void sub_8003EE4(u32, u16, u16, u32, u32, u32, u32, struct BgAffineRegs *);
+void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
+                 struct BgAffineRegs *affine);
 
 void sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);

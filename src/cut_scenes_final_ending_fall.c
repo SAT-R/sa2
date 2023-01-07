@@ -128,15 +128,15 @@ void CreateFinalEndingFallCutScene(void)
     gBgScrollRegs[1][1] = 0;
 
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xFF;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xFF;
+    gUnknown_03002280[0][3] = 0x20;
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xFF;
-    gUnknown_03002280[7] = 0x20;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xFF;
+    gUnknown_03002280[1][3] = 0x20;
 
     m4aMPlayAllStop();
     m4aSongNumStart(MUS_FINAL_ENDING);

@@ -87,20 +87,20 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     DmaFill32(3, 0, BG_CHAR_ADDR(r6), 0x4000);
 #endif
     gUnknown_03004D80[2] = 0x5a;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xff;
-    gUnknown_03002280[11] = 0x20;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xff;
+    gUnknown_03002280[2][3] = 0x20;
     gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0] = 0;
-    gUnknown_03002280[1] = 0;
-    gUnknown_03002280[2] = 0xff;
-    gUnknown_03002280[3] = 0x20;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xff;
+    gUnknown_03002280[0][3] = 0x20;
     gUnknown_03004D80[1] = 0;
-    gUnknown_03002280[4] = 0;
-    gUnknown_03002280[5] = 0;
-    gUnknown_03002280[6] = 0xff;
-    gUnknown_03002280[7] = 0x20;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xff;
+    gUnknown_03002280[1][3] = 0x20;
 
     t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0,
                    TaskDestroy_CreditsEndCutScene);

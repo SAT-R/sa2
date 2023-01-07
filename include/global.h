@@ -63,11 +63,11 @@
 // Converts a number to Q2.14 fixed-point format
 #define Q_2_14(n) ((s16)((n)*0x4000))
 
-// Converts a number to Q24.8 fixed-point format
+// Converts a number to Q20.12 fixed-point format
 #define Q_20_12(n) ((s32)((n)*4096))
 
 // Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n) ((s32)((n) << 8))
+#define Q_24_8(n) ((s32)((n)*256))
 
 // Converts a Q8.8 fixed-point format number to a regular integer
 #define Q_8_8_TO_INT(n) ((int)((n) / 256))
@@ -115,18 +115,18 @@ struct BlendRegs {
 };
 
 struct BgAffineRegs {
-    u16 bg2pa;
-    u16 bg2pb;
-    u16 bg2pc;
-    u16 bg2pd;
-    u32 bg2x;
-    u32 bg2y;
-    u16 bg3pa;
-    u16 bg3pb;
-    u16 bg3pc;
-    u16 bg3pd;
-    u32 bg3x;
-    u32 bg3y;
+    /* 0x00 */ u16 bg2pa;
+    /* 0x02 */ u16 bg2pb;
+    /* 0x04 */ u16 bg2pc;
+    /* 0x06 */ u16 bg2pd;
+    /* 0x08 */ u32 bg2x;
+    /* 0x0C */ u32 bg2y;
+    /* 0x10 */ u16 bg3pa;
+    /* 0x12 */ u16 bg3pb;
+    /* 0x14 */ u16 bg3pc;
+    /* 0x16 */ u16 bg3pd;
+    /* 0x18 */ u32 bg3x;
+    /* 0x1C */ u32 bg3y;
 };
 
 // TODO: Find better place for this

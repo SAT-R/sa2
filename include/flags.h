@@ -3,8 +3,9 @@
 
 #include "global.h"
 
-// Needs a better name
-#define FLAGS_UPDATE_SPRITE_PALETTES 0x2
+// used by 'animCmd_GetPalette_COPY' (0x08004314 in SA2)
+#define FLAGS_UPDATE_BACKGROUND_PALETTES 0x1
+#define FLAGS_UPDATE_SPRITE_PALETTES     0x2
 
 #define FLAGS_EXECUTE_HBLANK_CALLBACKS 0x8
 

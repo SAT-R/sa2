@@ -143,10 +143,10 @@ void CreateMultiplayerResultsScreen(u8 mode)
 
     gUnknown_03004D80[3] = 0;
 
-    gUnknown_03002280[12] = 0;
-    gUnknown_03002280[13] = 0;
-    gUnknown_03002280[14] = 0xFF;
-    gUnknown_03002280[15] = 0x40;
+    gUnknown_03002280[3][0] = 0;
+    gUnknown_03002280[3][1] = 0;
+    gUnknown_03002280[3][2] = 0xFF;
+    gUnknown_03002280[3][3] = 0x40;
 
     DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
     t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0,

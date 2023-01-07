@@ -219,7 +219,7 @@ extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
 
 union Unk_03002E60 *gUnknown_03002260;
-extern u8 gUnknown_03002280[16];
+extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
 extern void *gUnknown_030022AC;
 extern void *gUnknown_030022C0;

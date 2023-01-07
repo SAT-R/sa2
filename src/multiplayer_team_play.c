@@ -101,6 +101,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     lang = gLoadedSaveGame->unk6;
     if (lang > NUM_LANGUAGES) {
+        // NOTE(Jace): LANG_ENGLISH in the PAL version
         lang = LANG_JAPANESE;
     }
 
@@ -127,10 +128,10 @@ void CreateMultiplayerTeamPlayScreen(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
     gUnknown_03004D80[2] = 0;
-    gUnknown_03002280[8] = 0;
-    gUnknown_03002280[9] = 0;
-    gUnknown_03002280[10] = 0xff;
-    gUnknown_03002280[11] = 32;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xff;
+    gUnknown_03002280[2][3] = 32;
 
     t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0,
                    NULL);
@@ -351,10 +352,10 @@ static void sub_805CC34(void)
                     Background *background = &teamPlayScreen->unk290;
 
                     gUnknown_03004D80[2] = 0;
-                    gUnknown_03002280[8] = 0;
-                    gUnknown_03002280[9] = 0;
-                    gUnknown_03002280[10] = 0xFF;
-                    gUnknown_03002280[11] = 32;
+                    gUnknown_03002280[2][0] = 0;
+                    gUnknown_03002280[2][1] = 0;
+                    gUnknown_03002280[2][2] = 0xFF;
+                    gUnknown_03002280[2][3] = 32;
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
@@ -396,10 +397,10 @@ static void sub_805CC34(void)
                 background = &teamPlayScreen->unk290;
 
                 gUnknown_03004D80[2] = 0;
-                gUnknown_03002280[8] = 0;
-                gUnknown_03002280[9] = 0;
-                gUnknown_03002280[10] = 0xFF;
-                gUnknown_03002280[11] = 32;
+                gUnknown_03002280[2][0] = 0;
+                gUnknown_03002280[2][1] = 0;
+                gUnknown_03002280[2][2] = 0xFF;
+                gUnknown_03002280[2][3] = 32;
 
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                 background->graphics.anim = 0;

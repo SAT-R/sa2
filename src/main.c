@@ -54,7 +54,7 @@ union Unk_03002E60 *gUnknown_03002260 = NULL;
 u32 gFrameCount = 0;
 u16 gWinRegs[6] ALIGNED(16) = {};
 s32 gNumTasks = 0;
-u8 gUnknown_03002280[] = {};
+u8 gUnknown_03002280[4][4] = {};
 u16 gInput = 0;
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
 void *gUnknown_030022AC = NULL;
@@ -205,7 +205,7 @@ static void GameInit(void)
     gVramGraphicsCopyCursor = 0;
     gVramGraphicsCopyQueueIndex = 0;
 
-    DmaFill32(3, 0, gUnknown_03002280, 0x10);
+    DmaFill32(3, 0, gUnknown_03002280, sizeof(gUnknown_03002280));
 
     // TODO: sort out this type
     *(u32 *)gUnknown_03004D80 = 0;

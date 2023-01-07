@@ -6,6 +6,8 @@
 
 #define AnimCommandSizeInWords(_structType) ((sizeof(_structType)) / sizeof(s32))
 
+typedef s32 (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
+
 typedef struct {
     /* 0x00 */ s32 cmdId; // -2
 
@@ -79,14 +81,40 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 cmdId; // -11
 
-    /* 0x04 */ s32 unk4; // the logic of animCmd_11 suggests that only values of 0-3 make
-                         // sense here.
-} ACmd_11;
+    /* 0x04 */ s32 priority;
+} ACmd_SetSpritePriority;
 
 typedef struct {
     /* 0x00 */ s32 cmdId; // -12
 
     /* 0x04 */ s32 unk4;
 } ACmd_12;
+
+typedef struct {
+    // number of frames this will be displayed
+    s32 delay;
+
+    // frameId of this animation that should be displayed
+    s32 index;
+} ACmd_ShowFrame;
+
+typedef union {
+    s32 id;
+
+    ACmd_GetTiles tiles;
+    ACmd_GetPalette pal;
+    ACmd_JumpBack jump;
+    ACmd_4 end;
+    ACmd_PlaySoundEffect sfx;
+    ACmd_6 _6;
+    ACmd_TranslateSprite translate;
+    ACmd_8 _8;
+    ACmd_SetIdAndVariant setAnimId;
+    ACmd_10 _10;
+    ACmd_SetSpritePriority _11;
+    ACmd_12 _12;
+
+    ACmd_ShowFrame show;
+} ACmd;
 
 #endif // GUARD_ANIMATION_COMMANDS_H
