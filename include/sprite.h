@@ -90,6 +90,8 @@ typedef struct {
     /* 0x2F */ s8 unk7;
 } Sprite_UNK28;
 
+#define SPRITE_BF_GET_BG_ID(sprite) (((sprite)->unk10 & 0x18000) >> 15)
+
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
@@ -113,7 +115,6 @@ typedef struct {
 
     /* 0x14 */ u16 unk14; // animation cursor
 
-    // TODO: should be signed
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 

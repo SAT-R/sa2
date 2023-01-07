@@ -236,7 +236,7 @@ extern u8 gVramGraphicsCopyQueueIndex;
 extern u16 gUnknown_03002A8C;
 extern u8 gUnknown_03002AE0;
 extern u8 gUnknown_03002AE4;
-extern u8 gUnknown_03004D10[0x40];
+extern Sprite *gUnknown_03004D10[16];
 extern u8 gUnknown_03004D50;
 extern void *gUnknown_03004D54;
 extern u16 gUnknown_03004D58;

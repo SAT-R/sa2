@@ -135,6 +135,18 @@ struct BgAffineRegs {
     /* 0x1C */ u32 bg3y;
 };
 
+// Values to be passed top the affine registers
+// (used by BG2/BG3 in affine screen modes)
+typedef struct {
+    /* 0x00 */ u16 pa, pb, pc, pd;
+    /* 0x08 */ u32 x, y;
+} BgAffineReg;
+
+/*** TODO: Replace 'BgAffineRegs' with this! ***/
+typedef struct {
+    /* 0x00 */ BgAffineReg regs[2];
+} BgAffineRegs_Alt;
+
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8 vcount);
 typedef void (*IntrFunc)(void);

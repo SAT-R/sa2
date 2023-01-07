@@ -68,9 +68,49 @@ s32 animCmd_6_COPY(void *cursor, Sprite *sprite)
     return 1;
 }
 
-NONMATCH("asm/non_matching/sprite__sub_8003914.inc", void sub_8003914(Sprite *sprite)) {
+void sub_8003914(Sprite *sprite)
+{
+    SpriteOffset *dims;
+    gUnknown_03004D10[gUnknown_03005390] = sprite;
+    gUnknown_03005390++;
+
+    if (sprite->dimensions != (void *)-1) {
+        u32 bgId;
+
+        dims = sprite->dimensions;
+        bgId = SPRITE_BF_GET_BG_ID(sprite);
+        // Potential UB:
+        //     gDispCnt 'Mode' is an int, not a bitfield!
+        if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {
+            // __sub_8003954
+            BgAffineRegs_Alt *affineRegs;
+            s32 affineX, affineY;
+            s32 posX, posY;
+
+            posX = dims->offsetX - sprite->x;
+            affineX = Mod(posX, 16);
+            // TODO: Remove this cast after replacing 'BgAffineRegs'
+            affineRegs = (BgAffineRegs_Alt *)&gBgAffineRegs;
+            affineRegs->regs[bgId - 2].x = Q_24_8(affineX);
+
+            posY = dims->offsetY - sprite->y;
+            affineY = Mod(posY, 8);
+            affineRegs->regs[bgId - 2].y = Q_24_8(affineY);
+        } else {
+            // _080039A4
+            s32 scrollX, scrollY;
+            s32 posX, posY;
+
+            posX = dims->offsetX - sprite->x;
+            scrollX = Mod(posX, 16);
+            gBgScrollRegs[bgId][0] = scrollX;
+
+            posY = dims->offsetY - sprite->y;
+            scrollY = Mod(posY, 8);
+            gBgScrollRegs[bgId][1] = scrollY;
+        }
+    }
 }
-END_NONMATCH
 
 // Some VBlank function
 NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", u32 sub_80039E4(void)) { }
@@ -373,10 +413,10 @@ s32 sub_8004418(s16 x, s16 y)
             y *= Q_24_8(0.5);
             if (x == 0) {
                 // _0800447C
-                fraction = (s32)y;
+                fraction = y;
             } else {
                 // _08004480
-                fraction = (s32)((s32)y / (s32)x);
+                fraction = y / x;
             }
         } else {
             // _08004488
@@ -384,9 +424,9 @@ s32 sub_8004418(s16 x, s16 y)
 
             x *= Q_24_8(0.5);
             if (y == 0) {
-                fraction = (s32)x;
+                fraction = x;
             } else {
-                fraction = (s32)((s32)x / (s32)y);
+                fraction = x / y;
             }
         }
 
