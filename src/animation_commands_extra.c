@@ -19,7 +19,6 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-#if 1
 // Differences to sub_8004558:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable
@@ -90,7 +89,6 @@ s32 sub_80036E0(Sprite *sprite)
     }
     return 1;
 }
-#endif
 
 // (-1)
 // No differences to animCmd_GetTiles
