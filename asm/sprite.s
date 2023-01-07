@@ -1481,16 +1481,17 @@ _0800362C: .4byte REG_VCOUNT
 _08003630: .4byte gUnknown_03002AE4
 _08003634: .4byte gUnknown_0300287C
 
+.if 0
 	thumb_func_start sub_8003638
 sub_8003638: @ 0x08003638
 	push {r4, r5, r6, lr}
-	adds r4, r0, #0
+	adds r4, r0, #0        @ r4 = bg      
 	ldrh r0, [r4, #0x1c]
 	ldr r1, _08003694 @ =gUnknown_03002260
 	ldr r1, [r1]
 	lsls r0, r0, #2
 	adds r0, r0, r1
-	ldr r3, [r0]
+	ldr r3, [r0]        @ r3 = header
 	ldrb r0, [r3, #6]
 	cmp r0, #0
 	beq _080036D0
@@ -1506,8 +1507,8 @@ sub_8003638: @ 0x08003638
 	lsrs r0, r0, #0x18
 	cmp r1, r0
 	bhi _080036D0
-	strb r6, [r2]
-	subs r2, #1
+	strb r6, [r2]   @ r2 = bg ->unk2C
+	subs r2, #1     @ r2 = bg ->unk2B
 	ldrb r0, [r2]
 	adds r0, #1
 	strb r0, [r2]
@@ -1570,3 +1571,4 @@ _080036D0:
 	.align 2, 0
 _080036D8: .4byte gVramGraphicsCopyQueue
 _080036DC: .4byte gVramGraphicsCopyQueueIndex
+.endif

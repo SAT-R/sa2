@@ -19,6 +19,53 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
+#if 1
+void sub_8003638(Background *bg)
+{
+    struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
+    if (header->unk6) {
+        if (header->unk7 <= ++bg->unk2C) {
+            u32 unk4;
+
+            bg->unk2C = 0;
+
+            if (header->unk6 <= ++bg->unk2B)
+                bg->unk2B = 0;
+
+            // _0800367A
+            unk4 = header->unk4;
+
+            if (!(bg->unk2E & 0x200)) {
+                if (bg->unk2B == 0) {
+                    bg->graphics.src = header->Tileset;
+                } else {
+                    u8 *ts = header->Tileset;
+                    u16 unkC = header->unkC;
+                    ts += unkC;
+                    ts += (bg->unk2B - 1) * unk4;
+                    bg->graphics.src = ts;
+                }
+            } else {
+                // 080036AA
+                u8 *ts = bg->graphics.dest;
+                ts += header->unkC;
+                ts += (bg->unk2B * unk4);
+                bg->graphics.src = ts;
+            }
+            // _080036B8
+            { // TODO: Create: Graphics-Copy-Queue-Count = 32
+                u32 queueIndex;
+                bg->graphics.size = unk4;
+                gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
+                queueIndex = gVramGraphicsCopyQueueIndex + 1;
+                queueIndex %= 32;
+                gVramGraphicsCopyQueueIndex = queueIndex;
+            }
+        }
+    }
+}
+#endif
+
 // Differences to sub_8004558:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable
