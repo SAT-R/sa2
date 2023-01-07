@@ -107,7 +107,7 @@ HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 u8 gIwramHeap[] = {};
 EWRAM_DATA u8 gEwramHeap[] = {};
 
-Sprite *gUnknown_03004D10[16] ALIGNED(16) = {};
+Sprite *gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
 void *gUnknown_03004D54 = NULL;
 u16 gUnknown_03004D58 ALIGNED(4) = 0;
