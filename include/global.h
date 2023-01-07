@@ -101,6 +101,12 @@
 // with for the calculation
 #define GBA_FRAMES_PER_SECOND 60
 
+// TODO: fix casts here(?)
+#define XOR_SWAP(a, b)                                                                  \
+    a ^= (u8)b;                                                                         \
+    b ^= (u8)a;                                                                         \
+    a = ((u8)b ^ (u8)a);
+
 // TODO: fix casts here
 #define SWAP_AND_NEGATE(a, b)                                                           \
     a ^= (u8)b;                                                                         \
@@ -128,6 +134,19 @@ struct BgAffineRegs {
     /* 0x18 */ u32 bg3x;
     /* 0x1C */ u32 bg3y;
 };
+
+// Values to be passed top the affine registers
+// (used by BG2/BG3 in affine screen modes)
+typedef struct {
+    /* 0x00 */ u16 pa, pb, pc, pd;
+    /* 0x08 */ u32 x, y;
+} BgAffineReg;
+
+/*** TODO: Replace 'BgAffineRegs' with this! ***/
+// Should we introduce "#define NUM_AFFINE_BACKGROUNDS 2"?
+typedef struct {
+    /* 0x00 */ BgAffineReg regs[2];
+} BgAffineRegs_Alt;
 
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8 vcount);

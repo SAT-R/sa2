@@ -197,6 +197,11 @@ extern struct BgAffineRegs gBgAffineRegs;
 extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];
+
+// TODO: Turn this into a struct-array:
+//       [4]{s16 x, s16 y}
+//       Should we introduce a
+//       "#define NUM_BACKGROUNDS 4" in gba/defines.h?
 extern s16 gBgScrollRegs[4][2];
 
 extern OamData gUnknown_030022C8;

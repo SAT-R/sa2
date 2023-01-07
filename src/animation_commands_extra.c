@@ -15,6 +15,180 @@ extern u8 gVramGraphicsCopyQueueIndex;
 extern struct GraphicsData *gVramGraphicsCopyQueue[];
 
 extern const AnimationCommandFunc animCmdTable[];
+extern const AnimationCommandFunc animCmdTable_2[];
+
+#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
+
+// Differences to sub_8004558:
+// - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
+// - Uses animCmdTable_2 instead of animCmdTable
+s32 sub_80036E0(Sprite *sprite)
+{
+    ACmd **variants;
+    ACmd *script;
+    ACmd *cmd;
+
+    if (sprite->unk10 & 0x4000)
+        return 0;
+
+    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+
+    if (sprite->unk1C > 0)
+        sprite->unk1C -= 16 * sprite->unk22;
+    else {
+        // _080045B8
+        s32 ret;
+        ACmd *cmd;
+        ACmd *script;
+        ACmd **variants;
+
+        // Handle all the "regular" Animation commands with an ID < 0
+        variants = gUnknown_03002794->animations[sprite->graphics.anim];
+        script = variants[sprite->variant];
+        cmd = ReadInstruction(script, sprite->unk14);
+        while (cmd->id < 0) {
+            ret = animCmdTable_2[~cmd->id](cmd, sprite);
+            if (ret != 1) {
+#ifndef NON_MATCHING
+                register ACmd *newScript asm("r1");
+#else
+                ACmd *newScript;
+#endif
+                if (ret != -1) {
+                    return ret;
+                }
+
+                // animation has changed
+                variants = gUnknown_03002794->animations[sprite->graphics.anim];
+                newScript = variants[sprite->variant];
+                // reset cursor
+                sprite->unk14 = 0;
+                // load the new script
+                script = newScript;
+            }
+            cmd = ReadInstruction(script, sprite->unk14);
+        }
+        // _08004628
+
+        // Display the image 'index' for 'delay' frames
+        sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        sprite->unk1C -= sprite->unk22 * 16;
+        {
+            s32 frame = ((ACmd_ShowFrame *)cmd)->index;
+            if (frame != -1) {
+                const struct SpriteTables *sprTables = gUnknown_03002794;
+
+                sprite->dimensions
+                    = &sprTables->dimensions[sprite->graphics.anim][frame];
+            } else {
+                sprite->dimensions = (void *)-1;
+            }
+        }
+
+        sprite->unk14 += 2;
+    }
+    return 1;
+}
+
+// (-1)
+// No differences to animCmd_GetTiles
+s32 animCmd_GetTiles_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+
+    if ((sprite->unk10 & 0x80000) == 0) {
+        if (cmd->tileIndex < 0) {
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+        } else {
+            sprite->graphics.src
+                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+        }
+
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &sprite->graphics;
+        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
+    }
+
+    return 1;
+}
+
+// (-6)
+// Differences to animCmd_6:
+// - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
+s32 animCmd_6_COPY(void *cursor, Sprite *sprite)
+{
+    ACmd_6 *cmd = (ACmd_6 *)cursor;
+    s32 r3 = cmd->unk4.unk0 & 0xF;
+    sprite->unk14 += AnimCommandSizeInWords(ACmd_6);
+
+    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3].unk0, 8);
+
+    if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
+        && (cmd->unk4.unk7 == 0)) {
+        sprite->unk28[r3].unk0 = -1;
+    } else {
+        if (sprite->unk10 & 0x00000800) {
+            XOR_SWAP(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
+        }
+
+        if (sprite->unk10 & 0x00000400) {
+            XOR_SWAP(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
+        }
+    }
+
+    return 1;
+}
+
+void sub_8003914(Sprite *sprite)
+{
+    SpriteOffset *dims;
+    gUnknown_03004D10[gUnknown_03005390] = sprite;
+    gUnknown_03005390++;
+
+    if (sprite->dimensions != (void *)-1) {
+        u32 bgId;
+
+        dims = sprite->dimensions;
+        bgId = SPRITE_BF_GET_BG_ID(sprite);
+        // Potential UB:
+        //     gDispCnt 'Mode' is an int, not a bitfield!
+        if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {
+            // __sub_8003954
+            BgAffineRegs_Alt *affineRegs;
+            s32 affineX, affineY;
+            s32 posX, posY;
+
+            posX = dims->offsetX - sprite->x;
+            affineX = Mod(posX, 16);
+            // TODO: Remove this cast after replacing 'BgAffineRegs'
+            affineRegs = (BgAffineRegs_Alt *)&gBgAffineRegs;
+            affineRegs->regs[bgId - 2].x = Q_24_8(affineX);
+
+            posY = dims->offsetY - sprite->y;
+            affineY = Mod(posY, 8);
+            affineRegs->regs[bgId - 2].y = Q_24_8(affineY);
+        } else {
+            // _080039A4
+            s32 scrollX, scrollY;
+            s32 posX, posY;
+
+            posX = dims->offsetX - sprite->x;
+            scrollX = Mod(posX, 16);
+            gBgScrollRegs[bgId][0] = scrollX;
+
+            posY = dims->offsetY - sprite->y;
+            scrollY = Mod(posY, 8);
+            gBgScrollRegs[bgId][1] = scrollY;
+        }
+    }
+}
+
+// Some VBlank function
+NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", u32 sub_80039E4(void)) { }
+END_NONMATCH
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
@@ -313,10 +487,10 @@ s32 sub_8004418(s16 x, s16 y)
             y *= Q_24_8(0.5);
             if (x == 0) {
                 // _0800447C
-                fraction = (s32)y;
+                fraction = y;
             } else {
                 // _08004480
-                fraction = (s32)((s32)y / (s32)x);
+                fraction = y / x;
             }
         } else {
             // _08004488
@@ -324,9 +498,9 @@ s32 sub_8004418(s16 x, s16 y)
 
             x *= Q_24_8(0.5);
             if (y == 0) {
-                fraction = (s32)x;
+                fraction = x;
             } else {
-                fraction = (s32)((s32)x / (s32)y);
+                fraction = x / y;
             }
         }
 
@@ -379,20 +553,13 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
-
 s32 sub_8004558(Sprite *sprite)
 {
-    if (sprite->unk21 != sprite->variant || sprite->unk1E != sprite->graphics.anim) {
-        sprite->graphics.size = 0;
-        sprite->unk21 = sprite->variant;
-        sprite->unk1E = sprite->graphics.anim;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk10 &= ~0x4000;
-    }
+    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+
     if (sprite->unk10 & 0x4000)
         return 0;
+
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {

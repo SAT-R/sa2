@@ -12,7 +12,7 @@ MAKER_CODE := 78
 # Version
 BUILD_NAME := sa2
 TITLE      := SONICADVANC2
-GAME_CODE  := A2NE
+GAME_CODE  := A2N
 
 
 # Revision

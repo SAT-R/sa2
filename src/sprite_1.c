@@ -3,20 +3,20 @@
 #include "sprite.h"
 #include "flags.h"
 
-extern void animCmd_GetTiles_COPY(void);
-extern void animCmd_GetPalette_COPY(void);
-extern void animCmd_JumpBack_COPY(void);
-extern void animCmd_End_COPY(void);
-extern void animCmd_PlaySoundEffect_COPY(void);
-extern void animCmd_6_COPY(void);
-extern void animCmd_TranslateSprite_COPY(void);
-extern void animCmd_8_COPY(void);
-extern void animCmd_SetIdAndVariant_COPY(void);
-extern void animCmd_10_COPY(void);
-extern void animCmd_SetSpritePriority_COPY(void);
-extern void animCmd_12_COPY(void);
+extern s32 animCmd_GetTiles_COPY(void *, Sprite *);
+extern s32 animCmd_GetPalette_COPY(void *, Sprite *);
+extern s32 animCmd_JumpBack_COPY(void *, Sprite *);
+extern s32 animCmd_End_COPY(void *, Sprite *);
+extern s32 animCmd_PlaySoundEffect_COPY(void *, Sprite *);
+extern s32 animCmd_6_COPY(void *, Sprite *);
+extern s32 animCmd_TranslateSprite_COPY(void *, Sprite *);
+extern s32 animCmd_8_COPY(void *, Sprite *);
+extern s32 animCmd_SetIdAndVariant_COPY(void *, Sprite *);
+extern s32 animCmd_10_COPY(void *, Sprite *);
+extern s32 animCmd_SetSpritePriority_COPY(void *, Sprite *);
+extern s32 animCmd_12_COPY(void *, Sprite *);
 
-void *const gUnknown_08097A74[12] = {
+const AnimationCommandFunc animCmdTable_2[12] = {
     animCmd_GetTiles_COPY,          animCmd_GetPalette_COPY,
     animCmd_JumpBack_COPY,          animCmd_End_COPY,
     animCmd_PlaySoundEffect_COPY,   animCmd_6_COPY,

@@ -90,6 +90,20 @@ typedef struct {
     /* 0x2F */ s8 unk7;
 } Sprite_UNK28;
 
+#define SPRITE_BF_GET_BG_ID(sprite) (((sprite)->unk10 & 0x18000) >> 15)
+
+// TODO: Maybe rename this?
+#define SPRITE_MAYBE_SWITCH_ANIM(sprite)                                                \
+    if (((sprite)->unk21 != (sprite)->variant)                                          \
+        || ((sprite)->unk1E != (sprite)->graphics.anim)) {                              \
+        (sprite)->graphics.size = 0;                                                    \
+        (sprite)->unk21 = (sprite)->variant;                                            \
+        (sprite)->unk1E = (sprite)->graphics.anim;                                      \
+        (sprite)->unk14 = 0;                                                            \
+        (sprite)->unk1C = 0;                                                            \
+        (sprite)->unk10 &= ~0x4000;                                                     \
+    }
+
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
@@ -113,7 +127,6 @@ typedef struct {
 
     /* 0x14 */ u16 unk14; // animation cursor
 
-    // TODO: should be signed
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
@@ -124,7 +137,7 @@ typedef struct {
 
     /* 0x20 */ u8 variant;
 
-    /* 0x21 */ u8 unk21;
+    /* 0x21 */ u8 unk21; // prevVariant?
 
     // something to do with animation speed
     /* 0x22 */ u8 unk22;
@@ -175,7 +188,7 @@ void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine);
 
-void sub_80036E0(Sprite *);
+s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
 void sub_80047A0(u16, u16, u16, u16);
 
