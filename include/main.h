@@ -89,7 +89,7 @@ struct MapHeader {
     u8 unk7;
     void *Tileset;
     u16 unkC;
-    u16 unkD;
+    u16 unkE;
     u16 *Palette;
     u16 unk14;
     u16 unk16;

@@ -19,7 +19,6 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-#if 1
 void sub_8003638(Background *bg)
 {
     struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
@@ -39,14 +38,14 @@ void sub_8003638(Background *bg)
                     bg->graphics.src = header->Tileset;
                 } else {
                     u8 *ts = header->Tileset;
-                    u16 unkC = header->unkC;
+                    u32 unkC = *(u32 *)&header->unkC;
                     ts += unkC;
                     ts += (bg->unk2B - 1) * unk4;
                     bg->graphics.src = ts;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += header->unkC;
+                ts += *(u32 *)&header->unkC;
                 ts += (bg->unk2B * unk4);
                 bg->graphics.src = ts;
             }
@@ -61,7 +60,6 @@ void sub_8003638(Background *bg)
         }
     }
 }
-#endif
 
 // Differences to sub_8004558:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
