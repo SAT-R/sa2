@@ -3,6 +3,7 @@
 #include "task.h"
 #include "m4a.h"
 #include "sprite.h"
+#include "trig.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -152,4 +153,38 @@ void sub_8036E08(void)
         sprite->focused = 0;
         sprite->unk10 = 0;
     }
+}
+
+void sub_8036FE4(void);
+
+void sub_8036EF8(void)
+{
+    u8 i;
+    s32 pos[2];
+    s32 temp[2];
+    Sprite *sprite;
+    UNK_8036E08 *unkE08 = TaskGetStructPtr(gCurTask);
+
+    for (i = 0; i < 7; i++) {
+        sprite = &unkE08->unk38[i];
+        unkE08->unk8[i] += 5;
+        unkE08->unk18[i] += unkE08->unk8[i];
+
+        temp[0] = ((unkE08->unk18[i] * (i + 0xF)) >> 9) & ONE_CYCLE;
+        temp[1] = ((unkE08->unk18[i] * (i + 0xD)) >> 9) & ONE_CYCLE;
+
+        pos[0] = (COS(temp[0]) * (0x20 - unkE08->unk34)) >> 0xE;
+        pos[1] = (SIN(temp[1]) * (0x20 - unkE08->unk34)) >> 0x10;
+
+        sprite->x = pos[0] + 0x78;
+        sprite->y = pos[1] + 100;
+
+        sub_8004558(sprite);
+        sub_80051E8(sprite);
+    }
+
+    if (--unkE08->unk34 == 0) {
+        unkE08->unk34 = 0x168;
+        gCurTask->main = sub_8036FE4;
+    };
 }
