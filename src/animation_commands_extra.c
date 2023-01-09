@@ -19,7 +19,7 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-void sub_8003638(Background *bg)
+void updateBgAnimationTiles(Background *bg)
 {
     struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
     if (header->animFrameCount) {

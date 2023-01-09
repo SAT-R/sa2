@@ -195,6 +195,6 @@ s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
 void sub_80047A0(u16, u16, u16, u16);
 
-void sub_8003638(Background *);
+void updateBgAnimationTiles(Background *);
 
 #endif
