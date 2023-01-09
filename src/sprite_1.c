@@ -28,13 +28,15 @@ const AnimationCommandFunc animCmdTable_2[12] = {
 void sub_8002A3C(Background *background)
 {
     struct MapHeader_Full *r6 = gUnknown_03002260[background->unk1C].y;
-    u32 a;
-    u16 *c;
+    u16 *pal;
+    u32 palSize;
+    u16 gfxSize;
 
-    background->unk14 = r6->unk0.X_Tiles;
-    background->unk16 = r6->unk0.Y_Tiles;
-    background->graphics.src = r6->unk0.Tileset;
-    background->graphics.size = r6->unk0.unkC;
+    background->unk14 = r6->unk0.xTiles;
+    background->unk16 = r6->unk0.yTiles;
+    background->graphics.src = r6->unk0.tileset;
+    gfxSize = r6->unk0.tilesetSize;
+    background->graphics.size = gfxSize;
 
     if (!(background->unk2E & 8)) {
         gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
@@ -42,22 +44,22 @@ void sub_8002A3C(Background *background)
         background->unk2E ^= 8;
     }
 
-    c = r6->unk0.Palette;
-    a = r6->unk0.unk16;
-    background->unk2A = r6->unk0.unk14;
+    pal = r6->unk0.palette;
+    palSize = r6->unk0.palLength;
+    background->unk2A = r6->unk0.palOffset;
 
     if (!(background->unk2E & 0x10)) {
-        DmaCopy16(3, c, gBgPalette + background->unk2A, a * 2);
+        DmaCopy16(3, pal, gBgPalette + background->unk2A, palSize * sizeof(*pal));
         gFlags |= 1;
         background->unk2E ^= 0x10;
     }
 
-    background->unk10 = r6->unk0.Metatiles;
+    background->unk10 = r6->unk0.metatiles;
 
     if (background->unk2E & 0x40) { // Can we actually trigger this condition?
-        background->unk38 = r6->unk0.Map;
-        background->unk3C = r6->Map_Width;
-        background->unk3E = r6->Map_Height;
+        background->unk38 = r6->unk0.map;
+        background->unk3C = r6->mapWidth;
+        background->unk3E = r6->mapHeight;
     }
 
     gUnknown_03001800[gUnknown_0300287C] = background;

@@ -22,39 +22,39 @@ extern const AnimationCommandFunc animCmdTable_2[];
 void sub_8003638(Background *bg)
 {
     struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
-    if (header->unk6) {
-        if (header->unk7 <= ++bg->unk2C) {
-            u32 unk4;
+    if (header->animFrameCount) {
+        if (header->animDelay <= ++bg->animDelayCounter) {
+            u32 animTileSize;
 
-            bg->unk2C = 0;
+            bg->animDelayCounter = 0;
 
-            if (header->unk6 <= ++bg->unk2B)
-                bg->unk2B = 0;
+            if (header->animFrameCount <= ++bg->animFrameCounter)
+                bg->animFrameCounter = 0;
 
-            unk4 = header->unk4;
+            animTileSize = header->animTileSize;
 
             if (!(bg->unk2E & 0x200)) {
-                if (bg->unk2B == 0) {
-                    bg->graphics.src = header->Tileset;
+                if (bg->animFrameCounter == 0) {
+                    bg->graphics.src = header->tileset;
                 } else {
-                    u8 *ts = header->Tileset;
-                    u32 unkC = *(u32 *)&header->unkC;
-                    ts += unkC;
-                    ts += (bg->unk2B - 1) * unk4;
+                    u8 *ts = header->tileset;
+                    u32 size = header->tilesetSize;
+                    ts += size;
+                    ts += (bg->animFrameCounter - 1) * animTileSize;
                     bg->graphics.src = ts;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += *(u32 *)&header->unkC;
-                ts += (bg->unk2B * unk4);
+                ts += header->tilesetSize;
+                ts += (bg->animFrameCounter * animTileSize);
                 bg->graphics.src = ts;
             }
-            { // TODO: Create: Graphics-Copy-Queue-Count = 32
+            {
                 u32 queueIndex;
-                bg->graphics.size = unk4;
+                bg->graphics.size = animTileSize;
                 gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
                 queueIndex = gVramGraphicsCopyQueueIndex + 1;
-                queueIndex %= 32;
+                queueIndex %= ARRAY_COUNT(gVramGraphicsCopyQueue);
                 gVramGraphicsCopyQueueIndex = queueIndex;
             }
         }

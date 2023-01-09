@@ -48,10 +48,13 @@ typedef struct {
     u16 unk26;
     u16 unk28;
     u8 unk2A;
-    u8 unk2B;
-    u8 unk2C;
+    /* 0x2B */ u8 animFrameCounter;
+    /* 0x2C */ u8 animDelayCounter;
 
     u8 unk2D;
+
+    // Flags
+    // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
     u16 unk30;
     u16 unk32;
