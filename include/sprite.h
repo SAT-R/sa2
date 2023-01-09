@@ -48,10 +48,13 @@ typedef struct {
     u16 unk26;
     u16 unk28;
     u8 unk2A;
-    u8 unk2B;
-    u8 unk2C;
+    /* 0x2B */ u8 animFrameCounter;
+    /* 0x2C */ u8 animDelayCounter;
 
     u8 unk2D;
+
+    // Flags
+    // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
     u16 unk30;
     u16 unk32;
@@ -178,7 +181,7 @@ void sub_80051E8(Sprite *);
 void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
-u32 sub_8002B20(void);
+bool32 sub_8002B20(void);
 void DrawToOamBuffer(void);
 OamData *sub_80058B4(u8 size);
 
@@ -192,6 +195,6 @@ s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
 void sub_80047A0(u16, u16, u16, u16);
 
-void sub_8003638(Background *);
+void UpdateBgAnimationTiles(Background *);
 
 #endif

@@ -19,6 +19,48 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
+void UpdateBgAnimationTiles(Background *bg)
+{
+    struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
+    if (header->animFrameCount) {
+        if (header->animDelay <= ++bg->animDelayCounter) {
+            u32 animTileSize;
+
+            bg->animDelayCounter = 0;
+
+            if (header->animFrameCount <= ++bg->animFrameCounter)
+                bg->animFrameCounter = 0;
+
+            animTileSize = header->animTileSize;
+
+            if (!(bg->unk2E & 0x200)) {
+                if (bg->animFrameCounter == 0) {
+                    bg->graphics.src = header->tileset;
+                } else {
+                    u8 *ts = header->tileset;
+                    u32 size = header->tilesetSize;
+                    ts += size;
+                    ts += (bg->animFrameCounter - 1) * animTileSize;
+                    bg->graphics.src = ts;
+                }
+            } else {
+                u8 *ts = bg->graphics.dest;
+                ts += header->tilesetSize;
+                ts += (bg->animFrameCounter * animTileSize);
+                bg->graphics.src = ts;
+            }
+            {
+                u32 queueIndex;
+                bg->graphics.size = animTileSize;
+                gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
+                queueIndex = gVramGraphicsCopyQueueIndex + 1;
+                queueIndex %= ARRAY_COUNT(gVramGraphicsCopyQueue);
+                gVramGraphicsCopyQueueIndex = queueIndex;
+            }
+        }
+    }
+}
+
 // Differences to sub_8004558:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable
@@ -36,7 +78,6 @@ s32 sub_80036E0(Sprite *sprite)
     if (sprite->unk1C > 0)
         sprite->unk1C -= 16 * sprite->unk22;
     else {
-        // _080045B8
         s32 ret;
         ACmd *cmd;
         ACmd *script;
@@ -68,7 +109,6 @@ s32 sub_80036E0(Sprite *sprite)
             }
             cmd = ReadInstruction(script, sprite->unk14);
         }
-        // _08004628
 
         // Display the image 'index' for 'delay' frames
         sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
@@ -193,10 +233,10 @@ END_NONMATCH
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  struct BgAffineRegs *affine)
 {
-    affine->bg2pa = ((gSineTable[p0 + 256] >> 6) * (s16)Div(0x10000, p1)) >> 8;
-    affine->bg2pb = ((gSineTable[p0] >> 6) * (s16)Div(0x10000, p1)) >> 8;
-    affine->bg2pc = ((-gSineTable[p0] >> 6) * (s16)Div(0x10000, p2)) >> 8;
-    affine->bg2pd = ((gSineTable[p0 + 256] >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->bg2pa = ((COS(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->bg2pb = ((SIN(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->bg2pc = ((-SIN(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->bg2pd = ((COS(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
 
     p5 *= -1;
     p6 *= -1;

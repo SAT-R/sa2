@@ -82,25 +82,24 @@ union MultiSioData {
 
 // Used for the two background layers.
 struct MapHeader {
-    u16 X_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
-    u16 Y_Tiles; // Tiles inside Metatiles, usually 12 (0x0C)
-    u16 unk4;
-    u8 unk6;
-    u8 unk7;
-    void *Tileset;
-    u16 unkC;
-    u16 unkD;
-    u16 *Palette;
-    u16 unk14;
-    u16 unk16;
-    const u16 *Metatiles;
-    const u16 *Map;
+    /* 0x00 */ u16 xTiles; // Tiles inside Metatiles, usually 12 (0x0C)
+    /* 0x02 */ u16 yTiles; // Tiles inside Metatiles, usually 12 (0x0C)
+    /* 0x04 */ u16 animTileSize;
+    /* 0x06 */ u8 animFrameCount;
+    /* 0x07 */ u8 animDelay;
+    /* 0x08 */ void *tileset;
+    /* 0x0C */ u32 tilesetSize;
+    /* 0x10 */ u16 *palette;
+    /* 0x14 */ u16 palOffset;
+    /* 0x16 */ u16 palLength;
+    /* 0x18 */ const u16 *metatiles;
+    /* 0x1C */ const u16 *map;
 }; /* size = 0x20 */
 
 struct MapHeader_Full {
     struct MapHeader unk0;
-    u16 Map_Width; // in Metatiles
-    u16 Map_Height; // in Metatiles
+    u16 mapWidth; // in Metatiles
+    u16 mapHeight; // in Metatiles
 };
 
 union __attribute__((transparent_union)) Unk_03002E60 {
