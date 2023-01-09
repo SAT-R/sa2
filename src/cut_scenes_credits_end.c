@@ -242,7 +242,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk2A = 0;
         background->unk2E = 0;
         sub_8002A3C(background);
-        updateBgAnimationTiles(background);
+        UpdateBgAnimationTiles(background);
     }
 
     if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING) {

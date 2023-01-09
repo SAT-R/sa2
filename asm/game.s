@@ -3631,7 +3631,7 @@ sub_801C708: @ 0x0801C708
 	adds r0, r4, #0
 	bl sub_8002A3C
 	adds r0, r4, #0
-	bl updateBgAnimationTiles
+	bl UpdateBgAnimationTiles
 	adds r4, #0x40
 	mov r1, r8
 	strh r6, [r1, #8]
@@ -4538,7 +4538,7 @@ _0801CE78:
 	adds r0, r4, #0
 	bl sub_8002A3C
 	adds r0, r4, #0
-	bl updateBgAnimationTiles
+	bl UpdateBgAnimationTiles
 	ldr r0, _0801CEDC @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xf

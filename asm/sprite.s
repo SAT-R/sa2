@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 1
 	thumb_func_start sub_8002B20
 sub_8002B20: @ 0x08002B20
 	push {r4, r5, r6, r7, lr}
@@ -22,7 +23,7 @@ sub_8002B20: @ 0x08002B20
 	ldrb r1, [r4]
 	cmp r2, r1
 	bne _08002B44
-	bl _08003616
+	bl sub_8002B20_return_1
 _08002B44:
 	ldr r0, _08002B60 @ =REG_DISPSTAT
 	ldrh r1, [r0]
@@ -31,7 +32,7 @@ _08002B44:
 	cmp r0, #0
 	bne _08002B64
 	movs r0, #0
-	bl _08003618
+	bl sub_8002B20_return
 	.align 2, 0
 _08002B58: .4byte gUnknown_03002AE4
 _08002B5C: .4byte gUnknown_0300287C
@@ -57,7 +58,7 @@ _08002B64:
 	ldr r0, [r6, #0x34]
 	cmp r1, r0
 	bne _08002B90
-	bl _0800360A
+	bl sub_8002B20_continue
 _08002B90:
 	ldrh r3, [r6, #0x14]
 	str r3, [sp]
@@ -77,11 +78,11 @@ _08002B90:
 	lsls r0, r5, #1
 	adds r0, r0, r1
 	ldrh r0, [r0]
-	lsrs r3, r0, #0xe
+	lsrs r3, r0, #14
 	movs r0, #0x80
-	lsls r0, r0, #0xd
+	lsls r0, r0, #13
 	lsls r0, r3
-	lsrs r0, r0, #0x10
+	lsrs r0, r0, #16
 	str r0, [sp, #0xc]
 	movs r7, #1
 	str r7, [sp, #8]
@@ -144,7 +145,7 @@ _08002C20:
 	mov r0, r8
 	muls r0, r7, r0
 	adds r7, r1, r0
-	ldrh r5, [r6, #0x28]
+	ldrh r5, [r6, #0x28]    @ r5 = bg->unk28
 	movs r1, #0x80
 	lsls r1, r1, #1
 	adds r0, r1, #0
@@ -180,12 +181,12 @@ _08002C46:
 	bne _08002C7C
 	bl _080035FA
 _08002C7C:
-	ldr r2, [sp]
-	adds r1, r2, #0
-	muls r1, r3, r1
+	ldr r2, [sp]        @ r2 = sp00
+	adds r1, r2, #0     @ r1 = r2
+	muls r1, r3, r1     @ r1 = sp00 * sp08
 	mov sb, r1
 	mov sl, r0
-_08002C86:
+_08002C86: @ loop
 	movs r3, #0
 	subs r5, #1
 	ldr r0, [sp, #0xc]
@@ -196,7 +197,7 @@ _08002C86:
 	movs r0, #0xc0
 	lsls r0, r0, #4
 	mov r8, r0
-_08002C9A:
+_08002C9A: @ inner loop
 	lsls r0, r3, #1
 	adds r1, r0, r7
 	mov ip, r1
@@ -1458,15 +1459,15 @@ _080035FA:
 	strh r0, [r6, #0x36]
 	ldr r3, _08003630 @ =gUnknown_03002AE4
 	ldr r4, _08003634 @ =gUnknown_0300287C
-_0800360A: @ 0x0800360A
+sub_8002B20_continue: @ 0x0800360A
 	ldrb r0, [r3]
 	ldrb r5, [r4]
 	cmp r0, r5
-	beq _08003616
+	beq sub_8002B20_return_1
 	bl _08002B44
-_08003616:
+sub_8002B20_return_1:
 	movs r0, #1
-_08003618:
+sub_8002B20_return:
 	add sp, #0x40
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -1480,3 +1481,4 @@ _08003628: .4byte 0x040000D4
 _0800362C: .4byte REG_VCOUNT
 _08003630: .4byte gUnknown_03002AE4
 _08003634: .4byte gUnknown_0300287C
+.endif

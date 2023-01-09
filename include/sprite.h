@@ -181,7 +181,7 @@ void sub_80051E8(Sprite *);
 void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
-u32 sub_8002B20(void);
+bool32 sub_8002B20(void);
 void DrawToOamBuffer(void);
 OamData *sub_80058B4(u8 size);
 
@@ -195,6 +195,6 @@ s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
 void sub_80047A0(u16, u16, u16, u16);
 
-void updateBgAnimationTiles(Background *);
+void UpdateBgAnimationTiles(Background *);
 
 #endif
