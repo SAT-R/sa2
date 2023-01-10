@@ -1716,8 +1716,6 @@ s32 sub_8085698(s32, s32, s32, s32, u8);
 
 void sub_8037438(u8);
 
-extern const u8 gUnknown_080D7838[][10];
-
 void sub_80393A4(void)
 {
     s32 temp1, temp2;
@@ -1736,18 +1734,11 @@ void sub_80393A4(void)
 
         for (i = 0; i < 0x20; i++) {
             if (intro->unk10[i] != 0) {
-#ifndef NON_MATCHING
-                UNUSED s32 unused = 8 * i;
-                do {
-#endif
-                    intro->unk30[i][0]
-                        = sub_8085698(intro->unk30[i][0], temp1, intro->unk4, 10,
-                                      gUnknown_080D7838[i][0] + 2);
-#ifndef NON_MATCHING
-                } while (0);
-#endif
+                intro->unk30[i][0] = sub_8085698(intro->unk30[i][0], temp1, intro->unk4,
+                                                 10, gUnknown_080D7830[i][4] + 2);
+
                 intro->unk30[i][1] = sub_8085698(intro->unk30[i][1], temp2, intro->unk4,
-                                                 10, gUnknown_080D7838[i][0] + 2);
+                                                 10, gUnknown_080D7830[i][4] + 2);
 
                 intro->unk130[i][0] -= (intro->unk130[i][0] >> 3);
                 intro->unk130[i][1] -= (intro->unk130[i][1] >> 3);
@@ -1790,82 +1781,216 @@ void sub_80393A4(void)
     sub_803959C(1);
 }
 
-// https://decomp.me/scratch/p7edf
-// void sub_803959C(u8 p1)
-// {
-//     u8 i;
-//     s32 temp1, temp2;
-//     Sprite *sprite;
-//     TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
-//     gBgScrollRegs[0][1] = intro->unkF + intro->unk0;
-//     gBgScrollRegs[1][1] = intro->unkF + intro->unk0;
-//     gBgScrollRegs[0][0] = intro->unkE;
-//     gBgScrollRegs[1][0] = intro->unkE;
+void sub_803959C(u8 p1)
+{
+    u8 i;
+    s32 pos[2];
+    Sprite *sprite;
+    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    gBgScrollRegs[0][1] = intro->unkF + intro->unk0;
+    gBgScrollRegs[1][1] = intro->unkF + intro->unk0;
+    gBgScrollRegs[0][0] = intro->unkE;
+    gBgScrollRegs[1][0] = intro->unkE;
 
-//     sub_8004558(&intro->unk1EC[0]);
-//     sub_8004558(&intro->unk1EC[1]);
-//     sub_8004558(&intro->unk1EC[2]);
+    sub_8004558(&intro->unk1EC[0]);
+    sub_8004558(&intro->unk1EC[1]);
+    sub_8004558(&intro->unk1EC[2]);
 
-//     temp1 = (intro->unk8 * 5) & ONE_CYCLE;
-//     temp2 = (intro->unk8 * 3) & ONE_CYCLE;
+    pos[0] = (intro->unk8 * 5) & ONE_CYCLE;
+    pos[1] = (intro->unk8 * 3) & ONE_CYCLE;
 
-//     if (p1 != 0) {
-//        for (i = 0; i < 32; i++) {
-//             if (intro->unk10[i] != 0) {
-//                 sprite = &intro->unk1EC[gUnknown_080D7838[i][0]];
+    if (p1 != 0) {
+        for (i = 0; i < 32; i++) {
+            if (intro->unk10[i] != 0) {
+                sprite = &intro->unk1EC[gUnknown_080D7830[i][4]];
 
-//                 intro->unk30[i][0] += intro->unk130[i][0];
-//                 intro->unk30[i][1] += intro->unk130[i][1];
+                intro->unk30[i][0] += intro->unk130[i][0];
+                intro->unk30[i][1] += intro->unk130[i][1];
 
-//                 intro->unk130[i][0] -= 0x28;
-//                 intro->unk130[i][1] -= 0x10;
+                intro->unk130[i][0] -= 0x28;
+                intro->unk130[i][1] -= 0x10;
 
-//                 sprite->x = intro->unk30[i][0] >> 8;
-//                 sprite->y = (intro->unk30[i][1] >> 8) - intro->unk0;
-//                 sprite->unk10 &= ~0x400;
-//                 sub_80051E8(sprite);
-//             }
-//         }
-//     } else {
-//          for (i = 0; i < 32; i++) {
-//             s32 unk30, unk34;
-//              s32 sin, cos;
-//             // temp1 &= ONE_CYCLE;
-//             // temp2 &= ONE_CYCLE;
-//             sprite = &intro->unk1EC[gUnknown_080D7838[i][0]];
-//             unk30 = intro->unk30[i][0];
-//             unk34 = intro->unk30[i][1];
+                sprite->x = intro->unk30[i][0] >> 8;
+                sprite->y = (intro->unk30[i][1] >> 8) - intro->unk0;
+                sprite->unk10 &= ~0x400;
+                sub_80051E8(sprite);
+            }
+        }
+    } else {
+        for (i = 0; i < 32; i++) {
+            s32 unk30[2];
+            sprite = &intro->unk1EC[gUnknown_080D7830[i][4]];
+            unk30[0] = intro->unk30[i][0];
+            unk30[1] = intro->unk30[i][1];
 
-//             intro->unk30[i][0] = (COS(temp2) * gUnknown_080D7830[i][2]) >> 4;
-//             intro->unk30[i][0] += gUnknown_080D7830[i][0] * 0x100;
+            intro->unk30[i][0] = (COS(pos[0]) * gUnknown_080D7830[i][2]) >> 4;
+            intro->unk30[i][0] = intro->unk30[i][0] + gUnknown_080D7830[i][0] * 0x100;
 
-//             intro->unk30[i][1] = (SIN(temp1) * gUnknown_080D7830[i][3]) >> 4;
-//             intro->unk30[i][1] += gUnknown_080D7830[i][1] * 0x100;
+            intro->unk30[i][1] = (SIN(pos[1]) * gUnknown_080D7830[i][3]) >> 4;
+            intro->unk30[i][1] = intro->unk30[i][1] + gUnknown_080D7830[i][1] * 0x100;
 
-//             intro->unk130[i][0] = (intro->unk30[i][0] - unk30);
-//             intro->unk130[i][1] = (intro->unk30[i][1] - unk34);
+            intro->unk130[i][0] = (intro->unk30[i][0] - unk30[0]);
+            intro->unk130[i][1] = (intro->unk30[i][1] - unk30[1]);
 
-//             sprite->x = intro->unk30[i][0] >> 8;
-//             sprite->y = (intro->unk30[i][1] >> 8) - intro->unk0;
+            sprite->x = intro->unk30[i][0] >> 8;
+            sprite->y = (intro->unk30[i][1] >> 8) - intro->unk0;
 
-//             if (intro->unk130[i][0] < 0) {
-//                 sprite->unk10 &= 0x400;
-//             } else {
-//                 sprite->unk10 |= 0x400;
-//             }
+            if (intro->unk130[i][0] < 0) {
+                sprite->unk10 &= ~0x400;
+            } else {
+                sprite->unk10 |= 0x400;
+            }
 
-//             sub_80051E8(sprite);
-//             temp2 = (temp2 - 0x40);
-//             temp1 = (temp1 - 0x40);
-//         }
-//     }
+            sub_80051E8(sprite);
+            pos[0] = (pos[0] - 0x40) & ONE_CYCLE;
+            pos[1] = (pos[1] - 0x40) & ONE_CYCLE;
+        }
+    }
 
-//     if (intro->unk1B0 != 0) {
-//         sprite = &intro->unk1BC;
-//         sprite->x = intro->unk1B4 >> 8;
-//         sprite->y = ((intro->unk1B8 >> 8) - intro->unk0) + intro->unkF;
+    if (intro->unk1B0 != 0) {
+        sprite = &intro->unk1BC;
+        sprite->x = intro->unk1B4 >> 8;
+        sprite->y = ((intro->unk1B8 >> 8) - intro->unk0) + intro->unkF;
 
-//         sub_8004558(sprite);
-//         sub_80051E8(sprite);
-//     }
-// }
+        sub_8004558(sprite);
+        sub_80051E8(sprite);
+    }
+}
+
+typedef struct {
+    Background bg1;
+    Background bg2;
+    Background bg3;
+} UNK_803986C;
+
+void sub_8039A38(void);
+void sub_803986C(void)
+{
+    struct Task *t;
+    Background *background;
+    UNK_803986C *unk86C;
+    gDispCnt = 0x1341;
+    gBgCntRegs[2] = 0x5c09;
+    gBgCntRegs[1] = 0x1e06;
+    gBgCntRegs[0] = 0x1f03;
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0x48;
+    gBgScrollRegs[1][0] = 0;
+    gBgScrollRegs[1][1] = 0x48;
+    gBgScrollRegs[2][0] = 0;
+    gBgScrollRegs[2][1] = 0;
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xff;
+    gUnknown_03002280[2][3] = 0x20;
+
+    t = TaskCreate(sub_8039A38, 0xC0, 0x8100, 0, NULL);
+    unk86C = TaskGetStructPtr(t);
+
+    background = &unk86C->bg1;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
+    background->unkC = BG_SCREEN_ADDR(31);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = 0x179;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x20;
+    background->unk28 = 0x20;
+    background->unk2A = 0;
+    background->unk2E = 0;
+    sub_8002A3C(background);
+
+    background = &unk86C->bg2;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    background->graphics.anim = 0;
+    background->unkC = BG_SCREEN_ADDR(30);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->unk1C = 0x17A;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x20;
+    background->unk28 = 0x20;
+    background->unk2A = 0;
+    background->unk2E = 1;
+    sub_8002A3C(background);
+}
+
+void sub_803997C(void)
+{
+    UNK_8037438 *unk438 = TaskGetStructPtr(gCurTask);
+
+    sub_8004558(&unk438->unk14);
+    sub_80051E8(&unk438->unk14);
+}
+
+void sub_80399A4(void)
+{
+    UNK_8037438 *unk438 = TaskGetStructPtr(gCurTask);
+
+    sub_8004558(&unk438->unk14);
+    sub_80051E8(&unk438->unk14);
+}
+
+void sub_80399CC(void)
+{
+    UNK_8037438 *unk438 = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &unk438->unk14;
+    sprite->x = unk438->unk8 >> 8;
+    sprite->y = (unk438->unkC >> 8) - gCamera.y;
+
+    sub_8004558(sprite);
+    sub_80051E8(sprite);
+}
+
+void sub_8039A10(void)
+{
+    UNK_8037438 *unk438 = TaskGetStructPtr(gCurTask);
+
+    sub_8004558(&unk438->unk14);
+    sub_80051E8(&unk438->unk14);
+}
+
+void sub_8039A38(void) { TaskDestroy(gCurTask); }
+
+void sub_8039A6C(void);
+
+void sub_8039A4C(void) { TaskCreate(sub_8039A6C, 0, 0x2000, 0, NULL); }
+
+void sub_8039AD4(void);
+
+// https://decomp.me/scratch/9nkEP
+NONMATCH("asm/non_matching/sub_8039A6C.inc", void sub_8039A6C(void))
+{
+    if (gPressedKeys & START_BUTTON) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        TaskCreate(sub_8039AD4, 0, 0x8888, 0, NULL);
+    }
+}
+END_NONMATCH
+
+void sub_8039AD4(void)
+{
+    gUnknown_030018F0 = 0;
+    gUnknown_03002AE0 = 0;
+    CpuFill16(0xFFFF, gUnknown_03001850, 0x20);
+    CpuFill16(0xFFFF, gUnknown_03004D60, 0x20);
+
+    m4aMPlayAllStop();
+    gGameMode = GAME_MODE_SINGLE_PLAYER;
+    gSelectedCharacter = 0;
+    gCurrentLevel = 0x1D;
+    ApplyGameStageSettings();
+    GameStageStart();
+    TaskDestroy(gCurTask);
+}

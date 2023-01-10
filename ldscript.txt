@@ -63,7 +63,6 @@ SECTIONS
         build/sa2/src/countdown.o(.text);
         build/sa2/asm/game_over.o(.text);
         build/sa2/src/true_area_53_intro.o(.text);
-        build/sa2/asm/true_area_53_intro.o(.text);
         build/sa2/asm/true_area_53.o(.text);
         build/sa2/asm/enemies.o(.text);
         build/sa2/src/multiplayer_mode_select.o(.text);
