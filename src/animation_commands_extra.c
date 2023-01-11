@@ -19,6 +19,124 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
+#if 1
+bool32 sub_8002B20(void)
+{
+    u16 sp00;
+    s32 sp04 = 0;
+    u32 sp08;
+    u32 sp0C;
+    u32 affine;
+
+    while (gUnknown_03002AE4 != gUnknown_0300287C) {
+        Background *bg;
+
+        if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
+            return 0;
+
+        // _08002B64
+        REG_VCOUNT;
+        {
+            s32 index = gUnknown_03002AE4;
+            bg = gUnknown_03001800[index];
+            index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
+            gUnknown_03002AE4 = index;
+
+            if ((bg->unk2E & 0x20) && bg->unk30 == bg->unk34)
+                continue;
+        }
+        sp00 = bg->unk14;
+
+        {
+            u32 v = (bg->unk2E & 0x3);
+            if (v > 1 && ((gDispCnt & 0x3) > 0)) {
+                affine = (gBgCntRegs[v] >> 14);
+                sp0C = 0x400 << affine;
+                sp08 = 1;
+            } else {
+                // _08002BD8
+                sp0C = 0x20;
+                affine = (gBgCntRegs[v] >> 14);
+                if ((affine == 1) || (affine == 3)) {
+                    sp04 = 0x800;
+                }
+                sp08 = 2;
+            }
+
+            // _08002BF8
+            sp0C = (u16)(sp0C * sp08);
+        }
+
+        if (!(bg->unk2E & 0x20)) {
+            if (!(bg->unk2E & 0x40)) {
+                // _08002C20
+                u32 r1 = bg->unkC + (bg->unk24 * sp0C);
+                u16 *r7 = (u16 *)(r1 * (bg->unk22 * sp08));
+                u16 r5 = bg->unk28;
+
+                if (bg->unk2E & 0x100) {
+                    // _08002C46
+                    if (bg->unk2E & 0x80) {
+                        u32 someIndex = sp00 * ((bg->unk20 + r5) - 1) * sp08;
+                        void *r2Ptr = &((u8 *)bg->unk10)[someIndex];
+                        u16 *r4Ptr = r2Ptr + (sp08 * ((bg->unk1E + bg->unk26) - 1));
+
+                        // _08002C7C
+                        while (--r5 != (u16)-1) {
+                            u16 i;
+
+                            // _08002C9A
+                            for (i = 0; i < bg->unk26; i++) {
+                                r7[i] = (r4Ptr[0 - i] ^ 0xC00); // WTF? -i???
+                            }
+
+                            r7 = r2Ptr;
+                            ((u8 *)r4Ptr) -= (sp00 * sp08);
+                        }
+                    } else {
+                        // _08002CD4
+                        u32 someIndex = sp00 * bg->unk20 * sp08;
+                        void *r2Ptr = &((u8 *)bg->unk10)[someIndex];
+                        u16 *r4Ptr = r2Ptr + (sp08 * ((bg->unk1E + bg->unk26) - 1));
+
+                        // _08002D08
+                        while (--r5 != (u16)-1) {
+                            u16 i;
+
+                            for (i = 0; i < bg->unk26; i++) {
+                                r7[i] = (r4Ptr[0 - i] ^ 0x400); // WTF? -i???
+                            }
+
+                            r7 = r2Ptr;
+                            ((u8 *)r4Ptr) -= (sp00 * sp08);
+                        }
+                    }
+                } else {
+                    // _08002D50
+                    if (bg->unk2E & 0x80) {
+
+                    } else {
+                        // _08002DD4
+                        if ((affine & 1) && (sp08 == 2) && (0x20 - bg->unk22 > 0)
+                            && (bg->unk26 > 0)) { }
+                    }
+                }
+            } else {
+                // _08002ED4
+            }
+        } else {
+            // _08002FE8
+        }
+        // _080035FA
+        REG_VCOUNT;
+        bg->unk34 = bg->unk30;
+        bg->unk36 = bg->unk32;
+    };
+
+    return 1;
+}
+#endif
+
 void UpdateBgAnimationTiles(Background *bg)
 {
     struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;

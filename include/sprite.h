@@ -95,16 +95,18 @@ typedef struct {
 
 #define SPRITE_BF_GET_BG_ID(sprite) (((sprite)->unk10 & 0x18000) >> 15)
 
-// TODO: Maybe rename this?
+#define SpriteShouldUpdate(sprite) ((sprite)->unk21 != (sprite)->variant) || \
+                                   ((sprite)->unk1E != (sprite)->graphics.anim))
+
+// TODO: Maybe rename this and move if out?
 #define SPRITE_MAYBE_SWITCH_ANIM(sprite)                                                \
-    if (((sprite)->unk21 != (sprite)->variant)                                          \
-        || ((sprite)->unk1E != (sprite)->graphics.anim)) {                              \
-        (sprite)->graphics.size = 0;                                                    \
-        (sprite)->unk21 = (sprite)->variant;                                            \
-        (sprite)->unk1E = (sprite)->graphics.anim;                                      \
-        (sprite)->unk14 = 0;                                                            \
-        (sprite)->unk1C = 0;                                                            \
-        (sprite)->unk10 &= ~0x4000;                                                     \
+    if ( SpriteShouldUpdate(sprite) {                   \
+        (sprite)->graphics.size = 0;                    \
+        (sprite)->unk21 = (sprite)->variant;            \
+        (sprite)->unk1E = (sprite)->graphics.anim;      \
+        (sprite)->unk14 = 0;                            \
+        (sprite)->unk1C = 0;                            \
+        (sprite)->unk10 &= ~0x4000;                     \
     }
 
 // TODO: work out what makes this struct different from the above

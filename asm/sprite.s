@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 1
+.if 0
 	thumb_func_start sub_8002B20
 sub_8002B20: @ 0x08002B20
 	push {r4, r5, r6, r7, lr}
@@ -44,7 +44,7 @@ _08002B64:
 	ldrb r1, [r3]
 	lsls r0, r1, #2
 	adds r0, r0, r2
-	ldr r6, [r0]
+	ldr r6, [r0]        @ r6 = bg
 	adds r1, #1
 	movs r0, #0xf
 	ands r1, r0
@@ -187,7 +187,7 @@ _08002C7C:
 	mov sb, r1
 	mov sl, r0
 _08002C86: @ loop
-	movs r3, #0
+	movs r3, #0         @ r3 = i
 	subs r5, #1
 	ldr r0, [sp, #0xc]
 	adds r2, r7, r0
@@ -289,7 +289,7 @@ _08002D3A:
 	bl _080035FA
 	.align 2, 0
 _08002D4C: .4byte 0x0000FFFF
-_08002D50:
+_08002D50:      @ <- ((bg->unk2E & 0x100) == 0)
 	movs r0, #0x80
 	ands r0, r2
 	cmp r0, #0
