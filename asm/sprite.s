@@ -99,7 +99,7 @@ _08002BD8:
 	lsls r1, r5, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
-	lsrs r3, r0, #0xe
+	lsrs r3, r0, #14
 	cmp r3, #1
 	beq _08002BEE
 	cmp r3, #3
@@ -121,7 +121,7 @@ _08002BF8:
 	str r0, [sp, #0xc]
 	ldrh r2, [r6, #0x2e]
 	movs r7, #0x20
-	mov sb, r7
+	mov sb, r7          @ sb = 0x20
 	mov r0, sb
 	ands r0, r2
 	cmp r0, #0
@@ -318,7 +318,7 @@ _08002D80:
 	adds r0, r1, #0
 	muls r0, r2, r0
 	mov sb, r0
-	mov sl, r3
+	mov sl, r3      @ sl = (u16)-1
 _08002D8A:
 	movs r3, #0
 	subs r5, #1
@@ -358,14 +358,14 @@ _08002DBC:
 	.align 2, 0
 _08002DD0: .4byte 0x0000FFFF
 _08002DD4:
-	movs r0, #1
+	movs r0, #1     
 	ands r3, r0
 	cmp r3, #0
 	beq _08002E74
 	ldr r2, [sp, #8]
 	cmp r2, #2
 	bne _08002E74
-	mov r3, sb
+	mov r3, sb      @ r3 = sb = 0x20
 	mov r0, r8
 	subs r3, r3, r0
 	cmp r3, #0
@@ -376,6 +376,7 @@ _08002DD4:
 	subs r2, #0x20
 	cmp r2, #0
 	ble _08002E74
+__08002DF8:
 	ldrh r0, [r6, #0x20]
 	muls r0, r4, r0
 	lsls r0, r0, #1
@@ -387,6 +388,7 @@ _08002DD4:
 	lsls r3, r3, #1
 	mov sb, r3
 	lsls r2, r2, #1
+__08002DFE:
 	subs r0, r5, #1
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10

@@ -26,7 +26,7 @@ bool32 sub_8002B20(void)
     s32 sp04 = 0;
     u32 sp08;
     u32 sp0C;
-    u32 affine;
+    u32 affine; // -> r3
 
     while (gUnknown_03002AE4 != gUnknown_0300287C) {
         Background *bg;
@@ -45,6 +45,7 @@ bool32 sub_8002B20(void)
             if ((bg->unk2E & 0x20) && bg->unk30 == bg->unk34)
                 continue;
         }
+        // NOTE: register r4 = sp00
         sp00 = bg->unk14;
 
         {
@@ -74,12 +75,17 @@ bool32 sub_8002B20(void)
                 u16 *r7 = (u16 *)(r1 * (bg->unk22 * sp08));
                 u16 r5 = bg->unk28;
 
+                // r2 <- bg->unk2E
+                // r3 <- affine
+                // r4 <- sp00
+                // r5 <- bg->unk28
+                // sb = 0x20
                 if (bg->unk2E & 0x100) {
                     // _08002C46
                     if (bg->unk2E & 0x80) {
-                        u32 someIndex = sp00 * ((bg->unk20 + r5) - 1) * sp08;
-                        void *r2Ptr = &((u8 *)bg->unk10)[someIndex];
-                        u16 *r4Ptr = r2Ptr + (sp08 * ((bg->unk1E + bg->unk26) - 1));
+                        u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
+                        void *r2Ptr = &((u8 *)bg->unk10)[r0Index];
+                        u16 *r4Ptr = r2Ptr + (((bg->unk1E + bg->unk26) - 1) * sp08);
 
                         // _08002C7C
                         while (--r5 != (u16)-1) {
@@ -95,9 +101,9 @@ bool32 sub_8002B20(void)
                         }
                     } else {
                         // _08002CD4
-                        u32 someIndex = sp00 * bg->unk20 * sp08;
+                        u32 someIndex = (bg->unk20 * sp00) * sp08;
                         void *r2Ptr = &((u8 *)bg->unk10)[someIndex];
-                        u16 *r4Ptr = r2Ptr + (sp08 * ((bg->unk1E + bg->unk26) - 1));
+                        u16 *r4Ptr = r2Ptr + (((bg->unk1E + bg->unk26) - 1) * sp08);
 
                         // _08002D08
                         while (--r5 != (u16)-1) {
@@ -112,13 +118,48 @@ bool32 sub_8002B20(void)
                         }
                     }
                 } else {
+                    // r2 <- bg->unk2E
+                    // r3 <- affine
+                    // r4 <- sp00
+                    // r5 <- r5 = bg->unk28
+                    // sb = 0x20
                     // _08002D50
                     if (bg->unk2E & 0x80) {
+                        u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
+                        void *r1Ptr = &((u8 *)bg->unk10)[r0Index];
+                        u16 *r4Ptr = (u16 *)(r1Ptr + (bg->unk1E * sp08));
 
+                        while (--r5 != (u16)-1) {
+                            u16 i;
+                            u32 sb = sp00 * sp08;
+
+                            for (i = 0; i < bg->unk26; i++) {
+                                r7[i] = r4Ptr[i] ^ 0x800;
+                            }
+
+                            r4Ptr -= 16;
+                        }
                     } else {
                         // _08002DD4
-                        if ((affine & 1) && (sp08 == 2) && (0x20 - bg->unk22 > 0)
-                            && (bg->unk26 > 0)) { }
+                        if ((affine & 1) && (sp08 == 2) && ((0x20 - bg->unk22) > 0)
+                            && ((bg->unk26 + bg->unk22 - 0x20) > 0)) {
+                            // __08002DF8
+                            const u16 *r4Ptr = &bg->unk10[bg->unk20 * sp00] + bg->unk1E;
+                            s32 sb = 0x20 * 2;
+
+                            while (--r5 != (u16)-1) {
+                                // _08002E1C
+                                // r7 <- sp08
+                                DmaCopy16(3, r4Ptr, sp08, sb);
+                                DmaCopy16(3, &r4Ptr[0x20 / 2], &r7[sp04], sb);
+
+                                r7 += sp0C / 2;
+                                ((u8 *)r4Ptr) += sp00 * sp08;
+                            }
+
+                        } else {
+                            // __08002E74
+                        }
                     }
                 }
             } else {
