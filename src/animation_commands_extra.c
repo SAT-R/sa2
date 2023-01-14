@@ -151,7 +151,7 @@ bool32 sub_8002B20(void)
                                 // _08002E1C
                                 // r7 <- sp08
                                 DmaCopy16(3, r4Ptr, sp08, sb);
-                                DmaCopy16(3, &r4Ptr[0x20 / 2], &r7[sp04], sb);
+                                DmaCopy16(3, &r4Ptr[0x20 / 2], &((u8 *)r7)[sp04], sb);
 
                                 r7 += sp0C / 2;
                                 ((u8 *)r4Ptr) += sp00 * sp08;
@@ -159,10 +159,27 @@ bool32 sub_8002B20(void)
 
                         } else {
                             // __08002E74
+                            u32 r0Index = bg->unk20 * sp00 * sp08;
+                            void *r1Ptr = &((u8 *)bg->unk10)[bg->unk20 * sp00 * sp08];
+                            void *r4Ptr = &((u8 *)r1Ptr)[bg->unk1E * sp08];
+
+                            // r0 = r0Index
+                            // r1 = r1Ptr
+                            // r2 = sp00
+                            // r4 = r4Ptr
+                            // r6 = bg
+                            // r7 =
+                            while (--r5 != (u16)-1) {
+                                // _08002EA4
+                                DmaCopy16(3, r4Ptr, r7, (bg->unk26 * sp08));
+                                ((u8 *)r7) += sp0C;
+                                r4Ptr += sp00 * sp08;
+                            }
                         }
                     }
                 }
             } else {
+                // r6 = bg
                 // _08002ED4
             }
         } else {
