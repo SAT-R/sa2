@@ -25,7 +25,7 @@ bool32 sub_8002B20(void)
     u16 sp00;
     s32 sp04 = 0;
     u32 sp08;
-    u32 sp0C;
+    u32 sp0C; // palette-size ?
     u32 affine; // -> r3
 
     while (gUnknown_03002AE4 != gUnknown_0300287C) {
@@ -179,8 +179,89 @@ bool32 sub_8002B20(void)
                     }
                 }
             } else {
+                // r3 = affine
                 // r6 = bg
                 // _08002ED4
+                u32 sp10 = bg->unk1E;
+                u32 sp14 = bg->unk20;
+                s32 sp18;
+                s32 sp1C;
+                s32 sp20;
+                s32 sp38;
+                u32 dmaFlags; // <- sp3C
+                s32 i, j;
+
+                // _08002EE8
+                for (i = 0; i < bg->unk26;) {
+                    s32 r1;
+                    s32 r5Res;
+                    u32 r8;
+                    s32 sp10_i = sp10 + i;
+
+                    sp18 = Div(sp10_i, bg->unk14);
+                    r1 = bg->unk14;
+                    r5Res = sp18;
+
+                    sp1C = sp10_i - r5Res * bg->unk14;
+                    r1 -= sp1C;
+
+                    if (r1 > (bg->unk26 - i))
+                        r1 = (bg->unk26 - i);
+
+                    sp20 = r1 * sp08;
+                    sp38 = r1 + i;
+
+                    // _08002F28
+                    // sb = j
+                    r8 = bg->unk28;
+                    for (j = 0; j < bg->unk28; j++) {
+                        void *dmaSrc, *dmaDest;
+                        s32 r4 = sp14 + i;
+                        s32 r5;
+                        const u16 *r1Ptr;
+                        u16 v;
+                        s32 result = Div(sp14, bg->unk16);
+                        r4 -= result * bg->unk16;
+                        r5 = bg->unk16 - r4;
+
+                        result *= bg->unk3C;
+                        r1Ptr = &bg->unk38[result];
+
+                        // r1 = v
+                        v = r1Ptr[sp18] * bg->unk14 * bg->unk16;
+
+                        v += r4 * bg->unk14 + sp1C;
+                        v *= sp08;
+
+                        dmaSrc = ((u8 *)bg->unk10) + v;
+
+                        {
+                            s32 r0 = bg->unkC + bg->unk24;
+                            r0 += sp0C * j + bg->unk22;
+                            dmaDest = (void *)(r0 + sp08 * i);
+                        }
+
+                        j += r5;
+
+                        if (r5 > r8)
+                            r5 = r8;
+
+                        r8 -= r5;
+
+                        {
+                            u32 dmaSrcSize = sp00 * sp08;
+                            while (r5--) {
+                                dmaFlags = (sp20 + (sp20 >> 31)) / 2;
+                                DmaCopy16(3, dmaSrc, dmaDest, dmaFlags);
+                                dmaSrc += dmaSrcSize;
+                                dmaDest += sp0C;
+                            }
+                        }
+                    }
+
+                    i = sp38;
+                }
+                // _08002FD6
             }
         } else {
             // _08002FE8
