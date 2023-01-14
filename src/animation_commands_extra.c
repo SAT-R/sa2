@@ -27,6 +27,7 @@ bool32 sub_8002B20(void)
     u32 sp08;
     u32 sp0C; // palette-size ?
     u32 affine; // -> r3
+    u32 bgId; // -> r5 = (bg->unk2E & 0x3)
 
     while (gUnknown_03002AE4 != gUnknown_0300287C) {
         Background *bg;
@@ -49,15 +50,15 @@ bool32 sub_8002B20(void)
         sp00 = bg->unk14;
 
         {
-            u32 v = (bg->unk2E & 0x3);
-            if (v > 1 && ((gDispCnt & 0x3) > 0)) {
-                affine = (gBgCntRegs[v] >> 14);
+            bgId = (bg->unk2E & 0x3);
+            if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
+                affine = (gBgCntRegs[bgId] >> 14);
                 sp0C = 0x400 << affine;
                 sp08 = 1;
             } else {
                 // _08002BD8
                 sp0C = 0x20;
-                affine = (gBgCntRegs[v] >> 14);
+                affine = (gBgCntRegs[bgId] >> 14);
                 if ((affine == 1) || (affine == 3)) {
                     sp04 = 0x800;
                 }
@@ -264,7 +265,20 @@ bool32 sub_8002B20(void)
                 // _08002FD6
             }
         } else {
+            // r2 <- bg->unk2E
+            // r3 <- affine
+            // r4 <- sp00
+            // r5 <- bgId
             // _08002FE8
+            if (!(bg->unk2E & 0x40)) {
+                while (bg->unk30 < sp00 * 8)
+                    bg->unk30 -= sp00 * 8;
+
+                while (bg->unk32 >= bg->unk16) {
+                    bg->unk32 -= bg->unk16;
+                }
+            }
+            //_08003034
         }
         // _080035FA
         REG_VCOUNT;

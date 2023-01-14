@@ -138,13 +138,13 @@ _08002C20:
 	ldr r1, [sp, #0xc]
 	muls r0, r1, r0
 	ldr r1, [r6, #0xc]
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = bg->unkC + (bg->unk24 * sp0C);
 	ldrh r5, [r6, #0x22]
 	mov r8, r5
 	ldr r7, [sp, #8]
 	mov r0, r8
 	muls r0, r7, r0
-	adds r7, r1, r0
+	adds r7, r1, r0         @ r7 = (u16 *)(r1 * (bg->unk22 * sp08));
 	ldrh r5, [r6, #0x28]    @ r5 = bg->unk28
 	movs r1, #0x80
 	lsls r1, r1, #1
@@ -495,7 +495,7 @@ _08002ED4:
 	ldrh r2, [r6, #0x20]
 	str r2, [sp, #0x14]
 	movs r3, #0
-	mov sl, r3
+	mov sl, r3              @ sl = i = 0
 	ldrh r4, [r6, #0x26]
 	cmp sl, r4
 	blt _08002EE8
@@ -514,7 +514,7 @@ _08002EE8:
 	subs r4, r4, r0
 	str r4, [sp, #0x1c]
 	ldrh r7, [r6, #0x28]
-	mov r8, r7
+	mov r8, r7              @ r8 = innerEnd
 	ldrh r0, [r6, #0x26]
 	mov r2, sl
 	subs r0, r0, r2
@@ -528,7 +528,7 @@ _08002F14:
 	muls r3, r4, r3
 	str r3, [sp, #0x20]
 	movs r5, #0
-	mov sb, r5
+	mov sb, r5              @ sb = j = 0
 	add r1, sl
 	str r1, [sp, #0x38]
 	cmp sb, r8
@@ -566,6 +566,7 @@ _08002F28:
 	muls r1, r3, r1
 	ldr r0, [r6, #0x10]
 	adds r4, r0, r1
+
 	ldrh r1, [r6, #0x24]
 	ldr r0, [r6, #0xc]
 	adds r0, r0, r1
@@ -578,6 +579,7 @@ _08002F28:
 	mov r1, sl
 	muls r1, r3, r1
 	adds r7, r0, r1
+
 	add sb, r5
 	cmp r5, r8
 	ble _08002F8A
@@ -592,7 +594,7 @@ _08002F8A:
 	beq _08002FD0
 	ldr r3, _08002FE4 @ =0x040000D4
 	ldr r1, [sp, #0x20]
-	lsrs r0, r1, #0x1f
+	lsrs r0, r1, #31
 	adds r0, r1, r0
 	asrs r0, r0, #1
 	str r0, [sp, #0x3c]
@@ -605,7 +607,7 @@ _08002F8A:
 	ldr r2, [sp, #8]
 	adds r0, r1, #0
 	muls r0, r2, r0
-	mov ip, r0
+	mov ip, r0              @ ip = dmaSrc"Index"
 _08002FB8:
 	str r4, [r3]
 	str r7, [r3, #4]
@@ -637,9 +639,9 @@ _08002FE8:
 	ands r0, r2
 	ldrh r3, [r6, #0x30]
 	ldr r7, _080030B8 @ =gBgScrollRegs
-	mov sb, r7
-	lsls r5, r5, #2
-	mov r8, r5
+	mov sb, r7          @ sb = gBgScrollRegs
+	lsls r5, r5, #2     @ r5 = bgId * 4
+	mov r8, r5          @ r8 = bgId * 4
 	cmp r0, #0
 	bne _08003034
 	adds r2, r4, #0
