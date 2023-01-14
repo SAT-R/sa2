@@ -271,7 +271,7 @@ bool32 sub_8002B20(void)
             // r5 <- bgId
             // _08002FE8
             if (!(bg->unk2E & 0x40)) {
-                while (bg->unk30 < sp00 * 8)
+                while (bg->unk30 >= sp00 * 8)
                     bg->unk30 -= sp00 * 8;
 
                 while (bg->unk32 >= bg->unk16) {
