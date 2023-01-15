@@ -57,8 +57,9 @@ typedef struct {
     // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
 
-    /* 0x30 */ s16 scrollX;
-    /* 0x32 */ s16 scrollY;
+    // apparently NOT signed?
+    /* 0x30 */ u16 scrollX;
+    /* 0x32 */ u16 scrollY;
     /* 0x34 */ u16 prevScrollX;
     /* 0x36 */ u16 prevScrollY;
     const u16 *unk38;

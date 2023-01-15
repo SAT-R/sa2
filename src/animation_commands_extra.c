@@ -279,8 +279,9 @@ bool32 sub_8002B20(void)
                 }
             }
             //_08003034
-            gBgScrollRegs[bgId][0] = bg->scrollX & 7;
-            gBgScrollRegs[bgId][1] = bg->scrollY & 7;
+            gBgScrollRegs[bgId][0] = bg->scrollX % 8;
+            gBgScrollRegs[bgId][1] = bg->scrollY % 8;
+
         }
         // _080035FA
         REG_VCOUNT;

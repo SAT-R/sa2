@@ -6376,7 +6376,7 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
 }
 
 void sub_806B854(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
-                 u8 g, s16 scrollX, s16 scrollY)
+                 u8 g, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
