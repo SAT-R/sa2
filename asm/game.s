@@ -622,7 +622,7 @@ _0801AEB4:
 	orrs r2, r0
 	strh r2, [r3]
 	movs r0, #1
-	bl sub_8036670
+	bl CreateGameOverScreen
 	b _0801AEF6
 	.align 2, 0
 _0801AED0: .4byte gUnknown_03005448
@@ -1587,13 +1587,13 @@ _0801B71C:
 	cmp r0, #0
 	bne _0801B738
 	movs r0, #1
-	bl sub_8036670
+	bl CreateGameOverScreen
 	b _0801B73E
 	.align 2, 0
 _0801B734: .4byte gUnknown_03005448
 _0801B738:
 	movs r0, #2
-	bl sub_8036670
+	bl CreateGameOverScreen
 _0801B73E:
 	pop {r0}
 	bx r0
@@ -35584,7 +35584,7 @@ sub_802BC10: @ 0x0802BC10
 	cmp r1, r0
 	bls _0802BCB0
 	movs r0, #2
-	bl sub_8036670
+	bl CreateGameOverScreen
 	b _0802BCC4
 	.align 2, 0
 _0802BC84: .4byte gCurTask
@@ -35603,7 +35603,7 @@ _0802BCB0:
 	b _0802BCC4
 _0802BCB6:
 	movs r0, #1
-	bl sub_8036670
+	bl CreateGameOverScreen
 	b _0802BCC4
 _0802BCBE:
 	adds r0, r5, #0

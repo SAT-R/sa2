@@ -232,6 +232,7 @@ void ApplyGameStageSettings(void);
 
 void CreateTrueArea53Intro(void);
 
+void CreateGameStage(void);
 // Sweep anim
 void sub_802E044(u16, u16);
 
