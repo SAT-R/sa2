@@ -213,7 +213,7 @@
 #define SE_267                267
 #define SE_268                268
 #define SE_269                269
-#define SE_270                270
+#define SE_SUCTION            270
 #define SE_271                271
 #define SE_272                272
 #define SE_273                273

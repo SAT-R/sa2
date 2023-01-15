@@ -195,7 +195,7 @@
 #define SA2_ANIM_CHEESE_BACKFLIP                       457
 #define SA2_ANIM_CHEESE_NERVOUS                        458
 #define SA2_ANIM_CHEESE_PIROUETTE                      459
-#define SA2_ANIM_CHEESE_EATING                                                          \
+#define SA2_ANIM_CHEESE_SHOCKED                                                         \
     460 // Not sure about this one. They put their hand to their mouth, but it doesn't
         // have an eating animation
 #define SA2_ANIM_CHEESE_LIFTING              461

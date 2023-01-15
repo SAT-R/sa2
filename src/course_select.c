@@ -1094,7 +1094,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
         if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             GameStageStart();
         } else {
-            CreateTrueArea53();
+            CreateTrueArea53Intro();
         }
 
         TaskDestroy(gCurTask);

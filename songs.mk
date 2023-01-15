@@ -541,7 +541,7 @@ $(MID_SUBDIR)/se_268.s: %.s: %.mid
 $(MID_SUBDIR)/se_269.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/se_270.s: %.s: %.mid
+$(MID_SUBDIR)/se_suction.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
 $(MID_SUBDIR)/se_271.s: %.s: %.mid

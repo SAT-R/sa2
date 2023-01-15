@@ -271,7 +271,7 @@ gSongTable:	@ 0x08AD4F4C
 	song se_267, 2, 2
 	song se_268, 2, 2
 	song se_269, 2, 2
-	song se_270, 2, 2
+	song se_suction, 2, 2
 	song se_271, 2, 2
 	song se_272, 2, 2
 	song se_273, 2, 2

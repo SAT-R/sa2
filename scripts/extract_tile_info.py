@@ -34,7 +34,7 @@ with open('baserom.gba', 'rb') as rom:
     #     print(f"{read_u16(rom)}, ", end="")
     for i in range(length // 8):
         print("{ ", end="")
-        print(f"{read_u32(rom)}" + ", ", end="")
+        print(f"{hex(read_u32(rom))}" + ", ", end="")
         print(f"{read_u16(rom)}" + ", ", end="")
         print(f"{read_u8(rom)}" + "", end="")
         read_u8(rom)
