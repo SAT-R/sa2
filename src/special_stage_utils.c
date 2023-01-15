@@ -184,7 +184,7 @@ void InitSpecialStageScreenVram(void)
 }
 
 void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
-                 u8 g, u16 h, u16 i)
+                 u8 g, s16 scrollX, s16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
@@ -202,8 +202,8 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
     background->unk2E = g;
-    background->unk30 = h;
-    background->unk32 = i;
+    background->scrollX = scrollX;
+    background->scrollY = scrollY;
     sub_8002A3C(background);
 }
 

@@ -19,7 +19,7 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-#if 1
+#if 0
 bool32 sub_8002B20(void)
 {
     u16 sp00;
@@ -43,7 +43,7 @@ bool32 sub_8002B20(void)
             index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
             gUnknown_03002AE4 = index;
 
-            if ((bg->unk2E & 0x20) && bg->unk30 == bg->unk34)
+            if ((bg->unk2E & 0x20) && bg->scrollX == bg->prevScrollX)
                 continue;
         }
         // NOTE: register r4 = sp00
@@ -266,24 +266,26 @@ bool32 sub_8002B20(void)
             }
         } else {
             // r2 <- bg->unk2E
-            // r3 <- affine
+            // r3 <- bg->unk30
             // r4 <- sp00
             // r5 <- bgId
             // _08002FE8
             if (!(bg->unk2E & 0x40)) {
-                while (bg->unk30 >= sp00 * 8)
-                    bg->unk30 -= sp00 * 8;
+                while (bg->scrollX >= sp00 * 8)
+                    bg->scrollX -= sp00 * 8;
 
-                while (bg->unk32 >= bg->unk16) {
-                    bg->unk32 -= bg->unk16;
+                while (bg->scrollY >= bg->unk16) {
+                    bg->scrollY -= bg->unk16;
                 }
             }
             //_08003034
+            gBgScrollRegs[bgId][0] = bg->scrollX & 7;
+            gBgScrollRegs[bgId][1] = bg->scrollY & 7;
         }
         // _080035FA
         REG_VCOUNT;
-        bg->unk34 = bg->unk30;
-        bg->unk36 = bg->unk32;
+        bg->prevScrollX = bg->scrollX;
+        bg->prevScrollX = bg->scrollY;
     };
 
     return 1;

@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 0
+.if 1
 	thumb_func_start sub_8002B20
 sub_8002B20: @ 0x08002B20
 	push {r4, r5, r6, r7, lr}
@@ -676,8 +676,8 @@ _08003022:
 	lsls r0, r2, #3
 	cmp r1, r0
 	bge _08003022
-_08003034:
-	mov r0, r8
+_08003034:          @ sb = gBgScrollRegs
+	mov r0, r8      @ r0 = r8 = bgID * 4
 	add r0, sb
 	movs r2, #7
 	ands r3, r2

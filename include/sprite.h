@@ -56,10 +56,11 @@ typedef struct {
     // Flags
     // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
-    u16 unk30;
-    u16 unk32;
-    u16 unk34;
-    u16 unk36;
+
+    /* 0x30 */ s16 scrollX;
+    /* 0x32 */ s16 scrollY;
+    /* 0x34 */ u16 prevScrollX;
+    /* 0x36 */ u16 prevScrollY;
     const u16 *unk38;
     u16 unk3C;
     u16 unk3E;
