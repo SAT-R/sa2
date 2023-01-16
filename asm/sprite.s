@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 1
+.if 0
 	thumb_func_start sub_8002B20
 sub_8002B20: @ 0x08002B20
 	push {r4, r5, r6, r7, lr}
@@ -722,6 +722,7 @@ _08003072:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x14]
+
 	ldrh r0, [r6, #0x24]
 	ldr r2, [sp, #0xc]
 	muls r0, r2, r0
@@ -731,12 +732,13 @@ _08003072:
 	ldr r4, [sp, #8]
 	muls r0, r4, r0
 	adds r7, r1, r0
+
 	ldrh r0, [r6, #0x26]
 	ldr r5, [sp, #0x10]
 	adds r2, r5, r0
 	adds r1, r2, #1
 	ldrh r4, [r6, #0x14]
-	mov r8, r0
+	mov r8, r0              @ r8 = bg->unk26
 	cmp r1, r4
 	ble _080030BC
 	subs r0, r4, #1
@@ -782,7 +784,7 @@ _080030D4:
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
 	lsls r2, r2, #0x10
-	mov sl, r2
+	mov sl, r2          @ sl = r2
 	ldr r0, _08003154 @ =0x0000FFFF
 	cmp r5, r0
 	bne _08003108
@@ -791,8 +793,8 @@ _08003108:
 	ldr r2, [sp]
 	adds r1, r2, #0
 	muls r1, r3, r1
-	mov sb, r1
-	mov ip, r0
+	mov sb, r1          @ sb = sp00 * sp08
+	mov ip, r0          @ ip = (u16)-1;
 _08003112:
 	movs r3, #0
 	subs r5, #1
@@ -923,9 +925,9 @@ _080031D0:
 	beq _080032C4
 	ldr r2, [sp]
 	adds r1, r2, #0
-	muls r1, r3, r1
-	mov sb, r1
-	mov ip, r0
+	muls r1, r3, r1     @ r1 = sp00 * sp08
+	mov sb, r1          @ sb = r1
+	mov ip, r0          @ ip = (u16)-1
 _0800320C:
 	movs r3, #0
 	subs r5, #1

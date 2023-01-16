@@ -19,7 +19,7 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-#if 0
+#if 1
 bool32 sub_8002B20(void)
 {
     u16 sp00;
@@ -274,14 +274,98 @@ bool32 sub_8002B20(void)
                 while (bg->scrollX >= sp00 * 8)
                     bg->scrollX -= sp00 * 8;
 
-                while (bg->scrollY >= bg->unk16) {
-                    bg->scrollY -= bg->unk16;
+                while (bg->scrollY >= bg->unk16 * 8) {
+                    bg->scrollY -= bg->unk16 * 8;
                 }
             }
             //_08003034
             gBgScrollRegs[bgId][0] = bg->scrollX % 8;
             gBgScrollRegs[bgId][1] = bg->scrollY % 8;
 
+            if ((bg->prevScrollX / 8 != bg->scrollX / 8)
+                && (bg->prevScrollY / 8 != bg->scrollY / 8)) {
+                if (!(bg->unk2E & 0x40)) {
+                    // _08003072
+                    u32 sp10 = (u16)(bg->scrollX / 8 + bg->unk1E);
+                    u32 sp14 = (u16)(bg->scrollY / 8 + bg->unk20);
+                    u16 *sp3C;
+
+                    u16 *r7Ptr
+                        = (u16 *)((bg->unk24 * sp0C + bg->unkC) + (bg->unk22 * sp08));
+
+                    u16 r2 = (bg->unk26 + sp10);
+                    u32 r4 = bg->unk14;
+                    u16 r5;
+                    if ((r2 + 1) > r4) {
+                        r2 -= (r4 - 1);
+                    } else {
+                        r2 = 0;
+                    }
+
+                    r5 = bg->unk28 + 1;
+                    if (bg->unk2E & 0x100) {
+                        // _080030D4
+                        if (bg->unk2E & 0x80) {
+                            // _080030DC
+                            u32 index = ((bg->unk20 + r5) - 1);
+                            u16 *r1Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
+                            u32 index2 = ((bg->unk1E + bg->unk26) - 1);
+                            u16 *r4Ptr = &r1Ptr[index2 * sp08];
+
+                            while (--r5 != (u16)-1) {
+                                // _08003108
+                                u16 i; // <- r3
+                                for (i = 0; i < bg->unk26; i++) {
+                                    // _08003126
+                                    sp3C = &r7Ptr[i];
+                                    *sp3C = (r4Ptr[0 - i] ^ 0xC00);
+                                }
+                            }
+                        } else {
+                            // _08003158
+                            u32 index = bg->unk20;
+                            u16 *r1Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
+                            u32 index2 = bg->unk1E + bg->unk26 - 1;
+                            u16 *r4Ptr = &r1Ptr[index2 * sp08];
+
+                            while (--r5 != (u16)-1) {
+                                // _08003180
+                                u16 i;
+                                for (i = 0; i < bg->unk26; i++) {
+                                    // _0800319E
+                                    sp3C = &r7Ptr[i];
+                                    *sp3C = (r4Ptr[0 - i] ^ 0x400);
+                                }
+                            }
+                        }
+                    } else {
+                        // _080031D0
+                        if (bg->unk2E & 0x80) {
+                            // _080031D8
+                            u32 index = ((sp14 + r5) - 1);
+                            u16 *r0Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
+                            u32 index2 = sp10;
+                            u16 *r4Ptr = &r0Ptr[index2 * sp08];
+
+                            while (--r5 != (u16)-1) {
+                                u16 *r2Ptr = (u16 *)&((u8 *)r7Ptr)[sp0C];
+                                u16 i;
+
+                                for (i = 0; i < bg->unk26; i++) {
+                                    sp3C = &r7Ptr[i];
+                                    *sp3C = r4Ptr[i] ^ 0x800;
+                                }
+                                r7Ptr = r2Ptr;
+                            }
+                        } else {
+                            // _08003254
+                        }
+                    }
+                    // _080032C4
+                } else {
+                    // _080034DC
+                }
+            }
         }
         // _080035FA
         REG_VCOUNT;
