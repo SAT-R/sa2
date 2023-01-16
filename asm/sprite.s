@@ -1000,7 +1000,7 @@ _08003254:
 	ldr r1, [sp]
 	ldr r0, [sp, #8]
 	adds r3, r1, #0
-	muls r3, r0, r3
+	muls r3, r0, r3     @ r3 = sp00 * sp08
 _08003298:
 	str r4, [r2]
 	str r7, [r2, #4]
@@ -1009,7 +1009,7 @@ _08003298:
 	subs r0, r0, r1
 	ldr r1, [sp, #8]
 	muls r0, r1, r0
-	lsrs r1, r0, #0x1f
+	lsrs r1, r0, #31
 	adds r0, r0, r1
 	asrs r0, r0, #1
 	mov r1, sb
@@ -1024,6 +1024,7 @@ _08003298:
 	lsrs r5, r0, #0x10
 	cmp r5, ip
 	bne _08003298
+
 _080032C4:
 	mov r1, sl
 	asrs r3, r1, #0x10

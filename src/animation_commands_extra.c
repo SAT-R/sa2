@@ -359,9 +359,27 @@ bool32 sub_8002B20(void)
                             }
                         } else {
                             // _08003254
+                            u32 index = sp14;
+                            u16 *r0Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
+                            u32 index2 = sp10;
+                            u16 *r4Ptr = &r0Ptr[index2 * sp08];
+
+                            // _08003298
+                            while (--r5 != (u16)-1) {
+                                u32 dmaSize = bg->unk26 - (r2 - 1);
+                                dmaSize *= sp08;
+                                dmaSize += (dmaSize >> 31);
+                                DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
+
+                                ((u8 *)r7Ptr) += sp0C;
+                                ((u8 *)r4Ptr) += sp00 * sp08;
+                            }
                         }
                     }
                     // _080032C4
+                    if (r2 != 0) {
+                        // _080032CE
+                    }
                 } else {
                     // _080034DC
                 }
