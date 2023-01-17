@@ -1,12 +1,7 @@
-.include "asm/macros.inc"
 .include "constants/constants.inc"
 
 .syntax unified
-.arm
-
-.if 0
-	thumb_func_start sub_8002B20
-sub_8002B20: @ 0x08002B20
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1505,4 +1500,5 @@ _08003628: .4byte 0x040000D4
 _0800362C: .4byte REG_VCOUNT
 _08003630: .4byte gUnknown_03002AE4
 _08003634: .4byte gUnknown_0300287C
-.endif
+
+.syntax divided
