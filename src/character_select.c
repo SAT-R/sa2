@@ -290,7 +290,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(22);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 99;
@@ -307,7 +307,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unkC;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(20);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x175;
@@ -324,7 +324,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unk4C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(21);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(21);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x176;

@@ -173,7 +173,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background = &resultsScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = gUnknown_080D92A8[lang];

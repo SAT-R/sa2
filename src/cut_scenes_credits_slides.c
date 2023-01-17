@@ -92,7 +92,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->unkC = BG_SCREEN_ADDR(28);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1C = gUnknown_080E1278[scene->unk50];
@@ -125,7 +125,7 @@ void sub_808EF38(void)
                 Background *background = &scene->unk0;
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
                 background->graphics.anim = 0;
-                background->unkC = BG_SCREEN_ADDR(28);
+                background->tilesVram = (void *)BG_SCREEN_ADDR(28);
                 background->unk18 = 0;
                 background->unk1A = 0;
                 background->unk1C = gUnknown_080E1278[scene->unk50];

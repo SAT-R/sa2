@@ -466,7 +466,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background = &scene->unk80;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(29);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = gUnknown_080E1130[scene->unk10E + (lang * 15)];
@@ -483,7 +483,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = gUnknown_080E1118[scene->unk10C];
@@ -548,7 +548,7 @@ void sub_808E4C8(void)
             background = &scene->unk40;
             background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
             background->graphics.anim = 0;
-            background->unkC = BG_SCREEN_ADDR(28);
+            background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
             background->unk1C = gUnknown_080E1130[scene->unk10E + 1 + (lang * 15)];
