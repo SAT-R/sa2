@@ -19,13 +19,15 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
+#define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
+
 #if 1
 bool32 sub_8002B20(void)
 {
     u16 sp00;
     s32 sp04 = 0;
     u32 sp08;
-    u32 sp0C; // palette-size ?
+    u32 sp0C; // line-size ?
     u32 affine; // -> r3
     u32 bgId; // -> r5 = (bg->unk2E & 0x3)
 
@@ -72,8 +74,8 @@ bool32 sub_8002B20(void)
         if (!(bg->unk2E & 0x20)) {
             if (!(bg->unk2E & 0x40)) {
                 // _08002C20
-                u32 r1 = bg->unkC + (bg->unk24 * sp0C);
-                u16 *r7 = (u16 *)(r1 * (bg->unk22 * sp08));
+                u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C);
+                u16 *r7 = CastPointer(r1, bg->unk22 * sp08);
                 u16 r5 = bg->unk28;
 
                 // r2 <- bg->unk2E
@@ -85,8 +87,9 @@ bool32 sub_8002B20(void)
                     // _08002C46
                     if (bg->unk2E & 0x80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
-                        void *r2Ptr = &((u8 *)bg->unk10)[r0Index];
-                        u16 *r4Ptr = r2Ptr + (((bg->unk1E + bg->unk26) - 1) * sp08);
+                        void *r2Ptr = CastPointer(bg->unk10, r0Index);
+                        u16 *r4Ptr
+                            = CastPointer(r2Ptr, ((bg->unk1E + bg->unk26) - 1) * sp08);
 
                         // _08002C7C
                         while (--r5 != (u16)-1) {
@@ -94,27 +97,28 @@ bool32 sub_8002B20(void)
 
                             // _08002C9A
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = (r4Ptr[0 - i] ^ 0xC00); // WTF? -i???
+                                r7[i] = (r4Ptr[0 - i] ^ TileMask_FlipXY);
                             }
 
-                            r7 = r2Ptr;
+                            ((u8 *)r7) += sp0C;
                             ((u8 *)r4Ptr) -= (sp00 * sp08);
                         }
                     } else {
                         // _08002CD4
-                        u32 someIndex = (bg->unk20 * sp00) * sp08;
-                        void *r2Ptr = &((u8 *)bg->unk10)[someIndex];
-                        u16 *r4Ptr = r2Ptr + (((bg->unk1E + bg->unk26) - 1) * sp08);
+                        u32 someIndex = (bg->unk20 * sp00);
+                        void *r2Ptr = CastPointer(bg->unk10, someIndex * sp08);
+                        u32 index2 = ((bg->unk1E + bg->unk26) - 1);
+                        u16 *r4Ptr = CastPointer(r2Ptr, index2 * sp08);
 
                         // _08002D08
                         while (--r5 != (u16)-1) {
                             u16 i;
 
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = (r4Ptr[0 - i] ^ 0x400); // WTF? -i???
+                                r7[i] = (r4Ptr[0 - i] ^ TileMask_FlipX);
                             }
 
-                            r7 = r2Ptr;
+                            ((u8 *)r7) += sp0C;
                             ((u8 *)r4Ptr) -= (sp00 * sp08);
                         }
                     }
@@ -126,16 +130,16 @@ bool32 sub_8002B20(void)
                     // sb = 0x20
                     // _08002D50
                     if (bg->unk2E & 0x80) {
-                        u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
-                        void *r1Ptr = &((u8 *)bg->unk10)[r0Index];
-                        u16 *r4Ptr = (u16 *)(r1Ptr + (bg->unk1E * sp08));
+                        u32 r0Index = (((bg->unk20 + r5) - 1) * sp00);
+                        void *r1Ptr = CastPointer(bg->unk10, r0Index * sp08);
+                        u16 *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
                         while (--r5 != (u16)-1) {
                             u16 i;
                             u32 sb = sp00 * sp08;
 
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = r4Ptr[i] ^ 0x800;
+                                r7[i] = r4Ptr[i] ^ TileMask_FlipY;
                             }
 
                             r4Ptr -= 16;
@@ -237,9 +241,9 @@ bool32 sub_8002B20(void)
                         dmaSrc = ((u8 *)bg->unk10) + v;
 
                         {
-                            s32 r0 = bg->unkC + bg->unk24;
-                            r0 += sp0C * j + bg->unk22;
-                            dmaDest = (void *)(r0 + sp08 * i);
+                            u8 *r0 = CastPointer(bg->tilesVram, bg->unk24);
+                            r0 += (sp0C * j + bg->unk22);
+                            dmaDest = &r0[i * sp08];
                         }
 
                         j += r5;
@@ -290,8 +294,8 @@ bool32 sub_8002B20(void)
                     u32 sp14 = (u16)(bg->scrollY / 8 + bg->unk20);
                     u16 *sp3C;
 
-                    u16 *r7Ptr
-                        = (u16 *)((bg->unk24 * sp0C + bg->unkC) + (bg->unk22 * sp08));
+                    u16 *r7Ptr = CastPointer(bg->tilesVram,
+                                             (bg->unk24 * sp0C) + (bg->unk22 * sp08));
 
                     u16 r2 = (bg->unk26 + sp10);
                     u32 r4 = bg->unk14;
@@ -318,7 +322,7 @@ bool32 sub_8002B20(void)
                                 for (i = 0; i < bg->unk26; i++) {
                                     // _08003126
                                     sp3C = &r7Ptr[i];
-                                    *sp3C = (r4Ptr[0 - i] ^ 0xC00);
+                                    *sp3C = (r4Ptr[0 - i] ^ TileMask_FlipXY);
                                 }
                             }
                         } else {
@@ -334,7 +338,7 @@ bool32 sub_8002B20(void)
                                 for (i = 0; i < bg->unk26; i++) {
                                     // _0800319E
                                     sp3C = &r7Ptr[i];
-                                    *sp3C = (r4Ptr[0 - i] ^ 0x400);
+                                    *sp3C = (r4Ptr[0 - i] ^ TileMask_FlipX);
                                 }
                             }
                         }
@@ -353,7 +357,7 @@ bool32 sub_8002B20(void)
 
                                 for (i = 0; i < bg->unk26; i++) {
                                     sp3C = &r7Ptr[i];
-                                    *sp3C = r4Ptr[i] ^ 0x800;
+                                    *sp3C = r4Ptr[i] ^ TileMask_FlipY;
                                 }
                                 r7Ptr = r2Ptr;
                             }
@@ -379,9 +383,9 @@ bool32 sub_8002B20(void)
                     // _080032C4
                     if (r2 != 0) {
                         // _080032CE
-                        u32 r1 = bg->unkC + bg->unk24 * sp0C; // <- r1
-                        u32 r0 = bg->unk22 + bg->unk14 - sp10; // <- r0
-                        u16 *r7Ptr = (u16 *)(sp08 * r0 + r1);
+                        u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C); // <- r1
+                        u32 displayTile = bg->unk22 + bg->unk14 - sp10; // <- r0
+                        u16 *r7Ptr = CastPointer(r1, displayTile * sp08);
                         u16 r5 = (bg->unk28 + 1);
 
                         if (bg->unk2E & 0x100) {
@@ -394,7 +398,7 @@ bool32 sub_8002B20(void)
                                 while (--r5 != (u16)-1) {
                                     u16 i;
                                     for (i = 0; i < bg->unk26; i++) {
-                                        r7Ptr[i] = r4Ptr[i] ^ 0xC00;
+                                        r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipXY;
                                     }
                                     ((void *)r7Ptr) += sp0C;
                                     ((void *)r4Ptr) -= sp00 * sp08;
@@ -408,7 +412,7 @@ bool32 sub_8002B20(void)
                                 while (--r5 != (u16)-1) {
                                     u16 i;
                                     for (i = 0; i < bg->unk26; i++) {
-                                        r7Ptr[i] = r4Ptr[i] ^ 0x400;
+                                        r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipX;
                                     }
                                     ((void *)r7Ptr) += sp0C;
                                     ((void *)r4Ptr) += sp00 * sp08;
@@ -426,7 +430,7 @@ bool32 sub_8002B20(void)
                                     u16 i;
                                     for (i = 0; i < r2; i++) {
                                         u16 *sp3C = &r7Ptr[i];
-                                        *sp3C = r4Ptr[i] ^ 0x800;
+                                        *sp3C = r4Ptr[i] ^ TileMask_FlipY;
                                     }
                                     ((void *)r7Ptr) += sp0C;
                                     ((void *)r4Ptr) -= sp00 * sp08;
@@ -450,6 +454,75 @@ bool32 sub_8002B20(void)
                     }
                 } else {
                     // _080034DC
+                    u16 sp10 = (bg->scrollX / 8) + bg->unk1E;
+                    u16 sp14 = (bg->scrollY / 8) + bg->unk20;
+                    u16 i, j;
+
+                    for (i = 0; i < bg->unk26; i++) {
+                        // _08003500
+                        u32 sp24 = Div(sp10 + i, bg->unk14);
+                        u32 sp28 = bg->scrollX - (bg->unk14 * sp24);
+                        u32 sp2C;
+                        u32 sp34;
+                        u16 r8 = bg->unk28;
+                        u32 r0 = bg->unk26 - i;
+                        u32 r1 = bg->unk14 - sp28;
+
+                        if (r1 > r0)
+                            r1 = r0;
+
+                        // _0800352E
+                        sp2C = r1 * sp08;
+                        sp34 = r1 + i;
+
+                        for (j = 0; j < bg->unk28; j++) {
+                            // _08003542
+                            u32 divident = sp14 + j;
+                            u32 index = Div(divident, bg->unk16);
+                            u32 new_r4 = divident - (index * bg->unk16);
+                            u32 r5 = bg->unk16 - new_r4;
+                            index *= bg->unk3C;
+
+                            { // _0800355C
+                                u32 someVal = bg->unk38[index + (sp24 * 2)];
+                                u32 otherVal;
+                                someVal *= bg->unk14;
+                                someVal *= bg->unk16;
+
+                                otherVal = new_r4 * bg->unk14;
+                                otherVal += sp28;
+                                otherVal += someVal;
+
+                                {
+                                    // r4 <- dmaSrc
+                                    u8 *dmaSrc = CastPointer(bg->unk10, otherVal * sp08);
+                                    u8 *dmaDest;
+                                    u32 dmaSize;
+                                    u8 *destPtr = CastPointer(bg->tilesVram, bg->unk24);
+                                    u32 destIndex = sp0C * j + bg->unk22;
+                                    dmaDest = CastPointer(destPtr, destIndex + i * sp08);
+
+                                    j += r5;
+
+                                    if (r5 > r8)
+                                        r5 = r8;
+                                    r8 -= r5;
+
+                                    // _080035A4
+                                    // NOTE: Somehow this is different from all
+                                    //       the other while-loops, where it was
+                                    //       while(--r5 != (u16)-1) instead.
+                                    dmaSize = sp2C;
+                                    dmaSize += (dmaSize >> 31);
+                                    while (r5-- != 0) {
+                                        DmaCopy16(3, dmaSrc, dmaDest, dmaSize);
+                                        dmaDest += sp0C;
+                                        dmaSrc += sp00 * sp08;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

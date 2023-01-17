@@ -24,14 +24,34 @@ struct GraphicsData {
     /* 0x0A */ AnimId anim;
 };
 
+// TODO: Put this somewhere else! (or is this already somewhere?)
+#define TileMask_Index   (0x3FF)
+#define TileMask_FlipX   (1 << 10)
+#define TileMask_FlipY   (1 << 11)
+#define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
+#define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
+
 typedef struct {
     // TODO: BgHeader unk0;
     // and remove the below 3 values
     /* 0x00 */ struct GraphicsData graphics;
 
-    u32 unkC;
-    // Don't think this is right in sa2
-    const u16 *unk10;
+    // 'tilesVram' points to tile-index array in VRAM, telling the GBA which tiles to
+    // draw on this BG
+    //
+    // (!!! Data likely different depending on type of Background (Affine vs. Text). !!!)
+    //
+    // Data-Structure (16 bits): MSB > PPPPYXTTTTTTTTTT < LSB
+    // P = Palette Index
+    // Y = Y-Flip
+    // X = X-Flip
+    // T = Tile-Index
+    //
+    // NOTE: It does NOT point to the tileset!
+    // NOTE/TODO (Jace): Should this also be const?
+    //                   It's in VRAM, so it doesn't make much sense?
+    /* 0x0C */ u16 *tilesVram;
+    /* 0x10 */ const u16 *unk10;
 
     u16 unk14;
     u16 unk16;
