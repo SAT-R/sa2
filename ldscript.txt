@@ -34,7 +34,6 @@ SECTIONS
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
         build/sa2/src/sprite_1.o(.text);
-        build/sa2/asm/sprite.o(.text);
         build/sa2/src/bg_update.o(.text);
         build/sa2/src/animation_commands_extra.o(.text);
         build/sa2/asm/sprite_2.o(.text);
