@@ -62,9 +62,8 @@ SECTIONS
         build/sa2/src/character_select.o(.text);
         build/sa2/src/course_select.o(.text);
         build/sa2/src/countdown.o(.text);
-        build/sa2/asm/game_over.o(.text);
+        build/sa2/src/game_over.o(.text);
         build/sa2/src/true_area_53_intro.o(.text);
-        build/sa2/asm/true_area_53_intro.o(.text);
         build/sa2/asm/true_area_53.o(.text);
         build/sa2/asm/enemies.o(.text);
         build/sa2/src/multiplayer_mode_select.o(.text);
@@ -207,6 +206,8 @@ SECTIONS
         build/sa2/src/character_select.o(.rodata);
         build/sa2/src/course_select.o(.rodata);
         build/sa2/src/countdown.o(.rodata);
+        build/sa2/src/true_area_53_intro.o(.rodata);
+        build/sa2/data/true_area_53_data.o(.rodata);
         build/sa2/data/data1_1_3.o(.rodata);
         build/sa2/src/multiplayer_mode_select.o(.rodata);
         build/sa2/src/multiplayer_multipak_connection.o(.rodata);
@@ -438,7 +439,7 @@ SECTIONS
         build/sa2/sound/songs/midi/se_267.o(.rodata);
         build/sa2/sound/songs/midi/se_268.o(.rodata);
         build/sa2/sound/songs/midi/se_269.o(.rodata);
-        build/sa2/sound/songs/midi/se_270.o(.rodata);
+        build/sa2/sound/songs/midi/se_suction.o(.rodata);
         build/sa2/sound/songs/midi/se_271.o(.rodata);
         build/sa2/sound/songs/midi/se_272.o(.rodata);
         build/sa2/sound/songs/midi/se_273.o(.rodata);

@@ -33,7 +33,7 @@ struct MultiplayerSinglePakResultsScreen {
     u16 unk430;
     u16 unk432;
     u32 unk434;
-    u8 unk438;
+    u8 actor;
     u8 filler439[3];
     u32 unk43C;
 }; /* size 0x440 */
@@ -350,8 +350,8 @@ void sub_80823FC(void)
 
         if ((gMultiSioStatusFlags & MULTI_SIO_PARENT && gPressedKeys & START_BUTTON
              && !val && val2 > 1)
-            || resultsScreen->unk438) {
-            resultsScreen->unk438 = 1;
+            || resultsScreen->actor) {
+            resultsScreen->actor = 1;
             packet->pat0.unk0 = 0x4012;
         }
     }
@@ -540,7 +540,7 @@ struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
 
     resultsScreen->unk434 = mode;
     resultsScreen->unk430 = 0;
-    resultsScreen->unk438 = 0;
+    resultsScreen->actor = 0;
     resultsScreen->unk43C = gFrameCount;
 
     return resultsScreen;

@@ -726,7 +726,7 @@ static void KeypadIntr(void) { REG_IF = INTR_FLAG_KEYPAD; }
 
 static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
-static void DummyFunc(void) { }
+void DummyFunc(void) { }
 
 static void ClearOamBufferCpuSet(void)
 {

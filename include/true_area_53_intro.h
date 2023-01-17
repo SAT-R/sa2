@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void CreateTrueArea53(void);
+void CreateTrueArea53Intro(void);
 
 #endif // GUARD_TRUE_AREA_53_INTRO_h
