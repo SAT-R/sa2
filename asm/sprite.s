@@ -1060,6 +1060,8 @@ _080032CE:
 	ands r0, r1
 	cmp r0, #0
 	beq _08003380
+
+__08003306:
 	ldr r1, [sp, #0x14]
 	adds r0, r1, r5
 	subs r0, #1
@@ -1082,8 +1084,8 @@ _0800332A:
 	ldr r1, [sp]
 	adds r0, r1, #0
 	muls r0, r2, r0
-	mov sb, r0
-	mov sl, r3
+	mov sb, r0          @ sb = sp00 * sp08
+	mov sl, r3          @ sl = (u16)-1
 _08003334:
 	movs r3, #0
 	subs r5, #1
@@ -1209,11 +1211,11 @@ _080033F4:
 _0800341C:
 	mov r1, sl
 	str r1, [sp, #0x30]
-	mov ip, r3
+	mov ip, r3          @ ip = r2 (var)
 	ldr r0, [sp]
 	adds r3, r0, #0
 	muls r3, r2, r3
-	mov sb, r3
+	mov sb, r3          @ sb = sp00 * sp08
 _0800342A:
 	movs r3, #0
 	subs r5, #1
@@ -1223,7 +1225,7 @@ _0800342A:
 	bge _0800345E
 	movs r0, #0x80
 	lsls r0, r0, #4
-	mov sl, r0
+	mov sl, r0          @ sl = 0x800
 	ldr r1, [sp, #0x30]
 	asrs r1, r1, #0x10
 	mov r8, r1
@@ -1274,7 +1276,7 @@ _08003492:
 	ldr r2, _080034D8 @ =0x040000D4
 	ldr r1, [sp, #8]
 	adds r0, r3, #0
-	muls r0, r1, r0
+	muls r0, r1, r0     @ r0 = sp08 * r2(var)
 	lsrs r1, r0, #0x1f
 	adds r0, r0, r1
 	asrs r0, r0, #1
@@ -1283,9 +1285,9 @@ _08003492:
 	lsls r0, r0, #0x18
 	mov r3, sb
 	orrs r3, r0
-	mov sb, r3
-	ldr r1, [sp]
-	ldr r3, [sp, #8]
+	mov sb, r3          @ sb = dmaSize | DMA_ENABLE
+	ldr r1, [sp]        @ r1 = sp00
+	ldr r3, [sp, #8]    @ r3 = sp08
 	adds r0, r1, #0
 	muls r0, r3, r0
 	mov r8, r0

@@ -379,6 +379,74 @@ bool32 sub_8002B20(void)
                     // _080032C4
                     if (r2 != 0) {
                         // _080032CE
+                        u32 r1 = bg->unkC + bg->unk24 * sp0C; // <- r1
+                        u32 r0 = bg->unk22 + bg->unk14 - sp10; // <- r0
+                        u16 *r7Ptr = (u16 *)(sp08 * r0 + r1);
+                        u16 r5 = (bg->unk28 + 1);
+
+                        if (bg->unk2E & 0x100) {
+                            if (bg->unk2E & 0x80) {
+                                // _08003306
+                                u32 index = ((sp14 + r5) - 1) * r4;
+                                u16 *r1Ptr = (void *)&bg->unk10[index * sp08];
+                                u16 *r4Ptr = (void *)&r1Ptr[(r2 - 1) * sp08];
+
+                                while (--r5 != (u16)-1) {
+                                    u16 i;
+                                    for (i = 0; i < bg->unk26; i++) {
+                                        r7Ptr[i] = r4Ptr[i] ^ 0xC00;
+                                    }
+                                    ((void *)r7Ptr) += sp0C;
+                                    ((void *)r4Ptr) -= sp00 * sp08;
+                                }
+                            } else {
+                                // _08003380
+                                u32 index = sp14 * r4;
+                                u8 *r1Ptr = &((u8 *)bg->unk10)[index * sp08];
+                                u16 *r4Ptr = (u16 *)&r1Ptr[(r2 - 1) * sp08];
+
+                                while (--r5 != (u16)-1) {
+                                    u16 i;
+                                    for (i = 0; i < bg->unk26; i++) {
+                                        r7Ptr[i] = r4Ptr[i] ^ 0x400;
+                                    }
+                                    ((void *)r7Ptr) += sp0C;
+                                    ((void *)r4Ptr) += sp00 * sp08;
+                                }
+                            }
+                        } else {
+                            // _080033F4
+                            if (bg->unk2E & 0x80) {
+                                // _080033FC
+                                u32 index = ((sp14 + r5) - 1) * r4;
+                                u16 *r4Ptr = (u16 *)&((u8 *)bg->unk10)[index * sp08];
+
+                                u32 sp30 = r2;
+                                while (--r5 != (u16)-1) {
+                                    u16 i;
+                                    for (i = 0; i < r2; i++) {
+                                        u16 *sp3C = &r7Ptr[i];
+                                        *sp3C = r4Ptr[i] ^ 0x800;
+                                    }
+                                    ((void *)r7Ptr) += sp0C;
+                                    ((void *)r4Ptr) -= sp00 * sp08;
+                                }
+                            } else {
+                                // _08003474
+                                u32 index = (sp14 * r4);
+                                u16 *r4Ptr = (u16 *)&((u8 *)bg->unk10)[index * sp08];
+
+                                u32 dmaSize = r2 * sp08;
+                                dmaSize += (dmaSize >> 31);
+                                while (--r5 != (u16)-1) {
+                                    // _08003492
+                                    DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
+
+                                    ((void *)r7Ptr) += sp0C;
+                                    ((void *)r4Ptr) += sp00 * sp08;
+                                }
+                            }
+                        }
                     }
                 } else {
                     // _080034DC
@@ -388,7 +456,7 @@ bool32 sub_8002B20(void)
         // _080035FA
         REG_VCOUNT;
         bg->prevScrollX = bg->scrollX;
-        bg->prevScrollX = bg->scrollY;
+        bg->prevScrollY = bg->scrollY;
     };
 
     return 1;
