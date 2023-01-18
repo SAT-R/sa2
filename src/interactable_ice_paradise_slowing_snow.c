@@ -9,10 +9,10 @@
 #include "constants/move_states.h"
 
 typedef struct {
-    /* 0x00 */ s16 unk0;
-    /* 0x02 */ s16 unk2;
-    /* 0x04 */ s16 unk4;
-    /* 0x06 */ s16 unk6;
+    /* 0x00 */ s16 left;
+    /* 0x02 */ s16 top;
+    /* 0x04 */ s16 right;
+    /* 0x06 */ s16 bottom;
     /* 0x08 */ s32 posX;
     /* 0x0C */ s32 posY;
     /* 0x10 */ Interactable *ia;
@@ -33,10 +33,10 @@ void initSprite_Interactable_IceParadise_SlowingSnow(Interactable *ia, u16 sprit
                                 TaskDestructor_Interactable_IceParadise_SlowingSnow);
 
     Sprite_Slowing_Snow *snow = TaskGetStructPtr(t);
-    snow->unk0 = ia->d.sData[0] * 8;
-    snow->unk2 = ia->d.sData[1] * 8;
-    snow->unk4 = snow->unk0 + ia->d.uData[2] * 8;
-    snow->unk6 = snow->unk2 + ia->d.uData[3] * 8;
+    snow->left = ia->d.sData[0] * 8;
+    snow->top = ia->d.sData[1] * 8;
+    snow->right = snow->left + ia->d.uData[2] * 8;
+    snow->bottom = snow->top + ia->d.uData[3] * 8;
     snow->ia = ia;
     snow->spriteX = ia->x;
     snow->spriteY = spriteY;
@@ -55,11 +55,11 @@ bool32 PlayerTouchesSnow(Sprite_Slowing_Snow *snow)
             s16 playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
             s16 playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-            if (((snowScreenX + snow->unk0) <= playerScreenX)
-                && ((snowScreenX + snow->unk0) + (snow->unk4 - snow->unk0)
+            if (((snowScreenX + snow->left) <= playerScreenX)
+                && ((snowScreenX + snow->left) + (snow->right - snow->left)
                     >= playerScreenX)
-                && ((snowScreenY + snow->unk2) <= playerScreenY)
-                && ((snowScreenY + snow->unk2) + (snow->unk6 - snow->unk2)
+                && ((snowScreenY + snow->top) <= playerScreenY)
+                && ((snowScreenY + snow->top) + (snow->bottom - snow->top)
                     >= playerScreenY)) {
                 return TRUE;
             }
@@ -92,10 +92,10 @@ bool32 sub_8077F18(Sprite_Slowing_Snow *snow)
     screenX = snow->posX - gCamera.x;
     screenY = snow->posY - gCamera.y;
 
-    if ((screenX + snow->unk4 < -(CAM_REGION_WIDTH / 2))
-        || (screenX + snow->unk0 > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))
-        || (screenY + snow->unk6 < -(CAM_REGION_WIDTH / 2))
-        || (screenY + snow->unk2 > CAM_BOUND_Y))
+    if ((screenX + snow->right < -(CAM_REGION_WIDTH / 2))
+        || (screenX + snow->left > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))
+        || (screenY + snow->bottom < -(CAM_REGION_WIDTH / 2))
+        || (screenY + snow->top > CAM_BOUND_Y))
         return TRUE;
 
     return FALSE;
