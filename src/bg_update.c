@@ -1,5 +1,4 @@
 #include "global.h"
-#include "gba/syscall.h"
 #include "main.h"
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
