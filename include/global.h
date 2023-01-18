@@ -87,6 +87,8 @@
 // Converts a Q16.16 fixed-point format number to a regular integer
 #define Q_16_16_TO_INT(n) ((int)((n) >> 0x10))
 
+#define Q_24_8_MULTIPLY(intVal, floatVal) Q_24_8_TO_INT((intVal)*Q_24_8(floatVal))
+
 #define RED_VALUE(color)   ((color)&0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
