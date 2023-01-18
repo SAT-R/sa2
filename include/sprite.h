@@ -32,8 +32,6 @@ struct GraphicsData {
 #define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
 
 typedef struct {
-    // TODO: BgHeader unk0;
-    // and remove the below 3 values
     /* 0x00 */ struct GraphicsData graphics;
 
     // 'tilesVram' points to tile-index array in VRAM, telling the GBA which tiles to
