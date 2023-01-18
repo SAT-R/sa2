@@ -33,8 +33,7 @@ typedef struct {
 
 static void Task_Interactable_IceParadise_SlowingSnow(void);
 static void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t);
-
-extern bool32 sub_8077F18(Sprite_SlowingSnow *);
+static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
 void initSprite_Interactable_IceParadise_SlowingSnow(Interactable *in_ia,
                                                      u16 spriteRegionX,
@@ -91,7 +90,7 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
 
     // NOTE: Technically this can be turned into an else-if, because
     //       if the player does touch the snow, it will not need to be destroyed.
-    if (sub_8077F18(snow)) {
+    if (ShouldDespawn(snow)) {
         snow->ia->x = snow->spriteX;
         TaskDestroy(gCurTask);
     }
@@ -99,7 +98,7 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
 
 void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t) { }
 
-bool32 sub_8077F18(Sprite_SlowingSnow *snow)
+static bool32 ShouldDespawn(Sprite_SlowingSnow *snow)
 {
     s16 screenX, screenY;
     screenX = snow->posX - gCamera.x;
