@@ -349,7 +349,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background = &coursesScreen->header;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(28);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
 
@@ -372,7 +372,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background = &coursesScreen->zoneMap;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(16);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(16);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x69;

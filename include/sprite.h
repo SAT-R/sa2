@@ -24,14 +24,32 @@ struct GraphicsData {
     /* 0x0A */ AnimId anim;
 };
 
+// TODO: Put this somewhere else! (or is this already somewhere?)
+#define TileMask_Index   (0x3FF)
+#define TileMask_FlipX   (1 << 10)
+#define TileMask_FlipY   (1 << 11)
+#define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
+#define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
+
 typedef struct {
-    // TODO: BgHeader unk0;
-    // and remove the below 3 values
     /* 0x00 */ struct GraphicsData graphics;
 
-    u32 unkC;
-    // Don't think this is right in sa2
-    const u16 *unk10;
+    // 'tilesVram' points to tile-index array in VRAM, telling the GBA which tiles to
+    // draw on this BG
+    //
+    // (!!! Data likely different depending on type of Background (Affine vs. Text). !!!)
+    //
+    // Data-Structure (16 bits): MSB > PPPPYXTTTTTTTTTT < LSB
+    // P = Palette Index
+    // Y = Y-Flip
+    // X = X-Flip
+    // T = Tile-Index
+    //
+    // NOTE: It does NOT point to the tileset!
+    // NOTE/TODO (Jace): Should this also be const?
+    //                   It's in VRAM, so it doesn't make much sense?
+    /* 0x0C */ u16 *tilesVram;
+    /* 0x10 */ const u16 *unk10;
 
     u16 unk14;
     u16 unk16;
@@ -56,10 +74,12 @@ typedef struct {
     // Flags
     // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
-    u16 unk30;
-    u16 unk32;
-    u16 unk34;
-    u16 unk36;
+
+    // apparently NOT signed?
+    /* 0x30 */ u16 scrollX;
+    /* 0x32 */ u16 scrollY;
+    /* 0x34 */ u16 prevScrollX;
+    /* 0x36 */ u16 prevScrollY;
     const u16 *unk38;
     u16 unk3C;
     u16 unk3E;
@@ -95,10 +115,13 @@ typedef struct {
 
 #define SPRITE_BF_GET_BG_ID(sprite) (((sprite)->unk10 & 0x18000) >> 15)
 
-// TODO: Maybe rename this?
+#define SpriteShouldUpdate(sprite)                                                      \
+    (((sprite)->unk21 != (sprite)->variant)                                             \
+     || ((sprite)->unk1E != (sprite)->graphics.anim))
+
+// TODO: Maybe rename this and move if out?
 #define SPRITE_MAYBE_SWITCH_ANIM(sprite)                                                \
-    if (((sprite)->unk21 != (sprite)->variant)                                          \
-        || ((sprite)->unk1E != (sprite)->graphics.anim)) {                              \
+    if (SpriteShouldUpdate(sprite)) {                                                   \
         (sprite)->graphics.size = 0;                                                    \
         (sprite)->unk21 = (sprite)->variant;                                            \
         (sprite)->unk1E = (sprite)->graphics.anim;                                      \

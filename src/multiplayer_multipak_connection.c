@@ -155,7 +155,7 @@ void StartMultiPakConnect(void)
     unk9C = &connectScreen->unk9C;
     unk9C->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     unk9C->graphics.anim = 0;
-    unk9C->unkC = BG_SCREEN_ADDR(20);
+    unk9C->tilesVram = (void *)BG_SCREEN_ADDR(20);
     unk9C->unk18 = 0;
     unk9C->unk1A = 0;
     unk9C->unk1C = 0x72;
