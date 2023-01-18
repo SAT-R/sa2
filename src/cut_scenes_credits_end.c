@@ -145,7 +145,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->unkC = BG_SCREEN_ADDR(22);
+            background->tilesVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
             background->unk1C = gUnknown_080E12B0[2];
@@ -229,7 +229,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->unkC = BG_SCREEN_ADDR(22);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1C = gUnknown_080E12B0[scene->sonicAnimFrame + 2];
@@ -254,7 +254,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->unkC = BG_SCREEN_ADDR(20);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1C = gUnknown_080E12B0[scene->unk160];
@@ -311,7 +311,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->unkC = BG_SCREEN_ADDR(22);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1C = gUnknown_080E12B0[13];
@@ -334,7 +334,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->unkC = BG_SCREEN_ADDR(21);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1C = gUnknown_080E12B0[14];

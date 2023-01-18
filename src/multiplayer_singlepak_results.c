@@ -123,7 +123,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     Background *background = &screen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 5;
@@ -287,7 +287,7 @@ void sub_80823FC(void)
             gBgScrollRegs[2][1] = 0;
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->unkC = BG_SCREEN_ADDR(28);
+            background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
             background->unk1C = 6;

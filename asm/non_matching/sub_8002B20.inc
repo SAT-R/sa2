@@ -1,12 +1,7 @@
-.include "asm/macros.inc"
 .include "constants/constants.inc"
 
 .syntax unified
-.arm
-
-.if 1
-	thumb_func_start sub_8002B20
-sub_8002B20: @ 0x08002B20
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -44,7 +39,7 @@ _08002B64:
 	ldrb r1, [r3]
 	lsls r0, r1, #2
 	adds r0, r0, r2
-	ldr r6, [r0]
+	ldr r6, [r0]        @ r6 = bg
 	adds r1, #1
 	movs r0, #0xf
 	ands r1, r0
@@ -99,7 +94,7 @@ _08002BD8:
 	lsls r1, r5, #1
 	adds r1, r1, r0
 	ldrh r0, [r1]
-	lsrs r3, r0, #0xe
+	lsrs r3, r0, #14
 	cmp r3, #1
 	beq _08002BEE
 	cmp r3, #3
@@ -121,7 +116,7 @@ _08002BF8:
 	str r0, [sp, #0xc]
 	ldrh r2, [r6, #0x2e]
 	movs r7, #0x20
-	mov sb, r7
+	mov sb, r7          @ sb = 0x20
 	mov r0, sb
 	ands r0, r2
 	cmp r0, #0
@@ -138,13 +133,13 @@ _08002C20:
 	ldr r1, [sp, #0xc]
 	muls r0, r1, r0
 	ldr r1, [r6, #0xc]
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = bg->unkC + (bg->unk24 * sp0C);
 	ldrh r5, [r6, #0x22]
 	mov r8, r5
 	ldr r7, [sp, #8]
 	mov r0, r8
 	muls r0, r7, r0
-	adds r7, r1, r0
+	adds r7, r1, r0         @ r7 = (u16 *)(r1 * (bg->unk22 * sp08));
 	ldrh r5, [r6, #0x28]    @ r5 = bg->unk28
 	movs r1, #0x80
 	lsls r1, r1, #1
@@ -187,7 +182,7 @@ _08002C7C:
 	mov sb, r1
 	mov sl, r0
 _08002C86: @ loop
-	movs r3, #0
+	movs r3, #0         @ r3 = i
 	subs r5, #1
 	ldr r0, [sp, #0xc]
 	adds r2, r7, r0
@@ -289,7 +284,7 @@ _08002D3A:
 	bl _080035FA
 	.align 2, 0
 _08002D4C: .4byte 0x0000FFFF
-_08002D50:
+_08002D50:      @ <- ((bg->unk2E & 0x100) == 0)
 	movs r0, #0x80
 	ands r0, r2
 	cmp r0, #0
@@ -318,7 +313,7 @@ _08002D80:
 	adds r0, r1, #0
 	muls r0, r2, r0
 	mov sb, r0
-	mov sl, r3
+	mov sl, r3      @ sl = (u16)-1
 _08002D8A:
 	movs r3, #0
 	subs r5, #1
@@ -358,14 +353,14 @@ _08002DBC:
 	.align 2, 0
 _08002DD0: .4byte 0x0000FFFF
 _08002DD4:
-	movs r0, #1
+	movs r0, #1     
 	ands r3, r0
 	cmp r3, #0
 	beq _08002E74
 	ldr r2, [sp, #8]
 	cmp r2, #2
 	bne _08002E74
-	mov r3, sb
+	mov r3, sb      @ r3 = sb = 0x20
 	mov r0, r8
 	subs r3, r3, r0
 	cmp r3, #0
@@ -376,6 +371,7 @@ _08002DD4:
 	subs r2, #0x20
 	cmp r2, #0
 	ble _08002E74
+__08002DF8:
 	ldrh r0, [r6, #0x20]
 	muls r0, r4, r0
 	lsls r0, r0, #1
@@ -387,6 +383,7 @@ _08002DD4:
 	lsls r3, r3, #1
 	mov sb, r3
 	lsls r2, r2, #1
+__08002DFE:
 	subs r0, r5, #1
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
@@ -493,7 +490,7 @@ _08002ED4:
 	ldrh r2, [r6, #0x20]
 	str r2, [sp, #0x14]
 	movs r3, #0
-	mov sl, r3
+	mov sl, r3              @ sl = i = 0
 	ldrh r4, [r6, #0x26]
 	cmp sl, r4
 	blt _08002EE8
@@ -512,7 +509,7 @@ _08002EE8:
 	subs r4, r4, r0
 	str r4, [sp, #0x1c]
 	ldrh r7, [r6, #0x28]
-	mov r8, r7
+	mov r8, r7              @ r8 = innerEnd
 	ldrh r0, [r6, #0x26]
 	mov r2, sl
 	subs r0, r0, r2
@@ -526,7 +523,7 @@ _08002F14:
 	muls r3, r4, r3
 	str r3, [sp, #0x20]
 	movs r5, #0
-	mov sb, r5
+	mov sb, r5              @ sb = j = 0
 	add r1, sl
 	str r1, [sp, #0x38]
 	cmp sb, r8
@@ -564,6 +561,7 @@ _08002F28:
 	muls r1, r3, r1
 	ldr r0, [r6, #0x10]
 	adds r4, r0, r1
+
 	ldrh r1, [r6, #0x24]
 	ldr r0, [r6, #0xc]
 	adds r0, r0, r1
@@ -576,6 +574,7 @@ _08002F28:
 	mov r1, sl
 	muls r1, r3, r1
 	adds r7, r0, r1
+
 	add sb, r5
 	cmp r5, r8
 	ble _08002F8A
@@ -590,7 +589,7 @@ _08002F8A:
 	beq _08002FD0
 	ldr r3, _08002FE4 @ =0x040000D4
 	ldr r1, [sp, #0x20]
-	lsrs r0, r1, #0x1f
+	lsrs r0, r1, #31
 	adds r0, r1, r0
 	asrs r0, r0, #1
 	str r0, [sp, #0x3c]
@@ -603,7 +602,7 @@ _08002F8A:
 	ldr r2, [sp, #8]
 	adds r0, r1, #0
 	muls r0, r2, r0
-	mov ip, r0
+	mov ip, r0              @ ip = dmaSrc"Index"
 _08002FB8:
 	str r4, [r3]
 	str r7, [r3, #4]
@@ -635,9 +634,9 @@ _08002FE8:
 	ands r0, r2
 	ldrh r3, [r6, #0x30]
 	ldr r7, _080030B8 @ =gBgScrollRegs
-	mov sb, r7
-	lsls r5, r5, #2
-	mov r8, r5
+	mov sb, r7          @ sb = gBgScrollRegs
+	lsls r5, r5, #2     @ r5 = bgId * 4
+	mov r8, r5          @ r8 = bgId * 4
 	cmp r0, #0
 	bne _08003034
 	adds r2, r4, #0
@@ -672,8 +671,8 @@ _08003022:
 	lsls r0, r2, #3
 	cmp r1, r0
 	bge _08003022
-_08003034:
-	mov r0, r8
+_08003034:          @ sb = gBgScrollRegs
+	mov r0, r8      @ r0 = r8 = bgID * 4
 	add r0, sb
 	movs r2, #7
 	ands r3, r2
@@ -718,6 +717,7 @@ _08003072:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x14]
+
 	ldrh r0, [r6, #0x24]
 	ldr r2, [sp, #0xc]
 	muls r0, r2, r0
@@ -727,12 +727,13 @@ _08003072:
 	ldr r4, [sp, #8]
 	muls r0, r4, r0
 	adds r7, r1, r0
+
 	ldrh r0, [r6, #0x26]
 	ldr r5, [sp, #0x10]
 	adds r2, r5, r0
 	adds r1, r2, #1
 	ldrh r4, [r6, #0x14]
-	mov r8, r0
+	mov r8, r0              @ r8 = bg->unk26
 	cmp r1, r4
 	ble _080030BC
 	subs r0, r4, #1
@@ -778,7 +779,7 @@ _080030D4:
 	lsls r0, r0, #0x10
 	lsrs r5, r0, #0x10
 	lsls r2, r2, #0x10
-	mov sl, r2
+	mov sl, r2          @ sl = r2
 	ldr r0, _08003154 @ =0x0000FFFF
 	cmp r5, r0
 	bne _08003108
@@ -787,8 +788,8 @@ _08003108:
 	ldr r2, [sp]
 	adds r1, r2, #0
 	muls r1, r3, r1
-	mov sb, r1
-	mov ip, r0
+	mov sb, r1          @ sb = sp00 * sp08
+	mov ip, r0          @ ip = (u16)-1;
 _08003112:
 	movs r3, #0
 	subs r5, #1
@@ -919,9 +920,9 @@ _080031D0:
 	beq _080032C4
 	ldr r2, [sp]
 	adds r1, r2, #0
-	muls r1, r3, r1
-	mov sb, r1
-	mov ip, r0
+	muls r1, r3, r1     @ r1 = sp00 * sp08
+	mov sb, r1          @ sb = r1
+	mov ip, r0          @ ip = (u16)-1
 _0800320C:
 	movs r3, #0
 	subs r5, #1
@@ -994,7 +995,7 @@ _08003254:
 	ldr r1, [sp]
 	ldr r0, [sp, #8]
 	adds r3, r1, #0
-	muls r3, r0, r3
+	muls r3, r0, r3     @ r3 = sp00 * sp08
 _08003298:
 	str r4, [r2]
 	str r7, [r2, #4]
@@ -1003,7 +1004,7 @@ _08003298:
 	subs r0, r0, r1
 	ldr r1, [sp, #8]
 	muls r0, r1, r0
-	lsrs r1, r0, #0x1f
+	lsrs r1, r0, #31
 	adds r0, r0, r1
 	asrs r0, r0, #1
 	mov r1, sb
@@ -1018,6 +1019,7 @@ _08003298:
 	lsrs r5, r0, #0x10
 	cmp r5, ip
 	bne _08003298
+
 _080032C4:
 	mov r1, sl
 	asrs r3, r1, #0x10
@@ -1053,6 +1055,8 @@ _080032CE:
 	ands r0, r1
 	cmp r0, #0
 	beq _08003380
+
+__08003306:
 	ldr r1, [sp, #0x14]
 	adds r0, r1, r5
 	subs r0, #1
@@ -1075,8 +1079,8 @@ _0800332A:
 	ldr r1, [sp]
 	adds r0, r1, #0
 	muls r0, r2, r0
-	mov sb, r0
-	mov sl, r3
+	mov sb, r0          @ sb = sp00 * sp08
+	mov sl, r3          @ sl = (u16)-1
 _08003334:
 	movs r3, #0
 	subs r5, #1
@@ -1202,11 +1206,11 @@ _080033F4:
 _0800341C:
 	mov r1, sl
 	str r1, [sp, #0x30]
-	mov ip, r3
+	mov ip, r3          @ ip = r2 (var)
 	ldr r0, [sp]
 	adds r3, r0, #0
 	muls r3, r2, r3
-	mov sb, r3
+	mov sb, r3          @ sb = sp00 * sp08
 _0800342A:
 	movs r3, #0
 	subs r5, #1
@@ -1216,7 +1220,7 @@ _0800342A:
 	bge _0800345E
 	movs r0, #0x80
 	lsls r0, r0, #4
-	mov sl, r0
+	mov sl, r0          @ sl = 0x800
 	ldr r1, [sp, #0x30]
 	asrs r1, r1, #0x10
 	mov r8, r1
@@ -1267,7 +1271,7 @@ _08003492:
 	ldr r2, _080034D8 @ =0x040000D4
 	ldr r1, [sp, #8]
 	adds r0, r3, #0
-	muls r0, r1, r0
+	muls r0, r1, r0     @ r0 = sp08 * r2(var)
 	lsrs r1, r0, #0x1f
 	adds r0, r0, r1
 	asrs r0, r0, #1
@@ -1276,12 +1280,12 @@ _08003492:
 	lsls r0, r0, #0x18
 	mov r3, sb
 	orrs r3, r0
-	mov sb, r3
-	ldr r1, [sp]
-	ldr r3, [sp, #8]
+	mov sb, r3          @ sb = dmaSize | DMA_ENABLE
+	ldr r1, [sp]        @ r1 = sp00
+	ldr r3, [sp, #8]    @ r3 = sp08
 	adds r0, r1, #0
 	muls r0, r3, r0
-	mov r8, r0
+	mov r8, r0          @ r8 = sp00 * sp08
 _080034B6:
 	str r4, [r2]
 	str r7, [r2, #4]
@@ -1301,22 +1305,25 @@ _080034B6:
 	.align 2, 0
 _080034D4: .4byte 0x0000FFFF
 _080034D8: .4byte 0x040000D4
+    @ r4 = bg->scrollX
 _080034DC:
 	lsrs r0, r4, #3
 	ldrh r4, [r6, #0x1e]
 	adds r0, r0, r4
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp, #0x10]
+	str r0, [sp, #0x10]     @ sp10 = (scrollX / 8) + bg->unk1E;
+
 	ldrh r0, [r6, #0x32]
 	lsrs r0, r0, #3
 	ldrh r5, [r6, #0x20]
 	adds r0, r0, r5
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp, #0x14]
+	str r0, [sp, #0x14]     @ sp14 = (scrollY / 8) + bg->unk20;
+
 	movs r7, #0
-	mov sl, r7
+	mov sl, r7              @ sl = i
 	ldrh r0, [r6, #0x26]
 	cmp sl, r0
 	bge _080035FA
@@ -1326,15 +1333,17 @@ _08003500:
 	ldrh r1, [r6, #0x14]
 	adds r0, r4, #0
 	bl Div
-	str r0, [sp, #0x24]
+	str r0, [sp, #0x24]     @ sp24 = Div-result
+
 	ldrh r1, [r6, #0x14]
 	adds r2, r0, #0
 	adds r0, r2, #0
 	muls r0, r1, r0
 	subs r4, r4, r0
 	str r4, [sp, #0x28]
+
 	ldrh r3, [r6, #0x28]
-	mov r8, r3
+	mov r8, r3              @ r8 = bg->unk28
 	ldrh r0, [r6, #0x26]
 	mov r4, sl
 	subs r0, r0, r4
@@ -1348,10 +1357,12 @@ _0800352E:
 	adds r7, r1, #0
 	muls r7, r0, r7
 	str r7, [sp, #0x2c]
+
 	movs r2, #0
-	mov sb, r2
+	mov sb, r2          @ sb = j
 	add r1, sl
 	str r1, [sp, #0x34]
+
 	cmp sb, r8
 	bge _080035F0
 _08003542:
@@ -1365,8 +1376,11 @@ _08003542:
 	muls r1, r3, r1
 	subs r4, r4, r1
 	subs r5, r3, r4
+
 	ldrh r1, [r6, #0x3c]
 	muls r0, r1, r0
+
+__0800355C:
 	ldr r2, [r6, #0x38]
 	ldr r7, [sp, #0x24]
 	lsls r1, r7, #1
@@ -1374,10 +1388,12 @@ _08003542:
 	adds r0, r0, r2
 	adds r1, r1, r0
 	ldrh r0, [r1]
+
 	ldrh r2, [r6, #0x14]
 	muls r0, r2, r0
 	adds r1, r0, #0
 	muls r1, r3, r1
+
 	adds r0, r4, #0
 	muls r0, r2, r0
 	ldr r2, [sp, #0x28]
@@ -1387,6 +1403,8 @@ _08003542:
 	muls r1, r3, r1
 	ldr r0, [r6, #0x10]
 	adds r4, r0, r1
+
+    // dmaDest
 	ldrh r1, [r6, #0x24]
 	ldr r0, [r6, #0xc]
 	adds r0, r0, r1
@@ -1398,7 +1416,8 @@ _08003542:
 	adds r0, r0, r1
 	mov r1, sl
 	muls r1, r3, r1
-	adds r7, r0, r1
+	adds r7, r0, r1     @ r7 = dmaDest
+
 	add sb, r5
 	cmp r5, r8
 	ble _080035A4
@@ -1416,7 +1435,7 @@ _080035A4:
 	lsrs r0, r1, #0x1f
 	adds r0, r1, r0
 	asrs r0, r0, #1
-	str r0, [sp, #0x3c]
+	str r0, [sp, #0x3c] @ sp3C = dmaIndex
 	movs r0, #0x80
 	lsls r0, r0, #0x18
 	ldr r2, [sp, #0x3c]
@@ -1426,7 +1445,7 @@ _080035A4:
 	ldr r2, [sp, #8]
 	adds r0, r1, #0
 	muls r0, r2, r0
-	mov ip, r0
+	mov ip, r0          @ ip = sp00 * sp08
 _080035D2:
 	str r4, [r3]
 	str r7, [r3, #4]
@@ -1481,4 +1500,5 @@ _08003628: .4byte 0x040000D4
 _0800362C: .4byte REG_VCOUNT
 _08003630: .4byte gUnknown_03002AE4
 _08003634: .4byte gUnknown_0300287C
-.endif
+
+.syntax divided

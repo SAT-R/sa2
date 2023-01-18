@@ -191,7 +191,7 @@ void CreateMultiplayerModeSelectScreen(void)
     unk0 = &modeScreen->unk0;
     unk0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     unk0->graphics.anim = 0;
-    unk0->unkC = BG_SCREEN_ADDR(20);
+    unk0->tilesVram = (void *)BG_SCREEN_ADDR(20);
     unk0->unk18 = 0;
     unk0->unk1A = 0;
     unk0->unk1C = 0x6E;
@@ -208,7 +208,7 @@ void CreateMultiplayerModeSelectScreen(void)
     unk0 = &modeScreen->unk40;
     unk0->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     unk0->graphics.anim = 0;
-    unk0->unkC = BG_SCREEN_ADDR(22);
+    unk0->tilesVram = (void *)BG_SCREEN_ADDR(22);
     unk0->unk18 = 0;
     unk0->unk18 = 0;
     unk0->unk18 = 0;

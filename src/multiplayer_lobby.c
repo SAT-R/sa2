@@ -162,7 +162,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background = &lobbyScreen->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x73;

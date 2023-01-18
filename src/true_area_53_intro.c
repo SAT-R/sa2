@@ -365,7 +365,7 @@ void CreateOrbitingEmeraldsSequence(void)
     background = &sequence->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(28);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x17B;
@@ -1559,7 +1559,7 @@ void CreateBackgrounds(void)
     background = &worldBgs->bg1;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(31);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(31);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x179;
@@ -1576,7 +1576,7 @@ void CreateBackgrounds(void)
     background = &worldBgs->bg2;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x17A;

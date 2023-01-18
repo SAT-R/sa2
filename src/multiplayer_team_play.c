@@ -201,7 +201,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background = &teamPlayScreen->unk210;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(6);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x7B;
@@ -218,7 +218,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background = &teamPlayScreen->unk250;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(14);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x7A;
@@ -235,7 +235,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background = &teamPlayScreen->unk290;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(22);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x7C;
@@ -252,7 +252,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background = &teamPlayScreen->unk2D0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->unkC = BG_SCREEN_ADDR(30);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1C = 0x7E;
@@ -359,7 +359,7 @@ static void sub_805CC34(void)
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
-                    background->unkC = BG_SCREEN_ADDR(22);
+                    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
                     background->unk1C = 0x7D;
@@ -404,7 +404,7 @@ static void sub_805CC34(void)
 
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                 background->graphics.anim = 0;
-                background->unkC = BG_SCREEN_ADDR(22);
+                background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
                 background->unk1C = 0x7D;
