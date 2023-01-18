@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 1
 	thumb_func_start Task_Interactable_IceParadise_SlidyIce
 Task_Interactable_IceParadise_SlidyIce: @ 0x0801121C
 	push {r4, r5, r6, r7, lr}
@@ -102,41 +103,4 @@ _080112D0: .4byte gCurTask
 _080112D4: .4byte gPlayer
 _080112D8: .4byte gCamera
 
-	thumb_func_start initSprite_Interactable_IceParadise_SlidyIce
-initSprite_Interactable_IceParadise_SlidyIce: @ 0x080112DC
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _08011320 @ =Task_Interactable_IceParadise_SlidyIce
-	ldr r2, _08011324 @ =0x00002010
-	movs r1, #0
-	str r1, [sp]
-	movs r1, #0xc
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	strh r4, [r0, #4]
-	strh r5, [r0, #6]
-	str r6, [r0]
-	ldrb r1, [r6]
-	strb r1, [r0, #8]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08011320: .4byte Task_Interactable_IceParadise_SlidyIce
-_08011324: .4byte 0x00002010
+.endif

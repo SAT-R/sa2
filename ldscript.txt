@@ -54,6 +54,7 @@ SECTIONS
         build/sa2/asm/interactable_clear_pipe.o(.text);
         build/sa2/asm/interactable_platform_thin.o(.text);
         build/sa2/asm/interactable_slidy_ice.o(.text);
+        build/sa2/src/interactable_slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
         build/sa2/src/init.o(.text);
         build/sa2/src/game.o(.text);
