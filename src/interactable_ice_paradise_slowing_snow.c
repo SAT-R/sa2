@@ -75,7 +75,9 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
     if (PlayerTouchesSnow(snow)) {
         gPlayer.speedGroundX = Q_24_8_MULTIPLY(gPlayer.speedGroundX, 0.95);
     }
-    // _08077EEE
+
+    // NOTE: Technically this can be turned into an else-if, because
+    //       if the player does touch the snow, it will not need to be destroyed.
     if (sub_8077F18(snow)) {
         snow->ia->x = snow->spriteX;
         TaskDestroy(gCurTask);
@@ -84,13 +86,17 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
 
 void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t) { }
 
-/*
-u32 sub_8077F18(Sprite_Slowing_Snow *snow) {
+bool32 sub_8077F18(Sprite_Slowing_Snow *snow)
+{
     s16 screenX, screenY;
-    screenX = snow->base.spriteX - gCamera.x;
-    screenY = snow->base.spriteY - gCamera.y;
+    screenX = snow->posX - gCamera.x;
+    screenY = snow->posY - gCamera.y;
 
-    if (screenX + snow->base.)
-        ;
+    if ((screenX + snow->unk4 < -(CAM_REGION_WIDTH / 2))
+        || (screenX + snow->unk0 > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))
+        || (screenY + snow->unk6 < -(CAM_REGION_WIDTH / 2))
+        || (screenY + snow->unk2 > CAM_BOUND_Y))
+        return TRUE;
+
+    return FALSE;
 }
-*/
