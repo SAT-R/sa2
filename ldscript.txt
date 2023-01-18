@@ -53,7 +53,7 @@ SECTIONS
         build/sa2/src/interactable_044.o(.text);
         build/sa2/asm/interactable_clear_pipe.o(.text);
         build/sa2/asm/interactable_platform_thin.o(.text);
-        build/sa2/asm/interactable_slidy_ice.o(.text);
+        build/sa2/src/interactable_slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
         build/sa2/src/init.o(.text);
         build/sa2/src/game.o(.text);
@@ -107,7 +107,7 @@ SECTIONS
         build/sa2/asm/interactable_music_plant_keyboard.o(.text);
         build/sa2/asm/interactable_music_plant_german_flute.o(.text);
         build/sa2/asm/interactable_music_plant_pipe_horn.o(.text);
-        build/sa2/asm/interactable_ice_paradise_slowing_snow.o(.text);
+        build/sa2/src/interactable_ice_paradise_slowing_snow.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/asm/interactable_ice_paradise_half_pipe.o(.text);
         build/sa2/asm/interactable_069.o(.text);

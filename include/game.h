@@ -166,7 +166,6 @@ extern struct Camera gCamera;
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
-// NOTE(Jace): The u16-cast is u32 in SA3(?)
 #define IS_OUT_OF_RANGE(castType, x, y, dim)                                            \
     (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
      || (y > DISPLAY_HEIGHT + (dim / 2)))

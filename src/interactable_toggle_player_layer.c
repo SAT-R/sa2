@@ -10,18 +10,25 @@
 #include "constants/move_states.h"
 
 typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+
+    /* 0x03 */ s8 unused3;
+    /* 0x04 */ s8 unused4;
+    /* 0x05 */ u8 width;
+    /* 0x06 */ u8 height;
+} Interactable_Toggle_PlayerLayer;
+
+typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_ChangePlayerLayer;
-
-// Width and height of the rectangle of this object, in tiles
-#define splWidth  d.uData[2]
-#define splHeight d.uData[3]
 
 static void Task_Interactable_Toggle_PlayerLayer(void)
 {
     Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &layerChanger->base;
-    Interactable *ia = base->ia;
+    Interactable_Toggle_PlayerLayer *ia = (Interactable_Toggle_PlayerLayer *)base->ia;
     u8 spriteX = base->spriteX;
     u32 regionX = base->regionX;
     u32 regionY = base->regionY;
@@ -31,9 +38,9 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     screenY = SpriteGetScreenPos(ia->y, regionY);
 
     if ((screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && (screenX + (ia->splWidth * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
+        && (screenX + (ia->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
         && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && (screenY + (ia->splHeight * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
+        && (screenY + (ia->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.
@@ -54,9 +61,6 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
         TaskDestroy(gCurTask);
     }
 }
-
-#undef splHeight
-#undef splWidth
 
 void initSprite_Interactable_Toggle_PlayerLayer(Interactable *ia, u16 spriteRegionX,
                                                 u16 spriteRegionY, UNUSED u8 spriteY)
