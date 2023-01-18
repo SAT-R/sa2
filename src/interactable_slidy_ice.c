@@ -23,7 +23,6 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_SlidyIce;
 
-#if 1
 void Task_Interactable_IceParadise_SlidyIce(void)
 {
     Sprite_SlidyIce *ice = TaskGetStructPtr(gCurTask);
@@ -60,7 +59,6 @@ void Task_Interactable_IceParadise_SlidyIce(void)
         TaskDestroy(gCurTask);
     }
 }
-#endif
 
 void initSprite_Interactable_IceParadise_SlidyIce(Interactable *ia, u16 spriteRegionX,
                                                   u16 spriteRegionY, u8 spriteY)
