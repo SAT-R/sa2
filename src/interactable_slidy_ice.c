@@ -1,5 +1,4 @@
 #include "global.h"
-
 #include "task.h"
 
 #include "game.h"
@@ -10,6 +9,17 @@
 extern void Task_Interactable_IceParadise_SlidyIce(void);
 
 typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+
+    /* 0x03 */ s8 offsetX;
+    /* 0x04 */ s8 offsetY;
+    /* 0x05 */ u8 width;
+    /* 0x06 */ u8 height;
+} Interactable_SlidyIce PACKED;
+
+typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_SlidyIce;
 
@@ -17,7 +27,7 @@ typedef struct {
 void Task_Interactable_IceParadise_SlidyIce(void)
 {
     Sprite_SlidyIce *ice = TaskGetStructPtr(gCurTask);
-    Interactable *ia = ice->base.ia;
+    Interactable_SlidyIce *ia = (Interactable_SlidyIce *)ice->base.ia;
     u8 spriteX = ice->base.spriteX;
 
     s32 regionX, regionY;
@@ -27,15 +37,18 @@ void Task_Interactable_IceParadise_SlidyIce(void)
     screenX = SpriteGetScreenPos(spriteX, regionX);
     screenY = SpriteGetScreenPos(ia->y, regionY);
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        s32 posX = (screenX + ia->offsetX * TILE_WIDTH);
 
-        && ((screenX + ia->d.sData[0] * 8) <= Q_24_8_TO_INT(gPlayer.x))
-        && (((screenX + ia->d.sData[0] * 8) + ia->d.uData[2] * 8)
-            >= Q_24_8_TO_INT(gPlayer.x))
-        && ((screenY + ia->d.sData[1] * 8) <= Q_24_8_TO_INT(gPlayer.y))
-        && ((screenY + ia->d.sData[1] * 8) + ia->d.uData[3] * 8
-            >= Q_24_8_TO_INT(gPlayer.y))) {
-        gPlayer.moveState |= MOVESTATE_800;
+        if ((posX <= Q_24_8_TO_INT(gPlayer.x))
+            && ((posX + ia->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))) {
+            s32 posY = screenY + ia->offsetY * TILE_WIDTH;
+
+            if ((posY <= Q_24_8_TO_INT(gPlayer.y))
+                && ((posY + ia->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
+                gPlayer.moveState |= MOVESTATE_800;
+            }
+        }
     }
 
     // _08011292

@@ -12,6 +12,12 @@
 #define INTERACTABLE_DATA_SIZE     INTERACTABLE_DATA_SIZE_SA2
 
 typedef struct {
+    /* 0x00 */ u8 x;
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+} InteractableBase PACKED;
+
+typedef struct {
     /* 0x00 */ u8 x; // While an interactable is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
@@ -19,8 +25,9 @@ typedef struct {
 
     // PACKED was moved down to allow Intellisense to see the union's name
     union {
-        /* 0x03 */ s8 sData[INTERACTABLE_DATA_SIZE];
-        /* 0x03 */ u8 uData[INTERACTABLE_DATA_SIZE];
+        /* 0x03 */
+        s8 sData[INTERACTABLE_DATA_SIZE];
+        u8 uData[INTERACTABLE_DATA_SIZE];
     } d PACKED;
 } Interactable PACKED;
 
