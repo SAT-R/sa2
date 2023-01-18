@@ -59,7 +59,7 @@ void initSprite_Interactable_IceParadise_SlowingSnow(Interactable *in_ia,
     SET_SPRITE_INITIALIZED(ia);
 }
 
-bool32 PlayerTouchesSnow(Sprite_SlowingSnow *snow)
+static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         if (!(gPlayer.moveState & MOVESTATE_IN_AIR)) {
@@ -85,7 +85,7 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
 {
     Sprite_SlowingSnow *snow = TaskGetStructPtr(gCurTask);
 
-    if (PlayerTouchesSnow(snow)) {
+    if (PlayerIsTouchingSnow(snow)) {
         gPlayer.speedGroundX = Q_24_8_MULTIPLY(gPlayer.speedGroundX, 0.95);
     }
 
