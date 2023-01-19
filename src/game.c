@@ -20,7 +20,7 @@ void sub_80498CC(u8);
 void sub_802B708(void);
 void sub_801C068(u32);
 void sub_801BF90(void);
-void sub_8082D44(void);
+void CreateCollectRingsTimeDisplay(void);
 
 void sub_800BEF8(void);
 void sub_802F0A8(void);
@@ -143,7 +143,7 @@ void CreateGameStage(void)
     } else {
         sub_801C068(0);
         sub_801BF90();
-        sub_8082D44();
+        CreateCollectRingsTimeDisplay();
         gPlayer.moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
         gUnknown_03005424 &= ~0x1;
     }

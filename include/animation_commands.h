@@ -117,4 +117,6 @@ typedef union {
     ACmd_ShowFrame show;
 } ACmd;
 
+u32 sub_8004518(u16 num);
+
 #endif // GUARD_ANIMATION_COMMANDS_H
