@@ -147,7 +147,8 @@
         "complex": "c",
         "filesystem": "c",
         "mutex": "c",
-        "__debug": "c"
+        "__debug": "c",
+        "collect_rings_time_display.h": "c"
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,

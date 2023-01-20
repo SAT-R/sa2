@@ -12,9 +12,18 @@ typedef struct {
 void sub_80832E0(struct Task *);
 void sub_808328C(void);
 
+// Probably defined in `interactable_unknown`
+// will wait before deciding where this is defined
 extern u32 gUnknown_03005B6C;
 
-extern const u16 gUnknown_080E0270[];
+const u8 gUnknown_080E0234[] = {
+    0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,
+    37,  39,  40,  48,  50,  51,  53,  55,  56,  64,  66,  67,  69,  71,  72,
+    80,  82,  83,  85,  87,  88,  96,  98,  99,  101, 103, 104, 112, 114, 115,
+    117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
+};
+
+const u16 gUnknown_080E0270[] = INCBIN_U16("graphics/80E0270.gbapal");
 
 void CreateCollectRingsTimeDisplay(void)
 {
@@ -73,8 +82,6 @@ void CreateCollectRingsTimeDisplay(void)
 
     gFlags |= 0x2;
 }
-
-extern const u8 gUnknown_080E0234[];
 
 void sub_8082E9C(TimeDisplay *timeDisplay)
 {
@@ -163,4 +170,150 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     sprite->y = y;
     sprite->focused = temp5;
     sub_80051E8(sprite);
+}
+
+void sub_8083040(TimeDisplay *timeDisplay)
+{
+    Sprite *sprite;
+
+    u16 i, j;
+    s16 x, y;
+    u32 temp;
+
+    for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
+        sprite = &timeDisplay->unk0;
+        sprite->x = i * 26;
+        sprite->y = 0;
+        sprite->focused = i;
+        sub_80051E8(sprite);
+
+        j = sub_8004518(gUnknown_030053E8[i]);
+        x = sprite->x + 0x17;
+        y = sprite->y + 0x13;
+        do {
+            sprite = &timeDisplay->unk30[j % 16];
+            sprite->x = x;
+            sprite->y = y;
+            sprite->focused = 0;
+            sub_80051E8(sprite);
+            x -= 8;
+            y = y;
+        } while (j /= 16);
+    }
+}
+
+void sub_8083104(TimeDisplay *timeDisplay)
+{
+    s16 x, y;
+    u16 temp4;
+    u32 temp;
+    Sprite *sprite;
+    u16 index;
+    u8 digit1;
+    u32 temp2;
+    u32 temp3;
+    u16 temp6;
+
+    temp = Div(gUnknown_03005B6C, 60);
+    index = gUnknown_03005B6C - (temp * 60);
+    temp *= 0x10000;
+    temp /= 0x10000;
+    digit1 = gUnknown_080E0234[index];
+
+    temp2 = Div(temp, 60);
+    temp -= (temp2 * 60);
+    temp *= 0x10000;
+
+#ifndef NON_MATCHING
+    while (0)
+        ;
+#endif
+
+    index = temp / 0x10000;
+    temp2 *= 0x10000;
+    temp2 /= 0x10000;
+    temp6 = sub_8004518(index);
+
+    temp3 = Div(temp2, 60);
+    index = temp2 - (temp3 * 60);
+    temp4 = sub_8004518(index);
+
+    x = 8;
+    y = 54;
+
+#ifndef NON_MATCHING
+    while (0)
+        ;
+#endif
+
+    sprite = &timeDisplay->unk30[temp4 % 16];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 1;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[10];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 0;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[(temp6 / 16) % 16];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 1;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[temp6 % 16];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 1;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[10];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 0;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[(digit1 / 16) % 16];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 1;
+    sub_80051E8(sprite);
+
+    x += 8;
+    sprite = &timeDisplay->unk30[digit1 % 16];
+    sprite->x = x;
+    sprite->y = y;
+    sprite->focused = 1;
+    sub_80051E8(sprite);
+}
+
+void sub_808328C(void)
+{
+    if (!(gUnknown_03005424 & 0x400)) {
+        TimeDisplay *timeDisplay = TaskGetStructPtr(gCurTask);
+        Sprite *sprite = &timeDisplay->unk0;
+        if (!(gUnknown_03005424 & 0x200)) {
+            sub_8082E9C(timeDisplay);
+
+            if (gUnknown_03005B6C != 0) {
+                sub_8083104(timeDisplay);
+            }
+        }
+        sub_8083040(timeDisplay);
+    }
+}
+
+void sub_80832E0(struct Task *t)
+{
+    TimeDisplay *timeDisplay = TaskGetStructPtr(t);
+    VramFree(timeDisplay->unk0.graphics.dest);
+    VramFree(timeDisplay->unk30[0].graphics.dest);
 }
