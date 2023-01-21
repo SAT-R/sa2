@@ -427,8 +427,6 @@ void sub_808267C(void)
     }
 }
 
-u32 sub_8004518(u8);
-
 void sub_8082788(void)
 {
     u32 i;

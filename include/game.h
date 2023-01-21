@@ -48,6 +48,18 @@ struct UNK_3005A44 {
 };
 extern struct UNK_3005A44 gUnknown_03005A44;
 
+typedef struct {
+    u8 filler0[0x22];
+    s16 unk22;
+    s16 unk24;
+} UNK_03005A70; /* 0x30 */
+
+typedef struct {
+    UNK_03005A70 *unk0;
+} UNK_03005A70_Wrapper;
+
+extern UNK_03005A70_Wrapper gUnknown_03005A70;
+
 extern u8 gUnknown_0300543C;
 
 extern u32 gUnknown_030054DC;
@@ -129,7 +141,7 @@ typedef struct {
     u8 a[2];
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
-    /* 0x64 */ u16 unk64;
+    /* 0x64 */ s16 unk64;
     /* 0x66 */ u16 unk66;
     /* 0x68 */ u16 unk68; // anim?
     /* 0x6A */ u16 unk6A; // variant?
@@ -155,9 +167,13 @@ extern Player gPlayer;
 struct Camera {
     /* 0x00 */ s32 x; // x
     /* 0x04 */ s32 y; // y
-    /* 0x08 */ u8 filler[92 - 8];
+    /* 0x08 */ u8 filler[72];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ u8 unk52[10];
     /* 0x5C */ u32 unk5C;
-    /* 0x60 */ u8 filler60[0x20];
+    /* 0x60 */ u8 filler60[6];
+    /* 0x66 */ u8 unk66;
+    /* 0x60 */ u8 filler67[25];
 }; /* size 0x80 */
 
 extern struct Camera gCamera;

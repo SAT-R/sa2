@@ -38,6 +38,7 @@ void GameStart(void)
     gUnknown_030054DC = 0;
     gUnknown_03005B34 = 0;
     gDemoPlayCounter = 0;
+    // TODO: resolve this
     gUnknown_030054E4 = 0;
 
     for (i = 0; i < 4; i++) {

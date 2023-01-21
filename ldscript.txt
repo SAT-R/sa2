@@ -135,13 +135,13 @@ SECTIONS
         build/sa2/asm/interactable_SpecialRing.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);
-        build/sa2/asm/unknown_time_display.o(.text);
+        build/sa2/src/collect_rings_time_display.o(.text);
         build/sa2/asm/math0.o(.text);
         build/sa2/src/random.o(.text);
         build/sa2/src/math.o(.text);
         build/sa2/asm/math1.o(.text);
         build/sa2/asm/unused_task_5F1C.o(.text);
-        build/sa2/asm/unknown_object_6998.o(.text);
+        build/sa2/src/unknown_object_6998.o(.text);
         build/sa2/src/race_progress.o(.text);
         build/sa2/src/unknown_effect.o(.text);
         build/sa2/src/multiplayer_lobby.o(.text);
@@ -233,7 +233,7 @@ SECTIONS
         build/sa2/src/special_stage_tables.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
-        build/sa2/data/unknown_time_display_data.o(.rodata);
+        build/sa2/src/collect_rings_time_display.o(.rodata);
         build/sa2/data/math_data.o(.rodata);
         build/sa2/data/data1_3.o(.rodata);
         build/sa2/src/race_progress.o(.rodata);
