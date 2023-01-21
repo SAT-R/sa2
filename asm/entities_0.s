@@ -782,7 +782,7 @@ _08008166:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _080081AC
-	ldr r1, _080082B8 @ =gUnknown_03005448
+	ldr r1, _080082B8 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -925,7 +925,7 @@ _080082A8: .4byte gSpritePosData_Rings
 _080082AC: .4byte gUnknown_030059E8
 _080082B0: .4byte gCourseTime
 _080082B4: .4byte gGameMode
-_080082B8: .4byte gUnknown_03005448
+_080082B8: .4byte gNumLives
 _080082BC: .4byte gUnknown_030054A8
 _080082C0: .4byte 0x04000128
 _080082C4: .4byte gMultiplayerPlayerTasks
@@ -3430,7 +3430,7 @@ sub_8009530: @ 0x08009530
 	bne _0800959E
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _080095E0 @ =gUnknown_03005448
+	ldr r1, _080095E0 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -3473,7 +3473,7 @@ _080095D0: .4byte gUnknown_080D5020
 _080095D4: .4byte gPlayer
 _080095D8: .4byte 0x0000C350
 _080095DC: .4byte gGameMode
-_080095E0: .4byte gUnknown_03005448
+_080095E0: .4byte gNumLives
 _080095E4: .4byte gUnknown_030054A8
 
 	thumb_func_start TaskDestructor_80095E8
@@ -6964,7 +6964,7 @@ _0800B260: @ jump table
 	.4byte _0800B532 @ case 11
 	.4byte _0800B546 @ case 12
 _0800B294:
-	ldr r1, _0800B2AC @ =gUnknown_03005448
+	ldr r1, _0800B2AC @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -6977,7 +6977,7 @@ _0800B2A0:
 	strb r0, [r1, #3]
 	b _0800B558
 	.align 2, 0
-_0800B2AC: .4byte gUnknown_03005448
+_0800B2AC: .4byte gNumLives
 _0800B2B0: .4byte gUnknown_030054A8
 _0800B2B4:
 	ldr r3, _0800B2EC @ =gPlayer
@@ -7165,7 +7165,7 @@ _0800B408:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0800B448
-	ldr r1, _0800B470 @ =gUnknown_03005448
+	ldr r1, _0800B470 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -7195,7 +7195,7 @@ _0800B45C:
 _0800B464: .4byte gCourseTime
 _0800B468: .4byte gCurrentLevel
 _0800B46C: .4byte gGameMode
-_0800B470: .4byte gUnknown_03005448
+_0800B470: .4byte gNumLives
 _0800B474: .4byte gUnknown_030054A8
 _0800B478:
 	movs r6, #1
@@ -8223,7 +8223,7 @@ _0800BC36:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0800BC86
-	ldr r1, _0800BCD0 @ =gUnknown_03005448
+	ldr r1, _0800BCD0 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -8265,7 +8265,7 @@ _0800BCC0: .4byte gUnknown_03005AF0
 _0800BCC4: .4byte gCourseTime
 _0800BCC8: .4byte gCurrentLevel
 _0800BCCC: .4byte gGameMode
-_0800BCD0: .4byte gUnknown_03005448
+_0800BCD0: .4byte gNumLives
 _0800BCD4: .4byte gUnknown_030054A8
 _0800BCD8:
 	ldr r2, _0800BD0C @ =gCamera

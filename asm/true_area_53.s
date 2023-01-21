@@ -3511,7 +3511,7 @@ _0803B6D8:
 	bne _0803B774
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _0803B75C @ =gUnknown_03005448
+	ldr r1, _0803B75C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -3531,7 +3531,7 @@ _0803B74C: .4byte 0x00000275
 _0803B750: .4byte gUnknown_03005450
 _0803B754: .4byte 0x0000C350
 _0803B758: .4byte gGameMode
-_0803B75C: .4byte gUnknown_03005448
+_0803B75C: .4byte gNumLives
 _0803B760: .4byte gUnknown_030054A8
 _0803B764:
 	ldr r0, _0803B7A4 @ =0x00000275
@@ -6869,7 +6869,7 @@ _0803D0C8:
 	bne _0803D200
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _0803D1F4 @ =gUnknown_03005448
+	ldr r1, _0803D1F4 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -6896,7 +6896,7 @@ _0803D1E4: .4byte IWRAM_START + 0xD9
 _0803D1E8: .4byte gUnknown_03005450
 _0803D1EC: .4byte 0x0000C350
 _0803D1F0: .4byte gGameMode
-_0803D1F4: .4byte gUnknown_03005448
+_0803D1F4: .4byte gNumLives
 _0803D1F8:
 	strb r0, [r1]
 _0803D1FA:
@@ -7793,7 +7793,7 @@ _0803D8D2:
 	bne _0803D95E
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _0803D948 @ =gUnknown_03005448
+	ldr r1, _0803D948 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -7812,7 +7812,7 @@ _0803D930:
 _0803D93C: .4byte gUnknown_03005450
 _0803D940: .4byte 0x0000C350
 _0803D944: .4byte gGameMode
-_0803D948: .4byte gUnknown_03005448
+_0803D948: .4byte gNumLives
 _0803D94C: .4byte gUnknown_030054A8
 _0803D950:
 	movs r0, #0xa2
@@ -8409,7 +8409,7 @@ _0803DD16:
 	bne _0803DE34
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _0803DE28 @ =gUnknown_03005448
+	ldr r1, _0803DE28 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r3, [r1]
 	adds r0, r0, r3
@@ -8428,7 +8428,7 @@ _0803DE18: .4byte 0x00000282
 _0803DE1C: .4byte gUnknown_03005450
 _0803DE20: .4byte 0x0000C350
 _0803DE24: .4byte gGameMode
-_0803DE28: .4byte gUnknown_03005448
+_0803DE28: .4byte gNumLives
 _0803DE2C:
 	strb r0, [r1]
 _0803DE2E:
@@ -14180,7 +14180,7 @@ _08040B66:
 	bne _08040C2E
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08040C54 @ =gUnknown_03005448
+	ldr r1, _08040C54 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -14206,7 +14206,7 @@ _08040C44: .4byte 0x0000026B
 _08040C48: .4byte gUnknown_03005450
 _08040C4C: .4byte 0x0000C350
 _08040C50: .4byte gGameMode
-_08040C54: .4byte gUnknown_03005448
+_08040C54: .4byte gNumLives
 _08040C58: .4byte gUnknown_030054A8
 _08040C5C:
 	movs r0, #0x8f
@@ -14287,7 +14287,7 @@ _08040C64:
 	bne _08040D1A
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08040D4C @ =gUnknown_03005448
+	ldr r1, _08040D4C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -14319,7 +14319,7 @@ _08040D3C: .4byte 0x0000026B
 _08040D40: .4byte gUnknown_03005450
 _08040D44: .4byte 0x0000C350
 _08040D48: .4byte gGameMode
-_08040D4C: .4byte gUnknown_03005448
+_08040D4C: .4byte gNumLives
 _08040D50: .4byte gUnknown_030054A8
 _08040D54: .4byte gUnknown_03005498
 _08040D58:
@@ -14410,7 +14410,7 @@ _08040DB4:
 	bne _08040E40
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08040E2C @ =gUnknown_03005448
+	ldr r1, _08040E2C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -14430,7 +14430,7 @@ _08040E1C: .4byte 0x00000275
 _08040E20: .4byte gUnknown_03005450
 _08040E24: .4byte 0x0000C350
 _08040E28: .4byte gGameMode
-_08040E2C: .4byte gUnknown_03005448
+_08040E2C: .4byte gNumLives
 _08040E30: .4byte gUnknown_030054A8
 _08040E34:
 	ldr r0, _08040E6C @ =0x00000275
@@ -17240,7 +17240,7 @@ _08042420:
 	bne _080424A8
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08042494 @ =gUnknown_03005448
+	ldr r1, _08042494 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -17259,7 +17259,7 @@ _0804247C:
 _08042488: .4byte gUnknown_03005450
 _0804248C: .4byte 0x0000C350
 _08042490: .4byte gGameMode
-_08042494: .4byte gUnknown_03005448
+_08042494: .4byte gNumLives
 _08042498: .4byte gUnknown_030054A8
 _0804249C:
 	ldr r0, _080424B4 @ =0x00000275
@@ -20918,7 +20918,7 @@ _0804423E:
 	mov r5, sl
 	subs r0, r5, r1
 	lsls r0, r0, #0x10
-	ldr r1, _080442A0 @ =gUnknown_03005448
+	ldr r1, _080442A0 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -20937,7 +20937,7 @@ _08044288:
 _08044294: .4byte gUnknown_03005450
 _08044298: .4byte 0x0000C350
 _0804429C: .4byte gGameMode
-_080442A0: .4byte gUnknown_03005448
+_080442A0: .4byte gNumLives
 _080442A4: .4byte gUnknown_030054A8
 _080442A8:
 	str r4, [sp]
@@ -21016,7 +21016,7 @@ _0804430A:
 	mov r5, r8
 	subs r0, r5, r1
 	lsls r0, r0, #0x10
-	ldr r1, _080444C8 @ =gUnknown_03005448
+	ldr r1, _080444C8 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -21204,7 +21204,7 @@ _080444B8: .4byte gUnknown_03005498
 _080444BC: .4byte gUnknown_03005450
 _080444C0: .4byte 0x0000C350
 _080444C4: .4byte gGameMode
-_080444C8: .4byte gUnknown_03005448
+_080444C8: .4byte gNumLives
 _080444CC: .4byte gUnknown_030054A8
 _080444D0: .4byte gSineTable
 _080444D4: .4byte gCamera
@@ -23209,7 +23209,7 @@ _080453F4:
 	bne _0804546E
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08045458 @ =gUnknown_03005448
+	ldr r1, _08045458 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -23228,7 +23228,7 @@ _08045440:
 _0804544C: .4byte gUnknown_03005450
 _08045450: .4byte 0x0000C350
 _08045454: .4byte gGameMode
-_08045458: .4byte gUnknown_03005448
+_08045458: .4byte gNumLives
 _0804545C: .4byte gUnknown_030054A8
 _08045460:
 	movs r0, #0xab
@@ -27368,7 +27368,7 @@ _080474F8:
 	bne _08047588
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08047574 @ =gUnknown_03005448
+	ldr r1, _08047574 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -27388,7 +27388,7 @@ _08047564: .4byte 0x000002B5
 _08047568: .4byte gUnknown_03005450
 _0804756C: .4byte 0x0000C350
 _08047570: .4byte gGameMode
-_08047574: .4byte gUnknown_03005448
+_08047574: .4byte gNumLives
 _08047578: .4byte gUnknown_030054A8
 _0804757C:
 	movs r0, #0
@@ -30450,7 +30450,7 @@ _08048DA2:
 	bne _08048E2C
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08048E18 @ =gUnknown_03005448
+	ldr r1, _08048E18 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -30470,7 +30470,7 @@ _08048E08: .4byte 0x000002B6
 _08048E0C: .4byte gUnknown_03005450
 _08048E10: .4byte 0x0000C350
 _08048E14: .4byte gGameMode
-_08048E18: .4byte gUnknown_03005448
+_08048E18: .4byte gNumLives
 _08048E1C: .4byte gUnknown_030054A8
 _08048E20:
 	ldr r0, _08048E58 @ =0x000002B6
@@ -37947,7 +37947,7 @@ _0804C92E:
 	bne _0804C976
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _0804C9AC @ =gUnknown_03005448
+	ldr r1, _0804C9AC @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -37984,7 +37984,7 @@ _0804C99C: .4byte gUnknown_030054A8
 _0804C9A0: .4byte gUnknown_03005450
 _0804C9A4: .4byte 0x0000C350
 _0804C9A8: .4byte gGameMode
-_0804C9AC: .4byte gUnknown_03005448
+_0804C9AC: .4byte gNumLives
 _0804C9B0: .4byte 0x000002C1
 
 	thumb_func_start sub_804C9B4

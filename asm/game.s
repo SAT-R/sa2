@@ -181,94 +181,6 @@ gUnknown_080D6AF0:
 .syntax unified
 .arm
 
-	thumb_func_start sub_801AE48
-sub_801AE48: @ 0x0801AE48
-	push {lr}
-	ldr r3, _0801AE90 @ =gUnknown_03005424
-	ldrh r1, [r3]
-	movs r0, #0x20
-	adds r2, r1, #0
-	orrs r2, r0
-	strh r2, [r3]
-	ldr r0, _0801AE94 @ =gGameMode
-	ldrb r0, [r0]
-	subs r0, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #1
-	bhi _0801AEB4
-	ldr r1, _0801AE98 @ =0x0000FFFF
-	movs r0, #0
-	bl TasksDestroyInPriorityRange
-	ldr r1, _0801AE9C @ =gUnknown_03002AE4
-	ldr r0, _0801AEA0 @ =gUnknown_0300287C
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r1, _0801AEA4 @ =gUnknown_03005390
-	movs r0, #0
-	strb r0, [r1]
-	ldr r1, _0801AEA8 @ =gVramGraphicsCopyCursor
-	ldr r0, _0801AEAC @ =gVramGraphicsCopyQueueIndex
-	ldrb r0, [r0]
-	strb r0, [r1]
-	bl CreateTimeAttackLobbyScreen
-	ldr r1, _0801AEB0 @ =gUnknown_03005448
-	movs r0, #2
-	strb r0, [r1]
-	b _0801AEF6
-	.align 2, 0
-_0801AE90: .4byte gUnknown_03005424
-_0801AE94: .4byte gGameMode
-_0801AE98: .4byte 0x0000FFFF
-_0801AE9C: .4byte gUnknown_03002AE4
-_0801AEA0: .4byte gUnknown_0300287C
-_0801AEA4: .4byte gUnknown_03005390
-_0801AEA8: .4byte gVramGraphicsCopyCursor
-_0801AEAC: .4byte gVramGraphicsCopyQueueIndex
-_0801AEB0: .4byte gUnknown_03005448
-_0801AEB4:
-	ldr r1, _0801AED0 @ =gUnknown_03005448
-	ldrb r0, [r1]
-	subs r0, #1
-	strb r0, [r1]
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	bne _0801AED4
-	movs r0, #1
-	orrs r2, r0
-	strh r2, [r3]
-	movs r0, #1
-	bl CreateGameOverScreen
-	b _0801AEF6
-	.align 2, 0
-_0801AED0: .4byte gUnknown_03005448
-_0801AED4:
-	ldr r1, _0801AEFC @ =0x0000FFFF
-	movs r0, #0
-	bl TasksDestroyInPriorityRange
-	ldr r1, _0801AF00 @ =gUnknown_03002AE4
-	ldr r0, _0801AF04 @ =gUnknown_0300287C
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r1, _0801AF08 @ =gUnknown_03005390
-	movs r0, #0
-	strb r0, [r1]
-	ldr r1, _0801AF0C @ =gVramGraphicsCopyCursor
-	ldr r0, _0801AF10 @ =gVramGraphicsCopyQueueIndex
-	ldrb r0, [r0]
-	strb r0, [r1]
-	bl CreateGameStage
-_0801AEF6:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801AEFC: .4byte 0x0000FFFF
-_0801AF00: .4byte gUnknown_03002AE4
-_0801AF04: .4byte gUnknown_0300287C
-_0801AF08: .4byte gUnknown_03005390
-_0801AF0C: .4byte gVramGraphicsCopyCursor
-_0801AF10: .4byte gVramGraphicsCopyQueueIndex
-
 	thumb_func_start sub_801AF14
 sub_801AF14: @ 0x0801AF14
 	push {lr}
@@ -1180,7 +1092,7 @@ sub_801B6B4: @ 0x0801B6B4
 	ldrb r0, [r0]
 	strb r0, [r1]
 	bl CreateTimeAttackLobbyScreen
-	ldr r1, _0801B718 @ =gUnknown_03005448
+	ldr r1, _0801B718 @ =gNumLives
 	movs r0, #2
 	strb r0, [r1]
 	b _0801B73E
@@ -1193,9 +1105,9 @@ _0801B708: .4byte gUnknown_0300287C
 _0801B70C: .4byte gUnknown_03005390
 _0801B710: .4byte gVramGraphicsCopyCursor
 _0801B714: .4byte gVramGraphicsCopyQueueIndex
-_0801B718: .4byte gUnknown_03005448
+_0801B718: .4byte gNumLives
 _0801B71C:
-	ldr r1, _0801B734 @ =gUnknown_03005448
+	ldr r1, _0801B734 @ =gNumLives
 	ldrb r0, [r1]
 	subs r0, #1
 	strb r0, [r1]
@@ -1206,7 +1118,7 @@ _0801B71C:
 	bl CreateGameOverScreen
 	b _0801B73E
 	.align 2, 0
-_0801B734: .4byte gUnknown_03005448
+_0801B734: .4byte gNumLives
 _0801B738:
 	movs r0, #2
 	bl CreateGameOverScreen
@@ -10524,7 +10436,7 @@ _0801FF70:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _0801FFC4
-	ldr r1, _08020000 @ =gUnknown_03005448
+	ldr r1, _08020000 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -10559,7 +10471,7 @@ _0801FFF0: .4byte gPlayer
 _0801FFF4: .4byte gCourseTime
 _0801FFF8: .4byte gCurrentLevel
 _0801FFFC: .4byte gGameMode
-_08020000: .4byte gUnknown_03005448
+_08020000: .4byte gNumLives
 _08020004: .4byte gUnknown_030054A8
 _08020008:
 	movs r4, #0xa
@@ -10946,7 +10858,7 @@ _080202BE:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08020312
-	ldr r1, _08020358 @ =gUnknown_03005448
+	ldr r1, _08020358 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -10983,7 +10895,7 @@ _08020348: .4byte gPlayer
 _0802034C: .4byte gCourseTime
 _08020350: .4byte gCurrentLevel
 _08020354: .4byte gGameMode
-_08020358: .4byte gUnknown_03005448
+_08020358: .4byte gNumLives
 _0802035C: .4byte gUnknown_030054A8
 _08020360:
 	movs r4, #0xa
@@ -11373,7 +11285,7 @@ _08020620:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08020672
-	ldr r1, _080206B8 @ =gUnknown_03005448
+	ldr r1, _080206B8 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -11414,7 +11326,7 @@ _080206A8: .4byte gPlayer
 _080206AC: .4byte gCourseTime
 _080206B0: .4byte gCurrentLevel
 _080206B4: .4byte gGameMode
-_080206B8: .4byte gUnknown_03005448
+_080206B8: .4byte gNumLives
 _080206BC: .4byte gUnknown_030054A8
 _080206C0:
 	adds r3, r5, #0
@@ -11967,7 +11879,7 @@ _08020ABE:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08020B12
-	ldr r1, _08020B48 @ =gUnknown_03005448
+	ldr r1, _08020B48 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -12003,7 +11915,7 @@ _08020B38: .4byte gPlayer
 _08020B3C: .4byte gCourseTime
 _08020B40: .4byte gCurrentLevel
 _08020B44: .4byte gGameMode
-_08020B48: .4byte gUnknown_03005448
+_08020B48: .4byte gNumLives
 _08020B4C: .4byte gUnknown_030054A8
 _08020B50:
 	adds r4, r5, #0
@@ -12604,7 +12516,7 @@ _08020FAA:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08020FFE
-	ldr r1, _0802103C @ =gUnknown_03005448
+	ldr r1, _0802103C @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -12642,7 +12554,7 @@ _0802102C: .4byte gPlayer
 _08021030: .4byte gCourseTime
 _08021034: .4byte gCurrentLevel
 _08021038: .4byte gGameMode
-_0802103C: .4byte gUnknown_03005448
+_0802103C: .4byte gNumLives
 _08021040: .4byte gUnknown_030054A8
 _08021044:
 	adds r4, r5, #0
@@ -26100,7 +26012,7 @@ _080276FC:
 	bne _08027744
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08027784 @ =gUnknown_03005448
+	ldr r1, _08027784 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -26143,7 +26055,7 @@ _08027774: .4byte 0x00000579
 _08027778: .4byte gUnknown_03005450
 _0802777C: .4byte 0x0000C350
 _08027780: .4byte gGameMode
-_08027784: .4byte gUnknown_03005448
+_08027784: .4byte gNumLives
 _08027788: .4byte gUnknown_030054A8
 _0802778C:
 	ldrh r0, [r6, #0x14]
@@ -28766,7 +28678,7 @@ _08028B12:
 	bne _08028B6A
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08028B88 @ =gUnknown_03005448
+	ldr r1, _08028B88 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -28791,7 +28703,7 @@ _08028B78: .4byte gPlayerControls
 _08028B7C: .4byte gUnknown_03005450
 _08028B80: .4byte gUnknown_080D6932
 _08028B84: .4byte 0x0000C350
-_08028B88: .4byte gUnknown_03005448
+_08028B88: .4byte gNumLives
 _08028B8C: .4byte gUnknown_030054A8
 _08028B90:
 	movs r0, #0x80
@@ -28820,7 +28732,7 @@ _08028B90:
 	bne _08028BE2
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08028C08 @ =gUnknown_03005448
+	ldr r1, _08028C08 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -28851,7 +28763,7 @@ _08028BE2:
 _08028BFC: .4byte gUnknown_03005450
 _08028C00: .4byte gUnknown_080D6932
 _08028C04: .4byte 0x0000C350
-_08028C08: .4byte gUnknown_03005448
+_08028C08: .4byte gNumLives
 _08028C0C: .4byte gUnknown_030054A8
 _08028C10:
 	cmp r0, #4
@@ -28937,7 +28849,7 @@ _08028C84:
 	bne _08028CCE
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08028CE8 @ =gUnknown_03005448
+	ldr r1, _08028CE8 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -28961,7 +28873,7 @@ _08028CD8: .4byte gUnknown_03005450
 _08028CDC: .4byte gUnknown_080D6932
 _08028CE0: .4byte 0x0000C350
 _08028CE4: .4byte gGameMode
-_08028CE8: .4byte gUnknown_03005448
+_08028CE8: .4byte gNumLives
 _08028CEC: .4byte gUnknown_030054A8
 _08028CF0:
 	ldr r1, _08028D54 @ =gUnknown_03005450
@@ -28986,7 +28898,7 @@ _08028CF0:
 	bne _08028D3A
 	subs r0, r7, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08028D64 @ =gUnknown_03005448
+	ldr r1, _08028D64 @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -29021,7 +28933,7 @@ _08028D54: .4byte gUnknown_03005450
 _08028D58: .4byte gUnknown_080D6932
 _08028D5C: .4byte 0x0000C350
 _08028D60: .4byte gGameMode
-_08028D64: .4byte gUnknown_03005448
+_08028D64: .4byte gNumLives
 _08028D68: .4byte gUnknown_030054A8
 _08028D6C: .4byte gPlayer
 _08028D70: .4byte sub_80286F0
@@ -35185,7 +35097,7 @@ sub_802BC10: @ 0x0802BC10
 	ldr r0, _0802BCA0 @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	ldr r1, _0802BCA4 @ =gUnknown_03005448
+	ldr r1, _0802BCA4 @ =gNumLives
 	ldrb r0, [r1]
 	cmp r0, #0
 	beq _0802BCB6
@@ -35211,7 +35123,7 @@ _0802BC94: .4byte gUnknown_0300287C
 _0802BC98: .4byte gUnknown_03005390
 _0802BC9C: .4byte gVramGraphicsCopyCursor
 _0802BCA0: .4byte gVramGraphicsCopyQueueIndex
-_0802BCA4: .4byte gUnknown_03005448
+_0802BCA4: .4byte gNumLives
 _0802BCA8: .4byte gUnknown_03005490
 _0802BCAC: .4byte 0x00008C9F
 _0802BCB0:
@@ -37473,7 +37385,7 @@ _0802CDAC:
 	add r0, sb
 	ldrh r0, [r0]
 	strh r0, [r3, #4]
-	ldr r1, _0802CE40 @ =gUnknown_03005448
+	ldr r1, _0802CE40 @ =gNumLives
 	ldrb r0, [r1]
 	cmp r0, #0
 	beq _0802CE44
@@ -37492,7 +37404,7 @@ _0802CE30: .4byte 0x000F423F
 _0802CE34: .4byte 0x0000800E
 _0802CE38: .4byte gUnknown_080D6AF0
 _0802CE3C: .4byte 0x00004006
-_0802CE40: .4byte gUnknown_03005448
+_0802CE40: .4byte gNumLives
 _0802CE44:
 	movs r7, #0
 _0802CE46:
@@ -45292,7 +45204,7 @@ _08030A9E:
 	bne _08030AEE
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -45333,7 +45245,7 @@ _08030AEE:
 	bne _08030B40
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r4, [r1]
 	adds r0, r0, r4
@@ -45374,7 +45286,7 @@ _08030B40:
 	bne _08030B92
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -45427,7 +45339,7 @@ _08030BB0:
 	bne _08030BF8
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r4, [r1]
 	adds r0, r0, r4
@@ -45463,7 +45375,7 @@ _08030BF8:
 	bne _08030C40
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r3, [r1]
 	adds r0, r0, r3
@@ -45499,7 +45411,7 @@ _08030C40:
 	bne _08030C88
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08030D1C @ =gUnknown_03005448
+	ldr r1, _08030D1C @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r2, [r1]
 	adds r0, r0, r2
@@ -45576,7 +45488,7 @@ _08030D0C: .4byte IWRAM_START + 0x160
 _08030D10: .4byte gUnknown_03005450
 _08030D14: .4byte 0x0000C350
 _08030D18: .4byte gGameMode
-_08030D1C: .4byte gUnknown_03005448
+_08030D1C: .4byte gNumLives
 _08030D20: .4byte gPressedKeys
 _08030D24: .4byte gUnknown_03005590
 _08030D28:

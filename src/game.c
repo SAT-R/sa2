@@ -5,6 +5,8 @@
 #include "multi_sio.h"
 #include "collect_rings_time_display.h"
 #include "m4a.h"
+#include "time_attack_lobby.h"
+#include "game_over.h"
 #include "constants/songs.h"
 
 #include "constants/move_states.h"
@@ -46,10 +48,10 @@ void ApplyGameStageSettings(void)
 {
     gUnknown_03005450 = 0;
     gUnknown_030054B0 = 0;
-    gUnknown_03005448 = 3;
+    gNumLives = 3;
 
     if (IsMultiplayer()) {
-        gUnknown_03005448 = 1;
+        gNumLives = 1;
     }
 
     if ((gGameMode >= GAME_MODE_TIME_ATTACK && gGameMode <= GAME_MODE_TEAM_PLAY)
@@ -359,5 +361,31 @@ void sub_801AB3C(void)
             gUnknown_03005424 |= 1;
             sub_8019F08();
         }
+    }
+}
+
+// HandleDeath
+void sub_801AE48(void)
+{
+    gUnknown_03005424 |= 0x20;
+    if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        CreateTimeAttackLobbyScreen();
+        gNumLives = 2;
+        return;
+    }
+
+    if (--gNumLives == 0) {
+        gUnknown_03005424 |= 1;
+        CreateGameOverScreen(1);
+    } else {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        CreateGameStage();
     }
 }
