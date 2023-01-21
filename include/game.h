@@ -163,9 +163,13 @@ extern Player gPlayer;
 struct Camera {
     /* 0x00 */ s32 x; // x
     /* 0x04 */ s32 y; // y
-    /* 0x08 */ u8 filler[92 - 8];
+    /* 0x08 */ u8 filler[72];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ u8 unk52[10];
     /* 0x5C */ u32 unk5C;
-    /* 0x60 */ u8 filler60[0x20];
+    /* 0x60 */ u8 filler60[6];
+    /* 0x66 */ u8 unk66;
+    /* 0x60 */ u8 filler67[25];
 }; /* size 0x80 */
 
 extern struct Camera gCamera;
