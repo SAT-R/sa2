@@ -27,16 +27,13 @@ typedef struct {
 
 // TODO: Make static
 extern void Task_Interactable_Checkpoint(void);
-extern void Task_Interactable_Toggle_Checkpoint(void);
+static void Task_Interactable_Toggle_Checkpoint(void);
 
 extern u32 gUnknown_030053E4;
 extern u32 gUnknown_080D63FC[34][2];
 
-// const static TileInfoCheckpoint sCheckpointTileInfo[8] = { {} };
-
-void Task_Interactable_Toggle_Checkpoint(void)
+static void Task_Interactable_Toggle_Checkpoint(void)
 {
-
     Sprite_Toggle_Checkpoint *toggle = TaskGetStructPtr(gCurTask);
     Interactable *ia = toggle->base.ia;
     s32 posX, posY;
@@ -45,29 +42,27 @@ void Task_Interactable_Toggle_Checkpoint(void)
     posX = SpriteGetScreenPos(toggle->base.spriteX, toggle->base.regionX);
     posY = SpriteGetScreenPos(ia->y, toggle->base.regionY);
 
-    screenX = (posX - gCamera.x);
-    screenY = (posY - gCamera.y);
+    screenX = posX - gCamera.x;
+    screenY = posY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE_TYPED(u16, screenX, screenY)) {
+    if (IS_OUT_OF_CAM_RANGE(screenX, screenY)) {
         ia->x = toggle->base.spriteX;
         TaskDestroy(gCurTask);
-    } else {
-        if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
+    } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
             && posX <= Q_24_8_TO_INT(gPlayer.x)) {
-            // __0806332C
-            gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
-            gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
-            gPlayer.checkpointTime = gUnknown_030053E4;
+        // __0806332C
+        gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
+        gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
+        gPlayer.checkpointTime = gUnknown_030053E4;
 
-            if (gUnknown_030055B0 == 0)
-                gUnknown_030055B0++;
+        if (gUnknown_030055B0 == 0)
+            gUnknown_030055B0++;
 
+        TaskDestroy(gCurTask);
+    } else {
+        // _08063388
+        if (gUnknown_030055B0 != 0)
             TaskDestroy(gCurTask);
-        } else {
-            // _08063388
-            if (gUnknown_030055B0 != 0)
-                TaskDestroy(gCurTask);
-        }
     }
 }
 
