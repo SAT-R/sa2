@@ -131,16 +131,29 @@ s32 sub_80857A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
 
 s32 sub_80857E0(s32 a, s32 b, s32 c) { return ((c - a) + ((c - a) >> 1)) - (b >> 1); }
 
-// https://decomp.me/scratch/4gPAQ
-// s32 sub_80857EC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g) {
-//     s32 h = ((s64)(b - a) * (s64)(f + (1 << g))) >> g;
-//     s64 i = ((s64)(c - b) * (s64)((1 << g) - f)) >> g;
-//     s64 j;
+s32 sub_80857EC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+{
+    s32 h = ((s64)(b - a) * (s64)(f + (1 << g))) >> g;
+    s64 i = ((s64)(c - b) * (s64)((1 << g) - f)) >> g;
+    s64 h64 = h;
+    s64 j = ((s32)(i - h) * (s64)((1 << (g - 1)) + (e >> 1))) >> g;
+    return ((s64)(j + h64) * (s64)((1 << g) - d)) >> g;
+}
 
-//     // Problem here
-//     s64 k = h + -i;
+s32 sub_80858A4(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u8 g)
+{
+    s32 h = ((s64)(b - a) * (s64)(f + (1 << g))) >> g;
+    s64 i = ((s64)(c - b) * (s64)((1 << g) - f)) >> g;
+    s64 h64 = h;
+    s64 j = ((s32)(i - h) * (s64)((1 << (g - 1)) - (e >> 1))) >> g;
+    return ((s64)(j + h64) * (s64)((1 << g) - d)) >> g;
+}
 
-//     j = ((k * (s64)((1 << (g - 1)) + (e >> 1))) >> g);
-//     j+=h;
-//     return ((s64)(j) * (s64)((1 << g) - d)) >> g;
-// }
+s32 sub_808595C(s32 a, s32 b, s32 c)
+{
+    s32 e = (b - a);
+    s32 f = (c - b);
+    f -= e;
+    f >>= 1;
+    return e + f;
+}
