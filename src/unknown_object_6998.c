@@ -2,13 +2,14 @@
 #include "unknown_object_6998.h"
 #include "malloc_vram.h"
 #include "game.h"
+#include "sprite.h"
 
 typedef struct {
     Sprite unk0[4];
     u8 unkC0;
     s16 unkC2;
-    u32 unkC4[4];
-    u32 unkD4[4];
+    s32 unkC4[4];
+    s32 unkD4[4];
     u8 unkE4;
 } UNK_8086998; /* 0xE8 */
 
@@ -100,26 +101,70 @@ void sub_8086A88(void)
     }
 }
 
-// void sub_8086B38(UNK_8086998 *unk998)
-// {
-//     u8 i;
-//     Sprite *sprite;
+void sub_8086B38(UNK_8086998 *unk998)
+{
+    u8 i;
+    u8 j = 1;
+    Sprite *sprite;
 
-//     if (unk998->unkE4 == 0 || unk998->unkC0 != 0) {
-//         for (i = 0; i < 4; i++) {
-//             if (GetBit(unk998->unkC0, i)) {
-//                 sprite = &unk998->unk0[i];
-//                 sprite->x = (unk998->unkC4[i] >> 8) - gCamera.x;
-//                 sprite->y = (unk998->unkD4[i] >> 8) - gCamera.y;
+    if (unk998->unkE4 != 0 && unk998->unkC0 == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    }
 
-//                 if (sub_8004558(sprite) == 0) {
-//                     unk998->unkC0 &= ~(1 << i);
-//                 } else {
-//                     sub_80051E8(sprite);
-//                 }
-//             }
-//         }
-//     } else {
-//         TaskDestroy(gCurTask);
-//     }
-// }
+    for (i = 0; i < 4; i++) {
+        if (unk998->unkC0 & j) {
+            sprite = &unk998->unk0[i];
+            sprite->x = (unk998->unkC4[i] >> 8) - gCamera.x;
+            sprite->y = (unk998->unkD4[i] >> 8) - gCamera.y;
+
+            if (sub_8004558(sprite) == 0) {
+                unk998->unkC0 &= ~(1 << i);
+            } else {
+                sub_80051E8(sprite);
+            }
+        }
+        j <<= 1;
+    }
+}
+
+void sub_8086BE8(u8 i)
+{
+    Sprite *sprite;
+    UNK_8086998 *unk998 = TaskGetStructPtr(gCurTask);
+
+    unk998->unkC4[i] = gPlayer.x;
+    unk998->unkD4[i] = gPlayer.y;
+
+    if (i == 1) {
+        unk998->unkD4[1] += 0x800;
+    }
+
+    if (i == 3) {
+        unk998->unkD4[3] -= 0x800;
+    }
+
+    sprite = &unk998->unk0[i];
+    sprite->unk21 = 0xFF;
+    sprite->x = (unk998->unkC4[i] >> 8) - gCamera.x;
+    sprite->y = (unk998->unkD4[i] >> 8) - gCamera.y;
+
+    if (gUnknown_03005424 & 0x80) {
+        sprite->unk10 |= 0x800;
+    } else {
+        sprite->unk10 &= ~0x800;
+    }
+
+    sub_8004558(sprite);
+    unk998->unkC0 |= (1 << i);
+}
+
+void sub_8086CBC(struct Task *t)
+{
+    u8 i;
+    UNK_8086998 *unk998 = TaskGetStructPtr(t);
+
+    for (i = 0; i < 4; i++) {
+        VramFree(unk998->unk0[i].graphics.dest);
+    }
+}

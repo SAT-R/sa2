@@ -784,3 +784,111 @@ sub_8085E94: @ 0x08085E94
 	strh r1, [r0]
 	bx lr
 	.align 2, 0
+
+	thumb_func_start sub_8085EC4
+sub_8085EC4: @ 0x08085EC4
+	push {r4, r5, r6, lr}
+	adds r4, r0, #0
+	movs r6, #0
+	ldr r0, [r4]
+	cmp r0, #0
+	beq _08085ED8
+	adds r0, r4, #0
+	bl sub_8085EC4
+	adds r6, r0, #0
+_08085ED8:
+	ldr r1, [r4, #0xc]
+	movs r0, #3
+	ands r0, r1
+	cmp r0, #3
+	bne _08085EEA
+	cmp r6, #0
+	bne _08085F04
+	movs r0, #0
+	b _08085F14
+_08085EEA:
+	movs r5, #1
+	ands r1, r5
+	cmp r1, #0
+	bne _08085F04
+	adds r0, r4, #0
+	bl sub_80853F8
+	ldr r0, [r4, #0xc]
+	orrs r0, r5
+	movs r1, #3
+	rsbs r1, r1, #0
+	ands r0, r1
+	str r0, [r4, #0xc]
+_08085F04:
+	adds r0, r4, #0
+	adds r0, #0x34
+	adds r4, #0x14
+	adds r1, r6, #0
+	adds r2, r4, #0
+	bl sub_8083B88
+	adds r0, r4, #0
+_08085F14:
+	pop {r4, r5, r6}
+	pop {r1}
+	bx r1
+	.align 2, 0
+
+	thumb_func_start sub_8085F1C
+sub_8085F1C: @ 0x08085F1C
+	push {r4, r5, r6, lr}
+	adds r4, r0, #0
+	movs r6, #0
+	ldr r0, [r4]
+	cmp r0, #0
+	beq _08085F30
+	adds r0, r4, #0
+	bl sub_8085EC4
+	adds r6, r0, #0
+_08085F30:
+	ldr r1, [r4, #0xc]
+	movs r0, #3
+	ands r0, r1
+	cmp r0, #3
+	bne _08085F50
+	adds r5, r4, #0
+	adds r5, #0x14
+	cmp r6, #0
+	beq _08085F7A
+	adds r0, r4, #0
+	adds r0, #0x34
+	adds r1, r6, #0
+	adds r2, r5, #0
+	bl sub_8083B88
+	b _08085F7A
+_08085F50:
+	movs r5, #1
+	ands r1, r5
+	cmp r1, #0
+	bne _08085F6A
+	adds r0, r4, #0
+	bl sub_80853F8
+	ldr r0, [r4, #0xc]
+	orrs r0, r5
+	movs r1, #3
+	rsbs r1, r1, #0
+	ands r0, r1
+	str r0, [r4, #0xc]
+_08085F6A:
+	adds r0, r4, #0
+	adds r0, #0x34
+	adds r4, #0x14
+	adds r1, r6, #0
+	adds r2, r4, #0
+	bl sub_8083B88
+	adds r5, r4, #0
+_08085F7A:
+	adds r0, r5, #0
+	pop {r4, r5, r6}
+	pop {r1}
+	bx r1
+	.align 2, 0
+
+	thumb_func_start sub_8085F84
+sub_8085F84: @ 0x08085F84
+	bx lr
+	.align 2, 0

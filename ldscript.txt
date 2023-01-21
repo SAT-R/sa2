@@ -141,7 +141,6 @@ SECTIONS
         build/sa2/asm/math1.o(.text);
         build/sa2/asm/unused_task_5F1C.o(.text);
         build/sa2/src/unknown_object_6998.o(.text);
-        build/sa2/asm/unknown_object_6998.o(.text);
         build/sa2/src/race_progress.o(.text);
         build/sa2/src/unknown_effect.o(.text);
         build/sa2/src/multiplayer_lobby.o(.text);
