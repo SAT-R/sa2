@@ -48,6 +48,18 @@ struct UNK_3005A44 {
 };
 extern struct UNK_3005A44 gUnknown_03005A44;
 
+typedef struct {
+    u8 filler0[0x22];
+    s16 unk22;
+    s16 unk24;
+} UNK_03005A70; /* 0x30 */
+
+typedef struct {
+    UNK_03005A70 *unk0;
+} UNK_03005A70_Wrapper;
+
+extern UNK_03005A70_Wrapper gUnknown_03005A70;
+
 extern u8 gUnknown_0300543C;
 
 extern u32 gUnknown_030054DC;
@@ -129,7 +141,7 @@ typedef struct {
     u8 a[2];
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
-    /* 0x64 */ u16 unk64;
+    /* 0x64 */ s16 unk64;
     /* 0x66 */ u16 unk66;
     /* 0x68 */ u16 unk68; // anim?
     /* 0x6A */ u16 unk6A; // variant?
