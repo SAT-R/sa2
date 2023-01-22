@@ -181,58 +181,6 @@ gUnknown_080D6AF0:
 .syntax unified
 .arm
 
-	thumb_func_start sub_801BFFC
-sub_801BFFC: @ 0x0801BFFC
-	push {lr}
-	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
-	ldr r0, _0801C034 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _0801C05C
-	ldr r0, _0801C038 @ =gSelectedCharacter
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #0
-	bne _0801C048
-	ldr r0, _0801C03C @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r1, [r0, #7]
-	ldr r2, _0801C040 @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r2, r0]
-	cmp r1, r0
-	bgt _0801C048
-	cmp r0, #0x12
-	bne _0801C048
-	ldr r1, _0801C044 @ =gUnknown_030054A8
-	movs r0, #0x1e
-	strb r0, [r1, #1]
-	b _0801C062
-	.align 2, 0
-_0801C034: .4byte gGameMode
-_0801C038: .4byte gSelectedCharacter
-_0801C03C: .4byte gLoadedSaveGame
-_0801C040: .4byte gCurrentLevel
-_0801C044: .4byte gUnknown_030054A8
-_0801C048:
-	ldr r0, _0801C058 @ =gLevelSongs
-	lsls r1, r3, #1
-	adds r1, r1, r0
-	ldrh r0, [r1]
-	bl m4aSongNumStart
-	b _0801C062
-	.align 2, 0
-_0801C058: .4byte gLevelSongs
-_0801C05C:
-	movs r0, #0x3a
-	bl m4aSongNumStart
-_0801C062:
-	pop {r0}
-	bx r0
-	.align 2, 0
-
 	thumb_func_start sub_801C068
 sub_801C068: @ 0x0801C068
 	push {r4, r5, r6, r7, lr}

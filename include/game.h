@@ -11,6 +11,7 @@
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
 
 #include "global.h"
+#include "sprite.h"
 #include "multi_sio.h"
 #include "save.h"
 #include "task.h"
@@ -164,16 +165,43 @@ typedef struct {
 
 extern Player gPlayer;
 
+struct UNK_80D62D8 {
+    u8 unk0[28];
+    u32 unk1C;
+    u32 unk20;
+    u8 unk24[12];
+};
+
 struct Camera {
-    /* 0x00 */ s32 x; // x
-    /* 0x04 */ s32 y; // y
-    /* 0x08 */ u8 filler[72];
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    s32 unk20;
+    s32 unk24;
+    s32 unk28;
+    s32 unk2C;
+    s32 unk30;
+    s32 unk34;
+    u8 filler38[8];
+    u16 unk40;
+    s32 unk44;
+    s32 unk48;
+    s32 unk4C;
     /* 0x50 */ u16 unk50;
-    /* 0x52 */ u8 unk52[10];
-    /* 0x5C */ u32 unk5C;
-    /* 0x60 */ u8 filler60[6];
-    /* 0x66 */ u8 unk66;
-    /* 0x60 */ u8 filler67[25];
+    u16 unk52;
+    u16 unk54;
+    u16 unk56;
+    TaskMain unk58;
+    /* 0x5C */ struct Task *unk5C;
+    u16 unk60;
+    u16 unk62;
+    u16 unk64;
+    u8 unk66;
 }; /* size 0x80 */
 
 extern struct Camera gCamera;
@@ -213,6 +241,10 @@ extern u32 gUnknown_03005434;
 extern u32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
+
+extern Background gUnknown_03005890;
+extern Background gUnknown_030058D0;
+extern Background gUnknown_03005910;
 
 extern u8 gMultiplayerConnections;
 
