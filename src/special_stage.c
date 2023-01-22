@@ -612,13 +612,13 @@ void sub_806C6A4(void)
 
         if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
             u16 temp5 = (temp2 - temp3);
-            temp5 += gUnknown_03005448;
+            temp5 += gNumLives;
 
             if (temp5 > 0xFF) {
                 temp5 = 0xFF;
             }
 
-            gUnknown_03005448 = temp5;
+            gNumLives = temp5;
         }
 
         gLoadedSaveGame->unk374 += stage->rings;

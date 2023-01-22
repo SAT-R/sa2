@@ -449,7 +449,7 @@ _08062A3E:
 	bne _08062A86
 	subs r0, r6, r1
 	lsls r0, r0, #0x10
-	ldr r1, _08062AEC @ =gUnknown_03005448
+	ldr r1, _08062AEC @ =gNumLives
 	lsrs r0, r0, #0x10
 	ldrb r3, [r1]
 	adds r0, r0, r3
@@ -513,7 +513,7 @@ _08062ACE:
 _08062AE0: .4byte gUnknown_03005450
 _08062AE4: .4byte 0x0000C350
 _08062AE8: .4byte gGameMode
-_08062AEC: .4byte gUnknown_03005448
+_08062AEC: .4byte gNumLives
 _08062AF0: .4byte gUnknown_030054A8
 _08062AF4: .4byte gPlayer
 _08062AF8: .4byte gCamera

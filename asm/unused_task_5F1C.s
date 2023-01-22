@@ -710,7 +710,7 @@ _08086516:
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08086576
-	ldr r1, _080865B0 @ =gUnknown_03005448
+	ldr r1, _080865B0 @ =gNumLives
 	ldrb r0, [r1]
 	adds r0, #1
 	cmp r0, #0xff
@@ -744,7 +744,7 @@ _080865A0: .4byte 0x3C6EF35F
 _080865A4: .4byte gCourseTime
 _080865A8: .4byte gCurrentLevel
 _080865AC: .4byte gGameMode
-_080865B0: .4byte gUnknown_03005448
+_080865B0: .4byte gNumLives
 _080865B4: .4byte gUnknown_030054A8
 _080865B8:
 	bl sub_8019224

@@ -30,7 +30,7 @@ build/sa2/src/main.o(.data);
 . = 0x0000543C; gUnknown_0300543C = .;
 . = 0x00005440; gUnknown_03005440 = .;
 . = 0x00005444; gUnknown_03005444 = .;
-. = 0x00005448; gUnknown_03005448 = .;
+. = 0x00005448; gNumLives = .;
 . = 0x0000544C; gUnknown_0300544C = .;
 . = 0x00005450; gUnknown_03005450 = .;
 . = 0x00005460; gMultiplayerNames = .;
