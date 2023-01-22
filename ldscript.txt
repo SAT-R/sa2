@@ -220,7 +220,7 @@ SECTIONS
         build/sa2/src/interactable_019.o(.rodata);
         build/sa2/data/unused_objects_data.o(.rodata);
         build/sa2/src/interactable_bouncy_bar.o(.rodata);
-        build/sa2/asm/interactable_checkpoint.o(.rodata);
+        build/sa2/src/interactable_checkpoint.o(.rodata);
         build/sa2/asm/interactable_051.o(.rodata);
         build/sa2/src/profile.o(.rodata);
         build/sa2/src/special_stage_data.o(.rodata);

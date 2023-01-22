@@ -1,13 +1,6 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-    
-    .global gUnknown_080D94F8
-gUnknown_080D94F8:
-    .incbin "baserom.gba", 0x000D94F8, 0x20
-
-.section .text
 .syntax unified
 .arm
 
@@ -439,76 +432,5 @@ _08063204:
 _0806320C: .4byte gCurTask
 _08063210: .4byte gCamera
 
-	thumb_func_start TaskDestructor_8063214
-TaskDestructor_8063214: @ 0x08063214
-	push {lr}
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	ldr r0, [r0, #0x10]
-	bl VramFree
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_8063228
-sub_8063228: @ 0x08063228
-	push {r4, lr}
-	ldr r0, _0806328C @ =gCurrentLevel
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x1a
-	lsls r0, r0, #0x18
-	ldr r1, _08063290 @ =gUnknown_080D94F8
-	lsrs r0, r0, #0x16
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	ldr r1, _08063294 @ =gAnimations
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r0, [r0]
-	ldr r2, [r0]
-	ldm r2!, {r1}
-	movs r0, #2
-	rsbs r0, r0, #0
-	cmp r1, r0
-	bne _08063286
-	ldm r2!, {r3}
-	ldr r1, [r2]
-	lsrs r2, r1, #0x10
-	movs r0, #0xff
-	ands r1, r0
-	ldr r4, _08063298 @ =0x040000D4
-	ldr r0, _0806329C @ =gUnknown_03002794
-	ldr r0, [r0]
-	lsls r3, r3, #5
-	ldr r0, [r0, #0xc]
-	adds r0, r0, r3
-	str r0, [r4]
-	lsls r2, r2, #1
-	ldr r0, _080632A0 @ =gBgPalette
-	adds r2, r2, r0
-	str r2, [r4, #4]
-	lsrs r1, r1, #1
-	movs r0, #0x84
-	lsls r0, r0, #0x18
-	orrs r1, r0
-	str r1, [r4, #8]
-	ldr r0, [r4, #8]
-	ldr r2, _080632A4 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #1
-	orrs r0, r1
-	str r0, [r2]
-_08063286:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0806328C: .4byte gCurrentLevel
-_08063290: .4byte gUnknown_080D94F8
-_08063294: .4byte gAnimations
-_08063298: .4byte 0x040000D4
-_0806329C: .4byte gUnknown_03002794
-_080632A0: .4byte gBgPalette
-_080632A4: .4byte gFlags
+.if 0
+.endif

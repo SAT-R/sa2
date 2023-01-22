@@ -4,11 +4,15 @@
 
 #include "game.h"
 #include "task.h"
+#include "main.h"
 
+#include "data.h"
+#include "flags.h"
 #include "interactable.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
+#include "constants/anim_commands.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
@@ -23,14 +27,62 @@ typedef struct {
 } Sprite_Toggle_Checkpoint;
 
 typedef struct {
-} TileInfoCheckpoint;
+    u16 anim;
+    u8 variant; // <- TODO: Check that this is really 'variant'!
+} TileInfo_Checkpoint;
 
 // TODO: Make static
 extern void Task_Interactable_Checkpoint(void);
 static void Task_Interactable_Toggle_Checkpoint(void);
 
 extern u32 gUnknown_030053E4;
+extern const struct SpriteTables *gUnknown_03002794;
 extern u32 gUnknown_080D63FC[34][2];
+
+extern void **gAnimations[];
+
+const TileInfo_Checkpoint gUnknown_080D94F8[NUM_COURSE_ZONES + 1] = {
+    [ZONE_1] = { SA2_ANIM_898, 0 }, [ZONE_2] = { SA2_ANIM_899, 0 },
+    [ZONE_3] = { SA2_ANIM_903, 0 }, [ZONE_4] = { SA2_ANIM_902, 0 },
+    [ZONE_5] = { SA2_ANIM_904, 0 }, [ZONE_6] = { SA2_ANIM_947, 0 },
+    [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
+};
+
+// static
+void TaskDestructor_8063214(struct Task *t)
+{
+    Sprite_Checkpoint *chkPt = TaskGetStructPtr(t);
+    void *gfx = chkPt->displayed.graphics.dest;
+#ifdef UBFIX
+    if (gfx)
+#endif
+    {
+        VramFree(gfx);
+    }
+}
+
+void sub_8063228(void)
+{
+    u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
+    s32 animId = gUnknown_080D94F8[zone].anim;
+    s32 **anim = (s32 **)gAnimations[animId];
+    s32 *cmd = anim[0];
+    u32 palId;
+    u32 numColors;
+    u32 offset;
+
+    if (*cmd++ == ANIM_CMD__GET_PALETTE) {
+        palId = *cmd++;
+        numColors = *cmd;
+        offset = numColors >> 16;
+        numColors %= 256;
+
+        DmaCopy32(3, &gUnknown_03002794->palettes[palId * 16], &gBgPalette[offset],
+                  numColors * sizeof(u16));
+
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+    }
+}
 
 static void Task_Interactable_Toggle_Checkpoint(void)
 {
@@ -49,7 +101,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
         ia->x = toggle->base.spriteX;
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
-            && posX <= Q_24_8_TO_INT(gPlayer.x)) {
+               && posX <= Q_24_8_TO_INT(gPlayer.x)) {
         // __0806332C
         gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
         gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
