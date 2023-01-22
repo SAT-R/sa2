@@ -40,6 +40,8 @@ void sub_80193C4(u8);
 void sub_8013FAC(Player *);
 void sub_80191A4(void);
 
+extern const u16 gLevelSongs[];
+
 extern const u16 gUnknown_080D5964[][2];
 // TODO not TaskMain use an inline type
 extern const TaskMain gUnknown_080D57DC[];
@@ -387,5 +389,700 @@ void sub_801AE48(void)
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         CreateGameStage();
+    }
+}
+
+void sub_8009628(s32, s32, s32, s32);
+
+void sub_801AF14(void)
+{
+    u32 level;
+    sub_80115D0(0x830, 0x7F207F20, 0);
+    sub_8009628(0x2000, 0x381, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801AFA4(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 900, 0, 0);
+    sub_8009628(0x2000, 900, 1, 0);
+    sub_8009628(0x2000, 900, 2, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B03C(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 900, 0, 0);
+    sub_8009628(0x2000, 900, 1, 0);
+    sub_8009628(0x2000, 900, 2, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B0D4(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 906, 2, 0);
+    sub_8009628(0x2000, 906, 0, 0);
+    sub_8009628(0x2000, 906, 1, 0);
+    sub_8009628(0x2000, 901, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B180(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 906, 2, 0);
+    sub_8009628(0x2000, 906, 0, 0);
+    sub_8009628(0x2000, 906, 1, 0);
+    sub_8009628(0x2000, 901, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B22C(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 940, 0, 0);
+    sub_8009628(0x2000, 940, 1, 0);
+    sub_8009628(0x2000, 940, 2, 0);
+    sub_8009628(0x2000, 940, 3, 0);
+    sub_8009628(0x2000, 940, 4, 0);
+    sub_8009628(0x2000, 940, 5, 0);
+    sub_8009628(0x2000, 940, 6, 0);
+    sub_8009628(0x2000, 940, 7, 0);
+    sub_8009628(0x2000, 940, 8, 0);
+    sub_8009628(0x2000, 940, 9, 0);
+    sub_8009628(0x2000, 940, 11, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B324(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 940, 0, 0);
+    sub_8009628(0x2000, 940, 1, 0);
+    sub_8009628(0x2000, 940, 2, 0);
+    sub_8009628(0x2000, 940, 3, 0);
+    sub_8009628(0x2000, 940, 4, 0);
+    sub_8009628(0x2000, 940, 5, 0);
+    sub_8009628(0x2000, 940, 6, 0);
+    sub_8009628(0x2000, 940, 7, 0);
+    sub_8009628(0x2000, 940, 8, 0);
+    sub_8009628(0x2000, 940, 9, 0);
+    sub_8009628(0x2000, 940, 11, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B41C(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 941, 0, 0);
+    sub_8009628(0x2000, 942, 0, 0);
+    sub_8009628(0x2000, 943, 0, 0);
+    sub_8009628(0x2000, 944, 0, 0);
+    sub_8009628(0x2000, 945, 0, 0);
+    sub_8009628(0x2000, 946, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B4EC(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 941, 0, 0);
+    sub_8009628(0x2000, 942, 0, 0);
+    sub_8009628(0x2000, 943, 0, 0);
+    sub_8009628(0x2000, 944, 0, 0);
+    sub_8009628(0x2000, 945, 0, 0);
+    sub_8009628(0x2000, 946, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B5BC(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 941, 0, 0);
+    sub_8009628(0x2000, 942, 0, 0);
+    sub_8009628(0x2000, 943, 0, 0);
+    sub_8009628(0x2000, 944, 0, 0);
+    sub_8009628(0x2000, 945, 0, 0);
+    sub_8009628(0x2000, 946, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801E028(void);
+void sub_80299FC(Player *player);
+
+void sub_801B68C(void)
+{
+    TaskDestroy(gGameStageTask);
+    gGameStageTask = NULL;
+    sub_80299FC(&gPlayer);
+    sub_801E028();
+}
+
+void sub_801B6B4(void)
+{
+    gUnknown_03005424 |= 0x20;
+    if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        CreateTimeAttackLobbyScreen();
+        gNumLives = 2;
+        return;
+    }
+
+    if (--gNumLives == 0) {
+        CreateGameOverScreen(1);
+    } else {
+        CreateGameOverScreen(2);
+    }
+}
+
+void sub_801B744(void)
+{
+    TasksDestroyAll();
+    gUnknown_03002AE4 = gUnknown_0300287C;
+    gUnknown_03005390 = 0;
+    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    WriteSaveGame();
+
+    if (gGameMode == 0) {
+        gCurrentLevel++;
+        if (gCurrentLevel < 34) {
+            GameStageStart();
+        }
+    }
+}
+
+void sub_801B7A8(struct Task *t)
+{
+    gGameStageTask = NULL;
+    m4aMPlayAllStop();
+}
+
+void sub_801B7BC(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 897, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B83C(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B8A8(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B914(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B980(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801B9EC(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BA58(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BAC4(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BB30(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BB9C(void)
+{
+    u32 level;
+    sub_8009628(0x2000, 686, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BC1C(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BC88(void)
+{
+    u32 level;
+
+    sub_8009628(0x2000, 686, 0, 0);
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BD08(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BD74(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BDE0(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BE4C(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BEB8(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BF24(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
+    }
+}
+
+void sub_801BF90(void)
+{
+    u32 level;
+
+#ifndef NON_MATCHING
+    level = (u16)gCurrentLevel;
+#endif
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+            && gCurrentLevel == 18) {
+            gUnknown_030054A8[1] = 0x1E;
+        } else {
+            m4aSongNumStart(gLevelSongs[level]);
+        }
+    } else {
+        m4aSongNumStart(MUS_VS_2);
     }
 }

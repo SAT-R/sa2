@@ -29,7 +29,7 @@ extern u32 gUnknown_030059D0[2];
 // might be wrong
 extern s16 gCourseTime;
 
-extern u8 gUnknown_030054A8;
+extern u8 gUnknown_030054A8[8];
 extern u32 gUnknown_03005490;
 extern u8 gUnknown_030054F4;
 extern u16 gUnknown_03005440;

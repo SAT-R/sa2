@@ -261,15 +261,8 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk10 = 0;
     sub_8004558(element);
 
-#ifndef NON_MATCHING
-    {
-        u8 *ptr = &gUnknown_030054A8;
-        register s32 var asm("r0") = 1;
-        *ptr = -var;
-    }
-#else
-    gUnknown_030054A8 = 0xFF;
-#endif
+    gUnknown_030054A8[0] = 0xFF;
+
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
         gPlayer.unk64 = 0x20;
     }
