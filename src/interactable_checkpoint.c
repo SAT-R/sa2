@@ -35,6 +35,7 @@ typedef struct {
 // TODO: Make static
 extern void Task_Interactable_Checkpoint(void);
 static void Task_Interactable_Toggle_Checkpoint(void);
+void Task_8063108(void);
 void Task_806319C(void);
 
 extern u32 gUnknown_030053E4;
@@ -49,6 +50,47 @@ const TileInfo_Checkpoint gUnknown_080D94F8[NUM_COURSE_ZONES + 1] = {
     [ZONE_5] = { SA2_ANIM_904, 0 }, [ZONE_6] = { SA2_ANIM_947, 0 },
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
+
+void Task_8062FD8(void)
+{
+    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite *disp = &chkPt->displayed;
+    Interactable *ia = chkPt->base.ia;
+    s32 posX, posY;
+    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+
+    disp->x = posX - gCamera.x;
+    disp->y = posY - gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+        ia->x = chkPt->base.spriteX;
+        TaskDestroy(chkPt->task);
+        TaskDestroy(gCurTask);
+    } else {
+        if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
+            && posX <= Q_24_8_TO_INT(gPlayer.x)) {
+            // __0806306C
+            gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
+            gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
+            gPlayer.checkpointTime = gUnknown_030053E4;
+
+            if (gUnknown_030055B0 == 0)
+                gUnknown_030055B0++;
+
+            disp->graphics.anim = SA2_ANIM_CHECKPOINT;
+            disp->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
+            disp->unk21 = 0xFF;
+
+            gCurTask->main = Task_8063108;
+
+            m4aSongNumStart(SE_CHECKPOINT);
+        }
+
+        sub_8004558(disp);
+        sub_80051E8(disp);
+    }
+}
 
 void Task_8063108(void)
 {
@@ -148,7 +190,6 @@ static void Task_Interactable_Toggle_Checkpoint(void)
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
                && posX <= Q_24_8_TO_INT(gPlayer.x)) {
-        // __0806332C
         gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
         gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
         gPlayer.checkpointTime = gUnknown_030053E4;
@@ -158,7 +199,6 @@ static void Task_Interactable_Toggle_Checkpoint(void)
 
         TaskDestroy(gCurTask);
     } else {
-        // _08063388
         if (gUnknown_030055B0 != 0)
             TaskDestroy(gCurTask);
     }

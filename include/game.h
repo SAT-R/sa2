@@ -154,8 +154,8 @@ typedef struct {
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
     /* 0x6F */ u8 filler6F[5];
-    /* 0x70 */ s16 checkPointX;
-    /* 0x74 */ s16 checkPointY;
+    /* 0x74 */ u16 checkPointX;
+    /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u8 filler7C[0x10];
     /* 0x8C */ u32 unk8C;

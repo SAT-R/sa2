@@ -123,11 +123,13 @@
 #define SA2_ANIM_ANIMAL_ELEPHANT  529
 
 // Interactable
-#define SA2_ANIM_LEVEL_START_MACHINE 530
-#define SA2_ANIM_CHECKPOINT          531
-#define SA2_ANIM_GOAL_LEVER          532
-#define SA2_ANIM_WATER_SPLASH        533
-#define SA2_ANIM_534                 534
+#define SA2_ANIM_LEVEL_START_MACHINE     530
+#define SA2_ANIM_CHECKPOINT              531
+#define SA2_ANIM_VARIANT_CHECKPOINT_IDLE 0
+#define SA2_ANIM_VARIANT_CHECKPOINT_HIT  1
+#define SA2_ANIM_GOAL_LEVER              532
+#define SA2_ANIM_WATER_SPLASH            533
+#define SA2_ANIM_534                     534
 
 #define SA2_ANIM_LEAF_FOREST_GROUND_TILE 535
 #define SA2_ANIM_SPRING                  536
