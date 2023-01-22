@@ -19,6 +19,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite displayed;
+    /* 0x3C */ struct Task *task;
 } Sprite_Checkpoint;
 
 typedef struct {
@@ -47,6 +48,25 @@ const TileInfo_Checkpoint gUnknown_080D94F8[NUM_COURSE_ZONES + 1] = {
     [ZONE_5] = { SA2_ANIM_904, 0 }, [ZONE_6] = { SA2_ANIM_947, 0 },
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
+
+void Task_806319C(void)
+{
+    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite *disp = &chkPt->displayed;
+    Interactable *ia = chkPt->base.ia;
+    s32 posX, posY;
+    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+
+    disp->x = posX - gCamera.x;
+    disp->y = posY - gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+        ia->x = chkPt->base.spriteX;
+        TaskDestroy(chkPt->task);
+        TaskDestroy(gCurTask);
+    }
+}
 
 // static
 void TaskDestructor_8063214(struct Task *t)
