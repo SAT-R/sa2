@@ -269,7 +269,7 @@ _080630A6:
 	strb r0, [r1]
 	mov r0, r8
 	ldr r1, [r0]
-	ldr r0, _08063104 @ =sub_8063108
+	ldr r0, _08063104 @ =Task_8063108
 	str r0, [r1, #8]
 	movs r0, #152 @ SE_CHECKPOINT
 	bl m4aSongNumStart
@@ -294,82 +294,7 @@ _080630F4: .4byte gUnknown_030055B0
 _080630F8: .4byte 0x00000213
 _080630FC: .4byte IWRAM_START + 0x2C
 _08063100: .4byte IWRAM_START + 0x2D
-_08063104: .4byte sub_8063108
-
-	thumb_func_start sub_8063108
-sub_8063108: @ 0x08063108
-	push {r4, r5, r6, r7, lr}
-	ldr r7, _08063174 @ =gCurTask
-	ldr r0, [r7]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, #0xc
-	adds r5, r1, r0
-	ldr r6, [r4]
-	ldrb r1, [r4, #8]
-	lsls r1, r1, #3
-	ldrh r0, [r4, #4]
-	lsls r0, r0, #8
-	adds r1, r1, r0
-	ldrb r2, [r6, #1]
-	lsls r2, r2, #3
-	ldrh r0, [r4, #6]
-	lsls r0, r0, #8
-	adds r2, r2, r0
-	ldr r3, _08063178 @ =gCamera
-	ldr r0, [r3]
-	subs r1, r1, r0
-	strh r1, [r5, #0x16]
-	ldr r0, [r3, #4]
-	subs r2, r2, r0
-	strh r2, [r5, #0x18]
-	adds r1, #0x80
-	lsls r1, r1, #0x10
-	movs r0, #0xf8
-	lsls r0, r0, #0x11
-	cmp r1, r0
-	bhi _0806315E
-	movs r1, #0x18
-	ldrsh r0, [r5, r1]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _0806315E
-	lsls r1, r2, #0x10
-	movs r0, #0x90
-	lsls r0, r0, #0x11
-	cmp r1, r0
-	ble _0806317C
-_0806315E:
-	ldrb r0, [r4, #8]
-	strb r0, [r6]
-	ldr r0, [r4, #0x3c]
-	bl TaskDestroy
-	ldr r0, _08063174 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _08063192
-	.align 2, 0
-_08063174: .4byte gCurTask
-_08063178: .4byte gCamera
-_0806317C:
-	adds r0, r5, #0
-	bl sub_8004558
-	cmp r0, #0
-	bne _0806318C
-	ldr r1, [r7]
-	ldr r0, _08063198 @ =Task_806319C
-	str r0, [r1, #8]
-_0806318C:
-	adds r0, r5, #0
-	bl sub_80051E8
-_08063192:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08063198: .4byte Task_806319C
+_08063104: .4byte Task_8063108
 
 .if 0
 .endif

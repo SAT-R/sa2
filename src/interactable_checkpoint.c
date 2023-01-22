@@ -35,6 +35,7 @@ typedef struct {
 // TODO: Make static
 extern void Task_Interactable_Checkpoint(void);
 static void Task_Interactable_Toggle_Checkpoint(void);
+void Task_806319C(void);
 
 extern u32 gUnknown_030053E4;
 extern const struct SpriteTables *gUnknown_03002794;
@@ -48,6 +49,31 @@ const TileInfo_Checkpoint gUnknown_080D94F8[NUM_COURSE_ZONES + 1] = {
     [ZONE_5] = { SA2_ANIM_904, 0 }, [ZONE_6] = { SA2_ANIM_947, 0 },
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
+
+void Task_8063108(void)
+{
+    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite *disp = &chkPt->displayed;
+    Interactable *ia = chkPt->base.ia;
+    s32 posX, posY;
+    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+
+    disp->x = posX - gCamera.x;
+    disp->y = posY - gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+        ia->x = chkPt->base.spriteX;
+        TaskDestroy(chkPt->task);
+        TaskDestroy(gCurTask);
+    } else {
+        if (sub_8004558(disp) == 0) {
+            gCurTask->main = Task_806319C;
+        }
+
+        sub_80051E8(disp);
+    }
+}
 
 void Task_806319C(void)
 {
