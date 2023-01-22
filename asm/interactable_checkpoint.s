@@ -40,7 +40,7 @@ _08062ED0: .4byte sub_8062FD8
 _08062ED4: .4byte 0x00002010
 _08062ED8: .4byte TaskDestructor_8063214
 _08062EDC:
-	ldr r0, _08062FA8 @ =sub_806319C
+	ldr r0, _08062FA8 @ =Task_806319C
 	ldr r2, _08062FAC @ =0x00002010
 	ldr r1, _08062FB0 @ =TaskDestructor_8063214
 	str r1, [sp]
@@ -140,7 +140,7 @@ _08062EEC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08062FA8: .4byte sub_806319C
+_08062FA8: .4byte Task_806319C
 _08062FAC: .4byte 0x00002010
 _08062FB0: .4byte TaskDestructor_8063214
 _08062FB4: .4byte IWRAM_START + 0xC
@@ -359,7 +359,7 @@ _0806317C:
 	cmp r0, #0
 	bne _0806318C
 	ldr r1, [r7]
-	ldr r0, _08063198 @ =sub_806319C
+	ldr r0, _08063198 @ =Task_806319C
 	str r0, [r1, #8]
 _0806318C:
 	adds r0, r5, #0
@@ -369,10 +369,10 @@ _08063192:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08063198: .4byte sub_806319C
+_08063198: .4byte Task_806319C
 
-	thumb_func_start sub_806319C
-sub_806319C: @ 0x0806319C
+	thumb_func_start Task_806319C
+Task_806319C: @ 0x0806319C
 	push {r4, r5, r6, lr}
 	ldr r0, _0806320C @ =gCurTask
 	ldr r0, [r0]
