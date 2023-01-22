@@ -3,7 +3,7 @@
 
 #include "constants/text.h" // for language-specific stuff
 
-/* Collection of animation indices for Sonic Advance 2 and 3.
+/* Collection of animation indices for Sonic Advance 2.
  * - By JaceCear
  */
 
