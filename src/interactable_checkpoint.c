@@ -194,12 +194,7 @@ void TaskDestructor_8063214(struct Task *t)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(t);
     void *gfx = chkPt->displayed.graphics.dest;
-#ifdef UBFIX
-    if (gfx)
-#endif
-    {
-        VramFree(gfx);
-    }
+    VramFree(gfx);
 }
 
 void Task_8063228(void)
