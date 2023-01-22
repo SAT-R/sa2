@@ -27,29 +27,83 @@ typedef struct {
     /* 0x0C */ Sprite displayed;
 } Sprite_Toggle_Checkpoint;
 
-typedef struct {
-    u16 anim;
-    u8 variant; // <- TODO: Check that this is really 'variant'!
-} TileInfo_Checkpoint;
+extern struct Task *sub_8009628(u16, u16, u8, TaskMain);
 
-// TODO: Make static
-extern void Task_Interactable_Checkpoint(void);
 static void Task_Interactable_Toggle_Checkpoint(void);
-void Task_8063108(void);
-void Task_806319C(void);
+static void Task_8062FD8(void);
+static void Task_8063108(void);
+static void Task_806319C(void);
+static void TaskDestructor_8063214(struct Task *);
+static void Task_8063228(void);
 
 extern u32 gUnknown_030053E4;
 extern const struct SpriteTables *gUnknown_03002794;
-extern u32 gUnknown_080D63FC[34][2];
+extern const u32 gUnknown_080D63FC[34][2];
 
-extern void **gAnimations[];
+extern s32 **const gAnimations[];
 
-const TileInfo_Checkpoint gUnknown_080D94F8[NUM_COURSE_ZONES + 1] = {
+#define CHECKPOINT_BALL_TILE_COUNT 4
+
+/* [0] = animId
+ * [1] = variant
+ *
+ * Using a struct doesn't match */
+static const u16 sAnimIdsCheckpoint[NUM_COURSE_ZONES + 1][2] = {
     [ZONE_1] = { SA2_ANIM_898, 0 }, [ZONE_2] = { SA2_ANIM_899, 0 },
     [ZONE_3] = { SA2_ANIM_903, 0 }, [ZONE_4] = { SA2_ANIM_902, 0 },
     [ZONE_5] = { SA2_ANIM_904, 0 }, [ZONE_6] = { SA2_ANIM_947, 0 },
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
+
+void initSprite_Interactable_Checkpoint(Interactable *ia, u16 spriteRegionX,
+                                        u16 spriteRegionY, u8 spriteY)
+{
+    struct Task *t;
+    Sprite_Checkpoint *chkPt;
+    Sprite *disp;
+    u8 zone;
+    u16 anim;
+    u8 variant;
+    if (gUnknown_030055B0 == 0) {
+        t = TaskCreate(Task_8062FD8, sizeof(Sprite_Checkpoint), 0x2010, 0,
+                       TaskDestructor_8063214);
+    } else {
+        t = TaskCreate(Task_806319C, sizeof(Sprite_Checkpoint), 0x2010, 0,
+                       TaskDestructor_8063214);
+    }
+
+    chkPt = TaskGetStructPtr(t);
+    disp = &chkPt->displayed;
+
+    chkPt->base.regionX = spriteRegionX;
+    chkPt->base.regionY = spriteRegionY;
+    chkPt->base.ia = ia;
+    chkPt->base.spriteX = ia->x;
+    chkPt->base.spriteY = spriteY;
+
+    disp->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    disp->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(ia);
+
+    disp->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
+    disp->graphics.anim = SA2_ANIM_CHECKPOINT;
+    disp->variant = 0;
+    disp->unk1A = 0x480;
+    disp->graphics.size = 0;
+    disp->unk14 = 0;
+    disp->unk1C = 0;
+    disp->unk21 = 0xFF;
+    disp->unk22 = 0x10;
+    disp->focused = 0;
+    disp->unk28->unk0 = -1;
+    disp->unk10 = 0x2000;
+
+    zone = LEVEL_TO_ZONE(gCurrentLevel);
+    anim = sAnimIdsCheckpoint[zone][0];
+    variant = sAnimIdsCheckpoint[zone][1];
+
+    chkPt->task = sub_8009628(0x2000, anim, variant, Task_8063228);
+}
 
 void Task_8062FD8(void)
 {
@@ -70,7 +124,6 @@ void Task_8062FD8(void)
     } else {
         if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
             && posX <= Q_24_8_TO_INT(gPlayer.x)) {
-            // __0806306C
             gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
             gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
             gPlayer.checkpointTime = gUnknown_030053E4;
@@ -149,11 +202,11 @@ void TaskDestructor_8063214(struct Task *t)
     }
 }
 
-void sub_8063228(void)
+void Task_8063228(void)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
-    s32 animId = gUnknown_080D94F8[zone].anim;
-    s32 **anim = (s32 **)gAnimations[animId];
+    s32 animId = sAnimIdsCheckpoint[zone][0];
+    s32 **anim = gAnimations[animId];
     s32 *cmd = anim[0];
     u32 palId;
     u32 numColors;
