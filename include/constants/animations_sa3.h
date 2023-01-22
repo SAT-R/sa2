@@ -1,0 +1,202 @@
+#ifndef GUARD_ANIMATIONS_SA3_H
+#define GUARD_ANIMATIONS_SA3_H
+
+/* Collection of animation indices for Sonic Advance 3.
+ * - By JaceCear
+ */
+
+// "x_PROJ" means "projectile belonging to x"
+
+#define SA3_ANIM_SONIC_IDLE    0
+#define SA3_ANIM_CREAM_IDLE    163
+#define SA3_ANIM_TAILS_IDLE    326
+#define SA3_ANIM_KNUCKLES_IDLE 489
+#define SA3_ANIM_AMY_IDLE      652
+
+// UI elements etc.
+#define SA3_ANIM_CHAOS_EMERALD_BIG 854
+#define SA3_ANIM_ARROWUP           855
+
+#define SA3_ANIM_CHAOMAP_EMERALD 858
+
+#define SA3_ANIM_ACT_EMBLEM 860
+/*SA3_ANIM_ACT_EMBLEM:
+    0="ACT 01"
+    1="ACT 02"
+    2="ACT 03"
+    3="ACT 04"
+    4="VS BOSS"
+*/
+
+#define SA3_ANIM_CHARACTER_NAMES 861
+/*SA3_ANIM_CHARACTER_NAMES:
+    0="SONIC"
+*/
+
+#define SA3_ANIM_ACT_MEDALS 862
+/*SA3_ANIM_ACT_MEDALS:
+    0=Gold
+    1=Silver
+    2=Bronze
+*/
+
+#define SA3_ANIM_ACT_NAMES_JAP 863
+// 864: White ???
+#define SA3_ANIM_ACT_NAMES_ENG 865
+
+// Interactables
+#define SA3_ANIM_SPRING           866
+#define SA3_ANIM_LAUNCH_RING      867
+#define SA3_ANIM_BOOSTER          868
+#define SA3_ANIM_SPIKES           869
+#define SA3_ANIM_RAMP             870
+#define SA3_ANIM_PLATFORM_R99     871
+#define SA3_ANIM_ZONE_TELEPORT    872
+#define SA3_ANIM_BOUNCE_BAR       873
+#define SA3_ANIM_ROTATING_HANDLE  874
+#define SA3_ANIM_CHECKPOINT       875
+#define SA3_ANIM_HANG_HANDLE      876
+#define SA3_ANIM_PLATFORM_2       877
+#define SA3_ANIM_TRAMPOLINE       878
+#define SA3_ANIM_INV_PLATFORM_W01 879 // xxx
+#define SA3_ANIM_INACTIVE_SPRING  880 // substate 15 = red switch
+#define SA3_ANIM_BREAKABLE_WALL   881
+#define SA3_ANIM_ROCK             882
+#define SA3_ANIM_HORZ_SWITCH      883
+#define SA3_ANIM_WHEEL_PLATFORM   884
+#define SA3_ANIM_SEESAW           885
+#define SA3_ANIM_YELLOW_SPRING_SH 886
+
+#define SA3_ANIM_SUNSET_LAUNCHER 891
+#define SA3_ANIM_SUNSET_BRIDGE   892
+#define SA3_ANIM_SUNSET_WAGGLE   894
+
+#define SA3_ANIM_PLATFORM_SH       897
+#define SA3_ANIM_TRANSFER_PLATFORM 898
+
+#define SA3_ANIM_DEATH_CRUSHER_SPIKED 903
+#define SA3_ANIM_PLATFORM_OB          904
+#define SA3_ANIM_DEATH_CRUSHER        905
+//#define SA3_ANIM_PLATFORM_CRUMBLE 906
+#define SA3_ANIM_PLATFORM_CRUMBLE 907
+
+#define SA3_ANIM_LAUNCHER_TS     910
+#define SA3_ANIM_FACTORY_RING    911
+#define SA3_ANIM_SPECIAL_SPRING  912
+#define SA3_ANIM_BONUS_TELEPORT  913
+#define SA3_ANIM_BONUS_TLPT_ANIM 914
+#define SA3_ANIM_ROCKET          915
+#define SA3_ANIM_CIRCLE_THINGY   916
+#define SA3_ANIM_BALLOON         917
+#define SA3_ANIM_SPRING_IN_A_BOX 918
+#define SA3_ANIM_PANDA_CART      919
+#define SA3_ANIM_PENDULUM        920
+
+#define SA3_ANIM_ICE_SPIKE    922
+#define SA3_ANIM_ICE_LAUNCHER 923
+
+#define SA3_ANIM_MINECART    925
+#define SA3_ANIM_AIR_BUBBLES 926
+
+#define SA3_ANIM_FALLING_BOULDER 929
+#define SA3_ANIM_SQUEEZER        930
+#define SA3_ANIM_UFO_PLATFORM    931
+
+#define SA3_ANIM_FALL_PLATFORM_CA 933
+
+#define SA3_ANIM_MAZE_LAUNCHER 940
+/* SA3_ANIM_MAZE_LAUNCHER:
+    0=Std
+    1=Blink Left
+    2=Blink Right
+    3=Downward std
+    6=Corner
+    7=Un-Launcher
+*/
+
+#define SA3_ANIM_GOAL_RING 948
+
+#define SA3_ANIM_OMOCHAO0  977
+#define SA3_ANIM_OMOCHAO1  978
+#define SA3_ANIM_OMOCHAO2  979
+#define SA3_ANIM_OMOCHAO3  980
+#define SA3_ANIM_OMOCHAO4  981
+#define SA3_ANIM_OMOCHAO5  982
+#define SA3_ANIM_ACT_RINGS 983
+/* SA3_ANIM_ACT_RINGS:
+    0=Act 1
+    1=Act 2
+    2=Act 3
+    3=Crown (completed stage)
+*/
+
+#define SA3_ANIM_PLATFORM_CA_ACT3 986
+#define SA3_ANIM_SPRING_TK        987
+#define SA3_ANIM_SPIKES_TK        988
+#define SA3_ANIM_INV_PLATFORM_W02 989
+#define SA3_ANIM_INV_PLATFORM_W03 990
+#define SA3_ANIM_INV_PLATFORM_W04 991
+#define SA3_ANIM_INV_PLATFORM_W05 992
+#define SA3_ANIM_INV_PLATFORM_W06 993
+#define SA3_ANIM_INV_PLATFORM_W07 994
+
+#define SA3_ANIM_FINALZONE_RING 996
+
+#define SA3_ANIM_CHAOx 1004
+
+#define SA3_ANIM_RING 1117
+
+#define SA3_ANIM_BONUS_CAPSULE 1154
+
+// SA3 - Enemies
+#define SA3_ANIM_SPINNER     1166
+#define SA3_ANIM_CONDOR      1167
+#define SA3_ANIM_RED_BEETLE  1168
+#define SA3_ANIM_BLUE_BEETLE 1169
+
+#define SA3_ANIM_APE 1171
+
+#define SA3_ANIM_FROG     1173
+#define SA3_ANIM_MINIMOLE 1174
+#define SA3_ANIM_BUZZER   1175
+
+#define SA3_ANIM_JOUSUN  1177 /* Green Plane */
+#define SA3_ANIM_TAKKON  1178 /* Red Octopus */
+#define SA3_ANIM_UUTSUBO 1179 /* Yellow Eel */
+
+#define SA3_ANIM_BUBU          1181
+#define SA3_ANIM_BAOBAO        1182
+#define SA3_ANIM_GUARD         1183
+#define SA3_ANIM_GUARD_PROJ    1184
+#define SA3_ANIM_JUGGLING      1185
+#define SA3_ANIM_JUGGLING_PROJ 1186
+
+#define SA3_ANIM_GINPE       1187 /* Penguin */
+#define SA3_ANIM_GINPE_PROJ  1188
+#define SA3_ANIM_PUFFER      1189
+#define SA3_ANIM_PUFFER_PROJ 1190
+
+// Crab with spin projectile (which isn't its own anim?)
+#define SA3_ANIM_YADOKKA       1191
+#define SA3_ANIM_SNOWMAN       1192
+#define SA3_ANIM_SNOWMAN_PROJ  1193
+#define SA3_ANIM_KYACCHAA      1194 /* Spider */
+#define SA3_ANIM_KYACCHAA_PROJ 1195
+#define SA3_ANIM_GURUGURU      1196
+#define SA3_ANIM_KAMAKI        1197 /* Mantis */
+#define SA3_ANIM_KAMAKI_PROJ   1198
+#define SA3_ANIM_CLAMP         1199
+#define SA3_ANIM_CLAMP_PROJ    1200
+#define SA3_ANIM_MARRUN        1201
+#define SA3_ANIM_MUUGADEN      1202
+#define SA3_ANIM_MUUGADEN_PART 1203
+#define SA3_ANIM_MUUGADEN_PROJ 1204
+
+#define SA3_ANIM_ITEMBOX_TYPE 1315
+#define SA3_ANIM_ITEMBOX      1316
+
+#define SA3_ANIM_SPECIAL_KEY 1348
+
+#define SA3_ANIM_ZONEX_NAME 1424 /* Substate-Index == Zone number */
+
+#endif // GUARD_ANIMATIONS_SA3_H
