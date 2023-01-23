@@ -569,7 +569,8 @@ static void Task_RollInAnim(void)
     u32 animFrame = ++characterScreen->animFrame;
 #endif
 
-    if (animFrame > 60 || ((gPressedKeys & A_BUTTON) && !IsMultiplayer())) {
+    if (animFrame > 60
+        || ((gPressedKeys & A_BUTTON) && GAME_MODE_IS_SINGLE_PLAYER(gGameMode))) {
         characterScreen->cursorAnimFrame++;
         characterScreen->carouselPosition = characterScreen->initialSelection * -0x6600;
         if (characterScreen->amyUnlocked) {
@@ -630,7 +631,7 @@ static void Task_CharacterSelectMain(void)
 
     MultiPakHeartbeat();
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         ReadMultiplayerSelections(characterScreen, i, packet);
     } else if (gPressedKeys & B_BUTTON || characterScreen->exiting) {
         unk0 = &characterScreen->screenFade;
@@ -677,7 +678,7 @@ static void Task_CharacterSelectMain(void)
 
         m4aSongNumStart(gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
-        if (IsMultiplayer()) {
+        if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gCurTask->main = Task_MultiplayerWaitForSelections;
         } else {
             gCurTask->main = Task_SelectionCompleteFadeOutAndExit;
@@ -726,7 +727,7 @@ static void Task_CharacterSelectMain(void)
             RenderCarouselScrollAnim(characterScreen);
         } else {
 #ifndef NON_MATCHING
-            if (!(!IsMultiplayer()
+            if (!(GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
                   && !((gPressedKeys & A_BUTTON)
                        && (characterScreen->availableCharacters
                            & CHARACTER_BIT(characterScreen->selectedCharacter))))) {
@@ -737,11 +738,14 @@ static void Task_CharacterSelectMain(void)
             goto label;
         code:
 #else
-            if (!IsMultiplayer() && !((gPressedKeys & A_BUTTON) && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter))) {
+            if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+                && !((gPressedKeys & A_BUTTON)
+                     && (characterScreen->availableCharacters
+                         & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
                 RenderCarouselScrollAnim(characterScreen);
             } else
 #endif
-            if (!IsMultiplayer() // completely optimized out
+            if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode) // completely optimized out
                 || (gPressedKeys & A_BUTTON
                     && !(characterScreen->multiplayerSelections
                          & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
@@ -774,13 +778,13 @@ static void Task_CharacterSelectMain(void)
                 m4aSongNumStart(
                     gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
-                if (IsMultiplayer()) {
+                if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
                     gCurTask->main = Task_MultiplayerWaitForSelections;
                 } else {
                     gCurTask->main = Task_SelectionCompleteFadeOutAndExit;
                 }
                 RenderUI(characterScreen);
-            } else if (IsMultiplayer()
+            } else if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
                        && characterScreen->multiplayerSelections
                            & CHARACTER_BIT(characterScreen->selectedCharacter)) {
                 if (characterScreen->scrollingDown) {
@@ -832,7 +836,7 @@ static void Task_CharacterSelectMain(void)
             }
         }
     }
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         packet = &gMultiSioSend;
         packet->pat0.unk0 = 0x4020;
         packet->pat0.unk2 = characterScreen->selectedCharacter;
@@ -866,14 +870,14 @@ static void Task_HandleCarouselScrollUp(void)
     characterScreen->carouselPosition += sCourselScrollAnimVelocities[animFrame];
     characterScreen->carouselPosition &= 0x3FFFF;
 
-    if ((!IsMultiplayer() && (gPressedKeys & A_BUTTON)
+    if ((GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
          && (characterScreen->availableCharacters
              & CHARACTER_BIT(characterScreen->selectedCharacter)))
-        || (IsMultiplayer() && (gPressedKeys & A_BUTTON)
+        || (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
             && !(characterScreen->multiplayerSelections
                  & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
-    } else if (!IsMultiplayer() && (gPressedKeys & B_BUTTON)) {
+    } else if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & B_BUTTON)) {
         if (!characterScreen->exiting) {
             m4aSongNumStart(SE_RETURN);
         }
@@ -893,7 +897,7 @@ static void Task_HandleCarouselScrollUp(void)
     RenderCarouselScrollAnim(characterScreen);
 
     BackgroundAnim();
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         gMultiSioSend.pat0.unk0 = 0x4020;
         gMultiSioSend.pat0.unk2 = characterScreen->selectedCharacter;
     }
@@ -924,14 +928,14 @@ static void Task_HandleCarouselScrollDown(void)
     characterScreen->carouselPosition -= sCourselScrollAnimVelocities[animFrame];
     characterScreen->carouselPosition &= 0x3FFFF;
 
-    if ((!IsMultiplayer() && (gPressedKeys & A_BUTTON)
+    if ((GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
          && (characterScreen->availableCharacters
              & CHARACTER_BIT(characterScreen->selectedCharacter)))
-        || (IsMultiplayer() && (gPressedKeys & A_BUTTON)
+        || (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
             && !(characterScreen->multiplayerSelections
                  & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
-    } else if (!IsMultiplayer() && (gPressedKeys & B_BUTTON)) {
+    } else if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & B_BUTTON)) {
         if (!characterScreen->exiting) {
             m4aSongNumStart(SE_RETURN);
         }
@@ -951,7 +955,7 @@ static void Task_HandleCarouselScrollDown(void)
     RenderCarouselScrollAnim(characterScreen);
 
     BackgroundAnim();
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         gMultiSioSend.pat0.unk0 = 0x4020;
         gMultiSioSend.pat0.unk2 = characterScreen->selectedCharacter;
     }
@@ -984,10 +988,10 @@ static void Task_CarouselScrollCompleteAnim(void)
         }
     }
 
-    if ((!IsMultiplayer() && (gPressedKeys & A_BUTTON)
+    if ((GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
          && (characterScreen->availableCharacters
              & CHARACTER_BIT(characterScreen->selectedCharacter)))
-        || (IsMultiplayer() && (gPressedKeys & A_BUTTON)
+        || (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (gPressedKeys & A_BUTTON)
             && !(characterScreen->multiplayerSelections
                  & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
@@ -1011,7 +1015,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
     struct UNK_802D4CC_UNK270 *unk0 = &characterScreen->screenFade;
     MultiPakHeartbeat();
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         ReadMultiplayerSelections(characterScreen, i, packet);
     }
 
@@ -1043,7 +1047,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         && sub_802D4CC(unk0) == 1) {
         TaskDestroy(gCurTask);
 
-        if (IsMultiplayer()) {
+        if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             CreateMultiplayerResultsScreen(MULTIPLAYER_RESULTS_MODE_CHARACTER_SELECTION);
             return;
         }
@@ -1262,7 +1266,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
-        && !IsMultiplayer()) {
+        && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         element->unk10 |= 0x40000;
         element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
@@ -1278,7 +1282,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && !IsMultiplayer()) {
+            && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             // make shadow mode
             element->unk10 |= 0x40000;
             element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
@@ -1388,7 +1392,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && !IsMultiplayer()) {
+            && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             element->unk10 |= 0x40000;
             element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
         } else {
@@ -1400,7 +1404,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && !IsMultiplayer()) {
+            && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             element = &characterScreen->characterNameSubText;
             element->graphics.anim
                 = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][0];
@@ -1525,7 +1529,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
-        && !IsMultiplayer()) {
+        && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         element->unk10 |= 0x40000;
         element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
@@ -1541,7 +1545,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && !IsMultiplayer()) {
+            && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             element->unk10 |= 0x40000;
             element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
@@ -1552,7 +1556,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         sub_80051E8(element);
     }
 
-    if (IsMultiplayer()
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
         && characterScreen->multiplayerSelections
             & CHARACTER_BIT(characterScreen->selectedCharacter)) {
         element = &characterScreen->characterUnavailableIndicator;
@@ -1710,7 +1714,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         sub_8004558(element2);
         sub_80051E8(element2);
     }
-    if (IsMultiplayer()
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
         && (characterScreen->multiplayerSelections
             & CHARACTER_BIT(characterScreen->selectedCharacter))) {
         sub_80051E8(&characterScreen->characterUnavailableIndicator);
@@ -1754,7 +1758,7 @@ static void Task_MultiplayerWaitForSelections(void)
 
     MultiPakHeartbeat();
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         ReadMultiplayerSelections(characterScreen, i, recv);
     }
 

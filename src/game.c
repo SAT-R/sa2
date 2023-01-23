@@ -52,7 +52,7 @@ void ApplyGameStageSettings(void)
     gUnknown_030054B0 = 0;
     gNumLives = 3;
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         gNumLives = 1;
     }
 
@@ -86,7 +86,7 @@ void GameStageStart(void)
     gUnknown_03005590 = 0;
     gUnknown_03005424 &= ~0x80;
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         gUnknown_030054A0 = gFrameCount;
     }
 
@@ -177,7 +177,7 @@ void CreateGameStage(void)
     gUnknown_03002820 = 0x50;
     gUnknown_03005398 = 0x80;
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         sub_80191A4();
         sub_8019120();
 
@@ -217,7 +217,8 @@ void CreateGameStage(void)
         sub_8013FAC(&gPlayer);
     }
 
-    if (IsMultiplayer() && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+        && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateRaceProgressIndicator();
     }
 }
@@ -233,7 +234,7 @@ void sub_801AB3C(void)
     u16 sioId = SIO_MULTI_CNT->id;
     u32 step;
 
-    if (!IsMultiplayer()) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         if (!(gUnknown_03005424 & 0x20) && (gPressedKeys & START_BUTTON)
             && !(gUnknown_03005424 & 0x40)) {
             sub_800A9FC();
@@ -312,7 +313,7 @@ void sub_801AB3C(void)
             return;
         }
 
-        if (!IsMultiplayer()) {
+        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gUnknown_03005424 |= 1;
 
             if (gLoadedSaveGame->unk5) {
@@ -342,11 +343,12 @@ void sub_801AB3C(void)
             return;
         }
 
-        if (!IsMultiplayer()) {
+        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gUnknown_03005424 |= 1;
 
             if (gLoadedSaveGame->unk5
-                && (gGameMode == GAME_MODE_SINGLE_PLAYER || IsMultiplayer())) {
+                && (gGameMode == GAME_MODE_SINGLE_PLAYER
+                    || !GAME_MODE_IS_SINGLE_PLAYER(gGameMode))) {
                 return;
             }
 

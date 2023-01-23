@@ -259,7 +259,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         WriteSaveGame();
     }
 
-    if (IsMultiplayer() && maxLevel > LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+        && maxLevel > LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
         maxLevel = LEVEL_INDEX(ZONE_7, ACT_BOSS);
     }
 
@@ -286,7 +287,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     }
 
     // make sure our level rounds to 3, or the screen will crash
-    if (!IsMultiplayer() && (Mod(maxLevel, ACTS_PER_ZONE + 1) & 2) != 0) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+        && (Mod(maxLevel, ACTS_PER_ZONE + 1) & 2) != 0) {
         maxLevel &= ~ACTS_PER_ZONE;
     }
 
@@ -301,7 +303,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     gBgScrollRegs[1][1] = 0;
 
     if (cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53)
-        && !IsMultiplayer()) {
+        && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         t = TaskCreate(Task_FadeInIntroAndStartUnlockCutScene,
                        sizeof(struct CourseSelectionScreen), 0x3100, 0,
                        CourseSelectionScreenOnDestroy);
@@ -353,7 +355,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk18 = 0;
     background->unk1A = 0;
 
-    if (!IsMultiplayer()) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         background->unk1C = 100 + gSelectedCharacter;
     } else {
         background->unk1C = 100 + gMultiplayerCharacters[0];
@@ -391,7 +393,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->y = 0;
     element->graphics.dest = VramMalloc(4);
     element->graphics.anim = 0x2F7;
-    if (!IsMultiplayer()) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         element->variant = gSelectedCharacter;
     } else {
         element->variant = gMultiplayerCharacters[0];
@@ -492,7 +494,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->graphics.anim = 0x2FB;
         // Set the background color based on the
         // character
-        if (!IsMultiplayer()) {
+        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
 #ifndef NONMATCHING
             s8 var = gSelectedCharacter;
             if (var)
@@ -506,7 +508,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     } else {
         element->graphics.dest = VramMalloc(0x1C);
         element->graphics.anim = 0x2FC;
-        if (!IsMultiplayer()) {
+        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             element->variant = gSelectedCharacter;
         } else {
             element->variant = gMultiplayerCharacters[0];
@@ -555,7 +557,8 @@ static void Task_FadeInIntro(void)
             coursesScreen->cameraScrollX
                 = coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2);
 
-            if ((coursesScreen->cutScenes & 4) && !IsMultiplayer()) {
+            if ((coursesScreen->cutScenes & 4)
+                && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
                 coursesScreen->currentCourse++;
                 gCurTask->main = Task_UnlockCutSceneScrollToNextCourseAnim;
             } else {
@@ -677,7 +680,7 @@ static void Task_CourseSelectMain(void)
     union MultiSioData *recv, *send;
     MultiPakHeartbeat();
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         recv = &gMultiSioRecv[0];
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && recv->pat1.unk0 > 0x404F) {
             coursesScreen->currentCourse = recv->pat1.unk2;
@@ -688,8 +691,9 @@ static void Task_CourseSelectMain(void)
 
     ScrollInZoneName(zoneName, 16);
 
-    if (!IsMultiplayer() || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-        if (coursesScreen->levelChosen && !IsMultiplayer()) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+        || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
+        if (coursesScreen->levelChosen && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
@@ -721,7 +725,7 @@ static void Task_CourseSelectMain(void)
                 gCurTask->main = Task_ScrollToNextLevelAnim;
             }
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
-                   && !IsMultiplayer()) {
+                   && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
@@ -730,7 +734,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
-        } else if ((gPressedKeys & B_BUTTON) && !IsMultiplayer()) {
+        } else if ((gPressedKeys & B_BUTTON) && GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
@@ -752,7 +756,7 @@ static void Task_CourseSelectMain(void)
         }
     }
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         send = &gMultiSioSend;
 
         send->pat1.unk0 = 0x4050;
@@ -817,7 +821,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
         coursesScreen->levelChosen = TRUE;
     }
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
@@ -834,7 +838,7 @@ static void Task_ScrollToNextLevelAnim(void)
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         MultiPakHeartbeat();
     }
 
@@ -863,7 +867,7 @@ static void Task_ScrollToNextLevelAnim(void)
         coursesScreen->levelChosen = TRUE;
     }
 
-    if (IsMultiplayer()) {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
@@ -1025,7 +1029,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     element = &coursesScreen->screenTitle;
     sub_80051E8(element);
 
-    if (!IsMultiplayer()) {
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         u8 i;
         for (i = 0; i < NUM_COURSE_ZONES; i++) {
             if (gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALD(i)) {

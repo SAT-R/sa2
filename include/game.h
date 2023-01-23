@@ -208,7 +208,8 @@ struct Camera {
     s32 unk2C;
     s32 unk30;
     s32 unk34;
-    u8 filler38[8];
+    s32 unk38;
+    s32 unk3C;
     u16 unk40;
     s32 unk44;
     s32 unk48;
@@ -294,8 +295,6 @@ extern const u8 gUnknown_08CB41C0[0x6a44];
 extern const u8 gUnknown_08CBAC04[0x8000];
 extern const u8 gUnknown_08CC2C04[0x8000];
 extern const u8 gUnknown_08CCAC04[0x8900];
-
-#define IsMultiplayer() (gGameMode >= GAME_MODE_MULTI_PLAYER)
 
 // Possibly CreateGameStageAtSelectedCourse
 void GameStageStart(void);

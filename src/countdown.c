@@ -99,7 +99,8 @@ void sub_8036168(void)
     Sprite *element;
 
     // Skip intro
-    if (!IsMultiplayer() && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
+        && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
         && gPressedKeys & (A_BUTTON | B_BUTTON)) {
         countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
@@ -164,7 +165,7 @@ void sub_8036168(void)
         gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
 
-        if (IsMultiplayer()) {
+        if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gPlayer.unk90->unk31 = (SIO_MULTI_CNT)->id;
         } else {
             gPlayer.unk90->unk31 = 0;
