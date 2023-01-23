@@ -131,7 +131,7 @@ SECTIONS
         build/sa2/asm/interactable_unknown.o(.text);
         build/sa2/asm/sub_80807CC.o(.text);
         build/sa2/asm/interactable_105.o(.text);
-        build/sa2/asm/interactable_SpecialRing.o(.text);
+        build/sa2/src/interactable_special_ring.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);
         build/sa2/src/collect_rings_time_display.o(.text);

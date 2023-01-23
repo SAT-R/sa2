@@ -4,6 +4,9 @@
 #define GAME_MODE_SINGLE_PLAYER    0
 #define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
+#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                \
+    (((mode) == GAME_MODE_SINGLE_PLAYER) || ((mode) == GAME_MODE_TIME_ATTACK)           \
+     || ((mode) == GAME_MODE_BOSS_TIME_ATTACK))
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER               3
@@ -81,7 +84,12 @@ extern u8 gUnknown_03005444;
 
 extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
-extern u32 gUnknown_030056A4;
+
+typedef struct {
+    s32 posX;
+    s32 posY;
+} UNK_30056A4; /* size: unknown */
+extern UNK_30056A4 *gUnknown_030056A4;
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;
@@ -163,7 +171,10 @@ typedef struct {
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
-    /* 0x7C */ u8 filler7C[0x10];
+    /* 0x7C */ u8 filler7C[8];
+    /* 0x84 */ u8 filler84;
+    /* 0x85 */ s8 unk85;
+    /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;
 } Player;
