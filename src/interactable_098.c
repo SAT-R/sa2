@@ -19,10 +19,13 @@ typedef struct {
     u16 unkA;
     u16 unkC;
     u16 unkE;
-    u16 unk10;
-    u16 unk12;
+    s16 unk10;
+    s16 unk12;
     u16 unk14;
-    u8 unk16[14];
+    u8 filler16[2];
+    s16 unk18;
+    s16 unk1A;
+    u8 filler1C[8];
     /* 0x24 */ Interactable_GravitySwitch *ia;
     /* 0x28 */ u8 spriteX;
     /* 0x29 */ u8 spriteY;
@@ -32,12 +35,12 @@ void sub_80801F8(void);
 void sub_8080230(struct Task *);
 
 void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
-                                u16 spriteRegionY, u8 spriteY, u8 unknown)
+                                u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
     struct Task *t = TaskCreate(sub_80801F8, 0x2C, 0x2010, 0, sub_8080230);
     Sprite_IA098 *ia098 = TaskGetStructPtr(t);
     Interactable_GravitySwitch *ia = (Interactable_GravitySwitch *)in_ia;
-    ia098->unk14 = unknown;
+    ia098->unk14 = toggleKind;
     ia098->unk0 = SpriteGetScreenPos(ia->x, spriteRegionX);
     ia098->unk4 = SpriteGetScreenPos(ia->y, spriteRegionY);
     ia098->unk8 = (ia->offsetX * 8);
@@ -51,4 +54,36 @@ void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
     ia098->spriteX = ia->x;
     ia098->spriteY = spriteY;
     SET_SPRITE_INITIALIZED(ia);
+}
+
+void sub_80800D4(Sprite_IA098 *toggle)
+{
+    switch (toggle->unk14) {
+        case 0: {
+            // Regular gravity
+            gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
+        } break;
+
+        case 1: {
+            // Upside-down
+            gUnknown_03005424 |= EXTRA_STATE__GRAVITY_INVERTED;
+        } break;
+
+        case 2: {
+            // Maybe collision on enter/exit?
+            if (((toggle->unk18 > 0) && (gPlayer.speedAirX > 0))
+                || ((toggle->unk18 < 0) && (gPlayer.speedAirX < 0))
+                || ((toggle->unk1A > 0) && (gPlayer.speedAirY > 0))
+                || ((toggle->unk1A < 0) && (gPlayer.speedAirY < 0))) {
+                gUnknown_03005424 ^= EXTRA_STATE__GRAVITY_INVERTED;
+            }
+
+        } break;
+
+        default: {
+            ;
+        } break;
+    }
+
+    gCurTask->main = sub_80801F8;
 }

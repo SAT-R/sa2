@@ -67,6 +67,11 @@ extern u32 gUnknown_030054DC;
 extern u8 gUnknown_03005B34;
 
 extern u8 gUnknown_030054E4;
+
+#define EXTRA_STATE__ACT_START        0x0001
+#define EXTRA_STATE__GRAVITY_INVERTED 0x0080
+// "Extra State" (see above #defines for states)
+// TODO: Find better name
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
