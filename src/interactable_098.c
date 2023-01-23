@@ -15,25 +15,26 @@ typedef struct {
 } Interactable_GravityToggle PACKED;
 
 typedef struct {
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
-    u16 unkA;
-    u16 unkC;
-    u16 unkE;
-    s16 unk10;
-    s16 unk12;
-    u16 unk14;
-    u8 filler16[2];
-    s16 unk18;
-    s16 unk1A;
-    u8 filler1C[8];
+    /* 0x00 */ u32 x;
+    /* 0x04 */ u32 y;
+    /* 0x08 */ u16 left;
+    /* 0x0A */ u16 top;
+    /* 0x0C */ u16 right;
+    /* 0x0E */ u16 bottom;
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ s16 unk12;
+    /* 0x14 */ u16 unk14;
+    /* 0x16 */ u8 filler16[2];
+    /* 0x18 */ s16 unk18;
+    /* 0x1A */ s16 unk1A;
+    /* 0x1C */ u8 filler1C[8];
     /* 0x24 */ Interactable_GravityToggle *ia;
+
+    // Tile-Pos inside spriteRegion
     /* 0x28 */ u8 spriteX;
     /* 0x29 */ u8 spriteY;
 } Sprite_GravityToggle;
 
-// make static
 static void initSprite_Interactable098(Interactable *, u16, u16, u8, u8);
 static void Task_80801F8(void);
 static void TaskDestructor_8080230(struct Task *);
@@ -52,16 +53,17 @@ static void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
     struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
     Interactable_GravityToggle *ia = (Interactable_GravityToggle *)in_ia;
-    toggle->unk14 = toggleKind;
-    toggle->unk0 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    toggle->unk4 = SpriteGetScreenPos(ia->y, spriteRegionY);
-    toggle->unk8 = (ia->offsetX * 8);
-    toggle->unkA = (ia->offsetY * 8);
-    toggle->unkC = toggle->unk8 + (ia->width * 8);
-    toggle->unkE = toggle->unkA + (ia->height * 8);
 
-    toggle->unk10 = toggle->unkC - toggle->unk8;
-    toggle->unk12 = toggle->unkE - toggle->unkA;
+    toggle->unk14 = toggleKind;
+    toggle->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    toggle->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    toggle->left = (ia->offsetX * 8);
+    toggle->top = (ia->offsetY * 8);
+    toggle->right = toggle->left + (ia->width * 8);
+    toggle->bottom = toggle->top + (ia->height * 8);
+
+    toggle->unk10 = toggle->right - toggle->left;
+    toggle->unk12 = toggle->bottom - toggle->top;
     toggle->ia = ia;
     toggle->spriteX = ia->x;
     toggle->spriteY = spriteY;
@@ -105,8 +107,9 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s16 posX, posY;
         s16 playerX, playerY;
-        posX = (toggle->unk0 + toggle->unk8) - gCamera.x;
-        posY = (toggle->unk4 + toggle->unkA) - gCamera.y;
+
+        posX = (toggle->x + toggle->left) - gCamera.x;
+        posY = (toggle->y + toggle->top) - gCamera.y;
 
         playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
@@ -123,6 +126,7 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
 void Task_80801F8(void)
 {
     Sprite_GravityToggle *toggle = TaskGetStructPtr(gCurTask);
+
     if (sub_808017C(toggle)) {
         sub_8080234(toggle);
     }
@@ -144,8 +148,8 @@ void sub_8080234(Sprite_GravityToggle *toggle)
 bool32 sub_8080254(Sprite_GravityToggle *toggle)
 {
     s16 screenX, screenY;
-    screenX = toggle->unk0 - gCamera.x;
-    screenY = toggle->unk4 - gCamera.y;
+    screenX = toggle->x - gCamera.x;
+    screenY = toggle->y - gCamera.y;
 
     if (IS_OUT_OF_GRAV_TRIGGER_RANGE(screenX, screenY)) {
         return TRUE;
