@@ -26,6 +26,8 @@ typedef struct {
 extern void Task_Interactable_SpecialRing(void);
 extern void TaskDestructor_Interactable_SpecialRing(struct Task *);
 
+extern u32 sub_800DF38(Sprite *, s32, s32);
+
 void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
 {
@@ -63,4 +65,40 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
         disp->variant = 0;
         SET_SPRITE_INITIALIZED(ia);
     }
+}
+
+bool32 sub_8081010(Sprite_SpecialRing *ring)
+{
+    UNK_30056A4 *ptr = gUnknown_030056A4;
+#ifndef NON_MATCHING
+    register Player *player asm("r3") = &gPlayer;
+#else
+    Player *player = &gPlayer;
+#endif
+
+    if (!(player->moveState & MOVESTATE_DEAD)) {
+        u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY);
+        if (flags & 0xF0000) {
+            return TRUE;
+        } else {
+            s32 somePosX, somePosY;
+            u16 posX, posY;
+            somePosX = Q_24_8_TO_INT(ptr->posX) + 16;
+            somePosX -= ring->posX;
+
+            somePosY = Q_24_8_TO_INT(ptr->posY) + 32;
+            somePosY -= ring->posY;
+
+            posY = somePosY;
+            posX = somePosX;
+
+            if ((posX <= 32) && (posY <= 32)) {
+                gCurTask->unk15 = 0;
+
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
 }

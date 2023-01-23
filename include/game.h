@@ -4,7 +4,7 @@
 #define GAME_MODE_SINGLE_PLAYER    0
 #define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
-#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                 \
+#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                \
     (((mode) == GAME_MODE_SINGLE_PLAYER) || ((mode) == GAME_MODE_TIME_ATTACK)           \
      || ((mode) == GAME_MODE_BOSS_TIME_ATTACK))
 
@@ -79,7 +79,12 @@ extern u8 gUnknown_03005444;
 
 extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
-extern u32 gUnknown_030056A4;
+
+typedef struct {
+    s32 posX;
+    s32 posY;
+} UNK_30056A4; /* size: unknown */
+extern UNK_30056A4 *gUnknown_030056A4;
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;

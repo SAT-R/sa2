@@ -5,8 +5,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_8081010
 sub_8081010: @ 0x08081010
 	push {r4, r5, lr}
@@ -67,6 +65,7 @@ _0808107E:
 	pop {r4, r5}
 	pop {r1}
 	bx r1
+.endif
 
 	thumb_func_start Task_Interactable_SpecialRing
 Task_Interactable_SpecialRing: @ 0x08081084
