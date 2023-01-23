@@ -22,13 +22,13 @@ typedef struct {
     /* 0x40 */ s32 posY;
 } Sprite_SpecialRing; /* size = 0x44 */
 
-// make static
 static void Task_Interactable_SpecialRing(void);
 static void TaskDestructor_Interactable_SpecialRing(struct Task *);
-extern void sub_80810FC(Sprite_SpecialRing *);
-extern bool32 sub_8081164(Sprite_SpecialRing *);
-extern void sub_80811A0(Sprite_SpecialRing *, u32);
-extern void sub_8081134(Sprite_SpecialRing *);
+static void sub_80810FC(Sprite_SpecialRing *);
+static bool32 sub_8081164(Sprite_SpecialRing *);
+static void sub_80811A0(Sprite_SpecialRing *, u32);
+static void sub_8081134(Sprite_SpecialRing *);
+static void Task_80811BC(void);
 
 extern u32 sub_800DF38(Sprite *, s32, s32);
 extern void sub_80122DC(s32, s32);
@@ -43,9 +43,9 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
 
         Sprite_SpecialRing *ring = TaskGetStructPtr(t);
         Sprite *disp;
+
         ring->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
         ring->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
         ring->base.ia = ia;
@@ -57,17 +57,15 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
         disp->graphics.size = 0;
         disp->unk14 = 0;
         disp->unk1C = 0;
-
         disp->unk21 = 0xFF;
         disp->unk22 = 0x10;
         disp->focused = 0;
-
         disp->unk28->unk0 = -1;
         disp->unk10 = 0x2000;
 
         disp->graphics.dest = VramMalloc(9);
         disp->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
-        disp->variant = 0;
+        disp->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
         SET_SPRITE_INITIALIZED(ia);
     }
 }
@@ -132,4 +130,64 @@ static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
     Sprite_SpecialRing *ring = TaskGetStructPtr(t);
     void *gfx = ring->displayed.graphics.dest;
     VramFree(gfx);
+}
+
+static void sub_80810FC(Sprite_SpecialRing *ring)
+{
+    gUnknown_030054F4++;
+
+    ring->displayed.graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
+    ring->displayed.variant = SA2_ANIM_VARIANT_SP_RING__COLLECT;
+    m4aSongNumStart(SE_SPECIAL_RING);
+    gCurTask->main = Task_80811BC;
+}
+
+static void sub_8081134(Sprite_SpecialRing *ring)
+{
+    Sprite *disp = &ring->displayed;
+
+    disp->x = ring->posX - gCamera.x;
+    disp->y = ring->posY - gCamera.y;
+
+    sub_8004558(disp);
+    sub_80051E8(disp);
+}
+
+static bool32 sub_8081164(Sprite_SpecialRing *ring)
+{
+    s32 screenPosX, screenPosY;
+    u16 posX, posY;
+    screenPosX = (ring->posX + 128);
+    screenPosX -= gCamera.x;
+
+    screenPosY = (ring->posY + 128);
+    screenPosY -= gCamera.y;
+
+    posY = screenPosY;
+    posX = screenPosX;
+
+    if ((posX > CAM_BOUND_X) || posY > (DISPLAY_HEIGHT + CAM_REGION_WIDTH))
+        return TRUE;
+    else
+        return FALSE;
+}
+
+static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
+{
+    if (param1 != 0) {
+        ring->base.ia->x = ring->base.spriteX;
+    }
+    TaskDestroy(gCurTask);
+}
+
+static void Task_80811BC(void)
+{
+    Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
+    Sprite *disp = &ring->displayed;
+
+    if ((disp->unk10 & 0x4000) || sub_8081164(ring)) {
+        sub_80811A0(ring, 0);
+    } else {
+        sub_8081134(ring);
+    }
 }
