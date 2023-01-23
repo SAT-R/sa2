@@ -1267,7 +1267,7 @@ static void Task_HandleTitleScreenExit(void)
     u8 i;
 
     if (sub_802D4CC(&titleScreen->unk270) == 1) {
-        gUnknown_03005424 = 0;
+        gUnknown_03005424 = EXTRA_STATE__CLEAR;
         gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
 

@@ -71,10 +71,15 @@ extern u8 gUnknown_03005B34;
 
 extern u8 gUnknown_030054E4;
 
-#define EXTRA_STATE__ACT_START        0x0001
-#define EXTRA_STATE__GRAVITY_INVERTED 0x0080
+#define EXTRA_STATE__CLEAR              0x0000
+#define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
+#define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
+#define EXTRA_STATE__GRAVITY_INVERTED   0x0080
+#define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
+#define EXTRA_STATE__TURN_OFF_TIMER     0x0200
+#define EXTRA_STATE__TURN_OFF_HUD       0x0400
 // "Extra State" (see above #defines for states)
-// TODO: Find better name
+// TODO: Find better name. Put somewhere else?
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
