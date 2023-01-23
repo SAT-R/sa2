@@ -70,6 +70,11 @@ extern u32 gUnknown_030054DC;
 extern u8 gUnknown_03005B34;
 
 extern u8 gUnknown_030054E4;
+
+#define EXTRA_STATE__ACT_START        0x0001
+#define EXTRA_STATE__GRAVITY_INVERTED 0x0080
+// "Extra State" (see above #defines for states)
+// TODO: Find better name
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
@@ -234,6 +239,10 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(u16, x, y, CAM_REGION_WIDTH)
 #define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
     IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
+
+#define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
+    (((u16)(x + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X) || (y < -(CAM_REGION_WIDTH / 2)) \
+     || (y > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)))
 
 struct SomeStruct_5660 {
     u8 filler[16];
