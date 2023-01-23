@@ -21,8 +21,8 @@ typedef struct {
     /* 0x0A */ u16 top;
     /* 0x0C */ u16 right;
     /* 0x0E */ u16 bottom;
-    /* 0x10 */ s16 unk10;
-    /* 0x12 */ s16 unk12;
+    /* 0x10 */ s16 width;
+    /* 0x12 */ s16 height;
     /* 0x14 */ u16 unk14;
     /* 0x16 */ u8 filler16[2];
     /* 0x18 */ s16 unk18;
@@ -62,8 +62,8 @@ static void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
     toggle->right = toggle->left + (ia->width * 8);
     toggle->bottom = toggle->top + (ia->height * 8);
 
-    toggle->unk10 = toggle->right - toggle->left;
-    toggle->unk12 = toggle->bottom - toggle->top;
+    toggle->width = toggle->right - toggle->left;
+    toggle->height = toggle->bottom - toggle->top;
     toggle->ia = ia;
     toggle->spriteX = ia->x;
     toggle->spriteY = spriteY;
@@ -114,8 +114,8 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
         playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        if ((posX <= playerX) && ((posX + toggle->unk10) >= playerX) && (posY <= playerY)
-            && ((posY + toggle->unk12) >= playerY)) {
+        if ((posX <= playerX) && ((posX + toggle->width) >= playerX) && (posY <= playerY)
+            && ((posY + toggle->height) >= playerY)) {
             return TRUE;
         }
     }
