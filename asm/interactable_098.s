@@ -5,10 +5,9 @@
 .arm
 
 .if 0
-.endif
 
-	thumb_func_start sub_80801F8
-sub_80801F8: @ 0x080801F8
+	thumb_func_start Task_80801F8
+Task_80801F8: @ 0x080801F8
 	push {r4, lr}
 	ldr r0, _0808022C @ =gCurTask
 	ldr r0, [r0]
@@ -39,7 +38,8 @@ _0808022C: .4byte gCurTask
 	thumb_func_start sub_8080230
 sub_8080230: @ 0x08080230
 	bx lr
-	.align 2, 0
+	.align 2, 0    
+.endif
 
 	thumb_func_start sub_8080234
 sub_8080234: @ 0x08080234

@@ -33,13 +33,16 @@ typedef struct {
     /* 0x29 */ u8 spriteY;
 } Sprite_GravityToggle;
 
-void sub_80801F8(void);
-void sub_8080230(struct Task *);
+void Task_80801F8(void);
+void TaskDestructor_8080230(struct Task *);
+void sub_8080234(Sprite_GravityToggle *);
+bool32 sub_8080254(Sprite_GravityToggle *);
+void sub_808029C(Sprite_GravityToggle *);
 
 void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
                                 u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
-    struct Task *t = TaskCreate(sub_80801F8, 0x2C, 0x2010, 0, sub_8080230);
+    struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
     Interactable_GravityToggle *ia = (Interactable_GravityToggle *)in_ia;
     toggle->unk14 = toggleKind;
@@ -87,7 +90,7 @@ void sub_80800D4(Sprite_GravityToggle *toggle)
         } break;
     }
 
-    gCurTask->main = sub_80801F8;
+    gCurTask->main = Task_80801F8;
 }
 
 bool32 sub_808017C(Sprite_GravityToggle *toggle)
@@ -109,3 +112,17 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
 
     return FALSE;
 }
+
+void Task_80801F8(void)
+{
+    Sprite_GravityToggle *toggle = TaskGetStructPtr(gCurTask);
+    if (sub_808017C(toggle)) {
+        sub_8080234(toggle);
+    }
+
+    if (sub_8080254(toggle)) {
+        sub_808029C(toggle);
+    }
+}
+
+void TaskDestructor_8080230(UNUSED struct Task *t) { }
