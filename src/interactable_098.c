@@ -33,14 +33,21 @@ typedef struct {
     /* 0x29 */ u8 spriteY;
 } Sprite_GravityToggle;
 
-void Task_80801F8(void);
-void TaskDestructor_8080230(struct Task *);
-void sub_8080234(Sprite_GravityToggle *);
-bool32 sub_8080254(Sprite_GravityToggle *);
-void sub_808029C(Sprite_GravityToggle *);
+// make static
+static void initSprite_Interactable098(Interactable *, u16, u16, u8, u8);
+static void Task_80801F8(void);
+static void TaskDestructor_8080230(struct Task *);
+static void sub_8080234(Sprite_GravityToggle *);
+static bool32 sub_8080254(Sprite_GravityToggle *);
+static void sub_808029C(Sprite_GravityToggle *);
+static void Task_8080318(void);
 
-void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
-                                u16 spriteRegionY, u8 spriteY, u8 toggleKind)
+#define GRAVITY_TOGGLE__DOWN   0
+#define GRAVITY_TOGGLE__UP     1
+#define GRAVITY_TOGGLE__TOGGLE 2
+
+static void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
     struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
@@ -126,3 +133,67 @@ void Task_80801F8(void)
 }
 
 void TaskDestructor_8080230(UNUSED struct Task *t) { }
+
+void sub_8080234(Sprite_GravityToggle *toggle)
+{
+    toggle->unk18 = gPlayer.speedAirX;
+    toggle->unk1A = gPlayer.speedAirY;
+    gCurTask->main = Task_8080318;
+}
+
+bool32 sub_8080254(Sprite_GravityToggle *toggle)
+{
+    s16 screenX, screenY;
+    screenX = toggle->unk0 - gCamera.x;
+    screenY = toggle->unk4 - gCamera.y;
+
+    if (IS_OUT_OF_GRAV_TRIGGER_RANGE(screenX, screenY)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+void sub_808029C(Sprite_GravityToggle *toggle)
+{
+    toggle->ia->x = toggle->spriteX;
+    TaskDestroy(gCurTask);
+}
+
+void initSprite_Interactable_Toggle_Gravity__Down(Interactable *ia, u16 spriteRegionX,
+                                                  u16 spriteRegionY, u8 spriteY)
+{
+    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+                               GRAVITY_TOGGLE__DOWN);
+}
+
+void initSprite_Interactable_Toggle_Gravity__Up(Interactable *ia, u16 spriteRegionX,
+                                                u16 spriteRegionY, u8 spriteY)
+{
+    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+                               GRAVITY_TOGGLE__UP);
+}
+
+void initSprite_Interactable_Toggle_Gravity__Toggle(Interactable *ia, u16 spriteRegionX,
+                                                    u16 spriteRegionY, u8 spriteY)
+{
+    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+                               GRAVITY_TOGGLE__TOGGLE);
+}
+
+void Task_8080318(void)
+{
+    Sprite_GravityToggle *toggle = TaskGetStructPtr(gCurTask);
+
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        sub_80800D4(toggle);
+    }
+
+    if (sub_808017C(toggle) == FALSE) {
+        sub_80800D4(toggle);
+    }
+
+    if (sub_8080254(toggle)) {
+        sub_808029C(toggle);
+    }
+}

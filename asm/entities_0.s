@@ -126,9 +126,9 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable095
     .4byte initSprite_Interactable_SkyCanyon_FlyingHandle
     .4byte initSprite_Interactable097
-    .4byte initSprite_Interactable098_0     @ Toggle gravity - Up
-    .4byte initSprite_Interactable098_1     @ Toggle gravity - Down
-    .4byte initSprite_Interactable098_2
+    .4byte initSprite_Interactable_Toggle_Gravity__Down
+    .4byte initSprite_Interactable_Toggle_Gravity__Up
+    .4byte initSprite_Interactable_Toggle_Gravity__Toggle
     .4byte initSprite_Interactable091_2
     .4byte initSprite_Interactable091_3     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
     .4byte initSprite_Interactable_SpecialRing

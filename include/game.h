@@ -229,6 +229,10 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
     IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
 
+#define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
+    (((u16)(x + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X) || (y < -(CAM_REGION_WIDTH / 2)) \
+     || (y > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)))
+
 struct SomeStruct_5660 {
     u8 filler[16];
     u32 unk10;
