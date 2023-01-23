@@ -135,7 +135,7 @@ void Task_Interactable_Booster(void)
         gPlayer.unk62 = 0;
         gPlayer.unk5A = 1;
 
-        if (gUnknown_03005424 & 0x80) {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
             if ((displayed->unk10 & 0x800) == 0) {
                 if ((displayed->unk10 & 0x400) == 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);

@@ -22,7 +22,7 @@ void GameStart(void)
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];
 
-    gUnknown_03005424 = gUnknown_0300544C = 0;
+    gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;

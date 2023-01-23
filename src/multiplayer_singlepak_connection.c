@@ -106,7 +106,7 @@ void sub_8081200(void)
     };
 
     ApplyGameStageSettings();
-    gUnknown_03005424 &= ~0x1;
+    gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
     gPlayer.unk5C |= gPlayerControls.unk0 | gPlayerControls.unk2;
 }
