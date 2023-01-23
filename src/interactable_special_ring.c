@@ -23,10 +23,15 @@ typedef struct {
 } Sprite_SpecialRing; /* size = 0x44 */
 
 // make static
-extern void Task_Interactable_SpecialRing(void);
-extern void TaskDestructor_Interactable_SpecialRing(struct Task *);
+static void Task_Interactable_SpecialRing(void);
+static void TaskDestructor_Interactable_SpecialRing(struct Task *);
+extern void sub_80810FC(Sprite_SpecialRing *);
+extern bool32 sub_8081164(Sprite_SpecialRing *);
+extern void sub_80811A0(Sprite_SpecialRing *, u32);
+extern void sub_8081134(Sprite_SpecialRing *);
 
 extern u32 sub_800DF38(Sprite *, s32, s32);
+extern void sub_80122DC(s32, s32);
 
 void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
@@ -101,4 +106,30 @@ bool32 sub_8081010(Sprite_SpecialRing *ring)
     }
 
     return FALSE;
+}
+
+static void Task_Interactable_SpecialRing(void)
+{
+    Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
+
+    if (gPlayer.unk85 == 1) {
+        sub_80122DC(Q_24_8(ring->posX), Q_24_8(ring->posY));
+    }
+
+    if (sub_8081010(ring)) {
+        sub_80810FC(ring);
+    } else {
+        if (sub_8081164(ring)) {
+            sub_80811A0(ring, 1);
+        } else {
+            sub_8081134(ring);
+        }
+    }
+}
+
+static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
+{
+    Sprite_SpecialRing *ring = TaskGetStructPtr(t);
+    void *gfx = ring->displayed.graphics.dest;
+    VramFree(gfx);
 }
