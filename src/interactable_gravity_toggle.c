@@ -1,5 +1,5 @@
 #include "main.h"
-#include "interactable_098.h"
+#include "interactable_gravity_toggle.h"
 
 #include "constants/move_states.h"
 
