@@ -1034,135 +1034,136 @@ struct Backgrounds {
 extern struct Backgrounds gUnknown_03005850;
 extern const u32 *gUnknown_030059C8;
 
-// void sub_801C068(u32 level)
-// {
-//     s32 x;
-//     u32 temp;
+void sub_801C068(u32 level)
+{
+    s32 x;
+    u32 temp;
 
-//     struct Backgrounds *bgs;
-//     struct Camera *camera = &gCamera;
-//     const s8 *unkA98 = gUnknown_080D5A98[level];
+    struct Backgrounds *bgs;
+    Player *player = &gPlayer;
+    struct Camera *camera = &gCamera;
+    const s8 *unkA98 = gUnknown_080D5A98[level];
 
-//     gDispCnt = 0x3E40;
-//     if (level == 0x1D) {
-//         gDispCnt = 0x3741;
-//     }
+    gDispCnt = 0x3E40;
+    if (level == 0x1D) {
+        gDispCnt = 0x3741;
+    }
 
-//     gBgCntRegs[1] = 0x1E01;
-//     gBgCntRegs[2] = 0x1F02;
-//     temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
-//     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
+    gBgCntRegs[1] = 0x1E01;
+    gBgCntRegs[2] = 0x1F02;
+    temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
+    gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
-//     if (level == 0x1D) {
-//         gDispCnt = 0x3641;
-//     }
+    if (level == 0x1D) {
+        gDispCnt = 0x3641;
+    }
 
-//     bgs = &gUnknown_03005850;
-//     memcpy(&gUnknown_03005850.unk40, &gUnknown_080D5864[0], 0x40);
-//     bgs->unk40.unk1C = level * 3;
+    bgs = &gUnknown_03005850;
+    memcpy(&gUnknown_03005850.unk40, &gUnknown_080D5864[0], 0x40);
+    bgs->unk40.unk1C = level * 3;
 
-//     memcpy(&gUnknown_03005850.unk80, &gUnknown_080D5864[1], 0x40);
-//     bgs->unk80.unk1C = (level * 3) + 1;
+    memcpy(&gUnknown_03005850.unk80, &gUnknown_080D5864[1], 0x40);
+    bgs->unk80.unk1C = (level * 3) + 1;
 
-//     memcpy(&gUnknown_03005850.unkC0, &gUnknown_080D5864[2], 0x40);
-//     bgs->unkC0.unk1C = (level * 3) + 2;
+    memcpy(&gUnknown_03005850.unkC0, &gUnknown_080D5864[2], 0x40);
+    bgs->unkC0.unk1C = (level * 3) + 2;
 
-//     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
-//     bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
-//     bgs->unkC0.unk26 = unkA98[0];
-//     bgs->unkC0.unk28 = unkA98[1];
+    bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
+    bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
+    bgs->unkC0.unk26 = unkA98[0];
+    bgs->unkC0.unk28 = unkA98[1];
 
-//     gUnknown_03004D80[1] = 0;
-//     gUnknown_03002280[1][0] = 0;
-//     gUnknown_03002280[1][1] = 0;
-//     gUnknown_03002280[1][2] = 0xff;
-//     gUnknown_03002280[1][3] = 0x20;
-//     gUnknown_03004D80[2] = 0;
-//     gUnknown_03002280[2][0] = 0;
-//     gUnknown_03002280[2][1] = 0;
-//     gUnknown_03002280[2][2] = 0xff;
-//     gUnknown_03002280[2][3] = 0x20;
+    gUnknown_03004D80[1] = 0;
+    gUnknown_03002280[1][0] = 0;
+    gUnknown_03002280[1][1] = 0;
+    gUnknown_03002280[1][2] = 0xff;
+    gUnknown_03002280[1][3] = 0x20;
+    gUnknown_03004D80[2] = 0;
+    gUnknown_03002280[2][0] = 0;
+    gUnknown_03002280[2][1] = 0;
+    gUnknown_03002280[2][2] = 0xff;
+    gUnknown_03002280[2][3] = 0x20;
 
-//     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-//         bgs->unk40.unk2E |= 0x208;
-//         bgs->unk80.unk2E |= 0x208;
-//     }
+    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        bgs->unk40.unk2E |= 0x208;
+        bgs->unk80.unk2E |= 0x208;
+    }
 
-//     if (level != 0x1D) {
-//         sub_8002A3C(&bgs->unk40);
-//         sub_8002A3C(&bgs->unk80);
-//         sub_8002A3C(&bgs->unkC0);
-//     }
+    if (level != 0x1D) {
+        sub_8002A3C(&bgs->unk40);
+        sub_8002A3C(&bgs->unk80);
+        sub_8002A3C(&bgs->unkC0);
+    }
 
-//     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-//         gUnknown_030059C8 = gUnknown_080D62D8[level];
-//     } else {
-//         gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
-//     }
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        gUnknown_030059C8 = gUnknown_080D62D8[level];
+    } else {
+        gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
+    }
 
-//     camera->unk20 = 0;
-//     camera->unk2C = gUnknown_030059C8[8];
-//     camera->unk30 = 0;
-//     camera->unk34 = gUnknown_030059C8[7];
+    camera->unk28 = 0;
+    camera->unk2C = gUnknown_030059C8[8];
+    camera->unk30 = 0;
+    camera->unk34 = gUnknown_030059C8[7];
 
-//     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
-//         || ((gCurrentLevel == 0x1C) && (gUnknown_030054B0 == 0))
-//         || (gCurrentLevel == 0x1D)) {
-//         if (gCurrentLevel == 0x1D) {
-//             sub_802C668(&gPlayer.x, &gPlayer.y);
-//             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
-//             gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
-//             camera->x = 600;
-//             camera->unk10 = 0x78;
-//             camera->unk14 = 0;
-//             camera->y = 0;
-//             camera->unk64 = 0xFFFC;
-//         } else {
-//             camera->x = (gPlayer.x >> 8);
-//             camera->unk10 = (gPlayer.x >> 8) - 0x1E0;
-//             camera->y = (gPlayer.y >> 8) - 0x54;
-//             camera->unk14 = camera->y;
-//             camera->unk64 = gPlayer.unk17 - 4;
-//         }
-//     } else {
-//         camera->x = (gPlayer.x >> 8) - 0x78;
-//         camera->y = (gPlayer.y >> 8) - 0x54;
+    if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
+        || ((gCurrentLevel == 0x1C) && (gUnknown_030054B0 == 0))
+        || (gCurrentLevel == 0x1D)) {
+        if (gCurrentLevel == 0x1D) {
+            sub_802C668(&player->x, &player->y);
+            gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
+            gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
+            camera->x = 600;
+            camera->unk10 = 0x78;
+            camera->unk14 = 0;
+            camera->y = 0;
+            camera->unk64 = 0xFFFC;
+        } else {
+            camera->x = (player->x >> 8);
+            camera->unk10 = (player->x >> 8) - 0x1E0;
+            camera->y = (player->y >> 8) - 0x54;
+            camera->unk14 = camera->y;
+            camera->unk64 = player->unk17 - 4;
+        }
+    } else {
+        camera->x = (player->x >> 8) - 0x78;
+        camera->y = (player->y >> 8) - 0x54;
 
-//         if (camera->x < 0) {
-//             camera->x = 0;
-//         }
+        if (camera->x < 0) {
+            camera->x = 0;
+        }
 
-//         if (camera->y < 0) {
-//             camera->y = 0;
-//         }
+        if (camera->y < 0) {
+            camera->y = 0;
+        }
 
-//         camera->unk10 = camera->x;
-//         camera->unk14 = camera->y;
-//         camera->unk64 = gPlayer.unk17 - 4;
-//     }
+        camera->unk10 = camera->x;
+        camera->unk14 = camera->y;
+        camera->unk64 = player->unk17 - 4;
+    }
 
-//     camera->unk8 = 0x1000;
-//     camera->unkC = 0xc;
-//     camera->unk56 = 0;
-//     camera->unk18 = 0;
-//     camera->unk1C = 0;
-//     camera->unk20 = 0;
-//     camera->unk24 = 0;
-//     camera->unk40 = 0;
-//     camera->unk44 = 8;
-//     camera->unk48 = 0;
-//     camera->unk4C = 0;
-//     camera->unk50 = 0;
-//     camera->unk52 = 0;
-//     camera->unk54 = 0;
-//     camera->unk60 = 0;
-//     camera->unk62 = 0;
+    camera->unk8 = 0x1000;
+    camera->unkC = 0xc;
+    camera->unk56 = 0;
+    camera->unk18 = 0;
+    camera->unk1C = 0;
+    camera->unk20 = 0;
+    camera->unk24 = 0;
+    camera->unk40 = 0;
+    camera->unk44 = 8;
+    camera->unk48 = 0;
+    camera->unk4C = 0;
+    camera->unk50 = 0;
+    camera->unk52 = 0;
+    camera->unk54 = 0;
+    camera->unk60 = 0;
+    camera->unk62 = 0;
 
-//     camera->unk5C = TaskCreate(sub_801E0A8, 0, 0xF00, 0, sub_801E040);
+    camera->unk5C = TaskCreate(sub_801E0A8, 0, 0xF00, 0, sub_801E040);
 
-//     camera->unk58 = gUnknown_080D5A10[level];
+    camera->unk58 = gUnknown_080D5A10[level];
 
-//     if (gUnknown_080D5988[level] != NULL) {
-//         gUnknown_080D5988[level]();
-//     }
-// }
+    if (gUnknown_080D5988[level] != NULL) {
+        gUnknown_080D5988[level]();
+    }
+}
