@@ -4,6 +4,9 @@
 #define GAME_MODE_SINGLE_PLAYER    0
 #define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
+#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                 \
+    (((mode) == GAME_MODE_SINGLE_PLAYER) || ((mode) == GAME_MODE_TIME_ATTACK)           \
+     || ((mode) == GAME_MODE_BOSS_TIME_ATTACK))
 
 // May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER               3
