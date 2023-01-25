@@ -68,7 +68,8 @@ reports
 .vscode/*.log
 *.gbapal
 *.lz
+*.rl
 *.gba
-maps
+./maps
 *.4bpp
 *.8bpp
