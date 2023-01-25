@@ -522,6 +522,9 @@ sub_8051200: @ 0x08051200
 	pop {r0}
 	bx r0
 
+@ --- Possibly the above is its own module.
+@     The functions are shared across all enemy code.
+
 	thumb_func_start initSprite_Enemy_Mon
 initSprite_Enemy_Mon: @ 0x08051214
 	push {r4, r5, r6, r7, lr}

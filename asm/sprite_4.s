@@ -5,15 +5,74 @@
 
     .global gUnknown_080984DC
 gUnknown_080984DC:
-    .incbin "baserom.gba", 0x000984DC, 0x1
+    .byte 0x08
 
     .global gUnknown_080984DD
 gUnknown_080984DD:
-    .incbin "baserom.gba", 0x000984DD, 0x17
+    .byte 0x08, 0x10, 0x10
+    .byte 0x20, 0x20, 0x40, 0x40
+    .byte 0x10, 0x08, 0x20, 0x08
+    .byte 0x20, 0x10, 0x40, 0x20
+    .byte 0x08, 0x10, 0x08, 0x20
+    .byte 0x10, 0x20, 0x20, 0x40
 
     .global gUnknown_080984F4
 gUnknown_080984F4:
-    .incbin "baserom.gba", 0x000984F4, 0x1687C
+    @ Zone 1
+    .2byte 0x0001
+    .2byte 0x0001
+    .2byte 0x2430
+    .2byte 0x0000
+    
+    @ Zone 2
+    .2byte 0x0004
+    .2byte 0x0024
+    .2byte 0x0300
+    .2byte 0x0080
+    
+    @ Zone 3
+    .2byte 0x0200
+    .2byte 0x0098
+    .2byte 0x2430
+    .2byte 0x0000
+    
+    @ Zone 4
+    .2byte 0x0004
+    .2byte 0x0024
+    .2byte 0x0300
+    .2byte 0x0080
+    
+    @ Zone 5
+    .2byte 0x0200
+    .2byte 0x0098
+    .2byte 0x2430
+    .2byte 0x0000
+    
+    @ Zone 6
+    .2byte 0x0004
+    .2byte 0x0024
+    .2byte 0x0300
+    .2byte 0x0080
+    
+    @ Zone 7
+    .2byte 0x0200
+    .2byte 0x0098
+    .2byte 0x2430
+    .2byte 0x0000
+    
+    @ Zone Extra
+    .2byte 0x0004
+    .2byte 0x0024
+    .2byte 0x0300
+    .2byte 0x0080
+    
+    @ Dummies?
+    .2byte 0x0200
+    .2byte 0x0098
+    
+    .global gUnknown_08098538
+gUnknown_08098538:
+    .include "data/maps/entities.s"
 
 .text
 .syntax unified
