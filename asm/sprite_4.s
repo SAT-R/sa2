@@ -72,7 +72,7 @@ gUnknown_080984F4:
     
     .global gUnknown_08098538
 gUnknown_08098538:
-    .include "data/maps/entities.s"
+    .include "data/maps/entities.inc"
 
 .text
 .syntax unified

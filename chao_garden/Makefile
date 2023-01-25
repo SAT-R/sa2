@@ -149,7 +149,7 @@ include songs.mk
 %.bin.lz: %.bin 
 	$(GFX) $< $@
 %.lz: % ; $(GFX) $< $@
-%.rl: % ; $(GFX) $< $@
+%.bin.rl: % ; $(GFX) $< $@
 
 %.bin: %.aif ; $(AIF) $< $@
 

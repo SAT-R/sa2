@@ -8,7 +8,7 @@
 @;             pointed to from here is composed, look at the below thread.
 @;             Even though it is about SA3, all 3 games do share quite a bit.
 @;             https://twitter.com/JaceCear/status/1362912485951610881
-.include "data/maps/entity_tables.s"
+.include "data/maps/entity_tables.inc"
 
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
