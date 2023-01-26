@@ -112,6 +112,7 @@ static const UnkDashRingStruct sAnimationInfoDashRing[2][8][2] = {
     },
 };
 
+// NOTE(Jace): Maybe these are UnkDashRingStruct[8]?
 static const u16 sUnknown_080DFB90[8][6] = {
     { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 },
 };
