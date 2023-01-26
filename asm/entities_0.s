@@ -8,21 +8,7 @@
 @;             pointed to from here is composed, look at the below thread.
 @;             Even though it is about SA3, all 3 games do share quite a bit.
 @;             https://twitter.com/JaceCear/status/1362912485951610881
-    .global gSpritePosData_Rings
-gSpritePosData_Rings: @ 080D4BFC
-    .incbin "baserom.gba", 0x000D4BFC, 0x88
-
-    .global gSpritePosData_Interactables
-gSpritePosData_Interactables: @ 080D4C84
-    .incbin "baserom.gba", 0x000D4C84, 0x88
-
-    .global gSpritePosData_Itemboxes
-gSpritePosData_Itemboxes: @ 080D4D0C
-    .incbin "baserom.gba", 0x000D4D0C, 0x88
-
-    .global gSpritePosData_Enemies
-gSpritePosData_Enemies: @ 080D4D94
-    .incbin "baserom.gba", 0x000D4D94, 0x88
+.include "data/maps/entity_tables.inc"
 
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
@@ -348,7 +334,7 @@ sub_8007E10: @ 0x08007E10
 	movs r3, #0
 	bl TaskCreate
 	adds r7, r0, #0
-	ldr r5, _08007E68 @ =gSpritePosData_Rings
+	ldr r5, _08007E68 @ =gSpritePosData_rings
 	ldr r4, _08007E6C @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -371,7 +357,7 @@ sub_8007E10: @ 0x08007E10
 _08007E5C: .4byte gGameMode
 _08007E60: .4byte sub_8007F1C
 _08007E64: .4byte sub_8008874
-_08007E68: .4byte gSpritePosData_Rings
+_08007E68: .4byte gSpritePosData_rings
 _08007E6C: .4byte gCurrentLevel
 _08007E70:
 	ldr r0, _08007EF4 @ =sub_8007F1C
@@ -519,7 +505,7 @@ _08007F8E:
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08007FBE
-	ldr r1, _080082A8 @ =gSpritePosData_Rings
+	ldr r1, _080082A8 @ =gSpritePosData_rings
 	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -921,7 +907,7 @@ _08008298: .4byte gCurrentLevel
 _0800829C: .4byte gUnknown_030054B0
 _080082A0: .4byte gUnknown_03005430
 _080082A4: .4byte gUnknown_0300542C
-_080082A8: .4byte gSpritePosData_Rings
+_080082A8: .4byte gSpritePosData_rings
 _080082AC: .4byte gUnknown_030059E8
 _080082B0: .4byte gCourseTime
 _080082B4: .4byte gGameMode
@@ -1733,7 +1719,7 @@ _080088BC:
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _0800898C
-	ldr r5, _08008978 @ =gSpritePosData_Interactables
+	ldr r5, _08008978 @ =gSpritePosData_interactables
 	ldr r4, _0800897C @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r4, r0]
@@ -1752,7 +1738,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7]
-	ldr r5, _08008980 @ =gSpritePosData_Itemboxes
+	ldr r5, _08008980 @ =gSpritePosData_itemboxes
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1770,7 +1756,7 @@ _080088BC:
 	adds r1, r6, #0
 	bl RLUnCompWram
 	str r6, [r7, #4]
-	ldr r5, _08008984 @ =gSpritePosData_Enemies
+	ldr r5, _08008984 @ =gSpritePosData_enemies
 	movs r0, #0
 	ldrsb r0, [r4, r0]
 	lsls r0, r0, #2
@@ -1804,10 +1790,10 @@ _080088BC:
 	.align 2, 0
 _08008970: .4byte sub_8008DCC
 _08008974: .4byte gGameMode
-_08008978: .4byte gSpritePosData_Interactables
+_08008978: .4byte gSpritePosData_interactables
 _0800897C: .4byte gCurrentLevel
-_08008980: .4byte gSpritePosData_Itemboxes
-_08008984: .4byte gSpritePosData_Enemies
+_08008980: .4byte gSpritePosData_itemboxes
+_08008984: .4byte gSpritePosData_enemies
 _08008988: .4byte gSpriteTileInits_PreStageEntry
 _0800898C:
 	ldr r6, _080089BC @ =EWRAM_START + 0x3F000
