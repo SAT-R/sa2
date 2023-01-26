@@ -239,7 +239,7 @@ _080746B2:
 	orrs r0, r1
 	str r0, [r4, #0x10]
 	adds r0, r7, #0
-	bl sub_8074C20
+	bl DashRing_UpdateScreenPos
 	adds r0, r7, #0
 	bl sub_8004558
 	adds r0, r4, #0

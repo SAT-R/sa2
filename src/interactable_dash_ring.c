@@ -16,13 +16,13 @@
 
 #define IA_DASH_RING_ACCELERATION 8
 
-// make static!
-extern void Task_Interactable_DashRing(void);
-extern void Task_Interactable_DashRing_AfterAcceleration(void);
-extern void TaskDestructor_Interactable_DashRing(struct Task *);
-extern void sub_8074C20(Sprite_DashRing *);
-extern bool32 sub_8074C48(Sprite_DashRing *);
-extern void sub_8074C98(Sprite_DashRing *);
+static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring);
+static void Task_Interactable_DashRing(void);
+static void Task_Interactable_DashRing_AfterAcceleration(void);
+static void TaskDestructor_Interactable_DashRing(struct Task *);
+static void DashRing_UpdateScreenPos(Sprite_DashRing *);
+static bool32 DashRing_ShouldDespawn(Sprite_DashRing *);
+static void DashRing_Despawn(Sprite_DashRing *);
 
 static const UnkDashRingStruct sAnimInfoDashRing[DASH_RING__NUM_TYPES]
                                                 [DASH_RING__NUM_ORIENTATIONS][2]
@@ -154,7 +154,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
         = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][1].tileCount);
     ring->spriteB.unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1].unk6;
 
-    sub_8074C20(ring);
+    DashRing_UpdateScreenPos(ring);
     sub_8004558(&ring->spriteA);
     sub_8004558(&ring->spriteB);
 
@@ -169,7 +169,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
 }
 END_NONMATCH
 
-void DR_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
+static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 {
     gPlayer.unk6D = 0x18;
 
@@ -273,32 +273,69 @@ NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
 }
 END_NONMATCH
 
-void Task_Interactable_DashRing(void)
+static void Task_Interactable_DashRing(void)
 {
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
     if (sub_8074AC8(ring)) {
-        DR_SetPlayerSpeedAndDir(ring);
+        DashRing_SetPlayerSpeedAndDir(ring);
     }
 
-    if (sub_8074C48(ring)) {
-        sub_8074C98(ring);
+    if (DashRing_ShouldDespawn(ring)) {
+        DashRing_Despawn(ring);
     } else {
-        sub_8074C20(ring);
-
+        DashRing_UpdateScreenPos(ring);
         sub_80051E8(&ring->spriteA);
         sub_80051E8(&ring->spriteB);
     }
 }
 
-void Task_Interactable_DashRing_AfterAcceleration(void)
+static void Task_Interactable_DashRing_AfterAcceleration(void)
 {
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
-    sub_8074C20(ring);
+    DashRing_UpdateScreenPos(ring);
     sub_80051E8(&ring->spriteA);
     sub_80051E8(&ring->spriteB);
+
     if (!sub_8074AC8(ring)) {
         gCurTask->main = Task_Interactable_DashRing;
     }
+}
+
+static void TaskDestructor_Interactable_DashRing(struct Task *t)
+{
+    Sprite_DashRing *ring = TaskGetStructPtr(t);
+
+    VramFree(ring->spriteA.graphics.dest);
+    VramFree(ring->spriteB.graphics.dest);
+}
+
+static void DashRing_UpdateScreenPos(Sprite_DashRing *ring)
+{
+    ring->spriteA.x = ring->posX - gCamera.x;
+    ring->spriteA.y = ring->posY - gCamera.y;
+    ring->spriteB.x = ring->posX - gCamera.x;
+    ring->spriteB.y = ring->posY - gCamera.y;
+}
+
+static bool32 DashRing_ShouldDespawn(Sprite_DashRing *ring)
+{
+    s16 screenX, screenY;
+
+    screenX = ring->posX - gCamera.x;
+    screenY = ring->posY - gCamera.y;
+
+    if (((u16)(screenX + 140) > 520) || ((screenY + 12) < -128)
+        || ((screenY - 12) > 288)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void DashRing_Despawn(Sprite_DashRing *ring)
+{
+    ring->ia->x = ring->spriteX;
+    TaskDestroy(gCurTask);
 }
