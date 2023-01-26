@@ -1,11 +1,13 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "m4a.h"
+#include "trig.h"
 
 #include "game.h"
 #include "task.h"
 
 #include "interactable.h"
+#include "interactable_dash_ring.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
@@ -36,12 +38,15 @@ typedef struct {
     /* 0x7D */ u8 spriteY;
 } Sprite_DashRing; /* size: 0x80 */
 
+#define IA_DASH_RING_ACCELERATION 8
+
 // make static!
 extern void Task_Interactable_DashRing(void);
 extern void TaskDestructor_Interactable_DashRing(struct Task *);
 extern void sub_8074C20(Sprite_DashRing *);
+extern void Task_8074BBC(void);
 
-static const UnkDashRingStruct sAnimationInfoDashRing[2][8][2] = {
+static const UnkDashRingStruct sAnimInfoDashRing[2][DASH_RING__NUM_ORIENTATIONS][2] = {
     {
         {
             { SA2_ANIM_DASH_RING, 0x0002, 12, 0x0000, 0x0000, 0x0000 },
@@ -113,7 +118,7 @@ static const UnkDashRingStruct sAnimationInfoDashRing[2][8][2] = {
 };
 
 // NOTE(Jace): Maybe these are UnkDashRingStruct[8]?
-static const u16 sUnknown_080DFB90[8][6] = {
+static const u16 sUnknown_080DFB90[DASH_RING__NUM_ORIENTATIONS][6] = {
     { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 },
 };
 
@@ -147,12 +152,11 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteA.focused = 0;
     ring->spriteA.unk28->unk0 = -1;
     ring->spriteA.unk10 = 0x2000;
-    ring->spriteA.graphics.anim
-        = sAnimationInfoDashRing[sp08][ring->orientation][0].anim;
-    ring->spriteA.variant = sAnimationInfoDashRing[sp08][ring->orientation][0].variant;
+    ring->spriteA.graphics.anim = sAnimInfoDashRing[sp08][ring->orientation][0].anim;
+    ring->spriteA.variant = sAnimInfoDashRing[sp08][ring->orientation][0].variant;
     ring->spriteA.graphics.dest
-        = VramMalloc(sAnimationInfoDashRing[sp08][ring->orientation][0].tileCount);
-    ring->spriteA.unk10 |= sAnimationInfoDashRing[sp08][ring->orientation][0].unk6;
+        = VramMalloc(sAnimInfoDashRing[sp08][ring->orientation][0].tileCount);
+    ring->spriteA.unk10 |= sAnimInfoDashRing[sp08][ring->orientation][0].unk6;
 
     ring->spriteA.unk1A = 0x480;
     ring->spriteA.graphics.size = 0;
@@ -164,12 +168,11 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteB.focused = 0;
     ring->spriteB.unk28->unk0 = -1;
     ring->spriteB.unk10 = 0x2000;
-    ring->spriteB.graphics.anim
-        = sAnimationInfoDashRing[sp08][ring->orientation][1].anim;
-    ring->spriteB.variant = sAnimationInfoDashRing[sp08][ring->orientation][1].variant;
+    ring->spriteB.graphics.anim = sAnimInfoDashRing[sp08][ring->orientation][1].anim;
+    ring->spriteB.variant = sAnimInfoDashRing[sp08][ring->orientation][1].variant;
     ring->spriteB.graphics.dest
-        = VramMalloc(sAnimationInfoDashRing[sp08][ring->orientation][1].tileCount);
-    ring->spriteB.unk10 |= sAnimationInfoDashRing[sp08][ring->orientation][1].unk6;
+        = VramMalloc(sAnimInfoDashRing[sp08][ring->orientation][1].tileCount);
+    ring->spriteB.unk10 |= sAnimInfoDashRing[sp08][ring->orientation][1].unk6;
 
     sub_8074C20(ring);
     sub_8004558(&ring->spriteA);
@@ -185,3 +188,82 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->unk60.unkA = sUnknown_080DFB90[ring->orientation][5];
 }
 END_NONMATCH
+
+void DR_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
+{
+    gPlayer.unk6D = 0x18;
+
+    // NOTE: This doesn't take the sprite offset, is it a bug?
+    gPlayer.x = SpriteGetScreenPos(0, ring->posX);
+    gPlayer.y = SpriteGetScreenPos(0, ring->posY);
+    gPlayer.unk72 = 0x10;
+
+    switch (ring->orientation) {
+        case DASH_RING_DIR__UP: {
+            gPlayer.unk64 = 0x26;
+            gPlayer.speedAirX = COS_DEG(270) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(270) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__UP_RIGHT: {
+            gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0x26;
+            gPlayer.speedAirX = COS_DEG(315) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(315) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__RIGHT: {
+            gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0x28;
+            gPlayer.speedAirX = COS_DEG(0) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(0) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__DOWN_RIGHT: {
+            gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0xE;
+            gPlayer.speedAirX = COS_DEG(45) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(45) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__DOWN: {
+            gPlayer.unk64 = 0xE;
+            gPlayer.speedAirX = COS_DEG(90) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(90) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__DOWN_LEFT: {
+            gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0xE;
+            gPlayer.speedAirX = COS_DEG(135) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(135) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__LEFT: {
+            gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0x28;
+            gPlayer.speedAirX = COS_DEG(180) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(180) * IA_DASH_RING_ACCELERATION;
+        } break;
+
+        case DASH_RING_DIR__UP_LEFT: {
+            gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+            gPlayer.unk64 = 0x26;
+            gPlayer.speedAirX = COS_DEG(225) * IA_DASH_RING_ACCELERATION;
+            gPlayer.speedAirY = SIN_DEG(225) * IA_DASH_RING_ACCELERATION;
+        } break;
+    }
+
+    m4aSongNumStart(SE_DASH_RING);
+    gCurTask->main = Task_8074BBC;
+}
+
+#if 0
+bool32 sub_8074AC8(Sprite_DashRing *ring) {
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        return TRUE;
+    }
+
+    // _08074AE4
+}
+#endif

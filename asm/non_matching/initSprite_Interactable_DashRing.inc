@@ -96,7 +96,7 @@ _080746B2:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 
-	ldr r2, _080748BC @ =sAnimationInfoDashRing
+	ldr r2, _080748BC @ =sAnimInfoDashRing
 	mov r4, sl
 	ldrh r1, [r4]
 	lsls r0, r1, #1
@@ -333,7 +333,7 @@ _080748AC: .4byte IWRAM_START + 0x7D
 _080748B0: .4byte gCurrentLevel
 _080748B4: .4byte IWRAM_START + 0x21
 _080748B8: .4byte IWRAM_START + 0x22
-_080748BC: .4byte sAnimationInfoDashRing
+_080748BC: .4byte sAnimInfoDashRing
 _080748C0: .4byte IWRAM_START + 0x20
 _080748C4: .4byte IWRAM_START + 0x30
 _080748C8: .4byte IWRAM_START + 0x51

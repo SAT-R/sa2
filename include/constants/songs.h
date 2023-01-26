@@ -220,7 +220,7 @@
 #define SE_274                274
 #define SE_275                275
 #define SE_276                276
-#define SE_277                277
+#define SE_DASH_RING          277
 #define SE_278                278
 #define SE_279                279
 #define SE_280                280

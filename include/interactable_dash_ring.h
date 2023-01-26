@@ -1,0 +1,15 @@
+#ifndef GUARD_IA_DASH_RING_H
+#define GUARD_IA_DASH_RING_H
+
+#define DASH_RING__NUM_ORIENTATIONS 8
+
+#define DASH_RING_DIR__UP         0
+#define DASH_RING_DIR__UP_RIGHT   1
+#define DASH_RING_DIR__RIGHT      2
+#define DASH_RING_DIR__DOWN_RIGHT 3
+#define DASH_RING_DIR__DOWN       4
+#define DASH_RING_DIR__DOWN_LEFT  5
+#define DASH_RING_DIR__LEFT       6
+#define DASH_RING_DIR__UP_LEFT    7
+
+#endif // GUARD_IA_DASH_RING_H
