@@ -46,76 +46,78 @@ extern void TaskDestructor_Interactable_DashRing(struct Task *);
 extern void sub_8074C20(Sprite_DashRing *);
 extern void Task_8074BBC(void);
 
-static const UnkDashRingStruct sAnimInfoDashRing[2][DASH_RING__NUM_ORIENTATIONS][2] = {
-    {
-        {
-            { SA2_ANIM_DASH_RING, 0x0002, 12, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0003, 6, 0x0000, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0400, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0400, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0000, 12, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0001, 6, 0x0000, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0C00, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0C00, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0002, 12, 0x0800, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0003, 6, 0x0800, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0800, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0800, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0000, 12, 0x0400, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0001, 6, 0x0400, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0000, 0x0000, 0x0000 },
-        },
-    },
-    {
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0002, 0x000C, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0003, 0x0006, 0x0000, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0400, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0400, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0000, 0x000C, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0001, 0x0006, 0x0000, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0C00, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0C00, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0002, 0x000C, 0x0800, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0003, 0x0006, 0x0800, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0800, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0800, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0000, 0x000C, 0x0400, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0001, 0x0006, 0x0400, 0x0000, 0x0000 },
-        },
-        {
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0000, 0x0000, 0x0000 },
-            { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0000, 0x0000, 0x0000 },
-        },
-    },
-};
+static const UnkDashRingStruct sAnimInfoDashRing[DASH_RING__NUM_TYPES]
+                                                [DASH_RING__NUM_ORIENTATIONS][2]
+    = {
+          {
+              {
+                  { SA2_ANIM_DASH_RING, 0x0002, 12, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0003, 6, 0x0000, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0400, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0400, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0000, 12, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0001, 6, 0x0000, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0C00, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0C00, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0002, 12, 0x0800, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0003, 6, 0x0800, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0800, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0800, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0000, 12, 0x0400, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0001, 6, 0x0400, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING, 0x0004, 36, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING, 0x0005, 25, 0x0000, 0x0000, 0x0000 },
+              },
+          },
+          {
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0002, 0x000C, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0003, 0x0006, 0x0000, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0400, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0400, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0000, 0x000C, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0001, 0x0006, 0x0000, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0C00, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0C00, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0002, 0x000C, 0x0800, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0003, 0x0006, 0x0800, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0800, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0800, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0000, 0x000C, 0x0400, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0001, 0x0006, 0x0400, 0x0000, 0x0000 },
+              },
+              {
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0004, 0x0024, 0x0000, 0x0000, 0x0000 },
+                  { SA2_ANIM_DASH_RING_TEC_BAS, 0x0005, 0x0019, 0x0000, 0x0000, 0x0000 },
+              },
+          },
+      };
 
 // NOTE(Jace): Maybe these are UnkDashRingStruct[8]?
 static const u16 sUnknown_080DFB90[DASH_RING__NUM_ORIENTATIONS][6] = {
@@ -126,8 +128,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
          void initSprite_Interactable_DashRing(Interactable *ia, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY))
 {
-    // TODO: Rename! ('ringType' ?)
-    u32 sp08 = 0;
+    u32 ringType = DASH_RING__TYPE_REGULAR;
 
     struct Task *t = TaskCreate(Task_Interactable_DashRing, 0x80, 0x2010, 0,
                                 TaskDestructor_Interactable_DashRing);
@@ -141,7 +142,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->ia = ia;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
-        sp08 = 1;
+        ringType = DASH_RING__TYPE_TECHNO_BASE;
 
     ring->spriteA.unk1A = 0x180;
     ring->spriteA.graphics.size = 0;
@@ -152,11 +153,11 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteA.focused = 0;
     ring->spriteA.unk28->unk0 = -1;
     ring->spriteA.unk10 = 0x2000;
-    ring->spriteA.graphics.anim = sAnimInfoDashRing[sp08][ring->orientation][0].anim;
-    ring->spriteA.variant = sAnimInfoDashRing[sp08][ring->orientation][0].variant;
+    ring->spriteA.graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0].anim;
+    ring->spriteA.variant = sAnimInfoDashRing[ringType][ring->orientation][0].variant;
     ring->spriteA.graphics.dest
-        = VramMalloc(sAnimInfoDashRing[sp08][ring->orientation][0].tileCount);
-    ring->spriteA.unk10 |= sAnimInfoDashRing[sp08][ring->orientation][0].unk6;
+        = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][0].tileCount);
+    ring->spriteA.unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0].unk6;
 
     ring->spriteA.unk1A = 0x480;
     ring->spriteA.graphics.size = 0;
@@ -168,11 +169,11 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteB.focused = 0;
     ring->spriteB.unk28->unk0 = -1;
     ring->spriteB.unk10 = 0x2000;
-    ring->spriteB.graphics.anim = sAnimInfoDashRing[sp08][ring->orientation][1].anim;
-    ring->spriteB.variant = sAnimInfoDashRing[sp08][ring->orientation][1].variant;
+    ring->spriteB.graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1].anim;
+    ring->spriteB.variant = sAnimInfoDashRing[ringType][ring->orientation][1].variant;
     ring->spriteB.graphics.dest
-        = VramMalloc(sAnimInfoDashRing[sp08][ring->orientation][1].tileCount);
-    ring->spriteB.unk10 |= sAnimInfoDashRing[sp08][ring->orientation][1].unk6;
+        = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][1].tileCount);
+    ring->spriteB.unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1].unk6;
 
     sub_8074C20(ring);
     sub_8004558(&ring->spriteA);

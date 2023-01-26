@@ -3,6 +3,10 @@
 
 #define DASH_RING__NUM_ORIENTATIONS 8
 
+#define DASH_RING__TYPE_REGULAR     0
+#define DASH_RING__TYPE_TECHNO_BASE 1
+#define DASH_RING__NUM_TYPES        2
+
 #define DASH_RING_DIR__UP         0
 #define DASH_RING_DIR__UP_RIGHT   1
 #define DASH_RING_DIR__RIGHT      2
