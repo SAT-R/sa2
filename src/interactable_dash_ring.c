@@ -18,9 +18,11 @@
 
 // make static!
 extern void Task_Interactable_DashRing(void);
+extern void Task_8074BBC(void);
 extern void TaskDestructor_Interactable_DashRing(struct Task *);
 extern void sub_8074C20(Sprite_DashRing *);
-extern void Task_8074BBC(void);
+extern bool32 sub_8074C48(Sprite_DashRing *);
+extern void sub_8074C98(Sprite_DashRing *);
 
 static const UnkDashRingStruct sAnimInfoDashRing[DASH_RING__NUM_TYPES]
                                                 [DASH_RING__NUM_ORIENTATIONS][2]
@@ -270,3 +272,21 @@ NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
     return FALSE;
 }
 END_NONMATCH
+
+void Task_Interactable_DashRing(void)
+{
+    Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
+
+    if (sub_8074AC8(ring)) {
+        DR_SetPlayerSpeedAndDir(ring);
+    }
+
+    if (sub_8074C48(ring)) {
+        sub_8074C98(ring);
+    } else {
+        sub_8074C20(ring);
+
+        sub_80051E8(&ring->spriteA);
+        sub_80051E8(&ring->spriteB);
+    }
+}
