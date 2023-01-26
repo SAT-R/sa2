@@ -102,10 +102,10 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_044
     .4byte initSprite_Interactable_ClearPipe_Start
     .4byte initSprite_Interactable_ClearPipe_End
-    .4byte initSprite_Interactable074
+    .4byte initSprite_Interactable074               @ Techno Base - Loud Digital Path
     .4byte initSprite_Interactable075_0
     .4byte initSprite_Interactable075_1
-    .4byte initSprite_Interactable075_2
+    .4byte initSprite_Interactable075_2             @ Techno Base - Box Platform (Launch player up)
     .4byte initSprite_Interactable078
     .4byte initSprite_Interactable079
     .4byte initSprite_Interactable080
