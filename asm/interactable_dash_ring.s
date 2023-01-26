@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 0
 	thumb_func_start sub_8074AC8
 sub_8074AC8: @ 0x08074AC8
 	push {r4, r5, r6, r7, lr}
@@ -24,10 +25,10 @@ _08074AE4:
 	ldr r3, [r7, #0x70]
 	ldr r0, _08074B64 @ =gCamera
 	ldr r4, [r0]
-	subs r3, r3, r4
+	subs r3, r3, r4     @ r3 = ringScreenX = ring->posX - gCamera.x
 	ldr r2, [r7, #0x74]
 	ldr r5, [r0, #4]
-	subs r2, r2, r5
+	subs r2, r2, r5     @ r2 = ringScreenY = ring->posY - gCamera.y
 	ldr r1, [r6, #8]
 	asrs r1, r1, #8
 	subs r1, r1, r4
@@ -36,14 +37,14 @@ _08074AE4:
 	subs r0, r0, r5
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	mov ip, r0
+	mov ip, r0          @ playerScreenY
 	movs r4, #0
 	lsls r3, r3, #0x10
-	asrs r3, r3, #0x10
+	asrs r3, r3, #0x10      @ r3 = ringScreenX
 	lsls r2, r2, #0x10
-	asrs r6, r2, #0x10
+	asrs r6, r2, #0x10      @ r6 = ringScreenY
 	lsls r1, r1, #0x10
-	asrs r5, r1, #0x10
+	asrs r5, r1, #0x10      @ r5 = playerScreenX
 _08074B12:
 	lsls r2, r4, #2
 	adds r2, r7, r2
@@ -57,9 +58,9 @@ _08074B12:
 	adds r0, r6, r0
 	subs r0, #0xc
 	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
+	lsrs r2, r0, #0x10  @ r2 = someY
 	lsls r1, r1, #0x10
-	asrs r0, r1, #0x10
+	asrs r0, r1, #0x10  @ r0 = someX
 	cmp r0, r5
 	bgt _08074B50
 	adds r0, #0x18
@@ -90,6 +91,7 @@ _08074B5C:
 	bx r1
 	.align 2, 0
 _08074B64: .4byte gCamera
+.endif
 
 	thumb_func_start Task_Interactable_DashRing
 Task_Interactable_DashRing: @ 0x08074B68

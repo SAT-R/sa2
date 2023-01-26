@@ -14,30 +14,6 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
-typedef struct {
-    /* 0x00 */ u16 anim;
-    /* 0x02 */ u16 variant;
-    /* 0x04 */ u16 tileCount;
-    /* 0x06 */ u16 unk6;
-    /* 0x08 */ u16 unk8;
-    /* 0x0A */ u16 unkA;
-} UnkDashRingStruct;
-
-typedef struct {
-    /* 0x00 */ Sprite spriteA;
-    /* 0x30 */ Sprite spriteB;
-
-    /* 0x60 */ UnkDashRingStruct unk60;
-
-    // Maybe a struct starts here?
-    /* 0x6C */ u16 orientation;
-    /* 0x70 */ s32 posX;
-    /* 0x74 */ s32 posY;
-    /* 0x78 */ Interactable *ia;
-    /* 0x7C */ u8 spriteX;
-    /* 0x7D */ u8 spriteY;
-} Sprite_DashRing; /* size: 0x80 */
-
 #define IA_DASH_RING_ACCELERATION 8
 
 // make static!
@@ -148,6 +124,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteA.graphics.size = 0;
     ring->spriteA.unk14 = 0;
     ring->spriteA.unk1C = 0;
+
     ring->spriteA.unk21 = 0xFF;
     ring->spriteA.unk22 = 0x10;
     ring->spriteA.focused = 0;
@@ -164,7 +141,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
     ring->spriteA.unk14 = 0;
     ring->spriteA.unk1C = 0;
 
-    ring->spriteB.unk21 = -1;
+    ring->spriteB.unk21 = 0xFF;
     ring->spriteB.unk22 = 0x10;
     ring->spriteB.focused = 0;
     ring->spriteB.unk28->unk0 = -1;
@@ -181,12 +158,12 @@ NONMATCH("asm/non_matching/initSprite_Interactable_DashRing.inc",
 
     SET_SPRITE_INITIALIZED(ia);
 
-    ring->unk60.anim = sUnknown_080DFB90[ring->orientation][0];
-    ring->unk60.variant = sUnknown_080DFB90[ring->orientation][1];
-    ring->unk60.tileCount = sUnknown_080DFB90[ring->orientation][2];
-    ring->unk60.unk6 = sUnknown_080DFB90[ring->orientation][3];
-    ring->unk60.unk8 = sUnknown_080DFB90[ring->orientation][4];
-    ring->unk60.unkA = sUnknown_080DFB90[ring->orientation][5];
+    ring->positions[0].x = sUnknown_080DFB90[ring->orientation][0];
+    ring->positions[0].y = sUnknown_080DFB90[ring->orientation][1];
+    ring->positions[1].x = sUnknown_080DFB90[ring->orientation][2];
+    ring->positions[1].y = sUnknown_080DFB90[ring->orientation][3];
+    ring->positions[2].x = sUnknown_080DFB90[ring->orientation][4];
+    ring->positions[2].y = sUnknown_080DFB90[ring->orientation][5];
 }
 END_NONMATCH
 
@@ -195,8 +172,8 @@ void DR_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gPlayer.unk6D = 0x18;
 
     // NOTE: This doesn't take the sprite offset, is it a bug?
-    gPlayer.x = SpriteGetScreenPos(0, ring->posX);
-    gPlayer.y = SpriteGetScreenPos(0, ring->posY);
+    gPlayer.x = Q_24_8(ring->posX);
+    gPlayer.y = Q_24_8(ring->posY);
     gPlayer.unk72 = 0x10;
 
     switch (ring->orientation) {
@@ -259,12 +236,37 @@ void DR_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gCurTask->main = Task_8074BBC;
 }
 
-#if 0
-bool32 sub_8074AC8(Sprite_DashRing *ring) {
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
-        return TRUE;
+NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
+         bool32 sub_8074AC8(Sprite_DashRing *ring))
+{
+    s32 ringScreenX, ringScreenY;
+    s16 ringScreenX2, ringScreenY2;
+    s16 playerScreenX, playerScreenY;
+    u8 i;
+
+    if (gPlayer.moveState & MOVESTATE_DEAD)
+        return FALSE;
+
+    ringScreenX = ring->posX;
+    ringScreenX -= gCamera.x;
+
+    ringScreenY = ring->posY;
+    ringScreenY -= gCamera.y;
+    playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+    for (i = 0; i < ARRAY_COUNT(ring->positions); i++) {
+        ringScreenX2 = ringScreenX;
+        ringScreenY2 = ringScreenY;
+        ringScreenX2 = ringScreenX2 + ring->positions[i].x - 12;
+        ringScreenY2 = ringScreenY2 + ring->positions[i].y - 12;
+
+        if ((ringScreenX2 <= playerScreenX) && ((ringScreenX2 + 24) >= playerScreenX)
+            && (ringScreenY2 <= playerScreenY) && (ringScreenY2 + 24) >= playerScreenY) {
+            return TRUE;
+        }
     }
 
-    // _08074AE4
+    return FALSE;
 }
-#endif
+END_NONMATCH
