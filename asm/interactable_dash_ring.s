@@ -7,39 +7,6 @@
 .if 0
 .endif
 
-	thumb_func_start Task_8074BBC
-Task_8074BBC: @ 0x08074BBC
-	push {r4, r5, r6, lr}
-	ldr r6, _08074BF8 @ =gCurTask
-	ldr r0, [r6]
-	ldrh r5, [r0, #6]
-	movs r4, #0xc0
-	lsls r4, r4, #0x12
-	adds r4, r5, r4
-	adds r0, r4, #0
-	bl sub_8074C20
-	adds r0, r4, #0
-	bl sub_80051E8
-	ldr r0, _08074BFC @ =IWRAM_START + 0x30
-	adds r5, r5, r0
-	adds r0, r5, #0
-	bl sub_80051E8
-	adds r0, r4, #0
-	bl sub_8074AC8
-	cmp r0, #0
-	bne _08074BF0
-	ldr r1, [r6]
-	ldr r0, _08074C00 @ =Task_Interactable_DashRing
-	str r0, [r1, #8]
-_08074BF0:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08074BF8: .4byte gCurTask
-_08074BFC: .4byte IWRAM_START + 0x30
-_08074C00: .4byte Task_Interactable_DashRing
-
 	thumb_func_start TaskDestructor_Interactable_DashRing
 TaskDestructor_Interactable_DashRing: @ 0x08074C04
 	push {r4, lr}

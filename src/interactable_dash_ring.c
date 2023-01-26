@@ -18,7 +18,7 @@
 
 // make static!
 extern void Task_Interactable_DashRing(void);
-extern void Task_8074BBC(void);
+extern void Task_Interactable_DashRing_AfterAcceleration(void);
 extern void TaskDestructor_Interactable_DashRing(struct Task *);
 extern void sub_8074C20(Sprite_DashRing *);
 extern bool32 sub_8074C48(Sprite_DashRing *);
@@ -235,7 +235,7 @@ void DR_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     }
 
     m4aSongNumStart(SE_DASH_RING);
-    gCurTask->main = Task_8074BBC;
+    gCurTask->main = Task_Interactable_DashRing_AfterAcceleration;
 }
 
 NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
@@ -288,5 +288,17 @@ void Task_Interactable_DashRing(void)
 
         sub_80051E8(&ring->spriteA);
         sub_80051E8(&ring->spriteB);
+    }
+}
+
+void Task_Interactable_DashRing_AfterAcceleration(void)
+{
+    Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
+
+    sub_8074C20(ring);
+    sub_80051E8(&ring->spriteA);
+    sub_80051E8(&ring->spriteB);
+    if (!sub_8074AC8(ring)) {
+        gCurTask->main = Task_Interactable_DashRing;
     }
 }
