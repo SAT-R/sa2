@@ -26,8 +26,8 @@ typedef struct {
 } UnkDashRingStruct;
 
 typedef struct {
-    /* 0x00 */ u16 x;
-    /* 0x02 */ u16 y;
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
 } DashRingAnim;
 
 typedef struct {

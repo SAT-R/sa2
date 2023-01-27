@@ -238,8 +238,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gCurTask->main = Task_Interactable_DashRing_AfterAcceleration;
 }
 
-NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
-         bool32 sub_8074AC8(Sprite_DashRing *ring))
+bool32 sub_8074AC8(Sprite_DashRing *ring)
 {
     s32 ringScreenX, ringScreenY;
     s16 ringScreenX2, ringScreenY2;
@@ -251,9 +250,9 @@ NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
 
     ringScreenX = ring->posX;
     ringScreenX -= gCamera.x;
-
     ringScreenY = ring->posY;
     ringScreenY -= gCamera.y;
+
     playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
@@ -271,7 +270,6 @@ NONMATCH("asm/non_matching/DashRing_sub_8074AC8.inc",
 
     return FALSE;
 }
-END_NONMATCH
 
 static void Task_Interactable_DashRing(void)
 {
