@@ -238,7 +238,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gCurTask->main = Task_Interactable_DashRing_AfterAcceleration;
 }
 
-bool32 sub_8074AC8(Sprite_DashRing *ring)
+bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
 {
     s32 ringScreenX, ringScreenY;
     s16 ringScreenX2, ringScreenY2;
@@ -275,7 +275,7 @@ static void Task_Interactable_DashRing(void)
 {
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
-    if (sub_8074AC8(ring)) {
+    if (DashRing_PlayerIsColliding(ring)) {
         DashRing_SetPlayerSpeedAndDir(ring);
     }
 
@@ -296,7 +296,7 @@ static void Task_Interactable_DashRing_AfterAcceleration(void)
     sub_80051E8(&ring->spriteA);
     sub_80051E8(&ring->spriteB);
 
-    if (!sub_8074AC8(ring)) {
+    if (!DashRing_PlayerIsColliding(ring)) {
         gCurTask->main = Task_Interactable_DashRing;
     }
 }
