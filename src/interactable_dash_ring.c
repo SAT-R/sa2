@@ -172,7 +172,6 @@ void initSprite_Interactable_DashRing(Interactable *ia, u16 spriteRegionX,
     ring->positions[2].x = sUnknown_080DFB90[ring->orientation][4];
     ring->positions[2].y = sUnknown_080DFB90[ring->orientation][5];
 }
-// END_NONMATCH
 
 static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 {
