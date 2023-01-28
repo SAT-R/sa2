@@ -1024,7 +1024,8 @@ extern const u32 *gUnknown_080D62D8[];
 extern const Background gUnknown_080D5864[3];
 
 extern const TaskMain gUnknown_080D5988[];
-extern const TaskMain gUnknown_080D5A10[];
+
+extern const CameraMain gUnknown_080D5A10[];
 
 struct Backgrounds {
     Background unk0;
@@ -1167,5 +1168,197 @@ void sub_801C068(u32 level)
 
     if (gUnknown_080D5988[level] != NULL) {
         gUnknown_080D5988[level]();
+    }
+}
+
+void sub_801C708(s32, s32);
+
+#define CLAMP(value, min, max)                                                          \
+    ({                                                                                  \
+        s32 clamped;                                                                    \
+        if ((value) < (min)) {                                                          \
+            clamped = (min);                                                            \
+        } else {                                                                        \
+            clamped = (value) > (max) ? (max) : (value);                                \
+        }                                                                               \
+        clamped;                                                                        \
+    })
+
+void sub_801C394(void)
+{
+    Player *player = &gPlayer;
+    struct Camera *camera = &gCamera;
+    s32 newX, newY;
+    newX = camera->x;
+    newY = camera->y;
+    camera->unk38 = newX;
+    camera->unk3C = newY;
+
+    newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF1);
+    newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA1);
+
+    if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
+        || ((gCurrentLevel == 0x1C) && (gUnknown_030054B0 == 0))
+        || (gCurrentLevel == 0x1D)) {
+        s32 delta, playerY;
+        if (player->moveState & MOVESTATE_DEAD) {
+            if (camera->unk58 != NULL) {
+                camera->unk58(gCamera.x, gCamera.y);
+            }
+            return;
+        }
+
+        if (gCurrentLevel == 0x1D) {
+            sub_802C668(&player->x, &player->y);
+        }
+
+        camera->unk10 += 5;
+        newX += 5;
+
+        if (newX + 0x79 < (player->x >> 8)) {
+            if ((camera->unk10 + 0x50) > newX) {
+                s32 temp = (player->x >> 8);
+                temp -= 0x78;
+                camera->unk18 = temp - newX;
+            } else {
+                newX = (camera->unk10 + 0x50);
+                camera->unk18 = 0;
+            }
+        } else {
+            camera->unk18 = 0;
+            if ((newX + 0x60) > (player->x >> 8)) {
+                newX = (player->x >> 8);
+                newX -= 0x60;
+                if (newX < camera->unk10) {
+                    newX = camera->unk10;
+                }
+            }
+        }
+
+        playerY = player->y >> 8;
+        delta = playerY - newY;
+        if (gCurrentLevel == 0x1D) {
+            if (delta < 0x31) {
+                s32 temp = newY - 0x30;
+                newY = delta + temp;
+                camera->unk1C = 0;
+            } else if (delta >= (gUnknown_030054BC - 0xD0)) {
+                s32 temp = newY - 0x70;
+                newY = delta + temp;
+                camera->unk1C = 0;
+            }
+        } else {
+            if (delta < 0x31) {
+                s32 temp = newY - 0x30;
+                newY = delta + temp;
+                camera->unk1C = 0;
+            } else {
+                newY += 2;
+            }
+        }
+        newY = CLAMP(newY, gUnknown_03005440, gUnknown_030054BC - 0xA0);
+
+        newX = newX + camera->unk18;
+        newY = newY + camera->unk1C;
+        newX += camera->unk60;
+        newY += camera->unk62;
+
+    } else {
+        if (camera->unk40 != 0) {
+            camera->unk40--;
+        } else {
+            if (!(camera->unk50 & 1)) {
+                s16 airSpeedX = player->speedAirX;
+                camera->unk10 = ((player->x >> 8) + camera->unk18 - 0x78);
+                camera->unk56 = (airSpeedX + (camera->unk56 * 0xF)) >> 4;
+                camera->unk10 += (camera->unk56 >> 5);
+            }
+            if (!(camera->unk50 & 2)) {
+                s32 unk64 = camera->unk64;
+                s32 temp8 = player->unk17 - 4;
+                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                    temp8 = -temp8;
+                }
+
+                if (unk64 != temp8) {
+                    if (unk64 < temp8) {
+                        unk64 += 5;
+                        if (unk64 > temp8) {
+                            unk64 = temp8;
+                        }
+                    } else {
+                        unk64 -= 5;
+                        if (unk64 < temp8) {
+                            unk64 = temp8;
+                        }
+                    }
+                    camera->unk64 = unk64;
+                }
+
+                camera->unk14
+                    = (player->y >> 8) + camera->unk1C - 0x50 + camera->unk4C + unk64;
+            }
+        }
+
+        if ((camera->unk10 - newX) > camera->unk44) {
+            s32 temp = camera->unk10 - newX - camera->unk44;
+            s32 temp2 = camera->unk8 >> 8;
+            if (temp2 > temp) {
+                temp2 = temp;
+            }
+            newX += temp2;
+        } else if ((camera->unk10 - newX) < -(camera->unk44)) {
+            s32 temp = (camera->unk10 - newX) + camera->unk44;
+            s32 temp2 = -(camera->unk8 >> 8);
+            if (temp2 < temp) {
+                temp2 = temp;
+            }
+
+            newX += temp2;
+        }
+
+        newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF0);
+
+        if (camera->unk8 < 0x1000) {
+            camera->unk8 += 0x20;
+        }
+
+        if ((player->moveState & 2) && (player->unk85 != 3 || player->unk61 != 9)) {
+            camera->unk48 += 4;
+            camera->unk48 = camera->unk48 > 0x18 ? 0x18 : camera->unk48;
+        } else {
+            camera->unk48 -= 4;
+            camera->unk48 = camera->unk48 < 0 ? 0 : camera->unk48;
+        }
+
+        if ((camera->unk14 - newY) > camera->unk48) {
+            newY += (camera->unkC > ((camera->unk14 - newY) - camera->unk48))
+                ? ((camera->unk14 - newY) - camera->unk48)
+                : camera->unkC;
+        } else if ((camera->unk14 - newY) < -(camera->unk48)) {
+            newY += (-camera->unkC < (camera->unk14 - newY) + camera->unk48)
+                ? (camera->unk14 - newY) + camera->unk48
+                : -camera->unkC;
+        }
+
+        newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA0);
+
+        // maybe a macro, these values are already clamped
+        newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF0);
+        newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA0);
+        newX = newX + camera->unk60;
+        newY = newY + camera->unk62;
+    }
+
+    camera->x = newX;
+    camera->y = newY;
+
+    camera->unk38 -= newX;
+    camera->unk3C -= newY;
+
+    sub_801C708(newX, newY);
+
+    if (camera->unk58 != NULL) {
+        camera->unk58(newX, newY);
     }
 }
