@@ -1122,15 +1122,15 @@ void sub_801C068(u32 level)
             camera->y = 0;
             camera->unk64 = 0xFFFC;
         } else {
-            camera->x = (player->x >> 8);
-            camera->unk10 = (player->x >> 8) - 0x1E0;
-            camera->y = (player->y >> 8) - 0x54;
+            camera->x = Q_24_8_TO_INT(player->x);
+            camera->unk10 = Q_24_8_TO_INT(player->x) - 0x1E0;
+            camera->y = Q_24_8_TO_INT(player->y) - 0x54;
             camera->unk14 = camera->y;
             camera->unk64 = player->unk17 - 4;
         }
     } else {
-        camera->x = (player->x >> 8) - 0x78;
-        camera->y = (player->y >> 8) - 0x54;
+        camera->x = Q_24_8_TO_INT(player->x) - 0x78;
+        camera->y = Q_24_8_TO_INT(player->y) - 0x54;
 
         if (camera->x < 0) {
             camera->x = 0;
@@ -1194,12 +1194,13 @@ void sub_801C394(void)
     camera->unk38 = newX;
     camera->unk3C = newY;
 
-    newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF1);
-    newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA1);
+    newX = CLAMP(newX, camera->unk30, camera->unk34 - (DISPLAY_WIDTH + 1));
+    newY = CLAMP(newY, camera->unk28, camera->unk2C - (DISPLAY_HEIGHT + 1));
 
     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
-        || ((gCurrentLevel == 0x1C) && (gUnknown_030054B0 == 0))
-        || (gCurrentLevel == 0x1D)) {
+        || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
+            && (gUnknown_030054B0 == 0))
+        || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         s32 delta, playerY;
         if (player->moveState & MOVESTATE_DEAD) {
             if (camera->unk58 != NULL) {
@@ -1208,55 +1209,55 @@ void sub_801C394(void)
             return;
         }
 
-        if (gCurrentLevel == 0x1D) {
+        if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             sub_802C668(&player->x, &player->y);
         }
 
         camera->unk10 += 5;
         newX += 5;
 
-        if (newX + 0x79 < (player->x >> 8)) {
-            if ((camera->unk10 + 0x50) > newX) {
-                s32 temp = (player->x >> 8);
-                temp -= 0x78;
+        if (newX + ((DISPLAY_WIDTH / 2) + 1) < Q_24_8_TO_INT(player->x)) {
+            if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
+                s32 temp = Q_24_8_TO_INT(player->x);
+                temp -= DISPLAY_WIDTH / 2;
                 camera->unk18 = temp - newX;
             } else {
-                newX = (camera->unk10 + 0x50);
+                newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
                 camera->unk18 = 0;
             }
         } else {
             camera->unk18 = 0;
-            if ((newX + 0x60) > (player->x >> 8)) {
-                newX = (player->x >> 8);
-                newX -= 0x60;
+            if ((newX + 96) > Q_24_8_TO_INT(player->x)) {
+                newX = Q_24_8_TO_INT(player->x);
+                newX -= 96;
                 if (newX < camera->unk10) {
                     newX = camera->unk10;
                 }
             }
         }
 
-        playerY = player->y >> 8;
+        playerY = Q_24_8_TO_INT(player->y);
         delta = playerY - newY;
-        if (gCurrentLevel == 0x1D) {
-            if (delta < 0x31) {
-                s32 temp = newY - 0x30;
+        if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+            if (delta < 49) {
+                s32 temp = newY - 48;
                 newY = delta + temp;
                 camera->unk1C = 0;
-            } else if (delta >= (gUnknown_030054BC - 0xD0)) {
-                s32 temp = newY - 0x70;
+            } else if (delta >= (gUnknown_030054BC - 208)) {
+                s32 temp = newY - 112;
                 newY = delta + temp;
                 camera->unk1C = 0;
             }
         } else {
-            if (delta < 0x31) {
-                s32 temp = newY - 0x30;
+            if (delta < 49) {
+                s32 temp = newY - 48;
                 newY = delta + temp;
                 camera->unk1C = 0;
             } else {
                 newY += 2;
             }
         }
-        newY = CLAMP(newY, gUnknown_03005440, gUnknown_030054BC - 0xA0);
+        newY = CLAMP(newY, gUnknown_03005440, gUnknown_030054BC - DISPLAY_HEIGHT);
 
         newX = newX + camera->unk18;
         newY = newY + camera->unk1C;
@@ -1269,8 +1270,9 @@ void sub_801C394(void)
         } else {
             if (!(camera->unk50 & 1)) {
                 s16 airSpeedX = player->speedAirX;
-                camera->unk10 = ((player->x >> 8) + camera->unk18 - 0x78);
-                camera->unk56 = (airSpeedX + (camera->unk56 * 0xF)) >> 4;
+                camera->unk10
+                    = Q_24_8_TO_INT(player->x) + camera->unk18 - (DISPLAY_WIDTH / 2);
+                camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);
             }
             if (!(camera->unk50 & 2)) {
@@ -1295,21 +1297,21 @@ void sub_801C394(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14
-                    = (player->y >> 8) + camera->unk1C - 0x50 + camera->unk4C + unk64;
+                camera->unk14 = Q_24_8_TO_INT(player->y) + camera->unk1C
+                    - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
             }
         }
 
         if ((camera->unk10 - newX) > camera->unk44) {
             s32 temp = camera->unk10 - newX - camera->unk44;
-            s32 temp2 = camera->unk8 >> 8;
+            s32 temp2 = Q_24_8_TO_INT(camera->unk8);
             if (temp2 > temp) {
                 temp2 = temp;
             }
             newX += temp2;
-        } else if ((camera->unk10 - newX) < -(camera->unk44)) {
+        } else if ((camera->unk10 - newX) < -camera->unk44) {
             s32 temp = (camera->unk10 - newX) + camera->unk44;
-            s32 temp2 = -(camera->unk8 >> 8);
+            s32 temp2 = -Q_24_8_TO_INT(camera->unk8);
             if (temp2 < temp) {
                 temp2 = temp;
             }
@@ -1317,15 +1319,15 @@ void sub_801C394(void)
             newX += temp2;
         }
 
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF0);
+        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
 
-        if (camera->unk8 < 0x1000) {
-            camera->unk8 += 0x20;
+        if (camera->unk8 < Q_24_8(16)) {
+            camera->unk8 += Q_24_8(0.125);
         }
 
         if ((player->moveState & 2) && (player->unk85 != 3 || player->unk61 != 9)) {
             camera->unk48 += 4;
-            camera->unk48 = camera->unk48 > 0x18 ? 0x18 : camera->unk48;
+            camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
         } else {
             camera->unk48 -= 4;
             camera->unk48 = camera->unk48 < 0 ? 0 : camera->unk48;
@@ -1341,11 +1343,11 @@ void sub_801C394(void)
                 : -camera->unkC;
         }
 
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA0);
+        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
 
         // maybe a macro, these values are already clamped
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - 0xF0);
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - 0xA0);
+        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
+        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
         newX = newX + camera->unk60;
         newY = newY + camera->unk62;
     }
