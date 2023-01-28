@@ -169,10 +169,12 @@ typedef struct {
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
      *  0x17 = Used in Interactable 044
+     *  0x18 = Dash Ring
      * */
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
-    /* 0x6F */ u8 filler6F[5];
+    /* 0x6F */ u8 filler6F[3];
+    /* 0x72 */ u16 unk72;
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;

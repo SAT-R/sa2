@@ -449,7 +449,7 @@ void sub_806F468(void)
                         player->speed = player->unkE8;
                         // BOOSTING
                         player->state = 2;
-                        m4aSongNumStart(SE_277);
+                        m4aSongNumStart(SE_DASH_RING);
                         return;
                     case 1:
                         player->speed = player->speed < MIN_BOUNCE_SPEED

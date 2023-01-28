@@ -99,7 +99,7 @@ SECTIONS
         build/sa2/asm/interactable_hook_rail.o(.text);
         build/sa2/asm/interactable_052.o(.text);
         build/sa2/asm/interactable_hot_crater_crane.o(.text);
-        build/sa2/asm/interactable_dash_ring.o(.text);
+        build/sa2/src/interactable_dash_ring.o(.text);
         build/sa2/asm/interactable_floating_spring.o(.text);
         build/sa2/asm/interactable_music_plant_note_sphere.o(.text);
         build/sa2/asm/interactable_music_plant_note_block.o(.text);
@@ -230,6 +230,7 @@ SECTIONS
         build/sa2/src/special_stage_ui.o(.rodata);
         build/sa2/src/special_stage_guard_robo.o(.rodata);
         build/sa2/src/special_stage_tables.o(.rodata);
+        build/sa2/src/interactable_dash_ring.o(.rodata);
         build/sa2/data/data1_2.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
         build/sa2/src/collect_rings_time_display.o(.rodata);

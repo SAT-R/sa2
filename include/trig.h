@@ -10,4 +10,10 @@ extern const s16 gSineTable[1280];
 #define SIN(radAngle) (gSineTable[(radAngle)])
 #define COS(radAngle) (gSineTable[(radAngle) + 256])
 
+#define DEG_TO_SIN(deg) ((int)((((double)(deg)) / 360.0) * (ONE_CYCLE + 1)))
+
+// NOTE: Returns a Q_24_8!
+#define SIN_DEG(degrees) Q_2_14_TO_Q_24_8(gSineTable[DEG_TO_SIN(degrees)])
+#define COS_DEG(degrees) Q_2_14_TO_Q_24_8(gSineTable[DEG_TO_SIN(degrees) + 256])
+
 #endif // GUARD_TRIG_H
