@@ -157,7 +157,8 @@ typedef struct {
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C;
     /* 0x5E */ u16 unk5E; // input ?
-    u8 a[2];
+    /* 0x61 */ u8 unk60;
+    /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
     /* 0x64 */ s16 unk64;
@@ -195,6 +196,8 @@ struct UNK_80D62D8 {
     u8 unk24[12];
 };
 
+typedef void (*CameraMain)(s32, s32);
+
 struct Camera {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -212,19 +215,19 @@ struct Camera {
     s32 unk34;
     s32 unk38;
     s32 unk3C;
-    u16 unk40;
+    s16 unk40;
     s32 unk44;
     s32 unk48;
     s32 unk4C;
     /* 0x50 */ u16 unk50;
     u16 unk52;
     u16 unk54;
-    u16 unk56;
-    TaskMain unk58;
+    s16 unk56;
+    CameraMain unk58;
     /* 0x5C */ struct Task *unk5C;
-    u16 unk60;
-    u16 unk62;
-    u16 unk64;
+    s16 unk60;
+    s16 unk62;
+    s16 unk64;
     u8 unk66;
 }; /* size 0x80 */
 

@@ -1,6 +1,10 @@
 #ifndef GUARD_IA_DASH_RING_H
 #define GUARD_IA_DASH_RING_H
 
+#include "global.h"
+#include "sprite.h"
+#include "interactable.h"
+
 #define DASH_RING__NUM_ORIENTATIONS 8
 
 #define DASH_RING__TYPE_REGULAR     0

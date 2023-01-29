@@ -17,6 +17,7 @@
 #define IA_DASH_RING_ACCELERATION 8
 
 static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring);
+static bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring);
 static void Task_Interactable_DashRing(void);
 static void Task_Interactable_DashRing_AfterAcceleration(void);
 static void TaskDestructor_Interactable_DashRing(struct Task *);
@@ -242,7 +243,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gCurTask->main = Task_Interactable_DashRing_AfterAcceleration;
 }
 
-bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
+static bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
 {
     s32 ringScreenX, ringScreenY;
     s16 ringScreenX2, ringScreenY2;
