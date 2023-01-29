@@ -46,6 +46,7 @@ extern void sub_8073AA8(void);
 extern void TaskDestructor_80743B8(struct Task *);
 extern void sub_807447C(Sprite_HCCrane *);
 
+#if 1
 void initSprite_Interactable_HotCrater_Crane(Interactable *ia, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
@@ -85,71 +86,78 @@ void initSprite_Interactable_HotCrater_Crane(Interactable *ia, u16 spriteRegionX
     sub_8004558(cs->s);
 
     for (i = 0; i < ARRAY_COUNT(crane->unk28); i++) {
-        crane->unk28[i].unk4 = 0;
+        CraneStruct *current = &crane->unk28[i];
+        current->unk4 = 0;
 
         if (i == 0) {
-            crane->unk28[i].unk4 = 2;
-            crane->unk28[i].s = NULL;
-            crane->unk28[i].unk8 = 0;
-            crane->unk28[i].unkC = 0x2C00;
-            crane->unk28[i].unk10 = 0;
+            current->unk4 = 2;
+            current->s = NULL;
+            current->unk8 = 0;
+            current->unkC = 0x2C00;
+            current->unk10 = 0;
         } else {
             // _08073998
             Sprite *spr = &crane->unk188;
-            Sprite *hook = crane->unk28[i].s;
-            crane->unk28[i].s = spr;
-            crane->unk28[i].unk8 = 0;
-            crane->unk28[i].unkC = 0;
-            crane->unk28[i].unk10 = 0xC00;
+            Sprite *hook = current->s;
+            current->s = spr;
+            current->unk8 = 0;
+            current->unkC = 0;
+            current->unk10 = 0xC00;
 
             if (i == 1) {
-                crane->unk28[i].unk4 = 4;
+                current->unk4 = 4;
                 spr->unk1A = 0x480;
 
-                crane->unk28[i].s->graphics.size = 0;
-                crane->unk28[i].s->unk14 = 0;
-                crane->unk28[i].s->unk1C = 0;
-                crane->unk28[i].s->unk21 = 0xFF;
-                crane->unk28[i].s->unk22 = 0x10;
-                crane->unk28[i].s->focused = 0;
-                crane->unk28[i].s->unk28->unk0 = -1;
-                crane->unk28[i].s->unk10 = 0x2000;
-                crane->unk28[i].s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
-                crane->unk28[i].s->graphics.anim = SA2_ANIM_THROW_CRANE_PARTS;
-                crane->unk28[i].s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
-                sub_8004558(crane->unk28[i].s);
+                current->s->graphics.size = 0;
+                current->s->unk14 = 0;
+                current->s->unk1C = 0;
+                current->s->unk21 = 0xFF;
+                current->s->unk22 = 0x10;
+                current->s->focused = 0;
+                current->s->unk28->unk0 = -1;
+                current->s->unk10 = 0x2000;
+                current->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
+                current->s->graphics.anim = SA2_ANIM_THROW_CRANE_PARTS;
+                current->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
+                sub_8004558(current->s);
             }
         }
         // _08073A00
     }
 
-    // Hook
-    crane->unkE8.s = &crane->unk158;
-    crane->unkE8.unk4 = 5;
-    crane->unkE8.unk8 = 0x100;
-    crane->unkE8.unkC = 0x158;
-    crane->unkE8.unk10 = 0xC00;
-    crane->unkE8.s->unk1A = 0x480;
-    crane->unkE8.s->graphics.size = 0;
-    crane->unkE8.s->unk14 = 0;
-    crane->unkE8.s->unk1C = 0;
-    crane->unkE8.s->unk21 = 0xFF;
-    crane->unkE8.s->unk22 = 0x10;
-    crane->unkE8.s->focused = 0;
-    crane->unkE8.s->unk28->unk0 = -1;
-    crane->unkE8.s->unk10 = 0x2000;
-    crane->unkE8.s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
-    crane->unkE8.s->graphics.anim = SA2_ANIM_THROW_CRANE_PARTS;
-    crane->unkE8.s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
-    sub_8004558(crane->unkE8.s);
+    { // Hook
+        CraneStruct *hook = &crane->unkE8;
+        hook->s = &crane->unk158;
+        hook->unk4 = 5;
+        hook->unk8 = 0x100;
+        hook->unkC = 0x158;
+        hook->unk10 = 0xC00;
+        hook->s->unk1A = 0x480;
+        hook->s->graphics.size = 0;
+        hook->s->unk14 = 0;
+        hook->s->unk1C = 0;
+        hook->s->unk21 = 0xFF;
+        hook->s->unk22 = 0x10;
+        hook->s->focused = 0;
+        hook->s->unk28->unk0 = -1;
+        hook->s->unk10 = 0x2000;
+        hook->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
+        hook->s->graphics.anim = SA2_ANIM_THROW_CRANE_PARTS;
+        hook->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
+        sub_8004558(hook->s);
+    }
+    {
+        CraneStruct *last = &crane->unk108;
+        last->s = NULL;
+        last->unk4 = 2;
+        last->unk8 = 0;
+        last->unkC = 0x1000;
+        last->unk10 = 0;
+    }
 
-    crane->unk108.s = NULL;
-    crane->unk108.unk4 = 2;
-    crane->unk108.unk8 = 0;
-    crane->unk108.unkC = 0x1000;
-    crane->unk108.unk10 = 0;
     sub_807447C(crane);
 }
+#endif
 
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
