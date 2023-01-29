@@ -273,10 +273,6 @@ extern u32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 
-extern Background gUnknown_03005890;
-extern Background gUnknown_030058D0;
-extern Background gUnknown_03005910;
-
 extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;

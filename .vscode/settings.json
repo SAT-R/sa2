@@ -148,11 +148,16 @@
         "filesystem": "c",
         "mutex": "c",
         "__debug": "c",
-        "collect_rings_time_display.h": "c"
+        "collect_rings_time_display.h": "c",
+        "__bit_reference": "c",
+        "__node_handle": "c",
+        "__memory": "c",
+        "optional": "c",
+        "ratio": "c",
+        "__functional_base": "c"
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "xaver.clang-format",
-    "clang-format.executable": "clang-format-13",
-    "dbt.queryLimit": 500
+    "clang-format.executable": "clang-format-13"
 }
