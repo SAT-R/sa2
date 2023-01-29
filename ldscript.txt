@@ -98,6 +98,7 @@ SECTIONS
         build/sa2/asm/interactable_wind_up_stick.o(.text);
         build/sa2/asm/interactable_hook_rail.o(.text);
         build/sa2/asm/interactable_052.o(.text);
+        build/sa2/src/interactable_hot_crater_crane.o(.text);
         build/sa2/asm/interactable_hot_crater_crane.o(.text);
         build/sa2/src/interactable_dash_ring.o(.text);
         build/sa2/asm/interactable_floating_spring.o(.text);

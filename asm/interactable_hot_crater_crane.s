@@ -4,39 +4,40 @@
 .syntax unified
 .arm
 
+.if 0
 	thumb_func_start initSprite_Interactable_HotCrater_Crane
 initSprite_Interactable_HotCrater_Crane: @ 0x08073874
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
 	sub sp, #4
-	mov r8, r0
+	mov r8, r0              @ r8 = ia
 	adds r4, r1, #0
 	adds r5, r2, #0
 	adds r6, r3, #0
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ r4 = spriteRegionX
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = spriteRegionY
 	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
+	lsrs r6, r6, #0x18      @ r6 = spriteY
 	ldr r0, _08073970 @ =sub_8073AA8
 	movs r1, #0xe6
 	lsls r1, r1, #1
 	ldr r2, _08073974 @ =0x00002010
-	ldr r3, _08073978 @ =sub_80743B8
+	ldr r3, _08073978 @ =TaskDestructor_80743B8
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r2, r0
+	adds r7, r2, r0         @ r7 = crane
 	ldr r1, _0807397C @ =IWRAM_START + 0x1B8
 	adds r0, r2, r1
 	movs r3, #0
 	str r3, [r0]
-	mov r1, r8
+	mov r1, r8              @ r1 = ia
 	ldrb r0, [r1]
 	lsls r0, r0, #3
 	lsls r4, r4, #8
@@ -62,8 +63,9 @@ initSprite_Interactable_HotCrater_Crane: @ 0x08073874
 	adds r0, r4, #0
 	mov r1, r8
 	strb r0, [r1]
+
 	ldr r4, _08073988 @ =IWRAM_START + 0x8
-	adds r5, r2, r4
+	adds r5, r2, r4     @ r5 = cs
 	ldr r0, _0807398C @ =IWRAM_START + 0x128
 	adds r2, r2, r0
 	str r2, [r5]
@@ -116,9 +118,9 @@ initSprite_Interactable_HotCrater_Crane: @ 0x08073874
 	mov r8, r1
 	movs r6, #0
 _08073952:
-	lsls r0, r4, #5
+	lsls r0, r4, #5         @ i * 32
 	adds r0, #0x28
-	adds r5, r7, r0
+	adds r5, r7, r0         @ r5 = crane->unk28[i]
 	strh r6, [r5, #4]
 	cmp r4, #0
 	bne _08073998
@@ -134,7 +136,7 @@ _08073952:
 	.align 2, 0
 _08073970: .4byte sub_8073AA8
 _08073974: .4byte 0x00002010
-_08073978: .4byte sub_80743B8
+_08073978: .4byte TaskDestructor_80743B8
 _0807397C: .4byte IWRAM_START + 0x1B8
 _08073980: .4byte IWRAM_START + 0x1C4
 _08073984: .4byte IWRAM_START + 0x1C9
@@ -169,6 +171,7 @@ _08073998:
 	adds r0, #0x21
 	movs r1, #0xff
 	strb r1, [r0]
+
 	ldr r0, [r5]
 	adds r0, #0x22
 	movs r1, #0x10
@@ -187,7 +190,7 @@ _08073998:
 	ldr r0, _08073AA0 @ =0x06012B80
 	str r0, [r1, #4]
 	movs r0, #0x8d
-	lsls r0, r0, #2
+	lsls r0, r0, #2 @ SA2_ANIM_THROW_CRANE_HOOK
 	strh r0, [r1, #0xa]
 	ldr r0, [r5]
 	adds r0, #0x20
@@ -200,6 +203,8 @@ _08073A00:
 	lsrs r4, r0, #0x10
 	cmp r4, #5
 	bls _08073952
+
+    @ r7 = crane
 	adds r5, r7, #0
 	adds r5, #0xe8
 	movs r4, #0xac
@@ -275,6 +280,7 @@ _08073A00:
 	.align 2, 0
 _08073AA0: .4byte 0x06012B80
 _08073AA4: .4byte 0x06012980
+.endif
 
 	thumb_func_start sub_8073AA8
 sub_8073AA8: @ 0x08073AA8
@@ -1458,8 +1464,8 @@ _080743B2:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_80743B8
-sub_80743B8: @ 0x080743B8
+	thumb_func_start TaskDestructor_80743B8
+TaskDestructor_80743B8: @ 0x080743B8
 	bx lr
 	.align 2, 0
 
