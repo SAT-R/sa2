@@ -311,8 +311,7 @@ void Task_8073C6C(void)
         // _08073CF8
         {
             u32 newR0 = r1 + 256;
-            newR0 &= (1024 - 1);
-            crane->cs[7].unk8 = newR0;
+            crane->cs[7].unk8 = newR0 & (1024 - 1);
         }
     }
     // _08073D0A
