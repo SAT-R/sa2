@@ -4,121 +4,8 @@
 .syntax unified
 .arm
 .if 0
-	thumb_func_start Task_8073C6C
-Task_8073C6C: @ 0x08073C6C
-	push {r4, r5, r6, lr}
-	ldr r0, _08073CD4 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r0, _08073CD8 @ =IWRAM_START + 0x1BE
-	adds r5, r1, r0
-	movs r2, #0
-	ldrsh r1, [r5, r2]
-	adds r0, r4, #0
-	bl sub_80744D0
-	adds r6, r0, #0
-	ldrh r1, [r5]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x14
-	adds r0, r4, #0
-	bl sub_8074490
-	adds r0, r4, #0
-	bl sub_807447C
-	adds r0, r4, #0
-	movs r1, #7
-	bl sub_8074448
-	ldr r1, _08073CDC @ =0xFFFFFF00
-	adds r0, r0, r1
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	cmp r1, #0
-	beq _08073D0A
-	ldrh r0, [r5]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x18
-	cmp r0, #0
-	bge _08073CBC
-	rsbs r0, r0, #0
-_08073CBC:
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	cmp r2, #0
-	bne _08073CC6
-	movs r2, #1
-_08073CC6:
-	ldr r0, _08073CE0 @ =0x000001FF
-	cmp r1, r0
-	bhi _08073CE4
-	cmp r2, r1
-	bhi _08073CF6
-	subs r0, r1, r2
-	b _08073CF0
-	.align 2, 0
-_08073CD4: .4byte gCurTask
-_08073CD8: .4byte IWRAM_START + 0x1BE
-_08073CDC: .4byte 0xFFFFFF00
-_08073CE0: .4byte 0x000001FF
-_08073CE4:
-	movs r0, #0x80
-	lsls r0, r0, #3
-	subs r0, r0, r1
-	cmp r2, r0
-	bgt _08073CF6
-	adds r0, r1, r2
-_08073CF0:
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	b _08073CF8
-_08073CF6:
-	movs r1, #0
-_08073CF8:
-	movs r2, #0x80
-	lsls r2, r2, #1
-	adds r0, r1, r2
-	ldr r2, _08073D44 @ =0x000003FF
-	adds r1, r2, #0
-	ands r0, r1
-	adds r1, r4, #0
-	adds r1, #0xf0
-	strh r0, [r1]
-_08073D0A:
-	adds r0, r4, #0
-	bl sub_80741B4
-	movs r0, #0xdf
-	lsls r0, r0, #1
-	adds r1, r4, r0
-	ldrh r0, [r1]
-	adds r0, #0x2a
-	strh r0, [r1]
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	bgt _08073D26
-	cmp r6, #0
-	bne _08073D2C
-_08073D26:
-	adds r0, r4, #0
-	bl sub_80743E4
-_08073D2C:
-	adds r0, r4, #0
-	bl sub_80742A8
-	movs r2, #0xe0
-	lsls r2, r2, #1
-	adds r1, r4, r2
-	ldrh r0, [r1]
-	adds r0, #1
-	strh r0, [r1]
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08073D44: .4byte 0x000003FF
-.endif
-
-	thumb_func_start sub_8073D48
-sub_8073D48: @ 0x08073D48
+	thumb_func_start Task_8073D48
+Task_8073D48: @ 0x08073D48
 	push {r4, r5, r6, lr}
 	ldr r0, _08073DBC @ =gCurTask
 	ldr r0, [r0]
@@ -224,6 +111,7 @@ _08073E10:
 	bx r0
 	.align 2, 0
 _08073E1C: .4byte 0x000003FF
+.endif
 
 	thumb_func_start sub_8073E20
 sub_8073E20: @ 0x08073E20
@@ -997,12 +885,12 @@ sub_80743E4: @ 0x080743E4
 	strh r0, [r1]
 	ldr r0, _080743F8 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080743FC @ =sub_8073D48
+	ldr r0, _080743FC @ =Task_8073D48
 	str r0, [r1, #8]
 	bx lr
 	.align 2, 0
 _080743F8: .4byte gCurTask
-_080743FC: .4byte sub_8073D48
+_080743FC: .4byte Task_8073D48
 
 	thumb_func_start sub_8074400
 sub_8074400: @ 0x08074400

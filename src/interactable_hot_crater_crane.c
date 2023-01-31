@@ -57,6 +57,7 @@ extern void sub_80742A8(Sprite_HCCrane *);
 extern bool32 sub_807432C(Sprite_HCCrane *);
 extern void sub_80743BC(Sprite_HCCrane *);
 extern void sub_80743E4(Sprite_HCCrane *);
+extern void sub_8074400(Sprite_HCCrane *);
 extern u16 sub_8074448(Sprite_HCCrane *, u16);
 extern void sub_807447C(Sprite_HCCrane *);
 extern void sub_8074490(Sprite_HCCrane *, s16);
@@ -260,7 +261,6 @@ void Task_8073BD4(void)
         }
 
         crane->cs[0].unk8 += r3;
-        // crane->cs.unk8 = 512 - (crane->unk1B8.unk8 >> 6);
     }
 
     if (crane->unk1B8.unk6 == 0) {
@@ -293,13 +293,10 @@ void Task_8073C6C(void)
         if (r2 == 0)
             r2 = 1;
 
-        //_08073CC6
-        // r0(var) -> r2(reg)
         if (r1 <= (512 - 1)) {
             if (r2 > r1) {
                 r1 = 0;
             } else {
-                // _08073CF0
                 r1 = r1 - r2;
             }
         } else if (r2 <= 1024 - r1) {
@@ -308,7 +305,6 @@ void Task_8073C6C(void)
             r1 = 0;
         }
 
-        // _08073CF8
         {
             u32 newR0 = r1 + 256;
             crane->cs[7].unk8 = newR0 & (1024 - 1);
@@ -324,6 +320,55 @@ void Task_8073C6C(void)
     sub_80742A8(crane);
 
     crane->unk1B8.unk8++;
+}
+
+void Task_8073D48(void)
+{
+    bool32 result_744D0;
+    u16 r1;
+    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+
+    sub_8074260(crane);
+
+    result_744D0 = sub_80744D0(crane, crane->unk1B8.unk6);
+
+    sub_8074490(crane, crane->unk1B8.unk6 >> 4);
+    sub_807447C(crane);
+    r1 = sub_8074448(crane, 7) - 256;
+
+    if (r1 != 512) {
+        u16 r4;
+        s32 r0 = (crane->unk1B8.unk6 >> 8);
+        r4 = (r0 < 0) ? -r0 : r0;
+
+        if (r4 == 0)
+            r4 = 1;
+
+        if (r1 <= (512 - 1)) {
+            if (r4 > 512 - r1) {
+                r1 = 512;
+            } else {
+                r1 = r1 + r4;
+            }
+        } else if (r4 <= r1 - 512) {
+            r1 = r1 - r4;
+        } else {
+            r1 = 512;
+        }
+
+        {
+            u32 newR0 = r1 + 256;
+            crane->cs[7].unk8 = newR0 & (1024 - 1);
+        }
+    }
+
+    sub_80741B4(crane);
+    crane->unk1B8.unk6 += 42;
+
+    if ((result_744D0 == FALSE))
+        sub_8074400(crane);
+
+    sub_80742A8(crane);
 }
 
 /* matches
