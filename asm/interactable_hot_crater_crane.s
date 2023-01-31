@@ -4,85 +4,8 @@
 .syntax unified
 .arm
 .if 0
-	thumb_func_start Task_8073BD4
-Task_8073BD4: @ 0x08073BD4
-	push {r4, r5, lr}
-	ldr r0, _08073C1C @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r3, _08073C20 @ =gPlayer
-	ldr r2, [r3, #0x20]
-	movs r0, #0x80
-	ands r0, r2
-	cmp r0, #0
-	bne _08073BF6
-	movs r5, #0x2c
-	ldrsh r0, [r3, r5]
-	cmp r0, #0x78
-	bne _08073C04
-_08073BF6:
-	ldr r0, _08073C24 @ =0xFFBFFFFF
-	ands r2, r0
-	str r2, [r3, #0x20]
-	ldr r0, _08073C28 @ =IWRAM_START + 0x1B8
-	adds r1, r1, r0
-	movs r0, #0
-	str r0, [r1]
-_08073C04:
-	movs r3, #0xdf
-	lsls r3, r3, #1
-	adds r1, r4, r3
-	ldrh r2, [r1]
-	movs r5, #0
-	ldrsh r0, [r1, r5]
-	cmp r0, #0x3f
-	ble _08073C2C
-	movs r3, #0x40
-	adds r0, r2, #0
-	subs r0, #0x40
-	b _08073C30
-	.align 2, 0
-_08073C1C: .4byte gCurTask
-_08073C20: .4byte gPlayer
-_08073C24: .4byte 0xFFBFFFFF
-_08073C28: .4byte IWRAM_START + 0x1B8
-_08073C2C:
-	ldrh r3, [r1]
-	movs r0, #0
-_08073C30:
-	strh r0, [r1]
-	ldrh r0, [r4, #0x10]
-	adds r0, r3, r0
-	strh r0, [r4, #0x10]
-	movs r1, #0xdf
-	lsls r1, r1, #1
-	adds r0, r4, r1
-	movs r3, #0
-	ldrsh r0, [r0, r3]
-	cmp r0, #0
-	bne _08073C4C
-	adds r0, r4, #0
-	bl sub_8074138
-_08073C4C:
-	adds r0, r4, #0
-	bl sub_807447C
-	adds r0, r4, #0
-	bl sub_80741B4
-	adds r0, r4, #0
-	bl sub_8074550
-	adds r0, r4, #0
-	bl sub_80742A8
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-.endif
-
-	thumb_func_start sub_8073C6C
-sub_8073C6C: @ 0x08073C6C
+	thumb_func_start Task_8073C6C
+Task_8073C6C: @ 0x08073C6C
 	push {r4, r5, r6, lr}
 	ldr r0, _08073CD4 @ =gCurTask
 	ldr r0, [r0]
@@ -192,6 +115,7 @@ _08073D2C:
 	bx r0
 	.align 2, 0
 _08073D44: .4byte 0x000003FF
+.endif
 
 	thumb_func_start sub_8073D48
 sub_8073D48: @ 0x08073D48
@@ -755,7 +679,7 @@ _08074178:
 	strh r1, [r0]
 	ldr r0, _080741AC @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080741B0 @ =sub_8073C6C
+	ldr r0, _080741B0 @ =Task_8073C6C
 	str r0, [r1, #8]
 	pop {r4, r5}
 	pop {r0}
@@ -764,7 +688,7 @@ _08074178:
 _080741A4: .4byte gPlayer
 _080741A8: .4byte 0xFFBFFFFF
 _080741AC: .4byte gCurTask
-_080741B0: .4byte sub_8073C6C
+_080741B0: .4byte Task_8073C6C
 
 	thumb_func_start sub_80741B4
 sub_80741B4: @ 0x080741B4
@@ -1149,6 +1073,7 @@ _08074470:
 	.align 2, 0
 _08074478: .4byte 0x000003FF
 
+@ Matched in src
 	thumb_func_start sub_807447C
 sub_807447C: @ 0x0807447C
 	ldrh r2, [r0, #0x10]
@@ -1212,14 +1137,14 @@ sub_80744D0: @ 0x080744D0
 	thumb_func_start sub_80744E0
 sub_80744E0: @ 0x080744E0
 	push {r4, r5, r6, lr}
-	adds r6, r0, #0
+	adds r6, r0, #0         @ r6 = crane
 	lsls r1, r1, #0x10
-	lsrs r4, r1, #0x10
+	lsrs r4, r1, #0x10      @ r4 = p1
 	lsls r0, r4, #5
 	adds r0, #8
-	adds r1, r6, r0
+	adds r1, r6, r0         @ r1 = crane->cs
 	lsls r2, r2, #0x10
-	asrs r5, r2, #0x10
+	asrs r5, r2, #0x10      @ r5 = p2
 	ldr r0, [r1, #0x10]
 	adds r0, r0, r5
 	adds r3, r0, #0

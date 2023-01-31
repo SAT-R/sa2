@@ -35,12 +35,9 @@ typedef struct {
 typedef struct {
     /* 0x000 */ s32 posX;
     /* 0x004 */ s32 posY;
-    /* 0x008 */ CraneStruct cs;
-    /* 0x028 */ CraneStruct unk28[6];
-    /* 0x0E8 */ CraneStruct unkE8;
-    /* 0x108 */ CraneStruct unk108;
+    /* 0x008 */ CraneStruct cs[9];
     /* 0x128 */ Sprite unk128;
-    /* 0x158 */ Sprite unk158; // Maybe alos Sprite?
+    /* 0x158 */ Sprite unk158;
     /* 0x188 */ Sprite unk188;
     /* 0x1B8 */ unk1B8 unk1B8;
 
@@ -50,6 +47,7 @@ typedef struct {
 } Sprite_HCCrane; /* size: 0x1CC */
 
 extern void Task_8073AA8(void);
+void Task_8073B1C(void);
 extern void TaskDestructor_80743B8(struct Task *);
 extern void sub_8074088(Sprite_HCCrane *);
 extern void sub_8074138(Sprite_HCCrane *);
@@ -58,10 +56,17 @@ extern void sub_8074260(Sprite_HCCrane *);
 extern void sub_80742A8(Sprite_HCCrane *);
 extern bool32 sub_807432C(Sprite_HCCrane *);
 extern void sub_80743BC(Sprite_HCCrane *);
+extern void sub_80743E4(Sprite_HCCrane *);
+extern u16 sub_8074448(Sprite_HCCrane *, u16);
 extern void sub_807447C(Sprite_HCCrane *);
+extern void sub_8074490(Sprite_HCCrane *, s16);
+extern bool32 sub_80744D0(Sprite_HCCrane *, s16);
+extern bool32 sub_80744E0(Sprite_HCCrane *, u16, s16);
 extern void sub_8074550(Sprite_HCCrane *);
 extern bool32 sub_80745B4(Sprite_HCCrane *);
 extern void sub_8074604(Sprite_HCCrane *);
+
+#define CRANE_SOME_ACCELERATION 3072
 
 NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
          void initSprite_Interactable_HotCrater_Crane(Interactable *ia,
@@ -82,7 +87,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
     crane->spriteY = spriteY;
     SET_SPRITE_INITIALIZED(crane->ia);
 
-    cs = &crane->cs;
+    cs = &crane->cs[0];
     cs->s = &crane->unk128;
     cs->unk4 = 5;
     cs->unk8 = 0x200;
@@ -103,8 +108,8 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
     cs->s->variant = 0;
     sub_8004558(cs->s);
 
-    for (i = 0; i < ARRAY_COUNT(crane->unk28); i++) {
-        CraneStruct *current = &crane->unk28[i];
+    for (i = 0; i < 6; i++) {
+        CraneStruct *current = &crane->cs[1 + i];
         current->unk4 = 0;
 
         if (i == 0) {
@@ -142,7 +147,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
     }
 
     { // Hook
-        CraneStruct *hook = &crane->unkE8;
+        CraneStruct *hook = &crane->cs[7];
         hook->s = &crane->unk158;
         hook->unk4 = 5;
         hook->unk8 = 0x100;
@@ -163,7 +168,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
         sub_8004558(hook->s);
     }
     {
-        CraneStruct *last = &crane->unk108;
+        CraneStruct *last = &crane->cs[8];
         last->s = NULL;
         last->unk4 = 2;
         last->unk8 = 0;
@@ -181,11 +186,11 @@ void Task_8073AA8()
 
     sub_8074260(crane);
 
-    if (crane->unkE8.unk8 != 0x100) {
-        if (crane->unkE8.unk8 > 0x100) {
-            crane->unkE8.unk8--;
+    if (crane->cs[7].unk8 != 0x100) {
+        if (crane->cs[7].unk8 > 0x100) {
+            crane->cs[7].unk8--;
         } else {
-            crane->unkE8.unk8++;
+            crane->cs[7].unk8++;
         }
     }
 
@@ -221,7 +226,7 @@ void Task_8073B1C(void)
         }
 
         crane->unk1B8.unk8 += r0;
-        crane->cs.unk8 = 512 - (crane->unk1B8.unk8 >> 6);
+        crane->cs[0].unk8 = 512 - (crane->unk1B8.unk8 >> 6);
     }
 
     if ((u16)crane->unk1B8.unk6 <= crane->unk1B8.unk8) {
@@ -246,7 +251,7 @@ void Task_8073BD4(void)
     {
         u16 r3;
 
-        if (crane->unk1B8.unk6 > 63) {
+        if (crane->unk1B8.unk6 > (64 - 1)) {
             r3 = 64;
             crane->unk1B8.unk6 -= 64;
         } else {
@@ -254,7 +259,7 @@ void Task_8073BD4(void)
             crane->unk1B8.unk6 = 0;
         }
 
-        crane->cs.unk8 += r3;
+        crane->cs[0].unk8 += r3;
         // crane->cs.unk8 = 512 - (crane->unk1B8.unk8 >> 6);
     }
 
@@ -268,9 +273,94 @@ void Task_8073BD4(void)
     sub_80742A8(crane);
 }
 
+void Task_8073C6C(void)
+{
+    bool32 result_744D0;
+    u16 r1;
+    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+
+    result_744D0 = sub_80744D0(crane, crane->unk1B8.unk6);
+
+    sub_8074490(crane, crane->unk1B8.unk6 >> 4);
+    sub_807447C(crane);
+    r1 = sub_8074448(crane, 7) - 256;
+
+    if (r1 != 0) {
+        u16 r2;
+        s32 r0 = (crane->unk1B8.unk6 >> 8);
+        r2 = (r0 < 0) ? -r0 : r0;
+
+        if (r2 == 0)
+            r2 = 1;
+
+        //_08073CC6
+        // r0(var) -> r2(reg)
+        if (r1 <= (512 - 1)) {
+            if (r2 > r1) {
+                r1 = 0;
+            } else {
+                // _08073CF0
+                r1 = r1 - r2;
+            }
+        } else if (r2 <= 1024 - r1) {
+            r1 = r1 + r2;
+        } else {
+            r1 = 0;
+        }
+
+        // _08073CF8
+        {
+            u32 newR0 = r1 + 256;
+            newR0 &= (1024 - 1);
+            crane->cs[7].unk8 = newR0;
+        }
+    }
+    // _08073D0A
+    sub_80741B4(crane);
+    crane->unk1B8.unk6 += 42;
+
+    if ((crane->unk1B8.unk6 > 0) || (result_744D0 == FALSE))
+        sub_80743E4(crane);
+
+    sub_80742A8(crane);
+
+    crane->unk1B8.unk8++;
+}
+
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
-u32 r2 = crane->cs.unk8;
+    u32 r2 = crane->cs.unk8;
 
-crane->unk28->unk8 = (1024 - r2) & (1024-1);
+    crane->unk28->unk8 = (1024 - r2) & (1024-1);
+}
+
+bool32 sub_80744D0(Sprite_HCCrane *crane, u16 p1) { return sub_80744E0(crane, 7, p1); }
+
+bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
+{
+    s32 v, w;
+
+    CraneStruct *cs = &crane->cs[index];
+
+    w = cs->unk10 + p2;
+    v = (w < 0) ? -w : w;
+
+    if (v <= CRANE_SOME_ACCELERATION) {
+        cs->unk10 = w;
+        return TRUE;
+    } else {
+        s16 r3;
+        if (p2 > 0) {
+            r3 = w - CRANE_SOME_ACCELERATION;
+            cs->unk10 = CRANE_SOME_ACCELERATION;
+        } else {
+            r3 = w + CRANE_SOME_ACCELERATION;
+            cs->unk10 = -CRANE_SOME_ACCELERATION;
+        }
+
+        if (--index != 1)
+            return sub_80744E0(crane, index, r3);
+        else
+            return FALSE;
+    }
 }*/
