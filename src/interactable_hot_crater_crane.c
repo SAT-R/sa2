@@ -550,6 +550,23 @@ void sub_8074088(Sprite_HCCrane *crane)
     gCurTask->main = Task_8073B1C;
 }
 
+void sub_8074138(Sprite_HCCrane *crane)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
+        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.unk64 = 0x26;
+        gPlayer.unk6D = 7;
+        gPlayer.speedAirX = 0;
+        gPlayer.speedAirY = -crane->unk1B8.unk4;
+        crane->unk1B8.unk0 = 0;
+    }
+    // _08074178
+    crane->unk1B8.unk6 = -crane->unk1B8.unk4;
+    crane->unk1B8.unk8 = 0;
+
+    gCurTask->main = Task_8073C6C;
+}
+
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
     u32 r2 = crane->cs.unk8;

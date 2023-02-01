@@ -6,68 +6,6 @@
 .if 0
 .endif
 
-	thumb_func_start sub_8074138
-sub_8074138: @ 0x08074138
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	ldr r2, _080741A4 @ =gPlayer
-	ldr r1, [r2, #0x20]
-	movs r4, #0x80
-	ands r4, r1
-	cmp r4, #0
-	bne _08074178
-	movs r0, #0xdc
-	lsls r0, r0, #1
-	adds r5, r3, r0
-	ldr r0, [r5]
-	cmp r0, #0
-	beq _08074178
-	ldr r0, _080741A8 @ =0xFFBFFFFF
-	ands r1, r0
-	str r1, [r2, #0x20]
-	adds r1, r2, #0
-	adds r1, #0x64
-	movs r0, #0x26
-	strh r0, [r1]
-	adds r1, #9
-	movs r0, #7
-	strb r0, [r1]
-	strh r4, [r2, #0x10]
-	movs r1, #0xde
-	lsls r1, r1, #1
-	adds r0, r3, r1
-	ldrh r0, [r0]
-	rsbs r0, r0, #0
-	strh r0, [r2, #0x12]
-	str r4, [r5]
-_08074178:
-	movs r2, #0xde
-	lsls r2, r2, #1
-	adds r0, r3, r2
-	ldrh r0, [r0]
-	rsbs r0, r0, #0
-	movs r1, #0xdf
-	lsls r1, r1, #1
-	adds r2, r3, r1
-	movs r1, #0
-	strh r0, [r2]
-	movs r2, #0xe0
-	lsls r2, r2, #1
-	adds r0, r3, r2
-	strh r1, [r0]
-	ldr r0, _080741AC @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _080741B0 @ =Task_8073C6C
-	str r0, [r1, #8]
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080741A4: .4byte gPlayer
-_080741A8: .4byte 0xFFBFFFFF
-_080741AC: .4byte gCurTask
-_080741B0: .4byte Task_8073C6C
-
 	thumb_func_start sub_80741B4
 sub_80741B4: @ 0x080741B4
 	push {r4, r5, r6, r7, lr}
