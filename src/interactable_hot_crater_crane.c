@@ -613,25 +613,21 @@ bool32 sub_8074260(Sprite_HCCrane *crane)
 {
     CraneStruct *cs = &crane->cs[0];
 
-    if (cs->unk8 == 512)
+    if (cs->unk8 == 512) {
         return TRUE;
-
-    if (cs->unk8 > 512) {
-        if (--cs->unk8 > 512)
-            return FALSE;
-        else {
+    } else if (cs->unk8 > 512) {
+        if (--cs->unk8 <= 512) {
             cs->unk8 = 512;
             return TRUE;
         }
     } else {
-        // _08074288
-        if (++cs->unk8 < 512)
-            return FALSE;
-        else {
+        if (++cs->unk8 >= 512) {
             cs->unk8 = 512;
             return TRUE;
         }
     }
+
+    return FALSE;
 }
 
 /* matches
