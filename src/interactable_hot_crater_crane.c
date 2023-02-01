@@ -478,7 +478,8 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
             crane->unk1B8.unk6++;
         }
         // _08073FDA
-        crane->cs[1].unk8 = (((crane->unk1B8.unkA >> 5) + (crane->cs[1].unk8)) & 0x3FF);
+        crane->cs[1].unk8
+            = (((crane->unk1B8.unkA >> 5) + (crane->cs[1].unk8)) & (1024 - 1));
 
         if (*(u32 *)&crane->unk1B8.unk8 == 0) {
             // _08073FFC
@@ -668,10 +669,8 @@ bool32 sub_807432C(Sprite_HCCrane *crane)
             s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
             s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-            if(((screenX - 24) <= playerX)
-            && ((screenX + 24) >= playerX)
-            && ((screenY - 24) <= playerY)
-            && ((screenY + 24) >= playerY)) {
+            if (((screenX - 24) <= playerX) && ((screenX + 24) >= playerX)
+                && ((screenY - 24) <= playerY) && ((screenY + 24) >= playerY)) {
                 return TRUE;
             }
         }
@@ -681,13 +680,49 @@ bool32 sub_807432C(Sprite_HCCrane *crane)
 
 void TaskDestructor_80743B8(struct Task *t) { }
 
-/* matches
-void sub_807447C(Sprite_HCCrane *crane) {
-    u32 r2 = crane->cs.unk8;
-
-    crane->unk28->unk8 = (1024 - r2) & (1024-1);
+void sub_80743BC(Sprite_HCCrane *crane)
+{
+    crane->unk1B8.unk6 = (512 - crane->cs[0].unk8) << 1;
+    gCurTask->main = Task_8073BD4;
 }
 
+void sub_80743E4(Sprite_HCCrane *crane)
+{
+    crane->unk1B8.unk6 = 0;
+    gCurTask->main = Task_8073D48;
+}
+
+void sub_8074400(Sprite_HCCrane *crane)
+{
+    crane->unk1B8.unk6 = 0;
+
+    crane->unk1B8.unk8 = (256 - crane->cs[7].unk8) << 4;
+
+    crane->unk1B8.unkA = 0;
+    crane->unk1B8.accelY = 0;
+    gCurTask->main = Task_8073E20;
+}
+
+u16 sub_8074448(Sprite_HCCrane *crane, u16 max)
+{
+    u16 result = 0;
+    u8 i;
+
+    for (i = 0; i <= max; i++) {
+        result = (result + crane->cs[i].unk8) & (1024 - 1);
+    }
+
+    return result;
+}
+
+void sub_807447C(Sprite_HCCrane *crane)
+{
+    u32 r2 = crane->cs[0].unk8;
+
+    crane->cs[1].unk8 = (1024 - r2) & (1024 - 1);
+}
+
+/* matches
 bool32 sub_80744D0(Sprite_HCCrane *crane, u16 p1) { return sub_80744E0(crane, 7, p1); }
 
 bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
