@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gba/types.h"
 #include "m4a.h"
+#include "trig.h"
 
 #include "game.h"
 #include "interactable.h"
@@ -16,18 +17,18 @@ typedef struct {
     /* 0x06 */ u8 filler6[2];
     /* 0x08 */ u16 unk8;
     /* 0x0A */ s16 unkA;
-    /* 0x0C */ u32 unkC;
-    /* 0x10 */ u32 unk10;
+    /* 0x0C */ s32 unkC;
+    /* 0x10 */ s32 unk10;
     /* 0x14 */ u16 unk14;
-    /* 0x16 */ u8 filler16[4];
+    /* 0x16 */ u8 filler16[2];
 
-    /* 0x1A */ u16 unk1A;
-    /* 0x1C */ u16 unk1C;
+    /* 0x1A */ s32 screenX;
+    /* 0x1C */ s32 screenY;
 } CraneStruct;
 
 typedef struct {
     /* 0x00 */ u32 unk0;
-    /* 0x04 */ s16 unk4; // might be unsigned?
+    /* 0x04 */ s16 accelY;
     /* 0x06 */ s16 unk6;
     /* 0x08 */ s16 unk8;
     /* 0x0A */ s16 unkA;
@@ -418,7 +419,7 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
                     temp1 = crane->unk1B8.unkA;
                 } else {
                     // _08073EEC
-                    temp0 = crane->unk1B8.unk4;
+                    temp0 = crane->unk1B8.accelY;
                     temp1 = crane->unk1B8.unkA;
                 }
 
@@ -432,7 +433,7 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
                 // _08073F0C
                 s16 temp;
                 if (crane->unk1B8.unkA > 0) {
-                    r2 = crane->unk1B8.unkA - crane->unk1B8.unk4;
+                    r2 = crane->unk1B8.unkA - crane->unk1B8.accelY;
                     temp = r2;
 
                     if (temp > -32)
@@ -457,7 +458,7 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
             u16 unk8 = crane->unk1B8.unk8;
             s16 other;
             crane->unk1B8.unkA = unk8;
-            crane->unk1B8.unk4 = unk8;
+            crane->unk1B8.accelY = unk8;
 
             // crane->unk1B8.unk8 *= -0.75;
             other = -((crane->unk1B8.unk8 * 3) >> 2);
@@ -530,16 +531,16 @@ void sub_8074088(Sprite_HCCrane *crane)
 
     sub_8074550(crane);
     crane->unk1B8.unk0 = 1;
-    crane->unk1B8.unk4 = (u16)gPlayer.speedAirY * 2;
+    crane->unk1B8.accelY = (u16)gPlayer.speedAirY * 2;
 
     // TODO: Replace with clamp-macro
-    if (crane->unk1B8.unk4 < Q_24_8(7.5)) {
-        crane->unk1B8.unk4 = Q_24_8(7.5);
-    } else if (crane->unk1B8.unk4 > Q_24_8(12)) {
-        crane->unk1B8.unk4 = Q_24_8(12);
+    if (crane->unk1B8.accelY < Q_8_8(7.5)) {
+        crane->unk1B8.accelY = Q_8_8(7.5);
+    } else if (crane->unk1B8.accelY > Q_8_8(12)) {
+        crane->unk1B8.accelY = Q_8_8(12);
     }
 
-    v = (crane->unk1B8.unk4 >> 2) * 15;
+    v = (crane->unk1B8.accelY >> 2) * 15;
     crane->unk1B8.unk6 = v;
     crane->unk1B8.unk8 = 0;
 
@@ -557,14 +558,55 @@ void sub_8074138(Sprite_HCCrane *crane)
         gPlayer.unk64 = 0x26;
         gPlayer.unk6D = 7;
         gPlayer.speedAirX = 0;
-        gPlayer.speedAirY = -crane->unk1B8.unk4;
+        gPlayer.speedAirY = -crane->unk1B8.accelY;
         crane->unk1B8.unk0 = 0;
     }
     // _08074178
-    crane->unk1B8.unk6 = -crane->unk1B8.unk4;
+    crane->unk1B8.unk6 = -crane->unk1B8.accelY;
     crane->unk1B8.unk8 = 0;
 
     gCurTask->main = Task_8073C6C;
+}
+
+void sub_80741B4(Sprite_HCCrane *crane)
+{
+    s32 screenX, screenY;
+    u8 i;
+    u32 sinIndex = 0;
+
+    screenX = Q_24_8(crane->posX - gCamera.x);
+    screenY = Q_24_8(crane->posY - gCamera.y);
+
+    for (i = 0; i < ARRAY_COUNT(crane->cs); i++) {
+        CraneStruct *cs = &crane->cs[i];
+        s16 cos = Q_2_14_TO_Q_24_8(COS(sinIndex));
+        s32 cosV2 = Q_24_8_TO_INT((signed)cs->unkC * cos);
+        s16 sin = Q_2_14_TO_Q_24_8(SIN(sinIndex));
+        s32 sinV2 = Q_24_8_TO_INT(cs->unk10 * sin);
+        s32 diff, temp;
+
+        diff = cosV2 - sinV2;
+        screenX += diff;
+
+        temp = Q_24_8_TO_INT(cs->unkC * sin);
+
+        screenY += temp + Q_24_8_TO_INT(cs->unk10 * cos);
+
+        sinIndex += cs->unk8;
+        {
+#ifndef NON_MATCHING
+            register u32 mask asm("r1") = ONE_CYCLE;
+            register u32 mask2 asm("r0");
+            asm("mov %0, %1\n" : "=r"(mask2) : "r"(mask));
+#else
+            u32 mask2 = ONE_CYCLE;
+#endif
+            sinIndex &= mask2;
+            cs->unk14 = sinIndex;
+            cs->screenX = screenX;
+            cs->screenY = screenY;
+        }
+    }
 }
 
 /* matches
