@@ -57,7 +57,7 @@ extern void TaskDestructor_80743B8(struct Task *);
 extern void sub_8074088(Sprite_HCCrane *);
 extern void sub_8074138(Sprite_HCCrane *);
 extern void sub_80741B4(Sprite_HCCrane *);
-extern void sub_8074260(Sprite_HCCrane *);
+extern bool32 sub_8074260(Sprite_HCCrane *);
 extern void sub_80742A8(Sprite_HCCrane *);
 extern bool32 sub_807432C(Sprite_HCCrane *);
 extern void sub_80743BC(Sprite_HCCrane *);
@@ -605,6 +605,31 @@ void sub_80741B4(Sprite_HCCrane *crane)
             cs->unk14 = sinIndex;
             cs->screenX = screenX;
             cs->screenY = screenY;
+        }
+    }
+}
+
+bool32 sub_8074260(Sprite_HCCrane *crane)
+{
+    CraneStruct *cs = &crane->cs[0];
+
+    if (cs->unk8 == 512)
+        return TRUE;
+
+    if (cs->unk8 > 512) {
+        if (--cs->unk8 > 512)
+            return FALSE;
+        else {
+            cs->unk8 = 512;
+            return TRUE;
+        }
+    } else {
+        // _08074288
+        if (++cs->unk8 < 512)
+            return FALSE;
+        else {
+            cs->unk8 = 512;
+            return TRUE;
         }
     }
 }

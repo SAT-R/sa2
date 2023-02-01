@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 .if 0
-.endif
 
 	thumb_func_start sub_8074260
 sub_8074260: @ 0x08074260
@@ -48,6 +47,7 @@ _080742A2:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_80742A8
 sub_80742A8: @ 0x080742A8
