@@ -659,6 +659,28 @@ void sub_80742A8(Sprite_HCCrane *crane)
     }
 }
 
+bool32 sub_807432C(Sprite_HCCrane *crane)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        if ((gPlayer.moveState & MOVESTATE_IN_AIR) && (gPlayer.speedAirY > 0)) {
+            s16 screenX = Q_24_8_TO_INT(crane->cs[7].screenX);
+            s16 screenY = Q_24_8_TO_INT(crane->cs[7].screenY);
+            s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+            s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+            if(((screenX - 24) <= playerX)
+            && ((screenX + 24) >= playerX)
+            && ((screenY - 24) <= playerY)
+            && ((screenY + 24) >= playerY)) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+void TaskDestructor_80743B8(struct Task *t) { }
+
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
     u32 r2 = crane->cs.unk8;
