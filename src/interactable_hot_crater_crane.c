@@ -15,6 +15,7 @@ typedef struct {
     /* 0x04 */ u16 unk4;
     /* 0x06 */ u8 filler6[2];
     /* 0x08 */ u16 unk8;
+    /* 0x0A */ s16 unkA;
     /* 0x0C */ u32 unkC;
     /* 0x10 */ u32 unk10;
     /* 0x14 */ u16 unk14;
@@ -26,10 +27,10 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u32 unk0;
-    /* 0x04 */ u8 filler4[0x2];
+    /* 0x04 */ s16 unk4;
     /* 0x06 */ s16 unk6;
-    /* 0x08 */ u16 unk8;
-    /* 0x0A */ u8 filler8[0x2];
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
 } unk1B8; /* size: 0x0C */
 
 typedef struct {
@@ -218,7 +219,7 @@ void Task_8073B1C(void)
 
     {
         u16 r0;
-        r0 = (((u16)crane->unk1B8.unk6 - crane->unk1B8.unk8) >> 4);
+        r0 = (((u16)crane->unk1B8.unk6 - (u16)crane->unk1B8.unk8) >> 4);
 
         if (r0 > 384)
             r0 = 384;
@@ -227,10 +228,10 @@ void Task_8073B1C(void)
         }
 
         crane->unk1B8.unk8 += r0;
-        crane->cs[0].unk8 = 512 - (crane->unk1B8.unk8 >> 6);
+        crane->cs[0].unk8 = 512 - ((u16)crane->unk1B8.unk8 >> 6);
     }
 
-    if ((u16)crane->unk1B8.unk6 <= crane->unk1B8.unk8) {
+    if ((u16)crane->unk1B8.unk6 <= (u16)crane->unk1B8.unk8) {
         sub_80743BC(crane);
     }
 
@@ -310,7 +311,7 @@ void Task_8073C6C(void)
             crane->cs[7].unk8 = newR0 & (1024 - 1);
         }
     }
-    // _08073D0A
+
     sub_80741B4(crane);
     crane->unk1B8.unk6 += 42;
 
@@ -370,6 +371,146 @@ void Task_8073D48(void)
 
     sub_80742A8(crane);
 }
+
+NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
+{
+    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+
+    sub_8074260(crane);
+    sub_807447C(crane);
+
+    // TODO: Fix cast... maybe unk1B8.unk8 is a Q_16_16?
+    if (*(u32 *)&crane->unk1B8.unk8 != 0) {
+        u16 r2;
+
+        if (crane->unk1B8.unk6 == 0) {
+            s32 r6 = -crane->unk1B8.unkA;
+            s32 r3 = -crane->unk1B8.unk8;
+            s32 r0 = (r6 - r3);
+            r2 = (r0 > -32) ? -32 : (r0 >> 4);
+
+            r0 = ((r3 - r6) >> 4) + 256;
+
+            crane->cs[7].unk8 = r0;
+        } else {
+            // _08073E9C
+            if (crane->unk1B8.unk8 == 0) {
+                r2 = crane->unk1B8.unkA;
+
+                if (crane->unk1B8.unkA > 0) {
+                    if (crane->unk1B8.unkA > 32) {
+                        r2 = -32;
+                    }
+                } else if (crane->unk1B8.unkA < -32) {
+                    r2 = 32;
+                } else {
+                    r2 = -r2;
+                }
+            } else if (crane->unk1B8.unk8 > 0) {
+                // __08073ED0
+                s16 temp;
+                s16 temp0, temp1;
+                if (crane->unk1B8.unkA > 0) {
+                    temp0 = crane->unk1B8.unk8;
+                    temp1 = crane->unk1B8.unkA;
+                } else {
+                    // _08073EEC
+                    temp0 = crane->unk1B8.unk4;
+                    temp1 = crane->unk1B8.unkA;
+                }
+
+                temp = ((temp0 - temp1) >> 4);
+
+                if (temp < 32)
+                    r2 = 32;
+                else
+                    r2 = temp;
+            } else /* crane->unk1B8.unk8 < 0 */ {
+                // _08073F0C
+                s16 temp;
+                if (crane->unk1B8.unkA > 0) {
+                    r2 = crane->unk1B8.unkA - crane->unk1B8.unk4;
+                    temp = r2;
+
+                    if (temp > -32)
+                        r2 = -32;
+                } else {
+                    // _08073F3C
+                    r2 = crane->unk1B8.unk8 - crane->unk1B8.unkA;
+                    temp = r2;
+
+                    if (temp > -32)
+                        r2 = -32;
+                }
+            }
+        }
+        // _08073F56
+        crane->unk1B8.unkA += r2;
+
+        if (((crane->unk1B8.unk8 > 0) && (crane->unk1B8.unk8 <= crane->unk1B8.unkA))
+            || ((crane->unk1B8.unk8 < 0)
+                && (crane->unk1B8.unk8 >= crane->unk1B8.unkA))) {
+            // _08073F88
+            u16 unk8 = crane->unk1B8.unk8;
+            s16 other;
+            crane->unk1B8.unkA = unk8;
+            crane->unk1B8.unk4 = unk8;
+
+            // crane->unk1B8.unk8 *= -0.75;
+            other = -((crane->unk1B8.unk8 * 3) >> 2);
+            crane->unk1B8.unk8 = other;
+
+            if (other != 0) {
+                if (other < 0)
+                    other = -other;
+
+                if (other < 128)
+                    crane->unk1B8.unk8 = 0;
+            } else {
+                // _08073FCC
+                crane->unk1B8.unkA = crane->unk1B8.unk8;
+            }
+            // _08073FCE
+            crane->unk1B8.unk6++;
+        }
+        // _08073FDA
+        crane->cs[1].unk8 = (((crane->unk1B8.unkA >> 5) + (crane->cs[1].unk8)) & 0x3FF);
+
+        if (*(u32 *)&crane->unk1B8.unk8 == 0) {
+            // _08073FFC
+            gCurTask->main = Task_8073AA8;
+        }
+    } else {
+        // _08073FFC
+        gCurTask->main = Task_8073AA8;
+    }
+
+    {
+        s32 temp = crane->unk1B8.unk8;
+        if (temp < 0)
+            temp = -temp;
+
+        if (temp <= 1024) {
+            if (sub_807432C(crane)) {
+                sub_807447C(crane);
+                sub_8074088(crane);
+            }
+            if (!sub_80745B4(crane)) {
+                crane->ia->x = crane->spriteX;
+                TaskDestroy(gCurTask);
+                return;
+            }
+        }
+        // _08074064
+        sub_80741B4(crane);
+        if (sub_80745B4(crane)) {
+            sub_8074604(crane);
+        } else {
+            sub_80742A8(crane);
+        }
+    }
+}
+END_NONMATCH
 
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
