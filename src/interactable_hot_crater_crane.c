@@ -27,7 +27,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u32 unk0;
-    /* 0x04 */ s16 unk4;
+    /* 0x04 */ s16 unk4; // might be unsigned?
     /* 0x06 */ s16 unk6;
     /* 0x08 */ s16 unk8;
     /* 0x0A */ s16 unkA;
@@ -46,6 +46,9 @@ typedef struct {
     /* 0x1C8 */ u8 spriteX;
     /* 0x1C9 */ u8 spriteY;
 } Sprite_HCCrane; /* size: 0x1CC */
+
+extern void sub_80218E4(Player *);
+extern void sub_8023B5C(Player *, u32);
 
 extern void Task_8073AA8(void);
 void Task_8073B1C(void);
@@ -511,6 +514,41 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
     }
 }
 END_NONMATCH
+
+void sub_8074088(Sprite_HCCrane *crane)
+{
+    s32 speedY;
+    s16 v;
+
+    sub_80218E4(&gPlayer);
+    sub_8023B5C(&gPlayer, 9);
+
+    gPlayer.unk16 = 6;
+    gPlayer.unk17 = 9;
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 0x37;
+
+    sub_8074550(crane);
+    crane->unk1B8.unk0 = 1;
+    crane->unk1B8.unk4 = (u16)gPlayer.speedAirY * 2;
+
+    // TODO: Replace with clamp-macro
+    if (crane->unk1B8.unk4 < Q_24_8(7.5)) {
+        crane->unk1B8.unk4 = Q_24_8(7.5);
+    } else if (crane->unk1B8.unk4 > Q_24_8(12)) {
+        crane->unk1B8.unk4 = Q_24_8(12);
+    }
+
+    v = (crane->unk1B8.unk4 >> 2) * 15;
+    crane->unk1B8.unk6 = v;
+    crane->unk1B8.unk8 = 0;
+
+    gPlayer.speedGroundX = 0;
+    gPlayer.speedAirX = 0;
+    gPlayer.speedAirY = 0;
+
+    gCurTask->main = Task_8073B1C;
+}
 
 /* matches
 void sub_807447C(Sprite_HCCrane *crane) {
