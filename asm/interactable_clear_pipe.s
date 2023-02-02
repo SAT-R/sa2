@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_80106E8
-sub_80106E8: @ 0x080106E8
+	thumb_func_start Task_80106E8
+Task_80106E8: @ 0x080106E8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -133,8 +133,9 @@ _080107E0: .4byte gPlayer
 _080107E4: .4byte gMPlayInfo_BGM
 _080107E8: .4byte gCamera
 
-	thumb_func_start sub_80107EC
-sub_80107EC: @ 0x080107EC
+.if 0
+	thumb_func_start Task_80107EC
+Task_80107EC: @ 0x080107EC
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -143,8 +144,8 @@ sub_80107EC: @ 0x080107EC
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	ldr r7, [r0]
+	adds r0, r0, r1         @ r0 = pipe
+	ldr r7, [r0]            @ r7 = ia
 	ldrb r1, [r0, #8]
 	mov r8, r1
 	ldrh r1, [r0, #4]
@@ -152,13 +153,13 @@ sub_80107EC: @ 0x080107EC
 	mov r3, r8
 	lsls r0, r3, #3
 	lsls r1, r1, #8
-	adds r5, r0, r1
+	adds r5, r0, r1         @ r5 = screenX
 	ldrb r0, [r7, #1]
 	lsls r0, r0, #3
 	lsls r2, r2, #8
-	adds r4, r0, r2
+	adds r4, r0, r2         @ r4 = screenY
 	ldr r0, _080108DC @ =gPlayer
-	mov ip, r0
+	mov ip, r0              @ ip = r0 = gPlayer
 	ldr r2, [r0, #0x20]
 	movs r6, #0x80
 	ands r6, r2
@@ -188,20 +189,23 @@ sub_80107EC: @ 0x080107EC
 	beq _0801089C
 	ldr r0, _080108E0 @ =0xFFF7FDFD
 	ands r2, r0
-	mov r3, ip
+	mov r3, ip              @ r3 = gPlayer
 	str r2, [r3, #0x20]
+
 	adds r3, #0x90
 	ldr r2, [r3]
 	ldr r0, [r2, #0x1c]
 	ldr r1, _080108E4 @ =0xFFFFCFFF
 	ands r0, r1
 	str r0, [r2, #0x1c]
+
 	ldr r2, [r3]
 	ldr r0, [r2, #0x1c]
 	movs r1, #0x80
 	lsls r1, r1, #6
 	orrs r0, r1
 	str r0, [r2, #0x1c]
+
 	mov r1, ip
 	adds r1, #0x38
 	strb r6, [r1]
@@ -262,81 +266,4 @@ _080108DC: .4byte gPlayer
 _080108E0: .4byte 0xFFF7FDFD
 _080108E4: .4byte 0xFFFFCFFF
 _080108E8: .4byte gCamera
-
-	thumb_func_start initSprite_Interactable_ClearPipe_Start
-initSprite_Interactable_ClearPipe_Start: @ 0x080108EC
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _08010930 @ =sub_80106E8
-	ldr r2, _08010934 @ =0x00002010
-	movs r1, #0
-	str r1, [sp]
-	movs r1, #0xc
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	strh r4, [r0, #4]
-	strh r5, [r0, #6]
-	str r6, [r0]
-	ldrb r1, [r6]
-	strb r1, [r0, #8]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08010930: .4byte sub_80106E8
-_08010934: .4byte 0x00002010
-
-	thumb_func_start initSprite_Interactable_ClearPipe_End
-initSprite_Interactable_ClearPipe_End: @ 0x08010938
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _0801097C @ =sub_80107EC
-	ldr r2, _08010980 @ =0x00002010
-	movs r1, #0
-	str r1, [sp]
-	movs r1, #0xc
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	strh r4, [r0, #4]
-	strh r5, [r0, #6]
-	str r6, [r0]
-	ldrb r1, [r6]
-	strb r1, [r0, #8]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801097C: .4byte sub_80107EC
-_08010980: .4byte 0x00002010
+.endif

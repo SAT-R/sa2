@@ -123,11 +123,19 @@ extern u8 gMultiplayerMissingHeartbeats[4];
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
 
+// Maybe .unk1C is a bitfield, not flags?
+#define FLAG_3005A70_x1C__1000 0x1000
+#define FLAG_3005A70_x1C__2000 0x2000
 struct UNK_3005A70 {
-    u8 unk0[0x31];
-    u8 unk31;
+    /* 0x00 */ u8 filler0[0x1C];
+    /* 0x1C */ u32 unk1C;
+    /* 0x20 */ u8 filler20[0x10];
+    /* 0x30 */ u8 filler30;
+    /* 0x31 */ u8 unk31;
 };
 
+#define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
+#define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
 // Not sure what these are yet
 typedef struct {
     /* 0x00 */ u32 filler0;
@@ -150,7 +158,7 @@ typedef struct {
     /* 0x2E */ u8 filler2E[8];
     /* 0x36 */ u8 unk36;
     /* 0x37 */ u8 unk37;
-    /* 0x38 */ u8 unk38; // bitfield, 0x1 determines layer
+    /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
