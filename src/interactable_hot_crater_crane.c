@@ -72,7 +72,7 @@ extern void sub_8074550(Sprite_HCCrane *);
 extern bool32 sub_80745B4(Sprite_HCCrane *);
 extern void sub_8074604(Sprite_HCCrane *);
 
-#define CRANE_SOME_ACCELERATION 3072
+#define CRANE_SOME_ACCELERATION (Q_8_8(12))
 
 NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
          void initSprite_Interactable_HotCrater_Crane(Interactable *ia,
@@ -722,8 +722,23 @@ void sub_807447C(Sprite_HCCrane *crane)
     crane->cs[1].unk8 = (1024 - r2) & (1024 - 1);
 }
 
-/* matches
-bool32 sub_80744D0(Sprite_HCCrane *crane, u16 p1) { return sub_80744E0(crane, 7, p1); }
+void sub_8074490(Sprite_HCCrane *crane, s16 p1)
+{
+    u8 i;
+
+    for (i = 2; i < (ARRAY_COUNT(crane->cs) - 1); i++) {
+        CraneStruct *cs = &crane->cs[i];
+
+        cs->unk10 += p1;
+        if (cs->unk10 > CRANE_SOME_ACCELERATION) {
+            cs->unk10 = CRANE_SOME_ACCELERATION;
+        } else if (cs->unk10 < -CRANE_SOME_ACCELERATION) {
+            cs->unk10 = -CRANE_SOME_ACCELERATION;
+        }
+    }
+}
+
+bool32 sub_80744D0(Sprite_HCCrane *crane, s16 p1) { return sub_80744E0(crane, 7, p1); }
 
 bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
 {
@@ -752,4 +767,17 @@ bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
         else
             return FALSE;
     }
-}*/
+}
+
+void sub_8074550(Sprite_HCCrane *crane)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (crane->unk1B8.unk0 != 0)) {
+        gPlayer.y = crane->cs[8].screenY + Q_24_8(gCamera.y + 24);
+
+        if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
+            gPlayer.x = crane->cs[8].screenX + Q_24_8(gCamera.x + 6);
+        } else {
+            gPlayer.x = crane->cs[8].screenX + Q_24_8(gCamera.x - 6);
+        }
+    }
+}
