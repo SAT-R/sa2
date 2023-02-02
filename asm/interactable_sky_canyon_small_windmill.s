@@ -131,7 +131,7 @@ sub_807BC1C: @ 0x0807BC1C
 	adds r4, r0, #0
 	adds r5, r4, #0
 	adds r5, #0xc
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r2, _0807BC58 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	movs r1, #0x80
@@ -293,7 +293,7 @@ _0807BD78: .4byte sub_807C0B4
 sub_807BD7C: @ 0x0807BD7C
 	push {r4, lr}
 	adds r4, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, _0807BDB4 @ =gPlayer
 	ldr r2, [r1, #0x20]
 	movs r0, #0x80

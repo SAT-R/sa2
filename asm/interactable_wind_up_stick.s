@@ -173,7 +173,7 @@ sub_80726E8: @ 0x080726E8
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
 	strb r0, [r5, #0x17]
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r3, [r5, #0x20]
 	movs r0, #0x80
 	lsls r0, r0, #0xf
@@ -300,7 +300,7 @@ _080727F0: .4byte sub_8072650
 sub_80727F4: @ 0x080727F4
 	push {r4, lr}
 	adds r4, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r2, _08072828 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	ldr r1, _0807282C @ =0xFFBFFFFF
@@ -554,7 +554,7 @@ sub_80729D4: @ 0x080729D4
 	thumb_func_start sub_80729D8
 sub_80729D8: @ 0x080729D8
 	push {lr}
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r0, _080729EC @ =gCurTask
 	ldr r1, [r0]
 	ldr r0, _080729F0 @ =sub_8072998

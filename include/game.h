@@ -155,7 +155,9 @@ typedef struct {
     /* 0x24 */ u8 unk24;
     /* 0x25 */ u8 filler25[7];
     /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u8 filler2E[8];
+    /* 0x2E */ u8 filler2E[2];
+    /* 0x30 */ u16 unk30;
+    /* 0x32 */ u8 filler32[4];
     /* 0x36 */ u8 unk36;
     /* 0x37 */ u8 unk37;
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
@@ -177,10 +179,12 @@ typedef struct {
     /* 0x6A */ u16 unk6A; // variant?
     /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
+     *  0x05 = Set by IA ClearPipe_End if data[1] is set
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
      *  0x17 = Used in Interactable 044
      *  0x18 = Dash Ring
+     *  0x1C = Set by IA ClearPipe_End if data[1] is 0
      * */
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)

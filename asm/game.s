@@ -28241,8 +28241,8 @@ _08029FE2:
 _08029FE8: .4byte gUnknown_03005590
 _08029FEC: .4byte gUnknown_03005424
 
-	thumb_func_start sub_8029FF0
-sub_8029FF0: @ 0x08029FF0
+	thumb_func_start Player_SetMovestate_IsInScriptedSequence
+Player_SetMovestate_IsInScriptedSequence: @ 0x08029FF0
 	ldr r0, _0802A000 @ =gPlayer
 	ldr r1, [r0, #0x20]
 	movs r2, #0x80
@@ -28253,8 +28253,8 @@ sub_8029FF0: @ 0x08029FF0
 	.align 2, 0
 _0802A000: .4byte gPlayer
 
-	thumb_func_start sub_802A004
-sub_802A004: @ 0x0802A004
+	thumb_func_start Player_ClearMovestate_IsInScriptedSequence
+Player_ClearMovestate_IsInScriptedSequence: @ 0x0802A004
 	ldr r0, _0802A010 @ =gPlayer
 	ldr r1, [r0, #0x20]
 	ldr r2, _0802A014 @ =0xBFFFFFFF
