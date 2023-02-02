@@ -20,7 +20,7 @@ typedef struct {
 
     /* 0x03 */ s8 unk3;
     /* 0x04 */ s8 unk4;
-    /* 0x05 */ u8 filler[INTERACTABLE_DATA_SIZE - 2];
+    /* 0x05 */ u8 unused[INTERACTABLE_DATA_SIZE - 2];
 } Interactable_PipeStart PACKED;
 
 typedef struct {
@@ -30,7 +30,7 @@ typedef struct {
 
     /* 0x03 */ s8 exitOnBackLayer;
     /* 0x04 */ s8 unk4;
-    /* 0x05 */ u8 filler[INTERACTABLE_DATA_SIZE - 2];
+    /* 0x05 */ u8 unused[INTERACTABLE_DATA_SIZE - 2];
 } Interactable_PipeEnd PACKED;
 
 extern void Player_SetMovestate_IsInScriptedSequence(void);
@@ -117,7 +117,6 @@ static void Task_ClearPipe_End(void)
             gPlayer.unk6D = 0x5;
         }
 
-        // Clears MOVESTATE_INSIDE_PIPE
         Player_ClearMovestate_IsInScriptedSequence();
     }
 
