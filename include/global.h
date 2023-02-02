@@ -96,6 +96,26 @@
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
+#define CLAMP(value, min, max)                                                          \
+    ({                                                                                  \
+        s32 clamped;                                                                    \
+        if ((value) < (min)) {                                                          \
+            clamped = (min);                                                            \
+        } else {                                                                        \
+            clamped = (value) > (max) ? (max) : (value);                                \
+        }                                                                               \
+        clamped;                                                                        \
+    })
+
+#define CLAMP_INLINE(var, min, max)                                                     \
+    ({                                                                                  \
+        if ((var) < (min)) {                                                            \
+            var = (min);                                                                \
+        } else if ((var) > (max)) {                                                     \
+            var = (max);                                                                \
+        }                                                                               \
+    })
+
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))

@@ -1173,17 +1173,6 @@ void sub_801C068(u32 level)
 
 void sub_801C708(s32, s32);
 
-#define CLAMP(value, min, max)                                                          \
-    ({                                                                                  \
-        s32 clamped;                                                                    \
-        if ((value) < (min)) {                                                          \
-            clamped = (min);                                                            \
-        } else {                                                                        \
-            clamped = (value) > (max) ? (max) : (value);                                \
-        }                                                                               \
-        clamped;                                                                        \
-    })
-
 void sub_801C394(void)
 {
     Player *player = &gPlayer;

@@ -534,12 +534,7 @@ static void sub_8074088(Sprite_HCCrane *crane)
     crane->unk1B8.unk0 = 1;
     crane->unk1B8.accelY = (u16)gPlayer.speedAirY * 2;
 
-    // TODO: Replace with clamp-macro
-    if (crane->unk1B8.accelY < Q_8_8(7.5)) {
-        crane->unk1B8.accelY = Q_8_8(7.5);
-    } else if (crane->unk1B8.accelY > Q_8_8(12)) {
-        crane->unk1B8.accelY = Q_8_8(12);
-    }
+    CLAMP_INLINE(crane->unk1B8.accelY, Q_8_8(7.5), Q_8_8(12));
 
     v = (crane->unk1B8.accelY >> 2) * 15;
     crane->unk1B8.unk6 = v;
