@@ -51,28 +51,28 @@ typedef struct {
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, u32);
 
-extern void Task_8073AA8(void);
-void Task_8073B1C(void);
-extern void TaskDestructor_80743B8(struct Task *);
-extern void sub_8074088(Sprite_HCCrane *);
-extern void sub_8074138(Sprite_HCCrane *);
-extern void sub_80741B4(Sprite_HCCrane *);
-extern bool32 sub_8074260(Sprite_HCCrane *);
-extern void sub_80742A8(Sprite_HCCrane *);
-extern bool32 sub_807432C(Sprite_HCCrane *);
-extern void sub_80743BC(Sprite_HCCrane *);
-extern void sub_80743E4(Sprite_HCCrane *);
-extern void sub_8074400(Sprite_HCCrane *);
-extern u16 sub_8074448(Sprite_HCCrane *, u16);
-extern void sub_807447C(Sprite_HCCrane *);
-extern void sub_8074490(Sprite_HCCrane *, s16);
-extern bool32 sub_80744D0(Sprite_HCCrane *, s16);
-extern bool32 sub_80744E0(Sprite_HCCrane *, u16, s16);
-extern void sub_8074550(Sprite_HCCrane *);
-extern bool32 sub_80745B4(Sprite_HCCrane *);
-extern void sub_8074604(Sprite_HCCrane *);
+static void Task_8073AA8(void);
+static void Task_8073B1C(void);
+static void TaskDestructor_80743B8(struct Task *);
+static void sub_8074088(Sprite_HCCrane *);
+static void sub_8074138(Sprite_HCCrane *);
+static void sub_80741B4(Sprite_HCCrane *);
+static bool32 sub_8074260(Sprite_HCCrane *);
+static void sub_80742A8(Sprite_HCCrane *);
+static bool32 sub_807432C(Sprite_HCCrane *);
+static void sub_80743BC(Sprite_HCCrane *);
+static void sub_80743E4(Sprite_HCCrane *);
+static void sub_8074400(Sprite_HCCrane *);
+static u16 sub_8074448(Sprite_HCCrane *, u16);
+static void sub_807447C(Sprite_HCCrane *);
+static void sub_8074490(Sprite_HCCrane *, s16);
+static bool32 sub_80744D0(Sprite_HCCrane *, s16);
+static bool32 sub_80744E0(Sprite_HCCrane *, u16, s16);
+static void sub_8074550(Sprite_HCCrane *);
+static bool32 sub_80745B4(Sprite_HCCrane *);
+static void sub_8074604(Sprite_HCCrane *);
 
-#define CRANE_SOME_ACCELERATION (Q_8_8(12))
+#define CRANE_MAX_ACCELERATION (Q_8_8(12))
 
 NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
          void initSprite_Interactable_HotCrater_Crane(Interactable *ia,
@@ -186,7 +186,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
 }
 END_NONMATCH
 
-void Task_8073AA8()
+static void Task_8073AA8()
 {
     Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
 
@@ -212,7 +212,7 @@ void Task_8073AA8()
     }
 }
 
-void Task_8073B1C(void)
+static void Task_8073B1C(void)
 {
     Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
 
@@ -245,7 +245,7 @@ void Task_8073B1C(void)
     sub_80742A8(crane);
 }
 
-void Task_8073BD4(void)
+static void Task_8073BD4(void)
 {
     Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
 
@@ -278,7 +278,7 @@ void Task_8073BD4(void)
     sub_80742A8(crane);
 }
 
-void Task_8073C6C(void)
+static void Task_8073C6C(void)
 {
     bool32 result_744D0;
     u16 r1;
@@ -327,7 +327,7 @@ void Task_8073C6C(void)
     crane->unk1B8.unk8++;
 }
 
-void Task_8073D48(void)
+static void Task_8073D48(void)
 {
     bool32 result_744D0;
     u16 r1;
@@ -376,7 +376,7 @@ void Task_8073D48(void)
     sub_80742A8(crane);
 }
 
-NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
+NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", static void Task_8073E20(void))
 {
     Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
 
@@ -517,7 +517,7 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", void Task_8073E20(void))
 }
 END_NONMATCH
 
-void sub_8074088(Sprite_HCCrane *crane)
+static void sub_8074088(Sprite_HCCrane *crane)
 {
     s32 speedY;
     s16 v;
@@ -552,7 +552,7 @@ void sub_8074088(Sprite_HCCrane *crane)
     gCurTask->main = Task_8073B1C;
 }
 
-void sub_8074138(Sprite_HCCrane *crane)
+static void sub_8074138(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -569,7 +569,7 @@ void sub_8074138(Sprite_HCCrane *crane)
     gCurTask->main = Task_8073C6C;
 }
 
-void sub_80741B4(Sprite_HCCrane *crane)
+static void sub_80741B4(Sprite_HCCrane *crane)
 {
     s32 screenX, screenY;
     u8 i;
@@ -610,7 +610,7 @@ void sub_80741B4(Sprite_HCCrane *crane)
     }
 }
 
-bool32 sub_8074260(Sprite_HCCrane *crane)
+static bool32 sub_8074260(Sprite_HCCrane *crane)
 {
     CraneStruct *cs = &crane->cs[0];
 
@@ -631,7 +631,7 @@ bool32 sub_8074260(Sprite_HCCrane *crane)
     return FALSE;
 }
 
-void sub_80742A8(Sprite_HCCrane *crane)
+static void sub_80742A8(Sprite_HCCrane *crane)
 {
     struct UNK_808D124_UNK180 some;
     u8 i;
@@ -660,7 +660,7 @@ void sub_80742A8(Sprite_HCCrane *crane)
     }
 }
 
-bool32 sub_807432C(Sprite_HCCrane *crane)
+static bool32 sub_807432C(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         if ((gPlayer.moveState & MOVESTATE_IN_AIR) && (gPlayer.speedAirY > 0)) {
@@ -678,21 +678,21 @@ bool32 sub_807432C(Sprite_HCCrane *crane)
     return FALSE;
 }
 
-void TaskDestructor_80743B8(struct Task *t) { }
+static void TaskDestructor_80743B8(struct Task *t) { }
 
-void sub_80743BC(Sprite_HCCrane *crane)
+static void sub_80743BC(Sprite_HCCrane *crane)
 {
     crane->unk1B8.unk6 = (512 - crane->cs[0].unk8) << 1;
     gCurTask->main = Task_8073BD4;
 }
 
-void sub_80743E4(Sprite_HCCrane *crane)
+static void sub_80743E4(Sprite_HCCrane *crane)
 {
     crane->unk1B8.unk6 = 0;
     gCurTask->main = Task_8073D48;
 }
 
-void sub_8074400(Sprite_HCCrane *crane)
+static void sub_8074400(Sprite_HCCrane *crane)
 {
     crane->unk1B8.unk6 = 0;
 
@@ -703,7 +703,7 @@ void sub_8074400(Sprite_HCCrane *crane)
     gCurTask->main = Task_8073E20;
 }
 
-u16 sub_8074448(Sprite_HCCrane *crane, u16 max)
+static u16 sub_8074448(Sprite_HCCrane *crane, u16 max)
 {
     u16 result = 0;
     u8 i;
@@ -715,14 +715,14 @@ u16 sub_8074448(Sprite_HCCrane *crane, u16 max)
     return result;
 }
 
-void sub_807447C(Sprite_HCCrane *crane)
+static void sub_807447C(Sprite_HCCrane *crane)
 {
     u32 r2 = crane->cs[0].unk8;
 
     crane->cs[1].unk8 = (1024 - r2) & (1024 - 1);
 }
 
-void sub_8074490(Sprite_HCCrane *crane, s16 p1)
+static void sub_8074490(Sprite_HCCrane *crane, s16 p1)
 {
     u8 i;
 
@@ -730,17 +730,20 @@ void sub_8074490(Sprite_HCCrane *crane, s16 p1)
         CraneStruct *cs = &crane->cs[i];
 
         cs->unk10 += p1;
-        if (cs->unk10 > CRANE_SOME_ACCELERATION) {
-            cs->unk10 = CRANE_SOME_ACCELERATION;
-        } else if (cs->unk10 < -CRANE_SOME_ACCELERATION) {
-            cs->unk10 = -CRANE_SOME_ACCELERATION;
+        if (cs->unk10 > CRANE_MAX_ACCELERATION) {
+            cs->unk10 = CRANE_MAX_ACCELERATION;
+        } else if (cs->unk10 < -CRANE_MAX_ACCELERATION) {
+            cs->unk10 = -CRANE_MAX_ACCELERATION;
         }
     }
 }
 
-bool32 sub_80744D0(Sprite_HCCrane *crane, s16 p1) { return sub_80744E0(crane, 7, p1); }
+static bool32 sub_80744D0(Sprite_HCCrane *crane, s16 p1)
+{
+    return sub_80744E0(crane, 7, p1);
+}
 
-bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
+static bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
 {
     s32 v, w;
 
@@ -749,17 +752,17 @@ bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
     w = cs->unk10 + p2;
     v = (w < 0) ? -w : w;
 
-    if (v <= CRANE_SOME_ACCELERATION) {
+    if (v <= CRANE_MAX_ACCELERATION) {
         cs->unk10 = w;
         return TRUE;
     } else {
         s16 r3;
         if (p2 > 0) {
-            r3 = w - CRANE_SOME_ACCELERATION;
-            cs->unk10 = CRANE_SOME_ACCELERATION;
+            r3 = w - CRANE_MAX_ACCELERATION;
+            cs->unk10 = CRANE_MAX_ACCELERATION;
         } else {
-            r3 = w + CRANE_SOME_ACCELERATION;
-            cs->unk10 = -CRANE_SOME_ACCELERATION;
+            r3 = w + CRANE_MAX_ACCELERATION;
+            cs->unk10 = -CRANE_MAX_ACCELERATION;
         }
 
         if (--index != 1)
@@ -769,7 +772,7 @@ bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
     }
 }
 
-void sub_8074550(Sprite_HCCrane *crane)
+static void sub_8074550(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (crane->unk1B8.unk0 != 0)) {
         gPlayer.y = crane->cs[8].screenY + Q_24_8(gCamera.y + 24);
@@ -780,4 +783,25 @@ void sub_8074550(Sprite_HCCrane *crane)
             gPlayer.x = crane->cs[8].screenX + Q_24_8(gCamera.x - 6);
         }
     }
+}
+
+static bool32 sub_80745B4(Sprite_HCCrane *crane)
+{
+    s16 screenX, screenY;
+    screenX = crane->posX - gCamera.x;
+    screenY = crane->posY - gCamera.y;
+
+    // TODO: Replace constants!
+    if (((u16)(screenX + 192) > 624) || ((screenY + 64) < -128)
+        || ((screenY - 64) > 288)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void sub_8074604(Sprite_HCCrane *crane)
+{
+    crane->ia->x = crane->spriteX;
+    TaskDestroy(gCurTask);
 }
