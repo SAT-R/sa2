@@ -1596,7 +1596,7 @@ _080797A8: .4byte IWRAM_START + 0x1B4
 	thumb_func_start sub_80797AC
 sub_80797AC: @ 0x080797AC
 	push {lr}
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r2, _080797DC @ =gPlayer
 	ldr r0, [r2, #0x20]
 	movs r1, #0x80
@@ -1660,7 +1660,7 @@ sub_8079810: @ 0x08079810
 	ands r0, r1
 	cmp r0, #0
 	beq _08079848
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, [r6]
 	ldr r0, _08079844 @ =Task_Interactable069
 	str r0, [r1, #8]
@@ -1702,7 +1702,7 @@ _08079884: .4byte 0xFFFFF000
 	thumb_func_start sub_8079888
 sub_8079888: @ 0x08079888
 	push {lr}
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, _080798B4 @ =gPlayer
 	ldr r2, [r1, #0x20]
 	movs r0, #0x80

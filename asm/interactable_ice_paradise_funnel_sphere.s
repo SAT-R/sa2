@@ -262,7 +262,7 @@ _0807816C: .4byte gSineTable
 sub_8078170: @ 0x08078170
 	push {r4, r5, lr}
 	adds r5, r0, #0
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r4, _080781B0 @ =gPlayer
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
@@ -373,7 +373,7 @@ _08078250: .4byte sub_807844C
 sub_8078254: @ 0x08078254
 	push {r4, r5, lr}
 	adds r5, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r4, _08078288 @ =gPlayer
 	ldr r0, [r4, #0x20]
 	ldr r1, _0807828C @ =0xFFBFFFFF
@@ -452,7 +452,7 @@ _080782F8: .4byte sub_8078414
 sub_80782FC: @ 0x080782FC
 	push {r4, r5, lr}
 	adds r5, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r4, _08078320 @ =gPlayer
 	adds r0, r4, #0
 	adds r0, #0x85
