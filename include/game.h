@@ -145,7 +145,9 @@ typedef struct {
     /* 0x20 */ u32
         moveState; // set/compare to values in "include/constants/move_states.h"
     /* 0x24 */ u8 unk24;
-    /* 0x25 */ u8 filler25[0x11];
+    /* 0x25 */ u8 filler25[7];
+    /* 0x2C */ s16 unk2C;
+    /* 0x2E */ u8 filler2E[8];
     /* 0x36 */ u8 unk36;
     /* 0x37 */ u8 unk37;
     /* 0x38 */ u8 unk38; // bitfield, 0x1 determines layer
