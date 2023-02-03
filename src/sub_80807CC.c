@@ -14,8 +14,10 @@ typedef struct {
 
 static void Task_80808DC(void);
 
-struct Task *sub_80807CC(void) {
-    struct Task *t = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
+struct Task *sub_80807CC(void)
+{
+    struct Task *t
+        = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
     Sprite_OnInit_SkyCanyon *init = TaskGetStructPtr(t);
     Sprite *spring, *propellor;
 
@@ -36,7 +38,7 @@ struct Task *sub_80807CC(void) {
     spring->graphics.anim = SA2_ANIM_SPRING_FLYING;
     spring->variant = 0;
     sub_8004558(&init->spring);
-    
+
     propellor = &init->propellor;
     propellor->unk1A = 0x480;
     propellor->graphics.size = 0;
