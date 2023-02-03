@@ -180,7 +180,7 @@ _0807E376:
 sub_807E384: @ 0x0807E384
 	push {r4, r5, lr}
 	adds r5, r0, #0
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r4, _0807E3C8 @ =gPlayer
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
@@ -246,7 +246,7 @@ _0807E404: .4byte sub_807E7B0
 sub_807E408: @ 0x0807E408
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r0, _0807E4C8 @ =gPlayer
 	mov ip, r0
 	ldr r1, [r0, #0x20]

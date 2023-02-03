@@ -342,7 +342,7 @@ sub_807608C: @ 0x0807608C
 	adds r5, r1, #0
 	cmp r4, #0
 	bne _080760E2
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r0, [r5, #0x20]
 	movs r1, #0x80
 	lsls r1, r1, #0xf
@@ -584,7 +584,7 @@ sub_8076258: @ 0x08076258
 	ands r0, r1
 	cmp r0, #0
 	bne _08076288
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r0, [r4, #0x20]
 	ldr r1, _0807629C @ =0xFFBFFFFF
 	ands r0, r1

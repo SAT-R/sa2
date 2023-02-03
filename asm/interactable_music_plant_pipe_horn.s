@@ -1149,7 +1149,7 @@ _080777C2:
 sub_80777C8: @ 0x080777C8
 	push {r4, lr}
 	adds r4, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r2, _08077824 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	ldr r1, _08077828 @ =0xFFBFFFFF
@@ -1292,7 +1292,7 @@ _080778E0: .4byte gCurTask
 sub_80778E4: @ 0x080778E4
 	push {r4, r5, r6, lr}
 	adds r5, r0, #0
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r4, _0807793C @ =gPlayer
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
@@ -1474,7 +1474,7 @@ sub_8077A3C: @ 0x08077A3C
 	ands r1, r0
 	cmp r1, #0
 	beq _08077A70
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, [r5]
 	ldr r0, _08077A6C @ =sub_80778AC
 	str r0, [r1, #8]
@@ -1542,7 +1542,7 @@ sub_8077ABC: @ 0x08077ABC
 	ands r0, r1
 	cmp r0, #0
 	beq _08077AF0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, [r5]
 	ldr r0, _08077AEC @ =sub_8077C04
 	str r0, [r1, #8]
@@ -1584,7 +1584,7 @@ _08077B24: .4byte gUnknown_08C87960
 sub_8077B28: @ 0x08077B28
 	push {r4, lr}
 	adds r4, r0, #0
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r2, _08077B80 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	ldr r1, _08077B84 @ =0xFFBFFFFF
@@ -1723,7 +1723,7 @@ _08077C38: .4byte gCurTask
 sub_8077C3C: @ 0x08077C3C
 	push {r4, r5, r6, lr}
 	adds r5, r0, #0
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r4, _08077C90 @ =gPlayer
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80

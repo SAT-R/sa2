@@ -129,7 +129,7 @@ sub_8073474: @ 0x08073474
 	adds r4, r0, #0
 	adds r5, r4, #0
 	adds r5, #0xc
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r2, _080734AC @ =gPlayer
 	ldr r0, [r2, #0x20]
 	ldr r1, _080734B0 @ =0xFFBFFFFF
@@ -381,7 +381,7 @@ sub_8073670: @ 0x08073670
 	adds r4, r0, #0
 	adds r5, r4, #0
 	adds r5, #0xc
-	bl sub_8029FF0
+	bl Player_SetMovestate_IsInScriptedSequence
 	ldr r1, _080736D0 @ =gPlayer
 	ldr r3, [r1, #0x20]
 	movs r0, #0x80
@@ -463,7 +463,7 @@ sub_807371C: @ 0x0807371C
 	adds r4, r0, #0
 	adds r5, r4, #0
 	adds r5, #0xc
-	bl sub_802A004
+	bl Player_ClearMovestate_IsInScriptedSequence
 	movs r1, #0
 	ldr r0, _08073750 @ =0x00000237
 	strh r0, [r5, #0xa]
