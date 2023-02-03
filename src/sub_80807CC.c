@@ -14,6 +14,12 @@ typedef struct {
 
 static void Task_80808DC(void);
 
+/* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside entities_0.s
+ * Which itself is referenced by 'sub_800888C'
+ * It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
+ * the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.
+ */
+
 struct Task *sub_80807CC(void)
 {
     struct Task *t
@@ -57,7 +63,7 @@ struct Task *sub_80807CC(void)
     return t;
 }
 
-void Task_80808DC(void)
+static void Task_80808DC(void)
 {
     Sprite_OnInit_SkyCanyon *init = TaskGetStructPtr(gCurTask);
     if (init->unk60) {
