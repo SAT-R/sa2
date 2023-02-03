@@ -29,7 +29,7 @@ typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u8 filler32[2];
-} Sprite_IaUnknown2; /* size: 0x34 */
+} Sprite_Notif_RingBonus; /* size: 0x34 */
 
 extern void sub_80803FC(Sprite_IaUnknown *);
 extern bool32 sub_808055C(Sprite_IaUnknown *);
@@ -39,6 +39,24 @@ void sub_808073C(Sprite_IaUnknown UNUSED *s);
 static void Task_8080750(void);
 void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
+
+bool32 sub_808055C(Sprite_IaUnknown *sprite)
+{
+    s16 spriteX, spriteY;
+    s16 playerX, playerY;
+    spriteX = sprite->posX - gCamera.x;
+    spriteY = sprite->posY - gCamera.y;
+
+    playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+    if ((spriteX + sprite->unk8 <= playerX) && (playerX <= spriteX + sprite->unkC)
+        && (spriteY + sprite->unkA <= playerY) && (playerY <= spriteY + sprite->unkE)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
 
 void sub_80805D0(Sprite_IaUnknown *sprite)
 {
@@ -72,9 +90,9 @@ void sub_80805D0(Sprite_IaUnknown *sprite)
 
 void InitSprite_Notif_RingBonus(void)
 {
-    struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_IaUnknown2), 0x2010, 0,
+    struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
                                 TaskDestructor_8080790);
-    Sprite_IaUnknown2 *notif = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *notif = TaskGetStructPtr(t);
 
     notif->unk30 = 120;
     notif->s.unk1A = 0x40;
@@ -110,7 +128,7 @@ void sub_808073C(Sprite_IaUnknown UNUSED *s) { gCurTask->main = Task_80807A4; }
 
 void Task_8080750(void)
 {
-    Sprite_IaUnknown2 *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(gCurTask);
     if (--sprite->unk30 == (u16)-1) {
         TaskDestroy(gCurTask);
     } else {
@@ -122,7 +140,7 @@ void Task_8080750(void)
 
 void TaskDestructor_8080790(struct Task *t)
 {
-    Sprite_IaUnknown2 *sprite = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(t);
     VramFree(sprite->s.graphics.dest);
 }
 
