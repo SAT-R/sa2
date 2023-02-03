@@ -40,6 +40,36 @@ static void Task_8080750(void);
 void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
+void sub_80805D0(Sprite_IaUnknown *sprite)
+{
+    if (sprite->unk1C != 0) {
+        s32 xValue, yValue;
+
+        if ((gPlayer.x < Q_24_8(240)) && (gPlayer.y < Q_24_8(288))) {
+            xValue = Q_24_8(1440);
+            yValue = Q_24_8(864);
+        } else if ((gPlayer.x > Q_24_8(1680)) && (gPlayer.y > Q_24_8(864))) {
+            xValue = Q_24_8(-1440);
+            yValue = Q_24_8(-864);
+        } else {
+            return;
+        }
+        gPlayer.x += xValue;
+        gPlayer.y += yValue;
+
+        xValue = Q_24_8_TO_INT(xValue);
+        yValue = Q_24_8_TO_INT(yValue);
+
+        gCamera.x += xValue;
+        gCamera.unk20 += xValue;
+        gCamera.unk10 += xValue;
+
+        gCamera.y += yValue;
+        gCamera.unk24 += yValue;
+        gCamera.unk14 += yValue;
+    }
+}
+
 void InitSprite_Notif_RingBonus(void)
 {
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_IaUnknown2), 0x2010, 0,
