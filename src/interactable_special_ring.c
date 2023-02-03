@@ -70,7 +70,7 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
     }
 }
 
-bool32 sub_8081010(Sprite_SpecialRing *ring)
+static bool32 sub_8081010(Sprite_SpecialRing *ring)
 {
     UNK_30056A4 *ptr = gUnknown_030056A4;
 #ifndef NON_MATCHING

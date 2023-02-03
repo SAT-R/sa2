@@ -13,19 +13,19 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite displayed;
     /* 0x3C */ u16 unk3C;
-} Ramp /* size 0x40 */;
+} Sprite_Ramp /* size 0x40 */;
 
-void sub_800FAF4(void);
-
-void TaskDestructor_800FE24(struct Task *);
+static void Task_Interactable_Ramp(void);
+static void TaskDestructor_Interactable_Ramp(struct Task *);
 
 void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                   u8 spriteY)
 {
     u8 temp;
     s32 temp2;
-    struct Task *t = TaskCreate(sub_800FAF4, 0x40, 0x2010, 0, TaskDestructor_800FE24);
-    Ramp *ramp = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_Interactable_Ramp, sizeof(Sprite_Ramp), 0x2010, 0,
+                                TaskDestructor_Interactable_Ramp);
+    Sprite_Ramp *ramp = TaskGetStructPtr(t);
     Sprite *displayed = &ramp->displayed;
 
     ramp->base.regionX = spriteRegionX;
@@ -41,7 +41,7 @@ void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 sprit
     temp = ia->d.sData[0] & 3;
     ramp->unk3C = temp;
 
-    displayed->graphics.dest = VramMalloc(0x14);
+    displayed->graphics.dest = VramMalloc(20);
     displayed->graphics.anim = SA2_ANIM_RAMP;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == 5) {
@@ -68,10 +68,10 @@ void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 sprit
     sub_8004558(displayed);
 }
 
-void sub_800FAF4(void)
+static void Task_Interactable_Ramp(void)
 {
     Player *player = &gPlayer;
-    Ramp *ramp = TaskGetStructPtr(gCurTask);
+    Sprite_Ramp *ramp = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &ramp->displayed;
     Interactable *ia = ramp->base.ia;
 
@@ -113,7 +113,7 @@ void sub_800FAF4(void)
                 if (temp9 > 0) {
                     if (temp9 > temp2) {
                         if (!(player->moveState & MOVESTATE_IN_AIR)
-                            && (player->speedGroundX > 0x400)) {
+                            && (player->speedGroundX > Q_8_8(4))) {
                             player->unk6D = 0x16;
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
@@ -127,7 +127,7 @@ void sub_800FAF4(void)
 
                         if (temp4 >= temp6) {
                             if (!(player->moveState & MOVESTATE_IN_AIR)
-                                && (player->speedGroundX > 0x400)
+                                && (player->speedGroundX > Q_8_8(4))
                                 && (player->unk5E & gPlayerControls.unk0)) {
                                 if (temp9 < (temp2 / 2)) {
                                     player->unk6D = 0x16;
@@ -159,7 +159,7 @@ void sub_800FAF4(void)
                     || ((ramp->unk3C & 2) == 0
                         && Q_24_8_TO_INT(player->x) > displayed->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR)
-                        && player->speedGroundX > 0x400) {
+                        && player->speedGroundX > Q_8_8(4)) {
                         player->unk6D = 0x16;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
@@ -174,8 +174,7 @@ void sub_800FAF4(void)
         }
     }
 
-    if (((u32)(screenX - gCamera.x) + 0x80) > 0x1F0 || ((screenY - gCamera.y) + 0x80) < 0
-        || (screenY - gCamera.y) > 0x120) {
+    if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX - gCamera.x, screenY - gCamera.y)) {
         ia->x = ramp->base.spriteX;
         TaskDestroy(gCurTask);
         return;
@@ -184,8 +183,8 @@ void sub_800FAF4(void)
     sub_80051E8(displayed);
 }
 
-void TaskDestructor_800FE24(struct Task *t)
+static void TaskDestructor_Interactable_Ramp(struct Task *t)
 {
-    Ramp *ramp = TaskGetStructPtr(t);
+    Sprite_Ramp *ramp = TaskGetStructPtr(t);
     VramFree(ramp->displayed.graphics.dest);
 }

@@ -171,6 +171,7 @@ typedef struct {
     /* 0x6D Some player state, cleared after usage
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
+     *  0x16 = Set in IA Ramp
      *  0x17 = Used in Interactable 044
      *  0x18 = Dash Ring
      * */
