@@ -184,7 +184,7 @@ _080804AE:
 _080804C2:
 	ldr r0, _080804EC @ =0x0000019B
 	bl m4aSongNumStart
-	bl sub_8080664
+	bl InitSprite_Notif_RingBonus
 	ldr r0, _080804F0 @ =gUnknown_030053E4
 	ldr r0, [r0]
 	str r0, [r5, #0x14]
@@ -315,6 +315,8 @@ _080805CA:
 	pop {r1}
 	bx r1
 
+@# -------------------------------------------------------
+
 	thumb_func_start sub_80805D0
 sub_80805D0: @ 0x080805D0
 	push {r4, lr}
@@ -390,184 +392,5 @@ _08080658: .4byte 0xFFFA6000
 _0808065C: .4byte 0xFFFCA000
 _08080660: .4byte gCamera
 
-	thumb_func_start sub_8080664
-sub_8080664: @ 0x08080664
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	ldr r0, _080806D4 @ =sub_8080750
-	ldr r2, _080806D8 @ =0x00002010
-	ldr r1, _080806DC @ =sub_8080790
-	str r1, [sp]
-	movs r1, #0x34
-	movs r3, #0
-	bl TaskCreate
-	ldrh r5, [r0, #6]
-	movs r4, #0xc0
-	lsls r4, r4, #0x12
-	adds r4, r5, r4
-	movs r6, #0
-	movs r1, #0
-	movs r0, #0x78
-	strh r0, [r4, #0x30]
-	movs r0, #0x40
-	strh r0, [r4, #0x1a]
-	strh r1, [r4, #8]
-	strh r1, [r4, #0x14]
-	strh r1, [r4, #0x1c]
-	ldr r0, _080806E0 @ =IWRAM_START + 0x21
-	adds r1, r5, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, _080806E4 @ =IWRAM_START + 0x22
-	adds r1, r5, r0
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r1, _080806E8 @ =IWRAM_START + 0x25
-	adds r0, r5, r1
-	strb r6, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r4, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #5
-	str r0, [r4, #0x10]
-	movs r0, #0x1a
-	bl VramMalloc
-	str r0, [r4, #4]
-	ldr r0, _080806EC @ =0x000002DF
-	strh r0, [r4, #0xa]
-	ldr r0, _080806F0 @ =IWRAM_START + 0x20
-	adds r5, r5, r0
-	strb r6, [r5]
-	adds r0, r4, #0
-	bl sub_8004558
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080806D4: .4byte sub_8080750
-_080806D8: .4byte 0x00002010
-_080806DC: .4byte sub_8080790
-_080806E0: .4byte IWRAM_START + 0x21
-_080806E4: .4byte IWRAM_START + 0x22
-_080806E8: .4byte IWRAM_START + 0x25
-_080806EC: .4byte 0x000002DF
-_080806F0: .4byte IWRAM_START + 0x20
-
-	thumb_func_start Task_80806F4
-Task_80806F4: @ 0x080806F4
-	push {r4, r5, lr}
-	ldr r0, _08080724 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r5, _08080728 @ =gPlayer
-	ldr r0, [r5, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _08080712
-	ldrh r0, [r4, #0x1a]
-	strh r0, [r4, #0x18]
-_08080712:
-	adds r0, r4, #0
-	bl sub_808055C
-	cmp r0, #0
-	beq _0808072C
-	adds r0, r4, #0
-	bl sub_808073C
-	b _08080730
-	.align 2, 0
-_08080724: .4byte gCurTask
-_08080728: .4byte gPlayer
-_0808072C:
-	ldr r0, [r5, #8]
-	str r0, [r4, #0x20]
-_08080730:
-	adds r0, r4, #0
-	bl sub_80805D0
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_808073C
-sub_808073C: @ 0x0808073C
-	ldr r0, _08080748 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0808074C @ =sub_80807A4
-	str r0, [r1, #8]
-	bx lr
-	.align 2, 0
-_08080748: .4byte gCurTask
-_0808074C: .4byte sub_80807A4
-
-	thumb_func_start sub_8080750
-sub_8080750: @ 0x08080750
-	push {lr}
-	ldr r0, _08080774 @ =gCurTask
-	ldr r3, [r0]
-	ldrh r1, [r3, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r2, r1, r0
-	ldrh r0, [r2, #0x30]
-	subs r0, #1
-	strh r0, [r2, #0x30]
-	lsls r0, r0, #0x10
-	ldr r1, _08080778 @ =0xFFFF0000
-	cmp r0, r1
-	bne _0808077C
-	adds r0, r3, #0
-	bl TaskDestroy
-	b _0808078A
-	.align 2, 0
-_08080774: .4byte gCurTask
-_08080778: .4byte 0xFFFF0000
-_0808077C:
-	movs r0, #0x78
-	strh r0, [r2, #0x16]
-	movs r0, #0x30
-	strh r0, [r2, #0x18]
-	adds r0, r2, #0
-	bl sub_80051E8
-_0808078A:
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start sub_8080790
-sub_8080790: @ 0x08080790
-	push {lr}
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	ldr r0, [r0, #4]
-	bl VramFree
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_80807A4
-sub_80807A4: @ 0x080807A4
-	push {r4, lr}
-	ldr r0, _080807C8 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_808055C
-	cmp r0, #0
-	bne _080807C2
-	adds r0, r4, #0
-	bl sub_80803FC
-_080807C2:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080807C8: .4byte gCurTask
+.if 0
+.endif
