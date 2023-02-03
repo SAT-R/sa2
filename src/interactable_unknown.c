@@ -17,7 +17,7 @@ typedef struct {
     /* 0x0E */ s16 unkE;
     /* 0x10 */ s16 unk10;
     /* 0x12 */ s16 unk12;
-    /* 0x14 */ u8 filler14[4];
+    /* 0x14 */ s32 unk14;
     /* 0x18 */ s16 unk18;
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ s32 unk1C;
@@ -35,10 +35,36 @@ extern void sub_80803FC(Sprite_IaUnknown *);
 extern bool32 sub_808055C(Sprite_IaUnknown *);
 extern void sub_80805D0(Sprite_IaUnknown *);
 
+void Task_80806F4(void);
 void sub_808073C(Sprite_IaUnknown UNUSED *s);
 static void Task_8080750(void);
-void TaskDestructor_8080790(struct Task *t);
+static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
+
+#if 0
+void sub_80803FC(Sprite_IaUnknown *sprite) {
+    if ((sprite->someX < Q_24_8(sprite->posX)) && (gPlayer.x > Q_24_8(sprite->posY))) {
+        // _08080412
+        if (sprite->unk1C != 0) {
+
+        }
+        // _808004F8
+        sprite->unk1C = 1;
+        sprite->unk14 = gUnknown_030053E4;
+    }
+    // _08080510
+    else if((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
+    && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))){
+        if (sprite->unk1C != 0) {
+            sprite->unk18--;
+        }
+
+        sprite->someX = gPlayer.x;
+    }
+
+    gCurTask->main = Task_80806F4;
+}
+#endif
 
 bool32 sub_808055C(Sprite_IaUnknown *sprite)
 {
@@ -138,13 +164,13 @@ void Task_8080750(void)
     }
 }
 
-void TaskDestructor_8080790(struct Task *t)
+static void TaskDestructor_8080790(struct Task *t)
 {
     Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(t);
     VramFree(sprite->s.graphics.dest);
 }
 
-void Task_80807A4(void)
+static void Task_80807A4(void)
 {
     Sprite_IaUnknown *sprite = TaskGetStructPtr(gCurTask);
     if (sub_808055C(sprite) == 0)

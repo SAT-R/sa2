@@ -78,13 +78,14 @@ initSprite_8080368: @ 0x08080368
 _080803F4: .4byte Task_80806F4
 _080803F8: .4byte 0x00002010
 
+.if 1
 	thumb_func_start sub_80803FC
 sub_80803FC: @ 0x080803FC
 	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0
+	adds r5, r0, #0         @ r5 = sprite
 	movs r1, #8
 	ldrsh r0, [r5, r1]
-	ldr r2, [r5]
+	ldr r2, [r5]            @ r2 = sprite->posX
 	adds r0, r2, r0
 	lsls r0, r0, #8
 	ldr r1, [r5, #0x20]
@@ -182,7 +183,7 @@ _080804AE:
 	movs r0, #0xff
 	strh r0, [r1]
 _080804C2:
-	ldr r0, _080804EC @ =0x0000019B
+	ldr r0, _080804EC @ =0x0000019B @ MUS_FANFARE
 	bl m4aSongNumStart
 	bl InitSprite_Notif_RingBonus
 	ldr r0, _080804F0 @ =gUnknown_030053E4
@@ -252,6 +253,4 @@ _08080540:
 _08080550: .4byte gPlayer
 _08080554: .4byte gCurTask
 _08080558: .4byte Task_80806F4
-
-.if 0
 .endif
