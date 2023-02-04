@@ -375,74 +375,74 @@ static void Task_8073D48(void)
     sub_80742A8(crane);
 }
 
-NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", static void Task_8073E20(void))
+static void Task_8073E20(void)
 {
     Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
-
     sub_8074260(crane);
     sub_807447C(crane);
 
     // TODO: Fix cast... maybe unk1B8.unk8 is a Q_16_16?
-    if (*(u32 *)&crane->unk1B8.unk8 != 0) {
-        u16 r2;
+    if (crane->unk1B8.unk8 != 0 || crane->unk1B8.unkA != 0) {
+        s16 r2;
 
         if (crane->unk1B8.unk6 == 0) {
-            s32 r6 = -crane->unk1B8.unkA;
-            s32 r3 = -crane->unk1B8.unk8;
-            s32 r0 = (r6 - r3);
-            r2 = (r0 > -32) ? -32 : (r0 >> 4);
+            s32 temp = -crane->unk1B8.unkA;
+            s32 temp2 = -crane->unk1B8.unk8;
+            r2 = (temp - temp2) >> 4;
 
-            r0 = ((r3 - r6) >> 4) + 256;
+            if (r2 > -32) {
+                r2 = -32;
+            }
 
-            crane->cs[7].unk8 = r0;
+            crane->cs[7].unk8 = ((temp2 - temp) >> 4) + 256;
         } else {
             // _08073E9C
             if (crane->unk1B8.unk8 == 0) {
-                r2 = crane->unk1B8.unkA;
-
                 if (crane->unk1B8.unkA > 0) {
                     if (crane->unk1B8.unkA > 32) {
                         r2 = -32;
+                    } else {
+                        r2 = -crane->unk1B8.unkA;
                     }
-                } else if (crane->unk1B8.unkA < -32) {
-                    r2 = 32;
                 } else {
-                    r2 = -r2;
+                    if (crane->unk1B8.unkA < -32) {
+                        r2 = 32;
+                    } else {
+                        r2 = -crane->unk1B8.unkA;
+                    }
                 }
             } else if (crane->unk1B8.unk8 > 0) {
                 // __08073ED0
                 s16 temp;
-                s16 temp0, temp1;
+                s32 temp0, temp1;
                 if (crane->unk1B8.unkA > 0) {
-                    temp0 = crane->unk1B8.unk8;
-                    temp1 = crane->unk1B8.unkA;
+                    r2 = (crane->unk1B8.unk8 - crane->unk1B8.unkA) >> 4;
+                    if (r2 < 32)
+                        r2 = 32;
                 } else {
                     // _08073EEC
-                    temp0 = crane->unk1B8.accelY;
-                    temp1 = crane->unk1B8.unkA;
+                    s32 tempa = crane->unk1B8.accelY;
+                    s32 tempb = crane->unk1B8.unkA;
+                    r2 = ((tempb - tempa)) >> 4;
+                    if (r2 < 32)
+                        r2 = 32;
                 }
-
-                temp = ((temp0 - temp1) >> 4);
-
-                if (temp < 32)
-                    r2 = 32;
-                else
-                    r2 = temp;
-            } else /* crane->unk1B8.unk8 < 0 */ {
+            } else {
                 // _08073F0C
+                s32 temp0;
                 s16 temp;
                 if (crane->unk1B8.unkA > 0) {
-                    r2 = crane->unk1B8.unkA - crane->unk1B8.accelY;
-                    temp = r2;
-
-                    if (temp > -32)
+                    r2 = (crane->unk1B8.unkA - crane->unk1B8.accelY) >> 4;
+                    // TODO: fix
+                    if (r2 > -32) {
                         r2 = -32;
-                } else {
-                    // _08073F3C
-                    r2 = crane->unk1B8.unk8 - crane->unk1B8.unkA;
-                    temp = r2;
+                    }
 
-                    if (temp > -32)
+                } else {
+                    s32 tempa = crane->unk1B8.unkA;
+                    s32 tempb = crane->unk1B8.unk8;
+                    r2 = (tempb - tempa) >> 4;
+                    if (r2 > -32)
                         r2 = -32;
                 }
             }
@@ -455,36 +455,27 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", static void Task_8073E20(
                 && (crane->unk1B8.unk8 >= crane->unk1B8.unkA))) {
             // _08073F88
             u16 unk8 = crane->unk1B8.unk8;
-            s16 other;
             crane->unk1B8.unkA = unk8;
             crane->unk1B8.accelY = unk8;
 
             // crane->unk1B8.unk8 *= -0.75;
-            other = -((crane->unk1B8.unk8 * 3) >> 2);
-            crane->unk1B8.unk8 = other;
+            crane->unk1B8.unk8 = -((crane->unk1B8.unk8 * 3) >> 2);
 
-            if (other != 0) {
-                if (other < 0)
-                    other = -other;
-
-                if (other < 128)
+            if (crane->unk1B8.unk8 != 0) {
+                if (abs(crane->unk1B8.unk8) <= 128)
                     crane->unk1B8.unk8 = 0;
             } else {
-                // _08073FCC
-                crane->unk1B8.unkA = crane->unk1B8.unk8;
+                crane->unk1B8.unkA = 0;
             }
             // _08073FCE
             crane->unk1B8.unk6++;
         }
         // _08073FDA
-        crane->cs[1].unk8
-            = (((crane->unk1B8.unkA >> 5) + (crane->cs[1].unk8)) & (1024 - 1));
+        crane->cs[1].unk8 += ((crane->unk1B8.unkA >> 5));
+        crane->cs[1].unk8 &= ONE_CYCLE;
+    }
 
-        if (*(u32 *)&crane->unk1B8.unk8 == 0) {
-            // _08073FFC
-            gCurTask->main = Task_8073AA8;
-        }
-    } else {
+    if (crane->unk1B8.unk8 == 0 && crane->unk1B8.unkA == 0) {
         // _08073FFC
         gCurTask->main = Task_8073AA8;
     }
@@ -499,7 +490,8 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", static void Task_8073E20(
                 sub_807447C(crane);
                 sub_8074088(crane);
             }
-            if (!sub_80745B4(crane)) {
+
+            if (sub_80745B4(crane)) {
                 crane->ia->x = crane->spriteX;
                 TaskDestroy(gCurTask);
                 return;
@@ -514,7 +506,6 @@ NONMATCH("asm/non_matching/IA_Crane_Task_8073E20.inc", static void Task_8073E20(
         }
     }
 }
-END_NONMATCH
 
 static void sub_8074088(Sprite_HCCrane *crane)
 {
