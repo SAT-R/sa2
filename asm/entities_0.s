@@ -10368,7 +10368,7 @@ _0800CC80:
 	.align 2, 0
 _0800CC9C: .4byte gUnknown_03005424
 _0800CCA0:
-	movs r0, #0x77
+	movs r0, #0x77 @ SE_LIFE_LOST
 	bl m4aSongNumStart
 	ldrb r1, [r4]
 	movs r0, #0xf6
