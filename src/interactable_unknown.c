@@ -53,7 +53,11 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
         && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
             u16 r7;
-            s32 prevCourseTime;
+#ifdef NON_MATCHING
+            u32 prevCourseTime;
+#else
+            register u32 prevCourseTime asm("r6");
+#endif
             u32 timeInc;
 
             // _08080428
@@ -73,8 +77,18 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                     timeInc = 15;
                 }
 
+// NOTE(Jace): Non-match flips the addends in add instruction
+#ifdef NON_MATCHING
                 prevCourseTime = (u16)gCourseTime;
-                gCourseTime = timeInc + gCourseTime;
+                gCourseTime = gCourseTime + timeInc;
+#else
+                asm("ldrh %1, [%0]\n"
+                    "\tadd r0, %2, %1 \n"
+                    "\tstrh r0, [%0]\n"
+                    :
+                    : "r"(&gCourseTime), "r"(prevCourseTime), "r"(timeInc)
+                    : "r0");
+#endif
 
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
                     && (Div((u16)gCourseTime, 100) != Div(prevCourseTime, 100))
@@ -90,9 +104,7 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 }
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                    // TODO: Use CLAMP macro
-                    u32 time = (u16)gCourseTime;
-                    if (time > 255) {
+                    if ((u16)gCourseTime > 255) {
                         gCourseTime = 255;
                     }
                 }
