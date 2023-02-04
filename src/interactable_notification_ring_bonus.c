@@ -87,7 +87,6 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
 #endif
             u32 timeInc;
 
-            // _08080428
             sprite->unk18++;
 
             if (sprite->unk1A < sprite->unk18) {
@@ -142,13 +141,11 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 gUnknown_03005B6C = r7;
             }
         } else {
-            // _808004F8
             sprite->unk1C = 1;
             sprite->timer = gUnknown_030053E4;
         }
         sprite->someX = gPlayer.x;
     }
-    // _08080510
     else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
              && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
