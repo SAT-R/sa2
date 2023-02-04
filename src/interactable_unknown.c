@@ -1,8 +1,9 @@
 #include "global.h"
+#include "malloc_vram.h"
 #include "m4a.h"
 #include "game.h"
 
-#include "malloc_vram.h"
+#include "interactable.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -24,7 +25,6 @@ typedef struct {
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ s32 someX;
-    /* 0x24 */ s32 someY;
 } Sprite_IaUnknown; /* size: 0x24 */
 
 typedef struct {
@@ -33,12 +33,13 @@ typedef struct {
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
+// Some timer difference
 s32 gUnknown_03005B6C ALIGNED(4) = 0;
 
 extern void sub_80803FC(Sprite_IaUnknown *);
 extern bool32 sub_808055C(Sprite_IaUnknown *);
 extern void sub_80805D0(Sprite_IaUnknown *);
-extern void InitSprite_Notif_RingBonus(void);
+extern void CreateSprite_Notif_RingBonus(void);
 
 void Task_80806F4(void);
 void sub_808073C(Sprite_IaUnknown UNUSED *s);
@@ -46,7 +47,33 @@ static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-#if 1
+void initSprite_8080368(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+                        UNUSED u8 spriteY)
+{
+    s32 screenX, screenY;
+
+    struct Task *t = TaskCreate(Task_80806F4, sizeof(Sprite_IaUnknown), 0x2010, 0, NULL);
+    Sprite_IaUnknown *sprite = TaskGetStructPtr(t);
+
+    sprite->timer = 0;
+    sprite->unk18 = 0;
+    sprite->unk1A = 0;
+    sprite->unk1C = 0;
+
+    sprite->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
+    sprite->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+
+    sprite->unk8 = ia->d.sData[0] * 8;
+    sprite->unkA = ia->d.sData[1] * 8;
+    sprite->unkC = sprite->unk8 + ia->d.uData[2] * 8;
+    sprite->unkE = sprite->unkA + ia->d.uData[3] * 8;
+
+    sprite->unk10 = sprite->unkC - sprite->unk8;
+    sprite->unk12 = sprite->unkE - sprite->unkA;
+
+    SET_SPRITE_INITIALIZED(ia);
+}
+
 void sub_80803FC(Sprite_IaUnknown *sprite)
 {
     if ((sprite->someX < Q_24_8(sprite->posX + sprite->unk8))
@@ -110,7 +137,7 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 }
 
                 m4aSongNumStart(MUS_FANFARE);
-                InitSprite_Notif_RingBonus();
+                CreateSprite_Notif_RingBonus();
 
                 sprite->timer = gUnknown_030053E4;
                 gUnknown_03005B6C = r7;
@@ -134,7 +161,6 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
 
     gCurTask->main = Task_80806F4;
 }
-#endif
 
 bool32 sub_808055C(Sprite_IaUnknown *sprite)
 {
@@ -184,7 +210,7 @@ void sub_80805D0(Sprite_IaUnknown *sprite)
     }
 }
 
-void InitSprite_Notif_RingBonus(void)
+void CreateSprite_Notif_RingBonus(void)
 {
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
                                 TaskDestructor_8080790);
