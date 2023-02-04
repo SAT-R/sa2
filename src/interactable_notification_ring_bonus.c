@@ -145,9 +145,8 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
             sprite->timer = gUnknown_030053E4;
         }
         sprite->someX = gPlayer.x;
-    }
-    else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
-             && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))) {
+    } else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
+               && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
             sprite->unk18--;
         }
