@@ -31,7 +31,7 @@ extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
 // might be wrong
-extern s16 gCourseTime;
+extern s16 gRingCount;
 
 extern u8 gUnknown_030054A8[8];
 extern u32 gUnknown_03005490;

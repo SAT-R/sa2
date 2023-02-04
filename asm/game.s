@@ -7185,7 +7185,7 @@ _0801FF70:
 	lsls r1, r2, #0x10
 	asrs r1, r1, #0x10
 	bl sub_800AEA0
-	ldr r1, _0801FFF4 @ =gCourseTime
+	ldr r1, _0801FFF4 @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
@@ -7224,7 +7224,7 @@ _0801FFC4:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _0801FFD8
-	ldr r1, _0801FFF4 @ =gCourseTime
+	ldr r1, _0801FFF4 @ =gRingCount
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _0801FFD8
@@ -7240,7 +7240,7 @@ _0801FFE4: .4byte IWRAM_START + 0x2B0
 _0801FFE8: .4byte IWRAM_START + 0x2B4
 _0801FFEC: .4byte gCamera
 _0801FFF0: .4byte gPlayer
-_0801FFF4: .4byte gCourseTime
+_0801FFF4: .4byte gRingCount
 _0801FFF8: .4byte gCurrentLevel
 _0801FFFC: .4byte gGameMode
 _08020000: .4byte gNumLives
@@ -7607,7 +7607,7 @@ _080202BE:
 	lsls r1, r7, #0x10
 	asrs r1, r1, #0x10
 	bl sub_800AEA0
-	ldr r1, _0802034C @ =gCourseTime
+	ldr r1, _0802034C @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
@@ -7646,7 +7646,7 @@ _08020312:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _08020326
-	ldr r1, _0802034C @ =gCourseTime
+	ldr r1, _0802034C @ =gRingCount
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _08020326
@@ -7664,7 +7664,7 @@ _0802033C: .4byte gUnknown_030054FC
 _08020340: .4byte gUnknown_030054E0
 _08020344: .4byte gCamera
 _08020348: .4byte gPlayer
-_0802034C: .4byte gCourseTime
+_0802034C: .4byte gRingCount
 _08020350: .4byte gCurrentLevel
 _08020354: .4byte gGameMode
 _08020358: .4byte gNumLives
@@ -8034,7 +8034,7 @@ _08020620:
 	lsls r1, r7, #0x10
 	asrs r1, r1, #0x10
 	bl sub_800AEA0
-	ldr r1, _080206AC @ =gCourseTime
+	ldr r1, _080206AC @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
@@ -8073,7 +8073,7 @@ _08020672:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _08020686
-	ldr r1, _080206AC @ =gCourseTime
+	ldr r1, _080206AC @ =gRingCount
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _08020686
@@ -8095,7 +8095,7 @@ _0802069C: .4byte IWRAM_START + 0x2B0
 _080206A0: .4byte IWRAM_START + 0x2B4
 _080206A4: .4byte gCamera
 _080206A8: .4byte gPlayer
-_080206AC: .4byte gCourseTime
+_080206AC: .4byte gRingCount
 _080206B0: .4byte gCurrentLevel
 _080206B4: .4byte gGameMode
 _080206B8: .4byte gNumLives
@@ -8628,7 +8628,7 @@ _08020ABE:
 	lsls r1, r6, #0x10
 	asrs r1, r1, #0x10
 	bl sub_800AEA0
-	ldr r1, _08020B3C @ =gCourseTime
+	ldr r1, _08020B3C @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
@@ -8667,7 +8667,7 @@ _08020B12:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _08020B26
-	ldr r1, _08020B3C @ =gCourseTime
+	ldr r1, _08020B3C @ =gRingCount
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _08020B26
@@ -8684,7 +8684,7 @@ _08020B26:
 	.align 2, 0
 _08020B34: .4byte gCamera
 _08020B38: .4byte gPlayer
-_08020B3C: .4byte gCourseTime
+_08020B3C: .4byte gRingCount
 _08020B40: .4byte gCurrentLevel
 _08020B44: .4byte gGameMode
 _08020B48: .4byte gNumLives
@@ -9265,7 +9265,7 @@ _08020FAA:
 	lsls r1, r6, #0x10
 	asrs r1, r1, #0x10
 	bl sub_800AEA0
-	ldr r1, _08021030 @ =gCourseTime
+	ldr r1, _08021030 @ =gRingCount
 	ldrh r6, [r1]
 	adds r0, r6, #1
 	strh r0, [r1]
@@ -9304,7 +9304,7 @@ _08020FFE:
 	ldrb r0, [r0]
 	cmp r0, #5
 	bne _08021012
-	ldr r1, _08021030 @ =gCourseTime
+	ldr r1, _08021030 @ =gRingCount
 	ldrh r0, [r1]
 	cmp r0, #0xff
 	bls _08021012
@@ -9323,7 +9323,7 @@ _08021020: .4byte 0xFFFA6000
 _08021024: .4byte 0xFFFCA000
 _08021028: .4byte gCamera
 _0802102C: .4byte gPlayer
-_08021030: .4byte gCourseTime
+_08021030: .4byte gRingCount
 _08021034: .4byte gCurrentLevel
 _08021038: .4byte gGameMode
 _0802103C: .4byte gNumLives
@@ -9826,7 +9826,7 @@ sub_80213C0: @ 0x080213C0
 	bls _0802141C
 	cmp r0, #5
 	beq _08021418
-	ldr r1, _08021414 @ =gCourseTime
+	ldr r1, _08021414 @ =gRingCount
 	movs r0, #1
 	strh r0, [r1]
 	b _0802141C
@@ -9834,9 +9834,9 @@ sub_80213C0: @ 0x080213C0
 _08021408: .4byte sub_8023FC0
 _0802140C: .4byte sub_802A07C
 _08021410: .4byte gGameMode
-_08021414: .4byte gCourseTime
+_08021414: .4byte gRingCount
 _08021418:
-	ldr r0, _08021474 @ =gCourseTime
+	ldr r0, _08021474 @ =gRingCount
 	strh r1, [r0]
 _0802141C:
 	adds r0, r5, #0
@@ -9879,7 +9879,7 @@ _08021442:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08021474: .4byte gCourseTime
+_08021474: .4byte gRingCount
 _08021478: .4byte gPlayer
 _0802147C: .4byte sub_8025318
 _08021480: .4byte gInputRecorder
@@ -15384,7 +15384,7 @@ _08023D7C: .4byte gUnknown_03005490
 _08023D80: .4byte 0x00008CA0
 _08023D84: .4byte gUnknown_03005424
 _08023D88:
-	ldr r0, _08023D98 @ =gCourseTime
+	ldr r0, _08023D98 @ =gRingCount
 	movs r1, #0
 	strh r1, [r0]
 	ldr r0, _08023D9C @ =gUnknown_030054F4
@@ -15392,10 +15392,10 @@ _08023D88:
 	bl sub_801AE48
 	b _08023E88
 	.align 2, 0
-_08023D98: .4byte gCourseTime
+_08023D98: .4byte gRingCount
 _08023D9C: .4byte gUnknown_030054F4
 _08023DA0:
-	ldr r1, _08023E50 @ =gCourseTime
+	ldr r1, _08023E50 @ =gRingCount
 	strh r5, [r1]
 	cmp r0, #3
 	bne _08023DAC
@@ -15483,7 +15483,7 @@ _08023E3E:
 	str r0, [r1]
 	b _08023E88
 	.align 2, 0
-_08023E50: .4byte gCourseTime
+_08023E50: .4byte gRingCount
 _08023E54: .4byte gUnknown_030054F4
 _08023E58: .4byte gPlayer
 _08023E5C: .4byte gCamera
@@ -17329,7 +17329,7 @@ _08024D02:
 	adds r0, r0, r1
 	ldrh r1, [r0]
 	subs r1, r3, r1
-	ldr r0, _08024DB8 @ =gCourseTime
+	ldr r0, _08024DB8 @ =gRingCount
 	ldrh r0, [r0]
 	lsls r0, r0, #8
 	orrs r1, r0
@@ -17366,7 +17366,7 @@ _08024DA8: .4byte gMultiSioSend
 _08024DAC: .4byte gMultiplayerPlayerTasks
 _08024DB0: .4byte 0x04000128
 _08024DB4: .4byte gUnknown_080D672C
-_08024DB8: .4byte gCourseTime
+_08024DB8: .4byte gRingCount
 _08024DBC:
 	ldrh r1, [r4, #8]
 	ldr r0, _08024DD8 @ =0x0000FFFE
@@ -23043,7 +23043,7 @@ _08027914: .4byte gUnknown_03005490
 _08027918:
 	ldr r0, _08027984 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _08027988 @ =gCourseTime
+	ldr r1, _08027988 @ =gRingCount
 	ldrh r1, [r1]
 	ldr r2, _0802798C @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -23097,7 +23097,7 @@ _0802796C:
 	b _080279A8
 	.align 2, 0
 _08027984: .4byte gUnknown_03005490
-_08027988: .4byte gCourseTime
+_08027988: .4byte gRingCount
 _0802798C: .4byte gUnknown_030054F4
 _08027990: .4byte gPlayer
 _08027994: .4byte sub_802A3F0
@@ -23221,7 +23221,7 @@ _08027A70: .4byte gUnknown_03005490
 _08027A74:
 	ldr r0, _08027AD8 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _08027ADC @ =gCourseTime
+	ldr r1, _08027ADC @ =gRingCount
 	ldrh r1, [r1]
 	ldr r2, _08027AE0 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -23271,7 +23271,7 @@ _08027AC2:
 	b _08027AF4
 	.align 2, 0
 _08027AD8: .4byte gUnknown_03005490
-_08027ADC: .4byte gCourseTime
+_08027ADC: .4byte gRingCount
 _08027AE0: .4byte gUnknown_030054F4
 _08027AE4: .4byte gUnknown_03005424
 _08027AE8: .4byte gUnknown_0300544C
@@ -27190,7 +27190,7 @@ _08029890:
 sub_802989C: @ 0x0802989C
 	push {lr}
 	adds r1, r0, #0
-	ldr r0, _080298B0 @ =gCourseTime
+	ldr r0, _080298B0 @ =gRingCount
 	ldrh r0, [r0]
 	cmp r0, #0x95
 	bls _080298B4
@@ -27198,7 +27198,7 @@ sub_802989C: @ 0x0802989C
 	movs r0, #4
 	b _080298D6
 	.align 2, 0
-_080298B0: .4byte gCourseTime
+_080298B0: .4byte gRingCount
 _080298B4:
 	cmp r0, #0x63
 	bls _080298BE
@@ -31231,7 +31231,7 @@ sub_802B708: @ 0x0802B708
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	bl sub_802B62C
-	ldr r1, _0802B7D8 @ =gCourseTime
+	ldr r1, _0802B7D8 @ =gRingCount
 	movs r0, #0x32
 	strh r0, [r1]
 	ldr r0, _0802B7DC @ =gPlayer
@@ -31331,7 +31331,7 @@ sub_802B708: @ 0x0802B708
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802B7D8: .4byte gCourseTime
+_0802B7D8: .4byte gRingCount
 _0802B7DC: .4byte gPlayer
 _0802B7E0: .4byte gUnknown_03005490
 _0802B7E4: .4byte sub_802BC10
@@ -31517,7 +31517,7 @@ _0802B964:
 	bl Mod
 	cmp r0, #0
 	bne _0802BA72
-	ldr r1, _0802B9F8 @ =gCourseTime
+	ldr r1, _0802B9F8 @ =gRingCount
 	ldrh r0, [r1]
 	adds r5, r0, #0
 	cmp r5, #0
@@ -31577,7 +31577,7 @@ _0802B964:
 	b _0802BA72
 	.align 2, 0
 _0802B9F4: .4byte gUnknown_03005590
-_0802B9F8: .4byte gCourseTime
+_0802B9F8: .4byte gRingCount
 _0802B9FC: .4byte gPlayer
 _0802BA00: .4byte sub_802C8EC
 _0802BA04: .4byte gUnknown_080D69C8
@@ -34244,7 +34244,7 @@ _0802CE6A:
 	add r0, sb
 	ldrh r0, [r0]
 	strh r0, [r3, #4]
-	ldr r0, _0802CF20 @ =gCourseTime
+	ldr r0, _0802CF20 @ =gRingCount
 	ldrh r1, [r0]
 	ldr r0, _0802CF24 @ =0x000003E7
 	cmp r1, r0
@@ -34278,7 +34278,7 @@ _0802CF10: .4byte gPlayer
 _0802CF14: .4byte 0x000007FF
 _0802CF18: .4byte 0x00004007
 _0802CF1C: .4byte 0x000002D2
-_0802CF20: .4byte gCourseTime
+_0802CF20: .4byte gRingCount
 _0802CF24: .4byte 0x000003E7
 _0802CF28:
 	movs r2, #0
@@ -34295,7 +34295,7 @@ _0802CF28:
 	lsls r0, r0, #7
 	mov sl, r0
 _0802CF42:
-	ldr r7, _0802D14C @ =gCourseTime
+	ldr r7, _0802D14C @ =gRingCount
 	ldrh r0, [r7]
 	movs r1, #0x64
 	bl Div
@@ -34547,7 +34547,7 @@ _0802D138:
 	bx r0
 	.align 2, 0
 _0802D148: .4byte gUnknown_03005590
-_0802D14C: .4byte gCourseTime
+_0802D14C: .4byte gRingCount
 _0802D150: .4byte gUnknown_03005490
 _0802D154: .4byte 0x00008C9F
 _0802D158: .4byte gUnknown_03005424
@@ -38378,7 +38378,7 @@ _0802EE2E:
 _0802EE36:
 	ldr r0, _0802EE48 @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0802EE4C @ =gCourseTime
+	ldr r1, _0802EE4C @ =gRingCount
 	ldrh r1, [r1]
 	ldr r2, _0802EE50 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -38386,12 +38386,12 @@ _0802EE36:
 	b _0802EE64
 	.align 2, 0
 _0802EE48: .4byte gUnknown_03005490
-_0802EE4C: .4byte gCourseTime
+_0802EE4C: .4byte gRingCount
 _0802EE50: .4byte gUnknown_030054F4
 _0802EE54:
 	ldr r0, _0802EE6C @ =gUnknown_03005490
 	ldr r0, [r0]
-	ldr r1, _0802EE70 @ =gCourseTime
+	ldr r1, _0802EE70 @ =gRingCount
 	ldrh r1, [r1]
 	ldr r2, _0802EE74 @ =gUnknown_030054F4
 	ldrb r2, [r2]
@@ -38402,7 +38402,7 @@ _0802EE64:
 	bx r0
 	.align 2, 0
 _0802EE6C: .4byte gUnknown_03005490
-_0802EE70: .4byte gCourseTime
+_0802EE70: .4byte gRingCount
 _0802EE74: .4byte gUnknown_030054F4
 
 	thumb_func_start sub_802EE78
@@ -41244,7 +41244,7 @@ sub_80304DC: @ 0x080304DC
 	movs r0, #0xdd
 	lsls r0, r0, #2
 	adds r1, r1, r0
-	ldr r0, _08030570 @ =gCourseTime
+	ldr r0, _08030570 @ =gRingCount
 	movs r3, #0
 	ldrsh r2, [r0, r3]
 	ldr r0, [r1]
@@ -41300,7 +41300,7 @@ sub_80304DC: @ 0x080304DC
 	b _080305B4
 	.align 2, 0
 _0803056C: .4byte gLoadedSaveGame
-_08030570: .4byte gCourseTime
+_08030570: .4byte gRingCount
 _08030574: .4byte sub_8030A4C
 _08030578: .4byte sub_8031370
 _0803057C: .4byte IWRAM_START + 0x168

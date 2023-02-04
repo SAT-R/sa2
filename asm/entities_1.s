@@ -18293,7 +18293,7 @@ _08019F36:
 	movs r0, #0xdd
 	lsls r0, r0, #2
 	adds r1, r1, r0
-	ldr r0, _08019FBC @ =gCourseTime
+	ldr r0, _08019FBC @ =gRingCount
 	movs r4, #0
 	ldrsh r2, [r0, r4]
 	ldr r0, [r1]
@@ -18353,7 +18353,7 @@ _08019FAC: .4byte sub_801A04C
 _08019FB0: .4byte gGameMode
 _08019FB4: .4byte gUnknown_030054A8
 _08019FB8: .4byte gLoadedSaveGame
-_08019FBC: .4byte gCourseTime
+_08019FBC: .4byte gRingCount
 _08019FC0: .4byte gUnknown_03005490
 _08019FC4: .4byte 0x00008CA0
 _08019FC8: .4byte gUnknown_03005424

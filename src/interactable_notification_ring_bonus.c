@@ -105,19 +105,19 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
 
 // NOTE(Jace): Non-match flips the addends in add instruction
 #ifdef NON_MATCHING
-                prevCourseTime = (u16)gCourseTime;
-                gCourseTime += timeInc;
+                prevCourseTime = (u16)gRingCount;
+                gRingCount += timeInc;
 #else
                 asm("ldrh %1, [%0]\n"
                     "\tadd r0, %2, %1 \n"
                     "\tstrh r0, [%0]\n"
                     :
-                    : "r"(&gCourseTime), "r"(prevCourseTime), "r"(timeInc)
+                    : "r"(&gRingCount), "r"(prevCourseTime), "r"(timeInc)
                     : "r0");
 #endif
 
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
-                    && (Div((u16)gCourseTime, 100) != Div(prevCourseTime, 100))
+                    && (Div((u16)gRingCount, 100) != Div(prevCourseTime, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                     u32 lives = gNumLives + 1;
                     if (lives > 255)
@@ -129,8 +129,8 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 }
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                    if ((u16)gCourseTime > 255) {
-                        gCourseTime = 255;
+                    if ((u16)gRingCount > 255) {
+                        gRingCount = 255;
                     }
                 }
 

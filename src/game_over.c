@@ -279,7 +279,7 @@ void sub_8036A44(void)
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
-        gCourseTime = 0;
+        gRingCount = 0;
 
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackLobbyScreen();

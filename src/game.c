@@ -75,7 +75,7 @@ void GameStageStart(void)
 {
     gUnknown_03005444 = 0;
     gUnknown_030055B0 = 0;
-    gCourseTime = 0;
+    gRingCount = 0;
     gUnknown_030054F8 = 1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {

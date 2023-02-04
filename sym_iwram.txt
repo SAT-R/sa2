@@ -17,7 +17,7 @@ build/sa2/src/main.o(.data);
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
 . = 0x000053EC; gMultiplayerLanguage = .;
-. = 0x000053F0; gCourseTime = .;
+. = 0x000053F0; gRingCount = .;
 . = 0x0000540C; gUnknown_0300540C = .;
 . = 0x00005410; gMultiplayerIds = .;
 . = 0x00005420; gUnknown_03005420 = .;
