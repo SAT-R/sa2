@@ -78,7 +78,7 @@ initSprite_8080368: @ 0x08080368
 _080803F4: .4byte Task_80806F4
 _080803F8: .4byte 0x00002010
 
-.if 1
+.if 0
 	thumb_func_start sub_80803FC
 sub_80803FC: @ 0x080803FC
 	push {r4, r5, r6, r7, lr}
@@ -104,6 +104,8 @@ _08080412:
 	ldr r0, [r5, #0x1c]
 	cmp r0, #0
 	beq _080804F8
+
+__08080428:
 	ldrh r0, [r5, #0x18]
 	adds r2, r0, #1
 	strh r2, [r5, #0x18]
@@ -114,6 +116,8 @@ _08080412:
 	cmp r1, r0
 	bge _08080502
 	strh r2, [r5, #0x1a]
+
+__0808043C:
 	ldr r0, _08080458 @ =gUnknown_030053E4
 	ldr r0, [r0]
 	ldr r1, [r5, #0x14]

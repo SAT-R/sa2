@@ -1,4 +1,5 @@
 #include "global.h"
+#include "m4a.h"
 #include "game.h"
 
 #include "malloc_vram.h"
@@ -7,6 +8,7 @@
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ s32 posX;
@@ -17,7 +19,7 @@ typedef struct {
     /* 0x0E */ s16 unkE;
     /* 0x10 */ s16 unk10;
     /* 0x12 */ s16 unk12;
-    /* 0x14 */ s32 unk14;
+    /* 0x14 */ s32 timer;
     /* 0x18 */ s16 unk18;
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ s32 unk1C;
@@ -31,9 +33,12 @@ typedef struct {
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
+s32 gUnknown_03005B6C ALIGNED(4) = 0;
+
 extern void sub_80803FC(Sprite_IaUnknown *);
 extern bool32 sub_808055C(Sprite_IaUnknown *);
 extern void sub_80805D0(Sprite_IaUnknown *);
+extern void InitSprite_Notif_RingBonus(void);
 
 void Task_80806F4(void);
 void sub_808073C(Sprite_IaUnknown UNUSED *s);
@@ -41,20 +46,73 @@ static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-#if 0
-void sub_80803FC(Sprite_IaUnknown *sprite) {
-    if ((sprite->someX < Q_24_8(sprite->posX)) && (gPlayer.x > Q_24_8(sprite->posY))) {
-        // _08080412
+#if 1
+void sub_80803FC(Sprite_IaUnknown *sprite)
+{
+    if ((sprite->someX < Q_24_8(sprite->posX + sprite->unk8))
+        && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
+            u16 r7;
+            s32 prevCourseTime;
+            u32 timeInc;
 
+            // _08080428
+            sprite->unk18++;
+
+            if (sprite->unk1A < sprite->unk18) {
+                sprite->unk1A = sprite->unk18;
+
+                // __0808043C
+                r7 = gUnknown_030053E4 - sprite->timer;
+
+                if (r7 > 1800) {
+                    timeInc = 5;
+                } else if (r7 > 1200) {
+                    timeInc = 10;
+                } else {
+                    timeInc = 15;
+                }
+
+                prevCourseTime = (u16)gCourseTime;
+                gCourseTime = timeInc + gCourseTime;
+
+                if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
+                    && (Div((u16)gCourseTime, 100) != Div(prevCourseTime, 100))
+                    && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                    // TODO: Use CLAMP macro
+                    u32 lives = gNumLives + 1;
+                    if (lives > 255)
+                        gNumLives = 255;
+                    else
+                        gNumLives = lives;
+
+                    gUnknown_030054A8[3] = 0x10;
+                }
+
+                if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    // TODO: Use CLAMP macro
+                    u32 time = (u16)gCourseTime;
+                    if (time > 255) {
+                        gCourseTime = 255;
+                    }
+                }
+
+                m4aSongNumStart(MUS_FANFARE);
+                InitSprite_Notif_RingBonus();
+
+                sprite->timer = gUnknown_030053E4;
+                gUnknown_03005B6C = r7;
+            }
+        } else {
+            // _808004F8
+            sprite->unk1C = 1;
+            sprite->timer = gUnknown_030053E4;
         }
-        // _808004F8
-        sprite->unk1C = 1;
-        sprite->unk14 = gUnknown_030053E4;
+        sprite->someX = gPlayer.x;
     }
     // _08080510
-    else if((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
-    && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))){
+    else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
+             && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
             sprite->unk18--;
         }
