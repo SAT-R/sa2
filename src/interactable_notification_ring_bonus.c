@@ -120,7 +120,6 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
                     && (Div((u16)gCourseTime, 100) != Div(prevCourseTime, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                    // TODO: Use CLAMP macro
                     u32 lives = gNumLives + 1;
                     if (lives > 255)
                         gNumLives = 255;
