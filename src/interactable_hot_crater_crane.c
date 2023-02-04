@@ -74,16 +74,15 @@ static void sub_8074604(Sprite_HCCrane *);
 
 #define CRANE_MAX_ACCELERATION (Q_8_8(12))
 
-NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
-         void initSprite_Interactable_HotCrater_Crane(Interactable *ia,
-                                                      u16 spriteRegionX,
-                                                      u16 spriteRegionY, u8 spriteY))
+void initSprite_Interactable_HotCrater_Crane(Interactable *ia, u16 spriteRegionX,
+                                             u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
                                 TaskDestructor_80743B8);
     Sprite_HCCrane *crane = TaskGetStructPtr(t);
     CraneStruct *cs;
     u16 i;
+    u16 j;
 
     crane->unk1B8.unk0 = 0;
     crane->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
@@ -91,7 +90,7 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
     crane->ia = ia;
     crane->spriteX = crane->ia->x;
     crane->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(crane->ia);
+    SET_SPRITE_INITIALIZED(ia);
 
     cs = &crane->cs[0];
     cs->s = &crane->unk128;
@@ -115,76 +114,76 @@ NONMATCH("asm/non_matching/initSprite_Interactable_HotCrater_Crane.inc",
     sub_8004558(cs->s);
 
     for (i = 0; i < 6; i++) {
-        CraneStruct *current = &crane->cs[1 + i];
-        current->unk4 = 0;
+        cs = &crane->cs[1 + i];
+        cs->unk4 = 0;
 
         if (i == 0) {
-            current->unk4 = 2;
-            current->s = NULL;
-            current->unk8 = 0;
-            current->unkC = 0x2C00;
-            current->unk10 = 0;
+            cs->unk4 = 2;
+            cs->s = NULL;
+            cs->unk8 = 0;
+            cs->unkC = 0x2C00;
+            cs->unk10 = 0;
         } else {
             // _08073998
-            current->s = &crane->unk188;
-            current->unk8 = 0;
-            current->unkC = 0;
-            current->unk10 = 0xC00;
+            cs->s = &crane->unk188;
+            cs->unk8 = 0;
+            cs->unkC = 0;
+            cs->unk10 = 0xC00;
 
             if (i == 1) {
-                current->unk4 = 4;
-                current->s->unk1A = 0x480;
+                cs->unk4 = 4;
+                cs->s->unk1A = 0x480;
 
-                current->s->graphics.size = 0;
-                current->s->unk14 = 0;
-                current->s->unk1C = 0;
-                current->s->unk21 = 0xFF;
-                current->s->unk22 = 0x10;
-                current->s->focused = 0;
-                current->s->unk28->unk0 = -1;
-                current->s->unk10 = 0x2000;
-                current->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
-                current->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
-                current->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
-                sub_8004558(current->s);
+                cs->s->graphics.size = 0;
+                cs->s->unk14 = 0;
+                cs->s->unk1C = 0;
+                cs->s->unk21 = 0xFF;
+                cs->s->unk22 = 0x10;
+                cs->s->focused = 0;
+                cs->s->unk28->unk0 = -1;
+                cs->s->unk10 = 0x2000;
+                cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
+                cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
+                cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
+                sub_8004558(cs->s);
             }
         }
         // _08073A00
     }
+    // Hook
 
-    { // Hook
-        CraneStruct *hook = &crane->cs[7];
-        hook->s = &crane->unk158;
-        hook->unk4 = 5;
-        hook->unk8 = 0x100;
-        hook->unkC = 0x158;
-        hook->unk10 = 0xC00;
-        hook->s->unk1A = 0x480;
-        hook->s->graphics.size = 0;
-        hook->s->unk14 = 0;
-        hook->s->unk1C = 0;
-        hook->s->unk21 = 0xFF;
-        hook->s->unk22 = 0x10;
-        hook->s->focused = 0;
-        hook->s->unk28->unk0 = -1;
-        hook->s->unk10 = 0x2000;
-        hook->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
-        hook->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
-        hook->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
-        sub_8004558(hook->s);
-    }
     {
-        CraneStruct *last = &crane->cs[8];
-        last->s = NULL;
-        last->unk4 = 2;
-        last->unk8 = 0;
-        last->unkC = 0x1000;
-        last->unk10 = 0;
-    }
+        cs = &crane->cs[7];
+        cs->s = &crane->unk158;
 
+        cs->unk4 = 5;
+        cs->unk8 = 0x100;
+        cs->unkC = 0;
+
+        cs->unk10 = 0xC00;
+        cs->s->unk1A = 0x480;
+        cs->s->graphics.size = 0;
+        cs->s->unk14 = 0;
+        cs->s->unk1C = 0;
+        cs->s->unk21 = 0xFF;
+        cs->s->unk22 = 0x10;
+        cs->s->focused = 0;
+        cs->s->unk28->unk0 = -1;
+        cs->s->unk10 = 0x2000;
+        cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
+        cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
+        cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
+        sub_8004558(cs->s);
+
+        cs = &crane->cs[8];
+        cs->s = NULL;
+        cs->unk4 = 2;
+        cs->unk8 = 0;
+        cs->unkC = 0x1000;
+        cs->unk10 = 0;
+    }
     sub_807447C(crane);
 }
-END_NONMATCH
 
 static void Task_8073AA8()
 {

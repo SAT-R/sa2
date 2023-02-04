@@ -1,3 +1,4 @@
+.include "constants/constants.inc"
 
 .syntax unified
 .text
