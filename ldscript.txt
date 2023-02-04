@@ -128,7 +128,7 @@ SECTIONS
         build/sa2/asm/interactable_sky_canyon_flying_handle.o(.text);
         build/sa2/asm/interactable_097.o(.text);
         build/sa2/src/interactable_gravity_toggle.o(.text);
-        build/sa2/src/interactable_unknown.o(.text);
+        build/sa2/src/interactable_notification_ring_bonus.o(.text);
         build/sa2/src/sub_80807CC.o(.text);
         build/sa2/asm/interactable_105.o(.text);
         build/sa2/src/interactable_special_ring.o(.text);

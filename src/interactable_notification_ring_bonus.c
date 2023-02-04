@@ -107,7 +107,7 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
 // NOTE(Jace): Non-match flips the addends in add instruction
 #ifdef NON_MATCHING
                 prevCourseTime = (u16)gCourseTime;
-                gCourseTime = gCourseTime + timeInc;
+                gCourseTime += timeInc;
 #else
                 asm("ldrh %1, [%0]\n"
                     "\tadd r0, %2, %1 \n"
