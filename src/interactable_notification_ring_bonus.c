@@ -80,12 +80,8 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
         && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
             u16 r7;
-#ifdef NON_MATCHING
-            u32 prevCourseTime;
-#else
-            register u32 prevCourseTime asm("r6");
-#endif
-            u32 timeInc;
+            u16 prevCourseTime;
+            u16 timeInc;
 
             sprite->unk18++;
 
@@ -103,18 +99,9 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                     timeInc = 15;
                 }
 
-// NOTE(Jace): Non-match flips the addends in add instruction
-#ifdef NON_MATCHING
-                prevCourseTime = (u16)gRingCount;
-                gRingCount += timeInc;
-#else
-                asm("ldrh %1, [%0]\n"
-                    "\tadd r0, %2, %1 \n"
-                    "\tstrh r0, [%0]\n"
-                    :
-                    : "r"(&gRingCount), "r"(prevCourseTime), "r"(timeInc)
-                    : "r0");
-#endif
+                prevCourseTime = gRingCount;
+                timeInc += gRingCount;
+                gRingCount = timeInc;
 
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
                     && (Div((u16)gRingCount, 100) != Div(prevCourseTime, 100))
