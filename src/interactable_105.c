@@ -234,3 +234,26 @@ void Task_8080DB8(void)
         }
     }
 }
+
+void Task_8080E54(void)
+{
+    struct Task *t = gCurTask;
+    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    if (--sprite->unk46 == (u16)-1) {
+        TaskDestroy(t);
+    } else {
+        sprite->unk38 += sprite->unk40;
+        sprite->unk3C += sprite->unk42;
+        sprite->unk42 += 42;
+
+        sprite->s.x = (sprite->unk30 - gCamera.x) + Q_24_8_TO_INT(sprite->unk38);
+        sprite->s.y = (sprite->unk34 - gCamera.y) + Q_24_8_TO_INT(sprite->unk3C);
+        sub_8004558(&sprite->s);
+
+        if (sprite->unk44 == 0) {
+            sub_80051E8(&sprite->s);
+        } else {
+            sprite->unk44--;
+        }
+    }
+}
