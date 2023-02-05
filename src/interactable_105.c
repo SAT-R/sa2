@@ -31,6 +31,7 @@ extern bool32 sub_80809B8(Sprite_IA105 *);
 extern bool32 sub_8080A9C(Sprite_IA105 *);
 extern void sub_8080AE4(Sprite_IA105 *);
 extern void Task_8080DB8(void);
+extern void Task_8080E54(void);
 extern void TaskDestructor_8080EF8(struct Task *);
 
 extern bool32 sub_800CBA4(Player *);
@@ -135,7 +136,6 @@ const u16 gUnknown_080E0140[4][5] = {
     [3] = { 0x242, 0, 0x006, 1, (0 | 2) },
 };
 
-#if 1
 // Public, called in interactable_music_plant_german_flute.o
 void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
 {
@@ -147,34 +147,69 @@ void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
     sprite->unk38 = 0;
     sprite->unk3C = 0;
 
-    {
-        sprite->unk40 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
-        sprite->unk42 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
-        sprite->unk44 = p2;
-        sprite->unk46 = p3;
-        sprite->unk48 = p6;
+    sprite->unk40 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
+    sprite->unk42 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
+    sprite->unk44 = p2;
+    sprite->unk46 = p3;
+    sprite->unk48 = p6;
 
-        sprite->s.unk1A = 0x180;
-        sprite->s.graphics.size = 0;
-        sprite->s.unk14 = 0;
-        sprite->s.unk1C = 0;
-        sprite->s.unk21 = 0xFF;
-        sprite->s.unk22 = 0x10;
-        sprite->s.focused = 0;
-        sprite->s.unk28->unk0 = -1;
+    sprite->s.unk1A = 0x180;
+    sprite->s.graphics.size = 0;
+    sprite->s.unk14 = 0;
+    sprite->s.unk1C = 0;
+    sprite->s.unk21 = 0xFF;
+    sprite->s.unk22 = 0x10;
+    sprite->s.focused = 0;
+    sprite->s.unk28->unk0 = -1;
 
-        sprite->s.unk10 = gUnknown_080E0140[p6][4] << 12;
+    sprite->s.unk10 = gUnknown_080E0140[p6][4] << 12;
 
-        if (gUnknown_080E0140[p6][3] != 0) {
-            sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[p6][2]);
-        } else {
-            sprite->s.graphics.dest
-                = (void *)(OBJ_VRAM0 + gUnknown_080E0140[p6][2] * TILE_SIZE_4BPP);
-        }
-
-        sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
-        sprite->s.variant = gUnknown_080E0140[p6][1];
-        sub_8004558(&sprite->s);
+    if (gUnknown_080E0140[p6][3] != 0) {
+        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[p6][2]);
+    } else {
+        sprite->s.graphics.dest
+            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[p6][2] * TILE_SIZE_4BPP);
     }
+
+    sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
+    sprite->s.variant = gUnknown_080E0140[p6][1];
+    sub_8004558(&sprite->s);
 }
-#endif
+
+void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
+{
+    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_Unknown_IA105), 0x2010, 0,
+                                TaskDestructor_8080EF8);
+    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    sprite->unk30 = p0;
+    sprite->unk34 = p1;
+    sprite->unk38 = 0;
+    sprite->unk3C = 0;
+
+    sprite->unk40 = p4;
+    sprite->unk42 = p5;
+    sprite->unk44 = p2;
+    sprite->unk46 = p3;
+    sprite->unk48 = p6;
+
+    sprite->s.unk1A = 0x180;
+    sprite->s.graphics.size = 0;
+    sprite->s.unk14 = 0;
+    sprite->s.unk1C = 0;
+    sprite->s.unk21 = 0xFF;
+    sprite->s.unk22 = 0x10;
+    sprite->s.focused = 0;
+    sprite->s.unk28->unk0 = -1;
+
+    sprite->s.unk10 = gUnknown_080E0140[p6][4] << 12;
+
+    if (gUnknown_080E0140[p6][3] != 0) {
+        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[p6][2]);
+    } else {
+        sprite->s.graphics.dest
+            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[p6][2] * TILE_SIZE_4BPP);
+    }
+
+    sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
+    sprite->s.variant = gUnknown_080E0140[p6][1];
+}

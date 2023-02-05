@@ -5,8 +5,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_8080C78
 sub_8080C78: @ 0x08080C78
 	push {r4, r5, r6, r7, lr}
@@ -15,27 +13,27 @@ sub_8080C78: @ 0x08080C78
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	mov sb, r0
-	str r1, [sp, #4]
+	mov sb, r0              @ sb   = p0
+	str r1, [sp, #4]        @ sp+4 = p1
 	adds r6, r2, #0
 	mov r8, r3
 	ldr r4, [sp, #0x28]
 	ldr r5, [sp, #0x2c]
 	ldr r0, [sp, #0x30]
 	lsls r6, r6, #0x10
-	lsrs r6, r6, #0x10
+	lsrs r6, r6, #0x10      @ r6 = p2
 	mov r1, r8
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
-	mov r8, r1
+	mov r8, r1              @ r8 = p3
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ r4 = p4
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = p5
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	mov sl, r0
-	ldr r0, _08080D4C @ =sub_8080E54
+	mov sl, r0              @ sl = p6
+	ldr r0, _08080D4C @ =Task_8080E54
 	ldr r2, _08080D50 @ =0x00002010
 	ldr r1, _08080D54 @ =TaskDestructor_8080EF8
 	str r1, [sp]
@@ -45,7 +43,7 @@ sub_8080C78: @ 0x08080C78
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r1, r0
+	adds r7, r1, r0         @ r7 = sprite
 	mov r3, sb
 	str r3, [r7, #0x30]
 	ldr r0, [sp, #4]
@@ -113,7 +111,7 @@ sub_8080C78: @ 0x08080C78
 	bl VramMalloc
 	b _08080D80
 	.align 2, 0
-_08080D4C: .4byte sub_8080E54
+_08080D4C: .4byte Task_8080E54
 _08080D50: .4byte 0x00002010
 _08080D54: .4byte TaskDestructor_8080EF8
 _08080D58: .4byte IWRAM_START + 0x40
@@ -157,6 +155,7 @@ _08080D80:
 	.align 2, 0
 _08080DB0: .4byte 0x06010000
 _08080DB4: .4byte gUnknown_080E0140
+.endif
 
 	thumb_func_start Task_8080DB8
 Task_8080DB8: @ 0x08080DB8
@@ -234,8 +233,8 @@ _08080E4C:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8080E54
-sub_8080E54: @ 0x08080E54
+	thumb_func_start Task_8080E54
+Task_8080E54: @ 0x08080E54
 	push {r4, r5, lr}
 	ldr r0, _08080E7C @ =gCurTask
 	ldr r2, [r0]
