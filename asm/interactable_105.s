@@ -7,185 +7,6 @@
 .if 0
 .endif
 
-	thumb_func_start sub_8080AFC
-sub_8080AFC: @ 0x08080AFC
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	adds r6, r0, #0
-	str r1, [sp, #4]
-	mov r8, r2
-	mov sb, r3
-	ldr r5, [sp, #0x28]
-	ldr r4, [sp, #0x2c]
-	ldr r0, [sp, #0x30]
-	mov r1, r8
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov r8, r1
-	mov r1, sb
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov sb, r1
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	lsls r4, r4, #0x18
-	lsrs r4, r4, #0x18
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	mov sl, r0
-	ldr r0, _08080C00 @ =sub_8080DB8
-	ldr r2, _08080C04 @ =0x00002010
-	ldr r1, _08080C08 @ =sub_8080EF8
-	str r1, [sp]
-	movs r1, #0x4c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r7, r2, r0
-	str r6, [r7, #0x30]
-	ldr r6, [sp, #4]
-	str r6, [r7, #0x34]
-	movs r3, #0
-	str r3, [r7, #0x38]
-	str r3, [r7, #0x3c]
-	lsls r5, r5, #0x10
-	asrs r5, r5, #0x10
-	lsls r0, r4, #3
-	movs r1, #0x80
-	lsls r1, r1, #2
-	adds r0, r0, r1
-	ldr r6, _08080C0C @ =gSineTable
-	adds r0, r0, r6
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	muls r0, r5, r0
-	asrs r0, r0, #8
-	ldr r6, _08080C10 @ =IWRAM_START + 0x40
-	adds r1, r2, r6
-	movs r6, #0
-	mov ip, r6
-	strh r0, [r1]
-	lsls r4, r4, #3
-	ldr r0, _08080C0C @ =gSineTable
-	adds r4, r4, r0
-	ldrh r0, [r4]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	muls r0, r5, r0
-	asrs r0, r0, #8
-	ldr r4, _08080C14 @ =IWRAM_START + 0x42
-	adds r1, r2, r4
-	strh r0, [r1]
-	ldr r6, _08080C18 @ =IWRAM_START + 0x44
-	adds r0, r2, r6
-	mov r1, r8
-	strh r1, [r0]
-	adds r4, #4
-	adds r0, r2, r4
-	mov r6, sb
-	strh r6, [r0]
-	ldr r1, _08080C1C @ =IWRAM_START + 0x48
-	adds r0, r2, r1
-	mov r4, sl
-	strb r4, [r0]
-	movs r0, #0xc0
-	lsls r0, r0, #1
-	strh r0, [r7, #0x1a]
-	strh r3, [r7, #8]
-	strh r3, [r7, #0x14]
-	strh r3, [r7, #0x1c]
-	ldr r6, _08080C20 @ =IWRAM_START + 0x21
-	adds r1, r2, r6
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, _08080C24 @ =IWRAM_START + 0x22
-	adds r1, r2, r0
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r1, _08080C28 @ =IWRAM_START + 0x25
-	adds r2, r2, r1
-	mov r4, ip
-	strb r4, [r2]
-	subs r0, #0x11
-	str r0, [r7, #0x28]
-	ldr r2, _08080C2C @ =gUnknown_080E0140
-	mov r6, sl
-	lsls r0, r6, #2
-	add r0, sl
-	lsls r1, r0, #1
-	adds r0, r2, #0
-	adds r0, #8
-	adds r0, r1, r0
-	ldrh r0, [r0]
-	lsls r0, r0, #0xc
-	str r0, [r7, #0x10]
-	adds r0, r2, #6
-	adds r0, r1, r0
-	ldrh r0, [r0]
-	cmp r0, #0
-	beq _08080C30
-	adds r0, r2, #4
-	adds r0, r1, r0
-	ldrh r0, [r0]
-	bl VramMalloc
-	b _08080C3C
-	.align 2, 0
-_08080C00: .4byte sub_8080DB8
-_08080C04: .4byte 0x00002010
-_08080C08: .4byte sub_8080EF8
-_08080C0C: .4byte gSineTable
-_08080C10: .4byte IWRAM_START + 0x40
-_08080C14: .4byte IWRAM_START + 0x42
-_08080C18: .4byte IWRAM_START + 0x44
-_08080C1C: .4byte IWRAM_START + 0x48
-_08080C20: .4byte IWRAM_START + 0x21
-_08080C24: .4byte IWRAM_START + 0x22
-_08080C28: .4byte IWRAM_START + 0x25
-_08080C2C: .4byte gUnknown_080E0140
-_08080C30:
-	adds r0, r2, #4
-	adds r0, r1, r0
-	ldrh r0, [r0]
-	lsls r0, r0, #5
-	ldr r1, _08080C70 @ =0x06010000
-	adds r0, r0, r1
-_08080C3C:
-	str r0, [r7, #4]
-	ldr r2, _08080C74 @ =gUnknown_080E0140
-	mov r4, sl
-	lsls r0, r4, #2
-	add r0, sl
-	lsls r0, r0, #1
-	adds r1, r0, r2
-	ldrh r1, [r1]
-	strh r1, [r7, #0xa]
-	adds r2, #2
-	adds r0, r0, r2
-	ldrh r1, [r0]
-	adds r0, r7, #0
-	adds r0, #0x20
-	strb r1, [r0]
-	adds r0, r7, #0
-	bl sub_8004558
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08080C70: .4byte 0x06010000
-_08080C74: .4byte gUnknown_080E0140
-
 	thumb_func_start sub_8080C78
 sub_8080C78: @ 0x08080C78
 	push {r4, r5, r6, r7, lr}
@@ -216,7 +37,7 @@ sub_8080C78: @ 0x08080C78
 	mov sl, r0
 	ldr r0, _08080D4C @ =sub_8080E54
 	ldr r2, _08080D50 @ =0x00002010
-	ldr r1, _08080D54 @ =sub_8080EF8
+	ldr r1, _08080D54 @ =TaskDestructor_8080EF8
 	str r1, [sp]
 	movs r1, #0x4c
 	movs r3, #0
@@ -294,7 +115,7 @@ sub_8080C78: @ 0x08080C78
 	.align 2, 0
 _08080D4C: .4byte sub_8080E54
 _08080D50: .4byte 0x00002010
-_08080D54: .4byte sub_8080EF8
+_08080D54: .4byte TaskDestructor_8080EF8
 _08080D58: .4byte IWRAM_START + 0x40
 _08080D5C: .4byte IWRAM_START + 0x42
 _08080D60: .4byte IWRAM_START + 0x48
@@ -337,8 +158,8 @@ _08080D80:
 _08080DB0: .4byte 0x06010000
 _08080DB4: .4byte gUnknown_080E0140
 
-	thumb_func_start sub_8080DB8
-sub_8080DB8: @ 0x08080DB8
+	thumb_func_start Task_8080DB8
+Task_8080DB8: @ 0x08080DB8
 	push {r4, r5, r6, lr}
 	ldr r0, _08080DE0 @ =gCurTask
 	ldr r2, [r0]
@@ -494,8 +315,8 @@ _08080EF0:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8080EF8
-sub_8080EF8: @ 0x08080EF8
+	thumb_func_start TaskDestructor_8080EF8
+TaskDestructor_8080EF8: @ 0x08080EF8
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

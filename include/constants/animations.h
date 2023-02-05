@@ -166,7 +166,7 @@
 #define SA2_ANIM_SPRING_MUS_PLA_2 573
 #define SA2_ANIM_DICE             574
 #define SA2_ANIM_NOTE_BLOCK       575
-#define SA2_ANIM_LONE_NOTE        576
+#define SA2_ANIM_NOTE_PARTICLES   576
 #define SA2_ANIM_YELLOW_STAR      577
 #define SA2_ANIM_SMOKE            578
 
