@@ -8,6 +8,7 @@
 #include "time_attack_lobby.h"
 #include "game_over.h"
 #include "constants/songs.h"
+#include "trig.h"
 
 #include "constants/move_states.h"
 
@@ -1021,7 +1022,7 @@ extern const s8 gUnknown_080D5A98[][4];
 
 extern const u32 *gUnknown_080D62D8[];
 
-extern const Background gUnknown_080D5864[3];
+extern const Background gUnknown_080D5864[4];
 
 extern const TaskMain gUnknown_080D5988[];
 
@@ -1467,4 +1468,202 @@ void sub_801C818(void)
             *cursor++ = camY;
         }
     }
+}
+
+// https://decomp.me/scratch/ekyaq
+NONMATCH("asm/non_matching/sub_801C94C.inc", void sub_801C94C(s32 a, s32 b))
+{
+    u8 i, j;
+    u16 *cursor = NULL;
+    s16 something;
+    s32 x = 0;
+    if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
+        if (gBgScrollRegs[3][0] == 0) {
+            gBgScrollRegs[3][0] = a;
+        }
+        gBgScrollRegs[3][0] += (gPlayer.speedGroundX >> 8);
+        a = gBgScrollRegs[3][0];
+    }
+
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        s16 val;
+        gBgScrollRegs[3][0] = a >> 4;
+        val = Div(b, 0x10);
+        if (val > 0x100) {
+            val = 0x100;
+        }
+        gBgScrollRegs[3][1] = val;
+    } else {
+        s16 temp, temp2;
+        s32 unk5590_1;
+
+        temp = Div(b, 0x10);
+        if (temp > 0x100) {
+            temp = 0x100;
+        }
+
+        temp2 = Div(a, 0x69);
+        if (temp2 > 0x100) {
+            temp2 = 0x100;
+        }
+
+        gFlags |= 4;
+        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
+        gUnknown_03002A80 = 4;
+
+        cursor = gUnknown_03001884;
+        unk5590_1 = gUnknown_03005590 * 0x18;
+
+        for (i = 0; i < 159; i++) {
+            s16 temp4;
+            s32 sin;
+            s32 temp3 = temp + i;
+            if ((u32)(temp3 - 0x6F) < 10) {
+                temp4 = (((temp3 - 0x6E) * a) >> 5) & 0xFF;
+            } else {
+                if (temp3 > 0x78) {
+                    temp4 = ((a * 10) >> 5) & 0xFF;
+                } else {
+                    temp4 = temp2 << 3;
+                }
+            }
+            *cursor++ = temp4;
+            *cursor++ = temp;
+            sin = SIN(((i * 8) + (temp << 3)) & ONE_CYCLE) >> 12;
+
+            if (temp + i + sin >= 178) {
+                break;
+            }
+        }
+        something = (a >> 3);
+        for (j = 0; i < 159; i++, j++) {
+            x = (x + 8);
+            x &= ONE_CYCLE;
+            *cursor++ = something + (SIN(x) >> 0xD)
+                + (COS(((gUnknown_03005590 * 2) + x) & ONE_CYCLE) >> 0xB)
+                + (SIN((unk5590_1 + (i * 0x40)) & ONE_CYCLE) >> 0xD);
+            *cursor++ = (j / 2) + temp + (SIN(x) >> 0xC)
+                + (COS((gUnknown_03005590 + (i * 8)) & ONE_CYCLE) >> 10);
+        };
+    }
+}
+END_NONMATCH
+
+void sub_801CB74(void)
+{
+    Background *background = &gUnknown_03005850.unk0;
+    gDispCnt |= 0x100;
+    gBgCntRegs[0] = 0x1B0F;
+
+    *background = gUnknown_080D5864[3];
+
+    background->unk1C = 0x171;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+    background->unk26 = 0x20;
+    background->unk28 = 0x20;
+    sub_8002A3C(background);
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+}
+
+NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8())
+{
+    // TODO: similar to sub_801C94C
+}
+END_NONMATCH
+
+void sub_800A6A8(void);
+
+void sub_801CD7C(void)
+{
+    Background *background = &gUnknown_03005850.unk0;
+    const Background *templates;
+    gBgCntRegs[0] = 0x1B0F;
+
+    *background = gUnknown_080D5864[3];
+
+    background->unk1C = 0x173;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+    background->unk26 = 0x20;
+    background->unk28 = 0x20;
+    background->unk2E = 0x13;
+    sub_8002A3C(background);
+
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        sub_800A6A8();
+    }
+}
+
+struct UNK_801CDF0 {
+    u8 unk0[0x40A];
+    s16 unk40A;
+};
+
+void sub_801CDF0(s32 a, s32 b)
+{
+    Player *player = &gPlayer;
+
+    if ((player->moveState & MOVESTATE_8000000) && gUnknown_030054F4 > 6) {
+        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
+        if (unkDF0->unk40A == 0) {
+            unkDF0->unk40A = a;
+        }
+        unkDF0->unk40A += player->speedGroundX >> 8;
+        a = unkDF0->unk40A;
+    } else {
+        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
+        unkDF0->unk40A = 0;
+    }
+
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && !(gUnknown_03005424 & 0x100)) {
+        gWinRegs[5] = 0x3e;
+        gWinRegs[4] = 0x3f3f;
+        gWinRegs[0] = 0xf0;
+        gWinRegs[2] = 0xa0;
+        gWinRegs[1] = 0xf0;
+        gWinRegs[3] = 0xa0;
+        gBldRegs.bldY = 7;
+        gBldRegs.bldCnt = 0x3f41;
+        gBldRegs.bldAlpha = 0xc0c;
+    }
+
+    sub_8002A3C(&gUnknown_03005850.unk0);
+    UpdateBgAnimationTiles(&gUnknown_03005850.unk0);
+
+    if (!(gUnknown_03005590 & 0xF)) {
+        gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
+        gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
+    }
+    gBgScrollRegs[3][0] = a >> 4;
+    gBgScrollRegs[3][1] = b >> 6;
+}
+
+void sub_801CEE4(void)
+{
+    Background *background = &gUnknown_03005850.unk0;
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        gDispCnt |= 0x100;
+        gBgCntRegs[0] = 0x1b0c;
+        *background = gUnknown_080D5864[3];
+        background->unk1C = 0x172;
+        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+        background->unk26 = 0x20;
+        background->unk28 = 0x20;
+        sub_8002A3C(background);
+    }
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
 }
