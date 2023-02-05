@@ -257,3 +257,11 @@ void Task_8080E54(void)
         }
     }
 }
+
+void TaskDestructor_8080EF8(struct Task *t)
+{
+    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    if (gUnknown_080E0140[sprite->unk48][3] != 0) {
+        VramFree(sprite->s.graphics.dest);
+    }
+}
