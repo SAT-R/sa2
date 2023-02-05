@@ -570,6 +570,7 @@ static void sub_80741B4(Sprite_HCCrane *crane)
         s16 sin = Q_2_14_TO_Q_24_8(SIN(sinIndex));
         s32 sinV2 = Q_24_8_TO_INT(cs->unk10 * sin);
         s32 diff, temp;
+        register u32 mask asm("r1");
 
         diff = cosV2 - sinV2;
         screenX += diff;
@@ -577,17 +578,11 @@ static void sub_80741B4(Sprite_HCCrane *crane)
         temp = Q_24_8_TO_INT(cs->unkC * sin);
 
         screenY += temp + Q_24_8_TO_INT(cs->unk10 * cos);
-
         sinIndex += cs->unk8;
+        mask = ONE_CYCLE;
+        sinIndex &= ONE_CYCLE;
         {
-#ifndef NON_MATCHING
-            register u32 mask asm("r1") = ONE_CYCLE;
-            register u32 mask2 asm("r0");
-            asm("mov %0, %1\n" : "=r"(mask2) : "r"(mask));
-#else
-            u32 mask2 = ONE_CYCLE;
-#endif
-            sinIndex &= mask2;
+            asm("" ::"r"(mask));
             cs->unk14 = sinIndex;
             cs->screenX = screenX;
             cs->screenY = screenY;
