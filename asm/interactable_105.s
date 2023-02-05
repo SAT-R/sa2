@@ -5,7 +5,6 @@
 .arm
 
 .if 0
-.endif
 
 	thumb_func_start sub_8080A9C
 sub_8080A9C: @ 0x08080A9C
@@ -13,12 +12,12 @@ sub_8080A9C: @ 0x08080A9C
 	ldr r1, [r0]
 	ldr r3, _08080AD8 @ =gCamera
 	ldr r2, [r3]
-	subs r1, r1, r2
+	subs r1, r1, r2     @ r1 = screenX
 	ldr r0, [r0, #4]
 	ldr r2, [r3, #4]
 	subs r0, r0, r2
 	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
+	lsrs r2, r0, #0x10  @ r2 = screenY
 	lsls r1, r1, #0x10
 	movs r0, #0x80
 	lsls r0, r0, #0x10
@@ -48,6 +47,7 @@ _08080ADE:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_8080AE4
 sub_8080AE4: @ 0x08080AE4

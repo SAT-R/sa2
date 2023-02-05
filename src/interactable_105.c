@@ -85,3 +85,18 @@ void Task_Interactable105(void)
 }
 
 void TaskDestructor_Interactable105(struct Task UNUSED *t) { }
+
+bool32 sub_8080A9C(Sprite_IA105 *sprite)
+{
+    s16 screenX, screenY;
+    screenX = sprite->posX - gCamera.x;
+    screenY = sprite->posY - gCamera.y;
+
+    // TODO: Use 'IS_OUT_OF_RANGE' instead of 'IS_OUT_OF_RANGE_'
+    //       (Fix that in game.h)
+    if (IS_OUT_OF_RANGE_(0, screenX, screenY, CAM_REGION_WIDTH / 2)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}

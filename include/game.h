@@ -256,9 +256,16 @@ extern struct Camera gCamera;
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
-#define IS_OUT_OF_RANGE(castType, x, y, dim)                                            \
+// TODO: Merge all these into one!
+#define IS_OUT_OF_RANGE_(UNUSED, x, y, radius)                                          \
+    ((x < -(radius)) || (x > DISPLAY_WIDTH + (radius)) || (y < -(radius))               \
+     || (y > DISPLAY_HEIGHT + (radius)))
+
+#define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                        \
     (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
      || (y > DISPLAY_HEIGHT + (dim / 2)))
+
+#define IS_OUT_OF_RANGE IS_OUT_OF_RANGE_OLD
 
 // @NOTE/INVESTIGATE: Some places match with u16, some with u32,
 // but u16 is more common, so it's the default.
@@ -266,9 +273,9 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
     IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
 
+// TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
 #define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
-    (((u16)(x + (CAM_REGION_WIDTH / 2)) > CAM_BOUND_X) || (y < -(CAM_REGION_WIDTH / 2)) \
-     || (y > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)))
+    IS_OUT_OF_RANGE_(u16, x, y, (CAM_REGION_WIDTH / 2))
 
 struct SomeStruct_5660 {
     u8 filler[16];
