@@ -5,63 +5,7 @@
 .arm
 
 .if 0
-
-	thumb_func_start sub_8080A9C
-sub_8080A9C: @ 0x08080A9C
-	push {lr}
-	ldr r1, [r0]
-	ldr r3, _08080AD8 @ =gCamera
-	ldr r2, [r3]
-	subs r1, r1, r2     @ r1 = screenX
-	ldr r0, [r0, #4]
-	ldr r2, [r3, #4]
-	subs r0, r0, r2
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10  @ r2 = screenY
-	lsls r1, r1, #0x10
-	movs r0, #0x80
-	lsls r0, r0, #0x10
-	adds r1, r1, r0
-	movs r0, #0xf8
-	lsls r0, r0, #0x11
-	cmp r1, r0
-	bhi _08080AD4
-	lsls r0, r2, #0x10
-	asrs r1, r0, #0x10
-	movs r0, #0x80
-	rsbs r0, r0, #0
-	cmp r1, r0
-	blt _08080AD4
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _08080ADC
-_08080AD4:
-	movs r0, #1
-	b _08080ADE
-	.align 2, 0
-_08080AD8: .4byte gCamera
-_08080ADC:
-	movs r0, #0
-_08080ADE:
-	pop {r1}
-	bx r1
-	.align 2, 0
 .endif
-
-	thumb_func_start sub_8080AE4
-sub_8080AE4: @ 0x08080AE4
-	push {lr}
-	ldr r1, [r0, #0x10]
-	ldrb r0, [r0, #0x14]
-	strb r0, [r1]
-	ldr r0, _08080AF8 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08080AF8: .4byte gCurTask
 
 	thumb_func_start sub_8080AFC
 sub_8080AFC: @ 0x08080AFC

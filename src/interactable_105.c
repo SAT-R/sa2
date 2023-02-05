@@ -100,3 +100,9 @@ bool32 sub_8080A9C(Sprite_IA105 *sprite)
 
     return FALSE;
 }
+
+void sub_8080AE4(Sprite_IA105 *sprite)
+{
+    sprite->ia->x = sprite->spriteX;
+    TaskDestroy(gCurTask);
+}
