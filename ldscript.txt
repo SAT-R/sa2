@@ -131,7 +131,6 @@ SECTIONS
         build/sa2/src/interactable_notification_ring_bonus.o(.text);
         build/sa2/src/sub_80807CC.o(.text);
         build/sa2/src/interactable_105.o(.text);
-        build/sa2/asm/interactable_105.o(.text);
         build/sa2/src/interactable_special_ring.o(.text);
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);

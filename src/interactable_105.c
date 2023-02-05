@@ -10,6 +10,7 @@
 
 #include "interactable_105.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 
 typedef struct {
@@ -24,17 +25,37 @@ typedef struct {
     /* 0x15 */ u8 spriteY;
 } Sprite_IA105;
 
-extern void Task_Interactable105(void);
-extern void TaskDestructor_Interactable105(struct Task *t);
+typedef struct {
+    /* 0x00 */ Sprite s;
+    /* 0x30 */ s32 posX;
+    /* 0x34 */ s32 posY;
+    /* 0x38 */ s32 offsetX;
+    /* 0x3C */ s32 offsetY;
+    /* 0x40 */ s16 unk40;
+    /* 0x42 */ s16 unk42;
+    /* 0x44 */ u16 unk44;
+    /* 0x46 */ u16 unk46;
+    /* 0x48 */ u8 unk48;
+} Sprite_Unknown_IA105; /* size: 0x4C */
 
-extern bool32 sub_80809B8(Sprite_IA105 *);
-extern bool32 sub_8080A9C(Sprite_IA105 *);
-extern void sub_8080AE4(Sprite_IA105 *);
-extern void Task_8080DB8(void);
-extern void Task_8080E54(void);
-extern void TaskDestructor_8080EF8(struct Task *);
+/* {anim, variant, tileCount, shouldAllocTileMem(?), (unk | priority)} */
+static const u16 gUnknown_080E0140[4][5] = {
+    [0] = { SA2_ANIM_NOTE_PARTICLES, 0, 0x1B9, 0, (4 | 2) },
+    [1] = { SA2_ANIM_NOTE_PARTICLES, 1, 0x1BB, 0, (4 | 2) },
+    [2] = { SA2_ANIM_YELLOW_STAR, 0, 0x004, 1, (4 | 2) },
+    [3] = { SA2_ANIM_SMOKE, 0, 0x006, 1, (0 | 2) },
+};
 
 extern bool32 sub_800CBA4(Player *);
+
+static void Task_Interactable105(void);
+static void TaskDestructor_Interactable105(struct Task *t);
+static bool32 sub_80809B8(Sprite_IA105 *);
+static bool32 sub_8080A9C(Sprite_IA105 *);
+static void sub_8080AE4(Sprite_IA105 *);
+static void Task_8080DB8(void);
+static void Task_8080E54(void);
+static void TaskDestructor_8080EF8(struct Task *);
 
 void initSprite_Interactable105(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
@@ -55,7 +76,7 @@ void initSprite_Interactable105(Interactable *ia, u16 spriteRegionX, u16 spriteR
     SET_SPRITE_INITIALIZED(ia);
 }
 
-bool32 sub_80809B8(Sprite_IA105 *sprite)
+static bool32 sub_80809B8(Sprite_IA105 *sprite)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s16 screenX, screenY;
@@ -79,7 +100,7 @@ bool32 sub_80809B8(Sprite_IA105 *sprite)
     return FALSE;
 }
 
-void Task_Interactable105(void)
+static void Task_Interactable105(void)
 {
     Sprite_IA105 *sprite = TaskGetStructPtr(gCurTask);
 
@@ -92,7 +113,7 @@ void Task_Interactable105(void)
     }
 }
 
-void TaskDestructor_Interactable105(struct Task UNUSED *t) { }
+static void TaskDestructor_Interactable105(struct Task UNUSED *t) { }
 
 bool32 sub_8080A9C(Sprite_IA105 *sprite)
 {
@@ -109,32 +130,11 @@ bool32 sub_8080A9C(Sprite_IA105 *sprite)
     return FALSE;
 }
 
-void sub_8080AE4(Sprite_IA105 *sprite)
+static void sub_8080AE4(Sprite_IA105 *sprite)
 {
     sprite->ia->x = sprite->spriteX;
     TaskDestroy(gCurTask);
 }
-
-typedef struct {
-    /* 0x00 */ Sprite s;
-    /* 0x30 */ s32 unk30;
-    /* 0x34 */ s32 unk34;
-    /* 0x38 */ s32 unk38;
-    /* 0x3C */ s32 unk3C;
-    /* 0x40 */ s16 unk40;
-    /* 0x42 */ s16 unk42;
-    /* 0x44 */ u16 unk44;
-    /* 0x46 */ u16 unk46;
-    /* 0x48 */ u8 unk48;
-} Sprite_Unknown_IA105; /* size: 0x4C */
-
-// TODO: Make static
-const u16 gUnknown_080E0140[4][5] = {
-    [0] = { 0x240, 0, 0x1B9, 0, (4 | 2) },
-    [1] = { 0x240, 1, 0x1BB, 0, (4 | 2) },
-    [2] = { 0x241, 0, 0x004, 1, (4 | 2) },
-    [3] = { 0x242, 0, 0x006, 1, (0 | 2) },
-};
 
 // Public, called in interactable_music_plant_german_flute.o
 void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
@@ -142,10 +142,10 @@ void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_Unknown_IA105), 0x2010, 0,
                                 TaskDestructor_8080EF8);
     Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
-    sprite->unk30 = p0;
-    sprite->unk34 = p1;
-    sprite->unk38 = 0;
-    sprite->unk3C = 0;
+    sprite->posX = p0;
+    sprite->posY = p1;
+    sprite->offsetX = 0;
+    sprite->offsetY = 0;
 
     sprite->unk40 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
     sprite->unk42 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
@@ -181,10 +181,10 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_Unknown_IA105), 0x2010, 0,
                                 TaskDestructor_8080EF8);
     Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
-    sprite->unk30 = p0;
-    sprite->unk34 = p1;
-    sprite->unk38 = 0;
-    sprite->unk3C = 0;
+    sprite->posX = p0;
+    sprite->posY = p1;
+    sprite->offsetX = 0;
+    sprite->offsetY = 0;
 
     sprite->unk40 = p4;
     sprite->unk42 = p5;
@@ -214,17 +214,17 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
     sprite->s.variant = gUnknown_080E0140[p6][1];
 }
 
-void Task_8080DB8(void)
+static void Task_8080DB8(void)
 {
     struct Task *t = gCurTask;
     Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
     if (--sprite->unk46 == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->unk38 += sprite->unk40;
-        sprite->unk3C += sprite->unk42;
-        sprite->s.x = (sprite->unk30 - gCamera.x) + Q_24_8_TO_INT(sprite->unk38);
-        sprite->s.y = (sprite->unk34 - gCamera.y) + Q_24_8_TO_INT(sprite->unk3C);
+        sprite->offsetX += sprite->unk40;
+        sprite->offsetY += sprite->unk42;
+        sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
+        sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
         sub_8004558(&sprite->s);
 
         if (sprite->unk44 == 0) {
@@ -235,19 +235,21 @@ void Task_8080DB8(void)
     }
 }
 
-void Task_8080E54(void)
+static void Task_8080E54(void)
 {
     struct Task *t = gCurTask;
     Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
     if (--sprite->unk46 == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->unk38 += sprite->unk40;
-        sprite->unk3C += sprite->unk42;
-        sprite->unk42 += 42;
+        sprite->offsetX += sprite->unk40;
+        sprite->offsetY += sprite->unk42;
 
-        sprite->s.x = (sprite->unk30 - gCamera.x) + Q_24_8_TO_INT(sprite->unk38);
-        sprite->s.y = (sprite->unk34 - gCamera.y) + Q_24_8_TO_INT(sprite->unk3C);
+        // TODO: Remove magic number
+        sprite->unk42 += Q_8_8(1./6.);
+
+        sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
+        sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
         sub_8004558(&sprite->s);
 
         if (sprite->unk44 == 0) {
@@ -258,7 +260,7 @@ void Task_8080E54(void)
     }
 }
 
-void TaskDestructor_8080EF8(struct Task *t)
+static void TaskDestructor_8080EF8(struct Task *t)
 {
     Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
     if (gUnknown_080E0140[sprite->unk48][3] != 0) {
