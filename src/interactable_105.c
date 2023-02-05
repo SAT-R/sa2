@@ -123,8 +123,8 @@ typedef struct {
     /* 0x3C */ s32 unk3C;
     /* 0x40 */ s16 unk40;
     /* 0x42 */ s16 unk42;
-    /* 0x44 */ s16 unk44;
-    /* 0x46 */ s16 unk46;
+    /* 0x44 */ u16 unk44;
+    /* 0x46 */ u16 unk46;
     /* 0x48 */ u8 unk48;
 } Sprite_Unknown_IA105; /* size: 0x4C */
 
@@ -212,4 +212,25 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
 
     sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
     sprite->s.variant = gUnknown_080E0140[p6][1];
+}
+
+void Task_8080DB8(void)
+{
+    struct Task *t = gCurTask;
+    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    if (--sprite->unk46 == (u16)-1) {
+        TaskDestroy(t);
+    } else {
+        sprite->unk38 += sprite->unk40;
+        sprite->unk3C += sprite->unk42;
+        sprite->s.x = (sprite->unk30 - gCamera.x) + Q_24_8_TO_INT(sprite->unk38);
+        sprite->s.y = (sprite->unk34 - gCamera.y) + Q_24_8_TO_INT(sprite->unk3C);
+        sub_8004558(&sprite->s);
+
+        if (sprite->unk44 == 0) {
+            sub_80051E8(&sprite->s);
+        } else {
+            sprite->unk44--;
+        }
+    }
 }
