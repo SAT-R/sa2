@@ -23,6 +23,10 @@ typedef struct {
 
 #define NUM_GERMAN_FLUTE_KINDS 4
 
+extern void sub_80218E4(Player *);
+extern void sub_8023B5C(Player *, u32);
+
+extern void sub_8076928(void);
 extern void sub_80769E0(void);
 extern void sub_8076A6C(void);
 extern void sub_8076B84(Sprite_GermanFlute *);
@@ -52,6 +56,54 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
     SE_MUSIC_PLANT_FLUTE_3,
     SE_MUSIC_PLANT_FLUTE_4,
 };
+
+void sub_8076B84(Sprite_GermanFlute *flute)
+{
+    sub_80218E4(&gPlayer);
+    sub_8023B5C(&gPlayer, 14);
+
+    gPlayer.unk16 = 6;
+    gPlayer.unk17 = 14;
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 4;
+    m4aSongNumStart(SE_SPIN_ATTACK);
+
+    gPlayer.speedGroundX = 0;
+    gPlayer.speedAirX = 0;
+    gPlayer.speedAirY = 0;
+
+    gPlayer.y = Q_24_8(flute->posY - 8);
+    gCurTask->main = sub_8076928;
+}
+
+extern bool32 sub_8076BE4(Sprite_GermanFlute *flute)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        s32 posX, posY;
+        s32 pos2X, pos2Y;
+        s16 playerX, playerY;
+        s16 screenX, screenY;
+
+        posX = flute->posX;
+        pos2X = (gCamera.x + 20);
+        screenX = posX - pos2X;
+
+        posY = flute->posY;
+        pos2Y = (gCamera.y + 16);
+        screenY = posY - pos2Y;
+
+        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        if ((screenX <= playerX) && (playerX < (screenX + 40))) {
+
+            if ((screenY <= playerY) && (playerY < screenY + 32)) {
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
+}
 
 void sub_8076C58(Sprite_GermanFlute *flute)
 {
