@@ -40,8 +40,8 @@ typedef struct {
 
 /* {anim, variant, tileCount, shouldAllocTileMem(?), (unk | priority)} */
 static const u16 gUnknown_080E0140[4][5] = {
-    [0] = { SA2_ANIM_NOTE_PARTICLES, 0, 0x1B9, 0, (4 | 2) },
-    [1] = { SA2_ANIM_NOTE_PARTICLES, 1, 0x1BB, 0, (4 | 2) },
+    [0] = { SA2_ANIM_NOTE_PARTICLES, SA2_ANIM_VARIANT_NOTE_H, 0x1B9, 0, (4 | 2) },
+    [1] = { SA2_ANIM_NOTE_PARTICLES, SA2_ANIM_VARIANT_NOTE_V, 0x1BB, 0, (4 | 2) },
     [2] = { SA2_ANIM_YELLOW_STAR, 0, 0x004, 1, (4 | 2) },
     [3] = { SA2_ANIM_SMOKE, 0, 0x006, 1, (0 | 2) },
 };
