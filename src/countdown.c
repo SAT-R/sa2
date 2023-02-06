@@ -180,10 +180,11 @@ void sub_8036398(void)
 
     element->x = countdown->unk60 - gCamera.x;
     element->y = countdown->unk64 - gCamera.y;
-
-    if (IS_OUT_OF_CAM_RANGE(element->x, element->y)) {
-        TaskDestroy(gCurTask);
-        return;
+    {
+        if (IS_OUT_OF_CAM_RANGE(element->x, element->y)) {
+            TaskDestroy(gCurTask);
+            return;
+        }
     }
 
     sub_8004558(element);
