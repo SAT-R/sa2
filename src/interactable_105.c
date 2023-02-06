@@ -16,10 +16,10 @@
 typedef struct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 posY;
-    /* 0x08 */ u16 unk8;
-    /* 0x0A */ u16 unkA;
-    /* 0x0C */ u16 unkC;
-    /* 0x0E */ u16 unkE;
+    /* 0x08 */ u16 offsetX;
+    /* 0x0A */ u16 offsetY;
+    /* 0x0C */ u16 width;
+    /* 0x0E */ u16 height;
     /* 0x10 */ Interactable *ia;
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
@@ -31,12 +31,12 @@ typedef struct {
     /* 0x34 */ s32 posY;
     /* 0x38 */ s32 offsetX;
     /* 0x3C */ s32 offsetY;
-    /* 0x40 */ s16 unk40;
-    /* 0x42 */ s16 unk42;
+    /* 0x40 */ s16 accelX;
+    /* 0x42 */ s16 accelY;
     /* 0x44 */ u16 unk44;
     /* 0x46 */ u16 unk46;
-    /* 0x48 */ u8 unk48;
-} Sprite_Unknown_IA105; /* size: 0x4C */
+    /* 0x48 */ u8 kind;
+} Sprite_NoteParticle; /* size: 0x4C */
 
 /* {anim, variant, tileCount, shouldAllocTileMem(?), (unk | priority)} */
 static const u16 gUnknown_080E0140[4][5] = {
@@ -66,10 +66,10 @@ void initSprite_Interactable105(Interactable *ia, u16 spriteRegionX, u16 spriteR
 
     sprite->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
     sprite->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    sprite->unk8 = ia->d.sData[0] * TILE_WIDTH;
-    sprite->unkA = ia->d.sData[1] * TILE_WIDTH;
-    sprite->unkC = ia->d.uData[2] * TILE_WIDTH + sprite->unk8;
-    sprite->unkE = ia->d.uData[3] * TILE_WIDTH + sprite->unkA;
+    sprite->offsetX = ia->d.sData[0] * TILE_WIDTH;
+    sprite->offsetY = ia->d.sData[1] * TILE_WIDTH;
+    sprite->width = ia->d.uData[2] * TILE_WIDTH + sprite->offsetX;
+    sprite->height = ia->d.uData[3] * TILE_WIDTH + sprite->offsetY;
     sprite->ia = ia;
     sprite->spriteX = ia->x;
     sprite->spriteY = spriteY;
@@ -82,14 +82,14 @@ static bool32 sub_80809B8(Sprite_IA105 *sprite)
         s16 screenX, screenY;
         s16 playerX, playerY;
         s16 someX, someY;
-        screenX = sprite->posX + sprite->unk8 - gCamera.x;
-        screenY = sprite->posY + sprite->unkA - gCamera.y;
+        screenX = (sprite->posX + sprite->offsetX) - gCamera.x;
+        screenY = (sprite->posY + sprite->offsetY) - gCamera.y;
 
         playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        someX = sprite->unkC - sprite->unk8;
-        someY = sprite->unkE - sprite->unkA;
+        someX = sprite->width - sprite->offsetX;
+        someY = sprite->height - sprite->offsetY;
 
         if ((screenX <= playerX) && (screenX + someX >= playerX) && (screenY <= playerY)
             && (screenY + someY >= playerY)) {
@@ -139,19 +139,19 @@ static void sub_8080AE4(Sprite_IA105 *sprite)
 // Public, called in interactable_music_plant_german_flute.o
 void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
 {
-    struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_Unknown_IA105), 0x2010, 0,
+    struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
     sprite->posX = p0;
     sprite->posY = p1;
     sprite->offsetX = 0;
     sprite->offsetY = 0;
 
-    sprite->unk40 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
-    sprite->unk42 = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
+    sprite->accelX = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
+    sprite->accelY = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
     sprite->unk44 = p2;
     sprite->unk46 = p3;
-    sprite->unk48 = p6;
+    sprite->kind = p6;
 
     sprite->s.unk1A = 0x180;
     sprite->s.graphics.size = 0;
@@ -178,19 +178,19 @@ void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
 
 void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
 {
-    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_Unknown_IA105), 0x2010, 0,
+    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
     sprite->posX = p0;
     sprite->posY = p1;
     sprite->offsetX = 0;
     sprite->offsetY = 0;
 
-    sprite->unk40 = p4;
-    sprite->unk42 = p5;
+    sprite->accelX = p4;
+    sprite->accelY = p5;
     sprite->unk44 = p2;
     sprite->unk46 = p3;
-    sprite->unk48 = p6;
+    sprite->kind = p6;
 
     sprite->s.unk1A = 0x180;
     sprite->s.graphics.size = 0;
@@ -217,12 +217,12 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
 static void Task_8080DB8(void)
 {
     struct Task *t = gCurTask;
-    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
     if (--sprite->unk46 == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->offsetX += sprite->unk40;
-        sprite->offsetY += sprite->unk42;
+        sprite->offsetX += sprite->accelX;
+        sprite->offsetY += sprite->accelY;
         sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
         sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
         sub_8004558(&sprite->s);
@@ -238,15 +238,15 @@ static void Task_8080DB8(void)
 static void Task_8080E54(void)
 {
     struct Task *t = gCurTask;
-    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
+    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
     if (--sprite->unk46 == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->offsetX += sprite->unk40;
-        sprite->offsetY += sprite->unk42;
+        sprite->offsetX += sprite->accelX;
+        sprite->offsetY += sprite->accelY;
 
         // TODO: Remove magic number
-        sprite->unk42 += Q_8_8(1./6.);
+        sprite->accelY += Q_8_8(1. / 6.);
 
         sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
         sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
@@ -262,8 +262,8 @@ static void Task_8080E54(void)
 
 static void TaskDestructor_8080EF8(struct Task *t)
 {
-    Sprite_Unknown_IA105 *sprite = TaskGetStructPtr(t);
-    if (gUnknown_080E0140[sprite->unk48][3] != 0) {
+    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
+    if (gUnknown_080E0140[sprite->kind][3] != 0) {
         VramFree(sprite->s.graphics.dest);
     }
 }
