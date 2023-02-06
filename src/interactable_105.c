@@ -1,6 +1,5 @@
 #include "global.h"
 #include "gba/types.h"
-#include "malloc_vram.h"
 
 #include "game.h"
 #include "interactable.h"

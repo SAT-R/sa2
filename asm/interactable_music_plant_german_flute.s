@@ -627,6 +627,7 @@ _08076DDE:
 	.align 2, 0
 _08076DE4: .4byte gCurTask
 
+.if 1
 	thumb_func_start sub_8076DE8
 sub_8076DE8: @ 0x08076DE8
 	push {r4, r5, lr}
@@ -672,112 +673,5 @@ _08076E34: .4byte gPlayer
 	thumb_func_start TaskDestructor_Interactable_MusicPlant_GermanFlute
 TaskDestructor_Interactable_MusicPlant_GermanFlute: @ 0x08076E38
 	bx lr
-	.align 2, 0
-
-	thumb_func_start sub_8076E3C
-sub_8076E3C: @ 0x08076E3C
-	push {r4, lr}
-	sub sp, #0xc
-	adds r4, r0, #0
-	ldr r1, _08076E98 @ =gPlayer
-	adds r2, r1, #0
-	adds r2, #0x64
-	movs r3, #0
-	movs r0, #0x3a
-	strh r0, [r2]
-	strh r3, [r1, #0x10]
-	ldr r2, _08076E9C @ =gUnknown_080DFCA0
-	ldrh r0, [r4, #0xc]
-	lsls r0, r0, #1
-	adds r0, r0, r2
-	ldrh r0, [r0]
-	rsbs r0, r0, #0
-	strh r0, [r1, #0x12]
-	strh r3, [r4, #0xe]
-	ldr r0, [r4]
-	ldr r1, [r4, #4]
-	adds r1, #0x18
-	str r3, [sp]
-	movs r2, #0xc0
-	str r2, [sp, #4]
-	movs r2, #3
-	str r2, [sp, #8]
-	movs r2, #0
-	movs r3, #0x1e
-	bl sub_8080AFC
-	ldr r1, _08076EA0 @ =gUnknown_080DFCA8
-	ldrh r0, [r4, #0xc]
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	bl m4aSongNumStart
-	ldr r0, _08076EA4 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _08076EA8 @ =sub_80769E0
-	str r0, [r1, #8]
-	add sp, #0xc
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08076E98: .4byte gPlayer
-_08076E9C: .4byte gUnknown_080DFCA0
-_08076EA0: .4byte gUnknown_080DFCA8
-_08076EA4: .4byte gCurTask
-_08076EA8: .4byte sub_80769E0
-
-	thumb_func_start sub_8076EAC
-sub_8076EAC: @ 0x08076EAC
-	push {lr}
-	ldr r1, [r0]
-	ldr r3, _08076EE8 @ =gCamera
-	ldr r2, [r3]
-	subs r1, r1, r2
-	ldr r0, [r0, #4]
-	ldr r2, [r3, #4]
-	subs r0, r0, r2
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	lsls r1, r1, #0x10
-	movs r0, #0x84
-	lsls r0, r0, #0x10
-	adds r1, r1, r0
-	movs r0, #0xfc
-	lsls r0, r0, #0x11
-	cmp r1, r0
-	bhi _08076EE4
-	lsls r0, r2, #0x10
-	asrs r1, r0, #0x10
-	movs r0, #0x80
-	rsbs r0, r0, #0
-	cmp r1, r0
-	blt _08076EE4
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _08076EEC
-_08076EE4:
-	movs r0, #1
-	b _08076EEE
-	.align 2, 0
-_08076EE8: .4byte gCamera
-_08076EEC:
-	movs r0, #0
-_08076EEE:
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_8076EF4
-sub_8076EF4: @ 0x08076EF4
-	push {lr}
-	ldr r1, [r0, #0x10]
-	ldrb r0, [r0, #0x14]
-	strb r0, [r1]
-	ldr r0, _08076F08 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08076F08: .4byte gCurTask
+	.align 2, 0    
+.endif

@@ -37,21 +37,22 @@ static void Task_8080DB8(void);
 static void Task_8080E54(void);
 static void TaskDestructor_8080EF8(struct Task *);
 
-void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
+void sub_8080AFC(s32 posX, s32 posY, u16 p2, u16 p3, s16 velocity, u8 quarterAngle,
+                 u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
     Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    sprite->posX = p0;
-    sprite->posY = p1;
+    sprite->posX = posX;
+    sprite->posY = posY;
     sprite->offsetX = 0;
     sprite->offsetY = 0;
 
-    sprite->accelX = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(COS(p5 * 4)));
-    sprite->accelY = Q_24_8_TO_INT(p4 * Q_2_14_TO_Q_24_8(SIN(p5 * 4)));
+    sprite->accelX = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(COS(quarterAngle * 4)));
+    sprite->accelY = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(SIN(quarterAngle * 4)));
     sprite->unk44 = p2;
     sprite->unk46 = p3;
-    sprite->kind = p6;
+    sprite->kind = kind;
 
     sprite->s.unk1A = 0x180;
     sprite->s.graphics.size = 0;
@@ -62,21 +63,21 @@ void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6)
     sprite->s.focused = 0;
     sprite->s.unk28->unk0 = -1;
 
-    sprite->s.unk10 = gUnknown_080E0140[p6][4] << 12;
+    sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
 
-    if (gUnknown_080E0140[p6][3] != 0) {
-        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[p6][2]);
+    if (gUnknown_080E0140[kind][3] != 0) {
+        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
         sprite->s.graphics.dest
-            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[p6][2] * TILE_SIZE_4BPP);
+            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
-    sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
-    sprite->s.variant = gUnknown_080E0140[p6][1];
+    sprite->s.graphics.anim = gUnknown_080E0140[kind][0];
+    sprite->s.variant = gUnknown_080E0140[kind][1];
     sub_8004558(&sprite->s);
 }
 
-void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
+void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 accelX, u16 accelY, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
@@ -86,11 +87,11 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
     sprite->offsetX = 0;
     sprite->offsetY = 0;
 
-    sprite->accelX = p4;
-    sprite->accelY = p5;
+    sprite->accelX = accelX;
+    sprite->accelY = accelY;
     sprite->unk44 = p2;
     sprite->unk46 = p3;
-    sprite->kind = p6;
+    sprite->kind = kind;
 
     sprite->s.unk1A = 0x180;
     sprite->s.graphics.size = 0;
@@ -101,17 +102,17 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, u16 p4, u16 p5, u8 p6)
     sprite->s.focused = 0;
     sprite->s.unk28->unk0 = -1;
 
-    sprite->s.unk10 = gUnknown_080E0140[p6][4] << 12;
+    sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
 
-    if (gUnknown_080E0140[p6][3] != 0) {
-        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[p6][2]);
+    if (gUnknown_080E0140[kind][3] != 0) {
+        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
         sprite->s.graphics.dest
-            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[p6][2] * TILE_SIZE_4BPP);
+            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
-    sprite->s.graphics.anim = gUnknown_080E0140[p6][0];
-    sprite->s.variant = gUnknown_080E0140[p6][1];
+    sprite->s.graphics.anim = gUnknown_080E0140[kind][0];
+    sprite->s.variant = gUnknown_080E0140[kind][1];
 }
 
 static void Task_8080DB8(void)
