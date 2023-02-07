@@ -152,7 +152,7 @@ typedef struct {
     /* 0x18 */ u8 filler18[8];
 
     // set/compare to values in "include/constants/move_states.h"
-    /* 0x20 */ u32 moveState; 
+    /* 0x20 */ u32 moveState;
 
     /* 0x24 */ u8 unk24;
     /* 0x25 */ u8 filler25[7];
