@@ -68,7 +68,6 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
 void sub_80769E0(void)
 {
     s32 res;
-    s32 r1;
     Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
@@ -96,20 +95,37 @@ void sub_80769E0(void)
                 }
             }
         }
+        //do
         { // _08076990
-            s32 r1 = gPlayer.x - r3;
-            if (((r1 >= 0) && (r1 <= Q_24_8(8))) || ((r3 - gPlayer.x) <= Q_24_8(8))) {
-                // _080769AC
-                if (gPlayer.y != r4) {
-                    gPlayer.speedAirY += Q_24_8(1. / 6.);
-                    gPlayer.y += gPlayer.speedAirY;
+            s32 r1 = (gPlayer.x - r3);
+            if (r1 >= 0)
+            {
+                if (r1 > Q_24_8(8)) 
+                    {
+                    // _080769AC
+                    if (gPlayer.y != r4) {
+                        gPlayer.speedAirY += Q_24_8(1. / 6.);
+                        gPlayer.y += gPlayer.speedAirY;
 
-                    if (gPlayer.y > r4) {
-                        gPlayer.y = r4;
+                        if (gPlayer.y > r4) {
+                            gPlayer.y = r4;
+                        }
+                    }
+                }
+            } else {
+                {
+                    if ((r3 - gPlayer.x) && (gPlayer.y != r4)) {
+                        gPlayer.speedAirY += Q_24_8(1. / 6.);
+                        gPlayer.y += gPlayer.speedAirY;
+
+                        if (gPlayer.y > r4) {
+                            gPlayer.y = r4;
+                        }
                     }
                 }
             }
         }
+        //while (FALSE);
 
         if ((gPlayer.x == r3) && (gPlayer.y == r4)) {
             sub_8076C58(flute);
