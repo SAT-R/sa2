@@ -49,7 +49,7 @@ static void TaskDestructor_Interactable_MusicPlant_GermanFlute(struct Task *);
 static void sub_8076E3C(Sprite_GermanFlute *);
 static bool32 sub_8076EAC(Sprite_GermanFlute *);
 static void sub_8076EF4(Sprite_GermanFlute *);
-static void sub_8076C58(Sprite_GermanFlute *);
+void sub_8076C58(Sprite_GermanFlute *);
 
 static const s16 sFluteUpdraft[NUM_GERMAN_FLUTE_KINDS] = {
     Q_8_8(7),
@@ -65,7 +65,8 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
     SE_MUSIC_PLANT_FLUTE_4,
 };
 
-void sub_80769E0(void)
+#if 1
+void sub_8076928(void)
 {
     s32 res;
     Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
@@ -126,8 +127,9 @@ void sub_80769E0(void)
         }
     }
 }
+#endif
 
-void sub_8076928(void)
+void sub_80769E0(void)
 {
     s32 res;
     s32 r1;
