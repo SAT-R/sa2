@@ -12,23 +12,30 @@
 typedef struct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 posY;
-    /* 0x08 */ u16 unk8;
-    /* 0x0A */ u16 unkA;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
     /* 0x0C */ u16 kind;
     /* 0x0E */ u16 unkE;
     /* 0x10 */ Interactable *ia;
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
+    /* 0x16 */ u8 unk16;
+    /* 0x17 */ s8 unk17;
 } Sprite_GermanFlute; /* size: 0x18 */
 
 #define NUM_GERMAN_FLUTE_KINDS 4
+
+typedef void (*SomeFunc)(s32, s32, s32);
+
+extern void sub_801EC3C(s32, s32, s32);
+extern s32 sub_801F100(s32, s32, s32, s32, SomeFunc);
 
 extern void sub_80218E4(Player *);
 extern void sub_8023B5C(Player *, u32);
 
 extern void sub_8076928(void);
 extern void sub_80769E0(void);
-extern void sub_8076A6C(void);
+extern void Task_8076A6C(void);
 extern void sub_8076B84(Sprite_GermanFlute *);
 extern bool32 sub_8076BE4(Sprite_GermanFlute *);
 extern void sub_8076C70(Sprite_GermanFlute *);
@@ -56,6 +63,57 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
     SE_MUSIC_PLANT_FLUTE_3,
     SE_MUSIC_PLANT_FLUTE_4,
 };
+
+void Task_8076A6C(void)
+{
+    s32 res;
+    s32 r1;
+    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        sub_8076CF4(flute);
+    }
+
+    if (gPlayer.unk2C == 0x78) {
+        sub_8076D08(flute);
+    }
+
+    gPlayer.x -= flute->unk8;
+    gPlayer.y -= flute->unkA;
+    flute->unk8 = 0;
+
+    flute->unkA = Q_2_14_TO_Q_24_8(SIN((u8)flute->unkE * 4)) * 8;
+    r1 = gPlayer.x;
+    gPlayer.y += flute->unkA;
+
+    // NOTE/BUG(?): Are the first 2 parameters swapped?
+    res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) - gPlayer.unk17, Q_24_8_TO_INT(r1),
+                      gPlayer.unk38, -8, sub_801EC3C);
+    if (res < 0) {
+        gPlayer.y -= Q_24_8(res);
+    }
+
+    flute->unkE++;
+
+    if (gPlayer.unk5C & 0x10) {
+        gPlayer.x += Q_24_8(0.5);
+        gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+
+    if (gPlayer.unk5C & 0x20) {
+        gPlayer.x -= Q_24_8(0.5);
+        gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+    }
+
+    if ((Q_24_8(flute->posX) - Q_24_8(16) > gPlayer.x)
+        || (Q_24_8(flute->posX) + Q_24_8(16) < gPlayer.x)) {
+        sub_8076C88(flute);
+    }
+
+    if (flute->unkE++ > 179) {
+        sub_8076CC0(flute);
+    }
+}
 
 void sub_8076B84(Sprite_GermanFlute *flute)
 {
@@ -117,7 +175,7 @@ void sub_8076C70(Sprite_GermanFlute *flute)
     flute->unkA = 0;
     flute->unkE = 0;
 
-    gCurTask->main = sub_8076A6C;
+    gCurTask->main = Task_8076A6C;
 }
 
 void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
