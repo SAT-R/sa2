@@ -95,13 +95,10 @@ void sub_80769E0(void)
                 }
             }
         }
-        //do
-        { // _08076990
-            s32 r1 = (gPlayer.x - r3);
-            if (r1 >= 0)
-            {
-                if (r1 > Q_24_8(8)) 
-                    {
+        do { // _08076990
+            // s32 r1 = ;
+            if ((gPlayer.x - r3) >= 0) {
+                if ((gPlayer.x - r3) > Q_24_8(8)) {
                     // _080769AC
                     if (gPlayer.y != r4) {
                         gPlayer.speedAirY += Q_24_8(1. / 6.);
@@ -113,19 +110,16 @@ void sub_80769E0(void)
                     }
                 }
             } else {
-                {
-                    if ((r3 - gPlayer.x) && (gPlayer.y != r4)) {
-                        gPlayer.speedAirY += Q_24_8(1. / 6.);
-                        gPlayer.y += gPlayer.speedAirY;
+                if (((r3 - gPlayer.x) <= Q_24_8(8)) && (gPlayer.y != r4)) {
+                    gPlayer.speedAirY += Q_24_8(1. / 6.);
+                    gPlayer.y += gPlayer.speedAirY;
 
-                        if (gPlayer.y > r4) {
-                            gPlayer.y = r4;
-                        }
+                    if (gPlayer.y > r4) {
+                        gPlayer.y = r4;
                     }
                 }
             }
-        }
-        //while (FALSE);
+        } while (FALSE);
 
         if ((gPlayer.x == r3) && (gPlayer.y == r4)) {
             sub_8076C58(flute);
