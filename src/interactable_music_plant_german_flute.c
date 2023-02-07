@@ -65,7 +65,6 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
     SE_MUSIC_PLANT_FLUTE_4,
 };
 
-#if 1
 void sub_8076928(void)
 {
     s32 res;
@@ -96,22 +95,15 @@ void sub_8076928(void)
                 }
             }
         }
-        do { // _08076990
-            // s32 r1 = ;
-            if ((gPlayer.x - r3) >= 0) {
-                if ((gPlayer.x - r3) > Q_24_8(8)) {
-                    // _080769AC
-                    if (gPlayer.y != r4) {
-                        gPlayer.speedAirY += Q_24_8(1. / 6.);
-                        gPlayer.y += gPlayer.speedAirY;
 
-                        if (gPlayer.y > r4) {
-                            gPlayer.y = r4;
-                        }
-                    }
-                }
-            } else {
-                if (((r3 - gPlayer.x) <= Q_24_8(8)) && (gPlayer.y != r4)) {
+        if ((gPlayer.x - r3) >= 0) {
+            if ((gPlayer.x - r3) <= Q_24_8(8)) {
+                goto lab;
+            }
+        } else {
+            if (((r3 - gPlayer.x) <= Q_24_8(8))) {
+            lab:
+                if (gPlayer.y != r4) {
                     gPlayer.speedAirY += Q_24_8(1. / 6.);
                     gPlayer.y += gPlayer.speedAirY;
 
@@ -120,14 +112,13 @@ void sub_8076928(void)
                     }
                 }
             }
-        } while (FALSE);
+        }
 
         if ((gPlayer.x == r3) && (gPlayer.y == r4)) {
             sub_8076C58(flute);
         }
     }
 }
-#endif
 
 void sub_80769E0(void)
 {
