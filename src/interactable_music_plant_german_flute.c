@@ -49,6 +49,7 @@ static void TaskDestructor_Interactable_MusicPlant_GermanFlute(struct Task *);
 static void sub_8076E3C(Sprite_GermanFlute *);
 static bool32 sub_8076EAC(Sprite_GermanFlute *);
 static void sub_8076EF4(Sprite_GermanFlute *);
+static void sub_8076C58(Sprite_GermanFlute *);
 
 static const s16 sFluteUpdraft[NUM_GERMAN_FLUTE_KINDS] = {
     Q_8_8(7),
@@ -63,6 +64,88 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
     SE_MUSIC_PLANT_FLUTE_3,
     SE_MUSIC_PLANT_FLUTE_4,
 };
+
+void sub_80769E0(void)
+{
+    s32 res;
+    s32 r1;
+    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        sub_8076CF4(flute);
+    } else if (gPlayer.unk2C == 0x78) {
+        sub_8076D08(flute);
+    } else {
+        s32 r3, r4;
+        r3 = Q_24_8(flute->posX);
+        r4 = Q_24_8(flute->posY) + Q_24_8(24);
+
+        if (gPlayer.x != r3) {
+            if (gPlayer.x > r3) {
+                gPlayer.x -= Q_24_8(0.5);
+
+                if (gPlayer.x < r3) {
+                    gPlayer.x = r3;
+                }
+
+            } else {
+                gPlayer.x += Q_24_8(0.5);
+
+                if (gPlayer.x > r3) {
+                    gPlayer.x = r3;
+                }
+            }
+        }
+        { // _08076990
+            s32 r1 = gPlayer.x - r3;
+            if (((r1 >= 0) && (r1 <= Q_24_8(8))) || ((r3 - gPlayer.x) <= Q_24_8(8))) {
+                // _080769AC
+                if (gPlayer.y != r4) {
+                    gPlayer.speedAirY += Q_24_8(1. / 6.);
+                    gPlayer.y += gPlayer.speedAirY;
+
+                    if (gPlayer.y > r4) {
+                        gPlayer.y = r4;
+                    }
+                }
+            }
+        }
+
+        if ((gPlayer.x == r3) && (gPlayer.y == r4)) {
+            sub_8076C58(flute);
+        }
+    }
+}
+
+void sub_8076928(void)
+{
+    s32 res;
+    s32 r1;
+    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        sub_8076CF4(flute);
+    }
+
+    if (gPlayer.unk2C == 0x78) {
+        sub_8076D08(flute);
+    }
+
+    gPlayer.y += gPlayer.speedAirY;
+    gPlayer.speedAirY += Q_24_8(1. / 6.);
+
+    // NOTE/BUG(?): Are the first 2 parameters swapped?
+    res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) - gPlayer.unk17, Q_24_8_TO_INT(gPlayer.x),
+                      gPlayer.unk38, -8, sub_801EC3C);
+
+    if (res < 0) {
+        gPlayer.y -= Q_24_8(res);
+    }
+
+    if (gPlayer.speedAirY >= 0) {
+        sub_8076C70(flute);
+    }
+}
 
 void Task_8076A6C(void)
 {
