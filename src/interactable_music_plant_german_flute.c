@@ -95,8 +95,7 @@ static void sub_8076928(void)
             }
         }
 
-        if (ABS(gPlayer.x - posX) <= Q_24_8(8))
-        {
+        if (ABS(gPlayer.x - posX) <= Q_24_8(8)) {
             if (gPlayer.y != posY) {
                 gPlayer.speedAirY += Q_24_8(1. / 6.);
                 gPlayer.y += gPlayer.speedAirY;
@@ -106,7 +105,6 @@ static void sub_8076928(void)
                 }
             }
         }
-        
 
         if ((gPlayer.x == posX) && (gPlayer.y == posY)) {
             sub_8076C58(flute);
