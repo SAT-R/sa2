@@ -181,9 +181,12 @@ typedef struct {
     /* 0x6A */ u16 unk6A; // variant?
     /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
-     *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute/Keyboard
-     * IAs) 0x0A = Player cleared the stage (only for Acts, not Bosses?) 0x0E = Hit an
-     * up-spring 0x16 = Set in IA Ramp 0x17 = Used in Interactable 044 0x18 = Dash Ring
+     *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA)
+     *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
+     *  0x0E = Hit an up-spring
+     *  0x16 = Set in IA Ramp
+     *  0x17 = Used in Interactable 044
+     *  0x18 = Dash Ring
      *  0x1C = Set by IA ClearPipe_End if data[1] is 0
      * */
     /* 0x6D */ u8 unk6D;
