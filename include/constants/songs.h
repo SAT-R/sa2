@@ -237,11 +237,13 @@
 #define SE_291                291
 #define SE_ICE_PARADISE_SLIDE 292
 #define SE_293                293
-#define SE_294                294
-#define SE_295                295
-#define SE_296                296
-#define SE_297                297
-#define SE_SPECIAL_RING       298
+// NOTE(Jace): Well, it's not actually a piano,
+//             but it works the same way as the one in Music Plant
+#define SE_TECHNO_BASE_PIANO 294
+#define SE_295               295
+#define SE_296               296
+#define SE_297               297
+#define SE_SPECIAL_RING      298
 // 299
 
 /* 300 - 329: Music Plant Instruments */
@@ -250,8 +252,9 @@
 #define SE_MUSIC_PLANT_SPRING_3  302
 #define SE_MUSIC_PLANT_SPRING_4  303
 #define SE_MUSIC_PLANT_CRASH_HIT 304
-#define SE_MUSIC_PLANT_NOTES_1                                                          \
-    305 // TODO(Jace): Name them by the note they play, instead of 1-n
+
+// TODO(Jace): Name them by the note they play, instead of 1-n
+#define SE_MUSIC_PLANT_NOTES_1        305
 #define SE_MUSIC_PLANT_NOTES_2        306
 #define SE_MUSIC_PLANT_NOTES_3        307
 #define SE_MUSIC_PLANT_NOTES_4        308

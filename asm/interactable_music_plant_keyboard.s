@@ -118,13 +118,14 @@ _0807643C: .4byte TaskDestructor_Interactable_MusicPlant_Keyboard
 _08076440: .4byte IWRAM_START + 0x20
 _08076444: .4byte IWRAM_START + 0x21
 
+.if 0
 	thumb_func_start sub_8076448
 sub_8076448: @ 0x08076448
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
 	sub sp, #0xc
-	adds r4, r0, #0
+	adds r4, r0, #0     @ r4 = kb
 	movs r0, #8
 	strb r0, [r4, #1]
 	ldr r1, _0807647C @ =gPlayer
@@ -175,6 +176,7 @@ _080764AE:
 	b _08076716
 	.align 2, 0
 _080764B4: .4byte gCurrentLevel
+@# case 0
 _080764B8:
 	movs r1, #0xc
 	ldrsh r0, [r4, r1]
@@ -188,15 +190,15 @@ _080764B8:
 	cmp r0, #5
 	bne _080764E0
 	ldr r2, _080764D8 @ =gPlayer
-	ldr r1, _080764DC @ =gUnknown_080DFC94
+	ldr r1, _080764DC @ =sKeyboardAccelTechnoBase
 	b _080764E4
 	.align 2, 0
 _080764D4: .4byte gCurrentLevel
 _080764D8: .4byte gPlayer
-_080764DC: .4byte gUnknown_080DFC94
+_080764DC: .4byte sKeyboardAccelTechnoBase
 _080764E0:
 	ldr r2, _080764F0 @ =gPlayer
-	ldr r1, _080764F4 @ =gUnknown_080DFC88
+	ldr r1, _080764F4 @ =sKeyboardAccelMusicPlant
 _080764E4:
 	ldrh r0, [r1]
 	strh r0, [r2, #0x10]
@@ -206,7 +208,7 @@ _080764E4:
 	b _0807670C
 	.align 2, 0
 _080764F0: .4byte gPlayer
-_080764F4: .4byte gUnknown_080DFC88
+_080764F4: .4byte sKeyboardAccelMusicPlant
 _080764F8:
 	cmp r0, #0
 	bge _08076548
@@ -218,15 +220,15 @@ _080764F8:
 	cmp r0, #5
 	bne _0807651C
 	ldr r2, _08076514 @ =gPlayer
-	ldr r1, _08076518 @ =gUnknown_080DFC94
+	ldr r1, _08076518 @ =sKeyboardAccelTechnoBase
 	b _08076520
 	.align 2, 0
 _08076510: .4byte gCurrentLevel
 _08076514: .4byte gPlayer
-_08076518: .4byte gUnknown_080DFC94
+_08076518: .4byte sKeyboardAccelTechnoBase
 _0807651C:
 	ldr r2, _08076538 @ =gPlayer
-	ldr r1, _0807653C @ =gUnknown_080DFC88
+	ldr r1, _0807653C @ =sKeyboardAccelMusicPlant
 _08076520:
 	ldrh r0, [r1]
 	rsbs r0, r0, #0
@@ -241,7 +243,7 @@ _08076520:
 	b _08076714
 	.align 2, 0
 _08076538: .4byte gPlayer
-_0807653C: .4byte gUnknown_080DFC88
+_0807653C: .4byte sKeyboardAccelMusicPlant
 _08076540: .4byte 0x0000FB80
 _08076544: .4byte 0x0000FF20
 _08076548:
@@ -254,16 +256,16 @@ _08076548:
 	bne _0807656C
 	ldr r1, _08076564 @ =gPlayer
 	strh r2, [r1, #0x10]
-	ldr r0, _08076568 @ =gUnknown_080DFC94
+	ldr r0, _08076568 @ =sKeyboardAccelTechnoBase
 	b _08076572
 	.align 2, 0
 _08076560: .4byte gCurrentLevel
 _08076564: .4byte gPlayer
-_08076568: .4byte gUnknown_080DFC94
+_08076568: .4byte sKeyboardAccelTechnoBase
 _0807656C:
 	ldr r1, _0807657C @ =gPlayer
 	strh r2, [r1, #0x10]
-	ldr r0, _08076580 @ =gUnknown_080DFC88
+	ldr r0, _08076580 @ =sKeyboardAccelMusicPlant
 _08076572:
 	ldrh r0, [r0, #2]
 	rsbs r0, r0, #0
@@ -271,7 +273,8 @@ _08076572:
 	b _0807670C
 	.align 2, 0
 _0807657C: .4byte gPlayer
-_08076580: .4byte gUnknown_080DFC88
+_08076580: .4byte sKeyboardAccelMusicPlant
+@# case 1
 _08076584:
 	movs r1, #0xe
 	ldrsh r0, [r4, r1]
@@ -285,15 +288,15 @@ _08076584:
 	cmp r0, #5
 	bne _080765AC
 	ldr r2, _080765A4 @ =gPlayer
-	ldr r1, _080765A8 @ =gUnknown_080DFC94
+	ldr r1, _080765A8 @ =sKeyboardAccelTechnoBase
 	b _080765B0
 	.align 2, 0
 _080765A0: .4byte gCurrentLevel
 _080765A4: .4byte gPlayer
-_080765A8: .4byte gUnknown_080DFC94
+_080765A8: .4byte sKeyboardAccelTechnoBase
 _080765AC:
 	ldr r2, _080765BC @ =gPlayer
-	ldr r1, _080765C0 @ =gUnknown_080DFC88
+	ldr r1, _080765C0 @ =sKeyboardAccelMusicPlant
 _080765B0:
 	ldrh r0, [r1, #4]
 	rsbs r0, r0, #0
@@ -302,7 +305,7 @@ _080765B0:
 	b _0807667A
 	.align 2, 0
 _080765BC: .4byte gPlayer
-_080765C0: .4byte gUnknown_080DFC88
+_080765C0: .4byte sKeyboardAccelMusicPlant
 _080765C4:
 	cmp r0, #0
 	bge _08076614
@@ -314,15 +317,15 @@ _080765C4:
 	cmp r0, #5
 	bne _080765E8
 	ldr r2, _080765E0 @ =gPlayer
-	ldr r1, _080765E4 @ =gUnknown_080DFC94
+	ldr r1, _080765E4 @ =sKeyboardAccelTechnoBase
 	b _080765EC
 	.align 2, 0
 _080765DC: .4byte gCurrentLevel
 _080765E0: .4byte gPlayer
-_080765E4: .4byte gUnknown_080DFC94
+_080765E4: .4byte sKeyboardAccelTechnoBase
 _080765E8:
 	ldr r2, _08076604 @ =gPlayer
-	ldr r1, _08076608 @ =gUnknown_080DFC88
+	ldr r1, _08076608 @ =sKeyboardAccelMusicPlant
 _080765EC:
 	ldrh r0, [r1, #4]
 	rsbs r0, r0, #0
@@ -337,7 +340,7 @@ _080765EC:
 	b _08076714
 	.align 2, 0
 _08076604: .4byte gPlayer
-_08076608: .4byte gUnknown_080DFC88
+_08076608: .4byte sKeyboardAccelMusicPlant
 _0807660C: .4byte 0x0000FB80
 _08076610: .4byte 0x0000FF20
 _08076614:
@@ -349,22 +352,23 @@ _08076614:
 	cmp r0, #5
 	bne _08076634
 	ldr r2, _0807662C @ =gPlayer
-	ldr r0, _08076630 @ =gUnknown_080DFC94
+	ldr r0, _08076630 @ =sKeyboardAccelTechnoBase
 	b _08076638
 	.align 2, 0
 _08076628: .4byte gCurrentLevel
 _0807662C: .4byte gPlayer
-_08076630: .4byte gUnknown_080DFC94
+_08076630: .4byte sKeyboardAccelTechnoBase
 _08076634:
 	ldr r2, _08076640 @ =gPlayer
-	ldr r0, _08076644 @ =gUnknown_080DFC88
+	ldr r0, _08076644 @ =sKeyboardAccelMusicPlant
 _08076638:
 	ldrh r0, [r0, #4]
 	rsbs r0, r0, #0
 	b _08076706
 	.align 2, 0
 _08076640: .4byte gPlayer
-_08076644: .4byte gUnknown_080DFC88
+_08076644: .4byte sKeyboardAccelMusicPlant
+@# case 2
 _08076648:
 	movs r1, #0xe
 	ldrsh r0, [r4, r1]
@@ -378,15 +382,15 @@ _08076648:
 	cmp r0, #5
 	bne _08076670
 	ldr r2, _08076668 @ =gPlayer
-	ldr r1, _0807666C @ =gUnknown_080DFC94
+	ldr r1, _0807666C @ =sKeyboardAccelTechnoBase
 	b _08076674
 	.align 2, 0
 _08076664: .4byte gCurrentLevel
 _08076668: .4byte gPlayer
-_0807666C: .4byte gUnknown_080DFC94
+_0807666C: .4byte sKeyboardAccelTechnoBase
 _08076670:
 	ldr r2, _08076688 @ =gPlayer
-	ldr r1, _0807668C @ =gUnknown_080DFC88
+	ldr r1, _0807668C @ =sKeyboardAccelMusicPlant
 _08076674:
 	ldrh r0, [r1, #8]
 	strh r0, [r2, #0x10]
@@ -401,7 +405,7 @@ _0807667A:
 	b _08076716
 	.align 2, 0
 _08076688: .4byte gPlayer
-_0807668C: .4byte gUnknown_080DFC88
+_0807668C: .4byte sKeyboardAccelMusicPlant
 _08076690: .4byte 0x0000FF20
 _08076694:
 	cmp r0, #0
@@ -414,15 +418,15 @@ _08076694:
 	cmp r0, #5
 	bne _080766B8
 	ldr r2, _080766B0 @ =gPlayer
-	ldr r1, _080766B4 @ =gUnknown_080DFC94
+	ldr r1, _080766B4 @ =sKeyboardAccelTechnoBase
 	b _080766BC
 	.align 2, 0
 _080766AC: .4byte gCurrentLevel
 _080766B0: .4byte gPlayer
-_080766B4: .4byte gUnknown_080DFC94
+_080766B4: .4byte sKeyboardAccelTechnoBase
 _080766B8:
 	ldr r2, _080766D0 @ =gPlayer
-	ldr r1, _080766D4 @ =gUnknown_080DFC88
+	ldr r1, _080766D4 @ =sKeyboardAccelMusicPlant
 _080766BC:
 	ldrh r0, [r1, #8]
 	strh r0, [r2, #0x10]
@@ -436,7 +440,7 @@ _080766BC:
 	b _08076714
 	.align 2, 0
 _080766D0: .4byte gPlayer
-_080766D4: .4byte gUnknown_080DFC88
+_080766D4: .4byte sKeyboardAccelMusicPlant
 _080766D8: .4byte 0x0000FB80
 _080766DC: .4byte 0x0000FF20
 _080766E0:
@@ -448,15 +452,15 @@ _080766E0:
 	cmp r0, #5
 	bne _08076700
 	ldr r2, _080766F8 @ =gPlayer
-	ldr r0, _080766FC @ =gUnknown_080DFC94
+	ldr r0, _080766FC @ =sKeyboardAccelTechnoBase
 	b _08076704
 	.align 2, 0
 _080766F4: .4byte gCurrentLevel
 _080766F8: .4byte gPlayer
-_080766FC: .4byte gUnknown_080DFC94
+_080766FC: .4byte sKeyboardAccelTechnoBase
 _08076700:
 	ldr r2, _08076770 @ =gPlayer
-	ldr r0, _08076774 @ =gUnknown_080DFC88
+	ldr r0, _08076774 @ =sKeyboardAccelMusicPlant
 _08076704:
 	ldrh r0, [r0, #8]
 _08076706:
@@ -517,239 +521,7 @@ _08076764:
 	bx r0
 	.align 2, 0
 _08076770: .4byte gPlayer
-_08076774: .4byte gUnknown_080DFC88
+_08076774: .4byte sKeyboardAccelMusicPlant
 _08076778: .4byte 0x0000FB80
 _0807677C: .4byte 0x0000FF20
-
-	thumb_func_start sub_8076780
-sub_8076780: @ 0x08076780
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0
-	ldr r6, _080767F8 @ =gPlayer
-	ldr r0, [r6, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	bne _08076804
-	ldrb r0, [r5, #1]
-	cmp r0, #0
-	bne _08076800
-	ldr r2, [r5, #4]
-	ldr r1, _080767FC @ =gCamera
-	ldr r3, [r1]
-	subs r2, r2, r3
-	ldr r0, [r5, #8]
-	ldr r4, [r1, #4]
-	subs r0, r0, r4
-	lsls r0, r0, #0x10
-	lsrs r7, r0, #0x10
-	ldr r1, [r6, #8]
-	asrs r1, r1, #8
-	subs r1, r1, r3
-	ldr r0, [r6, #0xc]
-	asrs r0, r0, #8
-	subs r0, r0, r4
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	movs r0, #0xc
-	ldrsh r3, [r5, r0]
-	adds r2, r2, r3
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	cmp r2, r1
-	bgt _08076804
-	movs r6, #0x10
-	ldrsh r0, [r5, r6]
-	subs r0, r0, r3
-	adds r0, r2, r0
-	cmp r0, r1
-	blt _08076804
-	lsls r0, r7, #0x10
-	asrs r0, r0, #0x10
-	movs r1, #0xe
-	ldrsh r2, [r5, r1]
-	adds r3, r0, r2
-	lsls r0, r4, #0x10
-	asrs r1, r0, #0x10
-	cmp r3, r1
-	bgt _08076804
-	movs r4, #0x12
-	ldrsh r0, [r5, r4]
-	subs r0, r0, r2
-	adds r0, r3, r0
-	cmp r0, r1
-	blt _08076804
-	movs r0, #1
-	b _08076806
-	.align 2, 0
-_080767F8: .4byte gPlayer
-_080767FC: .4byte gCamera
-_08076800:
-	subs r0, #1
-	strb r0, [r5, #1]
-_08076804:
-	movs r0, #0
-_08076806:
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-
-	thumb_func_start Task_Interactable_MusicPlant_Keyboard
-Task_Interactable_MusicPlant_Keyboard: @ 0x0807680C
-	push {r4, lr}
-	ldr r0, _08076840 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_8076780
-	cmp r0, #0
-	beq _0807682A
-	adds r0, r4, #0
-	bl sub_8076448
-_0807682A:
-	adds r0, r4, #0
-	bl sub_8076848
-	cmp r0, #0
-	beq _0807683A
-	adds r0, r4, #0
-	bl sub_80768AC
-_0807683A:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08076840: .4byte gCurTask
-
-	thumb_func_start TaskDestructor_Interactable_MusicPlant_Keyboard
-TaskDestructor_Interactable_MusicPlant_Keyboard: @ 0x08076844
-	bx lr
-	.align 2, 0
-
-	thumb_func_start sub_8076848
-sub_8076848: @ 0x08076848
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	ldr r2, [r3, #4]
-	ldr r1, _080768A0 @ =gCamera
-	ldr r0, [r1]
-	subs r2, r2, r0
-	ldr r0, [r3, #8]
-	ldr r1, [r1, #4]
-	subs r0, r0, r1
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	movs r1, #0x18
-	ldrsh r0, [r3, r1]
-	adds r0, r2, r0
-	movs r5, #0x80
-	rsbs r5, r5, #0
-	cmp r0, r5
-	blt _0807689A
-	movs r1, #0x14
-	ldrsh r0, [r3, r1]
-	adds r0, r2, r0
-	movs r1, #0xb8
-	lsls r1, r1, #1
-	cmp r0, r1
-	bgt _0807689A
-	lsls r0, r4, #0x10
-	asrs r1, r0, #0x10
-	movs r2, #0x1a
-	ldrsh r0, [r3, r2]
-	adds r0, r1, r0
-	cmp r0, r5
-	blt _0807689A
-	movs r2, #0x16
-	ldrsh r0, [r3, r2]
-	adds r0, r1, r0
-	movs r1, #0x90
-	lsls r1, r1, #1
-	cmp r0, r1
-	ble _080768A4
-_0807689A:
-	movs r0, #1
-	b _080768A6
-	.align 2, 0
-_080768A0: .4byte gCamera
-_080768A4:
-	movs r0, #0
-_080768A6:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-
-	thumb_func_start sub_80768AC
-sub_80768AC: @ 0x080768AC
-	push {lr}
-	ldr r1, [r0, #0x1c]
-	adds r0, #0x20
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r0, _080768C4 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080768C4: .4byte gCurTask
-
-	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Vertical
-initSprite_Interactable_MusicPlant_Keyboard_Vertical: @ 0x080768C8
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #0
-	str r4, [sp]
-	bl initSprite_Interactable_MusicPlant_Keyboard
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft
-initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft: @ 0x080768E8
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #1
-	str r4, [sp]
-	bl initSprite_Interactable_MusicPlant_Keyboard
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight
-initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight: @ 0x08076908
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #2
-	str r4, [sp]
-	bl initSprite_Interactable_MusicPlant_Keyboard
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
+.endif
