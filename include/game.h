@@ -150,8 +150,10 @@ typedef struct {
     /* 0x16 */ u8 unk16;
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
-    /* 0x20 */ u32
-        moveState; // set/compare to values in "include/constants/move_states.h"
+
+    // set/compare to values in "include/constants/move_states.h"
+    /* 0x20 */ u32 moveState;
+
     /* 0x24 */ u8 unk24;
     /* 0x25 */ u8 filler25[7];
     /* 0x2C */ s16 unk2C;
@@ -179,7 +181,7 @@ typedef struct {
     /* 0x6A */ u16 unk6A; // variant?
     /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
-     *  0x05 = Set by IA ClearPipe_End if data[1] is set
+     *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA)
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0E = Hit an up-spring
      *  0x16 = Set in IA Ramp
