@@ -95,20 +95,13 @@ static void sub_8076928(void)
             }
         }
 
-        if ((gPlayer.x - posX) >= 0) {
-            if ((gPlayer.x - posX) <= Q_24_8(8)) {
-                goto lab;
-            }
-        } else {
-            if (((posX - gPlayer.x) <= Q_24_8(8))) {
-            lab:
-                if (gPlayer.y != posY) {
-                    gPlayer.speedAirY += Q_24_8(1. / 6.);
-                    gPlayer.y += gPlayer.speedAirY;
+        if (ABS(gPlayer.x - posX) <= Q_24_8(8)) {
+            if (gPlayer.y != posY) {
+                gPlayer.speedAirY += Q_24_8(1. / 6.);
+                gPlayer.y += gPlayer.speedAirY;
 
-                    if (gPlayer.y > posY) {
-                        gPlayer.y = posY;
-                    }
+                if (gPlayer.y > posY) {
+                    gPlayer.y = posY;
                 }
             }
         }
