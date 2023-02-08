@@ -26,26 +26,19 @@ typedef struct {
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ Interactable *ia;
     /* 0x20 */ u8 spriteX;
+    /* 0x21 */ u8 spriteY;
 } Sprite_Keyboard; /* size: 0x24 */
 
 #define MUSIC_PLANT_KEYBOARD_TYPE_VERTICAL         0
 #define MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_LEFT  1
 #define MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT 2
 
+static void Task_Interactable_MusicPlant_Keyboard(void);
+static void TaskDestructor_Interactable_MusicPlant_Keyboard(struct Task *);
 static bool32 sub_8076848(Sprite_Keyboard *);
-static void sub_80768AC(Sprite_Keyboard *);
-extern void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind);
-extern void initSprite_Interactable_MusicPlant_Keyboard(Interactable *ia,
-                                                        u16 spriteRegionX,
-                                                        u16 spriteRegionY, u8 spriteY,
-                                                        u8 type);
-/*{
-    struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GermanFlute,
-                                sizeof(Sprite_GermanFlute), 0x2010, 0,
-                                TaskDestructor_Interactable_MusicPlant_GermanFlute);
-    Sprite_Keyboard *kb = TaskGetStructPtr(t);
 
-}*/
+static void DespawnKeyboard(Sprite_Keyboard *);
+extern void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind);
 
 const s16 sKeyboardAccelMusicPlant[3][2] = {
     { Q_8_8(3.0), Q_8_8(4.0) },
@@ -58,6 +51,36 @@ const s16 sKeyboardAccelTechnoBase[3][2] = {
     { Q_8_8(5.0), Q_8_8(8.0) },
     { Q_8_8(5.0), Q_8_8(8.0) },
 };
+
+void initSprite_Interactable_MusicPlant_Keyboard(Interactable *ia, u16 spriteRegionX,
+                                                 u16 spriteRegionY, u8 spriteY, u32 type)
+{
+    struct Task *t
+        = TaskCreate(Task_Interactable_MusicPlant_Keyboard, sizeof(Sprite_Keyboard),
+                     0x2010, 0, TaskDestructor_Interactable_MusicPlant_Keyboard);
+
+    Sprite_Keyboard *kb = TaskGetStructPtr(t);
+    kb->kbType = type;
+    kb->unk1 = 0;
+    kb->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
+    kb->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+
+    {
+        kb->unkC = ia->d.sData[0] * TILE_WIDTH;
+        kb->unkE = ia->d.sData[1] * TILE_WIDTH;
+        kb->unk10 = kb->unkC + ia->d.uData[2] * TILE_WIDTH;
+        kb->unk12 = kb->unkE + ia->d.uData[3] * TILE_WIDTH;
+
+        kb->unk14 = (kb->unkC > 0) ? 0 : kb->unkC;
+        kb->unk16 = (kb->unkE > 0) ? 0 : kb->unkE;
+        kb->unk18 = (kb->unk10 < 0) ? 0 : kb->unk10;
+        kb->unk1A = (kb->unk12 < 0) ? 0 : kb->unk12;
+    }
+    kb->spriteX = ia->x;
+    kb->spriteY = spriteY;
+    kb->ia = ia;
+    SET_SPRITE_INITIALIZED(ia);
+}
 
 static void sub_8076448(Sprite_Keyboard *kb)
 {
@@ -236,7 +259,7 @@ static bool32 sub_8076780(Sprite_Keyboard *kb)
     return FALSE;
 }
 
-void Task_Interactable_MusicPlant_Keyboard(void)
+static void Task_Interactable_MusicPlant_Keyboard(void)
 {
     Sprite_Keyboard *kb = TaskGetStructPtr(gCurTask);
     if (sub_8076780(kb)) {
@@ -244,11 +267,11 @@ void Task_Interactable_MusicPlant_Keyboard(void)
     }
 
     if (sub_8076848(kb)) {
-        sub_80768AC(kb);
+        DespawnKeyboard(kb);
     }
 }
 
-void TaskDestructor_Interactable_MusicPlant_Keyboard(struct Task *UNUSED t) { }
+static void TaskDestructor_Interactable_MusicPlant_Keyboard(struct Task *UNUSED t) { }
 
 static bool32 sub_8076848(Sprite_Keyboard *kb)
 {
@@ -265,7 +288,7 @@ static bool32 sub_8076848(Sprite_Keyboard *kb)
     return FALSE;
 }
 
-void sub_80768AC(Sprite_Keyboard *kb)
+static void DespawnKeyboard(Sprite_Keyboard *kb)
 {
     kb->ia->x = kb->spriteX;
     TaskDestroy(gCurTask);
