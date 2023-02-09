@@ -229,10 +229,10 @@ static void sub_8076448(Sprite_Keyboard *kb)
     }
 
     if (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_6) {
-        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, (s16)r7,
-                    (s16)r5, 0);
-        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, (s16)r8,
-                    (s16)r6, 1);
+        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, r7, r5,
+                    0);
+        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, r8, r6,
+                    1);
     }
 }
 
