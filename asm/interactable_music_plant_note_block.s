@@ -12,20 +12,20 @@ initSprite_Interactable_MusicPlant_Note_Block: @ 0x0807593C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #4
-	adds r7, r0, #0
+	adds r7, r0, #0         @ r7 = ia
 	mov r8, r1
 	mov sb, r2
 	adds r6, r3, #0
 	mov r0, r8
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	mov r8, r0
+	mov r8, r0              @ r8 = spriteRegionX
 	mov r1, sb
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
-	mov sb, r1
+	mov sb, r1              @ sb = spriteRegionY
 	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
+	lsrs r6, r6, #0x18      @ r6 = spriteY
 	ldr r0, _08075A5C @ =sub_8075C6C
 	ldr r2, _08075A60 @ =0x00002010
 	ldr r1, _08075A64 @ =sub_8075CC0

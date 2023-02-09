@@ -89,7 +89,6 @@ static const u16 sSpring_MusicPlant_Soundeffects[5]
     = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3,
         SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY };
 
-// Finished, but doesn't match.
 static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
                                            u16 spriteRegionX, u16 spriteRegionY,
                                            u8 spriteY)
@@ -143,7 +142,6 @@ static void initSprite_Interactable_Spring(u8 springType, Interactable *ia,
     sub_8004558(displayed);
 }
 
-// TODO: make static
 static void Task_Interactable_Spring(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
