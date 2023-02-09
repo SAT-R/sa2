@@ -1,5 +1,6 @@
 #include "global.h"
 #include "task.h"
+#include "trig.h"
 
 #include "interactable.h"
 
@@ -12,8 +13,8 @@ typedef struct {
     /* 0x0C */ Sprite disp;
     /* 0x3C */ s32 posX;
     /* 0x40 */ s32 posY;
-    /* 0x44 */ u16 unk44;
-    /* 0x46 */ u16 unk46;
+    /* 0x44 */ s16 unk44;
+    /* 0x46 */ s16 unk46;
     /* 0x48 */ u8 unk48;
     /* 0x49 */ u8 unk49;
     /* 0x4A */ u8 unk4A;
@@ -21,7 +22,11 @@ typedef struct {
 } Sprite_NoteBlock; /* size: 0x4C */
 
 extern void sub_8075C6C(void);
-extern void sub_8075CC0(struct Task*);
+extern void sub_8075CC0(struct Task *);
+extern void sub_8075CC4(Sprite_NoteBlock *);
+extern void sub_8075CF0(Sprite_NoteBlock *);
+extern void sub_8075D28(Sprite_NoteBlock *);
+extern void sub_8075DE8(Sprite_NoteBlock *);
 
 /* animId, variant, tileId (OBJ VRAM) */
 extern const u16 gUnknown_080DFC40[7][3];
@@ -35,13 +40,13 @@ extern const u16 gUnknown_080DFC40[7][3];
     {SA2_ANIM_NOTE_BLOCK, 6, 0x184},
 };*/
 
-#if 1
 void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteRegionX,
-                                        u16 spriteRegionY, u8 spriteY)
+                                                   u16 spriteRegionY, u8 spriteY)
 {
-    struct Task* t = TaskCreate(sub_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0, sub_8075CC0);
-    Sprite_NoteBlock* block = TaskGetStructPtr(t);
-    Sprite* s = &block->disp;
+    struct Task *t
+        = TaskCreate(sub_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0, sub_8075CC0);
+    Sprite_NoteBlock *block = TaskGetStructPtr(t);
+    Sprite *s = &block->disp;
 
     block->unk4B = 3;
     block->unk44 = 0;
@@ -68,7 +73,7 @@ void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteR
 
     {
         u16 tileId = gUnknown_080DFC40[block->unk48][2];
-        s->graphics.dest = &((u8*)OBJ_VRAM0)[tileId * TILE_SIZE_4BPP];
+        s->graphics.dest = &((u8 *)OBJ_VRAM0)[tileId * TILE_SIZE_4BPP];
     }
     {
         u16 animId = gUnknown_080DFC40[block->unk48][0];
@@ -85,4 +90,34 @@ void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteR
 
     sub_8004558(s);
 }
-#endif
+
+void sub_8075A90(void)
+{
+    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+
+    u32 index = block->unk4A++;
+
+    switch (index) {
+        case 0: {
+            block->unk44 = Q_2_14_TO_Q_24_8(COS(block->unk49 * 4)) * 4;
+            block->unk46 = Q_2_14_TO_Q_24_8(SIN(block->unk49 * 4)) * 4;
+        } break;
+
+        case 4: {
+            block->unk44 = 0;
+            block->unk46 = 0;
+
+            if (block->unk4B == 0) {
+                sub_8075DE8(block);
+                return;
+            } else {
+                sub_8075CC4(block);
+            }
+        }
+    }
+
+    sub_8075CF0(block);
+    if (block->unk4B != 0) {
+        sub_8075D28(block);
+    }
+}
