@@ -1667,3 +1667,121 @@ void sub_801CEE4(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 }
+
+void sub_801CF60(void)
+{
+    s32 num;
+    u16 *cursor, i, val;
+    gBgScrollRegs[0][0]++;
+    gBgScrollRegs[3][0] = 0;
+    num = gUnknown_03005590 * 2;
+    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        gFlags = gFlags | 4;
+        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
+        gUnknown_03002A80 = 2;
+        cursor = gUnknown_03001884;
+        if (gCurrentLevel != 18) {
+            gDispCnt |= 0x100;
+            gDispCnt |= 0x2000;
+            gWinRegs[5] = 0x3f;
+            gWinRegs[4] = 0x3f3f;
+            gWinRegs[0] = 0xf0;
+            gWinRegs[2] = 0xa0;
+            gWinRegs[1] = 0xf0;
+            gWinRegs[3] = 0xa0;
+            gBldRegs.bldY = 7;
+            gBldRegs.bldCnt = 0x3f41;
+            gBldRegs.bldAlpha = 0x1010;
+        }
+
+        for (i = 0; i < 0x60; i++) {
+            *cursor++ = 0;
+        }
+
+        val = Div(num, 8);
+        for (; i < 100; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 7);
+        for (; i < 0x68; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 6);
+        for (; i < 0x70; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 5);
+        for (; i < 0x78; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 4);
+        for (; i < 0x80; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 3);
+        for (; i < 0x90; i++) {
+            *cursor++ = val;
+        }
+
+        val = Div(num, 2);
+        for (; i < 0x9F; i++) {
+            *cursor++ = val;
+        }
+    }
+}
+
+void sub_801D1A8(void);
+
+void sub_801D104(void)
+{
+    gDispCnt |= 0x100;
+    gBgCntRegs[0] = 0x1a0f;
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xff;
+    gUnknown_03002280[0][3] = 32;
+    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+    gUnknown_03005590 = 0x380;
+
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        sub_801D1A8();
+    }
+    gBgCntRegs[3] &= ~(1 | 2);
+    gBgCntRegs[3] |= 2;
+}
+
+void sub_801D1A8(void)
+{
+    Background *background = &gUnknown_03005850.unk0;
+    gDispCnt |= 0x100;
+    gBgCntRegs[0] = 0x1a0f;
+    gUnknown_03004D80[0] = 0;
+    gUnknown_03002280[0][0] = 0;
+    gUnknown_03002280[0][1] = 0;
+    gUnknown_03002280[0][2] = 0xff;
+    gUnknown_03002280[0][3] = 32;
+    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
+    gBgScrollRegs[0][0] = 0;
+    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[3][0] = 0;
+    gBgScrollRegs[3][1] = 0;
+
+    *background = gUnknown_080D5864[3];
+    background->unk1C = 0xA8;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
+    background->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    background->unk26 = 0x20;
+    background->unk28 = 0x20;
+
+    sub_8002A3C(background);
+}
