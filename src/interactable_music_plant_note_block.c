@@ -1,8 +1,10 @@
 #include "global.h"
+#include "m4a.h"
 #include "task.h"
 #include "trig.h"
 
 #include "interactable.h"
+#include "interactable_music_plant_note_particle.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -28,17 +30,32 @@ extern void sub_8075CF0(Sprite_NoteBlock *);
 extern void sub_8075D28(Sprite_NoteBlock *);
 extern void sub_8075DE8(Sprite_NoteBlock *);
 
+#define NUM_NOTE_BLOCK_TYPES 7
+
 /* animId, variant, tileId (OBJ VRAM) */
-extern const u16 gUnknown_080DFC40[7][3];
-/*= {
-    {SA2_ANIM_NOTE_BLOCK, 0, 0x16C},
-    {SA2_ANIM_NOTE_BLOCK, 1, 0x170},
-    {SA2_ANIM_NOTE_BLOCK, 2, 0x174},
-    {SA2_ANIM_NOTE_BLOCK, 3, 0x178},
-    {SA2_ANIM_NOTE_BLOCK, 4, 0x17C},
-    {SA2_ANIM_NOTE_BLOCK, 5, 0x180},
-    {SA2_ANIM_NOTE_BLOCK, 6, 0x184},
-};*/
+const u16 gUnknown_080DFC40[NUM_NOTE_BLOCK_TYPES][3] = {
+    { SA2_ANIM_NOTE_BLOCK, 0, 0x16C }, { SA2_ANIM_NOTE_BLOCK, 1, 0x170 },
+    { SA2_ANIM_NOTE_BLOCK, 2, 0x174 }, { SA2_ANIM_NOTE_BLOCK, 3, 0x178 },
+    { SA2_ANIM_NOTE_BLOCK, 4, 0x17C }, { SA2_ANIM_NOTE_BLOCK, 5, 0x180 },
+    { SA2_ANIM_NOTE_BLOCK, 6, 0x184 },
+};
+
+const s16 gUnknown_080DFC6A[NUM_NOTE_BLOCK_TYPES] = {
+    Q_8_8(4.5 + 0. / 8.),
+    Q_8_8(4.5 + 3. / 8.),
+    Q_8_8(4.5 + 6. / 8.),
+    Q_8_8(4.5 + 9. / 8.),
+    Q_8_8(4.5 + 12. / 8.),
+    Q_8_8(4.5 + 15. / 8.),
+    Q_8_8(0),
+};
+
+const u16 gUnknown_080DFC78[NUM_NOTE_BLOCK_TYPES + 1] = {
+    SE_MUSIC_PLANT_GLOCKENSPIEL_1, SE_MUSIC_PLANT_GLOCKENSPIEL_2,
+    SE_MUSIC_PLANT_GLOCKENSPIEL_3, SE_MUSIC_PLANT_GLOCKENSPIEL_4,
+    SE_MUSIC_PLANT_GLOCKENSPIEL_5, SE_MUSIC_PLANT_GLOCKENSPIEL_6,
+    SE_MUSIC_PLANT_GLOCKENSPIEL_6, MUS_DUMMY,
+};
 
 void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteRegionX,
                                                    u16 spriteRegionY, u8 spriteY)
@@ -91,7 +108,7 @@ void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteR
     sub_8004558(s);
 }
 
-void sub_8075A90(void)
+void Task_8075A90(void)
 {
     Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
 
@@ -113,11 +130,39 @@ void sub_8075A90(void)
             } else {
                 sub_8075CC4(block);
             }
-        }
+        } break;
     }
 
     sub_8075CF0(block);
+
     if (block->unk4B != 0) {
         sub_8075D28(block);
     }
+}
+
+void sub_8075B50(Sprite_NoteBlock *block)
+{
+    block->unk49 = 192;
+    gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
+    gPlayer.unk64 = 0x39;
+    gPlayer.unk6D = 5;
+    gPlayer.unk66 = -1;
+
+    block->unk4A = 0;
+    sub_8080C78(block->posX, block->posY, 5, 30, (gUnknown_080DFC6A[block->unk48]) >> 3,
+                -((gUnknown_080DFC6A[block->unk48] * 3)) >> 2, 0);
+    sub_8080C78(block->posX, block->posY, 5, 30, (-gUnknown_080DFC6A[block->unk48]) >> 3,
+                -((gUnknown_080DFC6A[block->unk48] * 3) >> 3), 1);
+
+    if (--block->unk4B == 1) {
+        block->disp.graphics.dest = &(
+            (u8 *)OBJ_VRAM0)[gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][2]];
+        block->disp.graphics.anim
+            = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][0];
+        block->disp.variant = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][1];
+        sub_8004558(&block->disp);
+    }
+
+    m4aSongNumStart(gUnknown_080DFC78[block->unk48]);
+    gCurTask->main = Task_8075A90;
 }

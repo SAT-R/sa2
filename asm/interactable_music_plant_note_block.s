@@ -5,17 +5,15 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_8075B50
 sub_8075B50: @ 0x08075B50
 	push {r4, r5, r6, r7, lr}
 	sub sp, #0xc
-	adds r6, r0, #0
+	adds r6, r0, #0     @ r6 = block
 	adds r1, r6, #0
-	adds r1, #0x49
+	adds r1, #0x49      @ r1 = &block->unk49
 	movs r0, #0
-	mov ip, r0
+	mov ip, r0          @ ip = 0
 	movs r0, #0xc0
 	strb r0, [r1]
 	ldr r3, _08075C4C @ =gPlayer
@@ -42,6 +40,7 @@ sub_8075B50: @ 0x08075B50
 	adds r0, r6, #0
 	adds r0, #0x4a
 	strb r2, [r0]
+
 	ldr r0, [r6, #0x3c]
 	ldr r1, [r6, #0x40]
 	ldrb r2, [r7]
@@ -67,6 +66,7 @@ sub_8075B50: @ 0x08075B50
 	movs r2, #5
 	movs r3, #0x1e
 	bl sub_8080C78
+
 	ldr r0, [r6, #0x3c]
 	ldr r1, [r6, #0x40]
 	ldrb r2, [r7]
@@ -93,6 +93,7 @@ sub_8075B50: @ 0x08075B50
 	movs r2, #5
 	movs r3, #0x1e
 	bl sub_8080C78
+
 	adds r1, r6, #0
 	adds r1, #0x4b
 	ldrb r0, [r1]
@@ -125,7 +126,7 @@ _08075C2C:
 	bl m4aSongNumStart
 	ldr r0, _08075C64 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08075C68 @ =sub_8075A90
+	ldr r0, _08075C68 @ =Task_8075A90
 	str r0, [r1, #8]
 	add sp, #0xc
 	pop {r4, r5, r6, r7}
@@ -139,7 +140,8 @@ _08075C58: .4byte gUnknown_080DFC40
 _08075C5C: .4byte 0x06010000
 _08075C60: .4byte gUnknown_080DFC78
 _08075C64: .4byte gCurTask
-_08075C68: .4byte sub_8075A90
+_08075C68: .4byte Task_8075A90
+.endif
 
 	thumb_func_start sub_8075C6C
 sub_8075C6C: @ 0x08075C6C
