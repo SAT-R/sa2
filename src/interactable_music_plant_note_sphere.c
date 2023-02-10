@@ -1,13 +1,17 @@
 #include "global.h"
 #include "gba/syscall.h"
 
+#include "m4a.h"
+#include "math.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
 
 #include "interactable.h"
+#include "interactable_music_plant_note_particle.h"
 
 #include "constants/animations.h"
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -17,8 +21,8 @@ typedef struct {
     /* 0x40 */ s32 posY;
     /* 0x44 */ s16 unk44;
     /* 0x46 */ s16 unk46;
-    /* 0x48 */ u8 unk48;
-    /* 0x49 */ u8 unk49;
+    /* 0x48 */ u8 kind;
+    /* 0x49 */ u8 angle;
     /* 0x4A */ u8 unk4A;
     /* 0x4B */ u8 unk4B;
 } Sprite_NoteSphere; /* size: 0x4C */
@@ -26,7 +30,7 @@ typedef struct {
 extern void Task_Interactable_MusicPlant_Note_Sphere(void);
 extern void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
 
-extern void sub_8075678(Sprite_NoteSphere *);
+extern u8 sub_8075678(Sprite_NoteSphere *);
 extern void sub_8075880(Sprite_NoteSphere *);
 extern void sub_80758B8(Sprite_NoteSphere *);
 
@@ -39,25 +43,14 @@ const u16 gUnknown_080DFBF0[8][3] = {
 };
 
 const s16 gUnknown_080DFC20[8] = {
-    Q_8_8(4.5);
-    Q_8_8(5.0);
-    Q_8_8(5.5)
-    Q_8_8(6.0);
-    Q_8_8(6.5)
-    Q_8_8(7.0);
-    Q_8_8(7.5)
-    Q_8_8(8.0);
+    Q_8_8(4.5), Q_8_8(5.0), Q_8_8(5.5), Q_8_8(6.0),
+    Q_8_8(6.5), Q_8_8(7.0), Q_8_8(7.5), Q_8_8(8.0),
 };
 
 const u16 gUnknown_080DFC30[8] = {
-    SE_MUSIC_PLANT_NOTES_1,
-    SE_MUSIC_PLANT_NOTES_2,
-    SE_MUSIC_PLANT_NOTES_3,
-    SE_MUSIC_PLANT_NOTES_4,
-    SE_MUSIC_PLANT_NOTES_5,
-    SE_MUSIC_PLANT_NOTES_6,
-    SE_MUSIC_PLANT_NOTES_7,
-    SE_MUSIC_PLANT_NOTES_8,
+    SE_MUSIC_PLANT_NOTES_1, SE_MUSIC_PLANT_NOTES_2, SE_MUSIC_PLANT_NOTES_3,
+    SE_MUSIC_PLANT_NOTES_4, SE_MUSIC_PLANT_NOTES_5, SE_MUSIC_PLANT_NOTES_6,
+    SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
 void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 spriteRegionX,
@@ -70,7 +63,7 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     Sprite *s = &note->disp;
     note->unk44 = 0;
     note->unk46 = 0;
-    note->unk48 = ia->d.uData[0];
+    note->kind = ia->d.uData[0];
 
     note->base.regionX = spriteRegionX;
     note->base.regionY = spriteRegionY;
@@ -88,9 +81,9 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     s->unk10 = 0x2000;
 
     s->graphics.dest
-        = &((u8 *)OBJ_VRAM0)[gUnknown_080DFBF0[note->unk48][2] * TILE_SIZE_4BPP];
-    s->graphics.anim = gUnknown_080DFBF0[note->unk48][0];
-    s->variant = gUnknown_080DFBF0[note->unk48][1];
+        = &((u8 *)OBJ_VRAM0)[gUnknown_080DFBF0[note->kind][2] * TILE_SIZE_4BPP];
+    s->graphics.anim = gUnknown_080DFBF0[note->kind][0];
+    s->variant = gUnknown_080DFBF0[note->kind][1];
 
     note->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
     note->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
@@ -99,19 +92,19 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     sub_8004558(s);
 }
 
-void sub_80754B8(void)
+void Task_80754B8(void)
 {
     Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
 
     switch (note->unk4A++) {
         case 0: {
-            note->unk44 = (Q_2_14_TO_Q_24_8(COS(note->unk49 * 4)) * 8);
-            note->unk46 = (Q_2_14_TO_Q_24_8(SIN(note->unk49 * 4)) * 8);
+            note->unk44 = (Q_2_14_TO_Q_24_8(COS(note->angle * 4)) * 8);
+            note->unk46 = (Q_2_14_TO_Q_24_8(SIN(note->angle * 4)) * 8);
         } break;
 
         case 4: {
-            note->unk44 = -(Q_2_14_TO_Q_24_8(COS(note->unk49 * 4)) * 4);
-            note->unk46 = -(Q_2_14_TO_Q_24_8(SIN(note->unk49 * 4)) * 4);
+            note->unk44 = -(Q_2_14_TO_Q_24_8(COS(note->angle * 4)) * 4);
+            note->unk46 = -(Q_2_14_TO_Q_24_8(SIN(note->angle * 4)) * 4);
         } break;
 
         case 6: {
@@ -125,6 +118,59 @@ void sub_80754B8(void)
     sub_80758B8(note);
 }
 
-void sub_80755A8(Sprite_NoteSphere* note) {
-    note->unk49 = sub_8075678(note);
+void sub_80755A8(Sprite_NoteSphere *note)
+{
+    note->angle = sub_8075678(note);
+
+    gPlayer.moveState = ((gPlayer.moveState | MOVESTATE_IN_AIR) & ~(MOVESTATE_100));
+    note->unk4A = 0;
+
+    sub_8080C78(note->posX, note->posY, 5, 30, (gUnknown_080DFC20[note->kind] >> 3),
+                (-((gUnknown_080DFC20[note->kind] * 3) << 14)) >> 16, 0);
+
+    sub_8080C78(note->posX, note->posY, 5, 30, (-gUnknown_080DFC20[note->kind] >> 3),
+                (-((gUnknown_080DFC20[note->kind] * 3) << 14)) >> 16, 1);
+
+    m4aSongNumStart(gUnknown_080DFC30[note->kind]);
+    gCurTask->main = Task_80754B8;
 }
+
+#if 1
+u8 sub_8075678(Sprite_NoteSphere* note) {
+    u8 angle;
+    u16 r6;
+    s16 vecPlayerToNoteX, vecPlayerToNoteY;
+    vecPlayerToNoteX = Q_24_8_TO_INT(gPlayer.x) - note->posX;
+    vecPlayerToNoteY = Q_24_8_TO_INT(gPlayer.y) - note->posY;
+
+    r6 = sub_8085530(vecPlayerToNoteX, vecPlayerToNoteY);
+
+    // Normalize (/create direction-)vector?
+    vecPlayerToNoteX = (vecPlayerToNoteX << 14) / r6;
+    vecPlayerToNoteY = (vecPlayerToNoteY << 14) / r6;
+
+    angle = ArcTan2(vecPlayerToNoteX, vecPlayerToNoteY) >> 8;
+    note->angle = angle;
+
+    {
+        u8 newAngle;
+        u8 r4;
+        s16 vecNewPlayerDirX = -gPlayer.speedAirX;
+        s16 vecNewPlayerDirY = -gPlayer.speedAirY;
+        r6 = sub_8085530((s16)vecNewPlayerDirX, (s16)vecNewPlayerDirY);
+
+        vecNewPlayerDirX = (vecNewPlayerDirX << 8) / r6;
+        vecNewPlayerDirY = (vecNewPlayerDirY << 8) / r6;
+        newAngle = ArcTan2(vecNewPlayerDirX, vecNewPlayerDirY) >> 8;
+
+        r4 = vecNewPlayerDirX + (sub_808558C(newAngle, angle, 8) << 1);
+
+        gPlayer.speedAirX = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
+        gPlayer.speedAirY = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
+    }
+
+    gPlayer.unk6D = 5;
+
+    return angle;
+}
+#endif

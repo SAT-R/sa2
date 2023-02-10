@@ -5,105 +5,6 @@
 .arm
 
 .if 0
-	thumb_func_start sub_80755A8
-sub_80755A8: @ 0x080755A8
-	push {r4, r5, r6, r7, lr}
-	sub sp, #0xc
-	adds r7, r0, #0     @ r7 = note
-	bl sub_8075678
-	adds r1, r7, #0
-	adds r1, #0x49      @ r1 = note->unk49
-	movs r2, #0
-	mov ip, r2          @ ip = 0
-	strb r0, [r1]
-	ldr r2, _08075660 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	movs r1, #2
-	orrs r0, r1
-	ldr r1, _08075664 @ =0xFFFFFEFF
-	ands r0, r1
-	str r0, [r2, #0x20]
-	adds r0, r7, #0
-	adds r0, #0x4a
-	mov r3, ip
-	strb r3, [r0]
-	ldr r0, [r7, #0x3c]
-	ldr r1, [r7, #0x40]
-	ldr r4, _08075668 @ =gUnknown_080DFC20
-	adds r5, r7, #0
-	adds r5, #0x48
-	ldrb r2, [r5]
-	lsls r2, r2, #1
-	adds r2, r2, r4
-	ldrh r2, [r2]
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x13
-	str r2, [sp]
-	ldrb r2, [r5]
-	lsls r2, r2, #1
-	adds r2, r2, r4
-	movs r6, #0
-	ldrsh r3, [r2, r6]
-	lsls r2, r3, #1
-	adds r2, r2, r3
-	lsls r2, r2, #0xe
-	rsbs r2, r2, #0
-	asrs r2, r2, #0x10
-	str r2, [sp, #4]
-	mov r2, ip
-	str r2, [sp, #8]
-	movs r2, #5
-	movs r3, #0x1e
-	bl sub_8080C78
-	ldr r0, [r7, #0x3c]
-	ldr r1, [r7, #0x40]
-	ldrb r2, [r5]
-	lsls r2, r2, #1
-	adds r2, r2, r4
-	movs r3, #0
-	ldrsh r2, [r2, r3]
-	rsbs r2, r2, #0
-	asrs r2, r2, #3
-	str r2, [sp]
-	ldrb r2, [r5]
-	lsls r2, r2, #1
-	adds r2, r2, r4
-	movs r4, #0
-	ldrsh r3, [r2, r4]
-	lsls r2, r3, #1
-	adds r2, r2, r3
-	lsls r2, r2, #0xe
-	rsbs r2, r2, #0
-	asrs r2, r2, #0x10
-	str r2, [sp, #4]
-	movs r2, #1
-	str r2, [sp, #8]
-	movs r2, #5
-	movs r3, #0x1e
-	bl sub_8080C78
-	ldr r1, _0807566C @ =gUnknown_080DFC30
-	ldrb r0, [r5]
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	bl m4aSongNumStart
-	ldr r0, _08075670 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _08075674 @ =sub_80754B8
-	str r0, [r1, #8]
-	add sp, #0xc
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08075660: .4byte gPlayer
-_08075664: .4byte 0xFFFFFEFF
-_08075668: .4byte gUnknown_080DFC20
-_0807566C: .4byte gUnknown_080DFC30
-_08075670: .4byte gCurTask
-_08075674: .4byte sub_80754B8
-.endif
-
 	thumb_func_start sub_8075678
 sub_8075678: @ 0x08075678
 	push {r4, r5, r6, lr}
@@ -111,19 +12,19 @@ sub_8075678: @ 0x08075678
 	mov r5, sb
 	mov r4, r8
 	push {r4, r5, r6}
-	mov sl, r0
+	mov sl, r0              @ sl = note
 	ldr r0, _080757B4 @ =gPlayer
-	mov sb, r0
+	mov sb, r0              @ sb = gPlayer
 	ldr r4, [r0, #8]
 	asrs r4, r4, #8
 	mov r1, sl
 	ldr r0, [r1, #0x3c]
-	subs r4, r4, r0
+	subs r4, r4, r0         @ r4 = vecNoteToPlayerX
 	mov r2, sb
 	ldr r5, [r2, #0xc]
 	asrs r5, r5, #8
 	ldr r0, [r1, #0x40]
-	subs r5, r5, r0
+	subs r5, r5, r0         @ r5 = vecNoteToPlayerY
 	lsls r4, r4, #0x10
 	asrs r4, r4, #0x10
 	lsls r5, r5, #0x10
@@ -160,7 +61,8 @@ sub_8075678: @ 0x08075678
 	mov r0, sl
 	adds r0, #0x49
 	strb r3, [r0]
-	mov r5, sb
+
+	mov r5, sb      @ r5 = gPlayer
 	ldrh r4, [r5, #0x10]
 	rsbs r4, r4, #0
 	ldrh r5, [r5, #0x12]
@@ -200,6 +102,7 @@ sub_8075678: @ 0x08075678
 	mov r1, r8
 	movs r2, #8
 	bl sub_808558C
+
 	lsls r0, r0, #1
 	adds r4, r4, r0
 	lsls r4, r4, #0x18
@@ -258,6 +161,7 @@ sub_8075678: @ 0x08075678
 _080757B4: .4byte gPlayer
 _080757B8: .4byte gUnknown_080DFC20
 _080757BC: .4byte gSineTable
+.endif
 
 	thumb_func_start sub_80757C0
 sub_80757C0: @ 0x080757C0

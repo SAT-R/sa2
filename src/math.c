@@ -18,6 +18,8 @@ u32 AbsMax(s32 a, s32 b)
 }
 
 // AbsSumMul
+// NOTE(Jace): Seems to approximate the length of a vector
+// If so, 'NormalizeVector' might be a reasonable name?
 u32 sub_8085530(s32 a, s32 b)
 {
     if (a < 0) {
@@ -29,24 +31,24 @@ u32 sub_8085530(s32 a, s32 b)
     }
 
     if (a > b) {
-        return (((u64)a * 246) + ((u64)b * 102)) >> 8;
+        return (((u64)a * Q_24_8(0.9609375)) + ((u64)b * Q_24_8(0.3984375))) >> 8;
     } else {
-        return (((u64)b * 246) + ((u64)a * 102)) >> 8;
+        return (((u64)b * Q_24_8(0.9609375)) + ((u64)a * Q_24_8(0.3984375))) >> 8;
     }
 }
 
-s16 sub_808558C(u16 a, u16 b, u8 c)
+s16 sub_808558C(u16 angleA, u16 angleB, u8 numDecimalBits)
 {
-    u32 c1 = (1 << c);
+    u32 c1 = (1 << numDecimalBits);
     u16 c2 = c1 - 1;
 
-    b -= a;
-    b &= c2;
+    angleB -= angleA;
+    angleB &= c2;
 
-    if (b <= (c1 / 2)) {
-        return b;
+    if (angleB <= (c1 / 2)) {
+        return angleB;
     } else {
-        return (b - c1);
+        return (angleB - c1);
     }
 }
 
