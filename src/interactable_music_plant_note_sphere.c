@@ -30,7 +30,7 @@ typedef struct {
 extern void Task_Interactable_MusicPlant_Note_Sphere(void);
 extern void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
 
-extern u8 sub_8075678(Sprite_NoteSphere *);
+extern u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
 extern void sub_8075880(Sprite_NoteSphere *);
 extern void sub_80758B8(Sprite_NoteSphere *);
 
@@ -120,7 +120,10 @@ void Task_80754B8(void)
 
 void sub_80755A8(Sprite_NoteSphere *note)
 {
-    note->angle = sub_8075678(note);
+    // NOTE: Setting note->angle is redundant, it gets set in the procedure.
+    //       Though it'd be more understandable to leave this in and
+    //       remove the assignment inside the proc, if one wanted to remove one of them.
+    note->angle = NoteSphere_BouncePlayer(note);
 
     gPlayer.moveState = ((gPlayer.moveState | MOVESTATE_IN_AIR) & ~(MOVESTATE_100));
     note->unk4A = 0;
@@ -135,7 +138,7 @@ void sub_80755A8(Sprite_NoteSphere *note)
     gCurTask->main = Task_80754B8;
 }
 
-u8 sub_8075678(Sprite_NoteSphere *note)
+u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 {
     u8 angle;
     u16 r6;
