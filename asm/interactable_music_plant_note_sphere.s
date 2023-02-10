@@ -5,125 +5,6 @@
 .arm
 
 .if 0
-.endif
-
-	thumb_func_start sub_80754B8
-sub_80754B8: @ 0x080754B8
-	push {r4, r5, r6, lr}
-	ldr r3, _080754E4 @ =gCurTask
-	ldr r0, [r3]
-	ldrh r4, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r5, r4, r0
-	adds r0, #0x4a
-	adds r2, r4, r0
-	ldrb r0, [r2]
-	adds r1, r0, #1
-	strb r1, [r2]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #4
-	beq _0807552C
-	cmp r0, #4
-	bgt _080754E8
-	cmp r0, #0
-	beq _080754EE
-	b _08075588
-	.align 2, 0
-_080754E4: .4byte gCurTask
-_080754E8:
-	cmp r0, #6
-	beq _08075574
-	b _08075588
-_080754EE:
-	ldr r3, _08075520 @ =gSineTable
-	ldr r1, _08075524 @ =IWRAM_START + 0x49
-	adds r2, r4, r1
-	ldrb r0, [r2]
-	lsls r0, r0, #3
-	movs r6, #0x80
-	lsls r6, r6, #2
-	adds r0, r0, r6
-	adds r0, r0, r3
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	lsls r0, r0, #3
-	ldr r6, _08075528 @ =IWRAM_START + 0x44
-	adds r1, r4, r6
-	strh r0, [r1]
-	ldrb r0, [r2]
-	lsls r0, r0, #3
-	adds r0, r0, r3
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	lsls r0, r0, #3
-	b _0807555E
-	.align 2, 0
-_08075520: .4byte gSineTable
-_08075524: .4byte IWRAM_START + 0x49
-_08075528: .4byte IWRAM_START + 0x44
-_0807552C:
-	ldr r3, _08075568 @ =gSineTable
-	ldr r6, _0807556C @ =IWRAM_START + 0x49
-	adds r2, r4, r6
-	ldrb r0, [r2]
-	lsls r0, r0, #3
-	movs r1, #0x80
-	lsls r1, r1, #2
-	adds r0, r0, r1
-	adds r0, r0, r3
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	lsls r0, r0, #2
-	rsbs r0, r0, #0
-	subs r6, #5
-	adds r1, r4, r6
-	strh r0, [r1]
-	ldrb r0, [r2]
-	lsls r0, r0, #3
-	adds r0, r0, r3
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
-	lsls r0, r0, #2
-	rsbs r0, r0, #0
-_0807555E:
-	ldr r2, _08075570 @ =IWRAM_START + 0x46
-	adds r1, r4, r2
-	strh r0, [r1]
-	b _08075588
-	.align 2, 0
-_08075568: .4byte gSineTable
-_0807556C: .4byte IWRAM_START + 0x49
-_08075570: .4byte IWRAM_START + 0x46
-_08075574:
-	ldr r6, _0807559C @ =IWRAM_START + 0x44
-	adds r0, r4, r6
-	movs r1, #0
-	strh r1, [r0]
-	ldr r2, _080755A0 @ =IWRAM_START + 0x46
-	adds r0, r4, r2
-	strh r1, [r0]
-	ldr r1, [r3]
-	ldr r0, _080755A4 @ =Task_Interactable_MusicPlant_Note_Sphere
-	str r0, [r1, #8]
-_08075588:
-	adds r0, r5, #0
-	bl sub_8075880
-	adds r0, r5, #0
-	bl sub_80758B8
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807559C: .4byte IWRAM_START + 0x44
-_080755A0: .4byte IWRAM_START + 0x46
-_080755A4: .4byte Task_Interactable_MusicPlant_Note_Sphere
-
 	thumb_func_start sub_80755A8
 sub_80755A8: @ 0x080755A8
 	push {r4, r5, r6, r7, lr}
@@ -221,6 +102,7 @@ _08075668: .4byte gUnknown_080DFC20
 _0807566C: .4byte gUnknown_080DFC30
 _08075670: .4byte gCurTask
 _08075674: .4byte sub_80754B8
+.endif
 
 	thumb_func_start sub_8075678
 sub_8075678: @ 0x08075678

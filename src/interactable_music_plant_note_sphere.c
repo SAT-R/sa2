@@ -1,6 +1,7 @@
 #include "global.h"
 #include "sprite.h"
 #include "task.h"
+#include "trig.h"
 
 #include "interactable.h"
 
@@ -22,16 +23,15 @@ typedef struct {
 extern void Task_Interactable_MusicPlant_Note_Sphere(void);
 extern void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
 
+extern void sub_8075880(Sprite_NoteSphere *);
+extern void sub_80758B8(Sprite_NoteSphere *);
+
 /* animId, variant, tileId (OBJ VRAM) */
 const u16 gUnknown_080DFBF0[8][3] = {
-    {SA2_ANIM_NOTE_BLOCK, 7, 0x188},
-    {SA2_ANIM_NOTE_BLOCK, 8, 0x18E},
-    {SA2_ANIM_NOTE_BLOCK, 9, 0x194},
-    {SA2_ANIM_NOTE_BLOCK, 10, 0x19A},
-    {SA2_ANIM_NOTE_BLOCK, 11, 0x1A0},
-    {SA2_ANIM_NOTE_BLOCK, 12, 0x1A6},
-    {SA2_ANIM_NOTE_BLOCK, 13, 0x1AC},
-    {SA2_ANIM_NOTE_BLOCK, 14, 0x1B2},
+    { SA2_ANIM_NOTE_BLOCK, 7, 0x188 },  { SA2_ANIM_NOTE_BLOCK, 8, 0x18E },
+    { SA2_ANIM_NOTE_BLOCK, 9, 0x194 },  { SA2_ANIM_NOTE_BLOCK, 10, 0x19A },
+    { SA2_ANIM_NOTE_BLOCK, 11, 0x1A0 }, { SA2_ANIM_NOTE_BLOCK, 12, 0x1A6 },
+    { SA2_ANIM_NOTE_BLOCK, 13, 0x1AC }, { SA2_ANIM_NOTE_BLOCK, 14, 0x1B2 },
 };
 
 void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 spriteRegionX,
@@ -41,7 +41,7 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
         = TaskCreate(Task_Interactable_MusicPlant_Note_Sphere, sizeof(Sprite_NoteSphere),
                      0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
     Sprite_NoteSphere *note = TaskGetStructPtr(t);
-    Sprite* s = &note->disp;
+    Sprite *s = &note->disp;
     note->unk44 = 0;
     note->unk46 = 0;
     note->unk48 = ia->d.uData[0];
@@ -61,7 +61,8 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     s->unk28->unk0 = -1;
     s->unk10 = 0x2000;
 
-    s->graphics.dest = &((u8*)OBJ_VRAM0)[gUnknown_080DFBF0[note->unk48][2] * TILE_SIZE_4BPP];
+    s->graphics.dest
+        = &((u8 *)OBJ_VRAM0)[gUnknown_080DFBF0[note->unk48][2] * TILE_SIZE_4BPP];
     s->graphics.anim = gUnknown_080DFBF0[note->unk48][0];
     s->variant = gUnknown_080DFBF0[note->unk48][1];
 
@@ -70,4 +71,30 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     SET_SPRITE_INITIALIZED(ia);
 
     sub_8004558(s);
+}
+
+void sub_80754B8(void)
+{
+    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+
+    switch (note->unk4A++) {
+        case 0: {
+            note->unk44 = (Q_2_14_TO_Q_24_8(COS(note->unk49 * 4)) * 8);
+            note->unk46 = (Q_2_14_TO_Q_24_8(SIN(note->unk49 * 4)) * 8);
+        } break;
+
+        case 4: {
+            note->unk44 = -(Q_2_14_TO_Q_24_8(COS(note->unk49 * 4)) * 4);
+            note->unk46 = -(Q_2_14_TO_Q_24_8(SIN(note->unk49 * 4)) * 4);
+        } break;
+
+        case 6: {
+            note->unk44 = 0;
+            note->unk46 = 0;
+            gCurTask->main = Task_Interactable_MusicPlant_Note_Sphere;
+        } break;
+    }
+
+    sub_8075880(note);
+    sub_80758B8(note);
 }
