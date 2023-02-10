@@ -142,6 +142,7 @@ void Task_8075A90(void)
 
 void sub_8075B50(Sprite_NoteBlock *block)
 {
+    s32 ah;
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
     gPlayer.unk64 = 0x39;
@@ -150,13 +151,14 @@ void sub_8075B50(Sprite_NoteBlock *block)
 
     block->unk4A = 0;
     sub_8080C78(block->posX, block->posY, 5, 30, (gUnknown_080DFC6A[block->unk48]) >> 3,
-                -((gUnknown_080DFC6A[block->unk48] * 3)) >> 2, 0);
+                (-((gUnknown_080DFC6A[block->unk48] * 3) << 14)) >> 16, 0);
     sub_8080C78(block->posX, block->posY, 5, 30, (-gUnknown_080DFC6A[block->unk48]) >> 3,
-                -((gUnknown_080DFC6A[block->unk48] * 3) >> 3), 1);
+                (-((gUnknown_080DFC6A[block->unk48] * 3) << 14)) >> 16, 1);
 
     if (--block->unk4B == 1) {
-        block->disp.graphics.dest = &(
-            (u8 *)OBJ_VRAM0)[gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][2]];
+        block->disp.graphics.dest
+            = &((u8 *)OBJ_VRAM0)[gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][2]
+                                 * TILE_SIZE_4BPP];
         block->disp.graphics.anim
             = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][0];
         block->disp.variant = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][1];
