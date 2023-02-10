@@ -23,12 +23,14 @@ typedef struct {
     /* 0x4B */ u8 unk4B;
 } Sprite_NoteBlock; /* size: 0x4C */
 
-extern void sub_8075C6C(void);
-extern void sub_8075CC0(struct Task *);
-extern void sub_8075CC4(Sprite_NoteBlock *);
-extern void sub_8075CF0(Sprite_NoteBlock *);
-extern void sub_8075D28(Sprite_NoteBlock *);
-extern void sub_8075DE8(Sprite_NoteBlock *);
+static void Task_8075C6C(void);
+static void TaskDestructor_8075CC0(struct Task *);
+static void sub_8075CC4(Sprite_NoteBlock *);
+static void NoteBlock_UpdatePosition(Sprite_NoteBlock *);
+static bool32 sub_8075D58(Sprite_NoteBlock *);
+static bool32 sub_8075D98(Sprite_NoteBlock *);
+static void sub_8075D28(Sprite_NoteBlock *);
+static void sub_8075DE8(Sprite_NoteBlock *);
 
 #define NUM_NOTE_BLOCK_TYPES 7
 
@@ -60,8 +62,8 @@ const u16 gUnknown_080DFC78[NUM_NOTE_BLOCK_TYPES + 1] = {
 void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteRegionX,
                                                    u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(sub_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0, sub_8075CC0);
+    struct Task *t = TaskCreate(Task_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0,
+                                TaskDestructor_8075CC0);
     Sprite_NoteBlock *block = TaskGetStructPtr(t);
     Sprite *s = &block->disp;
 
@@ -133,7 +135,7 @@ void Task_8075A90(void)
         } break;
     }
 
-    sub_8075CF0(block);
+    NoteBlock_UpdatePosition(block);
 
     if (block->unk4B != 0) {
         sub_8075D28(block);
@@ -167,4 +169,95 @@ void sub_8075B50(Sprite_NoteBlock *block)
 
     m4aSongNumStart(gUnknown_080DFC78[block->unk48]);
     gCurTask->main = Task_8075A90;
+}
+
+void Task_8075C6C(void)
+{
+    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+    if (sub_8075D98(block)) {
+        sub_8075B50(block);
+    }
+
+    if (sub_8075D58(block)) {
+        sub_8075DE8(block);
+    } else {
+        NoteBlock_UpdatePosition(block);
+
+        if (block->unk4B != 0) {
+            sub_8075D28(block);
+        }
+    }
+}
+
+void TaskDestructor_8075CC0(struct Task *UNUSED t) { }
+
+void sub_8075CC4(Sprite_NoteBlock *block)
+{
+    if (block->unk4B != 0) {
+        gCurTask->main = Task_8075C6C;
+    } else {
+        sub_8075DE8(block);
+    }
+}
+
+void NoteBlock_UpdatePosition(Sprite_NoteBlock *block)
+{
+    Sprite *s = &block->disp;
+
+    s->x = block->posX - gCamera.x + Q_24_8_TO_INT(block->unk44);
+    s->y = block->posY - gCamera.y + Q_24_8_TO_INT(block->unk46);
+}
+
+void sub_8075D28(Sprite_NoteBlock *block)
+{
+    Sprite *s = &block->disp;
+
+    s->unk10 |= 0x400;
+    sub_80051E8(s);
+
+    s->unk10 &= ~0x400;
+    sub_80051E8(s);
+}
+
+NONMATCH("asm/non_matching/sub_8075D58.inc", bool32 sub_8075D58(Sprite_NoteBlock *block))
+{
+    s32 screenX, screenY;
+    s16 otherX;
+    screenX = (block->posX + 256);
+    screenX -= gCamera.x;
+    screenY = (block->posY + 256);
+    screenY -= gCamera.y;
+
+    otherX = screenX;
+
+    if ((otherX < -256 || otherX > (256 + DISPLAY_WIDTH))
+        || (screenY < -256 || screenY > (256 + DISPLAY_HEIGHT))) {
+        return TRUE;
+    }
+}
+END_NONMATCH
+
+bool32 sub_8075D98(Sprite_NoteBlock *block)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (block->unk4B != 0)) {
+        s32 posX, posY;
+        u16 otherX, otherY;
+        posX = Q_24_8_TO_INT(gPlayer.x) + 16;
+        posX -= block->posX;
+        posY = Q_24_8_TO_INT(gPlayer.y) + 24;
+        posY -= block->posY;
+
+        otherY = posY;
+        otherX = posX;
+        if (otherX <= 32 && otherY <= 24)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+void sub_8075DE8(Sprite_NoteBlock *block)
+{
+    block->base.ia->x = block->base.spriteX;
+    TaskDestroy(gCurTask);
 }
