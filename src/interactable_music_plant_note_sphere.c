@@ -135,8 +135,8 @@ void sub_80755A8(Sprite_NoteSphere *note)
     gCurTask->main = Task_80754B8;
 }
 
-#if 1
-u8 sub_8075678(Sprite_NoteSphere* note) {
+u8 sub_8075678(Sprite_NoteSphere *note)
+{
     u8 angle;
     u16 r6;
     s16 vecPlayerToNoteX, vecPlayerToNoteY;
@@ -159,18 +159,19 @@ u8 sub_8075678(Sprite_NoteSphere* note) {
         s16 vecNewPlayerDirY = -gPlayer.speedAirY;
         r6 = sub_8085530((s16)vecNewPlayerDirX, (s16)vecNewPlayerDirY);
 
-        vecNewPlayerDirX = (vecNewPlayerDirX << 8) / r6;
-        vecNewPlayerDirY = (vecNewPlayerDirY << 8) / r6;
+        vecNewPlayerDirX = ((vecNewPlayerDirX << 8) / r6) << 6;
+        vecNewPlayerDirY = ((vecNewPlayerDirY << 8) / r6) << 6;
         newAngle = ArcTan2(vecNewPlayerDirX, vecNewPlayerDirY) >> 8;
 
-        r4 = vecNewPlayerDirX + (sub_808558C(newAngle, angle, 8) << 1);
+        r4 = (u8)(newAngle + (sub_808558C(newAngle, angle, 8) << 1));
 
-        gPlayer.speedAirX = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
-        gPlayer.speedAirY = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
+        gPlayer.speedAirX = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind]
+                                          * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
+        gPlayer.speedAirY = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind]
+                                          * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
     gPlayer.unk6D = 5;
 
     return angle;
 }
-#endif
