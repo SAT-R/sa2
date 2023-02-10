@@ -1,4 +1,6 @@
 #include "global.h"
+#include "gba/syscall.h"
+
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -6,6 +8,7 @@
 #include "interactable.h"
 
 #include "constants/animations.h"
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -23,6 +26,7 @@ typedef struct {
 extern void Task_Interactable_MusicPlant_Note_Sphere(void);
 extern void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
 
+extern void sub_8075678(Sprite_NoteSphere *);
 extern void sub_8075880(Sprite_NoteSphere *);
 extern void sub_80758B8(Sprite_NoteSphere *);
 
@@ -32,6 +36,28 @@ const u16 gUnknown_080DFBF0[8][3] = {
     { SA2_ANIM_NOTE_BLOCK, 9, 0x194 },  { SA2_ANIM_NOTE_BLOCK, 10, 0x19A },
     { SA2_ANIM_NOTE_BLOCK, 11, 0x1A0 }, { SA2_ANIM_NOTE_BLOCK, 12, 0x1A6 },
     { SA2_ANIM_NOTE_BLOCK, 13, 0x1AC }, { SA2_ANIM_NOTE_BLOCK, 14, 0x1B2 },
+};
+
+const s16 gUnknown_080DFC20[8] = {
+    Q_8_8(4.5);
+    Q_8_8(5.0);
+    Q_8_8(5.5)
+    Q_8_8(6.0);
+    Q_8_8(6.5)
+    Q_8_8(7.0);
+    Q_8_8(7.5)
+    Q_8_8(8.0);
+};
+
+const u16 gUnknown_080DFC30[8] = {
+    SE_MUSIC_PLANT_NOTES_1,
+    SE_MUSIC_PLANT_NOTES_2,
+    SE_MUSIC_PLANT_NOTES_3,
+    SE_MUSIC_PLANT_NOTES_4,
+    SE_MUSIC_PLANT_NOTES_5,
+    SE_MUSIC_PLANT_NOTES_6,
+    SE_MUSIC_PLANT_NOTES_7,
+    SE_MUSIC_PLANT_NOTES_8,
 };
 
 void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 spriteRegionX,
@@ -97,4 +123,8 @@ void sub_80754B8(void)
 
     sub_8075880(note);
     sub_80758B8(note);
+}
+
+void sub_80755A8(Sprite_NoteSphere* note) {
+    note->unk49 = sub_8075678(note);
 }

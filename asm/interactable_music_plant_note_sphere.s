@@ -9,12 +9,12 @@
 sub_80755A8: @ 0x080755A8
 	push {r4, r5, r6, r7, lr}
 	sub sp, #0xc
-	adds r7, r0, #0
+	adds r7, r0, #0     @ r7 = note
 	bl sub_8075678
 	adds r1, r7, #0
-	adds r1, #0x49
+	adds r1, #0x49      @ r1 = note->unk49
 	movs r2, #0
-	mov ip, r2
+	mov ip, r2          @ ip = 0
 	strb r0, [r1]
 	ldr r2, _08075660 @ =gPlayer
 	ldr r0, [r2, #0x20]
