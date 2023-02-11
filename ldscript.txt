@@ -107,6 +107,7 @@ SECTIONS
         build/sa2/src/interactable_music_plant_keyboard.o(.text);
         build/sa2/src/interactable_music_plant_german_flute.o(.text);
         build/sa2/asm/interactable_music_plant_pipe_horn.o(.text);
+        build/sa2/src/interactable_music_plant_pipe_horn.o(.text);
         build/sa2/src/interactable_ice_paradise_slowing_snow.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/asm/interactable_ice_paradise_half_pipe.o(.text);
@@ -536,7 +537,7 @@ SECTIONS
         /* Asset data */
         build/sa2/data/data3.o(.rodata);
         build/sa2/data/special_stage_levels.o(.rodata);
-        build/sa2/data/data3_1.o(.rodata);
+        build/sa2/src/interactable_music_plant_pipe_horn.o(.data);
         build/sa2/src/palettes.o(.rodata);
         build/sa2/src/recordings.o(.rodata);
         build/sa2/data/data4.o(.rodata);

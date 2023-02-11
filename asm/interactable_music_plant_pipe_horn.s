@@ -1544,13 +1544,13 @@ sub_8077ABC: @ 0x08077ABC
 	beq _08077AF0
 	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, [r5]
-	ldr r0, _08077AEC @ =sub_8077C04
+	ldr r0, _08077AEC @ =Task_Trumpet_8077C04
 	str r0, [r1, #8]
 	b _08077B1E
 	.align 2, 0
 _08077AE4: .4byte gCurTask
 _08077AE8: .4byte gPlayer
-_08077AEC: .4byte sub_8077C04
+_08077AEC: .4byte Task_Trumpet_8077C04
 _08077AF0:
 	adds r1, r2, #0
 	adds r1, #0x24
@@ -1618,7 +1618,7 @@ sub_8077B28: @ 0x08077B28
 	bl m4aSongNumStart
 	ldr r0, _08077B90 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08077B94 @ =sub_8077C04
+	ldr r0, _08077B94 @ =Task_Trumpet_8077C04
 	str r0, [r1, #8]
 	pop {r4}
 	pop {r0}
@@ -1629,7 +1629,7 @@ _08077B84: .4byte 0xFFBFFFFF
 _08077B88: .4byte gUnknown_080DFFF4
 _08077B8C: .4byte gUnknown_080E0000
 _08077B90: .4byte gCurTask
-_08077B94: .4byte sub_8077C04
+_08077B94: .4byte Task_Trumpet_8077C04
 
 	thumb_func_start sub_8077B98
 sub_8077B98: @ 0x08077B98
@@ -1689,218 +1689,6 @@ _08077BFE:
 	pop {r4, r5}
 	pop {r1}
 	bx r1
-
-	thumb_func_start sub_8077C04
-sub_8077C04: @ 0x08077C04
-	push {r4, lr}
-	ldr r0, _08077C38 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_8077B98
-	cmp r0, #0
-	beq _08077C22
-	adds r0, r4, #0
-	bl sub_8077C3C
-_08077C22:
-	adds r0, r4, #0
-	bl sub_8077CB0
-	cmp r0, #0
-	beq _08077C32
-	adds r0, r4, #0
-	bl sub_8077CF8
-_08077C32:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077C38: .4byte gCurTask
-
-	thumb_func_start sub_8077C3C
-sub_8077C3C: @ 0x08077C3C
-	push {r4, r5, r6, lr}
-	adds r5, r0, #0
-	bl Player_SetMovestate_IsInScriptedSequence
-	ldr r4, _08077C90 @ =gPlayer
-	ldr r0, [r4, #0x20]
-	movs r1, #0x80
-	lsls r1, r1, #0xf
-	orrs r0, r1
-	str r0, [r4, #0x20]
-	adds r1, r4, #0
-	adds r1, #0x64
-	movs r6, #0
-	movs r0, #4
-	strh r0, [r1]
-	movs r0, #0x6d
-	bl m4aSongNumStart
-	ldr r0, [r4, #0x20]
-	movs r1, #2
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4, #0x20]
-	strh r6, [r4, #0x10]
-	strh r6, [r4, #0x12]
-	ldr r1, [r5, #0x1c]
-	lsls r1, r1, #8
-	ldr r2, [r5, #0x20]
-	lsls r2, r2, #8
-	adds r0, r5, #0
-	bl sub_8077774
-	ldr r0, _08077C94 @ =0x0000013F
-	bl m4aSongNumStart
-	ldr r0, _08077C98 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _08077C9C @ =sub_8077ABC
-	str r0, [r1, #8]
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077C90: .4byte gPlayer
-_08077C94: .4byte 0x0000013F
-_08077C98: .4byte gCurTask
-_08077C9C: .4byte sub_8077ABC
-
-	thumb_func_start sub_8077CA0
-sub_8077CA0: @ 0x08077CA0
-	ldr r2, _08077CAC @ =gPlayer
-	ldr r1, [r0, #0x10]
-	str r1, [r2, #8]
-	ldr r0, [r0, #0x14]
-	str r0, [r2, #0xc]
-	bx lr
-	.align 2, 0
-_08077CAC: .4byte gPlayer
-
-	thumb_func_start sub_8077CB0
-sub_8077CB0: @ 0x08077CB0
-	push {lr}
-	ldr r1, [r0, #0x1c]
-	ldr r3, _08077CEC @ =gCamera
-	ldr r2, [r3]
-	subs r1, r1, r2
-	ldr r0, [r0, #0x20]
-	ldr r2, [r3, #4]
-	subs r0, r0, r2
-	lsls r0, r0, #0x10
-	lsrs r2, r0, #0x10
-	lsls r1, r1, #0x10
-	movs r0, #0x80
-	lsls r0, r0, #0x10
-	adds r1, r1, r0
-	movs r0, #0xf8
-	lsls r0, r0, #0x11
-	cmp r1, r0
-	bhi _08077CE8
-	lsls r0, r2, #0x10
-	asrs r1, r0, #0x10
-	movs r0, #0x80
-	rsbs r0, r0, #0
-	cmp r1, r0
-	blt _08077CE8
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _08077CF0
-_08077CE8:
-	movs r0, #1
-	b _08077CF2
-	.align 2, 0
-_08077CEC: .4byte gCamera
-_08077CF0:
-	movs r0, #0
-_08077CF2:
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-	thumb_func_start sub_8077CF8
-sub_8077CF8: @ 0x08077CF8
-	push {lr}
-	ldr r1, [r0, #0x28]
-	adds r0, #0x2c
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r0, _08077D10 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077D10: .4byte gCurTask
-
-	thumb_func_start initSprite_Interactable_MusicPlant_Trumpet_Entry
-initSprite_Interactable_MusicPlant_Trumpet_Entry: @ 0x08077D14
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	mov r8, r0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	adds r6, r3, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
-	ldr r0, _08077D8C @ =sub_8077C04
-	ldr r2, _08077D90 @ =0x00002010
-	ldr r1, _08077D94 @ =sub_8077DA0
-	str r1, [sp]
-	movs r1, #0x30
-	movs r3, #0
-	bl TaskCreate
-	ldrh r1, [r0, #6]
-	movs r3, #0xc0
-	lsls r3, r3, #0x12
-	adds r3, r1, r3
-	mov r2, r8
-	movs r0, #3
-	ldrsb r0, [r2, r0]
-	strh r0, [r3, #0x24]
-	str r2, [r3, #0x28]
-	ldrb r2, [r2]
-	ldr r7, _08077D98 @ =IWRAM_START + 0x2C
-	adds r0, r1, r7
-	strb r2, [r0]
-	ldr r0, _08077D9C @ =IWRAM_START + 0x2D
-	adds r1, r1, r0
-	strb r6, [r1]
-	mov r1, r8
-	ldrb r0, [r1]
-	lsls r0, r0, #3
-	lsls r4, r4, #8
-	adds r0, r0, r4
-	str r0, [r3, #0x1c]
-	ldrb r0, [r1, #1]
-	lsls r0, r0, #3
-	lsls r5, r5, #8
-	adds r0, r0, r5
-	str r0, [r3, #0x20]
-	movs r2, #2
-	rsbs r2, r2, #0
-	adds r0, r2, #0
-	strb r0, [r1]
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077D8C: .4byte sub_8077C04
-_08077D90: .4byte 0x00002010
-_08077D94: .4byte sub_8077DA0
-_08077D98: .4byte IWRAM_START + 0x2C
-_08077D9C: .4byte IWRAM_START + 0x2D
-
-	thumb_func_start sub_8077DA0
-sub_8077DA0: @ 0x08077DA0
-	bx lr
-	.align 2, 0
+    
+.if 0
+.endif
