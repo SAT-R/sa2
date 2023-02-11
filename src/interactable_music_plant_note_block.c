@@ -234,6 +234,8 @@ NONMATCH("asm/non_matching/sub_8075D58.inc", bool32 sub_8075D58(Sprite_NoteBlock
         || (screenY < -256 || screenY > (256 + DISPLAY_HEIGHT))) {
         return TRUE;
     }
+
+    return FALSE;
 }
 END_NONMATCH
 
