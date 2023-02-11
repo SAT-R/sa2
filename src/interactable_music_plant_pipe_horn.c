@@ -16,6 +16,19 @@ extern u8 gUnknown_080DFEE4[];
 extern u8 gUnknown_080DFF3C[];
 extern u8 gUnknown_080DFF9C[];
 
+static const s16 gUnknown_080DFFF4[3][2] = {
+    { Q_8_8(9), Q_8_8(0) },
+    { Q_8_8(12), Q_8_8(0) },
+    { Q_8_8(9), Q_8_8(-9) },
+};
+
+static const s16 gUnknown_080E0000[4] = {
+    Q_8_8(0),
+    Q_8_8(0),
+    Q_8_8(7. / 8.),
+    Q_8_8(0),
+};
+
 const void *gUnknown_08C8793C[9] = {
     gUnknown_080DFCF0, gUnknown_080DFCF0, gUnknown_080DFD40,
     gUnknown_080DFD40, gUnknown_080DFD98, gUnknown_080DFDD8,
@@ -43,33 +56,84 @@ typedef struct {
     /* 0x28 */ Interactable *ia;
     /* 0x2C */ u8 spriteX;
     /* 0x2D */ u8 spriteY;
-} Sprite_Trumpet;
+} Sprite_FrenchHorn;
 
 extern void Player_SetMovestate_IsInScriptedSequence(void);
+extern void Player_ClearMovestate_IsInScriptedSequence(void);
 
-extern void sub_8077774(Sprite_Trumpet *, s32, s32);
+extern void sub_8077774(Sprite_FrenchHorn *, s32, s32);
 extern void sub_8077ABC(void);
-extern bool32 sub_8077B98(Sprite_Trumpet *);
-extern void sub_8077C3C(Sprite_Trumpet *);
-extern bool32 sub_8077CB0(Sprite_Trumpet *);
-extern void Task_Trumpet_8077C04(void);
-void Trumpet_Despawn(Sprite_Trumpet *);
-void TaskDestructor_Trumpet(struct Task *);
+extern bool32 sub_8077B98(Sprite_FrenchHorn *);
+extern void sub_8077C3C(Sprite_FrenchHorn *);
+extern bool32 sub_8077CB0(Sprite_FrenchHorn *);
+extern void Task_FrenchHorn_8077C04(void);
+void FrenchHorn_Despawn(Sprite_FrenchHorn *);
+void TaskDestructor_FrenchHorn(struct Task *);
 
-void Task_Trumpet_8077C04(void)
+void sub_8077B28(Sprite_FrenchHorn *horn)
 {
-    Sprite_Trumpet *trumpet = TaskGetStructPtr(gCurTask);
+#ifndef MODERN
+    Player_ClearMovestate_IsInScriptedSequence();
+    gPlayer.moveState &= ~(MOVESTATE_400000);
+#else
+    // Doing this inline is faster, and
+    // personally more comprehensible.
+    gPlayer.moveState &= ~(MOVESTATE_IN_SCRIPTED | MOVESTATE_400000);
+#endif
 
-    if (sub_8077B98(trumpet)) {
-        sub_8077C3C(trumpet);
-    }
+    gPlayer.unk6D = 5;
+    gPlayer.speedAirX = gUnknown_080DFFF4[horn->kind][0];
+    gPlayer.speedAirY = gUnknown_080DFFF4[horn->kind][1];
+    gPlayer.unk24 = gUnknown_080E0000[horn->kind];
 
-    if (sub_8077CB0(trumpet)) {
-        Trumpet_Despawn(trumpet);
+    m4aSongNumStart(SE_MUSIC_PLANT_EXIT_HORN);
+
+    gCurTask->main = Task_FrenchHorn_8077C04;
+}
+
+bool32 sub_8077B98(Sprite_FrenchHorn *horn)
+{
+    // NOTE: This matches... but at what cost? D:
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        goto sub_8077B98_ret0;
+    } else {
+        s16 screenX, screenY;
+        s16 playerX, playerY;
+        s32 cSquared;
+
+        screenX = horn->posX - gCamera.x;
+        screenY = horn->posY - gCamera.y;
+
+        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+        screenX -= playerX;
+        screenY -= playerY;
+
+        cSquared = (screenX * screenX) + (screenY * screenY);
+        if (cSquared > 400) {
+        sub_8077B98_ret0:
+            return FALSE;
+        } else {
+            return TRUE;
+        }
     }
 }
 
-void sub_8077C3C(Sprite_Trumpet *trumpet)
+void Task_FrenchHorn_8077C04(void)
+{
+    Sprite_FrenchHorn *horn = TaskGetStructPtr(gCurTask);
+
+    if (sub_8077B98(horn)) {
+        sub_8077C3C(horn);
+    }
+
+    if (sub_8077CB0(horn)) {
+        FrenchHorn_Despawn(horn);
+    }
+}
+
+void sub_8077C3C(Sprite_FrenchHorn *horn)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
@@ -82,25 +146,25 @@ void sub_8077C3C(Sprite_Trumpet *trumpet)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    sub_8077774(trumpet, Q_24_8(trumpet->posX), Q_24_8(trumpet->posY));
+    sub_8077774(horn, Q_24_8(horn->posX), Q_24_8(horn->posY));
 
     m4aSongNumStart(SE_MUSIC_PLANT_ENTER_HORN);
 
     gCurTask->main = sub_8077ABC;
 }
 
-void sub_8077CA0(Sprite_Trumpet *trumpet)
+void sub_8077CA0(Sprite_FrenchHorn *horn)
 {
-    gPlayer.x = trumpet->x2;
-    gPlayer.y = trumpet->y2;
+    gPlayer.x = horn->x2;
+    gPlayer.y = horn->y2;
 }
 
-bool32 sub_8077CB0(Sprite_Trumpet *trumpet)
+bool32 sub_8077CB0(Sprite_FrenchHorn *horn)
 {
     s16 screenX, screenY;
 
-    screenX = trumpet->posX - gCamera.x;
-    screenY = trumpet->posY - gCamera.y;
+    screenX = horn->posX - gCamera.x;
+    screenY = horn->posY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_(0, screenX, screenY, (CAM_REGION_WIDTH / 2))) {
         return TRUE;
@@ -109,28 +173,28 @@ bool32 sub_8077CB0(Sprite_Trumpet *trumpet)
     return FALSE;
 }
 
-void Trumpet_Despawn(Sprite_Trumpet *trumpet)
+void FrenchHorn_Despawn(Sprite_FrenchHorn *horn)
 {
-    trumpet->ia->x = trumpet->spriteX;
+    horn->ia->x = horn->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_Trumpet_Entry(Interactable *ia,
-                                                      u16 spriteRegionX,
-                                                      u16 spriteRegionY, u8 spriteY)
+void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(Interactable *ia,
+                                                         u16 spriteRegionX,
+                                                         u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Trumpet_8077C04, sizeof(Sprite_Trumpet), 0x2010, 0,
-                                TaskDestructor_Trumpet);
-    Sprite_Trumpet *trumpet = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_FrenchHorn),
+                                0x2010, 0, TaskDestructor_FrenchHorn);
+    Sprite_FrenchHorn *horn = TaskGetStructPtr(t);
 
-    trumpet->kind = ia->d.sData[0];
-    trumpet->ia = ia;
-    trumpet->spriteX = ia->x;
-    trumpet->spriteY = spriteY;
+    horn->kind = ia->d.sData[0];
+    horn->ia = ia;
+    horn->spriteX = ia->x;
+    horn->spriteY = spriteY;
 
-    trumpet->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    trumpet->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+    horn->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
+    horn->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
     SET_SPRITE_INITIALIZED(ia);
 }
 
-void TaskDestructor_Trumpet(struct Task *t) { }
+void TaskDestructor_FrenchHorn(struct Task *t) { }

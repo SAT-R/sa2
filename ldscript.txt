@@ -238,6 +238,8 @@ SECTIONS
         build/sa2/src/interactable_music_plant_keyboard.o(.rodata);
         build/sa2/src/interactable_music_plant_german_flute.o(.rodata);
         build/sa2/data/data1_2_2.o(.rodata);
+        build/sa2/src/interactable_music_plant_pipe_horn.o(.rodata);
+        build/sa2/data/data1_2_3.o(.rodata);
         build/sa2/src/interactable_music_plant_note_particle.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
         build/sa2/src/collect_rings_time_display.o(.rodata);

@@ -77,7 +77,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft
     .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight
     .4byte initSprite_Interactable_MusicPlant_GermanFlute
-    .4byte initSprite_Interactable_MusicPlant_Trumpet_Entry
+    .4byte initSprite_Interactable_MusicPlant_FrenchHorn_Entry
     .4byte initSprite_Interactable_MusicPlant_PipeInstrument_Entry
     .4byte initSprite_Interactable_IceParadise_SlowingSnow
     .4byte initSprite_Interactable_IceParadise_FunnelSphere

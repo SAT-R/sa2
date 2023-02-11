@@ -1527,6 +1527,7 @@ sub_8077AAC: @ 0x08077AAC
 	.align 2, 0
 _08077AB8: .4byte gPlayer
 
+@ FrenchHorn
 	thumb_func_start sub_8077ABC
 sub_8077ABC: @ 0x08077ABC
 	push {r4, r5, lr}
@@ -1544,13 +1545,13 @@ sub_8077ABC: @ 0x08077ABC
 	beq _08077AF0
 	bl Player_ClearMovestate_IsInScriptedSequence
 	ldr r1, [r5]
-	ldr r0, _08077AEC @ =Task_Trumpet_8077C04
+	ldr r0, _08077AEC @ =Task_FrenchHorn_8077C04
 	str r0, [r1, #8]
 	b _08077B1E
 	.align 2, 0
 _08077AE4: .4byte gCurTask
 _08077AE8: .4byte gPlayer
-_08077AEC: .4byte Task_Trumpet_8077C04
+_08077AEC: .4byte Task_FrenchHorn_8077C04
 _08077AF0:
 	adds r1, r2, #0
 	adds r1, #0x24
@@ -1580,115 +1581,5 @@ _08077B1E:
 	.align 2, 0
 _08077B24: .4byte gUnknown_08C87960
 
-	thumb_func_start sub_8077B28
-sub_8077B28: @ 0x08077B28
-	push {r4, lr}
-	adds r4, r0, #0
-	bl Player_ClearMovestate_IsInScriptedSequence
-	ldr r2, _08077B80 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	ldr r1, _08077B84 @ =0xFFBFFFFF
-	ands r0, r1
-	str r0, [r2, #0x20]
-	adds r1, r2, #0
-	adds r1, #0x6d
-	movs r0, #5
-	strb r0, [r1]
-	ldr r1, _08077B88 @ =gUnknown_080DFFF4
-	ldrh r0, [r4, #0x24]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	strh r0, [r2, #0x10]
-	ldrh r0, [r4, #0x24]
-	lsls r0, r0, #2
-	adds r1, #2
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	strh r0, [r2, #0x12]
-	ldr r1, _08077B8C @ =gUnknown_080E0000
-	ldrh r0, [r4, #0x24]
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	adds r2, #0x24
-	strb r0, [r2]
-	movs r0, #0xa0
-	lsls r0, r0, #1
-	bl m4aSongNumStart
-	ldr r0, _08077B90 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _08077B94 @ =Task_Trumpet_8077C04
-	str r0, [r1, #8]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077B80: .4byte gPlayer
-_08077B84: .4byte 0xFFBFFFFF
-_08077B88: .4byte gUnknown_080DFFF4
-_08077B8C: .4byte gUnknown_080E0000
-_08077B90: .4byte gCurTask
-_08077B94: .4byte Task_Trumpet_8077C04
-
-	thumb_func_start sub_8077B98
-sub_8077B98: @ 0x08077B98
-	push {r4, r5, lr}
-	adds r2, r0, #0
-	ldr r5, _08077BF4 @ =gPlayer
-	ldr r0, [r5, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	bne _08077BF0
-	ldr r3, [r2, #0x1c]
-	ldr r0, _08077BF8 @ =gCamera
-	ldr r1, [r0]
-	subs r3, r3, r1
-	ldr r2, [r2, #0x20]
-	ldr r4, [r0, #4]
-	subs r2, r2, r4
-	ldr r0, [r5, #8]
-	asrs r0, r0, #8
-	subs r0, r0, r1
-	ldr r1, [r5, #0xc]
-	asrs r1, r1, #8
-	subs r1, r1, r4
-	lsls r3, r3, #0x10
-	asrs r3, r3, #0x10
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x10
-	subs r3, r3, r0
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	subs r2, r2, r1
-	lsls r3, r3, #0x10
-	asrs r3, r3, #0x10
-	adds r1, r3, #0
-	muls r1, r3, r1
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	adds r0, r2, #0
-	muls r0, r2, r0
-	adds r1, r1, r0
-	movs r0, #0xc8
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _08077BFC
-_08077BF0:
-	movs r0, #0
-	b _08077BFE
-	.align 2, 0
-_08077BF4: .4byte gPlayer
-_08077BF8: .4byte gCamera
-_08077BFC:
-	movs r0, #1
-_08077BFE:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-    
 .if 0
 .endif
