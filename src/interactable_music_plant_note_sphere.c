@@ -148,7 +148,7 @@ u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 
     r6 = sub_8085530(vecPlayerToNoteX, vecPlayerToNoteY);
 
-    // Normalize (/create direction-)vector?
+    // Normalize vector
     vecPlayerToNoteX = (vecPlayerToNoteX << 14) / r6;
     vecPlayerToNoteY = (vecPlayerToNoteY << 14) / r6;
 
@@ -177,4 +177,22 @@ u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     gPlayer.unk6D = 5;
 
     return angle;
+}
+
+bool32 sub_80757C0(Sprite_NoteSphere *note)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        s16 distanceX, distanceY;
+
+        distanceX = ABS(note->posX - Q_24_8_TO_INT(gPlayer.x));
+        distanceY = ABS(note->posY - Q_24_8_TO_INT(gPlayer.y));
+
+        if (MAX(distanceX, distanceY) < 25) {
+            if ((distanceX * distanceX + distanceY * distanceY) <= (24 * 24)) {
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
 }

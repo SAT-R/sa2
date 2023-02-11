@@ -96,6 +96,9 @@
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
 #define CLAMP(value, min, max)                                                          \
     ({                                                                                  \
         s32 clamped;                                                                    \
