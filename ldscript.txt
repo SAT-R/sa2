@@ -102,7 +102,6 @@ SECTIONS
         build/sa2/src/interactable_dash_ring.o(.text);
         build/sa2/asm/interactable_floating_spring.o(.text);
         build/sa2/src/interactable_music_plant_note_sphere.o(.text);
-        build/sa2/asm/interactable_music_plant_note_sphere.o(.text);
         build/sa2/src/interactable_music_plant_note_block.o(.text);
         build/sa2/asm/interactable_music_plant_guitar_string.o(.text);
         build/sa2/src/interactable_music_plant_keyboard.o(.text);

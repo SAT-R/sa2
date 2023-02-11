@@ -27,27 +27,30 @@ typedef struct {
     /* 0x4B */ u8 unk4B;
 } Sprite_NoteSphere; /* size: 0x4C */
 
-extern void Task_Interactable_MusicPlant_Note_Sphere(void);
-extern void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
+static void Task_Interactable_MusicPlant_Note_Sphere(void);
 
-extern u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
-extern void sub_8075880(Sprite_NoteSphere *);
-extern void sub_80758B8(Sprite_NoteSphere *);
+static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
+static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *);
+static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *);
+static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *);
+static void NoteSphere_80758B8(Sprite_NoteSphere *);
+static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *);
+static void NoteSphere_Despawn(Sprite_NoteSphere *);
 
 /* animId, variant, tileId (OBJ VRAM) */
-const u16 gUnknown_080DFBF0[8][3] = {
+static const u16 sNoteSphereAnimInfo[8][3] = {
     { SA2_ANIM_NOTE_BLOCK, 7, 0x188 },  { SA2_ANIM_NOTE_BLOCK, 8, 0x18E },
     { SA2_ANIM_NOTE_BLOCK, 9, 0x194 },  { SA2_ANIM_NOTE_BLOCK, 10, 0x19A },
     { SA2_ANIM_NOTE_BLOCK, 11, 0x1A0 }, { SA2_ANIM_NOTE_BLOCK, 12, 0x1A6 },
     { SA2_ANIM_NOTE_BLOCK, 13, 0x1AC }, { SA2_ANIM_NOTE_BLOCK, 14, 0x1B2 },
 };
 
-const s16 gUnknown_080DFC20[8] = {
+static const s16 sNoteSphereVelocities[8] = {
     Q_8_8(4.5), Q_8_8(5.0), Q_8_8(5.5), Q_8_8(6.0),
     Q_8_8(6.5), Q_8_8(7.0), Q_8_8(7.5), Q_8_8(8.0),
 };
 
-const u16 gUnknown_080DFC30[8] = {
+static const u16 sNoteSphereSfx[8] = {
     SE_MUSIC_PLANT_NOTES_1, SE_MUSIC_PLANT_NOTES_2, SE_MUSIC_PLANT_NOTES_3,
     SE_MUSIC_PLANT_NOTES_4, SE_MUSIC_PLANT_NOTES_5, SE_MUSIC_PLANT_NOTES_6,
     SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
@@ -81,9 +84,9 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     s->unk10 = 0x2000;
 
     s->graphics.dest
-        = &((u8 *)OBJ_VRAM0)[gUnknown_080DFBF0[note->kind][2] * TILE_SIZE_4BPP];
-    s->graphics.anim = gUnknown_080DFBF0[note->kind][0];
-    s->variant = gUnknown_080DFBF0[note->kind][1];
+        = &((u8 *)OBJ_VRAM0)[sNoteSphereAnimInfo[note->kind][2] * TILE_SIZE_4BPP];
+    s->graphics.anim = sNoteSphereAnimInfo[note->kind][0];
+    s->variant = sNoteSphereAnimInfo[note->kind][1];
 
     note->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
     note->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
@@ -92,7 +95,7 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     sub_8004558(s);
 }
 
-void Task_80754B8(void)
+static void Task_80754B8(void)
 {
     Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
 
@@ -114,11 +117,11 @@ void Task_80754B8(void)
         } break;
     }
 
-    sub_8075880(note);
-    sub_80758B8(note);
+    NoteSphere_UpdateSpritePos(note);
+    NoteSphere_80758B8(note);
 }
 
-void sub_80755A8(Sprite_NoteSphere *note)
+static void NoteSphere_ApplyCollisionPlayer(Sprite_NoteSphere *note)
 {
     // NOTE: Setting note->angle is redundant, it gets set in the procedure.
     //       Though it'd be more understandable to leave this in and
@@ -128,17 +131,17 @@ void sub_80755A8(Sprite_NoteSphere *note)
     gPlayer.moveState = ((gPlayer.moveState | MOVESTATE_IN_AIR) & ~(MOVESTATE_100));
     note->unk4A = 0;
 
-    sub_8080C78(note->posX, note->posY, 5, 30, (gUnknown_080DFC20[note->kind] >> 3),
-                (-((gUnknown_080DFC20[note->kind] * 3) << 14)) >> 16, 0);
+    sub_8080C78(note->posX, note->posY, 5, 30, (sNoteSphereVelocities[note->kind] >> 3),
+                (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 0);
 
-    sub_8080C78(note->posX, note->posY, 5, 30, (-gUnknown_080DFC20[note->kind] >> 3),
-                (-((gUnknown_080DFC20[note->kind] * 3) << 14)) >> 16, 1);
+    sub_8080C78(note->posX, note->posY, 5, 30, (-sNoteSphereVelocities[note->kind] >> 3),
+                (-((sNoteSphereVelocities[note->kind] * 3) << 14)) >> 16, 1);
 
-    m4aSongNumStart(gUnknown_080DFC30[note->kind]);
+    m4aSongNumStart(sNoteSphereSfx[note->kind]);
     gCurTask->main = Task_80754B8;
 }
 
-u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
+static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 {
     u8 angle;
     u16 r6;
@@ -153,6 +156,8 @@ u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     vecPlayerToNoteY = (vecPlayerToNoteY << 14) / r6;
 
     angle = ArcTan2(vecPlayerToNoteX, vecPlayerToNoteY) >> 8;
+
+    // Redundant (see note in NoteSphere_ApplyCollisionPlayer)
     note->angle = angle;
 
     {
@@ -168,9 +173,9 @@ u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 
         r4 = (u8)(newAngle + (sub_808558C(newAngle, angle, 8) << 1));
 
-        gPlayer.speedAirX = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind]
+        gPlayer.speedAirX = Q_24_8_TO_INT(sNoteSphereVelocities[note->kind]
                                           * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
-        gPlayer.speedAirY = Q_24_8_TO_INT(gUnknown_080DFC20[note->kind]
+        gPlayer.speedAirY = Q_24_8_TO_INT(sNoteSphereVelocities[note->kind]
                                           * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
@@ -179,7 +184,7 @@ u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     return angle;
 }
 
-bool32 sub_80757C0(Sprite_NoteSphere *note)
+static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s16 distanceX, distanceY;
@@ -195,4 +200,69 @@ bool32 sub_80757C0(Sprite_NoteSphere *note)
     }
 
     return FALSE;
+}
+
+static void Task_Interactable_MusicPlant_Note_Sphere(void)
+{
+    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+
+    if (NoteSphere_IsPlayerColliding(note)) {
+        NoteSphere_ApplyCollisionPlayer(note);
+    }
+
+    if (NoteSphere_ShouldDespawn(note)) {
+        NoteSphere_Despawn(note);
+    } else {
+        NoteSphere_UpdateSpritePos(note);
+        NoteSphere_80758B8(note);
+    }
+}
+
+static void TaskDestructor_Interactable_MusicPlant_Note_Sphere(struct Task *UNUSED t) { }
+
+static void NoteSphere_UpdateSpritePos(Sprite_NoteSphere *note)
+{
+    Sprite *s = &note->disp;
+
+    s->x = (note->posX - gCamera.x) + Q_8_8_TO_INT(note->unk44);
+    s->y = (note->posY - gCamera.y) + Q_8_8_TO_INT(note->unk46);
+}
+
+static void NoteSphere_80758B8(Sprite_NoteSphere *note)
+{
+    Sprite *s = &note->disp;
+
+    s->unk10 |= 0x400;
+    sub_80051E8(s);
+
+    s->unk10 &= ~0x400;
+    sub_80051E8(s);
+}
+
+static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)
+{
+    s32 screenX, screenY;
+    u16 posX, posY;
+
+    screenX = (note->posX + (CAM_REGION_WIDTH / 2));
+    screenX -= gCamera.x;
+
+    screenY = (note->posY + (CAM_REGION_WIDTH / 2));
+    screenY -= gCamera.y;
+
+    posY = screenY;
+    posX = screenX;
+
+    if ((posX > (DISPLAY_WIDTH + CAM_REGION_WIDTH))
+        || (posY > (DISPLAY_HEIGHT + CAM_REGION_WIDTH))) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void NoteSphere_Despawn(Sprite_NoteSphere *note)
+{
+    note->base.ia->x = note->base.spriteX;
+    TaskDestroy(gCurTask);
 }
