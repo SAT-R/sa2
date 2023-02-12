@@ -1527,59 +1527,5 @@ sub_8077AAC: @ 0x08077AAC
 	.align 2, 0
 _08077AB8: .4byte gPlayer
 
-@ FrenchHorn
-	thumb_func_start sub_8077ABC
-sub_8077ABC: @ 0x08077ABC
-	push {r4, r5, lr}
-	ldr r5, _08077AE4 @ =gCurTask
-	ldr r0, [r5]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r2, _08077AE8 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _08077AF0
-	bl Player_ClearMovestate_IsInScriptedSequence
-	ldr r1, [r5]
-	ldr r0, _08077AEC @ =Task_FrenchHorn_8077C04
-	str r0, [r1, #8]
-	b _08077B1E
-	.align 2, 0
-_08077AE4: .4byte gCurTask
-_08077AE8: .4byte gPlayer
-_08077AEC: .4byte Task_FrenchHorn_8077C04
-_08077AF0:
-	adds r1, r2, #0
-	adds r1, #0x24
-	movs r0, #0x20
-	strb r0, [r1]
-	movs r0, #1
-	strh r0, [r2, #0x10]
-	strh r0, [r2, #0x12]
-	ldr r1, _08077B24 @ =gUnknown_08C87960
-	ldrh r0, [r4, #0x24]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r1, [r0]
-	adds r0, r4, #0
-	bl sub_8077788
-	cmp r0, #0
-	bne _08077B18
-	adds r0, r4, #0
-	bl sub_8077B28
-_08077B18:
-	adds r0, r4, #0
-	bl sub_8077CA0
-_08077B1E:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08077B24: .4byte gUnknown_08C87960
-
 .if 0
 .endif

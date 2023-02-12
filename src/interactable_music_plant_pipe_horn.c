@@ -62,13 +62,36 @@ extern void Player_SetMovestate_IsInScriptedSequence(void);
 extern void Player_ClearMovestate_IsInScriptedSequence(void);
 
 extern void sub_8077774(Sprite_FrenchHorn *, s32, s32);
+extern bool32 sub_8077788(Sprite_FrenchHorn *, const void *);
 extern void sub_8077ABC(void);
+extern void sub_8077B28(Sprite_FrenchHorn *);
 extern bool32 sub_8077B98(Sprite_FrenchHorn *);
 extern void sub_8077C3C(Sprite_FrenchHorn *);
+extern void sub_8077CA0(Sprite_FrenchHorn *);
 extern bool32 sub_8077CB0(Sprite_FrenchHorn *);
 extern void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_FrenchHorn *);
 void TaskDestructor_FrenchHorn(struct Task *);
+
+void sub_8077ABC(void)
+{
+    Sprite_FrenchHorn *horn = TaskGetStructPtr(gCurTask);
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        Player_ClearMovestate_IsInScriptedSequence();
+        gCurTask->main = Task_FrenchHorn_8077C04;
+    } else {
+        gPlayer.unk24 = 0x20;
+
+        gPlayer.speedAirX = 1;
+        gPlayer.speedAirY = 1;
+
+        if (sub_8077788(horn, gUnknown_08C87960[horn->kind]) == 0) {
+            sub_8077B28(horn);
+        }
+
+        sub_8077CA0(horn);
+    }
+}
 
 void sub_8077B28(Sprite_FrenchHorn *horn)
 {
