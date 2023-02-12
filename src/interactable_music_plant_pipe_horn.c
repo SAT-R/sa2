@@ -56,26 +56,82 @@ typedef struct {
     /* 0x28 */ Interactable *ia;
     /* 0x2C */ u8 spriteX;
     /* 0x2D */ u8 spriteY;
-} Sprite_FrenchHorn;
+} Sprite_Pipe_Horn;
 
 extern void Player_SetMovestate_IsInScriptedSequence(void);
 extern void Player_ClearMovestate_IsInScriptedSequence(void);
 
-extern void sub_8077774(Sprite_FrenchHorn *, s32, s32);
-extern bool32 sub_8077788(Sprite_FrenchHorn *, const void *);
+extern void sub_8077774(Sprite_Pipe_Horn *, s32, s32);
+extern void sub_80777C8(Sprite_Pipe_Horn *);
+extern bool32 sub_8077788(Sprite_Pipe_Horn *, const void *);
+extern void sub_80778AC(void);
 extern void sub_8077ABC(void);
-extern void sub_8077B28(Sprite_FrenchHorn *);
-extern bool32 sub_8077B98(Sprite_FrenchHorn *);
-extern void sub_8077C3C(Sprite_FrenchHorn *);
-extern void sub_8077CA0(Sprite_FrenchHorn *);
-extern bool32 sub_8077CB0(Sprite_FrenchHorn *);
+static void TaskDestructor_Pipe(struct Task* t);
+extern void sub_8077AAC(Sprite_Pipe_Horn*);
+void sub_8077AAC(Sprite_Pipe_Horn *horn);
+static void sub_8077B28(Sprite_Pipe_Horn *);
+extern bool32 sub_8077B98(Sprite_Pipe_Horn *);
+extern void sub_8077C3C(Sprite_Pipe_Horn *);
+extern void sub_8077CA0(Sprite_Pipe_Horn *);
+extern bool32 sub_8077CB0(Sprite_Pipe_Horn *);
 extern void Task_FrenchHorn_8077C04(void);
-void FrenchHorn_Despawn(Sprite_FrenchHorn *);
+void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
+
+void sub_8077994(Sprite_Pipe_Horn* pipe) {
+    pipe->ia->x = pipe->spriteX;
+    TaskDestroy(gCurTask);
+}
+
+void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(Interactable *ia,
+                                                         u16 spriteRegionX,
+                                                         u16 spriteRegionY, u8 spriteY)
+{
+    struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_Pipe_Horn), 0x2010, 0, TaskDestructor_Pipe);
+    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(t);
+
+    pipe->kind = ia->d.sData[0];
+    pipe->ia = ia;
+
+    pipe->spriteX = ia->x;
+    pipe->spriteY = spriteY;
+    pipe->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
+    pipe->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(ia);
+}
+
+void sub_8077A3C(void) {
+    Sprite_Pipe_Horn* pipe = TaskGetStructPtr(gCurTask);
+
+    if(gPlayer.moveState & MOVESTATE_DEAD) {
+        Player_ClearMovestate_IsInScriptedSequence();
+        gCurTask->main = sub_80778AC;
+    } else {
+        gPlayer.unk24 = 0;
+        gPlayer.speedAirX = 1;
+        gPlayer.speedAirY = 0;
+
+        if(sub_8077788(pipe, gUnknown_08C8793C[pipe->kind]) == 0) {
+            sub_80777C8(pipe);
+        }
+
+        sub_8077AAC(pipe);
+    }
+}
+
+void TaskDestructor_Pipe(struct Task* t) {}
+
+/* --- French Horn --- */
+
+void sub_8077AAC(Sprite_Pipe_Horn *horn)
+{
+    gPlayer.x = horn->x2;
+    gPlayer.y = horn->y2;
+}
 
 void sub_8077ABC(void)
 {
-    Sprite_FrenchHorn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = Task_FrenchHorn_8077C04;
@@ -93,7 +149,7 @@ void sub_8077ABC(void)
     }
 }
 
-void sub_8077B28(Sprite_FrenchHorn *horn)
+void sub_8077B28(Sprite_Pipe_Horn *horn)
 {
 #ifndef MODERN
     Player_ClearMovestate_IsInScriptedSequence();
@@ -114,7 +170,7 @@ void sub_8077B28(Sprite_FrenchHorn *horn)
     gCurTask->main = Task_FrenchHorn_8077C04;
 }
 
-bool32 sub_8077B98(Sprite_FrenchHorn *horn)
+bool32 sub_8077B98(Sprite_Pipe_Horn *horn)
 {
     // NOTE: This matches... but at what cost? D:
     if (gPlayer.moveState & MOVESTATE_DEAD) {
@@ -145,7 +201,7 @@ bool32 sub_8077B98(Sprite_FrenchHorn *horn)
 
 void Task_FrenchHorn_8077C04(void)
 {
-    Sprite_FrenchHorn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
 
     if (sub_8077B98(horn)) {
         sub_8077C3C(horn);
@@ -156,7 +212,7 @@ void Task_FrenchHorn_8077C04(void)
     }
 }
 
-void sub_8077C3C(Sprite_FrenchHorn *horn)
+void sub_8077C3C(Sprite_Pipe_Horn *horn)
 {
     Player_SetMovestate_IsInScriptedSequence();
 
@@ -176,13 +232,13 @@ void sub_8077C3C(Sprite_FrenchHorn *horn)
     gCurTask->main = sub_8077ABC;
 }
 
-void sub_8077CA0(Sprite_FrenchHorn *horn)
+void sub_8077CA0(Sprite_Pipe_Horn *horn)
 {
     gPlayer.x = horn->x2;
     gPlayer.y = horn->y2;
 }
 
-bool32 sub_8077CB0(Sprite_FrenchHorn *horn)
+bool32 sub_8077CB0(Sprite_Pipe_Horn *horn)
 {
     s16 screenX, screenY;
 
@@ -196,7 +252,7 @@ bool32 sub_8077CB0(Sprite_FrenchHorn *horn)
     return FALSE;
 }
 
-void FrenchHorn_Despawn(Sprite_FrenchHorn *horn)
+void FrenchHorn_Despawn(Sprite_Pipe_Horn *horn)
 {
     horn->ia->x = horn->spriteX;
     TaskDestroy(gCurTask);
@@ -206,9 +262,9 @@ void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(Interactable *ia,
                                                          u16 spriteRegionX,
                                                          u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_FrenchHorn),
+    struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_Pipe_Horn),
                                 0x2010, 0, TaskDestructor_FrenchHorn);
-    Sprite_FrenchHorn *horn = TaskGetStructPtr(t);
+    Sprite_Pipe_Horn *horn = TaskGetStructPtr(t);
 
     horn->kind = ia->d.sData[0];
     horn->ia = ia;
