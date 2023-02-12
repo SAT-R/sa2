@@ -1,4 +1,5 @@
 #include "global.h"
+#include "math.h"
 
 struct UNK_8085F1C_1 {
     u8 filler0[2];
@@ -15,6 +16,22 @@ struct UNK_8085F1C {
     s32 unk10;
     struct UNK_8085F1C_1 unk14;
     struct UNK_8085F1C_1 unk34;
+
+    s16 unk54;
+    s16 unk56;
+    s16 unk58;
+    u8 unk59[2];
+
+    s16 unk5C;
+    s16 unk5E;
+    s16 unk60;
+    u8 unk62[2];
+
+    s32 unk64;
+    s32 unk68;
+    s32 unk6C;
+
+    u8 unk70[4];
 };
 
 struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1);
@@ -22,6 +39,60 @@ struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1);
 void sub_80853F8(struct UNK_8085F1C *p1);
 
 void sub_8083B88(struct UNK_8085F1C_1 *, struct UNK_8085F1C_1 *, struct UNK_8085F1C_1 *);
+
+void sub_80835E0(struct UNK_8085F1C *p2, s32 *);
+
+void sub_8085E10(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
+{
+    memcpy(p2, &p1->unk10, 0x10);
+}
+
+void sub_8085E24(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
+{
+    memcpy(&p1->unk10, p2, 0x10);
+}
+
+void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
+{
+
+    memcpy(p2, &p1->unk10, 0x10);
+
+    while (p1 = p1->unk0, p1 != NULL) {
+        sub_80835E0(p2, &p1->unk10);
+    }
+}
+
+void sub_8085E64(struct UNK_8085F1C *p1)
+{
+    u8 i;
+    struct UNK_8085F1C_1 *unk34;
+    p1->unk10 = 0;
+
+    // memset 0
+    unk34 = &p1->unk34;
+    for (i = 0; i < 0x20; i += 4) {
+        *((u32 *)unk34)++ = 0;
+    }
+
+    unk34->unk2[8] = 0x400;
+    unk34->unk2[4] = 0x400;
+    unk34->unk2[0] = 0x400;
+    p1->unkC |= 1;
+}
+
+void sub_8085E94(struct UNK_8085F1C *p1)
+{
+    p1->unk10 = 1;
+    p1->unk58 = 0;
+    p1->unk56 = 0;
+    p1->unk54 = 0;
+    p1->unk6C = 0;
+    p1->unk68 = 0;
+    p1->unk64 = 0;
+    p1->unk60 = 0x400;
+    p1->unk5E = 0x400;
+    p1->unk5C = 0x400;
+}
 
 struct UNK_8085F1C_1 *sub_8085EC4(struct UNK_8085F1C *p1)
 {
