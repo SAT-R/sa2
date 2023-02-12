@@ -11,15 +11,3 @@ gUnknown_080DFC20:
     .global gUnknown_080DFC30
 gUnknown_080DFC30:
     .incbin "baserom.gba", 0x000DFC30, 0x10
-
-    .global gUnknown_080DFC40
-gUnknown_080DFC40:
-    .incbin "baserom.gba", 0x000DFC40, 0x2A
-
-    .global gUnknown_080DFC6A
-gUnknown_080DFC6A:
-    .incbin "baserom.gba", 0x000DFC6A, 0xE
-
-    .global gUnknown_080DFC78
-gUnknown_080DFC78:
-    .incbin "baserom.gba", 0x000DFC78, 0x10
