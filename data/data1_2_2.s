@@ -2,13 +2,13 @@
 
     @; These functions control the character when they enter
     @; one of the trumpets(/horns(?)) or pipes in Music Plant.
-    .global gUnknown_080DFCB0
-gUnknown_080DFCB0:
+    .global sPipeHandlers
+sPipeHandlers: @ 0x80DFCB0
     .4byte Handler_MusicPlant_Pipe_0, Handler_MusicPlant_Pipe_1, Handler_MusicPlant_Pipe_2, Handler_MusicPlant_Pipe_3
     .4byte Handler_MusicPlant_Pipe_4, Handler_MusicPlant_Pipe_5, Handler_MusicPlant_Pipe_6, Handler_MusicPlant_Pipe_7
     .4byte Handler_MusicPlant_Pipe_8, Handler_MusicPlant_Pipe_9, Handler_MusicPlant_Pipe_10, 0
     .4byte 0, 0, 0, 0
-    
+
     .global gUnknown_080DFCF0
 gUnknown_080DFCF0:
     .incbin "baserom.gba", 0x000DFCF0, 0x50
