@@ -58,12 +58,15 @@ extern const Pipe_Data gUnknown_080DFEE4[];
 extern const Pipe_Data gUnknown_080DFF3C[];
 extern const Pipe_Data gUnknown_080DFF9C[];
 
+// NOTE: Gets stored in .data section
+//       (I assume that is because it's a pointer array)
 const Pipe_Data (*gUnknown_08C8793C[9])[] = {
     &gUnknown_080DFCF0, &gUnknown_080DFCF0, &gUnknown_080DFD40,
     &gUnknown_080DFD40, &gUnknown_080DFD98, &gUnknown_080DFDD8,
     &gUnknown_080DFDD8, &gUnknown_080DFE30, &gUnknown_080DFE30,
 };
 
+// NOTE: Gets stored in .data section
 const Pipe_Data (*gUnknown_08C87960[3])[] = {
     &gUnknown_080DFEE4,
     &gUnknown_080DFF3C,
@@ -97,10 +100,33 @@ extern void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
 
-#if 00
+#if 001
 void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s32 r5 = data[pipe->unk18].unk4;
+    s32 v = ((pipe->unk1A >> 3) + 512) & ONE_CYCLE;
+    s16 sin, cos;
+    cos = Q_2_14_TO_Q_24_8(COS(v));
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 + r5;
+
+    sin = Q_2_14_TO_Q_24_8(SIN(v));
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if(pipe->unk1A >= 1024) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        pipe->x1 += Q_24_8_TO_INT(Q_2_14_TO_Q_24_8(COS(640)) * r5);
+        pipe->x1 += r5;
+        pipe->y1 += Q_24_8_TO_INT(Q_2_14_TO_Q_24_8(SIN(640)) * r5);
+
+        value = data[++pipe->unk18].unk0;
+        if(value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
 }
 #endif
 

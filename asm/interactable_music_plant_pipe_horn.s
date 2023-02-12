@@ -997,7 +997,7 @@ _080776A4: .4byte gSineTable
 _080776A8: .4byte 0xFFFFFC00
 _080776AC: .4byte 0x0000FFFF
 
-.if 001
+.if 00
     @ Also used for Horn
 	thumb_func_start Handler_MusicPlant_Pipe_10
 Handler_MusicPlant_Pipe_10: @ 0x080776B0
@@ -1025,7 +1025,7 @@ Handler_MusicPlant_Pipe_10: @ 0x080776B0
 	adds r0, r0, r7
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
+	asrs r0, r0, #0x16  @ r0 = cos
 	muls r0, r5, r0
 	asrs r0, r0, #8
 	ldr r3, [r4, #8]
