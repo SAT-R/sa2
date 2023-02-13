@@ -100,6 +100,231 @@ extern void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
 
+void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (DEG_TO_SIN(90) - index) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1 - r5;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(0);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+        sin = SIN_DEG(0);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1 - r5;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (DEG_TO_SIN(270) + index) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1 + r5;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(0);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+        sin = SIN_DEG(0);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1 + r5;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (index)&ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 - r5;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(90);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1 - r5;
+
+        sin = SIN_DEG(90);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (DEG_TO_SIN(180) - index) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 + r5;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(90);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1 + r5;
+
+        sin = SIN_DEG(90);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (index + DEG_TO_SIN(90)) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1 - r5;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(180);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+        sin = SIN_DEG(180);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1 - r5;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (DEG_TO_SIN(270) - index) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1 + r5;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(180);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+
+        sin = SIN_DEG(180);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1 + r5;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
+void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u32 index = (pipe->unk1A >> 2);
+    u16 sinIndex = (DEG_TO_SIN(360) - index) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 - r5;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_DEG(270);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+        pipe->x1 -= r5;
+
+        sin = SIN_DEG(270);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
 void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
