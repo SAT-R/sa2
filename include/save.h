@@ -14,23 +14,14 @@
 #define MAX_MULTIPLAYER_SCORE  99
 
 struct MultiplayerScore {
-    // playerId
-    u32 unk0;
+    u32 playerId;
+    u16 playerName[MAX_PLAYER_NAME_LENGTH];
 
-    // playerName
-    u16 unk4[MAX_PLAYER_NAME_LENGTH];
+    bool8 slotFilled;
 
-    // slotFilled
-    bool8 unk10;
-
-    // wins
-    u8 unk11;
-
-    // loses
-    u8 unk12;
-
-    // draws
-    u8 unk13;
+    u8 wins;
+    u8 losses;
+    u8 draws;
 };
 
 struct ButtonConfig {
@@ -40,8 +31,6 @@ struct ButtonConfig {
     u16 unk2;
     // trick
     u16 unk4;
-    // unused
-    u16 unk6;
 };
 
 struct TimeRecords {
@@ -49,7 +38,7 @@ struct TimeRecords {
 };
 
 #define NUM_TIME_RECORD_ROWS                                                            \
-    NUM_COURSE_ZONES *ACTS_PER_ZONE *NUM_CHARACTERS *TIME_RECORDS_PER_COURSE
+    (NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE)
 
 struct SaveGame {
     u32 unk0;
