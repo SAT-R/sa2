@@ -17,30 +17,38 @@ void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *, const Pipe_Data[]);
 
 // These functions control the character when they enter
 // one of the horns or pipes in Music Plant.
-const PipeHandler sPipeHandlers[NUM_PIPE_HANDLERS] = {
-    Handler_MusicPlant_Pipe_0, Handler_MusicPlant_Pipe_1, Handler_MusicPlant_Pipe_2, Handler_MusicPlant_Pipe_3,
-    Handler_MusicPlant_Pipe_4, Handler_MusicPlant_Pipe_5, Handler_MusicPlant_Pipe_6, Handler_MusicPlant_Pipe_7,
-    Handler_MusicPlant_Pipe_8, Handler_MusicPlant_Pipe_9, Handler_MusicPlant_Pipe_10, NULL,
-    NULL, NULL, NULL, NULL
-};
-
+const PipeHandler sPipeHandlers[NUM_PIPE_HANDLERS] = { Handler_MusicPlant_Pipe_0,
+                                                       Handler_MusicPlant_Pipe_1,
+                                                       Handler_MusicPlant_Pipe_2,
+                                                       Handler_MusicPlant_Pipe_3,
+                                                       Handler_MusicPlant_Pipe_4,
+                                                       Handler_MusicPlant_Pipe_5,
+                                                       Handler_MusicPlant_Pipe_6,
+                                                       Handler_MusicPlant_Pipe_7,
+                                                       Handler_MusicPlant_Pipe_8,
+                                                       Handler_MusicPlant_Pipe_9,
+                                                       Handler_MusicPlant_Pipe_10,
+                                                       NULL,
+                                                       NULL,
+                                                       NULL,
+                                                       NULL,
+                                                       NULL };
 
 // TODO: Find out, why data doesn't work (is it the union?)
 #if TRUE
 extern const Pipe_Data gUnknown_080DFCF0[];
 #else
-const Pipe_Data gUnknown_080DFCF0[] = {
-    {0, 0x22, {0x0000, 0x0800}},
-    {0, 0xCC,  {0, 0x5000}},
-    {2, 0x140,  {0, 0x1400}},
-    {0, 0x100,  {0x4000, 0x0000}},
-    {4, 0x140,  {0x0000, 0x1400}},
-    {1, 0x140,  {0x0000, 0x1400}},
-    {0, 0xAA,   {0xA000, 0x0000}},
-    {0, 0xAA,   {0xA000, 0x0000}},
-    {0, 0x200,  {0xE000, 0x0000}},
-    {-1, -1, {-1, -1},
-};
+const Pipe_Data gUnknown_080DFCF0[]
+    = { { 0, 0x22, { 0x0000, 0x0800 } }, { 0, 0xCC, { 0, 0x5000 } },
+        { 2, 0x140, { 0, 0x1400 } }, { 0, 0x100, { 0x4000, 0x0000 } },
+        { 4, 0x140, { 0x0000, 0x1400 } }, { 1, 0x140, { 0x0000, 0x1400 } },
+        { 0, 0xAA, { 0xA000, 0x0000 } }, { 0, 0xAA, { 0xA000, 0x0000 } },
+        { 0, 0x200, { 0xE000, 0x0000 } },
+        {
+            -1,
+            -1,
+            { -1, -1 },
+        };
 #endif
 extern const Pipe_Data gUnknown_080DFD40[];
 extern const Pipe_Data gUnknown_080DFD98[];
@@ -73,7 +81,7 @@ void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s32 r1 = (u16)(Q_24_8_TO_INT(data[pipe->unk18].unk4._32) >> 8);
     s32 r0, r3, r6, r7;
-    
+
     r0 = data[pipe->unk18].unk4._16[0];
     r3 = pipe->x1;
     r7 = -r0;

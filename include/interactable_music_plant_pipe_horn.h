@@ -35,10 +35,10 @@ typedef struct {
     u16 unk2;
 
     PipeData_Weirdness unk4;
-    
+
 } Pipe_Data;
 
 #define NUM_PIPE_HANDLERS 16
-typedef void(*PipeHandler)(Sprite_Pipe_Horn *, const Pipe_Data[]);
+typedef void (*PipeHandler)(Sprite_Pipe_Horn *, const Pipe_Data[]);
 
 #endif // GUARD_INTERACTABLE_PIPE_HORN_H
