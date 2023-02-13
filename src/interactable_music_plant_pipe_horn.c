@@ -100,35 +100,72 @@ extern void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
 
-#if 001
-void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
-{
-    s32 r5 = data[pipe->unk18].unk4;
-    s32 v = ((pipe->unk1A >> 3) + 512) & ONE_CYCLE;
-    s16 sin, cos;
-    cos = Q_2_14_TO_Q_24_8(COS(v));
-    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 + r5;
 
-    sin = Q_2_14_TO_Q_24_8(SIN(v));
-    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r7 = data[pipe->unk18].unk4;
+    u16 sinIndex = ((pipe->unk1A >> 3) + 896) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r7) + pipe->x1 + r7;
+
+    asm("mov r8, r8");
+
+    sin = COS_24_8(sinIndex) + SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r7) + pipe->y1;
 
     pipe->unk1A += data[pipe->unk18].unk2;
 
-    if(pipe->unk1A >= 1024) {
+    if (pipe->unk1A > ONE_CYCLE) {
         u32 value;
         pipe->unk1A -= 1024;
 
-        pipe->x1 += Q_24_8_TO_INT(Q_2_14_TO_Q_24_8(COS(640)) * r5);
-        pipe->x1 += r5;
-        pipe->y1 += Q_24_8_TO_INT(Q_2_14_TO_Q_24_8(SIN(640)) * r5);
+        cos = COS_24_8(0);
+        pipe->x1 = Q_24_8_TO_INT(cos * r7) + pipe->x1;
+        pipe->x1 += r7;
+
+        sin = SIN_24_8(0) + sin;
+        pipe->y1 = Q_24_8_TO_INT(sin * r7) + pipe->y1;
 
         value = data[++pipe->unk18].unk0;
-        if(value == (u16)-1) {
+        if (value == (u16)-1) {
             pipe->unk18 |= value;
         }
     }
 }
-#endif
+
+void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 sin, cos;
+    s32 r5 = data[pipe->unk18].unk4;
+    u16 sinIndex = ((pipe->unk1A >> 3) + 512) & ONE_CYCLE;
+
+    cos = COS_24_8(sinIndex);
+    pipe->x2 = Q_24_8_TO_INT(cos * r5) + pipe->x1 + r5;
+
+    sin = SIN_24_8(sinIndex);
+    pipe->y2 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        cos = COS_24_8(640);
+        pipe->x1 = Q_24_8_TO_INT(cos * r5) + pipe->x1;
+        pipe->x1 += r5;
+
+        sin = SIN_24_8(640);
+        pipe->y1 = Q_24_8_TO_INT(sin * r5) + pipe->y1;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
 
 void sub_8077774(Sprite_Pipe_Horn *pipe, s32 x, s32 y)
 {

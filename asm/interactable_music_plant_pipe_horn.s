@@ -871,6 +871,7 @@ _080775AC: .4byte gSineTable
 _080775B0: .4byte 0xFFFFFC00
 _080775B4: .4byte 0x0000FFFF
 
+.if 00
     @ Also used for Horn
 	thumb_func_start Handler_MusicPlant_Pipe_9
 Handler_MusicPlant_Pipe_9: @ 0x080775B8
@@ -879,8 +880,8 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	adds r6, r0, #0
-	mov ip, r1
+	adds r6, r0, #0         @ r6 = pipe
+	mov ip, r1              @ ip = data
 	ldrh r0, [r6, #0x18]
 	lsls r0, r0, #3
 	add r0, ip
@@ -922,6 +923,7 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	mov r8, r0
 	add r1, r8
 	str r1, [r6, #0x10]
+
 	lsls r2, r2, #1
 	adds r2, r2, r5
 	ldrh r1, [r2]
@@ -938,12 +940,14 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	ldr r1, [r6, #0xc]
 	adds r0, r0, r1
 	str r0, [r6, #0x14]
+
 	ldrh r0, [r6, #0x18]
 	lsls r0, r0, #3
 	add r0, ip
 	ldrh r0, [r0, #2]
 	adds r4, r4, r0
 	strh r4, [r6, #0x1a]
+
 	lsls r0, r4, #0x10
 	lsrs r0, r0, #0x10
 	cmp r0, sl
@@ -951,6 +955,7 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	ldr r2, _080776A8 @ =0xFFFFFC00
 	adds r0, r4, r2
 	strh r0, [r6, #0x1a]
+
 	movs r2, #0x80
 	lsls r2, r2, #2
 	adds r0, r5, r2
@@ -963,6 +968,7 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	asrs r0, r0, #8
 	add r0, r8
 	str r0, [r6, #8]
+
 	ldrh r0, [r5]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x16
@@ -971,9 +977,11 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	asrs r0, r0, #8
 	adds r0, r0, r1
 	str r0, [r6, #0xc]
+
 	ldrh r0, [r6, #0x18]
 	adds r2, r0, #1
 	strh r2, [r6, #0x18]
+
 	lsls r0, r2, #0x10
 	lsrs r0, r0, #0xd
 	add r0, ip
@@ -996,6 +1004,4 @@ _080776A0: .4byte 0x000003FF
 _080776A4: .4byte gSineTable
 _080776A8: .4byte 0xFFFFFC00
 _080776AC: .4byte 0x0000FFFF
-
-.if 00
 .endif
