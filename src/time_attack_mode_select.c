@@ -91,7 +91,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     Sprite *element;
     Background *background;
 
-    s8 lang = gLoadedSaveGame->unk6 - 1;
+    s8 lang = gLoadedSaveGame->language - 1;
     if (lang < 0) {
         lang = 0;
     }
@@ -321,7 +321,7 @@ static void Task_ScreenMain(void)
     s8 lang;
 
     if (gPressedKeys & A_BUTTON) {
-        if (modeScreen->unk14D && !gLoadedSaveGame->unk12) {
+        if (modeScreen->unk14D && !gLoadedSaveGame->bossTimeAttackUnlocked) {
             m4aSongNumStart(SE_ABORT);
         } else {
             transitionConfig = &modeScreen->unk140;
@@ -362,7 +362,7 @@ static void Task_ScreenMain(void)
     }
 
     if (modeScreen->unk14D) {
-        lang = gLoadedSaveGame->unk6 - 1;
+        lang = gLoadedSaveGame->language - 1;
         if (lang < 0) {
             lang = 0;
         }
@@ -374,7 +374,7 @@ static void Task_ScreenMain(void)
         element->focused = 0xFF;
 
         element = &modeScreen->infoText;
-        if (gLoadedSaveGame->unk12) {
+        if (gLoadedSaveGame->bossTimeAttackUnlocked) {
             element->graphics.anim
                 = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
             element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].variant;
@@ -385,7 +385,7 @@ static void Task_ScreenMain(void)
         }
         element->unk21 = 0xFF;
     } else {
-        lang = gLoadedSaveGame->unk6 - 1;
+        lang = gLoadedSaveGame->language - 1;
         if (lang < 0) {
             lang = 0;
         }
@@ -472,7 +472,7 @@ static void Task_HandleModeSelectedExit(void)
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
     gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
-    CreateCharacterSelectionScreen(0, gLoadedSaveGame->unk13 & 0x10);
+    CreateCharacterSelectionScreen(0, gLoadedSaveGame->unlockedCharacters & 0x10);
 }
 
 static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)

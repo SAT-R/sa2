@@ -14,34 +14,20 @@
 #define MAX_MULTIPLAYER_SCORE  99
 
 struct MultiplayerScore {
-    // playerId
-    u32 unk0;
+    u32 playerId;
+    u16 playerName[MAX_PLAYER_NAME_LENGTH];
 
-    // playerName
-    u16 unk4[MAX_PLAYER_NAME_LENGTH];
+    bool8 slotFilled;
 
-    // slotFilled
-    bool8 unk10;
-
-    // wins
-    u8 unk11;
-
-    // loses
-    u8 unk12;
-
-    // draws
-    u8 unk13;
+    u8 wins;
+    u8 losses;
+    u8 draws;
 };
 
 struct ButtonConfig {
-    // jump
-    u16 unk0;
-    // attack
-    u16 unk2;
-    // trick
-    u16 unk4;
-    // unused
-    u16 unk6;
+    u16 jump;
+    u16 attack;
+    u16 trick;
 };
 
 struct TimeRecords {
@@ -49,69 +35,39 @@ struct TimeRecords {
 };
 
 #define NUM_TIME_RECORD_ROWS                                                            \
-    NUM_COURSE_ZONES *ACTS_PER_ZONE *NUM_CHARACTERS *TIME_RECORDS_PER_COURSE
+    (NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE)
 
 struct SaveGame {
-    u32 unk0;
+    /* 0x000 */ u32 id;
 
-    // difficultyLevel
-    u8 unk4;
+    /* 0x004 */ u8 difficultyLevel;
+    /* 0x005 */ bool8 timeLimitEnabled;
+    /* 0x006 */ u8 language;
 
-    // timeLimitEnabled
-    bool8 unk5;
+    /* 0x007 */ u8 unlockedLevels[NUM_CHARACTERS];
+    /* 0x00C */ u8 chaosEmeralds[NUM_CHARACTERS];
 
-    // Language
-    u8 unk6;
+    /* 0x011 */ bool8 soundTestUnlocked;
+    /* 0x012 */ bool8 bossTimeAttackUnlocked;
 
-    // unlockedLevels
-    u8 unk7[NUM_CHARACTERS];
+    /* 0x013 */ u8 unlockedCharacters;
+    /* 0x014 */ bool8 chaoGardenUnlocked;
 
-    // chaosEmeralds
-    u8 unkC[NUM_CHARACTERS];
+    /* 0x015 */ bool8 completedCharacters[NUM_CHARACTERS];
 
-    // soundTestUnlocked
-    bool8 unk11;
+    /* 0x01A */ u8 extraZoneStatus;
+    /* 0x01B */ bool8 extraEndingCreditsPlayed;
 
-    // bossTimeAttackUnlocked
-    bool8 unk12;
+    /* 0x01C */ u8 multiplayerWins;
+    /* 0x01D */ u8 multiplayerLoses;
+    /* 0x01E */ u8 multiplayerDraws;
 
-    // unlockedCharacters
-    u8 unk13;
+    /* 0x020 */ u16 playerName[MAX_PLAYER_NAME_LENGTH];
 
-    // chaoGardenUnlocked
-    bool8 unk14;
-
-    // completedCharacters
-    bool8 unk15[NUM_CHARACTERS];
-
-    // extraZoneStatus
-    u8 unk1A;
-
-    u8 unk1B;
-
-    // multiplayerWins
-    u8 unk1C;
-    // multiplayerLoses
-    u8 unk1D;
-    // multiplayerDraws
-    u8 unk1E;
-
-    u8 unk1F;
-
-    // playerName
-    u16 unk20[MAX_PLAYER_NAME_LENGTH];
-
-    // buttonConfig
-    struct ButtonConfig unk2C;
-
-    // timeRecords
-    struct TimeRecords unk34;
-
-    // multiplayerScores
-    struct MultiplayerScore unk2AC[NUM_MULTIPLAYER_SCORES];
-
-    // score
-    u32 unk374;
+    /* 0x02C */ struct ButtonConfig buttonConfig;
+    /* 0x034 */ struct TimeRecords timeRecords;
+    /* 0x2AC */ struct MultiplayerScore multiplayerScores[NUM_MULTIPLAYER_SCORES];
+    /* 0x374 */ u32 score;
 };
 
 #define MULTIPLAYER_RESULT_WIN  0

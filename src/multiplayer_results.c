@@ -124,7 +124,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     Sprite *element;
 
     u32 count = 0;
-    u32 lang = gLoadedSaveGame->unk6;
+    u32 lang = gLoadedSaveGame->language;
     gWinRegs[4] = 0;
     gWinRegs[5] = 0;
     gWinRegs[0] = 0;
@@ -366,7 +366,7 @@ static void sub_805C3D0(void)
                                             COURSE_SELECT_CUT_SCENE_NONE);
 #endif
             } else if (gGameMode == 0
-                       && gLoadedSaveGame->unk7[gSelectedCharacter] == 0) {
+                       && gLoadedSaveGame->unlockedLevels[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
                 GameStageStart();
                 return;
@@ -374,8 +374,9 @@ static void sub_805C3D0(void)
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
 #else
-                CreateCourseSelectionScreen(0, gLoadedSaveGame->unk7[gSelectedCharacter],
-                                            COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(
+                    0, gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
+                    COURSE_SELECT_CUT_SCENE_NONE);
 #endif
             }
         }

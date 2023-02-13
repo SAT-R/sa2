@@ -86,7 +86,7 @@ void CreateMultiplayerModeSelectScreen(void)
     Sprite *element;
     Background *unk0;
 
-    u8 lang = gLoadedSaveGame->unk6 * 4;
+    u8 lang = gLoadedSaveGame->language * 4;
     gDispCnt = 0;
     gDispCnt |= 0x1341;
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
@@ -342,7 +342,7 @@ static void Task_ScreenMain(void)
 
     if (modeScreen->pakMode != PAK_MODE_MULTI) {
         Sprite *subText;
-        u8 lang = gLoadedSaveGame->unk6 * 4;
+        u8 lang = gLoadedSaveGame->language * 4;
         modeScreen->unkB0.focused = 1;
         modeScreen->unkE0.focused = 0xFF;
 
@@ -352,7 +352,7 @@ static void Task_ScreenMain(void)
         subText->unk21 = 0xFF;
     } else {
         Sprite *subText;
-        u8 lang = gLoadedSaveGame->unk6 * 4;
+        u8 lang = gLoadedSaveGame->language * 4;
         modeScreen->unkB0.focused = 0;
         modeScreen->unkE0.focused = 0;
         subText = &modeScreen->subText;

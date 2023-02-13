@@ -177,10 +177,10 @@ static void sub_805BC40(void)
         u32 offset;
         element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
-        offset = gLoadedSaveGame->unk6 + 7;
+        offset = gLoadedSaveGame->language + 7;
 
         element->graphics.anim = unk9090[offset].anim;
-        offset = gLoadedSaveGame->unk6 + 7;
+        offset = gLoadedSaveGame->language + 7;
         element->variant = unk9090[offset].variant + unk206 - 2;
         element->unk21 = 0xFF;
         sub_8004558(element);
@@ -190,8 +190,8 @@ static void sub_805BC40(void)
         element = &outcomeScreen->unkD0;
         unk9090 = gUnknown_080D9090[0];
 
-        element->graphics.anim = unk9090[gLoadedSaveGame->unk6].anim;
-        element->variant = unk9090[gLoadedSaveGame->unk6].variant;
+        element->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
+        element->variant = unk9090[gLoadedSaveGame->language].variant;
         element->unk21 = 0xFF;
         sub_8004558(element);
         sub_80051E8(element);

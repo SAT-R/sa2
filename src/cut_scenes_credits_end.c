@@ -114,7 +114,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     scene->unk160 = 0;
     scene->hasAllEmeralds = FALSE;
     scene->unk162 = -1;
-    if (gLoadedSaveGame->unk6 != LANG_JAPANESE) {
+    if (gLoadedSaveGame->language != LANG_JAPANESE) {
         scene->unk160 = 1;
     }
 
@@ -417,13 +417,14 @@ static void Task_HandleGameCompletion(void)
 #endif
 
     if (scene->creditsVariant == CREDITS_VARIANT_FINAL_ENDING) {
-        if (gLoadedSaveGame->unk15[4] == 0) {
-            gLoadedSaveGame->unk15[4] = 1;
+        if (!gLoadedSaveGame->completedCharacters[CHARACTER_AMY]) {
+            gLoadedSaveGame->completedCharacters[CHARACTER_AMY] = TRUE;
             WriteSaveGame();
         }
 
         for (i = 0; i < NUM_CHARACTERS; i++) {
-            if (gLoadedSaveGame->unk7[i] > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+            if (gLoadedSaveGame->unlockedLevels[i]
+                > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
                 zonesCompleteCharacters |= CHARACTER_BIT(i);
             }
         }
@@ -431,38 +432,41 @@ static void Task_HandleGameCompletion(void)
         // sonic, cream, tails, knuckles, all completed, and all chaos emeralds
         // unlock true area 53.
         if (zonesCompleteCharacters >= MAIN_CHARACTERS
-            && (gLoadedSaveGame->unkC[0] & CHAOS_EMERALDS_COMPLETED)
-            && gLoadedSaveGame->unk1A == 0) {
-            gLoadedSaveGame->unk1A |= 1;
+            && (gLoadedSaveGame->chaosEmeralds[0] & CHAOS_EMERALDS_COMPLETED)
+            && gLoadedSaveGame->extraZoneStatus == 0) {
+            gLoadedSaveGame->extraZoneStatus |= 1;
             WriteSaveGame();
         }
 
         if (gSelectedCharacter != CHARACTER_AMY) {
-            if ((gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
-                gLoadedSaveGame->unk15[gSelectedCharacter] = 1;
+            if ((gLoadedSaveGame->chaosEmeralds[gSelectedCharacter]
+                 & CHAOS_EMERALDS_COMPLETED)) {
+                gLoadedSaveGame->completedCharacters[gSelectedCharacter] = TRUE;
 
                 for (i = 0; i < 4; i++) {
-                    if (gLoadedSaveGame->unk15[i] != 0) {
+                    if (gLoadedSaveGame->completedCharacters[i]) {
                         charactersCompleted++;
                     }
                 }
 
-                if ((charactersCompleted == 1 && gLoadedSaveGame->unk14)
-                    || (charactersCompleted == 2 && gLoadedSaveGame->unk11)
-                    || (charactersCompleted == 3 && gLoadedSaveGame->unk12)
+                if ((charactersCompleted == 1 && gLoadedSaveGame->chaoGardenUnlocked)
+                    || (charactersCompleted == 2 && gLoadedSaveGame->soundTestUnlocked)
+                    || (charactersCompleted == 3
+                        && gLoadedSaveGame->bossTimeAttackUnlocked)
                     || (charactersCompleted >= 4
-                        && gLoadedSaveGame->unk13 > MAIN_CHARACTERS)) {
+                        && gLoadedSaveGame->unlockedCharacters > MAIN_CHARACTERS)) {
                     scene->hasAllEmeralds = TRUE;
                     scene->delayFrames = 180;
                 } else {
                     if (charactersCompleted == 1) {
-                        gLoadedSaveGame->unk14 = TRUE;
+                        gLoadedSaveGame->chaoGardenUnlocked = TRUE;
                     } else if (charactersCompleted == 2) {
-                        gLoadedSaveGame->unk11 = TRUE;
+                        gLoadedSaveGame->soundTestUnlocked = TRUE;
                     } else if (charactersCompleted == 3) {
-                        gLoadedSaveGame->unk12 = TRUE;
+                        gLoadedSaveGame->bossTimeAttackUnlocked = TRUE;
                     } else if (charactersCompleted == 4) {
-                        gLoadedSaveGame->unk13 |= CHARACTER_BIT(CHARACTER_AMY);
+                        gLoadedSaveGame->unlockedCharacters
+                            |= CHARACTER_BIT(CHARACTER_AMY);
                     }
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
@@ -480,8 +484,8 @@ static void Task_HandleGameCompletion(void)
             scene->delayFrames = 180;
         }
     } else {
-        if (gLoadedSaveGame->unk1B == 0) {
-            gLoadedSaveGame->unk1B = 1;
+        if (!gLoadedSaveGame->extraEndingCreditsPlayed) {
+            gLoadedSaveGame->extraEndingCreditsPlayed = TRUE;
             WriteSaveGame();
         }
         scene->hasAllEmeralds = TRUE;

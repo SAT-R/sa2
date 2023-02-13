@@ -122,7 +122,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     Sprite *element;
     Background *background;
     struct UNK_802D4CC_UNK270 *transitionConfig;
-    s8 lang = gLoadedSaveGame->unk6 - 1;
+    s8 lang = gLoadedSaveGame->language - 1;
 
     if (lang < 0) {
         lang = 0;

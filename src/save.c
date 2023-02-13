@@ -102,16 +102,17 @@ void InsertMultiplayerProfile(u32 playerId, u16 *name)
     s16 i, j;
 
     for (i = 0; i < 10; i++) {
-        struct MultiplayerScore *score = &gLoadedSaveGame->unk2AC[i];
-        if (playerId == score->unk0
-            && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+        struct MultiplayerScore *score = &gLoadedSaveGame->multiplayerScores[i];
+        if (playerId == score->playerId
+            && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             struct MultiplayerScore scoreCopy;
             memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
 
             for (j = i; j > 0; j--) {
-                gLoadedSaveGame->unk2AC[j] = gLoadedSaveGame->unk2AC[j - 1];
+                gLoadedSaveGame->multiplayerScores[j]
+                    = gLoadedSaveGame->multiplayerScores[j - 1];
             }
-            memcpy(&gLoadedSaveGame->unk2AC[0], &scoreCopy,
+            memcpy(&gLoadedSaveGame->multiplayerScores[0], &scoreCopy,
                    sizeof(struct MultiplayerScore));
             return;
         }
@@ -119,35 +120,36 @@ void InsertMultiplayerProfile(u32 playerId, u16 *name)
 
     // otherwise, insert the score at the beginning
     for (i = 9; i > 0; i--) {
-        gLoadedSaveGame->unk2AC[i] = gLoadedSaveGame->unk2AC[i - 1];
+        gLoadedSaveGame->multiplayerScores[i]
+            = gLoadedSaveGame->multiplayerScores[i - 1];
     }
 
-    gLoadedSaveGame->unk2AC[0].unk0 = playerId;
+    gLoadedSaveGame->multiplayerScores[0].playerId = playerId;
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        gLoadedSaveGame->unk2AC[0].unk4[i] = name[i];
+        gLoadedSaveGame->multiplayerScores[0].playerName[i] = name[i];
     }
-    gLoadedSaveGame->unk2AC[0].unk10 = TRUE;
-    gLoadedSaveGame->unk2AC[0].unk11 = 0;
-    gLoadedSaveGame->unk2AC[0].unk12 = 0;
-    gLoadedSaveGame->unk2AC[0].unk13 = 0;
+    gLoadedSaveGame->multiplayerScores[0].slotFilled = TRUE;
+    gLoadedSaveGame->multiplayerScores[0].wins = 0;
+    gLoadedSaveGame->multiplayerScores[0].losses = 0;
+    gLoadedSaveGame->multiplayerScores[0].draws = 0;
 }
 
 void RecordOwnMultiplayerResult(s16 result)
 {
     switch (result) {
         case MULTIPLAYER_RESULT_WIN:
-            if (gLoadedSaveGame->unk1C < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->unk1C++;
+            if (gLoadedSaveGame->multiplayerWins < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->multiplayerWins++;
             }
             break;
         case MULTIPLAYER_RESULT_LOSS:
-            if (gLoadedSaveGame->unk1D < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->unk1D++;
+            if (gLoadedSaveGame->multiplayerLoses < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->multiplayerLoses++;
             }
             break;
         case MULTIPLAYER_RESULT_DRAW:
-            if (gLoadedSaveGame->unk1E < MAX_MULTIPLAYER_SCORE) {
-                gLoadedSaveGame->unk1E++;
+            if (gLoadedSaveGame->multiplayerDraws < MAX_MULTIPLAYER_SCORE) {
+                gLoadedSaveGame->multiplayerDraws++;
             }
             break;
     }
@@ -158,23 +160,23 @@ void RecordMultiplayerResult(u32 id, u16 *name, s16 result)
     s16 i;
 
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
-        struct MultiplayerScore *score = &gLoadedSaveGame->unk2AC[i];
-        if (id == score->unk0
-            && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+        struct MultiplayerScore *score = &gLoadedSaveGame->multiplayerScores[i];
+        if (id == score->playerId
+            && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             switch (result) {
                 case MULTIPLAYER_RESULT_WIN:
-                    if (score->unk11 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk11++;
+                    if (score->wins < MAX_MULTIPLAYER_SCORE) {
+                        score->wins++;
                     }
                     break;
                 case MULTIPLAYER_RESULT_LOSS:
-                    if (score->unk12 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk12++;
+                    if (score->losses < MAX_MULTIPLAYER_SCORE) {
+                        score->losses++;
                     }
                     break;
                 case MULTIPLAYER_RESULT_DRAW:
-                    if (score->unk13 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk13++;
+                    if (score->draws < MAX_MULTIPLAYER_SCORE) {
+                        score->draws++;
                     }
                     break;
             }
@@ -191,46 +193,46 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
 
     memset(gameState, 0, sizeof(struct SaveGame));
 
-    gameState->unk0 = 0;
-    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
-    gameState->unk4 = 0;
-    gameState->unk5 = 0;
-    gameState->unk6 = LANG_ENGLISH;
-    gameState->unk20[0] = PLAYER_NAME_END_CHAR;
+    gameState->id = 0;
+    gameState->unlockedCharacters = CHARACTER_BIT(CHARACTER_SONIC);
+    gameState->difficultyLevel = 0;
+    gameState->timeLimitEnabled = 0;
+    gameState->language = LANG_ENGLISH;
+    gameState->playerName[0] = PLAYER_NAME_END_CHAR;
 
-    buttonConfig = &gameState->unk2C;
+    buttonConfig = &gameState->buttonConfig;
 
-    buttonConfig->unk0 = A_BUTTON;
-    buttonConfig->unk2 = B_BUTTON;
-    buttonConfig->unk4 = R_BUTTON;
+    buttonConfig->jump = A_BUTTON;
+    buttonConfig->attack = B_BUTTON;
+    buttonConfig->trick = R_BUTTON;
 
-    record = (void *)gameState->unk34.table;
+    record = (void *)gameState->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
         *record = MAX_COURSE_TIME;
     }
 
-    gameState->unk1C = 0;
-    gameState->unk1D = 0;
-    gameState->unk1E = 0;
+    gameState->multiplayerWins = 0;
+    gameState->multiplayerLoses = 0;
+    gameState->multiplayerDraws = 0;
 
-    multiplayerScore = gameState->unk2AC;
+    multiplayerScore = gameState->multiplayerScores;
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++, multiplayerScore++) {
-        multiplayerScore->unk10 = FALSE;
-        multiplayerScore->unk11 = 0;
-        multiplayerScore->unk12 = 0;
-        multiplayerScore->unk13 = 0;
-        multiplayerScore->unk4[0] = PLAYER_NAME_END_CHAR;
+        multiplayerScore->slotFilled = FALSE;
+        multiplayerScore->wins = 0;
+        multiplayerScore->losses = 0;
+        multiplayerScore->draws = 0;
+        multiplayerScore->playerName[0] = PLAYER_NAME_END_CHAR;
     }
 
-    gameState->unk374 = 0;
-    gameState->unk15[CHARACTER_AMY] = FALSE;
-    gameState->unk1A = 0;
-    gameState->unk1B = 0;
+    gameState->score = 0;
+    gameState->completedCharacters[CHARACTER_AMY] = FALSE;
+    gameState->extraZoneStatus = 0;
+    gameState->extraEndingCreditsPlayed = FALSE;
 
-    gameState->unk15[CHARACTER_SONIC] = FALSE;
-    gameState->unk15[CHARACTER_CREAM] = FALSE;
-    gameState->unk15[CHARACTER_TAILS] = FALSE;
-    gameState->unk15[CHARACTER_KNUCKLES] = FALSE;
+    gameState->completedCharacters[CHARACTER_SONIC] = FALSE;
+    gameState->completedCharacters[CHARACTER_CREAM] = FALSE;
+    gameState->completedCharacters[CHARACTER_TAILS] = FALSE;
+    gameState->completedCharacters[CHARACTER_KNUCKLES] = FALSE;
 }
 
 static void InitSaveGameSectorData(struct SaveSectorData *save)
@@ -262,11 +264,11 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
 
     p2 = save->multiplayerScores;
     for (i = 0; i < 10; i++, p2++) {
-        p2->unk10 = FALSE;
-        p2->unk11 = 0;
-        p2->unk12 = 0;
-        p2->unk13 = 0;
-        p2->unk4[0] = PLAYER_NAME_END_CHAR;
+        p2->slotFilled = FALSE;
+        p2->wins = 0;
+        p2->losses = 0;
+        p2->draws = 0;
+        p2->playerName[0] = PLAYER_NAME_END_CHAR;
     }
 
     save->score = 0;
@@ -283,8 +285,8 @@ static s16 TryWriteSaveGame(void)
     lastWrittenGameState = gLastWrittenSaveGame;
     save = gSaveSectorDataBuffer;
 
-    if (gameState->unk0 == 0) {
-        gameState->unk0 = Random32();
+    if (gameState->id == 0) {
+        gameState->id = Random32();
     }
 
     // Keep a copy of the last game state
@@ -321,66 +323,66 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
     save->header.security = SECTOR_SECURITY_NUM;
     save->header.version = version + 1;
 
-    save->unk8 = gameState->unk0;
-    memcpy(save->playerName, gameState->unk20, sizeof(gameState->unk20));
-    save->language = gameState->unk6;
+    save->unk8 = gameState->id;
+    memcpy(save->playerName, gameState->playerName, sizeof(gameState->playerName));
+    save->language = gameState->language;
 
     save->gamePlayOptions = 0;
-    if (gameState->unk4 != 0) {
+    if (gameState->difficultyLevel != 0) {
         save->gamePlayOptions |= GAME_PLAY_OPTION_DIFFICULTY_EASY;
     }
 
-    if (gameState->unk5) {
+    if (gameState->timeLimitEnabled) {
         save->gamePlayOptions |= GAME_PLAY_OPTION_TIME_LIMIT_ENABLED;
     }
 
     save->completions = 0;
-    if (gameState->unk15[CHARACTER_AMY]) {
+    if (gameState->completedCharacters[CHARACTER_AMY]) {
         save->completions |= 1;
     }
-    if (gameState->unk1A) {
-        save->completions |= (gameState->unk1A << 1) & 6;
+    if (gameState->extraZoneStatus) {
+        save->completions |= (gameState->extraZoneStatus << 1) & 6;
     }
-    if (gameState->unk1B) {
+    if (gameState->extraEndingCreditsPlayed) {
         save->completions |= 8;
     }
-    if (gameState->unk15[CHARACTER_SONIC]) {
+    if (gameState->completedCharacters[CHARACTER_SONIC]) {
         save->completions |= 0x10;
     }
-    if (gameState->unk15[CHARACTER_CREAM]) {
+    if (gameState->completedCharacters[CHARACTER_CREAM]) {
         save->completions |= 0x20;
     }
-    if (gameState->unk15[CHARACTER_TAILS]) {
+    if (gameState->completedCharacters[CHARACTER_TAILS]) {
         save->completions |= 0x40;
     }
-    if (gameState->unk15[CHARACTER_KNUCKLES]) {
+    if (gameState->completedCharacters[CHARACTER_KNUCKLES]) {
         save->completions |= 0x80;
     }
 
     save->unlocks = 0;
-    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_CREAM))) {
+    if ((gameState->unlockedCharacters & CHARACTER_BIT(CHARACTER_CREAM))) {
         save->unlocks |= UNLOCK_FLAG_CREAM;
     }
-    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_TAILS))) {
+    if ((gameState->unlockedCharacters & CHARACTER_BIT(CHARACTER_TAILS))) {
         save->unlocks |= UNLOCK_FLAG_TAILS;
     }
-    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_KNUCKLES))) {
+    if ((gameState->unlockedCharacters & CHARACTER_BIT(CHARACTER_KNUCKLES))) {
         save->unlocks |= UNLOCK_FLAG_KNUCKLES;
     }
-    if ((gameState->unk13 & CHARACTER_BIT(CHARACTER_AMY))) {
+    if ((gameState->unlockedCharacters & CHARACTER_BIT(CHARACTER_AMY))) {
         save->unlocks |= UNLOCK_FLAG_AMY;
     }
-    if (gameState->unk11) {
+    if (gameState->soundTestUnlocked) {
         save->unlocks |= UNLOCK_FLAG_SOUND_TEST;
     }
-    if (gameState->unk12) {
+    if (gameState->bossTimeAttackUnlocked) {
         save->unlocks |= UNLOCK_FLAG_BOSS_TA;
     }
-    if (gameState->unk14) {
+    if (gameState->chaoGardenUnlocked) {
         save->unlocks |= UNLOCK_FLAG_CHAO_GARDEN;
     }
 
-    switch (gameState->unk2C.unk0) {
+    switch (gameState->buttonConfig.jump) {
         case B_BUTTON:
             save->jumpControl = PACKED_B_BUTTON;
             break;
@@ -392,7 +394,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
             break;
     }
 
-    switch (gameState->unk2C.unk2) {
+    switch (gameState->buttonConfig.attack) {
         case B_BUTTON:
             save->attackControl = PACKED_B_BUTTON;
             break;
@@ -404,7 +406,7 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
             break;
     }
 
-    switch (gameState->unk2C.unk4) {
+    switch (gameState->buttonConfig.trick) {
         case B_BUTTON:
             save->trickControl = PACKED_B_BUTTON;
             break;
@@ -417,22 +419,23 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        save->unlockedLevels[i] = gameState->unk7[i];
+        save->unlockedLevels[i] = gameState->unlockedLevels[i];
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        save->chaosEmeralds[i] = gameState->unkC[i];
+        save->chaosEmeralds[i] = gameState->chaosEmeralds[i];
     }
 
-    save->multiplayerWins = gameState->unk1C;
-    save->multiplayerLoses = gameState->unk1D;
-    save->multiplayerDraws = gameState->unk1E;
+    save->multiplayerWins = gameState->multiplayerWins;
+    save->multiplayerLoses = gameState->multiplayerLoses;
+    save->multiplayerDraws = gameState->multiplayerDraws;
 
-    memcpy(&save->timeRecords, &gameState->unk34, sizeof(gameState->unk34));
-    memcpy(save->multiplayerScores, gameState->unk2AC, sizeof(gameState->unk2AC));
+    memcpy(&save->timeRecords, &gameState->timeRecords, sizeof(gameState->timeRecords));
+    memcpy(save->multiplayerScores, gameState->multiplayerScores,
+           sizeof(gameState->multiplayerScores));
 
     save->id = Random32();
-    save->score = gameState->unk374;
+    save->score = gameState->score;
 
     checksum = CalcChecksum(save);
     save->checksum = checksum;
@@ -625,123 +628,124 @@ static bool16 UnpackSaveSectorData(struct SaveGame *gameState,
     s16 i;
 
     memset(gameState, 0, sizeof(struct SaveGame));
-    memcpy(gameState->unk20, save->playerName, sizeof(save->playerName));
+    memcpy(gameState->playerName, save->playerName, sizeof(save->playerName));
 
-    gameState->unk0 = save->unk8;
-    gameState->unk6 = save->language;
+    gameState->id = save->unk8;
+    gameState->language = save->language;
 
     if (save->gamePlayOptions & GAME_PLAY_OPTION_DIFFICULTY_EASY) {
-        gameState->unk4 = 1;
+        gameState->difficultyLevel = 1;
     }
 
     if (save->gamePlayOptions & GAME_PLAY_OPTION_TIME_LIMIT_ENABLED) {
-        gameState->unk5 = TRUE;
+        gameState->timeLimitEnabled = TRUE;
     }
 
     if ((save->completions & 1)) {
-        gameState->unk15[4] = 1;
+        gameState->completedCharacters[CHARACTER_AMY] = TRUE;
     }
     if ((save->completions & 6)) {
-        gameState->unk1A = (save->completions & 6) >> 1;
+        gameState->extraZoneStatus = (save->completions & 6) >> 1;
     }
     if ((save->completions & 8)) {
-        gameState->unk1B = 1;
+        gameState->extraEndingCreditsPlayed = TRUE;
     }
     if ((save->completions & 0x10)) {
-        gameState->unk15[0] = 1;
+        gameState->completedCharacters[CHARACTER_SONIC] = TRUE;
     }
     if ((save->completions & 0x20)) {
-        gameState->unk15[1] = 1;
+        gameState->completedCharacters[CHARACTER_CREAM] = TRUE;
     }
     if ((save->completions & 0x40)) {
-        gameState->unk15[2] = 1;
+        gameState->completedCharacters[CHARACTER_TAILS] = TRUE;
     }
     if ((save->completions & 0x80)) {
-        gameState->unk15[3] = 1;
+        gameState->completedCharacters[CHARACTER_KNUCKLES] = TRUE;
     }
 
-    gameState->unk13 = CHARACTER_BIT(CHARACTER_SONIC);
+    gameState->unlockedCharacters = CHARACTER_BIT(CHARACTER_SONIC);
 
     if (save->unlocks & UNLOCK_FLAG_CREAM) {
-        gameState->unk13 |= CHARACTER_BIT(CHARACTER_CREAM);
+        gameState->unlockedCharacters |= CHARACTER_BIT(CHARACTER_CREAM);
     }
     if (save->unlocks & UNLOCK_FLAG_TAILS) {
-        gameState->unk13 |= CHARACTER_BIT(CHARACTER_TAILS);
+        gameState->unlockedCharacters |= CHARACTER_BIT(CHARACTER_TAILS);
     }
     if (save->unlocks & UNLOCK_FLAG_KNUCKLES) {
-        gameState->unk13 |= CHARACTER_BIT(CHARACTER_KNUCKLES);
+        gameState->unlockedCharacters |= CHARACTER_BIT(CHARACTER_KNUCKLES);
     }
     if (save->unlocks & UNLOCK_FLAG_AMY) {
-        gameState->unk13 |= CHARACTER_BIT(CHARACTER_AMY);
+        gameState->unlockedCharacters |= CHARACTER_BIT(CHARACTER_AMY);
     }
 
     if (save->unlocks & UNLOCK_FLAG_SOUND_TEST) {
-        gameState->unk11 = TRUE;
+        gameState->soundTestUnlocked = TRUE;
     } else {
-        gameState->unk11 = FALSE;
+        gameState->soundTestUnlocked = FALSE;
     }
 
     if (save->unlocks & UNLOCK_FLAG_BOSS_TA) {
-        gameState->unk12 = TRUE;
+        gameState->bossTimeAttackUnlocked = TRUE;
     } else {
-        gameState->unk12 = FALSE;
+        gameState->bossTimeAttackUnlocked = FALSE;
     }
 
     if (save->unlocks & UNLOCK_FLAG_CHAO_GARDEN) {
-        gameState->unk14 = TRUE;
+        gameState->chaoGardenUnlocked = TRUE;
     } else {
-        gameState->unk14 = FALSE;
+        gameState->chaoGardenUnlocked = FALSE;
     }
 
     switch (save->jumpControl) {
         case PACKED_R_BUTTON:
-            gameState->unk2C.unk0 = R_BUTTON;
+            gameState->buttonConfig.jump = R_BUTTON;
             break;
         case PACKED_B_BUTTON:
-            gameState->unk2C.unk0 = B_BUTTON;
+            gameState->buttonConfig.jump = B_BUTTON;
             break;
         case PACKED_A_BUTTON:
-            gameState->unk2C.unk0 = A_BUTTON;
+            gameState->buttonConfig.jump = A_BUTTON;
             break;
     }
     switch (save->attackControl) {
         case PACKED_R_BUTTON:
-            gameState->unk2C.unk2 = R_BUTTON;
+            gameState->buttonConfig.attack = R_BUTTON;
             break;
         case PACKED_B_BUTTON:
-            gameState->unk2C.unk2 = B_BUTTON;
+            gameState->buttonConfig.attack = B_BUTTON;
             break;
         case PACKED_A_BUTTON:
-            gameState->unk2C.unk2 = A_BUTTON;
+            gameState->buttonConfig.attack = A_BUTTON;
             break;
     }
     switch (save->trickControl) {
         case PACKED_R_BUTTON:
-            gameState->unk2C.unk4 = R_BUTTON;
+            gameState->buttonConfig.trick = R_BUTTON;
             break;
         case PACKED_B_BUTTON:
-            gameState->unk2C.unk4 = B_BUTTON;
+            gameState->buttonConfig.trick = B_BUTTON;
             break;
         case PACKED_A_BUTTON:
-            gameState->unk2C.unk4 = A_BUTTON;
+            gameState->buttonConfig.trick = A_BUTTON;
             break;
     }
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        gameState->unk7[i] = save->unlockedLevels[i];
+        gameState->unlockedLevels[i] = save->unlockedLevels[i];
     }
 
     for (i = 0; i < 5; i++) {
-        gameState->unkC[i] = save->chaosEmeralds[i];
+        gameState->chaosEmeralds[i] = save->chaosEmeralds[i];
     }
 
-    gameState->unk1C = save->multiplayerWins;
-    gameState->unk1D = save->multiplayerLoses;
-    gameState->unk1E = save->multiplayerDraws;
-    gameState->unk34 = save->timeRecords;
+    gameState->multiplayerWins = save->multiplayerWins;
+    gameState->multiplayerLoses = save->multiplayerLoses;
+    gameState->multiplayerDraws = save->multiplayerDraws;
+    gameState->timeRecords = save->timeRecords;
 
-    memcpy(gameState->unk2AC, save->multiplayerScores, sizeof(save->multiplayerScores));
-    gameState->unk374 = save->score;
+    memcpy(gameState->multiplayerScores, save->multiplayerScores,
+           sizeof(save->multiplayerScores));
+    gameState->score = save->score;
     return TRUE;
 }
 
@@ -754,13 +758,13 @@ static s16 CreateAndTryWriteNewSaveGame(void)
     struct SaveGame *lastWrittenGameState = gLastWrittenSaveGame;
     struct SaveSectorData *save = gSaveSectorDataBuffer;
 
-    u8 language = gameState->unk6;
-    u32 score = gameState->unk374;
+    u8 language = gameState->language;
+    u32 score = gameState->score;
 
     GenerateNewSaveGame(gameState);
 
-    gameState->unk6 = language;
-    gameState->unk374 = score;
+    gameState->language = language;
+    gameState->score = score;
 
     memcpy(lastWrittenGameState, gameState, sizeof(struct SaveGame));
 
@@ -830,32 +834,32 @@ static void GenerateCompletedSaveGame(struct SaveGame *gameState)
 {
     s16 i;
 
-    if (gameState->unk0 == 0) {
+    if (gameState->id == 0) {
         // id?
-        gameState->unk0 = Random32();
+        gameState->id = Random32();
     }
 
-    gameState->unk374 = 0;
+    gameState->score = 0;
 
     for (i = 0; i < 5; i++) {
-        gameState->unk7[i] = i == CHARACTER_SONIC
+        gameState->unlockedLevels[i] = i == CHARACTER_SONIC
             ? LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1
             : LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) + 1;
-        gameState->unkC[i] = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
+        gameState->chaosEmeralds[i] = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
     }
 
-    gameState->unk13 = MAIN_CHARACTERS | CHARACTER_BIT(CHARACTER_AMY);
-    gameState->unk11 = TRUE;
-    gameState->unk12 = TRUE;
-    gameState->unk14 = TRUE;
+    gameState->unlockedCharacters = MAIN_CHARACTERS | CHARACTER_BIT(CHARACTER_AMY);
+    gameState->soundTestUnlocked = TRUE;
+    gameState->bossTimeAttackUnlocked = TRUE;
+    gameState->chaoGardenUnlocked = TRUE;
 
-    gameState->unk15[CHARACTER_AMY] = TRUE;
-    gameState->unk1A = 2;
-    gameState->unk1B = 1;
-    gameState->unk15[CHARACTER_SONIC] = TRUE;
-    gameState->unk15[CHARACTER_CREAM] = TRUE;
-    gameState->unk15[CHARACTER_TAILS] = TRUE;
-    gameState->unk15[CHARACTER_KNUCKLES] = TRUE;
+    gameState->completedCharacters[CHARACTER_AMY] = TRUE;
+    gameState->extraZoneStatus = 2;
+    gameState->extraEndingCreditsPlayed = TRUE;
+    gameState->completedCharacters[CHARACTER_SONIC] = TRUE;
+    gameState->completedCharacters[CHARACTER_CREAM] = TRUE;
+    gameState->completedCharacters[CHARACTER_TAILS] = TRUE;
+    gameState->completedCharacters[CHARACTER_KNUCKLES] = TRUE;
 }
 
 // Exported functions
@@ -899,7 +903,7 @@ s16 LoadSaveGame(void) { return TryLoadLatestSaveGame(); }
 
 bool32 WriteSaveGame(void)
 {
-    if (!HasChangesToSave() && gLoadedSaveGame->unk0) {
+    if (!HasChangesToSave() && gLoadedSaveGame->id) {
         return TRUE;
     } else {
         return TryWriteSaveGame();

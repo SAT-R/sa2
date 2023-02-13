@@ -137,10 +137,11 @@ SECTIONS
         build/sa2/src/multiplayer_singlepak_connection.o(.text);
         build/sa2/src/multiplayer_singlepak_results.o(.text);
         build/sa2/src/collect_rings_time_display.o(.text);
-        build/sa2/asm/math0.o(.text);
+        build/sa2/asm/math_0.o(.text);
         build/sa2/src/random.o(.text);
-        build/sa2/src/math.o(.text);
-        build/sa2/asm/math1.o(.text);
+        build/sa2/src/math_0.o(.text);
+        build/sa2/asm/math_1.o(.text);
+        build/sa2/src/math_1.o(.text);
         build/sa2/asm/unused_task_5F1C.o(.text);
         build/sa2/src/unknown_object_6998.o(.text);
         build/sa2/src/race_progress.o(.text);

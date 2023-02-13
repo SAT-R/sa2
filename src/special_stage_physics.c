@@ -240,7 +240,7 @@ void sub_806EFB4(void)
 
     player->unkB8 += player->unkF2;
 
-    if (player->unkBA >= player->unkF0 || !(gInput & gPlayerControls.unk0)) {
+    if (player->unkBA >= player->unkF0 || !(gInput & gPlayerControls.jump)) {
         player->state = 5;
     }
 }
@@ -724,7 +724,7 @@ static void HandleJumpControls(void)
     struct SpecialStagePhysics *physics = TaskGetStructPtr(gCurTask);
     struct SpecialStagePlayer *player = TaskGetStructPtr(physics->stage->playerTask);
 
-    if (gPressedKeys & gPlayerControls.unk0) {
+    if (gPressedKeys & gPlayerControls.jump) {
         player->state = 4;
         player->unkB0 = 0;
         player->unkB8 = player->unkEC;

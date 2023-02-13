@@ -1182,7 +1182,7 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
     s16 i;
 
-    ReadAvailableCharacters(i, gLoadedSaveGame->unk13);
+    ReadAvailableCharacters(i, gLoadedSaveGame->unlockedCharacters);
 
     timeRecordsScreen->playerDataMenu = 0;
     timeRecordsScreen->timeRecords = EwramMalloc(sizeof(struct TimeRecords));
@@ -1194,10 +1194,10 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
     timeRecordsScreen->availableCharacters = i;
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unk7[i];
+        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unlockedLevels[i];
     }
 
-    timeRecordsScreen->language = LanguageIndex(gLoadedSaveGame->unk6);
+    timeRecordsScreen->language = LanguageIndex(gLoadedSaveGame->language);
     timeRecordsScreen->isBossMode = isBossView;
     timeRecordsScreen->view = TIME_RECORDS_SCREEN_VIEW_TIME_ATTACK;
 
@@ -1205,7 +1205,7 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
         timeRecordsScreen->language = LanguageIndex(LANG_ENGLISH);
     }
 
-    memcpy(timeRecordsScreen->timeRecords, &gLoadedSaveGame->unk34,
+    memcpy(timeRecordsScreen->timeRecords, &gLoadedSaveGame->timeRecords,
            sizeof(struct TimeRecords));
 
     ResetProfileScreensVram();
@@ -1228,7 +1228,7 @@ void CreateNewProfileScreen(void)
     languageScreen = TaskGetStructPtr(t);
 
     languageScreen->optionsScreen = NULL;
-    languageScreen->menuCursor = LanguageIndex(gLoadedSaveGame->unk6);
+    languageScreen->menuCursor = LanguageIndex(gLoadedSaveGame->language);
     languageScreen->creatingNewProfile = TRUE;
 
     if ((u8)languageScreen->menuCursor >= NUM_LANGUAGES) {
@@ -1251,7 +1251,7 @@ void CreateNewProfileNameScreen(s16 mode)
     s16 i;
 
     profileNameScreen->playerDataMenu = NULL;
-    profileNameScreen->language = LanguageIndex(gLoadedSaveGame->unk6);
+    profileNameScreen->language = LanguageIndex(gLoadedSaveGame->language);
 
     profileNameScreen->onCompleteAction = mode == NEW_PROFILE_NAME_START_GAME
         ? NAME_SCREEN_COMPLETE_ACTION_START_GAME
@@ -1293,22 +1293,23 @@ static void ReadProfileData(struct OptionsScreen *optionsScreen)
 
     s16 i;
 
-    memcpy(profile->playerName, saveGame->unk20, sizeof(saveGame->unk20));
-    memcpy(&profile->timeRecords, &saveGame->unk34, sizeof(saveGame->unk34));
-    memcpy(profile->multiplayerScores, saveGame->unk2AC, sizeof(saveGame->unk2AC));
+    memcpy(profile->playerName, saveGame->playerName, sizeof(saveGame->playerName));
+    memcpy(&profile->timeRecords, &saveGame->timeRecords, sizeof(saveGame->timeRecords));
+    memcpy(profile->multiplayerScores, saveGame->multiplayerScores,
+           sizeof(saveGame->multiplayerScores));
 
-    profile->multiplayerWins = saveGame->unk1C;
-    profile->multiplayerLoses = saveGame->unk1D;
-    profile->multiplayerDraws = saveGame->unk1E;
+    profile->multiplayerWins = saveGame->multiplayerWins;
+    profile->multiplayerLoses = saveGame->multiplayerLoses;
+    profile->multiplayerDraws = saveGame->multiplayerDraws;
 
-    memcpy(&profile->buttonConfig, &saveGame->unk2C, 8);
+    memcpy(&profile->buttonConfig, &saveGame->buttonConfig, 8);
 
-    optionsScreen->difficultyLevel = saveGame->unk4;
-    optionsScreen->timeLimitEnabled = saveGame->unk5;
-    optionsScreen->language = LanguageIndex(saveGame->unk6);
-    optionsScreen->soundTestUnlocked = saveGame->unk11;
-    optionsScreen->bossTimeAttackUnlocked = saveGame->unk12;
-    optionsScreen->unk35E = saveGame->unk13;
+    optionsScreen->difficultyLevel = saveGame->difficultyLevel;
+    optionsScreen->timeLimitEnabled = saveGame->timeLimitEnabled;
+    optionsScreen->language = LanguageIndex(saveGame->language);
+    optionsScreen->soundTestUnlocked = saveGame->soundTestUnlocked;
+    optionsScreen->bossTimeAttackUnlocked = saveGame->bossTimeAttackUnlocked;
+    optionsScreen->unk35E = saveGame->unlockedCharacters;
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
         if (profile->playerName[i] == PLAYER_NAME_END_CHAR) {
@@ -1346,24 +1347,24 @@ static void StoreProfileData(struct OptionsScreen *optionsScreen)
     struct SaveGame *saveGame = gLoadedSaveGame;
     struct OptionsScreenProfileData *profile = &optionsScreen->profileData;
 
-    memcpy(saveGame->unk20, profile->playerName, sizeof(profile->playerName));
-    saveGame->unk34 = profile->timeRecords;
+    memcpy(saveGame->playerName, profile->playerName, sizeof(profile->playerName));
+    saveGame->timeRecords = profile->timeRecords;
 
-    memcpy(saveGame->unk2AC, profile->multiplayerScores,
+    memcpy(saveGame->multiplayerScores, profile->multiplayerScores,
            sizeof(struct MultiplayerScore));
 
-    saveGame->unk1C = profile->multiplayerWins;
-    saveGame->unk1D = profile->multiplayerLoses;
-    saveGame->unk1E = profile->multiplayerDraws;
+    saveGame->multiplayerWins = profile->multiplayerWins;
+    saveGame->multiplayerLoses = profile->multiplayerLoses;
+    saveGame->multiplayerDraws = profile->multiplayerDraws;
 
     // Doesn't match when assigned, not sure
-    memcpy(&saveGame->unk2C, &profile->buttonConfig, sizeof(struct ButtonConfig));
+    memcpy(&saveGame->buttonConfig, &profile->buttonConfig, sizeof(struct ButtonConfig));
 
-    saveGame->unk4 = optionsScreen->difficultyLevel;
-    saveGame->unk5 = optionsScreen->timeLimitEnabled;
-    saveGame->unk6 = optionsScreen->language + 1;
-    saveGame->unk11 = optionsScreen->soundTestUnlocked;
-    saveGame->unk12 = optionsScreen->bossTimeAttackUnlocked;
+    saveGame->difficultyLevel = optionsScreen->difficultyLevel;
+    saveGame->timeLimitEnabled = optionsScreen->timeLimitEnabled;
+    saveGame->language = optionsScreen->language + 1;
+    saveGame->soundTestUnlocked = optionsScreen->soundTestUnlocked;
+    saveGame->bossTimeAttackUnlocked = optionsScreen->bossTimeAttackUnlocked;
 }
 
 // OptionsScreenInitRegistersAndFadeIn
@@ -2437,7 +2438,7 @@ static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
 
     buttonConfigMenu->optionsScreen = optionsScreen;
 
-    switch (optionsScreen->profileData.buttonConfig.unk0) {
+    switch (optionsScreen->profileData.buttonConfig.jump) {
         case A_BUTTON:
             buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_JUMP;
             break;
@@ -2449,7 +2450,7 @@ static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
             break;
     }
 
-    switch (optionsScreen->profileData.buttonConfig.unk2) {
+    switch (optionsScreen->profileData.buttonConfig.attack) {
         case A_BUTTON:
             buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_ATTACK;
             break;
@@ -2461,7 +2462,7 @@ static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
             break;
     }
 
-    switch (optionsScreen->profileData.buttonConfig.unk4) {
+    switch (optionsScreen->profileData.buttonConfig.trick) {
         case A_BUTTON:
             buttonConfigMenu->aButtonAction = BUTTON_CONFIG_MENU_ACTION_TRICK;
             break;
@@ -2794,37 +2795,37 @@ static inline void CommitButtonConfig(struct ButtonConfigMenu *buttonConfigMenu,
 {
     switch (buttonConfigMenu->aButtonAction) {
         case BUTTON_CONFIG_MENU_ACTION_JUMP:
-            optionsScreen->profileData.buttonConfig.unk0 = A_BUTTON;
+            optionsScreen->profileData.buttonConfig.jump = A_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_ATTACK:
-            optionsScreen->profileData.buttonConfig.unk2 = A_BUTTON;
+            optionsScreen->profileData.buttonConfig.attack = A_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_TRICK:
-            optionsScreen->profileData.buttonConfig.unk4 = A_BUTTON;
+            optionsScreen->profileData.buttonConfig.trick = A_BUTTON;
             break;
     }
 
     switch (buttonConfigMenu->bButtonAction) {
         case BUTTON_CONFIG_MENU_ACTION_JUMP:
-            optionsScreen->profileData.buttonConfig.unk0 = B_BUTTON;
+            optionsScreen->profileData.buttonConfig.jump = B_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_ATTACK:
-            optionsScreen->profileData.buttonConfig.unk2 = B_BUTTON;
+            optionsScreen->profileData.buttonConfig.attack = B_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_TRICK:
-            optionsScreen->profileData.buttonConfig.unk4 = B_BUTTON;
+            optionsScreen->profileData.buttonConfig.trick = B_BUTTON;
             break;
     }
 
     switch (buttonConfigMenu->rShoulderAction) {
         case BUTTON_CONFIG_MENU_ACTION_JUMP:
-            optionsScreen->profileData.buttonConfig.unk0 = R_BUTTON;
+            optionsScreen->profileData.buttonConfig.jump = R_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_ATTACK:
-            optionsScreen->profileData.buttonConfig.unk2 = R_BUTTON;
+            optionsScreen->profileData.buttonConfig.attack = R_BUTTON;
             break;
         case BUTTON_CONFIG_MENU_ACTION_TRICK:
-            optionsScreen->profileData.buttonConfig.unk4 = R_BUTTON;
+            optionsScreen->profileData.buttonConfig.trick = R_BUTTON;
             break;
     }
 }
@@ -3052,7 +3053,7 @@ static void Task_LanguageScreenMain(void)
     if (languageScreen->creatingNewProfile) {
         if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
             m4aSongNumStart(SE_SELECT);
-            gLoadedSaveGame->unk6 = languageScreen->menuCursor + 1;
+            gLoadedSaveGame->language = languageScreen->menuCursor + 1;
             LanguageScreenHandleExit();
         }
         return;
@@ -3838,7 +3839,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        gLoadedSaveGame->unk20[i] = nameInput->buffer[i];
+        gLoadedSaveGame->playerName[i] = nameInput->buffer[i];
     }
     WriteSaveGame();
     TasksDestroyAll();
@@ -3961,7 +3962,7 @@ static void CreateTimeRecordsScreen(struct PlayerDataMenu *playerDataMenu)
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
     s16 availableCharacters;
 
-    ReadAvailableCharacters(availableCharacters, gLoadedSaveGame->unk13);
+    ReadAvailableCharacters(availableCharacters, gLoadedSaveGame->unlockedCharacters);
 
     timeRecordsScreen->playerDataMenu = playerDataMenu;
     timeRecordsScreen->character = 0;
@@ -3974,7 +3975,7 @@ static void CreateTimeRecordsScreen(struct PlayerDataMenu *playerDataMenu)
     for (availableCharacters = 0; availableCharacters < NUM_CHARACTERS;
          availableCharacters++) {
         timeRecordsScreen->unlockedCourses[availableCharacters]
-            = gLoadedSaveGame->unk7[availableCharacters];
+            = gLoadedSaveGame->unlockedLevels[availableCharacters];
     }
 
     timeRecordsScreen->language = playerDataMenu->language;
@@ -4128,7 +4129,7 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu *playerDa
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
     s16 i;
 
-    ReadAvailableCharacters(i, gLoadedSaveGame->unk13);
+    ReadAvailableCharacters(i, gLoadedSaveGame->unlockedCharacters);
 
     timeRecordsScreen->playerDataMenu = playerDataMenu;
     timeRecordsScreen->timeRecords = NULL;
@@ -4140,7 +4141,7 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu *playerDa
     timeRecordsScreen->availableCharacters = i;
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unk7[i];
+        timeRecordsScreen->unlockedCourses[i] = gLoadedSaveGame->unlockedLevels[i];
     }
 
     timeRecordsScreen->language = playerDataMenu->language;
@@ -4945,7 +4946,7 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu
     rows = multiplayerRecordsScreen->table->rows;
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
         for (j = 0; j < MAX_PLAYER_NAME_LENGTH; j++) {
-            rows[i].playerName[j] = profileData->multiplayerScores[i].unk4[j];
+            rows[i].playerName[j] = profileData->multiplayerScores[i].playerName[j];
             if (rows[i].playerName[j] == PLAYER_NAME_END_CHAR) {
                 break;
             }
@@ -4955,10 +4956,10 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu
             rows[i].playerName[j] = PLAYER_NAME_END_CHAR;
         }
 
-        rows[i].slotFilled = profileData->multiplayerScores[i].unk10;
-        rows[i].wins = profileData->multiplayerScores[i].unk11;
-        rows[i].loses = profileData->multiplayerScores[i].unk12;
-        rows[i].draws = profileData->multiplayerScores[i].unk13;
+        rows[i].slotFilled = profileData->multiplayerScores[i].slotFilled;
+        rows[i].wins = profileData->multiplayerScores[i].wins;
+        rows[i].loses = profileData->multiplayerScores[i].losses;
+        rows[i].draws = profileData->multiplayerScores[i].draws;
     }
 
     ResetProfileScreensVram();

@@ -66,7 +66,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     struct UNK_802D4CC_UNK270 *transitionConfig;
     Background *background;
     Sprite *element;
-    s8 lang = gLoadedSaveGame->unk6 - 1;
+    s8 lang = gLoadedSaveGame->language - 1;
     u32 i;
 
     if (lang < 0) {
@@ -281,7 +281,7 @@ void sub_8088D60(void)
                 break;
             case 1:
                 CreateCharacterSelectionScreen(gSelectedCharacter,
-                                               gLoadedSaveGame->unk13
+                                               gLoadedSaveGame->unlockedCharacters
                                                    & CHARACTER_BIT(CHARACTER_AMY));
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 break;
