@@ -55,9 +55,6 @@ extern const Pipe_Data gUnknown_080DFD98[];
 extern const Pipe_Data gUnknown_080DFDD8[];
 extern const Pipe_Data gUnknown_080DFE30[];
 
-extern s16 gUnknown_080DFE90[9][2];
-extern s16 gUnknown_080DFEB4[14];
-extern s16 gUnknown_080DFED0[10];
 extern const Pipe_Data gUnknown_080DFEE4[];
 extern const Pipe_Data gUnknown_080DFF3C[];
 extern const Pipe_Data gUnknown_080DFF9C[];

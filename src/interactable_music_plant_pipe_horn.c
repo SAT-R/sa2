@@ -23,18 +23,19 @@ static const s16 gUnknown_080E0000[4] = {
     Q_8_8(0),
 };
 
-extern const Pipe_Data gUnknown_080DFCF0[];
-extern const Pipe_Data gUnknown_080DFD40[];
-extern const Pipe_Data gUnknown_080DFD98[];
-extern const Pipe_Data gUnknown_080DFDD8[];
-extern const Pipe_Data gUnknown_080DFE30[];
-
 extern s16 gUnknown_080DFE90[9][2];
 extern s16 gUnknown_080DFEB4[14];
-extern s16 gUnknown_080DFED0[10];
-extern const Pipe_Data gUnknown_080DFEE4[];
-extern const Pipe_Data gUnknown_080DFF3C[];
-extern const Pipe_Data gUnknown_080DFF9C[];
+
+// TODO: Replace
+#if TRUE
+extern u16 gUnknown_080DFED0[10];
+#else
+extern u16 gUnknown_080DFED0[10] = {
+    SE_MUSIC_PLANT_EXIT_HORN2, SE_MUSIC_PLANT_HORN3,      SE_MUSIC_PLANT_EXIT_HORN2,
+    SE_MUSIC_PLANT_HORN3,      SE_MUSIC_PLANT_EXIT_HORN2, SE_MUSIC_PLANT_EXIT_HORN2,
+    SE_MUSIC_PLANT_HORN3,      SE_MUSIC_PLANT_EXIT_HORN2, MUS_DUMMY,
+};
+#endif
 
 // NOTE: Gets stored in .data section
 //       (I assume that is because it's a pointer array)
