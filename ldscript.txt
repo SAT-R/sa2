@@ -106,7 +106,6 @@ SECTIONS
         build/sa2/asm/interactable_music_plant_guitar_string.o(.text);
         build/sa2/src/interactable_music_plant_keyboard.o(.text);
         build/sa2/src/interactable_music_plant_german_flute.o(.text);
-        build/sa2/asm/interactable_music_plant_pipe_horn.o(.text);
         build/sa2/src/interactable_music_plant_pipe_horn.o(.text);
         build/sa2/src/interactable_ice_paradise_slowing_snow.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);

@@ -105,16 +105,25 @@ void TaskDestructor_FrenchHorn(struct Task *);
 
 void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
-    s16 r1 = data[pipe->unk18].unk4._16[1];
-    s32 r3, r5, r6, r7;
+    s32 r1 = (u16)data[pipe->unk18].unk4._16[1];
+    s32 r0, r3, r6, r7;
     s16 *data2 = data[pipe->unk18].unk4._16;
 
+    r0 = data2[0];
     r3 = pipe->x1;
-    r7 = -data2[0];
+    r7 = -r0;
     pipe->x2 = r3 - (((s16)pipe->unk1A * r7) >> 10);
 
+#ifndef NON_MATCHING
+    asm("lsl %0, %0, #16\n"
+        "asr %0, %0, #16"
+        :
+        : "r"(r1));
+#else
+    r1 = (s16)r1;
+#endif
+
     r6 = pipe->y1;
-    r5 = -r1;
     pipe->y2 = r6 - ((-r1 * (s16)pipe->unk1A) >> 10);
 
     pipe->unk1A += data[pipe->unk18].unk2;
@@ -124,7 +133,7 @@ void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
         pipe->unk1A -= 1024;
 
         pipe->x1 = pipe->x1 - r7;
-        pipe->y1 = pipe->y1 - r5;
+        pipe->y1 = pipe->y1 - -r1;
 
         value = data[++pipe->unk18].unk0;
         if (value == (u16)-1) {
