@@ -104,20 +104,20 @@ void TaskDestructor_FrenchHorn(struct Task *);
 void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s32 sin, cos;
-    s32 r8;
+    s32 sin2;
+    s32 r8, r9;
     s32 r7 = data[pipe->unk18].unk4;
     u16 sinIndex = ((pipe->unk1A >> 3) + 896) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    r8 = cos * r7;
-    asm("mov r7, r7");
+    r8 = r7 * cos;
 
-    pipe->x2 = Q_24_8_TO_INT(r8 - SIN_24_8(384) * r7) + pipe->x1;
+    sin = SIN_24_8(768);
+    r9 = r7*sin;
+    pipe->x2 = Q_24_8_TO_INT(r8 - sin) + pipe->x1;
 
-    asm("mov r8, r8");
-
-    sin = COS_24_8(sinIndex) + COS(0);
-    pipe->y2 = Q_24_8_TO_INT(sin * r7) + pipe->y1;
+    sin2 = (SIN_24_8(sinIndex) + SIN_24_8(128));
+    pipe->y2 = Q_24_8_TO_INT(sin2 * r7) + pipe->y1;
 
     pipe->unk1A += data[pipe->unk18].unk2;
 
@@ -125,12 +125,11 @@ void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
         u32 value;
         pipe->unk1A -= 1024;
 
-        cos = COS_24_8(0);
-        pipe->x1 = Q_24_8_TO_INT(cos * r7) + pipe->x1;
-        pipe->x1 += r7;
+        cos = SIN_24_8(256);
+        pipe->x1 = Q_24_8_TO_INT(r9 - cos) + pipe->x1;
+        //pipe->x1 += r7;
 
-        sin = SIN_24_8(0) + sin;
-        pipe->y1 = Q_24_8_TO_INT(sin * r7) + pipe->y1;
+        pipe->y1 = Q_24_8_TO_INT((SIN_24_8(0) + sinIndex) * r7) + pipe->y1;
 
         value = data[++pipe->unk18].unk0;
         if (value == (u16)-1) {
