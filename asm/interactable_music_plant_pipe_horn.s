@@ -885,7 +885,7 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	ldrh r0, [r6, #0x18]
 	lsls r0, r0, #3
 	add r0, ip
-	ldr r7, [r0, #4]
+	ldr r7, [r0, #4]        @ r7 = data->unk4
 	ldrh r4, [r6, #0x1a]
 	lsrs r2, r4, #3
 	movs r0, #0xe0
@@ -894,16 +894,17 @@ Handler_MusicPlant_Pipe_9: @ 0x080775B8
 	ldr r1, _080776A0 @ =0x000003FF
 	mov sl, r1
 	mov r0, sl
-	ands r2, r0
-	ldr r5, _080776A4 @ =gSineTable
+	ands r2, r0             @ r2 = sinIndex
+	ldr r5, _080776A4 @ =gSineTable @ r5 = gSineTable
 	movs r3, #0x80
-	lsls r3, r3, #1
+	lsls r3, r3, #1         @ r3 = 256
 	adds r0, r2, r3
 	lsls r0, r0, #1
 	adds r0, r0, r5
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
-	asrs r0, r0, #0x16
+	asrs r0, r0, #0x16      r0 = COS_24_8(sinIndex)
+
 	adds r1, r7, #0
 	muls r1, r0, r1
 	mov r8, r1

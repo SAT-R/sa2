@@ -103,16 +103,20 @@ void TaskDestructor_FrenchHorn(struct Task *);
 
 void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
-    s16 sin, cos;
+    s32 sin, cos;
+    s32 r8;
     s32 r7 = data[pipe->unk18].unk4;
     u16 sinIndex = ((pipe->unk1A >> 3) + 896) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
-    pipe->x2 = Q_24_8_TO_INT(cos * r7) + pipe->x1 + r7;
+    r8 = cos * r7;
+    asm("mov r7, r7");
+
+    pipe->x2 = Q_24_8_TO_INT(r8 - SIN_24_8(384) * r7) + pipe->x1;
 
     asm("mov r8, r8");
 
-    sin = COS_24_8(sinIndex) + SIN_24_8(sinIndex);
+    sin = COS_24_8(sinIndex) + COS(0);
     pipe->y2 = Q_24_8_TO_INT(sin * r7) + pipe->y1;
 
     pipe->unk1A += data[pipe->unk18].unk2;
