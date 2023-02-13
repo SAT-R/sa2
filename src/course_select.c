@@ -255,7 +255,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     gMultiplayerMissingHeartbeats[0] = 0;
 
     if (cutScenes == CUT_SCENE_UNLOCK_TRUE_AREA_53) {
-        gLoadedSaveGame->unk1A = 2;
+        gLoadedSaveGame->extraZoneStatus = 2;
         WriteSaveGame();
     }
 
@@ -268,7 +268,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         if (maxLevel < LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             maxLevel++;
         } else {
-            if (gLoadedSaveGame->unk1A != 0 && gSelectedCharacter == CHARACTER_SONIC) {
+            if (gLoadedSaveGame->extraZoneStatus != 0
+                && gSelectedCharacter == CHARACTER_SONIC) {
                 maxLevel = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
             } else {
                 maxLevel = LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE);
@@ -489,7 +490,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element = &coursesScreen->screenTitle;
     element->x = 0;
     element->y = 0;
-    if (gLoadedSaveGame->unk6 == LANG_JAPANESE) {
+    if (gLoadedSaveGame->language == LANG_JAPANESE) {
         element->graphics.dest = VramMalloc(0x18);
         element->graphics.anim = 0x2FB;
         // Set the background color based on the
@@ -976,7 +977,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
 {
     Sprite *element;
     s8 somethinga;
-    s8 lang = gLoadedSaveGame->unk6;
+    s8 lang = gLoadedSaveGame->language;
 
     if (lang <= 1) {
         somethinga = 0;
@@ -1032,7 +1033,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         u8 i;
         for (i = 0; i < NUM_COURSE_ZONES; i++) {
-            if (gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALD(i)) {
+            if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(i)) {
                 element = &coursesScreen->chaosEmeralds[i + 1];
             } else {
                 element = &coursesScreen->chaosEmeralds[0];
@@ -1130,7 +1131,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
     if (sub_802D4CC(&coursesScreen->screenFade) == 1) {
         DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter,
-                                       gLoadedSaveGame->unk13 & 0x10);
+                                       gLoadedSaveGame->unlockedCharacters & 0x10);
         TaskDestroy(gCurTask);
         return;
     }

@@ -99,7 +99,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     u32 lang, vram;
     u8 i;
 
-    lang = gLoadedSaveGame->unk6;
+    lang = gLoadedSaveGame->language;
     if (lang > NUM_LANGUAGES) {
         // NOTE(Jace): LANG_ENGLISH in the PAL version
         lang = LANG_JAPANESE;

@@ -61,14 +61,15 @@ void ApplyGameStageSettings(void)
         || (gUnknown_03005424 & 0x40)) {
         gUnknown_030054EC = 0;
     } else {
-        gUnknown_030054EC = gLoadedSaveGame->unk4;
+        gUnknown_030054EC = gLoadedSaveGame->difficultyLevel;
     }
 
     if ((gUnknown_03005424 & 0x40)) {
         sub_802B61C(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
-        sub_802B61C(gLoadedSaveGame->unk2C.unk0, gLoadedSaveGame->unk2C.unk2,
-                    gLoadedSaveGame->unk2C.unk4);
+        sub_802B61C(gLoadedSaveGame->buttonConfig.jump,
+                    gLoadedSaveGame->buttonConfig.attack,
+                    gLoadedSaveGame->buttonConfig.trick);
     }
 }
 
@@ -317,7 +318,7 @@ void sub_801AB3C(void)
         if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gUnknown_03005424 |= 1;
 
-            if (gLoadedSaveGame->unk5) {
+            if (gLoadedSaveGame->timeLimitEnabled) {
                 return;
             }
 
@@ -347,7 +348,7 @@ void sub_801AB3C(void)
         if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
             gUnknown_03005424 |= 1;
 
-            if (gLoadedSaveGame->unk5
+            if (gLoadedSaveGame->timeLimitEnabled
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER
                     || !GAME_MODE_IS_SINGLE_PLAYER(gGameMode))) {
                 return;
@@ -406,7 +407,8 @@ void sub_801AF14(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -427,7 +429,8 @@ void sub_801AFA4(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -448,7 +451,8 @@ void sub_801B03C(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -470,7 +474,8 @@ void sub_801B0D4(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -492,7 +497,8 @@ void sub_801B180(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -521,7 +527,8 @@ void sub_801B22C(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -550,7 +557,8 @@ void sub_801B324(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -574,7 +582,8 @@ void sub_801B41C(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -598,7 +607,8 @@ void sub_801B4EC(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -622,7 +632,8 @@ void sub_801B5BC(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -694,7 +705,8 @@ void sub_801B7BC(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -710,7 +722,8 @@ void sub_801B83C(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -726,7 +739,8 @@ void sub_801B8A8(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -742,7 +756,8 @@ void sub_801B914(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -758,7 +773,8 @@ void sub_801B980(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -774,7 +790,8 @@ void sub_801B9EC(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -790,7 +807,8 @@ void sub_801BA58(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -806,7 +824,8 @@ void sub_801BAC4(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -822,7 +841,8 @@ void sub_801BB30(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -841,7 +861,8 @@ void sub_801BB9C(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -857,7 +878,8 @@ void sub_801BC1C(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -877,7 +899,8 @@ void sub_801BC88(void)
     level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -893,7 +916,8 @@ void sub_801BD08(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -909,7 +933,8 @@ void sub_801BD74(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -925,7 +950,8 @@ void sub_801BDE0(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -941,7 +967,8 @@ void sub_801BE4C(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -957,7 +984,8 @@ void sub_801BEB8(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -973,7 +1001,8 @@ void sub_801BF24(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -989,7 +1018,8 @@ void sub_801BF90(void)
     u16 level = gCurrentLevel;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {
@@ -1003,7 +1033,8 @@ void sub_801BF90(void)
 void sub_801BFFC(u16 level)
 {
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == 0 && gLoadedSaveGame->unk7[0] <= gCurrentLevel
+        if (gSelectedCharacter == 0
+            && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
             gUnknown_030054A8[1] = 0x1E;
         } else {

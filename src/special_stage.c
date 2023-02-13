@@ -537,7 +537,7 @@ void sub_806C560(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
     u8 character = stage->character;
-    u8 chaosEmeralds = gLoadedSaveGame->unkC[character];
+    u8 chaosEmeralds = gLoadedSaveGame->chaosEmeralds[character];
 
     if (stage->unk5C7 == 1) {
         if (--stage->unk5C8 == 0) {
@@ -548,15 +548,15 @@ void sub_806C560(void)
 
     if (!(chaosEmeralds & CHAOS_EMERALD(stage->zone))) {
         SpecialStageResultsScreenNewEmeraldSequence(stage);
-        gLoadedSaveGame->unkC[character] |= CHAOS_EMERALD(stage->zone);
+        gLoadedSaveGame->chaosEmeralds[character] |= CHAOS_EMERALD(stage->zone);
         stage->animFrame = 120;
     } else {
         stage->animFrame = 12;
     }
 
-    if ((gLoadedSaveGame->unkC[character] & ALL_ZONE_CHAOS_EMERALDS)
+    if ((gLoadedSaveGame->chaosEmeralds[character] & ALL_ZONE_CHAOS_EMERALDS)
         == ALL_ZONE_CHAOS_EMERALDS) {
-        gLoadedSaveGame->unkC[character]
+        gLoadedSaveGame->chaosEmeralds[character]
             = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
     }
 
@@ -621,7 +621,7 @@ void sub_806C6A4(void)
             gNumLives = temp5;
         }
 
-        gLoadedSaveGame->unk374 += stage->rings;
+        gLoadedSaveGame->score += stage->rings;
 
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

@@ -77,7 +77,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
     gUnknown_03002260 = ((struct UNK_02003300 *)(EWRAM_START + 0x33000))->unk0;
-    gMultiplayerLanguage = gLoadedSaveGame->unk6;
+    gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
     resultsScreen = sub_8082B1C(a);

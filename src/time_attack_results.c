@@ -50,7 +50,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     u8 i;
     u8 isBossLevel;
     u8 level;
-    gLoadedSaveGame->unk374 += gRingCount;
+    gLoadedSaveGame->score += gRingCount;
 
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
                    sub_8089BB0);
@@ -389,19 +389,20 @@ u8 sub_80899B8(u32 finishTime)
     u8 rank = 0;
 
     for (i = 0; i < 3; i++) {
-        existingRecords[i] = gLoadedSaveGame->unk34.table[character][zone][act][i];
+        existingRecords[i] = gLoadedSaveGame->timeRecords.table[character][zone][act][i];
     }
 
     for (i = 0; i < 3; i++) {
         if (finishTime < existingRecords[i]) {
-            gLoadedSaveGame->unk34.table[character][zone][act][i] = finishTime;
+            gLoadedSaveGame->timeRecords.table[character][zone][act][i] = finishTime;
             rank = ++i;
             break;
         }
     }
 
     for (; i < 3; i++) {
-        gLoadedSaveGame->unk34.table[character][zone][act][i] = existingRecords[i - 1];
+        gLoadedSaveGame->timeRecords.table[character][zone][act][i]
+            = existingRecords[i - 1];
     }
 
     return rank;

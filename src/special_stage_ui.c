@@ -308,7 +308,7 @@ void sub_8070078(void)
 static void HandlePaused(struct SpecialStageUI *ui)
 {
     Sprite *element = &ui->pauseMenu;
-    s16 lang = LanguageIndex(gLoadedSaveGame->unk6);
+    s16 lang = LanguageIndex(gLoadedSaveGame->language);
 
     const u16 pauseMenuSprites[6][3];
     memcpy(&pauseMenuSprites, sPauseMenuVariants, 0x24);
@@ -334,7 +334,7 @@ SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScree
     s16 d = 0x9E, e = 0x9E, f = 0x9E;
     s16 i;
 
-    u8 chaosEmeralds = gLoadedSaveGame->unkC[stage->character];
+    u8 chaosEmeralds = gLoadedSaveGame->chaosEmeralds[stage->character];
     u8 character = stage->character;
 
     gUnknown_03005B5C = stage->screenVram;

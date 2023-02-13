@@ -416,7 +416,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
-    if (gLoadedSaveGame->unk6 < 2) {
+    if (gLoadedSaveGame->language < 2) {
         config0->unk1C = 0x108;
     } else {
         config0->unk1C = 0x109;
@@ -547,7 +547,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     Sprite *config;
 
     // Must be 0 - 6;
-    language = gLoadedSaveGame->unk6;
+    language = gLoadedSaveGame->language;
     objAddr = (void *)OBJ_VRAM0;
 
     // TODO: make these into macros maybe?
@@ -607,7 +607,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         if (menuItemId < SinglePlayerMenuItem(0)) {
             // PlayModeMenu positions
             config->y = (PlayModeMenuIndex(menuItemId) * 0x12) + 96;
-        } else if (gLoadedSaveGame->unk14) {
+        } else if (gLoadedSaveGame->chaoGardenUnlocked) {
             // SinglePlayerMenu positions if we have the chao garden available
             config->y = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 96;
         } else {
@@ -949,7 +949,7 @@ static void Task_IntroSkyAnim(void)
         config0->unk18 = 0;
         config0->unk1A = 0;
 
-        if (gLoadedSaveGame->unk6 < LANG_ENGLISH) {
+        if (gLoadedSaveGame->language < LANG_ENGLISH) {
             config0->unk1C = 0x108;
         } else {
             config0->unk1C = 0x109;
@@ -1163,7 +1163,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void)
         CreateMenuItemTransition(&menuItems[MENU_ITEM_TIME_ATTACK], TRANSITION_IN);
         CreateMenuItemTransition(&menuItems[MENU_ITEM_OPTIONS], TRANSITION_IN);
 
-        if (gLoadedSaveGame->unk14) {
+        if (gLoadedSaveGame->chaoGardenUnlocked) {
             CreateMenuItemTransition(&menuItems[MENU_ITEM_TINY_CHAO_GARDEN],
                                      TRANSITION_IN);
         }
@@ -1203,7 +1203,7 @@ static void Task_SinglePlayerMenuMain(void)
     u8 menuIndex;
 
     u8 numMenuItems = 3;
-    if (gLoadedSaveGame->unk14) {
+    if (gLoadedSaveGame->chaoGardenUnlocked) {
         numMenuItems = 4;
     }
 
@@ -1276,7 +1276,7 @@ static void Task_HandleTitleScreenExit(void)
                 gGameMode = GAME_MODE_SINGLE_PLAYER;
                 ApplyGameStageSettings();
                 // If all characters unlocked
-                if (gLoadedSaveGame->unk13 & CHARACTER_BIT(CHARACTER_AMY)) {
+                if (gLoadedSaveGame->unlockedCharacters & CHARACTER_BIT(CHARACTER_AMY)) {
                     CreateCharacterSelectionScreen(CHARACTER_SONIC, TRUE);
                 } else {
                     CreateCharacterSelectionScreen(CHARACTER_SONIC, FALSE);
@@ -1299,7 +1299,7 @@ static void Task_HandleTitleScreenExit(void)
             case SPECIAL_MENU_INDEX_MULTI_PLAYER:
                 gGameMode = GAME_MODE_MULTI_PLAYER;
                 ApplyGameStageSettings();
-                if (gLoadedSaveGame->unk20[0] != PLAYER_NAME_END_CHAR) {
+                if (gLoadedSaveGame->playerName[0] != PLAYER_NAME_END_CHAR) {
                     CreateMultiplayerModeSelectScreen();
                 } else {
                     // If we don't have a profile name
@@ -1359,7 +1359,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config0->unk1A = 0;
 
     // Show japanese game logo if japanese, otherwise
-    if (gLoadedSaveGame->unk6 < LANG_ENGLISH) {
+    if (gLoadedSaveGame->language < LANG_ENGLISH) {
         config0->unk1C = 0x108;
     } else {
         config0->unk1C = 0x109;
@@ -1430,7 +1430,7 @@ static void Task_JumpToSinglePlayerMenu(void)
     struct UNK_802D4CC_UNK270 *config270;
 
     u8 numMenuItems = 3;
-    if (gLoadedSaveGame->unk14) {
+    if (gLoadedSaveGame->chaoGardenUnlocked) {
         numMenuItems = 4;
     }
 
@@ -1757,9 +1757,9 @@ static void Task_LensFlareAnim(void)
 static void LoadTinyChaoGarden(void)
 {
     u32 chaoGardenLang;
-    u32 unk374 = gLoadedSaveGame->unk374;
+    u32 unk374 = gLoadedSaveGame->score;
 
-    switch (gLoadedSaveGame->unk6) {
+    switch (gLoadedSaveGame->language) {
         case LANG_JAPANESE:
             chaoGardenLang = 0;
             break;
@@ -1777,7 +1777,7 @@ static void LoadTinyChaoGarden(void)
             chaoGardenLang = 1;
             break;
         default:
-            chaoGardenLang = gLoadedSaveGame->unk6 & 1;
+            chaoGardenLang = gLoadedSaveGame->language & 1;
             break;
     }
 

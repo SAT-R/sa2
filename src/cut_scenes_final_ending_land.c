@@ -162,7 +162,7 @@ void CreateFinalEndingLandingCutScene(void)
     t = TaskCreate(sub_8093EDC, 0x61C, 0x3100, 0, sub_8093F9C);
     scene = TaskGetStructPtr(t);
     // TODO: chaos emeralds are probabyl wrong
-    if (gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALD(ZONE_FINAL)) {
+    if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(ZONE_FINAL)) {
         value = 2;
         scene->unk33C = 0;
     } else {
@@ -522,7 +522,8 @@ void CreateFinalEndingLandingCutScene(void)
         sub_8002A3C(background);
     }
 
-    if (!(gLoadedSaveGame->unkC[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
+    if (!(gLoadedSaveGame->chaosEmeralds[gSelectedCharacter]
+          & CHAOS_EMERALDS_COMPLETED)) {
         memcpy(unk1AF4, gUnknown_080E1AF4, 0x20);
         DmaCopy32(3, unk1AF4, &gBgPalette[0x20], 0x20);
     }

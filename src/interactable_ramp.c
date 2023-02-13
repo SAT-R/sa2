@@ -128,7 +128,7 @@ static void Task_Interactable_Ramp(void)
                         if (temp4 >= temp6) {
                             if (!(player->moveState & MOVESTATE_IN_AIR)
                                 && (player->speedGroundX > Q_8_8(4))
-                                && (player->unk5E & gPlayerControls.unk0)) {
+                                && (player->unk5E & gPlayerControls.jump)) {
                                 if (temp9 < (temp2 / 2)) {
                                     player->unk6D = 0x16;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;

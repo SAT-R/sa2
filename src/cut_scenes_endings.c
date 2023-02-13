@@ -87,7 +87,7 @@ void sub_808E9F8(UNUSED struct Task *t)
 UNUSED void sub_808E9FC(void)
 {
     struct EndingCutSceneTransition *transition = TaskGetStructPtr(gCurTask);
-    if (gLoadedSaveGame->unk7[gSelectedCharacter]
+    if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
         > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         transition->unk6D = 2;
     } else {

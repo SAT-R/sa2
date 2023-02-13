@@ -211,7 +211,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s8 something;
     u32 selection = initialSelection;
     s8 lang;
-    lang = gLoadedSaveGame->unk6 - 1;
+    lang = gLoadedSaveGame->language - 1;
     if (lang < 0) {
         lang = 0;
     }
@@ -244,7 +244,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
                    CharacterSelectScreenOnDestroy);
     characterScreen = TaskGetStructPtr(t);
 
-    characterScreen->availableCharacters = gLoadedSaveGame->unk13;
+    characterScreen->availableCharacters = gLoadedSaveGame->unlockedCharacters;
     characterScreen->selectedCharacter = initialSelection;
     characterScreen->unk3C4 = 0x10;
     characterScreen->cursorAnimFrame = 0;
@@ -1059,21 +1059,24 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         }
 
         // Only 1 zone available
-        if (gLoadedSaveGame->unk7[gSelectedCharacter] <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
+        if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
+            <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
             gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
             GameStageStart();
             return;
         }
 
-        if (gLoadedSaveGame->unk1A == 1 && gSelectedCharacter == CHARACTER_SONIC) {
-            CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1),
-                                        gLoadedSaveGame->unk7[gSelectedCharacter],
-                                        CUT_SCENE_UNLOCK_TRUE_AREA_53);
+        if (gLoadedSaveGame->extraZoneStatus == 1
+            && gSelectedCharacter == CHARACTER_SONIC) {
+            CreateCourseSelectionScreen(
+                LEVEL_INDEX(ZONE_1, ACT_1),
+                gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
+                CUT_SCENE_UNLOCK_TRUE_AREA_53);
             return;
         }
 
         CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1),
-                                    gLoadedSaveGame->unk7[gSelectedCharacter],
+                                    gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
                                     COURSE_SELECT_CUT_SCENE_NONE);
         return;
     }
@@ -1354,7 +1357,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     Sprite *element;
     struct UNK_808D124_UNK180 *transformOptions;
 
-    s8 lang = gLoadedSaveGame->unk6 - 1;
+    s8 lang = gLoadedSaveGame->language - 1;
 
     if (lang < 0) {
         lang = 0;
@@ -1935,8 +1938,8 @@ static void Task_MultiplayerVerifySelections(void)
 
         // WTF: why is this here
         for (i = 0; i < NUM_CHARACTERS; i++) {
-            if (mostLevelsAvailable < gLoadedSaveGame->unk7[i]) {
-                mostLevelsAvailable = gLoadedSaveGame->unk7[i];
+            if (mostLevelsAvailable < gLoadedSaveGame->unlockedLevels[i]) {
+                mostLevelsAvailable = gLoadedSaveGame->unlockedLevels[i];
             }
         }
 
@@ -1961,8 +1964,8 @@ static void Task_MultiplayerVerifySelections(void)
         mostLevelsAvailable = 0;
 
         for (i = 0; i < NUM_CHARACTERS; i++) {
-            if (mostLevelsAvailable < gLoadedSaveGame->unk7[i]) {
-                mostLevelsAvailable = gLoadedSaveGame->unk7[i];
+            if (mostLevelsAvailable < gLoadedSaveGame->unlockedLevels[i]) {
+                mostLevelsAvailable = gLoadedSaveGame->unlockedLevels[i];
             }
         }
         send->pat0.unk3 = mostLevelsAvailable;

@@ -108,7 +108,7 @@ void sub_8081200(void)
     ApplyGameStageSettings();
     gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-    gPlayer.unk5C |= gPlayerControls.unk0 | gPlayerControls.unk2;
+    gPlayer.unk5C |= gPlayerControls.jump | gPlayerControls.attack;
 }
 
 void sub_8081604(void);
@@ -135,7 +135,7 @@ void StartSinglePakConnect(void)
 
     t = TaskCreate(sub_8081604, 0xFC, 0x2000, 0, NULL);
     connectScreen = TaskGetStructPtr(t);
-    connectScreen->unkFA = gLoadedSaveGame->unk6;
+    connectScreen->unkFA = gLoadedSaveGame->language;
 
     if ((u8)LanguageIndex(connectScreen->unkFA) > LanguageIndex(LANG_ITALIAN)) {
         connectScreen->unkFA = 1;

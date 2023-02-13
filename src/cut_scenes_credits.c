@@ -85,10 +85,10 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     }
 
     if ((scene->variant == CREDITS_VARIANT_FINAL_ENDING
-         && gLoadedSaveGame->unk15[4] != 0)) {
+         && gLoadedSaveGame->completedCharacters[CHARACTER_AMY])) {
         scene->unk4D = 1;
     } else if (scene->variant == CREDITS_VARIANT_EXTRA_ENDING
-               && gLoadedSaveGame->unk1B != 0) {
+               && gLoadedSaveGame->extraEndingCreditsPlayed) {
         scene->unk4D = 2;
     } else {
         scene->unk4D = 0;
