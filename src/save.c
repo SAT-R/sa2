@@ -103,8 +103,8 @@ void InsertMultiplayerProfile(u32 playerId, u16 *name)
 
     for (i = 0; i < 10; i++) {
         struct MultiplayerScore *score = &gLoadedSaveGame->unk2AC[i];
-        if (playerId == score->unk0
-            && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+        if (playerId == score->playerId
+            && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             struct MultiplayerScore scoreCopy;
             memcpy(&scoreCopy, score, sizeof(struct MultiplayerScore));
 
@@ -122,14 +122,14 @@ void InsertMultiplayerProfile(u32 playerId, u16 *name)
         gLoadedSaveGame->unk2AC[i] = gLoadedSaveGame->unk2AC[i - 1];
     }
 
-    gLoadedSaveGame->unk2AC[0].unk0 = playerId;
+    gLoadedSaveGame->unk2AC[0].playerId = playerId;
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++) {
-        gLoadedSaveGame->unk2AC[0].unk4[i] = name[i];
+        gLoadedSaveGame->unk2AC[0].playerName[i] = name[i];
     }
-    gLoadedSaveGame->unk2AC[0].unk10 = TRUE;
-    gLoadedSaveGame->unk2AC[0].unk11 = 0;
-    gLoadedSaveGame->unk2AC[0].unk12 = 0;
-    gLoadedSaveGame->unk2AC[0].unk13 = 0;
+    gLoadedSaveGame->unk2AC[0].slotFilled = TRUE;
+    gLoadedSaveGame->unk2AC[0].wins = 0;
+    gLoadedSaveGame->unk2AC[0].losses = 0;
+    gLoadedSaveGame->unk2AC[0].draws = 0;
 }
 
 void RecordOwnMultiplayerResult(s16 result)
@@ -159,22 +159,22 @@ void RecordMultiplayerResult(u32 id, u16 *name, s16 result)
 
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
         struct MultiplayerScore *score = &gLoadedSaveGame->unk2AC[i];
-        if (id == score->unk0
-            && StringEquals(name, score->unk4, MAX_PLAYER_NAME_LENGTH)) {
+        if (id == score->playerId
+            && StringEquals(name, score->playerName, MAX_PLAYER_NAME_LENGTH)) {
             switch (result) {
                 case MULTIPLAYER_RESULT_WIN:
-                    if (score->unk11 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk11++;
+                    if (score->wins < MAX_MULTIPLAYER_SCORE) {
+                        score->wins++;
                     }
                     break;
                 case MULTIPLAYER_RESULT_LOSS:
-                    if (score->unk12 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk12++;
+                    if (score->losses < MAX_MULTIPLAYER_SCORE) {
+                        score->losses++;
                     }
                     break;
                 case MULTIPLAYER_RESULT_DRAW:
-                    if (score->unk13 < MAX_MULTIPLAYER_SCORE) {
-                        score->unk13++;
+                    if (score->draws < MAX_MULTIPLAYER_SCORE) {
+                        score->draws++;
                     }
                     break;
             }
@@ -215,11 +215,11 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
 
     multiplayerScore = gameState->unk2AC;
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++, multiplayerScore++) {
-        multiplayerScore->unk10 = FALSE;
-        multiplayerScore->unk11 = 0;
-        multiplayerScore->unk12 = 0;
-        multiplayerScore->unk13 = 0;
-        multiplayerScore->unk4[0] = PLAYER_NAME_END_CHAR;
+        multiplayerScore->slotFilled = FALSE;
+        multiplayerScore->wins = 0;
+        multiplayerScore->losses = 0;
+        multiplayerScore->draws = 0;
+        multiplayerScore->playerName[0] = PLAYER_NAME_END_CHAR;
     }
 
     gameState->unk374 = 0;
@@ -262,11 +262,11 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
 
     p2 = save->multiplayerScores;
     for (i = 0; i < 10; i++, p2++) {
-        p2->unk10 = FALSE;
-        p2->unk11 = 0;
-        p2->unk12 = 0;
-        p2->unk13 = 0;
-        p2->unk4[0] = PLAYER_NAME_END_CHAR;
+        p2->slotFilled = FALSE;
+        p2->wins = 0;
+        p2->losses = 0;
+        p2->draws = 0;
+        p2->playerName[0] = PLAYER_NAME_END_CHAR;
     }
 
     save->score = 0;

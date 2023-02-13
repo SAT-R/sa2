@@ -4945,7 +4945,7 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu
     rows = multiplayerRecordsScreen->table->rows;
     for (i = 0; i < NUM_MULTIPLAYER_SCORES; i++) {
         for (j = 0; j < MAX_PLAYER_NAME_LENGTH; j++) {
-            rows[i].playerName[j] = profileData->multiplayerScores[i].unk4[j];
+            rows[i].playerName[j] = profileData->multiplayerScores[i].playerName[j];
             if (rows[i].playerName[j] == PLAYER_NAME_END_CHAR) {
                 break;
             }
@@ -4955,10 +4955,10 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu
             rows[i].playerName[j] = PLAYER_NAME_END_CHAR;
         }
 
-        rows[i].slotFilled = profileData->multiplayerScores[i].unk10;
-        rows[i].wins = profileData->multiplayerScores[i].unk11;
-        rows[i].loses = profileData->multiplayerScores[i].unk12;
-        rows[i].draws = profileData->multiplayerScores[i].unk13;
+        rows[i].slotFilled = profileData->multiplayerScores[i].slotFilled;
+        rows[i].wins = profileData->multiplayerScores[i].wins;
+        rows[i].loses = profileData->multiplayerScores[i].losses;
+        rows[i].draws = profileData->multiplayerScores[i].draws;
     }
 
     ResetProfileScreensVram();
