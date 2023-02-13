@@ -70,10 +70,10 @@
 #define Q_24_8(n) ((s32)((n)*256))
 
 // Converts a Q8.8 fixed-point format number to a regular integer
-#define Q_8_8_TO_INT(n) ((int)((n) / 256))
+#define Q_8_8_TO_INT(n) ((int)((n) >> 8))
 
 // Converts a Q4.12 fixed-point format number to a regular integer
-#define Q_4_12_TO_INT(n) ((int)((n) / 4096))
+#define Q_4_12_TO_INT(n) ((int)((n) >> 12))
 
 // Converts a Q2.12 fixed-point format number to a regular integer
 #define Q_2_14_TO_INT(n) ((int)((n) >> 14))
@@ -95,6 +95,9 @@
 #define RED_VALUE(color)   ((color)&0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
+
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #define CLAMP(value, min, max)                                                          \
     ({                                                                                  \
