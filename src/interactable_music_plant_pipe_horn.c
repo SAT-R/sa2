@@ -29,7 +29,10 @@ typedef struct {
 typedef struct {
     u16 unk0;
     u16 unk2;
-    s32 unk4; // Q_24_8?
+    union {
+        s16 _16[2];
+        s32 _32; // Q_24_8?
+    } unk4;
 } Pipe_Data;
 
 static const s16 gUnknown_080DFFF4[3][2] = {
@@ -100,10 +103,40 @@ extern void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
 
+void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+{
+    s16 r1 = data[pipe->unk18].unk4._16[1];
+    s32 r3, r5, r6, r7;
+    s16 *data2 = data[pipe->unk18].unk4._16;
+
+    r3 = pipe->x1;
+    r7 = -data2[0];
+    pipe->x2 = r3 - (((s16)pipe->unk1A * r7) >> 10);
+
+    r6 = pipe->y1;
+    r5 = -r1;
+    pipe->y2 = r6 - ((-r1 * (s16)pipe->unk1A) >> 10);
+
+    pipe->unk1A += data[pipe->unk18].unk2;
+
+    if (pipe->unk1A > ONE_CYCLE) {
+        u32 value;
+        pipe->unk1A -= 1024;
+
+        pipe->x1 = pipe->x1 - r7;
+        pipe->y1 = pipe->y1 - r5;
+
+        value = data[++pipe->unk18].unk0;
+        if (value == (u16)-1) {
+            pipe->unk18 |= value;
+        }
+    }
+}
+
 void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (DEG_TO_SIN(90) - index) & ONE_CYCLE;
 
@@ -135,7 +168,7 @@ void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (DEG_TO_SIN(270) + index) & ONE_CYCLE;
 
@@ -167,7 +200,7 @@ void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (index)&ONE_CYCLE;
 
@@ -199,7 +232,7 @@ void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (DEG_TO_SIN(180) - index) & ONE_CYCLE;
 
@@ -231,7 +264,7 @@ void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (index + DEG_TO_SIN(90)) & ONE_CYCLE;
 
@@ -263,7 +296,7 @@ void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (DEG_TO_SIN(270) - index) & ONE_CYCLE;
 
@@ -295,7 +328,7 @@ void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u32 index = (pipe->unk1A >> 2);
     u16 sinIndex = (DEG_TO_SIN(360) - index) & ONE_CYCLE;
 
@@ -328,7 +361,7 @@ void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u16 sinIndex = ((pipe->unk1A >> 2) + 512) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
@@ -362,7 +395,7 @@ void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
     s32 sin, cos;
     s32 sin2;
     s32 r8, r9;
-    s32 r7 = data[pipe->unk18].unk4;
+    s32 r7 = data[pipe->unk18].unk4._32;
     u16 sinIndex = ((pipe->unk1A >> 3) + DEG_TO_SIN(315)) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
@@ -396,7 +429,7 @@ void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
 {
     s16 sin, cos;
-    s32 r5 = data[pipe->unk18].unk4;
+    s32 r5 = data[pipe->unk18].unk4._32;
     u16 sinIndex = ((pipe->unk1A >> 3) + 512) & ONE_CYCLE;
 
     cos = COS_24_8(sinIndex);
