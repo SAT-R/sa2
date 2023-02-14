@@ -84,6 +84,7 @@ SECTIONS
         build/sa2/asm/interactable_corkscrew_3D.o(.text);
         build/sa2/asm/interactable_stage_goal.o(.text);
         build/sa2/src/interactable_checkpoint.o(.text);
+        build/sa2/src/interactable_051.o(.text);
         build/sa2/asm/interactable_051.o(.text);
         build/sa2/src/profile.o(.text);
         build/sa2/src/special_stage.o(.text);
