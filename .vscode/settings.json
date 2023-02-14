@@ -155,7 +155,8 @@
         "optional": "c",
         "ratio": "c",
         "__functional_base": "c",
-        "interactable_051.h": "c"
+        "interactable_051.h": "c",
+        "interactable_windmill.h": "c"
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
