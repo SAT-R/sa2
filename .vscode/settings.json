@@ -154,7 +154,8 @@
         "__memory": "c",
         "optional": "c",
         "ratio": "c",
-        "__functional_base": "c"
+        "__functional_base": "c",
+        "interactable_051.h": "c"
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
