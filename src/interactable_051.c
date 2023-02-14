@@ -83,56 +83,58 @@ void initSprite_Interactable051(Interactable *ia, u16 spriteRegionX, u16 spriteR
     }
 }
 
-// void sub_8063598(void)
-// {
-//     u8 i, j;
-//     struct UNK_808D124_UNK180 *transformConfig;
-//     Sprite_IA051 *ia051 = TaskGetStructPtr(gCurTask);
-//     Sprite *sprite = &ia051->sprite;
-//     Interactable *ia = ia051->base.ia;
+void sub_8063598(void)
+{
+    u8 i, j;
+    struct UNK_808D124_UNK180 *transformConfig;
+    Sprite_IA051 *ia051 = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &ia051->sprite;
+    Interactable *ia = ia051->base.ia;
 
-//     s32 screenX, screenY;
-//     s32 baseX, baseY;
+    s32 screenX, screenY;
+    s32 baseX, baseY;
 
-//     screenX = SpriteGetScreenPos(ia051->base.spriteX, ia051->base.regionX);
-//     screenY = SpriteGetScreenPos(ia->y, ia051->base.regionY);
-//     sprite->x = screenX - gCamera.x;
-//     sprite->y = screenY - gCamera.y;
+    screenX = SpriteGetScreenPos(ia051->base.spriteX, ia051->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, ia051->base.regionY);
+    sprite->x = screenX - gCamera.x;
+    sprite->y = screenY - gCamera.y;
 
-//     if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-//         ia->x = ia051->base.spriteX;
-//         TaskDestroy(gCurTask);
-//         return;
-//     }
+    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+        ia->x = ia051->base.spriteX;
+        TaskDestroy(gCurTask);
+        return;
+    }
 
-//     sub_80051E8(sprite);
-//     screenX = sprite->x;
-//     screenY = sprite->y;
+    sub_80051E8(sprite);
+    screenX = sprite->x;
+    screenY = sprite->y;
 
-//     for (i = 0; i < 4; i++) {
-//         for (j = 0; j < 4; j++) {
-//             register s32 temp asm("r2");
-//             register s32 mask asm("r3");
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            u32 temp, mask, r0;
 
-//             sprite = &ia051->unk3C[i * 4 + j].sprite;
-//             transformConfig = &ia051->unk3C[i * 4 + j].transformConfig;
-//             temp = (gUnknown_03005590 * 2 + (i * 0x100));
+            sprite = &ia051->unk3C[i * 4 + j].sprite;
+            transformConfig = &ia051->unk3C[i * 4 + j].transformConfig;
+            temp = (gUnknown_03005590 * 2 + (i * 0x100));
 
-//             mask = ONE_CYCLE;
-//             asm("" ::"r"(mask));
-//             temp &= ONE_CYCLE;
+            mask = ONE_CYCLE;
+#ifndef NON_MATCHING
+            asm("add %0, %1, #0" : "=r"(r0) : "r"(mask) : "cc");
+#else
+            r0 = mask;
+#endif
 
-//             sprite->x = screenX + ((COS(temp) * ((j + 1) * 16 - 8)) >> 0xE);
-//             sprite->y = screenY + ((SIN(temp) * ((j + 1) * 16 - 8)) >> 0xE);
-//             transformConfig->unk0 = temp;
-//             transformConfig->unk2 = 0x100;
-//             transformConfig->unk4 = 0x100;
-//             transformConfig->unk6[0] = sprite->x;
-//             transformConfig->unk6[1] = sprite->y;
+            sprite->x = screenX + ((COS(temp & r0) * ((j + 1) * 16 - 8)) >> 0xE);
+            sprite->y = screenY + ((SIN(temp & r0) * ((j + 1) * 16 - 8)) >> 0xE);
+            transformConfig->unk0 = temp & r0;
+            transformConfig->unk2 = 0x100;
+            transformConfig->unk4 = 0x100;
+            transformConfig->unk6[0] = sprite->x;
+            transformConfig->unk6[1] = sprite->y;
 
-//             sprite->unk10 = (gUnknown_030054B8++ | 0x1060);
-//             sub_8004860(sprite, transformConfig);
-//             sub_80051E8(sprite);
-//         }
-//     }
-// }
+            sprite->unk10 = (gUnknown_030054B8++ | 0x1060);
+            sub_8004860(sprite, transformConfig);
+            sub_80051E8(sprite);
+        }
+    }
+}
