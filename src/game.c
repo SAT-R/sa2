@@ -43,9 +43,94 @@ void sub_80191A4(void);
 
 extern const u16 gLevelSongs[];
 
-extern const u16 gUnknown_080D5964[][2];
-// TODO not TaskMain use an inline type
-extern const TaskMain gUnknown_080D57DC[];
+void sub_801AF14(void);
+void sub_801AFA4(void);
+void sub_801B03C(void);
+void sub_801B0D4(void);
+void sub_801B180(void);
+void sub_801B22C(void);
+void sub_801B324(void);
+void sub_801B41C(void);
+void sub_801B4EC(void);
+void sub_801B5BC(void);
+void sub_801B7BC(void);
+void sub_801B83C(void);
+void sub_801B8A8(void);
+void sub_801B914(void);
+void sub_801B980(void);
+void sub_801B9EC(void);
+void sub_801BA58(void);
+void sub_801BAC4(void);
+void sub_801BB30(void);
+void sub_801BB9C(void);
+void sub_801BC88(void);
+void sub_801BC1C(void);
+void sub_801BD08(void);
+void sub_801BD74(void);
+void sub_801BDE0(void);
+void sub_801BE4C(void);
+void sub_801BEB8(void);
+void sub_801BF24(void);
+const VoidFn gUnknown_080D57DC[]
+    = { sub_801AF14, sub_801B7BC, sub_801B83C, sub_801BF24, sub_801B8A8, sub_801B914,
+        sub_801B980, sub_801BF24, sub_801AFA4, sub_801B03C, sub_801B9EC, sub_801BF24,
+        sub_801B0D4, sub_801B180, sub_801BA58, sub_801BF24, sub_801BAC4, sub_801BB30,
+        sub_801BB9C, sub_801BF24, sub_801B22C, sub_801B324, sub_801BC1C, sub_801BF24,
+        sub_801B41C, sub_801B4EC, sub_801B5BC, sub_801BF24, sub_801BC88, sub_801BD08,
+        sub_801BD74, sub_801BDE0, sub_801BE4C, sub_801BEB8 };
+
+asm(" .global gUnknown_080D5864\n"
+    "gUnknown_080D5864:\n"
+    ".incbin \"baserom.gba\", 0x000D5864, 0x100\n");
+
+const u16 gUnknown_080D5964[][2] = {
+    { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 },
+    { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 },
+};
+
+void sub_801C774(void);
+void sub_801CB74(void);
+void sub_801CD7C(void);
+void sub_801CEE4(void);
+void sub_801D104(void);
+void sub_801D1A8(void);
+void sub_801D95C(void);
+void sub_801DF08(void);
+void sub_801E118(void);
+void sub_801E12C(void);
+const VoidFn gUnknown_080D5988[] = {
+    sub_801C774, sub_801C774, sub_801C774, NULL,        sub_801E118, sub_801E118,
+    sub_801E118, NULL,        sub_801CB74, sub_801CB74, sub_801CB74, NULL,
+    sub_801CD7C, sub_801CD7C, sub_801E12C, NULL,        sub_801CEE4, sub_801CEE4,
+    NULL,        NULL,        sub_801D104, sub_801D104, sub_801D1A8, NULL,
+    sub_801D95C, sub_801D95C, sub_801D95C, NULL,        NULL,        sub_801DF08,
+    sub_801C774, NULL,        NULL,        NULL,
+};
+
+void sub_801C818(s32, s32);
+void sub_801C94C(s32, s32);
+void sub_801CBE8(s32, s32);
+void sub_801CDF0(s32, s32);
+void sub_801CF60(s32, s32);
+void sub_801D534(s32, s32);
+void sub_801E130(s32, s32);
+void sub_801E134(s32, s32);
+void sub_801E1A4(s32, s32);
+void sub_801E1D0(s32, s32);
+void sub_801E1E4(s32, s32);
+void sub_801E234(s32, s32);
+void sub_801E26C(s32, s32);
+void sub_801E2E0(s32, s32);
+void sub_801E310(s32, s32);
+void sub_801E360(s32, s32);
+const CameraMain gUnknown_080D5A10[] = {
+    sub_801C818, sub_801C818, sub_801E134, sub_801E130, sub_801C94C, sub_801C94C,
+    sub_801E1A4, sub_801E130, sub_801CBE8, sub_801CBE8, sub_801E1D0, sub_801E130,
+    sub_801CDF0, sub_801CDF0, sub_801E130, sub_801E130, sub_801CF60, sub_801CF60,
+    sub_801E1E4, sub_801E130, sub_801D534, sub_801D534, sub_801E234, sub_801E130,
+    sub_801E26C, sub_801E26C, sub_801E2E0, sub_801E130, sub_801E310, sub_801E360,
+    sub_801C818, sub_801C94C, sub_801C818, sub_801D534,
+};
 
 void ApplyGameStageSettings(void)
 {
@@ -1055,8 +1140,6 @@ extern const u32 *gUnknown_080D62D8[];
 
 extern const Background gUnknown_080D5864[4];
 
-extern const TaskMain gUnknown_080D5988[];
-
 extern const CameraMain gUnknown_080D5A10[];
 
 struct Backgrounds {
@@ -1439,7 +1522,7 @@ void sub_801C774(void)
     gBgScrollRegs[0][1] = 0;
 }
 
-void sub_801C818(void)
+void sub_801C818(s32 UNUSED a, s32 UNUSED b)
 {
 
     s32 i;
@@ -1601,7 +1684,7 @@ void sub_801CB74(void)
     gBgScrollRegs[3][1] = 0;
 }
 
-NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8())
+NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
 {
     // TODO: similar to sub_801C94C
 }
@@ -1699,7 +1782,7 @@ void sub_801CEE4(void)
     gBgScrollRegs[3][1] = 0;
 }
 
-void sub_801CF60(void)
+void sub_801CF60(s32 UNUSED a, s32 UNUSED b)
 {
     s32 num;
     u16 *cursor, i, val;

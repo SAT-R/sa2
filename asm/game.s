@@ -3,26 +3,6 @@
 
 .section .rodata
 
-    .global gUnknown_080D57DC
-gUnknown_080D57DC:
-    .incbin "baserom.gba", 0x000D57DC, 0x88
-
-    .global gUnknown_080D5864
-gUnknown_080D5864:
-    .incbin "baserom.gba", 0x000D5864, 0x100
-
-    .global gUnknown_080D5964
-gUnknown_080D5964:
-    .incbin "baserom.gba", 0x000D5964, 0x24
-
-    .global gUnknown_080D5988
-gUnknown_080D5988:
-    .incbin "baserom.gba", 0x000D5988, 0x88
-
-    .global gUnknown_080D5A10
-gUnknown_080D5A10:
-    .incbin "baserom.gba", 0x000D5A10, 0x88
-
     .global gUnknown_080D5A98
 gUnknown_080D5A98:
     .incbin "baserom.gba", 0x000D5A98, 0x88
@@ -2053,11 +2033,14 @@ sub_801E118: @ 0x0801E118
 	bx lr
 	.align 2, 0
 _0801E128: .4byte gBgScrollRegs
-_0801E12C:
-	.byte 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start nullsub_8002A34_1
-nullsub_8002A34_1: @ 0x0801E130
+    thumb_func_start sub_801E12C
+sub_801E12C:
+    bx lr
+    .align 2, 0
+
+	thumb_func_start sub_801E130
+sub_801E130: @ 0x0801E130
 	bx lr
 	.align 2, 0
 
