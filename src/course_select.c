@@ -496,7 +496,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         // Set the background color based on the
         // character
         if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
-#ifndef NONMATCHING
+#ifndef NON_MATCHING
             s8 var = gSelectedCharacter;
             if (var)
                 var = gSelectedCharacter;

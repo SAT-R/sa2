@@ -219,25 +219,43 @@ void sub_8075D28(Sprite_NoteBlock *block)
     sub_80051E8(s);
 }
 
-NONMATCH("asm/non_matching/sub_8075D58.inc", bool32 sub_8075D58(Sprite_NoteBlock *block))
+bool32 sub_8075D58(Sprite_NoteBlock *block)
 {
     s32 screenX, screenY;
-    s16 otherX;
-    screenX = (block->posX + 256);
+    u16 otherX, otherY;
+
+#ifndef NON_MATCHING
+    s32 r1;
+    register s32 r4 asm("r4");
+    screenX = block->posX;
+    r1 = 256;
+    r4 = r1;
+    asm("" ::"r"(r1));
+    screenX += r4;
     screenX -= gCamera.x;
-    screenY = (block->posY + 256);
+
+    screenY = block->posY + r4;
     screenY -= gCamera.y;
+#else
+    screenX = block->posX + 256;
+    screenX -= gCamera.x;
+    screenX = block->posY + 256;
+    screenY -= gCamera.y;
+#endif
 
+#ifndef NON_MATCHING
+    otherY = screenY;
     otherX = screenX;
-
-    if ((otherX < -256 || otherX > (256 + DISPLAY_WIDTH))
+    if ((otherX) > 752 || (otherY) > 672) {
+#else
+    if ((screenX < -256 || screenX > (256 + DISPLAY_WIDTH))
         || (screenY < -256 || screenY > (256 + DISPLAY_HEIGHT))) {
+#endif
         return TRUE;
     }
 
     return FALSE;
 }
-END_NONMATCH
 
 bool32 sub_8075D98(Sprite_NoteBlock *block)
 {
