@@ -202,6 +202,7 @@ SECTIONS
         build/sa2/asm/interactable_platform_thin.o(.rodata);
         build/sa2/asm/entities_1.o(.rodata);
         build/sa2/src/game.o(.rodata);
+        build/sa2/src/stage.o(.rodata);
         build/sa2/asm/game.o(.rodata);
         build/sa2/data/time_data.o(.rodata);
         build/sa2/src/time.o(.rodata);
