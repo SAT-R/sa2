@@ -97,7 +97,7 @@ struct MapHeader {
 }; /* size = 0x20 */
 
 struct MapHeader_Full {
-    struct MapHeader unk0;
+    struct MapHeader h;
     u16 mapWidth; // in Metatiles
     u16 mapHeight; // in Metatiles
 };
