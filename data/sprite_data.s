@@ -7,7 +7,7 @@ gSpriteTables: @ 0x080F40D4
     .4byte gSpriteOamData
     .4byte gSpritePalettes
     .4byte gObjTiles_4bpp
-    .4byte gObjTiles_8bpp
+    .4byte gObjTiles_8bpp @ 8bpp UNUSED - Read comment below at gObjTiles_8bpp
     
     .include "data/animations/animations.inc"
     .include "data/animations/animations_table.inc"
@@ -36,6 +36,9 @@ gSpritePalettes:
 gObjTiles_4bpp:
     .include "graphics/obj_tiles_4bpp.inc"
 
+@ Unlike the first game, Sonic Advance 2 does not use 8-bits-per-pixel object tiles,
+@   but the engine does need a dummy-pointer to 8bpp data.
+@   Here it would just turn out to be "garbage" data.
     .global gObjTiles_8bpp
 gObjTiles_8bpp: @ 0x086E9E08
-    .incbin "baserom.gba", 0x006E9E08, 0x600
+    @ DUMMY - NO DATA HERE!

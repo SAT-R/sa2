@@ -1,12 +1,20 @@
 	.section .rodata
  
-    .global gUnknown_086EA408
-gUnknown_086EA408:
-    .incbin "baserom.gba", 0x006EA408, 0x6EA0
+@ NOTE: Sometimes in the codebase, there is pointers to inside the tileset data.
+@       Set these pointers to:
+@           (<Beginning_of_Tileset> + (tile_count * TILE_SIZE_4BPP))
 
-    .global gUnknown_086F12A8
-gUnknown_086F12A8:
-    .incbin "baserom.gba", 0x006F12A8, 0x1CA8
+    .global Palette_Tileset_Stage_LeafForest
+Palette_Tileset_Stage_LeafForest: @ 0x086E9E08
+    .incbin "graphics/tilesets/zones/1_leaf_forest.gbapal"
+.size Palette_Tileset_Stage_LeafForest, .-Palette_Tileset_Stage_LeafForest
+    
+    .global Tileset_Stage_LeafForest
+Tileset_Stage_LeafForest: @ 0x086EA008
+    .incbin "graphics/tilesets/zones/1_leaf_forest.4bpp"
+.size Tileset_Stage_LeafForest, .-Tileset_Stage_LeafForest
+
+    .incbin "baserom.gba", 0x6F12A8, 0x1CA8
 
     .global gUnknown_086F2F50
 gUnknown_086F2F50:
