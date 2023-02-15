@@ -8,5 +8,5 @@
 extern u8 Tileset_Stage_LeafForest[];
 
 //{{METATILE_WIDTH, METATILE_HEIGHT, 0, 0, 0, 0, Tileset_Stage_LeafForest,
-//sizeof(Tileset_Stage_LeafForest), Palette_Tileset_Stage_LeafForest,
+// sizeof(Tileset_Stage_LeafForest), Palette_Tileset_Stage_LeafForest,
 // palOffset, sizeof(Palette_Tileset_Stage_LeafForest), metatiles, map}, 206, 32};
