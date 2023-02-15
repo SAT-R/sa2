@@ -30,7 +30,6 @@ static void sub_80811A0(Sprite_SpecialRing *, u32);
 static void sub_8081134(Sprite_SpecialRing *);
 static void Task_80811BC(void);
 
-extern u32 sub_800DF38(Sprite *, s32, s32);
 extern void sub_80122DC(s32, s32);
 
 void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,

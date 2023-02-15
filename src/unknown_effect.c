@@ -5,12 +5,11 @@
 
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "game.h"
 
 struct UnknownEffect87028 {
     /* 0x00 */ u8 unk0;
 } /* size 0x4 */;
-
-extern u32 sub_800CBA4(Player *);
 
 void sub_80871C4(s16, s16, s16);
 

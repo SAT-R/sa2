@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
+#include "game.h"
 
 #include "constants/move_states.h"
 
@@ -20,8 +21,6 @@ typedef struct {
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
 } Sprite_IA105;
-
-extern bool32 sub_800CBA4(Player *);
 
 static void Task_Interactable105(void);
 static void TaskDestructor_Interactable105(struct Task *t);
