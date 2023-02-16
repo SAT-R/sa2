@@ -112,7 +112,7 @@ SECTIONS
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/asm/interactable_ice_paradise_half_pipe.o(.text);
         build/sa2/asm/interactable_069.o(.text);
-        build/sa2/asm/interactable_070.o(.text);
+        build/sa2/src/interactable_070.o(.text);
         build/sa2/asm/interactable_074.o(.text);
         build/sa2/asm/interactable_075.o(.text);
         build/sa2/asm/interactable_078.o(.text);

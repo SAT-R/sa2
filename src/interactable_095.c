@@ -32,7 +32,7 @@ static void DestroyInteractable095(Sprite_IA95 *);
 void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable095Main, 0x54, 0x2010, 0,
+    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
                                 TaskDestructor_Interactable095);
     Sprite_IA95 *ia95 = TaskGetStructPtr(t);
     Sprite *sprite;
