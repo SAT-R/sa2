@@ -249,7 +249,7 @@ gUnknown_087C0FC: @ 0x087C0FC
 @   0x0892F4D4 0x0892F4F8 0x08950508  @ True Area 53
 @   0x08933538 0x0893355C 0x089520C4  @ Leftover - w/out tileset
 
-@ Unknown Data Pointers
+@ Unknown Graphics Data Pointers
 @  >> Start: @ 0x80D5E58
 @   00000000 080E8DF4 080F1800 
 @   080F2EAC 080F40B8 08954330 
