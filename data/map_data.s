@@ -50,7 +50,7 @@ gUnknown_086F32E8:
      
     .global Metatiles_Stage_LeafForest_Act1
 Metatiles_Stage_LeafForest_Act1: @ 0x086F33D0
-    .incbin "graphics/tilesets/zones/1_leaf_forest/metatiles_act1.raw"
+    .incbin "data/maps/zone1/act1/metatiles.raw"
     mDataSize Metatiles_Stage_LeafForest_Act1
 
     .global Map_Stage_LeafForest_Act1_FrontLayer
@@ -90,36 +90,40 @@ gUnknown_08714578:
     .global Palette_Stage_LeafForest_Act2
 Palette_Stage_LeafForest_Act2: @ 0x0871459C
     .incbin "graphics/tilesets/zones/1_leaf_forest/tileset.gbapal"
-.size Palette_Stage_LeafForest_Act2, .-Palette_Stage_LeafForest_Act2
+    mDataSize Palette_Stage_LeafForest_Act2
 
     .global Tileset_Stage_LeafForest_Act2
 Tileset_Stage_LeafForest_Act2: @ 0x0871479C
     .incbin "graphics/tilesets/zones/1_leaf_forest/tileset_act2.4bpp"
-.size Tileset_Stage_LeafForest_Act2, .-Tileset_Stage_LeafForest_Act2
+    mDataSize Tileset_Stage_LeafForest_Act2
 
     .global gUnknown_0871B4DC
 gUnknown_0871B4DC: @ 0x0871B4DC
-    .incbin "baserom.gba", 0x0071B4DC, 0x1B50
+    .incbin "data/maps/zone1/act2/gUnknown_0871B4DC.raw"
+    mDataSize gUnknown_0871B4DC
     
     .global gUnknown_0871D02C
 gUnknown_0871D02C: @ 0x0871D02C
-    .incbin "baserom.gba", 0x0071D02C, 0x36C
+    .incbin "data/maps/zone1/act2/gUnknown_0871D02C.raw"
+    mDataSize gUnknown_0871D02C
         
     .global gUnknown_0871D398
 gUnknown_0871D398: @ 0x0871D398
-    .incbin "baserom.gba", 0x0071D398, 0xDC
+    .incbin "data/maps/zone1/act2/gUnknown_0871D398.raw"
+    mDataSize gUnknown_0871D398
     
     .global Metatiles_Stage_LeafForest_Act2
 Metatiles_Stage_LeafForest_Act2: @ 0x0871D474
-    .incbin "baserom.gba", 0x0071D474, 0x17E80
+    .incbin "data/maps/zone1/act2/metatiles.raw"
+    mDataSize Metatiles_Stage_LeafForest_Act2
 
     .global Map_Stage_LeafForest_Act2_FrontLayer
 Map_Stage_LeafForest_Act2_FrontLayer: @ 0x087352F4
-    .incbin "baserom.gba", 0x007352F4, 0x286C
+    .incbin "data/maps/zone1/act2/map_front.raw"
     
     .global Map_Stage_LeafForest_Act2_BackLayer
 Map_Stage_LeafForest_Act2_BackLayer: @ 0x08737B60
-    .incbin "baserom.gba", 0x00737B60, 0x286C
+    .incbin "data/maps/zone1/act2/map_back.raw"
 
     .global MapHeader_LeafForest_Act2_FrontLayer
 MapHeader_LeafForest_Act2_FrontLayer: @ 0x0873A3CC
