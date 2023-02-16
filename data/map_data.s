@@ -157,8 +157,7 @@ Palette_Stage_LeafForest_Boss: @ 0x0873A438
 
     .global Tileset_Stage_LeafForest_Boss
 Tileset_Stage_LeafForest_Boss: @ 0x0873A638
-    .incbin "baserom.gba", 0x0073A638, 0xE00
-    @.incbin "graphics/tilesets/zones/1_leaf_forest/tileset_boss.4bpp"
+    .incbin "graphics/tilesets/zones/1_leaf_forest/tileset_boss.4bpp"
     mDataSize Tileset_Stage_LeafForest_Boss
 
     .global gUnknown_0873B438
