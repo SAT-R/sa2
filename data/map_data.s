@@ -163,28 +163,32 @@ Tileset_Stage_LeafForest_Boss: @ 0x0873A638
 
     .global gUnknown_0873B438
 gUnknown_0873B438: @ 0x0873B438
-    .incbin "baserom.gba", 0x0073B438, 0x380
+    .incbin "data/maps/zone1/boss/gUnknown_0873B438.raw"
+    mDataSize gUnknown_0873B438
     
     .global gUnknown_0873B7B8
 gUnknown_0873B7B8: @ 0x0873B7B8
-    .incbin "baserom.gba", 0x0073B7B8, 0x70
+    .incbin "data/maps/zone1/boss/gUnknown_0873B7B8.raw"
+    mDataSize gUnknown_0873B7B8
         
     .global gUnknown_0873B828
 gUnknown_0873B828: @ 0x0873B828
-    .incbin "baserom.gba", 0x0073B828, 0x1C
+    .incbin "data/maps/zone1/boss/gUnknown_0873B828.raw"
+    mDataSize gUnknown_0873B828
     
     .global Metatiles_Stage_LeafForest_Boss
 Metatiles_Stage_LeafForest_Boss: @ 0x0873B844
-    .incbin "baserom.gba", 0x0073B844, 0x5A0
+    .incbin "data/maps/zone1/boss/metatiles.raw"
+    mDataSize Metatiles_Stage_LeafForest_Boss
 
     .global Map_Stage_LeafForest_Boss_FrontLayer
 Map_Stage_LeafForest_Boss_FrontLayer: @ 0x0873BDE4
-    .incbin "baserom.gba", 0x0073BDE4, ((60 * 3) * 2)
+    .incbin "data/maps/zone1/boss/map_front.raw"
     mDataSize Map_Stage_LeafForest_Boss_FrontLayer
     
     .global Map_Stage_LeafForest_Boss_BackLayer
 Map_Stage_LeafForest_Boss_BackLayer: @ 0x0873BF4C
-    .incbin "baserom.gba", 0x0073BF4C, ((60 * 3) * 2)
+    .incbin "data/maps/zone1/boss/map_back.raw"
     mDataSize Map_Stage_LeafForest_Boss_BackLayer
 
     .global MapHeader_LeafForest_Boss_FrontLayer
