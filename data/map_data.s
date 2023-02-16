@@ -249,6 +249,7 @@ gUnknown_087C0FC: @ 0x087C0FC
 @   0x08933538 0x0893355C 0x089520C4  @ Leftover - w/out tileset
 
 @ Unknown Graphics Data Pointers
+@ Also NOT part of this file - just for keeping an overview on the pointers
 @  >> Start: @ 0x80D5E58
 @   00000000 080E8DF4 080F1800 
 @   080F2EAC 080F40B8 08954330 
