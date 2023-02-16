@@ -295,7 +295,7 @@ gSongTable:	@ 0x08AD4F4C
 	song se_291, 2, 2
 	song se_ice_paradise_slide, 2, 2
 	song se_293, 2, 2
-	song se_294, 2, 2
+	song se_techno_base_note_block, 2, 2
 	song se_295, 2, 2
 	song se_296, 2, 2
 	song se_297, 2, 2

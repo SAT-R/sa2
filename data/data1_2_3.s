@@ -1,17 +1,5 @@
     .section .rodata
 
-    .global gUnknown_080E0008
-gUnknown_080E0008:
-    .incbin "baserom.gba", 0x000E0008, 0x12
-
-    .global gUnknown_080E001A
-gUnknown_080E001A:
-    .incbin "baserom.gba", 0x000E001A, 0x18
-
-    .global gUnknown_080E0032
-gUnknown_080E0032:
-    .incbin "baserom.gba", 0x000E0032, 0x6
-
     .global gUnknown_080E0038
 gUnknown_080E0038:
     .incbin "baserom.gba", 0x000E0038, 0xC

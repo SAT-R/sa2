@@ -92,7 +92,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
     gPlayer.unk6D = 5;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
-        m4aSongNumStart(SE_TECHNO_BASE_PIANO);
+        m4aSongNumStart(SE_TECHNO_BASE_NOTE_BLOCK);
     } else {
         m4aSongNumStart(SE_MUSIC_PLANT_PIANO);
     }

@@ -5,6 +5,8 @@
 #include "m4a.h"
 
 #include "constants/move_states.h"
+#include "constants/songs.h"
+#include "constants/animations.h"
 
 typedef struct {
     SpriteBase base;
@@ -18,11 +20,30 @@ typedef struct {
     u8 unk4E;
 } Sprite_IA70;
 
-void Task_Interactable070(void);
-void TaskDestructor_Interactable070(struct Task *);
+static void Task_Interactable070(void);
+static void TaskDestructor_Interactable070(struct Task *);
+static void sub_8079CCC(Sprite_IA70 *);
+static bool32 sub_8079D60(Sprite_IA70 *);
+static void sub_8079D9C(Sprite_IA70 *);
+static void sub_8079D00(Sprite_IA70 *);
+static void sub_8079D30(Sprite_IA70 *);
 
-extern const u16 gUnknown_080E0008[][3];
-extern const u16 gUnknown_080E001A[][4];
+static const u16 sNoteBlockAssets[][3] = {
+    { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 0, 0x14C },
+    { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 1, 0x154 },
+    { SA2_ANIM_NOTE_BLOCK_TEC_BASE, 2, 0x15C },
+};
+static const u16 gUnknown_080E001A[][4] = {
+    { Q_8_8(6), Q_8_8(250), Q_8_8(250), Q_8_8(6) },
+    { Q_8_8(7), Q_8_8(249), Q_8_8(249), Q_8_8(7) },
+    { Q_8_8(8), Q_8_8(248), Q_8_8(248), Q_8_8(8) },
+};
+
+static const u16 sNoteBlockSfx[] = {
+    SE_TECHNO_BASE_NOTE_BLOCK,
+    SE_TECHNO_BASE_NOTE_BLOCK,
+    SE_TECHNO_BASE_NOTE_BLOCK,
+};
 
 void initSprite_Interactable070(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
@@ -51,34 +72,29 @@ void initSprite_Interactable070(Interactable *ia, u16 spriteRegionX, u16 spriteR
     sprite->focused = 0;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
-    sprite->graphics.dest = (void *)OBJ_VRAM0 + gUnknown_080E0008[ia70->unk4C][2] * 0x20;
-    sprite->graphics.anim = gUnknown_080E0008[ia70->unk4C][0];
-    sprite->variant = gUnknown_080E0008[ia70->unk4C][1];
+    sprite->graphics.dest = (void *)OBJ_VRAM0 + sNoteBlockAssets[ia70->unk4C][2] * 0x20;
+    sprite->graphics.anim = sNoteBlockAssets[ia70->unk4C][0];
+    sprite->variant = sNoteBlockAssets[ia70->unk4C][1];
 
-    ia70->unk3C = ia->x * 8 + spriteRegionX * 0x100;
-    ia70->unk40 = ia->y * 8 + spriteRegionY * 0x100;
+    ia70->unk3C = ia->x * 8 + Q_24_8(spriteRegionX);
+    ia70->unk40 = ia->y * 8 + Q_24_8(spriteRegionY);
 
     SET_SPRITE_INITIALIZED(ia);
     sub_8004558(sprite);
 }
 
-void sub_8079D9C(Sprite_IA70 *);
-
-void sub_8079D00(Sprite_IA70 *);
-void sub_8079D30(Sprite_IA70 *);
-
-void sub_80799FC(void)
+static void sub_80799FC(void)
 {
     Sprite_IA70 *ia70 = TaskGetStructPtr(gCurTask);
 
     switch (ia70->unk4E++) {
         case 0:
-            ia70->unk44 = (COS(ia70->unk4D * 4) >> 6) * 8;
-            ia70->unk48 = (SIN(ia70->unk4D * 4) >> 6) * 8;
+            ia70->unk44 = Q_2_14_TO_Q_24_8(COS(ia70->unk4D * 4)) * 8;
+            ia70->unk48 = Q_2_14_TO_Q_24_8(SIN(ia70->unk4D * 4)) * 8;
             break;
         case 4:
-            ia70->unk44 = (COS(ia70->unk4D * 4) >> 6) * -2;
-            ia70->unk48 = (SIN(ia70->unk4D * 4) >> 6) * -2;
+            ia70->unk44 = Q_2_14_TO_Q_24_8(COS(ia70->unk4D * 4)) * -2;
+            ia70->unk48 = Q_2_14_TO_Q_24_8(SIN(ia70->unk4D * 4)) * -2;
             break;
         case 6:
             ia70->unk44 = 0;
@@ -90,25 +106,25 @@ void sub_80799FC(void)
     sub_8079D30(ia70);
 }
 
-bool32 sub_8079AC4(Sprite_IA70 *ia70)
+static bool32 sub_8079AC4(Sprite_IA70 *ia70)
 {
     u32 temp;
     s32 temp1, temp2;
     u16 temp3, temp4;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        temp1 = gPlayer.x >> 8;
-        temp1 += 0x18;
+        temp1 = Q_24_8_TO_INT(gPlayer.x);
+        temp1 += 24;
         temp1 -= ia70->unk3C;
 
-        temp2 = gPlayer.y >> 8;
-        temp2 += 0x10;
+        temp2 = Q_24_8_TO_INT(gPlayer.y);
+        temp2 += 16;
         temp2 -= ia70->unk40;
 
         temp4 = temp2;
         temp3 = temp1;
 
-        if (temp3 < 0x31 && temp4 < 0x21) {
+        if (temp3 < 49 && temp4 < 33) {
             s16 speedGround = gPlayer.speedGroundX;
 
             temp = sub_800CDBC(&ia70->sprite, ia70->unk3C, ia70->unk40, &gPlayer);
@@ -117,7 +133,7 @@ bool32 sub_8079AC4(Sprite_IA70 *ia70)
             }
 
             if (temp & 0x10000) {
-                gPlayer.y += (s16)(temp << 8);
+                gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[ia70->unk4C][1];
                 gPlayer.unk64 = 4;
                 gPlayer.unk6D = 5;
@@ -135,7 +151,7 @@ bool32 sub_8079AC4(Sprite_IA70 *ia70)
                 gPlayer.unk6D = 5;
                 ia70->unk4D = 0;
             } else {
-                gPlayer.y += (s16)(temp << 8);
+                gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[ia70->unk4C][3];
                 gPlayer.unk64 = 4;
                 gPlayer.unk6D = 5;
@@ -143,7 +159,7 @@ bool32 sub_8079AC4(Sprite_IA70 *ia70)
             }
 
             if (gPlayer.moveState & MOVESTATE_IN_AIR) {
-                gPlayer.moveState &= ~0x100;
+                gPlayer.moveState &= ~MOVESTATE_100;
             } else {
                 gPlayer.speedGroundX = speedGround;
                 gPlayer.unk64 = 4;
@@ -152,7 +168,7 @@ bool32 sub_8079AC4(Sprite_IA70 *ia70)
 
             if (gPlayer.unk3C == &ia70->sprite) {
                 gPlayer.unk3C = NULL;
-                gPlayer.moveState &= ~0x8;
+                gPlayer.moveState &= ~MOVESTATE_8;
             }
 
             return TRUE;
@@ -161,10 +177,7 @@ bool32 sub_8079AC4(Sprite_IA70 *ia70)
     return FALSE;
 }
 
-void sub_8079CCC(Sprite_IA70 *);
-bool32 sub_8079D60(Sprite_IA70 *);
-
-void Task_Interactable070(void)
+static void Task_Interactable070(void)
 {
     Sprite_IA70 *ia70 = TaskGetStructPtr(gCurTask);
 
@@ -180,29 +193,27 @@ void Task_Interactable070(void)
     }
 }
 
-void TaskDestructor_Interactable070(struct Task *t)
+static void TaskDestructor_Interactable070(struct Task *t)
 {
     // unused
 }
 
-extern const u16 gUnknown_080E0032[];
-
-void sub_8079CCC(Sprite_IA70 *ia70)
+static void sub_8079CCC(Sprite_IA70 *ia70)
 {
     ia70->unk4E = 0;
-    m4aSongNumStart(gUnknown_080E0032[ia70->unk4C]);
+    m4aSongNumStart(sNoteBlockSfx[ia70->unk4C]);
     gCurTask->main = sub_80799FC;
 }
 
-void sub_8079D00(Sprite_IA70 *ia70)
+static void sub_8079D00(Sprite_IA70 *ia70)
 {
     Sprite *sprite = &ia70->sprite;
 
-    sprite->x = ia70->unk3C - gCamera.x + (ia70->unk44 >> 8);
-    sprite->y = ia70->unk40 - gCamera.y + (ia70->unk48 >> 8);
+    sprite->x = ia70->unk3C - gCamera.x + Q_24_8_TO_INT(ia70->unk44);
+    sprite->y = ia70->unk40 - gCamera.y + Q_24_8_TO_INT(ia70->unk48);
 }
 
-void sub_8079D30(Sprite_IA70 *ia70)
+static void sub_8079D30(Sprite_IA70 *ia70)
 {
     Sprite *sprite = &ia70->sprite;
 
@@ -213,30 +224,29 @@ void sub_8079D30(Sprite_IA70 *ia70)
     sub_80051E8(sprite);
 }
 
-bool32 sub_8079D60(Sprite_IA70 *ia70)
+static bool32 sub_8079D60(Sprite_IA70 *ia70)
 {
     s32 temp, temp2;
     u16 temp3, temp4;
 
     temp = ia70->unk3C;
-    temp += 0x80;
+    temp += 128;
     temp -= gCamera.x;
 
     temp2 = ia70->unk40;
-    temp2 += 0x80;
+    temp2 += 128;
     temp2 -= gCamera.y;
 
     temp4 = temp2;
     temp3 = temp;
 
     if (temp3 > 496 || temp4 > 416) {
-        return 1;
+        return TRUE;
     }
-
-    return 0;
+    return FALSE;
 }
 
-void sub_8079D9C(Sprite_IA70 *ia70)
+static void sub_8079D9C(Sprite_IA70 *ia70)
 {
     ia70->base.ia->x = ia70->base.spriteX;
     TaskDestroy(gCurTask);

@@ -241,6 +241,7 @@ SECTIONS
         build/sa2/src/handlers_ia_pipe_horn.o(.rodata);
         build/sa2/data/data1_2_2.o(.rodata);
         build/sa2/src/interactable_music_plant_pipe_horn.o(.rodata);
+        build/sa2/src/interactable_070.o(.rodata);
         build/sa2/data/data1_2_3.o(.rodata);
         build/sa2/src/interactable_music_plant_note_particle.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
@@ -475,7 +476,7 @@ SECTIONS
         build/sa2/sound/songs/se_291.o(.rodata);
         build/sa2/sound/songs/midi/se_ice_paradise_slide.o(.rodata);
         build/sa2/sound/songs/midi/se_293.o(.rodata);
-        build/sa2/sound/songs/midi/se_294.o(.rodata);
+        build/sa2/sound/songs/midi/se_techno_base_note_block.o(.rodata);
         build/sa2/sound/songs/midi/se_295.o(.rodata);
         build/sa2/sound/songs/midi/se_296.o(.rodata);
         build/sa2/sound/songs/midi/se_297.o(.rodata);

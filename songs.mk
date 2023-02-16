@@ -613,7 +613,7 @@ $(MID_SUBDIR)/se_ice_paradise_slide.s: %.s: %.mid
 $(MID_SUBDIR)/se_293.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
-$(MID_SUBDIR)/se_294.s: %.s: %.mid
+$(MID_SUBDIR)/se_techno_base_note_block.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G5 -P20 -V100
     
 $(MID_SUBDIR)/se_295.s: %.s: %.mid
