@@ -237,9 +237,7 @@
 #define SE_291                291
 #define SE_ICE_PARADISE_SLIDE 292
 #define SE_293                293
-// NOTE(Jace): Well, it's not actually a piano,
-//             but it works the same way as the one in Music Plant
-#define SE_TECHNO_BASE_NOTE_BLOCK 294
+#define SE_TECHNO_BASE_COMMON 294
 #define SE_295                    295
 #define SE_296                    296
 #define SE_297                    297

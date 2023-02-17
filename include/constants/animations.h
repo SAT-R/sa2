@@ -169,6 +169,7 @@
 #define SA2_ANIM_DICE                            574
 
 #define SA2_ANIM_NOTE_BLOCK       575
+#define SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR 15
 #define SA2_ANIM_NOTE_PARTICLES   576
 #define SA2_ANIM_VARIANT_NOTE_H   0
 #define SA2_ANIM_VARIANT_NOTE_V   1

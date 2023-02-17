@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 00
 	thumb_func_start initSprite_Interactable_MusicPlant_GuitarString
 initSprite_Interactable_MusicPlant_GuitarString: @ 0x08075E00
 	push {r4, r5, r6, r7, lr}
@@ -12,19 +13,19 @@ initSprite_Interactable_MusicPlant_GuitarString: @ 0x08075E00
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	mov sb, r0
+	mov sb, r0              @ sb = ia
 	adds r5, r1, #0
 	adds r6, r2, #0
 	mov r8, r3
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = spriteRegionX
 	lsls r6, r6, #0x10
-	lsrs r6, r6, #0x10
-	str r6, [sp, #4]
+	lsrs r6, r6, #0x10      @ r6   = spriteRegionY
+	str r6, [sp, #4]        @ sp+4 = spriteRegionY
 	mov r0, r8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	mov r8, r0
+	mov r8, r0              @ r8 = spriteY
 	ldr r0, _08075EE4 @ =Task_Interactable_MusicPlant_GuitarString
 	ldr r2, _08075EE8 @ =0x00002010
 	ldr r1, _08075EEC @ =TaskDestructor_Interactable_MusicPlant_GuitarString
@@ -35,7 +36,7 @@ initSprite_Interactable_MusicPlant_GuitarString: @ 0x08075E00
 	ldrh r3, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r3, r0
+	adds r7, r3, r0         @ r7 = gs
 	ldr r1, _08075EF0 @ =IWRAM_START + 0x3C
 	adds r0, r3, r1
 	movs r2, #0
@@ -164,6 +165,7 @@ _08075F3E:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start sub_8075F58
 sub_8075F58: @ 0x08075F58
