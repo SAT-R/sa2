@@ -3,100 +3,6 @@
 
 .section .rodata
 
-    .global gUnknown_080D57DC
-gUnknown_080D57DC:
-    .incbin "baserom.gba", 0x000D57DC, 0x88
-
-    .global gUnknown_080D5864
-gUnknown_080D5864:
-    .incbin "baserom.gba", 0x000D5864, 0x100
-
-    .global gUnknown_080D5964
-gUnknown_080D5964:
-    .incbin "baserom.gba", 0x000D5964, 0x24
-
-    .global gUnknown_080D5988
-gUnknown_080D5988:
-    .incbin "baserom.gba", 0x000D5988, 0x88
-
-    .global gUnknown_080D5A10
-gUnknown_080D5A10:
-    .incbin "baserom.gba", 0x000D5A10, 0x88
-
-    .global gUnknown_080D5A98
-gUnknown_080D5A98:
-    .incbin "baserom.gba", 0x000D5A98, 0x88
-
-    .global gUnknown_080D5B20
-gUnknown_080D5B20:
-    .byte 14
-
-    .global gUnknown_080D5B21
-gUnknown_080D5B21:
-    .byte 0
-
-    .global gUnknown_080D5B22
-gUnknown_080D5B22:
-    .incbin "baserom.gba", 0x000D5B22, 0x2E
-
-    .global gUnknown_080D5B50
-gUnknown_080D5B50:
-    .incbin "baserom.gba", 0x000D5B50, 0xA0
-
-    .global gUnknown_080D5BF0
-gUnknown_080D5BF0:
-    .incbin "baserom.gba", 0x000D5BF0, 0x12
-
-    .global gUnknown_080D5C02
-gUnknown_080D5C02:
-    .incbin "baserom.gba", 0x000D5C02, 0x2
-
-    .global gUnknown_080D5C04
-gUnknown_080D5C04:
-    .incbin "baserom.gba", 0x000D5C04, 0x5E
-
-    .global gUnknown_080D5C62
-gUnknown_080D5C62:
-    .incbin "baserom.gba", 0x000D5C62, 0x20
-
-    .global gUnknown_080D5C82
-gUnknown_080D5C82:
-    .incbin "baserom.gba", 0x000D5C82, 0x20
-
-    .global gUnknown_080D5CA2
-gUnknown_080D5CA2:
-    .incbin "baserom.gba", 0x000D5CA2, 0x20
-
-    .global gUnknown_080D5CC2
-gUnknown_080D5CC2:
-    .incbin "baserom.gba", 0x000D5CC2, 0x22
-
-@; Not sure whether the size is correct, here.
-@; It should be (2 MapHeader pointers + 1 Background-Map pointer) * number_of_maps (which is 31)
-    .global gMapHeaders
-gMapHeaders:
-    .incbin "baserom.gba", 0x000D5CE4, 0x5F4
-
-    .global gUnknown_080D62D8
-gUnknown_080D62D8:
-    .incbin "baserom.gba", 0x000D62D8, 0x7C
-
-    .global gUnknown_080D6354
-gUnknown_080D6354:
-    .incbin "baserom.gba", 0x000D6354, 0x20
-
-@; Spawn positions are (count from the top-left of the map):
-@;   .2byte xPixels
-@;   .2byte yPixels
-    .global gSpawnPositions
-gSpawnPositions:
-    .incbin "baserom.gba", 0x000D6374, 0x88
-
-    @ Referenced by Interactable "Checkpoint"
-    .global gUnknown_080D63FC
-gUnknown_080D63FC:
-    .incbin "baserom.gba", 0x000D63FC, 0x110
-
     .global gUnknown_080D650C
 gUnknown_080D650C:
     .incbin "baserom.gba", 0x000D650C, 0x110
@@ -105,9 +11,10 @@ gUnknown_080D650C:
 gUnknown_080D661C:
     .incbin "baserom.gba", 0x000D661C, 0x110
 
+@; These very likely represent an idle animation index for each character
     .global gUnknown_080D672C
 gUnknown_080D672C:
-    .2byte 0, 0x5B, 0xB6, 0x111, 0x16C
+    .2byte 0, 91, 182, 273, 364
 
     .global gUnknown_080D6736
 gUnknown_080D6736:
@@ -2053,11 +1960,14 @@ sub_801E118: @ 0x0801E118
 	bx lr
 	.align 2, 0
 _0801E128: .4byte gBgScrollRegs
-_0801E12C:
-	.byte 0x70, 0x47, 0x00, 0x00
 
-	thumb_func_start nullsub_8002A34_1
-nullsub_8002A34_1: @ 0x0801E130
+    thumb_func_start sub_801E12C
+sub_801E12C:
+    bx lr
+    .align 2, 0
+
+	thumb_func_start sub_801E130
+sub_801E130: @ 0x0801E130
 	bx lr
 	.align 2, 0
 
@@ -4658,7 +4568,7 @@ _0801F43A:
 _0801F43C:
 	mov r6, r8
 	adds r6, #0x1c
-	ldr r5, _0801F484 @ =gUnknown_080D6354
+	ldr r5, _0801F484 @ =sAnimData_StageGoalScoreBonus
 	lsls r4, r7, #1
 	adds r4, r4, r7
 	lsls r4, r4, #1
@@ -4692,7 +4602,7 @@ _0801F474:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0801F484: .4byte gUnknown_080D6354
+_0801F484: .4byte sAnimData_StageGoalScoreBonus
 
 	thumb_func_start sub_801F488
 sub_801F488: @ 0x0801F488

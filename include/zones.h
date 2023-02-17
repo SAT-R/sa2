@@ -23,6 +23,8 @@
 
 #define LEVEL_INDEX(zone, act) ((zone) * (ACTS_PER_ZONE + 1)) + (act)
 
+#define NUM_LEVEL_IDS 34
+
 #define LEVEL_TO_ZONE(level) ((level) >> 2)
 // ((((level) / (ACTS_PER_ZONE + 1)) * 2) | ((level) & 1))
 #define LEVEL_TO_COURSE_INDEX(level)                                                    \

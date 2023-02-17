@@ -11,6 +11,8 @@
 
 #define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
 
+typedef void (*VoidFn)(void);
+
 // helper macros
 
 #if NON_MATCHING

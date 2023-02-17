@@ -3743,7 +3743,7 @@ _0800982A:
 	add r0, sp, #0xc
 	bl sub_80044D8
 	ldr r0, [r5]
-	ldr r1, _08009850 @ =gObjTiles_8bpp
+	ldr r1, _08009850 @ =Palette_Stage_LeafForest_Act1
 	movs r2, #0
 	str r2, [sp]
 	add r3, sp, #0xc
@@ -3758,7 +3758,7 @@ _08009848:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08009850: .4byte gObjTiles_8bpp
+_08009850: .4byte Palette_Stage_LeafForest_Act1
 
 	thumb_func_start sub_8009854
 sub_8009854: @ 0x08009854
@@ -3780,7 +3780,7 @@ sub_8009854: @ 0x08009854
 	orrs r0, r1
 	str r0, [r2]
 	ldr r0, [r4]
-	ldr r1, _080098B4 @ =gObjTiles_8bpp
+	ldr r1, _080098B4 @ =Palette_Stage_LeafForest_Act1
 	str r3, [sp]
 	ldr r2, _080098B8 @ =gUnknown_080D5128
 	str r2, [sp, #4]
@@ -3804,7 +3804,7 @@ _080098A4: .4byte gCurTask
 _080098A8: .4byte gBgPalette
 _080098AC: .4byte 0x00007FFF
 _080098B0: .4byte gFlags
-_080098B4: .4byte gObjTiles_8bpp
+_080098B4: .4byte Palette_Stage_LeafForest_Act1
 _080098B8: .4byte gUnknown_080D5128
 _080098BC: .4byte sub_8009780
 
@@ -5302,7 +5302,7 @@ sub_800A4CC: @ 0x0800A4CC
 	push {lr}
 	sub sp, #0xc
 	ldr r0, _0800A500 @ =0x06000020
-	ldr r1, _0800A504 @ =gObjTiles_8bpp
+	ldr r1, _0800A504 @ =Palette_Stage_LeafForest_Act1
 	movs r2, #2
 	str r2, [sp]
 	ldr r2, _0800A508 @ =gUnknown_080D5130
@@ -5325,7 +5325,7 @@ _0800A4F8:
 	bx r0
 	.align 2, 0
 _0800A500: .4byte 0x06000020
-_0800A504: .4byte gObjTiles_8bpp
+_0800A504: .4byte Palette_Stage_LeafForest_Act1
 _0800A508: .4byte gUnknown_080D5130
 _0800A50C: .4byte gPressedKeys
 
@@ -6478,7 +6478,7 @@ sub_800AE58: @ 0x0800AE58
 	bx lr
 	.align 2, 0
 _0800AE80: .4byte 0x040000D4
-_0800AE84: .4byte gUnknown_086EA408
+_0800AE84: .4byte (Tileset_Stage_LeafForest_Act1+(32 * TILE_SIZE_4BPP))
 _0800AE88: .4byte 0x06017EC0
 _0800AE8C: .4byte 0x800000A0
 _0800AE90: .4byte gObjPalette

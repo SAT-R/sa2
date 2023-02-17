@@ -17,3 +17,9 @@
 	.set SPRITE_SIZE_8x32,  (OAM_SIZE_1 >> 28) | (OAM_V_RECTANGLE >> 14)
 	.set SPRITE_SIZE_16x32, (OAM_SIZE_2 >> 28) | (OAM_V_RECTANGLE >> 14)
 	.set SPRITE_SIZE_32x64, (OAM_SIZE_3 >> 28) | (OAM_V_RECTANGLE >> 14)
+
+    .set TILE_SIZE_4BPP,    (8*8 / 2)   @ <= 32 (0x20)
+    .set TILE_SIZE_8BPP,    (8*8)       @ <= 64 (0x40)
+    
+    .set METATILE_WIDTH,    12
+    .set METATILE_HEIGHT,   12
