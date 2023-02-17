@@ -84,7 +84,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_IceParadise_HalfPipe_End     @ Like in SA1 Neo Green Hill
     .4byte initSprite_Interactable_IceParadise_HalfPipe_Start   @ Like in SA1 Neo Green Hill
     .4byte initSprite_Interactable069
-    .4byte initSprite_Interactable070
+    .4byte initSprite_InteractableTecBaseNoteBlock
     .4byte initSprite_Interactable_044
     .4byte initSprite_Interactable_ClearPipe_Start
     .4byte initSprite_Interactable_ClearPipe_End

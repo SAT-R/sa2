@@ -112,7 +112,7 @@ SECTIONS
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/asm/interactable_ice_paradise_half_pipe.o(.text);
         build/sa2/asm/interactable_069.o(.text);
-        build/sa2/src/interactable_070.o(.text);
+        build/sa2/src/interactable_tec_base_note_block.o(.text);
         build/sa2/asm/interactable_074.o(.text);
         build/sa2/asm/interactable_075.o(.text);
         build/sa2/asm/interactable_078.o(.text);
@@ -241,7 +241,7 @@ SECTIONS
         build/sa2/src/handlers_ia_pipe_horn.o(.rodata);
         build/sa2/data/data1_2_2.o(.rodata);
         build/sa2/src/interactable_music_plant_pipe_horn.o(.rodata);
-        build/sa2/src/interactable_070.o(.rodata);
+        build/sa2/src/interactable_tec_base_note_block.o(.rodata);
         build/sa2/data/data1_2_3.o(.rodata);
         build/sa2/src/interactable_music_plant_note_particle.o(.rodata);
         build/sa2/src/multiplayer_singlepak_connection.o(.rodata);
