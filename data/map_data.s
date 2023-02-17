@@ -35,32 +35,32 @@ Tileset_Stage_LeafForest_Act1: @ 0x086EA008
 
     .global gUnknown_086F12A8
 gUnknown_086F12A8: @ 0x086F12A8
-    .incbin "data/maps/zone1/act1/gUnknown_086F12A8.raw"
+    .incbin "data/maps/zone1/act1/gUnknown_086F12A8.bin"
     mDataSize gUnknown_086F12A8
 
     .global gUnknown_086F2F50
 gUnknown_086F2F50:
-    .incbin "data/maps/zone1/act1/gUnknown_086F2F50.raw"
+    .incbin "data/maps/zone1/act1/gUnknown_086F2F50.bin"
     mDataSize gUnknown_086F2F50
 
     .global gUnknown_086F32E8
 gUnknown_086F32E8:
-    .incbin "data/maps/zone1/act1/gUnknown_086F32E8.raw"
+    .incbin "data/maps/zone1/act1/gUnknown_086F32E8.bin"
     mDataSize gUnknown_086F32E8
      
     .global Metatiles_Stage_LeafForest_Act1
 Metatiles_Stage_LeafForest_Act1: @ 0x086F33D0
-    .incbin "data/maps/zone1/act1/metatiles.raw"
+    .incbin "data/maps/zone1/act1/metatiles.bin"
     mDataSize Metatiles_Stage_LeafForest_Act1
 
     .global Map_Stage_LeafForest_Act1_FrontLayer
 Map_Stage_LeafForest_Act1_FrontLayer: @ 0x0870DE30
-    .incbin "data/maps/zone1/act1/map_front.raw"
+    .incbin "data/maps/zone1/act1/map_front.bin"
     mDataSize Map_Stage_LeafForest_Act1_FrontLayer
           
     .global Map_Stage_LeafForest_Act1_BackLayer
 Map_Stage_LeafForest_Act1_BackLayer:
-    .incbin "data/maps/zone1/act1/map_back.raw"
+    .incbin "data/maps/zone1/act1/map_back.bin"
     mDataSize Map_Stage_LeafForest_Act1_BackLayer
 
     .global MapHeader_LeafForest_Act1_FrontLayer
@@ -99,31 +99,31 @@ Tileset_Stage_LeafForest_Act2: @ 0x0871479C
 
     .global gUnknown_0871B4DC
 gUnknown_0871B4DC: @ 0x0871B4DC
-    .incbin "data/maps/zone1/act2/gUnknown_0871B4DC.raw"
+    .incbin "data/maps/zone1/act2/gUnknown_0871B4DC.bin"
     mDataSize gUnknown_0871B4DC
     
     .global gUnknown_0871D02C
 gUnknown_0871D02C: @ 0x0871D02C
-    .incbin "data/maps/zone1/act2/gUnknown_0871D02C.raw"
+    .incbin "data/maps/zone1/act2/gUnknown_0871D02C.bin"
     mDataSize gUnknown_0871D02C
         
     .global gUnknown_0871D398
 gUnknown_0871D398: @ 0x0871D398
-    .incbin "data/maps/zone1/act2/gUnknown_0871D398.raw"
+    .incbin "data/maps/zone1/act2/gUnknown_0871D398.bin"
     mDataSize gUnknown_0871D398
     
     .global Metatiles_Stage_LeafForest_Act2
 Metatiles_Stage_LeafForest_Act2: @ 0x0871D474
-    .incbin "data/maps/zone1/act2/metatiles.raw"
+    .incbin "data/maps/zone1/act2/metatiles.bin"
     mDataSize Metatiles_Stage_LeafForest_Act2
 
     .global Map_Stage_LeafForest_Act2_FrontLayer
 Map_Stage_LeafForest_Act2_FrontLayer: @ 0x087352F4
-    .incbin "data/maps/zone1/act2/map_front.raw"
+    .incbin "data/maps/zone1/act2/map_front.bin"
     
     .global Map_Stage_LeafForest_Act2_BackLayer
 Map_Stage_LeafForest_Act2_BackLayer: @ 0x08737B60
-    .incbin "data/maps/zone1/act2/map_back.raw"
+    .incbin "data/maps/zone1/act2/map_back.bin"
 
     .global MapHeader_LeafForest_Act2_FrontLayer
 MapHeader_LeafForest_Act2_FrontLayer: @ 0x0873A3CC
@@ -162,32 +162,32 @@ Tileset_Stage_LeafForest_Boss: @ 0x0873A638
 
     .global gUnknown_0873B438
 gUnknown_0873B438: @ 0x0873B438
-    .incbin "data/maps/zone1/boss/gUnknown_0873B438.raw"
+    .incbin "data/maps/zone1/boss/gUnknown_0873B438.bin"
     mDataSize gUnknown_0873B438
     
     .global gUnknown_0873B7B8
 gUnknown_0873B7B8: @ 0x0873B7B8
-    .incbin "data/maps/zone1/boss/gUnknown_0873B7B8.raw"
+    .incbin "data/maps/zone1/boss/gUnknown_0873B7B8.bin"
     mDataSize gUnknown_0873B7B8
         
     .global gUnknown_0873B828
 gUnknown_0873B828: @ 0x0873B828
-    .incbin "data/maps/zone1/boss/gUnknown_0873B828.raw"
+    .incbin "data/maps/zone1/boss/gUnknown_0873B828.bin"
     mDataSize gUnknown_0873B828
     
     .global Metatiles_Stage_LeafForest_Boss
 Metatiles_Stage_LeafForest_Boss: @ 0x0873B844
-    .incbin "data/maps/zone1/boss/metatiles.raw"
+    .incbin "data/maps/zone1/boss/metatiles.bin"
     mDataSize Metatiles_Stage_LeafForest_Boss
 
     .global Map_Stage_LeafForest_Boss_FrontLayer
 Map_Stage_LeafForest_Boss_FrontLayer: @ 0x0873BDE4
-    .incbin "data/maps/zone1/boss/map_front.raw"
+    .incbin "data/maps/zone1/boss/map_front.bin"
     mDataSize Map_Stage_LeafForest_Boss_FrontLayer
     
     .global Map_Stage_LeafForest_Boss_BackLayer
 Map_Stage_LeafForest_Boss_BackLayer: @ 0x0873BF4C
-    .incbin "data/maps/zone1/boss/map_back.raw"
+    .incbin "data/maps/zone1/boss/map_back.bin"
     mDataSize Map_Stage_LeafForest_Boss_BackLayer
 
     .global MapHeader_LeafForest_Boss_FrontLayer
