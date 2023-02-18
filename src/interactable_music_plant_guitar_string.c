@@ -10,6 +10,7 @@
 #include "constants/move_states.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
+#define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS*TILE_WIDTH)
 #define GUITARSTR_MIN_ACCEL     Q_8_8(4.0)
 #define GUITARSTR_MAX_ACCEL     Q_8_8(12.0)
 
@@ -237,4 +238,21 @@ void sub_8076114(Sprite_GuitarString *gs)
 
         sub_80051E8(s);
     }
+}
+
+bool32 sub_807618C(Sprite_GuitarString* gs) {
+    if(!(gPlayer.moveState & MOVESTATE_DEAD) && gPlayer.speedAirY > 0) {
+        s16 screenX = gs->posX - gCamera.x;
+        s16 screenY = gs->posY - gCamera.y;
+        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+        if((screenX <= playerX)
+        && ((screenX + GUITARSTR_WIDTH_PX) >= playerX)
+        && ((screenY - 9) <= playerY)
+        && ((screenY + 9) >= playerY)) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
