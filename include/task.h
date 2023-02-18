@@ -39,6 +39,7 @@ struct IwramNode {
 };
 
 #define TaskGetStructPtr(taskp) (void *)(IWRAM_START + (taskp)->structOffset)
+#define TaskGetParent(taskp)    (struct Task *)(IWRAM_START + (taskp)->parent)
 #define TasksDestroyAll()       TasksDestroyInPriorityRange(0, 0xFFFF)
 
 extern struct Task gTasks[MAX_TASK_NUM];
