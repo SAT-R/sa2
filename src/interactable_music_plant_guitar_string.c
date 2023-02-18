@@ -7,23 +7,31 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 
+#define NUM_GUITAR_STRING_ELEMS 6
+
 typedef struct {
-    /* 0x00 */ s16 elements[6][4];
+    /* 0x00 */ s16 elements[NUM_GUITAR_STRING_ELEMS][4];
     /* 0x30 */ SpriteBase base;
     /* 0x3C */ Sprite s1;
     /* 0x6C */ s32 posX;
     /* 0x70 */ s32 posY;
-    /* 0x74 */ u8 unk74[4];
+    /* 0x74 */ s16 unk74;
+    /* 0x76 */ s16 unk76;
 } Sprite_GuitarString; /* size 0x78 */
 
 extern void Task_Interactable_MusicPlant_GuitarString(void);
-extern void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task*);
+extern void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task *);
+extern void sub_8076114(Sprite_GuitarString *);
+extern void sub_8076258(Sprite_GuitarString *);
+extern void sub_80762E0(Sprite_GuitarString *);
 
 void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 spriteRegionX,
-                                                   u16 spriteRegionY, u8 spriteY)
+                                                     u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GuitarString, sizeof(Sprite_GuitarString), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_GuitarString);
-    Sprite_GuitarString* gs = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GuitarString,
+                                sizeof(Sprite_GuitarString), 0x2010, 0,
+                                TaskDestructor_Interactable_MusicPlant_GuitarString);
+    Sprite_GuitarString *gs = TaskGetStructPtr(t);
     Sprite *s = &gs->s1;
     u16 i;
 
@@ -42,7 +50,7 @@ void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 sprit
     s->focused = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2000;
-    s->graphics.dest = (void*)(OBJ_VRAM0 + 0x3700);
+    s->graphics.dest = (void *)(OBJ_VRAM0 + 0x3700);
     s->graphics.anim = SA2_ANIM_NOTE_BLOCK;
     s->variant = SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR;
 
@@ -52,7 +60,7 @@ void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 sprit
 
     sub_8004558(s);
 
-    for(i = 0; i < 6; i++) {
+    for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
         s16 *elem = gs->elements[i];
         s16 offsetX = Q_8_8(i << 3);
         s16 offsetY = 0;
@@ -60,23 +68,67 @@ void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 sprit
         elem[0] = offsetX;
         elem[1] = offsetY;
 
-        switch(i) {
-        case 0:
-        case 5: {
-            elem[2] = Q_8_8(0);
-        } break;
+        switch (i) {
+            case 0:
+            case 5: {
+                elem[2] = Q_8_8(0);
+            } break;
 
-        case 1:
-        case 4: {
-            elem[2] = Q_8_8(0.5);
-        } break;
-            
-        case 2:
-        case 3: {
-            elem[2] = 0x80;
-            elem[2] *= 2;
-        } break;
+            case 1:
+            case 4: {
+                elem[2] = Q_8_8(0.5);
+            } break;
 
+            case 2:
+            case 3: {
+#ifdef NON_MATCHING
+                elem[2] = Q_8_8(1.0);
+#else
+                elem[2] = 0x80;
+                elem[2] <<= 1;
+#endif
+            } break;
         }
     }
+}
+
+void sub_8075F58(void)
+{
+    u8 r7 = 0;
+    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    u8 i;
+
+    sub_80762E0(gs);
+
+    for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+        s16 *element = gs->elements[i];
+        s32 r1 = gs->unk74;
+        u32 ip;
+        r1 = r1 - element[1];
+        r1 = (((element[2] * r1) << 8) >> 16);
+
+        ip = (u16)element[1];
+
+        if ((s16)(r1) <= element[1]) {
+            r7++;
+        } else {
+            r1 = (u16)((r1 - element[1]) >> 2);
+
+            if ((s16)r1 < Q_8_8(0.5)) {
+                r1 = Q_8_8(0.5);
+            }
+            element[1] = (s16)ip + ((r1 << 16) >> 16);
+        }
+    }
+
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        gPlayer.y = ((gs->posY - 16) << 8) + gs->elements[2][1];
+        gPlayer.unk24 = 0x40;
+    }
+
+    if (r7 == NUM_GUITAR_STRING_ELEMS) {
+        sub_8076258(gs);
+    }
+
+    sub_8076114(gs);
 }
