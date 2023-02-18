@@ -10,7 +10,7 @@
 #include "constants/move_states.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
-#define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS*TILE_WIDTH)
+#define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS * TILE_WIDTH)
 #define GUITARSTR_MIN_ACCEL     Q_8_8(4.0)
 #define GUITARSTR_MAX_ACCEL     Q_8_8(12.0)
 
@@ -36,6 +36,7 @@ extern void sub_8076258(Sprite_GuitarString *);
 extern void sub_80762A8(Sprite_GuitarString *);
 extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
+extern bool32 sub_8076320(Sprite_GuitarString *);
 
 void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 spriteRegionX,
                                                      u16 spriteRegionY, u8 spriteY)
@@ -240,19 +241,36 @@ void sub_8076114(Sprite_GuitarString *gs)
     }
 }
 
-bool32 sub_807618C(Sprite_GuitarString* gs) {
-    if(!(gPlayer.moveState & MOVESTATE_DEAD) && gPlayer.speedAirY > 0) {
+bool32 sub_807618C(Sprite_GuitarString *gs)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && gPlayer.speedAirY > 0) {
         s16 screenX = gs->posX - gCamera.x;
         s16 screenY = gs->posY - gCamera.y;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        if((screenX <= playerX)
-        && ((screenX + GUITARSTR_WIDTH_PX) >= playerX)
-        && ((screenY - 9) <= playerY)
-        && ((screenY + 9) >= playerY)) {
+        if ((screenX <= playerX) && ((screenX + GUITARSTR_WIDTH_PX) >= playerX)
+            && ((screenY - 9) <= playerY) && ((screenY + 9) >= playerY)) {
             return TRUE;
         }
     }
     return FALSE;
 }
+
+void Task_Interactable_MusicPlant_GuitarString(void)
+{
+    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+
+    if (sub_807618C(gs)) {
+        sub_807608C(gs);
+    }
+
+    if (sub_8076320(gs)) {
+        gs->base.ia->x = gs->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        sub_8076114(gs);
+    }
+}
+
+void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task UNUSED *t) { }

@@ -7,50 +7,6 @@
 .if 00
 .endif
 
-	thumb_func_start Task_Interactable_MusicPlant_GuitarString
-Task_Interactable_MusicPlant_GuitarString: @ 0x08076204
-	push {r4, r5, r6, lr}
-	ldr r6, _08076240 @ =gCurTask
-	ldr r0, [r6]
-	ldrh r5, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r5, r0
-	adds r0, r4, #0
-	bl sub_807618C
-	cmp r0, #0
-	beq _08076222
-	adds r0, r4, #0
-	bl sub_807608C
-_08076222:
-	adds r0, r4, #0
-	bl sub_8076320
-	cmp r0, #0
-	beq _08076248
-	ldr r1, [r4, #0x30]
-	ldr r2, _08076244 @ =IWRAM_START + 0x38
-	adds r0, r5, r2
-	ldrb r0, [r0]
-	strb r0, [r1]
-	ldr r0, [r6]
-	bl TaskDestroy
-	b _0807624E
-	.align 2, 0
-_08076240: .4byte gCurTask
-_08076244: .4byte IWRAM_START + 0x38
-_08076248:
-	adds r0, r4, #0
-	bl sub_8076114
-_0807624E:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-
-	thumb_func_start TaskDestructor_Interactable_MusicPlant_GuitarString
-TaskDestructor_Interactable_MusicPlant_GuitarString: @ 0x08076254
-	bx lr
-	.align 2, 0
-
 	thumb_func_start sub_8076258
 sub_8076258: @ 0x08076258
 	push {r4, lr}
