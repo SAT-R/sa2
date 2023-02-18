@@ -261,14 +261,12 @@ extern struct Camera gCamera;
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
 // TODO: Merge all these into one!
-#define IS_OUT_OF_RANGE_(UNUSED, x, y, radius)                                          \
-    ((x < -(radius)) || (x > DISPLAY_WIDTH + (radius)) || (y < -(radius))               \
-     || (y > DISPLAY_HEIGHT + (radius)))
-
-// TODO: Merge all these into one!
 #define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                       \
     ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY))            \
      || (y > DISPLAY_HEIGHT + (radiusY)))
+
+// TODO: Merge all these into one!
+#define IS_OUT_OF_RANGE_(UNUSED, x, y, radius) IS_OUT_OF_RANGE_2(x, y, radius, radius)
 
 #define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                        \
     (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
