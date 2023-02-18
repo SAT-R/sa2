@@ -10,6 +10,10 @@
 #define NUM_GUITAR_STRING_ELEMS 6
 
 typedef struct {
+    // elems:
+    // [0] = xCoord
+    // [1] = yCoord
+    // [2] = spike of oscillation
     /* 0x00 */ s16 elements[NUM_GUITAR_STRING_ELEMS][4];
     /* 0x30 */ SpriteBase base;
     /* 0x3C */ Sprite s1;
@@ -22,7 +26,10 @@ typedef struct {
 extern void Task_Interactable_MusicPlant_GuitarString(void);
 extern void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task *);
 extern void sub_8076114(Sprite_GuitarString *);
+extern bool32 sub_807618C(Sprite_GuitarString *);
 extern void sub_8076258(Sprite_GuitarString *);
+extern void sub_80762A8(Sprite_GuitarString *);
+extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
 
 void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 spriteRegionX,
@@ -101,23 +108,23 @@ void sub_8075F58(void)
     sub_80762E0(gs);
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
-        s16 *element = gs->elements[i];
+        s16 *elem = gs->elements[i];
         s32 r1 = gs->unk74;
         u32 ip;
-        r1 = r1 - element[1];
-        r1 = (((element[2] * r1) << 8) >> 16);
+        r1 = r1 - elem[1];
+        r1 = (((elem[2] * r1) << 8) >> 16);
 
-        ip = (u16)element[1];
+        ip = (u16)elem[1];
 
-        if ((s16)(r1) <= element[1]) {
+        if ((s16)(r1) <= elem[1]) {
             r7++;
         } else {
-            r1 = (u16)((r1 - element[1]) >> 2);
+            r1 = (u16)((r1 - elem[1]) >> 2);
 
             if ((s16)r1 < Q_8_8(0.5)) {
                 r1 = Q_8_8(0.5);
             }
-            element[1] = (s16)ip + ((r1 << 16) >> 16);
+            elem[1] = (s16)ip + ((r1 << 16) >> 16);
         }
     }
 
@@ -132,3 +139,48 @@ void sub_8075F58(void)
 
     sub_8076114(gs);
 }
+
+#if 001
+void sub_8076000(void) {
+    u8 r5 = 0;
+    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    u8 i;
+
+    for(i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+        s16* elem = gs->elements[i];
+
+        if(elem[1] == 0) {
+            r5++;
+        } else {
+            u32 zero;
+            if (elem[1] > 0) {
+                elem[1] -= Q_8_8(1);
+
+                zero = 0;
+
+                if(elem[1] < 0)
+                    elem[1] = zero;
+                
+            } else {
+                elem[1] += Q_8_8(1);
+                
+                zero = 0;
+
+                if(elem[1] > 0)
+                    elem[1] = zero;
+            }
+
+            elem[1] = -elem[1];
+        }
+    }
+
+    if(r5 == NUM_GUITAR_STRING_ELEMS) {
+        sub_80762A8(gs);
+    }
+
+    if(sub_807618C(gs)) {
+        sub_80762BC(gs);
+    }
+    sub_8076114(gs);
+}
+#endif

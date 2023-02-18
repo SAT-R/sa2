@@ -5,8 +5,6 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start sub_8076000
 sub_8076000: @ 0x08076000
 	push {r4, r5, r6, lr}
@@ -16,11 +14,11 @@ sub_8076000: @ 0x08076000
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	movs r3, #0
+	adds r4, r1, r0         @ r4 = gs
+	movs r3, #0             @ r3 = i
 _08076012:
 	lsls r0, r3, #3
-	adds r1, r4, r0
+	adds r1, r4, r0         @ r1 = elem
 	ldrh r2, [r1, #2]
 	movs r6, #2
 	ldrsh r0, [r1, r6]
@@ -83,6 +81,7 @@ _08076080:
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start sub_807608C
 sub_807608C: @ 0x0807608C
