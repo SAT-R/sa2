@@ -104,7 +104,6 @@ SECTIONS
         build/sa2/src/interactable_music_plant_note_sphere.o(.text);
         build/sa2/src/interactable_music_plant_note_block.o(.text);
         build/sa2/src/interactable_music_plant_guitar_string.o(.text);
-        build/sa2/asm/interactable_music_plant_guitar_string.o(.text);
         build/sa2/src/interactable_music_plant_keyboard.o(.text);
         build/sa2/src/interactable_music_plant_german_flute.o(.text);
         build/sa2/src/handlers_ia_pipe_horn.o(.text);
