@@ -16,6 +16,18 @@ typedef struct {
     u8 unk49;
 } Sprite_IA85;
 
+// TODO: find out what task is parent to IA
+typedef struct {
+    u8 filler0[0x18];
+    struct Task *unk18;
+} UNK_807C5F8_Parent;
+
+typedef struct {
+    Sprite sprite1;
+    Sprite sprite2;
+    u16 unk60;
+} UNK_807C5F8;
+
 bool32 sub_807C424(Sprite_IA85 *);
 void sub_807C4A0(Sprite_IA85 *);
 bool32 sub_807C598(Sprite_IA85 *);
@@ -161,11 +173,11 @@ void sub_807C52C(Sprite_IA85 *ia85)
     }
 }
 
-Sprite *sub_807C5F8(Sprite_IA85 *ia85);
+Sprite *sub_807C5F8(void);
 
 void sub_807C558(Sprite_IA85 *ia85)
 {
-    Sprite *sprite = sub_807C5F8(ia85);
+    Sprite *sprite = sub_807C5F8();
     sprite->x = ia85->unk3C - gCamera.x + (ia85->unk44 >> 8);
     sprite->y = ia85->unk40 - gCamera.y + (ia85->unk46 >> 8);
 
@@ -194,4 +206,92 @@ void sub_807C5E0(Sprite_IA85 *ia85)
 {
     ia85->base.ia->x = ia85->base.spriteX;
     TaskDestroy(gCurTask);
+}
+
+Sprite *sub_807C5F8(void)
+{
+    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
+    UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
+    return &unk807->sprite1;
+}
+
+void sub_807C614(void)
+{
+    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
+    UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
+
+    unk807->unk60++;
+}
+void TaskDestructor_Interactable085(struct Task *);
+
+void initSprite_Interactable085(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
+{
+    struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
+                                TaskDestructor_Interactable085);
+    Sprite_IA85 *ia85 = TaskGetStructPtr(t);
+    ia85->unk3C = ia->x * 8 + spriteRegionX * 0x100;
+    ia85->unk40 = ia->y * 8 + spriteRegionY * 0x100;
+
+    ia85->unk44 = 0;
+    ia85->unk46 = 0;
+    ia85->unk49 = 0;
+
+    ia85->base.regionX = spriteRegionX;
+    ia85->base.regionY = spriteRegionY;
+    ia85->base.ia = ia;
+    ia85->base.spriteX = ia->x;
+    ia85->base.spriteY = spriteY;
+    SET_SPRITE_INITIALIZED(ia);
+}
+
+void sub_807C72C(Sprite_IA85 *);
+
+void sub_807C6E4(void)
+{
+    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    sub_807C3DC(ia85);
+
+    if (++ia85->unk49 > 0) {
+        sub_807C72C(ia85);
+    }
+
+    sub_807C614();
+    sub_807C558(ia85);
+}
+
+void TaskDestructor_Interactable085(struct Task *t)
+{
+    // unused
+}
+
+void sub_807C744(void);
+
+void sub_807C72C(Sprite_IA85 *ia85)
+{
+    ia85->unk49 = 0x40;
+    gCurTask->main = sub_807C744;
+}
+
+void sub_807C7A0(Sprite_IA85 *);
+
+void sub_807C744(void)
+{
+    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    ia85->unk46 = SIN_24_8(ia85->unk49 * 4) * 16;
+    sub_807C3DC(ia85);
+
+    ia85->unk49 += 8;
+    if ((s8)ia85->unk49 < 0) {
+        sub_807C7A0(ia85);
+    }
+
+    sub_807C614();
+    sub_807C558(ia85);
+}
+
+void sub_807C7A0(Sprite_IA85 *ia85)
+{
+    ia85->unk49 = 0x80;
+    gCurTask->main = sub_807C360;
 }

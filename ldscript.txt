@@ -120,7 +120,6 @@ SECTIONS
         build/sa2/asm/interactable_sky_canyon_giant_propeller.o(.text);
         build/sa2/asm/interactable_sky_canyon_small_windmill.o(.text);
         build/sa2/src/interactable_085.o(.text);
-        build/sa2/asm/interactable_085.o(.text);
         build/sa2/asm/interactable_086.o(.text);
         build/sa2/asm/interactable_087.o(.text);
         build/sa2/asm/interactable_091.o(.text);
