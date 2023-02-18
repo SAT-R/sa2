@@ -324,6 +324,10 @@ extern const u8 gUnknown_08CCAC04[0x8900];
 // Possibly CreateGameStageAtSelectedCourse
 void GameStageStart(void);
 
+// TODO: Might need to be moved out of this header?
+void Player_SetMovestate_IsInScriptedSequence(void);
+void Player_ClearMovestate_IsInScriptedSequence(void);
+
 void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
 

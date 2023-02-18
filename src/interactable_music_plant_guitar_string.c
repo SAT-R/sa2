@@ -4,10 +4,14 @@
 #include "interactable.h"
 #include "task.h"
 
+#include "game.h"
+
 #include "constants/animations.h"
 #include "constants/move_states.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
+#define GUITARSTR_MIN_ACCEL     Q_8_8(4.0)
+#define GUITARSTR_MAX_ACCEL     Q_8_8(12.0)
 
 typedef struct {
     // elems:
@@ -183,4 +187,54 @@ void sub_8076000(void)
         sub_80762BC(gs);
     }
     sub_8076114(gs);
+}
+
+void sub_807608C(Sprite_GuitarString *gs)
+{
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        Player_SetMovestate_IsInScriptedSequence();
+        gPlayer.moveState |= MOVESTATE_400000;
+
+        gPlayer.unk64 = 4;
+        gPlayer.speedAirX = 0;
+        gPlayer.speedAirY = (s32)(gPlayer.speedAirY * 3) >> 1;
+
+        CLAMP_INLINE(gPlayer.speedAirY, GUITARSTR_MIN_ACCEL, GUITARSTR_MAX_ACCEL);
+    }
+
+    gs->unk74 = (u16)gPlayer.speedAirY * 2;
+
+    if (gs->unk74 < GUITARSTR_MIN_ACCEL) {
+        gs->unk74 = GUITARSTR_MIN_ACCEL;
+    }
+
+    gCurTask->main = sub_8075F58;
+}
+
+void sub_8076114(Sprite_GuitarString *gs)
+{
+    Sprite *s = &gs->s1;
+    u8 i;
+
+    for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+        s16 *elem = gs->elements[i];
+
+        s32 elY = (u16)(ABS(elem[1]) >> 3);
+        s32 r2, r1;
+        if (i > 2)
+            elY = (u16)((-(elY << 16)) >> 16);
+
+        r2 = gs->posX;
+        r2 += 4;
+        r2 += (s16)Q_24_8_TO_INT(elem[0] + (s16)elY);
+        r2 -= gCamera.x;
+        s->x = r2;
+
+        r1 = gs->posY;
+        r1 += (s8)Q_24_8_TO_INT((u16)elem[1]);
+        r1 -= gCamera.y;
+        s->y = r1;
+
+        sub_80051E8(s);
+    }
 }
