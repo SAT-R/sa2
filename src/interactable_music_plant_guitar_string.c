@@ -1,6 +1,8 @@
 #include "global.h"
 #include "main.h"
+#include "m4a.h"
 #include "sprite.h"
+
 #include "interactable.h"
 #include "task.h"
 
@@ -8,6 +10,7 @@
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/songs.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
 #define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS * TILE_WIDTH)
@@ -134,7 +137,7 @@ void sub_8075F58(void)
         }
     }
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+    if (PlayerIsAlive) {
         gPlayer.y = ((gs->posY - 16) << 8) + gs->elements[2][1];
         gPlayer.unk24 = 0x40;
     }
@@ -193,7 +196,7 @@ void sub_8076000(void)
 
 void sub_807608C(Sprite_GuitarString *gs)
 {
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+    if (PlayerIsAlive) {
         Player_SetMovestate_IsInScriptedSequence();
         gPlayer.moveState |= MOVESTATE_400000;
 
@@ -243,7 +246,7 @@ void sub_8076114(Sprite_GuitarString *gs)
 
 bool32 sub_807618C(Sprite_GuitarString *gs)
 {
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && gPlayer.speedAirY > 0) {
+    if (PlayerIsAlive && gPlayer.speedAirY > 0) {
         s16 screenX = gs->posX - gCamera.x;
         s16 screenY = gs->posY - gCamera.y;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
@@ -274,3 +277,79 @@ void Task_Interactable_MusicPlant_GuitarString(void)
 }
 
 void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task UNUSED *t) { }
+
+void sub_8076258(Sprite_GuitarString UNUSED *gs)
+{
+    if (PlayerIsAlive) {
+        Player_ClearMovestate_IsInScriptedSequence();
+        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.unk6D = 5;
+        gPlayer.speedAirY = -gPlayer.speedAirY;
+        m4aSongNumStart(SE_MUSIC_PLANT_GUITAR_STRING);
+    }
+
+    gCurTask->main = sub_8076000;
+}
+
+void sub_80762A8(Sprite_GuitarString UNUSED *gs)
+{
+    gCurTask->main = Task_Interactable_MusicPlant_GuitarString;
+}
+
+void sub_80762BC(Sprite_GuitarString *gs)
+{
+    u8 i;
+    for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+        s16 *elem = gs->elements[i];
+        elem[1] = 0;
+    }
+
+    sub_807608C(gs);
+}
+
+// Because assigning it to a variable doesn't match...
+#define LOCAL_GUITARSTR_MARGIN (Q_24_8(gs->posX + (GUITARSTR_WIDTH_PX / 2)))
+
+void sub_80762E0(Sprite_GuitarString *gs)
+{
+    if (PlayerIsAlive) {
+        if (gPlayer.x != LOCAL_GUITARSTR_MARGIN) {
+            if (gPlayer.x > LOCAL_GUITARSTR_MARGIN) {
+                gPlayer.x -= Q_24_8(0.5);
+
+                if (gPlayer.x < LOCAL_GUITARSTR_MARGIN)
+                    gPlayer.x = LOCAL_GUITARSTR_MARGIN;
+            } else {
+                gPlayer.x += Q_24_8(0.5);
+
+                if (gPlayer.x > LOCAL_GUITARSTR_MARGIN)
+                    gPlayer.x = LOCAL_GUITARSTR_MARGIN;
+            }
+        }
+    }
+}
+
+#undef LOCAL_GUITARSTR_MARGIN
+
+bool32 sub_8076320(Sprite_GuitarString *gs)
+{
+    s32 screenX, screenY;
+    s16 otherX, otherY;
+
+    screenX = gs->posX;
+    screenX -= gCamera.x;
+
+    screenY = gs->posY;
+    screenY -= gCamera.y;
+
+    otherY = screenY;
+    otherX = screenX;
+
+    if (IS_OUT_OF_RANGE_2(otherX, otherY,
+                          (CAM_REGION_WIDTH + (GUITARSTR_WIDTH_PX / 2)) / 2,
+                          CAM_REGION_WIDTH / 2)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}

@@ -250,6 +250,8 @@ struct Camera {
 
 extern struct Camera gCamera;
 
+#define PlayerIsAlive (!(gPlayer.moveState & MOVESTATE_DEAD))
+
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
 #define SpriteGetScreenPos(spritePos, regionPos)                                        \
@@ -262,6 +264,11 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_RANGE_(UNUSED, x, y, radius)                                          \
     ((x < -(radius)) || (x > DISPLAY_WIDTH + (radius)) || (y < -(radius))               \
      || (y > DISPLAY_HEIGHT + (radius)))
+
+// TODO: Merge all these into one!
+#define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                       \
+    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY))            \
+     || (y > DISPLAY_HEIGHT + (radiusY)))
 
 #define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                        \
     (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
