@@ -140,47 +140,47 @@ void sub_8075F58(void)
     sub_8076114(gs);
 }
 
-#if 001
-void sub_8076000(void) {
+void sub_8076000(void)
+{
     u8 r5 = 0;
     Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
     u8 i;
 
-    for(i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
-        s16* elem = gs->elements[i];
+    for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+        s16 *elem = gs->elements[i];
 
-        if(elem[1] == 0) {
+        u32 r2 = (u16)elem[1];
+
+        if (elem[1] == 0) {
             r5++;
         } else {
-            u32 zero;
             if (elem[1] > 0) {
-                elem[1] -= Q_8_8(1);
+                u32 value = r2 - Q_8_8(1);
+                r2 = 0;
+                elem[1] = value;
 
-                zero = 0;
+                if (elem[1] < 0)
+                    elem[1] = r2;
 
-                if(elem[1] < 0)
-                    elem[1] = zero;
-                
             } else {
-                elem[1] += Q_8_8(1);
-                
-                zero = 0;
+                u32 value = r2 + Q_8_8(1);
+                r2 = 0;
+                elem[1] = value;
 
-                if(elem[1] > 0)
-                    elem[1] = zero;
+                if (elem[1] > 0)
+                    elem[1] = r2;
             }
 
             elem[1] = -elem[1];
         }
     }
 
-    if(r5 == NUM_GUITAR_STRING_ELEMS) {
+    if (r5 == NUM_GUITAR_STRING_ELEMS) {
         sub_80762A8(gs);
     }
 
-    if(sub_807618C(gs)) {
+    if (sub_807618C(gs)) {
         sub_80762BC(gs);
     }
     sub_8076114(gs);
 }
-#endif
