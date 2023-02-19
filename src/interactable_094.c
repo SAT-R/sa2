@@ -1,7 +1,11 @@
 #include "global.h"
+#include "main.h"
+#include "game.h"
+#include "m4a.h"
 #include "interactable.h"
 #include "interactable_094.h"
 #include "constants/move_states.h"
+#include "constants/songs.h"
 
 typedef struct {
     s32 unk0;
@@ -14,23 +18,23 @@ typedef struct {
     s16 unk12;
     s32 unk14;
     s32 unk18;
-    s32 unk1C;
+    bool32 unk1C;
     Interactable *ia;
     u8 spriteX;
     u8 spriteY;
 } Sprite_IA94;
 
-void Task_Interactable094(void);
-void TaskDestructor_Interactable094(struct Task *);
+static void Task_Interactable094(void);
+static void TaskDestructor_Interactable094(struct Task *);
 
 void initSprite_Interactable094(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable094, 0x28, 0x2010, 0,
+    struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_IA94), 0x2010, 0,
                                 TaskDestructor_Interactable094);
     Sprite_IA94 *ia94 = TaskGetStructPtr(t);
-    ia94->unk0 = ia->x * 8 + spriteRegionX * 0x100;
-    ia94->unk4 = ia->y * 8 + spriteRegionY * 0x100;
+    ia94->unk0 = ia->x * 8 + Q_24_8(spriteRegionX);
+    ia94->unk4 = ia->y * 8 + Q_24_8(spriteRegionY);
 
     ia94->unk8 = ia->d.sData[0] * 8;
     ia94->unkA = ia->d.sData[1] * 8;
@@ -48,15 +52,15 @@ void initSprite_Interactable094(Interactable *ia, u16 spriteRegionX, u16 spriteR
     SET_SPRITE_INITIALIZED(ia);
 }
 
-void sub_807ED68(Sprite_IA94 *);
-void sub_807ED88(Sprite_IA94 *);
-bool32 sub_807EBBC(Sprite_IA94 *);
-void sub_807ED00(Sprite_IA94 *);
-bool32 sub_807EDB8(Sprite_IA94 *);
-void sub_807EE1C(Sprite_IA94 *);
-void sub_807EB48(Sprite_IA94 *);
+static void sub_807ED68(Sprite_IA94 *);
+static void sub_807ED88(Sprite_IA94 *);
+static bool32 sub_807EBBC(Sprite_IA94 *);
+static void sub_807ED00(Sprite_IA94 *);
+static bool32 sub_807EDB8(Sprite_IA94 *);
+static void sub_807EE1C(Sprite_IA94 *);
+static void sub_807EB48(Sprite_IA94 *);
 
-void sub_807EA8C(void)
+static void sub_807EA8C(void)
 {
     Sprite_IA94 *ia94 = TaskGetStructPtr(gCurTask);
 
@@ -64,7 +68,7 @@ void sub_807EA8C(void)
         sub_807ED68(ia94);
         return;
     }
-    if (gPlayer.unk2C == 0x78) {
+    if (gPlayer.unk2C == 120) {
         sub_807ED88(ia94);
         return;
     }
@@ -78,7 +82,7 @@ void sub_807EA8C(void)
     if (gPlayer.unk5E & gPlayerControls.jump) {
         u16 temp = gPlayer.unk5C & 0x20;
         if (temp != 0) {
-            temp = 1;
+            temp = TRUE;
         }
         ia94->unk1C = temp;
         sub_807EB48(ia94);
@@ -91,4 +95,150 @@ void sub_807EA8C(void)
     if (sub_807EDB8(ia94)) {
         sub_807EE1C(ia94);
     }
+}
+
+static void sub_807EC70(void);
+
+static void sub_807EB48(Sprite_IA94 *ia94)
+{
+    if (PlayerIsAlive) {
+        gPlayer.moveState &= ~MOVESTATE_400000;
+        if (ia94->unk1C) {
+            gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+        } else {
+            gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+        }
+        gPlayer.unk64 = 4;
+        gPlayer.unk6D = 5;
+
+        if (ia94->unk1C) {
+            gPlayer.speedAirX = -Q_24_8(5);
+        } else {
+            gPlayer.speedAirX = Q_24_8(5);
+        }
+        m4aSongNumStop(SE_290);
+    }
+    gCurTask->main = sub_807EC70;
+}
+
+static bool32 sub_807EBBC(Sprite_IA94 *ia94)
+{
+    s16 temp, temp2, temp3, temp4;
+    if (!PlayerIsAlive) {
+        return FALSE;
+    }
+
+    temp = (ia94->unk0 + ia94->unk8) - gCamera.x;
+    temp3 = (ia94->unk4 + ia94->unkA) - gCamera.y;
+    temp2 = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    temp4 = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    if (temp <= temp2 && temp + ia94->unk10 >= temp2) {
+        if (temp3 <= temp4 && temp3 + ia94->unk12 >= temp4) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+static void sub_807ECB8(Sprite_IA94 *);
+
+static void Task_Interactable094(void)
+{
+    Sprite_IA94 *ia94 = TaskGetStructPtr(gCurTask);
+    if (sub_807EBBC(ia94)) {
+        sub_807ECB8(ia94);
+    }
+
+    if (sub_807EDB8(ia94)) {
+        sub_807EE1C(ia94);
+    }
+}
+
+static void sub_807ED48(Sprite_IA94 *ia94);
+static void Task_Interactable094(void);
+
+static void sub_807EC70(void)
+{
+    Sprite_IA94 *ia94 = TaskGetStructPtr(gCurTask);
+    if (!PlayerIsAlive) {
+        gCurTask->main = Task_Interactable094;
+        return;
+    }
+
+    if (!sub_807EBBC(ia94)) {
+        sub_807ED48(ia94);
+    }
+}
+
+static void TaskDestructor_Interactable094(struct Task *t)
+{
+    // unused
+}
+
+static void sub_807EA8C(void);
+
+static void sub_807ECB8(Sprite_IA94 *ia94)
+{
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 66;
+    gPlayer.x = Q_24_8(ia94->unk14);
+    gPlayer.speedGroundX = 0;
+    gPlayer.speedAirX = 0;
+    gPlayer.speedAirY = 0;
+
+    m4aSongNumStart(SE_290);
+    gCurTask->main = sub_807EA8C;
+}
+
+static void sub_807ED00(Sprite_IA94 *ia94)
+{
+    if (PlayerIsAlive) {
+        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.unk64 = 14;
+        gPlayer.unk6D = 5;
+        gPlayer.speedAirY = Q_24_8(1);
+        m4aSongNumStop(SE_290);
+    }
+    gCurTask->main = Task_Interactable094;
+}
+
+static void sub_807ED48(Sprite_IA94 *ia94)
+{
+    m4aSongNumStop(SE_290);
+    gCurTask->main = Task_Interactable094;
+}
+
+static void sub_807ED68(Sprite_IA94 *ia94)
+{
+    m4aSongNumStop(SE_290);
+    gCurTask->main = Task_Interactable094;
+}
+
+static void sub_807EC70(void);
+static void sub_807ED88(Sprite_IA94 *ia94)
+{
+    gPlayer.moveState &= ~MOVESTATE_400000;
+    m4aSongNumStop(SE_290);
+    gCurTask->main = sub_807EC70;
+}
+
+static bool32 sub_807EDB8(Sprite_IA94 *ia94)
+{
+    s16 temp, temp3;
+
+    temp = ia94->unk0 - gCamera.x;
+    temp3 = ia94->unk4 - gCamera.y;
+    if (temp + ia94->unkC < -128 || temp + ia94->unk8 > 368 || temp3 + ia94->unkE < -128
+        || temp3 + ia94->unkA > 288) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void sub_807EE1C(Sprite_IA94 *ia94)
+{
+    ia94->ia->x = ia94->spriteX;
+    TaskDestroy(gCurTask);
 }
