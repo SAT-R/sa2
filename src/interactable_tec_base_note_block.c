@@ -39,10 +39,10 @@ static const u16 gUnknown_080E001A[][4] = {
     { Q_8_8(8), Q_8_8(248), Q_8_8(248), Q_8_8(8) },
 };
 
-static const u16 sNoteBlockSfx[] = {
-    SE_TECHNO_BASE_NOTE_BLOCK,
-    SE_TECHNO_BASE_NOTE_BLOCK,
-    SE_TECHNO_BASE_NOTE_BLOCK,
+static const u16 sTecBasBlockSfx[] = {
+    SE_TECHNO_BASE_COMMON,
+    SE_TECHNO_BASE_COMMON,
+    SE_TECHNO_BASE_COMMON,
 };
 
 void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX,
@@ -204,7 +204,7 @@ static void TaskDestructor_InteractableTecBaseNoteBlock(struct Task *t)
 static void sub_8079CCC(Sprite_TecBaseNoteBlock *noteBlock)
 {
     noteBlock->unk4E = 0;
-    m4aSongNumStart(sNoteBlockSfx[noteBlock->unk4C]);
+    m4aSongNumStart(sTecBasBlockSfx[noteBlock->unk4C]);
     gCurTask->main = sub_80799FC;
 }
 

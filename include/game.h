@@ -250,6 +250,8 @@ struct Camera {
 
 extern struct Camera gCamera;
 
+#define PlayerIsAlive (!(gPlayer.moveState & MOVESTATE_DEAD))
+
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
 #define SpriteGetScreenPos(spritePos, regionPos)                                        \
@@ -259,9 +261,12 @@ extern struct Camera gCamera;
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
 // TODO: Merge all these into one!
-#define IS_OUT_OF_RANGE_(UNUSED, x, y, radius)                                          \
-    ((x < -(radius)) || (x > DISPLAY_WIDTH + (radius)) || (y < -(radius))               \
-     || (y > DISPLAY_HEIGHT + (radius)))
+#define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                       \
+    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY))            \
+     || (y > DISPLAY_HEIGHT + (radiusY)))
+
+// TODO: Merge all these into one!
+#define IS_OUT_OF_RANGE_(UNUSED, x, y, radius) IS_OUT_OF_RANGE_2(x, y, radius, radius)
 
 #define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                        \
     (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
@@ -323,6 +328,10 @@ extern const u8 gUnknown_08CCAC04[0x8900];
 
 // Possibly CreateGameStageAtSelectedCourse
 void GameStageStart(void);
+
+// TODO: Might need to be moved out of this header?
+void Player_SetMovestate_IsInScriptedSequence(void);
+void Player_ClearMovestate_IsInScriptedSequence(void);
 
 void sub_802EFDC(u32);
 void sub_802E164(u16, u16);
