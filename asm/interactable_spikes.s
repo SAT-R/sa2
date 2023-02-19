@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 00
+.if 001
 	thumb_func_start initSprite_Interactable_Spikes_Up
 initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	push {r4, r5, r6, lr}

@@ -26,6 +26,7 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 
 extern void sub_805F810(void);
 
+#if 00
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
@@ -56,3 +57,4 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
         s->graphics.anim = SA2_ANIM_SPIKES;
     }
 }
+#endif
