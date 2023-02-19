@@ -147,3 +147,48 @@ void sub_805F810(void)
         sub_80051E8(s);
     }
 }
+
+void sub_805F928(void)
+{
+    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite *s = &spikes->s;
+    Interactable *ia = spikes->base.ia;
+    s16 screenX, screenY;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (ia->d.sData[0] != 0)
+        || (gUnknown_030053E0 != 0)) {
+        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            sub_8060440(s, ia, spikes, &gPlayer);
+        } else {
+            sub_80601F8(s, ia, spikes, &gPlayer);
+        }
+    }
+
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+        && (gUnknown_030053E0 == 0)) {
+        if (spikes->unk3C & MOVESTATE_20) {
+            gPlayer.moveState &= ~MOVESTATE_20;
+        }
+
+        if (spikes->unk3C & 0x8) {
+            gPlayer.moveState &= ~MOVESTATE_8;
+        }
+    }
+
+    if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
+        ia->x = spikes->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+            || (ia->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+    }
+}
