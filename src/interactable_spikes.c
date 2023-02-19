@@ -26,7 +26,6 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 
 extern void sub_805F810(void);
 
-#if 00
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
@@ -52,9 +51,18 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
     s->graphics.size = 0;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
     } else {
         s->graphics.anim = SA2_ANIM_SPIKES;
     }
+
+    s->variant = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = 0xFF;
+    s->unk22 = 0x10;
+    s->focused = 0;
+    s->unk28->unk0 = -1;
+    s->unk10 = 0x2200;
+    sub_8004558(s);
 }
-#endif
