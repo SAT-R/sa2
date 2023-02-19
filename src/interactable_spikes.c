@@ -4,6 +4,7 @@
 #include "interactable.h"
 
 #include "constants/animations.h"
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -26,6 +27,8 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 
 extern void sub_805F810(void);
 extern void sub_805F928(void);
+extern bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
+extern bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
 
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
@@ -102,4 +105,45 @@ void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
     s->unk28->unk0 = -1;
     s->unk10 = 0x2A00;
     sub_8004558(s);
+}
+
+void sub_805F810(void)
+{
+    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite *s = &spikes->s;
+    Interactable *ia = spikes->base.ia;
+    s16 screenX, screenY;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+
+    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+        sub_80601F8(s, ia, spikes, &gPlayer);
+    } else {
+        sub_8060440(s, ia, spikes, &gPlayer);
+    }
+
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+        && (gUnknown_030053E0 == 0)) {
+        if (spikes->unk3C & 0xC0000) {
+            gPlayer.moveState &= ~MOVESTATE_20;
+        }
+
+        if (spikes->unk3C & 0x10000) {
+            gPlayer.moveState &= ~MOVESTATE_8;
+        }
+    }
+
+    if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
+        ia->x = spikes->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            sub_8004558(s);
+        }
+        sub_80051E8(s);
+    }
 }
