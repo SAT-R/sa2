@@ -124,6 +124,7 @@ SECTIONS
         build/sa2/asm/interactable_087.o(.text);
         build/sa2/asm/interactable_091.o(.text);
         build/sa2/asm/interactable_093.o(.text);
+        build/sa2/src/interactable_094.o(.text);
         build/sa2/asm/interactable_094.o(.text);
         build/sa2/src/interactable_095.o(.text);
         build/sa2/asm/interactable_sky_canyon_flying_handle.o(.text);

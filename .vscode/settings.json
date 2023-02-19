@@ -161,7 +161,8 @@
         "__split_buffer": "c",
         "interactable_095.h": "c",
         "interactable_070.h": "c",
-        "interactable_tec_base_note_block.h": "c"
+        "interactable_tec_base_note_block.h": "c",
+        "interactable_094.h": "c"
     },
     "asm-code-lens.donated": true,
     "editor.formatOnSave": true,
