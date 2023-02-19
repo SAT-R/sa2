@@ -1,9 +1,11 @@
 #include "global.h"
 #include "task.h"
+#include "malloc_vram.h"
 
 #include "interactable.h"
 
 #include "constants/animations.h"
+#include "constants/interactables.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
@@ -27,8 +29,10 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 
 extern void sub_805F810(void);
 extern void sub_805F928(void);
+extern void sub_805FBA0(void);
 extern bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
 extern bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
+extern void TaskDestructor_8060CF4(struct Task *);
 
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
@@ -191,4 +195,59 @@ void sub_805F928(void)
             sub_80051E8(s);
         }
     }
+}
+
+void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegionX,
+                                              u16 spriteRegionY, u8 spriteY)
+{
+    struct Task *t = TaskCreate(sub_805FBA0, sizeof(Sprite_Spikes), 0x2000, 0,
+                                TaskDestructor_8060CF4);
+    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite *s = &spikes->s;
+
+    spikes->unk40 = 0;
+    spikes->unk3C = 0;
+    spikes->base.regionX = spriteRegionX;
+    spikes->base.regionY = spriteRegionY;
+    spikes->base.ia = ia;
+    spikes->base.spriteX = ia->x;
+    spikes->base.spriteY = spriteY;
+
+    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(ia);
+
+    s->graphics.dest = VramMalloc(4 * 4);
+
+    s->unk1A = 0x440;
+    s->graphics.size = 0;
+
+    s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+
+    s->variant = 3;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = 0xFF;
+    s->unk22 = 0x10;
+    s->focused = 0;
+    s->unk28->unk0 = -1;
+    s->unk10 = 0x2200;
+
+    switch (gGameMode) {
+        case GAME_MODE_MULTI_PLAYER_COLLECT_RINGS: {
+            if (ia->index == IA__SPIKES__NORMAL_LEFT) {
+                // X-Flip
+                s->unk10 |= 0x400;
+            }
+        } break;
+
+        default: {
+            if (ia->index == IA__SPIKES__NORMAL_LEFT) {
+                // X-Flip
+                s->unk10 |= 0x400;
+            }
+        } break;
+    }
+
+    sub_8004558(s);
 }

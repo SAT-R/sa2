@@ -5,8 +5,6 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start initSprite_Interactable_Spikes_LeftRight
 initSprite_Interactable_Spikes_LeftRight: @ 0x0805FA70
 	push {r4, r5, r6, r7, lr}
@@ -15,18 +13,18 @@ initSprite_Interactable_Spikes_LeftRight: @ 0x0805FA70
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	mov sl, r0
+	mov sl, r0              @ sl = ia
 	adds r4, r1, #0
 	adds r5, r2, #0
 	mov r8, r3
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ r4 = spriteRegionX
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = spriteRegionY
 	mov r0, r8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	mov r8, r0
+	mov r8, r0              @ r8 = spriteY
 	ldr r0, _0805FB50 @ =sub_805FBA0
 	movs r2, #0x80
 	lsls r2, r2, #6
@@ -151,6 +149,7 @@ _0805FB88:
 	pop {r0}
 	bx r0
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_805FBA0
 sub_805FBA0: @ 0x0805FBA0
