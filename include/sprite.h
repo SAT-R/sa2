@@ -141,8 +141,8 @@ typedef struct {
                           // bit 6: rotscale double-size
                           // bit 7-8: obj mode
                           // bit 9
-                          // bit 10
-                          // bit 11
+                          // bit 10 X-Flip
+                          // bit 11 Y-Flip
                           // bit 12-13: priority
                           // bit 14
                           // bit 15-16: bg id (?)
