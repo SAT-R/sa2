@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 00
 	thumb_func_start initSprite_Interactable_Spikes_Up
 initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	push {r4, r5, r6, lr}
@@ -11,21 +12,21 @@ initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	mov r5, r8
 	push {r5, r6}
 	sub sp, #4
-	mov r8, r0
+	mov r8, r0              @ r8 = ia
 	adds r4, r1, #0
 	adds r5, r2, #0
 	adds r6, r3, #0
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ r4 = spriteRegionX
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = spriteRegionY
 	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
+	lsrs r6, r6, #0x18      @ r6 = spriteY
 	ldr r0, _0805F6B0 @ =sub_805F810
 	movs r2, #0x80
 	lsls r2, r2, #6
 	movs r1, #0
-	mov sb, r1
+	mov sb, r1              @ sb = 0
 	str r1, [sp]
 	movs r1, #0x44
 	movs r3, #0
@@ -33,9 +34,9 @@ initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r0, r1, r0
+	adds r0, r1, r0     @ r0 = spikes
 	ldr r3, _0805F6B4 @ =IWRAM_START + 0xC
-	adds r2, r1, r3
+	adds r2, r1, r3     @ r2 = s
 	mov r1, sb
 	str r1, [r0, #0x40]
 	str r1, [r0, #0x3c]
@@ -71,7 +72,7 @@ initSprite_Interactable_Spikes_Up: @ 0x0805F618
 	ldrb r0, [r0]
 	cmp r0, #5
 	beq _0805F6C8
-	ldr r1, _0805F6C0 @ =gUnknown_080D94D8
+	ldr r1, _0805F6C0 @ =sSpikesOfZone
 	ldr r0, _0805F6C4 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -85,7 +86,7 @@ _0805F6B0: .4byte sub_805F810
 _0805F6B4: .4byte IWRAM_START + 0xC
 _0805F6B8: .4byte 0x06011980
 _0805F6BC: .4byte gGameMode
-_0805F6C0: .4byte gUnknown_080D94D8
+_0805F6C0: .4byte sSpikesOfZone
 _0805F6C4: .4byte gCurrentLevel
 _0805F6C8:
 	ldr r0, _0805F710 @ =0x0000021E
@@ -125,6 +126,7 @@ _0805F6CA:
 	bx r0
 	.align 2, 0
 _0805F710: .4byte 0x0000021E
+.endif
 
 	thumb_func_start initSprite_Interactable_Spikes_Down
 initSprite_Interactable_Spikes_Down: @ 0x0805F714
@@ -190,7 +192,7 @@ initSprite_Interactable_Spikes_Down: @ 0x0805F714
 	movs r1, #0x88
 	lsls r1, r1, #3
 	strh r1, [r0, #0x1a]
-	ldr r2, _0805F7F8 @ =gUnknown_080D94D8
+	ldr r2, _0805F7F8 @ =sSpikesOfZone
 	ldr r1, _0805F7FC @ =gCurrentLevel
 	ldrb r1, [r1]
 	lsls r1, r1, #0x18
@@ -237,7 +239,7 @@ initSprite_Interactable_Spikes_Down: @ 0x0805F714
 _0805F7EC: .4byte sub_805F928
 _0805F7F0: .4byte IWRAM_START + 0xC
 _0805F7F4: .4byte 0x06011980
-_0805F7F8: .4byte gUnknown_080D94D8
+_0805F7F8: .4byte sSpikesOfZone
 _0805F7FC: .4byte gCurrentLevel
 _0805F800: .4byte IWRAM_START + 0x2C
 _0805F804: .4byte IWRAM_START + 0x2D
@@ -618,7 +620,7 @@ initSprite_Interactable_Spikes_LeftRight: @ 0x0805FA70
 	strh r0, [r7, #0x1a]
 	ldr r2, [sp, #4]
 	strh r2, [r7, #8]
-	ldr r1, _0805FB5C @ =gUnknown_080D94D8
+	ldr r1, _0805FB5C @ =sSpikesOfZone
 	ldr r0, _0805FB60 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -662,7 +664,7 @@ initSprite_Interactable_Spikes_LeftRight: @ 0x0805FA70
 _0805FB50: .4byte sub_805FBA0
 _0805FB54: .4byte TaskDestructor_8060CF4
 _0805FB58: .4byte IWRAM_START + 0xC
-_0805FB5C: .4byte gUnknown_080D94D8
+_0805FB5C: .4byte sSpikesOfZone
 _0805FB60: .4byte gCurrentLevel
 _0805FB64: .4byte IWRAM_START + 0x2C
 _0805FB68: .4byte IWRAM_START + 0x2D
@@ -2048,7 +2050,7 @@ _0806061C:
 	movs r0, #0
 	str r0, [r2]
 _0806063C:
-	ldr r1, _08060658 @ =gUnknown_080D94D8
+	ldr r1, _08060658 @ =sSpikesOfZone
 	ldr r0, _0806065C @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2062,7 +2064,7 @@ _0806063C:
 	movs r0, #1
 	b _08060928
 	.align 2, 0
-_08060658: .4byte gUnknown_080D94D8
+_08060658: .4byte sSpikesOfZone
 _0806065C: .4byte gCurrentLevel
 _08060660:
 	cmp r4, #0x3f
@@ -2113,7 +2115,7 @@ _080606AA:
 	ldr r1, [sp, #0x30]
 	str r0, [r1]
 _080606B4:
-	ldr r1, _0806074C @ =gUnknown_080D94D8
+	ldr r1, _0806074C @ =sSpikesOfZone
 	ldr r0, _08060750 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2186,7 +2188,7 @@ _080606FC:
 	subs r0, r0, r1
 	b _0806076E
 	.align 2, 0
-_0806074C: .4byte gUnknown_080D94D8
+_0806074C: .4byte sSpikesOfZone
 _08060750: .4byte gCurrentLevel
 _08060754: .4byte gUnknown_03005424
 _08060758:
@@ -2418,7 +2420,7 @@ _080608F4:
 	movs r0, #0
 	str r0, [r2]
 _08060910:
-	ldr r1, _08060934 @ =gUnknown_080D94D8
+	ldr r1, _08060934 @ =sSpikesOfZone
 	ldr r0, _08060938 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2436,7 +2438,7 @@ _08060928:
 	bl sub_8004558
 	b _08060998
 	.align 2, 0
-_08060934: .4byte gUnknown_080D94D8
+_08060934: .4byte sSpikesOfZone
 _08060938: .4byte gCurrentLevel
 _0806093C:
 	ldr r1, [r5, #0x20]
@@ -2471,7 +2473,7 @@ _08060958:
 	movs r0, #0
 	str r0, [r2]
 _08060978:
-	ldr r1, _080609AC @ =gUnknown_080D94D8
+	ldr r1, _080609AC @ =sSpikesOfZone
 	ldr r0, _080609B0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2498,7 +2500,7 @@ _0806099A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_080609AC: .4byte gUnknown_080D94D8
+_080609AC: .4byte sSpikesOfZone
 _080609B0: .4byte gCurrentLevel
 
 	thumb_func_start sub_80609B4
@@ -2625,7 +2627,7 @@ _08060A80:
 	movs r0, #0
 	str r0, [r2]
 _08060AA0:
-	ldr r1, _08060ABC @ =gUnknown_080D94D8
+	ldr r1, _08060ABC @ =sSpikesOfZone
 	ldr r0, _08060AC0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2639,7 +2641,7 @@ _08060AA0:
 	movs r0, #1
 	b _08060C68
 	.align 2, 0
-_08060ABC: .4byte gUnknown_080D94D8
+_08060ABC: .4byte sSpikesOfZone
 _08060AC0: .4byte gCurrentLevel
 _08060AC4:
 	cmp r4, #0x3f
@@ -2687,7 +2689,7 @@ _08060B0A:
 	ldr r1, [sp, #0x30]
 	str r0, [r1]
 _08060B14:
-	ldr r1, _08060BAC @ =gUnknown_080D94D8
+	ldr r1, _08060BAC @ =sSpikesOfZone
 	ldr r0, _08060BB0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2762,7 +2764,7 @@ _08060B5E:
 	subs r0, r0, r1
 	b _08060BCE
 	.align 2, 0
-_08060BAC: .4byte gUnknown_080D94D8
+_08060BAC: .4byte sSpikesOfZone
 _08060BB0: .4byte gCurrentLevel
 _08060BB4: .4byte gUnknown_03005424
 _08060BB8:
@@ -2846,7 +2848,7 @@ _08060C34:
 	movs r0, #0
 	str r0, [r2]
 _08060C50:
-	ldr r1, _08060C74 @ =gUnknown_080D94D8
+	ldr r1, _08060C74 @ =sSpikesOfZone
 	ldr r0, _08060C78 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2864,7 +2866,7 @@ _08060C68:
 	bl sub_8004558
 	b _08060CD8
 	.align 2, 0
-_08060C74: .4byte gUnknown_080D94D8
+_08060C74: .4byte sSpikesOfZone
 _08060C78: .4byte gCurrentLevel
 _08060C7C:
 	ldr r1, [r5, #0x20]
@@ -2899,7 +2901,7 @@ _08060C98:
 	movs r0, #0
 	str r0, [r2]
 _08060CB8:
-	ldr r1, _08060CEC @ =gUnknown_080D94D8
+	ldr r1, _08060CEC @ =sSpikesOfZone
 	ldr r0, _08060CF0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -2926,7 +2928,7 @@ _08060CDA:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08060CEC: .4byte gUnknown_080D94D8
+_08060CEC: .4byte sSpikesOfZone
 _08060CF0: .4byte gCurrentLevel
 
 	thumb_func_start TaskDestructor_8060CF4
