@@ -209,35 +209,35 @@ gUnknown_080D5130:
     .byte 0xC5, 0xB2, 0xC4, 0x2C, 0xBE, 0xB0, 0xCC, 0xDE, 0xC3, 0xDE, 0xB7, 0xC5, 0xB2, 0xC3, 0xDE, 0xBD
     
 .align 2 , 0
-    .global gUnknown_080D5148
-gUnknown_080D5148:
+    .global sAnimInfoPauseMenu
+sAnimInfoPauseMenu:
     .4byte 40
-    .2byte 0x42A
+    .2byte 0x42A    @ SA2_ANIM_PAUSE_MENU_JP
     .byte  0x00
 .align 2 , 0
 
     .4byte 40
-    .2byte 0x42B
+    .2byte 0x42B    @ SA2_ANIM_PAUSE_MENU_EN
     .byte  0x00
 .align 2 , 0
 
     .4byte 40
-    .2byte 0x42C
+    .2byte 0x42C    @ SA2_ANIM_PAUSE_MENU_DE
     .byte  0x00
 .align 2 , 0
 
     .4byte 40
-    .2byte 0x42D
+    .2byte 0x42D    @ SA2_ANIM_PAUSE_MENU_FR
     .byte  0x00
 .align 2 , 0
 
     .4byte 40
-    .2byte 0x42E
+    .2byte 0x42E    @ SA2_ANIM_PAUSE_MENU_ES
     .byte  0x00
 .align 2 , 0
 
     .4byte 40
-    .2byte 0x42F
+    .2byte 0x42F    @ SA2_ANIM_PAUSE_MENU_IT
     .byte  0x00
 .align 2 , 0
 
@@ -248,7 +248,7 @@ gUnknown_080D5178:
     .global gUnknown_080D51C6
 gUnknown_080D51C6:
     .2byte 0x2D5, 0, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_SONIC   , 4
-    .2byte 0x2D5, 1, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS   , 4
+    .2byte 0x2D5, 1, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_CREAM   , 4
     .2byte 0x2D5, 2, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS   , 4
     .2byte 0x2D5, 3, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_KNUCKLES, 4
     .2byte 0x2D5, 4, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY     , 4
@@ -5963,7 +5963,7 @@ _0800AA12:
 	lsrs r5, r0, #0x10
 	cmp r5, #0
 	bne _0800AAF8
-	ldr r1, _0800AA80 @ =gUnknown_080D5148
+	ldr r1, _0800AA80 @ =sAnimInfoPauseMenu
 	lsls r4, r4, #0x18
 	asrs r0, r4, #0x15
 	adds r0, r0, r1
@@ -6006,7 +6006,7 @@ _0800AA12:
 	.align 2, 0
 _0800AA78: .4byte gLoadedSaveGame
 _0800AA7C: .4byte gUnknown_03005424
-_0800AA80: .4byte gUnknown_080D5148
+_0800AA80: .4byte sAnimInfoPauseMenu
 _0800AA84: .4byte ewram_end
 _0800AA88: .4byte sub_800ADAC
 _0800AA8C: .4byte 0x0000FFFE
@@ -6029,7 +6029,7 @@ _0800AAAA:
 	mov r1, ip
 	strh r0, [r1, #0x1a]
 	strh r2, [r1, #8]
-	ldr r1, _0800AB04 @ =gUnknown_080D5148
+	ldr r1, _0800AB04 @ =sAnimInfoPauseMenu
 	asrs r0, r4, #0x15
 	adds r0, r0, r1
 	ldrh r1, [r0, #4]
@@ -6065,7 +6065,7 @@ _0800AAF8:
 	bx r0
 	.align 2, 0
 _0800AB00: .4byte IWRAM_START + 0x63
-_0800AB04: .4byte gUnknown_080D5148
+_0800AB04: .4byte sAnimInfoPauseMenu
 
 	thumb_func_start sub_800AB08
 sub_800AB08: @ 0x0800AB08
