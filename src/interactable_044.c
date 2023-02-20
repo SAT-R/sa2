@@ -1,6 +1,4 @@
 #include "global.h"
-#include "gba/types.h"
-
 #include "game.h"
 #include "interactable.h"
 #include "sprite.h"
