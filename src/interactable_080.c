@@ -3,9 +3,12 @@
 #include "interactable.h"
 #include "main.h"
 #include "task.h"
+#include "m4a.h"
 #include "interactable_080.h"
 #include "malloc_vram.h"
+#include "trig.h"
 #include "constants/animations.h"
+#include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
@@ -14,11 +17,16 @@ typedef struct {
     s32 unk40;
     s16 unk44;
     s16 unk46;
-    s16 unk48;
+    u16 unk48;
 } Sprite_IA80;
 
-void Task_Interactable080(void);
-void TaskDestructor_Interactable080(struct Task *);
+static void Task_Interactable080(void);
+static void TaskDestructor_Interactable080(struct Task *);
+static void sub_807B2D0(Sprite_IA80 *);
+static void sub_807B398(Sprite_IA80 *);
+static void sub_807B318(Sprite_IA80 *);
+static void sub_807B350(Sprite_IA80 *);
+static void sub_807B3B0(void);
 
 void initSprite_Interactable080(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
@@ -56,7 +64,7 @@ void initSprite_Interactable080(Interactable *ia, u16 spriteRegionX, u16 spriteR
     SET_SPRITE_INITIALIZED(ia);
 }
 
-bool32 sub_807B190(Sprite_IA80 *ia80)
+static bool32 sub_807B190(Sprite_IA80 *ia80)
 {
     s32 temp3, temp4;
     s16 temp5, temp6;
@@ -78,7 +86,7 @@ bool32 sub_807B190(Sprite_IA80 *ia80)
     return FALSE;
 }
 
-bool32 sub_807B1F0(Sprite_IA80 *ia80)
+static bool32 sub_807B1F0(Sprite_IA80 *ia80)
 {
     s32 r3, r2, r0, r1;
     s16 r3_16, r0_16, r2_16, r1_16, temp2, temp4;
@@ -110,4 +118,68 @@ bool32 sub_807B1F0(Sprite_IA80 *ia80)
         return TRUE;
     }
     return FALSE;
+}
+
+static void Task_Interactable080(void)
+{
+    Sprite_IA80 *ia80 = TaskGetStructPtr(gCurTask);
+    if (sub_807B1F0(ia80)) {
+        sub_807B2D0(ia80);
+    }
+
+    if (sub_807B190(ia80)) {
+        sub_807B398(ia80);
+    } else {
+        sub_807B318(ia80);
+        sub_807B350(ia80);
+    }
+}
+
+static void TaskDestructor_Interactable080(struct Task *t)
+{
+    Sprite_IA80 *ia80 = TaskGetStructPtr(t);
+    VramFree(ia80->sprite.graphics.dest);
+}
+
+static void sub_807B2D0(Sprite_IA80 *ia80)
+{
+    gPlayer.unk6D = 14;
+    gPlayer.unk6E = 0;
+    ia80->sprite.graphics.anim = 600;
+    ia80->sprite.variant = 1;
+    m4aSongNumStart(SE_297);
+    gCurTask->main = sub_807B3B0;
+}
+
+static void sub_807B318(Sprite_IA80 *ia80)
+{
+    ia80->unk44 = 0;
+    ia80->unk46 = SIN_24_8(ia80->unk48);
+    ia80->unk48 = (ia80->unk48 + 0x10) & ONE_CYCLE;
+}
+
+static void sub_807B350(Sprite_IA80 *ia80)
+{
+    Sprite *sprite = &ia80->sprite;
+    sprite->x = ia80->unk3C - gCamera.x + (ia80->unk44 >> 8);
+    sprite->y = ia80->unk40 - gCamera.y + (ia80->unk46 >> 8);
+    sub_8004558(sprite);
+    sub_80051E8(sprite);
+}
+
+static void sub_807B398(Sprite_IA80 *ia80)
+{
+    ia80->base.ia->x = ia80->base.spriteX;
+    TaskDestroy(gCurTask);
+}
+
+static void sub_807B3B0(void)
+{
+    Sprite_IA80 *ia80 = TaskGetStructPtr(gCurTask);
+
+    if (ia80->sprite.unk10 & 0x4000) {
+        sub_807B398(ia80);
+    } else {
+        sub_807B350(ia80);
+    }
 }
