@@ -19,6 +19,8 @@
 #include "save.h"
 #include "task.h"
 
+#include "constants/move_states.h"
+
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
