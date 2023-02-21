@@ -5,8 +5,6 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start sub_805FF68
 sub_805FF68: @ 0x0805FF68
 	push {r4, r5, r6, r7, lr}
@@ -18,10 +16,10 @@ sub_805FF68: @ 0x0805FF68
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r5, r1, r0
+	adds r5, r1, r0         @ r5 = spikes
 	adds r0, #0xc
-	adds r6, r1, r0
-	ldr r7, [r5]
+	adds r6, r1, r0         @ r6 = s
+	ldr r7, [r5]            @ r7 = ia
 	ldrb r1, [r5, #8]
 	lsls r1, r1, #3
 	ldrh r0, [r5, #4]
@@ -108,6 +106,7 @@ _08060028:
 	bx r0
 	.align 2, 0
 _08060030: .4byte gPlayer
+.endif
 
 	thumb_func_start initSprite_Interactable_Spikes_HidingDown
 initSprite_Interactable_Spikes_HidingDown: @ 0x08060034

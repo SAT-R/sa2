@@ -34,6 +34,8 @@ extern void sub_805FBA0(void);
 extern void sub_805FF68(void);
 extern bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
 extern bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
+extern bool32 sub_8060554(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
+extern bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
 extern void TaskDestructor_8060CF4(struct Task *);
 
 // TODO: Include header this belongs to
@@ -420,4 +422,35 @@ void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX
     s->focused = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2200;
+}
+
+void sub_805FF68(void)
+{
+    s16 screenX, screenY;
+    u32 someParam = 0;
+    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite *s = &spikes->s;
+    Interactable *ia = spikes->base.ia;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+
+    if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
+        ia->x = spikes->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        bool32 procResult;
+        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            procResult = sub_8060554(s, ia, spikes, &gPlayer, &someParam);
+        } else {
+            procResult = sub_80609B4(s, ia, spikes, &gPlayer, &someParam);
+        }
+
+        if (procResult) {
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+    }
 }
