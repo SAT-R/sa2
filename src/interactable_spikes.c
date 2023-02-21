@@ -31,12 +31,14 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
 extern void sub_805F810(void);
 extern void sub_805F928(void);
 extern void sub_805FBA0(void);
-extern void sub_805FF68(void);
+extern void Task_805FF68(void);
 extern bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
 extern bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
 extern bool32 sub_8060554(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
 extern bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
 extern void TaskDestructor_8060CF4(struct Task *);
+
+extern void Task_806012C(void);
 
 // TODO: Include header this belongs to
 extern u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
@@ -390,7 +392,7 @@ void sub_805FBA0(void)
 void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
+    struct Task *t = TaskCreate(Task_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
@@ -424,7 +426,7 @@ void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX
     s->unk10 = 0x2200;
 }
 
-void sub_805FF68(void)
+void Task_805FF68(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
@@ -453,4 +455,41 @@ void sub_805FF68(void)
             sub_80051E8(s);
         }
     }
+}
+
+void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegionX,
+                                               u16 spriteRegionY, u8 spriteY)
+{
+    struct Task *t = TaskCreate(Task_806012C, sizeof(Sprite_Spikes), 0x2000, 0,
+                                TaskDestructor_8060CF4);
+    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite *s = &spikes->s;
+
+    spikes->unk40 = 0;
+    spikes->unk3C = 0;
+    spikes->base.regionX = spriteRegionX;
+    spikes->base.regionY = spriteRegionY;
+    spikes->base.ia = ia;
+    spikes->base.spriteX = ia->x;
+    spikes->base.spriteY = spriteY;
+
+    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(ia);
+
+    s->graphics.dest = VramMalloc(4 * 4);
+
+    s->unk1A = 0x440;
+
+    s->graphics.size = 0;
+    s->graphics.anim = -1;
+
+    s->variant = 0xFF;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = -1;
+    s->unk22 = 0x10;
+    s->focused = 0;
+    s->unk28->unk0 = -1;
+    s->unk10 = 0x2A00;
 }
