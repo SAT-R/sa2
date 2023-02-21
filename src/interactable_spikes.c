@@ -493,3 +493,34 @@ void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegio
     s->unk28->unk0 = -1;
     s->unk10 = 0x2A00;
 }
+
+void Task_806012C(void)
+{
+    s16 screenX, screenY;
+    u32 someParam = 0;
+    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite *s = &spikes->s;
+    Interactable *ia = spikes->base.ia;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+
+    if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
+        ia->x = spikes->base.spriteX;
+        TaskDestroy(gCurTask);
+    } else {
+        bool32 procResult;
+        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            procResult = sub_80609B4(s, ia, spikes, &gPlayer, &someParam);
+        } else {
+            procResult = sub_8060554(s, ia, spikes, &gPlayer, &someParam);
+        }
+
+        if (procResult) {
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+    }
+}
