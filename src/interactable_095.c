@@ -106,9 +106,10 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
             >> 0xF;
     }
 
-    ia95->unk3C
-        = ia95->base.spriteX * 8 + ia95->base.regionX * 0x100 + (ia95->unk44 >> 8);
-    ia95->unk40 = ia->y * 8 + ia95->base.regionY * 0x100 + (ia95->unk48 >> 8);
+    ia95->unk3C = SpriteGetScreenPos(ia95->base.spriteX, ia95->base.regionX)
+        + Q_24_8_TO_INT(ia95->unk44);
+    ia95->unk40
+        = SpriteGetScreenPos(ia->y, ia95->base.regionY) + Q_24_8_TO_INT(ia95->unk48);
 }
 
 static void Task_Interactable095Main(void)

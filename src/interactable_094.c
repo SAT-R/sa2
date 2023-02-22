@@ -33,8 +33,8 @@ void initSprite_Interactable094(Interactable *ia, u16 spriteRegionX, u16 spriteR
     struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_IA94), 0x2010, 0,
                                 TaskDestructor_Interactable094);
     Sprite_IA94 *ia94 = TaskGetStructPtr(t);
-    ia94->unk0 = ia->x * 8 + Q_24_8(spriteRegionX);
-    ia94->unk4 = ia->y * 8 + Q_24_8(spriteRegionY);
+    ia94->unk0 = SpriteGetScreenPos(ia->x, spriteRegionX);
+    ia94->unk4 = SpriteGetScreenPos(ia->y, spriteRegionY);
 
     ia94->unk8 = ia->d.sData[0] * 8;
     ia94->unkA = ia->d.sData[1] * 8;

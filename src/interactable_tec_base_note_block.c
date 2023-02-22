@@ -78,8 +78,8 @@ void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX
     sprite->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];
     sprite->variant = sNoteBlockAssets[noteBlock->unk4C][1];
 
-    noteBlock->unk3C = ia->x * 8 + Q_24_8(spriteRegionX);
-    noteBlock->unk40 = ia->y * 8 + Q_24_8(spriteRegionY);
+    noteBlock->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
+    noteBlock->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
 
     SET_SPRITE_INITIALIZED(ia);
     sub_8004558(sprite);

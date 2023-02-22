@@ -39,8 +39,8 @@ void initSprite_Interactable080(Interactable *ia, u16 spriteRegionX, u16 spriteR
     ia80->unk44 = 0;
     ia80->unk46 = 0;
     ia80->unk48 = 0;
-    ia80->unk3C = ia->x * 8 + Q_24_8(spriteRegionX);
-    ia80->unk40 = ia->y * 8 + Q_24_8(spriteRegionY);
+    ia80->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
+    ia80->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
     ia80->base.regionX = spriteRegionX;
     ia80->base.regionY = spriteRegionY;
     ia80->base.ia = ia;

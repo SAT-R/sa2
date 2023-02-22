@@ -48,8 +48,8 @@ void initSprite_Interactable052(Interactable *ia, u16 spriteRegionX, u16 spriteR
     sprite->graphics.anim = 567;
     sprite->variant = 0;
 
-    ia52->unk3C = ia->x * 8 + Q_24_8(spriteRegionX);
-    ia52->unk40 = ia->y * 8 + Q_24_8(spriteRegionY);
+    ia52->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
+    ia52->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
     SET_SPRITE_INITIALIZED(ia);
     sub_8004558(sprite);
 }
