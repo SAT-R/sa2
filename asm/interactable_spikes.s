@@ -5,8 +5,6 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start sub_80601F8
 sub_80601F8: @ 0x080601F8
 	push {r4, r5, r6, r7, lr}
@@ -14,33 +12,33 @@ sub_80601F8: @ 0x080601F8
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	sub sp, #0x10
-	adds r6, r0, #0
-	adds r4, r1, #0
-	adds r5, r3, #0
+	sub sp, #0x10           @ r2 = spikes
+	adds r6, r0, #0         @ r6 = s
+	adds r4, r1, #0         @ r4 = ia
+	adds r5, r3, #0         @ r5 = player
 	ldrb r3, [r2, #8]
 	lsls r3, r3, #3
 	ldrh r0, [r2, #4]
 	lsls r0, r0, #8
-	adds r3, r3, r0
+	adds r3, r3, r0         @ r3 = screenX
 	lsls r3, r3, #0x10
 	ldrb r1, [r4, #1]
 	lsls r1, r1, #3
 	ldrh r0, [r2, #6]
 	lsls r0, r0, #8
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = screenY
 	lsls r1, r1, #0x10
-	ldr r2, _080602C8 @ =gCamera
+	ldr r2, _080602C8 @ =gCamera    @ r2 = gCamera
 	ldr r0, [r2]
 	lsrs r7, r3, #0x10
-	mov sl, r7
+	mov sl, r7              @ sl = screenX
 	asrs r3, r3, #0x10
 	subs r0, r3, r0
 	strh r0, [r6, #0x16]
 	ldr r0, [r2, #4]
 	lsrs r2, r1, #0x10
-	mov sb, r2
-	asrs r7, r1, #0x10
+	mov sb, r2              @ sb = screenY
+	asrs r7, r1, #0x10      @ r7 = screenY
 	subs r0, r7, r0
 	strh r0, [r6, #0x18]
 	ldr r0, _080602CC @ =gGameMode
@@ -60,7 +58,7 @@ sub_80601F8: @ 0x080601F8
 	adds r2, r7, #0
 	adds r3, r5, #0
 	bl sub_800CCB8
-	mov r8, r0
+	mov r8, r0          @ r8 = flags
 	cmp r0, #0
 	beq _080602FC
 	ldrb r4, [r5, #0x16]
@@ -136,7 +134,7 @@ _080602EE:
 	bl sub_800CBA4
 	cmp r0, #0
 	bne _080603C6
-_080602FC:
+_080602FC:      @ r5 = player
 	ldr r1, [r5, #0x20]
 	lsrs r7, r1, #3
 	movs r0, #1
@@ -151,7 +149,7 @@ _080602FC:
 	mov r1, sl
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
-	str r0, [sp, #0xc]
+	str r0, [sp, #0xc]      @ sp0c = screenX
 	mov r2, sb
 	lsls r0, r2, #0x10
 	asrs r4, r0, #0x10
@@ -184,6 +182,10 @@ _080602FC:
 	beq _0806042C
 	movs r0, #0
 	strh r0, [r5, #0x12]
+
+                    @ r4 = screenY
+                    @ r5 = player
+                    @ r6 = s
 	adds r0, r6, #0
 	adds r0, #0x2f
 	ldrb r0, [r0]
@@ -195,13 +197,16 @@ _080602FC:
 	adds r0, r0, r1
 	lsls r0, r0, #8
 	str r0, [r5, #0xc]
+
 	ldr r0, [r5, #0x20]
 	movs r1, #8
 	orrs r0, r1
 	subs r1, #0xb
 	ands r0, r1
 	str r0, [r5, #0x20]
+
 	str r6, [r5, #0x3c]
+
 	ldrh r0, [r5, #0x10]
 	strh r0, [r5, #0x14]
 	b _080603BC
@@ -305,6 +310,7 @@ _0806042E:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_8060440
 sub_8060440: @ 0x08060440
