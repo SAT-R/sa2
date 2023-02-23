@@ -2,6 +2,7 @@
 #include "m4a.h"
 #include "trig.h"
 
+#include "game.h"
 #include "interactable.h"
 #include "sprite.h"
 
@@ -43,9 +44,6 @@ extern const Pipe_Data (*gUnknown_08C8793C[9])[];
 extern const Pipe_Data (*gUnknown_08C87960[3])[];
 
 extern PipeHandler sPipeHandlers[NUM_PIPE_HANDLERS];
-
-extern void Player_SetMovestate_IsInScriptedSequence(void);
-extern void Player_ClearMovestate_IsInScriptedSequence(void);
 
 extern void sub_8077774(Sprite_Pipe_Horn *, s32, s32);
 extern void sub_80777C8(Sprite_Pipe_Horn *);

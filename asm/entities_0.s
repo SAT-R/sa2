@@ -66,7 +66,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_HookRail_Start
     .4byte initSprite_Interactable_HookRail_End
     .4byte initSprite_InteractableWindmill
-    .4byte initSprite_Interactable052
+    .4byte initSprite_InteractableTurnAroundBar
     .4byte initSprite_Interactable_HotCrater_Crane
     .4byte initSprite_Interactable_DashRing
     .4byte initSprite_Interactable_FloatingSpring_Up

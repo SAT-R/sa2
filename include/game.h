@@ -169,7 +169,7 @@ typedef struct {
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ u8 filler40[0x1A];
-    /* 0x5A */ u8 unk5A;
+    /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C;
     /* 0x5E */ u16 unk5E; // input ?
