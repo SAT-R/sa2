@@ -29,9 +29,10 @@ sub_8060440: @ 0x08060440
 	strh r0, [r6, #0x16]
 	ldr r0, [r2, #4]
 	lsrs r7, r1, #0x10
-	asrs r5, r1, #0x10
+	asrs r5, r1, #0x10      @ r5 = screenY
 	subs r0, r5, r0
 	strh r0, [r6, #0x18]
+
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
 	lsls r1, r1, #0xf
