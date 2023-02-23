@@ -77,7 +77,7 @@ SECTIONS
         build/sa2/src/interactable_019.o(.text);
         build/sa2/src/interactable_toggle_player_layer.o(.text);
         build/sa2/asm/interactable_rotating_handle.o(.text);
-        build/sa2/asm/interactable_gapped_loop.o(.text);
+        build/sa2/src/interactable_gapped_loop.o(.text);
         build/sa2/asm/interactable_spikes.o(.text);
         build/sa2/asm/interactable_corkscrew.o(.text);
         build/sa2/src/interactable_bouncy_bar.o(.text);

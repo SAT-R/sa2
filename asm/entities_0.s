@@ -33,8 +33,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_BouncySpring
     .4byte initSprite_Interactable_019
     .4byte initSprite_Interactable_RotatingHandle
-    .4byte initSprite_Interactable_LoopGap_Start
-    .4byte initSprite_Interactable_LoopGap_End
+    .4byte initSprite_Interactable_gappedLoop_Start
+    .4byte initSprite_Interactable_gappedLoop_End
 
     .4byte initSprite_Interactable_Spikes_Up
     .4byte initSprite_Interactable_Spikes_Down
