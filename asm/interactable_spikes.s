@@ -5,25 +5,23 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start sub_8060440
 sub_8060440: @ 0x08060440
 	push {r4, r5, r6, r7, lr}
-	adds r6, r0, #0
-	adds r4, r3, #0
-	ldrb r3, [r2, #8]
+	adds r6, r0, #0         @ r6 = s
+	adds r4, r3, #0         @ r4 = player
+	ldrb r3, [r2, #8]       @ r2 = spikes
 	lsls r3, r3, #3
 	ldrh r0, [r2, #4]
 	lsls r0, r0, #8
-	adds r3, r3, r0
-	ldrb r1, [r1, #1]
+	adds r3, r3, r0         @ r3 = screenX
+	ldrb r1, [r1, #1]       @ r1 = ia->y
 	lsls r1, r1, #3
 	ldrh r0, [r2, #6]
 	lsls r0, r0, #8
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = screenY
 	lsls r1, r1, #0x10
-	ldr r2, _080604C8 @ =gCamera
+	ldr r2, _080604C8 @ =gCamera    @ r2 = gCamera
 	ldr r0, [r2]
 	lsls r3, r3, #0x10
 	asrs r3, r3, #0x10
@@ -148,6 +146,7 @@ _0806054C:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_8060554
 sub_8060554: @ 0x08060554
