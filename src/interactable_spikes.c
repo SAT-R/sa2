@@ -13,8 +13,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 unk3C;
-    /* 0x3C */ s32 unk40;
+    /* 0x3C */ u32 unk3C[2];
 } Sprite_Spikes; /* size: 0x44 */
 
 const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
@@ -52,8 +51,8 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
 
-    spikes->unk40 = 0;
-    spikes->unk3C = 0;
+    spikes->unk3C[1] = 0;
+    spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.ia = ia;
@@ -93,8 +92,8 @@ void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
 
-    spikes->unk40 = 0;
-    spikes->unk3C = 0;
+    spikes->unk3C[1] = 0;
+    spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.ia = ia;
@@ -143,11 +142,11 @@ void sub_805F810(void)
 
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
-        if (spikes->unk3C & 0xC0000) {
+        if (spikes->unk3C[0] & 0xC0000) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
 
-        if (spikes->unk3C & 0x10000) {
+        if (spikes->unk3C[0] & 0x10000) {
             gPlayer.moveState &= ~MOVESTATE_8;
         }
     }
@@ -187,11 +186,11 @@ void sub_805F928(void)
 
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
-        if (spikes->unk3C & MOVESTATE_20) {
+        if (spikes->unk3C[0] & MOVESTATE_20) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
 
-        if (spikes->unk3C & 0x8) {
+        if (spikes->unk3C[0] & 0x8) {
             gPlayer.moveState &= ~MOVESTATE_8;
         }
     }
@@ -216,8 +215,8 @@ void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegion
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
 
-    spikes->unk40 = 0;
-    spikes->unk3C = 0;
+    spikes->unk3C[1] = 0;
+    spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.ia = ia;
@@ -368,11 +367,11 @@ void sub_805FBA0(void)
 
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
-        if (spikes->unk3C & 0x20) {
+        if (spikes->unk3C[0] & 0x20) {
             gPlayer.moveState &= ~MOVESTATE_20;
         }
         // _0805FDD8
-        if (spikes->unk3C & 0x8) {
+        if (spikes->unk3C[0] & 0x8) {
             gPlayer.moveState &= ~MOVESTATE_8;
         }
     }
@@ -397,8 +396,8 @@ void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
 
-    spikes->unk40 = 0;
-    spikes->unk3C = 0;
+    spikes->unk3C[1] = 0;
+    spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.ia = ia;
@@ -465,8 +464,8 @@ void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegio
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     Sprite *s = &spikes->s;
 
-    spikes->unk40 = 0;
-    spikes->unk3C = 0;
+    spikes->unk3C[1] = 0;
+    spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
     spikes->base.ia = ia;
@@ -703,4 +702,140 @@ bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
     }
 
     return FALSE;
+}
+
+// Very unfinished! (~33% matching)
+NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
+         bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+                            Player *player, u32 *param4))
+{
+    s16 screenX, screenY;
+    s8 sp00[4];
+    s8 sp04[4];
+    vu32 sp0C;
+    s8 sl;
+    Sprite *sp08;
+    u32 r7, r8;
+
+    sp0C = gUnknown_03005590 & 0x7F;
+    sl = player->unk60;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+
+    if (sp0C <= 0x3B && player->moveState & MOVESTATE_8 && player->unk3C == s) {
+        vu32 flags;
+        player->moveState &= ~MOVESTATE_8;
+        player->moveState |= MOVESTATE_IN_AIR;
+
+        if (spikes->unk3C[sl] & 0x20) {
+            s8 *dst, *src;
+            s32 value, value0, value1, value2, value3;
+
+            player->moveState &= ~MOVESTATE_40;
+            spikes->unk3C[sl] = 0;
+            spikes->s.graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+
+            s->variant = 1;
+            sub_8004558(s);
+            return TRUE;
+        }
+    } else {
+        u32 flags = sub_800CCB8(s, screenX, screenY, player);
+        if (flags) {
+            if (flags & 0x30000) {
+                u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                if (gravityInverted) {
+                    if (flags & 0x20000) {
+                        player->speedAirY = 0;
+                        player->y = Q_24_8(s->unk28->unk7 + screenY + player->unk17);
+                        player->moveState |= MOVESTATE_8;
+                        player->moveState &= ~MOVESTATE_IN_AIR;
+                        player->unk3C = s;
+                        player->speedGroundX = player->speedAirX;
+                        // _080603BC
+                        if (sub_800CBA4(player)) {
+                            m4aSongNumStart(SE_SPIKES);
+                            return TRUE;
+                        }
+                    }
+                } else {
+                    // _0806038C
+                    if (flags & 0x10000) {
+                        u32 localResult = sub_8060D08(s, screenX, screenY, player);
+
+                        if (localResult & 0x10000) {
+                            player->y += Q_8_8(localResult);
+                            player->speedAirY = 0;
+
+                            // _080603BC
+                            if (sub_800CBA4(player)) {
+                                m4aSongNumStart(SE_SPIKES);
+                                return TRUE;
+                            }
+                        } else {
+                            // _080603D0
+                            if (r7) {
+                                player->moveState |= MOVESTATE_8;
+                            } else {
+                                player->moveState &= ~MOVESTATE_8;
+                            }
+
+                            if (r8) {
+                                player->moveState |= MOVESTATE_IN_AIR;
+                            } else {
+                                player->moveState &= ~MOVESTATE_IN_AIR;
+                            }
+
+                            player->unk3C = sp08;
+                        }
+                    }
+                }
+            } else if (flags & 0x0C0000) {
+                // _08060404
+                player->moveState |= MOVESTATE_20;
+                player->x += (s16)(flags & 0xFF00);
+                player->speedAirX = 0;
+                player->speedGroundX = 0;
+            }
+        }
+    }
+    s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+    s->variant = 1;
+    sub_8004558(s);
+    return TRUE;
+}
+END_NONMATCH
+
+// Resembles sub_8060554
+NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
+         bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+                            Player *player, u32 *param4))
+{
+    ;
+}
+END_NONMATCH
+
+void TaskDestructor_8060CF4(struct Task *t)
+{
+    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    VramFree(spikes->s.graphics.dest);
+}
+
+u32 sub_8060D08(Sprite *s, s32 x, s32 y, Player *player)
+{
+    u32 result;
+
+    s->unk28->unk4++;
+    s->unk28->unk6--;
+
+    result = sub_800CCB8(s, x, y, player);
+
+    s->unk28->unk4--;
+    s->unk28->unk6++;
+
+    return result;
 }
