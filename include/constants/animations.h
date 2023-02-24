@@ -139,6 +139,11 @@
 #define SA2_ANIM_BOOSTER                 540
 #define SA2_ANIM_PLATFORM_LEA_FOR        541
 #define SA2_ANIM_SPIKES                  542
+// TODO: Rename
+#define SA2_ANIM_VARIANT_SPIKES_UP       0
+#define SA2_ANIM_VARIANT_SPIKES_UP_LOW   1
+#define SA2_ANIM_VARIANT_SPIKES_UP_MID   2
+#define SA2_ANIM_VARIANT_SPIKES_SIDEWAYS 3
 #define SA2_ANIM_RAMP                    543
 
 #define SA2_ANIM_ROTATING_HANDLE   546

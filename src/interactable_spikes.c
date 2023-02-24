@@ -1,3 +1,5 @@
+#include <string.h> // for memcpy
+
 #include "global.h"
 #include "task.h"
 #include "m4a.h"
@@ -44,6 +46,13 @@ extern u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
 extern u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
+#ifndef NON_MATCHING
+// HACK: Purposefully declare it like this (src without const)
+//       to prevent inlining.
+// TODO: Remove this hack!!!
+extern void* memcpy(void*, void*, size_t);
+#endif
+
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
@@ -74,7 +83,7 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
         s->graphics.anim = SA2_ANIM_SPIKES;
     }
 
-    s->variant = 0;
+    s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
     s->unk14 = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
@@ -110,7 +119,7 @@ void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
-    s->variant = 0;
+    s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
     s->unk14 = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
@@ -234,7 +243,7 @@ void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegion
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
-    s->variant = 3;
+    s->variant = SA2_ANIM_VARIANT_SPIKES_SIDEWAYS;
     s->unk14 = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
@@ -739,7 +748,7 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
             spikes->unk3C[sl] = 0;
             spikes->s.graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
-            s->variant = 1;
+            s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
             sub_8004558(s);
             return TRUE;
         }
@@ -804,20 +813,157 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
         }
     }
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
-    s->variant = 1;
+    s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
     sub_8004558(s);
     return TRUE;
 }
 END_NONMATCH
 
-// Resembles sub_8060554
+// Resembles sub_8060554 (or does it?)
+// // https://decomp.me/scratch/pIxcj
 NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
-         bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+        bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                             Player *player, u32 *param4))
 {
-    ;
+    s16 screenX, screenY;
+    s8 sp00[4];
+    u32 sp0C = gUnknown_03005590 & 0x7F;
+    s32 sl = player->unk60;
+
+    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
+    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
+    
+    // TODO: Replace magic numbers in if statements
+    if(sp0C < 60) {
+        if((player->moveState & MOVESTATE_8) && (player->unk3C == s)){
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+
+        return FALSE;
+    } else if (sp0C < 62) {
+        // _08060A60
+        if((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+        
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
+        sub_8004558(s);
+    } else if (sp0C < 64) {
+        // _08060AC4
+        if((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // _08060C34
+        // TODO: Combine this with the identical end of the outer if-block below, if posssible
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
+        sub_8004558(s);
+    } else if (sp0C < 124) {
+        // _08060AF0
+        if((s->variant != SA2_ANIM_VARIANT_SPIKES_UP) || ((player->unk60 != 0) && (*param4 != 0))) {
+            if(player->unk60 == 0) {
+                // TODO: Replace magic number
+                *param4 = 1;
+            }
+            // _08060B14
+            s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+            s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
+            sub_8004558(s);
+
+            if((sub_800DF38(s, screenX, screenY, player) == 0x80000)
+            && (sub_8060D08(s, screenX, screenY, player) != 0)){
+                // _08060B5E
+                u32 v = (player->unk16 + 5);
+                u8 sp04[4];
+                sp04[0] = -v;
+                sp04[1] = 1-player->unk17;
+                sp04[2] = v;
+                sp04[3] = player->unk17-1;
+                memcpy(sp00, sp04, ARRAY_COUNT(sp00));
+
+                if(!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                    player->y = Q_24_8(s->unk28->unk7 + screenY - sp00[1]);
+                } else {
+                    player->y = Q_24_8(s->unk28->unk5 + screenY + sp00[1]);
+                }
+            }
+        } else {
+            // _08060BD4
+            spikes->unk3C[sl] = sub_800CCB8(s, screenX, screenY, player);
+            if(!(spikes->unk3C[sl] & 0x20000)) {
+                return TRUE;
+            }
+        }
+        
+        // _08060C34
+        // TODO: Combine this with the identical end of the outer if-block above
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
+        sub_8004558(s);
+    } else if(sp0C < 126) {
+        // _08060C0E
+        
+        // _08060C34
+        // TODO: Combine this with the identical end of the outer if-block above
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
+        sub_8004558(s);
+    } else {
+        // _08060C7C
+        
+        if((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if(spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
+        sub_8004558(s);
+    }
+
+    return TRUE;
 }
-END_NONMATCH
+//END_NONMATCH
 
 void TaskDestructor_8060CF4(struct Task *t)
 {

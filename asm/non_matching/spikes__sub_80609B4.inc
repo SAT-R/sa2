@@ -7,50 +7,57 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	adds r6, r0, #0
-	adds r7, r2, #0
-	adds r5, r3, #0
+	adds r6, r0, #0         @ r6 = s
+	adds r7, r2, #0         @ r7 = spikes
+	adds r5, r3, #0         @ r5 = player
 	ldr r0, _08060A58 @ =gUnknown_03005590
 	ldr r4, [r0]
 	movs r0, #0x7f
-	ands r4, r0
+	ands r4, r0             @ r4 = gUnknown_03005590 & 0x7F
 	str r4, [sp, #0xc]
+
 	movs r0, #0x60
 	adds r0, r0, r5
-	mov ip, r0
+	mov ip, r0              @ ip = &player->unk60
 	movs r2, #0
 	ldrsb r2, [r0, r2]
-	mov sl, r2
+	mov sl, r2              @ sl = player->unk60
+
 	ldrb r2, [r7, #8]
 	lsls r2, r2, #3
 	ldrh r0, [r7, #4]
 	lsls r0, r0, #8
-	adds r2, r2, r0
+	adds r2, r2, r0         @ r2 = screenX
 	lsls r2, r2, #0x10
-	ldrb r1, [r1, #1]
+
+	ldrb r1, [r1, #1]       @ r1 = ia->y
 	lsls r1, r1, #3
 	ldrh r0, [r7, #6]
 	lsls r0, r0, #8
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = screenY
 	lsls r1, r1, #0x10
+
 	ldr r3, _08060A5C @ =gCamera
-	ldr r0, [r3]
-	mov sb, r0
+	ldr r0, [r3]            @ r3 = gCamera
+	mov sb, r0              @ sb = gCamera.x
 	lsrs r0, r2, #0x10
-	str r0, [sp, #8]
+	str r0, [sp, #8]        @ sp08 = screenX
+
 	asrs r2, r2, #0x10
 	mov r8, r2
 	mov r0, sb
 	subs r2, r2, r0
-	strh r2, [r6, #0x16]
-	ldr r0, [r3, #4]
+	strh r2, [r6, #0x16]    @ s->x = screenX - gCamera.x
+	ldr r0, [r3, #4]        @ r0 gCamera.y
 	lsrs r2, r1, #0x10
 	asrs r1, r1, #0x10
-	mov sb, r1
+	mov sb, r1              @ sb = screenY
 	subs r0, r1, r0
-	strh r0, [r6, #0x18]
+	strh r0, [r6, #0x18]    @ s->y = screenY - gCamera.y
+
 	cmp r4, #0x3b
 	bhi _08060A60
+
 	ldr r1, [r5, #0x20]
 	movs r0, #8
 	ands r0, r1
@@ -84,13 +91,14 @@ _08060A34:
 	str r0, [r2]
 _08060A54:
 	movs r0, #0
-	b _08060CDA
+	b sub_80609B4_return
 	.align 2, 0
 _08060A58: .4byte gUnknown_03005590
 _08060A5C: .4byte gCamera
 _08060A60:
 	cmp r4, #0x3d
 	bhi _08060AC4
+
 	ldr r1, [r5, #0x20]
 	movs r0, #8
 	ands r0, r1
@@ -207,7 +215,7 @@ _08060B14:
 	lsls r1, r1, #0xc
 	cmp r0, r1
 	beq _08060B46
-	b _08060CD8
+	b sub_80609B4_return_1
 _08060B46:
 	adds r0, r6, #0
 	mov r1, r8
@@ -219,7 +227,7 @@ _08060B46:
 	ands r1, r0
 	cmp r1, #0
 	bne _08060B5E
-	b _08060CD8
+	b sub_80609B4_return_1
 _08060B5E:
 	ldrb r4, [r5, #0x16]
 	adds r4, #5
@@ -298,15 +306,15 @@ _08060BD4:
 	lsls r1, r1, #0xa
 	ands r1, r0
 	cmp r1, #0
-	beq _08060CD8
+	beq sub_80609B4_return_1
 _08060BFC:
 	adds r0, r5, #0
 	bl sub_800CBA4
 	cmp r0, #0
-	beq _08060CD8
+	beq sub_80609B4_return_1
 	movs r0, #0x9a
 	bl m4aSongNumStart
-	b _08060CD8
+	b sub_80609B4_return_1
 _08060C0E:
 	ldr r2, [sp, #0xc]
 	cmp r2, #0x7d
@@ -360,7 +368,7 @@ _08060C68:
 	strb r0, [r1]
 	adds r0, r6, #0
 	bl sub_8004558
-	b _08060CD8
+	b sub_80609B4_return_1
 	.align 2, 0
 _08060C74: .4byte sSpikesOfZone
 _08060C78: .4byte gCurrentLevel
@@ -412,9 +420,9 @@ _08060CB8:
 	strb r0, [r1]
 	adds r0, r6, #0
 	bl sub_8004558
-_08060CD8:
+sub_80609B4_return_1:
 	movs r0, #1
-_08060CDA:
+sub_80609B4_return:
 	add sp, #0x10
 	pop {r3, r4, r5}
 	mov r8, r3
