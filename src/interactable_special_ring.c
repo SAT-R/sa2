@@ -72,14 +72,9 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
 static bool32 sub_8081010(Sprite_SpecialRing *ring)
 {
     UNK_30056A4 *ptr = gUnknown_030056A4;
-#ifndef NON_MATCHING
-    register Player *player asm("r3") = &gPlayer;
-#else
-    Player *player = &gPlayer;
-#endif
 
-    if (!(player->moveState & MOVESTATE_DEAD)) {
-        u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY);
+    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+        u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY, &gPlayer);
         if (flags & 0xF0000) {
             return TRUE;
         } else {

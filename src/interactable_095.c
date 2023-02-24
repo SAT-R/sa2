@@ -163,17 +163,11 @@ static bool32 sub_807F120(Sprite_IA95 *ia95)
 
 static bool32 sub_807F17C(Sprite_IA95 *ia95)
 {
-#ifndef NON_MATCHING
-    register Player *player asm("r3") = &gPlayer;
-#else
-    Player *player = &gPlayer;
-#endif
-
-    if (player->moveState & MOVESTATE_DEAD) {
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
         return FALSE;
     }
 
-    if (sub_800DF38(&ia95->sprite, ia95->unk3C, ia95->unk40) & 0xF0000) {
+    if (sub_800DF38(&ia95->sprite, ia95->unk3C, ia95->unk40, &gPlayer) & 0xF0000) {
         return TRUE;
     }
 

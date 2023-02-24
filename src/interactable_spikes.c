@@ -46,13 +46,6 @@ extern u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
 extern u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
-#ifndef NON_MATCHING
-// HACK: Purposefully declare it like this (src without const)
-//       to prevent inlining.
-// TODO: Remove this hack!!!
-extern void* memcpy(void*, void*, size_t);
-#endif
-
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
@@ -828,7 +821,7 @@ NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
     s16 screenX, screenY;
     s8 sp00[4];
     u32 sp0C = gUnknown_03005590 & 0x7F;
-    s32 sl = player->unk60;
+    s32 sl = (s8)player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -896,7 +889,7 @@ NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
             sub_8004558(s);
 
             if((sub_800DF38(s, screenX, screenY, player) == 0x80000)
-            && (sub_8060D08(s, screenX, screenY, player) != 0)){
+            && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)){
                 // _08060B5E
                 u32 v = (player->unk16 + 5);
                 u8 sp04[4];
@@ -957,13 +950,13 @@ NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
             spikes->unk3C[sl] = 0;
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
-        s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
         sub_8004558(s);
     }
 
     return TRUE;
 }
-//END_NONMATCH
+END_NONMATCH
 
 void TaskDestructor_8060CF4(struct Task *t)
 {
