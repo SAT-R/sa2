@@ -80,9 +80,7 @@ static void Task_JumpSequenceForwards(void)
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.unk24 += gappedLoop->spinSpeed;
 
-    r3 = (Q_24_8(3) - gappedLoop->playerAngle < 0 ? gappedLoop->playerAngle - Q_24_8(3)
-                                                  : Q_24_8(3) - gappedLoop->playerAngle)
-        >> 4;
+    r3 = ABS(Q_24_8(3) - gappedLoop->playerAngle) >> 4;
     gPlayer.y = gappedLoop->unk10
         + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
     gPlayer.x = gappedLoop->unkC + Q_2_14_TO_Q_24_8(COS(gappedLoop->playerAngle) * 135);
@@ -163,9 +161,7 @@ static void Task_JumpSequenceReverse(void)
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.unk24 += gappedLoop->spinSpeed;
 
-    r3 = (Q_24_8(3) - gappedLoop->playerAngle < 0 ? gappedLoop->playerAngle - Q_24_8(3)
-                                                  : Q_24_8(3) - gappedLoop->playerAngle)
-        >> 4;
+    r3 = ABS(Q_24_8(3) - gappedLoop->playerAngle) >> 4;
     gPlayer.y = gappedLoop->unk10
         + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
     gPlayer.x = gappedLoop->unkC + Q_2_14_TO_Q_24_8(COS(gappedLoop->playerAngle) * 135);
@@ -213,6 +209,7 @@ void initSprite_Interactable_gappedLoop_End(Interactable *ia, u16 spriteRegionX,
     gappedLoop->base.spriteX = ia->x;
     SET_SPRITE_INITIALIZED(ia);
 
+    // BUG: not sure if these offset values are correct for the reverse
     gappedLoop->unkC
         = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) + 96);
     gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(ia->y, spriteRegionY) + 96);

@@ -19,9 +19,14 @@ It so far builds the following ROM:
 
 - Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, save game logic, nearly all UI, Multiplayer code, Special Stage
+- Initialisation of game state, main task logic, save game logic, UI, Multiplayer code, Special Stage
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
 - :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
+
+
+### Community
+
+Join us on [discord](https://discord.gg/rckwpnYUXF) to get started in helping out
 
 ### Setting up the repository
 
@@ -80,9 +85,9 @@ To format code run `make format`
 
 ### Credits
 
-- Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds decompilation
 - Shout out to [@froggestspirit](https://github.com/froggestspirit) for the drive to set this project up
+- Special thanks to [@normmatt](https://github.com/normmatt) for the initial repo setup and sounds decompilation
+- [JaceCear](https://github.com/JaceCear) for his dedication to understanding the internals of the graphics engine and writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter), as well as massive effort in contributing towards the decompilation process
 - [Pokemon Reverse Engineering Team](https://github.com/pret) for their help with the project, and tooling for GBA decompilations
 - [Kermalis](https://github.com/Kermalis) for [their tool](https://github.com/Kermalis/VGMusicStudio) which was used to dump the game midis
 - [琪姬](https://github.com/laqieer) for their exellent work [documenting](https://github.com/FireEmblemUniverse/fireemblem8u/pull/137) all the quirks of matching midis
-- [JaceCear](https://github.com/JaceCear) for their dedication to understanding the internals of the graphics engine and writing [tools to extract this data](https://github.com/JaceCear/SA-Trilogy-Animation-Exporter)
