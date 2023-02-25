@@ -524,11 +524,13 @@ static void Task_806012C(void)
     }
 }
 
-// https://decomp.me/scratch/vHS5d
-NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
-bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player))
+bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player)
 {
     s16 screenX, screenY;
+
+    /* For matching */
+    ++s;
+    --s;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -536,86 +538,90 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-    && (ia->d.sData[0] == 0)
-    && (gUnknown_030053E0 == 30)){
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+        && (gUnknown_030053E0 == 30)) {
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
-        
-        if(flags) {
+
+        if (flags) {
             u32 v = (player->unk16 + 5);
             s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
-
-            if(flags & 0xC0000) {
+            if (flags & 0xC0000) {
                 player->moveState |= MOVESTATE_20;
             }
 
-            if(!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
                 player->y = Q_24_8(screenY + s->unk28->unk5 - sp00[3]);
             } else {
                 player->y = Q_24_8(screenY + s->unk28->unk7 + sp00[3]);
             }
 
-            if(sub_800CBA4(player)) {
+            if (sub_800CBA4(player)) {
                 m4aSongNumStart(SE_SPIKES);
                 return TRUE;
             }
         }
     }
-    
-    // _080602FC
-    
+
     {
         u32 r7, r8;
-        Sprite* sp08;
+        Sprite *sp08;
         u32 flags;
-        
+
         r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
         r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
         sp08 = player->unk3C;
-        
+
         flags = sub_800CCB8(s, screenX, screenY, player);
-        if(flags) {
-            if(flags & 0x30000) {
-                u16 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
-                if(gravityInverted) {
-                    if(flags & 0x20000) {
+        if (flags) {
+            if (flags & 0x30000) {
+
+                u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+
+                /* For matching */
+                if (gravityInverted)
+                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                else
+                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+
+                gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                if (gravityInverted) {
+                    if (flags & 0x20000) {
                         player->speedAirY = 0;
                         player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
-                        player->speedGroundX = player->speedAirX; 
+                        player->speedGroundX = player->speedAirX;
                         // _080603BC
-                        if(sub_800CBA4(player)) {
+                        if (sub_800CBA4(player)) {
                             m4aSongNumStart(SE_SPIKES);
                             return TRUE;
                         }
                     }
                 } else {
                     // _0806038C
-                    if(flags & 0x10000) {
+                    if (flags & 0x10000) {
                         flags = sub_8060D08(s, screenX, screenY, player);
 
-                        if(flags & 0x10000) {
+                        if (flags & 0x10000) {
                             player->y += Q_8_8(flags);
                             player->speedAirY = 0;
-                            
+
                             // _080603BC
-                            if(sub_800CBA4(player)) {
+                            if (sub_800CBA4(player)) {
                                 m4aSongNumStart(SE_SPIKES);
                                 return TRUE;
                             }
                         } else {
                             // _080603D0
-                            if(r7) {
+                            if (r7) {
                                 player->moveState |= MOVESTATE_8;
                             } else {
                                 player->moveState &= ~MOVESTATE_8;
                             }
 
-                            
-                            if(r8) {
+                            if (r8) {
                                 player->moveState |= MOVESTATE_IN_AIR;
                             } else {
                                 player->moveState &= ~MOVESTATE_IN_AIR;
@@ -625,7 +631,7 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
                         }
                     }
                 }
-            } else if(flags & 0x0C0000) {
+            } else if (flags & 0x0C0000) {
                 // _08060404
                 player->moveState |= MOVESTATE_20;
                 player->x += (s16)(flags & 0xFF00);
@@ -637,7 +643,6 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
 
     return FALSE;
 }
-END_NONMATCH
 
 static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                           Player *player)
