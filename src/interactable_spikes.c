@@ -283,7 +283,6 @@ void sub_805FBA0(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || ia->d.sData[0] != 0
         || gUnknown_030053E0 != 0) {
-        // _0805FC16
         s32 r4 = sub_800CCB8(s, screenX, screenY, &gPlayer);
 #ifdef NON_MATCHING
         u32 gravityInverted;
@@ -299,7 +298,6 @@ void sub_805FBA0(void)
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
                 gPlayer.unk3C = 0;
             }
-            // _0805FC6C
 
             if (r4 & 0x20000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
@@ -311,7 +309,6 @@ void sub_805FBA0(void)
                 }
             }
         } else {
-            // _0805FCC8
             if (r4 & 0x10000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
                     gPlayer.y += (r4 << 24) >> 16;
@@ -812,15 +809,11 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
 }
 END_NONMATCH
 
-// Resembles sub_8060554 (or does it?)
-// // https://decomp.me/scratch/d1OM0
-//NONMATCH("asm/non_matching/spikes__sub_80609B4.inc",
-        bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
-                            Player *player, u32 *param4)//)
+bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player,
+                   u32 *param4)
 {
     s16 screenX, screenY;
-    s8 sp00[4];
-    u32 sp0C = gUnknown_03005590 & 0x7F;
+    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
     s32 sl = (s8)player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
@@ -830,7 +823,7 @@ END_NONMATCH
     s->y = screenY - gCamera.y;
 
     // TODO: Replace magic numbers in if statements
-    if (sp0C < 60) {
+    if (sp0C[0] < 60) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= MOVESTATE_IN_AIR;
@@ -843,8 +836,7 @@ END_NONMATCH
         }
 
         return FALSE;
-    } else if (sp0C < 62) {
-        // _08060A60
+    } else if (sp0C[0] < 62) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= MOVESTATE_IN_AIR;
@@ -859,16 +851,12 @@ END_NONMATCH
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
         sub_8004558(s);
-    } else if (sp0C < 64) {
-        // _08060AC4
+    } else if (sp0C[0] < 64) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= MOVESTATE_IN_AIR;
         }
 
-        // _08060C34
-        // TODO: Combine this with the identical end of the outer if-block below, if
-        // posssible
         // TODO: Replace magic number
         if (spikes->unk3C[sl] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
@@ -877,55 +865,49 @@ END_NONMATCH
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         sub_8004558(s);
-    } else if (sp0C < 124) {
-        // _08060AF0
+    } else if (sp0C[0] < 124) {
         if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
             || ((player->unk60 != 0) && (*param4 != 0))) {
             if (player->unk60 == 0) {
                 // TODO: Replace magic number
                 *param4 = 1;
             }
-            // _08060B14
+
             s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             sub_8004558(s);
 
             if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
                 && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
-                // _08060B5E
+
                 u32 v = (player->unk16 + 5);
-                u8 sp04[4];
-                sp04[0] = -v;
-                sp04[1] = 1 - player->unk17;
-                sp04[2] = v;
-                sp04[3] = player->unk17 - 1;
-                memcpy(sp00, sp04, ARRAY_COUNT(sp00));
+                s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                 if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
                     player->y = Q_24_8(s->unk28->unk7 + screenY - sp00[1]);
                 } else {
                     player->y = Q_24_8(s->unk28->unk5 + screenY + sp00[1]);
                 }
-            }
+                if (!sub_800CBA4(player)) {
+                    return TRUE;
+                }
+            } else
+                return TRUE;
         } else {
-            // _08060BD4
             spikes->unk3C[sl] = sub_800CCB8(s, screenX, screenY, player);
-            if ((spikes->unk3C[sl] & 0x20000) && !sub_800CBA4(player)) {
+            if (!(spikes->unk3C[sl] & 0x20000) || !sub_800CBA4(player)) {
                 return TRUE;
             }
         }
 
         m4aSongNumStart(SE_SPIKES);
-    } else if (sp0C < 126) {
+    } else if (sp0C[0] < 126) {
 
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= MOVESTATE_IN_AIR;
         }
-        // _08060C0E
 
-        // _08060C34
-        // TODO: Combine this with the identical end of the outer if-block above
         // TODO: Replace magic number
         if (spikes->unk3C[sl] & 0x20) {
             player->moveState &= ~MOVESTATE_20;
@@ -935,8 +917,6 @@ END_NONMATCH
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
         sub_8004558(s);
     } else {
-        // _08060C7C
-
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= MOVESTATE_IN_AIR;
@@ -954,7 +934,6 @@ END_NONMATCH
 
     return TRUE;
 }
-//END_NONMATCH
 
 void TaskDestructor_8060CF4(struct Task *t)
 {
