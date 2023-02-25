@@ -29,22 +29,20 @@ const u16 sSpikesOfZone[NUM_COURSE_ZONES + 1] = {
     [ZONE_FINAL] = 0,
 };
 
-extern void sub_805F810(void);
-extern void sub_805F928(void);
-extern void sub_805FBA0(void);
-extern void Task_805FF68(void);
-extern bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
-extern bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
-extern bool32 sub_8060554(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
-extern bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
-extern void TaskDestructor_8060CF4(struct Task *);
-
-extern void Task_806012C(void);
+static void sub_805F810(void);
+static void sub_805F928(void);
+static void sub_805FBA0(void);
+static void Task_805FF68(void);
+static void Task_806012C(void);
+static bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
+static bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
+static bool32 sub_8060554(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
+static bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
+static void TaskDestructor_8060CF4(struct Task *);
+static u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
 // TODO: Include header this belongs to
 extern u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
-
-extern u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
@@ -123,7 +121,7 @@ void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
     sub_8004558(s);
 }
 
-void sub_805F810(void)
+static void sub_805F810(void)
 {
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
@@ -164,7 +162,7 @@ void sub_805F810(void)
     }
 }
 
-void sub_805F928(void)
+static void sub_805F928(void)
 {
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
@@ -264,7 +262,7 @@ void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegion
     sub_8004558(s);
 }
 
-void sub_805FBA0(void)
+static void sub_805FBA0(void)
 {
     // Decls had to be split to match, for some reason
     s16 screenX, screenY;
@@ -283,6 +281,7 @@ void sub_805FBA0(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || ia->d.sData[0] != 0
         || gUnknown_030053E0 != 0) {
+        // _0805FC16
         s32 r4 = sub_800CCB8(s, screenX, screenY, &gPlayer);
 #ifdef NON_MATCHING
         u32 gravityInverted;
@@ -298,6 +297,7 @@ void sub_805FBA0(void)
                 gPlayer.moveState |= MOVESTATE_IN_AIR;
                 gPlayer.unk3C = 0;
             }
+            // _0805FC6C
 
             if (r4 & 0x20000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
@@ -309,6 +309,7 @@ void sub_805FBA0(void)
                 }
             }
         } else {
+            // _0805FCC8
             if (r4 & 0x10000) {
                 if (sub_8060D08(s, screenX, screenY, &gPlayer) & 0x10000) {
                     gPlayer.y += (r4 << 24) >> 16;
@@ -424,7 +425,7 @@ void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX
     s->unk10 = 0x2200;
 }
 
-void Task_805FF68(void)
+static void Task_805FF68(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
@@ -492,7 +493,7 @@ void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegio
     s->unk10 = 0x2A00;
 }
 
-void Task_806012C(void)
+static void Task_806012C(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
@@ -656,7 +657,8 @@ NONMATCH("asm/non_matching/sub_80601F8.inc",
 }
 END_NONMATCH
 
-bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player)
+static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+                          Player *player)
 {
 
     s16 screenX, screenY;
@@ -809,8 +811,8 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
 }
 END_NONMATCH
 
-bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player,
-                   u32 *param4)
+static bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+                          Player *player, u32 *param4)
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
@@ -935,13 +937,13 @@ bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
     return TRUE;
 }
 
-void TaskDestructor_8060CF4(struct Task *t)
+static void TaskDestructor_8060CF4(struct Task *t)
 {
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
     VramFree(spikes->s.graphics.dest);
 }
 
-u32 sub_8060D08(Sprite *s, s32 x, s32 y, Player *player)
+static u32 sub_8060D08(Sprite *s, s32 x, s32 y, Player *player)
 {
     u32 result;
 
