@@ -528,9 +528,10 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
 {
     s16 screenX, screenY;
 
-    /* For matching */
+#ifndef NON_MATCHING
     ++s;
     --s;
+#endif
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -577,14 +578,16 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
             if (flags & 0x30000) {
 
                 u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
-
-                /* For matching */
+                
+#ifndef NON_MATCHING
                 if (gravityInverted)
                     gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
                 else
                     gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
 
                 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+#endif
+
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
