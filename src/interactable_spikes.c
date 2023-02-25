@@ -705,21 +705,14 @@ static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     return FALSE;
 }
 
-// Very unfinished! (~33% matching)
+// Unfinished! (~68.64% matching)
 NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
          bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                             Player *player, u32 *param4))
 {
     s16 screenX, screenY;
-    s8 sp00[4];
-    s8 sp04[4];
-    vu32 sp0C;
-    s8 sl;
-    Sprite *sp08;
-    u32 r7, r8;
-
-    sp0C = gUnknown_03005590 & 0x7F;
-    sl = player->unk60;
+    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
+    s32 sl = (s8)player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -727,86 +720,126 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (sp0C <= 0x3B && player->moveState & MOVESTATE_8 && player->unk3C == s) {
-        vu32 flags;
-        player->moveState &= ~MOVESTATE_8;
-        player->moveState |= MOVESTATE_IN_AIR;
-
-        if (spikes->unk3C[sl] & 0x20) {
-            s8 *dst, *src;
-            s32 value, value0, value1, value2, value3;
-
-            player->moveState &= ~MOVESTATE_40;
-            spikes->unk3C[sl] = 0;
-            spikes->s.graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
-
-            s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-            sub_8004558(s);
-            return TRUE;
+    // TODO: Replace magic numbers in if statements
+    if (sp0C[0] < 60) {
+        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
         }
-    } else {
-        u32 flags = sub_800CCB8(s, screenX, screenY, player);
-        if (flags) {
-            if (flags & 0x30000) {
-                u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
-                if (gravityInverted) {
-                    if (flags & 0x20000) {
-                        player->speedAirY = 0;
-                        player->y = Q_24_8(s->unk28->unk7 + screenY + player->unk17);
-                        player->moveState |= MOVESTATE_8;
-                        player->moveState &= ~MOVESTATE_IN_AIR;
-                        player->unk3C = s;
-                        player->speedGroundX = player->speedAirX;
-                        // _080603BC
-                        if (sub_800CBA4(player)) {
-                            m4aSongNumStart(SE_SPIKES);
-                            return TRUE;
-                        }
-                    }
+
+        // TODO: Replace magic number
+        if (spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+
+        return FALSE;
+    } else if (sp0C[0] < 62) {
+        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if (spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
+        sub_8004558(s);
+    } else if (sp0C[0] < 64) {
+        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if (spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
+        sub_8004558(s);
+    } else if (sp0C[0] < 124) {
+        if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
+            || ((player->unk60 != 0) && (*param4 != 0))) {
+            if (player->unk60 == 0) {
+                // TODO: Replace magic number
+                *param4 = 1;
+            }
+
+            s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+            s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
+            sub_8004558(s);
+
+            if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
+                && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
+
+                u32 v = (player->unk16 + 5);
+                s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
+
+                if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                    player->y = Q_24_8(s->unk28->unk5 + screenY - sp00[1]);
                 } else {
-                    // _0806038C
-                    if (flags & 0x10000) {
-                        u32 localResult = sub_8060D08(s, screenX, screenY, player);
-
-                        if (localResult & 0x10000) {
-                            player->y += Q_8_8(localResult);
-                            player->speedAirY = 0;
-
-                            // _080603BC
-                            if (sub_800CBA4(player)) {
-                                m4aSongNumStart(SE_SPIKES);
-                                return TRUE;
-                            }
-                        } else {
-                            // _080603D0
-                            if (r7) {
-                                player->moveState |= MOVESTATE_8;
-                            } else {
-                                player->moveState &= ~MOVESTATE_8;
-                            }
-
-                            if (r8) {
-                                player->moveState |= MOVESTATE_IN_AIR;
-                            } else {
-                                player->moveState &= ~MOVESTATE_IN_AIR;
-                            }
-
-                            player->unk3C = sp08;
-                        }
-                    }
+                    player->y = Q_24_8(s->unk28->unk7 + screenY + sp00[1]);
                 }
-            } else if (flags & 0x0C0000) {
-                // _08060404
-                player->moveState |= MOVESTATE_20;
-                player->x += (s16)(flags & 0xFF00);
-                player->speedAirX = 0;
-                player->speedGroundX = 0;
+                if (!sub_800CBA4(player)) {
+                    m4aSongNumStart(SE_SPIKES);
+                    return TRUE;
+                }
+            } else {
+                if (sub_800CCB8(s, screenX, screenY, player) & 0x10000) {
+
+                    // TEMP: Only for debugging!
+                    asm("mov r7, r7");
+                    asm("mov r7, r7");
+                    asm("mov r7, r7");
+
+                } else {
+                }
+            }
+        } else {
+            spikes->unk3C[sl] = sub_800CCB8(s, screenX, screenY, player);
+            if (!(spikes->unk3C[sl] & 0x20000) || !sub_800CBA4(player)) {
+                return TRUE;
             }
         }
+
+        m4aSongNumStart(SE_SPIKES);
+    } else if (sp0C[0] < 126) {
+
+        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if (spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
+        sub_8004558(s);
+    } else {
+        if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
+            player->moveState &= ~MOVESTATE_8;
+            player->moveState |= MOVESTATE_IN_AIR;
+        }
+
+        // TODO: Replace magic number
+        if (spikes->unk3C[sl] & 0x20) {
+            player->moveState &= ~MOVESTATE_20;
+            spikes->unk3C[sl] = 0;
+        }
+        s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
+        s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
+        sub_8004558(s);
     }
-    s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
-    s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-    sub_8004558(s);
+
     return TRUE;
 }
 END_NONMATCH
