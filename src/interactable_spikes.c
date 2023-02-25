@@ -524,16 +524,14 @@ static void Task_806012C(void)
     }
 }
 
-// https://decomp.me/scratch/YbYor
-NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
-         bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
-                            Player *player))
+bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player)
 {
     s16 screenX, screenY;
-    s8 sp00[4];
-    s8 sp04[4];
-    Sprite *sp08;
-    u32 r7, r8;
+
+#ifndef NON_MATCHING
+    ++s;
+    --s;
+#endif
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -543,32 +541,11 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
 
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
         && (gUnknown_030053E0 == 30)) {
-#ifndef NON_MATCHING
-        register u32 flags asm("r8") = sub_800CCB8(s, screenX, screenY, player);
-#else
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
-#endif
 
         if (flags) {
-            s8 *dst, *src;
-            s32 value, value0, value1, value2, value3;
-            value = (player->unk16 + 5);
-            value0 = -value;
-            src = sp04;
-            *src = value0;
-
-            value1 = (1 - ((u8)player->unk17));
-            *(sp04 + 1) = value1;
-
-            value2 = value;
-            *(sp04 + 2) = value2;
-
-            value3 = value1 - 1;
-            *(sp04 + 3) = value3;
-
-            dst = sp00;
-            src = sp04;
-            memcpy(dst, src, sizeof(sp04));
+            u32 v = (player->unk16 + 5);
+            s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
             if (flags & 0xC0000) {
                 player->moveState |= MOVESTATE_20;
@@ -587,20 +564,34 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
         }
     }
 
-    // _080602FC
-    r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
-    r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
-    sp08 = player->unk3C;
-
     {
-        u32 flags = sub_800CCB8(s, screenX, screenY, player);
+        u32 r7, r8;
+        Sprite *sp08;
+        u32 flags;
+
+        r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
+        r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
+        sp08 = player->unk3C;
+
+        flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if (flags & 0x30000) {
+
                 u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+
+#ifndef NON_MATCHING
+                if (gravityInverted)
+                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                else
+                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+
+                gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+#endif
+
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q_24_8(s->unk28->unk7 + screenY + player->unk17);
+                        player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -614,10 +605,10 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
                 } else {
                     // _0806038C
                     if (flags & 0x10000) {
-                        u32 localResult = sub_8060D08(s, screenX, screenY, player);
+                        flags = sub_8060D08(s, screenX, screenY, player);
 
-                        if (localResult & 0x10000) {
-                            player->y += Q_8_8(localResult);
+                        if (flags & 0x10000) {
+                            player->y += Q_8_8(flags);
                             player->speedAirY = 0;
 
                             // _080603BC
@@ -655,7 +646,6 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
 
     return FALSE;
 }
-END_NONMATCH
 
 static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                           Player *player)
