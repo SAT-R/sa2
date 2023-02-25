@@ -801,7 +801,6 @@ static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                             }
                         }
                     } else if (flags & 0xC0000) {
-                        // _080607CA
                         player->moveState |= MOVESTATE_20;
                         player->x += (s16)(flags & 0xFF00);
                         player->speedAirX = 0;
@@ -822,7 +821,6 @@ static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                     }
                 } else if ((flags & 0x20000)
                            && (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-                    // _08060844
                     player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
@@ -841,8 +839,7 @@ static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                 }
             }
 
-            // _080608BE
-            // TODO: WHAT!?
+            // TODO: WHY!?
             spikes->unk3C[sl] = player->moveState;
         }
     } else if (sp0C[0] < 126) {
