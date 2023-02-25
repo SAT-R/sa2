@@ -526,14 +526,9 @@ static void Task_806012C(void)
 
 // https://decomp.me/scratch/YbYor
 NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
-         bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
-                            Player *player))
+bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player))
 {
     s16 screenX, screenY;
-    s8 sp00[4];
-    s8 sp04[4];
-    Sprite *sp08;
-    u32 r7, r8;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
@@ -541,99 +536,86 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
-        && (gUnknown_030053E0 == 30)) {
-#ifndef NON_MATCHING
-        register u32 flags asm("r8") = sub_800CCB8(s, screenX, screenY, player);
-#else
+    if((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+    && (ia->d.sData[0] == 0)
+    && (gUnknown_030053E0 == 30)){
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
-#endif
+        
+        if(flags) {
+            u32 v = (player->unk16 + 5);
+            s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
-        if (flags) {
-            s8 *dst, *src;
-            s32 value, value0, value1, value2, value3;
-            value = (player->unk16 + 5);
-            value0 = -value;
-            src = sp04;
-            *src = value0;
 
-            value1 = (1 - ((u8)player->unk17));
-            *(sp04 + 1) = value1;
-
-            value2 = value;
-            *(sp04 + 2) = value2;
-
-            value3 = value1 - 1;
-            *(sp04 + 3) = value3;
-
-            dst = sp00;
-            src = sp04;
-            memcpy(dst, src, sizeof(sp04));
-
-            if (flags & 0xC0000) {
+            if(flags & 0xC0000) {
                 player->moveState |= MOVESTATE_20;
             }
 
-            if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            if(!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
                 player->y = Q_24_8(screenY + s->unk28->unk5 - sp00[3]);
             } else {
                 player->y = Q_24_8(screenY + s->unk28->unk7 + sp00[3]);
             }
 
-            if (sub_800CBA4(player)) {
+            if(sub_800CBA4(player)) {
                 m4aSongNumStart(SE_SPIKES);
                 return TRUE;
             }
         }
     }
-
+    
     // _080602FC
-    r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
-    r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
-    sp08 = player->unk3C;
-
+    
     {
-        u32 flags = sub_800CCB8(s, screenX, screenY, player);
-        if (flags) {
-            if (flags & 0x30000) {
-                u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
-                if (gravityInverted) {
-                    if (flags & 0x20000) {
+        u32 r7, r8;
+        Sprite* sp08;
+        u32 flags;
+        
+        r7 = (player->moveState >> 3) & (MOVESTATE_8 >> 3);
+        r8 = (player->moveState >> 1) & (MOVESTATE_IN_AIR >> 1);
+        sp08 = player->unk3C;
+        
+        flags = sub_800CCB8(s, screenX, screenY, player);
+        if(flags) {
+            if(flags & 0x30000) {
+                u16 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                if(gravityInverted) {
+                    if(flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q_24_8(s->unk28->unk7 + screenY + player->unk17);
+                        player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
-                        player->speedGroundX = player->speedAirX;
+                        player->speedGroundX = player->speedAirX; 
                         // _080603BC
-                        if (sub_800CBA4(player)) {
+                        if(sub_800CBA4(player)) {
                             m4aSongNumStart(SE_SPIKES);
                             return TRUE;
                         }
                     }
                 } else {
                     // _0806038C
-                    if (flags & 0x10000) {
-                        u32 localResult = sub_8060D08(s, screenX, screenY, player);
+                    if(flags & 0x10000) {
+                        flags = sub_8060D08(s, screenX, screenY, player);
 
-                        if (localResult & 0x10000) {
-                            player->y += Q_8_8(localResult);
+                        if(flags & 0x10000) {
+                            player->y += Q_8_8(flags);
                             player->speedAirY = 0;
-
+                            
                             // _080603BC
-                            if (sub_800CBA4(player)) {
+                            if(sub_800CBA4(player)) {
                                 m4aSongNumStart(SE_SPIKES);
                                 return TRUE;
                             }
                         } else {
                             // _080603D0
-                            if (r7) {
+                            if(r7) {
                                 player->moveState |= MOVESTATE_8;
                             } else {
                                 player->moveState &= ~MOVESTATE_8;
                             }
 
-                            if (r8) {
+                            
+                            if(r8) {
                                 player->moveState |= MOVESTATE_IN_AIR;
                             } else {
                                 player->moveState &= ~MOVESTATE_IN_AIR;
@@ -643,7 +625,7 @@ NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
                         }
                     }
                 }
-            } else if (flags & 0x0C0000) {
+            } else if(flags & 0x0C0000) {
                 // _08060404
                 player->moveState |= MOVESTATE_20;
                 player->x += (s16)(flags & 0xFF00);
