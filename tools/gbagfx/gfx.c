@@ -312,6 +312,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
             if(checksum == 0) {
                 // This trailing tile is empty (Palette index 0), don't output it
                 bufferSize -= tileSize;
+                numTiles--;
             } else {
                 // This tile contains graphics data, so don't ignore it
                 break;
