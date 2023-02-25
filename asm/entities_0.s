@@ -10382,6 +10382,8 @@ _0800CCB0:
 	bx r1
 	.align 2, 0
 
+@ Returns some flags
+@ u32 sub_800CCB8 (Sprite*, s32 x, s32 y, Player*);
 	thumb_func_start sub_800CCB8
 sub_800CCB8: @ 0x0800CCB8
 	push {r4, r5, r6, r7, lr}

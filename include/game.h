@@ -358,6 +358,6 @@ void sub_802E044(u16, u16);
 void sub_80304DC(u32, u16, u8);
 
 bool32 sub_800CBA4(Player *);
-u32 sub_800DF38(Sprite *, s32, s32);
+u32 sub_800DF38(Sprite *, s32, s32, Player *);
 
 #endif // GUARD_GAME_H
