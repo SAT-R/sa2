@@ -113,6 +113,7 @@ SECTIONS
         build/sa2/asm/interactable_ice_paradise_half_pipe.o(.text);
         build/sa2/asm/interactable_069.o(.text);
         build/sa2/src/interactable_tec_base_note_block.o(.text);
+        build/sa2/src/interactable_074.o(.text);
         build/sa2/asm/interactable_074.o(.text);
         build/sa2/asm/interactable_075.o(.text);
         build/sa2/asm/interactable_078.o(.text);
