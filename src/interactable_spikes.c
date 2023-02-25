@@ -525,7 +525,7 @@ static void Task_806012C(void)
 }
 
 // https://decomp.me/scratch/YbYor
-NONMATCH("asm/non_matching/sub_80601F8.inc",
+NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
          bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                             Player *player))
 {
@@ -705,10 +705,8 @@ static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     return FALSE;
 }
 
-// Unfinished! (~68.64% matching)
-NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
-         bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
-                            Player *player, u32 *param4))
+static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+                          Player *player, u32 *param4) //)
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
@@ -775,40 +773,78 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
             sub_8004558(s);
 
-            if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
-                && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
+            if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
+                if ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0) {
+                    u32 v = (player->unk16 + 5);
+                    s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
-                u32 v = (player->unk16 + 5);
-                s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
-
-                if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-                    player->y = Q_24_8(s->unk28->unk5 + screenY - sp00[1]);
-                } else {
-                    player->y = Q_24_8(s->unk28->unk7 + screenY + sp00[1]);
-                }
-                if (!sub_800CBA4(player)) {
-                    m4aSongNumStart(SE_SPIKES);
-                    return TRUE;
+                    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                        player->y = Q_24_8((screenY + s->unk28->unk5) - sp00[3]);
+                    } else {
+                        player->y = Q_24_8((screenY + s->unk28->unk7) + sp00[3]);
+                    }
+                    if (sub_800CBA4(player)) {
+                        m4aSongNumStart(SE_SPIKES);
+                        return TRUE;
+                    }
                 }
             } else {
-                if (sub_800CCB8(s, screenX, screenY, player) & 0x10000) {
+                u32 flags = sub_800CCB8(s, screenX, screenY, player);
+                if (flags) {
+                    if (flags & 0x10000) {
+                        flags = sub_8060D08(s, screenX, screenY, player);
 
-                    // TEMP: Only for debugging!
-                    asm("mov r7, r7");
-                    asm("mov r7, r7");
-                    asm("mov r7, r7");
-
-                } else {
+                        if (flags & 0x10000) {
+                            if (sub_800CBA4(player)) {
+                                m4aSongNumStart(SE_SPIKES);
+                                return TRUE;
+                            }
+                        }
+                    } else if (flags & 0xC0000) {
+                        // _080607CA
+                        player->moveState |= MOVESTATE_20;
+                        player->x += (s16)(flags & 0xFF00);
+                        player->speedAirX = 0;
+                        player->speedGroundX = 0;
+                    }
                 }
             }
         } else {
-            spikes->unk3C[sl] = sub_800CCB8(s, screenX, screenY, player);
-            if (!(spikes->unk3C[sl] & 0x20000) || !sub_800CBA4(player)) {
-                return TRUE;
-            }
-        }
+            u32 flags = sub_800CCB8(s, screenX, screenY, player);
+            if (flags) {
+                if ((flags & 0x10000)
+                    && !(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                    flags = sub_8060D08(s, screenX, screenY, player);
 
-        m4aSongNumStart(SE_SPIKES);
+                    if ((flags & 0x10000) && sub_800CBA4(player)) {
+                        m4aSongNumStart(SE_SPIKES);
+                        return TRUE;
+                    }
+                } else if ((flags & 0x20000)
+                           && (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                    // _08060844
+                    player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
+                    player->moveState |= MOVESTATE_8;
+                    player->moveState &= ~MOVESTATE_IN_AIR;
+                    player->unk3C = s;
+                    player->speedGroundX = player->speedAirX;
+
+                    if (sub_800CBA4(player)) {
+                        m4aSongNumStart(SE_SPIKES);
+                        return TRUE;
+                    }
+                } else if (flags & 0xC0000) {
+                    player->moveState |= MOVESTATE_20;
+                    player->x += (s16)(flags & 0xFF00);
+                    player->speedAirX = 0;
+                    player->speedGroundX = 0;
+                }
+            }
+
+            // _080608BE
+            // TODO: WHAT!?
+            spikes->unk3C[sl] = player->moveState;
+        }
     } else if (sp0C[0] < 126) {
 
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
@@ -842,7 +878,6 @@ NONMATCH("asm/non_matching/spikes__sub_8060554.inc",
 
     return TRUE;
 }
-END_NONMATCH
 
 static bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
                           Player *player, u32 *param4)
