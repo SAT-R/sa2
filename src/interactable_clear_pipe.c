@@ -33,9 +33,6 @@ typedef struct {
     /* 0x05 */ u8 unused[INTERACTABLE_DATA_SIZE - 2];
 } Interactable_PipeEnd PACKED;
 
-extern void Player_SetMovestate_IsInScriptedSequence(void);
-extern void Player_ClearMovestate_IsInScriptedSequence(void);
-
 static void Task_ClearPipe_Start(void)
 {
     Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);

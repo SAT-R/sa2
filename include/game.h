@@ -156,7 +156,7 @@ typedef struct {
     // set/compare to values in "include/constants/move_states.h"
     /* 0x20 */ u32 moveState;
 
-    /* 0x24 */ u8 unk24;
+    /* 0x24 */ u8 unk24; // rotation?
     /* 0x25 */ u8 filler25[7];
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u8 filler2E[2];
@@ -169,7 +169,7 @@ typedef struct {
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ u8 filler40[0x1A];
-    /* 0x5A */ u8 unk5A;
+    /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C;
     /* 0x5E */ u16 unk5E; // input ?
@@ -267,6 +267,11 @@ extern struct Camera gCamera;
     ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY))            \
      || (y > DISPLAY_HEIGHT + (radiusY)))
 
+// No idea on this one
+#define IS_OUT_OF_RANGE_3(x, y, radiusX, radiusY)                                       \
+    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || ((y) + (radiusY) < 0)       \
+     || (y > DISPLAY_HEIGHT + (radiusY)))
+
 // TODO: Merge all these into one!
 #define IS_OUT_OF_RANGE_(UNUSED, x, y, radius) IS_OUT_OF_RANGE_2(x, y, radius, radius)
 
@@ -285,6 +290,9 @@ extern struct Camera gCamera;
 // TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
 #define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
     IS_OUT_OF_RANGE_(u16, x, y, (CAM_REGION_WIDTH / 2))
+
+#define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)                                              \
+    IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))
 
 struct SomeStruct_5660 {
     u8 filler[16];

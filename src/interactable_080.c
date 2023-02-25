@@ -31,7 +31,7 @@ static void sub_807B3B0(void);
 void initSprite_Interactable080(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable080, 0x4C, 0x2010, 0,
+    struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_IA80), 0x2010, 0,
                                 TaskDestructor_Interactable080);
     Sprite_IA80 *ia80 = TaskGetStructPtr(t);
     Sprite *sprite;
@@ -39,8 +39,8 @@ void initSprite_Interactable080(Interactable *ia, u16 spriteRegionX, u16 spriteR
     ia80->unk44 = 0;
     ia80->unk46 = 0;
     ia80->unk48 = 0;
-    ia80->unk3C = ia->x * 8 + Q_24_8(spriteRegionX);
-    ia80->unk40 = ia->y * 8 + Q_24_8(spriteRegionY);
+    ia80->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
+    ia80->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
     ia80->base.regionX = spriteRegionX;
     ia80->base.regionY = spriteRegionY;
     ia80->base.ia = ia;
@@ -71,11 +71,11 @@ static bool32 sub_807B190(Sprite_IA80 *ia80)
 
     temp3 = ia80->unk3C;
     temp3 -= gCamera.x;
-    temp3 += (ia80->unk44 >> 8);
+    temp3 += Q_24_8_TO_INT(ia80->unk44);
 
     temp4 = ia80->unk40;
     temp4 -= gCamera.y;
-    temp4 += (ia80->unk46 >> 8);
+    temp4 += Q_24_8_TO_INT(ia80->unk46);
 
     temp5 = temp3;
     temp6 = temp4;
@@ -96,11 +96,11 @@ static bool32 sub_807B1F0(Sprite_IA80 *ia80)
 
     r3 = ia80->unk3C;
     r3 -= gCamera.x;
-    r3 += (ia80->unk44 >> 8);
+    r3 += Q_24_8_TO_INT(ia80->unk44);
 
     r2 = ia80->unk40;
     r2 -= gCamera.y;
-    r2 += (ia80->unk46 >> 8);
+    r2 += Q_24_8_TO_INT(ia80->unk46);
 
     r0 = Q_24_8_TO_INT(gPlayer.x);
     r0 -= gCamera.x;
@@ -161,8 +161,8 @@ static void sub_807B318(Sprite_IA80 *ia80)
 static void sub_807B350(Sprite_IA80 *ia80)
 {
     Sprite *sprite = &ia80->sprite;
-    sprite->x = ia80->unk3C - gCamera.x + (ia80->unk44 >> 8);
-    sprite->y = ia80->unk40 - gCamera.y + (ia80->unk46 >> 8);
+    sprite->x = ia80->unk3C - gCamera.x + Q_24_8_TO_INT(ia80->unk44);
+    sprite->y = ia80->unk40 - gCamera.y + Q_24_8_TO_INT(ia80->unk46);
     sub_8004558(sprite);
     sub_80051E8(sprite);
 }
