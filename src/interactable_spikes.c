@@ -524,7 +524,7 @@ static void Task_806012C(void)
     }
 }
 
-// https://decomp.me/scratch/YbYor
+// https://decomp.me/scratch/vHS5d
 NONMATCH("asm/non_matching/spikes__sub_80601F8.inc",
 bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player))
 {
