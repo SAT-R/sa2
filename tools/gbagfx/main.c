@@ -62,7 +62,7 @@ void ConvertPngToGba(char *inputPath, char *outputPath, struct PngToGbaOptions *
 
     ReadPng(inputPath, &image);
 
-    WriteImage(outputPath, options->numTiles, options->bitDepth, options->metatileWidth, options->metatileHeight, &image, !image.hasPalette);
+    WriteImage(outputPath, options->numTiles, options->bitDepth, options->metatileWidth, options->metatileHeight, &image, !image.hasPalette, options->ignoreTrailingTiles);
 
     FreeImage(&image);
 }
@@ -155,12 +155,19 @@ void HandlePngToGbaCommand(char *inputPath, char *outputPath, int argc, char **a
     options.bitDepth = bitDepth;
     options.metatileWidth = 1;
     options.metatileHeight = 1;
+    options.ignoreTrailingTiles = false;
 
     for (int i = 3; i < argc; i++)
     {
         char *option = argv[i];
 
-        if (strcmp(option, "-num_tiles") == 0)
+        
+        if(strcmp(option, "-ignore_trailing") == 0) {
+            // Tilesets in Sonic Advance 1 and 2 can have empty tiles at the end.
+            // These shall be ignored when -ignore_trailing is set.
+            options.ignoreTrailingTiles = true;
+        }
+        else if (strcmp(option, "-num_tiles") == 0)
         {
             if (i + 1 >= argc)
                 FATAL_ERROR("No number of tiles following \"-num_tiles\".\n");
