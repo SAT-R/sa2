@@ -578,7 +578,7 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
             if (flags & 0x30000) {
 
                 u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
-                
+
 #ifndef NON_MATCHING
                 if (gravityInverted)
                     gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
