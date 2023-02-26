@@ -27,7 +27,7 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *, u16);
 static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *);
 static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *);
 static void StartHalfPipeSequence(Sprite_IceParadiseHalfPipe *);
-static bool32 ShouldDespwan(Sprite_IceParadiseHalfPipe *);
+static bool32 ShouldDespawn(Sprite_IceParadiseHalfPipe *);
 static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *);
 
 #define HALF_PIPE_DIRECTION_FORWARD 0
@@ -153,7 +153,7 @@ static void Task_HalfPipeMain(void)
         StartHalfPipeSequence(halfPipe);
     }
 
-    if (ShouldDespwan(halfPipe)) {
+    if (ShouldDespawn(halfPipe)) {
         DestroyHalfPipe(halfPipe);
     }
 }
@@ -186,7 +186,7 @@ static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
     return FALSE;
 }
 
-static bool32 ShouldDespwan(Sprite_IceParadiseHalfPipe *halfPipe)
+static bool32 ShouldDespawn(Sprite_IceParadiseHalfPipe *halfPipe)
 {
     s16 x = halfPipe->x - gCamera.x;
     s16 y = halfPipe->y - gCamera.y;
