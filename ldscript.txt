@@ -95,6 +95,7 @@ SECTIONS
         build/sa2/src/special_stage_ui.o(.text);
         build/sa2/src/special_stage_guard_robo.o(.text);
         build/sa2/src/save.o(.text);
+        build/sa2/src/interactable_wind_up_stick.o(.text);
         build/sa2/asm/interactable_wind_up_stick.o(.text);
         build/sa2/asm/interactable_hook_rail.o(.text);
         build/sa2/src/interactable_turn_around_bar.o(.text);
