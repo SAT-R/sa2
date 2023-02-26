@@ -103,8 +103,7 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
 #ifndef NON_MATCHING
         {
             register s16 *unk64 asm("r0") = &gPlayer.unk64;
-            s32 temp = 0x34;
-            *unk64 = temp;
+            *unk64 = 0x34;
         }
 #else
             gPlayer.unk64 = 0x34;
@@ -177,37 +176,28 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
         return 0;
     }
     if (PlayerIsAlive) {
-        s16 temp = windUpStick->unk0 - gCamera.x;
-        s16 temp3 = windUpStick->unk4 - gCamera.y;
-        s16 temp2 = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 temp4 = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 posX = windUpStick->unk0 - gCamera.x;
+        s16 posY = windUpStick->unk4 - gCamera.y;
+        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        s32 temp5 = temp;
-        s32 unk8 = windUpStick->unk8;
-        temp5 += unk8;
-        if (temp5 <= temp2) {
-            s32 temp6 = windUpStick->unkC;
-            temp6 -= unk8;
-            if (temp5 + temp6 >= temp2) {
-                s32 temp3_0 = temp3;
-                s32 unkA = windUpStick->unkA;
-                if (temp3_0 + unkA <= temp4) {
-                    s32 temp7 = windUpStick->unkE;
-                    temp7 -= unkA;
-                    if ((temp3_0 + unkA) + temp7 >= temp4) {
-                        if (gPlayer.moveState & MOVESTATE_IN_AIR) {
-                            if (gPlayer.speedAirY < 0) {
-                                return 1;
-                            } else {
-                                return 2;
-                            }
-                        } else {
-                            if (gPlayer.speedAirY < 0) {
-                                return 3;
-                            } else {
-                                return 4;
-                            }
-                        }
+        if ((posX + windUpStick->unk8) <= playerX
+            && (posX + windUpStick->unk8) + (windUpStick->unkC - windUpStick->unk8)
+                >= playerX) {
+            if (posY + windUpStick->unkA <= playerY
+                && (posY + windUpStick->unkA) + (windUpStick->unkE - windUpStick->unkA)
+                    >= playerY) {
+                if (gPlayer.moveState & MOVESTATE_IN_AIR) {
+                    if (gPlayer.speedAirY < 0) {
+                        return 1;
+                    } else {
+                        return 2;
+                    }
+                } else {
+                    if (gPlayer.speedAirY < 0) {
+                        return 3;
+                    } else {
+                        return 4;
                     }
                 }
             }
