@@ -19,3 +19,6 @@
 
 %_tiles_64.4bpp: %_tiles_64.png
 	$(GFX) $< $@ -num_tiles 64
+
+tileset_%.4bpp: tileset_%.png
+	$(GFX) $< $@ -ignore_trailing

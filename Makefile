@@ -97,6 +97,7 @@ MID_SUBDIR = sound/songs/midi
 SAMPLE_SUBDIR = sound/direct_sound_samples
 
 OBJ_TILES_4BPP_SUBDIR = graphics/obj_tiles/4bpp
+TILESETS_SUBDIR = graphics/tilesets/
 
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
