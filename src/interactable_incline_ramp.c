@@ -14,10 +14,6 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_InclineRamp;
 
-extern void sub_80218E4(Player *);
-extern void sub_8023260(Player *);
-extern void sub_8023B5C(Player *, s8);
-
 static void Task_Interactable_InclineRamp(void)
 {
     Sprite_InclineRamp *ramp = TaskGetStructPtr(gCurTask);

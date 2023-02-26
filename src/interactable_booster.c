@@ -7,6 +7,7 @@
 
 #include "interactable.h"
 #include "sprite.h"
+#include "game.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -16,9 +17,6 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite displayed;
 } Sprite_Booster;
-
-extern void sub_80218E4(Player *);
-extern void sub_8023B5C(Player *, s8);
 
 static void Task_Interactable_Booster(void);
 

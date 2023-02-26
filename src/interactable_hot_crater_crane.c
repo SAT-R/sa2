@@ -48,9 +48,6 @@ typedef struct {
     /* 0x1C9 */ u8 spriteY;
 } Sprite_HCCrane; /* size: 0x1CC */
 
-extern void sub_80218E4(Player *);
-extern void sub_8023B5C(Player *, u32);
-
 static void Task_8073AA8(void);
 static void Task_8073B1C(void);
 static void TaskDestructor_80743B8(struct Task *);

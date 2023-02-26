@@ -30,9 +30,6 @@ typedef void (*SomeFunc)(s32, s32, s32);
 extern void sub_801EC3C(s32, s32, s32);
 extern s32 sub_801F100(s32, s32, s32, s32, SomeFunc);
 
-extern void sub_80218E4(Player *);
-extern void sub_8023B5C(Player *, u32);
-
 static void sub_8076928(void);
 static void sub_80769E0(void);
 static void Task_8076A6C(void);
