@@ -291,13 +291,15 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
 		break;
 	}
     
+    int outfileSize = bufferSize;
+
     if(ignoreEmptyTrailingTiles) {
         int tileSize = (8*8 * bitDepth) / 8;
 
-        if((bufferSize % tileSize) != 0)
-            FATAL_ERROR("The output buffer size (0x%X) is not a multiple of the tileSize (0x%X).", bufferSize, tileSize);
+        if((outfileSize % tileSize) != 0)
+            FATAL_ERROR("The output buffer size (0x%X) is not a multiple of the tileSize (0x%X).", outfileSize, tileSize);
 
-        unsigned char* bufferEnd = buffer + (bufferSize-1);
+        unsigned char* bufferEnd = buffer + (outfileSize-1);
 
         int checksum = 0;
 
@@ -311,7 +313,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
 
             if(checksum == 0) {
                 // This trailing tile is empty (Palette index 0), don't output it
-                bufferSize -= tileSize;
+                outfileSize -= tileSize;
                 numTiles--;
             } else {
                 // This tile contains graphics data, so don't ignore it
@@ -320,7 +322,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
         }
     }
 
-	WriteWholeFile(path, buffer, bufferSize);
+	WriteWholeFile(path, buffer, outfileSize);
 
 	free(buffer);
 }
