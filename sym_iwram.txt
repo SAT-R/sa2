@@ -9,7 +9,7 @@ build/sa2/src/lib/agb_flash.o(.bss);
 . = ALIGN(16); 
 build/sa2/src/lib/multi_sio.o(.data);
 build/sa2/src/lib/sio32_multi_load.o(COMMON);
-build/sa2/src/main.o(.data);
+build/sa2/src/engine/core.o(.data);
 
 . = ALIGN(32); 
 /* game.o */

@@ -1,5 +1,5 @@
 #include "time_attack_lobby.h"
-#include "main.h"
+#include "engine/core.h"
 #include "sprite.h"
 #include "save.h"
 #include "transition.h"

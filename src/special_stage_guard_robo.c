@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "sprite.h"
 #include "special_stage.h"
 #include "special_stage_player.h"

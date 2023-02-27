@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "game/game_over.h"
 #include "game.h"
 #include "time_attack_lobby.h"

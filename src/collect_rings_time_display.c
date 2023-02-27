@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "collect_rings_time_display.h"
 #include "malloc_vram.h"

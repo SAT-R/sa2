@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "engine/core.h"
 #include "sprite.h"
 #include "interactable.h"
 #include "task.h"

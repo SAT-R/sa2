@@ -255,4 +255,7 @@ extern s32 gPseudoRandom;
 extern u8 gUnknown_03002710[128];
 extern struct MultiBootParam gMultiBootParam;
 
+void GameInit(void);
+void GameLoop(void);
+
 #endif

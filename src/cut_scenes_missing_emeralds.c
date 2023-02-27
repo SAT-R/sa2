@@ -1,6 +1,6 @@
 #include "global.h"
 #include "cut_scenes_missing_emeralds.h"
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"

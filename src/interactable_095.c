@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "engine/core.h"
 #include "task.h"
 #include "interactable_095.h"
 #include "malloc_vram.h"

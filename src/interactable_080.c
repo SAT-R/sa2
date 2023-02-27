@@ -1,7 +1,7 @@
 #include "global.h"
 #include "game.h"
 #include "interactable.h"
-#include "main.h"
+#include "engine/core.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "interactable_080.h"

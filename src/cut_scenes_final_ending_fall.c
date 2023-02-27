@@ -1,7 +1,7 @@
 #include "global.h"
 #include "cut_scenes_endings.h"
 #include "cut_scenes_extra_ending_slides.h"
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"

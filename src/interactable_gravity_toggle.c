@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "interactable_gravity_toggle.h"
 
 #include "constants/move_states.h"

@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "engine/core.h"
 #include "data.h"
 #include "multiplayer_multipak_connection.h"
 #include "multiplayer_communication_outcome.h"

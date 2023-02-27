@@ -1,5 +1,5 @@
 #include "course_progress.h"
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "task.h"
 #include "sprite.h"

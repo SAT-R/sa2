@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "true_area_53_intro.h"
 #include "task.h"

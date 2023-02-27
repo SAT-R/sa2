@@ -1,6 +1,6 @@
 #include "global.h"
 #include "task.h"
-#include "main.h"
+#include "engine/core.h"
 #include "flags.h"
 #include "lib/m4a.h"
 

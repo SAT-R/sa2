@@ -1,6 +1,6 @@
 #include "global.h"
 #include "sound_test.h"
-#include "main.h"
+#include "engine/core.h"
 #include "profile.h"
 #include "task.h"
 #include "lib/m4a.h"

@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "engine/core.h"
 #include "profile.h"
 #include "lib/m4a.h"
 #include "task.h"

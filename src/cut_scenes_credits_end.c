@@ -2,7 +2,7 @@
 #include "cut_scenes_credits.h"
 #include "cut_scenes_credits_end.h"
 #include "cut_scenes_missing_emeralds.h"
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"

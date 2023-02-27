@@ -4,7 +4,7 @@
 
 #include "game.h"
 #include "task.h"
-#include "main.h"
+#include "engine/core.h"
 
 #include "data.h"
 #include "flags.h"

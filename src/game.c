@@ -1,4 +1,4 @@
-#include "main.h"
+#include "engine/core.h"
 #include "game.h"
 #include "save.h"
 #include "course_progress.h"
