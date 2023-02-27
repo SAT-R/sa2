@@ -2,7 +2,7 @@
 #define GUARD_INTRO_H
 
 #include "global.h"
-#include "sprite.h"
+#include "engine/sprite.h"
 
 // TODO: not sure why these were shared from here, may
 // not be

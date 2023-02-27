@@ -1,12 +1,12 @@
 #include "global.h"
 #include "gba/types.h"
 
-#include "game.h"
+#include "game/game.h"
 #include "interactable.h"
-#include "sprite.h"
-#include "task.h"
-#include "trig.h"
-#include "game.h"
+#include "engine/sprite.h"
+#include "engine/task.h"
+#include "engine/trig.h"
+#include "game/game.h"
 
 #include "constants/move_states.h"
 
@@ -93,7 +93,7 @@ static bool32 sub_8080A9C(Sprite_IA105 *sprite)
     screenY = sprite->posY - gCamera.y;
 
     // TODO: Use 'IS_OUT_OF_RANGE' instead of 'IS_OUT_OF_RANGE_'
-    //       (Fix that in game.h)
+    //       (Fix that in game/game.h)
     if (IS_OUT_OF_RANGE_(0, screenX, screenY, CAM_REGION_WIDTH / 2)) {
         return TRUE;
     }

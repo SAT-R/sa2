@@ -1,9 +1,9 @@
 #include "global.h"
 #include "interactable_windmill.h"
-#include "malloc_vram.h"
-#include "sprite.h"
-#include "game.h"
-#include "trig.h"
+#include "engine/malloc_vram.h"
+#include "engine/sprite.h"
+#include "game/game.h"
+#include "engine/trig.h"
 #include "constants/animations.h"
 
 typedef struct {

@@ -1,12 +1,12 @@
 #include "engine/core.h"
 #include "game/game_over.h"
-#include "game.h"
+#include "game/game.h"
 #include "time_attack_lobby.h"
 #include "title_screen.h"
-#include "task.h"
+#include "engine/task.h"
 #include "transition.h"
 #include "lib/m4a.h"
-#include "malloc_vram.h"
+#include "engine/malloc_vram.h"
 #include "constants/songs.h"
 
 typedef struct {

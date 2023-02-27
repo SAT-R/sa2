@@ -2,8 +2,8 @@
 #define GUARD_OPTION_SCREEN_H
 
 #include "global.h"
-#include "save.h"
-#include "sprite.h"
+#include "game/save.h"
+#include "engine/sprite.h"
 #include "transition.h"
 #include "constants/text.h"
 

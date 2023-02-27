@@ -3,9 +3,9 @@
 
 #include "lib/m4a.h"
 #include "math.h"
-#include "sprite.h"
-#include "task.h"
-#include "trig.h"
+#include "engine/sprite.h"
+#include "engine/task.h"
+#include "engine/trig.h"
 
 #include "interactable.h"
 #include "interactable_music_plant_note_particle.h"

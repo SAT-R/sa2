@@ -3,14 +3,14 @@
 #include "global.h"
 #include "data.h"
 #include "lib/m4a.h"
-#include "malloc_ewram.h"
+#include "engine/malloc_ewram.h"
 #include "lib/multi_sio.h"
-#include "sprite.h"
-#include "task.h"
+#include "engine/sprite.h"
+#include "engine/task.h"
 #include "lib/agb_flash.h"
 #include "flags.h"
 #include "engine/input_recorder.h"
-#include "malloc_vram.h"
+#include "engine/malloc_vram.h"
 
 // TODO: the order of these vars has
 // been shuffled due to compilation losses.

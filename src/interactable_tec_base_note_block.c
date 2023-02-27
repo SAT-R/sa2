@@ -1,7 +1,7 @@
 #include "global.h"
 #include "interactable_tec_base_note_block.h"
-#include "trig.h"
-#include "game.h"
+#include "engine/trig.h"
+#include "game/game.h"
 #include "lib/m4a.h"
 
 #include "constants/move_states.h"

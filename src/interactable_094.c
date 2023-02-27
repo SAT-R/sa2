@@ -1,6 +1,6 @@
 #include "global.h"
 #include "engine/core.h"
-#include "game.h"
+#include "game/game.h"
 #include "lib/m4a.h"
 #include "interactable.h"
 #include "interactable_094.h"

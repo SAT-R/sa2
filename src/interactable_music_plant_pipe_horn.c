@@ -1,10 +1,10 @@
 #include "global.h"
 #include "lib/m4a.h"
-#include "trig.h"
+#include "engine/trig.h"
 
-#include "game.h"
+#include "game/game.h"
 #include "interactable.h"
-#include "sprite.h"
+#include "engine/sprite.h"
 
 #include "interactable_music_plant_pipe_horn.h"
 

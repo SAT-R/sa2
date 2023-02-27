@@ -1,5 +1,5 @@
 #include "global.h"
-#include "trig.h"
+#include "engine/trig.h"
 
 #include "interactable_music_plant_pipe_horn.h"
 

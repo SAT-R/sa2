@@ -1,8 +1,8 @@
 #include "engine/core.h"
-#include "game.h"
+#include "game/game.h"
 #include "collect_rings_time_display.h"
-#include "malloc_vram.h"
-#include "animation_commands.h"
+#include "engine/malloc_vram.h"
+#include "engine/animation_commands.h"
 
 typedef struct {
     Sprite unk0;

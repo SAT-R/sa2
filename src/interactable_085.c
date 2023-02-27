@@ -1,6 +1,6 @@
 #include "global.h"
 #include "interactable_085.h"
-#include "trig.h"
+#include "engine/trig.h"
 #include "lib/m4a.h"
 
 #include "constants/songs.h"

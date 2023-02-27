@@ -12,7 +12,7 @@ build/sa2/src/lib/sio32_multi_load.o(COMMON);
 build/sa2/src/engine/core.o(.data);
 
 . = ALIGN(32); 
-/* game.o */
+/* game/game.o */
                 gUnknown_030053E0 = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
@@ -103,8 +103,8 @@ build/sa2/src/engine/core.o(.data);
 . = 0x00005B50; 
 
 build/sa2/src/profile.o(.data);
-build/sa2/src/special_stage_utils.o(.data);
-build/sa2/src/save.o(.data);
+build/sa2/src/game/special_stage/special_stage_utils.o(.data);
+build/sa2/src/game/save.o(.data);
 
 /* something in code3.s */
 . = 0x00005B6C; gUnknown_03005B6C = .;

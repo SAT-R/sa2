@@ -1,9 +1,9 @@
 #include "game/countdown.h"
 #include "engine/core.h"
-#include "sprite.h"
-#include "game.h"
-#include "task.h"
-#include "malloc_vram.h"
+#include "engine/sprite.h"
+#include "game/game.h"
+#include "engine/task.h"
+#include "engine/malloc_vram.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"

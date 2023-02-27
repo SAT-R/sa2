@@ -1,10 +1,10 @@
 #include "global.h"
 
-#include "task.h"
-#include "game.h"
+#include "engine/task.h"
+#include "game/game.h"
 
 #include "interactable.h"
-#include "sprite.h"
+#include "engine/sprite.h"
 
 #include "constants/move_states.h"
 

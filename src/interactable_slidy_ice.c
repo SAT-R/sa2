@@ -1,7 +1,7 @@
 #include "global.h"
-#include "task.h"
+#include "engine/task.h"
 
-#include "game.h"
+#include "game/game.h"
 #include "interactable.h"
 
 #include "constants/move_states.h"

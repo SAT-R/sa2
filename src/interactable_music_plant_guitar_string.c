@@ -1,12 +1,12 @@
 #include "global.h"
 #include "engine/core.h"
 #include "lib/m4a.h"
-#include "sprite.h"
+#include "engine/sprite.h"
 
 #include "interactable.h"
-#include "task.h"
+#include "engine/task.h"
 
-#include "game.h"
+#include "game/game.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

@@ -1,6 +1,6 @@
 #include "global.h"
 
-#include "sprite.h"
+#include "engine/sprite.h"
 
 #include "constants/animations.h"
 
