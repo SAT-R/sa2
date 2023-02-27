@@ -5,6 +5,7 @@ static const u8 demo2[];
 static const u8 demo3[];
 static const u8 demo4[];
 
+// TODO: move to data and include as asm
 const u8 *const gDemoRecordings[] = {
     demo1,
     demo2,

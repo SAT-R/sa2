@@ -3,7 +3,7 @@
     .global gUnknown_080DFCF0
 gUnknown_080DFCF0:
     .incbin "baserom.gba", 0x000DFCF0, 0x50
-    
+
     .global gUnknown_080DFD40
 gUnknown_080DFD40:
     .incbin "baserom.gba", 0x000DFD40, 0x58

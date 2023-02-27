@@ -1,18 +1,18 @@
 /**** bss ****/
-build/sa2/src/m4a.o(.bss.code);
-build/sa2/src/multi_boot.o(.bss);
+build/sa2/src/lib/m4a.o(.bss.code);
+build/sa2/src/lib/multi_boot.o(.bss);
 /* space 0x20 */
 . = 0x0000042C; 
-build/sa2/src/agb_flash.o(.bss);
+build/sa2/src/lib/agb_flash.o(.bss);
 
 /**** common ****/
 . = ALIGN(16); 
-build/sa2/src/multi_sio.o(.data);
-build/sa2/src/sio32_multi_load.o(COMMON);
-build/sa2/src/main.o(.data);
+build/sa2/src/lib/multi_sio.o(.data);
+build/sa2/src/lib/sio32_multi_load.o(COMMON);
+build/sa2/src/core.o(.data);
 
 . = ALIGN(32); 
-/* game.o */
+/* game/game.o */
                 gUnknown_030053E0 = .;
 . = 0x000053E4; gUnknown_030053E4 = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
@@ -102,18 +102,18 @@ build/sa2/src/main.o(.data);
 . = 0x00005B4C; gUnknown_03005B4C = .;
 . = 0x00005B50; 
 
-build/sa2/src/profile.o(.data);
-build/sa2/src/special_stage_utils.o(.data);
-build/sa2/src/save.o(.data);
+build/sa2/src/game/options_screen.o(.data);
+build/sa2/src/game/special_stage/utils.o(.data);
+build/sa2/src/game/save.o(.data);
 
 /* something in code3.s */
 . = 0x00005B6C; gUnknown_03005B6C = .;
 . = 0x00005B70; 
 
-build/sa2/src/random.o(.data);
+build/sa2/src/game/math_0.o(.data);
 . = ALIGN(16); 
-build/sa2/src/backgrounds.o(.data);
+build/sa2/src/game/backgrounds.o(.data);
 . = ALIGN(16);
-build/sa2/src/agb_flash.o(.data);
+build/sa2/src/lib/agb_flash.o(.data);
 
 iwram_end = .;

@@ -6,7 +6,7 @@
 #define GUARD_DATA_H
 
 #include "global.h"
-#include "animation_commands.h"
+#include "engine/animation_commands.h"
 
 // TODO: extract this data
 extern union Unk_03002E60 gMapHeaders[];
