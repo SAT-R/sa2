@@ -3,7 +3,7 @@
 #include "interactable.h"
 #include "main.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "interactable_080.h"
 #include "malloc_vram.h"
 #include "trig.h"

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "main.h"
 #include "game.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "interactable.h"
 #include "interactable_094.h"
 #include "constants/move_states.h"

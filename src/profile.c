@@ -1,7 +1,7 @@
 #include "global.h"
 #include "main.h"
 #include "profile.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "task.h"
 #include "save.h"
 #include "malloc_ewram.h"

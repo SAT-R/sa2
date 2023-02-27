@@ -6,7 +6,7 @@
 #include "game.h"
 #include "time.h"
 #include "malloc_vram.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "trig.h"
 #include "task.h"
 #include "time_attack_lobby.h"

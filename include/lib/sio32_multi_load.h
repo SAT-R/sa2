@@ -1,7 +1,7 @@
 #ifndef GUARD_SIO32_MULTI_LOAD_H
 #define GUARD_SIO32_MULTI_LOAD_H
 
-#include "multi_sio.h"
+#include "lib/multi_sio.h"
 
 // Optimize the following settings based on the software
 // specifications

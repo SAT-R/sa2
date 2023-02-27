@@ -5,7 +5,7 @@
 #include "special_stage_collectables.h"
 #include "special_stage_data.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "trig.h"
 #include "random.h"
 #include "constants/songs.h"

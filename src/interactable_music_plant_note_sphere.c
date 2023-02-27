@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/syscall.h"
 
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "math.h"
 #include "sprite.h"
 #include "task.h"

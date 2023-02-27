@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include "character_select.h"
 #include "save.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "task.h"
 #include "malloc_vram.h"
 #include "flags.h"

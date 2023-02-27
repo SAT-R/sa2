@@ -4,7 +4,7 @@
 #include "special_stage_ui.h"
 #include "special_stage_utils.h"
 #include "special_stage_data.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "save.h"
 #include "constants/songs.h"
 #include "constants/text.h"

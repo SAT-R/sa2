@@ -3,7 +3,7 @@
 #include "flags.h"
 #include "global.h"
 #include "main.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "task.h"
 #include "sprite.h"
 #include "save.h"

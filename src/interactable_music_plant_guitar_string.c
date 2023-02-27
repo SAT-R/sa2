@@ -1,6 +1,6 @@
 #include "global.h"
 #include "main.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "sprite.h"
 
 #include "interactable.h"

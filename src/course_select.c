@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include "transition.h"
 #include "save.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "character_select.h"
 #include "constants/songs.h"
 #include "constants/text.h"

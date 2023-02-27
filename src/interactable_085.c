@@ -1,7 +1,7 @@
 #include "global.h"
 #include "interactable_085.h"
 #include "trig.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 
 #include "constants/songs.h"
 

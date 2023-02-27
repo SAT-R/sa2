@@ -1,4 +1,4 @@
-#include "m4a.h"
+#include "lib/m4a.h"
 
 #include "global.h"
 

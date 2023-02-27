@@ -6,7 +6,7 @@
 #include "task.h"
 #include "cut_scenes_credits.h"
 #include "cut_scenes_missing_emeralds.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "trig.h"
 #include "save.h"
 #include "title_screen.h"

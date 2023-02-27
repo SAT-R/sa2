@@ -9,7 +9,7 @@ SECTIONS
     ALIGN(4)
     {
         build/sa2/data/sound_data.o(ewram_data); 
-        build/sa2/src/m4a.o(ewram_data);
+        build/sa2/src/lib/m4a.o(ewram_data);
         build/sa2/src/main.o(ewram_data);
         ewram_end = .;
     }
@@ -28,9 +28,9 @@ SECTIONS
         build/sa2/asm/rom_header.o(.text);
         build/sa2/asm/crt0.o(.text);
         build/sa2/asm/multi_sio_asm.o(.text);
-        build/sa2/src/multi_sio.o(.text);
-        build/sa2/src/multi_boot.o(.text);
-        build/sa2/src/sio32_multi_load.o(.text);
+        build/sa2/src/lib/multi_sio.o(.text);
+        build/sa2/src/lib/multi_boot.o(.text);
+        build/sa2/src/lib/sio32_multi_load.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
         build/sa2/src/sprite_1.o(.text);
@@ -165,11 +165,11 @@ SECTIONS
         build/sa2/src/cut_scenes_final_ending_land.o(.text);
         build/sa2/src/cut_scenes_missing_emeralds.o(.text);
         build/sa2/asm/m4a0.o(.text);
-        build/sa2/src/m4a.o(.text);
-        build/sa2/src/agb_flash.o(.text);
-        build/sa2/src/agb_flash_512k.o(.text);
-        build/sa2/src/agb_flash_le_512k.o(.text);
-        build/sa2/src/agb_flash_mx_512k.o(.text);
+        build/sa2/src/lib/m4a.o(.text);
+        build/sa2/src/lib/agb_flash.o(.text);
+        build/sa2/src/lib/agb_flash_512k.o(.text);
+        build/sa2/src/lib/agb_flash_le_512k.o(.text);
+        build/sa2/src/lib/agb_flash_mx_512k.o(.text);
         build/sa2/asm/libagbsyscall.o(.text);
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
@@ -185,8 +185,8 @@ SECTIONS
         *libc.a:memset.o(.text);
 
         /* Data */
-        build/sa2/src/multi_sio.o(.rodata);
-        build/sa2/src/sio32_multi_load.o(.rodata);
+        build/sa2/src/lib/multi_sio.o(.rodata);
+        build/sa2/src/lib/sio32_multi_load.o(.rodata);
         build/sa2/src/main.o(.rodata);
         build/sa2/src/sprite_1.o(.rodata);
         build/sa2/src/trig.o(.rodata);
@@ -272,7 +272,7 @@ SECTIONS
         build/sa2/data/sprite_data.o(.rodata);
         build/sa2/data/map_data.o(.rodata);
 
-        build/sa2/src/m4a_tables.o(.rodata);
+        build/sa2/src/lib/m4a_tables.o(.rodata);
         build/sa2/data/sound_data.o(.rodata);
 
         /* Songs */
@@ -536,10 +536,10 @@ SECTIONS
         build/sa2/sound/songs/midi/mus_506.o(.rodata);
 
         /* Lib data */
-        build/sa2/src/agb_flash.o(.rodata);
-        build/sa2/src/agb_flash_512k.o(.rodata);
-        build/sa2/src/agb_flash_le_512k.o(.rodata);
-        build/sa2/src/agb_flash_mx_512k.o(.rodata);
+        build/sa2/src/lib/agb_flash.o(.rodata);
+        build/sa2/src/lib/agb_flash_512k.o(.rodata);
+        build/sa2/src/lib/agb_flash_le_512k.o(.rodata);
+        build/sa2/src/lib/agb_flash_mx_512k.o(.rodata);
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */

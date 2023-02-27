@@ -5,7 +5,7 @@
 #include "interactable.h"
 #include "malloc_vram.h"
 #include "game.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "constants/songs.h"
 #include "constants/move_states.h"
 #include "constants/animations.h"

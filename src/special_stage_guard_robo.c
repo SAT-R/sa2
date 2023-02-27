@@ -9,7 +9,7 @@
 #include "special_stage_tables.h"
 #include "special_stage_data.h"
 #include "trig.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "constants/songs.h"
 
 void sub_80714C4(void);

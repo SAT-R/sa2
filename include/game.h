@@ -15,7 +15,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "multi_sio.h"
+#include "lib/multi_sio.h"
 #include "save.h"
 #include "task.h"
 

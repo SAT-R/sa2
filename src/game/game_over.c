@@ -5,7 +5,7 @@
 #include "title_screen.h"
 #include "task.h"
 #include "transition.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "constants/songs.h"
 

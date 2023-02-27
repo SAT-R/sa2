@@ -4,7 +4,7 @@
 #include "game.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

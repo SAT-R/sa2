@@ -7,7 +7,7 @@
 #include "sprite.h"
 #include "transition.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "save.h"
 
 struct CreditsCutScene {

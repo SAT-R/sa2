@@ -1,6 +1,6 @@
 #include "global.h"
-#include "multi_sio.h"
-#include "sio32_multi_load.h"
+#include "lib/multi_sio.h"
+#include "lib/sio32_multi_load.h"
 
 static const char sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
 

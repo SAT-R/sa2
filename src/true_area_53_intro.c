@@ -2,7 +2,7 @@
 #include "game.h"
 #include "true_area_53_intro.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "sprite.h"
 #include "trig.h"
 #include "math.h"

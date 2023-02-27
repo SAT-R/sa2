@@ -5,7 +5,7 @@
 #include "save.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "title_screen.h"
 #include "game.h"
 #include "character_select.h"

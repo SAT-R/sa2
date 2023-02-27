@@ -6,7 +6,7 @@
 #include "special_stage_guard_robo.h"
 #include "special_stage_data.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "save.h"
 #include "trig.h"
 #include "game.h"

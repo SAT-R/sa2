@@ -10,9 +10,9 @@
 #include "save.h"
 #include "title_screen.h"
 #include "transition.h"
-#include "m4a.h"
-#include "multi_boot.h"
-#include "sio32_multi_load.h"
+#include "lib/m4a.h"
+#include "lib/multi_boot.h"
+#include "lib/sio32_multi_load.h"
 #include "mb_programs.h"
 
 #include "constants/animations.h"

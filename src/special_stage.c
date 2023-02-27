@@ -11,7 +11,7 @@
 #include "game.h"
 #include "sprite.h"
 #include "transition.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "task.h"
 #include "title_screen.h"
 #include "zones.h"

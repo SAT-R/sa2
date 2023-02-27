@@ -111,8 +111,6 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
-C_OBJECTS := $(addprefix $(OBJ_DIR)/, $(C_SRCS:%.c=%.o))
-
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
@@ -133,11 +131,11 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
 # to the original codebase
-$(C_BUILDDIR)/m4a.o: CC1 := $(CC1_OLD)
+$(C_BUILDDIR)/lib/m4a.o: CC1 := $(CC1_OLD)
 
 # Use `-O1` for agb_flash libs, as these were also prebuilt
-$(C_BUILDDIR)/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
-$(C_BUILDDIR)/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 
 ifeq ($(DINFO),1)
 override CC1FLAGS += -g
@@ -219,14 +217,14 @@ $(ROM): $(ELF)
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 
 ifeq ($(NODEP),1)
-$(C_BUILDDIR)/%.o: c_dep :=
+$(OBJ_DIR)/src/%.o: c_dep :=
 else
 $(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
 $(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=))
 endif
 
 # Build c sources, and ensure alignment
-$(C_OBJECTS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
+$(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
 	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i

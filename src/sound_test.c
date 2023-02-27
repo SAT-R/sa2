@@ -3,7 +3,7 @@
 #include "main.h"
 #include "profile.h"
 #include "task.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "flags.h"
 #include "trig.h"
 #include "backgrounds.h"

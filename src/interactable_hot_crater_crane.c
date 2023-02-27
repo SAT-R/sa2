@@ -1,6 +1,6 @@
 #include "global.h"
 #include "gba/types.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "trig.h"
 
 #include "game.h"

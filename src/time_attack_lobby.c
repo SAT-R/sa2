@@ -5,7 +5,7 @@
 #include "transition.h"
 #include "game.h"
 #include "malloc_vram.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "character_select.h"
 #include "course_select.h"
 #include "profile.h"

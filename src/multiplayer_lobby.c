@@ -4,7 +4,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "transition.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 #include "constants/songs.h"
 #include "save.h"
 #include "malloc_vram.h"
