@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/core.h"
+#include "core.h"
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 

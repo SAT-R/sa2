@@ -1,5 +1,5 @@
 #include "game/course_select.h"
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
 #include "engine/sprite.h"
 #include "transition.h"

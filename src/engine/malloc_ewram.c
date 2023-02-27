@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/core.h"
+#include "core.h"
 #include "engine/malloc_ewram.h"
 
 /* At the very beginning, there's only one node. */

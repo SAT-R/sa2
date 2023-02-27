@@ -1,7 +1,7 @@
 #include "global.h"
 #include "game/multiplayer/team_play.h"
 #include "game/save.h"
-#include "engine/core.h"
+#include "core.h"
 #include "engine/task.h"
 #include "engine/sprite.h"
 #include "lib/multi_sio.h"

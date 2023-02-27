@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
 #include "lib/m4a.h"
 #include "game/interactable.h"

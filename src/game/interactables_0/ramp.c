@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/core.h"
+#include "core.h"
 #include "engine/sprite.h"
 #include "game/interactable.h"
 #include "engine/task.h"

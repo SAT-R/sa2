@@ -1,4 +1,4 @@
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
 #include "game/multiboot/collect_rings/time_display.h"
 #include "engine/malloc_vram.h"

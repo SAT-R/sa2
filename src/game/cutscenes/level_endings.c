@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/cutscenes/level_endings.h"
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
 #include "engine/sprite.h"
 #include "transition.h"

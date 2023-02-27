@@ -1,5 +1,5 @@
-#include "game//race_progress.h"
-#include "engine/core.h"
+#include "game/race_progress.h"
+#include "core.h"
 #include "game/game.h"
 #include "engine/task.h"
 #include "engine/sprite.h"

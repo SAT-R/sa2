@@ -1,4 +1,4 @@
-#include "engine/core.h"
+#include "core.h"
 #include "game/unknown_object_6998.h"
 #include "engine/malloc_vram.h"
 #include "game/game.h"

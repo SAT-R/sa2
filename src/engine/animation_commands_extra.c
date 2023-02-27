@@ -1,6 +1,6 @@
 #include "global.h"
 #include "gba/syscall.h"
-#include "engine/core.h"
+#include "core.h"
 #include "lib/m4a.h"
 #include "engine/trig.h"
 

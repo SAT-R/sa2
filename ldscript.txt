@@ -10,7 +10,7 @@ SECTIONS
     {
         build/sa2/data/sound_data.o(ewram_data); 
         build/sa2/src/lib/m4a.o(ewram_data);
-        build/sa2/src/engine/core.o(ewram_data);
+        build/sa2/src/core.o(ewram_data);
         ewram_end = .;
     }
 
@@ -31,7 +31,7 @@ SECTIONS
         build/sa2/src/lib/multi_sio.o(.text);
         build/sa2/src/lib/multi_boot.o(.text);
         build/sa2/src/lib/sio32_multi_load.o(.text);
-        build/sa2/src/engine/core.o(.text);
+        build/sa2/src/core.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/engine/task.o(.text);
         build/sa2/src/engine/sprite_1.o(.text);
@@ -187,7 +187,7 @@ SECTIONS
         /* Data */
         build/sa2/src/lib/multi_sio.o(.rodata);
         build/sa2/src/lib/sio32_multi_load.o(.rodata);
-        build/sa2/src/engine/core.o(.rodata);
+        build/sa2/src/core.o(.rodata);
         build/sa2/src/engine/sprite_1.o(.rodata);
         build/sa2/src/engine/trig.o(.rodata);
         build/sa2/asm/sprite_3.o(.rodata);

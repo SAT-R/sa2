@@ -3,7 +3,7 @@
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/connection.h"
 #include "game/save.h"
-#include "engine/core.h"
+#include "core.h"
 #include "lib/multi_sio.h"
 #include "engine/task.h"
 #include "engine/sprite.h"

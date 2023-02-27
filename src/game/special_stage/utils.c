@@ -1,4 +1,4 @@
-#include "engine/core.h"
+#include "core.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/world.h"
 #include "game/special_stage/utils.h"

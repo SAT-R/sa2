@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/sound_test.h"
-#include "engine/core.h"
+#include "core.h"
 #include "game/options_screen.h"
 #include "engine/task.h"
 #include "lib/m4a.h"

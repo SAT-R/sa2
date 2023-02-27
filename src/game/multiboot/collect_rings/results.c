@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
 #include "game/multiboot/connection.h"
 #include "game/multiplayer/multipak_connection.h"

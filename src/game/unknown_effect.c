@@ -1,6 +1,6 @@
-#include "engine/core.h"
+#include "core.h"
 #include "game/game.h"
-#include "game//unknown_effect.h"
+#include "game/unknown_effect.h"
 #include "lib/m4a.h"
 
 #include "constants/move_states.h"

@@ -1,5 +1,5 @@
 #include "game/time_attack/results.h"
-#include "engine/core.h"
+#include "core.h"
 #include "engine/sprite.h"
 #include "transition.h"
 #include "game/save.h"

@@ -1,4 +1,4 @@
-#include "engine/core.h"
+#include "core.h"
 #include "game/init.h"
 
 void AgbMain(void)
