@@ -6,7 +6,7 @@
 #include "collect_rings_time_display.h"
 #include "m4a.h"
 #include "time_attack_lobby.h"
-#include "game_over.h"
+#include "game/game_over.h"
 #include "constants/songs.h"
 #include "trig.h"
 

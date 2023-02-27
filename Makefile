@@ -108,8 +108,10 @@ MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
-C_SRCS := $(wildcard $(C_SUBDIR)/*.c)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
+
+C_OBJECTS := $(addprefix $(OBJ_DIR)/, $(C_SRCS:%.c=%.o))
 
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
@@ -219,16 +221,18 @@ $(ROM): $(ELF)
 ifeq ($(NODEP),1)
 $(C_BUILDDIR)/%.o: c_dep :=
 else
-$(C_BUILDDIR)/%.o: c_dep = $(shell $(SCANINC) -I include $(C_SUBDIR)/$*.c)
+$(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
+$(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=))
 endif
 
 # Build c sources, and ensure alignment
-$(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c $$(c_dep)
+$(C_OBJECTS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
-	@$(CPP) $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(PREPROC) $(C_BUILDDIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(C_BUILDDIR)/$*.s
-	@printf ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
-	@$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
+	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
+	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
+	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s
+	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+	@$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/$*.s
 
 ifeq ($(NODEP),1)
 $(ASM_BUILDDIR)/%.o: asm_dep :=

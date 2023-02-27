@@ -1,5 +1,5 @@
 #include "main.h"
-#include "game_over.h"
+#include "game/game_over.h"
 #include "game.h"
 #include "time_attack_lobby.h"
 #include "title_screen.h"
