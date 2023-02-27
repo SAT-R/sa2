@@ -1,9 +1,9 @@
 #include <string.h> // for memcpy
 
 #include "global.h"
-#include "engine/task.h"
+#include "task.h"
 #include "lib/m4a.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 
 #include "game/interactable.h"
 

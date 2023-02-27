@@ -2,7 +2,7 @@
 #define GUARD_SPECIAL_STAGE_DATA_H
 
 #include "global.h"
-#include "engine/sprite.h" // for the 'AnimId' type
+#include "sprite.h" // for the 'AnimId' type
 #include "zones.h"
 
 #define SPRITE_ARRAY_END                                                                \

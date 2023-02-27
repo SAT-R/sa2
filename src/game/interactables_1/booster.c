@@ -1,12 +1,12 @@
 #include "global.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 #include "lib/m4a.h"
 
 #include "game/game.h"
-#include "engine/task.h"
+#include "task.h"
 
 #include "game/interactable.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/game.h"
 
 #include "constants/animations.h"

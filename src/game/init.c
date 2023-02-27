@@ -2,7 +2,7 @@
 #include "core.h"
 #include "data.h"
 #include "game/game.h"
-#include "engine/task.h"
+#include "task.h"
 #include "game/init.h"
 #include "flags.h"
 #include "game/save.h"

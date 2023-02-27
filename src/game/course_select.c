@@ -1,17 +1,17 @@
 #include "game/course_select.h"
 #include "core.h"
 #include "game/game.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "transition.h"
 #include "game/save.h"
 #include "lib/m4a.h"
 #include "game/character_select.h"
 #include "constants/songs.h"
 #include "constants/text.h"
-#include "engine/task.h"
-#include "engine/malloc_vram.h"
+#include "task.h"
+#include "malloc_vram.h"
 #include "game/multiplayer/multipak_connection.h"
-#include "engine/trig.h"
+#include "trig.h"
 
 struct CourseSelectionScreen {
     struct UNK_802D4CC_UNK270 screenFade;

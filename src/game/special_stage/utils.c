@@ -3,8 +3,8 @@
 #include "game/special_stage/world.h"
 #include "game/special_stage/utils.h"
 #include "game/special_stage/data.h"
-#include "engine/sprite.h"
-#include "engine/trig.h"
+#include "sprite.h"
+#include "trig.h"
 
 void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;

@@ -2,7 +2,7 @@
 #define GUARD_SPECIAL_STAGE_H
 
 #include "global.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "transition.h"
 
 #define SPECIAL_STAGE_ZONE_SIZE 8

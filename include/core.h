@@ -3,9 +3,9 @@
 
 #include "global.h"
 #include "data.h"
-#include "engine/task.h"
-#include "engine/sprite.h"
-#include "engine/input_recorder.h"
+#include "task.h"
+#include "sprite.h"
+#include "input_recorder.h"
 
 struct MultiSioData_0_0 {
     // id

@@ -2,13 +2,13 @@
 #include "gba/syscall.h"
 #include "core.h"
 #include "lib/m4a.h"
-#include "engine/trig.h"
+#include "trig.h"
 
 #include "data.h"
 #include "flags.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
-#include "engine/animation_commands.h"
+#include "animation_commands.h"
 
 extern const struct SpriteTables *gUnknown_03002794;
 extern u8 gVramGraphicsCopyQueueIndex;

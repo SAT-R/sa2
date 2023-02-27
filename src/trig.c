@@ -1,5 +1,5 @@
 #include "global.h"
-#include "engine/trig.h"
+#include "trig.h"
 
 const s16 gSineTable[0x500] = {
     Q_2_14(0), /* sin(0*π/512) */

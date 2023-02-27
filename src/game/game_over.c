@@ -3,10 +3,10 @@
 #include "game/game.h"
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
-#include "engine/task.h"
+#include "task.h"
 #include "transition.h"
 #include "lib/m4a.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 #include "constants/songs.h"
 
 typedef struct {

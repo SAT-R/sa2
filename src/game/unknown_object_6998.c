@@ -1,8 +1,8 @@
 #include "core.h"
 #include "game/unknown_object_6998.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 #include "game/game.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
 typedef struct {
     Sprite unk0[4];

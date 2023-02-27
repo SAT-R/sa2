@@ -1,7 +1,7 @@
 #include "global.h"
 
-#include "engine/sprite.h"
-#include "engine/task.h"
+#include "sprite.h"
+#include "task.h"
 
 #include "constants/animations.h"
 

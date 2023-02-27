@@ -1,10 +1,10 @@
 #include "game/race_progress.h"
 #include "core.h"
 #include "game/game.h"
-#include "engine/task.h"
-#include "engine/sprite.h"
+#include "task.h"
+#include "sprite.h"
 #include "transition.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

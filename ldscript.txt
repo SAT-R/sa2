@@ -25,26 +25,31 @@ SECTIONS
     ROM :
 	ALIGN(4)
 	{
+        /* bootstrap */
         build/sa2/asm/rom_header.o(.text);
         build/sa2/asm/crt0.o(.text);
+
+        /* engine */
         build/sa2/asm/multi_sio_asm.o(.text);
-        build/sa2/src/lib/multi_sio.o(.text);
-        build/sa2/src/lib/multi_boot.o(.text);
-        build/sa2/src/lib/sio32_multi_load.o(.text);
+        build/sa2/src/multi_sio.o(.text);
+        build/sa2/src/multi_boot.o(.text);
+        build/sa2/src/sio32_multi_load.o(.text);
         build/sa2/src/core.o(.text);
         build/sa2/src/main.o(.text);
-        build/sa2/src/engine/task.o(.text);
-        build/sa2/src/engine/sprite_1.o(.text);
-        build/sa2/src/engine/bg_update.o(.text);
-        build/sa2/src/engine/animation_commands_extra.o(.text);
+        build/sa2/src/task.o(.text);
+        build/sa2/src/sprite_1.o(.text);
+        build/sa2/src/bg_update.o(.text);
+        build/sa2/src/animation_commands_extra.o(.text);
         build/sa2/asm/sprite_2.o(.text);
-        build/sa2/src/engine/sprite_3.o(.text);
+        build/sa2/src/sprite_3.o(.text);
         build/sa2/asm/sprite_3.o(.text);
-        build/sa2/src/engine/animation_commands.o(.text);
+        build/sa2/src/animation_commands.o(.text);
         build/sa2/asm/sprite_4.o(.text);
-        build/sa2/src/engine/malloc_ewram.o(.text);
-        build/sa2/src/engine/malloc_vram.o(.text);
-        build/sa2/src/engine/input_recorder.o(.text);
+        build/sa2/src/malloc_ewram.o(.text);
+        build/sa2/src/malloc_vram.o(.text);
+        build/sa2/src/input_recorder.o(.text);
+
+        /* game */
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/asm/interactable_platform.o(.text);
@@ -164,6 +169,8 @@ SECTIONS
         build/sa2/src/game/cutscenes/final_ending_fall.o(.text);
         build/sa2/src/game/cutscenes/final_ending_land.o(.text);
         build/sa2/src/game/cutscenes/missing_emeralds.o(.text);
+
+        /* libs */
         build/sa2/asm/m4a0.o(.text);
         build/sa2/src/lib/m4a.o(.text);
         build/sa2/src/lib/agb_flash.o(.text);
@@ -185,15 +192,18 @@ SECTIONS
         *libc.a:memset.o(.text);
 
         /* Data */
-        build/sa2/src/lib/multi_sio.o(.rodata);
-        build/sa2/src/lib/sio32_multi_load.o(.rodata);
+        /* engine Data */
+        build/sa2/src/multi_sio.o(.rodata);
+        build/sa2/src/sio32_multi_load.o(.rodata);
         build/sa2/src/core.o(.rodata);
-        build/sa2/src/engine/sprite_1.o(.rodata);
-        build/sa2/src/engine/trig.o(.rodata);
+        build/sa2/src/sprite_1.o(.rodata);
+        build/sa2/src/trig.o(.rodata);
         build/sa2/asm/sprite_3.o(.rodata);
-        build/sa2/src/engine/animation_commands_extra.o(.rodata);
-        build/sa2/src/engine/animation_commands.o(.rodata);
+        build/sa2/src/animation_commands_extra.o(.rodata);
+        build/sa2/src/animation_commands.o(.rodata);
         build/sa2/asm/sprite_4.o(.rodata);
+    
+        /* game Data */
         build/sa2/data/multiboot_chao_garden.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
@@ -546,8 +556,8 @@ SECTIONS
         build/sa2/data/data3.o(.rodata);
         build/sa2/data/special_stage_levels.o(.rodata);
         build/sa2/data/handlers_ia_pipe_horn_sequences.o(.rodata);
-        build/sa2/src/palettes.o(.rodata);
-        build/sa2/src/recordings.o(.rodata);
+        build/sa2/src/data/palettes.o(.rodata);
+        build/sa2/src/data/recordings.o(.rodata);
         build/sa2/data/data4.o(.rodata);
         build/sa2/data/multiboot_subgame_loader.o(.rodata);
 

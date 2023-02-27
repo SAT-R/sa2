@@ -1,4 +1,4 @@
-#include "engine/sprite.h"
+#include "sprite.h"
 
 #include "zones.h"
 #include "constants/animations.h"

@@ -1,8 +1,8 @@
 #include "global.h"
 #include "core.h"
-#include "engine/task.h"
-#include "engine/malloc_ewram.h"
-#include "engine/input_recorder.h"
+#include "task.h"
+#include "malloc_ewram.h"
+#include "input_recorder.h"
 
 #define TAPE_LENGTH 0x800
 

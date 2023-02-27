@@ -14,10 +14,10 @@
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
 
 #include "global.h"
-#include "engine/sprite.h"
-#include "lib/multi_sio.h"
+#include "sprite.h"
+#include "multi_sio.h"
 #include "game/save.h"
-#include "engine/task.h"
+#include "task.h"
 
 #include "constants/move_states.h"
 

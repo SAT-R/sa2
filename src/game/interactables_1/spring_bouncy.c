@@ -2,12 +2,12 @@
 #include "lib/m4a.h"
 #include "gba/syscall.h"
 
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 
 #include "game/game.h"
 #include "game/interactable.h"
-#include "engine/sprite.h"
-#include "engine/task.h"
+#include "sprite.h"
+#include "task.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

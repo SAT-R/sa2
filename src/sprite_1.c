@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "flags.h"
 
 extern s32 animCmd_GetTiles_COPY(void *, Sprite *);

@@ -3,7 +3,7 @@
 
 #include "gba/defines.h"
 #include "gba/types.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/game.h"
 
 #define INTERACTABLE_DATA_SIZE_SA1 4

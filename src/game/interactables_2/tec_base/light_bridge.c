@@ -2,9 +2,9 @@
 #include "game/game.h"
 #include "game/interactable.h"
 #include "game/interactables_2/tec_base/light_bridge.h"
-#include "engine/sprite.h"
-#include "engine/task.h"
-#include "engine/malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
+#include "malloc_vram.h"
 #include "lib/m4a.h"
 
 #include "constants/interactables.h"

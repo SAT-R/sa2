@@ -3,9 +3,9 @@
 
 #include "game/game.h"
 #include "game/interactable.h"
-#include "engine/sprite.h"
-#include "engine/task.h"
-#include "engine/trig.h"
+#include "sprite.h"
+#include "task.h"
+#include "trig.h"
 #include "game/game.h"
 
 #include "constants/move_states.h"

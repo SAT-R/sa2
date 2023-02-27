@@ -2,7 +2,7 @@
 #define GUARD_BACKGROUNDS_H
 
 #include "global.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
 struct UNK_3005B80_UNK4 {
     u8 unk0;

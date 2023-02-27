@@ -1,6 +1,6 @@
 #include "global.h"
 #include "lib/agb_flash.h"
-#include "engine/malloc_ewram.h"
+#include "malloc_ewram.h"
 #include "flags.h"
 #include "game/save.h"
 #include "lib/m4a.h"

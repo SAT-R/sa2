@@ -3,9 +3,9 @@
 
 #include "lib/m4a.h"
 #include "game/math.h"
-#include "engine/sprite.h"
-#include "engine/task.h"
-#include "engine/trig.h"
+#include "sprite.h"
+#include "task.h"
+#include "trig.h"
 
 #include "game/interactable.h"
 #include "game/interactables_2/note_particle.h"

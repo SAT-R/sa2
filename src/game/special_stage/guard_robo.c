@@ -1,5 +1,5 @@
 #include "core.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/player.h"
 #include "game/special_stage/utils.h"
@@ -8,7 +8,7 @@
 #include "game/special_stage/collectables.h"
 #include "game/special_stage/tables.h"
 #include "game/special_stage/data.h"
-#include "engine/trig.h"
+#include "trig.h"
 #include "lib/m4a.h"
 #include "constants/songs.h"
 

@@ -2,7 +2,7 @@
 #define GUARD_IA_DASH_RING_H
 
 #include "global.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/interactable.h"
 
 #define DASH_RING__NUM_ORIENTATIONS 8

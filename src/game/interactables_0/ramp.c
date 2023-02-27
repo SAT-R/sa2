@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/interactable.h"
-#include "engine/task.h"
-#include "engine/malloc_vram.h"
+#include "task.h"
+#include "malloc_vram.h"
 #include "zones.h"
 
 #include "constants/animations.h"

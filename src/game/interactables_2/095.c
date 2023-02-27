@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
-#include "engine/task.h"
+#include "task.h"
 #include "game/interactables_2/095.h"
-#include "engine/malloc_vram.h"
-#include "engine/trig.h"
+#include "malloc_vram.h"
+#include "trig.h"
 
 #include "constants/move_states.h"
 

@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "game/game.h"
-#include "lib/multi_sio.h"
+#include "multi_sio.h"
 
 extern u8 gMultiplayerUnlockedCharacters;
 extern u8 gMultiplayerConnections;

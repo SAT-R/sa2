@@ -1,4 +1,4 @@
-#include "lib/sio32_multi_load.h"
+#include "sio32_multi_load.h"
 
 #include "global.h"
 

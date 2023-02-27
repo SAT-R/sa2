@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "game/save.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "transition.h"
 #include "constants/text.h"
 

@@ -1,12 +1,12 @@
 #include "global.h"
 #include "gba/types.h"
-#include "engine/malloc_vram.h"
+#include "malloc_vram.h"
 
 #include "game/game.h"
 #include "game/interactable.h"
-#include "engine/sprite.h"
-#include "engine/task.h"
-#include "engine/trig.h"
+#include "sprite.h"
+#include "task.h"
+#include "trig.h"
 
 #include "game/interactables_2/note_particle.h"
 

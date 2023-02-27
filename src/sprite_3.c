@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "flags.h"
 
 extern const u8 gUnknown_080984DC[][2];

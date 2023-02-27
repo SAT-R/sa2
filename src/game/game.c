@@ -2,13 +2,13 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "game/race_progress.h"
-#include "lib/multi_sio.h"
+#include "multi_sio.h"
 #include "game/multiboot/collect_rings/time_display.h"
 #include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
 #include "constants/songs.h"
-#include "engine/trig.h"
+#include "trig.h"
 
 #include "constants/move_states.h"
 

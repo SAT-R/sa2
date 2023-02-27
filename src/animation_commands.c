@@ -3,9 +3,9 @@
 
 #include "data.h"
 #include "flags.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
-#include "engine/animation_commands.h"
+#include "animation_commands.h"
 
 extern s32 animCmd_GetTiles(void *cursor, Sprite *sprite);
 static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);

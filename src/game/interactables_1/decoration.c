@@ -1,11 +1,11 @@
 #include "global.h"
-#include "engine/malloc_vram.h"
-#include "engine/task.h"
+#include "malloc_vram.h"
+#include "task.h"
 #include "game/game.h"
 
 #include "constants/animations.h"
 #include "game/interactable.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

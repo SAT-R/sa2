@@ -4,9 +4,9 @@
 #include "game/cutscenes/credits_slides.h"
 #include "core.h"
 #include "game/game.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "transition.h"
-#include "engine/task.h"
+#include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
 

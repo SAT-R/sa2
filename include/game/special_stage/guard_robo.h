@@ -3,7 +3,7 @@
 #define GUARD_SPECIAL_GUARD_ROBO_H
 
 #include "global.h"
-#include "engine/task.h"
+#include "task.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/data.h"
 

@@ -2,9 +2,9 @@
 #include "game/game.h"
 #include "game/interactable.h"
 #include "game/interactables_2/turn_around_bar.h"
-#include "engine/task.h"
-#include "engine/sprite.h"
-#include "engine/malloc_vram.h"
+#include "task.h"
+#include "sprite.h"
+#include "malloc_vram.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

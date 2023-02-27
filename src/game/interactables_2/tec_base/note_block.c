@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/interactables_2/tec_base/note_block.h"
-#include "engine/trig.h"
+#include "trig.h"
 #include "game/game.h"
 #include "lib/m4a.h"
 

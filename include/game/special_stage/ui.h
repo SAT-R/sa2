@@ -2,7 +2,7 @@
 #define GUARD_SPECIAL_STAGE_UI_H
 
 #include "global.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 #include "game/special_stage/main.h"
 
 struct SpecialStageUI {

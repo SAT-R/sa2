@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/data.h"
-#include "engine/sprite.h"
+#include "sprite.h"
 
 extern void *gUnknown_03005B58;
 extern void *gUnknown_03005B5C;

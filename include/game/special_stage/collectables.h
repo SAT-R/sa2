@@ -2,7 +2,7 @@
 #define GUARD_SPECIAL_COLLECTABLES_H
 
 #include "global.h"
-#include "engine/task.h"
+#include "task.h"
 #include "game/special_stage/main.h"
 
 #define MAX_RING_PARTICLES 8

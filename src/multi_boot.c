@@ -1,4 +1,4 @@
-#include "lib/multi_boot.h"
+#include "multi_boot.h"
 
 #include "global.h"
 

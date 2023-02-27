@@ -4,8 +4,8 @@
 #include "game/special_stage/physics.h"
 #include "game/special_stage/guard_robo.h"
 #include "game/special_stage/data.h"
-#include "engine/task.h"
-#include "engine/trig.h"
+#include "task.h"
+#include "trig.h"
 #include "game/game.h"
 #include "lib/m4a.h"
 

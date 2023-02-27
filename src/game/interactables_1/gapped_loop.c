@@ -1,12 +1,12 @@
 #include "global.h"
 #include "core.h"
-#include "engine/task.h"
+#include "task.h"
 #include "game/game.h"
 #include "game/interactable.h"
 #include "game/interactables_1/gapped_loop.h"
 #include "constants/move_states.h"
-#include "engine/sprite.h"
-#include "engine/trig.h"
+#include "sprite.h"
+#include "trig.h"
 
 typedef struct {
     SpriteBase base;
