@@ -1,7 +1,7 @@
 #include "global.h"
 #include "engine/trig.h"
 
-#include "interactable_music_plant_pipe_horn.h"
+#include "game/interactables/interactable_music_plant_pipe_horn.h"
 
 void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data[]);
 void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *, const Pipe_Data[]);

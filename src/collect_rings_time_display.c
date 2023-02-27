@@ -12,7 +12,7 @@ typedef struct {
 void sub_80832E0(struct Task *);
 void sub_808328C(void);
 
-// Probably defined in `interactable_unknown`
+// Probably defined in `game/interactables/interactable_unknown`
 // will wait before deciding where this is defined
 extern u32 gUnknown_03005B6C;
 
