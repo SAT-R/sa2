@@ -8,9 +8,9 @@
 #include "game/save.h"
 #include "game/game.h"
 #include "player.h"
-#include "title_screen.h"
-#include "profile.h"
-#include "multiplayer_singlepak_connection.h"
+#include "game/title_screen.h"
+#include "game/options_screen.h"
+#include "game/multiboot/connection.h"
 
 void GameStart(void)
 {

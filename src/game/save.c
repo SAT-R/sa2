@@ -4,9 +4,9 @@
 #include "flags.h"
 #include "game/save.h"
 #include "lib/m4a.h"
-#include "random.h"
+#include "game/math.h"
 #include "constants/text.h"
-#include "time.h"
+#include "game/time.h"
 #include "zones.h"
 
 struct SaveSectorHeader {

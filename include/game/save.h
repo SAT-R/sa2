@@ -4,7 +4,7 @@
 #include "global.h"
 #include "zones.h"
 #include "player.h"
-#include "time.h"
+#include "game/time.h"
 
 #define TIME_RECORDS_PER_COURSE 3
 #define NUM_MULTIPLAYER_SCORES  10

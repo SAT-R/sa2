@@ -102,17 +102,17 @@ build/sa2/src/engine/core.o(.data);
 . = 0x00005B4C; gUnknown_03005B4C = .;
 . = 0x00005B50; 
 
-build/sa2/src/profile.o(.data);
-build/sa2/src/game/special_stage/special_stage_utils.o(.data);
+build/sa2/src/game/options_screen.o(.data);
+build/sa2/src/game/special_stage/utils.o(.data);
 build/sa2/src/game/save.o(.data);
 
 /* something in code3.s */
 . = 0x00005B6C; gUnknown_03005B6C = .;
 . = 0x00005B70; 
 
-build/sa2/src/random.o(.data);
+build/sa2/src/game/math_0.o(.data);
 . = ALIGN(16); 
-build/sa2/src/backgrounds.o(.data);
+build/sa2/src/game/backgrounds.o(.data);
 . = ALIGN(16);
 build/sa2/src/lib/agb_flash.o(.data);
 
