@@ -170,14 +170,13 @@
     "game/interactables_2/ice_paradise/half_pipe.h": "c",
     "game.h": "c",
     "lobby.h": "c",
-    "trig.h": "c",
     "math.h": "c",
     "boost_effect.h": "c",
     "interactable_music_plant_pipe_horn.h": "c",
     "note_particle.h": "c",
-    "sprite.h": "c",
     "interactable.h": "c",
-    "race_progress.h": "c"
+    "race_progress.h": "c",
+    "078.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
