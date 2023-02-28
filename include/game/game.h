@@ -364,8 +364,6 @@ void sub_802E044(u16, u16);
 
 void sub_80304DC(u32, u16, u8);
 
-bool32 sub_800CBA4(Player *);
-u32 sub_800DF38(Sprite *, s32, s32, Player *);
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);

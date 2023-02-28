@@ -122,7 +122,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
         build/sa2/asm/interactable_075.o(.text);
         build/sa2/src/game/interactables_2/078.o(.text);
-        build/sa2/asm/interactable_078.o(.text);
         build/sa2/src/game/interactables_2/080.o(.text);
         build/sa2/asm/interactable_sky_canyon_giant_propeller.o(.text);
         build/sa2/asm/interactable_sky_canyon_small_windmill.o(.text);
@@ -256,6 +255,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);
+        build/sa2/src/game/interactables_2/078.o(.rodata);
         build/sa2/data/data1_2_3.o(.rodata);
         build/sa2/src/game/interactables_2/note_particle.o(.rodata);
         build/sa2/src/game/multiboot/connection.o(.rodata);

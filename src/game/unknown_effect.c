@@ -1,11 +1,11 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/unknown_effect.h"
+#include "game/interactable.h"
 #include "lib/m4a.h"
 
 #include "constants/move_states.h"
 #include "constants/songs.h"
-#include "game/game.h"
 
 struct UnknownEffect87028 {
     /* 0x00 */ u8 unk0;

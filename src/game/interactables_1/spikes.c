@@ -41,9 +41,6 @@ static bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u
 static void TaskDestructor_8060CF4(struct Task *);
 static u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
-// TODO: Include header this belongs to
-extern u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
-
 void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {

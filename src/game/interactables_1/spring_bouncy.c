@@ -18,8 +18,6 @@ typedef struct {
     /* 0x0C */ Sprite displayed;
 } Sprite_BouncySpring;
 
-extern u32 sub_800CCB8(Sprite *, s32, s32, Player *);
-
 static void Task_Interactable_BouncySpring(void);
 static void Task_805E02C(void);
 static void TaskDestructor_Interactable_BouncySpring(struct Task *);
