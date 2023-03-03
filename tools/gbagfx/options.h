@@ -20,6 +20,7 @@ struct PngToGbaOptions {
     int metatileWidth;
     int metatileHeight;
     bool ignoreTrailingTiles;
+    bool splitIntoOamShapes;
 };
 
 #endif // OPTIONS_H
