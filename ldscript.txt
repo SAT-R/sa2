@@ -106,6 +106,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/hot_crater/turn_around_bar.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/crane.o(.text);
         build/sa2/src/game/interactables_2/dash_ring.o(.text);
+        build/sa2/src/game/interactables_2/floating_spring.o(.text);
         build/sa2/asm/interactable_floating_spring.o(.text);
         build/sa2/src/game/interactables_2/music_plant/note_sphere.o(.text);
         build/sa2/src/game/interactables_2/music_plant/note_block.o(.text);
