@@ -256,33 +256,28 @@ struct OamShape {
     unsigned char height;
 };
 
-struct OamShapes {
-    size_t count;
-    struct OamShape next[1];
-};
-
 typedef struct {
     unsigned char width;
     unsigned char height;
 } OamDim;
 OamDim oamSizes[12] = {
-    {.width = 64, .height = 64},
-    {.width = 64, .height = 32},
-    {.width = 32, .height = 64},
-    {.width = 32, .height = 32},
-    {.width = 32, .height = 16},
-    {.width = 32, .height = 8},
-    {.width = 16, .height = 32},
-    {.width = 16, .height = 16},
-    {.width = 16, .height = 8},
-    {.width = 8,  .height = 32},
-    {.width = 8,  .height = 16},
-    {.width = 8,  .height = 8},
+    {.width = 8, .height = 8},
+    {.width = 8, .height = 4},
+    {.width = 4, .height = 8},
+    {.width = 4, .height = 4},
+    {.width = 4, .height = 2},
+    {.width = 4, .height = 1},
+    {.width = 2, .height = 4},
+    {.width = 2, .height = 2},
+    {.width = 2, .height = 1},
+    {.width = 1, .height = 4},
+    {.width = 1, .height = 2},
+    {.width = 1, .height = 1},
 };
 
 struct OamShape* FindSingleShape(int tileX, int tileY, int imageTileWidth, int imageTileHeight) {
-    int chunkWidth  = (imageTileWidth  - tileX)*8;
-    int chunkHeight = (imageTileHeight - tileY)*8;
+    int chunkWidth  = (imageTileWidth  - tileX);
+    int chunkHeight = (imageTileHeight - tileY);
 
     OamDim found = {0};
     for(int i = 0; i < ARRAY_COUNT(oamSizes); i++) {
@@ -294,8 +289,8 @@ struct OamShape* FindSingleShape(int tileX, int tileY, int imageTileWidth, int i
 
     if((found.width + found.height) > 0) {
         struct OamShape *res = calloc(1, sizeof(struct OamShape));
-        res->offX = tileX*8;
-        res->offY = tileY*8;
+        res->offX = tileX;
+        res->offY = tileY;
         res->width  = found.width;
         res->height = found.height;
 
@@ -316,9 +311,9 @@ struct OamShape *FindOamShapes(int imageWidth, int imageHeight) {
     struct OamShape* curr = head;
 
     // Set tiles as set
-    for(int y = 0; y < curr->height / 8; y++) {
-        char *pos = &collBuffer[(curr->offY / 8 + y) * pitch + curr->offX / 8];
-        memset(pos, 1, curr->width / 8);
+    for(int y = 0; y < curr->height; y++) {
+        char *pos = &collBuffer[(curr->offY + y) * pitch + curr->offX];
+        memset(pos, 1, curr->width);
     }
 
     for(int x = 0; x < tileWidth; x++) {
@@ -334,9 +329,9 @@ struct OamShape *FindOamShapes(int imageWidth, int imageHeight) {
             curr = curr->next;
             
             // Set tiles as set
-            for(int y = 0; y < curr->height / 8; y++) {
-                char *pos = &collBuffer[(curr->offY / 8 + y) * pitch + curr->offX / 8];
-                memset(pos, 1, curr->width / 8);
+            for(int y = 0; y < curr->height; y++) {
+                char *pos = &collBuffer[(curr->offY + y) * pitch + curr->offX];
+                memset(pos, 1, curr->width);
             }
 
             // We did not yet reach the bottom of the image
@@ -422,12 +417,12 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
             /* Split image into shapes */
             struct OamShape* head = FindOamShapes(image->width, image->height);
 
-#if 0
+#if 1
             /* Debug */
             printf("OAM Shapes (%d, %d):\n", image->width, image->height);
             struct OamShape* temp = head;
             while(temp) {
-                printf("\t=> %d %d %d %d\n", temp->offX, temp->offY, temp->width, temp->height);
+                printf("\t=> %d %d %d %d\n", temp->offX*8, temp->offY*8, temp->width*8, temp->height*8);
                 temp = temp->next;
             }
 #endif
@@ -435,12 +430,13 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
             /* Copy the tiles over in the correct order */
             struct OamShape* curr = head;
             int dstIndex = 0;
+
             while(curr) {
                 int imgPitch = imgWidthTiles * tileSize;
-                int srcIndex = (curr->offY / 8) * imgPitch + (curr->offX / 8) * tileSize;
+                int srcIndex = curr->offY * imgPitch + curr->offX * tileSize;
 
-                for(int y = 0; y < curr->height / 8; y++) {
-                    int copySize = (curr->width / 8) * tileSize;
+                for(int y = 0; y < curr->height; y++) {
+                    int copySize = curr->width * tileSize;
                     memcpy(&scratchBuffer[dstIndex],
                            &buffer[srcIndex],
                            copySize);
@@ -450,7 +446,6 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
 
                 curr = curr->next;
             }
-
             /* Copy the scratch buffer back into the original buffer */
             memcpy(buffer, scratchBuffer, bufferSize);
             
