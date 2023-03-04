@@ -1,7 +1,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/unknown_effect.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "lib/m4a.h"
 
 #include "constants/move_states.h"
