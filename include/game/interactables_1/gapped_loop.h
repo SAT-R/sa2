@@ -4,10 +4,10 @@
 #include "global.h"
 #include "game/interactable.h"
 
-void initSprite_Interactable_gappedLoop_Start(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_gappedLoop_Start(MapEntity *ia, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 spriteY);
 
-void initSprite_Interactable_gappedLoop_End(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_gappedLoop_End(MapEntity *ia, u16 spriteRegionX,
                                             u16 spriteRegionY, u8 spriteY);
 
 #endif // GUARD_INTERACTABLE_GAPPED_LOOP_H

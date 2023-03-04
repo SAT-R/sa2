@@ -45,7 +45,7 @@ static const u16 sTecBasBlockSfx[] = {
     SE_TECHNO_BASE_COMMON,
 };
 
-void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX,
+void initSprite_InteractableTecBaseNoteBlock(MapEntity *me, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -55,12 +55,12 @@ void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX
     Sprite *sprite = &noteBlock->sprite;
     noteBlock->unk44 = 0;
     noteBlock->unk48 = 0;
-    noteBlock->unk4C = ia->d.uData[0];
+    noteBlock->unk4C = me->d.uData[0];
 
     noteBlock->base.regionX = spriteRegionX;
     noteBlock->base.regionY = spriteRegionY;
-    noteBlock->base.ia = ia;
-    noteBlock->base.spriteX = ia->x;
+    noteBlock->base.me = me;
+    noteBlock->base.spriteX = me->x;
     noteBlock->base.spriteY = spriteY;
 
     sprite = &noteBlock->sprite;
@@ -78,10 +78,10 @@ void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX
     sprite->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];
     sprite->variant = sNoteBlockAssets[noteBlock->unk4C][1];
 
-    noteBlock->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
-    noteBlock->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    noteBlock->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
+    noteBlock->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
     sub_8004558(sprite);
 }
 
@@ -251,6 +251,6 @@ static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)
 
 static void sub_8079D9C(Sprite_TecBaseNoteBlock *noteBlock)
 {
-    noteBlock->base.ia->x = noteBlock->base.spriteX;
+    noteBlock->base.me->x = noteBlock->base.spriteX;
     TaskDestroy(gCurTask);
 }

@@ -4,7 +4,7 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/floating_spring.h"
 #include "constants/songs.h"
 #include "constants/animations.h"
@@ -38,7 +38,7 @@ static bool32 sub_80751CC(Sprite_FloatingSpring *);
 static void sub_80752D8(void);
 static void sub_8075334(Sprite_FloatingSpring *);
 
-void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -50,10 +50,10 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
     floatingSpring->unk48 = 0;
     floatingSpring->unk50 = FALSE;
 
-    floatingSpring->base.ia = ia;
+    floatingSpring->base.me = me;
     floatingSpring->base.regionX = spriteRegionX;
     floatingSpring->base.regionY = spriteRegionY;
-    floatingSpring->base.spriteX = ia->x;
+    floatingSpring->base.spriteX = me->x;
     floatingSpring->base.spriteY = spriteY;
 
     sprite->unk1A = 0x480;
@@ -70,8 +70,8 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
     sprite->graphics.dest = 0;
     sub_8075284(floatingSpring);
 
-    if (ia->d.uData[2] > ia->d.uData[3]) {
-        if (ia->d.sData[0] >= 0) {
+    if (me->d.uData[2] > me->d.uData[3]) {
+        if (me->d.sData[0] >= 0) {
             floatingSpring->unk52 = 4;
             floatingSpring->unk54 = 0;
             floatingSpring->unk56 = 0;
@@ -81,7 +81,7 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
             floatingSpring->unk56 = 0x80;
         }
     } else {
-        if (ia->d.sData[1] >= 0) {
+        if (me->d.sData[1] >= 0) {
             floatingSpring->unk52 = 0;
             floatingSpring->unk54 = 4;
             floatingSpring->unk56 = 0;
@@ -96,15 +96,15 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 {
-    Interactable *ia = floatingSpring->base.ia;
+    MapEntity *me = floatingSpring->base.me;
 
     if (floatingSpring->unk52 != 0) {
-        s32 temp = ia->d.uData[2] * 2048;
+        s32 temp = me->d.uData[2] * 2048;
         floatingSpring->unk44
             = (SIN((floatingSpring->unk52
                     * ((gUnknown_03005590 + floatingSpring->unk56) & 255))
@@ -114,7 +114,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
     }
 
     if (floatingSpring->unk54 != 0) {
-        s32 temp = ia->d.uData[3] * 2048;
+        s32 temp = me->d.uData[3] * 2048;
         floatingSpring->unk48
             = (SIN((floatingSpring->unk54
                     * ((gUnknown_03005590 + floatingSpring->unk56) & 255))
@@ -126,7 +126,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
     floatingSpring->unk3C
         = SpriteGetScreenPos(floatingSpring->base.spriteX, floatingSpring->base.regionX)
         + Q_24_8_TO_INT(floatingSpring->unk44);
-    floatingSpring->unk40 = SpriteGetScreenPos(ia->y, floatingSpring->base.regionY)
+    floatingSpring->unk40 = SpriteGetScreenPos(me->y, floatingSpring->base.regionY)
         + Q_24_8_TO_INT(floatingSpring->unk48);
 }
 
@@ -241,7 +241,7 @@ static void sub_80750A8(void)
     }
 
     if (sub_80751CC(floatingSpring)) {
-        floatingSpring->base.ia->x = floatingSpring->base.spriteX;
+        floatingSpring->base.me->x = floatingSpring->base.spriteX;
         TaskDestroy(gCurTask);
 
     } else {
@@ -288,15 +288,15 @@ static void sub_80751B4(Sprite_FloatingSpring *floatingSpring)
 
 bool32 sub_80751CC(Sprite_FloatingSpring *floatingSpring)
 {
-    Interactable *ia = floatingSpring->base.ia;
+    MapEntity *me = floatingSpring->base.me;
     s16 x = floatingSpring->unk3C - gCamera.x;
     s16 y = floatingSpring->unk40 - gCamera.y;
 
-    if (x < -((ia->d.uData[2] * 8) + 0x80) || x > (ia->d.uData[2] * 8) + 0x170) {
+    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
         return TRUE;
     }
 
-    if (y < -((ia->d.uData[3] * 8) + 0x80) || y > (ia->d.uData[3] * 8) + 0x220) {
+    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x220) {
         return TRUE;
     }
 
@@ -305,15 +305,15 @@ bool32 sub_80751CC(Sprite_FloatingSpring *floatingSpring)
 
 bool32 sub_8075228(Sprite_FloatingSpring *floatingSpring)
 {
-    Interactable *ia = floatingSpring->base.ia;
+    MapEntity *me = floatingSpring->base.me;
     s16 x = floatingSpring->unk3C - gCamera.x;
     s16 y = floatingSpring->unk40 - gCamera.y;
 
-    if (x < -((ia->d.uData[2] * 8) + 0x80) || x > (ia->d.uData[2] * 8) + 0x170) {
+    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
         return TRUE;
     }
 
-    if (y < -((ia->d.uData[3] * 8) + 0x80) || y > (ia->d.uData[3] * 8) + 0x120) {
+    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x120) {
         return TRUE;
     }
 

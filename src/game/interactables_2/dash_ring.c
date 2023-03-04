@@ -6,7 +6,7 @@
 #include "game/game.h"
 #include "task.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/dash_ring.h"
 #include "sprite.h"
 
@@ -104,7 +104,7 @@ static const u16 sUnknown_080DFB90[DASH_RING__NUM_ORIENTATIONS][6] = {
     { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 },
 };
 
-void initSprite_Interactable_DashRing(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_DashRing(MapEntity *me, u16 spriteRegionX,
                                       u16 spriteRegionY, u8 spriteY)
 {
     u32 ringType = DASH_RING__TYPE_REGULAR;
@@ -113,12 +113,12 @@ void initSprite_Interactable_DashRing(Interactable *ia, u16 spriteRegionX,
                                 TaskDestructor_Interactable_DashRing);
 
     Sprite_DashRing *ring = TaskGetStructPtr(t);
-    ring->orientation = ia->d.sData[0];
-    ring->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    ring->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    ring->spriteX = ia->x;
+    ring->orientation = me->d.sData[0];
+    ring->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    ring->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    ring->spriteX = me->x;
     ring->spriteY = spriteY;
-    ring->ia = ia;
+    ring->me = me;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
         ringType = DASH_RING__TYPE_TECHNO_BASE;
@@ -164,7 +164,7 @@ void initSprite_Interactable_DashRing(Interactable *ia, u16 spriteRegionX,
         sub_8004558(&ring->spriteB);
     }
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 
     ring->positions[0].x = sUnknown_080DFB90[ring->orientation][0];
     ring->positions[0].y = sUnknown_080DFB90[ring->orientation][1];
@@ -339,6 +339,6 @@ static bool32 DashRing_ShouldDespawn(Sprite_DashRing *ring)
 
 static void DashRing_Despawn(Sprite_DashRing *ring)
 {
-    ring->ia->x = ring->spriteX;
+    ring->me->x = ring->spriteX;
     TaskDestroy(gCurTask);
 }

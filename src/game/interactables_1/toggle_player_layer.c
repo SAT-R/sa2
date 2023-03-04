@@ -3,7 +3,7 @@
 #include "task.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 
 #include "constants/interactables.h"
@@ -28,23 +28,23 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
 {
     Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &layerChanger->base;
-    Interactable_Toggle_PlayerLayer *ia = (Interactable_Toggle_PlayerLayer *)base->ia;
+    Interactable_Toggle_PlayerLayer *me = (Interactable_Toggle_PlayerLayer *)base->me;
     u8 spriteX = base->spriteX;
     u32 regionX = base->regionX;
     u32 regionY = base->regionY;
     s32 screenX, screenY;
 
     screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(ia->y, regionY);
+    screenY = SpriteGetScreenPos(me->y, regionY);
 
     if ((screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && (screenX + (ia->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
+        && (screenX + (me->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
         && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && (screenY + (ia->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
+        && (screenY + (me->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.
-        if (ia->index == IA__TOGGLE_PLAYER_LAYER__FOREGROUND) {
+        if (me->index == IA__TOGGLE_PLAYER_LAYER__FOREGROUND) {
             gPlayer.unk38 &= ~1;
         } else {
             gPlayer.unk38 |= 1;
@@ -57,12 +57,12 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
 
-void initSprite_Interactable_Toggle_PlayerLayer(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX,
                                                 u16 spriteRegionY, UNUSED u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer,
@@ -72,7 +72,7 @@ void initSprite_Interactable_Toggle_PlayerLayer(Interactable *ia, u16 spriteRegi
 
     base->regionX = spriteRegionX;
     base->regionY = spriteRegionY;
-    base->ia = ia;
-    base->spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    base->me = me;
+    base->spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 }

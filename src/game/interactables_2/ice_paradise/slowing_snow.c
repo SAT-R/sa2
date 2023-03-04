@@ -3,7 +3,7 @@
 #include "task.h"
 #include "game/game.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 
 #include "constants/move_states.h"
@@ -26,7 +26,7 @@ typedef struct {
     /* 0x06 */ s16 bottom;
     /* 0x08 */ s32 posX;
     /* 0x0C */ s32 posY;
-    /* 0x10 */ Interactable_SlowingSnow *ia;
+    /* 0x10 */ Interactable_SlowingSnow *me;
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
 } Sprite_SlowingSnow; // size = 0x18
@@ -35,8 +35,7 @@ static void Task_Interactable_IceParadise_SlowingSnow(void);
 static void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t);
 static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
-void initSprite_Interactable_IceParadise_SlowingSnow(Interactable *in_ia,
-                                                     u16 spriteRegionX,
+void initSprite_Interactable_IceParadise_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX,
                                                      u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_IceParadise_SlowingSnow,
@@ -44,18 +43,18 @@ void initSprite_Interactable_IceParadise_SlowingSnow(Interactable *in_ia,
                                 TaskDestructor_Interactable_IceParadise_SlowingSnow);
 
     Sprite_SlowingSnow *snow = TaskGetStructPtr(t);
-    Interactable_SlowingSnow *ia = (Interactable_SlowingSnow *)in_ia;
-    snow->left = ia->offsetX * 8;
-    snow->top = ia->offsetY * 8;
-    snow->right = snow->left + ia->width * 8;
-    snow->bottom = snow->top + ia->height * 8;
-    snow->ia = ia;
-    snow->spriteX = ia->x;
+    Interactable_SlowingSnow *me = (Interactable_SlowingSnow *)in_ia;
+    snow->left = me->offsetX * 8;
+    snow->top = me->offsetY * 8;
+    snow->right = snow->left + me->width * 8;
+    snow->bottom = snow->top + me->height * 8;
+    snow->me = me;
+    snow->spriteX = me->x;
     snow->spriteY = spriteY;
 
-    snow->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    snow->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    snow->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    snow->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
@@ -91,7 +90,7 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
     // NOTE: Technically this can be turned into an else-if, because
     //       if the player does touch the snow, it will not need to be destroyed.
     if (ShouldDespawn(snow)) {
-        snow->ia->x = snow->spriteX;
+        snow->me->x = snow->spriteX;
         TaskDestroy(gCurTask);
     }
 }

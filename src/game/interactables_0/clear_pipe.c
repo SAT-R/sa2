@@ -3,7 +3,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -20,8 +20,8 @@ typedef struct {
 
     /* 0x03 */ s8 unk3;
     /* 0x04 */ s8 unk4;
-    /* 0x05 */ u8 unused[INTERACTABLE_DATA_SIZE - 2];
-} Interactable_PipeStart PACKED;
+    /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
+} MapEntity_PipeStart PACKED;
 
 typedef struct {
     /* 0x00 */ u8 x;
@@ -30,14 +30,14 @@ typedef struct {
 
     /* 0x03 */ s8 exitOnBackLayer;
     /* 0x04 */ s8 unk4;
-    /* 0x05 */ u8 unused[INTERACTABLE_DATA_SIZE - 2];
-} Interactable_PipeEnd PACKED;
+    /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
+} MapEntity_PipeEnd PACKED;
 
 static void Task_ClearPipe_Start(void)
 {
     Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &pipe->base;
-    Interactable_PipeStart *ia = (Interactable_PipeStart *)base->ia;
+    MapEntity_PipeStart *me = (MapEntity_PipeStart *)base->me;
 
     u8 spriteX = base->spriteX;
     s32 regionX = base->regionX;
@@ -45,7 +45,7 @@ static void Task_ClearPipe_Start(void)
 
     s32 screenX, screenY;
     screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(ia->y, regionY);
+    screenY = SpriteGetScreenPos(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
         && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))
@@ -56,8 +56,8 @@ static void Task_ClearPipe_Start(void)
 
         gPlayer.unk6D = 0x19;
 
-        flag = (ia->unk3 & 0x03) << 4;
-        flag |= ia->unk4 & 0x0F;
+        flag = (me->unk3 & 0x03) << 4;
+        flag |= me->unk4 & 0x0F;
         gPlayer.unk6E = flag;
 
         gPlayer.x = Q_24_8(screenX + 12);
@@ -75,7 +75,7 @@ static void Task_ClearPipe_Start(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
@@ -84,7 +84,7 @@ static void Task_ClearPipe_End(void)
 {
     Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &pipe->base;
-    Interactable_PipeEnd *ia = (Interactable_PipeEnd *)base->ia;
+    MapEntity_PipeEnd *me = (MapEntity_PipeEnd *)base->me;
 
     u8 spriteX = base->spriteX;
     s32 regionX = base->regionX;
@@ -92,7 +92,7 @@ static void Task_ClearPipe_End(void)
 
     s32 screenX, screenY;
     screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(ia->y, regionY);
+    screenY = SpriteGetScreenPos(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
         && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))
@@ -105,12 +105,12 @@ static void Task_ClearPipe_End(void)
         gPlayer.unk90->unk1C |= FLAG_3005A70_x1C__2000;
 
         gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_FOREGROUND;
-        if (ia->exitOnBackLayer) {
+        if (me->exitOnBackLayer) {
             gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
         }
 
         gPlayer.unk6D = 0x1C;
-        if (ia->unk4 != 0) {
+        if (me->unk4 != 0) {
             gPlayer.unk6D = 0x5;
         }
 
@@ -121,12 +121,12 @@ static void Task_ClearPipe_End(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
 
-void initSprite_Interactable_ClearPipe_Start(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_ClearPipe_Start(MapEntity *me, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -135,12 +135,12 @@ void initSprite_Interactable_ClearPipe_Start(Interactable *ia, u16 spriteRegionX
     Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
-    pipe->base.ia = ia;
-    pipe->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    pipe->base.me = me;
+    pipe->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 }
 
-void initSprite_Interactable_ClearPipe_End(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_ClearPipe_End(MapEntity *me, u16 spriteRegionX,
                                            u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -149,7 +149,7 @@ void initSprite_Interactable_ClearPipe_End(Interactable *ia, u16 spriteRegionX,
     Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
-    pipe->base.ia = ia;
-    pipe->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    pipe->base.me = me;
+    pipe->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 }

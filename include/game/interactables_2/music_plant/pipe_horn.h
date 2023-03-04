@@ -1,7 +1,7 @@
 #ifndef GUARD_INTERACTABLE_PIPE_HORN_H
 #define GUARD_INTERACTABLE_PIPE_HORN_H
 
-#include "game/interactable.h"
+#include "game/entity.h"
 
 void sub_8080AFC(s32 p0, s32 p1, u16 p2, u16 p3, s16 p4, u8 p5, u8 p6);
 void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind);
@@ -19,7 +19,7 @@ typedef struct {
     /* 0x20 */ s32 posY;
     /* 0x24 */ u16 kind;
     /* 0x26 */ u16 unk26;
-    /* 0x28 */ Interactable *ia;
+    /* 0x28 */ MapEntity *me;
     /* 0x2C */ u8 spriteX;
     /* 0x2D */ u8 spriteY;
 } Sprite_Pipe_Horn;

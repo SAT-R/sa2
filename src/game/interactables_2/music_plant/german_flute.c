@@ -3,7 +3,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
 
 #include "constants/move_states.h"
@@ -16,7 +16,7 @@ typedef struct {
     /* 0x0A */ s16 unkA;
     /* 0x0C */ u16 kind;
     /* 0x0E */ u16 timer;
-    /* 0x10 */ Interactable *ia;
+    /* 0x10 */ MapEntity *me;
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
     /* 0x16 */ u8 unk16;
@@ -285,7 +285,7 @@ static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
     gCurTask->main = Task_Interactable_MusicPlant_GermanFlute;
 }
 
-void initSprite_Interactable_MusicPlant_GermanFlute(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_MusicPlant_GermanFlute(MapEntity *me, u16 spriteRegionX,
                                                     u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GermanFlute,
@@ -294,19 +294,19 @@ void initSprite_Interactable_MusicPlant_GermanFlute(Interactable *ia, u16 sprite
     Sprite_GermanFlute *flute = TaskGetStructPtr(t);
     s32 posX, posY;
 
-    posX = SpriteGetScreenPos(ia->x, spriteRegionX);
+    posX = SpriteGetScreenPos(me->x, spriteRegionX);
     flute->posX = posX + (TILE_WIDTH / 2);
 
-    posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+    posY = SpriteGetScreenPos(me->y, spriteRegionY);
     flute->posY = posY;
 
     flute->unk8 = 0;
     flute->unkA = 0;
-    flute->kind = ia->d.sData[0];
-    flute->ia = ia;
-    flute->spriteX = ia->x;
+    flute->kind = me->d.sData[0];
+    flute->me = me;
+    flute->spriteX = me->x;
     flute->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void Task_Interactable_MusicPlant_GermanFlute(void)
@@ -369,6 +369,6 @@ static bool32 sub_8076EAC(Sprite_GermanFlute *flute)
 
 static void sub_8076EF4(Sprite_GermanFlute *flute)
 {
-    flute->ia->x = flute->spriteX;
+    flute->me->x = flute->spriteX;
     TaskDestroy(gCurTask);
 }

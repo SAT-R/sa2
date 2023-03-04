@@ -8,7 +8,7 @@
 
 #include "data.h"
 #include "flags.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
@@ -32,7 +32,7 @@ static void Task_80811BC(void);
 
 extern void sub_80122DC(s32, s32);
 
-void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_SpecialRing(MapEntity *me, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
 {
     if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
@@ -43,12 +43,12 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
         Sprite_SpecialRing *ring = TaskGetStructPtr(t);
         Sprite *disp;
 
-        ring->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-        ring->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+        ring->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+        ring->posY = SpriteGetScreenPos(me->y, spriteRegionY);
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
-        ring->base.ia = ia;
-        ring->base.spriteX = ia->x;
+        ring->base.me = me;
+        ring->base.spriteX = me->x;
         ring->base.spriteY = spriteY;
 
         disp = &ring->displayed;
@@ -65,7 +65,7 @@ void initSprite_Interactable_SpecialRing(Interactable *ia, u16 spriteRegionX,
         disp->graphics.dest = VramMalloc(9);
         disp->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
         disp->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
-        SET_SPRITE_INITIALIZED(ia);
+        SET_SPRITE_INITIALIZED(me);
     }
 }
 
@@ -169,7 +169,7 @@ static bool32 sub_8081164(Sprite_SpecialRing *ring)
 static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
 {
     if (param1 != 0) {
-        ring->base.ia->x = ring->base.spriteX;
+        ring->base.me->x = ring->base.spriteX;
     }
     TaskDestroy(gCurTask);
 }

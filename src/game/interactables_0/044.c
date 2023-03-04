@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -11,15 +11,15 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_IA044;
 
-#define sLeft   (screenX + ia->d.sData[0] * TILE_WIDTH)
-#define sRight  ((sLeft) + ia->d.uData[2] * TILE_WIDTH)
-#define sTop    (screenY + ia->d.sData[1] * TILE_WIDTH)
-#define sBottom ((sTop) + ia->d.uData[3] * TILE_WIDTH)
+#define sLeft   (screenX + me->d.sData[0] * TILE_WIDTH)
+#define sRight  ((sLeft) + me->d.uData[2] * TILE_WIDTH)
+#define sTop    (screenY + me->d.sData[1] * TILE_WIDTH)
+#define sBottom ((sTop) + me->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
     Sprite_IA044 *ia044 = TaskGetStructPtr(gCurTask);
     SpriteBase *object = &ia044->base;
-    Interactable *ia = object->ia;
+    MapEntity *me = object->me;
     s32 screenX, screenY;
     u32 regionY, regionX;
     s32 left, top;
@@ -30,7 +30,7 @@ void Task_Interactable_044(void)
     regionX = object->regionX;
     regionY = object->regionY;
     screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(ia->y, regionY);
+    screenY = SpriteGetScreenPos(me->y, regionY);
 
     left = sLeft;
     playerX = Q_24_8_TO_INT(gPlayer.x);
@@ -53,7 +53,7 @@ void Task_Interactable_044(void)
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
 
-                    if (ia->index != IA__044)
+                    if (me->index != IA__044)
                         gPlayer.unk6E = 1;
                 }
             }
@@ -68,7 +68,7 @@ void Task_Interactable_044(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
@@ -77,7 +77,7 @@ void Task_Interactable_044(void)
 #undef sRight
 #undef sLeft
 
-void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
     struct Task *t
@@ -86,8 +86,8 @@ void initSprite_Interactable_044(Interactable *ia, u16 spriteRegionX, u16 sprite
 
     ia044->base.regionX = spriteRegionX;
     ia044->base.regionY = spriteRegionY;
-    ia044->base.ia = ia;
-    ia044->base.spriteX = ia->x;
+    ia044->base.me = me;
+    ia044->base.spriteX = me->x;
     ia044->base.spriteY = 0;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }

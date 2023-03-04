@@ -2,8 +2,8 @@
 #define GUARD_IA_WIND_UP_STICK_H
 
 #include "global.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
-void initSprite_Interactable_WindUpStick(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_WindUpStick(MapEntity *ia, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY);
 #endif

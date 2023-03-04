@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
 #define DASH_RING__NUM_ORIENTATIONS 8
 
@@ -44,7 +44,7 @@ typedef struct {
     /* 0x6C */ u16 orientation;
     /* 0x70 */ s32 posX;
     /* 0x74 */ s32 posY;
-    /* 0x78 */ Interactable *ia;
+    /* 0x78 */ MapEntity *me;
     /* 0x7C */ u8 spriteX;
     /* 0x7D */ u8 spriteY;
 } Sprite_DashRing; /* size: 0x80 */

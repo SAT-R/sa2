@@ -3,7 +3,7 @@
 #include "lib/m4a.h"
 #include "sprite.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "task.h"
 
 #include "game/game.h"
@@ -41,7 +41,7 @@ extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
 extern bool32 sub_8076320(Sprite_GuitarString *);
 
-void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_MusicPlant_GuitarString(MapEntity *me, u16 spriteRegionX,
                                                      u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GuitarString,
@@ -53,8 +53,8 @@ void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 sprit
 
     gs->base.regionX = spriteRegionX;
     gs->base.regionY = spriteRegionY;
-    gs->base.ia = ia;
-    gs->base.spriteX = ia->x;
+    gs->base.me = me;
+    gs->base.spriteX = me->x;
     gs->base.spriteY = spriteY;
 
     s->unk1A = 0x480;
@@ -70,9 +70,9 @@ void initSprite_Interactable_MusicPlant_GuitarString(Interactable *ia, u16 sprit
     s->graphics.anim = SA2_ANIM_NOTE_BLOCK;
     s->variant = SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR;
 
-    gs->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    gs->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    gs->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    gs->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     sub_8004558(s);
 
@@ -269,7 +269,7 @@ void Task_Interactable_MusicPlant_GuitarString(void)
     }
 
     if (sub_8076320(gs)) {
-        gs->base.ia->x = gs->base.spriteX;
+        gs->base.me->x = gs->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_8076114(gs);

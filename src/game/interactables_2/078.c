@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "core.h"
 #include "task.h"
 #include "lib/m4a.h"
@@ -42,7 +42,7 @@ static const u16 gUnknown_080E00FC[][2] = {
     { 47, 0 }, { 53, 6 }, { 59, 4 }, { 51, 2 }, { 53, 0 },
 };
 
-void initSprite_Interactable078(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable078(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
     Sprite *sprite;
@@ -50,14 +50,14 @@ void initSprite_Interactable078(Interactable *ia, u16 spriteRegionX, u16 spriteR
                                 TaskDestructor_Interactable078);
     Sprite_IA78 *ia78 = TaskGetStructPtr(t);
 
-    ia78->base.ia = ia;
+    ia78->base.me = me;
     ia78->base.regionX = spriteRegionX;
     ia78->base.regionY = spriteRegionY;
-    ia78->base.spriteX = ia->x;
+    ia78->base.spriteX = me->x;
     ia78->base.spriteY = spriteY;
 
-    ia78->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
-    ia78->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    ia78->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
+    ia78->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
 
     sprite = &ia78->sprite;
     sprite->unk1A = 0x480;
@@ -73,7 +73,7 @@ void initSprite_Interactable078(Interactable *ia, u16 spriteRegionX, u16 spriteR
     sprite->graphics.anim = -1;
     sprite->variant = -1;
     sub_807ACF4(ia78, 1);
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
@@ -278,6 +278,6 @@ static bool32 sub_807B028(Sprite_IA78 *ia78)
 
 static void sub_807B070(Sprite_IA78 *ia78)
 {
-    ia78->base.ia->x = ia78->base.spriteX;
+    ia78->base.me->x = ia78->base.spriteX;
     TaskDestroy(gCurTask);
 }

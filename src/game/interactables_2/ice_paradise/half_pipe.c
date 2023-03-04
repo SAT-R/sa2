@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "task.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 #include "trig.h"
 
@@ -15,7 +15,7 @@ typedef struct {
     s16 width;
     s16 height;
     u16 direction;
-    Interactable *ia;
+    MapEntity *me;
     s8 spriteX;
     s8 spriteY;
 } Sprite_IceParadiseHalfPipe;
@@ -33,7 +33,7 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *);
 #define HALF_PIPE_DIRECTION_FORWARD 0
 #define HALF_PIPE_DIRECTION_REVERSE 1
 
-static void initSprite_Interactable_IceParadise_HalfPipe(Interactable *ia,
+static void initSprite_Interactable_IceParadise_HalfPipe(MapEntity *me,
                                                          u16 spriteRegionX,
                                                          u16 spriteRegionY, u8 spriteY,
                                                          s32 direction)
@@ -43,16 +43,16 @@ static void initSprite_Interactable_IceParadise_HalfPipe(Interactable *ia,
                      TaskDestructor_InteractableIceParadiseHalfPipe);
     Sprite_IceParadiseHalfPipe *halfPipe = TaskGetStructPtr(t);
     halfPipe->direction = direction;
-    halfPipe->x = Q_24_8(spriteRegionX) + ia->x * TILE_WIDTH;
-    halfPipe->y = Q_24_8(spriteRegionY) + ia->y * TILE_WIDTH;
-    halfPipe->offsetX = ia->d.sData[0] * TILE_WIDTH;
-    halfPipe->offsetY = ia->d.sData[1] * TILE_WIDTH;
-    halfPipe->width = ia->d.uData[2] * TILE_WIDTH + halfPipe->offsetX;
-    halfPipe->height = ia->d.uData[3] * TILE_WIDTH + halfPipe->offsetY;
-    halfPipe->ia = ia;
-    halfPipe->spriteX = ia->x;
+    halfPipe->x = Q_24_8(spriteRegionX) + me->x * TILE_WIDTH;
+    halfPipe->y = Q_24_8(spriteRegionY) + me->y * TILE_WIDTH;
+    halfPipe->offsetX = me->d.sData[0] * TILE_WIDTH;
+    halfPipe->offsetY = me->d.sData[1] * TILE_WIDTH;
+    halfPipe->width = me->d.uData[2] * TILE_WIDTH + halfPipe->offsetX;
+    halfPipe->height = me->d.uData[3] * TILE_WIDTH + halfPipe->offsetY;
+    halfPipe->me = me;
+    halfPipe->spriteX = me->x;
     halfPipe->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void Task_HalfPipeSequenceMain(void)
@@ -230,22 +230,20 @@ static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 
 static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 {
-    halfPipe->ia->x = halfPipe->spriteX;
+    halfPipe->me->x = halfPipe->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_IceParadise_HalfPipe_End(Interactable *ia,
-                                                      u16 spriteRegionX,
+void initSprite_Interactable_IceParadise_HalfPipe_End(MapEntity *me, u16 spriteRegionX,
                                                       u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_IceParadise_HalfPipe(ia, spriteRegionX, spriteRegionY,
+    initSprite_Interactable_IceParadise_HalfPipe(me, spriteRegionX, spriteRegionY,
                                                  spriteY, HALF_PIPE_DIRECTION_REVERSE);
 }
 
-void initSprite_Interactable_IceParadise_HalfPipe_Start(Interactable *ia,
-                                                        u16 spriteRegionX,
+void initSprite_Interactable_IceParadise_HalfPipe_Start(MapEntity *me, u16 spriteRegionX,
                                                         u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_IceParadise_HalfPipe(ia, spriteRegionX, spriteRegionY,
+    initSprite_Interactable_IceParadise_HalfPipe(me, spriteRegionX, spriteRegionY,
                                                  spriteY, HALF_PIPE_DIRECTION_FORWARD);
 }

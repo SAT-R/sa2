@@ -3,7 +3,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -17,22 +17,22 @@ typedef struct {
 static void Task_Interactable_InclineRamp(void)
 {
     Sprite_InclineRamp *ramp = TaskGetStructPtr(gCurTask);
-    Interactable *ia = ramp->base.ia;
+    MapEntity *me = ramp->base.me;
     u32 moveState;
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(ramp->base.spriteX, ramp->base.regionY);
 
     // @BUG - Same as inside initSprite func (regionX used instead of regionY)
-    screenY = SpriteGetScreenPos(ia->y, ramp->base.regionX);
+    screenY = SpriteGetScreenPos(me->y, ramp->base.regionX);
 
     moveState = gPlayer.moveState;
     if (!(moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && ((screenX + ia->d.uData[2] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
+        && ((screenX + me->d.uData[2] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
         && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && ((screenY + ia->d.uData[3] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))
+        && ((screenY + me->d.uData[3] * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))
         && (!(moveState & MOVESTATE_IN_AIR))) {
-        //  spriteY == ia->d.uData[0]; (set in initSprite, below)
+        //  spriteY == me->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.spriteY) == 0) {
             if (gPlayer.speedAirX > Q_24_8(4)) {
                 moveState &= ~MOVESTATE_8;
@@ -92,12 +92,12 @@ static void Task_Interactable_InclineRamp(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, screenY)) {
-        ia->x = ramp->base.spriteX;
+        me->x = ramp->base.spriteX;
         TaskDestroy(gCurTask);
     }
 }
 
-void initSprite_Interactable_InclineRamp(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_InclineRamp(MapEntity *me, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 param3)
 {
     struct Task *t = TaskCreate(Task_Interactable_InclineRamp,
@@ -107,9 +107,9 @@ void initSprite_Interactable_InclineRamp(Interactable *ia, u16 spriteRegionX,
     // @BUG? (regionY gets set to regionX and vice versa)
     ramp->base.regionY = spriteRegionX;
     ramp->base.regionX = spriteRegionY;
-    ramp->base.ia = ia;
+    ramp->base.me = me;
 
-    ramp->base.spriteY = ia->d.uData[0];
-    ramp->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    ramp->base.spriteY = me->d.uData[0];
+    ramp->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 }

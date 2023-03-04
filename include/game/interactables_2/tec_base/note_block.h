@@ -2,9 +2,9 @@
 #define GUARD_INTERACTABLE_070_H
 
 #include "global.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
-void initSprite_InteractableTecBaseNoteBlock(Interactable *ia, u16 spriteRegionX,
+void initSprite_InteractableTecBaseNoteBlock(MapEntity *ia, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY);
 
 #endif

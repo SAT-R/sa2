@@ -204,7 +204,7 @@ static bool32 sub_807C598(Sprite_IA85 *ia85)
 
 static void sub_807C5E0(Sprite_IA85 *ia85)
 {
-    ia85->base.ia->x = ia85->base.spriteX;
+    ia85->base.me->x = ia85->base.spriteX;
     TaskDestroy(gCurTask);
 }
 
@@ -224,14 +224,14 @@ static void sub_807C614(void)
 }
 static void TaskDestructor_Interactable085(struct Task *);
 
-void initSprite_Interactable085(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable085(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
                                 TaskDestructor_Interactable085);
     Sprite_IA85 *ia85 = TaskGetStructPtr(t);
-    ia85->unk3C = SpriteGetScreenPos(ia->x, spriteRegionX);
-    ia85->unk40 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    ia85->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
+    ia85->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
 
     ia85->unk44 = 0;
     ia85->unk46 = 0;
@@ -239,10 +239,10 @@ void initSprite_Interactable085(Interactable *ia, u16 spriteRegionX, u16 spriteR
 
     ia85->base.regionX = spriteRegionX;
     ia85->base.regionY = spriteRegionY;
-    ia85->base.ia = ia;
-    ia85->base.spriteX = ia->x;
+    ia85->base.me = me;
+    ia85->base.spriteX = me->x;
     ia85->base.spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_807C72C(Sprite_IA85 *);

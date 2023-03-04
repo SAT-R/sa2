@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/wind_up_stick.h"
 #include "task.h"
 #include "sprite.h"
@@ -20,7 +20,7 @@ typedef struct {
     u8 unk11;
     u8 unk12;
 
-    Interactable *ia;
+    MapEntity *me;
     s8 spriteX;
     s8 spriteY;
 } Sprite_WindUpStick;
@@ -34,22 +34,22 @@ static void sub_80729D8(Sprite_WindUpStick *);
 static u32 sub_8072A5C(Sprite_WindUpStick *);
 static void sub_8072AC0(Sprite_WindUpStick *);
 
-void initSprite_Interactable_WindUpStick(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_WindUpStick(MapEntity *me, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8072998, 0x1C, 0x2010, 0, sub_80729D4);
     Sprite_WindUpStick *windUpStick = TaskGetStructPtr(t);
     windUpStick->unk11 = 0;
-    windUpStick->unk0 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    windUpStick->unk4 = SpriteGetScreenPos(ia->y, spriteRegionY);
-    windUpStick->unk8 = ia->d.sData[0] * 8;
-    windUpStick->unkA = ia->d.sData[1] * 8;
-    windUpStick->unkC = ia->d.uData[2] * 8 + windUpStick->unk8;
-    windUpStick->unkE = ia->d.uData[3] * 8 + windUpStick->unkA;
-    windUpStick->ia = ia;
-    windUpStick->spriteX = ia->x;
+    windUpStick->unk0 = SpriteGetScreenPos(me->x, spriteRegionX);
+    windUpStick->unk4 = SpriteGetScreenPos(me->y, spriteRegionY);
+    windUpStick->unk8 = me->d.sData[0] * 8;
+    windUpStick->unkA = me->d.sData[1] * 8;
+    windUpStick->unkC = me->d.uData[2] * 8 + windUpStick->unk8;
+    windUpStick->unkE = me->d.uData[3] * 8 + windUpStick->unkA;
+    windUpStick->me = me;
+    windUpStick->spriteX = me->x;
     windUpStick->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_8072650(void)
@@ -272,6 +272,6 @@ bool32 sub_8072A5C(Sprite_WindUpStick *windUpStick)
 
 static void sub_8072AC0(Sprite_WindUpStick *windUpStick)
 {
-    windUpStick->ia->x = windUpStick->spriteX;
+    windUpStick->me->x = windUpStick->spriteX;
     TaskDestroy(gCurTask);
 }

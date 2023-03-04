@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "task.h"
 #include "malloc_vram.h"
 #include "zones.h"
@@ -18,7 +18,7 @@ typedef struct {
 static void Task_Interactable_Ramp(void);
 static void TaskDestructor_Interactable_Ramp(struct Task *);
 
-void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                   u8 spriteY)
 {
     u8 temp;
@@ -30,15 +30,15 @@ void initSprite_Interactable_Ramp(Interactable *ia, u16 spriteRegionX, u16 sprit
 
     ramp->base.regionX = spriteRegionX;
     ramp->base.regionY = spriteRegionY;
-    ramp->base.ia = ia;
-    ramp->base.spriteX = ia->x;
+    ramp->base.me = me;
+    ramp->base.spriteX = me->x;
     ramp->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
-    temp = ia->d.sData[0] & 3;
+    temp = me->d.sData[0] & 3;
     ramp->unk3C = temp;
 
     displayed->graphics.dest = VramMalloc(20);
@@ -73,7 +73,7 @@ static void Task_Interactable_Ramp(void)
     Player *player = &gPlayer;
     Sprite_Ramp *ramp = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &ramp->displayed;
-    Interactable *ia = ramp->base.ia;
+    MapEntity *me = ramp->base.me;
 
     s16 screenX, screenY;
 
@@ -82,7 +82,7 @@ static void Task_Interactable_Ramp(void)
 #endif
 
         screenX = SpriteGetScreenPos(ramp->base.spriteX, ramp->base.regionX);
-        screenY = SpriteGetScreenPos(ia->y, ramp->base.regionY);
+        screenY = SpriteGetScreenPos(me->y, ramp->base.regionY);
         displayed->x = screenX - gCamera.x;
         displayed->y = screenY - gCamera.y;
 
@@ -175,7 +175,7 @@ static void Task_Interactable_Ramp(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX - gCamera.x, screenY - gCamera.y)) {
-        ia->x = ramp->base.spriteX;
+        me->x = ramp->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }

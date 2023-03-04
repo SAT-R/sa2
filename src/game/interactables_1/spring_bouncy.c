@@ -5,7 +5,7 @@
 #include "malloc_vram.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -40,7 +40,7 @@ static const TileInfo gUnknown_080D94BC[3] = {
     { 24, SA2_ANIM_603, 3 },
 };
 
-void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_BouncySpring(MapEntity *me, u16 spriteRegionX,
                                           u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -52,13 +52,13 @@ void initSprite_Interactable_BouncySpring(Interactable *ia, u16 spriteRegionX,
 
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
-    spring->base.ia = ia;
-    spring->base.spriteX = ia->x;
+    spring->base.me = me;
+    spring->base.spriteX = me->x;
     spring->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
         displayed->graphics.dest = VramMalloc(16);
@@ -89,12 +89,12 @@ static void Task_Interactable_BouncySpring()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &spring->displayed;
-    Interactable *ia = spring->base.ia;
+    MapEntity *me = spring->base.me;
     s32 screenX, screenY;
     s16 airSpeed;
 
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spring->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
@@ -150,7 +150,7 @@ static void Task_Interactable_BouncySpring()
     }
     // _0805DFBA
     if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
-        ia->x = spring->base.spriteX;
+        me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_8004558(displayed);
@@ -162,18 +162,18 @@ static void Task_805E02C()
 {
     Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &spring->displayed;
-    Interactable *ia = spring->base.ia;
+    MapEntity *me = spring->base.me;
     s32 screenX, screenY;
     u32 variant = 0;
 
     screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spring->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spring->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
-        ia->x = spring->base.spriteX;
+        me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         if (sub_8004558(displayed) == 0) {
