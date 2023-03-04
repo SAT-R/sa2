@@ -72,7 +72,7 @@
 #define IA__ICE_PARADISE__HALFPIPE__START          68
 #define IA__069                                    69
 #define IA__070                                    70
-#define IA__071                                    71 // MapEntity 071 calls the code of IA__044
+#define IA__071                                    71 // IA__071 calls the code of IA__044
 #define IA__COMMON_CLEAR_PIPE__START               72
 #define IA__COMMON_CLEAR_PIPE__END                 73
 #define IA__074                                    74
