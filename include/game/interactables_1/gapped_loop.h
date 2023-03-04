@@ -2,7 +2,7 @@
 #define GUARD_INTERACTABLE_GAPPED_LOOP_H
 
 #include "global.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
 void initSprite_Interactable_gappedLoop_Start(MapEntity *ia, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 spriteY);
