@@ -70,7 +70,7 @@ SECTIONS
         build/sa2/src/game/game_over.o(.text);
         build/sa2/src/game/true_area_53/intro.o(.text);
         build/sa2/asm/true_area_53.o(.text);
-        build/sa2/asm/enemies.o(.text);
+        build/sa2/asm/enemies_shared.o(.text);
         build/sa2/asm/enemy_mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/asm/enemy_kura_kura.o(.text);
