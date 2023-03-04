@@ -220,7 +220,7 @@ ifeq ($(NODEP),1)
 $(OBJ_DIR)/src/%.o: c_dep :=
 else
 $(OBJ_DIR)/src/%.o: C_FILE = $(*D)/$(*F).c
-$(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=))
+$(OBJ_DIR)/src/%.o: c_dep = $(shell $(SCANINC) -I include $(C_FILE:$(OBJ_DIR)/=) 2>/dev/null)
 endif
 
 # Build c sources, and ensure alignment
