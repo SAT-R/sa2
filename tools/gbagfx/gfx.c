@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h> // memcpy
-#include <malloc.h> // memcpy
 #include "global.h"
 #include "gfx.h"
 #include "util.h"
