@@ -417,7 +417,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
             /* Split image into shapes */
             struct OamShape* head = FindOamShapes(image->width, image->height);
 
-#if 1
+#if 0
             /* Debug */
             printf("OAM Shapes (%d, %d):\n", image->width, image->height);
             struct OamShape* temp = head;

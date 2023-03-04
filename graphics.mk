@@ -22,3 +22,6 @@
 
 tileset_%.4bpp: tileset_%.png
 	$(GFX) $< $@ -ignore_trailing
+
+a%.4bpp: a%.png
+	$(GFX) $< $@ -split_into_oam_shapes
