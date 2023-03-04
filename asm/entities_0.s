@@ -131,7 +131,7 @@ gSpriteInits_Enemies:
     .4byte initSprite_Enemy_Buzzer
     .4byte initSprite_Enemy_Gohla
     .4byte initSprite_Enemy_KuraKura
-    .4byte initSprite_Enemy_Kobinaga
+    .4byte initSprite_Enemy_Kubinaga
     .4byte initSprite_Enemy_PikoPiko
     .4byte initSprite_Enemy_Bell
     .4byte initSprite_Enemy_Yado
