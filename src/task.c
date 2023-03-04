@@ -1,8 +1,8 @@
 #include "global.h"
 #include "task.h"
-#include "main.h"
+#include "core.h"
 #include "flags.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 
 static void TaskMainDummy1(void);
 static void TaskMainDummy2(void);

@@ -158,6 +158,7 @@ void HandlePngToGbaCommand(char *inputPath, char *outputPath, int argc, char **a
     options.ignoreTrailingTiles = false;
     options.splitIntoOamShapes = false;
 
+
     for (int i = 3; i < argc; i++)
     {
         char *option = argv[i];

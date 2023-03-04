@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "core.h"
 #include "sprite.h"
 #include "flags.h"
 

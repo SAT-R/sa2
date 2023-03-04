@@ -1,5 +1,5 @@
 #include "global.h"
-#include "main.h"
+#include "core.h"
 #include "task.h"
 #include "malloc_ewram.h"
 #include "input_recorder.h"

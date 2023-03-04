@@ -1,5 +1,5 @@
 #include "global.h"
-#include "m4a.h"
+#include "lib/m4a.h"
 
 #include "data.h"
 #include "flags.h"

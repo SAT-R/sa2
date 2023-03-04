@@ -16,16 +16,9 @@ def search_directories(*patterns):
 
 for filename in search_directories('./src/**/*.h', './include/**/*.h'):
     with open(filename) as header:
-        header_name = filename.split('/')[-1]
+        header_name = "/".join(filename.split('/')[2:])
 
-        if "constants/" in filename:
-            header_name = f"constants/{header_name}"
-
-        if "gba/" in filename:
-            header_name = "gba/" + header_name
-
-        if not header_name in depends_on:
-            
+        if not header_name in depends_on:            
             depends_on[header_name] = set()
             if not header_name.startswith("gba/") and header_name != "global.h" and header_name != "functions.h":
                 depends_on[header_name].add("global.h")
