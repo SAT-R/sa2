@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h> // memcpy
 #include "global.h"
 #include "gfx.h"
 #include "util.h"
@@ -245,39 +246,147 @@ void ReadImage(char *path, int tilesWidth, int bitDepth, int metatileWidth, int 
 	free(buffer);
 }
 
-void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int metatileHeight, struct Image *image, bool invertColors, bool ignoreEmptyTrailingTiles)
-{
-	int tileSize = bitDepth * 8;
+struct OamShape;
+struct OamShape {
+    struct OamShape *next;
+    short offX;
+    short offY;
+    unsigned char width;
+    unsigned char height;
+};
 
+typedef struct {
+    unsigned char width;
+    unsigned char height;
+} OamDim;
+OamDim oamSizes[12] = {
+    {.width = 8, .height = 8},
+    {.width = 8, .height = 4},
+    {.width = 4, .height = 8},
+    {.width = 4, .height = 4},
+    {.width = 4, .height = 2},
+    {.width = 4, .height = 1},
+    {.width = 2, .height = 4},
+    {.width = 2, .height = 2},
+    {.width = 2, .height = 1},
+    {.width = 1, .height = 4},
+    {.width = 1, .height = 2},
+    {.width = 1, .height = 1},
+};
+
+struct OamShape* FindSingleShape(int tileX, int tileY, int imageTileWidth, int imageTileHeight) {
+    int chunkWidth  = (imageTileWidth  - tileX);
+    int chunkHeight = (imageTileHeight - tileY);
+
+    OamDim found = {0};
+    for(int i = 0; i < ARRAY_COUNT(oamSizes); i++) {
+        if((chunkWidth >= oamSizes[i].width) && (chunkHeight >= oamSizes[i].height)) {
+            found = oamSizes[i];
+            break;
+        }
+    }
+
+    if((found.width + found.height) > 0) {
+        struct OamShape *res = calloc(1, sizeof(struct OamShape));
+        res->offX = tileX;
+        res->offY = tileY;
+        res->width  = found.width;
+        res->height = found.height;
+
+        return res;
+    } else {
+        return NULL;
+    }
+}
+
+struct OamShape *FindOamShapes(int imageWidth, int imageHeight) {
+    int tileWidth  = imageWidth  / 8;
+    int tileHeight = imageHeight / 8;
+    char *collBuffer = calloc(1, (tileWidth * tileHeight));
+
+    int pitch = tileWidth;
+
+    struct OamShape* head = FindSingleShape(0, 0, tileWidth, tileHeight);
+    struct OamShape* curr = head;
+
+    // Set tiles as set
+    for(int y = 0; y < curr->height; y++) {
+        char *pos = &collBuffer[(curr->offY + y) * pitch + curr->offX];
+        memset(pos, 1, curr->width);
+    }
+
+    for(int x = 0; x < tileWidth; x++) {
+
+        // Find next shape position
+        int y = tileHeight;
+        for(; y > 0 && collBuffer[(y - 1)*pitch + x] == 0; y--)
+            ;
+
+        
+        if(y != tileHeight) {
+            curr->next = FindSingleShape(x, y, tileWidth, tileHeight);
+            curr = curr->next;
+            
+            // Set tiles as set
+            for(int y = 0; y < curr->height; y++) {
+                char *pos = &collBuffer[(curr->offY + y) * pitch + curr->offX];
+                memset(pos, 1, curr->width);
+            }
+
+            // We did not yet reach the bottom of the image
+            // so we have to continue looking at the current x pos
+            --x;
+        }
+    }
+
+    int visitedTiles = 0;
+    while(visitedTiles < tileWidth * tileHeight) {
+        if(collBuffer[visitedTiles] != 1)
+            break;
+
+        visitedTiles++;
+    }
+
+    if(visitedTiles != tileWidth * tileHeight)
+        FATAL_ERROR("Could not find all OAM shapes in the image");
+
+    free(collBuffer);
+
+    return head;
+}
+
+void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int metatileHeight, struct Image *image, bool invertColors, bool ignoreEmptyTrailingTiles, bool splitIntoOamShapes)
+{
 	if (image->width % 8 != 0)
 		FATAL_ERROR("The width in pixels (%d) isn't a multiple of 8.\n", image->width);
 
 	if (image->height % 8 != 0)
 		FATAL_ERROR("The height in pixels (%d) isn't a multiple of 8.\n", image->height);
 
-	int tilesWidth = image->width / 8;
-	int tilesHeight = image->height / 8;
+	int imgWidthTiles  = image->width / 8;
+	int imgHeightTiles = image->height / 8;
 
-	if (tilesWidth % metatileWidth != 0)
-		FATAL_ERROR("The width in tiles (%d) isn't a multiple of the specified metatile width (%d)", tilesWidth, metatileWidth);
+	if (imgWidthTiles % metatileWidth != 0)
+		FATAL_ERROR("The width in tiles (%d) isn't a multiple of the specified metatile width (%d)", imgWidthTiles, metatileWidth);
 
-	if (tilesHeight % metatileHeight != 0)
-		FATAL_ERROR("The height in tiles (%d) isn't a multiple of the specified metatile height (%d)", tilesHeight, metatileHeight);
+	if (imgHeightTiles % metatileHeight != 0)
+		FATAL_ERROR("The height in tiles (%d) isn't a multiple of the specified metatile height (%d)", imgHeightTiles, metatileHeight);
 
-	int maxNumTiles = tilesWidth * tilesHeight;
+	int maxNumTiles = imgWidthTiles * imgHeightTiles;
 
 	if (numTiles == 0)
 		numTiles = maxNumTiles;
 	else if (numTiles > maxNumTiles)
 		FATAL_ERROR("The specified number of tiles (%d) is greater than the maximum possible value (%d).\n", numTiles, maxNumTiles);
-
+    
+    int tileSize = (8*8 * bitDepth) / 8;
 	int bufferSize = numTiles * tileSize;
 	unsigned char *buffer = malloc(bufferSize);
 
 	if (buffer == NULL)
 		FATAL_ERROR("Failed to allocate memory for pixels.\n");
 
-	int metatilesWide = tilesWidth / metatileWidth;
+	int metatilesWide = imgWidthTiles / metatileWidth;
 
 	switch (bitDepth) {
 	case 1:
@@ -293,13 +402,71 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
     
     int outfileSize = bufferSize;
 
-    if(ignoreEmptyTrailingTiles) {
-        int tileSize = (8*8 * bitDepth) / 8;
+    if(splitIntoOamShapes) {
+        if(ignoreEmptyTrailingTiles)
+            FATAL_ERROR("It is not supported to use -ignore_trailing and -split_into_oam_shapes simultaneously.");
 
+        // TODO: Add 8bpp support
+        if(bitDepth != 4)
+            FATAL_ERROR("Only 4bpp images supported for -split_into_oam_shapes");
+
+        unsigned char* scratchBuffer = malloc(bufferSize);
+
+        if(scratchBuffer) {
+            /* Split image into shapes */
+            struct OamShape* head = FindOamShapes(image->width, image->height);
+
+#if 0
+            /* Debug */
+            printf("OAM Shapes (%d, %d):\n", image->width, image->height);
+            struct OamShape* temp = head;
+            while(temp) {
+                printf("\t=> %d %d %d %d\n", temp->offX*8, temp->offY*8, temp->width*8, temp->height*8);
+                temp = temp->next;
+            }
+#endif
+            
+            /* Copy the tiles over in the correct order */
+            struct OamShape* curr = head;
+            int dstIndex = 0;
+
+            while(curr) {
+                int imgPitch = imgWidthTiles * tileSize;
+                int srcIndex = curr->offY * imgPitch + curr->offX * tileSize;
+
+                for(int y = 0; y < curr->height; y++) {
+                    int copySize = curr->width * tileSize;
+                    memcpy(&scratchBuffer[dstIndex],
+                           &buffer[srcIndex],
+                           copySize);
+                    srcIndex += imgPitch;
+                    dstIndex += copySize;
+                }
+
+                curr = curr->next;
+            }
+            /* Copy the scratch buffer back into the original buffer */
+            memcpy(buffer, scratchBuffer, bufferSize);
+            
+            /* Free the shape list*/
+            curr = head;
+            while(curr) {
+                struct OamShape* old = curr;
+                curr = old->next;
+                free(old);
+            };
+
+            free(scratchBuffer);
+        } else {
+            FATAL_ERROR("Couldn't allocate buffer for splitting into OAM shapes");
+        }
+    }
+
+    if(ignoreEmptyTrailingTiles) {
         if((outfileSize % tileSize) != 0)
             FATAL_ERROR("The output buffer size (0x%X) is not a multiple of the tileSize (0x%X).", outfileSize, tileSize);
 
-        unsigned char* bufferEnd = buffer + (outfileSize-1);
+        unsigned char* bufferEnd = buffer + (bufferSize-1);
 
         int checksum = 0;
 

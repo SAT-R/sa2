@@ -28,7 +28,7 @@ struct Image {
 };
 
 void ReadImage(char *path, int tilesWidth, int bitDepth, int metatileWidth, int metatileHeight, struct Image *image, bool invertColors);
-void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int metatileHeight, struct Image *image, bool invertColors, bool ignoreTrailingTiles);
+void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int metatileHeight, struct Image *image, bool invertColors, bool ignoreTrailingTiles, bool splitIntoOamShapes);
 void FreeImage(struct Image *image);
 void ReadGbaPalette(char *path, struct Palette *palette);
 void WriteGbaPalette(char *path, struct Palette *palette);

@@ -12,15 +12,15 @@ static int cmp_tree(const void * a0, const void * b0) {
 
 typedef int (*cmpfun)(const void *, const void *);
 
-int msort_r(void * data, size_t count, size_t size, cmpfun cmp, void * buffer) {
+int msort_r(unsigned char * data, size_t count, size_t size, cmpfun cmp, unsigned char * buffer) {
     /*
      * Out-of-place mergesort (stable sort)
      * Returns 1 on success, 0 on failure
      */
-    void * leftPtr;
-    void * rightPtr;
-    void * leftEnd;
-    void * rightEnd;
+    unsigned char * leftPtr;
+    unsigned char * rightPtr;
+    unsigned char * leftEnd;
+    unsigned char * rightEnd;
     int i;
 
     switch (count) {
