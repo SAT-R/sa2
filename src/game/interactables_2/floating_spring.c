@@ -2,8 +2,12 @@
 #include "core.h"
 #include "sprite.h"
 #include "trig.h"
+#include "malloc_vram.h"
+#include "lib/m4a.h"
 #include "game/interactable.h"
 #include "game/interactables_2/floating_spring.h"
+#include "constants/songs.h"
+#include "constants/animations.h"
 
 typedef struct {
     SpriteBase base;
@@ -12,31 +16,39 @@ typedef struct {
     s32 unk40;
     s32 unk44;
     s32 unk48;
-    s32 unk4C;
-    s16 unk50;
+    bool32 unk4C;
+    bool16 unk50;
     s16 unk52;
     s16 unk54;
     u16 unk56;
 } Sprite_FloatingSpring; /* size 0x58 */
 
-void sub_80750A8(void);
-void sub_8075140(struct Task *);
+static void sub_80750A8(void);
+static void sub_8075140(struct Task *);
 
-void sub_8075284(Sprite_FloatingSpring *);
-void sub_8074FD8(Sprite_FloatingSpring *);
-void sub_8074E44(Sprite_FloatingSpring *);
-void sub_80751B4(Sprite_FloatingSpring *);
+static void sub_8075284(Sprite_FloatingSpring *);
+static void sub_8074FD8(Sprite_FloatingSpring *);
+static void sub_8074E44(Sprite_FloatingSpring *);
+static void sub_80751B4(Sprite_FloatingSpring *);
+static bool32 sub_8075228(Sprite_FloatingSpring *);
+static void sub_80752BC(Sprite_FloatingSpring *);
+static void sub_8075154(Sprite_FloatingSpring *);
+static u32 sub_8074EF4(Sprite_FloatingSpring *);
+static bool32 sub_80751CC(Sprite_FloatingSpring *);
+static void sub_80752D8(void);
+static void sub_8075334(Sprite_FloatingSpring *);
 
 void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80750A8, 0x58, 0x2010, 0, sub_8075140);
+    struct Task *t
+        = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
     Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(t);
     Sprite *sprite = &floatingSpring->sprite;
 
     floatingSpring->unk44 = 0;
     floatingSpring->unk48 = 0;
-    floatingSpring->unk50 = 0;
+    floatingSpring->unk50 = FALSE;
 
     floatingSpring->base.ia = ia;
     floatingSpring->base.regionX = spriteRegionX;
@@ -54,7 +66,7 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
 
-    floatingSpring->unk4C = 0;
+    floatingSpring->unk4C = FALSE;
     sprite->graphics.dest = 0;
     sub_8075284(floatingSpring);
 
@@ -87,7 +99,7 @@ void initSprite_Interactable_FloatingSpring_Up(Interactable *ia, u16 spriteRegio
     SET_SPRITE_INITIALIZED(ia);
 }
 
-void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
+static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 {
     Interactable *ia = floatingSpring->base.ia;
 
@@ -116,4 +128,246 @@ void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
         + Q_24_8_TO_INT(floatingSpring->unk44);
     floatingSpring->unk40 = SpriteGetScreenPos(ia->y, floatingSpring->base.regionY)
         + Q_24_8_TO_INT(floatingSpring->unk48);
+}
+
+static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
+{
+    if (PlayerIsAlive) {
+        u32 temp = sub_800CDBC(&floatingSpring->sprite, floatingSpring->unk3C,
+                               floatingSpring->unk40, &gPlayer);
+        if (temp != 0) {
+            if (Q_24_8_TO_INT(gPlayer.y) < floatingSpring->unk40) {
+                gPlayer.y += Q_24_8(floatingSpring->sprite.unk28[0].unk5);
+                if (gPlayer.speedAirY > 0) {
+                    gPlayer.speedAirY = 0;
+                }
+                return 2;
+            } else if (temp & 0x10000) {
+                gPlayer.y += Q_8_8(temp);
+                if (gPlayer.speedAirY > 0) {
+                    gPlayer.speedAirY = 0;
+                }
+                return 2;
+            } else if (temp & 0x20000) {
+                gPlayer.y += Q_8_8(temp);
+                if (gPlayer.speedAirY < 0) {
+                    gPlayer.speedAirY = 0;
+                }
+                return 1;
+            } else if (temp & 0x40000) {
+                gPlayer.x += (s16)(temp & 0xFF00);
+                if (gPlayer.speedAirX < 0) {
+                    gPlayer.speedAirX = 0;
+                    gPlayer.speedGroundX = 0;
+                }
+                return 1;
+            } else if (temp & 0x80000) {
+                gPlayer.x += (s16)(temp & 0xFF00);
+                if (gPlayer.speedAirX > 0) {
+                    gPlayer.speedAirX = 0;
+                    gPlayer.speedGroundX = 0;
+                }
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+static void sub_8074FD8(Sprite_FloatingSpring *floatingSpring)
+{
+
+    if (floatingSpring->unk50) {
+        u8 level = gCurrentLevel;
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->sprite.variant = 0;
+        } else {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->sprite.variant = 0;
+        }
+    } else {
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->sprite.variant = ZONE_3;
+        } else {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->sprite.variant = 2;
+        }
+    }
+}
+
+static void sub_8075048(Sprite_FloatingSpring *floatingSpring)
+{
+    if (floatingSpring->unk50) {
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->sprite.variant = 1;
+        } else {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->sprite.variant = 1;
+        }
+    } else {
+        if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->sprite.variant = 3;
+        } else {
+            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->sprite.variant = 3;
+        }
+    }
+}
+
+static void sub_80750A8(void)
+{
+    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(gCurTask);
+
+    sub_8074E44(floatingSpring);
+    if (sub_8075228(floatingSpring)) {
+        if (floatingSpring->unk4C) {
+            sub_80752BC(floatingSpring);
+        }
+    } else {
+        if (!floatingSpring->unk4C) {
+            sub_8075284(floatingSpring);
+            sub_8074FD8(floatingSpring);
+            sub_8004558(&floatingSpring->sprite);
+        }
+    }
+
+    if (sub_8074EF4(floatingSpring) == 2) {
+        sub_8075154(floatingSpring);
+    }
+
+    if (sub_80751CC(floatingSpring)) {
+        floatingSpring->base.ia->x = floatingSpring->base.spriteX;
+        TaskDestroy(gCurTask);
+
+    } else {
+        sub_80751B4(floatingSpring);
+
+        if (floatingSpring->unk4C) {
+            sub_80051E8(&floatingSpring->sprite);
+        }
+    }
+}
+
+static void sub_8075140(struct Task *t)
+{
+    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(t);
+
+    sub_80752BC(floatingSpring);
+}
+
+static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
+{
+    gPlayer.unk6D = 0xE;
+
+    if (floatingSpring->unk50) {
+        gPlayer.unk6E = 3;
+    } else {
+        gPlayer.unk6E = 0;
+    }
+
+    if (!floatingSpring->unk4C) {
+        sub_8075284(floatingSpring);
+    }
+
+    sub_8075048(floatingSpring);
+    sub_8004558(&floatingSpring->sprite);
+    m4aSongNumStart(SE_SPRING);
+    gCurTask->main = sub_80752D8;
+}
+
+static void sub_80751B4(Sprite_FloatingSpring *floatingSpring)
+{
+    floatingSpring->sprite.x = floatingSpring->unk3C - gCamera.x;
+    floatingSpring->sprite.y = floatingSpring->unk40 - gCamera.y;
+}
+
+bool32 sub_80751CC(Sprite_FloatingSpring *floatingSpring)
+{
+    Interactable *ia = floatingSpring->base.ia;
+    s16 x = floatingSpring->unk3C - gCamera.x;
+    s16 y = floatingSpring->unk40 - gCamera.y;
+
+    if (x < -((ia->d.uData[2] * 8) + 0x80) || x > (ia->d.uData[2] * 8) + 0x170) {
+        return TRUE;
+    }
+
+    if (y < -((ia->d.uData[3] * 8) + 0x80) || y > (ia->d.uData[3] * 8) + 0x220) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 sub_8075228(Sprite_FloatingSpring *floatingSpring)
+{
+    Interactable *ia = floatingSpring->base.ia;
+    s16 x = floatingSpring->unk3C - gCamera.x;
+    s16 y = floatingSpring->unk40 - gCamera.y;
+
+    if (x < -((ia->d.uData[2] * 8) + 0x80) || x > (ia->d.uData[2] * 8) + 0x170) {
+        return TRUE;
+    }
+
+    if (y < -((ia->d.uData[3] * 8) + 0x80) || y > (ia->d.uData[3] * 8) + 0x120) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
+{
+    if (!floatingSpring->unk4C) {
+#ifndef NON_MATCHING
+        u32 zone = LEVEL_TO_ZONE(gCurrentLevel);
+        asm("" ::"r"(zone));
+#endif
+        floatingSpring->sprite.graphics.dest = VramMalloc(0x1C);
+        floatingSpring->sprite.unk1E = -1;
+        floatingSpring->sprite.unk21 = -1;
+        floatingSpring->unk4C = TRUE;
+    }
+}
+
+static void sub_80752BC(Sprite_FloatingSpring *floatingSpring)
+{
+    if (floatingSpring->unk4C) {
+        VramFree(floatingSpring->sprite.graphics.dest);
+        floatingSpring->sprite.graphics.dest = NULL;
+        floatingSpring->unk4C = FALSE;
+    }
+}
+
+static void sub_80752D8(void)
+{
+    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &floatingSpring->sprite;
+    sub_8074E44(floatingSpring);
+    sub_80751B4(floatingSpring);
+
+    if (!(sprite->unk10 & 0x4000)) {
+        sub_8004558(&floatingSpring->sprite);
+    } else {
+        sub_8075334(floatingSpring);
+    }
+
+    if (sub_8074EF4(floatingSpring) == 2) {
+        sub_8075154(floatingSpring);
+    }
+
+    sub_80051E8(sprite);
+}
+
+static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
+{
+    floatingSpring->unk50 ^= TRUE;
+    sub_8074FD8(floatingSpring);
+    sub_8004558(&floatingSpring->sprite);
+    sub_80051E8(&floatingSpring->sprite);
+    gCurTask->main = sub_80750A8;
 }
