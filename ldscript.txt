@@ -106,7 +106,6 @@ SECTIONS
         build/sa2/src/game/interactables_1/019.o(.text);
         build/sa2/src/game/interactables_1/toggle_player_layer.o(.text);
         build/sa2/src/game/interactables_1/rotating_handle.o(.text);
-        build/sa2/asm/interactable_rotating_handle.o(.text);
         build/sa2/src/game/interactables_1/gapped_loop.o(.text);
         build/sa2/src/game/interactables_1/spikes.o(.text);
         build/sa2/asm/interactable_corkscrew.o(.text);
