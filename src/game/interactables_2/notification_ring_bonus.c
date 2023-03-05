@@ -3,7 +3,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -47,7 +47,7 @@ static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-void initSprite_8080368(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                         UNUSED u8 spriteY)
 {
     s32 screenX, screenY;
@@ -60,18 +60,18 @@ void initSprite_8080368(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
     sprite->unk1A = 0;
     sprite->unk1C = 0;
 
-    sprite->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    sprite->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+    sprite->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    sprite->posY = SpriteGetScreenPos(me->y, spriteRegionY);
 
-    sprite->unk8 = ia->d.sData[0] * 8;
-    sprite->unkA = ia->d.sData[1] * 8;
-    sprite->unkC = sprite->unk8 + ia->d.uData[2] * 8;
-    sprite->unkE = sprite->unkA + ia->d.uData[3] * 8;
+    sprite->unk8 = me->d.sData[0] * 8;
+    sprite->unkA = me->d.sData[1] * 8;
+    sprite->unkC = sprite->unk8 + me->d.uData[2] * 8;
+    sprite->unkE = sprite->unkA + me->d.uData[3] * 8;
 
     sprite->unk10 = sprite->unkC - sprite->unk8;
     sprite->unk12 = sprite->unkE - sprite->unkA;
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 void sub_80803FC(Sprite_IaUnknown *sprite)

@@ -4,7 +4,7 @@
 #include "trig.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -43,7 +43,7 @@ typedef struct {
     /* 0x188 */ Sprite unk188;
     /* 0x1B8 */ unk1B8 unk1B8;
 
-    /* 0x1C4 */ Interactable *ia;
+    /* 0x1C4 */ MapEntity *me;
     /* 0x1C8 */ u8 spriteX;
     /* 0x1C9 */ u8 spriteY;
 } Sprite_HCCrane; /* size: 0x1CC */
@@ -71,7 +71,7 @@ static void sub_8074604(Sprite_HCCrane *);
 
 #define CRANE_MAX_ACCELERATION (Q_8_8(12))
 
-void initSprite_Interactable_HotCrater_Crane(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_HotCrater_Crane(MapEntity *me, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
@@ -82,12 +82,12 @@ void initSprite_Interactable_HotCrater_Crane(Interactable *ia, u16 spriteRegionX
     u16 j;
 
     crane->unk1B8.unk0 = 0;
-    crane->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    crane->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    crane->ia = ia;
-    crane->spriteX = crane->ia->x;
+    crane->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    crane->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    crane->me = me;
+    crane->spriteX = crane->me->x;
     crane->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 
     cs = &crane->cs[0];
     cs->s = &crane->unk128;
@@ -489,7 +489,7 @@ static void Task_8073E20(void)
             }
 
             if (sub_80745B4(crane)) {
-                crane->ia->x = crane->spriteX;
+                crane->me->x = crane->spriteX;
                 TaskDestroy(gCurTask);
                 return;
             }
@@ -779,6 +779,6 @@ static bool32 sub_80745B4(Sprite_HCCrane *crane)
 
 static void sub_8074604(Sprite_HCCrane *crane)
 {
-    crane->ia->x = crane->spriteX;
+    crane->me->x = crane->spriteX;
     TaskDestroy(gCurTask);
 }

@@ -3,7 +3,7 @@
 #include "malloc_vram.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"

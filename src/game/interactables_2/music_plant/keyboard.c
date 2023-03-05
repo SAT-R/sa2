@@ -3,7 +3,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
 
 #include "constants/move_states.h"
@@ -24,7 +24,7 @@ typedef struct {
     /* 0x16 */ s16 unk16;
     /* 0x18 */ s16 unk18;
     /* 0x1A */ s16 unk1A;
-    /* 0x1C */ Interactable *ia;
+    /* 0x1C */ MapEntity *me;
     /* 0x20 */ u8 spriteX;
     /* 0x21 */ u8 spriteY;
 } Sprite_Keyboard; /* size: 0x24 */
@@ -52,7 +52,7 @@ const s16 sKeyboardAccelTechnoBase[3][2] = {
     { Q_8_8(5.0), Q_8_8(8.0) },
 };
 
-void initSprite_Interactable_MusicPlant_Keyboard(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_MusicPlant_Keyboard(MapEntity *me, u16 spriteRegionX,
                                                  u16 spriteRegionY, u8 spriteY, u32 type)
 {
     struct Task *t
@@ -62,24 +62,24 @@ void initSprite_Interactable_MusicPlant_Keyboard(Interactable *ia, u16 spriteReg
     Sprite_Keyboard *kb = TaskGetStructPtr(t);
     kb->kbType = type;
     kb->unk1 = 0;
-    kb->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    kb->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
+    kb->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    kb->posY = SpriteGetScreenPos(me->y, spriteRegionY);
 
     {
-        kb->unkC = ia->d.sData[0] * TILE_WIDTH;
-        kb->unkE = ia->d.sData[1] * TILE_WIDTH;
-        kb->unk10 = kb->unkC + ia->d.uData[2] * TILE_WIDTH;
-        kb->unk12 = kb->unkE + ia->d.uData[3] * TILE_WIDTH;
+        kb->unkC = me->d.sData[0] * TILE_WIDTH;
+        kb->unkE = me->d.sData[1] * TILE_WIDTH;
+        kb->unk10 = kb->unkC + me->d.uData[2] * TILE_WIDTH;
+        kb->unk12 = kb->unkE + me->d.uData[3] * TILE_WIDTH;
 
         kb->unk14 = (kb->unkC > 0) ? 0 : kb->unkC;
         kb->unk16 = (kb->unkE > 0) ? 0 : kb->unkE;
         kb->unk18 = (kb->unk10 < 0) ? 0 : kb->unk10;
         kb->unk1A = (kb->unk12 < 0) ? 0 : kb->unk12;
     }
-    kb->spriteX = ia->x;
+    kb->spriteX = me->x;
     kb->spriteY = spriteY;
-    kb->ia = ia;
-    SET_SPRITE_INITIALIZED(ia);
+    kb->me = me;
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_8076448(Sprite_Keyboard *kb)
@@ -290,34 +290,34 @@ static bool32 sub_8076848(Sprite_Keyboard *kb)
 
 static void DespawnKeyboard(Sprite_Keyboard *kb)
 {
-    kb->ia->x = kb->spriteX;
+    kb->me->x = kb->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Vertical(Interactable *ia,
+void initSprite_Interactable_MusicPlant_Keyboard_Vertical(MapEntity *me,
                                                           u16 spriteRegionX,
                                                           u16 spriteRegionY, u8 spriteY)
 {
     initSprite_Interactable_MusicPlant_Keyboard(
-        ia, spriteRegionX, spriteRegionY, spriteY, MUSIC_PLANT_KEYBOARD_TYPE_VERTICAL);
+        me, spriteRegionX, spriteRegionY, spriteY, MUSIC_PLANT_KEYBOARD_TYPE_VERTICAL);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft(Interactable *ia,
+void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft(MapEntity *me,
                                                                      u16 spriteRegionX,
                                                                      u16 spriteRegionY,
                                                                      u8 spriteY)
 {
     initSprite_Interactable_MusicPlant_Keyboard(
-        ia, spriteRegionX, spriteRegionY, spriteY,
+        me, spriteRegionX, spriteRegionY, spriteY,
         MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_LEFT);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight(Interactable *ia,
+void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight(MapEntity *me,
                                                                       u16 spriteRegionX,
                                                                       u16 spriteRegionY,
                                                                       u8 spriteY)
 {
     initSprite_Interactable_MusicPlant_Keyboard(
-        ia, spriteRegionX, spriteRegionY, spriteY,
+        me, spriteRegionX, spriteRegionY, spriteY,
         MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT);
 }

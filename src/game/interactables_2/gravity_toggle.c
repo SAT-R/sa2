@@ -28,14 +28,14 @@ typedef struct {
     /* 0x18 */ s16 unk18;
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ u8 filler1C[8];
-    /* 0x24 */ Interactable_GravityToggle *ia;
+    /* 0x24 */ Interactable_GravityToggle *me;
 
     // Tile-Pos inside spriteRegion
     /* 0x28 */ u8 spriteX;
     /* 0x29 */ u8 spriteY;
 } Sprite_GravityToggle;
 
-static void initSprite_Interactable098(Interactable *, u16, u16, u8, u8);
+static void initSprite_Interactable098(MapEntity *, u16, u16, u8, u8);
 static void Task_80801F8(void);
 static void TaskDestructor_8080230(struct Task *);
 static void sub_8080234(Sprite_GravityToggle *);
@@ -47,27 +47,27 @@ static void Task_8080318(void);
 #define GRAVITY_TOGGLE__UP     1
 #define GRAVITY_TOGGLE__TOGGLE 2
 
-static void initSprite_Interactable098(Interactable *in_ia, u16 spriteRegionX,
+static void initSprite_Interactable098(MapEntity *in_ia, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
     struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
-    Interactable_GravityToggle *ia = (Interactable_GravityToggle *)in_ia;
+    Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
     toggle->unk14 = toggleKind;
-    toggle->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    toggle->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    toggle->left = (ia->offsetX * 8);
-    toggle->top = (ia->offsetY * 8);
-    toggle->right = toggle->left + (ia->width * 8);
-    toggle->bottom = toggle->top + (ia->height * 8);
+    toggle->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    toggle->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    toggle->left = (me->offsetX * 8);
+    toggle->top = (me->offsetY * 8);
+    toggle->right = toggle->left + (me->width * 8);
+    toggle->bottom = toggle->top + (me->height * 8);
 
     toggle->width = toggle->right - toggle->left;
     toggle->height = toggle->bottom - toggle->top;
-    toggle->ia = ia;
-    toggle->spriteX = ia->x;
+    toggle->me = me;
+    toggle->spriteX = me->x;
     toggle->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 void sub_80800D4(Sprite_GravityToggle *toggle)
@@ -160,28 +160,28 @@ bool32 sub_8080254(Sprite_GravityToggle *toggle)
 
 void sub_808029C(Sprite_GravityToggle *toggle)
 {
-    toggle->ia->x = toggle->spriteX;
+    toggle->me->x = toggle->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Down(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX,
                                                   u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
                                GRAVITY_TOGGLE__DOWN);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Up(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
                                GRAVITY_TOGGLE__UP);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Toggle(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
                                                     u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable098(ia, spriteRegionX, spriteRegionY, spriteY,
+    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
                                GRAVITY_TOGGLE__TOGGLE);
 }
 

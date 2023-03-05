@@ -3,7 +3,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
 
 #include "constants/animations.h"
@@ -59,7 +59,7 @@ const u16 gUnknown_080DFC78[NUM_NOTE_BLOCK_TYPES + 1] = {
     SE_MUSIC_PLANT_GLOCKENSPIEL_6, MUS_DUMMY,
 };
 
-void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_MusicPlant_Note_Block(MapEntity *me, u16 spriteRegionX,
                                                    u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0,
@@ -70,13 +70,13 @@ void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteR
     block->unk4B = 3;
     block->unk44 = 0;
     block->unk46 = 0;
-    block->unk48 = ia->d.uData[0];
+    block->unk48 = me->d.uData[0];
 
     block->base.regionX = spriteRegionX;
     block->base.regionY = spriteRegionY;
-    block->base.ia = ia;
+    block->base.me = me;
 
-    block->base.spriteX = ia->x;
+    block->base.spriteX = me->x;
     block->base.spriteY = spriteY;
 
     s->unk1A = 0x480;
@@ -103,9 +103,9 @@ void initSprite_Interactable_MusicPlant_Note_Block(Interactable *ia, u16 spriteR
         s->variant = variant;
     }
 
-    block->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    block->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    block->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    block->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     sub_8004558(s);
 }
@@ -278,6 +278,6 @@ bool32 sub_8075D98(Sprite_NoteBlock *block)
 
 void sub_8075DE8(Sprite_NoteBlock *block)
 {
-    block->base.ia->x = block->base.spriteX;
+    block->base.me->x = block->base.spriteX;
     TaskDestroy(gCurTask);
 }

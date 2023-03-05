@@ -5,7 +5,7 @@
 #include "game/game.h"
 #include "task.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "game/game.h"
 
@@ -53,8 +53,8 @@ const TileInfo sBoosterAnimationData[2][6] = {
     if (gPlayer.speedGroundX < BOOSTER_SPEED)                                           \
         gPlayer.speedGroundX = BOOSTER_SPEED;
 
-void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
-                                     u16 spriteRegionY, u8 spriteY)
+void initSprite_Interactable_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster),
                                 0x2000, 0, TaskDestructor_80095E8);
@@ -64,24 +64,24 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
 
     booster->base.regionX = spriteRegionX;
     booster->base.regionY = spriteRegionY;
-    booster->base.ia = ia;
-    booster->base.spriteX = ia->x;
+    booster->base.me = me;
+    booster->base.spriteX = me->x;
     booster->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
         value = 1;
     else
         value = 0;
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 
     displayed->graphics.dest
-        = VramMalloc(sBoosterAnimationData[value][ia->d.sData[0]].numTiles);
-    displayed->graphics.anim = sBoosterAnimationData[value][ia->d.sData[0]].anim;
-    displayed->variant = sBoosterAnimationData[value][ia->d.sData[0]].variant;
+        = VramMalloc(sBoosterAnimationData[value][me->d.sData[0]].numTiles);
+    displayed->graphics.anim = sBoosterAnimationData[value][me->d.sData[0]].anim;
+    displayed->variant = sBoosterAnimationData[value][me->d.sData[0]].variant;
     displayed->unk1A = 0x480;
     displayed->graphics.size = 0;
     displayed->unk14 = 0;
@@ -92,11 +92,11 @@ void initSprite_Interactable_Booster(Interactable *ia, u16 spriteRegionX,
     displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2000;
 
-    if (ia->d.uData[2] != 0) {
+    if (me->d.uData[2] != 0) {
         displayed->unk10 |= 0x800;
     }
 
-    if (ia->d.sData[1] != 0) {
+    if (me->d.sData[1] != 0) {
         displayed->unk10 |= 0x400;
     }
 }
@@ -105,12 +105,12 @@ void Task_Interactable_Booster(void)
 {
     Sprite_Booster *booster = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &booster->displayed;
-    Interactable *ia = booster->base.ia;
+    MapEntity *me = booster->base.me;
 
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(booster->base.spriteX, booster->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, booster->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, booster->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
@@ -165,7 +165,7 @@ void Task_Interactable_Booster(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
-        ia->x = booster->base.spriteX;
+        me->x = booster->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_8004558(displayed);

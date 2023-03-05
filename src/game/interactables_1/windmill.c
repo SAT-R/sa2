@@ -1,9 +1,10 @@
 #include "global.h"
-#include "game/interactables_1/windmill.h"
 #include "malloc_vram.h"
 #include "sprite.h"
-#include "game/game.h"
 #include "trig.h"
+#include "game/game.h"
+#include "game/interactables_1/windmill.h"
+
 #include "constants/animations.h"
 
 typedef struct {
@@ -26,8 +27,8 @@ static const TileInfo sWindmillParts[] = {
     { 4, SA2_ANIM_WIND_MILL_PART, 6 },
 };
 
-void initSprite_InteractableWindmill(Interactable *ia, u16 spriteRegionX,
-                                     u16 spriteRegionY, u8 spriteY)
+void initSprite_InteractableWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
     u8 i, j;
     void *ramDests[4];
@@ -40,13 +41,13 @@ void initSprite_InteractableWindmill(Interactable *ia, u16 spriteRegionX,
     sprite = &windmill->center;
     windmill->base.regionX = spriteRegionX;
     windmill->base.regionY = spriteRegionY;
-    windmill->base.ia = ia;
-    windmill->base.spriteX = ia->x;
+    windmill->base.me = me;
+    windmill->base.spriteX = me->x;
     windmill->base.spriteY = spriteY;
 
-    sprite->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
     sprite->graphics.anim = sWindmillParts[4].anim;
@@ -95,18 +96,18 @@ static void Task_InteractableWindmillMain(void)
     struct UNK_808D124_UNK180 *transformConfig;
     InteractableWindmill *windmill = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &windmill->center;
-    Interactable *ia = windmill->base.ia;
+    MapEntity *me = windmill->base.me;
 
     s32 screenX, screenY;
     s32 baseX, baseY;
 
     screenX = SpriteGetScreenPos(windmill->base.spriteX, windmill->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, windmill->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, windmill->base.regionY);
     sprite->x = screenX - gCamera.x;
     sprite->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-        ia->x = windmill->base.spriteX;
+        me->x = windmill->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }

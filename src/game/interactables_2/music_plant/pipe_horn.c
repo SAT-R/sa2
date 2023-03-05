@@ -3,7 +3,7 @@
 #include "trig.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 
 #include "game/interactables_2/music_plant/pipe_horn.h"
@@ -184,11 +184,11 @@ bool32 sub_807794C(Sprite_Pipe_Horn *pipe)
 
 void sub_8077994(Sprite_Pipe_Horn *pipe)
 {
-    pipe->ia->x = pipe->spriteX;
+    pipe->me->x = pipe->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(Interactable *ia,
+void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(MapEntity *me,
                                                              u16 spriteRegionX,
                                                              u16 spriteRegionY,
                                                              u8 spriteY)
@@ -197,14 +197,14 @@ void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(Interactable *ia,
                                 TaskDestructor_Pipe);
     Sprite_Pipe_Horn *pipe = TaskGetStructPtr(t);
 
-    pipe->kind = ia->d.sData[0];
-    pipe->ia = ia;
+    pipe->kind = me->d.sData[0];
+    pipe->me = me;
 
-    pipe->spriteX = ia->x;
+    pipe->spriteX = me->x;
     pipe->spriteY = spriteY;
-    pipe->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    pipe->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    pipe->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    pipe->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 void sub_8077A3C(void)
@@ -363,11 +363,11 @@ bool32 sub_8077CB0(Sprite_Pipe_Horn *horn)
 
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *horn)
 {
-    horn->ia->x = horn->spriteX;
+    horn->me->x = horn->spriteX;
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(Interactable *ia,
+void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(MapEntity *me,
                                                          u16 spriteRegionX,
                                                          u16 spriteRegionY, u8 spriteY)
 {
@@ -375,14 +375,14 @@ void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(Interactable *ia,
                                 0x2010, 0, TaskDestructor_FrenchHorn);
     Sprite_Pipe_Horn *horn = TaskGetStructPtr(t);
 
-    horn->kind = ia->d.sData[0];
-    horn->ia = ia;
-    horn->spriteX = ia->x;
+    horn->kind = me->d.sData[0];
+    horn->me = me;
+    horn->spriteX = me->x;
     horn->spriteY = spriteY;
 
-    horn->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    horn->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    horn->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    horn->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 void TaskDestructor_FrenchHorn(struct Task *t) { }

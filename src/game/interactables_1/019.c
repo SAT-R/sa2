@@ -4,7 +4,7 @@
 #include "task.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "data.h"
 
@@ -17,7 +17,7 @@ typedef struct {
     s16 unk3C;
 } Sprite_019;
 
-// @NOTE/@BUG: This only has 2 entries, so using this Interactable in
+// @NOTE/@BUG: This only has 2 entries, so using this MapEntity in
 // anything beyond Leaf Forest Act 2 will use a wrong AnimID.
 static const u16 sInt019_AnimationIds[]
     = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE,
@@ -37,7 +37,7 @@ static void TaskDestructor_Interactable019(struct Task *);
 // @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
 
-void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable_019(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0,
@@ -49,16 +49,16 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
 
     base->regionX = spriteRegionX;
     base->regionY = spriteRegionY;
-    base->ia = ia;
-    base->spriteX = ia->x;
+    base->me = me;
+    base->spriteX = me->x;
     base->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 
     platform->unk3C = 0;
 
     // @BUG Loads the -2 set through SET_SPRITE_INITIALIZED
-    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
+    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
     displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
 #ifdef UBFIX
@@ -79,7 +79,7 @@ void initSprite_Interactable_019(Interactable *ia, u16 spriteRegionX, u16 sprite
     displayed->focused = FALSE;
     displayed->unk10 = 0x2000;
 
-    if (ia->d.sData[0] != 0) {
+    if (me->d.sData[0] != 0) {
         displayed->unk10 |= 0x400;
     }
 
@@ -91,11 +91,11 @@ void Task_Interactable_019(void)
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &platform->base;
     Sprite *displayed = &platform->displayed;
-    Interactable *ia = base->ia;
+    MapEntity *me = base->me;
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(base->spriteX, base->regionX);
-    screenY = SpriteGetScreenPos(ia->y, base->regionY);
+    screenY = SpriteGetScreenPos(me->y, base->regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
@@ -106,7 +106,7 @@ void Task_Interactable_019(void)
     }
 
     if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)ia->x == SPRITE_STATE_UNK_MINUS_THREE)) {
+        && ((s8)me->x == SPRITE_STATE_UNK_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     }
@@ -118,7 +118,7 @@ void Task_Interactable_019(void)
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
-        ia->x = base->spriteX;
+        me->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(displayed);
@@ -129,11 +129,11 @@ void Task_805E35C(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &platform->displayed;
-    Interactable *ia = platform->base.ia;
+    MapEntity *me = platform->base.me;
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
@@ -141,7 +141,7 @@ void Task_805E35C(void)
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
     if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)ia->x == SPRITE_STATE_UNK_MINUS_THREE)) {
+        && ((s8)me->x == SPRITE_STATE_UNK_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     } else if (platform->unk3C++ > 30) {
@@ -154,7 +154,7 @@ void Task_805E35C(void)
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
-        ia->x = platform->base.spriteX;
+        me->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(displayed);
@@ -165,7 +165,7 @@ void Task_805E480(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &platform->displayed;
-    Interactable *ia = platform->base.ia;
+    MapEntity *me = platform->base.me;
     s16 screenX, screenY;
     s16 otherPos;
     u8 r6, x, y;
@@ -173,7 +173,7 @@ void Task_805E480(void)
     u16 *oam;
 
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
@@ -187,7 +187,7 @@ void Task_805E480(void)
         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
         if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
-            ia->x = platform->base.spriteX;
+            me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -255,7 +255,7 @@ void Task_805E6A4(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &platform->displayed;
-    Interactable *ia = platform->base.ia;
+    MapEntity *me = platform->base.me;
 
     s16 screenX, screenY;
     s16 otherPos;
@@ -264,7 +264,7 @@ void Task_805E6A4(void)
     u16 *oam;
 
     screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, platform->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
@@ -276,7 +276,7 @@ void Task_805E6A4(void)
         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
         if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
-            ia->x = platform->base.spriteX;
+            me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -298,7 +298,7 @@ void Task_805E6A4(void)
             if (r4 > otherPos) {
                 if (r6 == 0) {
                     TaskDestroy(gCurTask);
-                    ia->x = platform->base.spriteX;
+                    me->x = platform->base.spriteX;
                 }
                 return;
             }

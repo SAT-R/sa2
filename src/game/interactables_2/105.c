@@ -2,7 +2,7 @@
 #include "gba/types.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x0A */ u16 offsetY;
     /* 0x0C */ u16 width;
     /* 0x0E */ u16 height;
-    /* 0x10 */ Interactable *ia;
+    /* 0x10 */ MapEntity *me;
     /* 0x14 */ u8 spriteX;
     /* 0x15 */ u8 spriteY;
 } Sprite_IA105;
@@ -28,23 +28,23 @@ static bool32 sub_80809B8(Sprite_IA105 *);
 static bool32 sub_8080A9C(Sprite_IA105 *);
 static void sub_8080AE4(Sprite_IA105 *);
 
-void initSprite_Interactable105(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable105(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable105, sizeof(Sprite_IA105), 0x1FF0, 0,
                                 TaskDestructor_Interactable105);
     Sprite_IA105 *sprite = TaskGetStructPtr(t);
 
-    sprite->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    sprite->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    sprite->offsetX = ia->d.sData[0] * TILE_WIDTH;
-    sprite->offsetY = ia->d.sData[1] * TILE_WIDTH;
-    sprite->width = ia->d.uData[2] * TILE_WIDTH + sprite->offsetX;
-    sprite->height = ia->d.uData[3] * TILE_WIDTH + sprite->offsetY;
-    sprite->ia = ia;
-    sprite->spriteX = ia->x;
+    sprite->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    sprite->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->offsetX = me->d.sData[0] * TILE_WIDTH;
+    sprite->offsetY = me->d.sData[1] * TILE_WIDTH;
+    sprite->width = me->d.uData[2] * TILE_WIDTH + sprite->offsetX;
+    sprite->height = me->d.uData[3] * TILE_WIDTH + sprite->offsetY;
+    sprite->me = me;
+    sprite->spriteX = me->x;
     sprite->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static bool32 sub_80809B8(Sprite_IA105 *sprite)
@@ -103,6 +103,6 @@ static bool32 sub_8080A9C(Sprite_IA105 *sprite)
 
 static void sub_8080AE4(Sprite_IA105 *sprite)
 {
-    sprite->ia->x = sprite->spriteX;
+    sprite->me->x = sprite->spriteX;
     TaskDestroy(gCurTask);
 }

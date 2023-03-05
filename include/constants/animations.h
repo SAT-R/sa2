@@ -122,7 +122,7 @@
 #define SA2_ANIM_ANIMAL_KOALA     528
 #define SA2_ANIM_ANIMAL_ELEPHANT  529
 
-// Interactable
+// MapEntity
 #define SA2_ANIM_LEVEL_START_MACHINE     530
 #define SA2_ANIM_CHECKPOINT              531
 #define SA2_ANIM_VARIANT_CHECKPOINT_IDLE 0
