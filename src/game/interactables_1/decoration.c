@@ -28,7 +28,6 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 
 #define decoId d.sData[0]
 
-// InteractableDecorationInit
 void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
                                         u8 spriteY)
 {
