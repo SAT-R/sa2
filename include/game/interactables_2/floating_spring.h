@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable_FloatingSpring_Up(MapEntity *ia, u16 spriteRegionX,
+void initSprite_Interactable_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY);
 
 #endif

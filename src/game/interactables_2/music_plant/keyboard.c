@@ -4,7 +4,7 @@
 #include "trig.h"
 
 #include "game/entity.h"
-#include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/music_plant/note_particle.h"
 
 #include "constants/move_states.h"
 #include "constants/songs.h"

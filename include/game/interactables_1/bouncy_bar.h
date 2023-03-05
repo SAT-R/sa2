@@ -4,7 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable_BouncyBar(MapEntity *ia, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY);
+void initSprite_Interactable_BouncyBar(MapEntity *, u16, u16, u8);
 
 #endif // GUARD_INTERACTABLE_BOUNCY_BAR_H
