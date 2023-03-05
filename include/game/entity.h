@@ -11,6 +11,18 @@
 #define ENTITY_DATA_SIZE_SA3 5
 #define ENTITY_DATA_SIZE     ENTITY_DATA_SIZE_SA2
 
+// After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
+#define MAP_ENTITY_STATE_INITIALIZED (-2)
+#define MAP_ENTITY_STATE_MINUS_THREE (-3)
+#define SET_MAP_ENTITY_INITIALIZED(target)                                              \
+    {                                                                                   \
+        s32 negativeTwo;                                                                \
+        s16 forMatching;                                                                \
+        negativeTwo = MAP_ENTITY_STATE_INITIALIZED;                                     \
+        forMatching = negativeTwo;                                                      \
+        target->x = forMatching;                                                        \
+    }
+
 typedef struct {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)

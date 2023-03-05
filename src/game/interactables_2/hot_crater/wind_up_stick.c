@@ -49,7 +49,7 @@ void initSprite_Interactable_WindUpStick(MapEntity *me, u16 spriteRegionX,
     windUpStick->me = me;
     windUpStick->spriteX = me->x;
     windUpStick->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_8072650(void)

@@ -107,7 +107,7 @@ static void initSprite_Interactable_Spring(u8 springType, MapEntity *me,
 
     displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     displayed->unk1A = 0x480;
     displayed->graphics.size = springKind;

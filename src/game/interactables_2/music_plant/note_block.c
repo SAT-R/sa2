@@ -105,7 +105,7 @@ void initSprite_Interactable_MusicPlant_Note_Block(MapEntity *me, u16 spriteRegi
 
     block->posX = SpriteGetScreenPos(me->x, spriteRegionX);
     block->posY = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     sub_8004558(s);
 }

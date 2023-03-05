@@ -204,7 +204,7 @@ void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(MapEntity *me,
     pipe->spriteY = spriteY;
     pipe->posX = SpriteGetScreenPos(me->x, spriteRegionX);
     pipe->posY = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 void sub_8077A3C(void)
@@ -382,7 +382,7 @@ void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(MapEntity *me,
 
     horn->posX = SpriteGetScreenPos(me->x, spriteRegionX);
     horn->posY = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 void TaskDestructor_FrenchHorn(struct Task *t) { }

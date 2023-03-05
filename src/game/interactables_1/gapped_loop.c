@@ -190,7 +190,7 @@ void initSprite_Interactable_gappedLoop_Start(MapEntity *me, u16 spriteRegionX,
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;
     gappedLoop->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     gappedLoop->unkC
         = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) - 96);
@@ -207,7 +207,7 @@ void initSprite_Interactable_gappedLoop_End(MapEntity *me, u16 spriteRegionX,
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;
     gappedLoop->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     // BUG: not sure if these offset values are correct for the reverse
     gappedLoop->unkC

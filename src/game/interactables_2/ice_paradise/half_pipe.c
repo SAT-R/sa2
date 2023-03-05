@@ -52,7 +52,7 @@ static void initSprite_Interactable_IceParadise_HalfPipe(MapEntity *me,
     halfPipe->me = me;
     halfPipe->spriteX = me->x;
     halfPipe->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void Task_HalfPipeSequenceMain(void)

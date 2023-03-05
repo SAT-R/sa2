@@ -96,7 +96,7 @@ void initSprite_Interactable_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX,
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)

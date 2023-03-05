@@ -83,7 +83,7 @@ void initSprite_Interactable_Checkpoint(MapEntity *me, u16 spriteRegionX,
 
     disp->x = SpriteGetScreenPos(me->x, spriteRegionX);
     disp->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     disp->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
     disp->graphics.anim = SA2_ANIM_CHECKPOINT;
@@ -267,5 +267,5 @@ void initSprite_Interactable_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegio
         toggle->base.spriteY = spriteY;
     }
 
-    SET_SPRITE_INITIALIZED(in_ia);
+    SET_MAP_ENTITY_INITIALIZED(in_ia);
 }

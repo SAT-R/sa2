@@ -128,7 +128,7 @@ void initSprite_InteractableTecBaseLightBridge(MapEntity *me, u16 spriteRegionX,
         vram += sBridgeSprites[i][2] * TILE_SIZE_4BPP;
     }
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void Task_LightBridgeActive(void)

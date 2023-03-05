@@ -54,7 +54,7 @@ void initSprite_Interactable_IceParadise_SlowingSnow(MapEntity *in_ia, u16 sprit
 
     snow->posX = SpriteGetScreenPos(me->x, spriteRegionX);
     snow->posY = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)

@@ -61,7 +61,7 @@ void initSprite_Interactable080(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->graphics.anim = 600;
     sprite->variant = 0;
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static bool32 sub_807B190(Sprite_IA80 *ia80)

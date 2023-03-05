@@ -72,7 +72,7 @@ void initSprite_Interactable_MusicPlant_GuitarString(MapEntity *me, u16 spriteRe
 
     gs->posX = SpriteGetScreenPos(me->x, spriteRegionX);
     gs->posY = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     sub_8004558(s);
 
