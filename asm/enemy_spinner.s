@@ -5,8 +5,6 @@
 .arm
 
 .if 00
-.endif
-
 	thumb_func_start Task_EnemySpinner
 Task_EnemySpinner: @ 0x08057024
 	push {r4, r5, r6, r7, lr}
@@ -18,20 +16,21 @@ Task_EnemySpinner: @ 0x08057024
 	ldr r0, _08057174 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r0, [r0, #6]
-	mov r8, r0
+	mov r8, r0          @ r8 = structPtrPart
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	add r0, r8
-	str r0, [sp, #4]
+	str r0, [sp, #4]    @ sp04 = spinner
 	ldr r6, _08057178 @ =IWRAM_START + 0xC
-	add r6, r8
+	add r6, r8          @ r6 = s
 	ldr r0, [r0]
-	str r0, [sp]
+	str r0, [sp]        @ sp00 = me
+
 	ldr r1, [sp, #4]
 	ldr r0, [r1, #0x44]
 	asrs r4, r0, #8
 	ldr r0, [r1, #0x48]
-	asrs r5, r0, #8
+	asrs r5, r0, #8     @ r5 = Q_24_8_TO_INT(spinner->poxY)
 	ldr r1, _0805717C @ =gCamera
 	ldr r0, [r1]
 	subs r0, r4, r0
@@ -39,17 +38,18 @@ Task_EnemySpinner: @ 0x08057024
 	ldr r0, [r1, #4]
 	subs r0, r5, r0
 	strh r0, [r6, #0x18]
+
 	ldr r2, _08057180 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	ldr r1, _08057184 @ =0x00400080
 	ands r0, r1
 	cmp r0, #0
 	bne _0805713E
-	mov sl, r2
+	mov sl, r2      @ sl = r2 = gPlayer
 	mov r0, sl
 	adds r0, #0x90
 	ldr r0, [r0]
-	mov ip, r0
+	mov ip, r0      @ ip = gPlayer.unk90
 	movs r0, #0xc
 	add r0, ip
 	mov sb, r0
@@ -61,11 +61,12 @@ Task_EnemySpinner: @ 0x08057024
 	ldr r0, [r6, #0x30]
 	cmp r0, r1
 	beq _0805712E
+
 	ldr r0, _08057188 @ =IWRAM_START + 0x40
 	add r0, r8
 	movs r7, #0
 	ldrsb r7, [r0, r7]
-	adds r3, r7, r4
+	adds r3, r7, r4     @ r3 = someX
 	mov r1, sl
 	ldr r0, [r1, #8]
 	asrs r0, r0, #8
@@ -207,3 +208,4 @@ _080571A4:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif

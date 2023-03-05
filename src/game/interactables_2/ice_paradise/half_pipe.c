@@ -1,10 +1,12 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
 #include "task.h"
+#include "trig.h"
+#include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
-#include "trig.h"
+
+#include "constants/move_states.h"
 
 typedef struct {
     s32 x;

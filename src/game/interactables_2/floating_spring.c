@@ -1,13 +1,15 @@
 #include "global.h"
 #include "core.h"
+#include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"
-#include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/entity.h"
 #include "game/interactables_2/floating_spring.h"
-#include "constants/songs.h"
+
 #include "constants/animations.h"
+#include "constants/move_states.h"
+#include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;

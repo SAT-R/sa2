@@ -5,11 +5,16 @@
 #include "game/entity.h"
 
 #include "constants/animations.h"
+#include "constants/move_states.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ u8 filler3C[8];
+    /* 0x3C */ u8 filler3C[4];
+    /* 0x40 */ s8 unk40;
+    /* 0x41 */ s8 unk41;
+    /* 0x42 */ s8 unk42;
+    /* 0x43 */ s8 unk43;
     /* 0x44 */ s32 posX;
     /* 0x48 */ s32 posY;
 } Sprite_Spinner;
@@ -18,6 +23,9 @@ typedef struct {
 
 void Task_EnemySpinner(void);
 void TaskDestructor_80095E8(struct Task *);
+
+extern bool32 sub_800C4FC(Sprite*, s32, s32, u8);
+extern void sub_80122DC(s32, s32);
 
 void initSprite_Enemy_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
@@ -54,3 +62,50 @@ void initSprite_Enemy_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->unk28[1].unk0 = -1;
     s->unk10 = 0x2000;
 }
+
+#if 001
+void Task_EnemySpinner(void)
+{
+    s32 posX, posY;
+    s32 someX, otherX;
+    Sprite_Spinner *spinner = TaskGetStructPtr(gCurTask);
+    Sprite *s = &spinner->s;
+    MapEntity* me = spinner->base.me;
+
+    posX = Q_24_8_TO_INT(spinner->posX);
+    posY = Q_24_8_TO_INT(spinner->posY);
+    s->x = posX - gCamera.x;
+    s->y = posY - gCamera.y;
+
+    if(!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD)))
+    {
+        struct UNK_3005A70 *u90 = gPlayer.unk90;
+        if((u90->s->unk28[0].unk0 == -1)
+        && (u90->s->unk28[1].unk0 == -1)) {
+            someX  = spinner->unk40 + posX;
+            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->unk38;
+            if((someX > otherX) || someX + (spinner->unk42 - spinner->unk40))
+            {
+                /* TODO */
+            }
+        }
+        //_0805712E
+        if(sub_800C4FC(s, posX, posY, 0))
+        {
+            SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
+            TaskDestroy(gCurTask);
+            return;
+        }
+    }
+    // _0805713E
+    if(IS_OUT_OF_CAM_RANGE(s->x, s->y))
+    {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
+        TaskDestroy(gCurTask);
+    } else {
+        sub_80122DC(Q_24_8(s->x), Q_24_8(s->y));
+        sub_8004558(s);
+        sub_80051E8(s);
+    }
+}
+#endif
