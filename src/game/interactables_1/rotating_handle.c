@@ -3,7 +3,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_1/rotating_handle.h"
 #include "malloc_vram.h"
 #include "sprite.h"
@@ -24,26 +24,26 @@ typedef struct {
 void sub_805EA94(void);
 void TaskDestructor_80095E8(struct Task *);
 
-void initSprite_Interactable_RotatingHandle(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_RotatingHandle(MapEntity *me, u16 spriteRegionX,
                                             u16 spriteRegionY, u8 spriteY)
 {
-    if (ia->d.sData[0] >= 0) {
+    if (me->d.sData[0] >= 0) {
         struct Task *t
             = TaskCreate(sub_805EA94, 0x44, 0x2010, 0, TaskDestructor_80095E8);
         Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(t);
         Sprite *sprite = &rotatingHandle->sprite;
         rotatingHandle->base.regionX = spriteRegionX;
         rotatingHandle->base.regionY = spriteRegionY;
-        rotatingHandle->base.ia = ia;
-        rotatingHandle->base.spriteX = ia->x;
+        rotatingHandle->base.me = me;
+        rotatingHandle->base.spriteX = me->x;
         rotatingHandle->base.spriteY = spriteY;
         rotatingHandle->unk3C = 0;
         rotatingHandle->unk3E = 0;
         rotatingHandle->unk40 = 0;
 
-        sprite->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-        sprite->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-        SET_SPRITE_INITIALIZED(ia);
+        sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
+        sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+        SET_SPRITE_INITIALIZED(me);
 
         sprite->graphics.dest = VramMalloc(9);
         sprite->graphics.anim = 546;
@@ -67,10 +67,10 @@ void sub_805EA94(void)
 {
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &rotatingHandle->sprite;
-    Interactable *ia = rotatingHandle->base.ia;
+    MapEntity *me = rotatingHandle->base.me;
     s32 x
         = SpriteGetScreenPos(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
-    s32 y = SpriteGetScreenPos(ia->y, rotatingHandle->base.regionY);
+    s32 y = SpriteGetScreenPos(me->y, rotatingHandle->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
@@ -130,7 +130,7 @@ void sub_805EA94(void)
         gCurTask->main = sub_805ECA0;
     } else {
         if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-            ia->x = rotatingHandle->base.spriteX;
+            me->x = rotatingHandle->base.spriteX;
             TaskDestroy(gCurTask);
             return;
         }
@@ -147,14 +147,14 @@ void sub_805EF90(void);
 //     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
 //     SpriteBase *base = &rotatingHandle->base;
 //     Sprite *sprite = &rotatingHandle->sprite;
-//     Interactable *ia = base->ia;
+//     MapEntity *me = base->me;
 //     u32 temp;
 //     u32 tempX;
 //     register u32 cycle;
 //     s32 x, y;
 //     s32 sin, cos;
 //     x = SpriteGetScreenPos(base->spriteX, base->regionX);
-//     y = SpriteGetScreenPos(ia->y, base->regionY);
+//     y = SpriteGetScreenPos(me->y, base->regionY);
 
 //     temp = (rotatingHandle->unk3E + rotatingHandle->unk3C);
 //     temp &= 0x3FF0;
@@ -176,7 +176,7 @@ void sub_805EF90(void);
 //     if (gPlayer.unk5E & gPlayerControls.jump) {
 //         u32 temp2;
 //         gPlayer.unk6D = 5;
-//         ia->x = base->spriteX;
+//         me->x = base->spriteX;
 //         sub_80218E4(&gPlayer);
 //         sub_8023B5C(&gPlayer, 9);
 //         gPlayer.unk16 = 6;
@@ -249,7 +249,7 @@ void sub_805EF90(void);
 //     }
 
 //     if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-//         ia->x = base->spriteX;
+//         me->x = base->spriteX;
 //         TaskDestroy(gCurTask);
 //         return;
 //     }
@@ -261,11 +261,11 @@ void sub_805EF90(void);
 // void sub_805EF90(void)
 // {
 //     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
-//     Interactable *ia = &rotatingHandle->base.ia;
+//     MapEntity *me = &rotatingHandle->base.me;
 //     Sprite *sprite = &rotatingHandle->sprite;
 //     u8 spriteX = rotatingHandle->base.spriteX;
 //     u16 regionX = rotatingHandle->base.regionX;
-//     u8 spriteY = ia->y;
+//     u8 spriteY = me->y;
 //     u16 regionY = rotatingHandle->base.regionY;
 
 //     u32 temp, tempX;
@@ -295,7 +295,7 @@ void sub_805EF90(void);
 //     sprite->y = SpriteGetScreenPos(spriteY, regionY) - gCamera.y;
 
 //     if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-//         ia->x = rotatingHandle->base.spriteX;
+//         me->x = rotatingHandle->base.spriteX;
 //         TaskDestroy(gCurTask);
 //         return;
 //     }
