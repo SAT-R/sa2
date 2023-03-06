@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/turn_around_bar.h"
 #include "task.h"
 #include "sprite.h"
@@ -27,7 +27,7 @@ static void sub_8073600(void);
 static void sub_80736E0(Sprite_TurnAroundBar *);
 static void sub_807371C(Sprite_TurnAroundBar *);
 
-void initSprite_InteractableTurnAroundBar(Interactable *ia, u16 spriteRegionX,
+void initSprite_InteractableTurnAroundBar(MapEntity *me, u16 spriteRegionX,
                                           u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar),
@@ -37,8 +37,8 @@ void initSprite_InteractableTurnAroundBar(Interactable *ia, u16 spriteRegionX,
 
     turnAroundBar->base.regionX = spriteRegionX;
     turnAroundBar->base.regionY = spriteRegionY;
-    turnAroundBar->base.ia = ia;
-    turnAroundBar->base.spriteX = ia->x;
+    turnAroundBar->base.me = me;
+    turnAroundBar->base.spriteX = me->x;
     turnAroundBar->base.spriteY = spriteY;
 
     sprite->unk1A = 0x480;
@@ -55,9 +55,9 @@ void initSprite_InteractableTurnAroundBar(Interactable *ia, u16 spriteRegionX,
     sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     sprite->variant = 0;
 
-    turnAroundBar->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    turnAroundBar->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    turnAroundBar->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    turnAroundBar->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
     sub_8004558(sprite);
 }
 
@@ -120,13 +120,13 @@ static void Task_TurnAroundBarMain(void)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &turnAroundBar->sprite;
-    Interactable *ia = turnAroundBar->base.ia;
+    MapEntity *me = turnAroundBar->base.me;
     if (sub_8073520(turnAroundBar) == 2) {
         sub_8073670(turnAroundBar);
     }
 
     if (sub_8073784(turnAroundBar)) {
-        ia->x = turnAroundBar->base.spriteX;
+        me->x = turnAroundBar->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         sub_8073760(turnAroundBar);

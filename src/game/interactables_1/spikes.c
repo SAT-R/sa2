@@ -5,7 +5,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"
@@ -34,14 +34,14 @@ static void sub_805F928(void);
 static void sub_805FBA0(void);
 static void Task_805FF68(void);
 static void Task_806012C(void);
-static bool32 sub_80601F8(Sprite *, Interactable *, Sprite_Spikes *, Player *);
-static bool32 sub_8060440(Sprite *, Interactable *, Sprite_Spikes *, Player *);
-static bool32 sub_8060554(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
-static bool32 sub_80609B4(Sprite *, Interactable *, Sprite_Spikes *, Player *, u32 *);
+static bool32 sub_80601F8(Sprite *, MapEntity *, Sprite_Spikes *, Player *);
+static bool32 sub_8060440(Sprite *, MapEntity *, Sprite_Spikes *, Player *);
+static bool32 sub_8060554(Sprite *, MapEntity *, Sprite_Spikes *, Player *, u32 *);
+static bool32 sub_80609B4(Sprite *, MapEntity *, Sprite_Spikes *, Player *, u32 *);
 static void TaskDestructor_8060CF4(struct Task *);
 static u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
-void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Spikes_Up(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F810, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
@@ -52,13 +52,13 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
     spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
-    spikes->base.ia = ia;
-    spikes->base.spriteX = ia->x;
+    spikes->base.me = me;
+    spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
@@ -82,7 +82,7 @@ void initSprite_Interactable_Spikes_Up(Interactable *ia, u16 spriteRegionX,
     sub_8004558(s);
 }
 
-void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Spikes_Down(MapEntity *me, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F928, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
@@ -93,13 +93,13 @@ void initSprite_Interactable_Spikes_Down(Interactable *ia, u16 spriteRegionX,
     spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
-    spikes->base.ia = ia;
-    spikes->base.spriteX = ia->x;
+    spikes->base.me = me;
+    spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
@@ -122,22 +122,22 @@ static void sub_805F810(void)
 {
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
-    Interactable *ia = spikes->base.ia;
+    MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-        sub_80601F8(s, ia, spikes, &gPlayer);
+        sub_80601F8(s, me, spikes, &gPlayer);
     } else {
-        sub_8060440(s, ia, spikes, &gPlayer);
+        sub_8060440(s, me, spikes, &gPlayer);
     }
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
         if (spikes->unk3C[0] & 0xC0000) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -149,7 +149,7 @@ static void sub_805F810(void)
     }
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        ia->x = spikes->base.spriteX;
+        me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -163,25 +163,25 @@ static void sub_805F928(void)
 {
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
-    Interactable *ia = spikes->base.ia;
+    MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (ia->d.sData[0] != 0)
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
         || (gUnknown_030053E0 != 0)) {
         if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-            sub_8060440(s, ia, spikes, &gPlayer);
+            sub_8060440(s, me, spikes, &gPlayer);
         } else {
-            sub_80601F8(s, ia, spikes, &gPlayer);
+            sub_80601F8(s, me, spikes, &gPlayer);
         }
     }
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
         if (spikes->unk3C[0] & MOVESTATE_20) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -193,18 +193,18 @@ static void sub_805F928(void)
     }
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        ia->x = spikes->base.spriteX;
+        me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-            || (ia->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
+            || (me->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
             sub_8004558(s);
             sub_80051E8(s);
         }
     }
 }
 
-void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805FBA0, sizeof(Sprite_Spikes), 0x2000, 0,
@@ -216,13 +216,13 @@ void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegion
     spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
-    spikes->base.ia = ia;
-    spikes->base.spriteX = ia->x;
+    spikes->base.me = me;
+    spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
@@ -242,14 +242,14 @@ void initSprite_Interactable_Spikes_LeftRight(Interactable *ia, u16 spriteRegion
 
     switch (gGameMode) {
         case GAME_MODE_MULTI_PLAYER_COLLECT_RINGS: {
-            if (ia->index == IA__SPIKES__NORMAL_LEFT) {
+            if (me->index == IA__SPIKES__NORMAL_LEFT) {
                 // X-Flip
                 s->unk10 |= 0x400;
             }
         } break;
 
         default: {
-            if (ia->index == IA__SPIKES__NORMAL_LEFT) {
+            if (me->index == IA__SPIKES__NORMAL_LEFT) {
                 // X-Flip
                 s->unk10 |= 0x400;
             }
@@ -264,19 +264,19 @@ static void sub_805FBA0(void)
     // Decls had to be split to match, for some reason
     s16 screenX, screenY;
     Sprite *s;
-    Interactable *ia;
+    MapEntity *me;
     Sprite_Spikes *spikes;
     spikes = TaskGetStructPtr(gCurTask);
     s = &spikes->s;
-    ia = spikes->base.ia;
+    me = spikes->base.me;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || ia->d.sData[0] != 0
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS || me->d.sData[0] != 0
         || gUnknown_030053E0 != 0) {
         // _0805FC16
         s32 r4 = sub_800CCB8(s, screenX, screenY, &gPlayer);
@@ -333,7 +333,7 @@ static void sub_805FBA0(void)
             gPlayer.speedGroundX = 0;
 
             iaIndex = IA__SPIKES__NORMAL_LEFT;
-            if (iaIndex != ia->index) {
+            if (iaIndex != me->index) {
                 if (sub_800CBA4(&gPlayer)) {
                     m4aSongNumStart(SE_SPIKES);
                 }
@@ -352,7 +352,7 @@ static void sub_805FBA0(void)
                 gPlayer.speedGroundX = 0;
 
                 iaIndex = IA__SPIKES__NORMAL_LEFT;
-                if (iaIndex == ia->index) {
+                if (iaIndex == me->index) {
                     if (sub_800CBA4(&gPlayer)) {
                         m4aSongNumStart(SE_SPIKES);
                     }
@@ -362,7 +362,7 @@ static void sub_805FBA0(void)
     }
     // _0805FDA4
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0)
         && (gUnknown_030053E0 == 0)) {
         if (spikes->unk3C[0] & 0x20) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -374,10 +374,10 @@ static void sub_805FBA0(void)
     }
     // _0805FDF0
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        ia->x = spikes->base.spriteX;
+        me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (ia->d.sData[0] != 0)
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
             || (gUnknown_030053E0 != 0)) {
             sub_8004558(s);
             sub_80051E8(s);
@@ -385,7 +385,7 @@ static void sub_805FBA0(void)
     }
 }
 
-void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
@@ -397,13 +397,13 @@ void initSprite_Interactable_Spikes_HidingUp(Interactable *ia, u16 spriteRegionX
     spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
-    spikes->base.ia = ia;
-    spikes->base.spriteX = ia->x;
+    spikes->base.me = me;
+    spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
@@ -428,22 +428,22 @@ static void Task_805FF68(void)
     u32 someParam = 0;
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
-    Interactable *ia = spikes->base.ia;
+    MapEntity *me = spikes->base.me;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        ia->x = spikes->base.spriteX;
+        me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
         if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-            procResult = sub_8060554(s, ia, spikes, &gPlayer, &someParam);
+            procResult = sub_8060554(s, me, spikes, &gPlayer, &someParam);
         } else {
-            procResult = sub_80609B4(s, ia, spikes, &gPlayer, &someParam);
+            procResult = sub_80609B4(s, me, spikes, &gPlayer, &someParam);
         }
 
         if (procResult) {
@@ -453,7 +453,7 @@ static void Task_805FF68(void)
     }
 }
 
-void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_806012C, sizeof(Sprite_Spikes), 0x2000, 0,
@@ -465,13 +465,13 @@ void initSprite_Interactable_Spikes_HidingDown(Interactable *ia, u16 spriteRegio
     spikes->unk3C[0] = 0;
     spikes->base.regionX = spriteRegionX;
     spikes->base.regionY = spriteRegionY;
-    spikes->base.ia = ia;
-    spikes->base.spriteX = ia->x;
+    spikes->base.me = me;
+    spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
@@ -496,22 +496,22 @@ static void Task_806012C(void)
     u32 someParam = 0;
     Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
     Sprite *s = &spikes->s;
-    Interactable *ia = spikes->base.ia;
+    MapEntity *me = spikes->base.me;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if (IS_OUT_OF_RANGE_OLD(u16, s->x, s->y, (CAM_REGION_WIDTH))) {
-        ia->x = spikes->base.spriteX;
+        me->x = spikes->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
         if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-            procResult = sub_80609B4(s, ia, spikes, &gPlayer, &someParam);
+            procResult = sub_80609B4(s, me, spikes, &gPlayer, &someParam);
         } else {
-            procResult = sub_8060554(s, ia, spikes, &gPlayer, &someParam);
+            procResult = sub_8060554(s, me, spikes, &gPlayer, &someParam);
         }
 
         if (procResult) {
@@ -521,7 +521,7 @@ static void Task_806012C(void)
     }
 }
 
-bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *player)
+bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *player)
 {
     s16 screenX, screenY;
 
@@ -531,12 +531,12 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
 #endif
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (ia->d.sData[0] == 0)
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (me->d.sData[0] == 0)
         && (gUnknown_030053E0 == 30)) {
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
 
@@ -644,14 +644,14 @@ bool32 sub_80601F8(Sprite *s, Interactable *ia, Sprite_Spikes *spikes, Player *p
     return FALSE;
 }
 
-static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player)
 {
 
     s16 screenX, screenY;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -692,7 +692,7 @@ static bool32 sub_8060440(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     return FALSE;
 }
 
-static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4) //)
 {
     s16 screenX, screenY;
@@ -700,7 +700,7 @@ static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     s32 sl = (s8)player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -863,7 +863,7 @@ static bool32 sub_8060554(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     return TRUE;
 }
 
-static bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
+static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4)
 {
     s16 screenX, screenY;
@@ -871,7 +871,7 @@ static bool32 sub_80609B4(Sprite *s, Interactable *ia, Sprite_Spikes *spikes,
     s32 sl = (s8)player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, spikes->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;

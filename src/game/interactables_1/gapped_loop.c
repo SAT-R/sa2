@@ -2,7 +2,7 @@
 #include "core.h"
 #include "task.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_1/gapped_loop.h"
 #include "constants/move_states.h"
 #include "sprite.h"
@@ -22,20 +22,20 @@ static void Task_JumpSequenceReverse(void);
 static void Task_GappedLoopForwardsMain(void)
 {
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
-    Interactable *ia = gappedLoop->base.ia;
+    MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x = SpriteGetScreenPos(spriteX, regionX);
-    s32 y = SpriteGetScreenPos(ia->y, regionY);
+    s32 y = SpriteGetScreenPos(me->y, regionY);
 
     if (PlayerIsAlive) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
-            && (x + ia->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
+            && (x + me->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
             if (y <= Q_24_8_TO_INT(gPlayer.y)
-                && (y + ia->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
+                && (y + me->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
                 if (y <= Q_24_8_TO_INT(gPlayer.y)
-                    && (y + ia->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
+                    && (y + me->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
                     if (gPlayer.speedGroundX > Q_24_8(3)
                         && !(gPlayer.moveState
                              & (MOVESTATE_FACING_LEFT | MOVESTATE_IN_AIR))) {
@@ -53,7 +53,7 @@ static void Task_GappedLoopForwardsMain(void)
     x -= gCamera.x;
     y -= gCamera.y;
     if (IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
@@ -61,7 +61,7 @@ static void Task_GappedLoopForwardsMain(void)
 static void Task_JumpSequenceForwards(void)
 {
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
-    Interactable *ia = gappedLoop->base.ia;
+    MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
@@ -69,13 +69,13 @@ static void Task_JumpSequenceForwards(void)
     s8 r3;
 
     if (!PlayerIsAlive) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
     x = SpriteGetScreenPos(spriteX, regionX);
-    y = SpriteGetScreenPos(ia->y, regionY);
+    y = SpriteGetScreenPos(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.unk24 += gappedLoop->spinSpeed;
@@ -95,7 +95,7 @@ static void Task_JumpSequenceForwards(void)
     }
 
     if (IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
@@ -103,20 +103,20 @@ static void Task_JumpSequenceForwards(void)
 static void Task_GappedLoopReverseMain(void)
 {
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
-    Interactable *ia = gappedLoop->base.ia;
+    MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
     s32 x = SpriteGetScreenPos(spriteX, regionX);
-    s32 y = SpriteGetScreenPos(ia->y, regionY);
+    s32 y = SpriteGetScreenPos(me->y, regionY);
     if (PlayerIsAlive) {
-        s32 base = (x + ia->d.sData[0] * 8);
+        s32 base = (x + me->d.sData[0] * 8);
         if (base <= Q_24_8_TO_INT(gPlayer.x)
-            && (base + ia->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
+            && (base + me->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
             if (y <= Q_24_8_TO_INT(gPlayer.y)
-                && (y + ia->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
+                && (y + me->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
                 if (y <= Q_24_8_TO_INT(gPlayer.y)
-                    && (y + ia->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
+                    && (y + me->d.uData[3] * 8) >= Q_24_8_TO_INT(gPlayer.y)) {
                     if (gPlayer.speedGroundX < -Q_24_8(3)
                         && (gPlayer.moveState & MOVESTATE_FACING_LEFT)
                         && !(gPlayer.moveState & MOVESTATE_IN_AIR)) {
@@ -134,7 +134,7 @@ static void Task_GappedLoopReverseMain(void)
     x -= gCamera.x;
     y -= gCamera.y;
     if (IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
@@ -142,7 +142,7 @@ static void Task_GappedLoopReverseMain(void)
 static void Task_JumpSequenceReverse(void)
 {
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
-    Interactable *ia = gappedLoop->base.ia;
+    MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
@@ -150,13 +150,13 @@ static void Task_JumpSequenceReverse(void)
     s8 r3;
 
     if (!PlayerIsAlive) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
     x = SpriteGetScreenPos(spriteX, regionX);
-    y = SpriteGetScreenPos(ia->y, regionY);
+    y = SpriteGetScreenPos(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.unk24 += gappedLoop->spinSpeed;
@@ -175,12 +175,12 @@ static void Task_JumpSequenceReverse(void)
     }
 
     if (IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
 
-void initSprite_Interactable_gappedLoop_Start(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_gappedLoop_Start(MapEntity *me, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop),
@@ -188,16 +188,16 @@ void initSprite_Interactable_gappedLoop_Start(Interactable *ia, u16 spriteRegion
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
-    gappedLoop->base.ia = ia;
-    gappedLoop->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    gappedLoop->base.me = me;
+    gappedLoop->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 
     gappedLoop->unkC
         = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) - 96);
-    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(ia->y, spriteRegionY) + 96);
+    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY) + 96);
 }
 
-void initSprite_Interactable_gappedLoop_End(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_gappedLoop_End(MapEntity *me, u16 spriteRegionX,
                                             u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop),
@@ -205,12 +205,12 @@ void initSprite_Interactable_gappedLoop_End(Interactable *ia, u16 spriteRegionX,
     Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
-    gappedLoop->base.ia = ia;
-    gappedLoop->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    gappedLoop->base.me = me;
+    gappedLoop->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 
     // BUG: not sure if these offset values are correct for the reverse
     gappedLoop->unkC
         = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) + 96);
-    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(ia->y, spriteRegionY) + 96);
+    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY) + 96);
 }

@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/tec_base/light_bridge.h"
 #include "sprite.h"
 #include "task.h"
@@ -38,7 +38,7 @@ typedef struct {
     bool8 playingSfx;
     u8 unk6C;
     void *vram;
-    Interactable *ia;
+    MapEntity *me;
     s8 spriteX;
     s8 spriteY;
 } Sprite_LightBridge;
@@ -87,7 +87,7 @@ static const s16 sCurvedBridgePositions[][3] = {
     { 83, -58, 0 }, { 88, -69, 0 }, { 91, -81, 0 }, { 92, -92, 0 },
 };
 
-void initSprite_InteractableTecBaseLightBridge(Interactable *ia, u16 spriteRegionX,
+void initSprite_InteractableTecBaseLightBridge(MapEntity *me, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
     void *vram;
@@ -97,15 +97,15 @@ void initSprite_InteractableTecBaseLightBridge(Interactable *ia, u16 spriteRegio
                      TaskDestructor_InteractableTecBaseLightBridge);
     Sprite_LightBridge *lightBridge = TaskGetStructPtr(t);
     Sprite *sprite;
-    lightBridge->type = ia->d.uData[0];
-    lightBridge->unk6C = ia->d.uData[1];
+    lightBridge->type = me->d.uData[0];
+    lightBridge->unk6C = me->d.uData[1];
     lightBridge->active = FALSE;
     lightBridge->playingSfx = FALSE;
-    lightBridge->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    lightBridge->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    lightBridge->spriteX = ia->x;
+    lightBridge->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    lightBridge->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    lightBridge->spriteX = me->x;
     lightBridge->spriteY = spriteY;
-    lightBridge->ia = ia;
+    lightBridge->me = me;
 
     vram = VramMalloc(SPRITE_TILES * NUM_BRIDGE_SPRITES);
     lightBridge->vram = vram;
@@ -128,7 +128,7 @@ void initSprite_InteractableTecBaseLightBridge(Interactable *ia, u16 spriteRegio
         vram += sBridgeSprites[i][2] * TILE_SIZE_4BPP;
     }
 
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void Task_LightBridgeActive(void)
@@ -354,6 +354,6 @@ static void HandleSfx(Sprite_LightBridge *lightBridge)
 static void DespawnBridge(Sprite_LightBridge *lightBridge)
 {
     m4aSongNumStop(SE_295);
-    lightBridge->ia->x = lightBridge->spriteX;
+    lightBridge->me->x = lightBridge->spriteX;
     TaskDestroy(gCurTask);
 }

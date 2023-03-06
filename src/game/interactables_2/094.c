@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "lib/m4a.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/094.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
@@ -19,7 +19,7 @@ typedef struct {
     s32 unk14;
     s32 unk18;
     bool32 unk1C;
-    Interactable *ia;
+    MapEntity *me;
     u8 spriteX;
     u8 spriteY;
 } Sprite_IA94;
@@ -27,29 +27,29 @@ typedef struct {
 static void Task_Interactable094(void);
 static void TaskDestructor_Interactable094(struct Task *);
 
-void initSprite_Interactable094(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable094(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_IA94), 0x2010, 0,
                                 TaskDestructor_Interactable094);
     Sprite_IA94 *ia94 = TaskGetStructPtr(t);
-    ia94->unk0 = SpriteGetScreenPos(ia->x, spriteRegionX);
-    ia94->unk4 = SpriteGetScreenPos(ia->y, spriteRegionY);
+    ia94->unk0 = SpriteGetScreenPos(me->x, spriteRegionX);
+    ia94->unk4 = SpriteGetScreenPos(me->y, spriteRegionY);
 
-    ia94->unk8 = ia->d.sData[0] * 8;
-    ia94->unkA = ia->d.sData[1] * 8;
-    ia94->unkC = ia94->unk8 + ia->d.uData[2] * 8;
-    ia94->unkE = ia94->unkA + ia->d.uData[3] * 8;
+    ia94->unk8 = me->d.sData[0] * 8;
+    ia94->unkA = me->d.sData[1] * 8;
+    ia94->unkC = ia94->unk8 + me->d.uData[2] * 8;
+    ia94->unkE = ia94->unkA + me->d.uData[3] * 8;
 
     ia94->unk10 = ia94->unkC - ia94->unk8;
     ia94->unk12 = ia94->unkE - ia94->unkA;
 
     ia94->unk14 = ((ia94->unk8 + ia94->unkC) >> 1) + ia94->unk0;
     ia94->unk18 = ((ia94->unkA + ia94->unkE) >> 1) + ia94->unk4;
-    ia94->ia = ia;
-    ia94->spriteX = ia->x;
+    ia94->me = me;
+    ia94->spriteX = me->x;
     ia94->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_807ED68(Sprite_IA94 *);
@@ -239,6 +239,6 @@ static bool32 sub_807EDB8(Sprite_IA94 *ia94)
 
 static void sub_807EE1C(Sprite_IA94 *ia94)
 {
-    ia94->ia->x = ia94->spriteX;
+    ia94->me->x = ia94->spriteX;
     TaskDestroy(gCurTask);
 }

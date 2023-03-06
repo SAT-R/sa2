@@ -2,7 +2,7 @@
 #include "core.h"
 #include "task.h"
 #include "sprite.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "lib/m4a.h"
@@ -28,7 +28,7 @@ const s8 gUnknown_080D94EE[] = { -16, -18, -20 };
 
 const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
 
-void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_BouncyBar(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
     Sprite *displayed;
@@ -39,8 +39,8 @@ void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
 
     bar->base.regionX = spriteRegionX;
     bar->base.regionY = spriteRegionY;
-    bar->base.ia = ia;
-    bar->base.spriteX = ia->x;
+    bar->base.me = me;
+    bar->base.spriteX = me->x;
     bar->base.spriteY = spriteY;
 
     bar->unk3C = 0;
@@ -48,9 +48,9 @@ void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
     bar->unk3E = 0;
     bar->unk40 = 0;
 
-    displayed->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     displayed->graphics.dest = VramMalloc(0x18);
     displayed->graphics.anim = 0x21A;
@@ -66,7 +66,7 @@ void initSprite_Interactable_BouncyBar(Interactable *ia, u16 spriteRegionX,
     displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2000;
 
-    if (ia->d.sData[0] != 0) {
+    if (me->d.sData[0] != 0) {
         displayed->unk10 |= 0x400;
     }
 }
@@ -75,12 +75,12 @@ void sub_806160C(void)
 {
     BouncyBar *bar = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &bar->displayed;
-    Interactable *ia = bar->base.ia;
+    MapEntity *me = bar->base.me;
 
     s32 screenX, screenY;
 
     screenX = SpriteGetScreenPos(bar->base.spriteX, bar->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, bar->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, bar->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
@@ -112,7 +112,7 @@ void sub_806160C(void)
         bar->unk3C = 2 - bar->unk3C;
         m4aSongNumStart(SE_279);
     } else if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
-        ia->x = bar->base.spriteX;
+        me->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
@@ -125,12 +125,12 @@ void sub_80617A4(void)
 {
     BouncyBar *bar = TaskGetStructPtr(gCurTask);
     Sprite *displayed = &bar->displayed;
-    Interactable *ia = bar->base.ia;
+    MapEntity *me = bar->base.me;
 
     s32 screenX, screenY;
 
     screenX = SpriteGetScreenPos(bar->base.spriteX, bar->base.regionX);
-    screenY = SpriteGetScreenPos(ia->y, bar->base.regionY);
+    screenY = SpriteGetScreenPos(me->y, bar->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
@@ -156,7 +156,7 @@ void sub_80617A4(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
-        ia->x = bar->base.spriteX;
+        me->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }

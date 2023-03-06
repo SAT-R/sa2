@@ -2,7 +2,7 @@
 #include "task.h"
 
 #include "game/game.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
 #include "constants/move_states.h"
 
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x04 */ s8 offsetY;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} Interactable_SlidyIce PACKED;
+} MapEntity_SlidyIce PACKED;
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -26,7 +26,7 @@ typedef struct {
 void Task_Interactable_IceParadise_SlidyIce(void)
 {
     Sprite_SlidyIce *ice = TaskGetStructPtr(gCurTask);
-    Interactable_SlidyIce *ia = (Interactable_SlidyIce *)ice->base.ia;
+    MapEntity_SlidyIce *me = (MapEntity_SlidyIce *)ice->base.me;
     u8 spriteX = ice->base.spriteX;
 
     s32 regionX, regionY;
@@ -34,17 +34,17 @@ void Task_Interactable_IceParadise_SlidyIce(void)
     regionX = ice->base.regionX;
     regionY = ice->base.regionY;
     screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(ia->y, regionY);
+    screenY = SpriteGetScreenPos(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        s32 posX = (screenX + ia->offsetX * TILE_WIDTH);
+        s32 posX = (screenX + me->offsetX * TILE_WIDTH);
 
         if ((posX <= Q_24_8_TO_INT(gPlayer.x))
-            && ((posX + ia->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))) {
-            s32 posY = screenY + ia->offsetY * TILE_WIDTH;
+            && ((posX + me->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))) {
+            s32 posY = screenY + me->offsetY * TILE_WIDTH;
 
             if ((posY <= Q_24_8_TO_INT(gPlayer.y))
-                && ((posY + ia->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
+                && ((posY + me->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
                 gPlayer.moveState |= MOVESTATE_800;
             }
         }
@@ -55,12 +55,12 @@ void Task_Interactable_IceParadise_SlidyIce(void)
     screenY -= gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
-        ia->x = spriteX;
+        me->x = spriteX;
         TaskDestroy(gCurTask);
     }
 }
 
-void initSprite_Interactable_IceParadise_SlidyIce(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_IceParadise_SlidyIce(MapEntity *me, u16 spriteRegionX,
                                                   u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -69,7 +69,7 @@ void initSprite_Interactable_IceParadise_SlidyIce(Interactable *ia, u16 spriteRe
     Sprite_SlidyIce *ice = TaskGetStructPtr(t);
     ice->base.regionX = spriteRegionX;
     ice->base.regionY = spriteRegionY;
-    ice->base.ia = ia;
-    ice->base.spriteX = ia->x;
-    SET_SPRITE_INITIALIZED(ia);
+    ice->base.me = me;
+    ice->base.spriteX = me->x;
+    SET_SPRITE_INITIALIZED(me);
 }

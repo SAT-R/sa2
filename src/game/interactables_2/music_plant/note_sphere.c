@@ -7,7 +7,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
 
 #include "constants/animations.h"
@@ -56,7 +56,7 @@ static const u16 sNoteSphereSfx[8] = {
     SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
-void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_MusicPlant_Note_Sphere(MapEntity *me, u16 spriteRegionX,
                                                     u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -66,12 +66,12 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     Sprite *s = &note->disp;
     note->unk44 = 0;
     note->unk46 = 0;
-    note->kind = ia->d.uData[0];
+    note->kind = me->d.uData[0];
 
     note->base.regionX = spriteRegionX;
     note->base.regionY = spriteRegionY;
-    note->base.ia = ia;
-    note->base.spriteX = ia->x;
+    note->base.me = me;
+    note->base.spriteX = me->x;
     note->base.spriteY = spriteY;
     s->unk1A = 0x480;
     s->graphics.size = 0;
@@ -88,9 +88,9 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(Interactable *ia, u16 sprite
     s->graphics.anim = sNoteSphereAnimInfo[note->kind][0];
     s->variant = sNoteSphereAnimInfo[note->kind][1];
 
-    note->posX = SpriteGetScreenPos(ia->x, spriteRegionX);
-    note->posY = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    note->posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    note->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     sub_8004558(s);
 }
@@ -263,6 +263,6 @@ static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)
 
 static void NoteSphere_Despawn(Sprite_NoteSphere *note)
 {
-    note->base.ia->x = note->base.spriteX;
+    note->base.me->x = note->base.spriteX;
     TaskDestroy(gCurTask);
 }

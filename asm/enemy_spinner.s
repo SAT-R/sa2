@@ -12,19 +12,19 @@ initSprite_Enemy_Spinner: @ 0x08056F28
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	mov r8, r0
+	mov r8, r0          @ r8 = en
 	adds r4, r1, #0
 	adds r6, r2, #0
 	mov sb, r3
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10  @ r4 = spriteRegionX
 	lsls r6, r6, #0x10
-	lsrs r6, r6, #0x10
+	lsrs r6, r6, #0x10  @ r6 = spriteRegionY
 	mov r0, sb
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	mov sb, r0
-	ldr r0, _08057004 @ =sub_8057024
+	mov sb, r0          @ sb = spriteY
+	ldr r0, _08057004 @ =Task_EnemySpinner
 	ldr r2, _08057008 @ =0x00004040
 	ldr r1, _0805700C @ =TaskDestructor_80095E8
 	str r1, [sp]
@@ -34,7 +34,7 @@ initSprite_Enemy_Spinner: @ 0x08056F28
 	ldrh r2, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
-	adds r1, r2, r1
+	adds r1, r2, r1         @ r1 = spinner
 	ldr r3, _08057010 @ =IWRAM_START + 0xC
 	adds r5, r2, r3
 	movs r7, #0
@@ -115,7 +115,7 @@ initSprite_Enemy_Spinner: @ 0x08056F28
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08057004: .4byte sub_8057024
+_08057004: .4byte Task_EnemySpinner
 _08057008: .4byte 0x00004040
 _0805700C: .4byte TaskDestructor_80095E8
 _08057010: .4byte IWRAM_START + 0xC
@@ -124,8 +124,8 @@ _08057018: .4byte IWRAM_START + 0x2C
 _0805701C: .4byte IWRAM_START + 0x2E
 _08057020: .4byte IWRAM_START + 0x31
 
-	thumb_func_start sub_8057024
-sub_8057024: @ 0x08057024
+	thumb_func_start Task_EnemySpinner
+Task_EnemySpinner: @ 0x08057024
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

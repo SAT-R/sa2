@@ -8,7 +8,7 @@
 
 #include "data.h"
 #include "flags.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
@@ -55,7 +55,7 @@ static const u16 sAnimIdsCheckpoint[NUM_COURSE_ZONES + 1][2] = {
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
 
-void initSprite_Interactable_Checkpoint(Interactable *ia, u16 spriteRegionX,
+void initSprite_Interactable_Checkpoint(MapEntity *me, u16 spriteRegionX,
                                         u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t;
@@ -77,13 +77,13 @@ void initSprite_Interactable_Checkpoint(Interactable *ia, u16 spriteRegionX,
 
     chkPt->base.regionX = spriteRegionX;
     chkPt->base.regionY = spriteRegionY;
-    chkPt->base.ia = ia;
-    chkPt->base.spriteX = ia->x;
+    chkPt->base.me = me;
+    chkPt->base.spriteX = me->x;
     chkPt->base.spriteY = spriteY;
 
-    disp->x = SpriteGetScreenPos(ia->x, spriteRegionX);
-    disp->y = SpriteGetScreenPos(ia->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(ia);
+    disp->x = SpriteGetScreenPos(me->x, spriteRegionX);
+    disp->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    SET_SPRITE_INITIALIZED(me);
 
     disp->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
     disp->graphics.anim = SA2_ANIM_CHECKPOINT;
@@ -109,16 +109,16 @@ void Task_8062FD8(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
     Sprite *disp = &chkPt->displayed;
-    Interactable *ia = chkPt->base.ia;
+    MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
-        ia->x = chkPt->base.spriteX;
+        me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
@@ -149,16 +149,16 @@ void Task_8063108(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
     Sprite *disp = &chkPt->displayed;
-    Interactable *ia = chkPt->base.ia;
+    MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
-        ia->x = chkPt->base.spriteX;
+        me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
@@ -174,16 +174,16 @@ void Task_806319C(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
     Sprite *disp = &chkPt->displayed;
-    Interactable *ia = chkPt->base.ia;
+    MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(ia->y, chkPt->base.regionY);
+    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
-        ia->x = chkPt->base.spriteX;
+        me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     }
@@ -223,18 +223,18 @@ void Task_8063228(void)
 static void Task_Interactable_Toggle_Checkpoint(void)
 {
     Sprite_Toggle_Checkpoint *toggle = TaskGetStructPtr(gCurTask);
-    Interactable *ia = toggle->base.ia;
+    MapEntity *me = toggle->base.me;
     s32 posX, posY;
     s16 screenX, screenY;
 
     posX = SpriteGetScreenPos(toggle->base.spriteX, toggle->base.regionX);
-    posY = SpriteGetScreenPos(ia->y, toggle->base.regionY);
+    posY = SpriteGetScreenPos(me->y, toggle->base.regionY);
 
     screenX = posX - gCamera.x;
     screenY = posY - gCamera.y;
 
     if (IS_OUT_OF_CAM_RANGE(screenX, screenY)) {
-        ia->x = toggle->base.spriteX;
+        me->x = toggle->base.spriteX;
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
                && posX <= Q_24_8_TO_INT(gPlayer.x)) {
@@ -252,7 +252,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
     }
 }
 
-void initSprite_Interactable_Toggle_Checkpoint(Interactable *in_ia, u16 spriteRegionX,
+void initSprite_Interactable_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
     if (gUnknown_030055B0 == 0) {
@@ -262,7 +262,7 @@ void initSprite_Interactable_Toggle_Checkpoint(Interactable *in_ia, u16 spriteRe
         Sprite_Toggle_Checkpoint *toggle = TaskGetStructPtr(t);
         toggle->base.regionX = spriteRegionX;
         toggle->base.regionY = spriteRegionY;
-        toggle->base.ia = in_ia;
+        toggle->base.me = in_ia;
         toggle->base.spriteX = in_ia->x;
         toggle->base.spriteY = spriteY;
     }

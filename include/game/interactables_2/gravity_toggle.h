@@ -2,15 +2,12 @@
 #define GUARD_INTERACTABLE_098_H
 
 #include "global.h"
-#include "game/interactable.h"
+#include "game/entity.h"
 
-void initSprite_Interactable098_Down(Interactable *ia, u16 spriteRegionX,
-                                     u16 spriteRegionY, u8 spriteY);
+void initSprite_Interactable098_Down(MapEntity *, u16, u16, u8);
 
-void initSprite_Interactable098_Up(Interactable *ia, u16 spriteRegionX,
-                                   u16 spriteRegionY, u8 spriteY);
+void initSprite_Interactable098_Up(MapEntity *, u16, u16, u8);
 
-void initSprite_Interactable098_Toggle(Interactable *ia, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY);
+void initSprite_Interactable098_Toggle(MapEntity *, u16, u16, u8);
 
 #endif // GUARD_INTERACTABLE_098_H

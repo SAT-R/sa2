@@ -29,7 +29,7 @@ static bool32 sub_807F120(Sprite_IA95 *);
 static void TaskDestructor_Interactable095(struct Task *);
 static void DestroyInteractable095(Sprite_IA95 *);
 
-void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteRegionY,
+void initSprite_Interactable095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
@@ -39,10 +39,10 @@ void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteR
     ia95->unk44 = 0;
     ia95->unk48 = 0;
 
-    ia95->base.ia = ia;
+    ia95->base.me = me;
     ia95->base.regionX = spriteRegionX;
     ia95->base.regionY = spriteRegionY;
-    ia95->base.spriteX = ia->x;
+    ia95->base.spriteX = me->x;
     ia95->base.spriteY = spriteY;
 
     sprite = &ia95->sprite;
@@ -60,8 +60,8 @@ void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteR
     sprite->variant = 0;
     sub_8004558(sprite);
 
-    if (ia->d.uData[2] > ia->d.uData[3]) {
-        if (ia->d.sData[0] >= 0) {
+    if (me->d.uData[2] > me->d.uData[3]) {
+        if (me->d.sData[0] >= 0) {
             ia95->unk4C = 4;
             ia95->unk4E = 0;
             ia95->unk50 = 0;
@@ -71,7 +71,7 @@ void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteR
             ia95->unk50 = 0x80;
         }
     } else {
-        if (ia->d.sData[1] >= 0) {
+        if (me->d.sData[1] >= 0) {
             ia95->unk4C = 0;
             ia95->unk4E = 4;
             ia95->unk50 = 0;
@@ -83,15 +83,15 @@ void initSprite_Interactable095(Interactable *ia, u16 spriteRegionX, u16 spriteR
     }
     sub_807EFC4(ia95);
     sub_807F0D8(ia95);
-    SET_SPRITE_INITIALIZED(ia);
+    SET_SPRITE_INITIALIZED(me);
 }
 
 static void sub_807EFC4(Sprite_IA95 *ia95)
 {
-    Interactable *ia = ia95->base.ia;
+    MapEntity *me = ia95->base.me;
 
     if (ia95->unk4C != 0) {
-        s32 temp = ia->d.uData[2] * 0x800;
+        s32 temp = me->d.uData[2] * 0x800;
         ia95->unk44 = (temp
                        * SIN((ia95->unk4C * ((gUnknown_03005590 + ia95->unk50) & 0xFF))
                              & ONE_CYCLE))
@@ -99,7 +99,7 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
     }
 
     if (ia95->unk4E != 0) {
-        s32 temp = (ia->d.uData[3] * 0x800);
+        s32 temp = (me->d.uData[3] * 0x800);
         ia95->unk48 = (temp
                        * SIN((ia95->unk4E * ((gUnknown_03005590 + ia95->unk50) & 0xFF))
                              & ONE_CYCLE))
@@ -109,7 +109,7 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
     ia95->unk3C = SpriteGetScreenPos(ia95->base.spriteX, ia95->base.regionX)
         + Q_24_8_TO_INT(ia95->unk44);
     ia95->unk40
-        = SpriteGetScreenPos(ia->y, ia95->base.regionY) + Q_24_8_TO_INT(ia95->unk48);
+        = SpriteGetScreenPos(me->y, ia95->base.regionY) + Q_24_8_TO_INT(ia95->unk48);
 }
 
 static void Task_Interactable095Main(void)
@@ -147,15 +147,15 @@ static void sub_807F0D8(Sprite_IA95 *ia95)
 
 static bool32 sub_807F120(Sprite_IA95 *ia95)
 {
-    Interactable *ia = ia95->base.ia;
+    MapEntity *me = ia95->base.me;
     s16 x = ia95->unk3C - gCamera.x;
     s16 y = ia95->unk40 - gCamera.y;
 
-    if (x < -((ia->d.uData[2] * 8) + 0x80) || x > (ia->d.uData[2] * 8) + 0x170) {
+    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
         return TRUE;
     }
 
-    if (y < -((ia->d.uData[3] * 8) + 0x80) || y > (ia->d.uData[3] * 8) + 0x120) {
+    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x120) {
         return TRUE;
     }
 
@@ -177,6 +177,6 @@ static bool32 sub_807F17C(Sprite_IA95 *ia95)
 
 static void DestroyInteractable095(Sprite_IA95 *ia95)
 {
-    ia95->base.ia->x = ia95->base.spriteX;
+    ia95->base.me->x = ia95->base.spriteX;
     TaskDestroy(gCurTask);
 }
