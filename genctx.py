@@ -1,7 +1,17 @@
 import glob
 import itertools as it
-from graphlib import TopologicalSorter
 import sys
+
+# NOTE(Jace):
+#  "ImportError: cannot import name 'TopologicalSorter' from 'graphlib'"
+#
+# If you get the above error message, try uninstalling graphlib and install graphlib-backport instead.
+# 
+# Alternatively you can try updating to a Python version equal to or newer than 3.9,
+# and reinstall the module, though I haven't tested that yet.
+# The information on graphlib-backport is from:
+# https://stackoverflow.com/questions/71119487/cannot-get-topologicalsorter-from-graphlib
+from graphlib import TopologicalSorter
 
 if len(sys.argv) > 1 and sys.argv[1] == '-e':
     excluded = sys.argv[1:]
