@@ -84,9 +84,20 @@ void Task_EnemySpinner(void)
         && (u90->s->unk28[1].unk0 == -1)) {
             someX  = spinner->unk40 + posX;
             otherX = Q_24_8_TO_INT(gPlayer.x) + u90->unk38;
-            if((someX > otherX) || someX + (spinner->unk42 - spinner->unk40))
+            if((someX > otherX) 
+            || someX + (spinner->unk42 - spinner->unk40))
             {
+                // _080570C2
+                if(otherX + (u90->unk3A - u90->unk38))
+                {
+
+                }
                 /* TODO */
+            }
+
+            if(!(gPlayer.unk37 & 0x2))
+            {
+                sub_800CBA4(&gPlayer);
             }
         }
         //_0805712E

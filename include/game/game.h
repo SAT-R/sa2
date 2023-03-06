@@ -137,6 +137,8 @@ struct UNK_3005A70 {
     /* 0x31 */ u8 unk31;
     /* 0x32 */ u8 filler32[0x6];
     /* 0x38 */ s8 unk38;
+    /* 0x38 */ s8 unk39;
+    /* 0x38 */ s8 unk3A;
 }; /* size: unknown? */
 
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00

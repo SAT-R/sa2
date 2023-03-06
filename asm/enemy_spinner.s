@@ -65,17 +65,17 @@ Task_EnemySpinner: @ 0x08057024
 	ldr r0, _08057188 @ =IWRAM_START + 0x40
 	add r0, r8
 	movs r7, #0
-	ldrsb r7, [r0, r7]
+	ldrsb r7, [r0, r7]  @ r7 = spinner->unk40
 	adds r3, r7, r4     @ r3 = someX
 	mov r1, sl
 	ldr r0, [r1, #8]
-	asrs r0, r0, #8
+	asrs r0, r0, #8     @ r0 = Q_24_8(gPlayer.x)
 	mov r1, ip
 	adds r1, #0x38
-	ldrb r1, [r1]
+	ldrb r1, [r1]       @ r1 = u90->unk38 
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18
-	adds r2, r0, r1
+	adds r2, r0, r1     @ r2 = otherX
 	cmp r3, r2
 	bgt _080570C2
 	ldr r0, _0805718C @ =IWRAM_START + 0x42
