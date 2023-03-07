@@ -162,7 +162,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/notification_ring_bonus.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon_init.o(.text);
         build/sa2/src/game/interactables_2/105.o(.text);
-        build/sa2/src/game/interactables_2/music_plant/note_particle.o(.text);
+        build/sa2/src/game/interactables_2/note_particle.o(.text);
         build/sa2/src/game/interactables_2/special_ring.o(.text);
         build/sa2/src/game/multiboot/connection.o(.text);
         build/sa2/src/game/multiboot/collect_rings/results.o(.text);
@@ -281,7 +281,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);
         build/sa2/src/game/interactables_2/078.o(.rodata);
         build/sa2/data/data1_2_3.o(.rodata);
-        build/sa2/src/game/interactables_2/music_plant/note_particle.o(.rodata);
+        build/sa2/src/game/interactables_2/note_particle.o(.rodata);
         build/sa2/src/game/multiboot/connection.o(.rodata);
         build/sa2/src/game/multiboot/collect_rings/time_display.o(.rodata);
         build/sa2/data/math_data.o(.rodata);

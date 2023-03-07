@@ -8,7 +8,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/interactables_2/music_plant/note_particle.h"
+#include "game/interactables_2/note_particle.h"
 
 #include "constants/animations.h"
 
