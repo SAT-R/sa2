@@ -129,7 +129,7 @@ extern struct Task *gUnknown_03005844;
 struct UNK_3005A70 {
     /* 0x00 */ u8 filler0[0xC];
     // TODO: Confirm type of 0x0C
-    /* 0x0C */ Sprite* s;
+    /* 0x0C */ Sprite *s;
     /* 0x10 */ u8 filler10[0xC];
     /* 0x1C */ u32 unk1C;
     /* 0x20 */ u8 filler20[0x10];

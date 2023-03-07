@@ -2,11 +2,7 @@
 .include "constants/constants.inc"
 
 .syntax unified
-.arm
-
-.if 00
-	thumb_func_start Task_EnemySpinner
-Task_EnemySpinner: @ 0x08057024
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -52,7 +48,7 @@ Task_EnemySpinner: @ 0x08057024
 	mov ip, r0      @ ip = gPlayer.unk90
 	movs r0, #0xc
 	add r0, ip
-	mov sb, r0
+	mov sb, r0      @ sb = u90->s
 	ldr r0, [r0, #0x28]
 	movs r1, #1
 	rsbs r1, r1, #0
@@ -76,35 +72,35 @@ Task_EnemySpinner: @ 0x08057024
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18
 	adds r2, r0, r1     @ r2 = otherX
-	cmp r3, r2
+	cmp r3, r2          @ someX > otherX
 	bgt _080570C2
 	ldr r0, _0805718C @ =IWRAM_START + 0x42
-	add r0, r8
+	add r0, r8          @ r0 = spinner->unk42
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	subs r0, r0, r7
-	adds r0, r3, r0
+	asrs r0, r0, #0x18  @ r7 = spinner->unk40
+	subs r0, r0, r7     @ r0 = unk42-unk40
+	adds r0, r3, r0     @ r0 = someX + r0
 	cmp r0, r2
 	bge _080570D4
-	cmp r3, r2
+	cmp r3, r2          @ someX < otherX
 	blt _0805712E
 _080570C2:
-	mov r0, ip
+	mov r0, ip          @ r0 = gPlayer.unk90
 	adds r0, #0x3a
-	ldrb r0, [r0]
+	ldrb r0, [r0]       @ u90->unk3A
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	subs r0, r0, r1
-	adds r0, r2, r0
+	subs r0, r0, r1     @ r0 = unk3A - unk38
+	adds r0, r2, r0     @ r0 = otherX + r0
 	cmp r0, r3
 	blt _0805712E
 _080570D4:
 	adds r0, r6, #0
-	adds r0, #0x35
+	adds r0, #0x35      @ r0 = &s->unk28[1].unk5
 	movs r3, #0
 	ldrsb r3, [r0, r3]
-	adds r2, r3, r5
+	adds r2, r3, r5     @ r2 = r0 + posY
 	mov r1, sl
 	ldr r0, [r1, #0xc]
 	asrs r0, r0, #8
@@ -185,12 +181,12 @@ _0805716A:
 	b _080571A4
 	.align 2, 0
 _08057174: .4byte gCurTask
-_08057178: .4byte IWRAM_START + 0xC
+_08057178: .4byte 0x03000000 + 0xC
 _0805717C: .4byte gCamera
 _08057180: .4byte gPlayer
 _08057184: .4byte 0x00400080
-_08057188: .4byte IWRAM_START + 0x40
-_0805718C: .4byte IWRAM_START + 0x42
+_08057188: .4byte 0x03000000 + 0x40
+_0805718C: .4byte 0x03000000 + 0x42
 _08057190:
 	lsls r0, r4, #8
 	lsls r1, r5, #8
@@ -208,4 +204,5 @@ _080571A4:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-.endif
+
+.syntax divided

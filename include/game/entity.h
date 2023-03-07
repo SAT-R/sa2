@@ -14,19 +14,19 @@
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
 #define MAP_ENTITY_STATE_INITIALIZED (-2)
 #define MAP_ENTITY_STATE_MINUS_THREE (-3)
-#define SET_MAP_ENTITY_INITIALIZED(mapEnt)               \
-{                                                        \
-    s32 negativeTwo;                                     \
-    s16 forMatching;                                     \
-    negativeTwo = MAP_ENTITY_STATE_INITIALIZED;          \
-    forMatching = negativeTwo;                           \
-    mapEnt->x = forMatching;                             \
-}
+#define SET_MAP_ENTITY_INITIALIZED(mapEnt)                                              \
+    {                                                                                   \
+        s32 negativeTwo;                                                                \
+        s16 forMatching;                                                                \
+        negativeTwo = MAP_ENTITY_STATE_INITIALIZED;                                     \
+        forMatching = negativeTwo;                                                      \
+        mapEnt->x = forMatching;                                                        \
+    }
 
-#define SET_MAP_ENTITY_NOT_INITIALIZED(mapEnt, initialX) \
-{                                                        \
-    mapEnt->x = initialX;                                \
-}
+#define SET_MAP_ENTITY_NOT_INITIALIZED(mapEnt, initialX)                                \
+    {                                                                                   \
+        mapEnt->x = initialX;                                                           \
+    }
 
 typedef struct {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
