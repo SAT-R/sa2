@@ -321,6 +321,8 @@ extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;
 
+extern s32 gUnknown_030054D0;
+
 struct UNK_03005AF0 {
     u8 filler0[0x1C];
     u32 unk1C;
@@ -372,5 +374,6 @@ void sub_80304DC(u32, u16, u8);
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
+void sub_801F3A4(s32, s32, u32);
 
 #endif // GUARD_GAME_H

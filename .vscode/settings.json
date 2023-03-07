@@ -177,7 +177,10 @@
     "interactable.h": "c",
     "race_progress.h": "c",
     "078.h": "c",
-    "floating_spring.h": "c"
+    "floating_spring.h": "c",
+    "rotating_handle.h": "c",
+    "entity.h": "c",
+    "stage_goal.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
