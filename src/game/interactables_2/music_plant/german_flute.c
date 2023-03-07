@@ -306,7 +306,7 @@ void initSprite_Interactable_MusicPlant_GermanFlute(MapEntity *me, u16 spriteReg
     flute->me = me;
     flute->spriteX = me->x;
     flute->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void Task_Interactable_MusicPlant_GermanFlute(void)

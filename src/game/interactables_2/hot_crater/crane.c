@@ -87,7 +87,7 @@ void initSprite_Interactable_HotCrater_Crane(MapEntity *me, u16 spriteRegionX,
     crane->me = me;
     crane->spriteX = crane->me->x;
     crane->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     cs = &crane->cs[0];
     cs->s = &crane->unk128;

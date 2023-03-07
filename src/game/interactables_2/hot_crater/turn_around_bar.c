@@ -57,7 +57,7 @@ void initSprite_InteractableTurnAroundBar(MapEntity *me, u16 spriteRegionX,
 
     turnAroundBar->x = SpriteGetScreenPos(me->x, spriteRegionX);
     turnAroundBar->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
     sub_8004558(sprite);
 }
 

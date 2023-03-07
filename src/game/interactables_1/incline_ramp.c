@@ -111,5 +111,5 @@ void initSprite_Interactable_InclineRamp(MapEntity *me, u16 spriteRegionX,
 
     ramp->base.spriteY = me->d.uData[0];
     ramp->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }

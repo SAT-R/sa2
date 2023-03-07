@@ -44,7 +44,7 @@ void initSprite_Interactable105(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->me = me;
     sprite->spriteX = me->x;
     sprite->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static bool32 sub_80809B8(Sprite_IA105 *sprite)

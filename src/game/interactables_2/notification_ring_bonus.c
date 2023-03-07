@@ -71,7 +71,7 @@ void initSprite_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     sprite->unk10 = sprite->unkC - sprite->unk8;
     sprite->unk12 = sprite->unkE - sprite->unkA;
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 void sub_80803FC(Sprite_IaUnknown *sprite)

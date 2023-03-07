@@ -74,5 +74,5 @@ void initSprite_Interactable_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX
     base->regionY = spriteRegionY;
     base->me = me;
     base->spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }

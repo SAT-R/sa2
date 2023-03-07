@@ -81,7 +81,7 @@ void initSprite_InteractableTecBaseNoteBlock(MapEntity *me, u16 spriteRegionX,
     noteBlock->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
     noteBlock->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
     sub_8004558(sprite);
 }
 

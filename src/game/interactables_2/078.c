@@ -1,13 +1,14 @@
 #include "global.h"
+#include "core.h"
+#include "malloc_vram.h"
+#include "task.h"
+#include "trig.h"
+#include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "core.h"
-#include "task.h"
-#include "lib/m4a.h"
 #include "game/interactables_2/078.h"
-#include "malloc_vram.h"
-#include "trig.h"
 #include "constants/animations.h"
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -73,7 +74,7 @@ void initSprite_Interactable078(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->graphics.anim = -1;
     sprite->variant = -1;
     sub_807ACF4(ia78, 1);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)

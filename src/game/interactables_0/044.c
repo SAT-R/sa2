@@ -89,5 +89,5 @@ void initSprite_Interactable_044(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     ia044->base.me = me;
     ia044->base.spriteX = me->x;
     ia044->base.spriteY = 0;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }

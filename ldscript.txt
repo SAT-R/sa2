@@ -85,7 +85,7 @@ SECTIONS
         build/sa2/asm/enemy_madillo.o(.text);
         build/sa2/asm/enemy_straw.o(.text);
         build/sa2/asm/enemy_hammerhead.o(.text);
-        build/sa2/asm/enemy_spinner.o(.text);
+        build/sa2/src/game/enemies/spinner.o(.text);
         build/sa2/asm/enemy_mouse.o(.text);
         build/sa2/asm/enemy_pen.o(.text);
         build/sa2/asm/enemy_geji_geji.o(.text);

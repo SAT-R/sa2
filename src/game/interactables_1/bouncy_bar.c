@@ -50,7 +50,7 @@ void initSprite_Interactable_BouncyBar(MapEntity *me, u16 spriteRegionX,
 
     displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     displayed->graphics.dest = VramMalloc(0x18);
     displayed->graphics.anim = 0x21A;

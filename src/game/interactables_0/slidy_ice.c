@@ -71,5 +71,5 @@ void initSprite_Interactable_IceParadise_SlidyIce(MapEntity *me, u16 spriteRegio
     ice->base.regionY = spriteRegionY;
     ice->base.me = me;
     ice->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }

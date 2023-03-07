@@ -28,7 +28,6 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 
 #define decoId d.sData[0]
 
-// InteractableDecorationInit
 void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
                                         u8 spriteY)
 {
@@ -51,7 +50,7 @@ void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
 
         deco->x = SpriteGetScreenPos(me->x, regionX);
         deco->y = SpriteGetScreenPos(me->y, regionY);
-        SET_SPRITE_INITIALIZED(me);
+        SET_MAP_ENTITY_INITIALIZED(me);
 
         deco->graphics.dest = VramMalloc(sDecoTileAnimInfo[me->decoId].numTiles);
         deco->graphics.anim = sDecoTileAnimInfo[me->decoId].anim;

@@ -58,7 +58,7 @@ void initSprite_Interactable_Spikes_Up(MapEntity *me, u16 spriteRegionX,
 
     s->x = SpriteGetScreenPos(me->x, spriteRegionX);
     s->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
@@ -99,7 +99,7 @@ void initSprite_Interactable_Spikes_Down(MapEntity *me, u16 spriteRegionX,
 
     s->x = SpriteGetScreenPos(me->x, spriteRegionX);
     s->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
@@ -222,7 +222,7 @@ void initSprite_Interactable_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX,
 
     s->x = SpriteGetScreenPos(me->x, spriteRegionX);
     s->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
@@ -403,7 +403,7 @@ void initSprite_Interactable_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX,
 
     s->x = SpriteGetScreenPos(me->x, spriteRegionX);
     s->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
@@ -471,7 +471,7 @@ void initSprite_Interactable_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX,
 
     s->x = SpriteGetScreenPos(me->x, spriteRegionX);
     s->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
 
