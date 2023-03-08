@@ -180,7 +180,8 @@
     "floating_spring.h": "c",
     "rotating_handle.h": "c",
     "entity.h": "c",
-    "stage_goal.h": "c"
+    "stage_goal.h": "c",
+    "__locale": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

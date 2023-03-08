@@ -178,3 +178,90 @@ void sub_8062934(void)
         TaskDestroy(gCurTask);
     }
 }
+
+extern void sub_8019CCC(u8, u8);
+extern struct UNK_3005510 *sub_8019224(void);
+
+void sub_8062D44(void);
+
+void sub_8062B00(void)
+{
+    struct UNK_3005510 *unk5510;
+    u32 count = 0;
+    struct MultiplayerPlayer *player
+        = TaskGetStructPtr(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    gPlayer.unk37 &= ~0x40;
+    gPlayer.unk32 = 0;
+
+    if (!(player->unk5C & 1)) {
+        u32 j;
+        for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks)
+             && gMultiplayerPlayerTasks[j] != NULL;
+             j++) {
+            struct MultiplayerPlayer *otherPlayer
+                = TaskGetStructPtr(gMultiplayerPlayerTasks[j]);
+            if (otherPlayer->unk5C & 1) {
+                count++;
+            }
+        }
+
+        sub_8019CCC(SIO_MULTI_CNT->id, count);
+        player->unk5C |= 1;
+
+        if (count == 0) {
+            gUnknown_03005424 |= 4;
+            gUnknown_03005490 = 3600;
+        }
+
+        unk5510 = sub_8019224();
+        unk5510->unk0 = 7;
+        gCurTask->main = sub_8062D44;
+        gCamera.unk50 |= 4;
+    }
+}
+
+void sub_8062BD0(void)
+{
+    u32 thing = 0;
+    struct Task **mpTasks = gMultiplayerPlayerTasks;
+    struct UNK_3005510 *unk5510;
+    u32 j;
+
+    // Required for match
+    *SIO_MULTI_CNT;
+
+    gPlayer.unk37 &= ~0x40;
+    gPlayer.unk32 = 0;
+
+    for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {
+        // TODO: make this a macro? What does it even mean
+        if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
+                != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
+                    >> (SIO_MULTI_CNT->id + 4)
+            && gUnknown_030054B4[j] == 0) {
+            thing = 1;
+            break;
+        }
+    }
+
+    for (j = 0;
+         j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL;
+         j++) {
+        if (gUnknown_030054B4[j] == -1) {
+            if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
+                == (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
+                    >> (SIO_MULTI_CNT->id + 4)) {
+                sub_8019CCC(j, thing);
+            } else {
+                sub_8019CCC(j, thing ^ 1);
+            }
+        }
+    }
+
+    gUnknown_03005424 |= 4;
+    gUnknown_03005490 = 3600;
+    unk5510 = sub_8019224();
+    unk5510->unk0 = 7;
+    gCurTask->main = sub_8062D44;
+    gCamera.unk50 |= 4;
+}

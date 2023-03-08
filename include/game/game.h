@@ -113,6 +113,8 @@ struct MultiplayerPlayer {
     u8 filler[0x50];
     // x
     s16 unk50;
+    u8 unk52[10];
+    u32 unk5C;
 };
 
 extern struct Task *gMultiplayerPlayerTasks[4];
@@ -161,7 +163,8 @@ typedef struct {
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u8 filler2E[2];
     /* 0x30 */ u16 unk30;
-    /* 0x32 */ u8 filler32[4];
+    /* 0x32 */ u16 unk32;
+    /* 0x32 */ u8 filler34[2];
     /* 0x36 */ u8 unk36;
     /* 0x37 */ u8 unk37;
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
@@ -327,6 +330,13 @@ extern struct UNK_03005AF0 gUnknown_03005AF0;
 
 extern u8 gUnknown_03005428[4];
 extern u8 gUnknown_030053E8[4];
+
+struct UNK_3005510 {
+    u8 unk0;
+    u8 unk1[7];
+}; /* 0x8 */
+
+extern struct UNK_3005510 gUnknown_03005510[16];
 
 // rodata
 extern const u16 gUnknown_080D672C[5];
