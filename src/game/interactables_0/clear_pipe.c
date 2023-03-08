@@ -137,7 +137,7 @@ void initSprite_Interactable_ClearPipe_Start(MapEntity *me, u16 spriteRegionX,
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;
     pipe->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 void initSprite_Interactable_ClearPipe_End(MapEntity *me, u16 spriteRegionX,
@@ -151,5 +151,5 @@ void initSprite_Interactable_ClearPipe_End(MapEntity *me, u16 spriteRegionX,
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;
     pipe->base.spriteX = me->x;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }

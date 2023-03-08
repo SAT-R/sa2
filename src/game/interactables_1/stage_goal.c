@@ -38,7 +38,7 @@ void initSprite_Interactable_StageGoal(MapEntity *me, u16 spriteRegionX,
 
     sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
     sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(4);
     sprite->graphics.anim = 532;

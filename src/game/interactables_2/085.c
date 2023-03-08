@@ -242,7 +242,7 @@ void initSprite_Interactable085(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia85->base.me = me;
     ia85->base.spriteX = me->x;
     ia85->base.spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_807C72C(Sprite_IA85 *);

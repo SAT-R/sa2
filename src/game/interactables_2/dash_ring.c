@@ -164,7 +164,7 @@ void initSprite_Interactable_DashRing(MapEntity *me, u16 spriteRegionX,
         sub_8004558(&ring->spriteB);
     }
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     ring->positions[0].x = sUnknown_080DFB90[ring->orientation][0];
     ring->positions[0].y = sUnknown_080DFB90[ring->orientation][1];

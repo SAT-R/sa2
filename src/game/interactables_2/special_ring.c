@@ -65,7 +65,7 @@ void initSprite_Interactable_SpecialRing(MapEntity *me, u16 spriteRegionX,
         disp->graphics.dest = VramMalloc(9);
         disp->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
         disp->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
-        SET_SPRITE_INITIALIZED(me);
+        SET_MAP_ENTITY_INITIALIZED(me);
     }
 }
 

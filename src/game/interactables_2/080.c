@@ -8,6 +8,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "constants/animations.h"
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -61,7 +62,7 @@ void initSprite_Interactable080(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->graphics.anim = 600;
     sprite->variant = 0;
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static bool32 sub_807B190(Sprite_IA80 *ia80)

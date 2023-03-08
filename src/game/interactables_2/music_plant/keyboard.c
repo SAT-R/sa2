@@ -79,7 +79,7 @@ void initSprite_Interactable_MusicPlant_Keyboard(MapEntity *me, u16 spriteRegion
     kb->spriteX = me->x;
     kb->spriteY = spriteY;
     kb->me = me;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_8076448(Sprite_Keyboard *kb)

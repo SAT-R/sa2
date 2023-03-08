@@ -36,7 +36,7 @@ void initSprite_Interactable_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
     displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     temp = me->d.sData[0] & 3;
     ramp->unk3C = temp;

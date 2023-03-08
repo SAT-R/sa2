@@ -67,7 +67,7 @@ static void initSprite_Interactable098(MapEntity *in_ia, u16 spriteRegionX,
     toggle->me = me;
     toggle->spriteX = me->x;
     toggle->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 void sub_80800D4(Sprite_GravityToggle *toggle)

@@ -76,7 +76,7 @@ void initSprite_Interactable_Booster(MapEntity *me, u16 spriteRegionX, u16 sprit
     else
         value = 0;
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     displayed->graphics.dest
         = VramMalloc(sBoosterAnimationData[value][me->d.sData[0]].numTiles);

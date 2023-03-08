@@ -19,8 +19,6 @@
 #include "game/save.h"
 #include "task.h"
 
-#include "constants/move_states.h"
-
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
 
@@ -131,12 +129,19 @@ extern struct Task *gUnknown_03005844;
 #define FLAG_3005A70_x1C__1000 0x1000
 #define FLAG_3005A70_x1C__2000 0x2000
 struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0x1C];
+    /* 0x00 */ u8 filler0[0xC];
+    // TODO: Confirm type of 0x0C
+    /* 0x0C */ Sprite *s;
+    /* 0x10 */ u8 filler10[0xC];
     /* 0x1C */ u32 unk1C;
     /* 0x20 */ u8 filler20[0x10];
     /* 0x30 */ u8 filler30;
     /* 0x31 */ u8 unk31;
-};
+    /* 0x32 */ u8 filler32[0x6];
+    /* 0x38 */ s8 unk38;
+    /* 0x38 */ s8 unk39;
+    /* 0x38 */ s8 unk3A;
+}; /* size: unknown? */
 
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01

@@ -58,7 +58,7 @@ void initSprite_Interactable_BouncySpring(MapEntity *me, u16 spriteRegionX,
 
     displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
         displayed->graphics.dest = VramMalloc(16);

@@ -52,11 +52,11 @@ void initSprite_Interactable_019(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     base->me = me;
     base->spriteX = me->x;
     base->spriteY = spriteY;
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     platform->unk3C = 0;
 
-    // @BUG Loads the -2 set through SET_SPRITE_INITIALIZED
+    // @BUG Loads the -2 set through SET_MAP_ENTITY_INITIALIZED
     displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
     displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
     displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
@@ -106,7 +106,7 @@ void Task_Interactable_019(void)
     }
 
     if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == SPRITE_STATE_UNK_MINUS_THREE)) {
+        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     }
@@ -141,7 +141,7 @@ void Task_805E35C(void)
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
     if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == SPRITE_STATE_UNK_MINUS_THREE)) {
+        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     } else if (platform->unk3C++ > 30) {

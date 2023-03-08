@@ -47,7 +47,7 @@ void initSprite_InteractableWindmill(MapEntity *me, u16 spriteRegionX, u16 sprit
 
     sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
     sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
     sprite->graphics.anim = sWindmillParts[4].anim;

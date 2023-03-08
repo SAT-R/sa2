@@ -1,13 +1,15 @@
 #include "global.h"
 #include "core.h"
+#include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"
-#include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/entity.h"
 #include "game/interactables_2/floating_spring.h"
-#include "constants/songs.h"
+
 #include "constants/animations.h"
+#include "constants/move_states.h"
+#include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
@@ -96,7 +98,7 @@ void initSprite_Interactable_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX,
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
-    SET_SPRITE_INITIALIZED(me);
+    SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
