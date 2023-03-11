@@ -33,11 +33,11 @@ extern void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
                                               u16 spriteRegionY, u8 spriteY,
                                               u8 railType);
 
-void sub_800FE38(void);
+void Task_GrindRail(void);
 void sub_8010464(void);
 
 // https://decomp.me/scratch/Wvuov
-void Task_GrindRail_Air(void)
+NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void))
 {
     Player *player = &gPlayer;
     Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
@@ -122,12 +122,14 @@ void Task_GrindRail_Air(void)
         TaskDestroy(gCurTask);
     }
 }
+END_NONMATCH
 
 void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t = TaskCreate(sub_800FE38, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TaskGetStructPtr(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
@@ -135,7 +137,7 @@ void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
     rail->me = me;
     rail->spriteX = me->x;
 #else
-    struct Task *t = TaskCreate(sub_800FE38, 10, 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_GrindRail, 10, 0x2010, 0, NULL);
     void *rail;
     {
         rail = TaskGetStructPtr(t);
