@@ -19,15 +19,24 @@ typedef struct {
     /* 0x0C */ Sprite sprite;
 } Sprite_StageGoal;
 
-void sub_80627CC(void);
-void TaskDestructor_8062E7C(struct Task *);
+typedef struct {
+    /* 0x00 */ SpriteBase base;
+} Sprite_StageGoalToggle;
+
+static void Task_StageGoalMain(void);
+static void TaskDestructor_8062E7C(struct Task *);
+static void Task_StageGoalAnimate(void);
+static void sub_8062D44(void);
+static void StageGoalToggle_HandleMultiplayerFinish(void);
+
+#define GOAL_LEVER_TILES 4
 
 void initSprite_Interactable_StageGoal(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80627CC, 0x3C, 0x2010, 0, TaskDestructor_8062E7C);
+    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
+                                TaskDestructor_8062E7C);
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
-
     Sprite *sprite = &stageGoal->sprite;
 
     stageGoal->base.regionX = spriteRegionX;
@@ -40,8 +49,8 @@ void initSprite_Interactable_StageGoal(MapEntity *me, u16 spriteRegionX,
     sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest = VramMalloc(4);
-    sprite->graphics.anim = 532;
+    sprite->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
+    sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
     sprite->variant = 1;
     sprite->unk21 = -1;
     sprite->unk1A = 0x100;
@@ -55,9 +64,7 @@ void initSprite_Interactable_StageGoal(MapEntity *me, u16 spriteRegionX,
     sub_8004558(sprite);
 }
 
-void sub_80628B4(void);
-
-void sub_80627CC(void)
+static void Task_StageGoalMain(void)
 {
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &stageGoal->sprite;
@@ -77,16 +84,16 @@ void sub_80627CC(void)
 
     if (PlayerIsAlive && !(gPlayer.moveState & MOVESTATE_400000)) {
         if (sub_800C204(sprite, x, y, 0, &gPlayer, 0) == 1) {
-            sprite->graphics.anim = 532;
+            sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
             sprite->variant = 0;
             sprite->unk21 = -1;
-            gCurTask->main = sub_80628B4;
+            gCurTask->main = Task_StageGoalAnimate;
         }
     }
     sub_80051E8(sprite);
 }
 
-void sub_80628B4(void)
+static void Task_StageGoalAnimate(void)
 {
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &stageGoal->sprite;
@@ -108,17 +115,14 @@ void sub_80628B4(void)
     sub_80051E8(sprite);
 }
 
-void sub_8062B00(void);
-
-void sub_8062934(void)
+static void Task_StageGoalToggleMain(void)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &stageGoal->sprite;
-    MapEntity *me = stageGoal->base.me;
+    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(gCurTask);
+    MapEntity *me = stageGoalToggle->base.me;
 
-    u8 spriteX = stageGoal->base.spriteX;
-    u16 regionX = stageGoal->base.regionX;
-    u16 regionY = stageGoal->base.regionY;
+    u8 spriteX = stageGoalToggle->base.spriteX;
+    u16 regionX = stageGoalToggle->base.regionX;
+    u16 regionY = stageGoalToggle->base.regionY;
     s32 x = SpriteGetScreenPos(spriteX, regionX);
     s32 y = SpriteGetScreenPos(me->y, regionY);
 
@@ -127,7 +131,7 @@ void sub_8062934(void)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.unk6D = 10;
             gUnknown_030054D0 = x;
-            sub_8062B00();
+            StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= Q_24_8_TO_INT(gPlayer.x)
                && !(gPlayer.moveState & MOVESTATE_8000000)) {
@@ -179,12 +183,7 @@ void sub_8062934(void)
     }
 }
 
-extern void sub_8019CCC(u8, u8);
-extern struct UNK_3005510 *sub_8019224(void);
-
-void sub_8062D44(void);
-
-void sub_8062B00(void)
+static void StageGoalToggle_HandleMultiplayerFinish(void)
 {
     struct UNK_3005510 *unk5510;
     u32 count = 0;
@@ -220,7 +219,7 @@ void sub_8062B00(void)
     }
 }
 
-void sub_8062BD0(void)
+static void sub_8062BD0(void)
 {
     u32 thing = 0;
     struct Task **mpTasks = gMultiplayerPlayerTasks;
@@ -264,4 +263,63 @@ void sub_8062BD0(void)
     unk5510->unk0 = 7;
     gCurTask->main = sub_8062D44;
     gCamera.unk50 |= 4;
+}
+
+static void sub_8062D44(void)
+{
+
+    u32 id = SIO_MULTI_CNT->id;
+    u32 count = 0;
+
+    if (gUnknown_030054B4[id] != -1) {
+        u32 j;
+        struct Task **tasks;
+        for (j = 0, tasks = gMultiplayerPlayerTasks;
+             j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
+            struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[j]);
+            if (otherPlayer->unk54 & 0x100) {
+                count++;
+            }
+        }
+
+        if (count != 0 && (count >= (j - 1) || gGameMode == GAME_MODE_TEAM_PLAY)) {
+            struct Task **tasks;
+            u32 i;
+            // Check seems redundant, required for match
+            if (gMultiplayerPlayerTasks[0] != NULL) {
+                for (i = 0, tasks = gMultiplayerPlayerTasks;
+                     i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
+                    struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[i]);
+                    if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
+                        otherPlayer->unk5C |= 1;
+                        gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+                        gPlayer.unk5C = 0;
+                    }
+                }
+            }
+
+            sub_8019F08();
+            TaskDestroy(gCurTask);
+        }
+    }
+}
+
+void initSprite_Interactable_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX,
+                                              u16 spriteRegionY, u8 spriteY)
+{
+    struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle),
+                                0x2010, 0, NULL);
+    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(t);
+
+    stageGoalToggle->base.regionX = spriteRegionX;
+    stageGoalToggle->base.regionY = spriteRegionY;
+    stageGoalToggle->base.me = me;
+    stageGoalToggle->base.spriteX = me->x;
+    SET_MAP_ENTITY_INITIALIZED(me);
+}
+
+static void TaskDestructor_8062E7C(struct Task *t)
+{
+    Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
+    VramFree(stageGoal->sprite.graphics.dest);
 }

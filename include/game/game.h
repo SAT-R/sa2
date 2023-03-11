@@ -111,7 +111,9 @@ struct MultiplayerPlayer {
     u8 filler[0x50];
     // x
     s16 unk50;
-    u8 unk52[10];
+    s16 unk52;
+    u16 unk54;
+    u8 unk56[6];
     u32 unk5C;
 };
 
@@ -385,5 +387,10 @@ void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
 void sub_801F3A4(s32, s32, u32);
+void sub_8019F08(void);
+
+// Something to do with entities
+extern void sub_8019CCC(u8, u8);
+extern struct UNK_3005510 *sub_8019224(void);
 
 #endif // GUARD_GAME_H

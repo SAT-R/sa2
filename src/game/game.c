@@ -496,8 +496,6 @@ void CreateGameStage(void)
 
 void sub_800A9FC(void);
 
-void sub_8019F08(void);
-
 void sub_802B4F8(s32, s32, s32, s32, s32);
 
 void sub_801AB3C(void)
