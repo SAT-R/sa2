@@ -100,6 +100,7 @@ void Task_GrindRail(void)
                         }
                     }
                     // _0800FFF0
+
                 } else {
                     // _08010060
                 }
@@ -116,6 +117,13 @@ void Task_GrindRail(void)
         }
     }
     // _080100D6
+    posX -= gCamera.x;
+    posY -= gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(posX, posY)) {
+        me->x = rail->spriteX;
+        TaskDestroy(gCurTask);
+    }
 }
 
 // https://decomp.me/scratch/Wvuov
