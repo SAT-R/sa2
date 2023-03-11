@@ -78,7 +78,7 @@ SECTIONS
         build/sa2/asm/enemy_buzzer.o(.text);
         build/sa2/asm/enemy_kiki.o(.text);
         build/sa2/asm/enemy_koura.o(.text);
-        build/sa2/asm/enemy_bell.o(.text);
+        build/sa2/src/game/enemies/bell.o(.text);
         build/sa2/asm/enemy_yado.o(.text);
         build/sa2/asm/enemy_piko_piko.o(.text);
         build/sa2/asm/enemy_circus.o(.text);

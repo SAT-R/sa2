@@ -24,9 +24,6 @@ typedef struct {
 void Task_EnemySpinner(void);
 void TaskDestructor_80095E8(struct Task *);
 
-extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
-extern void sub_80122DC(s32, s32);
-
 void initSprite_Enemy_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
