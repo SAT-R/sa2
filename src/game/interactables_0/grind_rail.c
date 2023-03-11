@@ -2,6 +2,7 @@
 #include "lib/m4a.h"
 #include "game/entity.h"
 
+#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -11,6 +12,15 @@ typedef struct {
     /* 0x08 */ u8 spriteX;
     /* 0x09 */ u8 kind;
 } Sprite_GrindRail;
+
+#define RAIL_KIND_1        0x1
+#define RAIL_KIND_2        0x2
+
+#define StructMemberOffset(_struct, member) (((void*)&(_struct)->member) - (void*)&(_struct))
+#define GetStructMember(type, _struct, member)  \
+{                                               \
+      /* TODO */                                \
+}
 
 #define INITIALIZE_RAIL(type)                                                           \
     initSprite_Interactable_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
@@ -23,8 +33,114 @@ extern void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
                                               u8 railType);
 
 void sub_800FE38(void);
-void sub_8010144(void);
 void sub_8010464(void);
+
+// https://decomp.me/scratch/v5k6N
+void Task_GrindRail_Air(void)
+{
+    Player *player = &gPlayer;
+    Sprite_GrindRail* rail = TaskGetStructPtr(gCurTask);
+    MapEntity *me = rail->me;
+    s32 right, bottom;
+    u8 smolRight;
+    s16 left, top;
+
+    // This pointer madness seems to be necessary for matching
+    u8* pSpriteX = &rail->spriteX;
+    u8 stackSpriteX = *pSpriteX;
+    u16 *pRegX = &rail->regionX;
+    u16 regionX = *pRegX;
+    u16 *pRegY = &rail->regionY;
+    u16 regionY = *pRegY;
+    u8* pRailKind = &rail->kind;
+
+    left = SpriteGetScreenPos(stackSpriteX, regionX);
+    top = SpriteGetScreenPos(me->y, regionY);
+
+    if(!(player->moveState & MOVESTATE_DEAD))
+    {
+        // _080101AA
+        do
+        {
+            s32 someX, someWidth, someY, otherY;
+            //smolRight = ;
+            right = left;
+            right += me->d.uData[0] * TILE_WIDTH;
+            right += left;
+
+            if(right > Q_24_8_TO_INT(player->x))
+                break;
+
+            someWidth = me->d.uData[2] * TILE_WIDTH;
+            if((right + someWidth) < Q_24_8_TO_INT(player->x))
+                break;
+
+            someY = top + me->d.sData[1] * TILE_WIDTH;
+
+            if(someY > Q_24_8_TO_INT(player->y))
+                break;
+
+            otherY = someY + me->d.uData[3] * TILE_WIDTH;
+            if(otherY < Q_24_8_TO_INT(player->y))
+                break;
+
+            // __080101FC
+            if(!(player->moveState & MOVESTATE_1000000))
+                break;
+            
+            if(*pRailKind & RAIL_KIND_1)
+            {
+                if(left >= (someWidth >> 1))
+                {
+                    if((player->unk5C & gPlayerControls.jump)
+                    || (rail->kind & RAIL_KIND_2))
+                    {
+                        if(rail->kind & RAIL_KIND_2)
+                            player->unk6D = 13;
+                        else
+                            player->unk6D = 12;
+
+                        break;
+                    }
+                }
+                // _08010264
+                if(rail->kind & RAIL_KIND_1)
+                    break;
+            }
+            // _0801026C
+             // TODO
+            if(!(player->moveState & MOVESTATE_FACING_LEFT))
+            {
+                s32 playerX = Q_24_8_TO_INT(player->x);
+                s32 newLeft = left;
+                newLeft += me->d.uData[0] * 8;
+                newLeft += me->d.uData[2] * 4;
+
+                if(playerX <= newLeft)
+                {
+                    if(!(player->unk5C & gPlayerControls.jump)
+                    || !(*pRailKind & RAIL_KIND_2))
+                        break;
+                }
+                // _080102AA
+                if(!(*pRailKind & RAIL_KIND_2))
+                    player->unk6D = 12;
+                else
+                    player->unk6D = 13;
+            }
+        } while(FALSE);
+    }
+    // _080102C8
+
+    left -= gCamera.x;
+    top  -= gCamera.y;
+
+    if(IS_OUT_OF_CAM_RANGE(left, top))
+    {
+        me->x = stackSpriteX;
+        TaskDestroy(gCurTask);
+    }
+}
 
 void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY, u8 railType)
@@ -74,7 +190,7 @@ void initSprite_Interactable_GrindRail_Air(MapEntity *me, u16 spriteRegionX,
                                            u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t = TaskCreate(sub_8010144, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TaskGetStructPtr(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
@@ -82,7 +198,7 @@ void initSprite_Interactable_GrindRail_Air(MapEntity *me, u16 spriteRegionX,
     rail->me = me;
     rail->spriteX = me->x;
 #else
-    struct Task *t = TaskCreate(sub_8010144, 10, 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
     void *rail;
     {
         rail = TaskGetStructPtr(t);
