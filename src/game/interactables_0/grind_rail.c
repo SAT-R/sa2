@@ -13,14 +13,15 @@ typedef struct {
     /* 0x09 */ u8 kind;
 } Sprite_GrindRail;
 
-#define RAIL_KIND_1        0x1
-#define RAIL_KIND_2        0x2
+#define RAIL_KIND_1 0x1
+#define RAIL_KIND_2 0x2
 
-#define StructMemberOffset(_struct, member) (((void*)&(_struct)->member) - (void*)&(_struct))
-#define GetStructMember(type, _struct, member)  \
-{                                               \
-      /* TODO */                                \
-}
+#define StructMemberOffset(_struct, member)                                             \
+    (((void *)&(_struct)->member) - (void *)&(_struct))
+#define GetStructMember(type, _struct, member)                                          \
+    {                                                                                   \
+        /* TODO */                                                                      \
+    }
 
 #define INITIALIZE_RAIL(type)                                                           \
     initSprite_Interactable_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
@@ -35,108 +36,88 @@ extern void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
 void sub_800FE38(void);
 void sub_8010464(void);
 
-// https://decomp.me/scratch/v5k6N
+// https://decomp.me/scratch/Wvuov
 void Task_GrindRail_Air(void)
 {
     Player *player = &gPlayer;
-    Sprite_GrindRail* rail = TaskGetStructPtr(gCurTask);
+    Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
     MapEntity *me = rail->me;
     s32 right, bottom;
     u8 smolRight;
     s16 left, top;
 
     // This pointer madness seems to be necessary for matching
-    u8* pSpriteX = &rail->spriteX;
+    u8 *pSpriteX = &rail->spriteX;
     u8 stackSpriteX = *pSpriteX;
     u16 *pRegX = &rail->regionX;
     u16 regionX = *pRegX;
     u16 *pRegY = &rail->regionY;
     u16 regionY = *pRegY;
-    u8* pRailKind = &rail->kind;
+    u8 *pRailKind = &rail->kind;
+    u8 kind = *pRailKind;
 
     left = SpriteGetScreenPos(stackSpriteX, regionX);
     top = SpriteGetScreenPos(me->y, regionY);
 
-    if(!(player->moveState & MOVESTATE_DEAD))
-    {
+    if (!(player->moveState & MOVESTATE_DEAD)) {
         // _080101AA
-        do
-        {
-            s32 someX, someWidth, someY, otherY;
-            //smolRight = ;
-            right = left;
-            right += me->d.uData[0] * TILE_WIDTH;
-            right += left;
+        s32 someX, someWidth, someY, otherY;
+        right = (left + (me->d.uData[0] * TILE_WIDTH));
 
-            if(right > Q_24_8_TO_INT(player->x))
-                break;
-
+        if (right <= Q_24_8_TO_INT(player->x)) {
             someWidth = me->d.uData[2] * TILE_WIDTH;
-            if((right + someWidth) < Q_24_8_TO_INT(player->x))
-                break;
+            if ((right + someWidth) >= Q_24_8_TO_INT(player->x)) {
 
-            someY = top + me->d.sData[1] * TILE_WIDTH;
+                someY = top + me->d.sData[1] * TILE_WIDTH;
 
-            if(someY > Q_24_8_TO_INT(player->y))
-                break;
+                if (someY <= Q_24_8_TO_INT(player->y)) {
 
-            otherY = someY + me->d.uData[3] * TILE_WIDTH;
-            if(otherY < Q_24_8_TO_INT(player->y))
-                break;
+                    otherY = someY + me->d.uData[3] * TILE_WIDTH;
+                    if (otherY >= Q_24_8_TO_INT(player->y)) {
 
-            // __080101FC
-            if(!(player->moveState & MOVESTATE_1000000))
-                break;
-            
-            if(*pRailKind & RAIL_KIND_1)
-            {
-                if(left >= (someWidth >> 1))
-                {
-                    if((player->unk5C & gPlayerControls.jump)
-                    || (rail->kind & RAIL_KIND_2))
-                    {
-                        if(rail->kind & RAIL_KIND_2)
-                            player->unk6D = 13;
-                        else
-                            player->unk6D = 12;
+                        // __080101FC
+                        if ((player->moveState & MOVESTATE_1000000)) {
 
-                        break;
+                            if (kind & RAIL_KIND_1) {
+                                if ((gPlayer.moveState & MOVESTATE_FACING_LEFT)) {
+                                    if (left < right + (someWidth >> 1)
+                                        || ((player->unk5C & gPlayerControls.jump)
+                                            && (kind & RAIL_KIND_2))) {
+                                        if ((kind & RAIL_KIND_2))
+                                            player->unk6D = 13;
+                                        else
+                                            player->unk6D = 12;
+                                    }
+                                }
+                            }
+                            if (!(kind & RAIL_KIND_1)) {
+                                if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
+                                    s32 playerX = Q_24_8_TO_INT(player->x);
+                                    s32 newLeft = left;
+                                    newLeft += me->d.uData[0] * 8;
+                                    newLeft += me->d.uData[2] * 4;
+
+                                    if (playerX > newLeft
+                                        || ((player->unk5C & gPlayerControls.jump)
+                                            && (kind & RAIL_KIND_2))) {
+                                        if ((kind & RAIL_KIND_2))
+                                            player->unk6D = 13;
+                                        else
+                                            player->unk6D = 12;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-                // _08010264
-                if(rail->kind & RAIL_KIND_1)
-                    break;
             }
-            // _0801026C
-             // TODO
-            if(!(player->moveState & MOVESTATE_FACING_LEFT))
-            {
-                s32 playerX = Q_24_8_TO_INT(player->x);
-                s32 newLeft = left;
-                newLeft += me->d.uData[0] * 8;
-                newLeft += me->d.uData[2] * 4;
-
-                if(playerX <= newLeft)
-                {
-                    if(!(player->unk5C & gPlayerControls.jump)
-                    || !(*pRailKind & RAIL_KIND_2))
-                        break;
-                }
-                // _080102AA
-                if(!(*pRailKind & RAIL_KIND_2))
-                    player->unk6D = 12;
-                else
-                    player->unk6D = 13;
-            }
-        } while(FALSE);
+        }
     }
-    // _080102C8
 
     left -= gCamera.x;
-    top  -= gCamera.y;
+    top -= gCamera.y;
 
-    if(IS_OUT_OF_CAM_RANGE(left, top))
-    {
+    if (IS_OUT_OF_CAM_RANGE(left, top)) {
         me->x = stackSpriteX;
         TaskDestroy(gCurTask);
     }
@@ -190,7 +171,8 @@ void initSprite_Interactable_GrindRail_Air(MapEntity *me, u16 spriteRegionX,
                                            u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TaskGetStructPtr(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
