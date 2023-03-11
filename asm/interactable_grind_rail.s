@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 00
 	thumb_func_start Task_GrindRail
 Task_GrindRail: @ 0x0800FE38
 	push {r4, r5, r6, r7, lr}
@@ -46,27 +47,27 @@ _0800FE78:
 	lsls r0, r0, #0x12
 	adds r0, r1, r0
 	ldr r0, [r0]
-	mov sl, r0
+	mov sl, r0      @ sl = me
 	ldr r3, _0800FF40 @ =IWRAM_START + 0x8
 	adds r0, r1, r3
 	ldrb r0, [r0]
 	str r0, [sp, #8]
 	ldr r6, _0800FF44 @ =IWRAM_START+4
 	adds r0, r1, r6
-	ldrh r2, [r0]
+	ldrh r2, [r0]       @ r2 = regionX
 	subs r3, #2
 	adds r0, r1, r3
-	ldrh r3, [r0]
+	ldrh r3, [r0]       @ r3 = regionY
 	adds r6, #5
 	adds r1, r1, r6
-	ldrb r5, [r1]
+	ldrb r5, [r1]       @ r5 = railKind
 	ldr r1, [sp, #8]
 	lsls r0, r1, #3
 	lsls r2, r2, #8
 	adds r0, r0, r2
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp]
+	str r0, [sp]        @ sp = posX
 	mov r2, sl
 	ldrb r0, [r2, #1]
 	lsls r0, r0, #3
@@ -74,20 +75,20 @@ _0800FE78:
 	adds r0, r0, r3
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp, #4]
+	str r0, [sp, #4]    @ sp04 = posY
 	mov r3, ip
 	ldr r1, [r3, #0x20]
 	adds r0, r1, #0
 	movs r6, #0x80
 	ands r0, r6
-	mov sb, r1
+	mov sb, r1          @ sb = player->moveState
 	cmp r0, #0
 	beq _0800FED2
 	b _080100D6
 _0800FED2:
 	ldr r0, [sp]
 	lsls r3, r0, #0x10
-	asrs r1, r3, #0x10
+	asrs r1, r3, #0x10      @ r1 = posX
 	ldrb r2, [r2, #3]
 	lsls r2, r2, #0x18
 	asrs r2, r2, #0x18
@@ -96,9 +97,9 @@ _0800FED2:
 	mov r1, ip
 	ldr r0, [r1, #8]
 	asrs r6, r0, #8
-	str r3, [sp, #0xc]
-	mov r8, r2
-	adds r3, r0, #0
+	str r3, [sp, #0xc]      @ sp0C = (posX << 16)
+	mov r8, r2              @ r8 = me->d.sData[0]
+	adds r3, r0, #0         @ r3 = player.x
 	cmp r4, r6
 	ble _0800FEF4
 	b _080100C4
@@ -107,14 +108,14 @@ _0800FEF4:
 	ldrb r1, [r2, #5]
 	lsls r0, r1, #3
 	adds r0, r4, r0
-	adds r4, r1, #0
+	adds r4, r1, #0         @ r4 = me->d.uData[2]
 	cmp r0, r6
 	bge _0800FF04
 	b _080100C4
 _0800FF04:
 	ldr r6, [sp, #4]
 	lsls r0, r6, #0x10
-	asrs r2, r0, #0x10
+	asrs r2, r0, #0x10      @ r2 = posY
 	mov r1, sl
 	movs r0, #4
 	ldrsb r0, [r1, r0]
@@ -187,7 +188,7 @@ _0800FF6E:
 	beq _0800FFE8
 	asrs r2, r3, #8
 	ldr r1, [sp, #0xc]
-	asrs r0, r1, #0x10
+	asrs r0, r1, #0x10  @ r0 = posX
 	mov r6, r8
 	lsls r1, r6, #3
 	adds r0, r0, r1
@@ -417,3 +418,4 @@ _08010128:
 _08010138: .4byte gCurTask
 _0801013C: .4byte IWRAM_START + 0x9
 _08010140: .4byte gCamera
+.endif

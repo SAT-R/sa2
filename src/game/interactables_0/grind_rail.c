@@ -13,8 +13,9 @@ typedef struct {
     /* 0x09 */ u8 kind;
 } Sprite_GrindRail;
 
-#define RAIL_KIND_1 0x1
-#define RAIL_KIND_2 0x2
+#define RAIL_KIND_1  0x1
+#define RAIL_KIND_2  0x2
+#define RAIL_KIND_80 0x80
 
 #define StructMemberOffset(_struct, member)                                             \
     (((void *)&(_struct)->member) - (void *)&(_struct))
@@ -35,6 +36,87 @@ extern void initSprite_Interactable_GrindRail(MapEntity *me, u16 spriteRegionX,
 
 void Task_GrindRail(void);
 void sub_8010464(void);
+
+void Task_GrindRail(void)
+{
+    Player *player = &gPlayer;
+
+    s32 r7 = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+        ? Q_24_8_TO_INT(gPlayer.y) - gPlayer.unk17
+        : Q_24_8_TO_INT(gPlayer.y) + gPlayer.unk17;
+
+    // _0800FE78
+    Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
+    MapEntity *me = rail->me;
+    s32 sp08 = rail->spriteX;
+    s32 regionX = rail->regionX;
+    s32 regionY = rail->regionY;
+    u8 railKind = rail->kind;
+    s16 posX = SpriteGetScreenPos(sp08, regionX);
+    s16 posY = SpriteGetScreenPos(me->y, regionY);
+
+    if (PlayerIsAlive) {
+        s32 left = posX + me->d.sData[0] * TILE_WIDTH;
+        if ((left <= Q_24_8_TO_INT(player->x))
+            && (left + me->d.uData[2] * TILE_WIDTH >= Q_24_8_TO_INT(player->x))
+            && ((posY + me->d.sData[1] * TILE_WIDTH) <= r7)
+            && (((posY + me->d.sData[1] * TILE_WIDTH) + me->d.uData[3] * TILE_WIDTH)
+                <= r7)) {
+            bool32 r6 = FALSE;
+
+            if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                if (r7 >= posX)
+                    r6 = TRUE;
+            } else {
+                if (r7 <= posX)
+                    r6 = TRUE;
+            }
+            //_0800FF52
+
+            if ((player->speedAirY >= 0) && (r6) && !(railKind & RAIL_KIND_80)) {
+                // _0800FF6E
+                if (player->moveState & MOVESTATE_1000000) {
+                    if (!(railKind & RAIL_KIND_1)) {
+                        if (player->moveState & MOVESTATE_FACING_LEFT) {
+                            s32 newPlayerX = Q_24_8_TO_INT(player->x);
+                            s32 width = me->d.sData[0] * TILE_WIDTH;
+                            s32 r0 = width + me->d.uData[2] * 4;
+                            if (newPlayerX >= r0) {
+                                if ((!(player->unk5C & gPlayerControls.jump)
+                                     || !(railKind & RAIL_KIND_2))
+                                    && !(railKind & RAIL_KIND_1))
+                                    goto _080100B0;
+                            }
+                            // _0800FFB8
+                            if ((railKind & RAIL_KIND_2))
+                                player->unk6D = 13;
+                            else
+                                player->unk6D = 12;
+
+                            rail->kind |= RAIL_KIND_80;
+                            goto _080100B0;
+                        } else if (!(railKind & RAIL_KIND_1)) {
+                            goto _080100B0;
+                        }
+                    }
+                    // _0800FFF0
+                } else {
+                    // _08010060
+                }
+            }
+
+        _080100B0 : {
+            Sprite_GrindRail *newRail = TaskGetStructPtr(gCurTask);
+            newRail->kind &= 0x7F;
+        }
+        } else {
+            // _080100C4
+            Sprite_GrindRail *newRail = TaskGetStructPtr(gCurTask);
+            newRail->kind &= 0x7F;
+        }
+    }
+    // _080100D6
+}
 
 // https://decomp.me/scratch/Wvuov
 NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void))
@@ -62,7 +144,7 @@ NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void
     if (!(player->moveState & MOVESTATE_DEAD)) {
         // _080101AA
         s32 someX, someWidth, someY, otherY;
-        right = (left + (me->d.uData[0] * TILE_WIDTH));
+        right = (left + (me->d.sData[0] * TILE_WIDTH));
 
         if (right <= Q_24_8_TO_INT(player->x)) {
             someWidth = me->d.uData[2] * TILE_WIDTH;
