@@ -140,7 +140,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/half_pipe.o(.text);
-        build/sa2/asm/interactable_069.o(.text);
+        build/sa2/src/game/interactables_2/ice_paradise/069.o(.text);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.text);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
         build/sa2/asm/interactable_075.o(.text);
