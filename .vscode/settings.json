@@ -181,7 +181,9 @@
     "rotating_handle.h": "c",
     "entity.h": "c",
     "stage_goal.h": "c",
-    "__locale": "c"
+    "__locale": "c",
+    "bell.h": "c",
+    "069.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

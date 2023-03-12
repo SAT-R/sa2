@@ -78,7 +78,7 @@ SECTIONS
         build/sa2/asm/enemy_buzzer.o(.text);
         build/sa2/asm/enemy_kiki.o(.text);
         build/sa2/asm/enemy_koura.o(.text);
-        build/sa2/asm/enemy_bell.o(.text);
+        build/sa2/src/game/enemies/bell.o(.text);
         build/sa2/asm/enemy_yado.o(.text);
         build/sa2/asm/enemy_piko_piko.o(.text);
         build/sa2/asm/enemy_circus.o(.text);
@@ -112,7 +112,6 @@ SECTIONS
         build/sa2/src/game/interactables_1/bouncy_bar.o(.text);
         build/sa2/asm/interactable_corkscrew_3D.o(.text);
         build/sa2/src/game/interactables_1/stage_goal.o(.text);
-        build/sa2/asm/interactable_stage_goal.o(.text);
         build/sa2/src/game/interactables_1/checkpoint.o(.text);
         build/sa2/src/game/interactables_1/windmill.o(.text);
         build/sa2/src/game/options_screen.o(.text);
@@ -141,7 +140,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/half_pipe.o(.text);
-        build/sa2/asm/interactable_069.o(.text);
+        build/sa2/src/game/interactables_2/ice_paradise/069.o(.text);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.text);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
         build/sa2/asm/interactable_075.o(.text);
