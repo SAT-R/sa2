@@ -2,11 +2,7 @@
 .include "constants/constants.inc"
 
 .syntax unified
-.arm
-
-.if 00
-	thumb_func_start Task_GrindRail
-Task_GrindRail: @ 0x0800FE38
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -245,7 +241,7 @@ _0800FFF0:
 	ands r0, r6
 	cmp r0, #0
 	bne _080100B0
-	asrs r2, r3, #8
+	asrs r2, r3, #8     @ r2 = Q_24_8_TO_INT(player->x)
 	ldr r1, [sp]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
@@ -418,4 +414,4 @@ _08010128:
 _08010138: .4byte gCurTask
 _0801013C: .4byte IWRAM_START + 0x9
 _08010140: .4byte gCamera
-.endif
+    .syntax divided
