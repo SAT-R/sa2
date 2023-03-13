@@ -145,11 +145,15 @@ struct UNK_3005A70 {
     /* 0x38 */ s8 unk3A;
 }; /* size: unknown? */
 
+// Declared beforehand because it's used inside Player struct
+struct Player_;
+typedef void (*PlayerCallback)(struct Player_*);
+
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
 // Not sure what these are yet
-typedef struct {
-    /* 0x00 */ u32 filler0;
+typedef struct Player_ {
+    /* 0x00 */ PlayerCallback callback;
     /* 0x04 */ u32 filler4;
 
     /* 0x08 */ s32 x;

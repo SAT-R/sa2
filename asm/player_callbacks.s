@@ -9,6 +9,7 @@
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
+.if 00
 @ In: Player*
 	thumb_func_start PlayerCB_8025318
 PlayerCB_8025318: @ 0x08025318
@@ -97,6 +98,7 @@ _080253B4:
 	.align 2, 0
 _080253BC: .4byte gPlayer
 _080253C0: .4byte PlayerCB_Idle
+.endif
 
 @ In: Player*
 	thumb_func_start PlayerCB_Idle
