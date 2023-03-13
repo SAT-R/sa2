@@ -352,7 +352,7 @@ _08010C30:
 	lsls r0, r3, #0x18
 	b _08010C78
 _08010C36:
-	ldr r0, _08010CB0 @ =gUnknown_080D672C
+	ldr r0, _08010CB0 @ =PlayerCharIdleAnims
 	movs r1, #0
 	ldrsb r1, [r3, r1]
 	lsls r1, r1, #1
@@ -415,7 +415,7 @@ _08010C8A:
 	strb r2, [r0, #4]
 	b _08010CF0
 	.align 2, 0
-_08010CB0: .4byte gUnknown_080D672C
+_08010CB0: .4byte PlayerCharIdleAnims
 _08010CB4: .4byte gGameMode
 _08010CB8:
 	ldr r4, [sp, #0xc]

@@ -64,6 +64,8 @@ SECTIONS
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
+        build/sa2/asm/player_callbacks.o(.text);
+        build/sa2/asm/game_2.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);
         build/sa2/src/game/countdown.o(.text);

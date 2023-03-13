@@ -551,9 +551,9 @@ void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        u16 val = gUnknown_080D672C[i];
-        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), val, 0, 0x78,
-                    (i * 40) + 20, 0x400, i, 0x1000);
+        u16 anim = PlayerCharIdleAnims[i];
+        sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), anim, 0,
+                    0x78, (i * 40) + 20, 0x400, i, 0x1000);
     }
 }
 
@@ -583,7 +583,7 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
                 0x1000);
 }
 
-void sub_8082CEC(Sprite *element, u32 vramAddr, u16 asset, u8 variant, s16 x, s16 y,
+void sub_8082CEC(Sprite *element, u32 vramAddr, u16 animId, u8 variant, s16 x, s16 y,
                  u16 unk1A, u8 unk25, u32 unk10)
 {
     element->x = x;
@@ -591,7 +591,7 @@ void sub_8082CEC(Sprite *element, u32 vramAddr, u16 asset, u8 variant, s16 x, s1
     element->graphics.dest = (void *)vramAddr;
     element->unk1A = unk1A;
     element->graphics.size = 0;
-    element->graphics.anim = asset;
+    element->graphics.anim = animId;
     element->variant = variant;
     element->unk14 = 0;
     element->unk1C = 0;

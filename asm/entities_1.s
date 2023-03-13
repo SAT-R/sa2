@@ -1246,7 +1246,7 @@ _08011BFC:
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _08011C44
-	ldr r1, _08011C90 @ =gUnknown_080D672C
+	ldr r1, _08011C90 @ =PlayerCharIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1296,7 +1296,7 @@ _08011C7E:
 	bx r1
 	.align 2, 0
 _08011C8C: .4byte gUnknown_080D6736
-_08011C90: .4byte gUnknown_080D672C
+_08011C90: .4byte PlayerCharIdleAnims
 _08011C94: .4byte gUnknown_080D5518
 
 	thumb_func_start sub_8011C98
@@ -2037,8 +2037,8 @@ _08012250: .4byte 0xFFFFBFFF
 _08012254: .4byte gPlayer
 _08012258: .4byte sub_80124D0
 
-	thumb_func_start sub_801225C
-sub_801225C: @ 0x0801225C
+	thumb_func_start PlayerCB_801225C
+PlayerCB_801225C: @ 0x0801225C
 	push {r4, r5, lr}
 	adds r5, r0, #0
 	bl sub_80218E4
@@ -2234,7 +2234,7 @@ sub_80123D0: @ 0x080123D0
 	cmp r0, #0
 	beq _080123EA
 	ldr r1, _080123F4 @ =gPlayer
-	ldr r0, _080123F8 @ =sub_8025318
+	ldr r0, _080123F8 @ =PlayerCB_8025318
 	str r0, [r1]
 _080123EA:
 	adds r0, r2, #0
@@ -2243,7 +2243,7 @@ _080123EA:
 	bx r0
 	.align 2, 0
 _080123F4: .4byte gPlayer
-_080123F8: .4byte sub_8025318
+_080123F8: .4byte PlayerCB_8025318
 
 	thumb_func_start sub_80123FC
 sub_80123FC: @ 0x080123FC
@@ -3075,7 +3075,7 @@ _080129F8:
 	movs r3, #0xc0
 	lsls r3, r3, #0x12
 	adds r3, r6, r3
-	ldr r1, _08012A88 @ =gUnknown_080D672C
+	ldr r1, _08012A88 @ =PlayerCharIdleAnims
 	adds r0, r5, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -3122,7 +3122,7 @@ _080129F8:
 _08012A7C: .4byte gPlayer
 _08012A80: .4byte sub_801F214
 _08012A84: .4byte sub_801F550
-_08012A88: .4byte gUnknown_080D672C
+_08012A88: .4byte PlayerCharIdleAnims
 _08012A8C: .4byte gUnknown_080D6736
 _08012A90: .4byte IWRAM_START + 0x1C
 _08012A94: .4byte 0x0000034D
@@ -3560,7 +3560,7 @@ _08012DC4:
 	cmp r0, #0
 	beq _08012DE4
 	ldr r1, _08012DF0 @ =gPlayer
-	ldr r0, _08012DF4 @ =sub_8025318
+	ldr r0, _08012DF4 @ =PlayerCB_8025318
 	str r0, [r1]
 _08012DE4:
 	adds r0, r4, #0
@@ -3570,7 +3570,7 @@ _08012DE4:
 	bx r0
 	.align 2, 0
 _08012DF0: .4byte gPlayer
-_08012DF4: .4byte sub_8025318
+_08012DF4: .4byte PlayerCB_8025318
 
 	thumb_func_start sub_8012DF8
 sub_8012DF8: @ 0x08012DF8
@@ -3632,7 +3632,7 @@ _08012E1C:
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _08012E84
-	ldr r1, _08012EDC @ =gUnknown_080D672C
+	ldr r1, _08012EDC @ =PlayerCharIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -3685,7 +3685,7 @@ _08012ECC: .4byte gPlayer
 _08012ED0: .4byte sub_801F214
 _08012ED4: .4byte sub_801F550
 _08012ED8: .4byte gUnknown_080D6736
-_08012EDC: .4byte gUnknown_080D672C
+_08012EDC: .4byte PlayerCharIdleAnims
 _08012EE0: .4byte IWRAM_START + 0x1C
 _08012EE4: .4byte gUnknown_080D553C
 _08012EE8: .4byte IWRAM_START + 0x3C
@@ -5833,7 +5833,7 @@ _08013EC2:
 	adds r0, r0, r1
 	str r0, [r4, #8]
 	adds r0, r4, #0
-	bl sub_8025318
+	bl PlayerCB_8025318
 	b _08013EDA
 _08013ECE:
 	adds r0, r4, #0
@@ -5946,7 +5946,7 @@ _08013F82:
 	cmp r0, #0
 	beq _08013F9A
 	ldr r1, _08013FA4 @ =gPlayer
-	ldr r0, _08013FA8 @ =sub_8025318
+	ldr r0, _08013FA8 @ =PlayerCB_8025318
 	str r0, [r1]
 _08013F9A:
 	adds r0, r2, #0
@@ -5955,7 +5955,7 @@ _08013F9A:
 	bx r0
 	.align 2, 0
 _08013FA4: .4byte gPlayer
-_08013FA8: .4byte sub_8025318
+_08013FA8: .4byte PlayerCB_8025318
 
 	thumb_func_start sub_8013FAC
 sub_8013FAC: @ 0x08013FAC
@@ -9691,7 +9691,7 @@ _08015C0E:
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _08015C76
-	ldr r1, _08015CD4 @ =gUnknown_080D672C
+	ldr r1, _08015CD4 @ =PlayerCharIdleAnims
 	adds r0, r6, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -9745,7 +9745,7 @@ _08015CC4: .4byte sub_8015FF0
 _08015CC8: .4byte gUnknown_080D6736
 _08015CCC: .4byte IWRAM_START + 0x100
 _08015CD0: .4byte IWRAM_START + 0x102
-_08015CD4: .4byte gUnknown_080D672C
+_08015CD4: .4byte PlayerCharIdleAnims
 _08015CD8: .4byte IWRAM_START + 0x104
 _08015CDC: .4byte IWRAM_START + 0x106
 _08015CE0: .4byte IWRAM_START + 0x10A
@@ -10384,7 +10384,7 @@ _08016188:
 	movs r0, #0x80
 	lsls r0, r0, #1
 	strh r0, [r4, #0x3c]
-	ldr r2, _08016204 @ =gUnknown_080D672C
+	ldr r2, _08016204 @ =PlayerCharIdleAnims
 	ldr r1, _08016208 @ =gMultiplayerCharacters
 	ldrb r0, [r7]
 	adds r0, r0, r1
@@ -10412,7 +10412,7 @@ _08016188:
 	str r0, [r4, #0x10]
 	b _08016214
 	.align 2, 0
-_08016204: .4byte gUnknown_080D672C
+_08016204: .4byte PlayerCharIdleAnims
 _08016208: .4byte gMultiplayerCharacters
 _0801620C: .4byte 0x04000128
 _08016210:
@@ -10833,7 +10833,7 @@ _080164C4:
 	strh r0, [r1]
 	movs r0, #0x3c
 	strh r0, [r4, #0x2c]
-	ldr r0, _080165BC @ =sub_8025318
+	ldr r0, _080165BC @ =PlayerCB_8025318
 	str r0, [r4]
 	ldr r0, [r4, #0x20]
 	ldr r2, _080165C0 @ =0xFFBFFFFF
@@ -10871,7 +10871,7 @@ _08016576:
 	adds r0, r7, #0
 	adds r0, #0x6a
 	strh r3, [r0]
-	ldr r1, _080165CC @ =gUnknown_080D672C
+	ldr r1, _080165CC @ =PlayerCharIdleAnims
 	ldrb r0, [r5]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -10886,11 +10886,11 @@ _080165AC: .4byte IWRAM_START + 0x64
 _080165B0: .4byte gPlayer
 _080165B4: .4byte 0xFFFFFBFF
 _080165B8: .4byte 0xFFFFFEFF
-_080165BC: .4byte sub_8025318
+_080165BC: .4byte PlayerCB_8025318
 _080165C0: .4byte 0xFFBFFFFF
 _080165C4: .4byte gGameMode
 _080165C8: .4byte gUnknown_030053E8
-_080165CC: .4byte gUnknown_080D672C
+_080165CC: .4byte PlayerCharIdleAnims
 _080165D0:
 	mov r0, r8
 	ldrh r3, [r0, #6]
@@ -11034,7 +11034,7 @@ _080166E8: .4byte gVramGraphicsCopyQueueIndex
 _080166EC: .4byte gGameMode
 _080166F0:
 	movs r2, #3
-	ldr r3, _0801688C @ =gUnknown_080D672C
+	ldr r3, _0801688C @ =PlayerCharIdleAnims
 	movs r4, #6
 	ldrsh r0, [r3, r4]
 	ldrh r1, [r6, #0xa]
@@ -11247,7 +11247,7 @@ _08016880:
 	ldr r0, [r0]
 	mov pc, r0
 	.align 2, 0
-_0801688C: .4byte gUnknown_080D672C
+_0801688C: .4byte PlayerCharIdleAnims
 _08016890: .4byte gCamera
 _08016894: .4byte gGameMode
 _08016898: .4byte gUnknown_030054B4
@@ -11943,7 +11943,7 @@ _08016E06:
 	movs r2, #0
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _08016E60 @ =sub_8025318
+	ldr r0, _08016E60 @ =PlayerCB_8025318
 	str r0, [r3]
 	adds r0, r3, #0
 	adds r0, #0x61
@@ -11983,7 +11983,7 @@ _08016E3E:
 	b _08016FBC
 	.align 2, 0
 _08016E5C: .4byte gPlayer
-_08016E60: .4byte sub_8025318
+_08016E60: .4byte PlayerCB_8025318
 _08016E64: .4byte gUnknown_03005424
 _08016E68:
 	ldr r0, [r2, #0xc]
@@ -12114,7 +12114,7 @@ _08016F4C:
 	movs r2, #0
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _08016FA8 @ =sub_8025318
+	ldr r0, _08016FA8 @ =PlayerCB_8025318
 	str r0, [r3]
 	adds r0, r3, #0
 	adds r0, #0x61
@@ -12153,7 +12153,7 @@ _08016F84:
 	.align 2, 0
 _08016FA0: .4byte gPlayer
 _08016FA4: .4byte 0x00010028
-_08016FA8: .4byte sub_8025318
+_08016FA8: .4byte PlayerCB_8025318
 _08016FAC: .4byte gUnknown_03005424
 _08016FB0:
 	ldr r0, [r2, #0xc]
@@ -12670,7 +12670,7 @@ _0801738A:
 	movs r2, #0
 	movs r0, #0
 	strh r0, [r1]
-	ldr r0, _080173D0 @ =sub_8025318
+	ldr r0, _080173D0 @ =PlayerCB_8025318
 	mov r4, r8
 	str r0, [r4]
 	ldr r0, [r4, #0x20]
@@ -12697,7 +12697,7 @@ _0801738A:
 	b _0801749C
 	.align 2, 0
 _080173CC: .4byte gPlayer
-_080173D0: .4byte sub_8025318
+_080173D0: .4byte PlayerCB_8025318
 _080173D4: .4byte 0xFFBFFFFF
 _080173D8:
 	ldr r2, [sp, #0x10]
@@ -12754,7 +12754,7 @@ _08017426:
 	adds r1, #0x64
 	movs r0, #0
 	strh r0, [r1]
-	ldr r0, _08017484 @ =sub_8025318
+	ldr r0, _08017484 @ =PlayerCB_8025318
 	str r0, [r4]
 	ldr r0, _08017478 @ =gUnknown_03005424
 	ldrh r0, [r0]
@@ -12785,7 +12785,7 @@ _08017474: .4byte gCamera
 _08017478: .4byte gUnknown_03005424
 _0801747C: .4byte gPlayer
 _08017480: .4byte 0xFFBFFFFF
-_08017484: .4byte sub_8025318
+_08017484: .4byte PlayerCB_8025318
 _08017488:
 	mov r0, r8
 	ldr r1, [r0, #0x20]

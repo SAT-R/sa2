@@ -1057,7 +1057,7 @@ _080083C4:
 	blt _0800841C
 _080083D2:
 	ldrb r1, [r4, #0xa]
-	ldr r3, _080084F8 @ =gUnknown_080D672C
+	ldr r3, _080084F8 @ =PlayerCharIdleAnims
 	ldr r2, _080084FC @ =gMultiplayerCharacters
 	adds r0, r4, #0
 	adds r0, #0x56
@@ -1217,7 +1217,7 @@ _080084EE:
 	adds r5, r4, r0
 	b _08008642
 	.align 2, 0
-_080084F8: .4byte gUnknown_080D672C
+_080084F8: .4byte PlayerCharIdleAnims
 _080084FC: .4byte gMultiplayerCharacters
 _08008500: .4byte gCamera
 _08008504: .4byte gPlayer
@@ -11709,12 +11709,12 @@ _0800D66A:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D6B4 @ =sub_8025318
+	ldr r0, _0800D6B4 @ =PlayerCB_8025318
 	str r0, [r6]
 	adds r0, r6, #0
 	b _0800DA00
 	.align 2, 0
-_0800D6B4: .4byte sub_8025318
+_0800D6B4: .4byte PlayerCB_8025318
 _0800D6B8:
 	mov r4, sl
 	strh r4, [r6, #0x14]
@@ -11807,7 +11807,7 @@ _0800D738:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D790 @ =sub_8025318
+	ldr r0, _0800D790 @ =PlayerCB_8025318
 	str r0, [r6]
 _0800D770:
 	ldr r0, [r6, #0x20]
@@ -11826,7 +11826,7 @@ _0800D770:
 	str r2, [r6, #0xc]
 	b _0800DA18
 	.align 2, 0
-_0800D790: .4byte sub_8025318
+_0800D790: .4byte PlayerCB_8025318
 _0800D794:
 	movs r0, #0x80
 	lsls r0, r0, #0xb
@@ -11884,7 +11884,7 @@ _0800D7D8:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D80C @ =sub_8025318
+	ldr r0, _0800D80C @ =PlayerCB_8025318
 	str r0, [r6]
 	adds r0, r6, #0
 	adds r0, #0x61
@@ -11892,7 +11892,7 @@ _0800D7D8:
 	strb r4, [r5]
 	b _0800DA18
 	.align 2, 0
-_0800D80C: .4byte sub_8025318
+_0800D80C: .4byte PlayerCB_8025318
 _0800D810:
 	adds r0, r6, #0
 	bl sub_800DE44
@@ -11971,7 +11971,7 @@ _0800D868:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D8B8 @ =sub_8025318
+	ldr r0, _0800D8B8 @ =PlayerCB_8025318
 	str r0, [r5]
 	adds r0, r5, #0
 	adds r0, #0x61
@@ -11980,7 +11980,7 @@ _0800D868:
 	strb r4, [r1]
 	b _0800DA18
 	.align 2, 0
-_0800D8B8: .4byte sub_8025318
+_0800D8B8: .4byte PlayerCB_8025318
 _0800D8BC: .4byte gUnknown_03005A42
 _0800D8C0:
 	mov r2, sl
@@ -12065,7 +12065,7 @@ _0800D93C:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D994 @ =sub_8025318
+	ldr r0, _0800D994 @ =PlayerCB_8025318
 	str r0, [r5]
 	adds r0, r5, #0
 	movs r1, #0xe
@@ -12091,7 +12091,7 @@ _0800D974:
 	str r4, [r5, #0xc]
 	b _0800DA18
 	.align 2, 0
-_0800D994: .4byte sub_8025318
+_0800D994: .4byte PlayerCB_8025318
 _0800D998:
 	movs r0, #0x80
 	lsls r0, r0, #0xa
@@ -12143,7 +12143,7 @@ _0800D9BE:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800DA08 @ =sub_8025318
+	ldr r0, _0800DA08 @ =PlayerCB_8025318
 	str r0, [r5]
 	adds r0, r5, #0
 _0800DA00:
@@ -12152,7 +12152,7 @@ _0800DA00:
 	strb r4, [r7]
 	b _0800DA18
 	.align 2, 0
-_0800DA08: .4byte sub_8025318
+_0800DA08: .4byte PlayerCB_8025318
 _0800DA0C:
 	adds r0, r5, #0
 	bl sub_800DE44
@@ -12601,6 +12601,8 @@ _0800DD44:
 	pop {r1}
 	bx r1
 
+@ In:
+@  r0: Player*
 	thumb_func_start sub_800DD54
 sub_800DD54: @ 0x0800DD54
 	push {r4, r5, r6, lr}
@@ -12724,6 +12726,8 @@ _0800DE38: .4byte 0xFFFFFEFF
 _0800DE3C: .4byte gGameMode
 _0800DE40: .4byte gRingCount
 
+@ In:
+@  r0: Player*
 	thumb_func_start sub_800DE44
 sub_800DE44: @ 0x0800DE44
 	push {r4, r5, r6, lr}
@@ -12891,6 +12895,8 @@ sub_800DF38: @ 0x0800DF38
 	bx r1
 	.align 2, 0
 
+@ In:
+@  r0: Player*
 	thumb_func_start sub_800DF8C
 sub_800DF8C: @ 0x0800DF8C
 	push {r4, r5, r6, r7, lr}
