@@ -4,6 +4,11 @@
 .syntax unified
 .text
 
+@ NOTE: We consider Player Callbacks to be all those procedures
+@       that are passed to the first member of the Player struct.
+@       So even if there are procedures that only take a Player,
+@       if they are only called directly in the code, those are NOT callbacks.
+
 @ In: Player*
 	thumb_func_start PlayerCB_8025318
 PlayerCB_8025318: @ 0x08025318
