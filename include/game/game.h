@@ -349,7 +349,7 @@ struct UNK_3005510 {
 extern struct UNK_3005510 gUnknown_03005510[16];
 
 // rodata
-extern const u16 PlayerCharIdleAnims[NUM_CHARACTERS];
+extern const u16 PlayerCharacterIdleAnims[NUM_CHARACTERS];
 extern const u16 gUnknown_080D713C[5][3];
 extern const u16 gUnknown_080D715A[5][3];
 extern const u16 gUnknown_080D7178[11][3];

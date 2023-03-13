@@ -11,8 +11,8 @@ gUnknown_080D650C:
 gUnknown_080D661C:
     .incbin "baserom.gba", 0x000D661C, 0x110
 
-    .global PlayerCharIdleAnims
-PlayerCharIdleAnims: @ 0x080D672C
+    .global PlayerCharacterIdleAnims
+PlayerCharacterIdleAnims: @ 0x080D672C
     .2byte 0, 91, 182, 273, 364
 
     .global gUnknown_080D6736
@@ -6949,7 +6949,7 @@ _08020710: .4byte gGameMode
 _08020714:
 	mov r0, ip
 	ldrb r1, [r0, #0xa]
-	ldr r2, _080207CC @ =PlayerCharIdleAnims
+	ldr r2, _080207CC @ =PlayerCharacterIdleAnims
 	mov sl, r2
 	ldr r2, _080207D0 @ =gMultiplayerCharacters
 	ldr r3, _080207D4 @ =IWRAM_START + 0x56
@@ -7044,7 +7044,7 @@ _080207BA:
 	movs r0, #0
 	b _08020962
 	.align 2, 0
-_080207CC: .4byte PlayerCharIdleAnims
+_080207CC: .4byte PlayerCharacterIdleAnims
 _080207D0: .4byte gMultiplayerCharacters
 _080207D4: .4byte IWRAM_START + 0x56
 _080207D8:
@@ -7545,7 +7545,7 @@ _08020BA0:
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	lsls r0, r0, #1
-	ldr r4, _08020C60 @ =PlayerCharIdleAnims
+	ldr r4, _08020C60 @ =PlayerCharacterIdleAnims
 	adds r0, r0, r4
 	ldrb r0, [r0]
 	subs r1, r1, r0
@@ -7633,7 +7633,7 @@ _08020C44:
 	.align 2, 0
 _08020C58: .4byte gMultiplayerCharacters
 _08020C5C: .4byte IWRAM_START + 0x56
-_08020C60: .4byte PlayerCharIdleAnims
+_08020C60: .4byte PlayerCharacterIdleAnims
 _08020C64:
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
@@ -8184,7 +8184,7 @@ _08021094:
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	lsls r0, r0, #1
-	ldr r4, _08021154 @ =PlayerCharIdleAnims
+	ldr r4, _08021154 @ =PlayerCharacterIdleAnims
 	adds r0, r0, r4
 	ldrb r0, [r0]
 	subs r1, r1, r0
@@ -8272,7 +8272,7 @@ _08021138:
 	.align 2, 0
 _0802114C: .4byte gMultiplayerCharacters
 _08021150: .4byte IWRAM_START + 0x56
-_08021154: .4byte PlayerCharIdleAnims
+_08021154: .4byte PlayerCharacterIdleAnims
 _08021158:
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
@@ -15339,7 +15339,7 @@ sub_80246DC: @ 0x080246DC
 	mov ip, r1
 	ldrh r2, [r1]
 	mov sl, r2
-	ldr r1, _0802476C @ =PlayerCharIdleAnims
+	ldr r1, _0802476C @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -15387,7 +15387,7 @@ sub_80246DC: @ 0x080246DC
 	strb r0, [r4, #0x17]
 	b _0802485C
 	.align 2, 0
-_0802476C: .4byte PlayerCharIdleAnims
+_0802476C: .4byte PlayerCharacterIdleAnims
 _08024770:
 	movs r1, #0x12
 	ldrsh r0, [r4, r1]
@@ -15561,7 +15561,7 @@ sub_802486C: @ 0x0802486C
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _080248C6
-	ldr r0, _0802490C @ =PlayerCharIdleAnims
+	ldr r0, _0802490C @ =PlayerCharacterIdleAnims
 	adds r1, r3, #0
 	adds r1, #0x85
 	ldrb r1, [r1]
@@ -15609,7 +15609,7 @@ _080248FC:
 	mov pc, r0
 	.align 2, 0
 _08024908: .4byte gUnknown_080D6736
-_0802490C: .4byte PlayerCharIdleAnims
+_0802490C: .4byte PlayerCharacterIdleAnims
 _08024910: .4byte _08024914
 _08024914: @ jump table
 	.4byte _080249E8 @ case 0
@@ -15666,7 +15666,7 @@ _08024914: @ jump table
 	.4byte _08024A10 @ case 51
 	.4byte _08024A10 @ case 52
 _080249E8:
-	ldr r1, _08024A2C @ =PlayerCharIdleAnims
+	ldr r1, _08024A2C @ =PlayerCharacterIdleAnims
 	adds r0, r3, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -15703,7 +15703,7 @@ _08024A20:
 	movs r0, #0x80
 	b _08024A32
 	.align 2, 0
-_08024A2C: .4byte PlayerCharIdleAnims
+_08024A2C: .4byte PlayerCharacterIdleAnims
 _08024A30:
 	movs r0, #8
 _08024A32:
@@ -16125,7 +16125,7 @@ _08024D02:
 	mov r8, r2
 	cmp r0, #5
 	bne _08024D6C
-	ldr r1, _08024DB4 @ =PlayerCharIdleAnims
+	ldr r1, _08024DB4 @ =PlayerCharacterIdleAnims
 	adds r0, r7, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -16171,7 +16171,7 @@ _08024DA4: .4byte gUnknown_03005590
 _08024DA8: .4byte gMultiSioSend
 _08024DAC: .4byte gMultiplayerPlayerTasks
 _08024DB0: .4byte 0x04000128
-_08024DB4: .4byte PlayerCharIdleAnims
+_08024DB4: .4byte PlayerCharacterIdleAnims
 _08024DB8: .4byte gRingCount
 _08024DBC:
 	ldrh r1, [r4, #8]
@@ -16502,7 +16502,7 @@ _08025028:
 	adds r0, #2
 	ldrh r2, [r0]
 	mov ip, r2
-	ldr r1, _080250B0 @ =PlayerCharIdleAnims
+	ldr r1, _080250B0 @ =PlayerCharacterIdleAnims
 	movs r0, #0
 	ldrsb r0, [r7, r0]
 	lsls r0, r0, #1
@@ -16568,7 +16568,7 @@ _0802506E:
 	lsls r0, r0, #8
 	b _080250BC
 	.align 2, 0
-_080250B0: .4byte PlayerCharIdleAnims
+_080250B0: .4byte PlayerCharacterIdleAnims
 _080250B4: .4byte gUnknown_030054B8
 _080250B8:
 	movs r0, #0x80
@@ -16685,7 +16685,7 @@ _08025180:
 	adds r0, #2
 	ldrh r2, [r0]
 	mov r8, r2
-	ldr r1, _080251F4 @ =PlayerCharIdleAnims
+	ldr r1, _080251F4 @ =PlayerCharacterIdleAnims
 	movs r0, #0
 	ldrsb r0, [r7, r0]
 	lsls r0, r0, #1
@@ -16735,7 +16735,7 @@ _080251DE:
 	lsrs r0, r0, #0x18
 	b _08025208
 	.align 2, 0
-_080251F4: .4byte PlayerCharIdleAnims
+_080251F4: .4byte PlayerCharacterIdleAnims
 _080251F8:
 	movs r0, #1
 	mov r1, sl

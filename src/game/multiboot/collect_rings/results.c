@@ -551,7 +551,7 @@ void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        u16 anim = PlayerCharIdleAnims[i];
+        u16 anim = PlayerCharacterIdleAnims[i];
         sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), anim, 0,
                     0x78, (i * 40) + 20, 0x400, i, 0x1000);
     }

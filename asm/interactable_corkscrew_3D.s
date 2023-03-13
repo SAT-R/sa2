@@ -396,7 +396,7 @@ _08061BF4:
 	bl m4aSongNumStart
 	b _08061C56
 _08061C28:
-	ldr r1, _08061C64 @ =PlayerCharIdleAnims
+	ldr r1, _08061C64 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -427,7 +427,7 @@ _08061C56:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08061C64: .4byte PlayerCharIdleAnims
+_08061C64: .4byte PlayerCharacterIdleAnims
 _08061C68: .4byte 0xFFFFFEE6
 _08061C6C: .4byte 0x000003FF
 
@@ -772,7 +772,7 @@ _08061EE8:
 	bl m4aSongNumStart
 	b _08061F4A
 _08061F1C:
-	ldr r1, _08061F58 @ =PlayerCharIdleAnims
+	ldr r1, _08061F58 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -803,7 +803,7 @@ _08061F4A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08061F58: .4byte PlayerCharIdleAnims
+_08061F58: .4byte PlayerCharacterIdleAnims
 _08061F5C: .4byte 0xFFFFFEE6
 
 	thumb_func_start sub_8061F60
@@ -1200,7 +1200,7 @@ _0806224C:
 	bl m4aSongNumStart
 	b _080622AE
 _08062280:
-	ldr r1, _080622BC @ =PlayerCharIdleAnims
+	ldr r1, _080622BC @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1231,7 +1231,7 @@ _080622AE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080622BC: .4byte PlayerCharIdleAnims
+_080622BC: .4byte PlayerCharacterIdleAnims
 _080622C0: .4byte 0xFFFFFEE6
 _080622C4: .4byte 0x000003FF
 
@@ -1587,7 +1587,7 @@ _0806255C:
 	bl m4aSongNumStart
 	b _080625BE
 _08062590:
-	ldr r1, _080625CC @ =PlayerCharIdleAnims
+	ldr r1, _080625CC @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1618,7 +1618,7 @@ _080625BE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080625CC: .4byte PlayerCharIdleAnims
+_080625CC: .4byte PlayerCharacterIdleAnims
 _080625D0: .4byte 0xFFFFFEE6
 
 	thumb_func_start initSprite_Interactable_Corkscrew3D_Start

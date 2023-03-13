@@ -479,7 +479,7 @@ sub_802569C: @ 0x0802569C
 	adds r7, #0xc
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _08025718 @ =PlayerCharIdleAnims
+	ldr r1, _08025718 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -532,7 +532,7 @@ _080256EC:
 	str r1, [r0, #0x1c]
 	b _0802572A
 	.align 2, 0
-_08025718: .4byte PlayerCharIdleAnims
+_08025718: .4byte PlayerCharacterIdleAnims
 _0802571C: .4byte 0xFFFFBFFF
 _08025720:
 	cmp r1, #0x40
@@ -702,7 +702,7 @@ sub_8025854: @ 0x08025854
 	adds r7, #0xc
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _080258D0 @ =PlayerCharIdleAnims
+	ldr r1, _080258D0 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -756,7 +756,7 @@ _080258A4:
 	str r0, [r2, #0x1c]
 	b _080258E2
 	.align 2, 0
-_080258D0: .4byte PlayerCharIdleAnims
+_080258D0: .4byte PlayerCharacterIdleAnims
 _080258D4: .4byte 0xFFFFBFFF
 _080258D8:
 	cmp r1, #0x80
@@ -1658,7 +1658,7 @@ sub_8025F84: @ 0x08025F84
 _08025FAA:
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _08025FEC @ =PlayerCharIdleAnims
+	ldr r1, _08025FEC @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1689,7 +1689,7 @@ _08025FD8:
 	b _08025FFE
 	.align 2, 0
 _08025FE8: .4byte 0xFEFFFFDF
-_08025FEC: .4byte PlayerCharIdleAnims
+_08025FEC: .4byte PlayerCharacterIdleAnims
 _08025FF0:
 	adds r0, r4, #0
 	movs r1, #0xe
@@ -1769,7 +1769,7 @@ PlayerCB_8026060: @ 0x08026060
 _08026084:
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _080260C8 @ =PlayerCharIdleAnims
+	ldr r1, _080260C8 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1800,7 +1800,7 @@ _080260B2:
 	b _080260DA
 	.align 2, 0
 _080260C4: .4byte 0xFEFFFFDF
-_080260C8: .4byte PlayerCharIdleAnims
+_080260C8: .4byte PlayerCharacterIdleAnims
 _080260CC:
 	adds r0, r4, #0
 	movs r1, #0xe
@@ -1863,7 +1863,7 @@ PlayerCB_802611C: @ 0x0802611C
 _08026140:
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _08026184 @ =PlayerCharIdleAnims
+	ldr r1, _08026184 @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -1894,7 +1894,7 @@ _0802616E:
 	b _08026196
 	.align 2, 0
 _08026180: .4byte 0xFEFFFFDF
-_08026184: .4byte PlayerCharIdleAnims
+_08026184: .4byte PlayerCharacterIdleAnims
 _08026188:
 	adds r0, r4, #0
 	movs r1, #0xe
@@ -2156,7 +2156,7 @@ sub_8026378: @ 0x08026378
 	mov r8, r0
 	adds r2, r6, #0
 	adds r2, #0x68
-	ldr r1, _080263F4 @ =PlayerCharIdleAnims
+	ldr r1, _080263F4 @ =PlayerCharacterIdleAnims
 	adds r0, r6, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -2210,7 +2210,7 @@ _080263E4:
 	bl m4aSongNumStart
 	b _080264B2
 	.align 2, 0
-_080263F4: .4byte PlayerCharIdleAnims
+_080263F4: .4byte PlayerCharacterIdleAnims
 _080263F8: .4byte 0xFFFFFBFF
 _080263FC: .4byte gUnknown_080D6920
 _08026400: .4byte gPlayer
@@ -4590,7 +4590,7 @@ PlayerCB_8027620: @ 0x08027620
 	adds r6, r0, #0
 	adds r2, r6, #0
 	adds r2, #0x68
-	ldr r1, _080276C8 @ =PlayerCharIdleAnims
+	ldr r1, _080276C8 @ =PlayerCharacterIdleAnims
 	adds r0, #0x85
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -4670,7 +4670,7 @@ _08027680:
 	mov r8, r1
 	b _080276FC
 	.align 2, 0
-_080276C8: .4byte PlayerCharIdleAnims
+_080276C8: .4byte PlayerCharacterIdleAnims
 _080276CC: .4byte gCamera
 _080276D0: .4byte gUnknown_030054D0
 _080276D4: .4byte 0x000002DA
@@ -7665,7 +7665,7 @@ PlayerCB_8028D74: @ 0x08028D74
 _08028D9A:
 	adds r2, r4, #0
 	adds r2, #0x68
-	ldr r1, _08028DDC @ =PlayerCharIdleAnims
+	ldr r1, _08028DDC @ =PlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -7696,7 +7696,7 @@ _08028DC8:
 	b _08028DEE
 	.align 2, 0
 _08028DD8: .4byte 0xFEFFFFDF
-_08028DDC: .4byte PlayerCharIdleAnims
+_08028DDC: .4byte PlayerCharacterIdleAnims
 _08028DE0:
 	adds r0, r4, #0
 	movs r1, #0xe
