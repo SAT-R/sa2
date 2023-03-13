@@ -84,7 +84,7 @@
 #define SE_SONIC_SKID_ATTACK       111
 #define SE_SONIC_MIDAIR_SOMERSAULT 112
 #define SE_SONIC_INSTA_SHIELD      113
-#define SE_114                     114
+#define SE_GRINDING                114
 #define SE_BRAKE                   115
 #define SE_JUMP                    116
 #define SE_RING_COPY               117

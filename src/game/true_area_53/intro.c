@@ -784,7 +784,7 @@ void sub_8037A38(void)
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, sprite);
         sprite->unk22 = 0x10;
-        m4aSongNumStart(SE_114);
+        m4aSongNumStart(SE_GRINDING);
         gCurTask->main = sub_8037B04;
     }
     OBJ_RENDER_SPRITE(actor, sprite);
@@ -883,7 +883,7 @@ void sub_8037E08(void)
 
         gCurTask->main = sub_8037F68;
 
-        m4aSongNumStop(SE_114);
+        m4aSongNumStop(SE_GRINDING);
         m4aSongNumStart(SE_221);
     }
     OBJ_RENDER_SPRITE(actor, sprite);
