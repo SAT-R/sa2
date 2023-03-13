@@ -147,7 +147,7 @@ struct UNK_3005A70 {
 
 // Declared beforehand because it's used inside Player struct
 struct Player_;
-typedef void (*PlayerCallback)(struct Player_*);
+typedef void (*PlayerCallback)(struct Player_ *);
 
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
