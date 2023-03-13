@@ -474,7 +474,7 @@ sub_8039ED4: @ 0x08039ED4
 	ldr r1, _08039F0C @ =0xFFDFFFFF
 	ands r0, r1
 	str r0, [r2, #0x20]
-	ldr r0, _08039F10 @ =sub_8025318
+	ldr r0, _08039F10 @ =PlayerCB_8025318
 	str r0, [r2]
 	adds r2, #0x6d
 	movs r0, #0
@@ -487,7 +487,7 @@ _08039F00: .4byte gCurrentLevel
 _08039F04: .4byte gPlayer
 _08039F08: .4byte 0xF7FFFFFF
 _08039F0C: .4byte 0xFFDFFFFF
-_08039F10: .4byte sub_8025318
+_08039F10: .4byte PlayerCB_8025318
 
 	thumb_func_start sub_8039F14
 sub_8039F14: @ 0x08039F14
