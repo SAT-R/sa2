@@ -1,6 +1,7 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.arm
 .syntax unified
 .text
 
@@ -19,13 +20,13 @@ PlayerCB_8025548: @ 0x08025548
 	bl sub_802A0FC
 	cmp r0, #0
 	beq _08025556
-	b _08025688
+	b PlayerCB_8025548_return
 _08025556:
 	adds r0, r4, #0
 	bl sub_8029E6C
 	cmp r0, #0
 	beq _08025562
-	b _08025688
+	b PlayerCB_8025548_return
 _08025562:
 	ldr r0, _08025618 @ =gGameMode
 	ldrb r0, [r0]
@@ -35,7 +36,7 @@ _08025562:
 	bl sub_802A2A8
 	cmp r0, #0
 	beq _08025576
-	b _08025688
+	b PlayerCB_8025548_return
 _08025576:
 	adds r0, r4, #0
 	adds r0, #0x90
@@ -171,11 +172,11 @@ _08025678:
 	movs r1, #2
 	ands r0, r1
 	cmp r0, #0
-	beq _08025688
+	beq PlayerCB_8025548_return
 	ldr r1, _08025694 @ =gPlayer
 	ldr r0, _08025698 @ =PlayerCB_8025E18
 	str r0, [r1]
-_08025688:
+PlayerCB_8025548_return:
 	pop {r4, r5}
 	pop {r0}
 	bx r0
