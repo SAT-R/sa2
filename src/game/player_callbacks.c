@@ -89,11 +89,7 @@ void PlayerCB_Idle(Player *player)
         player->x += player->speedAirX;
 
         if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-#ifndef PORTABLE
-            player->speedAirY = (u16)player->speedAirY * (-1);
-#else
-            player->speedAirY = player->speedAirY * (-1);
-#endif
+            player->speedAirY = -player->speedAirY;
         }
 
         player->speedAirY
