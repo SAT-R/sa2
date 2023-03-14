@@ -533,7 +533,7 @@ _08025A64:
 	adds r0, #0x99
 	strb r5, [r0]
 	ldr r0, _08025AB0 @ =gPlayer
-	ldr r1, _08025AB4 @ =sub_8025AB8
+	ldr r1, _08025AB4 @ =PlayerCB_8025AB8
 	str r1, [r0]
 	adds r0, r6, #0
 	bl _call_via_r1
@@ -544,10 +544,10 @@ _08025AA4:
 	.align 2, 0
 _08025AAC: .4byte 0xFFFFBFFF
 _08025AB0: .4byte gPlayer
-_08025AB4: .4byte sub_8025AB8
+_08025AB4: .4byte PlayerCB_8025AB8
 
-	thumb_func_start sub_8025AB8
-sub_8025AB8: @ 0x08025AB8
+	thumb_func_start PlayerCB_8025AB8
+PlayerCB_8025AB8: @ 0x08025AB8
 	push {r4, r5, r6, lr}
 	adds r4, r0, #0
 	ldr r2, [r4, #0x20]
@@ -2275,7 +2275,7 @@ _080267E8:
 	movs r0, #0x72
 	bl m4aSongNumStart
 	ldr r0, _08026808 @ =gPlayer
-	ldr r1, _0802680C @ =sub_8026810
+	ldr r1, _0802680C @ =PlayerCB_8026810
 	str r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
@@ -2284,10 +2284,10 @@ _080267E8:
 	bx r0
 	.align 2, 0
 _08026808: .4byte gPlayer
-_0802680C: .4byte sub_8026810
+_0802680C: .4byte PlayerCB_8026810
 
-	thumb_func_start sub_8026810
-sub_8026810: @ 0x08026810
+	thumb_func_start PlayerCB_8026810
+PlayerCB_8026810: @ 0x08026810
 	push {r4, lr}
 	adds r4, r0, #0
 	bl sub_8029E6C
@@ -3268,7 +3268,7 @@ _08026F74:
 	movs r0, #0x1e
 	strb r0, [r1]
 	ldr r0, _08026FC0 @ =gPlayer
-	ldr r1, _08026FC4 @ =sub_8025AB8
+	ldr r1, _08026FC4 @ =PlayerCB_8025AB8
 	str r1, [r0]
 	adds r0, r5, #0
 	bl _call_via_r1
@@ -3279,7 +3279,7 @@ _08026FB4:
 	.align 2, 0
 _08026FBC: .4byte 0xFFFFBFFF
 _08026FC0: .4byte gPlayer
-_08026FC4: .4byte sub_8025AB8
+_08026FC4: .4byte PlayerCB_8025AB8
 
 	thumb_func_start PlayerCB_8026FC8
 PlayerCB_8026FC8: @ 0x08026FC8
