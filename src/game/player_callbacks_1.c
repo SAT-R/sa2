@@ -70,16 +70,14 @@ void PlayerCB_Idle(Player *player)
     } else if (!sub_802A0C8(player) && !sub_802A0FC(player) && !sub_8029E6C(player)
                && !sub_802A2A8(player)) {
         // _0802542C
-        u32 maybeRotation;
         sub_802966C(player);
 
-        maybeRotation = player->unk24;
-
         if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
-            u32 sinus = (SIN_24_8(player->unk24 * 4) * 3) >> 5;
+            // >> velocity = (sin(angle) * 3) / 32
+            s32 acceleration = (SIN_24_8(player->unk24 * 4) * 3) >> 5;
 
             if (player->speedGroundX != 0) {
-                player->speedGroundX += sinus;
+                player->speedGroundX += acceleration;
             }
         }
 
@@ -92,8 +90,7 @@ void PlayerCB_Idle(Player *player)
             player->speedAirY = -player->speedAirY;
         }
 
-        player->speedAirY
-            = (player->speedAirY > Q_24_8(15.0)) ? Q_24_8(15.0) : player->speedAirY;
+        player->speedAirY = MIN(player->speedAirY, Q_24_8(15.0));
 
         player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
             ? player->y - player->speedAirY
@@ -104,11 +101,8 @@ void PlayerCB_Idle(Player *player)
         if (player->unk2A) {
             player->unk2A -= 1;
         } else if ((player->unk24 + 32) & 0xC0) {
-            s32 speed = player->speedGroundX;
-            if (speed < 0)
-                speed = -speed;
-
-            if (speed < Q_24_8(1.875)) {
+            s32 absGroundSpeed = ABS(player->speedGroundX);
+            if (absGroundSpeed < Q_24_8(1.875)) {
                 player->speedGroundX = 0;
 
                 player->moveState |= MOVESTATE_IN_AIR;
