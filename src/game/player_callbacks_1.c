@@ -172,3 +172,11 @@ void PlayerCB_8025548(Player *player)
         }
     }
 }
+
+#if 0
+void PlayerCB_802569C(Player* player)
+{
+    Sprite *spriteU90 = player->unk90->s;
+    u16* anim = &player->unk68;
+}
+#endif

@@ -218,7 +218,7 @@ typedef struct Player_ {
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u8 filler7C[8];
     /* 0x84 */ u8 filler84;
-    /* 0x85 */ s8 unk85;
+    /* 0x85 */ s8 character; // unk85 = character
     /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;

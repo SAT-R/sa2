@@ -104,7 +104,7 @@ static void Task_Interactable_SpecialRing(void)
 {
     Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
 
-    if (gPlayer.unk85 == 1) {
+    if (gPlayer.character == CHARACTER_CREAM) {
         sub_80122DC(Q_24_8(ring->posX), Q_24_8(ring->posY));
     }
 
