@@ -10,8 +10,6 @@
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
 @ In: Player*
 	thumb_func_start PlayerCB_Idle
 PlayerCB_Idle: @ 0x080253C4
@@ -26,7 +24,7 @@ PlayerCB_Idle: @ 0x080253C4
 	bne _080253E4
 	adds r0, r4, #0
 	bl PlayerCB_80273D0
-	b _0802553A
+	b PlayerCB_Idle_return
 	.align 2, 0
 _080253E0: .4byte 0x800000A
 _080253E4:
@@ -37,7 +35,7 @@ _080253E4:
 	bne _080253FC
 	adds r0, r4, #0
 	bl sub_802A360
-	b _0802553A
+	b PlayerCB_Idle_return
 	.align 2, 0
 _080253F8: .4byte 0x0000080A
 _080253FC:
@@ -45,25 +43,25 @@ _080253FC:
 	bl sub_802A0C8
 	cmp r0, #0
 	beq _08025408
-	b _0802553A
+	b PlayerCB_Idle_return
 _08025408:
 	adds r0, r4, #0
 	bl sub_802A0FC
 	cmp r0, #0
 	beq _08025414
-	b _0802553A
+	b PlayerCB_Idle_return
 _08025414:
 	adds r0, r4, #0
 	bl sub_8029E6C
 	cmp r0, #0
 	beq _08025420
-	b _0802553A
+	b PlayerCB_Idle_return
 _08025420:
 	adds r0, r4, #0
 	bl sub_802A2A8
 	cmp r0, #0
 	beq _0802542C
-	b _0802553A
+	b PlayerCB_Idle_return
 _0802542C:
 	adds r0, r4, #0
 	bl sub_802966C
@@ -191,24 +189,25 @@ _08025510:
 	rsbs r0, r0, #0
 	ands r1, r0
 	str r1, [r4, #0x20]
-	b _0802553A
+	b PlayerCB_Idle_return
 	.align 2, 0
 _08025528: .4byte 0x000001DF
 _0802552C:
 	movs r0, #2
 	ands r1, r0
 	cmp r1, #0
-	beq _0802553A
+	beq PlayerCB_Idle_return
 	ldr r1, _08025540 @ =gPlayer
-	ldr r0, _08025544 @ =sub_8025E18
+	ldr r0, _08025544 @ =PlayerCB_8025E18
 	str r0, [r1]
-_0802553A:
+PlayerCB_Idle_return:
 	pop {r4, r5}
 	pop {r0}
 	bx r0
 	.align 2, 0
 _08025540: .4byte gPlayer
-_08025544: .4byte sub_8025E18
+_08025544: .4byte PlayerCB_8025E18
+.endif
 
 	thumb_func_start sub_8025548
 sub_8025548: @ 0x08025548
@@ -371,7 +370,7 @@ _08025678:
 	cmp r0, #0
 	beq _08025688
 	ldr r1, _08025694 @ =gPlayer
-	ldr r0, _08025698 @ =sub_8025E18
+	ldr r0, _08025698 @ =PlayerCB_8025E18
 	str r0, [r1]
 _08025688:
 	pop {r4, r5}
@@ -380,7 +379,7 @@ _08025688:
 	.align 2, 0
 _08025690: .4byte 0x000001DF
 _08025694: .4byte gPlayer
-_08025698: .4byte sub_8025E18
+_08025698: .4byte PlayerCB_8025E18
 
 	thumb_func_start sub_802569C
 sub_802569C: @ 0x0802569C
@@ -594,7 +593,7 @@ _08025830:
 	cmp r0, #0
 	beq _08025840
 	ldr r1, _0802584C @ =gPlayer
-	ldr r0, _08025850 @ =sub_8025E18
+	ldr r0, _08025850 @ =PlayerCB_8025E18
 	str r0, [r1]
 _08025840:
 	pop {r4, r5, r6, r7}
@@ -603,7 +602,7 @@ _08025840:
 	.align 2, 0
 _08025848: .4byte 0x000001DF
 _0802584C: .4byte gPlayer
-_08025850: .4byte sub_8025E18
+_08025850: .4byte PlayerCB_8025E18
 
 	thumb_func_start sub_8025854
 sub_8025854: @ 0x08025854
@@ -818,7 +817,7 @@ _080259E8:
 	cmp r0, #0
 	beq _080259F8
 	ldr r1, _08025A04 @ =gPlayer
-	ldr r0, _08025A08 @ =sub_8025E18
+	ldr r0, _08025A08 @ =PlayerCB_8025E18
 	str r0, [r1]
 _080259F8:
 	pop {r4, r5, r6, r7}
@@ -827,7 +826,7 @@ _080259F8:
 	.align 2, 0
 _08025A00: .4byte 0x000001DF
 _08025A04: .4byte gPlayer
-_08025A08: .4byte sub_8025E18
+_08025A08: .4byte PlayerCB_8025E18
 
 	thumb_func_start PlayerCB_8025A0C
 PlayerCB_8025A0C: @ 0x08025A0C
@@ -1211,7 +1210,7 @@ _08025CDC:
 	cmp r0, #0
 	beq _08025CEC
 	ldr r1, _08025CF8 @ =gPlayer
-	ldr r0, _08025CFC @ =sub_8025E18
+	ldr r0, _08025CFC @ =PlayerCB_8025E18
 	str r0, [r1]
 _08025CEC:
 	pop {r4, r5, r6}
@@ -1220,7 +1219,7 @@ _08025CEC:
 	.align 2, 0
 _08025CF4: .4byte 0x000001DF
 _08025CF8: .4byte gPlayer
-_08025CFC: .4byte sub_8025E18
+_08025CFC: .4byte PlayerCB_8025E18
 
 	thumb_func_start PlayerCB_8025D00
 PlayerCB_8025D00: @ 0x08025D00
@@ -1347,7 +1346,7 @@ _08025DD6:
 	movs r0, #0x74
 	bl m4aSongNumStart
 	ldr r0, _08025E10 @ =gPlayer
-	ldr r1, _08025E14 @ =sub_8025E18
+	ldr r1, _08025E14 @ =PlayerCB_8025E18
 	str r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
@@ -1361,10 +1360,10 @@ _08025E04: .4byte gUnknown_030054B0
 _08025E08: .4byte gCamera
 _08025E0C: .4byte 0xFFFFBFFF
 _08025E10: .4byte gPlayer
-_08025E14: .4byte sub_8025E18
+_08025E14: .4byte PlayerCB_8025E18
 
-	thumb_func_start sub_8025E18
-sub_8025E18: @ 0x08025E18
+	thumb_func_start PlayerCB_8025E18
+PlayerCB_8025E18: @ 0x08025E18
 	push {r4, r5, lr}
 	adds r4, r0, #0
 	movs r5, #0xfd
@@ -1649,7 +1648,7 @@ _08026022:
 	movs r0, #0x74
 	bl m4aSongNumStart
 	ldr r0, _08026058 @ =gPlayer
-	ldr r1, _0802605C @ =sub_8025E18
+	ldr r1, _0802605C @ =PlayerCB_8025E18
 	str r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
@@ -1659,7 +1658,7 @@ _08026022:
 	.align 2, 0
 _08026054: .4byte 0xFFFFBFFF
 _08026058: .4byte gPlayer
-_0802605C: .4byte sub_8025E18
+_0802605C: .4byte PlayerCB_8025E18
 
 	thumb_func_start PlayerCB_8026060
 PlayerCB_8026060: @ 0x08026060
@@ -2850,14 +2849,14 @@ _08026934:
 	str r0, [r4, #0x20]
 	movs r0, #0x72
 	bl m4aSongNumStop
-	ldr r0, _080269A4 @ =sub_8025E18
+	ldr r0, _080269A4 @ =PlayerCB_8025E18
 	str r0, [r4]
 	b _080269B4
 	.align 2, 0
 _08026998: .4byte 0xFFFFCFFF
 _0802699C: .4byte gPlayer
 _080269A0: .4byte 0xBFFFFFFF
-_080269A4: .4byte sub_8025E18
+_080269A4: .4byte PlayerCB_8025E18
 _080269A8:
 	ldr r0, _080269BC @ =gGameMode
 	ldrb r0, [r0]
@@ -3288,12 +3287,12 @@ _08026CE4:
 	movs r0, #0xe
 	strh r0, [r1]
 	ldr r1, _08026D00 @ =gPlayer
-	ldr r0, _08026D04 @ =sub_8025E18
+	ldr r0, _08026D04 @ =PlayerCB_8025E18
 	b _08026D16
 	.align 2, 0
 _08026CFC: .4byte 0x000001DF
 _08026D00: .4byte gPlayer
-_08026D04: .4byte sub_8025E18
+_08026D04: .4byte PlayerCB_8025E18
 _08026D08:
 	ldr r0, _08026D20 @ =0x00000808
 	ands r1, r0

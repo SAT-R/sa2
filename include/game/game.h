@@ -170,7 +170,8 @@ typedef struct Player_ {
     /* 0x20 */ u32 moveState;
 
     /* 0x24 */ u8 unk24; // rotation?
-    /* 0x25 */ u8 filler25[7];
+    /* 0x25 */ u8 filler25[5];
+    /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u8 filler2E[2];
     /* 0x30 */ u16 unk30;
