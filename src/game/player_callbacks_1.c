@@ -241,15 +241,14 @@ void PlayerCB_802569C(Player *player)
     }
 }
 
-void PlayerCB_8025854(Player* player)
+void PlayerCB_8025854(Player *player)
 {
     Sprite *s = &player->unk90->s;
     u16 characterAnim = GetCharacterAnim(player);
-    
+
     if (!sub_802A184(player) && !sub_8029E6C(player) && !sub_802A2A8(player)) {
         u16 dpad = (player->unk5C & DPAD_ANY);
-        if(dpad == 0)
-        {
+        if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (player->unk6A == 0)) {
                 player->unk6A = 1;
                 player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
@@ -257,19 +256,19 @@ void PlayerCB_8025854(Player* player)
         } else if (dpad != DPAD_DOWN) {
             gPlayer.callback = PlayerCB_8025318;
         }
-        
+
         if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (player->unk6A == 1)
             && (s->unk10 & 0x4000)) {
             gPlayer.callback = PlayerCB_8025318;
         }
-        
+
         if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
             u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
 
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
         }
-        
+
         sub_80232D0(player);
         sub_8023260(player);
 
@@ -278,15 +277,15 @@ void PlayerCB_8025854(Player* player)
         if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
             player->speedAirY = -player->speedAirY;
         }
-        
+
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-        
+
         player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
             ? player->y - player->speedAirY
             : player->y + player->speedAirY;
 
         sub_8022D6C(player);
-        
+
         if (player->unk2A) {
             player->unk2A -= 1;
         } else if ((player->unk24 + 32) & 0xC0) {
@@ -298,7 +297,7 @@ void PlayerCB_8025854(Player* player)
                 player->unk2A = GBA_FRAMES_PER_SECOND / 2;
             }
         }
-        
+
         if (player->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
         }
