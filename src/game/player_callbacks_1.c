@@ -177,7 +177,6 @@ void PlayerCB_8025548(Player *player)
 #define GetCharacterAnim(playerRef)                                                     \
     ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
 
-#if 001
 void PlayerCB_802569C(Player *player)
 {
     Sprite *s = &player->unk90->s;
@@ -240,4 +239,3 @@ void PlayerCB_802569C(Player *player)
         }
     }
 }
-#endif
