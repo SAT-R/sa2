@@ -127,7 +127,7 @@ void PlayerCB_8025548(Player *player)
     if (!sub_802A0FC(player) && !sub_8029E6C(player)
         && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
             || !sub_802A2A8(player))) {
-        if (player->unk90->s.unk10 & 0x4000) {
+        if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
             gPlayer.callback = PlayerCB_8025318;
         }
 
@@ -187,7 +187,7 @@ void PlayerCB_802569C(Player *player)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (player->unk6A == 0)) {
                 player->unk6A = 1;
-                player->unk90->s.unk10 &= ~0x4000;
+                player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
             }
         } else if (dpad != DPAD_UP) {
             gPlayer.callback = PlayerCB_8025318;
