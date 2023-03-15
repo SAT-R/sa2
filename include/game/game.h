@@ -127,27 +127,8 @@ extern u8 gMultiplayerMissingHeartbeats[4];
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
 
-// Maybe .unk1C is a bitfield, not flags?
-#define FLAG_3005A70_x1C__1000 0x1000
-#define FLAG_3005A70_x1C__2000 0x2000
 struct UNK_3005A70 {
     /* 0x00 */ u8 filler0[0xC];
-    // TODO: Confirm type of 0x0C
-    /* 0x0C */ Sprite *s;
-    /* 0x10 */ u8 filler10[0xC];
-    /* 0x1C */ u32 unk1C;
-    /* 0x20 */ u8 filler20[0x10];
-    /* 0x30 */ u8 filler30;
-    /* 0x31 */ u8 unk31;
-    /* 0x32 */ u8 filler32[0x6];
-    /* 0x38 */ s8 unk38;
-    /* 0x38 */ s8 unk39;
-    /* 0x38 */ s8 unk3A;
-}; /* size: unknown? */
-
-struct UNK_3005A70_TestCopy {
-    /* 0x00 */ u8 filler0[0xC];
-    // TODO: Confirm type of 0x0C
     /* 0x0C */ Sprite s;
 }; /* size: unknown? */
 
@@ -227,7 +208,7 @@ typedef struct Player_ {
     /* 0x85 */ s8 character;
     /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
-    /* 0x90 */ struct UNK_3005A70_TestCopy *unk90;
+    /* 0x90 */ struct UNK_3005A70 *unk90;
 } Player;
 
 extern Player gPlayer;

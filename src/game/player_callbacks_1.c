@@ -174,52 +174,43 @@ void PlayerCB_8025548(Player *player)
     }
 }
 
-#define GetCharacterAnim(playerRef) ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
+#define GetCharacterAnim(playerRef)                                                     \
+    ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
 
 #if 001
-void PlayerCB_802569C(Player* player)
+void PlayerCB_802569C(Player *player)
 {
     Sprite *s = &player->unk90->s;
     u16 characterAnim = GetCharacterAnim(player);
 
-    if (!sub_802A0FC(player)
-    &&  !sub_8029E6C(player)
-    &&  !sub_802A2A8(player)) {
+    if (!sub_802A0FC(player) && !sub_8029E6C(player) && !sub_802A2A8(player)) {
         u16 dpad = (player->unk5C & DPAD_ANY);
-        if(dpad == 0)
-        {
-            if((characterAnim == SA2_CHAR_ANIM_TAUNT)
-            && (player->unk6A == 0))
-            {
+        if (dpad == 0) {
+            if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (player->unk6A == 0)) {
                 player->unk6A = 1;
                 player->unk90->s.unk10 &= ~0x4000;
             }
-        }
-        else if(dpad != DPAD_UP)
-        {
+        } else if (dpad != DPAD_UP) {
             gPlayer.callback = PlayerCB_8025318;
         }
         //_0802572A
-        if((characterAnim == SA2_CHAR_ANIM_TAUNT)
-        && (player->unk6A == 1)
-        && (s->unk10 & 0x4000))
-        {
+        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (player->unk6A == 1)
+            && (s->unk10 & 0x4000)) {
             gPlayer.callback = PlayerCB_8025318;
         }
-        
+
         if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
             u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
 
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
         }
-        
+
         sub_80232D0(player);
         sub_8023260(player);
-        
+
         player->x += player->speedAirX;
 
-        
         if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
             player->speedAirY = -player->speedAirY;
         }

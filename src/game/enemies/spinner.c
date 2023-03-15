@@ -76,17 +76,17 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         struct UNK_3005A70 *u90 = gPlayer.unk90;
-        if ((u90->s->unk28[0].unk0 == -1) && (u90->s->unk28[1].unk0 == -1)) {
+        if ((u90->s.unk28[0].unk0 == -1) && (u90->s.unk28[1].unk0 == -1)) {
             someX = spinner->unk40 + posX;
-            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->unk38;
+            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.unk28->unk4;
             if ((someX > otherX)
                 || (someX + (spinner->unk42 - spinner->unk40)) >= otherX) {
                 // _080570C2
-                int diff = (u90->unk3A - u90->unk38);
+                int diff = (u90->s.unk28[0].unk6 - u90->s.unk28[0].unk4);
                 if (otherX + diff >= someX) {
                 _080570D4:
                     someY = s->unk28[1].unk5 + posY;
-                    otherY = Q_24_8_TO_INT(gPlayer.y) + u90->s->unk28->unk5;
+                    otherY = Q_24_8_TO_INT(gPlayer.y) + u90->s.unk28[0].unk5;
                     if ((someY <= otherY) || (someY >= otherY)) {
 
                     } else {

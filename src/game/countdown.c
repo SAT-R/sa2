@@ -166,9 +166,9 @@ void sub_8036168(void)
         gPlayer.unk6C = 1;
 
         if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
-            gPlayer.unk90->unk31 = (SIO_MULTI_CNT)->id;
+            gPlayer.unk90->s.focused = (SIO_MULTI_CNT)->id;
         } else {
-            gPlayer.unk90->unk31 = 0;
+            gPlayer.unk90->s.focused = 0;
         }
     }
 }

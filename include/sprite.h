@@ -118,6 +118,9 @@ typedef struct {
         (sprite)->unk10 &= ~0x4000;                                                     \
     }
 
+#define SPRITE_FLAG_PRIORITY(prio) ((prio) << 12)
+#define SPRITE_FLAG_MASK_PRIORITY  (0x3 << 12)
+#define SPRITE_FLAG_MASK_14        (0x3 << 12)
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
