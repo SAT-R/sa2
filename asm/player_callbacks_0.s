@@ -809,6 +809,9 @@ _080122D0: .4byte 0xFFFFBFFF
 _080122D4: .4byte gPlayer
 _080122D8: .4byte PlayerCB_80261D8
 
+@ In:
+@  r0: s32 x
+@  r1: s32 y
 	thumb_func_start sub_80122DC
 sub_80122DC: @ 0x080122DC
 	push {r4, r5, r6, r7, lr}
