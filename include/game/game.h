@@ -145,6 +145,12 @@ struct UNK_3005A70 {
     /* 0x38 */ s8 unk3A;
 }; /* size: unknown? */
 
+struct UNK_3005A70_TestCopy {
+    /* 0x00 */ u8 filler0[0xC];
+    // TODO: Confirm type of 0x0C
+    /* 0x0C */ Sprite s;
+}; /* size: unknown? */
+
 // Declared beforehand because it's used inside Player struct
 struct Player_;
 typedef void (*PlayerCallback)(struct Player_ *);
@@ -186,8 +192,8 @@ typedef struct Player_ {
     /* 0x40 */ u8 filler40[0x1A];
     /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
-    /* 0x5C */ u16 unk5C;
-    /* 0x5E */ u16 unk5E; // input ?
+    /* 0x5C */ u16 unk5C; // input
+    /* 0x5E */ u16 unk5E; // new input on this frame?
     /* 0x61 */ u8 unk60;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
@@ -218,10 +224,10 @@ typedef struct Player_ {
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u8 filler7C[8];
     /* 0x84 */ u8 filler84;
-    /* 0x85 */ s8 character; // unk85 = character
+    /* 0x85 */ s8 character;
     /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
-    /* 0x90 */ struct UNK_3005A70 *unk90;
+    /* 0x90 */ struct UNK_3005A70_TestCopy *unk90;
 } Player;
 
 extern Player gPlayer;

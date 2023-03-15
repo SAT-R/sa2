@@ -2,6 +2,7 @@
 #include "trig.h"
 #include "game/game.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 
 void PlayerCB_Idle(Player *);
@@ -126,7 +127,7 @@ void PlayerCB_8025548(Player *player)
     if (!sub_802A0FC(player) && !sub_8029E6C(player)
         && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
             || !sub_802A2A8(player))) {
-        if (player->unk90->unk1C & 0x4000) {
+        if (player->unk90->s.unk10 & 0x4000) {
             gPlayer.callback = PlayerCB_8025318;
         }
 
@@ -173,10 +174,79 @@ void PlayerCB_8025548(Player *player)
     }
 }
 
-#if 0
+#define GetCharacterAnim(playerRef) ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
+
+#if 001
 void PlayerCB_802569C(Player* player)
 {
-    Sprite *spriteU90 = player->unk90->s;
-    u16* anim = &player->unk68;
+    Sprite *s = &player->unk90->s;
+    u16 characterAnim = GetCharacterAnim(player);
+
+    if (!sub_802A0FC(player)
+    &&  !sub_8029E6C(player)
+    &&  !sub_802A2A8(player)) {
+        u16 dpad = (player->unk5C & DPAD_ANY);
+        if(dpad == 0)
+        {
+            if((characterAnim == SA2_CHAR_ANIM_TAUNT)
+            && (player->unk6A == 0))
+            {
+                player->unk6A = 1;
+                player->unk90->s.unk10 &= ~0x4000;
+            }
+        }
+        else if(dpad != DPAD_UP)
+        {
+            gPlayer.callback = PlayerCB_8025318;
+        }
+        //_0802572A
+        if((characterAnim == SA2_CHAR_ANIM_TAUNT)
+        && (player->unk6A == 1)
+        && (s->unk10 & 0x4000))
+        {
+            gPlayer.callback = PlayerCB_8025318;
+        }
+        
+        if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
+
+            if (player->speedGroundX != 0)
+                player->speedGroundX += acceleration;
+        }
+        
+        sub_80232D0(player);
+        sub_8023260(player);
+        
+        player->x += player->speedAirX;
+
+        
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+            player->speedAirY = -player->speedAirY;
+        }
+
+        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            ? player->y - player->speedAirY
+            : player->y + player->speedAirY;
+
+        sub_8022D6C(player);
+
+        if (player->unk2A) {
+            player->unk2A -= 1;
+        } else if ((player->unk24 + 32) & 0xC0) {
+            s32 absGroundSpeed = ABS(player->speedGroundX);
+            if (absGroundSpeed < Q_24_8(1.875)) {
+                player->speedGroundX = 0;
+
+                player->moveState |= MOVESTATE_IN_AIR;
+                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+            }
+        }
+
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            gPlayer.callback = PlayerCB_8025E18;
+        }
+    }
 }
 #endif

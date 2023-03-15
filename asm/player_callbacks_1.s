@@ -11,8 +11,6 @@
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
 	thumb_func_start PlayerCB_802569C
 PlayerCB_802569C: @ 0x0802569C
 	push {r4, r5, r6, r7, lr}
@@ -36,24 +34,24 @@ PlayerCB_802569C: @ 0x0802569C
 	ldrh r0, [r0]
 	subs r1, r1, r0
 	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
+	lsrs r5, r1, #0x10  @ characterAnim
 	adds r0, r4, #0
 	bl sub_802A0FC
 	cmp r0, #0
 	beq _080256D4
-	b _08025840
+	b PlayerCB_802569C_return
 _080256D4:
 	adds r0, r4, #0
 	bl sub_8029E6C
 	cmp r0, #0
 	beq _080256E0
-	b _08025840
+	b PlayerCB_802569C_return
 _080256E0:
 	adds r0, r4, #0
 	bl sub_802A2A8
 	cmp r0, #0
 	beq _080256EC
-	b _08025840
+	b PlayerCB_802569C_return
 _080256EC:
 	adds r0, r4, #0
 	adds r0, #0x5c
@@ -223,11 +221,11 @@ _08025830:
 	movs r1, #2
 	ands r0, r1
 	cmp r0, #0
-	beq _08025840
+	beq PlayerCB_802569C_return
 	ldr r1, _0802584C @ =gPlayer
 	ldr r0, _08025850 @ =PlayerCB_8025E18
 	str r0, [r1]
-_08025840:
+PlayerCB_802569C_return:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -235,6 +233,7 @@ _08025840:
 _08025848: .4byte 0x000001DF
 _0802584C: .4byte gPlayer
 _08025850: .4byte PlayerCB_8025E18
+.endif
 
 	thumb_func_start PlayerCB_8025854
 PlayerCB_8025854: @ 0x08025854
