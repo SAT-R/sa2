@@ -18,6 +18,8 @@
 
 // TODO: If possible, make player animations macros, so there's no redundancy
 #define SA2_CHAR_ANIM_IDLE                                   0
+#define SA2_CHAR_ANIM_TAUNT                                  1
+#define SA2_CHAR_ANIM_CROUCH                                 2
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1

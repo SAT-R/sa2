@@ -75,7 +75,7 @@ static void sub_8072650(void)
         }
     }
 
-    if (gPlayer.unk90->unk1C & 0x4000) {
+    if (gPlayer.unk90->s.unk10 & 0x4000) {
         sub_80727F4(windUpStick);
     }
 }

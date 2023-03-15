@@ -61,10 +61,13 @@ SECTIONS
         build/sa2/asm/interactable_platform_thin.o(.text);
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
+        build/sa2/asm/player_callbacks_0.o(.text);
+        build/sa2/asm/entities_2.o(.text);
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
-        build/sa2/asm/player_callbacks.o(.text);
+        build/sa2/src/game/player_callbacks_1.o(.text);
+        build/sa2/asm/player_callbacks_1.o(.text);
         build/sa2/asm/game_2.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);

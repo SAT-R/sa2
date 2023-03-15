@@ -1611,7 +1611,8 @@ void sub_801C394(void)
             camera->unk8 += Q_24_8(0.125);
         }
 
-        if ((player->moveState & 2) && (player->unk85 != 3 || player->unk61 != 9)) {
+        if ((player->moveState & 2)
+            && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
             camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
         } else {

@@ -118,6 +118,30 @@ typedef struct {
         (sprite)->unk10 &= ~0x4000;                                                     \
     }
 
+#define SPRITE_FLAG_ROT_SCALE(rotScale)             ((rotScale) << 0)
+#define SPRITE_FLAG_ROT_SCALE_ENABLE(enabled)       ((enabled) << 5)
+#define SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(isDouble) ((isDouble) << 6)
+#define SPRITE_FLAG_OBJ_MODE(mode)                  ((mode) << 6)
+#define SPRITE_FLAG_9(v)                            ((v) << 9)
+#define SPRITE_FLAG_X_FLIP(flip)                    ((flip) << 10)
+#define SPRITE_FLAG_Y_FLIP(flip)                    ((flip) << 11)
+#define SPRITE_FLAG_PRIORITY(prio)                  ((prio) << 12)
+#define SPRITE_FLAG_14(v)                           ((v) << 14)
+#define SPRITE_FLAG_26(v)                           ((v) << 26)
+#define SPRITE_FLAG_30(v)                           ((v) << 30)
+#define SPRITE_FLAG_31(v)                           ((v) << 31)
+#define SPRITE_FLAG_MASK_ROT_SCALE                  SPRITE_FLAG_ROT_SCALE(0x1F)
+#define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE           SPRITE_FLAG_ROT_SCALE_ENABLE(1)
+#define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE      SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(1)
+#define SPRITE_FLAG_MASK_OBJ_MODE                   SPRITE_FLAG_OBJ_MODE(3)
+#define SPRITE_FLAG_MASK_9                          SPRITE_FLAG_9(1)
+#define SPRITE_FLAG_MASK_X_FLIP                     SPRITE_FLAG_X_FLIP(1)
+#define SPRITE_FLAG_MASK_Y_FLIP                     SPRITE_FLAG_Y_FLIP(1)
+#define SPRITE_FLAG_MASK_PRIORITY                   SPRITE_FLAG_PRIORITY(3)
+#define SPRITE_FLAG_MASK_14                         SPRITE_FLAG_14(1)
+#define SPRITE_FLAG_MASK_26                         SPRITE_FLAG_26(1)
+#define SPRITE_FLAG_MASK_30                         SPRITE_FLAG_30(1)
+#define SPRITE_FLAG_MASK_31                         SPRITE_FLAG_31(1)
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
@@ -135,9 +159,11 @@ typedef struct {
                           // bit 14
                           // bit 15-16: bg id (?)
                           // bit 17
-                          // bit 18-25
+                          // bit 18-25(?)
                           // bit 26
-                          // bit 27-31
+                          // bit 27-29(?)
+                          // bit 30
+                          // bit 31
 
     /* 0x14 */ u16 unk14; // animation cursor
 
