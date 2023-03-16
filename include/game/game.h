@@ -170,7 +170,9 @@ typedef struct Player_ {
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
-    /* 0x40 */ u8 filler40[0x1A];
+    /* 0x40 */ u8 filler40[0x10];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ u8 filler52[0x8];
     /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
@@ -209,6 +211,8 @@ typedef struct Player_ {
     /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;
+    /* 0x94 */ u8 filler94[5];
+    /* 0x99 */ s8 unk99;
 } Player;
 
 extern Player gPlayer;

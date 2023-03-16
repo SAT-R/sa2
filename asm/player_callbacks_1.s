@@ -11,94 +11,6 @@
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
-	thumb_func_start PlayerCB_8025A0C
-PlayerCB_8025A0C: @ 0x08025A0C
-	push {r4, r5, r6, lr}
-	adds r6, r0, #0
-	ldr r0, _08025A44 @ =gCurrentLevel
-	ldrb r1, [r0]
-	movs r0, #3
-	ands r0, r1
-	cmp r0, #2
-	beq _08025A32
-	lsls r0, r1, #0x18
-	asrs r2, r0, #0x18
-	cmp r2, #0x1c
-	bne _08025A2C
-	ldr r0, _08025A48 @ =gUnknown_030054B0
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _08025A32
-_08025A2C:
-	ldr r1, [r6, #0x20]
-	cmp r2, #0x1d
-	bne _08025A4C
-_08025A32:
-	ldr r1, [r6, #0x20]
-	movs r0, #2
-	ands r0, r1
-	cmp r0, #0
-	beq _08025A4C
-	adds r0, r6, #0
-	bl sub_8025F84
-	b _08025AA4
-	.align 2, 0
-_08025A44: .4byte gCurrentLevel
-_08025A48: .4byte gUnknown_030054B0
-_08025A4C:
-	ldr r0, _08025A60 @ =0x0000080A
-	ands r0, r1
-	movs r1, #0x80
-	lsls r1, r1, #4
-	cmp r0, r1
-	bne _08025A64
-	adds r0, r6, #0
-	bl sub_802A360
-	b _08025AA4
-	.align 2, 0
-_08025A60: .4byte 0x0000080A
-_08025A64:
-	adds r0, r6, #0
-	adds r0, #0x90
-	ldr r2, [r0]
-	ldr r0, [r2, #0x1c]
-	ldr r1, _08025AAC @ =0xFFFFBFFF
-	ands r0, r1
-	str r0, [r2, #0x1c]
-	adds r0, r6, #0
-	adds r0, #0x64
-	movs r5, #0
-	movs r4, #4
-	strh r4, [r0]
-	adds r0, r6, #0
-	movs r1, #9
-	bl sub_8023B5C
-	movs r0, #6
-	strb r0, [r6, #0x16]
-	movs r0, #9
-	strb r0, [r6, #0x17]
-	ldr r0, [r6, #0x20]
-	orrs r0, r4
-	str r0, [r6, #0x20]
-	adds r0, r6, #0
-	adds r0, #0x99
-	strb r5, [r0]
-	ldr r0, _08025AB0 @ =gPlayer
-	ldr r1, _08025AB4 @ =PlayerCB_8025AB8
-	str r1, [r0]
-	adds r0, r6, #0
-	bl _call_via_r1
-_08025AA4:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08025AAC: .4byte 0xFFFFBFFF
-_08025AB0: .4byte gPlayer
-_08025AB4: .4byte PlayerCB_8025AB8
-
 	thumb_func_start PlayerCB_8025AB8
 PlayerCB_8025AB8: @ 0x08025AB8
 	push {r4, r5, r6, lr}
@@ -112,7 +24,7 @@ PlayerCB_8025AB8: @ 0x08025AB8
 	bne _08025AD8
 	adds r0, r4, #0
 	bl PlayerCB_80273D0
-	b _08025CEC
+	b PlayerCB_8025AB8_return
 	.align 2, 0
 _08025AD4: .4byte 0x800000A
 _08025AD8:
@@ -123,7 +35,7 @@ _08025AD8:
 	bne _08025AF0
 	adds r0, r4, #0
 	bl sub_802A360
-	b _08025CEC
+	b PlayerCB_8025AB8_return
 	.align 2, 0
 _08025AEC: .4byte 0x0000080A
 _08025AF0:
@@ -142,7 +54,7 @@ _08025B04:
 	bl sub_8029E6C
 	cmp r0, #0
 	beq _08025B10
-	b _08025CEC
+	b PlayerCB_8025AB8_return
 _08025B10:
 	movs r1, #0x2a
 	ldrsh r0, [r4, r1]
@@ -215,6 +127,8 @@ _08025B88:
 	movs r0, #0
 _08025B8E:
 	strh r0, [r1]
+
+__08025B90:
 	adds r2, r1, #0
 	ldrh r0, [r4, #0x14]
 	ldrh r1, [r2]
@@ -238,7 +152,7 @@ _08025BAA:
 	str r1, [r0]
 	adds r0, r4, #0
 	bl _call_via_r1
-	b _08025CEC
+	b PlayerCB_8025AB8_return
 	.align 2, 0
 _08025BC0: .4byte gPlayer
 _08025BC4: .4byte PlayerCB_8025318
@@ -393,11 +307,11 @@ _08025CDC:
 	movs r1, #2
 	ands r0, r1
 	cmp r0, #0
-	beq _08025CEC
+	beq PlayerCB_8025AB8_return
 	ldr r1, _08025CF8 @ =gPlayer
 	ldr r0, _08025CFC @ =PlayerCB_8025E18
 	str r0, [r1]
-_08025CEC:
+PlayerCB_8025AB8_return:
 	pop {r4, r5, r6}
 	pop {r0}
 	bx r0
@@ -405,6 +319,7 @@ _08025CEC:
 _08025CF4: .4byte 0x000001DF
 _08025CF8: .4byte gPlayer
 _08025CFC: .4byte PlayerCB_8025E18
+.endif
 
 	thumb_func_start PlayerCB_8025D00
 PlayerCB_8025D00: @ 0x08025D00
