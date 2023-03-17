@@ -146,9 +146,10 @@ typedef struct Player_ {
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;
 
-    /* 0x10 */ s16 speedAirX;
-    /* 0x12 */ s16 speedAirY;
-    /* 0x14 */ s16 speedGroundX;
+    /* 0x10 */ s16 speedAirX; // Q_8_8
+    /* 0x12 */ s16 speedAirY; // Q_8_8
+    /* 0x14 */ s16 speedGroundX; // Q_8_8
+
     /* 0x16 */ u8 unk16;
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
@@ -200,7 +201,9 @@ typedef struct Player_ {
      * */
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
-    /* 0x6F */ u8 filler6F[3];
+    /* 0x6F */ u8 unk6F;
+    /* 0x70 */ u8 unk70;
+    /* 0x71 */ u8 unk71;
     /* 0x72 */ u16 unk72;
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;

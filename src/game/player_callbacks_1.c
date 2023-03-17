@@ -1,9 +1,11 @@
 #include "global.h"
 #include "trig.h"
+#include "lib/m4a.h"
 #include "game/game.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/songs.h"
 
 void PlayerCB_Idle(Player *);
 void sub_8022D6C(Player *);
@@ -140,7 +142,6 @@ void PlayerCB_8025548(Player *player)
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
         }
-        // _080255C2
 
         sub_80232D0(player);
         sub_8023260(player);
@@ -195,7 +196,7 @@ void PlayerCB_802569C(Player *player)
         } else if (dpad != DPAD_UP) {
             gPlayer.callback = PlayerCB_8025318;
         }
-        //_0802572A
+
         if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (player->unk6A == 1)
             && (s->unk10 & 0x4000)) {
             gPlayer.callback = PlayerCB_8025318;
@@ -357,8 +358,8 @@ void PlayerCB_8025AB8(Player *player)
                         if (val <= 0) {
                             player->moveState |= MOVESTATE_FACING_LEFT;
                         } else if ((val - Q_24_8(0.09375)) < 0) {
-                            s32 aaaa = -Q_24_8(0.375);
-                            player->speedGroundX = aaaa;
+                            s32 deceleration = -Q_24_8(0.375);
+                            player->speedGroundX = deceleration;
                         } else {
                             player->speedGroundX = (val - Q_24_8(0.09375));
                         }
@@ -461,4 +462,53 @@ void PlayerCB_8025AB8(Player *player)
             }
         }
     }
+}
+
+void PlayerCB_8025D00(Player *player)
+{
+    u8 rot;
+    s32 mulVal;
+    s32 accelX, accelY;
+
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    if (player->moveState & MOVESTATE_4) {
+        player->moveState |= MOVESTATE_10;
+    }
+
+    if (ABS(player->speedAirX) < Q_24_8(1.25)) {
+        player->unk64 = 10;
+    } else {
+        player->unk64 = 11;
+    }
+
+    player->unk70 = 1;
+
+    mulVal = (player->moveState & MOVESTATE_40) ? Q_24_8(2.625) : Q_24_8(4.875);
+
+    rot = player->rotation - 0x40;
+
+    accelX = Q_24_8_TO_INT(COS_24_8((u8)rot * 4) * mulVal);
+    player->speedAirX += accelX;
+
+    accelY = Q_24_8_TO_INT(SIN_24_8((u8)rot * 4) * mulVal);
+    player->speedAirY += accelY;
+
+    if (player->moveState & MOVESTATE_8) {
+        if (((gCurrentLevel & 0x3) == ACT_BOSS)
+            || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
+            || (gCurrentLevel == 29)) {
+            player->speedAirX -= Q_24_8(gCamera.unk38);
+        }
+    }
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    m4aSongNumStart(SE_JUMP);
+
+    gPlayer.callback = PlayerCB_8025E18;
+    gPlayer.callback(player);
 }
