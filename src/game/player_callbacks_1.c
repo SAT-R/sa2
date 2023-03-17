@@ -563,15 +563,9 @@ void PlayerCB_8025E18(Player *player)
     {
         s32 rot = (s8)player->rotation;
         if (rot < 0) {
-            if ((rot + 2) <= 0)
-                rot = (rot + 2);
-            else
-                rot = 0;
+            rot = MIN((rot + 2), 0);
         } else if (rot > 0) {
-            if ((rot - 2) >= 0)
-                rot = (rot - 2);
-            else
-                rot = 0;
+            rot = MAX((rot - 2), 0);
         }
         player->rotation = rot;
     }
