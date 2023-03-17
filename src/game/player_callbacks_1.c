@@ -45,9 +45,7 @@ void sub_802A360(Player *);
 void PlayerCB_8025318(Player *player)
 {
     u32 mask;
-    if (((gCurrentLevel & 0x3) == ACT_BOSS)
-        || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
-        || (gCurrentLevel == 29)) {
+    if (IsBossStage(gCurrentLevel)) {
         if ((player->moveState & MOVESTATE_IN_AIR)) {
             sub_8025F84(player);
             return;
@@ -317,9 +315,7 @@ void PlayerCB_8025854(Player *player)
 void PlayerCB_8025A0C(Player *player)
 {
     u32 mask;
-    if (((gCurrentLevel & 0x3) == ACT_BOSS)
-        || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
-        || (gCurrentLevel == 29)) {
+    if (IsBossStage(gCurrentLevel)) {
         if ((player->moveState & MOVESTATE_IN_AIR)) {
             sub_8025F84(player);
             return;
@@ -505,9 +501,7 @@ void PlayerCB_8025D00(Player *player)
     player->speedAirY += accelY;
 
     if (player->moveState & MOVESTATE_8) {
-        if (((gCurrentLevel & 0x3) == ACT_BOSS)
-            || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
-            || (gCurrentLevel == 29)) {
+        if (IsBossStage(gCurrentLevel)) {
             player->speedAirX -= Q_24_8(gCamera.unk38);
         }
     }
@@ -542,10 +536,7 @@ void PlayerCB_8025E18(Player *player)
     sub_80246DC(player);
     sub_8023610(player);
 
-    // NOTE(Jace): This if-statement likely a macro, so just invert it using !-operator
-    if (!(((gCurrentLevel & 0x3) == ACT_BOSS)
-          || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
-          || (gCurrentLevel == 29))) {
+    if (!IsBossStage(gCurrentLevel)) {
         sub_80236C8(player);
     }
 

@@ -10,9 +10,6 @@
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 00
-.endif
-
 	thumb_func_start sub_8025F84
 sub_8025F84: @ 0x08025F84
 	push {r4, lr}
