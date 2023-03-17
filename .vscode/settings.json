@@ -183,7 +183,9 @@
     "stage_goal.h": "c",
     "__locale": "c",
     "bell.h": "c",
-    "069.h": "c"
+    "069.h": "c",
+    "m4a.h": "c",
+    "platform_thin.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
