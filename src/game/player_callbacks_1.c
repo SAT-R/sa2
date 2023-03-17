@@ -80,8 +80,8 @@ void PlayerCB_Idle(Player *player)
                && !sub_802A2A8(player)) {
         sub_802966C(player);
 
-        if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
-            s32 acceleration = GET_ROTATED_ACCEL(player->unk24);
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            s32 acceleration = GET_ROTATED_ACCEL(player->rotation);
 
             if (player->speedGroundX != 0) {
                 player->speedGroundX += acceleration;
@@ -107,7 +107,7 @@ void PlayerCB_Idle(Player *player)
 
         if (player->unk2A) {
             player->unk2A -= 1;
-        } else if ((player->unk24 + 32) & 0xC0) {
+        } else if ((player->rotation + 32) & 0xC0) {
             s32 absGroundSpeed = ABS(player->speedGroundX);
             if (absGroundSpeed < Q_24_8(1.875)) {
                 player->speedGroundX = 0;
@@ -134,8 +134,8 @@ void PlayerCB_8025548(Player *player)
             gPlayer.callback = PlayerCB_8025318;
         }
 
-        if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
-            u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            u32 acceleration = GET_ROTATED_ACCEL(player->rotation);
 
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
@@ -161,7 +161,7 @@ void PlayerCB_8025548(Player *player)
 
         if (player->unk2A) {
             player->unk2A -= 1;
-        } else if ((player->unk24 + 32) & 0xC0) {
+        } else if ((player->rotation + 32) & 0xC0) {
             s32 absGroundSpeed = ABS(player->speedGroundX);
             if (absGroundSpeed < Q_24_8(1.875)) {
                 player->speedGroundX = 0;
@@ -201,8 +201,8 @@ void PlayerCB_802569C(Player *player)
             gPlayer.callback = PlayerCB_8025318;
         }
 
-        if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
-            u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            u32 acceleration = GET_ROTATED_ACCEL(player->rotation);
 
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
@@ -227,7 +227,7 @@ void PlayerCB_802569C(Player *player)
 
         if (player->unk2A) {
             player->unk2A -= 1;
-        } else if ((player->unk24 + 32) & 0xC0) {
+        } else if ((player->rotation + 32) & 0xC0) {
             s32 absGroundSpeed = ABS(player->speedGroundX);
             if (absGroundSpeed < Q_24_8(1.875)) {
                 player->speedGroundX = 0;
@@ -264,8 +264,8 @@ void PlayerCB_8025854(Player *player)
             gPlayer.callback = PlayerCB_8025318;
         }
 
-        if (((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) {
-            u32 acceleration = GET_ROTATED_ACCEL(player->unk24);
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            u32 acceleration = GET_ROTATED_ACCEL(player->rotation);
 
             if (player->speedGroundX != 0)
                 player->speedGroundX += acceleration;
@@ -290,7 +290,7 @@ void PlayerCB_8025854(Player *player)
 
         if (player->unk2A) {
             player->unk2A -= 1;
-        } else if ((player->unk24 + 32) & 0xC0) {
+        } else if ((player->rotation + 32) & 0xC0) {
             s32 absGroundSpeed = ABS(player->speedGroundX);
             if (absGroundSpeed < Q_24_8(1.875)) {
                 player->speedGroundX = 0;
@@ -377,7 +377,6 @@ void PlayerCB_8025AB8(Player *player)
         } else {
             return;
         }
-        // _08025B66
 
         if (player->speedGroundX > 0) {
             player->unk50 = 8;
@@ -386,7 +385,6 @@ void PlayerCB_8025AB8(Player *player)
         } else {
             player->unk50 = 0;
         }
-        // __08025B90
 
         player->speedGroundX -= player->unk50;
 
@@ -399,34 +397,25 @@ void PlayerCB_8025AB8(Player *player)
         if (player->speedGroundX == 0) {
             gPlayer.callback = PlayerCB_8025318;
             gPlayer.callback(player);
-            return;
-        }
-
-        {
+        } else {
             s32 speedX = player->speedGroundX;
-            if ((((player->unk24 + Q_24_8(0.375)) & 0xFF) < 0xC0) && (speedX != 0)) {
-                u32 sinVal = SIN_24_8((player->unk24) * 4) * 60;
+
+            if ((((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && (speedX != 0)) {
+                u32 sinVal = SIN_24_8((player->rotation) * 4) * 60;
                 s32 sinInt = (s32)(Q_24_8_TO_INT((s32)sinVal));
 
-                if ((speedX > 0)) {
-                    if ((sinInt > 0))
-                        speedX += sinInt;
-                    else {
+                if (speedX > 0) {
+                    if (sinInt <= 0) {
                         sinInt >>= 2;
-                        speedX += sinInt;
                     }
-                } else {
-                    if ((sinInt < 0))
-                        speedX += sinInt;
-                    else {
-                        sinInt >>= 2;
-                        speedX += sinInt;
-                    }
+                } else if (sinInt >= 0) {
+                    sinInt >>= 2;
                 }
+
+                speedX += sinInt;
 
                 player->speedGroundX = speedX;
             }
-            // _08025C12
 
             sub_80232D0(player);
             sub_8023260(player);
@@ -439,7 +428,6 @@ void PlayerCB_8025AB8(Player *player)
                     player->speedAirY += Q_24_8(42.0 / 256.0);
                 }
             }
-            // _08025C42
 
             player->x += player->speedAirX;
 
@@ -458,7 +446,7 @@ void PlayerCB_8025AB8(Player *player)
 
             if (player->unk2A) {
                 player->unk2A -= 1;
-            } else if ((player->unk24 + 32) & 0xC0) {
+            } else if ((player->rotation + 32) & 0xC0) {
                 s32 absGroundSpeed = ABS(player->speedGroundX);
                 if (absGroundSpeed < Q_24_8(1.875)) {
                     player->speedGroundX = 0;

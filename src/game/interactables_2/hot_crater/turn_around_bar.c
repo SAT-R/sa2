@@ -78,7 +78,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     }
 
     gPlayer.speedGroundX = ClampSpeed(-gPlayer.speedGroundX);
-    gPlayer.unk24 = 0;
+    gPlayer.rotation = 0;
     gPlayer.speedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
     gPlayer.unk6D = 1;

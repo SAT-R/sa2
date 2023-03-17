@@ -78,7 +78,7 @@ static void Task_JumpSequenceForwards(void)
     y = SpriteGetScreenPos(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
-    gPlayer.unk24 += gappedLoop->spinSpeed;
+    gPlayer.rotation += gappedLoop->spinSpeed;
 
     r3 = ABS(Q_24_8(3) - gappedLoop->playerAngle) >> 4;
     gPlayer.y = gappedLoop->unk10
@@ -159,7 +159,7 @@ static void Task_JumpSequenceReverse(void)
     y = SpriteGetScreenPos(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
-    gPlayer.unk24 += gappedLoop->spinSpeed;
+    gPlayer.rotation += gappedLoop->spinSpeed;
 
     r3 = ABS(Q_24_8(3) - gappedLoop->playerAngle) >> 4;
     gPlayer.y = gappedLoop->unk10

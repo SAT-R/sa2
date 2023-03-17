@@ -98,7 +98,7 @@ void sub_80777C8(Sprite_Pipe_Horn *pipe)
 
     gPlayer.speedAirX = gUnknown_080DFE90[pipe->kind][0];
     gPlayer.speedAirY = gUnknown_080DFE90[pipe->kind][1];
-    gPlayer.unk24 = gUnknown_080DFEB4[pipe->kind];
+    gPlayer.rotation = gUnknown_080DFEB4[pipe->kind];
 
     m4aSongNumStart(gUnknown_080DFED0[pipe->kind]);
 
@@ -215,7 +215,7 @@ void sub_8077A3C(void)
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = sub_80778AC;
     } else {
-        gPlayer.unk24 = 0;
+        gPlayer.rotation = 0;
         gPlayer.speedAirX = 1;
         gPlayer.speedAirY = 0;
 
@@ -244,7 +244,7 @@ void sub_8077ABC(void)
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = Task_FrenchHorn_8077C04;
     } else {
-        gPlayer.unk24 = 0x20;
+        gPlayer.rotation = 0x20;
 
         gPlayer.speedAirX = 1;
         gPlayer.speedAirY = 1;
@@ -271,7 +271,7 @@ void sub_8077B28(Sprite_Pipe_Horn *horn)
     gPlayer.unk6D = 5;
     gPlayer.speedAirX = gUnknown_080DFFF4[horn->kind][0];
     gPlayer.speedAirY = gUnknown_080DFFF4[horn->kind][1];
-    gPlayer.unk24 = gUnknown_080E0000[horn->kind];
+    gPlayer.rotation = gUnknown_080E0000[horn->kind];
 
     m4aSongNumStart(SE_MUSIC_PLANT_EXIT_HORN);
 
