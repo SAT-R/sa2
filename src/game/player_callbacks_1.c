@@ -7,15 +7,22 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
+extern bool32 sub_801251C(Player *);
+
 void PlayerCB_Idle(Player *);
+void sub_8022190(Player *);
 void sub_8022D6C(Player *);
 void sub_8023128(Player *);
 void sub_8023260(Player *);
 void sub_80232D0(Player *);
+void sub_8023610(Player *);
+void sub_80236C8(Player *);
+void sub_80246DC(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
 void PlayerCB_80273D0(Player *);
+bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
 bool32 sub_802A0C8(Player *);
@@ -511,4 +518,78 @@ void PlayerCB_8025D00(Player *player)
 
     gPlayer.callback = PlayerCB_8025E18;
     gPlayer.callback(player);
+}
+
+void PlayerCB_8025E18(Player *player)
+{
+    s16 temp = -Q_24_8(3.0);
+
+    if (player->moveState & MOVESTATE_40) {
+        temp = -Q_24_8(1.5);
+    }
+
+    if (player->moveState & MOVESTATE_100) {
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+            if (sub_801251C(player) || sub_80294F4(player))
+                return;
+
+        if ((player->speedAirY < temp)
+            && ((player->unk5C & gPlayerControls.jump) == 0)) {
+            player->speedAirY = temp;
+        }
+    }
+    // _08025E74
+    sub_80246DC(player);
+    sub_8023610(player);
+
+    // NOTE(Jace): This if-statement likely a macro, so just invert it using !-operator
+    if (!(((gCurrentLevel & 0x3) == ACT_BOSS)
+          || ((gCurrentLevel == 28) && (gUnknown_030054B0 == 0))
+          || (gCurrentLevel == 29))) {
+        sub_80236C8(player);
+    }
+
+    sub_80232D0(player);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY += Q_24_8(12.0 / 256.0);
+    } else {
+        player->speedAirY += Q_24_8(42.0 / 256.0);
+    }
+
+    player->x += player->speedAirX;
+
+    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+        player->speedAirY = -player->speedAirY;
+    }
+
+    player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+    player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+        ? player->y - player->speedAirY
+        : player->y + player->speedAirY;
+
+    {
+        s32 rot = (s8)player->rotation;
+        if (rot < 0) {
+            if ((rot + 2) <= 0)
+                rot = (rot + 2);
+            else
+                rot = 0;
+        } else if (rot > 0) {
+            if ((rot - 2) >= 0)
+                rot = (rot - 2);
+            else
+                rot = 0;
+        }
+        player->rotation = rot;
+    }
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
 }
