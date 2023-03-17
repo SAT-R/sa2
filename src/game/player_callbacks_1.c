@@ -337,8 +337,6 @@ void PlayerCB_8025A0C(Player *player)
     }
 }
 
-#if 001
-// https://decomp.me/scratch/vi5jF
 void PlayerCB_8025AB8(Player *player)
 {
     if ((player->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR))
@@ -413,23 +411,21 @@ void PlayerCB_8025AB8(Player *player)
                 if ((speedX > 0)) {
                     if ((sinInt > 0))
                         speedX += sinInt;
-                    else
-                        speedX += (sinInt >> 2);
-
-                    // player->speedGroundX = speedX;
-                } else {
-#if 0
-                    if(sinInt >= 0) {
+                    else {
+                        sinInt >>= 2;
                         speedX += sinInt;
-                    } else {
-                        speedX += (sinInt >> 2);
                     }
-#else
-                    speedX += (sinInt < 0) ? sinInt : (sinInt >> 2);
-#endif
+                } else {
+                    if ((sinInt < 0))
+                        speedX += sinInt;
+                    else {
+                        sinInt >>= 2;
+                        speedX += sinInt;
+                    }
                 }
+
+                player->speedGroundX = speedX;
             }
-            player->speedGroundX = speedX;
             // _08025C12
 
             sub_80232D0(player);
@@ -478,4 +474,3 @@ void PlayerCB_8025AB8(Player *player)
         }
     }
 }
-#endif
