@@ -60,7 +60,7 @@ const s16 sSpinDashSpeeds[9] = {
 void PlayerCB_8025318(Player *player)
 {
     u32 mask;
-    if (IsBossStage(gCurrentLevel)) {
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((player->moveState & MOVESTATE_IN_AIR)) {
             sub_8025F84(player);
             return;
@@ -86,7 +86,7 @@ void PlayerCB_8025318(Player *player)
         }
 
         gPlayer.callback = PlayerCB_Idle;
-        gPlayer.callback(player);
+        PlayerCB_Idle(player);
     }
 }
 
@@ -330,7 +330,7 @@ void PlayerCB_8025854(Player *player)
 void PlayerCB_8025A0C(Player *player)
 {
     u32 mask;
-    if (IsBossStage(gCurrentLevel)) {
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((player->moveState & MOVESTATE_IN_AIR)) {
             sub_8025F84(player);
             return;
@@ -352,7 +352,7 @@ void PlayerCB_8025A0C(Player *player)
         player->moveState |= MOVESTATE_4;
         player->unk99 = 0;
         gPlayer.callback = PlayerCB_8025AB8;
-        gPlayer.callback(player);
+        PlayerCB_8025AB8(player);
     }
 }
 
@@ -365,7 +365,7 @@ void PlayerCB_8025AB8(Player *player)
                == MOVESTATE_800) {
         sub_802A360(player);
     } else {
-        if (player->unk99) {
+        if (player->unk99 != 0) {
             player->unk99--;
         } else if (!sub_8029E6C(player)) {
             if (player->unk2A == 0) {
@@ -415,7 +415,7 @@ void PlayerCB_8025AB8(Player *player)
 
         if (player->speedGroundX == 0) {
             gPlayer.callback = PlayerCB_8025318;
-            gPlayer.callback(player);
+            PlayerCB_8025318(player);
         } else {
             s32 speedX = player->speedGroundX;
 
@@ -516,7 +516,7 @@ void PlayerCB_8025D00(Player *player)
     player->speedAirY += accelY;
 
     if (player->moveState & MOVESTATE_8) {
-        if (IsBossStage(gCurrentLevel)) {
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
             player->speedAirX -= Q_24_8(gCamera.unk38);
         }
     }
@@ -526,7 +526,7 @@ void PlayerCB_8025D00(Player *player)
     m4aSongNumStart(SE_JUMP);
 
     gPlayer.callback = PlayerCB_8025E18;
-    gPlayer.callback(player);
+    PlayerCB_8025E18(player);
 }
 
 void PlayerCB_8025E18(Player *player)
@@ -551,7 +551,7 @@ void PlayerCB_8025E18(Player *player)
     sub_80246DC(player);
     sub_8023610(player);
 
-    if (!IsBossStage(gCurrentLevel)) {
+    if (!IS_BOSS_STAGE(gCurrentLevel)) {
         sub_80236C8(player);
     }
 
@@ -628,7 +628,7 @@ void sub_8025F84(Player *player)
     m4aSongNumStart(SE_JUMP);
 
     gPlayer.callback = PlayerCB_8025E18;
-    gPlayer.callback(player);
+    PlayerCB_8025E18(player);
 }
 
 void PlayerCB_8026060(Player *player)
@@ -659,9 +659,9 @@ void PlayerCB_8026060(Player *player)
     player->unk90->s.unk10 &= ~MOVESTATE_4000;
 
     player->rotation = 0;
-
+    
     gPlayer.callback = PlayerCB_80261D8;
-    gPlayer.callback(player);
+    PlayerCB_80261D8(player);
 }
 
 void PlayerCB_802611C(Player *player)
@@ -694,7 +694,7 @@ void PlayerCB_802611C(Player *player)
     player->rotation = 0;
 
     gPlayer.callback = PlayerCB_80261D8;
-    gPlayer.callback(player);
+    PlayerCB_80261D8(player);
 }
 
 void PlayerCB_80261D8(Player *player)
@@ -712,7 +712,7 @@ void PlayerCB_80261D8(Player *player)
     }
     // _08026220
 
-    if (!IsBossStage(gCurrentLevel)) {
+    if (!IS_BOSS_STAGE(gCurrentLevel)) {
         sub_80236C8(player);
     }
 
@@ -775,7 +775,7 @@ void PlayerCB_802631C(Player *player)
     sub_801F7DC();
 
     gPlayer.callback = PlayerCB_Spindash;
-    gPlayer.callback(player);
+    PlayerCB_Spindash(player);
 }
 
 #if 00
@@ -809,6 +809,11 @@ void PlayerCB_Spindash(Player *player)
                 r4 = 0;
         }
         // _08026420
+        if (player->unk5E & gPlayerControls.jump) {
+            m4aSongNumStart(SE_SPIN_ATTACK);
+            m4aMPlayImmInit(&gMPlayTable[gSongTable[SE_219].header]);
+        }
+        // _08026490
     }
     // _080264B2
 }
