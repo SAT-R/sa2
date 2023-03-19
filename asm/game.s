@@ -19,69 +19,15 @@ PlayerCharacterIdleAnims: @ 0x080D672C
 gUnknown_080D6736:
     .incbin "baserom.gba", 0x000D6736, 0x1CC
 
+@ TODO: Move over to player_callbacks_1.c
     .global gUnknown_080D6902
 gUnknown_080D6902:
     .incbin "baserom.gba", 0x000D6902, 0x14
-
+    
+@ TODO: Move over to player_callbacks_1.c
     .global gUnknown_080D6916
 gUnknown_080D6916:
     .incbin "baserom.gba", 0x000D6916, 0xA
-
-    .global gUnknown_080D6920
-gUnknown_080D6920:
-    .incbin "baserom.gba", 0x000D6920, 0x12
-
-    .global gUnknown_080D6932
-gUnknown_080D6932:
-    .incbin "baserom.gba", 0x000D6932, 0x8
-
-    .global gUnknown_080D693A
-gUnknown_080D693A:
-    .incbin "baserom.gba", 0x000D693A, 0x50
-
-    .global gUnknown_080D698A
-gUnknown_080D698A:
-    .incbin "baserom.gba", 0x000D698A, 0x8
-
-    .global gUnknown_080D6992
-gUnknown_080D6992:
-    .incbin "baserom.gba", 0x000D6992, 0x14
-
-    .global gUnknown_080D69A6
-gUnknown_080D69A6:
-    .incbin "baserom.gba", 0x000D69A6, 0xC
-
-    .global gUnknown_080D69B2
-gUnknown_080D69B2:
-    .incbin "baserom.gba", 0x000D69B2, 0x8
-
-    .global gUnknown_080D69BA
-gUnknown_080D69BA:
-    .incbin "baserom.gba", 0x000D69BA, 0x8
-
-    .global gUnknown_080D69C2
-gUnknown_080D69C2:
-    .incbin "baserom.gba", 0x000D69C2, 0x6
-
-    .global gUnknown_080D69C8
-gUnknown_080D69C8:
-    .incbin "baserom.gba", 0x000D69C8, 0xB8
-
-    .global gUnknown_080D6A80
-gUnknown_080D6A80:
-    .incbin "baserom.gba", 0x000D6A80, 0x30
-
-    .global gUnknown_080D6AB0
-gUnknown_080D6AB0:
-    .incbin "baserom.gba", 0x000D6AB0, 0x1E
-
-    .global gUnknown_080D6ACE
-gUnknown_080D6ACE:
-    .incbin "baserom.gba", 0x000D6ACE, 0x22
-
-    .global gUnknown_080D6AF0
-gUnknown_080D6AF0:
-    .incbin "baserom.gba", 0x000D6AF0, 0x18
 
 .text
 .syntax unified

@@ -22,7 +22,7 @@ void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
-void PlayerCB_8026378(Player *);
+void PlayerCB_Spindash(Player *);
 void PlayerCB_80273D0(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -43,6 +43,19 @@ void sub_802A360(Player *);
 #define GET_ROTATED_ACCEL(angle) ((SIN_24_8((angle)*4) * 3) >> 5)
 
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
+
+// TODO: static
+const s16 sSpinDashSpeeds[9] = {
+    Q_8_8(6.000 + 0 * (3. / 8.)), //
+    Q_8_8(6.000 + 1 * (3. / 8.)), //
+    Q_8_8(6.000 + 2 * (3. / 8.)), //
+    Q_8_8(6.000 + 3 * (3. / 8.)), //
+    Q_8_8(6.000 + 4 * (3. / 8.)), // Formatter
+    Q_8_8(6.000 + 5 * (3. / 8.)), //
+    Q_8_8(6.000 + 6 * (3. / 8.)), //
+    Q_8_8(6.000 + 7 * (3. / 8.)), //
+    Q_8_8(6.000 + 8 * (3. / 8.)), //
+};
 
 void PlayerCB_8025318(Player *player)
 {
@@ -761,6 +774,42 @@ void PlayerCB_802631C(Player *player)
     m4aSongNumStart(SE_SPIN_ATTACK);
     sub_801F7DC();
 
-    gPlayer.callback = PlayerCB_8026378;
+    gPlayer.callback = PlayerCB_Spindash;
     gPlayer.callback(player);
 }
+
+#if 00
+void PlayerCB_Spindash(Player *player)
+{
+    Sprite *s = &player->unk90->s;
+    u16 cAnim = GetCharacterAnim(player);
+
+    if (!(player->unk5C & DPAD_DOWN)) {
+        s16 index;
+        s16 speed;
+        player->moveState &= ~MOVESTATE_100;
+
+        index = Q_24_8_TO_INT(player->unk26);
+        if (index > 8)
+            index = 8;
+
+        speed = sSpinDashSpeeds[index];
+        if (player->moveState & MOVESTATE_FACING_LEFT)
+            speed = -speed;
+
+        player->speedGroundX = speed;
+
+        m4aSongNumStart(SE_SPIN_DASH_RELEASE);
+    } else {
+        // _08026408
+        vs16 r4 = player->unk26;
+        if (r4 != 0) {
+            r4 -= Q_24_8_TO_INT(r4 << 3);
+            if (r4 <= 0)
+                r4 = 0;
+        }
+        // _08026420
+    }
+    // _080264B2
+}
+#endif

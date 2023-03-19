@@ -1,6 +1,59 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+    .global gUnknown_080D6932
+gUnknown_080D6932:
+    .incbin "baserom.gba", 0x000D6932, 0x8
+
+    .global gUnknown_080D693A
+gUnknown_080D693A:
+    .incbin "baserom.gba", 0x000D693A, 0x50
+
+    .global gUnknown_080D698A
+gUnknown_080D698A:
+    .incbin "baserom.gba", 0x000D698A, 0x8
+
+    .global gUnknown_080D6992
+gUnknown_080D6992:
+    .incbin "baserom.gba", 0x000D6992, 0x14
+
+    .global gUnknown_080D69A6
+gUnknown_080D69A6:
+    .incbin "baserom.gba", 0x000D69A6, 0xC
+
+    .global gUnknown_080D69B2
+gUnknown_080D69B2:
+    .incbin "baserom.gba", 0x000D69B2, 0x8
+
+    .global gUnknown_080D69BA
+gUnknown_080D69BA:
+    .incbin "baserom.gba", 0x000D69BA, 0x8
+
+    .global gUnknown_080D69C2
+gUnknown_080D69C2:
+    .incbin "baserom.gba", 0x000D69C2, 0x6
+
+    .global gUnknown_080D69C8
+gUnknown_080D69C8:
+    .incbin "baserom.gba", 0x000D69C8, 0xB8
+
+    .global gUnknown_080D6A80
+gUnknown_080D6A80:
+    .incbin "baserom.gba", 0x000D6A80, 0x30
+
+    .global gUnknown_080D6AB0
+gUnknown_080D6AB0:
+    .incbin "baserom.gba", 0x000D6AB0, 0x1E
+
+    .global gUnknown_080D6ACE
+gUnknown_080D6ACE:
+    .incbin "baserom.gba", 0x000D6ACE, 0x22
+
+    .global gUnknown_080D6AF0
+gUnknown_080D6AF0:
+    .incbin "baserom.gba", 0x000D6AF0, 0x18
+
 .arm
 .syntax unified
 .text
@@ -10,9 +63,9 @@
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 01
-	thumb_func_start PlayerCB_8026378
-PlayerCB_8026378: @ 0x08026378
+.if 001
+	thumb_func_start PlayerCB_Spindash
+PlayerCB_Spindash: @ 0x08026378
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -35,7 +88,7 @@ PlayerCB_8026378: @ 0x08026378
 	ldrh r0, [r0]
 	subs r1, r1, r0
 	lsls r1, r1, #0x10
-	lsrs r7, r1, #0x10
+	lsrs r7, r1, #0x10      @ r7 = cAnim
 	adds r0, r6, #0
 	adds r0, #0x5c
 	ldrh r1, [r0]
@@ -57,7 +110,7 @@ PlayerCB_8026378: @ 0x08026378
 	ble _080263CE
 	movs r1, #8
 _080263CE:
-	ldr r0, _080263FC @ =gUnknown_080D6920
+	ldr r0, _080263FC @ =sSpinDashSpeeds
 	lsls r1, r1, #0x10
 	asrs r1, r1, #0xf
 	adds r1, r1, r0
@@ -79,7 +132,7 @@ _080263E4:
 	.align 2, 0
 _080263F4: .4byte PlayerCharacterIdleAnims
 _080263F8: .4byte 0xFFFFFBFF
-_080263FC: .4byte gUnknown_080D6920
+_080263FC: .4byte sSpinDashSpeeds
 _08026400: .4byte gPlayer
 _08026404: .4byte PlayerCB_8025A0C
 _08026408:
