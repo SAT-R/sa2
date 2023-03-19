@@ -159,7 +159,9 @@ typedef struct Player_ {
     /* 0x20 */ u32 moveState;
 
     /* 0x24 */ u8 rotation;
-    /* 0x25 */ u8 filler25[5];
+    /* 0x25 */ u8 filler25[1];
+    /* 0x26 */ s16 unk26;
+    /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u8 filler2E[2];
@@ -392,11 +394,15 @@ void sub_802E044(u16, u16);
 
 void sub_80304DC(u32, u16, u8);
 
+void sub_8019F08(void);
+void sub_801F3A4(s32, s32, u32);
+
+// TODO: Find out return type
+void* sub_801F7DC();
+
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
-void sub_801F3A4(s32, s32, u32);
-void sub_8019F08(void);
 
 // Something to do with entities
 extern void sub_8019CCC(u8, u8);

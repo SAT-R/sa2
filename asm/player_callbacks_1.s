@@ -10,52 +10,7 @@
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 0
-.endif
-
-	thumb_func_start PlayerCB_802631C
-PlayerCB_802631C: @ 0x0802631C
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	adds r1, r4, #0
-	adds r1, #0x64
-	movs r5, #0
-	movs r0, #3
-	strh r0, [r1]
-	ldr r0, [r4, #0x20]
-	ldr r1, _0802636C @ =0x00000404
-	orrs r0, r1
-	movs r1, #0x23
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4, #0x20]
-	adds r0, r4, #0
-	movs r1, #9
-	bl sub_8023B5C
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #9
-	strb r0, [r4, #0x17]
-	strh r5, [r4, #0x26]
-	strh r5, [r4, #0x10]
-	strh r5, [r4, #0x12]
-	strh r5, [r4, #0x14]
-	movs r0, #0x6d
-	bl m4aSongNumStart
-	bl sub_801F7DC
-	ldr r0, _08026370 @ =gPlayer
-	ldr r1, _08026374 @ =PlayerCB_8026378
-	str r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802636C: .4byte 0x00000404
-_08026370: .4byte gPlayer
-_08026374: .4byte PlayerCB_8026378
-
+.if 01
 	thumb_func_start PlayerCB_8026378
 PlayerCB_8026378: @ 0x08026378
 	push {r4, r5, r6, r7, lr}
@@ -466,6 +421,7 @@ _0802668C:
 	bx r0
 	.align 2, 0
 _08026698: .4byte 0x000001DF
+.endif
 
 	thumb_func_start sub_802669C
 sub_802669C: @ 0x0802669C

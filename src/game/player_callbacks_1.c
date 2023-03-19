@@ -22,6 +22,7 @@ void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
+void PlayerCB_8026378(Player *);
 void PlayerCB_80273D0(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -739,4 +740,27 @@ void PlayerCB_80261D8(Player *player)
         player->speedGroundX = player->speedAirX;
         player->rotation = 0;
     }
+}
+
+void PlayerCB_802631C(Player* player)
+{
+    player->unk64 = 3;
+
+    player->moveState |= (MOVESTATE_400 | MOVESTATE_4);
+    player->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
+
+    sub_8023B5C(player, 9);
+
+    player->unk16 = 6;
+    player->unk17 = 9;
+    player->unk26 = 0;
+    player->speedAirX = 0;
+    player->speedAirY = 0;
+    player->speedGroundX = 0;
+
+    m4aSongNumStart(SE_SPIN_ATTACK);
+    sub_801F7DC();
+
+    gPlayer.callback = PlayerCB_8026378;
+    gPlayer.callback(player);
 }
