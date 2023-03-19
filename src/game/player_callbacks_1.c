@@ -532,7 +532,7 @@ void PlayerCB_8025E18(Player *player)
             player->speedAirY = temp;
         }
     }
-    // _08025E74
+
     sub_80246DC(player);
     sub_8023610(player);
 
@@ -577,4 +577,42 @@ void PlayerCB_8025E18(Player *player)
         player->speedGroundX = player->speedAirX;
         player->rotation = 0;
     }
+}
+
+void sub_8025F84(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
+        u16 chAnim = GetCharacterAnim(player);
+
+        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
+            || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
+            sub_8023B5C(player, 9);
+            player->unk16 = 6;
+            player->unk17 = 9;
+        } else {
+            // _08025FF0
+            sub_8023B5C(player, 14);
+            player->unk16 = 6;
+            player->unk17 = 14;
+        }
+    }
+    //_08026000
+    if (ABS(player->speedAirX) < Q_24_8(1.25)) {
+        player->unk64 = 10;
+    } else {
+        player->unk64 = 11;
+    }
+
+    player->unk70 = 1;
+
+    player->unk90->s.unk10 &= ~MOVESTATE_4000;
+    m4aSongNumStart(SE_JUMP);
+
+    gPlayer.callback = PlayerCB_8025E18;
+    gPlayer.callback(player);
 }

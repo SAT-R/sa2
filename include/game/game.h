@@ -150,6 +150,7 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
+    // TODO: unk16 might be s8?
     /* 0x16 */ u8 unk16;
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
