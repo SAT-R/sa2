@@ -682,3 +682,61 @@ void PlayerCB_802611C(Player *player)
     gPlayer.callback = PlayerCB_80261D8;
     gPlayer.callback(player);
 }
+
+void PlayerCB_80261D8(Player *player)
+{
+    sub_80246DC(player);
+
+    if ((player->unk6E != 1) || (player->speedAirY > 0)) {
+        sub_8023610(player);
+
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+            && (player->moveState & MOVESTATE_100)) {
+            if (sub_801251C(player) || sub_80294F4(player))
+                return;
+        }
+    }
+    // _08026220
+
+    if (!IsBossStage(gCurrentLevel)) {
+        sub_80236C8(player);
+    }
+
+    sub_80232D0(player);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY += Q_24_8(12.0 / 256.0);
+    } else {
+        player->speedAirY += Q_24_8(42.0 / 256.0);
+    }
+
+    player->x += player->speedAirX;
+
+    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+        player->speedAirY = -player->speedAirY;
+    }
+
+    player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+    player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+        ? player->y - player->speedAirY
+        : player->y + player->speedAirY;
+
+    {
+        s32 rot = (s8)player->rotation;
+        if (rot < 0) {
+            rot = MIN((rot + 2), 0);
+        } else if (rot > 0) {
+            rot = MAX((rot - 2), 0);
+        }
+        player->rotation = rot;
+    }
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
+}
