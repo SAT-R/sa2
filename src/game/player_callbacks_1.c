@@ -596,13 +596,12 @@ void sub_8025F84(Player *player)
             player->unk16 = 6;
             player->unk17 = 9;
         } else {
-            // _08025FF0
             sub_8023B5C(player, 14);
             player->unk16 = 6;
             player->unk17 = 14;
         }
     }
-    //_08026000
+
     if (ABS(player->speedAirX) < Q_24_8(1.25)) {
         player->unk64 = 10;
     } else {
@@ -634,7 +633,6 @@ void PlayerCB_8026060(Player *player)
             player->unk16 = 6;
             player->unk17 = 9;
         } else {
-            // _08025FF0
             sub_8023B5C(player, 14);
             player->unk16 = 6;
             player->unk17 = 14;
@@ -668,7 +666,6 @@ void PlayerCB_802611C(Player *player)
             player->unk16 = 6;
             player->unk17 = 9;
         } else {
-            // _08025FF0
             sub_8023B5C(player, 14);
             player->unk16 = 6;
             player->unk17 = 14;
