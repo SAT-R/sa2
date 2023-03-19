@@ -398,7 +398,7 @@ void sub_8019F08(void);
 void sub_801F3A4(s32, s32, u32);
 
 // TODO: Find out return type
-void* sub_801F7DC();
+void *sub_801F7DC();
 
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);

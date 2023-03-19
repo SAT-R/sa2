@@ -742,7 +742,7 @@ void PlayerCB_80261D8(Player *player)
     }
 }
 
-void PlayerCB_802631C(Player* player)
+void PlayerCB_802631C(Player *player)
 {
     player->unk64 = 3;
 
