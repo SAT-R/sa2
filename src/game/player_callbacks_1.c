@@ -659,7 +659,7 @@ void PlayerCB_8026060(Player *player)
     player->unk90->s.unk10 &= ~MOVESTATE_4000;
 
     player->rotation = 0;
-    
+
     gPlayer.callback = PlayerCB_80261D8;
     PlayerCB_80261D8(player);
 }
