@@ -343,7 +343,13 @@ extern u8 gUnknown_030053E8[4];
 
 struct UNK_3005510 {
     u8 unk0;
-    u8 unk1[7];
+    u8 unk1;
+    u8 unk2;
+    u8 unk3;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
 }; /* 0x8 */
 
 extern struct UNK_3005510 gUnknown_03005510[16];

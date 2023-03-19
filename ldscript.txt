@@ -58,6 +58,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/grind_rail.o(.text);
         build/sa2/src/game/interactables_0/044.o(.text);
         build/sa2/src/game/interactables_0/clear_pipe.o(.text);
+        build/sa2/src/game/interactables_0/platform_thin.o(.text);
         build/sa2/asm/interactable_platform_thin.o(.text);
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
@@ -237,6 +238,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
         build/sa2/asm/interactable_081.o(.rodata);
+        build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
         build/sa2/asm/interactable_platform_thin.o(.rodata);
         build/sa2/asm/entities_1.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
