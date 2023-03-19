@@ -63,7 +63,7 @@ gUnknown_080D6AF0:
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 001
+.if 00
 	thumb_func_start PlayerCB_Spindash
 PlayerCB_Spindash: @ 0x08026378
 	push {r4, r5, r6, r7, lr}
@@ -164,7 +164,7 @@ _08026420:
 	movs r1, #0xdb
 	lsls r1, r1, #2
 	adds r0, r0, r1
-	ldrh r1, [r0]
+	ldrh r1, [r0]       @ r1 = gSongTable[SE_SPIN_ATTACK].ms (music_player index)
 	lsls r0, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #2
@@ -325,7 +325,7 @@ _0802656C:
 	ands r0, r1
 	cmp r0, #8
 	beq _08026580
-	b _0802668C
+	b PlayerCB_Spindash_return
 _08026580:
 	ldr r1, _08026590 @ =gPlayer
 	ldr r0, _08026594 @ =PlayerCB_8025318
@@ -334,7 +334,7 @@ _08026580:
 	movs r1, #0
 	strh r0, [r6, #0x14]
 	strb r1, [r5]
-	b _0802668C
+	b PlayerCB_Spindash_return
 	.align 2, 0
 _08026590: .4byte gPlayer
 _08026594: .4byte PlayerCB_8025318
@@ -448,7 +448,7 @@ _08026662:
 	movs r1, #0xc0
 	ands r0, r1
 	cmp r0, #0
-	beq _0802668C
+	beq PlayerCB_Spindash_return
 	movs r0, #0x14
 	ldrsh r1, [r6, r0]
 	cmp r1, #0
@@ -457,7 +457,7 @@ _08026662:
 _08026678:
 	ldr r0, _08026698 @ =0x000001DF
 	cmp r1, r0
-	bgt _0802668C
+	bgt PlayerCB_Spindash_return
 	strh r2, [r6, #0x14]
 	ldr r0, [r6, #0x20]
 	movs r1, #2
@@ -466,7 +466,7 @@ _08026678:
 	movs r0, #0x1e
 _0802668A:
 	strh r0, [r6, #0x2a]
-_0802668C:
+PlayerCB_Spindash_return:
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6, r7}
