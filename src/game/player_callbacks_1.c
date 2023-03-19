@@ -21,6 +21,7 @@ void sub_80246DC(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
+void PlayerCB_80261D8(Player *);
 void PlayerCB_80273D0(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -614,5 +615,39 @@ void sub_8025F84(Player *player)
     m4aSongNumStart(SE_JUMP);
 
     gPlayer.callback = PlayerCB_8025E18;
+    gPlayer.callback(player);
+}
+
+void PlayerCB_8026060(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
+        u16 chAnim = GetCharacterAnim(player);
+
+        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
+            || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
+            sub_8023B5C(player, 9);
+            player->unk16 = 6;
+            player->unk17 = 9;
+        } else {
+            // _08025FF0
+            sub_8023B5C(player, 14);
+            player->unk16 = 6;
+            player->unk17 = 14;
+        }
+    }
+
+    player->unk70 = 1;
+    player->unk6E = 1;
+
+    player->unk90->s.unk10 &= ~MOVESTATE_4000;
+
+    player->rotation = 0;
+
+    gPlayer.callback = PlayerCB_80261D8;
     gPlayer.callback(player);
 }
