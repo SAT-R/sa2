@@ -778,8 +778,9 @@ void PlayerCB_802631C(Player *player)
     PlayerCB_Spindash(player);
 }
 
-#if 001
-void PlayerCB_Spindash(Player *player)
+// https://decomp.me/scratch/jIJLs
+NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
+         void PlayerCB_Spindash(Player *player))
 {
     Sprite *s = &player->unk90->s;
     u16 cAnim = GET_CHARACTER_ANIM(player);
@@ -787,7 +788,7 @@ void PlayerCB_Spindash(Player *player)
     if (!(player->unk5C & DPAD_DOWN)) {
         s16 index;
         s32 speed;
-        player->moveState &= ~MOVESTATE_100;
+        player->moveState &= ~MOVESTATE_400;
 
         index = Q_24_8_TO_INT(player->unk26);
         if (index > 8)
@@ -800,7 +801,6 @@ void PlayerCB_Spindash(Player *player)
         player->speedGroundX = speed;
 
         gPlayer.callback = PlayerCB_8025A0C;
-        PlayerCB_8025A0C(player);
 
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
@@ -929,4 +929,4 @@ void PlayerCB_Spindash(Player *player)
         }
     }
 }
-#endif
+END_NONMATCH
