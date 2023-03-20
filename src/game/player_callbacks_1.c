@@ -44,6 +44,9 @@ void sub_802A360(Player *);
 
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
+#define GET_CHARACTER_ANIM(playerRef)                                                   \
+    ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
+
 // TODO: static
 const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 0 * (3. / 8.)), //
@@ -198,13 +201,10 @@ void PlayerCB_8025548(Player *player)
     }
 }
 
-#define GetCharacterAnim(playerRef)                                                     \
-    ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
-
 void PlayerCB_802569C(Player *player)
 {
     Sprite *s = &player->unk90->s;
-    u16 characterAnim = GetCharacterAnim(player);
+    u16 characterAnim = GET_CHARACTER_ANIM(player);
 
     if (!sub_802A0FC(player) && !sub_8029E6C(player) && !sub_802A2A8(player)) {
         u16 dpad = (player->unk5C & DPAD_ANY);
@@ -267,7 +267,7 @@ void PlayerCB_802569C(Player *player)
 void PlayerCB_8025854(Player *player)
 {
     Sprite *s = &player->unk90->s;
-    u16 characterAnim = GetCharacterAnim(player);
+    u16 characterAnim = GET_CHARACTER_ANIM(player);
 
     if (!sub_802A184(player) && !sub_8029E6C(player) && !sub_802A2A8(player)) {
         u16 dpad = (player->unk5C & DPAD_ANY);
@@ -602,7 +602,7 @@ void sub_8025F84(Player *player)
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
     if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
-        u16 chAnim = GetCharacterAnim(player);
+        u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
             || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
@@ -639,7 +639,7 @@ void PlayerCB_8026060(Player *player)
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
     if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
-        u16 chAnim = GetCharacterAnim(player);
+        u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
             || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
@@ -672,7 +672,7 @@ void PlayerCB_802611C(Player *player)
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
     if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
-        u16 chAnim = GetCharacterAnim(player);
+        u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
             || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
@@ -782,7 +782,7 @@ void PlayerCB_802631C(Player *player)
 void PlayerCB_Spindash(Player *player)
 {
     Sprite *s = &player->unk90->s;
-    u16 cAnim = GetCharacterAnim(player);
+    u16 cAnim = GET_CHARACTER_ANIM(player);
 
     if (!(player->unk5C & DPAD_DOWN)) {
         s16 index;
