@@ -837,7 +837,7 @@ void PlayerCB_Spindash(Player *player)
         }
     }
     // _080264B2
-    if (player->moveState & MOVESTATE_FACING_LEFT) {
+    if (player->moveState & MOVESTATE_IN_AIR) {
         sub_80236C8(player);
         sub_80232D0(player);
 
