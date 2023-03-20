@@ -272,7 +272,7 @@ static void sub_808DD9C(void)
     }
 
     if (scene->unk7A == 1) {
-        transitionConfig->unk0 = scene->unk0->unk24 << 2;
+        transitionConfig->unk0 = scene->unk0->rotation * 4;
     }
 
     element->x = scene->unk70 >> 8;

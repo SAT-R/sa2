@@ -139,7 +139,7 @@ void sub_8075F58(void)
 
     if (PlayerIsAlive) {
         gPlayer.y = ((gs->posY - 16) << 8) + gs->elements[2][1];
-        gPlayer.unk24 = 0x40;
+        gPlayer.rotation = 0x40;
     }
 
     if (r7 == NUM_GUITAR_STRING_ELEMS) {

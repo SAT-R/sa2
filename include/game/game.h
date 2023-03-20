@@ -146,9 +146,11 @@ typedef struct Player_ {
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;
 
-    /* 0x10 */ s16 speedAirX;
-    /* 0x12 */ s16 speedAirY;
-    /* 0x14 */ s16 speedGroundX;
+    /* 0x10 */ s16 speedAirX; // Q_8_8
+    /* 0x12 */ s16 speedAirY; // Q_8_8
+    /* 0x14 */ s16 speedGroundX; // Q_8_8
+
+    // TODO: unk16 might be s8?
     /* 0x16 */ u8 unk16;
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
@@ -156,8 +158,10 @@ typedef struct Player_ {
     // set/compare to values in "include/constants/move_states.h"
     /* 0x20 */ u32 moveState;
 
-    /* 0x24 */ u8 unk24; // rotation?
-    /* 0x25 */ u8 filler25[5];
+    /* 0x24 */ u8 rotation;
+    /* 0x25 */ u8 filler25[1];
+    /* 0x26 */ s16 unk26;
+    /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u8 filler2E[2];
@@ -170,7 +174,9 @@ typedef struct Player_ {
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
-    /* 0x40 */ u8 filler40[0x1A];
+    /* 0x40 */ u8 filler40[0x10];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ u8 filler52[0x8];
     /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
@@ -198,7 +204,9 @@ typedef struct Player_ {
      * */
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
-    /* 0x6F */ u8 filler6F[3];
+    /* 0x6F */ u8 unk6F;
+    /* 0x70 */ u8 unk70;
+    /* 0x71 */ u8 unk71;
     /* 0x72 */ u16 unk72;
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;
@@ -209,6 +217,8 @@ typedef struct Player_ {
     /* 0x86 */ u8 filler86[6];
     /* 0x8C */ u32 unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;
+    /* 0x94 */ u8 filler94[5];
+    /* 0x99 */ s8 unk99;
 } Player;
 
 extern Player gPlayer;
@@ -384,11 +394,15 @@ void sub_802E044(u16, u16);
 
 void sub_80304DC(u32, u16, u8);
 
+void sub_8019F08(void);
+void sub_801F3A4(s32, s32, u32);
+
+// TODO: Find out return type
+void *sub_801F7DC();
+
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
-void sub_801F3A4(s32, s32, u32);
-void sub_8019F08(void);
 
 // Something to do with entities
 extern void sub_8019CCC(u8, u8);

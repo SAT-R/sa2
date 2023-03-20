@@ -138,7 +138,7 @@ static void Task_Interactable_Ramp(void)
                                 }
                             } else {
                                 player->y += Q_24_8(temp6 - temp4);
-                                player->unk24 = 0;
+                                player->rotation = 0;
 
                                 player->moveState |= MOVESTATE_8;
                                 player->moveState &= ~MOVESTATE_IN_AIR;
