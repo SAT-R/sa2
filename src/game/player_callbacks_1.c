@@ -930,3 +930,34 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
     }
 }
 END_NONMATCH
+
+extern s32 sub_801E6D4(s32, s32, s32, s32, s32, s32 (*)(s32, s32, s32, s32));
+extern s32 sub_801EE64(s32, s32, s32, s32);
+
+void sub_802669C(Player *player)
+{
+    s32 newY;
+    player->unk38 = 0;
+    player->rotation = 0;
+
+    player->unk90->s.unk10 &= ~(MOVESTATE_2000 | MOVESTATE_1000);
+    player->unk90->s.unk10 |= MOVESTATE_1000;
+
+    player->unk37 |= 0x80;
+
+    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        newY = sub_801E6D4(Q_24_8_TO_INT(player->y) - player->unk17,
+                           Q_24_8_TO_INT(player->x), player->unk38, -8, 0, sub_801EE64);
+
+        newY = player->y - Q_24_8(newY);
+    } else {
+        newY = sub_801E6D4(Q_24_8_TO_INT(player->y) + player->unk17,
+                           Q_24_8_TO_INT(player->x), player->unk38, 8, 0, sub_801EE64);
+
+        newY = player->y + Q_24_8(newY);
+    }
+    player->y = newY;
+    player->moveState &= ~MOVESTATE_IN_AIR;
+
+    gPlayer.moveState |= MOVESTATE_IN_SCRIPTED;
+}
