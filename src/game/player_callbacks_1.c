@@ -1063,3 +1063,29 @@ void PlayerCB_8026810(Player *player)
         }
     }
 }
+
+void PlayerCB_80269C0(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState &= ~MOVESTATE_4;
+    player->moveState &= ~(MOVESTATE_100 | MOVESTATE_IN_AIR);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 9;
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+
+    player->unk37 &= ~0x80;
+    player->unk38 = 1;
+
+    gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+
+    m4aSongNumStop(SE_GRINDING);
+    gPlayer.callback = PlayerCB_Idle;
+    PlayerCB_Idle(player);
+}
