@@ -1010,7 +1010,6 @@ void PlayerCB_8026810(Player *player)
         gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
         m4aSongNumStop(SE_GRINDING);
     } else {
-        //_08026868
         if (player->speedGroundX >= 0) {
             player->moveState &= ~MOVESTATE_FACING_LEFT;
         } else {
@@ -1063,5 +1062,4 @@ void PlayerCB_8026810(Player *player)
             }
         }
     }
-    // _080269B4
 }
