@@ -23,6 +23,7 @@ void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
+void PlayerCB_8026810(Player *);
 void PlayerCB_80273D0(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -960,4 +961,39 @@ void sub_802669C(Player *player)
     player->moveState &= ~MOVESTATE_IN_AIR;
 
     gPlayer.moveState |= MOVESTATE_IN_SCRIPTED;
+}
+
+void PlayerCB_8026764(Player *player)
+{
+    s32 upper;
+
+    sub_80218E4(player);
+
+    player->moveState &= ~MOVESTATE_4;
+    player->moveState |= MOVESTATE_1000000;
+
+    sub_8023B5C(player, 14);
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+    player->unk64 = 41;
+
+    if (player->unk6E != 0) {
+        player->moveState |= MOVESTATE_FACING_LEFT;
+
+        player->speedAirX = MIN(player->speedAirX, -Q_24_8(1.0));
+        player->speedGroundX = MIN(player->speedAirX, -Q_24_8(1.0));
+    } else {
+        // _080267C4
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+
+        player->speedAirX = MAX(player->speedAirX, Q_24_8(1.0));
+        player->speedGroundX = MAX(player->speedAirX, Q_24_8(1.0));
+    }
+
+    sub_802669C(player);
+    m4aSongNumStart(SE_GRINDING);
+
+    gPlayer.callback = PlayerCB_8026810;
+    PlayerCB_8026810(player);
 }
