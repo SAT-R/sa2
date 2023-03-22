@@ -965,8 +965,6 @@ void sub_802669C(Player *player)
 
 void PlayerCB_8026764(Player *player)
 {
-    s32 upper;
-
     sub_80218E4(player);
 
     player->moveState &= ~MOVESTATE_4;
