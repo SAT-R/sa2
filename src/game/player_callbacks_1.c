@@ -50,6 +50,21 @@ void sub_802A360(Player *);
 #define GET_CHARACTER_ANIM(playerRef)                                                   \
     ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
 
+#define PLAYERCB_UPDATE_POSITION(player)                                                \
+    {                                                                                   \
+        player->x += player->speedAirX;                                                 \
+                                                                                        \
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {  \
+            player->speedAirY = -player->speedAirY;                                     \
+        }                                                                               \
+                                                                                        \
+        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);               \
+                                                                                        \
+        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)                 \
+            ? player->y - player->speedAirY                                             \
+            : player->y + player->speedAirY;                                            \
+    }
+
 // TODO: static
 const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 0 * (3. / 8.)), //
@@ -119,17 +134,7 @@ void PlayerCB_Idle(Player *player)
         sub_80232D0(player);
         sub_8023260(player);
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
@@ -172,17 +177,7 @@ void PlayerCB_8025548(Player *player)
         sub_80232D0(player);
         sub_8023260(player);
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
@@ -235,17 +230,7 @@ void PlayerCB_802569C(Player *player)
         sub_80232D0(player);
         sub_8023260(player);
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
@@ -298,17 +283,7 @@ void PlayerCB_8025854(Player *player)
         sub_80232D0(player);
         sub_8023260(player);
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
@@ -451,18 +426,7 @@ void PlayerCB_8025AB8(Player *player)
                 }
             }
 
-            player->x += player->speedAirX;
-
-            if ((gUnknown_03005424 ^ gUnknown_0300544C)
-                & EXTRA_STATE__GRAVITY_INVERTED) {
-                player->speedAirY = -player->speedAirY;
-            }
-
-            player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-            player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-                ? player->y - player->speedAirY
-                : player->y + player->speedAirY;
+            PLAYERCB_UPDATE_POSITION(player);
 
             sub_8022D6C(player);
 
@@ -566,17 +530,7 @@ void PlayerCB_8025E18(Player *player)
         player->speedAirY += Q_24_8(42.0 / 256.0);
     }
 
-    player->x += player->speedAirX;
-
-    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-        player->speedAirY = -player->speedAirY;
-    }
-
-    player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-    player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-        ? player->y - player->speedAirY
-        : player->y + player->speedAirY;
+    PLAYERCB_UPDATE_POSITION(player);
 
     {
         s32 rot = (s8)player->rotation;
@@ -727,17 +681,7 @@ void PlayerCB_80261D8(Player *player)
         player->speedAirY += Q_24_8(42.0 / 256.0);
     }
 
-    player->x += player->speedAirX;
-
-    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-        player->speedAirY = -player->speedAirY;
-    }
-
-    player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-    player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-        ? player->y - player->speedAirY
-        : player->y + player->speedAirY;
+    PLAYERCB_UPDATE_POSITION(player);
 
     {
         s32 rot = (s8)player->rotation;
@@ -850,17 +794,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
             player->speedAirY += Q_24_8(42.0 / 256.0);
         }
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         {
             s32 rot = (s8)player->rotation;
@@ -905,17 +839,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
         sub_8023260(player);
         sub_8023128(player);
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
@@ -1030,17 +954,7 @@ void PlayerCB_8026810(Player *player)
             }
         }
 
-        player->x += player->speedAirX;
-
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
-        }
-
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
-
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        PLAYERCB_UPDATE_POSITION(player);
 
         sub_8022D6C(player);
 
