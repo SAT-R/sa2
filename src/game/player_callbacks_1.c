@@ -8,6 +8,7 @@
 #include "constants/songs.h"
 
 extern bool32 sub_801251C(Player *);
+extern void sub_801F488(void);
 
 void PlayerCB_Idle(Player *);
 void sub_8022190(Player *);
@@ -41,7 +42,8 @@ void sub_802A360(Player *);
  */
 
 // >> acceleration = (sin(angle) * 3) / 32
-#define GET_ROTATED_ACCEL(angle) ((SIN_24_8((angle)*4) * 3) >> 5)
+#define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
+#define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
 
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
@@ -994,4 +996,72 @@ void PlayerCB_8026764(Player *player)
 
     gPlayer.callback = PlayerCB_8026810;
     PlayerCB_8026810(player);
+}
+
+void PlayerCB_8026810(Player *player)
+{
+    if (sub_8029E6C(player)) {
+        player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+
+        player->unk37 &= ~0x80;
+        player->unk38 = 1;
+
+        gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+        m4aSongNumStop(SE_GRINDING);
+    } else {
+        //_08026868
+        if (player->speedGroundX >= 0) {
+            player->moveState &= ~MOVESTATE_FACING_LEFT;
+        } else {
+            player->moveState |= MOVESTATE_FACING_LEFT;
+        }
+
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0)
+            player->speedGroundX += GET_ROTATED_ACCEL_2(player->rotation);
+
+        sub_80232D0(player);
+        sub_8023260(player);
+
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            if (player->moveState & MOVESTATE_40) {
+                player->speedAirY += Q_24_8(12.0 / 256.0);
+            } else {
+                player->speedAirY += Q_24_8(42.0 / 256.0);
+            }
+        }
+
+        player->x += player->speedAirX;
+
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+            player->speedAirY = -player->speedAirY;
+        }
+
+        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            ? player->y - player->speedAirY
+            : player->y + player->speedAirY;
+
+        sub_8022D6C(player);
+
+        m4aSongNumStartOrContinue(SE_GRINDING);
+
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 14;
+            player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+            player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+            player->unk37 &= ~0x80;
+            player->unk38 = 1;
+
+            gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+            m4aSongNumStop(SE_GRINDING);
+            gPlayer.callback = PlayerCB_8025E18;
+        } else {
+            if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+                sub_801F488();
+            }
+        }
+    }
+    // _080269B4
 }
