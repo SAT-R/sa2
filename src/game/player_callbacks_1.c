@@ -1053,3 +1053,22 @@ void PlayerCB_8026A4C(Player *player)
     gPlayer.callback = PlayerCB_8029074;
     PlayerCB_8029074(player);
 }
+
+void sub_8026B64(Player *player)
+{
+    s16 groundSpeed = player->speedGroundX;
+
+    if ((player->unk2A == 0) && (player->unk5C & (DPAD_LEFT | DPAD_RIGHT))) {
+        if ((player->unk5C & DPAD_RIGHT) != 0 && groundSpeed < player->unk44) {
+            groundSpeed += 8;
+        } else if ((player->unk5C & DPAD_LEFT) && (groundSpeed > Q_24_8(1.0))) {
+            groundSpeed -= 8;
+        }
+    }
+
+    if (groundSpeed < Q_24_8(1.0)) {
+        groundSpeed += 8;
+    }
+
+    player->speedGroundX = groundSpeed;
+}
