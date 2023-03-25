@@ -26,6 +26,7 @@ void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
 void PlayerCB_8026810(Player *);
 void PlayerCB_80273D0(Player *);
+void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
@@ -1002,4 +1003,53 @@ void PlayerCB_80269C0(Player *player)
     m4aSongNumStop(SE_GRINDING);
     gPlayer.callback = PlayerCB_Idle;
     PlayerCB_Idle(player);
+}
+
+void PlayerCB_8026A4C(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState &= ~MOVESTATE_4;
+    player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+        && (player->unk5C & gPlayerControls.jump)
+        && (player->character == CHARACTER_SONIC
+            || player->character == CHARACTER_AMY)) {
+        player->unk64 = 42;
+        player->speedAirY = -Q_24_8(7.5);
+    } else {
+        player->unk64 = 39;
+        player->speedAirY = -Q_24_8(4.875);
+    }
+
+    if (player->moveState & MOVESTATE_40)
+        player->speedAirY /= 2;
+
+    // _08026ADA
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+
+    player->unk37 &= ~0x80;
+    player->unk38 = 1;
+
+    gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+
+    m4aSongNumStop(SE_GRINDING);
+
+    if (player->speedAirX > 0) {
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+
+    if (player->speedAirX < 0) {
+        player->moveState |= MOVESTATE_FACING_LEFT;
+    }
+
+    m4aSongNumStart(SE_JUMP);
+    gPlayer.callback = PlayerCB_8029074;
+    PlayerCB_8029074(player);
 }
