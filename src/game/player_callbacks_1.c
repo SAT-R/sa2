@@ -1059,15 +1059,15 @@ void sub_8026B64(Player *player)
     s16 groundSpeed = player->speedGroundX;
 
     if ((player->unk2A == 0) && (player->unk5C & (DPAD_LEFT | DPAD_RIGHT))) {
-        if ((player->unk5C & DPAD_RIGHT) != 0 && groundSpeed < player->unk44) {
-            groundSpeed += 8;
+        if ((player->unk5C & DPAD_RIGHT) && (groundSpeed < player->unk44)) {
+            groundSpeed += Q_24_8(1.0 / 32.0);
         } else if ((player->unk5C & DPAD_LEFT) && (groundSpeed > Q_24_8(1.0))) {
-            groundSpeed -= 8;
+            groundSpeed -= Q_24_8(1.0 / 32.0);
         }
     }
 
     if (groundSpeed < Q_24_8(1.0)) {
-        groundSpeed += 8;
+        groundSpeed += Q_24_8(1.0 / 32.0);
     }
 
     player->speedGroundX = groundSpeed;
