@@ -159,3 +159,146 @@ void sub_807BD7C(Sprite_SmallWindmill *windmill)
     windmill->unk3F = 0;
     gCurTask->main = sub_807C110;
 }
+
+u32 sub_807BE70(Sprite_SmallWindmill *windmill)
+{
+    switch (windmill->unk3D) {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+            windmill->unk3F += 8;
+            break;
+        case 2:
+        case 4:
+        case 6:
+        case 8:
+            windmill->unk3F -= 8;
+            break;
+    }
+
+    if (PlayerIsAlive) {
+        gPlayer.x = COS_24_8(windmill->unk3F * 4) * 0x18 + Q_24_8(windmill->x);
+        gPlayer.y = SIN_24_8(windmill->unk3F * 4) * 0x18 + Q_24_8(windmill->y);
+    }
+
+    return windmill->unk3F == windmill->unk3E;
+}
+
+u32 sub_807BF34(Sprite_SmallWindmill *windmill)
+{
+    if (PlayerIsAlive) {
+        s16 x = windmill->x - gCamera.x;
+        s16 y = windmill->y - gCamera.y;
+        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+        s16 dX = (x - playerX);
+        s16 dY = (y - playerY);
+
+        if (dX * dX + dY * dY < 0x401) {
+            if (playerX <= x) {
+                if (playerY <= y) {
+                    if (windmill->unk3C & 1) {
+                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                            return 2;
+                        } else {
+                            return 1;
+                        }
+                    }
+                } else {
+                    if (windmill->unk3C & 4) {
+                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                            return 5;
+                        } else {
+                            return 6;
+                        }
+                    }
+                }
+            } else {
+                if (playerY <= y) {
+                    if (windmill->unk3C & 2) {
+                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                            return 3;
+                        } else {
+                            return 4;
+                        }
+                    }
+                } else {
+                    if (windmill->unk3C & 8) {
+                        if (abs(gPlayer.speedAirX) <= abs(gPlayer.speedAirY)) {
+                            return 8;
+                        } else {
+                            return 7;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+u32 sub_807C20C(Sprite_SmallWindmill *);
+void sub_807C1C0(Sprite_SmallWindmill *);
+void sub_807C25C(Sprite_SmallWindmill *);
+
+void Task_Interactable_SkyCanyon_SmallSpinnyWindmill(void)
+{
+    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+
+    windmill->unk3D = sub_807BF34(windmill);
+    if (windmill->unk3D != 0) {
+        sub_807BC1C(windmill);
+    }
+
+    if (sub_807C20C(windmill)) {
+        sub_807C25C(windmill);
+    } else {
+        sub_807C1C0(windmill);
+    }
+}
+
+void sub_807C0B4(void)
+{
+    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &windmill->sprite;
+    if (sub_807BE70(windmill) != 0) {
+        sub_807BD7C(windmill);
+    }
+
+    if (sprite->unk10 & 0x4000) {
+        sprite->unk10 &= ~0x4000;
+        sprite->unk1E = -1;
+        sprite->unk21 = -1;
+    }
+    sub_807C1C0(windmill);
+}
+
+void sub_807C18C(Sprite_SmallWindmill *);
+
+void sub_807C110(void)
+{
+    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &windmill->sprite;
+
+    if (sprite->unk10 & 0x4000) {
+        sprite->unk10 &= ~0x4000;
+        sprite->unk1E = -1;
+        sprite->unk21 = -1;
+
+        sprite->unk22 -= 8;
+        if (sprite->unk22 == 0) {
+            sub_807C18C(windmill);
+        }
+    }
+    sub_807C1C0(windmill);
+}
+
+void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *t)
+{
+    Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
+
+    VramFree(windmill->sprite.graphics.dest);
+}
