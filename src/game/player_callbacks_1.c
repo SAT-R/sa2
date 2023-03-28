@@ -601,7 +601,7 @@ void sub_8025F84(Player *player)
     player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-    if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
+    if ((player->unk16 < 6) || (player->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
@@ -638,7 +638,7 @@ void PlayerCB_8026060(Player *player)
     player->moveState |= (MOVESTATE_IN_AIR);
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-    if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
+    if ((player->unk16 < 6) || (player->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
@@ -671,7 +671,7 @@ void PlayerCB_802611C(Player *player)
     player->moveState |= (MOVESTATE_IN_AIR);
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-    if (((s8)player->unk16 < 6) || (player->unk17 < 9)) {
+    if ((player->unk16 < 6) || (player->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(player);
 
         if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)

@@ -150,8 +150,7 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
-    // TODO: unk16 might be s8?
-    /* 0x16 */ u8 unk16;
+    /* 0x16 */ s8 unk16;
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
 
@@ -411,4 +410,8 @@ extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
 extern void sub_800C84C(Sprite *);
 
+typedef void (*Func801F100)(s32, s32, s32);
+extern s32 sub_801F100(s32, s32, s32, s32, Func801F100);
+extern void sub_801EC3C(s32, s32, s32);
+extern void sub_801EB44(s32, s32, s32);
 #endif // GUARD_GAME_H

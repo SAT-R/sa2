@@ -25,11 +25,6 @@ typedef struct {
 
 #define NUM_GERMAN_FLUTE_KINDS 4
 
-typedef void (*SomeFunc)(s32, s32, s32);
-
-extern void sub_801EC3C(s32, s32, s32);
-extern s32 sub_801F100(s32, s32, s32, s32, SomeFunc);
-
 static void sub_8076928(void);
 static void sub_80769E0(void);
 static void Task_8076A6C(void);
