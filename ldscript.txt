@@ -153,7 +153,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/080.o(.text);
         build/sa2/asm/interactable_sky_canyon_giant_propeller.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/small_windmill.o(.text);
-        build/sa2/asm/interactable_sky_canyon_small_windmill.o(.text);
         build/sa2/src/game/interactables_2/085.o(.text);
         build/sa2/asm/interactable_086.o(.text);
         build/sa2/asm/interactable_087.o(.text);
