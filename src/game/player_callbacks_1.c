@@ -37,6 +37,7 @@ bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
 void sub_802A360(Player *);
+void PlayerCB_802A3B8(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -1161,5 +1162,98 @@ void PlayerCB_8026D2C(Player *player)
         gPlayer.callback = PlayerCB_8025318;
         player->speedGroundX = player->speedAirX;
         player->rotation = 0;
+    }
+}
+
+void PlayerCB_8026E24(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_4);
+
+    sub_8023B5C(player, 9);
+
+    player->unk16 = 6;
+    player->unk17 = 9;
+    player->rotation = 0;
+    player->unk64 = 4;
+
+    player->moveState &= ~MOVESTATE_FACING_LEFT;
+
+    switch (player->unk6E & 0x30) {
+        case 0x00: {
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->speedAirX = 0;
+            player->speedAirY = -Q_24_8(12.0);
+            player->speedGroundX = Q_24_8(12.0);
+        } break;
+
+        case 0x10: {
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->speedAirX = 0;
+            player->speedAirY = Q_24_8(12.0);
+            player->speedGroundX = Q_24_8(12.0);
+        } break;
+
+        case 0x20: {
+            player->moveState &= ~MOVESTATE_IN_AIR;
+            player->moveState |= MOVESTATE_FACING_LEFT;
+            player->speedAirX = -Q_24_8(12.0);
+            player->speedAirY = 0;
+            player->speedGroundX = -Q_24_8(12.0);
+        } break;
+
+        case 0x30: {
+            player->moveState &= ~MOVESTATE_IN_AIR;
+            player->speedAirX = Q_24_8(12.0);
+            player->speedAirY = 0;
+            player->speedGroundX = Q_24_8(12.0);
+        } break;
+    }
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(1);
+    player->unk38 = 0;
+
+    m4aSongNumStart(SE_SPIN);
+
+    gPlayer.callback = PlayerCB_802A3B8;
+    PlayerCB_802A3B8(player);
+}
+
+void PlayerCB_8026F10(Player *player)
+{
+    if ((player->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
+        == MOVESTATE_800) {
+        sub_80218E4(player);
+        player->moveState &= ~MOVESTATE_4;
+
+        sub_8023B5C(player, 14);
+        player->unk16 = 6;
+        player->unk17 = 14;
+
+        player->unk64 = 62;
+
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+        m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
+
+        gPlayer.callback = PlayerCB_8026BCC;
+        PlayerCB_8026BCC(player);
+    } else {
+        //_08026F74
+        player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+        player->unk64 = 4;
+
+        sub_8023B5C(player, 9);
+
+        player->unk16 = 6;
+        player->unk17 = 9;
+
+        player->moveState |= MOVESTATE_4;
+
+        player->unk99 = 30;
+
+        gPlayer.callback = PlayerCB_8025AB8;
+        PlayerCB_8025AB8(player);
     }
 }
