@@ -12,6 +12,8 @@ extern void sub_801F488(void);
 
 void PlayerCB_Idle(Player *);
 void sub_8022190(Player *);
+void sub_8022218(Player *);
+void sub_8022284(Player *);
 void sub_8022D6C(Player *);
 void sub_8023128(Player *);
 void sub_8023260(Player *);
@@ -1120,5 +1122,44 @@ void PlayerCB_8026BCC(Player *player)
                    != MOVESTATE_800) {
             gPlayer.callback = PlayerCB_8025318;
         }
+    }
+}
+
+void PlayerCB_8026D2C(Player *player)
+{
+    sub_80246DC(player);
+    sub_8023610(player);
+    sub_80236C8(player);
+    sub_80232D0(player);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY += Q_24_8(12.0 / 256.0);
+    } else {
+        player->speedAirY += Q_24_8(42.0 / 256.0);
+    }
+
+    PLAYERCB_UPDATE_POSITION(player);
+    {
+        s32 rot = (s8)player->rotation;
+        if (rot < 0) {
+            rot = MIN((rot + 2), 0);
+        } else if (rot > 0) {
+            rot = MAX((rot - 2), 0);
+        }
+        player->rotation = rot;
+    }
+
+    if (player->speedAirY >= 0) {
+        sub_8022218(player);
+        sub_8022284(player);
+    } else {
+        sub_8022284(player);
+        sub_8022218(player);
+    }
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
     }
 }
