@@ -27,6 +27,7 @@ void sub_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
 void PlayerCB_8026810(Player *);
+void PlayerCB_8027040(Player *);
 void PlayerCB_80273D0(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
@@ -1256,4 +1257,29 @@ void PlayerCB_8026F10(Player *player)
         gPlayer.callback = PlayerCB_8025AB8;
         PlayerCB_8025AB8(player);
     }
+}
+
+void PlayerCB_8026FC8(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState &= ~MOVESTATE_4;
+
+    sub_8023B5C(player, 14);
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    if (player->unk5C & DPAD_LEFT) {
+        player->moveState |= MOVESTATE_FACING_LEFT;
+    }
+    if (player->unk5C & DPAD_RIGHT) {
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+
+    player->unk64 = 63;
+    player->rotation = 0;
+
+    gPlayer.callback = PlayerCB_8027040;
+    PlayerCB_8027040(player);
 }

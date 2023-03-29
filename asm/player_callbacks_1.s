@@ -66,66 +66,6 @@ gUnknown_080D6AF0:
 .if 00
 .endif
 
-	thumb_func_start PlayerCB_8026FC8
-PlayerCB_8026FC8: @ 0x08026FC8
-	push {r4, lr}
-	adds r4, r0, #0
-	bl sub_80218E4
-	ldr r0, [r4, #0x20]
-	movs r1, #5
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4, #0x20]
-	adds r0, r4, #0
-	movs r1, #0xe
-	bl sub_8023B5C
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #0xe
-	strb r0, [r4, #0x17]
-	adds r2, r4, #0
-	adds r2, #0x5c
-	ldrh r1, [r2]
-	movs r0, #0x20
-	ands r0, r1
-	cmp r0, #0
-	beq _08027000
-	ldr r0, [r4, #0x20]
-	movs r1, #1
-	orrs r0, r1
-	str r0, [r4, #0x20]
-_08027000:
-	ldrh r1, [r2]
-	movs r0, #0x10
-	ands r0, r1
-	cmp r0, #0
-	beq _08027014
-	ldr r0, [r4, #0x20]
-	movs r1, #2
-	rsbs r1, r1, #0
-	ands r0, r1
-	str r0, [r4, #0x20]
-_08027014:
-	adds r1, r4, #0
-	adds r1, #0x64
-	movs r2, #0
-	movs r0, #0x3f
-	strh r0, [r1]
-	adds r0, r4, #0
-	adds r0, #0x24
-	strb r2, [r0]
-	ldr r0, _08027038 @ =gPlayer
-	ldr r1, _0802703C @ =PlayerCB_8027040
-	str r1, [r0]
-	adds r0, r4, #0
-	bl _call_via_r1
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08027038: .4byte gPlayer
-_0802703C: .4byte PlayerCB_8027040
-
 	thumb_func_start PlayerCB_8027040
 PlayerCB_8027040: @ 0x08027040
 	push {r4, r5, lr}
