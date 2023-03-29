@@ -353,9 +353,6 @@ static void sub_808DF88(void)
     }
 }
 
-extern s32 sub_801F100(u32, u32, u8, u8, TaskMain);
-void sub_801EC3C(void);
-
 static void sub_808E114(void)
 {
     s32 result;

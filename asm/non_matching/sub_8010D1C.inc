@@ -17,9 +17,9 @@
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov r8, r0
-	ldr r0, _08010F20 @ =sub_8010F78
+	ldr r0, _08010F20 @ =Task_PlatformBreakParticlesMain
 	ldr r2, _08010F24 @ =0x00002011
-	ldr r1, _08010F28 @ =sub_80111D4
+	ldr r1, _08010F28 @ =TaskDestructor_PlatformBreakParticles
 	str r1, [sp]
 	movs r1, #0xf4
 	movs r3, #0
@@ -53,7 +53,7 @@
 	mov r1, r8
 	lsrs r1, r1, #0x10
 	mov r8, r1
-	ldr r3, _08010F40 @ =gUnknown_080D549E
+	ldr r3, _08010F40 @ =sPlatformBreakAnimations
 	mov sb, r3
 	ldr r0, _08010F44 @ =gCurrentLevel
 	ldrb r1, [r0]
@@ -255,15 +255,15 @@
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08010F20: .4byte sub_8010F78
+_08010F20: .4byte Task_PlatformBreakParticlesMain
 _08010F24: .4byte 0x00002011
-_08010F28: .4byte sub_80111D4
+_08010F28: .4byte TaskDestructor_PlatformBreakParticles
 _08010F2C: .4byte IWRAM_START + 0xC0
 _08010F30: .4byte IWRAM_START + 0xF0
 _08010F34: .4byte IWRAM_START + 0xF2
 _08010F38: .4byte 0xFF800000
 _08010F3C: .4byte 0xFFCE0000
-_08010F40: .4byte gUnknown_080D549E
+_08010F40: .4byte sPlatformBreakAnimations
 _08010F44: .4byte gCurrentLevel
 _08010F48: .4byte IWRAM_START + 0x20
 _08010F4C: .4byte IWRAM_START + 0x22

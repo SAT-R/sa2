@@ -541,7 +541,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
 
         if (flags) {
-            u32 v = (player->unk16 + 5);
+            u32 v = ((u8)player->unk16 + 5);
             s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
             if (flags & 0xC0000) {
@@ -762,7 +762,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
             if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
                 if ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0) {
-                    u32 v = (player->unk16 + 5);
+                    u32 v = ((u8)player->unk16 + 5);
                     s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                     if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
@@ -934,7 +934,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
             if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
                 && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
 
-                u32 v = (player->unk16 + 5);
+                u32 v = ((u8)player->unk16 + 5);
                 s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                 if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {

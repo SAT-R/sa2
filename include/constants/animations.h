@@ -168,6 +168,8 @@
 #define SA2_ANIM_WATER_GROUND_SPLASH 560
 
 #define SA2_ANIM_WIND_MILL_PART 561
+#define SA2_ANIM_562            562
+#define SA2_ANIM_563            563
 
 #define SA2_ANIM_CRANE_PARTS                     564
 #define SA2_ANIM_VARIANT_CRANE_PARTS_HOOK        0
@@ -195,10 +197,12 @@
 #define SA2_ANIM_SPIKES_MUS_PLA            580
 #define SA2_ANIM_PLATFORM_ICE_PAR          581
 #define SA2_ANIM_SNOWBALL                  582
+#define SA2_ANIM_583                       583
 
 #define SA2_ANIM_DASH_RING        584
 #define SA2_ANIM_CROSS_SKY_CAN    585
 #define SA2_ANIM_PLATFORM_SKY_CAN 586
+#define SA2_ANIM_PLATFORM_587     587
 
 #define SA2_ANIM_PROPELLOR               589
 #define SA2_ANIM_SPRING_FLYING           590
@@ -213,11 +217,14 @@
 #define SA2_ANIM_NOTE_BLOCK_TEC_BASE   598
 #define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE 601
 
+#define SA2_ANIM_602               602
 #define SA2_ANIM_603               603
 #define SA2_ANIM_SPRING_TEC_BAS    604
 #define SA2_ANIM_DASH_RING_TEC_BAS 605
 #define SA2_ANIM_DIR_ARROW_TEC_BAS 606
 #define SA2_ANIM_SPIKES_TEC_BAS    607
+#define SA2_ANIM_609               609
+#define SA2_ANIM_610               610
 
 #define SA2_ANIM_SPEEDING_PLATFORM 612
 
