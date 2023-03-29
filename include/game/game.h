@@ -339,6 +339,19 @@ struct UNK_03005AF0 {
 
 extern struct UNK_03005AF0 gUnknown_03005AF0;
 
+// TODO: find out what task is parent to IA
+typedef struct {
+    u8 filler0[0x18];
+    struct Task *unk18; // UNK_807C5F8
+} UNK_807C5F8_Parent;
+
+typedef struct {
+    Sprite sprite1;
+    Sprite sprite2;
+    u16 unk60;
+    u16 unk62;
+} UNK_807C5F8;
+
 extern u8 gUnknown_03005428[4];
 extern u8 gUnknown_030053E8[4];
 

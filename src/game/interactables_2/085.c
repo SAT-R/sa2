@@ -1,5 +1,6 @@
 #include "global.h"
 #include "game/interactables_2/085.h"
+#include "game/game.h"
 #include "trig.h"
 #include "lib/m4a.h"
 
@@ -15,18 +16,6 @@ typedef struct {
     u8 unk48;
     u8 unk49;
 } Sprite_IA85;
-
-// TODO: find out what task is parent to IA
-typedef struct {
-    u8 filler0[0x18];
-    struct Task *unk18;
-} UNK_807C5F8_Parent;
-
-typedef struct {
-    Sprite sprite1;
-    Sprite sprite2;
-    u16 unk60;
-} UNK_807C5F8;
 
 static bool32 sub_807C424(Sprite_IA85 *);
 static void sub_807C4A0(Sprite_IA85 *);
