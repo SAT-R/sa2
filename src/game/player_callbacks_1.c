@@ -1072,3 +1072,53 @@ void sub_8026B64(Player *player)
 
     player->speedGroundX = groundSpeed;
 }
+
+void PlayerCB_8026BCC(Player *player)
+{
+    if (!sub_8029E6C(player)) {
+        sub_8026B64(player);
+        sub_8023128(player);
+
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            s32 accel = GET_ROTATED_ACCEL(player->rotation);
+            if (player->speedGroundX)
+                player->speedGroundX += accel;
+        }
+
+        sub_80232D0(player);
+        sub_8023260(player);
+
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            if (player->moveState & MOVESTATE_40) {
+                player->speedAirY += Q_24_8(12.0 / 256.0);
+            } else {
+                player->speedAirY += Q_24_8(42.0 / 256.0);
+            }
+        }
+
+        PLAYERCB_UPDATE_POSITION(player);
+
+        sub_8022D6C(player);
+
+        if (player->unk2A) {
+            player->unk2A -= 1;
+        } else if ((player->rotation + 32) & 0xC0) {
+            s32 absGroundSpeed = ABS(player->speedGroundX);
+            if (absGroundSpeed < Q_24_8(1.875)) {
+                player->speedGroundX = 0;
+
+                player->moveState |= MOVESTATE_IN_AIR;
+                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+            }
+        }
+
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 14;
+
+            gPlayer.callback = PlayerCB_8025E18;
+        } else if ((player->moveState & (MOVESTATE_800 | MOVESTATE_8))
+                   != MOVESTATE_800) {
+            gPlayer.callback = PlayerCB_8025318;
+        }
+    }
+}
