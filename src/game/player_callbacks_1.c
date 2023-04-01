@@ -1338,3 +1338,50 @@ void PlayerCB_8027114(Player *player)
     gPlayer.callback = PlayerCB_8027190;
     PlayerCB_8027190(player);
 }
+
+void PlayerCB_8027190(Player *player)
+{
+    s32 u48 = player->unk48;
+    s32 u40 = player->unk40;
+    s16 speed = player->speedGroundX;
+
+    if (player->unk5C & DPAD_LEFT) {
+        speed -= u48;
+
+        if (speed < -u40) {
+            speed += u48;
+
+            if (speed > -u40)
+                speed = -u40;
+        }
+    } else if (player->unk5C & DPAD_RIGHT) {
+        speed += u48;
+
+        if (speed > +u40) {
+            speed -= u48;
+
+            if (speed < +u40)
+                speed = +u40;
+        }
+    } else if (speed > 0) {
+        // _080271F0
+        speed -= Q_24_8(8.0 / 256.0);
+    } else {
+        speed += Q_24_8(8.0 / 256.0);
+    }
+    player->speedGroundX = speed;
+
+    sub_80232D0(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
+    }
+}

@@ -173,9 +173,10 @@ typedef struct Player_ {
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
-    /* 0x40 */ u8 filler40[0x4];
+    /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
-    /* 0x48 */ u8 filler48[0x8];
+    /* 0x48 */ s32 unk48;
+    /* 0x4C */ s32 unk4C;
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u8 filler52[0x8];
     /* 0x5A */ u8 unk5A; // boost?
