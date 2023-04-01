@@ -21,26 +21,29 @@ typedef struct {
     u8 unk48;
 } Sprite_GiantPropeller;
 
-void sub_807B8FC(Sprite_GiantPropeller *);
-void sub_807B74C(Sprite_GiantPropeller *);
-void Task_Interactable_SkyCanyon_GiantPropeller(void);
-bool32 sub_807B9A4(Sprite_GiantPropeller *);
-void sub_807B7BC(Sprite_GiantPropeller *);
-void sub_807BA70(void);
-void sub_807B930(Sprite_GiantPropeller *);
-void sub_807B8E0(Sprite_GiantPropeller *);
-bool32 sub_807B95C(Sprite_GiantPropeller *);
-void sub_807BA3C(Sprite_GiantPropeller *);
-UNK_807C5F8 *sub_807BA54(void);
-void TaskDestructor_Interactable_SkyCanyon_GiantPropeller(struct Task *);
-bool32 sub_807B9F0(Sprite_GiantPropeller *);
+#define PROPELLER_HITBOX_WIDTH  148
+#define PROPELLER_HITBOX_HEIGHT 128
 
-void sub_807B3E4(void)
+static void sub_807B8FC(Sprite_GiantPropeller *);
+static void sub_807B74C(Sprite_GiantPropeller *);
+static void Task_GiantPropellerIdle(void);
+static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *);
+static void sub_807B7BC(Sprite_GiantPropeller *);
+static void sub_807BA70(void);
+static void Render(Sprite_GiantPropeller *);
+static void StartPlayerFloatingTask(Sprite_GiantPropeller *);
+static bool32 ShouldDespawn(Sprite_GiantPropeller *);
+static void DestroyPropeller(Sprite_GiantPropeller *);
+UNK_807C5F8 *sub_807BA54(void);
+static void TaskDestructor_GiantPropeller(struct Task *);
+static bool32 sub_807B9F0(Sprite_GiantPropeller *);
+
+static void Task_PlayerFloating(void)
 {
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
 
     if (!PlayerIsAlive) {
-        gCurTask->main = Task_Interactable_SkyCanyon_GiantPropeller;
+        gCurTask->main = Task_GiantPropellerIdle;
     } else {
         s32 temp;
         sub_807B8FC(propeller);
@@ -81,40 +84,40 @@ void sub_807B3E4(void)
         }
     }
 
-    if (!sub_807B9A4(propeller)) {
+    if (!IsPlayerInAirCurrent(propeller)) {
         sub_807B7BC(propeller);
     }
 
     sub_807BA70();
-    sub_807B930(propeller);
+    Render(propeller);
 }
 
-void sub_807B530(void)
+static void sub_807B530(void)
 {
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
     if (!PlayerIsAlive) {
-        gCurTask->main = Task_Interactable_SkyCanyon_GiantPropeller;
+        gCurTask->main = Task_GiantPropellerIdle;
     } else {
         s32 temp;
         sub_807B8FC(propeller);
         if (gPlayer.unk5C & 0x10) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-            propeller->unk44 += 0x10;
+            propeller->unk44 += 16;
 
-            if (propeller->unk44 > 0x200) {
-                propeller->unk44 = 0x200;
-            } else if ((u16)(propeller->unk44 + 0x1F) < 0x3F) {
-                propeller->unk44 = 0x20;
+            if (propeller->unk44 > 512) {
+                propeller->unk44 = 512;
+            } else if (propeller->unk44 > -32 && propeller->unk44 < 32) {
+                propeller->unk44 = 32;
             }
         }
 
         if (gPlayer.unk5C & 0x20) {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-            propeller->unk44 -= 0x10;
-            if (propeller->unk44 < -0x200) {
-                propeller->unk44 = -0x200;
-            } else if ((u16)(propeller->unk44 + 31) < 0x3F) {
-                propeller->unk44 = -0x20;
+            propeller->unk44 -= 16;
+            if (propeller->unk44 < -512) {
+                propeller->unk44 = -512;
+            } else if (propeller->unk44 > -32 && propeller->unk44 < 32) {
+                propeller->unk44 = -32;
             }
         }
 
@@ -129,13 +132,13 @@ void sub_807B530(void)
                            Q_24_8_TO_INT(gPlayer.y), gPlayer.unk38, 8, sub_801EB44);
         if (temp < 0) {
             gPlayer.x += Q_24_8(temp);
-            propeller->unk44 = 0x20;
+            propeller->unk44 = 32;
         }
         temp = sub_801F100(({ Q_24_8_TO_INT(gPlayer.x) - 2; }) - gPlayer.unk16,
                            Q_24_8_TO_INT(gPlayer.y), gPlayer.unk38, -8, sub_801EB44);
         if (temp < 0) {
             gPlayer.x -= Q_24_8(temp);
-            propeller->unk44 = -0x20;
+            propeller->unk44 = -32;
         }
 
         temp = sub_801F100(Q_24_8_TO_INT(gPlayer.y) + gPlayer.unk17,
@@ -149,39 +152,39 @@ void sub_807B530(void)
             gPlayer.y -= Q_24_8(temp);
         }
 
-        if (!sub_807B9A4(propeller)) {
+        if (!IsPlayerInAirCurrent(propeller)) {
             sub_807B7BC(propeller);
         } else if (!sub_807B9F0(propeller)) {
             sub_807B7BC(propeller);
         }
     }
     sub_807BA70();
-    sub_807B930(propeller);
+    Render(propeller);
 }
 
-void sub_807B74C(Sprite_GiantPropeller *propeller)
+static void sub_807B74C(Sprite_GiantPropeller *propeller)
 {
     propeller->unk48 = 0;
     propeller->unk46 = SIN_24_8(0) * 16;
     propeller->unk44 = gPlayer.speedAirX;
     if (gPlayer.speedAirX >= 1) {
-        propeller->unk44 = 0x20;
+        propeller->unk44 = 32;
     } else if (gPlayer.speedAirX < 0) {
-        propeller->unk44 = -0x20;
+        propeller->unk44 = -32;
     } else {
-        propeller->unk44 = gPlayer.moveState & MOVESTATE_FACING_LEFT ? -0x20 : 0x20;
+        propeller->unk44 = gPlayer.moveState & MOVESTATE_FACING_LEFT ? -32 : 32;
     }
     gCurTask->main = sub_807B530;
 }
 
-void sub_807B7BC(Sprite_GiantPropeller *propeller)
+static void sub_807B7BC(Sprite_GiantPropeller *propeller)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.unk6D = 5;
 
-    if ((u8)(propeller->unk48 - 0x41) > 0x7E) {
-        propeller->unk48 += 0x40;
-        propeller->unk48 = 0x80 - propeller->unk48;
+    if (propeller->unk48 <= (PROPELLER_HITBOX_HEIGHT / 2) || propeller->unk48 >= 192) {
+        propeller->unk48 += (PROPELLER_HITBOX_HEIGHT / 2);
+        propeller->unk48 = PROPELLER_HITBOX_HEIGHT - propeller->unk48;
         gPlayer.speedAirY = -(propeller->unk48 * 1024) >> 7;
         if (gPlayer.speedAirY >= 1) {
             gPlayer.speedAirY = 0;
@@ -191,22 +194,24 @@ void sub_807B7BC(Sprite_GiantPropeller *propeller)
     }
 
     gPlayer.speedAirX = propeller->unk44 >> 1;
-    gCurTask->main = Task_Interactable_SkyCanyon_GiantPropeller;
+    gCurTask->main = Task_GiantPropellerIdle;
 }
 
-bool32 sub_807B828(Sprite_GiantPropeller *propeller)
+bool32 IsPlayerInteracting(Sprite_GiantPropeller *propeller)
 {
-    s16 temp, temp2, temp3, temp4;
+    s16 x, playerX, y, playerY;
     if (!PlayerIsAlive) {
-        return 0;
+        return FALSE;
     }
 
-    temp = propeller->x - gCamera.x;
-    temp3 = propeller->y - gCamera.y;
-    temp2 = (gPlayer.x >> 8) - gCamera.x;
-    temp4 = (gPlayer.y >> 8) - gCamera.y;
-    if (temp - 0x4A <= temp2 && temp + 0x4A >= temp2) {
-        if (temp3 - 0x40 <= temp4 && temp3 + 0x40 >= temp4) {
+    x = propeller->x - gCamera.x;
+    y = propeller->y - gCamera.y;
+    playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    if (x - (PROPELLER_HITBOX_WIDTH / 2) <= playerX
+        && x + (PROPELLER_HITBOX_WIDTH / 2) >= playerX) {
+        if (y - (PROPELLER_HITBOX_HEIGHT / 2) <= playerY
+            && y + (PROPELLER_HITBOX_HEIGHT / 2) >= playerY) {
             return TRUE;
         }
     }
@@ -214,29 +219,30 @@ bool32 sub_807B828(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-void Task_Interactable_SkyCanyon_GiantPropeller(void)
+static void Task_GiantPropellerIdle(void)
 {
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
 
-    if (sub_807B828(propeller)) {
-        sub_807B8E0(propeller);
+    if (IsPlayerInteracting(propeller)) {
+        StartPlayerFloatingTask(propeller);
     }
 
-    if (sub_807B95C(propeller)) {
-        sub_807BA3C(propeller);
-    } else {
-        sub_807BA70();
-        sub_807B930(propeller);
+    if (ShouldDespawn(propeller)) {
+        DestroyPropeller(propeller);
+        return;
     }
+
+    sub_807BA70();
+    Render(propeller);
 }
 
-void sub_807B8E0(Sprite_GiantPropeller *propeller)
+static void StartPlayerFloatingTask(Sprite_GiantPropeller *propeller)
 {
     sub_807B8FC(propeller);
-    gCurTask->main = sub_807B3E4;
+    gCurTask->main = Task_PlayerFloating;
 }
 
-void sub_807B8FC(Sprite_GiantPropeller *propeller)
+static void sub_807B8FC(Sprite_GiantPropeller *propeller)
 {
 
     sub_80218E4(&gPlayer);
@@ -247,7 +253,7 @@ void sub_807B8FC(Sprite_GiantPropeller *propeller)
     gPlayer.unk64 = 44;
 }
 
-void sub_807B930(Sprite_GiantPropeller *propeller)
+static void Render(Sprite_GiantPropeller *propeller)
 {
     Sprite *sprite = &sub_807BA54()->sprite2;
     sprite->x = propeller->x - gCamera.x;
@@ -255,7 +261,7 @@ void sub_807B930(Sprite_GiantPropeller *propeller)
     sub_80051E8(sprite);
 }
 
-bool32 sub_807B95C(Sprite_GiantPropeller *propeller)
+static bool32 ShouldDespawn(Sprite_GiantPropeller *propeller)
 {
     s16 x = propeller->x - gCamera.x;
     s16 y = propeller->y - gCamera.y;
@@ -267,13 +273,14 @@ bool32 sub_807B95C(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-bool32 sub_807B9A4(Sprite_GiantPropeller *propeller)
+static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *propeller)
 {
     if (PlayerIsAlive) {
         s16 x = propeller->x - gCamera.x;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
 
-        if (x - 0x4A <= playerX && (x + 0x4A >= playerX)) {
+        if (x - (PROPELLER_HITBOX_WIDTH / 2) <= playerX
+            && (x + (PROPELLER_HITBOX_WIDTH / 2) >= playerX)) {
             return TRUE;
         }
     }
@@ -281,13 +288,13 @@ bool32 sub_807B9A4(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
+static bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
 {
     if (PlayerIsAlive) {
         s16 y = propeller->y - gCamera.y;
         s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        if (y - 0x60 <= playerY && y + 0x40 >= playerY) {
+        if (y - 96 <= playerY && y + (PROPELLER_HITBOX_HEIGHT / 2) >= playerY) {
             return TRUE;
         }
     }
@@ -295,7 +302,7 @@ bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-void sub_807BA3C(Sprite_GiantPropeller *propeller)
+static void DestroyPropeller(Sprite_GiantPropeller *propeller)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(propeller->base.me, propeller->base.spriteX);
     TaskDestroy(gCurTask);
@@ -307,7 +314,7 @@ UNK_807C5F8 *sub_807BA54(void)
     return TaskGetStructPtr(parent->unk18);
 }
 
-void sub_807BA70(void)
+static void sub_807BA70(void)
 {
     UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
     UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
@@ -318,9 +325,8 @@ void sub_807BA70(void)
 void initSprite_Interactable_SkyCanyon_GiantPropeller(MapEntity *me, u16 spriteRegionX,
                                                       u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_SkyCanyon_GiantPropeller,
-                                sizeof(Sprite_GiantPropeller), 0x2010, 0,
-                                TaskDestructor_Interactable_SkyCanyon_GiantPropeller);
+    struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_GiantPropeller),
+                                0x2010, 0, TaskDestructor_GiantPropeller);
 
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(t);
     propeller->x = SpriteGetScreenPos(me->x, spriteRegionX);
@@ -333,7 +339,7 @@ void initSprite_Interactable_SkyCanyon_GiantPropeller(MapEntity *me, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void TaskDestructor_Interactable_SkyCanyon_GiantPropeller(struct Task *t)
+static void TaskDestructor_GiantPropeller(struct Task *t)
 {
     // unused
 }
