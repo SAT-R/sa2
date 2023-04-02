@@ -64,8 +64,6 @@ gUnknown_080D6AF0:
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
 	thumb_func_start PlayerCB_80273D0
 PlayerCB_80273D0: @ 0x080273D0
 	push {r4, lr}
@@ -180,6 +178,7 @@ _080274A8: .4byte 0xFFFFBFFF
 _080274AC: .4byte 0xFFDFFFFF
 _080274B0: .4byte gPlayer
 _080274B4: .4byte PlayerCB_80274B8
+.endif
 
 	thumb_func_start PlayerCB_80274B8
 PlayerCB_80274B8: @ 0x080274B8

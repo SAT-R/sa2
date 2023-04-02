@@ -32,6 +32,8 @@ void PlayerCB_8027190(Player *);
 void PlayerCB_8027250(Player *);
 void PlayerCB_8027324(Player *);
 void PlayerCB_80273D0(Player *);
+void PlayerCB_80274B8(Player *);
+void sub_802785C(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -42,6 +44,9 @@ bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
 void sub_802A360(Player *);
 void PlayerCB_802A3B8(Player *);
+void sub_802A40C(Player *);
+void sub_802A468(Player *);
+void sub_802A4B8(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -1457,5 +1462,43 @@ void PlayerCB_8027324(Player *player)
 
         player->speedGroundX = player->speedAirX;
         player->rotation = 0;
+    }
+}
+
+void PlayerCB_80273D0(Player *player)
+{
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        sub_802A4B8(player);
+    } else if (IS_BOSS_STAGE(gCurrentLevel)) {
+        sub_802A468(player);
+    } else {
+        if (gGameMode == GAME_MODE_TIME_ATTACK)
+            gUnknown_030054F4 = 7;
+
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 > 6)) {
+            sub_802A40C(player);
+        } else {
+            sub_80218E4(player);
+
+            player->moveState &= ~(MOVESTATE_4 | MOVESTATE_FACING_LEFT);
+
+            sub_8023B5C(player, 14);
+
+            player->unk16 = 6;
+            player->unk17 = 14;
+
+            if (player->speedGroundX <= 0) {
+                sub_802785C(player);
+            } else {
+                player->unk64 = 9;
+
+                player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+                player->moveState &= ~MOVESTATE_IGNORE_INPUT;
+
+                gPlayer.callback = PlayerCB_80274B8;
+                PlayerCB_80274B8(player);
+            }
+        }
     }
 }
