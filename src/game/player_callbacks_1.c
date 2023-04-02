@@ -32,7 +32,8 @@ void PlayerCB_8027190(Player *);
 void PlayerCB_8027250(Player *);
 void PlayerCB_8027324(Player *);
 void PlayerCB_80273D0(Player *);
-void PlayerCB_80274B8(Player *);
+void PlayerCB_GoalSlowdown(Player *);
+void PlayerCB_GoalBrake(Player *);
 void sub_802785C(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
@@ -1496,8 +1497,65 @@ void PlayerCB_80273D0(Player *player)
 
                 player->moveState &= ~MOVESTATE_IGNORE_INPUT;
 
-                gPlayer.callback = PlayerCB_80274B8;
-                PlayerCB_80274B8(player);
+                gPlayer.callback = PlayerCB_GoalSlowdown;
+                PlayerCB_GoalSlowdown(player);
+            }
+        }
+    }
+}
+
+void PlayerCB_GoalSlowdown(Player *player)
+{
+    u32 playerX = Q_24_8_TO_INT(player->x);
+    u16 playerX2;
+
+    playerX2 = playerX - gUnknown_030054D0;
+
+    if (((player->speedGroundX >= Q_24_8(2.0)) && (player->unk5E & DPAD_LEFT))
+        || (playerX2 > 0x579)) {
+        player->unk64 = 25;
+
+        player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+        m4aSongNumStart(SE_LONG_BRAKE);
+        gPlayer.callback = PlayerCB_GoalBrake;
+        PlayerCB_GoalBrake(player);
+    } else {
+        s32 grnd = player->speedGroundX;
+        if (grnd > 0) {
+            s32 speedOg = player->speedGroundX - Q_24_8(8.0 / 256.0);
+            s16 speed = speedOg;
+            if (speed <= 0)
+                speed = 0;
+
+            player->speedGroundX = speed;
+        } else {
+            player->speedGroundX = 0;
+        }
+
+        if (player->speedGroundX <= 0) {
+            sub_802785C(player);
+        } else {
+            if (gCamera.unk1C > -56)
+                gCamera.unk1C--;
+
+            sub_80232D0(player);
+            sub_8023260(player);
+
+            PLAYERCB_UPDATE_POSITION(player);
+
+            sub_8022D6C(player);
+
+            if (player->unk2A) {
+                player->unk2A -= 1;
+            } else if ((player->rotation + 32) & 0xC0) {
+                s32 absGroundSpeed = ABS(player->speedGroundX);
+                if (absGroundSpeed < Q_24_8(1.875)) {
+                    player->speedGroundX = 0;
+
+                    player->moveState |= MOVESTATE_IN_AIR;
+                    player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+                }
             }
         }
     }
