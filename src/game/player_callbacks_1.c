@@ -1437,3 +1437,25 @@ void PlayerCB_8027250(Player *player)
     gPlayer.callback = PlayerCB_8027324;
     PlayerCB_8027324(player);
 }
+
+void PlayerCB_8027324(Player *player)
+{
+    sub_80232D0(player);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY += Q_24_8(12.0 / 256.0);
+    } else {
+        player->speedAirY += Q_24_8(42.0 / 256.0);
+    }
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
+}
