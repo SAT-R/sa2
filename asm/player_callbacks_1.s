@@ -64,8 +64,6 @@ gUnknown_080D6AF0:
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
 	thumb_func_start PlayerCB_8027250
 PlayerCB_8027250: @ 0x08027250
 	push {r4, lr}
@@ -85,11 +83,11 @@ _0802726A:
 	movs r0, #0xa0
 	lsls r0, r0, #2
 	cmp r1, r0
-	bgt _080272A8
+	bgt _080272A8 @ (ABS(player->speedAirX) <= Q_24_8(2.5))
 	movs r0, #0x10
 	ldrsh r1, [r4, r0]
 	cmp r1, #0xa0
-	bgt _08027298
+	bgt _08027298 @ (player->speedAirX <= Q_24_8(0.625))
 	movs r0, #0xa0
 	rsbs r0, r0, #0
 	cmp r1, r0
@@ -177,6 +175,7 @@ _08027314: .4byte 0x0000FE80
 _08027318: .4byte 0xFFFFFDF3
 _0802731C: .4byte gPlayer
 _08027320: .4byte PlayerCB_8027324
+.endif
 
 	thumb_func_start PlayerCB_8027324
 PlayerCB_8027324: @ 0x08027324

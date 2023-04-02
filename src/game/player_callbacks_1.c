@@ -29,6 +29,8 @@ void PlayerCB_Spindash(Player *);
 void PlayerCB_8026810(Player *);
 void PlayerCB_8027040(Player *);
 void PlayerCB_8027190(Player *);
+void PlayerCB_8027250(Player *);
+void PlayerCB_8027324(Player *);
 void PlayerCB_80273D0(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
@@ -1384,4 +1386,54 @@ void PlayerCB_8027190(Player *player)
             player->unk2A = GBA_FRAMES_PER_SECOND / 2;
         }
     }
+}
+
+void PlayerCB_8027250(Player *player)
+{
+    player->unk2C = 0x78;
+    player->unk5A = 0;
+
+    if (ABS(player->speedAirX) <= Q_24_8(2.5)) {
+        if (player->speedAirX <= Q_24_8(0.625)) {
+            if (player->speedAirX < -Q_24_8(0.625)) {
+                player->speedAirX = +Q_24_8(1.5);
+            } else {
+                if ((player->moveState & MOVESTATE_FACING_LEFT)) {
+                    player->speedAirX = +Q_24_8(1.5);
+                } else {
+                    player->speedAirX = -Q_24_8(1.5);
+                }
+            }
+        } else {
+            player->speedAirX = -Q_24_8(1.5);
+        }
+        player->unk64 = 0x14;
+    } else {
+        if (player->speedAirX >= 0) {
+            player->speedAirX = +Q_24_8(1.5);
+        } else {
+            player->speedAirX = -Q_24_8(1.5);
+        }
+        player->unk64 = 0x15;
+    }
+
+    player->speedAirY = -Q_24_8(3.0);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY >>= 1;
+        player->speedAirX >>= 1;
+    }
+
+    sub_80218E4(player);
+
+    player->moveState |= MOVESTATE_IN_AIR;
+    player->moveState &= ~(MOVESTATE_200 | MOVESTATE_8 | MOVESTATE_4);
+
+    sub_8023B5C(player, 14);
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    gPlayer.callback = PlayerCB_8027324;
+    PlayerCB_8027324(player);
 }
