@@ -1536,8 +1536,8 @@ void PlayerCB_GoalSlowdown(Player *player)
         if (player->speedGroundX <= 0) {
             sub_802785C(player);
         } else {
-            if (gCamera.unk1C > -56)
-                gCamera.unk1C--;
+            if (gCamera.shiftY > -56)
+                gCamera.shiftY--;
 
             sub_80232D0(player);
             sub_8023260(player);

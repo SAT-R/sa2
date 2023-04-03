@@ -1445,8 +1445,8 @@ void sub_801C068(u32 level)
     camera->unk8 = 0x1000;
     camera->unkC = 0xc;
     camera->unk56 = 0;
-    camera->unk18 = 0;
-    camera->unk1C = 0;
+    camera->shiftX = 0;
+    camera->shiftY = 0;
     camera->unk20 = 0;
     camera->unk24 = 0;
     camera->unk40 = 0;
@@ -1506,13 +1506,13 @@ void sub_801C394(void)
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
                 s32 temp = Q_24_8_TO_INT(player->x);
                 temp -= DISPLAY_WIDTH / 2;
-                camera->unk18 = temp - newX;
+                camera->shiftX = temp - newX;
             } else {
                 newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
-                camera->unk18 = 0;
+                camera->shiftX = 0;
             }
         } else {
-            camera->unk18 = 0;
+            camera->shiftX = 0;
             if ((newX + 96) > Q_24_8_TO_INT(player->x)) {
                 newX = Q_24_8_TO_INT(player->x);
                 newX -= 96;
@@ -1528,25 +1528,25 @@ void sub_801C394(void)
             if (delta < 49) {
                 s32 temp = newY - 48;
                 newY = delta + temp;
-                camera->unk1C = 0;
+                camera->shiftY = 0;
             } else if (delta >= (gUnknown_030054BC - 208)) {
                 s32 temp = newY - 112;
                 newY = delta + temp;
-                camera->unk1C = 0;
+                camera->shiftY = 0;
             }
         } else {
             if (delta < 49) {
                 s32 temp = newY - 48;
                 newY = delta + temp;
-                camera->unk1C = 0;
+                camera->shiftY = 0;
             } else {
                 newY += 2;
             }
         }
         newY = CLAMP(newY, gUnknown_03005440, gUnknown_030054BC - DISPLAY_HEIGHT);
 
-        newX = newX + camera->unk18;
-        newY = newY + camera->unk1C;
+        newX = newX + camera->shiftX;
+        newY = newY + camera->shiftY;
         newX += camera->unk60;
         newY += camera->unk62;
 
@@ -1557,7 +1557,7 @@ void sub_801C394(void)
             if (!(camera->unk50 & 1)) {
                 s16 airSpeedX = player->speedAirX;
                 camera->unk10
-                    = Q_24_8_TO_INT(player->x) + camera->unk18 - (DISPLAY_WIDTH / 2);
+                    = Q_24_8_TO_INT(player->x) + camera->shiftX - (DISPLAY_WIDTH / 2);
                 camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);
             }
@@ -1583,7 +1583,7 @@ void sub_801C394(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14 = Q_24_8_TO_INT(player->y) + camera->unk1C
+                camera->unk14 = Q_24_8_TO_INT(player->y) + camera->shiftY
                     - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
             }
         }
