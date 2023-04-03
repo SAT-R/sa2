@@ -149,7 +149,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.text);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
         build/sa2/src/game/interactables_2/075.o(.text);
-        build/sa2/asm/interactable_075.o(.text);
         build/sa2/src/game/interactables_2/078.o(.text);
         build/sa2/src/game/interactables_2/080.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/giant_propeller.o(.text);

@@ -284,3 +284,139 @@ void sub_807A7F4(Sprite_IA75 *ia75)
     ia75->sprite2.y = sprite->y;
     sub_80051E8(&ia75->sprite2);
 }
+
+bool32 sub_807A920(Sprite_IA75 *ia75)
+{
+    s16 x = ia75->x - gCamera.x;
+    s16 y = ia75->y - gCamera.y;
+
+    if ((x + ia75->unk88 + 24) < -128 || (x + ia75->unk84 - 24) > 368
+        || (y + ia75->unk8A + 24) < -128 || (y + ia75->unk86 - 24) > 288) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+u32 sub_807A99C(Sprite_IA75 *ia75)
+{
+    if (PlayerIsAlive) {
+        u32 temp = sub_800CCB8(&ia75->sprite2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
+                               ia75->y + Q_24_8_TO_INT(ia75->unk78), &gPlayer);
+        if (temp != 0) {
+            if (temp & 0x10000) {
+                gPlayer.y += Q_8_8(temp);
+                gPlayer.speedAirY = 0;
+                return 2;
+            }
+            if (temp & 0x40000) {
+                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.speedAirX = 0;
+                gPlayer.speedGroundX = 0;
+                gPlayer.moveState |= MOVESTATE_20;
+                return 1;
+            }
+            if (temp & 0x80000) {
+                gPlayer.x += (s16)(temp & 0xFF00);
+                gPlayer.speedAirX = 0;
+                gPlayer.speedGroundX = 0;
+                gPlayer.moveState |= MOVESTATE_20;
+                return 3;
+            }
+            if (temp & 0x20000) {
+                gPlayer.y += Q_8_8(temp);
+                gPlayer.speedAirY = 0;
+                return 4;
+            }
+        }
+    }
+
+    return 0;
+}
+
+void sub_807AB54(Sprite_IA75 *ia75);
+
+void sub_807AA68(void)
+{
+    Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
+
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        sub_807AB6C(ia75);
+    }
+
+    if (sub_807A99C(ia75) == 2) {
+        sub_807A688(ia75);
+    }
+
+    if (sub_807A920(ia75) != 0) {
+        sub_807AB54(ia75);
+    } else {
+        sub_807A7F4(ia75);
+    }
+}
+
+void sub_807AABC(void)
+{
+    Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
+
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        sub_807AB6C(ia75);
+    }
+
+    sub_807A99C(ia75);
+
+    if (sub_807A920(ia75) != 0) {
+        sub_807AB54(ia75);
+    } else {
+        sub_807A7F4(ia75);
+    }
+}
+
+void sub_807AB04(struct Task *t)
+{
+    Sprite_IA75 *ia75 = TaskGetStructPtr(t);
+    VramFree(ia75->sprite1.graphics.dest);
+}
+
+void sub_807AB18(Sprite_IA75 *ia75)
+{
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.x = ia75->unk7C + Q_24_8(ia75->x) + ia75->unk74;
+    gPlayer.y = ia75->unk80 + Q_24_8(ia75->y) + ia75->unk78;
+    sub_807A99C(ia75);
+}
+
+void sub_807AB54(Sprite_IA75 *ia75)
+{
+    SET_MAP_ENTITY_NOT_INITIALIZED(ia75->base.me, ia75->base.spriteX);
+    TaskDestroy(gCurTask);
+}
+
+void sub_807AB6C(Sprite_IA75 *ia75)
+{
+    ia75->unk98[2][0] = ia75->unk98[1][0];
+    ia75->unk98[2][1] = ia75->unk98[1][1];
+
+    ia75->unk98[1][0] = ia75->unk98[0][0];
+    ia75->unk98[1][1] = ia75->unk98[0][1];
+
+    ia75->unk98[0][0] = ia75->unk74;
+    ia75->unk98[0][1] = ia75->unk78;
+}
+
+void initSprite_Interactable075_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
+{
+    sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 0);
+}
+
+void initSprite_Interactable075_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
+{
+    sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 1);
+}
+
+void initSprite_Interactable075_2(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
+{
+    sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 2);
+}
