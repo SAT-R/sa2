@@ -39,6 +39,7 @@ void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
+bool32 sub_8029FA4(Player *);
 bool32 sub_802A0C8(Player *);
 bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
@@ -1557,6 +1558,94 @@ void PlayerCB_GoalSlowdown(Player *player)
                     player->unk2A = GBA_FRAMES_PER_SECOND / 2;
                 }
             }
+        }
+    }
+}
+
+void PlayerCB_GoalBrake(Player *player)
+{
+    u16 cAnim = GET_CHARACTER_ANIM(player);
+
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+
+    if (cAnim == SA2_CHAR_ANIM_31) {
+        // _0802765C
+        if ((player->unk6A == 0) && (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
+            player->unk64 = 26;
+        }
+
+        if ((player->unk6A == 1) && (player->speedGroundX <= 0)) {
+            player->unk64 = 27;
+            player->speedGroundX = 0;
+            m4aSongNumStop(SE_LONG_BRAKE);
+
+            if (gUnknown_030054D0 != 0) {
+                u16 playerX = Q_24_8_TO_INT(player->x) - gUnknown_030054D0;
+                s32 r8 = 0;
+
+                if (playerX <= 730)
+                    r8 = 800;
+                else if (playerX <= 1114)
+                    r8 = 500;
+                else if (playerX <= 1401)
+                    r8 = 100;
+
+                if (r8 != 0) {
+                    // _080276FC
+                    s32 divResA, divResB;
+                    s32 old_3005450 = gUnknown_03005450;
+                    gUnknown_03005450 += r8;
+
+                    divResA = Div(gUnknown_03005450, 50000);
+                    divResB = Div(old_3005450, 50000);
+
+                    if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                        u16 lives = divResA - divResB;
+                        lives += gNumLives;
+
+                        gNumLives = ({
+                            if (lives > 255)
+                                lives = 255;
+                            lives;
+                        });
+
+                        gUnknown_030054A8[3] = 16;
+                    }
+                    // _08027744
+                    sub_801F3A4(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), r8);
+                }
+            }
+        }
+        // _08027752
+
+        if ((player->unk6A == 2) && (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
+            sub_802785C(player);
+            return;
+        }
+    }
+    // _0802778C
+    player->speedGroundX -= Q_24_8(0.125);
+    if (player->speedGroundX < 0)
+        player->speedGroundX = 0;
+
+    sub_8029FA4(player);
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
         }
     }
 }
