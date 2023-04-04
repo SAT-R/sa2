@@ -21,10 +21,10 @@ typedef struct {
     s32 unk78;
     s32 unk7C;
     s32 unk80;
-    s16 unk84;
-    s16 unk86;
-    s16 unk88;
-    s16 unk8A;
+    s16 width;
+    s16 height;
+    s16 offsetX;
+    s16 offsetY;
     s32 unk8C;
     s32 unk90;
     u16 unk94;
@@ -32,23 +32,32 @@ typedef struct {
     s32 unk98[3][2];
 } Sprite_IA75; /* 0xB0 */
 
-void sub_807AB04(struct Task *);
-void sub_807AA68(void);
+#define BORDER_VRAM_ADDR OBJ_VRAM0 + 0x2C80
 
-void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
-                 u8 param)
+static void sub_807AB04(struct Task *);
+static void sub_807AA68(void);
+static void sub_807AB54(Sprite_IA75 *ia75);
+static void sub_807AB6C(Sprite_IA75 *);
+static void sub_807AB18(Sprite_IA75 *);
+static void sub_807A73C(Sprite_IA75 *);
+static void sub_807A7F4(Sprite_IA75 *);
+static void sub_807AABC(void);
+
+static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
+                        u8 param)
 {
     s32 i;
     Sprite *sprite;
-    struct Task *t = TaskCreate(sub_807AA68, 0xB0, 0x2010, 0, sub_807AB04);
+    struct Task *t
+        = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
     Sprite_IA75 *ia75 = TaskGetStructPtr(t);
     ia75->unk94 = param;
     ia75->unk8C = 0;
     ia75->unk90 = 0;
-    ia75->unk84 = me->d.sData[0] * TILE_WIDTH + 0x18;
-    ia75->unk86 = me->d.sData[1] * TILE_WIDTH + 0x18;
-    ia75->unk88 = me->d.uData[2] * TILE_WIDTH + ia75->unk84 - 0x18;
-    ia75->unk8A = me->d.uData[3] * TILE_WIDTH + ia75->unk86 - 0x18;
+    ia75->width = me->d.sData[0] * TILE_WIDTH + 0x18;
+    ia75->height = me->d.sData[1] * TILE_WIDTH + 0x18;
+    ia75->offsetX = me->d.uData[2] * TILE_WIDTH + ia75->width - 0x18;
+    ia75->offsetY = me->d.uData[3] * TILE_WIDTH + ia75->height - 0x18;
 
     ia75->base.me = me;
     ia75->base.regionX = spriteRegionX;
@@ -58,16 +67,16 @@ void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY
 
     switch (ia75->unk94) {
         case 0:
-            ia75->unk74 = Q_24_8(ia75->unk88);
-            ia75->unk78 = Q_24_8(ia75->unk86);
+            ia75->unk74 = Q_24_8(ia75->offsetX);
+            ia75->unk78 = Q_24_8(ia75->height);
             break;
         case 1:
-            ia75->unk74 = Q_24_8(ia75->unk84);
-            ia75->unk78 = Q_24_8(ia75->unk86);
+            ia75->unk74 = Q_24_8(ia75->width);
+            ia75->unk78 = Q_24_8(ia75->height);
             break;
         case 2:
-            ia75->unk74 = Q_24_8(ia75->unk84);
-            ia75->unk78 = Q_24_8(ia75->unk8A);
+            ia75->unk74 = Q_24_8(ia75->width);
+            ia75->unk78 = Q_24_8(ia75->offsetY);
             break;
     }
 
@@ -90,7 +99,7 @@ void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = VramMalloc(8);
-    sprite->graphics.anim = 595;
+    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
     sprite->variant = 2;
     sub_8004558(sprite);
 
@@ -104,20 +113,15 @@ void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY
     sprite->focused = 0;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
-    sprite->graphics.dest = (void *)0x6012C80;
-    sprite->graphics.anim = 599;
+    sprite->graphics.dest = (void *)BORDER_VRAM_ADDR;
+    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN_BORDER;
     sprite->variant = 0;
     sub_8004558(sprite);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_807AB6C(Sprite_IA75 *);
-void sub_807AB18(Sprite_IA75 *);
-void sub_807A73C(Sprite_IA75 *);
-void sub_807A7F4(Sprite_IA75 *);
-
-void sub_807A560(void)
+static void sub_807A560(void)
 {
     u8 someBool = FALSE;
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
@@ -130,30 +134,30 @@ void sub_807A560(void)
 
     switch (ia75->unk94) {
         case 0:
-            ia75->unk74 -= 0x780;
-            if (Q_24_8_TO_INT(ia75->unk74) <= ia75->unk84) {
-                ia75->unk74 = Q_24_8(ia75->unk84);
+            ia75->unk74 -= Q_8_8(7.5);
+            if (Q_24_8_TO_INT(ia75->unk74) <= ia75->width) {
+                ia75->unk74 = Q_24_8(ia75->width);
                 someBool = TRUE;
             }
             break;
         case 1:
-            ia75->unk74 += 0x780;
-            if (Q_24_8_TO_INT(ia75->unk74) >= ia75->unk88) {
-                ia75->unk74 = Q_24_8(ia75->unk88);
+            ia75->unk74 += Q_8_8(7.5);
+            if (Q_24_8_TO_INT(ia75->unk74) >= ia75->offsetX) {
+                ia75->unk74 = Q_24_8(ia75->offsetX);
                 someBool = TRUE;
             }
             break;
         case 2:
-            ia75->unk78 -= 0x780;
-            if (Q_24_8_TO_INT(ia75->unk78) <= ia75->unk86) {
-                ia75->unk78 = Q_24_8(ia75->unk86);
+            ia75->unk78 -= Q_8_8(7.5);
+            if (Q_24_8_TO_INT(ia75->unk78) <= ia75->height) {
+                ia75->unk78 = Q_24_8(ia75->height);
                 someBool = TRUE;
             }
 
             break;
     }
 
-    if (gPlayer.unk2C == 0x78 && ia75->unk90) {
+    if (gPlayer.unk2C == 120 && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         ia75->unk90 = 0;
     }
@@ -170,7 +174,7 @@ void sub_807A560(void)
     sub_807A7F4(ia75);
 }
 
-void sub_807A688(Sprite_IA75 *ia75)
+static void sub_807A688(Sprite_IA75 *ia75)
 {
     Sprite *sprite;
     ia75->unk7C = gPlayer.x - (Q_24_8(ia75->x) + ia75->unk74);
@@ -188,15 +192,15 @@ void sub_807A688(Sprite_IA75 *ia75)
 
     switch (ia75->unk94) {
         case 0:
-            sprite->graphics.anim = 595;
+            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
             sprite->variant = 0;
             break;
         case 1:
-            sprite->graphics.anim = 595;
+            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
             sprite->variant = 0;
             break;
         case 2:
-            sprite->graphics.anim = 595;
+            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
             sprite->variant = 1;
             break;
     }
@@ -205,12 +209,10 @@ void sub_807A688(Sprite_IA75 *ia75)
     gCurTask->main = sub_807A560;
 }
 
-void sub_807AABC(void);
-
-void sub_807A73C(Sprite_IA75 *ia75)
+static void sub_807A73C(Sprite_IA75 *ia75)
 {
     Sprite *sprite = &ia75->sprite1;
-    sprite->graphics.anim = 595;
+    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
     sprite->variant = 2;
     sub_8004558(sprite);
 
@@ -240,7 +242,7 @@ void sub_807A73C(Sprite_IA75 *ia75)
     gCurTask->main = sub_807AABC;
 }
 
-void sub_807A7F4(Sprite_IA75 *ia75)
+static void sub_807A7F4(Sprite_IA75 *ia75)
 {
     Sprite *sprite = &ia75->sprite1;
     if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
@@ -254,29 +256,29 @@ void sub_807A7F4(Sprite_IA75 *ia75)
     if (ia75->unk8C != 0) {
         switch (ia75->unk94) {
             case 0:
-                sprite->unk10 &= ~(MOVESTATE_800 | MOVESTATE_400);
+                sprite->unk10 &= ~(0x800 | 0x400);
                 sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= MOVESTATE_800;
+                sprite->unk10 |= 0x800;
                 sub_80051E8(&ia75->sprite1);
                 break;
             case 1:
-                sprite->unk10 &= ~MOVESTATE_800;
-                sprite->unk10 |= MOVESTATE_400;
+                sprite->unk10 &= ~0x800;
+                sprite->unk10 |= 0x400;
                 sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= MOVESTATE_800;
+                sprite->unk10 |= 0x800;
                 sub_80051E8(&ia75->sprite1);
                 break;
             case 2:
-                sprite->unk10 &= ~(MOVESTATE_800 | MOVESTATE_400);
+                sprite->unk10 &= ~(0x800 | 0x400);
                 sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= MOVESTATE_400;
+                sprite->unk10 |= 0x400;
                 sub_80051E8(&ia75->sprite1);
                 break;
         }
     } else {
-        sprite->unk10 &= ~(MOVESTATE_800 | MOVESTATE_400);
+        sprite->unk10 &= ~(0x800 | 0x400);
         sub_80051E8(&ia75->sprite1);
-        sprite->unk10 |= MOVESTATE_800;
+        sprite->unk10 |= 0x800;
         sub_80051E8(&ia75->sprite1);
     }
 
@@ -285,19 +287,19 @@ void sub_807A7F4(Sprite_IA75 *ia75)
     sub_80051E8(&ia75->sprite2);
 }
 
-bool32 sub_807A920(Sprite_IA75 *ia75)
+static bool32 sub_807A920(Sprite_IA75 *ia75)
 {
     s16 x = ia75->x - gCamera.x;
     s16 y = ia75->y - gCamera.y;
 
-    if ((x + ia75->unk88 + 24) < -128 || (x + ia75->unk84 - 24) > 368
-        || (y + ia75->unk8A + 24) < -128 || (y + ia75->unk86 - 24) > 288) {
+    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > 368
+        || (y + ia75->offsetY + 24) < -128 || (y + ia75->height - 24) > 288) {
         return TRUE;
     }
     return FALSE;
 }
 
-u32 sub_807A99C(Sprite_IA75 *ia75)
+static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
     if (PlayerIsAlive) {
         u32 temp = sub_800CCB8(&ia75->sprite2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
@@ -333,9 +335,7 @@ u32 sub_807A99C(Sprite_IA75 *ia75)
     return 0;
 }
 
-void sub_807AB54(Sprite_IA75 *ia75);
-
-void sub_807AA68(void)
+static void sub_807AA68(void)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
 
@@ -354,7 +354,7 @@ void sub_807AA68(void)
     }
 }
 
-void sub_807AABC(void)
+static void sub_807AABC(void)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
 
@@ -371,13 +371,13 @@ void sub_807AABC(void)
     }
 }
 
-void sub_807AB04(struct Task *t)
+static void sub_807AB04(struct Task *t)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(t);
     VramFree(ia75->sprite1.graphics.dest);
 }
 
-void sub_807AB18(Sprite_IA75 *ia75)
+static void sub_807AB18(Sprite_IA75 *ia75)
 {
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.x = ia75->unk7C + Q_24_8(ia75->x) + ia75->unk74;
@@ -385,13 +385,13 @@ void sub_807AB18(Sprite_IA75 *ia75)
     sub_807A99C(ia75);
 }
 
-void sub_807AB54(Sprite_IA75 *ia75)
+static void sub_807AB54(Sprite_IA75 *ia75)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(ia75->base.me, ia75->base.spriteX);
     TaskDestroy(gCurTask);
 }
 
-void sub_807AB6C(Sprite_IA75 *ia75)
+static void sub_807AB6C(Sprite_IA75 *ia75)
 {
     ia75->unk98[2][0] = ia75->unk98[1][0];
     ia75->unk98[2][1] = ia75->unk98[1][1];
