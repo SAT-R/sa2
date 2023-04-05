@@ -55,6 +55,7 @@ void PlayerCB_802A3F0(Player *);
 void sub_802A40C(Player *);
 void sub_802A468(Player *);
 void sub_802A4B8(Player *);
+void PlayerCB_802A4FC(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -1829,5 +1830,73 @@ void PlayerCB_8027C5C(Player *player)
             player->moveState |= MOVESTATE_IN_AIR;
             player->unk2A = GBA_FRAMES_PER_SECOND / 2;
         }
+    }
+}
+
+#define REG_SIOCNT_32 (*(vu32 *)REG_ADDR_SIOCNT)
+void PlayerCB_8027D3C(Player *player)
+{
+    s8 *someSio = gUnknown_030054B4;
+    s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
+    u16 r8 = someSio[sioDat];
+    u32 cmpX;
+
+    cmpX = Q_24_8(gUnknown_030054D0 + (0x40 + (r8 * 32)));
+    if (player->x < cmpX) {
+        player->unk5C = DPAD_RIGHT;
+    } else if (player->x > cmpX) {
+        player->unk5C = DPAD_LEFT;
+    } else {
+        player->unk5C = 0;
+    }
+
+    sub_802966C(player);
+    if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        s32 acceleration = GET_ROTATED_ACCEL(player->rotation);
+
+        if (player->speedGroundX != 0) {
+            player->speedGroundX += acceleration;
+        }
+    }
+
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
+    }
+
+    if (((player->x > cmpX) && (player->unk5C == DPAD_RIGHT))
+        || ((player->x < cmpX) && (player->unk5C == DPAD_LEFT)) || (player->x == cmpX)) {
+        player->unk5A = 0;
+        player->speedAirX = 0;
+        player->speedAirY = 0;
+        player->speedGroundX = 0;
+        player->x = cmpX;
+
+        // TODO: Check correctness of MULTI_SIO_PLAYERS_MAX being here!
+        if (r8 < MULTI_SIO_PLAYERS_MAX) {
+            player->unk64 = 28;
+        } else {
+            player->unk64 = 0;
+        }
+
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+        player->unk72 = 0;
+        player->unk5C = 0;
+
+        gPlayer.callback = PlayerCB_802A4FC;
     }
 }
