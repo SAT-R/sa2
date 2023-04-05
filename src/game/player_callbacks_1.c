@@ -1839,9 +1839,11 @@ void PlayerCB_8027D3C(Player *player)
     s8 *someSio = gUnknown_030054B4;
     s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
     u16 r8 = someSio[sioDat];
+    u32 *pCmpX = &gUnknown_030054D0;
     u32 cmpX;
+    s32 index = (0x40 + (r8 * 32));
 
-    cmpX = Q_24_8(gUnknown_030054D0 + (0x40 + (r8 * 32)));
+    cmpX = Q_24_8(*pCmpX + index);
     if (player->x < cmpX) {
         player->unk5C = DPAD_RIGHT;
     } else if (player->x > cmpX) {
