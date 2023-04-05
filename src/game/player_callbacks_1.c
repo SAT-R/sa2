@@ -35,6 +35,7 @@ void PlayerCB_80273D0(Player *);
 void PlayerCB_GoalSlowdown(Player *);
 void PlayerCB_GoalBrake(Player *);
 void sub_802785C(Player *);
+void PlayerCB_80278D4(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -1570,7 +1571,6 @@ void PlayerCB_GoalBrake(Player *player)
         gCamera.shiftY--;
 
     if (cAnim == SA2_CHAR_ANIM_31) {
-        // _0802765C
         if ((player->unk6A == 0) && (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
             player->unk64 = 26;
         }
@@ -1592,7 +1592,6 @@ void PlayerCB_GoalBrake(Player *player)
                     r8 = 100;
 
                 if (r8 != 0) {
-                    // _080276FC
                     s32 divResA, divResB;
                     s32 old_3005450 = gUnknown_03005450;
                     gUnknown_03005450 += r8;
@@ -1612,19 +1611,18 @@ void PlayerCB_GoalBrake(Player *player)
 
                         gUnknown_030054A8[3] = 16;
                     }
-                    // _08027744
+
                     sub_801F3A4(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), r8);
                 }
             }
         }
-        // _08027752
 
         if ((player->unk6A == 2) && (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
             sub_802785C(player);
             return;
         }
     }
-    // _0802778C
+
     player->speedGroundX -= Q_24_8(0.125);
     if (player->speedGroundX < 0)
         player->speedGroundX = 0;
@@ -1647,5 +1645,34 @@ void PlayerCB_GoalBrake(Player *player)
             player->moveState |= MOVESTATE_IN_AIR;
             player->unk2A = GBA_FRAMES_PER_SECOND / 2;
         }
+    }
+}
+
+void sub_802785C(Player *player)
+{
+
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+
+    player->unk72 = 0x5A;
+
+    if (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+        switch (gCurrentLevel & 0x3) {
+            case ACT_1: {
+                player->unk64 = 28;
+                gPlayer.callback = PlayerCB_80278D4;
+            } break;
+
+            case ACT_2: {
+                player->unk64 = 29;
+                gPlayer.callback = PlayerCB_80278D4;
+            } break;
+
+            case ACT_BOSS: {
+                player->unk64 = 32;
+            } break;
+        }
+    } else {
+        player->unk64 = 28;
     }
 }
