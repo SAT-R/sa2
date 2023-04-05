@@ -1773,3 +1773,27 @@ void PlayerCB_80279F8(Player *player)
         m4aSongNumStart(SE_273);
     }
 }
+
+void PlayerCB_8027B98(Player *player)
+{
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
+    }
+
+    gCamera.unk8 -= 56;
+}
