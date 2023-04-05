@@ -1797,3 +1797,37 @@ void PlayerCB_8027B98(Player *player)
 
     gCamera.unk8 -= 56;
 }
+
+void PlayerCB_8027C5C(Player *player)
+{
+    // TODO: Maybe this is actually to be considered the player's
+    //       x-position relative to a sprite region?
+    s32 playerX = Q_24_8_TO_INT(player->x) - gCamera.x;
+
+    if (playerX > 0x78) {
+        player->speedGroundX = Q_24_8(4.5);
+    } else if (playerX < 0x78) {
+        player->speedGroundX = Q_24_8(5.5);
+    } else {
+        player->speedGroundX = Q_24_8(5.0);
+    }
+
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
+    }
+}

@@ -64,129 +64,6 @@ gUnknown_080D6AF0:
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-.endif
-
-	thumb_func_start PlayerCB_8027C5C
-PlayerCB_8027C5C: @ 0x08027C5C
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	ldr r1, _08027C74 @ =gCamera
-	ldr r1, [r1]
-	subs r0, r0, r1
-	cmp r0, #0x78
-	ble _08027C78
-	movs r0, #0x90
-	lsls r0, r0, #3
-	b _08027C86
-	.align 2, 0
-_08027C74: .4byte gCamera
-_08027C78:
-	cmp r0, #0x77
-	bgt _08027C82
-	movs r0, #0xb0
-	lsls r0, r0, #3
-	b _08027C86
-_08027C82:
-	movs r0, #0xa0
-	lsls r0, r0, #3
-_08027C86:
-	strh r0, [r4, #0x14]
-	adds r0, r4, #0
-	bl sub_80232D0
-	adds r0, r4, #0
-	bl sub_8023260
-	movs r0, #0x10
-	ldrsh r1, [r4, r0]
-	ldr r0, [r4, #8]
-	adds r0, r0, r1
-	str r0, [r4, #8]
-	ldr r3, _08027CDC @ =gUnknown_03005424
-	ldr r1, _08027CE0 @ =gUnknown_0300544C
-	ldrh r0, [r3]
-	ldrh r1, [r1]
-	eors r0, r1
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _08027CB6
-	ldrh r0, [r4, #0x12]
-	rsbs r0, r0, #0
-	strh r0, [r4, #0x12]
-_08027CB6:
-	ldrh r2, [r4, #0x12]
-	movs r1, #0x12
-	ldrsh r0, [r4, r1]
-	movs r1, #0xf0
-	lsls r1, r1, #4
-	cmp r0, r1
-	ble _08027CC6
-	adds r2, r1, #0
-_08027CC6:
-	strh r2, [r4, #0x12]
-	ldrh r1, [r3]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _08027CE4
-	movs r0, #0x12
-	ldrsh r1, [r4, r0]
-	ldr r0, [r4, #0xc]
-	subs r0, r0, r1
-	b _08027CEC
-	.align 2, 0
-_08027CDC: .4byte gUnknown_03005424
-_08027CE0: .4byte gUnknown_0300544C
-_08027CE4:
-	movs r0, #0x12
-	ldrsh r1, [r4, r0]
-	ldr r0, [r4, #0xc]
-	adds r0, r0, r1
-_08027CEC:
-	str r0, [r4, #0xc]
-	adds r0, r4, #0
-	bl sub_8022D6C
-	ldrh r0, [r4, #0x2a]
-	movs r1, #0x2a
-	ldrsh r2, [r4, r1]
-	cmp r2, #0
-	beq _08027D02
-	subs r0, #1
-	b _08027D2E
-_08027D02:
-	adds r0, r4, #0
-	adds r0, #0x24
-	ldrb r0, [r0]
-	adds r0, #0x20
-	movs r1, #0xc0
-	ands r0, r1
-	cmp r0, #0
-	beq _08027D30
-	movs r0, #0x14
-	ldrsh r1, [r4, r0]
-	cmp r1, #0
-	bge _08027D1C
-	rsbs r1, r1, #0
-_08027D1C:
-	ldr r0, _08027D38 @ =0x000001DF
-	cmp r1, r0
-	bgt _08027D30
-	strh r2, [r4, #0x14]
-	ldr r0, [r4, #0x20]
-	movs r1, #2
-	orrs r0, r1
-	str r0, [r4, #0x20]
-	movs r0, #0x1e
-_08027D2E:
-	strh r0, [r4, #0x2a]
-_08027D30:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08027D38: .4byte 0x000001DF
-
 	thumb_func_start PlayerCB_8027D3C
 PlayerCB_8027D3C: @ 0x08027D3C
 	push {r4, r5, r6, r7, lr}
@@ -414,6 +291,7 @@ _08027EDC:
 	.align 2, 0
 _08027EE8: .4byte gPlayer
 _08027EEC: .4byte PlayerCB_802A4FC
+.endif
 
 	thumb_func_start sub_8027EF0
 sub_8027EF0: @ 0x08027EF0
