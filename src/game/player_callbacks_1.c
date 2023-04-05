@@ -3,6 +3,8 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 
+#include "game/time_attack/results.h" // for PlayerCB_80278D4
+
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
@@ -47,6 +49,7 @@ bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
 void sub_802A360(Player *);
 void PlayerCB_802A3B8(Player *);
+void PlayerCB_802A3F0(Player *);
 void sub_802A40C(Player *);
 void sub_802A468(Player *);
 void sub_802A4B8(Player *);
@@ -1650,7 +1653,6 @@ void PlayerCB_GoalBrake(Player *player)
 
 void sub_802785C(Player *player)
 {
-
     if (gCamera.shiftY > -56)
         gCamera.shiftY--;
 
@@ -1674,5 +1676,43 @@ void sub_802785C(Player *player)
         }
     } else {
         player->unk64 = 28;
+    }
+}
+
+void PlayerCB_80278D4(Player *player)
+{
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+
+    if(--player->unk72 == 0)
+    {
+        if(gGameMode == GAME_MODE_TIME_ATTACK)
+        {
+            CreateTimeAttackResultsCutScene(gUnknown_03005490);
+        }
+        else
+        {
+            sub_80304DC(gUnknown_03005490, gRingCount, gUnknown_030054F4);
+        }
+        gPlayer.callback = PlayerCB_802A3F0;
+    }
+
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
     }
 }
