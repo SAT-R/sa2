@@ -10,6 +10,7 @@
 #include "constants/songs.h"
 
 extern bool32 sub_801251C(Player *);
+extern void sub_801583C(void);
 extern void sub_801F488(void);
 
 void PlayerCB_Idle(Player *);
@@ -38,6 +39,7 @@ void PlayerCB_GoalSlowdown(Player *);
 void PlayerCB_GoalBrake(Player *);
 void sub_802785C(Player *);
 void PlayerCB_80278D4(Player *);
+void PlayerCB_8027B98(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -1684,14 +1686,10 @@ void PlayerCB_80278D4(Player *player)
     if (gCamera.shiftY > -56)
         gCamera.shiftY--;
 
-    if(--player->unk72 == 0)
-    {
-        if(gGameMode == GAME_MODE_TIME_ATTACK)
-        {
+    if (--player->unk72 == 0) {
+        if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gUnknown_03005490);
-        }
-        else
-        {
+        } else {
             sub_80304DC(gUnknown_03005490, gRingCount, gUnknown_030054F4);
         }
         gPlayer.callback = PlayerCB_802A3F0;
@@ -1714,5 +1712,64 @@ void PlayerCB_80278D4(Player *player)
             player->moveState |= MOVESTATE_IN_AIR;
             player->unk2A = GBA_FRAMES_PER_SECOND / 2;
         }
+    }
+}
+
+void PlayerCB_80279F8(Player *player)
+{
+    if (player->speedGroundX > Q_24_8(5.5)) {
+        player->speedGroundX -= Q_24_8(0.5);
+    } else if (player->speedAirX < Q_24_8(4.75)) {
+        player->speedGroundX += Q_24_8(0.25);
+    } else {
+        player->speedGroundX = Q_24_8(5.0);
+    }
+
+    if (player->unk72 < INT16_MAX)
+        player->unk72++;
+
+    if (player->unk72 == 0x78) {
+        player->unk64 = 32;
+    }
+
+    if (player->unk72 == 0xB4) {
+        if (gGameMode == GAME_MODE_TIME_ATTACK) {
+            CreateTimeAttackResultsCutScene(gUnknown_03005490);
+        } else {
+            sub_80304DC(gUnknown_03005490, gRingCount, gUnknown_030054F4);
+        }
+    }
+
+    sub_80232D0(player);
+    sub_8023260(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+
+    sub_8022D6C(player);
+
+    if (player->unk2A) {
+        player->unk2A -= 1;
+    } else if ((player->rotation + 32) & 0xC0) {
+        s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (absGroundSpeed < Q_24_8(1.875)) {
+            player->speedGroundX = 0;
+
+            player->moveState |= MOVESTATE_IN_AIR;
+            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+        }
+    }
+
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+
+    if (player->moveState & MOVESTATE_4000000) {
+        player->unk5A = 1;
+        player->unk5C = 0x10;
+        player->speedGroundX = Q_24_8(10.0);
+        player->unk64 = 9;
+        sub_801583C();
+
+        gPlayer.callback = PlayerCB_8027B98;
+        m4aSongNumStart(SE_273);
     }
 }
