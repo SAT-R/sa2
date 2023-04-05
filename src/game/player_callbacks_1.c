@@ -1880,8 +1880,9 @@ void PlayerCB_8027D3C(Player *player)
         }
     }
 
-    if (((player->x > cmpX) && (player->unk5C == DPAD_RIGHT))
-        || ((player->x < cmpX) && (player->unk5C == DPAD_LEFT)) || (player->x == cmpX)) {
+    if (((player->x > cmpX) && (player->unk5C == DPAD_RIGHT)) // fmt
+        || ((player->x < cmpX) && (player->unk5C == DPAD_LEFT)) //
+        || (player->x == cmpX)) {
         player->unk5A = 0;
         player->speedAirX = 0;
         player->speedAirY = 0;
