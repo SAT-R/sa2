@@ -697,7 +697,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
-    s32 sl = (s8)player->unk60;
+    s32 sl = player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
@@ -868,7 +868,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 {
     s16 screenX, screenY;
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
-    s32 sl = (s8)player->unk60;
+    s32 sl = player->unk60;
 
     screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
     screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);

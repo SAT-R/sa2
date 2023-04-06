@@ -183,7 +183,7 @@ typedef struct Player_ {
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
     /* 0x5E */ u16 unk5E; // new input on this frame?
-    /* 0x61 */ u8 unk60;
+    /* 0x61 */ s8 unk60;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
