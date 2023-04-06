@@ -1810,3 +1810,42 @@ void sub_802808C(Player *player)
         PLAYERCB_UPDATE_UNK2A(player);
     }
 }
+
+void sub_8028204(Player *player)
+{
+    s16 speed;
+    sub_8023610(player);
+    sub_80236C8(player);
+    sub_80232D0(player);
+
+    speed
+        = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0) : Q_8_8(42.0 / 256.0);
+
+    if (player->speedAirY < 0) {
+#ifdef NON_MATCHING
+        speed /= 2;
+#else
+        asm("lsl r0, %0, #16\n"
+            "\tasr r0, r0, #17\n"
+            "\tlsl r0, r0, #16\n"
+            "\tlsr %0, r0, #16\n"
+            : "=r"(speed)
+            : "r"(speed)
+            : "r0");
+#endif
+    }
+
+    player->speedAirY += speed;
+
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
+}
