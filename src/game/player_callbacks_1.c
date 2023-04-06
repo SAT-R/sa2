@@ -1849,3 +1849,28 @@ void sub_8028204(Player *player)
         player->rotation = 0;
     }
 }
+
+void sub_80282EC(Player *player)
+{
+    player->unk48 >>= 1;
+
+    sub_8023610(player);
+
+    if (player->character == CHARACTER_TAILS) {
+        sub_80236C8(player);
+    }
+
+    sub_80232D0(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
+}
