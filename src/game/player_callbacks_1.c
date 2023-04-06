@@ -1891,3 +1891,48 @@ void sub_80283C4(Player *player)
         player->rotation = 0;
     }
 }
+
+void sub_8028478(Player *player)
+{
+    if (player->moveState & MOVESTATE_IN_AIR) {
+        sub_80236C8(player);
+        sub_80232D0(player);
+
+        if (player->moveState & MOVESTATE_40) {
+            player->speedAirY += Q_24_8(12.0 / 256.0);
+        } else {
+            player->speedAirY += Q_24_8(42.0 / 256.0);
+        }
+
+        PLAYERCB_UPDATE_POSITION(player);
+        PLAYERCB_UPDATE_ROTATION(player);
+
+        sub_8022190(player);
+
+        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+            gPlayer.callback = PlayerCB_8025318;
+
+            player->speedGroundX = player->speedAirX;
+            player->rotation = 0;
+        }
+    } else {
+        // _08028550
+        if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+            s32 acceleration = GET_ROTATED_ACCEL(player->rotation);
+
+            if (player->speedGroundX != 0) {
+                player->speedGroundX += acceleration;
+            }
+        }
+
+        sub_80232D0(player);
+        sub_80231C0(player);
+        sub_8023260(player);
+
+        PLAYERCB_UPDATE_POSITION(player);
+
+        sub_8022D6C(player);
+
+        PLAYERCB_UPDATE_UNK2A(player);
+    }
+}
