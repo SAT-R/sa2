@@ -63,9 +63,7 @@ gUnknown_080D6AF0:
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 00
-.endif
-
+.if 001
 	thumb_func_start sub_8028640
 sub_8028640: @ 0x08028640
 	push {r4, r5, r6, lr}
@@ -149,6 +147,7 @@ _080286E0: .4byte sub_801F550
 _080286E4: .4byte IWRAM_START + 0x1C
 _080286E8: .4byte gUnknown_080D69A6
 _080286EC: .4byte IWRAM_START + 0x3C
+.endif
 
 	thumb_func_start PlayerCB_80286F0
 PlayerCB_80286F0: @ 0x080286F0

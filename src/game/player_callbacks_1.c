@@ -70,8 +70,8 @@ void PlayerCB_802A4FC(Player *);
 
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
-#define GET_CHARACTER_ANIM(playerRef)                                                   \
-    ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
+#define GET_CHARACTER_ANIM(player)                                                      \
+    (player->unk68 - PlayerCharacterIdleAnims[player->character])
 
 #define PLAYERCB_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \
@@ -112,6 +112,22 @@ void PlayerCB_802A4FC(Player *);
         player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)                 \
             ? player->y - player->speedAirY                                             \
             : player->y + player->speedAirY;                                            \
+    }
+
+// TODO(Jace): This name is speculative right now, check for accuracy!
+#define PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                \
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {        \
+        gPlayer.callback = PlayerCB_8025318;                                            \
+                                                                                        \
+        player->speedGroundX = player->speedAirX;                                       \
+        player->rotation = 0;                                                           \
+    }
+
+// TODO(Jace): This name is speculative right now, check for accuracy!
+#define PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player)                                     \
+    {                                                                                   \
+        sub_8022190(player);                                                            \
+        PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
     }
 
 // TODO: static
@@ -531,14 +547,7 @@ void PlayerCB_8025E18(Player *player)
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void sub_8025F84(Player *player)
@@ -673,14 +682,7 @@ void PlayerCB_80261D8(Player *player)
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void PlayerCB_802631C(Player *player)
@@ -777,14 +779,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
 
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
-
-        sub_8022190(player);
-
-        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-            gPlayer.callback = PlayerCB_8025318;
-            player->speedGroundX = player->speedAirX;
-            player->rotation = 0;
-        }
+        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
     } else {
         // _08026598
         s32 groundSpeed = player->speedGroundX;
@@ -1098,11 +1093,7 @@ void PlayerCB_8026D2C(Player *player)
         sub_8022218(player);
     }
 
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player);
 }
 
 void PlayerCB_8026E24(Player *player)
@@ -1242,14 +1233,7 @@ void PlayerCB_8027040(Player *player)
     }
 
     PLAYERCB_UPDATE_POSITION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void PlayerCB_8027114(Player *player)
@@ -1375,15 +1359,7 @@ void PlayerCB_8027324(Player *player)
     }
 
     PLAYERCB_UPDATE_POSITION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void PlayerCB_80273D0(Player *player)
@@ -1760,15 +1736,7 @@ void sub_8027EF0(Player *player)
 
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
-
-        sub_8022190(player);
-
-        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-            gPlayer.callback = PlayerCB_8025318;
-
-            player->speedGroundX = player->speedAirX;
-            player->rotation = 0;
-        }
+        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
     } else {
         sub_80232D0(player);
         sub_80231C0(player);
@@ -1789,15 +1757,7 @@ void sub_802808C(Player *player)
 
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
-
-        sub_8022190(player);
-
-        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-            gPlayer.callback = PlayerCB_8025318;
-
-            player->speedGroundX = player->speedAirX;
-            player->rotation = 0;
-        }
+        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
     } else {
         sub_80232D0(player);
         sub_80231C0(player);
@@ -1839,15 +1799,7 @@ void sub_8028204(Player *player)
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void sub_80282EC(Player *player)
@@ -1864,15 +1816,7 @@ void sub_80282EC(Player *player)
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void sub_80283C4(Player *player)
@@ -1881,15 +1825,7 @@ void sub_80283C4(Player *player)
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
-
-    sub_8022190(player);
-
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-        gPlayer.callback = PlayerCB_8025318;
-
-        player->speedGroundX = player->speedAirX;
-        player->rotation = 0;
-    }
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
 void sub_8028478(Player *player)
@@ -1906,15 +1842,7 @@ void sub_8028478(Player *player)
 
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
-
-        sub_8022190(player);
-
-        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-            gPlayer.callback = PlayerCB_8025318;
-
-            player->speedGroundX = player->speedAirX;
-            player->rotation = 0;
-        }
+        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
     } else {
         // _08028550
         if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
