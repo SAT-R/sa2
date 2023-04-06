@@ -19,6 +19,7 @@ void sub_8022218(Player *);
 void sub_8022284(Player *);
 void sub_8022D6C(Player *);
 void sub_8023128(Player *);
+void sub_80231C0(Player *);
 void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void sub_8023610(Player *);
@@ -71,6 +72,32 @@ void PlayerCB_802A4FC(Player *);
 
 #define GET_CHARACTER_ANIM(playerRef)                                                   \
     ((playerRef)->unk68 - PlayerCharacterIdleAnims[player->character])
+
+#define PLAYERCB_UPDATE_UNK2A(player)                                                   \
+    {                                                                                   \
+        if (player->unk2A) {                                                            \
+            player->unk2A -= 1;                                                         \
+        } else if ((player->rotation + 32) & 0xC0) {                                    \
+            s32 absGroundSpeed = ABS(player->speedGroundX);                             \
+            if (absGroundSpeed < Q_24_8(1.875)) {                                       \
+                player->speedGroundX = 0;                                               \
+                                                                                        \
+                player->moveState |= MOVESTATE_IN_AIR;                                  \
+                player->unk2A = GBA_FRAMES_PER_SECOND / 2;                              \
+            }                                                                           \
+        }                                                                               \
+    }
+
+#define PLAYERCB_UPDATE_ROTATION(player)                                                \
+    {                                                                                   \
+        s32 rot = (s8)player->rotation;                                                 \
+        if (rot < 0) {                                                                  \
+            rot = MIN((rot + 2), 0);                                                    \
+        } else if (rot > 0) {                                                           \
+            rot = MAX((rot - 2), 0);                                                    \
+        }                                                                               \
+        player->rotation = rot;                                                         \
+    }
 
 #define PLAYERCB_UPDATE_POSITION(player)                                                \
     {                                                                                   \
@@ -160,17 +187,7 @@ void PlayerCB_Idle(Player *player)
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
 
         if (player->moveState & MOVESTATE_8000) {
             player->moveState &= ~MOVESTATE_IN_AIR;
@@ -203,17 +220,7 @@ void PlayerCB_8025548(Player *player)
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -256,17 +263,7 @@ void PlayerCB_802569C(Player *player)
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -309,17 +306,7 @@ void PlayerCB_8025854(Player *player)
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -452,17 +439,7 @@ void PlayerCB_8025AB8(Player *player)
 
             sub_8022D6C(player);
 
-            if (player->unk2A) {
-                player->unk2A -= 1;
-            } else if ((player->rotation + 32) & 0xC0) {
-                s32 absGroundSpeed = ABS(player->speedGroundX);
-                if (absGroundSpeed < Q_24_8(1.875)) {
-                    player->speedGroundX = 0;
-
-                    player->moveState |= MOVESTATE_IN_AIR;
-                    player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-                }
-            }
+            PLAYERCB_UPDATE_UNK2A(player);
 
             if (player->moveState & MOVESTATE_IN_AIR) {
                 gPlayer.callback = PlayerCB_8025E18;
@@ -553,16 +530,7 @@ void PlayerCB_8025E18(Player *player)
     }
 
     PLAYERCB_UPDATE_POSITION(player);
-
-    {
-        s32 rot = (s8)player->rotation;
-        if (rot < 0) {
-            rot = MIN((rot + 2), 0);
-        } else if (rot > 0) {
-            rot = MAX((rot - 2), 0);
-        }
-        player->rotation = rot;
-    }
+    PLAYERCB_UPDATE_ROTATION(player);
 
     sub_8022190(player);
 
@@ -704,16 +672,7 @@ void PlayerCB_80261D8(Player *player)
     }
 
     PLAYERCB_UPDATE_POSITION(player);
-
-    {
-        s32 rot = (s8)player->rotation;
-        if (rot < 0) {
-            rot = MIN((rot + 2), 0);
-        } else if (rot > 0) {
-            rot = MAX((rot - 2), 0);
-        }
-        player->rotation = rot;
-    }
+    PLAYERCB_UPDATE_ROTATION(player);
 
     sub_8022190(player);
 
@@ -817,16 +776,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
         }
 
         PLAYERCB_UPDATE_POSITION(player);
-
-        {
-            s32 rot = (s8)player->rotation;
-            if (rot < 0) {
-                rot = MIN((rot + 2), 0);
-            } else if (rot > 0) {
-                rot = MAX((rot - 2), 0);
-            }
-            player->rotation = rot;
-        }
+        PLAYERCB_UPDATE_ROTATION(player);
 
         sub_8022190(player);
 
@@ -865,17 +815,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
     }
 }
 END_NONMATCH
@@ -1121,17 +1061,7 @@ void PlayerCB_8026BCC(Player *player)
 
         sub_8022D6C(player);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
-                player->speedGroundX = 0;
-
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-            }
-        }
+        PLAYERCB_UPDATE_UNK2A(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
             player->unk64 = 14;
@@ -1158,15 +1088,7 @@ void PlayerCB_8026D2C(Player *player)
     }
 
     PLAYERCB_UPDATE_POSITION(player);
-    {
-        s32 rot = (s8)player->rotation;
-        if (rot < 0) {
-            rot = MIN((rot + 2), 0);
-        } else if (rot > 0) {
-            rot = MAX((rot - 2), 0);
-        }
-        player->rotation = rot;
-    }
+    PLAYERCB_UPDATE_ROTATION(player);
 
     if (player->speedAirY >= 0) {
         sub_8022218(player);
@@ -1389,17 +1311,7 @@ void PlayerCB_8027190(Player *player)
 
     sub_80232D0(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 }
 
 void PlayerCB_8027250(Player *player)
@@ -1554,17 +1466,7 @@ void PlayerCB_GoalSlowdown(Player *player)
 
             sub_8022D6C(player);
 
-            if (player->unk2A) {
-                player->unk2A -= 1;
-            } else if ((player->rotation + 32) & 0xC0) {
-                s32 absGroundSpeed = ABS(player->speedGroundX);
-                if (absGroundSpeed < Q_24_8(1.875)) {
-                    player->speedGroundX = 0;
-
-                    player->moveState |= MOVESTATE_IN_AIR;
-                    player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-                }
-            }
+            PLAYERCB_UPDATE_UNK2A(player);
         }
     }
 }
@@ -1641,17 +1543,7 @@ void PlayerCB_GoalBrake(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 }
 
 void sub_802785C(Player *player)
@@ -1703,17 +1595,7 @@ void PlayerCB_80278D4(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 }
 
 void PlayerCB_80279F8(Player *player)
@@ -1748,17 +1630,7 @@ void PlayerCB_80279F8(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 
     if (gCamera.shiftY > -56)
         gCamera.shiftY--;
@@ -1784,17 +1656,7 @@ void PlayerCB_8027B98(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 
     gCamera.unk8 -= 56;
 }
@@ -1820,20 +1682,9 @@ void PlayerCB_8027C5C(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 }
 
-#define REG_SIOCNT_32 (*(vu32 *)REG_ADDR_SIOCNT)
 void PlayerCB_8027D3C(Player *player)
 {
     s8 *someSio = gUnknown_030054B4;
@@ -1868,17 +1719,7 @@ void PlayerCB_8027D3C(Player *player)
 
     sub_8022D6C(player);
 
-    if (player->unk2A) {
-        player->unk2A -= 1;
-    } else if ((player->rotation + 32) & 0xC0) {
-        s32 absGroundSpeed = ABS(player->speedGroundX);
-        if (absGroundSpeed < Q_24_8(1.875)) {
-            player->speedGroundX = 0;
-
-            player->moveState |= MOVESTATE_IN_AIR;
-            player->unk2A = GBA_FRAMES_PER_SECOND / 2;
-        }
-    }
+    PLAYERCB_UPDATE_UNK2A(player);
 
     if (((player->x > cmpX) && (player->unk5C == DPAD_RIGHT)) // fmt
         || ((player->x < cmpX) && (player->unk5C == DPAD_LEFT)) //
@@ -1901,5 +1742,71 @@ void PlayerCB_8027D3C(Player *player)
         player->unk5C = 0;
 
         gPlayer.callback = PlayerCB_802A4FC;
+    }
+}
+
+void sub_8027EF0(Player *player)
+{
+    if (player->moveState & MOVESTATE_IN_AIR) {
+        sub_8023610(player);
+        sub_80236C8(player);
+        sub_80232D0(player);
+
+        if (player->moveState & MOVESTATE_40) {
+            player->speedAirY += Q_24_8(12.0 / 256.0);
+        } else {
+            player->speedAirY += Q_24_8(42.0 / 256.0);
+        }
+
+        PLAYERCB_UPDATE_POSITION(player);
+        PLAYERCB_UPDATE_ROTATION(player);
+
+        sub_8022190(player);
+
+        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+            gPlayer.callback = PlayerCB_8025318;
+
+            player->speedGroundX = player->speedAirX;
+            player->rotation = 0;
+        }
+    } else {
+        sub_80232D0(player);
+        sub_80231C0(player);
+        sub_8023260(player);
+
+        PLAYERCB_UPDATE_POSITION(player);
+
+        sub_8022D6C(player);
+
+        PLAYERCB_UPDATE_UNK2A(player);
+    }
+}
+
+void sub_802808C(Player *player)
+{
+    if (player->moveState & MOVESTATE_IN_AIR) {
+        sub_80232D0(player);
+
+        PLAYERCB_UPDATE_POSITION(player);
+        PLAYERCB_UPDATE_ROTATION(player);
+
+        sub_8022190(player);
+
+        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+            gPlayer.callback = PlayerCB_8025318;
+
+            player->speedGroundX = player->speedAirX;
+            player->rotation = 0;
+        }
+    } else {
+        sub_80232D0(player);
+        sub_80231C0(player);
+        sub_8023260(player);
+
+        PLAYERCB_UPDATE_POSITION(player);
+
+        sub_8022D6C(player);
+
+        PLAYERCB_UPDATE_UNK2A(player);
     }
 }
