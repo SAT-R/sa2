@@ -1874,3 +1874,20 @@ void sub_80282EC(Player *player)
         player->rotation = 0;
     }
 }
+
+void sub_80283C4(Player *player)
+{
+    sub_80232D0(player);
+
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+
+    sub_8022190(player);
+
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        gPlayer.callback = PlayerCB_8025318;
+
+        player->speedGroundX = player->speedAirX;
+        player->rotation = 0;
+    }
+}
