@@ -42,6 +42,7 @@ void PlayerCB_GoalBrake(Player *);
 void sub_802785C(Player *);
 void PlayerCB_80278D4(Player *);
 void PlayerCB_8027B98(Player *);
+void PlayerCB_80287AC(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -1528,7 +1529,7 @@ void sub_802785C(Player *player)
     if (gCamera.shiftY > -56)
         gCamera.shiftY--;
 
-    player->unk72 = 0x5A;
+    player->unk72 = 90;
 
     if (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         switch (gCurrentLevel & 0x3) {
@@ -1588,11 +1589,11 @@ void PlayerCB_80279F8(Player *player)
     if (player->unk72 < INT16_MAX)
         player->unk72++;
 
-    if (player->unk72 == 0x78) {
+    if (player->unk72 == 120) {
         player->unk64 = 32;
     }
 
-    if (player->unk72 == 0xB4) {
+    if (player->unk72 == 180) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gUnknown_03005490);
         } else {
@@ -1871,6 +1872,8 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
 extern void sub_801F550(struct Task *);
 
+extern u16 gUnknown_080D698A[4];
+extern u8 gUnknown_080D6992[4][NUM_CHARACTERS];
 extern u16 gUnknown_080D69A6[2][3];
 
 // https://decomp.me/scratch/qLNF8
@@ -1900,3 +1903,37 @@ NONMATCH("asm/non_matching/playercb1__sub_8028640.inc",
     return t;
 }
 END_NONMATCH
+
+void PlayerCB_80286F0(Player *player)
+{
+    u32 u5B = player->unk5B;
+    u16 character = player->character;
+    u32 mask = gUnknown_080D6992[player->unk5B][character];
+
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_2000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    sub_8023B5C(player, 14);
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    if (mask & 0x4)
+        player->unk72 = 10;
+    else if (mask & 0x8)
+        player->unk72 = 45;
+
+    player->speedAirX = 0;
+    player->speedAirY = 0;
+
+    player->unk64 = gUnknown_080D698A[u5B];
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    m4aSongNumStart(SE_JUMP);
+    m4aSongNumStart(SE_230);
+
+    gPlayer.callback = PlayerCB_80287AC;
+    PlayerCB_80287AC(player);
+}
