@@ -1887,18 +1887,80 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
 extern void sub_801F550(struct Task *);
 
-extern u16 gUnknown_080D693A[4][NUM_CHARACTERS][2];
-extern u16 gUnknown_080D698A[4];
+static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
+    [0] = {
+        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(-6.00)},
+    },
+    [1] = {
+        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(1.00)},
+        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(0.50)},
+        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(0.50)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(1.00)},
+        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(1.00)},
+    },
+    [2] = {
+        [CHARACTER_SONIC] = {Q_8_8(6.00), Q_8_8(0.00)},
+        [CHARACTER_CREAM] = {Q_8_8(4.00), Q_8_8(-2.50)},
+        [CHARACTER_TAILS] = {Q_8_8(4.00), Q_8_8(-2.50)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(6.00), Q_8_8(0.00)},
+        [CHARACTER_AMY] = {Q_8_8(6.00), Q_8_8(0.00)},
+    },
+    [3] = {
+        [CHARACTER_SONIC] = {Q_8_8(-5.00), Q_8_8(-3.50)},
+        [CHARACTER_CREAM] = {Q_8_8(-3.50), Q_8_8(-3.00)},
+        [CHARACTER_TAILS] = {Q_8_8(-3.50), Q_8_8(-3.00)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(-5.00), Q_8_8(0.00)},
+        [CHARACTER_AMY] = {Q_8_8(-3.50), Q_8_8(-2.00)},
+    },
+};
 
-// A bitmask
-extern u8 gUnknown_080D6992[4][NUM_CHARACTERS];
+static const u16 gUnknown_080D698A[4] = {33, 36, 34, 35};
+
 #define MASK_80D6992_1  0x1
 #define MASK_80D6992_2  0x2
 #define MASK_80D6992_4  0x4
 #define MASK_80D6992_8  0x8
 #define MASK_80D6992_10 0x10
 
-extern u16 gUnknown_080D69A6[2][3];
+static const u8 gUnknown_080D6992[4][NUM_CHARACTERS] = {
+    [0] = {
+        [CHARACTER_SONIC]    = MASK_80D6992_1,
+        [CHARACTER_CREAM]    = MASK_80D6992_1,
+        [CHARACTER_TAILS]    = MASK_80D6992_1,
+        [CHARACTER_KNUCKLES] = (MASK_80D6992_2 | MASK_80D6992_1),
+        [CHARACTER_AMY]      = MASK_80D6992_1,
+    },
+    [1] = {
+        [CHARACTER_SONIC]    = 0,
+        [CHARACTER_CREAM]    = 0,
+        [CHARACTER_TAILS]    = 0,
+        [CHARACTER_KNUCKLES] = 0,
+        [CHARACTER_AMY]      = 0,
+    },
+    [2] = {
+        [CHARACTER_SONIC]    = MASK_80D6992_8,
+        [CHARACTER_CREAM]    = MASK_80D6992_10,
+        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
+        [CHARACTER_AMY]      = MASK_80D6992_8,
+    },
+    [3] = {
+        [CHARACTER_SONIC]    = 0,
+        [CHARACTER_CREAM]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
+        [CHARACTER_AMY]      = 0,
+    },
+};
+
+static const u16 gUnknown_080D69A6[2][3] = {
+    [0] = {32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC), SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX},
+    [1] = {24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES), SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX},
+};
 
 struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 {

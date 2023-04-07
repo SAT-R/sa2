@@ -2,23 +2,6 @@
 .include "constants/constants.inc"
 
 .section .rodata
-    .global gUnknown_080D693A
-gUnknown_080D693A:
-    .incbin "baserom.gba", 0x000D693A, 0x50
-
-    .global gUnknown_080D698A
-gUnknown_080D698A:
-    .incbin "baserom.gba", 0x000D698A, 0x8
-
-    .global gUnknown_080D6992
-gUnknown_080D6992:
-    .incbin "baserom.gba", 0x000D6992, 0x14
-
-    .global gUnknown_080D69A6
-gUnknown_080D69A6:
-    .2byte 32,  49, 2
-    .2byte 24, 321, 3
-
     .global gUnknown_080D69B2
 gUnknown_080D69B2:
     .incbin "baserom.gba", 0x000D69B2, 0x8
