@@ -369,6 +369,17 @@ struct UNK_3005510 {
     u8 unk7;
 }; /* 0x8 */
 
+// TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
+typedef struct {
+    /* 0x00 */ u8 filler0[0xC];
+    /* 0x0C */ u8 fillerC[0xA];
+    /* 0x16 */ AnimId playerAnim;
+    /* 0x18 */ u16 playerVariant;
+    /* 0x1A */ u16 unk1A;
+    /* 0x1C */ Sprite s;
+    /* 0x4C */ u8 filler4C[0xC];
+} TaskStrc_801F15C; /* size: 0x58 */
+
 extern struct UNK_3005510 gUnknown_03005510[16];
 
 // rodata
@@ -430,4 +441,6 @@ typedef void (*Func801F100)(s32, s32, s32);
 extern s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 extern void sub_801EC3C(s32, s32, s32);
 extern void sub_801EB44(s32, s32, s32);
+
+extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 #endif // GUARD_GAME_H

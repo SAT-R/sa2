@@ -1,6 +1,7 @@
 #include "global.h"
 #include "trig.h"
 #include "lib/m4a.h"
+#include "malloc_vram.h"
 #include "game/game.h"
 
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
@@ -1844,7 +1845,6 @@ void sub_8028478(Player *player)
         PLAYERCB_UPDATE_ROTATION(player);
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
     } else {
-        // _08028550
         if (((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
             s32 acceleration = GET_ROTATED_ACCEL(player->rotation);
 
@@ -1864,3 +1864,39 @@ void sub_8028478(Player *player)
         PLAYERCB_UPDATE_UNK2A(player);
     }
 }
+
+/* Starting here, callbacks appear to have a different style */
+
+extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern void sub_801F214(void);
+extern void sub_801F550(struct Task *);
+
+extern u16 gUnknown_080D69A6[2][3];
+
+// https://decomp.me/scratch/qLNF8
+NONMATCH("asm/non_matching/playercb1__sub_8028640.inc",
+         struct Task *sub_8028640(s16 p0, s16 p1, u16 p2))
+{
+    struct Task *t;
+    TaskStrc_801F15C *taskStrc;
+    Sprite *s;
+
+    register u32 p2_ asm("r8") = p2 << 16;
+    p2_ >>= 16;
+
+    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+
+    taskStrc = TaskGetStructPtr(t);
+    taskStrc->playerAnim = gPlayer.unk68;
+    taskStrc->playerVariant = gPlayer.unk6A;
+
+    s = &taskStrc->s;
+    s->graphics.dest = VramMalloc(gUnknown_080D69A6[p2_][0]);
+    s->graphics.anim = gUnknown_080D69A6[p2_][1];
+    s->variant = gUnknown_080D69A6[p2_][2];
+    s->unk1A = 0x1C0;
+    s->unk10 = SPRITE_FLAG_PRIORITY(2);
+
+    return t;
+}
+END_NONMATCH
