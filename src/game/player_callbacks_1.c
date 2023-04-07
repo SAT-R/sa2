@@ -10,7 +10,9 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
+extern void PlayerCB_8011F1C(Player *);
 extern bool32 sub_801251C(Player *);
+extern void PlayerCB_8013D18(Player *);
 extern void sub_801583C(void);
 extern void sub_801F488(void);
 
@@ -125,6 +127,29 @@ void PlayerCB_802A4FC(Player *);
                                                                                         \
         player->speedGroundX = player->speedAirX;                                       \
         player->rotation = 0;                                                           \
+    }
+
+#define PLAYERCB_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 old_3005450 = gUnknown_03005450;                                            \
+        gUnknown_03005450 += incVal;                                                    \
+                                                                                        \
+        divResA = Div(gUnknown_03005450, 50000);                                        \
+        divResB = Div(old_3005450, 50000);                                              \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+                                                                                        \
+            gUnknown_030054A8[3] = 16;                                                  \
+        }                                                                               \
     }
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
@@ -1502,25 +1527,7 @@ void PlayerCB_GoalBrake(Player *player)
                     r8 = 100;
 
                 if (r8 != 0) {
-                    s32 divResA, divResB;
-                    s32 old_3005450 = gUnknown_03005450;
-                    gUnknown_03005450 += r8;
-
-                    divResA = Div(gUnknown_03005450, 50000);
-                    divResB = Div(old_3005450, 50000);
-
-                    if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                        u16 lives = divResA - divResB;
-                        lives += gNumLives;
-
-                        gNumLives = ({
-                            if (lives > 255)
-                                lives = 255;
-                            lives;
-                        });
-
-                        gUnknown_030054A8[3] = 16;
-                    }
+                    PLAYERCB_MAYBE_INCREMENT_LIVES(player, r8);
 
                     sub_801F3A4(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), r8);
                 }
@@ -2037,5 +2044,57 @@ void PlayerCB_802890C(Player *player)
         && (player->character == CHARACTER_KNUCKLES) && (player->unk5B == 2)) {
         player->unk6A++;
         gPlayer.callback = PlayerCB_802A3C4;
+    }
+}
+
+void sub_8028ADC(Player *player)
+{
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (player->unk36 == 0)
+        && (player->unk5E & gPlayerControls.trick)) {
+        if (player->unk5C & DPAD_UP) {
+            PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[0]);
+            player->unk5B = 0;
+            gPlayer.callback = PlayerCB_80286F0;
+        } else if (player->unk5C & DPAD_DOWN) {
+            // _08028B90
+            PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[3]);
+
+            switch (player->character) {
+                case CHARACTER_SONIC: {
+                    player->moveState |= MOVESTATE_20000000;
+                    gPlayer.callback = PlayerCB_8011F1C;
+                } break;
+
+                case CHARACTER_KNUCKLES: {
+                    player->moveState |= MOVESTATE_20000000;
+                    gPlayer.callback = PlayerCB_8013D18;
+                } break;
+
+                case CHARACTER_AMY: {
+                    player->moveState |= MOVESTATE_20000000;
+                    gPlayer.callback = PlayerCB_8011F1C;
+                } break;
+
+                default: {
+                    player->unk5B = 1;
+                    gPlayer.callback = PlayerCB_80286F0;
+                } break;
+            }
+        } else if ((!(player->moveState & MOVESTATE_FACING_LEFT)
+                    && (player->unk5C & DPAD_RIGHT))
+                   || ((player->moveState & MOVESTATE_FACING_LEFT)
+                       && (player->unk5C & DPAD_LEFT))) {
+            // _08028C84
+            PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[2]);
+            player->unk5B = 2;
+
+            gPlayer.callback = PlayerCB_80286F0;
+        } else {
+            // _08028CF0
+            PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[1]);
+            player->unk5B = 3;
+
+            gPlayer.callback = PlayerCB_80286F0;
+        }
     }
 }

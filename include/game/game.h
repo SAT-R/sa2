@@ -167,7 +167,7 @@ typedef struct Player_ {
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
-    /* 0x36 */ u8 unk36;
+    /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 unk37;
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
