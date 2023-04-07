@@ -55,6 +55,7 @@ bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
 void sub_802A360(Player *);
 void PlayerCB_802A3B8(Player *);
+void PlayerCB_802A3C4(Player *);
 void PlayerCB_802A3F0(Player *);
 void sub_802A40C(Player *);
 void sub_802A468(Player *);
@@ -131,6 +132,25 @@ void PlayerCB_802A4FC(Player *);
     {                                                                                   \
         sub_8022190(player);                                                            \
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
+    }
+
+// TODO: Match this without ASM!
+#define PLAYERCB_UPDATE_AIR_FALL_SPEED(player)                                          \
+    {                                                                                   \
+        s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0)            \
+                                                       : Q_8_8(42.0 / 256.0);           \
+                                                                                        \
+        if (player->speedAirY < 0) {                                                    \
+            asm("lsl r0, %0, #16\n"                                                     \
+                "\tasr r0, r0, #17\n"                                                   \
+                "\tlsl r0, r0, #16\n"                                                   \
+                "\tlsr %0, r0, #16\n"                                                   \
+                : "=r"(speed)                                                           \
+                : "r"(speed)                                                            \
+                : "r0");                                                                \
+        }                                                                               \
+                                                                                        \
+        player->speedAirY += speed;                                                     \
     }
 
 // TODO: static
@@ -1784,24 +1804,7 @@ void sub_8028204(Player *player)
     sub_80236C8(player);
     sub_80232D0(player);
 
-    speed
-        = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0) : Q_8_8(42.0 / 256.0);
-
-    if (player->speedAirY < 0) {
-#ifdef NON_MATCHING
-        speed /= 2;
-#else
-        asm("lsl r0, %0, #16\n"
-            "\tasr r0, r0, #17\n"
-            "\tlsl r0, r0, #16\n"
-            "\tlsr %0, r0, #16\n"
-            : "=r"(speed)
-            : "r"(speed)
-            : "r0");
-#endif
-    }
-
-    player->speedAirY += speed;
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
@@ -1870,7 +1873,8 @@ void sub_8028478(Player *player)
     }
 }
 
-/* Starting here, callbacks appear to have a different style */
+/* Starting here, callbacks appear to have a different style,
+   but they still use macros like PLAYERCB_UPDATE_POSITION */
 
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
@@ -1878,7 +1882,15 @@ extern void sub_801F550(struct Task *);
 
 extern u16 gUnknown_080D693A[4][NUM_CHARACTERS][2];
 extern u16 gUnknown_080D698A[4];
+
+// A bitmask
 extern u8 gUnknown_080D6992[4][NUM_CHARACTERS];
+#define MASK_80D6992_1  0x1
+#define MASK_80D6992_2  0x2
+#define MASK_80D6992_4  0x4
+#define MASK_80D6992_8  0x8
+#define MASK_80D6992_10 0x10
+
 extern u16 gUnknown_080D69A6[2][3];
 
 struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
@@ -1910,7 +1922,7 @@ void PlayerCB_80286F0(Player *player)
 {
     u32 u5B = player->unk5B;
     u16 character = player->character;
-    u32 mask = gUnknown_080D6992[player->unk5B][character];
+    u8 mask = gUnknown_080D6992[player->unk5B][character];
 
     sub_80218E4(player);
 
@@ -1922,9 +1934,9 @@ void PlayerCB_80286F0(Player *player)
     player->unk16 = 6;
     player->unk17 = 14;
 
-    if (mask & 0x4)
+    if (mask & MASK_80D6992_4)
         player->unk72 = 10;
-    else if (mask & 0x8)
+    else if (mask & MASK_80D6992_8)
         player->unk72 = 45;
 
     player->speedAirX = 0;
@@ -1973,4 +1985,57 @@ void PlayerCB_80287AC(Player *player)
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
+}
+
+void PlayerCB_802890C(Player *player)
+{
+    u32 u5B = player->unk5B;
+    u16 character = player->character;
+    u8 mask = gUnknown_080D6992[u5B][character];
+
+    if ((mask & MASK_80D6992_1) && (player->unk6A == 1) && (player->speedAirY > 0)) {
+        player->unk6A = 2;
+    }
+
+    if (player->unk72 != 0) {
+        player->unk72--;
+    } else {
+        if (mask & MASK_80D6992_4)
+            mask &= ~MASK_80D6992_4;
+
+        if ((mask & MASK_80D6992_8) && (player->unk64 != 14))
+            player->unk64 = 14;
+    }
+
+    if (!(mask & MASK_80D6992_2) || (player->speedAirY > 0)) {
+        sub_8023610(player);
+    }
+
+    if (!(mask & MASK_80D6992_4)) {
+        sub_80236C8(player);
+    }
+
+    sub_80232D0(player);
+
+    if (mask & MASK_80D6992_10) {
+        PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
+    } else {
+        if (!(mask & MASK_80D6992_4)) {
+            if (player->moveState & MOVESTATE_40) {
+                player->speedAirY += Q_24_8(12.0 / 256.0);
+            } else {
+                player->speedAirY += Q_24_8(42.0 / 256.0);
+            }
+        }
+    }
+
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)
+        && (player->character == CHARACTER_KNUCKLES) && (player->unk5B == 2)) {
+        player->unk6A++;
+        gPlayer.callback = PlayerCB_802A3C4;
+    }
 }
