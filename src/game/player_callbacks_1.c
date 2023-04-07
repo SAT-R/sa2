@@ -43,6 +43,7 @@ void sub_802785C(Player *);
 void PlayerCB_80278D4(Player *);
 void PlayerCB_8027B98(Player *);
 void PlayerCB_80287AC(Player *);
+void PlayerCB_802890C(Player *);
 void PlayerCB_8029074(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
@@ -144,6 +145,9 @@ const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 7 * (3. / 8.)), //
     Q_8_8(6.000 + 8 * (3. / 8.)), //
 };
+
+// TODO: static
+const u16 gUnknown_080D6932[4] = { 100, 100, 100, 100 };
 
 void PlayerCB_8025318(Player *player)
 {
@@ -1872,20 +1876,18 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
 extern void sub_801F550(struct Task *);
 
+extern u16 gUnknown_080D693A[4][NUM_CHARACTERS][2];
 extern u16 gUnknown_080D698A[4];
 extern u8 gUnknown_080D6992[4][NUM_CHARACTERS];
 extern u16 gUnknown_080D69A6[2][3];
 
-// https://decomp.me/scratch/qLNF8
-NONMATCH("asm/non_matching/playercb1__sub_8028640.inc",
-         struct Task *sub_8028640(s16 p0, s16 p1, u16 p2))
+struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 {
     struct Task *t;
     TaskStrc_801F15C *taskStrc;
     Sprite *s;
 
-    register u32 p2_ asm("r8") = p2 << 16;
-    p2_ >>= 16;
+    u16 p2_ = p2;
 
     t = sub_801F15C(p0, p1, 232, gPlayer.unk60, sub_801F214, sub_801F550);
 
@@ -1902,8 +1904,8 @@ NONMATCH("asm/non_matching/playercb1__sub_8028640.inc",
 
     return t;
 }
-END_NONMATCH
 
+// Set when doing (non-downwards) tricks
 void PlayerCB_80286F0(Player *player)
 {
     u32 u5B = player->unk5B;
@@ -1936,4 +1938,39 @@ void PlayerCB_80286F0(Player *player)
 
     gPlayer.callback = PlayerCB_80287AC;
     PlayerCB_80287AC(player);
+}
+
+#include "game/unknown_object_6998.h"
+void PlayerCB_80287AC(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        u32 u5B = player->unk5B;
+        u16 character = player->character;
+        player->unk6A++;
+
+        player->speedAirX = gUnknown_080D693A[u5B][character][0];
+        player->speedAirY = gUnknown_080D693A[u5B][character][1];
+
+        if (player->moveState & MOVESTATE_FACING_LEFT)
+            player->speedAirX = -player->speedAirX;
+
+        gPlayer.callback = PlayerCB_802890C;
+
+        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+            if (u5B == 2 && character == CHARACTER_SONIC) {
+                sub_8028640(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), 0);
+            }
+            if (u5B == 0 && character == CHARACTER_KNUCKLES) {
+                sub_8028640(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), 1);
+            }
+            if (u5B == 2 && character == CHARACTER_AMY) {
+                sub_8086998();
+            }
+        }
+    }
+
+    sub_80232D0(player);
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
