@@ -60,7 +60,7 @@ void PlayerCB_8029314(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
-bool32 sub_8029FA4(Player *);
+void sub_8029FA4(Player *);
 bool32 sub_802A0C8(Player *);
 bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
@@ -73,6 +73,7 @@ void sub_802A40C(Player *);
 void sub_802A468(Player *);
 void sub_802A4B8(Player *);
 void PlayerCB_802A4FC(Player *);
+void PlayerCB_802A5C4(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -2420,6 +2421,7 @@ void PlayerCB_802940C(Player *player)
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
 
+// TODO: Fix the goto-match
 bool32 sub_80294F4(Player *player)
 {
     u16 song;
@@ -2506,3 +2508,147 @@ bool32 sub_80294F4(Player *player)
 
     return FALSE;
 }
+
+// https://decomp.me/scratch/HZn3x
+NONMATCH("asm/non_matching/playercb__sub_802966C.inc", void sub_802966C(Player *player))
+{
+    u8 r6 = -1;
+    s32 u48 = player->unk48;
+    s32 u4C = player->unk4C;
+
+    if ((player->unk2A == 0) && player->unk5C & (DPAD_LEFT | DPAD_RIGHT)) {
+        // _08029690
+        if (player->speedGroundX > 0) {
+            if (player->unk5C & DPAD_RIGHT) {
+                if (player->speedGroundX < player->unk44) {
+                    player->speedGroundX += u48;
+
+                    if (player->speedGroundX > player->unk44) {
+                        player->speedGroundX = player->unk44;
+                    }
+                } else {
+                    player->unk58 += u48;
+                }
+                player->moveState &= ~MOVESTATE_FACING_LEFT;
+            } else if (player->speedGroundX >= Q_24_8(2.0)) {
+            // _080296D2
+            argh:
+                if ((player->unk64 == 7) || (player->unk64 == 8)) {
+                    r6 = player->unk64;
+                } else {
+                    r6 = (player->unk54 > 3) ? 8 : 7;
+                }
+                player->speedGroundX -= u4C;
+            }
+
+            // _080297A2
+            sub_8029FA4(player);
+            m4aSongNumStart(SE_BRAKE);
+        } else if (player->speedGroundX < 0) {
+            // _08029734
+            if (player->moveState & MOVESTATE_20) {
+                if ((player->unk64 == 7) || (player->unk64 == 8)) {
+                    r6 = player->unk64;
+                }
+
+                if (player->speedGroundX > -player->unk44) {
+                    player->speedGroundX -= u48;
+
+                    if (player->speedGroundX < -player->speedGroundX) {
+                        player->speedGroundX = -player->speedGroundX;
+                    }
+                } else {
+                    // _0802975C
+                    player->unk58 += u48;
+                }
+                player->moveState |= MOVESTATE_FACING_LEFT;
+            } else {
+                // _08029770
+                if (player->speedGroundX <= -Q_24_8(2.0)) {
+                    if ((player->unk64 == 7) || (player->unk64 == 8)) {
+                        r6 = player->unk64;
+                    } else {
+                        r6 = (player->unk54 > 3) ? 8 : 7;
+                    }
+
+                    player->speedGroundX += u4C;
+
+                    // _080297A2
+                    sub_8029FA4(player);
+                    m4aSongNumStart(SE_BRAKE);
+                } else {
+                    // _080297B2
+                    player->speedGroundX += u4C;
+
+                    if ((player->speedGroundX < 0)
+                        && !(player->moveState & MOVESTATE_FACING_LEFT)) {
+                        goto skip_block;
+                    } else {
+                        goto argh;
+                    }
+                }
+            }
+        } else {
+            // _080297C8
+            if ((player->moveState & MOVESTATE_FACING_LEFT)
+                != ((player->unk5C & DPAD_RIGHT) >> 4)) {
+                if (player->moveState & MOVESTATE_FACING_LEFT) {
+                    player->speedGroundX -= u48;
+                } else {
+                    player->speedGroundX += u48;
+                }
+
+                r6 = 9;
+                sub_8023B5C(player, 14);
+                player->unk16 = 6;
+                player->unk17 = 14;
+            } else {
+                gPlayer.callback = PlayerCB_802A5C4;
+            }
+        }
+    } else {
+        // _0802980C
+        s32 grndSpeed = player->speedGroundX;
+        if (grndSpeed > 0) {
+            s16 val = grndSpeed - Q_24_8(8.0 / 256.0);
+            if (val <= 0) {
+                r6 = 0;
+                val = 0;
+            } else {
+                r6 = 9;
+            }
+            player->speedGroundX = val;
+        } else if (grndSpeed < 0) {
+            // _08029820
+            s16 val = grndSpeed + Q_24_8(8.0 / 256.0);
+            if (val >= 0) {
+                r6 = 0;
+                val = 0;
+            } else {
+                r6 = 9;
+            }
+            player->speedGroundX = val;
+
+        } else {
+            // _0802983A
+            r6 = 0;
+        }
+    }
+    // _0802983C
+skip_block:
+    if (player->moveState & MOVESTATE_8000) {
+        s8 r6s = r6;
+        if ((r6s == 7) || (r6s == 8)) {
+            player->unk64 = r6s;
+        }
+    } else if ((s8)r6 != -1) {
+        //_08029860
+        if (player->unk64 != (s8)r6)
+            player->unk64 = (s8)r6;
+    } else if ((player->unk64 == 7) || (player->unk64 == 8)) {
+        player->unk64 = 9;
+    }
+
+    sub_8023128(player);
+}
+END_NONMATCH
