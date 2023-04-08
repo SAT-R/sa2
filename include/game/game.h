@@ -331,6 +331,12 @@ extern u32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 
+typedef struct {
+    s32 unk0;
+    u16 unk4;
+} Struct_30054C0;
+extern Struct_30054C0 gUnknown_030054C0;
+
 extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;

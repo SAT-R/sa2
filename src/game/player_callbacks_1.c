@@ -10,10 +10,18 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
+extern void sub_8011B88(s32, s32, u32);
 extern void PlayerCB_8011F1C(Player *);
+extern void sub_8012194(Player *);
+extern void sub_8012BC0(Player *);
 extern bool32 sub_801251C(Player *);
+extern void sub_8012644(Player *);
+extern void sub_8012888(Player *);
+extern void sub_80128E0(Player *);
+extern void sub_8013AD8(Player *);
 extern void PlayerCB_8013D18(Player *);
 extern void sub_801583C(void);
+extern void sub_8015BD4(u16);
 extern void sub_801F488(void);
 
 void PlayerCB_Idle(Player *);
@@ -27,6 +35,7 @@ void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void sub_8023610(Player *);
 void sub_80236C8(Player *);
+void sub_8023708(Player *);
 void sub_80246DC(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
@@ -47,6 +56,7 @@ void PlayerCB_8027B98(Player *);
 void PlayerCB_80287AC(Player *);
 void PlayerCB_802890C(Player *);
 void PlayerCB_8029074(Player *);
+void PlayerCB_8029314(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
@@ -159,8 +169,15 @@ void PlayerCB_802A4FC(Player *);
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
     }
 
-// TODO: Match this without ASM!
 #define PLAYERCB_UPDATE_AIR_FALL_SPEED(player)                                          \
+    if (player->moveState & MOVESTATE_40) {                                             \
+        player->speedAirY += Q_24_8(12.0 / 256.0);                                      \
+    } else {                                                                            \
+        player->speedAirY += Q_24_8(42.0 / 256.0);                                      \
+    }
+
+// TODO: Match this without ASM!
+#define PLAYERCB_UPDATE_AIR_FALL_SPEED_B(player)                                        \
     {                                                                                   \
         s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0)            \
                                                        : Q_8_8(42.0 / 256.0);           \
@@ -495,11 +512,7 @@ void PlayerCB_8025AB8(Player *player)
             sub_8023128(player);
 
             if (player->moveState & MOVESTATE_IN_AIR) {
-                if (player->moveState & MOVESTATE_40) {
-                    player->speedAirY += Q_24_8(12.0 / 256.0);
-                } else {
-                    player->speedAirY += Q_24_8(42.0 / 256.0);
-                }
+                PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
             }
 
             PLAYERCB_UPDATE_POSITION(player);
@@ -590,12 +603,7 @@ void PlayerCB_8025E18(Player *player)
 
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
-    }
-
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
@@ -724,12 +732,7 @@ void PlayerCB_80261D8(Player *player)
 
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
-    }
-
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
@@ -821,12 +824,7 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc",
         sub_80236C8(player);
         sub_80232D0(player);
 
-        if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q_24_8(12.0 / 256.0);
-        } else {
-            player->speedAirY += Q_24_8(42.0 / 256.0);
-        }
-
+        PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
@@ -953,11 +951,7 @@ void PlayerCB_8026810(Player *player)
         sub_8023260(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
-            if (player->moveState & MOVESTATE_40) {
-                player->speedAirY += Q_24_8(12.0 / 256.0);
-            } else {
-                player->speedAirY += Q_24_8(42.0 / 256.0);
-            }
+            PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         }
 
         PLAYERCB_UPDATE_POSITION(player);
@@ -1093,11 +1087,7 @@ void PlayerCB_8026BCC(Player *player)
         sub_8023260(player);
 
         if (player->moveState & MOVESTATE_IN_AIR) {
-            if (player->moveState & MOVESTATE_40) {
-                player->speedAirY += Q_24_8(12.0 / 256.0);
-            } else {
-                player->speedAirY += Q_24_8(42.0 / 256.0);
-            }
+            PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         }
 
         PLAYERCB_UPDATE_POSITION(player);
@@ -1124,12 +1114,7 @@ void PlayerCB_8026D2C(Player *player)
     sub_80236C8(player);
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
-    }
-
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
 
@@ -1274,12 +1259,7 @@ void PlayerCB_8027040(Player *player)
     sub_80236C8(player);
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
-    }
-
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
@@ -1399,12 +1379,7 @@ void PlayerCB_8027324(Player *player)
 {
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
-    }
-
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
@@ -1757,12 +1732,7 @@ void sub_8027EF0(Player *player)
         sub_80236C8(player);
         sub_80232D0(player);
 
-        if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q_24_8(12.0 / 256.0);
-        } else {
-            player->speedAirY += Q_24_8(42.0 / 256.0);
-        }
-
+        PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
@@ -1802,12 +1772,11 @@ void sub_802808C(Player *player)
 
 void sub_8028204(Player *player)
 {
-    s16 speed;
     sub_8023610(player);
     sub_80236C8(player);
     sub_80232D0(player);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
+    PLAYERCB_UPDATE_AIR_FALL_SPEED_B(player);
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
@@ -1846,12 +1815,7 @@ void sub_8028478(Player *player)
         sub_80236C8(player);
         sub_80232D0(player);
 
-        if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q_24_8(12.0 / 256.0);
-        } else {
-            player->speedAirY += Q_24_8(42.0 / 256.0);
-        }
-
+        PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         PLAYERCB_UPDATE_POSITION(player);
         PLAYERCB_UPDATE_ROTATION(player);
         PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
@@ -2085,14 +2049,10 @@ void PlayerCB_802890C(Player *player)
     sub_80232D0(player);
 
     if (mask & MASK_80D6992_10) {
-        PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
+        PLAYERCB_UPDATE_AIR_FALL_SPEED_B(player);
     } else {
         if (!(mask & MASK_80D6992_4)) {
-            if (player->moveState & MOVESTATE_40) {
-                player->speedAirY += Q_24_8(12.0 / 256.0);
-            } else {
-                player->speedAirY += Q_24_8(42.0 / 256.0);
-            }
+            PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
         }
     }
 
@@ -2322,13 +2282,227 @@ void PlayerCB_8029074(Player *player)
     sub_80236C8(player);
     sub_80232D0(player);
 
-    if (player->moveState & MOVESTATE_40) {
-        player->speedAirY += Q_24_8(12.0 / 256.0);
-    } else {
-        player->speedAirY += Q_24_8(42.0 / 256.0);
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
+}
+
+void PlayerCB_8029158(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState |= MOVESTATE_IN_AIR;
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_8);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 40;
+    player->unk66 = -1;
+
+    if (player->speedAirX > Q_24_8(1.25)) {
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
     }
+    if (player->speedAirX < -Q_24_8(1.25)) {
+        player->moveState |= MOVESTATE_FACING_LEFT;
+    }
+
+    switch (player->unk6E) {
+        case 0: {
+            s32 groundSpeed = player->speedGroundX;
+            s32 speed = (groundSpeed * 3);
+            s16 r5;
+            s16 res;
+            if (speed < 0) {
+                speed += 7;
+            }
+            r5 = (((u32)speed << 13) >> 16);
+
+            res = -ABS(groundSpeed) / 6;
+
+            player->speedAirX = r5 + Q_24_8(3.75);
+            player->speedAirY = res + -Q_24_8(3.75);
+        } break;
+
+        case 1:
+        case 2: {
+            s32 groundSpeed = player->speedGroundX;
+            s32 speed = (groundSpeed * 3);
+            s16 r5;
+            s16 res;
+            if (speed < 0) {
+                speed += 7;
+            }
+            r5 = (((u32)speed << 13) >> 16);
+
+            res = -ABS(groundSpeed) / 6;
+
+            player->speedAirX = r5 + Q_24_8(3.75);
+            player->speedAirY = res + -Q_24_8(7.50);
+        } break;
+
+        case 3: {
+            s32 groundSpeed = player->speedGroundX;
+            s32 speed = (groundSpeed * 3);
+            s16 r5;
+            s16 res;
+            if (speed < 0) {
+                speed += 7;
+            }
+            r5 = (((u32)speed << 13) >> 16);
+
+            res = -ABS(groundSpeed) / 6;
+
+            player->speedAirX = r5 + Q_24_8(5.625);
+            player->speedAirY = res + -Q_24_8(2.50);
+        } break;
+
+        case 4:
+        case 5: {
+            s32 groundSpeed = player->speedGroundX;
+            s32 speed = (groundSpeed * 3);
+            s16 r5;
+            s16 res;
+            if (speed < 0) {
+                speed += 7;
+            }
+            r5 = (((u32)speed << 13) >> 16);
+
+            res = -ABS(groundSpeed) / 6;
+
+            player->speedAirX = r5 + Q_24_8(11.25);
+            player->speedAirY = res + -Q_24_8(2.50);
+        } break;
+    }
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY >>= 1;
+    }
+
+    if (player->moveState & MOVESTATE_FACING_LEFT) {
+        player->speedAirX = -player->speedAirX;
+    }
+
+    m4aSongNumStart(SE_276);
+
+    gPlayer.callback = PlayerCB_8029314;
+    PlayerCB_8029314(player);
+}
+
+void PlayerCB_8029314(Player *player)
+{
+    if ((player->unk64 == 40) && (player->unk6A == 0) && (player->speedAirY > 0))
+        player->unk6A = 1;
+
+    sub_8028ADC(player);
+    sub_8023708(player);
+    sub_80232D0(player);
+
+    PLAYERCB_UPDATE_AIR_FALL_SPEED(player);
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
+}
+
+void PlayerCB_802940C(Player *player)
+{
+    if (--player->unk72 == -1) {
+        gPlayer.callback = PlayerCB_8029074;
+    }
+
+    sub_80246DC(player);
+    sub_8028ADC(player);
+    sub_80232D0(player);
 
     PLAYERCB_UPDATE_POSITION(player);
     PLAYERCB_UPDATE_ROTATION(player);
     PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
+}
+
+bool32 sub_80294F4(Player *player)
+{
+    u16 song;
+    if (!(player->moveState & MOVESTATE_20000000)) {
+        if (player->unk5E & gPlayerControls.attack) {
+            switch (player->character) {
+                case CHARACTER_SONIC: {
+                    PlayerCB_8011F1C(player);
+                    return TRUE;
+                } break;
+
+                case CHARACTER_CREAM: {
+                    if ((player->unk5C & DPAD_ANY) == DPAD_DOWN) {
+                        sub_8012888(player);
+                    } else {
+                        sub_80128E0(player);
+                    }
+                    return TRUE;
+                } break;
+
+                case CHARACTER_KNUCKLES: {
+                    PlayerCB_8013D18(player);
+                    return TRUE;
+                } break;
+
+                case CHARACTER_AMY: {
+                    PlayerCB_8011F1C(player);
+                    return TRUE;
+                } break;
+            }
+        }
+        // _0802956E
+        if (player->unk5E & gPlayerControls.jump) {
+            switch (player->character) {
+                case CHARACTER_SONIC: {
+                    if (!IS_BOSS_STAGE(gCurrentLevel)
+                        && gUnknown_030054C0.unk0 < 0x4000) {
+                        sub_8012194(player);
+                        return TRUE;
+                    } else {
+                        player->moveState |= MOVESTATE_20000000;
+                        player->unk64 = 18;
+                        sub_8011B88(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y),
+                                    1);
+                        song = SE_SONIC_INSTA_SHIELD;
+                        goto sub_80294F4_PlaySfx;
+                    }
+                } break;
+
+                case CHARACTER_CREAM: {
+                    sub_8012644(player);
+                    return TRUE;
+                } break;
+
+                case CHARACTER_TAILS: {
+                    if (!(player->moveState & MOVESTATE_40)) {
+                        sub_8012BC0(player);
+                        player->moveState |= MOVESTATE_20000000;
+                        return TRUE;
+                    }
+                } break;
+
+                case CHARACTER_KNUCKLES: {
+                    if (!(player->moveState & MOVESTATE_40)) {
+                        sub_8013AD8(player);
+                        return TRUE;
+                    }
+                } break;
+
+                case CHARACTER_AMY: {
+                    player->moveState |= MOVESTATE_20000000;
+                    player->unk64 = 18;
+                    sub_8015BD4(2);
+
+                    song = SE_AMY_SUPER_HAMMER_ATTACK;
+                sub_80294F4_PlaySfx:
+                    m4aSongNumStart(song);
+                    // TODO / BUG?
+                    // there's no return TRUE; for Amy
+                } break;
+            }
+        }
+    }
+
+    return FALSE;
 }
