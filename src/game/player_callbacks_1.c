@@ -1918,7 +1918,7 @@ static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
     },
 };
 
-static const u16 gUnknown_080D698A[4] = {33, 36, 34, 35};
+static const u16 gUnknown_080D698A[4] = { 33, 36, 34, 35 };
 
 #define MASK_80D6992_1  0x1
 #define MASK_80D6992_2  0x2
@@ -1958,8 +1958,10 @@ static const u8 gUnknown_080D6992[4][NUM_CHARACTERS] = {
 };
 
 static const u16 gUnknown_080D69A6[2][3] = {
-    [0] = {32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC), SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX},
-    [1] = {24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES), SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX},
+    [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC),
+            SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
+    [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES),
+            SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
 };
 
 struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
@@ -2159,4 +2161,162 @@ void sub_8028ADC(Player *player)
             gPlayer.callback = PlayerCB_80286F0;
         }
     }
+}
+
+void PlayerCB_8028D74(Player *player)
+{
+    sub_80218E4(player);
+
+    player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    if ((player->unk16 < 6) || (player->unk17 < 9)) {
+        u16 cAnim = GET_CHARACTER_ANIM(player);
+
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (cAnim == SA2_CHAR_ANIM_JUMP_1)
+            || (cAnim == SA2_CHAR_ANIM_JUMP_2) || (cAnim == SA2_CHAR_ANIM_70)) {
+            sub_8023B5C(player, 9);
+            player->unk16 = 6;
+            player->unk17 = 9;
+        } else {
+            sub_8023B5C(player, 14);
+            player->unk16 = 6;
+            player->unk17 = 14;
+        }
+    }
+    // _08028DF0
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    player->rotation = 0;
+
+    gPlayer.callback = PlayerCB_8029074;
+    PlayerCB_8029074(player);
+}
+
+static const s16 gUnknown_080D69B2[4] = {
+    Q_8_8(7.5),
+    Q_8_8(9.0),
+    Q_8_8(10.5),
+    Q_8_8(12.0),
+};
+
+static const s16 gUnknown_080D69BA[4] = {
+    Q_8_8(7.5),
+    Q_8_8(9.0),
+    Q_8_8(10.5),
+    Q_8_8(12.0),
+};
+
+static const u8 gUnknown_080D69C2[4] = { 4, 3, 2, 2 };
+
+void PlayerCB_8028E24(Player *player)
+{
+    u8 u6E = player->unk6E;
+    u8 r5 = (u6E >> 4);
+    u8 r6 = u6E % 4;
+
+    sub_80218E4(player);
+
+    if (((r5 == 2) || (r5 == 3)) && !(player->moveState & MOVESTATE_IN_AIR)) {
+        player->moveState &= ~(MOVESTATE_100 | MOVESTATE_IN_AIR);
+    } else {
+        player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+    }
+
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
+        || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
+        player->unk64 = 37;
+    } else if (ABS(player->speedAirX) < Q_24_8(2.5)) {
+        player->unk64 = 38;
+    } else {
+        player->unk64 = 39;
+    }
+
+    player->unk66 = -1;
+
+    switch (r5) {
+        case 0: {
+            player->speedAirY = -gUnknown_080D69B2[r6];
+        } break;
+
+        case 1: {
+            player->speedAirY = +gUnknown_080D69B2[r6];
+        } break;
+
+        case 2: {
+            player->speedAirX = -gUnknown_080D69BA[r6];
+
+            if (!(player->moveState & MOVESTATE_IN_AIR)
+                && player->speedAirX < -Q_24_8(9.0)) {
+                player->unk5A = 1;
+            }
+        } break;
+
+        case 3: {
+            player->speedAirX = +gUnknown_080D69BA[r6];
+
+            if (!(player->moveState & MOVESTATE_IN_AIR)
+                && player->speedAirX > +Q_24_8(9.0)) {
+                player->unk5A = 1;
+            }
+        } break;
+
+        case 4: {
+            player->speedAirX = -gUnknown_080D69BA[r6];
+            player->speedAirY = -gUnknown_080D69B2[r6];
+        } break;
+
+        case 5: {
+            player->speedAirX = +gUnknown_080D69BA[r6];
+            player->speedAirY = -gUnknown_080D69B2[r6];
+        } break;
+
+        case 6: {
+            player->speedAirX = -gUnknown_080D69BA[r6];
+            player->speedAirY = +gUnknown_080D69B2[r6];
+        } break;
+
+        case 7: {
+            player->speedAirX = +gUnknown_080D69BA[r6];
+            player->speedAirY = +gUnknown_080D69B2[r6];
+        } break;
+    }
+    // _08028FCE
+    player->unk36 = gUnknown_080D69C2[r6];
+
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
+        || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
+        {
+            s32 speed = (player->speedAirX * 5);
+            if (speed < 0) {
+                speed += 3;
+            }
+            player->speedAirX = speed >> 2;
+        }
+        {
+            s32 speed = (player->speedAirY * 5);
+            if (speed < 0) {
+                speed += 3;
+            }
+            player->speedAirY = speed >> 2;
+        }
+    }
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY /= 2;
+    }
+
+    if (player->speedAirX > Q_24_8(1.25)) {
+        player->moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+    if (player->speedAirX < -Q_24_8(1.25)) {
+        player->moveState |= MOVESTATE_FACING_LEFT;
+    }
+
+    gPlayer.callback = PlayerCB_8029074;
+    PlayerCB_8029074(player);
 }
