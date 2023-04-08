@@ -717,7 +717,6 @@ void PlayerCB_80261D8(Player *player)
                 return;
         }
     }
-    // _08026220
 
     if (!IS_BOSS_STAGE(gCurrentLevel)) {
         sub_80236C8(player);
@@ -916,7 +915,6 @@ void PlayerCB_8026764(Player *player)
         player->speedAirX = MIN(player->speedAirX, -Q_24_8(1.0));
         player->speedGroundX = MIN(player->speedAirX, -Q_24_8(1.0));
     } else {
-        // _080267C4
         player->moveState &= ~MOVESTATE_FACING_LEFT;
 
         player->speedAirX = MAX(player->speedAirX, Q_24_8(1.0));
@@ -1037,7 +1035,6 @@ void PlayerCB_8026A4C(Player *player)
     if (player->moveState & MOVESTATE_40)
         player->speedAirY /= 2;
 
-    // _08026ADA
     player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
 
@@ -1337,7 +1334,6 @@ void PlayerCB_8027190(Player *player)
                 speed = +u40;
         }
     } else if (speed > 0) {
-        // _080271F0
         speed -= Q_24_8(8.0 / 256.0);
     } else {
         speed += Q_24_8(8.0 / 256.0);
@@ -2120,7 +2116,6 @@ void sub_8028ADC(Player *player)
             player->unk5B = 0;
             gPlayer.callback = PlayerCB_80286F0;
         } else if (player->unk5C & DPAD_DOWN) {
-            // _08028B90
             PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[3]);
 
             switch (player->character) {
@@ -2148,13 +2143,11 @@ void sub_8028ADC(Player *player)
                     && (player->unk5C & DPAD_RIGHT))
                    || ((player->moveState & MOVESTATE_FACING_LEFT)
                        && (player->unk5C & DPAD_LEFT))) {
-            // _08028C84
             PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[2]);
             player->unk5B = 2;
 
             gPlayer.callback = PlayerCB_80286F0;
         } else {
-            // _08028CF0
             PLAYERCB_MAYBE_INCREMENT_LIVES(player, gUnknown_080D6932[1]);
             player->unk5B = 3;
 
@@ -2184,7 +2177,7 @@ void PlayerCB_8028D74(Player *player)
             player->unk17 = 14;
         }
     }
-    // _08028DF0
+
     player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
     player->rotation = 0;
 
@@ -2285,7 +2278,7 @@ void PlayerCB_8028E24(Player *player)
             player->speedAirY = +gUnknown_080D69B2[r6];
         } break;
     }
-    // _08028FCE
+
     player->unk36 = gUnknown_080D69C2[r6];
 
     if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
@@ -2319,4 +2312,23 @@ void PlayerCB_8028E24(Player *player)
 
     gPlayer.callback = PlayerCB_8029074;
     PlayerCB_8029074(player);
+}
+
+void PlayerCB_8029074(Player *player)
+{
+    sub_80246DC(player);
+    sub_8028ADC(player);
+    sub_8023610(player);
+    sub_80236C8(player);
+    sub_80232D0(player);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY += Q_24_8(12.0 / 256.0);
+    } else {
+        player->speedAirY += Q_24_8(42.0 / 256.0);
+    }
+
+    PLAYERCB_UPDATE_POSITION(player);
+    PLAYERCB_UPDATE_ROTATION(player);
+    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player);
 }
