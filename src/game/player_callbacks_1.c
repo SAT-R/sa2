@@ -2652,3 +2652,18 @@ skip_block:
     sub_8023128(player);
 }
 END_NONMATCH
+
+void sub_802989C(Player *player)
+{
+    if((u16)gRingCount >= 150) {
+        player->unk52 = 4;
+    } else if((u16)gRingCount >= 100) {
+        player->unk52 = 3;
+    } else if((u16)gRingCount >= 50) {
+        player->unk52 = 2;
+    } else if((u16)gRingCount > 10) {
+        player->unk52 = 1;
+    } else {
+        player->unk52 = 0;
+    }
+}

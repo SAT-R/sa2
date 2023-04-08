@@ -30,7 +30,7 @@ extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
-// might be wrong
+// might be unsigned, actually?
 extern s16 gRingCount;
 
 extern u8 gUnknown_030054A8[8];
@@ -178,7 +178,7 @@ typedef struct Player_ {
     /* 0x48 */ s32 unk48;
     /* 0x4C */ s32 unk4C;
     /* 0x50 */ u16 unk50;
-    /* 0x52 */ u8 filler52[0x2];
+    /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54;
     /* 0x56 */ u8 filler56[0x2];
     /* 0x58 */ u16 unk58;
