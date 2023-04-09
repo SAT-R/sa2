@@ -85,6 +85,7 @@ void PlayerCB_802A5C4(Player *);
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
 #define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
+#define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
@@ -2740,7 +2741,7 @@ void sub_80299FC(Player *player)
 extern void *sub_802195C(Player *player, u8 *p1, int *out);
 extern void *sub_8021A34(Player *player, u8 *p1, int *out);
 extern void *sub_8021B08(Player *player, u8 *p1, int *out);
-extern void *sub_8029BB8(Player *player, u8 *p1, int *out);
+void *sub_8029BB8(Player *player, u8 *p1, int *out);
 
 void *sub_8029A28(Player *player, u8 *p1, int *out)
 {
@@ -2898,4 +2899,151 @@ void *sub_8029B88(Player *player, u8 *p1, int *out)
     }
 
     return result;
+}
+
+extern s32 sub_801E4E4(s32, s32, u32, u32, u8 *, void *);
+
+// TODO/HACK: Remove the cast at the return!!!
+void *sub_8029BB8(Player *player, u8 *p1, int *out)
+{
+    u8 dummy;
+    int dummyInt;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    u32 mask;
+    u8 anotherByte, anotherByte2;
+    s32 r5, r1;
+    int result;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    playerY2 = Q_24_8_TO_INT(player->y) + player->unk17;
+    playerX2 = Q_24_8_TO_INT(player->x) - (2 + player->unk16);
+
+    mask = player->unk38;
+    if (player->speedAirY < 0) {
+        mask |= 0x80;
+    }
+
+    r5 = sub_801E4E4(playerY2, playerX2, mask, 8, &anotherByte, sub_801EE64);
+
+    playerY = Q_24_8_TO_INT(player->y) + player->unk17;
+    playerX = Q_24_8_TO_INT(player->x) + (2 + player->unk16);
+
+    mask = player->unk38;
+    if (player->speedAirY < 0) {
+        mask |= 0x80;
+    }
+
+    r1 = sub_801E4E4(playerY, playerX, mask, 8, &anotherByte2, sub_801EE64);
+
+    if (r5 < r1) {
+        result = r5;
+        *p1 = anotherByte;
+        *out = r1;
+    } else {
+        result = r1;
+        *p1 = anotherByte2;
+        *out = r5;
+    }
+
+    return (void *)result;
+}
+
+void sub_8029C84(Player *player)
+{
+    s32 rot = player->rotation + Q_24_8(0.25);
+
+    if ((rot & UINT8_MAX) > INT8_MAX)
+        player->speedGroundX = 0;
+}
+
+void sub_8029CA0(Player *player)
+{
+    s32 rot = player->rotation;
+    if (((rot + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        rot = GET_ROTATED_ACCEL(rot);
+
+        if (player->speedGroundX != 0) {
+            player->speedGroundX += rot;
+        }
+    }
+}
+
+void sub_8029CE0(Player *player)
+{
+    s32 rot = player->rotation;
+    if (((rot + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        s32 other = GET_ROTATED_ACCEL_2(rot);
+
+        player->speedGroundX += other;
+    }
+}
+
+void sub_8029D14(Player *player)
+{
+#ifndef NON_MATCHING
+    register s32 grndSpeed asm("r2") = player->speedGroundX;
+#else
+    s32 grndSpeed = player->speedGroundX;
+#endif
+
+    if ((((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && grndSpeed != 0) {
+        s32 accelInt = Q_24_8_TO_INT(GET_ROTATED_ACCEL_3(player->rotation));
+
+        if (grndSpeed > 0) {
+            if (accelInt <= 0) {
+                accelInt = (accelInt >> 2);
+            }
+        } else {
+            if (accelInt >= 0) {
+                accelInt = (accelInt >> 2);
+            }
+        }
+
+        player->speedGroundX = grndSpeed + accelInt;
+    }
+}
+
+void sub_8029D64(Player *player) { PLAYERCB_UPDATE_POSITION(player); }
+
+void sub_8029DC8(Player *player) { PLAYERCB_UPDATE_AIR_FALL_SPEED(player); }
+
+bool32 sub_8029DE8(Player *player)
+{
+    struct Camera *cam = &gCamera;
+    s32 playerY = player->y;
+
+    if (!(player->moveState & MOVESTATE_80000000)) {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (playerY <= Q_24_8(cam->unk28))
+                return TRUE;
+        } else {
+            if (playerY >= Q_24_8(cam->unk2C) - 1)
+                return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+bool32 sub_8029E24(Player *player)
+{
+    struct Camera *cam = &gCamera;
+    s32 playerY = player->y;
+
+    if (!(player->moveState & MOVESTATE_80000000)) {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (playerY <= Q_24_8(cam->y - (DISPLAY_HEIGHT / 2)))
+                return TRUE;
+        } else {
+            if (playerY >= Q_24_8(cam->y) + Q_24_8(DISPLAY_HEIGHT + 80) - 1)
+                return TRUE;
+        }
+    }
+
+    return FALSE;
 }
