@@ -27,7 +27,7 @@ gUnknown_080D6902:
 @ TODO: Move over to player_callbacks_1.c
     .global gUnknown_080D6916
 gUnknown_080D6916:
-    .incbin "baserom.gba", 0x000D6916, 0xA
+    .2byte 0x800, 0x7F8, 0x690, 0x5A0, 0x438
 
 .text
 .syntax unified

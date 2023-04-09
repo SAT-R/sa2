@@ -4,6 +4,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 
+#include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 
 #include "constants/animations.h"
@@ -2655,15 +2656,46 @@ END_NONMATCH
 
 void sub_802989C(Player *player)
 {
-    if((u16)gRingCount >= 150) {
+    if ((u16)gRingCount >= 150) {
         player->unk52 = 4;
-    } else if((u16)gRingCount >= 100) {
+    } else if ((u16)gRingCount >= 100) {
         player->unk52 = 3;
-    } else if((u16)gRingCount >= 50) {
+    } else if ((u16)gRingCount >= 50) {
         player->unk52 = 2;
-    } else if((u16)gRingCount > 10) {
+    } else if ((u16)gRingCount > 10) {
         player->unk52 = 1;
     } else {
         player->unk52 = 0;
+    }
+}
+
+extern s16 gUnknown_080D6916[5];
+void sub_80298DC(Player *player)
+{
+    // TODO: unk5A Might be isBoostActive ?
+    bool32 isBoostActive = player->unk5A;
+    if (isBoostActive) {
+        if (!(player->moveState & MOVESTATE_IN_AIR)) {
+            player->unk58 = gUnknown_080D6916[player->unk52];
+
+            if (ABS(player->speedGroundX) < Q_24_8(4.5)) {
+                player->unk5A = FALSE;
+                player->unk58 = 0;
+            }
+        }
+    } else {
+        if ((!(player->moveState & MOVESTATE_IN_AIR))
+            && ((ABS(player->speedGroundX) >= player->unk44))) {
+            if (player->unk58 >= gUnknown_080D6916[player->unk52]) {
+                player->unk5A = TRUE;
+                gCamera.unk8 = 0x400;
+
+                CreateBoostModeParticles();
+
+                m4aSongNumStart(SE_221);
+            }
+        } else {
+            player->unk58 = isBoostActive;
+        }
     }
 }
