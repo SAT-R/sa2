@@ -24,11 +24,6 @@ gUnknown_080D6736:
 gUnknown_080D6902:
     .incbin "baserom.gba", 0x000D6902, 0x14
     
-@ TODO: Move over to player_callbacks_1.c
-    .global gUnknown_080D6916
-gUnknown_080D6916:
-    .2byte 0x800, 0x7F8, 0x690, 0x5A0, 0x438
-
 .text
 .syntax unified
 .arm
@@ -8832,7 +8827,7 @@ _080215F8:
 	.align 2, 0
 _08021600: .4byte 0x00042024
 
-@ Called (by sub_80299F0) which might be unused
+@ Called by sub_80299F0
 	thumb_func_start sub_8021604
 sub_8021604: @ 0x08021604
 	push {r4, lr}

@@ -222,7 +222,7 @@ typedef struct Player_ {
     /* 0x84 */ u8 filler84;
     /* 0x85 */ s8 character;
     /* 0x86 */ u8 filler86[6];
-    /* 0x8C */ u32 unk8C;
+    /* 0x8C */ struct Task *unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;
     /* 0x94 */ u8 filler94[5];
     /* 0x99 */ s8 unk99;
@@ -448,10 +448,18 @@ extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
 extern void sub_800C84C(Sprite *);
 
+extern void sub_801EB44(s32, s32, s32);
+extern void sub_801EC3C(s32, s32, s32);
+
 typedef void (*Func801F100)(s32, s32, s32);
 extern s32 sub_801F100(s32, s32, s32, s32, Func801F100);
-extern void sub_801EC3C(s32, s32, s32);
-extern void sub_801EB44(s32, s32, s32);
+
+extern void sub_801F78C(void);
 
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+
+extern void sub_8021350(void);
+
+// NOTE: Proc type should be the same as sub_80299F0!
+extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
 #endif // GUARD_GAME_H

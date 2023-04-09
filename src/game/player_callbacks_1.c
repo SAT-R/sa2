@@ -197,6 +197,8 @@ void PlayerCB_802A5C4(Player *);
         player->speedAirY += speed;                                                     \
     }
 
+static const s16 gUnknown_080D6916[5] = { 0x800, 0x7F8, 0x690, 0x5A0, 0x438 };
+
 // TODO: static
 const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 0 * (3. / 8.)), //
@@ -2669,7 +2671,6 @@ void sub_802989C(Player *player)
     }
 }
 
-extern s16 gUnknown_080D6916[5];
 void sub_80298DC(Player *player)
 {
     // TODO: unk5A Might be isBoostActive ?
@@ -2698,4 +2699,203 @@ void sub_80298DC(Player *player)
             player->unk58 = isBoostActive;
         }
     }
+}
+
+void sub_8029990(Player *player)
+{
+    s32 absSpeed = ABS(player->speedGroundX);
+
+    if (absSpeed <= Q_24_8(1.25)) {
+        player->unk54 = 0;
+    } else if (absSpeed <= Q_24_8(2.5)) {
+        player->unk54 = 1;
+    } else if (absSpeed <= Q_24_8(4.0)) {
+        player->unk54 = 2;
+    } else if (absSpeed <= Q_24_8(9.0)) {
+        player->unk54 = 3;
+    } else if (absSpeed <= Q_24_8(10.0)) {
+        player->unk54 = 4;
+    } else {
+        player->unk54 = 5;
+    }
+}
+
+// NOTE: Proc type should be the same as sub_8021604!
+void sub_80299F0(u32 character, u32 level, u32 p2, Player *player)
+{
+    sub_8021604(character, level, p2, player);
+}
+
+void sub_80299FC(Player *player)
+{
+    TaskDestroy(player->unk8C);
+    player->unk8C = NULL;
+
+    if (player->unk60 == 0) {
+        sub_801F78C();
+        sub_8021350();
+    }
+}
+
+extern void *sub_802195C(Player *player, u8 *p1, int *out);
+extern void *sub_8021A34(Player *player, u8 *p1, int *out);
+extern void *sub_8021B08(Player *player, u8 *p1, int *out);
+extern void *sub_8029BB8(Player *player, u8 *p1, int *out);
+
+void *sub_8029A28(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    // TODO: Why is dummyInt unused?
+    int dummyInt;
+    int p1Value;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    result = sub_802195C(player, p1, out);
+
+    p1Value = *p1;
+
+    if (p1Value & 0x1)
+        *p1 = 0;
+    else {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            s32 val = -0x80;
+            val -= p1Value;
+            *p1 = val;
+        }
+    }
+
+    return result;
+}
+
+void *sub_8029A74(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    // TODO: Why is dummyInt unused?
+    int dummyInt;
+    int p1Value;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    result = sub_8021A34(player, p1, out);
+
+    p1Value = *p1;
+
+    if (p1Value & 0x1)
+        *p1 = 0;
+    else {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            s32 val = -0x80;
+            val -= p1Value;
+            *p1 = val;
+        }
+    }
+
+    return result;
+}
+
+void *sub_8029AC0(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    // TODO: Why is dummyInt unused?
+    int dummyInt;
+    int p1Value;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    result = sub_8021B08(player, p1, out);
+
+    p1Value = *p1;
+
+    if (p1Value & 0x1)
+        *p1 = 0;
+    else {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            s32 val = -0x80;
+            val -= p1Value;
+            *p1 = val;
+        }
+    }
+
+    return result;
+}
+
+void *sub_8029B0C(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    // TODO: Why is dummyInt unused?
+    int dummyInt;
+    int p1Value;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    result = sub_8029BB8(player, p1, out);
+
+    p1Value = *p1;
+
+    if (p1Value & 0x1)
+        *p1 = 0;
+    else {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            s32 val = -0x80;
+            val -= p1Value;
+            *p1 = val;
+        }
+    }
+
+    return result;
+}
+
+void *sub_8029B58(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        result = sub_8029B0C(player, p1, out);
+    } else {
+        result = sub_8029AC0(player, p1, out);
+    }
+
+    return result;
+}
+
+void *sub_8029B88(Player *player, u8 *p1, int *out)
+{
+    void *result;
+
+    u8 dummy;
+
+    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        result = sub_8029AC0(player, p1, out);
+    } else {
+        result = sub_8029B0C(player, p1, out);
+    }
+
+    return result;
 }
