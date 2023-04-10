@@ -19,11 +19,6 @@ PlayerCharacterIdleAnims: @ 0x080D672C
 gUnknown_080D6736:
     .incbin "baserom.gba", 0x000D6736, 0x1CC
 
-@ TODO: Move over to player_callbacks_1.c
-    .global gUnknown_080D6902
-gUnknown_080D6902:
-    .incbin "baserom.gba", 0x000D6902, 0x14
-    
 .text
 .syntax unified
 .arm

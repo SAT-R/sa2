@@ -687,6 +687,7 @@
 #define KEY_OR_INTR     0x0000
 #define KEY_AND_INTR    0x8000
 #define DPAD_ANY        0x00F0
+#define DPAD_SIDEWAYS   (DPAD_LEFT | DPAD_RIGHT)
 #define JOY_EXCL_DPAD   0x030F
 
 // interrupt flags

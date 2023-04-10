@@ -12,15 +12,22 @@
 #include "constants/songs.h"
 
 extern void sub_8011B88(s32, s32, u32);
+extern void sub_8011D48(Player *);
 extern void PlayerCB_8011F1C(Player *);
 extern void sub_8012194(Player *);
-extern void sub_8012BC0(Player *);
 extern bool32 sub_801251C(Player *);
 extern void sub_8012644(Player *);
 extern void sub_8012888(Player *);
 extern void sub_80128E0(Player *);
+extern void sub_8012548(Player *);
+extern void sub_8012830(Player *);
+extern void sub_8012BC0(Player *);
+extern void sub_8012D3C(Player *);
+extern void sub_8012EEC(Player *);
+extern void sub_8013070(Player *);
 extern void sub_8013AD8(Player *);
 extern void PlayerCB_8013D18(Player *);
+extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern void sub_801F488(void);
@@ -77,6 +84,7 @@ void sub_802A4B8(Player *);
 void PlayerCB_802A4FC(Player *);
 void PlayerCB_802A5C4(Player *);
 void PlayerCB_802A620(Player *);
+void PlayerCB_802A714(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -199,6 +207,11 @@ void PlayerCB_802A620(Player *);
                                                                                         \
         player->speedAirY += speed;                                                     \
     }
+
+// static
+const s16 gUnknown_080D6902[5][2] = {
+    { 8, 64 }, { 12, 64 }, { 14, 64 }, { 16, 64 }, { 18, 64 },
+};
 
 static const s16 gUnknown_080D6916[5] = { 0x800, 0x7F8, 0x690, 0x5A0, 0x438 };
 
@@ -423,7 +436,6 @@ void PlayerCB_8025A0C(Player *player)
         player->unk64 = 4;
 
         sub_8023B5C(player, 9);
-
         player->unk16 = 6;
         player->unk17 = 9;
 
@@ -753,9 +765,9 @@ void PlayerCB_802631C(Player *player)
     player->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
 
     sub_8023B5C(player, 9);
-
     player->unk16 = 6;
     player->unk17 = 9;
+
     player->unk26 = 0;
     player->speedAirX = 0;
     player->speedAirY = 0;
@@ -909,9 +921,9 @@ void PlayerCB_8026764(Player *player)
     player->moveState |= MOVESTATE_1000000;
 
     sub_8023B5C(player, 14);
-
     player->unk16 = 6;
     player->unk17 = 14;
+
     player->unk64 = 41;
 
     if (player->unk6E != 0) {
@@ -1143,9 +1155,9 @@ void PlayerCB_8026E24(Player *player)
     player->moveState |= (MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_4);
 
     sub_8023B5C(player, 9);
-
     player->unk16 = 6;
     player->unk17 = 9;
+
     player->rotation = 0;
     player->unk64 = 4;
 
@@ -1216,7 +1228,6 @@ void PlayerCB_8026F10(Player *player)
         player->unk64 = 4;
 
         sub_8023B5C(player, 9);
-
         player->unk16 = 6;
         player->unk17 = 9;
 
@@ -1236,7 +1247,6 @@ void PlayerCB_8026FC8(Player *player)
     player->moveState &= ~MOVESTATE_4;
 
     sub_8023B5C(player, 14);
-
     player->unk16 = 6;
     player->unk17 = 14;
 
@@ -1374,7 +1384,6 @@ void PlayerCB_8027250(Player *player)
     player->moveState &= ~(MOVESTATE_200 | MOVESTATE_8 | MOVESTATE_4);
 
     sub_8023B5C(player, 14);
-
     player->unk16 = 6;
     player->unk17 = 14;
 
@@ -1409,7 +1418,6 @@ void PlayerCB_80273D0(Player *player)
             player->moveState &= ~(MOVESTATE_4 | MOVESTATE_FACING_LEFT);
 
             sub_8023B5C(player, 14);
-
             player->unk16 = 6;
             player->unk17 = 14;
 
@@ -1968,7 +1976,6 @@ void PlayerCB_80286F0(Player *player)
     player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
     sub_8023B5C(player, 14);
-
     player->unk16 = 6;
     player->unk17 = 14;
 
@@ -3172,17 +3179,330 @@ bool32 sub_802A0FC(Player *player)
                  & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
             gPlayer.callback = PlayerCB_802A228;
             return TRUE;
-        } else {
-            // _0802A148
-            if (((u16)(player->speedGroundX + (Q_24_8(0.5) - 1)) > Q_24_8(1.0) - 2)
-                && !(player->moveState
-                     & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
-                gPlayer.callback = PlayerCB_8025A0C;
-                m4aSongNumStart(SE_SPIN_ATTACK);
-                return TRUE;
-            }
+        } else if (((u16)(player->speedGroundX + (Q_24_8(0.5) - 1)) > Q_24_8(1.0) - 2)
+                   && !(player->moveState
+                        & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+            gPlayer.callback = PlayerCB_8025A0C;
+            m4aSongNumStart(SE_SPIN_ATTACK);
+            return TRUE;
         }
     }
 
     return FALSE;
+}
+
+bool32 sub_802A184(Player *player)
+{
+    if (player->unk64 == 2) {
+        if (player->unk5E & gPlayerControls.jump) {
+            gPlayer.callback = PlayerCB_802631C;
+            PlayerCB_802631C(player);
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+void sub_802A1C8(Player *player)
+{
+    u32 unk52 = player->unk52;
+    if (player->unk5A) {
+        player->unk44 = Q_24_8(12.0);
+        player->unk40 = Q_24_8(15.0);
+    } else if (player->moveState & MOVESTATE_4) {
+        player->unk44 = Q_24_8(6.0);
+        player->unk40 = Q_24_8(15.0);
+    } else {
+        player->unk44 = Q_24_8(6.0);
+        player->unk40 = Q_24_8(9.0);
+    }
+
+    player->unk48 = gUnknown_080D6902[unk52][0];
+    player->unk4C = gUnknown_080D6902[unk52][1];
+}
+
+void PlayerCB_802A228(Player *player)
+{
+    player->moveState &= ~MOVESTATE_20;
+
+    player->unk64 = 2;
+    player->speedGroundX = 0;
+
+    gPlayer.callback = PlayerCB_8025854;
+    PlayerCB_8025854(player);
+}
+
+void PlayerCB_802A258(Player *player)
+{
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        if (player->moveState & MOVESTATE_4)
+            PlayerCB_8025A0C(player);
+        else
+            PlayerCB_8025318(player);
+    } else {
+        player->moveState |= MOVESTATE_40000;
+        player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+        gPlayer.callback = PlayerCB_8026D2C;
+        PlayerCB_8026D2C(player);
+    }
+}
+
+bool32 sub_802A2A8(Player *player)
+{
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+        || (player->moveState & (MOVESTATE_8000 | MOVESTATE_400))
+        || ((player->rotation + Q_24_8(0.25)) << 24 <= 0)) {
+        return FALSE;
+    } else if (player->unk5E & gPlayerControls.attack) {
+        gPlayer.callback = PlayerCB_802A714;
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+void PlayerCB_802A300(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState |= MOVESTATE_IN_AIR;
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_8);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk66 = -1;
+
+    player->rotation = 0;
+
+    m4aSongNumStart(SE_DASH_RING);
+
+    gPlayer.callback = PlayerCB_802940C;
+    PlayerCB_802940C(player);
+}
+
+void sub_802A360(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState &= ~MOVESTATE_4;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 62;
+    player->moveState &= ~(MOVESTATE_FACING_LEFT);
+
+    m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
+
+    gPlayer.callback = PlayerCB_8026BCC;
+    PlayerCB_8026BCC(player);
+}
+
+void PlayerCB_802A3B8(Player *player) { sub_802808C(player); }
+
+void PlayerCB_802A3C4(Player *player)
+{
+    sub_8027EF0(player);
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        gPlayer.callback = PlayerCB_8025A0C;
+    }
+}
+
+void PlayerCB_802A3F0(Player *player)
+{
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+}
+
+void sub_802A40C(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState &= ~MOVESTATE_4;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk5A = 0;
+    player->unk64 = 9;
+    player->moveState &= ~(MOVESTATE_FACING_LEFT);
+    player->unk72 = 0;
+
+    gPlayer.callback = PlayerCB_80279F8;
+    PlayerCB_80279F8(player);
+}
+
+void sub_802A468(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState &= ~MOVESTATE_4;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 9;
+    player->moveState &= ~(MOVESTATE_FACING_LEFT);
+
+    gPlayer.callback = PlayerCB_8027C5C;
+    PlayerCB_8027C5C(player);
+}
+
+void sub_802A4B8(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState &= ~MOVESTATE_4;
+    player->moveState |= MOVESTATE_IGNORE_INPUT;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    gPlayer.callback = PlayerCB_8027D3C;
+    PlayerCB_8027D3C(player);
+}
+
+void PlayerCB_802A4FC(Player *player) { }
+
+void sub_802A500(Player *player)
+{
+    if (player->speedAirY >= 0) {
+        sub_8022218(player);
+        sub_8022284(player);
+    } else {
+        sub_8022284(player);
+        sub_8022218(player);
+    }
+}
+
+void sub_802A52C(Player *player) { PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player); }
+
+void sub_802A558(Player *player) { PLAYERCB_UPDATE_AIR_FALL_SPEED_B(player); }
+
+void sub_802A58C(Player *player)
+{
+    if (player->unk64 != 20) {
+        if (player->unk2C > 0)
+            player->unk2C--;
+    }
+}
+
+void sub_802A5AC(Player *player)
+{
+    if (player->unk36 != 0)
+        player->unk36--;
+}
+
+void PlayerCB_802A5C4(Player *player)
+{
+    player->moveState &= ~MOVESTATE_20;
+
+    if (player->unk64 == 7 || player->unk64 == 8) {
+        player->unk64 = 6;
+    } else {
+        player->unk64 = 5;
+    }
+
+    player->unk90->s.unk10 &= ~(MOVESTATE_4000);
+
+    player->speedGroundX = 0;
+    player->moveState ^= MOVESTATE_FACING_LEFT;
+
+    gPlayer.callback = PlayerCB_8025548;
+    PlayerCB_8025548(player);
+}
+
+void PlayerCB_802A620(Player *player)
+{
+    player->moveState &= ~MOVESTATE_20;
+
+    player->unk90->s.unk10 &= ~(MOVESTATE_4000);
+
+    player->unk64 = 1;
+
+    player->speedGroundX = 0;
+
+    gPlayer.callback = PlayerCB_802569C;
+    PlayerCB_802569C(player);
+}
+
+void sub_802A660(Player *player)
+{
+    if (player->unk2A == 0) {
+        if ((player->unk5C & DPAD_SIDEWAYS) != DPAD_RIGHT) {
+            if ((player->unk5C & DPAD_SIDEWAYS) == DPAD_LEFT) {
+                s32 grnd = player->speedGroundX;
+                if (grnd <= 0) {
+                    player->moveState |= MOVESTATE_FACING_LEFT;
+                } else if ((grnd - Q_24_8(0.09375)) < 0) {
+                    s32 val = Q_24_8(0.375);
+                    player->speedGroundX = -val;
+                } else {
+                    player->speedGroundX = (grnd - Q_24_8(0.09375));
+                }
+            }
+        } else {
+            s32 grnd = player->speedGroundX;
+            if (grnd >= 0) {
+                player->moveState &= ~MOVESTATE_FACING_LEFT;
+            } else if ((grnd + Q_24_8(0.09375)) > 0) {
+                player->speedGroundX = +Q_24_8(0.375);
+            } else {
+                player->speedGroundX = (grnd + Q_24_8(0.09375));
+            }
+        }
+    }
+}
+
+void sub_802A6C0(Player *player)
+{
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    player->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+
+    player->unk37 &= ~0x80;
+    player->unk38 = 0x1;
+
+    gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+    m4aSongNumStop(SE_GRINDING);
+}
+
+void PlayerCB_802A714(Player *player)
+{
+    switch (player->character) {
+        case CHARACTER_SONIC: {
+            sub_8011D48(player);
+        } break;
+
+        case CHARACTER_CREAM: {
+            if (player->unk5A == 0) {
+                sub_8012548(player);
+            } else {
+                sub_8012830(player);
+            }
+        } break;
+
+        case CHARACTER_TAILS: {
+            sub_8012D3C(player);
+        } break;
+
+        case CHARACTER_KNUCKLES: {
+            if (player->unk5A == 0) {
+                sub_8012EEC(player);
+            } else {
+                sub_8013070(player);
+            }
+        } break;
+
+        case CHARACTER_AMY: {
+            if (player->unk5A == 0) {
+                sub_8013F04(player);
+            } else {
+                sub_8011D48(player);
+            }
+        } break;
+    }
 }
