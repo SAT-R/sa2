@@ -73,6 +73,7 @@ extern u8 gUnknown_030054E4;
 
 #define EXTRA_STATE__CLEAR              0x0000
 #define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
+#define EXTRA_STATE__2                  0x0002
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
@@ -150,7 +151,11 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
+    // The player sprite's position is actually at the middle of its graphics
+    // this offset
+    // spriteOffsetX
     /* 0x16 */ s8 unk16;
+    // spriteOffsetY
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
 
@@ -221,7 +226,9 @@ typedef struct Player_ {
     /* 0x7C */ u8 filler7C[8];
     /* 0x84 */ u8 filler84;
     /* 0x85 */ s8 character;
-    /* 0x86 */ u8 filler86[6];
+    /* 0x86 */ u8 unk86;
+    /* 0x87 */ u8 unk87;
+    /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *unk8C;
     /* 0x90 */ struct UNK_3005A70 *unk90;
     /* 0x94 */ u8 filler94[5];

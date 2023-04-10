@@ -245,8 +245,8 @@ sAnimInfoPauseMenu:
 gUnknown_080D5178:
     .incbin "baserom.gba", 0x000D5178, 0x4E
 
-    .global gUnknown_080D51C6
-gUnknown_080D51C6:
+    .global ItemBox_1UpIcons
+ItemBox_1UpIcons:
     .2byte 0x2D5, 0, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_SONIC   , 4
     .2byte 0x2D5, 1, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_CREAM   , 4
     .2byte 0x2D5, 2, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS   , 4
@@ -7348,7 +7348,7 @@ _0800B5C2:
 	ldrb r0, [r3]
 	cmp r0, #0
 	bne _0800B5F4
-	ldr r2, _0800B5EC @ =gUnknown_080D51C6
+	ldr r2, _0800B5EC @ =ItemBox_1UpIcons
 	ldr r3, _0800B5F0 @ =gSelectedCharacter
 	movs r1, #0
 	ldrsb r1, [r3, r1]
@@ -7364,7 +7364,7 @@ _0800B5C2:
 	ldrsb r1, [r3, r1]
 	b _0800B60A
 	.align 2, 0
-_0800B5EC: .4byte gUnknown_080D51C6
+_0800B5EC: .4byte ItemBox_1UpIcons
 _0800B5F0: .4byte gSelectedCharacter
 _0800B5F4:
 	ldr r2, _0800B628 @ =gUnknown_080D5178

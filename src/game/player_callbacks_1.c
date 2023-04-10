@@ -3047,3 +3047,91 @@ bool32 sub_8029E24(Player *player)
 
     return FALSE;
 }
+
+extern s32 sub_8022F58(u8, Player *);
+
+bool32 sub_8029E6C(Player *player)
+{
+    u8 rot = player->rotation;
+
+    if (player->unk5E & gPlayerControls.jump) {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            rot += Q_24_8(0.25);
+            rot = -rot;
+            rot -= Q_24_8(0.25);
+        }
+
+        if (sub_8022F58(rot + Q_24_8(0.5), player) > 3) {
+            gPlayer.callback = PlayerCB_8025D00;
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+void sub_8029ED8(Player *player) { PLAYERCB_UPDATE_UNK2A(player); }
+
+void sub_8029F20(Player *player) { PLAYERCB_UPDATE_ROTATION(player); }
+
+extern u16 gLevelSongs[];
+
+void ContinueLevelSongAfterDrowning(Player *player)
+{
+    player->unk87 = 60;
+    player->unk86 = 30;
+
+    if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
+        if (player->unk60 == 0) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+    }
+}
+
+extern void sub_801F5CC(s32, s32);
+
+void sub_8029FA4(Player *player)
+{
+    u8 mask = (player->moveState & MOVESTATE_8000000) ? 0x7 : 0x3;
+
+    if ((gUnknown_03005590 & mask) == 0) {
+        s32 u17 = player->unk17;
+
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            u17 = -u17;
+        }
+
+        sub_801F5CC(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y) + u17);
+    }
+}
+
+void Player_SetMovestate_IsInScriptedSequence(void)
+{
+    gPlayer.moveState |= MOVESTATE_IN_SCRIPTED;
+}
+
+void Player_ClearMovestate_IsInScriptedSequence(void)
+{
+    gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
+}
+
+void sub_802A018(void)
+{
+    gPlayer.unk6D = 10;
+    gUnknown_03005424
+        |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);
+
+    if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
+        gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+    }
+}
+
+void sub_802A050(void)
+{
+    gUnknown_03005424
+        |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);
+
+    if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
+        gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+    }
+}
