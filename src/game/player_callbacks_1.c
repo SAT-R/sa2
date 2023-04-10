@@ -66,6 +66,7 @@ bool32 sub_802A0C8(Player *);
 bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
+void PlayerCB_802A228(Player *);
 void sub_802A360(Player *);
 void PlayerCB_802A3B8(Player *);
 void PlayerCB_802A3C4(Player *);
@@ -75,6 +76,7 @@ void sub_802A468(Player *);
 void sub_802A4B8(Player *);
 void PlayerCB_802A4FC(Player *);
 void PlayerCB_802A5C4(Player *);
+void PlayerCB_802A620(Player *);
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -3074,9 +3076,7 @@ void sub_8029ED8(Player *player) { PLAYERCB_UPDATE_UNK2A(player); }
 
 void sub_8029F20(Player *player) { PLAYERCB_UPDATE_ROTATION(player); }
 
-
 /* This could be a different module starting here? */
-
 
 extern u16 gLevelSongs[];
 
@@ -3140,9 +3140,49 @@ void sub_802A050(void)
     }
 }
 
-void sub_802A07C(void)
+void TaskDestructor_802A07C(void)
 {
     gPlayer.spriteTask = NULL;
 
+    if (gPlayer.unk60) {
+        VramFree(gPlayer.unk90->s.graphics.dest);
+    }
 
+    if (gPlayer.character == CHARACTER_CREAM || gPlayer.character == CHARACTER_TAILS) {
+        VramFree(gPlayer.unk94->s.graphics.dest);
+    }
+}
+
+bool32 sub_802A0C8(Player *player)
+{
+    if (((player->unk5C & DPAD_ANY) == DPAD_UP) && player->speedGroundX == 0) {
+        gPlayer.callback = PlayerCB_802A620;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 sub_802A0FC(Player *player)
+{
+    if ((player->unk5C & DPAD_ANY) == DPAD_DOWN) {
+        if ((player->speedGroundX == 0)
+            && (((player->rotation + Q_24_8(0.125)) & 0xC0) == 0)
+            && !(player->moveState
+                 & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+            gPlayer.callback = PlayerCB_802A228;
+            return TRUE;
+        } else {
+            // _0802A148
+            if (((u16)(player->speedGroundX + (Q_24_8(0.5) - 1)) > Q_24_8(1.0) - 2)
+                && !(player->moveState
+                     & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+                gPlayer.callback = PlayerCB_8025A0C;
+                m4aSongNumStart(SE_SPIN_ATTACK);
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
 }

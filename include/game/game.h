@@ -191,7 +191,7 @@ typedef struct Player_ {
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
     /* 0x5E */ u16 unk5E; // new input on this frame?
-    /* 0x61 */ s8 unk60;
+    /* 0x60 */ s8 unk60;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
@@ -231,7 +231,9 @@ typedef struct Player_ {
     /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ struct UNK_3005A70 *unk90;
-    /* 0x94 */ u8 filler94[5];
+    // Only used for Cream/Tails?
+    /* 0x94 */ struct UNK_3005A70 *unk94;
+    /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
 } Player;
 
