@@ -229,7 +229,7 @@ typedef struct Player_ {
     /* 0x86 */ u8 unk86;
     /* 0x87 */ u8 unk87;
     /* 0x88 */ u8 filler88[4];
-    /* 0x8C */ struct Task *unk8C;
+    /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ struct UNK_3005A70 *unk90;
     /* 0x94 */ u8 filler94[5];
     /* 0x99 */ s8 unk99;

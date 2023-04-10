@@ -95,7 +95,7 @@ void sub_8081200(void)
     gUnknown_030059D8 = 0;
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
-    gPlayer.unk8C = 0;
+    gPlayer.spriteTask = 0;
     gCamera.unk5C = 0;
     gUnknown_0300543C = 0;
     *gameMode = val;

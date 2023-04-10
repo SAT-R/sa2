@@ -2729,8 +2729,8 @@ void sub_80299F0(u32 character, u32 level, u32 p2, Player *player)
 
 void sub_80299FC(Player *player)
 {
-    TaskDestroy(player->unk8C);
-    player->unk8C = NULL;
+    TaskDestroy(player->spriteTask);
+    player->spriteTask = NULL;
 
     if (player->unk60 == 0) {
         sub_801F78C();
@@ -3074,6 +3074,10 @@ void sub_8029ED8(Player *player) { PLAYERCB_UPDATE_UNK2A(player); }
 
 void sub_8029F20(Player *player) { PLAYERCB_UPDATE_ROTATION(player); }
 
+
+/* This could be a different module starting here? */
+
+
 extern u16 gLevelSongs[];
 
 void ContinueLevelSongAfterDrowning(Player *player)
@@ -3134,4 +3138,11 @@ void sub_802A050(void)
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
     }
+}
+
+void sub_802A07C(void)
+{
+    gPlayer.spriteTask = NULL;
+
+
 }
