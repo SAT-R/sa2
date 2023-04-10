@@ -12,6 +12,12 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
+/* NOTE: We consider Player Callbacks to be all procedures
+ *       that are passed to the first member of the Player struct.
+ *       So even if there are procedures that only take a Player,
+ *       if they are only called directly in the code, those are NOT callbacks.
+ */
+
 extern void sub_8011B88(s32, s32, u32);
 extern void sub_8011D48(Player *);
 extern void PlayerCB_8011F1C(Player *);
@@ -31,21 +37,32 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
+extern s32 sub_801E4E4(s32, s32, u32, u32, u8 *, void *);
+extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern void sub_801F214(void);
 extern void sub_801F488(void);
+extern void sub_801F550(struct Task *);
+extern void sub_801F5CC(s32, s32);
+
+extern void *sub_802195C(Player *player, u8 *p1, int *out);
+extern void *sub_8021A34(Player *player, u8 *p1, int *out);
+extern void *sub_8021B08(Player *player, u8 *p1, int *out);
+
+extern s32 sub_8022F58(u8, Player *);
+extern void sub_8022190(Player *);
+extern void sub_8022218(Player *);
+extern void sub_8022284(Player *);
+extern void sub_8022D6C(Player *);
+extern void sub_8023128(Player *);
+extern void sub_80231C0(Player *);
+extern void sub_8023260(Player *);
+extern void sub_80232D0(Player *);
+extern void sub_8023610(Player *);
+extern void sub_80236C8(Player *);
+extern void sub_8023708(Player *);
+extern void sub_80246DC(Player *);
 
 void PlayerCB_Idle(Player *);
-void sub_8022190(Player *);
-void sub_8022218(Player *);
-void sub_8022284(Player *);
-void sub_8022D6C(Player *);
-void sub_8023128(Player *);
-void sub_80231C0(Player *);
-void sub_8023260(Player *);
-void sub_80232D0(Player *);
-void sub_8023610(Player *);
-void sub_80236C8(Player *);
-void sub_8023708(Player *);
-void sub_80246DC(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_8025E18(Player *);
 void sub_8025F84(Player *);
@@ -87,21 +104,15 @@ void PlayerCB_802A5C4(Player *);
 void PlayerCB_802A620(Player *);
 void PlayerCB_802A714(Player *);
 
-/* NOTE: We consider Player Callbacks to be all procedures
- *       that are passed to the first member of the Player struct.
- *       So even if there are procedures that only take a Player,
- *       if they are only called directly in the code, those are NOT callbacks.
- */
+extern u16 gLevelSongs[];
 
-// static
-const s16 gUnknown_080D6902[5][2] = {
+static const s16 gUnknown_080D6902[5][2] = {
     { 8, 64 }, { 12, 64 }, { 14, 64 }, { 16, 64 }, { 18, 64 },
 };
 
 static const s16 gUnknown_080D6916[5] = { 0x800, 0x7F8, 0x690, 0x5A0, 0x438 };
 
-// TODO: static
-const s16 sSpinDashSpeeds[9] = {
+static const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 0 * (3. / 8.)), //
     Q_8_8(6.000 + 1 * (3. / 8.)), //
     Q_8_8(6.000 + 2 * (3. / 8.)), //
@@ -113,8 +124,100 @@ const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 8 * (3. / 8.)), //
 };
 
-// TODO: static
-const u16 gUnknown_080D6932[4] = { 100, 100, 100, 100 };
+static const u16 gUnknown_080D6932[4] = { 100, 100, 100, 100 };
+
+static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
+    [0] = {
+        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(-6.00)},
+        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(-6.00)},
+    },
+    [1] = {
+        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(1.00)},
+        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(0.50)},
+        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(0.50)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(1.00)},
+        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(1.00)},
+    },
+    [2] = {
+        [CHARACTER_SONIC] = {Q_8_8(6.00), Q_8_8(0.00)},
+        [CHARACTER_CREAM] = {Q_8_8(4.00), Q_8_8(-2.50)},
+        [CHARACTER_TAILS] = {Q_8_8(4.00), Q_8_8(-2.50)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(6.00), Q_8_8(0.00)},
+        [CHARACTER_AMY] = {Q_8_8(6.00), Q_8_8(0.00)},
+    },
+    [3] = {
+        [CHARACTER_SONIC] = {Q_8_8(-5.00), Q_8_8(-3.50)},
+        [CHARACTER_CREAM] = {Q_8_8(-3.50), Q_8_8(-3.00)},
+        [CHARACTER_TAILS] = {Q_8_8(-3.50), Q_8_8(-3.00)},
+        [CHARACTER_KNUCKLES] = {Q_8_8(-5.00), Q_8_8(0.00)},
+        [CHARACTER_AMY] = {Q_8_8(-3.50), Q_8_8(-2.00)},
+    },
+};
+
+static const u16 gUnknown_080D698A[4] = { 33, 36, 34, 35 };
+
+#define MASK_80D6992_1  0x1
+#define MASK_80D6992_2  0x2
+#define MASK_80D6992_4  0x4
+#define MASK_80D6992_8  0x8
+#define MASK_80D6992_10 0x10
+
+static const u8 gUnknown_080D6992[4][NUM_CHARACTERS] = {
+    [0] = {
+        [CHARACTER_SONIC]    = MASK_80D6992_1,
+        [CHARACTER_CREAM]    = MASK_80D6992_1,
+        [CHARACTER_TAILS]    = MASK_80D6992_1,
+        [CHARACTER_KNUCKLES] = (MASK_80D6992_2 | MASK_80D6992_1),
+        [CHARACTER_AMY]      = MASK_80D6992_1,
+    },
+    [1] = {
+        [CHARACTER_SONIC]    = 0,
+        [CHARACTER_CREAM]    = 0,
+        [CHARACTER_TAILS]    = 0,
+        [CHARACTER_KNUCKLES] = 0,
+        [CHARACTER_AMY]      = 0,
+    },
+    [2] = {
+        [CHARACTER_SONIC]    = MASK_80D6992_8,
+        [CHARACTER_CREAM]    = MASK_80D6992_10,
+        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
+        [CHARACTER_AMY]      = MASK_80D6992_8,
+    },
+    [3] = {
+        [CHARACTER_SONIC]    = 0,
+        [CHARACTER_CREAM]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
+        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
+        [CHARACTER_AMY]      = 0,
+    },
+};
+
+static const u16 gUnknown_080D69A6[2][3] = {
+    [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC),
+            SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
+    [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES),
+            SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
+};
+
+static const s16 gUnknown_080D69B2[4] = {
+    Q_8_8(7.5),
+    Q_8_8(9.0),
+    Q_8_8(10.5),
+    Q_8_8(12.0),
+};
+
+static const s16 gUnknown_080D69BA[4] = {
+    Q_8_8(7.5),
+    Q_8_8(9.0),
+    Q_8_8(10.5),
+    Q_8_8(12.0),
+};
+
+static const u8 gUnknown_080D69C2[4] = { 4, 3, 2, 2 };
 
 void PlayerCB_8025318(Player *player)
 {
@@ -1743,87 +1846,6 @@ void sub_8028478(Player *player)
 /* Starting here, callbacks appear to have a different style,
    but they still use macros like PLAYERCB_UPDATE_POSITION */
 
-extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
-extern void sub_801F214(void);
-extern void sub_801F550(struct Task *);
-
-static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
-    [0] = {
-        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(-6.00)},
-        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(-6.00)},
-        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(-6.00)},
-        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(-6.00)},
-        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(-6.00)},
-    },
-    [1] = {
-        [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(1.00)},
-        [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(0.50)},
-        [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(0.50)},
-        [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(1.00)},
-        [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(1.00)},
-    },
-    [2] = {
-        [CHARACTER_SONIC] = {Q_8_8(6.00), Q_8_8(0.00)},
-        [CHARACTER_CREAM] = {Q_8_8(4.00), Q_8_8(-2.50)},
-        [CHARACTER_TAILS] = {Q_8_8(4.00), Q_8_8(-2.50)},
-        [CHARACTER_KNUCKLES] = {Q_8_8(6.00), Q_8_8(0.00)},
-        [CHARACTER_AMY] = {Q_8_8(6.00), Q_8_8(0.00)},
-    },
-    [3] = {
-        [CHARACTER_SONIC] = {Q_8_8(-5.00), Q_8_8(-3.50)},
-        [CHARACTER_CREAM] = {Q_8_8(-3.50), Q_8_8(-3.00)},
-        [CHARACTER_TAILS] = {Q_8_8(-3.50), Q_8_8(-3.00)},
-        [CHARACTER_KNUCKLES] = {Q_8_8(-5.00), Q_8_8(0.00)},
-        [CHARACTER_AMY] = {Q_8_8(-3.50), Q_8_8(-2.00)},
-    },
-};
-
-static const u16 gUnknown_080D698A[4] = { 33, 36, 34, 35 };
-
-#define MASK_80D6992_1  0x1
-#define MASK_80D6992_2  0x2
-#define MASK_80D6992_4  0x4
-#define MASK_80D6992_8  0x8
-#define MASK_80D6992_10 0x10
-
-static const u8 gUnknown_080D6992[4][NUM_CHARACTERS] = {
-    [0] = {
-        [CHARACTER_SONIC]    = MASK_80D6992_1,
-        [CHARACTER_CREAM]    = MASK_80D6992_1,
-        [CHARACTER_TAILS]    = MASK_80D6992_1,
-        [CHARACTER_KNUCKLES] = (MASK_80D6992_2 | MASK_80D6992_1),
-        [CHARACTER_AMY]      = MASK_80D6992_1,
-    },
-    [1] = {
-        [CHARACTER_SONIC]    = 0,
-        [CHARACTER_CREAM]    = 0,
-        [CHARACTER_TAILS]    = 0,
-        [CHARACTER_KNUCKLES] = 0,
-        [CHARACTER_AMY]      = 0,
-    },
-    [2] = {
-        [CHARACTER_SONIC]    = MASK_80D6992_8,
-        [CHARACTER_CREAM]    = MASK_80D6992_10,
-        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
-        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
-        [CHARACTER_AMY]      = MASK_80D6992_8,
-    },
-    [3] = {
-        [CHARACTER_SONIC]    = 0,
-        [CHARACTER_CREAM]    = (MASK_80D6992_10 | MASK_80D6992_1),
-        [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
-        [CHARACTER_KNUCKLES] = MASK_80D6992_4,
-        [CHARACTER_AMY]      = 0,
-    },
-};
-
-static const u16 gUnknown_080D69A6[2][3] = {
-    [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC),
-            SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
-    [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES),
-            SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
-};
-
 struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 {
     struct Task *t;
@@ -2043,22 +2065,6 @@ void PlayerCB_8028D74(Player *player)
     gPlayer.callback = PlayerCB_8029074;
     PlayerCB_8029074(player);
 }
-
-static const s16 gUnknown_080D69B2[4] = {
-    Q_8_8(7.5),
-    Q_8_8(9.0),
-    Q_8_8(10.5),
-    Q_8_8(12.0),
-};
-
-static const s16 gUnknown_080D69BA[4] = {
-    Q_8_8(7.5),
-    Q_8_8(9.0),
-    Q_8_8(10.5),
-    Q_8_8(12.0),
-};
-
-static const u8 gUnknown_080D69C2[4] = { 4, 3, 2, 2 };
 
 void PlayerCB_8028E24(Player *player)
 {
@@ -2632,11 +2638,6 @@ void sub_80299FC(Player *player)
     }
 }
 
-extern void *sub_802195C(Player *player, u8 *p1, int *out);
-extern void *sub_8021A34(Player *player, u8 *p1, int *out);
-extern void *sub_8021B08(Player *player, u8 *p1, int *out);
-void *sub_8029BB8(Player *player, u8 *p1, int *out);
-
 void *sub_8029A28(Player *player, u8 *p1, int *out)
 {
     void *result;
@@ -2733,6 +2734,8 @@ void *sub_8029AC0(Player *player, u8 *p1, int *out)
     return result;
 }
 
+void *sub_8029BB8(Player *player, u8 *p1, int *out);
+
 void *sub_8029B0C(Player *player, u8 *p1, int *out)
 {
     void *result;
@@ -2794,8 +2797,6 @@ void *sub_8029B88(Player *player, u8 *p1, int *out)
 
     return result;
 }
-
-extern s32 sub_801E4E4(s32, s32, u32, u32, u8 *, void *);
 
 // TODO/HACK: Remove the cast at the return!!!
 void *sub_8029BB8(Player *player, u8 *p1, int *out)
@@ -2942,8 +2943,6 @@ bool32 sub_8029E24(Player *player)
     return FALSE;
 }
 
-extern s32 sub_8022F58(u8, Player *);
-
 bool32 sub_8029E6C(Player *player)
 {
     u8 rot = player->rotation;
@@ -2970,8 +2969,6 @@ void sub_8029F20(Player *player) { PLAYERCB_UPDATE_ROTATION(player); }
 
 /* This could be a different module starting here? */
 
-extern u16 gLevelSongs[];
-
 void ContinueLevelSongAfterDrowning(Player *player)
 {
     player->unk87 = 60;
@@ -2983,8 +2980,6 @@ void ContinueLevelSongAfterDrowning(Player *player)
         }
     }
 }
-
-extern void sub_801F5CC(s32, s32);
 
 void sub_8029FA4(Player *player)
 {
