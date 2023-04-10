@@ -147,7 +147,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/ice_paradise/069.o(.text);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.text);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
-        build/sa2/asm/interactable_075.o(.text);
+        build/sa2/src/game/interactables_2/075.o(.text);
         build/sa2/src/game/interactables_2/078.o(.text);
         build/sa2/src/game/interactables_2/080.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/giant_propeller.o(.text);
@@ -160,6 +160,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/094.o(.text);
         build/sa2/src/game/interactables_2/095.o(.text);
         build/sa2/asm/interactable_sky_canyon_flying_handle.o(.text);
+        build/sa2/src/game/interactables_2/097.o(.text);
         build/sa2/asm/interactable_097.o(.text);
         build/sa2/src/game/interactables_2/gravity_toggle.o(.text);
         build/sa2/src/game/interactables_2/notification_ring_bonus.o(.text);
