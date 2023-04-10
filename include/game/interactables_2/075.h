@@ -1,5 +1,5 @@
-#ifndef GUARD_INTERACTABLE_078_H
-#define GUARD_INTERACTABLE_078_H
+#ifndef GUARD_INTERACTABLE_075_H
+#define GUARD_INTERACTABLE_075_H
 
 #include "global.h"
 #include "game/entity.h"
