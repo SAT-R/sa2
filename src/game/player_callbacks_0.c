@@ -331,3 +331,29 @@ void sub_8012194(Player *player)
     gPlayer.callback = PlayerCB_80124D0;
     PlayerCB_80124D0(player);
 }
+
+void PlayerCB_801225C(Player *player)
+{
+    sub_80218E4(player);
+    player->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_1000000 | MOVESTATE_20);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 14;
+
+    player->speedAirX = 0;
+    player->speedAirY = -Q_24_8(4.0);
+    player->rotation = 0;
+
+    player->unk70 = 1;
+    player->unk71 = 0;
+    player->unk6E = 0;
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    player->rotation = 0;
+
+    gPlayer.callback = PlayerCB_80261D8;
+    PlayerCB_80261D8(player);
+}

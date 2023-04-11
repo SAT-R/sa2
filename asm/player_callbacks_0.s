@@ -13,66 +13,6 @@
 .if 00
 .endif
 
-	thumb_func_start PlayerCB_801225C
-PlayerCB_801225C: @ 0x0801225C
-	push {r4, r5, lr}
-	adds r5, r0, #0
-	bl sub_80218E4
-	ldr r0, [r5, #0x20]
-	movs r1, #0x81
-	lsls r1, r1, #1
-	orrs r0, r1
-	ldr r1, _080122CC @ =0xDEFFFFDF
-	ands r0, r1
-	str r0, [r5, #0x20]
-	adds r0, r5, #0
-	movs r1, #0xe
-	bl sub_8023B5C
-	movs r2, #0
-	movs r0, #6
-	strb r0, [r5, #0x16]
-	movs r1, #0xe
-	strb r1, [r5, #0x17]
-	adds r0, r5, #0
-	adds r0, #0x64
-	movs r3, #0
-	strh r1, [r0]
-	strh r2, [r5, #0x10]
-	movs r0, #0xfc
-	lsls r0, r0, #8
-	strh r0, [r5, #0x12]
-	adds r4, r5, #0
-	adds r4, #0x24
-	strb r3, [r4]
-	adds r1, r5, #0
-	adds r1, #0x70
-	movs r0, #1
-	strb r0, [r1]
-	adds r0, r5, #0
-	adds r0, #0x71
-	strb r3, [r0]
-	subs r0, #3
-	strb r3, [r0]
-	adds r0, #0x22
-	ldr r2, [r0]
-	ldr r0, [r2, #0x1c]
-	ldr r1, _080122D0 @ =0xFFFFBFFF
-	ands r0, r1
-	str r0, [r2, #0x1c]
-	strb r3, [r4]
-	ldr r0, _080122D4 @ =gPlayer
-	ldr r1, _080122D8 @ =PlayerCB_80261D8
-	str r1, [r0]
-	adds r0, r5, #0
-	bl _call_via_r1
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080122CC: .4byte 0xDEFFFFDF
-_080122D0: .4byte 0xFFFFBFFF
-_080122D4: .4byte gPlayer
-_080122D8: .4byte PlayerCB_80261D8
 
 @ In:
 @  r0: s32 x
