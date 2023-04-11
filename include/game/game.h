@@ -151,8 +151,8 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
-    // The player sprite's position is actually at the middle of its graphics
-    // this offset
+    // The player sprite's position is actually at the middle of its graphics,
+    // this offset denotes the difference to the ground.
     // spriteOffsetX
     /* 0x16 */ s8 unk16;
     // spriteOffsetY
