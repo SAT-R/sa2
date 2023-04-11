@@ -22,13 +22,14 @@ void Task_8012034(void);
 void PlayerCB_80123D0(Player *);
 void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
-extern void TaskDestructor_80124B8(struct Task *);
+void TaskDestructor_80124B8(struct Task *);
+void PlayerCB_80124D0(Player *player);
 
-void PlayerCB_80261D8(Player *player);
-void sub_8027EF0(Player *player);
-void sub_80283C4(Player *player);
-void sub_8029C84(Player *player);
-void sub_8029FA4(Player *player);
+extern void PlayerCB_80261D8(Player *player);
+extern void sub_8027EF0(Player *player);
+extern void sub_80283C4(Player *player);
+extern void sub_8029C84(Player *player);
+extern void sub_8029FA4(Player *player);
 
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
@@ -293,4 +294,40 @@ void sub_80120C0(Player *player)
 
     gPlayer.callback = PlayerCB_80261D8;
     PlayerCB_80261D8(player);
+}
+
+void sub_8012194(Player *player)
+{
+    s16 unk30054C0 = gUnknown_030054C0.unk4;
+    s32 six = Q_24_8(6.0);
+    s32 cosVal, sinVal;
+
+    sub_80218E4(player);
+    player->moveState
+        |= (MOVESTATE_20000000 | MOVESTATE_BOOST_EFFECT_ON | MOVESTATE_IN_AIR);
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
+
+    sub_8023B5C(player, 9);
+    player->unk16 = 6;
+    player->unk17 = 9;
+
+    player->unk64 = 19;
+
+    cosVal = COS_24_8(unk30054C0);
+    sinVal = SIN_24_8(unk30054C0);
+    player->speedAirX = Q_24_8_TO_INT(cosVal * six);
+    player->speedAirY = Q_24_8_TO_INT(sinVal * six) - Q_24_8(0.5);
+
+    player->rotation = 0;
+    player->unk70 = 0;
+    player->unk71 = 0;
+    player->unk6E = 0;
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    player->rotation = 0;
+    player->unk72 = GBA_FRAMES_PER_SECOND;
+
+    m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
+
+    gPlayer.callback = PlayerCB_80124D0;
+    PlayerCB_80124D0(player);
 }
