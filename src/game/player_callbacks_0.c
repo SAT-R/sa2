@@ -232,3 +232,24 @@ void PlayerCB_8011F94(Player *player)
         player->unk64 = -1;
     }
 }
+
+void Task_8012034(void)
+{
+    TaskStrc_8011C98 *strc = TaskGetStructPtr(gCurTask);
+    Sprite *s = &strc->s;
+    TrickBoundPos pos;
+
+    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q_24_8(2.0))
+        || (gPlayer.unk64 != 36)) {
+        TaskDestroy(gCurTask);
+    } else {
+        sub_8004558(s);
+
+        strc->unk28 = ((strc->unk28 - 1) & 0x6);
+        sub_80157C8(&pos, strc->unk28);
+        s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
+        s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
+
+        sub_80051E8(s);
+    }
+}

@@ -397,6 +397,13 @@ typedef struct {
     /* 0x2C */ Sprite s;
 } TaskStrc_8011C98; /* size: 0x5C */
 
+typedef struct {
+    s32 x;
+    s32 y;
+} TrickBoundPos;
+
+extern void sub_80157C8(TrickBoundPos *pos, u8 index);
+
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
     /* 0x00 */ u8 filler0[0xC];
