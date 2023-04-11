@@ -38,6 +38,7 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_START               0
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_EXECUTE             1
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
+#define SA2_CHAR_ANIM_51                                     51
 #define SA2_CHAR_ANIM_70                                     70
 
 #define SA2_ANIM_SONIC_IDLE    0

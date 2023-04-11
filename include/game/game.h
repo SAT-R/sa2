@@ -389,6 +389,14 @@ struct UNK_3005510 {
     u8 unk7;
 }; /* 0x8 */
 
+// TODO: Move this into the module sub_8011C98 gets defined in, once it's decomped
+typedef struct {
+    /* 0x00 */ s32 px[5];
+    /* 0x14 */ s32 py[5];
+    /* 0x28 */ u16 unk28;
+    /* 0x2C */ Sprite s;
+} TaskStrc_8011C98; /* size: 0x5C */
+
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
     /* 0x00 */ u8 filler0[0xC];
