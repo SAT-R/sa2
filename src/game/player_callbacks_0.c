@@ -24,6 +24,7 @@ void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 extern void TaskDestructor_80124B8(struct Task *);
 
+void PlayerCB_80261D8(Player *player);
 void sub_8027EF0(Player *player);
 void sub_80283C4(Player *player);
 void sub_8029C84(Player *player);
@@ -252,4 +253,44 @@ void Task_8012034(void)
 
         sub_80051E8(s);
     }
+}
+
+void sub_80120C0(Player *player)
+{
+    if (player->moveState & MOVESTATE_10) {
+        if (player->unk5C & DPAD_LEFT)
+            player->moveState |= MOVESTATE_FACING_LEFT;
+
+        if (player->unk5C & DPAD_RIGHT)
+            player->moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+
+    sub_80218E4(player);
+    player->moveState |= MOVESTATE_IN_AIR;
+    player->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_4);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 80;
+
+    if (player->moveState & MOVESTATE_FACING_LEFT)
+        player->speedAirX -= Q_24_8(2.25);
+    else
+        player->speedAirX += Q_24_8(2.25);
+
+    player->speedAirY = 0;
+    player->rotation = 0;
+    player->unk70 = 0;
+    player->unk71 = 0;
+
+    m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
+
+    player->unk6E = 0;
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    player->rotation = 0;
+
+    gPlayer.callback = PlayerCB_80261D8;
+    PlayerCB_80261D8(player);
 }
