@@ -22,7 +22,8 @@ typedef struct {
     s32 unk48;
 
     s32 unk4C;
-    s32 unk50;
+    s16 unk50;
+    s16 unk52;
 
     s32 unk54;
     s16 unk58;
@@ -127,4 +128,31 @@ void sub_807FA98(Sprite_IA97 *ia97)
     ia97->unk54 = 1;
     m4aSongNumStop(SE_288);
     gCurTask->main = sub_807F9F0;
+}
+
+s32 sub_807FC9C(Sprite_IA97 *);
+
+void sub_807FB1C(Sprite_IA97 *ia97)
+{
+    if (ia97->unk54 == 0) {
+        ia97->unk5C = ia97->unk5C > 0xF00 ? 0xF00 : ia97->unk5C;
+        ia97->unk58 = Q_24_8_TO_INT(ia97->unk5C * COS_24_8(ia97->unk5E * 4));
+        ia97->unk5A = Q_24_8_TO_INT(ia97->unk5C * SIN_24_8(ia97->unk5E * 4));
+    } else {
+        ia97->unk5A += 0x2A;
+        ia97->unk5A = ia97->unk5A > 0x800 ? 0x800 : ia97->unk5A;
+    }
+
+    ia97->unk44 += ia97->unk58;
+    ia97->unk48 += ia97->unk5A;
+
+    if (PlayerIsAlive && ia97->unk4C != 0) {
+        gPlayer.x = ia97->unk50 + ((ia97->x * 0x100) + ia97->unk44);
+        gPlayer.y
+            = ia97->unk52 + ((ia97->y * 0x100) + ia97->unk48) - (gPlayer.unk17 * 0x100);
+        ia97->unk50 += gPlayer.speedAirX;
+        ia97->unk52 += gPlayer.speedAirY;
+    }
+
+    ia97->unk4C = sub_807FC9C(ia97);
 }
