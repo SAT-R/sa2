@@ -24,7 +24,9 @@ void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 void TaskDestructor_80124B8(struct Task *);
 void PlayerCB_80124D0(Player *player);
+void sub_8015BD4(u16);
 
+extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
 extern void sub_8027EF0(Player *player);
 extern void sub_80283C4(Player *player);
@@ -409,3 +411,61 @@ NONMATCH("asm/non_matching/playercb__sub_80122DC.inc", void sub_80122DC(s32 x, s
     }
 }
 END_NONMATCH
+
+void PlayerCB_80123D0(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        gPlayer.callback = PlayerCB_8025318;
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_80123FC(Player *player)
+{
+    sub_80283C4(player);
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        player->unk6A++;
+
+        player->speedAirY = Q_24_8(2.0);
+        gPlayer.callback = PlayerCB_8011F94;
+
+        if (player->character == CHARACTER_SONIC) {
+            sub_8011C98(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y));
+        } else if (player->character == CHARACTER_AMY) {
+            sub_8015BD4(3);
+        }
+    }
+}
+
+void PlayerCB_8012498(Player *player);
+
+void PlayerCB_8012460(Player *player)
+{
+    player->speedAirY += Q_24_8(56.0 / 256.0);
+
+    if (player->speedAirY >= 0) {
+        player->unk6A++;
+        player->unk6C = 1;
+        gPlayer.callback = PlayerCB_8012498;
+    }
+
+    sub_80283C4(player);
+}
+
+void PlayerCB_8012498(Player *player)
+{
+    sub_8027EF0(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    }
+}
+
+void TaskDestructor_80124B8(struct Task *t)
+{
+    TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
+    Sprite *s = &strc->s;
+    VramFree(s->graphics.dest);
+}

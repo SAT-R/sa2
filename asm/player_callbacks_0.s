@@ -10,146 +10,7 @@
 @       So even if there are procedures that only take a Player,
 @       if they are only called directly in the code, those are NOT callbacks.
 
-.if 00
-.endif
-
-	thumb_func_start PlayerCB_80123D0
-PlayerCB_80123D0: @ 0x080123D0
-	push {lr}
-	adds r2, r0, #0
-	adds r0, #0x90
-	ldr r0, [r0]
-	ldr r0, [r0, #0x1c]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	beq _080123EA
-	ldr r1, _080123F4 @ =gPlayer
-	ldr r0, _080123F8 @ =PlayerCB_8025318
-	str r0, [r1]
-_080123EA:
-	adds r0, r2, #0
-	bl sub_8027EF0
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080123F4: .4byte gPlayer
-_080123F8: .4byte PlayerCB_8025318
-
-	thumb_func_start PlayerCB_80123FC
-PlayerCB_80123FC: @ 0x080123FC
-	push {r4, lr}
-	adds r4, r0, #0
-	bl sub_80283C4
-	adds r0, r4, #0
-	adds r0, #0x90
-	ldr r0, [r0]
-	ldr r0, [r0, #0x1c]
-	movs r1, #0x80
-	lsls r1, r1, #7
-	ands r0, r1
-	cmp r0, #0
-	beq _0801245A
-	adds r1, r4, #0
-	adds r1, #0x6a
-	ldrh r0, [r1]
-	adds r0, #1
-	strh r0, [r1]
-	movs r0, #0x80
-	lsls r0, r0, #2
-	strh r0, [r4, #0x12]
-	ldr r1, _08012448 @ =gPlayer
-	ldr r0, _0801244C @ =PlayerCB_8011F94
-	str r0, [r1]
-	adds r0, r4, #0
-	adds r0, #0x85
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #0
-	bne _08012450
-	ldr r0, [r4, #8]
-	asrs r0, r0, #8
-	ldr r1, [r4, #0xc]
-	asrs r1, r1, #8
-	bl sub_8011C98
-	b _0801245A
-	.align 2, 0
-_08012448: .4byte gPlayer
-_0801244C: .4byte PlayerCB_8011F94
-_08012450:
-	cmp r0, #4
-	bne _0801245A
-	movs r0, #3
-	bl sub_8015BD4
-_0801245A:
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start PlayerCB_8012460
-PlayerCB_8012460: @ 0x08012460
-	push {lr}
-	adds r2, r0, #0
-	ldrh r0, [r2, #0x12]
-	adds r0, #0x38
-	strh r0, [r2, #0x12]
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	blt _08012486
-	adds r1, r2, #0
-	adds r1, #0x6a
-	ldrh r0, [r1]
-	adds r0, #1
-	strh r0, [r1]
-	adds r1, #2
-	movs r0, #1
-	strb r0, [r1]
-	ldr r1, _08012490 @ =gPlayer
-	ldr r0, _08012494 @ =PlayerCB_8012498
-	str r0, [r1]
-_08012486:
-	adds r0, r2, #0
-	bl sub_80283C4
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08012490: .4byte gPlayer
-_08012494: .4byte PlayerCB_8012498
-
-	thumb_func_start PlayerCB_8012498
-PlayerCB_8012498: @ 0x08012498
-	push {r4, lr}
-	adds r4, r0, #0
-	bl sub_8027EF0
-	ldr r0, [r4, #0x20]
-	movs r1, #2
-	ands r0, r1
-	cmp r0, #0
-	bne _080124B2
-	adds r1, r4, #0
-	adds r1, #0x6d
-	movs r0, #1
-	strb r0, [r1]
-_080124B2:
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start TaskDestructor_80124B8
-TaskDestructor_80124B8: @ 0x080124B8
-	push {lr}
-	ldrh r0, [r0, #6]
-	ldr r1, _080124CC @ =IWRAM_START + 0x2C
-	adds r0, r0, r1
-	ldr r0, [r0, #4]
-	bl VramFree
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080124CC: .4byte IWRAM_START + 0x2C
-
+.if 001
 	thumb_func_start PlayerCB_80124D0
 PlayerCB_80124D0: @ 0x080124D0
 	push {r4, lr}
@@ -191,6 +52,7 @@ _08012512:
 	bx r0
 	.align 2, 0
 _08012518: .4byte 0xFDFFFFFF
+.endif
 
 	thumb_func_start sub_801251C
 sub_801251C: @ 0x0801251C
