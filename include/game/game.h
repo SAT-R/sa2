@@ -325,6 +325,12 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)                                              \
     IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))
 
+typedef struct {
+    /* 0x00 */ s32 someDistanceSquared;
+    /* 0x04 */ struct Task *t;
+} SomeStruct_3005498; /* size: unknown (but >= 0x8) */
+extern SomeStruct_3005498 gUnknown_03005498;
+
 struct SomeStruct_5660 {
     u8 filler[16];
     u32 unk10;

@@ -357,3 +357,55 @@ void PlayerCB_801225C(Player *player)
     gPlayer.callback = PlayerCB_80261D8;
     PlayerCB_80261D8(player);
 }
+
+// https://decomp.me/scratch/XxzZB
+NONMATCH("asm/non_matching/playercb__sub_80122DC.inc", void sub_80122DC(s32 x, s32 y))
+{
+    s32 playerX = Q_24_8_TO_INT(gPlayer.x - x);
+    s32 playerY = Q_24_8_TO_INT(gPlayer.y - y);
+    s32 sqPlayerX = playerX * playerX;
+    s32 sqPlayerY = playerY * playerY;
+    s32 sqDistance = sqPlayerX + sqPlayerY; // c^2 = a^2 + b^2
+
+    if (gPlayer.character == CHARACTER_SONIC) {
+        if (sqDistance < gUnknown_030054C0.unk0) {
+            if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
+                s32 temp = sub_8004418(playerX, playerY);
+                u16 value = (temp + -Q_24_8(1.0));
+                value &= (1024 - 1);
+
+                if (value < 313) {
+                    s32 unk4 = Q_24_8(2.0);
+                    unk4 -= value;
+                    unk4 &= (1024 - 1);
+
+                    gUnknown_030054C0.unk0 = sqDistance;
+                    gUnknown_030054C0.unk4 = unk4;
+                }
+            } else {
+                u16 value = sub_8004418(-playerY, -playerX);
+                if (value <= 312) {
+                    gUnknown_030054C0.unk0 = sqDistance;
+                    gUnknown_030054C0.unk4 = value;
+                }
+            }
+        }
+    } else if (gPlayer.character == CHARACTER_CREAM) {
+        // _08012382
+        struct Task *t = gCurTask;
+
+        if (sqDistance < gUnknown_03005498.someDistanceSquared) {
+            if (((gPlayer.moveState & MOVESTATE_FACING_LEFT) && (playerX >= 0))
+                || ((!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) && (playerX <= 0))) {
+                gUnknown_03005498.someDistanceSquared = sqDistance;
+                gUnknown_03005498.t = t;
+            }
+
+            if (t->unk15) {
+                t->unk16 = Q_24_8_TO_INT(x);
+                t->unk18 = Q_24_8_TO_INT(y);
+            }
+        }
+    }
+}
+END_NONMATCH
