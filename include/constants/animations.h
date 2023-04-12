@@ -31,6 +31,13 @@
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
+#define SA2_CHAR_ANIM_31                                     31
+#define SA2_CHAR_ANIM_TRICK_UP                               48
+#define SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX           3 // Knuckles-only(?)
+#define SA2_CHAR_ANIM_TRICK_SIDE                             49
+#define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_START               0
+#define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_EXECUTE             1
+#define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
 #define SA2_CHAR_ANIM_70                                     70
 
 #define SA2_ANIM_SONIC_IDLE    0

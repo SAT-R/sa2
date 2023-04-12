@@ -347,6 +347,8 @@ _08011F0C:
 _08011F14: .4byte gPlayer
 _08011F18: .4byte PlayerCB_80123D0
 
+@ Seems to initialize the "Stop'n' Slam" moves (Trickmove-Down)
+@ for Sonic (Bound) & Amy (Mid-Air Hammer Swirl)
 	thumb_func_start PlayerCB_8011F1C
 PlayerCB_8011F1C: @ 0x08011F1C
 	push {r4, r5, lr}

@@ -476,6 +476,7 @@
 #define REG_TM3CNT_H    (*(vu16 *)REG_ADDR_TM3CNT_H)
 
 #define REG_SIOCNT      (*(vu16 *)REG_ADDR_SIOCNT)
+#define REG_SIOCNT_32   (*(vu32 *)REG_ADDR_SIOCNT)
 #define REG_SIODATA8    (*(vu16 *)REG_ADDR_SIODATA8)
 #define REG_SIODATA32   (*(vu32 *)REG_ADDR_SIODATA32)
 #define REG_SIOMLT_SEND (*(vu16 *)REG_ADDR_SIOMLT_SEND)
@@ -686,6 +687,7 @@
 #define KEY_OR_INTR     0x0000
 #define KEY_AND_INTR    0x8000
 #define DPAD_ANY        0x00F0
+#define DPAD_SIDEWAYS   (DPAD_LEFT | DPAD_RIGHT)
 #define JOY_EXCL_DPAD   0x030F
 
 // interrupt flags

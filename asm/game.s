@@ -19,16 +19,6 @@ PlayerCharacterIdleAnims: @ 0x080D672C
 gUnknown_080D6736:
     .incbin "baserom.gba", 0x000D6736, 0x1CC
 
-@ TODO: Move over to player_callbacks_1.c
-    .global gUnknown_080D6902
-gUnknown_080D6902:
-    .incbin "baserom.gba", 0x000D6902, 0x14
-    
-@ TODO: Move over to player_callbacks_1.c
-    .global gUnknown_080D6916
-gUnknown_080D6916:
-    .incbin "baserom.gba", 0x000D6916, 0xA
-
 .text
 .syntax unified
 .arm
@@ -8554,7 +8544,7 @@ sub_80213C0: @ 0x080213C0
 	ldr r0, _08021408 @ =sub_8023FC0
 	movs r2, #0xc0
 	lsls r2, r2, #6
-	ldr r1, _0802140C @ =sub_802A07C
+	ldr r1, _0802140C @ =TaskDestructor_802A07C
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
@@ -8581,7 +8571,7 @@ sub_80213C0: @ 0x080213C0
 	b _0802141C
 	.align 2, 0
 _08021408: .4byte sub_8023FC0
-_0802140C: .4byte sub_802A07C
+_0802140C: .4byte TaskDestructor_802A07C
 _08021410: .4byte gGameMode
 _08021414: .4byte gRingCount
 _08021418:
@@ -8832,7 +8822,7 @@ _080215F8:
 	.align 2, 0
 _08021600: .4byte 0x00042024
 
-@ Called (by sub_80299F0) which might be unused
+@ Called by sub_80299F0
 	thumb_func_start sub_8021604
 sub_8021604: @ 0x08021604
 	push {r4, lr}

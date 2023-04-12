@@ -30,7 +30,7 @@ extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
-// might be wrong
+// might be unsigned, actually?
 extern s16 gRingCount;
 
 extern u8 gUnknown_030054A8[8];
@@ -73,6 +73,7 @@ extern u8 gUnknown_030054E4;
 
 #define EXTRA_STATE__CLEAR              0x0000
 #define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
+#define EXTRA_STATE__2                  0x0002
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
@@ -150,7 +151,11 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
+    // The player sprite's position is actually at the middle of its graphics
+    // this offset
+    // spriteOffsetX
     /* 0x16 */ s8 unk16;
+    // spriteOffsetY
     /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 filler18[8];
 
@@ -167,22 +172,26 @@ typedef struct Player_ {
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
-    /* 0x36 */ u8 unk36;
+    /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 unk37;
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
-    /* 0x40 */ u8 filler40[0x4];
+    /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
-    /* 0x48 */ u8 filler48[0x8];
+    /* 0x48 */ s32 unk48;
+    /* 0x4C */ s32 unk4C;
     /* 0x50 */ u16 unk50;
-    /* 0x52 */ u8 filler52[0x8];
+    /* 0x52 */ u16 unk52;
+    /* 0x54 */ u16 unk54;
+    /* 0x56 */ u8 filler56[0x2];
+    /* 0x58 */ s16 unk58;
     /* 0x5A */ u8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
     /* 0x5E */ u16 unk5E; // new input on this frame?
-    /* 0x61 */ u8 unk60;
+    /* 0x60 */ s8 unk60;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
@@ -208,17 +217,23 @@ typedef struct Player_ {
     /* 0x6F */ u8 unk6F;
     /* 0x70 */ u8 unk70;
     /* 0x71 */ u8 unk71;
-    /* 0x72 */ u16 unk72;
+    // unk72 appears to be a duration timer for side-forward trick animations (in
+    // frames?)
+    /* 0x72 */ s16 unk72;
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u8 filler7C[8];
     /* 0x84 */ u8 filler84;
     /* 0x85 */ s8 character;
-    /* 0x86 */ u8 filler86[6];
-    /* 0x8C */ u32 unk8C;
+    /* 0x86 */ u8 unk86;
+    /* 0x87 */ u8 unk87;
+    /* 0x88 */ u8 filler88[4];
+    /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ struct UNK_3005A70 *unk90;
-    /* 0x94 */ u8 filler94[5];
+    // Only used for Cream/Tails?
+    /* 0x94 */ struct UNK_3005A70 *unk94;
+    /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
 } Player;
 
@@ -236,34 +251,34 @@ typedef void (*CameraMain)(s32, s32);
 struct Camera {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
-    s32 unk8;
-    s32 unkC;
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    s32 unk20;
-    s32 unk24;
-    s32 unk28;
-    s32 unk2C;
-    s32 unk30;
-    s32 unk34;
-    s32 unk38;
-    s32 unk3C;
-    s16 unk40;
-    s32 unk44;
-    s32 unk48;
-    s32 unk4C;
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ s32 unkC;
+    /* 0x10 */ s32 unk10;
+    /* 0x14 */ s32 unk14;
+    /* 0x18 */ s32 shiftX;
+    /* 0x1C */ s32 shiftY;
+    /* 0x20 */ s32 unk20;
+    /* 0x24 */ s32 unk24;
+    /* 0x28 */ s32 unk28;
+    /* 0x2c */ s32 unk2C;
+    /* 0x30 */ s32 unk30;
+    /* 0x34 */ s32 unk34;
+    /* 0x38 */ s32 unk38;
+    /* 0x3c */ s32 unk3C;
+    /* 0x40 */ s16 unk40;
+    /* 0x44 */ s32 unk44;
+    /* 0x48 */ s32 unk48;
+    /* 0x4c */ s32 unk4C;
     /* 0x50 */ u16 unk50;
-    u16 unk52;
-    u16 unk54;
-    s16 unk56;
-    CameraMain unk58;
+    /* 0x52 */ u16 unk52;
+    /* 0x54 */ u16 unk54;
+    /* 0x56 */ s16 unk56;
+    /* 0x58 */ CameraMain unk58;
     /* 0x5C */ struct Task *unk5C;
-    s16 unk60;
-    s16 unk62;
-    s16 unk64;
-    u8 unk66;
+    /* 0x60 */ s16 unk60;
+    /* 0x62 */ s16 unk62;
+    /* 0x64 */ s16 unk64;
+    /* 0x66 */ u8 unk66;
 }; /* size 0x80 */
 
 extern struct Camera gCamera;
@@ -328,6 +343,12 @@ extern u32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 
+typedef struct {
+    s32 unk0;
+    u16 unk4;
+} Struct_30054C0;
+extern Struct_30054C0 gUnknown_030054C0;
+
 extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;
@@ -367,6 +388,17 @@ struct UNK_3005510 {
     u8 unk6;
     u8 unk7;
 }; /* 0x8 */
+
+// TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
+typedef struct {
+    /* 0x00 */ u8 filler0[0xC];
+    /* 0x0C */ u8 fillerC[0xA];
+    /* 0x16 */ AnimId playerAnim;
+    /* 0x18 */ u16 playerVariant;
+    /* 0x1A */ u16 unk1A;
+    /* 0x1C */ Sprite s;
+    /* 0x4C */ u8 filler4C[0xC];
+} TaskStrc_801F15C; /* size: 0x58 */
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 
@@ -425,8 +457,18 @@ extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
 extern void sub_800C84C(Sprite *);
 
+extern void sub_801EB44(s32, s32, s32);
+extern void sub_801EC3C(s32, s32, s32);
+
 typedef void (*Func801F100)(s32, s32, s32);
 extern s32 sub_801F100(s32, s32, s32, s32, Func801F100);
-extern void sub_801EC3C(s32, s32, s32);
-extern void sub_801EB44(s32, s32, s32);
+
+extern void sub_801F78C(void);
+
+extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+
+extern void sub_8021350(void);
+
+// NOTE: Proc type should be the same as sub_80299F0!
+extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
 #endif // GUARD_GAME_H
