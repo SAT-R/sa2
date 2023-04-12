@@ -201,6 +201,7 @@ typedef struct Player_ {
     /* 0x6A */ u16 unk6A; // variant?
     /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
+     *  0x01 = PlayerCB_80124D0
      *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA)
      *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
      *  0x0B = Something Grinding
@@ -235,6 +236,16 @@ typedef struct Player_ {
     /* 0x94 */ struct UNK_3005A70 *unk94;
     /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
+    /* 0x9A */ u8 filler9A[0x12];
+
+    // Cream's framecounter for flying
+    /* 0xAC */ s16 flyingDurationCream;
+
+    /* 0xAE */ u8 fillerAE[0x2];
+
+    // Tails's framecounter for flying
+    /* 0xB0 */ s16 flyingDurationTails;
+
 } Player;
 
 extern Player gPlayer;

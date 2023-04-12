@@ -24,6 +24,7 @@ void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 void TaskDestructor_80124B8(struct Task *);
 void PlayerCB_80124D0(Player *player);
+void PlayerCB_80126B0(Player *player);
 void sub_8015BD4(u16);
 
 extern void PlayerCB_8025318(Player *player);
@@ -468,4 +469,104 @@ void TaskDestructor_80124B8(struct Task *t)
     TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
     Sprite *s = &strc->s;
     VramFree(s->graphics.dest);
+}
+
+void PlayerCB_80124D0(Player *player)
+{
+    if (--player->unk72 == -1) {
+        player->unk64 = 14;
+        player->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
+    }
+
+    sub_8027EF0(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    }
+}
+
+/* Maybe new module here? */
+
+bool32 sub_801251C(Player *player)
+{
+    if (player->character == CHARACTER_SONIC) {
+        if (player->unk71 == 1) {
+            sub_80120C0(player);
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+void PlayerCB_80127F0(Player *player);
+
+void sub_8012548(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    if (ABS(player->speedGroundX) < Q_24_8(0.25)) {
+        player->speedGroundX = 0;
+        player->unk64 = 15;
+    } else {
+        player->unk64 = 87;
+    }
+
+    gPlayer.callback = PlayerCB_80127F0;
+    PlayerCB_80127F0(player);
+}
+
+void sub_80125BC(Player *player)
+{
+    if (player->flyingDurationCream == 0) {
+        if (player->unk64 == 0x55)
+            m4aSongNumStop(SE_CREAM_FLYING);
+
+        player->unk64 = 0x55;
+    } else {
+        if (((player->unk5C & DPAD_LEFT) && !(player->moveState & MOVESTATE_FACING_LEFT))
+            || ((player->unk5C & DPAD_RIGHT)
+                && (player->moveState & MOVESTATE_FACING_LEFT))) {
+            player->unk64 = 0x54;
+        } else if (player->unk64 == 0x54) {
+            if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+                player->unk64 = 0x53;
+            }
+        } else {
+            player->unk64 = 0x53;
+        }
+
+        m4aSongNumStartOrChange(SE_CREAM_FLYING);
+    }
+}
+
+#define CREAM_FLYING_DURATION (4 * GBA_FRAMES_PER_SECOND)
+
+void sub_8012644(Player *player)
+{
+    sub_80218E4(player);
+
+    if (player->moveState & MOVESTATE_4) {
+        player->moveState &= ~MOVESTATE_4;
+
+        sub_8023B5C(player, 14);
+        player->unk16 = 6;
+        player->unk17 = 14;
+    }
+
+    player->flyingDurationCream = CREAM_FLYING_DURATION;
+    player->unk61 = 1;
+    player->unk5A = 0;
+    player->unk58 = 0;
+    gPlayer.moveState |= MOVESTATE_10000000;
+    gPlayer.callback = PlayerCB_80126B0;
+    PlayerCB_80126B0(player);
 }
