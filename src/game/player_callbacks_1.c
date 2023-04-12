@@ -2676,9 +2676,8 @@ void *sub_8029A74(Player *player, u8 *p1, int *out)
 
     u8 dummy;
 
-    // TODO: Why is dummyInt unused?
-    int dummyInt;
-    int p1Value;
+    s32 dummyInt;
+    s32 p1Value;
 
     if (p1 == NULL)
         p1 = &dummy;
