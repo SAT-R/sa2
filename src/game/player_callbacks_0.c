@@ -28,6 +28,9 @@ void PlayerCB_80124D0(Player *player);
 void PlayerCB_80126B0(Player *player);
 void sub_8015BD4(u16);
 
+void sub_801F214(void);
+void sub_801F550(struct Task*);
+
 extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
 extern void sub_8027EF0(Player *player);
@@ -35,6 +38,8 @@ extern void sub_80282EC(Player *player);
 extern void sub_80283C4(Player *player);
 extern void sub_8029C84(Player *player);
 extern void sub_8029FA4(Player *player);
+
+extern s16 gUnknown_080D6736[115][2];
 
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
@@ -748,3 +753,44 @@ void PlayerCB_80129BC(Player *player)
         player->unk6D = 1;
     }
 }
+
+struct Task *sub_80129DC(s32 x, s32 y)
+{
+    struct Task *result;
+
+    if(!GAME_MODE_IS_SINGLE_PLAYER(gGameMode))
+    {
+        result = NULL;
+    } else {
+        struct Task *t;
+        TaskStrc_801F15C *ts;
+        Sprite *s;
+        t = sub_801F15C(x, y, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+        ts = TaskGetStructPtr(t);
+        ts->playerAnim = PlayerCharacterIdleAnims[gPlayer.character];
+
+        // TODO: Why is this += ?
+        ts->playerAnim += gUnknown_080D6736[gPlayer.unk64][0];
+        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+
+        s = &ts->s;
+
+        if(!gPlayer.unk5A) {
+            s->graphics.dest = VramMalloc(15);
+            s->graphics.anim = SA2_ANIM_TAILS_TAIL_SWIPE;
+            s->variant = 0;
+        } else {
+            s->graphics.dest = VramMalloc(24);
+            s->graphics.anim = SA2_ANIM_TAILS_SUPER_TAIL_SWIPE;
+            s->variant = 1;
+        }
+
+        s->unk1A = 0x200;
+        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+
+        result = t;
+    }
+
+    return result;
+}
+

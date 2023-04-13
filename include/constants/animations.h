@@ -58,6 +58,10 @@
 // #define SA2_ANIM_AMY_IDLE      SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY)
 
 #define SA2_ANIM_CREAM_HOLDING_ONTO_SONIC              130
+
+// Super Tail Swipe" is the regular "Tail Swipe" in Boost-Mode
+#define SA2_ANIM_TAILS_SUPER_TAIL_SWIPE                198
+
 #define SA2_ANIM_TAILS_CAPTURED                        222
 #define SA2_ANIM_TAILS_FLYING                          223
 #define SA2_ANIM_VARIANT_TAILS_FLYING_NORMAL           0
@@ -294,6 +298,8 @@
 
 #define SA2_ANIM_TITLE_SEAGULL    831
 #define SA2_ANIM_TITLE_LENS_FLARE 832
+
+#define SA2_ANIM_TAILS_TAIL_SWIPE      845
 
 #define SA2_ANIM_TRIANGLE_RED 866
 
