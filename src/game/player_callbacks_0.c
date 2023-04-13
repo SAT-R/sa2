@@ -30,6 +30,7 @@ void sub_8015BD4(u16);
 extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
 extern void sub_8027EF0(Player *player);
+extern void sub_80282EC(Player *player);
 extern void sub_80283C4(Player *player);
 extern void sub_8029C84(Player *player);
 extern void sub_8029FA4(Player *player);
@@ -549,6 +550,7 @@ void sub_80125BC(Player *player)
 }
 
 #define CREAM_FLYING_DURATION (4 * GBA_FRAMES_PER_SECOND)
+#define CREAM_FLYING_GRAVITY  0.033
 
 void sub_8012644(Player *player)
 {
@@ -569,4 +571,70 @@ void sub_8012644(Player *player)
     gPlayer.moveState |= MOVESTATE_10000000;
     gPlayer.callback = PlayerCB_80126B0;
     PlayerCB_80126B0(player);
+}
+
+static const s16 gUnknown_080D552C[6]
+    = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
+
+void PlayerCB_80126B0(Player *player)
+{
+    if (player->flyingDurationCream != 0) {
+        player->flyingDurationCream--;
+
+        if (player->unk5C & gPlayerControls.attack) {
+            player->unk64 = 0x56;
+            player->unk6D = 0x5;
+
+            m4aSongNumStop(SE_CREAM_FLYING);
+            return;
+        }
+    }
+
+    if (player->unk61 != 1) {
+        if (player->speedAirY >= -Q_24_8(0.75)) {
+            player->speedAirY -= Q_24_8(0.095);
+
+            if (++player->unk61 == 32) {
+                player->unk61 = 1;
+            }
+        } else {
+            player->unk61 = 1;
+        }
+    } else {
+        if ((player->unk5E & gPlayerControls.jump)
+            && (player->speedAirY >= -Q_24_8(0.75))
+            && (player->flyingDurationCream != 0)) {
+            player->unk61 = 2;
+        }
+
+        player->speedAirY += Q_24_8(CREAM_FLYING_GRAVITY);
+    }
+    // _08012756
+    if (player->y < Q_24_8(gCamera.unk28)) {
+        player->y = Q_24_8(gCamera.unk28);
+
+        if (player->speedAirY < 0)
+            player->speedAirY = 0;
+    }
+
+    sub_80125BC(player);
+
+    {
+        s16 speed = gUnknown_080D552C[player->unk52];
+        if (ABS(player->speedAirX) > speed) {
+            if (player->speedAirX > 0)
+                player->speedAirX -= player->unk48 * 2;
+            else
+                player->speedAirX += player->unk48 * 2;
+        }
+    }
+    // _080127BC
+    sub_80282EC(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    } else if (player->moveState & MOVESTATE_40) {
+        player->unk64 = 14;
+        player->unk6D = 5;
+    }
 }
