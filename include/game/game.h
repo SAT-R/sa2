@@ -240,6 +240,7 @@ typedef struct Player_ {
 
     // Tails's framecounter for flying
     /* 0xB0 */ s16 flyingDurationTails;
+    /* 0xB2 */ s16 unkB2;
 
 } Player;
 

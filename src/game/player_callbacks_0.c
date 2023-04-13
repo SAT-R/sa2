@@ -26,10 +26,11 @@ void PlayerCB_8012460(Player *);
 void TaskDestructor_80124B8(struct Task *);
 void PlayerCB_80124D0(Player *player);
 void PlayerCB_80126B0(Player *player);
+void PlayerCB_8012D1C(Player *player);
 void sub_8015BD4(u16);
 
 void sub_801F214(void);
-void sub_801F550(struct Task*);
+void sub_801F550(struct Task *);
 
 extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
@@ -534,21 +535,21 @@ void sub_8012548(Player *player)
 void sub_80125BC(Player *player)
 {
     if (player->flyingDurationCream == 0) {
-        if (player->unk64 == 0x55)
+        if (player->unk64 == 85)
             m4aSongNumStop(SE_CREAM_FLYING);
 
-        player->unk64 = 0x55;
+        player->unk64 = 85;
     } else {
         if (((player->unk5C & DPAD_LEFT) && !(player->moveState & MOVESTATE_FACING_LEFT))
             || ((player->unk5C & DPAD_RIGHT)
                 && (player->moveState & MOVESTATE_FACING_LEFT))) {
-            player->unk64 = 0x54;
-        } else if (player->unk64 == 0x54) {
+            player->unk64 = 84;
+        } else if (player->unk64 == 84) {
             if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
-                player->unk64 = 0x53;
+                player->unk64 = 83;
             }
         } else {
-            player->unk64 = 0x53;
+            player->unk64 = 83;
         }
 
         m4aSongNumStartOrChange(SE_CREAM_FLYING);
@@ -585,7 +586,7 @@ void PlayerCB_80126B0(Player *player)
         player->flyingDurationCream--;
 
         if (player->unk5C & gPlayerControls.attack) {
-            player->unk64 = 0x56;
+            player->unk64 = 86;
             player->unk6D = 0x5;
 
             m4aSongNumStop(SE_CREAM_FLYING);
@@ -758,8 +759,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 {
     struct Task *result;
 
-    if(!GAME_MODE_IS_SINGLE_PLAYER(gGameMode))
-    {
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
         result = NULL;
     } else {
         struct Task *t;
@@ -775,7 +775,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 
         s = &ts->s;
 
-        if(!gPlayer.unk5A) {
+        if (!gPlayer.unk5A) {
             s->graphics.dest = VramMalloc(15);
             s->graphics.anim = SA2_ANIM_TAILS_TAIL_SWIPE;
             s->variant = 0;
@@ -794,3 +794,49 @@ struct Task *sub_80129DC(s32 x, s32 y)
     return result;
 }
 
+void sub_8012AD0(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 91;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+
+    player->speedAirY = -Q_24_8(4.0);
+
+    if (player->moveState & MOVESTATE_40) {
+        player->speedAirY >>= 1;
+    }
+
+    m4aSongNumStart(SE_JUMP);
+
+    gPlayer.callback = PlayerCB_8012D1C;
+    PlayerCB_8012D1C(player);
+}
+
+void sub_8012B44(Player *player)
+{
+    if ((player->flyingDurationTails == 0) && (player->unkB2 == 0)) {
+        player->unk64 = 90;
+        m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
+    } else {
+        if (((player->unk5C & DPAD_LEFT) && !(player->moveState & MOVESTATE_FACING_LEFT))
+            || ((player->unk5C & DPAD_RIGHT)
+                && (player->moveState & MOVESTATE_FACING_LEFT))) {
+            player->unk64 = 89;
+        } else if ((player->unk64 == 89)) {
+            if ((player->unk90->s.unk10 & SPRITE_FLAG_MASK_14))
+                player->unk64 = 88;
+        } else {
+            player->unk64 = 88;
+        }
+
+        m4aSongNumStartOrChange(SE_TAILS_PROPELLER_FLYING);
+    }
+}
