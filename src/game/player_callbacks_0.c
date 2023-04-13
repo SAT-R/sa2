@@ -4,6 +4,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/playercb_cmds.h"
+#include "game/parameters/characters.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -549,9 +550,6 @@ void sub_80125BC(Player *player)
     }
 }
 
-#define CREAM_FLYING_DURATION (4 * GBA_FRAMES_PER_SECOND)
-#define CREAM_FLYING_GRAVITY  0.033
-
 void sub_8012644(Player *player)
 {
     sub_80218E4(player);
@@ -636,5 +634,117 @@ void PlayerCB_80126B0(Player *player)
     } else if (player->moveState & MOVESTATE_40) {
         player->unk64 = 14;
         player->unk6D = 5;
+    }
+}
+
+void PlayerCB_80127F0(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 9;
+            player->unk6D = 5;
+        } else {
+            player->unk6D = 1;
+        }
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_8012938(Player *player);
+void PlayerCB_8012978(Player *player);
+void PlayerCB_80129BC(Player *player);
+
+void sub_8012830(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    player->unk64 = 17;
+
+    gPlayer.callback = PlayerCB_8012938;
+    PlayerCB_8012938(player);
+}
+
+void sub_8012888(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+
+    player->unk64 = 18;
+
+    gPlayer.callback = PlayerCB_8012978;
+    PlayerCB_8012978(player);
+}
+
+void sub_80128E0(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
+
+    player->unk64 = 19;
+
+    gPlayer.callback = PlayerCB_80129BC;
+    PlayerCB_80129BC(player);
+}
+
+void PlayerCB_8012938(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 50;
+            player->unk6D = 5;
+        } else {
+            player->unk6D = 1;
+        }
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_8012978(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if ((player->unk68
+             == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
+            && player->unk6A == 0) {
+            player->unk6A++;
+        }
+    }
+
+    sub_8027EF0(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    }
+}
+
+void PlayerCB_80129BC(Player *player)
+{
+    sub_8027EF0(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
     }
 }
