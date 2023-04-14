@@ -239,8 +239,8 @@ typedef struct Player_ {
     /* 0xAE */ u8 fillerAE[0x2];
 
     // Tails's framecounter for flying
-    /* 0xB0 */ s16 flyingDurationTails;
-    /* 0xB2 */ s16 unkB2;
+    // TODO: Why is this a 4-byte value, while Cream's is a 2-byte?
+    /* 0xB0 */ s32 flyingDurationTails;
 
 } Player;
 

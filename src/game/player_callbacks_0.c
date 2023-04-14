@@ -26,6 +26,7 @@ void PlayerCB_8012460(Player *);
 void TaskDestructor_80124B8(struct Task *);
 void PlayerCB_80124D0(Player *player);
 void PlayerCB_80126B0(Player *player);
+void PlayerCB_8012C2C(Player *player);
 void PlayerCB_8012D1C(Player *player);
 void sub_8015BD4(u16);
 
@@ -822,7 +823,7 @@ void sub_8012AD0(Player *player)
 
 void sub_8012B44(Player *player)
 {
-    if ((player->flyingDurationTails == 0) && (player->unkB2 == 0)) {
+    if (player->flyingDurationTails == 0) {
         player->unk64 = 90;
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
     } else {
@@ -839,4 +840,26 @@ void sub_8012B44(Player *player)
 
         m4aSongNumStartOrChange(SE_TAILS_PROPELLER_FLYING);
     }
+}
+
+void sub_8012BC0(Player *player)
+{
+    sub_80218E4(player);
+
+    if (player->moveState & MOVESTATE_4) {
+        player->moveState &= ~MOVESTATE_4;
+
+        sub_8023B5C(player, 14);
+        player->unk16 = 6;
+        player->unk17 = 14;
+    }
+
+    player->flyingDurationTails = TAILS_FLYING_DURATION;
+    player->unk61 = 1;
+    player->unk5A = 0;
+    player->unk58 = 0;
+
+    gPlayer.moveState |= MOVESTATE_10000000;
+    gPlayer.callback = PlayerCB_8012C2C;
+    PlayerCB_8012C2C(player);
 }
