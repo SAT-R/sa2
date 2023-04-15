@@ -98,22 +98,22 @@ static void sub_805EA94(void)
         if (gPlayer.speedAirX > 0) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
             if (Q_24_8_TO_INT(gPlayer.y) > y) {
-                sprite->unk10 |= 0x400;
+                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 0;
             } else {
-                sprite->unk10 &= ~0x400;
+                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2E;
                 rotatingHandle->unk40 = 1;
             }
         } else {
             gPlayer.moveState |= 1;
             if (Q_24_8_TO_INT(gPlayer.y) > y) {
-                sprite->unk10 &= ~0x400;
+                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 2;
             } else {
-                sprite->unk10 |= 0x400;
+                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2E;
                 rotatingHandle->unk40 = 3;
             }

@@ -822,11 +822,11 @@ void sub_8037BD0(void)
     sprite = &actor->ssGroundEffectSprite;
     sprite->x = Q_24_8_TO_INT(actor->x);
     sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
-    sprite->unk10 |= 0x400;
+    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     sub_80051E8(sprite);
 
     if (!(actor->animFrame & 3)) {
@@ -851,11 +851,11 @@ void sub_8037CEC(void)
     sprite = &actor->ssGroundEffectSprite;
     sprite->x = Q_24_8_TO_INT(actor->x);
     sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
-    sprite->unk10 |= 0x400;
+    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     sub_80051E8(sprite);
 
     if (!(actor->animFrame & 3)) {
@@ -891,11 +891,11 @@ void sub_8037E08(void)
     sprite = &actor->ssGroundEffectSprite;
     sprite->x = Q_24_8_TO_INT(actor->x);
     sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_8004558(sprite);
     sub_80051E8(sprite);
 
-    sprite->unk10 |= 0x400;
+    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     sub_80051E8(sprite);
 
     if (!(actor->animFrame & 3)) {
@@ -944,11 +944,11 @@ void sub_8037F68(void)
         sprite = &actor->ssGroundEffectSprite;
         sprite->x = Q_24_8_TO_INT(actor->x);
         sprite->y = 178 - gCamera.y;
-        sprite->unk10 &= ~0x400;
+        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         sub_8004558(sprite);
         sub_80051E8(sprite);
 
-        sprite->unk10 |= 0x400;
+        sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
         sub_80051E8(sprite);
     }
 
@@ -1297,7 +1297,7 @@ void sub_8039084(void)
     if (actor->x < 0xB800) {
         actor->x += 0x80;
     } else {
-        sprite->unk10 &= ~0x400;
+        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     }
 
     if (--actor->animFrame == 0) {
@@ -1319,7 +1319,7 @@ void sub_8039144(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk10 &= ~0x400;
+        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         gCurTask->main = sub_8039208;
     }
 
@@ -1487,7 +1487,7 @@ void IntroRenderSprites(u8 flockMode)
 
                 sprite->x = intro->birdPositions[i][0] >> 8;
                 sprite->y = (intro->birdPositions[i][1] >> 8) - intro->cameraY;
-                sprite->unk10 &= ~0x400;
+                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 sub_80051E8(sprite);
             }
         }
@@ -1511,9 +1511,9 @@ void IntroRenderSprites(u8 flockMode)
             sprite->y = Q_24_8_TO_INT(intro->birdPositions[i][1]) - intro->cameraY;
 
             if (intro->birdSpeeds[i][0] < 0) {
-                sprite->unk10 &= ~0x400;
+                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
             } else {
-                sprite->unk10 |= 0x400;
+                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
             }
 
             sub_80051E8(sprite);

@@ -111,7 +111,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
     .4byte initSprite_Interactable_SkyCanyon_FlyingHandle
-    .4byte initSprite_Interactable097
+    .4byte initSprite_InteractableSpeedingPlatform
     .4byte initSprite_Interactable_Toggle_Gravity__Down
     .4byte initSprite_Interactable_Toggle_Gravity__Up
     .4byte initSprite_Interactable_Toggle_Gravity__Toggle

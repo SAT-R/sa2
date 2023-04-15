@@ -175,7 +175,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     sprite->variant = 1;
 
     if (gPlayer.moveState & 1) {
-        sprite->unk10 |= 0x400;
+        sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     }
     sub_8004558(sprite);
     gCurTask->main = sub_8073818;
@@ -186,7 +186,7 @@ static void sub_80736E0(Sprite_TurnAroundBar *turnAroundBar)
     Sprite *sprite = &turnAroundBar->sprite;
     sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     sprite->variant = 0;
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_8004558(sprite);
     gCurTask->main = Task_TurnAroundBarMain;
 }
@@ -197,7 +197,7 @@ static void sub_807371C(Sprite_TurnAroundBar *turnAroundBar)
     Player_ClearMovestate_IsInScriptedSequence();
     sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     sprite->variant = 0;
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_8004558(sprite);
     gCurTask->main = Task_TurnAroundBarMain;
 }

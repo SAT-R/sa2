@@ -220,10 +220,10 @@ static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)
 {
     Sprite *sprite = &noteBlock->sprite;
 
-    sprite->unk10 |= 0x400;
+    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     sub_80051E8(sprite);
 
-    sprite->unk10 &= ~0x400;
+    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     sub_80051E8(sprite);
 }
 
