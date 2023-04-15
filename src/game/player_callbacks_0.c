@@ -49,7 +49,7 @@ static const s16 gUnknown_080D552C[6]
     = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
 
 // static
-const u8 gUnknown_080D5538[4] = { 0x60, 0x61, 0x62, 0x63 };
+const s8 gUnknown_080D5538[4] = { 0x60, 0x61, 0x62, 0x63 };
 
 // static
 const u16 gUnknown_080D553C[2][3] = {
@@ -877,6 +877,8 @@ void sub_8012BC0(Player *player)
 
 void PlayerCB_8012C2C(Player *player)
 {
+    // Only decrease Tails' counter every 2nd frame, giving him 8 seconds of flight.
+    // ...why didn't they just set his timer to a bigger value?
     if ((gUnknown_03005590 & 0x1) && (player->flyingDurationTails != 0)) {
         player->flyingDurationTails--;
     }
@@ -917,11 +919,9 @@ void PlayerCB_8012C2C(Player *player)
 
     if (!(player->moveState & MOVESTATE_IN_AIR)) {
         player->unk6D = 1;
-    } else {
-        if (player->moveState & MOVESTATE_40) {
-            player->unk64 = 14;
-            player->unk6D = 5;
-        }
+    } else if (player->moveState & MOVESTATE_40) {
+        player->unk64 = 14;
+        player->unk6D = 5;
     }
 }
 
@@ -1013,3 +1013,172 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
 
     return result;
 }
+
+void PlayerCB_8012F6C(Player *player);
+void PlayerCB_8013010(Player *player);
+void PlayerCB_80130E4(Player *player);
+
+void sub_8012EEC(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 15;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    if (ABS(player->speedGroundX) < Q_24_8(3.0)) {
+        if (player->moveState & MOVESTATE_FACING_LEFT) {
+            player->speedGroundX = -Q_24_8(3.0);
+        } else {
+            player->speedGroundX = +Q_24_8(3.0);
+        }
+    }
+
+    gPlayer.callback = PlayerCB_8012F6C;
+    PlayerCB_8012F6C(player);
+}
+
+void PlayerCB_8012F6C(Player *player)
+{
+    s32 speed = player->speedGroundX;
+    if (speed > 0) {
+        if ((speed -= Q_24_8(0.375)) < 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    } else if (speed < 0) {
+        if ((speed += Q_24_8(0.375)) > 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    }
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 50;
+            player->unk6D = 5;
+        } else {
+            player->unk6A++;
+            player->unk6C = 1;
+
+            if (ABS(player->speedGroundX) < Q_24_8(3.0)) {
+                if (player->moveState & MOVESTATE_FACING_LEFT) {
+                    player->speedGroundX = -Q_24_8(3.0);
+                } else {
+                    player->speedGroundX = +Q_24_8(3.0);
+                }
+            }
+
+            gPlayer.callback = PlayerCB_8013010;
+        }
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_8013010(Player *player)
+{
+    s32 speed = player->speedGroundX;
+    if (speed > 0) {
+        if ((speed -= Q_24_8(0.375)) < 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    } else if (speed < 0) {
+        if ((speed += Q_24_8(0.375)) > 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    }
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 50;
+            player->unk6D = 5;
+        } else {
+            player->unk6D = 1;
+        }
+    }
+
+    sub_8027EF0(player);
+}
+
+void sub_8013070(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 17;
+
+    sub_8023B5C(player, 9);
+    player->unk16 = 6;
+    player->unk17 = 9;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    sub_8012DF8(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), 0);
+
+    player->unk72 = 32;
+
+    m4aSongNumStart(SE_225);
+
+    gPlayer.callback = PlayerCB_80130E4;
+    PlayerCB_80130E4(player);
+}
+
+void PlayerCB_8013B6C(Player *player);
+
+void PlayerCB_80130E4(Player *player)
+{
+    s32 speed = player->speedGroundX;
+    s32 addend = player->unk4C >> 1;
+    if (speed > 0) {
+        if ((speed -= addend) < 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    } else if (speed < 0) {
+        if ((speed += addend) > 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    }
+
+    sub_8029C84(player);
+
+    if (--player->unk72 == -1) {
+        player->unk6A++;
+        player->unk6C = 1;
+        gPlayer.callback = PlayerCB_8013B6C;
+    }
+
+    sub_8027EF0(player);
+}
+
+NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *player))
+{
+    s8 xOffset = *((u8 *)(&player->flyingDurationCream) + 1);
+
+    player->moveState &= ~MOVESTATE_20;
+    player->moveState &= ~MOVESTATE_FACING_LEFT;
+
+    if ((xOffset & 0x7F) == 0) {
+        player->unk64 = 0x5C;
+
+        if ((u8)xOffset == 0x80) {
+            player->moveState |= MOVESTATE_FACING_LEFT;
+        }
+    } else {
+        u8 val = ABS(xOffset);
+        // _0801318C
+        player->unk64 = gUnknown_080D5538[(val & 0x7F) >> 5];
+    }
+}
+END_NONMATCH

@@ -227,13 +227,18 @@ typedef struct Player_ {
     /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ struct UNK_3005A70 *unk90;
-    // Only used for Cream/Tails?
+
+    // TODO: Only used for Cream/Tails?
+    //       Alternatively, some of the following data might be a union
     /* 0x94 */ struct UNK_3005A70 *unk94;
     /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
     /* 0x9A */ u8 filler9A[0x12];
 
     // Cream's framecounter for flying
+    // TODO/HACK: I guess this is actually part of a union per character?
+    //            When the player selected Tails, this value is actually some x-offset
+    //            when jumping.
     /* 0xAC */ s16 flyingDurationCream;
 
     /* 0xAE */ u8 fillerAE[0x2];
