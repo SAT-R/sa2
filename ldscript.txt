@@ -241,7 +241,6 @@ SECTIONS
         build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
         build/sa2/asm/entities_1.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
-        build/sa2/asm/player_callbacks_0.o(.rodata);
         build/sa2/asm/entities_2.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
         build/sa2/src/game/stage.o(.rodata);

@@ -21,6 +21,7 @@ void PlayerCB_8011DCC(Player *);
 void PlayerCB_8011E88(Player *);
 void Task_8012034(void);
 void PlayerCB_80123D0(Player *);
+void PlayerCB_8012DA4(Player *player);
 void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 void TaskDestructor_80124B8(struct Task *);
@@ -36,12 +37,25 @@ void sub_801F550(struct Task *);
 extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
 extern void sub_8027EF0(Player *player);
+extern void sub_8028204(Player *player);
 extern void sub_80282EC(Player *player);
 extern void sub_80283C4(Player *player);
 extern void sub_8029C84(Player *player);
 extern void sub_8029FA4(Player *player);
 
-extern s16 gUnknown_080D6736[115][2];
+extern u16 gUnknown_080D6736[115][2];
+
+static const s16 gUnknown_080D552C[6]
+    = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
+
+// static
+const u8 gUnknown_080D5538[4] = { 0x60, 0x61, 0x62, 0x63 };
+
+// static
+const u16 gUnknown_080D553C[2][3] = {
+    { 30, 0x121, 2 },
+    { 25, 0x144, 3 },
+};
 
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
@@ -578,9 +592,6 @@ void sub_8012644(Player *player)
     PlayerCB_80126B0(player);
 }
 
-static const s16 gUnknown_080D552C[6]
-    = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
-
 void PlayerCB_80126B0(Player *player)
 {
     if (player->flyingDurationCream != 0) {
@@ -612,7 +623,7 @@ void PlayerCB_80126B0(Player *player)
             player->unk61 = 2;
         }
 
-        player->speedAirY += Q_24_8(CREAM_FLYING_GRAVITY);
+        player->speedAirY += Q_24_8(PLAYER_GRAVITY);
     }
     // _08012756
     if (player->y < Q_24_8(gCamera.unk28)) {
@@ -770,7 +781,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         ts = TaskGetStructPtr(t);
         ts->playerAnim = PlayerCharacterIdleAnims[gPlayer.character];
 
-        // TODO: Why is this += ?
+        // This is += because it's adding to the base Idle character animation
         ts->playerAnim += gUnknown_080D6736[gPlayer.unk64][0];
         ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
 
@@ -862,4 +873,143 @@ void sub_8012BC0(Player *player)
     gPlayer.moveState |= MOVESTATE_10000000;
     gPlayer.callback = PlayerCB_8012C2C;
     PlayerCB_8012C2C(player);
+}
+
+void PlayerCB_8012C2C(Player *player)
+{
+    if ((gUnknown_03005590 & 0x1) && (player->flyingDurationTails != 0)) {
+        player->flyingDurationTails--;
+    }
+
+    if (player->unk61 != 1) {
+        if (player->speedAirY >= -Q_24_8(0.75)) {
+            player->speedAirY -= Q_24_8(0.095);
+
+            if (++player->unk61 == 32) {
+                player->unk61 = 1;
+            }
+        } else {
+            player->unk61 = 1;
+        }
+    } else {
+        if ((player->unk5E & gPlayerControls.jump)
+            && (player->speedAirY >= -Q_24_8(0.75))
+            && (player->flyingDurationTails != 0)) {
+            player->unk61 = 2;
+        }
+
+        player->speedAirY += Q_24_8(PLAYER_GRAVITY);
+    }
+
+    if (player->y < Q_24_8(gCamera.unk28)) {
+        player->y = Q_24_8(gCamera.unk28);
+
+        if (player->speedAirY < 0)
+            player->speedAirY = 0;
+    }
+
+    sub_8012B44(player);
+
+    player->unk40 = Q_24_8(6.0);
+    player->unk48 = 0x10;
+
+    sub_80282EC(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    } else {
+        if (player->moveState & MOVESTATE_40) {
+            player->unk64 = 14;
+            player->unk6D = 5;
+        }
+    }
+}
+
+void PlayerCB_8012D1C(Player *player)
+{
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        player->unk6D = 1;
+    }
+
+    sub_8028204(player);
+}
+
+void sub_8012D3C(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 15;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    sub_80129DC(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y));
+
+    m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
+
+    gPlayer.callback = PlayerCB_8012DA4;
+    PlayerCB_8012DA4(player);
+}
+
+void PlayerCB_8012DA4(Player *player)
+{
+    s32 halfUnk4C = player->unk4C >> 1;
+
+    s32 speed = player->speedGroundX;
+    if (speed > 0) {
+        if ((speed -= halfUnk4C) < 0)
+            speed = 0;
+    } else {
+        if ((speed += halfUnk4C) > 0)
+            speed = 0;
+    }
+    player->speedGroundX = speed;
+
+    sub_8029C84(player);
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        gPlayer.callback = PlayerCB_8025318;
+    }
+
+    sub_8027EF0(player);
+}
+
+struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
+{
+    struct Task *result;
+
+    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        result = NULL;
+    } else {
+        TaskStrc_801F15C *ts;
+        Sprite *s;
+        struct Task *t;
+        t = sub_801F15C(x, y, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+        ts = TaskGetStructPtr(t);
+
+        ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
+        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+
+        if (gPlayer.unk64 < 80) {
+            ts->playerAnim += PlayerCharacterIdleAnims[gPlayer.character];
+        }
+
+        s = &ts->s;
+
+        s->graphics.dest = VramMalloc(gUnknown_080D553C[p2][0]);
+        s->graphics.anim = gUnknown_080D553C[p2][1];
+        s->variant = gUnknown_080D553C[p2][2];
+
+        s->unk1A = 0x200;
+        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+
+        result = t;
+    }
+
+    return result;
 }
