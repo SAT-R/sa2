@@ -3,7 +3,7 @@
 #include "game/game.h"
 #include "lib/m4a.h"
 #include "game/entity.h"
-#include "game/interactables_2/094.h"
+#include "game/interactables_2/sky_canyon/094.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
 

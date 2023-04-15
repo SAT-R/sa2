@@ -1,5 +1,5 @@
 #include "core.h"
-#include "game/interactables_2/gravity_toggle.h"
+#include "game/interactables_2/egg_utopia/gravity_toggle.h"
 
 #include "constants/move_states.h"
 
