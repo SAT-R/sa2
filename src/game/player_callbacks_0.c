@@ -609,7 +609,7 @@ void PlayerCB_80126B0(Player *player)
 
     if (player->unk61 != 1) {
         if (player->speedAirY >= -Q_24_8(0.75)) {
-            player->speedAirY -= Q_24_8(0.095);
+            player->speedAirY -= Q_24_8(0.09375);
 
             if (++player->unk61 == 32) {
                 player->unk61 = 1;
@@ -886,7 +886,7 @@ void PlayerCB_8012C2C(Player *player)
 
     if (player->unk61 != 1) {
         if (player->speedAirY >= -Q_24_8(0.75)) {
-            player->speedAirY -= Q_24_8(0.095);
+            player->speedAirY -= Q_24_8(0.09375);
 
             if (++player->unk61 == 32) {
                 player->unk61 = 1;
@@ -1253,8 +1253,8 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             playerBottomY -= player->unk17;
 
                             playerBottomX = Q_24_8_TO_INT(player->x);
-                            playerBottomY -= 1;
-                            playerBottomY -= player->unk16;
+                            playerBottomX -= 1;
+                            playerBottomX -= player->unk16;
 
                             if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
                                             -8, NULL, sub_801EE64)
@@ -1269,8 +1269,8 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             playerBottomY += player->unk17;
 
                             playerBottomX = Q_24_8_TO_INT(player->x);
-                            playerBottomY -= 1;
-                            playerBottomY -= player->unk16;
+                            playerBottomX -= 1;
+                            playerBottomX -= player->unk16;
 
                             if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
                                             +8, NULL, sub_801EE64)
@@ -1306,8 +1306,8 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                         playerBottomY += player->unk17;
 
                         playerBottomX = Q_24_8_TO_INT(player->x);
-                        playerBottomY += 1;
-                        playerBottomY += player->unk16;
+                        playerBottomX += 1;
+                        playerBottomX += player->unk16;
 
                         if (sub_801E4E4(playerBottomX, // fmt
                                         playerBottomY, player->unk38, +8, NULL,
@@ -1380,10 +1380,8 @@ void sub_8013498(Player *player)
     sub_8023610(player);
     sub_8029DC8(player);
     sub_8022838(player);
-    
-    // HACK: Don't cast it like this!
-    
-    if(!(player->w.tf.flags & 0x2)) {
+
+    if (!(player->w.tf.flags & 0x2)) {
         player->speedGroundX = 0;
         player->speedAirX = 0;
         player->speedAirY = 0;
@@ -1393,7 +1391,7 @@ void sub_8013498(Player *player)
 
         sub_8022318(player);
 
-        if((player->rotation + Q_24_8(0.125) ) & Q_24_8(0.75)) {
+        if ((player->rotation + Q_24_8(0.125)) & Q_24_8(0.75)) {
             player->unk6D = 1;
         } else {
             player->unk2A = 15;
@@ -1401,4 +1399,127 @@ void sub_8013498(Player *player)
             gPlayer.callback = PlayerCB_8013BF0;
         }
     }
+}
+
+void sub_801F5CC(s32, s32);
+
+void sub_801350C(Player *player)
+{
+    u8 rot;
+    s32 p2;
+    s32 res;
+
+    if ((gUnknown_03005590 & 0x3) == 0) {
+        s32 offsetY = player->unk17;
+
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            offsetY = -offsetY;
+
+        sub_801F5CC(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y) + offsetY);
+    }
+    // _0801353E
+    sub_8022838(player);
+
+    res = sub_8029B88(player, &rot, &p2);
+
+    if (res < 12) {
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            res = -res;
+        }
+
+        player->y += Q_24_8(res);
+        player->rotation = rot;
+    } else if (!(player->moveState & MOVESTATE_8)) {
+        // _08013580
+        gPlayer.callback = PlayerCB_8013BD4;
+
+        sub_8023B5C(player, 14);
+        player->unk16 = 6;
+        player->unk17 = 14;
+
+        player->w.tf.flags |= 0x2;
+    }
+}
+
+void sub_80135BC(Player *player)
+{
+    if (player->unk5C & gPlayerControls.jump) {
+        if (player->speedAirX <= 0) {
+            player->speedAirX += Q_24_8(0.09375);
+
+            if (player->speedAirX < 0) {
+                sub_801350C(player);
+                return;
+            }
+        } else {
+            player->speedAirX -= Q_24_8(0.09375);
+
+            if (player->speedAirX > 0) {
+                sub_801350C(player);
+                return;
+            }
+        }
+    }
+
+    player->speedGroundX = 0;
+    player->speedAirX = 0;
+    player->speedAirY = 0;
+
+    {
+        s32 offsetY;
+        offsetY = player->unk17 - 14;
+
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            offsetY = -offsetY;
+
+        player->y += Q_24_8(offsetY);
+    }
+
+    sub_8022318(player);
+
+    player->unk2A = 15;
+    player->unk6D = 1;
+}
+
+s32 sub_8013644(Player *player)
+{
+    s32 result;
+    u8 rot;
+
+    if (player->moveState & MOVESTATE_FACING_LEFT) {
+        s32 pX;
+        s32 pY;
+
+        pX = Q_24_8_TO_INT(player->x);
+        pX -= 2;
+        pX -= player->unk16;
+
+        pY = Q_24_8_TO_INT(player->y);
+
+        result = sub_801E4E4(pX, pY, player->unk38, -8, &rot, sub_801ED24);
+
+        if (rot & 0x1) {
+            player->rotation = Q_24_8(0.25);
+        } else {
+            player->rotation = rot;
+        }
+    } else {
+        s32 pX;
+        s32 pY;
+        pX = Q_24_8_TO_INT(player->x);
+        pX += 2;
+        pX += player->unk16;
+
+        pY = Q_24_8_TO_INT(player->y);
+
+        result = sub_801E4E4(pX, pY, player->unk38, +8, &rot, sub_801ED24);
+
+        if (!(rot & 0x1)) {
+            player->rotation = rot;
+        } else {
+            player->rotation = Q_24_8(0.75);
+        }
+    }
+
+    return result;
 }

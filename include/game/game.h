@@ -253,7 +253,7 @@ typedef struct Player_ {
         s16 flyingDurationCream;
         TailsFlags tf;
     } w;
-    
+
     // Tails's framecounter for flying
     // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
     /* 0xB0 */ s32 flyingDurationTails;

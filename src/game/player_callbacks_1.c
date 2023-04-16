@@ -44,9 +44,9 @@ extern void sub_801F488(void);
 extern void sub_801F550(struct Task *);
 extern void sub_801F5CC(s32, s32);
 
-extern void *sub_802195C(Player *player, u8 *p1, int *out);
-extern void *sub_8021A34(Player *player, u8 *p1, int *out);
-extern void *sub_8021B08(Player *player, u8 *p1, int *out);
+extern s32 sub_802195C(Player *player, u8 *p1, s32 *out);
+extern s32 sub_8021A34(Player *player, u8 *p1, s32 *out);
+extern s32 sub_8021B08(Player *player, u8 *p1, s32 *out);
 
 extern s32 sub_8022F58(u8, Player *);
 extern void sub_8022190(Player *);
@@ -2638,9 +2638,9 @@ void sub_80299FC(Player *player)
     }
 }
 
-void *sub_8029A28(Player *player, u8 *p1, int *out)
+s32 sub_8029A28(Player *player, u8 *p1, s32 *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2670,9 +2670,9 @@ void *sub_8029A28(Player *player, u8 *p1, int *out)
     return result;
 }
 
-void *sub_8029A74(Player *player, u8 *p1, int *out)
+s32 sub_8029A74(Player *player, u8 *p1, s32 *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2701,9 +2701,9 @@ void *sub_8029A74(Player *player, u8 *p1, int *out)
     return result;
 }
 
-void *sub_8029AC0(Player *player, u8 *p1, int *out)
+s32 sub_8029AC0(Player *player, u8 *p1, s32 *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2733,11 +2733,11 @@ void *sub_8029AC0(Player *player, u8 *p1, int *out)
     return result;
 }
 
-void *sub_8029BB8(Player *player, u8 *p1, int *out);
+s32 sub_8029BB8(Player *player, u8 *p1, s32 *out);
 
-void *sub_8029B0C(Player *player, u8 *p1, int *out)
+s32 sub_8029B0C(Player *player, u8 *p1, s32 *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2767,9 +2767,9 @@ void *sub_8029B0C(Player *player, u8 *p1, int *out)
     return result;
 }
 
-void *sub_8029B58(Player *player, u8 *p1, int *out)
+s32 sub_8029B58(Player *player, u8 *p1, int *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2782,9 +2782,9 @@ void *sub_8029B58(Player *player, u8 *p1, int *out)
     return result;
 }
 
-void *sub_8029B88(Player *player, u8 *p1, int *out)
+s32 sub_8029B88(Player *player, u8 *p1, int *out)
 {
-    void *result;
+    s32 result;
 
     u8 dummy;
 
@@ -2797,17 +2797,16 @@ void *sub_8029B88(Player *player, u8 *p1, int *out)
     return result;
 }
 
-// TODO/HACK: Remove the cast at the return!!!
-void *sub_8029BB8(Player *player, u8 *p1, int *out)
+s32 sub_8029BB8(Player *player, u8 *p1, s32 *out)
 {
     u8 dummy;
-    int dummyInt;
+    s32 dummyInt;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
     u32 mask;
     u8 anotherByte, anotherByte2;
     s32 r5, r1;
-    int result;
+    s32 result;
 
     if (p1 == NULL)
         p1 = &dummy;
@@ -2844,7 +2843,7 @@ void *sub_8029BB8(Player *player, u8 *p1, int *out)
         *out = r5;
     }
 
-    return (void *)result;
+    return result;
 }
 
 void sub_8029C84(Player *player)
