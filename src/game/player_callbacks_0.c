@@ -1192,7 +1192,7 @@ void sub_8022838(Player *player);
 void PlayerCB_8013BD4(Player *player);
 void PlayerCB_8013C18(Player *player);
 
-// (90.96% on Apr. 16th 2023) https://decomp.me/scratch/JahZb
+// (91.52% on Apr. 17th 2023) https://decomp.me/scratch/9bH5g
 NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *player))
 {
     u8 someFlags;
@@ -1201,7 +1201,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
     sub_8022838(player);
 
     // HACK: Don't cast it like this!
-    someFlags = *((u8 *)(&player->w.flyingDurationCream));
+    someFlags = player->w.tf.flags;
     mstate_inAir = MOVESTATE_IN_AIR;
 
     if (!(someFlags & 0x2)) {
@@ -1236,7 +1236,6 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
         type8029A28 sp08;
 
         if (player->w.tf.unkAE >= 0) {
-            // HACK
             u8 *urgh = ((u8 *)(&player->w.flyingDurationCream) + 1);
             if ((*urgh + Q_24_8(0.25)) << 24 <= 0) {
                 type8029A28 result; // <= r6
@@ -1256,7 +1255,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             playerBottomX -= 1;
                             playerBottomX -= player->unk16;
 
-                            if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
+                            if (sub_801E4E4(playerBottomY, playerBottomX, player->unk38,
                                             -8, NULL, sub_801EE64)
                                 < 0) {
                                 goto _08013348;
@@ -1272,7 +1271,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             playerBottomX -= 1;
                             playerBottomX -= player->unk16;
 
-                            if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
+                            if (sub_801E4E4(playerBottomY, playerBottomX, player->unk38,
                                             +8, NULL, sub_801EE64)
                                 < 0) {
                                 goto _08013348;
@@ -1295,7 +1294,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                     player->unk16 = 6;
                     player->unk17 = 14;
                     // HACK: Don't cast it like this!
-                    *((u8 *)(&player->w.flyingDurationCream)) |= mstate_inAir;
+                    player->w.tf.flags |= mstate_inAir;
                     return;
                 } else if (ret != 0) {
                     // _08013370
@@ -1309,8 +1308,8 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                         playerBottomX += 1;
                         playerBottomX += player->unk16;
 
-                        if (sub_801E4E4(playerBottomX, // fmt
-                                        playerBottomY, player->unk38, +8, NULL,
+                        if (sub_801E4E4(playerBottomY, // fmt
+                                        playerBottomX, player->unk38, +8, NULL,
                                         sub_801EE64)
                             < 0) {
                             goto _08013348;
@@ -1344,7 +1343,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
         player->unk16 = 6;
         player->unk17 = 14;
         // HACK: Don't cast it like this!
-        *((u8 *)(&player->w.flyingDurationCream)) |= mstate_inAir;
+        player->w.tf.flags |= mstate_inAir;
     } else {
         // _08013424
         if (!(player->unk5C & gPlayerControls.jump)
