@@ -137,6 +137,15 @@ struct UNK_3005A70 {
 struct Player_;
 typedef void (*PlayerCallback)(struct Player_ *);
 
+// TODO: Better name.
+//       This is used for an apparent around the value Cream uses for flying duration
+typedef struct {
+    /* 0xAC */ u8 flags;
+    /* 0xAD */ s8 shift;
+    /* 0xAE */ s8 unkAE;
+    /* 0xAF */ s8 unkAF;
+} TailsFlags;
+
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
 // Not sure what these are yet
@@ -239,11 +248,12 @@ typedef struct Player_ {
     // TODO/HACK: I guess this is actually part of a union per character?
     //            When the player selected Tails, player->unk6D is actually some x-offset
     //            when jumping.
-    /* 0xAC */ s16 flyingDurationCream;
-
-    /* 0xAE */ s8 unkAE;
-    /* 0xAF */ s8 unkAF;
-
+    /* 0xAC */
+    union {
+        s16 flyingDurationCream;
+        TailsFlags tf;
+    } w;
+    
     // Tails's framecounter for flying
     // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
     /* 0xB0 */ s32 flyingDurationTails;

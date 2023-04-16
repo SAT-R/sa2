@@ -550,7 +550,7 @@ void sub_8012548(Player *player)
 
 void sub_80125BC(Player *player)
 {
-    if (player->flyingDurationCream == 0) {
+    if (player->w.flyingDurationCream == 0) {
         if (player->unk64 == 85)
             m4aSongNumStop(SE_CREAM_FLYING);
 
@@ -584,7 +584,7 @@ void sub_8012644(Player *player)
         player->unk17 = 14;
     }
 
-    player->flyingDurationCream = CREAM_FLYING_DURATION;
+    player->w.flyingDurationCream = CREAM_FLYING_DURATION;
     player->unk61 = 1;
     player->unk5A = 0;
     player->unk58 = 0;
@@ -595,8 +595,8 @@ void sub_8012644(Player *player)
 
 void PlayerCB_80126B0(Player *player)
 {
-    if (player->flyingDurationCream != 0) {
-        player->flyingDurationCream--;
+    if (player->w.flyingDurationCream != 0) {
+        player->w.flyingDurationCream--;
 
         if (player->unk5C & gPlayerControls.attack) {
             player->unk64 = 86;
@@ -620,7 +620,7 @@ void PlayerCB_80126B0(Player *player)
     } else {
         if ((player->unk5E & gPlayerControls.jump)
             && (player->speedAirY >= -Q_24_8(0.75))
-            && (player->flyingDurationCream != 0)) {
+            && (player->w.flyingDurationCream != 0)) {
             player->unk61 = 2;
         }
 
@@ -1167,7 +1167,7 @@ void PlayerCB_80130E4(Player *player)
 NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *player))
 {
     // HACK: Don't cast it like this!
-    s8 xOffset = *((u8 *)(&player->flyingDurationCream) + 1);
+    s8 xOffset = player->w.tf.shift;
 
     player->moveState &= ~MOVESTATE_20;
     player->moveState &= ~MOVESTATE_FACING_LEFT;
@@ -1201,7 +1201,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
     sub_8022838(player);
 
     // HACK: Don't cast it like this!
-    someFlags = *((u8 *)(&player->flyingDurationCream));
+    someFlags = *((u8 *)(&player->w.flyingDurationCream));
     mstate_inAir = MOVESTATE_IN_AIR;
 
     if (!(someFlags & 0x2)) {
@@ -1213,7 +1213,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
 
         if (((player->rotation + Q_24_8(0.125)) & (-Q_24_8(0.25))) << 24 != 0) {
             // HACK: cast
-            s8 urgh = *((u8 *)(&player->flyingDurationCream) + 1) + Q_24_8(0.25);
+            s8 urgh = *((u8 *)(&player->w.flyingDurationCream) + 1) + Q_24_8(0.25);
             if (urgh <= 0) {
                 player->moveState |= MOVESTATE_FACING_LEFT;
             } else {
@@ -1235,9 +1235,9 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
 
         type8029A28 sp08;
 
-        if (player->unkAE >= 0) {
+        if (player->w.tf.unkAE >= 0) {
             // HACK
-            u8 *urgh = ((u8 *)(&player->flyingDurationCream) + 1);
+            u8 *urgh = ((u8 *)(&player->w.flyingDurationCream) + 1);
             if ((*urgh + Q_24_8(0.25)) << 24 <= 0) {
                 type8029A28 result; // <= r6
                 player->moveState |= MOVESTATE_FACING_LEFT;
@@ -1295,7 +1295,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                     player->unk16 = 6;
                     player->unk17 = 14;
                     // HACK: Don't cast it like this!
-                    *((u8 *)(&player->flyingDurationCream)) |= mstate_inAir;
+                    *((u8 *)(&player->w.flyingDurationCream)) |= mstate_inAir;
                     return;
                 } else if (ret != 0) {
                     // _08013370
@@ -1344,7 +1344,7 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
         player->unk16 = 6;
         player->unk17 = 14;
         // HACK: Don't cast it like this!
-        *((u8 *)(&player->flyingDurationCream)) |= mstate_inAir;
+        *((u8 *)(&player->w.flyingDurationCream)) |= mstate_inAir;
     } else {
         // _08013424
         if (!(player->unk5C & gPlayerControls.jump)
@@ -1367,3 +1367,38 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
     }
 }
 END_NONMATCH
+
+void PlayerCB_8013BF0(Player *player);
+
+void sub_8023610(Player *player);
+void sub_8029DC8(Player *player);
+
+void sub_8013498(Player *player)
+{
+    u8 someFlags;
+
+    sub_8023610(player);
+    sub_8029DC8(player);
+    sub_8022838(player);
+    
+    // HACK: Don't cast it like this!
+    
+    if(!(player->w.tf.flags & 0x2)) {
+        player->speedGroundX = 0;
+        player->speedAirX = 0;
+        player->speedAirY = 0;
+
+        player->unk16 = 6;
+        player->unk17 = 14;
+
+        sub_8022318(player);
+
+        if((player->rotation + Q_24_8(0.125) ) & Q_24_8(0.75)) {
+            player->unk6D = 1;
+        } else {
+            player->unk2A = 15;
+            player->unk64 = 94;
+            gPlayer.callback = PlayerCB_8013BF0;
+        }
+    }
+}
