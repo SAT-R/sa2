@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/player_callbacks_1.h"
 #include "game/playercb_cmds.h"
 #include "game/parameters/characters.h"
 
@@ -1134,6 +1135,7 @@ void sub_8013070(Player *player)
 }
 
 void PlayerCB_8013B6C(Player *player);
+void PlayerCB_8013C34(Player *player);
 
 void PlayerCB_80130E4(Player *player)
 {
@@ -1164,6 +1166,7 @@ void PlayerCB_80130E4(Player *player)
 
 NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *player))
 {
+    // HACK: Don't cast it like this!
     s8 xOffset = *((u8 *)(&player->flyingDurationCream) + 1);
 
     player->moveState &= ~MOVESTATE_20;
@@ -1179,6 +1182,188 @@ NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *
         u8 val = ABS(xOffset);
         // _0801318C
         player->unk64 = gUnknown_080D5538[(val & 0x7F) >> 5];
+    }
+}
+END_NONMATCH
+
+void sub_8022318(Player *player);
+void sub_8022838(Player *player);
+
+void PlayerCB_8013BD4(Player *player);
+void PlayerCB_8013C18(Player *player);
+
+// (90.96% on Apr. 16th 2023) https://decomp.me/scratch/JahZb
+NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *player))
+{
+    u8 someFlags;
+    u8 mstate_inAir;
+
+    sub_8022838(player);
+
+    // HACK: Don't cast it like this!
+    someFlags = *((u8 *)(&player->flyingDurationCream));
+    mstate_inAir = MOVESTATE_IN_AIR;
+
+    if (!(someFlags & 0x2)) {
+        if (player->speedAirX <= 0) {
+            player->moveState |= MOVESTATE_FACING_LEFT;
+        } else {
+            player->moveState &= ~MOVESTATE_FACING_LEFT;
+        }
+
+        if (((player->rotation + Q_24_8(0.125)) & (-Q_24_8(0.25))) << 24 != 0) {
+            // HACK: cast
+            s8 urgh = *((u8 *)(&player->flyingDurationCream) + 1) + Q_24_8(0.25);
+            if (urgh <= 0) {
+                player->moveState |= MOVESTATE_FACING_LEFT;
+            } else {
+                player->moveState &= ~MOVESTATE_FACING_LEFT;
+            }
+
+            player->speedAirY = 0;
+
+            sub_8022318(player);
+
+            player->unk6D = 1;
+        } else {
+            gPlayer.callback = PlayerCB_8013C18;
+            player->unk64 = 95;
+            m4aSongNumStart(SE_SONIC_SKID_ATTACK);
+        }
+    } else if (someFlags & 0x20) {
+        // _08013258
+
+        type8029A28 sp08;
+
+        if (player->unkAE >= 0) {
+            // HACK
+            u8 *urgh = ((u8 *)(&player->flyingDurationCream) + 1);
+            if ((*urgh + Q_24_8(0.25)) << 24 <= 0) {
+                type8029A28 result; // <= r6
+                player->moveState |= MOVESTATE_FACING_LEFT;
+                result = sub_8029A28(player, NULL, &sp08);
+
+                if (result == sp08) {
+                    if (result != 0) {
+                        u16 gravInv = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                        if (gravInv) {
+                            s32 playerBottomX;
+                            s32 playerBottomY = Q_24_8_TO_INT(player->y);
+                            playerBottomY -= 1;
+                            playerBottomY -= player->unk17;
+
+                            playerBottomX = Q_24_8_TO_INT(player->x);
+                            playerBottomY -= 1;
+                            playerBottomY -= player->unk16;
+
+                            if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
+                                            -8, NULL, sub_801EE64)
+                                < 0) {
+                                goto _08013348;
+                            }
+                        } else {
+                            // _080132F0
+                            s32 playerBottomX;
+                            s32 playerBottomY = Q_24_8_TO_INT(player->y);
+                            playerBottomY += 1;
+                            playerBottomY += player->unk17;
+
+                            playerBottomX = Q_24_8_TO_INT(player->x);
+                            playerBottomY -= 1;
+                            playerBottomY -= player->unk16;
+
+                            if (sub_801E4E4(playerBottomX, playerBottomY, player->unk38,
+                                            +8, NULL, sub_801EE64)
+                                < 0) {
+                                goto _08013348;
+                            }
+                        }
+                        // _0801331E
+                        player->x -= Q_24_8(*urgh);
+                    }
+                }
+            } else {
+                // _0801332C
+                type8029A28 ret;
+                player->moveState &= ~MOVESTATE_FACING_LEFT;
+
+                ret = sub_8029A74(player, 0, &sp08);
+                if (ret != sp08) {
+                _08013348:
+                    gPlayer.callback = PlayerCB_8013BD4;
+                    player->unk64 = 93;
+                    player->unk16 = 6;
+                    player->unk17 = 14;
+                    // HACK: Don't cast it like this!
+                    *((u8 *)(&player->flyingDurationCream)) |= mstate_inAir;
+                    return;
+                } else if (ret != 0) {
+                    // _08013370
+                    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                        s32 playerBottomX;
+                        s32 playerBottomY = Q_24_8_TO_INT(player->y);
+                        playerBottomY += 1;
+                        playerBottomY += player->unk17;
+
+                        playerBottomX = Q_24_8_TO_INT(player->x);
+                        playerBottomY += 1;
+                        playerBottomY += player->unk16;
+
+                        if (sub_801E4E4(playerBottomX, // fmt
+                                        playerBottomY, player->unk38, +8, NULL,
+                                        sub_801EE64)
+                            < 0) {
+                            goto _08013348;
+                        }
+                    }
+
+                    player->x += Q_24_8(ret);
+                }
+            }
+
+            // _080133BA
+            player->speedGroundX = 0;
+            player->speedAirX = 0;
+            player->speedAirY = 0;
+
+            gPlayer.callback = PlayerCB_8013C34;
+
+            *urgh = 3;
+
+            player->unk64 = 100;
+            player->moveState |= MOVESTATE_10000000;
+            player->unk16 = 6;
+            player->unk17 = 10;
+
+            return;
+        }
+        // _080133FC
+        gPlayer.callback = PlayerCB_8013BD4;
+
+        player->unk64 = 93;
+        player->unk16 = 6;
+        player->unk17 = 14;
+        // HACK: Don't cast it like this!
+        *((u8 *)(&player->flyingDurationCream)) |= mstate_inAir;
+    } else {
+        // _08013424
+        if (!(player->unk5C & gPlayerControls.jump)
+            || (player->moveState & MOVESTATE_40)) {
+            gPlayer.callback = PlayerCB_8013BD4;
+            player->unk64 = 93;
+
+            if (player->speedAirX <= 0) {
+                player->moveState |= MOVESTATE_FACING_LEFT;
+            } else {
+                player->moveState &= ~MOVESTATE_FACING_LEFT;
+            }
+
+            player->speedAirX >>= 2;
+            player->unk16 = 6;
+            player->unk17 = 14;
+        } else {
+            sub_8013150(player);
+        }
     }
 }
 END_NONMATCH

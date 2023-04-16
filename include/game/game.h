@@ -237,11 +237,12 @@ typedef struct Player_ {
 
     // Cream's framecounter for flying
     // TODO/HACK: I guess this is actually part of a union per character?
-    //            When the player selected Tails, this value is actually some x-offset
+    //            When the player selected Tails, player->unk6D is actually some x-offset
     //            when jumping.
     /* 0xAC */ s16 flyingDurationCream;
 
-    /* 0xAE */ u8 fillerAE[0x2];
+    /* 0xAE */ s8 unkAE;
+    /* 0xAF */ s8 unkAF;
 
     // Tails's framecounter for flying
     // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte

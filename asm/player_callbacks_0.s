@@ -11,62 +11,6 @@
 @       if they are only called directly in the code, those are NOT callbacks.
 
 .if 00
-	thumb_func_start sub_8013150
-sub_8013150: @ 0x08013150
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	adds r0, #0xad
-	ldrb r2, [r0]
-	ldr r0, [r3, #0x20]
-	movs r1, #0x21
-	rsbs r1, r1, #0
-	ands r0, r1
-	adds r1, #0x1f
-	ands r0, r1
-	str r0, [r3, #0x20]
-	lsls r4, r2, #0x18
-	asrs r1, r4, #0x18
-	movs r5, #0x7f
-	adds r0, r1, #0
-	ands r0, r5
-	cmp r0, #0
-	bne _0801318C
-	adds r0, r3, #0
-	adds r0, #0x64
-	movs r1, #0x5c
-	strh r1, [r0]
-	lsrs r0, r4, #0x18
-	cmp r0, #0x80
-	bne _080131A8
-	ldr r0, [r3, #0x20]
-	movs r1, #1
-	orrs r0, r1
-	str r0, [r3, #0x20]
-	b _080131A8
-_0801318C:
-	cmp r1, #0
-	bge _08013196
-	rsbs r0, r1, #0
-	lsls r0, r0, #0x18
-	lsrs r2, r0, #0x18
-_08013196:
-	ldr r1, _080131B0 @ =gUnknown_080D5538
-	ands r2, r5
-	lsrs r0, r2, #5
-	adds r0, r0, r1
-	movs r1, #0
-	ldrsb r1, [r0, r1]
-	adds r0, r3, #0
-	adds r0, #0x64
-	strh r1, [r0]
-_080131A8:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080131B0: .4byte gUnknown_080D5538
-.endif
-
 	thumb_func_start sub_80131B4
 sub_80131B4: @ 0x080131B4
 	push {r4, r5, r6, r7, lr}
@@ -74,10 +18,10 @@ sub_80131B4: @ 0x080131B4
 	mov r6, r8
 	push {r6, r7}
 	sub sp, #0xc
-	adds r5, r0, #0
+	adds r5, r0, #0         @ r5 = player
 	bl sub_8022838
 	adds r7, r5, #0
-	adds r7, #0xac
+	adds r7, #0xac          @ r7 = player->unkAC
 	ldrb r1, [r7]
 	movs r0, #2
 	mov r8, r0
@@ -105,7 +49,7 @@ _080131EE:
 	ldrb r0, [r0]
 	adds r0, #0x20
 	movs r2, #0x40
-	rsbs r2, r2, #0
+	rsbs r2, r2, #0         @ r2 = -Q_24_8(0.25)
 	adds r1, r2, #0
 	ands r0, r1
 	lsls r0, r0, #0x18
@@ -137,7 +81,7 @@ _08013224:
 	adds r1, #0x6d
 	movs r0, #1
 	strb r0, [r1]
-	b _0801348A
+	b sub_80131B4_return
 _0801323A:
 	ldr r1, _08013250 @ =gPlayer
 	ldr r0, _08013254 @ =PlayerCB_8013C18
@@ -148,7 +92,7 @@ _0801323A:
 	strh r0, [r1]
 	movs r0, #0x6f
 	bl m4aSongNumStart
-	b _0801348A
+	b sub_80131B4_return
 	.align 2, 0
 _08013250: .4byte gPlayer
 _08013254: .4byte PlayerCB_8013C18
@@ -290,7 +234,7 @@ _08013348:
 	mov r2, r8
 	orrs r0, r2
 	strb r0, [r7]
-	b _0801348A
+	b sub_80131B4_return
 	.align 2, 0
 _08013368: .4byte gPlayer
 _0801336C: .4byte PlayerCB_8013BD4
@@ -357,7 +301,7 @@ _080133BA:
 	strb r0, [r5, #0x16]
 	movs r0, #0xa
 	strb r0, [r5, #0x17]
-	b _0801348A
+	b sub_80131B4_return
 	.align 2, 0
 _080133EC: .4byte gUnknown_03005424
 _080133F0: .4byte sub_801EE64
@@ -379,7 +323,7 @@ _080133FC:
 	mov r1, r8
 	orrs r0, r1
 	strb r0, [r7]
-	b _0801348A
+	b sub_80131B4_return
 	.align 2, 0
 _0801341C: .4byte gPlayer
 _08013420: .4byte PlayerCB_8013BD4
@@ -432,11 +376,11 @@ _08013470:
 	strb r0, [r5, #0x16]
 	movs r0, #0xe
 	strb r0, [r5, #0x17]
-	b _0801348A
+	b sub_80131B4_return
 _08013484:
 	adds r0, r5, #0
 	bl sub_8013150
-_0801348A:
+sub_80131B4_return:
 	add sp, #0xc
 	pop {r3, r4}
 	mov r8, r3
@@ -444,6 +388,7 @@ _0801348A:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start sub_8013498
 sub_8013498: @ 0x08013498
