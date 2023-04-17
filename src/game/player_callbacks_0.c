@@ -1699,3 +1699,74 @@ void sub_801394C(Player *player)
         player->unk6D = 4;
     }
 }
+
+// https://decomp.me/scratch/8fUWD
+NONMATCH("asm/non_matching/playercb__sub_80139B0.inc", void sub_80139B0(Player *player))
+{
+    s32 speedGrnd = ABS(player->speedGroundX);
+    s8 r2 = player->w.tf.shift;
+
+    if (speedGrnd < Q_24_8(3.0)) {
+        speedGrnd += Q_24_8(6.0 / 256.0);
+    } else if (speedGrnd < Q_24_8(15.0)) {
+        if ((r2 & 0x7F) == 0)
+            speedGrnd += Q_24_8(3.0 / 256.0);
+    }
+    // _080139E4
+    if (player->moveState & MOVESTATE_40) {
+        if ((speedGrnd > Q_24_8(3.0))
+            && (speedGrnd -= Q_24_8(9.0 / 256.0)) < Q_24_8(3.0))
+            speedGrnd = Q_24_8(3.0);
+    }
+
+    {
+        s8 shift = player->w.tf.shift + Q_24_8(0.25);
+        if (shift <= 0) {
+            player->speedGroundX = -speedGrnd;
+        } else {
+            player->speedGroundX = +speedGrnd;
+        }
+    }
+
+    {
+        u8 shift;
+
+        if (player->unk5C & DPAD_LEFT) {
+            if (((u8)r2 != 0x80)) {
+                shift = ABS(r2) + Q_8_8(2.0);
+            }
+        } else if (player->unk5C & DPAD_RIGHT) {
+            if ((r2 != 0)) {
+                shift = ABS(r2) + Q_8_8(2.0);
+            }
+        } else {
+            if (r2 & 0x7F) {
+                shift = r2 + 2;
+            }
+        }
+
+        player->w.tf.shift = shift;
+
+        {
+            s32 speedX = Q_24_8_TO_INT(COS_24_8(shift) * speedGrnd);
+            player->speedAirX = speedX;
+        }
+        {
+            s32 speedY = player->speedAirY;
+
+            if (speedY < Q_24_8(0.5)) {
+                speedY += Q_24_8(0.09375);
+            } else {
+                speedY -= Q_24_8(0.09375);
+            }
+            player->speedAirY = speedY;
+        }
+
+        if (gCamera.unk4C > 0) {
+            gCamera.unk4C -= 2;
+        } else if (gCamera.unk4C < 0) {
+            gCamera.unk4C += 4;
+        }
+    }
+}
+END_NONMATCH
