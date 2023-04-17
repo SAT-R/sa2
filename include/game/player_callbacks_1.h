@@ -21,5 +21,7 @@ s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
 s32 sub_801E6D4(s32, s32, u32, void *);
 
 s32 sub_8029B88(Player *player, u8 *p1, int *out);
+s32 sub_8029AC0(Player *player, u8 *p1, s32 *out);
+s32 sub_8029B0C(Player *player, u8 *p1, s32 *out);
 
 #endif // GUARD_PLAYER_CALLBACKS_1_H

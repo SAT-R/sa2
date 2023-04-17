@@ -25,15 +25,40 @@ void PlayerCB_80123D0(Player *);
 void PlayerCB_8012DA4(Player *player);
 void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
+void PlayerCB_8012498(Player *player);
 void TaskDestructor_80124B8(struct Task *);
 void PlayerCB_80124D0(Player *player);
 void PlayerCB_80126B0(Player *player);
+void PlayerCB_80127F0(Player *player);
+void PlayerCB_8012938(Player *player);
+void PlayerCB_8012978(Player *player);
+void PlayerCB_80129BC(Player *player);
 void PlayerCB_8012C2C(Player *player);
 void PlayerCB_8012D1C(Player *player);
+void PlayerCB_8012F6C(Player *player);
+void PlayerCB_8013010(Player *player);
+void PlayerCB_80130E4(Player *player);
+s32 sub_8013644(Player *player);
+void sub_801394C(Player *player);
+void PlayerCB_8013B6C(Player *player);
+void PlayerCB_8013BD4(Player *player);
+void PlayerCB_8013BF0(Player *player);
+void PlayerCB_8013C18(Player *player);
+void PlayerCB_8013C34(Player *player);
+void sub_8013C50(Player *player);
+void sub_8013CA0(Player *player);
+
 void sub_8015BD4(u16);
 
 void sub_801F214(void);
 void sub_801F550(struct Task *);
+void sub_801F5CC(s32, s32);
+
+void sub_8022318(Player *player);
+void sub_8022838(Player *player);
+
+void sub_8023610(Player *player);
+void sub_8029DC8(Player *player);
 
 extern void PlayerCB_8025318(Player *player);
 extern void PlayerCB_80261D8(Player *player);
@@ -464,8 +489,6 @@ void PlayerCB_80123FC(Player *player)
     }
 }
 
-void PlayerCB_8012498(Player *player);
-
 void PlayerCB_8012460(Player *player)
 {
     player->speedAirY += Q_24_8(56.0 / 256.0);
@@ -522,8 +545,6 @@ bool32 sub_801251C(Player *player)
 
     return FALSE;
 }
-
-void PlayerCB_80127F0(Player *player);
 
 void sub_8012548(Player *player)
 {
@@ -669,10 +690,6 @@ void PlayerCB_80127F0(Player *player)
 
     sub_8027EF0(player);
 }
-
-void PlayerCB_8012938(Player *player);
-void PlayerCB_8012978(Player *player);
-void PlayerCB_80129BC(Player *player);
 
 void sub_8012830(Player *player)
 {
@@ -1015,10 +1032,6 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
     return result;
 }
 
-void PlayerCB_8012F6C(Player *player);
-void PlayerCB_8013010(Player *player);
-void PlayerCB_80130E4(Player *player);
-
 void sub_8012EEC(Player *player)
 {
     sub_80218E4(player);
@@ -1134,9 +1147,6 @@ void sub_8013070(Player *player)
     PlayerCB_80130E4(player);
 }
 
-void PlayerCB_8013B6C(Player *player);
-void PlayerCB_8013C34(Player *player);
-
 void PlayerCB_80130E4(Player *player)
 {
     s32 speed = player->speedGroundX;
@@ -1185,12 +1195,6 @@ NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *
     }
 }
 END_NONMATCH
-
-void sub_8022318(Player *player);
-void sub_8022838(Player *player);
-
-void PlayerCB_8013BD4(Player *player);
-void PlayerCB_8013C18(Player *player);
 
 // (91.52% on Apr. 17th 2023) https://decomp.me/scratch/9bH5g
 NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *player))
@@ -1367,11 +1371,6 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
 }
 END_NONMATCH
 
-void PlayerCB_8013BF0(Player *player);
-
-void sub_8023610(Player *player);
-void sub_8029DC8(Player *player);
-
 void sub_8013498(Player *player)
 {
     u8 someFlags;
@@ -1399,8 +1398,6 @@ void sub_8013498(Player *player)
         }
     }
 }
-
-void sub_801F5CC(s32, s32);
 
 void sub_801350C(Player *player)
 {
@@ -1522,3 +1519,162 @@ s32 sub_8013644(Player *player)
 
     return result;
 }
+
+// https://decomp.me/scratch/JUkKD
+NONMATCH("asm/non_matching/playercb__sub_80136E8.inc", void sub_80136E8(Player *player))
+{
+    if (player->w.tf.unkAE <= 0) {
+        if (!(player->moveState & MOVESTATE_8)) {
+            player->speedGroundX = 0;
+            player->speedAirX = 0;
+            player->speedAirY = 0;
+
+            if (player->unk64 != 100) {
+                player->unk64 = 101;
+            }
+
+            if (player->unk5C & DPAD_UP) {
+                s32 offsetY = Q_24_8(player->unk17);
+                s32 r2;
+                u8 sp;
+
+                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                    offsetY = -offsetY;
+                }
+
+                player->y -= offsetY;
+                r2 = sub_8013644(player);
+                player->y += offsetY;
+
+                if (r2 > 2) {
+                    sub_8013C50(player);
+                    return;
+                } else if (r2 > 0) {
+                    // TODO: is sp actually uninitialized?
+                    player->rotation = sp;
+
+                    player->speedGroundX = 0;
+                    player->speedAirX = 0;
+                    player->speedAirY = 0;
+
+                    sub_8022318(player);
+                    gPlayer.callback = PlayerCB_8013BD4;
+
+                    player->unk64 = 93;
+                } else if (r2 >= 0) {
+                    s32 offsetY = Q_24_8(9.0);
+                    u8 rot;
+
+                    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                        offsetY = -offsetY;
+                    }
+
+                    player->y -= offsetY;
+                    r2 = sub_8029AC0(player, &rot, NULL);
+                    player->y += offsetY;
+
+                    if (r2 < 0) {
+                        player->unk64 = 0x66;
+                        player->y -= Q_24_8(r2);
+                    } else {
+                        s32 speed;
+                        player->unk64 = 0x66;
+                        speed = Q_24_8(0.75);
+                        if (player->moveState & 0x40) {
+                            speed = -Q_24_8(0.5);
+                        }
+                        player->speedAirY = speed;
+                    }
+                } else {
+                    sub_801394C(player);
+                }
+            } else if (player->unk5C & DPAD_DOWN) {
+                // _080137FC
+                s32 offsetY = Q_24_8(player->unk17);
+                s32 r2;
+                u8 rot;
+
+                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                    offsetY = -offsetY;
+                }
+                // _0801381C
+
+                player->y += offsetY;
+                r2 = sub_8013644(player);
+                player->y -= offsetY;
+
+                if (r2 <= 0) {
+                    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                        r2 = sub_8029AC0(player, &rot, NULL);
+                    } else {
+                        r2 = sub_8029B0C(player, &rot, NULL);
+                    }
+
+                    if (r2 < 0) {
+                        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                            player->y -= Q_24_8(r2);
+                        } else {
+                            player->y += Q_24_8(r2);
+                        }
+                        // _0801387E
+                        player->rotation = rot;
+
+                        player->speedGroundX = 0;
+                        player->speedAirX = 0;
+                        player->speedAirY = 0;
+
+                        sub_8022318(player);
+                        gPlayer.callback = PlayerCB_8013BD4;
+                        goto jumpPos;
+                    } else {
+                        s32 speed;
+                        player->unk64 = 103;
+
+                        speed = Q_24_8(0.75);
+                        if (player->moveState & MOVESTATE_40) {
+                            speed = Q_24_8(0.5);
+                        }
+                        player->speedAirY = speed;
+                    }
+                }
+            } else if (sub_8013644(player) > 0) {
+                // _080138BE
+                sub_8013CA0(player);
+            } else {
+                // _080138D2
+                s32 r2 = 1;
+                u8 rot;
+
+                if (!(player->unk5C & (DPAD_DOWN | DPAD_UP))) {
+                    r2 = sub_8029B0C(player, &rot, NULL);
+
+                    if (r2 < 0) {
+                        player->y += Q_24_8(r2);
+
+                        player->rotation = rot;
+
+                        player->speedGroundX = 0;
+                        player->speedAirX = 0;
+                        player->speedAirY = 0;
+
+                        sub_8022318(player);
+                    jumpPos:
+                        player->unk64 = 93;
+                        asm("");
+                        return;
+                    }
+                }
+                // _08013914
+                if (r2 != 0) {
+                    if (--player->w.tf.shift == 0)
+                        player->w.tf.shift = 1;
+                }
+
+                sub_801394C(player);
+                return;
+            }
+        }
+    }
+    sub_8013CA0(player);
+}
+END_NONMATCH
