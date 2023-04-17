@@ -1678,3 +1678,24 @@ NONMATCH("asm/non_matching/playercb__sub_80136E8.inc", void sub_80136E8(Player *
     sub_8013CA0(player);
 }
 END_NONMATCH
+
+void sub_801394C(Player *player)
+{
+    if (player->unk5E & gPlayerControls.jump) {
+        player->speedAirY = -Q_24_8(2.625);
+        player->speedAirX = +Q_24_8(3.0);
+        player->moveState ^= MOVESTATE_FACING_LEFT;
+
+        if (player->moveState & MOVESTATE_FACING_LEFT)
+            player->speedAirX = -player->speedAirX;
+
+        player->moveState |= MOVESTATE_4;
+        player->moveState |= MOVESTATE_IN_AIR;
+        player->moveState |= MOVESTATE_100;
+
+        player->unk16 = 6;
+        player->unk17 = 9;
+        player->unk64 = 50;
+        player->unk6D = 4;
+    }
+}
