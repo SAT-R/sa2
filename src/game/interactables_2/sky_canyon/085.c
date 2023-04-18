@@ -1,5 +1,5 @@
 #include "global.h"
-#include "game/interactables_2/085.h"
+#include "game/interactables_2/sky_canyon/085.h"
 #include "game/game.h"
 #include "trig.h"
 #include "lib/m4a.h"

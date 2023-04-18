@@ -265,7 +265,7 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
                 break;
             case 1:
                 sprite->unk10 &= ~0x800;
-                sprite->unk10 |= 0x400;
+                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 sub_80051E8(&ia75->sprite1);
                 sprite->unk10 |= 0x800;
                 sub_80051E8(&ia75->sprite1);
@@ -273,7 +273,7 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
             case 2:
                 sprite->unk10 &= ~(0x800 | 0x400);
                 sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= 0x400;
+                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 sub_80051E8(&ia75->sprite1);
                 break;
         }
