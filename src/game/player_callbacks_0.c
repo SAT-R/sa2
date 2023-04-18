@@ -41,6 +41,7 @@ void PlayerCB_80130E4(Player *player);
 s32 sub_8013644(Player *player);
 void sub_801394C(Player *player);
 void PlayerCB_8013B6C(Player *player);
+void PlayerCB_8013BB4(Player *player);
 void PlayerCB_8013BD4(Player *player);
 void PlayerCB_8013BF0(Player *player);
 void PlayerCB_8013C18(Player *player);
@@ -1770,3 +1771,41 @@ NONMATCH("asm/non_matching/playercb__sub_80139B0.inc", void sub_80139B0(Player *
     }
 }
 END_NONMATCH
+
+void sub_8013AD8(Player *player)
+{
+    player->moveState &= ~MOVESTATE_4;
+    player->unk16 = 6;
+    player->unk17 = 6;
+
+    player->speedAirY += Q_24_8(1.5);
+
+    if (player->speedAirY < 0)
+        player->speedAirY = 0;
+
+    player->speedGroundX = Q_24_8(3.0);
+
+    if (player->moveState & MOVESTATE_40)
+        player->speedGroundX /= 2;
+
+    if (player->moveState & MOVESTATE_FACING_LEFT) {
+        player->speedGroundX = -player->speedGroundX;
+        player->speedAirX = player->speedGroundX;
+        player->w.tf.shift = 0x80;
+    } else {
+        player->speedAirX = player->speedGroundX;
+        player->w.tf.shift = 0;
+    }
+
+    player->rotation = 0;
+
+    {
+        u8 *tFlags = &player->w.tf.flags;
+        *tFlags = 0;
+        player->unk5A = FALSE;
+        *tFlags |= 0x2;
+    }
+
+    gPlayer.callback = PlayerCB_8013BB4;
+    PlayerCB_8013BB4(player);
+}
