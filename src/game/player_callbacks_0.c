@@ -1907,6 +1907,7 @@ void sub_8013CC0(Player *player)
     }
 }
 
+// Identical to sub_8013EE0
 void sub_8013CF4(Player *player)
 {
     s32 speedGrnd = player->speedGroundX;
@@ -2012,4 +2013,96 @@ void PlayerCB_8013E34(Player *player)
     if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
         player->unk6D = 1;
     }
+}
+
+void PlayerCB_8013E64(Player *player)
+{
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        player->rotation = 0;
+
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            player->y += Q_24_8(player->unk17);
+        } else {
+            player->y -= Q_24_8(player->unk17);
+        }
+
+        if (player->moveState & MOVESTATE_FACING_LEFT) {
+            player->x -= Q_24_8(16.0);
+        } else {
+            player->x += Q_24_8(16.0);
+        }
+
+        PlayerCB_8025318(player);
+    } else {
+        sub_80232D0(player);
+        sub_8029D64(player);
+    }
+}
+
+// Identical to sub_8013CF4
+void sub_8013EE0(Player *player)
+{
+    s32 speedGrnd = player->speedGroundX;
+
+    if (speedGrnd > 0) {
+        if ((speedGrnd - Q_24_8(0.375)) < 0) {
+            speedGrnd = 0;
+        } else {
+            speedGrnd -= Q_24_8(0.375);
+        }
+
+        player->speedGroundX = speedGrnd;
+    } else if (speedGrnd < 0) {
+        if ((speedGrnd + Q_24_8(0.375)) > 0) {
+            speedGrnd = 0;
+        } else {
+            speedGrnd += Q_24_8(0.375);
+        }
+
+        player->speedGroundX = speedGrnd;
+    }
+}
+
+void PlayerCB_8013F60(Player *player);
+
+void sub_8013F04(Player *player)
+{
+    sub_80218E4(player);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 15;
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= MOVESTATE_20000000;
+
+    sub_8015BD4(0);
+
+    gPlayer.callback = PlayerCB_8013F60;
+    PlayerCB_8013F60(player);
+}
+
+void PlayerCB_8013F60(Player *player)
+{
+    s32 speed = player->speedGroundX;
+    if (speed > 0) {
+        if ((speed -= Q_24_8(0.375)) < 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    } else if (speed < 0) {
+        if ((speed += Q_24_8(0.375)) > 0)
+            speed = 0;
+
+        player->speedGroundX = speed;
+    }
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        gPlayer.callback = PlayerCB_8025318;
+    }
+
+    sub_8027EF0(player);
 }
