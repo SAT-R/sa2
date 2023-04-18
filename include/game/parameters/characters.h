@@ -7,7 +7,6 @@
 /*** Tricks ***/
 #define TRICK__STOP_N_SLAM__DROP_SPEED Q_24_8(0.21875)
 
-
 /*** Cream ***/
 #define CREAM_FLYING_DURATION (4 * GBA_FRAMES_PER_SECOND)
 
