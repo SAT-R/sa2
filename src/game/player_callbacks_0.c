@@ -252,8 +252,6 @@ void PlayerCB_8011F1C(Player *player)
     PlayerCB_80123FC(player);
 }
 
-#define TRICK__STOP_N_SLAM__DROP_SPEED Q_24_8(0.21875)
-
 void PlayerCB_8011F94(Player *player)
 {
     player->speedAirY += TRICK__STOP_N_SLAM__DROP_SPEED;
