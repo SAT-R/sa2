@@ -1195,26 +1195,25 @@ void sub_8013150(Player *player)
     }
 }
 
-// (91.52% on Apr. 17th 2023) https://decomp.me/scratch/9bH5g
-NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *player))
+void sub_80131B4(Player *player)
 {
+    type8029A28 result;
     u8 someFlags;
-    u8 mstate_inAir;
-
     sub_8022838(player);
 
     // HACK: Don't cast it like this!
     someFlags = player->w.tf.flags;
-    mstate_inAir = MOVESTATE_IN_AIR;
 
-    if (!(someFlags & 0x2)) {
+    if (!(someFlags & MOVESTATE_IN_AIR)) {
+        u8 temp;
         if (player->speedAirX <= 0) {
             player->moveState |= MOVESTATE_FACING_LEFT;
         } else {
             player->moveState &= ~MOVESTATE_FACING_LEFT;
         }
 
-        if (((player->rotation + Q_24_8(0.125)) & (-Q_24_8(0.25))) << 24 != 0) {
+        temp = -((player->rotation + Q_24_8(0.125)) & -Q_24_8(0.25));
+        if (temp != 0) {
             // HACK: cast
             s8 urgh = *((u8 *)(&player->w.flyingDurationCream) + 1) + Q_24_8(0.25);
             if (urgh <= 0) {
@@ -1233,19 +1232,30 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
             player->unk64 = 95;
             m4aSongNumStart(SE_SONIC_SKID_ATTACK);
         }
-    } else if (someFlags & 0x20) {
-        // _08013258
+    } else {
+        u32 temp = 0x20;
+        temp &= someFlags;
+        if (temp) {
+            // _08013258
+            type8029A28 sp08;
 
-        type8029A28 sp08;
+            if (player->w.tf.unkAE >= 0) {
+                s8 temp = (*((u8 *)(&player->w.flyingDurationCream) + 1) + Q_24_8(0.25));
+                if (temp <= 0) {
+                    // <= r6
+                    player->moveState |= MOVESTATE_FACING_LEFT;
+                    result = sub_8029A28(player, NULL, &sp08);
 
-        if (player->w.tf.unkAE >= 0) {
-            u8 *urgh = ((u8 *)(&player->w.flyingDurationCream) + 1);
-            if ((*urgh + Q_24_8(0.25)) << 24 <= 0) {
-                type8029A28 result; // <= r6
-                player->moveState |= MOVESTATE_FACING_LEFT;
-                result = sub_8029A28(player, NULL, &sp08);
+                    if (result != sp08) {
+                        gPlayer.callback = PlayerCB_8013BD4;
+                        player->unk64 = 93;
+                        player->unk16 = 6;
+                        player->unk17 = 14;
+                        // HACK: Don't cast it like this!
+                        player->w.tf.flags |= MOVESTATE_IN_AIR;
+                        return;
+                    }
 
-                if (result == sp08) {
                     if (result != 0) {
                         u16 gravInv = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
                         if (gravInv) {
@@ -1261,7 +1271,13 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             if (sub_801E4E4(playerBottomY, playerBottomX, player->unk38,
                                             -8, NULL, sub_801EE64)
                                 < 0) {
-                                goto _08013348;
+                                gPlayer.callback = PlayerCB_8013BD4;
+                                player->unk64 = 93;
+                                player->unk16 = 6;
+                                player->unk17 = 14;
+                                // HACK: Don't cast it like this!
+                                player->w.tf.flags |= MOVESTATE_IN_AIR;
+                                return;
                             }
                         } else {
                             // _080132F0
@@ -1277,98 +1293,106 @@ NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *
                             if (sub_801E4E4(playerBottomY, playerBottomX, player->unk38,
                                             +8, NULL, sub_801EE64)
                                 < 0) {
-                                goto _08013348;
+
+                                gPlayer.callback = PlayerCB_8013BD4;
+                                player->unk64 = 93;
+                                player->unk16 = 6;
+                                player->unk17 = 14;
+                                // HACK: Don't cast it like this!
+                                player->w.tf.flags |= MOVESTATE_IN_AIR;
+                                return;
                             }
                         }
                         // _0801331E
-                        player->x -= Q_24_8(*urgh);
+                        player->x -= Q_24_8(result);
                     }
-                }
-            } else {
-                // _0801332C
-                type8029A28 ret;
-                player->moveState &= ~MOVESTATE_FACING_LEFT;
+                } else {
+                    player->moveState &= ~MOVESTATE_FACING_LEFT;
 
-                ret = sub_8029A74(player, 0, &sp08);
-                if (ret != sp08) {
-                _08013348:
-                    gPlayer.callback = PlayerCB_8013BD4;
-                    player->unk64 = 93;
-                    player->unk16 = 6;
-                    player->unk17 = 14;
-                    // HACK: Don't cast it like this!
-                    player->w.tf.flags |= mstate_inAir;
-                    return;
-                } else if (ret != 0) {
-                    // _08013370
-                    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
-                        s32 playerBottomX;
-                        s32 playerBottomY = Q_24_8_TO_INT(player->y);
-                        playerBottomY += 1;
-                        playerBottomY += player->unk17;
+                    result = sub_8029A74(player, 0, &sp08);
+                    if (result != sp08) {
+                        gPlayer.callback = PlayerCB_8013BD4;
+                        player->unk64 = 93;
+                        player->unk16 = 6;
+                        player->unk17 = 14;
+                        // HACK: Don't cast it like this!
+                        player->w.tf.flags |= MOVESTATE_IN_AIR;
+                        return;
+                    } else if (result != 0) {
+                        // _08013370
+                        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                            s32 playerBottomX;
+                            s32 playerBottomY = Q_24_8_TO_INT(player->y);
+                            playerBottomY += 1;
+                            playerBottomY += player->unk17;
 
-                        playerBottomX = Q_24_8_TO_INT(player->x);
-                        playerBottomX += 1;
-                        playerBottomX += player->unk16;
+                            playerBottomX = Q_24_8_TO_INT(player->x);
+                            playerBottomX += 1;
+                            playerBottomX += player->unk16;
 
-                        if (sub_801E4E4(playerBottomY, // fmt
-                                        playerBottomX, player->unk38, +8, NULL,
-                                        sub_801EE64)
-                            < 0) {
-                            goto _08013348;
+                            if (sub_801E4E4(playerBottomY, // fmt
+                                            playerBottomX, player->unk38, +8, NULL,
+                                            sub_801EE64)
+                                < 0) {
+                                gPlayer.callback = PlayerCB_8013BD4;
+                                player->unk64 = 93;
+                                player->unk16 = 6;
+                                player->unk17 = 14;
+                                // HACK: Don't cast it like this!
+                                player->w.tf.flags |= MOVESTATE_IN_AIR;
+                                return;
+                            }
                         }
+                        player->x += Q_24_8(result);
                     }
-
-                    player->x += Q_24_8(ret);
                 }
+
+                // _080133BA
+                player->speedGroundX = 0;
+                player->speedAirX = 0;
+                player->speedAirY = 0;
+
+                gPlayer.callback = PlayerCB_8013C34;
+
+                *((u8 *)(&player->w.flyingDurationCream) + 1) = 3;
+
+                player->unk64 = 100;
+                player->moveState |= MOVESTATE_10000000;
+                player->unk16 = 6;
+                player->unk17 = 10;
+
+                return;
             }
-
-            // _080133BA
-            player->speedGroundX = 0;
-            player->speedAirX = 0;
-            player->speedAirY = 0;
-
-            gPlayer.callback = PlayerCB_8013C34;
-
-            *urgh = 3;
-
-            player->unk64 = 100;
-            player->moveState |= MOVESTATE_10000000;
-            player->unk16 = 6;
-            player->unk17 = 10;
-
-            return;
-        }
-        // _080133FC
-        gPlayer.callback = PlayerCB_8013BD4;
-
-        player->unk64 = 93;
-        player->unk16 = 6;
-        player->unk17 = 14;
-        // HACK: Don't cast it like this!
-        player->w.tf.flags |= mstate_inAir;
-    } else {
-        // _08013424
-        if (!(player->unk5C & gPlayerControls.jump)
-            || (player->moveState & MOVESTATE_40)) {
+            // _080133FC
             gPlayer.callback = PlayerCB_8013BD4;
+
             player->unk64 = 93;
-
-            if (player->speedAirX <= 0) {
-                player->moveState |= MOVESTATE_FACING_LEFT;
-            } else {
-                player->moveState &= ~MOVESTATE_FACING_LEFT;
-            }
-
-            player->speedAirX >>= 2;
             player->unk16 = 6;
             player->unk17 = 14;
+            // HACK: Don't cast it like this!
+            player->w.tf.flags |= MOVESTATE_IN_AIR;
         } else {
-            sub_8013150(player);
+            // _08013424
+            if (!(player->unk5C & gPlayerControls.jump)
+                || (player->moveState & MOVESTATE_40)) {
+                gPlayer.callback = PlayerCB_8013BD4;
+                player->unk64 = 93;
+
+                if (player->speedAirX <= 0) {
+                    player->moveState |= MOVESTATE_FACING_LEFT;
+                } else {
+                    player->moveState &= ~MOVESTATE_FACING_LEFT;
+                }
+
+                player->speedAirX >>= 2;
+                player->unk16 = 6;
+                player->unk17 = 14;
+            } else {
+                sub_8013150(player);
+            }
         }
     }
 }
-END_NONMATCH
 
 void sub_8013498(Player *player)
 {
