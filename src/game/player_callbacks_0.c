@@ -1175,27 +1175,25 @@ void PlayerCB_80130E4(Player *player)
     sub_8027EF0(player);
 }
 
-NONMATCH("asm/non_matching/playercb__sub_8013150.inc", void sub_8013150(Player *player))
+void sub_8013150(Player *player)
 {
-    // HACK: Don't cast it like this!
     s8 xOffset = player->w.tf.shift;
-
     player->moveState &= ~MOVESTATE_20;
     player->moveState &= ~MOVESTATE_FACING_LEFT;
 
-    if ((xOffset & 0x7F) == 0) {
+    if (!(xOffset & 0x7F)) {
         player->unk64 = 0x5C;
 
         if ((u8)xOffset == 0x80) {
             player->moveState |= MOVESTATE_FACING_LEFT;
         }
     } else {
-        u8 val = ABS(xOffset);
-        // _0801318C
-        player->unk64 = gUnknown_080D5538[(val & 0x7F) >> 5];
+        if (xOffset < 0) {
+            xOffset = -xOffset;
+        }
+        player->unk64 = gUnknown_080D5538[(xOffset & 0x7F) >> 5];
     }
 }
-END_NONMATCH
 
 // (91.52% on Apr. 17th 2023) https://decomp.me/scratch/9bH5g
 NONMATCH("asm/non_matching/playercb__sub_80131B4.inc", void sub_80131B4(Player *player))

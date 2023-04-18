@@ -1,6 +1,8 @@
 #ifndef GUARD_PLAYER_CALLBACKS_1_H
 #define GUARD_PLAYER_CALLBACKS_1_H
 
+#include "game/game.h"
+
 /* TODO: Cleanup! Make sure all the types are accurate! */
 
 // Actual type of 'type8029A28' currently unknown, rename once it is
