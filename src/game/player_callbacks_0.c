@@ -57,8 +57,10 @@ void sub_801F5CC(s32, s32);
 
 void sub_8022318(Player *player);
 void sub_8022838(Player *player);
+void sub_80232D0(Player *player);
 
 void sub_8023610(Player *player);
+void sub_8029D64(Player *player);
 void sub_8029DC8(Player *player);
 
 extern void PlayerCB_8025318(Player *player);
@@ -1808,4 +1810,58 @@ void sub_8013AD8(Player *player)
 
     gPlayer.callback = PlayerCB_8013BB4;
     PlayerCB_8013BB4(player);
+}
+
+void PlayerCB_8013B6C(Player *player)
+{
+    sub_8029C84(player);
+
+    if ((player->unk90->s.unk10) & SPRITE_FLAG_MASK_14) {
+        if (player->moveState & MOVESTATE_IN_AIR) {
+            player->unk64 = 50;
+            player->unk6D = 5;
+        } else {
+            player->unk6D = 1;
+        }
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_8013BB4(Player *player)
+{
+    sub_80139B0(player);
+    sub_80232D0(player);
+    sub_8029D64(player);
+    sub_80131B4(player);
+}
+
+void PlayerCB_8013BD4(Player *player)
+{
+    sub_80232D0(player);
+    sub_8029D64(player);
+    sub_8013498(player);
+}
+
+void PlayerCB_8013BF0(Player *player)
+{
+    if ((player->unk90->s.unk10) & SPRITE_FLAG_MASK_14) {
+        player->unk6D = 1;
+    }
+
+    sub_8027EF0(player);
+}
+
+void PlayerCB_8013C18(Player *player)
+{
+    sub_80135BC(player);
+    sub_80232D0(player);
+    sub_8029D64(player);
+}
+
+void PlayerCB_8013C34(Player *player)
+{
+    sub_80136E8(player);
+    sub_80232D0(player);
+    sub_8029D64(player);
 }
