@@ -1865,3 +1865,151 @@ void PlayerCB_8013C34(Player *player)
     sub_80232D0(player);
     sub_8029D64(player);
 }
+
+void PlayerCB_8013E64(Player *player);
+
+void sub_8013C50(Player *player)
+{
+    player->unk64 = 104;
+
+    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        player->y += Q_24_8(player->unk17);
+    } else {
+        player->y -= Q_24_8(player->unk17);
+    }
+
+    gPlayer.callback = PlayerCB_8013E64;
+
+    player->w.tf.shift = 0;
+}
+
+void sub_8013CA0(Player *player)
+{
+    gPlayer.callback = PlayerCB_8013BD4;
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->unk64 = 93;
+}
+
+// PlayerSomething_CeilGroundSpeed
+void sub_8013CC0(Player *player)
+{
+    s32 speedGrnd = ABS(player->speedGroundX);
+
+    if (speedGrnd < Q_24_8(3.0)) {
+        if (player->moveState & MOVESTATE_FACING_LEFT) {
+            player->speedGroundX = -Q_24_8(3.0);
+        } else {
+            player->speedGroundX = +Q_24_8(3.0);
+        }
+    }
+}
+
+void sub_8013CF4(Player *player)
+{
+    s32 speedGrnd = player->speedGroundX;
+
+    if (speedGrnd > 0) {
+        if ((speedGrnd - Q_24_8(0.375)) < 0) {
+            speedGrnd = 0;
+        } else {
+            speedGrnd -= Q_24_8(0.375);
+        }
+
+        player->speedGroundX = speedGrnd;
+    } else if (speedGrnd < 0) {
+        if ((speedGrnd + Q_24_8(0.375)) > 0) {
+            speedGrnd = 0;
+        } else {
+            speedGrnd += Q_24_8(0.375);
+        }
+
+        player->speedGroundX = speedGrnd;
+    }
+}
+
+void PlayerCB_8013DA8(Player *player);
+
+void PlayerCB_8013D18(Player *player)
+{
+    sub_80218E4(player);
+
+    sub_8023B5C(player, 14);
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->moveState |= (MOVESTATE_20000000 | MOVESTATE_100);
+
+    player->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+
+    player->unk64 = 106;
+
+    player->speedAirX = 0;
+    player->speedAirY = 0;
+
+    m4aSongNumStart(SE_226);
+
+    gPlayer.callback = PlayerCB_8013DA8;
+    PlayerCB_8013DA8(player);
+}
+
+void sub_8013D7C(Player *player)
+{
+    gPlayer.callback = PlayerCB_8013BD4;
+
+    player->unk64 = 93;
+
+    player->unk16 = 6;
+    player->unk17 = 14;
+
+    player->w.tf.flags |= 0x2;
+}
+
+void PlayerCB_8013DFC(Player *player);
+
+void PlayerCB_8013DA8(Player *player)
+{
+    sub_80283C4(player);
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        player->unk64 = 107;
+        player->speedAirX = Q_24_8(0.0);
+        player->speedAirY = Q_24_8(1.0);
+
+        sub_8012DF8(Q_24_8_TO_INT(player->x), Q_24_8_TO_INT(player->y), 1);
+
+        gPlayer.callback = PlayerCB_8013DFC;
+        PlayerCB_8013DFC(player);
+    }
+}
+
+void PlayerCB_8013E34(Player *player);
+
+void PlayerCB_8013DFC(Player *player)
+{
+    player->speedAirY += Q_24_8(42.0 / 256.0);
+
+    sub_80283C4(player);
+
+    if (!(player->moveState & MOVESTATE_IN_AIR)) {
+        gPlayer.callback = PlayerCB_8013E34;
+
+        player->unk64 = 108;
+        player->speedAirY = 0;
+    }
+}
+
+void PlayerCB_8013E34(Player *player)
+{
+    sub_8027EF0(player);
+
+    player->speedGroundX = 0;
+    player->speedAirX = 0;
+    player->speedAirY = 0;
+
+    if (player->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        player->unk6D = 1;
+    }
+}
