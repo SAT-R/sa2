@@ -11,7 +11,7 @@
 #define GET_CHARACTER_ANIM(player)                                                      \
     (player->unk68 - PlayerCharacterIdleAnims[player->character])
 
-#define PLAYERCB_UPDATE_UNK2A(player)                                                   \
+#define PLAYERFN_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \
         if (player->unk2A) {                                                            \
             player->unk2A -= 1;                                                         \
@@ -26,7 +26,7 @@
         }                                                                               \
     }
 
-#define PLAYERCB_UPDATE_ROTATION(player)                                                \
+#define PLAYERFN_UPDATE_ROTATION(player)                                                \
     {                                                                                   \
         s32 rot = (s8)player->rotation;                                                 \
         if (rot < 0) {                                                                  \
@@ -37,7 +37,7 @@
         player->rotation = rot;                                                         \
     }
 
-#define PLAYERCB_UPDATE_POSITION(player)                                                \
+#define PLAYERFN_UPDATE_POSITION(player)                                                \
     {                                                                                   \
         player->x += player->speedAirX;                                                 \
                                                                                         \
@@ -53,7 +53,7 @@
     }
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
-#define PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                \
+#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                \
     if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {        \
         gPlayer.callback = PlayerCB_8025318;                                            \
                                                                                         \
@@ -61,7 +61,7 @@
         player->rotation = 0;                                                           \
     }
 
-#define PLAYERCB_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
+#define PLAYERFN_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
         s32 old_3005450 = gUnknown_03005450;                                            \
@@ -85,13 +85,13 @@
     }
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
-#define PLAYERCB_MAYBE_TRANSITION_TO_GROUND(player)                                     \
+#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND(player)                                     \
     {                                                                                   \
         sub_8022190(player);                                                            \
-        PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
     }
 
-#define PLAYERCB_UPDATE_AIR_FALL_SPEED(player)                                          \
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                          \
     if (player->moveState & MOVESTATE_40) {                                             \
         player->speedAirY += Q_24_8(12.0 / 256.0);                                      \
     } else {                                                                            \
@@ -99,7 +99,7 @@
     }
 
 // TODO: Match this without ASM!
-#define PLAYERCB_UPDATE_AIR_FALL_SPEED_B(player)                                        \
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
     {                                                                                   \
         s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0)            \
                                                        : Q_8_8(42.0 / 256.0);           \
@@ -115,6 +115,13 @@
         }                                                                               \
                                                                                         \
         player->speedAirY += speed;                                                     \
+    }
+
+#define PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
+    {                                                                                   \
+        sub_8023B5C(player, y);                                                         \
+        p->unk16 = x;                                                                   \
+        p->unk17 = y;                                                                   \
     }
 
 #endif // GUARD_PLAYER_CB_COMMANDS_H

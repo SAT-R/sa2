@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/player_callbacks_1.h"
-#include "game/playercb_cmds.h"
+#include "game/playerfn_cmds.h"
 #include "game/parameters/characters.h"
 
 #include "constants/animations.h"
@@ -77,11 +77,11 @@ extern u16 gUnknown_080D6736[115][2];
 static const s16 gUnknown_080D552C[6]
     = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
 
-static const s8 gUnknown_080D5538[4] = { 0x60, 0x61, 0x62, 0x63 };
+static const s8 gUnknown_080D5538[4] = { 96, 97, 98, 99 };
 
-static const u16 gUnknown_080D553C[2][3] = {
-    { 30, 0x121, 2 },
-    { 25, 0x144, 3 },
+static const u16 sKnucklesAnimData_FX[2][3] = {
+    { 30, SA2_ANIM_CHAR(SA2_CHAR_ANIM_16, CHARACTER_KNUCKLES), 2 },
+    { 25, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 3 },
 };
 
 // For Sonic's Down-Trick "Bound"
@@ -124,9 +124,8 @@ void sub_8011D48(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
 
-    sub_8023B5C(p, 9);
-    p->unk16 = 6;
-    p->unk17 = 9;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 9);
+
     p->moveState |= MOVESTATE_20000000;
 
     if (p->unk5A == FALSE) {
@@ -228,9 +227,7 @@ void PlayerCB_8011E88(Player *p)
 void PlayerCB_8011F1C(Player *p)
 {
     sub_80218E4(p);
-    sub_8023B5C(p, 9);
-    p->unk16 = 6;
-    p->unk17 = 9;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 9);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -321,9 +318,7 @@ void sub_80120C0(Player *p)
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_4);
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk64 = 80;
 
@@ -357,9 +352,7 @@ void sub_8012194(Player *p)
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_BOOST_EFFECT_ON | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-    sub_8023B5C(p, 9);
-    p->unk16 = 6;
-    p->unk17 = 9;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 9);
 
     p->unk64 = 19;
 
@@ -388,9 +381,7 @@ void PlayerCB_801225C(Player *p)
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_1000000 | MOVESTATE_20);
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk64 = 14;
 
@@ -549,9 +540,7 @@ void sub_8012548(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -596,9 +585,7 @@ void sub_8012644(Player *p)
     if (p->moveState & MOVESTATE_4) {
         p->moveState &= ~MOVESTATE_4;
 
-        sub_8023B5C(p, 14);
-        p->unk16 = 6;
-        p->unk17 = 14;
+        PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
     }
 
     p->w.flyingDurationCream = CREAM_FLYING_DURATION;
@@ -692,9 +679,7 @@ void sub_8012830(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -710,9 +695,7 @@ void sub_8012888(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
@@ -728,9 +711,7 @@ void sub_80128E0(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
@@ -826,9 +807,7 @@ void sub_8012AD0(Player *p)
 
     p->unk64 = 91;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
@@ -871,9 +850,7 @@ void sub_8012BC0(Player *p)
     if (p->moveState & MOVESTATE_4) {
         p->moveState &= ~MOVESTATE_4;
 
-        sub_8023B5C(p, 14);
-        p->unk16 = 6;
-        p->unk17 = 14;
+        PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
     }
 
     p->flyingDurationTails = TAILS_FLYING_DURATION;
@@ -952,9 +929,7 @@ void sub_8012D3C(Player *p)
 
     p->unk64 = 15;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -1011,9 +986,9 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
 
         s = &ts->s;
 
-        s->graphics.dest = VramMalloc(gUnknown_080D553C[p2][0]);
-        s->graphics.anim = gUnknown_080D553C[p2][1];
-        s->variant = gUnknown_080D553C[p2][2];
+        s->graphics.dest = VramMalloc(sKnucklesAnimData_FX[p2][0]);
+        s->graphics.anim = sKnucklesAnimData_FX[p2][1];
+        s->variant = sKnucklesAnimData_FX[p2][2];
 
         s->unk1A = 0x200;
         s->unk10 = SPRITE_FLAG_PRIORITY(2);
@@ -1032,9 +1007,7 @@ void sub_8012EEC(Player *p)
 
     p->unk64 = 15;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -1123,9 +1096,7 @@ void sub_8013070(Player *p)
 
     p->unk64 = 17;
 
-    sub_8023B5C(p, 9);
-    p->unk16 = 6;
-    p->unk17 = 9;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 9);
 
     p->moveState |= MOVESTATE_20000000;
 
@@ -1434,9 +1405,7 @@ void sub_801350C(Player *p)
     } else if (!(p->moveState & MOVESTATE_8)) {
         gPlayer.callback = PlayerCB_8013BD4;
 
-        sub_8023B5C(p, 14);
-        p->unk16 = 6;
-        p->unk17 = 14;
+        PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
         p->w.tf.flags |= 0x2;
     }
@@ -1933,9 +1902,7 @@ void PlayerCB_8013D18(Player *p)
 {
     sub_80218E4(p);
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100);
 

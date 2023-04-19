@@ -26,6 +26,7 @@
 #define SA2_CHAR_ANIM_JUMP_1             10
 #define SA2_CHAR_ANIM_JUMP_2             11
 #define SA2_CHAR_ANIM_FALLING_VULNERABLE 13
+#define SA2_CHAR_ANIM_16                 16
 
 // TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17

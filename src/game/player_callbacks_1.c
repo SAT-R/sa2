@@ -6,7 +6,7 @@
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
-#include "game/playercb_cmds.h"
+#include "game/playerfn_cmds.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -275,11 +275,11 @@ void PlayerCB_Idle(Player *p)
         sub_80232D0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_8000) {
             p->moveState &= ~MOVESTATE_IN_AIR;
@@ -307,11 +307,11 @@ void PlayerCB_8025548(Player *p)
         sub_80232D0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -350,11 +350,11 @@ void PlayerCB_802569C(Player *p)
         sub_80232D0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -393,11 +393,11 @@ void PlayerCB_8025854(Player *p)
         sub_80232D0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
             gPlayer.callback = PlayerCB_8025E18;
@@ -517,14 +517,14 @@ void PlayerCB_8025AB8(Player *p)
             sub_8023128(p);
 
             if (p->moveState & MOVESTATE_IN_AIR) {
-                PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
+                PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
             }
 
-            PLAYERCB_UPDATE_POSITION(p);
+            PLAYERFN_UPDATE_POSITION(p);
 
             sub_8022D6C(p);
 
-            PLAYERCB_UPDATE_UNK2A(p);
+            PLAYERFN_UPDATE_UNK2A(p);
 
             if (p->moveState & MOVESTATE_IN_AIR) {
                 gPlayer.callback = PlayerCB_8025E18;
@@ -607,10 +607,10 @@ void PlayerCB_8025E18(Player *p)
 
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void sub_8025F84(Player *p)
@@ -736,10 +736,10 @@ void PlayerCB_80261D8(Player *p)
 
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_802631C(Player *p)
@@ -827,10 +827,10 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc", void PlayerCB_Spindash(Player
         sub_80236C8(p);
         sub_80232D0(p);
 
-        PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-        PLAYERCB_UPDATE_POSITION(p);
-        PLAYERCB_UPDATE_ROTATION(p);
-        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+        PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+        PLAYERFN_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_ROTATION(p);
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
     } else {
         // _08026598
         s32 groundSpeed = p->speedGroundX;
@@ -857,11 +857,11 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc", void PlayerCB_Spindash(Player
         sub_8023260(p);
         sub_8023128(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
     }
 }
 END_NONMATCH
@@ -954,10 +954,10 @@ void PlayerCB_8026810(Player *p)
         sub_8023260(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
+            PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
         }
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
@@ -1089,14 +1089,14 @@ void PlayerCB_8026BCC(Player *p)
         sub_8023260(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
+            PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
         }
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 14;
@@ -1115,9 +1115,9 @@ void PlayerCB_8026D2C(Player *p)
     sub_80236C8(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
 
     if (p->speedAirY >= 0) {
         sub_8022218(p);
@@ -1127,7 +1127,7 @@ void PlayerCB_8026D2C(Player *p)
         sub_8022218(p);
     }
 
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p);
 }
 
 void PlayerCB_8026E24(Player *p)
@@ -1258,9 +1258,9 @@ void PlayerCB_8027040(Player *p)
     sub_80236C8(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_8027114(Player *p)
@@ -1321,7 +1321,7 @@ void PlayerCB_8027190(Player *p)
 
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 }
 
 void PlayerCB_8027250(Player *p)
@@ -1377,9 +1377,9 @@ void PlayerCB_8027324(Player *p)
 {
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_80273D0(Player *p)
@@ -1457,11 +1457,11 @@ void PlayerCB_GoalSlowdown(Player *p)
             sub_80232D0(p);
             sub_8023260(p);
 
-            PLAYERCB_UPDATE_POSITION(p);
+            PLAYERFN_UPDATE_POSITION(p);
 
             sub_8022D6C(p);
 
-            PLAYERCB_UPDATE_UNK2A(p);
+            PLAYERFN_UPDATE_UNK2A(p);
         }
     }
 }
@@ -1495,7 +1495,7 @@ void PlayerCB_GoalBrake(Player *p)
                     r8 = 100;
 
                 if (r8 != 0) {
-                    PLAYERCB_MAYBE_INCREMENT_LIVES(p, r8);
+                    PLAYERFN_MAYBE_INCREMENT_LIVES(p, r8);
 
                     sub_801F3A4(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), r8);
                 }
@@ -1516,11 +1516,11 @@ void PlayerCB_GoalBrake(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 }
 
 void sub_802785C(Player *p)
@@ -1568,11 +1568,11 @@ void PlayerCB_80278D4(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 }
 
 void PlayerCB_80279F8(Player *p)
@@ -1603,11 +1603,11 @@ void PlayerCB_80279F8(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 
     if (gCamera.shiftY > -56)
         gCamera.shiftY--;
@@ -1629,11 +1629,11 @@ void PlayerCB_8027B98(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 
     gCamera.unk8 -= 56;
 }
@@ -1655,11 +1655,11 @@ void PlayerCB_8027C5C(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 }
 
 void PlayerCB_8027D3C(Player *p)
@@ -1692,11 +1692,11 @@ void PlayerCB_8027D3C(Player *p)
     sub_80232D0(p);
     sub_8023260(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_POSITION(p);
 
     sub_8022D6C(p);
 
-    PLAYERCB_UPDATE_UNK2A(p);
+    PLAYERFN_UPDATE_UNK2A(p);
 
     if (((p->x > cmpX) && (p->unk5C == DPAD_RIGHT)) // fmt
         || ((p->x < cmpX) && (p->unk5C == DPAD_LEFT)) //
@@ -1729,20 +1729,20 @@ void sub_8027EF0(Player *p)
         sub_80236C8(p);
         sub_80232D0(p);
 
-        PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-        PLAYERCB_UPDATE_POSITION(p);
-        PLAYERCB_UPDATE_ROTATION(p);
-        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+        PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+        PLAYERFN_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_ROTATION(p);
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
     } else {
         sub_80232D0(p);
         sub_80231C0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
     }
 }
 
@@ -1751,19 +1751,19 @@ void sub_802808C(Player *p)
     if (p->moveState & MOVESTATE_IN_AIR) {
         sub_80232D0(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
-        PLAYERCB_UPDATE_ROTATION(p);
-        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+        PLAYERFN_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_ROTATION(p);
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
     } else {
         sub_80232D0(p);
         sub_80231C0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
     }
 }
 
@@ -1773,11 +1773,11 @@ void sub_8028204(Player *p)
     sub_80236C8(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED_B(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void sub_80282EC(Player *p)
@@ -1792,18 +1792,18 @@ void sub_80282EC(Player *p)
 
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void sub_80283C4(Player *p)
 {
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void sub_8028478(Player *p)
@@ -1812,10 +1812,10 @@ void sub_8028478(Player *p)
         sub_80236C8(p);
         sub_80232D0(p);
 
-        PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-        PLAYERCB_UPDATE_POSITION(p);
-        PLAYERCB_UPDATE_ROTATION(p);
-        PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+        PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+        PLAYERFN_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_ROTATION(p);
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
     } else {
         if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
             s32 acceleration = GET_ROTATED_ACCEL(p->rotation);
@@ -1829,16 +1829,16 @@ void sub_8028478(Player *p)
         sub_80231C0(p);
         sub_8023260(p);
 
-        PLAYERCB_UPDATE_POSITION(p);
+        PLAYERFN_UPDATE_POSITION(p);
 
         sub_8022D6C(p);
 
-        PLAYERCB_UPDATE_UNK2A(p);
+        PLAYERFN_UPDATE_UNK2A(p);
     }
 }
 
 /* Starting here, callbacks appear to have a different style,
-   but they still use macros like PLAYERCB_UPDATE_POSITION */
+   but they still use macros like PLAYERFN_UPDATE_POSITION */
 
 struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 {
@@ -1928,9 +1928,9 @@ void PlayerCB_80287AC(Player *p)
     }
 
     sub_80232D0(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_802890C(Player *p)
@@ -1964,16 +1964,16 @@ void PlayerCB_802890C(Player *p)
     sub_80232D0(p);
 
     if (mask & MASK_80D6992_10) {
-        PLAYERCB_UPDATE_AIR_FALL_SPEED_B(p);
+        PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p);
     } else {
         if (!(mask & MASK_80D6992_4)) {
-            PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
+            PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
         }
     }
 
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR) && (p->character == CHARACTER_KNUCKLES)
         && (p->unk5B == 2)) {
@@ -1987,11 +1987,11 @@ void sub_8028ADC(Player *p)
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0)
         && (p->unk5E & gPlayerControls.trick)) {
         if (p->unk5C & DPAD_UP) {
-            PLAYERCB_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[0]);
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[0]);
             p->unk5B = 0;
             gPlayer.callback = PlayerCB_80286F0;
         } else if (p->unk5C & DPAD_DOWN) {
-            PLAYERCB_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[3]);
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[3]);
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -2017,12 +2017,12 @@ void sub_8028ADC(Player *p)
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
                    || ((p->moveState & MOVESTATE_FACING_LEFT)
                        && (p->unk5C & DPAD_LEFT))) {
-            PLAYERCB_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[2]);
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[2]);
             p->unk5B = 2;
 
             gPlayer.callback = PlayerCB_80286F0;
         } else {
-            PLAYERCB_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[1]);
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[1]);
             p->unk5B = 3;
 
             gPlayer.callback = PlayerCB_80286F0;
@@ -2178,10 +2178,10 @@ void PlayerCB_8029074(Player *p)
     sub_80236C8(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_8029158(Player *p)
@@ -2295,10 +2295,10 @@ void PlayerCB_8029314(Player *p)
     sub_8023708(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_AIR_FALL_SPEED(p);
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 void PlayerCB_802940C(Player *p)
@@ -2311,9 +2311,9 @@ void PlayerCB_802940C(Player *p)
     sub_8028ADC(p);
     sub_80232D0(p);
 
-    PLAYERCB_UPDATE_POSITION(p);
-    PLAYERCB_UPDATE_ROTATION(p);
-    PLAYERCB_MAYBE_TRANSITION_TO_GROUND(p);
+    PLAYERFN_UPDATE_POSITION(p);
+    PLAYERFN_UPDATE_ROTATION(p);
+    PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
 // TODO: Fix the goto-match
@@ -2891,9 +2891,9 @@ void sub_8029D14(Player *p)
     }
 }
 
-void sub_8029D64(Player *p) { PLAYERCB_UPDATE_POSITION(p); }
+void sub_8029D64(Player *p) { PLAYERFN_UPDATE_POSITION(p); }
 
-void sub_8029DC8(Player *p) { PLAYERCB_UPDATE_AIR_FALL_SPEED(p); }
+void sub_8029DC8(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED(p); }
 
 bool32 sub_8029DE8(Player *p)
 {
@@ -2951,9 +2951,9 @@ bool32 sub_8029E6C(Player *p)
     return FALSE;
 }
 
-void sub_8029ED8(Player *p) { PLAYERCB_UPDATE_UNK2A(p); }
+void sub_8029ED8(Player *p) { PLAYERFN_UPDATE_UNK2A(p); }
 
-void sub_8029F20(Player *p) { PLAYERCB_UPDATE_ROTATION(p); }
+void sub_8029F20(Player *p) { PLAYERFN_UPDATE_ROTATION(p); }
 
 /* This could be a different module starting here? */
 
@@ -3245,9 +3245,9 @@ void sub_802A500(Player *p)
     }
 }
 
-void sub_802A52C(Player *p) { PLAYERCB_MAYBE_TRANSITION_TO_GROUND_BASE(p); }
+void sub_802A52C(Player *p) { PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p); }
 
-void sub_802A558(Player *p) { PLAYERCB_UPDATE_AIR_FALL_SPEED_B(p); }
+void sub_802A558(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p); }
 
 void sub_802A58C(Player *p)
 {
