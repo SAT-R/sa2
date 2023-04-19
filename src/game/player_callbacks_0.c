@@ -2036,9 +2036,7 @@ void sub_8013F04(Player *p)
 
     p->unk64 = 15;
 
-    sub_8023B5C(p, 14);
-    p->unk16 = 6;
-    p->unk17 = 14;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
 
     p->moveState |= MOVESTATE_20000000;
 
