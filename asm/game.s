@@ -13823,6 +13823,9 @@ _08023B54:
 	bx r0
 	.align 2, 0
 
+    @ Input:
+    @  r0 = Player*
+    @  r1 = spriteOffsetY
 	thumb_func_start sub_8023B5C
 sub_8023B5C: @ 0x08023B5C
 	push {r4, lr}
