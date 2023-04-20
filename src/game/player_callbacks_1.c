@@ -247,11 +247,11 @@ void PlayerCB_8025318(Player *p)
             p->unk64 = 0;
         }
 
-        gPlayer.callback = PlayerCB_Idle;
-        PlayerCB_Idle(p);
+        PLAYERFN_SET_AND_CALL(PlayerCB_Idle, p);
     }
 }
 
+// TODO/NAME: Not only used for idling...
 void PlayerCB_Idle(Player *p)
 {
     if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR))
@@ -3031,7 +3031,7 @@ void TaskDestructor_802A07C(void)
 bool32 sub_802A0C8(Player *p)
 {
     if (((p->unk5C & DPAD_ANY) == DPAD_UP) && p->speedGroundX == 0) {
-        gPlayer.callback = PlayerCB_802A620;
+        PLAYERFN_SET(PlayerCB_802A620);
         return TRUE;
     }
 
@@ -3043,12 +3043,12 @@ bool32 sub_802A0FC(Player *p)
     if ((p->unk5C & DPAD_ANY) == DPAD_DOWN) {
         if ((p->speedGroundX == 0) && (((p->rotation + Q_24_8(0.125)) & 0xC0) == 0)
             && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
-            gPlayer.callback = PlayerCB_802A228;
+            PLAYERFN_SET(PlayerCB_802A228);
             return TRUE;
         } else if (((u16)(p->speedGroundX + (Q_24_8(0.5) - 1)) > Q_24_8(1.0) - 2)
                    && !(p->moveState
                         & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
-            gPlayer.callback = PlayerCB_8025A0C;
+            PLAYERFN_SET(PlayerCB_8025A0C);
             m4aSongNumStart(SE_SPIN_ATTACK);
             return TRUE;
         }
@@ -3061,8 +3061,7 @@ bool32 sub_802A184(Player *p)
 {
     if (p->unk64 == 2) {
         if (p->unk5E & gPlayerControls.jump) {
-            gPlayer.callback = PlayerCB_802631C;
-            PlayerCB_802631C(p);
+            PLAYERFN_SET_AND_CALL(PlayerCB_802631C, p);
             return TRUE;
         }
     }
@@ -3110,8 +3109,7 @@ void PlayerCB_802A258(Player *p)
         p->moveState |= MOVESTATE_40000;
         p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
-        gPlayer.callback = PlayerCB_8026D2C;
-        PlayerCB_8026D2C(p);
+        PLAYERFN_SET_AND_CALL(PlayerCB_8026D2C, p);
     }
 }
 
@@ -3122,7 +3120,7 @@ bool32 sub_802A2A8(Player *p)
         || ((p->rotation + Q_24_8(0.25)) << 24 <= 0)) {
         return FALSE;
     } else if (p->unk5E & gPlayerControls.attack) {
-        gPlayer.callback = PlayerCB_802A714;
+        PLAYERFN_SET(PlayerCB_802A714);
         return TRUE;
     } else {
         return FALSE;
@@ -3163,8 +3161,7 @@ void sub_802A360(Player *p)
 
     m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
 
-    gPlayer.callback = PlayerCB_8026BCC;
-    PlayerCB_8026BCC(p);
+    PLAYERFN_SET_AND_CALL(PlayerCB_8026BCC, p);
 }
 
 void PlayerCB_802A3B8(Player *p) { sub_802808C(p); }

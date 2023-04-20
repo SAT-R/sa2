@@ -11,6 +11,12 @@
 #define GET_CHARACTER_ANIM(player)                                                      \
     (player->unk68 - PlayerCharacterIdleAnims[player->character])
 
+#define PLAYERFN_SET(proc)          gPlayer.callback = proc;
+#define PLAYERFN_CALL(proc, player) proc(player);
+#define PLAYERFN_SET_AND_CALL(proc, player)                                             \
+    PLAYERFN_SET(proc);                                                                 \
+    PLAYERFN_CALL(proc, player);
+
 #define PLAYERFN_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \
         if (player->unk2A) {                                                            \
