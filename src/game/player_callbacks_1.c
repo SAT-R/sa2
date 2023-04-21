@@ -740,40 +740,41 @@ void PlayerCB_802631C(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_Spindash, p);
 }
 
-// https://decomp.me/scratch/jIJLs
-NONMATCH("asm/non_matching/PlayerCB_Spindash.inc", void PlayerCB_Spindash(Player *p))
+void PlayerCB_Spindash(Player *player)
 {
-    Sprite *s = &p->unk90->s;
-    u16 cAnim = GET_CHARACTER_ANIM(p);
+    Sprite *s = &player->unk90->s;
+    u16 cAnim = GET_CHARACTER_ANIM(player);
 
-    if (!(p->unk5C & DPAD_DOWN)) {
+    if (!(player->unk5C & DPAD_DOWN)) {
         s16 index;
         s32 speed;
-        p->moveState &= ~MOVESTATE_400;
+        player->moveState &= ~MOVESTATE_400;
 
-        index = Q_24_8_TO_INT(p->unk26);
+        index = Q_24_8_TO_INT(player->unk26);
         if (index > 8)
             index = 8;
 
         speed = sSpinDashSpeeds[index];
-        if (p->moveState & MOVESTATE_FACING_LEFT)
+        if (player->moveState & MOVESTATE_FACING_LEFT)
             speed = -sSpinDashSpeeds[index];
 
-        p->speedGroundX = speed;
+        player->speedGroundX = speed;
 
-        PLAYERFN_SET(PlayerCB_8025A0C);
+        gPlayer.callback = PlayerCB_8025A0C;
 
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
         // _08026408
-        s16 pitch = p->unk26;
-        if (pitch != 0) {
-            pitch = pitch - (Q_24_8_TO_INT(pitch << 3));
+        s16 pitch = player->unk26;
+
+        s16 pitch2 = pitch;
+        if (pitch2 != 0) {
+            pitch = pitch2 - (Q_24_8_TO_INT(pitch << 3));
             if (pitch <= 0)
                 pitch = 0;
         }
-        // _08026420
-        if (p->unk5E & gPlayerControls.jump) {
+
+        if (player->unk5E & gPlayerControls.jump) {
             struct MusicPlayerInfo *mPlayerInfo;
             m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -782,36 +783,65 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc", void PlayerCB_Spindash(Player
             m4aMPlayPitchControl(mPlayerInfo, 0xFFFF, (pitch & ~0x7F));
 
             pitch += Q_24_8(2.0);
+            pitch = MAX(pitch, Q_24_8(8.0));
 
-            if (pitch < Q_24_8(8.0))
-                pitch += Q_24_8(8.0);
-
-            p->unk6A = 1;
-            p->unk6C = 1;
+            player->unk6A = 1;
+            player->unk6C = 1;
         }
         // _08026490
-        p->unk26 = pitch;
+        player->unk26 = pitch;
 
-        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (p->unk6A == 1)
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->unk6A == 1)
             && (s->unk10 & SPRITE_FLAG_MASK_14)) {
-            p->unk6A = 0;
+            player->unk6A = 0;
         }
     }
     // _080264B2
-    if (p->moveState & MOVESTATE_IN_AIR) {
-        sub_80236C8(p);
-        sub_80232D0(p);
+    if (player->moveState & MOVESTATE_IN_AIR) {
+        sub_80236C8(player);
+        sub_80232D0(player);
 
-        PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
-        PLAYERFN_UPDATE_POSITION(p);
-        PLAYERFN_UPDATE_ROTATION(p);
-        PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
+        if (player->moveState & MOVESTATE_40) {
+            player->speedAirY += Q_24_8(12.0 / 256.0);
+        } else {
+            player->speedAirY += Q_24_8(42.0 / 256.0);
+        }
+
+        player->x += player->speedAirX;
+
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+            player->speedAirY = -player->speedAirY;
+        }
+
+        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            ? player->y - player->speedAirY
+            : player->y + player->speedAirY;
+
+        {
+            s32 rot = (s8)player->rotation;
+            if (rot < 0) {
+                rot = MIN((rot + 2), 0);
+            } else if (rot > 0) {
+                rot = MAX((rot - 2), 0);
+            }
+            player->rotation = rot;
+        }
+
+        sub_8022190(player);
+
+        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+            gPlayer.callback = PlayerCB_8025318;
+            player->speedGroundX = player->speedAirX;
+            player->rotation = 0;
+        }
     } else {
         // _08026598
-        s32 groundSpeed = p->speedGroundX;
+        s32 groundSpeed = player->speedGroundX;
 
-        if ((((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
-            u32 sinVal = SIN_24_8((p->rotation) * 4) * 60;
+        if ((((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
+            u32 sinVal = SIN_24_8((player->rotation) * 4) * 60;
             s32 sinInt = (s32)(Q_24_8_TO_INT((s32)sinVal));
 
             if (groundSpeed > 0) {
@@ -824,22 +854,41 @@ NONMATCH("asm/non_matching/PlayerCB_Spindash.inc", void PlayerCB_Spindash(Player
 
             groundSpeed += sinInt;
 
-            p->speedGroundX = groundSpeed;
+            player->speedGroundX = groundSpeed;
         }
         // _080265E2
 
-        sub_80232D0(p);
-        sub_8023260(p);
-        sub_8023128(p);
+        sub_80232D0(player);
+        sub_8023260(player);
+        sub_8023128(player);
 
-        PLAYERFN_UPDATE_POSITION(p);
+        player->x += player->speedAirX;
 
-        sub_8022D6C(p);
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+            player->speedAirY = -player->speedAirY;
+        }
 
-        PLAYERFN_UPDATE_UNK2A(p);
+        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+
+        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+            ? player->y - player->speedAirY
+            : player->y + player->speedAirY;
+
+        sub_8022D6C(player);
+
+        if (player->unk2A) {
+            player->unk2A -= 1;
+        } else if ((player->rotation + 32) & 0xC0) {
+            s32 absGroundSpeed = ABS(player->speedGroundX);
+            if (absGroundSpeed < Q_24_8(1.875)) {
+                player->speedGroundX = 0;
+
+                player->moveState |= MOVESTATE_IN_AIR;
+                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+            }
+        }
     }
 }
-END_NONMATCH
 
 extern s32 sub_801E6D4(s32, s32, s32, s32, s32, s32 (*)(s32, s32, s32, s32));
 extern s32 sub_801EE64(s32, s32, s32, s32);
