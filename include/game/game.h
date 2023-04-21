@@ -137,6 +137,15 @@ struct UNK_3005A70 {
 struct Player_;
 typedef void (*PlayerCallback)(struct Player_ *);
 
+// TODO: Better name.
+//       This is used for an apparent around the value Cream uses for flying duration
+typedef struct {
+    /* 0xAC */ u8 flags;
+    /* 0xAD */ s8 shift;
+    /* 0xAE */ s8 unkAE;
+    /* 0xAF */ s8 unkAF;
+} TailsFlags;
+
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
 // Not sure what these are yet
@@ -151,8 +160,8 @@ typedef struct Player_ {
     /* 0x12 */ s16 speedAirY; // Q_8_8
     /* 0x14 */ s16 speedGroundX; // Q_8_8
 
-    // The player sprite's position is actually at the middle of its graphics
-    // this offset
+    // The player sprite's position is actually at the middle of its graphics,
+    // this offset denotes the difference to the ground.
     // spriteOffsetX
     /* 0x16 */ s8 unk16;
     // spriteOffsetY
@@ -195,22 +204,19 @@ typedef struct Player_ {
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
-    /* 0x64 */ s16 unk64;
-    /* 0x66 */ u16 unk66;
+    /* 0x64 */ s16 unk64; // Character Anim? (TODO: shouldn't this be unsigned?)
+    /* 0x66 */ u16 unk66; // Character Anim, too? But if these were cAnims, why do some
+                          // procs recalculate them?
     /* 0x68 */ u16 unk68; // anim?
     /* 0x6A */ u16 unk6A; // variant?
     /* 0x6C */ u8 unk6C;
     /* 0x6D Some player state, cleared after usage
-     *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA)
-     *  0x0A = Player cleared the stage (only for Acts, not Bosses?)
-     *  0x0B = Something Grinding
-     *  0x0C = Something Grinding
-     *  0x0D = Something Grinding
-     *  0x0E = Hit an up-spring
-     *  0x16 = Set in IA Ramp
-     *  0x17 = Used in Interactable 044
-     *  0x18 = Dash Ring
-     *  0x1C = Set by IA ClearPipe_End if data[1] is 0
+     *  0x01 = PlayerCB_80124D0
+     *  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
+     * PlayerCB_80126B0 0x0A = Player cleared the stage (only for Acts, not Bosses?) 0x0B
+     * = Something Grinding 0x0C = Something Grinding 0x0D = Something Grinding 0x0E =
+     * Hit an up-spring 0x16 = Set in IA Ramp 0x17 = Used in Interactable 044 0x18 = Dash
+     * Ring 0x1C = Set by IA ClearPipe_End if data[1] is 0
      * */
     /* 0x6D */ u8 unk6D;
     /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
@@ -231,10 +237,28 @@ typedef struct Player_ {
     /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ struct UNK_3005A70 *unk90;
-    // Only used for Cream/Tails?
+
+    // TODO: Only used for Cream/Tails?
+    //       Alternatively, some of the following data might be a union
     /* 0x94 */ struct UNK_3005A70 *unk94;
     /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
+    /* 0x9A */ u8 filler9A[0x12];
+
+    // Cream's framecounter for flying
+    // TODO/HACK: I guess this is actually part of a union per character?
+    //            When the player selected Tails, player->unk6D is actually some x-offset
+    //            when jumping.
+    /* 0xAC */
+    union {
+        s16 flyingDurationCream;
+        TailsFlags tf;
+    } w;
+
+    // Tails's framecounter for flying
+    // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
+    /* 0xB0 */ s32 flyingDurationTails;
+
 } Player;
 
 extern Player gPlayer;
@@ -325,6 +349,12 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)                                              \
     IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))
 
+typedef struct {
+    /* 0x00 */ s32 someDistanceSquared;
+    /* 0x04 */ struct Task *t;
+} SomeStruct_3005498; /* size: unknown (but >= 0x8) */
+extern SomeStruct_3005498 gUnknown_03005498;
+
 struct SomeStruct_5660 {
     u8 filler[16];
     u32 unk10;
@@ -388,6 +418,21 @@ struct UNK_3005510 {
     u8 unk6;
     u8 unk7;
 }; /* 0x8 */
+
+// TODO: Move this into the module sub_8011C98 gets defined in, once it's decomped
+typedef struct {
+    /* 0x00 */ s32 px[5];
+    /* 0x14 */ s32 py[5];
+    /* 0x28 */ u16 unk28;
+    /* 0x2C */ Sprite s;
+} TaskStrc_8011C98; /* size: 0x5C */
+
+typedef struct {
+    s32 x;
+    s32 y;
+} TrickBoundPos;
+
+extern void sub_80157C8(TrickBoundPos *pos, u8 index);
 
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {

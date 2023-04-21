@@ -1,6 +1,75 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+    .global gUnknown_080D5548
+gUnknown_080D5548:
+    .2byte 0x1C7, 0
+    .2byte 0x1C8, 0
+    .2byte 0x1C9, 0
+    .2byte 0x1C7, 0
+    .2byte 0x1C8, 0
+    .2byte 0x1C9, 0
+    .2byte 0x1C9, 1
+    .2byte 0x1CA, 0
+    .2byte 0x1CB, 0
+    .2byte 0x1CC, 0
+    .2byte 0x1CC, 1
+    .2byte 0x1CD, 0
+    .2byte 0x1CE, 0
+    .2byte 0x1CF, 0
+    .2byte 0x1CF, 1
+    .2byte 0x1D0, 0
+    .2byte 0x1D1, 0
+    .2byte 0x1D6, 0
+
+    .global gUnknown_080D5590
+gUnknown_080D5590:
+    .incbin "baserom.gba", 0x000D5590, 0x98
+
+    .global gUnknown_080D5628
+gUnknown_080D5628:
+    .incbin "baserom.gba", 0x000D5628, 0x4C
+
+    .global gUnknown_080D5674
+gUnknown_080D5674:
+    .byte 2, 4, 6, 0
+
+    @; Some character Animation IDs.
+    @; Player character AnimIDs are 91 apart from eachother
+    .global gUnknown_080D5678
+gUnknown_080D5678:
+    .2byte 74 + 0*91 @ Sonic
+    .2byte 74 + 1*91 @ Cream
+    .2byte 74 + 2*91 @ Tails
+    .2byte 74 + 3*91 @ Knuckles
+    .2byte 74 + 4*91 @ Amy
+    .2byte 0
+
+    .global gUnknown_080D5684
+gUnknown_080D5684:
+    .incbin "baserom.gba", 0x000D5684, 0xC0
+
+    .global gUnknown_080D5744
+gUnknown_080D5744:
+    .4byte sub_8019240
+    .4byte sub_80192A8
+    .4byte sub_80192FC
+    .4byte sub_8019350
+    .4byte sub_8019368
+    .4byte sub_8018AD8
+    .4byte sub_8018E00
+    .4byte sub_80193B8
+    .4byte 0
+
+    .global gUnknown_080D5768
+gUnknown_080D5768:
+    .incbin "baserom.gba", 0x000D5768, 0x70
+
+    .global gUnknown_080D57D8
+gUnknown_080D57D8:
+    .byte 0, 1, 2, 3
+
 .text
 .syntax unified
 .arm

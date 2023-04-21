@@ -4693,6 +4693,9 @@ _0801F5C0: .4byte IWRAM_START + 0x1C
 _0801F5C4: .4byte 0x00000351
 _0801F5C8: .4byte IWRAM_START + 0x3C
 
+    @; This might be a collision function?
+    @; Gets called by sub_801350C and gets
+    @; the X/Y coords for the bottom pos of a sprite.
 	thumb_func_start sub_801F5CC
 sub_801F5CC: @ 0x0801F5CC
 	push {r4, r5, r6, r7, lr}
@@ -13820,6 +13823,9 @@ _08023B54:
 	bx r0
 	.align 2, 0
 
+    @ Input:
+    @  r0 = Player*
+    @  r1 = spriteOffsetY
 	thumb_func_start sub_8023B5C
 sub_8023B5C: @ 0x08023B5C
 	push {r4, lr}

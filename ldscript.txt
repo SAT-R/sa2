@@ -61,7 +61,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/platform_thin.o(.text);
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
         build/sa2/asm/entities_1.o(.text);
-        build/sa2/asm/player_callbacks_0.o(.text);
+        build/sa2/src/game/player_callbacks_0.o(.text);
         build/sa2/asm/entities_2.o(.text);
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
@@ -238,6 +238,8 @@ SECTIONS
         build/sa2/asm/interactable_081.o(.rodata);
         build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
         build/sa2/asm/entities_1.o(.rodata);
+        build/sa2/src/game/player_callbacks_0.o(.rodata);
+        build/sa2/asm/entities_2.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
         build/sa2/src/game/stage.o(.rodata);
         build/sa2/asm/game.o(.rodata);

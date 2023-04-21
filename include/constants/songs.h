@@ -166,16 +166,17 @@
 #define SE_DELETE_GAME_DATA               220
 #define SE_221                            221
 #define SE_222                            222
-#define SE_223                            223
-#define SE_224                            224
-#define SE_225                            225
-#define SE_226                            226
-#define SE_CREAM_FLYING                   227
-#define SE_228                            228
-#define SE_CREAM_CHEESE_ATTACK            229
-#define SE_230                            230
-#define SE_231                            231
-#define SE_LONG_BRAKE                     232
+// Plays when Sonic does his "Bound" trick and collides with the ground
+#define SE_SONIC_BOUND_IMPACT  223
+#define SE_224                 224
+#define SE_225                 225
+#define SE_226                 226
+#define SE_CREAM_FLYING        227
+#define SE_228                 228
+#define SE_CREAM_CHEESE_ATTACK 229
+#define SE_230                 230
+#define SE_231                 231
+#define SE_LONG_BRAKE          232
 // 233
 #define SE_234 234
 #define SE_235 235
