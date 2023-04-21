@@ -14,8 +14,10 @@
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);
 #define PLAYERFN_SET_AND_CALL(proc, player)                                             \
-    PLAYERFN_SET(proc);                                                                 \
-    PLAYERFN_CALL(proc, player);
+    {                                                                                   \
+        PLAYERFN_SET(proc);                                                             \
+        PLAYERFN_CALL(proc, player);                                                    \
+    }
 
 #define PLAYERFN_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \
@@ -125,9 +127,13 @@
 
 #define PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
     {                                                                                   \
+        player->unk16 = x;                                                              \
+        player->unk17 = y;                                                              \
+    }
+#define PLAYERFN_CHANGE_SHIFT_OFFSETS(player, x, y)                                     \
+    {                                                                                   \
         sub_8023B5C(player, y);                                                         \
-        p->unk16 = x;                                                                   \
-        p->unk17 = y;                                                                   \
+        PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
     }
 
 #endif // GUARD_PLAYER_CB_COMMANDS_H
