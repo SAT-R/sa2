@@ -255,7 +255,7 @@ void PlayerCB_8011F94(Player *p)
         s32 bounceSpeed;
         s32 rot;
         s32 sinValue;
-        s32 bounceHeight = -Q_24_8(6.0);
+        s32 bounceImpactAccel = -Q_24_8(6.0);
 
         // Matching
         u8 *rotPtr = &p->rotation;
@@ -264,8 +264,8 @@ void PlayerCB_8011F94(Player *p)
 
         // Bounce up after hitting the ground
         sinValue = SIN_24_8(rot = p->rotation * 4);
-        p->speedAirX = -Q_24_8_TO_INT(bounceHeight * sinValue);
-        bounceSpeed = Q_24_8_TO_INT(bounceHeight * (COS_24_8((rot))));
+        p->speedAirX = -Q_24_8_TO_INT(bounceImpactAccel * sinValue);
+        bounceSpeed = Q_24_8_TO_INT(bounceImpactAccel * (COS_24_8((rot))));
         p->speedAirY = -ABS(bounceSpeed);
 
         p->speedAirX = p->speedAirX >> 1;
