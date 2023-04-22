@@ -159,6 +159,7 @@ SECTIONS
         build/sa2/asm/interactable_093.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/094.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/095.o(.text);
+        build/sa2/src/game/interactables_2/sky_canyon/flying_handle.o(.text);
         build/sa2/asm/interactable_sky_canyon_flying_handle.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/speeding_platform.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/gravity_toggle.o(.text);
