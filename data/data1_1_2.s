@@ -60,38 +60,68 @@ gUnknown_080D6FF5:
 gUnknown_080D6FF7:
     .incbin "baserom.gba", 0x000D6FF7, 0x11F
 
+    @ Colors [NUM_CHARACTERS]
     .global gUnknown_080D7116
 gUnknown_080D7116:
-    .incbin "baserom.gba", 0x000D7116, 0xA
+    .2byte 0x7C00
+    .2byte 0x025F
+    .2byte 0x037F
+    .2byte 0x007F
+    .2byte 0x563F
 
     .global gUnknown_080D7120
 gUnknown_080D7120:
-    .incbin "baserom.gba", 0x000D7120, 0x10
+    .2byte 132, 97
+    .2byte 153, 101
+    .2byte 174, 105
+    .2byte 196, 109
 
     .global gUnknown_080D7130
 gUnknown_080D7130:
-    .incbin "baserom.gba", 0x000D7130, 0xC
+    .2byte 10, -8
+    .2byte  6, -4
+    .2byte  2,  0
 
     .global gUnknown_080D713C
 gUnknown_080D713C:
-    .incbin "baserom.gba", 0x000D713C, 0x1E
+    .2byte 24, 1121, 0
+    .2byte 27, 1121, 4
+    .2byte 24, 1121, 1
+    .2byte 27, 1121, 2
+    .2byte 18, 1121, 3
 
     .global gUnknown_080D715A
 gUnknown_080D715A:
-    .incbin "baserom.gba", 0x000D715A, 0x1E
+    .2byte 28, 1122, 0
+    .2byte 36, 1122, 1
+    .2byte 0, 0, 0
+    .2byte 0, 0, 0
+    .2byte 0, 0, 0
 
     .global gUnknown_080D7178
 gUnknown_080D7178:
-    .incbin "baserom.gba", 0x000D7178, 0x42
+    .2byte 14, 1123, 0
+    .2byte 14, 1123, 1
+    .2byte 18, 1123, 4
+    .2byte 18, 1123, 5
+    .2byte 18, 1123, 6
+    .2byte 18, 1123, 7
+    .2byte 18, 1123, 8
+    .2byte 18, 1123, 9
+    .2byte 18, 1123, 10
+    .2byte 16, 1123, 2
+    .2byte 16, 1123, 3
 
     .global gUnknown_080D71BA
 gUnknown_080D71BA:
-    .incbin "baserom.gba", 0x000D71BA, 0x4
+    .2byte 26, 1124
 
     .global gUnknown_080D71BE
 gUnknown_080D71BE:
-    .incbin "baserom.gba", 0x000D71BE, 0xE
+    .2byte 0            @ Time Bonus
+    .2byte 26, 1124, 1  @ Ring Bonus
+    .2byte 26, 1124, 2  @ Spring Bonus
 
     .global gUnknown_080D71CC
 gUnknown_080D71CC:
-    .incbin "baserom.gba", 0x000D71CC, 0x8
+    .2byte 0, 69, 173, 0
