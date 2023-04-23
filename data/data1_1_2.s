@@ -80,7 +80,7 @@ gUnknown_080D6C72:
 
     .global gAnimsTrappedAnimals
 gAnimsTrappedAnimals:
-  @ Index 0
+  @ Zone 1
     .4byte 0xC0
     .4byte 0x20B
     .4byte 0
@@ -93,7 +93,8 @@ gAnimsTrappedAnimals:
     .4byte 0x20F
     .4byte 0
     .byte  2, 0, 0, 0
-  @ Index 1
+
+  @ Zone 2
     .4byte 0xC0
     .4byte 0x207
     .4byte 0
@@ -106,7 +107,8 @@ gAnimsTrappedAnimals:
     .4byte 0x20E
     .4byte 0
     .byte  1, 0, 0, 0
-  @ Index 2
+
+  @ Zone 3
     .4byte 0xC0
     .4byte 0x206
     .4byte 0
@@ -119,7 +121,8 @@ gAnimsTrappedAnimals:
     .4byte 0x208
     .4byte 0
     .byte  1, 0, 0, 0
-  @ Index 3
+
+  @ Zone 4
     .4byte 0xC0
     .4byte 0x20B
     .4byte 0
@@ -132,7 +135,8 @@ gAnimsTrappedAnimals:
     .4byte 0x209
     .4byte 0
     .byte  2, 0, 0, 0
-  @ Index 4
+
+  @ Zone 5
     .4byte 0xC0
     .4byte 0x211
     .4byte 0
@@ -145,7 +149,8 @@ gAnimsTrappedAnimals:
     .4byte 0x204
     .4byte 0
     .byte  2, 0, 0, 0
-  @ Index 5
+
+  @ Zone 6
     .4byte 0xC0
     .4byte 0x207
     .4byte 0
@@ -158,7 +163,8 @@ gAnimsTrappedAnimals:
     .4byte 0x20A
     .4byte 0
     .byte  2, 0, 0, 0
-  @ Index 6
+
+  @ Zone 7
     .4byte 0xC0
     .4byte 0x20B
     .4byte 0
