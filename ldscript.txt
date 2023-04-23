@@ -68,6 +68,8 @@ SECTIONS
         build/sa2/asm/game.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/asm/game_2.o(.text);
+        build/sa2/asm/stage_loading_screen.o(.text);
+        build/sa2/asm/got_through_stage_screen.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);
         build/sa2/src/game/countdown.o(.text);
@@ -248,6 +250,8 @@ SECTIONS
         build/sa2/data/time_data.o(.rodata);
         build/sa2/src/game/time.o(.rodata);
         build/sa2/data/data1_1_2.o(.rodata);
+        build/sa2/asm/stage_loading_screen.o(.rodata);
+        build/sa2/asm/got_through_stage_screen.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);
