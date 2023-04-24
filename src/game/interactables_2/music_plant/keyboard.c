@@ -62,8 +62,8 @@ void initSprite_Interactable_MusicPlant_Keyboard(MapEntity *me, u16 spriteRegion
     Sprite_Keyboard *kb = TaskGetStructPtr(t);
     kb->kbType = type;
     kb->unk1 = 0;
-    kb->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    kb->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    kb->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    kb->posY = TO_WORLD_POS(me->y, spriteRegionY);
 
     {
         kb->unkC = me->d.sData[0] * TILE_WIDTH;

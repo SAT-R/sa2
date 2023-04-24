@@ -81,8 +81,8 @@ void initSprite_Interactable_Checkpoint(MapEntity *me, u16 spriteRegionX,
     chkPt->base.spriteX = me->x;
     chkPt->base.spriteY = spriteY;
 
-    disp->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    disp->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    disp->x = TO_WORLD_POS(me->x, spriteRegionX);
+    disp->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     disp->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
@@ -111,8 +111,8 @@ void Task_8062FD8(void)
     Sprite *disp = &chkPt->displayed;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
+    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
@@ -151,8 +151,8 @@ void Task_8063108(void)
     Sprite *disp = &chkPt->displayed;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
+    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
@@ -176,8 +176,8 @@ void Task_806319C(void)
     Sprite *disp = &chkPt->displayed;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
-    posX = SpriteGetScreenPos(chkPt->base.spriteX, chkPt->base.regionX);
-    posY = SpriteGetScreenPos(me->y, chkPt->base.regionY);
+    posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
+    posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
     disp->x = posX - gCamera.x;
     disp->y = posY - gCamera.y;
@@ -227,8 +227,8 @@ static void Task_Interactable_Toggle_Checkpoint(void)
     s32 posX, posY;
     s16 screenX, screenY;
 
-    posX = SpriteGetScreenPos(toggle->base.spriteX, toggle->base.regionX);
-    posY = SpriteGetScreenPos(me->y, toggle->base.regionY);
+    posX = TO_WORLD_POS(toggle->base.spriteX, toggle->base.regionX);
+    posY = TO_WORLD_POS(me->y, toggle->base.regionY);
 
     screenX = posX - gCamera.x;
     screenY = posY - gCamera.y;

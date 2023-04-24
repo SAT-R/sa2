@@ -289,10 +289,10 @@ void initSprite_Interactable_MusicPlant_GermanFlute(MapEntity *me, u16 spriteReg
     Sprite_GermanFlute *flute = TaskGetStructPtr(t);
     s32 posX, posY;
 
-    posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    posX = TO_WORLD_POS(me->x, spriteRegionX);
     flute->posX = posX + (TILE_WIDTH / 2);
 
-    posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    posY = TO_WORLD_POS(me->y, spriteRegionY);
     flute->posY = posY;
 
     flute->unk8 = 0;

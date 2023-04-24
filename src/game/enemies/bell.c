@@ -39,11 +39,11 @@ void initSprite_Enemy_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     bell->base.spriteX = me->x;
     bell->base.spriteY = spriteY;
 
-    bell->posX = Q_24_8(SpriteGetScreenPos(me->x, spriteRegionX));
-    bell->posY = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY));
+    bell->posX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
+    bell->posY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
 
-    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(ANIM_BELL_TILES);

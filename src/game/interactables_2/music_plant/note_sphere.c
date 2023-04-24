@@ -88,8 +88,8 @@ void initSprite_Interactable_MusicPlant_Note_Sphere(MapEntity *me, u16 spriteReg
     s->graphics.anim = sNoteSphereAnimInfo[note->kind][0];
     s->variant = sNoteSphereAnimInfo[note->kind][1];
 
-    note->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    note->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    note->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    note->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sub_8004558(s);

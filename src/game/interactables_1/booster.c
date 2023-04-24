@@ -68,8 +68,8 @@ void initSprite_Interactable_Booster(MapEntity *me, u16 spriteRegionX, u16 sprit
     booster->base.spriteX = me->x;
     booster->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
         value = 1;
@@ -109,8 +109,8 @@ void Task_Interactable_Booster(void)
 
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(booster->base.spriteX, booster->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, booster->base.regionY);
+    screenX = TO_WORLD_POS(booster->base.spriteX, booster->base.regionX);
+    screenY = TO_WORLD_POS(me->y, booster->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 

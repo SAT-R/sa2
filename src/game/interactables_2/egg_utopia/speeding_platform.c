@@ -61,8 +61,8 @@ void initSprite_InteractableSpeedingPlatform(MapEntity *me, u16 spriteRegionX,
     platform->unk5C = 0;
     platform->unk5E = 32;
 
-    platform->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    platform->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    platform->x = TO_WORLD_POS(me->x, spriteRegionX);
+    platform->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     platform->unk44 = Q_24_8(32);
     platform->unk48 = Q_24_8(18);

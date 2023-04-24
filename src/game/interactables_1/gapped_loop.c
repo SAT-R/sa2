@@ -26,8 +26,8 @@ static void Task_GappedLoopForwardsMain(void)
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
-    s32 x = SpriteGetScreenPos(spriteX, regionX);
-    s32 y = SpriteGetScreenPos(me->y, regionY);
+    s32 x = TO_WORLD_POS(spriteX, regionX);
+    s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (PLAYER_IS_ALIVE) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
@@ -74,8 +74,8 @@ static void Task_JumpSequenceForwards(void)
         return;
     }
 
-    x = SpriteGetScreenPos(spriteX, regionX);
-    y = SpriteGetScreenPos(me->y, regionY);
+    x = TO_WORLD_POS(spriteX, regionX);
+    y = TO_WORLD_POS(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.rotation += gappedLoop->spinSpeed;
@@ -107,8 +107,8 @@ static void Task_GappedLoopReverseMain(void)
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
     u16 regionY = gappedLoop->base.regionY;
-    s32 x = SpriteGetScreenPos(spriteX, regionX);
-    s32 y = SpriteGetScreenPos(me->y, regionY);
+    s32 x = TO_WORLD_POS(spriteX, regionX);
+    s32 y = TO_WORLD_POS(me->y, regionY);
     if (PLAYER_IS_ALIVE) {
         s32 base = (x + me->d.sData[0] * 8);
         if (base <= Q_24_8_TO_INT(gPlayer.x)
@@ -155,8 +155,8 @@ static void Task_JumpSequenceReverse(void)
         return;
     }
 
-    x = SpriteGetScreenPos(spriteX, regionX);
-    y = SpriteGetScreenPos(me->y, regionY);
+    x = TO_WORLD_POS(spriteX, regionX);
+    y = TO_WORLD_POS(me->y, regionY);
     gappedLoop->playerAngle
         = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.rotation += gappedLoop->spinSpeed;
@@ -193,8 +193,8 @@ void initSprite_Interactable_gappedLoop_Start(MapEntity *me, u16 spriteRegionX,
     SET_MAP_ENTITY_INITIALIZED(me);
 
     gappedLoop->unkC
-        = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) - 96);
-    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY) + 96);
+        = Q_24_8(TO_WORLD_POS(gappedLoop->base.spriteX, spriteRegionX) - 96);
+    gappedLoop->unk10 = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }
 
 void initSprite_Interactable_gappedLoop_End(MapEntity *me, u16 spriteRegionX,
@@ -211,6 +211,6 @@ void initSprite_Interactable_gappedLoop_End(MapEntity *me, u16 spriteRegionX,
 
     // BUG: not sure if these offset values are correct for the reverse
     gappedLoop->unkC
-        = Q_24_8(SpriteGetScreenPos(gappedLoop->base.spriteX, spriteRegionX) + 96);
-    gappedLoop->unk10 = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY) + 96);
+        = Q_24_8(TO_WORLD_POS(gappedLoop->base.spriteX, spriteRegionX) + 96);
+    gappedLoop->unk10 = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }

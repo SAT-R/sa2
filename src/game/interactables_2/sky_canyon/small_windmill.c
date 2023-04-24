@@ -47,8 +47,8 @@ void initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill(MapEntity *me,
     Sprite *sprite;
     windmill->type = me->d.uData[0];
 
-    windmill->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    windmill->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    windmill->x = TO_WORLD_POS(me->x, spriteRegionX);
+    windmill->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     windmill->base.regionX = spriteRegionX;
     windmill->base.regionY = spriteRegionY;

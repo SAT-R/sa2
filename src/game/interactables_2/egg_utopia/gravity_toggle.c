@@ -55,8 +55,8 @@ static void initSprite_Interactable098(MapEntity *in_ia, u16 spriteRegionX,
     Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
     toggle->unk14 = toggleKind;
-    toggle->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    toggle->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    toggle->x = TO_WORLD_POS(me->x, spriteRegionX);
+    toggle->y = TO_WORLD_POS(me->y, spriteRegionY);
     toggle->left = (me->offsetX * 8);
     toggle->top = (me->offsetY * 8);
     toggle->right = toggle->left + (me->width * 8);

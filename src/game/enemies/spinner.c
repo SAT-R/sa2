@@ -38,11 +38,11 @@ void initSprite_Enemy_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     spinner->base.spriteX = me->x;
     spinner->base.spriteY = spriteY;
 
-    spinner->posX = Q_24_8(SpriteGetScreenPos(me->x, spriteRegionX));
-    spinner->posY = Q_24_8(SpriteGetScreenPos(me->y, spriteRegionY));
+    spinner->posX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
+    spinner->posY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(GFX_TILE_COUNT_SPINNER);

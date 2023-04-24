@@ -21,10 +21,10 @@ static void Task_Interactable_InclineRamp(void)
     u32 moveState;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(ramp->base.spriteX, ramp->base.regionY);
+    screenX = TO_WORLD_POS(ramp->base.spriteX, ramp->base.regionY);
 
     // @BUG - Same as inside initSprite func (regionX used instead of regionY)
-    screenY = SpriteGetScreenPos(me->y, ramp->base.regionX);
+    screenY = TO_WORLD_POS(me->y, ramp->base.regionX);
 
     moveState = gPlayer.moveState;
     if (!(moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))

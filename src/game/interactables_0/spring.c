@@ -105,8 +105,8 @@ static void initSprite_Interactable_Spring(u8 springType, MapEntity *me,
     spring->base.spriteX = me->x;
     spring->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     displayed->unk1A = 0x480;
@@ -194,8 +194,8 @@ static void sub_800E3D0(void)
 static bool32 sub_800E490(Sprite *displayed, MapEntity *me, Sprite_Spring *spring,
                           Player *player)
 {
-    s16 xPos = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    s16 yPos = SpriteGetScreenPos(me->y, spring->base.regionY);
+    s16 xPos = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    s16 yPos = TO_WORLD_POS(me->y, spring->base.regionY);
     displayed->x = xPos - gCamera.x;
     displayed->y = yPos - gCamera.y;
 

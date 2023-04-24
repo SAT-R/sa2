@@ -33,8 +33,8 @@ void Task_Interactable_IceParadise_SlidyIce(void)
     s32 screenX, screenY;
     regionX = ice->base.regionX;
     regionY = ice->base.regionY;
-    screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(me->y, regionY);
+    screenX = TO_WORLD_POS(spriteX, regionX);
+    screenY = TO_WORLD_POS(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s32 posX = (screenX + me->offsetX * TILE_WIDTH);

@@ -82,8 +82,8 @@ void initSprite_Interactable_HotCrater_Crane(MapEntity *me, u16 spriteRegionX,
     u16 j;
 
     crane->unk1B8.unk0 = 0;
-    crane->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    crane->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    crane->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    crane->posY = TO_WORLD_POS(me->y, spriteRegionY);
     crane->me = me;
     crane->spriteX = crane->me->x;
     crane->spriteY = spriteY;

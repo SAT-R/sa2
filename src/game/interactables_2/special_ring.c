@@ -43,8 +43,8 @@ void initSprite_Interactable_SpecialRing(MapEntity *me, u16 spriteRegionX,
         Sprite_SpecialRing *ring = TaskGetStructPtr(t);
         Sprite *disp;
 
-        ring->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-        ring->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+        ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
+        ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
         ring->base.me = me;

@@ -50,8 +50,8 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
     u16 regionY = *pRegY;
     u8 *pRailKind = &rail->kind;
     u8 railKind = *pRailKind;
-    s16 posX = SpriteGetScreenPos(stackSpriteX, regionX);
-    s16 posY = SpriteGetScreenPos(me->y, regionY);
+    s16 posX = TO_WORLD_POS(stackSpriteX, regionX);
+    s16 posY = TO_WORLD_POS(me->y, regionY);
 
     if (!(player->moveState & MOVESTATE_DEAD)) {
         void *newRail; // for matching
@@ -201,8 +201,8 @@ NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void
     u8 *pRailKind = &rail->kind;
     u8 kind = *pRailKind;
 
-    left = SpriteGetScreenPos(stackSpriteX, regionX);
-    top = SpriteGetScreenPos(me->y, regionY);
+    left = TO_WORLD_POS(stackSpriteX, regionX);
+    top = TO_WORLD_POS(me->y, regionY);
 
     if (!(player->moveState & MOVESTATE_DEAD)) {
         // _080101AA

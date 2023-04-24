@@ -52,8 +52,8 @@ void initSprite_Interactable_IceParadise_SlowingSnow(MapEntity *in_ia, u16 sprit
     snow->spriteX = me->x;
     snow->spriteY = spriteY;
 
-    snow->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    snow->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    snow->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    snow->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

@@ -114,8 +114,8 @@ void initSprite_Interactable_DashRing(MapEntity *me, u16 spriteRegionX,
 
     Sprite_DashRing *ring = TaskGetStructPtr(t);
     ring->orientation = me->d.sData[0];
-    ring->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    ring->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
     ring->spriteX = me->x;
     ring->spriteY = spriteY;
     ring->me = me;

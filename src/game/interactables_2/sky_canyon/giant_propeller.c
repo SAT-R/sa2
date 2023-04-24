@@ -329,8 +329,8 @@ void initSprite_Interactable_SkyCanyon_GiantPropeller(MapEntity *me, u16 spriteR
                                 0x2010, 0, TaskDestructor_GiantPropeller);
 
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(t);
-    propeller->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    propeller->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    propeller->x = TO_WORLD_POS(me->x, spriteRegionX);
+    propeller->y = TO_WORLD_POS(me->y, spriteRegionY);
     propeller->base.regionX = spriteRegionX;
     propeller->base.regionY = spriteRegionY;
     propeller->base.me = me;

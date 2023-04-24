@@ -63,8 +63,8 @@ void initSprite_Interactable_SkyCanyon_FlyingHandle(MapEntity *me, u16 spriteReg
     flyingHandle->unk5C = 0;
     flyingHandle->unk5E = 0;
     flyingHandle->unk60 = 0;
-    flyingHandle->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    flyingHandle->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    flyingHandle->x = TO_WORLD_POS(me->x, spriteRegionX);
+    flyingHandle->y = TO_WORLD_POS(me->y, spriteRegionY);
     flyingHandle->offsetX = me->d.sData[0] * 8;
     flyingHandle->offsetY = me->d.sData[1] * 8;
     flyingHandle->width = flyingHandle->offsetX + me->d.uData[2] * 8;

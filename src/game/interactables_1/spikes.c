@@ -56,8 +56,8 @@ void initSprite_Interactable_Spikes_Up(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
@@ -97,8 +97,8 @@ void initSprite_Interactable_Spikes_Down(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
@@ -125,8 +125,8 @@ static void sub_805F810(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -166,8 +166,8 @@ static void sub_805F928(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -220,8 +220,8 @@ void initSprite_Interactable_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -270,8 +270,8 @@ static void sub_805FBA0(void)
     s = &spikes->s;
     me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -401,8 +401,8 @@ void initSprite_Interactable_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -430,8 +430,8 @@ static void Task_805FF68(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
@@ -469,8 +469,8 @@ void initSprite_Interactable_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -498,8 +498,8 @@ static void Task_806012C(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
@@ -530,8 +530,8 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
     --s;
 #endif
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -650,8 +650,8 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -699,8 +699,8 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
     s32 sl = player->unk60;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -870,8 +870,8 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
     s32 sl = player->unk60;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;

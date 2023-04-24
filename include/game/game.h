@@ -311,8 +311,8 @@ extern struct Camera gCamera;
 
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
-#define SpriteGetScreenPos(spritePos, regionPos)                                        \
-    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
+#define TO_WORLD_POS(pos, region) ((pos)*TILE_WIDTH + (region)*CAM_REGION_WIDTH)
 
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))

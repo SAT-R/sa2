@@ -91,8 +91,8 @@ void initSprite_Interactable_CommonThinPlatform(MapEntity *me, u16 spriteRegionX
     platform->unk40 = 0;
     platform->unk44 = 0;
 
-    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest
@@ -128,8 +128,8 @@ static void Task_CommonPlatformThinMain(void)
     platform = TaskGetStructPtr(gCurTask);
     sprite = &platform->sprite;
     me = platform->base.me;
-    x = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    y = SpriteGetScreenPos(me->y, platform->base.regionY);
+    x = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    y = TO_WORLD_POS(me->y, platform->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;

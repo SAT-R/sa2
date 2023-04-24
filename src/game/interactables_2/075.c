@@ -87,8 +87,8 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         ia75->unk98[i][1] = ia75->unk78;
     }
 
-    ia75->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia75->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia75->x = TO_WORLD_POS(me->x, spriteRegionX);
+    ia75->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     sprite = &ia75->sprite1;
     sprite->unk1A = 0x4C0;

@@ -101,8 +101,8 @@ void initSprite_InteractableTecBaseLightBridge(MapEntity *me, u16 spriteRegionX,
     lightBridge->unk6C = me->d.uData[1];
     lightBridge->active = FALSE;
     lightBridge->playingSfx = FALSE;
-    lightBridge->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    lightBridge->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    lightBridge->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    lightBridge->posY = TO_WORLD_POS(me->y, spriteRegionY);
     lightBridge->spriteX = me->x;
     lightBridge->spriteY = spriteY;
     lightBridge->me = me;

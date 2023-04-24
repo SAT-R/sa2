@@ -60,8 +60,8 @@ void initSprite_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     sprite->unk1A = 0;
     sprite->unk1C = 0;
 
-    sprite->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->posY = TO_WORLD_POS(me->y, spriteRegionY);
 
     sprite->unk8 = me->d.sData[0] * 8;
     sprite->unkA = me->d.sData[1] * 8;

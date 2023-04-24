@@ -56,8 +56,8 @@ void initSprite_Interactable_BouncySpring(MapEntity *me, u16 spriteRegionX,
     spring->base.spriteX = me->x;
     spring->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
@@ -93,8 +93,8 @@ static void Task_Interactable_BouncySpring()
     s32 screenX, screenY;
     s16 airSpeed;
 
-    screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spring->base.regionY);
+    screenX = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spring->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
@@ -166,8 +166,8 @@ static void Task_805E02C()
     s32 screenX, screenY;
     u32 variant = 0;
 
-    screenX = SpriteGetScreenPos(spring->base.spriteX, spring->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spring->base.regionY);
+    screenX = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spring->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;

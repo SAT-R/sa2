@@ -27,8 +27,8 @@ void Task_8060D34(void)
 
     u16 regionX = corkscrew->base.regionX;
     u16 regionY = corkscrew->base.regionY;
-    s32 x = SpriteGetScreenPos(corkscrew->base.spriteX, regionX);
-    s32 y = SpriteGetScreenPos(corkscrew->base.me->y, regionY);
+    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 y = TO_WORLD_POS(corkscrew->base.me->y, regionY);
 
     if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * 8) <= Q_24_8_TO_INT(gPlayer.x)

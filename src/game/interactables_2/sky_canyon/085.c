@@ -219,8 +219,8 @@ void initSprite_Interactable085(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
                                 TaskDestructor_Interactable085);
     Sprite_IA85 *ia85 = TaskGetStructPtr(t);
-    ia85->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia85->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia85->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
+    ia85->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     ia85->unk44 = 0;
     ia85->unk46 = 0;

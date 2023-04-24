@@ -45,8 +45,8 @@ void initSprite_Interactable_StageGoal(MapEntity *me, u16 spriteRegionX,
     stageGoal->base.spriteX = me->x;
     stageGoal->base.spriteY = spriteY;
 
-    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
@@ -70,8 +70,8 @@ static void Task_StageGoalMain(void)
     Sprite *sprite = &stageGoal->sprite;
     MapEntity *me = stageGoal->base.me;
 
-    s32 x = SpriteGetScreenPos(stageGoal->base.spriteX, stageGoal->base.regionX);
-    s32 y = SpriteGetScreenPos(me->y, stageGoal->base.regionY);
+    s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
+    s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
@@ -99,8 +99,8 @@ static void Task_StageGoalAnimate(void)
     Sprite *sprite = &stageGoal->sprite;
     MapEntity *me = stageGoal->base.me;
 
-    s32 x = SpriteGetScreenPos(stageGoal->base.spriteX, stageGoal->base.regionX);
-    s32 y = SpriteGetScreenPos(me->y, stageGoal->base.regionY);
+    s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
+    s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
@@ -123,8 +123,8 @@ static void Task_StageGoalToggleMain(void)
     u8 spriteX = stageGoalToggle->base.spriteX;
     u16 regionX = stageGoalToggle->base.regionX;
     u16 regionY = stageGoalToggle->base.regionY;
-    s32 x = SpriteGetScreenPos(spriteX, regionX);
-    s32 y = SpriteGetScreenPos(me->y, regionY);
+    s32 x = TO_WORLD_POS(spriteX, regionX);
+    s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (!IS_SINGLE_PLAYER) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)

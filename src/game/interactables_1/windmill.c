@@ -45,8 +45,8 @@ void initSprite_InteractableWindmill(MapEntity *me, u16 spriteRegionX, u16 sprit
     windmill->base.spriteX = me->x;
     windmill->base.spriteY = spriteY;
 
-    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
@@ -101,8 +101,8 @@ static void Task_InteractableWindmillMain(void)
     s32 screenX, screenY;
     s32 baseX, baseY;
 
-    screenX = SpriteGetScreenPos(windmill->base.spriteX, windmill->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, windmill->base.regionY);
+    screenX = TO_WORLD_POS(windmill->base.spriteX, windmill->base.regionX);
+    screenY = TO_WORLD_POS(me->y, windmill->base.regionY);
     sprite->x = screenX - gCamera.x;
     sprite->y = screenY - gCamera.y;
 

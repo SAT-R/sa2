@@ -70,8 +70,8 @@ void initSprite_Interactable_MusicPlant_GuitarString(MapEntity *me, u16 spriteRe
     s->graphics.anim = SA2_ANIM_NOTE_BLOCK;
     s->variant = SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR;
 
-    gs->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    gs->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    gs->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    gs->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sub_8004558(s);

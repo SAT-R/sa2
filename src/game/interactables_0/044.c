@@ -29,8 +29,8 @@ void Task_Interactable_044(void)
     spriteX = object->spriteX;
     regionX = object->regionX;
     regionY = object->regionY;
-    screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(me->y, regionY);
+    screenX = TO_WORLD_POS(spriteX, regionX);
+    screenY = TO_WORLD_POS(me->y, regionY);
 
     left = sLeft;
     playerX = Q_24_8_TO_INT(gPlayer.x);
