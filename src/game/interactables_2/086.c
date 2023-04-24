@@ -78,7 +78,7 @@ void Task_807D268(void)
 {
     Sprite_IA86* sprite = TaskGetStructPtr(gCurTask);
 
-    if(!PlayerIsAlive) {
+    if(!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_807D06C;
     } else if(sub_807CB78(sprite)) {
         sub_807D2BC(sprite);
