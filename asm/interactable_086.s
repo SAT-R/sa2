@@ -8,7 +8,8 @@ gUnknown_080E0124:
 
     .global gUnknown_080E0136
 gUnknown_080E0136:
-    .incbin "baserom.gba", 0x000E0136, 0xA
+    .byte 0, 0, 0, 0, 1, 1, 1, 2
+.align 2 , 0
 
 .text
 .syntax unified
@@ -35,7 +36,7 @@ initSprite_Interactable086: @ 0x0807C7B8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	mov sb, r0
-	ldr r0, _0807C980 @ =Task_Interactable086
+	ldr r0, _0807C980 @ =Task_807D06C
 	movs r1, #0x96
 	lsls r1, r1, #2
 	ldr r2, _0807C984 @ =0x00002010
@@ -244,7 +245,7 @@ _0807C904:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807C980: .4byte Task_Interactable086
+_0807C980: .4byte Task_807D06C
 _0807C984: .4byte 0x00002010
 _0807C988: .4byte TaskDestructor_Interactable086
 _0807C98C: .4byte IWRAM_START + 0x228
@@ -1155,8 +1156,8 @@ _0807D062:
 	pop {r1}
 	bx r1
 
-	thumb_func_start Task_Interactable086
-Task_Interactable086: @ 0x0807D06C
+	thumb_func_start Task_807D06C
+Task_807D06C: @ 0x0807D06C
 	push {r4, lr}
 	ldr r0, _0807D0A4 @ =gCurTask
 	ldr r0, [r0]
@@ -1210,13 +1211,13 @@ Task_807D0C4: @ 0x0807D0C4
 	ands r0, r1
 	cmp r0, #0
 	beq _0807D0F0
-	ldr r0, _0807D0EC @ =Task_Interactable086
+	ldr r0, _0807D0EC @ =Task_807D06C
 	str r0, [r2, #8]
 	b _0807D100
 	.align 2, 0
 _0807D0E4: .4byte gCurTask
 _0807D0E8: .4byte gPlayer
-_0807D0EC: .4byte Task_Interactable086
+_0807D0EC: .4byte Task_807D06C
 _0807D0F0:
 	adds r0, r4, #0
 	bl sub_807CA64
@@ -1270,13 +1271,13 @@ sub_807D130: @ 0x0807D130
 	str r0, [r3]
 	ldr r0, _0807D164 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0807D168 @ =sub_807D268
+	ldr r0, _0807D168 @ =Task_807D268
 	str r0, [r1, #8]
 	bx lr
 	.align 2, 0
 _0807D160: .4byte gPlayer
 _0807D164: .4byte gCurTask
-_0807D168: .4byte sub_807D268
+_0807D168: .4byte Task_807D268
 
 	thumb_func_start sub_807D16C
 sub_807D16C: @ 0x0807D16C
@@ -1319,159 +1320,5 @@ sub_807D188: @ 0x0807D188
 _0807D1B4: .4byte 0x0000011D
 _0807D1B8: .4byte gCurTask
 
-	thumb_func_start sub_807D1BC
-sub_807D1BC: @ 0x0807D1BC
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	adds r6, r0, #0
-	movs r5, #0
-	ldr r0, _0807D224 @ =gUnknown_080E0136
-	mov r8, r0
-	movs r7, #0
-_0807D1CC:
-	lsls r4, r5, #1
-	adds r4, r4, r5
-	lsls r4, r4, #3
-	adds r4, r6, r4
-	bl Random
-	movs r1, #7
-	ands r1, r0
-	add r1, r8
-	ldrb r1, [r1]
-	lsls r0, r1, #1
-	adds r0, r0, r1
-	lsls r0, r0, #4
-	movs r1, #0xcc
-	lsls r1, r1, #1
-	adds r0, r0, r1
-	adds r0, r6, r0
-	str r0, [r4]
-	bl Random
-	strb r0, [r4, #4]
-	str r7, [r4, #8]
-	bl Random
-	movs r1, #0x3f
-	ands r1, r0
-	lsls r1, r1, #8
-	rsbs r1, r1, #0
-	str r1, [r4, #0xc]
-	str r7, [r4, #0x10]
-	str r7, [r4, #0x14]
-	adds r0, r5, #1
-	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
-	cmp r5, #3
-	bls _0807D1CC
-	adds r0, r6, #0
-	bl sub_807CCBC
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807D224: .4byte gUnknown_080E0136
-
-	thumb_func_start initSprite_Interactable086_0
-initSprite_Interactable086_0: @ 0x0807D228
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #0
-	str r4, [sp]
-	bl initSprite_Interactable086
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable086_1
-initSprite_Interactable086_1: @ 0x0807D248
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #1
-	str r4, [sp]
-	bl initSprite_Interactable086
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_807D268
-sub_807D268: @ 0x0807D268
-	push {r4, lr}
-	ldr r0, _0807D288 @ =gCurTask
-	ldr r2, [r0]
-	ldrh r1, [r2, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r0, _0807D28C @ =gPlayer
-	ldr r0, [r0, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _0807D294
-	ldr r0, _0807D290 @ =Task_Interactable086
-	str r0, [r2, #8]
-	b _0807D2A4
-	.align 2, 0
-_0807D288: .4byte gCurTask
-_0807D28C: .4byte gPlayer
-_0807D290: .4byte Task_Interactable086
-_0807D294:
-	adds r0, r4, #0
-	bl sub_807CB78
-	cmp r0, #0
-	beq _0807D2A4
-	adds r0, r4, #0
-	bl sub_807D2BC
-_0807D2A4:
-	adds r0, r4, #0
-	bl sub_807CCBC
-	adds r0, r4, #0
-	bl sub_807CE94
-	adds r0, r4, #0
-	bl sub_807D16C
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_807D2BC
-sub_807D2BC: @ 0x0807D2BC
-	ldr r2, _0807D2E4 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	ldr r1, _0807D2E8 @ =0xFFBFFFFF
-	ands r0, r1
-	str r0, [r2, #0x20]
-	adds r3, r2, #0
-	adds r3, #0x6d
-	movs r1, #0
-	movs r0, #7
-	strb r0, [r3]
-	strh r1, [r2, #0x10]
-	movs r0, #0xf8
-	lsls r0, r0, #8
-	strh r0, [r2, #0x12]
-	ldr r0, _0807D2EC @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0807D2F0 @ =Task_Interactable086
-	str r0, [r1, #8]
-	bx lr
-	.align 2, 0
-_0807D2E4: .4byte gPlayer
-_0807D2E8: .4byte 0xFFBFFFFF
-_0807D2EC: .4byte gCurTask
-_0807D2F0: .4byte Task_Interactable086
+.if 0
+.endif
