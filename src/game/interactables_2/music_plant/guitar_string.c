@@ -137,7 +137,7 @@ void sub_8075F58(void)
         }
     }
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.y = ((gs->posY - 16) << 8) + gs->elements[2][1];
         gPlayer.rotation = 0x40;
     }
@@ -196,7 +196,7 @@ void sub_8076000(void)
 
 void sub_807608C(Sprite_GuitarString *gs)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         Player_SetMovestate_IsInScriptedSequence();
         gPlayer.moveState |= MOVESTATE_400000;
 
@@ -246,7 +246,7 @@ void sub_8076114(Sprite_GuitarString *gs)
 
 bool32 sub_807618C(Sprite_GuitarString *gs)
 {
-    if (PlayerIsAlive && gPlayer.speedAirY > 0) {
+    if (PLAYER_IS_ALIVE && gPlayer.speedAirY > 0) {
         s16 screenX = gs->posX - gCamera.x;
         s16 screenY = gs->posY - gCamera.y;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
@@ -280,7 +280,7 @@ void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task UNUSED *t) 
 
 void sub_8076258(Sprite_GuitarString UNUSED *gs)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk6D = 5;
@@ -312,7 +312,7 @@ void sub_80762BC(Sprite_GuitarString *gs)
 
 void sub_80762E0(Sprite_GuitarString *gs)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         if (gPlayer.x != LOCAL_GUITARSTR_MARGIN) {
             if (gPlayer.x > LOCAL_GUITARSTR_MARGIN) {
                 gPlayer.x -= Q_24_8(0.5);

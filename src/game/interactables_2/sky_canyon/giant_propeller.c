@@ -42,7 +42,7 @@ static void Task_PlayerFloating(void)
 {
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
     } else {
         s32 temp;
@@ -95,7 +95,7 @@ static void Task_PlayerFloating(void)
 static void sub_807B530(void)
 {
     Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
     } else {
         s32 temp;
@@ -200,7 +200,7 @@ static void sub_807B7BC(Sprite_GiantPropeller *propeller)
 bool32 IsPlayerInteracting(Sprite_GiantPropeller *propeller)
 {
     s16 x, playerX, y, playerY;
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     }
 
@@ -275,7 +275,7 @@ static bool32 ShouldDespawn(Sprite_GiantPropeller *propeller)
 
 static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *propeller)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s16 x = propeller->x - gCamera.x;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
 
@@ -290,7 +290,7 @@ static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *propeller)
 
 static bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s16 y = propeller->y - gCamera.y;
         s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 

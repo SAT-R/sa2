@@ -162,7 +162,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         gCurTask->main = sub_805EF90;
         sub_80051E8(sprite);
         return;

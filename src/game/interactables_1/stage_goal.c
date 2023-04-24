@@ -82,7 +82,7 @@ static void Task_StageGoalMain(void)
         return;
     }
 
-    if (PlayerIsAlive && !(gPlayer.moveState & MOVESTATE_400000)) {
+    if (PLAYER_IS_ALIVE && !(gPlayer.moveState & MOVESTATE_400000)) {
         if (sub_800C204(sprite, x, y, 0, &gPlayer, 0) == 1) {
             sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
             sprite->variant = 0;

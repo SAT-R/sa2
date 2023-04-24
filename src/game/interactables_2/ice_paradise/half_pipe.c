@@ -60,7 +60,7 @@ static void initSprite_Interactable_IceParadise_HalfPipe(MapEntity *me,
 static void Task_HalfPipeSequenceMain(void)
 {
     Sprite_IceParadiseHalfPipe *halfPipe = TaskGetStructPtr(gCurTask);
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_8000;
         EndHalfPipeSequence(halfPipe);
         return;
@@ -202,7 +202,7 @@ static bool32 ShouldDespawn(Sprite_IceParadiseHalfPipe *halfPipe)
 
 static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 {
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     }
 

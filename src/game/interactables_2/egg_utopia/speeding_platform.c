@@ -150,7 +150,7 @@ static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
     platform->unk44 += platform->unk58;
     platform->unk48 += platform->unk5A;
 
-    if (PlayerIsAlive && platform->unk4C) {
+    if (PLAYER_IS_ALIVE && platform->unk4C) {
         gPlayer.x = platform->unk50 + (Q_24_8(platform->x) + platform->unk44);
         gPlayer.y = platform->unk52 + (Q_24_8(platform->y) + platform->unk48)
             - Q_24_8(gPlayer.unk17);
@@ -207,7 +207,7 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
 
 static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         u32 temp = sub_800CCB8(&platform->sprite,
                                platform->x + Q_24_8_TO_INT(platform->unk44),
                                platform->y + Q_24_8_TO_INT(platform->unk48), &gPlayer);

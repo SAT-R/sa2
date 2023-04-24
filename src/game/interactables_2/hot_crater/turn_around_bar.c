@@ -92,7 +92,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
 static u32 sub_8073520(Sprite_TurnAroundBar *turnAroundBar)
 {
     s16 temp, temp2, temp3, temp4;
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return 0;
     }
 
@@ -139,7 +139,7 @@ static void sub_8073600(void)
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &turnAroundBar->sprite;
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         sub_807371C(turnAroundBar);
         return;
     }
@@ -253,7 +253,7 @@ static void sub_8073818(void)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &turnAroundBar->sprite;
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         sub_807371C(turnAroundBar);
         return;
     }

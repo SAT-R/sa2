@@ -164,7 +164,7 @@ static void sub_807A560(void)
         ia75->unk90 = 0;
     }
 
-    if (PlayerIsAlive && ia75->unk90) {
+    if (PLAYER_IS_ALIVE && ia75->unk90) {
         sub_807AB18(ia75);
     }
 
@@ -218,7 +218,7 @@ static void sub_807A73C(Sprite_IA75 *ia75)
     sprite->variant = 2;
     sub_8004558(sprite);
 
-    if (PlayerIsAlive && ia75->unk90) {
+    if (PLAYER_IS_ALIVE && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         ia75->unk90 = 0;
         switch (ia75->unk94) {
@@ -303,7 +303,7 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
 
 static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         u32 temp = sub_800CCB8(&ia75->sprite2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
                                ia75->y + Q_24_8_TO_INT(ia75->unk78), &gPlayer);
         if (temp != 0) {

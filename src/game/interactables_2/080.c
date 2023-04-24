@@ -91,7 +91,7 @@ static bool32 sub_807B1F0(Sprite_IA80 *ia80)
 {
     s32 r3, r2, r0, r1;
     s16 r3_16, r0_16, r2_16, r1_16, temp2, temp4;
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     }
 

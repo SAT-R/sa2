@@ -56,7 +56,7 @@ static void sub_8072650(void)
 {
     Sprite_WindUpStick *windUpStick = TaskGetStructPtr(gCurTask);
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         sub_80729D8(windUpStick);
         return;
     }
@@ -175,7 +175,7 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
         windUpStick->unk11--;
         return 0;
     }
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s16 posX = windUpStick->unk0 - gCamera.x;
         s16 posY = windUpStick->unk4 - gCamera.y;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;

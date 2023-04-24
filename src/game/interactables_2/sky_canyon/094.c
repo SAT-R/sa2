@@ -101,7 +101,7 @@ static void sub_807EC70(void);
 
 static void sub_807EB48(Sprite_IA94 *ia94)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         if (ia94->unk1C) {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
@@ -124,7 +124,7 @@ static void sub_807EB48(Sprite_IA94 *ia94)
 static bool32 sub_807EBBC(Sprite_IA94 *ia94)
 {
     s16 temp, temp2, temp3, temp4;
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     }
 
@@ -161,7 +161,7 @@ static void Task_Interactable094(void);
 static void sub_807EC70(void)
 {
     Sprite_IA94 *ia94 = TaskGetStructPtr(gCurTask);
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_Interactable094;
         return;
     }
@@ -193,7 +193,7 @@ static void sub_807ECB8(Sprite_IA94 *ia94)
 
 static void sub_807ED00(Sprite_IA94 *ia94)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 14;
         gPlayer.unk6D = 5;

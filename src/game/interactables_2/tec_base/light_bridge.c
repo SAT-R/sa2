@@ -134,7 +134,7 @@ void initSprite_InteractableTecBaseLightBridge(MapEntity *me, u16 spriteRegionX,
 static void Task_LightBridgeActive(void)
 {
     Sprite_LightBridge *lightBridge = TaskGetStructPtr(gCurTask);
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         DeactivateBridge(lightBridge);
     }
 
@@ -231,7 +231,7 @@ static bool32 IsPlayerOutOfRange(Sprite_LightBridge *lightBridge)
 
 static bool32 IsPlayerWithinRange(Sprite_LightBridge *lightBridge)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s16 playerX, playerY;
         s32 cameraX, cameraY;
         s32 posX, posY;
