@@ -1,6 +1,16 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+    .global gUnknown_080E0124
+gUnknown_080E0124:
+    .incbin "baserom.gba", 0x000E0124, 0x12
+
+    .global gUnknown_080E0136
+gUnknown_080E0136:
+    .incbin "baserom.gba", 0x000E0136, 0xA
+
+.text
 .syntax unified
 .arm
 
@@ -16,7 +26,7 @@ initSprite_Interactable086: @ 0x0807C7B8
 	adds r4, r1, #0
 	adds r5, r2, #0
 	mov sb, r3
-	ldr r6, [sp, #0x30]
+	ldr r6, [sp, #0x30]     @ r6 = kind
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
 	lsls r5, r5, #0x10
@@ -25,11 +35,11 @@ initSprite_Interactable086: @ 0x0807C7B8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	mov sb, r0
-	ldr r0, _0807C980 @ =sub_807D06C
+	ldr r0, _0807C980 @ =Task_Interactable086
 	movs r1, #0x96
 	lsls r1, r1, #2
 	ldr r2, _0807C984 @ =0x00002010
-	ldr r3, _0807C988 @ =sub_807D118
+	ldr r3, _0807C988 @ =TaskDestructor_Interactable086
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
@@ -234,9 +244,9 @@ _0807C904:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807C980: .4byte sub_807D06C
+_0807C980: .4byte Task_Interactable086
 _0807C984: .4byte 0x00002010
-_0807C988: .4byte sub_807D118
+_0807C988: .4byte TaskDestructor_Interactable086
 _0807C98C: .4byte IWRAM_START + 0x228
 _0807C990: .4byte IWRAM_START + 0x22C
 _0807C994: .4byte IWRAM_START + 0x230
@@ -324,7 +334,7 @@ sub_807C9C0: @ 0x0807C9C0
 	str r3, [r0]
 	ldr r0, _0807CA5C @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0807CA60 @ =sub_807D0C4
+	ldr r0, _0807CA60 @ =Task_807D0C4
 	str r0, [r1, #8]
 	pop {r4}
 	pop {r0}
@@ -332,7 +342,7 @@ sub_807C9C0: @ 0x0807C9C0
 	.align 2, 0
 _0807CA58: .4byte gPlayer
 _0807CA5C: .4byte gCurTask
-_0807CA60: .4byte sub_807D0C4
+_0807CA60: .4byte Task_807D0C4
 
 	thumb_func_start sub_807CA64
 sub_807CA64: @ 0x0807CA64
@@ -1145,8 +1155,8 @@ _0807D062:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_807D06C
-sub_807D06C: @ 0x0807D06C
+	thumb_func_start Task_Interactable086
+Task_Interactable086: @ 0x0807D06C
 	push {r4, lr}
 	ldr r0, _0807D0A4 @ =gCurTask
 	ldr r0, [r0]
@@ -1185,8 +1195,8 @@ _0807D0BE:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_807D0C4
-sub_807D0C4: @ 0x0807D0C4
+	thumb_func_start Task_807D0C4
+Task_807D0C4: @ 0x0807D0C4
 	push {r4, lr}
 	ldr r0, _0807D0E4 @ =gCurTask
 	ldr r2, [r0]
@@ -1200,13 +1210,13 @@ sub_807D0C4: @ 0x0807D0C4
 	ands r0, r1
 	cmp r0, #0
 	beq _0807D0F0
-	ldr r0, _0807D0EC @ =sub_807D06C
+	ldr r0, _0807D0EC @ =Task_Interactable086
 	str r0, [r2, #8]
 	b _0807D100
 	.align 2, 0
 _0807D0E4: .4byte gCurTask
 _0807D0E8: .4byte gPlayer
-_0807D0EC: .4byte sub_807D06C
+_0807D0EC: .4byte Task_Interactable086
 _0807D0F0:
 	adds r0, r4, #0
 	bl sub_807CA64
@@ -1225,8 +1235,8 @@ _0807D100:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_807D118
-sub_807D118: @ 0x0807D118
+	thumb_func_start TaskDestructor_Interactable086
+TaskDestructor_Interactable086: @ 0x0807D118
 	push {lr}
 	ldrh r0, [r0, #6]
 	ldr r1, _0807D12C @ =IWRAM_START + 0x254
@@ -1414,13 +1424,13 @@ sub_807D268: @ 0x0807D268
 	ands r0, r1
 	cmp r0, #0
 	beq _0807D294
-	ldr r0, _0807D290 @ =sub_807D06C
+	ldr r0, _0807D290 @ =Task_Interactable086
 	str r0, [r2, #8]
 	b _0807D2A4
 	.align 2, 0
 _0807D288: .4byte gCurTask
 _0807D28C: .4byte gPlayer
-_0807D290: .4byte sub_807D06C
+_0807D290: .4byte Task_Interactable086
 _0807D294:
 	adds r0, r4, #0
 	bl sub_807CB78
@@ -1457,11 +1467,11 @@ sub_807D2BC: @ 0x0807D2BC
 	strh r0, [r2, #0x12]
 	ldr r0, _0807D2EC @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0807D2F0 @ =sub_807D06C
+	ldr r0, _0807D2F0 @ =Task_Interactable086
 	str r0, [r1, #8]
 	bx lr
 	.align 2, 0
 _0807D2E4: .4byte gPlayer
 _0807D2E8: .4byte 0xFFBFFFFF
 _0807D2EC: .4byte gCurTask
-_0807D2F0: .4byte sub_807D06C
+_0807D2F0: .4byte Task_Interactable086

@@ -143,9 +143,10 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unkC[0];
     element->x = 256;
     element->y = 41;
-    element->graphics.dest = VramMalloc(gUnknown_080D713C[gSelectedCharacter][0]);
-    element->graphics.anim = gUnknown_080D713C[gSelectedCharacter][1];
-    element->variant = gUnknown_080D713C[gSelectedCharacter][2];
+    element->graphics.dest
+        = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
+    element->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
+    element->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
     element->unk1A = 0x100;
     element->graphics.size = 0;
     element->unk14 = 0;
@@ -185,9 +186,9 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element = &resultsCutScene->unkC[2];
     element->x = 256;
     element->y = 49;
-    element->graphics.dest = VramMalloc(gUnknown_080D7178[level][0]);
-    element->graphics.anim = gUnknown_080D7178[level][1];
-    element->variant = gUnknown_080D7178[level][2];
+    element->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
+    element->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
+    element->variant = sAnimsGotThroughZoneAndActNames[level][2];
     element->unk1A = 0x100;
     element->graphics.size = 0;
     element->unk14 = 0;

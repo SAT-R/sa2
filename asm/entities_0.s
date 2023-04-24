@@ -311,7 +311,43 @@ gLevelSongs: @ 0x080D5204
 
     .global gUnknown_080D5254
 gUnknown_080D5254:
-    .incbin "baserom.gba", 0x000D5254, 0x8C
+    .incbin "baserom.gba", 0x000D5254, 0x0E
+
+    .global gUnknown_080D5262
+gUnknown_080D5262:
+    .incbin "baserom.gba", 0x000D5262, 0x0E
+
+    .global gUnknown_080D5270
+gUnknown_080D5270:
+    .incbin "baserom.gba", 0x000D5270, 0x0E
+
+    .global gUnknown_080D527E
+gUnknown_080D527E:
+    .incbin "baserom.gba", 0x000D527E, 0x0E
+
+    .global gUnknown_080D528C
+gUnknown_080D528C:
+    .incbin "baserom.gba", 0x000D528C, 0x0E
+
+    .global gUnknown_080D529A
+gUnknown_080D529A:
+    .incbin "baserom.gba", 0x000D529A, 0x0E
+
+    .global gUnknown_080D52A8
+gUnknown_080D52A8:
+    .incbin "baserom.gba", 0x000D52A8, 0x0E
+
+    .global gUnknown_080D52B6
+gUnknown_080D52B6:
+    .incbin "baserom.gba", 0x000D52B6, 0x0E
+
+    .global gUnknown_080D52C4
+gUnknown_080D52C4:
+    .incbin "baserom.gba", 0x000D52C4, 0x0E
+
+    .global gUnknown_080D52D2
+gUnknown_080D52D2:
+    .incbin "baserom.gba", 0x000D52D2, 0x0E
 
 .text
 .syntax unified

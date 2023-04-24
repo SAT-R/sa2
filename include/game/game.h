@@ -449,9 +449,9 @@ extern struct UNK_3005510 gUnknown_03005510[16];
 
 // rodata
 extern const u16 PlayerCharacterIdleAnims[NUM_CHARACTERS];
-extern const u16 gUnknown_080D713C[5][3];
+extern const u16 sAnimsGotThroughCharacterNames[5][3];
 extern const u16 gUnknown_080D715A[5][3];
-extern const u16 gUnknown_080D7178[11][3];
+extern const u16 sAnimsGotThroughZoneAndActNames[11][3];
 
 // collect rings data
 extern const u8 gUnknown_08C88408[0x8000];

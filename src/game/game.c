@@ -28,7 +28,7 @@ void sub_801C068(u32);
 void sub_801BF90(void);
 
 void sub_800BEF8(void);
-void sub_802F0A8(void);
+void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
 void sub_8007E10(void);
@@ -414,7 +414,7 @@ void CreateGameStage(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         sub_800BEF8();
-        sub_802F0A8();
+        SetupStageLoadingScreen();
         sub_801C068(gCurrentLevel);
         gUnknown_080D57DC[gCurrentLevel]();
     } else {

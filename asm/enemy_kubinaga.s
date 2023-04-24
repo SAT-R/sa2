@@ -1,6 +1,14 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+    
+    .global gUnknown_080D8F30
+gUnknown_080D8F30:
+    .2byte 0x1EA, 0     @ SA2_ANIM_KUBINAGA_BASE, Variant 0
+    .2byte 0x1EA, 1     @ SA2_ANIM_KUBINAGA_BASE, Variant 1
+
+.text
 .syntax unified
 .arm
 
