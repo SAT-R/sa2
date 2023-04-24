@@ -30,7 +30,7 @@ void Task_8060D34(void)
     s32 x = SpriteGetScreenPos(corkscrew->base.spriteX, regionX);
     s32 y = SpriteGetScreenPos(corkscrew->base.me->y, regionY);
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * 8) <= Q_24_8_TO_INT(gPlayer.x)
              && (x + (me->d.sData[0] * 8) + (me->d.uData[2] * 8)
                  >= Q_24_8_TO_INT(gPlayer.x)))

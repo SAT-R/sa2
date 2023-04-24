@@ -133,7 +133,7 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
 {
     Player_ClearMovestate_IsInScriptedSequence();
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk6D = 5;
 
@@ -187,7 +187,7 @@ static bool32 RotateWindmill(Sprite_SmallWindmill *windmill)
             break;
     }
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.x = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER
             + Q_24_8(windmill->x);
         gPlayer.y = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER
@@ -199,7 +199,7 @@ static bool32 RotateWindmill(Sprite_SmallWindmill *windmill)
 
 static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s16 x = windmill->x - gCamera.x;
         s16 y = windmill->y - gCamera.y;
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;

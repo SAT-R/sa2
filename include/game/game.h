@@ -307,7 +307,7 @@ struct Camera {
 
 extern struct Camera gCamera;
 
-#define PlayerIsAlive (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define PLAYER_IS_ALIVE (!(gPlayer.moveState & MOVESTATE_DEAD))
 
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256

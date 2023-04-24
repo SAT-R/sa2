@@ -164,7 +164,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 
 static u32 sub_807AE60(Sprite_IA78 *ia78)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         Sprite *sprite = &ia78->sprite;
         u32 temp = sub_800CCB8(sprite, ia78->unk3C, ia78->unk40, &gPlayer);
         if (temp != 0) {
@@ -195,7 +195,7 @@ static u32 sub_807AE60(Sprite_IA78 *ia78)
 
 static u32 sub_807AF0C(Sprite_IA78 *ia78)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         u32 temp;
         ia78->sprite.unk28[0].unk5 -= 16;
         ia78->sprite.unk28[0].unk7 += 16;

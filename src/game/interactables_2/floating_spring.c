@@ -134,7 +134,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 
 static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
 {
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         u32 temp = sub_800CDBC(&floatingSpring->sprite, floatingSpring->unk3C,
                                floatingSpring->unk40, &gPlayer);
         if (temp != 0) {

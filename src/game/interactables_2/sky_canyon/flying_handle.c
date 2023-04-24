@@ -113,7 +113,7 @@ static void Task_ActiveMain(void)
 
     sub_807F818(flyingHandle);
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         sub_807F770(flyingHandle);
     } else if (gPlayer.unk2C == 120) {
         sub_807F798(flyingHandle);
@@ -217,7 +217,7 @@ static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
 
 static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
 {
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         return FALSE;
     } else {
         s16 x = Q_24_8_TO_INT(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
@@ -261,7 +261,7 @@ static void sub_807F6F0(void)
     }
 
     if (flyingHandle->unk69 == 0) {
-        if (!PlayerIsAlive || IsPlayerTouching(flyingHandle) == 0) {
+        if (!PLAYER_IS_ALIVE || IsPlayerTouching(flyingHandle) == 0) {
             sub_807F784(flyingHandle);
         }
     } else {

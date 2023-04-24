@@ -29,7 +29,7 @@ static void Task_GappedLoopForwardsMain(void)
     s32 x = SpriteGetScreenPos(spriteX, regionX);
     s32 y = SpriteGetScreenPos(me->y, regionY);
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && (x + me->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
             if (y <= Q_24_8_TO_INT(gPlayer.y)
@@ -68,7 +68,7 @@ static void Task_JumpSequenceForwards(void)
     s32 x, y;
     s8 r3;
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         me->x = spriteX;
         TaskDestroy(gCurTask);
         return;
@@ -109,7 +109,7 @@ static void Task_GappedLoopReverseMain(void)
     u16 regionY = gappedLoop->base.regionY;
     s32 x = SpriteGetScreenPos(spriteX, regionX);
     s32 y = SpriteGetScreenPos(me->y, regionY);
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         s32 base = (x + me->d.sData[0] * 8);
         if (base <= Q_24_8_TO_INT(gPlayer.x)
             && (base + me->d.uData[2] * 8) >= Q_24_8_TO_INT(gPlayer.x)) {
@@ -149,7 +149,7 @@ static void Task_JumpSequenceReverse(void)
     s32 x, y;
     s8 r3;
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         me->x = spriteX;
         TaskDestroy(gCurTask);
         return;

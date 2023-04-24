@@ -450,7 +450,7 @@ bool32 sub_8079624(Sprite_IA69 *ia69)
 bool32 sub_80796A8(Sprite_IA69 *ia69)
 {
 
-    if (!PlayerIsAlive || ia69->unk1B2 - Q_24_8_TO_INT(ia69->unk168) <= 0x3F) {
+    if (!PLAYER_IS_ALIVE || ia69->unk1B2 - Q_24_8_TO_INT(ia69->unk168) <= 0x3F) {
         return FALSE;
     } else {
         s16 posX = ia69->unk158 + Q_24_8_TO_INT(ia69->unk164) - gCamera.x;
@@ -519,7 +519,7 @@ void sub_8079810(void)
     Sprite_IA69 *ia69 = TaskGetStructPtr(gCurTask);
     sub_80791B4(ia69);
 
-    if (!PlayerIsAlive) {
+    if (!PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = Task_Interactable069;
     } else {
@@ -536,7 +536,7 @@ void sub_8079888(Sprite_IA69 *ia69)
 {
     Player_ClearMovestate_IsInScriptedSequence();
 
-    if (PlayerIsAlive) {
+    if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk6D = 9;
     }
