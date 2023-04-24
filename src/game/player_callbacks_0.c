@@ -87,7 +87,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
 {
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         return NULL;
     } else {
         struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0,
@@ -755,7 +755,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 {
     struct Task *result;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         result = NULL;
     } else {
         struct Task *t;
@@ -956,7 +956,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
 {
     struct Task *result;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         result = NULL;
     } else {
         TaskStrc_801F15C *ts;

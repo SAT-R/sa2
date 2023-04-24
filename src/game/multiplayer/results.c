@@ -210,7 +210,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             } else if (temp == 4) {
                 element->graphics.anim = gUnknown_080D9100[lang][2].anim;
                 element->variant = gUnknown_080D9100[lang][2].variant;
-            } else if (count == 2 || gGameMode == 4) {
+            } else if (count == 2 || gGameMode == GAME_MODE_TEAM_PLAY) {
                 element->graphics.anim = gUnknown_080D9100[lang][0].anim;
                 element->variant = gUnknown_080D9100[lang][0].variant + temp;
             } else {
@@ -350,14 +350,14 @@ static void sub_805C3D0(void)
         if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
             CreateMultiplayerLobbyScreen();
         } else {
-            if (gGameMode == 3) {
+            if (gGameMode == GAME_MODE_MULTI_PLAYER) {
                 u8 i;
                 for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                     if (!GetBit(gMultiplayerConnections, i)) {
                         break;
                     }
                 }
-                gGameMode = 3;
+                gGameMode = GAME_MODE_MULTI_PLAYER;
 
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
@@ -365,7 +365,7 @@ static void sub_805C3D0(void)
                 CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
                                             COURSE_SELECT_CUT_SCENE_NONE);
 #endif
-            } else if (gGameMode == 0
+            } else if (gGameMode == GAME_MODE_SINGLE_PLAYER
                        && gLoadedSaveGame->unlockedLevels[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
                 GameStageStart();

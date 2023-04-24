@@ -99,8 +99,7 @@ void sub_8036168(void)
     Sprite *element;
 
     // Skip intro
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
-        && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
+    if (IS_SINGLE_PLAYER && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
         && gPressedKeys & (A_BUTTON | B_BUTTON)) {
         countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
@@ -165,7 +164,7 @@ void sub_8036168(void)
         gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
 
-        if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (!IS_SINGLE_PLAYER) {
             gPlayer.unk90->s.focused = (SIO_MULTI_CNT)->id;
         } else {
             gPlayer.unk90->s.focused = 0;

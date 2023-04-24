@@ -188,7 +188,8 @@
     "platform_thin.h": "c",
     "small_windmill.h": "c",
     "085.h": "c",
-    "097.h": "c"
+    "097.h": "c",
+    "save.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

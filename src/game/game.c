@@ -322,7 +322,7 @@ void ApplyGameStageSettings(void)
     gUnknown_030054B0 = 0;
     gNumLives = 3;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         gNumLives = 1;
     }
 
@@ -358,7 +358,7 @@ void GameStageStart(void)
     gUnknown_03005590 = 0;
     gUnknown_03005424 &= ~0x80;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         gUnknown_030054A0 = gFrameCount;
     }
 
@@ -449,7 +449,7 @@ void CreateGameStage(void)
     gUnknown_03002820 = 0x50;
     gUnknown_03005398 = 0x80;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_80191A4();
         sub_8019120();
 
@@ -489,8 +489,7 @@ void CreateGameStage(void)
         sub_8013FAC(&gPlayer);
     }
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)
-        && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+    if (!IS_SINGLE_PLAYER && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateRaceProgressIndicator();
     }
 }
@@ -504,7 +503,7 @@ void sub_801AB3C(void)
     u16 sioId = SIO_MULTI_CNT->id;
     u32 step;
 
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (IS_SINGLE_PLAYER) {
         if (!(gUnknown_03005424 & 0x20) && (gPressedKeys & START_BUTTON)
             && !(gUnknown_03005424 & 0x40)) {
             sub_800A9FC();
@@ -583,7 +582,7 @@ void sub_801AB3C(void)
             return;
         }
 
-        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (IS_SINGLE_PLAYER) {
             gUnknown_03005424 |= 1;
 
             if (gLoadedSaveGame->timeLimitEnabled) {
@@ -613,12 +612,11 @@ void sub_801AB3C(void)
             return;
         }
 
-        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (IS_SINGLE_PLAYER) {
             gUnknown_03005424 |= 1;
 
             if (gLoadedSaveGame->timeLimitEnabled
-                && (gGameMode == GAME_MODE_SINGLE_PLAYER
-                    || !GAME_MODE_IS_SINGLE_PLAYER(gGameMode))) {
+                && (gGameMode == GAME_MODE_SINGLE_PLAYER || !IS_SINGLE_PLAYER)) {
                 return;
             }
 
@@ -1783,7 +1781,7 @@ NONMATCH("asm/non_matching/sub_801C94C.inc", void sub_801C94C(s32 a, s32 b))
         a = gBgScrollRegs[3][0];
     }
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         s16 val;
         gBgScrollRegs[3][0] = a >> 4;
         val = Div(b, 0x10);
@@ -1897,7 +1895,7 @@ void sub_801CD7C(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (IS_SINGLE_PLAYER) {
         sub_800A6A8();
     }
 }
@@ -1923,7 +1921,7 @@ void sub_801CDF0(s32 a, s32 b)
         unkDF0->unk40A = 0;
     }
 
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && !(gUnknown_03005424 & 0x100)) {
+    if (IS_SINGLE_PLAYER && !(gUnknown_03005424 & 0x100)) {
         gWinRegs[5] = 0x3e;
         gWinRegs[4] = 0x3f3f;
         gWinRegs[0] = 0xf0;
@@ -1949,7 +1947,7 @@ void sub_801CDF0(s32 a, s32 b)
 void sub_801CEE4(void)
 {
     Background *background = &gUnknown_03005850.unk0;
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (IS_SINGLE_PLAYER) {
         gDispCnt |= 0x100;
         gBgCntRegs[0] = 0x1b0c;
         *background = gUnknown_080D5864[3];
@@ -1973,7 +1971,7 @@ void sub_801CF60(s32 UNUSED a, s32 UNUSED b)
     gBgScrollRegs[0][0]++;
     gBgScrollRegs[3][0] = 0;
     num = gUnknown_03005590 * 2;
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (IS_SINGLE_PLAYER) {
         gFlags = gFlags | 4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 2;
@@ -2051,7 +2049,7 @@ void sub_801D104(void)
     gBgScrollRegs[3][1] = 0;
     gUnknown_03005590 = 0x380;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_801D1A8();
     }
     gBgCntRegs[3] &= ~(1 | 2);

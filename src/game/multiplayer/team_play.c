@@ -375,13 +375,13 @@ static void sub_805CC34(void)
 
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     teamPlayScreen->unk317 = 0;
-                    gGameMode = 4;
+                    gGameMode = GAME_MODE_TEAM_PLAY;
                     gCurTask->main = sub_805D5C8;
                     return;
                 } else {
                     TaskDestroy(gCurTask);
                     gFlags &= ~0x4;
-                    gGameMode = 3;
+                    gGameMode = GAME_MODE_MULTI_PLAYER;
                     CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
                                                 COURSE_SELECT_CUT_SCENE_NONE);
                     gMultiSioSend.pat0.unk0 = 0x4035;

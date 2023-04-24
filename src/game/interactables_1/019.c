@@ -105,8 +105,7 @@ void Task_Interactable_019(void)
         platform->unk3C = 0;
     }
 
-    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
+    if (!IS_SINGLE_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     }
@@ -140,8 +139,7 @@ void Task_805E35C(void)
 
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
-    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
+    if (!IS_SINGLE_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     } else if (platform->unk3C++ > 30) {

@@ -130,7 +130,7 @@ static void sub_807A560(void)
     gPlayer.unk6D = 1;
     gPlayer.unk64 = 0;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807AB6C(ia75);
     }
 
@@ -247,7 +247,7 @@ static void sub_807A73C(Sprite_IA75 *ia75)
 static void sub_807A7F4(Sprite_IA75 *ia75)
 {
     Sprite *sprite = &ia75->sprite1;
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sprite->x = ia75->x + Q_24_8_TO_INT(ia75->unk98[1][0]) - gCamera.x;
         sprite->y = ia75->y + Q_24_8_TO_INT(ia75->unk98[1][1]) - gCamera.y;
     } else {
@@ -341,7 +341,7 @@ static void sub_807AA68(void)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807AB6C(ia75);
     }
 
@@ -360,7 +360,7 @@ static void sub_807AABC(void)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807AB6C(ia75);
     }
 

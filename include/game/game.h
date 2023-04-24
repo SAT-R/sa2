@@ -4,11 +4,7 @@
 #define GAME_MODE_SINGLE_PLAYER    0
 #define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
-#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                \
-    (((mode) == GAME_MODE_SINGLE_PLAYER) || ((mode) == GAME_MODE_TIME_ATTACK)           \
-     || ((mode) == GAME_MODE_BOSS_TIME_ATTACK))
 
-// May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER               3
 #define GAME_MODE_TEAM_PLAY                  4
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
@@ -21,6 +17,10 @@
 
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
+
+#define IS_SINGLE_PLAYER                                                                \
+    ((gGameMode == GAME_MODE_SINGLE_PLAYER) || (gGameMode == GAME_MODE_TIME_ATTACK)     \
+     || (gGameMode == GAME_MODE_BOSS_TIME_ATTACK))
 
 extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;

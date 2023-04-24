@@ -98,7 +98,7 @@ void initSprite_InteractableSpeedingPlatform(MapEntity *me, u16 spriteRegionX,
 static void sub_807F9F0(void)
 {
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807FF04(platform);
     }
 
@@ -164,7 +164,7 @@ static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
 static void RenderPlatform(Sprite_SpeedingPlatform *platform)
 {
     Sprite *sprite = &platform->sprite;
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sprite->x = platform->x + Q_24_8_TO_INT(platform->unk60[1][0]) - gCamera.x;
         sprite->y = platform->y + Q_24_8_TO_INT(platform->unk60[1][1]) - gCamera.y;
     } else {
@@ -249,7 +249,7 @@ static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 static void Task_Interactable097(void)
 {
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807FF04(platform);
     }
 
@@ -314,7 +314,7 @@ static void sub_807FF20(void)
 {
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807FF04(platform);
     }
 
@@ -344,7 +344,7 @@ static void sub_807FFB0(void)
 {
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807FF04(platform);
     }
 

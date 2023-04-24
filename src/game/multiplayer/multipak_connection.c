@@ -499,7 +499,7 @@ static void sub_805B4C0(void)
             return;
         }
 
-        gGameMode = 3;
+        gGameMode = GAME_MODE_MULTI_PLAYER;
         for (i = 3; i >= 0; i--) {
             if (GetBit(gMultiplayerConnections, i)) {
                 if (i == 0) {

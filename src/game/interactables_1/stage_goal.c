@@ -126,7 +126,7 @@ static void Task_StageGoalToggleMain(void)
     s32 x = SpriteGetScreenPos(spriteX, regionX);
     s32 y = SpriteGetScreenPos(me->y, regionY);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.unk6D = 10;

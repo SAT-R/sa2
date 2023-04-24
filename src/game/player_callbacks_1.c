@@ -995,7 +995,7 @@ void PlayerCB_8026810(Player *p)
             m4aSongNumStop(SE_GRINDING);
             PLAYERFN_SET(PlayerCB_8025E18);
         } else {
-            if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+            if (IS_SINGLE_PLAYER) {
                 sub_801F488();
             }
         }
@@ -1379,7 +1379,7 @@ void PlayerCB_8027324(Player *p)
 
 void PlayerCB_80273D0(Player *p)
 {
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_802A4B8(p);
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         sub_802A468(p);
@@ -1903,7 +1903,7 @@ void PlayerCB_80287AC(Player *p)
 
         PLAYERFN_SET(PlayerCB_802890C);
 
-        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (IS_SINGLE_PLAYER) {
             if (u5B == 2 && character == CHARACTER_SONIC) {
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 0);
             }
