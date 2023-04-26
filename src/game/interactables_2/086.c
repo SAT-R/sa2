@@ -13,15 +13,19 @@
 #include "constants/songs.h"
 
 typedef struct {
-    u8 filler0[0x18];
-    s32 someY;
-    u8 filler1C[0x8];
+    /* 0x00 */ u8 filler0[0x14];
+    /* 0x14 */ s32 someX;
+    /* 0x18 */ s32 someY;
+    /* 0x1C */ u16 unk1C;
+    /* 0x1E */ u16 unk1E;
+    /* 0x20 */ u16 unk20;
+    /* 0x22 */ u16 unk22;
 
     // TODO: unk24 might point to a struct type?
-    u8 *unk24;
-    u8 unk28;
-    u8 filler29[0x3];
-    u8 *vramMem;
+    /* 0x24 */ u8 *unk24;
+    /* 0x28 */ u8 unk28;
+    /* 0x29 */ u8 filler29[0x3];
+    /* 0x2C */ u8 *vramMem;
 } StrcUnkIA086;
 
 typedef struct {
@@ -66,6 +70,34 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
+
+bool32 sub_807CFB4(Sprite_IA86 *ia086)
+{
+    if (PLAYER_IS_ALIVE) {
+        s16 x = ia086->unk228.someX - gCamera.x;
+        s16 y = ia086->unk228.someY - gCamera.y;
+        s16 px = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 py = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s32 r5, r4;
+        u16 r3;
+        s32 r2 = (y - ia086->unk228.unk1C);
+
+        if ((r2 <= py) && (r2 + ia086->unk228.unk1C >= py)) {
+            s32 tempX;
+            r5 = ia086->unk228.unk20;
+            r4 = ia086->unk228.unk1E;
+
+            r3 = sub_80855C0(r5, r4, (Q_24_8(y - py) / ia086->unk228.unk1C), 8);
+
+            tempX = (x - (r3 >> 1));
+            if ((tempX <= px) && ((tempX + r3) >= px)) {
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
+}
 
 void Task_807D06C(void)
 {
