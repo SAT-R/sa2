@@ -114,7 +114,6 @@ typedef struct {
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4;
 
-// TODO: sub_807D16C references this as u8?
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;

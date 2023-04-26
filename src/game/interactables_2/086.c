@@ -148,8 +148,7 @@ void sub_807D130(Sprite_IA86 *ia086)
 
 void sub_807D16C(Sprite_IA86 *unused)
 {
-    // TODO: BAD cast!
-    if (*(u8 *)&gUnknown_03005590 == 0) {
+    if ((gUnknown_03005590 & 0xFF) == 0) {
         m4aSongNumStartOrContinue(SE_285);
     }
 }
