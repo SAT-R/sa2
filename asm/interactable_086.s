@@ -990,7 +990,7 @@ _0807CF1A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-
+    
 	thumb_func_start sub_807CF2C
 sub_807CF2C: @ 0x0807CF2C
 	push {r4, r5, lr}
@@ -1060,99 +1060,6 @@ _0807CFAC:
 	movs r0, #0
 _0807CFAE:
 	pop {r4, r5}
-	pop {r1}
-	bx r1
-
-	thumb_func_start sub_807CFB4
-sub_807CFB4: @ 0x0807CFB4
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	adds r4, r0, #0
-	ldr r5, _0807D058 @ =gPlayer
-	ldr r0, [r5, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	bne _0807D060
-	movs r1, #0x8f
-	lsls r1, r1, #2
-	adds r0, r4, r1
-	ldr r0, [r0]
-	ldr r2, _0807D05C @ =gCamera
-	ldr r3, [r2]
-	subs r0, r0, r3
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	mov r8, r0
-	adds r1, #4
-	adds r0, r4, r1
-	ldr r1, [r0]
-	ldr r2, [r2, #4]
-	subs r1, r1, r2
-	ldr r0, [r5, #8]
-	asrs r0, r0, #8
-	subs r0, r0, r3
-	lsls r0, r0, #0x10
-	lsrs r7, r0, #0x10
-	ldr r0, [r5, #0xc]
-	asrs r0, r0, #8
-	subs r0, r0, r2
-	lsls r1, r1, #0x10
-	asrs r6, r1, #0x10
-	movs r2, #0x91
-	lsls r2, r2, #2
-	adds r1, r4, r2
-	ldrh r3, [r1]
-	subs r2, r6, r3
-	lsls r0, r0, #0x10
-	asrs r1, r0, #0x10
-	cmp r2, r1
-	bgt _0807D060
-	adds r0, r2, r3
-	cmp r0, r1
-	blt _0807D060
-	movs r2, #0x92
-	lsls r2, r2, #2
-	adds r0, r4, r2
-	ldrh r5, [r0]
-	subs r2, #2
-	adds r0, r4, r2
-	ldrh r4, [r0]
-	subs r0, r6, r1
-	lsls r0, r0, #8
-	adds r1, r3, #0
-	bl __divsi3
-	adds r2, r0, #0
-	adds r0, r5, #0
-	adds r1, r4, #0
-	movs r3, #8
-	bl sub_80855C0
-	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
-	mov r2, r8
-	lsls r1, r2, #0x10
-	asrs r1, r1, #0x10
-	lsrs r0, r0, #0x11
-	subs r1, r1, r0
-	lsls r0, r7, #0x10
-	asrs r2, r0, #0x10
-	cmp r1, r2
-	bgt _0807D060
-	adds r0, r1, r3
-	cmp r0, r2
-	blt _0807D060
-	movs r0, #1
-	b _0807D062
-	.align 2, 0
-_0807D058: .4byte gPlayer
-_0807D05C: .4byte gCamera
-_0807D060:
-	movs r0, #0
-_0807D062:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
     
