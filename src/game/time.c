@@ -1,6 +1,8 @@
 #include "global.h"
 #include "game/time.h"
 
+// TODO: this is part of `stage_ui.c`
+
 const u8 gSecondsTable[60][2] = {
     { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 }, { 0, 4 }, { 0, 5 }, { 0, 6 }, { 0, 7 },
     { 0, 8 }, { 0, 9 }, { 1, 0 }, { 1, 1 }, { 1, 2 }, { 1, 3 }, { 1, 4 }, { 1, 5 },
