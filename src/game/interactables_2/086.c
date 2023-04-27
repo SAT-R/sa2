@@ -13,7 +13,13 @@
 #include "constants/songs.h"
 
 typedef struct {
-    /* 0x00 */ u8 filler0[0x14];
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ s32 unk4;
+    /* 0x00 */ u8 filler0[0x4];
+    /* 0x0C */ s16 unkC;
+    /* 0x0E */ s16 unkE;
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ s16 unk12;
     /* 0x14 */ s32 someX;
     /* 0x18 */ s32 someY;
     /* 0x1C */ u16 unk1C;
@@ -30,7 +36,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Sprite *s;
-    /* 0x04 */ s8 unk4;
+    /* 0x04 */ u8 unk4;
     /* 0x05 */ u8 filler5[3];
     /* 0x08 */ s32 unk8;
     /* 0x0C */ s32 unkC;
@@ -39,8 +45,9 @@ typedef struct {
 } Unk_IA86;
 
 typedef struct {
-    /* 0x00 */ Unk_IA86 unk0[4];
-    /* 0x60 */ u8 filler60[0x128];
+    /* 0x00 */ Unk_IA86 unk0[16];
+
+    /* 0x180 */ u8 filler180[0x8];
 
     /* 0x188 */ s32 unk188;
     /* 0x18C */ s32 unk18C;
@@ -70,6 +77,58 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
+
+void sub_807CE94(Sprite_IA86 *ia086)
+{
+    u8 i;
+    for (i = 0; i < 16; i++) {
+        Unk_IA86 *unk086 = &ia086->unk0[i];
+
+        if (unk086->s != NULL) {
+            s32 someX, someY;
+            Sprite *s2;
+            someX = ia086->unk228.someX;
+            someX += Q_24_8_TO_INT(unk086->unk8 + unk086->unk10);
+            someX -= gCamera.x;
+            unk086->s->x = someX;
+
+            s2 = unk086->s;
+            someY = ia086->unk228.someY;
+            someY += Q_24_8_TO_INT(unk086->unkC + unk086->unk14);
+            someY -= gCamera.y;
+            s2->y = someY;
+
+            if (unk086->unk4 < 124) {
+                unk086->s->unk1A = 0x180;
+            } else {
+                unk086->s->unk1A = 0x480;
+            }
+
+            if (unk086->unkC > -Q_24_8(16))
+                unk086->s->unk10 = SPRITE_FLAG_PRIORITY(3);
+            else
+                unk086->s->unk10 = SPRITE_FLAG_PRIORITY(2);
+
+            sub_80051E8(unk086->s);
+        }
+    }
+}
+
+bool32 sub_807CF2C(Sprite_IA86 *ia086)
+{
+    s16 screenX = ia086->unk228.unk0 - gCamera.x;
+    s16 screenY = ia086->unk228.unk4 - gCamera.y;
+
+    if (((screenX + ia086->unk228.unk10) < -Q_24_8(0.5))
+        || ((screenX + ia086->unk228.unkC) > Q_24_8(1.4375))
+        || ((screenY + ia086->unk228.unk12) < -Q_24_8(0.5))
+        || ((screenY + ia086->unk228.unkE) > +Q_24_8(1.125))) {
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
 
 bool32 sub_807CFB4(Sprite_IA86 *ia086)
 {
