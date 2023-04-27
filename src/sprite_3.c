@@ -126,7 +126,7 @@ void sub_80051E8(Sprite *sprite)
                 r4->all.attr0 += ((y + r5) & 0xFF);
                 r4->all.attr1 += ((x + r7) & 0x1FF);
 
-                if (r4->all.attr0 & 0x2000) {
+                if (r4->all.attr0 & (ST_OAM_8BPP << 13)) {
                     r4->all.attr2 += r4->all.attr2 & 0x3FF;
                 }
                 r4->all.attr2 += GET_TILE_NUM(sprite->graphics.dest);
