@@ -135,8 +135,8 @@ SECTIONS
         build/sa2/asm/interactable_hook_rail.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/turn_around_bar.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/crane.o(.text);
-        build/sa2/src/game/interactables_2/dash_ring.o(.text);
-        build/sa2/src/game/interactables_2/floating_spring.o(.text);
+        build/sa2/src/game/interactables_2/hot_crater/dash_ring.o(.text);
+        build/sa2/src/game/interactables_2/hot_crater/floating_spring.o(.text);
         build/sa2/src/game/interactables_2/music_plant/note_sphere.o(.text);
         build/sa2/src/game/interactables_2/music_plant/note_block.o(.text);
         build/sa2/src/game/interactables_2/music_plant/guitar_string.o(.text);
@@ -284,13 +284,13 @@ SECTIONS
         build/sa2/src/game/special_stage/ui.o(.rodata);
         build/sa2/src/game/special_stage/guard_robo.o(.rodata);
         build/sa2/src/game/special_stage/tables.o(.rodata);
-        build/sa2/src/game/interactables_2/dash_ring.o(.rodata);
+        build/sa2/src/game/interactables_2/hot_crater/dash_ring.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/note_sphere.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.rodata);
-        build/sa2/data/data1_2_2.o(.rodata);
+        build/sa2/data/handlers_ia_pipe_horn_data.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);

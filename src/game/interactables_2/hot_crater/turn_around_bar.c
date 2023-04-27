@@ -1,7 +1,7 @@
 #include "global.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/turn_around_bar.h"
+#include "game/interactables_2/hot_crater/turn_around_bar.h"
 #include "task.h"
 #include "sprite.h"
 #include "malloc_vram.h"

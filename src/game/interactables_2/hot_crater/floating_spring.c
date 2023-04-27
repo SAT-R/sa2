@@ -5,7 +5,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "game/entity.h"
-#include "game/interactables_2/floating_spring.h"
+#include "game/interactables_2/hot_crater/floating_spring.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

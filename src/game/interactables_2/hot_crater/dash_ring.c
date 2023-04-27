@@ -7,7 +7,7 @@
 #include "task.h"
 
 #include "game/entity.h"
-#include "game/interactables_2/dash_ring.h"
+#include "game/interactables_2/hot_crater/dash_ring.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
