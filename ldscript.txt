@@ -233,6 +233,7 @@ SECTIONS
         build/sa2/asm/sprite_3.o(.rodata);
         build/sa2/src/animation_commands_extra.o(.rodata);
         build/sa2/src/animation_commands.o(.rodata);
+        build/sa2/src/sprite_3.o(.rodata);
         build/sa2/asm/sprite_4.o(.rodata);
     
         /* game Data */
