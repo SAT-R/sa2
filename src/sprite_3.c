@@ -117,7 +117,7 @@ void sub_80051E8(Sprite *sprite)
                     }
                 }
 
-                if (unk6D0 != 0 && (sprite->unk10 & SPRITE_FLAG_MASK_9) != 0) {
+                if (unk6D0 != 0 && (sprite->unk10 & SPRITE_FLAG_MASK_MOSAIC) != 0) {
                     r4->all.attr0 |= 0x1000;
                 }
 
