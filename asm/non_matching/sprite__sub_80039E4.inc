@@ -149,12 +149,12 @@ _08003AC8:
 	lsrs r0, r0, #0xe
 	orrs r1, r0
 	lsls r1, r1, #1
-	ldr r5, _08003BC0 @ =gUnknown_080984DC
+	ldr r5, _08003BC0 @ =gOamShapesSizes
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
 	str r0, [sp, #0x20]
-	ldr r6, _08003BC4 @ =gUnknown_080984DD
+	ldr r6, _08003BC4 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
@@ -244,8 +244,8 @@ _08003BB0: .4byte gDispCnt
 _08003BB4: .4byte gUnknown_03002794
 _08003BB8: .4byte 0x040000D4
 _08003BBC: .4byte 0x80000003
-_08003BC0: .4byte gUnknown_080984DC
-_08003BC4: .4byte gUnknown_080984DD
+_08003BC0: .4byte gOamShapesSizes
+_08003BC4: .4byte gOamShapesSizes+1
 _08003BC8: .4byte 0x000003FF
 _08003BCC: .4byte 0x000001FF
 _08003BD0:
@@ -367,12 +367,12 @@ _08003C7A:
 	lsrs r0, r0, #0xe
 	orrs r1, r0
 	lsls r1, r1, #1
-	ldr r5, _08003D20 @ =gUnknown_080984DC
+	ldr r5, _08003D20 @ =gOamShapesSizes
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
 	str r0, [sp, #0x20]
-	ldr r6, _08003D24 @ =gUnknown_080984DD
+	ldr r6, _08003D24 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
@@ -423,8 +423,8 @@ _08003C7A:
 _08003D14: .4byte gUnknown_03002794
 _08003D18: .4byte 0x040000D4
 _08003D1C: .4byte 0x80000003
-_08003D20: .4byte gUnknown_080984DC
-_08003D24: .4byte gUnknown_080984DD
+_08003D20: .4byte gOamShapesSizes
+_08003D24: .4byte gOamShapesSizes+1
 _08003D28: .4byte 0x000001FF
 _08003D2C:
 	ldr r3, [sp, #0xc]

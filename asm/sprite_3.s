@@ -299,7 +299,7 @@ _08005710:
 	adds r0, r3, #0
 	eors r0, r1
 	strh r0, [r6, #2]
-	ldr r0, _08005898 @ =gUnknown_080984DC
+	ldr r0, _08005898 @ =gOamShapesSizes
 	lsls r1, r4, #1
 	adds r0, #1
 	adds r1, r1, r0
@@ -326,7 +326,7 @@ _08005754:
 	adds r1, r2, #0
 	eors r0, r1
 	strh r0, [r6, #2]
-	ldr r1, _08005898 @ =gUnknown_080984DC
+	ldr r1, _08005898 @ =gOamShapesSizes
 	lsls r0, r4, #1
 	adds r0, r0, r1
 	ldrb r0, [r0]
@@ -477,7 +477,7 @@ _08005888:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08005898: .4byte gUnknown_080984DC
+_08005898: .4byte gOamShapesSizes
 _0800589C: .4byte 0x000001FF
 _080058A0: .4byte 0x000003FF
 _080058A4: .4byte 0xF9FF0000

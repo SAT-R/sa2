@@ -3,7 +3,25 @@
 #include "sprite.h"
 #include "flags.h"
 
-extern const u8 gUnknown_080984DC[][2];
+const u8 gOamShapesSizes[][2] = {
+    // Square
+    { 8, 8 },
+    { 16, 16 },
+    { 32, 32 },
+    { 64, 64 },
+
+    // Horizontal
+    { 16, 8 },
+    { 32, 8 },
+    { 32, 16 },
+    { 64, 32 },
+
+    // Vertical
+    { 8, 16 },
+    { 8, 32 },
+    { 16, 32 },
+    { 32, 64 },
+};
 
 void sub_80051E8(Sprite *sprite)
 {
@@ -18,29 +36,29 @@ void sub_80051E8(Sprite *sprite)
         SpriteOffset *sprDims = sprite->dimensions;
 
         sprite->unk24 = sprDims->numSubframes;
-        x = (s16)sprite->x;
-        y = (s16)sprite->y;
-        if (sprite->unk10 & 0x20000) {
+        x = sprite->x;
+        y = sprite->y;
+        if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
         }
 
         sprWidth = sprDims->width;
         sprHeight = sprDims->height;
-        if (sprite->unk10 & 0x20) {
-            if (sprite->unk10 & 0x40) {
+        if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+            if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                 x -= sprDims->width / 2;
                 y -= sprDims->height / 2;
                 sprWidth <<= 1;
                 sprHeight <<= 1;
             }
         } else {
-            if (sprite->unk10 & 0x800) {
+            if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
                 y -= sprHeight - sprDims->offsetY;
             } else {
                 y -= sprDims->offsetY;
             }
-            if (sprite->unk10 & 0x400) {
+            if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
                 x -= sprWidth - sprDims->offsetX;
             } else {
                 x -= sprDims->offsetX;
@@ -70,39 +88,41 @@ void sub_80051E8(Sprite *sprite)
                 r4->all.attr1 &= 0xFE00;
                 r4->all.attr0 &= 0xFE00;
 
-                r4->all.attr2 += sprite->focused * 0x1000;
-                if (sprite->unk10 & 0x20) {
+                r4->all.attr2 += sprite->focused << 12;
+                if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
                     r4->all.attr0 |= 0x100;
-                    if (sprite->unk10 & 0x40) {
+                    if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                         r4->all.attr0 |= 0x200;
                     }
-                    r4->all.attr1 |= (sprite->unk10 & 0x1F) << 9;
+                    r4->all.attr1 |= (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
                 } else {
-                    u32 r2 = ((r4->all.attr0 & 0xC000) >> 12);
-                    u32 temp3;
+                    u32 shapeAndSize = ((r4->all.attr0 & 0xC000) >> 12);
+                    u32 flipY;
                     u32 r6;
 
-                    r2 |= ((r4->all.attr1 & 0xC000) >> 14);
-                    temp3 = sprite->unk10 >> 11;
+                    shapeAndSize |= ((r4->all.attr1 & 0xC000) >> 14);
+                    flipY = sprite->unk10 >> 11;
                     r6 = 1;
 
-                    if ((((sprDims->flip >> 1) ^ temp3) & r6) != 0) {
+                    // y-flip
+                    if ((((sprDims->flip >> 1) ^ flipY) & r6) != 0) {
                         r4->all.attr1 ^= 0x2000;
-                        r5 = sprHeight - gUnknown_080984DC[r2][1] - r5;
+                        r5 = sprHeight - gOamShapesSizes[shapeAndSize][1] - r5;
                     }
 
+                    // x-flip
                     if (((sprite->unk10 >> 10) & r6) != (sprDims->flip & 1)) {
                         r4->all.attr1 ^= 0x1000;
-                        r7 = sprWidth - gUnknown_080984DC[r2][0] - r7;
+                        r7 = sprWidth - gOamShapesSizes[shapeAndSize][0] - r7;
                     }
                 }
 
-                if (unk6D0 != 0 && (sprite->unk10 & 0x200) != 0) {
+                if (unk6D0 != 0 && (sprite->unk10 & SPRITE_FLAG_MASK_9) != 0) {
                     r4->all.attr0 |= 0x1000;
                 }
 
-                r4->all.attr0 |= (sprite->unk10 & 0x180) * 8;
-                r4->all.attr2 |= (sprite->unk10 & 0x3000) >> 2;
+                r4->all.attr0 |= (sprite->unk10 & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
+                r4->all.attr2 |= (sprite->unk10 & SPRITE_FLAG_MASK_PRIORITY) >> 2;
                 r4->all.attr0 += ((y + r5) & 0xFF);
                 r4->all.attr1 += ((x + r7) & 0x1FF);
 
