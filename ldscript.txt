@@ -145,6 +145,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
+        build/sa2/src/game/interactables_2/ice_paradise/funnel_sphere.o(.text);
         build/sa2/asm/interactable_ice_paradise_funnel_sphere.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/half_pipe.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/069.o(.text);
