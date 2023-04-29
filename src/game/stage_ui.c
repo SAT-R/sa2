@@ -1,7 +1,44 @@
 #include "global.h"
+#include "game/game.h"
 #include "game/stage_ui.h"
 
-// TODO: this is part of `stage_ui.c`
+#include "constants/animations.h"
+
+#define ONE_UP_ICON_TILES 4
+
+const u16 sAnimsUiDigits[][2] = {
+    { 1119, 16 }, // '0'
+    { 1119, 17 }, // '1'
+    { 1119, 18 }, // '2'
+    { 1119, 19 }, // '3'
+    { 1119, 20 }, // '4'
+    { 1119, 21 }, // '5'
+    { 1119, 22 }, // '6'
+    { 1119, 23 }, // '7'
+    { 1119, 24 }, // '8'
+    { 1119, 25 }, // '9'
+    { 1119, 26 }, // ':'
+    { 1128, 0 }, // Icon - Special Ring collected
+};
+
+const u16 sAnims1UpIcons[][3]
+    = { [CHARACTER_SONIC] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+                              SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC },
+        [CHARACTER_CREAM] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+                              SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM },
+        [CHARACTER_TAILS] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+                              SA2_ANIM_VARIANT_LIFE_COUNTER_TAILS },
+        [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+                                 SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
+        [CHARACTER_AMY] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+                            SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
+
+// This palette might be used for the 1-Up icons
+const u8 sPalette_080D6ACE[] = INCBIN_U8("graphics/80D6ACE.gbapal");
+
+const u32 gUnknown_080D6AF0[] = {
+    100000, 10000, 1000, 100, 10, 1,
+};
 
 const u8 gSecondsTable[60][2] = {
     { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 }, { 0, 4 }, { 0, 5 }, { 0, 6 }, { 0, 7 },
