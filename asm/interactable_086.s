@@ -660,6 +660,7 @@ _0807CCA2:
 _0807CCB4: .4byte 0x00000246
 _0807CCB8: .4byte gSineTable
 
+.if 00
 	thumb_func_start sub_807CCBC
 sub_807CCBC: @ 0x0807CCBC
 	push {r4, r5, r6, r7, lr}
@@ -667,9 +668,9 @@ sub_807CCBC: @ 0x0807CCBC
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	adds r7, r0, #0
+	adds r7, r0, #0     @ r7 = ia086
 	movs r0, #0
-	mov sl, r0
+	mov sl, r0          @ sl = bIdk
 	ldr r0, _0807CD64 @ =gUnknown_03005590
 	ldr r0, [r0]
 	movs r1, #0xf
@@ -707,7 +708,7 @@ _0807CD0A:              @ for(i = 0; i < 16; i++)
 	lsls r0, r2, #1
 	add r0, r8
 	lsls r0, r0, #3
-	adds r6, r7, r0
+	adds r6, r7, r0     @ r6 = unk086
 	ldr r4, [r6]
 	cmp r4, #0
 	bne _0807CD7E
@@ -792,7 +793,7 @@ _0807CDA2:
 	str r0, [r6, #0x14]
 	asrs r1, r3, #5
 	ldr r2, _0807CE04 @ =0x00000246
-	adds r0, r7, r2
+	adds r0, r7, r2     @ r0 = ia086->unk228.unk1E
 	ldrh r0, [r0]
 	muls r0, r1, r0
 	lsls r0, r0, #8
@@ -867,7 +868,7 @@ _0807CE12:
 	rsbs r0, r3, #0
 	ldrh r1, [r1]
 	bl __divsi3
-	adds r2, r0, #0
+	adds r2, r0, #0     @ r2 = divRes
 	adds r0, r5, #0
 	adds r1, r4, #0
 	movs r3, #8
@@ -907,6 +908,4 @@ _0807CE84:
 	pop {r0}
 	bx r0
 	.align 2, 0
-    
-.if 0
 .endif
