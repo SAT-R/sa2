@@ -585,6 +585,7 @@ _0807CBDE:
 	.align 2, 0
 _0807CC24: .4byte gPlayer
 
+.if 00
 	thumb_func_start sub_807CC28
 sub_807CC28: @ 0x0807CC28
 	push {r4, r5, r6, lr}
@@ -660,7 +661,6 @@ _0807CCA2:
 _0807CCB4: .4byte 0x00000246
 _0807CCB8: .4byte gSineTable
 
-.if 00
 	thumb_func_start sub_807CCBC
 sub_807CCBC: @ 0x0807CCBC
 	push {r4, r5, r6, r7, lr}

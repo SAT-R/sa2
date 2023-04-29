@@ -48,11 +48,14 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Unk_IA86 unk0[16];
 
-    /* 0x180 */ u8 filler180[0x8];
+    /* 0x180 */ u16 unk180;
 
+    /* 0x182 */ u8 unk182;
+    /* 0x183 */ u8 filler183[0x5];
     /* 0x188 */ s32 unk188;
     /* 0x18C */ s32 unk18C;
-    /* 0x190 */ u8 filler190[0x8];
+    /* 0x190 */ s32 unk190;
+    /* 0x194 */ u8 filler194[0x4];
     /* 0x198 */ Sprite sprites[3];
     /* 0x228 */ StrcUnkIA086 unk228;
 } Sprite_IA86; /* size: 0x258 (600) */
@@ -79,8 +82,42 @@ void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
 
+void sub_807CC28(Sprite_IA86 *ia086)
+{
+    s32 unk10 = ia086->unk228.unk20;
+    s32 r4 = ia086->unk228.unk1E;
+    s32 divRes = -ia086->unk18C / ia086->unk228.unk1C;
+    s16 procRes = sub_80855C0(unk10, r4, divRes, 8) >> 1;
+
+    s32 *target = &ia086->unk190;
+
+    u32 temp;
+    u32 unk180;
+    s32 cosVal = (procRes * COS_24_8(ia086->unk182 * 4));
+
+    *target = Q_24_8_TO_INT(cosVal * 192);
+
+    unk180 = ia086->unk180;
+    unk180 += Q_24_8(0.5);
+    ia086->unk180 = unk180;
+    {
+        register u32 r2 asm("r2") = unk180;
+
+        unk180 <<= 16;
+        unk180 >>= 16;
+        if (unk180 > Q_24_8(6.0))
+            r2 = Q_24_8(6.0);
+        ia086->unk180 = r2;
+
+        {
+            register u32 r0 asm("r0") = (r2 << 16);
+            ia086->unk182 += (r0 >> 24);
+        }
+    }
+}
+
 // https://decomp.me/scratch/Yxcqt
-void sub_807CCBC(Sprite_IA86 *ia086)
+NONMATCH("asm/non_matching/sub_807CCBC.inc", void sub_807CCBC(Sprite_IA86 *ia086))
 {
     bool32 bIdk = FALSE;
     u8 i;
@@ -193,6 +230,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         }
     }
 }
+END_NONMATCH
 
 void sub_807CE94(Sprite_IA86 *ia086)
 {
