@@ -249,7 +249,7 @@ SECTIONS
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/game_2.o(.rodata);
         build/sa2/asm/stage_ui.o(.rodata);
-        build/sa2/src/game/time.o(.rodata);
+        build/sa2/src/game/stage_ui.o(.rodata);
         build/sa2/asm/stage_intro.o(.rodata);
         build/sa2/asm/stage_outro.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
