@@ -15,7 +15,8 @@
 typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x04 */ s32 unk4;
-    /* 0x00 */ u8 filler0[0x4];
+    /* 0x08 */ u16 kind;
+    /* 0x0A */ s16 unkA;
     /* 0x0C */ s16 unkC;
     /* 0x0E */ s16 unkE;
     /* 0x10 */ s16 unk10;
@@ -78,10 +79,115 @@ void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
 
+void sub_807CCBC(Sprite_IA86 *ia086)
+{
+    bool32 bIdk = FALSE;
+    u8 i;
+
+    if ((gUnknown_03005590 & 0xF) == 0)
+        bIdk = TRUE;
+
+    for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
+        sub_8004558(&ia086->sprites[i]);
+    }
+
+    for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
+        const s16 *sinTbl = gSineTable;
+
+        Unk_IA86 *unk086 = &ia086->unk0[i];
+        s16 r2;
+
+        if (unk086->s == NULL) {
+            u32 spriteIndex;
+            s32 unkC;
+            u16 rnd;
+            if (!bIdk)
+                continue;
+
+            rnd = Random();
+            spriteIndex = gUnknown_080E0136[rnd & 0x7];
+            unk086->s = &ia086->sprites[spriteIndex];
+            unk086->unk4 = Random();
+            unk086->unk8 = 0;
+
+            if (ia086->unk228.kind != 0) {
+                unkC = Q_24_8(-(Random() & 0x7));
+            } else {
+                unkC = 0x2000;
+            }
+            unk086->unkC = unkC;
+
+            unk086->unk10 = 0;
+            unk086->unk14 = 0;
+            bIdk = FALSE;
+        }
+        // _0807CD7E
+        r2 = ABS(unk086->unkC) >> 4;
+        if (r2 >= 64) {
+            if (r2 > 0x200) {
+                r2 = 0x200;
+            }
+        } else {
+            r2 = 64;
+        }
+
+        unk086->unkC -= r2;
+
+        if (unk086->unkC > 0) {
+            //_0807CDA2 + 0xC
+            s32 r1;
+            s16 r2;
+            unk086->unk14 = -unk086->unkC;
+            r1 = unk086->unkC >> 5;
+            r2 = Q_24_8_TO_INT(ia086->unk228.unk1E * r1);
+
+            if (ia086->unk228.unk20 < r2) {
+                s32 newR1 = r2 >> 1;
+                s32 sinIndex = unk086->unk4 * 4 + 0x100;
+                s32 addend;
+                u16 temp;
+                unk086->unk10 = newR1 * Q_2_14_TO_Q_24_8(sinTbl[sinIndex]);
+
+                temp = ((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
+                if ((s16)temp > 1) {
+                    addend = temp;
+                    if ((s16)temp > 8)
+                        addend = 8;
+                } else {
+                    addend = 2;
+                }
+                unk086->unk4 += addend;
+            }
+        } else {
+            // _0807CE12
+
+            if (-Q_24_8_TO_INT(unk086->unkC) < ia086->unk228.unk1C) {
+                s32 r4, r5;
+                s32 divRes;
+                s16 divRes2;
+                s32 temp2;
+                unk086->unk14 = (sinTbl[unk086->unk4 * 4] >> 6) * 4;
+
+                r5 = ia086->unk228.unk20;
+                r4 = ia086->unk228.unk1E;
+
+                temp2 = -unk086->unkC;
+                divRes = temp2 / ia086->unk228.unk1C;
+
+                divRes2 = sub_80855C0(r5, r4, divRes, 8) >> 1;
+                unk086->unk10 = divRes2 * (sinTbl[unk086->unk4 * 4] >> 6);
+                unk086->unk4 += 8;
+            } else {
+                unk086->s = NULL;
+            }
+        }
+    }
+}
+
 void sub_807CE94(Sprite_IA86 *ia086)
 {
     u8 i;
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
         Unk_IA86 *unk086 = &ia086->unk0[i];
 
         if (unk086->s != NULL) {
