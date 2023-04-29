@@ -79,6 +79,7 @@ void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
 
+// https://decomp.me/scratch/Yxcqt
 void sub_807CCBC(Sprite_IA86 *ia086)
 {
     bool32 bIdk = FALSE;
@@ -95,7 +96,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         const s16 *sinTbl = gSineTable;
 
         Unk_IA86 *unk086 = &ia086->unk0[i];
-        s16 r2;
+        s16 r2, r0;
 
         if (unk086->s == NULL) {
             u32 spriteIndex;
@@ -127,25 +128,32 @@ void sub_807CCBC(Sprite_IA86 *ia086)
             if (r2 > 0x200) {
                 r2 = 0x200;
             }
+            r0 = r2;
         } else {
-            r2 = 64;
+            r0 = 64;
         }
 
-        unk086->unkC -= r2;
+        unk086->unkC -= r0;
 
         if (unk086->unkC > 0) {
             //_0807CDA2 + 0xC
             s32 r1;
             s16 r2;
+            s16 newR1;
+
             unk086->unk14 = -unk086->unkC;
             r1 = unk086->unkC >> 5;
             r2 = Q_24_8_TO_INT(ia086->unk228.unk1E * r1);
 
-            if (ia086->unk228.unk20 < r2) {
-                s32 newR1 = r2 >> 1;
-                s32 sinIndex = unk086->unk4 * 4 + 0x100;
+            r1 = ia086->unk228.unk20;
+            if (r1 < r2)
+                r1 = r2;
+            {
+                s32 sinIndex;
                 s32 addend;
                 u16 temp;
+                newR1 = r1 >> 1;
+                sinIndex = unk086->unk4 * 4 + 0x100;
                 unk086->unk10 = newR1 * Q_2_14_TO_Q_24_8(sinTbl[sinIndex]);
 
                 temp = ((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
