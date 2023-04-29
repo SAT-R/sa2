@@ -58,6 +58,12 @@ typedef struct {
     s16 unk24;
 } UNK_03005A70; /* 0x30 */
 
+struct UNK_3005A70 {
+    /* 0x00 */ u8 filler0[0xC];
+    /* 0x0C */ Sprite s;
+}; /* size: unknown? */
+
+// TODO: this is just `gPlayer.unk90`
 typedef struct {
     UNK_03005A70 *unk0;
 } UNK_03005A70_Wrapper;
@@ -127,11 +133,6 @@ extern u8 gMultiplayerMissingHeartbeats[4];
 
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
-
-struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC];
-    /* 0x0C */ Sprite s;
-}; /* size: unknown? */
 
 // Declared beforehand because it's used inside Player struct
 struct Player_;
