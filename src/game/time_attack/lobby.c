@@ -10,7 +10,7 @@
 #include "game/course_select.h"
 #include "game/options_screen.h"
 #include "game/title_screen.h"
-#include "zones.h"
+#include "constants/zones.h"
 #include "task.h"
 
 #include "constants/animations.h"

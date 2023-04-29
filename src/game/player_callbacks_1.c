@@ -11,6 +11,7 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.

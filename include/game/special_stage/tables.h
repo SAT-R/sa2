@@ -2,7 +2,7 @@
 #define GUARD_SPECIAL_STAGE_TABLES_H
 
 #include "global.h"
-#include "zones.h"
+#include "constants/zones.h"
 
 extern const s16 gUnknown_080DF9D8[][3];
 

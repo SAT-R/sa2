@@ -2,16 +2,10 @@
 #define GUARD_SAVE_H
 
 #include "global.h"
-#include "zones.h"
-#include "player.h"
-#include "game/time.h"
+#include "constants/zones.h"
+#include "game/game.h"
 
-#define TIME_RECORDS_PER_COURSE 3
-#define NUM_MULTIPLAYER_SCORES  10
-
-#define MAX_PLAYER_NAME_LENGTH 6
-#define PLAYER_NAME_END_CHAR   0xFFFF
-#define MAX_MULTIPLAYER_SCORE  99
+#define PLAYER_NAME_END_CHAR 0xFFFF
 
 struct MultiplayerScore {
     u32 playerId;
@@ -22,12 +16,6 @@ struct MultiplayerScore {
     u8 wins;
     u8 losses;
     u8 draws;
-};
-
-struct ButtonConfig {
-    u16 jump;
-    u16 attack;
-    u16 trick;
 };
 
 struct TimeRecords {

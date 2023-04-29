@@ -12,7 +12,6 @@
 #include "trig.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer/results.h"
-#include "player.h"
 #include "game/options_screen.h"
 #include "game/course_select.h"
 #include "game/title_screen.h"

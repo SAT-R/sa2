@@ -13,7 +13,7 @@
 #include "game/title_screen.h"
 #include "game/game.h"
 #include "game/sound_test.h"
-#include "game/time.h"
+#include "game/stage_ui.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/character_select.h"
 
@@ -4371,21 +4371,21 @@ static void TimeRecordsScreenCreateTimesUI(struct TimeRecordsScreen *timeRecords
         sub_806A568(minuteDigit, RENDER_TARGET_SCREEN, digitSize, digit->unk0, 0x3000,
                     (i * 8 + 0x20), (i * 24 + 84), 8, digit->unk2, 0);
 
-        digit = &sTimeRecordDigitTiles[TensDigit(seconds)];
+        digit = &sTimeRecordDigitTiles[TENS_DIGIT(seconds)];
         sub_806A568(secondDigit, RENDER_TARGET_SCREEN, digitSize, digit->unk0, 0x3000,
                     (i * 8 + 0x40), (i * 24 + 84), 8, digit->unk2, 0);
 
         secondDigit++;
-        digit = &sTimeRecordDigitTiles[UnitsDigit(seconds)];
+        digit = &sTimeRecordDigitTiles[UNITS_DIGIT(seconds)];
         sub_806A568(secondDigit, RENDER_TARGET_SCREEN, digitSize, digit->unk0, 0x3000,
                     (i * 8 + 0x50), (i * 24 + 84), 8, digit->unk2, 0);
 
-        digit = &sTimeRecordDigitTiles[TensDigit(millis)];
+        digit = &sTimeRecordDigitTiles[TENS_DIGIT(millis)];
         sub_806A568(milliDigit, RENDER_TARGET_SCREEN, digitSize, digit->unk0, 0x3000,
                     (i * 8 + 0x70), (i * 24 + 84), 8, digit->unk2, 0);
 
         milliDigit++;
-        digit = &sTimeRecordDigitTiles[UnitsDigit(millis)];
+        digit = &sTimeRecordDigitTiles[UNITS_DIGIT(millis)];
         sub_806A568(milliDigit, RENDER_TARGET_SCREEN, digitSize, digit->unk0, 0x3000,
                     (i * 8 + 0x80), (i * 24 + 84), 8, digit->unk2, 0);
     }
@@ -4436,14 +4436,14 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
         deliminator->x = (i * 8) + 288;
         deliminator++;
 
-        digitTile = &sTimeRecordDigitTiles[TensDigit(seconds)];
+        digitTile = &sTimeRecordDigitTiles[TENS_DIGIT(seconds)];
         secondDigit->graphics.anim = digitTile->unk0;
         secondDigit->variant = digitTile->unk2;
         secondDigit->x = (i * 8) + 304;
         sub_8004558(secondDigit);
 
         secondDigit++;
-        digitTile = &sTimeRecordDigitTiles[UnitsDigit(seconds)];
+        digitTile = &sTimeRecordDigitTiles[UNITS_DIGIT(seconds)];
         secondDigit->graphics.anim = digitTile->unk0;
         secondDigit->variant = digitTile->unk2;
         secondDigit->x = (i * 8) + 320;
@@ -4451,14 +4451,14 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
 
         deliminator->x = (i * 8) + 336;
 
-        digitTile = &sTimeRecordDigitTiles[TensDigit(millis)];
+        digitTile = &sTimeRecordDigitTiles[TENS_DIGIT(millis)];
         milliDigit->graphics.anim = digitTile->unk0;
         milliDigit->variant = digitTile->unk2;
         milliDigit->x = (i * 8) + 352;
         sub_8004558(milliDigit);
 
         milliDigit++;
-        digitTile = &sTimeRecordDigitTiles[UnitsDigit(millis)];
+        digitTile = &sTimeRecordDigitTiles[UNITS_DIGIT(millis)];
         milliDigit->graphics.anim = digitTile->unk0;
         milliDigit->variant = digitTile->unk2;
         milliDigit->x = (i * 8) + 368;
@@ -5060,30 +5060,30 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
     loses = multiplayerRecordsScreen->playerLoses;
     draws = multiplayerRecordsScreen->playerDraws;
 
-    digitTile = &digitTiles[TensDigit(wins)];
+    digitTile = &digitTiles[TENS_DIGIT(wins)];
     sub_806A568(playerWinsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0x7C, 0x40, 0xD, digitTile->unk2, 0);
 
     playerWinsDigit++;
-    digitTile = &digitTiles[UnitsDigit(wins)];
+    digitTile = &digitTiles[UNITS_DIGIT(wins)];
     sub_806A568(playerWinsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0x84, 0x40, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[TensDigit(loses)];
+    digitTile = &digitTiles[TENS_DIGIT(loses)];
     sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0xA4, 0x40, 0xD, digitTile->unk2, 0);
 
     playerLosesDigit++;
-    digitTile = &digitTiles[UnitsDigit(loses)];
+    digitTile = &digitTiles[UNITS_DIGIT(loses)];
     sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0xAC, 0x40, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[TensDigit(draws)];
+    digitTile = &digitTiles[TENS_DIGIT(draws)];
     sub_806A568(playerDrawsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0xCC, 0x40, 0xD, digitTile->unk2, 0);
 
     playerDrawsDigit++;
-    digitTile = &digitTiles[UnitsDigit(draws)];
+    digitTile = &digitTiles[UNITS_DIGIT(draws)];
     sub_806A568(playerDrawsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
                 0x2000, 0xD4, 0x40, 0xD, digitTile->unk2, 0);
 }
@@ -5124,27 +5124,27 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex)
     draws = row->draws;
     yPos += 6;
 
-    digitTile = &digitTiles[TensDigit(wins)];
+    digitTile = &digitTiles[TENS_DIGIT(wins)];
     sub_806A568(&row->winsDigits[0], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0x7C, yPos, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[UnitsDigit(wins)];
+    digitTile = &digitTiles[UNITS_DIGIT(wins)];
     sub_806A568(&row->winsDigits[1], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0x84, yPos, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[TensDigit(loses)];
+    digitTile = &digitTiles[TENS_DIGIT(loses)];
     sub_806A568(&row->losesDigits[0], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0xA4, yPos, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[UnitsDigit(loses)];
+    digitTile = &digitTiles[UNITS_DIGIT(loses)];
     sub_806A568(&row->losesDigits[1], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0xAC, yPos, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[TensDigit(draws)];
+    digitTile = &digitTiles[TENS_DIGIT(draws)];
     sub_806A568(&row->defeatsDigits[0], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0xCC, yPos, 0xD, digitTile->unk2, 0);
 
-    digitTile = &digitTiles[UnitsDigit(draws)];
+    digitTile = &digitTiles[UNITS_DIGIT(draws)];
     sub_806A568(&row->defeatsDigits[1], RENDER_TARGET_SCREEN, digitTile->unk4,
                 digitTile->unk0, 0x2000, 0xD4, yPos, 0xD, digitTile->unk2, 0);
 }

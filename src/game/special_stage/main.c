@@ -9,12 +9,14 @@
 #include "game/special_stage/physics.h"
 #include "game/special_stage/tables.h"
 #include "game/game.h"
+#include "game/save.h"
 #include "sprite.h"
 #include "transition.h"
 #include "lib/m4a.h"
 #include "task.h"
 #include "game/title_screen.h"
-#include "zones.h"
+#include "constants/zones.h"
+
 #include "constants/songs.h"
 
 #define MAX_POINTS 99900

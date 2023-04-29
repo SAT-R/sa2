@@ -4,7 +4,7 @@
 #include "transition.h"
 #include "game/save.h"
 #include "game/game.h"
-#include "game/time.h"
+#include "game/stage_ui.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "trig.h"
@@ -85,11 +85,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         minutes = 9;
     }
 
-    resultsCutScene->unk171 = UnitsDigit(minutes);
-    resultsCutScene->unk172 = TensDigit(seconds);
-    resultsCutScene->unk173 = UnitsDigit(seconds);
-    resultsCutScene->unk174 = TensDigit(millis);
-    resultsCutScene->unk175 = UnitsDigit(millis);
+    resultsCutScene->unk171 = UNITS_DIGIT(minutes);
+    resultsCutScene->unk172 = TENS_DIGIT(seconds);
+    resultsCutScene->unk173 = UNITS_DIGIT(seconds);
+    resultsCutScene->unk174 = TENS_DIGIT(millis);
+    resultsCutScene->unk175 = UNITS_DIGIT(millis);
 
     for (i = 0; i < 7; i++) {
         element = &resultsCutScene->unk178[i];

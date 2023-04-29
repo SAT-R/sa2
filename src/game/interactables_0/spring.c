@@ -7,7 +7,7 @@
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
-#include "zones.h"
+#include "constants/zones.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

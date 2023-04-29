@@ -12,8 +12,37 @@
 #include "global.h"
 #include "sprite.h"
 #include "multi_sio.h"
-#include "game/save.h"
 #include "task.h"
+
+#define ZONE_TIME_TO_INT(minutes, seconds)                                              \
+    (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
+#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
+
+#define TIME_RECORDS_PER_COURSE 3
+#define NUM_MULTIPLAYER_SCORES  10
+
+#define MAX_PLAYER_NAME_LENGTH 6
+#define MAX_MULTIPLAYER_SCORE  99
+
+#define CHARACTER_SONIC    0
+#define CHARACTER_CREAM    1
+#define CHARACTER_TAILS    2
+#define CHARACTER_KNUCKLES 3
+#define CHARACTER_AMY      4
+
+#define NUM_CHARACTERS 5
+
+#define CHARACTER_BIT(character) (1 << (character))
+
+#define MAIN_CHARACTERS                                                                 \
+    (CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)                    \
+     | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES))
+
+struct ButtonConfig {
+    u16 jump;
+    u16 attack;
+    u16 trick;
+};
 
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;

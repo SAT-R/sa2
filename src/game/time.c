@@ -1,5 +1,5 @@
 #include "global.h"
-#include "game/time.h"
+#include "game/stage_ui.h"
 
 // TODO: this is part of `stage_ui.c`
 

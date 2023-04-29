@@ -1,6 +1,6 @@
 #include "sprite.h"
 
-#include "zones.h"
+#include "constants/zones.h"
 #include "constants/animations.h"
 
 const AnimId sPlatformLevelAnims[38] = {

@@ -7,7 +7,6 @@
 #include "flags.h"
 #include "game/save.h"
 #include "game/game.h"
-#include "player.h"
 #include "game/title_screen.h"
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
