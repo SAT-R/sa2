@@ -93,10 +93,8 @@ void sub_807CCBC(Sprite_IA86 *ia086)
     }
 
     for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
-        const s16 *sinTbl = gSineTable;
-
         Unk_IA86 *unk086 = &ia086->unk0[i];
-        s16 r2, r0;
+        s16 r0;
 
         if (unk086->s == NULL) {
             u32 spriteIndex;
@@ -123,14 +121,16 @@ void sub_807CCBC(Sprite_IA86 *ia086)
             bIdk = FALSE;
         }
         // _0807CD7E
-        r2 = ABS(unk086->unkC) >> 4;
-        if (r2 >= 64) {
-            if (r2 > 0x200) {
-                r2 = 0x200;
+        {
+            u16 r2 = ABS(unk086->unkC) >> 4;
+            if ((s16)r2 >= 64) {
+                if ((s16)r2 > 0x200) {
+                    r2 = 0x200;
+                }
+                r0 = r2;
+            } else {
+                r0 = 64;
             }
-            r0 = r2;
-        } else {
-            r0 = 64;
         }
 
         unk086->unkC -= r0;
@@ -138,23 +138,25 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         if (unk086->unkC > 0) {
             //_0807CDA2 + 0xC
             s32 r1;
-            s16 r2;
+            s32 r2;
             s16 newR1;
 
             unk086->unk14 = -unk086->unkC;
             r1 = unk086->unkC >> 5;
-            r2 = Q_24_8_TO_INT(ia086->unk228.unk1E * r1);
+            r2 = ((ia086->unk228.unk1E * r1) << 8) >> 16;
 
             r1 = ia086->unk228.unk20;
             if (r1 < r2)
                 r1 = r2;
+
+            r1 <<= 16;
+            newR1 = r1 >> 17;
+
             {
                 s32 sinIndex;
                 s32 addend;
                 u16 temp;
-                newR1 = r1 >> 1;
-                sinIndex = unk086->unk4 * 4 + 0x100;
-                unk086->unk10 = newR1 * Q_2_14_TO_Q_24_8(sinTbl[sinIndex]);
+                unk086->unk10 = newR1 * COS_24_8(unk086->unk4 * 4);
 
                 temp = ((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
                 if ((s16)temp > 1) {
@@ -174,7 +176,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 s32 divRes;
                 s16 divRes2;
                 s32 temp2;
-                unk086->unk14 = (sinTbl[unk086->unk4 * 4] >> 6) * 4;
+                unk086->unk14 = SIN_24_8(unk086->unk4 * 4) * 4;
 
                 r5 = ia086->unk228.unk20;
                 r4 = ia086->unk228.unk1E;
@@ -183,7 +185,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 divRes = temp2 / ia086->unk228.unk1C;
 
                 divRes2 = sub_80855C0(r5, r4, divRes, 8) >> 1;
-                unk086->unk10 = divRes2 * (sinTbl[unk086->unk4 * 4] >> 6);
+                unk086->unk10 = divRes2 * SIN_24_8(unk086->unk4 * 4);
                 unk086->unk4 += 8;
             } else {
                 unk086->s = NULL;
