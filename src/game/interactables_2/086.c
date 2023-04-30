@@ -51,11 +51,13 @@ typedef struct {
     /* 0x180 */ u16 unk180;
 
     /* 0x182 */ u8 unk182;
-    /* 0x183 */ u8 filler183[0x5];
+    /* 0x183 */ u8 unk183;
+    /* 0x184 */ u8 filler184[0x2];
+    /* 0x186 */ s16 unk186;
     /* 0x188 */ s32 unk188;
     /* 0x18C */ s32 unk18C;
     /* 0x190 */ s32 unk190;
-    /* 0x194 */ u8 filler194[0x4];
+    /* 0x190 */ s32 unk194;
     /* 0x198 */ Sprite sprites[3];
     /* 0x228 */ StrcUnkIA086 unk228;
 } Sprite_IA86; /* size: 0x258 (600) */
@@ -63,6 +65,7 @@ typedef struct {
 void sub_807C9C0(Sprite_IA86 *);
 bool32 sub_807CB78(Sprite_IA86 *);
 bool32 sub_807CA64(Sprite_IA86 *);
+void sub_807CC28(Sprite_IA86 *ia086);
 bool32 sub_807CF2C(Sprite_IA86 *);
 bool32 sub_807CFB4(Sprite_IA86 *);
 void sub_807CCBC(Sprite_IA86 *);
@@ -81,6 +84,39 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 void Task_807D06C(void);
 
 extern u8 gUnknown_080E0136[8];
+
+bool32 sub_807CB78(Sprite_IA86 *ia086)
+{
+    bool32 result = FALSE;
+
+    if (gPlayer.y > Q_24_8(ia086->unk228.unk4 + ia086->unk228.unkE)) {
+        ia086->unk186 -= 0x10;
+
+        ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
+        ia086->unk18C += ia086->unk186;
+
+        sub_807CC28(ia086);
+    } else {
+        result = TRUE;
+    }
+
+    {
+        Player *p = &gPlayer;
+        s32 x, y;
+
+        x = Q_24_8(ia086->unk228.someX);
+        x += ia086->unk188;
+        x += ia086->unk190;
+        p->x = x;
+
+        y = Q_24_8(ia086->unk228.someY);
+        y += ia086->unk18C;
+        y += ia086->unk194;
+        p->y = y;
+    }
+
+    return result;
+}
 
 void sub_807CC28(Sprite_IA86 *ia086)
 {
@@ -101,7 +137,11 @@ void sub_807CC28(Sprite_IA86 *ia086)
     unk180 += Q_24_8(0.5);
     ia086->unk180 = unk180;
     {
+#ifdef NON_MATCHING
+        u32 r2 = unk180;
+#else
         register u32 r2 asm("r2") = unk180;
+#endif
 
         unk180 <<= 16;
         unk180 >>= 16;
@@ -110,7 +150,11 @@ void sub_807CC28(Sprite_IA86 *ia086)
         ia086->unk180 = r2;
 
         {
+#ifdef NON_MATCHING
+            u32 r0 = (r2 << 16);
+#else
             register u32 r0 asm("r0") = (r2 << 16);
+#endif
             ia086->unk182 += (r0 >> 24);
         }
     }
