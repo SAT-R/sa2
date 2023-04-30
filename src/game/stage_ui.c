@@ -61,3 +61,99 @@ const u8 gMillisUnpackTable[60][2] = {
     { 8, 0 }, { 8, 2 }, { 8, 3 }, { 8, 5 }, { 8, 7 }, { 8, 8 }, { 9, 0 }, { 9, 2 },
     { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
+
+const u16 gUnknown_080D6BF8[] = {
+    ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),
+    ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),  ZONE_TIME_TO_INT(0, 5),
+    ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),
+    ZONE_TIME_TO_INT(0, 9),  ZONE_TIME_TO_INT(0, 10), ZONE_TIME_TO_INT(0, 11),
+    ZONE_TIME_TO_INT(0, 12), ZONE_TIME_TO_INT(0, 13), ZONE_TIME_TO_INT(0, 14),
+    ZONE_TIME_TO_INT(0, 15), ZONE_TIME_TO_INT(0, 16), ZONE_TIME_TO_INT(0, 17),
+    ZONE_TIME_TO_INT(0, 18), ZONE_TIME_TO_INT(0, 19), ZONE_TIME_TO_INT(0, 20),
+    ZONE_TIME_TO_INT(0, 21), ZONE_TIME_TO_INT(0, 22), ZONE_TIME_TO_INT(0, 23),
+    ZONE_TIME_TO_INT(0, 24), ZONE_TIME_TO_INT(0, 25), ZONE_TIME_TO_INT(0, 26),
+    ZONE_TIME_TO_INT(0, 27), ZONE_TIME_TO_INT(0, 28), ZONE_TIME_TO_INT(0, 29),
+    ZONE_TIME_TO_INT(0, 30), ZONE_TIME_TO_INT(0, 31), ZONE_TIME_TO_INT(0, 32),
+    ZONE_TIME_TO_INT(0, 33), ZONE_TIME_TO_INT(0, 34), ZONE_TIME_TO_INT(0, 35),
+    ZONE_TIME_TO_INT(0, 36), ZONE_TIME_TO_INT(0, 37), ZONE_TIME_TO_INT(0, 38),
+    ZONE_TIME_TO_INT(0, 39), ZONE_TIME_TO_INT(0, 40), ZONE_TIME_TO_INT(0, 41),
+    ZONE_TIME_TO_INT(0, 42), ZONE_TIME_TO_INT(0, 43), ZONE_TIME_TO_INT(0, 44),
+    ZONE_TIME_TO_INT(0, 45), ZONE_TIME_TO_INT(0, 46), ZONE_TIME_TO_INT(0, 47),
+    ZONE_TIME_TO_INT(0, 48), ZONE_TIME_TO_INT(0, 49), ZONE_TIME_TO_INT(0, 50),
+    ZONE_TIME_TO_INT(0, 51), ZONE_TIME_TO_INT(0, 52), ZONE_TIME_TO_INT(0, 53),
+    ZONE_TIME_TO_INT(0, 54), ZONE_TIME_TO_INT(0, 55), ZONE_TIME_TO_INT(0, 56),
+    ZONE_TIME_TO_INT(0, 57), ZONE_TIME_TO_INT(0, 58), ZONE_TIME_TO_INT(0, 59),
+    ZONE_TIME_TO_INT(0, 60),
+};
+
+const u16 gUnknown_080D6C72[] = {
+    ZONE_TIME_TO_INT(0, 0), ZONE_TIME_TO_INT(1, 0),  ZONE_TIME_TO_INT(2, 0),
+    ZONE_TIME_TO_INT(3, 0), ZONE_TIME_TO_INT(4, 0),  ZONE_TIME_TO_INT(5, 0),
+    ZONE_TIME_TO_INT(6, 0), ZONE_TIME_TO_INT(7, 0),  ZONE_TIME_TO_INT(8, 0),
+    ZONE_TIME_TO_INT(9, 0), ZONE_TIME_TO_INT(10, 0),
+};
+
+// Probably a split here for trapped animals module
+
+typedef struct {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u8 unkC;
+} TrappedAnimalData; /* size 0x10 */
+
+const TrappedAnimalData gAnimsTrappedAnimals[][3] = {
+    {
+        { 192, SA2_ANIM_ANIMAL_SEA_OTTER, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_KOALA, 0, 0 },
+        { 200, SA2_ANIM_ANIMAL_KANGAROO, 0, 2 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_MOLE, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_SKUNK, 0, 2 },
+        { 200, SA2_ANIM_ANIMAL_ROBIN, 0, 1 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_LION, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_PEACOCK, 0, 2 },
+        { 200, SA2_ANIM_ANIMAL_PARROT, 0, 1 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_SEA_OTTER, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_SEAL, 0, 0 },
+        { 200, SA2_ANIM_ANIMAL_PENGUIN, 0, 2 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_ELEPHANT, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_LION, 0, 0 },
+        { 200, SA2_ANIM_ANIMAL_GORILLA, 0, 2 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_MOLE, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_DEER, 0, 2 },
+        { 200, SA2_ANIM_ANIMAL_RABBIT, 0, 2 },
+    },
+    {
+        { 192, SA2_ANIM_ANIMAL_SEA_OTTER, 0, 0 },
+        { 196, SA2_ANIM_ANIMAL_KOALA, 0, 0 },
+        { 200, SA2_ANIM_ANIMAL_KANGAROO, 0, 2 },
+    },
+};
+
+typedef void (*TrappedAnimalsFunc)(TrappedAnimalData *, u32);
+
+void sub_802D99C(TrappedAnimalData *, u32);
+void sub_802D650(TrappedAnimalData *, u32);
+void sub_802D7FC(TrappedAnimalData *, u32);
+
+TrappedAnimalsFunc const gUnknown_080D6DD8[] = {
+    sub_802D99C,
+    sub_802D650,
+    sub_802D7FC,
+};
+
+// Seven unknown x/y positions
+const u16 gUnknown_080D6DE4[][2] = {
+    { 3800, 177 },  { 11864, 145 }, { 16088, 177 }, { 21080, 153 },
+    { 27000, 150 }, { 36058, 201 }, { 40000, 225 },
+};
