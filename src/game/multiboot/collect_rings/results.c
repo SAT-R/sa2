@@ -8,7 +8,7 @@
 #include "sprite.h"
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"

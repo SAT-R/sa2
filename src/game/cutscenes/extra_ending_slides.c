@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -13,7 +13,7 @@
 
 struct ExtraEndingCutSceneSlides {
     Background unk0;
-    struct UNK_802D4CC_UNK270 unk40;
+    struct TransitionState unk40;
     u16 unk4C;
 }; /* 0x50 */
 
@@ -25,7 +25,7 @@ void CreateExtraEndingSlidesCutScene(void)
     struct Task *t = NULL;
     struct ExtraEndingCutSceneSlides *scene;
     Background *background;
-    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    struct TransitionState *transition = NULL;
 
     gDispCnt = 0x1140;
     gBgCntRegs[0] = 0x5C00;
@@ -42,13 +42,13 @@ void CreateExtraEndingSlidesCutScene(void)
 
     scene->unk4C = 0xF0;
 
-    transitionConfig = &scene->unk40;
-    transitionConfig->unk2 = 1;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk6 = 0x80;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    transition = &scene->unk40;
+    transition->unk2 = 1;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk6 = 0x80;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -73,11 +73,11 @@ void sub_8091608(void);
 void sub_8091590(void)
 {
     struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    struct TransitionState *transition = &scene->unk40;
 
-    transitionConfig->unk2 = 2;
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    transition->unk2 = 2;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = sub_8091608;
     }
 }
@@ -87,11 +87,11 @@ void sub_8091638(void);
 void sub_80915CC(void)
 {
     struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    struct TransitionState *transition = &scene->unk40;
 
-    transitionConfig->unk2 = 1;
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    transition->unk2 = 1;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = sub_8091638;
     }
 }

@@ -5,7 +5,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -22,7 +22,7 @@ struct CreditsEndCutScene {
     Sprite unkC0;
     Sprite unkF0;
     Sprite unk120;
-    struct UNK_802D4CC_UNK270 transitionConfig;
+    struct TransitionState transition;
     u8 creditsVariant;
     u8 sequence;
     u8 unk15E;
@@ -75,7 +75,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     s32 r6 = 1;
     struct Task *t;
     struct CreditsEndCutScene *scene = NULL;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     gDispCnt = 0x1040;
 
     gBgCntRegs[0] = 0x160D;
@@ -126,13 +126,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         scene->unk170[2][i] = Q_24_8(200);
     }
 
-    transitionConfig = &scene->transitionConfig;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk2 = 2;
-    transitionConfig->unkA = 0;
-    transitionConfig->unk6 = 0x100;
-    transitionConfig->unk8 = 0x3FFF;
+    transition = &scene->transition;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->unkA = 0;
+    transition->unk6 = 0x100;
+    transition->unk8 = 0x3FFF;
 
     scene->unk16C = OBJ_VRAM0;
 
@@ -273,8 +273,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 static void Task_FadeOut(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->transitionConfig;
-    transitionConfig->unk2 = 1;
+    struct TransitionState *transition = &scene->transition;
+    transition->unk2 = 1;
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
         UpdateMessageLine1Pos(scene);
@@ -283,8 +283,8 @@ static void Task_FadeOut(void)
 
     RenderExtraEndingElements(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -471,11 +471,11 @@ static void Task_HandleGameCompletion(void)
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
                     scene->delayFrames = 105;
-                    scene->transitionConfig.unk8 = 0x3FFF;
+                    scene->transition.unk8 = 0x3FFF;
                 }
             } else {
                 scene->hasAllEmeralds = FALSE;
-                scene->transitionConfig.unk8 = 0x3FFF;
+                scene->transition.unk8 = 0x3FFF;
                 scene->delayFrames = 105;
             }
         } else {
@@ -547,8 +547,8 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 static void Task_FadeIn(void)
 {
     struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->transitionConfig;
-    transitionConfig->unk2 = 2;
+    struct TransitionState *transition = &scene->transition;
+    transition->unk2 = 2;
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -558,8 +558,8 @@ static void Task_FadeIn(void)
 
     RenderExtraEndingElements(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = Task_SequenceMain;
     }
 }

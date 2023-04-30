@@ -44,7 +44,7 @@
     "game/multiplayer/team_play.h": "c",
     "multi_boot.h": "c",
     "game/character_select.h": "c",
-    "transition.h": "c",
+    "game/screen_transition.h": "c",
     "data/palettes.h": "c",
     "game/multiplayer/mode_select.h": "c",
     "game/time_attack/lobby.h": "c",
@@ -190,7 +190,8 @@
     "085.h": "c",
     "097.h": "c",
     "save.h": "c",
-    "stage_ui.h": "c"
+    "stage_ui.h": "c",
+    "screen_transition.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

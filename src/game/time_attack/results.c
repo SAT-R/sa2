@@ -1,7 +1,7 @@
 #include "game/time_attack/results.h"
 #include "core.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "game/save.h"
 #include "game/game.h"
 #include "game/stage_ui.h"
@@ -15,7 +15,7 @@
 #include "constants/songs.h"
 
 struct TimeAttackResultsCutScene {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct TransitionState unk0;
     Sprite unkC[3];
     Sprite unk9C[3];
     Sprite unk12C;
@@ -44,7 +44,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
 {
     struct Task *t;
     struct TimeAttackResultsCutScene *resultsCutScene;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     Sprite *element = NULL;
     s16 millis, minutes, seconds;
     u8 i;
@@ -55,18 +55,18 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
                    sub_8089BB0);
     resultsCutScene = TaskGetStructPtr(t);
-    transitionConfig = &resultsCutScene->unk0;
+    transition = &resultsCutScene->unk0;
 
     resultsCutScene->unk168 = 0;
     resultsCutScene->unk2D4 = 0x800;
     resultsCutScene->unk2D6 = 0x4000;
 
-    transitionConfig->unk0 = 0;
-    transitionConfig->unk2 = 1;
-    transitionConfig->unk6 = 0x100;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    transition->unk0 = 0;
+    transition->unk2 = 1;
+    transition->unk6 = 0x100;
+    transition->unk4 = 0;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
     resultsCutScene->unk15C = finishTime;
 
@@ -431,7 +431,7 @@ void sub_8089AEC(void)
 void sub_8089B40(void)
 {
     struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&resultsCutScene->unk0) == 1) {
+    if (RunTransition(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
         WriteSaveGame();
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

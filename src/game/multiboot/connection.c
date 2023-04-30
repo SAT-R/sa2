@@ -9,7 +9,7 @@
 #include "sprite.h"
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
@@ -21,7 +21,7 @@
 #include "constants/text.h"
 
 struct SinglePakConnectScreen {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct TransitionState unk0;
     Sprite unkC;
     Sprite unk3C;
     Sprite unk6C;
@@ -117,7 +117,7 @@ void StartSinglePakConnect(void)
 {
     struct Task *t;
     struct SinglePakConnectScreen *connectScreen;
-    struct UNK_802D4CC_UNK270 *transition;
+    struct TransitionState *transition;
     Sprite *element;
     Background *background;
     struct MultiBootParam *mbParams;
@@ -157,7 +157,7 @@ void StartSinglePakConnect(void)
     transition->unk6 = 0x100;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
-    sub_802D4CC(transition);
+    RunTransition(transition);
 
     ram = OBJ_VRAM0;
     element = &connectScreen->unkC;
@@ -257,7 +257,7 @@ void sub_8081604(void)
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
-    sub_802D4CC(&connectScreen->unk0);
+    RunTransition(&connectScreen->unk0);
     sub_80051E8(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 

@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -13,7 +13,7 @@
 
 struct CreditsSlidesCutScene {
     Background unk0;
-    struct UNK_802D4CC_UNK270 unk40;
+    struct TransitionState unk40;
 
     u8 creditsVariant;
     u8 unk4D;
@@ -43,7 +43,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     struct Task *t;
     struct CreditsSlidesCutScene *scene = NULL;
     Background *background;
-    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    struct TransitionState *transition = NULL;
     u8 i;
 
     gDispCnt = 0x1241;
@@ -81,12 +81,12 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
 
     scene->unk51 = scene->unk50 + gUnknown_080E12AA[scene->unk4F];
 
-    transitionConfig = &scene->unk40;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unkA = 0;
-    transitionConfig->unk6 = 0x200;
-    transitionConfig->unk8 = 0x3FFF;
+    transition = &scene->unk40;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unkA = 0;
+    transition->unk6 = 0x200;
+    transition->unk8 = 0x3FFF;
 
     if (gUnknown_080E1278[scene->unk50] != 0) {
         background = &scene->unk0;
@@ -113,11 +113,11 @@ void sub_808F10C(void);
 void sub_808EF38(void)
 {
     struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    struct TransitionState *transition = &scene->unk40;
 
-    transitionConfig->unk2 = 1;
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    transition->unk2 = 1;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         scene->unk50++;
 
         if (scene->unk50 < scene->unk51) {
@@ -152,15 +152,15 @@ void sub_808F068(void);
 void sub_808F004(void)
 {
     struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
-    transitionConfig->unk2 = 2;
+    struct TransitionState *transition = &scene->unk40;
+    transition->unk2 = 2;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808F0BC;
     }
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = sub_808F068;
     }
 }
@@ -184,12 +184,12 @@ void sub_808F068(void)
 void sub_808F0BC(void)
 {
     struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
-    transitionConfig->unk2 = 1;
+    struct TransitionState *transition = &scene->unk40;
+    transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         CreateCreditsEndCutScene(scene->creditsVariant);
         TaskDestroy(gCurTask);
     }

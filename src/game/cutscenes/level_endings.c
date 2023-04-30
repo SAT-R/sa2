@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
@@ -19,7 +19,7 @@ struct ResultsCutScene {
     Player *unk0;
     Sprite unk4;
     Sprite unk34;
-    struct UNK_802D4CC_UNK270 unk64;
+    struct TransitionState unk64;
     u16 unk70;
     u16 unk72;
     u16 unk74;
@@ -35,7 +35,7 @@ struct CharacterUnlockCutScene {
     Background unk40;
     Background unk80;
     Background unkC0;
-    struct UNK_802D4CC_UNK270 unk100;
+    struct TransitionState unk100;
 
     // slide
     u16 unk10C;
@@ -150,7 +150,7 @@ void CreateCourseResultsCutScene(u8 mode)
     struct Task *t;
     struct ResultsCutScene *scene;
     Sprite *element;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     memcpy(mains, gUnknown_080E1208, sizeof(gUnknown_080E1208));
     memcpy(unk1214, gUnknown_080E1214, sizeof(gUnknown_080E1214));
     memcpy(unk1220, gUnknown_080E1220, sizeof(gUnknown_080E1220));
@@ -218,12 +218,12 @@ void CreateCourseResultsCutScene(u8 mode)
         m4aSongNumStart(SE_236);
     }
 
-    transitionConfig = &scene->unk64;
-    transitionConfig->unk0 = 0;
-    transitionConfig->unk2 = 0xFF00;
-    transitionConfig->unk4 = 0x100;
-    transitionConfig->unk6 = 0;
-    transitionConfig->unk8 = 0;
+    transition = &scene->unk64;
+    transition->unk0 = 0;
+    transition->unk2 = 0xFF00;
+    transition->unk4 = 0x100;
+    transition->unk6 = 0;
+    transition->unk8 = 0;
 }
 
 static void sub_808DD9C(void)
@@ -231,7 +231,7 @@ static void sub_808DD9C(void)
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
     Sprite *element = &scene->unk4;
     Player *player = scene->unk0;
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk64;
+    struct TransitionState *transition = &scene->unk64;
 
     scene->unk70 -= scene->unk74;
     scene->unk72 += scene->unk76;
@@ -272,14 +272,14 @@ static void sub_808DD9C(void)
     }
 
     if (scene->unk7A == 1) {
-        transitionConfig->unk0 = scene->unk0->rotation * 4;
+        transition->unk0 = scene->unk0->rotation * 4;
     }
 
     element->x = scene->unk70 >> 8;
     element->y = scene->unk72 >> 8;
 
-    transitionConfig->unk6 = scene->unk70 >> 8;
-    transitionConfig->unk8 = scene->unk72 >> 8;
+    transition->unk6 = scene->unk70 >> 8;
+    transition->unk8 = scene->unk72 >> 8;
 
     sub_8004558(element);
     sub_80051E8(element);
@@ -408,7 +408,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene);
 
 void sub_808E274(struct CharacterUnlockCutScene *scene)
 {
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     gDispCnt = 0x1600;
     gDispCnt |= 0x40;
 
@@ -441,15 +441,15 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
     sub_808E35C(scene);
 
-    transitionConfig = &scene->unk100;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk2 = 2;
-    transitionConfig->unk6 = 0x200;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    transition = &scene->unk100;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->unk6 = 0x200;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
-    sub_802D4CC(transitionConfig);
+    RunTransition(transition);
 }
 
 void sub_808E35C(struct CharacterUnlockCutScene *scene)
@@ -515,7 +515,7 @@ void sub_808E424(void)
     }
 
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
-    if (sub_802D4CC(&scene->unk100) == 1) {
+    if (RunTransition(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         scene->unk110 = 0;
         gCurTask->main = sub_808E4C8;
     }
@@ -582,14 +582,14 @@ void sub_808E63C(void)
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
 
     if (scene->unk110++ > 300) {
-        struct UNK_802D4CC_UNK270 *transitionConfig;
+        struct TransitionState *transition;
         scene->unk110 = 0;
-        transitionConfig = &scene->unk100;
-        transitionConfig->unk0 = 1;
-        transitionConfig->unk8 = 0x3FFF;
-        transitionConfig->unk4 = 0;
-        transitionConfig->unk2 = 1;
-        transitionConfig->unkA = 0;
+        transition = &scene->unk100;
+        transition->unk0 = 1;
+        transition->unk8 = 0x3FFF;
+        transition->unk4 = 0;
+        transition->unk2 = 1;
+        transition->unkA = 0;
 
         gCurTask->main = sub_808E6B0;
     }
@@ -600,7 +600,7 @@ void sub_808E6B0(void)
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
 
-    if (sub_802D4CC(&scene->unk100) == 1) {
+    if (RunTransition(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         if (gCurrentLevel >= gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
             CreateCourseSelectionScreen(
                 gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);

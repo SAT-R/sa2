@@ -3,7 +3,7 @@
 #include "game/multiplayer_lobby.h"
 #include "task.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "constants/songs.h"
 #include "game/save.h"
@@ -19,7 +19,7 @@ struct MultiplayerLobbyScreen {
     Sprite chao;
     Sprite uiElements[3];
     Background background;
-    struct UNK_802D4CC_UNK270 transitionConfig;
+    struct TransitionState transition;
     bool8 fadeInComplete;
     u8 cursor;
     u16 idleFrame;
@@ -112,7 +112,7 @@ void CreateMultiplayerLobbyScreen(void)
     lobbyScreen->animFrame = 0;
     lobbyScreen->playersWaiting = 0;
     CreateUI(lobbyScreen);
-    sub_802D4CC(&lobbyScreen->transitionConfig);
+    RunTransition(&lobbyScreen->transition);
     m4aSongNumStart(MUS_VS_LOBBY);
 }
 
@@ -121,7 +121,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     u8 i;
     Sprite *element;
     Background *background;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     s8 lang = gLoadedSaveGame->language - 1;
 
     if (lang < 0) {
@@ -211,12 +211,12 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         sub_8004558(element);
     }
 
-    lobbyScreen->transitionConfig.unk0 = 1;
-    lobbyScreen->transitionConfig.unk4 = 0;
-    lobbyScreen->transitionConfig.unk2 = 2;
-    lobbyScreen->transitionConfig.unk6 = 0x200;
-    lobbyScreen->transitionConfig.unk8 = 0x3FFF;
-    lobbyScreen->transitionConfig.unkA = 0;
+    lobbyScreen->transition.unk0 = 1;
+    lobbyScreen->transition.unk4 = 0;
+    lobbyScreen->transition.unk2 = 2;
+    lobbyScreen->transition.unk6 = 0x200;
+    lobbyScreen->transition.unk8 = 0x3FFF;
+    lobbyScreen->transition.unkA = 0;
 }
 
 static void Task_FadeInOrHandleExit(void)
@@ -240,7 +240,7 @@ static void Task_FadeInOrHandleExit(void)
 
     // Wait for idle frame to reach 0
     if (lobbyScreen->idleFrame == 0) {
-        if (sub_802D4CC(&lobbyScreen->transitionConfig) == 1) {
+        if (RunTransition(&lobbyScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
             if (lobbyScreen->fadeInComplete) {
                 TaskDestroy(gCurTask);
                 if (lobbyScreen->cursor != CURSOR_YES) {
@@ -469,10 +469,10 @@ static void Task_ListenForExit(void)
 static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     Sprite *chao = &lobbyScreen->chao;
-    lobbyScreen->transitionConfig.unk4 = 0;
-    lobbyScreen->transitionConfig.unk2 = 1;
-    lobbyScreen->transitionConfig.unkA = 0;
-    lobbyScreen->transitionConfig.unk6 = 0x100;
+    lobbyScreen->transition.unk4 = 0;
+    lobbyScreen->transition.unk2 = 1;
+    lobbyScreen->transition.unkA = 0;
+    lobbyScreen->transition.unk6 = 0x100;
     lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
     m4aSongNumStop(MUS_VS_LOBBY);
     m4aSongNumStart(MUS_VS_EXIT);
@@ -550,10 +550,10 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     lobbyScreen->idleFrame = 0;
-    lobbyScreen->transitionConfig.unk4 = 0;
-    lobbyScreen->transitionConfig.unk2 = 1;
-    lobbyScreen->transitionConfig.unk6 = 0x200;
-    lobbyScreen->transitionConfig.unkA = 0;
+    lobbyScreen->transition.unk4 = 0;
+    lobbyScreen->transition.unk2 = 1;
+    lobbyScreen->transition.unk6 = 0x200;
+    lobbyScreen->transition.unkA = 0;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 

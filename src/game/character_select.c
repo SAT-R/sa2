@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "game/game.h"
 #include "sprite.h"
 #include "game/character_select.h"
@@ -23,7 +23,7 @@
 #include "constants/text.h"
 
 struct CharacterSelectionScreen {
-    struct UNK_802D4CC_UNK270 screenFade;
+    struct TransitionState screenFade;
     Background unkC;
     Background unk4C;
     Background unk8C;
@@ -201,7 +201,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
 {
     struct Task *t;
     struct CharacterSelectionScreen *characterScreen;
-    struct UNK_802D4CC_UNK270 *screenFade;
+    struct TransitionState *screenFade;
     Background *background;
     Sprite *element;
     u32 a;
@@ -284,7 +284,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     screenFade->unk6 = 0x180;
     screenFade->unk8 = 0xFF;
     screenFade->unkA = 0;
-    sub_802D4CC(screenFade);
+    RunTransition(screenFade);
 
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -551,7 +551,7 @@ static void Task_FadeInAndStartRollInAnim(void)
         gCurTask->main = Task_RollInAnim;
     }
 
-    sub_802D4CC(&characterScreen->screenFade);
+    RunTransition(&characterScreen->screenFade);
     sub_80051E8(&characterScreen->scrollUpArrow);
     sub_80051E8(&characterScreen->scrollDownArrow);
 
@@ -622,7 +622,7 @@ static void Task_CharacterSelectMain(void)
 {
     u8 i;
     Sprite *element;
-    struct UNK_802D4CC_UNK270 *unk0;
+    struct TransitionState *unk0;
     union MultiSioData *packet;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
     characterScreen->cursorAnimFrame = (characterScreen->cursorAnimFrame & 0x3F) + 1;
@@ -1010,7 +1010,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
     union MultiSioData *packet;
     Sprite *element;
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *unk0 = &characterScreen->screenFade;
+    struct TransitionState *unk0 = &characterScreen->screenFade;
     MultiPakHeartbeat();
 
     if (!IS_SINGLE_PLAYER) {
@@ -1042,7 +1042,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
     if ((characterScreen->animFrame
          >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
-        && sub_802D4CC(unk0) == 1) {
+        && RunTransition(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (!IS_SINGLE_PLAYER) {
@@ -1086,9 +1086,9 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 static void Task_FadeOutAndExitToPrevious(void)
 {
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *unk0 = &characterScreen->screenFade;
+    struct TransitionState *unk0 = &characterScreen->screenFade;
 
-    if (sub_802D4CC(unk0) == 1) {
+    if (RunTransition(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

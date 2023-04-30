@@ -11,7 +11,7 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "task.h"
 #include "game/title_screen.h"
@@ -159,7 +159,7 @@ void Task_IntroScreenMain(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
 
-    struct UNK_802D4CC_UNK270 *transitionConfig = &stage->transition;
+    struct TransitionState *transition = &stage->transition;
     sub_80051E8(&stage->introText);
     gBldRegs.bldCnt = 0xAF;
 
@@ -169,12 +169,12 @@ void Task_IntroScreenMain(void)
         gBldRegs.bldCnt = 0xBF;
         gBldRegs.bldY = 0x10;
 
-        transitionConfig->unk0 = 0;
-        transitionConfig->unk2 = 2;
-        transitionConfig->unk4 = 0;
-        transitionConfig->unk6 = 0x100;
-        transitionConfig->unkA = 0;
-        transitionConfig->unk8 = 0xBF;
+        transition->unk0 = 0;
+        transition->unk2 = 2;
+        transition->unk4 = 0;
+        transition->unk6 = 0x100;
+        transition->unkA = 0;
+        transition->unk8 = 0xBF;
         stage->animFrame = 0;
         gCurTask->main = Task_InitComponents;
     }
@@ -289,19 +289,19 @@ void Task_SpecialStageMain(void)
 void sub_806BFD0(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &stage->transition;
+    struct TransitionState *transition = &stage->transition;
     struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(stage->guardRoboTask);
     struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
 
     guardRobo->state = 0;
 
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk2 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk6 = 0x40;
-    transitionConfig->unkA = 0;
-    transitionConfig->unk8 = 0xBF;
-    sub_802D4CC(transitionConfig);
+    transition->unk0 = 1;
+    transition->unk2 = 1;
+    transition->unk4 = 0;
+    transition->unk6 = 0x40;
+    transition->unkA = 0;
+    transition->unk8 = 0xBF;
+    RunTransition(transition);
 
     gDispCnt = 0x9641;
     gWinRegs[5] = 0x103F;
@@ -315,10 +315,10 @@ void sub_806BFD0(void)
 void Task_FadeToResultScreen(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &stage->transition;
+    struct TransitionState *transition = &stage->transition;
     struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
 
-    if (sub_802D4CC(transitionConfig) == 0) {
+    if (RunTransition(transition) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[5] = 0x103F;
         return;
@@ -508,7 +508,7 @@ void sub_806C42C(void)
 void sub_806C49C(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &stage->transition;
+    struct TransitionState *transition = &stage->transition;
     stage->animFrame++;
 
     if (stage->unk5C7 == 1) {
@@ -519,12 +519,12 @@ void sub_806C49C(void)
     }
 
     if (gPressedKeys & A_BUTTON || stage->animFrame > 60) {
-        transitionConfig->unk0 = 0;
-        transitionConfig->unk2 = 1;
-        transitionConfig->unk4 = 0;
-        transitionConfig->unk6 = 0x40;
-        transitionConfig->unkA = 0;
-        transitionConfig->unk8 = 0xBF;
+        transition->unk0 = 0;
+        transition->unk2 = 1;
+        transition->unk4 = 0;
+        transition->unk6 = 0x40;
+        transition->unkA = 0;
+        transition->unk8 = 0xBF;
 
         stage->animFrame = 0;
         if (stage->targetReached) {
@@ -587,7 +587,7 @@ void sub_806C638(void)
 void sub_806C6A4(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&stage->transition) == 0) {
+    if (RunTransition(&stage->transition) == 0) {
         return;
     }
 
@@ -734,7 +734,7 @@ void Task_FadeInSpecialStage(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&stage->transition) != 0) {
+    if (RunTransition(&stage->transition) != 0) {
         stage->animFrame = 0;
         stage->state = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);

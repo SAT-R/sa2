@@ -5,14 +5,14 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
 
 struct CreditsCutScene {
     Background unk0;
-    struct UNK_802D4CC_UNK270 unk40;
+    struct TransitionState unk40;
 
     u8 variant;
     u8 unk4D;
@@ -55,7 +55,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     struct Task *t;
     struct CreditsCutScene *scene = NULL;
     Background *background;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
 
     gDispCnt = 0x1140;
     gBgCntRegs[0] = 0x5c00;
@@ -94,12 +94,12 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
         scene->unk4D = 0;
     }
 
-    transitionConfig = &scene->unk40;
-    transitionConfig->unk0 = 0;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unkA = 0;
-    transitionConfig->unk6 = 0x100;
-    transitionConfig->unk8 = 0x3FFF;
+    transition = &scene->unk40;
+    transition->unk0 = 0;
+    transition->unk4 = 0;
+    transition->unkA = 0;
+    transition->unk6 = 0x100;
+    transition->unk8 = 0x3FFF;
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -122,16 +122,16 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 static void sub_808EBC4(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    struct TransitionState *transition = &scene->unk40;
 
-    transitionConfig->unk2 = 2;
+    transition->unk2 = 2;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;
     }
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = sub_808EC64;
     }
 }
@@ -139,11 +139,11 @@ static void sub_808EBC4(void)
 static void sub_808EC28(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
-    transitionConfig->unk2 = 1;
+    struct TransitionState *transition = &scene->unk40;
+    transition->unk2 = 1;
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         gCurTask->main = sub_808ED04;
     }
 }
@@ -151,7 +151,7 @@ static void sub_808EC28(void)
 static void sub_808EC64(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
+    struct TransitionState *transition = &scene->unk40;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;
@@ -167,12 +167,12 @@ static void sub_808EC64(void)
 static void sub_808ECB4(void)
 {
     struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk40;
-    transitionConfig->unk2 = 1;
+    struct TransitionState *transition = &scene->unk40;
+    transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = 0;
         CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }

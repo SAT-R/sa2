@@ -1,7 +1,7 @@
 #include "game/time_attack/mode_select.h"
 #include "core.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "game/save.h"
 #include "task.h"
 #include "malloc_vram.h"
@@ -21,7 +21,7 @@ struct TimeAttackModeSelectionScreen {
     Sprite unkB0;
     Sprite unkE0;
     Sprite infoText;
-    struct UNK_802D4CC_UNK270 unk140;
+    struct TransitionState unk140;
     u8 animFrame;
     u8 unk14D;
     u8 unk14E;
@@ -87,7 +87,7 @@ void CreateTimeAttackModeSelectionScreen(void)
 {
     struct Task *t;
     struct TimeAttackModeSelectionScreen *modeScreen;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     Sprite *element;
     Background *background;
 
@@ -118,15 +118,15 @@ void CreateTimeAttackModeSelectionScreen(void)
     modeScreen->unk14D = 0;
     modeScreen->unk14E = 0;
 
-    transitionConfig = &modeScreen->unk140;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk2 = 2;
-    transitionConfig->unk6 = 0x100;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    transition = &modeScreen->unk140;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->unk6 = 0x100;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
-    sub_802D4CC(transitionConfig);
+    RunTransition(transition);
 
     element = &modeScreen->unk80;
     element->graphics.dest = VramMalloc(0x6C);
@@ -316,7 +316,7 @@ static void Task_IntroUIAnim(void)
 static void Task_ScreenMain(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
     Sprite *element;
     s8 lang;
 
@@ -324,24 +324,24 @@ static void Task_ScreenMain(void)
         if (modeScreen->unk14D && !gLoadedSaveGame->bossTimeAttackUnlocked) {
             m4aSongNumStart(SE_ABORT);
         } else {
-            transitionConfig = &modeScreen->unk140;
-            transitionConfig->unk0 = 1;
-            transitionConfig->unk4 = 0;
-            transitionConfig->unk2 = 1;
-            transitionConfig->unk6 = 0x100;
-            transitionConfig->unk8 = 0x3FFF;
-            transitionConfig->unkA = 0;
+            transition = &modeScreen->unk140;
+            transition->unk0 = 1;
+            transition->unk4 = 0;
+            transition->unk2 = 1;
+            transition->unk6 = 0x100;
+            transition->unk8 = 0x3FFF;
+            transition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
-        transitionConfig = &modeScreen->unk140;
-        transitionConfig->unk0 = 1;
-        transitionConfig->unk4 = 0;
-        transitionConfig->unk2 = 1;
-        transitionConfig->unk6 = 0x100;
-        transitionConfig->unk8 = 0x3FFF;
-        transitionConfig->unkA = 0;
+        transition = &modeScreen->unk140;
+        transition->unk0 = 1;
+        transition->unk4 = 0;
+        transition->unk2 = 1;
+        transition->unk6 = 0x100;
+        transition->unk8 = 0x3FFF;
+        transition->unkA = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutToTitleScreen;
     }
@@ -407,7 +407,7 @@ static void Task_FadeOutModeSelected(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_HandleModeSelectedExit;
@@ -430,7 +430,7 @@ static void Task_FadeOutToTitleScreen(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtSinglePlayerMenu();
         TaskDestroy(gCurTask);
@@ -452,7 +452,7 @@ static void Task_FadeOutToTitleScreen(void)
 static void Task_FadeInAndStartIntro(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         modeScreen->animFrame = 0xF;
         gCurTask->main = Task_IntroSweepAnim;
     }

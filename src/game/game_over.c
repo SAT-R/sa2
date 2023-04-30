@@ -4,13 +4,13 @@
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
 #include "task.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "constants/songs.h"
 
 typedef struct {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct TransitionState unk0;
     u8 unkC;
     u8 unkD;
 } GameOverScreenTransition;
@@ -20,18 +20,18 @@ void sub_80366F0(void);
 void CreateGameOverScreen(u8 type)
 {
     struct Task *t = TaskCreate(sub_80366F0, 0x10, 0x2220, 0, NULL);
-    GameOverScreenTransition *transition = TaskGetStructPtr(t);
+    GameOverScreenTransition *screen = TaskGetStructPtr(t);
 
-    struct UNK_802D4CC_UNK270 *transitionConfig = &transition->unk0;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk2 = 1;
-    transitionConfig->unk6 = 0x40;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    struct TransitionState *transition = &screen->unk0;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 1;
+    transition->unk6 = 0x40;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
-    transition->unkC = type;
-    transition->unkD = 10;
+    screen->unkC = type;
+    screen->unkD = 10;
 
     m4aMPlayFadeOut(&gMPlayInfo_BGM, 8);
     m4aMPlayFadeOut(&gMPlayInfo_SE1, 8);
@@ -51,7 +51,7 @@ void sub_80366F0(void)
         return;
     }
 
-    if (sub_802D4CC(&transition->unk0) != 0) {
+    if (RunTransition(&transition->unk0) != 0) {
         gBldRegs.bldY = 0x10;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -68,7 +68,7 @@ void sub_80366F0(void)
 }
 
 typedef struct {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct TransitionState unk0;
     Sprite unkC;
     Sprite unk3C;
     u32 unk6C;
@@ -83,7 +83,7 @@ void sub_8036780(u8 unkC)
     struct Task *t;
     GameOverScreen *screen;
     Sprite *sprite;
-    struct UNK_802D4CC_UNK270 *transitionConfig;
+    struct TransitionState *transition;
 
     gWinRegs[4] = 0;
     gWinRegs[5] = 0;
@@ -147,13 +147,13 @@ void sub_8036780(u8 unkC)
     sprite->unk10 = 0;
     sub_8004558(sprite);
 
-    transitionConfig = &screen->unk0;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk2 = 2;
-    transitionConfig->unk6 = 0x200;
-    transitionConfig->unk8 = 0x3FD0;
-    transitionConfig->unkA = 0;
+    transition = &screen->unk0;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->unk6 = 0x200;
+    transition->unk8 = 0x3FD0;
+    transition->unkA = 0;
 }
 
 void sub_8036BD4(GameOverScreen *screen);
@@ -194,7 +194,7 @@ void sub_8036918(void)
         sprite2->x = 120;
     }
 
-    sub_802D4CC(&screen->unk0);
+    RunTransition(&screen->unk0);
 
     screen->unk6C--;
 
@@ -218,7 +218,7 @@ void sub_8036B30(void);
 void sub_80369D8(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
-    sub_802D4CC(&screen->unk0);
+    RunTransition(&screen->unk0);
 
     if (--screen->unk6C == 0) {
         screen->unk0.unk0 = 1;
@@ -272,7 +272,7 @@ void sub_8036A44(void)
         screen->unk0.unkA = 0;
     }
 
-    sub_802D4CC(&screen->unk0);
+    RunTransition(&screen->unk0);
 
     if (--screen->unk6C == 0) {
         TasksDestroyAll();
@@ -298,9 +298,9 @@ void sub_8036B30(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
 
-    if (sub_802D4CC(&screen->unk0) != 0) {
+    if (RunTransition(&screen->unk0) != 0) {
         screen->unk6C = 140;
-        sub_802D4CC(&screen->unk0);
+        RunTransition(&screen->unk0);
         gCurTask->main = sub_8036B70;
     }
 

@@ -8,7 +8,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "malloc_vram.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "flags.h"
 #include "game/title_screen.h"
@@ -29,7 +29,7 @@ struct MultiplayerModeSelectScreen {
     Sprite unkE0;
     Sprite subText;
 
-    struct UNK_802D4CC_UNK270 unk140;
+    struct TransitionState unk140;
 
     // animFrame
     u8 animFrame;
@@ -82,7 +82,7 @@ void CreateMultiplayerModeSelectScreen(void)
 {
     struct Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
-    struct UNK_802D4CC_UNK270 *unk140;
+    struct TransitionState *unk140;
     Sprite *element;
     Background *unk0;
 
@@ -114,7 +114,7 @@ void CreateMultiplayerModeSelectScreen(void)
     unk140->unk6 = 0x100;
     unk140->unk8 = 0x3FFF;
     unk140->unkA = 0;
-    sub_802D4CC(unk140);
+    RunTransition(unk140);
 
     element = &modeScreen->unk80;
     element->graphics.dest = VramMalloc(0x32);
@@ -302,7 +302,7 @@ static void Task_EnterAnimPart2(void)
 static void Task_ScreenMain(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *unk140;
+    struct TransitionState *unk140;
     if (gPressedKeys & A_BUTTON) {
         unk140 = &modeScreen->unk140;
         unk140->unk0 = 1;
@@ -367,7 +367,7 @@ static void Task_ScreenMain(void)
 static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
@@ -388,7 +388,7 @@ static void Task_FadeOutToSelectedMode(void)
 static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
@@ -409,7 +409,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 static void Task_FadeInAndStartEnterAnim(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (sub_802D4CC(&modeScreen->unk140) == 1) {
+    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }

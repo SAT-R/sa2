@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "game/cutscenes/extra_ending_fall.h"
 #include "game/cutscenes/final_ending_fall.h"
