@@ -171,3 +171,38 @@ void sub_8072D40(void)
         }
     }
 }
+
+void sub_8072BB8(void);
+
+void sub_8072DCC(Sprite_HookRail *hookRail)
+{
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 0x37;
+    sub_80218E4(&gPlayer);
+    sub_8023B5C(&gPlayer, 14);
+    gPlayer.unk16 = 6;
+    gPlayer.unk17 = 14;
+    gPlayer.moveState &= ~MOVESTATE_4;
+    gPlayer.y = Q_24_8(hookRail->y + 0x14);
+    hookRail->unk1C = 0;
+    if (hookRail->unk10 == 0) {
+        gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+        gPlayer.speedGroundX = gPlayer.speedAirX;
+
+        if (gPlayer.speedGroundX > -Q_24_8(1)) {
+            gPlayer.speedGroundX = -Q_24_8(1);
+        }
+        gPlayer.rotation = 128;
+    } else {
+        gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+        gPlayer.speedGroundX = gPlayer.speedAirX;
+        if (gPlayer.speedGroundX < Q_24_8(1)) {
+            gPlayer.speedGroundX = Q_24_8(1);
+        }
+
+        gPlayer.rotation = 0;
+    }
+
+    m4aSongNumStart(SE_283);
+    gCurTask->main = sub_8072BB8;
+}
