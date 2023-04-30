@@ -83,7 +83,8 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 // static
 void Task_807D06C(void);
 
-extern u8 gUnknown_080E0136[8];
+// static
+const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
 bool32 sub_807CB78(Sprite_IA86 *ia086)
 {

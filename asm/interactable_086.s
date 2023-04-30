@@ -6,11 +6,6 @@
 gUnknown_080E0124:
     .incbin "baserom.gba", 0x000E0124, 0x12
 
-    .global gUnknown_080E0136
-gUnknown_080E0136:
-    .byte 0, 0, 0, 0, 1, 1, 1, 2
-.align 2 , 0
-
 .text
 .syntax unified
 .arm
