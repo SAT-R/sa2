@@ -302,6 +302,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);
         build/sa2/src/game/interactables_2/078.o(.rodata);
         build/sa2/asm/interactable_086.o(.rodata);
+        build/sa2/src/game/interactables_2/086.o(.rodata);
         build/sa2/src/game/interactables_2/note_particle.o(.rodata);
         build/sa2/src/game/multiboot/connection.o(.rodata);
         build/sa2/src/game/multiboot/collect_rings/time_display.o(.rodata);
