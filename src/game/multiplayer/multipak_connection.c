@@ -95,10 +95,10 @@ void StartMultiPakConnect(void)
     unk0->unk0 = 1;
     unk0->unk4 = 0;
     unk0->unk2 = 2;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unk8 = 0x3FFF;
     unk0->unkA = 0;
-    RunTransition(unk0);
+    NextTransitionFrame(unk0);
 
     unkC = &connectScreen->unkC;
     unkC->graphics.dest = vramAddr;
@@ -206,7 +206,7 @@ static void sub_805ADAC(void)
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    RunTransition(&connectScreen->unk0);
+    NextTransitionFrame(&connectScreen->unk0);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {

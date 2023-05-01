@@ -171,8 +171,8 @@ void Task_IntroScreenMain(void)
 
         transition->unk0 = 0;
         transition->unk2 = 2;
-        transition->unk4 = 0;
-        transition->unk6 = 0x100;
+        transition->unk4 = Q_8_8(0);
+        transition->speed = 0x100;
         transition->unkA = 0;
         transition->unk8 = 0xBF;
         stage->animFrame = 0;
@@ -297,11 +297,11 @@ void sub_806BFD0(void)
 
     transition->unk0 = 1;
     transition->unk2 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x40;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x40;
     transition->unkA = 0;
     transition->unk8 = 0xBF;
-    RunTransition(transition);
+    NextTransitionFrame(transition);
 
     gDispCnt = 0x9641;
     gWinRegs[5] = 0x103F;
@@ -318,7 +318,7 @@ void Task_FadeToResultScreen(void)
     struct TransitionState *transition = &stage->transition;
     struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
 
-    if (RunTransition(transition) == 0) {
+    if (NextTransitionFrame(transition) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[5] = 0x103F;
         return;
@@ -521,8 +521,8 @@ void sub_806C49C(void)
     if (gPressedKeys & A_BUTTON || stage->animFrame > 60) {
         transition->unk0 = 0;
         transition->unk2 = 1;
-        transition->unk4 = 0;
-        transition->unk6 = 0x40;
+        transition->unk4 = Q_8_8(0);
+        transition->speed = 0x40;
         transition->unkA = 0;
         transition->unk8 = 0xBF;
 
@@ -587,7 +587,7 @@ void sub_806C638(void)
 void sub_806C6A4(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    if (RunTransition(&stage->transition) == 0) {
+    if (NextTransitionFrame(&stage->transition) == 0) {
         return;
     }
 
@@ -734,7 +734,7 @@ void Task_FadeInSpecialStage(void)
 {
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
 
-    if (RunTransition(&stage->transition) != 0) {
+    if (NextTransitionFrame(&stage->transition) != 0) {
         stage->animFrame = 0;
         stage->state = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);

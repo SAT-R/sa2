@@ -63,8 +63,8 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
 
     transition->unk0 = 0;
     transition->unk2 = 1;
-    transition->unk6 = 0x100;
-    transition->unk4 = 0;
+    transition->speed = 0x100;
+    transition->unk4 = Q_8_8(0);
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
@@ -431,7 +431,7 @@ void sub_8089AEC(void)
 void sub_8089B40(void)
 {
     struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
-    if (RunTransition(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
         WriteSaveGame();
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

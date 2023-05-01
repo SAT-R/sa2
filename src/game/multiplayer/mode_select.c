@@ -111,10 +111,10 @@ void CreateMultiplayerModeSelectScreen(void)
     unk140->unk0 = 1;
     unk140->unk4 = 0;
     unk140->unk2 = 2;
-    unk140->unk6 = 0x100;
+    unk140->speed = 0x100;
     unk140->unk8 = 0x3FFF;
     unk140->unkA = 0;
-    RunTransition(unk140);
+    NextTransitionFrame(unk140);
 
     element = &modeScreen->unk80;
     element->graphics.dest = VramMalloc(0x32);
@@ -308,7 +308,7 @@ static void Task_ScreenMain(void)
         unk140->unk0 = 1;
         unk140->unk4 = 0;
         unk140->unk2 = 1;
-        unk140->unk6 = 0x100;
+        unk140->speed = 0x100;
         unk140->unk8 = 0x3FFF;
         unk140->unkA = 0;
         m4aSongNumStart(SE_SELECT);
@@ -320,7 +320,7 @@ static void Task_ScreenMain(void)
         unk140->unk0 = 1;
         unk140->unk4 = 0;
         unk140->unk2 = 1;
-        unk140->unk6 = 0x100;
+        unk140->speed = 0x100;
         unk140->unk8 = 0x3FFF;
         unk140->unkA = 0;
         m4aSongNumStart(SE_RETURN);
@@ -367,7 +367,7 @@ static void Task_ScreenMain(void)
 static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
@@ -388,7 +388,7 @@ static void Task_FadeOutToSelectedMode(void)
 static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
@@ -409,7 +409,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 static void Task_FadeInAndStartEnterAnim(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (RunTransition(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }

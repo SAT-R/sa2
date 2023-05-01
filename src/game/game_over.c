@@ -24,9 +24,9 @@ void CreateGameOverScreen(u8 type)
 
     struct TransitionState *transition = &screen->unk0;
     transition->unk0 = 1;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unk2 = 1;
-    transition->unk6 = 0x40;
+    transition->speed = 0x40;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
@@ -51,7 +51,7 @@ void sub_80366F0(void)
         return;
     }
 
-    if (RunTransition(&transition->unk0) != 0) {
+    if (NextTransitionFrame(&transition->unk0) != 0) {
         gBldRegs.bldY = 0x10;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -149,9 +149,9 @@ void sub_8036780(u8 unkC)
 
     transition = &screen->unk0;
     transition->unk0 = 1;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unk2 = 2;
-    transition->unk6 = 0x200;
+    transition->speed = 0x200;
     transition->unk8 = 0x3FD0;
     transition->unkA = 0;
 }
@@ -171,7 +171,7 @@ void sub_8036918(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 1;
-        screen->unk0.unk6 = 0x400;
+        screen->unk0.speed = 0x400;
         screen->unk0.unk8 = 0x3F90;
         screen->unk0.unkA = 0;
     }
@@ -180,7 +180,7 @@ void sub_8036918(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 2;
-        screen->unk0.unk6 = 0x400;
+        screen->unk0.speed = 0x400;
         screen->unk0.unk8 = 0x3F90;
         screen->unk0.unkA = 0;
     }
@@ -194,7 +194,7 @@ void sub_8036918(void)
         sprite2->x = 120;
     }
 
-    RunTransition(&screen->unk0);
+    NextTransitionFrame(&screen->unk0);
 
     screen->unk6C--;
 
@@ -202,7 +202,7 @@ void sub_8036918(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 1;
-        screen->unk0.unk6 = 0x40;
+        screen->unk0.speed = 0x40;
         screen->unk0.unk8 = 0x3FAF;
         screen->unk0.unkA = 0;
 
@@ -218,13 +218,13 @@ void sub_8036B30(void);
 void sub_80369D8(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
-    RunTransition(&screen->unk0);
+    NextTransitionFrame(&screen->unk0);
 
     if (--screen->unk6C == 0) {
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 1;
-        screen->unk0.unk6 = 0x100;
+        screen->unk0.speed = 0x100;
         screen->unk0.unk8 = 0x3FBF;
         screen->unk0.unkA = 0;
         memset(gBgPalette, 0xFF, 0x200);
@@ -249,7 +249,7 @@ void sub_8036A44(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 1;
-        screen->unk0.unk6 = 0x400;
+        screen->unk0.speed = 0x400;
         screen->unk0.unk8 = 0x3F90;
         screen->unk0.unkA = 0;
     }
@@ -258,7 +258,7 @@ void sub_8036A44(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 2;
-        screen->unk0.unk6 = 0x200;
+        screen->unk0.speed = 0x200;
         screen->unk0.unk8 = 0x3F90;
         screen->unk0.unkA = 0;
     }
@@ -267,12 +267,12 @@ void sub_8036A44(void)
         screen->unk0.unk0 = 1;
         screen->unk0.unk4 = 0;
         screen->unk0.unk2 = 1;
-        screen->unk0.unk6 = 0x200;
+        screen->unk0.speed = 0x200;
         screen->unk0.unk8 = 0x3FD0;
         screen->unk0.unkA = 0;
     }
 
-    RunTransition(&screen->unk0);
+    NextTransitionFrame(&screen->unk0);
 
     if (--screen->unk6C == 0) {
         TasksDestroyAll();
@@ -298,9 +298,9 @@ void sub_8036B30(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
 
-    if (RunTransition(&screen->unk0) != 0) {
+    if (NextTransitionFrame(&screen->unk0) != 0) {
         screen->unk6C = 140;
-        RunTransition(&screen->unk0);
+        NextTransitionFrame(&screen->unk0);
         gCurTask->main = sub_8036B70;
     }
 

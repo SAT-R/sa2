@@ -128,10 +128,10 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
     transition = &scene->transition;
     transition->unk0 = 1;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unk2 = 2;
     transition->unkA = 0;
-    transition->unk6 = 0x100;
+    transition->speed = 0x100;
     transition->unk8 = 0x3FFF;
 
     scene->unk16C = OBJ_VRAM0;
@@ -283,8 +283,8 @@ static void Task_FadeOut(void)
 
     RenderExtraEndingElements(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -558,8 +558,8 @@ static void Task_FadeIn(void)
 
     RenderExtraEndingElements(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = Task_SequenceMain;
     }
 }

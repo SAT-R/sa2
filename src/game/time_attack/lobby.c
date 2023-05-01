@@ -226,14 +226,14 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
 
     transition = &lobbyScreen->unk1A0;
     transition->unk0 = 1;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unk2 = 2;
-    transition->unk6 = 0x200;
+    transition->speed = 0x200;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
-    RunTransition(transition);
+    NextTransitionFrame(transition);
 }
 
 void sub_8088EB4(void);
@@ -263,7 +263,7 @@ void sub_8088CC4(void)
         sub_80051E8(element);
     }
 
-    if (RunTransition(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
         gCurTask->main = sub_8088EB4;
     }
 }
@@ -273,7 +273,7 @@ void sub_8088D60(void)
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
     Sprite *element;
     u32 i;
-    if (RunTransition(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
         switch (lobbyScreen->unk1AD) {
             case 0:

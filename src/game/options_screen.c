@@ -1396,11 +1396,11 @@ static void OptionsScreenInitRegisters(struct OptionsScreen *optionsScreen, s16 
         unk774->unk0 = 0;
         unk774->unk2 = 2;
         unk774->unk4 = 0;
-        unk774->unk6 = 0x100;
+        unk774->speed = 0x100;
         unk774->unkA = 0;
         unk774->unk8 = 0xFF;
 
-        RunTransition(unk774);
+        NextTransitionFrame(unk774);
     }
 }
 
@@ -1764,7 +1764,7 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void)
     unk774->unk0 = 0;
     unk774->unk2 = 2;
     unk774->unk4 = 0;
-    unk774->unk6 = 0x100;
+    unk774->speed = 0x100;
     unk774->unkA = 0;
     unk774->unk8 = 0xFF;
 
@@ -1790,7 +1790,7 @@ static void Task_OptionsScreenWaitForSoundTestExit(void)
     unk774->unk0 = 0;
     unk774->unk2 = 2;
     unk774->unk4 = 0;
-    unk774->unk6 = 0x100;
+    unk774->speed = 0x100;
     unk774->unkA = 0;
     unk774->unk8 = 0xFF;
 
@@ -1824,7 +1824,7 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void)
     unk774->unk0 = 0;
     unk774->unk2 = 2;
     unk774->unk4 = 0;
-    unk774->unk6 = 0x100;
+    unk774->speed = 0x100;
     unk774->unkA = 0;
     unk774->unk8 = 0xFF;
 
@@ -2064,7 +2064,7 @@ OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMenu *playerDataMenu,
     unk150->unk0 = 0;
     unk150->unk2 = 2;
     unk150->unk4 = 0;
-    unk150->unk6 = 0x100;
+    unk150->speed = 0x100;
     unk150->unkA = 0;
     unk150->unk8 = 0xFF;
 
@@ -2089,7 +2089,7 @@ static void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
     PlayerDataMenuRenderUI();
 
     // fade out until complete
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         if (playerDataMenu->optionsScreen->bossTimeAttackUnlocked) {
             // give player the choice
             CreateTimeRecordsScreen(playerDataMenu);
@@ -2967,11 +2967,11 @@ static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
     unk1F0->unk0 = 0;
     unk1F0->unk2 = 2;
     unk1F0->unk4 = 0;
-    unk1F0->unk6 = 0x100;
+    unk1F0->speed = 0x100;
     unk1F0->unkA = 0;
     unk1F0->unk8 = 0xFF;
 
-    RunTransition(&languageScreen->unk1F0);
+    NextTransitionFrame(&languageScreen->unk1F0);
 }
 
 static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
@@ -3145,11 +3145,11 @@ static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
     unk130->unk0 = 0;
     unk130->unk2 = 2;
     unk130->unk4 = 0;
-    unk130->unk6 = 0x100;
+    unk130->speed = 0x100;
     unk130->unkA = 0;
     unk130->unk8 = 0xFF;
 
-    RunTransition(&deleteScreen->unk130);
+    NextTransitionFrame(&deleteScreen->unk130);
 }
 
 static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
@@ -3296,7 +3296,7 @@ static void Task_DeleteScreenFadeOutAndExit(void)
 {
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
 
-    if (!RunTransition(&deleteScreen->unk130)) {
+    if (!NextTransitionFrame(&deleteScreen->unk130)) {
         DeleteScreenRenderUI();
         return;
     }
@@ -3388,7 +3388,7 @@ ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen *profileNameScreen
     unk140->unk0 = 0;
     unk140->unk2 = 2;
     unk140->unk4 = 0;
-    unk140->unk6 = 0x100;
+    unk140->speed = 0x100;
     unk140->unkA = 0;
     unk140->unk8 = 0xFF;
 
@@ -3808,7 +3808,7 @@ static void ProfileNameScreenInputComplete(void)
     unk140->unk0 = 0;
     unk140->unk2 = 1;
     unk140->unk4 = 0;
-    unk140->unk6 = 0x100;
+    unk140->speed = 0x100;
     unk140->unkA = 0;
     unk140->unk8 = 0xFF;
 
@@ -3823,7 +3823,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     s16 onCompleteAction = profileNameScreen->onCompleteAction;
     s16 i;
 
-    if (!RunTransition(unk140)) {
+    if (!NextTransitionFrame(unk140)) {
         ProfileNameScreenRenderUI();
         return;
     }
@@ -4012,7 +4012,7 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
     unk270->unk0 = 0;
     unk270->unk2 = 2;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
     sub_806B854(&timeRecordsScreen->coursesViewCharacterBackground, 0, 7, 0x89, 0x1e,
@@ -4202,7 +4202,7 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
     unk270->unk0 = 0;
     unk270->unk2 = 2;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -4803,7 +4803,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
     u8 availableCharacters;
     bool8 allCharactersUnlocked;
 
-    if (!RunTransition(unk0)) {
+    if (!NextTransitionFrame(unk0)) {
         TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
@@ -4993,7 +4993,7 @@ static void MultiplayerRecordsScreenCreateBackgroundsUI(
     unk0->unk0 = 0;
     unk0->unk2 = 2;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -5504,7 +5504,7 @@ static void Task_OptionScreenFadeIn(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5560,7 +5560,7 @@ static void OptionsScreenShowLanguageScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5573,7 +5573,7 @@ static void Task_OptionsScreenFadeOutToLanguageScreen(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         CreateEditLanguageScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForLanguageScreenExit;
@@ -5586,7 +5586,7 @@ static void Task_OptionsScreenFadeInFromLanguageScreen(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5600,7 +5600,7 @@ static void OptionsScreenShowSoundTestScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5613,7 +5613,7 @@ static void Task_OptionScreenFadeOutToSoundTest(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         CreateSoundTestScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForSoundTestExit;
@@ -5626,7 +5626,7 @@ static void Task_OptionsScreenFadeInFromSoundTest(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5640,7 +5640,7 @@ static void OptionsScreenShowDeleteScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5653,7 +5653,7 @@ static void Task_OptionsScreenFadeOutToDeleteScreen(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         CreateDeleteScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForDeleteScreenExit;
@@ -5666,7 +5666,7 @@ static void Task_OptionsScreenFadeInFromDeleteScreen(void)
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (RunTransition(unk774)) {
+    if (NextTransitionFrame(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5680,7 +5680,7 @@ static void PlayerDataMenuShowProfileNameScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5693,7 +5693,7 @@ static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void)
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         CreateEditProfileNameScreen(playerDataMenu);
         playerDataMenu->state = PLAYER_DATA_MENU_STATE_SCREEN_OPEN;
         playerDataMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN;
@@ -5707,7 +5707,7 @@ static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void)
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5721,7 +5721,7 @@ static void PlayerDataMenuShowTimeRecordsScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5734,7 +5734,7 @@ static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void)
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5748,7 +5748,7 @@ static void PlayerDataMenuShowMultiplayerRecordsScreen(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5761,7 +5761,7 @@ static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void)
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         CreateMultiplayerRecordsScreen(playerDataMenu);
         playerDataMenu->state = PLAYER_DATA_MENU_STATE_SCREEN_OPEN;
         playerDataMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN;
@@ -5775,7 +5775,7 @@ static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void)
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (RunTransition(unk150)) {
+    if (NextTransitionFrame(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5787,7 +5787,7 @@ static void OptionsScreenHandleExit(void)
     unk270->unk0 = 0;
     unk270->unk2 = 1;
     unk270->unk4 = 0;
-    unk270->unk6 = 0x100;
+    unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
@@ -5798,7 +5798,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
 {
     struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
-    if (!RunTransition(unk270)) {
+    if (!NextTransitionFrame(unk270)) {
         OptionsScreenRenderUI();
         return;
     }
@@ -5980,7 +5980,7 @@ static void Task_LanguageScreenFadeIn(void)
     LanguageScreenRenderUI();
     ReseedRng();
 
-    if (RunTransition(unk1F0)) {
+    if (NextTransitionFrame(unk1F0)) {
         gCurTask->main = Task_LanguageScreenMain;
     }
 }
@@ -5992,11 +5992,11 @@ static void LanguageScreenHandleExit(void)
     unk1F0->unk0 = 0;
     unk1F0->unk2 = 1;
     unk1F0->unk4 = 0;
-    unk1F0->unk6 = 0x100;
+    unk1F0->speed = 0x100;
     unk1F0->unkA = 0;
     unk1F0->unk8 = 0xFF;
 
-    RunTransition(unk1F0);
+    NextTransitionFrame(unk1F0);
     gCurTask->main = Task_LanguageScreenFadeOutAndExit;
 }
 
@@ -6006,7 +6006,7 @@ static void Task_LanguageScreenFadeOutAndExit(void)
     struct TransitionState *unk1F0 = &languageScreen->unk1F0;
     ReseedRng();
 
-    if (!RunTransition(unk1F0)) {
+    if (!NextTransitionFrame(unk1F0)) {
         LanguageScreenRenderUI();
         return;
     }
@@ -6054,7 +6054,7 @@ static void Task_DeleteScreenFadeIn(void)
     struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *unk130 = &deleteScreen->unk130;
     DeleteScreenRenderUI();
-    if (RunTransition(unk130)) {
+    if (NextTransitionFrame(unk130)) {
         gCurTask->main = Task_DeleteScreenConfrimationMain;
     }
 }
@@ -6069,11 +6069,11 @@ static void Task_DeleteScreenHandleExit(void)
     unk130->unk0 = 0;
     unk130->unk2 = 1;
     unk130->unk4 = 0;
-    unk130->unk6 = 0x100;
+    unk130->speed = 0x100;
     unk130->unkA = 0;
     unk130->unk8 = 0xFF;
 
-    RunTransition(unk130);
+    NextTransitionFrame(unk130);
     gCurTask->main = Task_DeleteScreenFadeOutAndExit;
 }
 
@@ -6105,7 +6105,7 @@ static void Task_ProfileNameScreenFadeIn(void)
 
     ProfileNameScreenRenderUI();
 
-    if (RunTransition(unk140)) {
+    if (NextTransitionFrame(unk140)) {
         profileNameScreen->matrixCursorIndex = 0;
         gCurTask->main = Task_ProfileNameScreenMain;
     }
@@ -6133,7 +6133,7 @@ static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 
     TimeRecordsScreenRenderModeChoiceUI();
 
-    if (RunTransition(unk0)) {
+    if (NextTransitionFrame(unk0)) {
         gCurTask->main = Task_TimeRecordsScreenModeChoiceMain;
     }
 }
@@ -6146,7 +6146,7 @@ static void TimeRecordsScreenHandleExit(void)
     unk0->unk0 = 0;
     unk0->unk2 = 1;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -6159,7 +6159,7 @@ static void Task_TimeRecordsScreenFadeOutAndExit(void)
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
-    if (!RunTransition(unk0)) {
+    if (!NextTransitionFrame(unk0)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6176,7 +6176,7 @@ static void TimeRecordsScreenShowCoursesView(void)
     unk0->unk0 = 0;
     unk0->unk2 = 1;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -6188,7 +6188,7 @@ static void TimeRecordsScreenFadeOutToCoursesView(void)
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
-    if (!RunTransition(unk0)) {
+    if (!NextTransitionFrame(unk0)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6244,7 +6244,7 @@ static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
     TimeRecordsScreenRenderCoursesViewUI(0);
 
-    if (RunTransition(unk0)) {
+    if (NextTransitionFrame(unk0)) {
         timeRecordsScreen->animFrame = 0;
         gCurTask->main = Task_TimeRecordsScreenCoursesViewMain;
     }
@@ -6277,7 +6277,7 @@ static void Task_TimeRecordsScreenHandleCourseSelected(void)
     unk0->unk0 = 0;
     unk0->unk2 = 1;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -6289,7 +6289,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
     struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
-    if (!RunTransition(unk0)) {
+    if (!NextTransitionFrame(unk0)) {
         TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
@@ -6311,7 +6311,7 @@ static void TimeRecordsScreenHandleReturn(void)
     unk0->unk0 = 0;
     unk0->unk2 = 1;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -6338,7 +6338,7 @@ static void Task_MultiplayerRecordsScreenFadeIn(void)
     struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
     MultiplayerRecordsScreenRenderUI();
 
-    if (RunTransition(unk0)) {
+    if (NextTransitionFrame(unk0)) {
         gCurTask->main = Task_MultiplayerRecordsScreenMain;
     }
 }
@@ -6352,7 +6352,7 @@ static void Task_MultiplayerRecordsScreenHandleExit(void)
     unk0->unk0 = 0;
     unk0->unk2 = 1;
     unk0->unk4 = 0;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
@@ -6366,7 +6366,7 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
     struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
     struct PlayerDataMenu *playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 
-    if (!RunTransition(unk0)) {
+    if (!NextTransitionFrame(unk0)) {
         MultiplayerRecordsScreenRenderUI();
         return;
     }

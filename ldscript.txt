@@ -72,7 +72,6 @@ SECTIONS
         build/sa2/src/game/stage_ui.o(.text);
         build/sa2/asm/stage_debug_ui.o(.text);
         build/sa2/src/game/screen_transition.o(.text);
-        build/sa2/asm/screen_transition.o(.text);
         build/sa2/src/game/trapped_animals.o(.text);
         build/sa2/asm/trapped_animals.o(.text);
         build/sa2/src/game/stage_intro.o(.text);

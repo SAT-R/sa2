@@ -91,8 +91,8 @@ void CreateMissingChaosEmaraldsCutScene(void)
     }
     transition = &scene->unkB0;
     transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x80;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x80;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
@@ -227,8 +227,8 @@ void sub_809449C(void)
 
     sub_80945A4(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         scene->unkBE = 1;
         gCurTask->main = sub_8094530;
     }
@@ -244,8 +244,8 @@ void sub_80944EC(void)
 
     sub_80945A4(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
 
         gCurTask->main = sub_8094570;
     }

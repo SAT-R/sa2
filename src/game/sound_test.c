@@ -311,7 +311,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     unk4->unk0 = 0;
     unk4->unk2 = 2;
     unk4->unk4 = 0;
-    unk4->unk6 = 0x100;
+    unk4->speed = 0x100;
     unk4->unkA = 0;
     unk4->unk8 = 0xff;
 
@@ -552,7 +552,7 @@ static void Task_SoundTestScreenMain(void)
             unk4->unk0 = 0;
             unk4->unk2 = 1;
             unk4->unk4 = 0;
-            unk4->unk6 = 0x100;
+            unk4->speed = 0x100;
             unk4->unkA = 0;
             unk4->unk8 = 0xFF;
 
@@ -755,13 +755,13 @@ static void Task_SoundTestScreenInOutTransition(void)
         sub_8004558(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
-            RunTransition(&soundTestScreen->unk4);
+            NextTransitionFrame(&soundTestScreen->unk4);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
             sub_8004558(idleCream);
         }
-        RunTransition(&soundTestScreen->unk4);
+        NextTransitionFrame(&soundTestScreen->unk4);
     }
 
     if (soundTestScreen->animFrame > 60) {

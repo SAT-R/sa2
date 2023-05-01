@@ -221,8 +221,8 @@ void CreateCourseResultsCutScene(u8 mode)
     transition = &scene->unk64;
     transition->unk0 = 0;
     transition->unk2 = 0xFF00;
-    transition->unk4 = 0x100;
-    transition->unk6 = 0;
+    transition->unk4 = Q_8_8(1);
+    transition->speed = 0;
     transition->unk8 = 0;
 }
 
@@ -244,14 +244,14 @@ static void sub_808DD9C(void)
         scene->unk76 = (scene->unk76 * 0x43) >> 6;
     }
 
-    if (scene->unk70 < (player->x - (gCamera.x * 0x100) - 0x1400)) {
-        scene->unk70 = (player->x - (gCamera.x * 0x100) - 0x1400);
+    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - 0x1400)) {
+        scene->unk70 = (player->x - Q_24_8(gCamera.x) - 0x1400);
     }
 
     if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0xA00)) {
         // Required for match
         scene->unk72 = scene->unk72 = player->y - (gCamera.y * 0x100) - 0xA00;
-        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1400;
+        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1400;
 
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
@@ -278,7 +278,7 @@ static void sub_808DD9C(void)
     element->x = scene->unk70 >> 8;
     element->y = scene->unk72 >> 8;
 
-    transition->unk6 = scene->unk70 >> 8;
+    transition->speed = scene->unk70 >> 8;
     transition->unk8 = scene->unk72 >> 8;
 
     sub_8004558(element);
@@ -313,13 +313,13 @@ static void sub_808DF88(void)
         scene->unk76 = (scene->unk76 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 < (player->x - (gCamera.x * 0x100) - 0x1C00)) {
-        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1C00;
+    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - 0x1C00)) {
+        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1C00;
     }
 
     if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0x1400)) {
         scene->unk72 = player->y - (gCamera.y * 0x100) - 0x1400;
-        scene->unk70 = player->x - (gCamera.x * 0x100) - 0x1C00;
+        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1C00;
 
         if (scene->unk7A == 0) {
             VramFree(scene->unk4.graphics.dest);
@@ -443,13 +443,13 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
 
     transition = &scene->unk100;
     transition->unk0 = 1;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unk2 = 2;
-    transition->unk6 = 0x200;
+    transition->speed = 0x200;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
-    RunTransition(transition);
+    NextTransitionFrame(transition);
 }
 
 void sub_808E35C(struct CharacterUnlockCutScene *scene)
@@ -515,7 +515,7 @@ void sub_808E424(void)
     }
 
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
-    if (RunTransition(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         scene->unk110 = 0;
         gCurTask->main = sub_808E4C8;
     }
@@ -587,7 +587,7 @@ void sub_808E63C(void)
         transition = &scene->unk100;
         transition->unk0 = 1;
         transition->unk8 = 0x3FFF;
-        transition->unk4 = 0;
+        transition->unk4 = Q_8_8(0);
         transition->unk2 = 1;
         transition->unkA = 0;
 
@@ -600,7 +600,7 @@ void sub_808E6B0(void)
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
 
-    if (RunTransition(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         if (gCurrentLevel >= gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
             CreateCourseSelectionScreen(
                 gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);

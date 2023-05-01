@@ -281,10 +281,10 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     screenFade->unk0 = 0;
     screenFade->unk4 = 0;
     screenFade->unk2 = 2;
-    screenFade->unk6 = 0x180;
+    screenFade->speed = 0x180;
     screenFade->unk8 = 0xFF;
     screenFade->unkA = 0;
-    RunTransition(screenFade);
+    NextTransitionFrame(screenFade);
 
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -551,7 +551,7 @@ static void Task_FadeInAndStartRollInAnim(void)
         gCurTask->main = Task_RollInAnim;
     }
 
-    RunTransition(&characterScreen->screenFade);
+    NextTransitionFrame(&characterScreen->screenFade);
     sub_80051E8(&characterScreen->scrollUpArrow);
     sub_80051E8(&characterScreen->scrollDownArrow);
 
@@ -636,7 +636,7 @@ static void Task_CharacterSelectMain(void)
         unk0->unk0 = 0;
         unk0->unk4 = 0;
         unk0->unk2 = 1;
-        unk0->unk6 = 0x180;
+        unk0->speed = 0x180;
         unk0->unk8 = 0xFF;
         unk0->unkA = 0;
         gCurTask->main = Task_FadeOutAndExitToPrevious;
@@ -670,7 +670,7 @@ static void Task_CharacterSelectMain(void)
         unk0->unk0 = 0;
         unk0->unk4 = 0;
         unk0->unk2 = 1;
-        unk0->unk6 = 0x180;
+        unk0->speed = 0x180;
         unk0->unk8 = 0xFF;
         unk0->unkA = 0;
 
@@ -770,7 +770,7 @@ static void Task_CharacterSelectMain(void)
                 unk0->unk0 = 0;
                 unk0->unk4 = 0;
                 unk0->unk2 = 1;
-                unk0->unk6 = 0x180;
+                unk0->speed = 0x180;
                 unk0->unk8 = 0xFF;
                 unk0->unkA = 0;
                 m4aSongNumStart(
@@ -1042,7 +1042,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
     if ((characterScreen->animFrame
          >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
-        && RunTransition(unk0) == SCREEN_TRANSITION_COMPLETE) {
+        && NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (!IS_SINGLE_PLAYER) {
@@ -1088,7 +1088,7 @@ static void Task_FadeOutAndExitToPrevious(void)
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *unk0 = &characterScreen->screenFade;
 
-    if (RunTransition(unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

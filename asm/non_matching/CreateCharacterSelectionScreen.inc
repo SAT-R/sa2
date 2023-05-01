@@ -227,7 +227,7 @@ _08031602:
 	strh r0, [r1, #8]
 	strh r4, [r1, #0xa]
 	mov r0, sl
-	bl RunTransition
+	bl NextTransitionFrame
 	mov r1, sl
 	adds r1, #0x8c
 	ldr r0, _080319C8 @ =0x0600C000

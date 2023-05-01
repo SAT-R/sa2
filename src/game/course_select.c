@@ -342,10 +342,10 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     fadeTransition->unk0 = 0;
     fadeTransition->unk4 = 0;
     fadeTransition->unk2 = 2;
-    fadeTransition->unk6 = 0x180;
+    fadeTransition->speed = 0x180;
     fadeTransition->unk8 = 0xFF;
     fadeTransition->unkA = 0;
-    RunTransition(fadeTransition);
+    NextTransitionFrame(fadeTransition);
 
     background = &coursesScreen->header;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -549,7 +549,7 @@ static void Task_FadeInIntro(void)
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
     // Wait for fade
-    if (RunTransition(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
@@ -584,7 +584,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 
     ScrollInZoneName(zoneName, 16);
 
-    if (RunTransition(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= ((sZoneMapCourseXPositions[coursesScreen->unlockedCourse]
@@ -694,7 +694,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
-            fadeTransition->unk6 = 0x180;
+            fadeTransition->speed = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
@@ -726,7 +726,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
-            fadeTransition->unk6 = 0x180;
+            fadeTransition->speed = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
@@ -735,7 +735,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
-            fadeTransition->unk6 = 0x180;
+            fadeTransition->speed = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_RETURN);
@@ -745,7 +745,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
-            fadeTransition->unk6 = 0x180;
+            fadeTransition->speed = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             m4aSongNumStart(SE_SELECT);
@@ -773,7 +773,7 @@ static void Task_CourseSelectMain(void)
             fadeTransition->unk0 = 0;
             fadeTransition->unk4 = 0;
             fadeTransition->unk2 = 1;
-            fadeTransition->unk6 = 0x180;
+            fadeTransition->speed = 0x180;
             fadeTransition->unk8 = 0xFF;
             fadeTransition->unkA = 0;
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
@@ -934,7 +934,7 @@ static void Task_UnlockCutSceneNextCoursePause(void)
         fadeTransition->unk0 = 0;
         fadeTransition->unk4 = 0;
         fadeTransition->unk2 = 1;
-        fadeTransition->unk6 = 0x180;
+        fadeTransition->speed = 0x180;
         fadeTransition->unk8 = 0xFF;
         fadeTransition->unkA = 0;
         gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
@@ -1087,7 +1087,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (RunTransition(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
 
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
@@ -1109,7 +1109,7 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (RunTransition(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
         GameStageStart();
@@ -1124,7 +1124,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
 {
     struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
 
-    if (RunTransition(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter,
                                        gLoadedSaveGame->unlockedCharacters & 0x10);

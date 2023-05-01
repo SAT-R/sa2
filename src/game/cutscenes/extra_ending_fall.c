@@ -222,8 +222,8 @@ void CreateExtraEndingFallCutScene(void)
 
     transition = &scene->unk370;
     transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x80;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x80;
     transition->unk8 = 0x3FBF;
     transition->unkA = 0;
 
@@ -485,8 +485,8 @@ void sub_8090480(void)
     sub_8091044(scene);
     sub_8090F6C(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_80913DC;
     }
 }
@@ -520,8 +520,8 @@ void sub_8090520(void)
 
     sub_8091044(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8091468;
     }
 }

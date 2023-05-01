@@ -195,8 +195,8 @@ void CreateFinalEndingFallCutScene(void)
     transition = &scene->unk350;
     transition->unk2 = 2;
     transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x50;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x50;
     transition->unk8 = 0x3FBF;
     transition->unkA = 0;
 
@@ -474,7 +474,7 @@ void sub_8091E60(void)
     struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition = &scene->unk350;
 
-    transition->unk6 = 0x50;
+    transition->speed = 0x50;
     transition->unk2 = 1;
 
     sub_8091F68(scene);
@@ -775,8 +775,8 @@ void sub_8092690(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
         } else {
@@ -799,8 +799,8 @@ void sub_8092714(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8091CB0;
     }
 }

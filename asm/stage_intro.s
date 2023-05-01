@@ -2601,7 +2601,7 @@ Task_802ED98: @ 0x0802ED98
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
-	bl RunTransition
+	bl NextTransitionFrame
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
@@ -2707,7 +2707,7 @@ Task_802EE78: @ 0x0802EE78
 	lsls r0, r0, #0x12
 	adds r4, r1, r0
 	adds r0, r4, #0
-	bl RunTransition
+	bl NextTransitionFrame
 	ldrb r0, [r4, #0x10]
 	adds r0, #1
 	movs r1, #0
@@ -2958,7 +2958,7 @@ Task_802F06C: @ 0x0802F06C
 	lsls r0, r0, #0x12
 	adds r4, r1, r0
 	adds r0, r4, #0
-	bl RunTransition
+	bl NextTransitionFrame
 	ldrb r0, [r4, #0x10]
 	adds r0, #1
 	strb r0, [r4, #0x10]
@@ -3057,7 +3057,7 @@ SetupStageLoadingScreen: @ 0x0802F0A8
 	ldr r1, _0802F224 @ =0x00003FFF
 	strh r1, [r0, #8]
 	strh r4, [r0, #0xa]
-	bl RunTransition
+	bl NextTransitionFrame
 	ldr r0, _0802F228 @ =sub_802FD34
 	ldr r2, _0802F22C @ =0x00002220
 	mov r1, r8
@@ -4393,7 +4393,7 @@ _0802FC12:
 	ldr r1, [sp, #4]
 	strh r0, [r1, #8]
 	ldr r0, [sp, #4]
-	bl RunTransition
+	bl NextTransitionFrame
 	ldr r1, _0802FC54 @ =gWinRegs
 	ldr r0, _0802FC58 @ =0x00001F3F
 	strh r0, [r1, #8]
@@ -4415,7 +4415,7 @@ _0802FC5C:
 	ldr r3, [sp, #4]
 	strh r0, [r3, #8]
 	ldr r0, [sp, #4]
-	bl RunTransition
+	bl NextTransitionFrame
 	ldr r1, _0802FCC4 @ =gWinRegs
 	ldr r0, _0802FCC8 @ =0x00003F3F
 	strh r0, [r1, #8]

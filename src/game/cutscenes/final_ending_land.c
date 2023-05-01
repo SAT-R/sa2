@@ -215,8 +215,8 @@ void CreateFinalEndingLandingCutScene(void)
     transition = &scene->unk32C;
     transition->unk2 = 2;
     transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x100;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x100;
     transition->unk8 = 0x3FBF;
     if (gSelectedCharacter == 1) {
         {
@@ -559,8 +559,8 @@ void sub_80932C8(void)
     sub_80940BC(scene);
     sub_8093868(scene);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8093F54;
     }
 }
@@ -941,8 +941,8 @@ void sub_8093EDC(void)
     sub_80940BC(scene);
     sub_8093868(scene);
 
-    if (RunTransition(&scene->unk32C) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(&scene->unk32C) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_809334C;
     }
 }

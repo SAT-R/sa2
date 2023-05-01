@@ -96,9 +96,9 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 
     transition = &scene->unk40;
     transition->unk0 = 0;
-    transition->unk4 = 0;
+    transition->unk4 = Q_8_8(0);
     transition->unkA = 0;
-    transition->unk6 = 0x100;
+    transition->speed = 0x100;
     transition->unk8 = 0x3FFF;
 
     background = &scene->unk0;
@@ -130,8 +130,8 @@ static void sub_808EBC4(void)
         gCurTask->main = sub_808ECB4;
     }
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_808EC64;
     }
 }
@@ -142,8 +142,8 @@ static void sub_808EC28(void)
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 1;
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_808ED04;
     }
 }
@@ -171,8 +171,8 @@ static void sub_808ECB4(void)
     transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }

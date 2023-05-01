@@ -45,8 +45,8 @@ void CreateExtraEndingSlidesCutScene(void)
     transition = &scene->unk40;
     transition->unk2 = 1;
     transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk6 = 0x80;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x80;
     transition->unk8 = 0x3FFF;
     transition->unkA = 0;
 
@@ -76,8 +76,8 @@ void sub_8091590(void)
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 2;
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8091608;
     }
 }
@@ -90,8 +90,8 @@ void sub_80915CC(void)
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 1;
-    if (RunTransition(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8091638;
     }
 }
