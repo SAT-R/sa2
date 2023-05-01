@@ -75,7 +75,7 @@ void sub_807321C(void);
 void sub_80731D4(void);
 void sub_8072FD8(Sprite_HookRail *);
 void sub_8073068(Sprite_HookRail *);
-s16 sub_807319C(s32);
+s16 sub_807319C(s16);
 
 void sub_8072BB8(void)
 {
@@ -130,13 +130,11 @@ void sub_8072C90(void)
     } else if (gPlayer.rotation != 109 && gPlayer.rotation != 19) {
         sub_8073034(hookRail);
     } else {
-        s16 temp;
         sub_80731D4();
         hookRail->unk1C += gPlayer.speedAirX;
         gPlayer.x = hookRail->unk14 + hookRail->unk1C;
         gPlayer.y = hookRail->unk18 + (ABS(hookRail->unk1C) >> 1);
-        temp = gPlayer.speedGroundX + 0x15;
-        gPlayer.speedGroundX = sub_807319C(temp);
+        gPlayer.speedGroundX = sub_807319C(gPlayer.speedGroundX + 0x15);
     }
 }
 
@@ -166,7 +164,7 @@ void sub_8072D40(void)
         gPlayer.y += gPlayer.speedAirY;
         gPlayer.speedGroundX = sub_807319C(gPlayer.speedGroundX);
 
-        if (!sub_8072E84(hookRail)) {
+        if (sub_8072E84(hookRail) == 0) {
             sub_80730F0(hookRail);
         }
     }
@@ -206,3 +204,173 @@ void sub_8072DCC(Sprite_HookRail *hookRail)
     m4aSongNumStart(SE_283);
     gCurTask->main = sub_8072BB8;
 }
+
+u32 sub_8072E84(Sprite_HookRail *hookRail)
+{
+    s16 x, y, playerX, playerY;
+    if (!PLAYER_IS_ALIVE) {
+        return 0;
+    }
+
+    x = hookRail->x - gCamera.x;
+    y = hookRail->y - gCamera.y;
+    playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+    playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+    if (x + hookRail->width <= playerX
+        && (x + hookRail->width) + (hookRail->offsetX - hookRail->width) >= playerX) {
+        if (y + hookRail->height <= playerY
+            && (y + hookRail->height) + (hookRail->offsetY - hookRail->height)
+                >= playerY) {
+            s16 temp = x + ((hookRail->offsetX + hookRail->width) >> 1);
+            if (playerX < temp) {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+    }
+
+    return 0;
+}
+
+u32 sub_8073238(Sprite_HookRail *);
+void sub_8073280(Sprite_HookRail *);
+
+void sub_8072F38(void)
+{
+    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    u16 temp = sub_8072E84(hookRail);
+    if (temp != 0) {
+        if (!hookRail->unk10) {
+            if (temp == 1) {
+                sub_8072DCC(hookRail);
+            }
+        } else if (temp == 2) {
+            sub_8072DCC(hookRail);
+        }
+    }
+
+    if (sub_8073238(hookRail) != 0) {
+        sub_8073280(hookRail);
+    }
+}
+
+void sub_80730BC(Sprite_HookRail *);
+
+void sub_8072F8C(void)
+{
+    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+
+    if (sub_8072E84(hookRail) && gPlayer.unk64 == 55) {
+        sub_80730BC(hookRail);
+    }
+
+    if (sub_8073238(hookRail)) {
+        sub_8073280(hookRail);
+    }
+}
+
+void sub_8072FD4(struct Task *unused)
+{
+    // unused
+}
+
+void sub_8072FD8(Sprite_HookRail *hookRail)
+{
+    if (hookRail->unk10 == 0) {
+        gPlayer.x = Q_24_8(hookRail->x + hookRail->width);
+        hookRail->unk14 = gPlayer.x;
+        hookRail->unk18 = gPlayer.y;
+        gPlayer.rotation = 109;
+    } else {
+        gPlayer.x = Q_24_8(hookRail->x + hookRail->offsetX);
+        hookRail->unk14 = gPlayer.x;
+        hookRail->unk18 = gPlayer.y;
+        gPlayer.rotation = 19;
+    }
+    gCurTask->main = sub_8072C90;
+}
+
+void sub_8073034(UNUSED Sprite_HookRail *hookRail) { gCurTask->main = sub_8072F38; }
+
+void sub_8073320(void);
+
+void sub_8073048(UNUSED Sprite_HookRail *hookRail)
+{
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8073320;
+}
+
+void sub_8073068(UNUSED Sprite_HookRail *hookRail)
+{
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8072F38;
+}
+
+void sub_8073088(UNUSED Sprite_HookRail *hookRail)
+{
+    gPlayer.moveState &= ~MOVESTATE_400000;
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8073320;
+}
+
+void sub_80730BC(Sprite_HookRail *hookRail)
+{
+    gPlayer.y = Q_24_8(hookRail->y + 0x14);
+    if (gPlayer.rotation == 109) {
+        gPlayer.rotation = 128;
+    } else {
+        gPlayer.rotation = 0;
+    }
+
+    gCurTask->main = sub_8072D40;
+}
+
+void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
+{
+    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.unk64 = 14;
+    gPlayer.unk6D = 5;
+    if (gPlayer.rotation == 128) {
+        gPlayer.rotation = 109;
+    } else {
+        gPlayer.rotation = 19;
+    }
+
+    sub_80731D4();
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8072F8C;
+}
+
+void sub_8073148(UNUSED Sprite_HookRail *hookRail)
+{
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8072F8C;
+}
+
+void sub_8073168(UNUSED Sprite_HookRail *hookRail)
+{
+    gPlayer.moveState &= ~MOVESTATE_400000;
+    m4aSongNumStop(SE_283);
+    gCurTask->main = sub_8072F8C;
+}
+
+// s16 sub_807319C(s16 groundSpeedX)
+// {
+//     s32 temp;
+//     s16 out;
+//     if (gPlayer.unk5A == 0) {
+//         temp = 2304;
+//     } else {
+//         temp = 3840;
+//     }
+
+//     out = groundSpeedX;
+
+//     if (temp < groundSpeedX) {
+//         out = temp;
+//     }
+
+//     return out;
+// }
