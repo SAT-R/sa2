@@ -140,7 +140,6 @@ SECTIONS
         build/sa2/src/game/save.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/wind_up_stick.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/hook_rail.o(.text);
-        build/sa2/asm/interactable_hook_rail.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/turn_around_bar.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/crane.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/dash_ring.o(.text);

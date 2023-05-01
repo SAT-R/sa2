@@ -15,30 +15,49 @@
 typedef struct {
     s32 x;
     s32 y;
-    s16 width; /* 0x8*/
-    s16 height; /* 0xA */
-    s16 offsetX; /* 0xC */
-    s16 offsetY; /* 0xE */
-    u8 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-    MapEntity *me; /* 0x20 */
+    s16 width;
+    s16 height;
+    s16 offsetX;
+    s16 offsetY;
+    u8 triggerType;
+    s32 joinedX;
+    s32 joinedY;
+    s32 grindDistance;
+    MapEntity *me;
     u8 spriteX;
     u8 spriteY;
 
 } Sprite_HookRail;
 
-void sub_8072F38(void);
-void sub_8072FD4(struct Task *);
-void sub_8072F8C(void);
+static void sub_8072F38(void);
+static void sub_8072FD4(struct Task *);
+static void sub_8072F8C(void);
+static void sub_8073088(Sprite_HookRail *);
+static void sub_8073048(Sprite_HookRail *);
+static void sub_807321C(void);
+static void sub_80731D4(void);
+static void sub_8072FD8(Sprite_HookRail *);
+static void sub_8073068(Sprite_HookRail *);
+static s16 sub_807319C(s16);
+static void sub_8073034(Sprite_HookRail *);
+static u32 sub_8072E84(Sprite_HookRail *);
+static void sub_80730F0(Sprite_HookRail *);
+static void sub_8073148(Sprite_HookRail *);
+static void sub_8073168(Sprite_HookRail *);
+static void sub_8073320(void);
+static void sub_80730BC(Sprite_HookRail *);
+static bool32 sub_8073238(Sprite_HookRail *);
+static void sub_8073280(Sprite_HookRail *);
+static void sub_8072BB8(void);
 
-void initSprite_Interactable_HookRail(u32 p1, MapEntity *me, u16 spriteRegionX,
+#define HOOK_HEIGHT 20
+
+void initSprite_Interactable_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
                                       u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t;
     Sprite_HookRail *hookRail;
-    switch (p1) {
+    switch (triggerType) {
         case 0:
             t = TaskCreate(sub_8072F38, 0x28, 0x2010, 0, sub_8072FD4);
             break;
@@ -54,7 +73,7 @@ void initSprite_Interactable_HookRail(u32 p1, MapEntity *me, u16 spriteRegionX,
     }
 
     hookRail = TaskGetStructPtr(t);
-    hookRail->unk10 = p1;
+    hookRail->triggerType = triggerType;
     hookRail->x = TO_WORLD_POS(me->x, spriteRegionX);
     hookRail->y = TO_WORLD_POS(me->y, spriteRegionY);
 
@@ -69,15 +88,7 @@ void initSprite_Interactable_HookRail(u32 p1, MapEntity *me, u16 spriteRegionX,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_8073088(Sprite_HookRail *);
-void sub_8073048(Sprite_HookRail *);
-void sub_807321C(void);
-void sub_80731D4(void);
-void sub_8072FD8(Sprite_HookRail *);
-void sub_8073068(Sprite_HookRail *);
-s16 sub_807319C(s16);
-
-void sub_8072BB8(void)
+static void sub_8072BB8(void)
 {
     Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
 
@@ -101,7 +112,7 @@ void sub_8072BB8(void)
         x = hookRail->x - gCamera.x;
         playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
 
-        if (hookRail->unk10 == 0) {
+        if (hookRail->triggerType == 0) {
             if (playerX < x + hookRail->width) {
                 sub_8072FD8(hookRail);
             }
@@ -111,9 +122,7 @@ void sub_8072BB8(void)
     }
 }
 
-void sub_8073034(Sprite_HookRail *);
-
-void sub_8072C90(void)
+static void sub_8072C90(void)
 {
     Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
 
@@ -131,19 +140,14 @@ void sub_8072C90(void)
         sub_8073034(hookRail);
     } else {
         sub_80731D4();
-        hookRail->unk1C += gPlayer.speedAirX;
-        gPlayer.x = hookRail->unk14 + hookRail->unk1C;
-        gPlayer.y = hookRail->unk18 + (ABS(hookRail->unk1C) >> 1);
+        hookRail->grindDistance += gPlayer.speedAirX;
+        gPlayer.x = hookRail->joinedX + hookRail->grindDistance;
+        gPlayer.y = hookRail->joinedY + (ABS(hookRail->grindDistance) >> 1);
         gPlayer.speedGroundX = sub_807319C(gPlayer.speedGroundX + 0x15);
     }
 }
 
-u32 sub_8072E84(Sprite_HookRail *);
-void sub_80730F0(Sprite_HookRail *);
-void sub_8073148(Sprite_HookRail *);
-void sub_8073168(Sprite_HookRail *);
-
-void sub_8072D40(void)
+static void sub_8072D40(void)
 {
     Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
 
@@ -158,7 +162,6 @@ void sub_8072D40(void)
         sub_807321C();
         sub_8073148(hookRail);
     } else {
-        s16 x, playerX;
         sub_80731D4();
         gPlayer.x += gPlayer.speedAirX;
         gPlayer.y += gPlayer.speedAirY;
@@ -170,9 +173,7 @@ void sub_8072D40(void)
     }
 }
 
-void sub_8072BB8(void);
-
-void sub_8072DCC(Sprite_HookRail *hookRail)
+static void sub_8072DCC(Sprite_HookRail *hookRail)
 {
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.unk64 = 0x37;
@@ -181,9 +182,9 @@ void sub_8072DCC(Sprite_HookRail *hookRail)
     gPlayer.unk16 = 6;
     gPlayer.unk17 = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
-    gPlayer.y = Q_24_8(hookRail->y + 0x14);
-    hookRail->unk1C = 0;
-    if (hookRail->unk10 == 0) {
+    gPlayer.y = Q_24_8(hookRail->y + HOOK_HEIGHT);
+    hookRail->grindDistance = 0;
+    if (hookRail->triggerType == 0) {
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
         gPlayer.speedGroundX = gPlayer.speedAirX;
 
@@ -205,7 +206,7 @@ void sub_8072DCC(Sprite_HookRail *hookRail)
     gCurTask->main = sub_8072BB8;
 }
 
-u32 sub_8072E84(Sprite_HookRail *hookRail)
+static u32 sub_8072E84(Sprite_HookRail *hookRail)
 {
     s16 x, y, playerX, playerY;
     if (!PLAYER_IS_ALIVE) {
@@ -234,15 +235,12 @@ u32 sub_8072E84(Sprite_HookRail *hookRail)
     return 0;
 }
 
-u32 sub_8073238(Sprite_HookRail *);
-void sub_8073280(Sprite_HookRail *);
-
-void sub_8072F38(void)
+static void sub_8072F38(void)
 {
     Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
     u16 temp = sub_8072E84(hookRail);
     if (temp != 0) {
-        if (!hookRail->unk10) {
+        if (!hookRail->triggerType) {
             if (temp == 1) {
                 sub_8072DCC(hookRail);
             }
@@ -256,9 +254,7 @@ void sub_8072F38(void)
     }
 }
 
-void sub_80730BC(Sprite_HookRail *);
-
-void sub_8072F8C(void)
+static void sub_8072F8C(void)
 {
     Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
 
@@ -271,53 +267,54 @@ void sub_8072F8C(void)
     }
 }
 
-void sub_8072FD4(struct Task *unused)
+static void sub_8072FD4(struct Task *unused)
 {
     // unused
 }
 
-void sub_8072FD8(Sprite_HookRail *hookRail)
+static void sub_8072FD8(Sprite_HookRail *hookRail)
 {
-    if (hookRail->unk10 == 0) {
+    if (hookRail->triggerType == 0) {
         gPlayer.x = Q_24_8(hookRail->x + hookRail->width);
-        hookRail->unk14 = gPlayer.x;
-        hookRail->unk18 = gPlayer.y;
+        hookRail->joinedX = gPlayer.x;
+        hookRail->joinedY = gPlayer.y;
         gPlayer.rotation = 109;
     } else {
         gPlayer.x = Q_24_8(hookRail->x + hookRail->offsetX);
-        hookRail->unk14 = gPlayer.x;
-        hookRail->unk18 = gPlayer.y;
+        hookRail->joinedX = gPlayer.x;
+        hookRail->joinedY = gPlayer.y;
         gPlayer.rotation = 19;
     }
     gCurTask->main = sub_8072C90;
 }
 
-void sub_8073034(UNUSED Sprite_HookRail *hookRail) { gCurTask->main = sub_8072F38; }
+static void sub_8073034(UNUSED Sprite_HookRail *hookRail)
+{
+    gCurTask->main = sub_8072F38;
+}
 
-void sub_8073320(void);
-
-void sub_8073048(UNUSED Sprite_HookRail *hookRail)
+static void sub_8073048(UNUSED Sprite_HookRail *hookRail)
 {
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8073320;
 }
 
-void sub_8073068(UNUSED Sprite_HookRail *hookRail)
+static void sub_8073068(UNUSED Sprite_HookRail *hookRail)
 {
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8072F38;
 }
 
-void sub_8073088(UNUSED Sprite_HookRail *hookRail)
+static void sub_8073088(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8073320;
 }
 
-void sub_80730BC(Sprite_HookRail *hookRail)
+static void sub_80730BC(Sprite_HookRail *hookRail)
 {
-    gPlayer.y = Q_24_8(hookRail->y + 0x14);
+    gPlayer.y = Q_24_8(hookRail->y + HOOK_HEIGHT);
     if (gPlayer.rotation == 109) {
         gPlayer.rotation = 128;
     } else {
@@ -327,7 +324,7 @@ void sub_80730BC(Sprite_HookRail *hookRail)
     gCurTask->main = sub_8072D40;
 }
 
-void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
+static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.unk64 = 14;
@@ -343,34 +340,102 @@ void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
     gCurTask->main = sub_8072F8C;
 }
 
-void sub_8073148(UNUSED Sprite_HookRail *hookRail)
+static void sub_8073148(UNUSED Sprite_HookRail *hookRail)
 {
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8072F8C;
 }
 
-void sub_8073168(UNUSED Sprite_HookRail *hookRail)
+static void sub_8073168(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     m4aSongNumStop(SE_283);
     gCurTask->main = sub_8072F8C;
 }
 
-// s16 sub_807319C(s16 groundSpeedX)
-// {
-//     s32 temp;
-//     s16 out;
-//     if (gPlayer.unk5A == 0) {
-//         temp = 2304;
-//     } else {
-//         temp = 3840;
-//     }
+static s16 sub_807319C(s16 groundSpeedX)
+{
+    s16 temp;
 
-//     out = groundSpeedX;
+    if (gPlayer.unk5A != 0) {
+        temp = groundSpeedX;
+        if (temp > Q_8_8(15)) {
+            temp = Q_8_8(15);
+        }
+    } else {
+        temp = groundSpeedX;
+        if (temp > Q_8_8(9)) {
+            temp = Q_8_8(9);
+        }
+    }
 
-//     if (temp < groundSpeedX) {
-//         out = temp;
-//     }
+    return temp;
+}
 
-//     return out;
-// }
+static void sub_80731D4(void)
+{
+    gPlayer.speedAirX
+        = Q_24_8_TO_INT(gPlayer.speedGroundX * COS_24_8(gPlayer.rotation * 4));
+    gPlayer.speedAirY
+        = Q_24_8_TO_INT(gPlayer.speedGroundX * SIN_24_8(gPlayer.rotation * 4));
+}
+
+static void sub_807321C(void)
+{
+    gPlayer.moveState &= ~MOVESTATE_400000;
+    gPlayer.unk6D = 3;
+}
+
+static bool32 sub_8073238(Sprite_HookRail *hookRail)
+{
+    s16 x = hookRail->x - gCamera.x;
+    s16 y = hookRail->y - gCamera.y;
+
+    if (x < -128 || x > 368 || y < -128 || y > 288) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+static void sub_8073280(Sprite_HookRail *hookRail)
+{
+    SET_MAP_ENTITY_NOT_INITIALIZED(hookRail->me, hookRail->spriteX);
+    TaskDestroy(gCurTask);
+}
+
+void initSprite_Interactable048(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
+{
+    initSprite_Interactable_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
+}
+
+void initSprite_Interactable_HookRail_Start(MapEntity *me, u16 spriteRegionX,
+                                            u16 spriteRegionY, u8 spriteY)
+{
+    initSprite_Interactable_HookRail(1, me, spriteRegionX, spriteRegionY, spriteY);
+}
+
+void initSprite_Interactable_HookRail_End(MapEntity *me, u16 spriteRegionX,
+                                          u16 spriteRegionY, u8 spriteY)
+{
+    initSprite_Interactable_HookRail(2, me, spriteRegionX, spriteRegionY, spriteY);
+}
+
+static void sub_8073320(void)
+{
+    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+
+    if (!PLAYER_IS_ALIVE) {
+        sub_8073068(hookRail);
+        return;
+    }
+
+    if (sub_8072E84(hookRail) == 0) {
+        sub_8073068(hookRail);
+    }
+
+    if (sub_8073238(hookRail) != 0) {
+        sub_8073280(hookRail);
+    }
+}
