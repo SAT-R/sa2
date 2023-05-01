@@ -98,8 +98,6 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
 
         ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
     } else {
-        // _0807CAA4
-
         ia086->unk186 = MIN(ia086->unk186, +Q_24_8(6.0));
         ia086->unk186 += MIN((-ia086->unk186 >> 4), -Q_24_8(0.25));
     }
@@ -116,13 +114,11 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
         if (ia086->unk188 < 0)
             ia086->unk188 = 0;
     } else if (ia086->unk188 < 0) {
-        // _0807CB24
         ia086->unk188 += ia086->unk184;
 
         if (ia086->unk188 > 0)
             ia086->unk188 = 0;
     } else {
-        // _0807CB38
         returnState++;
         sub_807CC28(ia086);
     }
