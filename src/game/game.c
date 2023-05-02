@@ -345,7 +345,7 @@ void ApplyGameStageSettings(void)
 
 void GameStageStart(void)
 {
-    gUnknown_03005444 = 0;
+    gTrappedAnimalVariant = 0;
     gUnknown_030055B0 = 0;
     gRingCount = 0;
     gUnknown_030054F8 = 1;

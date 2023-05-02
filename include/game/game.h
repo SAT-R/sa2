@@ -121,7 +121,7 @@ extern u16 gUnknown_0300544C;
 
 extern u8 gUnknown_030054EC;
 
-extern s8 gUnknown_03005444;
+extern s8 gTrappedAnimalVariant;
 
 extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
@@ -540,6 +540,7 @@ extern s32 sub_801EE64(s32, s32, s32, u8 *);
 
 typedef s32 (*Func_801EE64)(s32, s32, s32, u8 *);
 
+// ground collision clamp functions
 s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
 s32 sub_801E6D4(s32, s32, s32, s32, void *, Func_801EE64);
 s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
