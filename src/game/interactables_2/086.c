@@ -203,8 +203,7 @@ void sub_807CC28(Sprite_IA86 *ia086)
     }
 }
 
-// https://decomp.me/scratch/Yxcqt
-NONMATCH("asm/non_matching/sub_807CCBC.inc", void sub_807CCBC(Sprite_IA86 *ia086))
+void sub_807CCBC(Sprite_IA86 *ia086)
 {
     bool32 bIdk = FALSE;
     u8 i;
@@ -246,15 +245,8 @@ NONMATCH("asm/non_matching/sub_807CCBC.inc", void sub_807CCBC(Sprite_IA86 *ia086
         }
         // _0807CD7E
         {
-            u16 r2 = ABS(unk086->unkC) >> 4;
-            if ((s16)r2 >= 64) {
-                if ((s16)r2 > 0x200) {
-                    r2 = 0x200;
-                }
-                r0 = r2;
-            } else {
-                r0 = 64;
-            }
+            s16 r2 = ABS(unk086->unkC) >> 4;
+            r0 = CLAMP_16(r2, 64, 0x200);
         }
 
         unk086->unkC -= r0;
@@ -279,18 +271,19 @@ NONMATCH("asm/non_matching/sub_807CCBC.inc", void sub_807CCBC(Sprite_IA86 *ia086
             {
                 s32 sinIndex;
                 s32 addend;
-                u16 temp;
                 unk086->unk10 = newR1 * COS_24_8(unk086->unk4 * 4);
 
-                temp = ((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
-                if ((s16)temp > 1) {
-                    addend = temp;
-                    if ((s16)temp > 8)
-                        addend = 8;
+                r2 = (u16)((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
+
+                if ((s16)r2 >= (2)) {
+                    r1 = r2;
+                    if ((s16)r2 > (8)) {
+                        r1 = 8;
+                    }
                 } else {
-                    addend = 2;
+                    r1 = (2);
                 }
-                unk086->unk4 += addend;
+                unk086->unk4 += r1;
             }
         } else {
             // _0807CE12
@@ -317,7 +310,6 @@ NONMATCH("asm/non_matching/sub_807CCBC.inc", void sub_807CCBC(Sprite_IA86 *ia086
         }
     }
 }
-END_NONMATCH
 
 void sub_807CE94(Sprite_IA86 *ia086)
 {
