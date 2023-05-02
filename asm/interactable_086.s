@@ -257,6 +257,7 @@ _0807C9B4: .4byte IWRAM_START + 0x248
 _0807C9B8: .4byte IWRAM_START + 0x24C
 _0807C9BC: .4byte gUnknown_080E0124
 
+.if 00
 	thumb_func_start sub_807C9C0
 sub_807C9C0: @ 0x0807C9C0
 	push {r4, lr}
@@ -340,5 +341,4 @@ _0807CA58: .4byte gPlayer
 _0807CA5C: .4byte gCurTask
 _0807CA60: .4byte Task_807D0C4
 
-.if 00
 .endif
