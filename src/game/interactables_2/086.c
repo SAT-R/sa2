@@ -74,6 +74,7 @@ void sub_807D100(Sprite_IA86 *);
 void sub_807D130(Sprite_IA86 *);
 void sub_807D188(Sprite_IA86 *);
 void sub_807D16C(Sprite_IA86 *);
+void Task_807D0C4(void);
 void Task_807D268(void);
 void sub_807D2BC(Sprite_IA86 *);
 
@@ -84,6 +85,26 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 void Task_807D06C(void);
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
+
+// https://decomp.me/scratch/Jl2c3
+void sub_807C9C0(Sprite_IA86 *ia086)
+{
+    Player *p;
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 44;
+
+    p = &gPlayer;
+    ia086->unk182 = 64;
+    ia086->unk184 = Q_24_8(0.5);
+    ia086->unk186 = p->speedAirY;
+    ia086->unk180 = 0;
+    ia086->unk188 = Q_24_8(ia086->unk228.someX) - p->x;
+    ia086->unk18C = Q_24_8(ia086->unk228.someY) - p->y;
+    ia086->unk190 = 0;
+    ia086->unk194 = 0;
+
+    gCurTask->main = Task_807D0C4;
+}
 
 bool32 sub_807CA64(Sprite_IA86 *ia086)
 {
