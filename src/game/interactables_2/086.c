@@ -86,7 +86,7 @@ void Task_807D06C(void);
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
-// https://decomp.me/scratch/Jl2c3
+#ifdef NON_MATCHING
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
     Player *p;
@@ -105,6 +105,70 @@ void sub_807C9C0(Sprite_IA86 *ia086)
 
     gCurTask->main = Task_807D0C4;
 }
+#else
+void sub_807C9C0(Sprite_IA86* ia086)
+{
+#ifndef NON_MATCHING
+    register Player *p1 asm("r2") = &gPlayer;
+    register Player *p asm("r4");
+    register s32 r0 asm("r0");
+    register s32 r3 asm("r3");
+    register s32 r1 asm("r1");
+    s16* p184;
+#else
+    Player *p1 = &gPlayer;
+    Player *p;
+#endif
+
+    p1->moveState |= MOVESTATE_400000;
+    p1->unk64 = 44;
+
+    // Must be some debug stuff happening here
+#ifndef NON_MATCHING
+    r0 = 0x8F << 2;
+    r0 = Q_24_8(*(s32*)((void*)ia086 + r0));
+    asm("" ::"r"(r0));
+    r1 = p1->x;
+    asm("" ::"r"(r1));
+    p = p1;
+    asm("" ::: "r0");
+#else
+    p = p1;
+#endif
+    
+    ia086->unk182 = 64;
+
+#ifndef NON_MATCHING
+    p184 = &ia086->unk184;
+    r3 = 0;
+    *p184 = Q_24_8(0.5);
+#else
+    ia086->unk184 = Q_24_8(0.5);
+#endif
+    
+    ia086->unk186 = p->speedAirY;
+    
+#ifndef NON_MATCHING
+    r0 = 0xC0 << 1;
+    (*(s16*)((void*)ia086 + r0)) = r3;
+#else
+    ia086->unk180 = 0;
+#endif
+
+    ia086->unk188 = p->x - Q_24_8(ia086->unk228.someX);
+    ia086->unk18C = p->y - Q_24_8(ia086->unk228.someY);
+
+#ifndef NON_MATCHING
+    ia086->unk190 = r3;
+    ia086->unk194 = r3;
+#else
+    ia086->unk190 = 0;
+    ia086->unk194 = 0;
+#endif
+
+    gCurTask->main = Task_807D0C4;
+}
+#endif
 
 bool32 sub_807CA64(Sprite_IA86 *ia086)
 {
