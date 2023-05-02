@@ -9450,7 +9450,7 @@ _0800C550:
 	bl sub_800B9B8
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_802DB14
+	bl CreateTrappedAnimal
 	movs r0, #1
 	b _0800C83A
 	.align 2, 0
@@ -9793,7 +9793,7 @@ _0800C802:
 	bl sub_800B9B8
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_802DB14
+	bl CreateTrappedAnimal
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl sub_8009530

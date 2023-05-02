@@ -38,7 +38,6 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
-extern s32 sub_801E4E4(s32, s32, u32, u32, u8 *, void *);
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
 extern void sub_801F488(void);
@@ -891,9 +890,6 @@ void PlayerCB_Spindash(Player *player)
     }
 }
 
-extern s32 sub_801E6D4(s32, s32, s32, s32, s32, s32 (*)(s32, s32, s32, s32));
-extern s32 sub_801EE64(s32, s32, s32, s32);
-
 void sub_802669C(Player *p)
 {
     s32 newY;
@@ -907,12 +903,12 @@ void sub_802669C(Player *p)
 
     if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) - p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           -8, 0, sub_801EE64);
+                           -8, NULL, sub_801EE64);
 
         newY = p->y - Q_24_8(newY);
     } else {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           8, 0, sub_801EE64);
+                           8, NULL, sub_801EE64);
 
         newY = p->y + Q_24_8(newY);
     }

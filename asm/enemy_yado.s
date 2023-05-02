@@ -535,7 +535,7 @@ _08055226:
 	bl sub_800B9B8
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_802DB14
+	bl CreateTrappedAnimal
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl sub_8009530
