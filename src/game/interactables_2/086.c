@@ -88,6 +88,7 @@ static const u16 gUnknown_080E0124[3][3] = {
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
+// https://decomp.me/scratch/vwdzi
 void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY, u32 kind)
 {
@@ -121,11 +122,12 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     {
         u8 i;
         u8 *vram;
+        Unk_IA86 *unkPtr;
         for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
             ia086->unk0[i].s = NULL;
-            vram = VramMalloc(4);
-            ia086->unk228.vramMem = vram;
         }
+        vram = VramMalloc(4);
+        ia086->unk228.vramMem = vram;
 
         for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
             Sprite *s = &ia086->sprites[i];
