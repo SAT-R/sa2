@@ -219,6 +219,7 @@
 #define SA2_ANIM_CROSS_SKY_CAN    585
 #define SA2_ANIM_PLATFORM_SKY_CAN 586
 #define SA2_ANIM_PLATFORM_587     587
+#define SA2_ANIM_588              588
 
 #define SA2_ANIM_PROPELLOR               589
 #define SA2_ANIM_SPRING_FLYING           590
