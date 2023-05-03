@@ -1,15 +1,11 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-    .global gUnknown_080E0124
-gUnknown_080E0124:
-    .incbin "baserom.gba", 0x000E0124, 0x12
-
 .text
 .syntax unified
 .arm
 
+.if 00
 	thumb_func_start initSprite_Interactable086
 initSprite_Interactable086: @ 0x0807C7B8
 	push {r4, r5, r6, r7, lr}
@@ -18,10 +14,10 @@ initSprite_Interactable086: @ 0x0807C7B8
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	adds r7, r0, #0
-	adds r4, r1, #0
-	adds r5, r2, #0
-	mov sb, r3
+	adds r7, r0, #0         @ r7 = me
+	adds r4, r1, #0         @ r4 = spriteRegionX
+	adds r5, r2, #0         @ r5 = spriteRegionY
+	mov sb, r3              @ sb = spriteY
 	ldr r6, [sp, #0x30]     @ r6 = kind
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
@@ -43,10 +39,10 @@ initSprite_Interactable086: @ 0x0807C7B8
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r2, r0
-	str r0, [sp, #4]
+	str r0, [sp, #4]    @ sp04 = &ia086
 	ldr r1, _0807C98C @ =IWRAM_START + 0x228
 	adds r1, r1, r2
-	mov ip, r1
+	mov ip, r1          @ ip = &ia086->unk228.posX
 	ldrb r0, [r7]
 	lsls r0, r0, #3
 	lsls r4, r4, #8
@@ -54,7 +50,7 @@ initSprite_Interactable086: @ 0x0807C7B8
 	str r0, [r1]
 	ldr r3, _0807C990 @ =IWRAM_START + 0x22C
 	adds r3, r3, r2
-	mov sl, r3
+	mov sl, r3          @ sl = &ia086->unk228.posY
 	ldrb r0, [r7, #1]
 	lsls r0, r0, #3
 	lsls r5, r5, #8
@@ -96,40 +92,43 @@ initSprite_Interactable086: @ 0x0807C7B8
 	movs r4, #0
 	ldrsh r1, [r5, r4]
 	str r1, [sp, #0xc]
+
 	mov r1, r8
 	movs r4, #0
 	ldrsh r0, [r1, r4]
 	ldr r4, [sp, #0xc]
 	adds r1, r4, r0
 	asrs r1, r1, #1
-	mov r4, ip
+	mov r4, ip          @ r4 = &ia086->unk228.posX
 	ldr r0, [r4]
 	adds r0, r0, r1
 	ldr r1, [sp, #8]
 	str r0, [r1]
 	ldr r4, _0807C9AC @ =IWRAM_START + 0x240
 	adds r4, r4, r2
-	mov ip, r4
+	mov ip, r4          @ ip = unk228.someY
 	movs r0, #0
 	ldrsh r1, [r3, r0]
-	mov r4, sl
+	mov r4, sl          @ r4 = &ia086->unk228.posY
 	ldr r0, [r4]
 	adds r0, r0, r1
 	mov r1, ip
 	str r0, [r1]
+
 	ldrh r0, [r3]
 	ldrh r1, [r6]
 	subs r0, r0, r1
 	ldr r3, _0807C9B0 @ =IWRAM_START + 0x244
 	adds r1, r2, r3
-	strh r0, [r1]
+	strh r0, [r1]   ..unk1C
 	ldrh r0, [r5]
 	mov r4, r8
 	ldrh r1, [r4]
 	subs r0, r0, r1
 	adds r3, #2
 	adds r1, r2, r3
-	strh r0, [r1]
+	strh r0, [r1] @ ia086->unk228.unk1E = ia086->unk228.width - ia086->unk228.offsetX;
+
 	ldrh r0, [r1]
 	lsrs r0, r0, #2
 	ldr r4, _0807C9B4 @ =IWRAM_START + 0x248
@@ -138,10 +137,12 @@ initSprite_Interactable086: @ 0x0807C7B8
 	ldr r1, _0807C9B8 @ =IWRAM_START + 0x24C
 	adds r0, r2, r1
 	str r7, [r0]
+
 	ldrb r1, [r7]
 	adds r3, #0xa
 	adds r0, r2, r3
 	strb r1, [r0]
+
 	adds r4, #9
 	adds r2, r2, r4
 	mov r0, sb
@@ -256,89 +257,4 @@ _0807C9B0: .4byte IWRAM_START + 0x244
 _0807C9B4: .4byte IWRAM_START + 0x248
 _0807C9B8: .4byte IWRAM_START + 0x24C
 _0807C9BC: .4byte gUnknown_080E0124
-
-.if 00
-	thumb_func_start sub_807C9C0
-sub_807C9C0: @ 0x0807C9C0
-	push {r4, lr}
-	mov ip, r0
-	ldr r2, _0807CA58 @ =gPlayer
-	ldr r0, [r2, #0x20]
-	movs r1, #0x80
-	lsls r1, r1, #0xf
-	orrs r0, r1
-	str r0, [r2, #0x20]
-	adds r1, r2, #0
-	adds r1, #0x64
-	movs r0, #0x2c
-	strh r0, [r1]
-	movs r0, #0x8f
-	lsls r0, r0, #2
-	add r0, ip
-	ldr r0, [r0]
-	lsls r0, r0, #8
-	ldr r1, [r2, #8]
-	adds r4, r2, #0
-	movs r1, #0xc1
-	lsls r1, r1, #1
-	add r1, ip
-	movs r0, #0x40
-	strb r0, [r1]
-	movs r1, #0xc2
-	lsls r1, r1, #1
-	add r1, ip
-	movs r3, #0
-	movs r0, #0x80
-	strh r0, [r1]
-	ldrh r0, [r4, #0x12]
-	movs r1, #0xc3
-	lsls r1, r1, #1
-	add r1, ip
-	strh r0, [r1]
-	movs r0, #0xc0
-	lsls r0, r0, #1
-	add r0, ip
-	strh r3, [r0]
-	movs r2, #0xc4
-	lsls r2, r2, #1
-	add r2, ip
-	movs r0, #0x8f
-	lsls r0, r0, #2
-	add r0, ip
-	ldr r1, [r0]
-	lsls r1, r1, #8
-	ldr r0, [r4, #8]
-	subs r0, r0, r1
-	str r0, [r2]
-	movs r2, #0xc6
-	lsls r2, r2, #1
-	add r2, ip
-	movs r0, #0x90
-	lsls r0, r0, #2
-	add r0, ip
-	ldr r1, [r0]
-	lsls r1, r1, #8
-	ldr r0, [r4, #0xc]
-	subs r0, r0, r1
-	str r0, [r2]
-	movs r0, #0xc8
-	lsls r0, r0, #1
-	add r0, ip
-	str r3, [r0]
-	movs r0, #0xca
-	lsls r0, r0, #1
-	add r0, ip
-	str r3, [r0]
-	ldr r0, _0807CA5C @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0807CA60 @ =Task_807D0C4
-	str r0, [r1, #8]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807CA58: .4byte gPlayer
-_0807CA5C: .4byte gCurTask
-_0807CA60: .4byte Task_807D0C4
-
 .endif

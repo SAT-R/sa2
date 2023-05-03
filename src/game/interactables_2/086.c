@@ -13,25 +13,24 @@
 #include "constants/songs.h"
 
 typedef struct {
-    /* 0x00 */ s32 unk0;
-    /* 0x04 */ s32 unk4;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 posY;
     /* 0x08 */ u16 kind;
     /* 0x0A */ s16 unkA;
-    /* 0x0C */ s16 unkC;
-    /* 0x0E */ s16 unkE;
-    /* 0x10 */ s16 unk10;
-    /* 0x12 */ s16 unk12;
+    /* 0x0C */ s16 offsetX;
+    /* 0x0E */ s16 offsetY;
+    /* 0x10 */ s16 width;
+    /* 0x12 */ s16 height;
     /* 0x14 */ s32 someX;
     /* 0x18 */ s32 someY;
     /* 0x1C */ u16 unk1C;
     /* 0x1E */ u16 unk1E;
     /* 0x20 */ u16 unk20;
     /* 0x22 */ u16 unk22;
-
-    // TODO: unk24 might point to a struct type?
-    /* 0x24 */ u8 *unk24;
-    /* 0x28 */ u8 unk28;
-    /* 0x29 */ u8 filler29[0x3];
+    /* 0x24 */ MapEntity *me;
+    /* 0x28 */ u8 spriteX;
+    /* 0x29 */ u8 spriteY;
+    /* 0x2A */ u8 filler2A[0x2];
     /* 0x2C */ u8 *vramMem;
 } StrcUnkIA086;
 
@@ -49,7 +48,6 @@ typedef struct {
     /* 0x00 */ Unk_IA86 unk0[16];
 
     /* 0x180 */ u16 unk180;
-
     /* 0x182 */ u8 unk182;
     /* 0x183 */ u8 unk183;
     /* 0x184 */ s16 unk184;
@@ -57,7 +55,7 @@ typedef struct {
     /* 0x188 */ s32 unk188;
     /* 0x18C */ s32 unk18C;
     /* 0x190 */ s32 unk190;
-    /* 0x190 */ s32 unk194;
+    /* 0x194 */ s32 unk194;
     /* 0x198 */ Sprite sprites[3];
     /* 0x228 */ StrcUnkIA086 unk228;
 } Sprite_IA86; /* size: 0x258 (600) */
@@ -70,21 +68,84 @@ bool32 sub_807CF2C(Sprite_IA86 *);
 bool32 sub_807CFB4(Sprite_IA86 *);
 void sub_807CCBC(Sprite_IA86 *);
 void sub_807CE94(Sprite_IA86 *);
+void Task_807D0C4(void);
 void sub_807D100(Sprite_IA86 *);
 void sub_807D130(Sprite_IA86 *);
 void sub_807D188(Sprite_IA86 *);
 void sub_807D16C(Sprite_IA86 *);
-void Task_807D0C4(void);
+void sub_807D1BC(Sprite_IA86 *ia086);
 void Task_807D268(void);
 void sub_807D2BC(Sprite_IA86 *);
 
-void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY, u32 kind);
+static void Task_807D06C(void);
+void TaskDestructor_Interactable086(struct Task *t);
 
-// static
-void Task_807D06C(void);
+static const u16 gUnknown_080E0124[3][3] = {
+    { SA2_ANIM_588, 2, 1 },
+    { SA2_ANIM_588, 1, 1 },
+    { SA2_ANIM_588, 0, 2 },
+};
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
+
+void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY, u32 kind)
+{
+    struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
+                                TaskDestructor_Interactable086);
+    Sprite_IA86 *ia086 = TaskGetStructPtr(t);
+    s32 someX, someY;
+    s32 value;
+    ia086->unk228.posX = SpriteGetScreenPos(me->x, spriteRegionX);
+    ia086->unk228.posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia086->unk228.kind = kind;
+    ia086->unk228.offsetX = me->d.sData[0] * TILE_WIDTH;
+    ia086->unk228.offsetY = me->d.sData[1] * TILE_WIDTH;
+    ia086->unk228.width = ia086->unk228.offsetX + me->d.uData[2] * TILE_WIDTH;
+    ia086->unk228.height = ia086->unk228.offsetY + me->d.uData[3] * TILE_WIDTH;
+
+    value = (ia086->unk228.offsetX + ia086->unk228.height) >> 1;
+    ia086->unk228.someX = value;
+
+    value = (ia086->unk228.offsetY + ia086->unk228.width);
+    ia086->unk228.someY = value;
+
+    ia086->unk228.unk1C = ia086->unk228.height - ia086->unk228.offsetY;
+    ia086->unk228.unk1E = ia086->unk228.width - ia086->unk228.offsetX;
+    ia086->unk228.unk20 = ia086->unk228.unk1E >> 2;
+    ia086->unk228.me = me;
+
+    ia086->unk228.spriteX = me->x;
+    ia086->unk228.spriteY = spriteY;
+
+    {
+        u8 i;
+        u8 *vram;
+        for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
+            ia086->unk0[i].s = NULL;
+            vram = VramMalloc(4);
+            ia086->unk228.vramMem = vram;
+        }
+
+        for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
+            Sprite *s = &ia086->sprites[i];
+            s->graphics.size = 0;
+            s->unk14 = 0;
+            s->unk1C = 0;
+            s->unk21 = 0xFF;
+            s->unk22 = 0x10;
+            s->focused = 0;
+            s->unk28->unk0 = -1;
+            s->graphics.dest = vram;
+            s->graphics.anim = gUnknown_080E0124[i][0];
+            s->variant = gUnknown_080E0124[i][1];
+            vram += gUnknown_080E0124[i][2] * 32;
+        }
+    }
+
+    sub_807D1BC(ia086);
+    SET_MAP_ENTITY_INITIALIZED(me);
+}
 
 #ifdef NON_MATCHING
 void sub_807C9C0(Sprite_IA86 *ia086)
@@ -106,7 +167,7 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     gCurTask->main = Task_807D0C4;
 }
 #else
-void sub_807C9C0(Sprite_IA86* ia086)
+void sub_807C9C0(Sprite_IA86 *ia086)
 {
 #ifndef NON_MATCHING
     register Player *p1 asm("r2") = &gPlayer;
@@ -114,7 +175,7 @@ void sub_807C9C0(Sprite_IA86* ia086)
     register s32 r0 asm("r0");
     register s32 r3 asm("r3");
     register s32 r1 asm("r1");
-    s16* p184;
+    s16 *p184;
 #else
     Player *p1 = &gPlayer;
     Player *p;
@@ -126,7 +187,7 @@ void sub_807C9C0(Sprite_IA86* ia086)
     // Must be some debug stuff happening here
 #ifndef NON_MATCHING
     r0 = 0x8F << 2;
-    r0 = Q_24_8(*(s32*)((void*)ia086 + r0));
+    r0 = Q_24_8(*(s32 *)((void *)ia086 + r0));
     asm("" ::"r"(r0));
     r1 = p1->x;
     asm("" ::"r"(r1));
@@ -135,7 +196,7 @@ void sub_807C9C0(Sprite_IA86* ia086)
 #else
     p = p1;
 #endif
-    
+
     ia086->unk182 = 64;
 
 #ifndef NON_MATCHING
@@ -145,12 +206,12 @@ void sub_807C9C0(Sprite_IA86* ia086)
 #else
     ia086->unk184 = Q_24_8(0.5);
 #endif
-    
+
     ia086->unk186 = p->speedAirY;
-    
+
 #ifndef NON_MATCHING
     r0 = 0xC0 << 1;
-    (*(s16*)((void*)ia086 + r0)) = r3;
+    (*(s16 *)((void *)ia086 + r0)) = r3;
 #else
     ia086->unk180 = 0;
 #endif
@@ -217,7 +278,7 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
 {
     bool32 result = FALSE;
 
-    if (gPlayer.y > Q_24_8(ia086->unk228.unk4 + ia086->unk228.unkE)) {
+    if (gPlayer.y > Q_24_8(ia086->unk228.posY + ia086->unk228.offsetY)) {
         ia086->unk186 -= 0x10;
 
         ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
@@ -434,13 +495,13 @@ void sub_807CE94(Sprite_IA86 *ia086)
 
 bool32 sub_807CF2C(Sprite_IA86 *ia086)
 {
-    s16 screenX = ia086->unk228.unk0 - gCamera.x;
-    s16 screenY = ia086->unk228.unk4 - gCamera.y;
+    s16 screenX = ia086->unk228.posX - gCamera.x;
+    s16 screenY = ia086->unk228.posX - gCamera.y;
 
-    if (((screenX + ia086->unk228.unk10) < -Q_24_8(0.5))
-        || ((screenX + ia086->unk228.unkC) > Q_24_8(1.4375))
-        || ((screenY + ia086->unk228.unk12) < -Q_24_8(0.5))
-        || ((screenY + ia086->unk228.unkE) > +Q_24_8(1.125))) {
+    if (((screenX + ia086->unk228.width) < -Q_24_8(0.5))
+        || ((screenX + ia086->unk228.offsetX) > Q_24_8(1.4375))
+        || ((screenY + ia086->unk228.height) < -Q_24_8(0.5))
+        || ((screenY + ia086->unk228.offsetY) > +Q_24_8(1.125))) {
 
         return TRUE;
     }
@@ -534,7 +595,7 @@ void sub_807D188(Sprite_IA86 *ia086)
 {
     m4aSongNumStop(SE_285);
 
-    *ia086->unk228.unk24 = ia086->unk228.unk28;
+    ia086->unk228.me->x = ia086->unk228.spriteX;
 
     TaskDestroy(gCurTask);
 }
