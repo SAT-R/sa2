@@ -1563,7 +1563,7 @@ void sub_801C394(void)
             if (!(camera->unk50 & 2)) {
                 s32 unk64 = camera->unk64;
                 s32 temp8 = player->unk17 - 4;
-                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                if GRAVITY_IS_INVERTED {
                     temp8 = -temp8;
                 }
 

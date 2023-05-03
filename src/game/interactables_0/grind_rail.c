@@ -35,9 +35,8 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
 {
     Player *player = &gPlayer;
 
-    s32 r7 = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-        ? Q_24_8_TO_INT(player->y) - player->unk17
-        : Q_24_8_TO_INT(player->y) + player->unk17;
+    s32 r7 = GRAVITY_IS_INVERTED ? Q_24_8_TO_INT(player->y) - player->unk17
+                                 : Q_24_8_TO_INT(player->y) + player->unk17;
 
     // _0800FE78
     Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
@@ -63,7 +62,7 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
                 >= r7)) {
             bool32 r6 = FALSE;
 
-            if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if GRAVITY_IS_INVERTED {
                 if (r7 >= posX)
                     r6 = TRUE;
             } else {

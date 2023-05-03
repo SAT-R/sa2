@@ -816,9 +816,8 @@ void PlayerCB_Spindash(Player *player)
 
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
 
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
+                                        : player->y + player->speedAirY;
 
         {
             s32 rot = (s8)player->rotation;
@@ -871,9 +870,8 @@ void PlayerCB_Spindash(Player *player)
 
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
 
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
+                                        : player->y + player->speedAirY;
 
         sub_8022D6C(player);
 
@@ -902,7 +900,7 @@ void sub_802669C(Player *p)
 
     p->unk37 |= 0x80;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if GRAVITY_IS_INVERTED {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) - p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
                            -8, NULL, sub_801EE64);
 
@@ -2623,7 +2621,7 @@ s32 sub_8029A28(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2654,7 +2652,7 @@ s32 sub_8029A74(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2686,7 +2684,7 @@ s32 sub_8029AC0(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2720,7 +2718,7 @@ s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2736,7 +2734,7 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
 
     u8 dummy;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if GRAVITY_IS_INVERTED {
         result = sub_8029B0C(p, p1, out);
     } else {
         result = sub_8029AC0(p, p1, out);
@@ -2751,7 +2749,7 @@ s32 sub_8029B88(Player *p, u8 *p1, int *out)
 
     u8 dummy;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if GRAVITY_IS_INVERTED {
         result = sub_8029AC0(p, p1, out);
     } else {
         result = sub_8029B0C(p, p1, out);
@@ -2874,7 +2872,7 @@ bool32 sub_8029DE8(Player *p)
     s32 playerY = p->y;
 
     if (!(p->moveState & MOVESTATE_80000000)) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             if (playerY <= Q_24_8(cam->unk28))
                 return TRUE;
         } else {
@@ -2892,7 +2890,7 @@ bool32 sub_8029E24(Player *p)
     s32 playerY = p->y;
 
     if (!(p->moveState & MOVESTATE_80000000)) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             if (playerY <= Q_24_8(cam->y - (DISPLAY_HEIGHT / 2)))
                 return TRUE;
         } else {
@@ -2909,7 +2907,7 @@ bool32 sub_8029E6C(Player *p)
     u8 rot = p->rotation;
 
     if (p->unk5E & gPlayerControls.jump) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             rot += Q_24_8(0.25);
             rot = -rot;
             rot -= Q_24_8(0.25);
@@ -2949,7 +2947,7 @@ void sub_8029FA4(Player *p)
     if ((gUnknown_03005590 & mask) == 0) {
         s32 u17 = p->unk17;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if GRAVITY_IS_INVERTED {
             u17 = -u17;
         }
 

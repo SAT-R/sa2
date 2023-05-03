@@ -55,9 +55,8 @@
                                                                                         \
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);               \
                                                                                         \
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)                 \
-            ? player->y - player->speedAirY                                             \
-            : player->y + player->speedAirY;                                            \
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY                 \
+                                        : player->y + player->speedAirY;                \
     }
 
 // TODO(Jace): This name is speculative right now, check for accuracy!

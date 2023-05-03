@@ -319,7 +319,8 @@ struct Camera {
 
 extern struct Camera gCamera;
 
-#define PLAYER_IS_ALIVE (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define PLAYER_IS_ALIVE     (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
 
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
