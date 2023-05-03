@@ -183,7 +183,7 @@ SECTIONS
         build/sa2/asm/math_1.o(.text);
         build/sa2/src/game/math_1.o(.text);
         build/sa2/asm/unused_task_5F1C.o(.text);
-        build/sa2/src/game/unknown_object_6998.o(.text);
+        build/sa2/src/game/heart_particles_effect.o(.text);
         build/sa2/src/game/race_progress.o(.text);
         build/sa2/src/game/unknown_effect.o(.text);
         build/sa2/src/game/multiplayer_lobby.o(.text);

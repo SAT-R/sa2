@@ -70,17 +70,6 @@ extern u16 gUnknown_030054BC;
 extern u8 gUnknown_030054E8;
 extern u8 gUnknown_030053E0;
 
-struct UNK_3005A44 {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    u16 unk8;
-    u16 unkA;
-    u16 unkC;
-};
-extern struct UNK_3005A44 gUnknown_03005A44;
-
 typedef struct {
     u8 filler0[0x22];
     s16 unk22;
@@ -91,13 +80,6 @@ struct UNK_3005A70 {
     /* 0x00 */ u8 filler0[0xC];
     /* 0x0C */ Sprite s;
 }; /* size: unknown? */
-
-// TODO: this is just `gPlayer.unk90`
-typedef struct {
-    UNK_03005A70 *unk0;
-} UNK_03005A70_Wrapper;
-
-extern UNK_03005A70_Wrapper gUnknown_03005A70;
 
 extern u8 gUnknown_0300543C;
 
@@ -328,7 +310,7 @@ struct Camera {
     /* 0x54 */ u16 unk54;
     /* 0x56 */ s16 unk56;
     /* 0x58 */ CameraMain unk58;
-    /* 0x5C */ struct Task *unk5C;
+    /* 0x5C */ struct Task *movementTask;
     /* 0x60 */ s16 unk60;
     /* 0x62 */ s16 unk62;
     /* 0x64 */ s16 unk64;

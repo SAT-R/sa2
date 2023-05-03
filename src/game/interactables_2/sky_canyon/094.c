@@ -73,7 +73,7 @@ static void sub_807EA8C(void)
         return;
     }
 
-    if (gUnknown_03005424 & 0x80) {
+    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
         gPlayer.y -= Q_24_8(1);
     } else {
         gPlayer.y += Q_24_8(1);

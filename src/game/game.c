@@ -1458,7 +1458,7 @@ void sub_801C068(u32 level)
     camera->unk60 = 0;
     camera->unk62 = 0;
 
-    camera->unk5C = TaskCreate(sub_801E0A8, 0, 0xF00, 0, sub_801E040);
+    camera->movementTask = TaskCreate(sub_801E0A8, 0, 0xF00, 0, sub_801E040);
 
     camera->unk58 = gUnknown_080D5A10[level];
 

@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
@@ -1884,7 +1885,6 @@ void PlayerCB_80286F0(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_80287AC, p);
 }
 
-#include "game/unknown_object_6998.h"
 void PlayerCB_80287AC(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
@@ -1908,7 +1908,7 @@ void PlayerCB_80287AC(Player *p)
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 1);
             }
             if (u5B == 2 && character == CHARACTER_AMY) {
-                sub_8086998();
+                CreateHeartParticles();
             }
         }
     }

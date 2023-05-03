@@ -191,7 +191,9 @@
     "097.h": "c",
     "save.h": "c",
     "stage_ui.h": "c",
-    "screen_transition.h": "c"
+    "screen_transition.h": "c",
+    "heart_particles_effect.h": "c",
+    "results.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

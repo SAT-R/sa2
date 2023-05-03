@@ -83,14 +83,13 @@ build/sa2/src/core.o(.data);
 . = 0x00005848; gGameStageTask = .;
 . = 0x00005850; gUnknown_03005850 = .;
 . = 0x00005960; gCamera = .;
+
+/* part of camera */
 . = 0x000059C8; gUnknown_030059C8 = .;
 . = 0x000059D0; gUnknown_030059D0 = .;
 . = 0x000059D8; gUnknown_030059D8 = .;
+
 . = 0x000059E0; gPlayer = .;
-. = 0x000059E8; gUnknown_030059E8 = .;
-. = 0x00005A42; gUnknown_03005A42 = .;
-. = 0x00005A44; gUnknown_03005A44 = .;
-. = 0x00005A70; gUnknown_03005A70 = .;
 . = 0x00005AA0; gUnknown_03005AA0 = .;
 . = 0x00005AF0; gUnknown_03005AF0 = .;
 . = 0x00005AFC; gUnknown_03005AFC = .;
