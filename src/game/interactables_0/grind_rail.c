@@ -62,7 +62,7 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
                 >= r7)) {
             bool32 r6 = FALSE;
 
-            if GRAVITY_IS_INVERTED {
+            if (GRAVITY_IS_INVERTED) {
                 if (r7 >= posX)
                     r6 = TRUE;
             } else {

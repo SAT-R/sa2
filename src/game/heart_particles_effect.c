@@ -152,7 +152,7 @@ static void sub_8086BE8(u8 i)
     sprite->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
     sprite->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 
-    if GRAVITY_IS_INVERTED {
+    if (GRAVITY_IS_INVERTED) {
         sprite->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
     } else {
         sprite->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
