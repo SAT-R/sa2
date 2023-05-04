@@ -21,12 +21,15 @@ typedef struct {
     /* 0x0E */ s16 top;
     /* 0x10 */ s16 right;
     /* 0x12 */ s16 bottom;
-    /* 0x14 */ s32 someX;
-    /* 0x18 */ s32 someY;
+    /* 0x14 */ s32 centerX;
+    /* 0x18 */ s32 centerY;
     /* 0x1C */ u16 height;
     /* 0x1E */ u16 width;
-    /* 0x20 */ u16 unk20;
-    /* 0x22 */ u16 unk22;
+    /* 0x20 */ u16 quarterWidth;
+
+    // unused
+    /* 0x22 */ u8 padding22[2];
+
     /* 0x24 */ MapEntity *me;
     /* 0x28 */ u8 spriteX;
     /* 0x29 */ u8 spriteY;
@@ -107,16 +110,16 @@ void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegion
     ia086->unk228.right = ia086->unk228.left + me->d.uData[2] * TILE_WIDTH;
     ia086->unk228.bottom = ia086->unk228.top + me->d.uData[3] * TILE_WIDTH;
 
-    ia086->unk228.someX
+    ia086->unk228.centerX
         = ia086->unk228.posX + ((ia086->unk228.right + ia086->unk228.left) >> 1);
 
-    ia086->unk228.someY = ia086->unk228.posY + (ia086->unk228.bottom);
+    ia086->unk228.centerY = ia086->unk228.posY + (ia086->unk228.bottom);
 
     ia086->unk228.height = ia086->unk228.bottom - ia086->unk228.top;
     ia086->unk228.width = ia086->unk228.right - ia086->unk228.left;
 
     width = ia086->unk228.width;
-    ia086->unk228.unk20 = width / 4;
+    ia086->unk228.quarterWidth = width / 4;
 
     ia086->unk228.me = me;
     ia086->unk228.spriteX = me->x;
@@ -163,8 +166,8 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     ia086->unk184 = Q_24_8(0.5);
     ia086->unk186 = gPlayer.speedAirY;
     ia086->unk180 = 0;
-    ia086->unk188 = Q_24_8(ia086->unk228.someX) - gPlayer.x;
-    ia086->unk18C = Q_24_8(ia086->unk228.someY) - gPlayer.y;
+    ia086->unk188 = Q_24_8(ia086->unk228.centerX) - gPlayer.x;
+    ia086->unk18C = Q_24_8(ia086->unk228.centerY) - gPlayer.y;
     ia086->unk190 = 0;
     ia086->unk194 = 0;
 
@@ -203,8 +206,8 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     r0 = 0x180;
     (*(s16 *)((void *)ia086 + r0)) = zero;
 
-    ia086->unk188 = p->x - Q_24_8(ia086->unk228.someX);
-    ia086->unk18C = p->y - Q_24_8(ia086->unk228.someY);
+    ia086->unk188 = p->x - Q_24_8(ia086->unk228.centerX);
+    ia086->unk18C = p->y - Q_24_8(ia086->unk228.centerY);
     ia086->unk190 = zero;
     ia086->unk194 = zero;
 
@@ -216,7 +219,7 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
 {
     u8 returnState = 0;
 
-    s32 someY = Q_24_8(ia086->unk228.someY - 16);
+    s32 someY = Q_24_8(ia086->unk228.centerY - 16);
 
     if (ia086->unk186 <= 0) {
         returnState = 1;
@@ -250,7 +253,7 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
         sub_807CC28(ia086);
     }
 
-    gPlayer.x = Q_24_8(ia086->unk228.someX) + ia086->unk188 + ia086->unk190;
+    gPlayer.x = Q_24_8(ia086->unk228.centerX) + ia086->unk188 + ia086->unk190;
 
     return (returnState == 2);
 }
@@ -274,12 +277,12 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
         Player *p = &gPlayer;
         s32 x, y;
 
-        x = Q_24_8(ia086->unk228.someX);
+        x = Q_24_8(ia086->unk228.centerX);
         x += ia086->unk188;
         x += ia086->unk190;
         p->x = x;
 
-        y = Q_24_8(ia086->unk228.someY);
+        y = Q_24_8(ia086->unk228.centerY);
         y += ia086->unk18C;
         y += ia086->unk194;
         p->y = y;
@@ -290,7 +293,7 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
 
 void sub_807CC28(Sprite_IA86 *ia086)
 {
-    s32 unk10 = ia086->unk228.unk20;
+    s32 unk10 = ia086->unk228.quarterWidth;
     s32 r4 = ia086->unk228.width;
     s32 divRes = -ia086->unk18C / ia086->unk228.height;
     s16 procRes = sub_80855C0(unk10, r4, divRes, 8) >> 1;
@@ -388,7 +391,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
             r1 = unk086->unkC >> 5;
             r2 = ((ia086->unk228.width * r1) << 8) >> 16;
 
-            r1 = ia086->unk228.unk20;
+            r1 = ia086->unk228.quarterWidth;
             if (r1 < r2)
                 r1 = r2;
 
@@ -423,7 +426,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 s32 temp2;
                 unk086->unk14 = SIN_24_8(unk086->unk4 * 4) * 4;
 
-                r5 = ia086->unk228.unk20;
+                r5 = ia086->unk228.quarterWidth;
                 r4 = ia086->unk228.width;
 
                 temp2 = -unk086->unkC;
@@ -448,13 +451,13 @@ void sub_807CE94(Sprite_IA86 *ia086)
         if (unk086->s != NULL) {
             s32 someX, someY;
             Sprite *s2;
-            someX = ia086->unk228.someX;
+            someX = ia086->unk228.centerX;
             someX += Q_24_8_TO_INT(unk086->unk8 + unk086->unk10);
             someX -= gCamera.x;
             unk086->s->x = someX;
 
             s2 = unk086->s;
-            someY = ia086->unk228.someY;
+            someY = ia086->unk228.centerY;
             someY += Q_24_8_TO_INT(unk086->unkC + unk086->unk14);
             someY -= gCamera.y;
             s2->y = someY;
@@ -494,8 +497,8 @@ bool32 sub_807CF2C(Sprite_IA86 *ia086)
 bool32 sub_807CFB4(Sprite_IA86 *ia086)
 {
     if (PLAYER_IS_ALIVE) {
-        s16 x = ia086->unk228.someX - gCamera.x;
-        s16 y = ia086->unk228.someY - gCamera.y;
+        s16 x = ia086->unk228.centerX - gCamera.x;
+        s16 y = ia086->unk228.centerY - gCamera.y;
         s16 px = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         s16 py = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
         s32 r5, r4;
@@ -504,7 +507,7 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
 
         if ((r2 <= py) && (r2 + ia086->unk228.height >= py)) {
             s32 tempX;
-            r5 = ia086->unk228.unk20;
+            r5 = ia086->unk228.quarterWidth;
             r4 = ia086->unk228.width;
 
             r3 = sub_80855C0(r5, r4, (Q_24_8(y - py) / ia086->unk228.height), 8);
@@ -561,7 +564,7 @@ void TaskDestructor_Interactable086(struct Task *t)
 void sub_807D130(Sprite_IA86 *ia086)
 {
     ia086->unk188 = 0;
-    ia086->unk18C = gPlayer.y - Q_24_8(ia086->unk228.someY);
+    ia086->unk18C = gPlayer.y - Q_24_8(ia086->unk228.centerY);
 
     gCurTask->main = Task_807D268;
 }
