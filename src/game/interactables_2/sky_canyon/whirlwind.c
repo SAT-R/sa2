@@ -215,7 +215,7 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
 {
     u8 returnState = 0;
 
-    s32 someY = Q_24_8(ia086->unk228.centerY - 16);
+    s32 someY = Q_24_8(ia086->unk228.centerY - 2 * TILE_WIDTH);
 
     if (ia086->unk186 <= 0) {
         returnState = 1;

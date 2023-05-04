@@ -489,7 +489,7 @@ _080058B0: .4byte 0x80000003
 sub_80058B4: @ 0x080058B4
 	push {r4, r5, lr}
 	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
+	lsrs r5, r0, #0x18      @ r5 = p0
 	cmp r5, #0x1f
 	bls _080058C0
 	movs r5, #0x1f

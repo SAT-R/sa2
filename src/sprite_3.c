@@ -49,8 +49,8 @@ void sub_80051E8(Sprite *sprite)
             if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                 x -= sprDims->width / 2;
                 y -= sprDims->height / 2;
-                sprWidth <<= 1;
-                sprHeight <<= 1;
+                sprWidth *= 2;
+                sprHeight *= 2;
             }
         } else {
             if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
@@ -58,6 +58,7 @@ void sub_80051E8(Sprite *sprite)
             } else {
                 y -= sprDims->offsetY;
             }
+
             if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
                 x -= sprWidth - sprDims->offsetX;
             } else {
@@ -65,8 +66,8 @@ void sub_80051E8(Sprite *sprite)
             }
         }
 
-        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && sprHeight + y >= 0
-            && y <= DISPLAY_HEIGHT) {
+        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && // fmt
+            y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
             u8 unk6D0 = gUnknown_030026D0 >> 8;
 
             for (sp0C = 0; sp0C < sprDims->numSubframes; sp0C++) {
