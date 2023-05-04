@@ -88,9 +88,10 @@ static const u16 gUnknown_080E0124[3][3] = {
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
-// https://decomp.me/scratch/vwdzi
-void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY, u32 kind)
+#define UNKNOWN_WHIRLWIND_THIRYTWO 32
+
+void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegionX,
+                                                 u16 spriteRegionY, u8 spriteY, u32 kind)
 {
     struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
                                 TaskDestructor_Interactable086);
@@ -384,7 +385,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
             if (ia086->unk228.kind != 0) {
                 unkC = Q_24_8(-(Random() & 0x7));
             } else {
-                unkC = 0x2000;
+                unkC = Q_24_8(UNKNOWN_WHIRLWIND_THIRYTWO);
             }
             unk086->unkC = unkC;
 
@@ -422,7 +423,8 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 s32 addend;
                 unk086->unk10 = newR1 * COS_24_8(unk086->unk4 * 4);
 
-                r2 = (u16)((32 - Q_24_8_TO_INT(unk086->unkC)) >> 2);
+                r2 = (u16)((UNKNOWN_WHIRLWIND_THIRYTWO - Q_24_8_TO_INT(unk086->unkC))
+                           >> 2);
 
                 if ((s16)r2 >= (2)) {
                     r1 = r2;
@@ -621,16 +623,18 @@ void sub_807D1BC(Sprite_IA86 *ia086)
     sub_807CCBC(ia086);
 }
 
-void initSprite_Interactable086_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void initSprite_Interactable_SkyCanyon_Whirlwind_0(MapEntity *me, u16 spriteRegionX,
+                                                   u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable086(me, spriteRegionX, spriteRegionY, spriteY, 0);
+    initSprite_Interactable_SkyCanyon_Whirlwind(me, spriteRegionX, spriteRegionY,
+                                                spriteY, 0);
 }
 
-void initSprite_Interactable086_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void initSprite_Interactable_SkyCanyon_Whirlwind_1(MapEntity *me, u16 spriteRegionX,
+                                                   u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable086(me, spriteRegionX, spriteRegionY, spriteY, 1);
+    initSprite_Interactable_SkyCanyon_Whirlwind(me, spriteRegionX, spriteRegionY,
+                                                spriteY, 1);
 }
 
 void Task_807D268(void)
