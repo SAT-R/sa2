@@ -98,8 +98,8 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     s32 someX, someY;
     s32 value;
     u32 temp;
-    ia086->unk228.posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia086->unk228.posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia086->unk228.posX = TO_WORLD_POS(me->x, spriteRegionX);
+    ia086->unk228.posY = TO_WORLD_POS(me->y, spriteRegionY);
     ia086->unk228.kind = kind;
     ia086->unk228.offsetX = me->d.sData[0] * TILE_WIDTH;
     ia086->unk228.offsetY = me->d.sData[1] * TILE_WIDTH;
