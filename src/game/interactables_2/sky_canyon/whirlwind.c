@@ -80,9 +80,9 @@ static void Task_807D06C(void);
 void TaskDestructor_Interactable086(struct Task *t);
 
 static const u16 gUnknown_080E0124[3][3] = {
-    { SA2_ANIM_588, 2, 1 },
-    { SA2_ANIM_588, 1, 1 },
-    { SA2_ANIM_588, 0, 2 },
+    { SA2_ANIM_WHIRLWIND, 2, 1 },
+    { SA2_ANIM_WHIRLWIND, 1, 1 },
+    { SA2_ANIM_WHIRLWIND, 0, 2 },
 };
 
 static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
@@ -523,7 +523,7 @@ void Task_807D06C(void)
     Sprite_IA86 *ia086 = TaskGetStructPtr(gCurTask);
 
     if (sub_807CFB4(ia086)) {
-        m4aSongNumStart(SE_285);
+        m4aSongNumStart(SE_WHIRLWIND);
         sub_807C9C0(ia086);
     }
 
@@ -568,13 +568,13 @@ void sub_807D130(Sprite_IA86 *ia086)
 void sub_807D16C(Sprite_IA86 *unused)
 {
     if ((gUnknown_03005590 & 0xFF) == 0) {
-        m4aSongNumStartOrContinue(SE_285);
+        m4aSongNumStartOrContinue(SE_WHIRLWIND);
     }
 }
 
 void sub_807D188(Sprite_IA86 *ia086)
 {
-    m4aSongNumStop(SE_285);
+    m4aSongNumStop(SE_WHIRLWIND);
 
     SET_MAP_ENTITY_NOT_INITIALIZED(ia086->unk228.me, ia086->unk228.spriteX);
 

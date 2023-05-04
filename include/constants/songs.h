@@ -229,7 +229,7 @@
 #define SE_282                282
 #define SE_283                283
 #define SE_284                284
-#define SE_285                285
+#define SE_WHIRLWIND          285
 #define SE_286                286
 #define SE_287                287
 #define SE_288                288

@@ -189,7 +189,7 @@ typedef struct {
     // TODO: these values are only used within some
     // sort of menu functions. Split out the shared stuff
     /* 0x23 */ u8 unk23;
-    /* 0x24 */ u8 unk24;
+    /* 0x24 */ u8 numSubFrames;
     /* 0x25 */ u8 focused;
 
     /* 0x26 */ u8 filler26[2];

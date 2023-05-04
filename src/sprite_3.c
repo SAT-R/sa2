@@ -35,7 +35,7 @@ void sub_80051E8(Sprite *sprite)
     if ((u32)sprite->dimensions != -1) {
         SpriteOffset *sprDims = sprite->dimensions;
 
-        sprite->unk24 = sprDims->numSubframes;
+        sprite->numSubFrames = sprDims->numSubframes;
         x = sprite->x;
         y = sprite->y;
         if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
