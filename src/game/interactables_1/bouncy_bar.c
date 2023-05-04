@@ -48,8 +48,8 @@ void initSprite_Interactable_BouncyBar(MapEntity *me, u16 spriteRegionX,
     bar->unk3E = 0;
     bar->unk40 = 0;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     displayed->graphics.dest = VramMalloc(0x18);
@@ -79,8 +79,8 @@ void sub_806160C(void)
 
     s32 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(bar->base.spriteX, bar->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, bar->base.regionY);
+    screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
+    screenY = TO_WORLD_POS(me->y, bar->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
@@ -129,8 +129,8 @@ void sub_80617A4(void)
 
     s32 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(bar->base.spriteX, bar->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, bar->base.regionY);
+    screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
+    screenY = TO_WORLD_POS(me->y, bar->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 

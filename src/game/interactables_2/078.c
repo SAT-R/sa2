@@ -57,8 +57,8 @@ void initSprite_Interactable078(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia78->base.spriteX = me->x;
     ia78->base.spriteY = spriteY;
 
-    ia78->unk3C = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia78->unk40 = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia78->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
+    ia78->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     sprite = &ia78->sprite;
     sprite->unk1A = 0x480;

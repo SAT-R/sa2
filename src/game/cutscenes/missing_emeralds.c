@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -19,7 +19,7 @@ struct MissingChaosEmaraldsCutScene {
     Background unk0;
     Background unk40;
     Sprite unk80;
-    struct UNK_802D4CC_UNK270 unkB0;
+    struct TransitionState unkB0;
 
     u8 unkBC;
     u8 unkBD;
@@ -46,7 +46,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     u8 i;
     struct Task *t;
     struct MissingChaosEmaraldsCutScene *scene = NULL;
-    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    struct TransitionState *transition = NULL;
 
     gDispCnt = 0x1040;
     gBgCntRegs[0] = 0x1e03;
@@ -89,12 +89,12 @@ void CreateMissingChaosEmaraldsCutScene(void)
     } else {
         m4aSongNumStart(MUS_MESSAGE_2);
     }
-    transitionConfig = &scene->unkB0;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk6 = 0x80;
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unkA = 0;
+    transition = &scene->unkB0;
+    transition->unk0 = 1;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x80;
+    transition->unk8 = 0x3FFF;
+    transition->unkA = 0;
 
     scene->unkC4 = OBJ_VRAM0;
 
@@ -222,13 +222,13 @@ void sub_8094530(void);
 void sub_809449C(void)
 {
     struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unkB0;
-    transitionConfig->unk2 = 2;
+    struct TransitionState *transition = &scene->unkB0;
+    transition->unk2 = 2;
 
     sub_80945A4(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         scene->unkBE = 1;
         gCurTask->main = sub_8094530;
     }
@@ -239,13 +239,13 @@ void sub_8094570(void);
 void sub_80944EC(void)
 {
     struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unkB0;
-    transitionConfig->unk2 = 1;
+    struct TransitionState *transition = &scene->unkB0;
+    transition->unk2 = 1;
 
     sub_80945A4(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
 
         gCurTask->main = sub_8094570;
     }

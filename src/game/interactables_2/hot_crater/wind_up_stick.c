@@ -1,7 +1,7 @@
 #include "global.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/wind_up_stick.h"
+#include "game/interactables_2/hot_crater/wind_up_stick.h"
 #include "task.h"
 #include "sprite.h"
 #include "malloc_vram.h"
@@ -40,8 +40,8 @@ void initSprite_Interactable_WindUpStick(MapEntity *me, u16 spriteRegionX,
     struct Task *t = TaskCreate(sub_8072998, 0x1C, 0x2010, 0, sub_80729D4);
     Sprite_WindUpStick *windUpStick = TaskGetStructPtr(t);
     windUpStick->unk11 = 0;
-    windUpStick->unk0 = SpriteGetScreenPos(me->x, spriteRegionX);
-    windUpStick->unk4 = SpriteGetScreenPos(me->y, spriteRegionY);
+    windUpStick->unk0 = TO_WORLD_POS(me->x, spriteRegionX);
+    windUpStick->unk4 = TO_WORLD_POS(me->y, spriteRegionY);
     windUpStick->unk8 = me->d.sData[0] * 8;
     windUpStick->unkA = me->d.sData[1] * 8;
     windUpStick->unkC = me->d.uData[2] * 8 + windUpStick->unk8;

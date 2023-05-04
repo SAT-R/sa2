@@ -97,6 +97,7 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     Sprite_IA86 *ia086 = TaskGetStructPtr(t);
     s32 someX, someY;
     s32 value;
+    u32 temp;
     ia086->unk228.posX = SpriteGetScreenPos(me->x, spriteRegionX);
     ia086->unk228.posY = SpriteGetScreenPos(me->y, spriteRegionY);
     ia086->unk228.kind = kind;
@@ -105,15 +106,15 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia086->unk228.width = ia086->unk228.offsetX + me->d.uData[2] * TILE_WIDTH;
     ia086->unk228.height = ia086->unk228.offsetY + me->d.uData[3] * TILE_WIDTH;
 
-    value = (ia086->unk228.offsetX + ia086->unk228.height) >> 1;
-    ia086->unk228.someX = value;
+    ia086->unk228.someX
+        = ia086->unk228.posX + ((ia086->unk228.width + ia086->unk228.offsetX) >> 1);
 
-    value = (ia086->unk228.offsetY + ia086->unk228.width);
-    ia086->unk228.someY = value;
+    ia086->unk228.someY = ia086->unk228.posY + (ia086->unk228.height);
 
     ia086->unk228.unk1C = ia086->unk228.height - ia086->unk228.offsetY;
     ia086->unk228.unk1E = ia086->unk228.width - ia086->unk228.offsetX;
-    ia086->unk228.unk20 = ia086->unk228.unk1E >> 2;
+    temp = ia086->unk228.unk1E;
+    ia086->unk228.unk20 = temp >> 2;
     ia086->unk228.me = me;
 
     ia086->unk228.spriteX = me->x;
@@ -126,8 +127,8 @@ void initSprite_Interactable086(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
         for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
             ia086->unk0[i].s = NULL;
         }
-        vram = VramMalloc(4);
-        ia086->unk228.vramMem = vram;
+        ia086->unk228.vramMem = VramMalloc(4);
+        vram = ia086->unk228.vramMem;
 
         for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
             Sprite *s = &ia086->sprites[i];
@@ -159,10 +160,10 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     p = &gPlayer;
     ia086->unk182 = 64;
     ia086->unk184 = Q_24_8(0.5);
-    ia086->unk186 = p->speedAirY;
+    ia086->unk186 = gPlayer.speedAirY;
     ia086->unk180 = 0;
-    ia086->unk188 = Q_24_8(ia086->unk228.someX) - p->x;
-    ia086->unk18C = Q_24_8(ia086->unk228.someY) - p->y;
+    ia086->unk188 = Q_24_8(ia086->unk228.someX) - gPlayer.x;
+    ia086->unk18C = Q_24_8(ia086->unk228.someY) - gPlayer.y;
     ia086->unk190 = 0;
     ia086->unk194 = 0;
 
@@ -498,12 +499,12 @@ void sub_807CE94(Sprite_IA86 *ia086)
 bool32 sub_807CF2C(Sprite_IA86 *ia086)
 {
     s16 screenX = ia086->unk228.posX - gCamera.x;
-    s16 screenY = ia086->unk228.posX - gCamera.y;
+    s16 screenY = ia086->unk228.posY - gCamera.y;
 
-    if (((screenX + ia086->unk228.width) < -Q_24_8(0.5))
-        || ((screenX + ia086->unk228.offsetX) > Q_24_8(1.4375))
-        || ((screenY + ia086->unk228.height) < -Q_24_8(0.5))
-        || ((screenY + ia086->unk228.offsetY) > +Q_24_8(1.125))) {
+    if (((screenX + ia086->unk228.width) < -128)
+        || ((screenX + ia086->unk228.offsetX) > 368)
+        || ((screenY + ia086->unk228.height) < -128)
+        || ((screenY + ia086->unk228.offsetY) > 288)) {
 
         return TRUE;
     }

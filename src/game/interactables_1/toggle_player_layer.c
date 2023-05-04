@@ -34,8 +34,8 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     u32 regionY = base->regionY;
     s32 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(me->y, regionY);
+    screenX = TO_WORLD_POS(spriteX, regionX);
+    screenY = TO_WORLD_POS(me->y, regionY);
 
     if ((screenX <= Q_24_8_TO_INT(gPlayer.x))
         && (screenX + (me->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))

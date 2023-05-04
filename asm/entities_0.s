@@ -576,7 +576,7 @@ _08007FBE:
 	movs r4, #0
 	str r4, [sp, #8]
 _08007FE4:
-	ldr r0, _080082AC @ =gUnknown_030059E8
+	ldr r0, _080082AC @ =gPlayer + 0x8
 	adds r1, r0, #4
 	bl sub_802C668
 	mov r0, sp
@@ -944,7 +944,7 @@ _0800829C: .4byte gUnknown_030054B0
 _080082A0: .4byte gUnknown_03005430
 _080082A4: .4byte gUnknown_0300542C
 _080082A8: .4byte gSpritePosData_rings
-_080082AC: .4byte gUnknown_030059E8
+_080082AC: .4byte gPlayer + 0x8
 _080082B0: .4byte gRingCount
 _080082B4: .4byte gGameMode
 _080082B8: .4byte gNumLives
@@ -9450,7 +9450,7 @@ _0800C550:
 	bl sub_800B9B8
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_802DB14
+	bl CreateTrappedAnimal
 	movs r0, #1
 	b _0800C83A
 	.align 2, 0
@@ -9793,7 +9793,7 @@ _0800C802:
 	bl sub_800B9B8
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_802DB14
+	bl CreateTrappedAnimal
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl sub_8009530
@@ -11948,7 +11948,7 @@ _0800D828:
 	ldr r2, [sp, #0x30]
 	orrs r2, r0
 	str r2, [sp, #0x30]
-	ldr r4, _0800D844 @ =gUnknown_03005A42
+	ldr r4, _0800D844 @ =gPlayer + 0x62
 	movs r6, #0
 	ldrsb r6, [r4, r6]
 	cmp r6, #0
@@ -11957,7 +11957,7 @@ _0800D828:
 	strh r0, [r5, #0x10]
 	b _0800DA18
 	.align 2, 0
-_0800D844: .4byte gUnknown_03005A42
+_0800D844: .4byte gPlayer + 0x62
 _0800D848:
 	mov r2, sp
 	movs r0, #0xe
@@ -12012,12 +12012,12 @@ _0800D868:
 	adds r0, r5, #0
 	adds r0, #0x61
 	strb r4, [r0]
-	ldr r1, _0800D8BC @ =gUnknown_03005A42
+	ldr r1, _0800D8BC @ =gPlayer + 0x62
 	strb r4, [r1]
 	b _0800DA18
 	.align 2, 0
 _0800D8B8: .4byte PlayerCB_8025318
-_0800D8BC: .4byte gUnknown_03005A42
+_0800D8BC: .4byte gPlayer + 0x62
 _0800D8C0:
 	mov r2, sl
 	strh r2, [r5, #0x14]

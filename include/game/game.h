@@ -4,11 +4,7 @@
 #define GAME_MODE_SINGLE_PLAYER    0
 #define GAME_MODE_TIME_ATTACK      1
 #define GAME_MODE_BOSS_TIME_ATTACK 2
-#define GAME_MODE_IS_SINGLE_PLAYER(mode)                                                \
-    (((mode) == GAME_MODE_SINGLE_PLAYER) || ((mode) == GAME_MODE_TIME_ATTACK)           \
-     || ((mode) == GAME_MODE_BOSS_TIME_ATTACK))
 
-// May be multiplayer time attack
 #define GAME_MODE_MULTI_PLAYER               3
 #define GAME_MODE_TEAM_PLAY                  4
 #define GAME_MODE_MULTI_PLAYER_COLLECT_RINGS 5
@@ -16,11 +12,44 @@
 #include "global.h"
 #include "sprite.h"
 #include "multi_sio.h"
-#include "game/save.h"
 #include "task.h"
+
+#define ZONE_TIME_TO_INT(minutes, seconds)                                              \
+    (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
+#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
+
+#define TIME_RECORDS_PER_COURSE 3
+#define NUM_MULTIPLAYER_SCORES  10
+
+#define MAX_PLAYER_NAME_LENGTH 6
+#define MAX_MULTIPLAYER_SCORE  99
+
+#define CHARACTER_SONIC    0
+#define CHARACTER_CREAM    1
+#define CHARACTER_TAILS    2
+#define CHARACTER_KNUCKLES 3
+#define CHARACTER_AMY      4
+
+#define NUM_CHARACTERS 5
+
+#define CHARACTER_BIT(character) (1 << (character))
+
+#define MAIN_CHARACTERS                                                                 \
+    (CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)                    \
+     | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES))
+
+struct ButtonConfig {
+    u16 jump;
+    u16 attack;
+    u16 trick;
+};
 
 extern u8 gDemoPlayCounter;
 extern u8 gGameMode;
+
+#define IS_SINGLE_PLAYER                                                                \
+    ((gGameMode == GAME_MODE_SINGLE_PLAYER) || (gGameMode == GAME_MODE_TIME_ATTACK)     \
+     || (gGameMode == GAME_MODE_BOSS_TIME_ATTACK))
 
 extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
@@ -41,28 +70,16 @@ extern u16 gUnknown_030054BC;
 extern u8 gUnknown_030054E8;
 extern u8 gUnknown_030053E0;
 
-struct UNK_3005A44 {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    u16 unk8;
-    u16 unkA;
-    u16 unkC;
-};
-extern struct UNK_3005A44 gUnknown_03005A44;
-
 typedef struct {
     u8 filler0[0x22];
     s16 unk22;
     s16 unk24;
 } UNK_03005A70; /* 0x30 */
 
-typedef struct {
-    UNK_03005A70 *unk0;
-} UNK_03005A70_Wrapper;
-
-extern UNK_03005A70_Wrapper gUnknown_03005A70;
+struct UNK_3005A70 {
+    /* 0x00 */ u8 filler0[0xC];
+    /* 0x0C */ Sprite s;
+}; /* size: unknown? */
 
 extern u8 gUnknown_0300543C;
 
@@ -86,7 +103,7 @@ extern u16 gUnknown_0300544C;
 
 extern u8 gUnknown_030054EC;
 
-extern u8 gUnknown_03005444;
+extern s8 gTrappedAnimalVariant;
 
 extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
@@ -128,11 +145,6 @@ extern u8 gMultiplayerMissingHeartbeats[4];
 
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
-
-struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC];
-    /* 0x0C */ Sprite s;
-}; /* size: unknown? */
 
 // Declared beforehand because it's used inside Player struct
 struct Player_;
@@ -299,7 +311,7 @@ struct Camera {
     /* 0x54 */ u16 unk54;
     /* 0x56 */ s16 unk56;
     /* 0x58 */ CameraMain unk58;
-    /* 0x5C */ struct Task *unk5C;
+    /* 0x5C */ struct Task *movementTask;
     /* 0x60 */ s16 unk60;
     /* 0x62 */ s16 unk62;
     /* 0x64 */ s16 unk64;
@@ -308,12 +320,13 @@ struct Camera {
 
 extern struct Camera gCamera;
 
-#define PLAYER_IS_ALIVE (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define PLAYER_IS_ALIVE     (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
 
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
-#define SpriteGetScreenPos(spritePos, regionPos)                                        \
-    ((spritePos)*TILE_WIDTH + (regionPos)*CAM_REGION_WIDTH)
+
+#define TO_WORLD_POS(pos, region) ((pos)*TILE_WIDTH + (region)*CAM_REGION_WIDTH)
 
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
@@ -506,8 +519,18 @@ extern void sub_800C84C(Sprite *);
 extern void sub_801EB44(s32, s32, s32);
 extern void sub_801EC3C(s32, s32, s32);
 
+extern s32 sub_801ED24(s32, s32, s32, u8 *);
+extern s32 sub_801EE64(s32, s32, s32, u8 *);
+
+typedef s32 (*Func_801EE64)(s32, s32, s32, u8 *);
+
+// ground collision clamp functions
+s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
+s32 sub_801E6D4(s32, s32, s32, s32, void *, Func_801EE64);
+s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
+
 typedef void (*Func801F100)(s32, s32, s32);
-extern s32 sub_801F100(s32, s32, s32, s32, Func801F100);
+s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
 extern void sub_801F78C(void);
 

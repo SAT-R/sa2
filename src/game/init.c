@@ -7,7 +7,6 @@
 #include "flags.h"
 #include "game/save.h"
 #include "game/game.h"
-#include "player.h"
 #include "game/title_screen.h"
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
@@ -28,7 +27,7 @@ void GameStart(void)
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
-    gCamera.unk5C = 0;
+    gCamera.movementTask = NULL;
 
     gUnknown_030059D0[1] = 0;
     gUnknown_03005660.unk10 = 0;

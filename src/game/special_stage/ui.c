@@ -196,11 +196,11 @@ static void CreateRingCounter(struct SpecialStageUI *ui)
                 sprite->anim, 0x1000, 100, 0x10, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTens];
-    sub_806CA88(&ui->ringsTensDigit, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
+    sub_806CA88(&ui->ringsTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
                 0x1000, 0x6C, 0x10, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsUnits];
-    sub_806CA88(&ui->ringsUnitsDigit, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
+    sub_806CA88(&ui->ringsUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
                 0x1000, 0x74, 0x10, 1, sprite->variant, 0);
 
     sub_806CA88(&ui->unk154, RENDER_TARGET_SCREEN, 8, 0x378, 0x1000, 0x78, 0xE, 2, 0, 0);
@@ -210,11 +210,11 @@ static void CreateRingCounter(struct SpecialStageUI *ui)
                 sprite->anim, 0x1000, 0x7C, 0x18, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTargetTens];
-    sub_806CA88(&ui->ringsTargetTensDigit, RENDER_TARGET_SCREEN, sprite->unk4,
+    sub_806CA88(&ui->ringsTargetTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4,
                 sprite->anim, 0x1000, 0x84, 0x18, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTargetUnits];
-    sub_806CA88(&ui->ringsTargetUnitsDigit, RENDER_TARGET_SCREEN, sprite->unk4,
+    sub_806CA88(&ui->ringsTargetUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4,
                 sprite->anim, 0x1000, 0x8C, 0x18, 1, sprite->variant, 0);
 }
 
@@ -234,10 +234,10 @@ void sub_806FFC8(void)
     }
 
     if (stage->ringsHundreds != 0 || stage->ringsTens != 0) {
-        sub_80051E8(&ui->ringsTensDigit);
+        sub_80051E8(&ui->ringsTENS_DIGIT);
     }
 
-    sub_80051E8(&ui->ringsUnitsDigit);
+    sub_80051E8(&ui->ringsUNITS_DIGIT);
     sub_80051E8(&ui->unk154);
 
     if (stage->ringsTargetHundreds != 0) {
@@ -245,10 +245,10 @@ void sub_806FFC8(void)
     }
 
     if (stage->ringsTargetHundreds != 0 || stage->ringsTargetTens != 0) {
-        sub_80051E8(&ui->ringsTargetTensDigit);
+        sub_80051E8(&ui->ringsTargetTENS_DIGIT);
     }
 
-    sub_80051E8(&ui->ringsTargetUnitsDigit);
+    sub_80051E8(&ui->ringsTargetUNITS_DIGIT);
 }
 
 void sub_8070078(void)
@@ -266,13 +266,13 @@ void sub_8070078(void)
     sub_8004558(element);
 
     sprite = &sDigitSprites[stage->ringsTens];
-    element = &ui->ringsTensDigit;
+    element = &ui->ringsTENS_DIGIT;
     element->graphics.anim = sprite->anim;
     element->variant = sprite->variant;
     sub_8004558(element);
 
     sprite = &sDigitSprites[stage->ringsUnits];
-    element = &ui->ringsUnitsDigit;
+    element = &ui->ringsUNITS_DIGIT;
     element->graphics.anim = sprite->anim;
     element->variant = sprite->variant;
     sub_8004558(element);

@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 
 #define SPECIAL_STAGE_ZONE_SIZE 8
 
@@ -29,7 +29,7 @@ struct SpecialStage {
 
     Sprite introText;
     Background unk48;
-    struct UNK_802D4CC_UNK270 transition;
+    struct TransitionState transition;
     s32 unk94[DISPLAY_HEIGHT][2];
     s32 cameraX;
     s32 cameraY;

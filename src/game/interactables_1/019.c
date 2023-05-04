@@ -10,6 +10,7 @@
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -57,8 +58,8 @@ void initSprite_Interactable_019(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     platform->unk3C = 0;
 
     // @BUG Loads the -2 set through SET_MAP_ENTITY_INITIALIZED
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
 #ifdef UBFIX
@@ -94,8 +95,8 @@ void Task_Interactable_019(void)
     MapEntity *me = base->me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(base->spriteX, base->regionX);
-    screenY = SpriteGetScreenPos(me->y, base->regionY);
+    screenX = TO_WORLD_POS(base->spriteX, base->regionX);
+    screenY = TO_WORLD_POS(me->y, base->regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
@@ -105,8 +106,7 @@ void Task_Interactable_019(void)
         platform->unk3C = 0;
     }
 
-    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
+    if (!IS_SINGLE_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     }
@@ -132,16 +132,15 @@ void Task_805E35C(void)
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
+    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
     sub_800C060(displayed, screenX, screenY, &gPlayer);
 
-    if ((gGameMode >= GAME_MODE_MULTI_PLAYER)
-        && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
+    if (!IS_SINGLE_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
         gCurTask->main = Task_805E480;
     } else if (platform->unk3C++ > 30) {
@@ -172,8 +171,8 @@ void Task_805E480(void)
     u16 *oam_ptr;
     u16 *oam;
 
-    screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
+    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
@@ -263,8 +262,8 @@ void Task_805E6A4(void)
     u16 *oam_ptr;
     u16 *oam;
 
-    screenX = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, platform->base.regionY);
+    screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 

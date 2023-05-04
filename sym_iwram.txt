@@ -29,7 +29,7 @@ build/sa2/src/core.o(.data);
 . = 0x00005438; gUnknown_03005438 = .;
 . = 0x0000543C; gUnknown_0300543C = .;
 . = 0x00005440; gUnknown_03005440 = .;
-. = 0x00005444; gUnknown_03005444 = .;
+. = 0x00005444; gTrappedAnimalVariant = .;
 . = 0x00005448; gNumLives = .;
 . = 0x0000544C; gUnknown_0300544C = .;
 . = 0x00005450; gUnknown_03005450 = .;
@@ -83,22 +83,21 @@ build/sa2/src/core.o(.data);
 . = 0x00005848; gGameStageTask = .;
 . = 0x00005850; gUnknown_03005850 = .;
 . = 0x00005960; gCamera = .;
+
+/* part of camera */
 . = 0x000059C8; gUnknown_030059C8 = .;
 . = 0x000059D0; gUnknown_030059D0 = .;
 . = 0x000059D8; gUnknown_030059D8 = .;
+
 . = 0x000059E0; gPlayer = .;
-. = 0x000059E8; gUnknown_030059E8 = .;
-. = 0x00005A42; gUnknown_03005A42 = .;
-. = 0x00005A44; gUnknown_03005A44 = .;
-. = 0x00005A70; gUnknown_03005A70 = .;
 . = 0x00005AA0; gUnknown_03005AA0 = .;
 . = 0x00005AF0; gUnknown_03005AF0 = .;
 . = 0x00005AFC; gUnknown_03005AFC = .;
 . = 0x00005B34; gUnknown_03005B34 = .;
 . = 0x00005B38; gPlayerControls = .;
 . = 0x00005B40; gUnknown_03005B40 = .;
-. = 0x00005B44; gUnknown_03005B44 = .;
-. = 0x00005B48; gUnknown_03005B48 = .;
+. = 0x00005B44; gStageUITask = .;
+. = 0x00005B48; gDebugUITask = .;
 . = 0x00005B4C; gUnknown_03005B4C = .;
 . = 0x00005B50; 
 

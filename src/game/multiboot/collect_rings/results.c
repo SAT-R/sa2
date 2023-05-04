@@ -8,7 +8,7 @@
 #include "sprite.h"
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
@@ -71,7 +71,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gMultiSioEnabled = TRUE;
     gFlags &= ~0x4000;
     m4aSoundVSyncOn();
-    gGameMode = 5;
+    gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
 
     CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);

@@ -1,6 +1,6 @@
 #include "global.h"
 #include "game/special_stage/tables.h"
-#include "zones.h"
+#include "constants/zones.h"
 
 // bearing, acceleration, rotateSpeed, maxSpeed
 const u16 gUnknown_080DF968[][4] = {

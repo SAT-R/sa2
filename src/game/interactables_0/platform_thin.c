@@ -8,7 +8,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_0/platform_thin.h"
-#include "zones.h"
+#include "constants/zones.h"
 
 #include "constants/move_states.h"
 #include "constants/songs.h"
@@ -91,8 +91,8 @@ void initSprite_Interactable_CommonThinPlatform(MapEntity *me, u16 spriteRegionX
     platform->unk40 = 0;
     platform->unk44 = 0;
 
-    sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     sprite->graphics.dest
@@ -128,13 +128,13 @@ static void Task_CommonPlatformThinMain(void)
     platform = TaskGetStructPtr(gCurTask);
     sprite = &platform->sprite;
     me = platform->base.me;
-    x = SpriteGetScreenPos(platform->base.spriteX, platform->base.regionX);
-    y = SpriteGetScreenPos(me->y, platform->base.regionY);
+    x = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    y = TO_WORLD_POS(me->y, platform->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode) && (s8)me->x == -3) {
+    if (!IS_SINGLE_PLAYER && (s8)me->x == -3) {
         CreatePlatformBreakParticles(x, y);
 
         if (player->moveState & MOVESTATE_8 && player->unk3C == sprite) {
@@ -189,7 +189,7 @@ static void Task_CommonPlatformThinMain(void)
         }
     }
     if (something) {
-        if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (!IS_SINGLE_PLAYER) {
             struct UNK_3005510 *unk5510 = sub_8019224();
             unk5510->unk0 = 1;
             unk5510->unk1 = platform->base.regionX;

@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "trig.h"
@@ -27,7 +27,7 @@ struct ExtraEndingCutScene {
     Sprite unk280[4];
     Sprite unk340;
 
-    struct UNK_802D4CC_UNK270 unk370;
+    struct TransitionState unk370;
 
     u8 unk37C;
     u8 unk37D;
@@ -137,7 +137,7 @@ void CreateExtraEndingFallCutScene(void)
     u8 j, i;
     struct Task *t;
     struct ExtraEndingCutScene *scene = NULL;
-    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    struct TransitionState *transition = NULL;
 
     SeedRng(0, 0xFFFF);
     gDispCnt = 0x1140;
@@ -220,12 +220,12 @@ void CreateExtraEndingFallCutScene(void)
 
     scene->unk478 = -1;
 
-    transitionConfig = &scene->unk370;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk6 = 0x80;
-    transitionConfig->unk8 = 0x3FBF;
-    transitionConfig->unkA = 0;
+    transition = &scene->unk370;
+    transition->unk0 = 1;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x80;
+    transition->unk8 = 0x3FBF;
+    transition->unkA = 0;
 
     scene->unk398 = OBJ_VRAM0;
 
@@ -462,8 +462,8 @@ void sub_80913DC(void);
 void sub_8090480(void)
 {
     struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
-    transitionConfig->unk2 = 2;
+    struct TransitionState *transition = &scene->unk370;
+    transition->unk2 = 2;
 
     sub_8090E18(scene);
     sub_8091484(scene);
@@ -485,8 +485,8 @@ void sub_8090480(void)
     sub_8091044(scene);
     sub_8090F6C(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_80913DC;
     }
 }
@@ -496,10 +496,10 @@ void sub_8091468(void);
 void sub_8090520(void)
 {
     struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
+    struct TransitionState *transition = &scene->unk370;
 
-    transitionConfig->unk8 = 0x3FFF;
-    transitionConfig->unk2 = 1;
+    transition->unk8 = 0x3FFF;
+    transition->unk2 = 1;
 
     sub_8090E18(scene);
     sub_8091484(scene);
@@ -520,8 +520,8 @@ void sub_8090520(void)
 
     sub_8091044(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8091468;
     }
 }
@@ -529,7 +529,7 @@ void sub_8090520(void)
 void sub_80905C0(void)
 {
     struct ExtraEndingCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk370;
+    struct TransitionState *transition = &scene->unk370;
     sub_8090E18(scene);
     sub_8091484(scene);
 

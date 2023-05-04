@@ -202,8 +202,8 @@ void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(MapEntity *me,
 
     pipe->spriteX = me->x;
     pipe->spriteY = spriteY;
-    pipe->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    pipe->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    pipe->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    pipe->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -380,8 +380,8 @@ void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(MapEntity *me,
     horn->spriteX = me->x;
     horn->spriteY = spriteY;
 
-    horn->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    horn->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    horn->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    horn->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

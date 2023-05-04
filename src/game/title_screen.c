@@ -7,7 +7,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "game/save.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "input_recorder.h"
 #include "game/math.h"
 #include "game/math.h"
@@ -15,8 +15,7 @@
 #include "game/options_screen.h"
 #include "game/game.h"
 #include "game/time_attack/lobby.h"
-#include "player.h"
-#include "zones.h"
+#include "constants/zones.h"
 #include "data/recordings.h"
 #include "trig.h"
 #include "game/backgrounds.h"
@@ -45,7 +44,7 @@ struct TitleScreen {
     Sprite unk240;
 
     // fade config
-    struct UNK_802D4CC_UNK270 unk270;
+    struct TransitionState unk270;
 
     struct UNK_3005B80_UNK4 unk27C;
 
@@ -287,7 +286,7 @@ void CreateTitleScreen(void)
 {
     struct Task *t;
     struct TitleScreen *titleScreen;
-    struct UNK_802D4CC_UNK270 *config270;
+    struct TransitionState *transition;
     struct UNK_3005B80_UNK4 *config27C;
     s32 i, val;
     s16 denom;
@@ -323,13 +322,13 @@ void CreateTitleScreen(void)
         titleScreen->wavesTranslationY[i] = Div(65536, val);
     };
 
-    config270 = &titleScreen->unk270;
-    config270->unk0 = 1;
-    config270->unk4 = 0;
-    config270->unk2 = 2;
-    config270->unk6 = 0x100;
-    config270->unk8 = 0x3FBF;
-    config270->unkA = 0;
+    transition = &titleScreen->unk270;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->speed = 0x100;
+    transition->unk8 = 0x3FBF;
+    transition->unkA = 0;
 
     config27C = &titleScreen->unk27C;
     config27C->unk0 = 0;
@@ -347,12 +346,12 @@ void CreateTitleScreen(void)
     m4aSongNumStart(MUS_INTRO);
     gFlags |= 0x8000;
 
-    sub_802D4CC(config270);
+    NextTransitionFrame(transition);
 }
 
 static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
 {
-    struct UNK_802D4CC_UNK270 *config270;
+    struct TransitionState *transition;
     Background *config0, *config40;
 
     // Size of filler between unk2B4
@@ -368,13 +367,13 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     titleScreen->introTransitionStep = 0;
     titleScreen->introPanUpVelocity = 1;
 
-    config270 = &titleScreen->unk270;
-    config270->unk0 = 1;
-    config270->unk4 = 0;
-    config270->unk2 = 2;
-    config270->unk6 = 0x200;
-    config270->unk8 = 0x3fbf;
-    config270->unkA = 0;
+    transition = &titleScreen->unk270;
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->speed = 0x200;
+    transition->unk8 = 0x3fbf;
+    transition->unkA = 0;
 
     InitTitleScreenUI(titleScreen);
 
@@ -460,7 +459,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
 
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
-    sub_802D4CC(&titleScreen->unk270);
+    NextTransitionFrame(&titleScreen->unk270);
 }
 
 // Maybe create background sprites
@@ -1082,7 +1081,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen *titleScreen)
 static void Task_PlayModeMenuMain(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *config270;
+    struct TransitionState *transition;
 
     sub_80051E8(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
@@ -1113,14 +1112,14 @@ static void Task_PlayModeMenuMain(void)
 
             gCurTask->main = Task_SinglePlayerSelectedTransitionAnim;
         } else {
-            config270 = &titleScreen->unk270;
+            transition = &titleScreen->unk270;
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_SINGLE_PLAYER],
                                      TRANSITION_OUT);
 
-            config270->unk8 = 0x3FFF;
-            config270->unk4 = 0;
-            config270->unk6 = 0x100;
-            config270->unk2 = 1;
+            transition->unk8 = 0x3FFF;
+            transition->unk4 = 0;
+            transition->speed = 0x100;
+            transition->unk2 = 1;
 
             titleScreen->menuCursor = SPECIAL_MENU_INDEX_MULTI_PLAYER;
             gCurTask->main = Task_HandleTitleScreenExit;
@@ -1199,7 +1198,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen *titleScr
 static void Task_SinglePlayerMenuMain(void)
 {
     struct TitleScreen *titleScreen;
-    struct UNK_802D4CC_UNK270 *config270;
+    struct TransitionState *transition;
     u8 menuIndex;
 
     u8 numMenuItems = 3;
@@ -1237,15 +1236,15 @@ static void Task_SinglePlayerMenuMain(void)
     }
 
     if (gPressedKeys & A_BUTTON) {
-        config270 = &titleScreen->unk270;
-        config270->unk8 = 0x3FFF;
+        transition = &titleScreen->unk270;
+        transition->unk8 = 0x3FFF;
         if (titleScreen->menuCursor
             == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
-            config270->unk8 = 0x3FBF;
+            transition->unk8 = 0x3FBF;
         }
-        config270->unk6 = 0x100;
-        config270->unk4 = 0;
-        config270->unk2 = 1;
+        transition->speed = 0x100;
+        transition->unk4 = 0;
+        transition->unk2 = 1;
 
         for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
             if (menuIndex != titleScreen->menuCursor) {
@@ -1266,7 +1265,7 @@ static void Task_HandleTitleScreenExit(void)
     Sprite *menuItem;
     u8 i;
 
-    if (sub_802D4CC(&titleScreen->unk270) == 1) {
+    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         gUnknown_03005424 = EXTRA_STATE__CLEAR;
         gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
@@ -1400,7 +1399,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     gBldRegs.bldCnt = 0;
     gFlags &= ~0x8000;
 
-    sub_802D4CC(&titleScreen->unk270);
+    NextTransitionFrame(&titleScreen->unk270);
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
     ShowGameLogo(titleScreen);
@@ -1417,7 +1416,7 @@ static void Task_JumpToPlayModeMenu(void)
     sub_80051E8(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (sub_802D4CC(&titleScreen->unk270) == 1) {
+    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PlayModeMenuMain;
@@ -1427,7 +1426,7 @@ static void Task_JumpToPlayModeMenu(void)
 static void Task_JumpToSinglePlayerMenu(void)
 {
     struct TitleScreen *titleScreen;
-    struct UNK_802D4CC_UNK270 *config270;
+    struct TransitionState *transition;
 
     u8 numMenuItems = 3;
     if (gLoadedSaveGame->chaoGardenUnlocked) {
@@ -1439,7 +1438,7 @@ static void Task_JumpToSinglePlayerMenu(void)
 
     ShowGameLogo(titleScreen);
 
-    if (sub_802D4CC(&titleScreen->unk270) == 1) {
+    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_SinglePlayerMenuMain;
@@ -1825,16 +1824,16 @@ void CreateTitleScreenAtSinglePlayerMenu(void)
 
 static void SkipIntro(struct TitleScreen *titleScreen)
 {
-    struct UNK_802D4CC_UNK270 *config270 = &titleScreen->unk270;
+    struct TransitionState *transition = &titleScreen->unk270;
     gFlags &= ~0x4;
 
-    config270->unk0 = 1;
-    config270->unk4 = 0;
-    config270->unk2 = 2;
-    config270->unk6 = 0x100;
-    config270->unk8 = 0x3FBF;
-    config270->unkA = 0;
-    sub_802D4CC(config270);
+    transition->unk0 = 1;
+    transition->unk4 = 0;
+    transition->unk2 = 2;
+    transition->speed = 0x100;
+    transition->unk8 = 0x3FBF;
+    transition->unkA = 0;
+    NextTransitionFrame(transition);
 
     m4aMPlayAllStop();
 
@@ -1850,7 +1849,7 @@ static void Task_ShowPressStartMenu(void)
     sub_80051E8(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (sub_802D4CC(&titleScreen->unk270) == 1) {
+    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PressStartMenuMain;
@@ -1862,7 +1861,7 @@ static void Task_IntroStartSegaLogoAnim(void)
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
-    if (sub_802D4CC(&titleScreen->unk270) == 1) {
+    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         gCurTask->main = Task_IntroFadeInSegaLogoAnim;
 
         gBldRegs.bldAlpha = FadeInBlend(0);

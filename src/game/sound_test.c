@@ -7,7 +7,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "data/palettes.h"
 
 #include "constants/animations.h"
@@ -18,7 +18,7 @@
 
 struct SoundTestScreen {
     struct OptionsScreen *optionsScreen;
-    struct UNK_802D4CC_UNK270 unk4;
+    struct TransitionState unk4;
     struct UNK_3005B80_UNK4 unk10;
 
     // Only 1 used, but fits 2
@@ -276,7 +276,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
         = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen),
                      0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
-    struct UNK_802D4CC_UNK270 *unk4;
+    struct TransitionState *unk4;
     struct UNK_3005B80_UNK4 *unk10;
     u32 i;
 
@@ -311,7 +311,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     unk4->unk0 = 0;
     unk4->unk2 = 2;
     unk4->unk4 = 0;
-    unk4->unk6 = 0x100;
+    unk4->speed = 0x100;
     unk4->unkA = 0;
     unk4->unk8 = 0xff;
 
@@ -423,7 +423,7 @@ static void Task_SoundTestScreenMain(void)
 
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
     Sprite *backControlName = &soundTestScreen->backControlName;
-    struct UNK_802D4CC_UNK270 *unk4 = &soundTestScreen->unk4;
+    struct TransitionState *unk4 = &soundTestScreen->unk4;
 
     const u8 *soundsList;
     u8 numSounds;
@@ -552,7 +552,7 @@ static void Task_SoundTestScreenMain(void)
             unk4->unk0 = 0;
             unk4->unk2 = 1;
             unk4->unk4 = 0;
-            unk4->unk6 = 0x100;
+            unk4->speed = 0x100;
             unk4->unkA = 0;
             unk4->unk8 = 0xFF;
 
@@ -755,13 +755,13 @@ static void Task_SoundTestScreenInOutTransition(void)
         sub_8004558(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
-            sub_802D4CC(&soundTestScreen->unk4);
+            NextTransitionFrame(&soundTestScreen->unk4);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
             sub_8004558(idleCream);
         }
-        sub_802D4CC(&soundTestScreen->unk4);
+        NextTransitionFrame(&soundTestScreen->unk4);
     }
 
     if (soundTestScreen->animFrame > 60) {

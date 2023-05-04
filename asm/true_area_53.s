@@ -1893,7 +1893,7 @@ _0803AA76:
 	strh r0, [r4, #6]
 _0803AA92:
 	adds r0, r4, #0
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	b _0803AC18
 	.align 2, 0
 _0803AA9C: .4byte gCurTask
@@ -1908,7 +1908,7 @@ _0803AAA8:
 	strh r0, [r4, #4]
 	strh r0, [r4, #6]
 	adds r0, r4, #0
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	ldr r2, _0803AB64 @ =gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r2, r0]
@@ -2009,7 +2009,7 @@ _0803AB84:
 	movs r0, #0x28
 	strh r0, [r4, #6]
 	adds r0, r4, #0
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
@@ -21577,7 +21577,7 @@ sub_8044784: @ 0x08044784
 	mov r4, r8
 	strh r1, [r4, #4]
 	mov r0, r8
-	bl sub_802D4CC
+	bl NextTransitionFrame
 _080447BC:
 	ldr r0, _080447D0 @ =gFlags
 	ldr r1, [r0]
@@ -21598,7 +21598,7 @@ _080447D4:
 	mov r5, r8
 	strh r0, [r5, #4]
 	mov r0, r8
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	ldr r2, _080447F8 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #5
@@ -21775,7 +21775,7 @@ _0804491C:
 	strb r0, [r1]
 _08044946:
 	mov r0, r8
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	ldr r1, _080449C8 @ =gPlayer
 	ldr r0, [r1, #0xc]
 	asrs r6, r0, #8
@@ -34414,7 +34414,7 @@ sub_804AD68: @ 0x0804AD68
 	adds r5, r6, r0
 	ldr r1, _0804ADC4 @ =IWRAM_START + 0x48
 	adds r0, r6, r1
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
@@ -34560,7 +34560,7 @@ _0804AEA0:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl sub_802D4CC
+	bl NextTransitionFrame
 _0804AEC2:
 	ldr r0, _0804AED0 @ =gFlags
 	ldr r1, [r0]
@@ -34593,7 +34593,7 @@ _0804AED4:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	ldrb r0, [r5, #8]
 	movs r2, #0xb4
 	lsls r2, r2, #1
@@ -34710,7 +34710,7 @@ _0804AF34:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	b _0804B0CE
 	.align 2, 0
 _0804AFF4: .4byte gSineTable
@@ -34811,7 +34811,7 @@ _0804B096:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl sub_802D4CC
+	bl NextTransitionFrame
 _0804B0CE:
 	add sp, #8
 	pop {r3, r4, r5}
@@ -38336,7 +38336,7 @@ sub_804CC30: @ 0x0804CC30
 	strh r1, [r2]
 	ldr r1, _0804CC80 @ =IWRAM_START + 0x48
 	adds r0, r0, r1
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	ldr r0, _0804CC84 @ =gUnknown_03005490
 	ldr r0, [r0]
 	ldr r1, _0804CC88 @ =gRingCount
@@ -40244,7 +40244,7 @@ _0804DC24: .4byte gIntrTable + 4
 _0804DC28: .4byte gCamera
 _0804DC2C:
 	adds r0, r7, #0
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1

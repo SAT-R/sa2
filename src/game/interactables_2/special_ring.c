@@ -35,7 +35,7 @@ extern void sub_80122DC(s32, s32);
 void initSprite_Interactable_SpecialRing(MapEntity *me, u16 spriteRegionX,
                                          u16 spriteRegionY, u8 spriteY)
 {
-    if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (IS_SINGLE_PLAYER) {
         struct Task *t
             = TaskCreate(Task_Interactable_SpecialRing, sizeof(Sprite_SpecialRing),
                          0x4040, 0, TaskDestructor_Interactable_SpecialRing);
@@ -43,8 +43,8 @@ void initSprite_Interactable_SpecialRing(MapEntity *me, u16 spriteRegionX,
         Sprite_SpecialRing *ring = TaskGetStructPtr(t);
         Sprite *disp;
 
-        ring->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-        ring->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+        ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
+        ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
         ring->base.me = me;

@@ -12,6 +12,7 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -68,8 +69,8 @@ void initSprite_Interactable_Booster(MapEntity *me, u16 spriteRegionX, u16 sprit
     booster->base.spriteX = me->x;
     booster->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6)
         value = 1;
@@ -109,8 +110,8 @@ void Task_Interactable_Booster(void)
 
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(booster->base.spriteX, booster->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, booster->base.regionY);
+    screenX = TO_WORLD_POS(booster->base.spriteX, booster->base.regionX);
+    screenY = TO_WORLD_POS(me->y, booster->base.regionY);
     displayed->x = screenX - gCamera.x;
     displayed->y = screenY - gCamera.y;
 
@@ -133,7 +134,7 @@ void Task_Interactable_Booster(void)
         gPlayer.unk62 = 0;
         gPlayer.unk5A = 1;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             if ((displayed->unk10 & 0x800) == 0) {
                 if ((displayed->unk10 & 0x400) == 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);

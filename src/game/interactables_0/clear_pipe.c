@@ -44,8 +44,8 @@ static void Task_ClearPipe_Start(void)
     s32 regionY = base->regionY;
 
     s32 screenX, screenY;
-    screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(me->y, regionY);
+    screenX = TO_WORLD_POS(spriteX, regionX);
+    screenY = TO_WORLD_POS(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
         && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))
@@ -91,8 +91,8 @@ static void Task_ClearPipe_End(void)
     s32 regionY = base->regionY;
 
     s32 screenX, screenY;
-    screenX = SpriteGetScreenPos(spriteX, regionX);
-    screenY = SpriteGetScreenPos(me->y, regionY);
+    screenX = TO_WORLD_POS(spriteX, regionX);
+    screenY = TO_WORLD_POS(me->y, regionY);
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
         && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))

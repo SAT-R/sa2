@@ -42,8 +42,8 @@ void initSprite_Interactable_RotatingHandle(MapEntity *me, u16 spriteRegionX,
         rotatingHandle->unk3E = 0;
         rotatingHandle->unk40 = 0;
 
-        sprite->x = SpriteGetScreenPos(me->x, spriteRegionX);
-        sprite->y = SpriteGetScreenPos(me->y, spriteRegionY);
+        sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
+        sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
         sprite->graphics.dest = VramMalloc(9);
@@ -67,9 +67,8 @@ static void sub_805EA94(void)
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &rotatingHandle->sprite;
     MapEntity *me = rotatingHandle->base.me;
-    s32 x
-        = SpriteGetScreenPos(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
-    s32 y = SpriteGetScreenPos(me->y, rotatingHandle->base.regionY);
+    s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
@@ -152,8 +151,8 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
     s32 cos;
     s32 sin;
 
-    x = SpriteGetScreenPos(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
-    y = SpriteGetScreenPos(me->y, rotatingHandle->base.regionY);
+    x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     rotatingHandle->unk3C = (rotatingHandle->unk3C + rotatingHandle->unk3E) & 0x3FF0;
     cycle = ONE_CYCLE;
@@ -262,9 +261,8 @@ static void sub_805EF90(void)
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &rotatingHandle->sprite;
     MapEntity *me = rotatingHandle->base.me;
-    s32 x
-        = SpriteGetScreenPos(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
-    s32 y = SpriteGetScreenPos(me->y, rotatingHandle->base.regionY);
+    s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
+    s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
     u8 temp3;
 

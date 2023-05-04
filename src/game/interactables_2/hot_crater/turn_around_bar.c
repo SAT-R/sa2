@@ -1,7 +1,7 @@
 #include "global.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/turn_around_bar.h"
+#include "game/interactables_2/hot_crater/turn_around_bar.h"
 #include "task.h"
 #include "sprite.h"
 #include "malloc_vram.h"
@@ -55,8 +55,8 @@ void initSprite_InteractableTurnAroundBar(MapEntity *me, u16 spriteRegionX,
     sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     sprite->variant = 0;
 
-    turnAroundBar->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    turnAroundBar->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    turnAroundBar->x = TO_WORLD_POS(me->x, spriteRegionX);
+    turnAroundBar->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
     sub_8004558(sprite);
 }

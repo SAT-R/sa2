@@ -9,7 +9,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "multi_sio.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "lib/m4a.h"
 #include "constants/text.h"
 #include "game/game.h"
@@ -20,7 +20,7 @@
 #include "constants/songs.h"
 
 struct MultiPakConnectScreen {
-    struct UNK_802D4CC_UNK270 unk0;
+    struct TransitionState unk0;
     Sprite unkC;
     Sprite unk3C;
     Sprite unk6C;
@@ -60,7 +60,7 @@ void StartMultiPakConnect(void)
 {
     struct Task *t;
     struct MultiPakConnectScreen *connectScreen;
-    struct UNK_802D4CC_UNK270 *unk0;
+    struct TransitionState *unk0;
     Sprite *unkC;
     Background *unk9C;
     const TileInfo *unkD64;
@@ -95,10 +95,10 @@ void StartMultiPakConnect(void)
     unk0->unk0 = 1;
     unk0->unk4 = 0;
     unk0->unk2 = 2;
-    unk0->unk6 = 0x100;
+    unk0->speed = 0x100;
     unk0->unk8 = 0x3FFF;
     unk0->unkA = 0;
-    sub_802D4CC(unk0);
+    NextTransitionFrame(unk0);
 
     unkC = &connectScreen->unkC;
     unkC->graphics.dest = vramAddr;
@@ -206,7 +206,7 @@ static void sub_805ADAC(void)
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    sub_802D4CC(&connectScreen->unk0);
+    NextTransitionFrame(&connectScreen->unk0);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {
@@ -499,7 +499,7 @@ static void sub_805B4C0(void)
             return;
         }
 
-        gGameMode = 3;
+        gGameMode = GAME_MODE_MULTI_PLAYER;
         for (i = 3; i >= 0; i--) {
             if (GetBit(gMultiplayerConnections, i)) {
                 if (i == 0) {

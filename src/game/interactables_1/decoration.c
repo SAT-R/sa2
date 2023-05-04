@@ -48,8 +48,8 @@ void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
         decoBase->base.spriteX = me->x;
         decoBase->base.spriteY = spriteY;
 
-        deco->x = SpriteGetScreenPos(me->x, regionX);
-        deco->y = SpriteGetScreenPos(me->y, regionY);
+        deco->x = TO_WORLD_POS(me->x, regionX);
+        deco->y = TO_WORLD_POS(me->y, regionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
         deco->graphics.dest = VramMalloc(sDecoTileAnimInfo[me->decoId].numTiles);

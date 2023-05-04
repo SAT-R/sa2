@@ -3,11 +3,12 @@
 #include "game/game.h"
 #include "task.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/zones.h"
 
 struct RaceProgressIndicator {
     Sprite avatars[4];

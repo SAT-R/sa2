@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
@@ -11,6 +12,7 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -37,7 +39,6 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
-extern s32 sub_801E4E4(s32, s32, u32, u32, u8 *, void *);
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void sub_801F214(void);
 extern void sub_801F488(void);
@@ -815,9 +816,8 @@ void PlayerCB_Spindash(Player *player)
 
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
 
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
+                                        : player->y + player->speedAirY;
 
         {
             s32 rot = (s8)player->rotation;
@@ -870,9 +870,8 @@ void PlayerCB_Spindash(Player *player)
 
         player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
 
-        player->y = (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
-            ? player->y - player->speedAirY
-            : player->y + player->speedAirY;
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
+                                        : player->y + player->speedAirY;
 
         sub_8022D6C(player);
 
@@ -890,9 +889,6 @@ void PlayerCB_Spindash(Player *player)
     }
 }
 
-extern s32 sub_801E6D4(s32, s32, s32, s32, s32, s32 (*)(s32, s32, s32, s32));
-extern s32 sub_801EE64(s32, s32, s32, s32);
-
 void sub_802669C(Player *p)
 {
     s32 newY;
@@ -904,14 +900,14 @@ void sub_802669C(Player *p)
 
     p->unk37 |= 0x80;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if (GRAVITY_IS_INVERTED) {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) - p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           -8, 0, sub_801EE64);
+                           -8, NULL, sub_801EE64);
 
         newY = p->y - Q_24_8(newY);
     } else {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           8, 0, sub_801EE64);
+                           8, NULL, sub_801EE64);
 
         newY = p->y + Q_24_8(newY);
     }
@@ -995,7 +991,7 @@ void PlayerCB_8026810(Player *p)
             m4aSongNumStop(SE_GRINDING);
             PLAYERFN_SET(PlayerCB_8025E18);
         } else {
-            if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+            if (IS_SINGLE_PLAYER) {
                 sub_801F488();
             }
         }
@@ -1379,7 +1375,7 @@ void PlayerCB_8027324(Player *p)
 
 void PlayerCB_80273D0(Player *p)
 {
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_802A4B8(p);
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         sub_802A468(p);
@@ -1887,7 +1883,6 @@ void PlayerCB_80286F0(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_80287AC, p);
 }
 
-#include "game/unknown_object_6998.h"
 void PlayerCB_80287AC(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
@@ -1903,7 +1898,7 @@ void PlayerCB_80287AC(Player *p)
 
         PLAYERFN_SET(PlayerCB_802890C);
 
-        if (GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+        if (IS_SINGLE_PLAYER) {
             if (u5B == 2 && character == CHARACTER_SONIC) {
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 0);
             }
@@ -1911,7 +1906,7 @@ void PlayerCB_80287AC(Player *p)
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 1);
             }
             if (u5B == 2 && character == CHARACTER_AMY) {
-                sub_8086998();
+                CreateHeartParticles();
             }
         }
     }
@@ -2626,7 +2621,7 @@ s32 sub_8029A28(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2657,7 +2652,7 @@ s32 sub_8029A74(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2689,7 +2684,7 @@ s32 sub_8029AC0(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2723,7 +2718,7 @@ s32 sub_8029B0C(Player *p, u8 *p1, s32 *out)
     if (p1Value & 0x1)
         *p1 = 0;
     else {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             s32 val = -0x80;
             val -= p1Value;
             *p1 = val;
@@ -2739,7 +2734,7 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
 
     u8 dummy;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, p1, out);
     } else {
         result = sub_8029AC0(p, p1, out);
@@ -2754,7 +2749,7 @@ s32 sub_8029B88(Player *p, u8 *p1, int *out)
 
     u8 dummy;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if (GRAVITY_IS_INVERTED) {
         result = sub_8029AC0(p, p1, out);
     } else {
         result = sub_8029B0C(p, p1, out);
@@ -2877,7 +2872,7 @@ bool32 sub_8029DE8(Player *p)
     s32 playerY = p->y;
 
     if (!(p->moveState & MOVESTATE_80000000)) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q_24_8(cam->unk28))
                 return TRUE;
         } else {
@@ -2895,7 +2890,7 @@ bool32 sub_8029E24(Player *p)
     s32 playerY = p->y;
 
     if (!(p->moveState & MOVESTATE_80000000)) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q_24_8(cam->y - (DISPLAY_HEIGHT / 2)))
                 return TRUE;
         } else {
@@ -2912,7 +2907,7 @@ bool32 sub_8029E6C(Player *p)
     u8 rot = p->rotation;
 
     if (p->unk5E & gPlayerControls.jump) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             rot += Q_24_8(0.25);
             rot = -rot;
             rot -= Q_24_8(0.25);
@@ -2952,7 +2947,7 @@ void sub_8029FA4(Player *p)
     if ((gUnknown_03005590 & mask) == 0) {
         s32 u17 = p->unk17;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             u17 = -u17;
         }
 

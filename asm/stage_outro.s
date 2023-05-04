@@ -148,7 +148,7 @@ _08030594:
 	lsls r0, r0, #6
 	strh r0, [r3, #4]
 	mov r0, sl
-	bl sub_802D4CC
+	bl NextTransitionFrame
 _080305B4:
 	ldr r0, _080305CC @ =0x00000707
 	cmp r4, r0
@@ -1211,7 +1211,7 @@ _08030E38: .4byte gVramGraphicsCopyCursor
 _08030E3C: .4byte gVramGraphicsCopyQueueIndex
 _08030E40:
 	adds r0, r7, #0
-	bl sub_802D4CC
+	bl NextTransitionFrame
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1

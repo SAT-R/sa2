@@ -4,7 +4,7 @@
 #include "game/entity.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "zones.h"
+#include "constants/zones.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -34,8 +34,8 @@ void initSprite_Interactable_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     ramp->base.spriteX = me->x;
     ramp->base.spriteY = spriteY;
 
-    displayed->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    displayed->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
+    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     temp = me->d.sData[0] & 3;
@@ -81,8 +81,8 @@ static void Task_Interactable_Ramp(void)
     do {
 #endif
 
-        screenX = SpriteGetScreenPos(ramp->base.spriteX, ramp->base.regionX);
-        screenY = SpriteGetScreenPos(me->y, ramp->base.regionY);
+        screenX = TO_WORLD_POS(ramp->base.spriteX, ramp->base.regionX);
+        screenY = TO_WORLD_POS(me->y, ramp->base.regionY);
         displayed->x = screenX - gCamera.x;
         displayed->y = screenY - gCamera.y;
 

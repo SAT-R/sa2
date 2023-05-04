@@ -6,8 +6,10 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/math.h"
+
 #include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/zones.h"
 
 typedef struct {
     u8 cameraY;

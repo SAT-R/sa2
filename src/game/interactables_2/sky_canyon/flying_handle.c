@@ -63,8 +63,8 @@ void initSprite_Interactable_SkyCanyon_FlyingHandle(MapEntity *me, u16 spriteReg
     flyingHandle->unk5C = 0;
     flyingHandle->unk5E = 0;
     flyingHandle->unk60 = 0;
-    flyingHandle->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    flyingHandle->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    flyingHandle->x = TO_WORLD_POS(me->x, spriteRegionX);
+    flyingHandle->y = TO_WORLD_POS(me->y, spriteRegionY);
     flyingHandle->offsetX = me->d.sData[0] * 8;
     flyingHandle->offsetY = me->d.sData[1] * 8;
     flyingHandle->width = flyingHandle->offsetX + me->d.uData[2] * 8;
@@ -107,7 +107,7 @@ void initSprite_Interactable_SkyCanyon_FlyingHandle(MapEntity *me, u16 spriteReg
 static void Task_ActiveMain(void)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807F8B4(flyingHandle);
     }
 
@@ -203,7 +203,7 @@ static void sub_807F4F0(Sprite_FlyingHandle *flyingHandle)
 static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
 {
     Sprite *sprite = &flyingHandle->sprite;
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sprite->x = Q_24_8_TO_INT(flyingHandle->unk6C[1][0]) - gCamera.x;
         sprite->y = Q_24_8_TO_INT(flyingHandle->unk6C[1][1]) - gCamera.y;
     } else {
@@ -236,7 +236,7 @@ static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
 static void Task_Interactable_SkyCanyon_FlyingHandle(void)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807F8B4(flyingHandle);
     }
 
@@ -256,7 +256,7 @@ static void sub_807F6F0(void)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         sub_807F8B4(flyingHandle);
     }
 

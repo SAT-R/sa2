@@ -87,7 +87,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
 {
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         return NULL;
     } else {
         struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0,
@@ -755,7 +755,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 {
     struct Task *result;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         result = NULL;
     } else {
         struct Task *t;
@@ -956,7 +956,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
 {
     struct Task *result;
 
-    if (!GAME_MODE_IS_SINGLE_PLAYER(gGameMode)) {
+    if (!IS_SINGLE_PLAYER) {
         result = NULL;
     } else {
         TaskStrc_801F15C *ts;
@@ -1200,7 +1200,7 @@ void sub_80131B4(Player *p)
                     }
 
                     if (result != 0) {
-                        u16 gravInv = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                        u16 gravInv = GRAVITY_IS_INVERTED;
                         if (gravInv) {
                             s32 playerBottomX;
                             s32 playerBottomY = Q_24_8_TO_INT(p->y);
@@ -1258,7 +1258,7 @@ void sub_80131B4(Player *p)
                         p->w.tf.flags |= MOVESTATE_IN_AIR;
                         return;
                     } else if (result != 0) {
-                        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                        if (!GRAVITY_IS_INVERTED) {
                             s32 playerBottomX;
                             s32 playerBottomY = Q_24_8_TO_INT(p->y);
                             playerBottomY += 1;
@@ -1364,7 +1364,7 @@ void sub_801350C(Player *p)
     if ((gUnknown_03005590 & 0x3) == 0) {
         s32 offsetY = p->unk17;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+        if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
         sub_801F5CC(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + offsetY);
@@ -1375,7 +1375,7 @@ void sub_801350C(Player *p)
     res = sub_8029B88(p, &rot, &p2);
 
     if (res < 12) {
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             res = -res;
         }
 
@@ -1418,7 +1418,7 @@ void sub_80135BC(Player *p)
         s32 offsetY;
         offsetY = p->unk17 - 14;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+        if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
         p->y += Q_24_8(offsetY);
@@ -1495,7 +1495,7 @@ void sub_80136E8(Player *p)
         if (p->unk5C & DPAD_UP) {
             s32 offsetY = Q_24_8(p->unk17);
 
-            if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
             }
 
@@ -1527,7 +1527,7 @@ void sub_80136E8(Player *p)
                 return;
             } else {
                 s32 offsetY = Q_24_8(9.0);
-                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                if (GRAVITY_IS_INVERTED) {
                     offsetY = -offsetY;
                 }
 
@@ -1551,7 +1551,7 @@ void sub_80136E8(Player *p)
         } else if (p->unk5C & DPAD_DOWN) {
             s32 speed;
             s32 offsetY = Q_24_8(p->unk17);
-            if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
             }
 
@@ -1564,14 +1564,14 @@ void sub_80136E8(Player *p)
                 return;
             }
 
-            if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (GRAVITY_IS_INVERTED) {
                 r2 = sub_8029AC0(p, &rot, NULL);
             } else {
                 r2 = sub_8029B0C(p, &rot, NULL);
             }
 
             if (r2 < 0) {
-                if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+                if (GRAVITY_IS_INVERTED) {
                     p->y -= Q_24_8(r2);
                 } else {
                     p->y += Q_24_8(r2);
@@ -1815,7 +1815,7 @@ void sub_8013C50(Player *p)
 {
     p->unk64 = 104;
 
-    if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+    if (GRAVITY_IS_INVERTED) {
         p->y += Q_24_8(p->unk17);
     } else {
         p->y -= Q_24_8(p->unk17);
@@ -1956,7 +1956,7 @@ void PlayerCB_8013E64(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
         p->rotation = 0;
 
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             p->y += Q_24_8(p->unk17);
         } else {
             p->y -= Q_24_8(p->unk17);

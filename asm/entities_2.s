@@ -10382,7 +10382,7 @@ _08018F30:
 	movs r5, #0
 	movs r4, #0
 	movs r0, #0x14
-	ldr r1, _080190A0 @ =gUnknown_03005A44
+	ldr r1, _080190A0 @ =gPlayer + 0x64
 	strh r0, [r1]
 	adds r0, r6, #0
 	movs r1, #0xe
@@ -10408,7 +10408,7 @@ _08018F30:
 	movs r0, #1
 	orrs r1, r0
 	movs r0, #0x1c
-	ldr r2, _080190A0 @ =gUnknown_03005A44
+	ldr r2, _080190A0 @ =gPlayer + 0x64
 	strh r0, [r2]
 	movs r0, #0x80
 	lsls r0, r0, #0x10
@@ -10501,7 +10501,7 @@ _08019090: .4byte gMultiplayerConnections
 _08019094: .4byte 0x04000128
 _08019098: .4byte 0xFFFFFBFF
 _0801909C: .4byte 0xFFFFFEFF
-_080190A0: .4byte gUnknown_03005A44
+_080190A0: .4byte gPlayer + 0x64
 _080190A4: .4byte gUnknown_03005424
 _080190A8: .4byte gUnknown_03005490
 _080190AC:

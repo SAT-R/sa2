@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "transition.h"
+#include "game/screen_transition.h"
 #include "task.h"
 #include "game/cutscenes/credits.h"
 #include "game/cutscenes/missing_emeralds.h"
@@ -33,7 +33,7 @@ struct FinalEndingLandCutScene {
     Sprite unk2C0[2];
 
     struct UNK_808D124_UNK180 unk320;
-    struct UNK_802D4CC_UNK270 unk32C;
+    struct TransitionState unk32C;
 
     u8 unk338;
     u8 unk339;
@@ -131,7 +131,7 @@ static const u8 gUnknown_080E1C55[] = {
 
 void CreateFinalEndingLandingCutScene(void)
 {
-    struct UNK_802D4CC_UNK270 *transitionConfig = NULL;
+    struct TransitionState *transition = NULL;
     struct UNK_808D124_UNK180 *transformer = NULL;
     struct FinalEndingLandCutScene *scene = NULL;
 
@@ -212,12 +212,12 @@ void CreateFinalEndingLandingCutScene(void)
     }
 
     scene->unk618 = OBJ_VRAM0;
-    transitionConfig = &scene->unk32C;
-    transitionConfig->unk2 = 2;
-    transitionConfig->unk0 = 1;
-    transitionConfig->unk4 = 0;
-    transitionConfig->unk6 = 0x100;
-    transitionConfig->unk8 = 0x3FBF;
+    transition = &scene->unk32C;
+    transition->unk2 = 2;
+    transition->unk0 = 1;
+    transition->unk4 = Q_8_8(0);
+    transition->speed = 0x100;
+    transition->unk8 = 0x3FBF;
     if (gSelectedCharacter == 1) {
         {
             Sprite *element;
@@ -544,10 +544,10 @@ void sub_8093F54(void);
 void sub_80932C8(void)
 {
     struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk32C;
+    struct TransitionState *transition = &scene->unk32C;
 
-    transitionConfig->unk2 = 1;
-    transitionConfig->unk8 = 0x3FFF;
+    transition->unk2 = 1;
+    transition->unk8 = 0x3FFF;
     sub_8093FA0(scene);
     sub_8093FF0(scene);
     sub_80934B8(scene);
@@ -559,8 +559,8 @@ void sub_80932C8(void)
     sub_80940BC(scene);
     sub_8093868(scene);
 
-    if (sub_802D4CC(transitionConfig) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_8093F54;
     }
 }
@@ -928,7 +928,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
 void sub_8093EDC(void)
 {
     struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct UNK_802D4CC_UNK270 *transitionConfig = &scene->unk32C;
+    struct TransitionState *transition = &scene->unk32C;
 
     sub_8093FA0(scene);
     sub_8093FF0(scene);
@@ -941,8 +941,8 @@ void sub_8093EDC(void)
     sub_80940BC(scene);
     sub_8093868(scene);
 
-    if (sub_802D4CC(&scene->unk32C) == 1) {
-        transitionConfig->unk4 = 0;
+    if (NextTransitionFrame(&scene->unk32C) == SCREEN_TRANSITION_COMPLETE) {
+        transition->unk4 = Q_8_8(0);
         gCurTask->main = sub_809334C;
     }
 }

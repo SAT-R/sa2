@@ -11,7 +11,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "malloc_ewram.h"
-#include "zones.h"
+#include "constants/zones.h"
 #include "constants/songs.h"
 
 void sub_806EA04(void);

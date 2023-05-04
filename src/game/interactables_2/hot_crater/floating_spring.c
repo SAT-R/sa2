@@ -5,11 +5,12 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "game/entity.h"
-#include "game/interactables_2/floating_spring.h"
+#include "game/interactables_2/hot_crater/floating_spring.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     SpriteBase base;
@@ -126,9 +127,9 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
     }
 
     floatingSpring->unk3C
-        = SpriteGetScreenPos(floatingSpring->base.spriteX, floatingSpring->base.regionX)
+        = TO_WORLD_POS(floatingSpring->base.spriteX, floatingSpring->base.regionX)
         + Q_24_8_TO_INT(floatingSpring->unk44);
-    floatingSpring->unk40 = SpriteGetScreenPos(me->y, floatingSpring->base.regionY)
+    floatingSpring->unk40 = TO_WORLD_POS(me->y, floatingSpring->base.regionY)
         + Q_24_8_TO_INT(floatingSpring->unk48);
 }
 

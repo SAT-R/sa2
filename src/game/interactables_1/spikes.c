@@ -11,6 +11,7 @@
 #include "constants/interactables.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -56,8 +57,8 @@ void initSprite_Interactable_Spikes_Up(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
@@ -97,8 +98,8 @@ void initSprite_Interactable_Spikes_Down(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
@@ -125,13 +126,13 @@ static void sub_805F810(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+    if (!GRAVITY_IS_INVERTED) {
         sub_80601F8(s, me, spikes, &gPlayer);
     } else {
         sub_8060440(s, me, spikes, &gPlayer);
@@ -166,15 +167,15 @@ static void sub_805F928(void)
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
         || (gUnknown_030053E0 != 0)) {
-        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+        if (!GRAVITY_IS_INVERTED) {
             sub_8060440(s, me, spikes, &gPlayer);
         } else {
             sub_80601F8(s, me, spikes, &gPlayer);
@@ -220,8 +221,8 @@ void initSprite_Interactable_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -270,8 +271,8 @@ static void sub_805FBA0(void)
     s = &spikes->s;
     me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -285,7 +286,7 @@ static void sub_805FBA0(void)
 #else
         register u32 gravityInverted asm("r9");
 #endif
-        gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+        gravityInverted = GRAVITY_IS_INVERTED;
         if (gravityInverted) {
             if (r4 & 0x10000) {
                 gPlayer.y += (r4 << 24) >> 16;
@@ -401,8 +402,8 @@ void initSprite_Interactable_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -430,8 +431,8 @@ static void Task_805FF68(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
@@ -440,7 +441,7 @@ static void Task_805FF68(void)
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
-        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+        if (!GRAVITY_IS_INVERTED) {
             procResult = sub_8060554(s, me, spikes, &gPlayer, &someParam);
         } else {
             procResult = sub_80609B4(s, me, spikes, &gPlayer, &someParam);
@@ -469,8 +470,8 @@ void initSprite_Interactable_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX,
     spikes->base.spriteX = me->x;
     spikes->base.spriteY = spriteY;
 
-    s->x = SpriteGetScreenPos(me->x, spriteRegionX);
-    s->y = SpriteGetScreenPos(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(4 * 4);
@@ -498,8 +499,8 @@ static void Task_806012C(void)
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
@@ -508,7 +509,7 @@ static void Task_806012C(void)
         TaskDestroy(gCurTask);
     } else {
         bool32 procResult;
-        if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+        if (!GRAVITY_IS_INVERTED) {
             procResult = sub_80609B4(s, me, spikes, &gPlayer, &someParam);
         } else {
             procResult = sub_8060554(s, me, spikes, &gPlayer, &someParam);
@@ -530,8 +531,8 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
     --s;
 #endif
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -548,7 +549,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 player->moveState |= MOVESTATE_20;
             }
 
-            if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            if (!GRAVITY_IS_INVERTED) {
                 player->y = Q_24_8(screenY + s->unk28->unk5 - sp00[3]);
             } else {
                 player->y = Q_24_8(screenY + s->unk28->unk7 + sp00[3]);
@@ -574,15 +575,15 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
         if (flags) {
             if (flags & 0x30000) {
 
-                u32 gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                u32 gravityInverted = GRAVITY_IS_INVERTED;
 
 #ifndef NON_MATCHING
                 if (gravityInverted)
-                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                    gravityInverted = GRAVITY_IS_INVERTED;
                 else
-                    gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                    gravityInverted = GRAVITY_IS_INVERTED;
 
-                gravityInverted = gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED;
+                gravityInverted = GRAVITY_IS_INVERTED;
 #endif
 
                 if (gravityInverted) {
@@ -650,8 +651,8 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
     s16 screenX, screenY;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -659,8 +660,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
     if (!(player->moveState & MOVESTATE_400000)) {
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
-            if ((flags & 0x20000)
-                && !(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
                 player->y = Q_24_8((screenY + s->unk28->unk7) + player->unk17 + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
@@ -669,8 +669,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                     m4aSongNumStart(SE_SPIKES);
                     return TRUE;
                 }
-            } else if ((flags & 0x10000)
-                       && (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+            } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
                 player->y = Q_24_8((screenY + s->unk28->unk5) - player->unk17 - 1);
                 player->speedAirY = 0;
@@ -699,8 +698,8 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
     s32 sl = player->unk60;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -765,7 +764,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                     u32 v = ((u8)player->unk16 + 5);
                     s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
-                    if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                    if (!GRAVITY_IS_INVERTED) {
                         player->y = Q_24_8((screenY + s->unk28->unk5) - sp00[3]);
                     } else {
                         player->y = Q_24_8((screenY + s->unk28->unk7) + sp00[3]);
@@ -798,16 +797,14 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         } else {
             u32 flags = sub_800CCB8(s, screenX, screenY, player);
             if (flags) {
-                if ((flags & 0x10000)
-                    && !(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                if ((flags & 0x10000) && !GRAVITY_IS_INVERTED) {
                     flags = sub_8060D08(s, screenX, screenY, player);
 
                     if ((flags & 0x10000) && sub_800CBA4(player)) {
                         m4aSongNumStart(SE_SPIKES);
                         return TRUE;
                     }
-                } else if ((flags & 0x20000)
-                           && (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
                     player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
@@ -870,8 +867,8 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
     u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
     s32 sl = player->unk60;
 
-    screenX = SpriteGetScreenPos(spikes->base.spriteX, spikes->base.regionX);
-    screenY = SpriteGetScreenPos(me->y, spikes->base.regionY);
+    screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
+    screenY = TO_WORLD_POS(me->y, spikes->base.regionY);
 
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
@@ -937,7 +934,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 u32 v = ((u8)player->unk16 + 5);
                 s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
-                if (!(gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)) {
+                if (!GRAVITY_IS_INVERTED) {
                     player->y = Q_24_8(s->unk28->unk7 + screenY - sp00[1]);
                 } else {
                     player->y = Q_24_8(s->unk28->unk5 + screenY + sp00[1]);

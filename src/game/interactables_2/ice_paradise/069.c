@@ -70,8 +70,8 @@ void initSprite_Interactable069(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia69->unk1BC = me->x;
     ia69->unk1BD = spriteY;
 
-    ia69->unk158 = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia69->unk15C = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia69->unk158 = TO_WORLD_POS(me->x, spriteRegionX);
+    ia69->unk15C = TO_WORLD_POS(me->y, spriteRegionY);
 
     temp = Q_24_8(ia69->unk1B2 - ia69->unk1AE);
     ia69->unk160 = (temp / Q_24_8(6)) + 0x78;

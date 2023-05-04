@@ -33,8 +33,8 @@ void initSprite_Interactable094(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_IA94), 0x2010, 0,
                                 TaskDestructor_Interactable094);
     Sprite_IA94 *ia94 = TaskGetStructPtr(t);
-    ia94->unk0 = SpriteGetScreenPos(me->x, spriteRegionX);
-    ia94->unk4 = SpriteGetScreenPos(me->y, spriteRegionY);
+    ia94->unk0 = TO_WORLD_POS(me->x, spriteRegionX);
+    ia94->unk4 = TO_WORLD_POS(me->y, spriteRegionY);
 
     ia94->unk8 = me->d.sData[0] * 8;
     ia94->unkA = me->d.sData[1] * 8;
@@ -73,7 +73,7 @@ static void sub_807EA8C(void)
         return;
     }
 
-    if (gUnknown_03005424 & 0x80) {
+    if (GRAVITY_IS_INVERTED) {
         gPlayer.y -= Q_24_8(1);
     } else {
         gPlayer.y += Q_24_8(1);

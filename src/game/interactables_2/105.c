@@ -35,8 +35,8 @@ void initSprite_Interactable105(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
                                 TaskDestructor_Interactable105);
     Sprite_IA105 *sprite = TaskGetStructPtr(t);
 
-    sprite->posX = SpriteGetScreenPos(me->x, spriteRegionX);
-    sprite->posY = SpriteGetScreenPos(me->y, spriteRegionY);
+    sprite->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    sprite->posY = TO_WORLD_POS(me->y, spriteRegionY);
     sprite->offsetX = me->d.sData[0] * TILE_WIDTH;
     sprite->offsetY = me->d.sData[1] * TILE_WIDTH;
     sprite->width = me->d.uData[2] * TILE_WIDTH + sprite->offsetX;
