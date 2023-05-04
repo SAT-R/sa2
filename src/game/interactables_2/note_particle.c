@@ -26,7 +26,7 @@ typedef struct {
 } Sprite_NoteParticle; /* size: 0x4C */
 
 /* {anim, variant, tileCount, shouldAllocTileMem(?), (unk | priority)} */
-static const u16 gUnknown_080E0140[4][5] = {
+static const ALIGNED(4) u16 gUnknown_080E0140[4][5] = {
     [0] = { SA2_ANIM_NOTE_PARTICLES, SA2_ANIM_VARIANT_NOTE_H, 0x1B9, 0, (4 | 2) },
     [1] = { SA2_ANIM_NOTE_PARTICLES, SA2_ANIM_VARIANT_NOTE_V, 0x1BB, 0, (4 | 2) },
     [2] = { SA2_ANIM_YELLOW_STAR, 0, 0x004, 1, (4 | 2) },

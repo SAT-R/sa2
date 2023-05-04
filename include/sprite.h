@@ -121,13 +121,14 @@ typedef struct {
 #define SPRITE_FLAG_ROT_SCALE(rotScale)             ((rotScale) << 0)
 #define SPRITE_FLAG_ROT_SCALE_ENABLE(enabled)       ((enabled) << 5)
 #define SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(isDouble) ((isDouble) << 6)
-#define SPRITE_FLAG_OBJ_MODE(mode)                  ((mode) << 6)
-#define SPRITE_FLAG_9(v)                            ((v) << 9)
+#define SPRITE_FLAG_OBJ_MODE(mode)                  ((mode) << 7)
+#define SPRITE_FLAG_MOSAIC(v)                       ((v) << 9)
 #define SPRITE_FLAG_X_FLIP(flip)                    ((flip) << 10)
 #define SPRITE_FLAG_Y_FLIP(flip)                    ((flip) << 11)
 #define SPRITE_FLAG_PRIORITY(prio)                  ((prio) << 12)
 #define SPRITE_FLAG_13(v)                           ((v) << 13)
 #define SPRITE_FLAG_14(v)                           ((v) << 14)
+#define SPRITE_FLAG_17(v)                           ((v) << 17)
 #define SPRITE_FLAG_26(v)                           ((v) << 26)
 #define SPRITE_FLAG_30(v)                           ((v) << 30)
 #define SPRITE_FLAG_31(v)                           ((v) << 31)
@@ -135,12 +136,13 @@ typedef struct {
 #define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE           SPRITE_FLAG_ROT_SCALE_ENABLE(1)
 #define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE      SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(1)
 #define SPRITE_FLAG_MASK_OBJ_MODE                   SPRITE_FLAG_OBJ_MODE(3)
-#define SPRITE_FLAG_MASK_9                          SPRITE_FLAG_9(1)
+#define SPRITE_FLAG_MASK_MOSAIC                     SPRITE_FLAG_MOSAIC(1)
 #define SPRITE_FLAG_MASK_X_FLIP                     SPRITE_FLAG_X_FLIP(1)
 #define SPRITE_FLAG_MASK_Y_FLIP                     SPRITE_FLAG_Y_FLIP(1)
 #define SPRITE_FLAG_MASK_PRIORITY                   SPRITE_FLAG_PRIORITY(3)
 #define SPRITE_FLAG_MASK_13                         SPRITE_FLAG_13(1)
 #define SPRITE_FLAG_MASK_14                         SPRITE_FLAG_14(1)
+#define SPRITE_FLAG_MASK_17                         SPRITE_FLAG_17(1)
 #define SPRITE_FLAG_MASK_26                         SPRITE_FLAG_26(1)
 #define SPRITE_FLAG_MASK_30                         SPRITE_FLAG_30(1)
 #define SPRITE_FLAG_MASK_31                         SPRITE_FLAG_31(1)
@@ -187,7 +189,7 @@ typedef struct {
     // TODO: these values are only used within some
     // sort of menu functions. Split out the shared stuff
     /* 0x23 */ u8 unk23;
-    /* 0x24 */ u8 unk24;
+    /* 0x24 */ u8 numSubFrames;
     /* 0x25 */ u8 focused;
 
     /* 0x26 */ u8 filler26[2];

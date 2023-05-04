@@ -145,7 +145,7 @@ void sub_806CD68(Sprite *element)
     s16 i;
     SpriteOffset *sprDims = (void *)element->dimensions;
 
-    element->unk24 = sprDims->numSubframes;
+    element->numSubFrames = sprDims->numSubframes;
     sprWidth = sprDims->width;
     sprHeight = sprDims->height;
     unk16 = (s16)element->x - (sprWidth / 2);

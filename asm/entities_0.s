@@ -100,7 +100,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_IceParadise_SlidyIce
     .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
     .4byte initSprite_Interactable085
-    .4byte initSprite_Interactable086_0
+    .4byte initSprite_Interactable_SkyCanyon_Whirlwind_0
     .4byte initSprite_Interactable087_0
     .4byte initSprite_Interactable087_1
     .4byte initSprite_Interactable087_2
@@ -118,7 +118,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable091_2
     .4byte initSprite_Interactable091_3     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
     .4byte initSprite_Interactable_SpecialRing
-    .4byte initSprite_Interactable086_1
+    .4byte initSprite_Interactable_SkyCanyon_Whirlwind_1
     .4byte initSprite_Interactable105
 
     @ Enemy code

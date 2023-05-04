@@ -181,12 +181,10 @@
 #define SA2_ANIM_ROCK              551
 #define SA2_ANIM_552               552
 
-#define SA2_ANIM_WATER_GROUND_SPLASH 560
-
-#define SA2_ANIM_WIND_MILL_PART 561
-#define SA2_ANIM_562            562
-#define SA2_ANIM_563            563
-
+#define SA2_ANIM_WATER_GROUND_SPLASH             560
+#define SA2_ANIM_WIND_MILL_PART                  561
+#define SA2_ANIM_562                             562
+#define SA2_ANIM_563                             563
 #define SA2_ANIM_CRANE_PARTS                     564
 #define SA2_ANIM_VARIANT_CRANE_PARTS_HOOK        0
 #define SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY   1
@@ -201,47 +199,43 @@
 #define SA2_ANIM_SPRING_MUS_PLA                  572
 #define SA2_ANIM_SPRING_MUS_PLA_2                573
 #define SA2_ANIM_DICE                            574
-
-#define SA2_ANIM_NOTE_BLOCK                575
-#define SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR 15
-#define SA2_ANIM_NOTE_PARTICLES            576
-#define SA2_ANIM_VARIANT_NOTE_H            0
-#define SA2_ANIM_VARIANT_NOTE_V            1
-#define SA2_ANIM_YELLOW_STAR               577
-#define SA2_ANIM_SMOKE                     578
-#define SA2_ANIM_579                       579
-#define SA2_ANIM_SPIKES_MUS_PLA            580
-#define SA2_ANIM_PLATFORM_ICE_PAR          581
-#define SA2_ANIM_SNOWBALL                  582
-#define SA2_ANIM_583                       583
-
-#define SA2_ANIM_DASH_RING        584
-#define SA2_ANIM_CROSS_SKY_CAN    585
-#define SA2_ANIM_PLATFORM_SKY_CAN 586
-#define SA2_ANIM_PLATFORM_587     587
-
-#define SA2_ANIM_PROPELLOR               589
-#define SA2_ANIM_SPRING_FLYING           590
-#define SA2_ANIM_MINI_PROPELLOR          591
-#define SA2_ANIM_FLYING_HANDLE           592
-#define SA2_ANIM_PLATFORM_SKY_CAN_2      593
-#define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN 594
-
-#define SA2_ANIM_ARROW_SCREEN          595
-#define SA2_ANIM_SPIKE_SCREEN          596
-#define SA2_ANIM_PLATFORM_TEC_BAS      597
-#define SA2_ANIM_NOTE_BLOCK_TEC_BASE   598
-#define SA2_ANIM_ARROW_SCREEN_BORDER   599
-#define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE 601
-
-#define SA2_ANIM_602               602
-#define SA2_ANIM_603               603
-#define SA2_ANIM_SPRING_TEC_BAS    604
-#define SA2_ANIM_DASH_RING_TEC_BAS 605
-#define SA2_ANIM_DIR_ARROW_TEC_BAS 606
-#define SA2_ANIM_SPIKES_TEC_BAS    607
-#define SA2_ANIM_609               609
-#define SA2_ANIM_610               610
+#define SA2_ANIM_NOTE_BLOCK                      575
+#define SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR       15
+#define SA2_ANIM_NOTE_PARTICLES                  576
+#define SA2_ANIM_VARIANT_NOTE_H                  0
+#define SA2_ANIM_VARIANT_NOTE_V                  1
+#define SA2_ANIM_YELLOW_STAR                     577
+#define SA2_ANIM_SMOKE                           578
+#define SA2_ANIM_579                             579
+#define SA2_ANIM_SPIKES_MUS_PLA                  580
+#define SA2_ANIM_PLATFORM_ICE_PAR                581
+#define SA2_ANIM_SNOWBALL                        582
+#define SA2_ANIM_583                             583
+#define SA2_ANIM_DASH_RING                       584
+#define SA2_ANIM_CROSS_SKY_CAN                   585
+#define SA2_ANIM_PLATFORM_SKY_CAN                586
+#define SA2_ANIM_PLATFORM_587                    587
+#define SA2_ANIM_WHIRLWIND                       588
+#define SA2_ANIM_PROPELLOR                       589
+#define SA2_ANIM_SPRING_FLYING                   590
+#define SA2_ANIM_MINI_PROPELLOR                  591
+#define SA2_ANIM_FLYING_HANDLE                   592
+#define SA2_ANIM_PLATFORM_SKY_CAN_2              593
+#define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594
+#define SA2_ANIM_ARROW_SCREEN                    595
+#define SA2_ANIM_SPIKE_SCREEN                    596
+#define SA2_ANIM_PLATFORM_TEC_BAS                597
+#define SA2_ANIM_NOTE_BLOCK_TEC_BASE             598
+#define SA2_ANIM_ARROW_SCREEN_BORDER             599
+#define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE           601
+#define SA2_ANIM_602                             602
+#define SA2_ANIM_603                             603
+#define SA2_ANIM_SPRING_TEC_BAS                  604
+#define SA2_ANIM_DASH_RING_TEC_BAS               605
+#define SA2_ANIM_DIR_ARROW_TEC_BAS               606
+#define SA2_ANIM_SPIKES_TEC_BAS                  607
+#define SA2_ANIM_609                             609
+#define SA2_ANIM_610                             610
 
 #define SA2_ANIM_SPEEDING_PLATFORM 612
 
