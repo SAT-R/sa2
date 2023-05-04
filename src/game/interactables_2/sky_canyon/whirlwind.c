@@ -27,13 +27,9 @@ typedef struct {
     /* 0x1E */ u16 width;
     /* 0x20 */ u16 quarterWidth;
 
-    // unused
-    /* 0x22 */ u8 padding22[2];
-
     /* 0x24 */ MapEntity *me;
     /* 0x28 */ u8 spriteX;
     /* 0x29 */ u8 spriteY;
-    /* 0x2A */ u8 filler2A[0x2];
     /* 0x2C */ u8 *vramMem;
 } StrcUnkIA086;
 
