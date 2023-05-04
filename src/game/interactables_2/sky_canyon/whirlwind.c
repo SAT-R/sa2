@@ -17,14 +17,14 @@ typedef struct {
     /* 0x04 */ s32 posY;
     /* 0x08 */ u16 kind;
     /* 0x0A */ s16 unkA;
-    /* 0x0C */ s16 offsetX;
-    /* 0x0E */ s16 offsetY;
-    /* 0x10 */ s16 width;
-    /* 0x12 */ s16 height;
+    /* 0x0C */ s16 left;
+    /* 0x0E */ s16 top;
+    /* 0x10 */ s16 right;
+    /* 0x12 */ s16 bottom;
     /* 0x14 */ s32 someX;
     /* 0x18 */ s32 someY;
-    /* 0x1C */ u16 unk1C;
-    /* 0x1E */ u16 unk1E;
+    /* 0x1C */ u16 height;
+    /* 0x1E */ u16 width;
     /* 0x20 */ u16 unk20;
     /* 0x22 */ u16 unk22;
     /* 0x24 */ MapEntity *me;
@@ -98,26 +98,27 @@ void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegion
     Sprite_IA86 *ia086 = TaskGetStructPtr(t);
     s32 someX, someY;
     s32 value;
-    u32 temp;
+    u32 width;
     ia086->unk228.posX = TO_WORLD_POS(me->x, spriteRegionX);
     ia086->unk228.posY = TO_WORLD_POS(me->y, spriteRegionY);
     ia086->unk228.kind = kind;
-    ia086->unk228.offsetX = me->d.sData[0] * TILE_WIDTH;
-    ia086->unk228.offsetY = me->d.sData[1] * TILE_WIDTH;
-    ia086->unk228.width = ia086->unk228.offsetX + me->d.uData[2] * TILE_WIDTH;
-    ia086->unk228.height = ia086->unk228.offsetY + me->d.uData[3] * TILE_WIDTH;
+    ia086->unk228.left = me->d.sData[0] * TILE_WIDTH;
+    ia086->unk228.top = me->d.sData[1] * TILE_WIDTH;
+    ia086->unk228.right = ia086->unk228.left + me->d.uData[2] * TILE_WIDTH;
+    ia086->unk228.bottom = ia086->unk228.top + me->d.uData[3] * TILE_WIDTH;
 
     ia086->unk228.someX
-        = ia086->unk228.posX + ((ia086->unk228.width + ia086->unk228.offsetX) >> 1);
+        = ia086->unk228.posX + ((ia086->unk228.right + ia086->unk228.left) >> 1);
 
-    ia086->unk228.someY = ia086->unk228.posY + (ia086->unk228.height);
+    ia086->unk228.someY = ia086->unk228.posY + (ia086->unk228.bottom);
 
-    ia086->unk228.unk1C = ia086->unk228.height - ia086->unk228.offsetY;
-    ia086->unk228.unk1E = ia086->unk228.width - ia086->unk228.offsetX;
-    temp = ia086->unk228.unk1E;
-    ia086->unk228.unk20 = temp >> 2;
+    ia086->unk228.height = ia086->unk228.bottom - ia086->unk228.top;
+    ia086->unk228.width = ia086->unk228.right - ia086->unk228.left;
+
+    width = ia086->unk228.width;
+    ia086->unk228.unk20 = width / 4;
+
     ia086->unk228.me = me;
-
     ia086->unk228.spriteX = me->x;
     ia086->unk228.spriteY = spriteY;
 
@@ -143,7 +144,7 @@ void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegion
             s->graphics.dest = vram;
             s->graphics.anim = gUnknown_080E0124[i][0];
             s->variant = gUnknown_080E0124[i][1];
-            vram += gUnknown_080E0124[i][2] * 32;
+            vram += gUnknown_080E0124[i][2] * TILE_SIZE_4BPP;
         }
     }
 
@@ -152,13 +153,12 @@ void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegion
 }
 
 #ifdef NON_MATCHING
+// https://decomp.me/scratch/Jl2c3
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
-    Player *p;
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.unk64 = 44;
 
-    p = &gPlayer;
     ia086->unk182 = 64;
     ia086->unk184 = Q_24_8(0.5);
     ia086->unk186 = gPlayer.speedAirY;
@@ -173,63 +173,40 @@ void sub_807C9C0(Sprite_IA86 *ia086)
 #else
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
-#ifndef NON_MATCHING
     register Player *p1 asm("r2") = &gPlayer;
     register Player *p asm("r4");
     register s32 r0 asm("r0");
-    register s32 r3 asm("r3");
+    register s32 zero asm("r3");
     register s32 r1 asm("r1");
     s16 *p184;
-#else
-    Player *p1 = &gPlayer;
-    Player *p;
-#endif
 
     p1->moveState |= MOVESTATE_400000;
     p1->unk64 = 44;
 
     // Must be some debug stuff happening here
-#ifndef NON_MATCHING
-    r0 = 0x8F << 2;
+    r0 = 0x23C;
     r0 = Q_24_8(*(s32 *)((void *)ia086 + r0));
     asm("" ::"r"(r0));
     r1 = p1->x;
     asm("" ::"r"(r1));
     p = p1;
     asm("" ::: "r0");
-#else
-    p = p1;
-#endif
 
     ia086->unk182 = 64;
 
-#ifndef NON_MATCHING
     p184 = &ia086->unk184;
-    r3 = 0;
+    zero = 0;
     *p184 = Q_24_8(0.5);
-#else
-    ia086->unk184 = Q_24_8(0.5);
-#endif
 
     ia086->unk186 = p->speedAirY;
 
-#ifndef NON_MATCHING
-    r0 = 0xC0 << 1;
-    (*(s16 *)((void *)ia086 + r0)) = r3;
-#else
-    ia086->unk180 = 0;
-#endif
+    r0 = 0x180;
+    (*(s16 *)((void *)ia086 + r0)) = zero;
 
     ia086->unk188 = p->x - Q_24_8(ia086->unk228.someX);
     ia086->unk18C = p->y - Q_24_8(ia086->unk228.someY);
-
-#ifndef NON_MATCHING
-    ia086->unk190 = r3;
-    ia086->unk194 = r3;
-#else
-    ia086->unk190 = 0;
-    ia086->unk194 = 0;
-#endif
+    ia086->unk190 = zero;
+    ia086->unk194 = zero;
 
     gCurTask->main = Task_807D0C4;
 }
@@ -282,7 +259,7 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
 {
     bool32 result = FALSE;
 
-    if (gPlayer.y > Q_24_8(ia086->unk228.posY + ia086->unk228.offsetY)) {
+    if (gPlayer.y > Q_24_8(ia086->unk228.posY + ia086->unk228.top)) {
         ia086->unk186 -= 0x10;
 
         ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
@@ -314,8 +291,8 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
 void sub_807CC28(Sprite_IA86 *ia086)
 {
     s32 unk10 = ia086->unk228.unk20;
-    s32 r4 = ia086->unk228.unk1E;
-    s32 divRes = -ia086->unk18C / ia086->unk228.unk1C;
+    s32 r4 = ia086->unk228.width;
+    s32 divRes = -ia086->unk18C / ia086->unk228.height;
     s16 procRes = sub_80855C0(unk10, r4, divRes, 8) >> 1;
 
     s32 *target = &ia086->unk190;
@@ -409,7 +386,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
 
             unk086->unk14 = -unk086->unkC;
             r1 = unk086->unkC >> 5;
-            r2 = ((ia086->unk228.unk1E * r1) << 8) >> 16;
+            r2 = ((ia086->unk228.width * r1) << 8) >> 16;
 
             r1 = ia086->unk228.unk20;
             if (r1 < r2)
@@ -439,7 +416,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         } else {
             // _0807CE12
 
-            if (-Q_24_8_TO_INT(unk086->unkC) < ia086->unk228.unk1C) {
+            if (-Q_24_8_TO_INT(unk086->unkC) < ia086->unk228.height) {
                 s32 r4, r5;
                 s32 divRes;
                 s16 divRes2;
@@ -447,10 +424,10 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 unk086->unk14 = SIN_24_8(unk086->unk4 * 4) * 4;
 
                 r5 = ia086->unk228.unk20;
-                r4 = ia086->unk228.unk1E;
+                r4 = ia086->unk228.width;
 
                 temp2 = -unk086->unkC;
-                divRes = temp2 / ia086->unk228.unk1C;
+                divRes = temp2 / ia086->unk228.height;
 
                 divRes2 = sub_80855C0(r5, r4, divRes, 8) >> 1;
                 unk086->unk10 = divRes2 * SIN_24_8(unk086->unk4 * 4);
@@ -503,10 +480,10 @@ bool32 sub_807CF2C(Sprite_IA86 *ia086)
     s16 screenX = ia086->unk228.posX - gCamera.x;
     s16 screenY = ia086->unk228.posY - gCamera.y;
 
-    if (((screenX + ia086->unk228.width) < -128)
-        || ((screenX + ia086->unk228.offsetX) > 368)
-        || ((screenY + ia086->unk228.height) < -128)
-        || ((screenY + ia086->unk228.offsetY) > 288)) {
+    if (((screenX + ia086->unk228.right) < -128)
+        || ((screenX + ia086->unk228.left) > 368)
+        || ((screenY + ia086->unk228.bottom) < -128)
+        || ((screenY + ia086->unk228.top) > 288)) {
 
         return TRUE;
     }
@@ -523,14 +500,14 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
         s16 py = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
         s32 r5, r4;
         u16 r3;
-        s32 r2 = (y - ia086->unk228.unk1C);
+        s32 r2 = (y - ia086->unk228.height);
 
-        if ((r2 <= py) && (r2 + ia086->unk228.unk1C >= py)) {
+        if ((r2 <= py) && (r2 + ia086->unk228.height >= py)) {
             s32 tempX;
             r5 = ia086->unk228.unk20;
-            r4 = ia086->unk228.unk1E;
+            r4 = ia086->unk228.width;
 
-            r3 = sub_80855C0(r5, r4, (Q_24_8(y - py) / ia086->unk228.unk1C), 8);
+            r3 = sub_80855C0(r5, r4, (Q_24_8(y - py) / ia086->unk228.height), 8);
 
             tempX = (x - (r3 >> 1));
             if ((tempX <= px) && ((tempX + r3) >= px)) {
@@ -600,7 +577,7 @@ void sub_807D188(Sprite_IA86 *ia086)
 {
     m4aSongNumStop(SE_285);
 
-    ia086->unk228.me->x = ia086->unk228.spriteX;
+    SET_MAP_ENTITY_NOT_INITIALIZED(ia086->unk228.me, ia086->unk228.spriteX);
 
     TaskDestroy(gCurTask);
 }
