@@ -132,7 +132,7 @@ typedef void (*VoidFn)(void);
         }                                                                               \
     })
 
-#define CLAMP_INLINE2(var, min, max)                                                     \
+#define CLAMP_INLINE2(var, min, max)                                                    \
     ({                                                                                  \
         if ((var) > (max)) {                                                            \
             var = (max);                                                                \

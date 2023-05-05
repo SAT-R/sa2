@@ -162,8 +162,8 @@ SECTIONS
         build/sa2/src/game/interactables_2/sky_canyon/small_windmill.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/085.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/whirlwind.o(.text);
-        build/sa2/asm/interactable_small_propellor.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/small_propellor.o(.text);
+        build/sa2/asm/interactable_small_propeller.o(.text);
+        build/sa2/src/game/interactables_2/sky_canyon/small_propeller.o(.text);
         build/sa2/asm/interactable_091.o(.text);
         build/sa2/asm/interactable_093.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/094.o(.text);

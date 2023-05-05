@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable_SkyCanyon_SmallPropellor
-initSprite_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D2F4
+	thumb_func_start initSprite_Interactable_SkyCanyon_SmallPropeller
+initSprite_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D2F4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -27,9 +27,9 @@ initSprite_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D2F4
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	mov sb, r1
-	ldr r0, _0807D430 @ =Task_Interactable_SkyCanyon_SmallPropellor
+	ldr r0, _0807D430 @ =Task_Interactable_SkyCanyon_SmallPropeller
 	ldr r2, _0807D434 @ =0x00002010
-	ldr r1, _0807D438 @ =TaskDestructor_Interactable_SkyCanyon_SmallPropellor
+	ldr r1, _0807D438 @ =TaskDestructor_Interactable_SkyCanyon_SmallPropeller
 	str r1, [sp]
 	movs r1, #0x58
 	movs r3, #0
@@ -165,9 +165,9 @@ _0807D418:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807D430: .4byte Task_Interactable_SkyCanyon_SmallPropellor
+_0807D430: .4byte Task_Interactable_SkyCanyon_SmallPropeller
 _0807D434: .4byte 0x00002010
-_0807D438: .4byte TaskDestructor_Interactable_SkyCanyon_SmallPropellor
+_0807D438: .4byte TaskDestructor_Interactable_SkyCanyon_SmallPropeller
 _0807D43C: .4byte IWRAM_START + 0x44
 _0807D440: .4byte IWRAM_START + 0x52
 _0807D444: .4byte IWRAM_START + 0x48
@@ -625,8 +625,8 @@ _0807D7A2:
 	bx r1
 	.align 2, 0
 
-	thumb_func_start Task_Interactable_SkyCanyon_SmallPropellor
-Task_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D7B0
+	thumb_func_start Task_Interactable_SkyCanyon_SmallPropeller
+Task_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D7B0
 	push {r4, lr}
 	ldr r0, _0807D7E0 @ =gCurTask
 	ldr r0, [r0]
@@ -661,8 +661,8 @@ _0807D7F0:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start TaskDestructor_Interactable_SkyCanyon_SmallPropellor
-TaskDestructor_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D7F8
+	thumb_func_start TaskDestructor_Interactable_SkyCanyon_SmallPropeller
+TaskDestructor_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D7F8
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

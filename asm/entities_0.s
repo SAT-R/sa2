@@ -101,10 +101,10 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
     .4byte initSprite_Interactable085
     .4byte initSprite_Interactable_SkyCanyon_Whirlwind_0
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropellor_Left
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropellor_Right
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropellor_Left_Periodic
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropellor_Right_Periodic
+    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left
+    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right
+    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic
+    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic
     .4byte initSprite_Interactable091_0
     .4byte initSprite_Interactable091_1
     .4byte initSprite_Interactable093
