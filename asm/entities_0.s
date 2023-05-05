@@ -4956,7 +4956,7 @@ _0800A180: .4byte sub_800A310
 _0800A184: .4byte gBldRegs
 _0800A188: .4byte gUnknown_030054A8
 _0800A18C:
-	ldr r0, _0800A1E4 @ =gUnknown_030053E4
+	ldr r0, _0800A1E4 @ =gCheckpointTime
 	ldr r1, [r0]
 	ldr r0, _0800A1E8 @ =0x000005BE
 	cmp r1, r0
@@ -5000,7 +5000,7 @@ _0800A1B6:
 	orrs r0, r1
 	b _0800A20A
 	.align 2, 0
-_0800A1E4: .4byte gUnknown_030053E4
+_0800A1E4: .4byte gCheckpointTime
 _0800A1E8: .4byte 0x000005BE
 _0800A1EC: .4byte IWRAM_START + 0x64
 _0800A1F0: .4byte sub_800A310

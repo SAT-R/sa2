@@ -2612,14 +2612,14 @@ Task_802ED98: @ 0x0802ED98
 	ldrb r0, [r0]
 	cmp r0, #2
 	bne _0802EDD8
-	ldr r0, _0802EDD4 @ =gUnknown_03005490
+	ldr r0, _0802EDD4 @ =gCourseTime
 	ldr r0, [r0]
 	bl CreateTimeAttackResultsCutScene
 	b _0802EE64
 	.align 2, 0
 _0802EDCC: .4byte gCurTask
 _0802EDD0: .4byte gGameMode
-_0802EDD4: .4byte gUnknown_03005490
+_0802EDD4: .4byte gCourseTime
 _0802EDD8:
 	ldr r3, _0802EE0C @ =gCurrentLevel
 	ldrb r0, [r3]
@@ -2668,7 +2668,7 @@ _0802EE2E:
 	bl CreateCourseResultsCutScene
 	b _0802EE64
 _0802EE36:
-	ldr r0, _0802EE48 @ =gUnknown_03005490
+	ldr r0, _0802EE48 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0802EE4C @ =gRingCount
 	ldrh r1, [r1]
@@ -2677,11 +2677,11 @@ _0802EE36:
 	bl sub_80304DC
 	b _0802EE64
 	.align 2, 0
-_0802EE48: .4byte gUnknown_03005490
+_0802EE48: .4byte gCourseTime
 _0802EE4C: .4byte gRingCount
 _0802EE50: .4byte gUnknown_030054F4
 _0802EE54:
-	ldr r0, _0802EE6C @ =gUnknown_03005490
+	ldr r0, _0802EE6C @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0802EE70 @ =gRingCount
 	ldrh r1, [r1]
@@ -2693,7 +2693,7 @@ _0802EE64:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802EE6C: .4byte gUnknown_03005490
+_0802EE6C: .4byte gCourseTime
 _0802EE70: .4byte gRingCount
 _0802EE74: .4byte gUnknown_030054F4
 

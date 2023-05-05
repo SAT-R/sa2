@@ -362,12 +362,12 @@ void GameStageStart(void)
         gUnknown_030054A0 = gFrameCount;
     }
 
-    gUnknown_030053E4 = 0;
+    gCheckpointTime = 0;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_03005490 = 0;
+        gCourseTime = 0;
     } else {
-        gUnknown_03005490 = 0x2A30;
+        gCourseTime = 0x2A30;
     }
 
     CreateGameStage();
@@ -501,7 +501,7 @@ void sub_802B4F8(s32, s32, s32, s32, s32);
 void sub_801AB3C(void)
 {
     u16 sioId = SIO_MULTI_CNT->id;
-    u32 step;
+    u32 timeStep;
 
     if (IS_SINGLE_PLAYER) {
         if (!(gUnknown_03005424 & 0x20) && (gPressedKeys & START_BUTTON)
@@ -509,63 +509,62 @@ void sub_801AB3C(void)
             sub_800A9FC();
         }
         gUnknown_03005590++;
-        step = 1;
+        timeStep = 1;
     } else {
         u32 temp = (gFrameCount - gUnknown_030054A0);
-        step = temp - gUnknown_03005590;
+        timeStep = temp - gUnknown_03005590;
         gUnknown_03005590 = temp;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            if ((temp & ~(0x1FF)) != ((temp - step) & ~(0x1FF))) {
-                u32 mask, v;
-                gMultiplayerPseudoRandom
-                    = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;
+            if ((temp & ~(0x1FF)) != ((temp - timeStep) & ~(0x1FF))) {
+                u32 mask, rand;
+                MultiplayerPseudoRandom32();
 
-                if ((temp & ~(0xFFF)) != ((temp - step) & ~(0xFFF))) {
+                if ((temp & ~(0xFFF)) != ((temp - timeStep) & ~(0xFFF))) {
                     u32 value = (gRandomItemBox >> 4) + 1;
                     gRandomItemBox = ((gRandomItemBox & 0xF) | (value * 16));
                 }
-                v = gMultiplayerPseudoRandom;
+                rand = gMultiplayerPseudoRandom;
                 mask = 7;
-                gRandomItemBox = (gRandomItemBox & 0xF8) | ((u32)v & mask);
+                gRandomItemBox = (gRandomItemBox & 0xF8) | (rand & mask);
             }
 
-        } else if ((temp & ~(0x3F)) != ((temp - step) & ~(0x3F))) {
-            gMultiplayerPseudoRandom
-                = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;
+        } else if ((temp & ~(0x3F)) != ((temp - timeStep) & ~(0x3F))) {
+            MultiplayerPseudoRandom32();
         }
 
-        if (gCamera.unk50 & 4) {
+        if (gCamera.unk50 & CAM_MODE_SPECTATOR) {
             if ((gInput & (L_BUTTON | R_BUTTON)) == (L_BUTTON | R_BUTTON)) {
                 if (sioId != 3) {
-                    gCamera.unk66 = 3;
+                    gCamera.spectatorTarget = 3;
                 } else {
-                    gCamera.unk66 = 2;
+                    gCamera.spectatorTarget = 2;
                 }
             } else if (gInput & L_BUTTON) {
                 if (sioId == 0) {
-                    gCamera.unk66 = 1;
+                    gCamera.spectatorTarget = 1;
                 } else {
-                    gCamera.unk66 = 0;
+                    gCamera.spectatorTarget = 0;
                 }
             } else if (gInput & R_BUTTON) {
                 if (sioId < 2) {
-                    gCamera.unk66 = 2;
+                    gCamera.spectatorTarget = 2;
                 } else {
-                    gCamera.unk66 = 1;
+                    gCamera.spectatorTarget = 1;
                 }
             } else {
-                gCamera.unk66 = sioId;
+                gCamera.spectatorTarget = sioId;
             }
         } else {
-            gCamera.unk66 = sioId;
+            gCamera.spectatorTarget = sioId;
         }
 
-        if (!GetBit(gMultiplayerConnections, gCamera.unk66)) {
-            gCamera.unk66 = sioId;
+        // If player is not connected, switch back to our player
+        if (!GetBit(gMultiplayerConnections, gCamera.spectatorTarget)) {
+            gCamera.spectatorTarget = sioId;
         }
 
-        if (gUnknown_030053E0 != 0) {
+        if (gUnknown_030053E0 > 0) {
             gUnknown_030053E0--;
         }
     }
@@ -576,16 +575,16 @@ void sub_801AB3C(void)
         return;
     }
 
-    gUnknown_030053E4 += step;
+    gCheckpointTime += timeStep;
 
-    if (gUnknown_03005424 & 4) {
-        gUnknown_03005490 -= step;
-        if ((s32)gUnknown_03005490 > 0) {
+    if (gUnknown_03005424 & EXTRA_STATE__4) {
+        gCourseTime -= timeStep;
+        if ((s32)gCourseTime > 0) {
             return;
         }
 
         if (IS_SINGLE_PLAYER) {
-            gUnknown_03005424 |= 1;
+            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
 
             if (gLoadedSaveGame->timeLimitEnabled) {
                 return;
@@ -599,23 +598,23 @@ void sub_801AB3C(void)
                 gPlayer.speedAirY = -0x4E0;
             }
 
-            if (gCurrentLevel == 10) {
-                sub_802B4F8(0x800, 8, 0x10, 0xffffffff, 0xd0);
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
+                sub_802B4F8(0x800, 8, 16, -1, 208);
             }
             gPlayer.moveState |= 0x80;
             m4aSongNumStart(SE_149);
         } else {
-            gUnknown_03005424 |= 1;
+            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
             sub_8019F08();
         }
     } else {
-        gUnknown_03005490 += step;
-        if (gUnknown_03005490 < 0x8CA1U) {
+        gCourseTime += timeStep;
+        if (gCourseTime <= MAX_COURSE_TIME) {
             return;
         }
 
         if (IS_SINGLE_PLAYER) {
-            gUnknown_03005424 |= 1;
+            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
 
             if (gLoadedSaveGame->timeLimitEnabled
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
@@ -632,7 +631,7 @@ void sub_801AB3C(void)
             gPlayer.moveState |= 0x80;
             m4aSongNumStart(SE_149);
         } else {
-            gUnknown_03005424 |= 1;
+            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
             sub_8019F08();
         }
     }
@@ -653,7 +652,7 @@ void sub_801AE48(void)
     }
 
     if (--gNumLives == 0) {
-        gUnknown_03005424 |= 1;
+        gUnknown_03005424 |= EXTRA_STATE__ACT_START;
         CreateGameOverScreen(1);
     } else {
         TasksDestroyAll();

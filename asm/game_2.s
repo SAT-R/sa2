@@ -2072,7 +2072,7 @@ sub_802B708: @ 0x0802B708
 	lsls r6, r6, #2
 	strh r6, [r0, #0x10]
 	strh r6, [r0, #0x14]
-	ldr r0, _0802B7E0 @ =gUnknown_03005490
+	ldr r0, _0802B7E0 @ =gCourseTime
 	str r4, [r0]
 	ldr r0, _0802B7E4 @ =sub_802BC10
 	movs r1, #0xc0
@@ -2162,7 +2162,7 @@ sub_802B708: @ 0x0802B708
 	.align 2, 0
 _0802B7D8: .4byte gRingCount
 _0802B7DC: .4byte gPlayer
-_0802B7E0: .4byte gUnknown_03005490
+_0802B7E0: .4byte gCourseTime
 _0802B7E4: .4byte sub_802BC10
 _0802B7E8: .4byte 0x00004040
 _0802B7EC: .4byte gUnknown_03005B40
@@ -2264,7 +2264,7 @@ _0802B8BA:
 	beq _0802B8CC
 	b _0802BA72
 _0802B8CC:
-	ldr r0, _0802B948 @ =gUnknown_03005490
+	ldr r0, _0802B948 @ =gCourseTime
 	ldr r1, [r0]
 	ldr r0, _0802B94C @ =0x00008C9F
 	cmp r1, r0
@@ -2326,7 +2326,7 @@ _0802B8CC:
 	b _0802BA72
 	.align 2, 0
 _0802B944: .4byte gUnknown_03005424
-_0802B948: .4byte gUnknown_03005490
+_0802B948: .4byte gCourseTime
 _0802B94C: .4byte 0x00008C9F
 _0802B950: .4byte gLoadedSaveGame
 _0802B954: .4byte gPlayer
@@ -2707,7 +2707,7 @@ sub_802BC10: @ 0x0802BC10
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _0802BCB6
-	ldr r0, _0802BCA8 @ =gUnknown_03005490
+	ldr r0, _0802BCA8 @ =gCourseTime
 	ldr r1, [r0]
 	ldr r0, _0802BCAC @ =0x00008C9F
 	cmp r1, r0
@@ -2725,7 +2725,7 @@ _0802BC98: .4byte gUnknown_03005390
 _0802BC9C: .4byte gVramGraphicsCopyCursor
 _0802BCA0: .4byte gVramGraphicsCopyQueueIndex
 _0802BCA4: .4byte gNumLives
-_0802BCA8: .4byte gUnknown_03005490
+_0802BCA8: .4byte gCourseTime
 _0802BCAC: .4byte 0x00008C9F
 _0802BCB0:
 	bl GameStageStart

@@ -1545,9 +1545,9 @@ void PlayerCB_80278D4(Player *p)
 
     if (--p->unk72 == 0) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
-            CreateTimeAttackResultsCutScene(gUnknown_03005490);
+            CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gUnknown_03005490, gRingCount, gUnknown_030054F4);
+            sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
         }
         PLAYERFN_SET(PlayerCB_802A3F0);
     }
@@ -1581,9 +1581,9 @@ void PlayerCB_80279F8(Player *p)
 
     if (p->unk72 == 180) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
-            CreateTimeAttackResultsCutScene(gUnknown_03005490);
+            CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gUnknown_03005490, gRingCount, gUnknown_030054F4);
+            sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
         }
     }
 

@@ -209,13 +209,13 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
 
         if (count == 0) {
             gUnknown_03005424 |= 4;
-            gUnknown_03005490 = 3600;
+            gCourseTime = 3600;
         }
 
         unk5510 = sub_8019224();
         unk5510->unk0 = 7;
         gCurTask->main = sub_8062D44;
-        gCamera.unk50 |= 4;
+        gCamera.unk50 |= CAM_MODE_SPECTATOR;
     }
 }
 
@@ -258,11 +258,11 @@ static void sub_8062BD0(void)
     }
 
     gUnknown_03005424 |= 4;
-    gUnknown_03005490 = 3600;
+    gCourseTime = 3600;
     unk5510 = sub_8019224();
     unk5510->unk0 = 7;
     gCurTask->main = sub_8062D44;
-    gCamera.unk50 |= 4;
+    gCamera.unk50 |= CAM_MODE_SPECTATOR;
 }
 
 static void sub_8062D44(void)

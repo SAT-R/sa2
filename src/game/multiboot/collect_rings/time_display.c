@@ -12,9 +12,7 @@ typedef struct {
 void sub_80832E0(struct Task *);
 void sub_808328C(void);
 
-// Probably defined in `game/interactables_2/unknown`
-// will wait before deciding where this is defined
-extern u32 gUnknown_03005B6C;
+u32 gUnknown_03005B6C = 0;
 
 const u8 gUnknown_080E0234[] = {
     0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,
@@ -96,8 +94,8 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     u32 temp3;
     u16 temp6;
 
-    temp = Div(gUnknown_03005490, 60);
-    index = gUnknown_03005490 - (temp * 60);
+    temp = Div(gCourseTime, 60);
+    index = gCourseTime - (temp * 60);
     temp *= 0x10000;
     temp /= 0x10000;
     digit1 = gUnknown_080E0234[index];
@@ -117,7 +115,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     temp4 = sub_8004518(index);
 
     temp5 = 0;
-    if (gUnknown_03005490 < 3600) {
+    if (gCourseTime < 3600) {
         temp5 = (-(gUnknown_03005590 & 0x10)) >> 0x1F;
     }
 

@@ -65,7 +65,7 @@ extern u32 gUnknown_030059D0[2];
 extern s16 gRingCount;
 
 extern u8 gUnknown_030054A8[8];
-extern u32 gUnknown_03005490;
+extern u32 gCourseTime;
 extern u8 gUnknown_030054F4;
 extern u16 gUnknown_03005440;
 extern u16 gUnknown_030054BC;
@@ -93,6 +93,7 @@ extern u8 gUnknown_030054E4;
 #define EXTRA_STATE__CLEAR              0x0000
 #define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
 #define EXTRA_STATE__2                  0x0002
+#define EXTRA_STATE__4                  0x0004
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
@@ -120,7 +121,7 @@ extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;
 
-extern u32 gUnknown_030053E4; // Checkpoint timer?
+extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
@@ -287,6 +288,8 @@ struct UNK_80D62D8 {
 
 typedef void (*CameraMain)(s32, s32);
 
+#define CAM_MODE_SPECTATOR 4
+
 struct Camera {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -308,7 +311,11 @@ struct Camera {
     /* 0x44 */ s32 unk44;
     /* 0x48 */ s32 unk48;
     /* 0x4c */ s32 unk4C;
+
+    // 0x4 = spectator
+    // mode
     /* 0x50 */ u16 unk50;
+
     /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54;
     /* 0x56 */ s16 unk56;
@@ -317,7 +324,7 @@ struct Camera {
     /* 0x60 */ s16 unk60;
     /* 0x62 */ s16 unk62;
     /* 0x64 */ s16 unk64;
-    /* 0x66 */ u8 unk66;
+    /* 0x66 */ u8 spectatorTarget;
 }; /* size 0x80 */
 
 extern struct Camera gCamera;

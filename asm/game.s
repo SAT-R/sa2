@@ -2352,7 +2352,7 @@ sub_801E498: @ 0x0801E498
 	cmp r1, #0x69
 	bls _0801E4B4
 	ldr r3, _0801E4B8 @ =0x0400001C
-	ldr r2, _0801E4BC @ =gUnknown_03005490
+	ldr r2, _0801E4BC @ =gCourseTime
 	ldr r0, _0801E4C0 @ =gUnknown_080D5B50
 	adds r0, r1, r0
 	ldrb r1, [r0]
@@ -2365,7 +2365,7 @@ _0801E4B4:
 	bx r0
 	.align 2, 0
 _0801E4B8: .4byte 0x0400001C
-_0801E4BC: .4byte gUnknown_03005490
+_0801E4BC: .4byte gCourseTime
 _0801E4C0: .4byte gUnknown_080D5B50
 
 	thumb_func_start sub_801E4C4
@@ -9089,12 +9089,12 @@ _080217EA:
 	ldrb r0, [r0]
 	cmp r0, #2
 	bhi _08021840
-	ldr r3, _0802182C @ =gUnknown_03005490
+	ldr r3, _0802182C @ =gCourseTime
 	ldr r1, [r3]
 	ldr r0, _08021830 @ =0x00008C9F
 	cmp r1, r0
 	bls _08021838
-	ldr r0, _08021834 @ =gUnknown_030053E4
+	ldr r0, _08021834 @ =gCheckpointTime
 	str r2, [r0]
 	str r2, [r3]
 	str r2, [r5, #0x78]
@@ -9104,11 +9104,11 @@ _0802181C: .4byte PlayerCB_8025318
 _08021820: .4byte gPlayerControls
 _08021824: .4byte 0x0000FFFF
 _08021828: .4byte gGameMode
-_0802182C: .4byte gUnknown_03005490
+_0802182C: .4byte gCourseTime
 _08021830: .4byte 0x00008C9F
-_08021834: .4byte gUnknown_030053E4
+_08021834: .4byte gCheckpointTime
 _08021838:
-	ldr r1, _08021854 @ =gUnknown_030053E4
+	ldr r1, _08021854 @ =gCheckpointTime
 	ldr r0, [r5, #0x78]
 	str r0, [r1]
 	str r0, [r3]
@@ -9124,7 +9124,7 @@ _08021840:
 	ldr r0, [r0]
 	mov pc, r0
 	.align 2, 0
-_08021854: .4byte gUnknown_030053E4
+_08021854: .4byte gCheckpointTime
 _08021858: .4byte _0802185C
 _0802185C: @ jump table
 	.4byte _08021870 @ case 0
@@ -14095,7 +14095,7 @@ _08023D1E:
 	ldrb r0, [r0, #5]
 	cmp r0, #0
 	bne _08023D50
-	ldr r0, _08023D7C @ =gUnknown_03005490
+	ldr r0, _08023D7C @ =gCourseTime
 	ldr r2, [r0]
 	ldr r0, _08023D80 @ =0x00008CA0
 	cmp r2, r0
@@ -14116,7 +14116,7 @@ _08023D50:
 	lsrs r0, r0, #0x18
 	cmp r0, #1
 	bhi _08023D88
-	ldr r0, _08023D7C @ =gUnknown_03005490
+	ldr r0, _08023D7C @ =gCourseTime
 	ldr r1, [r0]
 	ldr r0, _08023D80 @ =0x00008CA0
 	cmp r1, r0
@@ -14128,7 +14128,7 @@ _08023D68:
 _08023D70: .4byte gCurTask
 _08023D74: .4byte gGameMode
 _08023D78: .4byte gLoadedSaveGame
-_08023D7C: .4byte gUnknown_03005490
+_08023D7C: .4byte gCourseTime
 _08023D80: .4byte 0x00008CA0
 _08023D84: .4byte gUnknown_03005424
 _08023D88:

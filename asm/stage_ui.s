@@ -451,7 +451,7 @@ _0802CD74:
 	ldrb r0, [r0, #5]
 	cmp r0, #0
 	bne _0802CD9A
-	ldr r0, _0802CE24 @ =gUnknown_03005490
+	ldr r0, _0802CE24 @ =gCourseTime
 	ldr r1, [r0]
 	ldr r0, _0802CE28 @ =0x000087EF
 	cmp r1, r0
@@ -530,7 +530,7 @@ _0802CDAC:
 _0802CE18: .4byte 0x000002EE
 _0802CE1C: .4byte gUnknown_030054F4
 _0802CE20: .4byte gLoadedSaveGame
-_0802CE24: .4byte gUnknown_03005490
+_0802CE24: .4byte gCourseTime
 _0802CE28: .4byte 0x000087EF
 _0802CE2C: .4byte gUnknown_03005450
 _0802CE30: .4byte 999999
@@ -729,7 +729,7 @@ _0802CF42:
 	orrs r2, r0
 	strh r2, [r3, #4]
 _0802CFDC:
-	ldr r7, _0802D150 @ =gUnknown_03005490
+	ldr r7, _0802D150 @ =gCourseTime
 	ldr r0, _0802D154 @ =0x00008C9F
 	ldr r6, [r7]
 	cmp r6, r0
@@ -909,7 +909,7 @@ _0802D138:
 	.align 2, 0
 _0802D148: .4byte gUnknown_03005590
 _0802D14C: .4byte gRingCount
-_0802D150: .4byte gUnknown_03005490
+_0802D150: .4byte gCourseTime
 _0802D154: .4byte 0x00008C9F
 _0802D158: .4byte gUnknown_03005424
 _0802D15C: .4byte gUnknown_080D6BF8

@@ -14,7 +14,7 @@ build/sa2/src/core.o(.data);
 . = ALIGN(32); 
 /* game/game.o */
                 gUnknown_030053E0 = .;
-. = 0x000053E4; gUnknown_030053E4 = .;
+. = 0x000053E4; gCheckpointTime = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
 . = 0x000053EC; gMultiplayerLanguage = .;
 . = 0x000053F0; gRingCount = .;
@@ -34,7 +34,7 @@ build/sa2/src/core.o(.data);
 . = 0x0000544C; gUnknown_0300544C = .;
 . = 0x00005450; gUnknown_03005450 = .;
 . = 0x00005460; gMultiplayerNames = .;
-. = 0x00005490; gUnknown_03005490 = .;
+. = 0x00005490; gCourseTime = .;
 . = 0x00005498; gUnknown_03005498 = .;
 . = 0x000054A0; gUnknown_030054A0 = .;
 . = 0x000054A8; gUnknown_030054A8 = .;
@@ -104,10 +104,7 @@ build/sa2/src/core.o(.data);
 build/sa2/src/game/options_screen.o(.data);
 build/sa2/src/game/special_stage/utils.o(.data);
 build/sa2/src/game/save.o(.data);
-
-/* something in code3.s */
-. = 0x00005B6C; gUnknown_03005B6C = .;
-. = 0x00005B70; 
+build/sa2/src/game/multiboot/collect_rings/time_display.o(.data);
 
 build/sa2/src/game/math_0.o(.data);
 . = ALIGN(16); 

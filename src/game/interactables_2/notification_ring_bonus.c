@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 
+#include "game/multiboot/collect_rings/time_display.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
@@ -33,9 +34,6 @@ typedef struct {
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
-
-// Some timer difference
-s32 gUnknown_03005B6C ALIGNED(4) = 0;
 
 extern void sub_80803FC(Sprite_IaUnknown *);
 extern bool32 sub_808055C(Sprite_IaUnknown *);
@@ -80,9 +78,9 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
     if ((sprite->someX < Q_24_8(sprite->posX + sprite->unk8))
         && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
-            u16 r7;
-            u16 prevCourseTime;
-            u16 timeInc;
+            u16 timeDiff;
+            u16 prevRingCount;
+            u16 ringBonus;
 
             sprite->unk18++;
 
@@ -90,22 +88,22 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 sprite->unk1A = sprite->unk18;
 
                 // __0808043C
-                r7 = gUnknown_030053E4 - sprite->timer;
+                timeDiff = gCheckpointTime - sprite->timer;
 
-                if (r7 > 1800) {
-                    timeInc = 5;
-                } else if (r7 > 1200) {
-                    timeInc = 10;
+                if (timeDiff > ZONE_TIME_TO_INT(0, 30)) {
+                    ringBonus = 5;
+                } else if (timeDiff > ZONE_TIME_TO_INT(0, 20)) {
+                    ringBonus = 10;
                 } else {
-                    timeInc = 15;
+                    ringBonus = 15;
                 }
 
-                prevCourseTime = gRingCount;
-                timeInc += gRingCount;
-                gRingCount = timeInc;
+                prevRingCount = gRingCount;
+                ringBonus += gRingCount;
+                gRingCount = ringBonus;
 
                 if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
-                    && (Div((u16)gRingCount, 100) != Div(prevCourseTime, 100))
+                    && (Div((u16)gRingCount, 100) != Div(prevRingCount, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                     u32 lives = gNumLives + 1;
                     if (lives > 255)
@@ -125,12 +123,12 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                 m4aSongNumStart(MUS_FANFARE);
                 CreateSprite_Notif_RingBonus();
 
-                sprite->timer = gUnknown_030053E4;
-                gUnknown_03005B6C = r7;
+                sprite->timer = gCheckpointTime;
+                gUnknown_03005B6C = timeDiff;
             }
         } else {
             sprite->unk1C = 1;
-            sprite->timer = gUnknown_030053E4;
+            sprite->timer = gCheckpointTime;
         }
         sprite->someX = gPlayer.x;
     } else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))

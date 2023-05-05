@@ -140,6 +140,12 @@ struct Unk_03003674 {
         gPseudoRandom = (gPseudoRandom * 0x196225) + 0x3C6EF35F;                        \
         gPseudoRandom;                                                                  \
     })
+
+#define MultiplayerPseudoRandom32()                                                     \
+    ({                                                                                  \
+        gMultiplayerPseudoRandom = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;  \
+        gMultiplayerPseudoRandom;                                                       \
+    })
 #define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max))) + (min))
 
 extern u32 gFlags;

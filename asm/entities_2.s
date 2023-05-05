@@ -10442,7 +10442,7 @@ _08018FFE:
 	movs r0, #4
 	orrs r0, r1
 	strh r0, [r3]
-	ldr r1, _080190A8 @ =gUnknown_03005490
+	ldr r1, _080190A8 @ =gCourseTime
 	movs r0, #0xe1
 	lsls r0, r0, #4
 	str r0, [r1]
@@ -10503,7 +10503,7 @@ _08019098: .4byte 0xFFFFFBFF
 _0801909C: .4byte 0xFFFFFEFF
 _080190A0: .4byte gPlayer + 0x64
 _080190A4: .4byte gUnknown_03005424
-_080190A8: .4byte gUnknown_03005490
+_080190A8: .4byte gCourseTime
 _080190AC:
 	lsls r0, r7, #0x18
 	lsrs r0, r0, #0x18
@@ -12416,7 +12416,7 @@ _08019F36:
 	ldr r0, [r1]
 	adds r0, r0, r2
 	str r0, [r1]
-	ldr r0, _08019FC0 @ =gUnknown_03005490
+	ldr r0, _08019FC0 @ =gCourseTime
 	ldr r2, [r0]
 	ldr r0, _08019FC4 @ =0x00008CA0
 	cmp r2, r0
@@ -12471,7 +12471,7 @@ _08019FB0: .4byte gGameMode
 _08019FB4: .4byte gUnknown_030054A8
 _08019FB8: .4byte gLoadedSaveGame
 _08019FBC: .4byte gRingCount
-_08019FC0: .4byte gUnknown_03005490
+_08019FC0: .4byte gCourseTime
 _08019FC4: .4byte 0x00008CA0
 _08019FC8: .4byte gUnknown_03005424
 _08019FCC: .4byte gMultiplayerPlayerTasks

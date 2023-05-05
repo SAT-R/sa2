@@ -37,7 +37,7 @@ static void Task_806319C(void);
 static void TaskDestructor_8063214(struct Task *);
 static void Task_8063228(void);
 
-extern u32 gUnknown_030053E4;
+extern u32 gCheckpointTime;
 extern const struct SpriteTables *gUnknown_03002794;
 extern const u32 gUnknown_080D63FC[34][2];
 
@@ -127,7 +127,7 @@ void Task_8062FD8(void)
             && posX <= Q_24_8_TO_INT(gPlayer.x)) {
             gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
             gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
-            gPlayer.checkpointTime = gUnknown_030053E4;
+            gPlayer.checkpointTime = gCheckpointTime;
 
             if (gUnknown_030055B0 == 0)
                 gUnknown_030055B0++;
@@ -241,7 +241,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
                && posX <= Q_24_8_TO_INT(gPlayer.x)) {
         gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
         gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
-        gPlayer.checkpointTime = gUnknown_030053E4;
+        gPlayer.checkpointTime = gCheckpointTime;
 
         if (gUnknown_030055B0 == 0)
             gUnknown_030055B0++;

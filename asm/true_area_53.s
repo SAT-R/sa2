@@ -2023,14 +2023,14 @@ _0803AB84:
 	ldrb r0, [r0]
 	cmp r0, #2
 	bne _0803ABC0
-	ldr r0, _0803ABBC @ =gUnknown_03005490
+	ldr r0, _0803ABBC @ =gCourseTime
 	ldr r0, [r0]
 	bl CreateTimeAttackResultsCutScene
 	b _0803ABFC
 	.align 2, 0
 _0803ABB4: .4byte gCurrentLevel
 _0803ABB8: .4byte gGameMode
-_0803ABBC: .4byte gUnknown_03005490
+_0803ABBC: .4byte gCourseTime
 _0803ABC0:
 	ldr r0, _0803ABE4 @ =gSelectedCharacter
 	ldrb r0, [r0]
@@ -2052,7 +2052,7 @@ _0803ABC0:
 _0803ABE4: .4byte gSelectedCharacter
 _0803ABE8: .4byte gLoadedSaveGame
 _0803ABEC:
-	ldr r0, _0803AC08 @ =gUnknown_03005490
+	ldr r0, _0803AC08 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0803AC0C @ =gRingCount
 	ldrh r1, [r1]
@@ -2065,7 +2065,7 @@ _0803ABFC:
 	bl TaskDestroy
 	b _0803AC22
 	.align 2, 0
-_0803AC08: .4byte gUnknown_03005490
+_0803AC08: .4byte gCourseTime
 _0803AC0C: .4byte gRingCount
 _0803AC10: .4byte gUnknown_030054F4
 _0803AC14: .4byte gCurTask
@@ -29297,7 +29297,7 @@ sub_80484C8: @ 0x080484C8
 	beq _080484D4
 	b _08048642
 _080484D4:
-	ldr r0, _080484E4 @ =gUnknown_03005490
+	ldr r0, _080484E4 @ =gCourseTime
 	ldr r0, [r0]
 	movs r3, #1
 	ands r0, r3
@@ -29306,7 +29306,7 @@ _080484D4:
 	movs r1, #0
 	b _080484FA
 	.align 2, 0
-_080484E4: .4byte gUnknown_03005490
+_080484E4: .4byte gCourseTime
 _080484E8:
 	ldr r2, _08048534 @ =gPseudoRandom
 	ldr r1, [r2]
@@ -29994,7 +29994,7 @@ sub_8048A4C: @ 0x08048A4C
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _08048ACC
-	ldr r0, _08048A88 @ =gUnknown_03005490
+	ldr r0, _08048A88 @ =gCourseTime
 	ldr r0, [r0]
 	movs r1, #3
 	ands r0, r1
@@ -30017,7 +30017,7 @@ sub_8048A4C: @ 0x08048A4C
 	ldrb r0, [r1, #7]
 	b _08048AB8
 	.align 2, 0
-_08048A88: .4byte gUnknown_03005490
+_08048A88: .4byte gCourseTime
 _08048A8C: .4byte 0x00000FFF
 _08048A90: .4byte gUnknown_080D86D4
 _08048A94: .4byte gUnknown_080D8710
@@ -30200,7 +30200,7 @@ sub_8048BF0: @ 0x08048BF0
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	beq _08048C70
-	ldr r0, _08048C30 @ =gUnknown_03005490
+	ldr r0, _08048C30 @ =gCourseTime
 	ldr r0, [r0]
 	movs r1, #3
 	ands r0, r1
@@ -30226,7 +30226,7 @@ sub_8048BF0: @ 0x08048BF0
 	ldrb r0, [r0]
 	b _08048C5A
 	.align 2, 0
-_08048C30: .4byte gUnknown_03005490
+_08048C30: .4byte gCourseTime
 _08048C34: .4byte 0x00000FFF
 _08048C38: .4byte gUnknown_080D86D4
 _08048C3C: .4byte gUnknown_080D8710
@@ -32083,7 +32083,7 @@ _08049AB4:
 	beq _08049AC4
 	b _08049C4C
 _08049AC4:
-	ldr r0, _08049AEC @ =gUnknown_03005490
+	ldr r0, _08049AEC @ =gCourseTime
 	ldr r0, [r0]
 	str r0, [r3, #0x78]
 	movs r0, #7
@@ -32098,7 +32098,7 @@ _08049ADC: .4byte 0x00A6CBFF
 _08049AE0: .4byte gUnknown_080D8808
 _08049AE4: .4byte gUnknown_03005B4C
 _08049AE8: .4byte gUnknown_03005424
-_08049AEC: .4byte gUnknown_03005490
+_08049AEC: .4byte gCourseTime
 _08049AF0: .4byte 0x0000FFFD
 _08049AF4:
 	adds r2, r3, #0
@@ -32208,7 +32208,7 @@ _08049BAC:
 	movs r0, #0xa
 	strb r0, [r1]
 	ldr r1, _08049C94 @ =gPlayer
-	ldr r0, _08049C98 @ =gUnknown_03005490
+	ldr r0, _08049C98 @ =gCourseTime
 	ldr r0, [r0]
 	str r0, [r1, #0x78]
 	ldrb r0, [r7, #4]
@@ -32306,7 +32306,7 @@ _08049C88: .4byte gUnknown_080D87D8
 _08049C8C: .4byte gUnknown_03005430
 _08049C90: .4byte gUnknown_0300542C
 _08049C94: .4byte gPlayer
-_08049C98: .4byte gUnknown_03005490
+_08049C98: .4byte gCourseTime
 _08049C9C: .4byte gUnknown_03005424
 _08049CA0: .4byte 0x0000FFFD
 _08049CA4: .4byte gUnknown_080D8808
@@ -38337,7 +38337,7 @@ sub_804CC30: @ 0x0804CC30
 	ldr r1, _0804CC80 @ =IWRAM_START + 0x48
 	adds r0, r0, r1
 	bl NextTransitionFrame
-	ldr r0, _0804CC84 @ =gUnknown_03005490
+	ldr r0, _0804CC84 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0804CC88 @ =gRingCount
 	ldrh r1, [r1]
@@ -38359,7 +38359,7 @@ sub_804CC30: @ 0x0804CC30
 _0804CC78: .4byte gCurTask
 _0804CC7C: .4byte IWRAM_START + 0x4C
 _0804CC80: .4byte IWRAM_START + 0x48
-_0804CC84: .4byte gUnknown_03005490
+_0804CC84: .4byte gCourseTime
 _0804CC88: .4byte gRingCount
 _0804CC8C: .4byte gUnknown_030054F4
 _0804CC90: .4byte gMPlayInfo_SE3
@@ -40306,7 +40306,7 @@ sub_804DC60: @ 0x0804DC60
 	orrs r0, r1
 	strh r0, [r2]
 	bl sub_802C9E4
-	ldr r0, _0804DCE4 @ =gUnknown_03005490
+	ldr r0, _0804DCE4 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0804DCE8 @ =gRingCount
 	ldrh r1, [r1]
@@ -40328,7 +40328,7 @@ _0804DCD4: .4byte gUnknown_03005390
 _0804DCD8: .4byte gVramGraphicsCopyCursor
 _0804DCDC: .4byte gVramGraphicsCopyQueueIndex
 _0804DCE0: .4byte gUnknown_03005424
-_0804DCE4: .4byte gUnknown_03005490
+_0804DCE4: .4byte gCourseTime
 _0804DCE8: .4byte gRingCount
 _0804DCEC: .4byte gUnknown_030054F4
 _0804DCF0: .4byte gBldRegs
