@@ -164,7 +164,7 @@ void sub_8036168(void)
         gPlayer.unk6A = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
 
-        if (!IS_SINGLE_PLAYER) {
+        if (IS_MULTI_PLAYER) {
             gPlayer.unk90->s.focused = (SIO_MULTI_CNT)->id;
         } else {
             gPlayer.unk90->s.focused = 0;

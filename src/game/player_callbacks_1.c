@@ -1375,7 +1375,7 @@ void PlayerCB_8027324(Player *p)
 
 void PlayerCB_80273D0(Player *p)
 {
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         sub_802A4B8(p);
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         sub_802A468(p);

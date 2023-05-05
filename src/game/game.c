@@ -322,7 +322,7 @@ void ApplyGameStageSettings(void)
     gUnknown_030054B0 = 0;
     gNumLives = 3;
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         gNumLives = 1;
     }
 
@@ -358,7 +358,7 @@ void GameStageStart(void)
     gUnknown_03005590 = 0;
     gUnknown_03005424 &= ~0x80;
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         gUnknown_030054A0 = gFrameCount;
     }
 
@@ -449,11 +449,11 @@ void CreateGameStage(void)
     gUnknown_03002820 = 0x50;
     gUnknown_03005398 = 0x80;
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         sub_80191A4();
         sub_8019120();
 
-        gUnknown_030054E8 = 0;
+        gRandomItemBox = 0;
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             gUnknown_030053E8[i] = 0;
@@ -489,7 +489,7 @@ void CreateGameStage(void)
         sub_8013FAC(&gPlayer);
     }
 
-    if (!IS_SINGLE_PLAYER && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+    if (IS_MULTI_PLAYER && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateRaceProgressIndicator();
     }
 }
@@ -518,19 +518,21 @@ void sub_801AB3C(void)
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             if ((temp & ~(0x1FF)) != ((temp - step) & ~(0x1FF))) {
                 u32 mask, v;
-                gUnknown_03005434 = (gUnknown_03005434 * 0x196225) + 0x3C6EF35F;
+                gMultiplayerPseudoRandom
+                    = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;
 
                 if ((temp & ~(0xFFF)) != ((temp - step) & ~(0xFFF))) {
-                    u32 value = (gUnknown_030054E8 >> 4) + 1;
-                    gUnknown_030054E8 = ((gUnknown_030054E8 & 0xF) | (value * 16));
+                    u32 value = (gRandomItemBox >> 4) + 1;
+                    gRandomItemBox = ((gRandomItemBox & 0xF) | (value * 16));
                 }
-                v = gUnknown_03005434;
+                v = gMultiplayerPseudoRandom;
                 mask = 7;
-                gUnknown_030054E8 = (gUnknown_030054E8 & 0xF8) | ((u32)v & mask);
+                gRandomItemBox = (gRandomItemBox & 0xF8) | ((u32)v & mask);
             }
 
         } else if ((temp & ~(0x3F)) != ((temp - step) & ~(0x3F))) {
-            gUnknown_03005434 = (gUnknown_03005434 * 0x196225) + 0x3C6EF35F;
+            gMultiplayerPseudoRandom
+                = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;
         }
 
         if (gCamera.unk50 & 4) {
@@ -616,7 +618,7 @@ void sub_801AB3C(void)
             gUnknown_03005424 |= 1;
 
             if (gLoadedSaveGame->timeLimitEnabled
-                && (gGameMode == GAME_MODE_SINGLE_PLAYER || !IS_SINGLE_PLAYER)) {
+                && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
                 return;
             }
 
@@ -1781,7 +1783,7 @@ NONMATCH("asm/non_matching/sub_801C94C.inc", void sub_801C94C(s32 a, s32 b))
         a = gBgScrollRegs[3][0];
     }
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         s16 val;
         gBgScrollRegs[3][0] = a >> 4;
         val = Div(b, 0x10);
@@ -2049,7 +2051,7 @@ void sub_801D104(void)
     gBgScrollRegs[3][1] = 0;
     gUnknown_03005590 = 0x380;
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         sub_801D1A8();
     }
     gBgCntRegs[3] &= ~(1 | 2);

@@ -126,7 +126,7 @@ static void Task_StageGoalToggleMain(void)
     s32 x = TO_WORLD_POS(spriteX, regionX);
     s32 y = TO_WORLD_POS(me->y, regionY);
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.unk6D = 10;

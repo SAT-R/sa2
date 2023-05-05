@@ -259,7 +259,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         WriteSaveGame();
     }
 
-    if (!IS_SINGLE_PLAYER && maxLevel > LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
+    if (IS_MULTI_PLAYER && maxLevel > LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
         maxLevel = LEVEL_INDEX(ZONE_7, ACT_BOSS);
     }
 
@@ -678,7 +678,7 @@ static void Task_CourseSelectMain(void)
     union MultiSioData *recv, *send;
     MultiPakHeartbeat();
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         recv = &gMultiSioRecv[0];
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && recv->pat1.unk0 > 0x404F) {
             coursesScreen->currentCourse = recv->pat1.unk2;
@@ -753,7 +753,7 @@ static void Task_CourseSelectMain(void)
         }
     }
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         send = &gMultiSioSend;
 
         send->pat1.unk0 = 0x4050;
@@ -818,7 +818,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
         coursesScreen->levelChosen = TRUE;
     }
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;
@@ -835,7 +835,7 @@ static void Task_ScrollToNextLevelAnim(void)
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         MultiPakHeartbeat();
     }
 
@@ -864,7 +864,7 @@ static void Task_ScrollToNextLevelAnim(void)
         coursesScreen->levelChosen = TRUE;
     }
 
-    if (!IS_SINGLE_PLAYER) {
+    if (IS_MULTI_PLAYER) {
         send = &gMultiSioSend;
         send->pat1.unk0 = 0x4050;
         send->pat1.unk2 = coursesScreen->currentCourse;

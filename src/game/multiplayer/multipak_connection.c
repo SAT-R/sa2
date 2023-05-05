@@ -307,7 +307,7 @@ static void sub_805ADAC(void)
     }
 
     if (!bool2 && recv->unk0 == 0x4011 && connectScreen->unkFA != 0) {
-        gUnknown_03005434 = recv->unk10;
+        gMultiplayerPseudoRandom = recv->unk10;
         gMultiplayerConnections = recv->unk2;
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (GetBit(gMultiplayerConnections, i)) {

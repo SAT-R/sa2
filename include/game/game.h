@@ -51,6 +51,8 @@ extern u8 gGameMode;
     ((gGameMode == GAME_MODE_SINGLE_PLAYER) || (gGameMode == GAME_MODE_TIME_ATTACK)     \
      || (gGameMode == GAME_MODE_BOSS_TIME_ATTACK))
 
+#define IS_MULTI_PLAYER (!(IS_SINGLE_PLAYER))
+
 extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
@@ -67,7 +69,7 @@ extern u32 gUnknown_03005490;
 extern u8 gUnknown_030054F4;
 extern u16 gUnknown_03005440;
 extern u16 gUnknown_030054BC;
-extern u8 gUnknown_030054E8;
+extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
 typedef struct {
@@ -381,7 +383,7 @@ extern u8 gMultiplayerUnlockedLevels;
 extern u32 gMultiplayerIds[MULTI_SIO_PLAYERS_MAX];
 extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
-extern u32 gUnknown_03005434;
+extern u32 gMultiplayerPseudoRandom;
 
 extern u32 gUnknown_03005450;
 extern u8 gNumLives;

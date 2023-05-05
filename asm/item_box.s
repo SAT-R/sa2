@@ -22,8 +22,8 @@ gUnknown_080E02AA:
 .syntax unified
 .text
 
-	thumb_func_start initSprite_80806F4
-initSprite_80806F4: @ 0x08085F88
+	thumb_func_start initSprite_ItemBox
+initSprite_ItemBox: @ 0x08085F88
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -40,7 +40,7 @@ initSprite_80806F4: @ 0x08085F88
 	lsls r3, r3, #0x18
 	lsrs r3, r3, #0x18
 	mov sl, r3
-	ldr r0, _08085FC8 @ =gUnknown_030054E8
+	ldr r0, _08085FC8 @ =gRandomItemBox 
 	ldrb r2, [r0]
 	movs r0, #7
 	ands r0, r2
@@ -56,7 +56,7 @@ initSprite_80806F4: @ 0x08085F88
 	ldr r0, _08085FCC @ =sub_80865E4
 	b _08085FD2
 	.align 2, 0
-_08085FC8: .4byte gUnknown_030054E8
+_08085FC8: .4byte gRandomItemBox 
 _08085FCC: .4byte sub_80865E4
 _08085FD0:
 	ldr r0, _08086124 @ =sub_808673C
@@ -71,7 +71,7 @@ _08085FD2:
 	adds r2, r0, #0
 	movs r0, #4
 	ldrsb r0, [r7, r0]
-	ldr r1, _0808612C @ =gUnknown_030054E8
+	ldr r1, _0808612C @ =gRandomItemBox 
 	ldrb r1, [r1]
 	lsrs r1, r1, #4
 	cmp r0, r1
@@ -82,7 +82,7 @@ _08085FF4:
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
 	adds r2, r4, r2
-	ldr r0, _08086130 @ =gUnknown_03005434
+	ldr r0, _08086130 @ =gMultiplayerPseudoRandom
 	ldr r0, [r0]
 	movs r1, #7
 	ands r0, r1
@@ -229,8 +229,8 @@ _08085FF4:
 	.align 2, 0
 _08086124: .4byte sub_808673C
 _08086128: .4byte sub_80867E8
-_0808612C: .4byte gUnknown_030054E8
-_08086130: .4byte gUnknown_03005434
+_0808612C: .4byte gRandomItemBox 
+_08086130: .4byte gMultiplayerPseudoRandom
 _08086134: .4byte gUnknown_080E029A
 _08086138: .4byte IWRAM_START + 0x82
 _0808613C: .4byte IWRAM_START + 0x80
@@ -262,7 +262,7 @@ sub_808616C: @ 0x0808616C
 	mov r8, r1
 	add r8, r4
 	ldr r6, _08086220 @ =gUnknown_080E029A
-	ldr r0, _08086224 @ =gUnknown_03005434
+	ldr r0, _08086224 @ =gMultiplayerPseudoRandom
 	ldr r0, [r0]
 	movs r1, #7
 	ands r0, r1
@@ -336,7 +336,7 @@ sub_808616C: @ 0x0808616C
 	.align 2, 0
 _0808621C: .4byte gCurTask
 _08086220: .4byte gUnknown_080E029A
-_08086224: .4byte gUnknown_03005434
+_08086224: .4byte gMultiplayerPseudoRandom
 _08086228: .4byte IWRAM_START + 0x82
 _0808622C: .4byte gUnknown_080E02AA
 _08086230: .4byte IWRAM_START + 0x5C
@@ -394,7 +394,7 @@ sub_808623C: @ 0x0808623C
 	ldr r5, [r4]
 	movs r1, #3
 	ldrsb r1, [r5, r1]
-	ldr r0, _080862C4 @ =gUnknown_030054E8
+	ldr r0, _080862C4 @ =gRandomItemBox 
 	ldrb r2, [r0]
 	movs r0, #7
 	ands r0, r2
@@ -408,7 +408,7 @@ _080862B4: .4byte gCurTask
 _080862B8: .4byte gCamera
 _080862BC: .4byte IWRAM_START + 0x80
 _080862C0: .4byte sub_80865E4
-_080862C4: .4byte gUnknown_030054E8
+_080862C4: .4byte gRandomItemBox 
 _080862C8:
 	movs r1, #4
 	ldrsb r1, [r5, r1]
@@ -531,7 +531,7 @@ sub_808636C: @ 0x0808636C
 	ldr r4, [r5]
 	movs r1, #3
 	ldrsb r1, [r4, r1]
-	ldr r0, _080863F0 @ =gUnknown_030054E8
+	ldr r0, _080863F0 @ =gRandomItemBox 
 	ldrb r2, [r0]
 	movs r0, #7
 	ands r0, r2
@@ -551,7 +551,7 @@ sub_808636C: @ 0x0808636C
 _080863E4: .4byte gCurTask
 _080863E8: .4byte gCamera
 _080863EC: .4byte sub_808673C
-_080863F0: .4byte gUnknown_030054E8
+_080863F0: .4byte gRandomItemBox 
 _080863F4: .4byte sub_808616C
 _080863F8:
 	adds r0, r5, #0
@@ -798,7 +798,7 @@ sub_80865E4: @ 0x080865E4
 	ldr r5, [r4]
 	movs r1, #3
 	ldrsb r1, [r5, r1]
-	ldr r0, _08086610 @ =gUnknown_030054E8
+	ldr r0, _08086610 @ =gRandomItemBox 
 	ldrb r2, [r0]
 	movs r0, #7
 	ands r0, r2
@@ -809,7 +809,7 @@ sub_80865E4: @ 0x080865E4
 	b _08086656
 	.align 2, 0
 _0808660C: .4byte gCurTask
-_08086610: .4byte gUnknown_030054E8
+_08086610: .4byte gRandomItemBox 
 _08086614:
 	movs r1, #4
 	ldrsb r1, [r5, r1]
@@ -977,7 +977,7 @@ sub_808673C: @ 0x0808673C
 	ldr r4, [r5]
 	movs r1, #3
 	ldrsb r1, [r4, r1]
-	ldr r0, _08086774 @ =gUnknown_030054E8
+	ldr r0, _08086774 @ =gRandomItemBox 
 	ldrb r2, [r0]
 	movs r0, #7
 	ands r0, r2
@@ -995,7 +995,7 @@ sub_808673C: @ 0x0808673C
 	b _08086792
 	.align 2, 0
 _08086770: .4byte gCurTask
-_08086774: .4byte gUnknown_030054E8
+_08086774: .4byte gRandomItemBox 
 _08086778: .4byte sub_808616C
 _0808677C:
 	adds r0, r5, #0

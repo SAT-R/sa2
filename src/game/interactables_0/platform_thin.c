@@ -134,7 +134,7 @@ static void Task_CommonPlatformThinMain(void)
     sprite->x = x - gCamera.x;
     sprite->y = y - gCamera.y;
 
-    if (!IS_SINGLE_PLAYER && (s8)me->x == -3) {
+    if (IS_MULTI_PLAYER && (s8)me->x == -3) {
         CreatePlatformBreakParticles(x, y);
 
         if (player->moveState & MOVESTATE_8 && player->unk3C == sprite) {
@@ -189,7 +189,7 @@ static void Task_CommonPlatformThinMain(void)
         }
     }
     if (something) {
-        if (!IS_SINGLE_PLAYER) {
+        if (IS_MULTI_PLAYER) {
             struct UNK_3005510 *unk5510 = sub_8019224();
             unk5510->unk0 = 1;
             unk5510->unk1 = platform->base.regionX;

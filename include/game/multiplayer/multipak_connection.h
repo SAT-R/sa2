@@ -15,7 +15,7 @@ void MultiPakCommunicationError(void);
 // TOOD: MultiSioHeartBeat
 #define MultiPakHeartbeat()                                                             \
     ({                                                                                  \
-        if (!IS_SINGLE_PLAYER) {                                                        \
+        if (IS_MULTI_PLAYER) {                                                          \
             u32 i;                                                                      \
             for (i = 0;                                                                 \
                  i < MULTI_SIO_PLAYERS_MAX && GetBit(gMultiplayerConnections, i);       \

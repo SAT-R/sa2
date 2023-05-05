@@ -385,7 +385,7 @@ void sub_808267C(void)
 
     if (packet->pat3.unk0 == 0x4080) {
         u32 i;
-        gUnknown_03005434 = packet->pat3.unk8;
+        gMultiplayerPseudoRandom = packet->pat3.unk8;
 
         for (i = 0; i < 4; i++) {
             gMultiplayerCharacters[i] = 0;

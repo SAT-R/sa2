@@ -183,7 +183,7 @@ gUnknown_080D502C:
     .4byte initSprite_Interactable_GrindRail_EndAir
     .4byte initSprite_Interactable_GrindRail_EndGround_Left
     .4byte initSprite_Interactable_GrindRail_EndAir_Left
-    .4byte initSprite_80806F4
+    .4byte initSprite_ItemBox
     .4byte initSprite_8080368
 
     .global gSpriteTileInits_PreStageEntry
@@ -7451,7 +7451,7 @@ _0800B63C:
 	cmp r1, #0xd
 	bne _0800B680
 	ldr r5, _0800B6B4 @ =gUnknown_080D51F4
-	ldr r0, _0800B6B8 @ =gUnknown_03005434
+	ldr r0, _0800B6B8 @ =gMultiplayerPseudoRandom
 	ldr r2, [r0]
 	movs r0, #3
 	ands r0, r2
@@ -7499,7 +7499,7 @@ _0800B680:
 _0800B6AC: .4byte gUnknown_03005590
 _0800B6B0: .4byte gUnknown_080D51E4
 _0800B6B4: .4byte gUnknown_080D51F4
-_0800B6B8: .4byte gUnknown_03005434
+_0800B6B8: .4byte gMultiplayerPseudoRandom
 _0800B6BC: .4byte gCurrentLevel
 _0800B6C0: .4byte gUnknown_080D5178
 _0800B6C4:
