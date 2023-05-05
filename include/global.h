@@ -132,6 +132,15 @@ typedef void (*VoidFn)(void);
         }                                                                               \
     })
 
+#define CLAMP_INLINE2(var, min, max)                                                     \
+    ({                                                                                  \
+        if ((var) > (max)) {                                                            \
+            var = (max);                                                                \
+        } else if ((var) < (min)) {                                                     \
+            var = (min);                                                                \
+        }                                                                               \
+    })
+
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
 
 #define RECT_DISTANCE(aXA, aYA, aXB, aYB) (ABS((aXA) - (aXB)) + ABS((aYA) - (aYB)))

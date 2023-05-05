@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable087
-initSprite_Interactable087: @ 0x0807D2F4
+	thumb_func_start initSprite_Interactable_SkyCanyon_SmallPropellor
+initSprite_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D2F4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -27,9 +27,9 @@ initSprite_Interactable087: @ 0x0807D2F4
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	mov sb, r1
-	ldr r0, _0807D430 @ =Task_Interactable087
+	ldr r0, _0807D430 @ =Task_Interactable_SkyCanyon_SmallPropellor
 	ldr r2, _0807D434 @ =0x00002010
-	ldr r1, _0807D438 @ =TaskDestructor_Interactable087
+	ldr r1, _0807D438 @ =TaskDestructor_Interactable_SkyCanyon_SmallPropellor
 	str r1, [sp]
 	movs r1, #0x58
 	movs r3, #0
@@ -165,9 +165,9 @@ _0807D418:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0807D430: .4byte Task_Interactable087
+_0807D430: .4byte Task_Interactable_SkyCanyon_SmallPropellor
 _0807D434: .4byte 0x00002010
-_0807D438: .4byte TaskDestructor_Interactable087
+_0807D438: .4byte TaskDestructor_Interactable_SkyCanyon_SmallPropellor
 _0807D43C: .4byte IWRAM_START + 0x44
 _0807D440: .4byte IWRAM_START + 0x52
 _0807D444: .4byte IWRAM_START + 0x48
@@ -266,7 +266,7 @@ _0807D4FA:
 	subs r0, #0x40
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl sub_807D820
+	bl ClampGroundSpeed
 	strh r0, [r6, #0x14]
 	ldrh r0, [r6, #0x10]
 	subs r0, #0x40
@@ -314,14 +314,14 @@ _0807D558:
 	adds r0, #0x40
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl sub_807D820
+	bl ClampGroundSpeed
 	strh r0, [r6, #0x14]
 	ldrh r0, [r6, #0x10]
 	adds r0, #0x40
 _0807D572:
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl sub_807D820
+	bl ClampGroundSpeed
 	strh r0, [r6, #0x10]
 	b _0807D5C4
 _0807D57E:
@@ -625,8 +625,8 @@ _0807D7A2:
 	bx r1
 	.align 2, 0
 
-	thumb_func_start Task_Interactable087
-Task_Interactable087: @ 0x0807D7B0
+	thumb_func_start Task_Interactable_SkyCanyon_SmallPropellor
+Task_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D7B0
 	push {r4, lr}
 	ldr r0, _0807D7E0 @ =gCurTask
 	ldr r0, [r0]
@@ -646,7 +646,7 @@ _0807D7CE:
 	cmp r0, #0
 	beq _0807D7E4
 	adds r0, r4, #0
-	bl sub_807D8E0
+	bl DestroyTask_Interactable087
 	b _0807D7F0
 	.align 2, 0
 _0807D7E0: .4byte gCurTask
@@ -661,8 +661,8 @@ _0807D7F0:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start TaskDestructor_Interactable087
-TaskDestructor_Interactable087: @ 0x0807D7F8
+	thumb_func_start TaskDestructor_Interactable_SkyCanyon_SmallPropellor
+TaskDestructor_Interactable_SkyCanyon_SmallPropellor: @ 0x0807D7F8
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
@@ -684,233 +684,5 @@ sub_807D80C: @ 0x0807D80C
 _0807D818: .4byte gCurTask
 _0807D81C: .4byte Task_807D978
 
-	thumb_func_start sub_807D820
-sub_807D820: @ 0x0807D820
-	push {lr}
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	ldr r0, _0807D840 @ =gPlayer
-	adds r0, #0x5a
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0807D844
-	lsls r0, r1, #0x10
-	asrs r2, r0, #0x10
-	movs r0, #0xf0
-	lsls r0, r0, #4
-	cmp r2, r0
-	bgt _0807D850
-	b _0807D854
-	.align 2, 0
-_0807D840: .4byte gPlayer
-_0807D844:
-	lsls r0, r1, #0x10
-	asrs r2, r0, #0x10
-	movs r0, #0x90
-	lsls r0, r0, #4
-	cmp r2, r0
-	ble _0807D854
-_0807D850:
-	adds r1, r0, #0
-	b _0807D85E
-_0807D854:
-	ldr r0, _0807D868 @ =0xFFFFF100
-	cmp r2, r0
-	bge _0807D85E
-	movs r1, #0xf1
-	lsls r1, r1, #8
-_0807D85E:
-	lsls r0, r1, #0x10
-	asrs r0, r0, #0x10
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0807D868: .4byte 0xFFFFF100
-
-	thumb_func_start sub_807D86C
-sub_807D86C: @ 0x0807D86C
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	ldr r2, [r3, #0x3c]
-	ldr r1, _0807D8D4 @ =gCamera
-	ldr r0, [r1]
-	subs r2, r2, r0
-	ldr r0, [r3, #0x40]
-	ldr r1, [r1, #4]
-	subs r0, r0, r1
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	adds r0, r3, #0
-	adds r0, #0x4c
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	adds r0, r2, r0
-	movs r5, #0x80
-	rsbs r5, r5, #0
-	cmp r0, r5
-	blt _0807D8CE
-	adds r0, r3, #0
-	adds r0, #0x48
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	adds r0, r2, r0
-	movs r1, #0xb8
-	lsls r1, r1, #1
-	cmp r0, r1
-	bgt _0807D8CE
-	lsls r0, r4, #0x10
-	asrs r1, r0, #0x10
-	adds r0, r3, #0
-	adds r0, #0x4e
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	adds r0, r1, r0
-	cmp r0, r5
-	blt _0807D8CE
-	adds r0, r3, #0
-	adds r0, #0x4a
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	adds r0, r1, r0
-	movs r1, #0x90
-	lsls r1, r1, #1
-	cmp r0, r1
-	ble _0807D8D8
-_0807D8CE:
-	movs r0, #1
-	b _0807D8DA
-	.align 2, 0
-_0807D8D4: .4byte gCamera
-_0807D8D8:
-	movs r0, #0
-_0807D8DA:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-
-	thumb_func_start sub_807D8E0
-sub_807D8E0: @ 0x0807D8E0
-	push {lr}
-	ldr r1, [r0]
-	ldrb r0, [r0, #8]
-	strb r0, [r1]
-	ldr r0, _0807D8F4 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807D8F4: .4byte gCurTask
-
-	thumb_func_start initSprite_Interactable087_0
-initSprite_Interactable087_0: @ 0x0807D8F8
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #0
-	str r4, [sp]
-	bl initSprite_Interactable087
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable087_1
-initSprite_Interactable087_1: @ 0x0807D918
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #1
-	str r4, [sp]
-	bl initSprite_Interactable087
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable087_2
-initSprite_Interactable087_2: @ 0x0807D938
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #2
-	str r4, [sp]
-	bl initSprite_Interactable087
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable087_3
-initSprite_Interactable087_3: @ 0x0807D958
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #3
-	str r4, [sp]
-	bl initSprite_Interactable087
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start Task_807D978
-Task_807D978: @ 0x0807D978
-	push {r4, lr}
-	ldr r0, _0807D9B0 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_807D468
-	adds r0, r4, #0
-	bl sub_807D6FC
-	cmp r0, #0
-	bne _0807D99C
-	adds r0, r4, #0
-	bl sub_807D9B4
-_0807D99C:
-	adds r0, r4, #0
-	bl sub_807D5CC
-	adds r0, r4, #0
-	bl sub_807D6A8
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807D9B0: .4byte gCurTask
-
-	thumb_func_start sub_807D9B4
-sub_807D9B4: @ 0x0807D9B4
-	ldr r0, _0807D9C0 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0807D9C4 @ =Task_Interactable087
-	str r0, [r1, #8]
-	bx lr
-	.align 2, 0
-_0807D9C0: .4byte gCurTask
-_0807D9C4: .4byte Task_Interactable087
+.if 00
+.endif
