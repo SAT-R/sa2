@@ -161,7 +161,7 @@
     "game/interactables_2/070.h": "c",
     "game/interactables_2/tec_base/note_block.h": "c",
     "game/interactables_2/sky_canyon/094.h": "c",
-    "game/interactables_2/080.h": "c",
+    "game/interactables_2/tec_base/080.h": "c",
     "game/interactables_2/music_plant/pipe_horn.h": "c",
     "animation_commands.h": "c",
     "game/interactables_2/074.h": "c",

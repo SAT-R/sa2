@@ -5,7 +5,7 @@
 #include "core.h"
 #include "task.h"
 #include "lib/m4a.h"
-#include "game/interactables_2/080.h"
+#include "game/interactables_2/tec_base/080.h"
 #include "malloc_vram.h"
 #include "trig.h"
 #include "constants/animations.h"

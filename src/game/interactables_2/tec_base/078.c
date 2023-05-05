@@ -6,7 +6,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/078.h"
+#include "game/interactables_2/tec_base/078.h"
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
