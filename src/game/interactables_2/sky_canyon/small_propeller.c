@@ -7,6 +7,8 @@
 #include "task.h"
 #include "trig.h"
 
+#include "malloc_vram.h"
+
 #include "constants/move_states.h"
 
 typedef struct {
@@ -21,10 +23,11 @@ typedef struct {
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ s16 unk4E;
     /* 0x50 */ u8 filler50[0x8];
-} Sprite_IA087; /* size: 0x58 */
+} Sprite_SmallPropeller; /* size: 0x58 */
 
-#define PROPDIR_LEFT                           0
-#define PROPDIR_RIGHT                          1
+#define PROP_DIR_LEFT                          0
+#define PROP_DIR_RIGHT                         1
+#define PROP_MASK_PERIODIC                     2
 #define SKYCAN_PROPELLER_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
 
 extern void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
@@ -33,15 +36,47 @@ extern void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
                                                              u8 spriteY, u8 kind);
 extern void Task_Interactable_SkyCanyon_SmallPropeller(void);
 
-void sub_807D468(Sprite_IA087 *);
-void sub_807D5CC(Sprite_IA087 *);
-void sub_807D6A8(Sprite_IA087 *);
-bool32 sub_807D6FC(Sprite_IA087 *);
+void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
+
+void sub_807D468(Sprite_SmallPropeller *);
+void sub_807D5CC(Sprite_SmallPropeller *);
+void sub_807D6A8(Sprite_SmallPropeller *);
+bool32 sub_807D6FC(Sprite_SmallPropeller *);
+bool32 sub_807D86C(Sprite_SmallPropeller *);
 
 // static
 s16 ClampGroundSpeed(s16);
 
-void SetTaskMain_Interactable087(Sprite_IA087 *unused);
+void Task_807D978(void);
+void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
+void DestroyTask_Interactable087(Sprite_SmallPropeller *);
+
+void Task_Interactable_SkyCanyon_SmallPropeller(void)
+{
+    Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
+
+    if (sub_807D6FC(prop)) {
+        SetTaskMain_807D978(prop);
+    }
+
+    if (sub_807D86C(prop)) {
+        DestroyTask_Interactable087(prop);
+    } else {
+        sub_807D5CC(prop);
+        sub_807D6A8(prop);
+    }
+}
+
+void TaskDestructor_Interactable_SkyCanyon_SmallPropeller(struct Task *t)
+{
+    Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
+    VramFree(prop->s.graphics.dest);
+}
+
+void SetTaskMain_807D978(Sprite_SmallPropeller *unused)
+{
+    gCurTask->main = Task_807D978;
+}
 
 // static
 s16 ClampGroundSpeed(s16 speed)
@@ -56,23 +91,23 @@ s16 ClampGroundSpeed(s16 speed)
     return speed;
 }
 
-bool32 sub_807D86C(Sprite_IA087 *ia087)
+bool32 sub_807D86C(Sprite_SmallPropeller *prop)
 {
     s16 posX, posY;
 
-    posX = ia087->posX - gCamera.x;
-    posY = ia087->posY - gCamera.y;
+    posX = prop->posX - gCamera.x;
+    posY = prop->posY - gCamera.y;
 
-    if (((posX + ia087->unk4C) < -128) || ((posX + ia087->unk48) > 368)
-        || ((posY + ia087->unk4E) < -128) || ((posY + ia087->unk4A) > 288))
+    if (((posX + prop->unk4C) < -128) || ((posX + prop->unk48) > 368)
+        || ((posY + prop->unk4E) < -128) || ((posY + prop->unk4A) > 288))
         return TRUE;
 
     return FALSE;
 }
 
-void DestroyTask_Interactable087(Sprite_IA087 *ia087)
+void DestroyTask_Interactable087(Sprite_SmallPropeller *prop)
 {
-    SET_MAP_ENTITY_NOT_INITIALIZED(ia087->base.me, ia087->base.spriteX);
+    SET_MAP_ENTITY_NOT_INITIALIZED(prop->base.me, prop->base.spriteX);
     TaskDestroy(gCurTask);
 }
 
@@ -82,7 +117,7 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller_Left(MapEntity *me,
 {
     initSprite_Interactable_SkyCanyon_SmallPropeller(
         me, spriteRegionX, spriteRegionY, spriteY,
-        SKYCAN_PROPELLER_KIND(PROPDIR_LEFT, FALSE));
+        SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE));
 }
 
 void initSprite_Interactable_SkyCanyon_SmallPropeller_Right(MapEntity *me,
@@ -92,7 +127,7 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller_Right(MapEntity *me,
 {
     initSprite_Interactable_SkyCanyon_SmallPropeller(
         me, spriteRegionX, spriteRegionY, spriteY,
-        SKYCAN_PROPELLER_KIND(PROPDIR_RIGHT, FALSE));
+        SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, FALSE));
 }
 
 void initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic(MapEntity *me,
@@ -102,7 +137,7 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic(MapEntity *m
 {
     initSprite_Interactable_SkyCanyon_SmallPropeller(
         me, spriteRegionX, spriteRegionY, spriteY,
-        SKYCAN_PROPELLER_KIND(PROPDIR_LEFT, TRUE));
+        SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE));
 }
 
 void initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic(MapEntity *me,
@@ -112,24 +147,24 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic(MapEntity *
 {
     initSprite_Interactable_SkyCanyon_SmallPropeller(
         me, spriteRegionX, spriteRegionY, spriteY,
-        SKYCAN_PROPELLER_KIND(PROPDIR_RIGHT, TRUE));
+        SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE));
 }
 
 void Task_807D978(void)
 {
-    Sprite_IA087 *ia087 = TaskGetStructPtr(gCurTask);
+    Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
 
-    sub_807D468(ia087);
+    sub_807D468(prop);
 
-    if (!sub_807D6FC(ia087)) {
-        SetTaskMain_Interactable087(ia087);
+    if (!sub_807D6FC(prop)) {
+        SetTaskMain_Interactable087(prop);
     }
 
-    sub_807D5CC(ia087);
-    sub_807D6A8(ia087);
+    sub_807D5CC(prop);
+    sub_807D6A8(prop);
 }
 
-void SetTaskMain_Interactable087(Sprite_IA087 *unused)
+void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused)
 {
     gCurTask->main = Task_Interactable_SkyCanyon_SmallPropeller;
 }

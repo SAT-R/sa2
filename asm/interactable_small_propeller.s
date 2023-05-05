@@ -624,65 +624,6 @@ _0807D7A2:
 	pop {r1}
 	bx r1
 	.align 2, 0
-
-	thumb_func_start Task_Interactable_SkyCanyon_SmallPropeller
-Task_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D7B0
-	push {r4, lr}
-	ldr r0, _0807D7E0 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_807D6FC
-	cmp r0, #0
-	beq _0807D7CE
-	adds r0, r4, #0
-	bl sub_807D80C
-_0807D7CE:
-	adds r0, r4, #0
-	bl sub_807D86C
-	cmp r0, #0
-	beq _0807D7E4
-	adds r0, r4, #0
-	bl DestroyTask_Interactable087
-	b _0807D7F0
-	.align 2, 0
-_0807D7E0: .4byte gCurTask
-_0807D7E4:
-	adds r0, r4, #0
-	bl sub_807D5CC
-	adds r0, r4, #0
-	bl sub_807D6A8
-_0807D7F0:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start TaskDestructor_Interactable_SkyCanyon_SmallPropeller
-TaskDestructor_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D7F8
-	push {lr}
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	ldr r0, [r0, #0x10]
-	bl VramFree
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_807D80C
-sub_807D80C: @ 0x0807D80C
-	ldr r0, _0807D818 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0807D81C @ =Task_807D978
-	str r0, [r1, #8]
-	bx lr
-	.align 2, 0
-_0807D818: .4byte gCurTask
-_0807D81C: .4byte Task_807D978
-
+    
 .if 00
 .endif
