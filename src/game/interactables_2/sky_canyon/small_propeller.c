@@ -51,6 +51,28 @@ void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
+bool32 sub_807D6FC(Sprite_SmallPropeller *prop)
+{
+    if (PLAYER_IS_ALIVE) {
+        s16 screenX = prop->posX - gCamera.x;
+        s16 screenY = prop->posY - gCamera.y;
+
+        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+        u16 r6 = prop->unk4C - prop->unk48;
+        u16 r7 = prop->unk4E - prop->unk4A;
+
+        if (((screenX + prop->unk48) <= playerX)
+            && ((screenX + prop->unk48 + r6) >= playerX)
+            && ((screenY + prop->unk4A) <= playerY)
+            && ((screenY + prop->unk4A + r7) >= playerY))
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
 void Task_Interactable_SkyCanyon_SmallPropeller(void)
 {
     Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
