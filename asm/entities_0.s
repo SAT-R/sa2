@@ -183,7 +183,7 @@ gUnknown_080D502C:
     .4byte initSprite_Interactable_GrindRail_EndAir
     .4byte initSprite_Interactable_GrindRail_EndGround_Left
     .4byte initSprite_Interactable_GrindRail_EndAir_Left
-    .4byte initSprite_ItemBox
+    .4byte initSprite_Interactable_ItemBox
     .4byte initSprite_8080368
 
     .global gSpriteTileInits_PreStageEntry
