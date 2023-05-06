@@ -218,7 +218,7 @@
 #define SA2_ANIM_WHIRLWIND                       588
 #define SA2_ANIM_PROPELLOR                       589
 #define SA2_ANIM_SPRING_FLYING                   590
-#define SA2_ANIM_MINI_PROPELLOR                  591
+#define SA2_ANIM_SMALL_PROPELLOR                 591
 #define SA2_ANIM_FLYING_HANDLE                   592
 #define SA2_ANIM_PLATFORM_SKY_CAN_2              593
 #define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594

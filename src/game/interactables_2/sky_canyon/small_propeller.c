@@ -9,6 +9,7 @@
 
 #include "malloc_vram.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 
 typedef struct {
@@ -23,7 +24,8 @@ typedef struct {
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ s16 unk4E;
     /* 0x50 */ u16 unk50;
-    /* 0x52 */ u8 filler52[0x6];
+    /* 0x52 */ u16 unk52; // normalized anim-speed?
+    /* 0x54 */ u8 filler54[0x4];
 } Sprite_SmallPropeller; /* size: 0x58 */
 
 #define PROP_DIR_LEFT                          0
@@ -51,6 +53,69 @@ s16 ClampGroundSpeed(s16);
 void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
+
+void sub_807D5CC(Sprite_SmallPropeller *prop)
+{
+    Sprite *s = &prop->s;
+
+    if (prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE)
+        || prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)) {
+        u32 res = gUnknown_03005590 % 420;
+        if (res < 60) {
+            prop->unk52 = Q_24_8(0.0);
+        } else if (res < 120) {
+            u32 another;
+            s32 temp;
+            s16 res2;
+
+            res -= 60;
+
+            temp = (res << 8) / 60;
+            prop->unk52 = temp;
+            res2 = temp;
+
+            if (res2 >= 0) {
+                another = temp;
+                if (res2 > Q_24_8(1.0))
+                    another = Q_24_8(1.0);
+            } else {
+                another = Q_24_8(0.0);
+            }
+
+            prop->unk52 = another;
+        } else if (res < 360) {
+            prop->unk52 = Q_24_8(1.0);
+        } else {
+            // _0807D644
+            s32 temp;
+            s16 res2;
+
+            res -= 360;
+
+            temp = (res << 8) / 60;
+            ;
+            prop->unk52 = temp;
+            res2 = temp;
+
+            if ((s16)res2 >= 0) {
+                if (res2 > Q_24_8(1.0))
+                    temp = Q_24_8(1.0);
+            } else {
+                temp = Q_24_8(0.0);
+            }
+
+            prop->unk52 = Q_24_8(1.0) - temp;
+        }
+        // _0807D67A
+
+        s->unk22 = prop->unk52 >> 4;
+        s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
+        s->variant = 2;
+
+    } else {
+        prop->unk52 = Q_24_8(1.0);
+    }
+}
 
 void sub_807D6A8(Sprite_SmallPropeller *prop)
 {
