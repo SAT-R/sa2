@@ -485,52 +485,6 @@ _0807D6A2:
 	pop {r4, r5}
 	pop {r0}
 	bx r0
-
-	thumb_func_start sub_807D6A8
-sub_807D6A8: @ 0x0807D6A8
-	push {r4, lr}
-	adds r3, r0, #0
-	adds r4, r3, #0
-	adds r4, #0xc
-	adds r0, #0x44
-	ldrh r0, [r0]
-	cmp r0, #0
-	beq _0807D6BC
-	cmp r0, #2
-	bne _0807D6C4
-_0807D6BC:
-	ldr r1, [r3, #0x3c]
-	adds r0, r3, #0
-	adds r0, #0x4c
-	b _0807D6CA
-_0807D6C4:
-	ldr r1, [r3, #0x3c]
-	adds r0, r3, #0
-	adds r0, #0x48
-_0807D6CA:
-	ldrh r0, [r0]
-	adds r1, r1, r0
-	ldr r2, _0807D6F8 @ =gCamera
-	ldr r0, [r2]
-	subs r1, r1, r0
-	strh r1, [r4, #0x16]
-	ldr r0, [r3, #0x40]
-	adds r1, r3, #0
-	adds r1, #0x4e
-	ldrh r1, [r1]
-	adds r0, r0, r1
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r4, #0x18]
-	adds r0, r4, #0
-	bl sub_8004558
-	adds r0, r4, #0
-	bl sub_80051E8
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807D6F8: .4byte gCamera
-
+    
 .if 00
 .endif

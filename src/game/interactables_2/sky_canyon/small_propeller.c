@@ -22,7 +22,8 @@ typedef struct {
     /* 0x4A */ s16 unk4A;
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ s16 unk4E;
-    /* 0x50 */ u8 filler50[0x8];
+    /* 0x50 */ u16 unk50;
+    /* 0x52 */ u8 filler52[0x6];
 } Sprite_SmallPropeller; /* size: 0x58 */
 
 #define PROP_DIR_LEFT                          0
@@ -50,6 +51,23 @@ s16 ClampGroundSpeed(s16);
 void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
+
+void sub_807D6A8(Sprite_SmallPropeller *prop)
+{
+    Sprite *s = &prop->s;
+
+    if ((prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE))
+        || (prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))) {
+        s->x = prop->posX + prop->unk4C - gCamera.x;
+    } else {
+        s->x = prop->posX + prop->unk48 - gCamera.x;
+    }
+
+    s->y = prop->posY + prop->unk4E - gCamera.y;
+
+    sub_8004558(s);
+    sub_80051E8(s);
+}
 
 bool32 sub_807D6FC(Sprite_SmallPropeller *prop)
 {
