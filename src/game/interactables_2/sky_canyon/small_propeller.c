@@ -86,14 +86,12 @@ void sub_807D5CC(Sprite_SmallPropeller *prop)
         } else if (res < 360) {
             prop->unk52 = Q_24_8(1.0);
         } else {
-            // _0807D644
             s32 temp;
             s16 res2;
 
             res -= 360;
 
             temp = (res << 8) / 60;
-            ;
             prop->unk52 = temp;
             res2 = temp;
 
@@ -106,7 +104,6 @@ void sub_807D5CC(Sprite_SmallPropeller *prop)
 
             prop->unk52 = Q_24_8(1.0) - temp;
         }
-        // _0807D67A
 
         s->unk22 = prop->unk52 >> 4;
         s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
