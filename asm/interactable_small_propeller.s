@@ -180,6 +180,7 @@ _0807D45C: .4byte IWRAM_START + 0x2E
 _0807D460: .4byte IWRAM_START + 0x31
 _0807D464: .4byte 0x0000024F
 
+.if 0
 	thumb_func_start sub_807D468
 sub_807D468: @ 0x0807D468
 	push {r4, r5, r6, lr}
@@ -367,6 +368,4 @@ _0807D5C4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-
-.if 0
 .endif

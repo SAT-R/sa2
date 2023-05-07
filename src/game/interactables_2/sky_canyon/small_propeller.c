@@ -12,6 +12,10 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 
+/* This is the small propellers appearing in Sky Canyon,
+   which you can run at while keeping a distance from them and increasing your speed.
+   Propellers of the "periodic" kind turn themselves on-and-off periodically. */
+
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
@@ -24,7 +28,8 @@ typedef struct {
     /* 0x4C */ s16 unk4C;
     /* 0x4E */ s16 unk4E;
     /* 0x50 */ u16 unk50;
-    /* 0x52 */ u16 unk52; // normalized anim-speed?
+    /* 0x52 */ s16 unk52; // normalized anim-speed?
+    /* 0x54 */ s16 unk54;
     /* 0x54 */ u8 filler54[0x4];
 } Sprite_SmallPropeller; /* size: 0x58 */
 
@@ -32,6 +37,13 @@ typedef struct {
 #define PROP_DIR_RIGHT                         1
 #define PROP_MASK_PERIODIC                     2
 #define SKYCAN_PROPELLER_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
+#define IS_PROPELLER_DIR_LEFT(kind)                                                     \
+    (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE))                            \
+     || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE)))
+
+#define IS_PROPELLER_PERIODIC(kind)                                                     \
+    (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))                             \
+     || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)))
 
 extern void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
                                                              u16 spriteRegionX,
@@ -54,12 +66,88 @@ void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
+#if 001
+// https://decomp.me/scratch/H0A8X
+void sub_807D468(Sprite_SmallPropeller *prop)
+{
+    s32 temp;
+    s32 r3;
+    if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
+        r3 = Q_24_8(prop->posX + prop->unk4C) - gPlayer.x;
+    } else {
+        r3 = gPlayer.x - Q_24_8(prop->posX + prop->unk48);
+    }
+
+    temp = (Q_24_8(prop->unk50) - r3) / prop->unk50;
+
+    {
+        register s32 another asm("r3") = temp;
+        if (another >= 0) {
+            if (another > Q_24_8(1.0))
+                temp = Q_24_8(1.0);
+        } else {
+            temp = Q_24_8(0.0);
+        }
+        prop->unk54 = temp << 4;
+    }
+
+    prop->unk54 = Q_24_8_TO_INT(prop->unk54 * prop->unk52);
+
+    if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
+        // _0807D4FA
+        if (gPlayer.speedAirX < 0) {
+            gPlayer.speedGroundX = ClampGroundSpeed(gPlayer.speedGroundX - Q_24_8(0.25));
+            gPlayer.speedAirX = ClampGroundSpeed(gPlayer.speedAirX - Q_24_8(0.25));
+        } else {
+            // _0807D516
+            s32 newPlayerX = gPlayer.x - prop->unk54;
+            s32 someX;
+            gPlayer.x = newPlayerX;
+
+            someX = Q_24_8(prop->posX + prop->unk4C) - Q_24_8(48);
+
+            if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))
+                && newPlayerX > someX) {
+                gPlayer.x = someX;
+            }
+
+            if (gPlayer.unk5E & 0x20) {
+                gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+                gPlayer.speedGroundX = -gPlayer.speedGroundX;
+            }
+        }
+    } else {
+        // _0807D558
+        if (gPlayer.speedAirX > 0) {
+            gPlayer.speedGroundX = ClampGroundSpeed(gPlayer.speedGroundX + Q_24_8(0.25));
+            gPlayer.speedAirX = ClampGroundSpeed(gPlayer.speedAirX + Q_24_8(0.25));
+        } else {
+            // _0807D57E
+            s32 newPlayerX = gPlayer.x + prop->unk54;
+            s32 someX;
+            gPlayer.x = newPlayerX;
+
+            someX = Q_24_8(prop->posX + prop->unk48) + Q_24_8(48);
+
+            if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE))
+                && newPlayerX < someX) {
+                gPlayer.x = someX;
+            }
+
+            if (gPlayer.unk5E & 0x10) {
+                gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+                gPlayer.speedGroundX = -gPlayer.speedGroundX;
+            }
+        }
+    }
+}
+#endif
+
 void sub_807D5CC(Sprite_SmallPropeller *prop)
 {
     Sprite *s = &prop->s;
 
-    if (prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE)
-        || prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)) {
+    if (IS_PROPELLER_PERIODIC(prop->kind)) {
         u32 res = gUnknown_03005590 % 420;
         if (res < 60) {
             prop->unk52 = Q_24_8(0.0);
