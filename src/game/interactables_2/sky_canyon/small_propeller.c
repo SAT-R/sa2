@@ -66,9 +66,9 @@ void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
-#if 001
 // https://decomp.me/scratch/H0A8X
-void sub_807D468(Sprite_SmallPropeller *prop)
+NONMATCH("asm/non_matching/sub_807D468.inc",
+         void sub_807D468(Sprite_SmallPropeller *prop))
 {
     s32 temp;
     s32 r3;
@@ -141,7 +141,7 @@ void sub_807D468(Sprite_SmallPropeller *prop)
         }
     }
 }
-#endif
+END_NONMATCH
 
 void sub_807D5CC(Sprite_SmallPropeller *prop)
 {
