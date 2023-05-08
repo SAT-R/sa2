@@ -26,7 +26,7 @@ void sub_802B708(void);
 void sub_801C068(u32);
 void sub_801BF90(void);
 
-void sub_800BEF8(void);
+void CreateStageMusicManager(void);
 void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
@@ -413,7 +413,7 @@ void CreateGameStage(void)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        sub_800BEF8();
+        CreateStageMusicManager();
         SetupStageLoadingScreen();
         sub_801C068(gCurrentLevel);
         gUnknown_080D57DC[gCurrentLevel]();

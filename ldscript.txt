@@ -62,6 +62,9 @@ SECTIONS
         build/sa2/asm/stage_pause_menu.o(.text);
         build/sa2/asm/stage_collect_ring_effect.o(.text);
         build/sa2/asm/stage_item_box.o(.text);
+        build/sa2/asm/stage_pop_effect.o(.text);
+        build/sa2/asm/stage_ring.o(.text);
+        build/sa2/asm/stage_music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/asm/interactable_platform.o(.text);
@@ -259,6 +262,7 @@ SECTIONS
         build/sa2/asm/stage_language_task_2.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
+        build/sa2/asm/stage_music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
