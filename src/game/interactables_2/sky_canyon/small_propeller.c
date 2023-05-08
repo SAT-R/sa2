@@ -63,23 +63,22 @@ typedef struct {
 static void Task_IA_SmallPropeller_UpdateRegular(void);
 static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *);
 
-void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
-
-void sub_807D468(Sprite_SmallPropeller *);
-void UpdateFanSpeed(Sprite_SmallPropeller *);
+static void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
+static void sub_807D468(Sprite_SmallPropeller *);
+static void UpdateFanSpeed(Sprite_SmallPropeller *);
 static void UpdateFanSpritePosition(Sprite_SmallPropeller *);
 static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *);
-static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *);
-
 static s16 ClampPlayerSpeed(s16);
+static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *);
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void);
 void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
-void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me, u16 spriteRegionX,
-                                                      u16 spriteRegionY, u8 spriteY,
-                                                      u32 kind)
+static void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
+                                                             u16 spriteRegionX,
+                                                             u16 spriteRegionY,
+                                                             u8 spriteY, u32 kind)
 {
     struct Task *t
         = TaskCreate(Task_IA_SmallPropeller_UpdateRegular, sizeof(Sprite_SmallPropeller),
@@ -125,7 +124,7 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_807D468(Sprite_SmallPropeller *prop)
+static void sub_807D468(Sprite_SmallPropeller *prop)
 {
     s32 temp;
     s32 r3;
@@ -190,7 +189,7 @@ void sub_807D468(Sprite_SmallPropeller *prop)
     }
 }
 
-void UpdateFanSpeed(Sprite_SmallPropeller *prop)
+static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
 {
     Sprite *s = &prop->s;
 
@@ -310,7 +309,7 @@ static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *t)
     VramFree(prop->s.graphics.dest);
 }
 
-void SetTaskMain_807D978(Sprite_SmallPropeller *unused)
+static void SetTaskMain_807D978(Sprite_SmallPropeller *unused)
 {
     gCurTask->main = Task_IA_SmallPropeller_UpdateInFanRegion;
 }
