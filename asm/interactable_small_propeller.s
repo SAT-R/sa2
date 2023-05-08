@@ -4,7 +4,7 @@
 .syntax unified
 .arm
 
-.if 001
+.if 00
 	thumb_func_start initSprite_Interactable_SkyCanyon_SmallPropeller
 initSprite_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D2F4
 	push {r4, r5, r6, r7, lr}
@@ -13,21 +13,21 @@ initSprite_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D2F4
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	adds r7, r0, #0
+	adds r7, r0, #0         @ r7 = me
 	adds r6, r1, #0
 	mov r8, r2
 	mov sb, r3
 	lsls r6, r6, #0x10
 	lsrs r6, r6, #0x10
-	str r6, [sp, #4]
+	str r6, [sp, #4]        @ sp04 = spriteRegionX
 	mov r0, r8
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	mov r8, r0
+	mov r8, r0              @ r8 = spriteRegionY
 	mov r1, sb
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
-	mov sb, r1
+	mov sb, r1              @ sb = spriteY
 	ldr r0, _0807D430 @ =Task_Interactable_SkyCanyon_SmallPropeller
 	ldr r2, _0807D434 @ =0x00002010
 	ldr r1, _0807D438 @ =TaskDestructor_Interactable_SkyCanyon_SmallPropeller
@@ -35,16 +35,16 @@ initSprite_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D2F4
 	movs r1, #0x58
 	movs r3, #0
 	bl TaskCreate
-	ldrh r4, [r0, #6]
+	ldrh r4, [r0, #6]       @ r4 = t
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
-	adds r2, r4, r2
+	adds r2, r4, r2         @ r2 = prop
 	ldr r3, _0807D43C @ =IWRAM_START + 0x44
 	adds r0, r4, r3
 	movs r5, #0
-	mov sl, r5
+	mov sl, r5          @ sl = 0
 	mov r6, sp
-	ldrh r6, [r6, #0x28]
+	ldrh r6, [r6, #0x28]    @ r6 = kind
 	strh r6, [r0]
 	ldr r0, _0807D440 @ =IWRAM_START + 0x52
 	adds r1, r4, r0
@@ -105,6 +105,7 @@ initSprite_Interactable_SkyCanyon_SmallPropeller: @ 0x0807D2F4
 	strb r0, [r2, #8]
 	mov r0, sb
 	strb r0, [r2, #9]
+
 	ldr r1, _0807D454 @ =IWRAM_START + 0xC
 	adds r5, r4, r1
 	movs r0, #0x90

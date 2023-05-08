@@ -30,7 +30,6 @@ typedef struct {
     /* 0x50 */ u16 unk50;
     /* 0x52 */ s16 unk52; // normalized anim-speed?
     /* 0x54 */ s16 unk54;
-    /* 0x54 */ u8 filler54[0x4];
 } Sprite_SmallPropeller; /* size: 0x58 */
 
 #define PROP_DIR_LEFT                          0
@@ -45,11 +44,8 @@ typedef struct {
     (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))                             \
      || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)))
 
-extern void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
-                                                             u16 spriteRegionX,
-                                                             u16 spriteRegionY,
-                                                             u8 spriteY, u8 kind);
 extern void Task_Interactable_SkyCanyon_SmallPropeller(void);
+extern void TaskDestructor_Interactable_SkyCanyon_SmallPropeller(struct Task *);
 
 void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
 
@@ -65,6 +61,54 @@ s16 ClampGroundSpeed(s16);
 void Task_807D978(void);
 void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
+
+void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me, u16 spriteRegionX,
+                                                      u16 spriteRegionY, u8 spriteY,
+                                                      u32 kind)
+{
+    struct Task *t = TaskCreate(Task_Interactable_SkyCanyon_SmallPropeller,
+                                sizeof(Sprite_SmallPropeller), 0x2010, 0,
+                                TaskDestructor_Interactable_SkyCanyon_SmallPropeller);
+    Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
+    Sprite *s;
+
+    prop->kind = kind;
+    prop->unk52 = Q_24_8(1.0);
+    prop->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    prop->posY = TO_WORLD_POS(me->y, spriteRegionY);
+    prop->unk48 = me->d.sData[0] * TILE_WIDTH;
+    prop->unk4A = me->d.sData[1] * TILE_WIDTH;
+    prop->unk4C = me->d.uData[2] * TILE_WIDTH + prop->unk48;
+    prop->unk4E = me->d.uData[3] * TILE_WIDTH + prop->unk4A;
+    prop->unk50 = prop->unk4C - prop->unk48;
+
+    prop->base.regionX = spriteRegionX;
+    prop->base.regionY = spriteRegionY;
+    prop->base.me = me;
+    prop->base.spriteX = me->x;
+    prop->base.spriteY = spriteY;
+
+    s = &prop->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = 0xFF;
+    s->unk22 = 0x10;
+    s->focused = 0;
+    s->unk28->unk0 = -1;
+
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(12);
+    s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
+    s->variant = 2;
+
+    if (IS_PROPELLER_DIR_LEFT(kind)) {
+        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    }
+
+    SET_MAP_ENTITY_INITIALIZED(me);
+}
 
 // https://decomp.me/scratch/H0A8X
 NONMATCH("asm/non_matching/sub_807D468.inc",
