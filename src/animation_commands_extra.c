@@ -302,31 +302,37 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 }
 END_NONMATCH
 
-s32 sub_8004274(u16 *param0, u16 *cpuFastSetSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                u8 *tileCounts, u8 param6)
+// Copies the given tileOffsets of the given mapSrc (palette + tiles) into the
+// given dest.
+// Also sets some stuff in the vram blend regs
+s32 sub_8004274(void *dest, void *mapSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
+                u8 *tileOffsets, u8 param6)
 {
     u8 i = 0;
 
     u16 tileBase = gBgCntRegs[bgCtrlIndex] & BGCNT_CHARBASE(0x3);
-    u16 *vramTiles = (u16 *)(VRAM + (tileBase << 12));
+    void *vramTiles = (void *)(VRAM + (tileBase * 4096));
 
     u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
                        | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
         & gBgCntRegs[bgCtrlIndex];
     u16 *vramBlend = ({ (u16 *)(VRAM + (blendTarget * 8)); }) + param3 * 32 + param2;
 
-    for (; tileCounts[i] != 0; i++) {
-        u16 *copyDest = &param0[i * 16];
+    for (; tileOffsets[i] != 0; i++) {
+        void *copyDest = dest + (i * 32);
         u16 offset;
         u16 *addr;
-        CpuFastSet(&cpuFastSetSrc[tileCounts[i] * 16], copyDest, 8);
-
-        offset = (u16)(((copyDest - vramTiles) << 12) >> 16);
+        CpuFastCopy(mapSrc + (tileOffsets[i] * 32), copyDest, 32);
 
 #ifndef NON_MATCHING
+        offset = (u16)((((u16 *)copyDest - (u16 *)vramTiles) << 12) >> 16);
         vramBlend++;
         vramBlend--;
+#else
+        // divide by tilesize 4bpp
+        offset = (u16)(copyDest - vramTiles) >> 5;
 #endif
+
         addr = vramBlend;
         addr += i;
 

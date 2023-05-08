@@ -50,6 +50,10 @@ SECTIONS
         build/sa2/src/input_recorder.o(.text);
 
         /* game */
+        build/sa2/asm/stage_rings_manager.o(.text);
+        build/sa2/asm/stage_entities_manager.o(.text);
+        build/sa2/asm/stage_palette_loader.o(.text);
+        build/sa2/asm/stage_unknown_act1_task.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/asm/interactable_platform.o(.text);
@@ -241,6 +245,9 @@ SECTIONS
     
         /* game Data */
         build/sa2/data/multiboot_chao_garden.o(.rodata);
+        build/sa2/asm/stage_rings_manager.o(.rodata);
+        build/sa2/asm/stage_entities_manager.o(.rodata);
+        build/sa2/asm/stage_unknown_act1_task.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
