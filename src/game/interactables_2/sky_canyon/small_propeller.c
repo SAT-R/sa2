@@ -125,9 +125,7 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me, u16 spriteR
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-// https://decomp.me/scratch/H0A8X
-NONMATCH("asm/non_matching/sub_807D468.inc",
-         void sub_807D468(Sprite_SmallPropeller *prop))
+void sub_807D468(Sprite_SmallPropeller *prop)
 {
     s32 temp;
     s32 r3;
@@ -137,19 +135,16 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
         r3 = gPlayer.x - Q_24_8(prop->posX + prop->left);
     }
 
-    temp = (Q_24_8(prop->pitch) - r3) / prop->pitch;
+    r3 = (Q_24_8(prop->pitch) - r3) / prop->pitch;
 
-    {
-        register s32 another asm("r3") = temp;
-        if (another >= 0) {
-            if (another > Q_24_8(1.0))
-                temp = Q_24_8(1.0);
-        } else {
-            temp = Q_24_8(0.0);
-        }
-        prop->playerDeltaX = temp << 4;
+    if (r3 >= 0) {
+        temp = r3;
+        if (r3 > Q_24_8(1.0))
+            temp = Q_24_8(1.0);
+    } else {
+        temp = Q_24_8(0.0);
     }
-
+    prop->playerDeltaX = temp << 4;
     prop->playerDeltaX = Q_24_8_TO_INT(prop->playerDeltaX * prop->fanSpeed);
 
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
@@ -158,14 +153,13 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
             gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX - Q_24_8(0.25));
         } else {
             s32 newPlayerX = gPlayer.x - prop->playerDeltaX;
-            s32 someX;
             gPlayer.x = newPlayerX;
 
-            someX = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
+            r3 = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
 
             if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))
-                && newPlayerX > someX) {
-                gPlayer.x = someX;
+                && newPlayerX > r3) {
+                gPlayer.x = r3;
             }
 
             if (gPlayer.unk5E & 0x20) {
@@ -179,14 +173,13 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
             gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX + Q_24_8(0.25));
         } else {
             s32 newPlayerX = gPlayer.x + prop->playerDeltaX;
-            s32 someX;
             gPlayer.x = newPlayerX;
 
-            someX = Q_24_8(prop->posX + prop->left) + Q_24_8(48);
+            r3 = Q_24_8(prop->posX + prop->left) + Q_24_8(48);
 
             if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE))
-                && newPlayerX < someX) {
-                gPlayer.x = someX;
+                && newPlayerX < r3) {
+                gPlayer.x = r3;
             }
 
             if (gPlayer.unk5E & 0x10) {
@@ -196,7 +189,6 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
         }
     }
 }
-END_NONMATCH
 
 void UpdateFanSpeed(Sprite_SmallPropeller *prop)
 {
