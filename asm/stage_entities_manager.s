@@ -757,7 +757,7 @@ _08008BC0:
 	lsrs r1, r2, #0x10
 	ldr r5, [sp, #0x3c]
 	lsrs r2, r5, #0x10
-	bl sub_800B03C
+	bl CreateItemBox
 _08008C04:
 	adds r4, #3
 	adds r6, #1
@@ -1421,7 +1421,7 @@ _080090A0:
 	adds r0, r4, #0
 	adds r1, r7, #0
 	mov r2, r8
-	bl sub_800B03C
+	bl CreateItemBox
 _080090E4:
 	adds r4, #3
 	adds r6, #1
@@ -1798,7 +1798,7 @@ _0800936C:
 	adds r0, r4, #0
 	adds r1, r7, #0
 	mov r2, r8
-	bl sub_800B03C
+	bl CreateItemBox
 _080093AC:
 	adds r4, #3
 	adds r6, #1

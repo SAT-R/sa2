@@ -280,7 +280,7 @@ static const u16 sLensFlareStartPositions[][2] = {
 };
 
 // Don't know who these belong to yet
-void sub_8009F94(void);
+void CreateDemoManager(void);
 
 void CreateTitleScreen(void)
 {
@@ -1927,7 +1927,7 @@ static void Task_StartTitleScreenDemo(void)
 
     gGameMode = GAME_MODE_SINGLE_PLAYER;
 
-    sub_8009F94();
+    CreateDemoManager();
     ApplyGameStageSettings();
     GameStageStart();
 

@@ -493,7 +493,7 @@ void CreateGameStage(void)
     }
 }
 
-void sub_800A9FC(void);
+void CreatePauseMenu(void);
 
 void sub_802B4F8(s32, s32, s32, s32, s32);
 
@@ -505,7 +505,7 @@ void sub_801AB3C(void)
     if (IS_SINGLE_PLAYER) {
         if (!(gUnknown_03005424 & 0x20) && (gPressedKeys & START_BUTTON)
             && !(gUnknown_03005424 & 0x40)) {
-            sub_800A9FC();
+            CreatePauseMenu();
         }
         gUnknown_03005590++;
         timeStep = 1;
@@ -1870,7 +1870,7 @@ NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
 }
 END_NONMATCH
 
-void sub_800A6A8(void);
+void CreateSearchLightBeams(void);
 
 void sub_801CD7C(void)
 {
@@ -1894,7 +1894,7 @@ void sub_801CD7C(void)
     gBgScrollRegs[3][1] = 0;
 
     if (IS_SINGLE_PLAYER) {
-        sub_800A6A8();
+        CreateSearchLightBeams();
     }
 }
 

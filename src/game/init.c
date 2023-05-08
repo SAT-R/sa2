@@ -86,7 +86,7 @@ void GameStart(void)
     CreateTitleScreen();
 }
 
-static void Task_DummyFunc(void);
+void Task_DummyFunc(void);
 static void DummyTaskOnDestroy(struct Task *);
 
 UNUSED static void CreateDummyTask(void)
@@ -100,6 +100,6 @@ UNUSED static void DestroyDummyTask(void)
     gUnknown_03005844 = NULL;
 }
 
-UNUSED static void Task_DummyFunc(void) { }
+void Task_DummyFunc(void) { }
 
 UNUSED static void DummyTaskOnDestroy(struct Task *task) { gUnknown_03005844 = NULL; }
