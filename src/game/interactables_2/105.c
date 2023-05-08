@@ -8,8 +8,6 @@
 #include "trig.h"
 #include "game/game.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 posY;

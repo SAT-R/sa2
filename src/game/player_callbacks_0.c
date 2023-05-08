@@ -8,7 +8,6 @@
 #include "game/parameters/characters.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 /* NOTE: We consider Player Callbacks to be all procedures

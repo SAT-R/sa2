@@ -4,8 +4,6 @@
 #include "game/game.h"
 #include "game/entity.h"
 
-#include "constants/move_states.h"
-
 extern void Task_Interactable_IceParadise_SlidyIce(void);
 
 typedef struct {

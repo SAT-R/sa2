@@ -10,7 +10,6 @@
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {

@@ -6,8 +6,6 @@
 #include "game/entity.h"
 #include "sprite.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;

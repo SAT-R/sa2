@@ -8,7 +8,6 @@
 
 #include "game/interactables_2/music_plant/pipe_horn.h"
 
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 static const s16 gUnknown_080DFFF4[3][2] = {

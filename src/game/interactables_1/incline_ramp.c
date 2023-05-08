@@ -7,7 +7,6 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {

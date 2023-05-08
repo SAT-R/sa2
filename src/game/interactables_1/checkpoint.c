@@ -13,7 +13,6 @@
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 

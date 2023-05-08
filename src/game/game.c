@@ -10,8 +10,6 @@
 #include "constants/songs.h"
 #include "trig.h"
 
-#include "constants/move_states.h"
-
 void sub_802B61C(u16, u16, u16);
 void sub_80299F0(u32, u32, u32, Player *);
 void CreateGameStage(void);

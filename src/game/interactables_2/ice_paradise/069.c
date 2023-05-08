@@ -8,7 +8,6 @@
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/069.h"
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 struct Test {

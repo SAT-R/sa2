@@ -5,8 +5,6 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     SpriteBase base;
     Sprite sprite;

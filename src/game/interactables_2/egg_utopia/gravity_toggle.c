@@ -1,8 +1,6 @@
 #include "core.h"
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;

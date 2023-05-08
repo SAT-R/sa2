@@ -8,7 +8,6 @@
 #include "game/interactables_2/hot_crater/floating_spring.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 

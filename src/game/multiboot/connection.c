@@ -16,7 +16,6 @@
 #include "mb_programs.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 

@@ -9,7 +9,6 @@
 #include "trig.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 
 struct BoostModeParticles {
     Sprite unk0;

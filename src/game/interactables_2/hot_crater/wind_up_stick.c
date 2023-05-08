@@ -7,7 +7,6 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 
 typedef struct {
     s32 unk0;

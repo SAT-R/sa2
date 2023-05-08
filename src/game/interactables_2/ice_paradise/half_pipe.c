@@ -6,8 +6,6 @@
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     s32 x;
     s32 y;
