@@ -1,4 +1,8 @@
 
+@; NOTE(Jace): To better understand how the data here is composed, look at the below thread.
+@;             Even though it is about SA3, all 3 games do share quite a bit.
+@;             https://twitter.com/JaceCear/status/1362912485951610881
+
 .global zone1_act1_rings
 zone1_act1_rings:
 	.incbin "data/maps/zone1/act1/rings.bin.rl"

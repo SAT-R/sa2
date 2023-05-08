@@ -7,7 +7,6 @@
 #include "game/enemies/bell.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

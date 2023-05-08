@@ -7,7 +7,6 @@
 #include "game/game.h"
 #include "lib/m4a.h"
 #include "constants/songs.h"
-#include "constants/move_states.h"
 #include "constants/animations.h"
 
 typedef struct {

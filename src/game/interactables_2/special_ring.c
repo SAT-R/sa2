@@ -12,7 +12,6 @@
 #include "sprite.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 typedef struct {

@@ -194,7 +194,10 @@
     "screen_transition.h": "c",
     "heart_particles_effect.h": "c",
     "results.h": "c",
-    "time_display.h": "c"
+    "time_display.h": "c",
+    "item_box.h": "c",
+    "mystery_item_box.h": "c",
+    "stage_palette_loader.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

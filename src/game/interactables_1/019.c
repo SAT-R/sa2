@@ -9,7 +9,6 @@
 #include "data.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/zones.h"
 
 typedef struct {

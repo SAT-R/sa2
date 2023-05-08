@@ -7,10 +7,9 @@
 #include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
+#include "game/stage_palette_loader.h"
 #include "constants/songs.h"
 #include "trig.h"
-
-#include "constants/move_states.h"
 
 void sub_802B61C(u16, u16, u16);
 void sub_80299F0(u32, u32, u32, Player *);
@@ -31,11 +30,11 @@ void sub_800BEF8(void);
 void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
-void sub_8007E10(void);
+void CreateStageRingsManager(void);
 void sub_800888C(void);
 
 void sub_8019120(void);
-void sub_8016028(u8);
+void CreateMultiplayerPlayer(u8);
 void sub_8019498(void);
 void sub_80193C4(u8);
 void sub_8013FAC(Player *);
@@ -437,7 +436,7 @@ void CreateGameStage(void)
         gUnknown_03005424 |= 4;
     }
 
-    sub_8007E10();
+    CreateStageRingsManager();
     sub_800888C();
 
     gUnknown_03001944 = 0;
@@ -459,7 +458,7 @@ void CreateGameStage(void)
             gUnknown_030053E8[i] = 0;
 
             if (GetBit(gMultiplayerConnections, i)) {
-                sub_8016028(i);
+                CreateMultiplayerPlayer(i);
                 if (i != SIO_MULTI_CNT->id) {
                     sub_80193C4(i);
                 } else {
@@ -663,13 +662,11 @@ void sub_801AE48(void)
     }
 }
 
-void sub_8009628(s32, s32, s32, s32);
-
 void sub_801AF14(void)
 {
     u16 level;
     sub_80115D0(0x830, 0x7F207F20, 0);
-    sub_8009628(0x2000, 0x381, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 897, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -689,9 +686,9 @@ void sub_801AF14(void)
 void sub_801AFA4(void)
 {
     u16 level;
-    sub_8009628(0x2000, 900, 0, 0);
-    sub_8009628(0x2000, 900, 1, 0);
-    sub_8009628(0x2000, 900, 2, 0);
+    CreatePaletteLoaderTask(0x2000, 900, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 900, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 900, 2, NULL);
 
     level = gCurrentLevel;
 
@@ -711,9 +708,9 @@ void sub_801AFA4(void)
 void sub_801B03C(void)
 {
     u16 level;
-    sub_8009628(0x2000, 900, 0, 0);
-    sub_8009628(0x2000, 900, 1, 0);
-    sub_8009628(0x2000, 900, 2, 0);
+    CreatePaletteLoaderTask(0x2000, 900, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 900, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 900, 2, NULL);
 
     level = gCurrentLevel;
 
@@ -733,10 +730,10 @@ void sub_801B03C(void)
 void sub_801B0D4(void)
 {
     u16 level;
-    sub_8009628(0x2000, 906, 2, 0);
-    sub_8009628(0x2000, 906, 0, 0);
-    sub_8009628(0x2000, 906, 1, 0);
-    sub_8009628(0x2000, 901, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 906, 2, NULL);
+    CreatePaletteLoaderTask(0x2000, 906, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 906, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 901, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -756,10 +753,10 @@ void sub_801B0D4(void)
 void sub_801B180(void)
 {
     u16 level;
-    sub_8009628(0x2000, 906, 2, 0);
-    sub_8009628(0x2000, 906, 0, 0);
-    sub_8009628(0x2000, 906, 1, 0);
-    sub_8009628(0x2000, 901, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 906, 2, NULL);
+    CreatePaletteLoaderTask(0x2000, 906, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 906, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 901, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -779,17 +776,17 @@ void sub_801B180(void)
 void sub_801B22C(void)
 {
     u16 level;
-    sub_8009628(0x2000, 940, 0, 0);
-    sub_8009628(0x2000, 940, 1, 0);
-    sub_8009628(0x2000, 940, 2, 0);
-    sub_8009628(0x2000, 940, 3, 0);
-    sub_8009628(0x2000, 940, 4, 0);
-    sub_8009628(0x2000, 940, 5, 0);
-    sub_8009628(0x2000, 940, 6, 0);
-    sub_8009628(0x2000, 940, 7, 0);
-    sub_8009628(0x2000, 940, 8, 0);
-    sub_8009628(0x2000, 940, 9, 0);
-    sub_8009628(0x2000, 940, 11, 0);
+    CreatePaletteLoaderTask(0x2000, 940, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 2, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 3, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 4, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 5, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 6, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 7, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 8, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 9, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 11, NULL);
 
     level = gCurrentLevel;
 
@@ -809,17 +806,17 @@ void sub_801B22C(void)
 void sub_801B324(void)
 {
     u16 level;
-    sub_8009628(0x2000, 940, 0, 0);
-    sub_8009628(0x2000, 940, 1, 0);
-    sub_8009628(0x2000, 940, 2, 0);
-    sub_8009628(0x2000, 940, 3, 0);
-    sub_8009628(0x2000, 940, 4, 0);
-    sub_8009628(0x2000, 940, 5, 0);
-    sub_8009628(0x2000, 940, 6, 0);
-    sub_8009628(0x2000, 940, 7, 0);
-    sub_8009628(0x2000, 940, 8, 0);
-    sub_8009628(0x2000, 940, 9, 0);
-    sub_8009628(0x2000, 940, 11, 0);
+    CreatePaletteLoaderTask(0x2000, 940, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 1, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 2, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 3, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 4, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 5, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 6, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 7, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 8, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 9, NULL);
+    CreatePaletteLoaderTask(0x2000, 940, 11, NULL);
 
     level = gCurrentLevel;
 
@@ -839,12 +836,12 @@ void sub_801B324(void)
 void sub_801B41C(void)
 {
     u16 level;
-    sub_8009628(0x2000, 941, 0, 0);
-    sub_8009628(0x2000, 942, 0, 0);
-    sub_8009628(0x2000, 943, 0, 0);
-    sub_8009628(0x2000, 944, 0, 0);
-    sub_8009628(0x2000, 945, 0, 0);
-    sub_8009628(0x2000, 946, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 942, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 943, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 944, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 945, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 946, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -864,12 +861,12 @@ void sub_801B41C(void)
 void sub_801B4EC(void)
 {
     u16 level;
-    sub_8009628(0x2000, 941, 0, 0);
-    sub_8009628(0x2000, 942, 0, 0);
-    sub_8009628(0x2000, 943, 0, 0);
-    sub_8009628(0x2000, 944, 0, 0);
-    sub_8009628(0x2000, 945, 0, 0);
-    sub_8009628(0x2000, 946, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 942, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 943, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 944, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 945, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 946, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -889,12 +886,12 @@ void sub_801B4EC(void)
 void sub_801B5BC(void)
 {
     u16 level;
-    sub_8009628(0x2000, 941, 0, 0);
-    sub_8009628(0x2000, 942, 0, 0);
-    sub_8009628(0x2000, 943, 0, 0);
-    sub_8009628(0x2000, 944, 0, 0);
-    sub_8009628(0x2000, 945, 0, 0);
-    sub_8009628(0x2000, 946, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 942, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 943, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 944, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 945, 0, NULL);
+    CreatePaletteLoaderTask(0x2000, 946, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -967,7 +964,7 @@ void sub_801B7A8(struct Task *t)
 void sub_801B7BC(void)
 {
     u16 level;
-    sub_8009628(0x2000, 897, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 897, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -1123,7 +1120,7 @@ void sub_801BB30(void)
 void sub_801BB9C(void)
 {
     u16 level;
-    sub_8009628(0x2000, 686, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 686, 0, NULL);
 
     level = gCurrentLevel;
 
@@ -1161,7 +1158,7 @@ void sub_801BC88(void)
 {
     u16 level;
 
-    sub_8009628(0x2000, 686, 0, 0);
+    CreatePaletteLoaderTask(0x2000, 686, 0, NULL);
 
     level = gCurrentLevel;
 

@@ -205,9 +205,7 @@ struct UNK_808D124_UNK180 {
     s16 unk4;
     // pos
     s16 unk6[2];
-    u8 unkA;
-    u8 unkB;
-}; /* size 0xC */
+}; /* size 0xA */
 
 typedef struct {
     /* 0x00 */ u32 numTiles;

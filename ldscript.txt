@@ -50,6 +50,10 @@ SECTIONS
         build/sa2/src/input_recorder.o(.text);
 
         /* game */
+        build/sa2/asm/stage_rings_manager.o(.text);
+        build/sa2/asm/stage_entities_manager.o(.text);
+        build/sa2/asm/stage_palette_loader.o(.text);
+        build/sa2/asm/stage_unknown_act1_task.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/asm/interactable_platform.o(.text);
@@ -182,7 +186,7 @@ SECTIONS
         build/sa2/src/game/math_0.o(.text);
         build/sa2/asm/math_1.o(.text);
         build/sa2/src/game/math_1.o(.text);
-        build/sa2/asm/item_box.o(.text);
+        build/sa2/src/game/mystery_item_box.o(.text);
         build/sa2/src/game/heart_particles_effect.o(.text);
         build/sa2/src/game/race_progress.o(.text);
         build/sa2/src/game/unknown_effect.o(.text);
@@ -241,6 +245,9 @@ SECTIONS
     
         /* game Data */
         build/sa2/data/multiboot_chao_garden.o(.rodata);
+        build/sa2/asm/stage_rings_manager.o(.rodata);
+        build/sa2/asm/stage_entities_manager.o(.rodata);
+        build/sa2/asm/stage_unknown_act1_task.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
@@ -305,7 +312,7 @@ SECTIONS
         build/sa2/src/game/multiboot/connection.o(.rodata);
         build/sa2/src/game/multiboot/collect_rings/time_display.o(.rodata);
         build/sa2/asm/math_1.o(.rodata);
-        build/sa2/asm/item_box.o(.rodata);
+        build/sa2/src/game/mystery_item_box.o(.rodata);
         build/sa2/src/game/race_progress.o(.rodata);
         build/sa2/src/game/unknown_effect.o(.rodata);
         build/sa2/src/game/multiplayer_lobby.o(.rodata);

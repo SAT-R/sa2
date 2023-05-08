@@ -7,8 +7,6 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "constants/move_states.h"
-
 typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_ClearPipe;

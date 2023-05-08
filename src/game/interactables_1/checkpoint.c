@@ -9,11 +9,11 @@
 #include "data.h"
 #include "flags.h"
 #include "game/entity.h"
+#include "game/stage_palette_loader.h"
 #include "sprite.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -28,14 +28,12 @@ typedef struct {
     /* 0x0C */ Sprite displayed;
 } Sprite_Toggle_Checkpoint;
 
-extern struct Task *sub_8009628(u16, u16, u8, TaskMain);
-
 static void Task_Interactable_Toggle_Checkpoint(void);
 static void Task_8062FD8(void);
 static void Task_8063108(void);
 static void Task_806319C(void);
 static void TaskDestructor_8063214(struct Task *);
-static void Task_8063228(void);
+static void Task_8063228(struct Task *);
 
 extern u32 gCheckpointTime;
 extern const struct SpriteTables *gUnknown_03002794;
@@ -103,7 +101,7 @@ void initSprite_Interactable_Checkpoint(MapEntity *me, u16 spriteRegionX,
     anim = sAnimIdsCheckpoint[zone][0];
     variant = sAnimIdsCheckpoint[zone][1];
 
-    chkPt->task = sub_8009628(0x2000, anim, variant, Task_8063228);
+    chkPt->task = CreatePaletteLoaderTask(0x2000, anim, variant, Task_8063228);
 }
 
 void Task_8062FD8(void)
@@ -198,7 +196,7 @@ void TaskDestructor_8063214(struct Task *t)
     VramFree(gfx);
 }
 
-void Task_8063228(void)
+void Task_8063228(struct Task *unused)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
     s32 animId = sAnimIdsCheckpoint[zone][0];

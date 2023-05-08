@@ -8,7 +8,6 @@
 #include "game/entity.h"
 #include "game/interactables_2/tec_base/075.h"
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 // Probably arrow screen

@@ -4,7 +4,6 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_1/gapped_loop.h"
-#include "constants/move_states.h"
 #include "sprite.h"
 #include "trig.h"
 

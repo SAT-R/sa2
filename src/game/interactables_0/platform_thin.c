@@ -10,7 +10,6 @@
 #include "game/interactables_0/platform_thin.h"
 #include "constants/zones.h"
 
-#include "constants/move_states.h"
 #include "constants/songs.h"
 #include "constants/animations.h"
 

@@ -6,7 +6,6 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "constants/move_states.h"
 #include "constants/animations.h"
 #include "constants/songs.h"
 

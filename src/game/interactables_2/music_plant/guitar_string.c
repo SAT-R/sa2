@@ -9,7 +9,6 @@
 #include "game/game.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/songs.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
