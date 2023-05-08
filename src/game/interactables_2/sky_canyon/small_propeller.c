@@ -27,7 +27,7 @@ typedef struct {
     /* 0x4A */ s16 top;
     /* 0x4C */ s16 right;
     /* 0x4E */ s16 bottom;
-    /* 0x50 */ u16 pitch;
+    /* 0x50 */ u16 width;
     /* 0x52 */ s16 fanSpeed;
     /* 0x54 */ s16 playerDeltaX;
 } Sprite_SmallPropeller; /* size: 0x58 */
@@ -94,7 +94,7 @@ static void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me,
     prop->top = me->d.sData[1] * TILE_WIDTH;
     prop->right = me->d.uData[2] * TILE_WIDTH + prop->left;
     prop->bottom = me->d.uData[3] * TILE_WIDTH + prop->top;
-    prop->pitch = prop->right - prop->left;
+    prop->width = prop->right - prop->left;
 
     prop->base.regionX = spriteRegionX;
     prop->base.regionY = spriteRegionY;
@@ -134,7 +134,7 @@ static void sub_807D468(Sprite_SmallPropeller *prop)
         r3 = gPlayer.x - Q_24_8(prop->posX + prop->left);
     }
 
-    r3 = (Q_24_8(prop->pitch) - r3) / prop->pitch;
+    r3 = (Q_24_8(prop->width) - r3) / prop->width;
 
     if (r3 >= 0) {
         temp = r3;
