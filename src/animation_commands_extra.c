@@ -302,10 +302,11 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 }
 END_NONMATCH
 
-// Copies the given tileOffsets of the given mapSrc (palette + tiles) into the
+// Copies the given tileOffsets of the given tilesSrc into the
 // given dest.
 // Also sets some stuff in the vram blend regs
-s32 sub_8004274(void *dest, void *mapSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
+// My guess is that this was designed for rendering text based tiles to the screen
+s32 sub_8004274(void *dest, void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
                 u8 *tileOffsets, u8 param6)
 {
     u8 i = 0;
@@ -316,13 +317,15 @@ s32 sub_8004274(void *dest, void *mapSrc, u16 param2, u16 param3, u8 bgCtrlIndex
     u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
                        | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
         & gBgCntRegs[bgCtrlIndex];
-    u16 *vramBlend = ({ (u16 *)(VRAM + (blendTarget * 8)); }) + param3 * 32 + param2;
+    u16 *vramBlend
+        = ({ (u16 *)(VRAM + (blendTarget * 8)); }) + param3 * TILE_SIZE_4BPP + param2;
 
     for (; tileOffsets[i] != 0; i++) {
-        void *copyDest = dest + (i * 32);
+        void *copyDest = dest + (i * TILE_SIZE_4BPP);
         u16 offset;
         u16 *addr;
-        CpuFastCopy(mapSrc + (tileOffsets[i] * 32), copyDest, 32);
+        CpuFastCopy(tilesSrc + (tileOffsets[i] * TILE_SIZE_4BPP), copyDest,
+                    TILE_SIZE_4BPP);
 
 #ifndef NON_MATCHING
         offset = (u16)((((u16 *)copyDest - (u16 *)vramTiles) << 12) >> 16);
@@ -339,7 +342,7 @@ s32 sub_8004274(void *dest, void *mapSrc, u16 param2, u16 param3, u8 bgCtrlIndex
         *addr = (param6 * 4096) | offset;
     }
 
-    return i * 32;
+    return i * TILE_SIZE_4BPP;
 }
 
 // (-2)

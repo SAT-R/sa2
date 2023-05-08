@@ -170,7 +170,7 @@ _0800982A:
 	add r0, sp, #0xc
 	bl sub_80044D8
 	ldr r0, [r5]
-	ldr r1, _08009850 @ =Palette_Stage_LeafForest_Act1
+	ldr r1, _08009850 @ =Tileset_Language
 	movs r2, #0
 	str r2, [sp]
 	add r3, sp, #0xc
@@ -185,7 +185,7 @@ _08009848:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08009850: .4byte Palette_Stage_LeafForest_Act1
+_08009850: .4byte Tileset_Language
 
 	thumb_func_start sub_8009854
 sub_8009854: @ 0x08009854
@@ -207,7 +207,7 @@ sub_8009854: @ 0x08009854
 	orrs r0, r1
 	str r0, [r2]
 	ldr r0, [r4]
-	ldr r1, _080098B4 @ =Palette_Stage_LeafForest_Act1
+	ldr r1, _080098B4 @ =Tileset_Language
 	str r3, [sp]
 	ldr r2, _080098B8 @ =gUnknown_080D5128
 	str r2, [sp, #4]
@@ -231,7 +231,7 @@ _080098A4: .4byte gCurTask
 _080098A8: .4byte gBgPalette
 _080098AC: .4byte 0x00007FFF
 _080098B0: .4byte gFlags
-_080098B4: .4byte Palette_Stage_LeafForest_Act1
+_080098B4: .4byte Tileset_Language
 _080098B8: .4byte gUnknown_080D5128
 _080098BC: .4byte sub_8009780
 

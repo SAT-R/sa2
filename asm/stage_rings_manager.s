@@ -523,7 +523,7 @@ _080081C0:
 	asrs r0, r0, #0x10
 	lsls r1, r7, #0x10
 	asrs r1, r1, #0x10
-	bl sub_800AEA0
+	bl CreateCollectRingEffect
 	movs r0, #0xfe
 	strb r0, [r5]
 _080081D2:
@@ -817,7 +817,7 @@ _0800840A:
 	asrs r0, r0, #0x10
 	lsls r1, r7, #0x10
 	asrs r1, r1, #0x10
-	bl sub_800AEA0
+	bl CreateCollectRingEffect
 	movs r0, #0xfe
 	strb r0, [r5]
 _0800841C:
