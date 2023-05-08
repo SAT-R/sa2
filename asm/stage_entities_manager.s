@@ -210,8 +210,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic
-    .4byte initSprite_Interactable091_0
-    .4byte initSprite_Interactable091_1
+    .4byte initSprite_EggUtopia_Launcher_0
+    .4byte initSprite_EggUtopia_Launcher_1
     .4byte initSprite_Interactable093
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
@@ -220,8 +220,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Toggle_Gravity__Down
     .4byte initSprite_Interactable_Toggle_Gravity__Up
     .4byte initSprite_Interactable_Toggle_Gravity__Toggle
-    .4byte initSprite_Interactable091_2
-    .4byte initSprite_Interactable091_3     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
+    .4byte initSprite_EggUtopia_Launcher_2
+    .4byte initSprite_EggUtopia_Launcher_3     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
     .4byte initSprite_Interactable_SpecialRing
     .4byte initSprite_Interactable_SkyCanyon_Whirlwind_1
     .4byte initSprite_Interactable105

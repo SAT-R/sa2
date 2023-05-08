@@ -4,25 +4,25 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Interactable091
-initSprite_Interactable091: @ 0x0807D9C8
+	thumb_func_start initSprite_EggUtopia_Launcher
+initSprite_EggUtopia_Launcher: @ 0x0807D9C8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	mov r8, r0
+	mov r8, r0              @ r8 = me
 	adds r4, r1, #0
 	adds r5, r2, #0
 	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
+	lsrs r4, r4, #0x10      @ r4 = spriteRegionX
 	lsls r5, r5, #0x10
 	lsrs r5, r5, #0x10
-	mov sl, r5
+	mov sl, r5              @ r5 = spriteRegionY
 	lsls r0, r3, #0x18
 	lsrs r0, r0, #0x18
-	mov sb, r0
+	mov sb, r0              @ sb = spriteY
 	ldr r0, _0807DA8C @ =Task_807DE98
 	ldr r2, _0807DA90 @ =0x00002010
 	ldr r1, _0807DA94 @ =sub_807DF38
@@ -227,7 +227,7 @@ _0807DB36:
 	strh r0, [r5, #0xa]
 	mov r1, sl
 	strb r4, [r1]
-	ldr r2, [sp, #0x30]
+	ldr r2, [sp, #0x30]     @ r2 = launcher->kind
 	cmp r2, #0
 	bne _0807DB94
 	ldr r0, [r5, #0x10]
@@ -929,202 +929,6 @@ _0807E0B2:
 	pop {r4, r5}
 	pop {r1}
 	bx r1
-
-	thumb_func_start sub_807E0B8
-sub_807E0B8: @ 0x0807E0B8
-	push {lr}
-	ldr r1, [r0]
-	ldrb r0, [r0, #8]
-	strb r0, [r1]
-	ldr r0, _0807E0CC @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807E0CC: .4byte gCurTask
-
-	thumb_func_start sub_807E0D0
-sub_807E0D0: @ 0x0807E0D0
-	ldr r1, [r0, #0x68]
-	str r1, [r0, #0x70]
-	ldr r1, [r0, #0x6c]
-	str r1, [r0, #0x74]
-	ldr r1, [r0, #0x60]
-	str r1, [r0, #0x68]
-	ldr r1, [r0, #0x64]
-	str r1, [r0, #0x6c]
-	ldr r1, [r0, #0x54]
-	str r1, [r0, #0x60]
-	ldr r1, [r0, #0x58]
-	str r1, [r0, #0x64]
-	bx lr
-	.align 2, 0
-
-	thumb_func_start initSprite_Interactable091_0
-initSprite_Interactable091_0: @ 0x0807E0EC
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #0
-	str r4, [sp]
-	bl initSprite_Interactable091
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable091_1
-initSprite_Interactable091_1: @ 0x0807E10C
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #1
-	str r4, [sp]
-	bl initSprite_Interactable091
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable091_2
-initSprite_Interactable091_2: @ 0x0807E12C
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #2
-	str r4, [sp]
-	bl initSprite_Interactable091
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start initSprite_Interactable091_3
-initSprite_Interactable091_3: @ 0x0807E14C
-	push {r4, lr}
-	sub sp, #4
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	movs r4, #3
-	str r4, [sp]
-	bl initSprite_Interactable091
-	add sp, #4
-	pop {r4}
-	pop {r0}
-	bx r0
-
-	thumb_func_start sub_807E16C
-sub_807E16C: @ 0x0807E16C
-	push {r4, lr}
-	ldr r0, _0807E1A8 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	ldr r0, _0807E1AC @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0807E188
-	adds r0, r4, #0
-	bl sub_807E0D0
-_0807E188:
-	adds r0, r4, #0
-	bl sub_807E1C4
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	beq _0807E19A
-	adds r0, r4, #0
-	bl sub_807E1B0
-_0807E19A:
-	adds r0, r4, #0
-	bl sub_807DDA0
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807E1A8: .4byte gCurTask
-_0807E1AC: .4byte gGameMode
-
-	thumb_func_start sub_807E1B0
-sub_807E1B0: @ 0x0807E1B0
-	ldr r0, _0807E1BC @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0807E1C0 @ =Task_807DE98
-	str r0, [r1, #8]
-	bx lr
-	.align 2, 0
-_0807E1BC: .4byte gCurTask
-_0807E1C0: .4byte Task_807DE98
-
-	thumb_func_start sub_807E1C4
-sub_807E1C4: @ 0x0807E1C4
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	movs r4, #0
-	adds r0, #0x44
-	ldrh r0, [r0]
-	cmp r0, #0
-	beq _0807E1D6
-	cmp r0, #2
-	bne _0807E1F4
-_0807E1D6:
-	ldr r1, [r3, #0x54]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	adds r1, r1, r0
-	str r1, [r3, #0x54]
-	adds r0, r3, #0
-	adds r0, #0x50
-	movs r5, #0
-	ldrsh r2, [r0, r5]
-	ldr r0, [r3, #0x3c]
-	adds r0, r0, r2
-	lsls r0, r0, #8
-	cmp r1, r0
-	blt _0807E212
-	b _0807E20E
-_0807E1F4:
-	ldr r1, [r3, #0x54]
-	ldr r0, _0807E21C @ =0xFFFFFF00
-	adds r1, r1, r0
-	str r1, [r3, #0x54]
-	adds r0, r3, #0
-	adds r0, #0x4c
-	movs r5, #0
-	ldrsh r2, [r0, r5]
-	ldr r0, [r3, #0x3c]
-	adds r0, r0, r2
-	lsls r0, r0, #8
-	cmp r1, r0
-	bgt _0807E212
-_0807E20E:
-	str r0, [r3, #0x54]
-	movs r4, #1
-_0807E212:
-	adds r0, r4, #0
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0807E21C: .4byte 0xFFFFFF00
+    
+.if 0
+.endif
