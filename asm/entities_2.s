@@ -4293,8 +4293,8 @@ _08016016:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8016028
-sub_8016028: @ 0x08016028
+	thumb_func_start CreateMultiplayerPlayer
+CreateMultiplayerPlayer: @ 0x08016028
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}

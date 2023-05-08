@@ -40,6 +40,7 @@ static const u16 sCourseStepSizes[] = {
 
     [COURSE_INDEX(ZONE_7, ACT_1)] = 448,  [COURSE_INDEX(ZONE_7, ACT_2)] = 464,
 };
+
 static const u8 sCharacterAvatars[] = {
     [CHARACTER_SONIC] = SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC,
     [CHARACTER_CREAM] = SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM,

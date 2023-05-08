@@ -14,6 +14,8 @@
 #include "multi_sio.h"
 #include "task.h"
 
+#include "constants/move_states.h"
+
 #define ZONE_TIME_TO_INT(minutes, seconds)                                              \
     (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
 #define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
@@ -524,6 +526,7 @@ extern struct UNK_3005510 *sub_8019224(void);
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
 extern void sub_800C84C(Sprite *);
+extern void sub_800B9B8(s16, s16);
 
 extern void sub_801EB44(s32, s32, s32);
 extern void sub_801EC3C(s32, s32, s32);

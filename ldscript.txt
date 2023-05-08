@@ -182,8 +182,7 @@ SECTIONS
         build/sa2/src/game/math_0.o(.text);
         build/sa2/asm/math_1.o(.text);
         build/sa2/src/game/math_1.o(.text);
-        build/sa2/src/game/item_box.o(.text);
-        build/sa2/asm/item_box.o(.text);
+        build/sa2/src/game/mystery_item_box.o(.text);
         build/sa2/src/game/heart_particles_effect.o(.text);
         build/sa2/src/game/race_progress.o(.text);
         build/sa2/src/game/unknown_effect.o(.text);
@@ -306,7 +305,7 @@ SECTIONS
         build/sa2/src/game/multiboot/connection.o(.rodata);
         build/sa2/src/game/multiboot/collect_rings/time_display.o(.rodata);
         build/sa2/asm/math_1.o(.rodata);
-        build/sa2/asm/item_box.o(.rodata);
+        build/sa2/src/game/mystery_item_box.o(.rodata);
         build/sa2/src/game/race_progress.o(.rodata);
         build/sa2/src/game/unknown_effect.o(.rodata);
         build/sa2/src/game/multiplayer_lobby.o(.rodata);

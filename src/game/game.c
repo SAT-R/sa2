@@ -35,7 +35,7 @@ void sub_8007E10(void);
 void sub_800888C(void);
 
 void sub_8019120(void);
-void sub_8016028(u8);
+void CreateMultiplayerPlayer(u8);
 void sub_8019498(void);
 void sub_80193C4(u8);
 void sub_8013FAC(Player *);
@@ -459,7 +459,7 @@ void CreateGameStage(void)
             gUnknown_030053E8[i] = 0;
 
             if (GetBit(gMultiplayerConnections, i)) {
-                sub_8016028(i);
+                CreateMultiplayerPlayer(i);
                 if (i != SIO_MULTI_CNT->id) {
                     sub_80193C4(i);
                 } else {

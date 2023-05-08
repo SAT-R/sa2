@@ -500,7 +500,7 @@ static void UpdateScreenCpuSet(void)
 
     if (gFlags & FLAGS_EXECUTE_HBLANK_CALLBACKS) {
         REG_IE |= INTR_FLAG_HBLANK;
-        CpuFastFill(0, gHBlankIntrs, sizeof(gHBlankIntrs));
+        CpuFastFill(NULL, gHBlankIntrs, sizeof(gHBlankIntrs));
         if (gNumHBlankCallbacks != 0) {
             CpuFastSet(gHBlankCallbacks, gHBlankIntrs, gNumHBlankCallbacks);
         }
@@ -520,7 +520,7 @@ static void UpdateScreenCpuSet(void)
     }
 
     if (gFlags & 0x10) {
-        CpuFastFill(0, gUnknown_030053A0, 0x10);
+        CpuFastFill(NULL, gUnknown_030053A0, sizeof(gUnknown_030053A0));
         if (gUnknown_03004D50 != 0) {
             CpuFastSet(gUnknown_03001870, gUnknown_030053A0, gUnknown_03004D50);
         }
