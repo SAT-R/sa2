@@ -87,7 +87,7 @@ _0807D4FA:
 	subs r0, #0x40
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl ClampGroundSpeed
+	bl ClampPlayerSpeed
 	strh r0, [r6, #0x14]
 	ldrh r0, [r6, #0x10]
 	subs r0, #0x40
@@ -135,14 +135,14 @@ _0807D558:
 	adds r0, #0x40
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl ClampGroundSpeed
+	bl ClampPlayerSpeed
 	strh r0, [r6, #0x14]
 	ldrh r0, [r6, #0x10]
 	adds r0, #0x40
 _0807D572:
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
-	bl ClampGroundSpeed
+	bl ClampPlayerSpeed
 	strh r0, [r6, #0x10]
 	b _0807D5C4
 _0807D57E:

@@ -23,14 +23,30 @@ typedef struct {
     /* 0x40 */ s32 posY;
     /* 0x44 */ u16 kind;
     /* 0x46 */ u8 filler46[0x2];
-    /* 0x48 */ s16 unk48;
-    /* 0x4A */ s16 unk4A;
-    /* 0x4C */ s16 unk4C;
-    /* 0x4E */ s16 unk4E;
-    /* 0x50 */ u16 unk50;
-    /* 0x52 */ s16 unk52; // normalized anim-speed?
-    /* 0x54 */ s16 unk54;
+    /* 0x48 */ s16 left;
+    /* 0x4A */ s16 top;
+    /* 0x4C */ s16 right;
+    /* 0x4E */ s16 bottom;
+    /* 0x50 */ u16 pitch;
+    /* 0x52 */ s16 fanSpeed;
+    /* 0x54 */ s16 playerDeltaX;
 } Sprite_SmallPropeller; /* size: 0x58 */
+
+// Durations for each of the "stages" of the propellers with periodic fan speed
+
+#define PERIOD_END__OFF             (ZONE_TIME_TO_INT(0, 1)) /* 1s */
+#define PERIOD_END__ACCEL           (PERIOD_END__OFF + ZONE_TIME_TO_INT(0, 1)) /* 1s */
+#define PERIOD_END__MAX_SPEED       (PERIOD_END__ACCEL + ZONE_TIME_TO_INT(0, 4)) /* 4s */
+#define PERIOD_END__DECEL           (PERIOD_END__MAX_SPEED + ZONE_TIME_TO_INT(0, 1)) /* 1s */
+#define PERIODIC_PROP_FULL_DURATION (PERIOD_END__DECEL) /* 7s */
+
+// Used to clamp the player's max speed
+#define PROP_PLAYER_CLAMP_SPEED       Q_24_8(9.0)
+#define PROP_PLAYER_CLAMP_SPEED_BOOST Q_24_8(15.0)
+
+// The min/max fan prop->fanSpeed values.
+#define PROP_SPEED_MIN Q_24_8(0.0)
+#define PROP_SPEED_MAX Q_24_8(1.0)
 
 #define PROP_DIR_LEFT                          0
 #define PROP_DIR_RIGHT                         1
@@ -44,43 +60,42 @@ typedef struct {
     (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))                             \
      || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)))
 
-extern void Task_Interactable_SkyCanyon_SmallPropeller(void);
-extern void TaskDestructor_Interactable_SkyCanyon_SmallPropeller(struct Task *);
+static void Task_IA_SmallPropeller_UpdateRegular(void);
+static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *);
 
 void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
 
 void sub_807D468(Sprite_SmallPropeller *);
-void sub_807D5CC(Sprite_SmallPropeller *);
-void sub_807D6A8(Sprite_SmallPropeller *);
-bool32 sub_807D6FC(Sprite_SmallPropeller *);
-bool32 sub_807D86C(Sprite_SmallPropeller *);
+void UpdateFanSpeed(Sprite_SmallPropeller *);
+static void UpdateFanSpritePosition(Sprite_SmallPropeller *);
+static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *);
+static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *);
 
-// static
-s16 ClampGroundSpeed(s16);
+static s16 ClampPlayerSpeed(s16);
 
-void Task_807D978(void);
-void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused);
+void Task_IA_SmallPropeller_UpdateInFanRegion(void);
+void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
 void initSprite_Interactable_SkyCanyon_SmallPropeller(MapEntity *me, u16 spriteRegionX,
                                                       u16 spriteRegionY, u8 spriteY,
                                                       u32 kind)
 {
-    struct Task *t = TaskCreate(Task_Interactable_SkyCanyon_SmallPropeller,
-                                sizeof(Sprite_SmallPropeller), 0x2010, 0,
-                                TaskDestructor_Interactable_SkyCanyon_SmallPropeller);
+    struct Task *t
+        = TaskCreate(Task_IA_SmallPropeller_UpdateRegular, sizeof(Sprite_SmallPropeller),
+                     0x2010, 0, TaskDestructor_IA_SmallPropeller_UpdateRegular);
     Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
     Sprite *s;
 
     prop->kind = kind;
-    prop->unk52 = Q_24_8(1.0);
+    prop->fanSpeed = Q_24_8(1.0);
     prop->posX = TO_WORLD_POS(me->x, spriteRegionX);
     prop->posY = TO_WORLD_POS(me->y, spriteRegionY);
-    prop->unk48 = me->d.sData[0] * TILE_WIDTH;
-    prop->unk4A = me->d.sData[1] * TILE_WIDTH;
-    prop->unk4C = me->d.uData[2] * TILE_WIDTH + prop->unk48;
-    prop->unk4E = me->d.uData[3] * TILE_WIDTH + prop->unk4A;
-    prop->unk50 = prop->unk4C - prop->unk48;
+    prop->left = me->d.sData[0] * TILE_WIDTH;
+    prop->top = me->d.sData[1] * TILE_WIDTH;
+    prop->right = me->d.uData[2] * TILE_WIDTH + prop->left;
+    prop->bottom = me->d.uData[3] * TILE_WIDTH + prop->top;
+    prop->pitch = prop->right - prop->left;
 
     prop->base.regionX = spriteRegionX;
     prop->base.regionY = spriteRegionY;
@@ -117,12 +132,12 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
     s32 temp;
     s32 r3;
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
-        r3 = Q_24_8(prop->posX + prop->unk4C) - gPlayer.x;
+        r3 = Q_24_8(prop->posX + prop->right) - gPlayer.x;
     } else {
-        r3 = gPlayer.x - Q_24_8(prop->posX + prop->unk48);
+        r3 = gPlayer.x - Q_24_8(prop->posX + prop->left);
     }
 
-    temp = (Q_24_8(prop->unk50) - r3) / prop->unk50;
+    temp = (Q_24_8(prop->pitch) - r3) / prop->pitch;
 
     {
         register s32 another asm("r3") = temp;
@@ -132,23 +147,21 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
         } else {
             temp = Q_24_8(0.0);
         }
-        prop->unk54 = temp << 4;
+        prop->playerDeltaX = temp << 4;
     }
 
-    prop->unk54 = Q_24_8_TO_INT(prop->unk54 * prop->unk52);
+    prop->playerDeltaX = Q_24_8_TO_INT(prop->playerDeltaX * prop->fanSpeed);
 
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
-        // _0807D4FA
         if (gPlayer.speedAirX < 0) {
-            gPlayer.speedGroundX = ClampGroundSpeed(gPlayer.speedGroundX - Q_24_8(0.25));
-            gPlayer.speedAirX = ClampGroundSpeed(gPlayer.speedAirX - Q_24_8(0.25));
+            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX - Q_24_8(0.25));
+            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX - Q_24_8(0.25));
         } else {
-            // _0807D516
-            s32 newPlayerX = gPlayer.x - prop->unk54;
+            s32 newPlayerX = gPlayer.x - prop->playerDeltaX;
             s32 someX;
             gPlayer.x = newPlayerX;
 
-            someX = Q_24_8(prop->posX + prop->unk4C) - Q_24_8(48);
+            someX = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
 
             if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))
                 && newPlayerX > someX) {
@@ -161,17 +174,15 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
             }
         }
     } else {
-        // _0807D558
         if (gPlayer.speedAirX > 0) {
-            gPlayer.speedGroundX = ClampGroundSpeed(gPlayer.speedGroundX + Q_24_8(0.25));
-            gPlayer.speedAirX = ClampGroundSpeed(gPlayer.speedAirX + Q_24_8(0.25));
+            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX + Q_24_8(0.25));
+            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX + Q_24_8(0.25));
         } else {
-            // _0807D57E
-            s32 newPlayerX = gPlayer.x + prop->unk54;
+            s32 newPlayerX = gPlayer.x + prop->playerDeltaX;
             s32 someX;
             gPlayer.x = newPlayerX;
 
-            someX = Q_24_8(prop->posX + prop->unk48) + Q_24_8(48);
+            someX = Q_24_8(prop->posX + prop->left) + Q_24_8(48);
 
             if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE))
                 && newPlayerX < someX) {
@@ -187,44 +198,45 @@ NONMATCH("asm/non_matching/sub_807D468.inc",
 }
 END_NONMATCH
 
-void sub_807D5CC(Sprite_SmallPropeller *prop)
+void UpdateFanSpeed(Sprite_SmallPropeller *prop)
 {
     Sprite *s = &prop->s;
 
     if (IS_PROPELLER_PERIODIC(prop->kind)) {
-        u32 res = gUnknown_03005590 % 420;
-        if (res < 60) {
-            prop->unk52 = Q_24_8(0.0);
-        } else if (res < 120) {
+        u32 fanSpeed = gUnknown_03005590 % PERIODIC_PROP_FULL_DURATION;
+        if (fanSpeed < PERIOD_END__OFF) {
+            prop->fanSpeed = PROP_SPEED_MIN;
+        } else if (fanSpeed < PERIOD_END__ACCEL) {
             u32 another;
             s32 temp;
             s16 res2;
 
-            res -= 60;
+            fanSpeed -= PERIOD_END__OFF;
 
-            temp = (res << 8) / 60;
-            prop->unk52 = temp;
+            temp = (fanSpeed << 8) / GBA_FRAMES_PER_SECOND;
+            prop->fanSpeed = temp;
             res2 = temp;
 
-            if (res2 >= 0) {
+            // @TODO: Variant of CLAMP_16?
+            if (res2 >= PROP_SPEED_MIN) {
                 another = temp;
-                if (res2 > Q_24_8(1.0))
-                    another = Q_24_8(1.0);
+                if (res2 > PROP_SPEED_MAX)
+                    another = PROP_SPEED_MAX;
             } else {
-                another = Q_24_8(0.0);
+                another = PROP_SPEED_MIN;
             }
 
-            prop->unk52 = another;
-        } else if (res < 360) {
-            prop->unk52 = Q_24_8(1.0);
-        } else {
+            prop->fanSpeed = another;
+        } else if (fanSpeed < PERIOD_END__MAX_SPEED) {
+            prop->fanSpeed = PROP_SPEED_MAX;
+        } else /* PERIOD_END__DECEL */ {
             s32 temp;
             s16 res2;
 
-            res -= 360;
+            fanSpeed -= PERIOD_END__MAX_SPEED;
 
-            temp = (res << 8) / 60;
-            prop->unk52 = temp;
+            temp = (fanSpeed << 8) / GBA_FRAMES_PER_SECOND;
+            prop->fanSpeed = temp;
             res2 = temp;
 
             if ((s16)res2 >= 0) {
@@ -234,74 +246,73 @@ void sub_807D5CC(Sprite_SmallPropeller *prop)
                 temp = Q_24_8(0.0);
             }
 
-            prop->unk52 = Q_24_8(1.0) - temp;
+            prop->fanSpeed = Q_24_8(1.0) - temp;
         }
 
-        s->unk22 = prop->unk52 >> 4;
+        s->unk22 = prop->fanSpeed >> 4;
         s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
         s->variant = 2;
 
     } else {
-        prop->unk52 = Q_24_8(1.0);
+        prop->fanSpeed = Q_24_8(1.0);
     }
 }
 
-void sub_807D6A8(Sprite_SmallPropeller *prop)
+static void UpdateFanSpritePosition(Sprite_SmallPropeller *prop)
 {
     Sprite *s = &prop->s;
 
-    if ((prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE))
-        || (prop->kind == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))) {
-        s->x = prop->posX + prop->unk4C - gCamera.x;
+    if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
+        s->x = prop->posX + prop->right - gCamera.x;
     } else {
-        s->x = prop->posX + prop->unk48 - gCamera.x;
+        s->x = prop->posX + prop->left - gCamera.x;
     }
 
-    s->y = prop->posY + prop->unk4E - gCamera.y;
+    s->y = prop->posY + prop->bottom - gCamera.y;
 
     sub_8004558(s);
     sub_80051E8(s);
 }
 
-bool32 sub_807D6FC(Sprite_SmallPropeller *prop)
+static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *prop)
 {
     if (PLAYER_IS_ALIVE) {
-        s16 screenX = prop->posX - gCamera.x;
-        s16 screenY = prop->posY - gCamera.y;
+        s16 propX = prop->posX - gCamera.x;
+        s16 propY = prop->posY - gCamera.y;
 
         s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        u16 r6 = prop->unk4C - prop->unk48;
-        u16 r7 = prop->unk4E - prop->unk4A;
+        u16 width = prop->right - prop->left;
+        u16 height = prop->bottom - prop->top;
 
-        if (((screenX + prop->unk48) <= playerX)
-            && ((screenX + prop->unk48 + r6) >= playerX)
-            && ((screenY + prop->unk4A) <= playerY)
-            && ((screenY + prop->unk4A + r7) >= playerY))
+        if (((propX + prop->left) <= playerX)
+            && ((propX + prop->left + width) >= playerX)
+            && ((propY + prop->top) <= playerY)
+            && ((propY + prop->top + height) >= playerY))
             return TRUE;
     }
 
     return FALSE;
 }
 
-void Task_Interactable_SkyCanyon_SmallPropeller(void)
+static void Task_IA_SmallPropeller_UpdateRegular(void)
 {
     Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
 
-    if (sub_807D6FC(prop)) {
+    if (IsPlayerInFanRegion(prop)) {
         SetTaskMain_807D978(prop);
     }
 
-    if (sub_807D86C(prop)) {
+    if (IsPropellerOffScreen(prop)) {
         DestroyTask_Interactable087(prop);
     } else {
-        sub_807D5CC(prop);
-        sub_807D6A8(prop);
+        UpdateFanSpeed(prop);
+        UpdateFanSpritePosition(prop);
     }
 }
 
-void TaskDestructor_Interactable_SkyCanyon_SmallPropeller(struct Task *t)
+static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *t)
 {
     Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
     VramFree(prop->s.graphics.dest);
@@ -309,31 +320,35 @@ void TaskDestructor_Interactable_SkyCanyon_SmallPropeller(struct Task *t)
 
 void SetTaskMain_807D978(Sprite_SmallPropeller *unused)
 {
-    gCurTask->main = Task_807D978;
+    gCurTask->main = Task_IA_SmallPropeller_UpdateInFanRegion;
 }
 
-// static
-s16 ClampGroundSpeed(s16 speed)
+static s16 ClampPlayerSpeed(s16 speed)
 {
     if (gPlayer.unk5A) {
-        CLAMP_INLINE2(speed, -Q_24_8(15.0), +Q_24_8(15.0));
+        CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST,
+                      PROP_PLAYER_CLAMP_SPEED_BOOST);
     } else {
-        // @BUG: It seems like this should have -9.0 as min-value?
-        CLAMP_INLINE2(speed, -Q_24_8(15.0), +Q_24_8(9.0));
+        // @BUG: Seems like a copy-paste error?
+#ifdef BUGFIX
+        CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED, +PROP_PLAYER_CLAMP_SPEED);
+#else
+        CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, +PROP_PLAYER_CLAMP_SPEED);
+#endif
     }
 
     return speed;
 }
 
-bool32 sub_807D86C(Sprite_SmallPropeller *prop)
+static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *prop)
 {
     s16 posX, posY;
 
     posX = prop->posX - gCamera.x;
     posY = prop->posY - gCamera.y;
 
-    if (((posX + prop->unk4C) < -128) || ((posX + prop->unk48) > 368)
-        || ((posY + prop->unk4E) < -128) || ((posY + prop->unk4A) > 288))
+    if (((posX + prop->right) < -128) || ((posX + prop->left) > DISPLAY_WIDTH + 128)
+        || ((posY + prop->bottom) < -128) || ((posY + prop->top) > DISPLAY_HEIGHT + 128))
         return TRUE;
 
     return FALSE;
@@ -384,21 +399,21 @@ void initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic(MapEntity *
         SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE));
 }
 
-void Task_807D978(void)
+void Task_IA_SmallPropeller_UpdateInFanRegion(void)
 {
     Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
 
     sub_807D468(prop);
 
-    if (!sub_807D6FC(prop)) {
-        SetTaskMain_Interactable087(prop);
+    if (!IsPlayerInFanRegion(prop)) {
+        SetTaskMain_UpdateRegular(prop);
     }
 
-    sub_807D5CC(prop);
-    sub_807D6A8(prop);
+    UpdateFanSpeed(prop);
+    UpdateFanSpritePosition(prop);
 }
 
-void SetTaskMain_Interactable087(Sprite_SmallPropeller *unused)
+void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused)
 {
-    gCurTask->main = Task_Interactable_SkyCanyon_SmallPropeller;
+    gCurTask->main = Task_IA_SmallPropeller_UpdateRegular;
 }
