@@ -240,13 +240,13 @@ void UpdateFanSpeed(Sprite_SmallPropeller *prop)
             res2 = temp;
 
             if ((s16)res2 >= 0) {
-                if (res2 > Q_24_8(1.0))
-                    temp = Q_24_8(1.0);
+                if (res2 > PROP_SPEED_MAX)
+                    temp = PROP_SPEED_MAX;
             } else {
-                temp = Q_24_8(0.0);
+                temp = PROP_SPEED_MIN;
             }
 
-            prop->fanSpeed = Q_24_8(1.0) - temp;
+            prop->fanSpeed = PROP_SPEED_MAX - temp;
         }
 
         s->unk22 = prop->fanSpeed >> 4;
@@ -254,7 +254,7 @@ void UpdateFanSpeed(Sprite_SmallPropeller *prop)
         s->variant = 2;
 
     } else {
-        prop->fanSpeed = Q_24_8(1.0);
+        prop->fanSpeed = PROP_SPEED_MAX;
     }
 }
 
