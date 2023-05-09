@@ -197,7 +197,8 @@
     "time_display.h": "c",
     "item_box.h": "c",
     "mystery_item_box.h": "c",
-    "stage_palette_loader.h": "c"
+    "stage_palette_loader.h": "c",
+    "093.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
