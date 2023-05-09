@@ -31,13 +31,13 @@ void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
 void CreateStageRingsManager(void);
-void sub_800888C(void);
+void CreateStageEntitiesManager(void);
 
 void sub_8019120(void);
 void CreateMultiplayerPlayer(u8);
 void sub_8019498(void);
 void sub_80193C4(u8);
-void sub_8013FAC(Player *);
+void CreatePlayerActor(Player *);
 void sub_80191A4(void);
 
 extern const u16 gLevelSongs[];
@@ -437,7 +437,7 @@ void CreateGameStage(void)
     }
 
     CreateStageRingsManager();
-    sub_800888C();
+    CreateStageEntitiesManager();
 
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;
@@ -476,7 +476,6 @@ void CreateGameStage(void)
             gPlayer.unk37 |= 0x80;
         }
     } else {
-
         for (i = 0; i < 4; i++) {
             gUnknown_030054B4[i] = -1;
         }
@@ -485,7 +484,7 @@ void CreateGameStage(void)
     gUnknown_030056A4 = 0;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        sub_8013FAC(&gPlayer);
+        CreatePlayerActor(&gPlayer);
     }
 
     if (IS_MULTI_PLAYER && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

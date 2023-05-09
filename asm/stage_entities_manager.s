@@ -309,8 +309,8 @@ gSpriteTileInits_PreStageEntry:
 .syntax unified
 .arm
 
-	thumb_func_start sub_800888C
-sub_800888C: @ 0x0800888C
+	thumb_func_start CreateStageEntitiesManager
+CreateStageEntitiesManager: @ 0x0800888C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
