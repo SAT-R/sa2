@@ -11,13 +11,14 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    s32 unk3C;
-    u8 filler40[0x4];
+    /* 0x3C */ s32 posX;
+    /* 0x40 */ s32 posY;
     /* 0x44 */ u16 kind;
     u8 filler46[2 + 0x4];
     s16 unk4C;
-    s16 filler4E;
+    s16 unk4E;
     s16 unk50;
+    s16 unk52;
     s32 unk54;
     s32 unk58;
     u16 unk5C;
@@ -37,6 +38,22 @@ void Task_807DE98(void);
 extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
 void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher)
+{
+    s16 posX, posY;
+
+    posX = launcher->posX - gCamera.x;
+    posY = launcher->posY - gCamera.y;
+
+    if(((posX + launcher->unk50) < -(CAM_REGION_WIDTH/2))
+    || ((posX + launcher->unk4C) > DISPLAY_WIDTH + (CAM_REGION_WIDTH/2))
+    || ((posY + launcher->unk52) < -(CAM_REGION_WIDTH/2))
+    || ((posY + launcher->unk4E) > DISPLAY_HEIGHT + (CAM_REGION_WIDTH/2)))
+        return TRUE;
+
+    return FALSE;
+}
 
 void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher)
 {
@@ -105,7 +122,7 @@ bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher)
     if (launcher->kind == 0 || launcher->kind == 2) {
         s32 value;
         launcher->unk54 += Q_24_8(1.0);
-        value = Q_24_8(launcher->unk3C + launcher->unk50);
+        value = Q_24_8(launcher->posX + launcher->unk50);
         if (launcher->unk54 >= value) {
             launcher->unk54 = value;
             result = TRUE;
@@ -113,7 +130,7 @@ bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher)
     } else {
         s32 value;
         launcher->unk54 -= Q_24_8(1.0);
-        value = Q_24_8(launcher->unk3C + launcher->unk4C);
+        value = Q_24_8(launcher->posX + launcher->unk4C);
         if (launcher->unk54 <= value) {
             launcher->unk54 = value;
             result = TRUE;

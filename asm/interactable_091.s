@@ -866,69 +866,6 @@ _0807E03C:
 _0807E040:
 	pop {r0}
 	bx r0
-
-	thumb_func_start sub_807E044
-sub_807E044: @ 0x0807E044
-	push {r4, r5, lr}
-	adds r3, r0, #0
-	ldr r2, [r3, #0x3c]
-	ldr r1, _0807E0AC @ =gCamera
-	ldr r0, [r1]
-	subs r2, r2, r0
-	ldr r0, [r3, #0x40]
-	ldr r1, [r1, #4]
-	subs r0, r0, r1
-	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
-	lsls r2, r2, #0x10
-	asrs r2, r2, #0x10
-	adds r0, r3, #0
-	adds r0, #0x50
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	adds r0, r2, r0
-	movs r5, #0x80
-	rsbs r5, r5, #0
-	cmp r0, r5
-	blt _0807E0A6
-	adds r0, r3, #0
-	adds r0, #0x4c
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	adds r0, r2, r0
-	movs r1, #0xb8
-	lsls r1, r1, #1
-	cmp r0, r1
-	bgt _0807E0A6
-	lsls r0, r4, #0x10
-	asrs r1, r0, #0x10
-	adds r0, r3, #0
-	adds r0, #0x52
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	adds r0, r1, r0
-	cmp r0, r5
-	blt _0807E0A6
-	adds r0, r3, #0
-	adds r0, #0x4e
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	adds r0, r1, r0
-	movs r1, #0x90
-	lsls r1, r1, #1
-	cmp r0, r1
-	ble _0807E0B0
-_0807E0A6:
-	movs r0, #1
-	b _0807E0B2
-	.align 2, 0
-_0807E0AC: .4byte gCamera
-_0807E0B0:
-	movs r0, #0
-_0807E0B2:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
     
 .if 0
 .endif
