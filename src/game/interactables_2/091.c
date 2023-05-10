@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gba/types.h"
+#include "lib/m4a.h"
 
 #include "malloc_vram.h"
 
@@ -9,6 +10,8 @@
 #include "task.h"
 #include "trig.h"
 #include "game/game.h"
+
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -58,13 +61,75 @@ extern bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher);
 extern void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher);
 extern bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher);
 
-void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
+void Task_807DBF0(void);
 void sub_807DDA0(Sprite_EggUtopia_Launcher *);
 void Task_807DE98(void);
+void Task_807DEEC(void);
+void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
 extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
 void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 void Task_807E16C(void);
 bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
+{
+    m4aSongNumStart(SE_286);
+
+    gPlayer.moveState |= MOVESTATE_400000;
+    gPlayer.unk64 = 64;
+    gPlayer.speedGroundX = 0;
+    gPlayer.speedAirX = 0;
+    gPlayer.speedAirY = 0;
+
+    sub_80218E4(&gPlayer);
+    sub_8023B5C(&gPlayer, 14);
+
+    gPlayer.unk16 = 6;
+    gPlayer.unk17 = 14;
+    gPlayer.moveState &= ~MOVESTATE_4;
+
+    if (IS_LAUNCHER_DIR_LEFT(launcher->kind)) {
+        gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+    } else {
+        gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
+    }
+
+    launcher->unk48 = TRUE;
+
+    gCurTask->main = Task_807DBF0;
+}
+
+void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
+{
+    if (PLAYER_IS_ALIVE && launcher->unk48) {
+        gPlayer.moveState &= ~MOVESTATE_400000;
+        gPlayer.unk64 = 65;
+        gPlayer.unk6D = 0x7;
+
+        switch (launcher->kind) {
+            case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):
+            case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
+                gPlayer.speedAirX = -Q_24_8(15.0);
+                gPlayer.speedAirY = -Q_24_8(3.0);
+            } break;
+
+            case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN):
+            case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
+                gPlayer.speedAirX = +Q_24_8(15.0);
+                gPlayer.speedAirY = -Q_24_8(3.0);
+            } break;
+        }
+
+        launcher->unk48 = FALSE;
+
+        m4aSongNumStart(SE_287);
+    } else {
+        m4aSongNumStop(SE_286);
+    }
+
+    launcher->unk5C = 0;
+    gCurTask->main = Task_807DEEC;
+}
 
 void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
 {
@@ -130,7 +195,7 @@ void Task_807DE98(void)
     }
 }
 
-void sub_807DEEC(void)
+void Task_807DEEC(void)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
 
