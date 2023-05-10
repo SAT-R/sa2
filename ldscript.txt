@@ -190,9 +190,9 @@ SECTIONS
         build/sa2/asm/interactable_091.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/093.o(.text);
         build/sa2/asm/interactable_093.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/094.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/095.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/flying_handle.o(.text);
+        build/sa2/src/game/interactables_2/egg_utopia/094.o(.text);
+        build/sa2/src/game/interactables_2/egg_utopia/095.o(.text);
+        build/sa2/src/game/interactables_2/egg_utopia/flying_handle.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/speeding_platform.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/gravity_toggle.o(.text);
         build/sa2/src/game/interactables_2/notification_ring_bonus.o(.text);
