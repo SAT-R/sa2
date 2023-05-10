@@ -42,6 +42,14 @@ typedef struct {
     ((kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN))                          \
      || (kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP)))
 
+#define IS_LAUNCHER_RIGHTSIDE_UP(kind)                                                  \
+    ((kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN))                          \
+     || (kind == LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN)))
+
+#define IS_LAUNCHER_UPSIDE_DOWN(kind)                                                   \
+    ((kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP))                            \
+     || (kind == LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP)))
+
 extern void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX,
                                           u16 spriteRegionY, u8 spriteY, u32 kind);
 
@@ -57,6 +65,36 @@ extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
 void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 void Task_807E16C(void);
 bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
+{
+    if (PLAYER_IS_ALIVE) {
+        s16 someX, someY;
+        s16 playerX, playerY;
+
+        // Launcher should only activate if it's the correct gravity
+        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+            if (IS_LAUNCHER_RIGHTSIDE_UP(launcher->kind))
+                return FALSE;
+        } else {
+            if (IS_LAUNCHER_UPSIDE_DOWN(launcher->kind))
+                return FALSE;
+        }
+
+        someX = Q_24_8_TO_INT(launcher->unk54) - gCamera.x;
+        someY = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
+
+        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+
+        if ((someX - 2 * TILE_WIDTH <= playerX) && (someX + 2 * TILE_WIDTH >= playerX)
+            && (someY - 2 * TILE_WIDTH <= playerY)
+            && (someY + 2 * TILE_WIDTH >= playerY))
+            return TRUE;
+    }
+
+    return FALSE;
+}
 
 void Task_807DE98(void)
 {
