@@ -506,47 +506,5 @@ _0807DD80:
 _0807DD98: .4byte gCurTask
 _0807DD9C: .4byte sub_807DEEC
 
-	thumb_func_start sub_807DDA0
-sub_807DDA0: @ 0x0807DDA0
-	push {r4, lr}
-	adds r3, r0, #0
-	adds r4, r3, #0
-	adds r4, #0xc
-	ldr r0, _0807DDC0 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0807DDC8
-	ldr r0, [r3, #0x68]
-	asrs r0, r0, #8
-	ldr r2, _0807DDC4 @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r4, #0x16]
-	ldr r0, [r3, #0x6c]
-	b _0807DDD6
-	.align 2, 0
-_0807DDC0: .4byte gGameMode
-_0807DDC4: .4byte gCamera
-_0807DDC8:
-	ldr r0, [r3, #0x54]
-	asrs r0, r0, #8
-	ldr r2, _0807DDEC @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r4, #0x16]
-	ldr r0, [r3, #0x58]
-_0807DDD6:
-	asrs r0, r0, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r4, #0x18]
-	adds r0, r4, #0
-	bl sub_80051E8
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0807DDEC: .4byte gCamera
-
 .if 0
 .endif

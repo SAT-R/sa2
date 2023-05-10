@@ -59,12 +59,27 @@ extern void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher);
 extern bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher);
 
 void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
-extern void sub_807DDA0(Sprite_EggUtopia_Launcher *);
+void sub_807DDA0(Sprite_EggUtopia_Launcher *);
 void Task_807DE98(void);
 extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
 void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 void Task_807E16C(void);
 bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
+{
+    Sprite *s = &launcher->s;
+
+    if (IS_MULTI_PLAYER) {
+        s->x = Q_24_8_TO_INT(launcher->unk68) - gCamera.x;
+        s->y = Q_24_8_TO_INT(launcher->unk6C) - gCamera.y;
+    } else {
+        s->x = Q_24_8_TO_INT(launcher->unk54) - gCamera.x;
+        s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
+    }
+
+    sub_80051E8(s);
+}
 
 bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
 {
