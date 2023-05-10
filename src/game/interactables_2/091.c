@@ -57,7 +57,10 @@ extern void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX,
                                           u16 spriteRegionY, u8 spriteY, u32 kind);
 
 extern void sub_807DC80(Sprite_EggUtopia_Launcher *launcher);
+extern void sub_807DD04(Sprite_EggUtopia_Launcher *launcher);
 extern bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher);
+extern bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher);
+extern void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher);
 extern void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher);
 extern bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher);
 
@@ -70,6 +73,36 @@ extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
 void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 void Task_807E16C(void);
 bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+void Task_807DBF0(void)
+{
+    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    bool32 isDead;
+
+    if (IS_MULTI_PLAYER)
+        sub_807E0D0(launcher);
+
+    if (sub_807DF60(launcher))
+        sub_807DD04(launcher);
+
+    sub_807DFBC(launcher);
+
+    if (!PLAYER_IS_ALIVE) {
+        launcher->unk48 = FALSE;
+    } else {
+        if ((gPlayer.unk2C != 120) && (gPlayer.unk5E & gPlayerControls.jump)) {
+            gPlayer.unk6D = 3;
+
+            gPlayer.moveState &= ~MOVESTATE_400000;
+            launcher->unk48 = FALSE;
+        } else if (gPlayer.unk2C == 120) {
+            gPlayer.moveState &= ~MOVESTATE_400000;
+            launcher->unk48 = FALSE;
+        }
+    }
+
+    sub_807DDA0(launcher);
+}
 
 void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
 {
@@ -221,7 +254,7 @@ void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused)
     gCurTask->main = Task_807E16C;
 }
 
-bool32 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
+bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
 {
     bool32 result = FALSE;
 
