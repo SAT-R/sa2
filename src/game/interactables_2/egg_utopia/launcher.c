@@ -114,7 +114,7 @@ void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteR
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
         } break;
 
-        case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
+        case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
             launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
         } break;
