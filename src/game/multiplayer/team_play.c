@@ -101,8 +101,11 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     lang = gLoadedSaveGame->language;
     if (lang > NUM_LANGUAGES) {
-        // NOTE(Jace): LANG_ENGLISH in the PAL version
+#ifndef EUROPE
         lang = LANG_JAPANESE;
+#else
+        lang = LANG_ENGLISH;
+#endif
     }
 
     // TODO: make this a macro

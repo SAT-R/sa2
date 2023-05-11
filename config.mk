@@ -30,6 +30,8 @@ else
 ifeq ($(GAME_REGION), EUROPE)
   BUILD_NAME := $(BUILD_NAME)
   GAME_CODE  := $(GAME_CODE)P
+  MAKER_CODE := 8P
+  TITLE      := SONIC ADVANC
 else
   $(error unknown region $(GAME_REGION))
 endif

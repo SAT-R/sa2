@@ -1944,7 +1944,11 @@ static void Task_MultiplayerVerifySelections(void)
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
             if (GetBit(gMultiplayerConnections, i) && i != 0) {
                 recv = &gMultiSioRecv[i];
+#ifndef EUROPE
                 gMultiplayerCharacters[i] = recv->pat0.unk2;
+#else
+                gMultiplayerCharacters[i + 1] = recv->pat0.unk2;
+#endif
                 if (recv->pat0.unk0 != 0x4022) {
                     send->pat0.unk0 = 0x4022;
                     if (gPressedKeys & B_BUTTON) {

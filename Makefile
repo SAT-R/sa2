@@ -55,8 +55,8 @@ TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude
+CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
+ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude --defsym $(GAME_REGION)=1
 
 
 # Clear the default suffixes
@@ -256,6 +256,10 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
+
+
+# WIP (not matching yet)
+europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 chao_garden/mb_chao_garden.gba: 
 	$(MAKE) -C chao_garden

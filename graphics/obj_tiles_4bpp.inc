@@ -7229,6 +7229,8 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f006.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f007.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f008.4bpp"
+
+@; Anim 1117 is different in PAL
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f002.4bpp"
@@ -7266,6 +7268,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f034.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f035.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f036.4bpp"
+
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f002.4bpp"
