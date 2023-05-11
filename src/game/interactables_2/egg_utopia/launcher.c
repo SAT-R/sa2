@@ -295,7 +295,7 @@ static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
         s16 playerX, playerY;
 
         // Launcher should only activate if it's the correct gravity
-        if (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED) {
+        if (GRAVITY_IS_INVERTED) {
             if (IS_LAUNCHER_RIGHTSIDE_UP(launcher->kind))
                 return FALSE;
         } else {
