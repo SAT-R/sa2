@@ -187,7 +187,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/sky_canyon/085.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/whirlwind.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/small_propeller.o(.text);
-        build/sa2/asm/interactable_091.o(.text);
+        build/sa2/src/game/interactables_2/egg_utopia/launcher.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/093.o(.text);
         build/sa2/asm/interactable_093.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/094.o(.text);

@@ -139,7 +139,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
     sprite->unk21 = -1;
     sprite->unk22 = 16;
     sprite->focused = 0;
-    sprite->unk10 = SPRITE_FLAG_MASK_13;
+    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 
 static void Task_FlyingAnimal(void)
@@ -205,9 +205,9 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     sprite->unk14 = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
-    sprite->unk22 = 16;
+    sprite->unk22 = 0x10;
     sprite->focused = 0;
-    sprite->unk10 = SPRITE_FLAG_MASK_13;
+    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 
 static void Task_BouncingAnimal(void)
@@ -278,7 +278,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
     sprite->unk21 = -1;
     sprite->unk22 = 16;
     sprite->focused = 0;
-    sprite->unk10 = SPRITE_FLAG_MASK_13;
+    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 
 static void Task_StaticAnimalMain(void)

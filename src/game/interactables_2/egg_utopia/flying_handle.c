@@ -95,7 +95,7 @@ void initSprite_Interactable_FlyingHandle(MapEntity *me, u16 spriteRegionX,
     sprite->unk22 = 0x10;
     sprite->focused = 0;
     sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG_MASK_13;
+    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
     sprite->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
     sprite->graphics.anim = SA2_ANIM_FLYING_HANDLE;
     sprite->variant = 0;
