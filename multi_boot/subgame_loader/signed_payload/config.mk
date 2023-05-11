@@ -10,9 +10,9 @@ COMPARE       ?= 1
 MAKER_CODE := 8P
 
 # Version
-BUILD_NAME := sa2
+BUILD_NAME := signed_payload
 TITLE      := SONICADVANC2
-GAME_CODE  := A2NE
+GAME_CODE  := A2N
 
 
 # Revision
@@ -28,7 +28,7 @@ ifeq ($(GAME_REGION), USA)
   GAME_CODE  := $(GAME_CODE)E
 else
 ifeq ($(GAME_REGION), EUROPE)
-  BUILD_NAME := $(BUILD_NAME)
+  BUILD_NAME := $(BUILD_NAME)_europe
   GAME_CODE  := $(GAME_CODE)P
 else
   $(error unknown region $(GAME_REGION))

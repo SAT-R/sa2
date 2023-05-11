@@ -43,7 +43,7 @@ PREPROC	  := ../../../tools/preproc/preproc$(EXE)
 RAMSCRGEN := ../../../tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := ../../../tools/gbafix/gbafix$(EXE)
 
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
+ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1
 
 
 # Clear the default suffixes
@@ -85,7 +85,7 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 MAKEFLAGS += --no-print-directory
 
 compare: $(ROM)
-	$(SHA1) checksum.sha1
+	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
 	@$(MAKE) clean -C payload 
@@ -130,5 +130,5 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 payload/payload.gba: 
-	$(MAKE) -C payload
+	$(MAKE) -C payload GAME_REGION=$(GAME_REGION)
 

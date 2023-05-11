@@ -10,7 +10,7 @@ COMPARE       ?= 1
 MAKER_CODE := 8P
 
 # Version
-BUILD_NAME := mb_subgame_loader
+BUILD_NAME := payload
 TITLE      := SONICADVANC2
 GAME_CODE  := A2N
 

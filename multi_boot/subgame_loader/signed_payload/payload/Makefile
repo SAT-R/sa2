@@ -20,6 +20,8 @@ endif
 
 PREFIX := arm-none-eabi-
 
+include config.mk
+
 ifeq ($(OS),Windows_NT)
 EXE := .exe
 else
@@ -47,8 +49,8 @@ RAMSCRGEN := ../../../../tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := ../../../../tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I ../../../../tools/agbcc/include -iquote include -nostdinc
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
+CPPFLAGS := -I ../../../../tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION) -D GAME_TITLE=$(TITLE) -D GAME_CODE=$(GAME_CODE)
+ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1 --defsym GAME_TITLE=$(TITLE) --defsym GAME_CODE=$(GAME_CODE)
 
 
 # Clear the default suffixes
@@ -123,7 +125,7 @@ endif
 MAKEFLAGS += --no-print-directory
 
 compare: $(ROM)
-	$(SHA1) checksum.sha1
+	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
