@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "task.h"
-#include "game/interactables_2/sky_canyon/flying_handle.h"
+#include "game/interactables_2/egg_utopia/flying_handle.h"
 #include "malloc_vram.h"
 #include "trig.h"
 #include "lib/m4a.h"
@@ -49,8 +49,8 @@ static void sub_807F784(Sprite_FlyingHandle *);
 
 #define FLYING_HANDLE_VRAM_TILES 25
 
-void initSprite_Interactable_SkyCanyon_FlyingHandle(MapEntity *me, u16 spriteRegionX,
-                                                    u16 spriteRegionY, u8 spriteY)
+void initSprite_Interactable_FlyingHandle(MapEntity *me, u16 spriteRegionX,
+                                          u16 spriteRegionY, u8 spriteY)
 {
     u32 i;
     Sprite *sprite;

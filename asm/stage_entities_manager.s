@@ -215,7 +215,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable093
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
-    .4byte initSprite_Interactable_SkyCanyon_FlyingHandle
+    .4byte initSprite_Interactable_FlyingHandle
     .4byte initSprite_InteractableSpeedingPlatform
     .4byte initSprite_Interactable_Toggle_Gravity__Down
     .4byte initSprite_Interactable_Toggle_Gravity__Up
@@ -309,8 +309,8 @@ gSpriteTileInits_PreStageEntry:
 .syntax unified
 .arm
 
-	thumb_func_start sub_800888C
-sub_800888C: @ 0x0800888C
+	thumb_func_start CreateStageEntitiesManager
+CreateStageEntitiesManager: @ 0x0800888C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}

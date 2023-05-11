@@ -15,7 +15,7 @@ typedef struct {
 static void Task_80808DC(void);
 
 /* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside entities_0.s
- * Which itself is referenced by 'sub_800888C'
+ * Which itself is referenced by 'CreateStageEntitiesManager'
  * It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
  * the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.
  */

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "task.h"
-#include "game/interactables_2/sky_canyon/095.h"
+#include "game/interactables_2/egg_utopia/095.h"
 #include "malloc_vram.h"
 #include "trig.h"
 

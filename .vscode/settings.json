@@ -157,10 +157,10 @@
     "game/interactables_1/windmill.h": "c",
     "__hash_table": "c",
     "__split_buffer": "c",
-    "game/interactables_2/sky_canyon/095.h": "c",
+    "game/interactables_2/egg_utopia/095.h": "c",
     "game/interactables_2/070.h": "c",
     "game/interactables_2/tec_base/note_block.h": "c",
-    "game/interactables_2/sky_canyon/094.h": "c",
+    "game/interactables_2/egg_utopia/094.h": "c",
     "game/interactables_2/tec_base/080.h": "c",
     "game/interactables_2/music_plant/pipe_horn.h": "c",
     "animation_commands.h": "c",
@@ -197,7 +197,9 @@
     "time_display.h": "c",
     "item_box.h": "c",
     "mystery_item_box.h": "c",
-    "stage_palette_loader.h": "c"
+    "stage_palette_loader.h": "c",
+    "093.h": "c",
+    "flying_handle.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
