@@ -86,7 +86,7 @@ void initSprite_InteractableSpeedingPlatform(MapEntity *me, u16 spriteRegionX,
     sprite->unk22 = 0x10;
     sprite->focused = 0;
     sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG_MASK_13;
+    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
     sprite->graphics.dest = VramMalloc(0x10);
     sprite->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
     sprite->variant = 0;

@@ -3,7 +3,8 @@
 
 .syntax unified
 .arm
-
+    
+.if 0
 	thumb_func_start initSprite_EggUtopia_Launcher
 initSprite_EggUtopia_Launcher: @ 0x0807D9C8
 	push {r4, r5, r6, r7, lr}
@@ -34,7 +35,7 @@ initSprite_EggUtopia_Launcher: @ 0x0807D9C8
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r2
-	mov ip, r0
+	mov ip, r0              @ ip = launcher
 	ldr r1, _0807DA98 @ =IWRAM_START + 0x44
 	adds r3, r2, r1
 	mov r5, sp
@@ -55,7 +56,7 @@ initSprite_EggUtopia_Launcher: @ 0x0807D9C8
 	adds r0, r0, r1
 	mov r1, ip
 	str r0, [r1, #0x40]
-	mov r5, r8
+	mov r5, r8          @ r5 = me
 	movs r0, #3
 	ldrsb r0, [r5, r0]
 	lsls r0, r0, #3
@@ -169,15 +170,15 @@ _0807DAF4:
 	str r0, [r5, #0x58]
 _0807DB0E:
 	movs r3, #0
-	mov r4, ip
-	adds r4, #0xc
+	mov r4, ip          @ ip = launcher
+	adds r4, #0xc       @ r4 = s
 	mov r6, ip
-	adds r6, #0x2d
+	adds r6, #0x2d      @ r6 = launcher->s.unk21
 	mov r7, ip
-	adds r7, #0x2e
+	adds r7, #0x2e      @ r7 = launcher->s.unk22
 	movs r1, #0x31
 	add r1, ip
-	mov sb, r1
+	mov sb, r1          @ sb = launcher->s.focused
 	movs r2, #0x2c
 	add r2, ip
 	mov sl, r2
@@ -286,6 +287,4 @@ _0807DBD0:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-    
-.if 0
 .endif

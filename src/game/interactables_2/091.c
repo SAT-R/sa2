@@ -28,12 +28,8 @@ typedef struct {
     s32 unk54;
     s32 unk58;
     u16 unk5C;
-    s32 unk60;
-    s32 unk64;
-    s32 unk68;
-    s32 unk6C;
-    s32 unk70;
-    s32 unk74;
+
+    s32 unk60[3][2];
 } Sprite_EggUtopia_Launcher; /* size: 0x78 */
 
 #define LAUN_DIR_LEFT               0
@@ -53,31 +49,108 @@ typedef struct {
     ((kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP))                            \
      || (kind == LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP)))
 
-extern void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX,
-                                          u16 spriteRegionY, u8 spriteY, u32 kind);
+static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher);
+static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher);
+static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher);
+static bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher);
+static void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher);
+static void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher);
+static bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher);
+static void Task_807DBF0(void);
+static void sub_807DDA0(Sprite_EggUtopia_Launcher *);
 
-extern void sub_807DC80(Sprite_EggUtopia_Launcher *launcher);
-extern void sub_807DD04(Sprite_EggUtopia_Launcher *launcher);
-extern bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher);
-extern bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher);
-extern void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher);
-extern void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher);
-extern bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher);
-
-void Task_807DBF0(void);
-void sub_807DDA0(Sprite_EggUtopia_Launcher *);
+// static
 void Task_807DE98(void);
-void Task_807DEEC(void);
-void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
-extern void sub_807E0D0(Sprite_EggUtopia_Launcher *);
-void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
-void Task_807E16C(void);
-bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
 
-void Task_807DBF0(void)
+static void Task_807DEEC(void);
+
+// static
+void TaskDestructor_807DF38(struct Task *t);
+
+static void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused);
+static void sub_807E0D0(Sprite_EggUtopia_Launcher *);
+static void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
+static void Task_807E16C(void);
+static bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
+
+#if 0
+extern void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX,
+                                   u16 spriteRegionY, u8 spriteY, u32 kind);
+#else
+void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY, u32 kind)
+{
+    struct Task *t = TaskCreate(Task_807DE98, sizeof(Sprite_EggUtopia_Launcher), 0x2010,
+                                0, TaskDestructor_807DF38);
+    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
+    Sprite *s;
+
+    launcher->kind = kind;
+    launcher->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    launcher->posY = TO_WORLD_POS(me->y, spriteRegionY);
+
+    launcher->unk4C = me->d.sData[0] * TILE_WIDTH;
+    launcher->unk4E = me->d.sData[1] * TILE_WIDTH;
+    launcher->unk50 = me->d.uData[2] * TILE_WIDTH;
+    launcher->unk52 = me->d.uData[3] * TILE_WIDTH;
+
+    launcher->base.regionX = spriteRegionX;
+    launcher->base.regionY = spriteRegionY;
+    launcher->base.me = me;
+    launcher->base.spriteX = me->x;
+    launcher->base.spriteY = spriteY;
+
+    switch (launcher->kind) {
+        case 0: {
+            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
+            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
+        } break;
+
+        case 1: {
+            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
+            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
+        } break;
+
+        case 2: {
+            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
+            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
+        } break;
+
+        case 3: {
+            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
+            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
+        } break;
+    }
+
+    s = &launcher->s;
+
+    {
+        s32 *xs, *ys;
+        s32 i = 0;
+        for (i = 0; i < ARRAY_COUNT(launcher->unk60); i++) {
+            launcher->unk60[i][0] = launcher->unk54;
+            launcher->unk60[i][1] = launcher->unk58;
+        }
+
+        s->unk1A = 0x180;
+        s->graphics.size = 0;
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->focused = 0;
+        s->unk28->unk0 = -1;
+        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+    }
+
+    sub_8004558(s);
+    SET_MAP_ENTITY_INITIALIZED(me);
+}
+#endif
+
+static void Task_807DBF0(void)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
-    bool32 isDead;
 
     if (IS_MULTI_PLAYER)
         sub_807E0D0(launcher);
@@ -90,12 +163,14 @@ void Task_807DBF0(void)
     if (!PLAYER_IS_ALIVE) {
         launcher->unk48 = FALSE;
     } else {
-        if ((gPlayer.unk2C != 120) && (gPlayer.unk5E & gPlayerControls.jump)) {
-            gPlayer.unk6D = 3;
+        if (gPlayer.unk2C != 120) {
+            if (gPlayer.unk5E & gPlayerControls.jump) {
+                gPlayer.unk6D = 3;
 
-            gPlayer.moveState &= ~MOVESTATE_400000;
-            launcher->unk48 = FALSE;
-        } else if (gPlayer.unk2C == 120) {
+                gPlayer.moveState &= ~MOVESTATE_400000;
+                launcher->unk48 = FALSE;
+            }
+        } else {
             gPlayer.moveState &= ~MOVESTATE_400000;
             launcher->unk48 = FALSE;
         }
@@ -104,7 +179,7 @@ void Task_807DBF0(void)
     sub_807DDA0(launcher);
 }
 
-void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
 {
     m4aSongNumStart(SE_286);
 
@@ -132,7 +207,7 @@ void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
     gCurTask->main = Task_807DBF0;
 }
 
-void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -164,13 +239,13 @@ void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
     gCurTask->main = Task_807DEEC;
 }
 
-void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
 {
     Sprite *s = &launcher->s;
 
     if (IS_MULTI_PLAYER) {
-        s->x = Q_24_8_TO_INT(launcher->unk68) - gCamera.x;
-        s->y = Q_24_8_TO_INT(launcher->unk6C) - gCamera.y;
+        s->x = Q_24_8_TO_INT(launcher->unk60[1][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(launcher->unk60[1][1]) - gCamera.y;
     } else {
         s->x = Q_24_8_TO_INT(launcher->unk54) - gCamera.x;
         s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
@@ -179,7 +254,7 @@ void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
     sub_80051E8(s);
 }
 
-bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
+static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE) {
         s16 someX, someY;
@@ -209,6 +284,7 @@ bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
     return FALSE;
 }
 
+// static
 void Task_807DE98(void)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
@@ -228,7 +304,7 @@ void Task_807DE98(void)
     }
 }
 
-void Task_807DEEC(void)
+static void Task_807DEEC(void)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
 
@@ -243,18 +319,19 @@ void Task_807DEEC(void)
     sub_807DDA0(launcher);
 }
 
+// static
 void TaskDestructor_807DF38(struct Task *t)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
     VramFree(launcher->s.graphics.dest);
 }
 
-void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused)
+static void SetTaskMain_807E16C(Sprite_EggUtopia_Launcher *unused)
 {
     gCurTask->main = Task_807E16C;
 }
 
-bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
+static bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
 {
     bool32 result = FALSE;
 
@@ -279,7 +356,7 @@ bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
     return result;
 }
 
-void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         switch (launcher->kind) {
@@ -306,7 +383,7 @@ void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher)
     }
 }
 
-bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher)
+static bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher)
 {
     s16 posX, posY;
 
@@ -322,20 +399,20 @@ bool32 sub_807E044(Sprite_EggUtopia_Launcher *launcher)
     return FALSE;
 }
 
-void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807E0B8(Sprite_EggUtopia_Launcher *launcher)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(launcher->base.me, launcher->base.spriteX);
     TaskDestroy(gCurTask);
 }
 
-void sub_807E0D0(Sprite_EggUtopia_Launcher *launcher)
+static void sub_807E0D0(Sprite_EggUtopia_Launcher *launcher)
 {
-    launcher->unk70 = launcher->unk68;
-    launcher->unk74 = launcher->unk6C;
-    launcher->unk68 = launcher->unk60;
-    launcher->unk6C = launcher->unk64;
-    launcher->unk60 = launcher->unk54;
-    launcher->unk64 = launcher->unk58;
+    launcher->unk60[2][0] = launcher->unk60[1][0];
+    launcher->unk60[2][1] = launcher->unk60[1][1];
+    launcher->unk60[1][0] = launcher->unk60[0][0];
+    launcher->unk60[1][1] = launcher->unk60[0][1];
+    launcher->unk60[0][0] = launcher->unk54;
+    launcher->unk60[0][1] = launcher->unk58;
 }
 
 void initSprite_EggUtopia_Launcher_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
@@ -362,7 +439,7 @@ void initSprite_EggUtopia_Launcher_3(MapEntity *me, u16 spriteRegionX, u16 sprit
     initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY, 3);
 }
 
-void Task_807E16C(void)
+static void Task_807E16C(void)
 {
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
 
@@ -377,12 +454,12 @@ void Task_807E16C(void)
     sub_807DDA0(launcher);
 }
 
-void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused)
+static void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused)
 {
     gCurTask->main = Task_807DE98;
 }
 
-bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher)
+static bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher)
 {
     bool32 result = FALSE;
 
