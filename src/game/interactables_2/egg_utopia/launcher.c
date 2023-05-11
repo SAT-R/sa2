@@ -155,7 +155,7 @@ void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteR
 #ifndef NON_MATCHING
             // This is completely redundant because of the switch below.
             if (kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN)) {
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 |= (SPRITE_FLAG_X_FLIP(1) | SPRITE_FLAG_Y_FLIP(0));
             }
 #endif
             switch (launcher->kind) {
