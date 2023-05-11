@@ -2,6 +2,7 @@
 #include "game/interactables_2/egg_utopia/093.h"
 #include "lib/m4a.h"
 #include "trig.h"
+#include "game/math.h"
 
 #include "constants/songs.h"
 
@@ -174,3 +175,74 @@ u32 sub_807E4E4(Sprite_Cannon *cannon)
 
     return temp == 2 ? 1 : 0;
 }
+
+void sub_807E56C(Sprite_Cannon *cannon)
+{
+    u16 r3;
+    s16 temp2;
+    s16 temp3;
+    s32 mask;
+    register s16 r0 asm("r0");
+    s32 r1;
+
+    r3 = cannon->unk68 == 0  ? cannon->unk6E == 0 ? 0x280 : 0x180
+        : cannon->unk6E == 0 ? 0x80
+                             : 0x380;
+    temp2 = sub_808558C(cannon->unk6A, r3, 10);
+    temp3 = temp2;
+
+    if (abs(temp2) >= 5) {
+        temp3 = -4;
+        if (temp2 > 0) {
+            temp3 = 4;
+        }
+
+    } else {
+        cannon->unk6E ^= 1;
+    }
+
+    r0 = cannon->unk6A + temp3;
+    mask = ONE_CYCLE;
+
+#ifndef NON_MATCHING
+    asm("add %0, %1, #0" : "=r"(r1) : "r"(mask) : "cc");
+    r0 &= r1;
+#else
+    r0 &= mask;
+#endif
+
+    cannon->unk6A = r0;
+}
+
+void sub_807E5F0(Sprite_Cannon *cannon)
+{
+    struct UNK_808D124_UNK180 transform;
+    Sprite *sprite = &cannon->sprite2;
+    sprite->x = cannon->x - gCamera.x;
+    sprite->y = cannon->y - gCamera.y;
+
+    transform.unk0 = cannon->unk6A;
+    transform.unk2 = 0x100;
+    transform.unk4 = 0x100;
+    transform.unk6[0] = sprite->x;
+    transform.unk6[1] = sprite->y;
+
+    sprite->unk10 = 0x2060 | gUnknown_030054B8++;
+    if (cannon->unk68 == 0) {
+        sprite->unk10 |= 0x400;
+    }
+
+    sub_8004860(sprite, &transform);
+    sub_80051E8(sprite);
+}
+
+// void sub_807E66C(Sprite_Cannon *cannon)
+// {
+//     if (PLAYER_IS_ALIVE) {
+//         s16 x = cannon->x - gCamera.x;
+//         s16 playerX = Q_24_8(gPlayer.x) - gCamera.x;
+//         if (x + cannon->sprite2.unk28[0].unk4 > playerX + gUnknown_03005AF0.unk1C) {
+//             if (playerX + gUnknown_03005AF0.unk1C)
+//         }
+//     }
+// }
