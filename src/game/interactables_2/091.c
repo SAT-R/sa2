@@ -11,6 +11,7 @@
 #include "trig.h"
 #include "game/game.h"
 
+#include "constants/animations.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -31,6 +32,8 @@ typedef struct {
 
     s32 unk60[3][2];
 } Sprite_EggUtopia_Launcher; /* size: 0x78 */
+
+#define EGG_UTO_LAUNCHER_TILE_COUNT 15
 
 #define LAUN_DIR_LEFT               0
 #define LAUN_DIR_RIGHT              1
@@ -73,17 +76,12 @@ static void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 static void Task_807E16C(void);
 static bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
 
-#if 0
-extern void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX,
-                                   u16 spriteRegionY, u8 spriteY, u32 kind);
-#else
 void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                    u8 spriteY, u32 kind)
 {
     struct Task *t = TaskCreate(Task_807DE98, sizeof(Sprite_EggUtopia_Launcher), 0x2010,
                                 0, TaskDestructor_807DF38);
     Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
-    Sprite *s;
 
     launcher->kind = kind;
     launcher->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -91,8 +89,8 @@ void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
     launcher->unk4C = me->d.sData[0] * TILE_WIDTH;
     launcher->unk4E = me->d.sData[1] * TILE_WIDTH;
-    launcher->unk50 = me->d.uData[2] * TILE_WIDTH;
-    launcher->unk52 = me->d.uData[3] * TILE_WIDTH;
+    launcher->unk50 = launcher->unk4C + me->d.uData[2] * TILE_WIDTH;
+    launcher->unk52 = launcher->unk4E + me->d.uData[3] * TILE_WIDTH;
 
     launcher->base.regionX = spriteRegionX;
     launcher->base.regionY = spriteRegionY;
@@ -101,52 +99,88 @@ void initSprite_EggUtopia_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteR
     launcher->base.spriteY = spriteY;
 
     switch (launcher->kind) {
-        case 0: {
+        case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
             launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
         } break;
 
-        case 1: {
+        case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
             launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
         } break;
 
-        case 2: {
+        case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
             launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
         } break;
 
-        case 3: {
+        case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
             launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
             launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
         } break;
     }
 
-    s = &launcher->s;
-
     {
         s32 *xs, *ys;
-        s32 i = 0;
-        for (i = 0; i < ARRAY_COUNT(launcher->unk60); i++) {
+        int i = 0;
+#ifndef NON_MATCHING
+        register void *s2 asm("r4") = &launcher->s;
+#endif
+        for (; i < ARRAY_COUNT(launcher->unk60); i++) {
             launcher->unk60[i][0] = launcher->unk54;
             launcher->unk60[i][1] = launcher->unk58;
         }
 
-        s->unk1A = 0x180;
-        s->graphics.size = 0;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
-        s->focused = 0;
-        s->unk28->unk0 = -1;
-        s->unk10 = SPRITE_FLAG_PRIORITY(2);
-    }
-
-    sub_8004558(s);
-    SET_MAP_ENTITY_INITIALIZED(me);
-}
+        {
+#ifndef NON_MATCHING
+            register Sprite *s asm("r5") = s2;
+#else
+            Sprite *s = &launcher->s;
 #endif
+            s->unk1A = 0x180;
+            s->graphics.size = 0;
+            s->unk14 = 0;
+            s->unk1C = 0;
+
+            launcher->s.unk21 = 0xFF;
+            launcher->s.unk22 = 0x10;
+            launcher->s.focused = 0;
+
+            s->unk28->unk0 = -1;
+            s->unk10 = SPRITE_FLAG_PRIORITY(2);
+            s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
+            s->graphics.anim = SA2_ANIM_LAUNCHER_EGG_UTO;
+            launcher->s.variant = 0;
+
+#ifndef NON_MATCHING
+            // This is completely redundant because of the switch below.
+            if (kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN)) {
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            }
+#endif
+            switch (launcher->kind) {
+                case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
+                    s->unk10 |= (SPRITE_FLAG_X_FLIP(1) | SPRITE_FLAG_Y_FLIP(0));
+                } break;
+
+                case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
+                    s->unk10 |= (SPRITE_FLAG_X_FLIP(0) | SPRITE_FLAG_Y_FLIP(0));
+                } break;
+
+                case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
+                    s->unk10 |= (SPRITE_FLAG_X_FLIP(1) | SPRITE_FLAG_Y_FLIP(1));
+                } break;
+
+                case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
+                    s->unk10 |= (SPRITE_FLAG_X_FLIP(0) | SPRITE_FLAG_Y_FLIP(1));
+                } break;
+            }
+
+            sub_8004558(s);
+        }
+        SET_MAP_ENTITY_INITIALIZED(me);
+    }
+}
 
 static void Task_807DBF0(void)
 {
@@ -415,28 +449,32 @@ static void sub_807E0D0(Sprite_EggUtopia_Launcher *launcher)
     launcher->unk60[0][1] = launcher->unk58;
 }
 
-void initSprite_EggUtopia_Launcher_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void initSprite_EggUtopia_Launcher_Left_GDown(MapEntity *me, u16 spriteRegionX,
+                                              u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY, 0);
+    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                                  LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN));
 }
 
-void initSprite_EggUtopia_Launcher_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void initSprite_EggUtopia_Launcher_Right_GDown(MapEntity *me, u16 spriteRegionX,
+                                               u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY, 1);
+    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                                  LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN));
 }
 
-void initSprite_EggUtopia_Launcher_2(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void initSprite_EggUtopia_Launcher_Left_GUp(MapEntity *me, u16 spriteRegionX,
+                                            u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY, 2);
+    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                                  LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP));
 }
 
-void initSprite_EggUtopia_Launcher_3(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void initSprite_EggUtopia_Launcher_Right_GUp(MapEntity *me, u16 spriteRegionX,
+                                             u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY, 3);
+    initSprite_EggUtopia_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                                  LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP));
 }
 
 static void Task_807E16C(void)

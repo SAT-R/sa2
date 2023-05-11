@@ -132,7 +132,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Spring_Small_UpLeft
     .4byte initSprite_Interactable_CommonThinPlatform
     .4byte initSprite_Interactable_Decoration
-    .4byte initSprite_Interactable_Ramp
+    .4byte initSprite_EggUtopia_Launcher_Left_GDown
     .4byte initSprite_Interactable_Booster
     .4byte initSprite_Interactable_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
     .4byte initSprite_Interactable_BouncySpring
@@ -210,8 +210,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic
-    .4byte initSprite_EggUtopia_Launcher_0
-    .4byte initSprite_EggUtopia_Launcher_1
+    .4byte initSprite_EggUtopia_Launcher_Left_GDown
+    .4byte initSprite_EggUtopia_Launcher_Right_GDown
     .4byte initSprite_Interactable093
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
@@ -220,8 +220,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Toggle_Gravity__Down
     .4byte initSprite_Interactable_Toggle_Gravity__Up
     .4byte initSprite_Interactable_Toggle_Gravity__Toggle
-    .4byte initSprite_EggUtopia_Launcher_2
-    .4byte initSprite_EggUtopia_Launcher_3     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
+    .4byte initSprite_EggUtopia_Launcher_Left_GUp
+    .4byte initSprite_EggUtopia_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
     .4byte initSprite_Interactable_SpecialRing
     .4byte initSprite_Interactable_SkyCanyon_Whirlwind_1
     .4byte initSprite_Interactable105
