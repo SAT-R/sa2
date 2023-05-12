@@ -12,9 +12,9 @@ _entry:
 	msr cpsr_fc, r0
 	ldr sp, _0203B034 @ =gUnknown_03007F00
 	ldr r1, _0203B100 @ =gUnknown_03007FFC
-	add r0, pc, #0x18 @ =sub_0203b03c
+	add r0, pc, #0x18 @ =IntrMain
 	str r0, [r1]
-	ldr r1, _0203B104 @ =sub_0203b26c
+	ldr r1, _0203B104 @ =AgbMain
 	mov lr, pc
 	bx r1
 	b _entry
@@ -22,8 +22,8 @@ _entry:
 _0203B034: .4byte gUnknown_03007F00
 _0203B038: .4byte gUnknown_03007FA0
 
-	arm_func_start sub_0203b03c
-sub_0203b03c: @ 0x0203B03C
+	arm_func_start IntrMain
+IntrMain: @ 0x0203B03C
 	mov r3, #0x4000000
 	add r3, r3, #0x200
 	ldr r2, [r3]
@@ -71,10 +71,10 @@ _0203B054:
 	ands r0, r1, #0x2000
 _0203B0EC:
 	strh r0, [r3, #2]
-	ldr r1, _0203B108 @ =gUnknown_03000000
+	ldr r1, _0203B108 @ =gIntrTable
 	add r1, r1, r2
 	ldr r0, [r1]
 	bx r0
 _0203B100: .4byte gUnknown_03007FFC
-_0203B104: .4byte sub_0203b26c
-_0203B108: .4byte gUnknown_03000000
+_0203B104: .4byte AgbMain
+_0203B108: .4byte gIntrTable

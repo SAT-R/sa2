@@ -1,7 +1,7 @@
 	.section .rodata
 
-    .global gUnknown_0203C208
-gUnknown_0203C208:
+    .global gIntrTableTemplate
+gIntrTableTemplate:
     .incbin "data/rom_data.bin", 0x00001208, 0x34
 
     .global gUnknown_0203C23C

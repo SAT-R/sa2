@@ -17,8 +17,8 @@ struct UNK_03003330 {
     u8 unk10;
 };
 
-#define GBA_ROM_HEADER_FIXED_VALUE_ADDR ((vu8 *)(ROM_BASE + 0xB2))
-#define FIXED_HEADER_VALUE              0x96
+#define ROM_MAKER_CODE_ADDR ((vu8 *)(ROM_BASE + 0xB2))
+#define DIMPS_MAKER_CODE    0x96
 
 extern u8 IntrMain_RAM[0x80];
 extern IntrFunc gIntrTable[4];
@@ -110,7 +110,7 @@ void sub_0200019c(void)
 
     REG_IE = INTR_FLAG_VBLANK;
 
-    if (*GBA_ROM_HEADER_FIXED_VALUE_ADDR == FIXED_HEADER_VALUE) {
+    if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE) {
         REG_IE |= INTR_FLAG_GAMEPAK;
         gUnknown_03003B70 = INTR_FLAG_GAMEPAK;
     } else {

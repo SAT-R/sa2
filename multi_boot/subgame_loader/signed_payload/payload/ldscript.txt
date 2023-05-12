@@ -3,7 +3,6 @@ SECTIONS {
     EWRAM (NOLOAD) :
     ALIGN(4)
     {
-        . = 0x00020000; gUnknown_02020000 = .;
     }
 
     . = 0x203B000;
@@ -11,9 +10,10 @@ SECTIONS {
     ALIGN(4) {
         build/payload/asm/crt0.o(.text);
         build/payload/asm/multi_sio_asm.o(.text);
+        build/payload/src/main.o(.text);
         build/payload/asm/code.o(.text);
-        build/payload/asm/multi_sio.o(.text);
-        build/payload/asm/sio32_multi_load.o(.text);
+        build/payload/src/multi_sio.o(.text);
+        build/payload/src/sio32_multi_load.o(.text);
         build/payload/asm/libagbsyscall.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_udivsi3.o(.text);
@@ -30,13 +30,13 @@ SECTIONS {
     IWRAM (NOLOAD) :
     ALIGN(4)
     {
-        . = 0x00000000; gUnknown_03000000 = .;
+        . = 0x00000000; gIntrTable = .;
         . = 0x00000040; gUnknown_03000040 = .;
-        . = 0x00000090; gUnknown_03000090 = .;
-        . = 0x000000A0; gUnknown_030000A0 = .;
+        . = 0x00000090; gMultiSioStatusFlags = .;
+        . = 0x000000A0; gIntrMainBuf = .;
         . = 0x000004A0; gUnknown_030004A0 = .;
         . = 0x000004A2; gUnknown_030004A2 = .;
-        . = 0x000004C0; gUnknown_030004C0 = .;
+        . = 0x000004C0; gMultiSioIntrFuncBuf = .;
         . = 0x000005E0; gMultiSioArea = .;
         . = 0x000007D0; gMultiSioRecvFuncBuf = .;
         . = 0x00000810; gSio32MultiLoadArea = .;
