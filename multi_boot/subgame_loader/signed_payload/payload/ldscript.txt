@@ -11,7 +11,6 @@ SECTIONS {
         build/payload/asm/crt0.o(.text);
         build/payload/asm/multi_sio_asm.o(.text);
         build/payload/src/main.o(.text);
-        build/payload/asm/code.o(.text);
         build/payload/src/multi_sio.o(.text);
         build/payload/src/sio32_multi_load.o(.text);
         build/payload/asm/libagbsyscall.o(.text);
@@ -31,10 +30,10 @@ SECTIONS {
     ALIGN(4)
     {
         . = 0x00000000; gIntrTable = .;
-        . = 0x00000040; gUnknown_03000040 = .;
+        . = 0x00000040; gMultiSioRecv = .;
         . = 0x00000090; gMultiSioStatusFlags = .;
         . = 0x000000A0; gIntrMainBuf = .;
-        . = 0x000004A0; gUnknown_030004A0 = .;
+        . = 0x000004A0; gMultiSioSend = .;
         . = 0x000004A2; gUnknown_030004A2 = .;
         . = 0x000004C0; gMultiSioIntrFuncBuf = .;
         . = 0x000005E0; gMultiSioArea = .;

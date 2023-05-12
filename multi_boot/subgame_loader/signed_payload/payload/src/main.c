@@ -4,8 +4,6 @@
 
 extern IntrFunc gIntrTable[];
 
-extern u8 gUnknown_030004A2[];
-
 struct UNK_0203C280 {
     void *unk0;
 };
@@ -35,32 +33,39 @@ extern const struct UNK_0203C280 gUnknown_0203C280[];
 u32 gMultiSioStatusFlags;
 
 typedef struct {
+    u8 unk0;
+    u8 filler1[0x29];
+} LoaderUnkC; /* size 0x30 */
+
+extern LoaderUnkC gUnknown_030004A2;
+
+typedef struct {
     u32 unk0;
     u32 unk4;
     u16 unk8;
     u16 unkA; // state
-    void *unkC;
+    LoaderUnkC *unkC;
     u16 unk10;
     u8 unk12;
     u8 unk13;
     u8 unk14;
-    u8 unk15;
+    u8 unk15; // loadRequest
     u8 unk16;
 } Loader; /* size 0x18 */
 
-void sub_0203b530(Loader *);
+void LoaderInit(Loader *);
 u16 sub_0203b2f0(u16, Loader *);
 u16 sub_0203b79c(u16, Loader *);
 u16 sub_0203b7d0(u16, Loader *);
 u16 sub_0203b3d8(u16, Loader *);
 u16 sub_0203b818(u16, Loader *);
 void sub_0203b898(Loader *);
-u16 sub_0203b610(Loader *);
+void sub_0203b610(Loader *);
 
 void AgbMain()
 {
     Loader loader;
-    sub_0203b530(&loader);
+    LoaderInit(&loader);
 
     while (TRUE) {
         VBlankIntrWait();
@@ -179,20 +184,37 @@ u16 sub_0203b3d8(u16 state, Loader *loader)
     return 5;
 }
 
-u16 gUnknown_030004A0;
+struct MultiSioData_0_0 {
+    // id
+    u16 unk0;
+    // value
+    u8 unk2;
+    u32 unk4;
+    u16 unk8[3];
+    u8 unkE;
+    u8 unkF;
+    u32 unk10;
+};
+
+union MultiSioData {
+    struct MultiSioData_0_0 pat0;
+}; /* size = MULTI_SIO_BLOCK_SIZE */
+
+union MultiSioData gMultiSioSend;
+union MultiSioData gMultiSioRecv[4];
 
 extern const IntrFunc gIntrTableTemplate[13];
 
 extern u8 gIntrMainBuf[0x400];
 
-void sub_0203b530(Loader *loader)
+void LoaderInit(Loader *loader)
 {
 
     loader->unk0 = 0;
     loader->unk4 = 0;
     loader->unk8 = 0;
     loader->unkA = 0;
-    loader->unkC = gUnknown_030004A2;
+    loader->unkC = &gUnknown_030004A2;
     loader->unk10 = 0;
     loader->unk12 = 0;
     loader->unk13 = 0;
@@ -215,10 +237,141 @@ void sub_0203b530(Loader *loader)
     REG_DISPSTAT = 8;
     REG_IME = 1;
 
-    {
-        u16 r0, *r1;
-        r1 = &gUnknown_030004A0;
-        r0 = 0xF001;
-        *r1 = r0;
+    gMultiSioSend.pat0.unk0 = 0xF001;
+}
+
+extern const u8 gUnknown_0203EBC0[];
+extern const u8 gUnknown_0203EDC0[];
+
+struct UNK_203F260 {
+    u8 filler4[0x3C];
+}; /* 0x3C */
+
+struct UNK_203E844 {
+    u8 filler4[0x30];
+}; /* 0x3C */
+
+extern const struct UNK_203F260 gUnknown_0203F260[];
+
+extern const u8 gUnknown_0203C4A4[];
+extern const struct UNK_203E844 gUnknown_0203E844[];
+
+void sub_0203b610(Loader *loader)
+{
+    u16 i;
+    if (loader->unk16 == 0) {
+        REG_BG0CNT = 0x170B;
+        REG_BG0HOFS = 0;
+        REG_BG0VOFS = 0;
+
+        CpuCopy16(gUnknown_0203EBC0, (void *)PLTT, 0x200);
+        CpuCopy16(gUnknown_0203EDC0, (void *)VRAM + 0x8000, 0x4A0);
+
+        for (i = 0; i < 0x14; i++) {
+            CpuCopy16(&gUnknown_0203F260[i], (void *)VRAM + 0xB800 + (i * 0x40), 0x3C);
+        }
+
+        REG_BG1CNT = 0x1F0E;
+
+        if (loader->unk13 != 0) {
+            REG_BG1HOFS = 0xFFE8;
+            REG_BG1VOFS = ((loader->unk13 - 1) * 0x18) - 0x30;
+        } else {
+            REG_BG1HOFS = 0xFFE8;
+            REG_BG1VOFS = 0xFFE8;
+        }
+
+        CpuCopy16(gUnknown_0203C4A4, (void *)VRAM + 0xC000, 0x23A0);
+
+        for (i = 0; i < 0x12; i++) {
+            CpuCopy16(&gUnknown_0203E844[i], (void *)VRAM + 0xF800 + (i * 0x40), 0x30);
+        }
+
+        REG_WIN0H = 0x18D8;
+        REG_WIN0V = 0x3048;
+        REG_WININ = 2;
+        REG_WINOUT = 1;
+
+        CpuFill16(0, (void *)PLTT + 0x22, 0x1E);
+
+        REG_WIN1H = 0x2828;
+        REG_WIN1V = 0x5058;
+        loader->unk16 = 1;
+    }
+}
+
+void sub_0203b788(void) { INTR_CHECK |= 1; }
+
+void sub_0203b798(void) { }
+
+u16 sub_0203b79c(u16 state, Loader *loader)
+{
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_ENABLE) {
+        if (gMultiSioStatusFlags & MULTI_SIO_LD_SUCCESS) {
+            loader->unkC->unk0++;
+        }
+        state = 3;
+    }
+
+    MultiSioStart();
+
+    return state;
+}
+
+extern u16 gUnknown_03000040[];
+
+u16 sub_0203b7d0(u16 state, Loader *loader)
+{
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST) {
+        state = 4;
+    }
+
+    gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, loader->unk15);
+    loader->unk13 = gMultiSioRecv[0].pat0.unk0;
+    if (loader->unk10 != gMultiSioRecv[0].pat0.unk2) {
+        loader->unk10 = gMultiSioRecv[0].pat0.unk2;
+    }
+
+    return state;
+}
+
+void sub_0203b86c(Loader *loader);
+
+u16 sub_0203b818(u16 state, Loader *loader)
+{
+    u32 progress = 0;
+
+    if (Sio32MultiLoadMain(&progress) != 0) {
+        state = 1;
+    }
+
+    if (progress > loader->unk4) {
+        loader->unk0 += (progress - loader->unk4);
+        loader->unk4 = progress;
+    } else if (progress < loader->unk4) {
+        u32 temp = loader->unk0 + 0x2000;
+        loader->unk0 = (temp - loader->unk4) + progress;
+        loader->unk4 = progress;
+    }
+
+    sub_0203b86c(loader);
+
+    return state;
+}
+
+void sub_0203b86c(Loader *loader)
+{
+    u8 val = (loader->unk0 * 0xA0) / 0x12000;
+    REG_WIN1H = (val + 0x28) | 0x2800;
+}
+
+void sub_0203b898(Loader *loader)
+{
+    if (loader->unk12 != 0) {
+        REG_DISPCNT = 0x6300;
+        REG_WININ = 2;
+        REG_WINOUT = 1;
+    } else {
+        REG_DISPCNT = 0x80;
     }
 }
