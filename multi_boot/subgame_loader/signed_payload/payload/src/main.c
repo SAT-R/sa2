@@ -1,26 +1,60 @@
 #include "global.h"
 #include "multi_sio.h"
 #include "sio32_multi_load.h"
+#include "loader_tables.h"
 
-extern IntrFunc gIntrTable[];
+typedef struct {
+    u32 unk0;
+    u32 unk4;
+    u16 unk8;
+    u16 state;
+    u8 *resp;
+    u16 segment;
+    u8 unk12;
+    u8 unk13;
+    u8 unk14;
+    u8 loadRequest;
+    u8 unk16;
+} Loader; /* size 0x18 */
 
-struct UNK_0203C280 {
-    void *unk0;
+struct MultiSioData_0_0 {
+    // id
+    u16 unk0;
+    // value
+    u8 unk2;
+    u8 filler[17];
 };
 
-extern const struct UNK_0203C280 gUnknown_0203C280[];
+union MultiSioData {
+    struct MultiSioData_0_0 pat0;
+}; /* size = MULTI_SIO_BLOCK_SIZE */
 
-#define PROGRAM_WORK_BUFFER ((void *)EWRAM_START + 0x20000)
-#define RECV_BUFFER         ((void *)EWRAM_START + 0x33000)
+// .data
+IntrFunc gIntrTable[16] = {};
+union MultiSioData gMultiSioRecv[4] = {};
+u32 gMultiSioStatusFlags = 0;
+u8 gIntrMainBuf[0x400] ALIGNED(16) = {};
+union MultiSioData gMultiSioSend = {};
+
+void LoaderInit(Loader *);
+static u16 sub_0203b2f0(u16, Loader *);
+static u16 sub_0203b79c(u16, Loader *);
+static u16 sub_0203b7d0(u16, Loader *);
+static u16 sub_0203b3d8(u16, Loader *);
+static u16 sub_0203b818(u16, Loader *);
+static void sub_0203b898(Loader *);
+static void sub_0203b610(Loader *);
+static void sub_0203b86c(Loader *loader);
+
+static void sub_0203b788(void);
+static void sub_0203b798(void);
 
 #define ROM_MAKER_CODE_ADDR ((vu8 *)(ROM_BASE + 0xB2))
+#define ROM_GAME_CODE_ADDR  ((vu32 *)(ROM_BASE + 0xAC))
+#define ROM_TITLE_ADDR      ((u8 *)(ROM_BASE + 0xA0))
 
 // 8P
 #define DIMPS_MAKER_CODE 0x96
-
-#define ROM_GAME_CODE_ADDR ((vu32 *)(ROM_BASE + 0xAC))
-
-#define ROM_TITLE_ADDR ((u8 *)(ROM_BASE + 0xA0))
 
 #ifndef EUROPE
 // "A2NE"
@@ -30,37 +64,22 @@ extern const struct UNK_0203C280 gUnknown_0203C280[];
 #define EXPECTED_GAME_CODE 0x504e3241
 #endif
 
-u32 gMultiSioStatusFlags;
-
-typedef struct {
-    u8 unk0;
-    u8 filler1[0x29];
-} LoaderUnkC; /* size 0x30 */
-
-extern LoaderUnkC gUnknown_030004A2;
-
-typedef struct {
-    u32 unk0;
-    u32 unk4;
-    u16 unk8;
-    u16 unkA; // state
-    LoaderUnkC *unkC;
-    u16 unk10;
-    u8 unk12;
-    u8 unk13;
-    u8 unk14;
-    u8 unk15; // loadRequest
-    u8 unk16;
-} Loader; /* size 0x18 */
-
-void LoaderInit(Loader *);
-u16 sub_0203b2f0(u16, Loader *);
-u16 sub_0203b79c(u16, Loader *);
-u16 sub_0203b7d0(u16, Loader *);
-u16 sub_0203b3d8(u16, Loader *);
-u16 sub_0203b818(u16, Loader *);
-void sub_0203b898(Loader *);
-void sub_0203b610(Loader *);
+// .rodata
+IntrFunc const gIntrTableTemplate[13] = {
+    (void *)gMultiSioIntrFuncBuf,
+    sub_0203b788,
+    sub_0203b798,
+    sub_0203b798,
+    sub_0203b798,
+    sub_0203b798,
+    sub_0203b798,
+    sub_0203b798,
+    sub_0203b798,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+};
 
 void AgbMain()
 {
@@ -69,42 +88,42 @@ void AgbMain()
 
     while (TRUE) {
         VBlankIntrWait();
-        switch (loader.unkA) {
+        switch (loader.state) {
             case 0:
             case 1:
-                loader.unkA = sub_0203b2f0(loader.unkA, &loader);
+                loader.state = sub_0203b2f0(loader.state, &loader);
                 break;
             case 2:
-                loader.unkA = sub_0203b79c(loader.unkA, &loader);
+                loader.state = sub_0203b79c(loader.state, &loader);
             case 3:
-                loader.unkA = sub_0203b7d0(loader.unkA, &loader);
+                loader.state = sub_0203b7d0(loader.state, &loader);
                 break;
             case 4:
-                loader.unkA = sub_0203b3d8(loader.unkA, &loader);
+                loader.state = sub_0203b3d8(loader.state, &loader);
                 break;
             case 5:
-                loader.unkA = sub_0203b818(loader.unkA, &loader);
+                loader.state = sub_0203b818(loader.state, &loader);
         }
 
         sub_0203b898(&loader);
     }
 }
 
-u16 sub_0203b2f0(u16 state, Loader *loader)
+static u16 sub_0203b2f0(u16 state, Loader *loader)
 {
     REG_IME = 0;
     REG_IE &= ~0xC0;
     REG_IME = 1;
     gIntrTable[0] = (void *)gMultiSioIntrFuncBuf;
     MultiSioInit((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
-    loader->unk15 = 0;
+    loader->loadRequest = 0;
     gMultiSioStatusFlags = 0;
 
     if (state == 0) {
         state = 3;
     } else {
         state = 2;
-        switch (loader->unk10) {
+        switch (loader->segment) {
             case 2:
                 // When rom has been received, copy into EWRAM
                 LZ77UnCompWram(PROGRAM_WORK_BUFFER, (void *)EWRAM_START);
@@ -117,7 +136,7 @@ u16 sub_0203b2f0(u16 state, Loader *loader)
             case 5:
             case 6:
                 // When this segment has been received, decompress into work buffer
-                if (loader->unk14 == loader->unk10 - 3) {
+                if (loader->unk14 == loader->segment - 3) {
                     LZ77UnCompWram(RECV_BUFFER, PROGRAM_WORK_BUFFER);
                 }
                 break;
@@ -131,21 +150,16 @@ u16 sub_0203b2f0(u16 state, Loader *loader)
     return state;
 }
 
-extern const u8 gUnknown_0203C23C[];
-
-u16 sub_0203b3d8(u16 state, Loader *loader)
+static u16 sub_0203b3d8(u16 state, Loader *loader)
 {
     u8 *actualTitle = ROM_TITLE_ADDR;
-    // TODO: change to direct string (which moves it to rodata automatically)
-    // "SONICADVANC2"
-    u8 expectedTitle[13];
-    memcpy(expectedTitle, gUnknown_0203C23C, 13);
+    u8 expectedTitle[] = "SONICADVANC2";
 
     loader->unk14 = SIO_MULTI_CNT->id;
     loader->unk12 = 1;
     MultiSioStop();
 
-    if (loader->unk10 == 9) {
+    if (loader->segment == 9) {
         REG_DISPCNT = 0;
 
         if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE
@@ -156,7 +170,7 @@ u16 sub_0203b3d8(u16 state, Loader *loader)
                     break;
                 }
             }
-            // Shouldn't this be < 12
+
             if (i == 12) {
                 SoftResetRom(0xC0);
             }
@@ -179,47 +193,23 @@ u16 sub_0203b3d8(u16 state, Loader *loader)
     REG_IE &= ~0xC0;
     REG_IME = 1;
     gIntrTable[0] = Sio32MultiLoadIntr;
-    Sio32MultiLoadInit(0, gUnknown_0203C280[loader->unk10].unk0);
+    Sio32MultiLoadInit(0, gUnknown_0203C280[loader->segment]);
     sub_0203b610(loader);
     return 5;
 }
 
-struct MultiSioData_0_0 {
-    // id
-    u16 unk0;
-    // value
-    u8 unk2;
-    u32 unk4;
-    u16 unk8[3];
-    u8 unkE;
-    u8 unkF;
-    u32 unk10;
-};
-
-union MultiSioData {
-    struct MultiSioData_0_0 pat0;
-}; /* size = MULTI_SIO_BLOCK_SIZE */
-
-union MultiSioData gMultiSioSend;
-union MultiSioData gMultiSioRecv[4];
-
-extern const IntrFunc gIntrTableTemplate[13];
-
-extern u8 gIntrMainBuf[0x400];
-
 void LoaderInit(Loader *loader)
 {
-
     loader->unk0 = 0;
     loader->unk4 = 0;
     loader->unk8 = 0;
-    loader->unkA = 0;
-    loader->unkC = &gUnknown_030004A2;
-    loader->unk10 = 0;
+    loader->state = 0;
+    loader->resp = &gMultiSioSend.pat0.unk2;
+    loader->segment = 0;
     loader->unk12 = 0;
     loader->unk13 = 0;
     loader->unk14 = 0;
-    loader->unk15 = 0;
+    loader->loadRequest = 0;
     loader->unk16 = 0;
     RegisterRamReset(2);
 
@@ -240,23 +230,7 @@ void LoaderInit(Loader *loader)
     gMultiSioSend.pat0.unk0 = 0xF001;
 }
 
-extern const u8 gUnknown_0203EBC0[];
-extern const u8 gUnknown_0203EDC0[];
-
-struct UNK_203F260 {
-    u8 filler4[0x3C];
-}; /* 0x3C */
-
-struct UNK_203E844 {
-    u8 filler4[0x30];
-}; /* 0x3C */
-
-extern const struct UNK_203F260 gUnknown_0203F260[];
-
-extern const u8 gUnknown_0203C4A4[];
-extern const struct UNK_203E844 gUnknown_0203E844[];
-
-void sub_0203b610(Loader *loader)
+static void sub_0203b610(Loader *loader)
 {
     u16 i;
     if (loader->unk16 == 0) {
@@ -300,15 +274,15 @@ void sub_0203b610(Loader *loader)
     }
 }
 
-void sub_0203b788(void) { INTR_CHECK |= 1; }
+static void sub_0203b788(void) { INTR_CHECK |= 1; }
 
-void sub_0203b798(void) { }
+static void sub_0203b798(void) { }
 
-u16 sub_0203b79c(u16 state, Loader *loader)
+static u16 sub_0203b79c(u16 state, Loader *loader)
 {
     if (gMultiSioStatusFlags & MULTI_SIO_LD_ENABLE) {
         if (gMultiSioStatusFlags & MULTI_SIO_LD_SUCCESS) {
-            loader->unkC->unk0++;
+            (*loader->resp)++;
         }
         state = 3;
     }
@@ -318,26 +292,23 @@ u16 sub_0203b79c(u16 state, Loader *loader)
     return state;
 }
 
-extern u16 gUnknown_03000040[];
-
-u16 sub_0203b7d0(u16 state, Loader *loader)
+static u16 sub_0203b7d0(u16 state, Loader *loader)
 {
     if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST) {
         state = 4;
     }
 
-    gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, loader->unk15);
+    gMultiSioStatusFlags
+        = MultiSioMain(&gMultiSioSend, gMultiSioRecv, loader->loadRequest);
     loader->unk13 = gMultiSioRecv[0].pat0.unk0;
-    if (loader->unk10 != gMultiSioRecv[0].pat0.unk2) {
-        loader->unk10 = gMultiSioRecv[0].pat0.unk2;
+    if (loader->segment != gMultiSioRecv[0].pat0.unk2) {
+        loader->segment = gMultiSioRecv[0].pat0.unk2;
     }
 
     return state;
 }
 
-void sub_0203b86c(Loader *loader);
-
-u16 sub_0203b818(u16 state, Loader *loader)
+static u16 sub_0203b818(u16 state, Loader *loader)
 {
     u32 progress = 0;
 
@@ -359,13 +330,13 @@ u16 sub_0203b818(u16 state, Loader *loader)
     return state;
 }
 
-void sub_0203b86c(Loader *loader)
+static void sub_0203b86c(Loader *loader)
 {
     u8 val = (loader->unk0 * 0xA0) / 0x12000;
     REG_WIN1H = (val + 0x28) | 0x2800;
 }
 
-void sub_0203b898(Loader *loader)
+static void sub_0203b898(Loader *loader)
 {
     if (loader->unk12 != 0) {
         REG_DISPCNT = 0x6300;

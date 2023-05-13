@@ -5,76 +5,72 @@
 .arm
 
 _entry:
-	mov r0, #0x12
+	mov r0, #PSR_IRQ_MODE
 	msr cpsr_fc, r0
-	ldr sp, _0203B038 @ =gUnknown_03007FA0
-	mov r0, #0x1f
+	ldr sp, sp_irq
+	mov r0, #PSR_SYS_MODE
 	msr cpsr_fc, r0
-	ldr sp, _0203B034 @ =gUnknown_03007F00
-	ldr r1, _0203B100 @ =gUnknown_03007FFC
-	add r0, pc, #0x18 @ =IntrMain
+	ldr sp, sp_sys
+	ldr r1, =INTR_VECTOR
+	adr r0, IntrMain
 	str r0, [r1]
-	ldr r1, _0203B104 @ =AgbMain
+	ldr r1, =AgbMain
 	mov lr, pc
 	bx r1
 	b _entry
-	.align 2, 0
-_0203B034: .4byte gUnknown_03007F00
-_0203B038: .4byte gUnknown_03007FA0
+
+sp_sys: .word IWRAM_END - 0x100
+sp_irq: .word IWRAM_END - 0x60
 
 	arm_func_start IntrMain
 IntrMain: @ 0x0203B03C
-	mov r3, #0x4000000
-	add r3, r3, #0x200
+	mov r3, REG_BASE
+	add r3, r3, #OFFSET_REG_IE
 	ldr r2, [r3]
 	and r1, r2, r2, lsr #16
 	mov r2, #0
-	ands r0, r1, #0x2000
-_0203B054:
-	bne _0203B054
-	ands r0, r1, #0xc0
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_GAMEPAK
+    bne . @ spin
+	ands r0, r1, #INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #1
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_VBLANK
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #2
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_HBLANK
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #4
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_VCOUNT
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #8
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_TIMER0
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x10
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_TIMER1
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x20
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_TIMER2
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x100
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_DMA0
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x200
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_DMA1
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x400
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_DMA2
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x800
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_DMA3
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x1000
-	bne _0203B0EC
+	ands r0, r1, #INTR_FLAG_KEYPAD
+	bne IntrMain_FoundIntr
 	add r2, r2, #4
-	ands r0, r1, #0x2000
-_0203B0EC:
+	ands r0, r1, #INTR_FLAG_GAMEPAK
+IntrMain_FoundIntr:
 	strh r0, [r3, #2]
-	ldr r1, _0203B108 @ =gIntrTable
+	ldr r1, =gIntrTable
 	add r1, r1, r2
 	ldr r0, [r1]
 	bx r0
-_0203B100: .4byte gUnknown_03007FFC
-_0203B104: .4byte AgbMain
-_0203B108: .4byte gIntrTable

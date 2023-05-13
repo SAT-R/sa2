@@ -22,6 +22,10 @@ SECTIONS {
 
     .rodata :
     ALIGN(4) {
+        build/payload/src/main.o(.rodata);
+        build/payload/src/multi_sio.o(.rodata);
+        build/payload/src/sio32_multi_load.o(.rodata);
+        build/payload/src/loader_tables.o(.rodata);
         build/payload/data/data.o(.rodata);
     }
 
@@ -29,20 +33,9 @@ SECTIONS {
     IWRAM (NOLOAD) :
     ALIGN(4)
     {
-        . = 0x00000000; gIntrTable = .;
-        . = 0x00000040; gMultiSioRecv = .;
-        . = 0x00000090; gMultiSioStatusFlags = .;
-        . = 0x000000A0; gIntrMainBuf = .;
-        . = 0x000004A0; gMultiSioSend = .;
-        . = 0x000004A2; gUnknown_030004A2 = .;
-        . = 0x000004C0; gMultiSioIntrFuncBuf = .;
-        . = 0x000005E0; gMultiSioArea = .;
-        . = 0x000007D0; gMultiSioRecvFuncBuf = .;
-        . = 0x00000810; gSio32MultiLoadArea = .;
-        . = 0x00007F00; gUnknown_03007F00 = .;
-        . = 0x00007FA0; gUnknown_03007FA0 = .;
-        . = 0x00007FFA; gUnknown_03007FFA = .;
-        . = 0x00007FFC; gUnknown_03007FFC = .;
+        build/payload/src/main.o(.data);
+        build/payload/src/multi_sio.o(.data);
+        build/payload/src/sio32_multi_load.o(COMMON);
     }
 
     /* DWARF debug sections.

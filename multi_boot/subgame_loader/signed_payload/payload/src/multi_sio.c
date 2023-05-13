@@ -5,16 +5,15 @@
 static const char sMultiSioLibVer[] = "MultiSio4Sio32Load010528";
 
 #ifdef MULTI_SIO_DI_FUNC_FAST
-u32 gMultiSioIntrFuncBuf[0x120 / 4] = {}; // Interrupt Routine RAM Execution Buffer
+u32 gMultiSioIntrFuncBuf[0x120 / 4] ALIGNED(16)
+    = {}; // Interrupt Routine RAM Execution Buffer
 #endif
 
 struct MultiSioArea gMultiSioArea = {};
 
-UNUSED u32 gUnusedMultiSioSpace[2] = {};
-
 #ifdef MULTI_SIO_DI_FUNC_FAST
-u32 gMultiSioRecvFuncBuf[0x40 / 4]
-    = {}; // Receive Data/Check Buffer Change Routine RAM Execution Buffer
+u32 gMultiSioRecvFuncBuf[0x40 / 4] ALIGNED(16) = {}; // Receive Data/Check Buffer Change
+                                                     // Routine RAM Execution Buffer
 #endif
 
 /*------------------------------------------------------------------*/
