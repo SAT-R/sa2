@@ -129,8 +129,8 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
                 LZ77UnCompWram(PROGRAM_WORK_BUFFER, (void *)EWRAM_START);
                 break;
             case 3:
-                // When VRAM data received, copy into vram
-                CpuCopy16(PROGRAM_WORK_BUFFER, (void *)VRAM, 0x8000);
+                // When backgrounds received, copy into BG VRAM
+                CpuCopy16(PROGRAM_WORK_BUFFER, (void *)BG_VRAM, 0x8000);
                 break;
             case 4:
             case 5:

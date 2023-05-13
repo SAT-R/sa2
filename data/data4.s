@@ -34,16 +34,10 @@ gUnknown_08CAD1DC:
 gUnknown_08CB41C0:
     .incbin "baserom.gba", 0x00CB41C0, 0x6a44
 
-// TODO: extract this rom
     .global gUnknown_08CBAC04
 gUnknown_08CBAC04:
-    .incbin "baserom.gba", 0x00CBAC04, 0x8000
+    .incbin "multi_boot/collect_rings/mb_collect_rings.gba.lz"
 
-    .global gUnknown_08CC2C04
-gUnknown_08CC2C04:
-    .incbin "baserom.gba", 0x00CC2C04, 0x8000
-
-
-    .global gUnknown_08CCAC04
-gUnknown_08CCAC04:
-    .incbin "baserom.gba", 0x00CCAC04, 0x8900
+    .global gUnknown_08CD0728
+gUnknown_08CD0728:
+    .incbin "baserom.gba", 0x00CD0728, 0x2DDC

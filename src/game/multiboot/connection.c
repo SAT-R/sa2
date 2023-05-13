@@ -42,9 +42,15 @@ struct SinglePakConnectScreen {
 #define MB_SUBGAME_LOADER_SIZE 0x314C
 
 void *const gUnknown_080E0168[9] = {
-    &gUnknown_08CBAC04, &gUnknown_08CC2C04, &gUnknown_08CCAC04,
-    &gUnknown_08C92208, &gUnknown_08CA6760, &gUnknown_08CAD1DC,
-    &gUnknown_08CB41C0, &gUnknown_08C90408, &gUnknown_08C88408,
+    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 0,
+    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 1,
+    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 2,
+    &gUnknown_08C92208,
+    &gUnknown_08CA6760,
+    &gUnknown_08CAD1DC,
+    &gUnknown_08CB41C0,
+    &gUnknown_08C90408,
+    &gUnknown_08C88408,
 };
 
 static const u16 gUnknown_080E018C[7][3] = {
@@ -540,12 +546,13 @@ void sub_8081CC4(void)
     sub_80818B8();
 }
 
+// Send next segment
 void sub_8081D04(void)
 {
     struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
     MultiSioStop();
     gIntrTable[0] = Sio32MultiLoadIntr;
-    Sio32MultiLoadInit(gMultiSioStatusFlags & 0x80,
+    Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT,
                        gUnknown_080E0168[connectScreen->unkF9]);
     gCurTask->main = sub_8081A5C;
 }

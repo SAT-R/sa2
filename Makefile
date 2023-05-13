@@ -199,10 +199,15 @@ include graphics.mk
 %.8bpp: %.png  ; $(GFX) $< $@
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
-%.gba.lz: %.gba 
+
+chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
+
+%.gba.lz: %.gba 
+	$(GFX) $< $@
 %.bin.lz: %.bin 
 	$(GFX) $< $@
+
 %.lz: % ; $(GFX) $< $@
 %.rl: % ; $(GFX) $< $@
 
