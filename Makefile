@@ -174,6 +174,7 @@ compare: rom
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
 	@$(MAKE) clean -C multi_boot/subgame_loader
+	@$(MAKE) clean -C multi_boot/subgame_loader_2
 	@$(MAKE) clean -C multi_boot/signed_collect_rings
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
@@ -273,11 +274,17 @@ chao_garden/mb_chao_garden.gba:
 chao_garden: tools
 	$(MAKE) -C chao_garden
 
-multi_boot/subgame_loader/mb_subgame_loader.gba: 
+multi_boot/subgame_loader/mb_subgame_loader.gba:
 	$(MAKE) -C multi_boot/subgame_loader
 
-multi_boot/signed_collect_rings/mb_signed_collect_rings.gba: 
+multi_boot/subgame_loader_2/mb_subgame_loader_2.gba:
+	$(MAKE) -C multi_boot/subgame_loader_2
+
+multi_boot/signed_collect_rings/mb_signed_collect_rings.gba:
 	$(MAKE) -C multi_boot/signed_collect_rings
 
 subgame_loader: tools
 	$(MAKE) -C multi_boot/subgame_loader
+
+subgame_loader_2: tools
+	$(MAKE) -C multi_boot/subgame_loader_2

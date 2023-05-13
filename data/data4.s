@@ -38,7 +38,6 @@ gUnknown_08CB41C0:
 gUnknown_08CBAC04:
     .incbin "multi_boot/signed_collect_rings/mb_signed_collect_rings.gba.lz"
 
-@; another rom??
     .global gUnknown_08CD0728
 gUnknown_08CD0728:
-    .incbin "multi_boot/subgame_loader_2/subgame_loader_2.gba.lz"
+    .incbin "multi_boot/subgame_loader_2/mb_subgame_loader_2.gba.lz"

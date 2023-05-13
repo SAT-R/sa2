@@ -63,7 +63,9 @@ _02000160:
 	ldr r0, _020001A8 @ =gSignedPayload + 0x1C0
 	ldr r1, _020001AC @ =gUnknown_0203B000
 	svc #0x110000
-	ldr lr, _020001AC @ =gUnknown_0203B000
+
+	@; start subgame loader 2?
+	ldr lr, _020001AC @ =gUnknown_0203B000 
 	bx lr
 	.align 2, 0
 _020001A0: .4byte 0x04000120
