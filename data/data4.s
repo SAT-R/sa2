@@ -36,7 +36,7 @@ gUnknown_08CB41C0:
 
     .global gUnknown_08CBAC04
 gUnknown_08CBAC04:
-    .incbin "multi_boot/collect_rings/mb_collect_rings.gba.lz"
+    .incbin "multi_boot/signed_collect_rings/mb_signed_collect_rings.gba.lz"
 
     .global gUnknown_08CD0728
 gUnknown_08CD0728:

@@ -174,6 +174,7 @@ compare: rom
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
 	@$(MAKE) clean -C multi_boot/subgame_loader
+	@$(MAKE) clean -C multi_boot/signed_collect_rings
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -274,6 +275,9 @@ chao_garden: tools
 
 multi_boot/subgame_loader/mb_subgame_loader.gba: 
 	$(MAKE) -C multi_boot/subgame_loader
+
+multi_boot/signed_collect_rings/mb_signed_collect_rings.gba: 
+	$(MAKE) -C multi_boot/signed_collect_rings
 
 subgame_loader: tools
 	$(MAKE) -C multi_boot/subgame_loader
