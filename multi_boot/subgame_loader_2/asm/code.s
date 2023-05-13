@@ -383,7 +383,7 @@ sub_0203B3D8: @ 0x0203B3D8
 	bne _0203B45E
 	ldr r0, _0203B434 @ =0x080000AC
 	ldr r1, [r0]
-	ldr r0, _0203B438 @ =0x454E3241
+	ldr r0, _0203B438 @ ="A2NE" or "A2NP" for EUROPE
 	cmp r1, r0
 	bne _0203B45E
 	movs r2, #0
@@ -396,7 +396,13 @@ _0203B428: .4byte 0x0203C23C
 _0203B42C: .4byte 0x04000128
 _0203B430: .4byte 0x080000B2
 _0203B434: .4byte 0x080000AC
+
+.ifdef EUROPE
+_0203B438: .4byte 0x504E3241
+.else
 _0203B438: .4byte 0x454E3241
+.endif
+
 _0203B43C:
 	adds r0, r2, #1
 	lsls r0, r0, #0x18
@@ -566,7 +572,7 @@ sub_0203B530: @ 0x0203B530
 	bne _0203B5B0
 	ldr r0, _0203B5F8 @ =0x080000AC
 	ldr r1, [r0]
-	ldr r0, _0203B5FC @ =0x454E3241
+	ldr r0, _0203B5FC @ ="A2NE" or "A2NP" for EUROPE
 	cmp r1, r0
 	bne _0203B5B0
 	ldrh r0, [r2]
@@ -602,7 +608,13 @@ _0203B5EC: .4byte 0x85000100
 _0203B5F0: .4byte 0x04000200
 _0203B5F4: .4byte 0x080000B2
 _0203B5F8: .4byte 0x080000AC
+
+.ifdef EUROPE
+_0203B5FC: .4byte 0x504E3241
+.else
 _0203B5FC: .4byte 0x454E3241
+.endif
+
 _0203B600: .4byte 0x04000004
 _0203B604: .4byte 0x04000208
 _0203B608: .4byte 0x030004A0
