@@ -82,7 +82,7 @@ endif
 
 #### Files ####
 OBJ_DIR:= build/sa2
-ROM      := sa2.gba
+ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 LDSCRIPT := ldscript.txt
@@ -169,7 +169,7 @@ $(TOOLDIRS):
 	@$(MAKE) -C $@
 
 compare: rom
-	$(SHA1) checksum.sha1
+	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden

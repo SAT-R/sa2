@@ -15,8 +15,9 @@
 
 This is a work in progress matching decompilation of Sonic Advance 2
 
-It so far builds the following ROM:
+It so far builds the following ROMs:
 * [**sa2.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0890) `sha1: 7bcd6a07af7c894746fa28073fe0c0e34408022d`
+* [**sa2_europe.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=0900) `sha1: b0f64bdca097f2de8f05ac4c8caea2b80c5faeb1` (:warning: Work In Progress)
 
 ### Current state
 
@@ -72,6 +73,8 @@ If the rom built successfully you will see this output
 ```bash
 sa2.gba: OK
 ```
+
+**NOTE**: You can significantly speed up initial build times by passing the number of processes you wish to use for the build `make -j<number>`
 
 ### Code formatting
 

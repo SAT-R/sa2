@@ -7230,7 +7230,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f007.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1116/f008.4bpp"
 
-@; Anim 1117 is different in PAL
+
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f002.4bpp"
@@ -7260,15 +7260,23 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f026.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f027.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f028.4bpp"
+
+#ifdef EUROPE
+.incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f029.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f030.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f031.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f032.4bpp"
+#else
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f029.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f030.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f031.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f032.4bpp"
+#endif
+
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f033.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f034.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f035.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f036.4bpp"
-
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1118/f002.4bpp"
