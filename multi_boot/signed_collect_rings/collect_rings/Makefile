@@ -36,12 +36,12 @@ LD        := $(PREFIX)ld
 OBJCOPY   := $(PREFIX)objcopy
 AS 		  := $(PREFIX)as
 
-GFX 	  := ../../tools/gbagfx/gbagfx$(EXE)
-AIF		  := ../../tools/aif2pcm/aif2pcm$(EXE)
-SCANINC   := ../../tools/scaninc/scaninc$(EXE)
-PREPROC	  := ../../tools/preproc/preproc$(EXE)
-RAMSCRGEN := ../../tools/ramscrgen/ramscrgen$(EXE)
-FIX 	  := ../../tools/gbafix/gbafix$(EXE)
+GFX 	  := ../../../tools/gbagfx/gbagfx$(EXE)
+AIF		  := ../../../tools/aif2pcm/aif2pcm$(EXE)
+SCANINC   := ../../../tools/scaninc/scaninc$(EXE)
+PREPROC	  := ../../../tools/preproc/preproc$(EXE)
+RAMSCRGEN := ../../../tools/ramscrgen/ramscrgen$(EXE)
+FIX 	  := ../../../tools/gbafix/gbafix$(EXE)
 
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1
 
@@ -57,8 +57,8 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1
 .SECONDEXPANSION:
 
 #### Files ####
-OBJ_DIR:= build/mb_signed_collect_rings
-ROM      := mb_signed_collect_rings.gba
+OBJ_DIR:= build/collect_rings
+ROM      := collect_rings.gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 LDSCRIPT := ldscript.txt
@@ -88,7 +88,6 @@ compare: $(ROM)
 	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
-	@$(MAKE) clean -C collect_rings
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
 tidy:
@@ -101,7 +100,7 @@ tidy:
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../tools/agbcc/lib/libgcc.a ../../tools/agbcc/lib/libc.a -o $@
+	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) ../../../tools/agbcc/lib/libgcc.a ../../../tools/agbcc/lib/libc.a -o $@
 
 %.gba: %.elf
 	$(OBJCOPY) -O binary $< $@
@@ -127,6 +126,3 @@ endif
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
-
-collect_rings/collect_rings.gba: 
-	$(MAKE) -C collect_rings
