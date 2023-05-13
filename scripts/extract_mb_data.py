@@ -1,10 +1,10 @@
-rom_start = 0x0203B000
-end_of_code = 0x0203C206
-end_of_data = 0x0203f72c
+rom_start = 0x020000C0
+end_of_code = 0x02014F10
+end_of_data = 0x0201cc2c
 
 addresses = set()
 
-with open('multi_boot/subgame_loader/signed_payload/payload/asm/code.s') as code:
+with open('multi_boot/signed_collect_rings/collect_rings/asm/code.s') as code:
     for line in code.readlines():
         line = line.strip()
         if ".4byte 0x02" in line:
@@ -37,7 +37,7 @@ for i in range(len(sorted_addresses)):
 
 summed = 0
 
-with open("multi_boot/subgame_loader/signed_payload/payload/data/new_data.s", "w") as data_file:
+with open("multi_boot/signed_collect_rings/collect_rings/data/new_data.s", "w") as data_file:
     data_file.write('	.section .rodata\n')
     data_file.write('\n')
     for raw_addr, addr, size in addresses_with_size:
@@ -50,8 +50,8 @@ with open("multi_boot/subgame_loader/signed_payload/payload/data/new_data.s", "w
 """)
 
 print(hex(summed))
-with open("multi_boot/subgame_loader/signed_payload/payload/asm/new_code.s", "w") as new_rom:
-    existing_code = "".join(open("multi_boot/subgame_loader/signed_payload/payload/asm/code.s").readlines())
+with open("multi_boot/signed_collect_rings/collect_rings/asm/new_code.s", "w") as new_rom:
+    existing_code = "".join(open("multi_boot/signed_collect_rings/collect_rings/asm/code.s").readlines())
     for _, addr, __ in addresses_with_size:
         var = to_var_name(addr)
         existing_code = existing_code.replace(addr, to_var_name(addr))

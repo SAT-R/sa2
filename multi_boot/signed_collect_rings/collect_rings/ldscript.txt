@@ -1,7 +1,16 @@
 SECTIONS {
+    . = 0x03000000;
+    IWRAM (NOLOAD) :
+    ALIGN(4)
+    {
+        INCLUDE "sym_iwram.txt"
+    }
+
     . = 0x20000C0;
     .text :
     ALIGN(4) {
+        build/collect_rings/asm/rom_header.o(.text);
+        build/collect_rings/asm/crt0.o(.text);
         build/collect_rings/asm/code.o(.text);
     }
 
