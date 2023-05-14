@@ -284,7 +284,7 @@ multi_boot/programs/subgame_loader/subgame_loader.bin:
 multi_boot/collect_rings/mb_signed_collect_rings.gba:
 	$(MAKE) -C multi_boot/collect_rings
 
-subgame_bootstrap: tools
+subgame_bootstrap: subgame_loader
 	$(MAKE) -C multi_boot/subgame_bootstrap
 
 subgame_loader: tools

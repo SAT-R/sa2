@@ -46,9 +46,12 @@ void *const gUnknown_080E0168[9] = {
     (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 1,
     (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 2,
     &gUnknown_08C92208,
+
+    // character code?
     &gUnknown_08CA6760,
     &gUnknown_08CAD1DC,
     &gUnknown_08CB41C0,
+
     &gUnknown_08C90408,
     &gUnknown_08C88408,
 };

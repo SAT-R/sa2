@@ -12,7 +12,7 @@ typedef struct {
     u16 segment;
     u8 unk12;
     u8 unk13;
-    u8 unk14;
+    u8 sioId;
     u8 loadRequest;
     u8 unk16;
 } Loader; /* size 0x18 */
@@ -135,8 +135,8 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
             case 4:
             case 5:
             case 6:
-                // When this segment has been received, decompress into work buffer
-                if (loader->unk14 == loader->segment - 3) {
+                // Decompress something which relates to our character?
+                if (loader->sioId == loader->segment - 3) {
                     LZ77UnCompWram(RECV_BUFFER, PROGRAM_WORK_BUFFER);
                 }
                 break;
@@ -155,7 +155,7 @@ static u16 sub_0203b3d8(u16 state, Loader *loader)
     u8 *actualTitle = ROM_TITLE_ADDR;
     u8 expectedTitle[] = "SONICADVANC2";
 
-    loader->unk14 = SIO_MULTI_CNT->id;
+    loader->sioId = SIO_MULTI_CNT->id;
     loader->unk12 = 1;
     MultiSioStop();
 
@@ -208,7 +208,7 @@ void LoaderInit(Loader *loader)
     loader->segment = 0;
     loader->unk12 = 0;
     loader->unk13 = 0;
-    loader->unk14 = 0;
+    loader->sioId = 0;
     loader->loadRequest = 0;
     loader->unk16 = 0;
     RegisterRamReset(2);

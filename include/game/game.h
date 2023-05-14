@@ -486,8 +486,10 @@ extern const u16 sAnimsGotThroughCharacterNames[5][3];
 extern const u16 gUnknown_080D715A[5][3];
 extern const u16 sAnimsGotThroughZoneAndActNames[11][3];
 
-// collect rings data
+// Some unused rom thing?
 extern const u8 gUnknown_08C88408[0x8000];
+
+// Obj vram (only 0x5000 used)
 extern const u8 gUnknown_08C90408[0x8000];
 
 // Backgrounds?
