@@ -5,7 +5,7 @@ replace = {}
 
 max_ewram = "0x02014F10"
 
-with open("multi_boot/signed_collect_rings/collect_rings/asm/code.s") as code_file:
+with open("multi_boot/subgame_loader_2/asm/code.s") as code_file:
     for line in code_file.readlines():
         line = line.strip()
         if "0x030" in line and ":" not in line:
@@ -19,10 +19,10 @@ with open("multi_boot/signed_collect_rings/collect_rings/asm/code.s") as code_fi
     for addr, sym in replace.items():
         code_content = code_content.replace(addr, sym)
     
-    with open("multi_boot/signed_collect_rings/collect_rings/asm/new_code.s", "w") as new_code:
+    with open("multi_boot/subgame_loader_2/asm/new_code.s", "w") as new_code:
         new_code.write(code_content)
 
-    with open("multi_boot/signed_collect_rings/collect_rings/asm/sym_iwram.txt", "w") as iwram_sym_file:
+    with open("multi_boot/subgame_loader_2/asm/sym_iwram.txt", "w") as iwram_sym_file:
         keys = sorted(iwram_syms.keys())
         for addr in keys:
             sym = iwram_syms[addr]
@@ -33,4 +33,3 @@ with open("multi_boot/signed_collect_rings/collect_rings/asm/code.s") as code_fi
     #     for addr in keys:
     #         sym = ewram_syms[addr]
     #         ewram_sym_file.write(f". = {addr}; {sym} = .;\n")
-        

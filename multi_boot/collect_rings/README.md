@@ -1,0 +1,1 @@
+# MultiBoot Collect Rings
