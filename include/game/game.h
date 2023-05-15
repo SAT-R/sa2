@@ -421,6 +421,11 @@ extern s32 gUnknown_030054D0;
 struct UNK_03005AF0 {
     u8 filler0[0x1C];
     u32 unk1C;
+    u8 filler20[0x18];
+    s8 unk38;
+    s8 unk39;
+    u8 unk3A;
+    u8 unk3B;
 }; /* unknown length */
 
 extern struct UNK_03005AF0 gUnknown_03005AF0;

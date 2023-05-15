@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable093(MapEntity *, u16, u16, u8);
+void initSprite_InteractableCannon(MapEntity *, u16, u16, u8);
 
 #endif

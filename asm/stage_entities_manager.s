@@ -212,7 +212,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic
     .4byte initSprite_EggUtopia_Launcher_Left_GDown
     .4byte initSprite_EggUtopia_Launcher_Right_GDown
-    .4byte initSprite_Interactable093
+    .4byte initSprite_InteractableCannon
     .4byte initSprite_Interactable094
     .4byte initSprite_Interactable095
     .4byte initSprite_Interactable_FlyingHandle
