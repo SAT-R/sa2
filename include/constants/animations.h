@@ -198,7 +198,7 @@
 #define SA2_ANIM_SPRING_UNKNOWN                  571
 #define SA2_ANIM_SPRING_MUS_PLA                  572
 #define SA2_ANIM_SPRING_MUS_PLA_2                573
-#define SA2_ANIM_DICE                            574
+#define SA2_ANIM_PLATFORM_SQUARE_MUS_PLA         574
 #define SA2_ANIM_NOTE_BLOCK                      575
 #define SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR       15
 #define SA2_ANIM_NOTE_PARTICLES                  576
@@ -239,6 +239,7 @@
 #define SA2_ANIM_610                             610
 
 #define SA2_ANIM_SPEEDING_PLATFORM 612
+#define SA2_ANIM_SQ_PLATFORM_613   613
 
 #define SA2_ANIM_LAUNCHER_EGG_UTO 614
 

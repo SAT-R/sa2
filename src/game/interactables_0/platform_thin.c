@@ -47,10 +47,10 @@ static void TaskDestructor_PlatformBreakParticles(struct Task *);
 static void CreatePlatformBreakParticles(s16, s16);
 static u32 sub_80111F0(Sprite *, s32, s32, Player *);
 
-static const u16 sPlatformThinAnimations[][3] = {
+static const ALIGNED(4) u16 sPlatformThinAnimations[][3] = {
     { 24, SA2_ANIM_562, 0 },
     { 24, SA2_ANIM_PLATFORM_HOT_CRA, 1 },
-    { 24, SA2_ANIM_DICE, 2 },
+    { 24, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 2 },
     { 24, SA2_ANIM_PLATFORM_ICE_PAR, 1 },
     { 24, SA2_ANIM_PLATFORM_SKY_CAN, 0 },
     { 24, SA2_ANIM_PLATFORM_TEC_BAS, 1 },
