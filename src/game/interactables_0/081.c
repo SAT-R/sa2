@@ -398,3 +398,41 @@ void Task_800F38C(void)
         }
     }
 }
+
+void TaskDestructor_800F964(struct Task *t)
+{
+    Sprite_IA081 *ia081 = TaskGetStructPtr(t);
+    VramFree(ia081->s.graphics.dest);
+}
+
+void sub_800F978(void)
+{
+    gPlayer.speedGroundX = 0;
+    gPlayer.speedAirX = 0;
+    gPlayer.moveState |= MOVESTATE_DEAD;
+}
+
+void sub_800F990(Sprite_IA081* ia081)
+{
+    ia081->unk50[2][0] = ia081->unk50[1][0];
+    ia081->unk50[2][1] = ia081->unk50[1][1];
+    ia081->unk50[1][0] = ia081->unk50[0][0];
+    ia081->unk50[1][1] = ia081->unk50[0][1];
+    ia081->unk50[0][0] = ia081->unk40;
+    ia081->unk50[0][1] = ia081->unk44;
+}
+
+u32 sub_800F9AC(Sprite* s, s32 x, s32 y, Player *p)
+{
+    u32 result;
+
+    s->unk28->unk5++;
+    s->unk28->unk7--;
+
+    result = sub_800CCB8(s, x, y, p);
+
+    s->unk28->unk5--;
+    s->unk28->unk7++;
+
+    return result;
+}
