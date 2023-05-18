@@ -422,6 +422,7 @@ void sub_800F990(Sprite_IA081* ia081)
     ia081->unk50[0][1] = ia081->unk44;
 }
 
+// Seems to be unused
 u32 sub_800F9AC(Sprite* s, s32 x, s32 y, Player *p)
 {
     u32 result;
