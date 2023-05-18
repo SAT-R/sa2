@@ -5,7 +5,7 @@
 .syntax unified
 .arm
 
-.if 01
+.if 0
 	thumb_func_start Task_800F38C
 Task_800F38C: @ 0x0800F38C
 	push {r4, r5, r6, r7, lr}
@@ -14,7 +14,7 @@ Task_800F38C: @ 0x0800F38C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x24
-	ldr r6, _0800F4A4 @ =gPlayer
+	ldr r6, _0800F4A4 @ =gPlayer        @ r6 = p
 	movs r0, #0
 	str r0, [sp, #8]
 	movs r1, #0
@@ -24,13 +24,13 @@ Task_800F38C: @ 0x0800F38C
 	ldrh r7, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r0, r0, r7
-	mov r8, r0
+	adds r0, r0, r7                     @ r0 = ia081
+	mov r8, r0                          @ r8 = ia081
 	ldr r2, _0800F4AC @ =IWRAM_START + 0xC
 	adds r2, r2, r7
-	mov sl, r2
+	mov sl, r2                          @ sl = s
 	ldr r3, [r0]
-	str r3, [sp, #4]
+	str r3, [sp, #4]                    @ sp04 = me
 	ldr r4, _0800F4B0 @ =gGameMode
 	mov sb, r4
 	ldrb r0, [r4]
@@ -47,7 +47,7 @@ _0800F3CA:
 	beq _0800F40E
 	mov r3, r8
 	ldr r3, [r3, #0x40]
-	mov ip, r3
+	mov ip, r3              @ ip = ia081->unk40
 	ldr r4, [sp, #4]
 	ldrb r2, [r4, #5]
 	lsls r2, r2, #0xb
@@ -80,7 +80,7 @@ _0800F40E:
 	ldrsh r0, [r1, r4]
 	cmp r0, #0
 	beq _0800F450
-	mov r7, r8
+	mov r7, r8              @ r7 = ia081
 	ldr r5, [r7, #0x44]
 	ldr r0, [sp, #4]
 	ldrb r2, [r0, #6]
@@ -108,14 +108,14 @@ _0800F40E:
 	subs r5, r0, r5
 	str r5, [sp, #0xc]
 _0800F450:
-	mov r2, r8
+	mov r2, r8      @ r2 = ia081
 	ldrb r0, [r2, #8]
 	lsls r0, r0, #3
 	ldrh r1, [r2, #4]
 	lsls r1, r1, #8
 	adds r0, r0, r1
 	lsls r0, r0, #0x10
-	lsrs r3, r0, #0x10
+	lsrs r3, r0, #0x10      @ r3 = screenX
 	ldr r4, [sp, #4]
 	ldrb r0, [r4, #1]
 	lsls r0, r0, #3
@@ -123,7 +123,7 @@ _0800F450:
 	lsls r1, r1, #8
 	adds r0, r0, r1
 	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
+	lsrs r4, r0, #0x10      @ r4 = screenY
 	mov r5, sb
 	ldrb r0, [r5]
 	cmp r0, #2
@@ -181,8 +181,8 @@ _0800F4CC:
 	adds r1, r1, r0
 	strh r1, [r7, #0x18]
 _0800F4F2:
-	str r3, [sp, #0x14]
-	str r2, [sp, #0x18]
+	str r3, [sp, #0x14]     @ sp14 = posX
+	str r2, [sp, #0x18]     @ sp18 = posY
 	ldr r0, [r6, #0x20]
 	movs r1, #8
 	ands r0, r1
@@ -195,8 +195,8 @@ _0800F502:
 	beq _0800F50A
 	b _0800F614
 _0800F50A:
-	ldr r0, [r6, #8]
-	ldr r1, [sp, #8]
+	ldr r0, [r6, #8]    @ r0 = p->x
+	ldr r1, [sp, #8]    @ r1 = sp08
 	adds r0, r0, r1
 	str r0, [r6, #8]
 	ldr r0, _0800F530 @ =gUnknown_03005424
@@ -228,12 +228,12 @@ _0800F53E:
 	asrs r0, r0, #8
 	movs r1, #0x17
 	ldrsb r1, [r4, r1]
-	adds r0, r0, r1
+	adds r0, r0, r1     @ r0 = py = Q_24_8_TO_INT(gPlayer.y) + gPlayer.unk17;
 	ldr r1, [r4, #8]
 	asrs r1, r1, #8
 	movs r2, #0x16
 	ldrsb r2, [r4, r2]
-	adds r1, r1, r2
+	adds r1, r1, r2     @ r1 = px = Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk16;
 	adds r2, r4, #0
 	adds r2, #0x38
 	ldrb r2, [r2]
@@ -338,7 +338,7 @@ _0800F614:
 	b _0800F8FE
 _0800F622:
 	str r1, [sp, #0x10]
-	mov r4, sl
+	mov r4, sl              @ r4 = s
 	adds r4, #0x2d
 	ldrb r0, [r4]
 	subs r0, #3
@@ -470,7 +470,7 @@ _0800F718:
 	subs r0, r0, r5
 	str r0, [r6, #0xc]
 	mov r4, sl
-	adds r4, #0x2c
+	adds r4, #0x2c          @ r4 = s->
 	ldrb r0, [r4]
 	adds r0, #0x10
 	strb r0, [r4]
@@ -479,7 +479,7 @@ _0800F718:
 	ldrb r0, [r7]
 	subs r0, #0x10
 	strb r0, [r7]
-	ldr r3, [sp, #0x14]
+	ldr r3, [sp, #0x14] @ r3 = posX
 	asrs r1, r3, #0x10
 	mov r2, r8
 	ldr r0, [r2, #0x40]
@@ -494,16 +494,17 @@ _0800F718:
 	mov r0, sl
 	adds r3, r6, #0
 	bl sub_800CCB8
-	adds r2, r0, #0
-	ldrb r0, [r4]
+	adds r2, r0, #0         @ r2 = otherRes
+	ldrb r0, [r4]           
 	subs r0, #0x10
-	strb r0, [r4]
+	strb r0, [r4]           @ r4 = s->unk28->unk4 -= 16;
 	ldrb r0, [r7]
 	adds r0, #0x10
 	strb r0, [r7]
 	ldr r0, [r6, #0xc]
 	adds r0, r0, r5
 	str r0, [r6, #0xc]
+
 	ldr r4, [sp, #0x10]
 	str r4, [r6, #0x20]
 	movs r0, #0xc0
@@ -626,7 +627,7 @@ _0800F82C:
 _0800F85C:
 	movs r0, #0xc0
 	lsls r0, r0, #0xc
-	mov r4, sb
+	mov r4, sb              @ r4 = result (of first sub_800CCB8 call)
 	ands r0, r4
 	cmp r0, #0
 	beq _0800F8F6
