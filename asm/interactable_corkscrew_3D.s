@@ -3,8 +3,436 @@
 
 .syntax unified
 .arm
+	thumb_func_start Task_8061914
+Task_8061914: @ 0x08061914
+	push {r4, r5, r6, r7, lr}
+	mov r7, sl
+	mov r6, sb
+	mov r5, r8
+	push {r5, r6, r7}
+	sub sp, #8
+	ldr r3, _08061A04 @ =gCurTask
+	ldr r0, [r3]
+	str r0, [sp]
+	ldrh r1, [r0, #6]
+	movs r0, #0xc0
+	lsls r0, r0, #0x12
+	adds r5, r1, r0
+	ldr r1, [r5]
+	mov sb, r1
+	ldrh r1, [r5, #4]
+	ldrh r2, [r5, #6]
+	ldrb r0, [r5, #8]
+	lsls r0, r0, #3
+	lsls r1, r1, #8
+	adds r0, r0, r1
+	mov ip, r0
+	mov r1, sb
+	ldrb r0, [r1, #1]
+	lsls r0, r0, #3
+	lsls r2, r2, #8
+	adds r0, r0, r2
+	mov r8, r0
+	ldr r7, _08061A08 @ =gPlayer
+	ldr r6, [r7, #0x20]
+	movs r2, #0x80
+	mov sl, r2
+	mov r0, sl
+	ands r0, r6
+	mov sl, r0
+	cmp r0, #0
+	beq _08061960
+	b _08061A5A
+_08061960:
+	movs r0, #3
+	ldrsb r0, [r1, r0]
+	lsls r0, r0, #3
+	mov r2, ip
+	adds r1, r2, r0
+	ldr r3, [r7, #8]
+	str r3, [sp, #4]
+	asrs r4, r3, #8
+	cmp r1, r4
+	bgt _08061A52
+	mov r2, sb
+	ldrb r0, [r2, #5]
+	lsls r0, r0, #3
+	adds r0, r1, r0
+	cmp r0, r4
+	blt _08061A52
+	movs r0, #4
+	ldrsb r0, [r2, r0]
+	lsls r0, r0, #3
+	mov r3, r8
+	adds r2, r3, r0
+	ldr r0, [r7, #0xc]
+	asrs r1, r0, #8
+	cmp r2, r1
+	bgt _08061A52
+	mov r3, sb
+	ldrb r0, [r3, #6]
+	lsls r0, r0, #3
+	adds r0, r2, r0
+	cmp r0, r1
+	blt _08061A52
+	cmp ip, r4
+	bge _08061A1C
+	ldrb r1, [r5, #9]
+	movs r0, #1
+	ands r0, r1
+	adds r3, r1, #0
+	cmp r0, #0
+	beq _08061A4C
+	adds r1, r7, #0
+	adds r1, #0x6d
+	movs r0, #0x1b
+	strb r0, [r1]
+	mov r1, ip
+	subs r0, r4, r1
+	lsls r1, r0, #4
+	subs r1, r1, r0
+	lsls r0, r1, #5
+	subs r0, r0, r1
+	lsls r0, r0, #1
+	asrs r0, r0, #8
+	movs r2, #0x80
+	lsls r2, r2, #1
+	adds r0, r0, r2
+	ldr r1, _08061A0C @ =0x000003FF
+	ands r0, r1
+	movs r3, #0x14
+	ldrsh r1, [r7, r3]
+	ldr r2, [sp, #4]
+	adds r1, r2, r1
+	str r1, [r7, #8]
+	mov r3, r8
+	lsls r2, r3, #8
+	ldr r1, _08061A10 @ =gSineTable
+	lsls r0, r0, #1
+	adds r0, r0, r1
+	ldrh r1, [r0]
+	lsls r1, r1, #0x10
+	asrs r1, r1, #0x16
+	lsls r0, r1, #1
+	adds r0, r0, r1
+	lsls r0, r0, #3
+	adds r0, r0, r2
+	ldr r1, _08061A14 @ =0xFFFFE400
+	adds r0, r0, r1
+	str r0, [r7, #0xc]
+	mov r2, sl
+	strh r2, [r7, #0x12]
+	ldr r0, _08061A18 @ =sub_8061AB0
+	ldr r3, [sp]
+	str r0, [r3, #8]
+	b _08061A5A
+	.align 2, 0
+_08061A04: .4byte gCurTask
+_08061A08: .4byte gPlayer
+_08061A0C: .4byte 0x000003FF
+_08061A10: .4byte gSineTable
+_08061A14: .4byte 0xFFFFE400
+_08061A18: .4byte sub_8061AB0
+_08061A1C:
+	movs r0, #0x14
+	ldrsh r1, [r7, r0]
+	movs r0, #0x80
+	lsls r0, r0, #3
+	ldrb r3, [r5, #9]
+	cmp r1, r0
+	ble _08061A4C
+	movs r0, #2
+	ands r6, r0
+	cmp r6, #0
+	bne _08061A4C
+	adds r0, r7, #0
+	adds r0, #0x5e
+	ldr r1, _08061A48 @ =gPlayerControls
+	ldrh r2, [r0]
+	ldrh r0, [r1]
+	ands r0, r2
+	cmp r0, #0
+	bne _08061A4C
+	movs r0, #1
+	orrs r0, r3
+	b _08061A58
+	.align 2, 0
+_08061A48: .4byte gPlayerControls
+_08061A4C:
+	movs r0, #0xfe
+	ands r0, r3
+	b _08061A58
+_08061A52:
+	ldrb r1, [r5, #9]
+	movs r0, #0xfe
+	ands r0, r1
+_08061A58:
+	strb r0, [r5, #9]
+_08061A5A:
+	ldr r1, _08061AA8 @ =gCamera
+	ldr r0, [r1]
+	mov r2, ip
+	subs r2, r2, r0
+	mov ip, r2
+	ldr r0, [r1, #4]
+	mov r3, r8
+	subs r3, r3, r0
+	mov r8, r3
+	mov r1, ip
+	adds r1, #0x80
+	movs r0, #0xf8
+	lsls r0, r0, #1
+	cmp r1, r0
+	bhi _08061A88
+	mov r0, r8
+	adds r0, #0x80
+	cmp r0, #0
+	blt _08061A88
+	movs r0, #0x90
+	lsls r0, r0, #1
+	cmp r8, r0
+	ble _08061A96
+_08061A88:
+	ldrb r0, [r5, #8]
+	mov r1, sb
+	strb r0, [r1]
+	ldr r2, _08061AAC @ =gCurTask
+	ldr r0, [r2]
+	bl TaskDestroy
+_08061A96:
+	add sp, #8
+	pop {r3, r4, r5}
+	mov r8, r3
+	mov sb, r4
+	mov sl, r5
+	pop {r4, r5, r6, r7}
+	pop {r0}
+	bx r0
+	.align 2, 0
+_08061AA8: .4byte gCamera
+_08061AAC: .4byte gCurTask
 
-.if 0
+	thumb_func_start sub_8061AB0
+sub_8061AB0: @ 0x08061AB0
+	push {r4, r5, r6, r7, lr}
+	mov r7, sl
+	mov r6, sb
+	mov r5, r8
+	push {r5, r6, r7}
+	ldr r0, _08061B00 @ =gCurTask
+	ldr r0, [r0]
+	mov sl, r0
+	ldrh r1, [r0, #6]
+	movs r0, #0xc0
+	lsls r0, r0, #0x12
+	adds r1, r1, r0
+	mov ip, r1
+	ldr r3, [r1]
+	ldrh r0, [r1, #4]
+	ldrh r2, [r1, #6]
+	ldr r4, _08061B04 @ =gPlayer
+	ldrb r7, [r1, #8]
+	lsls r1, r7, #3
+	lsls r0, r0, #8
+	adds r1, r1, r0
+	mov r8, r1
+	ldrb r0, [r3, #1]
+	lsls r0, r0, #3
+	lsls r2, r2, #8
+	adds r0, r0, r2
+	mov sb, r0
+	ldr r5, [r4, #0x20]
+	adds r6, r5, #0
+	movs r1, #0x80
+	ands r6, r1
+	cmp r6, #0
+	beq _08061B08
+	strb r7, [r3]
+	ldr r2, _08061B00 @ =gCurTask
+	ldr r0, [r2]
+	bl TaskDestroy
+	b _08061C56
+	.align 2, 0
+_08061B00: .4byte gCurTask
+_08061B04: .4byte gPlayer
+_08061B08:
+	ldr r2, [r4, #8]
+	asrs r0, r2, #8
+	mov r1, r8
+	subs r0, r0, r1
+	lsls r1, r0, #4
+	subs r1, r1, r0
+	lsls r0, r1, #5
+	subs r0, r0, r1
+	lsls r0, r0, #1
+	asrs r7, r0, #8
+	movs r0, #0x80
+	lsls r0, r0, #1
+	adds r7, r7, r0
+	ldr r1, _08061B78 @ =0x000003FF
+	ands r7, r1
+	movs r1, #0x14
+	ldrsh r0, [r4, r1]
+	adds r2, r2, r0
+	str r2, [r4, #8]
+	mov r0, sb
+	lsls r3, r0, #8
+	ldr r1, _08061B7C @ =gSineTable
+	lsls r0, r7, #1
+	adds r0, r0, r1
+	ldrh r1, [r0]
+	lsls r1, r1, #0x10
+	asrs r1, r1, #0x16
+	lsls r0, r1, #1
+	adds r0, r0, r1
+	lsls r0, r0, #3
+	adds r0, r0, r3
+	ldr r1, _08061B80 @ =0xFFFFE400
+	adds r0, r0, r1
+	str r0, [r4, #0xc]
+	strh r6, [r4, #0x12]
+	asrs r2, r2, #8
+	mov r0, r8
+	subs r2, r2, r0
+	cmp r2, #0x8c
+	ble _08061B8C
+	adds r0, #0x8c
+	lsls r0, r0, #8
+	str r0, [r4, #8]
+	movs r0, #4
+	ands r5, r0
+	cmp r5, #0
+	bne _08061B6E
+	adds r1, r4, #0
+	adds r1, #0x64
+	movs r0, #0x30
+	strh r0, [r1]
+_08061B6E:
+	ldr r2, _08061B84 @ =gCurTask
+	ldr r1, [r2]
+	ldr r0, _08061B88 @ =sub_8061C70
+	str r0, [r1, #8]
+	b _08061C56
+	.align 2, 0
+_08061B78: .4byte 0x000003FF
+_08061B7C: .4byte gSineTable
+_08061B80: .4byte 0xFFFFE400
+_08061B84: .4byte gCurTask
+_08061B88: .4byte sub_8061C70
+_08061B8C:
+	movs r0, #0x14
+	ldrsh r1, [r4, r0]
+	mov r2, ip
+	ldr r0, [r2, #0xc]
+	cmp r1, r0
+	bge _08061BB8
+	adds r1, r4, #0
+	adds r1, #0x64
+	movs r0, #0x32
+	strh r0, [r1]
+	ldrh r0, [r4, #0x14]
+	strh r0, [r4, #0x10]
+	adds r1, #9
+	movs r0, #5
+	strb r0, [r1]
+	ldr r0, _08061BB4 @ =Task_8061914
+	mov r1, sl
+	str r0, [r1, #8]
+	b _08061C56
+	.align 2, 0
+_08061BB4: .4byte Task_8061914
+_08061BB8:
+	adds r1, r4, #0
+	adds r1, #0x5e
+	ldr r0, _08061BE8 @ =gPlayerControls
+	ldrh r1, [r1]
+	ldrh r0, [r0]
+	ands r0, r1
+	cmp r0, #0
+	beq _08061BF4
+	adds r1, r4, #0
+	adds r1, #0x64
+	movs r0, #0x32
+	strh r0, [r1]
+	ldrh r0, [r4, #0x14]
+	strh r0, [r4, #0x10]
+	ldr r0, _08061BEC @ =0x0000FB20
+	strh r0, [r4, #0x12]
+	adds r1, #9
+	movs r0, #5
+	strb r0, [r1]
+	ldr r0, _08061BF0 @ =Task_8061914
+	mov r2, sl
+	str r0, [r2, #8]
+	b _08061C56
+	.align 2, 0
+_08061BE8: .4byte gPlayerControls
+_08061BEC: .4byte 0x0000FB20
+_08061BF0: .4byte Task_8061914
+_08061BF4:
+	movs r6, #4
+	ands r5, r6
+	cmp r5, #0
+	bne _08061C56
+	movs r0, #0x80
+	ands r0, r1
+	cmp r0, #0
+	beq _08061C28
+	adds r0, r4, #0
+	adds r0, #0x64
+	strh r6, [r0]
+	adds r0, r4, #0
+	movs r1, #9
+	bl sub_8023B5C
+	movs r0, #6
+	strb r0, [r4, #0x16]
+	movs r0, #9
+	strb r0, [r4, #0x17]
+	ldr r0, [r4, #0x20]
+	orrs r0, r6
+	str r0, [r4, #0x20]
+	movs r0, #0x6d
+	bl m4aSongNumStart
+	b _08061C56
+_08061C28:
+	ldr r1, _08061C64 @ =PlayerCharacterIdleAnims
+	adds r0, r4, #0
+	adds r0, #0x85
+	ldrb r0, [r0]
+	lsls r0, r0, #0x18
+	asrs r0, r0, #0x18
+	lsls r0, r0, #1
+	adds r0, r0, r1
+	ldrh r0, [r0]
+	adds r0, #0x44
+	adds r1, r4, #0
+	adds r1, #0x68
+	strh r0, [r1]
+	ldr r1, _08061C68 @ =0xFFFFFEE6
+	adds r0, r7, r1
+	ldr r2, _08061C6C @ =0x000003FF
+	ands r0, r2
+	movs r1, #0x5e
+	bl Div
+	adds r1, r4, #0
+	adds r1, #0x6a
+	strh r0, [r1]
+_08061C56:
+	pop {r3, r4, r5}
+	mov r8, r3
+	mov sb, r4
+	mov sl, r5
+	pop {r4, r5, r6, r7}
+	pop {r0}
+	bx r0
+	.align 2, 0
+_08061C64: .4byte PlayerCharacterIdleAnims
+_08061C68: .4byte 0xFFFFFEE6
+_08061C6C: .4byte 0x000003FF
+
+@ -- The above code was decomped already, but there is some linker bug...
+
+.if 01
 	thumb_func_start sub_8061C70
 sub_8061C70: @ 0x08061C70
 	push {r4, r5, r6, r7, lr}

@@ -21,6 +21,7 @@ typedef struct {
 void sub_8061AB0(void);
 void sub_8061C70(void);
 
+#if 0
 void Task_8061914(void)
 {
     Sprite_Corkscrew3D *corkscrew = TaskGetStructPtr(gCurTask);
@@ -130,3 +131,4 @@ void sub_8061AB0(void)
         }
     }
 }
+#endif
