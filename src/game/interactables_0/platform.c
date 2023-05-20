@@ -23,6 +23,7 @@ typedef struct {
 } Sprite_Platform; /* size: 0x58 */
 
 extern void Task_800E89C(void);
+extern void Task_800EC58(void);
 extern void TaskDestructor_800F19C(struct Task *);
 
 const AnimId sPlatformLevelAnims[38] = {
@@ -248,5 +249,59 @@ void Task_800E89C(void)
 
         sub_8004558(s);
         sub_80051E8(s);
+    }
+}
+
+void initSprite_Interactable079(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
+{
+    struct Task *t = TaskCreate(Task_800EC58, sizeof(Sprite_Platform), 0x2010, 0,
+                                TaskDestructor_800F19C);
+    Sprite_Platform *platform = TaskGetStructPtr(t);
+    Sprite *s = &platform->s;
+
+    platform->base.regionX = spriteRegionX;
+    platform->base.regionY = spriteRegionY;
+    platform->base.me = me;
+    platform->base.spriteX = me->x;
+    platform->base.spriteY = spriteY;
+    platform->unk40 = 0;
+    platform->unk44 = 0;
+    platform->unk4C = 0;
+
+    {
+        s32 i;
+
+        platform->unk48 = 0;
+        platform->unk4A = 0;
+
+        s->x = TO_WORLD_POS(me->x, spriteRegionX);
+        s->y = TO_WORLD_POS(me->y, spriteRegionY);
+
+        platform->unk50[0] = platform->unk44;
+        platform->unk50[1] = platform->unk44;
+
+        SET_MAP_ENTITY_INITIALIZED(me);
+
+        s->graphics.dest = VramMalloc(18);
+
+        s->variant = 0;
+
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            s->graphics.anim = sPlatformLevelAnims[gCurrentLevel];
+        } else {
+            s->graphics.anim = SA2_ANIM_PLATFORM_LEA_FOR;
+        }
+
+        s->unk1A = 0x480;
+        s->graphics.size = 0;
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->focused = 0;
+        s->unk28->unk0 = -1;
+        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+        sub_8004558(s);
     }
 }
