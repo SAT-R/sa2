@@ -110,15 +110,14 @@ void initSprite_Interactable081(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     }
 }
 
-// https://decomp.me/scratch/C1std
 void Task_800F38C(void)
 {
     Player *p = &gPlayer;
     s16 posX;
     s16 posY;
     MapEntity *me;
-    // Maybe platform pos delta?
-    s32 sp08 = 0, sp0C = 0;
+    u32 result;
+    s32 deltaX = 0, deltaY = 0;
 
     Sprite_IA081 *ia081 = TaskGetStructPtr(gCurTask);
     Sprite *s = &ia081->s;
@@ -136,9 +135,8 @@ void Task_800F38C(void)
                             & ONE_CYCLE)
                         * meUdata2)
             >> 14;
-        sp08 = ia081->unk40 - oldUnk40;
+        deltaX = ia081->unk40 - oldUnk40;
     }
-    // _0800F40E
 
     if (ia081->unk4A != 0) {
         register s32 r5 asm("r5") = ia081->unk44;
@@ -150,9 +148,8 @@ void Task_800F38C(void)
             >> 14;
         r5 = ia081->unk44 - r5;
         asm("" ::"r"(r5));
-        sp0C = r5;
+        deltaY = r5;
     }
-    // _0800F450
 
     posX = TO_WORLD_POS(ia081->base.spriteX, ia081->base.regionX);
     posY = TO_WORLD_POS(me->y, ia081->base.regionY);
@@ -161,21 +158,18 @@ void Task_800F38C(void)
         s->x = posX - gCamera.x + Q_24_8_TO_INT(ia081->unk50[1][0]);
         s->y = posY - gCamera.y + Q_24_8_TO_INT(ia081->unk50[1][1]);
     } else {
-        // _0800F4CC
         s->x = posX - gCamera.x + Q_24_8_TO_INT(ia081->unk40);
         s->y = posY - gCamera.y + Q_24_8_TO_INT(ia081->unk44);
     }
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
         s32 res, temp, temp2;
-        // _0800F50A
-        p->x += sp08;
+        p->x += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
-            p->y += sp0C + Q_24_8(1.0);
+            p->y += deltaY + Q_24_8(1.0);
         } else {
-            // _0800F534
-            p->y += sp0C - Q_24_8(2.0);
+            p->y += deltaY - Q_24_8(2.0);
         }
 
         res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) + gPlayer.unk17,
@@ -188,7 +182,6 @@ void Task_800F38C(void)
             p->moveState |= MOVESTATE_IN_AIR;
             p->unk3C = 0;
         }
-        // _0800F584
 
         temp = Q_24_8_TO_INT(p->x) + 2;
         res = sub_801F100(temp + p->unk16, Q_24_8_TO_INT(p->y), p->unk38, +8,
@@ -197,7 +190,6 @@ void Task_800F38C(void)
         if (res < 0) {
             p->x += Q_24_8(res);
         }
-        // _0800F5B0
 
         temp2 = Q_24_8_TO_INT(p->x) - 2;
         res = sub_801F100(temp2 - p->unk16, Q_24_8_TO_INT(p->y), p->unk38, -8,
@@ -206,7 +198,6 @@ void Task_800F38C(void)
         if (res < 0) {
             p->x -= Q_24_8(res);
         }
-        // _0800F5D8
 
         res = sub_801F100(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x) - p->unk16,
                           p->unk38, +8, sub_801EC3C);
@@ -219,12 +210,11 @@ void Task_800F38C(void)
             p->unk3C = 0;
         }
     }
-    // _0800F614
 
     if (!(p->moveState & MOVESTATE_400000)) {
         s32 x, y;
-        u32 result;
         s32 res;
+        u32 otherRes;
         s32 movStateCopy = p->moveState;
 
         s->unk28->unk5 -= 3;
@@ -233,12 +223,10 @@ void Task_800F38C(void)
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
-            // _0800F660
             if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99
                 && gPlayer.unk64 <= 105) {
                 p->unk6D = 4;
             }
-            // _0800F688
 
             p->y += Q_8_8(result);
 
@@ -256,17 +244,13 @@ void Task_800F38C(void)
                 res = sub_801F100(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
                                   p->unk38, 8, sub_801EC3C);
 
-                if ((res < 0) && (sp0C > 0)) {
+                if ((res < 0) && (deltaY > 0)) {
                     sub_800F978();
                 }
             }
-            // _0800F6F8
 
             if (result & 0x10000) {
-                u32 otherRes;
-                // _0800F706
                 if (GRAVITY_IS_INVERTED) {
-                    // _0800F718
                     p->y -= Q_8_8(result);
                     s->unk28->unk4 += 16;
                     s->unk28->unk6 -= 16;
@@ -294,7 +278,6 @@ void Task_800F38C(void)
                         p->speedAirX = 0;
                         p->speedGroundX = 0;
                     }
-                    // _0800F7AA
 
                     if (otherRes & 0x10000) {
                         s32 newRes = sub_801F100(Q_24_8_TO_INT(p->y) - p->unk17,
@@ -302,38 +285,33 @@ void Task_800F38C(void)
                                                  sub_801EC3C);
 
                         if (newRes < 0) {
-                            if (sp0C < 0) {
+                            if (deltaY < 0) {
                                 sub_800F978();
                             } else {
-                                // _0800F7FC
                                 p->y -= Q_8_8(result);
                                 p->speedGroundX = 0;
                             }
                         } else {
-                            // _0800F80C
                             p->y -= Q_8_8(result);
                             p->speedGroundX = 0;
                             p->speedAirX = 0;
                             p->speedAirY = 0;
                         }
                     } else {
-                        // _0800F820
                         p->y -= Q_8_8(result);
                     }
                 } else {
-                    // _0800F82C
                     s32 newRes;
                     p->speedAirY = 0;
                     newRes = sub_801F100(Q_24_8_TO_INT(p->y) - p->unk17,
                                          Q_24_8_TO_INT(p->x), p->unk38, -8, sub_801EC3C);
 
-                    if ((newRes < 0) && (sp0C < 0)) {
+                    if ((newRes < 0) && (deltaY < 0)) {
                         sub_800F978();
                     }
                 }
             }
         }
-        // _0800F85C
 
         if ((result & 0xC0000) && !(p->moveState & MOVESTATE_8) && !(p->unk3C == s)) {
             s32 tempXX = (s16)(result & 0xFF00);
@@ -350,7 +328,6 @@ void Task_800F38C(void)
                     sub_800F978();
                 }
             }
-            // _0800F8C2
 
             if (result & 0x80000) {
                 s32 tempXVal = Q_24_8_TO_INT(p->x) - 2;
@@ -361,17 +338,15 @@ void Task_800F38C(void)
                 }
             }
         }
-        // _0800F8F6
+
         s->unk28->unk5 += 3;
     }
-    // _0800F8FE
-    {
-        if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(me, ia081->base.spriteX);
-            TaskDestroy(gCurTask);
-        } else {
-            sub_80051E8(s);
-        }
+
+    if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, ia081->base.spriteX);
+        TaskDestroy(gCurTask);
+    } else {
+        sub_80051E8(s);
     }
 }
 
