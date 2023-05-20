@@ -344,8 +344,8 @@ void Task_800EC58(void)
         gCurTask->main = Task_800EFD0;
     }
 
-    if (((posX > gCamera.x + 368) || (posX < (gCamera.x - 128))
-         || (posY > (gCamera.y + 288)) || ((posY < gCamera.y - 128)))
+    if (((posX > gCamera.x + (DISPLAY_WIDTH + 128)) || (posX < (gCamera.x - 128))
+         || (posY > (gCamera.y + (DISPLAY_HEIGHT + 128))) || ((posY < gCamera.y - 128)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
@@ -419,8 +419,8 @@ void Task_800EDF8(void)
         }
     }
 
-    if (((posX > gCamera.x + 368) || (posX < (gCamera.x - 128))
-         || (posY > (gCamera.y + 288)) || ((posY < gCamera.y - 128)))
+    if (((posX > gCamera.x + (DISPLAY_WIDTH + 128)) || (posX < (gCamera.x - 128))
+         || (posY > (gCamera.y + (DISPLAY_HEIGHT + 128))) || ((posY < gCamera.y - 128)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
