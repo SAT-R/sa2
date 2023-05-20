@@ -441,3 +441,89 @@ void Task_800EDF8(void)
         sub_80051E8(s);
     }
 }
+
+void Task_800EFD0(void)
+{
+    s16 posX;
+    s16 posY;
+    MapEntity *me;
+    u32 result;
+    s32 deltaX = 0, deltaY = 0;
+    s32 x, y;
+
+    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite *s = &platform->s;
+    me = platform->base.me;
+
+    if (IS_MULTI_PLAYER) {
+        sub_800F1B0(platform);
+    }
+
+    platform->unk4A += 0x2A;
+    platform->unk44 += platform->unk4A;
+
+    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posY = TO_WORLD_POS(me->y, platform->base.regionY);
+
+    s->x = posX - gCamera.x;
+
+    if (IS_MULTI_PLAYER) {
+        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(platform->unk50[1]);
+    } else {
+        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(platform->unk44);
+    }
+
+    platform->unk3C++;
+
+    if (gPlayer.moveState & MOVESTATE_8) {
+        if (gPlayer.unk3C == s) {
+            if (platform->unk3C > 32) {
+                gPlayer.moveState |= MOVESTATE_IN_AIR;
+                gPlayer.moveState &= ~MOVESTATE_8;
+                gPlayer.speedAirY = platform->unk4A;
+            } else {
+                gPlayer.x += platform->unk48;
+                gPlayer.y += Q_24_8(1.0) + platform->unk4A;
+            }
+        }
+    }
+
+    if (platform->unk3C < 32) {
+        result = sub_800CCB8(s, posX, posY + Q_24_8_TO_INT(platform->unk44), &gPlayer);
+        if (result & 0x10000) {
+            gPlayer.y += Q_8_8(result);
+        }
+    }
+
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        TaskDestroy(gCurTask);
+    } else {
+        if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+            if (platform->unk4C != 0x100) {
+                platform->unk4C += 0x10;
+            }
+        } else {
+            if (platform->unk4C != 0) {
+                platform->unk4C -= 0x10;
+            }
+        }
+
+        s->y += SIN_24_8(platform->unk4C) >> 6;
+
+        sub_8004558(s);
+        sub_80051E8(s);
+    }
+}
+
+void TaskDestructor_800F19C(struct Task *t)
+{
+    Sprite_Platform *platform = TaskGetStructPtr(t);
+    VramFree(platform->s.graphics.dest);
+}
+
+void sub_800F1B0(Sprite_Platform *platform)
+{
+    platform->unk50[1] = platform->unk50[0];
+    platform->unk50[0] = platform->unk44;
+}
