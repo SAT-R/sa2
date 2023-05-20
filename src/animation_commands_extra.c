@@ -28,7 +28,7 @@ s32 sub_80036E0(Sprite *sprite)
     ACmd *script;
     ACmd *cmd;
 
-    if (sprite->unk10 & 0x4000)
+    if (sprite->unk10 & SPRITE_FLAG_MASK_14)
         return 0;
 
     SPRITE_MAYBE_SWITCH_ANIM(sprite);
@@ -95,7 +95,7 @@ s32 animCmd_GetTiles_COPY(void *cursor, Sprite *sprite)
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
 
-    if ((sprite->unk10 & 0x80000) == 0) {
+    if ((sprite->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
             sprite->graphics.src
                 = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
@@ -128,11 +128,11 @@ s32 animCmd_6_COPY(void *cursor, Sprite *sprite)
         && (cmd->unk4.unk7 == 0)) {
         sprite->unk28[r3].unk0 = -1;
     } else {
-        if (sprite->unk10 & 0x00000800) {
+        if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
             XOR_SWAP(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
         }
 
-        if (sprite->unk10 & 0x00000400) {
+        if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             XOR_SWAP(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
         }
     }
@@ -355,7 +355,7 @@ s32 animCmd_GetPalette_COPY(void *cursor, Sprite *sprite)
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
 
-    if (!(sprite->unk10 & 0x40000)) {
+    if (!(sprite->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
@@ -380,7 +380,7 @@ s32 animCmd_JumpBack_COPY(void *cursor, Sprite *sprite)
 // (-4)
 s32 animCmd_End_COPY(void *cursor, Sprite *sprite)
 {
-    sprite->unk10 |= 0x4000;
+    sprite->unk10 |= SPRITE_FLAG_MASK_14;
 
     return 0;
 }
@@ -564,7 +564,7 @@ s32 sub_8004558(Sprite *sprite)
 {
     SPRITE_MAYBE_SWITCH_ANIM(sprite);
 
-    if (sprite->unk10 & 0x4000)
+    if (sprite->unk10 & SPRITE_FLAG_MASK_14)
         return 0;
 
     if (sprite->unk1C > 0)
@@ -596,14 +596,15 @@ s32 sub_8004558(Sprite *sprite)
                 // animation has changed
                 variants = gUnknown_03002794->animations[sprite->graphics.anim];
                 newScript = variants[sprite->variant];
+
                 // reset cursor
                 sprite->unk14 = 0;
+
                 // load the new script
                 script = newScript;
             }
             cmd = ReadInstruction(script, sprite->unk14);
         }
-        // _08004628
 
         // Display the image 'index' for 'delay' frames
         sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
@@ -631,7 +632,7 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
 
-    if ((sprite->unk10 & 0x80000) == 0) {
+    if ((sprite->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
             sprite->graphics.src
                 = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
@@ -662,11 +663,11 @@ s32 animCmd_6(void *cursor, Sprite *sprite)
         && (cmd->unk4.unk7 == 0)) {
         sprite->unk28[r3].unk0 = -1;
     } else {
-        if (sprite->unk10 & 0x00000800) {
+        if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
             SWAP_AND_NEGATE(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
         }
 
-        if (sprite->unk10 & 0x00000400) {
+        if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             SWAP_AND_NEGATE(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
         }
     }
