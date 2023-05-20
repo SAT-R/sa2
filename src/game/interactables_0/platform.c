@@ -22,9 +22,9 @@ typedef struct {
     /* 0x50 */ s32 unk50[2];
 } Sprite_Platform; /* size: 0x58 */
 
-extern void Task_800E89C(void);
-extern void Task_800EC58(void);
-extern void TaskDestructor_800F19C(struct Task *);
+static void Task_800E89C(void);
+static void Task_800EC58(void);
+static void TaskDestructor_800F19C(struct Task *);
 
 void Task_800EDF8(void);
 void Task_800EFD0(void);
