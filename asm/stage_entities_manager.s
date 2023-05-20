@@ -119,7 +119,7 @@ gSpritePosData_enemies:
 gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Toggle_PlayerLayer
     .4byte initSprite_Interactable_Toggle_PlayerLayer
-    .4byte initSprite_Interactable002
+    .4byte initSprite_Interactable_Platform
     .4byte initSprite_Interactable_Spring_Normal_Up
     .4byte initSprite_Interactable_Spring_Normal_Down
     .4byte initSprite_Interactable_Spring_Normal_Right
