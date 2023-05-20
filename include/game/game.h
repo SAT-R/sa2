@@ -448,9 +448,9 @@ extern u8 gUnknown_030053E8[4];
 
 struct UNK_3005510 {
     u8 unk0;
-    u8 unk1;
-    u8 unk2;
-    u8 unk3;
+    u8 unk1; // regionX (truncated)
+    u8 unk2; // regionY (truncated)
+    u8 unk3; // spriteY (truncated) as per sub_800EDF8
     u8 unk4;
     u8 unk5;
     u8 unk6;
