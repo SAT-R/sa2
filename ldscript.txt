@@ -68,8 +68,7 @@ SECTIONS
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/asm/interactable_platform.o(.text);
-        build/sa2/asm/interactable_081.o(.text);
-        build/sa2/src/game/interactables_0/081.o(.text);
+        build/sa2/src/game/interactables_0/platform_square.o(.text);
         build/sa2/src/game/interactables_0/ramp.o(.text);
         build/sa2/src/game/interactables_0/grind_rail.o(.text);
         build/sa2/src/game/interactables_0/044.o(.text);
@@ -276,7 +275,7 @@ SECTIONS
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
-        build/sa2/src/game/interactables_0/081.o(.rodata);
+        build/sa2/src/game/interactables_0/platform_square.o(.rodata);
         build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
         build/sa2/asm/player_unknown_0.o(.rodata);
         build/sa2/asm/player_callbacks_0.o(.rodata);

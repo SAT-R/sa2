@@ -238,8 +238,8 @@
 #define SA2_ANIM_609                             609
 #define SA2_ANIM_610                             610
 
-#define SA2_ANIM_SPEEDING_PLATFORM 612
-#define SA2_ANIM_SQ_PLATFORM_613   613
+#define SA2_ANIM_SPEEDING_PLATFORM      612
+#define SA2_ANIM_PLATFORM_SQUARE_COMMON 613
 
 #define SA2_ANIM_LAUNCHER_EGG_UTO 614
 

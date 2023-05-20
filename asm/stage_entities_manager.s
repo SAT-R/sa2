@@ -200,7 +200,7 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable078
     .4byte initSprite_Interactable079
     .4byte initSprite_Interactable080
-    .4byte initSprite_Interactable081
+    .4byte initSprite_Interactable_Platform_Square
     .4byte initSprite_Interactable_SkyCanyon_GiantPropeller
     .4byte initSprite_Interactable_IceParadise_SlidyIce
     .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill

@@ -19,59 +19,62 @@ typedef struct {
     /* 0x48 */ s16 unk48;
     /* 0x4A */ s16 unk4A;
     /* 0x4C */ s16 unk4C;
-    /* 0x4E */ u8 filler4E[2];
     /* 0x50 */ s32 unk50[3][2];
-} Sprite_IA081; /* size: 0x68 */
+} Sprite_PlatformSquare; /* size: 0x68 */
 
-extern void Task_800F38C(void);
-extern void TaskDestructor_800F964(struct Task *);
-extern void sub_800F978(void);
-extern void sub_800F990(Sprite_IA081 *);
+static void Task_Platform_Square(void);
+static void TaskDestructor_Platform_Square(struct Task *);
+static void Platform_Square_KillPlayer(void);
+static void sub_800F990(Sprite_PlatformSquare *);
 
-const u16 gUnknown_080D5430[9][3] = {
-    { 36, SA2_ANIM_SQ_PLATFORM_613, 0 },         { 36, SA2_ANIM_SQ_PLATFORM_613, 0 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 1 }, { 36, SA2_ANIM_PLATFORM_ICE_PAR, 2 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_SKY_CAN, 0 }, { 36, SA2_ANIM_PLATFORM_TEC_BAS, 2 },
-    { 36, SA2_ANIM_SQ_PLATFORM_613, 0 },         { 36, SA2_ANIM_SQ_PLATFORM_613, 0 },
-    { 36, SA2_ANIM_SQ_PLATFORM_613, 0 },
+static const u16 sAnimsPlatformSquare[9][3] = {
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 1 },
+    { 36, SA2_ANIM_PLATFORM_ICE_PAR, 2 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_SKY_CAN, 0 },
+    { 36, SA2_ANIM_PLATFORM_TEC_BAS, 2 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
 };
 
-void initSprite_Interactable081(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void initSprite_Interactable_Platform_Square(MapEntity *me, u16 spriteRegionX,
+                                             u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_800F38C, sizeof(Sprite_IA081), 0x2010, 0,
-                                TaskDestructor_800F964);
-    Sprite_IA081 *ia081 = TaskGetStructPtr(t);
-    Sprite *s = &ia081->s;
+    struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare),
+                                0x2010, 0, TaskDestructor_Platform_Square);
+    Sprite_PlatformSquare *platform = TaskGetStructPtr(t);
+    Sprite *s = &platform->s;
 
-    ia081->base.regionX = spriteRegionX;
-    ia081->base.regionY = spriteRegionY;
-    ia081->base.me = me;
-    ia081->base.spriteX = me->x;
-    ia081->base.spriteY = spriteY;
-    ia081->unk40 = 0;
-    ia081->unk44 = 0;
-    ia081->unk4C = 0;
+    platform->base.regionX = spriteRegionX;
+    platform->base.regionY = spriteRegionY;
+    platform->base.me = me;
+    platform->base.spriteX = me->x;
+    platform->base.spriteY = spriteY;
+    platform->unk40 = 0;
+    platform->unk44 = 0;
+    platform->unk4C = 0;
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {
-            ia081->unk48 = 0x4;
-            ia081->unk3C = 0;
-            ia081->unk4A = 0;
+            platform->unk48 = 0x4;
+            platform->unk3C = 0;
+            platform->unk4A = 0;
         } else {
-            ia081->unk48 = 0x4;
-            ia081->unk3C = 0x80;
-            ia081->unk4A = 0;
+            platform->unk48 = 0x4;
+            platform->unk3C = 0x80;
+            platform->unk4A = 0;
         }
     } else {
         if (me->d.sData[1] >= 0) {
-            ia081->unk48 = 0;
-            ia081->unk4A = 0x4;
-            ia081->unk3C = 0;
+            platform->unk48 = 0;
+            platform->unk4A = 0x4;
+            platform->unk3C = 0;
         } else {
-            ia081->unk48 = 0;
-            ia081->unk4A = 0x4;
-            ia081->unk3C = 0x80;
+            platform->unk48 = 0;
+            platform->unk4A = 0x4;
+            platform->unk3C = 0x80;
         }
     }
 
@@ -79,22 +82,22 @@ void initSprite_Interactable081(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
         s32 i;
         s32 tileCount, anim, variant;
 
-        for (i = 0; i < ARRAY_COUNT(ia081->unk50); i++) {
-            ia081->unk50[i][0] = ia081->unk40;
-            ia081->unk50[i][1] = ia081->unk44;
+        for (i = 0; i < ARRAY_COUNT(platform->unk50); i++) {
+            platform->unk50[i][0] = platform->unk40;
+            platform->unk50[i][1] = platform->unk44;
         }
 
         s->x = TO_WORLD_POS(me->x, spriteRegionX);
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        tileCount = gUnknown_080D5430[LEVEL_TO_ZONE(gCurrentLevel)][0];
+        tileCount = sAnimsPlatformSquare[LEVEL_TO_ZONE(gCurrentLevel)][0];
         s->graphics.dest = VramMalloc(tileCount);
 
-        anim = gUnknown_080D5430[LEVEL_TO_ZONE(gCurrentLevel)][1];
+        anim = sAnimsPlatformSquare[LEVEL_TO_ZONE(gCurrentLevel)][1];
         s->graphics.anim = anim;
 
-        variant = gUnknown_080D5430[LEVEL_TO_ZONE(gCurrentLevel)][2];
+        variant = sAnimsPlatformSquare[LEVEL_TO_ZONE(gCurrentLevel)][2];
         s->variant = variant;
 
         s->unk1A = 0x480;
@@ -110,7 +113,7 @@ void initSprite_Interactable081(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     }
 }
 
-void Task_800F38C(void)
+static void Task_Platform_Square(void)
 {
     Player *p = &gPlayer;
     s16 posX;
@@ -119,47 +122,54 @@ void Task_800F38C(void)
     u32 result;
     s32 deltaX = 0, deltaY = 0;
 
-    Sprite_IA081 *ia081 = TaskGetStructPtr(gCurTask);
-    Sprite *s = &ia081->s;
-    me = ia081->base.me;
+    Sprite_PlatformSquare *platform = TaskGetStructPtr(gCurTask);
+    Sprite *s = &platform->s;
+    me = platform->base.me;
 
     if (IS_MULTI_PLAYER) {
-        sub_800F990(ia081);
+        sub_800F990(platform);
     }
 
-    if (ia081->unk48 != 0) {
-        s32 oldUnk40 = ia081->unk40;
+    if (platform->unk48 != 0) {
+        s32 oldUnk40 = platform->unk40;
         s32 meUdata2 = (me->d.uData[2] << 11);
 
-        ia081->unk40 = (SIN((ia081->unk48 * ((gUnknown_03005590 + ia081->unk3C) & 0xFF))
-                            & ONE_CYCLE)
-                        * meUdata2)
+        platform->unk40
+            = (SIN((platform->unk48 * ((gUnknown_03005590 + platform->unk3C) & 0xFF))
+                   & ONE_CYCLE)
+               * meUdata2)
             >> 14;
-        deltaX = ia081->unk40 - oldUnk40;
+        deltaX = platform->unk40 - oldUnk40;
     }
 
-    if (ia081->unk4A != 0) {
-        register s32 r5 asm("r5") = ia081->unk44;
+    if (platform->unk4A != 0) {
+#ifdef NON_MATCHING
+        s32 r5 = platform->unk44;
+#else
+        register s32 r5 asm("r5") = platform->unk44;
+#endif
         s32 meUdata3 = (me->d.uData[3] << 11);
-        ia081->unk44
-            = (SIN(((ia081->unk4A * ((gUnknown_03005590 + ia081->unk3C) & 0xFF)))
+        platform->unk44
+            = (SIN(((platform->unk4A * ((gUnknown_03005590 + platform->unk3C) & 0xFF)))
                    & ONE_CYCLE)
                * meUdata3)
             >> 14;
-        r5 = ia081->unk44 - r5;
+        r5 = platform->unk44 - r5;
+#ifndef NON_MATCHING
         asm("" ::"r"(r5));
+#endif
         deltaY = r5;
     }
 
-    posX = TO_WORLD_POS(ia081->base.spriteX, ia081->base.regionX);
-    posY = TO_WORLD_POS(me->y, ia081->base.regionY);
+    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     if (IS_MULTI_PLAYER) {
-        s->x = posX - gCamera.x + Q_24_8_TO_INT(ia081->unk50[1][0]);
-        s->y = posY - gCamera.y + Q_24_8_TO_INT(ia081->unk50[1][1]);
+        s->x = posX - gCamera.x + Q_24_8_TO_INT(platform->unk50[1][0]);
+        s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk50[1][1]);
     } else {
-        s->x = posX - gCamera.x + Q_24_8_TO_INT(ia081->unk40);
-        s->y = posY - gCamera.y + Q_24_8_TO_INT(ia081->unk44);
+        s->x = posX - gCamera.x + Q_24_8_TO_INT(platform->unk40);
+        s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk44);
     }
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
@@ -180,7 +190,7 @@ void Task_800F38C(void)
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = 0;
+            p->unk3C = NULL;
         }
 
         temp = Q_24_8_TO_INT(p->x) + 2;
@@ -207,7 +217,7 @@ void Task_800F38C(void)
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
-            p->unk3C = 0;
+            p->unk3C = NULL;
         }
     }
 
@@ -218,8 +228,8 @@ void Task_800F38C(void)
         s32 movStateCopy = p->moveState;
 
         s->unk28->unk5 -= 3;
-        x = (posX + Q_24_8_TO_INT(ia081->unk40));
-        y = (posY + Q_24_8_TO_INT(ia081->unk44));
+        x = (posX + Q_24_8_TO_INT(platform->unk40));
+        y = (posY + Q_24_8_TO_INT(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
@@ -245,7 +255,7 @@ void Task_800F38C(void)
                                   p->unk38, 8, sub_801EC3C);
 
                 if ((res < 0) && (deltaY > 0)) {
-                    sub_800F978();
+                    Platform_Square_KillPlayer();
                 }
             }
 
@@ -255,8 +265,8 @@ void Task_800F38C(void)
                     s->unk28->unk4 += 16;
                     s->unk28->unk6 -= 16;
 
-                    otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(ia081->unk40),
-                                           posY + Q_24_8_TO_INT(ia081->unk44), p);
+                    otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(platform->unk40),
+                                           posY + Q_24_8_TO_INT(platform->unk44), p);
 
                     s->unk28->unk4 -= 16;
                     s->unk28->unk6 += 16;
@@ -286,7 +296,7 @@ void Task_800F38C(void)
 
                         if (newRes < 0) {
                             if (deltaY < 0) {
-                                sub_800F978();
+                                Platform_Square_KillPlayer();
                             } else {
                                 p->y -= Q_8_8(result);
                                 p->speedGroundX = 0;
@@ -307,7 +317,7 @@ void Task_800F38C(void)
                                          Q_24_8_TO_INT(p->x), p->unk38, -8, sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
-                        sub_800F978();
+                        Platform_Square_KillPlayer();
                     }
                 }
             }
@@ -325,7 +335,7 @@ void Task_800F38C(void)
                 if (sub_801F100(tempXVal + p->unk16, Q_24_8_TO_INT(p->y), p->unk38, -8,
                                 sub_801EB44)
                     < 0) {
-                    sub_800F978();
+                    Platform_Square_KillPlayer();
                 }
             }
 
@@ -334,7 +344,7 @@ void Task_800F38C(void)
                 if (sub_801F100(tempXVal - p->unk16, Q_24_8_TO_INT(p->y), p->unk38, +8,
                                 sub_801EB44)
                     < 0) {
-                    sub_800F978();
+                    Platform_Square_KillPlayer();
                 }
             }
         }
@@ -343,38 +353,38 @@ void Task_800F38C(void)
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, ia081->base.spriteX);
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
         sub_80051E8(s);
     }
 }
 
-void TaskDestructor_800F964(struct Task *t)
+static void TaskDestructor_Platform_Square(struct Task *t)
 {
-    Sprite_IA081 *ia081 = TaskGetStructPtr(t);
-    VramFree(ia081->s.graphics.dest);
+    Sprite_PlatformSquare *platform = TaskGetStructPtr(t);
+    VramFree(platform->s.graphics.dest);
 }
 
-void sub_800F978(void)
+static void Platform_Square_KillPlayer(void)
 {
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.moveState |= MOVESTATE_DEAD;
 }
 
-void sub_800F990(Sprite_IA081 *ia081)
+static void sub_800F990(Sprite_PlatformSquare *platform)
 {
-    ia081->unk50[2][0] = ia081->unk50[1][0];
-    ia081->unk50[2][1] = ia081->unk50[1][1];
-    ia081->unk50[1][0] = ia081->unk50[0][0];
-    ia081->unk50[1][1] = ia081->unk50[0][1];
-    ia081->unk50[0][0] = ia081->unk40;
-    ia081->unk50[0][1] = ia081->unk44;
+    platform->unk50[2][0] = platform->unk50[1][0];
+    platform->unk50[2][1] = platform->unk50[1][1];
+    platform->unk50[1][0] = platform->unk50[0][0];
+    platform->unk50[1][1] = platform->unk50[0][1];
+    platform->unk50[0][0] = platform->unk40;
+    platform->unk50[0][1] = platform->unk44;
 }
 
 // Seems to be unused
-u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
+static u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 
