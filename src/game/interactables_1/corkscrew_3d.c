@@ -18,10 +18,11 @@ typedef struct {
     s32 unk10;
 } Sprite_Corkscrew3D;
 
+void Task_8061914(void);
 void sub_8061AB0(void);
 void sub_8061C70(void);
+void sub_8061DA4(void);
 
-#if 0
 void Task_8061914(void)
 {
     Sprite_Corkscrew3D *corkscrew = TaskGetStructPtr(gCurTask);
@@ -131,4 +132,57 @@ void sub_8061AB0(void)
         }
     }
 }
-#endif
+
+void sub_8061C70(void)
+{
+    Sprite_Corkscrew3D *corkscrew = TaskGetStructPtr(gCurTask);
+    MapEntity *me = corkscrew->base.me;
+
+    u16 regionX = corkscrew->base.regionX;
+    u16 regionY = corkscrew->base.regionY;
+    Player *player = &gPlayer;
+    s32 x = TO_WORLD_POS(corkscrew->base.spriteX, regionX);
+    s32 y = TO_WORLD_POS(me->y, regionY);
+
+    if (!PLAYER_IS_ALIVE) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, corkscrew->base.spriteX);
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    player->speedGroundX++;
+
+    player->x = x = Q_24_8(x + 0x8C);
+    player->y += player->speedGroundX;
+    player->speedAirY = 0;
+
+    if ((Q_24_8_TO_INT(player->y) - y) > 0xBE) {
+        player->y = Q_24_8(y + 0xBE);
+
+        if (!(player->moveState & MOVESTATE_4)) {
+            player->unk64 = 0x2F;
+        }
+        gCurTask->main = sub_8061DA4;
+    } else {
+        if (player->speedGroundX < corkscrew->unkC) {
+            player->unk64 = 50;
+            player->speedAirX = 0;
+            player->speedAirY = player->speedGroundX;
+            player->unk6D = 5;
+            gCurTask->main = Task_8061914;
+        } else if (player->unk5E & gPlayerControls.jump) {
+            player->unk64 = 50;
+            player->speedAirX = 0;
+            player->speedAirY = -Q_24_8(4.875);
+            player->unk6D = 5;
+            gCurTask->main = Task_8061914;
+        } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
+            player->unk64 = 4;
+            sub_8023B5C(player, 9);
+            player->unk16 = 6;
+            player->unk17 = 9;
+            player->moveState |= MOVESTATE_4;
+            m4aSongNumStart(SE_SPIN_ATTACK);
+        }
+    }
+}
