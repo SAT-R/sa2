@@ -519,7 +519,8 @@ void Task_800EFD0(void)
 void TaskDestructor_800F19C(struct Task *t)
 {
     Sprite_Platform *platform = TaskGetStructPtr(t);
-    VramFree(platform->s.graphics.dest);
+    void *vramPtr = platform->s.graphics.dest;
+    VramFree(vramPtr);
 }
 
 void sub_800F1B0(Sprite_Platform *platform)
