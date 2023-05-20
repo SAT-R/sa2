@@ -26,6 +26,10 @@ extern void Task_800E89C(void);
 extern void Task_800EC58(void);
 extern void TaskDestructor_800F19C(struct Task *);
 
+void sub_800EDF8(void);
+void sub_800EFD0(void);
+void sub_800F1B0(Sprite_Platform *);
+
 const AnimId sPlatformLevelAnims[38] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LEA_FOR,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LEA_FOR,
@@ -300,4 +304,67 @@ void initSprite_Interactable079(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     s->unk28->unk0 = -1;
     s->unk10 = SPRITE_FLAG_PRIORITY(2);
     sub_8004558(s);
+}
+
+void Task_800EC58(void)
+{
+    Player *p;
+    s16 posX;
+    s16 posY;
+    MapEntity *me;
+    u32 result;
+    s32 deltaX = 0, deltaY = 0;
+    s32 x, y;
+
+    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite *s = &platform->s;
+    me = platform->base.me;
+
+    if (IS_MULTI_PLAYER) {
+        sub_800F1B0(platform);
+    }
+
+    posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
+    posY = TO_WORLD_POS(me->y, platform->base.regionY);
+
+    s->x = posX - gCamera.x;
+    s->y = posY - gCamera.y;
+
+    p = &gPlayer;
+    result = sub_800CCB8(s, posX, posY, p);
+
+    if (result & 0x10000) {
+        p->y += Q_8_8(result);
+        gCurTask->main = sub_800EDF8;
+        platform->unk3C = 30;
+    }
+
+    if (IS_MULTI_PLAYER) {
+        if ((s8)me->x == -3) {
+            platform->unk3C = 0;
+            gCurTask->main = sub_800EFD0;
+        }
+    }
+
+    if (((posX > gCamera.x + 368) || (posX < (gCamera.x - 128))
+         || (posY > (gCamera.y + 288)) || ((posY < gCamera.y - 128)))
+        && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
+        TaskDestroy(gCurTask);
+    } else {
+        if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+            if (platform->unk4C != 0x100) {
+                platform->unk4C += 0x10;
+            }
+        } else {
+            if (platform->unk4C != 0) {
+                platform->unk4C -= 0x10;
+            }
+        }
+
+        s->y += SIN_24_8(platform->unk4C) >> 6;
+
+        sub_8004558(s);
+        sub_80051E8(s);
+    }
 }
