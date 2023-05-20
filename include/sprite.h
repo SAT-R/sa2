@@ -128,6 +128,8 @@ typedef struct {
 #define SPRITE_FLAG_PRIORITY(prio)                  ((prio) << 12)
 #define SPRITE_FLAG_14(v)                           ((v) << 14)
 #define SPRITE_FLAG_17(v)                           ((v) << 17)
+#define SPRITE_FLAG_18(v)                           ((v) << 18)
+#define SPRITE_FLAG_19(v)                           ((v) << 19)
 #define SPRITE_FLAG_26(v)                           ((v) << 26)
 #define SPRITE_FLAG_30(v)                           ((v) << 30)
 #define SPRITE_FLAG_31(v)                           ((v) << 31)
@@ -141,6 +143,8 @@ typedef struct {
 #define SPRITE_FLAG_MASK_PRIORITY                   SPRITE_FLAG_PRIORITY(3)
 #define SPRITE_FLAG_MASK_14                         SPRITE_FLAG_14(1)
 #define SPRITE_FLAG_MASK_17                         SPRITE_FLAG_17(1)
+#define SPRITE_FLAG_MASK_18                         SPRITE_FLAG_18(1)
+#define SPRITE_FLAG_MASK_19                         SPRITE_FLAG_19(1)
 #define SPRITE_FLAG_MASK_26                         SPRITE_FLAG_26(1)
 #define SPRITE_FLAG_MASK_30                         SPRITE_FLAG_30(1)
 #define SPRITE_FLAG_MASK_31                         SPRITE_FLAG_31(1)
@@ -211,7 +215,6 @@ typedef struct {
     /* 0x06 */ u8 variant;
 } TileInfo;
 
-// Register menu item
 s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);

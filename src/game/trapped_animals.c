@@ -50,9 +50,10 @@ typedef struct {
 
 #define ANIMAL_VARIANTS_PER_ZONE 3
 
-#define ANIMAL_GRAVITY           Q_24_8(0.1875)
-#define ANIMAL_BOUNCE_SPEED      Q_24_8(4)
-#define ANIMAL_BOUNCE_MOVE_SPEED Q_24_8(2)
+#define ANIMAL_GRAVITY            Q_24_8(0.1875)
+#define ANIMAL_BOUNCE_SPEED       Q_24_8(4)
+#define ANIMAL_BOUNCE_MOVE_SPEED  Q_24_8(2)
+#define ANIMAL_INITIAL_MOVE_SPEED Q_24_8(0.00390625)
 
 #define ANIMAL_TYPE_STATIC   0
 #define ANIMAL_TYPE_FLYING   1
@@ -68,10 +69,9 @@ static void Task_FlyingAnimal(void);
 static void Task_StaticAnimalMain(void);
 static void Task_BouncingAnimal(void);
 
-#define IS_ANIMAL_OUT_OF_CAM_RANGE(x, y)                                                \
-    ((x) < -32 || (x) > 272 || ((y) + 32) < 0 || (y) > 192)
+#define IS_ANIMAL_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE_3(x, y, 32, 32)
 
-const TrappedAnimalData gAnimsTrappedAnimals[][ANIMAL_VARIANTS_PER_ZONE] = {
+static const TrappedAnimalData sAnimsTrappedAnimals[][ANIMAL_VARIANTS_PER_ZONE] = {
     {
         { 192, SA2_ANIM_ANIMAL_SEA_OTTER, 0, ANIMAL_TYPE_STATIC },
         { 196, SA2_ANIM_ANIMAL_KOALA, 0, ANIMAL_TYPE_STATIC },
@@ -189,7 +189,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     Sprite *sprite;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
-    animal->moveSpeed = Q_24_8(0.00390625);
+    animal->moveSpeed = ANIMAL_INITIAL_MOVE_SPEED;
     animal->fallSpeed = -ANIMAL_BOUNCE_SPEED;
     animal->bouncing = FALSE;
     animal->inAirTimer = 42;
@@ -327,10 +327,10 @@ void CreateTrappedAnimal(s16 x, s16 y)
         zone = ZONE_7;
     }
 
-    type = gAnimsTrappedAnimals[zone][gTrappedAnimalVariant].type;
-    options.vramOffset = gAnimsTrappedAnimals[zone][gTrappedAnimalVariant].vramOffset;
-    options.anim = gAnimsTrappedAnimals[zone][gTrappedAnimalVariant].anim;
-    options.variant = gAnimsTrappedAnimals[zone][gTrappedAnimalVariant].variant;
+    type = sAnimsTrappedAnimals[zone][gTrappedAnimalVariant].type;
+    options.vramOffset = sAnimsTrappedAnimals[zone][gTrappedAnimalVariant].vramOffset;
+    options.anim = sAnimsTrappedAnimals[zone][gTrappedAnimalVariant].anim;
+    options.variant = sAnimsTrappedAnimals[zone][gTrappedAnimalVariant].variant;
     options.x = x;
     options.y = y;
 
