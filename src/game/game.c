@@ -8,6 +8,7 @@
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
 #include "game/stage_palette_loader.h"
+#include "game/stage_entities_manager.h"
 #include "constants/songs.h"
 #include "trig.h"
 
@@ -31,7 +32,6 @@ void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
 void CreateStageRingsManager(void);
-void CreateStageEntitiesManager(void);
 
 void sub_8019120(void);
 void CreateMultiplayerPlayer(u8);

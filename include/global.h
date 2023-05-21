@@ -164,6 +164,13 @@ typedef void (*VoidFn)(void);
     a = ((u8)b ^ (u8)a) * -1;                                                           \
     b = (u8)b * -1;
 
+typedef struct {
+    u8 reserved : 4;
+    u8 compressedType : 4;
+    u32 size : 24;
+    void *data;
+} RLCompressed;
+
 struct BlendRegs {
     u16 bldCnt;
     u16 bldAlpha;
