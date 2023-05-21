@@ -784,7 +784,7 @@ _080083C4:
 	blt _0800841C
 _080083D2:
 	ldrb r1, [r4, #0xa]
-	ldr r3, _080084F8 @ =PlayerCharacterIdleAnims
+	ldr r3, _080084F8 @ =gPlayerCharacterIdleAnims
 	ldr r2, _080084FC @ =gMultiplayerCharacters
 	adds r0, r4, #0
 	adds r0, #0x56
@@ -944,7 +944,7 @@ _080084EE:
 	adds r5, r4, r0
 	b _08008642
 	.align 2, 0
-_080084F8: .4byte PlayerCharacterIdleAnims
+_080084F8: .4byte gPlayerCharacterIdleAnims
 _080084FC: .4byte gMultiplayerCharacters
 _08008500: .4byte gCamera
 _08008504: .4byte gPlayer

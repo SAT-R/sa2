@@ -826,7 +826,7 @@ _08015C0E:
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _08015C76
-	ldr r1, _08015CD4 @ =PlayerCharacterIdleAnims
+	ldr r1, _08015CD4 @ =gPlayerCharacterIdleAnims
 	adds r0, r6, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -880,7 +880,7 @@ _08015CC4: .4byte sub_8015FF0
 _08015CC8: .4byte gUnknown_080D6736
 _08015CCC: .4byte IWRAM_START + 0x100
 _08015CD0: .4byte IWRAM_START + 0x102
-_08015CD4: .4byte PlayerCharacterIdleAnims
+_08015CD4: .4byte gPlayerCharacterIdleAnims
 _08015CD8: .4byte IWRAM_START + 0x104
 _08015CDC: .4byte IWRAM_START + 0x106
 _08015CE0: .4byte IWRAM_START + 0x10A

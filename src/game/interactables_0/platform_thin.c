@@ -172,7 +172,7 @@ static void Task_CommonPlatformThinMain(void)
                     break;
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
-                    unk68 -= PlayerCharacterIdleAnims[player->character];
+                    unk68 -= gPlayerCharacterIdleAnims[player->character];
                     if (unk64 == 0x24 && unk68 == 0x33 && unk6A == 1
                         && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;

@@ -9,7 +9,7 @@
 #define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
 #define GET_CHARACTER_ANIM(player)                                                      \
-    (player->unk68 - PlayerCharacterIdleAnims[player->character])
+    (player->unk68 - gPlayerCharacterIdleAnims[player->character])
 
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);

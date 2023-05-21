@@ -126,7 +126,7 @@ void sub_8060ED0(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
@@ -240,7 +240,7 @@ void sub_8061228(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }

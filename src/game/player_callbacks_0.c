@@ -83,6 +83,37 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
     { 25, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 3 },
 };
 
+#if 0
+struct Task *sub_8011B88(s32 x, s32 y, u32 p2)
+{
+    TaskStrc_801F15C *ts;
+    struct Task *t;
+
+    if (IS_MULTI_PLAYER) {
+        return NULL;
+    }
+
+    t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, sub_801F214, sub_801F550);
+    ts = TaskGetStructPtr(t);
+
+    if (p2 == 0) {
+        ts->playerAnim = gPlayer.unk68;
+        ts->playerVariant = gPlayer.unk6A;
+    } else if (p2 >= 0 && p2 <= 2) {
+        // _08011BFC
+        ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
+        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+
+        if (gPlayer.unk64 < 80) {
+            AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
+        }
+    }
+    // _08011C44
+
+    return t;
+}
+#endif
+
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
 {
@@ -762,7 +793,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         Sprite *s;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, sub_801F214, sub_801F550);
         ts = TaskGetStructPtr(t);
-        ts->playerAnim = PlayerCharacterIdleAnims[gPlayer.character];
+        ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
         // This is += because it's adding to the base Idle character animation
         ts->playerAnim += gUnknown_080D6736[gPlayer.unk64][0];
@@ -968,7 +999,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
 
         if (gPlayer.unk64 < 80) {
-            ts->playerAnim += PlayerCharacterIdleAnims[gPlayer.character];
+            ts->playerAnim += gPlayerCharacterIdleAnims[gPlayer.character];
         }
 
         s = &ts->s;

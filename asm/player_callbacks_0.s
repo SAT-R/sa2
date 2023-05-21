@@ -49,15 +49,15 @@ _08011BAC:
 	str r2, [sp, #4]
 	movs r2, #0xe8
 	bl sub_801F15C
-	mov sb, r0
+	mov sb, r0              @ sb = t
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r1, r0
-	mov r0, r8
+	adds r7, r1, r0         @ r7 = ts
+	mov r0, r8              @ r0 = r8 = p2
 	cmp r0, #0
 	bne _08011BFC
-	adds r0, r4, #0
+	adds r0, r4, #0         @ r0 = r4 = gPlayer
 	adds r0, #0x68
 	ldrh r0, [r0]
 	strh r0, [r7, #0x16]
@@ -96,7 +96,7 @@ _08011BFC:
 	ldrsh r0, [r2, r1]
 	cmp r0, #0x4f
 	bgt _08011C44
-	ldr r1, _08011C90 @ =PlayerCharacterIdleAnims
+	ldr r1, _08011C90 @ =gPlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
 	ldrb r0, [r0]
@@ -146,5 +146,5 @@ _08011C7E:
 	bx r1
 	.align 2, 0
 _08011C8C: .4byte gUnknown_080D6736
-_08011C90: .4byte PlayerCharacterIdleAnims
+_08011C90: .4byte gPlayerCharacterIdleAnims
 _08011C94: .4byte gUnknown_080D5518
