@@ -148,8 +148,8 @@ gSpriteInits_Interactables:
     .4byte initSprite_Interactable_Spikes_HidingUp
     .4byte initSprite_Interactable_Spikes_HidingDown
 
-    .4byte initSprite_Interactable_CorkScrew_Start
-    .4byte initSprite_Interactable_CorkScrew_End
+    .4byte initSprite_Interactable_Corkscrew_Start
+    .4byte initSprite_Interactable_Corkscrew_End
     .4byte initSprite_Interactable_BouncyBar
     .4byte initSprite_Interactable_GrindRail_Start
     .4byte initSprite_Interactable_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
