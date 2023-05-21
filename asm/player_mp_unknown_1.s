@@ -28,7 +28,7 @@ _0801923C: .4byte gUnknown_03005510
 sub_8019240: @ 0x08019240
 	push {r4, lr}
 	adds r4, r0, #0
-	ldr r0, _080192A4 @ =gUnknown_030054DC
+	ldr r0, _080192A4 @ =gEntitesManagerTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0801929E
@@ -79,13 +79,13 @@ _0801929E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080192A4: .4byte gUnknown_030054DC
+_080192A4: .4byte gEntitesManagerTask
 
 	thumb_func_start sub_80192A8
 sub_80192A8: @ 0x080192A8
 	push {r4, lr}
 	adds r4, r0, #0
-	ldr r0, _080192F8 @ =gUnknown_030054DC
+	ldr r0, _080192F8 @ =gEntitesManagerTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _080192F0
@@ -124,13 +124,13 @@ _080192F0:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080192F8: .4byte gUnknown_030054DC
+_080192F8: .4byte gEntitesManagerTask
 
 	thumb_func_start sub_80192FC
 sub_80192FC: @ 0x080192FC
 	push {r4, lr}
 	adds r4, r0, #0
-	ldr r0, _0801934C @ =gUnknown_030054DC
+	ldr r0, _0801934C @ =gEntitesManagerTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08019344
@@ -169,7 +169,7 @@ _08019344:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801934C: .4byte gUnknown_030054DC
+_0801934C: .4byte gEntitesManagerTask
 
 	thumb_func_start sub_8019350
 sub_8019350: @ 0x08019350
@@ -189,7 +189,7 @@ sub_8019350: @ 0x08019350
 sub_8019368: @ 0x08019368
 	push {r4, lr}
 	adds r4, r0, #0
-	ldr r0, _080193B4 @ =gUnknown_030054DC
+	ldr r0, _080193B4 @ =gEntitesManagerTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _080193AC
@@ -226,7 +226,7 @@ _080193AC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080193B4: .4byte gUnknown_030054DC
+_080193B4: .4byte gEntitesManagerTask
 
     thumb_func_start sub_80193B8
 sub_80193B8:

@@ -107,7 +107,7 @@ void sub_8081200(void)
     gCamera.movementTask = NULL;
     gUnknown_0300543C = 0;
     *gameMode = val;
-    gUnknown_030054DC = 0;
+    gEntitesManagerTask = NULL;
 
     for (i = 0; i < 4; i++) {
         gMultiplayerPlayerTasks[i] = NULL;
