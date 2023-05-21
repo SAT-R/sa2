@@ -400,7 +400,6 @@ void Task_80622C8(void)
             player->speedAirY = player->speedGroundX;
             player->unk6D = 5;
             gCurTask->main = Task_8061F60;
-            asm("");
         } else if (player->unk5E & gPlayerControls.jump) {
             player->unk64 = 50;
             player->speedAirX = 0;
