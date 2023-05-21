@@ -87,7 +87,7 @@ struct UNK_3005A70 {
 
 extern u8 gUnknown_0300543C;
 
-extern u32 gUnknown_030054DC;
+extern struct Task *gEntitesManagerTask;
 extern u8 gUnknown_03005B34;
 
 extern u8 gUnknown_030054E4;

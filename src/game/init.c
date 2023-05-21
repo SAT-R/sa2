@@ -34,7 +34,7 @@ void GameStart(void)
 
     gUnknown_0300543C = 0;
     gGameMode = GAME_MODE_SINGLE_PLAYER;
-    gUnknown_030054DC = 0;
+    gEntitesManagerTask = NULL;
     gUnknown_03005B34 = 0;
     gDemoPlayCounter = 0;
     // TODO: resolve this
