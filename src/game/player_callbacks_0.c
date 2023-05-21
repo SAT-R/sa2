@@ -16,7 +16,7 @@
  *       if they are only called directly in the code, those are NOT callbacks.
  */
 
-void sub_8011B88(s32, s32, u32);
+struct Task *sub_8011B88(s32 x, s32 y, u16 p2);
 void PlayerCB_8011DCC(Player *);
 void PlayerCB_8011E88(Player *);
 void Task_8012034(void);
@@ -73,7 +73,13 @@ extern void sub_8029FA4(Player *p);
 
 extern u16 gUnknown_080D6736[115][2];
 
-static const s16 gUnknown_080D552C[6]
+const u16 gUnknown_080D5518[3][3] = {
+    {15, 16, 3},
+    {16, 17, 1},
+    {16, 51, 3},
+};
+
+const ALIGNED(4) s16 gUnknown_080D552C[6]
     = { Q_24_8(2.0), Q_24_8(4.0), Q_24_8(6.0), Q_24_8(8.0), Q_24_8(10.0), 0 };
 
 static const s8 gUnknown_080D5538[4] = { 96, 97, 98, 99 };
@@ -83,11 +89,12 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
     { 25, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 3 },
 };
 
-#if 0
-struct Task *sub_8011B88(s32 x, s32 y, u32 p2)
+#if 01
+struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 {
     TaskStrc_801F15C *ts;
     struct Task *t;
+    Sprite *s;
 
     if (IS_MULTI_PLAYER) {
         return NULL;
@@ -99,16 +106,30 @@ struct Task *sub_8011B88(s32 x, s32 y, u32 p2)
     if (p2 == 0) {
         ts->playerAnim = gPlayer.unk68;
         ts->playerVariant = gPlayer.unk6A;
-    } else if (p2 >= 0 && p2 <= 2) {
-        // _08011BFC
-        ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
-        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
-
-        if (gPlayer.unk64 < 80) {
-            AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
+    } else {
+        switch(p2) {
+            case 0:
+            case 1:
+            case 2: {
+                // _08011BFC
+                ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
+                ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+    
+                if (gPlayer.unk64 < 80) {
+                    AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
+                    ts->playerAnim += idle;
+                }
+            } break;
         }
     }
     // _08011C44
+    s = &ts->s;
+
+    s->graphics.dest = VramMalloc(gUnknown_080D5518[p2][0]);
+    s->graphics.anim = gUnknown_080D5518[p2][1];
+    s->variant = gUnknown_080D5518[p2][2];
+    s->unk1A = 0x200;
+    s->unk10 = SPRITE_FLAG_PRIORITY(2);
 
     return t;
 }
