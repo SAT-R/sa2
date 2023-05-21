@@ -245,7 +245,7 @@ void sub_8061228(void)
     }
 }
 
-void initSprite_Interactable_CorkScrew_Start(MapEntity *me, u16 spriteRegionX,
+void initSprite_Interactable_Corkscrew_Start(MapEntity *me, u16 spriteRegionX,
                                              u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8060D34, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);
@@ -261,7 +261,7 @@ void initSprite_Interactable_CorkScrew_Start(MapEntity *me, u16 spriteRegionX,
     corkscrew->unk10 = Q_24_8(4);
 }
 
-void initSprite_Interactable_CorkScrew_End(MapEntity *me, u16 spriteRegionX,
+void initSprite_Interactable_Corkscrew_End(MapEntity *me, u16 spriteRegionX,
                                            u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8061088, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);

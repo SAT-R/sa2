@@ -147,7 +147,7 @@ SECTIONS
         build/sa2/src/game/interactables_1/spikes.o(.text);
         build/sa2/src/game/interactables_1/corkscrew.o(.text);
         build/sa2/src/game/interactables_1/bouncy_bar.o(.text);
-        build/sa2/asm/interactable_corkscrew_3D.o(.text);
+        build/sa2/src/game/interactables_1/corkscrew_3d.o(.text);
         build/sa2/src/game/interactables_1/stage_goal.o(.text);
         build/sa2/src/game/interactables_1/checkpoint.o(.text);
         build/sa2/src/game/interactables_1/windmill.o(.text);
