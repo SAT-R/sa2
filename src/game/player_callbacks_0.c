@@ -74,9 +74,9 @@ extern void sub_8029FA4(Player *p);
 extern u16 gUnknown_080D6736[115][2];
 
 const u16 gUnknown_080D5518[3][3] = {
-    {15, 16, 3},
-    {16, 17, 1},
-    {16, 51, 3},
+    { 15, SA2_ANIM_CHAR(SA2_CHAR_ANIM_16, CHARACTER_SONIC), 3 },
+    { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_SONIC), 1 },
+    { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC), 3 },
 };
 
 const ALIGNED(4) s16 gUnknown_080D552C[6]
@@ -89,7 +89,6 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
     { 25, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 3 },
 };
 
-#if 01
 struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 {
     TaskStrc_801F15C *ts;
@@ -103,26 +102,25 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, sub_801F214, sub_801F550);
     ts = TaskGetStructPtr(t);
 
-    if (p2 == 0) {
-        ts->playerAnim = gPlayer.unk68;
-        ts->playerVariant = gPlayer.unk6A;
-    } else {
-        switch(p2) {
-            case 0:
-            case 1:
-            case 2: {
-                // _08011BFC
-                ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
-                ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
-    
-                if (gPlayer.unk64 < 80) {
-                    AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
-                    ts->playerAnim += idle;
-                }
-            } break;
-        }
+    switch (p2) {
+        case 0: {
+            ts->playerAnim = gPlayer.unk68;
+            ts->playerVariant = gPlayer.unk6A;
+        } break;
+
+        case 1:
+        case 2: {
+            // _08011BFC
+            ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
+            ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+
+            if (gPlayer.unk64 < 80) {
+                AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
+                ts->playerAnim += idle;
+            }
+        } break;
     }
-    // _08011C44
+
     s = &ts->s;
 
     s->graphics.dest = VramMalloc(gUnknown_080D5518[p2][0]);
@@ -133,7 +131,6 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 
     return t;
 }
-#endif
 
 // For Sonic's Down-Trick "Bound"
 struct Task *sub_8011C98(s32 x, s32 y)
