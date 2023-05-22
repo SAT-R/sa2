@@ -447,7 +447,7 @@ static void UpdateScreenDma(void)
     }
 
     gUnknown_030026F4 = 0xff;
-    for (; j <= 3; j++) {
+    for (; j < ARRAY_COUNT(spriteUpdateFuncs); j++) {
         if (spriteUpdateFuncs[j]() == 0) {
             gUnknown_030026F4 = j;
             break;

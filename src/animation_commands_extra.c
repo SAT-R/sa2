@@ -211,18 +211,18 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
     }
 }
 
+// https://decomp.me/scratch/oyiq8
 NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex;
     u16 sp00[2];
     u8 r4;
-    u32 sp08;
     u8 *spVramPtr;
     u16 bgSize_TxtOrAff;
 
     for (bgIndex = 0; bgIndex < 4; bgIndex++) {
 
-        if ((gUnknown_03002280[bgIndex][1] == gUnknown_03002280[bgIndex][3])
+        if ((gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][3])
             && (gUnknown_03002280[bgIndex][2] == gUnknown_03002280[bgIndex][0]))
             continue;
 
@@ -234,12 +234,11 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
             vramBgCtrl += target * 4;
 
             r4 = gUnknown_03002280[bgIndex][1];
-            sp08 = gUnknown_03002280[bgIndex][0];
 
             if ((bgIndex > 1)
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
-                spVramPtr = (u8 *)&vramBgCtrl[sp08];
+                spVramPtr = (u8 *)&vramBgCtrl[gUnknown_03002280[bgIndex][0]];
                 bgSize_TxtOrAff = 0x10 << (gBgCntRegs[bgIndex] >> 14);
 
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
@@ -251,7 +250,7 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
                     DmaCopy16(3, &sp00, &spVramPtr[bgSize_TxtOrAff * r4],
-                              (((s32)(value + (value >> 31))) / 2));
+                              (((s32)(value + (value >> 31))) >> 1));
                 } else {
                     // _080040F8
                     // u8 i2 = i + 1;
@@ -261,8 +260,9 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
                         v |= v << 8;
                         sp00[0] = v;
 
-                        DmaCopy32(3, &sp00, &spVramPtr[bgIndex * r4],
-                                  (s32)(bgIndex * 4 - sp08 + 1));
+                        DmaCopy32(
+                            3, &sp00, &spVramPtr[bgIndex * r4],
+                            (s32)(bgIndex * 4 - gUnknown_03002280[bgIndex][0] + 1));
                     }
                 }
                 // then -> _0800422C
