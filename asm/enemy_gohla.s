@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Gohla
-Create_Gohla: @ 0x08051788
+	thumb_func_start CreateEntity_Gohla
+CreateEntity_Gohla: @ 0x08051788
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

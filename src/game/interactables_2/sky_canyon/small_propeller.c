@@ -75,8 +75,8 @@ void Task_IA_SmallPropeller_UpdateInFanRegion(void);
 void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused);
 void DestroyTask_Interactable087(Sprite_SmallPropeller *);
 
-static void Create_SmallPropeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY, u32 kind)
+static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
+                                        u16 spriteRegionY, u8 spriteY, u32 kind)
 {
     struct Task *t
         = TaskCreate(Task_IA_SmallPropeller_UpdateRegular, sizeof(Sprite_SmallPropeller),
@@ -349,32 +349,32 @@ void DestroyTask_Interactable087(Sprite_SmallPropeller *prop)
     TaskDestroy(gCurTask);
 }
 
-void Create_SmallPropeller_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_SmallPropeller_Left(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 spriteY)
 {
-    Create_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                          SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE));
+    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE));
 }
 
-void Create_SmallPropeller_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_SmallPropeller_Right(MapEntity *me, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 spriteY)
 {
-    Create_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                          SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, FALSE));
+    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, FALSE));
 }
 
-void Create_SmallPropeller_Left_Periodic(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SmallPropeller_Left_Periodic(MapEntity *me, u16 spriteRegionX,
+                                               u16 spriteRegionY, u8 spriteY)
 {
-    Create_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                          SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE));
+    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE));
 }
 
-void Create_SmallPropeller_Right_Periodic(MapEntity *me, u16 spriteRegionX,
-                                          u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SmallPropeller_Right_Periodic(MapEntity *me, u16 spriteRegionX,
+                                                u16 spriteRegionY, u8 spriteY)
 {
-    Create_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                          SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE));
+    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE));
 }
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void)

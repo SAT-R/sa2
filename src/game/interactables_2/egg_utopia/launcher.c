@@ -76,8 +76,8 @@ static void SetTaskMain_807DE98(Sprite_EggUtopia_Launcher *unused);
 static void Task_807E16C(void);
 static bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher);
 
-void Create_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
-                     u32 kind)
+void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY, u32 kind)
 {
     struct Task *t = TaskCreate(Task_807DE98, sizeof(Sprite_EggUtopia_Launcher), 0x2010,
                                 0, TaskDestructor_807DF38);
@@ -449,32 +449,32 @@ static void sub_807E0D0(Sprite_EggUtopia_Launcher *launcher)
     launcher->unk60[0][1] = launcher->unk58;
 }
 
-void Create_Launcher_Left_GDown(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_Launcher_Left_GDown(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 spriteY)
 {
-    Create_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
-                    LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN));
+    CreateEntity_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                          LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN));
 }
 
-void Create_Launcher_Right_GDown(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_Launcher_Right_GDown(MapEntity *me, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 spriteY)
 {
-    Create_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
-                    LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN));
+    CreateEntity_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                          LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN));
 }
 
-void Create_Launcher_Left_GUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Launcher_Left_GUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
-    Create_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
-                    LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP));
+    CreateEntity_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                          LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP));
 }
 
-void Create_Launcher_Right_GUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_Launcher_Right_GUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
-    Create_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
-                    LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP));
+    CreateEntity_Launcher(me, spriteRegionX, spriteRegionY, spriteY,
+                          LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP));
 }
 
 static void Task_807E16C(void)

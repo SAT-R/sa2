@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Balloon
-Create_Balloon: @ 0x0805849C
+	thumb_func_start CreateEntity_Balloon
+CreateEntity_Balloon: @ 0x0805849C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

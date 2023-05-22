@@ -30,7 +30,8 @@ static void StageGoalToggle_HandleMultiplayerFinish(void);
 
 #define GOAL_LEVER_TILES 4
 
-void Create_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
                                 TaskDestructor_8062E7C);
@@ -302,8 +303,8 @@ static void sub_8062D44(void)
     }
 }
 
-void Create_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY)
+void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle),
                                 0x2010, 0, NULL);

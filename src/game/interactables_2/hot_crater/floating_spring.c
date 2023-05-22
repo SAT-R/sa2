@@ -40,8 +40,8 @@ static bool32 sub_80751CC(Sprite_FloatingSpring *);
 static void sub_80752D8(void);
 static void sub_8075334(Sprite_FloatingSpring *);
 
-void Create_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     struct Task *t
         = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);

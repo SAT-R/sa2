@@ -31,7 +31,8 @@ static void Task_80811BC(void);
 
 extern void sub_80122DC(s32, s32);
 
-void Create_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     if (IS_SINGLE_PLAYER) {
         struct Task *t

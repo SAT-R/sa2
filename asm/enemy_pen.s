@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Pen
-Create_Pen: @ 0x08057854
+	thumb_func_start CreateEntity_Pen
+CreateEntity_Pen: @ 0x08057854
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

@@ -10,8 +10,8 @@ gUnknown_080D8F50:
 .syntax unified
 .arm
 
-	thumb_func_start Create_GejiGeji
-Create_GejiGeji: @ 0x08057D84
+	thumb_func_start CreateEntity_GejiGeji
+CreateEntity_GejiGeji: @ 0x08057D84
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

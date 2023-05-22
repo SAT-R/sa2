@@ -58,7 +58,8 @@ const u16 gUnknown_080DFC78[NUM_NOTE_BLOCK_TYPES + 1] = {
     SE_MUSIC_PLANT_GLOCKENSPIEL_6, MUS_DUMMY,
 };
 
-void Create_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0,
                                 TaskDestructor_8075CC0);

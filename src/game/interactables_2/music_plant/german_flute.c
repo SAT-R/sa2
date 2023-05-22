@@ -279,7 +279,8 @@ static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
     gCurTask->main = Task_GermanFlute;
 }
 
-void Create_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0,
                                 TaskDestructor_GermanFlute);

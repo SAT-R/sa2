@@ -96,7 +96,8 @@ static void Task_InclineRamp(void)
     }
 }
 
-void Create_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 param3)
 {
     struct Task *t
         = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);

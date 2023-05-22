@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Flickey
-Create_Flickey: @ 0x08058920
+	thumb_func_start CreateEntity_Flickey
+CreateEntity_Flickey: @ 0x08058920
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

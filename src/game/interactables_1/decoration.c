@@ -28,7 +28,7 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 
 #define decoId d.sData[0]
 
-void Create_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
+void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
     struct Task *t;
     Sprite_Decoration *decoBase;

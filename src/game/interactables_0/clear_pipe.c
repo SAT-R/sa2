@@ -124,8 +124,8 @@ static void Task_ClearPipe_End(void)
     }
 }
 
-void Create_ClearPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_ClearPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_ClearPipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
@@ -138,8 +138,8 @@ void Create_ClearPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void Create_ClearPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY)
+void CreateEntity_ClearPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_ClearPipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);

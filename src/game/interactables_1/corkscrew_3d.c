@@ -482,8 +482,8 @@ void Task_8062414(void)
     }
 }
 
-void Create_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
@@ -499,8 +499,8 @@ void Create_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     corkscrew->unkC = +Q_24_8(4);
 }
 
-void Create_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);

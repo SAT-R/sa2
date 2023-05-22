@@ -70,7 +70,7 @@ static void sub_8074604(Sprite_HCCrane *);
 
 #define CRANE_MAX_ACCELERATION (Q_8_8(12))
 
-void Create_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
                                 TaskDestructor_80743B8);

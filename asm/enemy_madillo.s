@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Madillo
-Create_Madillo: @ 0x08055EDC
+	thumb_func_start CreateEntity_Madillo
+CreateEntity_Madillo: @ 0x08055EDC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

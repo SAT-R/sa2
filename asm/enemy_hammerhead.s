@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Hammerhead
-Create_Hammerhead: @ 0x08056BF8
+	thumb_func_start CreateEntity_Hammerhead
+CreateEntity_Hammerhead: @ 0x08056BF8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

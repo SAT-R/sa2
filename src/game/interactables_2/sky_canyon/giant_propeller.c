@@ -321,8 +321,8 @@ static void sub_807BA70(void)
     unk807->unk62++;
 }
 
-void Create_GiantPropeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_GiantPropeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_GiantPropeller),
                                 0x2010, 0, TaskDestructor_GiantPropeller);

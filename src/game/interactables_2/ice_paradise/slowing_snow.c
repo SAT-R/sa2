@@ -33,8 +33,8 @@ static void Task_SlowingSnow(void);
 static void TaskDestructor_SlowingSnow(struct Task *t);
 static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
-void Create_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY,
-                        u8 spriteY)
+void CreateEntity_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0,
                                 TaskDestructor_SlowingSnow);

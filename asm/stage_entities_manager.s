@@ -117,143 +117,143 @@ gSpritePosData_enemies:
 
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
-    .4byte Create_Toggle_PlayerLayer
-    .4byte Create_Toggle_PlayerLayer
-    .4byte Create_Platform
-    .4byte Create_Spring_Normal_Up
-    .4byte Create_Spring_Normal_Down
-    .4byte Create_Spring_Normal_Right
-    .4byte Create_Spring_Normal_Left
-    .4byte Create_Spring_Big_UpLeft
-    .4byte Create_Spring_Big_UpRight
-    .4byte Create_Spring_Big_DownRight
-    .4byte Create_Spring_Big_DownLeft
-    .4byte Create_Spring_Small_UpRight
-    .4byte Create_Spring_Small_UpLeft
-    .4byte Create_CommonThinPlatform
-    .4byte Create_Decoration
-    .4byte Create_Ramp
-    .4byte Create_Booster
-    .4byte Create_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
-    .4byte Create_BouncySpring
-    .4byte Create_019
-    .4byte Create_RotatingHandle
-    .4byte Create_GappedLoop_Start
-    .4byte Create_GappedLoop_End
+    .4byte CreateEntity_Toggle_PlayerLayer
+    .4byte CreateEntity_Toggle_PlayerLayer
+    .4byte CreateEntity_Platform
+    .4byte CreateEntity_Spring_Normal_Up
+    .4byte CreateEntity_Spring_Normal_Down
+    .4byte CreateEntity_Spring_Normal_Right
+    .4byte CreateEntity_Spring_Normal_Left
+    .4byte CreateEntity_Spring_Big_UpLeft
+    .4byte CreateEntity_Spring_Big_UpRight
+    .4byte CreateEntity_Spring_Big_DownRight
+    .4byte CreateEntity_Spring_Big_DownLeft
+    .4byte CreateEntity_Spring_Small_UpRight
+    .4byte CreateEntity_Spring_Small_UpLeft
+    .4byte CreateEntity_CommonThinPlatform
+    .4byte CreateEntity_Decoration
+    .4byte CreateEntity_Ramp
+    .4byte CreateEntity_Booster
+    .4byte CreateEntity_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
+    .4byte CreateEntity_BouncySpring
+    .4byte CreateEntity_019
+    .4byte CreateEntity_RotatingHandle
+    .4byte CreateEntity_GappedLoop_Start
+    .4byte CreateEntity_GappedLoop_End
 
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Down
-    .4byte Create_Spikes_LeftRight @ Left
-    .4byte Create_Spikes_LeftRight @ Right
-    .4byte Create_Spikes_HidingUp
-    .4byte Create_Spikes_HidingDown
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Down
+    .4byte CreateEntity_Spikes_LeftRight @ Left
+    .4byte CreateEntity_Spikes_LeftRight @ Right
+    .4byte CreateEntity_Spikes_HidingUp
+    .4byte CreateEntity_Spikes_HidingDown
 
-    .4byte Create_Corkscrew_Start
-    .4byte Create_Corkscrew_End
-    .4byte Create_BouncyBar
-    .4byte Create_GrindRail_Start
-    .4byte Create_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
-    .4byte Create_GrindRail_EndGround
-    .4byte Create_GrindRail_End_ForcedJump
-    .4byte Create_GrindRail_EndAlternate
-    .4byte Create_GrindRail_EndAir
-    .4byte Create_GrindRail_EndGround_Left
-    .4byte Create_GrindRail_EndAir_Left
-    .4byte Create_Corkscrew3D_Start
-    .4byte Create_Corkscrew3D_End
-    .4byte Create_StageGoal
-    .4byte Create_Checkpoint
-    .4byte Create_044    @ Used at layer transitions on three-quarter-type loops
-    .4byte Create_Toggle_Checkpoint
-    .4byte Create_Toggle_StageGoal
-    .4byte Create_WindUpStick @ Character rotates a bit around it, then shoots up/down
-    .4byte Create_048
-    .4byte Create_HookRail_Start
-    .4byte Create_HookRail_End
-    .4byte Create_Windmill
-    .4byte Create_TurnAroundBar
-    .4byte Create_Crane
-    .4byte Create_DashRing
-    .4byte Create_FloatingSpring_Up
-    .4byte Create_Note_Sphere
-    .4byte Create_Note_Block
-    .4byte Create_GuitarString
-    .4byte Create_Keyboard_Vertical
-    .4byte Create_Keyboard_Horizontal_PushLeft
-    .4byte Create_Keyboard_Horizontal_PushRight
-    .4byte Create_GermanFlute
-    .4byte Create_FrenchHorn_Entry
-    .4byte Create_PipeInstrument_Entry
-    .4byte Create_SlowingSnow
-    .4byte Create_FunnelSphere
-    .4byte Create_HalfPipe_End     @ Like in SA1 Neo Green Hill
-    .4byte Create_HalfPipe_Start   @ Like in SA1 Neo Green Hill
-    .4byte Create_069
-    .4byte Create_NoteBlock
-    .4byte Create_044
-    .4byte Create_ClearPipe_Start
-    .4byte Create_ClearPipe_End
-    .4byte Create_LightBridge               @ Techno Base - Loud Digital Path
-    .4byte Create_075_0
-    .4byte Create_075_1
-    .4byte Create_075_2             @ Techno Base - Box Platform (Launch player up)
-    .4byte Create_078
-    .4byte Create_079
-    .4byte Create_080
-    .4byte Create_Platform_Square
-    .4byte Create_GiantPropeller
-    .4byte Create_SlidyIce
-    .4byte Create_SmallSpinnyWindmill
-    .4byte Create_085
-    .4byte Create_Whirlwind_0
-    .4byte Create_SmallPropeller_Left
-    .4byte Create_SmallPropeller_Right
-    .4byte Create_SmallPropeller_Left_Periodic
-    .4byte Create_SmallPropeller_Right_Periodic
-    .4byte Create_Launcher_Left_GDown
-    .4byte Create_Launcher_Right_GDown
-    .4byte Create_Cannon
-    .4byte Create_094
-    .4byte Create_095
-    .4byte Create_FlyingHandle
-    .4byte Create_SpeedingPlatform
-    .4byte Create_Toggle_Gravity__Down
-    .4byte Create_Toggle_Gravity__Up
-    .4byte Create_Toggle_Gravity__Toggle
-    .4byte Create_Launcher_Left_GUp
-    .4byte Create_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
-    .4byte Create_SpecialRing
-    .4byte Create_Whirlwind_1
-    .4byte Create_Interactable105
+    .4byte CreateEntity_Corkscrew_Start
+    .4byte CreateEntity_Corkscrew_End
+    .4byte CreateEntity_BouncyBar
+    .4byte CreateEntity_GrindRail_Start
+    .4byte CreateEntity_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
+    .4byte CreateEntity_GrindRail_EndGround
+    .4byte CreateEntity_GrindRail_End_ForcedJump
+    .4byte CreateEntity_GrindRail_EndAlternate
+    .4byte CreateEntity_GrindRail_EndAir
+    .4byte CreateEntity_GrindRail_EndGround_Left
+    .4byte CreateEntity_GrindRail_EndAir_Left
+    .4byte CreateEntity_Corkscrew3D_Start
+    .4byte CreateEntity_Corkscrew3D_End
+    .4byte CreateEntity_StageGoal
+    .4byte CreateEntity_Checkpoint
+    .4byte CreateEntity_044    @ Used at layer transitions on three-quarter-type loops
+    .4byte CreateEntity_Toggle_Checkpoint
+    .4byte CreateEntity_Toggle_StageGoal
+    .4byte CreateEntity_WindUpStick @ Character rotates a bit around it, then shoots up/down
+    .4byte CreateEntity_048
+    .4byte CreateEntity_HookRail_Start
+    .4byte CreateEntity_HookRail_End
+    .4byte CreateEntity_Windmill
+    .4byte CreateEntity_TurnAroundBar
+    .4byte CreateEntity_Crane
+    .4byte CreateEntity_DashRing
+    .4byte CreateEntity_FloatingSpring_Up
+    .4byte CreateEntity_Note_Sphere
+    .4byte CreateEntity_Note_Block
+    .4byte CreateEntity_GuitarString
+    .4byte CreateEntity_Keyboard_Vertical
+    .4byte CreateEntity_Keyboard_Horizontal_PushLeft
+    .4byte CreateEntity_Keyboard_Horizontal_PushRight
+    .4byte CreateEntity_GermanFlute
+    .4byte CreateEntity_FrenchHorn_Entry
+    .4byte CreateEntity_PipeInstrument_Entry
+    .4byte CreateEntity_SlowingSnow
+    .4byte CreateEntity_FunnelSphere
+    .4byte CreateEntity_HalfPipe_End     @ Like in SA1 Neo Green Hill
+    .4byte CreateEntity_HalfPipe_Start   @ Like in SA1 Neo Green Hill
+    .4byte CreateEntity_069
+    .4byte CreateEntity_NoteBlock
+    .4byte CreateEntity_044
+    .4byte CreateEntity_ClearPipe_Start
+    .4byte CreateEntity_ClearPipe_End
+    .4byte CreateEntity_LightBridge               @ Techno Base - Loud Digital Path
+    .4byte CreateEntity_075_0
+    .4byte CreateEntity_075_1
+    .4byte CreateEntity_075_2             @ Techno Base - Box Platform (Launch player up)
+    .4byte CreateEntity_078
+    .4byte CreateEntity_079
+    .4byte CreateEntity_080
+    .4byte CreateEntity_Platform_Square
+    .4byte CreateEntity_GiantPropeller
+    .4byte CreateEntity_SlidyIce
+    .4byte CreateEntity_SmallSpinnyWindmill
+    .4byte CreateEntity_085
+    .4byte CreateEntity_Whirlwind_0
+    .4byte CreateEntity_SmallPropeller_Left
+    .4byte CreateEntity_SmallPropeller_Right
+    .4byte CreateEntity_SmallPropeller_Left_Periodic
+    .4byte CreateEntity_SmallPropeller_Right_Periodic
+    .4byte CreateEntity_Launcher_Left_GDown
+    .4byte CreateEntity_Launcher_Right_GDown
+    .4byte CreateEntity_Cannon
+    .4byte CreateEntity_094
+    .4byte CreateEntity_095
+    .4byte CreateEntity_FlyingHandle
+    .4byte CreateEntity_SpeedingPlatform
+    .4byte CreateEntity_Toggle_Gravity__Down
+    .4byte CreateEntity_Toggle_Gravity__Up
+    .4byte CreateEntity_Toggle_Gravity__Toggle
+    .4byte CreateEntity_Launcher_Left_GUp
+    .4byte CreateEntity_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
+    .4byte CreateEntity_SpecialRing
+    .4byte CreateEntity_Whirlwind_1
+    .4byte CreateEntity_Interactable105
 
     @ Enemy code
     @ TODO: Some names might be wrong?
     @       Should be in line with Encyclospeedia (mostly)
     .global gSpriteInits_Enemies
 gSpriteInits_Enemies:
-    .4byte Create_Mon
-    .4byte Create_Kiki
-    .4byte Create_Buzzer
-    .4byte Create_Gohla
-    .4byte Create_KuraKura
-    .4byte Create_Kubinaga
-    .4byte Create_PikoPiko
-    .4byte Create_Bell
-    .4byte Create_Yado
-    .4byte Create_Circus
-    .4byte Create_Koura
-    .4byte Create_Madillo
-    .4byte Create_Straw
-    .4byte Create_Hammerhead
-    .4byte Create_Spinner
-    .4byte Create_Mouse
-    .4byte Create_Pen
-    .4byte Create_GejiGeji
-    .4byte Create_Balloon
-    .4byte Create_Flickey
-    .4byte Create_Kyura
-    .4byte Create_Star
-    .4byte Create_BulletBuzzer
+    .4byte CreateEntity_Mon
+    .4byte CreateEntity_Kiki
+    .4byte CreateEntity_Buzzer
+    .4byte CreateEntity_Gohla
+    .4byte CreateEntity_KuraKura
+    .4byte CreateEntity_Kubinaga
+    .4byte CreateEntity_PikoPiko
+    .4byte CreateEntity_Bell
+    .4byte CreateEntity_Yado
+    .4byte CreateEntity_Circus
+    .4byte CreateEntity_Koura
+    .4byte CreateEntity_Madillo
+    .4byte CreateEntity_Straw
+    .4byte CreateEntity_Hammerhead
+    .4byte CreateEntity_Spinner
+    .4byte CreateEntity_Mouse
+    .4byte CreateEntity_Pen
+    .4byte CreateEntity_GejiGeji
+    .4byte CreateEntity_Balloon
+    .4byte CreateEntity_Flickey
+    .4byte CreateEntity_Kyura
+    .4byte CreateEntity_Star
+    .4byte CreateEntity_BulletBuzzer
 
 
     .global gUnknown_080D5020
@@ -263,35 +263,35 @@ gUnknown_080D5020:
 @; collect the rings interactables
     .global gUnknown_080D502C
 gUnknown_080D502C:
-    .4byte Create_Toggle_PlayerLayer
-    .4byte Create_Toggle_PlayerLayer
-    .4byte Create_Spring_Normal_Up
-    .4byte Create_Spring_Normal_Down
-    .4byte Create_Spring_Normal_Right
-    .4byte Create_Spring_Normal_Left
-    .4byte Create_Spring_Big_UpLeft
-    .4byte Create_Spring_Big_UpRight
-    .4byte Create_Spring_Big_DownLeft
-    .4byte Create_Spring_Big_DownRight
-    .4byte Create_Spring_Small_UpLeft
-    .4byte Create_Spring_Small_UpRight
-    .4byte Create_Ramp
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Up
-    .4byte Create_Spikes_Up
-    .4byte Create_GrindRail_Start
-    .4byte Create_GrindRail_StartAir
-    .4byte Create_GrindRail_EndGround
-    .4byte Create_GrindRail_End_ForcedJump
-    .4byte Create_GrindRail_EndAlternate
-    .4byte Create_GrindRail_EndAir
-    .4byte Create_GrindRail_EndGround_Left
-    .4byte Create_GrindRail_EndAir_Left
-    .4byte Create_MysteryItemBox
-    .4byte Create_8080368
+    .4byte CreateEntity_Toggle_PlayerLayer
+    .4byte CreateEntity_Toggle_PlayerLayer
+    .4byte CreateEntity_Spring_Normal_Up
+    .4byte CreateEntity_Spring_Normal_Down
+    .4byte CreateEntity_Spring_Normal_Right
+    .4byte CreateEntity_Spring_Normal_Left
+    .4byte CreateEntity_Spring_Big_UpLeft
+    .4byte CreateEntity_Spring_Big_UpRight
+    .4byte CreateEntity_Spring_Big_DownLeft
+    .4byte CreateEntity_Spring_Big_DownRight
+    .4byte CreateEntity_Spring_Small_UpLeft
+    .4byte CreateEntity_Spring_Small_UpRight
+    .4byte CreateEntity_Ramp
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_Spikes_Up
+    .4byte CreateEntity_GrindRail_Start
+    .4byte CreateEntity_GrindRail_StartAir
+    .4byte CreateEntity_GrindRail_EndGround
+    .4byte CreateEntity_GrindRail_End_ForcedJump
+    .4byte CreateEntity_GrindRail_EndAlternate
+    .4byte CreateEntity_GrindRail_EndAir
+    .4byte CreateEntity_GrindRail_EndGround_Left
+    .4byte CreateEntity_GrindRail_EndAir_Left
+    .4byte CreateEntity_MysteryItemBox
+    .4byte CreateEntity_8080368
 
     .global gSpriteTileInits_PreStageEntry
 gSpriteTileInits_PreStageEntry:

@@ -49,7 +49,8 @@ static void sub_807F784(Sprite_FlyingHandle *);
 
 #define FLYING_HANDLE_VRAM_TILES 25
 
-void Create_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     u32 i;
     Sprite *sprite;

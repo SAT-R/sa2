@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start Create_Mouse
-Create_Mouse: @ 0x080571B4
+	thumb_func_start CreateEntity_Mouse
+CreateEntity_Mouse: @ 0x080571B4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

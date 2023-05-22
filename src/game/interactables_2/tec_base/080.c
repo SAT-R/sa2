@@ -28,7 +28,7 @@ static void sub_807B318(Sprite_LightGlobe *);
 static void sub_807B350(Sprite_LightGlobe *);
 static void sub_807B3B0(void);
 
-void Create_080(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_080(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010,
                                 0, TaskDestructor_Interactable080);

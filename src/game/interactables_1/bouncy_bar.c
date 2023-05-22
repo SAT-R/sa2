@@ -27,7 +27,8 @@ const s8 gUnknown_080D94EE[] = { -16, -18, -20 };
 
 const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
 
-void Create_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY)
 {
     Sprite *displayed;
     struct Task *t = TaskCreate(sub_806160C, 0x44, 0x2010, 0, TaskDestructor_80095E8);

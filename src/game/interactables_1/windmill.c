@@ -27,7 +27,8 @@ static const TileInfo sWindmillParts[] = {
     { 4, SA2_ANIM_WIND_MILL_PART, 6 },
 };
 
-void Create_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     u8 i, j;
     void *ramDests[4];

@@ -54,7 +54,8 @@ static const u16 sAnimIdsCheckpoint[NUM_COURSE_ZONES + 1][2] = {
     [ZONE_7] = { SA2_ANIM_905, 0 }, [ZONE_FINAL] = { SA2_ANIM_899, 0 },
 };
 
-void Create_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY)
 {
     struct Task *t;
     Sprite_Checkpoint *chkPt;
@@ -250,8 +251,8 @@ static void Task_Interactable_Toggle_Checkpoint(void)
     }
 }
 
-void Create_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX,
+                                    u16 spriteRegionY, u8 spriteY)
 {
     if (gUnknown_030055B0 == 0) {
         struct Task *t = TaskCreate(Task_Interactable_Toggle_Checkpoint,

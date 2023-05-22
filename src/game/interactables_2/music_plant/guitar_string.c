@@ -40,7 +40,8 @@ extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
 extern bool32 sub_8076320(Sprite_GuitarString *);
 
-void Create_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010,
                                 0, TaskDestructor_GuitarString);

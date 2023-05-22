@@ -41,7 +41,8 @@ static bool32 sub_80609B4(Sprite *, MapEntity *, Sprite_Spikes *, Player *, u32 
 static void TaskDestructor_8060CF4(struct Task *);
 static u32 sub_8060D08(Sprite *, s32 x, s32 y, Player *);
 
-void Create_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F810, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
@@ -81,7 +82,8 @@ void Create_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sub_8004558(s);
 }
 
-void Create_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F928, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
     Sprite_Spikes *spikes = TaskGetStructPtr(t);
@@ -202,8 +204,8 @@ static void sub_805F928(void)
     }
 }
 
-void Create_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY)
+void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805FBA0, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
@@ -383,8 +385,8 @@ static void sub_805FBA0(void)
     }
 }
 
-void Create_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
@@ -451,8 +453,8 @@ static void Task_805FF68(void)
     }
 }
 
-void Create_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_806012C, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);

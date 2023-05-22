@@ -17,7 +17,7 @@ typedef struct {
 static void Task_Ramp(void);
 static void TaskDestructor_Ramp(struct Task *);
 
-void Create_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 temp;
     s32 temp2;

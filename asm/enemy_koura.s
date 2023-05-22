@@ -15,8 +15,8 @@ gUnknown_080D8F38:
 .syntax unified
 .arm
 
-	thumb_func_start Create_Koura
-Create_Koura: @ 0x08054068
+	thumb_func_start CreateEntity_Koura
+CreateEntity_Koura: @ 0x08054068
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

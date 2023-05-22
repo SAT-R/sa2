@@ -55,7 +55,8 @@ static const u16 sNoteSphereSfx[8] = {
     SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
-void Create_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0,
                                 TaskDestructor_Interactable_MusicPlant_Note_Sphere);

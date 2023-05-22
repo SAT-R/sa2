@@ -31,9 +31,9 @@ typedef struct {
 #define NUM_SPRING_KINDS        3
 
 #define INITIALIZE_SPRING(springType)                                                   \
-    Create_Spring(springType, me, spriteRegionX, spriteRegionY, param3)
+    CreateEntity_Spring(springType, me, spriteRegionX, spriteRegionY, param3)
 
-static void Create_Spring(u8, MapEntity *, u16, u16, u8);
+static void CreateEntity_Spring(u8, MapEntity *, u16, u16, u8);
 static void Task_Spring(void);
 static void sub_800E3D0(void);
 static bool32 sub_800E490(Sprite *p0, MapEntity *me, Sprite_Spring *spring,
@@ -88,8 +88,8 @@ static const u16 sSpring_MusicPlant_Soundeffects[5]
     = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3,
         SE_MUSIC_PLANT_SPRING_4, MUS_DUMMY };
 
-static void Create_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
-                          u16 spriteRegionY, u8 spriteY)
+static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
+                                u16 spriteRegionY, u8 spriteY)
 {
     s16 springKind = SPRING_KIND_NORMAL;
     struct Task *t = TaskCreate(Task_Spring, sizeof(Sprite_Spring), 0x2010, 0,
@@ -224,62 +224,62 @@ static void TaskDestructor_Spring(struct Task *t)
     }
 }
 
-void Create_Spring_Big_DownLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 param3)
+void CreateEntity_Spring_Big_DownLeft(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(6);
 }
 
-void Create_Spring_Normal_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 param3)
+void CreateEntity_Spring_Normal_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_DOWN);
 }
 
-void Create_Spring_Big_DownRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 param3)
+void CreateEntity_Spring_Big_DownRight(MapEntity *me, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(7);
 }
 
-void Create_Spring_Normal_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 param3)
+void CreateEntity_Spring_Normal_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 param3)
 {
     INITIALIZE_SPRING(2);
 }
 
-void Create_Spring_Normal_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 param3)
+void CreateEntity_Spring_Normal_Right(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(3);
 }
 
-void Create_Spring_Big_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 param3)
+void CreateEntity_Spring_Big_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 param3)
 {
     INITIALIZE_SPRING(4);
 }
 
-void Create_Spring_Normal_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 param3)
+void CreateEntity_Spring_Normal_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_UP);
 }
 
-void Create_Spring_Big_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 param3)
+void CreateEntity_Spring_Big_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 param3)
 {
     INITIALIZE_SPRING(5);
 }
 
-void Create_Spring_Small_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 param3)
+void CreateEntity_Spring_Small_UpLeft(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(8);
 }
 
-void Create_Spring_Small_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 param3)
+void CreateEntity_Spring_Small_UpRight(MapEntity *me, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(9);
 }

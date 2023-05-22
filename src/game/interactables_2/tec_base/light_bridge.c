@@ -86,7 +86,8 @@ static const s16 sCurvedBridgePositions[][3] = {
     { 83, -58, 0 }, { 88, -69, 0 }, { 91, -81, 0 }, { 92, -92, 0 },
 };
 
-void Create_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     void *vram;
     u8 i;

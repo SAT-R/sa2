@@ -17,12 +17,12 @@ typedef struct {
 #define RAIL_KIND_80 0x80
 
 #define INITIALIZE_RAIL(type)                                                           \
-    Create_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
+    CreateEntity_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
 #define INITIALIZE_RAIL_AIR(type)                                                       \
-    Create_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
+    CreateEntity_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
 
-extern void Create_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY, u8 railType);
+extern void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY, u8 railType);
 
 void Task_GrindRail(void);
 void sub_8010464(void);
@@ -265,8 +265,8 @@ NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void
 }
 END_NONMATCH
 
-void Create_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
-                      u8 railType)
+void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
     struct Task *t
@@ -310,8 +310,8 @@ void Create_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void Create_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY, u8 railType)
+void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
     struct Task *t
@@ -372,51 +372,51 @@ void sub_8010464(void)
     }
 }
 
-void Create_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
     INITIALIZE_RAIL(2);
 }
 
-void Create_GrindRail_End_ForcedJump(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_GrindRail_End_ForcedJump(MapEntity *me, u16 spriteRegionX,
+                                           u16 spriteRegionY, u8 spriteY)
 {
     INITIALIZE_RAIL(3);
 }
 
-void Create_GrindRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_GrindRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     INITIALIZE_RAIL(0);
 }
 
-void Create_GrindRail_EndGround(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_GrindRail_EndGround(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 spriteY)
 {
     INITIALIZE_RAIL(1);
 }
 
-void Create_GrindRail_EndAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY)
+void CreateEntity_GrindRail_EndAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY)
 {
     INITIALIZE_RAIL_AIR(2);
 }
 
-void Create_GrindRail_EndAir_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_GrindRail_EndAir_Left(MapEntity *me, u16 spriteRegionX,
+                                        u16 spriteRegionY, u8 spriteY)
 {
     INITIALIZE_RAIL_AIR(3);
 }
 
-// Might be called "Create_GrindRail_StartAir" instead?
-void Create_GrindRail_EndAlternate(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+// Might be called "CreateEntity_GrindRail_StartAir" instead?
+void CreateEntity_GrindRail_EndAlternate(MapEntity *me, u16 spriteRegionX,
+                                         u16 spriteRegionY, u8 spriteY)
 {
     INITIALIZE_RAIL_AIR(0);
 }
 
-void Create_GrindRail_EndGround_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_GrindRail_EndGround_Left(MapEntity *me, u16 spriteRegionX,
+                                           u16 spriteRegionY, u8 spriteY)
 {
     INITIALIZE_RAIL_AIR(1);
 }

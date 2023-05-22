@@ -33,8 +33,8 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *);
 #define HALF_PIPE_DIRECTION_FORWARD 0
 #define HALF_PIPE_DIRECTION_REVERSE 1
 
-static void Create_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY, s32 direction)
+static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY, s32 direction)
 {
     struct Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe),
                                 0x2010, 0, TaskDestructor_HalfPipe);
@@ -231,15 +231,16 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
     TaskDestroy(gCurTask);
 }
 
-void Create_HalfPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HalfPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
-    Create_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
-                    HALF_PIPE_DIRECTION_REVERSE);
+    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
+                          HALF_PIPE_DIRECTION_REVERSE);
 }
 
-void Create_HalfPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_HalfPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                 u8 spriteY)
 {
-    Create_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
-                    HALF_PIPE_DIRECTION_FORWARD);
+    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
+                          HALF_PIPE_DIRECTION_FORWARD);
 }
