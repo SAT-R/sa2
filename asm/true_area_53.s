@@ -38459,7 +38459,7 @@ _0804CD44: .4byte IWRAM_START + 0x94
 _0804CD48: .4byte IWRAM_START + 0xD0
 _0804CD4C: .4byte gUnknown_03005B4C
 
-@; CreateTrueArea53IntroBoss - Used to suck up creme's mum
+@; CreateTrueArea53IntroBoss - Used when Vanilla gets captured
 	thumb_func_start sub_804CD50
 sub_804CD50: @ 0x0804CD50
 	push {r4, r5, r6, r7, lr}
