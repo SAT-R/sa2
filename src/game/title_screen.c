@@ -895,7 +895,7 @@ static void Task_IntroSkyAnim(void)
 
     // Every other frame
     if (titleScreen->animFrame & 1) {
-        sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 10, &gBgAffineRegs);
+        sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 10, gBgAffineRegs);
         gDispCnt |= DISPCNT_BG0_ON;
     }
 
@@ -1937,7 +1937,7 @@ static void Task_StartTitleScreenDemo(void)
 static void ShowGameLogo(struct TitleScreen *_)
 {
     // angle, width, height, right, bottom, left, top
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 20, 8, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 20, 8, gBgAffineRegs);
 }
 
 static void BirdAnimEnd(void)

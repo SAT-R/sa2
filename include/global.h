@@ -177,20 +177,8 @@ struct BlendRegs {
     u16 bldY;
 };
 
-struct BgAffineRegs {
-    /* 0x00 */ u16 bg2pa;
-    /* 0x02 */ u16 bg2pb;
-    /* 0x04 */ u16 bg2pc;
-    /* 0x06 */ u16 bg2pd;
-    /* 0x08 */ u32 bg2x;
-    /* 0x0C */ u32 bg2y;
-    /* 0x10 */ u16 bg3pa;
-    /* 0x12 */ u16 bg3pb;
-    /* 0x14 */ u16 bg3pc;
-    /* 0x16 */ u16 bg3pd;
-    /* 0x18 */ u32 bg3x;
-    /* 0x1C */ u32 bg3y;
-};
+// TODO: Should this be in a GBA-specific header file?
+#define NUM_AFFINE_BACKGROUNDS 2
 
 // Values to be passed top the affine registers
 // (used by BG2/BG3 in affine screen modes)
@@ -198,12 +186,6 @@ typedef struct {
     /* 0x00 */ u16 pa, pb, pc, pd;
     /* 0x08 */ u32 x, y;
 } BgAffineReg;
-
-/*** TODO: Replace 'BgAffineRegs' with this! ***/
-// Should we introduce "#define NUM_AFFINE_BACKGROUNDS 2"?
-typedef struct {
-    /* 0x00 */ BgAffineReg regs[2];
-} BgAffineRegs_Alt;
 
 // TODO: Find better place for this
 typedef void (*HBlankFunc)(u8 vcount);

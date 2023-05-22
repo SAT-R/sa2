@@ -438,7 +438,7 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
     sub_808E35C(scene);
 
     transition = &scene->unk100;
@@ -514,7 +514,7 @@ void sub_808E424(void)
         }
     }
 
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
     if (NextTransitionFrame(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         scene->unk110 = 0;
         gCurTask->main = sub_808E4C8;
@@ -533,7 +533,7 @@ void sub_808E4C8(void)
     }
 
     scene = TaskGetStructPtr(gCurTask);
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (scene->unk110++ > 0x154) {
         scene->unk110 = 0;
@@ -579,7 +579,7 @@ void sub_808E6B0(void);
 void sub_808E63C(void)
 {
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (scene->unk110++ > 300) {
         struct TransitionState *transition;
@@ -598,7 +598,7 @@ void sub_808E63C(void)
 void sub_808E6B0(void)
 {
     struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, &gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (NextTransitionFrame(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
         if (gCurrentLevel >= gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {

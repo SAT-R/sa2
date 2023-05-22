@@ -37,7 +37,7 @@ u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gUnknown_030018F0 = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
-struct BgAffineRegs gBgAffineRegs ALIGNED(8) = {};
+BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 u32 gVramHeapStartAddr = 0;
 u16 gUnknown_03001944 ALIGNED(4) = 0;
 u8 gUnknown_03001948 ALIGNED(4) = 0;
@@ -228,18 +228,21 @@ void GameInit(void)
     DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
     DmaFill32(3, 0, gBgPalette, sizeof(gBgPalette));
 
-    gBgAffineRegs.bg2pa = 0x100;
-    gBgAffineRegs.bg2pb = 0;
-    gBgAffineRegs.bg2pc = 0;
-    gBgAffineRegs.bg2pd = 0x100;
-    gBgAffineRegs.bg2x = 0;
-    gBgAffineRegs.bg2y = 0;
-    gBgAffineRegs.bg3pa = 0x100;
-    gBgAffineRegs.bg3pb = 0;
-    gBgAffineRegs.bg3pc = 0;
-    gBgAffineRegs.bg3pd = 0x100;
-    gBgAffineRegs.bg3x = 0;
-    gBgAffineRegs.bg3y = 0;
+    // BG2
+    gBgAffineRegs[0].pa = 0x100;
+    gBgAffineRegs[0].pb = 0;
+    gBgAffineRegs[0].pc = 0;
+    gBgAffineRegs[0].pd = 0x100;
+    gBgAffineRegs[0].x = 0;
+    gBgAffineRegs[0].y = 0;
+
+    // BG3
+    gBgAffineRegs[1].pa = 0x100;
+    gBgAffineRegs[1].pb = 0;
+    gBgAffineRegs[1].pc = 0;
+    gBgAffineRegs[1].pd = 0x100;
+    gBgAffineRegs[1].x = 0;
+    gBgAffineRegs[1].y = 0;
 
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;

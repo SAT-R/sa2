@@ -155,19 +155,16 @@ void sub_8003914(Sprite *sprite)
         //     gDispCnt 'Mode' is an int, not a bitfield!
         if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {
             // __sub_8003954
-            BgAffineRegs_Alt *affineRegs;
             s32 affineX, affineY;
             s32 posX, posY;
 
             posX = dims->offsetX - sprite->x;
             affineX = Mod(posX, 16);
-            // TODO: Remove this cast after replacing 'BgAffineRegs'
-            affineRegs = (BgAffineRegs_Alt *)&gBgAffineRegs;
-            affineRegs->regs[bgId - 2].x = Q_24_8(affineX);
+            gBgAffineRegs[bgId - 2].x = Q_24_8(affineX);
 
             posY = dims->offsetY - sprite->y;
             affineY = Mod(posY, 8);
-            affineRegs->regs[bgId - 2].y = Q_24_8(affineY);
+            gBgAffineRegs[bgId - 2].y = Q_24_8(affineY);
         } else {
             // _080039A4
             s32 scrollX, scrollY;
@@ -189,28 +186,28 @@ NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", u32 sub_80039E4(void)) { }
 END_NONMATCH
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
-                 struct BgAffineRegs *affine)
+                 BgAffineReg *affine)
 {
-    affine->bg2pa = ((COS(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
-    affine->bg2pb = ((SIN(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
-    affine->bg2pc = ((-SIN(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
-    affine->bg2pd = ((COS(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->pa = ((COS(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->pb = ((SIN(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->pc = ((-SIN(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->pd = ((COS(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
 
     p5 *= -1;
     p6 *= -1;
     {
         // __sub_8003FA8
-        s32 r1 = (s16)affine->bg2pa * p5;
-        s32 r3 = (s16)affine->bg2pb * p6;
+        s32 r1 = (s16)affine->pa * p5;
+        s32 r3 = (s16)affine->pb * p6;
         r1 += r3;
-        affine->bg2x = r1 + p3 * 256;
+        affine->x = r1 + p3 * 256;
     }
     {
         // __sub_8003FBE
-        s32 r1 = (s16)affine->bg2pc * p5;
-        s32 r3 = (s16)affine->bg2pd * p6;
+        s32 r1 = (s16)affine->pc * p5;
+        s32 r3 = (s16)affine->pd * p6;
         r1 += r3;
-        affine->bg2y = r1 + p4 * 256;
+        affine->y = r1 + p4 * 256;
     }
 }
 
