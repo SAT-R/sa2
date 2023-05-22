@@ -104,8 +104,7 @@ static const u16 sUnknown_080DFB90[DASH_RING__NUM_ORIENTATIONS][6] = {
     { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 }, { 0 },
 };
 
-void initSprite_Interactable_DashRing(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void Create_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 ringType = DASH_RING__TYPE_REGULAR;
 

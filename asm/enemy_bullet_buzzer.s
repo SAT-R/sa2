@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_BulletBuzzer
-initSprite_Enemy_BulletBuzzer: @ 0x0805971C
+	thumb_func_start Create_BulletBuzzer
+Create_BulletBuzzer: @ 0x0805971C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

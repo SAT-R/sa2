@@ -46,8 +46,8 @@ static const u16 gUnknown_080E02AA[][3]
 
 static const u16 unused = 0;
 
-void initSprite_Interactable_MysteryItemBox(MapEntity *me, u16 spriteRegionX,
-                                            u16 spriteRegionY, u8 spriteY)
+void Create_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     Sprite *sprite;
     Sprite_MysteryItemBox *itemBox;

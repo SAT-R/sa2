@@ -22,8 +22,7 @@ static void sub_8054D20(void);
 
 #define ANIM_BELL_TILES 20
 
-void initSprite_Enemy_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void Create_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8054BF4, sizeof(Sprite_Bell), 0x4080, 0,
                                 TaskDestructor_80095E8);

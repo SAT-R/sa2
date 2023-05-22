@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Yado
-initSprite_Enemy_Yado: @ 0x08054E0C
+	thumb_func_start Create_Yado
+Create_Yado: @ 0x08054E0C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}

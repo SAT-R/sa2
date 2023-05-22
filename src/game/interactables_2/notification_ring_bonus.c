@@ -45,8 +45,8 @@ static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-void initSprite_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                        UNUSED u8 spriteY)
+void Create_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                    UNUSED u8 spriteY)
 {
     s32 screenX, screenY;
 

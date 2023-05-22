@@ -117,143 +117,143 @@ gSpritePosData_enemies:
 
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
-    .4byte initSprite_Interactable_Toggle_PlayerLayer
-    .4byte initSprite_Interactable_Toggle_PlayerLayer
-    .4byte initSprite_Interactable_Platform
-    .4byte initSprite_Interactable_Spring_Normal_Up
-    .4byte initSprite_Interactable_Spring_Normal_Down
-    .4byte initSprite_Interactable_Spring_Normal_Right
-    .4byte initSprite_Interactable_Spring_Normal_Left
-    .4byte initSprite_Interactable_Spring_Big_UpLeft
-    .4byte initSprite_Interactable_Spring_Big_UpRight
-    .4byte initSprite_Interactable_Spring_Big_DownRight
-    .4byte initSprite_Interactable_Spring_Big_DownLeft
-    .4byte initSprite_Interactable_Spring_Small_UpRight
-    .4byte initSprite_Interactable_Spring_Small_UpLeft
-    .4byte initSprite_Interactable_CommonThinPlatform
-    .4byte initSprite_Interactable_Decoration
-    .4byte initSprite_Interactable_Ramp
-    .4byte initSprite_Interactable_Booster
-    .4byte initSprite_Interactable_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
-    .4byte initSprite_Interactable_BouncySpring
-    .4byte initSprite_Interactable_019
-    .4byte initSprite_Interactable_RotatingHandle
-    .4byte initSprite_Interactable_gappedLoop_Start
-    .4byte initSprite_Interactable_gappedLoop_End
+    .4byte Create_Toggle_PlayerLayer
+    .4byte Create_Toggle_PlayerLayer
+    .4byte Create_Platform
+    .4byte Create_Spring_Normal_Up
+    .4byte Create_Spring_Normal_Down
+    .4byte Create_Spring_Normal_Right
+    .4byte Create_Spring_Normal_Left
+    .4byte Create_Spring_Big_UpLeft
+    .4byte Create_Spring_Big_UpRight
+    .4byte Create_Spring_Big_DownRight
+    .4byte Create_Spring_Big_DownLeft
+    .4byte Create_Spring_Small_UpRight
+    .4byte Create_Spring_Small_UpLeft
+    .4byte Create_CommonThinPlatform
+    .4byte Create_Decoration
+    .4byte Create_Ramp
+    .4byte Create_Booster
+    .4byte Create_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
+    .4byte Create_BouncySpring
+    .4byte Create_019
+    .4byte Create_RotatingHandle
+    .4byte Create_GappedLoop_Start
+    .4byte Create_GappedLoop_End
 
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Down
-    .4byte initSprite_Interactable_Spikes_LeftRight @ Left
-    .4byte initSprite_Interactable_Spikes_LeftRight @ Right
-    .4byte initSprite_Interactable_Spikes_HidingUp
-    .4byte initSprite_Interactable_Spikes_HidingDown
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Down
+    .4byte Create_Spikes_LeftRight @ Left
+    .4byte Create_Spikes_LeftRight @ Right
+    .4byte Create_Spikes_HidingUp
+    .4byte Create_Spikes_HidingDown
 
-    .4byte initSprite_Interactable_Corkscrew_Start
-    .4byte initSprite_Interactable_Corkscrew_End
-    .4byte initSprite_Interactable_BouncyBar
-    .4byte initSprite_Interactable_GrindRail_Start
-    .4byte initSprite_Interactable_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
-    .4byte initSprite_Interactable_GrindRail_EndGround
-    .4byte initSprite_Interactable_GrindRail_End_ForcedJump
-    .4byte initSprite_Interactable_GrindRail_EndAlternate
-    .4byte initSprite_Interactable_GrindRail_EndAir
-    .4byte initSprite_Interactable_GrindRail_EndGround_Left
-    .4byte initSprite_Interactable_GrindRail_EndAir_Left
-    .4byte initSprite_Interactable_Corkscrew3D_Start
-    .4byte initSprite_Interactable_Corkscrew3D_End
-    .4byte initSprite_Interactable_StageGoal
-    .4byte initSprite_Interactable_Checkpoint
-    .4byte initSprite_Interactable_044    @ Used at layer transitions on three-quarter-type loops
-    .4byte initSprite_Interactable_Toggle_Checkpoint
-    .4byte initSprite_Interactable_Toggle_StageGoal
-    .4byte initSprite_Interactable_WindUpStick @ Character rotates a bit around it, then shoots up/down
-    .4byte initSprite_Interactable048
-    .4byte initSprite_Interactable_HookRail_Start
-    .4byte initSprite_Interactable_HookRail_End
-    .4byte initSprite_InteractableWindmill
-    .4byte initSprite_InteractableTurnAroundBar
-    .4byte initSprite_Interactable_HotCrater_Crane
-    .4byte initSprite_Interactable_DashRing
-    .4byte initSprite_Interactable_FloatingSpring_Up
-    .4byte initSprite_Interactable_MusicPlant_Note_Sphere
-    .4byte initSprite_Interactable_MusicPlant_Note_Block
-    .4byte initSprite_Interactable_MusicPlant_GuitarString
-    .4byte initSprite_Interactable_MusicPlant_Keyboard_Vertical
-    .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft
-    .4byte initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight
-    .4byte initSprite_Interactable_MusicPlant_GermanFlute
-    .4byte initSprite_Interactable_MusicPlant_FrenchHorn_Entry
-    .4byte initSprite_Interactable_MusicPlant_PipeInstrument_Entry
-    .4byte initSprite_Interactable_IceParadise_SlowingSnow
-    .4byte initSprite_Interactable_IceParadise_FunnelSphere
-    .4byte initSprite_Interactable_IceParadise_HalfPipe_End     @ Like in SA1 Neo Green Hill
-    .4byte initSprite_Interactable_IceParadise_HalfPipe_Start   @ Like in SA1 Neo Green Hill
-    .4byte initSprite_Interactable069
-    .4byte initSprite_InteractableTecBaseNoteBlock
-    .4byte initSprite_Interactable_044
-    .4byte initSprite_Interactable_ClearPipe_Start
-    .4byte initSprite_Interactable_ClearPipe_End
-    .4byte initSprite_InteractableTecBaseLightBridge               @ Techno Base - Loud Digital Path
-    .4byte initSprite_Interactable075_0
-    .4byte initSprite_Interactable075_1
-    .4byte initSprite_Interactable075_2             @ Techno Base - Box Platform (Launch player up)
-    .4byte initSprite_Interactable078
-    .4byte initSprite_Interactable079
-    .4byte initSprite_Interactable080
-    .4byte initSprite_Interactable_Platform_Square
-    .4byte initSprite_Interactable_SkyCanyon_GiantPropeller
-    .4byte initSprite_Interactable_IceParadise_SlidyIce
-    .4byte initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill
-    .4byte initSprite_Interactable085
-    .4byte initSprite_Interactable_SkyCanyon_Whirlwind_0
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Left_Periodic
-    .4byte initSprite_Interactable_SkyCanyon_SmallPropeller_Right_Periodic
-    .4byte initSprite_EggUtopia_Launcher_Left_GDown
-    .4byte initSprite_EggUtopia_Launcher_Right_GDown
-    .4byte initSprite_InteractableCannon
-    .4byte initSprite_Interactable094
-    .4byte initSprite_Interactable095
-    .4byte initSprite_Interactable_FlyingHandle
-    .4byte initSprite_InteractableSpeedingPlatform
-    .4byte initSprite_Interactable_Toggle_Gravity__Down
-    .4byte initSprite_Interactable_Toggle_Gravity__Up
-    .4byte initSprite_Interactable_Toggle_Gravity__Toggle
-    .4byte initSprite_EggUtopia_Launcher_Left_GUp
-    .4byte initSprite_EggUtopia_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
-    .4byte initSprite_Interactable_SpecialRing
-    .4byte initSprite_Interactable_SkyCanyon_Whirlwind_1
-    .4byte initSprite_Interactable105
+    .4byte Create_Corkscrew_Start
+    .4byte Create_Corkscrew_End
+    .4byte Create_BouncyBar
+    .4byte Create_GrindRail_Start
+    .4byte Create_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
+    .4byte Create_GrindRail_EndGround
+    .4byte Create_GrindRail_End_ForcedJump
+    .4byte Create_GrindRail_EndAlternate
+    .4byte Create_GrindRail_EndAir
+    .4byte Create_GrindRail_EndGround_Left
+    .4byte Create_GrindRail_EndAir_Left
+    .4byte Create_Corkscrew3D_Start
+    .4byte Create_Corkscrew3D_End
+    .4byte Create_StageGoal
+    .4byte Create_Checkpoint
+    .4byte Create_044    @ Used at layer transitions on three-quarter-type loops
+    .4byte Create_Toggle_Checkpoint
+    .4byte Create_Toggle_StageGoal
+    .4byte Create_WindUpStick @ Character rotates a bit around it, then shoots up/down
+    .4byte Create_048
+    .4byte Create_HookRail_Start
+    .4byte Create_HookRail_End
+    .4byte Create_Windmill
+    .4byte Create_TurnAroundBar
+    .4byte Create_Crane
+    .4byte Create_DashRing
+    .4byte Create_FloatingSpring_Up
+    .4byte Create_Note_Sphere
+    .4byte Create_Note_Block
+    .4byte Create_GuitarString
+    .4byte Create_Keyboard_Vertical
+    .4byte Create_Keyboard_Horizontal_PushLeft
+    .4byte Create_Keyboard_Horizontal_PushRight
+    .4byte Create_GermanFlute
+    .4byte Create_FrenchHorn_Entry
+    .4byte Create_PipeInstrument_Entry
+    .4byte Create_SlowingSnow
+    .4byte Create_FunnelSphere
+    .4byte Create_HalfPipe_End     @ Like in SA1 Neo Green Hill
+    .4byte Create_HalfPipe_Start   @ Like in SA1 Neo Green Hill
+    .4byte Create_069
+    .4byte Create_NoteBlock
+    .4byte Create_044
+    .4byte Create_ClearPipe_Start
+    .4byte Create_ClearPipe_End
+    .4byte Create_LightBridge               @ Techno Base - Loud Digital Path
+    .4byte Create_075_0
+    .4byte Create_075_1
+    .4byte Create_075_2             @ Techno Base - Box Platform (Launch player up)
+    .4byte Create_078
+    .4byte Create_079
+    .4byte Create_080
+    .4byte Create_Platform_Square
+    .4byte Create_GiantPropeller
+    .4byte Create_SlidyIce
+    .4byte Create_SmallSpinnyWindmill
+    .4byte Create_085
+    .4byte Create_Whirlwind_0
+    .4byte Create_SmallPropeller_Left
+    .4byte Create_SmallPropeller_Right
+    .4byte Create_SmallPropeller_Left_Periodic
+    .4byte Create_SmallPropeller_Right_Periodic
+    .4byte Create_Launcher_Left_GDown
+    .4byte Create_Launcher_Right_GDown
+    .4byte Create_Cannon
+    .4byte Create_094
+    .4byte Create_095
+    .4byte Create_FlyingHandle
+    .4byte Create_SpeedingPlatform
+    .4byte Create_Toggle_Gravity__Down
+    .4byte Create_Toggle_Gravity__Up
+    .4byte Create_Toggle_Gravity__Toggle
+    .4byte Create_Launcher_Left_GUp
+    .4byte Create_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
+    .4byte Create_SpecialRing
+    .4byte Create_Whirlwind_1
+    .4byte Create_Interactable105
 
     @ Enemy code
     @ TODO: Some names might be wrong?
     @       Should be in line with Encyclospeedia (mostly)
     .global gSpriteInits_Enemies
 gSpriteInits_Enemies:
-    .4byte initSprite_Enemy_Mon
-    .4byte initSprite_Enemy_Kiki
-    .4byte initSprite_Enemy_Buzzer
-    .4byte initSprite_Enemy_Gohla
-    .4byte initSprite_Enemy_KuraKura
-    .4byte initSprite_Enemy_Kubinaga
-    .4byte initSprite_Enemy_PikoPiko
-    .4byte initSprite_Enemy_Bell
-    .4byte initSprite_Enemy_Yado
-    .4byte initSprite_Enemy_Circus
-    .4byte initSprite_Enemy_Koura
-    .4byte initSprite_Enemy_Madillo
-    .4byte initSprite_Enemy_Straw
-    .4byte initSprite_Enemy_Hammerhead
-    .4byte initSprite_Enemy_Spinner
-    .4byte initSprite_Enemy_Mouse
-    .4byte initSprite_Enemy_Pen
-    .4byte initSprite_Enemy_GejiGeji
-    .4byte initSprite_Enemy_Balloon
-    .4byte initSprite_Enemy_Flickey
-    .4byte initSprite_Enemy_Kyura
-    .4byte initSprite_Enemy_Star
-    .4byte initSprite_Enemy_BulletBuzzer
+    .4byte Create_Mon
+    .4byte Create_Kiki
+    .4byte Create_Buzzer
+    .4byte Create_Gohla
+    .4byte Create_KuraKura
+    .4byte Create_Kubinaga
+    .4byte Create_PikoPiko
+    .4byte Create_Bell
+    .4byte Create_Yado
+    .4byte Create_Circus
+    .4byte Create_Koura
+    .4byte Create_Madillo
+    .4byte Create_Straw
+    .4byte Create_Hammerhead
+    .4byte Create_Spinner
+    .4byte Create_Mouse
+    .4byte Create_Pen
+    .4byte Create_GejiGeji
+    .4byte Create_Balloon
+    .4byte Create_Flickey
+    .4byte Create_Kyura
+    .4byte Create_Star
+    .4byte Create_BulletBuzzer
 
 
     .global gUnknown_080D5020
@@ -263,35 +263,35 @@ gUnknown_080D5020:
 @; collect the rings interactables
     .global gUnknown_080D502C
 gUnknown_080D502C:
-    .4byte initSprite_Interactable_Toggle_PlayerLayer
-    .4byte initSprite_Interactable_Toggle_PlayerLayer
-    .4byte initSprite_Interactable_Spring_Normal_Up
-    .4byte initSprite_Interactable_Spring_Normal_Down
-    .4byte initSprite_Interactable_Spring_Normal_Right
-    .4byte initSprite_Interactable_Spring_Normal_Left
-    .4byte initSprite_Interactable_Spring_Big_UpLeft
-    .4byte initSprite_Interactable_Spring_Big_UpRight
-    .4byte initSprite_Interactable_Spring_Big_DownLeft
-    .4byte initSprite_Interactable_Spring_Big_DownRight
-    .4byte initSprite_Interactable_Spring_Small_UpLeft
-    .4byte initSprite_Interactable_Spring_Small_UpRight
-    .4byte initSprite_Interactable_Ramp
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_Spikes_Up
-    .4byte initSprite_Interactable_GrindRail_Start
-    .4byte initSprite_Interactable_GrindRail_StartAir
-    .4byte initSprite_Interactable_GrindRail_EndGround
-    .4byte initSprite_Interactable_GrindRail_End_ForcedJump
-    .4byte initSprite_Interactable_GrindRail_EndAlternate
-    .4byte initSprite_Interactable_GrindRail_EndAir
-    .4byte initSprite_Interactable_GrindRail_EndGround_Left
-    .4byte initSprite_Interactable_GrindRail_EndAir_Left
-    .4byte initSprite_Interactable_MysteryItemBox
-    .4byte initSprite_8080368
+    .4byte Create_Toggle_PlayerLayer
+    .4byte Create_Toggle_PlayerLayer
+    .4byte Create_Spring_Normal_Up
+    .4byte Create_Spring_Normal_Down
+    .4byte Create_Spring_Normal_Right
+    .4byte Create_Spring_Normal_Left
+    .4byte Create_Spring_Big_UpLeft
+    .4byte Create_Spring_Big_UpRight
+    .4byte Create_Spring_Big_DownLeft
+    .4byte Create_Spring_Big_DownRight
+    .4byte Create_Spring_Small_UpLeft
+    .4byte Create_Spring_Small_UpRight
+    .4byte Create_Ramp
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Up
+    .4byte Create_Spikes_Up
+    .4byte Create_GrindRail_Start
+    .4byte Create_GrindRail_StartAir
+    .4byte Create_GrindRail_EndGround
+    .4byte Create_GrindRail_End_ForcedJump
+    .4byte Create_GrindRail_EndAlternate
+    .4byte Create_GrindRail_EndAir
+    .4byte Create_GrindRail_EndGround_Left
+    .4byte Create_GrindRail_EndAir_Left
+    .4byte Create_MysteryItemBox
+    .4byte Create_8080368
 
     .global gSpriteTileInits_PreStageEntry
 gSpriteTileInits_PreStageEntry:

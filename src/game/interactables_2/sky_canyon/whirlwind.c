@@ -88,8 +88,8 @@ static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
 #define UNKNOWN_WHIRLWIND_THIRYTWO 32
 
-void initSprite_Interactable_SkyCanyon_Whirlwind(MapEntity *me, u16 spriteRegionX,
-                                                 u16 spriteRegionY, u8 spriteY, u32 kind)
+void Create_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
+                      u32 kind)
 {
     struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
                                 TaskDestructor_Interactable086);
@@ -598,18 +598,14 @@ void sub_807D1BC(Sprite_IA86 *ia086)
     sub_807CCBC(ia086);
 }
 
-void initSprite_Interactable_SkyCanyon_Whirlwind_0(MapEntity *me, u16 spriteRegionX,
-                                                   u16 spriteRegionY, u8 spriteY)
+void Create_Whirlwind_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_SkyCanyon_Whirlwind(me, spriteRegionX, spriteRegionY,
-                                                spriteY, 0);
+    Create_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void initSprite_Interactable_SkyCanyon_Whirlwind_1(MapEntity *me, u16 spriteRegionX,
-                                                   u16 spriteRegionY, u8 spriteY)
+void Create_Whirlwind_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_SkyCanyon_Whirlwind(me, spriteRegionX, spriteRegionY,
-                                                spriteY, 1);
+    Create_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 1);
 }
 
 void Task_807D268(void)

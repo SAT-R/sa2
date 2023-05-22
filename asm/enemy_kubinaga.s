@@ -12,8 +12,8 @@ gUnknown_080D8F30:
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Kubinaga
-initSprite_Enemy_Kubinaga: @ 0x08052288
+	thumb_func_start Create_Kubinaga
+Create_Kubinaga: @ 0x08052288
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

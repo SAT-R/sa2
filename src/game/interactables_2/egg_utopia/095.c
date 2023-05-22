@@ -27,8 +27,7 @@ static bool32 sub_807F120(Sprite_IA95 *);
 static void TaskDestructor_Interactable095(struct Task *);
 static void DestroyInteractable095(Sprite_IA95 *);
 
-void initSprite_Interactable095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void Create_095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
                                 TaskDestructor_Interactable095);

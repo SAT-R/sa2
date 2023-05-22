@@ -72,8 +72,8 @@ static const u16 sPlatformBreakAnimations[][6] = {
 };
 static const u16 unused = 0;
 
-void initSprite_Interactable_CommonThinPlatform(MapEntity *me, u16 spriteRegionX,
-                                                u16 spriteRegionY, u8 spriteY)
+void Create_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_CommonPlatformThinMain, sizeof(Sprite_CommonThinPlatform),

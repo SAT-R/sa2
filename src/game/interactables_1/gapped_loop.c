@@ -179,8 +179,8 @@ static void Task_JumpSequenceReverse(void)
     }
 }
 
-void initSprite_Interactable_gappedLoop_Start(MapEntity *me, u16 spriteRegionX,
-                                              u16 spriteRegionY, u8 spriteY)
+void Create_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop),
                                 0x2000, 0, NULL);
@@ -196,8 +196,8 @@ void initSprite_Interactable_gappedLoop_Start(MapEntity *me, u16 spriteRegionX,
     gappedLoop->unk10 = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }
 
-void initSprite_Interactable_gappedLoop_End(MapEntity *me, u16 spriteRegionX,
-                                            u16 spriteRegionY, u8 spriteY)
+void Create_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop),
                                 0x2000, 0, NULL);

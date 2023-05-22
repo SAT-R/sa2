@@ -26,8 +26,7 @@ typedef struct {
 static void Task_Interactable094(void);
 static void TaskDestructor_Interactable094(struct Task *);
 
-void initSprite_Interactable094(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void Create_094(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_IA94), 0x2010, 0,
                                 TaskDestructor_Interactable094);

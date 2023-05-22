@@ -23,8 +23,7 @@ typedef struct {
 void Task_EnemySpinner(void);
 void TaskDestructor_80095E8(struct Task *);
 
-void initSprite_Enemy_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void Create_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
                                 TaskDestructor_80095E8);

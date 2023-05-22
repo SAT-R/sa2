@@ -53,8 +53,7 @@ const TileInfo sBoosterAnimationData[2][6] = {
     if (gPlayer.speedGroundX < BOOSTER_SPEED)                                           \
         gPlayer.speedGroundX = BOOSTER_SPEED;
 
-void initSprite_Interactable_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void Create_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster),
                                 0x2000, 0, TaskDestructor_80095E8);

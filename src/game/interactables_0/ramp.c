@@ -14,16 +14,15 @@ typedef struct {
     /* 0x3C */ u16 unk3C;
 } Sprite_Ramp /* size 0x40 */;
 
-static void Task_Interactable_Ramp(void);
-static void TaskDestructor_Interactable_Ramp(struct Task *);
+static void Task_Ramp(void);
+static void TaskDestructor_Ramp(struct Task *);
 
-void initSprite_Interactable_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void Create_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 temp;
     s32 temp2;
-    struct Task *t = TaskCreate(Task_Interactable_Ramp, sizeof(Sprite_Ramp), 0x2010, 0,
-                                TaskDestructor_Interactable_Ramp);
+    struct Task *t
+        = TaskCreate(Task_Ramp, sizeof(Sprite_Ramp), 0x2010, 0, TaskDestructor_Ramp);
     Sprite_Ramp *ramp = TaskGetStructPtr(t);
     Sprite *displayed = &ramp->displayed;
 
@@ -67,7 +66,7 @@ void initSprite_Interactable_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     sub_8004558(displayed);
 }
 
-static void Task_Interactable_Ramp(void)
+static void Task_Ramp(void)
 {
     Player *player = &gPlayer;
     Sprite_Ramp *ramp = TaskGetStructPtr(gCurTask);
@@ -182,7 +181,7 @@ static void Task_Interactable_Ramp(void)
     sub_80051E8(displayed);
 }
 
-static void TaskDestructor_Interactable_Ramp(struct Task *t)
+static void TaskDestructor_Ramp(struct Task *t)
 {
     Sprite_Ramp *ramp = TaskGetStructPtr(t);
     VramFree(ramp->displayed.graphics.dest);

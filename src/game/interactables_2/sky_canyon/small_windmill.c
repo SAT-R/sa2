@@ -26,7 +26,7 @@ typedef struct {
 #define PLAYER_SPIN_DIAMETER 24
 #define ROTATE_SPEED         8
 
-static void Task_Interactable_SkyCanyon_SmallSpinnyWindmill(void);
+static void Task_SmallSpinnyWindmill(void);
 static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *);
 static void SlowWindmillToStop(void);
 static void Task_RotateSequence(void);
@@ -35,12 +35,11 @@ static void RenderWindmill(Sprite_SmallWindmill *);
 static void Despawn(Sprite_SmallWindmill *);
 static void ResetWindmill(Sprite_SmallWindmill *);
 
-void initSprite_Interactable_SkyCanyon_SmallSpinnyWindmill(MapEntity *me,
-                                                           u16 spriteRegionX,
-                                                           u16 spriteRegionY, u8 spriteY)
+void Create_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
 {
     struct Task *t
-        = TaskCreate(Task_Interactable_SkyCanyon_SmallSpinnyWindmill, 0x48, 0x2010, 0,
+        = TaskCreate(Task_SmallSpinnyWindmill, 0x48, 0x2010, 0,
                      TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
     Sprite *sprite;
@@ -251,7 +250,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
     return 0;
 }
 
-static void Task_Interactable_SkyCanyon_SmallSpinnyWindmill(void)
+static void Task_SmallSpinnyWindmill(void)
 {
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
 
@@ -316,7 +315,7 @@ static void ResetWindmill(Sprite_SmallWindmill *windmill)
     sprite->variant = 2;
     sprite->unk22 = 16;
     sub_8004558(sprite);
-    gCurTask->main = Task_Interactable_SkyCanyon_SmallSpinnyWindmill;
+    gCurTask->main = Task_SmallSpinnyWindmill;
 }
 
 static void RenderWindmill(Sprite_SmallWindmill *windmill)

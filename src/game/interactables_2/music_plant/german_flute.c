@@ -34,9 +34,9 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *);
 static void sub_8076CC0(Sprite_GermanFlute UNUSED *);
 static void sub_8076CF4(Sprite_GermanFlute UNUSED *);
 static void sub_8076D08(Sprite_GermanFlute UNUSED *);
-static void Task_Interactable_MusicPlant_GermanFlute(void);
+static void Task_GermanFlute(void);
 static void Task_8076DE8(void);
-static void TaskDestructor_Interactable_MusicPlant_GermanFlute(struct Task *);
+static void TaskDestructor_GermanFlute(struct Task *);
 static void sub_8076E3C(Sprite_GermanFlute *);
 static bool32 sub_8076EAC(Sprite_GermanFlute *);
 static void sub_8076EF4(Sprite_GermanFlute *);
@@ -255,7 +255,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    gCurTask->main = Task_Interactable_MusicPlant_GermanFlute;
+    gCurTask->main = Task_GermanFlute;
 }
 
 static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
@@ -265,26 +265,24 @@ static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    gCurTask->main = Task_Interactable_MusicPlant_GermanFlute;
+    gCurTask->main = Task_GermanFlute;
 }
 
 static void sub_8076CF4(Sprite_GermanFlute UNUSED *flute)
 {
-    gCurTask->main = Task_Interactable_MusicPlant_GermanFlute;
+    gCurTask->main = Task_GermanFlute;
 }
 
 static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gCurTask->main = Task_Interactable_MusicPlant_GermanFlute;
+    gCurTask->main = Task_GermanFlute;
 }
 
-void initSprite_Interactable_MusicPlant_GermanFlute(MapEntity *me, u16 spriteRegionX,
-                                                    u16 spriteRegionY, u8 spriteY)
+void Create_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GermanFlute,
-                                sizeof(Sprite_GermanFlute), 0x2010, 0,
-                                TaskDestructor_Interactable_MusicPlant_GermanFlute);
+    struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0,
+                                TaskDestructor_GermanFlute);
     Sprite_GermanFlute *flute = TaskGetStructPtr(t);
     s32 posX, posY;
 
@@ -303,7 +301,7 @@ void initSprite_Interactable_MusicPlant_GermanFlute(MapEntity *me, u16 spriteReg
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void Task_Interactable_MusicPlant_GermanFlute(void)
+static void Task_GermanFlute(void)
 {
     Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
     if (sub_8076BE4(flute)) {
@@ -331,7 +329,7 @@ static void Task_8076DE8(void)
     }
 }
 
-static void TaskDestructor_Interactable_MusicPlant_GermanFlute(struct Task *t) {};
+static void TaskDestructor_GermanFlute(struct Task *t) {};
 
 static void sub_8076E3C(Sprite_GermanFlute *flute)
 {

@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Mon
-initSprite_Enemy_Mon: @ 0x08051214
+	thumb_func_start Create_Mon
+Create_Mon: @ 0x08051214
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

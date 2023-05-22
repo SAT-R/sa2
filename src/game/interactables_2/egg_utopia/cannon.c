@@ -39,8 +39,7 @@ static void sub_807E8E0(Sprite_Cannon *cannon);
 static void sub_807E7F8(void);
 static void sub_807E7B0(void);
 
-void initSprite_InteractableCannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+void Create_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *sprite;
     struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0,

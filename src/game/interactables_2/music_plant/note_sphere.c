@@ -26,7 +26,7 @@ typedef struct {
     /* 0x4B */ u8 unk4B;
 } Sprite_NoteSphere; /* size: 0x4C */
 
-static void Task_Interactable_MusicPlant_Note_Sphere(void);
+static void Task_Note_Sphere(void);
 
 static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *);
 static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *);
@@ -55,12 +55,10 @@ static const u16 sNoteSphereSfx[8] = {
     SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
-void initSprite_Interactable_MusicPlant_Note_Sphere(MapEntity *me, u16 spriteRegionX,
-                                                    u16 spriteRegionY, u8 spriteY)
+void Create_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Interactable_MusicPlant_Note_Sphere, sizeof(Sprite_NoteSphere),
-                     0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
+    struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0,
+                                TaskDestructor_Interactable_MusicPlant_Note_Sphere);
     Sprite_NoteSphere *note = TaskGetStructPtr(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
@@ -112,7 +110,7 @@ static void Task_80754B8(void)
         case 6: {
             note->unk44 = 0;
             note->unk46 = 0;
-            gCurTask->main = Task_Interactable_MusicPlant_Note_Sphere;
+            gCurTask->main = Task_Note_Sphere;
         } break;
     }
 
@@ -201,7 +199,7 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
     return FALSE;
 }
 
-static void Task_Interactable_MusicPlant_Note_Sphere(void)
+static void Task_Note_Sphere(void)
 {
     Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
 

@@ -13,7 +13,7 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_InclineRamp;
 
-static void Task_Interactable_InclineRamp(void)
+static void Task_InclineRamp(void)
 {
     Sprite_InclineRamp *ramp = TaskGetStructPtr(gCurTask);
     MapEntity *me = ramp->base.me;
@@ -96,11 +96,10 @@ static void Task_Interactable_InclineRamp(void)
     }
 }
 
-void initSprite_Interactable_InclineRamp(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 param3)
+void Create_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
 {
-    struct Task *t = TaskCreate(Task_Interactable_InclineRamp,
-                                sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
     Sprite_InclineRamp *ramp = TaskGetStructPtr(t);
 
     // @BUG? (regionY gets set to regionX and vice versa)

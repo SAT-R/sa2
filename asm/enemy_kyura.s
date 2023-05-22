@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Kyura
-initSprite_Enemy_Kyura: @ 0x080593B4
+	thumb_func_start Create_Kyura
+Create_Kyura: @ 0x080593B4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

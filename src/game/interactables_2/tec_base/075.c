@@ -404,20 +404,17 @@ static void sub_807AB6C(Sprite_IA75 *ia75)
     ia75->unk98[0][1] = ia75->unk78;
 }
 
-void initSprite_Interactable075_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void Create_075_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void initSprite_Interactable075_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void Create_075_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 1);
 }
 
-void initSprite_Interactable075_2(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void Create_075_2(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 2);
 }

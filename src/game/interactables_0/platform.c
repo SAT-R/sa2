@@ -80,8 +80,7 @@ const AnimId sPlatformLevelAnims[38] = {
     [LEVEL_INDEX(9, ACT_2)] = SA2_ANIM_PLATFORM_LEA_FOR,
 };
 
-void initSprite_Interactable_Platform(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void Create_Platform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_800E89C, sizeof(Sprite_Platform), 0x2010, 0,
                                 TaskDestructor_800F19C);
@@ -256,8 +255,7 @@ void Task_800E89C(void)
     }
 }
 
-void initSprite_Interactable079(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void Create_079(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_800EC58, sizeof(Sprite_Platform), 0x2010, 0,
                                 TaskDestructor_800F19C);

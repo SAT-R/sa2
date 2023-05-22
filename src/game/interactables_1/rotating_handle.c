@@ -24,8 +24,8 @@ static void sub_805EF90(void);
 static void sub_805EA94(void);
 static void sub_805ECA0(void);
 
-void initSprite_Interactable_RotatingHandle(MapEntity *me, u16 spriteRegionX,
-                                            u16 spriteRegionY, u8 spriteY)
+void Create_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     if (me->d.sData[0] >= 0) {
         struct Task *t

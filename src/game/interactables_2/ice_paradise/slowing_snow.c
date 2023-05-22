@@ -29,16 +29,15 @@ typedef struct {
     /* 0x15 */ u8 spriteY;
 } Sprite_SlowingSnow; // size = 0x18
 
-static void Task_Interactable_IceParadise_SlowingSnow(void);
-static void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t);
+static void Task_SlowingSnow(void);
+static void TaskDestructor_SlowingSnow(struct Task *t);
 static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
-void initSprite_Interactable_IceParadise_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX,
-                                                     u16 spriteRegionY, u8 spriteY)
+void Create_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY,
+                        u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_IceParadise_SlowingSnow,
-                                sizeof(Sprite_SlowingSnow), 0x2010, 0,
-                                TaskDestructor_Interactable_IceParadise_SlowingSnow);
+    struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0,
+                                TaskDestructor_SlowingSnow);
 
     Sprite_SlowingSnow *snow = TaskGetStructPtr(t);
     Interactable_SlowingSnow *me = (Interactable_SlowingSnow *)in_ia;
@@ -77,7 +76,7 @@ static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
     return FALSE;
 }
 
-void Task_Interactable_IceParadise_SlowingSnow(void)
+void Task_SlowingSnow(void)
 {
     Sprite_SlowingSnow *snow = TaskGetStructPtr(gCurTask);
 
@@ -93,7 +92,7 @@ void Task_Interactable_IceParadise_SlowingSnow(void)
     }
 }
 
-void TaskDestructor_Interactable_IceParadise_SlowingSnow(struct Task *t) { }
+void TaskDestructor_SlowingSnow(struct Task *t) { }
 
 static bool32 ShouldDespawn(Sprite_SlowingSnow *snow)
 {

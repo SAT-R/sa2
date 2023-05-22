@@ -187,10 +187,8 @@ void sub_8077994(Sprite_Pipe_Horn *pipe)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_PipeInstrument_Entry(MapEntity *me,
-                                                             u16 spriteRegionX,
-                                                             u16 spriteRegionY,
-                                                             u8 spriteY)
+void Create_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_Pipe_Horn), 0x2010, 0,
                                 TaskDestructor_Pipe);
@@ -366,9 +364,8 @@ void FrenchHorn_Despawn(Sprite_Pipe_Horn *horn)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_FrenchHorn_Entry(MapEntity *me,
-                                                         u16 spriteRegionX,
-                                                         u16 spriteRegionY, u8 spriteY)
+void Create_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_Pipe_Horn),
                                 0x2010, 0, TaskDestructor_FrenchHorn);
