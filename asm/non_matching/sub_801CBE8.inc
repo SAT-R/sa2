@@ -102,7 +102,7 @@ _0801CCA8:
 	lsls r2, r2, #0x10
 	mov sl, r2
 	movs r6, #0xff
-	ldr r3, _0801CD64 @ =gUnknown_080D5B22
+	ldr r3, _0801CD64 @ =gUnknown_080D5B20+2
 	mov ip, r3
 _0801CCB6:
 	lsls r2, r4, #2
@@ -110,7 +110,7 @@ _0801CCB6:
 	adds r3, r7, r2
 	lsls r1, r4, #1
 	adds r1, r1, r4
-	ldr r7, _0801CD68 @ =gUnknown_080D5B21
+	ldr r7, _0801CD68 @ =gUnknown_080D5B20+1
 	adds r0, r1, r7
 	ldrb r0, [r0]
 	mov r7, r8
@@ -194,8 +194,8 @@ _0801CD4C:
 	.align 2, 0
 _0801CD5C: .4byte IWRAM_START + 0x408
 _0801CD60: .4byte gUnknown_080D5B20
-_0801CD64: .4byte gUnknown_080D5B22
-_0801CD68: .4byte gUnknown_080D5B21
+_0801CD64: .4byte gUnknown_080D5B20+2
+_0801CD68: .4byte gUnknown_080D5B20+1
 _0801CD6C: .4byte gNumHBlankCallbacks
 _0801CD70: .4byte gHBlankCallbacks
 _0801CD74: .4byte sub_801E454

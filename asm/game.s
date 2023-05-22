@@ -702,7 +702,7 @@ _0801D788:
 	muls r2, r6, r2
 	asrs r2, r2, #5
 	ands r2, r7
-	ldr r0, _0801D7F4 @ =gUnknown_080D5C04
+	ldr r0, _0801D7F4 @ =gUnknown_080D5C02+2
 	adds r1, r1, r0
 	ldrb r0, [r1]
 	muls r0, r6, r0
@@ -732,7 +732,7 @@ _0801D7E4: .4byte gBgScrollRegs
 _0801D7E8: .4byte gFlags
 _0801D7EC: .4byte gUnknown_080D5C02
 _0801D7F0: .4byte gBgPalette
-_0801D7F4: .4byte gUnknown_080D5C04
+_0801D7F4: .4byte gUnknown_080D5C02+2
 _0801D7F8:
 	movs r2, #0
 	ldr r0, _0801D860 @ =gBgScrollRegs
