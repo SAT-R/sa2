@@ -39,8 +39,8 @@ static const u16 sAnimsPlatformSquare[9][3] = {
     { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
 };
 
-void initSprite_Interactable_Platform_Square(MapEntity *me, u16 spriteRegionX,
-                                             u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare),
                                 0x2010, 0, TaskDestructor_Platform_Square);

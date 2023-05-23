@@ -33,8 +33,8 @@ typedef struct {
 #define MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_LEFT  1
 #define MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT 2
 
-static void Task_Interactable_MusicPlant_Keyboard(void);
-static void TaskDestructor_Interactable_MusicPlant_Keyboard(struct Task *);
+static void Task_Keyboard(void);
+static void TaskDestructor_Keyboard(struct Task *);
 static bool32 sub_8076848(Sprite_Keyboard *);
 
 static void DespawnKeyboard(Sprite_Keyboard *);
@@ -52,12 +52,11 @@ const s16 sKeyboardAccelTechnoBase[3][2] = {
     { Q_8_8(5.0), Q_8_8(8.0) },
 };
 
-void initSprite_Interactable_MusicPlant_Keyboard(MapEntity *me, u16 spriteRegionX,
-                                                 u16 spriteRegionY, u8 spriteY, u32 type)
+void CreateEntity_Keyboard(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY, u32 type)
 {
-    struct Task *t
-        = TaskCreate(Task_Interactable_MusicPlant_Keyboard, sizeof(Sprite_Keyboard),
-                     0x2010, 0, TaskDestructor_Interactable_MusicPlant_Keyboard);
+    struct Task *t = TaskCreate(Task_Keyboard, sizeof(Sprite_Keyboard), 0x2010, 0,
+                                TaskDestructor_Keyboard);
 
     Sprite_Keyboard *kb = TaskGetStructPtr(t);
     kb->kbType = type;
@@ -259,7 +258,7 @@ static bool32 sub_8076780(Sprite_Keyboard *kb)
     return FALSE;
 }
 
-static void Task_Interactable_MusicPlant_Keyboard(void)
+static void Task_Keyboard(void)
 {
     Sprite_Keyboard *kb = TaskGetStructPtr(gCurTask);
     if (sub_8076780(kb)) {
@@ -271,7 +270,7 @@ static void Task_Interactable_MusicPlant_Keyboard(void)
     }
 }
 
-static void TaskDestructor_Interactable_MusicPlant_Keyboard(struct Task *UNUSED t) { }
+static void TaskDestructor_Keyboard(struct Task *UNUSED t) { }
 
 static bool32 sub_8076848(Sprite_Keyboard *kb)
 {
@@ -294,30 +293,23 @@ static void DespawnKeyboard(Sprite_Keyboard *kb)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Vertical(MapEntity *me,
-                                                          u16 spriteRegionX,
-                                                          u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Keyboard_Vertical(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
-    initSprite_Interactable_MusicPlant_Keyboard(
-        me, spriteRegionX, spriteRegionY, spriteY, MUSIC_PLANT_KEYBOARD_TYPE_VERTICAL);
+    CreateEntity_Keyboard(me, spriteRegionX, spriteRegionY, spriteY,
+                          MUSIC_PLANT_KEYBOARD_TYPE_VERTICAL);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushLeft(MapEntity *me,
-                                                                     u16 spriteRegionX,
-                                                                     u16 spriteRegionY,
-                                                                     u8 spriteY)
+void CreateEntity_Keyboard_Horizontal_PushLeft(MapEntity *me, u16 spriteRegionX,
+                                               u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_MusicPlant_Keyboard(
-        me, spriteRegionX, spriteRegionY, spriteY,
-        MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_LEFT);
+    CreateEntity_Keyboard(me, spriteRegionX, spriteRegionY, spriteY,
+                          MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_LEFT);
 }
 
-void initSprite_Interactable_MusicPlant_Keyboard_Horizontal_PushRight(MapEntity *me,
-                                                                      u16 spriteRegionX,
-                                                                      u16 spriteRegionY,
-                                                                      u8 spriteY)
+void CreateEntity_Keyboard_Horizontal_PushRight(MapEntity *me, u16 spriteRegionX,
+                                                u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_MusicPlant_Keyboard(
-        me, spriteRegionX, spriteRegionY, spriteY,
-        MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT);
+    CreateEntity_Keyboard(me, spriteRegionX, spriteRegionY, spriteY,
+                          MUSIC_PLANT_KEYBOARD_TYPE_HORIZONTAL_RIGHT);
 }

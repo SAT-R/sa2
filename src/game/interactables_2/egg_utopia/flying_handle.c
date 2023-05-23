@@ -31,8 +31,8 @@ typedef struct {
     s32 unk6C[3][2];
 } Sprite_FlyingHandle;
 
-static void Task_Interactable_SkyCanyon_FlyingHandle(void);
-static void TaskDestructor_Interactable_SkyCanyon_FlyingHandle(struct Task *);
+static void Task_FlyingHandle(void);
+static void TaskDestructor_FlyingHandle(struct Task *);
 static void sub_807F8B4(Sprite_FlyingHandle *);
 static void sub_807F484(Sprite_FlyingHandle *);
 static void sub_807F798(Sprite_FlyingHandle *);
@@ -49,14 +49,13 @@ static void sub_807F784(Sprite_FlyingHandle *);
 
 #define FLYING_HANDLE_VRAM_TILES 25
 
-void initSprite_Interactable_FlyingHandle(MapEntity *me, u16 spriteRegionX,
-                                          u16 spriteRegionY, u8 spriteY)
+void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     u32 i;
     Sprite *sprite;
-    struct Task *t = TaskCreate(Task_Interactable_SkyCanyon_FlyingHandle,
-                                sizeof(Sprite_FlyingHandle), 0x2010, 0,
-                                TaskDestructor_Interactable_SkyCanyon_FlyingHandle);
+    struct Task *t = TaskCreate(Task_FlyingHandle, sizeof(Sprite_FlyingHandle), 0x2010,
+                                0, TaskDestructor_FlyingHandle);
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
     flyingHandle->unk68 = 0;
     flyingHandle->unk5C = 0;
@@ -232,7 +231,7 @@ static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
     return FALSE;
 }
 
-static void Task_Interactable_SkyCanyon_FlyingHandle(void)
+static void Task_FlyingHandle(void)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
     if (IS_MULTI_PLAYER) {
@@ -271,7 +270,7 @@ static void sub_807F6F0(void)
     sub_807F5C0(flyingHandle);
 }
 
-static void TaskDestructor_Interactable_SkyCanyon_FlyingHandle(struct Task *t)
+static void TaskDestructor_FlyingHandle(struct Task *t)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
     VramFree(flyingHandle->sprite.graphics.dest);
@@ -279,12 +278,12 @@ static void TaskDestructor_Interactable_SkyCanyon_FlyingHandle(struct Task *t)
 
 static void sub_807F770(UNUSED Sprite_FlyingHandle *flyingHandle)
 {
-    gCurTask->main = Task_Interactable_SkyCanyon_FlyingHandle;
+    gCurTask->main = Task_FlyingHandle;
 }
 
 static void sub_807F784(UNUSED Sprite_FlyingHandle *flyingHandle)
 {
-    gCurTask->main = Task_Interactable_SkyCanyon_FlyingHandle;
+    gCurTask->main = Task_FlyingHandle;
 }
 
 static void sub_807F798(Sprite_FlyingHandle *flyingHandle)

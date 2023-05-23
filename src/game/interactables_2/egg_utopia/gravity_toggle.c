@@ -33,7 +33,7 @@ typedef struct {
     /* 0x29 */ u8 spriteY;
 } Sprite_GravityToggle;
 
-static void initSprite_Interactable098(MapEntity *, u16, u16, u8, u8);
+static void CreateEntity_Toggle_Gravity(MapEntity *, u16, u16, u8, u8);
 static void Task_80801F8(void);
 static void TaskDestructor_8080230(struct Task *);
 static void sub_8080234(Sprite_GravityToggle *);
@@ -45,8 +45,8 @@ static void Task_8080318(void);
 #define GRAVITY_TOGGLE__UP     1
 #define GRAVITY_TOGGLE__TOGGLE 2
 
-static void initSprite_Interactable098(MapEntity *in_ia, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY, u8 toggleKind)
+static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX,
+                                        u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
     struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
@@ -162,25 +162,25 @@ void sub_808029C(Sprite_GravityToggle *toggle)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX,
-                                                  u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX,
+                                       u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
-                               GRAVITY_TOGGLE__DOWN);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
+                                GRAVITY_TOGGLE__DOWN);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX,
-                                                u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
-    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
-                               GRAVITY_TOGGLE__UP);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
+                                GRAVITY_TOGGLE__UP);
 }
 
-void initSprite_Interactable_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
-                                                    u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
+                                         u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable098(me, spriteRegionX, spriteRegionY, spriteY,
-                               GRAVITY_TOGGLE__TOGGLE);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
+                                GRAVITY_TOGGLE__TOGGLE);
 }
 
 void Task_8080318(void)

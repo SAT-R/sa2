@@ -19,8 +19,8 @@ typedef struct {
     u8 unk4E;
 } Sprite_TecBaseNoteBlock;
 
-static void Task_InteractableTecBaseNoteBlock(void);
-static void TaskDestructor_InteractableTecBaseNoteBlock(struct Task *);
+static void Task_NoteBlock(void);
+static void TaskDestructor_NoteBlock(struct Task *);
 static void sub_8079CCC(Sprite_TecBaseNoteBlock *);
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *);
 static void sub_8079D9C(Sprite_TecBaseNoteBlock *);
@@ -44,12 +44,11 @@ static const u16 sTecBasBlockSfx[] = {
     SE_TECHNO_BASE_COMMON,
 };
 
-void initSprite_InteractableTecBaseNoteBlock(MapEntity *me, u16 spriteRegionX,
-                                             u16 spriteRegionY, u8 spriteY)
+void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_InteractableTecBaseNoteBlock, sizeof(Sprite_TecBaseNoteBlock),
-                     0x2010, 0, TaskDestructor_InteractableTecBaseNoteBlock);
+    struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010,
+                                0, TaskDestructor_NoteBlock);
     Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(t);
     Sprite *sprite = &noteBlock->sprite;
     noteBlock->unk44 = 0;
@@ -179,7 +178,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
     return FALSE;
 }
 
-static void Task_InteractableTecBaseNoteBlock(void)
+static void Task_NoteBlock(void)
 {
     Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(gCurTask);
 
@@ -195,7 +194,7 @@ static void Task_InteractableTecBaseNoteBlock(void)
     }
 }
 
-static void TaskDestructor_InteractableTecBaseNoteBlock(struct Task *t)
+static void TaskDestructor_NoteBlock(struct Task *t)
 {
     // unused
 }

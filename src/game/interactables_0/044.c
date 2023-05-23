@@ -76,8 +76,7 @@ void Task_Interactable_044(void)
 #undef sRight
 #undef sLeft
 
-void initSprite_Interactable_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);

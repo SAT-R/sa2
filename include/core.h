@@ -199,7 +199,7 @@ extern bool8 gExecSoundMain;
 extern u16 gDispCnt;
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
-extern struct BgAffineRegs gBgAffineRegs;
+extern BgAffineReg gBgAffineRegs[2];
 extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];

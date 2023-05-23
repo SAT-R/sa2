@@ -13,8 +13,8 @@ typedef struct {
     /* 0x0C */ Sprite displayed;
 } Sprite_Decoration;
 
-void Task_Interactable_Decoration(void);
-void TaskDestructor_Interactable_Decoration(struct Task *);
+void Task_Decoration(void);
+void TaskDestructor_Decoration(struct Task *);
 
 static const TileInfo sDecoTileAnimInfo[7] = {
     { 2, SA2_ANIM_FLOWER_BLUE_SMALL, 0 },
@@ -28,16 +28,15 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 
 #define decoId d.sData[0]
 
-void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
-                                        u8 spriteY)
+void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
     struct Task *t;
     Sprite_Decoration *decoBase;
     Sprite *deco;
 
     if (me->decoId >= 0) {
-        t = TaskCreate(Task_Interactable_Decoration, sizeof(Sprite_Decoration), 0x2010,
-                       0, TaskDestructor_Interactable_Decoration);
+        t = TaskCreate(Task_Decoration, sizeof(Sprite_Decoration), 0x2010, 0,
+                       TaskDestructor_Decoration);
         decoBase = TaskGetStructPtr(t);
         deco = &decoBase->displayed;
 
@@ -68,7 +67,7 @@ void initSprite_Interactable_Decoration(MapEntity *me, u16 regionX, u16 regionY,
     }
 }
 
-void Task_Interactable_Decoration(void)
+void Task_Decoration(void)
 {
     Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
     Sprite *deco = &decoBase->displayed;
@@ -101,7 +100,7 @@ void Task_Interactable_Decoration(void)
 }
 
 // InteractableDecorationOnDestroy
-void TaskDestructor_Interactable_Decoration(struct Task *t)
+void TaskDestructor_Decoration(struct Task *t)
 {
     Sprite_Decoration *deco = TaskGetStructPtr(t);
     VramFree(deco->displayed.graphics.dest);

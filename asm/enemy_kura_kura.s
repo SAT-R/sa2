@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_KuraKura
-initSprite_Enemy_KuraKura: @ 0x08051E3C
+	thumb_func_start CreateEntity_KuraKura
+CreateEntity_KuraKura: @ 0x08051E3C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

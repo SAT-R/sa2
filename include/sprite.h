@@ -230,7 +230,7 @@ void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
 void sub_8004E14(Sprite *, struct UNK_808D124_UNK180 *);
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
-                 struct BgAffineRegs *affine);
+                 BgAffineReg *affine);
 
 s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);

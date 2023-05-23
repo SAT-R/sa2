@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 
-extern void Task_Interactable_IceParadise_SlidyIce(void);
+extern void Task_SlidyIce(void);
 
 typedef struct {
     /* 0x00 */ u8 x;
@@ -21,7 +21,7 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_SlidyIce;
 
-void Task_Interactable_IceParadise_SlidyIce(void)
+void Task_SlidyIce(void)
 {
     Sprite_SlidyIce *ice = TaskGetStructPtr(gCurTask);
     MapEntity_SlidyIce *me = (MapEntity_SlidyIce *)ice->base.me;
@@ -58,11 +58,10 @@ void Task_Interactable_IceParadise_SlidyIce(void)
     }
 }
 
-void initSprite_Interactable_IceParadise_SlidyIce(MapEntity *me, u16 spriteRegionX,
-                                                  u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SlidyIce(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Interactable_IceParadise_SlidyIce, 0xC, 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_SlidyIce, 0xC, 0x2010, 0, NULL);
 
     Sprite_SlidyIce *ice = TaskGetStructPtr(t);
     ice->base.regionX = spriteRegionX;

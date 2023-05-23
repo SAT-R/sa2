@@ -42,8 +42,7 @@ static const u16 gUnknown_080E00FC[][2] = {
     { 47, 0 }, { 53, 6 }, { 59, 4 }, { 51, 2 }, { 53, 0 },
 };
 
-void initSprite_Interactable078(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_078(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *sprite;
     struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0,

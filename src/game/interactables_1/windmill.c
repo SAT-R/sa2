@@ -18,8 +18,8 @@ typedef struct {
     BladePiece blades[16];
 } InteractableWindmill; /* size: 0x3FC */
 
-static void TaskDestructor_InteractableWindmill(struct Task *);
-static void Task_InteractableWindmillMain(void);
+static void TaskDestructor_Windmill(struct Task *);
+static void Task_WindmillMain(void);
 
 static const TileInfo sWindmillParts[] = {
     { 4, SA2_ANIM_WIND_MILL_PART, 3 }, { 4, SA2_ANIM_WIND_MILL_PART, 2 },
@@ -27,15 +27,14 @@ static const TileInfo sWindmillParts[] = {
     { 4, SA2_ANIM_WIND_MILL_PART, 6 },
 };
 
-void initSprite_InteractableWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     u8 i, j;
     void *ramDests[4];
     Sprite *sprite;
-    struct Task *t
-        = TaskCreate(Task_InteractableWindmillMain, sizeof(InteractableWindmill), 0x2010,
-                     0, TaskDestructor_InteractableWindmill);
+    struct Task *t = TaskCreate(Task_WindmillMain, sizeof(InteractableWindmill), 0x2010,
+                                0, TaskDestructor_Windmill);
     InteractableWindmill *windmill = TaskGetStructPtr(t);
 
     sprite = &windmill->center;
@@ -90,7 +89,7 @@ void initSprite_InteractableWindmill(MapEntity *me, u16 spriteRegionX, u16 sprit
     }
 }
 
-static void Task_InteractableWindmillMain(void)
+static void Task_WindmillMain(void)
 {
     u8 i, j;
     struct UNK_808D124_UNK180 *transformConfig;
@@ -146,7 +145,7 @@ static void Task_InteractableWindmillMain(void)
     }
 }
 
-static void TaskDestructor_InteractableWindmill(struct Task *t)
+static void TaskDestructor_Windmill(struct Task *t)
 {
     InteractableWindmill *windmill = TaskGetStructPtr(t);
     VramFree(windmill->center.graphics.dest);

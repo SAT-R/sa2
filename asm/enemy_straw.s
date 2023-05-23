@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Straw
-initSprite_Enemy_Straw: @ 0x08056684
+	thumb_func_start CreateEntity_Straw
+CreateEntity_Straw: @ 0x08056684
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

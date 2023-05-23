@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_Circus
-initSprite_Enemy_Circus: @ 0x080557F0
+	thumb_func_start CreateEntity_Circus
+CreateEntity_Circus: @ 0x080557F0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

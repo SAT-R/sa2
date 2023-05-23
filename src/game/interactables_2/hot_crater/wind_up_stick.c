@@ -33,8 +33,8 @@ static void sub_80729D8(Sprite_WindUpStick *);
 static u32 sub_8072A5C(Sprite_WindUpStick *);
 static void sub_8072AC0(Sprite_WindUpStick *);
 
-void initSprite_Interactable_WindUpStick(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 spriteY)
+void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8072998, 0x1C, 0x2010, 0, sub_80729D4);
     Sprite_WindUpStick *windUpStick = TaskGetStructPtr(t);

@@ -19,7 +19,7 @@
  *       if they are only called directly in the code, those are NOT callbacks.
  */
 
-extern void sub_8011B88(s32, s32, u32);
+struct Task *sub_8011B88(s32 x, s32 y, u16 p2);
 extern void sub_8011D48(Player *);
 extern void PlayerCB_8011F1C(Player *);
 extern void sub_8012194(Player *);

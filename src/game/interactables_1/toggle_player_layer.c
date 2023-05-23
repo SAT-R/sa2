@@ -61,8 +61,8 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     }
 }
 
-void initSprite_Interactable_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX,
-                                                u16 spriteRegionY, UNUSED u8 spriteY)
+void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     UNUSED u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer,
                                 sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);

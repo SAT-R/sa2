@@ -213,8 +213,7 @@ static void sub_807C614(void)
 }
 static void TaskDestructor_Interactable085(struct Task *);
 
-void initSprite_Interactable085(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_085(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
                                 TaskDestructor_Interactable085);

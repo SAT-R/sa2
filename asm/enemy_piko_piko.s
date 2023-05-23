@@ -4,8 +4,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start initSprite_Enemy_PikoPiko
-initSprite_Enemy_PikoPiko: @ 0x080554C0
+	thumb_func_start CreateEntity_PikoPiko
+CreateEntity_PikoPiko: @ 0x080554C0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

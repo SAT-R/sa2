@@ -30,8 +30,8 @@ typedef struct {
     /* 0x76 */ s16 unk76;
 } Sprite_GuitarString; /* size 0x78 */
 
-extern void Task_Interactable_MusicPlant_GuitarString(void);
-extern void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task *);
+extern void Task_GuitarString(void);
+extern void TaskDestructor_GuitarString(struct Task *);
 extern void sub_8076114(Sprite_GuitarString *);
 extern bool32 sub_807618C(Sprite_GuitarString *);
 extern void sub_8076258(Sprite_GuitarString *);
@@ -40,12 +40,11 @@ extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
 extern bool32 sub_8076320(Sprite_GuitarString *);
 
-void initSprite_Interactable_MusicPlant_GuitarString(MapEntity *me, u16 spriteRegionX,
-                                                     u16 spriteRegionY, u8 spriteY)
+void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_MusicPlant_GuitarString,
-                                sizeof(Sprite_GuitarString), 0x2010, 0,
-                                TaskDestructor_Interactable_MusicPlant_GuitarString);
+    struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010,
+                                0, TaskDestructor_GuitarString);
     Sprite_GuitarString *gs = TaskGetStructPtr(t);
     Sprite *s = &gs->s1;
     u16 i;
@@ -259,7 +258,7 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
     return FALSE;
 }
 
-void Task_Interactable_MusicPlant_GuitarString(void)
+void Task_GuitarString(void)
 {
     Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
 
@@ -275,7 +274,7 @@ void Task_Interactable_MusicPlant_GuitarString(void)
     }
 }
 
-void TaskDestructor_Interactable_MusicPlant_GuitarString(struct Task UNUSED *t) { }
+void TaskDestructor_GuitarString(struct Task UNUSED *t) { }
 
 void sub_8076258(Sprite_GuitarString UNUSED *gs)
 {
@@ -290,10 +289,7 @@ void sub_8076258(Sprite_GuitarString UNUSED *gs)
     gCurTask->main = sub_8076000;
 }
 
-void sub_80762A8(Sprite_GuitarString UNUSED *gs)
-{
-    gCurTask->main = Task_Interactable_MusicPlant_GuitarString;
-}
+void sub_80762A8(Sprite_GuitarString UNUSED *gs) { gCurTask->main = Task_GuitarString; }
 
 void sub_80762BC(Sprite_GuitarString *gs)
 {

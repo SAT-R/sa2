@@ -215,7 +215,7 @@ _08016188:
 	movs r0, #0x80
 	lsls r0, r0, #1
 	strh r0, [r4, #0x3c]
-	ldr r2, _08016204 @ =PlayerCharacterIdleAnims
+	ldr r2, _08016204 @ =gPlayerCharacterIdleAnims
 	ldr r1, _08016208 @ =gMultiplayerCharacters
 	ldrb r0, [r7]
 	adds r0, r0, r1
@@ -243,7 +243,7 @@ _08016188:
 	str r0, [r4, #0x10]
 	b _08016214
 	.align 2, 0
-_08016204: .4byte PlayerCharacterIdleAnims
+_08016204: .4byte gPlayerCharacterIdleAnims
 _08016208: .4byte gMultiplayerCharacters
 _0801620C: .4byte 0x04000128
 _08016210:
@@ -702,7 +702,7 @@ _08016576:
 	adds r0, r7, #0
 	adds r0, #0x6a
 	strh r3, [r0]
-	ldr r1, _080165CC @ =PlayerCharacterIdleAnims
+	ldr r1, _080165CC @ =gPlayerCharacterIdleAnims
 	ldrb r0, [r5]
 	lsls r0, r0, #1
 	adds r0, r0, r1
@@ -721,7 +721,7 @@ _080165BC: .4byte PlayerCB_8025318
 _080165C0: .4byte 0xFFBFFFFF
 _080165C4: .4byte gGameMode
 _080165C8: .4byte gUnknown_030053E8
-_080165CC: .4byte PlayerCharacterIdleAnims
+_080165CC: .4byte gPlayerCharacterIdleAnims
 _080165D0:
 	mov r0, r8
 	ldrh r3, [r0, #6]
@@ -865,7 +865,7 @@ _080166E8: .4byte gVramGraphicsCopyQueueIndex
 _080166EC: .4byte gGameMode
 _080166F0:
 	movs r2, #3
-	ldr r3, _0801688C @ =PlayerCharacterIdleAnims
+	ldr r3, _0801688C @ =gPlayerCharacterIdleAnims
 	movs r4, #6
 	ldrsh r0, [r3, r4]
 	ldrh r1, [r6, #0xa]
@@ -1078,7 +1078,7 @@ _08016880:
 	ldr r0, [r0]
 	mov pc, r0
 	.align 2, 0
-_0801688C: .4byte PlayerCharacterIdleAnims
+_0801688C: .4byte gPlayerCharacterIdleAnims
 _08016890: .4byte gCamera
 _08016894: .4byte gGameMode
 _08016898: .4byte gUnknown_030054B4

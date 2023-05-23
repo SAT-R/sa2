@@ -40,8 +40,8 @@ static const TileInfo gUnknown_080D94BC[3] = {
     { 24, SA2_ANIM_603, 3 },
 };
 
-void initSprite_Interactable_BouncySpring(MapEntity *me, u16 spriteRegionX,
-                                          u16 spriteRegionY, u8 spriteY)
+void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_Interactable_BouncySpring, sizeof(Sprite_BouncySpring), 0x2010,

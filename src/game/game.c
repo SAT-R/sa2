@@ -70,7 +70,26 @@ void sub_801BDE0(void);
 void sub_801BE4C(void);
 void sub_801BEB8(void);
 void sub_801BF24(void);
-const VoidFn gUnknown_080D57DC[]
+
+void sub_802C668(s32 *, s32 *);
+void sub_801E0A8(void);
+void sub_801E040(struct Task *);
+
+struct Backgrounds {
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
+};
+
+extern struct Backgrounds gUnknown_03005850;
+extern const u32 *gUnknown_030059C8;
+
+extern const Background gUnknown_080D5864[4];
+extern const CameraMain gUnknown_080D5A10[];
+extern const u32 *gUnknown_080D62D8[NUM_LEVEL_IDS];
+
+const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
     = { sub_801AF14, sub_801B7BC, sub_801B83C, sub_801BF24, // Anti-Formatting
         sub_801B8A8, sub_801B914, sub_801B980, sub_801BF24, //
         sub_801AFA4, sub_801B03C, sub_801B9EC, sub_801BF24, //
@@ -271,49 +290,182 @@ const CameraMain gUnknown_080D5A10[] = {
     sub_801C818, sub_801D534,
 };
 
-asm(".global gUnknown_080D5A98\n"
-    "gUnknown_080D5A98:\n"
-    "    .incbin \"baserom.gba\", 0x000D5A98, 0x88");
+const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x40, 0x20, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x20, 0x40, 0x02, 0x1C }, //
+    { 0x20, 0x20, 0x02, 0x1D }, //
+    { 0x40, 0x20, 0x02, 0x1C }, //
+};
 
-const u8 gUnknown_080D5B20 = 14;
-const u8 gUnknown_080D5B21 = 0;
+const u8 gUnknown_080D5B20[] = {
+    14,  0, 1, //
+    22,  0, 3, //
+    30,  0, 2, //
+    38,  0, 1, //
+    46,  0, 3, //
+    62,  0, 1, //
+    70,  0, 2, //
+    86,  0, 1, //
+    94,  0, 2, //
+    126, 0, 1, //
+    168, 1, 1, //
+    174, 1, 2, //
+    182, 2, 3, //
+    198, 3, 4, //
+    222, 4, 5, //
+    255, 5, 6, //
+};
 
-asm("    .global gUnknown_080D5B22\n"
-    "gUnknown_080D5B22:\n"
-    "    .incbin \"baserom.gba\", 0x000D5B22, 0x2E");
+// Used by sub_801E498
+const u8 gUnknown_080D5B50[160] = {
+    // 0-105
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 10, //
+    10, 10, 8, //
+    8, 8, 8, //
+    7, 7, 7, //
+    7, 6, 6, //
 
-asm("    .global gUnknown_080D5B50\n"
-    "gUnknown_080D5B50:\n"
-    "    .incbin \"baserom.gba\", 0x000D5B50, 0xA0\n");
+    // 106-159 | This data appears to be unused
+    6, 6, 6, //
+    6, 6, 6, //
+    5, 5, 5, //
+    5, 5, 5, //
+    5, 5, 4, //
+    4, 4, 4, //
+    4, 4, 4, //
+    4, 3, 3, //
+    3, 3, 3, //
+    3, 3, 3, //
+    3, 3, 3, //
+    3, 3, 3, //
+    3, 3, 2, //
+    2, 2, 2, //
+    2, 2, 2, //
+    2, 2, 2, //
+    2, 2, 2, //
+    2, 2, 2, //
 
-asm("    .global gUnknown_080D5BF0\n"
-    "gUnknown_080D5BF0:\n"
-    "    .incbin \"baserom.gba\", 0x000D5BF0, 0x12");
+    // Maybe padding?
+    0
+};
 
-asm("    .global gUnknown_080D5C02\n"
-    "gUnknown_080D5C02:\n"
-    "    .incbin \"baserom.gba\", 0x000D5C02, 0x2");
+const s16 gUnknown_080D5BF0[] = {
+    Q_8_8(0.00),  Q_8_8(0.25),  Q_8_8(2.25), Q_8_8(2.50), Q_8_8(3.50),
+    Q_8_8(3.625), Q_8_8(5.625), Q_8_8(5.75), Q_8_8(6.75),
+};
 
-asm("    .global gUnknown_080D5C04\n"
-    "gUnknown_080D5C04:\n"
-    "    .incbin \"baserom.gba\", 0x000D5C04, 0x5E");
+const u8 gUnknown_080D5C02[] = {
+    0x1F, 0x00, 0x1F, //
+    0x01, 0x07, 0x14, //
+    0x01, 0x09, 0x14, //
+    0x00, 0x0A, 0x13, //
+    0x00, 0x0C, 0x13, //
+    0x00, 0x0D, 0x12, //
+    0x00, 0x0F, 0x12, //
+    0x00, 0x10, 0x11, //
+    0x00, 0x12, 0x10, //
+    0x00, 0x13, 0x10, //
+    0x00, 0x15, 0x0F, //
+    0x00, 0x16, 0x0F, //
+    0x00, 0x18, 0x0E, //
+    0x00, 0x19, 0x0E, //
+    0x00, 0x1B, 0x0D, //
+    0x1F, 0x07, 0x00, //
+    0x1F, 0x00, 0x00, //
+    0x0F, 0x00, 0x1B, //
+    0x0E, 0x00, 0x19, //
+    0x0D, 0x01, 0x17, //
+    0x0C, 0x01, 0x15, //
+    0x0B, 0x02, 0x13, //
+    0x0A, 0x02, 0x11, //
+    0x08, 0x03, 0x0F, //
+    0x07, 0x03, 0x0D, //
+    0x06, 0x04, 0x0B, //
+    0x05, 0x04, 0x09, //
+    0x04, 0x05, 0x07, //
+    0x03, 0x05, 0x05, //
+    0x02, 0x06, 0x03, //
+    0x01, 0x06, 0x01, //
+    0x00, 0x07, 0x00, //
+};
 
-asm("    .global gUnknown_080D5C62\n"
-    "gUnknown_080D5C62:\n"
-    "    .incbin \"baserom.gba\", 0x000D5C62, 0x20");
+const s16 gUnknown_080D5C62[8][2] = {
+    { -Q_8_8(3.00), -Q_8_8(0.25) }, //
+    { -Q_8_8(1.50), +Q_8_8(0.00) }, //
 
-asm("    .global gUnknown_080D5C82\n"
-    "gUnknown_080D5C82:\n"
-    "    .incbin \"baserom.gba\", 0x000D5C82, 0x20");
+    { -Q_8_8(3.00), -Q_8_8(0.25) }, //
+    { -Q_8_8(1.00), -Q_8_8(0.0859375) }, //
 
-asm("    .global gUnknown_080D5CA2\n"
-    "gUnknown_080D5CA2:\n"
-    "    .incbin \"baserom.gba\", 0x000D5CA2, 0x20");
+    { -Q_8_8(3.00), -Q_8_8(0.25) }, //
+    { -Q_8_8(1.50), +Q_8_8(0.00) }, //
 
-// Some palette
-asm("    .global gUnknown_080D5CC2\n"
-    "gUnknown_080D5CC2:\n"
-    "    .incbin \"baserom.gba\", 0x000D5CC2, 0x22");
+    { -Q_8_8(3.00), -Q_8_8(0.25) }, //
+    { -Q_8_8(0.75), -Q_8_8(0.125) }, //
+
+};
+const u16 gUnknown_080D5C82[16] = INCBIN_U16("graphics/080D5C82.gbapal");
+const u16 gUnknown_080D5CA2[16] = INCBIN_U16("graphics/080D5CA2.gbapal");
+const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void ApplyGameStageSettings(void)
 {
@@ -361,12 +513,12 @@ void GameStageStart(void)
         gUnknown_030054A0 = gFrameCount;
     }
 
-    gCheckpointTime = 0;
+    gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gCourseTime = 0;
+        gCourseTime = ZONE_TIME_TO_INT(0, 0);
     } else {
-        gCourseTime = 0x2A30;
+        gCourseTime = ZONE_TIME_TO_INT(3, 0);
     }
 
     CreateGameStage();
@@ -1307,28 +1459,6 @@ void sub_801BFFC(u16 level)
         m4aSongNumStart(MUS_VS_2);
     }
 }
-
-void sub_802C668(s32 *, s32 *);
-void sub_801E0A8(void);
-void sub_801E040(struct Task *);
-
-extern const s8 gUnknown_080D5A98[][4];
-
-extern const u32 *gUnknown_080D62D8[];
-
-extern const Background gUnknown_080D5864[4];
-
-extern const CameraMain gUnknown_080D5A10[];
-
-struct Backgrounds {
-    Background unk0;
-    Background unk40;
-    Background unk80;
-    Background unkC0;
-};
-
-extern struct Backgrounds gUnknown_03005850;
-extern const u32 *gUnknown_030059C8;
 
 void sub_801C068(u32 level)
 {

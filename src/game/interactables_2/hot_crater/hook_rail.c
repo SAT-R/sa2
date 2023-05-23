@@ -56,8 +56,8 @@ static void sub_8072BB8(void);
 #define PLAYER_TOUCH_DIRECTION_FORWARDS 1
 #define PLAYER_TOUCH_DIRECTION_REVERSE  2
 
-void initSprite_Interactable_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
+                           u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t;
     Sprite_HookRail *hookRail;
@@ -410,22 +410,21 @@ static void sub_8073280(Sprite_HookRail *hookRail)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable048(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_048(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    initSprite_Interactable_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
+    CreateEntity_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
 }
 
-void initSprite_Interactable_HookRail_Start(MapEntity *me, u16 spriteRegionX,
-                                            u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                 u8 spriteY)
 {
-    initSprite_Interactable_HookRail(1, me, spriteRegionX, spriteRegionY, spriteY);
+    CreateEntity_HookRail(1, me, spriteRegionX, spriteRegionY, spriteY);
 }
 
-void initSprite_Interactable_HookRail_End(MapEntity *me, u16 spriteRegionX,
-                                          u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
-    initSprite_Interactable_HookRail(2, me, spriteRegionX, spriteRegionY, spriteY);
+    CreateEntity_HookRail(2, me, spriteRegionX, spriteRegionY, spriteY);
 }
 
 static void sub_8073320(void)

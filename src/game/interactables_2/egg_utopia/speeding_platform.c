@@ -46,8 +46,8 @@ static void sub_807FF20(void);
 static void sub_807FF88(Sprite_SpeedingPlatform *);
 static void sub_807FFB0(void);
 
-void initSprite_InteractableSpeedingPlatform(MapEntity *me, u16 spriteRegionX,
-                                             u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY)
 {
     u32 i;
     struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform),

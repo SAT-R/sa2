@@ -305,8 +305,8 @@ static void sub_8078594(Sprite_FunnelSphere *funnelSphere)
     TaskDestroy(gCurTask);
 }
 
-void initSprite_Interactable_IceParadise_FunnelSphere(MapEntity *me, u16 spriteRegionX,
-                                                      u16 spriteRegionY, u8 spriteY)
+void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8078414, 0x28, 0x2010, 0, sub_8078688);
     Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(t);

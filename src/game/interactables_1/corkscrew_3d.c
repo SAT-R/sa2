@@ -130,7 +130,8 @@ void sub_8061AB0(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+            player->unk68
+                = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
@@ -248,7 +249,7 @@ void Task_8061DA4(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
@@ -357,7 +358,8 @@ void Task_8062100(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+            player->unk68
+                = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
@@ -475,13 +477,13 @@ void Task_8062414(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = PlayerCharacterIdleAnims[player->character] + 68;
+        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
 
-void initSprite_Interactable_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX,
-                                               u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
@@ -497,8 +499,8 @@ void initSprite_Interactable_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX,
     corkscrew->unkC = +Q_24_8(4);
 }
 
-void initSprite_Interactable_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX,
-                                             u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
