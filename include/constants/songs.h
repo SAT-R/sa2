@@ -178,12 +178,12 @@
 #define SE_231                 231
 #define SE_LONG_BRAKE          232
 // 233
-#define SE_234 234
-#define SE_235 235
-#define SE_236 236
-#define SE_237 237
-#define SE_238 238
-#define SE_239 239
+#define SE_234             234
+#define SE_235             235
+#define SE_236             236
+#define SE_EGGMOBILE_FLEES 237
+#define SE_238             238
+#define SE_239             239
 // 240
 #define SE_241 241
 #define SE_242 242

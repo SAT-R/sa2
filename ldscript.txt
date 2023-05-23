@@ -105,7 +105,16 @@ SECTIONS
         build/sa2/src/game/countdown.o(.text);
         build/sa2/src/game/game_over.o(.text);
         build/sa2/src/game/true_area_53/intro.o(.text);
-        build/sa2/asm/true_area_53.o(.text);
+        build/sa2/asm/bosses_common.o(.text);
+        build/sa2/asm/boss_1.o(.text);
+        build/sa2/asm/boss_2.o(.text);
+        build/sa2/asm/boss_3.o(.text);
+        build/sa2/asm/boss_4.o(.text);
+        build/sa2/asm/boss_5.o(.text);
+        build/sa2/asm/boss_6.o(.text);
+        build/sa2/asm/boss_7.o(.text);
+        build/sa2/asm/boss_8.o(.text);
+        build/sa2/asm/boss_9.o(.text);
         build/sa2/asm/enemies_shared.o(.text);
         build/sa2/asm/enemy_mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
