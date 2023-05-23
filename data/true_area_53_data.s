@@ -2,11 +2,20 @@
 
     .global gUnknown_080D798C
 gUnknown_080D798C:
-    .incbin "baserom.gba", 0x000D798C, 0x24
+    .4byte CreateEggHammerTankII
+    .4byte CreateEggBomberTank
+    .4byte CreateEggTotem
+    .4byte CreateAeroEgg
+    .4byte CreateEggSaucer
+    .4byte CreateEggGoRound
+    .4byte CreateEggFrog
+    .4byte CreateSuperEggRoboZ
+    .4byte CreateTrueArea53Boss
 
     .global gUnknown_080D79B0
 gUnknown_080D79B0:
-    .incbin "baserom.gba", 0x000D79B0, 0x20
+    .4byte sub_803C80C, sub_803E3EC, sub_803FA84, sub_80425F0
+    .4byte sub_8043FD0, sub_8047224, sub_8048EB4, sub_804D594
 
     .global gUnknown_080D79D0
 gUnknown_080D79D0:
@@ -42,11 +51,12 @@ gUnknown_080D7AA2:
 
     .global gUnknown_080D7AA8
 gUnknown_080D7AA8:
-    .incbin "baserom.gba", 0x000D7AA8, 0x8
+    .4byte sub_803CAC8, sub_803B018
 
     .global gUnknown_080D7AB0
 gUnknown_080D7AB0:
-    .incbin "baserom.gba", 0x000D7AB0, 0x20
+    .4byte sub_803B17C, sub_803B264, sub_803CB84, sub_803B2F8
+    .4byte sub_803CBA4, sub_803B4A0, sub_803B57C, sub_803B62C
 
     .global gUnknown_080D7AD0
 gUnknown_080D7AD0:

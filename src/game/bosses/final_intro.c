@@ -87,7 +87,9 @@ void sub_8039208(void);
 void sub_8039A10(void);
 void IntroRenderSprites(u8);
 void sub_80393A4(void);
-void sub_804CD50(void);
+
+// TODO: Include these through Boss's header
+void SetupEggmanKidnapsVanillaTask(void);
 void sub_8050B2C(s32 *, s32 *);
 
 void CreateActor(u8);
@@ -1371,7 +1373,7 @@ void Task_IntroPanIn(void)
         }
 
         if (intro->animFrame == 60) {
-            sub_804CD50();
+            SetupEggmanKidnapsVanillaTask();
             return;
         }
 
