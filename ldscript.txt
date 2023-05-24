@@ -116,6 +116,7 @@ SECTIONS
         build/sa2/asm/boss_8.o(.text);
         build/sa2/asm/boss_9.o(.text);
         build/sa2/asm/enemies_shared.o(.text);
+        build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/asm/enemy_kura_kura.o(.text);
