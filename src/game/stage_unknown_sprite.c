@@ -6,12 +6,12 @@
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ s32 unk30;
-    /* 0x34 */ s32 unk34;
-    /* 0x38 */ s16 unk38;
-    /* 0x3A */ s16 unk3A;
-    /* 0x3C */ s16 unk3C;
-    /* 0x3E */ s16 unk3E;
+    /* 0x30 */ s32 x;
+    /* 0x34 */ s32 y;
+    /* 0x38 */ s16 speedX;
+    /* 0x3A */ s16 speedY;
+    /* 0x3C */ s16 accX;
+    /* 0x3E */ s16 accY;
     /* 0x40 */ u16 unk40;
 } Sprite_StageSprUnknown;
 
@@ -26,12 +26,12 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
         = TaskCreate(sub_800A5F8, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
 
     Sprite_StageSprUnknown *su = TaskGetStructPtr(t);
-    su->unk30 = 0;
-    su->unk34 = 0;
-    su->unk38 = 0;
-    su->unk3A = 0;
-    su->unk3C = 0;
-    su->unk3E = 0;
+    su->x = 0;
+    su->y = 0;
+    su->speedX = 0;
+    su->speedY = 0;
+    su->accX = 0;
+    su->accY = 0;
     su->unk40 = 0;
 
     su->s.x = 0;
@@ -55,14 +55,14 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
 void sub_800A5F8(void)
 {
     Sprite_StageSprUnknown *su = TaskGetStructPtr(gCurTask);
-    su->unk38 += su->unk3C;
-    su->unk3A += su->unk3E;
+    su->speedX += su->accX;
+    su->speedY += su->accY;
 
-    su->unk30 += su->unk38;
-    su->unk34 += su->unk3A;
+    su->x += su->speedX;
+    su->y += su->speedY;
 
-    su->s.x = Q_24_8_TO_INT(su->unk30) - gCamera.x;
-    su->s.y = Q_24_8_TO_INT(su->unk34) - gCamera.y;
+    su->s.x = Q_24_8_TO_INT(su->x) - gCamera.x;
+    su->s.y = Q_24_8_TO_INT(su->y) - gCamera.y;
 
     if (su->unk40 != 0) {
         su->unk40--;
