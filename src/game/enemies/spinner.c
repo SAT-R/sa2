@@ -3,6 +3,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
+#include "game/stage_entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -21,7 +22,6 @@ typedef struct {
 #define GFX_TILE_COUNT_SPINNER 24
 
 void Task_EnemySpinner(void);
-void TaskDestructor_80095E8(struct Task *);
 
 void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)

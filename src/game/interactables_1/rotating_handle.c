@@ -5,6 +5,8 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_1/rotating_handle.h"
+#include "game/stage_entities_manager.h"
+
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "task.h"

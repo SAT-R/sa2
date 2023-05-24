@@ -6,6 +6,8 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "lib/m4a.h"
+#include "game/stage_entities_manager.h"
+
 #include "constants/songs.h"
 #include "constants/animations.h"
 

@@ -5,6 +5,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/enemies/bell.h"
+#include "game/stage_entities_manager.h"
 
 #include "constants/animations.h"
 

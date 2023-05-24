@@ -28,7 +28,7 @@
         mapEnt->x = initialX;                                                           \
     }
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
@@ -40,7 +40,14 @@ typedef struct {
         s8 sData[ENTITY_DATA_SIZE];
         u8 uData[ENTITY_DATA_SIZE];
     } d PACKED;
-} MapEntity PACKED;
+} MapEntity;
+
+typedef struct PACKED {
+    /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
+                     // (e.g. indicating that it's active)
+    /* 0x01 */ u8 y;
+    /* 0x02 */ u8 index;
+} MapEntitySmall;
 
 typedef struct {
     /* 0x00 */ MapEntity *me;
@@ -59,7 +66,5 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 
 // TODO: Include header this belongs to
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
-
-void TaskDestructor_80095E8(struct Task *);
 
 #endif // GUARD_INTERACTABLE_H
