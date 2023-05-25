@@ -2,23 +2,18 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "game/entity.h"
+#include "game/enemies/mon.h"
 
 #include "constants/animations.h"
 
-typedef struct {
-    /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 posX;
-    /* 0x40 */ s32 posY;
-    /* 0x44 */ s32 speedX;
-    /* 0x48 */ s32 speedY;
-} Sprite_Mon; /* 0x4C */
-
+// static
 void Task_Enemy_Mon(void);
+void Task_805146C(void);
 
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Enemy_Mon, sizeof(Sprite_Mon), 0x4010, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_Enemy_Mon, sizeof(Sprite_Mon), 0x4010, 0,
+                                TaskDestructor_80095E8);
     Sprite_Mon *mon = TaskGetStructPtr(t);
     Sprite *s = &mon->s;
     u32 r2;
@@ -29,17 +24,14 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     mon->base.spriteX = me->x;
     mon->base.spriteY = spriteY;
 
+    // TODO: Isn't this always -1?
     r2 = (-me->d.sData[0] | me->d.sData[0]);
 
-    mon->posX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    mon->posY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    mon->x = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
+    mon->y = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
 
-    mon->posY += Q_24_8(sub_801F07C(Q_24_8_TO_INT(mon->posY),
-                             Q_24_8_TO_INT(mon->posX),
-                             r2 >> 31,
-                             8,
-                             NULL,
-                             sub_801EE64));
+    mon->y += Q_24_8(sub_801F07C(Q_24_8_TO_INT(mon->y), Q_24_8_TO_INT(mon->x), r2 >> 31,
+                                 8, NULL, sub_801EE64));
 
     s->x = 0;
     s->y = 0;
@@ -61,4 +53,40 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->graphics.anim = SA2_ANIM_MON;
     s->variant = 0;
     s->unk21 = 0xFF;
+}
+
+void Task_Enemy_Mon(void)
+{
+    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite *s = &mon->s;
+    MapEntity *me = mon->base.me;
+
+    s->x = Q_24_8_TO_INT(mon->x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(mon->y) - gCamera.y;
+
+    if (sub_800C4FC(s, Q_24_8_TO_INT(mon->x), Q_24_8_TO_INT(mon->y), 0)) {
+        TaskDestroy(gCurTask);
+    } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
+        TaskDestroy(gCurTask);
+    } else {
+        if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))
+            && (gPlayer.x < mon->x + Q_24_8(DISPLAY_WIDTH / 2))
+            && (gPlayer.y > mon->y - Q_24_8(50)) && (gPlayer.y < mon->y + Q_24_8(50))) {
+            gCurTask->main = Task_805146C;
+            s->graphics.anim = SA2_ANIM_MON;
+            s->variant = 2;
+            s->unk21 = 0xFF;
+        }
+
+        if (gPlayer.x < mon->x) {
+            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        } else {
+            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        }
+
+        sub_80122DC(mon->x, mon->y);
+        sub_8004558(s);
+        sub_80051E8(s);
+    }
 }

@@ -639,6 +639,8 @@ _0800C4F2:
 	pop {r1}
 	bx r1
 
+@; This appears to be the (or one of the?) collision procedure(s) 
+@; between the Player and enemies.
 	thumb_func_start sub_800C4FC
 sub_800C4FC: @ 0x0800C4FC
 	push {r4, r5, r6, r7, lr}
