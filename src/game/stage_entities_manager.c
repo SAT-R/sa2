@@ -3,18 +3,24 @@
 
 #include "malloc_ewram.h"
 #include "malloc_vram.h"
-#include "game/entity.h"
 
 #include "lib/m4a.h"
-#include "constants/songs.h"
 
 #include "game/game.h"
+#include "game/entity.h"
+#include "game/stage_item_box.h"
 #include "game/stage_entities_manager.h"
+
+#include "game/assets/compressed/entities.h"
+
+#include "constants/zones.h"
+#include "constants/songs.h"
+
+// Unknown task
+extern void sub_8009E00(s16, s16);
 
 typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
-
-extern void CreateItemBox(MapEntity *, u16, u16, u8);
 
 typedef struct {
     u32 unk0;
@@ -22,16 +28,6 @@ typedef struct {
     u32 unk8; // v_regionCount
     u32 unkC[0]; // unknown size, offsets
 } MapData; /* Unknown size */
-
-extern const RLCompressed *gSpritePosData_interactables[];
-extern const RLCompressed *gSpritePosData_itemboxes[];
-extern const RLCompressed *gSpritePosData_enemies[];
-
-extern const StagePreInitFunc gSpriteTileInits_PreStageEntry[];
-
-extern const MapEntityInit gSpriteInits_Interactables[];
-extern const MapEntityInit gSpriteInits_Enemies[];
-extern const MapEntityInit gUnknown_080D502C[];
 
 typedef struct {
     MapData *unk0; // interactables
@@ -43,9 +39,62 @@ typedef struct {
     struct Task *unk18; // preInitTask
 } EntitesManager;
 
+struct Range {
+    s32 xLow, yLow;
+    s32 xHigh, yHigh;
+};
+
 void sub_8008DCC(void);
 
 void sub_80095FC(struct Task *);
+
+const RLCompressed *const gSpritePosData_interactables[NUM_LEVEL_IDS] = {
+    (void *)&zone1_act1_interactables,
+    (void *)&zone1_act2_interactables,
+    (void *)&zone1_boss_interactables,
+    (void *)&zone1_act2_interactables,
+    (void *)&zone2_act1_interactables,
+    (void *)&zone2_act2_interactables,
+    (void *)&zone2_boss_interactables,
+    (void *)&zone2_act2_interactables,
+    (void *)&zone3_act1_interactables,
+    (void *)&zone3_act2_interactables,
+    (void *)&zone3_boss_interactables,
+    (void *)&zone3_act2_interactables,
+    (void *)&zone4_act1_interactables,
+    (void *)&zone4_act2_interactables,
+    (void *)&zone4_boss_interactables,
+    (void *)&zone4_act2_interactables,
+    (void *)&zone5_act1_interactables,
+    (void *)&zone5_act2_interactables,
+    (void *)&zone5_boss_interactables,
+    (void *)&zone5_act2_interactables,
+    (void *)&zone6_act1_interactables,
+    (void *)&zone6_act2_interactables,
+    (void *)&zone6_boss_interactables,
+    (void *)&zone6_act2_interactables,
+    (void *)&zone7_act1_interactables,
+    (void *)&zone7_act2_interactables,
+    (void *)&zone7_boss_interactables,
+    (void *)&zone7_act2_interactables,
+    (void *)&zone8_act1_interactables,
+    (void *)&zone8_act2_interactables,
+    (void *)&zone8_boss_interactables,
+    NULL,
+    NULL,
+    NULL,
+};
+
+extern const RLCompressed *gSpritePosData_itemboxes[];
+extern const RLCompressed *gSpritePosData_enemies[];
+
+extern const MapEntityInit gSpriteInits_Interactables[];
+extern const MapEntityInit gSpriteInits_Enemies[];
+
+extern const u16 gUnknown_080D5020[];
+extern const MapEntityInit gUnknown_080D502C[];
+
+extern const StagePreInitFunc gSpriteTileInits_PreStageEntry[];
 
 void CreateStageEntitiesManager(void)
 {
@@ -89,11 +138,6 @@ void CreateStageEntitiesManager(void)
     em->unk14 = 1;
     gEntitesManagerTask = t;
 }
-
-struct Range {
-    s32 xLow, yLow;
-    s32 xHigh, yHigh;
-};
 
 static inline MapEntity *ReadMe(void *data, u32 r6)
 {
@@ -641,10 +685,6 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC())
 }
 END_NONMATCH
 
-extern const u16 gUnknown_080D5020[];
-
-extern void sub_8009E00(s16, s16);
-
 void sub_8009530(s16 a, s16 b)
 {
     u32 old;
@@ -672,11 +712,6 @@ void sub_8009530(s16 a, s16 b)
         gPlayer.unk84++;
     }
 }
-
-typedef struct {
-    /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
-} Sprite_Entity;
 
 void TaskDestructor_80095E8(struct Task *t)
 {

@@ -273,8 +273,10 @@ SECTIONS
         build/sa2/asm/sprite_4.o(.rodata);
     
         /* game Data */
-        build/sa2/data/multiboot_chao_garden.o(.rodata);
+        build/sa2/src/game/assets/compressed/entities.o(.rodata);
+        build/sa2/src/game/assets/compressed/roms.o(.rodata);
         build/sa2/asm/stage_rings_manager.o(.rodata);
+        build/sa2/src/game/stage_entities_manager.o(.rodata);
         build/sa2/asm/stage_entities_manager.o(.rodata);
         build/sa2/asm/stage_language_task_1.o(.rodata);
         build/sa2/asm/stage_language_task_2.o(.rodata);

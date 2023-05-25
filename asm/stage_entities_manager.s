@@ -3,43 +3,6 @@
 
 .section .rodata
 
-.global gSpritePosData_interactables
-gSpritePosData_interactables:
-	.4byte zone1_act1_interactables
-	.4byte zone1_act2_interactables
-	.4byte zone1_boss_interactables
-	.4byte zone1_act2_interactables
-	.4byte zone2_act1_interactables
-	.4byte zone2_act2_interactables
-	.4byte zone2_boss_interactables
-	.4byte zone2_act2_interactables
-	.4byte zone3_act1_interactables
-	.4byte zone3_act2_interactables
-	.4byte zone3_boss_interactables
-	.4byte zone3_act2_interactables
-	.4byte zone4_act1_interactables
-	.4byte zone4_act2_interactables
-	.4byte zone4_boss_interactables
-	.4byte zone4_act2_interactables
-	.4byte zone5_act1_interactables
-	.4byte zone5_act2_interactables
-	.4byte zone5_boss_interactables
-	.4byte zone5_act2_interactables
-	.4byte zone6_act1_interactables
-	.4byte zone6_act2_interactables
-	.4byte zone6_boss_interactables
-	.4byte zone6_act2_interactables
-	.4byte zone7_act1_interactables
-	.4byte zone7_act2_interactables
-	.4byte zone7_boss_interactables
-	.4byte zone7_act2_interactables
-	.4byte zone8_act1_interactables
-	.4byte zone8_act2_interactables
-	.4byte zone8_boss_interactables
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 .global gSpritePosData_itemboxes
 gSpritePosData_itemboxes:
 	.4byte zone1_act1_itemboxes

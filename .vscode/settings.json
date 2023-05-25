@@ -201,7 +201,12 @@
     "093.h": "c",
     "flying_handle.h": "c",
     "loader_tables.h": "c",
-    "stage_entities_manager.h": "c"
+    "stage_entities_manager.h": "c",
+    "entities.h": "c",
+    "zones.h": "c",
+    "map_data.h": "c",
+    "map_entities.h": "c",
+    "roms.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

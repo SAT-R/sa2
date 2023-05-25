@@ -56,10 +56,6 @@ gUnknown_080984F4:
     @ Dummies?
     .2byte 0x0200
     .2byte 0x0098
-    
-    .global gUnknown_08098538
-gUnknown_08098538:
-    .include "data/maps/entities.inc"
 
 .text
 .syntax unified

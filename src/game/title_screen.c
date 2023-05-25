@@ -11,7 +11,6 @@
 #include "input_recorder.h"
 #include "game/math.h"
 #include "game/math.h"
-#include "mb_programs.h"
 #include "game/options_screen.h"
 #include "game/game.h"
 #include "game/time_attack/lobby.h"
@@ -23,6 +22,8 @@
 #include "game/character_select.h"
 #include "malloc_vram.h"
 #include "game/time_attack/mode_select.h"
+
+#include "game/assets/compressed/roms.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
