@@ -58,7 +58,7 @@ SECTIONS
         build/sa2/asm/stage_unknown_task.o(.text);
         build/sa2/asm/stage_demo.o(.text);
         build/sa2/asm/stage_language_task_2.o(.text);
-        build/sa2/asm/stage_unknown_sprite.o(.text);
+        build/sa2/src/game/stage_unknown_sprite.o(.text);
         build/sa2/asm/ice_paradise_search_lights.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
         build/sa2/asm/stage_collect_ring_effect.o(.text);
@@ -116,7 +116,7 @@ SECTIONS
         build/sa2/asm/boss_8.o(.text);
         build/sa2/asm/boss_9.o(.text);
         build/sa2/asm/enemies_shared.o(.text);
-        build/sa2/asm/enemy_mon.o(.text);
+        build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/asm/enemy_kura_kura.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);

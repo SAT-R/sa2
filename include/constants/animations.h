@@ -95,7 +95,7 @@
 #define SA2_ANIM_CLOUD                       477
 
 // Enemies
-#define SA2_ANIM_APE                    478
+#define SA2_ANIM_MON                    478
 #define SA2_ANIM_KIKI                   479
 #define SA2_ANIM_KIKI_PROJ              480
 #define SA2_ANIM_KIKI_PROJ_EXPLOSION    481
