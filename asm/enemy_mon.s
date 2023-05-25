@@ -5,240 +5,8 @@
 .arm
 
 .if 0
-.endif
-
-	thumb_func_start Task_805146C
-Task_805146C: @ 0x0805146C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r7, _080514B8 @ =gCurTask
-	ldr r0, [r7]
-	ldrh r6, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r6, r0
-	adds r0, #0xc
-	adds r5, r6, r0
-	ldr r1, [r4]
-	mov r8, r1
-	ldr r0, [r4, #0x3c]
-	asrs r0, r0, #8
-	ldr r2, _080514BC @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	ldr r0, [r4, #0x40]
-	asrs r0, r0, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	ldr r1, [r4, #0x3c]
-	asrs r1, r1, #8
-	ldr r2, [r4, #0x40]
-	asrs r2, r2, #8
-	adds r0, r5, #0
-	movs r3, #0
-	bl sub_800C4FC
-	cmp r0, #0
-	beq _080514C0
-	ldr r0, [r7]
-	bl TaskDestroy
-	b _08051534
-	.align 2, 0
-_080514B8: .4byte gCurTask
-_080514BC: .4byte gCamera
-_080514C0:
-	ldrh r0, [r5, #0x16]
-	adds r0, #0x80
-	lsls r0, r0, #0x10
-	movs r1, #0xf8
-	lsls r1, r1, #0x11
-	cmp r0, r1
-	bhi _080514E4
-	movs r1, #0x18
-	ldrsh r0, [r5, r1]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _080514E4
-	movs r0, #0x18
-	ldrsh r1, [r5, r0]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _080514F8
-_080514E4:
-	ldrb r0, [r4, #8]
-	mov r1, r8
-	strb r0, [r1]
-	ldr r0, _080514F4 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _08051534
-	.align 2, 0
-_080514F4: .4byte gCurTask
-_080514F8:
-	ldr r0, [r4, #0x3c]
-	ldr r1, [r4, #0x40]
-	bl sub_80122DC
-	adds r0, r5, #0
-	bl sub_8004558
-	adds r1, r0, #0
-	cmp r1, #0
-	bne _0805152E
-	ldr r0, _08051540 @ =0xFFFFFA80
-	str r0, [r4, #0x48]
-	str r1, [r4, #0x44]
-	movs r0, #0xef
-	lsls r0, r0, #1
-	strh r0, [r5, #0xa]
-	ldr r0, _08051544 @ =IWRAM_START + 0x2C
-	adds r1, r6, r0
-	movs r0, #1
-	strb r0, [r1]
-	ldr r0, _08051548 @ =IWRAM_START + 0x2D
-	adds r1, r6, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r1, [r7]
-	ldr r0, _0805154C @ =sub_8051550
-	str r0, [r1, #8]
-_0805152E:
-	adds r0, r5, #0
-	bl sub_80051E8
-_08051534:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08051540: .4byte 0xFFFFFA80
-_08051544: .4byte IWRAM_START + 0x2C
-_08051548: .4byte IWRAM_START + 0x2D
-_0805154C: .4byte sub_8051550
-
-	thumb_func_start sub_8051550
-sub_8051550: @ 0x08051550
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	ldr r7, _080515B0 @ =gCurTask
-	ldr r0, [r7]
-	ldrh r6, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r6, r0
-	adds r0, #0xc
-	adds r5, r6, r0
-	ldr r1, [r4]
-	mov r8, r1
-	ldr r1, [r4, #0x48]
-	adds r1, #0x34
-	str r1, [r4, #0x48]
-	ldr r0, [r4, #0x44]
-	adds r0, r0, r1
-	str r0, [r4, #0x44]
-	ldr r0, [r4, #0x3c]
-	asrs r0, r0, #8
-	ldr r2, _080515B4 @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	ldr r0, [r4, #0x40]
-	ldr r1, [r4, #0x44]
-	adds r0, r0, r1
-	asrs r0, r0, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	ldr r1, [r4, #0x3c]
-	asrs r1, r1, #8
-	ldr r2, [r4, #0x40]
-	ldr r0, [r4, #0x44]
-	adds r2, r2, r0
-	asrs r2, r2, #8
-	adds r0, r5, #0
-	movs r3, #0
-	bl sub_800C4FC
-	cmp r0, #0
-	beq _080515B8
-	ldr r0, [r7]
-	bl TaskDestroy
-	b _0805162A
-	.align 2, 0
-_080515B0: .4byte gCurTask
-_080515B4: .4byte gCamera
-_080515B8:
-	ldrh r0, [r5, #0x16]
-	adds r0, #0x80
-	lsls r0, r0, #0x10
-	movs r1, #0xf8
-	lsls r1, r1, #0x11
-	cmp r0, r1
-	bhi _080515DC
-	movs r1, #0x18
-	ldrsh r0, [r5, r1]
-	adds r0, #0x80
-	cmp r0, #0
-	blt _080515DC
-	movs r0, #0x18
-	ldrsh r1, [r5, r0]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	cmp r1, r0
-	ble _080515F0
-_080515DC:
-	ldrb r0, [r4, #8]
-	mov r1, r8
-	strb r0, [r1]
-	ldr r0, _080515EC @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	b _0805162A
-	.align 2, 0
-_080515EC: .4byte gCurTask
-_080515F0:
-	ldr r0, [r4, #0x44]
-	cmp r0, #0
-	blt _08051612
-	movs r0, #0xef
-	lsls r0, r0, #1
-	strh r0, [r5, #0xa]
-	ldr r0, _08051634 @ =IWRAM_START + 0x2C
-	adds r1, r6, r0
-	movs r0, #3
-	strb r0, [r1]
-	ldr r0, _08051638 @ =IWRAM_START + 0x2D
-	adds r1, r6, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r1, [r7]
-	ldr r0, _0805163C @ =sub_8051640
-	str r0, [r1, #8]
-_08051612:
-	ldr r0, [r4, #0x3c]
-	ldr r1, [r4, #0x40]
-	ldr r2, [r4, #0x44]
-	adds r1, r1, r2
-	bl sub_80122DC
-	adds r0, r5, #0
-	bl sub_8004558
-	adds r0, r5, #0
-	bl sub_80051E8
-_0805162A:
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08051634: .4byte IWRAM_START + 0x2C
-_08051638: .4byte IWRAM_START + 0x2D
-_0805163C: .4byte sub_8051640
-
-	thumb_func_start sub_8051640
-sub_8051640: @ 0x08051640
+	thumb_func_start Task_Enemy_Mon_4
+Task_Enemy_Mon_4: @ 0x08051640
 	push {r4, r5, r6, r7, lr}
 	ldr r6, _08051688 @ =gCurTask
 	ldr r0, [r6]
@@ -364,11 +132,11 @@ _0805172C:
 	strb r0, [r1]
 	ldr r0, _0805174C @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08051750 @ =Task_805146C
+	ldr r0, _08051750 @ =Task_Enemy_Mon_2
 	b _08051770
 	.align 2, 0
 _0805174C: .4byte gCurTask
-_08051750: .4byte Task_805146C
+_08051750: .4byte Task_Enemy_Mon_2
 _08051754:
 	movs r1, #0
 	movs r0, #0xef
@@ -383,7 +151,7 @@ _08051754:
 	strb r0, [r1]
 	ldr r0, _08051780 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08051784 @ =Task_Enemy_Mon
+	ldr r0, _08051784 @ =Task_Enemy_Mon_Main
 _08051770:
 	str r0, [r1, #8]
 _08051772:
@@ -395,4 +163,5 @@ _08051778:
 	bx r0
 	.align 2, 0
 _08051780: .4byte gCurTask
-_08051784: .4byte Task_Enemy_Mon
+_08051784: .4byte Task_Enemy_Mon_Main
+.endif

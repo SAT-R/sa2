@@ -9,7 +9,7 @@ typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x3C */ s32 x;
     /* 0x40 */ s32 y;
-    /* 0x44 */ s32 speedX;
+    /* 0x44 */ s32 deltaY;
     /* 0x48 */ s32 speedY;
 } Sprite_Mon; /* 0x4C */
 
