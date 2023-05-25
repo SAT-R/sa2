@@ -8,11 +8,19 @@
 
 // TODO: Name the tasks accordingly
 
-// static
-void Task_Enemy_Mon_Main(void);
-void Task_Enemy_Mon_2(void);
-void Task_Enemy_Mon_3(void);
-void Task_Enemy_Mon_4(void);
+static void Task_Enemy_Mon_Main(void);
+static void Task_Enemy_Mon_2(void);
+static void Task_Enemy_Mon_3(void);
+static void Task_Enemy_Mon_4(void);
+
+typedef struct {
+    /* 0x00 */ SpriteBase base;
+    /* 0x0C */ Sprite s;
+    /* 0x3C */ s32 x;
+    /* 0x40 */ s32 y;
+    /* 0x44 */ s32 deltaY;
+    /* 0x48 */ s32 speedY;
+} Sprite_Mon; /* 0x4C */
 
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -58,7 +66,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->unk21 = 0xFF;
 }
 
-void Task_Enemy_Mon_Main(void)
+static void Task_Enemy_Mon_Main(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -94,7 +102,7 @@ void Task_Enemy_Mon_Main(void)
     }
 }
 
-void Task_Enemy_Mon_2(void)
+static void Task_Enemy_Mon_2(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -123,7 +131,7 @@ void Task_Enemy_Mon_2(void)
     }
 }
 
-void Task_Enemy_Mon_3(void)
+static void Task_Enemy_Mon_3(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -155,7 +163,7 @@ void Task_Enemy_Mon_3(void)
     }
 }
 
-void Task_Enemy_Mon_4(void)
+static void Task_Enemy_Mon_4(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
