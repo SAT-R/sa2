@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable_IceParadise_FunnelSphere(MapEntity *, u16, u16, u8);
+void CreateEntity_HalfPipe_End(MapEntity *, u16, u16, u8);
 
 #endif

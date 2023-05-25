@@ -5,6 +5,7 @@
 
 #include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/music_plant/keyboard.h"
 
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -38,7 +39,6 @@ static void TaskDestructor_Keyboard(struct Task *);
 static bool32 sub_8076848(Sprite_Keyboard *);
 
 static void DespawnKeyboard(Sprite_Keyboard *);
-extern void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind);
 
 const s16 sKeyboardAccelMusicPlant[3][2] = {
     { Q_8_8(3.0), Q_8_8(4.0) },

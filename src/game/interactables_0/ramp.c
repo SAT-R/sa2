@@ -1,11 +1,14 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/entity.h"
+
 #include "task.h"
 #include "malloc_vram.h"
-#include "constants/zones.h"
 
+#include "game/entity.h"
+#include "game/interactables_0/ramp.h"
+
+#include "constants/zones.h"
 #include "constants/animations.h"
 
 typedef struct {

@@ -1,10 +1,13 @@
 #include "global.h"
-#include "game/game.h"
-#include "game/entity.h"
+
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
 #include "malloc_vram.h"
+
+#include "game/game.h"
+#include "game/entity.h"
+#include "game/interactables_0/platform.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"

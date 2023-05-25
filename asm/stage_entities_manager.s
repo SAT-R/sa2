@@ -3,81 +3,6 @@
 
 .section .rodata
 
-.global gSpritePosData_itemboxes
-gSpritePosData_itemboxes:
-	.4byte zone1_act1_itemboxes
-	.4byte zone1_act2_itemboxes
-	.4byte zone1_boss_itemboxes
-	.4byte zone1_act2_itemboxes
-	.4byte zone2_act1_itemboxes
-	.4byte zone2_act2_itemboxes
-	.4byte zone2_boss_itemboxes
-	.4byte zone2_act2_itemboxes
-	.4byte zone3_act1_itemboxes
-	.4byte zone3_act2_itemboxes
-	.4byte zone3_boss_itemboxes
-	.4byte zone3_act2_itemboxes
-	.4byte zone4_act1_itemboxes
-	.4byte zone4_act2_itemboxes
-	.4byte zone4_boss_itemboxes
-	.4byte zone4_act2_itemboxes
-	.4byte zone5_act1_itemboxes
-	.4byte zone5_act2_itemboxes
-	.4byte zone5_boss_itemboxes
-	.4byte zone5_act2_itemboxes
-	.4byte zone6_act1_itemboxes
-	.4byte zone6_act2_itemboxes
-	.4byte zone6_boss_itemboxes
-	.4byte zone6_act2_itemboxes
-	.4byte zone7_act1_itemboxes
-	.4byte zone7_act2_itemboxes
-	.4byte zone7_boss_itemboxes
-	.4byte zone7_act2_itemboxes
-	.4byte zone8_act1_itemboxes
-	.4byte zone8_act2_itemboxes
-	.4byte zone8_boss_itemboxes
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-.global gSpritePosData_enemies
-gSpritePosData_enemies:
-	.4byte zone1_act1_enemies
-	.4byte zone1_act2_enemies
-	.4byte zone1_boss_enemies
-	.4byte zone1_act2_enemies
-	.4byte zone2_act1_enemies
-	.4byte zone2_act2_enemies
-	.4byte zone2_boss_enemies
-	.4byte zone2_act2_enemies
-	.4byte zone3_act1_enemies
-	.4byte zone3_act2_enemies
-	.4byte zone3_boss_enemies
-	.4byte zone3_act2_enemies
-	.4byte zone4_act1_enemies
-	.4byte zone4_act2_enemies
-	.4byte zone4_boss_enemies
-	.4byte zone4_act2_enemies
-	.4byte zone5_act1_enemies
-	.4byte zone5_act2_enemies
-	.4byte zone5_boss_enemies
-	.4byte zone5_act2_enemies
-	.4byte zone6_act1_enemies
-	.4byte zone6_act2_enemies
-	.4byte zone6_boss_enemies
-	.4byte zone6_act2_enemies
-	.4byte zone7_act1_enemies
-	.4byte zone7_act2_enemies
-	.4byte zone7_boss_enemies
-	.4byte zone7_act2_enemies
-	.4byte zone8_act1_enemies
-	.4byte zone8_act2_enemies
-	.4byte zone8_boss_enemies
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-
     .global gSpriteInits_Interactables @ 080D4E1C
 gSpriteInits_Interactables:
     .4byte CreateEntity_Toggle_PlayerLayer
@@ -97,7 +22,7 @@ gSpriteInits_Interactables:
     .4byte CreateEntity_Decoration
     .4byte CreateEntity_Ramp
     .4byte CreateEntity_Booster
-    .4byte CreateEntity_InclineRamp @ The one at the end of Leaf Forest Act 1 (also in LF Act 2 and Sky Canyon Act 2)
+    .4byte CreateEntity_InclineRamp
     .4byte CreateEntity_BouncySpring
     .4byte CreateEntity_019
     .4byte CreateEntity_RotatingHandle
@@ -106,8 +31,8 @@ gSpriteInits_Interactables:
 
     .4byte CreateEntity_Spikes_Up
     .4byte CreateEntity_Spikes_Down
-    .4byte CreateEntity_Spikes_LeftRight @ Left
-    .4byte CreateEntity_Spikes_LeftRight @ Right
+    .4byte CreateEntity_Spikes_LeftRight
+    .4byte CreateEntity_Spikes_LeftRight
     .4byte CreateEntity_Spikes_HidingUp
     .4byte CreateEntity_Spikes_HidingDown
 
@@ -115,7 +40,7 @@ gSpriteInits_Interactables:
     .4byte CreateEntity_Corkscrew_End
     .4byte CreateEntity_BouncyBar
     .4byte CreateEntity_GrindRail_Start
-    .4byte CreateEntity_GrindRail_StartAir @ Enables not only from air, but when running on water aswell.
+    .4byte CreateEntity_GrindRail_StartAir
     .4byte CreateEntity_GrindRail_EndGround
     .4byte CreateEntity_GrindRail_End_ForcedJump
     .4byte CreateEntity_GrindRail_EndAlternate
@@ -126,10 +51,10 @@ gSpriteInits_Interactables:
     .4byte CreateEntity_Corkscrew3D_End
     .4byte CreateEntity_StageGoal
     .4byte CreateEntity_Checkpoint
-    .4byte CreateEntity_044    @ Used at layer transitions on three-quarter-type loops
+    .4byte CreateEntity_044    
     .4byte CreateEntity_Toggle_Checkpoint
     .4byte CreateEntity_Toggle_StageGoal
-    .4byte CreateEntity_WindUpStick @ Character rotates a bit around it, then shoots up/down
+    .4byte CreateEntity_WindUpStick 
     .4byte CreateEntity_048
     .4byte CreateEntity_HookRail_Start
     .4byte CreateEntity_HookRail_End
@@ -149,17 +74,17 @@ gSpriteInits_Interactables:
     .4byte CreateEntity_PipeInstrument_Entry
     .4byte CreateEntity_SlowingSnow
     .4byte CreateEntity_FunnelSphere
-    .4byte CreateEntity_HalfPipe_End     @ Like in SA1 Neo Green Hill
-    .4byte CreateEntity_HalfPipe_Start   @ Like in SA1 Neo Green Hill
+    .4byte CreateEntity_HalfPipe_End    
+    .4byte CreateEntity_HalfPipe_Start 
     .4byte CreateEntity_069
     .4byte CreateEntity_NoteBlock
     .4byte CreateEntity_044
     .4byte CreateEntity_ClearPipe_Start
     .4byte CreateEntity_ClearPipe_End
-    .4byte CreateEntity_LightBridge               @ Techno Base - Loud Digital Path
+    .4byte CreateEntity_LightBridge            
     .4byte CreateEntity_075_0
     .4byte CreateEntity_075_1
-    .4byte CreateEntity_075_2             @ Techno Base - Box Platform (Launch player up)
+    .4byte CreateEntity_075_2             
     .4byte CreateEntity_078
     .4byte CreateEntity_079
     .4byte CreateEntity_080
@@ -184,7 +109,7 @@ gSpriteInits_Interactables:
     .4byte CreateEntity_Toggle_Gravity__Up
     .4byte CreateEntity_Toggle_Gravity__Toggle
     .4byte CreateEntity_Launcher_Left_GUp
-    .4byte CreateEntity_Launcher_Right_GUp     @ Egg Utopia "Launcher" (like in Manias Flying Battery)
+    .4byte CreateEntity_Launcher_Right_GUp
     .4byte CreateEntity_SpecialRing
     .4byte CreateEntity_Whirlwind_1
     .4byte CreateEntity_Interactable105

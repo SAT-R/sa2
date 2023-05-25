@@ -1,6 +1,10 @@
 #include "global.h"
-#include "lib/m4a.h"
+#include "core.h"
+
 #include "game/entity.h"
+#include "game/interactables_0/grind_rail.h"
+
+#include "lib/m4a.h"
 
 #include "constants/songs.h"
 

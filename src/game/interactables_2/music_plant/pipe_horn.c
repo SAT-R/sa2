@@ -1,12 +1,15 @@
 #include "global.h"
 #include "lib/m4a.h"
 #include "trig.h"
+#include "sprite.h"
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "sprite.h"
 
 #include "game/interactables_2/music_plant/pipe_horn.h"
+#include "game/interactables_2/music_plant/handlers_ia_pipe_horn.h"
+
+#include "data/handlers_ia_pipe_horn_sequences.h"
 
 #include "constants/songs.h"
 
@@ -36,8 +39,6 @@ extern u16 gUnknown_080DFED0[10] = {
     SE_MUSIC_PLANT_HORN3,      SE_MUSIC_PLANT_EXIT_HORN2, MUS_DUMMY,
 };
 #endif
-
-extern PipeHandler sPipeHandlers[NUM_PIPE_HANDLERS];
 
 extern void sub_8077774(Sprite_Pipe_Horn *, s32, s32);
 extern void sub_80777C8(Sprite_Pipe_Horn *);
@@ -80,7 +81,7 @@ u32 sub_8077788(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
         return 0;
     }
 
-    sPipeHandlers[data[pipe->unk18].unk0](pipe, data);
+    gPipeHandlers[data[pipe->unk18].unk0](pipe, data);
 
     result = pipe->unk18;
     result ^= (u16)-1;

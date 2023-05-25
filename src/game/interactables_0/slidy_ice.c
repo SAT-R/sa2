@@ -3,8 +3,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-
-extern void Task_SlidyIce(void);
+#include "game/interactables_0/slidy_ice.h"
 
 typedef struct {
     /* 0x00 */ u8 x;

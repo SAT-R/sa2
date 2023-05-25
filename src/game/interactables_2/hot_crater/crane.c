@@ -1,12 +1,13 @@
 #include "global.h"
-#include "gba/types.h"
-#include "lib/m4a.h"
+#include "sprite.h"
+#include "task.h"
 #include "trig.h"
+
+#include "lib/m4a.h"
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "sprite.h"
-#include "task.h"
+#include "game/interactables_2/hot_crater/crane.h"
 
 #include "constants/animations.h"
 

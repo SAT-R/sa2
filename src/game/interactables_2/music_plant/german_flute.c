@@ -5,6 +5,7 @@
 
 #include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/music_plant/german_flute.h"
 
 #include "constants/songs.h"
 
