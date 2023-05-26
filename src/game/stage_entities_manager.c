@@ -74,8 +74,11 @@
 #include "game/interactables_2/egg_utopia/cannon.h"
 #include "game/interactables_2/egg_utopia/095.h"
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
+#include "game/interactables_2/egg_utopia/launcher.h"
 
 #include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/105.h"
+#include "game/interactables_2/special_ring.h"
 
 #include "game/assets/compressed/entities.h"
 

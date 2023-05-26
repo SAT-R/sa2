@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_HalfPipe_End(MapEntity *, u16, u16, u8);
+void CreateEntity_FunnelSphere(MapEntity *, u16, u16, u8);
 
 #endif
