@@ -376,6 +376,7 @@ void sub_8010464(void)
     }
 }
 
+// Enables not only from air, but when running on water aswell
 void CreateEntity_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                      u8 spriteY)
 {
