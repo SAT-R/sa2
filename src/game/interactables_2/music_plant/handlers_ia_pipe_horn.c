@@ -1,6 +1,7 @@
 #include "global.h"
 #include "trig.h"
 
+#include "game/interactables_2/music_plant/handlers_ia_pipe_horn.h"
 #include "game/interactables_2/music_plant/pipe_horn.h"
 
 void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data[]);
@@ -17,7 +18,7 @@ void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *, const Pipe_Data[]);
 
 // These functions control the character when they enter
 // one of the horns or pipes in Music Plant.
-const PipeHandler sPipeHandlers[NUM_PIPE_HANDLERS] = { Handler_MusicPlant_Pipe_0,
+const PipeHandler gPipeHandlers[NUM_PIPE_HANDLERS] = { Handler_MusicPlant_Pipe_0,
                                                        Handler_MusicPlant_Pipe_1,
                                                        Handler_MusicPlant_Pipe_2,
                                                        Handler_MusicPlant_Pipe_3,

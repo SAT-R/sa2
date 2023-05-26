@@ -1,14 +1,16 @@
 #include "global.h"
-#include "gba/types.h"
-#include "lib/m4a.h"
+
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
+
+#include "lib/m4a.h"
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "sprite.h"
-#include "task.h"
-#include "constants/zones.h"
+#include "game/interactables_0/spring.h"
 
+#include "constants/zones.h"
 #include "constants/animations.h"
 #include "constants/songs.h"
 

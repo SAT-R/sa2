@@ -1,6 +1,10 @@
 #include "global.h"
-#include "lib/m4a.h"
+#include "core.h"
+
 #include "game/entity.h"
+#include "game/interactables_0/grind_rail.h"
+
+#include "lib/m4a.h"
 
 #include "constants/songs.h"
 
@@ -372,6 +376,7 @@ void sub_8010464(void)
     }
 }
 
+// Enables not only from air, but when running on water aswell
 void CreateEntity_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                      u8 spriteY)
 {

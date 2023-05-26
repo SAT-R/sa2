@@ -4,6 +4,8 @@
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable075(MapEntity *, u16, u16, u8);
+void CreateEntity_075_0(MapEntity *, u16, u16, u8);
+void CreateEntity_075_1(MapEntity *, u16, u16, u8);
+void CreateEntity_075_2(MapEntity *, u16, u16, u8);
 
 #endif

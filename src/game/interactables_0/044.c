@@ -1,8 +1,11 @@
 #include "global.h"
-#include "game/game.h"
-#include "game/entity.h"
+#include "core.h"
 #include "sprite.h"
 #include "task.h"
+
+#include "game/game.h"
+#include "game/entity.h"
+#include "game/interactables_0/044.h"
 
 #include "constants/interactables.h"
 

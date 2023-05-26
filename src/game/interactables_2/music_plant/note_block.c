@@ -5,6 +5,7 @@
 
 #include "game/entity.h"
 #include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/music_plant/note_block.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

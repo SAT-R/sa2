@@ -1,13 +1,11 @@
-#ifndef GUARD_INTERACTABLE_098_H
-#define GUARD_INTERACTABLE_098_H
+#ifndef GUARD_INTERACTABLE_GRAVITY_TOGGLE_H
+#define GUARD_INTERACTABLE_GRAVITY_TOGGLE_H
 
 #include "global.h"
 #include "game/entity.h"
 
-void initSprite_Interactable098_Down(MapEntity *, u16, u16, u8);
+void CreateEntity_Toggle_Gravity__Down(MapEntity *, u16, u16, u8);
+void CreateEntity_Toggle_Gravity__Up(MapEntity *, u16, u16, u8);
+void CreateEntity_Toggle_Gravity__Toggle(MapEntity *, u16, u16, u8);
 
-void initSprite_Interactable098_Up(MapEntity *, u16, u16, u8);
-
-void initSprite_Interactable098_Toggle(MapEntity *, u16, u16, u8);
-
-#endif // GUARD_INTERACTABLE_098_H
+#endif // GUARD_INTERACTABLE_GRAVITY_TOGGLE_H

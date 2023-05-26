@@ -11,6 +11,75 @@
 #include "game/stage_item_box.h"
 #include "game/stage_entities_manager.h"
 
+#include "game/interactables_0/platform_thin.h"
+#include "game/interactables_0/044.h"
+#include "game/interactables_0/grind_rail.h"
+#include "game/interactables_0/platform_square.h"
+#include "game/interactables_0/platform.h"
+#include "game/interactables_0/ramp.h"
+#include "game/interactables_0/slidy_ice.h"
+#include "game/interactables_0/spring.h"
+#include "game/interactables_0/clear_pipe.h"
+
+#include "game/interactables_1/windmill.h"
+#include "game/interactables_1/checkpoint.h"
+#include "game/interactables_1/gapped_loop.h"
+#include "game/interactables_1/stage_goal.h"
+#include "game/interactables_1/corkscrew.h"
+#include "game/interactables_1/corkscrew_3d.h"
+#include "game/interactables_1/incline_ramp.h"
+#include "game/interactables_1/toggle_player_layer.h"
+#include "game/interactables_1/bouncy_bar.h"
+#include "game/interactables_1/spring_bouncy.h"
+#include "game/interactables_1/rotating_handle.h"
+#include "game/interactables_1/019.h"
+#include "game/interactables_1/spikes.h"
+#include "game/interactables_1/booster.h"
+#include "game/interactables_1/decoration.h"
+
+#include "game/interactables_2/hot_crater/crane.h"
+#include "game/interactables_2/hot_crater/dash_ring.h"
+#include "game/interactables_2/hot_crater/wind_up_stick.h"
+#include "game/interactables_2/hot_crater/floating_spring.h"
+#include "game/interactables_2/hot_crater/turn_around_bar.h"
+#include "game/interactables_2/hot_crater/hook_rail.h"
+
+#include "game/interactables_2/music_plant/note_sphere.h"
+#include "game/interactables_2/music_plant/pipe_horn.h"
+#include "game/interactables_2/music_plant/keyboard.h"
+#include "game/interactables_2/music_plant/note_block.h"
+#include "game/interactables_2/music_plant/guitar_string.h"
+#include "game/interactables_2/music_plant/german_flute.h"
+
+#include "game/interactables_2/ice_paradise/069.h"
+#include "game/interactables_2/ice_paradise/funnel_sphere.h"
+#include "game/interactables_2/ice_paradise/half_pipe.h"
+#include "game/interactables_2/ice_paradise/slowing_snow.h"
+
+#include "game/interactables_2/sky_canyon/giant_propeller.h"
+#include "game/interactables_2/sky_canyon/small_propeller.h"
+#include "game/interactables_2/sky_canyon/small_windmill.h"
+#include "game/interactables_2/sky_canyon/whirlwind.h"
+#include "game/interactables_2/sky_canyon/085.h"
+
+#include "game/interactables_2/tec_base/080.h"
+#include "game/interactables_2/tec_base/light_bridge.h"
+#include "game/interactables_2/tec_base/075.h"
+#include "game/interactables_2/tec_base/078.h"
+#include "game/interactables_2/tec_base/note_block.h"
+
+#include "game/interactables_2/egg_utopia/094.h"
+#include "game/interactables_2/egg_utopia/flying_handle.h"
+#include "game/interactables_2/egg_utopia/gravity_toggle.h"
+#include "game/interactables_2/egg_utopia/cannon.h"
+#include "game/interactables_2/egg_utopia/095.h"
+#include "game/interactables_2/egg_utopia/speeding_platform.h"
+#include "game/interactables_2/egg_utopia/launcher.h"
+
+#include "game/interactables_2/note_particle.h"
+#include "game/interactables_2/105.h"
+#include "game/interactables_2/special_ring.h"
+
 #include "game/assets/compressed/entities.h"
 
 #include "constants/zones.h"
@@ -53,30 +122,37 @@ const RLCompressed *const gSpritePosData_interactables[NUM_LEVEL_IDS] = {
     (void *)&zone1_act2_interactables,
     (void *)&zone1_boss_interactables,
     (void *)&zone1_act2_interactables,
+
     (void *)&zone2_act1_interactables,
     (void *)&zone2_act2_interactables,
     (void *)&zone2_boss_interactables,
     (void *)&zone2_act2_interactables,
+
     (void *)&zone3_act1_interactables,
     (void *)&zone3_act2_interactables,
     (void *)&zone3_boss_interactables,
     (void *)&zone3_act2_interactables,
+
     (void *)&zone4_act1_interactables,
     (void *)&zone4_act2_interactables,
     (void *)&zone4_boss_interactables,
     (void *)&zone4_act2_interactables,
+
     (void *)&zone5_act1_interactables,
     (void *)&zone5_act2_interactables,
     (void *)&zone5_boss_interactables,
     (void *)&zone5_act2_interactables,
+
     (void *)&zone6_act1_interactables,
     (void *)&zone6_act2_interactables,
     (void *)&zone6_boss_interactables,
     (void *)&zone6_act2_interactables,
+
     (void *)&zone7_act1_interactables,
     (void *)&zone7_act2_interactables,
     (void *)&zone7_boss_interactables,
     (void *)&zone7_act2_interactables,
+
     (void *)&zone8_act1_interactables,
     (void *)&zone8_act2_interactables,
     (void *)&zone8_boss_interactables,
@@ -85,10 +161,204 @@ const RLCompressed *const gSpritePosData_interactables[NUM_LEVEL_IDS] = {
     NULL,
 };
 
-extern const RLCompressed *gSpritePosData_itemboxes[];
-extern const RLCompressed *gSpritePosData_enemies[];
+const RLCompressed *const gSpritePosData_itemboxes[] = {
+    (void *)&zone1_act1_itemboxes,
+    (void *)&zone1_act2_itemboxes,
+    (void *)&zone1_boss_itemboxes,
+    (void *)&zone1_act2_itemboxes,
+
+    (void *)&zone2_act1_itemboxes,
+    (void *)&zone2_act2_itemboxes,
+    (void *)&zone2_boss_itemboxes,
+    (void *)&zone2_act2_itemboxes,
+
+    (void *)&zone3_act1_itemboxes,
+    (void *)&zone3_act2_itemboxes,
+    (void *)&zone3_boss_itemboxes,
+    (void *)&zone3_act2_itemboxes,
+
+    (void *)&zone4_act1_itemboxes,
+    (void *)&zone4_act2_itemboxes,
+    (void *)&zone4_boss_itemboxes,
+    (void *)&zone4_act2_itemboxes,
+
+    (void *)&zone5_act1_itemboxes,
+    (void *)&zone5_act2_itemboxes,
+    (void *)&zone5_boss_itemboxes,
+    (void *)&zone5_act2_itemboxes,
+
+    (void *)&zone6_act1_itemboxes,
+    (void *)&zone6_act2_itemboxes,
+    (void *)&zone6_boss_itemboxes,
+    (void *)&zone6_act2_itemboxes,
+
+    (void *)&zone7_act1_itemboxes,
+    (void *)&zone7_act2_itemboxes,
+    (void *)&zone7_boss_itemboxes,
+    (void *)&zone7_act2_itemboxes,
+
+    (void *)&zone8_act1_itemboxes,
+    (void *)&zone8_act2_itemboxes,
+    (void *)&zone8_boss_itemboxes,
+    NULL,
+    NULL,
+    NULL,
+};
+const RLCompressed *const gSpritePosData_enemies[] = {
+    (void *)&zone1_act1_enemies,
+    (void *)&zone1_act2_enemies,
+    (void *)&zone1_boss_enemies,
+    (void *)&zone1_act2_enemies,
+
+    (void *)&zone2_act1_enemies,
+    (void *)&zone2_act2_enemies,
+    (void *)&zone2_boss_enemies,
+    (void *)&zone2_act2_enemies,
+
+    (void *)&zone3_act1_enemies,
+    (void *)&zone3_act2_enemies,
+    (void *)&zone3_boss_enemies,
+    (void *)&zone3_act2_enemies,
+
+    (void *)&zone4_act1_enemies,
+    (void *)&zone4_act2_enemies,
+    (void *)&zone4_boss_enemies,
+    (void *)&zone4_act2_enemies,
+
+    (void *)&zone5_act1_enemies,
+    (void *)&zone5_act2_enemies,
+    (void *)&zone5_boss_enemies,
+    (void *)&zone5_act2_enemies,
+
+    (void *)&zone6_act1_enemies,
+    (void *)&zone6_act2_enemies,
+    (void *)&zone6_boss_enemies,
+    (void *)&zone6_act2_enemies,
+
+    (void *)&zone7_act1_enemies,
+    (void *)&zone7_act2_enemies,
+    (void *)&zone7_boss_enemies,
+    (void *)&zone7_act2_enemies,
+
+    (void *)&zone8_act1_enemies,
+    (void *)&zone8_act2_enemies,
+    (void *)&zone8_boss_enemies,
+    NULL,
+    NULL,
+    NULL,
+};
+
+const MapEntityInit gSpriteInits_Interactables[] = {
+    CreateEntity_Toggle_PlayerLayer,
+    CreateEntity_Toggle_PlayerLayer,
+    CreateEntity_Platform,
+    CreateEntity_Spring_Normal_Up,
+    CreateEntity_Spring_Normal_Down,
+    CreateEntity_Spring_Normal_Right,
+    CreateEntity_Spring_Normal_Left,
+    CreateEntity_Spring_Big_UpLeft,
+    CreateEntity_Spring_Big_UpRight,
+    CreateEntity_Spring_Big_DownRight,
+    CreateEntity_Spring_Big_DownLeft,
+    CreateEntity_Spring_Small_UpRight,
+    CreateEntity_Spring_Small_UpLeft,
+    CreateEntity_CommonThinPlatform,
+    CreateEntity_Decoration,
+    CreateEntity_Ramp,
+    CreateEntity_Booster,
+    CreateEntity_InclineRamp,
+    CreateEntity_BouncySpring,
+    CreateEntity_019,
+    CreateEntity_RotatingHandle,
+    CreateEntity_GappedLoop_Start,
+    CreateEntity_GappedLoop_End,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Down,
+    CreateEntity_Spikes_LeftRight,
+    CreateEntity_Spikes_LeftRight,
+    CreateEntity_Spikes_HidingUp,
+    CreateEntity_Spikes_HidingDown,
+    CreateEntity_Corkscrew_Start,
+    CreateEntity_Corkscrew_End,
+    CreateEntity_BouncyBar,
+    CreateEntity_GrindRail_Start,
+    CreateEntity_GrindRail_StartAir,
+    CreateEntity_GrindRail_EndGround,
+    CreateEntity_GrindRail_End_ForcedJump,
+    CreateEntity_GrindRail_EndAlternate,
+    CreateEntity_GrindRail_EndAir,
+    CreateEntity_GrindRail_EndGround_Left,
+    CreateEntity_GrindRail_EndAir_Left,
+    CreateEntity_Corkscrew3D_Start,
+    CreateEntity_Corkscrew3D_End,
+    CreateEntity_StageGoal,
+    CreateEntity_Checkpoint,
+    CreateEntity_044,
+    CreateEntity_Toggle_Checkpoint,
+    CreateEntity_Toggle_StageGoal,
+    CreateEntity_WindUpStick,
+    CreateEntity_048,
+    CreateEntity_HookRail_Start,
+    CreateEntity_HookRail_End,
+    CreateEntity_Windmill,
+    CreateEntity_TurnAroundBar,
+    CreateEntity_Crane,
+    CreateEntity_DashRing,
+    CreateEntity_FloatingSpring_Up,
+    CreateEntity_Note_Sphere,
+    CreateEntity_Note_Block,
+    CreateEntity_GuitarString,
+    CreateEntity_Keyboard_Vertical,
+    CreateEntity_Keyboard_Horizontal_PushLeft,
+    CreateEntity_Keyboard_Horizontal_PushRight,
+    CreateEntity_GermanFlute,
+    CreateEntity_FrenchHorn_Entry,
+    CreateEntity_PipeInstrument_Entry,
+    CreateEntity_SlowingSnow,
+    CreateEntity_FunnelSphere,
+    CreateEntity_HalfPipe_End,
+    CreateEntity_HalfPipe_Start,
+    CreateEntity_069,
+    CreateEntity_NoteBlock,
+    CreateEntity_044,
+    CreateEntity_ClearPipe_Start,
+    CreateEntity_ClearPipe_End,
+    CreateEntity_LightBridge,
+    CreateEntity_075_0,
+    CreateEntity_075_1,
+    CreateEntity_075_2,
+    CreateEntity_078,
+    CreateEntity_079,
+    CreateEntity_080,
+    CreateEntity_Platform_Square,
+    CreateEntity_GiantPropeller,
+    CreateEntity_SlidyIce,
+    CreateEntity_SmallSpinnyWindmill,
+    CreateEntity_085,
+    CreateEntity_Whirlwind_0,
+    CreateEntity_SmallPropeller_Left,
+    CreateEntity_SmallPropeller_Right,
+    CreateEntity_SmallPropeller_Left_Periodic,
+    CreateEntity_SmallPropeller_Right_Periodic,
+    CreateEntity_Launcher_Left_GDown,
+    CreateEntity_Launcher_Right_GDown,
+    CreateEntity_Cannon,
+    CreateEntity_094,
+    CreateEntity_095,
+    CreateEntity_FlyingHandle,
+    CreateEntity_SpeedingPlatform,
+    CreateEntity_Toggle_Gravity__Down,
+    CreateEntity_Toggle_Gravity__Up,
+    CreateEntity_Toggle_Gravity__Toggle,
+    CreateEntity_Launcher_Left_GUp,
+    CreateEntity_Launcher_Right_GUp,
+    CreateEntity_SpecialRing,
+    CreateEntity_Whirlwind_1,
+    CreateEntity_Interactable105,
+};
 
 extern const MapEntityInit gSpriteInits_Interactables[];
+
 extern const MapEntityInit gSpriteInits_Enemies[];
 
 extern const u16 gUnknown_080D5020[];
