@@ -89,7 +89,7 @@ void sub_80051E8(Sprite *sprite)
                 r4->all.attr1 &= 0xFE00;
                 r4->all.attr0 &= 0xFE00;
 
-                r4->all.attr2 += sprite->focused << 12;
+                r4->all.attr2 += sprite->palId << 12;
                 if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
                     r4->all.attr0 |= 0x100;
                     if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {

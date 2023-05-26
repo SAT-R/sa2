@@ -97,7 +97,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->focused = i;
+        element->palId = i;
         element->unk10 = 0;
         sub_8004558(element);
     }
@@ -114,7 +114,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -130,7 +130,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk10 = 0;
     sub_8004558(element);
 }

@@ -53,7 +53,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28[0].unk0 = -1;
     s->unk28[1].unk0 = -1;
     s->unk10 = 0x2000;

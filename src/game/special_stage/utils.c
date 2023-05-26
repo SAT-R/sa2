@@ -10,7 +10,7 @@ void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;
 
 void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos,
-                 s16 yPos, u16 g, u8 variant, u8 focused)
+                 s16 yPos, u16 g, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *element;
@@ -40,7 +40,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
     element->variant = variant;
     element->unk21 = 0xff;
     element->unk22 = 0x10;
-    element->focused = focused;
+    element->palId = palId;
     element->unk28[0].unk0 = -1;
 
     sub_8004558(element);
@@ -171,7 +171,7 @@ void sub_806CD68(Sprite *element)
         oam->all.attr1 &= 0xfe00;
         oam->all.attr1 |= ((element->unk10 & 0x1f) << 9);
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
-        oam->all.attr2 += element->focused * 0x1000;
+        oam->all.attr2 += element->palId * 0x1000;
         oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
         oam->all.attr2 += GET_TILE_NUM(element->graphics.dest);
     }

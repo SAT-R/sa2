@@ -186,7 +186,7 @@ void CreateCourseResultsCutScene(u8 mode)
     element->unk1C = 0;
 
     element->unk22 = 0x10;
-    element->focused = unk122C[mode];
+    element->palId = unk122C[mode];
 
     if (mode != 2) {
         element->unk10 = 0x400;
@@ -212,7 +212,7 @@ void CreateCourseResultsCutScene(u8 mode)
         element->unk1C = 0;
 
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk10 = 0x400;
         sub_8004558(element);
         m4aSongNumStart(SE_236);

@@ -110,7 +110,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s->unk1C = 0;
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
-        s->focused = 0;
+        s->palId = 0;
         s->unk28->unk0 = -1;
         s->unk10 = SPRITE_FLAG_PRIORITY(2);
         sub_8004558(s);

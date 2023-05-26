@@ -128,7 +128,7 @@ void sub_8036780(u8 unkC)
     sprite->graphics.size = 0;
     sprite->unk1C = 0;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = 0;
     sub_8004558(sprite);
 
@@ -143,7 +143,7 @@ void sub_8036780(u8 unkC)
     sprite->unk1A = 0xC0;
     sprite->unk1C = 0;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = 0;
     sub_8004558(sprite);
 

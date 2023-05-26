@@ -188,7 +188,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk10 = 0x1000;
     sub_8004558(element);
 
@@ -206,7 +206,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk10 = 0;
         sub_8004558(element);
     }
@@ -512,10 +512,10 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
     element = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
         element->x = (DISPLAY_WIDTH / 6) + 4;
-        element->focused = 1;
+        element->palId = 1;
     } else {
         element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
-        element->focused = 0;
+        element->palId = 0;
     }
     element->y = DISPLAY_HEIGHT - 50;
     sub_80051E8(element);
@@ -524,10 +524,10 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     if (lobbyScreen->cursor != CURSOR_YES) {
         element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
-        element->focused = 15;
+        element->palId = 15;
     } else {
         element->x = (DISPLAY_WIDTH - 48);
-        element->focused = 0;
+        element->palId = 0;
     }
     element->y = DISPLAY_HEIGHT - 50;
     sub_80051E8(element);

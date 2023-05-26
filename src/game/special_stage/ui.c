@@ -161,7 +161,7 @@ void sub_806FCF8(void)
         element->graphics.anim = unkF7E8->anim;
         element->variant = unkF7E8->variant;
         element->unk10 |= 0x40000;
-        element->focused = temp;
+        element->palId = temp;
         sub_8004558(element);
     }
 
@@ -171,7 +171,7 @@ void sub_806FCF8(void)
         element->graphics.anim = unkF7E8->anim;
         element->variant = unkF7E8->variant;
         element->unk10 |= 0x40000;
-        element->focused = temp;
+        element->palId = temp;
         sub_8004558(element);
     }
 
@@ -180,7 +180,7 @@ void sub_806FCF8(void)
     element->graphics.anim = unkF7E8->anim;
     element->variant = unkF7E8->variant;
     element->unk10 |= 0x40000;
-    element->focused = temp;
+    element->palId = temp;
     sub_8004558(element);
 }
 

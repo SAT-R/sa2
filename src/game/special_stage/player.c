@@ -120,7 +120,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         element->variant = variant;
         element->unk21 = -1;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk28[0].unk0 = -1;
 
         if (stage->paused == FALSE) {
@@ -321,7 +321,7 @@ void sub_806D548(Sprite *element, void *vram, s16 a, u8 b, const struct UNK_80DF
     element->variant = c4->variant;
     element->unk21 = 0xff;
     element->unk22 = c4->unk6;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     sub_8004558(element);
 }

@@ -80,7 +80,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->focused = FALSE;
+    displayed->palId = FALSE;
     displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2000;
 }

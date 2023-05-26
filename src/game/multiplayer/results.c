@@ -221,7 +221,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
-            element->focused = 0;
+            element->palId = 0;
             element->unk10 = 0x1000;
             sub_8004558(element);
 
@@ -237,7 +237,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
-            element->focused = 0;
+            element->palId = 0;
             element->unk10 = 0x1000;
             sub_8004558(element);
         }

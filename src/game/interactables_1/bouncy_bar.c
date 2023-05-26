@@ -63,7 +63,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     displayed->unk1C = 0;
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->focused = 0;
+    displayed->palId = 0;
     displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2000;
 

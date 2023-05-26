@@ -356,7 +356,7 @@ s32 animCmd_GetPalette_COPY(void *cursor, Sprite *sprite)
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
-                  &gBgPalette[sprite->focused * 16 + cmd->insertOffset],
+                  &gBgPalette[sprite->palId * 16 + cmd->insertOffset],
                   cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

@@ -159,7 +159,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         s->unk1A = 0x440;
         s->unk1C = 0;
         s->unk22 = 0x10;
-        s->focused = 0;
+        s->palId = 0;
         s->unk10 = SPRITE_FLAG_PRIORITY(2);
 
         return t;

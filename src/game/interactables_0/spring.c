@@ -116,7 +116,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
 
     displayed->unk21 = 0xFF;
     displayed->unk22 = 0x10;
-    displayed->focused = 0;
+    displayed->palId = 0;
     displayed->unk28[0].unk0 = -1;
     displayed->unk10 = 0x2200;
 

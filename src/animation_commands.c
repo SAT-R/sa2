@@ -42,7 +42,7 @@ s32 animCmd_GetPalette(void *cursor, Sprite *sprite)
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
-                  &gObjPalette[sprite->focused * 16 + cmd->insertOffset],
+                  &gObjPalette[sprite->palId * 16 + cmd->insertOffset],
                   cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

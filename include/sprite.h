@@ -192,7 +192,7 @@ typedef struct {
     // sort of menu functions. Split out the shared stuff
     /* 0x23 */ u8 unk23;
     /* 0x24 */ u8 numSubFrames;
-    /* 0x25 */ u8 focused;
+    /* 0x25 */ u8 palId;
 
     /* 0x26 */ u8 filler26[2];
     /* 0x28 */ Sprite_UNK28 unk28[1];

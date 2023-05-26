@@ -159,7 +159,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk28[0].unk0 = -1;
         element->unk10 = 0x1000;
         sub_8004558(element);
@@ -180,7 +180,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk28[0].unk0 = -1;
         element->unk10 = 0;
         sub_8004558(element);
@@ -197,7 +197,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
 
@@ -449,9 +449,9 @@ static void sub_805CC34(void)
     element->x = 70;
     element->y = 52;
     if (teamPlayScreen->unk316 != 0) {
-        element->focused = 0;
+        element->palId = 0;
     } else {
-        element->focused = 0xFF;
+        element->palId = 0xFF;
     }
     sub_80051E8(element);
 
@@ -459,9 +459,9 @@ static void sub_805CC34(void)
     element->x = 0xAA;
     element->y = 0x34;
     if (teamPlayScreen->unk316 != 0) {
-        element->focused = 0;
+        element->palId = 0;
     } else {
-        element->focused = 1;
+        element->palId = 1;
     }
     sub_80051E8(element);
 

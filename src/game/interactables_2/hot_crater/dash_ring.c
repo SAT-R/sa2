@@ -132,7 +132,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         spriteA->unk21 = 0xFF;
         spriteA->unk22 = 0x10;
-        spriteA->focused = 0;
+        spriteA->palId = 0;
         spriteA->unk28->unk0 = -1;
         spriteA->unk10 = 0x2000;
         spriteA->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
@@ -150,7 +150,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         spriteB->unk21 = 0xFF;
         spriteB->unk22 = 0x10;
-        spriteB->focused = 0;
+        spriteB->palId = 0;
         spriteB->unk28->unk0 = -1;
         spriteB->unk10 = 0x2000;
         spriteB->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];

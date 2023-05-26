@@ -59,7 +59,7 @@ static void sub_8086A0C(HeartParticles *unk998)
         sprite->unk14 = 0;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
-        sprite->focused = 0;
+        sprite->palId = 0;
         sprite->unk10 = 0x2000;
     }
 }

@@ -140,7 +140,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -158,7 +158,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -176,7 +176,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -194,7 +194,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
 
@@ -368,10 +368,10 @@ static void Task_ScreenMain(void)
         }
 
         element = &modeScreen->unkB0;
-        element->focused = 1;
+        element->palId = 1;
 
         element = &modeScreen->unkE0;
-        element->focused = 0xFF;
+        element->palId = 0xFF;
 
         element = &modeScreen->infoText;
         if (gLoadedSaveGame->bossTimeAttackUnlocked) {
@@ -390,10 +390,10 @@ static void Task_ScreenMain(void)
             lang = 0;
         }
         element = &modeScreen->unkB0;
-        element->focused = 0;
+        element->palId = 0;
 
         element = &modeScreen->unkE0;
-        element->focused = 0;
+        element->palId = 0;
 
         element = &modeScreen->infoText;
         element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;

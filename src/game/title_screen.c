@@ -566,7 +566,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     config->unk1A = 0x100;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->focused = 0;
+    config->palId = 0;
     config->unk10 = 0;
     sub_8004558(config);
 
@@ -585,7 +585,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     config->unk1A = 0xC0;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->focused = 0;
+    config->palId = 0;
     config->unk10 = 0;
     sub_8004558(config);
 
@@ -619,7 +619,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         config->unk1A = 0xc0;
         config->unk1C = 0;
         config->unk22 = 0x10;
-        config->focused = 0;
+        config->palId = 0;
         config->unk10 = 0;
         sub_8004558(config);
     };
@@ -636,7 +636,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     config->unk1A = 0x780;
     config->unk1C = 0;
     config->unk22 = 0x10;
-    config->focused = 0;
+    config->palId = 0;
     config->unk10 = 0x3000;
     sub_8004558(config);
 }
@@ -1074,7 +1074,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen *titleScreen)
     // Highlight the menu items from cursor position
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &titleScreen->menuItems[menuIndex ^ 1];
-        menuItem->focused = (menuIndex ^ titleScreen->menuCursor);
+        menuItem->palId = (menuIndex ^ titleScreen->menuCursor);
         sub_80051E8(menuItem);
     };
 }
@@ -1188,9 +1188,9 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen *titleScr
     for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
         menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)];
         if (titleScreen->menuCursor == menuIndex) {
-            menuItem->focused = 1;
+            menuItem->palId = 1;
         } else {
-            menuItem->focused = 0;
+            menuItem->palId = 0;
         }
         sub_80051E8(menuItem);
     }
@@ -1317,7 +1317,7 @@ static void Task_HandleTitleScreenExit(void)
             // obvious
             for (i = 0; i < 1; i++) {
                 menuItem = &titleScreen->menuItems[i ^ 1];
-                menuItem->focused = i ^ 1;
+                menuItem->palId = i ^ 1;
                 if ((++titleScreen->animFrame & 7) > 3) {
                     sub_80051E8(menuItem);
                 }
@@ -1326,7 +1326,7 @@ static void Task_HandleTitleScreenExit(void)
         } else {
             menuItem
                 = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
-            menuItem->focused = 1;
+            menuItem->palId = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
                 sub_80051E8(menuItem);
             }
@@ -1560,7 +1560,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     animation->sprite.unk1A = 0xC0;
     animation->sprite.unk1C = 0;
     animation->sprite.unk22 = 0x10;
-    animation->sprite.focused = 0;
+    animation->sprite.palId = 0;
     animation->sprite.unk10 = 0;
     sub_8004558(&animation->sprite);
 
@@ -1695,7 +1695,7 @@ static void CreateLensFlareAnimation(void)
         sprite->unk1A = (8 - i) * 0x40;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
-        sprite->focused = 0;
+        sprite->palId = 0;
         sprite->unk10 = i | 96;
 
         config180->unk0 = 0;

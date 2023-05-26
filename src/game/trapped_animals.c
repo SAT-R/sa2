@@ -138,7 +138,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 16;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 
@@ -206,7 +206,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 
@@ -277,7 +277,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 16;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
 }
 

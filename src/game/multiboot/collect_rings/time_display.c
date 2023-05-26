@@ -39,7 +39,7 @@ void CreateCollectRingsTimeDisplay(void)
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = 0x40000;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -62,7 +62,7 @@ void CreateCollectRingsTimeDisplay(void)
         sprite->unk1C = 0;
         sprite->unk21 = 0xFF;
         sprite->unk22 = 0x10;
-        sprite->focused = 0;
+        sprite->palId = 0;
         sprite->unk10 = 0;
 
         if (i == 0) {
@@ -124,49 +124,49 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     sprite = &timeDisplay->unk30[temp4 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = temp5;
+    sprite->palId = temp5;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[10];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[(temp6 / 16) % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = temp5;
+    sprite->palId = temp5;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[temp6 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = temp5;
+    sprite->palId = temp5;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[10];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[(digit1 / 16) % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = temp5;
+    sprite->palId = temp5;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[digit1 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = temp5;
+    sprite->palId = temp5;
     sub_80051E8(sprite);
 }
 
@@ -182,7 +182,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
         sprite = &timeDisplay->unk0;
         sprite->x = i * 26;
         sprite->y = 0;
-        sprite->focused = i;
+        sprite->palId = i;
         sub_80051E8(sprite);
 
         j = sub_8004518(gUnknown_030053E8[i]);
@@ -192,7 +192,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
             sprite = &timeDisplay->unk30[j % 16];
             sprite->x = x;
             sprite->y = y;
-            sprite->focused = 0;
+            sprite->palId = 0;
             sub_80051E8(sprite);
             x -= 8;
             y = y;
@@ -247,49 +247,49 @@ void sub_8083104(TimeDisplay *timeDisplay)
     sprite = &timeDisplay->unk30[temp4 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 1;
+    sprite->palId = 1;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[10];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[(temp6 / 16) % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 1;
+    sprite->palId = 1;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[temp6 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 1;
+    sprite->palId = 1;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[10];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[(digit1 / 16) % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 1;
+    sprite->palId = 1;
     sub_80051E8(sprite);
 
     x += 8;
     sprite = &timeDisplay->unk30[digit1 % 16];
     sprite->x = x;
     sprite->y = y;
-    sprite->focused = 1;
+    sprite->palId = 1;
     sub_80051E8(sprite);
 }
 

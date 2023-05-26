@@ -45,7 +45,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.unk1C = 0;
     su->s.unk21 = 0xFF;
     su->s.unk22 = 0x10;
-    su->s.focused = 0;
+    su->s.palId = 0;
     su->s.unk28->unk0 = -1;
     su->s.unk10 = 0;
 

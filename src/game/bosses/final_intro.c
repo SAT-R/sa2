@@ -329,7 +329,7 @@ void CreateTrueArea53Intro(void)
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
-    sprite->focused = 5;
+    sprite->palId = 5;
     sprite->unk10 = 0x400;
 
     for (i = 0; i < 3; i++) {
@@ -345,7 +345,7 @@ void CreateTrueArea53Intro(void)
         sprite->unk1C = 0;
         sprite->unk21 = 0xFF;
         sprite->unk22 = 0x10;
-        sprite->focused = i + 1;
+        sprite->palId = i + 1;
         sprite->unk28[0].unk0 = -1;
         sprite->unk10 = 0;
     }
@@ -397,7 +397,7 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->unk14 = 0;
         emerald->unk1C = 0;
         emerald->unk22 = 0x10;
-        emerald->focused = 0;
+        emerald->palId = 0;
         emerald->unk10 = 0;
     }
 }
@@ -582,7 +582,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     sprite->unk14 = 0;
     sprite->unk1C = 0;
     sprite->unk22 = 0x20;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk10 = 0x1000;
 }
 
@@ -638,9 +638,9 @@ void CreateActor(u8 character)
     sprite->unk1C = 0;
     sprite->unk22 = 0x20;
     if (character < ACTOR_CHEESE) {
-        sprite->focused = character;
+        sprite->palId = character;
     } else {
-        sprite->focused = 0;
+        sprite->palId = 0;
     }
 
     sprite->unk10 = 0x1400;
@@ -659,7 +659,7 @@ void CreateActor(u8 character)
         sprite->unk14 = 0;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
-        sprite->focused = 0;
+        sprite->palId = 0;
         sprite->unk10 = 0x1000;
     }
 }

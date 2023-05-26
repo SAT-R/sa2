@@ -76,7 +76,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2200;
     sub_8004558(s);
@@ -112,7 +112,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2A00;
     sub_8004558(s);
@@ -236,7 +236,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2200;
 
@@ -417,7 +417,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2200;
 }
@@ -485,7 +485,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2A00;
 }

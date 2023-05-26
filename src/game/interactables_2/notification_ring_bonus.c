@@ -203,7 +203,7 @@ void CreateSprite_Notif_RingBonus(void)
     notif->s.unk1C = 0;
     notif->s.unk21 = 0xFF;
     notif->s.unk22 = 0x10;
-    notif->s.focused = 0;
+    notif->s.palId = 0;
     notif->s.unk28->unk0 = -1;
     notif->s.unk10 = 0x1000;
     notif->s.graphics.dest = VramMalloc(26);

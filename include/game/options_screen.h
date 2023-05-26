@@ -94,7 +94,7 @@ void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
 void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
-                 s16 yPos, u16 g, u8 h, u8 focused);
+                 s16 yPos, u16 g, u8 h, u8 palId);
 void sub_806B854(Background *unk2400, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
                  u8 g, u16 scrollX, u16 scrollY);
 

@@ -41,7 +41,7 @@ void CreateBoostModeParticles(void)
     element->unk10 = 0x2000;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     sub_8004558(element);
 
     element = &particles->unk30;
@@ -54,7 +54,7 @@ void CreateBoostModeParticles(void)
     element->unk10 = 0x2000;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
 
     SeedRng(gPlayer.x, gCamera.x);
 

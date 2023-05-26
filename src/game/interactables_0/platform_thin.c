@@ -105,7 +105,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
 
@@ -240,7 +240,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         r7->unk1C = 0;
         r7->unk21 = -1;
         r7->unk22 = 0x10;
-        r7->focused = 0;
+        r7->palId = 0;
         r7->unk10 = 0x70;
 
         // Init transformer
@@ -285,7 +285,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         r7->unk1C = 0;
         r7->unk21 = -1;
         r7->unk22 = 0x10;
-        r7->focused = 0;
+        r7->palId = 0;
         r7->unk10 = 0x72;
 
         r2 = &platform->unkD8;

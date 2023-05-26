@@ -128,7 +128,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -146,7 +146,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -165,7 +165,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -184,7 +184,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
 
@@ -343,8 +343,8 @@ static void Task_ScreenMain(void)
     if (modeScreen->pakMode != PAK_MODE_MULTI) {
         Sprite *subText;
         u8 lang = gLoadedSaveGame->language * 4;
-        modeScreen->unkB0.focused = 1;
-        modeScreen->unkE0.focused = 0xFF;
+        modeScreen->unkB0.palId = 1;
+        modeScreen->unkE0.palId = 0xFF;
 
         subText = &modeScreen->subText;
         subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 3].anim;
@@ -353,8 +353,8 @@ static void Task_ScreenMain(void)
     } else {
         Sprite *subText;
         u8 lang = gLoadedSaveGame->language * 4;
-        modeScreen->unkB0.focused = 0;
-        modeScreen->unkE0.focused = 0;
+        modeScreen->unkB0.palId = 0;
+        modeScreen->unkE0.palId = 0;
         subText = &modeScreen->subText;
         subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
         subText->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;

@@ -106,7 +106,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->focused = 0;
+    unk100->palId = 0;
     unk100->unk10 = 0x2000;
 
     unk100 = &outcomeScreen->unkD0;
@@ -121,7 +121,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->focused = 0;
+    unk100->palId = 0;
     unk100->unk10 = 0x2000;
 
     unk100 = &outcomeScreen->unkA0;
@@ -136,7 +136,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     unk100->unk1C = 0;
     unk100->unk21 = 0xFF;
     unk100->unk22 = 0x10;
-    unk100->focused = 0;
+    unk100->palId = 0;
     unk100->unk10 = 0x2000;
 
     background = &outcomeScreen->unk0;

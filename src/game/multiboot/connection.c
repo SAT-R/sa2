@@ -176,7 +176,7 @@ void StartSinglePakConnect(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
@@ -194,7 +194,7 @@ void StartSinglePakConnect(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
@@ -211,7 +211,7 @@ void StartSinglePakConnect(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = SA2_ANIM_MP_MSG;

@@ -350,7 +350,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk28[0].unk0 = -1;
         element->unk10 = 0;
         sub_8004558(element);
@@ -368,7 +368,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -388,7 +388,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -407,7 +407,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -426,7 +426,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -443,7 +443,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -460,7 +460,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -477,7 +477,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x800;
     sub_8004558(element);
@@ -495,7 +495,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -512,7 +512,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -530,7 +530,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
@@ -1269,10 +1269,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && IS_SINGLE_PLAYER) {
         element->unk10 |= 0x40000;
-        element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
+        element->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
         element->unk10 &= ~0x40000;
-        element->focused = 0;
+        element->palId = 0;
     }
     sub_80051E8(element);
 
@@ -1286,10 +1286,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
             && IS_SINGLE_PLAYER) {
             // make shadow mode
             element->unk10 |= 0x40000;
-            element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
+            element->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
             element->unk10 &= ~0x40000;
-            element->focused = 0;
+            element->palId = 0;
         }
         sub_80051E8(element);
     }
@@ -1395,10 +1395,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && IS_SINGLE_PLAYER) {
             element->unk10 |= 0x40000;
-            element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
+            element->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
         } else {
             element->unk10 &= ~0x40000;
-            element->focused = 0;
+            element->palId = 0;
         }
 
         sub_8004558(element);
@@ -1532,10 +1532,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && IS_SINGLE_PLAYER) {
         element->unk10 |= 0x40000;
-        element->focused = sCharacterSilhouettes[characterScreen->selectedCharacter];
+        element->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
         element->unk10 &= ~0x40000;
-        element->focused = 0;
+        element->palId = 0;
     }
     sub_80051E8(element);
 
@@ -1548,10 +1548,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && IS_SINGLE_PLAYER) {
             element->unk10 |= 0x40000;
-            element->focused = sCharacterSilhouettes[CHEESE_SILHOUETTE];
+            element->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
             element->unk10 &= ~0x40000;
-            element->focused = 0;
+            element->palId = 0;
         }
 
         sub_80051E8(element);

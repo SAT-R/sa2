@@ -113,7 +113,7 @@ void StartMultiPakConnect(void)
     unkC->unk14 = 0;
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
-    unkC->focused = 0;
+    unkC->palId = 0;
     unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
     sub_8004558(unkC);
@@ -131,7 +131,7 @@ void StartMultiPakConnect(void)
     unkC->unk14 = 0;
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
-    unkC->focused = 0;
+    unkC->palId = 0;
     unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
 
@@ -147,7 +147,7 @@ void StartMultiPakConnect(void)
     unkC->unk14 = 0;
     unkC->unk1C = 0;
     unkC->unk22 = 0x10;
-    unkC->focused = 0;
+    unkC->palId = 0;
     unkC->unk28[0].unk0 = -1;
     unkC->unk10 = 0x1000;
 

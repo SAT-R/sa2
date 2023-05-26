@@ -37,7 +37,7 @@ struct Task *sub_80807CC(void)
     spring->unk1C = 0;
     spring->unk21 = 0xFF;
     spring->unk22 = 0x10;
-    spring->focused = 0;
+    spring->palId = 0;
     spring->unk28->unk0 = -1;
     spring->unk10 = 0x2000;
     spring->graphics.dest = (void *)(OBJ_VRAM0 + 0x3040);
@@ -52,7 +52,7 @@ struct Task *sub_80807CC(void)
     propellor->unk1C = 0;
     propellor->unk21 = -1;
     propellor->unk22 = 0x10;
-    propellor->focused = 0;
+    propellor->palId = 0;
     propellor->unk28->unk0 = -1;
     propellor->unk10 = 0x2000;
     propellor->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);

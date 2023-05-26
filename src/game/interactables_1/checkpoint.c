@@ -93,7 +93,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     disp->unk1C = 0;
     disp->unk21 = 0xFF;
     disp->unk22 = 0x10;
-    disp->focused = 0;
+    disp->palId = 0;
     disp->unk28->unk0 = -1;
     disp->unk10 = 0x2000;
 

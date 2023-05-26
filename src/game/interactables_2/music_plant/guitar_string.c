@@ -62,7 +62,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
     s->unk10 = 0x2000;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x3700);

@@ -1,4 +1,4 @@
-#include "game/interactables_2/music_plant/handlers_ia_pipe_horn.h";
+#include "game/interactables_2/music_plant/handlers_ia_pipe_horn.h"
 
 // NOTE: Stored at end of rom, probably because it's configured data (like levels and
 // assets?) it's made up of pointers defined in handlers_ia_pipe_horn.c

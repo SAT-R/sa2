@@ -194,7 +194,7 @@ void sub_808207C(void)
                 element->unk1C = 0;
                 element->unk21 = 0xFF;
                 element->unk22 = 0x10;
-                element->focused = 0;
+                element->palId = 0;
                 element->unk10 = 0x1000;
                 sub_8004558(element);
             }
@@ -222,7 +222,7 @@ void sub_808207C(void)
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
-            element->focused = 0;
+            element->palId = 0;
             element->unk10 = 0;
             sub_8004558(element);
         }
@@ -597,7 +597,7 @@ void sub_8082CEC(Sprite *element, u32 vramAddr, u16 animId, u8 variant, s16 x, s
     element->unk1C = 0;
     element->unk21 = 0xff;
     element->unk22 = 0x10;
-    element->focused = unk25;
+    element->palId = unk25;
     element->unk10 = unk10;
     sub_8004558(element);
 }

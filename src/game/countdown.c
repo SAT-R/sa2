@@ -69,7 +69,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0;
 
@@ -83,7 +83,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x2400;
 }
@@ -164,9 +164,9 @@ void sub_8036168(void)
         gPlayer.unk6C = 1;
 
         if (IS_MULTI_PLAYER) {
-            gPlayer.unk90->s.focused = (SIO_MULTI_CNT)->id;
+            gPlayer.unk90->s.palId = (SIO_MULTI_CNT)->id;
         } else {
-            gPlayer.unk90->s.focused = 0;
+            gPlayer.unk90->s.palId = 0;
         }
     }
 }
@@ -218,7 +218,7 @@ void CreateRaceStartMessage(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 
@@ -232,7 +232,7 @@ void CreateRaceStartMessage(void)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 }

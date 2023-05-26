@@ -83,7 +83,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->unk14 = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk1A = 0x480;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
@@ -98,7 +98,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->unk14 = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk1A = 0x4C0;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = SPRITE_FLAG_PRIORITY(2);

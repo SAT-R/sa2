@@ -107,7 +107,7 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
-    s->focused = 0;
+    s->palId = 0;
     s->unk28->unk0 = -1;
 
     s->unk10 = 0x2000;

@@ -101,7 +101,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->unk1C = 0;
     cs->s->unk21 = 0xFF;
     cs->s->unk22 = 0x10;
-    cs->s->focused = 0;
+    cs->s->palId = 0;
     cs->s->unk28->unk0 = -1;
     cs->s->unk10 = 0x2000;
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
@@ -135,7 +135,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->unk1C = 0;
                 cs->s->unk21 = 0xFF;
                 cs->s->unk22 = 0x10;
-                cs->s->focused = 0;
+                cs->s->palId = 0;
                 cs->s->unk28->unk0 = -1;
                 cs->s->unk10 = 0x2000;
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
@@ -163,7 +163,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->unk1C = 0;
         cs->s->unk21 = 0xFF;
         cs->s->unk22 = 0x10;
-        cs->s->focused = 0;
+        cs->s->palId = 0;
         cs->s->unk28->unk0 = -1;
         cs->s->unk10 = 0x2000;
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);

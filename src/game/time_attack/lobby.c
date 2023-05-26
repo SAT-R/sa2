@@ -127,7 +127,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
-            element->focused = 0;
+            element->palId = 0;
             element->unk28[0].unk0 = -1;
             element->unk10 = 0x1000;
             sub_8004558(element);
@@ -146,7 +146,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1000;
     sub_8004558(element);
@@ -163,7 +163,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     element->unk14 = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
-    element->focused = 0;
+    element->palId = 0;
     element->unk28[0].unk0 = -1;
     element->unk10 = 0x1400;
     sub_8004558(element);
@@ -184,7 +184,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         element->unk14 = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
-        element->focused = 0;
+        element->palId = 0;
         element->unk28[0].unk0 = -1;
         element->unk10 = 0x1400;
         sub_8004558(element);
@@ -247,9 +247,9 @@ void sub_8088CC4(void)
     for (i = 0; i < 4; i++) {
         element = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->focused = 0;
+            element->palId = 0;
         } else {
-            element->focused = 1;
+            element->palId = 1;
         }
         sub_80051E8(element);
     }
@@ -351,9 +351,9 @@ void sub_8088EB4(void)
     for (i = 0; i < 4; i++) {
         element = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->focused = 0;
+            element->palId = 0;
         } else {
-            element->focused = 1;
+            element->palId = 1;
         }
         sub_80051E8(element);
     }

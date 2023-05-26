@@ -1508,7 +1508,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
             nameCharTile = sub_806B908(nameChar);
             sub_806A568(playerNameDisplayChar, RENDER_TARGET_SCREEN, nameCharTile.unk0,
                         nameCharTile.unk4, 0x3000, xPos, yPos, 10, nameCharTile.unk6, 0);
-            playerNameDisplayChar->focused = optionsScreen->menuCursor == 0 ? 7 : 8;
+            playerNameDisplayChar->palId = optionsScreen->menuCursor == 0 ? 7 : 8;
         }
     }
 
@@ -1516,9 +1516,9 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
     menuItem = optionsScreen->menuItems;
     for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++) {
         if (optionsScreen->menuCursor == i) {
-            menuItem->focused = 0;
+            menuItem->palId = 0;
         } else {
-            menuItem->focused = 1;
+            menuItem->palId = 1;
         }
 
         ++menuItem;
@@ -1526,9 +1526,9 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
             continue;
 
         if (optionsScreen->menuCursor == i) {
-            metaItem->focused = 0;
+            metaItem->palId = 0;
         } else {
-            metaItem->focused = 1;
+            metaItem->palId = 1;
         }
         ++metaItem;
     }
@@ -1624,12 +1624,12 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 
     item = &optionsScreen->menuItems[optionsScreen->menuCursor];
     item->x = baseXPos + 32;
-    item->focused = 0;
+    item->palId = 0;
 
     if (optionsScreen->menuCursor < 4) {
         item = &optionsScreen->metaItems[optionsScreen->menuCursor];
         item->x = baseXPos + 152;
-        item->focused = 0;
+        item->palId = 0;
 
         if (optionsScreen->menuCursor == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
@@ -1637,7 +1637,7 @@ static inline void NextMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
-                playerNameDisplayChar->focused = 7;
+                playerNameDisplayChar->palId = 7;
             }
         }
     }
@@ -1652,19 +1652,19 @@ static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
     Sprite *item = &optionsScreen->menuItems[optionsScreen->prevCursorPosition];
 
     item->x = baseXPos + 32;
-    item->focused = 1;
+    item->palId = 1;
 
     if (optionsScreen->prevCursorPosition < 4) {
         item = &optionsScreen->metaItems[optionsScreen->prevCursorPosition];
         item->x = baseXPos + 152;
-        item->focused = 1;
+        item->palId = 1;
 
         if (optionsScreen->prevCursorPosition == OPTIONS_MENU_ITEM_PLAYER_DATA) {
             s16 i;
             Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
-                playerNameDisplayChar->focused = 8;
+                playerNameDisplayChar->palId = 8;
             }
         }
     }
@@ -1697,12 +1697,12 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
     Sprite *item = &optionsScreen->menuItems[optionsScreen->menuCursor];
 
     item->x = baseXPos + 32;
-    item->focused = 0;
+    item->palId = 0;
 
     if (optionsScreen->menuCursor < 4) {
         Sprite *item = &optionsScreen->metaItems[optionsScreen->menuCursor];
         item->x = baseXPos + 152;
-        item->focused = 0;
+        item->palId = 0;
 
         if (optionsScreen->menuCursor == 0) {
             s16 i;
@@ -1710,7 +1710,7 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
 
             for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
                 playerNameDisplayChar->x = baseXPos + 163 + UI_COLUMN(i, 10);
-                playerNameDisplayChar->focused = 7;
+                playerNameDisplayChar->palId = 7;
             }
         }
     }
@@ -1919,7 +1919,7 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
         // Interesting to note that gcc
         // uses some trickery here to set this
         // and the actual logic is `(u32)(-temp0 | temp0) >> 31;`
-        menuItem->focused = !!(menuCursor ^ i);
+        menuItem->palId = !!(menuCursor ^ i);
     }
 
     sub_806A568(menuItemOutline, RENDER_TARGET_SUB_MENU, 0x3f, 0x3bd, 0x1000,
@@ -1980,7 +1980,7 @@ static void Task_PlayerDataMenuMain(void)
         }
 
         for (i = 0; i < 4; i++, menuItem++) {
-            menuItem->focused = !!(playerDataMenu->menuCursor ^ i);
+            menuItem->palId = !!(playerDataMenu->menuCursor ^ i);
         }
         menuItemOutline->y = playerDataMenu->menuCursor * 19 + 46;
     }
@@ -2166,7 +2166,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 
     for (i = 0, difficultyOption = difficultyMenu->options; i < 2;
          i++, difficultyOption++) {
-        difficultyOption->focused = !!(difficultyLevel ^ i);
+        difficultyOption->palId = !!(difficultyLevel ^ i);
     }
 }
 
@@ -2213,7 +2213,7 @@ static void Task_DifficultyMenuMain(void)
         difficultyMenu->switchValue = difficultyMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, difficultyOption++) {
-            difficultyOption->focused = !!(difficultyMenu->switchValue ^ i);
+            difficultyOption->palId = !!(difficultyMenu->switchValue ^ i);
         }
 
         switchValueOutline->x
@@ -2319,7 +2319,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 
     for (i = 0, timeLimitOption = timeLimitMenu->options; i < 2;
          i++, timeLimitOption++) {
-        timeLimitOption->focused = !!(timeLimitEnabled ^ i);
+        timeLimitOption->palId = !!(timeLimitEnabled ^ i);
     }
 }
 
@@ -2367,7 +2367,7 @@ static void Task_TimeLimitMenuMain(void)
         timeLimitMenu->switchValue = timeLimitMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, timeLimitOption++) {
-            timeLimitOption->focused = !!(timeLimitMenu->switchValue ^ i);
+            timeLimitOption->palId = !!(timeLimitMenu->switchValue ^ i);
         }
 
         switchValueOutline->x
@@ -3010,7 +3010,7 @@ static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
          i++, languageOption++, optionText++, yPos += 15) {
         sub_806A568(languageOption, RENDER_TARGET_SCREEN, optionText->unk4,
                     optionText->unk0, 0x3000, 0x28, yPos, 0xD, optionText->unk2, 0);
-        languageOption->focused = !!(selectedLanguage ^ i);
+        languageOption->palId = !!(selectedLanguage ^ i);
     }
 
     sub_806A568(optionOutline, RENDER_TARGET_SCREEN, 0x3F, 0x3BD, 0x3000, 0x26,
@@ -3092,7 +3092,7 @@ static void LanguageScreenHandleLanguageChanged(void)
     menuItemOutline->y = languageScreen->menuCursor * 15 + 40;
 
     for (i = 0; i < NUM_LANGUAGES; i++, menuItems++) {
-        menuItems->focused = !!(languageScreen->menuCursor ^ i);
+        menuItems->palId = !!(languageScreen->menuCursor ^ i);
     }
 
     headerFooter->variant = titleText->unk2;
@@ -3171,7 +3171,7 @@ static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
     sub_806A568(option, RENDER_TARGET_SCREEN, optionText->unk4, optionText->unk0, 0x3000,
                 0x3A, 0x4C, 0xD, optionText->unk2, 0);
 
-    option->focused = 1;
+    option->palId = 1;
     option++;
     optionText++;
     sub_806A568(option, RENDER_TARGET_SCREEN, optionText->unk4, optionText->unk0, 0x3000,
@@ -3197,7 +3197,7 @@ static void Task_DeleteScreenConfrimationMain(void)
         deleteScreen->confirmationCursor = !deleteScreen->confirmationCursor;
 
         for (i = 0; i < 2; i++, option++) {
-            option->focused = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = !!(deleteScreen->confirmationCursor ^ i);
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }
@@ -3243,7 +3243,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
     deleteScreen->confirmationCursor = DELETE_SCREEN_CONFIRMATION_NO;
 
     for (i = 0; i < 2; i++, option++) {
-        option->focused = !!(deleteScreen->confirmationCursor ^ i);
+        option->palId = !!(deleteScreen->confirmationCursor ^ i);
     }
 
     optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
@@ -3264,7 +3264,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void)
         deleteScreen->confirmationCursor = deleteScreen->confirmationCursor == 0;
 
         for (i = 0; i < 2; i++, option++) {
-            option->focused = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = !!(deleteScreen->confirmationCursor ^ i);
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }
@@ -4094,13 +4094,13 @@ static void Task_TimeRecordsScreenModeChoiceMain(void)
         timeRecordsScreen->isBossMode = !timeRecordsScreen->isBossMode;
 
         if (!timeRecordsScreen->isBossMode) {
-            unk4C->focused = 0;
+            unk4C->palId = 0;
             unk4C++;
-            unk4C->focused = 0;
+            unk4C->palId = 0;
         } else {
-            unk4C->focused = 1;
+            unk4C->palId = 1;
             unk4C++;
-            unk4C->focused = 0xFF;
+            unk4C->palId = 0xFF;
         }
     }
 
@@ -5363,7 +5363,7 @@ static void MultiplayerRecordsScreenRenderUI(void)
 // Some sort of register menu item function
 // used in sound test, but wonder why it wasn't split out
 void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
-                 s16 yPos, u16 g, u8 variant, u8 focused)
+                 s16 yPos, u16 g, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *element;
@@ -5393,7 +5393,7 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
     element->variant = variant;
     element->unk21 = 0xff;
     element->unk22 = 0x10;
-    element->focused = focused;
+    element->palId = palId;
     element->unk28[0].unk0 = -1;
 
     sub_8004558(element);

@@ -57,7 +57,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
-    sprite->focused = 0;
+    sprite->palId = 0;
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sub_8004558(sprite);
@@ -81,7 +81,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             sprite->unk1C = 0;
             sprite->unk21 = 0xFF;
             sprite->unk22 = 0x10;
-            sprite->focused = 0;
+            sprite->palId = 0;
             sprite->unk28[0].unk0 = -1;
             sprite->unk10 = 0;
             sub_8004558(sprite);
