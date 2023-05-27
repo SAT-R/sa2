@@ -150,7 +150,7 @@ void sub_8003914(Sprite *sprite)
         u32 bgId;
 
         dims = sprite->dimensions;
-        bgId = SPRITE_BF_GET_BG_ID(sprite);
+        bgId = SPRITE_FLAG_GET(sprite, BG_ID);
         // Potential UB:
         //     gDispCnt 'Mode' is an int, not a bitfield!
         if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {

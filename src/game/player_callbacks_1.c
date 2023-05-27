@@ -949,7 +949,7 @@ void PlayerCB_8026810(Player *p)
 {
     if (sub_8029E6C(p)) {
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
         p->unk37 &= ~0x80;
         p->unk38 = 1;
 
@@ -982,7 +982,7 @@ void PlayerCB_8026810(Player *p)
             p->unk64 = 14;
 
             p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+            p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
             p->unk37 &= ~0x80;
             p->unk38 = 1;
 
@@ -1009,7 +1009,7 @@ void PlayerCB_80269C0(Player *p)
     p->unk64 = 9;
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
     p->unk37 &= ~0x80;
     p->unk38 = 1;
 
@@ -1042,7 +1042,7 @@ void PlayerCB_8026A4C(Player *p)
         p->speedAirY /= 2;
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
     p->unk37 &= ~0x80;
     p->unk38 = 1;
 
@@ -1183,7 +1183,7 @@ void PlayerCB_8026E24(Player *p)
     }
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(1);
+    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
     p->unk38 = 0;
 
     m4aSongNumStart(SE_SPIN);
@@ -1846,7 +1846,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
     s->graphics.anim = gUnknown_080D69A6[p2_][1];
     s->variant = gUnknown_080D69A6[p2_][2];
     s->unk1A = 0x1C0;
-    s->unk10 = SPRITE_FLAG_PRIORITY(2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
 }
@@ -3276,7 +3276,7 @@ void sub_802A660(Player *p)
 void sub_802A6C0(Player *p)
 {
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
     p->unk37 &= ~0x80;
     p->unk38 = 0x1;
 

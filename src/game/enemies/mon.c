@@ -58,7 +58,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->unk22 = 0x10;
     s->palId = 0;
     s->unk28->unk0 = -1;
-    s->unk10 = SPRITE_FLAG_PRIORITY(2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     mon->speedY = -Q_24_8(5.5);
     mon->deltaY = +Q_24_8(0);
