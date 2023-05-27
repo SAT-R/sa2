@@ -180,7 +180,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/guitar_string.o(.text);
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.text);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.text);
-        build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/funnel_sphere.o(.text);
@@ -341,8 +340,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.rodata);
-        build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.rodata);
-        build/sa2/data/handlers_ia_pipe_horn_data.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);
