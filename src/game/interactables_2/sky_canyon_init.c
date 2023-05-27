@@ -3,6 +3,8 @@
 #include "sprite.h"
 #include "task.h"
 
+#include "game/interactables_2/sky_canyon_init.h"
+
 #include "constants/animations.h"
 
 typedef struct {
