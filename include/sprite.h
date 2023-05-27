@@ -44,7 +44,7 @@ typedef struct {
     u16 unk18;
     u16 unk1A;
 
-    // assetId
+    // Index of current header in gMapHeaders
     u16 unk1C;
     u16 unk1E;
 

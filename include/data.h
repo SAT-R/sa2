@@ -9,7 +9,7 @@
 #include "animation_commands.h"
 
 // TODO: extract this data
-extern union Unk_03002E60 gMapHeaders[];
+extern struct MapHeader_Full *gMapHeaders[];
 
 struct SpriteTables {
     /* 0x00 */ ACmd ***animations;
