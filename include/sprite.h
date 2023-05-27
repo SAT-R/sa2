@@ -120,6 +120,9 @@ typedef struct {
 
 #define SPRITE_FLAG(flagName, value) ((value) << SF_SHIFT(flagName))
 
+#define SPRITE_FLAG_GET(sprite, flagName)                                               \
+    (((sprite)->unk10 & (SPRITE_FLAG_MASK_##flagName)) >> (SF_SHIFT(flagName)))
+
 #define SPRITE_FLAG_SHIFT_ROT_SCALE             0
 #define SPRITE_FLAG_SHIFT_ROT_SCALE_ENABLE      5
 #define SPRITE_FLAG_SHIFT_ROT_SCALE_DOUBLE_SIZE 6
@@ -153,9 +156,6 @@ typedef struct {
 #define SPRITE_FLAG_MASK_26                    SPRITE_FLAG(26, 1)
 #define SPRITE_FLAG_MASK_30                    SPRITE_FLAG(30, 1)
 #define SPRITE_FLAG_MASK_31                    SPRITE_FLAG(31, 1)
-
-#define SPRITE_FLAG_GET(sprite, flagName)                                               \
-    (((sprite)->unk10 & (SPRITE_FLAG_MASK_##flagName)) >> (SF_SHIFT(flagName)))
 
 // TODO: work out what makes this struct different from the above
 typedef struct {
