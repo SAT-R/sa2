@@ -172,7 +172,7 @@ typedef struct {
                           // bit 11 Y-Flip
                           // bit 12-13: priority
                           // bit 14
-                          // bit 15-16: Affine BG ID
+                          // bit 15-16: Background ID
                           // bit 17
                           // bit 18-25(?)
                           // bit 26
