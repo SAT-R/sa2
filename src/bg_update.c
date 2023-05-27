@@ -373,8 +373,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             if (bg->unk2E & 0x80) {
                                 // _08003306
                                 u32 index = ((sp14 + r5) - 1) * r4;
-                                u16 *r1Ptr = (u16*)((u8 *)&bg->unk10[index * sp08]);
-                                u16 *r4Ptr = (u16*)((u8 *)&r1Ptr[(r2 - 1) * sp08]);
+                                u16 *r1Ptr = (u16 *)((u8 *)&bg->unk10[index * sp08]);
+                                u16 *r4Ptr = (u16 *)((u8 *)&r1Ptr[(r2 - 1) * sp08]);
 
                                 while (--r5 != (u16)-1) {
                                     u16 i;
@@ -413,8 +413,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                         u16 *sp3C = &r7Ptr[i];
                                         *sp3C = r4Ptr[i] ^ TileMask_FlipY;
                                     }
-                                    r7Ptr = (u16*)(((u8 *)r7Ptr) + sp0C);
-                                    r7Ptr = (u16*)(((u8 *)r4Ptr) - sp00 * sp08);
+                                    r7Ptr = (u16 *)(((u8 *)r7Ptr) + sp0C);
+                                    r7Ptr = (u16 *)(((u8 *)r4Ptr) - sp00 * sp08);
                                 }
                             } else {
                                 // _08003474
@@ -427,8 +427,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     // _08003492
                                     DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
 
-                                    r7Ptr = (u16*)(((u8 *)r7Ptr) + sp0C);
-                                    r4Ptr = (u16*)(((u8 *)r4Ptr) + sp00 * sp08);
+                                    r7Ptr = (u16 *)(((u8 *)r7Ptr) + sp0C);
+                                    r4Ptr = (u16 *)(((u8 *)r4Ptr) + sp00 * sp08);
                                 }
                             }
                         }
