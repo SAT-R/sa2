@@ -1,3 +1,4 @@
+#include <string.h>
 #include "global.h"
 #include "gba/syscall.h"
 #include "core.h"
@@ -430,7 +431,7 @@ s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
 {
     sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
 
-#ifdef UBFIX
+#ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
 #else
     return (s32)cursor;

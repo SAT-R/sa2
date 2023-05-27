@@ -277,7 +277,12 @@ void GameInit(void)
     gInputPlaybackData = NULL;
     gFrameCount = 0;
 
-    for (i = 0; i < 15; i++) {
+#ifdef UB_FIX
+    for (i = 0; i < ARRAY_COUNT(gIntrTableTemplate); i++)
+#else
+    for (i = 0; i < 15; i++)
+#endif
+    {
         gIntrTable[i] = gIntrTableTemplate[i];
     }
 

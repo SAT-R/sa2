@@ -60,7 +60,7 @@ void CreateEntity_019(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
     displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
-#ifdef UBFIX
+#ifdef UB_FIX
     // Prevent overflow
     displayed->graphics.anim
         = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];

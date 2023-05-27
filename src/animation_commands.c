@@ -119,7 +119,7 @@ s32 animCmd_10(void *cursor, Sprite *sprite)
     ACmd_10 *cmd = cursor;
     sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
 
-#ifdef UBFIX
+#ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
 #else
     return (s32)cursor;
