@@ -92,9 +92,9 @@ static void Task_Enemy_Mon_Main(void)
         }
 
         if (gPlayer.x < mon->x) {
-            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+            SPRITE_FLAG_CLEAR(s, X_FLIP);
         } else {
-            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            SPRITE_FLAG_SET(s, X_FLIP);
         }
 
         sub_80122DC(mon->x, mon->y);
@@ -189,9 +189,9 @@ static void Task_Enemy_Mon_4(void)
                 && (gPlayer.y < mon->y + Q_24_8(50))) {
 
                 if (gPlayer.x < mon->x) {
-                    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                    SPRITE_FLAG_CLEAR(s, X_FLIP);
                 } else {
-                    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                    SPRITE_FLAG_SET(s, X_FLIP);
                 }
 
                 s->graphics.anim = SA2_ANIM_MON;
