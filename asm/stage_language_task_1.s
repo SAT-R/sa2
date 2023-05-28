@@ -3,86 +3,12 @@
 
 .section .rodata
 
-@; these are used as tile offsets. Is this just coincidence?
-    .global gUnknown_080D5128
-gUnknown_080D5128:
-    .asciz "STAGE"
-
 .text
 .syntax unified
 .arm
 
-    thumb_func_start sub_80096DC
-sub_80096DC: @ 0x080096DC
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _08009750 @ =sub_8009854
-	movs r2, #0x80
-	lsls r2, r2, #6
-	movs r4, #0
-	str r4, [sp]
-	movs r1, #8
-	movs r3, #0
-	bl TaskCreate
-	ldr r1, _08009754 @ =gMultiplayerMissingHeartbeats
-	strb r4, [r1, #3]
-	strb r4, [r1, #2]
-	strb r4, [r1, #1]
-	strb r4, [r1]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r1, r1, r0
-	ldr r5, _08009758 @ =gDispCnt
-	movs r2, #0xa0
-	lsls r2, r2, #1
-	adds r0, r2, #0
-	strh r0, [r5]
-	ldr r2, _0800975C @ =gBgCntRegs
-	movs r3, #0
-	ldr r0, _08009760 @ =0x00001F06
-	strh r0, [r2]
-	strh r4, [r1, #4]
-	strb r3, [r1, #6]
-	ldr r0, _08009764 @ =0x06004020
-	str r0, [r1]
-	ldr r0, _08009768 @ =gBldRegs
-	strh r4, [r0, #4]
-	strh r4, [r0]
-	strh r4, [r0, #2]
-	ldr r0, _0800976C @ =gWinRegs
-	ldr r2, _08009770 @ =0x0000F0F0
-	strh r2, [r0]
-	ldr r1, _08009774 @ =0x0000A0A0
-	strh r1, [r0, #4]
-	strh r2, [r0, #2]
-	strh r1, [r0, #6]
-	strh r4, [r0, #8]
-	strh r4, [r0, #0xa]
-	ldrh r1, [r5]
-	ldr r0, _08009778 @ =0x00001FFF
-	ands r0, r1
-	strh r0, [r5]
-	ldr r0, _0800977C @ =gBgScrollRegs
-	strh r4, [r0]
-	strh r4, [r0, #2]
-	add sp, #4
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08009750: .4byte sub_8009854
-_08009754: .4byte gMultiplayerMissingHeartbeats
-_08009758: .4byte gDispCnt
-_0800975C: .4byte gBgCntRegs
-_08009760: .4byte 0x00001F06
-_08009764: .4byte 0x06004020
-_08009768: .4byte gBldRegs
-_0800976C: .4byte gWinRegs
-_08009770: .4byte 0x0000F0F0
-_08009774: .4byte 0x0000A0A0
-_08009778: .4byte 0x00001FFF
-_0800977C: .4byte gBgScrollRegs
+.if 00
+.endif
 
 	thumb_func_start sub_8009780
 sub_8009780: @ 0x08009780
@@ -187,8 +113,8 @@ _08009848:
 	.align 2, 0
 _08009850: .4byte Tileset_Language
 
-	thumb_func_start sub_8009854
-sub_8009854: @ 0x08009854
+	thumb_func_start Task_8009854
+Task_8009854: @ 0x08009854
 	push {r4, r5, lr}
 	sub sp, #0xc
 	ldr r5, _080098A4 @ =gCurTask

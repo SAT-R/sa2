@@ -197,6 +197,13 @@ extern u16 gVramHeapState[256];
 extern bool8 gExecSoundMain;
 
 extern u16 gDispCnt;
+
+#define WINREG_WIN0H  0
+#define WINREG_WIN1H  1
+#define WINREG_WIN0V  2
+#define WINREG_WIN1V  3
+#define WINREG_WININ  4
+#define WINREG_WINOUT 5
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[2];

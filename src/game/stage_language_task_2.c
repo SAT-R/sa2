@@ -16,7 +16,8 @@ void sub_800A510(void);
 void sub_800A43C(void)
 {
     gDispCnt = (DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_0);
-    gBgCntRegs[2] = (BGCNT_SCREENBASE(30) | BGCNT_PRIORITY(1));
+    gBgCntRegs[2]
+        = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
     DmaFill32(3, 0, VRAM, 2 * TILE_SIZE_4BPP);
 
     gUnknown_03004D80[2] = 0;
