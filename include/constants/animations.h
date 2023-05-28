@@ -92,7 +92,7 @@
 #define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
 #define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
 #define SA2_ANIM_SUPER_SONIC_FROZEN          476
-#define SA2_ANIM_CLOUD                       477
+#define SA2_ANIM_DUST_CLOUD                  477
 
 // Enemies
 #define SA2_ANIM_MON                    478
