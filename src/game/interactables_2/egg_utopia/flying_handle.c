@@ -94,7 +94,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     sprite->unk22 = 0x10;
     sprite->palId = 0;
     sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG_PRIORITY(2);
+    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
     sprite->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
     sprite->graphics.anim = SA2_ANIM_FLYING_HANDLE;
     sprite->variant = 0;

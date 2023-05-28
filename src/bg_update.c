@@ -373,16 +373,16 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             if (bg->unk2E & 0x80) {
                                 // _08003306
                                 u32 index = ((sp14 + r5) - 1) * r4;
-                                u16 *r1Ptr = (void *)&bg->unk10[index * sp08];
-                                u16 *r4Ptr = (void *)&r1Ptr[(r2 - 1) * sp08];
+                                u16 *r1Ptr = (u16 *)((u8 *)&bg->unk10[index * sp08]);
+                                u16 *r4Ptr = (u16 *)((u8 *)&r1Ptr[(r2 - 1) * sp08]);
 
                                 while (--r5 != (u16)-1) {
                                     u16 i;
                                     for (i = 0; i < bg->unk26; i++) {
                                         r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipXY;
                                     }
-                                    ((void *)r7Ptr) += sp0C;
-                                    ((void *)r4Ptr) -= sp00 * sp08;
+                                    ((u8 *)r7Ptr) += sp0C;
+                                    ((u8 *)r4Ptr) -= sp00 * sp08;
                                 }
                             } else {
                                 // _08003380
@@ -395,8 +395,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     for (i = 0; i < bg->unk26; i++) {
                                         r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipX;
                                     }
-                                    ((void *)r7Ptr) += sp0C;
-                                    ((void *)r4Ptr) += sp00 * sp08;
+                                    ((u8 *)r7Ptr) += sp0C;
+                                    ((u8 *)r4Ptr) += sp00 * sp08;
                                 }
                             }
                         } else {
@@ -413,8 +413,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                         u16 *sp3C = &r7Ptr[i];
                                         *sp3C = r4Ptr[i] ^ TileMask_FlipY;
                                     }
-                                    ((void *)r7Ptr) += sp0C;
-                                    ((void *)r4Ptr) -= sp00 * sp08;
+                                    r7Ptr = (u16 *)(((u8 *)r7Ptr) + sp0C);
+                                    r7Ptr = (u16 *)(((u8 *)r4Ptr) - sp00 * sp08);
                                 }
                             } else {
                                 // _08003474
@@ -427,8 +427,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     // _08003492
                                     DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
 
-                                    ((void *)r7Ptr) += sp0C;
-                                    ((void *)r4Ptr) += sp00 * sp08;
+                                    r7Ptr = (u16 *)(((u8 *)r7Ptr) + sp0C);
+                                    r4Ptr = (u16 *)(((u8 *)r4Ptr) + sp00 * sp08);
                                 }
                             }
                         }
@@ -519,31 +519,31 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-    struct MapHeader *header = gUnknown_03002260[bg->unk1C].x;
-    if (header->animFrameCount) {
-        if (header->animDelay <= ++bg->animDelayCounter) {
+    struct MapHeader_Full *header = gUnknown_03002260[bg->unk1C];
+    if (header->h.animFrameCount) {
+        if (header->h.animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;
 
             bg->animDelayCounter = 0;
 
-            if (header->animFrameCount <= ++bg->animFrameCounter)
+            if (header->h.animFrameCount <= ++bg->animFrameCounter)
                 bg->animFrameCounter = 0;
 
-            animTileSize = header->animTileSize;
+            animTileSize = header->h.animTileSize;
 
             if (!(bg->unk2E & 0x200)) {
                 if (bg->animFrameCounter == 0) {
-                    bg->graphics.src = header->tileset;
+                    bg->graphics.src = header->h.tileset;
                 } else {
-                    u8 *ts = header->tileset;
-                    u32 size = header->tilesetSize;
+                    u8 *ts = header->h.tileset;
+                    u32 size = header->h.tilesetSize;
                     ts += size;
                     ts += (bg->animFrameCounter - 1) * animTileSize;
                     bg->graphics.src = ts;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += header->tilesetSize;
+                ts += header->h.tilesetSize;
                 ts += (bg->animFrameCounter * animTileSize);
                 bg->graphics.src = ts;
             }

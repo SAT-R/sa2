@@ -44,7 +44,7 @@ typedef struct {
     u16 unk18;
     u16 unk1A;
 
-    // assetId
+    // Index of current header in gMapHeaders
     u16 unk1C;
     u16 unk1E;
 
@@ -101,8 +101,6 @@ typedef struct {
     /* 0x2F */ s8 unk7;
 } Sprite_UNK28;
 
-#define SPRITE_BF_GET_BG_ID(sprite) (((sprite)->unk10 & 0x18000) >> 15)
-
 #define SpriteShouldUpdate(sprite)                                                      \
     (((sprite)->unk21 != (sprite)->variant)                                             \
      || ((sprite)->unk1E != (sprite)->graphics.anim))
@@ -118,36 +116,56 @@ typedef struct {
         (sprite)->unk10 &= ~0x4000;                                                     \
     }
 
-#define SPRITE_FLAG_ROT_SCALE(rotScale)             ((rotScale) << 0)
-#define SPRITE_FLAG_ROT_SCALE_ENABLE(enabled)       ((enabled) << 5)
-#define SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(isDouble) ((isDouble) << 6)
-#define SPRITE_FLAG_OBJ_MODE(mode)                  ((mode) << 7)
-#define SPRITE_FLAG_MOSAIC(v)                       ((v) << 9)
-#define SPRITE_FLAG_X_FLIP(flip)                    ((flip) << 10)
-#define SPRITE_FLAG_Y_FLIP(flip)                    ((flip) << 11)
-#define SPRITE_FLAG_PRIORITY(prio)                  ((prio) << 12)
-#define SPRITE_FLAG_14(v)                           ((v) << 14)
-#define SPRITE_FLAG_17(v)                           ((v) << 17)
-#define SPRITE_FLAG_18(v)                           ((v) << 18)
-#define SPRITE_FLAG_19(v)                           ((v) << 19)
-#define SPRITE_FLAG_26(v)                           ((v) << 26)
-#define SPRITE_FLAG_30(v)                           ((v) << 30)
-#define SPRITE_FLAG_31(v)                           ((v) << 31)
-#define SPRITE_FLAG_MASK_ROT_SCALE                  SPRITE_FLAG_ROT_SCALE(0x1F)
-#define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE           SPRITE_FLAG_ROT_SCALE_ENABLE(1)
-#define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE      SPRITE_FLAG_ROT_SCALE_DOUBLE_SIZE(1)
-#define SPRITE_FLAG_MASK_OBJ_MODE                   SPRITE_FLAG_OBJ_MODE(3)
-#define SPRITE_FLAG_MASK_MOSAIC                     SPRITE_FLAG_MOSAIC(1)
-#define SPRITE_FLAG_MASK_X_FLIP                     SPRITE_FLAG_X_FLIP(1)
-#define SPRITE_FLAG_MASK_Y_FLIP                     SPRITE_FLAG_Y_FLIP(1)
-#define SPRITE_FLAG_MASK_PRIORITY                   SPRITE_FLAG_PRIORITY(3)
-#define SPRITE_FLAG_MASK_14                         SPRITE_FLAG_14(1)
-#define SPRITE_FLAG_MASK_17                         SPRITE_FLAG_17(1)
-#define SPRITE_FLAG_MASK_18                         SPRITE_FLAG_18(1)
-#define SPRITE_FLAG_MASK_19                         SPRITE_FLAG_19(1)
-#define SPRITE_FLAG_MASK_26                         SPRITE_FLAG_26(1)
-#define SPRITE_FLAG_MASK_30                         SPRITE_FLAG_30(1)
-#define SPRITE_FLAG_MASK_31                         SPRITE_FLAG_31(1)
+#define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
+
+#define SPRITE_FLAG(flagName, value) ((value) << SF_SHIFT(flagName))
+
+#define SPRITE_FLAG_GET(sprite, flagName)                                               \
+    (((sprite)->unk10 & (SPRITE_FLAG_MASK_##flagName)) >> (SF_SHIFT(flagName)))
+
+#define SPRITE_FLAG_CLEAR(sprite, flagName)                                             \
+    (sprite)->unk10 &= ~(SPRITE_FLAG_MASK_##flagName)
+
+#define SPRITE_FLAG_SET(sprite, flagName)                                               \
+    (sprite)->unk10 |= (SPRITE_FLAG_MASK_##flagName)
+
+#define SPRITE_FLAG_SET_VALUE(sprite, flagName, value)                                  \
+    (sprite)->unk10 |= SPRITE_FLAG(flagName, value)
+
+#define SPRITE_FLAG_SHIFT_ROT_SCALE             0
+#define SPRITE_FLAG_SHIFT_ROT_SCALE_ENABLE      5
+#define SPRITE_FLAG_SHIFT_ROT_SCALE_DOUBLE_SIZE 6
+#define SPRITE_FLAG_SHIFT_OBJ_MODE              7
+#define SPRITE_FLAG_SHIFT_MOSAIC                9
+#define SPRITE_FLAG_SHIFT_X_FLIP                10
+#define SPRITE_FLAG_SHIFT_Y_FLIP                11
+#define SPRITE_FLAG_SHIFT_PRIORITY              12
+#define SPRITE_FLAG_SHIFT_14                    14
+#define SPRITE_FLAG_SHIFT_BG_ID                 15
+#define SPRITE_FLAG_SHIFT_17                    17
+#define SPRITE_FLAG_SHIFT_18                    18
+#define SPRITE_FLAG_SHIFT_19                    19
+#define SPRITE_FLAG_SHIFT_26                    26
+#define SPRITE_FLAG_SHIFT_30                    30
+#define SPRITE_FLAG_SHIFT_31                    31
+
+#define SPRITE_FLAG_MASK_ROT_SCALE             SPRITE_FLAG(ROT_SCALE, 0x1F)
+#define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE      SPRITE_FLAG(ROT_SCALE_ENABLE, 1)
+#define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1)
+#define SPRITE_FLAG_MASK_OBJ_MODE              SPRITE_FLAG(OBJ_MODE, 3)
+#define SPRITE_FLAG_MASK_MOSAIC                SPRITE_FLAG(MOSAIC, 1)
+#define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1)
+#define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1)
+#define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3)
+#define SPRITE_FLAG_MASK_14                    SPRITE_FLAG(14, 1)
+#define SPRITE_FLAG_MASK_BG_ID                 SPRITE_FLAG(BG_ID, 3)
+#define SPRITE_FLAG_MASK_17                    SPRITE_FLAG(17, 1)
+#define SPRITE_FLAG_MASK_18                    SPRITE_FLAG(18, 1)
+#define SPRITE_FLAG_MASK_19                    SPRITE_FLAG(19, 1)
+#define SPRITE_FLAG_MASK_26                    SPRITE_FLAG(26, 1)
+#define SPRITE_FLAG_MASK_30                    SPRITE_FLAG(30, 1)
+#define SPRITE_FLAG_MASK_31                    SPRITE_FLAG(31, 1)
+
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
@@ -163,7 +181,7 @@ typedef struct {
                           // bit 11 Y-Flip
                           // bit 12-13: priority
                           // bit 14
-                          // bit 15-16: bg id (?)
+                          // bit 15-16: Background ID
                           // bit 17
                           // bit 18-25(?)
                           // bit 26

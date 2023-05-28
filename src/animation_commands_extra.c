@@ -1,3 +1,4 @@
+#include <string.h>
 #include "global.h"
 #include "gba/syscall.h"
 #include "core.h"
@@ -150,7 +151,7 @@ void sub_8003914(Sprite *sprite)
         u32 bgId;
 
         dims = sprite->dimensions;
-        bgId = SPRITE_BF_GET_BG_ID(sprite);
+        bgId = SPRITE_FLAG_GET(sprite, BG_ID);
         // Potential UB:
         //     gDispCnt 'Mode' is an int, not a bitfield!
         if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {
@@ -430,7 +431,7 @@ s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
 {
     sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
 
-#ifdef UBFIX
+#ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
 #else
     return (s32)cursor;

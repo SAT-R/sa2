@@ -8,6 +8,30 @@ struct Task;
 typedef void (*TaskMain)(void);
 typedef void (*TaskDestructor)(struct Task *);
 
+// The task system uses the GBA's unique memory layout to halve the size of pointers.
+// Other platforms need to have the same logical behavior, but done differently.
+#ifndef PORTABLE
+typedef u16 TaskPtr;
+
+// Mainly used to silence (void* -> u16) warnings
+typedef u32 TaskPtr32;
+
+#define TASK_PTR(taskRef)   (IWRAM_START + (taskRef))
+#define TASK_IS_NULL(taskp) ((taskp) == (void *)IWRAM_START)
+
+typedef u16 IwramData;
+#else
+typedef struct Task *TaskPtr;
+typedef TaskPtr TaskPtr32;
+
+#define TASK_PTR(taskRef)  (taskRef)
+#define TASK_IS_NULL(task) ((task) == NULL)
+
+typedef void *IwramData;
+#endif
+
+#define TASK_IS_NOT_NULL(taskp) !TASK_IS_NULL(taskp)
+
 #define MAX_TASK_NUM 128
 
 #define TASK_INACTIVE         0x0001
@@ -16,10 +40,10 @@ typedef void (*TaskDestructor)(struct Task *);
 #define TASK_USE_EWRAM        0x0010
 
 struct Task {
-    /* 0x00 */ u16 parent;
-    /* 0x02 */ u16 prev; // prev?
-    /* 0x04 */ u16 next;
-    /* 0x06 */ u16 structOffset;
+    /* 0x00 */ TaskPtr parent;
+    /* 0x02 */ TaskPtr prev;
+    /* 0x04 */ TaskPtr next;
+    /* 0x06 */ IwramData data;
     /* 0x08 */ TaskMain main;
     /* 0x0C */ TaskDestructor dtor;
     /* 0x10 */ u16 priority; // priority?
@@ -32,14 +56,27 @@ struct Task {
     /* 0x18 */ u16 unk18;
 };
 
+#ifndef PORTABLE
+typedef u16 IwramNodePtr;
+typedef u32 IwramNodePtr32;
+#else
+struct IwramNode;
+
+typedef struct IwramNode *IwramNodePtr;
+typedef IwramNodePtr IwramNodePtr32;
+#endif
+
+#define IWRAM_PTR(ptr) TASK_PTR(ptr)
+
 struct IwramNode {
-    u16 next;
+    IwramNodePtr next;
     s16 state;
     u8 space[0];
 };
 
-#define TaskGetStructPtr(taskp) (void *)(IWRAM_START + (taskp)->structOffset)
-#define TaskGetParent(taskp)    (struct Task *)(IWRAM_START + (taskp)->parent)
+#define TaskGetStructPtr(taskp) (void *)TASK_PTR((taskp)->data)
+#define TaskGetParent(taskp)    (struct Task *)TASK_PTR((taskp)->parent)
+#define TaskGetNext(taskp)      (struct Task *)TASK_PTR((taskp)->next)
 #define TasksDestroyAll()       TasksDestroyInPriorityRange(0, 0xFFFF)
 
 extern struct Task gTasks[MAX_TASK_NUM];

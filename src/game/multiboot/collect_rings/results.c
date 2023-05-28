@@ -48,7 +48,7 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
 struct UNK_02003300 {
-    union Unk_03002E60 *unk0;
+    struct MapHeader_Full **unk0;
 } /* Unknown length */;
 
 void CreateMultiplayerSinglePakResultsScreen(u32 a)

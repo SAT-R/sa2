@@ -80,7 +80,7 @@ union MultiSioData {
     struct MultiSioData_0_3 pat3;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
-// Used for the two background layers.
+// Used for the background layers (1 layer in SA1/2 ; 2 layers in SA3).
 struct MapHeader {
     /* 0x00 */ u16 xTiles; // Tiles inside Metatiles, usually 12 (0x0C)
     /* 0x02 */ u16 yTiles; // Tiles inside Metatiles, usually 12 (0x0C)
@@ -102,9 +102,10 @@ struct MapHeader_Full {
     u16 mapHeight; // in Metatiles
 };
 
-union __attribute__((transparent_union)) Unk_03002E60 {
-    struct MapHeader *x;
-    struct MapHeader_Full *y;
+struct Map {
+    struct MapHeader_Full *front;
+    struct MapHeader_Full *back;
+    struct MapHeader *background;
 };
 
 struct Unk_03003674_1_Sub {
@@ -117,7 +118,7 @@ struct Unk_03003674_1_Full {
     u32 unkC;
 }; /* size = 0x10 */
 
-union __attribute__((transparent_union)) Unk_03003674_1 {
+union Unk_03003674_1 {
     const struct Unk_03003674_1_Sub *sub;
     const struct Unk_03003674_1_Full *full;
 };
@@ -229,7 +230,7 @@ extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
 
-union Unk_03002E60 *gUnknown_03002260;
+struct MapHeader_Full **gUnknown_03002260;
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
 extern void *gUnknown_030022AC;

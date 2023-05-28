@@ -100,7 +100,7 @@ static void Task_ClearPipe_End(void)
         gPlayer.moveState &= ~(MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_IN_AIR);
 
         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits
-        gPlayer.unk90->s.unk10 |= SPRITE_FLAG_PRIORITY(2);
+        gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
 
         gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_FOREGROUND;
         if (me->exitOnBackLayer) {

@@ -27,7 +27,7 @@ const AnimationCommandFunc animCmdTable_2[12] = {
 
 void sub_8002A3C(Background *background)
 {
-    struct MapHeader_Full *mapHeader = gUnknown_03002260[background->unk1C].y;
+    struct MapHeader_Full *mapHeader = gUnknown_03002260[background->unk1C];
     u16 *pal;
     u32 palSize;
     u16 gfxSize;
