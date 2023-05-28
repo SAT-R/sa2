@@ -283,7 +283,7 @@ static void sub_80028DC(void)
     void *nextNodeSpace;
     void *space;
 
-    while (TASK_IS_NOT_NULL((u8 *)IWRAM_PTR(cur->next))) {
+    while (TASK_IS_NOT_NULL((struct Task *)IWRAM_PTR(cur->next))) {
         if (cur->state >= 0) {
             cur->next += 0; // load again pls
             nextNodeOffset = cur->next;
