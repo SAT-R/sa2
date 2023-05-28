@@ -4,7 +4,7 @@
 #include "global.h"
 #include "task.h"
 
-struct Task *CreatePaletteLoaderTask(s32 priority, s32 anim, s32 variant,
-                                     TaskDestructor taskDestructor);
+struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
+                                     TaskDestructor dtor);
 
 #endif
