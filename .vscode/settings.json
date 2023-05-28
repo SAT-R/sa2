@@ -230,7 +230,9 @@
     "clear_pipe.h": "c",
     "slowing_snow.h": "c",
     "handlers_ia_pipe_horn_sequences.h": "c",
-    "sky_canyon_init.h": "c"
+    "sky_canyon_init.h": "c",
+    "mon.h": "c",
+    "kura_kura.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
