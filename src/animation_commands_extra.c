@@ -522,20 +522,20 @@ s32 sub_8004418(s16 x, s16 y)
     return result;
 }
 
-void sub_80044D8(u8 *p0, u16 p1)
+void numToTileIndices(u8 *digits, u16 number)
 {
     u8 i;
 
-    for (i = 0; i < 4; p1 <<= 4, i++) {
-        u16 value = ((p1 & 0xF000) >> 12);
+    for (i = 0; i < 4; number <<= 4, i++) {
+        u16 value = ((number & 0xF000) >> 12);
         if (value > 9) {
-            p0[i] = value + 87;
+            digits[i] = value + 87;
         } else {
-            p0[i] = value + 48;
+            digits[i] = value + '0';
         }
     }
 
-    p0[i] = 0;
+    digits[i] = 0;
 }
 
 u32 sub_8004518(u16 num)

@@ -17,7 +17,7 @@ const char ALIGNED(4) gUnknown_080D5128[8] = "STAGE";
 typedef struct {
     void *vram;
     u16 unk4;
-    u8 unk6;
+    u8 levelId;
 } Struct_LangTask;
 
 static void Task_8009854(void);
@@ -40,7 +40,7 @@ void sub_80096DC(void)
                          | BGCNT_PRIORITY(2));
 
         lang->unk4 = 0;
-        lang->unk6 = 0;
+        lang->levelId = 0;
         lang->vram = (void *)(BG_CHAR_ADDR(1) + 1 * TILE_SIZE_4BPP);
 
         gBldRegs.bldY = 0;
@@ -66,8 +66,7 @@ static void Task_8009780(void)
 {
     Struct_LangTask *lang = TaskGetStructPtr(gCurTask);
 
-    // TODO: Sizeunknown (but > 4)
-    u8 tileOffsets[8];
+    char digits[5];
 
     if (gPressedKeys & (START_BUTTON | A_BUTTON)) {
         m4aSongNumStart(SE_SELECT);
@@ -89,13 +88,13 @@ static void Task_8009780(void)
         gUnknown_03002280[0][3] = 0x20;
     } else {
         if (gRepeatedKeys & DPAD_LEFT) {
-            lang->unk6--;
+            lang->levelId--;
         } else if (gRepeatedKeys & DPAD_RIGHT) {
-            lang->unk6++;
+            lang->levelId++;
         }
 
-        sub_80044D8(tileOffsets, lang->unk6);
-        sub_8004274(lang->vram, Tileset_Language, 0xC, 0xE, 0, tileOffsets, 0);
+        numToTileIndices(digits, lang->levelId);
+        sub_8004274(lang->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
     }
 }
 
@@ -116,13 +115,13 @@ static void Task_80098C0(void)
 {
     Struct_LangTask *lang = TaskGetStructPtr(gCurTask);
 
-    u32 unk6 = lang->unk6;
-    u8 temp = unk6;
+    u32 levelId = lang->levelId;
+    u8 temp = levelId;
 
     TaskDestroy(gCurTask);
 
-    if (unk6 == 0) {
-        gCurrentLevel = unk6;
+    if (levelId == 0) {
+        gCurrentLevel = levelId;
         GameStageStart();
     } else if (temp <= NUM_LEVEL_IDS) {
         gActiveBossTask = NULL;
