@@ -7,8 +7,8 @@
 #include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
-#include "game/stage_palette_loader.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/palette_loader.h"
+#include "game/stage/entities_manager.h"
 #include "constants/songs.h"
 #include "trig.h"
 

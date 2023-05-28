@@ -1,7 +1,7 @@
 #include "global.h"
 #include "trig.h"
 #include "game/game.h"
-#include "game/stage_ui.h"
+#include "game/stage/ui.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

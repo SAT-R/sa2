@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "game/entity.h"
 #include "game/enemies/mon.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
 

@@ -8,8 +8,8 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/stage_item_box.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/item_box.h"
+#include "game/stage/entities_manager.h"
 
 #include "game/interactables_0/platform_thin.h"
 #include "game/interactables_0/044.h"

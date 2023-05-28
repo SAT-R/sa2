@@ -151,18 +151,18 @@ gUnknown_080D6FF7:
     @ Colors [NUM_CHARACTERS]
     .global sZoneLoadingCharacterColors
 sZoneLoadingCharacterColors:
-    .2byte 0x7C00       @ RGB( 0,  0, 31) // Sonic
-    .2byte 0x025F       @ RGB(31, 18,  0) // Cream
-    .2byte 0x037F       @ RGB(31, 27,  0) // Tails
-    .2byte 0x007F       @ RGB(31,  3,  0) // Knuckles
-    .2byte 0x563F       @ RGB(31, 17, 21) // Amy
+    RGB  0  0 31   @; Sonic
+    RGB 31 18  0   @; Cream
+    RGB 31 27  0   @; Tails
+    RGB 31  3  0   @; Knuckles
+    RGB 31 17 21   @; Amy
 
     .global sScreenPositions_ZoneLoadingActLetters
 sScreenPositions_ZoneLoadingActLetters:
-    .2byte 132, 97      @ A
-    .2byte 153, 101     @ C
-    .2byte 174, 105     @ T
-    .2byte 196, 109     @ 1|2
+    .2byte DISPLAY_WIDTH-108, DISPLAY_HEIGHT-63     @ A
+    .2byte DISPLAY_WIDTH-87,  DISPLAY_HEIGHT-59     @ C
+    .2byte DISPLAY_WIDTH-66,  DISPLAY_HEIGHT-55     @ T
+    .2byte DISPLAY_WIDTH-44,  DISPLAY_HEIGHT-51     @ 1|2
 
     .global gUnknown_080D7130
 gUnknown_080D7130:

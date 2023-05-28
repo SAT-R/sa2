@@ -9,7 +9,7 @@
 #include "data.h"
 #include "flags.h"
 #include "game/entity.h"
-#include "game/stage_palette_loader.h"
+#include "game/stage/palette_loader.h"
 #include "sprite.h"
 
 #include "constants/animations.h"

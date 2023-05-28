@@ -51,18 +51,18 @@ SECTIONS
 
         /* game */
         build/sa2/asm/stage_rings_manager.o(.text);
-        build/sa2/src/game/stage_entities_manager.o(.text);
-        build/sa2/src/game/stage_palette_loader.o(.text);
-        build/sa2/src/game/stage_language_task_1.o(.text);
+        build/sa2/src/game/stage/entities_manager.o(.text);
+        build/sa2/src/game/stage/palette_loader.o(.text);
+        build/sa2/src/game/stage/language_task_1.o(.text);
         build/sa2/asm/stage_unknown_task.o(.text);
         build/sa2/asm/stage_demo.o(.text);
-        build/sa2/src/game/stage_language_task_2.o(.text);
-        build/sa2/src/game/stage_unknown_sprite.o(.text);
+        build/sa2/src/game/stage/language_task_2.o(.text);
+        build/sa2/src/game/stage/unknown_sprite.o(.text);
         build/sa2/asm/ice_paradise_search_lights.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
         build/sa2/asm/stage_collect_ring_effect.o(.text);
         build/sa2/asm/stage_item_box.o(.text);
-        build/sa2/asm/stage_pop_effect.o(.text);
+        build/sa2/asm/stage_dust_cloud.o(.text);
         build/sa2/asm/stage_ring.o(.text);
         build/sa2/asm/stage_music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
@@ -92,11 +92,11 @@ SECTIONS
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/asm/game_2.o(.text);
         build/sa2/asm/stage_ui.o(.text);
-        build/sa2/src/game/stage_ui.o(.text);
+        build/sa2/src/game/stage/ui.o(.text);
         build/sa2/asm/stage_debug_ui.o(.text);
         build/sa2/src/game/screen_transition.o(.text);
         build/sa2/src/game/trapped_animals.o(.text);
-        build/sa2/src/game/stage_intro.o(.text);
+        build/sa2/src/game/stage/intro.o(.text);
         build/sa2/asm/stage_intro.o(.text);
         build/sa2/asm/stage_outro.o(.text);
         build/sa2/src/game/character_select.o(.text);
@@ -274,9 +274,9 @@ SECTIONS
         build/sa2/src/game/assets/compressed/entities.o(.rodata);
         build/sa2/src/game/assets/compressed/roms.o(.rodata);
         build/sa2/asm/stage_rings_manager.o(.rodata);
-        build/sa2/src/game/stage_entities_manager.o(.rodata);
-        build/sa2/src/game/stage_language_task_1.o(.rodata);
-        build/sa2/src/game/stage_language_task_2.o(.rodata);
+        build/sa2/src/game/stage/entities_manager.o(.rodata);
+        build/sa2/src/game/stage/language_task_1.o(.rodata);
+        build/sa2/src/game/stage/language_task_2.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
         build/sa2/asm/stage_music_manager.o(.rodata);
@@ -294,13 +294,13 @@ SECTIONS
         build/sa2/asm/player_mp_finish_1.o(.rodata);
         build/sa2/asm/player_mp_finish_2.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
-        build/sa2/src/game/stage.o(.rodata);
+        build/sa2/src/game/stage/stage.o(.rodata);
         build/sa2/asm/game.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/game_2.o(.rodata);
-        build/sa2/src/game/stage_ui.o(.rodata);
+        build/sa2/src/game/stage/ui.o(.rodata);
         build/sa2/src/game/trapped_animals.o(.rodata);
-        build/sa2/src/game/stage_intro.o(.rodata);
+        build/sa2/src/game/stage/intro.o(.rodata);
         build/sa2/asm/stage_intro.o(.rodata);
         build/sa2/asm/stage_outro.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);

@@ -4,7 +4,7 @@
 #include "game/screen_transition.h"
 #include "game/save.h"
 #include "game/game.h"
-#include "game/stage_ui.h"
+#include "game/stage/ui.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "trig.h"
