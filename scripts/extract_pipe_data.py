@@ -30,13 +30,16 @@ def format_hex(val):
 
 with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
-    for i in range(length // 2):
-        print(f"{read_u16(rom)}, ")
-    # for i in range(length // 4):
-    #     print("{ ", end="")
-    #     for j in range(2):
-    #         print(f"Q_8_8({read_s16(rom) / 256})" + ", ", end="")
-    #     print("},")
+    # for i in range(length // 2):
+    #     print(f"{read_u16(rom)}, ", end="")
+    for i in range(length // 8):
+        print("{ ", end="")
+        print(f"{read_u16(rom)}" + ", ", end="")
+        print(f"{read_u16(rom)}" + ", ", end="")
+        print("{ ._16 = {", end="")
+        print(f"Q_8_8({read_s16(rom) / 256})" + ", ", end="")
+        print(f"Q_8_8({read_s16(rom) / 256})" + " ", end="")
+        print("}},},")
 
     # print("{ ", end="")
     # for i in range(length):

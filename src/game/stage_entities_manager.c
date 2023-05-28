@@ -79,6 +79,34 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/105.h"
 #include "game/interactables_2/special_ring.h"
+#include "game/interactables_2/notification_ring_bonus.h"
+#include "game/interactables_2/sky_canyon_init.h"
+
+#include "game/mystery_item_box.h"
+
+#include "game/enemies/kiki.h"
+#include "game/enemies/kura_kura.h"
+#include "game/enemies/flickey.h"
+#include "game/enemies/kubinaga.h"
+#include "game/enemies/hammerhead.h"
+#include "game/enemies/bullet_buzzer.h"
+#include "game/enemies/circus.h"
+#include "game/enemies/yado.h"
+#include "game/enemies/pen.h"
+#include "game/enemies/gohla.h"
+#include "game/enemies/bell.h"
+#include "game/enemies/straw.h"
+#include "game/enemies/kyura.h"
+#include "game/enemies/balloon.h"
+#include "game/enemies/mouse.h"
+#include "game/enemies/koura.h"
+#include "game/enemies/madillo.h"
+#include "game/enemies/piko_piko.h"
+#include "game/enemies/geji_geji.h"
+#include "game/enemies/star.h"
+#include "game/enemies/mon.h"
+#include "game/enemies/buzzer.h"
+#include "game/enemies/spinner.h"
 
 #include "game/assets/compressed/entities.h"
 
@@ -357,14 +385,64 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Interactable105,
 };
 
-extern const MapEntityInit gSpriteInits_Interactables[];
+const MapEntityInit gSpriteInits_Enemies[] = {
+    CreateEntity_Mon,      CreateEntity_Kiki,         CreateEntity_Buzzer,
+    CreateEntity_Gohla,    CreateEntity_KuraKura,     CreateEntity_Kubinaga,
+    CreateEntity_PikoPiko, CreateEntity_Bell,         CreateEntity_Yado,
+    CreateEntity_Circus,   CreateEntity_Koura,        CreateEntity_Madillo,
+    CreateEntity_Straw,    CreateEntity_Hammerhead,   CreateEntity_Spinner,
+    CreateEntity_Mouse,    CreateEntity_Pen,          CreateEntity_GejiGeji,
+    CreateEntity_Balloon,  CreateEntity_Flickey,      CreateEntity_Kyura,
+    CreateEntity_Star,     CreateEntity_BulletBuzzer,
+};
 
-extern const MapEntityInit gSpriteInits_Enemies[];
+const u16 gUnknown_080D5020[] = {
+    100, 200, 400, 800, 1000, 0,
+};
 
-extern const u16 gUnknown_080D5020[];
-extern const MapEntityInit gUnknown_080D502C[];
+const MapEntityInit gUnknown_080D502C[] = {
+    CreateEntity_Toggle_PlayerLayer,
+    CreateEntity_Toggle_PlayerLayer,
+    CreateEntity_Spring_Normal_Up,
+    CreateEntity_Spring_Normal_Down,
+    CreateEntity_Spring_Normal_Right,
+    CreateEntity_Spring_Normal_Left,
+    CreateEntity_Spring_Big_UpLeft,
+    CreateEntity_Spring_Big_UpRight,
+    CreateEntity_Spring_Big_DownLeft,
+    CreateEntity_Spring_Big_DownRight,
+    CreateEntity_Spring_Small_UpLeft,
+    CreateEntity_Spring_Small_UpRight,
+    CreateEntity_Ramp,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Up,
+    CreateEntity_Spikes_Up,
+    CreateEntity_GrindRail_Start,
+    CreateEntity_GrindRail_StartAir,
+    CreateEntity_GrindRail_EndGround,
+    CreateEntity_GrindRail_End_ForcedJump,
+    CreateEntity_GrindRail_EndAlternate,
+    CreateEntity_GrindRail_EndAir,
+    CreateEntity_GrindRail_EndGround_Left,
+    CreateEntity_GrindRail_EndAir_Left,
+    CreateEntity_MysteryItemBox,
+    CreateEntity_8080368,
+};
 
-extern const StagePreInitFunc gSpriteTileInits_PreStageEntry[];
+const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
+    NULL,        NULL,        NULL, NULL, // Leaf Forest
+    NULL,        NULL,        NULL, NULL, // Hot Crater
+    NULL,        NULL,        NULL, NULL, // Music Plant
+    NULL,        NULL,        NULL, NULL, // Ice Paradise
+    sub_80807CC, sub_80807CC, NULL, NULL, // Sky Canyon
+    NULL,        NULL,        NULL, NULL, // Techno Base
+    NULL,        NULL,        NULL, NULL, // Egg Utopia
+    NULL,        NULL,        NULL, NULL, // Final Zone
+    NULL,        NULL,
+};
 
 void CreateStageEntitiesManager(void)
 {

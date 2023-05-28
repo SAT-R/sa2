@@ -52,7 +52,6 @@ SECTIONS
         /* game */
         build/sa2/asm/stage_rings_manager.o(.text);
         build/sa2/src/game/stage_entities_manager.o(.text);
-        build/sa2/asm/stage_entities_manager.o(.text);
         build/sa2/asm/stage_palette_loader.o(.text);
         build/sa2/asm/stage_language_task_1.o(.text);
         build/sa2/asm/stage_unknown_task.o(.text);
@@ -180,7 +179,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/guitar_string.o(.text);
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.text);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.text);
-        build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/funnel_sphere.o(.text);
@@ -277,7 +275,6 @@ SECTIONS
         build/sa2/src/game/assets/compressed/roms.o(.rodata);
         build/sa2/asm/stage_rings_manager.o(.rodata);
         build/sa2/src/game/stage_entities_manager.o(.rodata);
-        build/sa2/asm/stage_entities_manager.o(.rodata);
         build/sa2/asm/stage_language_task_1.o(.rodata);
         build/sa2/asm/stage_language_task_2.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
@@ -341,8 +338,6 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.rodata);
-        build/sa2/src/game/interactables_2/music_plant/handlers_ia_pipe_horn.o(.rodata);
-        build/sa2/data/handlers_ia_pipe_horn_data.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/note_block.o(.rodata);
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.rodata);
