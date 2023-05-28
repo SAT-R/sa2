@@ -56,7 +56,7 @@ SECTIONS
         build/sa2/asm/stage_language_task_1.o(.text);
         build/sa2/asm/stage_unknown_task.o(.text);
         build/sa2/asm/stage_demo.o(.text);
-        build/sa2/asm/stage_language_task_2.o(.text);
+        build/sa2/src/game/stage_language_task_2.o(.text);
         build/sa2/src/game/stage_unknown_sprite.o(.text);
         build/sa2/asm/ice_paradise_search_lights.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
@@ -276,7 +276,7 @@ SECTIONS
         build/sa2/asm/stage_rings_manager.o(.rodata);
         build/sa2/src/game/stage_entities_manager.o(.rodata);
         build/sa2/asm/stage_language_task_1.o(.rodata);
-        build/sa2/asm/stage_language_task_2.o(.rodata);
+        build/sa2/src/game/stage_language_task_2.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
         build/sa2/asm/stage_music_manager.o(.rodata);
@@ -367,7 +367,7 @@ SECTIONS
 
         build/sa2/data/data5.o(.rodata);
         build/sa2/data/sprite_data.o(.rodata);
-        build/sa2/data/language_data.o(.rodata);
+        build/sa2/src/data/tileset_language.o(.rodata);
         build/sa2/data/map_data.o(.rodata);
 
         build/sa2/src/lib/m4a_tables.o(.rodata);

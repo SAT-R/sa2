@@ -303,8 +303,8 @@ END_NONMATCH
 // given dest.
 // Also sets some stuff in the vram blend regs
 // My guess is that this was designed for rendering text based tiles to the screen
-s32 sub_8004274(void *dest, void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                u8 *tileOffsets, u8 param6)
+s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
+                const u8 *tileOffsets, u8 param6)
 {
     u8 i = 0;
 
