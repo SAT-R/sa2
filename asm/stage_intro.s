@@ -3011,7 +3011,7 @@ SetupStageLoadingScreen: @ 0x0802F0A8
 	ldr r0, [r1, #0x1c]
 	orrs r0, r2
 	str r0, [r1, #0x1c]
-	ldr r0, _0802F208 @ =gUnknown_03005B4C
+	ldr r0, _0802F208 @ =gActiveBossTask
 	movs r4, #0
 	str r4, [r0]
 	ldr r0, _0802F20C @ =sub_802F75C
@@ -3150,7 +3150,7 @@ SetupStageLoadingScreen: @ 0x0802F0A8
 	.align 2, 0
 _0802F200: .4byte gUnknown_03005424
 _0802F204: .4byte gPlayer
-_0802F208: .4byte gUnknown_03005B4C
+_0802F208: .4byte gActiveBossTask
 _0802F20C: .4byte sub_802F75C
 _0802F210: .4byte sub_80303CC
 _0802F214: .4byte sub_802F9F8

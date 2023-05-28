@@ -72,7 +72,7 @@ CreateEggSaucer: @ 0x08042E08
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _08042F08 @ =gUnknown_03005B4C
+	ldr r1, _08042F08 @ =gActiveBossTask
 	str r0, [r1]
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
@@ -118,7 +118,7 @@ _08042EF8: .4byte 0xFFFFCFFF
 _08042EFC: .4byte gUnknown_03005AA0
 _08042F00: .4byte Task_EggSaucerMain
 _08042F04: .4byte TaskDestructor_EggSaucerMain
-_08042F08: .4byte gUnknown_03005B4C
+_08042F08: .4byte gActiveBossTask
 _08042F0C: .4byte IWRAM_START + 0x134
 _08042F10: .4byte 0x000030EF
 _08042F14: .4byte gUnknown_030054EC
@@ -2168,7 +2168,7 @@ sub_8043FD0: @ 0x08043FD0
 	push {r4, r5, r6, r7, lr}
 	adds r4, r0, #0
 	adds r5, r1, #0
-	ldr r0, _0804406C @ =gUnknown_03005B4C
+	ldr r0, _0804406C @ =gActiveBossTask
 	ldr r0, [r0]
 	ldrh r2, [r0, #6]
 	movs r0, #0xc0
@@ -2244,7 +2244,7 @@ _08044030:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804406C: .4byte gUnknown_03005B4C
+_0804406C: .4byte gActiveBossTask
 _08044070: .4byte IWRAM_START + 0xC4
 _08044074: .4byte IWRAM_START + 0xC8
 _08044078: .4byte IWRAM_START + 0xCC
@@ -5506,11 +5506,11 @@ TaskDestructor_EggSaucerMain: @ 0x080459CC
 	adds r0, r0, r1
 	ldr r0, [r0]
 	bl VramFree
-	ldr r1, _080459E8 @ =gUnknown_03005B4C
+	ldr r1, _080459E8 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r0}
 	bx r0
 	.align 2, 0
 _080459E4: .4byte IWRAM_START + 0x4AC
-_080459E8: .4byte gUnknown_03005B4C
+_080459E8: .4byte gActiveBossTask
