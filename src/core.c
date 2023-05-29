@@ -49,7 +49,7 @@ bool8 gMultiSioEnabled = FALSE;
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
 u32 gUnknown_03001B60[][160] = {};
 u16 gObjPalette[] = {};
-union Unk_03002E60 *gUnknown_03002260 = NULL;
+struct MapHeader_Full **gUnknown_03002260 = NULL;
 u32 gFrameCount = 0;
 u16 gWinRegs[6] ALIGNED(16) = {};
 s32 gNumTasks = 0;
@@ -277,7 +277,12 @@ void GameInit(void)
     gInputPlaybackData = NULL;
     gFrameCount = 0;
 
-    for (i = 0; i < 15; i++) {
+#ifdef UB_FIX
+    for (i = 0; i < ARRAY_COUNT(gIntrTableTemplate); i++)
+#else
+    for (i = 0; i < 15; i++)
+#endif
+    {
         gIntrTable[i] = gIntrTableTemplate[i];
     }
 

@@ -1,3 +1,4 @@
+#include <string.h>
 #include "core.h"
 #include "game/game.h"
 #include "game/save.h"

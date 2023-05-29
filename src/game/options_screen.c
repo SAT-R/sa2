@@ -4535,15 +4535,14 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
 {
     // Not sure why but the struct has to be loaded like this
 #ifndef NON_MATCHING
-    u32 offsetA = gCurTask->structOffset + (rowIndex * sizeof(struct TimeRecordDisplay));
+    u32 offsetA = gCurTask->data + (rowIndex * sizeof(struct TimeRecordDisplay));
     register u32 offsetB asm("r2")
         = IWRAM_START + offsetof(struct TimeRecordsScreen, timeDisplays);
     struct TimeRecordDisplay *timeDisplay
         = (struct TimeRecordDisplay *)(offsetA + offsetB);
 #else
     struct UNK_80637EC_UNK314 *unk314
-        = &((struct TimeRecordsScreen *)(IWRAM_START + gCurTask->structOffset))
-               ->unk314[a];
+        = &((struct TimeRecordsScreen *)(IWRAM_START + gCurTask->data))->unk314[a];
 #endif
 
     if (frame > 0 && frame < 9) {
@@ -5096,7 +5095,7 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex)
     struct UNK_806B908 nameCharTile;
 
     struct MultiplayerRecordRow *row
-        = &((struct MultiplayerRecordsScreen *)(IWRAM_START + gCurTask->structOffset))
+        = &((struct MultiplayerRecordsScreen *)(IWRAM_START + gCurTask->data))
                ->table->rows[rowIndex];
     const struct UNK_080D95E8 *digitTile, *digitTiles = sMultiplayerScoreDigitTiles;
 

@@ -15,14 +15,19 @@ typedef void (*VoidFn)(void);
 
 // helper macros
 
-#if NON_MATCHING
+#if ((defined PORTABLE) || (defined NON_MATCHING))
+#define BUG_FIX
+#define UB_FIX
+#endif
+
+#ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
 #define ASM_FUNC(path, decl)                                                            \
     NAKED decl { asm(".include " #path); }
 #endif
 
-#if NON_MATCHING
+#ifdef NON_MATCHING
 #define NONMATCH(path, decl) decl
 #define END_NONMATCH
 #else

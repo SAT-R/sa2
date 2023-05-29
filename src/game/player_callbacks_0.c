@@ -127,7 +127,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     s->graphics.anim = gUnknown_080D5518[p2][1];
     s->variant = gUnknown_080D5518[p2][2];
     s->unk1A = 0x200;
-    s->unk10 = SPRITE_FLAG_PRIORITY(2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
 }
@@ -160,7 +160,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         s->unk1C = 0;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         return t;
     }
@@ -830,7 +830,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         }
 
         s->unk1A = 0x200;
-        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;
     }
@@ -1027,7 +1027,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         s->variant = sKnucklesAnimData_FX[p2][2];
 
         s->unk1A = 0x200;
-        s->unk10 = SPRITE_FLAG_PRIORITY(2);
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;
     }

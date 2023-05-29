@@ -464,9 +464,9 @@ void sub_807CE94(Sprite_IA86 *ia086)
             }
 
             if (unk086->unkC > -Q_24_8(16))
-                unk086->s->unk10 = SPRITE_FLAG_PRIORITY(3);
+                unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 3);
             else
-                unk086->s->unk10 = SPRITE_FLAG_PRIORITY(2);
+                unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
             sub_80051E8(unk086->s);
         }

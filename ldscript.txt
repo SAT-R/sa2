@@ -117,6 +117,7 @@ SECTIONS
         build/sa2/asm/enemies_shared.o(.text);
         build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
+        build/sa2/src/game/enemies/kura_kura.o(.text);
         build/sa2/asm/enemy_kura_kura.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);
         build/sa2/asm/enemy_buzzer.o(.text);

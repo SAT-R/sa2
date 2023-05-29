@@ -39,7 +39,7 @@ typedef struct PACKED {
         /* 0x03 */
         s8 sData[ENTITY_DATA_SIZE];
         u8 uData[ENTITY_DATA_SIZE];
-    } d PACKED;
+    } d;
 } MapEntity;
 
 typedef struct PACKED {
