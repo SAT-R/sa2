@@ -68,6 +68,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     sprite->unk10 = 0x2000;
 }
 
+/* TODO: move to projectile file */
 typedef struct {
     u16 unk0;
     u16 unk2;
@@ -78,7 +79,6 @@ typedef struct {
     u32 unkC;
     u32 unk10;
 } ProjInit;
-
 extern void sub_8050E04(ProjInit *init);
 
 void sub_80596C4(void);
@@ -120,35 +120,53 @@ void sub_80594E0(void)
 
     if (sub_800C4FC(sprite, pos.x, pos.y, 0)) {
         TaskDestroy(gCurTask);
-    } else if ((Q_24_8_TO_INT(kyura->unk44) > gCamera.x + 0x170
-                || Q_24_8_TO_INT(kyura->unk44) < gCamera.x - 0x80
-                || Q_24_8_TO_INT(kyura->unk48) > gCamera.y + 0x120
-                || Q_24_8_TO_INT(kyura->unk48) < gCamera.y - 0x80)
-               && IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+        return;
+    }
+
+    if ((Q_24_8_TO_INT(kyura->unk44) > gCamera.x + 0x170
+         || Q_24_8_TO_INT(kyura->unk44) < gCamera.x - 0x80
+         || Q_24_8_TO_INT(kyura->unk48) > gCamera.y + 0x120
+         || Q_24_8_TO_INT(kyura->unk48) < gCamera.y - 0x80)
+        && IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, kyura->base.spriteX);
         TaskDestroy(gCurTask);
-    } else {
-        if (--kyura->unk5A == 0) {
-            kyura->unk5A = 4;
-            if (kyura->unk5B-- == 1) {
-                ProjInit init;
-                u32 rand;
-                kyura->unk5B = 12;
-
-                rand = PseudoRandom32() & 1;
-                init.unk0 = 3;
-                init.unk2 = SA2_ANIM_KYURA_PROJ;
-                init.unk4 = rand;
-                init.unkC = Q_24_8(pos.x + 1);
-                init.unk10 = Q_24_8(pos.y + 0x14);
-                init.unk6 = 0x100;
-                init.unk8 = 0x200 - (rand * 0x100);
-                sub_8050E04(&init);
-            }
-            gCurTask->main = sub_80596C4;
-        }
-        sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        return;
     }
+
+    if (--kyura->unk5A == 0) {
+        kyura->unk5A = 4;
+        if (kyura->unk5B-- == 1) {
+            ProjInit init;
+            u32 rand;
+            kyura->unk5B = 12;
+
+            rand = PseudoRandom32() & 1;
+            init.unk0 = 3;
+            init.unk2 = SA2_ANIM_KYURA_PROJ;
+            init.unk4 = rand;
+            init.unkC = Q_24_8(pos.x + 1);
+            init.unk10 = Q_24_8(pos.y + 0x14);
+            init.unk6 = 0x100;
+            init.unk8 = 0x200 - (rand * 0x100);
+            sub_8050E04(&init);
+        }
+        gCurTask->main = sub_80596C4;
+    }
+    sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
+    sub_8004558(sprite);
+    sub_80051E8(sprite);
+}
+
+void sub_80596C4(void)
+{
+    Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
+    Sprite *sprite = &kyura->sprite;
+
+    if (--kyura->unk5A == 0) {
+        kyura->unk5A = 8;
+        kyura->unk54 = (kyura->unk54 + 8) & ONE_CYCLE;
+        gCurTask->main = sub_80594E0;
+    }
+    sub_8004558(sprite);
+    sub_80051E8(sprite);
 }
