@@ -486,6 +486,11 @@
 #define SA2_ANIM_PRESS_START_MSG_ES 1110
 #define SA2_ANIM_PRESS_START_MSG_IT 1111
 
+#define SA2_ANIM_ASCII            1119
+#define SA2_ANIM_ASCII_FIRST_CHAR '!'
+#define SA2_ANIM_ASCII_YEN        '\\'
+#define SA2_ANIM_NUM_ASCII_CHARS  94
+
 #define SA2_ANIM_TA_WHITE_BAR 1120
 
 #define SA2_ANIM_STAGE               1123
