@@ -26,7 +26,8 @@ static void Task_80098C0(void);
 
 void sub_80096DC(void)
 {
-    struct Task *t = TaskCreate(Task_8009854, sizeof(Struct_LevelSelect), 0x2000, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_8009854, sizeof(Struct_LevelSelect), 0x2000, 0, NULL);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -104,8 +105,8 @@ static void Task_8009854(void)
     gBgPalette[1] = RGB_WHITE;
     gFlags |= 0x1;
 
-    levelSelect->vram
-        += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, gUnknown_080D5128, 0);
+    levelSelect->vram += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0,
+                                     gUnknown_080D5128, 0);
 
     gCurTask->main = Task_8009780;
     gCurTask->main();

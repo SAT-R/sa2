@@ -24,7 +24,7 @@ void sub_800B9B8(s16 x, s16 y)
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk10 = SPRITE_FLAG_PRIORITY(2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_800BA58(void)
