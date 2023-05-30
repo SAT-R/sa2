@@ -35,7 +35,7 @@ sub_802C9E4: @ 0x0802C9E4
 	adds r0, #0xb2
 	adds r0, r0, r1
 	mov r8, r0
-	ldr r2, _0802CA50 @ =sAnimsUiDigits
+	ldr r2, _0802CA50 @ =sAnimsAsciiDigits
 	mov sb, r2
 	ldr r7, _0802CA54 @ =IWRAM_START + 0x94
 	adds r4, r1, r7
@@ -59,7 +59,7 @@ _0802CA40: .4byte sub_802CCE0
 _0802CA44: .4byte 0x00002102
 _0802CA48: .4byte sub_802D25C
 _0802CA4C: .4byte gStageUITask
-_0802CA50: .4byte sAnimsUiDigits
+_0802CA50: .4byte sAnimsAsciiDigits
 _0802CA54: .4byte IWRAM_START + 0x94
 _0802CA58: .4byte IWRAM_START + 0x90
 _0802CA5C:

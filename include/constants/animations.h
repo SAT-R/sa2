@@ -318,6 +318,7 @@
 #define SA2_ANIM_RACE_START_ICON  879
 #define SA2_ANIM_RACE_FINISH_ICON 880
 
+// Likely the Player UI ring
 #define SA2_ANIM_RING                    882
 #define SA2_ANIM_E100_ALPHA              883
 #define SA2_ANIM_SP_STAGE_HOLE           884

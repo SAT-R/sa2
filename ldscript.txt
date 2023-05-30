@@ -63,6 +63,7 @@ SECTIONS
         build/sa2/asm/stage_collect_ring_effect.o(.text);
         build/sa2/asm/stage_item_box.o(.text);
         build/sa2/src/game/stage/dust_cloud.o(.text);
+        build/sa2/src/game/stage/ring.o(.text);
         build/sa2/asm/stage_ring.o(.text);
         build/sa2/asm/stage_music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);

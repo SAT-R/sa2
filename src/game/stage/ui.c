@@ -6,7 +6,7 @@
 
 #define ONE_UP_ICON_TILES 4
 
-const u16 sAnimsUiDigits[][2] = {
+const u16 sAnimsAsciiDigits[][2] = {
     { 1119, 16 }, // '0'
     { 1119, 17 }, // '1'
     { 1119, 18 }, // '2'

@@ -425,7 +425,7 @@ struct UNK_03005AF0 {
     s8 unk38;
     s8 unk39;
     u8 unk3A;
-    u8 unk3B;
+    s8 unk3B;
 }; /* unknown length */
 
 extern struct UNK_03005AF0 gUnknown_03005AF0;
