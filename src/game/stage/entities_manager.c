@@ -1051,7 +1051,7 @@ void sub_8009530(s16 a, s16 b)
         } else {
             gNumLives = numLives;
         }
-        gUnknown_030054A8[3] = 0x10;
+        gUnknown_030054A8.unk3 = 0x10;
     }
 
     sub_8009E00(a, b);

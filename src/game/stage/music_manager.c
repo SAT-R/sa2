@@ -5,10 +5,8 @@
 
 #include "constants/songs.h"
 
-void sub_800BF30(void);
-void sub_800BF74(u16 p0);
-
-extern u16 gUnknown_080D5254[7];
+static void MusManager_UpdateBgmParams(void);
+void sub_800BF74(u16 fadeoutSpeed);
 
 const u16 gLevelSongs[] = {
     MUS_LEAF_FOREST__ACT_1,
@@ -53,6 +51,11 @@ const u16 gLevelSongs[] = {
     MUS_DUMMY,
 };
 
+const u16 gUnknown_080D5254[7] = {
+    SE_260, 0xF000, 0x1008, 0x8F0, 0xF000, 0x1008, 0x1F0,
+
+};
+
 void Task_StageMusicManager(void)
 {
     struct SongHeader *songHeader = gMPlayTable[0].info->songHeader;
@@ -83,16 +86,17 @@ void Task_StageMusicManager(void)
         } else if ((songHeader == gSongTable[MUS_INVINCIBILITY].header)
                    && ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK) != 0)
                    && (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE))
-                   && ((gPlayer.unk37 & 0x2) == 0)) {
+                   && ((gPlayer.unk37 & FLAG_PLAYER_x37__INVINCIBLE) == 0)) {
             gUnknown_030054A8.unk5 = 1;
             m4aSongNumStop(MUS_INVINCIBILITY);
         } else if ((songHeader != gSongTable[MUS_1_UP].header)
                    && (songHeader != gSongTable[MUS_INVINCIBILITY].header)
-                   && (gPlayer.unk37 & 0x2) && (gUnknown_030054A8.unk2 == 0)) {
+                   && (gPlayer.unk37 & FLAG_PLAYER_x37__INVINCIBLE)
+                   && (gUnknown_030054A8.unk2 == 0)) {
             gUnknown_030054A8.unk2 = 0;
             gUnknown_030054A8.unk5 = 1;
             m4aSongNumStart(MUS_INVINCIBILITY);
-            sub_800BF30();
+            MusManager_UpdateBgmParams();
         } else if (gUnknown_030054A8.unk2 != 0) {
             gUnknown_030054A8.unk2 = 0;
             gUnknown_030054A8.unk5 = 1;
@@ -110,16 +114,53 @@ void Task_StageMusicManager(void)
             if ((gUnknown_030054A8.unk1 & 0xF0) == 0x20) {
                 m4aSongNumStart(gUnknown_080D5254[gUnknown_030054A8.unk1]);
 
-                sub_800BF30();
+                MusManager_UpdateBgmParams();
             } else {
                 m4aSongNumStartOrContinue(
                     gLevelSongs[gCurrentLevel + (gUnknown_030054A8.unk1 & 0x0F)]);
 
                 if (gUnknown_030054A8.unk5 != 0) {
                     gUnknown_030054A8.unk5 = 0;
-                    sub_800BF30();
+                    MusManager_UpdateBgmParams();
                 }
             }
         }
+    }
+}
+
+void CreateStageMusicManager(void)
+{
+    TaskCreate(Task_StageMusicManager, 0, 0x4000, 0, NULL);
+
+    gUnknown_030054A8.unk0 = 0;
+    gUnknown_030054A8.unk1 = 0;
+    gUnknown_030054A8.unk2 = 0;
+    gUnknown_030054A8.unk3 = 0;
+    gUnknown_030054A8.unk4 = 0;
+    gUnknown_030054A8.unk5 = 0;
+    gUnknown_030054A8.unk6 = 0;
+}
+
+static void MusManager_UpdateBgmParams(void)
+{
+    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+
+    m4aMPlayImmInit(bgmInfo);
+    m4aMPlayVolumeControl(bgmInfo, 0xFF, 4);
+    m4aMPlayFadeIn(bgmInfo, 4);
+
+    if (gPlayer.unk37 & FLAG_PLAYER_x37__SPEEDUP) {
+        m4aMPlayTempoControl(bgmInfo, 0x200);
+    }
+}
+
+void sub_800BF74(u16 fadeoutSpeed)
+{
+    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+
+    m4aMPlayFadeOutTemporarily(bgmInfo, fadeoutSpeed / 16);
+
+    if (gPlayer.unk37 & FLAG_PLAYER_x37__SPEEDUP) {
+        m4aMPlayTempoControl(bgmInfo, 0x200);
     }
 }

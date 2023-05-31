@@ -174,6 +174,8 @@ typedef struct {
     /* 0xAF */ s8 unkAF;
 } TailsFlags;
 
+#define FLAG_PLAYER_x37__INVINCIBLE       0x02
+#define FLAG_PLAYER_x37__SPEEDUP          0x04
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
 // Not sure what these are yet
@@ -210,7 +212,7 @@ typedef struct Player_ {
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
     /* 0x36 */ s8 unk36;
-    /* 0x37 */ u8 unk37;
+    /* 0x37 */ u8 unk37; // bitfield
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];

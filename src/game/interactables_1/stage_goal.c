@@ -167,7 +167,7 @@ static void Task_StageGoalToggleMain(void)
                     }
 
                     gNumLives = numLives;
-                    gUnknown_030054A8[3] = 0x10;
+                    gUnknown_030054A8.unk3 = 0x10;
                 }
                 sub_801F3A4(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), temp);
             }

@@ -290,7 +290,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
                 if (Div((u16)gRingCount, 100) != Div(prevRingCount, 100)
                     && gGameMode == 0) {
                     gNumLives = MIN(gNumLives + 1, 255u);
-                    gUnknown_030054A8[3] = 0x10;
+                    gUnknown_030054A8.unk3 = 0x10;
                 }
             }
 

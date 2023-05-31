@@ -65,7 +65,6 @@ SECTIONS
         build/sa2/src/game/stage/dust_cloud.o(.text);
         build/sa2/src/game/stage/ring.o(.text);
         build/sa2/src/game/stage/music_manager.o(.text);
-        build/sa2/asm/stage_music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
         build/sa2/src/game/interactables_0/platform.o(.text);
@@ -282,7 +281,6 @@ SECTIONS
         build/sa2/asm/stage_pause_menu.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
         build/sa2/src/game/stage/music_manager.o(.rodata);
-        build/sa2/asm/stage_music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
         build/sa2/src/game/interactables_0/platform.o(.rodata);
@@ -644,7 +642,7 @@ SECTIONS
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */
-        build/sa2/data/data3.o(.rodata);
+        build/sa2/asm/entities_0.o(.rodata2);
         build/sa2/data/special_stage_levels.o(.rodata);
         build/sa2/data/handlers_ia_pipe_horn_sequences.o(.rodata);
         build/sa2/src/data/palettes.o(.rodata);

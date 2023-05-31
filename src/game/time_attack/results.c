@@ -262,7 +262,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk10 = 0;
     sub_8004558(element);
 
-    gUnknown_030054A8[0] = 0xFF;
+    gUnknown_030054A8.unk0 = 0xFF;
 
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
         gPlayer.unk64 = 0x20;
