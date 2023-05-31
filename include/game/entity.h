@@ -34,7 +34,6 @@ typedef struct PACKED {
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
 
-    // PACKED was moved down to allow Intellisense to see the union's name
     union {
         /* 0x03 */
         s8 sData[ENTITY_DATA_SIZE];
