@@ -66,7 +66,17 @@ extern u32 gUnknown_030059D0[2];
 // might be unsigned, actually?
 extern s16 gRingCount;
 
-extern u8 gUnknown_030054A8[8];
+typedef struct {
+    u8 unk0;
+    u8 unk1;
+    u8 unk2;
+    u8 unk3;
+    u8 unk4;
+    u8 unk5;
+    u16 unk6;
+} UNK_30054A8; /* size: 8 */
+
+extern UNK_30054A8 gUnknown_030054A8;
 extern u32 gCourseTime;
 extern u8 gUnknown_030054F4;
 extern u16 gUnknown_03005440;

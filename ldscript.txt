@@ -64,7 +64,7 @@ SECTIONS
         build/sa2/asm/stage_item_box.o(.text);
         build/sa2/src/game/stage/dust_cloud.o(.text);
         build/sa2/src/game/stage/ring.o(.text);
-        build/sa2/asm/stage_ring.o(.text);
+        build/sa2/src/game/stage/music_manager.o(.text);
         build/sa2/asm/stage_music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/game/interactables_0/spring.o(.text);
@@ -281,6 +281,7 @@ SECTIONS
         build/sa2/src/game/unused_unknown_task.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
+        build/sa2/src/game/stage/music_manager.o(.rodata);
         build/sa2/asm/stage_music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
         build/sa2/src/game/interactables_0/spring.o(.rodata);
