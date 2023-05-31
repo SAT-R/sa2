@@ -554,7 +554,7 @@ extern void sub_8019CCC(u8, u8);
 extern struct UNK_3005510 *sub_8019224(void);
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
-extern void sub_800C84C(Sprite *);
+extern void sub_800C84C(Sprite *, s32, s32);
 extern void sub_800B9B8(s16, s16);
 
 extern void sub_801EB44(s32, s32, s32);

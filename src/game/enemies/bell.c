@@ -65,25 +65,13 @@ static void sub_8054BF4(void)
     Sprite *sprite = &bell->s;
     MapEntity *me = bell->base.me;
 
-#ifndef NON_MATCHING
-    register s32 r0 asm("r0");
-    register s32 r1 asm("r1") = Q_24_8_TO_INT(bell->posX);
-    register s32 xPos asm("r4") = r1;
-    register s32 r2 asm("r2") = Q_24_8_TO_INT(bell->posY);
-    register s32 yPos asm("r5") = r2;
-    asm("" ::"r"(r2));
-    r0 = xPos - gCamera.x;
-    sprite->x = r0;
-    r0 = yPos - gCamera.y;
-    sprite->y = r0;
-    if (sub_800C4FC(sprite, r1, r2, 0) != 0) {
-#else
-    s32 xPos = Q_24_8_TO_INT(bell->posX);
-    s32 yPos = Q_24_8_TO_INT(bell->posY);
-    sprite->x = xPos - gCamera.x;
-    sprite->y = yPos - gCamera.y;
-    if (sub_800C4FC(sprite, xPos, yPos, 0) != 0) {
-#endif
+    Vec2_32 pos;
+
+    pos.x = Q_24_8_TO_INT(bell->posX);
+    pos.y = Q_24_8_TO_INT(bell->posY);
+    sprite->x = pos.x - gCamera.x;
+    sprite->y = pos.y - gCamera.y;
+    if (sub_800C4FC(sprite, pos.x, pos.y, 0) != 0) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -120,28 +108,13 @@ void sub_8054D20(void)
     Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &bell->s;
     MapEntity *me = bell->base.me;
+    Vec2_32 pos;
 
-#ifndef NON_MATCHING
-    register struct Camera *r3 asm("r3");
-    register s32 r0 asm("r0");
-    register s32 r1 asm("r1") = Q_24_8_TO_INT(bell->posX);
-    register s32 xPos asm("r4") = r1;
-    register s32 r2 asm("r2") = Q_24_8_TO_INT(bell->posY);
-    register s32 yPos asm("r5") = r2;
-    asm("" ::"r"(r1));
-    asm("" ::"r"(r2));
-    r3 = &gCamera;
-    r0 = xPos - r3->x;
-    sprite->x = r0;
-    r0 = yPos - r3->y;
-    sprite->y = r0;
-#else
-    s32 xPos = Q_24_8_TO_INT(bell->posX);
-    s32 yPos = Q_24_8_TO_INT(bell->posY);
-    sprite->x = xPos - gCamera.x;
-    sprite->y = yPos - gCamera.y;
-#endif
-    sub_800C84C(sprite);
+    pos.x = Q_24_8_TO_INT(bell->posX);
+    pos.y = Q_24_8_TO_INT(bell->posY);
+    sprite->x = pos.x - gCamera.x;
+    sprite->y = pos.y - gCamera.y;
+    sub_800C84C(sprite, pos.x, pos.y);
     if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, bell->base.spriteX);
         TaskDestroy(gCurTask);
@@ -149,23 +122,27 @@ void sub_8054D20(void)
     }
 
     bell->unk4C--;
+
+    {
 #ifndef NON_MATCHING
-    r2 = 0xFF;
+        register s32 r2 asm("r2") = 0xFF;
 #endif
 
-    if (bell->unk4C == 0) {
-        bell->unk4C = 120;
+        if (bell->unk4C == 0) {
+            bell->unk4C = 120;
 
-        sprite->graphics.anim = SA2_ANIM_BELL;
-        sprite->variant = 0;
+            sprite->graphics.anim = SA2_ANIM_BELL;
+            sprite->variant = 0;
 #ifndef NON_MATCHING
-        sprite->unk21 |= r2;
+            sprite->unk21 |= r2;
 #else
-        sprite->unk21 = -1;
+            sprite->unk21 = -1;
 #endif
-        // BUG: (?) Sprite is 0x30
-        sprite->unk28[1].unk0 = -1;
-        gCurTask->main = sub_8054BF4;
+
+            // BUG: (?) Sprite is 0x30
+            sprite->unk28[1].unk0 = -1;
+            gCurTask->main = sub_8054BF4;
+        }
     }
 
     sub_8004558(sprite);

@@ -59,6 +59,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk10 = 0x2000;
 }
 
+// https://decomp.me/scratch/fdN7S
 NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
 {
     s32 posX, posY;

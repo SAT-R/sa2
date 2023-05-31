@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+@; CreateProjectile?
 	thumb_func_start sub_8050E04
 sub_8050E04: @ 0x08050E04
 	push {r4, r5, r6, lr}
