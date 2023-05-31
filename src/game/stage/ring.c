@@ -43,9 +43,8 @@ void sub_800BAAC(s16 x, s16 y)
     s->unk10 = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
 }
 
-#if 01
-// https://decomp.me/scratch/EAamB
-void Task_StageRing(void)
+// https://decomp.me/scratch/EmhmV
+NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
 {
     Struct_StageRing *ring = TaskGetStructPtr(gCurTask);
     Player *p = &gPlayer;
@@ -70,11 +69,14 @@ void Task_StageRing(void)
     rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.unk38;
 
     if (((lvalue <= rvalue) && (ring->s.x + 8 < rvalue))
-        || ((ringY <= Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.unk39))) {
+        || ((ringY - 16 > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.unk39))
+        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.unk39)
+            || ringY - 16 < gUnknown_03005AF0.unk39)) {
+
     }
 
-    else if (gUnknown_03005AF0.filler0[gUnknown_03005AF0.unk3B - gUnknown_03005AF0.unk39]
-             >= ringY) {
+    else if (gUnknown_03005AF0.unk3B - gUnknown_03005AF0.unk39
+             >= Q_24_8_TO_INT(gPlayer.y) + ringY) {
         // _0800BC36
         if (PLAYER_IS_ALIVE) {
             u16 oldRings = gRingCount;
@@ -112,4 +114,4 @@ void Task_StageRing(void)
         ring->s.y = ringY;
     }
 }
-#endif
+END_NONMATCH
