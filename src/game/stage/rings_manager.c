@@ -102,3 +102,12 @@ void CreateStageRingsManager(void)
     s->unk10
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
+
+NONMATCH("asm/non_matching/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void)) { }
+END_NONMATCH
+
+void TaskDestructor_8007F1C(struct Task *t)
+{
+    void *rings = *(void **)(TaskGetStructPtr(t) + offsetof(Struct_RingsManager, rings));
+    EwramFree(rings);
+}

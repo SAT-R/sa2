@@ -51,7 +51,6 @@ SECTIONS
 
         /* game */
         build/sa2/src/game/stage/rings_manager.o(.text);
-        build/sa2/asm/stage_rings_manager.o(.text);
         build/sa2/src/game/stage/entities_manager.o(.text);
         build/sa2/src/game/stage/palette_loader.o(.text);
         build/sa2/src/game/unused_level_select.o(.text);
