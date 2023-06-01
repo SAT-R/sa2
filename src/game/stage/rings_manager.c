@@ -14,7 +14,7 @@ typedef struct {
 void Task_8007F1C(void);
 void TaskDestructor_8007F1C(struct Task *);
 
-const u8 *gSpritePosData_rings[34] = {
+const u8 * const gSpritePosData_rings[34] = {
     zone1_act1_rings,
     zone1_act2_rings,
     zone1_boss_rings,
