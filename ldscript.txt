@@ -50,6 +50,7 @@ SECTIONS
         build/sa2/src/input_recorder.o(.text);
 
         /* game */
+        build/sa2/src/game/stage/rings_manager.o(.text);
         build/sa2/asm/stage_rings_manager.o(.text);
         build/sa2/src/game/stage/entities_manager.o(.text);
         build/sa2/src/game/stage/palette_loader.o(.text);
@@ -273,7 +274,7 @@ SECTIONS
         /* game Data */
         build/sa2/src/game/assets/compressed/entities.o(.rodata);
         build/sa2/src/game/assets/compressed/roms.o(.rodata);
-        build/sa2/asm/stage_rings_manager.o(.rodata);
+        build/sa2/src/game/stage/rings_manager.o(.data);
         build/sa2/src/game/stage/entities_manager.o(.rodata);
         build/sa2/src/game/unused_level_select.o(.rodata);
         build/sa2/src/game/unused_unknown_task.o(.rodata);

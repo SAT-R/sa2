@@ -1,171 +1,15 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.global gSpritePosData_rings
-gSpritePosData_rings:
-	.4byte zone1_act1_rings
-	.4byte zone1_act2_rings
-	.4byte zone1_boss_rings
-	.4byte zone1_act2_rings
-	.4byte zone2_act1_rings
-	.4byte zone2_act2_rings
-	.4byte zone2_boss_rings
-	.4byte zone2_act2_rings
-	.4byte zone3_act1_rings
-	.4byte zone3_act2_rings
-	.4byte zone3_boss_rings
-	.4byte zone3_act2_rings
-	.4byte zone4_act1_rings
-	.4byte zone4_act2_rings
-	.4byte zone4_boss_rings
-	.4byte zone4_act2_rings
-	.4byte zone5_act1_rings
-	.4byte zone5_act2_rings
-	.4byte zone5_boss_rings
-	.4byte zone5_act2_rings
-	.4byte zone6_act1_rings
-	.4byte zone6_act2_rings
-	.4byte zone6_boss_rings
-	.4byte zone6_act2_rings
-	.4byte zone7_act1_rings
-	.4byte zone7_act2_rings
-	.4byte zone7_boss_rings
-	.4byte zone7_act2_rings
-	.4byte zone8_act1_rings
-	.4byte zone8_act2_rings
-	.4byte zone8_boss_rings
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 .text
 .syntax unified
 .arm
 
-	thumb_func_start CreateStageRingsManager
-CreateStageRingsManager: @ 0x08007E10
-	push {r4, r5, r6, r7, lr}
-	sub sp, #4
-	ldr r0, _08007E5C @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _08007E70
-	ldr r0, _08007E60 @ =sub_8007F1C
-	movs r2, #0x80
-	lsls r2, r2, #6
-	ldr r1, _08007E64 @ =sub_8008874
-	str r1, [sp]
-	movs r1, #0x34
-	movs r3, #0
-	bl TaskCreate
-	adds r7, r0, #0
-	ldr r5, _08007E68 @ =gSpritePosData_rings
-	ldr r4, _08007E6C @ =gCurrentLevel
-	movs r0, #0
-	ldrsb r0, [r4, r0]
-	lsls r0, r0, #2
-	adds r0, r0, r5
-	ldr r0, [r0]
-	ldr r0, [r0]
-	lsrs r0, r0, #8
-	bl EwramMalloc
-	adds r6, r0, #0
-	movs r0, #0
-	ldrsb r0, [r4, r0]
-	lsls r0, r0, #2
-	adds r0, r0, r5
-	ldr r0, [r0]
-	adds r1, r6, #0
-	bl RLUnCompWram
-	b _08007EA0
-	.align 2, 0
-_08007E5C: .4byte gGameMode
-_08007E60: .4byte sub_8007F1C
-_08007E64: .4byte sub_8008874
-_08007E68: .4byte gSpritePosData_rings
-_08007E6C: .4byte gCurrentLevel
-_08007E70:
-	ldr r0, _08007EF4 @ =sub_8007F1C
-	movs r2, #0x80
-	lsls r2, r2, #6
-	movs r1, #0
-	str r1, [sp]
-	movs r1, #0x34
-	movs r3, #0
-	bl TaskCreate
-	adds r7, r0, #0
-	ldr r0, _08007EF8 @ =EWRAM_START + 0x3300C
-	ldr r0, [r0]
-	ldr r0, [r0]
-	lsrs r0, r0, #8
-	adds r0, #3
-	lsrs r0, r0, #2
-	lsls r0, r0, #4
-	ldr r1, _08007EFC @ =EWRAM_START + 0x3F000
-	adds r6, r0, r1
-	ldr r0, _08007F00 @ =EWRAM_START + 0x33008
-	ldr r0, [r0]
-	adds r1, r6, #0
-	bl RLUnCompWram
-_08007EA0:
-	ldrh r0, [r7, #6]
-	ldr r5, _08007F04 @ =IWRAM_START + 0x30
-	adds r0, r0, r5
-	str r6, [r0]
-	ldrh r3, [r7, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r3, r1
-	movs r4, #0
-	movs r2, #0
-	strh r2, [r1, #0x16]
-	strh r2, [r1, #0x18]
-	ldr r0, _08007F08 @ =0x06011F00
-	str r0, [r1, #4]
-	movs r0, #0xa0
-	lsls r0, r0, #3
-	strh r0, [r1, #0x1a]
-	strh r2, [r1, #8]
-	ldr r0, _08007F0C @ =0x000002D6
-	strh r0, [r1, #0xa]
-	subs r5, #0x10
-	adds r0, r3, r5
-	strb r4, [r0]
-	strh r2, [r1, #0x14]
-	strh r2, [r1, #0x1c]
-	ldr r0, _08007F10 @ =IWRAM_START + 0x21
-	adds r2, r3, r0
-	movs r0, #0xff
-	strb r0, [r2]
-	adds r5, #2
-	adds r2, r3, r5
-	movs r0, #0x10
-	strb r0, [r2]
-	ldr r0, _08007F14 @ =IWRAM_START + 0x25
-	adds r3, r3, r0
-	strb r4, [r3]
-	ldr r0, _08007F18 @ =0x00042200
-	str r0, [r1, #0x10]
-	add sp, #4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08007EF4: .4byte sub_8007F1C
-_08007EF8: .4byte EWRAM_START + 0x3300C
-_08007EFC: .4byte EWRAM_START + 0x3F000
-_08007F00: .4byte EWRAM_START + 0x33008
-_08007F04: .4byte IWRAM_START + 0x30
-_08007F08: .4byte 0x06011F00
-_08007F0C: .4byte 0x000002D6
-_08007F10: .4byte IWRAM_START + 0x21
-_08007F14: .4byte IWRAM_START + 0x25
-_08007F18: .4byte 0x00042200
+.if 0
+.endif
 
-	thumb_func_start sub_8007F1C
-sub_8007F1C: @ 0x08007F1C
+	thumb_func_start Task_8007F1C
+Task_8007F1C: @ 0x08007F1C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1394,8 +1238,8 @@ _08008868: .4byte 0x80000003
 _0800886C: .4byte gCamera
 _08008870: .4byte 0x000001FF
 
-	thumb_func_start sub_8008874
-sub_8008874: @ 0x08008874
+	thumb_func_start TaskDestructor_8007F1C
+TaskDestructor_8007F1C: @ 0x08008874
 	push {lr}
 	ldrh r0, [r0, #6]
 	ldr r1, _08008888 @ =IWRAM_START + 0x30

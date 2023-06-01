@@ -4,6 +4,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/stage/collect_ring_effect.h"
+#include "game/stage/rings_manager.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -14,8 +15,6 @@ typedef struct {
 } Struct_StageRing;
 
 void Task_StageRing(void);
-
-#define RESERVED_RING_TILES_VRAM (void *)(OBJ_VRAM0 + 0x1F00)
 
 void sub_800BAAC(s16 x, s16 y)
 {
