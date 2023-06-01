@@ -5,11 +5,9 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
-	thumb_func_start Task_8007F1C
-Task_8007F1C: @ 0x08007F1C
+.if 01
+	thumb_func_start Task_RingsMgrMain
+Task_RingsMgrMain: @ 0x08007F1C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1237,6 +1235,7 @@ _08008864: .4byte 0x040000D4
 _08008868: .4byte 0x80000003
 _0800886C: .4byte gCamera
 _08008870: .4byte 0x000001FF
+.endif
 
 	thumb_func_start TaskDestructor_8007F1C
 TaskDestructor_8007F1C: @ 0x08008874

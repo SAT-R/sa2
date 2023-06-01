@@ -11,7 +11,7 @@ typedef struct {
     void *rings;
 } Struct_RingsManager;
 
-void Task_8007F1C(void);
+void Task_RingsMgrMain(void);
 void TaskDestructor_8007F1C(struct Task *);
 
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
@@ -46,9 +46,9 @@ const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     zone8_act1_rings,
     zone8_act2_rings,
     zone8_boss_rings,
-    0,
-    0,
-    0,
+    NULL,
+    NULL,
+    NULL,
 };
 
 void CreateStageRingsManager(void)
@@ -62,7 +62,7 @@ void CreateStageRingsManager(void)
     u32 dataSize;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(Task_8007F1C, sizeof(Struct_RingsManager), 0x2000, 0,
+        t = TaskCreate(Task_RingsMgrMain, sizeof(Struct_RingsManager), 0x2000, 0,
                        TaskDestructor_8007F1C);
 
         compressedRingPosData = gSpritePosData_rings[gCurrentLevel];
@@ -71,7 +71,7 @@ void CreateStageRingsManager(void)
 
         RLUnCompWram(gSpritePosData_rings[gCurrentLevel], ewramBuffer);
     } else {
-        t = TaskCreate(Task_8007F1C, sizeof(Struct_RingsManager), 0x2000, 0, NULL);
+        t = TaskCreate(Task_RingsMgrMain, sizeof(Struct_RingsManager), 0x2000, 0, NULL);
 
         compressedRingPosData = (u8 *)(*MP_COLLECT_RINGS_COMPRESSED_SIZE);
         dataSize = (*(u32 *)compressedRingPosData) >> 8;
