@@ -11,6 +11,6 @@
 #define RESERVED_RING_TILES_VRAM (void *)(OBJ_VRAM0 + 0x1F00)
 
 void CreateStageRingsManager(void);
-const u8 * const gSpritePosData_rings[];
+extern const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS];
 
 #endif // GUARD_RINGS_MANAGER_H

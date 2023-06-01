@@ -86,10 +86,10 @@ void Debug_PrintIntegerAt(u32 value, u16 x, u16 y)
     else
         numDigits = 7;
 
-    if (!remaining || !numDigits)
+    if (remaining == 0 || numDigits == 0)
         return;
 
-    for (digitX = x; remaining != 0 && numDigits != 0; digitX -= 8, numDigits--) {
+    for (digitX = x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
         Sprite *digit;
 
         remaining = Div(value, base);
