@@ -3,7 +3,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
 

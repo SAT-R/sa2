@@ -304,8 +304,8 @@ END_NONMATCH
 // given dest.
 // Also sets some stuff in the vram blend regs
 // My guess is that this was designed for rendering text based tiles to the screen
-s32 sub_8004274(void *dest, void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                u8 *tileOffsets, u8 param6)
+s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
+                const u8 *tileOffsets, u8 param6)
 {
     u8 i = 0;
 
@@ -523,20 +523,20 @@ s32 sub_8004418(s16 x, s16 y)
     return result;
 }
 
-void sub_80044D8(u8 *p0, u16 p1)
+void numToTileIndices(u8 *digits, u16 number)
 {
     u8 i;
 
-    for (i = 0; i < 4; p1 <<= 4, i++) {
-        u16 value = ((p1 & 0xF000) >> 12);
+    for (i = 0; i < 4; number <<= 4, i++) {
+        u16 value = ((number & 0xF000) >> 12);
         if (value > 9) {
-            p0[i] = value + 87;
+            digits[i] = value + 87;
         } else {
-            p0[i] = value + 48;
+            digits[i] = value + '0';
         }
     }
 
-    p0[i] = 0;
+    digits[i] = 0;
 }
 
 u32 sub_8004518(u16 num)

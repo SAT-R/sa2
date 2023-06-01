@@ -8,7 +8,7 @@
 #include "game/entity.h"
 #include "sprite.h"
 #include "game/game.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

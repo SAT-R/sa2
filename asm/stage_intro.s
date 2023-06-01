@@ -151,18 +151,18 @@ gUnknown_080D6FF7:
     @ Colors [NUM_CHARACTERS]
     .global sZoneLoadingCharacterColors
 sZoneLoadingCharacterColors:
-    .2byte 0x7C00       @ RGB( 0,  0, 31) // Sonic
-    .2byte 0x025F       @ RGB(31, 18,  0) // Cream
-    .2byte 0x037F       @ RGB(31, 27,  0) // Tails
-    .2byte 0x007F       @ RGB(31,  3,  0) // Knuckles
-    .2byte 0x563F       @ RGB(31, 17, 21) // Amy
+    RGB  0  0 31   @; Sonic
+    RGB 31 18  0   @; Cream
+    RGB 31 27  0   @; Tails
+    RGB 31  3  0   @; Knuckles
+    RGB 31 17 21   @; Amy
 
     .global sScreenPositions_ZoneLoadingActLetters
 sScreenPositions_ZoneLoadingActLetters:
-    .2byte 132, 97      @ A
-    .2byte 153, 101     @ C
-    .2byte 174, 105     @ T
-    .2byte 196, 109     @ 1|2
+    .2byte DISPLAY_WIDTH-108, DISPLAY_HEIGHT-63     @ A
+    .2byte DISPLAY_WIDTH-87,  DISPLAY_HEIGHT-59     @ C
+    .2byte DISPLAY_WIDTH-66,  DISPLAY_HEIGHT-55     @ T
+    .2byte DISPLAY_WIDTH-44,  DISPLAY_HEIGHT-51     @ 1|2
 
     .global gUnknown_080D7130
 gUnknown_080D7130:
@@ -3011,7 +3011,7 @@ SetupStageLoadingScreen: @ 0x0802F0A8
 	ldr r0, [r1, #0x1c]
 	orrs r0, r2
 	str r0, [r1, #0x1c]
-	ldr r0, _0802F208 @ =gUnknown_03005B4C
+	ldr r0, _0802F208 @ =gActiveBossTask
 	movs r4, #0
 	str r4, [r0]
 	ldr r0, _0802F20C @ =sub_802F75C
@@ -3150,7 +3150,7 @@ SetupStageLoadingScreen: @ 0x0802F0A8
 	.align 2, 0
 _0802F200: .4byte gUnknown_03005424
 _0802F204: .4byte gPlayer
-_0802F208: .4byte gUnknown_03005B4C
+_0802F208: .4byte gActiveBossTask
 _0802F20C: .4byte sub_802F75C
 _0802F210: .4byte sub_80303CC
 _0802F214: .4byte sub_802F9F8

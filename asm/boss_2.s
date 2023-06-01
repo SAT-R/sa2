@@ -453,7 +453,7 @@ _0803CE8A:
 	str r3, [r7, #0x28]
 	mov r0, ip
 	str r0, [r7, #0x10]
-	ldr r0, _0803D084 @ =gUnknown_03005B4C
+	ldr r0, _0803D084 @ =gActiveBossTask
 	ldr r1, [sp, #4]
 	str r1, [r0]
 	add sp, #0x64
@@ -479,7 +479,7 @@ _0803D074: .4byte 0x00000285
 _0803D078: .4byte 0x00000286
 _0803D07C: .4byte gUnknown_030054B8
 _0803D080: .4byte 0x00002060
-_0803D084: .4byte gUnknown_03005B4C
+_0803D084: .4byte gActiveBossTask
 
 	thumb_func_start Task_803D088
 Task_803D088: @ 0x0803D088
@@ -2903,7 +2903,7 @@ _0803E3E8: .4byte 0x06010000
 
 	thumb_func_start sub_803E3EC
 sub_803E3EC: @ 0x0803E3EC
-	ldr r2, _0803E438 @ =gUnknown_03005B4C
+	ldr r2, _0803E438 @ =gActiveBossTask
 	ldr r2, [r2]
 	ldrh r3, [r2, #6]
 	movs r2, #0xc0
@@ -2941,7 +2941,7 @@ sub_803E3EC: @ 0x0803E3EC
 	str r0, [r3, #0x58]
 	bx lr
 	.align 2, 0
-_0803E438: .4byte gUnknown_03005B4C
+_0803E438: .4byte gActiveBossTask
 
 	thumb_func_start Task_EggBomberTankMain
 Task_EggBomberTankMain: @ 0x0803E43C
@@ -3336,7 +3336,7 @@ TaskDestructor_EggBomberTankMain: @ 0x0803E768
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl VramFree
-	ldr r1, _0803E794 @ =gUnknown_03005B4C
+	ldr r1, _0803E794 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4}
@@ -3344,7 +3344,7 @@ TaskDestructor_EggBomberTankMain: @ 0x0803E768
 	bx r0
 	.align 2, 0
 _0803E790: .4byte IWRAM_START + 0x84
-_0803E794: .4byte gUnknown_03005B4C
+_0803E794: .4byte gActiveBossTask
 
 @; Unused?
 	thumb_func_start sub_803E798

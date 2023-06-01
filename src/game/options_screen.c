@@ -13,7 +13,7 @@
 #include "game/title_screen.h"
 #include "game/game.h"
 #include "game/sound_test.h"
-#include "game/stage_ui.h"
+#include "game/stage/ui.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/character_select.h"
 

@@ -501,7 +501,7 @@ sub_8039F14: @ 0x08039F14
 	lsls r1, r0, #0x18
 	cmp r0, #0x1c
 	beq _08039F3E
-	ldr r0, _08039F48 @ =gUnknown_03005B4C
+	ldr r0, _08039F48 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08039F3E
@@ -519,7 +519,7 @@ _08039F3E:
 	bx r0
 	.align 2, 0
 _08039F44: .4byte gCurrentLevel
-_08039F48: .4byte gUnknown_03005B4C
+_08039F48: .4byte gActiveBossTask
 _08039F4C: .4byte gUnknown_080D79B0
 
 	thumb_func_start sub_8039F50
@@ -530,7 +530,7 @@ sub_8039F50: @ 0x08039F50
 	lsrs r1, r1, #0x18
 	cmp r1, #6
 	bhi _08039F74
-	ldr r0, _08039F78 @ =gUnknown_03005B4C
+	ldr r0, _08039F78 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08039F74
@@ -545,7 +545,7 @@ _08039F74:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08039F78: .4byte gUnknown_03005B4C
+_08039F78: .4byte gActiveBossTask
 _08039F7C: .4byte gUnknown_080D79B0
 
 	thumb_func_start Task_8039F80

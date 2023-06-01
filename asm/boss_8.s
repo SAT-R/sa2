@@ -65,7 +65,7 @@ CreateSuperEggRoboZ: @ 0x0804A6C8
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _0804A79C @ =gUnknown_03005B4C
+	ldr r1, _0804A79C @ =gActiveBossTask
 	str r0, [r1]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -97,7 +97,7 @@ _0804A78C: .4byte 0xFFFFCFFF
 _0804A790: .4byte gUnknown_03005AA0
 _0804A794: .4byte Task_SuperEggRoboZMain
 _0804A798: .4byte TaskDestructor_SuperEggRoboZMain
-_0804A79C: .4byte gUnknown_03005B4C
+_0804A79C: .4byte gActiveBossTask
 _0804A7A0: .4byte gUnknown_030054EC
 _0804A7A4:
 	movs r0, #8
@@ -4855,7 +4855,7 @@ TaskDestructor_SuperEggRoboZMain: @ 0x0804CD0C
 	bl VramFree
 	ldr r0, [r5, #0x58]
 	bl VramFree
-	ldr r1, _0804CD4C @ =gUnknown_03005B4C
+	ldr r1, _0804CD4C @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4, r5}
@@ -4864,4 +4864,4 @@ TaskDestructor_SuperEggRoboZMain: @ 0x0804CD0C
 	.align 2, 0
 _0804CD44: .4byte IWRAM_START + 0x94
 _0804CD48: .4byte IWRAM_START + 0xD0
-_0804CD4C: .4byte gUnknown_03005B4C
+_0804CD4C: .4byte gActiveBossTask

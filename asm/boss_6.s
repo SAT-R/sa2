@@ -53,7 +53,7 @@ CreateEggGoRound: @ 0x080459EC
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _08045A90 @ =gUnknown_03005B4C
+	ldr r1, _08045A90 @ =gActiveBossTask
 	str r0, [r1]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -80,7 +80,7 @@ _08045A80: .4byte 0xFFFFCFFF
 _08045A84: .4byte gUnknown_03005AA0
 _08045A88: .4byte Task_EggGoRound
 _08045A8C: .4byte TaskDestructor_EggGoRound
-_08045A90: .4byte gUnknown_03005B4C
+_08045A90: .4byte gActiveBossTask
 _08045A94: .4byte gUnknown_030054EC
 _08045A98: .4byte gGameMode
 _08045A9C: .4byte IWRAM_START + 0x28
@@ -3032,7 +3032,7 @@ sub_8047224: @ 0x08047224
 	sub sp, #8
 	adds r7, r0, #0
 	adds r6, r1, #0
-	ldr r0, _08047310 @ =gUnknown_03005B4C
+	ldr r0, _08047310 @ =gActiveBossTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -3146,7 +3146,7 @@ _080472E2:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08047310: .4byte gUnknown_03005B4C
+_08047310: .4byte gActiveBossTask
 _08047314: .4byte IWRAM_START + 0x6C
 _08047318: .4byte IWRAM_START + 0xD0
 _0804731C: .4byte IWRAM_START + 0xD4
@@ -4067,7 +4067,7 @@ TaskDestructor_EggGoRound: @ 0x080479F0
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl VramFree
-	ldr r1, _08047A64 @ =gUnknown_03005B4C
+	ldr r1, _08047A64 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4}
@@ -4081,4 +4081,4 @@ _08047A54: .4byte IWRAM_START + 0x200
 _08047A58: .4byte IWRAM_START + 0x260
 _08047A5C: .4byte IWRAM_START + 0x2A4
 _08047A60: .4byte IWRAM_START + 0x230
-_08047A64: .4byte gUnknown_03005B4C
+_08047A64: .4byte gActiveBossTask

@@ -3,6 +3,9 @@
 
 	.set NULL, 0
 
+    .set DISPLAY_WIDTH,  240
+    .set DISPLAY_HEIGHT, 160
+
 	.set SPRITE_SIZE_8x8,   (OAM_SIZE_0 >> 28) | (OAM_SQUARE >> 14)
 	.set SPRITE_SIZE_16x16, (OAM_SIZE_1 >> 28) | (OAM_SQUARE >> 14)
 	.set SPRITE_SIZE_32x32, (OAM_SIZE_2 >> 28) | (OAM_SQUARE >> 14)

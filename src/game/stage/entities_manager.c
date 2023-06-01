@@ -8,8 +8,8 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/stage_item_box.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/item_box.h"
+#include "game/stage/entities_manager.h"
 
 #include "game/interactables_0/platform_thin.h"
 #include "game/interactables_0/044.h"
@@ -1051,7 +1051,7 @@ void sub_8009530(s16 a, s16 b)
         } else {
             gNumLives = numLives;
         }
-        gUnknown_030054A8[3] = 0x10;
+        gUnknown_030054A8.unk3 = 0x10;
     }
 
     sub_8009E00(a, b);

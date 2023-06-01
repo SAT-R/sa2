@@ -65,7 +65,7 @@ CreateEggFrog: @ 0x08047A68
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _08047B34 @ =gUnknown_03005B4C
+	ldr r1, _08047B34 @ =gActiveBossTask
 	str r0, [r1]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -95,7 +95,7 @@ _08047B24: .4byte gUnknown_03005AF0
 _08047B28: .4byte 0xFFFFCFFF
 _08047B2C: .4byte Task_EggFrogMain
 _08047B30: .4byte TaskDestructor_EggFrogMain
-_08047B34: .4byte gUnknown_03005B4C
+_08047B34: .4byte gActiveBossTask
 _08047B38: .4byte gUnknown_030054EC
 _08047B3C: .4byte gGameMode
 _08047B40:
@@ -2537,7 +2537,7 @@ _08048EB0: .4byte 0x000002B6
 
 	thumb_func_start sub_8048EB4
 sub_8048EB4: @ 0x08048EB4
-	ldr r2, _08048ED4 @ =gUnknown_03005B4C
+	ldr r2, _08048ED4 @ =gActiveBossTask
 	ldr r2, [r2]
 	ldrh r3, [r2, #6]
 	movs r2, #0xc0
@@ -2554,7 +2554,7 @@ sub_8048EB4: @ 0x08048EB4
 	str r1, [r3, #0x10]
 	bx lr
 	.align 2, 0
-_08048ED4: .4byte gUnknown_03005B4C
+_08048ED4: .4byte gActiveBossTask
 
 	thumb_func_start Task_EggFrogMain
 Task_EggFrogMain: @ 0x08048ED8
@@ -3186,7 +3186,7 @@ TaskDestructor_EggFrogMain: @ 0x08049380
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl VramFree
-	ldr r1, _080493F4 @ =gUnknown_03005B4C
+	ldr r1, _080493F4 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4}
@@ -3200,7 +3200,7 @@ _080493E4: .4byte IWRAM_START + 0xFC
 _080493E8: .4byte IWRAM_START + 0x12C
 _080493EC: .4byte IWRAM_START + 0x15C
 _080493F0: .4byte IWRAM_START + 0x18C
-_080493F4: .4byte gUnknown_03005B4C
+_080493F4: .4byte gActiveBossTask
 
 	thumb_func_start sub_80493F8
 sub_80493F8: @ 0x080493F8
@@ -4049,7 +4049,7 @@ _08049A96:
 	lsls r0, r0, #8
 	cmp r1, r0
 	ble _08049AF4
-	ldr r0, _08049AE4 @ =gUnknown_03005B4C
+	ldr r0, _08049AE4 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08049AB4
@@ -4077,7 +4077,7 @@ _08049AC4:
 	.align 2, 0
 _08049ADC: .4byte 0x00A6CBFF
 _08049AE0: .4byte gUnknown_080D8808
-_08049AE4: .4byte gUnknown_03005B4C
+_08049AE4: .4byte gActiveBossTask
 _08049AE8: .4byte gUnknown_03005424
 _08049AEC: .4byte gCourseTime
 _08049AF0: .4byte 0x0000FFFD
@@ -4106,7 +4106,7 @@ _08049AF4:
 _08049B1C: .4byte 0x00A7D000
 _08049B20: .4byte 0xF7FFFFFF
 _08049B24:
-	ldr r0, _08049B90 @ =gUnknown_03005B4C
+	ldr r0, _08049B90 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _08049B2E
@@ -4163,7 +4163,7 @@ _08049B4E:
 	adds r0, r0, r6
 	b _08049C4A
 	.align 2, 0
-_08049B90: .4byte gUnknown_03005B4C
+_08049B90: .4byte gActiveBossTask
 _08049B94: .4byte 0x00A53BFF
 _08049B98: .4byte gUnknown_080D8808
 _08049B9C: .4byte gUnknown_030054FC
@@ -4211,7 +4211,7 @@ _08049BEE:
 	ldr r1, [r0]
 	cmp r1, #0
 	blt _08049C4C
-	ldr r0, _08049CA8 @ =gUnknown_03005B4C
+	ldr r0, _08049CA8 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08049C4C
@@ -4291,7 +4291,7 @@ _08049C98: .4byte gCourseTime
 _08049C9C: .4byte gUnknown_03005424
 _08049CA0: .4byte 0x0000FFFD
 _08049CA4: .4byte gUnknown_080D8808
-_08049CA8: .4byte gUnknown_03005B4C
+_08049CA8: .4byte gActiveBossTask
 _08049CAC: .4byte gUnknown_030054FC
 _08049CB0: .4byte gUnknown_030056A4
 _08049CB4: .4byte 0xFFFFFDA8
@@ -4544,7 +4544,7 @@ sub_8049E90: @ 0x08049E90
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r5, r1, r0
-	ldr r0, _08049EB4 @ =gUnknown_03005B4C
+	ldr r0, _08049EB4 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _08049EB8
@@ -4553,7 +4553,7 @@ sub_8049E90: @ 0x08049E90
 	b _08049F08
 	.align 2, 0
 _08049EB0: .4byte gCurTask
-_08049EB4: .4byte gUnknown_03005B4C
+_08049EB4: .4byte gActiveBossTask
 _08049EB8:
 	movs r4, #0
 	ldr r6, _08049F10 @ =gUnknown_080D8874

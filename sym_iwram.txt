@@ -98,7 +98,7 @@ build/sa2/src/core.o(.data);
 . = 0x00005B40; gUnknown_03005B40 = .;
 . = 0x00005B44; gStageUITask = .;
 . = 0x00005B48; gDebugUITask = .;
-. = 0x00005B4C; gUnknown_03005B4C = .;
+. = 0x00005B4C; gActiveBossTask = .;
 . = 0x00005B50; 
 
 build/sa2/src/game/options_screen.o(.data);

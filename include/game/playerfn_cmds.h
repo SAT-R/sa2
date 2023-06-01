@@ -87,7 +87,7 @@
                 lives;                                                                  \
             });                                                                         \
                                                                                         \
-            gUnknown_030054A8[3] = 16;                                                  \
+            gUnknown_030054A8.unk3 = 16;                                                \
         }                                                                               \
     }
 

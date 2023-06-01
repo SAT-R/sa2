@@ -1,11 +1,181 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-    .section .rodata
+.section .rodata
+
+@; These are referenced in data3.s
+    .global gUnknown_080D5262
+gUnknown_080D5262:
+    .incbin "baserom.gba", 0x000D5262, 0x0E
+
+    .global gUnknown_080D5270
+gUnknown_080D5270:
+    .incbin "baserom.gba", 0x000D5270, 0x0E
+
+    .global gUnknown_080D527E
+gUnknown_080D527E:
+    .incbin "baserom.gba", 0x000D527E, 0x0E
+
+    .global gUnknown_080D528C
+gUnknown_080D528C:
+    .incbin "baserom.gba", 0x000D528C, 0x0E
+
+    .global gUnknown_080D529A
+gUnknown_080D529A:
+    .incbin "baserom.gba", 0x000D529A, 0x0E
+
+    .global gUnknown_080D52A8
+gUnknown_080D52A8:
+    .incbin "baserom.gba", 0x000D52A8, 0x0E
+
+    .global gUnknown_080D52B6
+gUnknown_080D52B6:
+    .incbin "baserom.gba", 0x000D52B6, 0x0E
+
+    .global gUnknown_080D52C4
+gUnknown_080D52C4:
+    .incbin "baserom.gba", 0x000D52C4, 0x0E
+
+    .global gUnknown_080D52D2
+gUnknown_080D52D2:
+    .incbin "baserom.gba", 0x000D52D2, 0x0E
+
+.section .rodata2
+
+    .global gUnknown_08c87098_unused
+gUnknown_08c87098_unused:
+    .space 0x100
+
+    .global unk_8C87198
+unk_8C87198:
+    .4byte gUnknown_080D5254, gUnknown_080D5262, -1
+    
+    .global unk_8C871A4
+unk_8C871A4:
+    .4byte gUnknown_080D5270, gUnknown_080D527E, -1
+    
+    .global unk_8C871B0
+unk_8C871B0:
+    .4byte gUnknown_080D528C, gUnknown_080D529A, -1
+    
+    .global unk_8C871BC
+unk_8C871BC:
+    .4byte gUnknown_080D52A8, gUnknown_080D52B6, -1
+    
+    .global unk_8C871C8
+unk_8C871C8:
+    .4byte gUnknown_080D52C4, gUnknown_080D52D2, -1
+
+    .global gUnknown_08C871D4
+gUnknown_08C871D4:
+    .4byte unk_8C87198, unk_8C871A4, unk_8C871B0
+    .4byte unk_8C871BC, unk_8C871C8
 
 .text
 .syntax unified
 .arm
+
+@ void sub_800BFAC(Sprite *s, s32 x, s32 y, Player *p)
+	thumb_func_start sub_800BFAC
+sub_800BFAC: @ 0x0800BFAC
+	push {r4, r5, r6, r7, lr}
+	mov r7, r8
+	push {r7}
+	mov ip, r0
+	adds r4, r1, #0
+	mov r8, r2
+	adds r5, r3, #0
+	ldr r6, [sp, #0x18]
+	movs r7, #0
+	ldr r1, [r0, #0x28]
+	movs r0, #1
+	rsbs r0, r0, #0
+	cmp r1, r0
+	beq _0800BFD2
+	ldr r0, [r5, #0x20]
+	movs r1, #0x80
+	ands r0, r1
+	cmp r0, #0
+	beq _0800BFD6
+_0800BFD2:
+	movs r0, #0
+	b _0800C054
+_0800BFD6:
+	mov r0, ip
+	adds r0, #0x2c
+	movs r3, #0
+	ldrsb r3, [r0, r3]
+	adds r2, r4, r3
+	ldr r0, [r5, #8]
+	asrs r0, r0, #8
+	movs r4, #0
+	ldrsb r4, [r6, r4]
+	adds r1, r0, r4
+	cmp r2, r1
+	bgt _0800C004
+	mov r0, ip
+	adds r0, #0x2e
+	ldrb r0, [r0]
+	lsls r0, r0, #0x18
+	asrs r0, r0, #0x18
+	subs r0, r0, r3
+	adds r0, r2, r0
+	cmp r0, r1
+	bge _0800C010
+	cmp r2, r1
+	blt _0800C052
+_0800C004:
+	movs r0, #2
+	ldrsb r0, [r6, r0]
+	subs r0, r0, r4
+	adds r0, r1, r0
+	cmp r0, r2
+	blt _0800C052
+_0800C010:
+	mov r0, ip
+	adds r0, #0x2d
+	movs r1, #0
+	ldrsb r1, [r0, r1]
+	mov r0, r8
+	adds r2, r0, r1
+	ldr r0, [r5, #0xc]
+	asrs r0, r0, #8
+	movs r4, #1
+	ldrsb r4, [r6, r4]
+	adds r3, r0, r4
+	cmp r2, r3
+	bgt _0800C040
+	mov r0, ip
+	adds r0, #0x2f
+	ldrb r0, [r0]
+	lsls r0, r0, #0x18
+	asrs r0, r0, #0x18
+	subs r0, r0, r1
+	adds r0, r2, r0
+	cmp r0, r3
+	bge _0800C04C
+	cmp r2, r3
+	blt _0800C052
+_0800C040:
+	movs r0, #3
+	ldrsb r0, [r6, r0]
+	subs r0, r0, r4
+	adds r0, r3, r0
+	cmp r0, r2
+	blt _0800C052
+_0800C04C:
+	movs r0, #0x80
+	lsls r0, r0, #0xc
+	orrs r7, r0
+_0800C052:
+	adds r0, r7, #0
+_0800C054:
+	pop {r3}
+	mov r8, r3
+	pop {r4, r5, r6, r7}
+	pop {r1}
+	bx r1
+	.align 2, 0
 
     @ Returns flags/a bitarray
     @ Maybe collision-hit test?
@@ -4149,6 +4319,7 @@ _0800DF2C: .4byte 0xFFFFFEFF
 _0800DF30: .4byte gGameMode
 _0800DF34: .4byte gRingCount
 
+@; void sub_800DF38(Sprite *s, s32 x, s32 y, Player *p)
 	thumb_func_start sub_800DF38
 sub_800DF38: @ 0x0800DF38
 	push {r4, r5, r6, lr}

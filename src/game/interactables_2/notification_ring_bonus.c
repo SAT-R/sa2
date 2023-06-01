@@ -110,7 +110,7 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
                     else
                         gNumLives = lives;
 
-                    gUnknown_030054A8[3] = 0x10;
+                    gUnknown_030054A8.unk3 = 0x10;
                 }
 
                 if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

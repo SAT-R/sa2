@@ -92,7 +92,7 @@
 #define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
 #define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
 #define SA2_ANIM_SUPER_SONIC_FROZEN          476
-#define SA2_ANIM_CLOUD                       477
+#define SA2_ANIM_DUST_CLOUD                  477
 
 // Enemies
 #define SA2_ANIM_MON                    478
@@ -318,6 +318,7 @@
 #define SA2_ANIM_RACE_START_ICON  879
 #define SA2_ANIM_RACE_FINISH_ICON 880
 
+// Likely the Player UI ring
 #define SA2_ANIM_RING                    882
 #define SA2_ANIM_E100_ALPHA              883
 #define SA2_ANIM_SP_STAGE_HOLE           884
@@ -485,6 +486,11 @@
 #define SA2_ANIM_PRESS_START_MSG_FR 1109
 #define SA2_ANIM_PRESS_START_MSG_ES 1110
 #define SA2_ANIM_PRESS_START_MSG_IT 1111
+
+#define SA2_ANIM_ASCII            1119
+#define SA2_ANIM_ASCII_FIRST_CHAR '!'
+#define SA2_ANIM_ASCII_YEN        '\\'
+#define SA2_ANIM_NUM_ASCII_CHARS  94
 
 #define SA2_ANIM_TA_WHITE_BAR 1120
 

@@ -8,8 +8,8 @@
 #include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
-#include "game/stage_palette_loader.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/palette_loader.h"
+#include "game/stage/entities_manager.h"
 #include "constants/songs.h"
 #include "trig.h"
 
@@ -826,7 +826,7 @@ void sub_801AF14(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -848,7 +848,7 @@ void sub_801AFA4(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -870,7 +870,7 @@ void sub_801B03C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -893,7 +893,7 @@ void sub_801B0D4(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -916,7 +916,7 @@ void sub_801B180(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -946,7 +946,7 @@ void sub_801B22C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -976,7 +976,7 @@ void sub_801B324(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1001,7 +1001,7 @@ void sub_801B41C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1026,7 +1026,7 @@ void sub_801B4EC(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1051,7 +1051,7 @@ void sub_801B5BC(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1124,7 +1124,7 @@ void sub_801B7BC(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1141,7 +1141,7 @@ void sub_801B83C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1158,7 +1158,7 @@ void sub_801B8A8(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1175,7 +1175,7 @@ void sub_801B914(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1192,7 +1192,7 @@ void sub_801B980(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1209,7 +1209,7 @@ void sub_801B9EC(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1226,7 +1226,7 @@ void sub_801BA58(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1243,7 +1243,7 @@ void sub_801BAC4(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1260,7 +1260,7 @@ void sub_801BB30(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1280,7 +1280,7 @@ void sub_801BB9C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1297,7 +1297,7 @@ void sub_801BC1C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1318,7 +1318,7 @@ void sub_801BC88(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1335,7 +1335,7 @@ void sub_801BD08(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1352,7 +1352,7 @@ void sub_801BD74(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1369,7 +1369,7 @@ void sub_801BDE0(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1386,7 +1386,7 @@ void sub_801BE4C(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1403,7 +1403,7 @@ void sub_801BEB8(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1420,7 +1420,7 @@ void sub_801BF24(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1437,7 +1437,7 @@ void sub_801BF90(void)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }
@@ -1452,7 +1452,7 @@ void sub_801BFFC(u16 level)
         if (gSelectedCharacter == 0
             && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel
             && gCurrentLevel == 18) {
-            gUnknown_030054A8[1] = 0x1E;
+            gUnknown_030054A8.unk1 = 0x1E;
         } else {
             m4aSongNumStart(gLevelSongs[level]);
         }

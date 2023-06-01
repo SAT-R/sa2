@@ -22,7 +22,7 @@ SetupEggmanKidnapsVanillaTask: @ 0x0804CD50
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r4, _0804CE84 @ =gUnknown_03005B4C
+	ldr r4, _0804CE84 @ =gActiveBossTask
 	str r0, [r4]
 	bl CreateTrueArea53Boss
 	ldr r0, [r4]
@@ -160,7 +160,7 @@ _0804CE24:
 	.align 2, 0
 _0804CE7C: .4byte Task_EggmanKidnapsVanilla
 _0804CE80: .4byte TaskDestructor_TrueArea53BossGfx
-_0804CE84: .4byte gUnknown_03005B4C
+_0804CE84: .4byte gActiveBossTask
 _0804CE88: .4byte IWRAM_START + 0x1C
 _0804CE8C: .4byte IWRAM_START + 0x48
 _0804CE90: .4byte 0x00000FFF
@@ -191,7 +191,7 @@ CreateTrueArea53Boss: @ 0x0804CEC4
 	movs r1, #0x20
 	orrs r0, r1
 	strh r0, [r2]
-	ldr r4, _0804D2AC @ =gUnknown_03005B4C
+	ldr r4, _0804D2AC @ =gActiveBossTask
 	ldr r0, [r4]
 	cmp r0, #0
 	bne _0804CEF8
@@ -683,7 +683,7 @@ _0804D25C:
 	b _0804D340
 	.align 2, 0
 _0804D2A8: .4byte gUnknown_03005424
-_0804D2AC: .4byte gUnknown_03005B4C
+_0804D2AC: .4byte gActiveBossTask
 _0804D2B0: .4byte sub_804D7A0
 _0804D2B4: .4byte TaskDestructor_TrueArea53BossGfx
 _0804D2B8: .4byte IWRAM_START + 0x1C
@@ -1021,7 +1021,7 @@ sub_804D594: @ 0x0804D594
 	sub sp, #0xc
 	adds r7, r0, #0
 	adds r6, r1, #0
-	ldr r0, _0804D694 @ =gUnknown_03005B4C
+	ldr r0, _0804D694 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0804D684
@@ -1147,7 +1147,7 @@ _0804D684:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804D694: .4byte gUnknown_03005B4C
+_0804D694: .4byte gActiveBossTask
 _0804D698: .4byte IWRAM_START + 0x1C
 _0804D69C: .4byte IWRAM_START + 0x5D4
 _0804D6A0: .4byte IWRAM_START + 0x5D8
@@ -7724,7 +7724,7 @@ _08050AB8:
 	adds r0, r6, r1
 	ldr r0, [r0]
 	bl VramFree
-	ldr r1, _08050B28 @ =gUnknown_03005B4C
+	ldr r1, _08050B28 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4, r5, r6, r7}
@@ -7734,14 +7734,14 @@ _08050AB8:
 _08050B1C: .4byte gIntrTable + 8
 _08050B20: .4byte IWRAM_START + 0xCC
 _08050B24: .4byte gIntrMainBuf + 4
-_08050B28: .4byte gUnknown_03005B4C
+_08050B28: .4byte gActiveBossTask
 
 	thumb_func_start sub_8050B2C
 sub_8050B2C: @ 0x08050B2C
 	push {r4, r5, r6, r7, lr}
 	adds r6, r0, #0
 	adds r7, r1, #0
-	ldr r0, _08050B40 @ =gUnknown_03005B4C
+	ldr r0, _08050B40 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _08050B44
@@ -7749,7 +7749,7 @@ sub_8050B2C: @ 0x08050B2C
 	str r0, [r7]
 	b _08050BA2
 	.align 2, 0
-_08050B40: .4byte gUnknown_03005B4C
+_08050B40: .4byte gActiveBossTask
 _08050B44:
 	ldrh r1, [r0, #6]
 	ldr r0, _08050BA8 @ =IWRAM_START + 0x1C
@@ -7810,7 +7810,7 @@ _08050BAC: .4byte gSineTable
 sub_8050BB0: @ 0x08050BB0
 	push {lr}
 	movs r2, #0
-	ldr r0, _08050BD4 @ =gUnknown_03005B4C
+	ldr r0, _08050BD4 @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _08050BCC
@@ -7827,7 +7827,7 @@ _08050BCC:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08050BD4: .4byte gUnknown_03005B4C
+_08050BD4: .4byte gActiveBossTask
 
 	thumb_func_start sub_8050BD8
 sub_8050BD8: @ 0x08050BD8

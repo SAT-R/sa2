@@ -11,7 +11,9 @@ asm(".section .rodata");
 // is 31)
 asm("    .global gMapHeaders\n"
     "gMapHeaders:\n"
-    "    .incbin \"baserom.gba\", 0x000D5CE4, 0x5F4\n");
+    "  .4byte MapHeader_LeafForest_Act1_FrontLayer, "
+    "MapHeader_LeafForest_Act1_BackLayer, 0x08935224\n"
+    "    .incbin \"baserom.gba\", 0x000D5CF0, 0x5E8\n");
 
 asm("    .global gUnknown_080D62D8\n"
     "gUnknown_080D62D8:\n"

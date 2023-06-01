@@ -1,86 +1,5 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
-
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-	thumb_func_start sub_800BAAC
-sub_800BAAC: @ 0x0800BAAC
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	sub sp, #4
-	adds r4, r0, #0
-	adds r5, r1, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	ldr r0, _0800BB2C @ =sub_800BB44
-	movs r2, #0x80
-	lsls r2, r2, #6
-	movs r6, #0
-	str r6, [sp]
-	movs r1, #0x34
-	movs r3, #0
-	bl TaskCreate
-	ldrh r3, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r3, r1
-	movs r0, #0
-	mov r8, r0
-	strh r6, [r1, #0x30]
-	strh r4, [r1, #0x16]
-	strh r5, [r1, #0x18]
-	ldr r0, _0800BB30 @ =0x06011F00
-	str r0, [r1, #4]
-	movs r0, #0xf0
-	lsls r0, r0, #2
-	strh r0, [r1, #0x1a]
-	strh r6, [r1, #8]
-	subs r0, #0xea
-	strh r0, [r1, #0xa]
-	ldr r2, _0800BB34 @ =IWRAM_START + 0x20
-	adds r0, r3, r2
-	mov r2, r8
-	strb r2, [r0]
-	strh r6, [r1, #0x14]
-	strh r6, [r1, #0x1c]
-	ldr r0, _0800BB38 @ =IWRAM_START + 0x21
-	adds r2, r3, r0
-	movs r0, #0xff
-	strb r0, [r2]
-	ldr r0, _0800BB3C @ =IWRAM_START + 0x22
-	adds r2, r3, r0
-	movs r0, #0x10
-	strb r0, [r2]
-	ldr r2, _0800BB40 @ =IWRAM_START + 0x25
-	adds r3, r3, r2
-	mov r0, r8
-	strb r0, [r3]
-	movs r0, #0xc2
-	lsls r0, r0, #0xc
-	str r0, [r1, #0x10]
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800BB2C: .4byte sub_800BB44
-_0800BB30: .4byte 0x06011F00
-_0800BB34: .4byte IWRAM_START + 0x20
-_0800BB38: .4byte IWRAM_START + 0x21
-_0800BB3C: .4byte IWRAM_START + 0x22
-_0800BB40: .4byte IWRAM_START + 0x25
-
-	thumb_func_start sub_800BB44
-sub_800BB44: @ 0x0800BB44
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -91,7 +10,7 @@ sub_800BB44: @ 0x0800BB44
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r5, r1, r0
+	adds r5, r1, r0     @ r5 = ring
 	ldr r4, _0800BCB8 @ =gPlayer
 	ldr r1, [r4, #8]
 	asrs r1, r1, #8
@@ -138,9 +57,9 @@ sub_800BB44: @ 0x0800BB44
 	adds r0, r0, r3
 	strh r0, [r5, #0x18]
 	ldrh r6, [r5, #0x18]
-	mov r8, r6
+	mov r8, r6              @ r8 = ringY
 	ldrh r0, [r5, #0x16]
-	mov sl, r0
+	mov sl, r0              @ sl = ringX
 	movs r1, #0x16
 	ldrsh r3, [r5, r1]
 	adds r2, r3, #0
@@ -218,7 +137,7 @@ _0800BC36:
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	cmp r0, #0x1d
+	cmp r0, #29
 	beq _0800BC86
 	ldrh r0, [r1]
 	movs r1, #0x64
@@ -305,3 +224,6 @@ _0800BCFE:
 	bx r0
 	.align 2, 0
 _0800BD0C: .4byte gCamera
+
+	
+.syntax divided

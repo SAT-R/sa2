@@ -6,10 +6,10 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "lib/m4a.h"
-#include "game/stage_entities_manager.h"
+#include "game/stage/entities_manager.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x0 */ SpriteBase base;

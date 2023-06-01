@@ -893,7 +893,7 @@ _0803F3BC:
 	adds r0, r6, r3
 	str r1, [r0]
 _0803F3CE:
-	ldr r0, _0803F3E4 @ =gUnknown_03005B4C
+	ldr r0, _0803F3E4 @ =gActiveBossTask
 	ldr r7, [sp, #4]
 	str r7, [r0]
 	add sp, #0x60
@@ -905,7 +905,7 @@ _0803F3CE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0803F3E4: .4byte gUnknown_03005B4C
+_0803F3E4: .4byte gActiveBossTask
 
 	thumb_func_start sub_803F3E8
 sub_803F3E8: @ 0x0803F3E8
@@ -1738,7 +1738,7 @@ sub_803FA84: @ 0x0803FA84
 	sub sp, #0x10
 	adds r5, r0, #0
 	adds r6, r1, #0
-	ldr r0, _0803FB7C @ =gUnknown_03005B4C
+	ldr r0, _0803FB7C @ =gActiveBossTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -1856,7 +1856,7 @@ _0803FB0A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0803FB7C: .4byte gUnknown_03005B4C
+_0803FB7C: .4byte gActiveBossTask
 _0803FB80: .4byte IWRAM_START + 0xC
 _0803FB84: .4byte IWRAM_START + 0x10
 
@@ -4554,7 +4554,7 @@ _080410B6:
 	beq _080410C6
 	bl VramFree
 _080410C6:
-	ldr r1, _080410DC @ =gUnknown_03005B4C
+	ldr r1, _080410DC @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4, r5, r6}
@@ -4563,7 +4563,7 @@ _080410C6:
 	.align 2, 0
 _080410D4: .4byte IWRAM_START + 0xC4
 _080410D8: .4byte IWRAM_START + 0xFC
-_080410DC: .4byte gUnknown_03005B4C
+_080410DC: .4byte gActiveBossTask
 
 	thumb_func_start Task_EggTotemMain
 Task_EggTotemMain: @ 0x080410E0

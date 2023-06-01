@@ -2188,7 +2188,7 @@ _0801E35C: .4byte gFlags
 sub_801E360: @ 0x0801E360
 	push {r4, r5, r6, lr}
 	movs r1, #0
-	ldr r0, _0801E3CC @ =gUnknown_03005B4C
+	ldr r0, _0801E3CC @ =gActiveBossTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0801E37A
@@ -2243,7 +2243,7 @@ _0801E3C4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801E3CC: .4byte gUnknown_03005B4C
+_0801E3CC: .4byte gActiveBossTask
 _0801E3D0: .4byte gFlags
 _0801E3D4: .4byte gUnknown_03002878
 _0801E3D8: .4byte 0x04000014

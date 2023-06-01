@@ -33,7 +33,7 @@ CreateAeroEgg: @ 0x0804156C
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _080415DC @ =gUnknown_03005B4C
+	ldr r1, _080415DC @ =gActiveBossTask
 	str r0, [r1]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -56,7 +56,7 @@ _080415CC: .4byte gPseudoRandom
 _080415D0: .4byte gUnknown_03005590
 _080415D4: .4byte Task_AeroEggMain
 _080415D8: .4byte TaskDestructor_AeroEggMain
-_080415DC: .4byte gUnknown_03005B4C
+_080415DC: .4byte gActiveBossTask
 _080415E0: .4byte gUnknown_030054EC
 _080415E4: .4byte gGameMode
 _080415E8:
@@ -2102,7 +2102,7 @@ sub_80425F0: @ 0x080425F0
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
 	adds r6, r1, #0
-	ldr r0, _08042660 @ =gUnknown_03005B4C
+	ldr r0, _08042660 @ =gActiveBossTask
 	ldr r0, [r0]
 	ldrh r2, [r0, #6]
 	movs r1, #0xc0
@@ -2156,7 +2156,7 @@ _0804262A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08042660: .4byte gUnknown_03005B4C
+_08042660: .4byte gActiveBossTask
 _08042664: .4byte IWRAM_START + 0x18
 _08042668: .4byte IWRAM_START + 0x30
 _0804266C: .4byte IWRAM_START + 0x34
@@ -2333,7 +2333,7 @@ TaskDestructor_AeroEggMain: @ 0x080427A0
 	adds r4, r4, r0
 	ldr r0, [r4]
 	bl VramFree
-	ldr r1, _080427F8 @ =gUnknown_03005B4C
+	ldr r1, _080427F8 @ =gActiveBossTask
 	movs r0, #0
 	str r0, [r1]
 	pop {r4}
@@ -2345,7 +2345,7 @@ _080427E8: .4byte IWRAM_START + 0x8C
 _080427EC: .4byte IWRAM_START + 0xC4
 _080427F0: .4byte IWRAM_START + 0xF4
 _080427F4: .4byte IWRAM_START + 0x124
-_080427F8: .4byte gUnknown_03005B4C
+_080427F8: .4byte gActiveBossTask
 
 	thumb_func_start sub_80427FC
 sub_80427FC: @ 0x080427FC
