@@ -7,8 +7,9 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_8009918
-sub_8009918: @ 0x08009918
+@; This task is related to spot lights in Ice Paradise.
+	thumb_func_start CreateStageUnknownTask
+CreateStageUnknownTask: @ 0x08009918
 	push {r4, lr}
 	sub sp, #4
 	ldr r0, _0800995C @ =sub_8009964

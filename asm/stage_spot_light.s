@@ -7,85 +7,11 @@
 .syntax unified
 .arm
 
-@; Create something when single player in ice paradise
-	thumb_func_start CreateSearchLightBeams
-CreateSearchLightBeams: @ 0x0800A6A8
-	push {r4, r5, r6, lr}
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6}
-	sub sp, #4
-	ldr r0, _0800A73C @ =sub_800A744
-	movs r2, #0x80
-	lsls r2, r2, #6
-	ldr r1, _0800A740 @ =sub_800A9B8
-	str r1, [sp]
-	movs r1, #0x10
-	movs r3, #0
-	bl TaskCreate
-	ldrh r4, [r0, #6]
-	movs r5, #0xc0
-	lsls r5, r5, #0x12
-	adds r4, r4, r5
-	movs r0, #0
-	mov sb, r0
-	movs r6, #0
-	movs r0, #0xc0
-	lsls r0, r0, #3
-	strh r0, [r4, #8]
-	str r6, [r4, #0xc]
-	bl sub_8009918
-	str r0, [r4]
-	ldrh r0, [r0, #6]
-	adds r1, r0, r5
-	movs r0, #0x3c
-	strh r0, [r1, #6]
-	movs r0, #0xc8
-	mov r8, r0
-	mov r0, r8
-	strh r0, [r1, #8]
-	strh r6, [r1]
-	movs r0, #0x20
-	strh r0, [r1, #2]
-	movs r0, #0x80
-	lsls r0, r0, #3
-	strh r0, [r1, #4]
-	movs r0, #2
-	strb r0, [r1, #0xa]
-	mov r0, sb
-	strb r0, [r1, #0xb]
-	bl sub_8009918
-	str r0, [r4, #4]
-	ldrh r0, [r0, #6]
-	adds r1, r0, r5
-	mov r0, r8
-	strh r0, [r1, #6]
-	movs r0, #0xf0
-	strh r0, [r1, #8]
-	strh r6, [r1]
-	movs r0, #0x10
-	strh r0, [r1, #2]
-	movs r0, #0xc0
-	lsls r0, r0, #2
-	strh r0, [r1, #4]
-	movs r0, #3
-	strb r0, [r1, #0xa]
-	mov r0, sb
-	strb r0, [r1, #0xb]
-	movs r0, #1
-	add sp, #4
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0800A73C: .4byte sub_800A744
-_0800A740: .4byte sub_800A9B8
+.if 0
+.endif
 
-	thumb_func_start sub_800A744
-sub_800A744: @ 0x0800A744
+	thumb_func_start Task_SpotLightMain
+Task_SpotLightMain: @ 0x0800A744
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -106,7 +32,7 @@ sub_800A744: @ 0x0800A744
 	mov sb, r2
 	cmp r0, #0
 	beq _0800A76E
-	b _0800A8CC
+	b Task_SpotLightMain_Return
 _0800A76E:
 	ldr r0, [r5]
 	ldrh r0, [r0, #6]
@@ -244,9 +170,9 @@ _0800A85A:
 	beq _0800A8B0
 	mov r0, sb
 	ldr r1, [r0]
-	ldr r0, _0800A8AC @ =sub_800A8E0
+	ldr r0, _0800A8AC @ =Task_800A8E0
 	str r0, [r1, #8]
-	b _0800A8CC
+	b Task_SpotLightMain_Return
 	.align 2, 0
 _0800A880: .4byte 0xFFFFFE00
 _0800A884: .4byte gSineTable
@@ -259,12 +185,12 @@ _0800A89C: .4byte gBldRegs
 _0800A8A0: .4byte 0x00003F41
 _0800A8A4: .4byte gPlayer
 _0800A8A8: .4byte 0x8000080
-_0800A8AC: .4byte sub_800A8E0
+_0800A8AC: .4byte Task_800A8E0
 _0800A8B0:
 	ldr r0, _0800A8D8 @ =gUnknown_030054E4
 	ldrb r0, [r0]
 	cmp r0, #0
-	beq _0800A8CC
+	beq Task_SpotLightMain_Return
 	ldr r0, [r5]
 	bl TaskDestroy
 	ldr r0, [r5, #4]
@@ -272,7 +198,7 @@ _0800A8B0:
 	ldr r0, _0800A8DC @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-_0800A8CC:
+Task_SpotLightMain_Return:
 	pop {r3, r4}
 	mov r8, r3
 	mov sb, r4
@@ -283,8 +209,8 @@ _0800A8CC:
 _0800A8D8: .4byte gUnknown_030054E4
 _0800A8DC: .4byte gCurTask
 
-	thumb_func_start sub_800A8E0
-sub_800A8E0: @ 0x0800A8E0
+	thumb_func_start Task_800A8E0
+Task_800A8E0: @ 0x0800A8E0
 	push {r4, r5, r6, lr}
 	movs r5, #0
 	ldr r0, _0800A998 @ =gCurTask
@@ -386,8 +312,8 @@ _0800A9AC: .4byte gBgScrollRegs
 _0800A9B0: .4byte gDispCnt
 _0800A9B4: .4byte 0x0000FEFF
 
-	thumb_func_start sub_800A9B8
-sub_800A9B8: @ 0x0800A9B8
+	thumb_func_start TaskDestructor_SpotLightMain
+TaskDestructor_SpotLightMain: @ 0x0800A9B8
 	ldr r2, _0800A9E4 @ =gDispCnt
 	ldrh r1, [r2]
 	ldr r0, _0800A9E8 @ =0x00009FFF

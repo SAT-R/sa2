@@ -8,8 +8,9 @@
 #include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
-#include "game/stage/palette_loader.h"
 #include "game/stage/entities_manager.h"
+#include "game/stage/palette_loader.h"
+#include "game/stage/spot_light.h"
 #include "constants/songs.h"
 #include "trig.h"
 
@@ -2000,8 +2001,6 @@ NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
 }
 END_NONMATCH
 
-void CreateSearchLightBeams(void);
-
 void sub_801CD7C(void)
 {
     Background *background = &gUnknown_03005850.unk0;
@@ -2024,7 +2023,7 @@ void sub_801CD7C(void)
     gBgScrollRegs[3][1] = 0;
 
     if (IS_SINGLE_PLAYER) {
-        CreateSearchLightBeams();
+        CreateSpotLightBeams();
     }
 }
 
