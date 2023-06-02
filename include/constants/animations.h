@@ -249,10 +249,12 @@
 
 #define SA2_ANIM_TAILS_CAPTURED_COPY 659
 
-#define SA2_ANIM_ITEMBOX      724
-#define SA2_ANIM_ITEMBOX_TYPE 725
-#define SA2_ANIM_RING_STATIC  726
-#define SA2_ANIM_RING_COLLECT 727
+#define SA2_ANIM_ITEMBOX              724
+#define SA2_ANIM_ITEMBOX_TYPE         725
+#define SA2_ANIM_RING_STATIC          726
+#define SA2_ANIM_RING_COLLECT         727
+#define TILE_COUNT__ANIM_ITEMBOX      16 // TODO: Automate
+#define TILE_COUNT__ANIM_ITEMBOX_TYPE 4 // TODO: Automate
 
 #define SA2_ANIM_SCORE              728 // variant: 0 = 100 | 1 = 200 | 2 = 400 | 3 = 800 | 4 = 1000
 #define SA2_ANIM_VARIANT_SCORE_100  0

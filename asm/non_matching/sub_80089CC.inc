@@ -301,7 +301,7 @@ _08008BC0:
 	lsrs r1, r2, #0x10
 	ldr r5, [sp, #0x3c]
 	lsrs r2, r5, #0x10
-	bl CreateItemBox
+	bl CreateEntity_ItemBox
 _08008C04:
 	adds r4, #3
 	adds r6, #1

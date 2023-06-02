@@ -62,6 +62,7 @@ SECTIONS
         build/sa2/src/game/stage/spot_light.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
         build/sa2/src/game/stage/collect_ring_effect.o(.text);
+        build/sa2/src/game/stage/item_box.o(.text);
         build/sa2/asm/stage_item_box.o(.text);
         build/sa2/src/game/stage/dust_cloud.o(.text);
         build/sa2/src/game/stage/ring.o(.text);

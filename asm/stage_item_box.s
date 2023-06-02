@@ -31,178 +31,8 @@ gUnknown_080D51FC:
 .syntax unified
 .arm
 
-	thumb_func_start CreateItemBox
-CreateItemBox: @ 0x0800B03C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	adds r6, r0, #0
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov sb, r1
-	lsls r2, r2, #0x10
-	lsrs r7, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	str r3, [sp, #4]
-	ldr r0, _0800B17C @ =gGameMode
-	ldrb r0, [r0]
-	subs r0, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #1
-	bhi _0800B076
-	ldrb r0, [r6, #2]
-	cmp r0, #0
-	beq _0800B164
-	cmp r0, #5
-	bne _0800B076
-	movs r0, #7
-	strb r0, [r6, #2]
-_0800B076:
-	ldr r0, _0800B180 @ =sub_800B704
-	movs r2, #0x80
-	lsls r2, r2, #6
-	ldr r1, _0800B184 @ =sub_800B80C
-	str r1, [sp]
-	movs r1, #0x7c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r4, [r0, #6]
-	movs r5, #0xc0
-	lsls r5, r5, #0x12
-	adds r5, r4, r5
-	ldrb r1, [r6, #2]
-	ldr r2, _0800B188 @ =IWRAM_START + 0x76
-	adds r0, r4, r2
-	movs r2, #0
-	mov sl, r2
-	strb r1, [r0]
-	ldr r1, _0800B18C @ =IWRAM_START + 0x74
-	adds r0, r4, r1
-	mov r2, sl
-	strh r2, [r0]
-	ldrb r0, [r6]
-	lsls r0, r0, #3
-	mov r2, sb
-	lsls r1, r2, #8
-	adds r0, r0, r1
-	str r0, [r5, #0x6c]
-	ldrb r0, [r6, #1]
-	lsls r0, r0, #3
-	lsls r1, r7, #8
-	adds r0, r0, r1
-	str r0, [r5, #0x70]
-	strh r2, [r5, #4]
-	strh r7, [r5, #6]
-	str r6, [r5]
-	ldrb r0, [r6]
-	strb r0, [r5, #8]
-	mov r0, sp
-	ldrb r0, [r0, #4]
-	strb r0, [r5, #9]
-	ldr r1, _0800B190 @ =IWRAM_START + 0xC
-	adds r7, r4, r1
-	movs r0, #0x98
-	lsls r0, r0, #3
-	strh r0, [r7, #0x1a]
-	mov r2, sl
-	strh r2, [r7, #8]
-	strh r2, [r7, #0x14]
-	strh r2, [r7, #0x1c]
-	ldr r0, _0800B194 @ =IWRAM_START + 0x2D
-	adds r1, r4, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r1, _0800B198 @ =IWRAM_START + 0x2E
-	adds r0, r4, r1
-	movs r2, #0x10
-	strb r2, [r0]
-	adds r1, #3
-	adds r0, r4, r1
-	movs r2, #0
-	strb r2, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	mov r8, r0
-	str r0, [r7, #0x28]
-	movs r1, #0x88
-	lsls r1, r1, #6
-	mov sb, r1
-	str r1, [r7, #0x10]
-	movs r0, #0xb5
-	lsls r0, r0, #2
-	strh r0, [r7, #0xa]
-	ldr r2, _0800B19C @ =IWRAM_START + 0x2C
-	adds r0, r4, r2
-	movs r1, #0
-	strb r1, [r0]
-	movs r0, #0x10
-	bl VramMalloc
-	str r0, [r7, #4]
-	adds r0, r7, #0
-	bl sub_8004558
-	ldr r2, _0800B1A0 @ =IWRAM_START + 0x3C
-	adds r7, r4, r2
-	movs r0, #0xa0
-	lsls r0, r0, #3
-	strh r0, [r7, #0x1a]
-	mov r0, sl
-	strh r0, [r7, #8]
-	strh r0, [r7, #0x14]
-	strh r0, [r7, #0x1c]
-	adds r2, #0x21
-	adds r1, r4, r2
-	movs r0, #1
-	rsbs r0, r0, #0
-	strb r0, [r1]
-	ldr r1, _0800B1A4 @ =IWRAM_START + 0x5E
-	adds r0, r4, r1
-	movs r2, #0x10
-	strb r2, [r0]
-	ldr r0, _0800B1A8 @ =IWRAM_START + 0x61
-	adds r4, r4, r0
-	movs r1, #0
-	strb r1, [r4]
-	mov r2, r8
-	str r2, [r7, #0x28]
-	mov r0, sb
-	str r0, [r7, #0x10]
-	movs r0, #4
-	bl VramMalloc
-	str r0, [r7, #4]
-	adds r0, r5, #0
-	movs r1, #1
-	bl sub_800B580
-_0800B164:
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800B17C: .4byte gGameMode
-_0800B180: .4byte sub_800B704
-_0800B184: .4byte sub_800B80C
-_0800B188: .4byte IWRAM_START + 0x76
-_0800B18C: .4byte IWRAM_START + 0x74
-_0800B190: .4byte IWRAM_START + 0xC
-_0800B194: .4byte IWRAM_START + 0x2D
-_0800B198: .4byte IWRAM_START + 0x2E
-_0800B19C: .4byte IWRAM_START + 0x2C
-_0800B1A0: .4byte IWRAM_START + 0x3C
-_0800B1A4: .4byte IWRAM_START + 0x5E
-_0800B1A8: .4byte IWRAM_START + 0x61
+.if 0
+.endif
 
 	thumb_func_start sub_800B1AC
 sub_800B1AC: @ 0x0800B1AC
@@ -860,8 +690,8 @@ _0800B6FA:
 	.align 2, 0
 _0800B700: .4byte gUnknown_080D5178
 
-	thumb_func_start sub_800B704
-sub_800B704: @ 0x0800B704
+	thumb_func_start Task_800B704
+Task_800B704: @ 0x0800B704
 	push {r4, lr}
 	ldr r0, _0800B730 @ =gCurTask
 	ldr r0, [r0]
@@ -997,8 +827,8 @@ _0800B804:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_800B80C
-sub_800B80C: @ 0x0800B80C
+	thumb_func_start TaskDestructor_800B80C
+TaskDestructor_800B80C: @ 0x0800B80C
 	push {r4, lr}
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0

@@ -606,7 +606,8 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
                                 s32 y = TO_WORLD_POS(me->y, regionY);
                                 if (x >= range.xLow && x <= range.xHigh
                                     && y >= range.yLow && y <= range.yHigh) {
-                                    CreateItemBox((void *)me, regionX, regionY, i);
+                                    CreateEntity_ItemBox((void *)me, regionX, regionY,
+                                                         i);
                                 }
                             }
                         }
@@ -862,8 +863,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC())
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            CreateItemBox((MapEntity *)me, regionX,
-                                                          regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me,
+                                                                 regionX, regionY, i);
                                         }
                                     }
                                 }
@@ -971,8 +972,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC())
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            CreateItemBox((MapEntity *)me, regionX,
-                                                          regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me,
+                                                                 regionX, regionY, i);
                                         }
                                     }
                                 }
