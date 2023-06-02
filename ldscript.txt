@@ -59,7 +59,6 @@ SECTIONS
         build/sa2/src/game/unused_unknown_task.o(.text);
         build/sa2/src/game/stage/unknown_sprite.o(.text);
         build/sa2/src/game/stage/spot_light.o(.text);
-        build/sa2/asm/stage_spot_light.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
         build/sa2/src/game/stage/collect_ring_effect.o(.text);
         build/sa2/asm/stage_item_box.o(.text);

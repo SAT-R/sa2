@@ -90,7 +90,7 @@ void Task_SpotLightMain(void)
             }
         }
         // _0800A800
-        unkC = spotLight->unkC - 0x200;
+        unkC = spotLight->unkC - Q_24_8(2.0);
         spotLight->unkC = unkC - SIN_24_8(gUnknown_03005590 & (ONE_CYCLE - 512));
 
         gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
@@ -119,4 +119,56 @@ void Task_SpotLightMain(void)
             TaskDestroy(gCurTask);
         }
     }
+}
+
+void Task_800A8E0(void)
+{
+    bool32 boolR5 = FALSE;
+    Struct_StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
+    Struct_StageUnkTask *ut;
+    s32 unkC;
+
+    ut = TaskGetStructPtr(spotLight->t0);
+    if (!(gUnknown_03005590 & 0x1) && (ut->unkB != 0)) {
+        ut->unkB -= 2;
+        if (ut->unkB < 5)
+            boolR5 = TRUE;
+    }
+
+    ut = TaskGetStructPtr(spotLight->t1);
+    if (!(gUnknown_03005590 & 0x1) && (ut->unkB != 0)) {
+        ut->unkB -= 1;
+        if (ut->unkB < 3)
+            boolR5 = TRUE;
+    }
+
+    unkC = spotLight->unkC - Q_24_8(2.0);
+    spotLight->unkC = unkC - SIN_24_8(gUnknown_03005590 & (ONE_CYCLE - 512));
+
+    gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
+    gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;
+
+    if (boolR5) {
+        gDispCnt &= ~DISPCNT_BG0_ON;
+
+        TaskDestroy(spotLight->t0);
+        TaskDestroy(spotLight->t1);
+        TaskDestroy(gCurTask);
+    }
+}
+
+void TaskDestructor_SpotLightMain(struct Task *t)
+{
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
+    gDispCnt &= ~DISPCNT_BG0_ON;
+
+    gBldRegs.bldCnt = 0;
+    gBldRegs.bldY = 0;
+
+    gWinRegs[WINREG_WIN0H] = 0;
+    gWinRegs[WINREG_WIN0V] = 0;
+    gWinRegs[WINREG_WIN1H] = 0;
+    gWinRegs[WINREG_WIN1V] = 0;
+
+    gFlags &= ~0x4;
 }
