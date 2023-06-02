@@ -114,7 +114,7 @@
 #include "constants/songs.h"
 
 // Unknown task
-extern void sub_8009E00(s16, s16);
+extern void CreateEnemyDefeatScore(s16, s16);
 
 typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
@@ -396,8 +396,9 @@ const MapEntityInit gSpriteInits_Enemies[] = {
     CreateEntity_Star,     CreateEntity_BulletBuzzer,
 };
 
-const u16 gUnknown_080D5020[] = {
-    100, 200, 400, 800, 1000, 0,
+#define NUN_ENEMY_DEFEAT_SCORES 5
+const u16 enemyDefeatScores[NUN_ENEMY_DEFEAT_SCORES] = {
+    100, 200, 400, 800, 1000,
 };
 
 const MapEntityInit gUnknown_080D502C[] = {
@@ -1033,14 +1034,14 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC())
 }
 END_NONMATCH
 
-void sub_8009530(s16 a, s16 b)
+void sub_8009530(s16 x, s16 y)
 {
     u32 old;
     u32 temp1;
     u32 temp2;
     m4aSongNumStart(SE_ITEM_BOX);
     old = gUnknown_03005450;
-    gUnknown_03005450 += gUnknown_080D5020[gPlayer.unk84];
+    gUnknown_03005450 += enemyDefeatScores[gPlayer.defeatScoreIndex];
     temp1 = Div(gUnknown_03005450, 50000);
     temp2 = Div(old, 50000);
     if (temp1 != temp2 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
@@ -1054,10 +1055,13 @@ void sub_8009530(s16 a, s16 b)
         gUnknown_030054A8.unk3 = 0x10;
     }
 
-    sub_8009E00(a, b);
+    CreateEnemyDefeatScore(x, y);
 
-    if (gPlayer.unk84 < 4) {
-        gPlayer.unk84++;
+    // NOTE: This should be (ARRAY_COUNT(enemyDefeatScores) - 1)
+    //       But padding makes it (6-1) instead of (5-1),
+    //       hence the macro.
+    if (gPlayer.defeatScoreIndex < (NUN_ENEMY_DEFEAT_SCORES - 1)) {
+        gPlayer.defeatScoreIndex++;
     }
 }
 
