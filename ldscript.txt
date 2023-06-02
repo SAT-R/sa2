@@ -60,7 +60,7 @@ SECTIONS
         build/sa2/src/game/stage/unknown_sprite.o(.text);
         build/sa2/asm/ice_paradise_search_lights.o(.text);
         build/sa2/asm/stage_pause_menu.o(.text);
-        build/sa2/asm/stage_collect_ring_effect.o(.text);
+        build/sa2/src/game/stage/collect_ring_effect.o(.text);
         build/sa2/asm/stage_item_box.o(.text);
         build/sa2/src/game/stage/dust_cloud.o(.text);
         build/sa2/src/game/stage/ring.o(.text);

@@ -252,6 +252,7 @@
 #define SA2_ANIM_ITEMBOX      724
 #define SA2_ANIM_ITEMBOX_TYPE 725
 #define SA2_ANIM_RING_STATIC  726
+#define SA2_ANIM_RING_COLLECT 727
 
 #define SA2_ANIM_SCORE              728 // variant: 0 = 100 | 1 = 200 | 2 = 400 | 3 = 800 | 4 = 1000
 #define SA2_ANIM_VARIANT_SCORE_100  0
