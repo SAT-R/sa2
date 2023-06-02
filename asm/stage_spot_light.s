@@ -8,8 +8,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_SpotLightMain
 Task_SpotLightMain: @ 0x0800A744
 	push {r4, r5, r6, r7, lr}
@@ -21,8 +19,8 @@ Task_SpotLightMain: @ 0x0800A744
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
-	mov ip, r1
-	adds r5, r0, r1
+	mov ip, r1          @ ip = IRAM
+	adds r5, r0, r1     @ r5 = spotLight
 	ldr r0, _0800A7BC @ =gUnknown_03005424
 	ldrh r1, [r0]
 	movs r7, #0x80
@@ -38,7 +36,7 @@ _0800A76E:
 	ldrh r0, [r0, #6]
 	movs r2, #0xc0
 	lsls r2, r2, #0x12
-	adds r3, r0, r2
+	adds r3, r0, r2     @ r3 = ut (from t0)
 	ldr r2, _0800A7C0 @ =gUnknown_03005590
 	ldr r0, [r2]
 	movs r1, #7
@@ -65,7 +63,7 @@ _0800A7A4:
 	ldr r0, [r5, #4]
 	ldrh r0, [r0, #6]
 	mov r1, ip
-	adds r3, r0, r1
+	adds r3, r0, r1     @ r3 = ut (from t1)
 	ldrb r0, [r3, #0xb]
 	cmp r0, #0xf
 	bhi _0800A800
@@ -208,6 +206,7 @@ Task_SpotLightMain_Return:
 	.align 2, 0
 _0800A8D8: .4byte gUnknown_030054E4
 _0800A8DC: .4byte gCurTask
+.endif
 
 	thumb_func_start Task_800A8E0
 Task_800A8E0: @ 0x0800A8E0
