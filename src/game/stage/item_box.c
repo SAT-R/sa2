@@ -61,7 +61,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     Sprite *s;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         if (me->index == 0) {
-            goto CreateEntity_Bell_defer;
+            goto CreateEntity_Itembox_defer;
         }
 
         if (me->index == 5) {
@@ -110,7 +110,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX_TYPE);
     sub_800B580(itembox, 1);
 
-CreateEntity_Bell_defer:
+CreateEntity_Itembox_defer:
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
