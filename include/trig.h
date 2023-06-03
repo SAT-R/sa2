@@ -19,4 +19,7 @@ extern const s16 gSineTable[1280];
 #define SIN_DEG(degrees) Q_2_14_TO_Q_24_8(gSineTable[DEG_TO_SIN(degrees)])
 #define COS_DEG(degrees) Q_2_14_TO_Q_24_8(gSineTable[DEG_TO_SIN(degrees) + 256])
 
+#define SQUARE(v) ((v) * (v))
+#define CUBE(v)   ((v) * (v) * (v))
+
 #endif // GUARD_TRIG_H

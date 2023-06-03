@@ -3,6 +3,7 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "task.h"
+#include "trig.h"
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
@@ -31,32 +32,26 @@ void Task_800B7D0(void);
 void TaskDestructor_800B80C(struct Task *);
 
 const u16 ItemBox_MysteryIcons[13][3] = {
-    {SA2_ANIM_ITEMBOX_TYPE, 0   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 5   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 6   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 7   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 8   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 9   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 10  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 11  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 13  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 14  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 15  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 16  , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, 12  , 4},
+    { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 6, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 7, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 8, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 9, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 10, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 11, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 13, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 14, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 15, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 16, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, 12, 4 },
 };
 
 const u16 ItemBox_1UpIcons[5][3] = {
-    {SA2_ANIM_ITEMBOX_TYPE, CHARACTER_SONIC   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, CHARACTER_CREAM   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS   , 4},
-    {SA2_ANIM_ITEMBOX_TYPE, CHARACTER_KNUCKLES, 4},
-    {SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY     , 4},
+    { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_SONIC, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_CREAM, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_KNUCKLES, 4 },
+    { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY, 4 },
 };
 
-const u16 gUnknown_080D51E4[] = {5, 13, 4, 13, 3, 13, 6, 13};
-const u16 gUnknown_080D51F4[] = {8, 9, 10, 11};
-const u8 gUnknown_080D51FC[] = {1, 5, 10, 30, 50, 0, 0, 0};
+const u16 gUnknown_080D51E4[] = { 5, 13, 4, 13, 3, 13, 6, 13 };
+const u16 gUnknown_080D51F4[] = { 8, 9, 10, 11 };
+const u8 gUnknown_080D51FC[] = { 1, 5, 10, 30, 50, 0, 0, 0 };
 
 void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
@@ -121,7 +116,7 @@ CreateEntity_Bell_defer:
 
 void sub_800B1AC(Entity_ItemBox *itembox)
 {
-    if(itembox->unk78 != 1 || gPlayer.moveState & MOVESTATE_IN_AIR) {
+    if (itembox->unk78 != 1 || gPlayer.moveState & MOVESTATE_IN_AIR) {
         gPlayer.speedAirY = -Q_24_8(3.0);
         gPlayer.unk64 = 38;
         gPlayer.unk66 = -1;
@@ -133,8 +128,8 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     sub_800B9B8(itembox->x, itembox->y);
 
     itembox->unk77 = 0;
-    
-    if(IS_MULTI_PLAYER) {
+
+    if (IS_MULTI_PLAYER) {
         struct UNK_3005510 *unk = sub_8019224();
         unk->unk0 = 2;
         unk->unk1 = itembox->base.regionX;
@@ -145,176 +140,181 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     gCurTask->main = Task_800B780;
 }
 
-asm(".end");
-void sub_800B23C(Entity_ItemBox *itembox)
+void ApplyItemboxEffect(Entity_ItemBox *itembox)
 {
     s32 oldRingCount;
+    u32 newRingCount;
+    u16 *rings;
 
-    switch(itembox->kind)
-    {
-    case 0: {
-        u32 newLives = gNumLives;
-        if(++newLives > 255) {
-            newLives = 255;
-        }
-        gNumLives = newLives;
-
-        gUnknown_030054A8.unk3 = 16;
-    } break;
-    
-    case 1: {
-        if(!(gPlayer.unk37 & 0x1)) {
-            gPlayer.unk37 &= ~0x8;
-            gPlayer.unk37 |= 0x1;
-            
-            if(!(gPlayer.unk37 & 0x2)) {
-                sub_802A7A8(gPlayer.unk60);
+    switch (itembox->kind) {
+        case 0: {
+            u32 newLives = gNumLives;
+            if (++newLives > 255) {
+                newLives = 255;
             }
-        }
+            gNumLives = newLives;
 
-    } break;
-    
-    case 2: {
-        if(!(gPlayer.unk37 & 0x8)) {
-            gPlayer.unk37 &= ~0x1;
-            gPlayer.unk37 |= 0x8;
-            
-            if(!(gPlayer.unk37 & 0x2)) {
-                sub_802A8F8(gPlayer.unk60);
-            }
-        }
+            gUnknown_030054A8.unk3 = 16;
+        } break;
 
-    } break;
-    
-    case 3: {
-        gPlayer.unk2E = 0x4B0;
+        case 1: {
+            if (!(gPlayer.unk37 & 0x1)) {
+                gPlayer.unk37 &= ~0x8;
+                gPlayer.unk37 |= 0x1;
 
-        if(IS_SINGLE_PLAYER || !(gPlayer.unk37 & 0x2)) {
-            gPlayer.unk37 |= 0x2;
-            sub_802A854(gPlayer.unk60);
-            gUnknown_030054A8.unk2 = 16;
-        }
-    } break;
-    
-    case 4: {
-        gPlayer.unk37 |= 0x4;
-        gPlayer.unk30 = 0x4B0;
-
-        m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
-
-        if(IS_MULTI_PLAYER) {
-            gPlayer.unk37 &= ~0x10;
-        }
-    } break;
-    
-    case 5: {
-        s32 rnd = gUnknown_080D51FC[(u32)PseudoRandom32() % 5];
-        oldRingCount = gRingCount;
-        gRingCount += rnd;
-        goto sub_800B23C_case7;
-    } break;
-    
-    case 6: {
-        oldRingCount = gRingCount;
-        gRingCount += 5;
-        goto sub_800B23C_case7;
-    } break;
-    
-    case 7: {
-        oldRingCount = gRingCount;
-        gRingCount += 10;
-
-sub_800B23C_case7:
-        if(gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            s32 newLivesCount = Div(gRingCount, 100);
-
-            if(newLivesCount != Div(oldRingCount, 100) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                u32 newLives = gNumLives;
-                if(++newLives > 255) {
-                    newLives = 255;
+                if (!(gPlayer.unk37 & 0x2)) {
+                    sub_802A7A8(gPlayer.unk60);
                 }
-                gNumLives = newLives;
-                
-                gUnknown_030054A8.unk3 = 16;
             }
 
-            if(gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                u32 newLives = gNumLives;
-                if(++newLives > 255) {
-                    newLives = 255;
+        } break;
+
+        case 2: {
+            if (!(gPlayer.unk37 & 0x8)) {
+                gPlayer.unk37 &= ~0x1;
+                gPlayer.unk37 |= 0x8;
+
+                if (!(gPlayer.unk37 & 0x2)) {
+                    sub_802A8F8(gPlayer.unk60);
                 }
-                gNumLives = newLives;
+            }
+
+        } break;
+
+        case 3: {
+            gPlayer.unk2E = 0x4B0;
+
+            if (IS_SINGLE_PLAYER || !(gPlayer.unk37 & 0x2)) {
+                gPlayer.unk37 |= 0x2;
+                sub_802A854(gPlayer.unk60);
+                gUnknown_030054A8.unk2 = 16;
+            }
+        } break;
+
+        case 4: {
+            gPlayer.unk37 |= 0x4;
+            gPlayer.unk30 = 0x4B0;
+
+            m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
+
+            if (IS_MULTI_PLAYER) {
+                gPlayer.unk37 &= ~0x10;
+            }
+        } break;
+
+        case 5: {
+            s32 rnd = gUnknown_080D51FC[(u32)PseudoRandom32() % 5];
+            rings = &gRingCount;
+            oldRingCount = *rings;
+            newRingCount = *rings + rnd;
+            goto ApplyItemboxEffect_case7;
+        } break;
+
+        case 6: {
+            rings = &gRingCount;
+            oldRingCount = *rings;
+            newRingCount = *rings + 5;
+            goto ApplyItemboxEffect_case7;
+        } break;
+
+        case 7: {
+            rings = &gRingCount;
+            oldRingCount = *rings;
+            newRingCount = *rings + 10;
+
+        ApplyItemboxEffect_case7:
+            gRingCount = newRingCount;
+            if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+                s32 newLivesCount = Div(gRingCount, 100);
+
+                if (newLivesCount != Div(oldRingCount, 100)
+                    && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                    u32 newLives = gNumLives;
+                    if (++newLives > 255) {
+                        newLives = 255;
+                    }
+                    gNumLives = newLives;
+
+                    gUnknown_030054A8.unk3 = 16;
+                }
+            }
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                if (gRingCount > 255) {
+                    gRingCount = 255;
+                }
             }
 
             m4aSongNumStart(SE_RING_COPY);
-        }
-    } break;
-    
-    case 8: {
-        s32 r6 = -1;
-        u8 i;
-        u8 sl = 0;
 
-        for(i = 0; i < MULTI_SIO_PLAYERS_MAX && gMultiplayerPlayerTasks[i] != NULL; i++) {
-            struct MultiplayerPlayer *mpp;
-            s32 someX, someY;
+        } break;
 
-            // (REG_SIOCNT & SIO_ID) >> 4
-            u32 sioId = (*(vu32*)&REG_SIOCNT << 26) >> 30;
+        case 8: {
+            s32 smallestMagnitude = -1;
+            u8 nearestPlayer = 0;
+            u8 playerId;
 
-            if(i == sioId)
-                continue;
+            // Find the player that's closest to you
+            for (playerId = 0; playerId < MULTI_SIO_PLAYERS_MAX
+                 && gMultiplayerPlayerTasks[playerId] != NULL;
+                 playerId++) {
+                struct MultiplayerPlayer *mpp;
+                s32 boxToPlayerX, boxToPlayerY;
+                s32 boxToPlayerMagnitude;
 
-            mpp = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
-            someX = Q_24_8_TO_INT(gPlayer.x) - mpp->unk50;
-            someX *= someX;
-            someY = Q_24_8_TO_INT(gPlayer.y) - mpp->unk52;
-            someY *= someY;
+                // Don't look for your own ID
+                u32 sioId = (*(vu32 *)&REG_SIOCNT << 26) >> 30;
+                if (playerId == sioId)
+                    continue;
 
-            if(r6 < someX * someY) {
-                r6 = someX * someY;
-                sl = i;
+                mpp = TaskGetStructPtr(gMultiplayerPlayerTasks[playerId]);
+                boxToPlayerX = SQUARE(Q_24_8_TO_INT(gPlayer.x) - mpp->unk50);
+                boxToPlayerY = SQUARE(Q_24_8_TO_INT(gPlayer.y) - mpp->unk52);
+
+                boxToPlayerMagnitude = boxToPlayerX + boxToPlayerY;
+                if (smallestMagnitude < boxToPlayerMagnitude) {
+                    smallestMagnitude = boxToPlayerMagnitude;
+                    nearestPlayer = playerId;
+                }
             }
-        }
-        
-        {
+
+            {
+                struct UNK_3005510 *unkPtr = sub_8019224();
+                unkPtr->unk0 = 6;
+                unkPtr->unk1 = 1;
+                unkPtr->unk2 = nearestPlayer;
+            }
+
+            m4aSongNumStart(SE_218);
+        } break;
+
+        case 9: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
-            unkPtr->unk1 = 1;
-            unkPtr->unk2 = sl;
-        }
+            unkPtr->unk1 = 0;
+            m4aSongNumStart(SE_217);
+        } break;
 
-        m4aSongNumStart(SE_218);
-    } break;
-    
-    case 9: {
-        struct UNK_3005510 *unkPtr = sub_8019224();
-        unkPtr->unk0 = 0;
-        unkPtr->unk1 = 1;
-        m4aSongNumStart(SE_217);
-    } break;
-    
-    case 10: {
-        struct UNK_3005510 *unkPtr = sub_8019224();
-        unkPtr->unk0 = 6;
-        unkPtr->unk1 = 2;
-        m4aSongNumStart(SE_217);
-    } break;
-    
-    case 11: {
-        struct UNK_3005510 *unkPtr = sub_8019224();
-        unkPtr->unk0 = 6;
-        unkPtr->unk1 = 3;
-        m4aSongNumStart(SE_219);
-    } break;
-    
-    case 12: {
-        struct UNK_3005510 *unkPtr = sub_8019224();
-        unkPtr->unk0 = 6;
-        unkPtr->unk1 = 4;
-        m4aSongNumStart(SE_216);
-    } break;
+        case 10: {
+            struct UNK_3005510 *unkPtr = sub_8019224();
+            unkPtr->unk0 = 6;
+            unkPtr->unk1 = 2;
+            m4aSongNumStart(SE_217);
+        } break;
 
+        case 11: {
+            struct UNK_3005510 *unkPtr = sub_8019224();
+            unkPtr->unk0 = 6;
+            unkPtr->unk1 = 3;
+            m4aSongNumStart(SE_219);
+        } break;
+
+        case 12: {
+            struct UNK_3005510 *unkPtr = sub_8019224();
+            unkPtr->unk0 = 6;
+            unkPtr->unk1 = 4;
+            m4aSongNumStart(SE_216);
+        } break;
     }
 
     itembox->unk77 = 0;
