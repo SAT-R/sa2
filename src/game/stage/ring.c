@@ -82,7 +82,7 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
             gRingCount++;
 
             if ((gCurrentLevel != COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
-                && (Div((u16)gRingCount, 100) != Div(oldRings, 100))
+                && (Div(gRingCount, 100) != Div(oldRings, 100))
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                 u32 lives = gNumLives;
                 if (lives + 1 > 255)
@@ -94,7 +94,7 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
             }
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if ((u16)gRingCount > 255)
+                if (gRingCount > 255)
                     gRingCount = 255;
             }
 

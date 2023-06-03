@@ -287,7 +287,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             gRingCount = prevRingCount + boxVal;
 
             if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                if (Div((u16)gRingCount, 100) != Div(prevRingCount, 100)
+                if (Div(gRingCount, 100) != Div(prevRingCount, 100)
                     && gGameMode == 0) {
                     gNumLives = MIN(gNumLives + 1, 255u);
                     gUnknown_030054A8.unk3 = 0x10;
@@ -295,7 +295,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             }
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS
-                && (u16)gRingCount > 255) {
+                && gRingCount > 255) {
                 gRingCount = 255;
             }
 

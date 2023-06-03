@@ -2519,13 +2519,13 @@ END_NONMATCH
 
 void sub_802989C(Player *p)
 {
-    if ((u16)gRingCount >= 150) {
+    if (gRingCount >= 150) {
         p->unk52 = 4;
-    } else if ((u16)gRingCount >= 100) {
+    } else if (gRingCount >= 100) {
         p->unk52 = 3;
-    } else if ((u16)gRingCount >= 50) {
+    } else if (gRingCount >= 50) {
         p->unk52 = 2;
-    } else if ((u16)gRingCount > 10) {
+    } else if (gRingCount > 10) {
         p->unk52 = 1;
     } else {
         p->unk52 = 0;

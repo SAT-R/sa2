@@ -280,6 +280,7 @@ SECTIONS
         build/sa2/src/game/unused_level_select.o(.rodata);
         build/sa2/src/game/unused_unknown_task.o(.rodata);
         build/sa2/asm/stage_pause_menu.o(.rodata);
+        build/sa2/src/game/stage/item_box.o(.rodata);
         build/sa2/asm/stage_item_box.o(.rodata);
         build/sa2/src/game/stage/music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);

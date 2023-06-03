@@ -145,7 +145,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     gCurTask->main = Task_800B780;
 }
 
-//asm(".end");
+asm(".end");
 void sub_800B23C(Entity_ItemBox *itembox)
 {
     s32 oldRingCount;

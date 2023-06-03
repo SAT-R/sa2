@@ -63,8 +63,9 @@ extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
-// might be unsigned, actually?
-extern s16 gRingCount;
+// Sometimes loaded as s16, but as u16 most of the time.
+// If you encounter it being loaded as s16, please cast it.
+extern u16 gRingCount;
 
 typedef struct {
     u8 unk0;
@@ -208,7 +209,7 @@ typedef struct Player_ {
     /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u8 filler2E[2];
+    /* 0x2E */ u16 unk2E; // bitfield(?)
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
@@ -586,4 +587,8 @@ extern void sub_8021350(void);
 
 // NOTE: Proc type should be the same as sub_80299F0!
 extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
+
+extern struct Task *sub_802A7A8(s8);
+extern struct Task *sub_802A854(s8);
+extern struct Task *sub_802A8F8(s8);
 #endif // GUARD_GAME_H

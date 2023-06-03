@@ -1,109 +1,11 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-    .global gUnknown_080D5178
-gUnknown_080D5178:
-    .incbin "baserom.gba", 0x000D5178, 0x4E
-
-    .global ItemBox_1UpIcons
-ItemBox_1UpIcons:
-    .2byte 0x2D5, 0, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_SONIC   , 4
-    .2byte 0x2D5, 1, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_CREAM   , 4
-    .2byte 0x2D5, 2, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_TAILS   , 4
-    .2byte 0x2D5, 3, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_KNUCKLES, 4
-    .2byte 0x2D5, 4, 4   @ SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY     , 4
-
-    .global gUnknown_080D51E4
-gUnknown_080D51E4:
-    .2byte 5, 13, 4, 13, 3, 13, 6, 13
-
-    .global gUnknown_080D51F4
-gUnknown_080D51F4:
-    .2byte 8, 9, 10, 11
-
-    .global gUnknown_080D51FC
-gUnknown_080D51FC:
-    .byte 1, 5, 10, 30, 50, 0, 0, 0
-
 .text
 .syntax unified
 .arm
 
-.if 0
-.endif
-
-	thumb_func_start sub_800B1AC
-sub_800B1AC: @ 0x0800B1AC
-	push {r4, lr}
-	adds r4, r0, #0
-	adds r0, #0x78
-	ldrb r0, [r0]
-	ldr r2, _0800B228 @ =gPlayer
-	cmp r0, #1
-	bne _0800B1C4
-	ldr r0, [r2, #0x20]
-	movs r1, #2
-	ands r0, r1
-	cmp r0, #0
-	beq _0800B1DE
-_0800B1C4:
-	movs r0, #0xfd
-	lsls r0, r0, #8
-	strh r0, [r2, #0x12]
-	adds r1, r2, #0
-	adds r1, #0x64
-	movs r0, #0x26
-	strh r0, [r1]
-	adds r1, #2
-	ldr r0, _0800B22C @ =0x0000FFFF
-	strh r0, [r1]
-	adds r1, #7
-	movs r0, #5
-	strb r0, [r1]
-_0800B1DE:
-	movs r0, #0x96
-	bl m4aSongNumStart
-	ldr r0, [r4, #0x6c]
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x10
-	ldr r1, [r4, #0x70]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	bl sub_800B9B8
-	adds r1, r4, #0
-	adds r1, #0x77
-	movs r0, #0
-	strb r0, [r1]
-	ldr r0, _0800B230 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0800B218
-	bl sub_8019224
-	movs r1, #2
-	strb r1, [r0]
-	ldrh r1, [r4, #4]
-	strb r1, [r0, #1]
-	ldrh r1, [r4, #6]
-	strb r1, [r0, #2]
-	ldrb r1, [r4, #9]
-	strb r1, [r0, #3]
-_0800B218:
-	ldr r0, _0800B234 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0800B238 @ =sub_800B780
-	str r0, [r1, #8]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800B228: .4byte gPlayer
-_0800B22C: .4byte 0x0000FFFF
-_0800B230: .4byte gGameMode
-_0800B234: .4byte gCurTask
-_0800B238: .4byte sub_800B780
-
+.if 01
 	thumb_func_start sub_800B23C
 sub_800B23C: @ 0x0800B23C
 	push {r4, r5, r6, r7, lr}
@@ -489,7 +391,7 @@ _0800B558:
 	strb r0, [r1]
 	ldr r0, _0800B578 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0800B57C @ =sub_800B7D0
+	ldr r0, _0800B57C @ =Task_800B7D0
 	str r0, [r1, #8]
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -500,7 +402,8 @@ _0800B558:
 	bx r0
 	.align 2, 0
 _0800B578: .4byte gCurTask
-_0800B57C: .4byte sub_800B7D0
+_0800B57C: .4byte Task_800B7D0
+.endif
 
 	thumb_func_start sub_800B580
 sub_800B580: @ 0x0800B580
@@ -557,7 +460,7 @@ _0800B5C2:
 _0800B5EC: .4byte ItemBox_1UpIcons
 _0800B5F0: .4byte gSelectedCharacter
 _0800B5F4:
-	ldr r2, _0800B628 @ =gUnknown_080D5178
+	ldr r2, _0800B628 @ =ItemBox_MysteryIcons
 	ldrb r1, [r3]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -583,7 +486,7 @@ _0800B60A:
 	bl sub_8004558
 	b _0800B6FA
 	.align 2, 0
-_0800B628: .4byte gUnknown_080D5178
+_0800B628: .4byte ItemBox_MysteryIcons
 _0800B62C:
 	ldr r3, _0800B6AC @ =gUnknown_03005590
 	cmp r2, #0
@@ -631,7 +534,7 @@ _0800B680:
 	adds r0, r4, #0
 	adds r0, #0x76
 	strb r1, [r0]
-	ldr r2, _0800B6C0 @ =gUnknown_080D5178
+	ldr r2, _0800B6C0 @ =ItemBox_MysteryIcons
 	lsls r0, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #1
@@ -655,11 +558,11 @@ _0800B6B0: .4byte gUnknown_080D51E4
 _0800B6B4: .4byte gUnknown_080D51F4
 _0800B6B8: .4byte gMultiplayerPseudoRandom
 _0800B6BC: .4byte gCurrentLevel
-_0800B6C0: .4byte gUnknown_080D5178
+_0800B6C0: .4byte ItemBox_MysteryIcons
 _0800B6C4:
 	cmp r2, #0
 	beq _0800B6FA
-	ldr r2, _0800B700 @ =gUnknown_080D5178
+	ldr r2, _0800B700 @ =ItemBox_MysteryIcons
 	adds r3, r4, #0
 	adds r3, #0x76
 	ldrb r1, [r3]
@@ -688,7 +591,7 @@ _0800B6FA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800B700: .4byte gUnknown_080D5178
+_0800B700: .4byte ItemBox_MysteryIcons
 
 	thumb_func_start Task_800B704
 Task_800B704: @ 0x0800B704
@@ -752,8 +655,8 @@ _0800B778:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_800B780
-sub_800B780: @ 0x0800B780
+	thumb_func_start Task_800B780
+Task_800B780: @ 0x0800B780
 	push {r4, lr}
 	ldr r0, _0800B7A8 @ =gCurTask
 	ldr r0, [r0]
@@ -794,8 +697,8 @@ _0800B7BA:
 _0800B7C8: .4byte IWRAM_START + 0x74
 _0800B7CC: .4byte 0xFFFFFF00
 
-	thumb_func_start sub_800B7D0
-sub_800B7D0: @ 0x0800B7D0
+	thumb_func_start Task_800B7D0
+Task_800B7D0: @ 0x0800B7D0
 	push {r4, lr}
 	ldr r4, _0800B7F8 @ =gCurTask
 	ldr r0, [r4]
@@ -860,14 +763,14 @@ sub_800B828: @ 0x0800B828
 	strb r0, [r4]
 	ldr r0, _0800B858 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0800B85C @ =sub_800B950
+	ldr r0, _0800B85C @ =Task_800B950
 	str r0, [r1, #8]
 	pop {r4}
 	pop {r0}
 	bx r0
 	.align 2, 0
 _0800B858: .4byte gCurTask
-_0800B85C: .4byte sub_800B950
+_0800B85C: .4byte Task_800B950
 
 	thumb_func_start sub_800B860
 sub_800B860: @ 0x0800B860
@@ -1002,8 +905,8 @@ _0800B948:
 	pop {r1}
 	bx r1
 
-	thumb_func_start sub_800B950
-sub_800B950: @ 0x0800B950
+	thumb_func_start Task_800B950
+Task_800B950: @ 0x0800B950
 	push {r4, lr}
 	ldr r0, _0800B978 @ =gCurTask
 	ldr r0, [r0]
@@ -1051,9 +954,9 @@ sub_800B9A0: @ 0x0800B9A0
 	strb r1, [r0]
 	ldr r0, _0800B9B0 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0800B9B4 @ =sub_800B7D0
+	ldr r0, _0800B9B4 @ =Task_800B7D0
 	str r0, [r1, #8]
 	bx lr
 	.align 2, 0
 _0800B9B0: .4byte gCurTask
-_0800B9B4: .4byte sub_800B7D0
+_0800B9B4: .4byte Task_800B7D0
