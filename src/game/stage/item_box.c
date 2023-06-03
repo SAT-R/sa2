@@ -13,15 +13,15 @@
 #include "constants/zones.h"
 
 typedef struct {
-    SpriteBase base;
-    Sprite s;
-    Sprite item;
-    s32 x;
-    s32 y;
-    u16 unk74;
-    u8 kind;
-    u8 unk77;
-    u8 unk78;
+    /* 0x00 */ SpriteBase base;
+    /* 0x0C */ Sprite s;
+    /* 0x3C */ Sprite item;
+    /* 0x6C */ s32 x;
+    /* 0x70 */ s32 y;
+    /* 0x74 */ s16 unk74;
+    /* 0x76 */ u8 kind;
+    /* 0x77 */ u8 frames;
+    /* 0x78 */ bool8 unk78;
 } Entity_ItemBox; /* size: 0x7C */
 
 void sub_800B1AC(Entity_ItemBox *);
@@ -34,6 +34,8 @@ void TaskDestructor_800B80C(struct Task *);
 void sub_800B828(Entity_ItemBox *);
 bool32 sub_800B8AC(Entity_ItemBox *);
 bool32 sub_800B8F4(Entity_ItemBox *);
+void Task_800B950(void);
+void sub_800B9A0(Entity_ItemBox *);
 
 const u16 ItemBox_MysteryIcons[13][3] = {
     { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },
@@ -121,7 +123,7 @@ CreateEntity_Itembox_defer:
 
 void sub_800B1AC(Entity_ItemBox *itembox)
 {
-    if (itembox->unk78 != 1 || gPlayer.moveState & MOVESTATE_IN_AIR) {
+    if (itembox->unk78 != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
         gPlayer.speedAirY = -Q_24_8(3.0);
         gPlayer.unk64 = 38;
         gPlayer.unk66 = -1;
@@ -132,7 +134,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
 
     sub_800B9B8(itembox->x, itembox->y);
 
-    itembox->unk77 = 0;
+    itembox->frames = 0;
 
     if (IS_MULTI_PLAYER) {
         struct UNK_3005510 *unk = sub_8019224();
@@ -322,7 +324,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
     }
 
-    itembox->unk77 = 0;
+    itembox->frames = 0;
     gCurTask->main = Task_800B7D0;
 }
 
@@ -399,4 +401,118 @@ void Task_800B704(void)
             sub_800B860(itembox, FALSE);
         }
     }
+}
+
+void Task_800B780(void)
+{
+    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+
+    // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
+    if (itembox->frames++ >= 60)
+        ApplyItemboxEffect(itembox);
+    else {
+        itembox->unk74 += -Q_24_8(1.0);
+    }
+
+    sub_800B860(itembox, TRUE);
+}
+
+void Task_800B7D0(void)
+{
+    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+
+    // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
+    if (itembox->frames++ >= 30)
+        TaskDestroy(gCurTask);
+    else
+        sub_800B860(itembox, TRUE);
+}
+
+void TaskDestructor_800B80C(struct Task *t)
+{
+    Entity_ItemBox *itembox = TaskGetStructPtr(t);
+    VramFree(itembox->s.graphics.dest);
+    VramFree(itembox->item.graphics.dest);
+}
+
+void sub_800B828(Entity_ItemBox *itembox)
+{
+    m4aSongNumStart(SE_ITEM_BOX_2);
+
+    sub_800B9B8(itembox->x, itembox->y);
+
+    itembox->frames = 0;
+
+    gCurTask->main = Task_800B950;
+}
+
+void sub_800B860(Entity_ItemBox *itembox, bool32 p1)
+{
+    itembox->s.x = itembox->x - gCamera.x;
+    itembox->s.y = itembox->y - gCamera.y;
+
+    itembox->item.x = itembox->x - gCamera.x;
+    itembox->item.y = (Q_24_8_TO_INT(itembox->unk74) + itembox->s.y);
+
+    if (!p1)
+        sub_80051E8(&itembox->s);
+
+    sub_80051E8(&itembox->item);
+}
+
+bool32 sub_800B8AC(Entity_ItemBox *itembox)
+{
+    s16 x = itembox->x - gCamera.x;
+    s16 y = itembox->y - gCamera.y;
+
+    if (IS_OUT_OF_RANGE_2(x, y, CAM_REGION_WIDTH / 2, CAM_REGION_WIDTH / 2)) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 sub_800B8F4(Entity_ItemBox *itembox)
+{
+    if (PLAYER_IS_ALIVE) {
+        Sprite *s = &itembox->s;
+        u32 res = sub_800C944(s, itembox->x, itembox->y);
+
+        if (res != 0) {
+            itembox->unk78 = 1;
+
+            return itembox->unk78;
+        } else {
+            if (!sub_800C204(s, itembox->x, itembox->y, 0, &gPlayer, 0)) {
+            sub_800B8F4_Ret0:
+                return FALSE;
+            } else {
+                itembox->unk78 = 0;
+
+                return TRUE;
+            }
+        }
+    } else {
+        goto sub_800B8F4_Ret0;
+    }
+}
+
+void Task_800B950(void)
+{
+    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+
+    // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
+    if (itembox->frames++ >= 60) {
+        sub_800B9A0(itembox);
+    } else {
+        itembox->unk74 += -Q_24_8(1.0);
+    }
+
+    sub_800B860(itembox, TRUE);
+}
+
+void sub_800B9A0(Entity_ItemBox *itembox)
+{
+    itembox->frames = 0;
+    gCurTask->main = Task_800B7D0;
 }

@@ -1,6 +1,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "lib/m4a.h"
 
@@ -483,8 +484,6 @@ static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)
 
     return FALSE;
 }
-
-u32 sub_800C944(Sprite *, s32, s32);
 
 static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
 {
