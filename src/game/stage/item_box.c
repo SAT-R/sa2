@@ -15,7 +15,7 @@
 typedef struct {
     SpriteBase base;
     Sprite s;
-    Sprite s2;
+    Sprite item;
     s32 x;
     s32 y;
     u16 unk74;
@@ -25,11 +25,15 @@ typedef struct {
 } Entity_ItemBox; /* size: 0x7C */
 
 void sub_800B1AC(Entity_ItemBox *);
-void sub_800B580(Entity_ItemBox *, s32);
+void sub_800B580(Entity_ItemBox *, bool32);
+void sub_800B860(Entity_ItemBox *, bool32);
 void Task_800B704(void);
 void Task_800B780(void);
 void Task_800B7D0(void);
 void TaskDestructor_800B80C(struct Task *);
+void sub_800B828(Entity_ItemBox *);
+bool32 sub_800B8AC(Entity_ItemBox *);
+bool32 sub_800B8F4(Entity_ItemBox *);
 
 const u16 ItemBox_MysteryIcons[13][3] = {
     { SA2_ANIM_ITEMBOX_TYPE, 0, 4 },  { SA2_ANIM_ITEMBOX_TYPE, 5, 4 },
@@ -49,7 +53,8 @@ const u16 ItemBox_1UpIcons[5][3] = {
     { SA2_ANIM_ITEMBOX_TYPE, CHARACTER_AMY, 4 },
 };
 
-const u16 gUnknown_080D51E4[] = { 5, 13, 4, 13, 3, 13, 6, 13 };
+const u16 gUnknown_080D51E4[8] = { 5, 13, 4, 13, 3, 13, 6, 13 };
+
 const u16 gUnknown_080D51F4[] = { 8, 9, 10, 11 };
 const u8 gUnknown_080D51FC[] = { 1, 5, 10, 30, 50, 0, 0, 0 };
 
@@ -97,7 +102,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX);
     sub_8004558(s);
 
-    s = &itembox->s2;
+    s = &itembox->item;
     s->unk1A = 0x500;
     s->graphics.size = 0;
     s->unk14 = 0;
@@ -319,4 +324,79 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
     itembox->unk77 = 0;
     gCurTask->main = Task_800B7D0;
+}
+
+void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
+{
+    switch (gGameMode) {
+        case GAME_MODE_SINGLE_PLAYER:
+        case GAME_MODE_TIME_ATTACK:
+        case GAME_MODE_BOSS_TIME_ATTACK: {
+            if (p1) {
+                if (itembox->kind == 0) {
+                    itembox->item.graphics.anim
+                        = ItemBox_1UpIcons[gSelectedCharacter][0];
+                    itembox->item.variant = ItemBox_1UpIcons[gSelectedCharacter][1];
+                } else {
+                    itembox->item.graphics.anim = ItemBox_MysteryIcons[itembox->kind][0];
+                    itembox->item.variant = ItemBox_MysteryIcons[itembox->kind][1];
+                }
+
+                sub_8004558(&itembox->item);
+            }
+        } break;
+
+        case GAME_MODE_MULTI_PLAYER:
+        case GAME_MODE_TEAM_PLAY: {
+            if (p1 || ((gUnknown_03005590 & 0x1F) == 0)) {
+                s32 kind = gUnknown_080D51E4[(gUnknown_03005590 >> 5) & 0x7];
+
+                if (kind == 13) {
+                    kind = gUnknown_080D51F4[gMultiplayerPseudoRandom & 0x3];
+
+                    if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_7) {
+                        if (kind == 8) {
+                            s32 index = ((gMultiplayerPseudoRandom >> 2) % 3) + 1;
+                            kind = gUnknown_080D51F4[index];
+                        }
+                    }
+                }
+                itembox->kind = kind;
+
+                itembox->item.graphics.anim = ItemBox_MysteryIcons[kind][0];
+                itembox->item.variant = ItemBox_MysteryIcons[kind][1];
+                sub_8004558(&itembox->item);
+            }
+        } break;
+
+        case GAME_MODE_MULTI_PLAYER_COLLECT_RINGS: {
+            if (p1) {
+                itembox->item.graphics.anim = ItemBox_MysteryIcons[itembox->kind][0];
+                itembox->item.variant = ItemBox_MysteryIcons[itembox->kind][1];
+                sub_8004558(&itembox->item);
+            }
+        } break;
+    }
+}
+
+void Task_800B704(void)
+{
+    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+
+    if (IS_MULTI_PLAYER && ((s8)itembox->base.me->x) == MAP_ENTITY_STATE_MINUS_THREE) {
+        sub_800B828(itembox);
+    } else {
+        if (sub_800B8F4(itembox)) {
+            sub_800B1AC(itembox);
+        } else {
+            sub_800B580(itembox, FALSE);
+        }
+
+        if (sub_800B8AC(itembox)) {
+            SET_MAP_ENTITY_NOT_INITIALIZED(itembox->base.me, itembox->base.spriteX);
+            TaskDestroy(gCurTask);
+        } else {
+            sub_800B860(itembox, FALSE);
+        }
+    }
 }
