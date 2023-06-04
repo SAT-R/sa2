@@ -60,13 +60,7 @@ void Task_CreateStageUnknownTask(void)
 
         if(someCos != 0) {
             // _080099D6
-            s16 divRes0;
-            s16 divRes1;
-            s16 divRes2;
-            s16 divRes3;
-            s16 divRes4;
-            s16 divRes5;
-            s16 divRes6;
+            s16 divRes;
             u8 sp08[8];
             Struct_SP10 sp10;
             s16 sp14[2];
@@ -74,8 +68,8 @@ void Task_CreateStageUnknownTask(void)
             s32 r5;
 
             someSin = (sinIndex << 8);
-            divRes0 = Div(someSin, someCos);
-            sp10.unk0 = ut->unk6 - Q_24_8_TO_INT(divRes0 * ut->unk8);
+            divRes = Div(someSin, someCos);
+            sp10.unk0 = ut->unk6 - Q_24_8_TO_INT(divRes * ut->unk8);
 
             if(sp10.unk0 <= 0) {
                 sp10.unk0 = 0;
@@ -84,15 +78,15 @@ void Task_CreateStageUnknownTask(void)
                     s32 newSinIndex = ((sinIndex - 256 - 512) & ONE_CYCLE);
                     s32 newSinValue = Q_24_8(SIN_24_8(newSinIndex));
                     
-                    divRes1 = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(divRes1 * ut->unk6);
+                    divRes = Div(newSinValue, COS_24_8(newSinIndex));
+                    sp10.unk2 = Q_24_8_TO_INT(divRes * ut->unk6);
                 } else {
                     // _08009A50
                     s32 newSinIndex = ((sinIndex - 256) & ONE_CYCLE);
                     s32 newSinValue = SIN_24_8(newSinIndex);
                     
-                    divRes1 = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(divRes1 * ut->unk6);
+                    divRes = Div(newSinValue, COS_24_8(newSinIndex));
+                    sp10.unk2 = Q_24_8_TO_INT(divRes * ut->unk6);
                 }
             } else if(sp10.unk0 >= DISPLAY_WIDTH) {
                 // _08009A86
@@ -117,15 +111,15 @@ void Task_CreateStageUnknownTask(void)
             
             // __08009AF4
 
-            divRes2 = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
-            sp08[2] = Q_24_8(divRes2 * ut->unk8 - DISPLAY_HEIGHT);
+            divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
+            sp08[2] = Q_24_8(divRes * ut->unk8 - DISPLAY_HEIGHT);
             sp08[3] = DISPLAY_HEIGHT;
 
             r5 = (ut->unk0 - ut->unkB);
             r5 &= ONE_CYCLE;
 
-            divRes3 = Div(SIN_24_8(r5) << 8, COS_24_8(r5));
-            sp14[0] = ((divRes3 * ut->unk8) >> 8) + ut->unk6;
+            divRes = Div(SIN_24_8(r5) << 8, COS_24_8(r5));
+            sp14[0] = ((divRes * ut->unk8) >> 8) + ut->unk6;
             
 
             if(sp14[0] <= 0) {
@@ -137,8 +131,8 @@ void Task_CreateStageUnknownTask(void)
                     sinIndex = 256 - r5;
                 }
 
-                divRes4 = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
-                sp14[1] = ut->unk8 - ((divRes4 * ut->unk6) >> 8);
+                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
+                sp14[1] = ut->unk8 - ((divRes * ut->unk6) >> 8);
             } else if(sp14[0] >= DISPLAY_WIDTH) {
                 // _08009BD8
                 sb = DISPLAY_WIDTH;
@@ -150,8 +144,8 @@ void Task_CreateStageUnknownTask(void)
                     sinIndex = 256 - r5;
                 }
                 // _08009BF6
-                divRes5 = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
-                sp14[1] = ut->unk8 - ((divRes5 * (sb - ut->unk6)) >> 8);
+                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
+                sp14[1] = ut->unk8 - ((divRes * (sb - ut->unk6)) >> 8);
 
             } else {
                 // _08009C34
@@ -163,8 +157,8 @@ void Task_CreateStageUnknownTask(void)
             sp08[5] = sp14[1];
 
             // _08009C46
-            divRes6 = Div(SIN_24_8(r5) << 8, COS_24_8(r5));
-            sp08[6] = (((ut->unk8 - DISPLAY_HEIGHT) * divRes6) >> 8) + ut->unk6;
+            divRes = Div(SIN_24_8(r5) << 8, COS_24_8(r5));
+            sp08[6] = (((ut->unk8 - DISPLAY_HEIGHT) * divRes) >> 8) + ut->unk6;
             sp08[7] = DISPLAY_HEIGHT;
 
             if(ut->unk0 < Q_24_8(2.0)) {
