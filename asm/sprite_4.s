@@ -842,6 +842,7 @@ _08006214:
 	.align 2, 0
 _08006224: .4byte gUnknown_03002A80
 
+@; Same parameters as sub_80064A8
 	thumb_func_start sub_8006228
 sub_8006228: @ 0x08006228
 	push {r4, r5, r6, r7, lr}
@@ -1183,6 +1184,7 @@ _08006496:
 	.align 2, 0
 _080064A4: .4byte gUnknown_03002A80
 
+@; Same parameters as sub_8006228
 	thumb_func_start sub_80064A8
 sub_80064A8: @ 0x080064A8
 	push {r4, r5, r6, r7, lr}

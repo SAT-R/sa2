@@ -455,7 +455,7 @@ _08009CCC:
 	orrs r0, r1
 	strh r0, [r2, #4]
 _08009CDA:
-	ldrb r0, [r4, #0xa]
+	ldrb r0, [r4, #0xa]     @ r0 = ut->unkA
 	add r1, sp, #8
 	ldrb r1, [r1, #4]
 	add r2, sp, #8
@@ -503,12 +503,13 @@ _08009D2A:
 	.align 2, 0
 _08009D34: .4byte gWinRegs
 _08009D38:
-	mov r3, sl
+	mov r3, sl          @ r3 = sp10
 	ldrh r0, [r3, #2]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
 	cmp r0, #0x9f
 	bgt Task_StageUnknownTask_Return
+__08009D44:
 	mov r5, r8
 	ldrh r0, [r5, #2]
 	lsls r0, r0, #0x10
@@ -520,6 +521,7 @@ _08009D38:
 	ands r0, r1
 	cmp r0, #0
 	beq _08009D70
+__08009D5A:
 	ldr r2, _08009D6C @ =gWinRegs
 	add r0, sp, #8
 	ldrb r0, [r0, #1]

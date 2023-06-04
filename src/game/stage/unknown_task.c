@@ -67,7 +67,7 @@ void Task_CreateStageUnknownTask(void)
             s16 divRes4;
             s16 divRes5;
             s16 divRes6;
-            s8 sp08[8];
+            u8 sp08[8];
             Struct_SP10 sp10;
             s16 sp14[2];
             s32 sb;
@@ -170,7 +170,7 @@ void Task_CreateStageUnknownTask(void)
             if(ut->unk0 < Q_24_8(2.0)) {
                 if(sp14[1] < DISPLAY_HEIGHT) {
                     // _08009C98
-                    if(sp10.unk2 >= DISPLAY_HEIGHT) {
+                    if((u16)sp10.unk2 >= DISPLAY_HEIGHT) {
                         if(ut->unkA & 0x1) {
                             gWinRegs[3] = WIN_RANGE(sp08[5], DISPLAY_HEIGHT); 
                         } else {
@@ -181,10 +181,38 @@ void Task_CreateStageUnknownTask(void)
                         sub_8006228(ut->unkA, sp08[4], sp08[5], sp08[6], sp08[7], 0);
                     } else {
                         // _08009CFC
+                        if(ut->unkA & 0x1) {
+                            gWinRegs[3] = WIN_RANGE(sp08[5], DISPLAY_WIDTH);
+                        } else {
+                            // _08009D1C
+                            gWinRegs[2] = WIN_RANGE(sp08[5], DISPLAY_WIDTH);
+                        }
+
+                        sub_800724C(ut->unkA, sp08);
                     }
                 }
-            } else {
-                // _08009D38
+            } else if(sp10.unk2 < DISPLAY_HEIGHT){
+                // __08009D44
+                if(sp14[1] < DISPLAY_HEIGHT) {
+                    if(ut->unkA & 0x1) {
+                        gWinRegs[6] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
+                    } else {
+                        // _08009D70
+                        gWinRegs[4] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
+                    }
+                    
+                        sub_80064A8(ut->unkA, sp08[0], sp08[1], sp08[2], sp08[3], 0);
+                } else {
+                    // _08009DA0
+                    if(ut->unkA & 0x1) {
+                        gWinRegs[3] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
+                    } else {
+                        // _08009D1C
+                        gWinRegs[2] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
+                    }
+
+                    sub_800724C(ut->unkA, sp08);
+                }
             }
         }
     }
