@@ -54,6 +54,7 @@ SECTIONS
         build/sa2/src/game/stage/entities_manager.o(.text);
         build/sa2/src/game/stage/palette_loader.o(.text);
         build/sa2/src/game/unused_level_select.o(.text);
+        build/sa2/src/game/stage/unknown_task.o(.text);
         build/sa2/asm/stage_unknown_task.o(.text);
         build/sa2/src/game/stage/enemy_defeat_score.o(.text);
         build/sa2/asm/stage_demo.o(.text);

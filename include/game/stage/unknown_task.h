@@ -3,11 +3,11 @@
 
 // Declared in header because it's used outside the module
 typedef struct {
-    u16 unk0;
+    s16 unk0;
     u16 unk2;
-    u16 unk4;
-    u16 unk6;
-    u16 unk8;
+    s16 unk4;
+    s16 unk6;
+    s16 unk8;
     u8 unkA;
     u8 unkB;
 } Struct_StageUnkTask; /* size: 0xC */
