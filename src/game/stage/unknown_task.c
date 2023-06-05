@@ -37,12 +37,12 @@ typedef struct {
 
 } Struct_SP10;
 
-// (60.60%) https://decomp.me/scratch/tNQ7u
+// (60.60%) https://decomp.me/scratch/NchTb
 NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
          void Task_CreateStageUnknownTask(void))
 {
     u32 sinIndex;
-    s32 someCos, someSin;
+    s32 someCos;
 
     Struct_StageUnkTask *ut = TaskGetStructPtr(gCurTask);
 
@@ -50,9 +50,9 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
         // _08009984
 
         if (ut->unk0 < Q_24_8(2.0)) {
-            ut->unk4 - ut->unk2;
+            ut->unk4 -= ut->unk2;
         } else {
-            ut->unk4 + ut->unk2;
+            ut->unk4 += ut->unk2;
         }
         // _080099A6
         ut->unk0 = (ut->unk0 - (ut->unk4 >> 8)) & ONE_CYCLE;
@@ -68,10 +68,10 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
             s16 sp14[2];
             s32 sb;
             s32 r5;
+            s32 temp;
 
-            someSin = (sinIndex << 8);
-            divRes = Div(someSin, someCos);
-            sp10.unk0 = ut->unk6 - Q_24_8_TO_INT(divRes * ut->unk8);
+            divRes = Div(Q_24_8(sinIndex) << 8, someCos);
+            sp10.unk0 = ut->unk6 - Q_24_8_TO_INT(ut->unk8 * divRes);
 
             if (sp10.unk0 <= 0) {
                 sp10.unk0 = 0;
@@ -81,14 +81,14 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
                     s32 newSinValue = Q_24_8(SIN_24_8(newSinIndex));
 
                     divRes = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(divRes * ut->unk6);
+                    sp10.unk2 = Q_24_8_TO_INT(ut->unk6 * divRes);
                 } else {
                     // _08009A50
                     s32 newSinIndex = ((sinIndex - 256) & ONE_CYCLE);
                     s32 newSinValue = SIN_24_8(newSinIndex);
 
                     divRes = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(divRes * ut->unk6);
+                    sp10.unk2 = Q_24_8_TO_INT(ut->unk6 * divRes);
                 }
             } else if (sp10.unk0 >= DISPLAY_WIDTH) {
                 // _08009A86
@@ -114,14 +114,14 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
 
             divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
                          COS_24_8(sinIndex & ONE_CYCLE));
-            sp08[2] = Q_24_8(divRes * ut->unk8 - DISPLAY_HEIGHT);
+            sp08[2] = Q_24_8((ut->unk8 * divRes) - DISPLAY_HEIGHT);
             sp08[3] = DISPLAY_HEIGHT;
 
             r5 = (ut->unk0 - ut->unkB);
             r5 &= ONE_CYCLE;
 
             divRes = Div(SIN_24_8(r5) << 8, COS_24_8(r5));
-            sp14[0] = ((divRes * ut->unk8) >> 8) + ut->unk6;
+            sp14[0] = ((ut->unk8 * divRes) >> 8) + ut->unk6;
 
             if (sp14[0] <= 0) {
                 sp14[0] = sb;
@@ -134,7 +134,7 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
 
                 divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
                              COS_24_8(sinIndex & ONE_CYCLE));
-                sp14[1] = ut->unk8 - ((divRes * ut->unk6) >> 8);
+                sp14[1] = ut->unk8 - ((ut->unk6 * divRes) >> 8);
             } else if (sp14[0] >= DISPLAY_WIDTH) {
                 // _08009BD8
                 sb = DISPLAY_WIDTH;
@@ -148,7 +148,7 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
                 // _08009BF6
                 divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
                              COS_24_8(sinIndex & ONE_CYCLE));
-                sp14[1] = ut->unk8 - ((divRes * (sb - ut->unk6)) >> 8);
+                sp14[1] = ut->unk8 - (((sb - ut->unk6) * divRes) >> 8);
 
             } else {
                 // _08009C34
@@ -204,7 +204,7 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
                     if (ut->unkA & 0x1) {
                         gWinRegs[3] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
                     } else {
-                        // _08009DC0
+                        // _08009D1C
                         gWinRegs[2] = WIN_RANGE(sp08[1], DISPLAY_HEIGHT);
                     }
 
@@ -213,10 +213,4 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
             }
         }
     }
-}
-END_NONMATCH
-
-void TaskDestructor_CreateStageUnknownTask(struct Task *t)
-{
-    gFlags &= ~FLAGS_4;
 }
