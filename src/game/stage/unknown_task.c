@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -214,3 +215,8 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
     }
 }
 END_NONMATCH
+
+void TaskDestructor_CreateStageUnknownTask(struct Task *t)
+{
+    gFlags &= ~FLAGS_4;
+}
