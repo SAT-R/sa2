@@ -37,7 +37,7 @@ typedef struct {
 
 } Struct_SP10;
 
-// (60.60%) https://decomp.me/scratch/NchTb
+// (68.53%) https://decomp.me/scratch/NchTb
 NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
          void Task_CreateStageUnknownTask(void))
 {
