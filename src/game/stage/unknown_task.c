@@ -214,3 +214,6 @@ NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
         }
     }
 }
+END_NONMATCH
+
+void TaskDestructor_CreateStageUnknownTask(struct Task *t) { gFlags &= ~FLAGS_4; }

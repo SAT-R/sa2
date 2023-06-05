@@ -1,170 +1,12 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.align 2 , 0
-    .global sAnimInfoPauseMenu
-sAnimInfoPauseMenu:
-    .4byte 40
-    .2byte 0x42A    @ SA2_ANIM_PAUSE_MENU_JP
-    .byte  0x00
-.align 2 , 0
-
-    .4byte 40
-    .2byte 0x42B    @ SA2_ANIM_PAUSE_MENU_EN
-    .byte  0x00
-.align 2 , 0
-
-    .4byte 40
-    .2byte 0x42C    @ SA2_ANIM_PAUSE_MENU_DE
-    .byte  0x00
-.align 2 , 0
-
-    .4byte 40
-    .2byte 0x42D    @ SA2_ANIM_PAUSE_MENU_FR
-    .byte  0x00
-.align 2 , 0
-
-    .4byte 40
-    .2byte 0x42E    @ SA2_ANIM_PAUSE_MENU_ES
-    .byte  0x00
-.align 2 , 0
-
-    .4byte 40
-    .2byte 0x42F    @ SA2_ANIM_PAUSE_MENU_IT
-    .byte  0x00
-.align 2 , 0
-
 .text
 .syntax unified
 .arm
 
-	thumb_func_start CreatePauseMenu
-CreatePauseMenu: @ 0x0800A9FC
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	ldr r0, _0800AA78 @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r0, [r0, #6]
-	subs r0, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r0, #0
-	bge _0800AA12
-	movs r4, #0
-_0800AA12:
-	ldr r0, _0800AA7C @ =gUnknown_03005424
-	ldrh r1, [r0]
-	movs r0, #0x20
-	ands r0, r1
-	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
-	cmp r5, #0
-	bne _0800AAF8
-	ldr r1, _0800AA80 @ =sAnimInfoPauseMenu
-	lsls r4, r4, #0x18
-	asrs r0, r4, #0x15
-	adds r0, r0, r1
-	ldr r0, [r0]
-	bl VramMalloc
-	adds r6, r0, #0
-	ldr r0, _0800AA84 @ =ewram_end
-	ldr r0, [r0]
-	cmp r6, r0
-	beq _0800AAF8
-	ldr r0, _0800AA88 @ =sub_800ADAC
-	ldr r2, _0800AA8C @ =0x0000FFFE
-	ldr r1, _0800AA90 @ =sub_800AE44
-	str r1, [sp]
-	movs r1, #0x70
-	movs r3, #4
-	bl TaskCreate
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r0, r2
-	mov ip, r0
-	ldr r1, _0800AA94 @ =IWRAM_START + 0x60
-	adds r0, r2, r1
-	movs r1, #0
-	strh r5, [r0]
-	ldr r3, _0800AA98 @ =IWRAM_START + 0x62
-	adds r0, r2, r3
-	strb r1, [r0]
-	ldr r0, _0800AA9C @ =gInput
-	ldrh r1, [r0]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0800AAA4
-	ldr r0, _0800AAA0 @ =IWRAM_START + 0x63
-	adds r1, r2, r0
-	movs r0, #2
-	b _0800AAAA
-	.align 2, 0
-_0800AA78: .4byte gLoadedSaveGame
-_0800AA7C: .4byte gUnknown_03005424
-_0800AA80: .4byte sAnimInfoPauseMenu
-_0800AA84: .4byte ewram_end
-_0800AA88: .4byte sub_800ADAC
-_0800AA8C: .4byte 0x0000FFFE
-_0800AA90: .4byte sub_800AE44
-_0800AA94: .4byte IWRAM_START + 0x60
-_0800AA98: .4byte IWRAM_START + 0x62
-_0800AA9C: .4byte gInput
-_0800AAA0: .4byte IWRAM_START + 0x63
-_0800AAA4:
-	ldr r3, _0800AB00 @ =IWRAM_START + 0x63
-	adds r1, r2, r3
-	movs r0, #1
-_0800AAAA:
-	strb r0, [r1]
-	mov r0, ip
-	str r6, [r0, #4]
-	movs r3, #0
-	movs r2, #0
-	movs r0, #0x40
-	mov r1, ip
-	strh r0, [r1, #0x1a]
-	strh r2, [r1, #8]
-	ldr r1, _0800AB04 @ =sAnimInfoPauseMenu
-	asrs r0, r4, #0x15
-	adds r0, r0, r1
-	ldrh r1, [r0, #4]
-	mov r4, ip
-	strh r1, [r4, #0xa]
-	ldrb r1, [r0, #6]
-	mov r0, ip
-	adds r0, #0x20
-	strb r1, [r0]
-	strh r2, [r4, #0x14]
-	strh r2, [r4, #0x1c]
-	mov r1, ip
-	adds r1, #0x21
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0x10
-	strb r0, [r1]
-	mov r0, ip
-	adds r0, #0x25
-	strb r3, [r0]
-	movs r0, #0x78
-	strh r0, [r4, #0x16]
-	movs r0, #0x50
-	strh r0, [r4, #0x18]
-	str r2, [r4, #0x10]
-	mov r0, ip
-	bl sub_8004558
-_0800AAF8:
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800AB00: .4byte IWRAM_START + 0x63
-_0800AB04: .4byte sAnimInfoPauseMenu
+.if 0
+.endif
 
 	thumb_func_start sub_800AB08
 sub_800AB08: @ 0x0800AB08
@@ -471,8 +313,8 @@ _0800ADA0: .4byte gUnknown_03005660
 _0800ADA4: .4byte IWRAM_START + 0x1F8
 _0800ADA8: .4byte IWRAM_START + 0x1F2
 
-	thumb_func_start sub_800ADAC
-sub_800ADAC: @ 0x0800ADAC
+	thumb_func_start Task_PauseMenu
+Task_PauseMenu: @ 0x0800ADAC
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -542,8 +384,8 @@ _0800AE38: .4byte gObjPalette + 0x1F2
 _0800AE3C: .4byte 0x80000003
 _0800AE40: .4byte sub_800AB08
 
-	thumb_func_start sub_800AE44
-sub_800AE44: @ 0x0800AE44
+	thumb_func_start TaskDestructor_PauseMenu
+TaskDestructor_PauseMenu: @ 0x0800AE44
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
