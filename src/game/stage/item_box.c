@@ -68,7 +68,8 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     Sprite *s;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         if (me->index == 0) {
-            goto CreateEntity_Itembox_defer;
+            SET_MAP_ENTITY_INITIALIZED(me);
+            return;
         }
 
         if (me->index == 5) {
@@ -117,7 +118,6 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX_TYPE);
     sub_800B580(itembox, 1);
 
-CreateEntity_Itembox_defer:
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -145,6 +145,33 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     }
 
     gCurTask->main = Task_800B780;
+}
+
+#define ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount)               \
+{                                                                       \
+    gRingCount = newRingCount;                                          \
+    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {   \
+        s32 newLivesCount = Div(gRingCount, 100);                       \
+                                                                        \
+        if (newLivesCount != Div(oldRingCount, 100)                     \
+            && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                \
+            u32 newLives = gNumLives;                                   \
+            if (++newLives > 255) {                                     \
+                newLives = 255;                                         \
+            }                                                           \
+            gNumLives = newLives;                                       \
+                                                                        \
+            gUnknown_030054A8.unk3 = 16;                                \
+        }                                                               \
+    }                                                                   \
+                                                                        \
+    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {            \
+        if (gRingCount > 255) {                                         \
+            gRingCount = 255;                                           \
+        }                                                               \
+    }                                                                   \
+                                                                        \
+    m4aSongNumStart(SE_RING_COPY);                                      \
 }
 
 void ApplyItemboxEffect(Entity_ItemBox *itembox)
@@ -214,46 +241,21 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + rnd;
-            goto ApplyItemboxEffect_case7;
+            ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
         case 6: {
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + 5;
-            goto ApplyItemboxEffect_case7;
+            ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
         case 7: {
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + 10;
-
-        ApplyItemboxEffect_case7:
-            gRingCount = newRingCount;
-            if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                s32 newLivesCount = Div(gRingCount, 100);
-
-                if (newLivesCount != Div(oldRingCount, 100)
-                    && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                    u32 newLives = gNumLives;
-                    if (++newLives > 255) {
-                        newLives = 255;
-                    }
-                    gNumLives = newLives;
-
-                    gUnknown_030054A8.unk3 = 16;
-                }
-            }
-
-            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if (gRingCount > 255) {
-                    gRingCount = 255;
-                }
-            }
-
-            m4aSongNumStart(SE_RING_COPY);
-
+            ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
         case 8: {
@@ -270,7 +272,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 s32 boxToPlayerMagnitude;
 
                 // Don't look for your own ID
-                u32 sioId = (*(vu32 *)&REG_SIOCNT << 26) >> 30;
+                u32 sioId = (SIO_MULTI_CNT)->id;
                 if (playerId == sioId)
                     continue;
 
