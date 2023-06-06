@@ -41,7 +41,7 @@ const AnimInfoPauseMenu sAnimInfoPauseMenu[] = {
 #define PMFLAG_A_BUTTON_RELEASED               0x1
 #define PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION 0x2
 
-void Task_PauseMenu(void);
+void Task_PauseMenuInit(void);
 void TaskDestructor_PauseMenu(struct Task *);
 
 void CreatePauseMenu(void)
@@ -55,7 +55,7 @@ void CreatePauseMenu(void)
         void *vramTiles = VramMalloc(sAnimInfoPauseMenu[lang].size);
 
         if (vramTiles != ewram_end) {
-            struct Task *t = TaskCreate(Task_PauseMenu, sizeof(PauseMenu), 0xFFFE, 4,
+            struct Task *t = TaskCreate(Task_PauseMenuInit, sizeof(PauseMenu), 0xFFFE, 4,
                                         TaskDestructor_PauseMenu);
             PauseMenu *pm = TaskGetStructPtr(t);
             Sprite *s = &pm->s;
@@ -90,7 +90,7 @@ void CreatePauseMenu(void)
     }
 }
 
-void Task_800AB08(void)
+void Task_PauseMenuUpdate(void)
 {
     PauseMenu *pm = TaskGetStructPtr(gCurTask);
 
@@ -103,12 +103,12 @@ void Task_800AB08(void)
                || ((gGameMode != GAME_MODE_SINGLE_PLAYER)
                    && (gPressedKeys & B_BUTTON))) {
         // Close the Pause Menu
-        gFlags &= ~FLAGS_400;
+        gFlags &= ~FLAGS_PAUSE_GAME;
         m4aMPlayContinue(gMPlayTable[0].info);
         TaskDestroy(gCurTask);
         return;
     } else if ((gGameMode != GAME_MODE_SINGLE_PLAYER) && (gReleasedKeys & A_BUTTON)) {
-        gFlags &= ~FLAGS_400;
+        gFlags &= ~FLAGS_PAUSE_GAME;
         m4aSongNumStart(SE_SELECT);
 
         TasksDestroyAll();
@@ -119,7 +119,7 @@ void Task_800AB08(void)
         return;
     } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER)
                && (pm->cursor != PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON)) {
-        gFlags &= ~FLAGS_400;
+        gFlags &= ~FLAGS_PAUSE_GAME;
         m4aSongNumStart(SE_SELECT);
 
         TasksDestroyAll();
@@ -146,8 +146,8 @@ void Task_800AB08(void)
 
     /* Color CONTINUE/QUIT by copying the correct palette */
     if (pm->cursor != PMCURSOR_CONTINUE) {
-        DmaCopy16(3, pm->pal6A, (void *)(OBJ_PLTT + 0x1F2), sizeof(pm->pal6A));
-        DmaCopy16(3, pm->pal64, (void *)(OBJ_PLTT + 0x1F8), sizeof(pm->pal64));
+        DmaCopy16(3, pm->pal6A, &(((u16 *)OBJ_PLTT)[249]), sizeof(pm->pal6A));
+        DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[252]), sizeof(pm->pal64));
 
         if (gUnknown_03005660.unk0 == 1) {
             u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
@@ -156,8 +156,8 @@ void Task_800AB08(void)
             DmaCopy16(3, pm->pal64, &somePalette[252], sizeof(pm->pal64));
         }
     } else {
-        DmaCopy16(3, pm->pal6A, (void *)(OBJ_PLTT + 0x1F8), sizeof(pm->pal6A));
-        DmaCopy16(3, pm->pal64, (void *)(OBJ_PLTT + 0x1F2), sizeof(pm->pal64));
+        DmaCopy16(3, pm->pal6A, &(((u16 *)OBJ_PLTT)[252]), sizeof(pm->pal6A));
+        DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[249]), sizeof(pm->pal64));
 
         if (gUnknown_03005660.unk0 == 1) {
             u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
@@ -169,4 +169,42 @@ void Task_800AB08(void)
 
     pm->unk60 = 0;
     sub_80051E8(&pm->s);
+}
+
+void Task_PauseMenuInit(void)
+{
+    PauseMenu *pm = TaskGetStructPtr(gCurTask);
+    u32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (i != gSongTable[142].ms) {
+            MPlayStop(gMPlayTable[i].info);
+        }
+    }
+
+    m4aSongNumStart(SE_PAUSE_SCREEN);
+
+    gFlags |= FLAGS_PAUSE_GAME;
+    DmaCopy16(3, &gObjPalette[249], pm->pal64, sizeof(pm->pal64));
+    DmaCopy16(3, &gObjPalette[252], pm->pal6A, sizeof(pm->pal6A));
+
+    gCurTask->main = Task_PauseMenuUpdate;
+}
+
+void TaskDestructor_PauseMenu(struct Task *t)
+{
+    PauseMenu *pm = TaskGetStructPtr(t);
+    VramFree(pm->s.graphics.dest);
+}
+
+extern u16 Tileset_Stage_LeafForest_Act1[16 * 16];
+
+void sub_800AE58(void)
+{
+    DmaCopy16(3, &Tileset_Stage_LeafForest_Act1[(2 * 16 * TILE_SIZE_4BPP) / sizeof(u16)],
+              (void *)(OBJ_VRAM1 + 0x3EC0), 0x140);
+
+    gObjPalette[1] = RGB_WHITE;
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+    gFlags &= ~FLAGS_PAUSE_GAME;
 }
