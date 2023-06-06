@@ -137,6 +137,7 @@ SECTIONS
         build/sa2/asm/enemy_flickey.o(.text);
         build/sa2/src/game/enemies/kyura.o(.text);
         build/sa2/asm/enemy_bullet_buzzer.o(.text);
+        build/sa2/src/game/enemies/star.o(.text);
         build/sa2/asm/enemy_star.o(.text);
         build/sa2/src/game/multiplayer/mode_select.o(.text);
         build/sa2/src/game/multiplayer/multipak_connection.o(.text);
