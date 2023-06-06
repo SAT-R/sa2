@@ -10,7 +10,7 @@ typedef struct {
     Sprite s;
     u8 unk30;
     u8 unk31;
-} Struct_RingEffect;
+} RingEffect;
 
 void Task_CollectRingEffect(void);
 
@@ -19,9 +19,9 @@ extern struct SongHeader se_ring_copy;
 void CreateCollectRingEffect(s16 x, s16 y)
 {
     if (gUnknown_0300540C < 8) {
-        struct Task *t = TaskCreate(Task_CollectRingEffect, sizeof(Struct_RingEffect),
-                                    0x2000, 0, NULL);
-        Struct_RingEffect *re = TaskGetStructPtr(t);
+        struct Task *t
+            = TaskCreate(Task_CollectRingEffect, sizeof(RingEffect), 0x2000, 0, NULL);
+        RingEffect *re = TaskGetStructPtr(t);
         Sprite *s = &re->s;
 
         re->unk31 = 0;
@@ -59,7 +59,7 @@ void CreateCollectRingEffect(s16 x, s16 y)
 
 void Task_CollectRingEffect(void)
 {
-    Struct_RingEffect *re = TaskGetStructPtr(gCurTask);
+    RingEffect *re = TaskGetStructPtr(gCurTask);
     Sprite *s = &re->s;
 
     s16 playerX = s->x;

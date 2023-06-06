@@ -18,7 +18,7 @@ typedef struct {
     void *vram;
     u16 unk4;
     u8 levelId;
-} Struct_LevelSelect;
+} LevelSelect;
 
 static void Task_8009854(void);
 static void Task_8009780(void);
@@ -26,15 +26,14 @@ static void Task_80098C0(void);
 
 void sub_80096DC(void)
 {
-    struct Task *t
-        = TaskCreate(Task_8009854, sizeof(Struct_LevelSelect), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_8009854, sizeof(LevelSelect), 0x2000, 0, NULL);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
     gMultiplayerMissingHeartbeats[0] = 0;
 
     {
-        Struct_LevelSelect *levelSelect = TaskGetStructPtr(t);
+        LevelSelect *levelSelect = TaskGetStructPtr(t);
 
         gDispCnt = (DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_0);
         gBgCntRegs[0] = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(1)
@@ -65,7 +64,7 @@ void sub_80096DC(void)
 
 static void Task_8009780(void)
 {
-    Struct_LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
 
     char digits[5];
 
@@ -101,7 +100,7 @@ static void Task_8009780(void)
 
 static void Task_8009854(void)
 {
-    Struct_LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
     gBgPalette[1] = RGB_WHITE;
     gFlags |= 0x1;
 
@@ -114,7 +113,7 @@ static void Task_8009854(void)
 
 static void Task_80098C0(void)
 {
-    Struct_LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
 
     u32 levelId = levelSelect->levelId;
     u8 levelId2 = levelId;

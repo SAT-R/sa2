@@ -10,7 +10,7 @@ typedef struct {
     s16 unk8;
     u8 unkA;
     u8 unkB;
-} Struct_StageUnkTask; /* size: 0xC */
+} StageUnkTask; /* size: 0xC */
 
 struct Task *CreateStageUnknownTask(void);
 
