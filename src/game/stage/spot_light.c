@@ -65,20 +65,17 @@ void Task_SpotLightMain(void)
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
         ut = TaskGetStructPtr(spotLight->t0);
 
-        if (((gUnknown_03005590 & 0x7) == 0) && (ut->unkB != 0)) {
-            if (gDispCnt & DISPCNT_BG0_ON) {
-                if (ut->unkB < 32)
-                    ut->unkB++;
+        if (((gUnknown_03005590 & 0x7) == 0) && (ut->unkB != 0)
+            && (gDispCnt & DISPCNT_BG0_ON)) {
 
-                ut = TaskGetStructPtr(spotLight->t1);
+            if (ut->unkB < 32)
+                ut->unkB++;
 
-                if (ut->unkB < 16)
-                    ut->unkB++;
-            } else {
-                goto goto_labl;
-            }
+            ut = TaskGetStructPtr(spotLight->t1);
+
+            if (ut->unkB < 16)
+                ut->unkB++;
         } else if (!(gDispCnt & DISPCNT_BG0_ON)) {
-        goto_labl:
             if (ut->unkB == 0) {
                 ut->unkB = 4;
 
