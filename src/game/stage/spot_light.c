@@ -15,7 +15,7 @@ typedef struct {
     struct Task *t1;
     s16 unk8;
     s32 unkC;
-} Struct_StageSpotLight;
+} StageSpotLight;
 
 void Task_SpotLightMain(void);
 void Task_800A8E0(void);
@@ -23,9 +23,9 @@ void TaskDestructor_SpotLightMain(struct Task *);
 
 bool32 CreateSpotLightBeams(void)
 {
-    struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(Struct_StageSpotLight),
-                                0x2000, 0, TaskDestructor_SpotLightMain);
-    Struct_StageSpotLight *spotLight = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(StageSpotLight), 0x2000, 0,
+                                TaskDestructor_SpotLightMain);
+    StageSpotLight *spotLight = TaskGetStructPtr(t);
     Struct_StageUnkTask *ut;
 
     spotLight->unk8 = 0x600;
@@ -58,7 +58,7 @@ bool32 CreateSpotLightBeams(void)
 
 void Task_SpotLightMain(void)
 {
-    Struct_StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
+    StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
     Struct_StageUnkTask *ut;
     s32 unkC;
 
@@ -124,7 +124,7 @@ void Task_SpotLightMain(void)
 void Task_800A8E0(void)
 {
     bool32 boolR5 = FALSE;
-    Struct_StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
+    StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
     Struct_StageUnkTask *ut;
     s32 unkC;
 

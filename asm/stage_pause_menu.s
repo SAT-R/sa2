@@ -6,22 +6,20 @@
 .arm
 
 .if 0
-.endif
-
-	thumb_func_start sub_800AB08
-sub_800AB08: @ 0x0800AB08
+	thumb_func_start Task_800AB08
+Task_800AB08: @ 0x0800AB08
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _0800AB3C @ =gCurTask
 	ldr r0, [r0]
 	ldrh r3, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r4, r3, r0
+	adds r4, r3, r0     @ r4 = pm
 	ldr r2, _0800AB40 @ =gReleasedKeys
 	ldrh r1, [r2]
 	movs r0, #1
 	ands r0, r1
-	mov ip, r2
+	mov ip, r2          @ ip = gReleasedKeys
 	cmp r0, #0
 	beq _0800AB4C
 	ldr r0, _0800AB44 @ =IWRAM_START + 0x63
@@ -48,13 +46,14 @@ _0800AB4C:
 	ands r0, r6
 	cmp r0, #0
 	bne _0800AB84
+__0800AB58:
 	adds r0, r4, #0
 	adds r0, #0x62
 	ldrb r3, [r0]
 	adds r5, r0, #0
 	cmp r3, #0
 	bne _0800AB70
-	mov r0, ip
+	mov r0, ip          @ r0 = ip = gReleasedKeys
 	ldrh r1, [r0]
 	movs r0, #1
 	ands r0, r1
@@ -83,7 +82,7 @@ _0800AB84:
 	ldr r0, _0800ABB4 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy
-	b _0800AD8A
+	b Task_800AB08_Return
 	.align 2, 0
 _0800ABA0: .4byte gPressedKeys
 _0800ABA4: .4byte gGameMode
@@ -92,12 +91,13 @@ _0800ABAC: .4byte 0xFFFFFBFF
 _0800ABB0: .4byte gMPlayTable
 _0800ABB4: .4byte gCurTask
 _0800ABB8:
-	mov r0, ip
+	mov r0, ip          @ r0 = ip = gReleasedKeys
 	ldrh r1, [r0]
 	movs r0, #1
 	ands r0, r1
 	cmp r0, #0
 	beq _0800AC7C
+__0800ABC4:
 	ldr r2, _0800ABF8 @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0800ABFC @ =0xFFFFFBFF
@@ -119,7 +119,7 @@ _0800ABB8:
 	ldrb r0, [r0]
 	strb r0, [r1]
 	bl CreateTimeAttackLobbyScreen
-	b _0800AD8A
+	b Task_800AB08_Return
 	.align 2, 0
 _0800ABF8: .4byte gFlags
 _0800ABFC: .4byte 0xFFFFFBFF
@@ -132,12 +132,13 @@ _0800AC14: .4byte gVramGraphicsCopyQueueIndex
 _0800AC18:
 	cmp r3, #0
 	beq _0800AC7C
-	mov r6, ip
+	mov r6, ip          @ r6 = ip = gReleasedKeys
 	ldrh r1, [r6]
 	movs r0, #1
 	ands r0, r1
 	cmp r0, #0
 	beq _0800AC7C
+__0800AC28:
 	ldr r2, _0800AC5C @ =gFlags
 	ldr r0, [r2]
 	ldr r1, _0800AC60 @ =0xFFFFFBFF
@@ -159,7 +160,7 @@ _0800AC18:
 	ldrb r0, [r0]
 	strb r0, [r1]
 	bl CreateTitleScreenAndSkipIntro
-	b _0800AD8A
+	b Task_800AB08_Return
 	.align 2, 0
 _0800AC5C: .4byte gFlags
 _0800AC60: .4byte 0xFFFFFBFF
@@ -300,7 +301,7 @@ _0800AD7C:
 	strh r0, [r1]
 	adds r0, r4, #0
 	bl sub_80051E8
-_0800AD8A:
+Task_800AB08_Return:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -312,6 +313,7 @@ _0800AD9C: .4byte 0x050003F2
 _0800ADA0: .4byte gUnknown_03005660
 _0800ADA4: .4byte IWRAM_START + 0x1F8
 _0800ADA8: .4byte IWRAM_START + 0x1F2
+.endif
 
 	thumb_func_start Task_PauseMenu
 Task_PauseMenu: @ 0x0800ADAC
@@ -367,7 +369,7 @@ _0800ADD6:
 	ldr r0, [r0, #8]
 	ldr r0, _0800AE24 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0800AE40 @ =sub_800AB08
+	ldr r0, _0800AE40 @ =Task_800AB08
 	str r0, [r1, #8]
 	pop {r3}
 	mov r8, r3
@@ -382,7 +384,7 @@ _0800AE30: .4byte gFlags
 _0800AE34: .4byte 0x040000D4
 _0800AE38: .4byte gObjPalette + 0x1F2
 _0800AE3C: .4byte 0x80000003
-_0800AE40: .4byte sub_800AB08
+_0800AE40: .4byte Task_800AB08
 
 	thumb_func_start TaskDestructor_PauseMenu
 TaskDestructor_PauseMenu: @ 0x0800AE44

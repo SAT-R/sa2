@@ -1,20 +1,27 @@
 #include "global.h"
+#include "lib/m4a.h"
+#include "gba/m4a_internal.h"
+
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/save.h"
+#include "game/time_attack/lobby.h"
+#include "game/title_screen.h"
 
 #include "constants/animations.h"
+#include "flags.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 
 typedef struct {
-    Sprite s;
-    u8 filler30[0x30];
-    u16 unk60;
-    u8 unk62;
-    u8 unk63;
-    u8 filler64[0xC];
-} Struct_PauseMenu; /* size: 0x70 */
+    /* 0x00 */ Sprite s;
+    /* 0x30 */ Sprite s2;
+    /* 0x60 */ u16 unk60;
+    /* 0x62 */ u8 cursor;
+    /* 0x63 */ u8 unk63; // bitarray
+    /* 0x64 */ u16 pal64[0x3];
+    /* 0x64 */ u16 pal6A[0x3];
+} PauseMenu; /* size: 0x70 */
 
 typedef struct {
     u32 size;
@@ -27,6 +34,12 @@ const AnimInfoPauseMenu sAnimInfoPauseMenu[] = {
     { 40, SA2_ANIM_PAUSE_MENU_DE, 0 }, { 40, SA2_ANIM_PAUSE_MENU_FR, 0 },
     { 40, SA2_ANIM_PAUSE_MENU_ES, 0 }, { 40, SA2_ANIM_PAUSE_MENU_IT, 0 },
 };
+
+#define PMCURSOR_CONTINUE 0
+#define PMCURSOR_QUIT     1
+
+#define PMFLAG_A_BUTTON_RELEASED               0x1
+#define PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION 0x2
 
 void Task_PauseMenu(void);
 void TaskDestructor_PauseMenu(struct Task *);
@@ -42,18 +55,18 @@ void CreatePauseMenu(void)
         void *vramTiles = VramMalloc(sAnimInfoPauseMenu[lang].size);
 
         if (vramTiles != ewram_end) {
-            struct Task *t = TaskCreate(Task_PauseMenu, sizeof(Struct_PauseMenu), 0xFFFE,
-                                        4, TaskDestructor_PauseMenu);
-            Struct_PauseMenu *pm = TaskGetStructPtr(t);
+            struct Task *t = TaskCreate(Task_PauseMenu, sizeof(PauseMenu), 0xFFFE, 4,
+                                        TaskDestructor_PauseMenu);
+            PauseMenu *pm = TaskGetStructPtr(t);
             Sprite *s = &pm->s;
 
             pm->unk60 = 0;
-            pm->unk62 = 0;
+            pm->cursor = PMCURSOR_CONTINUE;
 
             if (gInput & A_BUTTON) {
-                pm->unk63 = 2;
+                pm->unk63 = PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION;
             } else {
-                pm->unk63 = 1;
+                pm->unk63 = PMFLAG_A_BUTTON_RELEASED;
             }
 
             s->graphics.dest = vramTiles;
@@ -75,4 +88,85 @@ void CreatePauseMenu(void)
             sub_8004558(s);
         }
     }
+}
+
+void Task_800AB08(void)
+{
+    PauseMenu *pm = TaskGetStructPtr(gCurTask);
+
+    /* Handle A-/B-Button */
+    if ((gReleasedKeys & A_BUTTON)
+        && (pm->unk63 & PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION)) {
+        pm->unk63 = PMFLAG_A_BUTTON_RELEASED;
+    } else if ((gPressedKeys & START_BUTTON)
+               || ((pm->cursor == PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON))
+               || ((gGameMode != GAME_MODE_SINGLE_PLAYER)
+                   && (gPressedKeys & B_BUTTON))) {
+        // Close the Pause Menu
+        gFlags &= ~FLAGS_400;
+        m4aMPlayContinue(gMPlayTable[0].info);
+        TaskDestroy(gCurTask);
+        return;
+    } else if ((gGameMode != GAME_MODE_SINGLE_PLAYER) && (gReleasedKeys & A_BUTTON)) {
+        gFlags &= ~FLAGS_400;
+        m4aSongNumStart(SE_SELECT);
+
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        CreateTimeAttackLobbyScreen();
+        return;
+    } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER)
+               && (pm->cursor != PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON)) {
+        gFlags &= ~FLAGS_400;
+        m4aSongNumStart(SE_SELECT);
+
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        CreateTitleScreenAndSkipIntro();
+        return;
+    }
+
+    if (gBldRegs.bldY == 0) {
+        pm->s2.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        pm->s.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+    }
+
+    /* Move the cursor */
+    if ((gRepeatedKeys & DPAD_UP) && (pm->cursor != PMCURSOR_CONTINUE)) {
+        pm->cursor = PMCURSOR_CONTINUE;
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    } else if ((gRepeatedKeys & DPAD_DOWN) && pm->cursor == PMCURSOR_CONTINUE) {
+        pm->cursor = PMCURSOR_QUIT;
+        m4aSongNumStart(SE_MENU_CURSOR_MOVE);
+    }
+
+    /* Color CONTINUE/QUIT by copying the correct palette */
+    if (pm->cursor != PMCURSOR_CONTINUE) {
+        DmaCopy16(3, pm->pal6A, (void *)(OBJ_PLTT + 0x1F2), sizeof(pm->pal6A));
+        DmaCopy16(3, pm->pal64, (void *)(OBJ_PLTT + 0x1F8), sizeof(pm->pal64));
+
+        if (gUnknown_03005660.unk0 == 1) {
+            u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
+
+            DmaCopy16(3, pm->pal6A, &somePalette[249], sizeof(pm->pal6A));
+            DmaCopy16(3, pm->pal64, &somePalette[252], sizeof(pm->pal64));
+        }
+    } else {
+        DmaCopy16(3, pm->pal6A, (void *)(OBJ_PLTT + 0x1F8), sizeof(pm->pal6A));
+        DmaCopy16(3, pm->pal64, (void *)(OBJ_PLTT + 0x1F2), sizeof(pm->pal64));
+
+        if (gUnknown_03005660.unk0 == 1) {
+            u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
+
+            DmaCopy16(3, pm->pal6A, &somePalette[252], sizeof(pm->pal6A));
+            DmaCopy16(3, pm->pal64, &somePalette[249], sizeof(pm->pal64));
+        }
+    }
+
+    pm->unk60 = 0;
+    sub_80051E8(&pm->s);
 }

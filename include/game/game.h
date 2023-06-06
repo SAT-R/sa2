@@ -406,9 +406,13 @@ typedef struct {
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 extern SomeStruct_3005498 gUnknown_03005498;
 
+// Seems to be belonging to the pause menu?
+// Or maybe this is generally used to init common palettes for the GUI?
 struct SomeStruct_5660 {
-    u8 filler[16];
-    u32 unk10;
+    /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
+    /* 0x01 */ u8 filler1[15];
+    /* 0x10 */ struct Task
+        *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
 };
 
 extern struct SomeStruct_5660 gUnknown_03005660;
