@@ -147,32 +147,32 @@ void sub_800B1AC(Entity_ItemBox *itembox)
     gCurTask->main = Task_800B780;
 }
 
-#define ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount)               \
-{                                                                       \
-    gRingCount = newRingCount;                                          \
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {   \
-        s32 newLivesCount = Div(gRingCount, 100);                       \
-                                                                        \
-        if (newLivesCount != Div(oldRingCount, 100)                     \
-            && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                \
-            u32 newLives = gNumLives;                                   \
-            if (++newLives > 255) {                                     \
-                newLives = 255;                                         \
-            }                                                           \
-            gNumLives = newLives;                                       \
-                                                                        \
-            gUnknown_030054A8.unk3 = 16;                                \
-        }                                                               \
-    }                                                                   \
-                                                                        \
-    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {            \
-        if (gRingCount > 255) {                                         \
-            gRingCount = 255;                                           \
-        }                                                               \
-    }                                                                   \
-                                                                        \
-    m4aSongNumStart(SE_RING_COPY);                                      \
-}
+#define ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount)                               \
+    {                                                                                   \
+        gRingCount = newRingCount;                                                      \
+        if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {               \
+            s32 newLivesCount = Div(gRingCount, 100);                                   \
+                                                                                        \
+            if (newLivesCount != Div(oldRingCount, 100)                                 \
+                && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {                            \
+                u32 newLives = gNumLives;                                               \
+                if (++newLives > 255) {                                                 \
+                    newLives = 255;                                                     \
+                }                                                                       \
+                gNumLives = newLives;                                                   \
+                                                                                        \
+                gUnknown_030054A8.unk3 = 16;                                            \
+            }                                                                           \
+        }                                                                               \
+                                                                                        \
+        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {                        \
+            if (gRingCount > 255) {                                                     \
+                gRingCount = 255;                                                       \
+            }                                                                           \
+        }                                                                               \
+                                                                                        \
+        m4aSongNumStart(SE_RING_COPY);                                                  \
+    }
 
 void ApplyItemboxEffect(Entity_ItemBox *itembox)
 {
