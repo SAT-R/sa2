@@ -18,6 +18,8 @@ typedef struct {
 } DemoManager;
 
 void Task_800A110(void);
+void Task_800A310(void);
+void CreateMusicFadeoutTask(u16);
 void TaskDestructor_800A350(struct Task *);
 
 void CreateDemoManager(void)
@@ -34,7 +36,7 @@ void CreateDemoManager(void)
     dm->unk64 = 0;
     dm->unk65 = gLoadedSaveGame->timeLimitEnabled;
 
-    gUnknown_03005424 |= EXTRA_STATE__40;
+    gUnknown_03005424 |= EXTRA_STATE__DEMO_RUNNING;
 
     s = &dm->s;
     s->x = (DISPLAY_WIDTH / 2);
@@ -79,4 +81,60 @@ void CreateDemoManager(void)
         s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
     sub_8004558(s);
+}
+
+void Task_800A110(void)
+{
+    DemoManager *dm = TaskGetStructPtr(gCurTask);
+
+    if (gPhysicalInput & START_BUTTON) {
+        gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+        gPlayer.unk5C = 0;
+
+        gUnknown_030054E4 = 1;
+
+        dm->unk64 = 1;
+
+        gCurTask->main = Task_800A310;
+
+        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        gBldRegs.bldY = 0;
+
+        gUnknown_030054A8.unk0 = 0xFF;
+        CreateMusicFadeoutTask(64);
+    } else if (gCheckpointTime > (u32)ZONE_TIME_TO_INT(0, 24.5)) {
+        dm->unk64 = 0;
+
+        gCurTask->main = Task_800A310;
+
+        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        gBldRegs.bldY = 0;
+
+        gUnknown_030054A8.unk0 = 0xFF;
+        CreateMusicFadeoutTask(64);
+    }
+    // _0800A1B6
+
+    if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
+        Sprite *s = &dm->s;
+
+        if (gUnknown_03005590 & 0x20) {
+            if (gBldRegs.bldY != 0) {
+                s->unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+            } else {
+                s->unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+            }
+
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+
+        if (gBldRegs.bldY != 0) {
+            dm->s2.unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+        } else {
+            dm->s2.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        }
+
+        sub_80051E8(&dm->s2);
+    }
 }
