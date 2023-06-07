@@ -7,180 +7,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateDemoManager
-CreateDemoManager: @ 0x08009F94
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	ldr r0, _0800A0C8 @ =gBldRegs
-	ldrb r1, [r0]
-	movs r0, #0xc0
-	ands r0, r1
-	str r0, [sp, #4]
-	ldr r0, _0800A0CC @ =gLoadedSaveGame
-	mov r8, r0
-	ldr r0, [r0]
-	ldrb r4, [r0, #6]
-	ldr r0, _0800A0D0 @ =sub_800A110
-	ldr r1, _0800A0D4 @ =sub_800A350
-	str r1, [sp]
-	movs r1, #0x68
-	movs r2, #1
-	movs r3, #0
-	bl TaskCreate
-	ldrh r7, [r0, #6]
-	movs r6, #0xc0
-	lsls r6, r6, #0x12
-	ldr r1, _0800A0D8 @ =IWRAM_START + 0x60
-	adds r0, r7, r1
-	movs r2, #0
-	mov sb, r2
-	movs r5, #0
-	strh r5, [r0]
-	adds r1, #2
-	adds r0, r7, r1
-	strh r5, [r0]
-	ldr r2, _0800A0DC @ =IWRAM_START + 0x64
-	adds r0, r7, r2
-	mov r1, sb
-	strb r1, [r0]
-	mov r2, r8
-	ldr r0, [r2]
-	ldrb r1, [r0, #5]
-	ldr r2, _0800A0E0 @ =IWRAM_START + 0x65
-	adds r0, r7, r2
-	strb r1, [r0]
-	ldr r2, _0800A0E4 @ =gUnknown_03005424
-	ldrh r0, [r2]
-	movs r1, #0x40
-	orrs r0, r1
-	strh r0, [r2]
-	orrs r6, r7
-	movs r0, #0x78
-	strh r0, [r6, #0x16]
-	movs r0, #0x71
-	strh r0, [r6, #0x18]
-	ldr r0, _0800A0E8 @ =gPressStartTiles
-	lsls r4, r4, #0x18
-	asrs r4, r4, #0x15
-	adds r4, r4, r0
-	ldr r0, [r4]
-	bl VramMalloc
-	str r0, [r6, #4]
-	strh r5, [r6, #8]
-	ldrh r0, [r4, #4]
-	strh r0, [r6, #0xa]
-	ldrb r1, [r4, #6]
-	ldr r2, _0800A0EC @ =IWRAM_START + 0x20
-	adds r0, r7, r2
-	strb r1, [r0]
-	strh r5, [r6, #0x14]
-	ldr r0, _0800A0F0 @ =IWRAM_START + 0x21
-	adds r1, r7, r0
-	movs r2, #1
-	rsbs r2, r2, #0
-	adds r4, r2, #0
-	movs r0, #0xff
-	strb r0, [r1]
-	strh r5, [r6, #0x1c]
-	ldr r1, _0800A0F4 @ =IWRAM_START + 0x22
-	adds r0, r7, r1
-	movs r2, #0x10
-	mov sl, r2
-	mov r1, sl
-	strb r1, [r0]
-	ldr r2, _0800A0F8 @ =IWRAM_START + 0x25
-	adds r0, r7, r2
-	mov r1, sb
-	strb r1, [r0]
-	movs r2, #0x40
-	mov r8, r2
-	mov r0, r8
-	strh r0, [r6, #0x1a]
-	str r5, [r6, #0x10]
-	ldr r1, [sp, #4]
-	cmp r1, #0x40
-	beq _0800A05A
-	movs r0, #0x80
-	str r0, [r6, #0x10]
-_0800A05A:
-	adds r0, r6, #0
-	bl sub_8004558
-	ldr r2, _0800A0FC @ =IWRAM_START + 0x30
-	adds r6, r7, r2
-	movs r0, #0x78
-	strh r0, [r6, #0x16]
-	movs r0, #0x50
-	strh r0, [r6, #0x18]
-	movs r0, #0x1c
-	bl VramMalloc
-	str r0, [r6, #4]
-	strh r5, [r6, #8]
-	ldr r0, _0800A100 @ =0x00000414
-	strh r0, [r6, #0xa]
-	ldr r1, _0800A104 @ =IWRAM_START + 0x50
-	adds r0, r7, r1
-	mov r2, sb
-	strb r2, [r0]
-	strh r5, [r6, #0x14]
-	ldr r0, _0800A108 @ =IWRAM_START + 0x51
-	adds r1, r7, r0
-	ldrb r0, [r1]
-	orrs r0, r4
-	strb r0, [r1]
-	strh r5, [r6, #0x1c]
-	ldr r1, _0800A10C @ =IWRAM_START + 0x52
-	adds r0, r7, r1
-	mov r2, sl
-	strb r2, [r0]
-	adds r1, #3
-	adds r0, r7, r1
-	mov r2, sb
-	strb r2, [r0]
-	mov r0, r8
-	strh r0, [r6, #0x1a]
-	str r5, [r6, #0x10]
-	ldr r1, [sp, #4]
-	cmp r1, #0x40
-	beq _0800A0B0
-	movs r0, #0x80
-	str r0, [r6, #0x10]
-_0800A0B0:
-	adds r0, r6, #0
-	bl sub_8004558
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0800A0C8: .4byte gBldRegs
-_0800A0CC: .4byte gLoadedSaveGame
-_0800A0D0: .4byte sub_800A110
-_0800A0D4: .4byte sub_800A350
-_0800A0D8: .4byte IWRAM_START + 0x60
-_0800A0DC: .4byte IWRAM_START + 0x64
-_0800A0E0: .4byte IWRAM_START + 0x65
-_0800A0E4: .4byte gUnknown_03005424
-_0800A0E8: .4byte gPressStartTiles
-_0800A0EC: .4byte IWRAM_START + 0x20
-_0800A0F0: .4byte IWRAM_START + 0x21
-_0800A0F4: .4byte IWRAM_START + 0x22
-_0800A0F8: .4byte IWRAM_START + 0x25
-_0800A0FC: .4byte IWRAM_START + 0x30
-_0800A100: .4byte 0x00000414
-_0800A104: .4byte IWRAM_START + 0x50
-_0800A108: .4byte IWRAM_START + 0x51
-_0800A10C: .4byte IWRAM_START + 0x52
+.if 0
+.endif
 
-	thumb_func_start sub_800A110
-sub_800A110: @ 0x0800A110
+	thumb_func_start Task_800A110
+Task_800A110: @ 0x0800A110
 	push {r4, r5, r6, lr}
 	ldr r6, _0800A16C @ =gCurTask
 	ldr r0, [r6]
@@ -213,7 +44,7 @@ sub_800A110: @ 0x0800A110
 	movs r0, #1
 	strb r0, [r1]
 	ldr r1, [r6]
-	ldr r0, _0800A180 @ =sub_800A310
+	ldr r0, _0800A180 @ =Task_800A310
 	str r0, [r1, #8]
 	ldr r1, _0800A184 @ =gBldRegs
 	movs r0, #0xbf
@@ -231,7 +62,7 @@ _0800A170: .4byte gPhysicalInput
 _0800A174: .4byte gPlayer
 _0800A178: .4byte gUnknown_030054E4
 _0800A17C: .4byte IWRAM_START + 0x64
-_0800A180: .4byte sub_800A310
+_0800A180: .4byte Task_800A310
 _0800A184: .4byte gBldRegs
 _0800A188: .4byte gUnknown_030054A8
 _0800A18C:
@@ -244,7 +75,7 @@ _0800A18C:
 	adds r0, r5, r1
 	strb r2, [r0]
 	ldr r1, [r6]
-	ldr r0, _0800A1F0 @ =sub_800A310
+	ldr r0, _0800A1F0 @ =Task_800A310
 	str r0, [r1, #8]
 	ldr r1, _0800A1F4 @ =gBldRegs
 	movs r0, #0xbf
@@ -282,7 +113,7 @@ _0800A1B6:
 _0800A1E4: .4byte gCheckpointTime
 _0800A1E8: .4byte 0x000005BE
 _0800A1EC: .4byte IWRAM_START + 0x64
-_0800A1F0: .4byte sub_800A310
+_0800A1F0: .4byte Task_800A310
 _0800A1F4: .4byte gBldRegs
 _0800A1F8: .4byte gUnknown_030054A8
 _0800A1FC: .4byte gUnknown_03005424
@@ -325,8 +156,8 @@ _0800A240:
 	.align 2, 0
 _0800A248: .4byte 0xFFFFFE7F
 
-	thumb_func_start sub_800A24C
-sub_800A24C: @ 0x0800A24C
+	thumb_func_start Task_800A24C
+Task_800A24C: @ 0x0800A24C
 	push {r4, r5, r6, lr}
 	ldr r0, _0800A2C8 @ =gCurTask
 	ldr r0, [r0]
@@ -407,8 +238,8 @@ _0800A308:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_800A310
-sub_800A310: @ 0x0800A310
+	thumb_func_start Task_800A310
+Task_800A310: @ 0x0800A310
 	push {lr}
 	ldr r0, _0800A33C @ =gCurTask
 	ldr r3, [r0]
@@ -426,7 +257,7 @@ sub_800A310: @ 0x0800A310
 	ldr r0, _0800A348 @ =0x00000FFF
 	cmp r1, r0
 	bls _0800A336
-	ldr r0, _0800A34C @ =sub_800A24C
+	ldr r0, _0800A34C @ =Task_800A24C
 	str r0, [r3, #8]
 _0800A336:
 	pop {r0}
@@ -436,10 +267,10 @@ _0800A33C: .4byte gCurTask
 _0800A340: .4byte IWRAM_START + 0x60
 _0800A344: .4byte gBldRegs
 _0800A348: .4byte 0x00000FFF
-_0800A34C: .4byte sub_800A24C
+_0800A34C: .4byte Task_800A24C
 
-	thumb_func_start sub_800A350
-sub_800A350: @ 0x0800A350
+	thumb_func_start TaskDestructor_800A350
+TaskDestructor_800A350: @ 0x0800A350
 	push {r4, lr}
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0
@@ -472,7 +303,7 @@ sub_800A388: @ 0x0800A388
 	adds r5, r0, #0
 	lsls r5, r5, #0x10
 	lsrs r5, r5, #0x10
-	ldr r0, _0800A3C8 @ =sub_800A3D4
+	ldr r0, _0800A3C8 @ =Task_800A3D4
 	ldr r2, _0800A3CC @ =0x0000FFFE
 	movs r1, #0
 	str r1, [sp]
@@ -497,12 +328,12 @@ sub_800A388: @ 0x0800A388
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800A3C8: .4byte sub_800A3D4
+_0800A3C8: .4byte Task_800A3D4
 _0800A3CC: .4byte 0x0000FFFE
 _0800A3D0: .4byte gUnknown_030054A8
 
-	thumb_func_start sub_800A3D4
-sub_800A3D4: @ 0x0800A3D4
+	thumb_func_start Task_800A3D4
+Task_800A3D4: @ 0x0800A3D4
 	push {r4, r5, lr}
 	ldr r0, _0800A424 @ =gCurTask
 	ldr r0, [r0]

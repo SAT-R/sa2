@@ -109,6 +109,7 @@ extern u8 gUnknown_030054E4;
 #define EXTRA_STATE__4                  0x0004
 #define EXTRA_STATE__10                 0x0010
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
+#define EXTRA_STATE__40                 0x0040
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
 #define EXTRA_STATE__TURN_OFF_TIMER     0x0200
