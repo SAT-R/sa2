@@ -63,8 +63,9 @@ extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 extern u32 gUnknown_030059D0[2];
 
-// might be unsigned, actually?
-extern s16 gRingCount;
+// Sometimes loaded as s16, but as u16 most of the time.
+// If you encounter it being loaded as s16, please cast it.
+extern u16 gRingCount;
 
 typedef struct {
     u8 unk0;
@@ -106,6 +107,7 @@ extern u8 gUnknown_030054E4;
 #define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
 #define EXTRA_STATE__2                  0x0002
 #define EXTRA_STATE__4                  0x0004
+#define EXTRA_STATE__10                 0x0010
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
@@ -207,7 +209,7 @@ typedef struct Player_ {
     /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u8 filler2E[2];
+    /* 0x2E */ u16 unk2E; // bitfield(?)
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
@@ -268,7 +270,11 @@ typedef struct Player_ {
     /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u8 filler7C[8];
-    /* 0x84 */ s8 unk84;
+
+    // Denotes how many points the player should get after defeating an enemy.
+    // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
+    /* 0x84 */ s8 defeatScoreIndex;
+
     /* 0x85 */ s8 character;
     /* 0x86 */ u8 unk86;
     /* 0x87 */ u8 unk87;
@@ -400,9 +406,13 @@ typedef struct {
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 extern SomeStruct_3005498 gUnknown_03005498;
 
+// Seems to be belonging to the pause menu?
+// Or maybe this is generally used to init common palettes for the GUI?
 struct SomeStruct_5660 {
-    u8 filler[16];
-    u32 unk10;
+    /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
+    /* 0x01 */ u8 filler1[15];
+    /* 0x10 */ struct Task
+        *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
 };
 
 extern struct SomeStruct_5660 gUnknown_03005660;
@@ -581,4 +591,8 @@ extern void sub_8021350(void);
 
 // NOTE: Proc type should be the same as sub_80299F0!
 extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
+
+extern struct Task *sub_802A7A8(s8);
+extern struct Task *sub_802A854(s8);
+extern struct Task *sub_802A8F8(s8);
 #endif // GUARD_GAME_H

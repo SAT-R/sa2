@@ -12,15 +12,14 @@
 typedef struct {
     Sprite s;
     s16 unk30;
-} Struct_StageRing;
+} StageRing;
 
 void Task_StageRing(void);
 
 void sub_800BAAC(s16 x, s16 y)
 {
-    struct Task *t
-        = TaskCreate(Task_StageRing, sizeof(Struct_StageRing), 0x2000, 0, NULL);
-    Struct_StageRing *ring = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_StageRing, sizeof(StageRing), 0x2000, 0, NULL);
+    StageRing *ring = TaskGetStructPtr(t);
     Sprite *s;
 
     ring->unk30 = 0;
@@ -45,7 +44,7 @@ void sub_800BAAC(s16 x, s16 y)
 // https://decomp.me/scratch/EmhmV
 NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
 {
-    Struct_StageRing *ring = TaskGetStructPtr(gCurTask);
+    StageRing *ring = TaskGetStructPtr(gCurTask);
     Player *p = &gPlayer;
     s32 ringToPlayerX = Q_24_8_TO_INT(p->x) - (u16)ring->s.x;
     s32 ringToPlayerY = Q_24_8_TO_INT(p->y) - (u16)ring->s.y;
@@ -82,7 +81,7 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
             gRingCount++;
 
             if ((gCurrentLevel != COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
-                && (Div((u16)gRingCount, 100) != Div(oldRings, 100))
+                && (Div(gRingCount, 100) != Div(oldRings, 100))
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                 u32 lives = gNumLives;
                 if (lives + 1 > 255)
@@ -94,7 +93,7 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
             }
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if ((u16)gRingCount > 255)
+                if (gRingCount > 255)
                     gRingCount = 255;
             }
 

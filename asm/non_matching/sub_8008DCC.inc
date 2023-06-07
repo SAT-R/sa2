@@ -429,7 +429,7 @@ _080090A0:
 	adds r0, r4, #0
 	adds r1, r7, #0
 	mov r2, r8
-	bl CreateItemBox
+	bl CreateEntity_ItemBox
 _080090E4:
 	adds r4, #3
 	adds r6, #1
@@ -806,7 +806,7 @@ _0800936C:
 	adds r0, r4, #0
 	adds r1, r7, #0
 	mov r2, r8
-	bl CreateItemBox
+	bl CreateEntity_ItemBox
 _080093AC:
 	adds r4, #3
 	adds r6, #1

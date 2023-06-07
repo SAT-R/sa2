@@ -30,7 +30,7 @@ void GameStart(void)
     gCamera.movementTask = NULL;
 
     gUnknown_030059D0[1] = 0;
-    gUnknown_03005660.unk10 = 0;
+    gUnknown_03005660.t = NULL;
 
     gUnknown_0300543C = 0;
     gGameMode = GAME_MODE_SINGLE_PLAYER;

@@ -1,6 +1,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "lib/m4a.h"
 
@@ -287,15 +288,13 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             gRingCount = prevRingCount + boxVal;
 
             if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                if (Div((u16)gRingCount, 100) != Div(prevRingCount, 100)
-                    && gGameMode == 0) {
+                if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == 0) {
                     gNumLives = MIN(gNumLives + 1, 255u);
                     gUnknown_030054A8.unk3 = 0x10;
                 }
             }
 
-            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS
-                && (u16)gRingCount > 255) {
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && gRingCount > 255) {
                 gRingCount = 255;
             }
 
@@ -485,8 +484,6 @@ static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)
 
     return FALSE;
 }
-
-u32 sub_800C944(Sprite *, s32, s32);
 
 static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
 {
