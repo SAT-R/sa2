@@ -1,26 +1,33 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
-#include "game/save.h"
-#include "game/title_screen.h"
 #include "sprite.h"
 #include "task.h"
+#include "game/save.h"
+#include "game/title_screen.h"
+#include "lib/m4a.h"
 
 #include "constants/animations.h"
 
 typedef struct {
-    Sprite s;
-    Sprite s2;
-    u16 unk60;
-    u16 unk62;
-    u8 unk64;
-    u8 unk65;
+    /* 0x00 */ Sprite textPressStart;
+    /* 0x30 */ Sprite textDemoPlay;
+    /* 0x60 */ u16 unk60;
+    /* 0x62 */ u16 unk62;
+    /* 0x64 */ bool8 playerPressedStart;
+    /* 0x65 */ bool8 timeLimitEnabled;
 } DemoManager;
+
+typedef struct {
+    /* 0x00 */ u16 volume;
+    /* 0x02 */ u16 unk2;
+} DemoMusicFadeout;
 
 void Task_800A110(void);
 void Task_800A310(void);
 void CreateMusicFadeoutTask(u16);
 void TaskDestructor_800A350(struct Task *);
+void Task_800A3D4(void);
 
 void CreateDemoManager(void)
 {
@@ -33,12 +40,12 @@ void CreateDemoManager(void)
 
     dm->unk60 = 0;
     dm->unk62 = 0;
-    dm->unk64 = 0;
-    dm->unk65 = gLoadedSaveGame->timeLimitEnabled;
+    dm->playerPressedStart = FALSE;
+    dm->timeLimitEnabled = gLoadedSaveGame->timeLimitEnabled;
 
     gUnknown_03005424 |= EXTRA_STATE__DEMO_RUNNING;
 
-    s = &dm->s;
+    s = &dm->textPressStart;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2) + 33;
 
@@ -60,7 +67,7 @@ void CreateDemoManager(void)
     }
     sub_8004558(s);
 
-    s = &dm->s2;
+    s = &dm->textDemoPlay;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2);
 
@@ -93,7 +100,7 @@ void Task_800A110(void)
 
         gUnknown_030054E4 = 1;
 
-        dm->unk64 = 1;
+        dm->playerPressedStart = TRUE;
 
         gCurTask->main = Task_800A310;
 
@@ -103,7 +110,7 @@ void Task_800A110(void)
         gUnknown_030054A8.unk0 = 0xFF;
         CreateMusicFadeoutTask(64);
     } else if (gCheckpointTime > (u32)ZONE_TIME_TO_INT(0, 24.5)) {
-        dm->unk64 = 0;
+        dm->playerPressedStart = FALSE;
 
         gCurTask->main = Task_800A310;
 
@@ -113,10 +120,9 @@ void Task_800A110(void)
         gUnknown_030054A8.unk0 = 0xFF;
         CreateMusicFadeoutTask(64);
     }
-    // _0800A1B6
 
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
-        Sprite *s = &dm->s;
+        Sprite *s = &dm->textPressStart;
 
         if (gUnknown_03005590 & 0x20) {
             if (gBldRegs.bldY != 0) {
@@ -130,11 +136,82 @@ void Task_800A110(void)
         }
 
         if (gBldRegs.bldY != 0) {
-            dm->s2.unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+            dm->textDemoPlay.unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
         } else {
-            dm->s2.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+            dm->textDemoPlay.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
         }
 
-        sub_80051E8(&dm->s2);
+        sub_80051E8(&dm->textDemoPlay);
+    }
+}
+
+void Task_800A24C(void)
+{
+    DemoManager *dm = TaskGetStructPtr(gCurTask);
+    dm->unk62++;
+
+    m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 0);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE1, 0xFFFF, 0);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE2, 0xFFFF, 0);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, 0);
+
+    if (dm->unk62 >= 0x30) {
+        gLoadedSaveGame->timeLimitEnabled = dm->timeLimitEnabled;
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+
+        if (!dm->playerPressedStart) {
+            CreateTitleScreen();
+        } else {
+            CreateTitleScreenAtPlayModeMenu();
+        }
+    }
+}
+
+void Task_800A310(void)
+{
+    DemoManager *dm = TaskGetStructPtr(gCurTask);
+    dm->unk60 += Q_24_8(0.25);
+
+    gBldRegs.bldY = dm->unk60 >> 8;
+
+    if (dm->unk60 >= Q_24_8(16.0)) {
+        gCurTask->main = Task_800A24C;
+    }
+}
+
+void TaskDestructor_800A350(struct Task *t)
+{
+    DemoManager *dm = TaskGetStructPtr(t);
+    VramFree(dm->textPressStart.graphics.dest);
+    VramFree(dm->textDemoPlay.graphics.dest);
+
+    gUnknown_030054E4 = 0;
+    gUnknown_03005424 &= ~EXTRA_STATE__DEMO_RUNNING;
+}
+
+void CreateMusicFadeoutTask(u16 factor)
+{
+    struct Task *t = TaskCreate(Task_800A3D4, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
+    DemoMusicFadeout *mf = TaskGetStructPtr(t);
+    mf->volume = 0x100;
+    mf->unk2 = (s32)mf->volume / factor;
+    gUnknown_030054A8.unk0 = 0xFF;
+}
+
+void Task_800A3D4(void)
+{
+    DemoMusicFadeout *mf = TaskGetStructPtr(gCurTask);
+
+    m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, mf->volume);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE1, 0xFFFF, mf->volume);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE2, 0xFFFF, mf->volume);
+    m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, mf->volume);
+
+    mf->volume -= mf->unk2;
+    if ((s16)mf->volume < 0) {
+        mf->volume = 0;
     }
 }
