@@ -10,18 +10,26 @@
 #include "constants/animations.h"
 
 typedef struct {
-    /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 x;
-    /* 0x40 */ s32 y;
-    /* 0x44 */ u8 unk44;
-} Sprite_Star; /* 0x48 */
+    SpriteBase base;
+    Sprite s;
+    s32 x;
+    s32 y;
+    u8 timer;
+} Sprite_Star;
 
-void sub_8059D9C(void);
+static void Task_StarIdle(void);
+static void Task_StarClose(void);
+static void Task_StarSpin(void);
+static void Task_StarOpen(void);
+
+#define IDLE_TIME       GBA_FRAMES_PER_SECOND * 2
+#define SPIN_TIME       GBA_FRAMES_PER_SECOND * 2
+#define OPEN_CLOSE_TIME GBA_FRAMES_PER_SECOND / 3
 
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_8059D9C, 0x48, 0x4050, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0,
+                                TaskDestructor_80095E8);
     Sprite_Star *star = TaskGetStructPtr(t);
     Sprite *s = &star->s;
 
@@ -33,7 +41,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
     star->x = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
     star->y = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
-    star->unk44 = 0x78;
+    star->timer = IDLE_TIME;
 
     s->x = 0;
     s->y = 0;
@@ -53,9 +61,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->unk10 = 0x2000;
 }
 
-void sub_8059EC0(void);
-
-void sub_8059D9C(void)
+static void Task_StarIdle(void)
 {
     Sprite_Star *star = TaskGetStructPtr(gCurTask);
     Sprite *s = &star->s;
@@ -81,12 +87,120 @@ void sub_8059D9C(void)
         return;
     }
 
-    if (--star->unk44 == 0) {
-        star->unk44 = 20;
+    if (--star->timer == 0) {
+        star->timer = OPEN_CLOSE_TIME;
         s->graphics.anim = SA2_ANIM_STAR;
         s->variant = 1;
         s->unk21 = -1;
-        gCurTask->main = sub_8059EC0;
+        gCurTask->main = Task_StarClose;
+    }
+
+    sub_80122DC(star->x, star->y);
+    sub_8004558(s);
+    sub_80051E8(s);
+}
+
+static void Task_StarClose(void)
+{
+    Sprite_Star *star = TaskGetStructPtr(gCurTask);
+    Sprite *s = &star->s;
+    MapEntity *me = star->base.me;
+
+    Vec2_32 pos;
+    pos.x = Q_24_8_TO_INT(star->x);
+    pos.y = Q_24_8_TO_INT(star->y);
+
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+
+    sub_800C84C(s, pos.x, pos.y);
+
+    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
+         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
+        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (--star->timer == 0) {
+        star->timer = SPIN_TIME;
+        s->graphics.anim = SA2_ANIM_STAR;
+        s->variant = 2;
+        s->unk21 = -1;
+        gCurTask->main = Task_StarSpin;
+    }
+
+    sub_80122DC(star->x, star->y);
+    sub_8004558(s);
+    sub_80051E8(s);
+}
+
+static void Task_StarSpin(void)
+{
+    Sprite_Star *star = TaskGetStructPtr(gCurTask);
+    Sprite *s = &star->s;
+    MapEntity *me = star->base.me;
+
+    Vec2_32 pos;
+    pos.x = Q_24_8_TO_INT(star->x);
+    pos.y = Q_24_8_TO_INT(star->y);
+
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+
+    sub_800C84C(s, pos.x, pos.y);
+
+    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
+         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
+        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (--star->timer == 0) {
+        star->timer = OPEN_CLOSE_TIME;
+        s->graphics.anim = SA2_ANIM_STAR;
+        s->variant = 3;
+        s->unk21 = -1;
+        gCurTask->main = Task_StarOpen;
+    }
+
+    sub_80122DC(star->x, star->y);
+    sub_8004558(s);
+    sub_80051E8(s);
+}
+
+static void Task_StarOpen(void)
+{
+    Sprite_Star *star = TaskGetStructPtr(gCurTask);
+    Sprite *s = &star->s;
+    MapEntity *me = star->base.me;
+
+    Vec2_32 pos;
+    pos.x = Q_24_8_TO_INT(star->x);
+    pos.y = Q_24_8_TO_INT(star->y);
+
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+
+    sub_800C84C(s, pos.x, pos.y);
+
+    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
+         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
+        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (--star->timer == 0) {
+        star->timer = IDLE_TIME;
+        s->graphics.anim = SA2_ANIM_STAR;
+        s->variant = 0;
+        s->unk21 = -1;
+        gCurTask->main = Task_StarIdle;
     }
 
     sub_80122DC(star->x, star->y);
