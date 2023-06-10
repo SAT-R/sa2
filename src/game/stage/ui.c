@@ -1,40 +1,41 @@
 #include "global.h"
+#include "core.h"
+#include "flags.h"
+#include "malloc_vram.h"
 #include "game/game.h"
 #include "game/stage/ui.h"
 
 #include "constants/animations.h"
 
-#define ONE_UP_ICON_TILES 4
-
-const u16 sAnimsAsciiDigits[][2] = {
-    { 1119, 16 }, // '0'
-    { 1119, 17 }, // '1'
-    { 1119, 18 }, // '2'
-    { 1119, 19 }, // '3'
-    { 1119, 20 }, // '4'
-    { 1119, 21 }, // '5'
-    { 1119, 22 }, // '6'
-    { 1119, 23 }, // '7'
-    { 1119, 24 }, // '8'
-    { 1119, 25 }, // '9'
-    { 1119, 26 }, // ':'
-    { 1128, 0 }, // Icon - Special Ring collected
+const u16 sAnimsAsciiDigits[12][2] = {
+    { SA2_ANIM_ASCII, '0' - 32 },
+    { SA2_ANIM_ASCII, '1' - 32 },
+    { SA2_ANIM_ASCII, '2' - 32 },
+    { SA2_ANIM_ASCII, '3' - 32 },
+    { SA2_ANIM_ASCII, '4' - 32 },
+    { SA2_ANIM_ASCII, '5' - 32 },
+    { SA2_ANIM_ASCII, '6' - 32 },
+    { SA2_ANIM_ASCII, '7' - 32 },
+    { SA2_ANIM_ASCII, '8' - 32 },
+    { SA2_ANIM_ASCII, '9' - 32 },
+    { SA2_ANIM_ASCII, ':' - 32 },
+    { SA2_ANIM_UI_SPECIAL_RING_ICON, 0 }, // Icon - Special Ring collected
 };
 
 const u16 sAnims1UpIcons[][3]
-    = { [CHARACTER_SONIC] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+    = { [CHARACTER_SONIC] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC },
-        [CHARACTER_CREAM] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_CREAM] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM },
-        [CHARACTER_TAILS] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_TAILS] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_TAILS },
-        [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                                  SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
-        [CHARACTER_AMY] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_AMY] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                             SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
 
 // This palette might be used for the 1-Up icons
-const u8 sPalette_080D6ACE[] = INCBIN_U8("graphics/80D6ACE.gbapal");
+const u16 sPalette_080D6ACE[] = INCBIN_U16("graphics/80D6ACE.gbapal");
 
 const u32 gUnknown_080D6AF0[] = {
     100000, 10000, 1000, 100, 10, 1,
@@ -92,3 +93,156 @@ const u16 gUnknown_080D6C72[] = {
     ZONE_TIME_TO_INT(6, 0), ZONE_TIME_TO_INT(7, 0),  ZONE_TIME_TO_INT(8, 0),
     ZONE_TIME_TO_INT(9, 0), ZONE_TIME_TO_INT(10, 0),
 };
+
+typedef struct {
+    /* 0x00 */ Sprite s1;
+    /* 0x30 */ Sprite s2;
+
+    // Only used in Single player
+    /* 0x60 */ Sprite s3;
+
+    /* 0x90 */ Sprite s4[12];
+    /* 0x2D8 */ u16 unk2D0;
+    /* 0x2D8 */ u16 unk2D2;
+    /* 0x2D8 */ u16 unk2D4;
+    /* 0x2D8 */ u16 unk2D6;
+    /* 0x2D8 */ u16 unk2D8[12];
+} StageUi; /* size: 0x2F0 */
+
+void Task_CreateStageUiMain(void);
+void TaskDestructor_CreateStageUi(struct Task *t);
+
+struct Task *CreateStageUi(void)
+{
+    u32 i;
+    u32 tile;
+    u32 sixK;
+    StageUi *ui;
+    Sprite *s;
+
+    struct Task *t = TaskCreate(Task_CreateStageUiMain, sizeof(StageUi), 0x2102, 0,
+                                TaskDestructor_CreateStageUi);
+    gStageUITask = t;
+    ui = TaskGetStructPtr(t);
+
+    for (i = 0; i < ARRAY_COUNT(ui->s4); i++) {
+        s = &ui->s4[i];
+        s->x = 0;
+        s->y = 0;
+
+        if (i == 0) {
+            s->graphics.dest = VramMalloc(24);
+        } else {
+            s->graphics.dest = ui->s4[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
+        }
+
+        ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
+
+        s->unk1A = 0;
+        s->graphics.size = 0;
+        s->graphics.anim = sAnimsAsciiDigits[i][0];
+        s->variant = sAnimsAsciiDigits[i][1];
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk28[0].unk0 = -1;
+        s->unk10 = SPRITE_FLAG(18, 1);
+
+        if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
+            sub_8004558(s);
+        }
+    }
+
+    if (IS_SINGLE_PLAYER) {
+        s = &ui->s3;
+        s->x = 6;
+        s->y = 142;
+
+        s->graphics.dest = VramMalloc(sAnims1UpIcons[gSelectedCharacter][0]);
+
+        ui->unk2D4 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+        s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
+        s->variant = sAnims1UpIcons[gSelectedCharacter][2];
+        s->unk1A = 0x100;
+        s->graphics.size = 0;
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk28[0].unk0 = -1;
+        s->unk10 = 0;
+
+        // TODO/BUG?: ...why does it check for MP inside a block that's already in SP?
+        if (IS_MULTI_PLAYER) {
+            u16 id = (SIO_MULTI_CNT)->id;
+            s->palId = id;
+            ui->unk2D4 |= (id << 12);
+        }
+        sub_8004558(s);
+    }
+
+    s = &ui->s2;
+    // _0802CBA4
+    s->x = 0;
+    s->y = 1;
+    s->graphics.dest = VramMalloc(32);
+    ui->unk2D6 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+    ui->unk2D6 |= 0x6000;
+    s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
+    s->variant = 0;
+    s->unk1A = 0xC0;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = -1;
+    s->unk22 = 0x10;
+    s->palId = 0;
+    s->unk28[0].unk0 = -1;
+    s->unk10 = 0;
+    sub_8004558(s);
+
+    s = &ui->s1;
+    ui->s1.x = 7;
+    s->y = 9;
+    s->graphics.dest = VramMalloc(4);
+    ui->unk2D2 = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
+    ui->unk2D2 |= 0x6000;
+    s->graphics.anim = SA2_ANIM_UI_RING;
+    s->variant = 0;
+    s->unk1A = 0;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = -1;
+    s->unk22 = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    s->unk28[0].unk0 = -1;
+    s->unk10 = 0;
+    ui->unk2D0 = 0;
+
+    // _0802CC7C
+    for (i = 0; i < 16; i++) {
+        gObjPalette[0x70 + i] = sPalette_080D6ACE[i];
+    }
+
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+    return gStageUITask;
+}
+
+#if 0 // matches
+void TaskDestructor_CreateStageUi(struct Task *t)
+{
+    StageUi *ui = TaskGetStructPtr(t);
+    VramFree(ui->s.graphics.dest);
+    VramFree(ui->s2.graphics.dest);
+
+    if(IS_SINGLE_PLAYER)
+        VramFree(ui->s3.graphics.dest);
+
+    VramFree(ui->s4.graphics.dest);
+}
+#endif
