@@ -29,7 +29,7 @@ struct SaveGame {
     /* 0x000 */ u32 id;
 
     /* 0x004 */ u8 difficultyLevel;
-    /* 0x005 */ bool8 timeLimitEnabled;
+    /* 0x005 */ bool8 timeLimitDisabled;
     /* 0x006 */ u8 language;
 
     /* 0x007 */ u8 unlockedLevels[NUM_CHARACTERS];

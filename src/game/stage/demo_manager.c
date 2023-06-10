@@ -15,7 +15,7 @@ typedef struct {
     /* 0x60 */ u16 unk60;
     /* 0x62 */ u16 unk62;
     /* 0x64 */ bool8 playerPressedStart;
-    /* 0x65 */ bool8 timeLimitEnabled;
+    /* 0x65 */ bool8 timeLimitDisabled;
 } DemoManager;
 
 typedef struct {
@@ -41,7 +41,7 @@ void CreateDemoManager(void)
     dm->unk60 = 0;
     dm->unk62 = 0;
     dm->playerPressedStart = FALSE;
-    dm->timeLimitEnabled = gLoadedSaveGame->timeLimitEnabled;
+    dm->timeLimitDisabled = gLoadedSaveGame->timeLimitDisabled;
 
     gUnknown_03005424 |= EXTRA_STATE__DEMO_RUNNING;
 
@@ -156,7 +156,7 @@ void Task_800A24C(void)
     m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, 0);
 
     if (dm->unk62 >= 0x30) {
-        gLoadedSaveGame->timeLimitEnabled = dm->timeLimitEnabled;
+        gLoadedSaveGame->timeLimitDisabled = dm->timeLimitDisabled;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

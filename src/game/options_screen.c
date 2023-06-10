@@ -1305,7 +1305,7 @@ static void ReadProfileData(struct OptionsScreen *optionsScreen)
     memcpy(&profile->buttonConfig, &saveGame->buttonConfig, 8);
 
     optionsScreen->difficultyLevel = saveGame->difficultyLevel;
-    optionsScreen->timeLimitEnabled = saveGame->timeLimitEnabled;
+    optionsScreen->timeLimitDisabled = saveGame->timeLimitDisabled;
     optionsScreen->language = LanguageIndex(saveGame->language);
     optionsScreen->soundTestUnlocked = saveGame->soundTestUnlocked;
     optionsScreen->bossTimeAttackUnlocked = saveGame->bossTimeAttackUnlocked;
@@ -1325,8 +1325,8 @@ static void ReadProfileData(struct OptionsScreen *optionsScreen)
         optionsScreen->difficultyLevel = 0;
     }
 
-    if (optionsScreen->timeLimitEnabled > 1) {
-        optionsScreen->timeLimitEnabled = FALSE;
+    if (optionsScreen->timeLimitDisabled > 1) {
+        optionsScreen->timeLimitDisabled = FALSE;
     }
 
     if (optionsScreen->language > NUM_LANGUAGES - 1) {
@@ -1361,7 +1361,7 @@ static void StoreProfileData(struct OptionsScreen *optionsScreen)
     memcpy(&saveGame->buttonConfig, &profile->buttonConfig, sizeof(struct ButtonConfig));
 
     saveGame->difficultyLevel = optionsScreen->difficultyLevel;
-    saveGame->timeLimitEnabled = optionsScreen->timeLimitEnabled;
+    saveGame->timeLimitDisabled = optionsScreen->timeLimitDisabled;
     saveGame->language = optionsScreen->language + 1;
     saveGame->soundTestUnlocked = optionsScreen->soundTestUnlocked;
     saveGame->bossTimeAttackUnlocked = optionsScreen->bossTimeAttackUnlocked;
@@ -1466,7 +1466,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
 
     {
         const struct UNK_080D95E8 *timeLimitSwitchText
-            = &sTimeLimitMenuSwitchText[language][optionsScreen->timeLimitEnabled];
+            = &sTimeLimitMenuSwitchText[language][optionsScreen->timeLimitDisabled];
         xPos = optionsScreen->menuCursor == OPTIONS_MENU_ITEM_TIME_LIMIT ? 152 : 160;
 
         sub_806A568(metaItem, RENDER_TARGET_SCREEN, timeLimitSwitchText->unk4,
@@ -2291,7 +2291,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
         = sTimeLimitMenuSwitchText[timeLimitMenu->language];
 
     s16 baseXPos = timeLimitMenu->optionsScreen->subMenuXPos;
-    s16 timeLimitEnabled = timeLimitMenu->switchValue;
+    s16 timeLimitDisabled = timeLimitMenu->switchValue;
     s16 i;
 
     // TODO: can these be a macro?
@@ -2315,11 +2315,11 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
                 timeLimitSwitchText->unk2, 0);
 
     sub_806A568(switchValueOutline, RENDER_TARGET_SUB_MENU, 0x12, 0x3b8, 0x1000,
-                timeLimitEnabled * 60 + 272, 76, 7, 3, 0);
+                timeLimitDisabled * 60 + 272, 76, 7, 3, 0);
 
     for (i = 0, timeLimitOption = timeLimitMenu->options; i < 2;
          i++, timeLimitOption++) {
-        timeLimitOption->palId = !!(timeLimitEnabled ^ i);
+        timeLimitOption->palId = !!(timeLimitDisabled ^ i);
     }
 }
 
@@ -2391,7 +2391,7 @@ static void Task_TimeLimitMenuMain(void)
         sub_8004558(timeLimitOption);
         m4aSongNumStart(SE_SELECT);
         // and this
-        optionsScreen->timeLimitEnabled = timeLimitMenu->switchValue;
+        optionsScreen->timeLimitDisabled = timeLimitMenu->switchValue;
         optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
         gCurTask->main = Task_TimeLimitMenuCloseAnim;
     } else if ((gPressedKeys & B_BUTTON)) {
@@ -5873,7 +5873,7 @@ static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
     struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(t);
 
     timeLimitMenu->optionsScreen = optionsScreen;
-    timeLimitMenu->switchValue = optionsScreen->timeLimitEnabled;
+    timeLimitMenu->switchValue = optionsScreen->timeLimitDisabled;
     timeLimitMenu->language = optionsScreen->language;
     timeLimitMenu->animFrame = 0;
     TimeLimitMenuCreateUI(timeLimitMenu);

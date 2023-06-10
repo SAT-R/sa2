@@ -40,7 +40,7 @@ struct OptionsScreen {
 
     u8 unusedUnk358;
     u8 difficultyLevel;
-    u8 timeLimitEnabled;
+    u8 timeLimitDisabled;
 
     // language
     u8 language;

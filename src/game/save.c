@@ -85,7 +85,7 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
 
 #define GAME_PLAY_OPTION_DIFFICULTY_EASY    1
-#define GAME_PLAY_OPTION_TIME_LIMIT_ENABLED 2
+#define GAME_PLAY_OPTION_TIME_LIMIT_DISABLED 2
 
 #define PACKED_A_BUTTON 1
 #define PACKED_B_BUTTON 2
@@ -196,7 +196,7 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
     gameState->id = 0;
     gameState->unlockedCharacters = CHARACTER_BIT(CHARACTER_SONIC);
     gameState->difficultyLevel = 0;
-    gameState->timeLimitEnabled = 0;
+    gameState->timeLimitDisabled = 0;
     gameState->language = LANG_ENGLISH;
     gameState->playerName[0] = PLAYER_NAME_END_CHAR;
 
@@ -332,8 +332,8 @@ static bool16 PackSaveSectorData(struct SaveSectorData *save, struct SaveGame *g
         save->gamePlayOptions |= GAME_PLAY_OPTION_DIFFICULTY_EASY;
     }
 
-    if (gameState->timeLimitEnabled) {
-        save->gamePlayOptions |= GAME_PLAY_OPTION_TIME_LIMIT_ENABLED;
+    if (gameState->timeLimitDisabled) {
+        save->gamePlayOptions |= GAME_PLAY_OPTION_TIME_LIMIT_DISABLED;
     }
 
     save->completions = 0;
@@ -637,8 +637,8 @@ static bool16 UnpackSaveSectorData(struct SaveGame *gameState,
         gameState->difficultyLevel = 1;
     }
 
-    if (save->gamePlayOptions & GAME_PLAY_OPTION_TIME_LIMIT_ENABLED) {
-        gameState->timeLimitEnabled = TRUE;
+    if (save->gamePlayOptions & GAME_PLAY_OPTION_TIME_LIMIT_DISABLED) {
+        gameState->timeLimitDisabled = TRUE;
     }
 
     if ((save->completions & 1)) {

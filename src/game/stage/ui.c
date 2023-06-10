@@ -3,9 +3,14 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/save.h"
 #include "game/stage/ui.h"
 
 #include "constants/animations.h"
+#include "constants/zones.h"
+
+#define UI_ASCII_COLON   10
+#define UI_ASCII_SP_RING 11
 
 const u16 sAnimsAsciiDigits[12][2] = {
     { SA2_ANIM_ASCII, '0' - 32 },
@@ -95,17 +100,17 @@ const u16 gUnknown_080D6C72[] = {
 };
 
 typedef struct {
-    /* 0x00 */ Sprite s1;
-    /* 0x30 */ Sprite s2;
+    /* 0x00 */ Sprite ring;
+    /* 0x30 */ Sprite ringContainer;
 
-    // Only used in Single player
-    /* 0x60 */ Sprite s3;
+    // Only used in Single Player
+    /* 0x60 */ Sprite playerIcon;
 
-    /* 0x90 */ Sprite s4[12];
-    /* 0x2D8 */ u16 unk2D0;
-    /* 0x2D8 */ u16 unk2D2;
-    /* 0x2D8 */ u16 unk2D4;
-    /* 0x2D8 */ u16 unk2D6;
+    /* 0x90 */ Sprite digits[12];
+    /* 0x2D0 */ u16 unk2D0;
+    /* 0x2D2 */ u16 unk2D2;
+    /* 0x2D4 */ u16 unk2D4;
+    /* 0x2D6 */ u16 unk2D6;
     /* 0x2D8 */ u16 unk2D8[12];
 } StageUi; /* size: 0x2F0 */
 
@@ -125,15 +130,15 @@ struct Task *CreateStageUi(void)
     gStageUITask = t;
     ui = TaskGetStructPtr(t);
 
-    for (i = 0; i < ARRAY_COUNT(ui->s4); i++) {
-        s = &ui->s4[i];
+    for (i = 0; i < ARRAY_COUNT(ui->digits); i++) {
+        s = &ui->digits[i];
         s->x = 0;
         s->y = 0;
 
         if (i == 0) {
             s->graphics.dest = VramMalloc(24);
         } else {
-            s->graphics.dest = ui->s4[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
+            s->graphics.dest = ui->digits[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
         }
 
         ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
@@ -156,7 +161,7 @@ struct Task *CreateStageUi(void)
     }
 
     if (IS_SINGLE_PLAYER) {
-        s = &ui->s3;
+        s = &ui->playerIcon;
         s->x = 6;
         s->y = 142;
 
@@ -175,7 +180,7 @@ struct Task *CreateStageUi(void)
         s->unk28[0].unk0 = -1;
         s->unk10 = 0;
 
-        // TODO/BUG?: ...why does it check for MP inside a block that's already in SP?
+        // This can never be reached
         if (IS_MULTI_PLAYER) {
             u16 id = (SIO_MULTI_CNT)->id;
             s->palId = id;
@@ -184,8 +189,7 @@ struct Task *CreateStageUi(void)
         sub_8004558(s);
     }
 
-    s = &ui->s2;
-    // _0802CBA4
+    s = &ui->ringContainer;
     s->x = 0;
     s->y = 1;
     s->graphics.dest = VramMalloc(32);
@@ -204,8 +208,8 @@ struct Task *CreateStageUi(void)
     s->unk10 = 0;
     sub_8004558(s);
 
-    s = &ui->s1;
-    ui->s1.x = 7;
+    s = &ui->ring;
+    ui->ring.x = 7;
     s->y = 9;
     s->graphics.dest = VramMalloc(4);
     ui->unk2D2 = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
@@ -224,7 +228,6 @@ struct Task *CreateStageUi(void)
     s->unk10 = 0;
     ui->unk2D0 = 0;
 
-    // _0802CC7C
     for (i = 0; i < 16; i++) {
         gObjPalette[0x70 + i] = sPalette_080D6ACE[i];
     }
@@ -233,16 +236,44 @@ struct Task *CreateStageUi(void)
     return gStageUITask;
 }
 
+void Task_CreateStageUiMain(void)
+{
+    if(!GRAVITY_IS_INVERTED) {
+        StageUi *ui = TaskGetStructPtr(gCurTask);
+
+        if(gGameMode == GAME_MODE_SINGLE_PLAYER) {
+            if(ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
+                u16 i;
+                sub_8004558(&ui->digits[UI_ASCII_SP_RING]);
+
+                for(i = 0; i < gUnknown_030054F4; i++) {
+                    OamData *oam = sub_80058B4(3);
+                    oam->all.attr0 = 31;
+                    oam->all.attr1 = i*8 + 4;
+                    oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
+                }
+            }
+            // _0802CD74
+            if((!gLoadedSaveGame->timeLimitDisabled)
+            && (gCourseTime > ZONE_TIME_TO_INT(9, 40))
+            && (1)){
+
+            }
+        }
+        // _0802CE6A
+    }
+}
+
 #if 0 // matches
 void TaskDestructor_CreateStageUi(struct Task *t)
 {
     StageUi *ui = TaskGetStructPtr(t);
-    VramFree(ui->s.graphics.dest);
-    VramFree(ui->s2.graphics.dest);
+    VramFree(ui->ring.graphics.dest);
+    VramFree(ui->ringContainer.graphics.dest);
 
     if(IS_SINGLE_PLAYER)
-        VramFree(ui->s3.graphics.dest);
+        VramFree(ui->playerIcon.graphics.dest);
 
-    VramFree(ui->s4.graphics.dest);
+    VramFree(ui->digits.graphics.dest);
 }
 #endif

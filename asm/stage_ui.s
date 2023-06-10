@@ -9,8 +9,6 @@
 .text
 
 .if 0
-.endif
-
 	thumb_func_start Task_CreateStageUiMain
 Task_CreateStageUiMain: @ 0x0802CCE0
 	push {r4, r5, r6, r7, lr}
@@ -26,7 +24,7 @@ Task_CreateStageUiMain: @ 0x0802CCE0
 	ands r0, r1
 	cmp r0, #0
 	beq _0802CCFC
-	b _0802D138
+	b Task_CreateStageUiMain_Return
 _0802CCFC:
 	ldr r0, _0802CD38 @ =gCurTask
 	ldr r0, [r0]
@@ -34,7 +32,7 @@ _0802CCFC:
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r2
-	mov sb, r0
+	mov sb, r0      @ sb = ui
 	ldr r0, _0802CD3C @ =IWRAM_START + 0x90
 	adds r0, r2, r0
 	str r0, [sp]
@@ -83,7 +81,7 @@ _0802CD6C:
 	ldr r0, _0802CE1C @ =gUnknown_030054F4
 	ldrb r0, [r0]
 	cmp r7, r0
-	blo _0802CD4C
+	bcc _0802CD4C
 _0802CD74:
 	ldr r0, _0802CE20 @ =gLoadedSaveGame
 	ldr r0, [r0]
@@ -249,7 +247,7 @@ _0802CE6A:
 	ldr r0, _0802CF24 @ =0x000003E7
 	cmp r1, r0
 	bls _0802CF28
-	ldr r2, [sp]
+	ldr r2, [sp]        @ &ui->s4[0]
 	movs r0, #0xd8
 	lsls r0, r0, #1
 	adds r7, r2, r0
@@ -382,7 +380,7 @@ _0802CFE8:
 	ands r0, r1
 	cmp r0, #0
 	beq _0802CFF8
-	b _0802D138
+	b Task_CreateStageUiMain_Return
 _0802CFF8:
 	movs r0, #0xc0
 	lsls r0, r0, #7
@@ -536,7 +534,7 @@ _0802D084:
 	strb r1, [r0]
 	adds r0, r7, #0
 	bl sub_80051E8
-_0802D138:
+Task_CreateStageUiMain_Return:
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -556,6 +554,7 @@ _0802D160: .4byte gUnknown_080D6C72
 _0802D164: .4byte 0x00007E90
 _0802D168: .4byte gMillisUnpackTable
 _0802D16C: .4byte gSecondsTable
+.endif
 
 	thumb_func_start sub_802D170
 sub_802D170: @ 0x0802D170
