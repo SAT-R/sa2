@@ -5,12 +5,17 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "game/stage/ui.h"
+#include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/songs.h"
 #include "constants/zones.h"
 
 #define UI_ASCII_COLON   10
 #define UI_ASCII_SP_RING 11
+
+#define UI_POS_RING_COUNT_X 32
+#define UI_POS_RING_COUNT_Y 16
 
 const u16 sAnimsAsciiDigits[12][2] = {
     { SA2_ANIM_ASCII, '0' - 32 },
@@ -42,7 +47,7 @@ const u16 sAnims1UpIcons[][3]
 // This palette might be used for the 1-Up icons
 const u16 sPalette_080D6ACE[] = INCBIN_U16("graphics/80D6ACE.gbapal");
 
-const u32 gUnknown_080D6AF0[] = {
+const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
 };
 
@@ -68,7 +73,7 @@ const u8 gMillisUnpackTable[60][2] = {
     { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
 
-const u16 gUnknown_080D6BF8[] = {
+const u16 sZoneTimeSecondsTable[] = {
     ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),
     ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),  ZONE_TIME_TO_INT(0, 5),
     ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),
@@ -92,7 +97,7 @@ const u16 gUnknown_080D6BF8[] = {
     ZONE_TIME_TO_INT(0, 60),
 };
 
-const u16 gUnknown_080D6C72[] = {
+const u16 sZoneTimeMinutesTable[] = {
     ZONE_TIME_TO_INT(0, 0), ZONE_TIME_TO_INT(1, 0),  ZONE_TIME_TO_INT(2, 0),
     ZONE_TIME_TO_INT(3, 0), ZONE_TIME_TO_INT(4, 0),  ZONE_TIME_TO_INT(5, 0),
     ZONE_TIME_TO_INT(6, 0), ZONE_TIME_TO_INT(7, 0),  ZONE_TIME_TO_INT(8, 0),
@@ -107,6 +112,8 @@ typedef struct {
     /* 0x60 */ Sprite playerIcon;
 
     /* 0x90 */ Sprite digits[12];
+
+    // Seem to be OamData.attr2
     /* 0x2D0 */ u16 unk2D0;
     /* 0x2D2 */ u16 unk2D2;
     /* 0x2D4 */ u16 unk2D4;
@@ -236,31 +243,215 @@ struct Task *CreateStageUi(void)
     return gStageUITask;
 }
 
+// TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
+// https://decomp.me/scratch/EhVgP
 void Task_CreateStageUiMain(void)
 {
-    if(!GRAVITY_IS_INVERTED) {
+    if (!GRAVITY_IS_INVERTED) {
+        u32 time;
+        s32 score;
+        u16 lives;
+        u16 i;
+        u32 sl;
+        OamData *oam;
         StageUi *ui = TaskGetStructPtr(gCurTask);
 
-        if(gGameMode == GAME_MODE_SINGLE_PLAYER) {
-            if(ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
-                u16 i;
+        if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
+            if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
                 sub_8004558(&ui->digits[UI_ASCII_SP_RING]);
 
-                for(i = 0; i < gUnknown_030054F4; i++) {
+                for (i = 0; i < gUnknown_030054F4; i++) {
                     OamData *oam = sub_80058B4(3);
                     oam->all.attr0 = 31;
-                    oam->all.attr1 = i*8 + 4;
+                    oam->all.attr1 = i * 8 + 4;
                     oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
                 }
             }
             // _0802CD74
-            if((!gLoadedSaveGame->timeLimitDisabled)
-            && (gCourseTime > ZONE_TIME_TO_INT(9, 40))
-            && (1)){
-
+            if ((!gLoadedSaveGame->timeLimitDisabled)
+                && (gCourseTime >= ZONE_TIME_TO_INT(9, 40))
+                && (Mod(gCourseTime, 60) == 0)) {
+                m4aSongNumStart(SE_TIMER);
             }
+
+            /* Score Value */
+            score = gUnknown_03005450;
+            if (score > 999999)
+                score = 999999;
+
+            for (i = 0; i < ARRAY_COUNT(sOrdersOfMagnitude); i++) {
+                s32 digit;
+                u32 m = sOrdersOfMagnitude[i];
+
+                digit = Div(score, m);
+                oam = sub_80058B4(3);
+
+                oam->all.attr0 = 0x800E;
+                oam->all.attr1 = i * 8 + 28;
+                oam->all.attr2 = ui->unk2D8[digit];
+
+                score -= digit * m;
+            }
+
+            /* Player-Icon */
+            oam = sub_80058B4(3);
+            oam->all.attr0 = 142;
+            oam->all.attr1 = (0x4000 | 6);
+            oam->all.attr2 = ui->unk2D4;
+
+            lives = (gNumLives > 0) ? gNumLives - 1 : 0;
+            lives = MIN(lives, 9);
+
+            /* Lives Counter */
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 140);
+            oam->all.attr1 = 30;
+            oam->all.attr2 = ui->unk2D8[lives];
         }
         // _0802CE6A
+
+        /* Ring-Container */
+        oam = sub_80058B4(4);
+        oam->all.attr0 = (0x4000 | 0);
+        oam->all.attr1 = (0xC000 | 509);
+        oam->all.attr2 = ui->unk2D6;
+
+        /* Ring */
+        ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q_24_8(0.25));
+        ui->unk2D0 &= 0x7FF;
+        ui->ring.variant = ui->unk2D0 >> 8;
+        ui->ring.unk21 = 0xFF;
+        sub_8004558(&ui->ring);
+
+        /* Ring-Count */
+        oam = sub_80058B4(3);
+        oam->all.attr0 = 8;
+        oam->all.attr1 = (0x4000 | 7);
+        oam->all.attr2 = ui->unk2D2;
+
+        if (gRingCount > 999) {
+            Sprite *digits = &ui->digits[0];
+            digits[9].y = UI_POS_RING_COUNT_Y;
+            digits[9].x = UI_POS_RING_COUNT_X + 0 * 8;
+            sub_80051E8(&digits[9]);
+
+            digits[9].y = UI_POS_RING_COUNT_Y;
+            digits[9].x = UI_POS_RING_COUNT_X + 1 * 8;
+            sub_80051E8(&digits[9]);
+
+            digits[9].y = UI_POS_RING_COUNT_Y;
+            digits[9].x = UI_POS_RING_COUNT_X * 2 * 8;
+            sub_80051E8(&digits[9]);
+        } else {
+            // _0802CF28
+            u16 processed;
+            sl = 0;
+
+            if ((gRingCount == 0) && gUnknown_03005590 & 0x10) {
+                sl = 0x7000;
+            }
+
+            { /* 100s */
+                u16 hundreds = Div(gRingCount, 100);
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 0 * 8);
+                oam->all.attr2 = (sl | ui->unk2D8[hundreds]);
+
+                processed = hundreds * 100;
+            }
+
+            { /* 10s */
+                u16 tens = Div(gRingCount - processed, 10);
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 1 * 8);
+                oam->all.attr2 = (sl | ui->unk2D8[tens]);
+
+                processed += tens * 10;
+            }
+
+            { /* 1s */
+                u16 ones = gRingCount - processed;
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 2 * 8);
+                oam->all.attr2 = (sl | ui->unk2D8[ones]);
+            }
+        }
+        // _0802CFDC
+        time = gCourseTime;
+        if (time > MAX_COURSE_TIME - 1)
+            time = MAX_COURSE_TIME - 1;
+
+        if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
+            // _0802CFF8
+            u32 seconds, minutes;
+            u32 r1, r5;
+            Sprite *sd;
+
+            sl = 0x6000;
+
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 0);
+            oam->all.attr1 = 99;
+            oam->all.attr2 = (sl | ui->unk2D8[UI_ASCII_COLON]);
+
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 0);
+            oam->all.attr1 = 123;
+            oam->all.attr2 = (sl | ui->unk2D8[UI_ASCII_COLON]);
+
+            seconds = Div(time, GBA_FRAMES_PER_SECOND);
+            minutes = Div(seconds, 60);
+
+            seconds -= sZoneTimeSecondsTable[minutes];
+            r1 = time - sZoneTimeSecondsTable[seconds];
+            r5 = r1 - sZoneTimeMinutesTable[minutes];
+
+            sl = 0;
+            if (gCourseTime > ZONE_TIME_TO_INT(9, 0)) {
+                sl = !!(gUnknown_03005590 & 0x10);
+            }
+
+            // Milliseconds-L
+            sd = &ui->digits[gMillisUnpackTable[r5][0]];
+            sd->x = 136 + 0 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Milliseconds-R
+            sd = &ui->digits[gMillisUnpackTable[r5][1]];
+            sd->x = 136 + 1 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Seconds-L
+            sd = &ui->digits[gSecondsTable[seconds][0]];
+            sd->x = 112 + 0 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Seconds-R
+            sd = &ui->digits[gSecondsTable[seconds][1]];
+            sd->x = 112 + 1 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Minutes
+            sd = &ui->digits[minutes];
+            sd->x = 112 + 1 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+        }
     }
 }
 

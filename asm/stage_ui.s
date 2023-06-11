@@ -112,14 +112,14 @@ _0802CDA6:
 	ldr r2, _0802CE34 @ =0x0000800E
 	mov r8, r2
 _0802CDAC:
-	ldr r1, _0802CE38 @ =gUnknown_080D6AF0
+	ldr r1, _0802CE38 @ =sOrdersOfMagnitude
 	lsls r0, r7, #2
 	adds r0, r0, r1
 	ldr r5, [r0]
 	adds r0, r6, #0
 	adds r1, r5, #0
 	bl Div
-	adds r4, r0, #0
+	adds r4, r0, #0     @ r4 = digit
 	movs r0, #3
 	bl sub_80058B4
 	adds r3, r0, #0
@@ -135,7 +135,7 @@ _0802CDAC:
 	adds r0, r0, r1
 	ldrh r0, [r0]
 	strh r0, [r3, #4]
-	adds r0, r4, #0
+	adds r0, r4, #0     @ r0 = digit
 	muls r0, r5, r0
 	subs r6, r6, r0
 	adds r0, r7, #1
@@ -172,7 +172,7 @@ _0802CE28: .4byte 0x000087EF
 _0802CE2C: .4byte gUnknown_03005450
 _0802CE30: .4byte 999999
 _0802CE34: .4byte 0x0000800E
-_0802CE38: .4byte gUnknown_080D6AF0
+_0802CE38: .4byte sOrdersOfMagnitude
 _0802CE3C: .4byte 0x00004006
 _0802CE40: .4byte gNumLives
 _0802CE44:
@@ -247,7 +247,7 @@ _0802CE6A:
 	ldr r0, _0802CF24 @ =0x000003E7
 	cmp r1, r0
 	bls _0802CF28
-	ldr r2, [sp]        @ &ui->s4[0]
+	ldr r2, [sp]        @ &ui->digits[0]
 	movs r0, #0xd8
 	lsls r0, r0, #1
 	adds r7, r2, r0
@@ -280,7 +280,7 @@ _0802CF20: .4byte gRingCount
 _0802CF24: .4byte 0x000003E7
 _0802CF28:
 	movs r2, #0
-	mov sl, r2
+	mov sl, r2      @ sl = r2 = 0
 	cmp r1, #0
 	bne _0802CF42
 	ldr r0, _0802D148 @ =gUnknown_03005590
@@ -306,7 +306,7 @@ _0802CF42:
 	movs r1, #0x80
 	lsls r1, r1, #8
 	mov r8, r1
-	mov r2, r8
+	mov r2, r8      @ r2 = r8 = r1 = 0x8000
 	strh r2, [r3]
 	movs r0, #0x1c
 	strh r0, [r3, #2]
@@ -416,22 +416,22 @@ _0802CFF8:
 	adds r4, r0, #0
 	movs r1, #0x3c
 	bl Div
-	str r0, [sp, #4]
-	ldr r1, _0802D15C @ =gUnknown_080D6BF8
+	str r0, [sp, #4]    @ sp04 = minutes
+	ldr r1, _0802D15C @ =sZoneTimeSecondsTable
 	adds r2, r0, #0
 	lsls r2, r2, #1
-	mov sb, r2
+	mov sb, r2          @ sb =minutes*2
 	adds r0, r2, r1
 	movs r2, #0
 	ldrsh r0, [r0, r2]
-	subs r4, r4, r0
+	subs r4, r4, r0     @ seconds -= sZoneTimeSecondsTable[minutes];
 	lsls r4, r4, #1
 	mov r8, r4
 	add r1, r8
 	movs r0, #0
 	ldrsh r1, [r1, r0]
 	subs r1, r6, r1
-	ldr r0, _0802D160 @ =gUnknown_080D6C72
+	ldr r0, _0802D160 @ =sZoneTimeMinutesTable
 	add r0, sb
 	ldrh r0, [r0]
 	subs r5, r1, r0
@@ -456,7 +456,7 @@ _0802D084:
 	lsls r0, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #4
-	ldr r1, [sp]
+	ldr r1, [sp]        @ r1 = &ui->digits[0]
 	adds r7, r1, r0
 	movs r0, #0x88
 	strh r0, [r7, #0x16]
@@ -549,8 +549,8 @@ _0802D14C: .4byte gRingCount
 _0802D150: .4byte gCourseTime
 _0802D154: .4byte 0x00008C9F
 _0802D158: .4byte gUnknown_03005424
-_0802D15C: .4byte gUnknown_080D6BF8
-_0802D160: .4byte gUnknown_080D6C72
+_0802D15C: .4byte sZoneTimeSecondsTable
+_0802D160: .4byte sZoneTimeMinutesTable
 _0802D164: .4byte 0x00007E90
 _0802D168: .4byte gMillisUnpackTable
 _0802D16C: .4byte gSecondsTable

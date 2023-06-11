@@ -135,6 +135,7 @@ typedef struct {
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4;
 
+// Some flags
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;
@@ -428,7 +429,7 @@ extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gMultiplayerPseudoRandom;
 
-extern u32 gUnknown_03005450;
+extern s32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 

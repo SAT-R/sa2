@@ -84,7 +84,7 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define UNLOCK_FLAG_SOUND_TEST  1 << 5
 #define UNLOCK_FLAG_CHAO_GARDEN 1 << 6
 
-#define GAME_PLAY_OPTION_DIFFICULTY_EASY    1
+#define GAME_PLAY_OPTION_DIFFICULTY_EASY     1
 #define GAME_PLAY_OPTION_TIME_LIMIT_DISABLED 2
 
 #define PACKED_A_BUTTON 1
