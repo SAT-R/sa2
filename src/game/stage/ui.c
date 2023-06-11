@@ -245,7 +245,8 @@ struct Task *CreateStageUi(void)
 
 // TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
 // https://decomp.me/scratch/EhVgP
-NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc", void Task_CreateStageUiMain(void))
+NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
+         void Task_CreateStageUiMain(void))
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
         u32 time;
