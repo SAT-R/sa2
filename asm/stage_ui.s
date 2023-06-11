@@ -50,31 +50,31 @@ _0802D1B0:
 	movs r6, #2
 	b _0802D1F2
 _0802D1B8:
-	ldr r0, _0802D1C4 @ =0x000003E7
+	ldr r0, _0802D1C4 @ =999
 	cmp r4, r0
 	bhi _0802D1C8
 	movs r6, #3
 	b _0802D1F2
 	.align 2, 0
-_0802D1C4: .4byte 0x000003E7
+_0802D1C4: .4byte 999
 _0802D1C8:
-	ldr r0, _0802D1D4 @ =0x0000270F
+	ldr r0, _0802D1D4 @ =9999
 	cmp r4, r0
 	bhi _0802D1D8
 	movs r6, #4
 	b _0802D1F2
 	.align 2, 0
-_0802D1D4: .4byte 0x0000270F
+_0802D1D4: .4byte 9999
 _0802D1D8:
-	ldr r0, _0802D1E4 @ =0x0001869F
+	ldr r0, _0802D1E4 @ =99999
 	cmp r4, r0
 	bhi _0802D1E8
 	movs r6, #5
 	b _0802D1F2
 	.align 2, 0
-_0802D1E4: .4byte 0x0001869F
+_0802D1E4: .4byte 99999
 _0802D1E8:
-	ldr r0, _0802D258 @ =0x000F423F
+	ldr r0, _0802D258 @ =999999
 	movs r6, #7
 	cmp r4, r0
 	bhi _0802D1F2
@@ -131,7 +131,7 @@ _0802D246:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802D258: .4byte 0x000F423F
+_0802D258: .4byte 999999
 
 	thumb_func_start TaskDestructor_CreateStageUi
 TaskDestructor_CreateStageUi: @ 0x0802D25C
