@@ -461,16 +461,65 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
 }
 END_NONMATCH
 
-#if 0 // matches
+// Almost identical to Debug_PrintIntegerAt()"
+void StageUi_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
+{
+    StageUi *ui = TaskGetStructPtr(gStageUITask);
+    Sprite *digits = &ui->digits[0];
+    u32 numDigits;
+    u32 digitX;
+
+    s32 base = 10;
+    u32 remaining = 1;
+
+    if (value <= 9) {
+        numDigits = 1;
+    } else if (value <= 99) {
+        numDigits = 2;
+    } else if (value <= 999) {
+        numDigits = 3;
+    } else if (value <= 9999) {
+        numDigits = 4;
+    } else if (value <= 99999) {
+        numDigits = 5;
+    } else if (value <= 999999) {
+        numDigits = 6;
+    } else {
+        numDigits = 7;
+    }
+
+    if (remaining == 0 || numDigits == 0)
+        return;
+
+    for (digitX = x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
+        Sprite *digit;
+
+        remaining = Div(value, base);
+
+        digit = &digits[value];
+        digit -= remaining * base;
+
+        digit->x = digitX;
+        digit->y = y;
+
+        digit->palId = palId;
+
+        digit->unk10 |= SPRITE_FLAG_MASK_14;
+
+        sub_80051E8(digit);
+
+        value = remaining;
+    }
+}
+
 void TaskDestructor_CreateStageUi(struct Task *t)
 {
     StageUi *ui = TaskGetStructPtr(t);
     VramFree(ui->ring.graphics.dest);
     VramFree(ui->ringContainer.graphics.dest);
 
-    if(IS_SINGLE_PLAYER)
+    if (IS_SINGLE_PLAYER)
         VramFree(ui->playerIcon.graphics.dest);
 
-    VramFree(ui->digits.graphics.dest);
+    VramFree(ui->digits[0].graphics.dest);
 }
-#endif

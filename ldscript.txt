@@ -93,7 +93,6 @@ SECTIONS
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/asm/game_2.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
-        build/sa2/asm/stage_ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
         build/sa2/src/game/screen_transition.o(.text);
         build/sa2/src/game/trapped_animals.o(.text);
