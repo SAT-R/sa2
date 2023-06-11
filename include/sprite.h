@@ -206,9 +206,7 @@ typedef struct {
     // something to do with animation speed
     /* 0x22 */ u8 unk22;
 
-    // TODO: these values are only used within some
-    // sort of menu functions. Split out the shared stuff
-    /* 0x23 */ u8 unk23;
+    /* 0x23 */ u8 oamBaseIndex;
     /* 0x24 */ u8 numSubFrames;
     /* 0x25 */ u8 palId;
 
