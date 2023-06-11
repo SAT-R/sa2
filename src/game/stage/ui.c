@@ -73,7 +73,7 @@ const u8 gMillisUnpackTable[60][2] = {
     { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
 
-const u16 sZoneTimeSecondsTable[] = {
+const s16 sZoneTimeSecondsTable[] = {
     ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),
     ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),  ZONE_TIME_TO_INT(0, 5),
     ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),
@@ -245,23 +245,23 @@ struct Task *CreateStageUi(void)
 
 // TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
 // https://decomp.me/scratch/EhVgP
-void Task_CreateStageUiMain(void)
+NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc", void Task_CreateStageUiMain(void))
 {
-    if (!GRAVITY_IS_INVERTED) {
+    if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
         u32 time;
         s32 score;
-        u16 lives;
-        u16 i;
         u32 sl;
+        u16 i;
         OamData *oam;
         StageUi *ui = TaskGetStructPtr(gCurTask);
+        Sprite *digits = &ui->digits[0];
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
             if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
-                sub_8004558(&ui->digits[UI_ASCII_SP_RING]);
+                sub_8004558(&digits[UI_ASCII_SP_RING]);
 
                 for (i = 0; i < gUnknown_030054F4; i++) {
-                    OamData *oam = sub_80058B4(3);
+                    oam = sub_80058B4(3);
                     oam->all.attr0 = 31;
                     oam->all.attr1 = i * 8 + 4;
                     oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
@@ -299,14 +299,19 @@ void Task_CreateStageUiMain(void)
             oam->all.attr1 = (0x4000 | 6);
             oam->all.attr2 = ui->unk2D4;
 
-            lives = (gNumLives > 0) ? gNumLives - 1 : 0;
-            lives = MIN(lives, 9);
+            if (gNumLives > 0)
+                i = gNumLives - 1;
+            else
+                i = 0;
+
+            if (i > 9)
+                i = 9;
 
             /* Lives Counter */
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 140);
             oam->all.attr1 = 30;
-            oam->all.attr2 = ui->unk2D8[lives];
+            oam->all.attr2 = ui->unk2D8[i];
         }
         // _0802CE6A
 
@@ -330,20 +335,21 @@ void Task_CreateStageUiMain(void)
         oam->all.attr2 = ui->unk2D2;
 
         if (gRingCount > 999) {
-            Sprite *digits = &ui->digits[0];
-            digits[9].y = UI_POS_RING_COUNT_Y;
-            digits[9].x = UI_POS_RING_COUNT_X + 0 * 8;
-            sub_80051E8(&digits[9]);
+            Sprite *d9 = &digits[9];
+            d9->y = UI_POS_RING_COUNT_Y;
+            d9->x = UI_POS_RING_COUNT_X + 0 * 8;
+            sub_80051E8(d9);
 
-            digits[9].y = UI_POS_RING_COUNT_Y;
-            digits[9].x = UI_POS_RING_COUNT_X + 1 * 8;
-            sub_80051E8(&digits[9]);
+            d9->y = UI_POS_RING_COUNT_Y;
+            d9->x = UI_POS_RING_COUNT_X + 1 * 8;
+            sub_80051E8(d9);
 
-            digits[9].y = UI_POS_RING_COUNT_Y;
-            digits[9].x = UI_POS_RING_COUNT_X * 2 * 8;
-            sub_80051E8(&digits[9]);
+            d9->y = UI_POS_RING_COUNT_Y;
+            d9->x = UI_POS_RING_COUNT_X + 2 * 8;
+            sub_80051E8(d9);
         } else {
             // _0802CF28
+            u32 processed2;
             u16 processed;
             sl = 0;
 
@@ -357,7 +363,7 @@ void Task_CreateStageUiMain(void)
                 oam = sub_80058B4(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 0 * 8);
-                oam->all.attr2 = (sl | ui->unk2D8[hundreds]);
+                oam->all.attr2 = (ui->unk2D8[hundreds] | sl);
 
                 processed = hundreds * 100;
             }
@@ -368,24 +374,22 @@ void Task_CreateStageUiMain(void)
                 oam = sub_80058B4(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 1 * 8);
-                oam->all.attr2 = (sl | ui->unk2D8[tens]);
+                oam->all.attr2 = (ui->unk2D8[tens] | sl);
 
-                processed += tens * 10;
+                processed2 = processed + tens * 10;
             }
 
             { /* 1s */
-                u16 ones = gRingCount - processed;
+                u16 ones = gRingCount - processed2;
 
                 oam = sub_80058B4(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 2 * 8);
-                oam->all.attr2 = (sl | ui->unk2D8[ones]);
+                oam->all.attr2 = (ui->unk2D8[ones] | sl);
             }
         }
         // _0802CFDC
-        time = gCourseTime;
-        if (time > MAX_COURSE_TIME - 1)
-            time = MAX_COURSE_TIME - 1;
+        time = (gCourseTime > MAX_COURSE_TIME - 1) ? MAX_COURSE_TIME - 1 : gCourseTime;
 
         if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
             // _0802CFF8
@@ -398,12 +402,12 @@ void Task_CreateStageUiMain(void)
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 0);
             oam->all.attr1 = 99;
-            oam->all.attr2 = (sl | ui->unk2D8[UI_ASCII_COLON]);
+            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 0);
             oam->all.attr1 = 123;
-            oam->all.attr2 = (sl | ui->unk2D8[UI_ASCII_COLON]);
+            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
             minutes = Div(seconds, 60);
@@ -414,46 +418,47 @@ void Task_CreateStageUiMain(void)
 
             sl = 0;
             if (gCourseTime > ZONE_TIME_TO_INT(9, 0)) {
-                sl = !!(gUnknown_03005590 & 0x10);
+                sl = (-(gUnknown_03005590 & 0x10)) >> 31;
             }
 
             // Milliseconds-L
-            sd = &ui->digits[gMillisUnpackTable[r5][0]];
+            sd = &digits[gMillisUnpackTable[r5][0]];
             sd->x = 136 + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Milliseconds-R
-            sd = &ui->digits[gMillisUnpackTable[r5][1]];
+            sd = &digits[gMillisUnpackTable[r5][1]];
             sd->x = 136 + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-L
-            sd = &ui->digits[gSecondsTable[seconds][0]];
+            sd = &digits[gSecondsTable[seconds][0]];
             sd->x = 112 + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-R
-            sd = &ui->digits[gSecondsTable[seconds][1]];
+            sd = &digits[gSecondsTable[seconds][1]];
             sd->x = 112 + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Minutes
-            sd = &ui->digits[minutes];
-            sd->x = 112 + 1 * 8;
+            sd = &digits[minutes];
+            sd->x = 96;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
         }
     }
 }
+END_NONMATCH
 
 #if 0 // matches
 void TaskDestructor_CreateStageUi(struct Task *t)
