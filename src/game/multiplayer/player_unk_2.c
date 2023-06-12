@@ -20,14 +20,14 @@ void sub_801A384(void)
             struct Task *t
                 = TaskCreate(Task_PlayerMPUnk2, (sizeof(MultiPlayerBgCtrlRegs)), 0xE000,
                              0, TaskDestructor_PlayerMPUnk2);
-            MultiPlayerBgCtrlRegs *bgCntRegs = TaskGetStructPtr(t);
+            MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(t);
 
-            gUnknown_03005840 = bgCntRegs;
+            gUnknown_03005840 = regs;
 
-            bgCntRegs->unk0 = 0;
-            bgCntRegs->unk2 = 600;
-            bgCntRegs->unk4 = 0;
-            bgCntRegs->unk6 = 0;
+            regs->unk0 = 0;
+            regs->unk2 = 600;
+            regs->unk4 = 0;
+            regs->unk6 = 0;
 
             gUnknown_030026D0 = 0;
 
@@ -37,4 +37,56 @@ void sub_801A384(void)
             gBgCntRegs[3] |= 0x40;
         }
     }
+}
+
+void Task_PlayerMPUnk2(void)
+{
+    MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(gCurTask);
+    s16 *p;
+
+    regs->unk0++;
+
+    if (regs->unk2 != 0) {
+        if (regs->unk6 < 15) {
+            if (++regs->unk4 >= 4) {
+                regs->unk6++;
+                regs->unk4 = 0;
+            }
+        } else {
+            regs->unk2--;
+        }
+    } else if (regs->unk6 == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    } else {
+        if (++regs->unk4 >= 4) {
+            regs->unk6--;
+            regs->unk4 = 0;
+        }
+    }
+
+    {
+        u16 value = regs->unk6 & 0xF;
+        gUnknown_030026D0 = (value << 12);
+        gUnknown_030026D0 |= (value << 8);
+        gUnknown_030026D0 |= (value << 4);
+        gUnknown_030026D0 |= (value << 0);
+    }
+
+    gBgCntRegs[0] |= 0x40;
+    gBgCntRegs[1] |= 0x40;
+    gBgCntRegs[2] |= 0x40;
+    gBgCntRegs[3] |= 0x40;
+}
+
+void TaskDestructor_PlayerMPUnk2(struct Task *t)
+{
+    gUnknown_03005840 = NULL;
+
+    gBgCntRegs[0] &= ~0x40;
+    gBgCntRegs[1] &= ~0x40;
+    gBgCntRegs[2] &= ~0x40;
+    gBgCntRegs[3] &= ~0x40;
+
+    gUnknown_030026D0 = 0;
 }

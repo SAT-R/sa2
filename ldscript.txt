@@ -87,7 +87,6 @@ SECTIONS
         build/sa2/asm/player_mp_finish_1.o(.text);
         build/sa2/asm/player_mp_finish_2.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
-        build/sa2/asm/player_mp_unknown_2.o(.text);
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
