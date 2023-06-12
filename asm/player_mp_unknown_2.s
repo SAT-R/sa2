@@ -7,93 +7,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_801A384
-sub_801A384: @ 0x0801A384
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _0801A3C0 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0801A418
-	ldr r0, _0801A3C4 @ =gCurrentLevel
-	ldrb r1, [r0]
-	movs r0, #3
-	ands r0, r1
-	cmp r0, #2
-	beq _0801A418
-	lsls r0, r1, #0x18
-	asrs r1, r0, #0x18
-	cmp r1, #0x1c
-	bne _0801A3AC
-	ldr r0, _0801A3C8 @ =gUnknown_030054B0
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0801A418
-_0801A3AC:
-	cmp r1, #0x1d
-	beq _0801A418
-	ldr r5, _0801A3CC @ =gUnknown_03005840
-	ldr r4, [r5]
-	cmp r4, #0
-	beq _0801A3D0
-	movs r0, #0x96
-	lsls r0, r0, #2
-	strh r0, [r4, #2]
-	b _0801A418
-	.align 2, 0
-_0801A3C0: .4byte gGameMode
-_0801A3C4: .4byte gCurrentLevel
-_0801A3C8: .4byte gUnknown_030054B0
-_0801A3CC: .4byte gUnknown_03005840
-_0801A3D0:
-	ldr r0, _0801A420 @ =sub_801A430
-	movs r2, #0xe0
-	lsls r2, r2, #8
-	ldr r1, _0801A424 @ =sub_801A4D8
-	str r1, [sp]
-	movs r1, #8
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	str r0, [r5]
-	strh r4, [r0]
-	movs r1, #0x96
-	lsls r1, r1, #2
-	strh r1, [r0, #2]
-	strh r4, [r0, #4]
-	strh r4, [r0, #6]
-	ldr r0, _0801A428 @ =gUnknown_030026D0
-	strh r4, [r0]
-	ldr r1, _0801A42C @ =gBgCntRegs
-	ldrh r0, [r1]
-	movs r2, #0x40
-	orrs r0, r2
-	strh r0, [r1]
-	ldrh r0, [r1, #2]
-	orrs r0, r2
-	strh r0, [r1, #2]
-	ldrh r0, [r1, #4]
-	orrs r0, r2
-	strh r0, [r1, #4]
-	ldrh r0, [r1, #6]
-	orrs r2, r0
-	strh r2, [r1, #6]
-_0801A418:
-	add sp, #4
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801A420: .4byte sub_801A430
-_0801A424: .4byte sub_801A4D8
-_0801A428: .4byte gUnknown_030026D0
-_0801A42C: .4byte gBgCntRegs
+.if 0
+.endif
 
-	thumb_func_start sub_801A430
-sub_801A430: @ 0x0801A430
+	thumb_func_start Task_PlayerMPUnk2
+Task_PlayerMPUnk2: @ 0x0801A430
 	push {r4, lr}
 	ldr r0, _0801A46C @ =gCurTask
 	ldr r3, [r0]
@@ -181,8 +99,8 @@ _0801A4CA:
 _0801A4D0: .4byte gUnknown_030026D0
 _0801A4D4: .4byte gBgCntRegs
 
-	thumb_func_start sub_801A4D8
-sub_801A4D8: @ 0x0801A4D8
+	thumb_func_start TaskDestructor_PlayerMPUnk2
+TaskDestructor_PlayerMPUnk2: @ 0x0801A4D8
 	push {r4, lr}
 	ldr r0, _0801A50C @ =gUnknown_03005840
 	movs r4, #0

@@ -88,6 +88,15 @@ extern u16 gUnknown_030054BC;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
+// Copies of BG control regs for Multiplayer(?)
+typedef struct {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+} MultiPlayerBgCtrlRegs; /* size: 8 */
+extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
+
 typedef struct {
     u8 filler0[0x22];
     s16 unk22;
