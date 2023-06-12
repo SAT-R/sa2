@@ -9,7 +9,7 @@ struct UNK_3005510 *sub_8019224(void)
     struct UNK_3005510 *result = &gUnknown_03005510[gUnknown_03005438];
 
     gUnknown_03005438 = (gUnknown_03005438 + 1) & 0xF;
-    
+
     return result;
 }
 
@@ -17,7 +17,8 @@ struct UNK_3005510 *sub_8019224(void)
 void sub_8019240(union MultiSioData *msioData, u32 someId)
 {
     if(gEntitiesManagerTask != NULL) {
-
+        EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
+        MapData *mapDat = em->unk0;
     }
 }
 #endif

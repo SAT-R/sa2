@@ -12,20 +12,27 @@ typedef struct {
 } Sprite_Entity;
 
 typedef struct {
-    u32 unk0;
-    u32 unk4; // h_regionCount
-    u32 unk8; // v_regionCount
-    u32 unkC[0]; // unknown size, offsets
+    /* 0x00 */ u32 uncompSize; // unsigned Q_24_8
+    /* 0x04 */ u32 h_regionCount;
+    /* 0x08 */ u32 v_regionCount;
+    /* 0x0C */ u32 offsets[0]; // (h*v) * sizeof(u32)
+
+    /* *** Data the offsets point to goes here ***
+     * - each different per type
+     * - Array per region:
+     *  - IAs / Enemies: X/Y Pos, Type, 4 data bytes (5 in SA3)
+     *  - Rings have X/Y position
+     *  - Itemboxes have X/Y Pos and Type */
 } MapData; /* Unknown size */
 
 typedef struct {
-    MapData *unk0; // interactables
-    MapData *unk4; // itemBoxes
-    MapData *unk8; // enemies
-    s32 unkC; // camX
-    s32 unk10; // camY
-    u8 unk14;
-    struct Task *unk18; // preInitTask
+    /* 0x00 */ MapData *interactables; // interactables
+    /* 0x04 */ MapData *items; // itemBoxes
+    /* 0x08 */ MapData *enemies; // enemies
+    /* 0x0C */ s32 camX; // camX
+    /* 0x10 */ s32 camY; // camY
+    /* 0x14 */ u8 unk14;
+    /* 0x18 */ struct Task *preInit;
 } EntitiesManager;
 extern struct Task *gEntitiesManagerTask;
 
