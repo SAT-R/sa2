@@ -119,23 +119,6 @@ extern void CreateEnemyDefeatScore(s16, s16);
 typedef struct Task *(*StagePreInitFunc)(void);
 typedef void (*MapEntityInit)(MapEntity *, u16, u16, u8);
 
-typedef struct {
-    u32 unk0;
-    u32 unk4; // h_regionCount
-    u32 unk8; // v_regionCount
-    u32 unkC[0]; // unknown size, offsets
-} MapData; /* Unknown size */
-
-typedef struct {
-    MapData *unk0; // interactables
-    MapData *unk4; // itemBoxes
-    MapData *unk8; // enemies
-    s32 unkC; // camX
-    s32 unk10; // camY
-    u8 unk14;
-    struct Task *unk18; // preInitTask
-} EntitesManager;
-
 struct Range {
     s32 xLow, yLow;
     s32 xHigh, yHigh;
@@ -449,11 +432,11 @@ void CreateStageEntitiesManager(void)
 {
     void *decompBuf;
     struct Task *t;
-    EntitesManager *em;
+    EntitiesManager *em;
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(sub_8008DCC, sizeof(EntitesManager), 0x2000, 0, sub_80095FC);
+        t = TaskCreate(sub_8008DCC, sizeof(EntitiesManager), 0x2000, 0, sub_80095FC);
     } else {
-        t = TaskCreate(sub_8008DCC, sizeof(EntitesManager), 0x2000, 0, NULL);
+        t = TaskCreate(sub_8008DCC, sizeof(EntitiesManager), 0x2000, 0, NULL);
     }
 
     em = TaskGetStructPtr(t);
@@ -485,7 +468,7 @@ void CreateStageEntitiesManager(void)
     em->unkC = gCamera.x;
     em->unk10 = gCamera.y;
     em->unk14 = 1;
-    gEntitesManagerTask = t;
+    gEntitiesManagerTask = t;
 }
 
 static inline MapEntity *ReadMe(void *data, u32 r6)
@@ -506,7 +489,7 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
         struct Range range;
         u32 h_regionCount, v_regionCount;
 
-        EntitesManager *em = TaskGetStructPtr(gCurTask);
+        EntitiesManager *em = TaskGetStructPtr(gCurTask);
         u32 *interactables;
         u32 *itemBoxPositions;
         u32 *enemyPositions;
@@ -685,7 +668,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC())
 
         u32 h_regionCount, v_regionCount;
 
-        EntitesManager *em = TaskGetStructPtr(gCurTask);
+        EntitiesManager *em = TaskGetStructPtr(gCurTask);
 
         if (em->unk14 != 0) {
             sub_80089CC();
@@ -1074,9 +1057,9 @@ void TaskDestructor_80095E8(struct Task *t)
 
 void sub_80095FC(struct Task *t)
 {
-    EntitesManager *em = TaskGetStructPtr(t);
+    EntitiesManager *em = TaskGetStructPtr(t);
     EwramFree(em->unk0);
     EwramFree(em->unk4);
     EwramFree(em->unk8);
-    gEntitesManagerTask = NULL;
+    gEntitiesManagerTask = NULL;
 }

@@ -49,7 +49,7 @@ build/sa2/src/core.o(.data);
 . = 0x000054D0; gUnknown_030054D0 = .;
 . = 0x000054D4; gMultiplayerMissingHeartbeats = .;
 . = 0x000054D8; gMultiplayerUnlockedLevels = .;
-. = 0x000054DC; gEntitesManagerTask = .;
+. = 0x000054DC; gEntitiesManagerTask = .;
 . = 0x000054E0; gUnknown_030054E0 = .;
 . = 0x000054E4; gUnknown_030054E4 = .;
 . = 0x000054E8; gRandomItemBox  = .;
