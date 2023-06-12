@@ -8,21 +8,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start sub_8019224
-sub_8019224: @ 0x08019224
-	ldr r3, _08019238 @ =gUnknown_03005438
-	ldrb r1, [r3]
-	lsls r0, r1, #3
-	ldr r2, _0801923C @ =gUnknown_03005510
-	adds r0, r0, r2
-	adds r1, #1
-	movs r2, #0xf
-	ands r1, r2
-	strb r1, [r3]
-	bx lr
-	.align 2, 0
-_08019238: .4byte gUnknown_03005438
-_0801923C: .4byte gUnknown_03005510
+.if 0
+.endif
 
 	thumb_func_start sub_8019240
 sub_8019240: @ 0x08019240

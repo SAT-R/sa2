@@ -153,8 +153,9 @@ extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
-extern u8 gUnknown_03005430;
 extern u8 gUnknown_0300542C;
+extern u8 gUnknown_03005430;
+extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
@@ -575,7 +576,6 @@ void sub_8023260(Player *);
 
 // Something to do with entities
 extern void sub_8019CCC(u8, u8);
-extern struct UNK_3005510 *sub_8019224(void);
 
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
