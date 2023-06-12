@@ -738,7 +738,7 @@ void sub_801AB3C(void)
         if (IS_SINGLE_PLAYER) {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
 
-            if (gLoadedSaveGame->timeLimitEnabled) {
+            if (gLoadedSaveGame->timeLimitDisabled) {
                 return;
             }
 
@@ -768,7 +768,7 @@ void sub_801AB3C(void)
         if (IS_SINGLE_PLAYER) {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
 
-            if (gLoadedSaveGame->timeLimitEnabled
+            if (gLoadedSaveGame->timeLimitDisabled
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
                 return;
             }

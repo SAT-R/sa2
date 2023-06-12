@@ -56,7 +56,7 @@ SECTIONS
         build/sa2/src/game/unused_level_select.o(.text);
         build/sa2/src/game/stage/unknown_task.o(.text);
         build/sa2/src/game/stage/enemy_defeat_score.o(.text);
-        build/sa2/asm/stage_demo.o(.text);
+        build/sa2/src/game/stage/demo_manager.o(.text);
         build/sa2/src/game/unused_unknown_task.o(.text);
         build/sa2/src/game/stage/unknown_sprite.o(.text);
         build/sa2/src/game/stage/spot_light.o(.text);
@@ -92,7 +92,6 @@ SECTIONS
         build/sa2/asm/game.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/asm/game_2.o(.text);
-        build/sa2/asm/stage_ui.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
         build/sa2/src/game/screen_transition.o(.text);
@@ -100,6 +99,7 @@ SECTIONS
         build/sa2/src/game/stage/intro.o(.text);
         build/sa2/asm/stage_intro.o(.text);
         build/sa2/asm/stage_outro.o(.text);
+        build/sa2/src/game/stage/outro.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);
         build/sa2/src/game/countdown.o(.text);
@@ -304,6 +304,7 @@ SECTIONS
         build/sa2/src/game/stage/intro.o(.rodata);
         build/sa2/asm/stage_intro.o(.rodata);
         build/sa2/asm/stage_outro.o(.rodata);
+        build/sa2/src/game/stage/outro.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);

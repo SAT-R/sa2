@@ -1,42 +1,53 @@
 #include "global.h"
+#include "core.h"
+#include "flags.h"
+#include "malloc_vram.h"
 #include "game/game.h"
+#include "game/save.h"
 #include "game/stage/ui.h"
+#include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/zones.h"
 
-#define ONE_UP_ICON_TILES 4
+#define UI_ASCII_COLON   10
+#define UI_ASCII_SP_RING 11
 
-const u16 sAnimsAsciiDigits[][2] = {
-    { 1119, 16 }, // '0'
-    { 1119, 17 }, // '1'
-    { 1119, 18 }, // '2'
-    { 1119, 19 }, // '3'
-    { 1119, 20 }, // '4'
-    { 1119, 21 }, // '5'
-    { 1119, 22 }, // '6'
-    { 1119, 23 }, // '7'
-    { 1119, 24 }, // '8'
-    { 1119, 25 }, // '9'
-    { 1119, 26 }, // ':'
-    { 1128, 0 }, // Icon - Special Ring collected
+#define UI_POS_RING_COUNT_X 32
+#define UI_POS_RING_COUNT_Y 16
+
+const u16 sAnimsAsciiDigits[12][2] = {
+    { SA2_ANIM_ASCII, '0' - 32 },
+    { SA2_ANIM_ASCII, '1' - 32 },
+    { SA2_ANIM_ASCII, '2' - 32 },
+    { SA2_ANIM_ASCII, '3' - 32 },
+    { SA2_ANIM_ASCII, '4' - 32 },
+    { SA2_ANIM_ASCII, '5' - 32 },
+    { SA2_ANIM_ASCII, '6' - 32 },
+    { SA2_ANIM_ASCII, '7' - 32 },
+    { SA2_ANIM_ASCII, '8' - 32 },
+    { SA2_ANIM_ASCII, '9' - 32 },
+    { SA2_ANIM_ASCII, ':' - 32 },
+    { SA2_ANIM_UI_SPECIAL_RING_ICON, 0 }, // Icon - Special Ring collected
 };
 
 const u16 sAnims1UpIcons[][3]
-    = { [CHARACTER_SONIC] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+    = { [CHARACTER_SONIC] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC },
-        [CHARACTER_CREAM] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_CREAM] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM },
-        [CHARACTER_TAILS] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_TAILS] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                               SA2_ANIM_VARIANT_LIFE_COUNTER_TAILS },
-        [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_KNUCKLES] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                                  SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES },
-        [CHARACTER_AMY] = { ONE_UP_ICON_TILES, SA2_ANIM_LIFE_COUNTER,
+        [CHARACTER_AMY] = { ONE_UP_ICON_TILE_COUNT, SA2_ANIM_LIFE_COUNTER,
                             SA2_ANIM_VARIANT_LIFE_COUNTER_AMY } };
 
 // This palette might be used for the 1-Up icons
-const u8 sPalette_080D6ACE[] = INCBIN_U8("graphics/80D6ACE.gbapal");
+const u16 sPalette_080D6ACE[] = INCBIN_U16("graphics/80D6ACE.gbapal");
 
-const u32 gUnknown_080D6AF0[] = {
+const u32 sOrdersOfMagnitude[6] = {
     100000, 10000, 1000, 100, 10, 1,
 };
 
@@ -62,7 +73,7 @@ const u8 gMillisUnpackTable[60][2] = {
     { 9, 3 }, { 9, 5 }, { 9, 7 }, { 9, 9 },
 };
 
-const u16 gUnknown_080D6BF8[] = {
+const s16 sZoneTimeSecondsTable[] = {
     ZONE_TIME_TO_INT(0, 0),  ZONE_TIME_TO_INT(0, 1),  ZONE_TIME_TO_INT(0, 2),
     ZONE_TIME_TO_INT(0, 3),  ZONE_TIME_TO_INT(0, 4),  ZONE_TIME_TO_INT(0, 5),
     ZONE_TIME_TO_INT(0, 6),  ZONE_TIME_TO_INT(0, 7),  ZONE_TIME_TO_INT(0, 8),
@@ -86,9 +97,432 @@ const u16 gUnknown_080D6BF8[] = {
     ZONE_TIME_TO_INT(0, 60),
 };
 
-const u16 gUnknown_080D6C72[] = {
+const u16 sZoneTimeMinutesTable[] = {
     ZONE_TIME_TO_INT(0, 0), ZONE_TIME_TO_INT(1, 0),  ZONE_TIME_TO_INT(2, 0),
     ZONE_TIME_TO_INT(3, 0), ZONE_TIME_TO_INT(4, 0),  ZONE_TIME_TO_INT(5, 0),
     ZONE_TIME_TO_INT(6, 0), ZONE_TIME_TO_INT(7, 0),  ZONE_TIME_TO_INT(8, 0),
     ZONE_TIME_TO_INT(9, 0), ZONE_TIME_TO_INT(10, 0),
 };
+
+typedef struct {
+    /* 0x00 */ Sprite ring;
+    /* 0x30 */ Sprite ringContainer;
+
+    // Only used in Single Player
+    /* 0x60 */ Sprite playerIcon;
+
+    /* 0x90 */ Sprite digits[12];
+
+    // Seem to be OamData.attr2
+    /* 0x2D0 */ u16 unk2D0;
+    /* 0x2D2 */ u16 unk2D2;
+    /* 0x2D4 */ u16 unk2D4;
+    /* 0x2D6 */ u16 unk2D6;
+    /* 0x2D8 */ u16 unk2D8[12];
+} StageUi; /* size: 0x2F0 */
+
+void Task_CreateStageUiMain(void);
+void TaskDestructor_CreateStageUi(struct Task *t);
+
+struct Task *CreateStageUi(void)
+{
+    u32 i;
+    u32 tile;
+    u32 sixK;
+    StageUi *ui;
+    Sprite *s;
+
+    struct Task *t = TaskCreate(Task_CreateStageUiMain, sizeof(StageUi), 0x2102, 0,
+                                TaskDestructor_CreateStageUi);
+    gStageUITask = t;
+    ui = TaskGetStructPtr(t);
+
+    for (i = 0; i < ARRAY_COUNT(ui->digits); i++) {
+        s = &ui->digits[i];
+        s->x = 0;
+        s->y = 0;
+
+        if (i == 0) {
+            s->graphics.dest = VramMalloc(24);
+        } else {
+            s->graphics.dest = ui->digits[0].graphics.dest + (i * (2 * TILE_SIZE_4BPP));
+        }
+
+        ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
+
+        s->unk1A = 0;
+        s->graphics.size = 0;
+        s->graphics.anim = sAnimsAsciiDigits[i][0];
+        s->variant = sAnimsAsciiDigits[i][1];
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk28[0].unk0 = -1;
+        s->unk10 = SPRITE_FLAG(18, 1);
+
+        if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
+            sub_8004558(s);
+        }
+    }
+
+    if (IS_SINGLE_PLAYER) {
+        s = &ui->playerIcon;
+        s->x = 6;
+        s->y = 142;
+
+        s->graphics.dest = VramMalloc(sAnims1UpIcons[gSelectedCharacter][0]);
+
+        ui->unk2D4 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+        s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
+        s->variant = sAnims1UpIcons[gSelectedCharacter][2];
+        s->unk1A = 0x100;
+        s->graphics.size = 0;
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk28[0].unk0 = -1;
+        s->unk10 = 0;
+
+        // This can never be reached
+        if (IS_MULTI_PLAYER) {
+            u16 id = (SIO_MULTI_CNT)->id;
+            s->palId = id;
+            ui->unk2D4 |= (id << 12);
+        }
+        sub_8004558(s);
+    }
+
+    s = &ui->ringContainer;
+    s->x = 0;
+    s->y = 1;
+    s->graphics.dest = VramMalloc(32);
+    ui->unk2D6 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
+    ui->unk2D6 |= 0x6000;
+    s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
+    s->variant = 0;
+    s->unk1A = 0xC0;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = -1;
+    s->unk22 = 0x10;
+    s->palId = 0;
+    s->unk28[0].unk0 = -1;
+    s->unk10 = 0;
+    sub_8004558(s);
+
+    s = &ui->ring;
+    ui->ring.x = 7;
+    s->y = 9;
+    s->graphics.dest = VramMalloc(4);
+    ui->unk2D2 = ((GET_TILE_NUM(s->graphics.dest) & 0x3FF));
+    ui->unk2D2 |= 0x6000;
+    s->graphics.anim = SA2_ANIM_UI_RING;
+    s->variant = 0;
+    s->unk1A = 0;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = -1;
+    s->unk22 = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    s->unk28[0].unk0 = -1;
+    s->unk10 = 0;
+    ui->unk2D0 = 0;
+
+    for (i = 0; i < 16; i++) {
+        gObjPalette[0x70 + i] = sPalette_080D6ACE[i];
+    }
+
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+    return gStageUITask;
+}
+
+// TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
+void Task_CreateStageUiMain(void)
+{
+    if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
+        u32 time;
+        s32 score;
+        u32 sl;
+        u16 i;
+        OamData *oam;
+        u32 courseTime;
+
+        StageUi *ui = TaskGetStructPtr(gCurTask);
+        Sprite *digits = &ui->digits[0];
+        Sprite *sd;
+        u32 seconds, minutes;
+
+        if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
+            if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
+                sd = &digits[UI_ASCII_SP_RING];
+                sub_8004558(sd);
+
+                for (i = 0; i < gUnknown_030054F4; i++) {
+                    oam = sub_80058B4(3);
+                    oam->all.attr0 = 31;
+                    oam->all.attr1 = i * 8 + 4;
+                    oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
+                }
+            }
+            // _0802CD74
+            if ((!gLoadedSaveGame->timeLimitDisabled)
+                && (gCourseTime >= ZONE_TIME_TO_INT(9, 40))
+                && (Mod(gCourseTime, 60) == 0)) {
+                m4aSongNumStart(SE_TIMER);
+            }
+
+            /* Score Value */
+            score = gUnknown_03005450;
+            if (score > 999999)
+                score = 999999;
+
+            for (i = 0; i < ARRAY_COUNT(sOrdersOfMagnitude); i++) {
+                s32 digit;
+                u32 m = sOrdersOfMagnitude[i];
+
+                digit = Div(score, m);
+                oam = sub_80058B4(3);
+
+                oam->all.attr0 = 0x800E;
+                oam->all.attr1 = i * 8 + 28;
+                oam->all.attr2 = ui->unk2D8[digit];
+
+                score -= digit * m;
+            }
+
+            /* Player-Icon */
+            oam = sub_80058B4(3);
+            oam->all.attr0 = 142;
+            oam->all.attr1 = (0x4000 | 6);
+            oam->all.attr2 = ui->unk2D4;
+
+            if (gNumLives > 0)
+                i = gNumLives - 1;
+            else
+                i = 0;
+
+            if (i > 9)
+                i = 9;
+
+            /* Lives Counter */
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 140);
+            oam->all.attr1 = 30;
+            oam->all.attr2 = ui->unk2D8[i];
+        }
+        // _0802CE6A
+
+        /* Ring-Container */
+        oam = sub_80058B4(4);
+        oam->all.attr0 = (0x4000 | 0);
+        oam->all.attr1 = (0xC000 | 509);
+        oam->all.attr2 = ui->unk2D6;
+
+        /* Ring */
+        ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q_24_8(0.25));
+        ui->unk2D0 &= 0x7FF;
+        ui->ring.variant = ui->unk2D0 >> 8;
+        ui->ring.unk21 = 0xFF;
+        sub_8004558(&ui->ring);
+
+        /* Ring-Count */
+        oam = sub_80058B4(3);
+        oam->all.attr0 = 8;
+        oam->all.attr1 = (0x4000 | 7);
+        oam->all.attr2 = ui->unk2D2;
+
+        if (gRingCount > 999) {
+            sd = &digits[9];
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 0 * 8;
+            sub_80051E8(sd);
+
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 1 * 8;
+            sub_80051E8(sd);
+
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 2 * 8;
+            sub_80051E8(sd);
+        } else {
+            // _0802CF28
+            u32 processed2;
+            u16 processed;
+            sl = (gRingCount == 0) && gUnknown_03005590 & 0x10 ? 0x7000 : 0;
+
+            { /* 100s */
+                u16 hundreds;
+                hundreds = Div(gRingCount, 100);
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 0 * 8);
+                oam->all.attr2 = (ui->unk2D8[hundreds] | sl);
+
+                processed = hundreds * 100;
+            }
+
+            { /* 10s */
+                u16 tens = Div(gRingCount - processed, 10);
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 1 * 8);
+                oam->all.attr2 = (ui->unk2D8[tens] | sl);
+
+                processed2 = processed + tens * 10;
+            }
+
+            { /* 1s */
+                u16 ones = gRingCount - processed2;
+
+                oam = sub_80058B4(3);
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (28 + 2 * 8);
+                oam->all.attr2 = (ui->unk2D8[ones] | sl);
+            }
+        }
+        // _0802CFDC
+
+        time = gCourseTime;
+        time = (time <= MAX_COURSE_TIME - 1) ? gCourseTime : MAX_COURSE_TIME - 1;
+
+        if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
+            // _0802CFF8
+
+            u32 r1, r5;
+            u32 tempTime, tempB;
+
+            sl = 0x6000;
+
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 0);
+            oam->all.attr1 = 99;
+            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+
+            oam = sub_80058B4(3);
+            oam->all.attr0 = (0x8000 | 0);
+            oam->all.attr1 = 123;
+            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+
+            seconds = Div(time, GBA_FRAMES_PER_SECOND);
+            minutes = Div(seconds, 60);
+
+            seconds -= sZoneTimeSecondsTable[minutes];
+            r1 = time - sZoneTimeSecondsTable[seconds];
+            r5 = r1 - sZoneTimeMinutesTable[minutes];
+
+            tempTime = gCourseTime;
+            tempB = ZONE_TIME_TO_INT(9, 0);
+            sl = 0;
+            if (tempTime > tempB) {
+                sl = (-(gUnknown_03005590 & 0x10)) >> 31;
+            }
+
+            // Milliseconds-L
+            sd = &digits[gMillisUnpackTable[r5][0]];
+            sd->x = 136 + 0 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Milliseconds-R
+            sd = &digits[gMillisUnpackTable[r5][1]];
+            sd->x = 136 + 1 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Seconds-L
+            sd = &digits[gSecondsTable[seconds][0]];
+            sd->x = 112 + 0 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Seconds-R
+            sd = &digits[gSecondsTable[seconds][1]];
+            sd->x = 112 + 1 * 8;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+
+            // Minutes
+            sd = &digits[minutes];
+            sd->x = 96;
+            sd->y = 16;
+            sd->palId = sl;
+            sub_80051E8(sd);
+        }
+    }
+}
+
+// Almost identical to Debug_PrintIntegerAt()"
+void StageUi_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
+{
+    StageUi *ui = TaskGetStructPtr(gStageUITask);
+    Sprite *digits = &ui->digits[0];
+    u32 numDigits;
+    u32 digitX;
+
+    s32 base = 10;
+    u32 remaining = 1;
+
+    if (value <= 9) {
+        numDigits = 1;
+    } else if (value <= 99) {
+        numDigits = 2;
+    } else if (value <= 999) {
+        numDigits = 3;
+    } else if (value <= 9999) {
+        numDigits = 4;
+    } else if (value <= 99999) {
+        numDigits = 5;
+    } else if (value <= 999999) {
+        numDigits = 6;
+    } else {
+        numDigits = 7;
+    }
+
+    if (remaining == 0 || numDigits == 0)
+        return;
+
+    for (digitX = x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
+        Sprite *digit;
+
+        remaining = Div(value, base);
+
+        digit = &digits[value];
+        digit -= remaining * base;
+
+        digit->x = digitX;
+        digit->y = y;
+
+        digit->palId = palId;
+
+        digit->unk10 |= SPRITE_FLAG_MASK_14;
+
+        sub_80051E8(digit);
+
+        value = remaining;
+    }
+}
+
+void TaskDestructor_CreateStageUi(struct Task *t)
+{
+    StageUi *ui = TaskGetStructPtr(t);
+    VramFree(ui->ring.graphics.dest);
+    VramFree(ui->ringContainer.graphics.dest);
+
+    if (IS_SINGLE_PLAYER)
+        VramFree(ui->playerIcon.graphics.dest);
+
+    VramFree(ui->digits[0].graphics.dest);
+}

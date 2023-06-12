@@ -249,8 +249,10 @@
 
 #define SA2_ANIM_TAILS_CAPTURED_COPY 659
 
-#define SA2_ANIM_ITEMBOX              724
-#define SA2_ANIM_ITEMBOX_TYPE         725
+#define SA2_ANIM_ITEMBOX      724
+#define SA2_ANIM_ITEMBOX_TYPE 725
+
+// Might be RING_UI instead of STATIC?
 #define SA2_ANIM_RING_STATIC          726
 #define SA2_ANIM_RING_COLLECT         727
 #define TILE_COUNT__ANIM_ITEMBOX      16 // TODO: Automate
@@ -355,6 +357,9 @@
 #define SA2_ANIM_SOUNDTEST_PLATFORM                      972
 #define SA2_ANIM_SOUNDTEST_CLAP_FORWARD                  973
 
+#define SA2_ANIM_DEMO_PLAY                        1044
+#define SA2_ANIM_1045                             1045
+#define SA2_ANIM_COPYRIGHT_INFO_TITLE_SCREEN      1046
 #define SA2_ANIM_TIME_ATTACK_DIGITS               1047
 #define SA2_ANIM_VARIANT_TA_DIGITS_0              0
 #define SA2_ANIM_VARIANT_TA_DIGITS_1              1
@@ -510,11 +515,15 @@
 #define SA2_ANIM_VARIANT_LIFE_COUNTER_KNUCKLES 2
 #define SA2_ANIM_VARIANT_LIFE_COUNTER_CREAM    3
 #define SA2_ANIM_VARIANT_LIFE_COUNTER_AMY      4
+#define ONE_UP_ICON_TILE_COUNT                 4
 
-#define SA2_ANIM_COUNTDOWN           1129
-#define SA2_ANIM_VARIANT_COUNTDOWN_3 0
-#define SA2_ANIM_VARIANT_COUNTDOWN_2 1
-#define SA2_ANIM_VARIANT_COUNTDOWN_1 2
+#define SA2_ANIM_UI_RING_CONTAINER    1126
+#define SA2_ANIM_UI_RING              1127
+#define SA2_ANIM_UI_SPECIAL_RING_ICON 1128
+#define SA2_ANIM_COUNTDOWN            1129
+#define SA2_ANIM_VARIANT_COUNTDOWN_3  0
+#define SA2_ANIM_VARIANT_COUNTDOWN_2  1
+#define SA2_ANIM_VARIANT_COUNTDOWN_1  2
 
 // The "START!" graphic has 2 64x64 images (hence Left / Right variants).
 #define SA2_ANIM_COUNTDOWN_START           1130

@@ -79,7 +79,10 @@ typedef struct {
 
 extern UNK_30054A8 gUnknown_030054A8;
 extern u32 gCourseTime;
+
+// Collected Special Rings in current stage?
 extern u8 gUnknown_030054F4;
+
 extern u16 gUnknown_03005440;
 extern u16 gUnknown_030054BC;
 extern u8 gRandomItemBox;
@@ -109,6 +112,7 @@ extern u8 gUnknown_030054E4;
 #define EXTRA_STATE__4                  0x0004
 #define EXTRA_STATE__10                 0x0010
 #define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
+#define EXTRA_STATE__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
 #define EXTRA_STATE__GRAVITY_INVERTED   0x0080
 #define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
 #define EXTRA_STATE__TURN_OFF_TIMER     0x0200
@@ -131,6 +135,7 @@ typedef struct {
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4;
 
+// Some flags
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;
@@ -424,7 +429,7 @@ extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gMultiplayerPseudoRandom;
 
-extern u32 gUnknown_03005450;
+extern s32 gUnknown_03005450;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 

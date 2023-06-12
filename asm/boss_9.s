@@ -1802,7 +1802,7 @@ _0804DC2C:
 	strh r0, [r1, #4]
 	mov r0, sb
 	ldr r1, [r0]
-	ldr r0, _0804DC5C @ =sub_804DC60
+	ldr r0, _0804DC5C @ =Task_804DC60
 	str r0, [r1, #8]
 _0804DC4C:
 	pop {r3, r4}
@@ -1813,10 +1813,10 @@ _0804DC4C:
 	bx r0
 	.align 2, 0
 _0804DC58: .4byte gBldRegs
-_0804DC5C: .4byte sub_804DC60
+_0804DC5C: .4byte Task_804DC60
 
-	thumb_func_start sub_804DC60
-sub_804DC60: @ 0x0804DC60
+	thumb_func_start Task_804DC60
+Task_804DC60: @ 0x0804DC60
 	push {lr}
 	ldr r0, _0804DCC4 @ =gCurTask
 	ldr r0, [r0]
@@ -1851,7 +1851,7 @@ sub_804DC60: @ 0x0804DC60
 	adds r1, r3, #0
 	orrs r0, r1
 	strh r0, [r2]
-	bl sub_802C9E4
+	bl CreateStageUi
 	ldr r0, _0804DCE4 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0804DCE8 @ =gRingCount
