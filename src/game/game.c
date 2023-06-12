@@ -1,18 +1,22 @@
 #include <string.h>
 #include "core.h"
+#include "multi_sio.h"
+#include "trig.h"
+#include "lib/m4a.h"
+
 #include "game/game.h"
 #include "game/save.h"
 #include "game/race_progress.h"
-#include "multi_sio.h"
 #include "game/multiboot/collect_rings/time_display.h"
-#include "lib/m4a.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
 #include "game/stage/entities_manager.h"
+#include "game/stage/rings_manager.h"
+#include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
 #include "game/stage/spot_light.h"
+
 #include "constants/songs.h"
-#include "trig.h"
 
 void sub_802B61C(u16, u16, u16);
 void sub_80299F0(u32, u32, u32, Player *);
@@ -29,11 +33,9 @@ void sub_802B708(void);
 void sub_801C068(u32);
 void sub_801BF90(void);
 
-void CreateStageMusicManager(void);
 void SetupStageLoadingScreen(void);
 
 void sub_80115D0(u32, u32, u32);
-void CreateStageRingsManager(void);
 
 void sub_8019120(void);
 void CreateMultiplayerPlayer(u8);

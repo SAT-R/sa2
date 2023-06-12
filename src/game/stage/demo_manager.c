@@ -6,6 +6,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "lib/m4a.h"
+#include "game/stage/demo_manager.h"
 
 #include "constants/animations.h"
 
