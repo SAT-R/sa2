@@ -99,6 +99,7 @@ SECTIONS
         build/sa2/src/game/stage/intro.o(.text);
         build/sa2/asm/stage_intro.o(.text);
         build/sa2/asm/stage_outro.o(.text);
+        build/sa2/src/game/stage/outro.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);
         build/sa2/src/game/countdown.o(.text);
@@ -303,6 +304,7 @@ SECTIONS
         build/sa2/src/game/stage/intro.o(.rodata);
         build/sa2/asm/stage_intro.o(.rodata);
         build/sa2/asm/stage_outro.o(.rodata);
+        build/sa2/src/game/stage/outro.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);

@@ -100,7 +100,7 @@ static void RenderUI(struct CharacterSelectionScreen *);
 
 #define CHARACTER_HIDDEN_LABEL 5
 
-static const u16 sCharacterTitleLeftSideAssets[][2] = {
+static ALIGNED(4) const u16 sCharacterTitleLeftSideAssets[][2] = {
     [CHARACTER_SONIC] = { 739, 0 }, [CHARACTER_CREAM] = { 739, 8 },
     [CHARACTER_TAILS] = { 739, 2 }, [CHARACTER_KNUCKLES] = { 739, 4 },
     [CHARACTER_AMY] = { 739, 6 },   [CHARACTER_HIDDEN_LABEL] = { 739, 10 },
