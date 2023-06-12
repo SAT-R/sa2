@@ -244,9 +244,7 @@ struct Task *CreateStageUi(void)
 }
 
 // TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
-// https://decomp.me/scratch/EhVgP
-NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
-         void Task_CreateStageUiMain(void))
+void Task_CreateStageUiMain(void)
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
         u32 time;
@@ -254,12 +252,17 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
         u32 sl;
         u16 i;
         OamData *oam;
+        u32 courseTime;
+
         StageUi *ui = TaskGetStructPtr(gCurTask);
         Sprite *digits = &ui->digits[0];
+        Sprite *sd;
+        u32 seconds, minutes;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
             if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
-                sub_8004558(&digits[UI_ASCII_SP_RING]);
+                sd = &digits[UI_ASCII_SP_RING];
+                sub_8004558(sd);
 
                 for (i = 0; i < gUnknown_030054F4; i++) {
                     oam = sub_80058B4(3);
@@ -336,30 +339,27 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
         oam->all.attr2 = ui->unk2D2;
 
         if (gRingCount > 999) {
-            Sprite *d9 = &digits[9];
-            d9->y = UI_POS_RING_COUNT_Y;
-            d9->x = UI_POS_RING_COUNT_X + 0 * 8;
-            sub_80051E8(d9);
+            sd = &digits[9];
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 0 * 8;
+            sub_80051E8(sd);
 
-            d9->y = UI_POS_RING_COUNT_Y;
-            d9->x = UI_POS_RING_COUNT_X + 1 * 8;
-            sub_80051E8(d9);
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 1 * 8;
+            sub_80051E8(sd);
 
-            d9->y = UI_POS_RING_COUNT_Y;
-            d9->x = UI_POS_RING_COUNT_X + 2 * 8;
-            sub_80051E8(d9);
+            sd->y = UI_POS_RING_COUNT_Y;
+            sd->x = UI_POS_RING_COUNT_X + 2 * 8;
+            sub_80051E8(sd);
         } else {
             // _0802CF28
             u32 processed2;
             u16 processed;
-            sl = 0;
-
-            if ((gRingCount == 0) && gUnknown_03005590 & 0x10) {
-                sl = 0x7000;
-            }
+            sl = (gRingCount == 0) && gUnknown_03005590 & 0x10 ? 0x7000 : 0;
 
             { /* 100s */
-                u16 hundreds = Div(gRingCount, 100);
+                u16 hundreds;
+                hundreds = Div(gRingCount, 100);
 
                 oam = sub_80058B4(3);
                 oam->all.attr0 = (0x8000 | 0);
@@ -390,13 +390,15 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
             }
         }
         // _0802CFDC
-        time = (gCourseTime > MAX_COURSE_TIME - 1) ? MAX_COURSE_TIME - 1 : gCourseTime;
+
+        time = gCourseTime;
+        time = (time <= MAX_COURSE_TIME - 1) ? gCourseTime : MAX_COURSE_TIME - 1;
 
         if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
             // _0802CFF8
-            u32 seconds, minutes;
+
             u32 r1, r5;
-            Sprite *sd;
+            u32 tempTime, tempB;
 
             sl = 0x6000;
 
@@ -417,8 +419,10 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
             r1 = time - sZoneTimeSecondsTable[seconds];
             r5 = r1 - sZoneTimeMinutesTable[minutes];
 
+            tempTime = gCourseTime;
+            tempB = ZONE_TIME_TO_INT(9, 0);
             sl = 0;
-            if (gCourseTime > ZONE_TIME_TO_INT(9, 0)) {
+            if (tempTime > tempB) {
                 sl = (-(gUnknown_03005590 & 0x10)) >> 31;
             }
 
@@ -459,7 +463,6 @@ NONMATCH("asm/non_matching/Task_CreateStageUiMain.inc",
         }
     }
 }
-END_NONMATCH
 
 // Almost identical to Debug_PrintIntegerAt()"
 void StageUi_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
