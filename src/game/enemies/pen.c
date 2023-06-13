@@ -21,7 +21,8 @@ typedef struct {
     /* 0x51 */ u8 unk51;
 } Sprite_Pen; /* 0x54 */
 
-void sub_8057980(void);
+static void sub_8057980(void);
+static void sub_8057BD4(void);
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -68,9 +69,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->unk10 = 0x2000;
 }
 
-void sub_8057BD4(void);
-
-void sub_8057980(void)
+static void sub_8057980(void)
 {
     Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
     Sprite *s = &pen->s;
@@ -168,5 +167,64 @@ void sub_8057980(void)
 
     sub_80122DC(posX_24_8, Q_24_8(pos.y));
     sub_8004558(s);
+    sub_80051E8(s);
+}
+
+static void sub_8057BD4(void)
+{
+    Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
+    Sprite *s = &pen->s;
+    MapEntity *me = pen->base.me;
+    Vec2_32 pos;
+
+    s32 val = sub_801F07C(Q_24_8_TO_INT(pen->y + pen->unk48),
+                          Q_24_8_TO_INT(pen->x + pen->unk44), pen->unk50, 8, NULL,
+                          sub_801EE64);
+
+    if (val < 0) {
+        pen->unk48 += Q_24_8(val);
+        val = sub_801F100(Q_24_8_TO_INT(pen->y + pen->unk48),
+                          Q_24_8_TO_INT(pen->x + pen->unk44), pen->unk50, 8,
+                          sub_801EC3C);
+    }
+
+    if (val > 0) {
+        pen->unk48 += Q_24_8(val);
+    }
+
+    pos.x = Q_24_8_TO_INT(pen->x + pen->unk44);
+    pos.y = Q_24_8_TO_INT(pen->y + pen->unk48);
+
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+
+    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if ((Q_24_8_TO_INT(pen->x) > gCamera.x + 0x170
+         || Q_24_8_TO_INT(pen->x) < gCamera.x - 0x80
+         || Q_24_8_TO_INT(pen->y) > gCamera.y + 0x120
+         || Q_24_8_TO_INT(pen->y) < gCamera.y - 0x80)
+        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        SET_MAP_ENTITY_NOT_INITIALIZED(me, pen->base.spriteX);
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
+    if (sub_8004558(s) == 0) {
+        pen->unk51 = 0;
+        if (s->unk10 & 0x400) {
+            s->unk10 &= ~0x400;
+        } else {
+            s->unk10 |= 0x400;
+        }
+        s->graphics.anim = SA2_ANIM_PEN;
+        s->variant = 0;
+        s->unk21 = -1;
+        gCurTask->main = sub_8057980;
+    }
     sub_80051E8(s);
 }
