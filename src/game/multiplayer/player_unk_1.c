@@ -13,9 +13,10 @@ struct UNK_3005510 *sub_8019224(void)
     return result;
 }
 
-#if 01
+// (99.61%)
 // https://decomp.me/scratch/fIfdo
-void sub_8019240(union MultiSioData *msioData, u32 someId)
+NONMATCH("asm/non_matching/sub_8019240.inc",
+         void sub_8019240(union MultiSioData *msioData, u32 someId))
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
@@ -29,6 +30,7 @@ void sub_8019240(union MultiSioData *msioData, u32 someId)
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
 
+        // NONMATCH: this line has reg-alloc issues, otherwise it matches
         offset = *(u32 *)(((u8 *)ias)
                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
                           + (r2 << 2));
@@ -48,4 +50,4 @@ void sub_8019240(union MultiSioData *msioData, u32 someId)
         }
     }
 }
-#endif
+END_NONMATCH
