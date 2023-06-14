@@ -516,7 +516,7 @@ _08058874:
 	lsls r0, r0, #2
 	strh r0, [r1, #8]
 	mov r0, sp
-	bl sub_8050E04
+	bl CreateProjectile
 _080588B8:
 	lsls r0, r4, #8
 	lsls r1, r5, #8

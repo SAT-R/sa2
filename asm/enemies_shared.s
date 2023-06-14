@@ -4,107 +4,8 @@
 .syntax unified
 .arm
 
-@; CreateProjectile?
-	thumb_func_start sub_8050E04
-sub_8050E04: @ 0x08050E04
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	sub sp, #8
-	adds r5, r0, #0
-	ldr r0, _08050EC0 @ =sub_805102C
-	movs r2, #0x80
-	lsls r2, r2, #7
-	ldr r1, _08050EC4 @ =sub_80511EC
-	str r1, [sp]
-	movs r1, #0x3c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r6, [r0, #6]
-	movs r4, #0xc0
-	lsls r4, r4, #0x12
-	adds r4, r6, r4
-	ldr r0, [r5, #0xc]
-	str r0, [r4, #0x30]
-	ldr r0, [r5, #0x10]
-	str r0, [r4, #0x34]
-	ldr r3, _08050EC8 @ =gSineTable
-	ldrh r0, [r5, #6]
-	movs r1, #0x80
-	lsls r1, r1, #1
-	adds r0, r0, r1
-	lsls r0, r0, #1
-	adds r0, r0, r3
-	movs r2, #0
-	ldrsh r1, [r0, r2]
-	movs r2, #8
-	ldrsh r0, [r5, r2]
-	muls r0, r1, r0
-	asrs r0, r0, #0xe
-	movs r1, #0
-	mov r8, r1
-	movs r2, #0
-	strh r0, [r4, #0x38]
-	ldrh r0, [r5, #6]
-	lsls r0, r0, #1
-	adds r0, r0, r3
-	movs r3, #0
-	ldrsh r1, [r0, r3]
-	movs r3, #8
-	ldrsh r0, [r5, r3]
-	muls r0, r1, r0
-	asrs r0, r0, #0xe
-	strh r0, [r4, #0x3a]
-	ldrh r0, [r5]
-	str r2, [sp, #4]
-	bl VramMalloc
-	str r0, [r4, #4]
-	ldrh r0, [r5, #2]
-	strh r0, [r4, #0xa]
-	ldrb r1, [r5, #4]
-	ldr r3, _08050ECC @ =IWRAM_START + 0x20
-	adds r0, r6, r3
-	strb r1, [r0]
-	movs r0, #0x80
-	lsls r0, r0, #2
-	strh r0, [r4, #0x1a]
-	ldr r2, [sp, #4]
-	strh r2, [r4, #8]
-	strh r2, [r4, #0x16]
-	strh r2, [r4, #0x18]
-	strh r2, [r4, #0x14]
-	strh r2, [r4, #0x1c]
-	ldr r0, _08050ED0 @ =IWRAM_START + 0x21
-	adds r1, r6, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r2, _08050ED4 @ =IWRAM_START + 0x22
-	adds r1, r6, r2
-	movs r0, #0x10
-	strb r0, [r1]
-	adds r3, #5
-	adds r6, r6, r3
-	mov r0, r8
-	strb r0, [r6]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r4, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #5
-	str r0, [r4, #0x10]
-	add sp, #8
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08050EC0: .4byte sub_805102C
-_08050EC4: .4byte sub_80511EC
-_08050EC8: .4byte gSineTable
-_08050ECC: .4byte IWRAM_START + 0x20
-_08050ED0: .4byte IWRAM_START + 0x21
-_08050ED4: .4byte IWRAM_START + 0x22
+.if 0
+.endif
 
 	thumb_func_start sub_8050ED8
 sub_8050ED8: @ 0x08050ED8
@@ -273,8 +174,8 @@ _08051020: .4byte IWRAM_START + 0x25
 _08051024: .4byte gSineTable
 _08051028: .4byte 0x000003FF
 
-	thumb_func_start sub_805102C
-sub_805102C: @ 0x0805102C
+	thumb_func_start Task_805102C
+Task_805102C: @ 0x0805102C
 	push {r4, r5, r6, r7, lr}
 	ldr r3, _0805108C @ =gCurTask
 	ldr r0, [r3]
@@ -499,8 +400,8 @@ sub_80511D8: @ 0x080511D8
 	.align 2, 0
 _080511E8: .4byte gCurTask
 
-	thumb_func_start sub_80511EC
-sub_80511EC: @ 0x080511EC
+	thumb_func_start TaskDestructor_80511EC
+TaskDestructor_80511EC: @ 0x080511EC
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
