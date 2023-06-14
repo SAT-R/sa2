@@ -69,4 +69,6 @@ u32 sub_800C944(Sprite *, s32, s32);
 // TODO: Include header this belongs to
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
+void sub_801FD34(s32, s32, s32);
+
 #endif // GUARD_INTERACTABLE_H
