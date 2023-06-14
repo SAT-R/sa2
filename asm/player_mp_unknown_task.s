@@ -12,7 +12,7 @@ gUnknown_080D5744:
     .4byte sub_8019368
     .4byte sub_8018AD8
     .4byte sub_8018E00
-    .4byte ReturnSIOControl32
+    .4byte VoidReturnSIOControl32
     .4byte 0
 
 .text
