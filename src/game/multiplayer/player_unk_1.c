@@ -167,7 +167,7 @@ NONMATCH("asm/non_matching/sub_8019368.inc",
 }
 END_NONMATCH
 
-// Type of this is determined by it being called in a C func-array
+// Type of this is determined by it being referenced in a C func-array
 void VoidReturnSIOControl32(union MultiSioData *msioData, u32 UNUSED someId)
 {
     REG_SIOCNT_32;
