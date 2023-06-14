@@ -1851,7 +1851,7 @@ Task_804DC60: @ 0x0804DC60
 	adds r1, r3, #0
 	orrs r0, r1
 	strh r0, [r2]
-	bl CreateStageUi
+	bl CreateStageUI
 	ldr r0, _0804DCE4 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0804DCE8 @ =gRingCount

@@ -22,6 +22,7 @@
 #include "game/character_select.h"
 #include "malloc_vram.h"
 #include "game/time_attack/mode_select.h"
+#include "game/stage/demo_manager.h"
 
 #include "game/assets/compressed/roms.h"
 
@@ -279,9 +280,6 @@ static const u16 sLensFlareStartPositions[][2] = {
     { 20, 10 }, { 36, 26 },   { 52, 42 },   { 68, 58 },
     { 92, 82 }, { 124, 114 }, { 148, 138 }, { 180, 170 },
 };
-
-// Don't know who these belong to yet
-void CreateDemoManager(void);
 
 void CreateTitleScreen(void)
 {

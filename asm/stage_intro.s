@@ -4095,7 +4095,7 @@ _0802F9CC:
 	ands r1, r2
 	str r1, [r0, #0x1c]
 _0802F9D6:
-	bl CreateStageUi
+	bl CreateStageUI
 	ldr r0, _0802F9F4 @ =gCurTask
 	ldr r0, [r0]
 	bl TaskDestroy

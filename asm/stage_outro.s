@@ -1703,7 +1703,7 @@ _0803121E:
 	asrs r1, r1, #0x10
 	movs r2, #0x5a
 	movs r3, #0
-	bl StageUi_PrintIntegerAt
+	bl StageUI_PrintIntegerAt
 _0803124C:
 	cmp r7, #0x30
 	bls _0803129C
@@ -1744,7 +1744,7 @@ _0803126E:
 	asrs r1, r1, #0x10
 	movs r2, #0x6e
 	movs r3, #0
-	bl StageUi_PrintIntegerAt
+	bl StageUI_PrintIntegerAt
 _0803129C:
 	ldr r0, _080312D0 @ =gCurrentLevel
 	ldrb r1, [r0]
@@ -1797,7 +1797,7 @@ _080312D6:
 	asrs r1, r1, #0x10
 	movs r2, #0x82
 	movs r3, #0
-	bl StageUi_PrintIntegerAt
+	bl StageUI_PrintIntegerAt
 _08031304:
 	add sp, #4
 	pop {r3, r4}

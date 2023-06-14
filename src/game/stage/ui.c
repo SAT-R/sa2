@@ -119,21 +119,21 @@ typedef struct {
     /* 0x2D4 */ u16 unk2D4;
     /* 0x2D6 */ u16 unk2D6;
     /* 0x2D8 */ u16 unk2D8[12];
-} StageUi; /* size: 0x2F0 */
+} StageUI; /* size: 0x2F0 */
 
-void Task_CreateStageUiMain(void);
-void TaskDestructor_CreateStageUi(struct Task *t);
+void Task_CreateStageUIMain(void);
+void TaskDestructor_CreateStageUI(struct Task *t);
 
-struct Task *CreateStageUi(void)
+struct Task *CreateStageUI(void)
 {
     u32 i;
     u32 tile;
     u32 sixK;
-    StageUi *ui;
+    StageUI *ui;
     Sprite *s;
 
-    struct Task *t = TaskCreate(Task_CreateStageUiMain, sizeof(StageUi), 0x2102, 0,
-                                TaskDestructor_CreateStageUi);
+    struct Task *t = TaskCreate(Task_CreateStageUIMain, sizeof(StageUI), 0x2102, 0,
+                                TaskDestructor_CreateStageUI);
     gStageUITask = t;
     ui = TaskGetStructPtr(t);
 
@@ -244,7 +244,7 @@ struct Task *CreateStageUi(void)
 }
 
 // TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
-void Task_CreateStageUiMain(void)
+void Task_CreateStageUIMain(void)
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
         u32 time;
@@ -254,7 +254,7 @@ void Task_CreateStageUiMain(void)
         OamData *oam;
         u32 courseTime;
 
-        StageUi *ui = TaskGetStructPtr(gCurTask);
+        StageUI *ui = TaskGetStructPtr(gCurTask);
         Sprite *digits = &ui->digits[0];
         Sprite *sd;
         u32 seconds, minutes;
@@ -465,9 +465,9 @@ void Task_CreateStageUiMain(void)
 }
 
 // Almost identical to Debug_PrintIntegerAt()"
-void StageUi_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
+void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 {
-    StageUi *ui = TaskGetStructPtr(gStageUITask);
+    StageUI *ui = TaskGetStructPtr(gStageUITask);
     Sprite *digits = &ui->digits[0];
     u32 numDigits;
     u32 digitX;
@@ -515,9 +515,9 @@ void StageUi_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
     }
 }
 
-void TaskDestructor_CreateStageUi(struct Task *t)
+void TaskDestructor_CreateStageUI(struct Task *t)
 {
-    StageUi *ui = TaskGetStructPtr(t);
+    StageUI *ui = TaskGetStructPtr(t);
     VramFree(ui->ring.graphics.dest);
     VramFree(ui->ringContainer.graphics.dest);
 
