@@ -4,9 +4,7 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
+.if 01
 	thumb_func_start sub_8050ED8
 sub_8050ED8: @ 0x08050ED8
 	push {r4, r5, r6, r7, lr}
@@ -21,10 +19,10 @@ sub_8050ED8: @ 0x08050ED8
 	mov r8, r1
 	lsls r2, r2, #0x18
 	lsrs r4, r2, #0x18
-	ldr r0, _0805100C @ =sub_80510B0
+	ldr r0, _0805100C @ =Task_80510B0
 	movs r2, #0x80
 	lsls r2, r2, #7
-	ldr r1, _08051010 @ =sub_8051200
+	ldr r1, _08051010 @ =TaskDestructor_8051200
 	str r1, [sp]
 	movs r1, #0x68
 	movs r3, #0
@@ -165,14 +163,15 @@ _08050FBA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0805100C: .4byte sub_80510B0
-_08051010: .4byte sub_8051200
+_0805100C: .4byte Task_80510B0
+_08051010: .4byte TaskDestructor_8051200
 _08051014: .4byte IWRAM_START + 0x60
 _08051018: .4byte IWRAM_START + 0x21
 _0805101C: .4byte IWRAM_START + 0x22
 _08051020: .4byte IWRAM_START + 0x25
 _08051024: .4byte gSineTable
 _08051028: .4byte 0x000003FF
+.endif
 
 	thumb_func_start Task_805102C
 Task_805102C: @ 0x0805102C
@@ -240,8 +239,8 @@ _080510AA:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80510B0
-sub_80510B0: @ 0x080510B0
+	thumb_func_start Task_80510B0
+Task_80510B0: @ 0x080510B0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -371,7 +370,7 @@ _080511A4:
 	bne _080511B2
 	ldr r0, _080511C4 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080511D4 @ =sub_80511D8
+	ldr r0, _080511D4 @ =Task_DestroyProjectileTask
 	str r0, [r1, #8]
 _080511B2:
 	add sp, #8
@@ -387,10 +386,10 @@ _080511C4: .4byte gCurTask
 _080511C8: .4byte IWRAM_START + 0x60
 _080511CC: .4byte IWRAM_START + 0x61
 _080511D0: .4byte gCamera
-_080511D4: .4byte sub_80511D8
+_080511D4: .4byte Task_DestroyProjectileTask
 
-	thumb_func_start sub_80511D8
-sub_80511D8: @ 0x080511D8
+	thumb_func_start Task_DestroyProjectileTask
+Task_DestroyProjectileTask: @ 0x080511D8
 	push {lr}
 	ldr r0, _080511E8 @ =gCurTask
 	ldr r0, [r0]
@@ -412,8 +411,8 @@ TaskDestructor_80511EC: @ 0x080511EC
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8051200
-sub_8051200: @ 0x08051200
+	thumb_func_start TaskDestructor_8051200
+TaskDestructor_8051200: @ 0x08051200
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
