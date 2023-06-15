@@ -661,7 +661,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
 
         struct Range range1;
         struct Range range2;
-    
+
         u32 h_regionCount, v_regionCount;
 
         EntitiesManager *em = TaskGetStructPtr(gCurTask);
@@ -670,11 +670,13 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             sub_80089CC();
             return;
         }
-        if ((gCamera.x - em->camX >= 0 ? gCamera.x - em->camX : em->camX - gCamera.x) > 248) {
+        if ((gCamera.x - em->camX >= 0 ? gCamera.x - em->camX : em->camX - gCamera.x)
+            > 248) {
             sub_80089CC();
             return;
         }
-        if ((gCamera.y - em->camY >= 0 ? gCamera.y - em->camY : em->camY - gCamera.y) > 208) {
+        if ((gCamera.y - em->camY >= 0 ? gCamera.y - em->camY : em->camY - gCamera.y)
+            > 208) {
             sub_80089CC();
             return;
         }
@@ -693,8 +695,6 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             h_regionCount = (u16)*interactables++;
             v_regionCount = (u16)*interactables++;
 
-            
-             
             if (gCamera.x > em->camX) {
                 range1.xLow = em->camX + 0x170;
                 range1.xHigh = gCamera.x + 0x170;
@@ -702,13 +702,11 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                 range1.xLow = gCamera.x - 0x80;
                 range1.xHigh = em->camX - 0x80;
             }
-           
 
             if (em->unk14 != 0) {
                 sub_80089CC();
                 return;
             }
-            
 
             range1.yLow = gCamera.y - 0x80;
             range1.yHigh = gCamera.y + 0x120;
@@ -718,23 +716,21 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                 range2.yHigh = gCamera.y + 0x120;
             } else {
                 range2.yLow = gCamera.y - 0x80;
-                range2.yHigh =  em->camY - 0x80;
+                range2.yHigh = em->camY - 0x80;
             }
 
             range2.xLow = gCamera.x - 0x80;
             range2.xHigh = gCamera.x + 0x170;
 
-
             if ((s32)range1.xLow < 0) {
                 range1.xLow = 0;
             }
-             if ((s32)range1.yLow < 0) {
+            if ((s32)range1.yLow < 0) {
                 range1.yLow = 0;
             }
             if ((s32)range1.xHigh < 0) {
                 range1.xHigh = 0;
             }
-            
 
             if ((s32)range1.yHigh < 0) {
                 range1.yHigh = 0;
@@ -777,7 +773,6 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                 range2.yHigh = 0;
             }
 
-
             if ((u32)range2.xLow >= temp) {
                 range2.xLow = temp - 1;
             }
@@ -798,18 +793,17 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                 && range1.yLow != range1.yHigh) {
                 regionY = Q_24_8_TO_INT(range1.yLow);
 
-                while (Q_24_8(regionY) < range1.yHigh
-                       && regionY < v_regionCount) {
+                while (Q_24_8(regionY) < range1.yHigh && regionY < v_regionCount) {
                     regionX = Q_24_8_TO_INT((s32)range1.xLow);
-                    while (Q_24_8(regionX) < range1.xHigh
-                           && regionX < h_regionCount) {
+                    while (Q_24_8(regionX) < range1.xHigh && regionX < h_regionCount) {
                         u32 r6;
                         u32 i;
-                         MapEntity *me;
+                        MapEntity *me;
 
-                        if (gGameMode
-                            != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32*)(((u8*)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                            r6 = *(u32 *)(((u8 *)interactables)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(interactables, r6);
@@ -821,19 +815,20 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Interactables
-                                                [me->index](me, regionX,
-                                                            regionY, i);
+                                            gSpriteInits_Interactables[me->index](
+                                                me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32*)(((u8*)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            
+                            r6 = *(u32 *)(((u8 *)itemBoxPositions)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
+
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox*)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -842,14 +837,16 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity*)me, regionX,
-                                                          regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me,
+                                                                 regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32*)(((u8*)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)enemyPositions)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(enemyPositions, r6);
@@ -861,15 +858,17 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Enemies[me->index](
-                                                me, regionX, regionY, i);
+                                            gSpriteInits_Enemies[me->index](me, regionX,
+                                                                            regionY, i);
                                         }
                                     }
                                 }
                             }
 
                         } else {
-                            r6 = *(u32*)(((u8*)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(interactables, r6);
@@ -881,8 +880,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gUnknown_080D502C[me->index](
-                                                me, regionX, regionY, i);
+                                            gUnknown_080D502C[me->index](me, regionX,
+                                                                         regionY, i);
                                         }
                                     }
                                 }
@@ -893,25 +892,22 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                     regionY++;
                 }
             }
-            if (((gCamera.y != em->camY)
-                 && (range2.yLow != range2.yHigh))
+            if (((gCamera.y != em->camY) && (range2.yLow != range2.yHigh))
                 && (range2.xLow != range2.xHigh)) {
                 regionY = Q_24_8_TO_INT((s32)range2.yLow);
 
-                while (Q_24_8(regionY) < range2.yHigh
-                       && regionY < v_regionCount) {
+                while (Q_24_8(regionY) < range2.yHigh && regionY < v_regionCount) {
                     regionX = Q_24_8_TO_INT((s32)range2.xLow);
-                    while (Q_24_8(regionX) < range2.xHigh
-                           && regionX < h_regionCount) {
+                    while (Q_24_8(regionX) < range2.xHigh && regionX < h_regionCount) {
                         u32 r6;
                         u32 offset;
                         u32 i;
                         MapEntity *me;
 
-                    
-                        if (gGameMode
-                            != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32*)(((u8*)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                            r6 = *(u32 *)(((u8 *)interactables)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(interactables, r6);
@@ -923,19 +919,20 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Interactables
-                                                [me->index](me, regionX,
-                                                            regionY, i);
+                                            gSpriteInits_Interactables[me->index](
+                                                me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32*)(((u8*)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
-                            
+                            r6 = *(u32 *)(((u8 *)itemBoxPositions)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
+
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox*)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -944,14 +941,16 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity*)me, regionX,
-                                                          regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me,
+                                                                 regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32*)(((u8*)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)enemyPositions)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(enemyPositions, r6);
@@ -963,15 +962,17 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Enemies[me->index](
-                                                me, regionX, regionY, i);
+                                            gSpriteInits_Enemies[me->index](me, regionX,
+                                                                            regionY, i);
                                         }
                                     }
                                 }
                             }
 
                         } else {
-                            r6 = *(u32*)(((u8*)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables)
+                                          + ((h_regionCount * regionY) * sizeof(u32))
+                                          + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMe(interactables, r6);
@@ -983,8 +984,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gUnknown_080D502C[me->index](
-                                                me, regionX, regionY, i);
+                                            gUnknown_080D502C[me->index](me, regionX,
+                                                                         regionY, i);
                                         }
                                     }
                                 }
