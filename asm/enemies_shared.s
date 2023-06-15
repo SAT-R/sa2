@@ -8,12 +8,12 @@
 	thumb_func_start sub_8050ED8
 sub_8050ED8: @ 0x08050ED8
 	push {r4, r5, r6, r7, lr}
-	mov r7, sl
+	mov r7, r10
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x18
-	adds r7, r0, #0
+	adds r7, r0, #0     @ r7 = init
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
 	mov r8, r1
@@ -30,7 +30,7 @@ sub_8050ED8: @ 0x08050ED8
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r5, r1, r0
+	adds r5, r1, r0     @ r5 = proj
 	mov r0, r8
 	cmp r0, #4
 	bls _08050F14
@@ -44,7 +44,7 @@ _08050F14:
 	movs r6, #0
 	subs r3, #0x40
 	adds r3, r3, r1
-	mov sl, r3
+	mov sl, r3          @ sl = proj->s.variant
 	ldr r0, _08051018 @ =IWRAM_START + 0x21
 	adds r0, r1, r0
 	str r0, [sp, #4]
@@ -73,10 +73,10 @@ _08050F44:
 	adds r0, r0, r2
 	ldr r1, [r7, #0x10]
 	str r1, [r0]
-	lsls r4, r6, #2
-	adds r3, r5, #0
+	lsls r4, r6, #2     @ r4 = i * 4
+	adds r3, r5, #0     @ r3 = r5 = proj
 	adds r3, #0x50
-	adds r3, r3, r4
+	adds r3, r3, r4     @ r3 = proj->unk50[i]
 	mov r1, sb
 	muls r1, r6, r1
 	ldrh r2, [r7, #6]
