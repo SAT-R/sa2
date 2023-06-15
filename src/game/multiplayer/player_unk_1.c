@@ -17,44 +17,36 @@ struct UNK_3005510 *sub_8019224(void)
 /* NOTE(Jace): Once one of the non-matching procedures is matched,
                the others should be relatively easy to do as well. */
 
-// (99.61%)
-// https://decomp.me/scratch/fIfdo
-NONMATCH("asm/non_matching/sub_8019240.inc",
-         void sub_8019240(union MultiSioData *msioData, u32 UNUSED someId))
+
+void sub_8019240(union MultiSioData *msioData, u32 someId)
 {
-    if (gEntitiesManagerTask != NULL) {
+    if(gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
-        // MapData *ias = em->interactables;
-        u32 *ias = (u32 *)em->interactables;
+        //MapData *ias = em->interactables;
+        u32 *ias = (u32*)em->interactables;
         u16 h_regionCount;
-        u32 r2;
-        u32 offset;
+        u32 r1, r2, r2_2;
+        u32 offset, offset2;
         ias++; // skip size
         h_regionCount = *ias++; // get h_regionCount
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
 
-        // NONMATCH: this line has reg-alloc issues, otherwise it matches
-        offset = *(u32 *)(((u8 *)ias)
-                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                          + (r2 << 2));
-        if (offset != 0) {
-            u32 *cursor;
+        offset = *(u32*)(((u8*)ias) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
+        if(offset != 0) {
+            s8 *cursor;
 
             // cursor's 0-pos is the same as h_regionCount
             offset -= 8;
-            cursor = (u32 *)(((u8 *)ias) + offset);
+            cursor = (u8*)ias + offset;
+            cursor = ((u8*)cursor) + (msioData->pat4.unk11 * sizeof(MapEntity));
 
-            cursor = (u32 *)(((u8 *)cursor) + (msioData->pat4.unk11 * 7));
-
-            if ((msioData->pat4.unk12 == 0)
-                || ((msioData->pat4.unk12 == 1) && (*((s8 *)cursor) == -2))) {
-                *(s8 *)cursor = -3;
+            if((msioData->pat4.unk12 == 0) || ((msioData->pat4.unk12 == 1) && (*cursor == -2))) {
+                *cursor = -3;
             }
         }
     }
 }
-END_NONMATCH
 
 // (97.68%)
 // https://decomp.me/scratch/mLFFR
