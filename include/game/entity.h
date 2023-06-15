@@ -46,7 +46,7 @@ typedef struct PACKED {
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
-} MapEntitySmall;
+} MapEntity_Itembox;
 
 typedef struct {
     /* 0x00 */ MapEntity *me;

@@ -14,16 +14,12 @@ struct UNK_3005510 *sub_8019224(void)
     return result;
 }
 
-/* NOTE(Jace): Once one of the non-matching procedures is matched,
-               the others should be relatively easy to do as well. */
-
-
 void sub_8019240(union MultiSioData *msioData, u32 someId)
 {
-    if(gEntitiesManagerTask != NULL) {
+    if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
-        //MapData *ias = em->interactables;
-        u32 *ias = (u32*)em->interactables;
+        // MapData *ias = em->interactables;
+        u32 *ias = (u32 *)em->interactables;
         u16 h_regionCount;
         u32 r1, r2, r2_2;
         u32 offset, offset2;
@@ -32,26 +28,27 @@ void sub_8019240(union MultiSioData *msioData, u32 someId)
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
 
-        offset = *(u32*)(((u8*)ias) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
-        if(offset != 0) {
-            s8 *cursor;
+        offset = *(u32 *)(((u8 *)ias)
+                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
+                          + (r2 * sizeof(u32)));
+        if (offset != 0) {
+            MapEntity *cursor;
 
             // cursor's 0-pos is the same as h_regionCount
             offset -= 8;
-            cursor = (u8*)ias + offset;
-            cursor = ((u8*)cursor) + (msioData->pat4.unk11 * sizeof(MapEntity));
+            cursor = (MapEntity *)((u8 *)ias + offset);
+            cursor += msioData->pat4.unk11;
 
-            if((msioData->pat4.unk12 == 0) || ((msioData->pat4.unk12 == 1) && (*cursor == -2))) {
-                *cursor = -3;
+            if ((msioData->pat4.unk12 == 0)
+                || ((msioData->pat4.unk12 == 1)
+                    && ((s8)cursor->x == MAP_ENTITY_STATE_INITIALIZED))) {
+                *(s8 *)(&cursor->x) = MAP_ENTITY_STATE_MINUS_THREE;
             }
         }
     }
 }
 
-// (97.68%)
-// https://decomp.me/scratch/mLFFR
-NONMATCH("asm/non_matching/sub_80192A8.inc",
-         void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId))
+void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
@@ -59,34 +56,36 @@ NONMATCH("asm/non_matching/sub_80192A8.inc",
         u32 *items = (u32 *)em->items;
         u16 h_regionCount;
         u32 r2;
-        u32 offset;
         items++; // skip size
         h_regionCount = *items++; // get h_regionCount
         items++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
 
-        offset = *(u32 *)(((u8 *)items)
-                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                          + (r2 << 2));
-        if (offset != 0) {
-            u32 *cursor;
+        {
+#ifdef NON_MATCHING
+            u32 offset
+#else
+            register u32 offset asm("r1")
+#endif
+                = *(u32 *)(((u8 *)items)
+                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
+                           + (r2 * sizeof(u32)));
+            if (offset != 0) {
+                MapEntity_Itembox *cursor;
 
-            // cursor's 0-pos is the same as h_regionCount
-            offset -= 8;
-            cursor = (u32 *)(((u8 *)items) + offset);
+                // cursor's 0-pos is the same as h_regionCount
+                offset -= 8;
+                cursor = (MapEntity_Itembox *)((s8 *)items + offset);
 
-            cursor = (u32 *)(((u8 *)cursor) + (msioData->pat4.unk11 * 3));
+                cursor += msioData->pat4.unk11;
 
-            *(s8 *)cursor = -3;
+                *(s8 *)(&cursor->x) = MAP_ENTITY_STATE_MINUS_THREE;
+            }
         }
     }
 }
-END_NONMATCH
 
-// (97.68%)
-// https://decomp.me/scratch/X2CJ3
-NONMATCH("asm/non_matching/sub_80192FC.inc",
-         void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId))
+void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
@@ -94,39 +93,40 @@ NONMATCH("asm/non_matching/sub_80192FC.inc",
         u32 *enemies = (u32 *)em->enemies;
         u16 h_regionCount;
         u32 r2;
-        u32 offset;
         enemies++; // skip size
         h_regionCount = *enemies++; // get h_regionCount
         enemies++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
+        {
+#ifdef NON_MATCHING
+            u32 offset
+#else
+            register u32 offset asm("r1")
+#endif
+                = *(u32 *)(((u8 *)enemies)
+                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
+                           + (r2 * sizeof(u32)));
+            if (offset != 0) {
+                MapEntity *cursor;
 
-        offset = *(u32 *)(((u8 *)enemies)
-                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                          + (r2 << 2));
-        if (offset != 0) {
-            u32 *cursor;
+                // cursor's 0-pos is the same as h_regionCount
+                offset -= 8;
+                cursor = (MapEntity *)((u8 *)enemies + offset);
 
-            // cursor's 0-pos is the same as h_regionCount
-            offset -= 8;
-            cursor = (u32 *)(((u8 *)enemies) + offset);
+                cursor += msioData->pat4.unk11;
 
-            cursor = (u32 *)(((u8 *)cursor) + (msioData->pat4.unk11 * 7));
-
-            *(s8 *)cursor = -3;
+                *((s8 *)&cursor->x) = MAP_ENTITY_STATE_MINUS_THREE;
+            }
         }
     }
 }
-END_NONMATCH
 
 void sub_8019350(union MultiSioData *msioData, u32 UNUSED someId)
 {
     sub_801FD34(msioData->pat4.unk2, msioData->pat4.unk4, msioData->pat4.unkF);
 }
 
-// (97.95%)
-// https://decomp.me/scratch/FzUTp
-NONMATCH("asm/non_matching/sub_8019368.inc",
-         void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId))
+void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
@@ -134,30 +134,32 @@ NONMATCH("asm/non_matching/sub_8019368.inc",
         u32 *ias = (u32 *)em->interactables;
         u16 h_regionCount;
         u32 r2;
-        u32 offset;
         ias++; // skip size
         h_regionCount = *ias++; // get h_regionCount
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
+        {
+#ifdef NON_MATCHING
+            u32 offset
+#else
+            register u32 offset asm("r1")
+#endif
+                = *(u32 *)(((u8 *)ias)
+                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
+                           + (r2 * sizeof(u32)));
+            if (offset != 0) {
+                MapEntity *cursor;
 
-        // NONMATCH: this line has reg-alloc issues, otherwise it matches
-        offset = *(u32 *)(((u8 *)ias)
-                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                          + (r2 << 2));
-        if (offset != 0) {
-            u32 *cursor;
+                offset -= 8;
+                cursor = (MapEntity *)((u8 *)ias + offset);
 
-            // cursor's 0-pos is the same as h_regionCount
-            offset -= 8;
-            cursor = (u32 *)(((u8 *)ias) + offset);
+                cursor += msioData->pat4.unk11;
 
-            cursor = (u32 *)(((u8 *)cursor) + (msioData->pat4.unk11 * 7));
-
-            *(s8 *)cursor = msioData->pat4.unk12;
+                cursor->d.sData[1] = msioData->pat4.unk12;
+            }
         }
     }
 }
-END_NONMATCH
 
 // Type of this is determined by it being referenced in a C func-array
 void VoidReturnSIOControl32(union MultiSioData *msioData, u32 UNUSED someId)

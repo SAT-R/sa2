@@ -11,7 +11,11 @@ typedef struct {
     /* 0x34 */ s32 y;
     /* 0x38 */ u16 unk38;
     /* 0x3A */ u16 unk3A;
-} ProjectileA;
+} ProjectileA; /* size: 0x3C */
+
+typedef struct {
+
+} ProjectileB; /* size: 0x68 */
 
 void Task_805102C(void);
 void TaskDestructor_80511EC(struct Task *);
@@ -47,3 +51,13 @@ void CreateProjectile(ProjInit *pji)
     proj->s.unk28[0].unk0 = -1;
     proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
 }
+
+#if 0
+void sub_8050ED8(ProjInit *pji, u8 p1, s8 p2)
+{
+    struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
+                                TaskDestructor_80511EC);
+    ProjectileA *proj = TaskGetStructPtr(t);
+    
+}
+#endif
