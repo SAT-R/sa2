@@ -9,8 +9,8 @@ typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 x;
     /* 0x34 */ s32 y;
-    /* 0x38 */ u16 unk38;
-    /* 0x3A */ u16 unk3A;
+    /* 0x38 */ s16 unk38;
+    /* 0x3A */ s16 unk3A;
 } ProjectileA; /* size: 0x3C */
 
 typedef struct {
@@ -76,7 +76,7 @@ void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
         proj->unk30[i].x = init->x;
         proj->unk30[i].y = init->y;
 
-        proj->unk50[i][0] = temp = ((i * p2) + init->unk6) & 0x3FF;
+        proj->unk50[i][0] = temp = ((i * p2) + init->unk6) & ONE_CYCLE;
         proj->unk50[i][0] = (COS(temp) * init->unk8) >> 14;
 
         proj->unk50[i][1] = (SIN(temp) * init->unk8) >> 14;
@@ -97,4 +97,24 @@ void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
     proj->s.palId = 0;
     proj->s.unk28->unk0 = -1;
     proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
+}
+
+void Task_805102C(void)
+{
+    ProjectileA *proj = TaskGetStructPtr(gCurTask);
+    Sprite *s = &proj->s;
+
+    proj->x += proj->unk38;
+    proj->y += proj->unk3A;
+
+    s->x = Q_24_8_TO_INT(proj->x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(proj->y) - gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        TaskDestroy(gCurTask);
+    } else {
+        sub_800C84C(s, Q_24_8_TO_INT(proj->x), Q_24_8_TO_INT(proj->y));
+        sub_8004558(s);
+        sub_80051E8(s);
+    }
 }
