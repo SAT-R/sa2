@@ -9,16 +9,16 @@ typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 x;
     /* 0x34 */ s32 y;
-    /* 0x38 */ s16 unk38;
-    /* 0x3A */ s16 unk3A;
+    /* 0x38 */ s16 velocityX;
+    /* 0x3A */ s16 velocityY;
 } ProjectileA; /* size: 0x3C */
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ Vec2_32 unk30[4];
-    /* 0x50 */ s16 unk50[4][2];
-    /* 0x60 */ u8 unk60;
-    /* 0x61 */ u8 unk61[4];
+    /* 0x30 */ Vec2_32 positions[4];
+    /* 0x50 */ s16 velocities[4][2];
+    /* 0x60 */ u8 count;
+    /* 0x61 */ bool8 isActive[4];
 } ProjectileB; /* size: 0x68 */
 
 void Task_805102C(void);
@@ -32,16 +32,16 @@ void CreateProjectile(ProjInit *init)
     struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
                                 TaskDestructor_80511EC);
     ProjectileA *proj = TaskGetStructPtr(t);
-    s32 someX, someY;
+    s32 velocityX, velocityY;
 
     proj->x = init->x;
     proj->y = init->y;
 
-    someX = (COS(init->unk6) * init->unk8) >> 14;
-    proj->unk38 = someX;
+    velocityX = (COS(init->rot) * init->speed) >> 14;
+    proj->velocityX = velocityX;
 
-    someY = (SIN(init->unk6) * init->unk8) >> 14;
-    proj->unk3A = someY;
+    velocityY = (SIN(init->rot) * init->speed) >> 14;
+    proj->velocityY = velocityY;
 
     proj->s.graphics.dest = VramMalloc(init->numTiles);
     proj->s.graphics.anim = init->anim;
@@ -59,28 +59,28 @@ void CreateProjectile(ProjInit *init)
     proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
 }
 
-void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
+void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
 {
     struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
                                 TaskDestructor_8051200);
     ProjectileB *proj = TaskGetStructPtr(t);
     u8 i;
 
-    if (p1 > 4)
-        p1 = 4;
+    if (count > 4)
+        count = 4;
 
-    proj->unk60 = p1;
+    proj->count = count;
 
-    for (i = 0; i < p1; i++) {
-        s16 temp;
-        proj->unk30[i].x = init->x;
-        proj->unk30[i].y = init->y;
+    for (i = 0; i < count; i++) {
+        s16 rot;
+        proj->positions[i].x = init->x;
+        proj->positions[i].y = init->y;
 
-        proj->unk50[i][0] = temp = ((i * p2) + init->unk6) & ONE_CYCLE;
-        proj->unk50[i][0] = (COS(temp) * init->unk8) >> 14;
+        proj->velocities[i][0] = rot = ((i * spreadAngle) + init->rot) & ONE_CYCLE;
+        proj->velocities[i][0] = (COS(rot) * init->speed) >> 14;
 
-        proj->unk50[i][1] = (SIN(temp) * init->unk8) >> 14;
-        proj->unk61[i] = 1;
+        proj->velocities[i][1] = (SIN(rot) * init->speed) >> 14;
+        proj->isActive[i] = TRUE;
     }
 
     proj->s.graphics.dest = VramMalloc(init->numTiles);
@@ -104,8 +104,8 @@ void Task_805102C(void)
     ProjectileA *proj = TaskGetStructPtr(gCurTask);
     Sprite *s = &proj->s;
 
-    proj->x += proj->unk38;
-    proj->y += proj->unk3A;
+    proj->x += proj->velocityX;
+    proj->y += proj->velocityY;
 
     s->x = Q_24_8_TO_INT(proj->x) - gCamera.x;
     s->y = Q_24_8_TO_INT(proj->y) - gCamera.y;
@@ -128,23 +128,24 @@ void Task_80510B0(void)
     sub_8004558(s);
 
     count = 0;
-    for (i = 0; i < proj->unk60; i++) {
-        if (proj->unk61[i] == 0)
+    for (i = 0; i < proj->count; i++) {
+        if (!proj->isActive[i])
             continue;
 
         count++;
 
-        proj->unk30[i].x += proj->unk50[i][0];
-        proj->unk30[i].y += proj->unk50[i][1];
+        proj->positions[i].x += proj->velocities[i][0];
+        proj->positions[i].y += proj->velocities[i][1];
 
-        s->x = Q_24_8_TO_INT(proj->unk30[i].x) - gCamera.x;
-        s->y = Q_24_8_TO_INT(proj->unk30[i].y) - gCamera.y;
+        s->x = Q_24_8_TO_INT(proj->positions[i].x) - gCamera.x;
+        s->y = Q_24_8_TO_INT(proj->positions[i].y) - gCamera.y;
 
         if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-            proj->unk61[i] = 0;
+            proj->isActive[i] = FALSE;
         }
 
-        sub_800C84C(s, Q_24_8_TO_INT(proj->unk30[i].x), Q_24_8_TO_INT(proj->unk30[i].y));
+        sub_800C84C(s, Q_24_8_TO_INT(proj->positions[i].x),
+                    Q_24_8_TO_INT(proj->positions[i].y));
         sub_80051E8(s);
     }
 
