@@ -670,12 +670,14 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             sub_80089CC();
             return;
         }
-        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX : em->prevCamX - gCamera.x)
+        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX
+                                           : em->prevCamX - gCamera.x)
             > 248) {
             sub_80089CC();
             return;
         }
-        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY : em->prevCamY - gCamera.y)
+        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY
+                                           : em->prevCamY - gCamera.y)
             > 208) {
             sub_80089CC();
             return;
