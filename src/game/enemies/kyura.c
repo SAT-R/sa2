@@ -124,17 +124,17 @@ void sub_80594E0(void)
         kyura->unk5A = 4;
         if (kyura->unk5B-- == 1) {
             ProjInit init;
-            u32 oneOrZero;
+            u32 randomBool;
             kyura->unk5B = 12;
 
-            oneOrZero = PseudoRandom32() & 1;
+            randomBool = PseudoRandom32() & 1;
             init.numTiles = 3;
             init.anim = SA2_ANIM_KYURA_PROJ;
-            init.variant = oneOrZero;
+            init.variant = randomBool;
             init.x = Q_24_8(pos.x + 1);
             init.y = Q_24_8(pos.y + 20);
-            init.unk6 = 0x100;
-            init.unk8 = 0x200 - (oneOrZero * 0x100);
+            init.rot = Q_24_8(1.0);
+            init.speed = Q_24_8(2.0) - (Q_24_8(1.0) * randomBool);
             CreateProjectile(&init);
         }
         gCurTask->main = sub_80596C4;

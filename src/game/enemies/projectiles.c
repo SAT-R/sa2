@@ -77,9 +77,10 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
         proj->positions[i].y = init->y;
 
         proj->velocities[i][0] = rot = ((i * spreadAngle) + init->rot) & ONE_CYCLE;
-        proj->velocities[i][0] = (COS(rot) * init->speed) >> 14;
 
+        proj->velocities[i][0] = (COS(rot) * init->speed) >> 14;
         proj->velocities[i][1] = (SIN(rot) * init->speed) >> 14;
+
         proj->isActive[i] = TRUE;
     }
 
