@@ -170,6 +170,11 @@ typedef void (*VoidFn)(void);
     b = (u8)b * -1;
 
 typedef struct {
+    s16 x;
+    s16 y;
+} Vec2_16;
+
+typedef struct {
     s32 x;
     s32 y;
 } Vec2_32;

@@ -18,8 +18,8 @@ typedef struct {
     /* 0x30 */ Vec2_32 unk30[4];
     /* 0x50 */ u16 unk50[4][2];
     /* 0x60 */ u8 unk60;
-    /* 0x60 */ u8 unk61;
-    /* 0x61 */ u8 filler61[0x6];
+    /* 0x61 */ u8 unk61[4];
+    /* 0x65 */ u8 filler65[0x2];
 } ProjectileB; /* size: 0x68 */
 
 void Task_805102C(void);
@@ -59,10 +59,9 @@ void CreateProjectile(ProjInit *init)
     proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
 }
 
-#if 0
 void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
 {
-    struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileA), 0x4000, 0,
+    struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
                                 TaskDestructor_8051200);
     ProjectileB *proj = TaskGetStructPtr(t);
     u8 i;
@@ -73,13 +72,15 @@ void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
     proj->unk60 = p1;
 
     for (i = 0; i < p1; i++) {
+        s16 temp;
         proj->unk30[i].x = init->x;
         proj->unk30[i].y = init->y;
-        proj->unk50[i][0] = (init->unk6 + (i * p2)) & 0x3FF;
-        proj->unk50[i][0] = (COS(proj->unk50[i][0]) * init->unk8) >> 14;
-        proj->unk50[i][1] = (init->unk6 + (i * p2)) & 0x3FF;
-        proj->unk50[i][1] = (SIN(proj->unk50[i][1]) * init->unk8) >> 14;
-        proj->unk61 = 1;
+
+        proj->unk50[i][0] = temp = ((i * p2) + init->unk6) & 0x3FF;
+        proj->unk50[i][0] = (COS(temp) * init->unk8) >> 14;
+
+        proj->unk50[i][1] = (SIN(temp) * init->unk8) >> 14;
+        proj->unk61[i] = 1;
     }
 
     proj->s.graphics.dest = VramMalloc(init->numTiles);
@@ -97,4 +98,3 @@ void sub_8050ED8(ProjInit *init, u8 p1, s8 p2)
     proj->s.unk28->unk0 = -1;
     proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
 }
-#endif
