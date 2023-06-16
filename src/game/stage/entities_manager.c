@@ -465,8 +465,8 @@ void CreateStageEntitiesManager(void)
         em->interactables = decompBuf;
     }
 
-    em->camX = gCamera.x;
-    em->camY = gCamera.y;
+    em->prevCamX = gCamera.x;
+    em->prevCamY = gCamera.y;
     em->unk14 = 1;
     gEntitiesManagerTask = t;
 }
@@ -504,11 +504,11 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
         h_regionCount = (u16)*interactables++;
         v_regionCount = (u16)*interactables++;
 
-        range.xLow = gCamera.x - 0x80;
-        range.xHigh = gCamera.x + 0x170;
+        range.xLow = gCamera.x - Q_24_8(0.5);
+        range.xHigh = gCamera.x + Q_24_8(1.4375);
 
-        range.yLow = gCamera.y - 0x80;
-        range.yHigh = gCamera.y + 0x120;
+        range.yLow = gCamera.y - Q_24_8(0.5);
+        range.yHigh = gCamera.y + Q_24_8(1.125);
 
         if (range.xLow < 0) {
             range.xLow = 0;
@@ -641,8 +641,8 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
             }
             regionY++;
         }
-        em->camX = gCamera.x;
-        em->camY = gCamera.y;
+        em->prevCamX = gCamera.x;
+        em->prevCamY = gCamera.y;
         em->unk14 = 0;
         gCurTask->main = sub_8008DCC;
     }
@@ -670,12 +670,12 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             sub_80089CC();
             return;
         }
-        if ((gCamera.x - em->camX >= 0 ? gCamera.x - em->camX : em->camX - gCamera.x)
+        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX : em->prevCamX - gCamera.x)
             > 248) {
             sub_80089CC();
             return;
         }
-        if ((gCamera.y - em->camY >= 0 ? gCamera.y - em->camY : em->camY - gCamera.y)
+        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY : em->prevCamY - gCamera.y)
             > 208) {
             sub_80089CC();
             return;
@@ -695,12 +695,12 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             h_regionCount = (u16)*interactables++;
             v_regionCount = (u16)*interactables++;
 
-            if (gCamera.x > em->camX) {
-                range1.xLow = em->camX + 0x170;
+            if (gCamera.x > em->prevCamX) {
+                range1.xLow = em->prevCamX + 0x170;
                 range1.xHigh = gCamera.x + 0x170;
             } else {
                 range1.xLow = gCamera.x - 0x80;
-                range1.xHigh = em->camX - 0x80;
+                range1.xHigh = em->prevCamX - 0x80;
             }
 
             if (em->unk14 != 0) {
@@ -711,12 +711,12 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             range1.yLow = gCamera.y - 0x80;
             range1.yHigh = gCamera.y + 0x120;
 
-            if (gCamera.y > em->camY) {
-                range2.yLow = em->camY + 0x120;
+            if (gCamera.y > em->prevCamY) {
+                range2.yLow = em->prevCamY + 0x120;
                 range2.yHigh = gCamera.y + 0x120;
             } else {
                 range2.yLow = gCamera.y - 0x80;
-                range2.yHigh = em->camY - 0x80;
+                range2.yHigh = em->prevCamY - 0x80;
             }
 
             range2.xLow = gCamera.x - 0x80;
@@ -789,7 +789,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                 range2.yHigh = temp4 - 1;
             }
 
-            if (gCamera.x != em->camX && range1.xLow != range1.xHigh
+            if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh
                 && range1.yLow != range1.yHigh) {
                 regionY = Q_24_8_TO_INT(range1.yLow);
 
@@ -892,7 +892,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                     regionY++;
                 }
             }
-            if (((gCamera.y != em->camY) && (range2.yLow != range2.yHigh))
+            if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh))
                 && (range2.xLow != range2.xHigh)) {
                 regionY = Q_24_8_TO_INT((s32)range2.yLow);
 
@@ -996,8 +996,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                     regionY++;
                 }
             }
-            em->camX = gCamera.x;
-            em->camY = gCamera.y;
+            em->prevCamX = gCamera.x;
+            em->prevCamY = gCamera.y;
         }
     }
 }

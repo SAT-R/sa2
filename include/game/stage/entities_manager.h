@@ -29,8 +29,8 @@ typedef struct {
     /* 0x00 */ MapData *interactables;
     /* 0x04 */ MapData *items;
     /* 0x08 */ MapData *enemies;
-    /* 0x0C */ s32 camX;
-    /* 0x10 */ s32 camY;
+    /* 0x0C */ s32 prevCamX;
+    /* 0x10 */ s32 prevCamY;
     /* 0x14 */ u8 unk14;
     /* 0x18 */ struct Task *preInit;
 } EntitiesManager;
