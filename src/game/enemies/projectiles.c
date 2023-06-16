@@ -16,7 +16,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ Vec2_32 unk30[4];
-    /* 0x50 */ u16 unk50[4][2];
+    /* 0x50 */ s16 unk50[4][2];
     /* 0x60 */ u8 unk60;
     /* 0x61 */ u8 unk61[4];
     /* 0x65 */ u8 filler65[0x2];
@@ -24,6 +24,7 @@ typedef struct {
 
 void Task_805102C(void);
 void Task_80510B0(void);
+void Task_DestroyProjectileTask(void);
 void TaskDestructor_80511EC(struct Task *);
 void TaskDestructor_8051200(struct Task *);
 
@@ -117,4 +118,52 @@ void Task_805102C(void)
         sub_8004558(s);
         sub_80051E8(s);
     }
+}
+
+void Task_80510B0(void)
+{
+    ProjectileB *proj = TaskGetStructPtr(gCurTask);
+    Sprite *s = &proj->s;
+    u8 count, i;
+
+    sub_8004558(s);
+
+    count = 0;
+    for (i = 0; i < proj->unk60; i++) {
+        if (proj->unk61[i] == 0)
+            continue;
+
+        count++;
+
+        proj->unk30[i].x += proj->unk50[i][0];
+        proj->unk30[i].y += proj->unk50[i][1];
+
+        s->x = Q_24_8_TO_INT(proj->unk30[i].x) - gCamera.x;
+        s->y = Q_24_8_TO_INT(proj->unk30[i].y) - gCamera.y;
+
+        if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+            proj->unk61[i] = 0;
+        }
+
+        sub_800C84C(s, Q_24_8_TO_INT(proj->unk30[i].x), Q_24_8_TO_INT(proj->unk30[i].y));
+        sub_80051E8(s);
+    }
+
+    if (count == 0) {
+        gCurTask->main = Task_DestroyProjectileTask;
+    }
+}
+
+void Task_DestroyProjectileTask(void) { TaskDestroy(gCurTask); }
+
+void TaskDestructor_80511EC(struct Task *t)
+{
+    ProjectileA *proj = TaskGetStructPtr(t);
+    VramFree(proj->s.graphics.dest);
+}
+
+void TaskDestructor_8051200(struct Task *t)
+{
+    ProjectileB *proj = TaskGetStructPtr(t);
+    VramFree(proj->s.graphics.dest);
 }
