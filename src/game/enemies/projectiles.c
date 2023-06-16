@@ -19,7 +19,6 @@ typedef struct {
     /* 0x50 */ s16 unk50[4][2];
     /* 0x60 */ u8 unk60;
     /* 0x61 */ u8 unk61[4];
-    /* 0x65 */ u8 filler65[0x2];
 } ProjectileB; /* size: 0x68 */
 
 void Task_805102C(void);
