@@ -13,7 +13,7 @@
 #define MOVESTATE_IN_AIR          0x00000002
 #define MOVESTATE_4               0x00000004
 #define MOVESTATE_JUMPING         (MOVESTATE_IN_AIR | MOVESTATE_4)
-#define MOVESTATE_8               0x00000008
+#define MOVESTATE_8               0x00000008 // COLLIDING_ENTITY ?
 #define MOVESTATE_10              0x00000010
 #define MOVESTATE_20              0x00000020
 #define MOVESTATE_40              0x00000040

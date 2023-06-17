@@ -1,6 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "task.h"
+#include "trig.h"
 #include "game/enemies/hammerhead.h"
 #include "game/entity.h"
 
@@ -15,7 +16,6 @@ typedef struct {
     /* 0x46 */ s16 unk46;
     /* 0x48 */ s32 unk48;
     /* 0x4C */ s16 unk4C;
-    /* 0x4E */ s16 unk4E;
     /* 0x50 */ s32 unk50[3];
 } Enemy_Hammerhead;
 
@@ -60,11 +60,91 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
-asm(".end");
+void Task_Hammerhead(void)
+{
+    Player *p = &gPlayer;
+    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(gCurTask);
+    Sprite *s = &hammerhead->s;
+    MapEntity *me = hammerhead->base.me;
+    u32 unk4C;
+    u16 temp;
+    s32 sin;
+    s32 prevUnk48;
+    s32 ip;
+    s32 posX, posY;
+
+    if (IS_MULTI_PLAYER) {
+        sub_8056EDC(hammerhead);
+    }
+
+    unk4C = hammerhead->unk4C;
+    temp = (((gUnknown_03005590 * 3) / 2) + (u16)hammerhead->unk44) % 256;
+    temp = ((unk4C * temp) & 0x1FF) | 0x200;
+
+    prevUnk48 = hammerhead->unk48;
+    sin = SIN(temp);
+
+    hammerhead->unk48 = (sin * 15) >> 3;
+    ip = hammerhead->unk48 - prevUnk48;
+
+    posX = TO_WORLD_POS(hammerhead->base.spriteX, hammerhead->base.regionX);
+    posY = TO_WORLD_POS(me->y, hammerhead->base.regionY);
+
+    s->x = posX - gCamera.x;
+
+    if (IS_MULTI_PLAYER) {
+        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(hammerhead->unk50[2]);
+    } else {
+        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(prevUnk48);
+    }
+
+    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+        p->y += 0x100;
+        p->y += ip;
+    }
+    if (!(p->moveState & MOVESTATE_400000)) {
+        s32 flags = sub_800CCB8(s, posX, posY + Q_24_8_TO_INT(hammerhead->unk48), p);
+
+        if (flags & 0x10000) {
+            p->y += (flags << 24) >> 16;
+        }
+    }
+
+    if (sub_800C4FC(s, posX, posY + Q_24_8_TO_INT(hammerhead->unk48), 1) == TRUE) {
+        TaskDestroy(gCurTask);
+    } else {
+        posX -= gCamera.x;
+        posY -= gCamera.y;
+
+        if ((((s->x < -(128)) || (s->x > DISPLAY_WIDTH + (128)) || ((s->y) + (256) < 0)
+              || (s->y > DISPLAY_HEIGHT + (256))))
+            && (((posX < -(128)) || (posX > DISPLAY_WIDTH + (128))
+                 || ((posY) + (256) < 0) || (posY > DISPLAY_HEIGHT + (256))))) {
+            SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.spriteX);
+            TaskDestroy(gCurTask);
+        } else {
+            sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+    }
+}
 
 void sub_8056EDC(Enemy_Hammerhead *hammerhead)
 {
     hammerhead->unk50[2] = hammerhead->unk50[1];
     hammerhead->unk50[1] = hammerhead->unk50[0];
     hammerhead->unk50[0] = hammerhead->unk48;
+}
+
+void TaskDestructor_Hammerhead(struct Task *t)
+{
+    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Sprite *s = &hammerhead->s;
+    VramFree(s->graphics.dest);
+
+    if ((gPlayer.moveState & MOVESTATE_8) && (gPlayer.unk3C == s)) {
+        gPlayer.moveState &= ~MOVESTATE_8;
+        gPlayer.unk3C = NULL;
+    }
 }
