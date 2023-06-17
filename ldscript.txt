@@ -93,6 +93,9 @@ SECTIONS
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/asm/item_tasks.o(.text);
         build/sa2/asm/game_2.o(.text);
+        build/sa2/asm/game_3.o(.text);
+        build/sa2/asm/game_4.o(.text);
+        build/sa2/asm/game_5.o(.text);
         build/sa2/asm/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
