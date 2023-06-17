@@ -7,6 +7,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/item_tasks.h"
 #include "game/multiplayer/unknown_1.h"
 
 #include "constants/animations.h"

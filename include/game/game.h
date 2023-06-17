@@ -612,8 +612,4 @@ extern void sub_8021350(void);
 // NOTE: Proc type should be the same as sub_80299F0!
 extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
 
-extern struct Task *CreateItemTask_Shield_Normal(s8);
-extern struct Task *CreateItemTask_Invincibility(s8);
-extern struct Task *CreateItemTask_Shield_Magnetic(s8);
-extern struct Task *CreateItemTask_Confusion(s8);
 #endif // GUARD_GAME_H
