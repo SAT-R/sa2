@@ -117,21 +117,26 @@
 #define SA2_ANIM_YADO                   497
 #define SA2_ANIM_YADO_PROJ              498
 #define SA2_ANIM_HAMMERHEAD             499
-#define SA2_ANIM_PEN                    500
-#define SA2_ANIM_BALLOON                501
-#define SA2_ANIM_BALLOON_PROJ           502
-#define SA2_ANIM_MADILLO                503
-#define SA2_ANIM_STRAW                  504
-#define SA2_ANIM_BULLETBUZZER           505
-#define SA2_ANIM_BUZZER_PROJ            506
-#define SA2_ANIM_FLICKEY                507
-#define SA2_ANIM_FLICKEY_PROJ           508
-#define SA2_ANIM_KYURA                  509
-#define SA2_ANIM_KYURA_PROJ             510
-#define SA2_ANIM_STAR                   511
-#define SA2_ANIM_GEJIGEJI               512
-#define SA2_ANIM_MOUSE                  513
-#define SA2_ANIM_SPINNER                514
+
+#define SA2_ANIM_PEN               500
+#define SA2_ANIM_PEN_VARIANT_MOVE  0
+#define SA2_ANIM_PEN_VARIANT_BOOST 1
+#define SA2_ANIM_PEN_VARIANT_TURN  2
+
+#define SA2_ANIM_BALLOON      501
+#define SA2_ANIM_BALLOON_PROJ 502
+#define SA2_ANIM_MADILLO      503
+#define SA2_ANIM_STRAW        504
+#define SA2_ANIM_BULLETBUZZER 505
+#define SA2_ANIM_BUZZER_PROJ  506
+#define SA2_ANIM_FLICKEY      507
+#define SA2_ANIM_FLICKEY_PROJ 508
+#define SA2_ANIM_KYURA        509
+#define SA2_ANIM_KYURA_PROJ   510
+#define SA2_ANIM_STAR         511
+#define SA2_ANIM_GEJIGEJI     512
+#define SA2_ANIM_MOUSE        513
+#define SA2_ANIM_SPINNER      514
 
 // Animals
 #define SA2_ANIM_ANIMAL_SEAL      515
