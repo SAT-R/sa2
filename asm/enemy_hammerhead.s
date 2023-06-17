@@ -4,135 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Hammerhead
-CreateEntity_Hammerhead: @ 0x08056BF8
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	mov sl, r0
-	adds r4, r1, #0
-	mov r8, r2
-	mov sb, r3
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	mov r0, r8
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	mov r8, r0
-	mov r1, sb
-	lsls r1, r1, #0x18
-	lsrs r1, r1, #0x18
-	mov sb, r1
-	ldr r0, _08056CE0 @ =sub_8056D08
-	ldr r2, _08056CE4 @ =0x00004040
-	ldr r1, _08056CE8 @ =sub_8056EEC
-	str r1, [sp]
-	movs r1, #0x5c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r5, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r5, r0
-	ldr r2, _08056CEC @ =IWRAM_START + 0xC
-	adds r6, r5, r2
-	movs r7, #0
-	strh r4, [r0, #4]
-	mov r1, r8
-	strh r1, [r0, #6]
-	mov r2, sl
-	str r2, [r0]
-	ldrb r1, [r2]
-	strb r1, [r0, #8]
-	mov r1, sb
-	strb r1, [r0, #9]
-	str r7, [r0, #0x48]
-	bl sub_8056EDC
-	ldr r2, _08056CF0 @ =IWRAM_START + 0x4C
-	adds r1, r5, r2
-	movs r0, #4
-	strh r0, [r1]
-	mov r0, sl
-	ldrb r1, [r0, #6]
-	subs r2, #8
-	adds r0, r5, r2
-	strh r1, [r0]
-	mov r1, sl
-	ldrb r0, [r1]
-	lsls r0, r0, #3
-	lsls r4, r4, #8
-	adds r0, r0, r4
-	strh r0, [r6, #0x16]
-	ldrb r0, [r1, #1]
-	lsls r0, r0, #3
-	mov r2, r8
-	lsls r2, r2, #8
-	mov r8, r2
-	add r0, r8
-	strh r0, [r6, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	mov r2, sl
-	strb r0, [r2]
-	movs r0, #0x24
-	bl VramMalloc
-	str r0, [r6, #4]
-	ldr r0, _08056CF4 @ =0x000001F3
-	strh r0, [r6, #0xa]
-	ldr r1, _08056CF8 @ =IWRAM_START + 0x2C
-	adds r0, r5, r1
-	movs r2, #0
-	strb r2, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r6, #0x1a]
-	strh r7, [r6, #8]
-	strh r7, [r6, #0x14]
-	strh r7, [r6, #0x1c]
-	ldr r0, _08056CFC @ =IWRAM_START + 0x2D
-	adds r1, r5, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r2, _08056D00 @ =IWRAM_START + 0x2E
-	adds r1, r5, r2
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _08056D04 @ =IWRAM_START + 0x31
-	adds r5, r5, r0
-	movs r1, #0
-	strb r1, [r5]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r6, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r6, #0x10]
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08056CE0: .4byte sub_8056D08
-_08056CE4: .4byte 0x00004040
-_08056CE8: .4byte sub_8056EEC
-_08056CEC: .4byte IWRAM_START + 0xC
-_08056CF0: .4byte IWRAM_START + 0x4C
-_08056CF4: .4byte 0x000001F3
-_08056CF8: .4byte IWRAM_START + 0x2C
-_08056CFC: .4byte IWRAM_START + 0x2D
-_08056D00: .4byte IWRAM_START + 0x2E
-_08056D04: .4byte IWRAM_START + 0x31
+.if 0
+.endif
 
-	thumb_func_start sub_8056D08
-sub_8056D08: @ 0x08056D08
+	thumb_func_start Task_Hammerhead
+Task_Hammerhead: @ 0x08056D08
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -372,8 +248,8 @@ sub_8056EDC: @ 0x08056EDC
 	bx lr
 	.align 2, 0
 
-	thumb_func_start sub_8056EEC
-sub_8056EEC: @ 0x08056EEC
+	thumb_func_start TaskDestructor_Hammerhead
+TaskDestructor_Hammerhead: @ 0x08056EEC
 	push {r4, lr}
 	ldrh r0, [r0, #6]
 	ldr r1, _08056F20 @ =IWRAM_START + 0xC
