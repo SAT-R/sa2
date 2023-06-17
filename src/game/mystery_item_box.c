@@ -3,6 +3,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
+#include "game/multiplayer/unknown_1.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"

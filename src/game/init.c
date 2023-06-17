@@ -10,6 +10,7 @@
 #include "game/title_screen.h"
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
+#include "game/stage/entities_manager.h"
 
 void GameStart(void)
 {
@@ -34,7 +35,7 @@ void GameStart(void)
 
     gUnknown_0300543C = 0;
     gGameMode = GAME_MODE_SINGLE_PLAYER;
-    gEntitesManagerTask = NULL;
+    gEntitiesManagerTask = NULL;
     gUnknown_03005B34 = 0;
     gDemoPlayCounter = 0;
     // TODO: resolve this

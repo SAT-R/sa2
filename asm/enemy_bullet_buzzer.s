@@ -641,7 +641,7 @@ _08059C12:
 	mov r0, sp
 	movs r1, #3
 	movs r2, #0x10
-	bl sub_8050ED8
+	bl CreateSeveralProjectiles
 _08059C3A:
 	lsls r0, r4, #8
 	lsls r1, r5, #8

@@ -658,7 +658,7 @@ _08055326:
 	lsls r0, r0, #1
 	strh r0, [r1, #8]
 	adds r0, r1, #0
-	bl sub_8050E04
+	bl CreateProjectile
 	b _08055358
 _08055340:
 	cmp r0, #6

@@ -12,15 +12,15 @@ gUnknown_080D5744:
     .4byte sub_8019368
     .4byte sub_8018AD8
     .4byte sub_8018E00
-    .4byte sub_80193B8
+    .4byte VoidReturnSIOControl32
     .4byte 0
 
 .text
 .syntax unified
 .arm
 
-	thumb_func_start sub_80188FC
-sub_80188FC: @ 0x080188FC
+	thumb_func_start Task_80188FC
+Task_80188FC: @ 0x080188FC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -165,8 +165,8 @@ _08018A1C: .4byte gUnknown_03005510
 _08018A20: .4byte gMultiSioSend + 0xE
 _08018A24: .4byte 0x80000003
 
-	thumb_func_start sub_8018A28
-sub_8018A28: @ 0x08018A28
+	thumb_func_start Task_8018A28
+Task_8018A28: @ 0x08018A28
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _08018A40 @ =0x04000128
 	ldr r0, [r0]
@@ -1044,7 +1044,7 @@ _0801911C: .4byte gMultiplayerPlayerTasks
 sub_8019120: @ 0x08019120
 	push {r4, lr}
 	sub sp, #8
-	ldr r0, _08019178 @ =sub_80188FC
+	ldr r0, _08019178 @ =Task_80188FC
 	ldr r2, _0801917C @ =0x0000FFFE
 	movs r4, #0
 	str r4, [sp]
@@ -1085,7 +1085,7 @@ sub_8019120: @ 0x08019120
 	pop {r1}
 	bx r1
 	.align 2, 0
-_08019178: .4byte sub_80188FC
+_08019178: .4byte Task_80188FC
 _0801917C: .4byte 0x0000FFFE
 _08019180: .4byte 0x040000D4
 _08019184: .4byte gMultiSioSend
@@ -1102,7 +1102,7 @@ _080191A0: .4byte gUnknown_03005420
 sub_80191A4: @ 0x080191A4
 	push {r4, lr}
 	sub sp, #8
-	ldr r0, _080191FC @ =sub_8018A28
+	ldr r0, _080191FC @ =Task_8018A28
 	movs r4, #0
 	str r4, [sp]
 	movs r1, #0
@@ -1143,7 +1143,7 @@ sub_80191A4: @ 0x080191A4
 	pop {r1}
 	bx r1
 	.align 2, 0
-_080191FC: .4byte sub_8018A28
+_080191FC: .4byte Task_8018A28
 _08019200: .4byte 0x040000D4
 _08019204: .4byte gMultiSioSend
 _08019208: .4byte 0x85000005

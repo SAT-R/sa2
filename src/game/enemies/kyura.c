@@ -6,6 +6,7 @@
 
 #include "game/entity.h"
 #include "game/enemies/kyura.h"
+#include "game/enemies/projectiles.h"
 #include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
@@ -28,6 +29,7 @@ typedef struct {
 
 void sub_80594E0(void);
 void TaskDestructor_80095E8(struct Task *);
+void sub_80596C4(void);
 
 void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -67,21 +69,6 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
 }
-
-/* TODO: move to projectile file */
-typedef struct {
-    u16 unk0;
-    u16 unk2;
-    u8 unk4;
-    u16 unk6;
-    u16 unk8;
-    u16 unkA;
-    u32 unkC;
-    u32 unk10;
-} ProjInit;
-extern void sub_8050E04(ProjInit *init);
-
-void sub_80596C4(void);
 
 void sub_80594E0(void)
 {
@@ -137,18 +124,18 @@ void sub_80594E0(void)
         kyura->unk5A = 4;
         if (kyura->unk5B-- == 1) {
             ProjInit init;
-            u32 rand;
+            u32 randomBool;
             kyura->unk5B = 12;
 
-            rand = PseudoRandom32() & 1;
-            init.unk0 = 3;
-            init.unk2 = SA2_ANIM_KYURA_PROJ;
-            init.unk4 = rand;
-            init.unkC = Q_24_8(pos.x + 1);
-            init.unk10 = Q_24_8(pos.y + 0x14);
-            init.unk6 = 0x100;
-            init.unk8 = 0x200 - (rand * 0x100);
-            sub_8050E04(&init);
+            randomBool = PseudoRandom32() & 1;
+            init.numTiles = 3;
+            init.anim = SA2_ANIM_KYURA_PROJ;
+            init.variant = randomBool;
+            init.x = Q_24_8(pos.x + 1);
+            init.y = Q_24_8(pos.y + 20);
+            init.rot = Q_24_8(1.0);
+            init.speed = Q_24_8(2.0) - (Q_24_8(1.0) * randomBool);
+            CreateProjectile(&init);
         }
         gCurTask->main = sub_80596C4;
     }

@@ -88,6 +88,15 @@ extern u16 gUnknown_030054BC;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
+// Copies of BG control regs for Multiplayer(?)
+typedef struct {
+    u16 unk0;
+    u16 unk2;
+    u16 unk4;
+    u16 unk6;
+} MultiPlayerBgCtrlRegs; /* size: 8 */
+extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
+
 typedef struct {
     u8 filler0[0x22];
     s16 unk22;
@@ -144,8 +153,9 @@ extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
-extern u8 gUnknown_03005430;
 extern u8 gUnknown_0300542C;
+extern u8 gUnknown_03005430;
+extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
@@ -566,7 +576,6 @@ void sub_8023260(Player *);
 
 // Something to do with entities
 extern void sub_8019CCC(u8, u8);
-extern struct UNK_3005510 *sub_8019224(void);
 
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);

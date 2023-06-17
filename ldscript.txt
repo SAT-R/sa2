@@ -82,11 +82,11 @@ SECTIONS
         build/sa2/asm/player_actions.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
         build/sa2/asm/player_mp_unknown_task.o(.text);
-        build/sa2/asm/player_mp_unknown_1.o(.text);
+        build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/asm/player_mp_indicators.o(.text);
         build/sa2/asm/player_mp_finish_1.o(.text);
         build/sa2/asm/player_mp_finish_2.o(.text);
-        build/sa2/asm/player_mp_unknown_2.o(.text);
+        build/sa2/src/game/multiplayer/player_unk_2.o(.text);
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
@@ -115,7 +115,7 @@ SECTIONS
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
         build/sa2/asm/boss_9.o(.text);
-        build/sa2/asm/enemies_shared.o(.text);
+        build/sa2/src/game/enemies/projectiles.o(.text);
         build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);

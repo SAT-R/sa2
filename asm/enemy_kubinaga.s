@@ -1002,7 +1002,7 @@ _08052A78:
 _08052A80:
 	str r0, [sp, #0x10]
 	mov r0, sp
-	bl sub_8050E04
+	bl CreateProjectile
 	b _08052A98
 	.align 2, 0
 _08052A8C: .4byte 0xFFFFF600

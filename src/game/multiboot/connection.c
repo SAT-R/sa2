@@ -10,6 +10,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "game/screen_transition.h"
+#include "game/stage/entities_manager.h"
 #include "lib/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
@@ -107,7 +108,7 @@ void sub_8081200(void)
     gCamera.movementTask = NULL;
     gUnknown_0300543C = 0;
     *gameMode = val;
-    gEntitesManagerTask = NULL;
+    gEntitiesManagerTask = NULL;
 
     for (i = 0; i < 4; i++) {
         gMultiplayerPlayerTasks[i] = NULL;
