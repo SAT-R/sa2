@@ -371,7 +371,7 @@ _08018BA4:
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	bl sub_802A9A4
+	bl CreateItemTask_Confusion
 	movs r0, #0xd9
 	bl m4aSongNumStart
 	b _08018DEA
@@ -553,7 +553,7 @@ _08018D14:
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	bl sub_802A9A4
+	bl CreateItemTask_Confusion
 	movs r0, #0xd9
 	bl m4aSongNumStart
 	ldr r0, _08018D58 @ =gMPlayInfo_BGM

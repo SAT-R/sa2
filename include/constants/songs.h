@@ -121,7 +121,7 @@
 #define SE_148                       148
 #define SE_149                       149
 #define SE_ITEM_BOX_2                150
-#define SE_151                       151
+#define SE_ACTIVATE_SHIELD           151
 #define SE_CHECKPOINT                152
 #define SE_SPRING                    153
 #define SE_SPIKES                    154
@@ -160,7 +160,7 @@
 #define SE_MAP_214                        214
 #define SE_MAP_MOVE_END                   215
 #define SE_216                            216
-#define SE_217                            217
+#define SE_ITEM_CONFUSION                 217
 #define SE_218                            218
 #define SE_219                            219
 #define SE_DELETE_GAME_DATA               220

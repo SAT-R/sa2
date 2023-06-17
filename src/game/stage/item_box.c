@@ -198,7 +198,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.unk37 |= 0x1;
 
                 if (!(gPlayer.unk37 & 0x2)) {
-                    sub_802A7A8(gPlayer.unk60);
+                    CreateItemTask_Shield_Normal(gPlayer.unk60);
                 }
             }
 
@@ -210,7 +210,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 gPlayer.unk37 |= 0x8;
 
                 if (!(gPlayer.unk37 & 0x2)) {
-                    sub_802A8F8(gPlayer.unk60);
+                    CreateItemTask_Shield_Magnetic(gPlayer.unk60);
                 }
             }
 
@@ -221,7 +221,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
             if (IS_SINGLE_PLAYER || !(gPlayer.unk37 & 0x2)) {
                 gPlayer.unk37 |= 0x2;
-                sub_802A854(gPlayer.unk60);
+                CreateItemTask_Invincibility(gPlayer.unk60);
                 gUnknown_030054A8.unk2 = 16;
             }
         } break;
@@ -302,14 +302,14 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 0;
-            m4aSongNumStart(SE_217);
+            m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case 10: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 2;
-            m4aSongNumStart(SE_217);
+            m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case 11: {
