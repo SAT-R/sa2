@@ -5,6 +5,8 @@
 #include "task.h"
 #include "trig.h"
 
+#define NUM_PROJECTILES_MAX 4
+
 typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 x;
@@ -15,10 +17,10 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ Vec2_32 positions[4];
-    /* 0x50 */ s16 velocities[4][2];
+    /* 0x30 */ Vec2_32 positions[NUM_PROJECTILES_MAX];
+    /* 0x50 */ s16 velocities[NUM_PROJECTILES_MAX][2];
     /* 0x60 */ u8 count;
-    /* 0x61 */ bool8 isActive[4];
+    /* 0x61 */ bool8 isActive[NUM_PROJECTILES_MAX];
 } ProjectileB; /* size: 0x68 */
 
 void Task_805102C(void);
@@ -66,8 +68,8 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
     ProjectileB *proj = TaskGetStructPtr(t);
     u8 i;
 
-    if (count > 4)
-        count = 4;
+    if (count > NUM_PROJECTILES_MAX)
+        count = NUM_PROJECTILES_MAX;
 
     proj->count = count;
 
