@@ -10,8 +10,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ s32 unk3C;
-    /* 0x40 */ u8 filler40[4];
+    /* 0x3C */ Sprite_UNK28 reserved; // "overflow" from Sprite
     /* 0x48 */ s16 unk44;
     /* 0x46 */ s16 unk46;
     /* 0x48 */ s32 unk48;
@@ -19,9 +18,9 @@ typedef struct {
     /* 0x50 */ s32 unk50[3];
 } Enemy_Hammerhead;
 
-void Task_Hammerhead(void);
-void sub_8056EDC(Enemy_Hammerhead *hammerhead);
-void TaskDestructor_Hammerhead(struct Task *);
+static void Task_Hammerhead(void);
+static void sub_8056EDC(Enemy_Hammerhead *hammerhead);
+static void TaskDestructor_Hammerhead(struct Task *);
 
 void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                              u8 spriteY)
@@ -60,7 +59,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
-void Task_Hammerhead(void)
+static void Task_Hammerhead(void)
 {
     Player *p = &gPlayer;
     Enemy_Hammerhead *hammerhead = TaskGetStructPtr(gCurTask);
@@ -116,10 +115,8 @@ void Task_Hammerhead(void)
         posX -= gCamera.x;
         posY -= gCamera.y;
 
-        if ((((s->x < -(128)) || (s->x > DISPLAY_WIDTH + (128)) || ((s->y) + (256) < 0)
-              || (s->y > DISPLAY_HEIGHT + (256))))
-            && (((posX < -(128)) || (posX > DISPLAY_WIDTH + (128))
-                 || ((posY) + (256) < 0) || (posY > DISPLAY_HEIGHT + (256))))) {
+        if (IS_OUT_OF_RANGE_3(s->x, s->y, 128, 256)
+            && IS_OUT_OF_RANGE_3(posX, posY, 128, 256)) {
             SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.spriteX);
             TaskDestroy(gCurTask);
         } else {
@@ -130,14 +127,14 @@ void Task_Hammerhead(void)
     }
 }
 
-void sub_8056EDC(Enemy_Hammerhead *hammerhead)
+static void sub_8056EDC(Enemy_Hammerhead *hammerhead)
 {
     hammerhead->unk50[2] = hammerhead->unk50[1];
     hammerhead->unk50[1] = hammerhead->unk50[0];
     hammerhead->unk50[0] = hammerhead->unk48;
 }
 
-void TaskDestructor_Hammerhead(struct Task *t)
+static void TaskDestructor_Hammerhead(struct Task *t)
 {
     Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
     Sprite *s = &hammerhead->s;
