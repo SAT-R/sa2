@@ -115,8 +115,8 @@ static void Task_Hammerhead(void)
         posX -= gCamera.x;
         posY -= gCamera.y;
 
-        if (IS_OUT_OF_RANGE_3(s->x, s->y, 128, 256)
-            && IS_OUT_OF_RANGE_3(posX, posY, 128, 256)) {
+        if (IS_OUT_OF_RANGE_3(s->x, s->y, (CAM_REGION_WIDTH / 2), CAM_REGION_WIDTH)
+            && IS_OUT_OF_RANGE_3(posX, posY, (CAM_REGION_WIDTH / 2), CAM_REGION_WIDTH)) {
             SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.spriteX);
             TaskDestroy(gCurTask);
         } else {
