@@ -3,6 +3,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "lib/m4a.h"
+#include "game/game.h"
 #include "game/item_tasks.h"
 
 #include "constants/animations.h"
@@ -118,4 +119,52 @@ struct Task *CreateItemTask_Confusion(u8 p0)
     }
 
     return t;
+}
+
+// https://decomp.me/scratch/DuFBd
+void Task_Item_Shield_Normal(void)
+{
+    ItemTask *item0 = TaskGetStructPtr(gCurTask);
+    u8 param = item0->unk30;
+
+    ItemTask *item = TaskGetStructPtr(gCurTask);
+    struct Camera *cam = &gCamera;
+
+    u32 unk37 = (gPlayer.unk37 & 0x3);
+    if (unk37 != 1) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (!(gPlayer.unk37 & 0x2)) {
+        bool32 b;
+        s32 screenX, screenY;
+
+        screenX = Q_24_8_TO_INT(gPlayer.x) - cam->x;
+        item->s.x = screenX + gPlayer.unk7C;
+
+        screenY = Q_24_8_TO_INT(gPlayer.y) - cam->y;
+        item->s.y = screenY;
+
+        item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        item->s.unk10 |= gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
+
+        sub_8004558(&item->s);
+
+#ifndef NON_MATCHING
+        asm("mov %0, %2\n"
+            "and %0, %1\n"
+            : "=r"(b)
+            : "r"(param), "r"(unk37));
+
+        // Make the compiler "forget" that unk37 is 0x1
+        asm("" : "=r"(unk37));
+#else
+        b = (param & 0x1);
+#endif
+        if (((gUnknown_03005590 & 0x2) && (b != unk37))
+            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+            sub_80051E8(&item->s);
+        }
+    }
 }
