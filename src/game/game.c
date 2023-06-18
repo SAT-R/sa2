@@ -629,7 +629,7 @@ void CreateGameStage(void)
         }
 
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            gPlayer.unk37 |= 0x80;
+            gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__80;
         }
     } else {
         for (i = 0; i < 4; i++) {
@@ -744,7 +744,7 @@ void sub_801AB3C(void)
                 return;
             }
 
-            gPlayer.unk37 = 0;
+            gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & 0x40) {
                 gPlayer.speedAirY = -0x2A0;
@@ -775,7 +775,7 @@ void sub_801AB3C(void)
                 return;
             }
 
-            gPlayer.unk37 = 0;
+            gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & 0x40) {
                 gPlayer.speedAirY = -0x2A0;

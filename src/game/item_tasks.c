@@ -135,13 +135,15 @@ void Task_Item_Shield_Normal(void)
     ItemTask *item = TaskGetStructPtr(gCurTask);
     struct Camera *cam = &gCamera;
 
-    u32 unk37 = (gPlayer.unk37 & 0x3);
-    if (unk37 != 1) {
+    u32 itemEffect
+        = (gPlayer.itemEffect
+           & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__SHIELD_NORMAL));
+    if (itemEffect != PLAYER_ITEM_EFFECT__SHIELD_NORMAL) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    if (!(gPlayer.unk37 & 0x2)) {
+    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
         bool32 b;
         s32 screenX, screenY;
 
@@ -160,14 +162,14 @@ void Task_Item_Shield_Normal(void)
         asm("mov %0, %2\n"
             "and %0, %1\n"
             : "=r"(b)
-            : "r"(param), "r"(unk37));
+            : "r"(param), "r"(itemEffect));
 
-        // Make the compiler "forget" that unk37 is 0x1
-        asm("" : "=r"(unk37));
+        // Make the compiler "forget" that itemEffect is 0x1
+        asm("" : "=r"(itemEffect));
 #else
         b = (param & 0x1);
 #endif
-        if (((gUnknown_03005590 & 0x2) && (b != unk37))
+        if (((gUnknown_03005590 & 0x2) && (b != itemEffect))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
             sub_80051E8(&item->s);
         }
@@ -184,14 +186,16 @@ void Task_Item_Shield_Magnetic(void)
     bool32 b;
 
     if (IS_SINGLE_PLAYER) {
-        u32 unk37 = (gPlayer.unk37 & (0x8 | 0x2));
+        u32 itemEffect = (gPlayer.itemEffect
+                          & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC
+                             | PLAYER_ITEM_EFFECT__INVINCIBILITY));
 
-        if (unk37 != 8) {
+        if (itemEffect != PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC) {
             TaskDestroy(gCurTask);
             return;
         }
 
-        if (!(gPlayer.unk37 & 0x2)) {
+        if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
             s32 screenX, screenY;
 
             screenX = Q_24_8_TO_INT(gPlayer.x) - cam->x;
@@ -279,7 +283,7 @@ void Task_Item_Invincibility(void)
             TaskDestroy(gCurTask);
             return;
         }
-    } else if ((gPlayer.unk37 & 0x2) == 0) {
+    } else if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY) == 0) {
         TaskDestroy(gCurTask);
         return;
     } else {

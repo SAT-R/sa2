@@ -223,7 +223,8 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         case 3: {
             gPlayer.unk2E = ITEM_DURATION_INVINCIBILITY;
 
-            if (IS_SINGLE_PLAYER || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
+            if (IS_SINGLE_PLAYER
+                || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__INVINCIBILITY;
                 CreateItemTask_Invincibility(gPlayer.unk60);
                 gUnknown_030054A8.unk2 = 16;

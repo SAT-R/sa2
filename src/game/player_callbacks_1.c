@@ -897,7 +897,7 @@ void sub_802669C(Player *p)
     p->unk90->s.unk10 &= ~(MOVESTATE_2000 | MOVESTATE_1000);
     p->unk90->s.unk10 |= MOVESTATE_1000;
 
-    p->unk37 |= 0x80;
+    p->itemEffect |= PLAYER_ITEM_EFFECT__80;
 
     if (GRAVITY_IS_INVERTED) {
         newY = sub_801E6D4(Q_24_8_TO_INT(p->y) - p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
@@ -950,7 +950,7 @@ void PlayerCB_8026810(Player *p)
     if (sub_8029E6C(p)) {
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-        p->unk37 &= ~0x80;
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
         p->unk38 = 1;
 
         gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -983,7 +983,7 @@ void PlayerCB_8026810(Player *p)
 
             p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
             p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-            p->unk37 &= ~0x80;
+            p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
             p->unk38 = 1;
 
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -1010,7 +1010,7 @@ void PlayerCB_80269C0(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-    p->unk37 &= ~0x80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -1043,7 +1043,7 @@ void PlayerCB_8026A4C(Player *p)
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-    p->unk37 &= ~0x80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -3277,7 +3277,7 @@ void sub_802A6C0(Player *p)
 {
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-    p->unk37 &= ~0x80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 0x1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
