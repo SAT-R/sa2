@@ -17,6 +17,7 @@ typedef struct {
 void Task_Item_Shield_Normal(void);
 void Task_Item_Invincibility(void);
 void Task_Item_Shield_Magnetic(void);
+void Task_Item_Confusion(void);
 void TaskDestructor_ItemTasks(struct Task *);
 
 struct Task *CreateItemTask_Shield_Normal(u8 p0)
@@ -67,30 +68,54 @@ struct Task *CreateItemTask_Invincibility(u8 p0)
     return t;
 }
 
-// https://decomp.me/scratch/m6YN7
-// What is going on here?
 struct Task *CreateItemTask_Shield_Magnetic(u8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
-    ItemTask *item = TaskGetStructPtr(t), *item2;
-    Sprite *s = &item->s;
+    ItemTask *item = (ItemTask *)TaskGetStructPtr(t);
 
     item->unk30 = p0;
 
-    item2 = TaskGetStructPtr(t);
-    item2->s.graphics.dest = VramMalloc(36);
-    s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_SHIELD_MAGNETIC;
-    s->variant = 0;
-    s->unk21 = 0xFF;
-    s->unk1A = 0x200;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
-    s->palId = 0;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    {
+        ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
+        item2->s.graphics.dest = VramMalloc(36);
+        item2->s.graphics.size = 0;
+        item2->s.graphics.anim = SA2_ANIM_SHIELD_MAGNETIC;
+        item2->s.variant = 0;
+        item2->s.unk21 = 0xFF;
+        item2->s.unk1A = 0x200;
+        item2->s.unk1C = 0;
+        item2->s.unk22 = 0x10;
+        item2->s.palId = 0;
+        item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+    }
 
     m4aSongNumStart(SE_ACTIVATE_SHIELD);
+
+    return t;
+}
+
+struct Task *CreateItemTask_Confusion(u8 p0)
+{
+    struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0,
+                                TaskDestructor_ItemTasks);
+    ItemTask *item = TaskGetStructPtr(t);
+
+    item->unk30 = p0;
+
+    {
+        ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
+        item2->s.graphics.dest = VramMalloc(8);
+        item2->s.graphics.size = 0;
+        item2->s.graphics.anim = SA2_ANIM_CONFUSION;
+        item2->s.variant = 0;
+        item2->s.unk21 = 0xFF;
+        item2->s.unk1A = 0x200;
+        item2->s.unk1C = 0;
+        item2->s.unk22 = 0x10;
+        item2->s.palId = 0;
+        item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+    }
 
     return t;
 }
