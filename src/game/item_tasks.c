@@ -207,11 +207,47 @@ void Task_Item_Shield_Magnetic(void)
 
     b = (param);
     {
+#ifndef NON_MATCHING
         register u32 one asm("r3") = 1;
+#else
+        u32 one = 1;
+#endif
         b &= one;
         if (((gUnknown_03005590 & 0x2) && (b != one))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
             sub_80051E8(&item->s);
         }
+    }
+}
+
+// Unused?
+void Task_802ABC8(void)
+{
+    ItemTask *item = TaskGetStructPtr(gCurTask);
+    struct Camera *cam = &gCamera;
+    Sprite *s = &item->s;
+
+    if (s->unk10 & SPRITE_FLAG_MASK_14) {
+        TaskDestroy(gCurTask);
+    } else {
+        s16 screenX = 0, screenY = 0;
+        u32 r2 = 0;
+
+        if (IS_SINGLE_PLAYER) {
+            screenX = Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk7C;
+
+            screenY = Q_24_8_TO_INT(gPlayer.y);
+
+            r2 = gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
+        }
+
+        s->x = screenX - cam->x;
+        s->y = screenY - cam->y;
+
+        item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        item->s.unk10 |= r2;
+
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 }
