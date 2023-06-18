@@ -21,6 +21,12 @@ void Task_Item_Shield_Magnetic(void);
 void Task_Item_Confusion(void);
 void TaskDestructor_ItemTasks(struct Task *);
 
+#define ITEMTASK_GET_PLAYER_NUM()                                                       \
+    ({                                                                                  \
+        ItemTask *it = TaskGetStructPtr(gCurTask);                                      \
+        it->unk30;                                                                      \
+    })
+
 struct Task *CreateItemTask_Shield_Normal(u8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0,
@@ -124,8 +130,7 @@ struct Task *CreateItemTask_Confusion(u8 p0)
 // https://decomp.me/scratch/DuFBd
 void Task_Item_Shield_Normal(void)
 {
-    ItemTask *item0 = TaskGetStructPtr(gCurTask);
-    u8 param = item0->unk30;
+    s8 param = ITEMTASK_GET_PLAYER_NUM();
 
     ItemTask *item = TaskGetStructPtr(gCurTask);
     struct Camera *cam = &gCamera;
@@ -171,8 +176,7 @@ void Task_Item_Shield_Normal(void)
 
 void Task_Item_Shield_Magnetic(void)
 {
-    ItemTask *item0 = TaskGetStructPtr(gCurTask);
-    s8 param = item0->unk30;
+    s8 param = ITEMTASK_GET_PLAYER_NUM();
 
     ItemTask *item = TaskGetStructPtr(gCurTask);
     struct Camera *cam = &gCamera;
@@ -180,7 +184,7 @@ void Task_Item_Shield_Magnetic(void)
     bool32 b;
 
     if (IS_SINGLE_PLAYER) {
-        u32 unk37 = (gPlayer.unk37 & 0xA);
+        u32 unk37 = (gPlayer.unk37 & (0x8 | 0x2));
 
         if (unk37 != 8) {
             TaskDestroy(gCurTask);
@@ -250,4 +254,119 @@ void Task_802ABC8(void)
         sub_8004558(s);
         sub_80051E8(s);
     }
+}
+
+void Task_Item_Invincibility(void)
+{
+    s32 param = ITEMTASK_GET_PLAYER_NUM();
+
+    ItemTask *item = TaskGetStructPtr(gCurTask);
+    s16 x, y;
+    u32 priority;
+    u32 b;
+
+    struct Camera *cam = &gCamera;
+
+    if (IS_MULTI_PLAYER) {
+        struct MultiplayerPlayer *mpp
+            = TaskGetStructPtr(gMultiplayerPlayerTasks[(s8)param]);
+
+        if (mpp->unk57 & 0x2) {
+            x = mpp->unk50;
+            y = mpp->unk52;
+            priority = mpp->s.unk10;
+        } else {
+            TaskDestroy(gCurTask);
+            return;
+        }
+    } else if ((gPlayer.unk37 & 0x2) == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    } else {
+        // _0802ACE4
+        x = Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk7C;
+        y = Q_24_8_TO_INT(gPlayer.y);
+        priority = gPlayer.unk90->s.unk10;
+    }
+    // _0802AD02
+    priority &= SPRITE_FLAG_MASK_PRIORITY;
+
+    item->s.x = x - cam->x;
+    item->s.y = y - cam->y;
+    item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    item->s.unk10 |= priority;
+    sub_8004558(&item->s);
+
+    {
+#ifndef NON_MATCHING
+        register u32 one asm("r3") = 1;
+#else
+        u32 one = 1;
+#endif
+        b = one;
+        b &= ~param;
+        if (((gUnknown_03005590 & 0x2) && (b != one))
+            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+            sub_80051E8(&item->s);
+        }
+    }
+}
+
+void Task_Item_Confusion(void)
+{
+    s8 param = ITEMTASK_GET_PLAYER_NUM();
+    ItemTask *item = TaskGetStructPtr(gCurTask);
+    Sprite *s = &item->s;
+
+    s16 x, y;
+    u32 priority;
+    u32 b;
+
+    struct Camera *cam = &gCamera;
+
+    if (IS_MULTI_PLAYER) {
+        struct MultiplayerPlayer *mpp
+            = TaskGetStructPtr(gMultiplayerPlayerTasks[(s8)param]);
+
+        if (!(mpp->unk57 & (0x40 | 0x10))) {
+            TaskDestroy(gCurTask);
+            return;
+        }
+
+        s->x = mpp->unk50 - cam->x;
+        s->y = mpp->unk52 - cam->y;
+        s->unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        s->unk10 |= mpp->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
+
+        if (GRAVITY_IS_INVERTED) {
+            s->unk10 |= MOVESTATE_800;
+        } else {
+            s->unk10 &= ~MOVESTATE_800;
+        }
+
+        sub_8004558(s);
+
+        b = param;
+        {
+#ifndef NON_MATCHING
+            register u32 one asm("r3") = 1;
+#else
+            u32 one = 1;
+#endif
+            b &= one;
+            if (((gUnknown_03005590 & 0x2) && (b != one))
+                || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+                sub_80051E8(s);
+            }
+        }
+    } else {
+        TaskDestroy(gCurTask);
+        return;
+    }
+}
+
+void TaskDestructor_ItemTasks(struct Task *t)
+{
+    ItemTask *item = TaskGetStructPtr(t);
+    VramFree(item->s.graphics.dest);
 }

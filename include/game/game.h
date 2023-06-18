@@ -159,12 +159,18 @@ extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
-    u8 filler[0x50];
+    // TODO: Verify that this is Sprite!
+    //       (Used in Task_Item_Invincibility @ 0x0802AC60)
+    Sprite s;
+
+    u8 filler[0x20];
     // x
     s16 unk50;
     s16 unk52;
     u16 unk54;
-    u8 unk56[6];
+    u8 unk56;
+    u8 unk57;
+    u8 unk58[4];
     u32 unk5C;
 };
 
