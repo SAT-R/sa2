@@ -168,3 +168,50 @@ void Task_Item_Shield_Normal(void)
         }
     }
 }
+
+void Task_Item_Shield_Magnetic(void)
+{
+    ItemTask *item0 = TaskGetStructPtr(gCurTask);
+    s8 param = item0->unk30;
+
+    ItemTask *item = TaskGetStructPtr(gCurTask);
+    struct Camera *cam = &gCamera;
+
+    bool32 b;
+
+    if (IS_SINGLE_PLAYER) {
+        u32 unk37 = (gPlayer.unk37 & 0xA);
+
+        if (unk37 != 8) {
+            TaskDestroy(gCurTask);
+            return;
+        }
+
+        if (!(gPlayer.unk37 & 0x2)) {
+            s32 screenX, screenY;
+
+            screenX = Q_24_8_TO_INT(gPlayer.x) - cam->x;
+            item->s.x = screenX + gPlayer.unk7C;
+
+            screenY = Q_24_8_TO_INT(gPlayer.y) - cam->y;
+            item->s.y = screenY;
+
+            item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+            item->s.unk10 |= gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
+        } else {
+            return;
+        }
+    }
+
+    sub_8004558(&item->s);
+
+    b = (param);
+    {
+        register u32 one asm("r3") = 1;
+        b &= one;
+        if (((gUnknown_03005590 & 0x2) && (b != one))
+            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+            sub_80051E8(&item->s);
+        }
+    }
+}
