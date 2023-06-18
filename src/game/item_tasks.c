@@ -27,7 +27,7 @@ void TaskDestructor_ItemTasks(struct Task *);
         it->unk30;                                                                      \
     })
 
-struct Task *CreateItemTask_Shield_Normal(u8 p0)
+struct Task *CreateItemTask_Shield_Normal(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
@@ -52,7 +52,7 @@ struct Task *CreateItemTask_Shield_Normal(u8 p0)
     return t;
 }
 
-struct Task *CreateItemTask_Invincibility(u8 p0)
+struct Task *CreateItemTask_Invincibility(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
@@ -75,7 +75,7 @@ struct Task *CreateItemTask_Invincibility(u8 p0)
     return t;
 }
 
-struct Task *CreateItemTask_Shield_Magnetic(u8 p0)
+struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
@@ -102,7 +102,7 @@ struct Task *CreateItemTask_Shield_Magnetic(u8 p0)
     return t;
 }
 
-struct Task *CreateItemTask_Confusion(u8 p0)
+struct Task *CreateItemTask_Confusion(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
