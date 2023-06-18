@@ -76,6 +76,10 @@ typedef void (*VoidFn)(void);
 // Converts a number to Q24.8 fixed-point format
 #define Q_24_8(n) ((s32)((n)*256))
 
+// This may be the "real" version as we are seeing better matches with
+// it in some cases
+#define Q_24_8_NEW(n) ((s32)((n) << 8))
+
 // Converts a Q8.8 fixed-point format number to a regular integer
 #define Q_8_8_TO_INT(n) ((int)((n) >> 8))
 
