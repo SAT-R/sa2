@@ -221,7 +221,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
 
         case 3: {
-            gPlayer.unk2E = ITEM_DURATION_INVINCIBILITY;
+            gPlayer.timerInvincibility = ITEM_DURATION_INVINCIBILITY;
 
             if (IS_SINGLE_PLAYER
                 || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
@@ -233,7 +233,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
         case 4: {
             gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SPEED_UP;
-            gPlayer.unk30 = ITEM_DURATION_SPEED_UP;
+            gPlayer.timerSpeedup = ITEM_DURATION_SPEED_UP;
 
             m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
 

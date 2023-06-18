@@ -236,8 +236,8 @@ typedef struct Player_ {
     /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u16 unk2E; // bitfield(?)
-    /* 0x30 */ u16 unk30;
+    /* 0x2E */ u16 timerInvincibility;
+    /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
     /* 0x36 */ s8 unk36;
