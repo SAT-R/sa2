@@ -78,7 +78,7 @@ typedef void (*VoidFn)(void);
 
 // This may be the "real" version as we are seeing better matches with
 // it in some cases
-#define Q_24_8_HACK(n) ((s32)((n) << 8))
+#define Q_24_8_NEW(n) ((s32)((n) << 8))
 
 // Converts a Q8.8 fixed-point format number to a regular integer
 #define Q_8_8_TO_INT(n) ((int)((n) >> 8))
