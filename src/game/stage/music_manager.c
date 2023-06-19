@@ -86,12 +86,12 @@ void Task_StageMusicManager(void)
         } else if ((songHeader == gSongTable[MUS_INVINCIBILITY].header)
                    && ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK) != 0)
                    && (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE))
-                   && ((gPlayer.unk37 & FLAG_PLAYER_x37__INVINCIBLE) == 0)) {
+                   && ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY) == 0)) {
             gUnknown_030054A8.unk5 = 1;
             m4aSongNumStop(MUS_INVINCIBILITY);
         } else if ((songHeader != gSongTable[MUS_1_UP].header)
                    && (songHeader != gSongTable[MUS_INVINCIBILITY].header)
-                   && (gPlayer.unk37 & FLAG_PLAYER_x37__INVINCIBLE)
+                   && (gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)
                    && (gUnknown_030054A8.unk2 == 0)) {
             gUnknown_030054A8.unk2 = 0;
             gUnknown_030054A8.unk5 = 1;
@@ -149,7 +149,7 @@ static void MusManager_UpdateBgmParams(void)
     m4aMPlayVolumeControl(bgmInfo, 0xFF, 4);
     m4aMPlayFadeIn(bgmInfo, 4);
 
-    if (gPlayer.unk37 & FLAG_PLAYER_x37__SPEEDUP) {
+    if (gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) {
         m4aMPlayTempoControl(bgmInfo, 0x200);
     }
 }
@@ -160,7 +160,7 @@ void sub_800BF74(u16 fadeoutSpeed)
 
     m4aMPlayFadeOutTemporarily(bgmInfo, fadeoutSpeed / 16);
 
-    if (gPlayer.unk37 & FLAG_PLAYER_x37__SPEEDUP) {
+    if (gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) {
         m4aMPlayTempoControl(bgmInfo, 0x200);
     }
 }

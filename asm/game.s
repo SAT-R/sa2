@@ -13389,7 +13389,7 @@ _080237AA:
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	bl sub_802A7A8
+	bl CreateItemTask_Shield_Normal
 	b _080237FE
 	.align 2, 0
 _080237E0: .4byte gMPlayInfo_BGM
@@ -13404,7 +13404,7 @@ _080237E8:
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	bl sub_802A8F8
+	bl CreateItemTask_Shield_Magnetic
 _080237FE:
 	ldr r0, _0802385C @ =gMPlayTable
 	ldr r1, [r0]

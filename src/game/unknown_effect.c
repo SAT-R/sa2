@@ -15,14 +15,13 @@ void sub_80871C4(s16, s16, s16);
 void sub_8087088(void);
 void sub_80870E8(void);
 
-void sub_8087028(void)
+void Task_UnknownEffect(void)
 {
     s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
 
-    // 160 = DISPLAY_HEIGHT?
-    sub_80871C4(a, b, 160 - effect->unk0);
+    sub_80871C4(a, b, DISPLAY_HEIGHT - effect->unk0);
 
     effect->unk0 += 4;
     if (effect->unk0 > 0x32) {
@@ -65,7 +64,9 @@ void sub_80870E8(void)
     if (effect->unk0 > 160) {
         if (!(gPlayer.moveState
               & (MOVESTATE_IN_SCRIPTED | MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT))
-            && !(gPlayer.unk37 & 0x82) && sub_800CBA4(&gPlayer) != 0) {
+            && !(gPlayer.itemEffect
+                 & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__80))
+            && sub_800CBA4(&gPlayer) != 0) {
             m4aSongNumStart(SE_SPIKES);
         }
         gBldRegs.bldY = 0;
@@ -155,13 +156,13 @@ void sub_80871C4(s16 a, s16 b, s16 c)
     }
 }
 
-void sub_80873EC(struct Task *);
+void TaskDestructor_UnknownEffect(struct Task *);
 void sub_80873A4(void);
 
 void sub_8087368(void)
 {
-    struct Task *t = TaskCreate(sub_8087028, sizeof(struct UnknownEffect87028), 0x8000,
-                                0, sub_80873EC);
+    struct Task *t = TaskCreate(Task_UnknownEffect, sizeof(struct UnknownEffect87028),
+                                0x8000, 0, TaskDestructor_UnknownEffect);
     struct UnknownEffect87028 *effect = TaskGetStructPtr(t);
     effect->unk0 = 0;
     sub_80873A4();
@@ -175,8 +176,8 @@ void sub_80873A4(void)
     gBldRegs.bldCnt = 0x3FBF;
     gBldRegs.bldY = 4;
     gDispCnt |= DISPCNT_WIN0_ON;
-    gWinRegs[0] = 0xF0;
-    gWinRegs[2] = 0xA0;
+    gWinRegs[0] = WIN_RANGE(0, DISPLAY_WIDTH);
+    gWinRegs[2] = WIN_RANGE(0, DISPLAY_HEIGHT);
 }
 
-void sub_80873EC(UNUSED struct Task *t) { gFlags &= ~0x4; }
+void TaskDestructor_UnknownEffect(UNUSED struct Task *t) { gFlags &= ~0x4; }

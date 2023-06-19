@@ -95,7 +95,7 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
             }
 
             // _0805711A
-            if (!(gPlayer.unk37 & 0x2)) {
+            if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                 sub_800CBA4(&gPlayer);
             }
         }

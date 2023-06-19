@@ -189,7 +189,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
     u32 count = 0;
     struct MultiplayerPlayer *player
         = TaskGetStructPtr(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
-    gPlayer.unk37 &= ~0x40;
+    gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__40;
     gPlayer.unk32 = 0;
 
     if (!(player->unk5C & 1)) {
@@ -229,7 +229,7 @@ static void sub_8062BD0(void)
     // Required for match
     *SIO_MULTI_CNT;
 
-    gPlayer.unk37 &= ~0x40;
+    gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__40;
     gPlayer.unk32 = 0;
 
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {

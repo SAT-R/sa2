@@ -159,12 +159,18 @@ extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
-    u8 filler[0x50];
+    // TODO: Verify that this is Sprite!
+    //       (Used in Task_Item_Invincibility @ 0x0802AC60)
+    Sprite s;
+
+    u8 filler[0x20];
     // x
     s16 unk50;
     s16 unk52;
     u16 unk54;
-    u8 unk56[6];
+    u8 unk56;
+    u8 unk57;
+    u8 unk58[4];
     u32 unk5C;
 };
 
@@ -191,10 +197,16 @@ typedef struct {
     /* 0xAF */ s8 unkAF;
 } TailsFlags;
 
-#define FLAG_PLAYER_x37__INVINCIBLE       0x02
-#define FLAG_PLAYER_x37__SPEEDUP          0x04
-#define FLAG_PLAYER_x38__LAYER_FOREGROUND 0x00
-#define FLAG_PLAYER_x38__LAYER_BACKGROUND 0x01
+#define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
+#define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
+#define PLAYER_ITEM_EFFECT__SPEED_UP        0x04
+#define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
+#define PLAYER_ITEM_EFFECT__10              0x10
+#define PLAYER_ITEM_EFFECT__20              0x20
+#define PLAYER_ITEM_EFFECT__40              0x40
+#define PLAYER_ITEM_EFFECT__80              0x80
+#define FLAG_PLAYER_x38__LAYER_FOREGROUND   0x00
+#define FLAG_PLAYER_x38__LAYER_BACKGROUND   0x01
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
@@ -224,12 +236,12 @@ typedef struct Player_ {
     /* 0x25 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u16 unk2E; // bitfield(?)
-    /* 0x30 */ u16 unk30;
+    /* 0x2E */ u16 timerInvincibility;
+    /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
     /* 0x32 */ u8 filler34[2];
     /* 0x36 */ s8 unk36;
-    /* 0x37 */ u8 unk37; // bitfield
+    /* 0x37 */ u8 itemEffect; // bitfield
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u8 filler3A[2];
@@ -284,7 +296,8 @@ typedef struct Player_ {
     /* 0x74 */ u16 checkPointX;
     /* 0x76 */ u16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
-    /* 0x7C */ u8 filler7C[8];
+    /* 0x7C */ u16 unk7C;
+    /* 0x7E */ u8 filler7E[6];
 
     // Denotes how many points the player should get after defeating an enemy.
     // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
@@ -612,7 +625,4 @@ extern void sub_8021350(void);
 // NOTE: Proc type should be the same as sub_80299F0!
 extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
 
-extern struct Task *sub_802A7A8(s8);
-extern struct Task *sub_802A854(s8);
-extern struct Task *sub_802A8F8(s8);
 #endif // GUARD_GAME_H

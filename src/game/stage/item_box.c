@@ -7,11 +7,15 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/item_tasks.h"
 #include "game/multiplayer/unknown_1.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
+
+#define ITEM_DURATION_INVINCIBILITY ZONE_TIME_TO_INT(0, 20)
+#define ITEM_DURATION_SPEED_UP      ZONE_TIME_TO_INT(0, 20)
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -193,47 +197,48 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
         } break;
 
         case 1: {
-            if (!(gPlayer.unk37 & 0x1)) {
-                gPlayer.unk37 &= ~0x8;
-                gPlayer.unk37 |= 0x1;
+            if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_NORMAL)) {
+                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
+                gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
 
-                if (!(gPlayer.unk37 & 0x2)) {
-                    sub_802A7A8(gPlayer.unk60);
+                if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
+                    CreateItemTask_Shield_Normal(gPlayer.unk60);
                 }
             }
 
         } break;
 
         case 2: {
-            if (!(gPlayer.unk37 & 0x8)) {
-                gPlayer.unk37 &= ~0x1;
-                gPlayer.unk37 |= 0x8;
+            if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC)) {
+                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
+                gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
 
-                if (!(gPlayer.unk37 & 0x2)) {
-                    sub_802A8F8(gPlayer.unk60);
+                if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
+                    CreateItemTask_Shield_Magnetic(gPlayer.unk60);
                 }
             }
 
         } break;
 
         case 3: {
-            gPlayer.unk2E = 0x4B0;
+            gPlayer.timerInvincibility = ITEM_DURATION_INVINCIBILITY;
 
-            if (IS_SINGLE_PLAYER || !(gPlayer.unk37 & 0x2)) {
-                gPlayer.unk37 |= 0x2;
-                sub_802A854(gPlayer.unk60);
+            if (IS_SINGLE_PLAYER
+                || !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
+                gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__INVINCIBILITY;
+                CreateItemTask_Invincibility(gPlayer.unk60);
                 gUnknown_030054A8.unk2 = 16;
             }
         } break;
 
         case 4: {
-            gPlayer.unk37 |= 0x4;
-            gPlayer.unk30 = 0x4B0;
+            gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SPEED_UP;
+            gPlayer.timerSpeedup = ITEM_DURATION_SPEED_UP;
 
             m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x200);
 
             if (IS_MULTI_PLAYER) {
-                gPlayer.unk37 &= ~0x10;
+                gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__10;
             }
         } break;
 
@@ -302,14 +307,14 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 0;
-            m4aSongNumStart(SE_217);
+            m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case 10: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 2;
-            m4aSongNumStart(SE_217);
+            m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
         case 11: {

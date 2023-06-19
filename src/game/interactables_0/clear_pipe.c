@@ -63,8 +63,8 @@ static void Task_ClearPipe_Start(void)
 
         Player_SetMovestate_IsInScriptedSequence();
 
-        gPlayer.unk37 &= ~(0x10);
-        gPlayer.unk30 = 0;
+        gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__10;
+        gPlayer.timerSpeedup = 0;
 
         m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x100);
     }

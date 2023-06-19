@@ -554,7 +554,7 @@ _08016434:
 	mov r1, sl
 	movs r0, #0
 	ldrsb r0, [r1, r0]
-	bl sub_802A854
+	bl CreateItemTask_Invincibility
 _08016474:
 	movs r0, #0x50
 	ands r4, r0
@@ -568,7 +568,7 @@ _08016474:
 	mov r3, sl
 	movs r0, #0
 	ldrsb r0, [r3, r0]
-	bl sub_802A9A4
+	bl CreateItemTask_Confusion
 _08016490:
 	mov r4, r8
 	ldrb r0, [r4, #0xa]
