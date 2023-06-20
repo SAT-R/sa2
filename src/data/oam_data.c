@@ -1,5 +1,7 @@
 #include "global.h"
 
+// TODO: Use struct-format that is more intuitive than hex values
+
 static const u16 spriteOamData_Data[][3] = {
     // 0 - 0x0814E378
     { 0x0000, 0x8000, 0x0000 },
