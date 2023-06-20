@@ -81,6 +81,38 @@ typedef union {
     u16 raw[4];
 } OamData;
 
+// NOTE: Inside the ROM the OAM data used for layouting
+//       is stored without an affine parameter, which makes sense
+//       since they're relatively unrelated and affine values
+//       usually generated during runtime, anyway.
+//       That's what this variation of 'OamData' is for.
+typedef union {
+    struct {
+    /*0x00*/ u32 y:8;
+    /*0x01*/ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
+             u32 objMode:2;     // 0x4, 0x8 -> 0xC
+             u32 mosaic:1;      // 0x10
+             u32 bpp:1;         // 0x20
+             u32 shape:2;       // 0x40, 0x80 -> 0xC0
+
+    /*0x02*/ u32 x:9;
+             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+
+    /*0x04*/ u16 tileNum:10;    // 0x3FF
+             u16 priority:2;    // 0x400, 0x800 -> 0xC00
+             u16 paletteNum:4;
+    } split;
+
+    struct {
+        u16 attr0;
+        u16 attr1;
+        u16 attr2;
+    } all;
+
+    u16 raw[3];
+} OamDataRom;
+
 #define ST_OAM_HFLIP     0x08
 #define ST_OAM_VFLIP     0x10
 #define ST_OAM_MNUM_FLIP_MASK 0x18

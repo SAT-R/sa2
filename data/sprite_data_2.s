@@ -1,20 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_0814E378 @ 0x0814E378
- gUnknown_0814E378:
-    .incbin "baserom.gba", 0x0014E378, 0x1B89C
-.size gUnknown_0814E378, .-gUnknown_0814E378
-    
-
-@; NOTE(Jace): As the name suggests, the data pointed to
-@;             is using the exact same layout
-@;             as the OAM memory in the GBA.
-@;             IIRC this is used for layouting bigger sprites.
-    .global gSpriteOamData @ 0x08169C14
-gSpriteOamData:
-    .incbin "baserom.gba", 0x00169C14, 0x11B4
-.size gSpriteOamData, .-gSpriteOamData
-
     .global gSpritePalettes @ 0x0816ADC8
 gSpritePalettes:
     .include "graphics/obj_palettes.inc"
