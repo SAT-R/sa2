@@ -20649,6 +20649,7 @@ static const u16 spriteOamData_Data[][3] = {
     { 0x0000, 0x8040, 0x6020 },
 
 };
+
 const u16 *const gSpriteOamData[1133] = {
     /*    0 */ &spriteOamData_Data[0][0],
     /*    1 */ &spriteOamData_Data[20][0],
