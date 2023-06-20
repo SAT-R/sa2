@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "data/sprite_dimensions.h"
 
 // 0 - 0x08137078
 static const SpriteOffset spriteDim_8137078[13] = {
@@ -71525,7 +71525,7 @@ static const SpriteOffset spriteDim_814D1B8[1] = {
     },
 };
 
-const SpriteOffset *const gSpriteDimensions[1133] = {
+const SpriteOffset *const gSpriteDimensions[NUM_SPRITE_ANIMATIONS] = {
     spriteDim_8137078,
     spriteDim_8137114,
     spriteDim_813724C,

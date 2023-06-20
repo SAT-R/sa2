@@ -1,4 +1,4 @@
-#include "global.h"
+#include "data/oam_data.h"
 
 // TODO: Use struct-format that is more intuitive than hex values
 
@@ -20650,7 +20650,7 @@ static const u16 spriteOamData_Data[][3] = {
 
 };
 
-const u16 *const gSpriteOamData[1133] = {
+const u16 *const gSpriteOamData[NUM_SPRITE_ANIMATIONS] = {
     /*    0 */ &spriteOamData_Data[0][0],
     /*    1 */ &spriteOamData_Data[20][0],
     /*    2 */ &spriteOamData_Data[98][0],
