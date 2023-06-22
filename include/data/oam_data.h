@@ -9,7 +9,7 @@
 //       since they're relatively unrelated and affine values
 //       usually generated during runtime, anyway.
 //       That's what this variation of 'OamData' is for.
-struct PACKED OamDataRom {
+typedef struct PACKED {
     /*0x00*/
     u32 y : 8;
 
@@ -29,8 +29,8 @@ struct PACKED OamDataRom {
     u16 tileNum : 10; // 0x3FF
     u16 priority : 2; // 0x400, 0x800 -> 0xC00
     u16 paletteNum : 4;
-};
+} OamDataRom;
 
-extern const struct OamDataRom *const gSpriteOamData[NUM_SPRITE_ANIMATIONS];
+extern const OamDataRom *const gSpriteOamData[NUM_SPRITE_ANIMATIONS];
 
 #endif // GUARD_CONST_DATA_OAM_DATA_H
