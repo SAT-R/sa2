@@ -374,6 +374,9 @@ SECTIONS
 
         build/sa2/data/data5.o(.rodata);
         build/sa2/data/sprite_data.o(.rodata);
+        build/sa2/src/data/sprite_dimensions.o(.rodata);
+        build/sa2/src/data/oam_data.o(.rodata);
+        build/sa2/data/sprite_data_2.o(.rodata);
         build/sa2/src/data/tileset_language.o(.rodata);
         build/sa2/data/map_data.o(.rodata);
 
