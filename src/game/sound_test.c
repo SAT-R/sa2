@@ -909,7 +909,8 @@ static void SoundTestScreenInitRegistersAndBackground(struct Task *t)
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    OptionsInitBackground(soundTestScreen->background, 0, 7, TM_SOUND_TEST_BG, 0x20, 0x20, 0, 0, 0, 0);
+    OptionsInitBackground(soundTestScreen->background, 0, 7, TM_SOUND_TEST_BG, 0x20,
+                          0x20, 0, 0, 0, 0);
 }
 
 static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)

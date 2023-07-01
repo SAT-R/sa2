@@ -460,8 +460,10 @@ static bool16 sub_806B988(u16 *);
 
 #define SetupOptionScreenBackgrounds(background, subMenuBackground)                     \
     ({                                                                                  \
-        OptionsInitBackground(&(background), 0, 7, TM_OPTIONS_BG0, 0x1E, 0x14, 0, 0, 0, 0);                 \
-        OptionsInitBackground(&(subMenuBackground), 1, 0xE, TM_OPTIONS_LANGUAGE_SELECT, 0x1E, 0x14, 0, 1, 0, 0);        \
+        OptionsInitBackground(&(background), 0, 7, TM_OPTIONS_BG0, 0x1E, 0x14, 0, 0, 0, \
+                              0);                                                       \
+        OptionsInitBackground(&(subMenuBackground), 1, 0xE, TM_OPTIONS_LANGUAGE_SELECT, \
+                              0x1E, 0x14, 0, 1, 0, 0);                                  \
     })
 
 #define ReadAvailableCharacters(i, unlockedCharacters)                                  \
@@ -491,12 +493,20 @@ static const s16 sSubMenuCloseAnim[16] = {
 };
 
 static const u16 sTimeRecordsCharacterAssets[NUM_CHARACTERS][2] = {
-    [CHARACTER_SONIC] = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_SONIC_BG, [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_SONIC },
-    [CHARACTER_CREAM] = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_CREAM_BG, [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_CREAM },
-    [CHARACTER_TAILS] = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_TAILS_BG, [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_TAILS },
+    [CHARACTER_SONIC]
+    = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_SONIC_BG,
+        [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_SONIC },
+    [CHARACTER_CREAM]
+    = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_CREAM_BG,
+        [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_CREAM },
+    [CHARACTER_TAILS]
+    = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_TAILS_BG,
+        [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_TAILS },
     [CHARACTER_KNUCKLES]
-    = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_KNUCKLES_BG, [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_KNUCKLES },
-    [CHARACTER_AMY] = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_AMY_BG, [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_AMY },
+    = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_KNUCKLES_BG,
+        [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_KNUCKLES },
+    [CHARACTER_AMY] = { [ASSET_CHARACTER_BACKGROUND] = TM_MP_CHARACTER_SELECTED_AMY_BG,
+                        [ASSET_CHARACTER] = TM_MP_CHARACTER_SELECTED_AMY },
 };
 
 const u16 gUnknown_080D95A4[] = {
@@ -3394,10 +3404,12 @@ ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen *profileNameScreen
     unk140->unkA = 0;
     unk140->unk8 = 0xFF;
 
-    OptionsInitBackground(&profileNameScreen->background, 0, 7, TM_OPTIONS_ENTER_NAME, 0x1E, 0x14, 0, 0, 0, 0);
-    OptionsInitBackground(&profileNameScreen->charMatrixBackground, 3, 0x1F, TM_OPTIONS_TIME_RECORD_BG0, 0x1E, 0x14, 0,
-                2, 0, 0);
-    OptionsInitBackground(&profileNameScreen->charMatrix, 1, 0x16, TM_OPTIONS_ENTER_NAME_CHARACTERS, 0x16, 0x2C, 0, 1, 0, 0);
+    OptionsInitBackground(&profileNameScreen->background, 0, 7, TM_OPTIONS_ENTER_NAME,
+                          0x1E, 0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&profileNameScreen->charMatrixBackground, 3, 0x1F,
+                          TM_OPTIONS_TIME_RECORD_BG0, 0x1E, 0x14, 0, 2, 0, 0);
+    OptionsInitBackground(&profileNameScreen->charMatrix, 1, 0x16,
+                          TM_OPTIONS_ENTER_NAME_CHARACTERS, 0x16, 0x2C, 0, 1, 0, 0);
 }
 
 static void ProfileNameScreenCreateUIText(struct ProfileNameScreen *profileNameScreen)
@@ -4017,10 +4029,10 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
     unk270->speed = 0x100;
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
-    OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 0, 7, TM_OPTIONS_TIME_RECORD_BG0, 0x1e,
-                0x14, 0, 0, 0, 0);
-    OptionsInitBackground(&timeRecordsScreen->coursesViewCharacter, 1, 0xF, TM_OPTIONS_TIME_RECORD_BG1, 0x1e, 0x14, 0, 1,
-                0, 0);
+    OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 0, 7,
+                          TM_OPTIONS_TIME_RECORD_BG0, 0x1e, 0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&timeRecordsScreen->coursesViewCharacter, 1, 0xF,
+                          TM_OPTIONS_TIME_RECORD_BG1, 0x1e, 0x14, 0, 1, 0, 0);
 }
 
 static void
@@ -4208,14 +4220,15 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    OptionsInitBackground(&timeRecordsScreen->coursesViewBackground, 0, 7, TM_139, 0x1e, 0x14, 0, 0,
-                0, 0);
-    OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16,
-                sTimeRecordsCharacterAssets[character][ASSET_CHARACTER_BACKGROUND], 9,
-                0x14, 0, 1, 0, 0);
+    OptionsInitBackground(&timeRecordsScreen->coursesViewBackground, 0, 7, TM_139, 0x1e,
+                          0x14, 0, 0, 0, 0);
+    OptionsInitBackground(
+        &timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16,
+        sTimeRecordsCharacterAssets[character][ASSET_CHARACTER_BACKGROUND], 9, 0x14, 0,
+        1, 0, 0);
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E,
-                sTimeRecordsCharacterAssets[character][ASSET_CHARACTER], 9, 0x14, 0, 2,
-                0, 0);
+                          sTimeRecordsCharacterAssets[character][ASSET_CHARACTER], 9,
+                          0x14, 0, 2, 0, 0);
 }
 
 static void
@@ -4486,9 +4499,11 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void)
     gBgScrollRegs[2][1] = 0x10;
 
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16,
-                sTimeRecordsCharacterAssets[character][0], 9, 0x14, 0, 1, 0, 0);
+                          sTimeRecordsCharacterAssets[character][0], 9, 0x14, 0, 1, 0,
+                          0);
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacter, 2, 0x1E,
-                sTimeRecordsCharacterAssets[character][1], 9, 0x14, 0, 2, 0, 0);
+                          sTimeRecordsCharacterAssets[character][1], 9, 0x14, 0, 2, 0,
+                          0);
 
     gCurTask->main = Task_TimeRecordsScreenCharacterChangeAnimIn;
 }
@@ -4998,10 +5013,10 @@ static void MultiplayerRecordsScreenCreateBackgroundsUI(
     unk0->unkA = 0;
     unk0->unk8 = 0xFF;
 
-    OptionsInitBackground(&multiplayerRecordsScreen->backgroundTrims, 0, 7, TM_OPTIONS_VS_RECORD_BG1, 0x1E, 0x14, 0, 0,
-                0, 0);
-    OptionsInitBackground(&multiplayerRecordsScreen->background, 1, 0x16, TM_OPTIONS_TIME_RECORD_BG0, 0x1E, 0x14, 0, 1,
-                0, 0);
+    OptionsInitBackground(&multiplayerRecordsScreen->backgroundTrims, 0, 7,
+                          TM_OPTIONS_VS_RECORD_BG1, 0x1E, 0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&multiplayerRecordsScreen->background, 1, 0x16,
+                          TM_OPTIONS_TIME_RECORD_BG0, 0x1E, 0x14, 0, 1, 0, 0);
 }
 
 static void MultiplayerRecordsScreenCreatePlayerRowUI(
@@ -5970,7 +5985,8 @@ static void CreateEditLanguageScreen(struct OptionsScreen *optionScreen)
 
 static void LanguageScreenCreateBackgroundsUI(struct LanguageScreen *languageScreen)
 {
-    OptionsInitBackground(&languageScreen->unk1B0, 0, 7, TM_OPTIONS_LANGUAGE_SELECT, 0x1E, 0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&languageScreen->unk1B0, 0, 7, TM_OPTIONS_LANGUAGE_SELECT,
+                          0x1E, 0x14, 0, 0, 0, 0);
 }
 
 static void Task_LanguageScreenFadeIn(void)
@@ -6047,7 +6063,8 @@ static void LanguageScreenRenderUI(void)
 
 static void DeleteScreenCreateBackgroundsUI(struct DeleteScreen *deleteScreen)
 {
-    OptionsInitBackground(&deleteScreen->background, 0, 7, TM_OPTIONS_LANGUAGE_SELECT, 0x1e, 0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&deleteScreen->background, 0, 7, TM_OPTIONS_LANGUAGE_SELECT,
+                          0x1e, 0x14, 0, 0, 0, 0);
 }
 
 static void Task_DeleteScreenFadeIn(void)
@@ -6377,8 +6394,8 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
     TaskDestroy(gCurTask);
 }
 
-void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 f,
-                 u8 g, u16 scrollX, u16 scrollY)
+void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d,
+                           u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;

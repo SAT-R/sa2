@@ -1,9 +1,9 @@
 #include "global.h"
-#include "game/cutscenes/missing_emeralds.h"
 #include "core.h"
+#include "game/cutscenes/missing_emeralds.h"
 #include "game/game.h"
-#include "sprite.h"
 #include "game/screen_transition.h"
+#include "sprite.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -11,9 +11,10 @@
 
 #include "constants/animations.h"
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
-void sub_8094360(void);
-void sub_80945A0(struct Task *);
+void Task_8094360(void);
+void TaskDestructor_80945A0(struct Task *);
 
 struct MissingChaosEmaraldsCutScene {
     Background unk0;
@@ -30,15 +31,51 @@ struct MissingChaosEmaraldsCutScene {
     vu32 unkC4;
 };
 
-static const u16 gUnknown_080E1C5C[34] = {
-    175, 176, 178, 177, 180, 179, 181, 181, 182, 184, 183, 186, 185, 187, 187, 188, 190,
-    189, 192, 191, 193, 193, 194, 196, 195, 198, 197, 199, 199, 200, 202, 201, 204, 203,
+static const u16 sTilemapsPlayerNotifs[34] = {
+    TM_COLLECT_ALL_CHAOS_EMERALDS_JP,
+    TM_COLLECT_ALL_CHAOS_EMERALDS_EN,
+    TM_COLLECT_ALL_CHAOS_EMERALDS_DE,
+    TM_COLLECT_ALL_CHAOS_EMERALDS_FR,
+    TM_COLLECT_ALL_CHAOS_EMERALDS_ES,
+    TM_COLLECT_ALL_CHAOS_EMERALDS_IT,
+
+    TM_UNLOCKED_TINY_CHAO_GARDEN_JP,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_JP,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_EN,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_DE,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_FR,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_ES,
+    TM_UNLOCKED_TINY_CHAO_GARDEN_IT,
+
+    TM_UNLOCKED_SOUND_TEST_JP,
+    TM_UNLOCKED_SOUND_TEST_JP,
+    TM_UNLOCKED_SOUND_TEST_EN,
+    TM_UNLOCKED_SOUND_TEST_DE,
+    TM_UNLOCKED_SOUND_TEST_FR,
+    TM_UNLOCKED_SOUND_TEST_ES,
+    TM_UNLOCKED_SOUND_TEST_IT,
+
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_JP,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_JP,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_EN,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_DE,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_FR,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_ES,
+    TM_UNLOCKED_BOSSES_TIME_ATTACK_IT,
+
+    TM_UNLOCKED_AMY_JP,
+    TM_UNLOCKED_AMY_JP,
+    TM_UNLOCKED_AMY_EN,
+    TM_UNLOCKED_AMY_DE,
+    TM_UNLOCKED_AMY_FR,
+    TM_UNLOCKED_AMY_ES,
+    TM_UNLOCKED_AMY_IT,
 };
 
 static const TileInfo gUnknown_080E1CA0[3] = {
-    { 48, 1075, 0 },
-    { 63, 810, 0 },
-    { 80, 810, 1 },
+    { 48, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, 0 },
+    { 63, SA2_ANIM_AMY_UNLOCKED, 0 },
+    { 80, SA2_ANIM_AMY_UNLOCKED, 1 },
 };
 
 void CreateMissingChaosEmaraldsCutScene(void)
@@ -64,7 +101,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
-    t = TaskCreate(sub_8094360, 0xC8, 0x3100, 0, sub_80945A0);
+    t = TaskCreate(Task_8094360, 0xC8, 0x3100, 0, TaskDestructor_80945A0);
     scene = TaskGetStructPtr(t);
 
     scene->unkBC = 0;
@@ -103,7 +140,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         element = &scene->unk80;
         element->graphics.dest = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
-            scene->unkC4 += gUnknown_080E1CA0[0].numTiles * 0x20;
+            scene->unkC4 += gUnknown_080E1CA0[0].numTiles * TILE_SIZE_4BPP;
             element->graphics.anim = gUnknown_080E1CA0[0].anim;
             element->variant = gUnknown_080E1CA0[0].variant;
             element->y = 85;
@@ -168,7 +205,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
 
 void sub_809449C(void);
 
-void sub_8094360(void)
+void Task_8094360(void)
 {
     Background *background = NULL;
     struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
@@ -179,15 +216,16 @@ void sub_8094360(void)
             gBgScrollRegs[1][0] = 0;
             gBgScrollRegs[1][1] = 400;
             background = &scene->unk40;
-            background->unk1C = gUnknown_080E1C5C[scene->unkBF - 1];
+            background->unk1C = sTilemapsPlayerNotifs[scene->unkBF - 1];
             sub_8002A3C(background);
         }
 
+        // "Collect all Chaos Emeralds!" message
         gDispCnt |= 0x100;
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         background = &scene->unk0;
-        background->unk1C = gUnknown_080E1C5C[0];
+        background->unk1C = sTilemapsPlayerNotifs[0];
         sub_8002A3C(background);
     } else {
         s32 base;
@@ -196,19 +234,20 @@ void sub_8094360(void)
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
 
+        // "Unlocked Tiny Chao Garden" message
         background = &scene->unk0;
-        background->unk1C = gUnknown_080E1C5C[7];
+        background->unk1C = sTilemapsPlayerNotifs[7];
         sub_8002A3C(background);
 
         if (scene->unkBD > 1 || scene->unkBF > 1) {
             gDispCnt |= 0x200;
             gBgScrollRegs[1][0] = 0;
-            gBgScrollRegs[1][1] = 0xA0;
+            gBgScrollRegs[1][1] = DISPLAY_HEIGHT;
 
             background = &scene->unk40;
             base = scene->unkBF;
             index = (base + 6 + ((scene->unkBD - 1) * 7));
-            background->unk1C = gUnknown_080E1C5C[index];
+            background->unk1C = sTilemapsPlayerNotifs[index];
             sub_8002A3C(background);
         }
     }
@@ -274,7 +313,7 @@ void sub_8094570(void)
     }
 }
 
-void sub_80945A0(struct Task *t)
+void TaskDestructor_80945A0(struct Task *t)
 {
     // unused logic
 }
