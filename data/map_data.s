@@ -200,15 +200,15 @@ MapHeader_LeafForest_Boss_BackLayer: @ 0x0873C0D8
     MapHeader METATILE_WIDTH, METATILE_HEIGHT, 0, 0, 0, Tileset_Stage_LeafForest_Boss, 0x0E00, Palette_Stage_LeafForest_Boss, 0, 0x100, Metatiles_Stage_LeafForest_Boss, Map_Stage_LeafForest_Boss_BackLayer, 60, 3
     mDataSize MapHeader_LeafForest_Boss_BackLayer
 
-    .global gUnknown_087C0FC
-gUnknown_087C0FC: @ 0x087C0FC
+    .global gUnknown_0873C0FC
+gUnknown_0873C0FC: @ 0x0873C0FC
     .4byte gUnknown_0873B438, gUnknown_0873B7B8
     .4byte Metatiles_Stage_LeafForest_Boss, Map_Stage_LeafForest_Boss_FrontLayer
     .4byte Map_Stage_LeafForest_Boss_BackLayer, gUnknown_0873B828
     .2byte 60, 3 @ Level Dimensions
     .byte  128, 22, 0, 0 @ TODO: not sure about this being .byte
     .2byte 0x0120, 0x0000
-    mDataSize gUnknown_087C0FC
+    mDataSize gUnknown_0873C0FC
 
 @
 @ --- Dummy Map ---

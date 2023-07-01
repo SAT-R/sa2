@@ -6,9 +6,10 @@
 
 asm(".section .rodata");
 
-// Not sure whether the size is correct, here.
-// It should be (2 MapHeader pointers + 1 Background-Map pointer) * number_of_maps (which
-// is 31)
+// As denoted in tilemaps.h:
+// - starts with MapHeaders (0-92)
+// - then one NULL value (93)
+// - then various background tilemaps (94-380)
 asm("    .global gMapHeaders\n"
     "gMapHeaders:\n"
     "  .4byte MapHeader_LeafForest_Act1_FrontLayer, "
@@ -17,7 +18,8 @@ asm("    .global gMapHeaders\n"
 
 asm("    .global gUnknown_080D62D8\n"
     "gUnknown_080D62D8:\n"
-    "    .incbin \"baserom.gba\", 0x000D62D8, 0x7C\n");
+    "    .4byte gUnknown_08714578, gUnknown_0873A414, gUnknown_0873C0FC\n"
+    "    .incbin \"baserom.gba\", 0x000D62E4, 0x70\n");
 
 // Like AnimInfo
 const unsigned short sAnimData_StageGoalScoreBonus[5][3] = {

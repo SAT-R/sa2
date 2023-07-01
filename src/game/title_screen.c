@@ -29,6 +29,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct TitleScreen {
     // Possibly an array of ui elements?
@@ -415,9 +416,9 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config0->unk18 = 0;
     config0->unk1A = 0;
     if (gLoadedSaveGame->language < 2) {
-        config0->unk1C = 0x108;
+        config0->unk1C = TM_SA2_LOGO_JP;
     } else {
-        config0->unk1C = 0x109;
+        config0->unk1C = TM_SA2_LOGO_EN;
     }
     config0->unk1E = 0;
     config0->unk20 = 0;
@@ -444,7 +445,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
-    config40->unk1C = 0x105;
+    config40->unk1C = TM_TITLE_SCREEN_BG;
     config40->unk1E = 0;
     config40->unk20 = 0;
     config40->unk22 = 0;
