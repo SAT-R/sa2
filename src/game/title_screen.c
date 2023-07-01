@@ -115,7 +115,7 @@ static void WavesBackgroundAnim(struct TitleScreen *);
 
 static void Task_IntroStartSegaLogoAnim(void);
 static void Task_IntroShowSegaLogo(void);
-static void Task_IntroStartTeamSonicLogoAnim(void);
+static void Task_IntroStartSonicTeamLogoAnim(void);
 static void Task_IntroFadeInSonicTeamLogoAnim(void);
 static void Task_IntroShowSonicTeamLogo(void);
 
@@ -505,7 +505,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     config80->tilesVram = (void *)BG_SCREEN_ADDR(31);
     config80->unk18 = 0;
     config80->unk1A = 0;
-    config80->unk1C = 0x60;
+    config80->unk1C = TM_INTRO_PRESENTED_BY_SEGA;
     config80->unk1E = 0;
     config80->unk20 = 0;
     config80->unk22 = 0;
@@ -524,7 +524,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
-    config0->unk1C = 0x106;
+    config0->unk1C = TM_INTRO_WATER;
     config0->unk1E = 0;
     config0->unk20 = 0;
     config0->unk22 = 0;
@@ -670,13 +670,13 @@ static void Task_IntroFadeOutSegaLogoAnim(void)
         gBldRegs.bldAlpha = FadeOutBlend(16);
         titleScreen->animFrame = 0;
         gFlags &= ~0x8000;
-        gCurTask->main = Task_IntroStartTeamSonicLogoAnim;
+        gCurTask->main = Task_IntroStartSonicTeamLogoAnim;
     }
 
     titleScreen->animFrame++;
 }
 
-static void Task_IntroStartTeamSonicLogoAnim(void)
+static void Task_IntroStartSonicTeamLogoAnim(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     Background *config80;
@@ -692,7 +692,7 @@ static void Task_IntroStartTeamSonicLogoAnim(void)
         config80->unk18 = 0;
         config80->unk1A = 0;
         // GFX asset
-        config80->unk1C = 0x61;
+        config80->unk1C = TM_INTRO_CREATED_BY_SONIC_TEAM;
         config80->unk1E = 0;
         config80->unk20 = 0;
         config80->unk22 = 0;
@@ -771,7 +771,7 @@ static void Task_IntroStartSkyTransition(void)
         config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
         config40->unk18 = 0;
         config40->unk1A = 0;
-        config40->unk1C = 0x105;
+        config40->unk1C = TM_TITLE_SCREEN_BG;
         config40->unk1E = 0;
         config40->unk20 = 0;
         config40->unk22 = 0;
@@ -849,7 +849,7 @@ static void Task_IntroPanSkyAnim(void)
         config0->tilesVram = (void *)BG_SCREEN_ADDR(31);
         config0->unk18 = 0;
         config0->unk1A = 0;
-        config0->unk1C = 0x107;
+        config0->unk1C = TM_LENS_FLARE_BG;
         config0->unk1E = 0;
         config0->unk20 = 0;
         config0->unk22 = 0;
@@ -949,9 +949,9 @@ static void Task_IntroSkyAnim(void)
         config0->unk1A = 0;
 
         if (gLoadedSaveGame->language < LANG_ENGLISH) {
-            config0->unk1C = 0x108;
+            config0->unk1C = TM_SA2_LOGO_JP;
         } else {
-            config0->unk1C = 0x109;
+            config0->unk1C = TM_SA2_LOGO_EN;
         }
 
         config0->unk1E = 0;
@@ -1359,9 +1359,9 @@ static void Task_ShowTitleScreenIntroSkipped(void)
 
     // Show japanese game logo if japanese, otherwise
     if (gLoadedSaveGame->language < LANG_ENGLISH) {
-        config0->unk1C = 0x108;
+        config0->unk1C = TM_SA2_LOGO_JP;
     } else {
-        config0->unk1C = 0x109;
+        config0->unk1C = TM_SA2_LOGO_EN;
     }
 
     config0->unk1E = 0;
@@ -1380,7 +1380,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
-    config40->unk1C = 0x105;
+    config40->unk1C = TM_TITLE_SCREEN_BG;
     config40->unk1E = 0;
     config40->unk20 = 0;
     config40->unk22 = 0;
