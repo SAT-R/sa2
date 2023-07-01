@@ -180,8 +180,8 @@
 #define TM_CREDITS_22                                 256
 #define TM_CREDITS_23                                 257
 #define TM_CREDITS_24                                 258
-#define TM_CREDITS_25                                 259
-#define TM_CREDITS_26                                 260
+#define TM_CREDITS_COPYRIGHT                          259
+#define TM_CREDITS_PRESENTED_BY_SEGA                  260
 #define TM_TITLE_SCREEN_BG                            261
 #define TM_INTRO_WATER                                262
 #define TM_LENS_FLARE_BG                              263
