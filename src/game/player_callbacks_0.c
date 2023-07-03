@@ -444,28 +444,27 @@ void PlayerCB_801225C(Player *p)
 }
 
 // https://decomp.me/scratch/XxzZB
-NONMATCH("asm/non_matching/playercb__sub_80122DC.inc", void sub_80122DC(s32 x, s32 y))
+void sub_80122DC(s32 x, s32 y)
 {
-    s32 playerX = Q_24_8_TO_INT(gPlayer.x - x);
-    s32 playerY = Q_24_8_TO_INT(gPlayer.y - y);
-    s32 sqPlayerX = playerX * playerX;
-    s32 sqPlayerY = playerY * playerY;
-    s32 sqDistance = sqPlayerX + sqPlayerY; // c^2 = a^2 + b^2
+    s32 playerX, playerY, sqPlayerX, sqPlayerY, sqDistance;
+
+    playerX = Q_24_8_TO_INT(gPlayer.x - x);
+    playerY = Q_24_8_TO_INT(gPlayer.y - y);
+    sqPlayerX = playerX * playerX;
+    sqPlayerY = playerY * playerY;
+    sqDistance = sqPlayerX + sqPlayerY; // c^2 = a^2 + b^2
 
     if (gPlayer.character == CHARACTER_SONIC) {
         if (sqDistance < gUnknown_030054C0.unk0) {
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                s32 temp = sub_8004418(playerX, playerY);
-                u16 value = (temp + -Q_24_8(1.0));
-                value &= (1024 - 1);
+                u32 value
+                    = CLAMP_SIN_PERIOD(sub_8004418(playerX, playerY) - Q_24_8(1.0));
 
                 if (value < 313) {
-                    s32 unk4 = Q_24_8(2.0);
-                    unk4 -= value;
-                    unk4 &= (1024 - 1);
+                    u32 r0 = CLAMP_SIN_PERIOD(Q_24_8(2.0) - value);
 
                     gUnknown_030054C0.unk0 = sqDistance;
-                    gUnknown_030054C0.unk4 = unk4;
+                    gUnknown_030054C0.unk4 = r0;
                 }
             } else {
                 u16 value = sub_8004418(-playerY, -playerX);
@@ -476,6 +475,7 @@ NONMATCH("asm/non_matching/playercb__sub_80122DC.inc", void sub_80122DC(s32 x, s
             }
         }
     } else if (gPlayer.character == CHARACTER_CREAM) {
+        // _08012382
         struct Task *t = gCurTask;
 
         if (sqDistance < gUnknown_03005498.someDistanceSquared) {
@@ -492,7 +492,6 @@ NONMATCH("asm/non_matching/playercb__sub_80122DC.inc", void sub_80122DC(s32 x, s
         }
     }
 }
-END_NONMATCH
 
 void PlayerCB_80123D0(Player *p)
 {

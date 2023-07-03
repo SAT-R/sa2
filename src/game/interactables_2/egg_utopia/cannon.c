@@ -412,20 +412,7 @@ static bool16 sub_807E954(Sprite_Cannon *cannon)
         ret = TRUE;
     }
 
-#ifndef NON_MATCHING
-    {
-        s32 r1;
-        register s16 r0 asm("r0");
-        r0 = cannon->unk6A + temp3;
-        mask = ONE_CYCLE;
-
-        asm("add %0, %1, #0" : "=r"(r1) : "r"(mask) : "cc");
-        r0 &= r1;
-        cannon->unk6A = r0;
-    }
-#else
-    cannon->unk6A = (cannon->unk6A + temp3) & mask;
-#endif
+    cannon->unk6A = CLAMP_SIN_PERIOD(cannon->unk6A + temp3);
 
     return ret;
 }
