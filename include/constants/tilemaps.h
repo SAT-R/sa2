@@ -7,12 +7,8 @@
 #define TM_LEVEL_METATILES_1(level) (((level)*3) + 1)
 #define TM_LEVEL_BG(level)          (((level)*3) + 2)
 
-// TEMP_NOTE: Breakpoint at sprite_1.c -> sub_8002A3C
-
-#define TM_SA1_TITLE_LOGO 94
-#define TM_SA1_TITLE_BG   95
-
-// TODO: Check name!
+#define TM_SA1_TITLE_LOGO                       94
+#define TM_SA1_TITLE_BG                         95
 #define TM_INTRO_PRESENTED_BY_SEGA              96
 #define TM_INTRO_CREATED_BY_SONIC_TEAM          97
 #define TM_CHAR_SELECT_BACKGROUND               98
@@ -92,29 +88,34 @@
 #define TM_CUTSCENE_FINAL_ENDING_FALL_CLOUDS    172
 #define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK   173
 #define TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK_2 174
-#define TM_COLLECT_ALL_CHAOS_EMERALDS_JP                                                \
-    175 // This has an image of Eggman, other languages are only the textbox
+
+// This has an image of Eggman, other languages are only the textbox
+#define TM_COLLECT_ALL_CHAOS_EMERALDS_JP 175
 #define TM_COLLECT_ALL_CHAOS_EMERALDS_EN 176
 #define TM_COLLECT_ALL_CHAOS_EMERALDS_FR 177
 #define TM_COLLECT_ALL_CHAOS_EMERALDS_DE 178
 #define TM_COLLECT_ALL_CHAOS_EMERALDS_IT 179
 #define TM_COLLECT_ALL_CHAOS_EMERALDS_ES 180
-#define TM_UNLOCKED_TINY_CHAO_GARDEN_JP                                                 \
-    181 // (Also used as BG for SoundTest unlock) This fills the entire screen, other
-        // languages are only the textbox
+
+// (Also used as BG for SoundTest unlock) This fills the entire screen, other
+// languages are only the textbox
+#define TM_UNLOCKED_TINY_CHAO_GARDEN_JP 181
 #define TM_UNLOCKED_TINY_CHAO_GARDEN_EN 182
 #define TM_UNLOCKED_TINY_CHAO_GARDEN_FR 183
 #define TM_UNLOCKED_TINY_CHAO_GARDEN_DE 184
 #define TM_UNLOCKED_TINY_CHAO_GARDEN_IT 185
 #define TM_UNLOCKED_TINY_CHAO_GARDEN_ES 186
-#define TM_UNLOCKED_SOUND_TEST_JP       187 // Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
-#define TM_UNLOCKED_SOUND_TEST_EN       188
-#define TM_UNLOCKED_SOUND_TEST_FR       189
-#define TM_UNLOCKED_SOUND_TEST_DE       190
-#define TM_UNLOCKED_SOUND_TEST_IT       191
-#define TM_UNLOCKED_SOUND_TEST_ES       192
-#define TM_UNLOCKED_BOSSES_TIME_ATTACK_JP                                               \
-    193 // Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
+
+// Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
+#define TM_UNLOCKED_SOUND_TEST_JP 187
+#define TM_UNLOCKED_SOUND_TEST_EN 188
+#define TM_UNLOCKED_SOUND_TEST_FR 189
+#define TM_UNLOCKED_SOUND_TEST_DE 190
+#define TM_UNLOCKED_SOUND_TEST_IT 191
+#define TM_UNLOCKED_SOUND_TEST_ES 192
+
+// Uses TM_UNLOCKED_TINY_CHAO_GARDEN_JP as BG
+#define TM_UNLOCKED_BOSSES_TIME_ATTACK_JP             193
 #define TM_UNLOCKED_BOSSES_TIME_ATTACK_EN             194
 #define TM_UNLOCKED_BOSSES_TIME_ATTACK_FR             195
 #define TM_UNLOCKED_BOSSES_TIME_ATTACK_DE             196
