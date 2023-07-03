@@ -12,6 +12,10 @@
 #include "game/multiboot/connection.h"
 #include "game/stage/entities_manager.h"
 
+// For the "Task Injection"
+void CreateDebugTilemapViewer(void);
+static void Debug_CallExternalTask(void);
+
 void GameStart(void)
 {
     u32 i;
@@ -65,7 +69,7 @@ void GameStart(void)
     }
 
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
-        CreateTitleScreen();
+        Debug_CallExternalTask();
         LoadCompletedSaveGame();
         return;
     }
@@ -84,15 +88,16 @@ void GameStart(void)
         return;
     }
 
-    CreateTitleScreen();
+    Debug_CallExternalTask();
 }
 
 void Task_DummyFunc(void);
 static void DummyTaskOnDestroy(struct Task *);
 
-UNUSED static void CreateDummyTask(void)
+static void Debug_CallExternalTask(void)
 {
-    gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
+    gUnknown_03005844
+        = TaskCreate(CreateDebugTilemapViewer, 0, 0x100, 0, DummyTaskOnDestroy);
 }
 
 UNUSED static void DestroyDummyTask(void)

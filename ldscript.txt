@@ -660,6 +660,10 @@ SECTIONS
         build/sa2/data/multiboot_subgame_loader.o(.rodata);
 
         build/sa2/asm/rom_footer.o(.rodata);
+
+        /* DEBUG */
+        build/sa2/src/_debug/tilemap_viewer.o(.text);
+        build/sa2/src/_debug/tilemap_viewer.o(.rodata);
 	} = 0
 
     /* DWARF debug sections.
