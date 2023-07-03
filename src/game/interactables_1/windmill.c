@@ -123,16 +123,11 @@ static void Task_WindmillMain(void)
             transformConfig = &windmill->blades[i * 4 + j].transformConfig;
             temp = (gUnknown_03005590 * 2 + (i * 256));
 
-            mask = ONE_CYCLE;
-#ifndef NON_MATCHING
-            asm("add %0, %1, #0" : "=r"(r0) : "r"(mask) : "cc");
-#else
-            r0 = mask;
-#endif
-
-            sprite->x = screenX + ((COS(temp & r0) * ((j + 1) * 16 - 8)) >> 14);
-            sprite->y = screenY + ((SIN(temp & r0) * ((j + 1) * 16 - 8)) >> 14);
-            transformConfig->unk0 = temp & r0;
+            sprite->x
+                = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
+            sprite->y
+                = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
+            transformConfig->unk0 = CLAMP_SIN_PERIOD(temp);
             transformConfig->unk2 = 256;
             transformConfig->unk4 = 256;
             transformConfig->unk6[0] = sprite->x;

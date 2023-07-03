@@ -9,13 +9,11 @@ extern const s16 gSineTable[1280];
 
 #define CLAMP_SIN_PERIOD(val)                                                           \
     ({                                                                                  \
-        s16 clamped = val & (SIN_PERIOD - 1);                                           \
+        s16 clamped = (val) & (SIN_PERIOD - 1);                                         \
         clamped;                                                                        \
     })
 
 #define ONE_CYCLE (SIN_PERIOD - 1)
-
-#
 
 #define SIN(radAngle) (gSineTable[(radAngle)])
 #define COS(radAngle) (gSineTable[(radAngle) + 256])
