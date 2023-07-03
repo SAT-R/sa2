@@ -1,22 +1,25 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
+#include "multi_sio.h"
+#include "sprite.h"
+#include "task.h"
+#include "game/game.h"
+#include "game/course_select.h"
 #include "game/multiplayer/results.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer_lobby.h"
-#include "task.h"
-#include "sprite.h"
 #include "game/save.h"
-#include "multi_sio.h"
-#include "lib/m4a.h"
-#include "constants/songs.h"
-#include "constants/text.h"
-#include "game/game.h"
-#include "flags.h"
-#include "game/course_select.h"
 
 #ifdef TEAMPLAY_AVAILABLE
 #include "game/multiplayer/team_play.h"
 #endif
+#include "lib/m4a.h"
+
+#include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct MultiplayerResultsScreen {
     Background unk0;
@@ -102,17 +105,21 @@ static const TileInfo gUnknown_080D9100[][7] = {
     },
 };
 
-static const TileInfo gUnknown_080D9288[MULTI_SIO_PLAYERS_MAX] = {
-    TextElementAlt4(13, 0, 1074),
-    TextElementAlt4(14, 0, 1074),
-    TextElementAlt4(15, 0, 1074),
-    TextElementAlt4(16, 0, 1074),
+static const TileInfo sResultsScreenPlayerCursor[MULTI_SIO_PLAYERS_MAX] = {
+    TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_1P, 0, SA2_ANIM_MP_MSG),
+    TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_2P, 0, SA2_ANIM_MP_MSG),
+    TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_3P, 0, SA2_ANIM_MP_MSG),
+    TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_4P, 0, SA2_ANIM_MP_MSG),
 };
 
-static const u16 gUnknown_080D92A8[] = {
-    [LANG_DEFAULT] = 116, [LANG_JAPANESE] = 116, [LANG_ENGLISH] = 117,
-    [LANG_GERMAN] = 118,  [LANG_FRENCH] = 119,   [LANG_SPANISH] = 120,
-    [LANG_ITALIAN] = 121,
+static const u16 sResultsScreenBgSelectedCharacters[] = {
+    [LANG_DEFAULT] = TM_MP_CHARACTERS_SELECTED_JP,
+    [LANG_JAPANESE] = TM_MP_CHARACTERS_SELECTED_JP,
+    [LANG_ENGLISH] = TM_MP_CHARACTERS_SELECTED_EN,
+    [LANG_GERMAN] = TM_MP_CHARACTERS_SELECTED_DE,
+    [LANG_FRENCH] = TM_MP_CHARACTERS_SELECTED_FR,
+    [LANG_SPANISH] = TM_MP_CHARACTERS_SELECTED_ES,
+    [LANG_ITALIAN] = TM_MP_CHARACTERS_SELECTED_IT,
 };
 
 void CreateMultiplayerResultsScreen(u8 mode)
@@ -176,7 +183,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080D92A8[lang];
+    background->unk1C = sResultsScreenBgSelectedCharacters[lang];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -231,8 +238,8 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
             element->unk1A = 0x400;
             element->graphics.size = 0;
-            element->graphics.anim = gUnknown_080D9288[i].anim;
-            element->variant = gUnknown_080D9288[i].variant;
+            element->graphics.anim = sResultsScreenPlayerCursor[i].anim;
+            element->variant = sResultsScreenPlayerCursor[i].variant;
             element->unk14 = 0;
             element->unk1C = 0;
             element->unk21 = 0xFF;

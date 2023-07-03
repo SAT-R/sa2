@@ -19,6 +19,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct SinglePakConnectScreen {
     struct TransitionState unk0;
@@ -90,9 +91,13 @@ static void *const gUnknown_080E01E0[7][2] = {
 };
 
 static const u32 gUnknown_080E0218[7] = {
-    [LANG_DEFAULT] = 0,   [LANG_JAPANESE] = 127, [LANG_ENGLISH] = 128,
-    [LANG_GERMAN] = 129,  [LANG_FRENCH] = 130,   [LANG_SPANISH] = 131,
-    [LANG_ITALIAN] = 132,
+    [LANG_DEFAULT] = 0,
+    [LANG_JAPANESE] = TM_MP_CHEESE_PLEASE_WAIT_JP,
+    [LANG_ENGLISH] = TM_MP_CHEESE_PLEASE_WAIT_EN,
+    [LANG_GERMAN] = TM_MP_CHEESE_PLEASE_WAIT_DE,
+    [LANG_FRENCH] = TM_MP_CHEESE_PLEASE_WAIT_FR,
+    [LANG_SPANISH] = TM_MP_CHEESE_PLEASE_WAIT_ES,
+    [LANG_ITALIAN] = TM_MP_CHEESE_PLEASE_WAIT_IT,
 };
 
 void sub_8081200(void)
@@ -226,7 +231,7 @@ void StartSinglePakConnect(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x72;
+    background->unk1C = TM_MP_WAIT_CONNECTION;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

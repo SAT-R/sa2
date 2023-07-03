@@ -14,6 +14,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct CreditsEndCutScene {
     Background unk0;
@@ -54,8 +55,15 @@ static void Task_CreateCopyrightScreen(void);
 static void Task_SequenceEnd(void);
 static void Task_FadeIn(void);
 
-static const u16 gUnknown_080E12B0[] = {
-    232, 233, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 260, 259,
+static const u16 sTilemapsCreditsEndSlides[] = {
+    [0] = TM_CREDITS_SA2_LOGO_JP,         [1] = TM_CREDITS_SA2_LOGO_EN,
+    [2] = TM_STORYFRAME_SONIC_LEAVES_0,   [3] = TM_STORYFRAME_SONIC_LEAVES_1,
+    [4] = TM_STORYFRAME_SONIC_LEAVES_2,   [5] = TM_STORYFRAME_SONIC_LEAVES_3,
+    [6] = TM_STORYFRAME_SONIC_LEAVES_4,   [7] = TM_STORYFRAME_SONIC_LEAVES_5,
+    [8] = TM_STORYFRAME_SONIC_LEAVES_6,   [9] = TM_STORYFRAME_SONIC_LEAVES_7,
+    [10] = TM_STORYFRAME_SONIC_LEAVES_8,  [11] = TM_STORYFRAME_SONIC_LEAVES_9,
+    [12] = TM_STORYFRAME_SONIC_LEAVES_10, [13] = TM_CREDITS_PRESENTED_BY_SEGA,
+    [14] = TM_CREDITS_COPYRIGHT,
 };
 
 static const TileInfo gUnknown_080E12D0[4] = {
@@ -148,7 +156,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->tilesVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C = gUnknown_080E12B0[2];
+            background->unk1C = sTilemapsCreditsEndSlides[2];
             background->unk1E = 0;
             background->unk20 = 0;
             background->unk22 = 0;
@@ -232,7 +240,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E12B0[scene->sonicAnimFrame + 2];
+        background->unk1C = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -257,7 +265,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->tilesVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E12B0[scene->unk160];
+        background->unk1C = sTilemapsCreditsEndSlides[scene->unk160];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -314,7 +322,7 @@ static void Task_CreateCopyrightScreen(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E12B0[13];
+        background->unk1C = sTilemapsCreditsEndSlides[13];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -337,7 +345,7 @@ static void Task_CreateCopyrightScreen(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E12B0[14];
+        background->unk1C = sTilemapsCreditsEndSlides[14];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -373,7 +381,7 @@ static void Task_SequenceMain(void)
                 gBgScrollRegs[0][0] = 0;
                 gBgScrollRegs[0][1] = 0;
 
-                background->unk1C = gUnknown_080E12B0[scene->sonicAnimFrame + 2];
+                background->unk1C = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
                 background->unk26 = 0x1E;
                 background->unk28 = 0x14;
                 background->unk2E = 0;

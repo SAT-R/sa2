@@ -18,6 +18,7 @@
 
 #include "constants/animations.h"
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
 struct MultiPakConnectScreen {
     struct TransitionState unk0;
@@ -158,7 +159,7 @@ void StartMultiPakConnect(void)
     unk9C->tilesVram = (void *)BG_SCREEN_ADDR(20);
     unk9C->unk18 = 0;
     unk9C->unk1A = 0;
-    unk9C->unk1C = 0x72;
+    unk9C->unk1C = TM_MP_WAIT_CONNECTION;
     unk9C->unk1E = 0;
     unk9C->unk20 = 0;
     unk9C->unk22 = 0;

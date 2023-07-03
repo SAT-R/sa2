@@ -15,6 +15,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct MultiplayerTeamPlayScreen {
     Sprite unk0[4];
@@ -207,7 +208,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x7B;
+    background->unk1C = TM_MP_UNKNOWN_GREEN;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -224,7 +225,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x7A;
+    background->unk1C = TM_MP_UNKNOWN_ORANGE_ZIGZAG;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -241,7 +242,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x7C;
+    background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -258,7 +259,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x7E;
+    background->unk1C = TM_MP_VS_BACKGROUND_TEXT;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -365,7 +366,7 @@ static void sub_805CC34(void)
                     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
-                    background->unk1C = 0x7D;
+                    background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
                     background->unk1E = 0;
                     background->unk20 = 0;
                     background->unk22 = 0;
@@ -410,7 +411,7 @@ static void sub_805CC34(void)
                 background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
-                background->unk1C = 0x7D;
+                background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
                 background->unk1E = 0;
                 background->unk20 = 0;
                 background->unk22 = 0;

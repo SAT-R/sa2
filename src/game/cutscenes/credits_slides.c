@@ -10,8 +10,9 @@
 #include "game/save.h"
 
 #include "constants/animations.h"
+#include "constants/tilemaps.h"
 
-struct CreditsSlidesCutScene {
+typedef struct {
     Background unk0;
     struct TransitionState unk40;
 
@@ -26,14 +27,17 @@ struct CreditsSlidesCutScene {
     u8 unk52;
     u32 unk54;
     u32 unk58;
-};
+} CreditsSlidesCutScene;
 
 void sub_808F004(void);
 void sub_808F148(struct Task *);
 
-static const u16 gUnknown_080E1278[] = {
-    234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246,
-    247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258,
+static const u16 sTilemapsCreditsSlides[] = {
+    TM_CREDITS_0,  TM_CREDITS_1,  TM_CREDITS_2,  TM_CREDITS_3,  TM_CREDITS_4,
+    TM_CREDITS_5,  TM_CREDITS_6,  TM_CREDITS_7,  TM_CREDITS_8,  TM_CREDITS_9,
+    TM_CREDITS_10, TM_CREDITS_11, TM_CREDITS_12, TM_CREDITS_13, TM_CREDITS_14,
+    TM_CREDITS_15, TM_CREDITS_16, TM_CREDITS_17, TM_CREDITS_18, TM_CREDITS_19,
+    TM_CREDITS_20, TM_CREDITS_21, TM_CREDITS_22, TM_CREDITS_23, TM_CREDITS_24,
 };
 
 static const u8 gUnknown_080E12AA[] = { 6, 6, 8, 5, 0, 0 };
@@ -41,7 +45,7 @@ static const u8 gUnknown_080E12AA[] = { 6, 6, 8, 5, 0, 0 };
 void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
 {
     struct Task *t;
-    struct CreditsSlidesCutScene *scene = NULL;
+    CreditsSlidesCutScene *scene = NULL;
     Background *background;
     struct TransitionState *transition = NULL;
     u8 i;
@@ -56,7 +60,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     gUnknown_03002280[1][2] = 0xff;
     gUnknown_03002280[1][3] = 0x20;
 
-    t = TaskCreate(sub_808F004, 0x5C, 0x3100, 0, sub_808F148);
+    t = TaskCreate(sub_808F004, sizeof(CreditsSlidesCutScene), 0x3100, 0, sub_808F148);
     scene = TaskGetStructPtr(t);
     scene->creditsVariant = creditsVariant;
     scene->unk4E = b;
@@ -88,14 +92,14 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     transition->speed = 0x200;
     transition->unk8 = 0x3FFF;
 
-    if (gUnknown_080E1278[scene->unk50] != 0) {
+    if (sTilemapsCreditsSlides[scene->unk50] != 0) {
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
         background->tilesVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E1278[scene->unk50];
+        background->unk1C = sTilemapsCreditsSlides[scene->unk50];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -112,7 +116,7 @@ void sub_808F10C(void);
 
 void sub_808EF38(void)
 {
-    struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 1;
@@ -121,14 +125,14 @@ void sub_808EF38(void)
         scene->unk50++;
 
         if (scene->unk50 < scene->unk51) {
-            if (gUnknown_080E1278[scene->unk50] != 0) {
+            if (sTilemapsCreditsSlides[scene->unk50] != 0) {
                 Background *background = &scene->unk0;
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
                 background->graphics.anim = 0;
                 background->tilesVram = (void *)BG_SCREEN_ADDR(28);
                 background->unk18 = 0;
                 background->unk1A = 0;
-                background->unk1C = gUnknown_080E1278[scene->unk50];
+                background->unk1C = sTilemapsCreditsSlides[scene->unk50];
                 background->unk1E = 0;
                 background->unk20 = 0;
                 background->unk22 = 0;
@@ -151,7 +155,7 @@ void sub_808F068(void);
 
 void sub_808F004(void)
 {
-    struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 2;
 
@@ -167,7 +171,7 @@ void sub_808F004(void)
 
 void sub_808F068(void)
 {
-    struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
 
     if (scene->unk54 != 0) {
         scene->unk54--;
@@ -183,7 +187,7 @@ void sub_808F068(void)
 
 void sub_808F0BC(void)
 {
-    struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
@@ -197,7 +201,7 @@ void sub_808F0BC(void)
 
 void sub_808F10C(void)
 {
-    struct CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
     scene->unk4F++;
     CreateCreditsCutScene(scene->creditsVariant, scene->unk4E, scene->unk4F);
     TaskDestroy(gCurTask);

@@ -15,6 +15,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct FinalEndingLandCutScene {
     Background unk0;
@@ -62,10 +63,10 @@ void sub_8093EDC(void);
 void sub_8093F9C(struct Task *);
 
 static const u16 gUnknown_080E179C[4] = {
-    205,
-    206,
-    207,
-    208,
+    TM_CUTSCENE_FINAL_ENDING_LAND_FG,
+    TM_CUTSCENE_FINAL_ENDING_LAND_BG,
+    TM_CUTSCENE_FINAL_ENDING_LAND_FLOWER_FIELD,
+    TM_CUTSCENE_FINAL_ENDING_LAND_BG_ALT,
 };
 
 static const TileInfo gUnknown_080E17A4[52] = {

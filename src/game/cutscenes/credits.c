@@ -10,6 +10,8 @@
 #include "lib/m4a.h"
 #include "game/save.h"
 
+#include "constants/tilemaps.h"
+
 struct CreditsCutScene {
     Background unk0;
     struct TransitionState unk40;
@@ -34,17 +36,17 @@ static void sub_808ED04(void);
 
 static const u16 gUnknown_080E1244[] = {
     // 0 or 1
-    227,
-    228,
-    229,
-    230,
-    231,
+    TM_STORYFRAME_CREAM_UNLOCK_0_SEPIA,
+    TM_STORYFRAME_CREAM_UNLOCK_1_SEPIA,
+    TM_STORYFRAME_TAILS_UNLOCK_1_SEPIA,
+    TM_STORYFRAME_KNUCKLES_UNLOCK_1_SEPIA,
+    TM_STORYFRAME_CREAM_UNLOCK_3_SEPIA,
     // 2
-    211,
-    212,
-    213,
-    214,
-    215,
+    TM_STORYFRAME_SONIC_FINDS_FRIENDS,
+    TM_STORYFRAME_SONIC_PATS_TAILS,
+    TM_STORYFRAME_CREAM_HUGS_VANILLA,
+    TM_STORYFRAME_CREAM_TAILS_VANILLA_LOOK_AROUND,
+    TM_STORYFRAME_CREAM_CHEESE_VANILLA_HAPPY,
 };
 
 UNUSED static const u16 gUnknown_080E124E[]

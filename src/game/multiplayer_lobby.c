@@ -14,6 +14,7 @@
 
 #include "constants/animations.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct MultiplayerLobbyScreen {
     Sprite chao;
@@ -43,7 +44,7 @@ struct MultiplayerLobbyScreen {
 
 static const TileInfo sUiText[] = {
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_2, 57, SA2_ANIM_MP_MSG),
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_PLAY_AGAIN, 57, SA2_ANIM_MP_MSG),
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_8, 12, SA2_ANIM_MP_MSG),
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)]
@@ -165,7 +166,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x73;
+    background->unk1C = TM_MP_MESSAGE_BOX_UNKNOWN;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -178,7 +179,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     element = &lobbyScreen->chao;
     element->graphics.dest = VramMalloc(0x38);
-    element->graphics.anim = 0x450;
+    element->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
     element->variant = 3;
     element->unk21 = 0xFF;
     element->x = (DISPLAY_WIDTH / 2);
@@ -443,7 +444,7 @@ static void Task_ListenForExit(void)
 #ifndef NON_MATCHING
     register union MultiSioData *recv, *send asm("r4");
 #else
-    union MultiSioData *send;
+    union MultiSioData *recv, *send;
 #endif
 
     MultiPakHeartbeat();

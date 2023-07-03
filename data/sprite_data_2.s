@@ -11,7 +11,7 @@ gObjTiles_4bpp:
 .size gObjTiles_4bpp, .-gObjTiles_4bpp
 
 @ Unlike the first game, Sonic Advance 2 does not use 8-bits-per-pixel object tiles,
-@   but the engine does need a dummy-pointer to 8bpp data.
+@   but the engine does need a dummy-pointer to 8bpp data!
 @   Here it would just turn out to be "garbage" data.
     .global gObjTiles_8bpp
 gObjTiles_8bpp: @ 0x086E9E08

@@ -16,6 +16,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 #define PAK_MODE_MULTI  0
 #define PAK_MODE_SINGLE 1
@@ -194,7 +195,7 @@ void CreateMultiplayerModeSelectScreen(void)
     unk0->tilesVram = (void *)BG_SCREEN_ADDR(20);
     unk0->unk18 = 0;
     unk0->unk1A = 0;
-    unk0->unk1C = 0x6E;
+    unk0->unk1C = TM_TA_AND_MP_WHITE_BG;
     unk0->unk1E = 0;
     unk0->unk20 = 0;
     unk0->unk22 = 0;
@@ -213,7 +214,7 @@ void CreateMultiplayerModeSelectScreen(void)
     unk0->unk18 = 0;
     unk0->unk18 = 0;
     unk0->unk1A = 0;
-    unk0->unk1C = 0x6F;
+    unk0->unk1C = TM_MP_ORANGE_BG;
     unk0->unk1E = 0;
     unk0->unk20 = 0;
     unk0->unk22 = 0;

@@ -14,6 +14,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct ResultsCutScene {
     Player *unk0;
@@ -52,14 +53,21 @@ static void sub_808DF88(void);
 static void sub_808E114(void);
 
 // slides
-static const u16 gUnknown_080E1118[] = {
-    266, 267, 268, 269, 300, 301, 302, 303, 334, 335, 336, 337,
+static const u16 sTilemapsCharacterSlides[] = {
+    TM_STORYFRAME_CREAM_UNLOCK_0,    TM_STORYFRAME_CREAM_UNLOCK_1,
+    TM_STORYFRAME_CREAM_UNLOCK_2,    TM_STORYFRAME_CREAM_UNLOCK_3,
+
+    TM_STORYFRAME_KNUCKLES_UNLOCK_0, TM_STORYFRAME_KNUCKLES_UNLOCK_1,
+    TM_STORYFRAME_KNUCKLES_UNLOCK_2, TM_STORYFRAME_KNUCKLES_UNLOCK_3,
+
+    TM_STORYFRAME_TAILS_UNLOCK_0,    TM_STORYFRAME_TAILS_UNLOCK_1,
+    TM_STORYFRAME_TAILS_UNLOCK_2,    TM_STORYFRAME_TAILS_UNLOCK_3,
 };
 
 #define SLIDES_GROUP(i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14)   \
     i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14
 
-static const u16 gUnknown_080E1130[] = {
+static const u16 sTilemapsCharacterDialogue[] = {
     /* LANG_JAPANESE */
     SLIDES_GROUP(270, 271, 272, 273, 274, 304, 305, 306, 307, 308, 338, 339, 340, 341,
                  342),
@@ -85,18 +93,18 @@ static const u16 gUnknown_080E1130[] = {
                  362),
 };
 
-static const u32 gUnknown_080E11E4[] = {
-    // 0
+static const u32 sAnimsCharacterRescued[] = {
+    // 0 - Cream
     20,
     135,
     0,
 
-    // 1
+    // 1 - Tails
     30,
     223,
     0,
 
-    // 2
+    // 2 - Knuckles
     35,
     316,
     0,
@@ -110,14 +118,14 @@ static const TaskMain gUnknown_080E1208[] = {
 
 static const u16 gUnknown_080E1214[] = {
     // 0
-    37888,
-    0,
+    Q_8_8(148),
+    Q_8_8(0),
     // 1
-    47104,
-    0,
+    Q_8_8(184),
+    Q_8_8(0),
     // 2
-    0,
-    34816,
+    Q_8_8(0),
+    Q_8_8(136),
 };
 
 static const u16 gUnknown_080E1220[] = {
@@ -174,9 +182,9 @@ void CreateCourseResultsCutScene(u8 mode)
 
     element = &scene->unk4;
 
-    element->graphics.dest = VramMalloc(gUnknown_080E11E4[mode * 3]);
-    element->graphics.anim = gUnknown_080E11E4[(mode * 3) + 1];
-    element->variant = gUnknown_080E11E4[(mode * 3) + 2];
+    element->graphics.dest = VramMalloc(sAnimsCharacterRescued[mode * 3]);
+    element->graphics.anim = sAnimsCharacterRescued[(mode * 3) + 1];
+    element->variant = sAnimsCharacterRescued[(mode * 3) + 2];
     element->unk21 = 0xFF;
 
     element->x = 0;
@@ -466,7 +474,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->tilesVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E1130[scene->unk10E + (lang * 15)];
+    background->unk1C = sTilemapsCharacterDialogue[scene->unk10E + (lang * 15)];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -483,7 +491,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E1118[scene->unk10C];
+    background->unk1C = sTilemapsCharacterSlides[scene->unk10C];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -548,7 +556,8 @@ void sub_808E4C8(void)
             background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C = gUnknown_080E1130[scene->unk10E + 1 + (lang * 15)];
+            background->unk1C
+                = sTilemapsCharacterDialogue[scene->unk10E + 1 + (lang * 15)];
             background->unk1E = 0;
             background->unk20 = 0;
             background->unk22 = 0;

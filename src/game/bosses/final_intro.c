@@ -7,8 +7,9 @@
 #include "trig.h"
 #include "game/math.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/songs.h"
+#include "constants/tilemaps.h"
 #include "constants/zones.h"
 
 typedef struct {
@@ -372,7 +373,7 @@ void CreateOrbitingEmeraldsSequence(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x17B;
+    background->unk1C = TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 9;
@@ -1566,7 +1567,7 @@ void CreateBackgrounds(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(31);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x179;
+    background->unk1C = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -1583,7 +1584,7 @@ void CreateBackgrounds(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x17A;
+    background->unk1C = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

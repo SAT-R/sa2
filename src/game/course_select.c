@@ -13,6 +13,8 @@
 #include "game/multiplayer/multipak_connection.h"
 #include "trig.h"
 
+#include "constants/tilemaps.h"
+
 struct CourseSelectionScreen {
     struct TransitionState screenFade;
     Background zoneMap;
@@ -355,9 +357,9 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk1A = 0;
 
     if (IS_SINGLE_PLAYER) {
-        background->unk1C = 100 + gSelectedCharacter;
+        background->unk1C = TM_STAGE_SELECT_BG_SONIC + gSelectedCharacter;
     } else {
-        background->unk1C = 100 + gMultiplayerCharacters[0];
+        background->unk1C = TM_STAGE_SELECT_BG_SONIC + gMultiplayerCharacters[0];
     }
 
     background->unk1E = 0;
@@ -376,7 +378,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->tilesVram = (void *)BG_SCREEN_ADDR(16);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x69;
+    background->unk1C = TM_STAGE_SELECT_MAP;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

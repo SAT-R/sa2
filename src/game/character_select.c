@@ -21,6 +21,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct CharacterSelectionScreen {
     struct TransitionState screenFade;
@@ -292,7 +293,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 99;
+    background->unk1C = TM_CHAR_SELECT_WHEEL;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -309,7 +310,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background->tilesVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x175;
+    background->unk1C = TM_CHARACTER_SELECT_BACKGROUND_0;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -326,7 +327,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background->tilesVram = (void *)BG_SCREEN_ADDR(21);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x176;
+    background->unk1C = TM_CHARACTER_SELECT_BACKGROUND_1;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

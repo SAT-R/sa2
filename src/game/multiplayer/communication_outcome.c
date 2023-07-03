@@ -16,6 +16,7 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
+#include "constants/tilemaps.h"
 
 struct CommunicationOutcomeScreen {
     Background unk0;
@@ -35,26 +36,43 @@ struct CommunicationOutcomeScreen {
 
 static void sub_805BC40(void);
 
-static const u16 gUnknown_080D9088[2] = { 1075, 1075 };
-static const u8 gUnknown_080D908C[2] = { 0, 1 };
+static const u16 gUnknown_080D9088[2]
+    = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
+static const u8 gUnknown_080D908C[2]
+    = { SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_HAPPY,
+        SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_SAD };
 static const TileInfo gUnknown_080D9090[][7] = {
     {
-        TextElementAlt2(LANG_DEFAULT, 1, 51, 1074),
-        TextElementAlt2(LANG_JAPANESE, 1, 51, 1074),
-        TextElementAlt2(LANG_ENGLISH, 1, 75, 1079),
-        TextElementAlt2(LANG_GERMAN, 1, 75, 1080),
-        TextElementAlt2(LANG_FRENCH, 1, 57, 1081),
-        TextElementAlt2(LANG_SPANISH, 1, 45, 1082),
-        TextElementAlt2(LANG_ITALIAN, 1, 51, 1083),
+        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        51, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        51, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        75, SA2_ANIM_MP_COMM_MSG_EN),
+        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        75, SA2_ANIM_MP_COMM_MSG_DE),
+        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        57, SA2_ANIM_MP_COMM_MSG_FR),
+        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        45, SA2_ANIM_MP_COMM_MSG_ES),
+        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
+                        51, SA2_ANIM_MP_COMM_MSG_IT),
     },
     {
-        TextElementAlt2(LANG_DEFAULT, 3, 66, 1074),
-        TextElementAlt2(LANG_JAPANESE, 3, 66, 1074),
-        TextElementAlt2(LANG_ENGLISH, 3, 68, 1079),
-        TextElementAlt2(LANG_GERMAN, 3, 88, 1080),
-        TextElementAlt2(LANG_FRENCH, 3, 60, 1081),
-        TextElementAlt2(LANG_SPANISH, 3, 68, 1082),
-        TextElementAlt2(LANG_ITALIAN, 3, 60, 1083),
+        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 66,
+                        SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P,
+                        66, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68,
+                        SA2_ANIM_MP_COMM_MSG_EN),
+        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 88,
+                        SA2_ANIM_MP_COMM_MSG_DE),
+        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60,
+                        SA2_ANIM_MP_COMM_MSG_FR),
+        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68,
+                        SA2_ANIM_MP_COMM_MSG_ES),
+        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60,
+                        SA2_ANIM_MP_COMM_MSG_IT),
     },
 };
 
@@ -153,7 +171,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->unk28 = 0x14;
     background->unk2A = 0;
     background->unk2E = 0;
-    background->unk1C = 0x73;
+    background->unk1C = TM_MP_MESSAGE_BOX_UNKNOWN;
     sub_8002A3C(background);
     m4aMPlayAllStop();
     if (outcome != OUTCOME_CONNECTION_SUCCESS) {

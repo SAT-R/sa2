@@ -12,6 +12,7 @@
 
 #include "constants/animations.h"
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
 struct FinalEndingFallCutScene {
     Background unk0;
@@ -74,10 +75,10 @@ void sub_8092690(void);
 void sub_8092800(struct Task *);
 
 static const u16 gUnknown_080E1648[4] = {
-    171,
-    172,
-    173,
-    174,
+    TM_CUTSCENE_FINAL_ENDING_FALL_BG,
+    TM_CUTSCENE_FINAL_ENDING_FALL_CLOUDS,
+    TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK,
+    TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK_2,
 };
 static const TileInfo gUnknown_080E1650[29] = {
     { 15, 823, 0 }, { 30, 815, 0 }, { 9, 817, 0 },   { 4, 816, 0 },   { 4, 816, 1 },
