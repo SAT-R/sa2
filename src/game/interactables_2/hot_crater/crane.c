@@ -468,7 +468,7 @@ static void Task_8073E20(void)
         }
         // _08073FDA
         crane->cs[1].unk8 += ((crane->unk1B8.unkA >> 5));
-        crane->cs[1].unk8 &= ONE_CYCLE;
+        crane->cs[1].unk8 = CLAMP_SIN_PERIOD(crane->cs[1].unk8);
     }
 
     if (crane->unk1B8.unk8 == 0 && crane->unk1B8.unkA == 0) {

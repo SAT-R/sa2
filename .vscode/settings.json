@@ -240,7 +240,8 @@
     "rings_manager.h": "c",
     "game_over.h": "c",
     "pen.h": "c",
-    "straw.h": "c"
+    "straw.h": "c",
+    "bullet_buzzer.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
