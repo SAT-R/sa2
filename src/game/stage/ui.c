@@ -298,7 +298,7 @@ void Task_CreateStageUIMain(void)
 
             /* Player-Icon */
             oam = sub_80058B4(3);
-            oam->all.attr0 = (DISPLAY_HEIGHT - 18);
+            oam->all.attr0 = DISPLAY_HEIGHT - 18;
             oam->all.attr1 = (0x4000 | 6);
             oam->all.attr2 = ui->unk2D4;
 
@@ -427,35 +427,35 @@ void Task_CreateStageUIMain(void)
 
             // Milliseconds-L
             sd = &digits[gMillisUnpackTable[r5][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
+            sd->x = (DISPLAY_WIDTH / 2) + 16 + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
+            sd->x = (DISPLAY_WIDTH / 2) + 16 + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
+            sd->x = (DISPLAY_WIDTH / 2) - 8 + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
-            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
+            sd->x = (DISPLAY_WIDTH / 2) - 8 + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Minutes
             sd = &digits[minutes];
-            sd->x = ((DISPLAY_WIDTH / 2) - 24);
+            sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
