@@ -403,7 +403,7 @@ void Task_CreateStageUIMain(void)
 
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 0);
-            oam->all.attr1 = (DISPLAY_WIDTH / 2) + 21;
+            oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
             oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
             oam = sub_80058B4(3);
