@@ -459,20 +459,20 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         for (j = 0; j < bg->unk28; j++) {
                             // _08003542
                             u32 divident = sp14 + j;
-                            u32 index = Div(divident, bg->unk16);
-                            u32 new_r4 = divident - (index * bg->unk16);
+                            u32 yPos = Div(divident, bg->unk16);
+                            u32 new_r4 = divident - (yPos * bg->unk16);
                             u32 r5 = bg->unk16 - new_r4;
-                            index *= bg->mapWidth;
+                            yPos *= bg->mapWidth;
 
                             { // _0800355C
-                                u32 someVal = bg->metatileMap[index + (sp24 * 2)];
+                                u32 metatileIndex = bg->metatileMap[yPos + (sp24 * 2)];
                                 u32 otherVal;
-                                someVal *= bg->unk14;
-                                someVal *= bg->unk16;
+                                metatileIndex *= bg->unk14;
+                                metatileIndex *= bg->unk16;
 
                                 otherVal = new_r4 * bg->unk14;
                                 otherVal += sp28;
-                                otherVal += someVal;
+                                otherVal += metatileIndex;
 
                                 {
                                     // r4 <- dmaSrc
