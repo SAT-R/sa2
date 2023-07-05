@@ -2,7 +2,7 @@
 #include "core.h"
 
 const u16 Palette_sa1_title_bg[]
-    = INCBIN_U16("data/tilemaps/sa1_title_bg/palette.gbapal");
+    = INCBIN_U16("data/tilemaps/sa1_title_bg/palette.gbapal256");
 const u8 Tiles_sa1_title_bg[] = INCBIN_U8("data/tilemaps/sa1_title_bg/tiles.4bpp");
 const u16 Tilemap_sa1_title_bg[]
     = INCBIN_U16("data/tilemaps/sa1_title_bg/tilemap.tilemap2");
