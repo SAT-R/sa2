@@ -349,7 +349,7 @@ gUnknown_0873C0FC: @ 0x0873C0FC
 @   0898CAC0 0898EC2C 08947EFC
 @ >> End: @ 0x080D62D8
 
-    .incbin "baserom.gba", 0x0073C120, (0x00ACDC78-0x0073C120)
+.incbin "baserom.gba", 0x0073C120, (0x00958E00-0x0073C120)
 
 
-@ >> 0x08ACDC78
+@ >> 0x08958E00

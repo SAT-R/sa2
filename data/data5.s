@@ -2,4 +2,7 @@
 
     .global gUnknown_080E1CB8
 gUnknown_080E1CB8:
-    .incbin "baserom.gba", 0x000E1CB8, 0x1241c
+    .incbin "baserom.gba", 0x000E1CB8, 0x36CC
+
+
+@ 0x080F40D4

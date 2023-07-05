@@ -47,8 +47,6 @@ typedef struct {
     /* 0x16 */ u16 unk16;
     /* 0x18 */ u16 unk18;
     /* 0x1A */ u16 unk1A;
-
-    // Index of current header in gTilemaps
     /* 0x1C */ u16 tilemapId;
     /* 0x1E */ u16 unk1E;
 
