@@ -208,7 +208,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_MP_UNKNOWN_GREEN;
+    background->tilemapId = TM_MP_UNKNOWN_GREEN;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -225,7 +225,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_MP_UNKNOWN_ORANGE_ZIGZAG;
+    background->tilemapId = TM_MP_UNKNOWN_ORANGE_ZIGZAG;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -242,7 +242,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE;
+    background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -259,7 +259,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_MP_VS_BACKGROUND_TEXT;
+    background->tilemapId = TM_MP_VS_BACKGROUND_TEXT;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -366,7 +366,7 @@ static void sub_805CC34(void)
                     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
-                    background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
+                    background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
                     background->unk1E = 0;
                     background->unk20 = 0;
                     background->unk22 = 0;
@@ -411,7 +411,7 @@ static void sub_805CC34(void)
                 background->tilesVram = (void *)BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
-                background->unk1C = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
+                background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
                 background->unk1E = 0;
                 background->unk20 = 0;
                 background->unk22 = 0;

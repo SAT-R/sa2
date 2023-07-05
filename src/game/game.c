@@ -119,7 +119,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -135,9 +135,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -152,7 +152,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -168,9 +168,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -185,7 +185,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -201,9 +201,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -218,7 +218,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -234,9 +234,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
 };
 
@@ -1491,13 +1491,13 @@ void sub_801C068(u32 level)
 
     bgs = &gUnknown_03005850;
     memcpy(&gUnknown_03005850.unk40, &gUnknown_080D5864[0], 0x40);
-    bgs->unk40.unk1C = TM_LEVEL_METATILES_0(level);
+    bgs->unk40.tilemapId = TM_LEVEL_METATILES_0(level);
 
     memcpy(&gUnknown_03005850.unk80, &gUnknown_080D5864[1], 0x40);
-    bgs->unk80.unk1C = TM_LEVEL_METATILES_1(level);
+    bgs->unk80.tilemapId = TM_LEVEL_METATILES_1(level);
 
     memcpy(&gUnknown_03005850.unkC0, &gUnknown_080D5864[2], 0x40);
-    bgs->unkC0.unk1C = TM_LEVEL_BG(level);
+    bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
     bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
@@ -1813,7 +1813,7 @@ void sub_801C774(void)
         const Background *templates = gUnknown_080D5864;
         memcpy(background, &templates[3], 0x40);
 
-        background->unk1C = TM_STAGE_1_BG_0_COPY;
+        background->tilemapId = TM_STAGE_1_BG_0_COPY;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
 
@@ -1822,7 +1822,7 @@ void sub_801C774(void)
     } else {
         const Background *templates = gUnknown_080D5864;
         memcpy(background, &templates[3], 0x40);
-        background->unk1C = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
+        background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
@@ -1985,7 +1985,7 @@ void sub_801CB74(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->unk1C = 0x171;
+    background->tilemapId = 0x171;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;
@@ -2012,7 +2012,7 @@ void sub_801CD7C(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->unk1C = TM_TILEMAP_371;
+    background->tilemapId = TM_TILEMAP_371;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;
@@ -2081,7 +2081,7 @@ void sub_801CEE4(void)
         gDispCnt |= 0x100;
         gBgCntRegs[0] = 0x1b0c;
         *background = gUnknown_080D5864[3];
-        background->unk1C = TM_SKY_CANYON_CLOUDS_FOREGROUND;
+        background->tilemapId = TM_SKY_CANYON_CLOUDS_FOREGROUND;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
         background->unk26 = 0x20;
@@ -2203,7 +2203,7 @@ void sub_801D1A8(void)
     gBgScrollRegs[3][1] = 0;
 
     *background = gUnknown_080D5864[3];
-    background->unk1C = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
+    background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(26);
     background->unk26 = 0x20;

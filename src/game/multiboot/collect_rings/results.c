@@ -123,7 +123,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
+    background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -287,7 +287,7 @@ void sub_80823FC(void)
             background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C = TM_LEVEL_METATILES_0(LEVEL_INDEX(ZONE_1, ACT_BOSS));
+            background->tilemapId = TM_LEVEL_METATILES_0(LEVEL_INDEX(ZONE_1, ACT_BOSS));
             switch (gMultiplayerLanguage) {
                 case 0:
                     background->unk1E = 0;

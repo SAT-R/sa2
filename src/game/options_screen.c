@@ -6402,7 +6402,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->tilesVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = tilemapId;
+    background->tilemapId = tilemapId;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

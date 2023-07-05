@@ -19,6 +19,10 @@ struct GraphicsData {
 #define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
 #define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
 
+#define BACKGROUND_UPDATE_GRAPHICS   0x8
+#define BACKGROUND_UPDATE_PALETTE    0x10
+#define BACKGROUND_FLAG_IS_LEVEL_MAP 0x40
+#define BACKGROUND_UPDATE_ANIMATIONS 0x200
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
 
@@ -39,39 +43,38 @@ typedef struct {
     /* 0x0C */ u16 *tilesVram;
     /* 0x10 */ const u16 *unk10;
 
-    u16 unk14;
-    u16 unk16;
-    u16 unk18;
-    u16 unk1A;
+    /* 0x14 */ u16 unk14;
+    /* 0x16 */ u16 unk16;
+    /* 0x18 */ u16 unk18;
+    /* 0x1A */ u16 unk1A;
 
     // Index of current header in gTilemaps
-    u16 unk1C;
-    u16 unk1E;
+    /* 0x1C */ u16 tilemapId;
+    /* 0x1E */ u16 unk1E;
 
-    u16 unk20;
-    u16 unk22;
-    u16 unk24;
-    u16 unk26;
-    u16 unk28;
-    u8 unk2A;
+    /* 0x20 */ u16 unk20;
+    /* 0x22 */ u16 unk22;
+    /* 0x24 */ u16 unk24;
+    /* 0x26 */ u16 unk26;
+    /* 0x28 */ u16 unk28;
+    /* 0x2A */ u8 unk2A;
     /* 0x2B */ u8 animFrameCounter;
     /* 0x2C */ u8 animDelayCounter;
 
     u8 unk2D;
 
     // Flags
-    // 0x040 = Is MapHeader tilemap
     // 0x200 = something about updating animations (sub_8003638)
-    u16 unk2E;
+    u16 unk2E; // TODO: rename to "flags"
 
     // apparently NOT signed?
     /* 0x30 */ u16 scrollX;
     /* 0x32 */ u16 scrollY;
     /* 0x34 */ u16 prevScrollX;
     /* 0x36 */ u16 prevScrollY;
-    const u16 *unk38;
-    u16 unk3C;
-    u16 unk3E;
+    /* 0x38 */ const u16 *metatileMap;
+    /* 0x3C */ u16 mapWidth;
+    /* 0x3E */ u16 mapHeight;
 } Background; /* size = 0x40 */
 
 typedef struct {

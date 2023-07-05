@@ -63,7 +63,7 @@ void StartMultiPakConnect(void)
     struct MultiPakConnectScreen *connectScreen;
     struct TransitionState *unk0;
     Sprite *unkC;
-    Background *unk9C;
+    Background *background;
     const TileInfo *unkD64;
     void *vramAddr = (void *)OBJ_VRAM0;
     u8 i;
@@ -153,22 +153,22 @@ void StartMultiPakConnect(void)
     unkC->unk10 = 0x1000;
 
     // TODO: make macro
-    unk9C = &connectScreen->unk9C;
-    unk9C->graphics.dest = (void *)BG_SCREEN_ADDR(0);
-    unk9C->graphics.anim = 0;
-    unk9C->tilesVram = (void *)BG_SCREEN_ADDR(20);
-    unk9C->unk18 = 0;
-    unk9C->unk1A = 0;
-    unk9C->unk1C = TM_MP_WAIT_CONNECTION;
-    unk9C->unk1E = 0;
-    unk9C->unk20 = 0;
-    unk9C->unk22 = 0;
-    unk9C->unk24 = 0;
-    unk9C->unk26 = 0x1E;
-    unk9C->unk28 = 0x14;
-    unk9C->unk2A = 0;
-    unk9C->unk2E = 0;
-    sub_8002A3C(unk9C);
+    background = &connectScreen->unk9C;
+    background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    background->graphics.anim = 0;
+    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->unk18 = 0;
+    background->unk1A = 0;
+    background->tilemapId = TM_MP_WAIT_CONNECTION;
+    background->unk1E = 0;
+    background->unk20 = 0;
+    background->unk22 = 0;
+    background->unk24 = 0;
+    background->unk26 = 0x1E;
+    background->unk28 = 0x14;
+    background->unk2A = 0;
+    background->unk2E = 0;
+    sub_8002A3C(background);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         MultiSioStart();

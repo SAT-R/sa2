@@ -27,7 +27,7 @@ const AnimationCommandFunc animCmdTable_2[12] = {
 
 void sub_8002A3C(Background *background)
 {
-    struct MapHeader *mapHeader = gUnknown_03002260[background->unk1C];
+    struct MapHeader *mapHeader = gUnknown_03002260[background->tilemapId];
     const u16 *pal;
     u32 palSize;
     u16 gfxSize;
@@ -38,28 +38,28 @@ void sub_8002A3C(Background *background)
     gfxSize = mapHeader->h.tilesSize;
     background->graphics.size = gfxSize;
 
-    if (!(background->unk2E & 8)) {
+    if (!(background->unk2E & BACKGROUND_UPDATE_GRAPHICS)) {
         gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
         gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
-        background->unk2E ^= 8;
+        background->unk2E ^= BACKGROUND_UPDATE_GRAPHICS;
     }
 
     pal = mapHeader->h.palette;
     palSize = mapHeader->h.palLength;
     background->unk2A = mapHeader->h.palOffset;
 
-    if (!(background->unk2E & 0x10)) {
+    if (!(background->unk2E & BACKGROUND_UPDATE_PALETTE)) {
         DmaCopy16(3, pal, gBgPalette + background->unk2A, palSize * sizeof(*pal));
         gFlags |= 1;
-        background->unk2E ^= 0x10;
+        background->unk2E ^= BACKGROUND_UPDATE_PALETTE;
     }
 
     background->unk10 = mapHeader->h.map;
 
-    if (background->unk2E & 0x40) { // Can we actually trigger this condition?
-        background->unk38 = mapHeader->metatileMap;
-        background->unk3C = mapHeader->mapWidth;
-        background->unk3E = mapHeader->mapHeight;
+    if (background->unk2E & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+        background->metatileMap = mapHeader->metatileMap;
+        background->mapWidth = mapHeader->mapWidth;
+        background->mapHeight = mapHeader->mapHeight;
     }
 
     gUnknown_03001800[gUnknown_0300287C] = background;
