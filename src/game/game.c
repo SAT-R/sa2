@@ -2012,7 +2012,7 @@ void sub_801CD7C(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->unk1C = TM_371;
+    background->unk1C = TM_TILEMAP_371;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;

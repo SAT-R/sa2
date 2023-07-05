@@ -10,8 +10,8 @@ asm(".section .rodata");
 // - starts with MapHeaders (0-92)
 // - then one NULL value (93)
 // - then various background tilemaps (94-380)
-asm("    .global gMapHeaders\n"
-    "gMapHeaders:\n"
+asm("    .global gTilemaps\n"
+    "gTilemaps:\n"
     "  .4byte MapHeader_LeafForest_Act1_FrontLayer, "
     "MapHeader_LeafForest_Act1_BackLayer, 0x08935224\n"
     "    .incbin \"baserom.gba\", 0x000D5CF0, 0x5E8\n");

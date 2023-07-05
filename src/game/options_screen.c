@@ -4220,8 +4220,8 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
     unk270->unkA = 0;
     unk270->unk8 = 0xFF;
 
-    OptionsInitBackground(&timeRecordsScreen->coursesViewBackground, 0, 7, TM_139, 0x1e,
-                          0x14, 0, 0, 0, 0);
+    OptionsInitBackground(&timeRecordsScreen->coursesViewBackground, 0, 7,
+                          TM_TILEMAP_139, 0x1e, 0x14, 0, 0, 0, 0);
     OptionsInitBackground(
         &timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16,
         sTimeRecordsCharacterAssets[character][ASSET_CHARACTER_BACKGROUND], 9, 0x14, 0,

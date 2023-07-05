@@ -44,7 +44,7 @@ typedef struct {
     u16 unk18;
     u16 unk1A;
 
-    // Index of current header in gMapHeaders
+    // Index of current header in gTilemaps
     u16 unk1C;
     u16 unk1E;
 
@@ -60,6 +60,7 @@ typedef struct {
     u8 unk2D;
 
     // Flags
+    // 0x040 = Is MapHeader tilemap
     // 0x200 = something about updating animations (sub_8003638)
     u16 unk2E;
 

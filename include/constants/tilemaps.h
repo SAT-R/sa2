@@ -7,6 +7,7 @@
 #define TM_LEVEL_METATILES_1(level) (((level)*3) + 1)
 #define TM_LEVEL_BG(level)          (((level)*3) + 2)
 
+#define TM_EMPTY_93                             93
 #define TM_SA1_TITLE_LOGO                       94
 #define TM_SA1_TITLE_BG                         95
 #define TM_INTRO_PRESENTED_BY_SEGA              96
@@ -21,7 +22,7 @@
 #define TM_STAGE_SELECT_MAP                     105
 #define TM_EGG_SAUCER_WHEEL_COPY                106
 #define TM_UNKNOWN_OPTIONS_BG                   107
-#define TM_108                                  108
+#define TM_TILEMAP_108                          108
 #define TM_SA2_TITLE_LOGO_JP                    109
 #define TM_TA_AND_MP_WHITE_BG                   110
 #define TM_MP_ORANGE_BG                         111
@@ -52,7 +53,7 @@
 #define TM_OPTIONS_ENTER_NAME_CHARACTERS        136
 #define TM_OPTIONS_TIME_RECORD_BG0              137
 #define TM_OPTIONS_TIME_RECORD_BG1              138
-#define TM_139                                  139
+#define TM_TILEMAP_139                          139
 #define TM_MP_CHARACTER_SELECTED_SONIC_BG       140
 #define TM_MP_CHARACTER_SELECTED_SONIC          141
 #define TM_MP_CHARACTER_SELECTED_TAILS_BG       142
@@ -63,8 +64,8 @@
 #define TM_MP_CHARACTER_SELECTED_AMY            147
 #define TM_MP_CHARACTER_SELECTED_CREAM_BG       148
 #define TM_MP_CHARACTER_SELECTED_CREAM          149
-#define TM_150_MESSAGE_BOX_BLACK                150
-#define TM_151_GREEN_CARET                      151
+#define TM_MESSAGE_BOX_BLACK                    150
+#define TM_GREEN_CARET                          151
 #define TM_OPTIONS_VS_RECORD_BG1                152
 #define TM_SPECIAL_STAGE_1                      153
 #define TM_SPECIAL_STAGE_1_BG                   154
@@ -293,12 +294,11 @@
 #define TM_REGULAR_FINAL_BOSS                         368
 #define TM_UNKNOWN_STARS                              369
 #define TM_SKY_CANYON_CLOUDS_FOREGROUND               370
-#define TM_371                                        371
+#define TM_TILEMAP_371                                371
 #define TM_EXTRA_BOSS_BACKGROUND                      372
 #define TM_CHARACTER_SELECT_BACKGROUND_0              373
 #define TM_CHARACTER_SELECT_BACKGROUND_1              374
 #define TM_EXTRA_BOSS_COCKPIT                         375
-#define TM_EXTRA_BOSS_BACKGROUND_COPY                 376
 #define TM_EXTRA_BOSS_BACKGROUND_COPY                 376
 #define TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP        377
 #define TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY   378

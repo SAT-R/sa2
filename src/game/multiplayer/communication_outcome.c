@@ -243,7 +243,7 @@ static void sub_805BC40(void)
             gMultiSioEnabled = FALSE;
             MultiSioStop();
             MultiSioInit(0);
-            gUnknown_03002260 = gMapHeaders;
+            gUnknown_03002260 = gTilemaps;
             CreateTitleScreenAndSkipIntro();
         }
     }

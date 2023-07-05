@@ -27,15 +27,15 @@ const AnimationCommandFunc animCmdTable_2[12] = {
 
 void sub_8002A3C(Background *background)
 {
-    struct MapHeader_Full *mapHeader = gUnknown_03002260[background->unk1C];
-    u16 *pal;
+    struct MapHeader *mapHeader = gUnknown_03002260[background->unk1C];
+    const u16 *pal;
     u32 palSize;
     u16 gfxSize;
 
     background->unk14 = mapHeader->h.xTiles;
     background->unk16 = mapHeader->h.yTiles;
-    background->graphics.src = mapHeader->h.tileset;
-    gfxSize = mapHeader->h.tilesetSize;
+    background->graphics.src = mapHeader->h.tiles;
+    gfxSize = mapHeader->h.tilesSize;
     background->graphics.size = gfxSize;
 
     if (!(background->unk2E & 8)) {
@@ -54,10 +54,10 @@ void sub_8002A3C(Background *background)
         background->unk2E ^= 0x10;
     }
 
-    background->unk10 = mapHeader->h.metatiles;
+    background->unk10 = mapHeader->h.map;
 
     if (background->unk2E & 0x40) { // Can we actually trigger this condition?
-        background->unk38 = mapHeader->h.map;
+        background->unk38 = mapHeader->metatileMap;
         background->unk3C = mapHeader->mapWidth;
         background->unk3E = mapHeader->mapHeight;
     }

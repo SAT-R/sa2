@@ -519,7 +519,7 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-    struct MapHeader_Full *header = gUnknown_03002260[bg->unk1C];
+    struct MapHeader *header = gUnknown_03002260[bg->unk1C];
     if (header->h.animFrameCount) {
         if (header->h.animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;
@@ -533,17 +533,17 @@ void UpdateBgAnimationTiles(Background *bg)
 
             if (!(bg->unk2E & 0x200)) {
                 if (bg->animFrameCounter == 0) {
-                    bg->graphics.src = header->h.tileset;
+                    bg->graphics.src = header->h.tiles;
                 } else {
-                    u8 *ts = header->h.tileset;
-                    u32 size = header->h.tilesetSize;
-                    ts += size;
-                    ts += (bg->animFrameCounter - 1) * animTileSize;
-                    bg->graphics.src = ts;
+                    const u8 *tiles = header->h.tiles;
+                    u32 size = header->h.tilesSize;
+                    tiles += size;
+                    tiles += (bg->animFrameCounter - 1) * animTileSize;
+                    bg->graphics.src = tiles;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += header->h.tilesetSize;
+                ts += header->h.tilesSize;
                 ts += (bg->animFrameCounter * animTileSize);
                 bg->graphics.src = ts;
             }

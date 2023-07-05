@@ -48,10 +48,6 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
-struct UNK_02003300 {
-    struct MapHeader_Full **unk0;
-} /* Unknown length */;
-
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
@@ -77,7 +73,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gUnknown_03002260 = ((struct UNK_02003300 *)(EWRAM_START + 0x33000))->unk0;
+    gUnknown_03002260 = ((struct MapHeader ***)(EWRAM_START + 0x33000))[0];
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
