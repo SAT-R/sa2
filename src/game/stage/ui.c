@@ -243,7 +243,6 @@ struct Task *CreateStageUI(void)
     return gStageUITask;
 }
 
-// TODO: Add DISPLAY_WIDTH/_HEIGHT to the positions of the timer and 1-Up-icons
 void Task_CreateStageUIMain(void)
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
@@ -299,7 +298,7 @@ void Task_CreateStageUIMain(void)
 
             /* Player-Icon */
             oam = sub_80058B4(3);
-            oam->all.attr0 = 142;
+            oam->all.attr0 = DISPLAY_HEIGHT - 18;
             oam->all.attr1 = (0x4000 | 6);
             oam->all.attr2 = ui->unk2D4;
 
@@ -313,7 +312,7 @@ void Task_CreateStageUIMain(void)
 
             /* Lives Counter */
             oam = sub_80058B4(3);
-            oam->all.attr0 = (0x8000 | 140);
+            oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
             oam->all.attr1 = 30;
             oam->all.attr2 = ui->unk2D8[i];
         }
@@ -404,12 +403,12 @@ void Task_CreateStageUIMain(void)
 
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 0);
-            oam->all.attr1 = 99;
+            oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
             oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
             oam = sub_80058B4(3);
             oam->all.attr0 = (0x8000 | 0);
-            oam->all.attr1 = 123;
+            oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
             oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
@@ -428,35 +427,35 @@ void Task_CreateStageUIMain(void)
 
             // Milliseconds-L
             sd = &digits[gMillisUnpackTable[r5][0]];
-            sd->x = 136 + 0 * 8;
+            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
-            sd->x = 136 + 1 * 8;
+            sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
-            sd->x = 112 + 0 * 8;
+            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
-            sd->x = 112 + 1 * 8;
+            sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
 
             // Minutes
             sd = &digits[minutes];
-            sd->x = 96;
+            sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
             sd->palId = sl;
             sub_80051E8(sd);
