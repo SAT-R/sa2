@@ -5,4 +5,4 @@ gUnknown_080E1CB8:
     .incbin "baserom.gba", 0x000E1CB8, 0x36CC
 
 
-@ 0x080F40D4
+@ 0x080E5384

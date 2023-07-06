@@ -16,8 +16,8 @@ asm("    .global gTilemaps\n"
     "MapHeader_LeafForest_Act1_BackLayer, 0x08935224\n"
     "    .incbin \"baserom.gba\", 0x000D5CF0, 0x5E8\n");
 
-asm("    .global gUnknown_080D62D8\n"
-    "gUnknown_080D62D8:\n"
+asm("    .global gCollisionTable\n"
+    "gCollisionTable:\n"
     "    .4byte gUnknown_08714578, gUnknown_0873A414, gUnknown_0873C0FC\n"
     "    .incbin \"baserom.gba\", 0x000D62E4, 0x70\n");
 

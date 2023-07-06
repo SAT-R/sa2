@@ -92,7 +92,7 @@ extern const u32 *gUnknown_030059C8;
 
 extern const Background gUnknown_080D5864[4];
 extern const CameraMain gUnknown_080D5A10[];
-extern const u32 *gUnknown_080D62D8[NUM_LEVEL_IDS];
+extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
 const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
     = { sub_801AF14, sub_801B7BC, sub_801B83C, sub_801BF24, // Anti-Formatting
@@ -1527,7 +1527,7 @@ void sub_801C068(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = gUnknown_080D62D8[level];
+        gUnknown_030059C8 = gCollisionTable[level];
     } else {
         gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
     }
