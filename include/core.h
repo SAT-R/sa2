@@ -120,6 +120,18 @@ struct MapHeader {
     /* 0x22 */ u16 mapHeight; // in Metatiles
 };
 
+typedef struct {
+    u8 *height_map;
+    u8 *tile_rotation;
+    u16 *metatiles;
+    u16 *map_front;
+    u16 *map_back;
+    u8 *flags;
+    u16 levelX, levelY;
+    u8 unk1C[4];
+    u16 unk20, unk22;
+} Collision;
+
 struct Unk_03003674_1_Sub {
     u16 unk0, unk2, unk4, unk6;
     s16 unk8, unkA;

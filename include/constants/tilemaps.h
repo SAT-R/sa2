@@ -12,8 +12,8 @@
 #define TM_SA1_TITLE_BG                         95
 #define TM_INTRO_PRESENTED_BY_SEGA              96
 #define TM_INTRO_CREATED_BY_SONIC_TEAM          97
-#define TM_CHAR_SELECT_BACKGROUND               98
-#define TM_CHAR_SELECT_WHEEL                    99
+#define TM_CHARACTER_SELECT_BACKGROUND          98
+#define TM_CHARACTER_SELECT_WHEEL               99
 #define TM_STAGE_SELECT_BG_SONIC                100
 #define TM_STAGE_SELECT_BG_CREAM                101
 #define TM_STAGE_SELECT_BG_TAILS                102

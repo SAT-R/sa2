@@ -293,7 +293,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->tilemapId = TM_CHAR_SELECT_WHEEL;
+    background->tilemapId = TM_CHARACTER_SELECT_WHEEL;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
