@@ -1,11 +1,17 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4) static const u16 Palette_tilemap_371[] = INCBIN_U16("data/tilemaps/tilemap_371/palette.gbapal");
-ALIGNED(4) static const u8 Tiles_tilemap_371[] = INCBIN_U8("data/tilemaps/tilemap_371/tiles.4bpp");
-ALIGNED(4) static const u16 Tilemap_tilemap_371[] = INCBIN_U16("data/tilemaps/tilemap_371/tilemap.tilemap2");
+ALIGNED(4)
+static const u16 Palette_tilemap_371[]
+    = INCBIN_U16("data/tilemaps/tilemap_371/palette.gbapal");
+ALIGNED(4)
+static const u8 Tiles_tilemap_371[] = INCBIN_U8("data/tilemaps/tilemap_371/tiles.4bpp");
+ALIGNED(4)
+static const u16 Tilemap_tilemap_371[]
+    = INCBIN_U16("data/tilemaps/tilemap_371/tilemap.tilemap2");
 
-ALIGNED(4) const Tilemap tilemap_371 = {
+ALIGNED(4)
+const Tilemap tilemap_371 = {
     .xTiles = 32,
     .yTiles = 32,
     .animTileSize = 128,

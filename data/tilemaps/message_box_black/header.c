@@ -1,11 +1,18 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4) static const u16 Palette_message_box_black[] = INCBIN_U16("data/tilemaps/message_box_black/palette.gbapal");
-ALIGNED(4) static const u8 Tiles_message_box_black[] = INCBIN_U8("data/tilemaps/message_box_black/tiles.4bpp");
-ALIGNED(4) static const u16 Tilemap_message_box_black[] = INCBIN_U16("data/tilemaps/message_box_black/tilemap.tilemap2");
+ALIGNED(4)
+static const u16 Palette_message_box_black[]
+    = INCBIN_U16("data/tilemaps/message_box_black/palette.gbapal");
+ALIGNED(4)
+static const u8 Tiles_message_box_black[]
+    = INCBIN_U8("data/tilemaps/message_box_black/tiles.4bpp");
+ALIGNED(4)
+static const u16 Tilemap_message_box_black[]
+    = INCBIN_U16("data/tilemaps/message_box_black/tilemap.tilemap2");
 
-ALIGNED(4) const Tilemap message_box_black = {
+ALIGNED(4)
+const Tilemap message_box_black = {
     .xTiles = 28,
     .yTiles = 12,
     .animTileSize = 0,

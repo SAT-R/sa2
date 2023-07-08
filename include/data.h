@@ -9,7 +9,7 @@
 #include "core.h"
 #include "animation_commands.h"
 
-extern const Tilemap * const gTilemaps[381];
+extern const Tilemap *const gTilemaps[381];
 
 struct SpriteTables {
     /* 0x00 */ ACmd ***animations;

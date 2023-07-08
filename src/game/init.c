@@ -18,7 +18,7 @@ void GameStart(void)
     bool32 hasProfile = FALSE;
 
     // TODO: Fix cast
-    gUnknown_03002260 = (struct MapHeader**)gTilemaps;
+    gUnknown_03002260 = (struct MapHeader **)gTilemaps;
     gUnknown_03002794 = &gSpriteTables;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];

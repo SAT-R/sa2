@@ -109,7 +109,7 @@ typedef struct {
 
     // Can be u8* in some instances
     // map = metatiles, when using with non-background map layers
-    /* 0x18 */ const u16 *map; 
+    /* 0x18 */ const u16 *map;
 } Tilemap; /* size = 0x1C */
 
 struct MapHeader {
