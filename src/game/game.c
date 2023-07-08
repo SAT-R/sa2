@@ -247,7 +247,7 @@ const u16 gUnknown_080D5964[][2] = {
 
 void sub_801C774(void);
 void sub_801CB74(void);
-void sub_801CD7C(void);
+void SetupSpotlightSnowAndCreateSpotlights(void);
 void sub_801CEE4(void);
 void sub_801D104(void);
 void sub_801D1A8(void);
@@ -256,15 +256,40 @@ void sub_801DF08(void);
 void sub_801E118(void);
 void sub_801E12C(void);
 const VoidFn gUnknown_080D5988[] = {
-    sub_801C774, sub_801C774, sub_801C774, NULL, // Anti-Formatting
-    sub_801E118, sub_801E118, sub_801E118, NULL, //
-    sub_801CB74, sub_801CB74, sub_801CB74, NULL, //
-    sub_801CD7C, sub_801CD7C, sub_801E12C, NULL, //
-    sub_801CEE4, sub_801CEE4, NULL,        NULL, //
-    sub_801D104, sub_801D104, sub_801D1A8, NULL, //
-    sub_801D95C, sub_801D95C, sub_801D95C, NULL, //
-    NULL,        sub_801DF08, sub_801C774, NULL, //
-    NULL,        NULL,
+    sub_801C774,
+    sub_801C774,
+    sub_801C774,
+    NULL, // Anti-Formatting
+    sub_801E118,
+    sub_801E118,
+    sub_801E118,
+    NULL, //
+    sub_801CB74,
+    sub_801CB74,
+    sub_801CB74,
+    NULL, //
+    SetupSpotlightSnowAndCreateSpotlights,
+    SetupSpotlightSnowAndCreateSpotlights,
+    sub_801E12C,
+    NULL, //
+    sub_801CEE4,
+    sub_801CEE4,
+    NULL,
+    NULL, //
+    sub_801D104,
+    sub_801D104,
+    sub_801D1A8,
+    NULL, //
+    sub_801D95C,
+    sub_801D95C,
+    sub_801D95C,
+    NULL, //
+    NULL,
+    sub_801DF08,
+    sub_801C774,
+    NULL, //
+    NULL,
+    NULL,
 };
 
 void sub_801C818(s32, s32);
@@ -2004,7 +2029,7 @@ NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
 }
 END_NONMATCH
 
-void sub_801CD7C(void)
+void SetupSpotlightSnowAndCreateSpotlights(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     const Background *templates;
@@ -2012,7 +2037,7 @@ void sub_801CD7C(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->tilemapId = TM_TILEMAP_371;
+    background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;

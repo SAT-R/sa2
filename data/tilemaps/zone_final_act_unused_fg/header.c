@@ -1,33 +1,26 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4)
-static const u16 Palette_zone_final_act_unused_fg[]
+const u16 Palette_zone_final_act_unused_fg[]
     = INCBIN_U16("data/tilemaps/zone_final_act_unused_fg/palette.gbapal");
-ALIGNED(4)
-static const u8 Tileset_zone_final_act_unused_fg[]
+const u8 Tileset_zone_final_act_unused_fg[]
     = INCBIN_U8("data/tilemaps/zone_final_act_unused_fg/tileset.4bpp");
-ALIGNED(4)
-static const u8 CollHeightMap_zone_final_act_unused_fg[]
+const u8 CollHeightMap_zone_final_act_unused_fg[]
     = INCBIN_U8("data/tilemaps/zone_final_act_unused_fg/height_map.coll");
-ALIGNED(4)
-static const u8 CollTileRot_zone_final_act_unused_fg[]
+const u8 CollTileRot_zone_final_act_unused_fg[]
     = INCBIN_U8("data/tilemaps/zone_final_act_unused_fg/tile_rot.coll");
-ALIGNED(4)
-static const u8 CollFlags_zone_final_act_unused_fg[]
+const u8 CollFlags_zone_final_act_unused_fg[]
     = INCBIN_U8("data/tilemaps/zone_final_act_unused_fg/flags.coll");
-ALIGNED(4)
-static const u16 Metatiles_zone_final_act_unused_fg[]
+const u16 Metatiles_zone_final_act_unused_fg[]
     = INCBIN_U16("data/tilemaps/zone_final_act_unused_fg/metatiles.tilemap2");
 
-ALIGNED(4)
-static const u16 Map_zone_final_act_unused_fg0[]
+const u16 Map_zone_final_act_unused_fg0[]
     = INCBIN_U16("data/tilemaps/zone_final_act_unused_fg/map_front.bin");
 
-ALIGNED(4)
-static const u16 Map_zone_final_act_unused_fg1[]
+const u16 Map_zone_final_act_unused_fg1[]
     = INCBIN_U16("data/tilemaps/zone_final_act_unused_fg/map_back.bin");
 
+// = 0x08933538
 ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg0 = 
 {
     .h = {
@@ -36,18 +29,19 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg0 =
         .animTileSize = 0,
         .animFrameCount = 0,
         .animDelay = 0,
-        .tiles = Tileset_zone_final_act_unused_fg,
-        .tilesSize = sizeof(Tileset_zone_final_act_unused_fg),
-        .palette = Palette_zone_final_act_unused_fg,
+        .tiles = Tileset_zone_final_act_unused_fg,  // -> 0x0892F740
+        .tilesSize = 0x2200, // GAME: HARDCODED // should be: sizeof(Tileset_zone_final_act_unused_fg)
+        .palette = Palette_zone_final_act_unused_fg,// -> 0x0892F540
         .palOffset = 0,
-        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16),
-        .map = Metatiles_zone_final_act_unused_fg,
+        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16), // 0x100
+        .map = Metatiles_zone_final_act_unused_fg,  // -> 0x08930118
     },
-    .metatileMap = Map_zone_final_act_unused_fg0,
+    .metatileMap = Map_zone_final_act_unused_fg0,   // -> 0x08933178
     .mapWidth = 20,
     .mapHeight = 12,
 };
 
+// = 0x0893355C
 ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg1 = 
 {
     .h = {
@@ -56,26 +50,25 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg1 =
         .animTileSize = 0,
         .animFrameCount = 0,
         .animDelay = 0,
-        .tiles = Tileset_zone_final_act_unused_fg,
-        .tilesSize = sizeof(Tileset_zone_final_act_unused_fg),
-        .palette = Palette_zone_final_act_unused_fg,
+        .tiles = Tileset_zone_final_act_unused_fg,  // -> 0x0892F740
+        .tilesSize = 0x2200, // GAME: HARDCODED // should be: sizeof(Tileset_zone_final_act_unused_fg)
+        .palette = Palette_zone_final_act_unused_fg,// -> 0x0892F540
         .palOffset = 0,
-        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16),
-        .map = Metatiles_zone_final_act_unused_fg,
+        .palLength = sizeof(Palette_zone_final_act_unused_fg) / sizeof(u16), // 0x100
+        .map = Metatiles_zone_final_act_unused_fg,  // -> 0x08930118
     },
-    .metatileMap = Map_zone_final_act_unused_fg1,
+    .metatileMap = Map_zone_final_act_unused_fg1,   // -> 0x08933358
     .mapWidth = 20,
     .mapHeight = 12,
 };
 
-ALIGNED(4)
 const Collision CollHeader_zone_final_act_unused_fg
-    = { CollHeightMap_zone_final_act_unused_fg,
-        CollTileRot_zone_final_act_unused_fg,
-        Metatiles_zone_final_act_unused_fg,
-        Map_zone_final_act_unused_fg0,
-        Map_zone_final_act_unused_fg1,
-        CollFlags_zone_final_act_unused_fg,
+    = { CollHeightMap_zone_final_act_unused_fg, // -> 0x0892F744
+        CollTileRot_zone_final_act_unused_fg, // -> 0x0892FFC4
+        Metatiles_zone_final_act_unused_fg, // -> 0x08930118
+        Map_zone_final_act_unused_fg0, // -> 0x08933178
+        Map_zone_final_act_unused_fg1, // -> 0x08933358
+        CollFlags_zone_final_act_unused_fg, // -> 0x089300D4
         20,
         12,
         0x80,

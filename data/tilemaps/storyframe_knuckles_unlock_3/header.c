@@ -1,17 +1,13 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4)
-static const u16 Palette_storyframe_knuckles_unlock_3[]
+const u16 Palette_storyframe_knuckles_unlock_3[]
     = INCBIN_U16("data/tilemaps/storyframe_knuckles_unlock_3/palette.gbapal");
-ALIGNED(4)
-static const u8 Tiles_storyframe_knuckles_unlock_3[]
+const u8 Tiles_storyframe_knuckles_unlock_3[]
     = INCBIN_U8("data/tilemaps/storyframe_knuckles_unlock_3/tiles.4bpp");
-ALIGNED(4)
-static const u16 Tilemap_storyframe_knuckles_unlock_3[]
+const u16 Tilemap_storyframe_knuckles_unlock_3[]
     = INCBIN_U16("data/tilemaps/storyframe_knuckles_unlock_3/tilemap.tilemap2");
 
-ALIGNED(4)
 const Tilemap storyframe_knuckles_unlock_3 = {
     .xTiles = 30,
     .yTiles = 20,

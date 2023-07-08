@@ -294,7 +294,7 @@
 #define TM_REGULAR_FINAL_BOSS                         368
 #define TM_UNKNOWN_STARS                              369
 #define TM_SKY_CANYON_CLOUDS_FOREGROUND               370
-#define TM_TILEMAP_371                                371
+#define TM_SPOTLIGHT_SNOW                             371
 #define TM_EXTRA_BOSS_BACKGROUND                      372
 #define TM_CHARACTER_SELECT_BACKGROUND_0              373
 #define TM_CHARACTER_SELECT_BACKGROUND_1              374

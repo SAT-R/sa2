@@ -32,6 +32,9 @@ extern const Collision CollHeader_zone_6_act_boss_fg;
 extern const Collision CollHeader_zone_7_act_1_fg;
 extern const Collision CollHeader_zone_7_act_2_fg;
 extern const Collision CollHeader_zone_7_act_boss_fg;
+extern const Collision CollHeader_zone_final_act_xx_fg;
+extern const Collision CollHeader_zone_final_act_ta53_fg;
+extern const Collision CollHeader_zone_final_act_unused_fg;
 
 // TODO: C-ify
 asm("    .global gCollisionTable\n"

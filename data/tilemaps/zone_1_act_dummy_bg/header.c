@@ -1,17 +1,13 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4)
-static const u16 Palette_zone_1_act_dummy_bg[]
+const u16 Palette_zone_1_act_dummy_bg[]
     = INCBIN_U16("data/tilemaps/zone_1_act_dummy_bg/palette.gbapal");
-ALIGNED(4)
-static const u8 Tiles_zone_1_act_dummy_bg[]
+const u8 Tiles_zone_1_act_dummy_bg[]
     = INCBIN_U8("data/tilemaps/zone_1_act_dummy_bg/tiles.4bpp");
-ALIGNED(4)
-static const u16 Tilemap_zone_1_act_dummy_bg[]
+const u16 Tilemap_zone_1_act_dummy_bg[]
     = INCBIN_U16("data/tilemaps/zone_1_act_dummy_bg/tilemap.tilemap2");
 
-ALIGNED(4)
 const Tilemap zone_1_act_dummy_bg = {
     .xTiles = 32,
     .yTiles = 32,

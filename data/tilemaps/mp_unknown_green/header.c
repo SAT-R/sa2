@@ -1,17 +1,13 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4)
-static const u16 Palette_mp_unknown_green[]
+const u16 Palette_mp_unknown_green[]
     = INCBIN_U16("data/tilemaps/mp_unknown_green/palette.gbapal");
-ALIGNED(4)
-static const u8 Tiles_mp_unknown_green[]
+const u8 Tiles_mp_unknown_green[]
     = INCBIN_U8("data/tilemaps/mp_unknown_green/tiles.4bpp");
-ALIGNED(4)
-static const u16 Tilemap_mp_unknown_green[]
+const u16 Tilemap_mp_unknown_green[]
     = INCBIN_U16("data/tilemaps/mp_unknown_green/tilemap.tilemap2");
 
-ALIGNED(4)
 const Tilemap mp_unknown_green = {
     .xTiles = 30,
     .yTiles = 20,

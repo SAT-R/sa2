@@ -50,7 +50,7 @@
 // zone_4_act_2_bg shares the pointer with zone_4_act_1_bg.
 // zone_4_act_boss_bg shares the pointer with zone_4_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_4_act_boss_bg.
-#include "../data/tilemaps/tilemap_371/header.c"
+#include "../data/tilemaps/spotlight_snow/header.c"
 #include "../data/tilemaps/zone_2_act_1_bg/header.c"
 // zone_2_act_2_bg shares the pointer with zone_2_act_1_bg.
 // zone_2_act_boss_bg shares the pointer with zone_2_act_2_bg.

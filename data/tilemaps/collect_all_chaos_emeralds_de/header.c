@@ -1,17 +1,13 @@
 #include "global.h"
 #include "core.h"
 
-ALIGNED(4)
-static const u16 Palette_collect_all_chaos_emeralds_de[]
+const u16 Palette_collect_all_chaos_emeralds_de[]
     = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_de/palette.gbapal");
-ALIGNED(4)
-static const u8 Tiles_collect_all_chaos_emeralds_de[]
+const u8 Tiles_collect_all_chaos_emeralds_de[]
     = INCBIN_U8("data/tilemaps/collect_all_chaos_emeralds_de/tiles.4bpp");
-ALIGNED(4)
-static const u16 Tilemap_collect_all_chaos_emeralds_de[]
+const u16 Tilemap_collect_all_chaos_emeralds_de[]
     = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_de/tilemap.tilemap2");
 
-ALIGNED(4)
 const Tilemap collect_all_chaos_emeralds_de = {
     .xTiles = 30,
     .yTiles = 6,
