@@ -99,7 +99,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
         background->tilesVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = sTilemapsCreditsSlides[scene->unk50];
+        background->tilemapId = sTilemapsCreditsSlides[scene->unk50];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -132,7 +132,7 @@ void sub_808EF38(void)
                 background->tilesVram = (void *)BG_SCREEN_ADDR(28);
                 background->unk18 = 0;
                 background->unk1A = 0;
-                background->unk1C = sTilemapsCreditsSlides[scene->unk50];
+                background->tilemapId = sTilemapsCreditsSlides[scene->unk50];
                 background->unk1E = 0;
                 background->unk20 = 0;
                 background->unk22 = 0;

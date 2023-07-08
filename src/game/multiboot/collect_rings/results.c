@@ -48,10 +48,6 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
-struct UNK_02003300 {
-    struct MapHeader_Full **unk0;
-} /* Unknown length */;
-
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
@@ -77,7 +73,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gUnknown_03002260 = ((struct UNK_02003300 *)(EWRAM_START + 0x33000))->unk0;
+    gUnknown_03002260 = ((struct MapHeader ***)(EWRAM_START + 0x33000))[0];
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
@@ -127,7 +123,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
+    background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -291,7 +287,7 @@ void sub_80823FC(void)
             background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C = TM_LEVEL_METATILES_0(LEVEL_INDEX(ZONE_1, ACT_BOSS));
+            background->tilemapId = TM_LEVEL_METATILES_0(LEVEL_INDEX(ZONE_1, ACT_BOSS));
             switch (gMultiplayerLanguage) {
                 case 0:
                     background->unk1E = 0;

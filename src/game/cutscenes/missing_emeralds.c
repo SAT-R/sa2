@@ -216,7 +216,7 @@ void Task_8094360(void)
             gBgScrollRegs[1][0] = 0;
             gBgScrollRegs[1][1] = 400;
             background = &scene->unk40;
-            background->unk1C = sTilemapsPlayerNotifs[scene->unkBF - 1];
+            background->tilemapId = sTilemapsPlayerNotifs[scene->unkBF - 1];
             sub_8002A3C(background);
         }
 
@@ -225,7 +225,7 @@ void Task_8094360(void)
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         background = &scene->unk0;
-        background->unk1C = sTilemapsPlayerNotifs[0];
+        background->tilemapId = sTilemapsPlayerNotifs[0];
         sub_8002A3C(background);
     } else {
         s32 base;
@@ -236,7 +236,7 @@ void Task_8094360(void)
 
         // "Unlocked Tiny Chao Garden" message
         background = &scene->unk0;
-        background->unk1C = sTilemapsPlayerNotifs[7];
+        background->tilemapId = sTilemapsPlayerNotifs[7];
         sub_8002A3C(background);
 
         if (scene->unkBD > 1 || scene->unkBF > 1) {
@@ -247,7 +247,7 @@ void Task_8094360(void)
             background = &scene->unk40;
             base = scene->unkBF;
             index = (base + 6 + ((scene->unkBD - 1) * 7));
-            background->unk1C = sTilemapsPlayerNotifs[index];
+            background->tilemapId = sTilemapsPlayerNotifs[index];
             sub_8002A3C(background);
         }
     }

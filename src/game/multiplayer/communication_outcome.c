@@ -171,7 +171,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->unk28 = 0x14;
     background->unk2A = 0;
     background->unk2E = 0;
-    background->unk1C = TM_MP_MESSAGE_BOX_UNKNOWN;
+    background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
     sub_8002A3C(background);
     m4aMPlayAllStop();
     if (outcome != OUTCOME_CONNECTION_SUCCESS) {
@@ -243,7 +243,9 @@ static void sub_805BC40(void)
             gMultiSioEnabled = FALSE;
             MultiSioStop();
             MultiSioInit(0);
-            gUnknown_03002260 = gMapHeaders;
+
+            // TODO: Fix cast!
+            gUnknown_03002260 = (struct MapHeader **)gTilemaps;
             CreateTitleScreenAndSkipIntro();
         }
     }

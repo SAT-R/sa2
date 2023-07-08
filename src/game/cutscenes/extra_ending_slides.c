@@ -57,7 +57,7 @@ void CreateExtraEndingSlidesCutScene(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_STORYFRAME_SONIC_CATCHES_VANILLA;
+    background->tilemapId = TM_STORYFRAME_SONIC_CATCHES_VANILLA;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

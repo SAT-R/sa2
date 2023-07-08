@@ -191,7 +191,7 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->tilesVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = assetId;
+    background->tilemapId = assetId;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

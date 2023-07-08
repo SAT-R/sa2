@@ -357,9 +357,9 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk1A = 0;
 
     if (IS_SINGLE_PLAYER) {
-        background->unk1C = TM_STAGE_SELECT_BG_SONIC + gSelectedCharacter;
+        background->tilemapId = TM_STAGE_SELECT_BG_SONIC + gSelectedCharacter;
     } else {
-        background->unk1C = TM_STAGE_SELECT_BG_SONIC + gMultiplayerCharacters[0];
+        background->tilemapId = TM_STAGE_SELECT_BG_SONIC + gMultiplayerCharacters[0];
     }
 
     background->unk1E = 0;
@@ -378,7 +378,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->tilesVram = (void *)BG_SCREEN_ADDR(16);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_STAGE_SELECT_MAP;
+    background->tilemapId = TM_STAGE_SELECT_MAP;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

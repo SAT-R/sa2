@@ -92,7 +92,7 @@ extern const u32 *gUnknown_030059C8;
 
 extern const Background gUnknown_080D5864[4];
 extern const CameraMain gUnknown_080D5A10[];
-extern const u32 *gUnknown_080D62D8[NUM_LEVEL_IDS];
+extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
 const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
     = { sub_801AF14, sub_801B7BC, sub_801B83C, sub_801BF24, // Anti-Formatting
@@ -119,7 +119,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -135,9 +135,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -152,7 +152,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -168,9 +168,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -185,7 +185,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -201,9 +201,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
     {
         .graphics = {  
@@ -218,7 +218,7 @@ const Background gUnknown_080D5864[] = {
         .unk16 = 0,
         .unk18 = 0,
         .unk1A = 0,
-        .unk1C = 0,
+        .tilemapId = 0,
         .unk1E = 0,
         .unk20 = 0,
         .unk22 = 0,
@@ -234,9 +234,9 @@ const Background gUnknown_080D5864[] = {
         .scrollY = 0,
         .prevScrollX = 32767,
         .prevScrollY = 32767,
-        .unk38 = NULL,
-        .unk3C = 0,
-        .unk3E = 0,
+        .metatileMap = NULL,
+        .mapWidth = 0,
+        .mapHeight = 0,
     },
 };
 
@@ -247,7 +247,7 @@ const u16 gUnknown_080D5964[][2] = {
 
 void sub_801C774(void);
 void sub_801CB74(void);
-void sub_801CD7C(void);
+void SetupSpotlightSnowAndCreateSpotlights(void);
 void sub_801CEE4(void);
 void sub_801D104(void);
 void sub_801D1A8(void);
@@ -256,15 +256,40 @@ void sub_801DF08(void);
 void sub_801E118(void);
 void sub_801E12C(void);
 const VoidFn gUnknown_080D5988[] = {
-    sub_801C774, sub_801C774, sub_801C774, NULL, // Anti-Formatting
-    sub_801E118, sub_801E118, sub_801E118, NULL, //
-    sub_801CB74, sub_801CB74, sub_801CB74, NULL, //
-    sub_801CD7C, sub_801CD7C, sub_801E12C, NULL, //
-    sub_801CEE4, sub_801CEE4, NULL,        NULL, //
-    sub_801D104, sub_801D104, sub_801D1A8, NULL, //
-    sub_801D95C, sub_801D95C, sub_801D95C, NULL, //
-    NULL,        sub_801DF08, sub_801C774, NULL, //
-    NULL,        NULL,
+    sub_801C774,
+    sub_801C774,
+    sub_801C774,
+    NULL, // Anti-Formatting
+    sub_801E118,
+    sub_801E118,
+    sub_801E118,
+    NULL, //
+    sub_801CB74,
+    sub_801CB74,
+    sub_801CB74,
+    NULL, //
+    SetupSpotlightSnowAndCreateSpotlights,
+    SetupSpotlightSnowAndCreateSpotlights,
+    sub_801E12C,
+    NULL, //
+    sub_801CEE4,
+    sub_801CEE4,
+    NULL,
+    NULL, //
+    sub_801D104,
+    sub_801D104,
+    sub_801D1A8,
+    NULL, //
+    sub_801D95C,
+    sub_801D95C,
+    sub_801D95C,
+    NULL, //
+    NULL,
+    sub_801DF08,
+    sub_801C774,
+    NULL, //
+    NULL,
+    NULL,
 };
 
 void sub_801C818(s32, s32);
@@ -1491,13 +1516,13 @@ void sub_801C068(u32 level)
 
     bgs = &gUnknown_03005850;
     memcpy(&gUnknown_03005850.unk40, &gUnknown_080D5864[0], 0x40);
-    bgs->unk40.unk1C = TM_LEVEL_METATILES_0(level);
+    bgs->unk40.tilemapId = TM_LEVEL_METATILES_0(level);
 
     memcpy(&gUnknown_03005850.unk80, &gUnknown_080D5864[1], 0x40);
-    bgs->unk80.unk1C = TM_LEVEL_METATILES_1(level);
+    bgs->unk80.tilemapId = TM_LEVEL_METATILES_1(level);
 
     memcpy(&gUnknown_03005850.unkC0, &gUnknown_080D5864[2], 0x40);
-    bgs->unkC0.unk1C = TM_LEVEL_BG(level);
+    bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
     bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
@@ -1527,7 +1552,7 @@ void sub_801C068(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = gUnknown_080D62D8[level];
+        gUnknown_030059C8 = gCollisionTable[level];
     } else {
         gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
     }
@@ -1813,7 +1838,7 @@ void sub_801C774(void)
         const Background *templates = gUnknown_080D5864;
         memcpy(background, &templates[3], 0x40);
 
-        background->unk1C = TM_STAGE_1_BG_0_COPY;
+        background->tilemapId = TM_STAGE_1_BG_0_COPY;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
 
@@ -1822,7 +1847,7 @@ void sub_801C774(void)
     } else {
         const Background *templates = gUnknown_080D5864;
         memcpy(background, &templates[3], 0x40);
-        background->unk1C = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
+        background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
@@ -1985,7 +2010,7 @@ void sub_801CB74(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->unk1C = 0x171;
+    background->tilemapId = 0x171;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;
@@ -2004,7 +2029,7 @@ NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
 }
 END_NONMATCH
 
-void sub_801CD7C(void)
+void SetupSpotlightSnowAndCreateSpotlights(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     const Background *templates;
@@ -2012,7 +2037,7 @@ void sub_801CD7C(void)
 
     *background = gUnknown_080D5864[3];
 
-    background->unk1C = TM_371;
+    background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;
@@ -2081,7 +2106,7 @@ void sub_801CEE4(void)
         gDispCnt |= 0x100;
         gBgCntRegs[0] = 0x1b0c;
         *background = gUnknown_080D5864[3];
-        background->unk1C = TM_SKY_CANYON_CLOUDS_FOREGROUND;
+        background->tilemapId = TM_SKY_CANYON_CLOUDS_FOREGROUND;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
         background->unk26 = 0x20;
@@ -2203,7 +2228,7 @@ void sub_801D1A8(void)
     gBgScrollRegs[3][1] = 0;
 
     *background = gUnknown_080D5864[3];
-    background->unk1C = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
+    background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->tilesVram = (void *)BG_SCREEN_ADDR(26);
     background->unk26 = 0x20;

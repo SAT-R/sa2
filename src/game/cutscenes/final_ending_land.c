@@ -487,7 +487,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E179C[value + 1];
+        background->tilemapId = gUnknown_080E179C[value + 1];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -511,7 +511,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(24);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E179C[value];
+        background->tilemapId = gUnknown_080E179C[value];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;

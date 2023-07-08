@@ -6,10 +6,10 @@
 #define GUARD_DATA_H
 
 #include "global.h"
+#include "core.h"
 #include "animation_commands.h"
 
-// TODO: extract this data
-extern struct MapHeader_Full *gMapHeaders[];
+extern const Tilemap *const gTilemaps[381];
 
 struct SpriteTables {
     /* 0x00 */ ACmd ***animations;

@@ -109,7 +109,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E1244[scene->unk50 + scene->unk4E];
+    background->tilemapId = gUnknown_080E1244[scene->unk50 + scene->unk4E];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

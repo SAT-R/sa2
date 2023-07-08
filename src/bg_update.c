@@ -210,8 +210,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         r4 -= result * bg->unk16;
                         r5 = bg->unk16 - r4;
 
-                        result *= bg->unk3C;
-                        r1Ptr = &bg->unk38[result];
+                        result *= bg->mapWidth;
+                        r1Ptr = &bg->metatileMap[result];
 
                         // r1 = v
                         v = r1Ptr[sp18] * bg->unk14 * bg->unk16;
@@ -459,20 +459,20 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         for (j = 0; j < bg->unk28; j++) {
                             // _08003542
                             u32 divident = sp14 + j;
-                            u32 index = Div(divident, bg->unk16);
-                            u32 new_r4 = divident - (index * bg->unk16);
+                            u32 yPos = Div(divident, bg->unk16);
+                            u32 new_r4 = divident - (yPos * bg->unk16);
                             u32 r5 = bg->unk16 - new_r4;
-                            index *= bg->unk3C;
+                            yPos *= bg->mapWidth;
 
                             { // _0800355C
-                                u32 someVal = bg->unk38[index + (sp24 * 2)];
+                                u32 metatileIndex = bg->metatileMap[yPos + (sp24 * 2)];
                                 u32 otherVal;
-                                someVal *= bg->unk14;
-                                someVal *= bg->unk16;
+                                metatileIndex *= bg->unk14;
+                                metatileIndex *= bg->unk16;
 
                                 otherVal = new_r4 * bg->unk14;
                                 otherVal += sp28;
-                                otherVal += someVal;
+                                otherVal += metatileIndex;
 
                                 {
                                     // r4 <- dmaSrc
@@ -519,7 +519,7 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-    struct MapHeader_Full *header = gUnknown_03002260[bg->unk1C];
+    struct MapHeader *header = gUnknown_03002260[bg->tilemapId];
     if (header->h.animFrameCount) {
         if (header->h.animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;
@@ -533,17 +533,17 @@ void UpdateBgAnimationTiles(Background *bg)
 
             if (!(bg->unk2E & 0x200)) {
                 if (bg->animFrameCounter == 0) {
-                    bg->graphics.src = header->h.tileset;
+                    bg->graphics.src = header->h.tiles;
                 } else {
-                    u8 *ts = header->h.tileset;
-                    u32 size = header->h.tilesetSize;
-                    ts += size;
-                    ts += (bg->animFrameCounter - 1) * animTileSize;
-                    bg->graphics.src = ts;
+                    const u8 *tiles = header->h.tiles;
+                    u32 size = header->h.tilesSize;
+                    tiles += size;
+                    tiles += (bg->animFrameCounter - 1) * animTileSize;
+                    bg->graphics.src = tiles;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += header->h.tilesetSize;
+                ts += header->h.tilesSize;
                 ts += (bg->animFrameCounter * animTileSize);
                 bg->graphics.src = ts;
             }
