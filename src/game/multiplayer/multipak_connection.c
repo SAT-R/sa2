@@ -664,7 +664,9 @@ void MultiPakCommunicationError(void)
     gMultiSioEnabled = FALSE;
     MultiSioStop();
     MultiSioInit(0);
-    gUnknown_03002260 = gTilemaps;
+
+    // TODO: Fix cast!
+    gUnknown_03002260 = (struct MapHeader**)gTilemaps;
     gUnknown_03002794 = &gSpriteTables;
     gMultiplayerMissingHeartbeats[0] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;

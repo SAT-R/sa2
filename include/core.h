@@ -2,7 +2,6 @@
 #define GUARD_MAIN_H
 
 #include "global.h"
-#include "data.h"
 #include "task.h"
 #include "sprite.h"
 #include "input_recorder.h"
@@ -109,8 +108,8 @@ typedef struct {
     /* 0x16 */ u16 palLength;
 
     // Can be u8* in some instances
-    /* 0x18 */ const u16
-        *map; // map = metatiles, when using with non-background map layers
+    // map = metatiles, when using with non-background map layers
+    /* 0x18 */ const u16 *map; 
 } Tilemap; /* size = 0x1C */
 
 struct MapHeader {
@@ -121,16 +120,19 @@ struct MapHeader {
 };
 
 typedef struct {
-    u8 *height_map;
-    u8 *tile_rotation;
-    u16 *metatiles;
-    u16 *map_front;
-    u16 *map_back;
-    u8 *flags;
+    const u8 *height_map;
+    const u8 *tile_rotation;
+    const u16 *metatiles;
+    const u16 *map_front;
+    const u16 *map_back;
+    const u8 *flags;
     u16 levelX, levelY;
     u8 unk1C[4];
     u16 unk20, unk22;
 } Collision;
+
+// We need 'Tilemap' in data.h, so it has to be declared later
+#include "data.h"
 
 struct Unk_03003674_1_Sub {
     u16 unk0, unk2, unk4, unk6;

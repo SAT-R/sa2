@@ -1,14 +1,11 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unlocked_sound_test_de[]
-    = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/palette.gbapal");
-const u8 Tiles_unlocked_sound_test_de[]
-    = INCBIN_U8("data/tilemaps/unlocked_sound_test_de/tiles.4bpp");
-const u16 Tilemap_unlocked_sound_test_de[]
-    = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/tilemap.tilemap2");
+ALIGNED(4) static const u16 Palette_unlocked_sound_test_de[] = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/palette.gbapal");
+ALIGNED(4) static const u8 Tiles_unlocked_sound_test_de[] = INCBIN_U8("data/tilemaps/unlocked_sound_test_de/tiles.4bpp");
+ALIGNED(4) static const u16 Tilemap_unlocked_sound_test_de[] = INCBIN_U16("data/tilemaps/unlocked_sound_test_de/tilemap.tilemap2");
 
-const Tilemap unlocked_sound_test_de = {
+ALIGNED(4) const Tilemap unlocked_sound_test_de = {
     .xTiles = 30,
     .yTiles = 7,
     .animTileSize = 0,

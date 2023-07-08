@@ -1,13 +1,11 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unlocked_amy_en[]
-    = INCBIN_U16("data/tilemaps/unlocked_amy_en/palette.gbapal");
-const u8 Tiles_unlocked_amy_en[] = INCBIN_U8("data/tilemaps/unlocked_amy_en/tiles.4bpp");
-const u16 Tilemap_unlocked_amy_en[]
-    = INCBIN_U16("data/tilemaps/unlocked_amy_en/tilemap.tilemap2");
+ALIGNED(4) static const u16 Palette_unlocked_amy_en[] = INCBIN_U16("data/tilemaps/unlocked_amy_en/palette.gbapal");
+ALIGNED(4) static const u8 Tiles_unlocked_amy_en[] = INCBIN_U8("data/tilemaps/unlocked_amy_en/tiles.4bpp");
+ALIGNED(4) static const u16 Tilemap_unlocked_amy_en[] = INCBIN_U16("data/tilemaps/unlocked_amy_en/tilemap.tilemap2");
 
-const Tilemap unlocked_amy_en = {
+ALIGNED(4) const Tilemap unlocked_amy_en = {
     .xTiles = 30,
     .yTiles = 7,
     .animTileSize = 0,

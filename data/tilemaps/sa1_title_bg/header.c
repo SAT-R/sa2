@@ -1,13 +1,11 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_sa1_title_bg[]
-    = INCBIN_U16("data/tilemaps/sa1_title_bg/palette.gbapal256");
-const u8 Tiles_sa1_title_bg[] = INCBIN_U8("data/tilemaps/sa1_title_bg/tiles.4bpp");
-const u16 Tilemap_sa1_title_bg[]
-    = INCBIN_U16("data/tilemaps/sa1_title_bg/tilemap.tilemap2");
+ALIGNED(4) static const u16 Palette_sa1_title_bg[] = INCBIN_U16("data/tilemaps/sa1_title_bg/palette.gbapal");
+ALIGNED(4) static const u8 Tiles_sa1_title_bg[] = INCBIN_U8("data/tilemaps/sa1_title_bg/tiles.4bpp");
+ALIGNED(4) static const u16 Tilemap_sa1_title_bg[] = INCBIN_U16("data/tilemaps/sa1_title_bg/tilemap.tilemap2");
 
-const Tilemap sa1_title_bg = {
+ALIGNED(4) const Tilemap sa1_title_bg = {
     .xTiles = 30,
     .yTiles = 20,
     .animTileSize = 0,

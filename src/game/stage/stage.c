@@ -1,25 +1,72 @@
 #include "global.h"
+#include "core.h"
 
 #include "sprite.h"
 
 #include "constants/animations.h"
 
+extern const u8 CollHeightMap_zone_1_act_1_fg[];
+extern const u8 CollTileRot_zone_1_act_1_fg[];
+extern const u8 CollFlags_zone_1_act_1_fg[];
+
 asm(".section .rodata");
 
-// As denoted in tilemaps.h:
-// - starts with MapHeaders (0-92)
-// - then one NULL value (93)
-// - then various background tilemaps (94-380)
-asm("    .global gTilemaps\n"
-    "gTilemaps:\n"
-    "  .4byte MapHeader_LeafForest_Act1_FrontLayer, "
-    "MapHeader_LeafForest_Act1_BackLayer, 0x08935224\n"
-    "    .incbin \"baserom.gba\", 0x000D5CF0, 0x5E8\n");
+extern const Collision CollHeader_zone_1_act_1_fg;
+extern const Collision CollHeader_zone_1_act_2_fg;
+extern const Collision CollHeader_zone_1_act_boss_fg;
+extern const Collision CollHeader_zone_2_act_1_fg;
+extern const Collision CollHeader_zone_2_act_2_fg;
+extern const Collision CollHeader_zone_2_act_boss_fg;
+extern const Collision CollHeader_zone_3_act_1_fg;
+extern const Collision CollHeader_zone_3_act_2_fg;
+extern const Collision CollHeader_zone_3_act_boss_fg;
+extern const Collision CollHeader_zone_4_act_1_fg;
+extern const Collision CollHeader_zone_4_act_2_fg;
+extern const Collision CollHeader_zone_4_act_boss_fg;
+extern const Collision CollHeader_zone_5_act_1_fg;
+extern const Collision CollHeader_zone_5_act_2_fg;
+extern const Collision CollHeader_zone_5_act_boss_fg;
+extern const Collision CollHeader_zone_6_act_1_fg;
+extern const Collision CollHeader_zone_6_act_2_fg;
+extern const Collision CollHeader_zone_6_act_boss_fg;
+extern const Collision CollHeader_zone_7_act_1_fg;
+extern const Collision CollHeader_zone_7_act_2_fg;
+extern const Collision CollHeader_zone_7_act_boss_fg;
 
+// TODO: C-ify
 asm("    .global gCollisionTable\n"
     "gCollisionTable:\n"
-    "    .4byte gUnknown_08714578, gUnknown_0873A414, gUnknown_0873C0FC\n"
-    "    .incbin \"baserom.gba\", 0x000D62E4, 0x70\n");
+    "   .4byte CollHeader_zone_1_act_1_fg\n"
+    "   .4byte CollHeader_zone_1_act_2_fg\n"
+    "   .4byte CollHeader_zone_1_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_2_act_1_fg\n"
+    "   .4byte CollHeader_zone_2_act_2_fg\n"
+    "   .4byte CollHeader_zone_2_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_3_act_1_fg\n"
+    "   .4byte CollHeader_zone_3_act_2_fg\n"
+    "   .4byte CollHeader_zone_3_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_4_act_1_fg\n"
+    "   .4byte CollHeader_zone_4_act_2_fg\n"
+    "   .4byte CollHeader_zone_4_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_5_act_1_fg\n"
+    "   .4byte CollHeader_zone_5_act_2_fg\n"
+    "   .4byte CollHeader_zone_5_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_6_act_1_fg\n"
+    "   .4byte CollHeader_zone_6_act_2_fg\n"
+    "   .4byte CollHeader_zone_6_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_7_act_1_fg\n"
+    "   .4byte CollHeader_zone_7_act_2_fg\n"
+    "   .4byte CollHeader_zone_7_act_boss_fg\n"
+    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
+    "   .4byte CollHeader_zone_final_act_xx_fg\n"
+    "   .4byte CollHeader_zone_final_act_ta53_fg\n"
+    "   .4byte CollHeader_zone_final_act_unused_fg\n");
 
 // Like AnimInfo
 const unsigned short sAnimData_StageGoalScoreBonus[5][3] = {
