@@ -69,19 +69,18 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_final_act_unused_fg1 =
 };
 
 ALIGNED(4)
-const Collision CollHeader_zone_final_act_unused_fg = {
-    CollHeightMap_zone_final_act_unused_fg,
-    CollTileRot_zone_final_act_unused_fg,
-    Metatiles_zone_final_act_unused_fg,
-    Map_zone_final_act_unused_fg0,
-    Map_zone_final_act_unused_fg1,
-    CollFlags_zone_final_act_unused_fg,
-    20,
-    12,
-    0x80,
-    0x07,
-    0x00,
-    0x00,
-    0x0480,
-    0x0000
-};
+const Collision CollHeader_zone_final_act_unused_fg
+    = { CollHeightMap_zone_final_act_unused_fg,
+        CollTileRot_zone_final_act_unused_fg,
+        Metatiles_zone_final_act_unused_fg,
+        Map_zone_final_act_unused_fg0,
+        Map_zone_final_act_unused_fg1,
+        CollFlags_zone_final_act_unused_fg,
+        20,
+        12,
+        0x80,
+        0x07,
+        0x00,
+        0x00,
+        0x0480,
+        0x0000 };
