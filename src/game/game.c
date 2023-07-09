@@ -5,6 +5,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
+#include "game/game_5.h"
 #include "game/save.h"
 #include "game/race_progress.h"
 #include "game/multiboot/collect_rings/time_display.h"
@@ -19,7 +20,6 @@
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
 
-void sub_802B61C(u16, u16, u16);
 void sub_80299F0(u32, u32, u32, Player *);
 void CreateGameStage(void);
 
@@ -516,11 +516,11 @@ void ApplyGameStageSettings(void)
     }
 
     if ((gUnknown_03005424 & 0x40)) {
-        sub_802B61C(A_BUTTON, B_BUTTON, R_BUTTON);
+        setPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
-        sub_802B61C(gLoadedSaveGame->buttonConfig.jump,
-                    gLoadedSaveGame->buttonConfig.attack,
-                    gLoadedSaveGame->buttonConfig.trick);
+        setPlayerControls(gLoadedSaveGame->buttonConfig.jump,
+                          gLoadedSaveGame->buttonConfig.attack,
+                          gLoadedSaveGame->buttonConfig.trick);
     }
 }
 
