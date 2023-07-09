@@ -40,7 +40,7 @@ struct SoundTestScreen {
     Sprite backControlName;
     Sprite numberDisplay[3];
 
-    struct UNK_808D124_UNK180 speakerConeEffects[NUM_SPEAKER_CONE_SECTIONS];
+    SpriteTransform speakerConeEffects[NUM_SPEAKER_CONE_SECTIONS];
 
     Sprite nameDisplay[MAX_SOUND_NAME_LENGTH];
 
@@ -343,7 +343,7 @@ static void SoundTestScreenCreateUI(struct Task *t)
     Sprite *danceStage = &soundTestScreen->danceStage;
     Sprite *animatedCream = soundTestScreen->creams;
     Sprite *scrollArrows = &soundTestScreen->scrollArrows;
-    struct UNK_808D124_UNK180 *unk3CC = soundTestScreen->speakerConeEffects;
+    SpriteTransform *transforms = soundTestScreen->speakerConeEffects;
 
     s16 i, xPos, yPos;
 
@@ -391,17 +391,17 @@ static void SoundTestScreenCreateUI(struct Task *t)
     }
 
     for (i = 0; i < 4; i++) {
-        unk3CC[i].unk0 = i << 8;
-        unk3CC[i].unk2 = 0x100;
-        unk3CC[i].unk4 = 0x100;
-        unk3CC[i].unk6[0] = 0x4C;
-        unk3CC[i].unk6[1] = 0x5A;
+        transforms[i].unk0 = i << 8;
+        transforms[i].width = 0x100;
+        transforms[i].height = 0x100;
+        transforms[i].x = 0x4C;
+        transforms[i].y = 0x5A;
     }
 
-    unk3CC[1].unk6[0]--;
-    unk3CC[2].unk6[1]--;
-    unk3CC[2].unk6[0]--;
-    unk3CC[3].unk6[1]--;
+    transforms[1].x--;
+    transforms[2].y--;
+    transforms[2].x--;
+    transforms[3].y--;
 
     sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, 0xB4, 0x8C, 6, 0,
                 4);
@@ -586,7 +586,7 @@ static void SoundTestScreenRenderUI(void)
 
     Sprite *scrollArrows = &soundTestScreen->scrollArrows;
     Sprite *speakerConeElement = soundTestScreen->speakerCone;
-    struct UNK_808D124_UNK180 *speakerConeEffects = soundTestScreen->speakerConeEffects;
+    SpriteTransform *speakerConeEffects = soundTestScreen->speakerConeEffects;
 
     struct SoundInfo *soundInfo;
 
@@ -708,7 +708,7 @@ static void SoundTestScreenRenderUI(void)
     for (i = 0; i < 4; i++) {
         if (unk2D8->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].unk0 = i << 8;
-            speakerConeEffects[i].unk4 = speakerConeEffects[i].unk2
+            speakerConeEffects[i].height = speakerConeEffects[i].width
                 = soundTestScreen->speakerSize + 0x100;
         }
 

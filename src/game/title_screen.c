@@ -96,7 +96,7 @@ struct MenuItemTransition {
 
 struct LensFlare {
     Sprite sprites[8];
-    struct UNK_808D124_UNK180 unk180[8];
+    SpriteTransform transforms[8];
     s16 posSequenceX[8];
     s16 posSequenceY[8];
     u16 unk200;
@@ -1672,13 +1672,13 @@ static void CreateLensFlareAnimation(void)
         = TaskCreate(Task_LensFlareAnim, sizeof(struct LensFlare), 0x2000, 0, 0);
     struct LensFlare *lensFlare = TaskGetStructPtr(t);
     Sprite *sprite;
-    struct UNK_808D124_UNK180 *config180;
+    SpriteTransform *transforms;
     u16 posX;
     u32 i;
 
     for (i = 0; i < 8; i++) {
         sprite = &lensFlare->sprites[i];
-        config180 = &lensFlare->unk180[i];
+        transforms = &lensFlare->transforms[i];
 
         sprite->graphics.dest = VramMalloc(0x40);
 
@@ -1696,10 +1696,10 @@ static void CreateLensFlareAnimation(void)
         sprite->palId = 0;
         sprite->unk10 = i | 96;
 
-        config180->unk0 = 0;
-        config180->unk4 = config180->unk2 = posX * 2 + 0xB0;
-        config180->unk6[0] = lensFlare->posSequenceX[i];
-        config180->unk6[1] = lensFlare->posSequenceY[i];
+        transforms->unk0 = 0;
+        transforms->height = transforms->width = posX * 2 + 0xB0;
+        transforms->x = lensFlare->posSequenceX[i];
+        transforms->y = lensFlare->posSequenceY[i];
 
         sub_8004558(sprite);
     }
@@ -1714,7 +1714,7 @@ static void Task_LensFlareAnim(void)
 {
     struct LensFlare *lensFlare = TaskGetStructPtr(gCurTask);
     Sprite *sprite;
-    struct UNK_808D124_UNK180 *config180;
+    SpriteTransform *transforms;
     u32 i;
 
     lensFlare->unk202 += 3;
@@ -1729,18 +1729,18 @@ static void Task_LensFlareAnim(void)
     if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
             sprite = &lensFlare->sprites[i];
-            config180 = &lensFlare->unk180[i];
+            transforms = &lensFlare->transforms[i];
 
             // Potentially a macro
-            config180->unk6[0] = sub_8085654(lensFlare->posSequenceX[i], -0x14,
-                                             lensFlare->animFrame * 16, 8, 0);
+            transforms->x = sub_8085654(lensFlare->posSequenceX[i], -0x14,
+                                        lensFlare->animFrame * 16, 8, 0);
 
-            config180->unk6[1] = sub_8085654(
-                lensFlare->posSequenceY[i] + lensFlare->unk202 - gBgScrollRegs[1][1],
-                -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
-                lensFlare->animFrame * 16, 8, 0);
+            transforms->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202
+                                            - gBgScrollRegs[1][1],
+                                        -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
+                                        lensFlare->animFrame * 16, 8, 0);
 
-            sub_8004860(sprite, config180);
+            sub_8004860(sprite, transforms);
             sub_80051E8(sprite);
         }
     }

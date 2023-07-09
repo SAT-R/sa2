@@ -533,7 +533,7 @@ typedef struct {
     /* 0x18 */ u16 playerVariant;
     /* 0x1A */ u16 unk1A;
     /* 0x1C */ Sprite s;
-    /* 0x4C */ u8 filler4C[0xC];
+    /* 0x4C */ SpriteTransform transform;
 } TaskStrc_801F15C; /* size: 0x58 */
 
 extern struct UNK_3005510 gUnknown_03005510[16];

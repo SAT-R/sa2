@@ -194,9 +194,9 @@ void sub_8036654(struct Task *);
 
 struct RaceStartMessage {
     Sprite unk0;
-    struct UNK_808D124_UNK180 unk30;
+    SpriteTransform unk30;
     Sprite unk3C;
-    struct UNK_808D124_UNK180 unk6C;
+    SpriteTransform unk6C;
     u16 unk78;
     u16 filler7A;
 }; /* 0x7C */
@@ -241,7 +241,7 @@ void sub_8036524(void)
 {
     struct RaceStartMessage *startMessage = TaskGetStructPtr(gCurTask);
     Sprite *element, *element2;
-    struct UNK_808D124_UNK180 *transformConfig;
+    SpriteTransform *transformConfig;
     s16 unk78;
     startMessage->unk78--;
 
@@ -259,15 +259,15 @@ void sub_8036524(void)
     transformConfig->unk0 = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
-        transformConfig->unk2 = 0x200 - startMessage->unk78 * 0x10;
-        transformConfig->unk4 = (startMessage->unk78 + 1) * 0x10;
+        transformConfig->width = 0x200 - startMessage->unk78 * 0x10;
+        transformConfig->height = (startMessage->unk78 + 1) * 0x10;
     } else {
-        transformConfig->unk2 = 0x100;
-        transformConfig->unk4 = 0x100;
+        transformConfig->width = 0x100;
+        transformConfig->height = 0x100;
     }
 
-    transformConfig->unk6[0] = element->x;
-    transformConfig->unk6[1] = element->y;
+    transformConfig->x = element->x;
+    transformConfig->y = element->y;
     sub_8004558(element);
     sub_8004860(element, transformConfig);
     sub_80051E8(element);
@@ -281,15 +281,15 @@ void sub_8036524(void)
     transformConfig->unk0 = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
-        transformConfig->unk2 = 0x200 - startMessage->unk78 * 0x10;
-        transformConfig->unk4 = (startMessage->unk78 + 1) * 0x10;
+        transformConfig->width = 0x200 - startMessage->unk78 * 0x10;
+        transformConfig->height = (startMessage->unk78 + 1) * 0x10;
     } else {
-        transformConfig->unk2 = 0x100;
-        transformConfig->unk4 = 0x100;
+        transformConfig->width = 0x100;
+        transformConfig->height = 0x100;
     }
 
-    transformConfig->unk6[0] = element->x;
-    transformConfig->unk6[1] = element->y;
+    transformConfig->x = element->x;
+    transformConfig->y = element->y;
     sub_8004558(element);
     sub_8004860(element, transformConfig);
     sub_80051E8(element);
