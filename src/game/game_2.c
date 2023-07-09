@@ -13,7 +13,7 @@ void Task_DrowningCountdown(void);
 void Task_802B1AC(void);
 void sub_801F550(struct Task *);
 
-struct Task *sub_802AF60(Player *p, s32 countdown)
+struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 {
     struct Camera *cam = &gCamera;
     struct Task *t = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, sub_801F550);
@@ -48,7 +48,7 @@ struct Task *sub_802AF60(Player *p, s32 countdown)
 }
 
 // Called when air bubbles spawn underwater
-struct Task *sub_802B018(s32 p0, s32 p1, s32 p2, s32 p3)
+struct Task *SpawnDrowningBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 {
     if ((s8)gSmallAirBubbleCount > 11) {
         return NULL;
@@ -114,8 +114,8 @@ bool32 sub_802B118(Player *p)
             if (!(p->moveState & MOVESTATE_FACING_LEFT))
                 randX = -randX;
 
-            sub_802B018(p->x - randX, p->y - randY, p->speedAirX,
-                        ((u32)PseudoRandom32() & 0x100) >> 8);
+            SpawnDrowningBubbles(p->x - randX, p->y - randY, p->speedAirX,
+                                 ((u32)PseudoRandom32() & 0x100) >> 8);
 
             result = TRUE;
         }
@@ -203,7 +203,7 @@ void Task_802B2D8(void)
 
                 r3 = ((u32)PseudoRandom32() & 0x100) >> 8;
 
-                sub_802B018(p->x + r1, p->y + r2 - 0xC00, 0, r3);
+                SpawnDrowningBubbles(p->x + r1, p->y + r2 - 0xC00, 0, r3);
             } while (r4-- != 0);
         }
     }

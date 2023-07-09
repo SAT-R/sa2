@@ -13603,32 +13603,32 @@ _08023994: .4byte gUnknown_030054A8
 _08023998:
 	adds r0, r4, #0
 	movs r1, #5
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 	b _080239D2
 _080239A2:
 	adds r0, r4, #0
 	movs r1, #4
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 	b _080239D2
 _080239AC:
 	adds r0, r4, #0
 	movs r1, #3
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 	b _080239D2
 _080239B6:
 	adds r0, r4, #0
 	movs r1, #2
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 	b _080239D2
 _080239C0:
 	adds r0, r4, #0
 	movs r1, #1
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 	b _080239D2
 _080239CA:
 	adds r0, r4, #0
 	movs r1, #0
-	bl sub_802AF60
+	bl SpawnDrowningCountdownNum
 _080239D2:
 	movs r0, #0
 	ldrsb r0, [r6, r0]
@@ -13646,7 +13646,7 @@ _080239D2:
 	adds r1, r1, r2
 	movs r2, #0
 	movs r3, #1
-	bl sub_802B018
+	bl SpawnDrowningBubbles
 	adds r0, r4, #0
 	bl sub_802B3BC
 _080239FC:
@@ -13687,7 +13687,7 @@ _08023A34:
 	adds r1, r1, r2
 	movs r2, #0
 	movs r3, #0
-	bl sub_802B018
+	bl SpawnDrowningBubbles
 	b _08023B02
 	.align 2, 0
 _08023A48: .4byte 0xFFFFF400
