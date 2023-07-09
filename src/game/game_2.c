@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
@@ -8,12 +9,48 @@
 
 #include "constants/animations.h"
 
+void Task_DrowningCountdown(void);
 void Task_802B1AC(void);
+void sub_801F550(struct Task *);
+
+struct Task *sub_802AF60(Player *p, s32 countdown)
+{
+    struct Camera *cam = &gCamera;
+    struct Task *t = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, sub_801F550);
+    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    Sprite *s;
+    SpriteTransform *transform;
+    s32 temp;
+
+    ts->x = p->x - Q_24_8(cam->x);
+    ts->y = p->y - Q_24_8(cam->y);
+    ts->unk8 = 0;
+    ts->unkA = 0x120;
+    ts->unk10 = 0;
+    ts->unk1A = p->unk60;
+
+    s = &ts->s;
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_DROWN_COUNTDOWN;
+    s->variant = 5 - countdown;
+
+    s->unk1A = 0x240;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+
+    transform = &ts->transform;
+    transform->unk0 = 0;
+    transform->width = 0;
+    transform->height = 0;
+    transform->x = 0;
+    transform->y = 0;
+
+    return t;
+}
 
 // Called when air bubbles spawn underwater
 struct Task *sub_802B018(s32 p0, s32 p1, s32 p2, s32 p3)
 {
-    if ((s8)gUnknown_03005B34 > 11) {
+    if ((s8)gSmallAirBubbleCount > 11) {
         return NULL;
     } else {
         struct Task *t;
@@ -21,7 +58,7 @@ struct Task *sub_802B018(s32 p0, s32 p1, s32 p2, s32 p3)
         Sprite *s;
         SpriteTransform *transform;
 
-        gUnknown_03005B34++;
+        gSmallAirBubbleCount++;
 
         t = sub_801F15C(0, 0, 0, 0, Task_802B1AC, TaskDestructor_802B3EC);
 
@@ -143,3 +180,43 @@ void Task_802B1AC(void)
         sub_80051E8(s);
     }
 }
+
+void Task_802B2D8(void)
+{
+    Player **refPlayer = TaskGetStructPtr(gCurTask);
+    Player *p = *refPlayer;
+
+    if (IS_ALIVE(p)) {
+        TaskDestroy(gCurTask);
+        return;
+    } else if (!(gUnknown_03005590 & (0x2 | 0x1))) {
+        if ((PseudoRandom32() & 0x300) == 0) {
+            s32 r4 = ((u32)PseudoRandom32() & 0x100) >> 8;
+
+            do {
+                // TODO: Maybe these could be converted to PseudoRandBetween?
+                u32 r3, r2, r1 = ((u32)PseudoRandom32() & 0x7FF00) >> 8;
+                r1 -= 0x400;
+
+                r2 = ((u32)PseudoRandom32() & 0x7FF00) >> 8;
+                r2 -= 0x400;
+
+                r3 = ((u32)PseudoRandom32() & 0x100) >> 8;
+
+                sub_802B018(p->x + r1, p->y + r2 - 0xC00, 0, r3);
+            } while (r4-- != 0);
+        }
+    }
+}
+
+struct Task *sub_802B3BC(Player *p)
+{
+    struct Task *t = TaskCreate(Task_802B2D8, sizeof(Player **), 0x4001, 0, NULL);
+
+    Player **refPlayer = TaskGetStructPtr(t);
+    *refPlayer = p;
+
+    return t;
+}
+
+void TaskDestructor_802B3EC(struct Task *t) { gSmallAirBubbleCount--; }

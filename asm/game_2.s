@@ -5,8 +5,8 @@
 .syntax unified
 .text
 
-	thumb_func_start Task_802AE6C
-Task_802AE6C: @ 0x0802AE6C
+	thumb_func_start Task_DrowningCountdown
+Task_DrowningCountdown: @ 0x0802AE6C
 	push {r4, r5, r6, r7, lr}
 	ldr r2, _0802AEF0 @ =gCurTask
 	ldr r0, [r2]
@@ -129,92 +129,6 @@ _0802AF50:
 	.align 2, 0
 _0802AF58: .4byte gSineTable
 _0802AF5C: .4byte gUnknown_030054B8
-
-	thumb_func_start sub_802AF60
-sub_802AF60: @ 0x0802AF60
-	push {r4, r5, r6, lr}
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6}
-	sub sp, #8
-	adds r6, r0, #0
-	mov sb, r1
-	ldr r4, _0802AFFC @ =gCamera
-	ldr r0, _0802B000 @ =Task_802AE6C
-	str r0, [sp]
-	ldr r0, _0802B004 @ =sub_801F550
-	str r0, [sp, #4]
-	movs r0, #0
-	movs r1, #0
-	movs r2, #0
-	movs r3, #0
-	bl sub_801F15C
-	mov r8, r0
-	ldrh r5, [r0, #6]
-	movs r2, #0xc0
-	lsls r2, r2, #0x12
-	adds r2, r5, r2
-	ldr r1, [r4]
-	lsls r1, r1, #8
-	ldr r0, [r6, #8]
-	subs r0, r0, r1
-	str r0, [r2]
-	ldr r1, [r4, #4]
-	lsls r1, r1, #8
-	ldr r0, [r6, #0xc]
-	subs r0, r0, r1
-	str r0, [r2, #4]
-	movs r4, #0
-	strh r4, [r2, #8]
-	movs r0, #0x90
-	lsls r0, r0, #1
-	strh r0, [r2, #0xa]
-	strh r4, [r2, #0x10]
-	adds r6, #0x60
-	ldrb r0, [r6]
-	strb r0, [r2, #0x1a]
-	ldr r0, _0802B008 @ =IWRAM_START + 0x1C
-	adds r6, r5, r0
-	movs r0, #4
-	bl VramMalloc
-	str r0, [r6, #4]
-	ldr r0, _0802B00C @ =0x00000366
-	strh r0, [r6, #0xa]
-	movs r0, #5
-	mov r1, sb
-	subs r0, r0, r1
-	ldr r2, _0802B010 @ =IWRAM_START + 0x3C
-	adds r1, r5, r2
-	strb r0, [r1]
-	movs r0, #0x90
-	lsls r0, r0, #2
-	strh r0, [r6, #0x1a]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r6, #0x10]
-	ldr r0, _0802B014 @ =IWRAM_START + 0x4C
-	adds r5, r5, r0
-	strh r4, [r5]
-	strh r4, [r5, #2]
-	strh r4, [r5, #4]
-	strh r4, [r5, #6]
-	strh r4, [r5, #8]
-	mov r0, r8
-	add sp, #8
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0802AFFC: .4byte gCamera
-_0802B000: .4byte Task_802AE6C
-_0802B004: .4byte sub_801F550
-_0802B008: .4byte IWRAM_START + 0x1C
-_0802B00C: .4byte 0x00000366
-_0802B010: .4byte IWRAM_START + 0x3C
-_0802B014: .4byte IWRAM_START + 0x4C
 
 .if 0
 .endif
