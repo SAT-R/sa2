@@ -216,6 +216,7 @@ _0802B00C: .4byte 0x00000366
 _0802B010: .4byte IWRAM_START + 0x3C
 _0802B014: .4byte IWRAM_START + 0x4C
 
+@; Called when air bubbles spawn underwater
 	thumb_func_start sub_802B018
 sub_802B018: @ 0x0802B018
 	push {r4, r5, r6, r7, lr}
@@ -337,77 +338,5 @@ _0802B10C: .4byte gPseudoRandom
 _0802B110: .4byte 0x00196225
 _0802B114: .4byte 0x3C6EF35F
 
-@ Unused?
-	thumb_func_start sub_802B118
-sub_802B118: @ 0x0802B118
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0
-	movs r2, #0
-	ldr r0, _0802B19C @ =gUnknown_03005590
-	ldr r0, [r0]
-	movs r1, #7
-	ands r0, r1
-	cmp r0, #0
-	bne _0802B192
-	ldr r7, _0802B1A0 @ =gPseudoRandom
-	ldr r0, [r7]
-	ldr r6, _0802B1A4 @ =0x00196225
-	muls r0, r6, r0
-	ldr r1, _0802B1A8 @ =0x3C6EF35F
-	mov ip, r1
-	adds r1, r0, r1
-	str r1, [r7]
-	movs r0, #0xc0
-	lsls r0, r0, #2
-	ands r0, r1
-	cmp r0, #0
-	bne _0802B192
-	muls r1, r6, r1
-	ldr r3, _0802B1A8 @ =0x3C6EF35F
-	adds r1, r1, r3
-	movs r2, #0xf0
-	lsls r2, r2, #4
-	adds r0, r1, #0
-	ands r0, r2
-	lsrs r4, r0, #8
-	adds r0, r1, #0
-	muls r0, r6, r0
-	adds r3, r0, r3
-	str r3, [r7]
-	adds r0, r3, #0
-	ands r0, r2
-	lsrs r0, r0, #8
-	adds r2, r0, #0
-	subs r2, #8
-	ldr r0, [r5, #0x20]
-	movs r1, #1
-	ands r0, r1
-	cmp r0, #0
-	bne _0802B172
-	rsbs r4, r4, #0
-_0802B172:
-	ldr r0, [r5, #8]
-	subs r0, r0, r4
-	ldr r1, [r5, #0xc]
-	subs r1, r1, r2
-	movs r4, #0x10
-	ldrsh r2, [r5, r4]
-	muls r3, r6, r3
-	add r3, ip
-	str r3, [r7]
-	movs r4, #0x80
-	lsls r4, r4, #1
-	ands r3, r4
-	lsrs r3, r3, #8
-	bl sub_802B018
-	movs r2, #1
-_0802B192:
-	adds r0, r2, #0
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0802B19C: .4byte gUnknown_03005590
-_0802B1A0: .4byte gPseudoRandom
-_0802B1A4: .4byte 0x00196225
-_0802B1A8: .4byte 0x3C6EF35F
+.if 0
+.endif

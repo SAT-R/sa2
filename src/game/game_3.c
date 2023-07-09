@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "game/game.h"
+#include "game/game_2.h"
+#include "game/game_3.h"
 
 #include "constants/move_states.h"
 

@@ -3,6 +3,33 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/game_2.h"
+
+bool32 sub_802B118(Player *p)
+{
+    u32 rand, randX, randY;
+
+    u32 result = FALSE;
+
+    u32 flags = gUnknown_03005590 & 0x7;
+    if (!flags) {
+        rand = ((u32)PseudoRandom32() & 0x300);
+        if (!rand) {
+            randX = (((u32)PseudoRandom32() & 0xF00) >> 8);
+            randY = (((u32)PseudoRandom32() & 0xF00) >> 8) - 8;
+
+            if (!(p->moveState & MOVESTATE_FACING_LEFT))
+                randX = -randX;
+
+            sub_802B018(p->x - randX, p->y - randY, p->speedAirX,
+                        ((u32)PseudoRandom32() & 0x100) >> 8);
+
+            result = TRUE;
+        }
+    }
+
+    return result;
+}
 
 void Task_802B1AC()
 {
