@@ -25,7 +25,6 @@ void Task_802B2D8(void)
             s32 r4 = ((u32)PseudoRandom32() & 0x100) >> 8;
 
             do {
-                // _0802B348
                 // TODO: Maybe these could be converted to PseudoRandBetween?
                 u32 r3, r2, r1 = ((u32)PseudoRandom32() & 0x7FF00) >> 8;
                 r1 -= 0x400;

@@ -33,10 +33,8 @@ void Task_ScreenShake(void)
         if (shake->flags & 0x10) {
             factor = ((u32)(PseudoRandom32() << 15) >> 23) - 0xFF;
         } else {
-            // _0802B458
             factor = SIN_24_8(shake->unk14);
         }
-        // _0802B466
 
         r2 = (shake->p0 * factor) >> 16;
 
@@ -54,7 +52,6 @@ void Task_ScreenShake(void)
                 r2 = -r2_2;
             } break;
         }
-        // _0802B496
 
         if (!(shake->flags & 0x20) || !(gUnknown_03005590 & 0x1)) {
             if (shake->flags & SCREENSHAKE_HORIZONTAL) {
@@ -64,7 +61,6 @@ void Task_ScreenShake(void)
                 cam->unk62 = r2;
             }
         }
-        // _0802B4C8
 
         if (shake->p3 > 0)
             shake->p3--;
