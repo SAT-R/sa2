@@ -2,5 +2,6 @@
 #define GUARD_GAME_3_H
 
 struct Task *sub_802B3BC(Player *p);
+void TaskDestructor_802B3EC(struct Task *);
 
 #endif // GUARD_GAME_3_H
