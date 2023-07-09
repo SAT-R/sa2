@@ -2522,7 +2522,7 @@ _080400B8:
 	movs r1, #0x20
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 _080400D0:
 	ldr r7, [sp, #0x50]
 	ldrh r1, [r7]
@@ -2827,7 +2827,7 @@ _08040324:
 	movs r1, #0x20
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 _0804033E:
 	ldr r7, [sp, #0x44]
 	ldr r0, [r7]
