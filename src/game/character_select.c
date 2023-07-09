@@ -33,14 +33,14 @@ struct CharacterSelectionScreen {
     Sprite characterNameSubText;
 
     Sprite characterTitleTextLeft;
-    struct UNK_808D124_UNK180 characterTitleLeftTransform;
+    SpriteTransform characterTitleLeftTransform;
 
     Sprite characterTitleTextRight;
-    struct UNK_808D124_UNK180 characterTitleRightTransform;
+    SpriteTransform characterTitleRightTransform;
 
     Sprite carouselBlobs[NUM_CHARACTERS];
     Sprite selectedCarouselBlob;
-    struct UNK_808D124_UNK180 selectedBlobTransform;
+    SpriteTransform selectedBlobTransform;
 
     Sprite scrollUpArrow;
     Sprite scrollDownArrow;
@@ -1174,7 +1174,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     u8 i;
     u16 x;
     Sprite *element;
-    struct UNK_808D124_UNK180 *transformOptions;
+    SpriteTransform *transformOptions;
 
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
@@ -1225,14 +1225,14 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element->unk21 = 0xFF;
 
     transformOptions->unk0 = 0;
-    transformOptions->unk2
+    transformOptions->width
         = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
         + 0xC0;
-    transformOptions->unk4
+    transformOptions->height
         = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
         + 0xC0;
-    transformOptions->unk6[0] = element->x;
-    transformOptions->unk6[1] = element->y;
+    transformOptions->x = element->x;
+    transformOptions->y = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x60;
     sub_8004558(element);
@@ -1314,10 +1314,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element->y = 0x4F;
 
     transformOptions->unk0 = 0;
-    transformOptions->unk2 = 0x100;
-    transformOptions->unk4 = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->unk6[0] = element->x;
-    transformOptions->unk6[1] = element->y;
+    transformOptions->width = 0x100;
+    transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
+    transformOptions->x = element->x;
+    transformOptions->y = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
@@ -1331,10 +1331,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element->y = 0x4F;
 
     transformOptions->unk0 = 0;
-    transformOptions->unk2 = 0x100;
-    transformOptions->unk4 = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
-    transformOptions->unk6[0] = element->x;
-    transformOptions->unk6[1] = element->y;
+    transformOptions->width = 0x100;
+    transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
+    transformOptions->x = element->x;
+    transformOptions->y = element->y;
 
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
@@ -1354,7 +1354,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     u8 i;
     s8 somethinga;
     Sprite *element;
-    struct UNK_808D124_UNK180 *transformOptions;
+    SpriteTransform *transformOptions;
 
     s8 lang = gLoadedSaveGame->language - 1;
 
@@ -1497,16 +1497,16 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         element->unk21 = 0xFF;
 
         transformOptions->unk0 = 0;
-        transformOptions->unk2
+        transformOptions->width
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk4
+        transformOptions->height
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk6[0] = element->x;
-        transformOptions->unk6[1] = element->y;
+        transformOptions->x = element->x;
+        transformOptions->y = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x60;
         sub_8004558(element);
@@ -1592,10 +1592,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     if (c < 8) {
         transformOptions->unk0 = 0;
-        transformOptions->unk2 = 0x100;
-        transformOptions->unk4 = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->unk6[0] = element->x;
-        transformOptions->unk6[1] = element->y;
+        transformOptions->width = 0x100;
+        transformOptions->height = 0x100 - ((8 - c) * 0x1E);
+        transformOptions->x = element->x;
+        transformOptions->y = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x20;
         sub_8004558(element);
@@ -1613,10 +1613,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
     if (c < 8) {
         transformOptions->unk0 = 0;
-        transformOptions->unk2 = 0x100;
-        transformOptions->unk4 = 0x100 - ((8 - c) * 0x1E);
-        transformOptions->unk6[0] = element->x;
-        transformOptions->unk6[1] = element->y;
+        transformOptions->width = 0x100;
+        transformOptions->height = 0x100 - ((8 - c) * 0x1E);
+        transformOptions->x = element->x;
+        transformOptions->y = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x20;
         sub_8004558(element);
@@ -1638,7 +1638,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
 static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 {
-    struct UNK_808D124_UNK180 *transformOptions;
+    SpriteTransform *transformOptions;
     Sprite *element, *element2, *element3;
     u8 i;
     if (characterScreen->amyUnlocked) {
@@ -1692,16 +1692,16 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         element->unk21 = 0xFF;
 
         transformOptions->unk0 = 0;
-        transformOptions->unk2
+        transformOptions->width
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk4
+        transformOptions->height
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
             + 0xC0;
-        transformOptions->unk6[0] = element->x;
-        transformOptions->unk6[1] = element->y;
+        transformOptions->x = element->x;
+        transformOptions->y = element->y;
 
         element->unk10 = gUnknown_030054B8++ | 0x60;
         sub_8004558(element);

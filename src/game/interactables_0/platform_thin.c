@@ -31,10 +31,10 @@ typedef struct {
     Sprite unk30;
     Sprite unk60;
     Sprite unk90;
-    struct UNK_808D124_UNK180 unkC0;
-    struct UNK_808D124_UNK180 unkCC;
-    struct UNK_808D124_UNK180 unkD8;
-    struct UNK_808D124_UNK180 unkE4;
+    SpriteTransform unkC0;
+    SpriteTransform unkCC;
+    SpriteTransform unkD8;
+    SpriteTransform unkE4;
     u16 unkF0;
     s16 unkF2;
 } Platform_D1C /* size 0xF4*/;
@@ -223,7 +223,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
 
     {
         Sprite *r7 = &platform->unk0;
-        struct UNK_808D124_UNK180 *r2 = &platform->unkC0;
+        SpriteTransform *transform = &platform->unkC0;
         platform->unkF0 = 0;
         platform->unkF2 = 0xFE00;
         x -= 128;
@@ -244,12 +244,12 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         r7->palId = 0;
         r7->unk10 = 0x70;
 
-        // Init transformer
-        r2->unk0 = 0;
-        r2->unk2 = 0x100;
-        r2->unk4 = 0x100;
-        r2->unk6[0] = x;
-        r2->unk6[1] = y;
+        // Init transform
+        transform->unk0 = 0;
+        transform->width = 0x100;
+        transform->height = 0x100;
+        transform->x = x;
+        transform->y = y;
 
         sub_8004558(r7);
 
@@ -257,23 +257,23 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
         r7 = &platform->unk30;
 
-        // copy transformer
+        // copy transform
         DmaCopy16(3, &platform->unkC0, &platform->unkCC, 0xC);
 
         // Set the new params
         r7->unk10 = 0x71;
 
-        r2 = &platform->unkCC;
-        r2->unk6[1] = y - 0x10;
+        transform = &platform->unkCC;
+        transform->y = y - 0x10;
     }
 
     {
         Sprite *r7;
-        struct UNK_808D124_UNK180 *r2;
+        SpriteTransform *transform;
         // init base 2
         r7 = &platform->unk60;
 
-        // Copy the transformer
+        // Copy the transform
         DmaCopy16(3, &platform->unkC0, &platform->unkD8, 0xC);
 
         r7->graphics.dest
@@ -289,9 +289,9 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         r7->palId = 0;
         r7->unk10 = 0x72;
 
-        r2 = &platform->unkD8;
-        // Set the transformer props
-        r2->unk6[1] = y;
+        transform = &platform->unkD8;
+        // Set the transform props
+        transform->y = y;
 
         sub_8004558(r7);
 
@@ -299,16 +299,16 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);
         r7 = &platform->unk90;
 
-        // Copy the transformer
+        // Copy the transform
         DmaCopy16(3, &platform->unkD8, &platform->unkE4, 0xC);
-        r2 = &platform->unkE4;
+        transform = &platform->unkE4;
 
         // Update props
         r7->unk10 = 0x73;
 
         // used to help match atm
         r6 = y - 0x10;
-        r2->unk6[1] = r6;
+        transform->y = r6;
     }
 
     m4aSongNumStart(SE_278);
@@ -321,7 +321,7 @@ static void Task_PlatformBreakParticlesMain(void)
     Platform_D1C *platform = TaskGetStructPtr(gCurTask);
     Sprite *sprite;
     s16 width;
-    struct UNK_808D124_UNK180 *transform;
+    SpriteTransform *transform;
     if (platform->unkF0++ >= 0x3D) {
         TaskDestroy(gCurTask);
         return;
@@ -333,22 +333,22 @@ static void Task_PlatformBreakParticlesMain(void)
     sprite = &platform->unk0;
     transform = &platform->unkC0;
 
-    transform->unk6[1] += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += Q_24_8_TO_INT(platform->unkF2);
 
-    x = transform->unk6[0];
-    y = transform->unk6[1];
+    x = transform->x;
+    y = transform->y;
 
-    transform->unk6[0] -= gCamera.x;
-    transform->unk6[1] -= gCamera.y;
+    transform->x -= gCamera.x;
+    transform->y -= gCamera.y;
 
-    transform->unk6[0] -= platform->unkF0 * 2;
+    transform->x -= platform->unkF0 * 2;
 
-    width = transform->unk2 + 8;
+    width = transform->width + 8;
     if (width > 0x200) {
         width = 0x200;
     }
-    transform->unk2 = width;
-    transform->unk4 = width;
+    transform->width = width;
+    transform->height = width;
     transform->unk0 -= 0x2A;
 
     sprite->unk10 &= ~0x1F;
@@ -356,25 +356,25 @@ static void Task_PlatformBreakParticlesMain(void)
     sub_8004E14(sprite, transform);
     sub_80051E8(sprite);
 
-    transform->unk6[0] = x;
-    transform->unk6[1] = y;
+    transform->x = x;
+    transform->y = y;
 
     //
     sprite = &platform->unk30;
     transform = &platform->unkCC;
 
-    transform->unk6[1] += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += Q_24_8_TO_INT(platform->unkF2);
 
-    x = transform->unk6[0];
-    y = transform->unk6[1];
+    x = transform->x;
+    y = transform->y;
 
-    transform->unk6[0] -= gCamera.x;
-    transform->unk6[1] -= gCamera.y;
+    transform->x -= gCamera.x;
+    transform->y -= gCamera.y;
 
-    transform->unk6[0] += platform->unkF0;
+    transform->x += platform->unkF0;
 
-    transform->unk2 = width;
-    transform->unk4 = width;
+    transform->width = width;
+    transform->height = width;
     transform->unk0 += 0x2A;
 
     sprite->unk10 &= ~0x1F;
@@ -382,24 +382,24 @@ static void Task_PlatformBreakParticlesMain(void)
     sub_8004E14(sprite, transform);
     sub_80051E8(sprite);
 
-    transform->unk6[0] = x;
-    transform->unk6[1] = y;
+    transform->x = x;
+    transform->y = y;
 
     //
     sprite = &platform->unk60;
     transform = &platform->unkD8;
 
-    transform->unk6[1] += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += Q_24_8_TO_INT(platform->unkF2);
 
-    x = transform->unk6[0];
-    y = transform->unk6[1];
+    x = transform->x;
+    y = transform->y;
 
-    transform->unk6[0] -= gCamera.x;
-    transform->unk6[1] -= gCamera.y;
-    transform->unk6[0] += platform->unkF0 * 2;
+    transform->x -= gCamera.x;
+    transform->y -= gCamera.y;
+    transform->x += platform->unkF0 * 2;
 
-    transform->unk2 = width;
-    transform->unk4 = width;
+    transform->width = width;
+    transform->height = width;
     transform->unk0 += 0xE;
 
     sprite->unk10 &= ~0x1F;
@@ -407,24 +407,24 @@ static void Task_PlatformBreakParticlesMain(void)
     sub_8004E14(sprite, transform);
     sub_80051E8(sprite);
 
-    transform->unk6[0] = x;
-    transform->unk6[1] = y;
+    transform->x = x;
+    transform->y = y;
 
     //
     sprite = &platform->unk90;
     transform = &platform->unkE4;
 
-    transform->unk6[1] += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += Q_24_8_TO_INT(platform->unkF2);
 
-    x = transform->unk6[0];
-    y = transform->unk6[1];
+    x = transform->x;
+    y = transform->y;
 
-    transform->unk6[0] -= gCamera.x;
-    transform->unk6[1] -= gCamera.y;
-    transform->unk6[0] -= platform->unkF0;
+    transform->x -= gCamera.x;
+    transform->y -= gCamera.y;
+    transform->x -= platform->unkF0;
 
-    transform->unk2 = width;
-    transform->unk4 = width;
+    transform->width = width;
+    transform->height = width;
     transform->unk0 -= 0xE;
 
     sprite->unk10 &= ~0x1F;
@@ -432,8 +432,8 @@ static void Task_PlatformBreakParticlesMain(void)
     sub_8004E14(sprite, transform);
     sub_80051E8(sprite);
 
-    transform->unk6[0] = x;
-    transform->unk6[1] = y;
+    transform->x = x;
+    transform->y = y;
 }
 
 static void TaskDestructor_CommonPlatformThin(struct Task *t)

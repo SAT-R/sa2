@@ -14,9 +14,9 @@ typedef struct {
     SpriteBase base; /* 0x00 */
     Sprite box; /* 0x0C*/
     Sprite identifier; /* 0x3C */
-    struct UNK_808D124_UNK180 transformer;
-    s32 unk78; // x
-    s32 unk7C; // y
+    SpriteTransform transform;
+    s32 x; // x
+    s32 y; // y
     s16 unk80;
     u8 unk82;
     u8 unk83;
@@ -70,8 +70,8 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     itemBox = TaskGetStructPtr(t);
     itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
     itemBox->unk80 = 0;
-    itemBox->unk78 = TO_WORLD_POS(me->x, spriteRegionX);
-    itemBox->unk7C = TO_WORLD_POS(me->y, spriteRegionY);
+    itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
+    itemBox->y = TO_WORLD_POS(me->y, spriteRegionY);
     itemBox->base.regionX = spriteRegionX;
     itemBox->base.regionY = spriteRegionY;
     itemBox->base.me = me;
@@ -113,7 +113,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 static void sub_808616C(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
-    struct UNK_808D124_UNK180 *transformer;
+    SpriteTransform *transform;
     Sprite *identifier;
 
     itemBox->unk82
@@ -127,12 +127,12 @@ static void sub_808616C(void)
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
-    transformer = &itemBox->transformer;
-    transformer->unk0 = 0;
-    transformer->unk2 = 0x100;
-    transformer->unk4 = 0;
-    transformer->unk6[0] = 0;
-    transformer->unk6[1] = 0;
+    transform = &itemBox->transform;
+    transform->unk0 = 0;
+    transform->width = 0x100;
+    transform->height = 0;
+    transform->x = 0;
+    transform->y = 0;
     gCurTask->main = sub_808623C;
     sub_808623C();
 }
@@ -169,18 +169,18 @@ static void sub_808623C(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
 
-    struct UNK_808D124_UNK180 *transformer = &itemBox->transformer;
-    transformer->unk6[0] = itemBox->unk78 - gCamera.x;
-    transformer->unk6[1] = itemBox->unk7C - gCamera.y;
+    SpriteTransform *transform = &itemBox->transform;
+    transform->x = itemBox->x - gCamera.x;
+    transform->y = itemBox->y - gCamera.y;
 
-    transformer->unk4 += 8;
+    transform->height += 8;
 
-    if (transformer->unk4 >= 0x100) {
+    if (transform->height >= 0x100) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
         itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        transformer->unk4 = 0x100;
+        transform->height = 0x100;
         itemBox->unk80 = 0;
         gCurTask->main = sub_80865E4;
 
@@ -194,8 +194,8 @@ static void sub_808623C(void)
     itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
     itemBox->identifier.unk10 |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transformer);
-    sub_8004860(&itemBox->identifier, transformer);
+    sub_8004860(&itemBox->box, transform);
+    sub_8004860(&itemBox->identifier, transform);
     sub_80051E8(&itemBox->box);
     sub_80051E8(&itemBox->identifier);
 }
@@ -223,18 +223,18 @@ static void sub_808636C(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
 
-    struct UNK_808D124_UNK180 *transformer = &itemBox->transformer;
-    transformer->unk6[0] = itemBox->unk78 - gCamera.x;
-    transformer->unk6[1] = itemBox->unk7C - gCamera.y;
+    SpriteTransform *transform = &itemBox->transform;
+    transform->x = itemBox->x - gCamera.x;
+    transform->y = itemBox->y - gCamera.y;
 
-    transformer->unk4 -= 8;
+    transform->height -= 8;
 
-    if (transformer->unk4 < 1) {
+    if (transform->height < 1) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
         itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        transformer->unk4 = 0x100;
+        transform->height = 0x100;
         gCurTask->main = sub_808673C;
 
         sub_808673C_inline();
@@ -247,8 +247,8 @@ static void sub_808636C(void)
     itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
     itemBox->identifier.unk10 |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transformer);
-    sub_8004860(&itemBox->identifier, transformer);
+    sub_8004860(&itemBox->box, transform);
+    sub_8004860(&itemBox->identifier, transform);
     sub_80051E8(&itemBox->box);
     sub_80051E8(&itemBox->identifier);
 }
@@ -267,7 +267,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     itemBox->base.me->d.sData[1] += 1;
 
     m4aSongNumStart(SE_ITEM_BOX_2);
-    sub_800B9B8(itemBox->unk78, itemBox->unk7C);
+    sub_800B9B8(itemBox->x, itemBox->y);
     itemBox->unk83 = 0;
     unk5510 = sub_8019224();
 
@@ -400,34 +400,34 @@ static void sub_808673C(void)
 
 static inline void sub_808679C_inline(void)
 {
-    struct UNK_808D124_UNK180 *transformer;
+    SpriteTransform *transform;
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
-    transformer = &itemBox->transformer;
-    transformer->unk0 = 0;
-    transformer->unk2 = 0x100;
-    transformer->unk4 = 0x100;
-    transformer->unk6[0] = 0;
-    transformer->unk6[1] = 0;
+    transform = &itemBox->transform;
+    transform->unk0 = 0;
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = 0;
+    transform->y = 0;
     gCurTask->main = sub_808636C;
     sub_808636C();
 }
 
 static void sub_808679C(void)
 {
-    struct UNK_808D124_UNK180 *transformer;
+    SpriteTransform *transform;
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
-    transformer = &itemBox->transformer;
-    transformer->unk0 = 0;
-    transformer->unk2 = 0x100;
-    transformer->unk4 = 0x100;
-    transformer->unk6[0] = 0;
-    transformer->unk6[1] = 0;
+    transform = &itemBox->transform;
+    transform->unk0 = 0;
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = 0;
+    transform->y = 0;
     gCurTask->main = sub_808636C;
     sub_808636C();
 }
@@ -449,7 +449,7 @@ static void sub_8086804(Sprite_MysteryItemBox *unused)
 static void sub_8086858(Sprite_MysteryItemBox *itemBox)
 {
     m4aSongNumStart(SE_ITEM_BOX_2);
-    sub_800B9B8(itemBox->unk78, itemBox->unk7C);
+    sub_800B9B8(itemBox->x, itemBox->y);
     itemBox->unk83 = 0;
     gCurTask->main = sub_80866AC;
 }
@@ -462,8 +462,8 @@ static void sub_8086890(Sprite_MysteryItemBox *itemBox)
 
 static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
 {
-    itemBox->box.x = itemBox->unk78 - gCamera.x;
-    itemBox->box.y = itemBox->unk7C - gCamera.y;
+    itemBox->box.x = itemBox->x - gCamera.x;
+    itemBox->box.y = itemBox->y - gCamera.y;
     itemBox->identifier.x = itemBox->box.x;
     itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->unk80);
 
@@ -476,8 +476,8 @@ static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
 
 static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)
 {
-    s16 x = itemBox->unk78 - gCamera.x;
-    s16 y = itemBox->unk7C - gCamera.y;
+    s16 x = itemBox->x - gCamera.x;
+    s16 y = itemBox->y - gCamera.y;
 
     if (IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)) {
         return TRUE;
@@ -489,11 +489,10 @@ static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)
 static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
 {
     if (PLAYER_IS_ALIVE) {
-        if (sub_800C944(&itemBox->box, itemBox->unk78, itemBox->unk7C) != 0) {
+        if (sub_800C944(&itemBox->box, itemBox->x, itemBox->y) != 0) {
             itemBox->unk84 = 1;
             return TRUE;
-        } else if (sub_800C204(&itemBox->box, itemBox->unk78, itemBox->unk7C, 0,
-                               &gPlayer, 0)
+        } else if (sub_800C204(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0)
                    == 0) {
 #ifndef NON_MATCHING
         ret0:

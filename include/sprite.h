@@ -216,16 +216,13 @@ typedef struct {
     /* 0x28 */ Sprite_UNK28 unk28[1];
 } Sprite /* size = 0x30 */;
 
-// Transformer
-struct UNK_808D124_UNK180 {
-    u16 unk0;
-    // width
-    s16 unk2;
-    // height
-    s16 unk4;
-    // pos
-    s16 unk6[2];
-}; /* size 0xA */
+typedef struct {
+    /* 0x00 */ u16 unk0;
+    /* 0x02 */ s16 width;
+    /* 0x04 */ s16 height;
+    /* 0x06 */ s16 x;
+    /* 0x08 */ s16 y;
+} SpriteTransform; /* size 0xA */
 
 typedef struct {
     /* 0x00 */ u32 numTiles;
@@ -244,8 +241,8 @@ void DrawToOamBuffer(void);
 OamData *sub_80058B4(u8 size);
 
 // TransformSprite
-void sub_8004860(Sprite *, struct UNK_808D124_UNK180 *);
-void sub_8004E14(Sprite *, struct UNK_808D124_UNK180 *);
+void sub_8004860(Sprite *, SpriteTransform *);
+void sub_8004E14(Sprite *, SpriteTransform *);
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  BgAffineReg *affine);

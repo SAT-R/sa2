@@ -4118,6 +4118,8 @@ _0801F154:
 	bx r1
 	.align 2, 0
 
+@; The data-structure the task-parameter uses
+@; is 'TaskStrc_801F15C', defined in game.h
 	thumb_func_start sub_801F15C
 sub_801F15C: @ 0x0801F15C
 	push {r4, r5, r6, lr}

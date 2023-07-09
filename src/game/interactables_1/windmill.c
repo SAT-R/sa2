@@ -9,7 +9,7 @@
 
 typedef struct {
     /* 0x00 */ Sprite sprite;
-    /* 0x30 */ struct UNK_808D124_UNK180 transformConfig;
+    /* 0x30 */ SpriteTransform transform;
 } BladePiece;
 
 typedef struct {
@@ -92,7 +92,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 static void Task_WindmillMain(void)
 {
     u8 i, j;
-    struct UNK_808D124_UNK180 *transformConfig;
+    SpriteTransform *transform;
     InteractableWindmill *windmill = TaskGetStructPtr(gCurTask);
     Sprite *sprite = &windmill->center;
     MapEntity *me = windmill->base.me;
@@ -120,21 +120,21 @@ static void Task_WindmillMain(void)
             u32 temp, mask, r0;
 
             sprite = &windmill->blades[i * 4 + j].sprite;
-            transformConfig = &windmill->blades[i * 4 + j].transformConfig;
+            transform = &windmill->blades[i * 4 + j].transform;
             temp = (gUnknown_03005590 * 2 + (i * 256));
 
             sprite->x
                 = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
             sprite->y
                 = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
-            transformConfig->unk0 = CLAMP_SIN_PERIOD(temp);
-            transformConfig->unk2 = 256;
-            transformConfig->unk4 = 256;
-            transformConfig->unk6[0] = sprite->x;
-            transformConfig->unk6[1] = sprite->y;
+            transform->unk0 = CLAMP_SIN_PERIOD(temp);
+            transform->width = 256;
+            transform->height = 256;
+            transform->x = sprite->x;
+            transform->y = sprite->y;
 
             sprite->unk10 = (gUnknown_030054B8++ | 0x1060);
-            sub_8004860(sprite, transformConfig);
+            sub_8004860(sprite, transform);
             sub_80051E8(sprite);
         }
     }

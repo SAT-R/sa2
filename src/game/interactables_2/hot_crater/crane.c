@@ -609,7 +609,7 @@ static bool32 sub_8074260(Sprite_HCCrane *crane)
 
 static void sub_80742A8(Sprite_HCCrane *crane)
 {
-    struct UNK_808D124_UNK180 some;
+    SpriteTransform transform;
     u8 i;
     for (i = 0; i < ARRAY_COUNT(crane->cs); i++) {
         CraneStruct *cs = &crane->cs[i];
@@ -620,16 +620,16 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
             if (cs->unk4 & 0x1) {
                 u8 v;
-                some.unk0 = cs->unk14;
-                some.unk2 = 0x100;
-                some.unk4 = 0x100;
+                transform.unk0 = cs->unk14;
+                transform.width = 0x100;
+                transform.height = 0x100;
 
-                some.unk6[0] = cs->s->x;
-                some.unk6[1] = cs->s->y;
+                transform.x = cs->s->x;
+                transform.y = cs->s->y;
 
                 cs->s->unk10 = gUnknown_030054B8++ | 0x00002060;
 
-                sub_8004860(cs->s, &some);
+                sub_8004860(cs->s, &transform);
             }
             sub_80051E8(cs->s);
         }
