@@ -113,7 +113,7 @@ struct UNK_3005A70 {
 extern u8 gUnknown_0300543C;
 
 extern struct Task *gEntitesManagerTask;
-extern u8 gUnknown_03005B34;
+extern u8 gSmallAirBubbleCount;
 
 extern u8 gUnknown_030054E4;
 
@@ -539,7 +539,7 @@ typedef struct {
     /* 0x14 */ u16 unk14;
     /* 0x16 */ AnimId playerAnim;
     /* 0x18 */ u16 playerVariant;
-    /* 0x1A */ u16 unk1A;
+    /* 0x1A */ u8 unk1A;
     /* 0x1C */ Sprite s;
     /* 0x4C */ SpriteTransform transform;
 } TaskStrc_801F15C; /* size: 0x58 */
