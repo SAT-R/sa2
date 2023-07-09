@@ -22,6 +22,9 @@
 
 tileset_%.4bpp: tileset_%.png
 	$(GFX) $< $@ -ignore_trailing
+    
+tiles.8bpp: tiles.png
+	$(GFX) $< $@ -ignore_trailing
 
 graphics/obj_tiles/4bpp/%.4bpp: graphics/obj_tiles/4bpp/%.png
 	$(GFX) $< $@ -split_into_oam_shapes
