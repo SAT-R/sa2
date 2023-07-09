@@ -6,16 +6,18 @@
 
 #include "game/game.h"
 #include "game/game_5.h"
-#include "game/save.h"
-#include "game/race_progress.h"
-#include "game/multiboot/collect_rings/time_display.h"
-#include "game/time_attack/lobby.h"
 #include "game/game_over.h"
+#include "game/multiboot/collect_rings/time_display.h"
+#include "game/race_progress.h"
+#include "game/save.h"
+#include "game/screen_shake.h"
 #include "game/stage/entities_manager.h"
 #include "game/stage/rings_manager.h"
 #include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
+#include "game/stage/pause_menu.h"
 #include "game/stage/spot_light.h"
+#include "game/time_attack/lobby.h"
 
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
@@ -674,10 +676,6 @@ void CreateGameStage(void)
     }
 }
 
-void CreatePauseMenu(void);
-
-void sub_802B4F8(s32, s32, s32, s32, s32);
-
 void sub_801AB3C(void)
 {
     u16 sioId = SIO_MULTI_CNT->id;
@@ -779,7 +777,7 @@ void sub_801AB3C(void)
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
-                sub_802B4F8(0x800, 8, 16, -1, 208);
+                CreateScreenShake(0x800, 8, 16, -1, 208);
             }
             gPlayer.moveState |= 0x80;
             m4aSongNumStart(SE_149);

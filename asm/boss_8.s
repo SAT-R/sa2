@@ -414,7 +414,7 @@ _0804AA0A:
 	movs r1, #0x10
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 _0804AA26:
 	ldr r0, [r5, #0x14]
 	movs r1, #0x1e
