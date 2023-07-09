@@ -4,6 +4,62 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/game_2.h"
+#include "game/game_3.h"
+
+#include "constants/animations.h"
+
+void Task_802B1AC(void);
+
+// Called when air bubbles spawn underwater
+struct Task *sub_802B018(s32 p0, s32 p1, s32 p2, s32 p3)
+{
+    if ((s8)gUnknown_03005B34 > 11) {
+        return NULL;
+    } else {
+        struct Task *t;
+        TaskStrc_801F15C *ts;
+        Sprite *s;
+        SpriteTransform *transform;
+
+        gUnknown_03005B34++;
+
+        t = sub_801F15C(0, 0, 0, 0, Task_802B1AC, TaskDestructor_802B3EC);
+
+        ts = TaskGetStructPtr(t);
+        s = &ts->s;
+        transform = &ts->transform;
+
+        ts->x = p0;
+        ts->y = p1;
+        ts->unk8 = p2;
+        ts->unkA = -0x80;
+        ts->unk10 = 0;
+        ts->unk12 = 0x100;
+        ts->unk14 = 0;
+
+        if (p3 == 0) {
+            s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2A40);
+            s->graphics.anim = SA2_ANIM_BUBBLES_SMALL;
+            s->variant = 0;
+        } else {
+            s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2AC0);
+            s->graphics.anim = SA2_ANIM_BUBBLES_GROUP;
+            s->variant = 0;
+
+            ts->unk14 = (((u32)PseudoRandom32() & 0x30000) >> 16);
+        }
+
+        s->unk1A = 0x240;
+
+        transform->unk0 = 0;
+        transform->width = 0;
+        transform->height = 0;
+        transform->x = 0;
+        transform->y = 0;
+
+        return t;
+    }
+}
 
 bool32 sub_802B118(Player *p)
 {
@@ -31,7 +87,7 @@ bool32 sub_802B118(Player *p)
     return result;
 }
 
-void Task_802B1AC()
+void Task_802B1AC(void)
 {
     TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
     Sprite *s = &ts->s;
