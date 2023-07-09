@@ -441,7 +441,9 @@ extern SomeStruct_3005498 gUnknown_03005498;
 // Or maybe this is generally used to init common palettes for the GUI?
 struct SomeStruct_5660 {
     /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
-    /* 0x01 */ u8 filler1[15];
+    /* 0x01 */ u8 filler1[3];
+    /* 0x04 */ s16 unk4;
+    /* 0x06 */ u8 filler6[0xA];
     /* 0x10 */ struct Task
         *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
 };
@@ -527,8 +529,14 @@ extern void sub_80157C8(TrickBoundPos *pos, u8 index);
 
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
-    /* 0x00 */ u8 filler0[0xC];
-    /* 0x0C */ u8 fillerC[0xA];
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
+    /* 0x0C */ u8 fillerC[0x4];
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ u16 unk12;
+    /* 0x14 */ u16 unk14;
     /* 0x16 */ AnimId playerAnim;
     /* 0x18 */ u16 playerVariant;
     /* 0x1A */ u16 unk1A;
