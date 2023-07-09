@@ -5,6 +5,7 @@
 .syntax unified
 .text
 
+.if 01
 	thumb_func_start Task_DrowningCountdown
 Task_DrowningCountdown: @ 0x0802AE6C
 	push {r4, r5, r6, r7, lr}
@@ -13,9 +14,9 @@ Task_DrowningCountdown: @ 0x0802AE6C
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
-	adds r4, r0, r1
+	adds r4, r0, r1     @ r4 = ts
 	adds r1, #0x1c
-	adds r6, r0, r1
+	adds r6, r0, r1     @ r6 = s
 	adds r1, #0x30
 	adds r5, r0, r1
 	ldr r0, [r4]
@@ -80,6 +81,7 @@ _0802AEF0: .4byte gCurTask
 _0802AEF4:
 	cmp r0, #0x40
 	bgt _0802AF1C
+__0802AEF8:
 	ldr r1, _0802AF58 @ =gSineTable
 	movs r2, #0x10
 	ldrsh r0, [r4, r2]
@@ -129,6 +131,4 @@ _0802AF50:
 	.align 2, 0
 _0802AF58: .4byte gSineTable
 _0802AF5C: .4byte gUnknown_030054B8
-
-.if 0
 .endif
