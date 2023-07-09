@@ -119,6 +119,7 @@ struct MapHeader {
     /* 0x22 */ u16 mapHeight; // in Metatiles
 };
 
+// Thanks @MainMemory_ for figuring out how collision works!
 typedef struct {
     const u8 *height_map;
     const u8 *tile_rotation;
