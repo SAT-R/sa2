@@ -1,14 +1,15 @@
 #ifndef GUARD_ZONES_H
 #define GUARD_ZONES_H
 
-#define ZONE_1     0
-#define ZONE_2     1
-#define ZONE_3     2
-#define ZONE_4     3
-#define ZONE_5     4
-#define ZONE_6     5
-#define ZONE_7     6
-#define ZONE_FINAL 7
+#define ZONE_1      0
+#define ZONE_2      1
+#define ZONE_3      2
+#define ZONE_4      3
+#define ZONE_5      4
+#define ZONE_6      5
+#define ZONE_7      6
+#define ZONE_FINAL  7
+#define ZONE_UNUSED 8
 
 #define ACT_1      0
 #define ACT_2      1

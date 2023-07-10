@@ -65,7 +65,8 @@ static void Task_DrowningCountdown(void)
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 {
     struct Camera *cam = &gCamera;
-    struct Task *t = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, sub_801F550);
+    struct Task *t
+        = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_801F550);
     TaskStrc_801F15C *ts = TaskGetStructPtr(t);
     Sprite *s;
     SpriteTransform *transform;

@@ -628,9 +628,10 @@ s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
 typedef void (*Func801F100)(s32, s32, s32);
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
-extern void sub_801F78C(void);
-
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern void TaskDestructor_801F550(struct Task *);
+
+extern void sub_801F78C(void);
 
 extern void sub_8021350(void);
 

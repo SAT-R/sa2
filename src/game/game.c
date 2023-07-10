@@ -79,8 +79,8 @@ void sub_801BEB8(void);
 void sub_801BF24(void);
 
 void sub_802C668(s32 *, s32 *);
-void sub_801E0A8(void);
-void sub_801E040(struct Task *);
+void Task_801E0A8(void);
+void TaskDestructor_801E040(struct Task *);
 
 struct Backgrounds {
     Background unk0;
@@ -247,51 +247,51 @@ const u16 gUnknown_080D5964[][2] = {
     { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 },
 };
 
-void sub_801C774(void);
+void StageInit_Zone1(void);
 void sub_801CB74(void);
 void SetupSpotlightSnowAndCreateSpotlights(void);
-void sub_801CEE4(void);
-void sub_801D104(void);
-void sub_801D1A8(void);
-void sub_801D95C(void);
-void sub_801DF08(void);
-void sub_801E118(void);
-void sub_801E12C(void);
+void StageInit_Zone5(void);
+void StageInit_Zone6_Acts(void);
+void StageInit_Zone6_Boss(void);
+void StageInit_Zone7(void);
+void StageInit_ZoneFinal_0(void);
+void StageInit_Zone2(void);
+void nullsub_801E12C(void);
 const VoidFn gUnknown_080D5988[] = {
-    sub_801C774,
-    sub_801C774,
-    sub_801C774,
-    NULL, // Anti-Formatting
-    sub_801E118,
-    sub_801E118,
-    sub_801E118,
-    NULL, //
-    sub_801CB74,
-    sub_801CB74,
-    sub_801CB74,
-    NULL, //
-    SetupSpotlightSnowAndCreateSpotlights,
-    SetupSpotlightSnowAndCreateSpotlights,
-    sub_801E12C,
-    NULL, //
-    sub_801CEE4,
-    sub_801CEE4,
-    NULL,
-    NULL, //
-    sub_801D104,
-    sub_801D104,
-    sub_801D1A8,
-    NULL, //
-    sub_801D95C,
-    sub_801D95C,
-    sub_801D95C,
-    NULL, //
-    NULL,
-    sub_801DF08,
-    sub_801C774,
-    NULL, //
-    NULL,
-    NULL,
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = NULL, // Anti-Formatting
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = StageInit_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = StageInit_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageInit_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = sub_801CB74,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = sub_801CB74,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = sub_801CB74,
+    [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = SetupSpotlightSnowAndCreateSpotlights,
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = SetupSpotlightSnowAndCreateSpotlights,
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = nullsub_801E12C,
+    [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = StageInit_Zone5,
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = StageInit_Zone5,
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = NULL,
+    [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageInit_Zone6_Acts,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageInit_Zone6_Acts,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageInit_Zone6_Boss,
+    [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = StageInit_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = StageInit_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = StageInit_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = NULL,       // This doesn't make sense...
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = StageInit_ZoneFinal_0,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = NULL, //
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = NULL,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
 void sub_801C818(s32, s32);
@@ -300,7 +300,7 @@ void sub_801CBE8(s32, s32);
 void sub_801CDF0(s32, s32);
 void sub_801CF60(s32, s32);
 void sub_801D534(s32, s32);
-void sub_801E130(s32, s32);
+void nullsub_801E130(s32, s32);
 void sub_801E134(s32, s32);
 void sub_801E1A4(s32, s32);
 void sub_801E1D0(s32, s32);
@@ -310,15 +310,15 @@ void sub_801E26C(s32, s32);
 void sub_801E2E0(s32, s32);
 void sub_801E310(s32, s32);
 void sub_801E360(s32, s32);
-const CameraMain gUnknown_080D5A10[] = {
-    sub_801C818, sub_801C818, sub_801E134, sub_801E130, // Anti-Formatting
-    sub_801C94C, sub_801C94C, sub_801E1A4, sub_801E130, //
-    sub_801CBE8, sub_801CBE8, sub_801E1D0, sub_801E130, //
-    sub_801CDF0, sub_801CDF0, sub_801E130, sub_801E130, //
-    sub_801CF60, sub_801CF60, sub_801E1E4, sub_801E130, //
-    sub_801D534, sub_801D534, sub_801E234, sub_801E130, //
-    sub_801E26C, sub_801E26C, sub_801E2E0, sub_801E130, //
-    sub_801E310, sub_801E360, sub_801C818, sub_801C94C, //
+const CameraMain gUnknown_080D5A10[NUM_LEVEL_IDS] = {
+    sub_801C818, sub_801C818, sub_801E134,     nullsub_801E130, // Zone 1
+    sub_801C94C, sub_801C94C, sub_801E1A4,     nullsub_801E130, // Zone 2
+    sub_801CBE8, sub_801CBE8, sub_801E1D0,     nullsub_801E130, // Zone 3
+    sub_801CDF0, sub_801CDF0, nullsub_801E130, nullsub_801E130, // Zone 4
+    sub_801CF60, sub_801CF60, sub_801E1E4,     nullsub_801E130, // Zone 5
+    sub_801D534, sub_801D534, sub_801E234,     nullsub_801E130, // Zone 6
+    sub_801E26C, sub_801E26C, sub_801E2E0,     nullsub_801E130, // Zone 7
+    sub_801E310, sub_801E360, sub_801C818,     sub_801C94C, // Zone Final
     sub_801C818, sub_801D534,
 };
 
@@ -1087,7 +1087,7 @@ void sub_801B5BC(void)
     }
 }
 
-void sub_801E028(void);
+void DestroyCameraMovementTask(void);
 void sub_80299FC(Player *player);
 
 void sub_801B68C(void)
@@ -1095,7 +1095,7 @@ void sub_801B68C(void)
     TaskDestroy(gGameStageTask);
     gGameStageTask = NULL;
     sub_80299FC(&gPlayer);
-    sub_801E028();
+    DestroyCameraMovementTask();
 }
 
 void sub_801B6B4(void)
@@ -1613,7 +1613,7 @@ void sub_801C068(u32 level)
     camera->unk60 = 0;
     camera->unk62 = 0;
 
-    camera->movementTask = TaskCreate(sub_801E0A8, 0, 0xF00, 0, sub_801E040);
+    camera->movementTask = TaskCreate(Task_801E0A8, 0, 0xF00, 0, TaskDestructor_801E040);
 
     camera->unk58 = gUnknown_080D5A10[level];
 
@@ -1826,7 +1826,7 @@ void sub_801C708(s32 x, s32 y)
     }
 }
 
-void sub_801C774(void)
+void StageInit_Zone1(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= 0x100;
@@ -2097,7 +2097,7 @@ void sub_801CDF0(s32 a, s32 b)
     gBgScrollRegs[3][1] = b >> 6;
 }
 
-void sub_801CEE4(void)
+void StageInit_Zone5(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     if (IS_SINGLE_PLAYER) {
@@ -2184,9 +2184,9 @@ void sub_801CF60(s32 UNUSED a, s32 UNUSED b)
     }
 }
 
-void sub_801D1A8(void);
+void StageInit_Zone6_Boss(void);
 
-void sub_801D104(void)
+void StageInit_Zone6_Acts(void)
 {
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1a0f;
@@ -2203,13 +2203,13 @@ void sub_801D104(void)
     gUnknown_03005590 = 0x380;
 
     if (IS_MULTI_PLAYER) {
-        sub_801D1A8();
+        StageInit_Zone6_Boss();
     }
     gBgCntRegs[3] &= ~(1 | 2);
     gBgCntRegs[3] |= 2;
 }
 
-void sub_801D1A8(void)
+void StageInit_Zone6_Boss(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= 0x100;
