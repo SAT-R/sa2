@@ -234,8 +234,8 @@ typedef struct Player_ {
 
     /* 0x24 */ u8 rotation;
     /* 0x25 */ u8 filler25[1];
-    /* 0x26 */ s16 unk26;
-    /* 0x25 */ u8 filler28[2];
+    /* 0x26 */ s16 spindashAccel;
+    /* 0x28 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u16 timerInvincibility;

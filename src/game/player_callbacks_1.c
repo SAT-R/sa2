@@ -730,7 +730,7 @@ void PlayerCB_802631C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->unk26 = 0;
+    p->spindashAccel = 0;
     p->speedAirX = 0;
     p->speedAirY = 0;
     p->speedGroundX = 0;
@@ -751,7 +751,7 @@ void PlayerCB_Spindash(Player *player)
         s32 speed;
         player->moveState &= ~MOVESTATE_400;
 
-        index = Q_24_8_TO_INT(player->unk26);
+        index = Q_24_8_TO_INT(player->spindashAccel);
         if (index > 8)
             index = 8;
 
@@ -766,7 +766,7 @@ void PlayerCB_Spindash(Player *player)
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
         // _08026408
-        s16 pitch = player->unk26;
+        s16 pitch = player->spindashAccel;
 
         s16 pitch2 = pitch;
         if (pitch2 != 0) {
@@ -790,7 +790,7 @@ void PlayerCB_Spindash(Player *player)
             player->unk6C = 1;
         }
         // _08026490
-        player->unk26 = pitch;
+        player->spindashAccel = pitch;
 
         if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->unk6A == 1)
             && (s->unk10 & SPRITE_FLAG_MASK_14)) {
