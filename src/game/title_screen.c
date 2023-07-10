@@ -1672,13 +1672,13 @@ static void CreateLensFlareAnimation(void)
         = TaskCreate(Task_LensFlareAnim, sizeof(struct LensFlare), 0x2000, 0, 0);
     struct LensFlare *lensFlare = TaskGetStructPtr(t);
     Sprite *sprite;
-    SpriteTransform *transforms;
+    SpriteTransform *transform;
     u16 posX;
     u32 i;
 
     for (i = 0; i < 8; i++) {
         sprite = &lensFlare->sprites[i];
-        transforms = &lensFlare->transforms[i];
+        transform = &lensFlare->transforms[i];
 
         sprite->graphics.dest = VramMalloc(0x40);
 
@@ -1696,10 +1696,10 @@ static void CreateLensFlareAnimation(void)
         sprite->palId = 0;
         sprite->unk10 = i | 96;
 
-        transforms->unk0 = 0;
-        transforms->height = transforms->width = posX * 2 + 0xB0;
-        transforms->x = lensFlare->posSequenceX[i];
-        transforms->y = lensFlare->posSequenceY[i];
+        transform->unk0 = 0;
+        transform->height = transform->width = posX * 2 + 0xB0;
+        transform->x = lensFlare->posSequenceX[i];
+        transform->y = lensFlare->posSequenceY[i];
 
         sub_8004558(sprite);
     }
@@ -1714,7 +1714,7 @@ static void Task_LensFlareAnim(void)
 {
     struct LensFlare *lensFlare = TaskGetStructPtr(gCurTask);
     Sprite *sprite;
-    SpriteTransform *transforms;
+    SpriteTransform *transform;
     u32 i;
 
     lensFlare->unk202 += 3;
@@ -1729,18 +1729,18 @@ static void Task_LensFlareAnim(void)
     if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
             sprite = &lensFlare->sprites[i];
-            transforms = &lensFlare->transforms[i];
+            transform = &lensFlare->transforms[i];
 
             // Potentially a macro
-            transforms->x = sub_8085654(lensFlare->posSequenceX[i], -0x14,
-                                        lensFlare->animFrame * 16, 8, 0);
+            transform->x = sub_8085654(lensFlare->posSequenceX[i], -0x14,
+                                       lensFlare->animFrame * 16, 8, 0);
 
-            transforms->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202
-                                            - gBgScrollRegs[1][1],
-                                        -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
-                                        lensFlare->animFrame * 16, 8, 0);
+            transform->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202
+                                           - gBgScrollRegs[1][1],
+                                       -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
+                                       lensFlare->animFrame * 16, 8, 0);
 
-            sub_8004860(sprite, transforms);
+            sub_8004860(sprite, transform);
             sub_80051E8(sprite);
         }
     }
