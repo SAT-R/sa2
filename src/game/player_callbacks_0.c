@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/dust_cloud_brake.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/parameters/characters.h"
@@ -52,7 +53,6 @@ void sub_8015BD4(u16);
 
 void Task_801F214(void);
 void TaskDestructor_801F550(struct Task *);
-void sub_801F5CC(s32, s32);
 
 void sub_8022318(Player *p);
 void sub_8022838(Player *p);
@@ -1414,7 +1414,7 @@ void sub_801350C(Player *p)
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
-        sub_801F5CC(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + offsetY);
+        CreateBrakeDustCloud(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + offsetY);
     }
 
     sub_8022838(p);

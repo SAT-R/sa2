@@ -31,7 +31,7 @@ void GameStart(void)
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
 
-    gUnknown_030059D0[1] = 0;
+    gUnknown_030059D0.t = NULL;
     gUnknown_03005660.t = NULL;
 
     gUnknown_0300543C = 0;
