@@ -590,6 +590,7 @@ void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
 void sub_801F3A4(s32, s32, u32);
+void sub_801F550(struct Task *);
 
 // TODO: Find out return type
 void *sub_801F7DC();
