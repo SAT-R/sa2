@@ -43,7 +43,7 @@ UNUSED void sub_802B584(u16 jump, u16 attack, u16 trick)
     gLoadedSaveGame->buttonConfig.trick = controls->trick;
 }
 
-void setPlayerControls(u16 jump, u16 attack, u16 trick)
+void SetPlayerControls(u16 jump, u16 attack, u16 trick)
 {
     gPlayerControls.jump = jump;
     gPlayerControls.attack = attack;

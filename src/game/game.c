@@ -518,9 +518,9 @@ void ApplyGameStageSettings(void)
     }
 
     if ((gUnknown_03005424 & 0x40)) {
-        setPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
+        SetPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
-        setPlayerControls(gLoadedSaveGame->buttonConfig.jump,
+        SetPlayerControls(gLoadedSaveGame->buttonConfig.jump,
                           gLoadedSaveGame->buttonConfig.attack,
                           gLoadedSaveGame->buttonConfig.trick);
     }
