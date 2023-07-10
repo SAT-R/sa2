@@ -39,9 +39,9 @@ extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
-extern void sub_801F214(void);
+extern void Task_801F214(void);
 extern void sub_801F488(void);
-extern void sub_801F550(struct Task *);
+extern void TaskDestructor_801F550(struct Task *);
 extern void sub_801F5CC(s32, s32);
 
 extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
@@ -1835,7 +1835,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 
     u16 p2_ = p2;
 
-    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
 
     taskStrc = TaskGetStructPtr(t);
     taskStrc->playerAnim = gPlayer.unk68;
