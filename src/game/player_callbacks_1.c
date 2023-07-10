@@ -6,6 +6,7 @@
 #include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
+#include "game/spindash_dust_cloud.h" // CreateSpindashDustCloud
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/playerfn_cmds.h"
 
@@ -735,7 +736,7 @@ void PlayerCB_802631C(Player *p)
     p->speedGroundX = 0;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
-    sub_801F7DC();
+    CreateSpindashDustCloud();
 
     PLAYERFN_SET_AND_CALL(PlayerCB_Spindash, p);
 }
