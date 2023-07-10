@@ -90,6 +90,12 @@ SECTIONS
         build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
+        build/sa2/asm/game_1.o(.text);
+        build/sa2/asm/game_2.o(.text);
+        build/sa2/asm/spindash_dust_cloud.o(.text);
+        build/sa2/asm/spark_effect.o(.text);
+        build/sa2/asm/game_5_2.o(.text);
+        build/sa2/asm/game_6.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/src/game/item_tasks.o(.text);
         build/sa2/src/game/underwater_effects.o(.text);
@@ -302,6 +308,8 @@ SECTIONS
         build/sa2/src/data/tilemap_table.o(.rodata);
         build/sa2/src/game/stage/stage.o(.rodata);
         build/sa2/asm/game.o(.rodata);
+        build/sa2/asm/game_5_2.o(.rodata);
+        build/sa2/asm/game_6.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
