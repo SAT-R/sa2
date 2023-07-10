@@ -105,7 +105,8 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 
         gSmallAirBubbleCount++;
 
-        t = sub_801F15C(0, 0, 0, 0, Task_SpawnAirBubbles, TaskDestructor_SpawnAirBubbles);
+        t = sub_801F15C(0, 0, 0, 0, Task_SpawnAirBubbles,
+                        TaskDestructor_SpawnAirBubbles);
 
         ts = TaskGetStructPtr(t);
         s = &ts->s;
@@ -160,7 +161,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
                 randX = -randX;
 
             SpawnAirBubbles(p->x - randX, p->y - randY, p->speedAirX,
-                                 ((u32)PseudoRandom32() & 0x100) >> 8);
+                            ((u32)PseudoRandom32() & 0x100) >> 8);
 
             result = TRUE;
         }
@@ -250,7 +251,8 @@ static void Task_SpawnBubblesAfterDrowning(void)
 
 struct Task *SpawnBubblesAfterDrowning(Player *p)
 {
-    struct Task *t = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
     Player **refPlayer = TaskGetStructPtr(t);
     *refPlayer = p;
