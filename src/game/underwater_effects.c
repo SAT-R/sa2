@@ -4,16 +4,17 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
-#include "game/game_2.h"
+#include "game/underwater_effects.h"
 #include "game/game_3.h"
 
 #include "constants/animations.h"
 
-void Task_DrowningCountdown(void);
-void Task_802B1AC(void);
-void sub_801F550(struct Task *);
+static void Task_DrowningCountdown(void);
+static void Task_SpawnAirBubbles(void);
 
-void Task_DrowningCountdown(void)
+static void TaskDestructor_SpawnAirBubbles(struct Task *t);
+
+static void Task_DrowningCountdown(void)
 {
     TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
     Sprite *s = &ts->s;
@@ -92,7 +93,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 }
 
 // Called when air bubbles spawn underwater
-struct Task *SpawnDrowningBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
+struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 {
     if ((s8)gSmallAirBubbleCount > 11) {
         return NULL;
@@ -104,7 +105,7 @@ struct Task *SpawnDrowningBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 
         gSmallAirBubbleCount++;
 
-        t = sub_801F15C(0, 0, 0, 0, Task_802B1AC, TaskDestructor_802B3EC);
+        t = sub_801F15C(0, 0, 0, 0, Task_SpawnAirBubbles, TaskDestructor_SpawnAirBubbles);
 
         ts = TaskGetStructPtr(t);
         s = &ts->s;
@@ -142,7 +143,7 @@ struct Task *SpawnDrowningBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
     }
 }
 
-bool32 sub_802B118(Player *p)
+bool32 RandomlySpawnAirBubbles(Player *p)
 {
     u32 rand, randX, randY;
 
@@ -158,7 +159,7 @@ bool32 sub_802B118(Player *p)
             if (!(p->moveState & MOVESTATE_FACING_LEFT))
                 randX = -randX;
 
-            SpawnDrowningBubbles(p->x - randX, p->y - randY, p->speedAirX,
+            SpawnAirBubbles(p->x - randX, p->y - randY, p->speedAirX,
                                  ((u32)PseudoRandom32() & 0x100) >> 8);
 
             result = TRUE;
@@ -168,7 +169,7 @@ bool32 sub_802B118(Player *p)
     return result;
 }
 
-void Task_802B1AC(void)
+static void Task_SpawnAirBubbles(void)
 {
     TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
     Sprite *s = &ts->s;
@@ -219,7 +220,7 @@ void Task_802B1AC(void)
     }
 }
 
-void Task_802B2D8(void)
+static void Task_SpawnBubblesAfterDrowning(void)
 {
     Player **refPlayer = TaskGetStructPtr(gCurTask);
     Player *p = *refPlayer;
@@ -241,15 +242,15 @@ void Task_802B2D8(void)
 
                 r3 = ((u32)PseudoRandom32() & 0x100) >> 8;
 
-                SpawnDrowningBubbles(p->x + r1, p->y + r2 - 0xC00, 0, r3);
+                SpawnAirBubbles(p->x + r1, p->y + r2 - 0xC00, 0, r3);
             } while (r4-- != 0);
         }
     }
 }
 
-struct Task *sub_802B3BC(Player *p)
+struct Task *SpawnBubblesAfterDrowning(Player *p)
 {
-    struct Task *t = TaskCreate(Task_802B2D8, sizeof(Player **), 0x4001, 0, NULL);
+    struct Task *t = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
     Player **refPlayer = TaskGetStructPtr(t);
     *refPlayer = p;
@@ -257,4 +258,4 @@ struct Task *sub_802B3BC(Player *p)
     return t;
 }
 
-void TaskDestructor_802B3EC(struct Task *t) { gSmallAirBubbleCount--; }
+static void TaskDestructor_SpawnAirBubbles(struct Task *t) { gSmallAirBubbleCount--; }

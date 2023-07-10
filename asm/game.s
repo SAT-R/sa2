@@ -13646,9 +13646,9 @@ _080239D2:
 	adds r1, r1, r2
 	movs r2, #0
 	movs r3, #1
-	bl SpawnDrowningBubbles
+	bl SpawnAirBubbles
 	adds r0, r4, #0
-	bl sub_802B3BC
+	bl SpawnBubblesAfterDrowning
 _080239FC:
 	movs r0, #0x3c
 	strb r0, [r7]
@@ -13687,7 +13687,7 @@ _08023A34:
 	adds r1, r1, r2
 	movs r2, #0
 	movs r3, #0
-	bl SpawnDrowningBubbles
+	bl SpawnAirBubbles
 	b _08023B02
 	.align 2, 0
 _08023A48: .4byte 0xFFFFF400
