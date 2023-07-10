@@ -72,7 +72,7 @@
 #include "game/interactables_2/egg_utopia/flying_handle.h"
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 #include "game/interactables_2/egg_utopia/cannon.h"
-#include "game/interactables_2/egg_utopia/095.h"
+#include "game/interactables_2/egg_utopia/iron_ball.h"
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 #include "game/interactables_2/egg_utopia/launcher.h"
 
