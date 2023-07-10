@@ -13,6 +13,50 @@ void Task_DrowningCountdown(void);
 void Task_802B1AC(void);
 void sub_801F550(struct Task *);
 
+void Task_DrowningCountdown(void)
+{
+    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    Sprite *s = &ts->s;
+    SpriteTransform *transform = &ts->transform;
+
+    s32 r2;
+
+    {
+        struct Camera *cam = &gCamera;
+        transform->x = Q_24_8_TO_INT(ts->x);
+        transform->y = Q_24_8_TO_INT(ts->y);
+    }
+
+    r2 = ((ts->unk10 + 1) << 3);
+    r2 = MIN(r2, 0x100);
+
+    transform->width = r2;
+    transform->height = r2;
+
+    if (ts->unk14 & 0x1)
+        transform->width = -r2;
+
+    if (ts->unk14 & 0x2)
+        transform->height = -transform->height;
+
+    if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
+        || (ts->unk10 > 0x80)) {
+        TaskDestroy(gCurTask);
+        return;
+    } else if (ts->unk10 <= 0x40) {
+        ts->y += (-COS_24_8(ts->unk10 * 4) * ts->unkA) >> 8;
+    }
+
+    ts->unk10 += 1;
+
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->unk10 |= (gUnknown_030054B8++ | 0x20);
+
+    sub_8004558(s);
+    sub_8004860(s, transform);
+    sub_80051E8(s);
+}
+
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 {
     struct Camera *cam = &gCamera;
@@ -141,12 +185,10 @@ void Task_802B1AC(void)
         transform->x = Q_24_8_TO_INT(r1) - cam->x;
         transform->y = Q_24_8_TO_INT(r4) - cam->y;
     }
-    // TODO: MIN()!
-    r2 = ((unk10 + 1) << 4);
-    if (r2 > 0x100)
-        r2 = 0x100;
 
-    // _0802B200
+    r2 = ((unk10 + 1) << 4);
+    r2 = MIN(r2, 0x100);
+
     transform->width = r2;
     transform->height = r2;
 
@@ -156,15 +198,12 @@ void Task_802B1AC(void)
     if (ts->unk14 & 0x2)
         transform->height = -transform->height;
 
-    // _0802B222
     if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
         || ((u16)gUnknown_03005660.unk0 != 1) || (gUnknown_03005660.unk4 < 0)
         || (Q_24_8_TO_INT(r4) - 3 < gUnknown_03005660.unk4) || (ts->unk10 > 0x1E0)) {
         TaskDestroy(gCurTask);
         return;
     } else {
-        // _0802B27C
-        u8 byte;
         ts->x += ts->unk8;
         ts->y += ts->unkA;
 
@@ -172,8 +211,7 @@ void Task_802B1AC(void)
         ts->unk10 += 1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-        byte = gUnknown_030054B8++ | 0x20;
-        s->unk10 |= byte;
+        s->unk10 |= (gUnknown_030054B8++ | 0x20);
 
         sub_8004558(s);
         sub_8004860(s, transform);

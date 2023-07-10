@@ -92,7 +92,6 @@ SECTIONS
         build/sa2/asm/game.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
         build/sa2/src/game/item_tasks.o(.text);
-        build/sa2/asm/game_2.o(.text);
         build/sa2/src/game/game_2.o(.text);
         build/sa2/src/game/screen_shake.o(.text);
         build/sa2/src/game/game_5.o(.text);
