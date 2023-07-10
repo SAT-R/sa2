@@ -14,6 +14,10 @@ static void Task_SpawnAirBubbles(void);
 
 static void TaskDestructor_SpawnAirBubbles(struct Task *t);
 
+typedef struct {
+    Player *p;
+} DrownBubbles;
+
 static void Task_DrowningCountdown(void)
 {
     TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
@@ -223,8 +227,8 @@ static void Task_SpawnAirBubbles(void)
 
 static void Task_SpawnBubblesAfterDrowning(void)
 {
-    Player **refPlayer = TaskGetStructPtr(gCurTask);
-    Player *p = *refPlayer;
+    DrownBubbles *db = TaskGetStructPtr(gCurTask);
+    Player *p = db->p;
 
     if (IS_ALIVE(p)) {
         TaskDestroy(gCurTask);
@@ -254,8 +258,8 @@ struct Task *SpawnBubblesAfterDrowning(Player *p)
     struct Task *t
         = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
-    Player **refPlayer = TaskGetStructPtr(t);
-    *refPlayer = p;
+    DrownBubbles *db = TaskGetStructPtr(t);
+    db->p = p;
 
     return t;
 }
