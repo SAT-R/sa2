@@ -1,9 +1,11 @@
 #include "global.h"
 #include "core.h"
-#include "task.h"
-#include "game/interactables_2/egg_utopia/095.h"
 #include "malloc_vram.h"
+#include "task.h"
 #include "trig.h"
+#include "game/interactables_2/egg_utopia/095.h"
+
+#include "constants/animations.h"
 
 typedef struct {
     SpriteBase base;
@@ -53,7 +55,7 @@ void CreateEntity_095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = VramMalloc(0x12);
-    sprite->graphics.anim = 0x26A;
+    sprite->graphics.anim = SA2_ANIM_IRON_BALL;
     sprite->variant = 0;
     sub_8004558(sprite);
 
