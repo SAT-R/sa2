@@ -63,7 +63,14 @@ extern s8 gSelectedCharacter;
 extern u8 gMultiplayerLanguage;
 extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
-extern u32 gUnknown_030059D0[2];
+
+typedef struct {
+    s8 unk0;
+    u8 filler1[3];
+    struct Task *t;
+} UNK_30059D0;
+
+extern UNK_30059D0 gUnknown_030059D0;
 
 // Sometimes loaded as s16, but as u16 most of the time.
 // If you encounter it being loaded as s16, please cast it.
