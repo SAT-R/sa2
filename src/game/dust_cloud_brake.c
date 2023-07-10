@@ -18,6 +18,9 @@ void TaskDestructor_801F7A8(struct Task *);
 void Task_801F7B4(void);
 void TaskDestructor_801F7B8(struct Task *);
 
+/* This generates the Dust Clouds that appear while running and then braking by
+ * holding the DPAD in the other direction. */
+
 struct Task *CreateBrakeDustCloud(s32 x, s32 y)
 {
     if (gUnknown_030059D0.t == NULL || gUnknown_030059D0.unk0 == 0) {
