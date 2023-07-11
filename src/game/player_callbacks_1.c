@@ -6,6 +6,7 @@
 #include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
+#include "game/dust_cloud_brake.h" // CreateSpindashDustCloud
 #include "game/dust_cloud_spindash.h" // CreateSpindashDustCloud
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/playerfn_cmds.h"
@@ -43,9 +44,6 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
 extern void TaskDestructor_801F550(struct Task *);
-
-// TODO: own header!
-extern void CreateBrakeDustCloud(s32, s32);
 
 extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
 extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);
