@@ -614,8 +614,6 @@ extern void sub_80122DC(s32, s32);
 // HandleHitPlayer
 extern void sub_800C84C(Sprite *, s32, s32);
 
-extern void sub_800B9B8(s16, s16);
-
 extern void sub_801EB44(s32, s32, s32);
 extern void sub_801EC3C(s32, s32, s32);
 

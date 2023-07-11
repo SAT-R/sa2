@@ -9,6 +9,7 @@
 #include "game/entity.h"
 #include "game/item_tasks.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/stage/dust_cloud.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -137,7 +138,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
 
     m4aSongNumStart(SE_ITEM_BOX_2);
 
-    sub_800B9B8(itembox->x, itembox->y);
+    CreateDustCloud(itembox->x, itembox->y);
 
     itembox->frames = 0;
 
@@ -447,7 +448,7 @@ void sub_800B828(Entity_ItemBox *itembox)
 {
     m4aSongNumStart(SE_ITEM_BOX_2);
 
-    sub_800B9B8(itembox->x, itembox->y);
+    CreateDustCloud(itembox->x, itembox->y);
 
     itembox->frames = 0;
 

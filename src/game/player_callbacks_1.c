@@ -6,8 +6,8 @@
 #include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
-#include "game/dust_cloud_brake.h" // CreateSpindashDustCloud
-#include "game/dust_cloud_spindash.h" // CreateSpindashDustCloud
+#include "game/dust_effect_braking.h" // CreateSpindashDustEffect
+#include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/playerfn_cmds.h"
 
@@ -736,7 +736,7 @@ void PlayerCB_802631C(Player *p)
     p->speedGroundX = 0;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
-    CreateSpindashDustCloud();
+    CreateSpindashDustEffect();
 
     PLAYERFN_SET_AND_CALL(PlayerCB_Spindash, p);
 }
@@ -2951,7 +2951,7 @@ void sub_8029FA4(Player *p)
             u17 = -u17;
         }
 
-        CreateBrakeDustCloud(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + u17);
+        CreateBrakingDustEffect(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + u17);
     }
 }
 

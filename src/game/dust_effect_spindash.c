@@ -8,22 +8,22 @@
 
 typedef struct {
     Sprite s;
-} DustCloud;
+} DustEffect;
 
-void Task_SpindashDustCloud(void);
-void Task_SpindashDustCloudBig(void);
-void TaskDestructor_SpindashDustCloud(struct Task *);
+void Task_SpindashDustEffect(void);
+void Task_SpindashDustEffectBig(void);
+void TaskDestructor_SpindashDustEffect(struct Task *);
 
-struct Task *CreateSpindashDustCloud()
+struct Task *CreateSpindashDustEffect()
 {
-    struct Task *t = TaskCreate(Task_SpindashDustCloud, sizeof(DustCloud), 0x4001, 0,
-                                TaskDestructor_SpindashDustCloud);
+    struct Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0,
+                                TaskDestructor_SpindashDustEffect);
 
-    DustCloud *sdc = TaskGetStructPtr(t);
-    Sprite *s = &sdc->s;
+    DustEffect *sde = TaskGetStructPtr(t);
+    Sprite *s = &sde->s;
     s->graphics.dest = VramMalloc(20);
     s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_SPINDASH_DUST_CLOUD;
+    s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
     s->variant = 0;
     s->unk21 = 0xFF;
     s->unk1A = 0x200;
@@ -35,7 +35,7 @@ struct Task *CreateSpindashDustCloud()
     return t;
 }
 
-void Task_SpindashDustCloud(void)
+void Task_SpindashDustEffect(void)
 {
     struct Camera *cam;
     Player *p = &gPlayer;
@@ -46,14 +46,14 @@ void Task_SpindashDustCloud(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        DustCloud *sdc = TaskGetStructPtr(gCurTask);
-        Sprite *s = &sdc->s;
+        DustEffect *sde = TaskGetStructPtr(gCurTask);
+        Sprite *s = &sde->s;
 
         if (p->spindashAccel > Q_24_8(2.0)) {
-            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_CLOUD_BIG;
+            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT_BIG;
             s->variant = 0;
             s->unk21 = 0xFF;
-            gCurTask->main = Task_SpindashDustCloudBig;
+            gCurTask->main = Task_SpindashDustEffectBig;
         }
 
         cam = &gCamera;
@@ -90,7 +90,7 @@ void Task_SpindashDustCloud(void)
     }
 }
 
-void Task_SpindashDustCloudBig(void)
+void Task_SpindashDustEffectBig(void)
 {
     struct Camera *cam;
     Player *p = &gPlayer;
@@ -101,14 +101,14 @@ void Task_SpindashDustCloudBig(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        DustCloud *sdc = TaskGetStructPtr(gCurTask);
-        Sprite *s = &sdc->s;
+        DustEffect *sde = TaskGetStructPtr(gCurTask);
+        Sprite *s = &sde->s;
 
         if (p->spindashAccel <= Q_24_8(2.0)) {
-            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_CLOUD;
+            s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
             s->variant = 0;
             s->unk21 = 0xFF;
-            gCurTask->main = Task_SpindashDustCloud;
+            gCurTask->main = Task_SpindashDustEffect;
         }
 
         cam = &gCamera;
@@ -145,8 +145,8 @@ void Task_SpindashDustCloudBig(void)
     }
 }
 
-void TaskDestructor_SpindashDustCloud(struct Task *t)
+void TaskDestructor_SpindashDustEffect(struct Task *t)
 {
-    DustCloud *sdc = TaskGetStructPtr(t);
-    VramFree(sdc->s.graphics.dest);
+    DustEffect *sde = TaskGetStructPtr(t);
+    VramFree(sde->s.graphics.dest);
 }

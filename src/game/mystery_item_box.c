@@ -4,6 +4,7 @@
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/stage/dust_cloud.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
@@ -267,7 +268,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     itemBox->base.me->d.sData[1] += 1;
 
     m4aSongNumStart(SE_ITEM_BOX_2);
-    sub_800B9B8(itemBox->x, itemBox->y);
+    CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->unk83 = 0;
     unk5510 = sub_8019224();
 
@@ -449,7 +450,7 @@ static void sub_8086804(Sprite_MysteryItemBox *unused)
 static void sub_8086858(Sprite_MysteryItemBox *itemBox)
 {
     m4aSongNumStart(SE_ITEM_BOX_2);
-    sub_800B9B8(itemBox->x, itemBox->y);
+    CreateDustCloud(itemBox->x, itemBox->y);
     itemBox->unk83 = 0;
     gCurTask->main = sub_80866AC;
 }
