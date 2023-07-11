@@ -11,7 +11,7 @@ typedef struct {
     /* 0x04 */ u16 unk4;
     /* 0x06 */ u16 unk6;
     /* 0x08 */ Sprite s;
-} BrakeDustCloud;
+} BrakeDustEffect;
 
 void Task_801F6E0(void);
 void TaskDestructor_801F7A8(struct Task *);
@@ -21,33 +21,33 @@ void TaskDestructor_801F7B8(struct Task *);
 /* This generates the Dust Clouds that appear while running and then braking by
  * holding the DPAD in the other direction. */
 
-struct Task *CreateBrakeDustCloud(s32 x, s32 y)
+struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 {
     if (gUnknown_030059D0.t == NULL || gUnknown_030059D0.unk0 == 0) {
         return NULL;
     } else {
         struct Task *t;
-        BrakeDustCloud *bdc;
+        BrakeDustEffect *bde;
         Player *p;
         Sprite *s;
 
         gUnknown_030059D0.unk0--;
 
-        t = TaskCreate(Task_801F6E0, sizeof(BrakeDustCloud), 0x4001, 0,
+        t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0,
                        TaskDestructor_801F7B8);
 
-        bdc = TaskGetStructPtr(t);
-        bdc->x = x;
-        bdc->y = y;
-        bdc->unk4 = 0;
-        bdc->unk6 = 0;
+        bde = TaskGetStructPtr(t);
+        bde->x = x;
+        bde->y = y;
+        bde->unk4 = 0;
+        bde->unk6 = 0;
 
-        s = &bdc->s;
+        s = &bde->s;
         p = &gPlayer;
 
         if (p->moveState & MOVESTATE_8000000) {
             s->graphics.dest = VramMalloc(15);
-            s->graphics.anim = SA2_ANIM_BRAKE_EFFECT;
+            s->graphics.anim = SA2_ANIM_BRAKING_DUST_EFFECT;
             s->variant = 0;
             s->unk10 = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(X_FLIP, 1));
         } else {
@@ -75,21 +75,21 @@ struct Task *CreateBrakeDustCloud(s32 x, s32 y)
 void Task_801F6E0(void)
 {
     UNK_30059D0 *unk = &gUnknown_030059D0;
-    BrakeDustCloud *bdc = TaskGetStructPtr(gCurTask);
-    Sprite *s = &bdc->s;
+    BrakeDustEffect *bde = TaskGetStructPtr(gCurTask);
+    Sprite *s = &bde->s;
 
     if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_14) != 0) {
         unk->unk0++;
         TaskDestroy(gCurTask);
         return;
     } else {
-        s->x = bdc->x - gCamera.x;
-        s->y = bdc->y - gCamera.y;
+        s->x = bde->x - gCamera.x;
+        s->y = bde->y - gCamera.y;
         sub_8004558(s);
         sub_80051E8(s);
 
-        bdc->x += bdc->unk4;
-        bdc->y += bdc->unk6;
+        bde->x += bde->unk4;
+        bde->y += bde->unk6;
     }
 }
 
@@ -116,10 +116,10 @@ void Task_801F7B4(void) { }
 
 void TaskDestructor_801F7B8(struct Task *t)
 {
-    BrakeDustCloud *bdc = TaskGetStructPtr(t);
-    Sprite *s = &bdc->s;
+    BrakeDustEffect *bde = TaskGetStructPtr(t);
+    Sprite *s = &bde->s;
 
-    if (s->graphics.anim == SA2_ANIM_BRAKE_EFFECT) {
-        VramFree(bdc->s.graphics.dest);
+    if (s->graphics.anim == SA2_ANIM_BRAKING_DUST_EFFECT) {
+        VramFree(bde->s.graphics.dest);
     }
 }
