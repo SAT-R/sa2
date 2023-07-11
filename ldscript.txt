@@ -91,7 +91,6 @@ SECTIONS
         build/sa2/src/game/game.o(.text);
         build/sa2/asm/game.o(.text);
         build/sa2/asm/game_1.o(.text);
-        build/sa2/asm/game_2.o(.text);
         build/sa2/src/game/game_2.o(.text);
         build/sa2/src/game/dust_effect_braking.o(.text);
         build/sa2/src/game/dust_effect_spindash.o(.text);

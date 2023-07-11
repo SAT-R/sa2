@@ -56,7 +56,7 @@ const Collision *const gCollisionTable[] = {
     &CollHeader_zone_final_act_unused_fg,
 };
 
-// Like TileInfo
+// Like TileInfo16
 const u16 sAnimData_StageGoalScoreBonus[5][3] = {
     { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 1 },
     { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 2 },
