@@ -25,7 +25,7 @@ void GameStart(void)
 
     gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 
-    gUnknown_030059D8 = 0;
+    gUnknown_030059D8 = NULL;
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;

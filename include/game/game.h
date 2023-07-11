@@ -61,7 +61,7 @@ extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
 extern u8 gMultiplayerLanguage;
-extern u32 gUnknown_030059D8;
+extern struct Task *gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 
 typedef struct {

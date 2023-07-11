@@ -4,172 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_PikoPiko
-CreateEntity_PikoPiko: @ 0x080554C0
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	adds r4, r0, #0
-	lsls r1, r1, #0x10
-	lsrs r6, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov r8, r2
-	lsls r3, r3, #0x18
-	lsrs r5, r3, #0x18
-	ldr r0, _0805552C @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _080554EE
-	ldr r0, _08055530 @ =gUnknown_030054EC
-	ldrb r0, [r0]
-	cmp r0, #1
-	bne _080554EE
-	b _080555F2
-_080554EE:
-	ldr r0, _08055534 @ =sub_805560C
-	movs r2, #0x81
-	lsls r2, r2, #7
-	ldr r1, _08055538 @ =sub_80557DC
-	str r1, [sp]
-	movs r1, #0x58
-	movs r3, #0
-	bl TaskCreate
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r7, r1, r0
-	adds r0, #0xc
-	adds r0, r0, r1
-	mov sb, r0
-	strh r6, [r7, #4]
-	mov r2, r8
-	strh r2, [r7, #6]
-	str r4, [r7]
-	ldrb r0, [r4]
-	strb r0, [r7, #8]
-	strb r5, [r7, #9]
-	movs r0, #4
-	ldrsb r0, [r4, r0]
-	cmp r0, #0
-	beq _08055540
-	ldr r3, _0805553C @ =IWRAM_START + 0x54
-	adds r1, r1, r3
-	movs r0, #1
-	b _08055546
-	.align 2, 0
-_0805552C: .4byte gGameMode
-_08055530: .4byte gUnknown_030054EC
-_08055534: .4byte sub_805560C
-_08055538: .4byte sub_80557DC
-_0805553C: .4byte IWRAM_START + 0x54
-_08055540:
-	ldr r0, _08055604 @ =IWRAM_START + 0x54
-	adds r1, r1, r0
-	movs r0, #0
-_08055546:
-	strb r0, [r1]
-	adds r1, r7, #0
-	adds r1, #0x56
-	movs r2, #0
-	mov sl, r2
-	movs r0, #0xff
-	lsls r0, r0, #8
-	strh r0, [r1]
-	ldrb r1, [r4]
-	lsls r1, r1, #3
-	lsls r6, r6, #8
-	adds r1, r1, r6
-	lsls r1, r1, #8
-	str r1, [r7, #0x44]
-	ldrb r0, [r4, #1]
-	lsls r0, r0, #3
-	mov r3, r8
-	lsls r5, r3, #8
-	adds r0, r0, r5
-	lsls r0, r0, #8
-	str r0, [r7, #0x48]
-	str r2, [r7, #0x4c]
-	asrs r0, r0, #8
-	asrs r1, r1, #8
-	adds r2, r7, #0
-	adds r2, #0x54
-	ldrb r2, [r2]
-	mov r3, sl
-	str r3, [sp]
-	ldr r3, _08055608 @ =sub_801EE64
-	str r3, [sp, #4]
-	movs r3, #8
-	bl sub_801F07C
-	lsls r0, r0, #8
-	str r0, [r7, #0x50]
-	ldrb r0, [r4]
-	lsls r0, r0, #3
-	adds r0, r0, r6
-	mov r1, sb
-	strh r0, [r1, #0x16]
-	ldrb r0, [r4, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	strh r0, [r1, #0x18]
-	movs r2, #2
-	rsbs r2, r2, #0
-	adds r0, r2, #0
-	strb r0, [r4]
-	movs r0, #0x1e
-	bl VramMalloc
-	mov r3, sb
-	str r0, [r3, #4]
-	movs r0, #0xf7
-	lsls r0, r0, #1
-	strh r0, [r3, #0xa]
-	mov r0, sb
-	adds r0, #0x20
-	movs r1, #0
-	strb r1, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r3, #0x1a]
-	mov r2, sl
-	strh r2, [r3, #8]
-	strh r2, [r3, #0x14]
-	strh r2, [r3, #0x1c]
-	mov r1, sb
-	adds r1, #0x21
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0x10
-	strb r0, [r1]
-	mov r0, sb
-	adds r0, #0x25
-	movs r3, #0
-	strb r3, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	mov r1, sb
-	str r0, [r1, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r1, #0x10]
-_080555F2:
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08055604: .4byte IWRAM_START + 0x54
-_08055608: .4byte sub_801EE64
+.if 0
+.endif
 
-	thumb_func_start sub_805560C
-sub_805560C: @ 0x0805560C
+	thumb_func_start Task_PikoPiko
+Task_PikoPiko: @ 0x0805560C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
@@ -393,8 +232,8 @@ _080557CE:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80557DC
-sub_80557DC: @ 0x080557DC
+	thumb_func_start TaskDestructor_PikoPiko
+TaskDestructor_PikoPiko: @ 0x080557DC
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

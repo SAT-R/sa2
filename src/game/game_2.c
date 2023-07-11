@@ -12,71 +12,71 @@ void Task_801F214(void)
 {
     TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
     Sprite *s = &ts->s;
-        
-    if(!PLAYER_IS_ALIVE) {
+
+    if (!PLAYER_IS_ALIVE) {
         TaskDestroy(gCurTask);
         return;
     }
-    if ((ts->unk14 & 0x8) && ((ts->playerAnim != gPlayer.unk68)
-    || (ts->playerVariant != gPlayer.unk6A))) {
+    if ((ts->unk14 & 0x8)
+        && ((ts->playerAnim != gPlayer.unk68) || (ts->playerVariant != gPlayer.unk6A))) {
         TaskDestroy(gCurTask);
         return;
     } else {
-        if(s->unk10 & SPRITE_FLAG_MASK_14) {
+        if (s->unk10 & SPRITE_FLAG_MASK_14) {
             TaskDestroy(gCurTask);
             return;
         }
 
-        switch(ts->unk14 & 0x3) {
-        case 0: {
-            switch(ts->unk14 & 0x30) {
-            case 0x20: {
-                if(IS_MULTI_PLAYER) {
-                    s8 id = SIO_MULTI_CNT->id;
-                    struct Task *tmpp = gMultiplayerPlayerTasks[id];
-                    struct MultiplayerPlayer *mpp = TaskGetStructPtr(tmpp);
-                    ts->x = mpp->unk50;
-                    ts->y = mpp->unk52;
-                } else {
-                    ts->x = Q_24_8_TO_INT(gPlayer.x);
-                    ts->y = Q_24_8_TO_INT(gPlayer.y);
+        switch (ts->unk14 & 0x3) {
+            case 0: {
+                switch (ts->unk14 & 0x30) {
+                    case 0x20: {
+                        if (IS_MULTI_PLAYER) {
+                            s8 id = SIO_MULTI_CNT->id;
+                            struct Task *tmpp = gMultiplayerPlayerTasks[id];
+                            struct MultiplayerPlayer *mpp = TaskGetStructPtr(tmpp);
+                            ts->x = mpp->unk50;
+                            ts->y = mpp->unk52;
+                        } else {
+                            ts->x = Q_24_8_TO_INT(gPlayer.x);
+                            ts->y = Q_24_8_TO_INT(gPlayer.y);
+                        }
+                    } break;
+
+                    case 0x10: {
+                        ts->y = gUnknown_03005660.unk4;
+                    } break;
+                }
+
+                {
+                    struct Camera *cam = &gCamera;
+                    s->x = ts->x - cam->x;
+                    s->y = ts->y - cam->y;
                 }
             } break;
-                
-            case 0x10: {
-                ts->y = gUnknown_03005660.unk4;
-            } break;
-            }
 
-            {
+            case 1: {
                 struct Camera *cam = &gCamera;
-                s->x = ts->x - cam->x;
-                s->y = ts->y - cam->y;
-            }
-        } break;
+                s->x = ts->x - cam->unk52;
+                s->y = ts->y - cam->unk54;
+            } break;
 
-        case 1: {
-            struct Camera* cam = &gCamera;
-            s->x = ts->x - cam->unk52;
-            s->y = ts->y - cam->unk54;
-        } break;
-
-        case 2: {
-            s->x = ts->x;
-            s->y = ts->y;
-        } break;
+            case 2: {
+                s->x = ts->x;
+                s->y = ts->y;
+            } break;
         }
 
-        if(ts->unk14 & 0x40) {
-            if(!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) {
+        if (ts->unk14 & 0x40) {
+            if (!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) {
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
             } else {
                 s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
             }
         }
 
-        if(ts->unk14 & 0x80) {
-            if(GRAVITY_IS_INVERTED) {
+        if (ts->unk14 & 0x80) {
+            if (GRAVITY_IS_INVERTED) {
                 s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
             } else {
                 s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
