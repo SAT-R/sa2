@@ -230,6 +230,12 @@ typedef struct {
     /* 0x06 */ u8 variant;
 } TileInfo;
 
+typedef struct PACKED {
+    /* 0x00 */ u16 numTiles;
+    /* 0x02 */ AnimId anim;
+    /* 0x04 */ u16 variant;
+} TileInfo16;
+
 s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);

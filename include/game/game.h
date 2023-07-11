@@ -579,7 +579,7 @@ void sub_802E044(u16, u16);
 void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
-void sub_801F3A4(s32, s32, u32);
+struct Task *sub_801F3A4(s32, s32, u16);
 void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);

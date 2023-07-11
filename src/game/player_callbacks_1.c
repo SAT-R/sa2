@@ -42,7 +42,6 @@ extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
-extern void TaskDestructor_801F550(struct Task *);
 
 extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
 extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);

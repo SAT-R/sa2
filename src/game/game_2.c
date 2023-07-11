@@ -4,10 +4,58 @@
 #include "task.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 
 #include "constants/animations.h"
 
 void Task_801F214(void);
+
+#if 01
+#endif
+
+struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
+{
+    if ((score != 100) && (score != 200) && (score != 300) && (score != 500)
+        && (score != 800)) {
+        return NULL;
+    } else {
+        struct Task *t;
+        TaskStrc_801F15C *ts;
+        Sprite *s;
+        t = sub_801F15C(x, y, 32, 0, Task_801F214, TaskDestructor_801F550);
+        ts = TaskGetStructPtr(t);
+
+        switch (score) {
+            case 100: {
+                score = 0;
+            } break;
+
+            case 200: {
+                score = 1;
+            } break;
+
+            case 300: {
+                score = 2;
+            } break;
+
+            case 500: {
+                score = 3;
+            } break;
+
+            case 800: {
+                score = 4;
+            } break;
+        }
+
+        s = &ts->s;
+        s->graphics.dest = VramMalloc(sAnimData_StageGoalScoreBonus[score][0]);
+        s->graphics.anim = sAnimData_StageGoalScoreBonus[score][1];
+        s->variant = sAnimData_StageGoalScoreBonus[score][2];
+        s->unk1A = 0x200;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        return t;
+    }
+}
 
 void sub_801F488(void)
 {
@@ -34,7 +82,7 @@ void sub_801F488(void)
         x2 -= x;
         y2 += y;
 
-        t = sub_801F15C(x2, y2, 0xC0, 0, Task_801F214, TaskDestructor_801F550);
+        t = sub_801F15C(x2, y2, 192, 0, Task_801F214, TaskDestructor_801F550);
 
         ts = TaskGetStructPtr(t);
         s = &ts->s;
@@ -56,7 +104,7 @@ void TaskDestructor_801F550(struct Task *t)
 
 struct Task *sub_801F568(s16 x, s16 y)
 {
-    struct Task *t = sub_801F15C(x, y, 0xC0, 0, Task_801F214, TaskDestructor_801F550);
+    struct Task *t = sub_801F15C(x, y, 192, 0, Task_801F214, TaskDestructor_801F550);
     TaskStrc_801F15C *ts = TaskGetStructPtr(t);
     Sprite *s = &ts->s;
 
