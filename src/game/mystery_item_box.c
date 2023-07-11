@@ -18,9 +18,9 @@ typedef struct {
     SpriteTransform transform;
     s32 x; // x
     s32 y; // y
-    s16 unk80;
+    s16 iconOffsetY;
     u8 unk82;
-    u8 unk83;
+    u8 framesSinceOpened;
     u8 unk84;
 } Sprite_MysteryItemBox;
 
@@ -49,6 +49,9 @@ static const u16 gUnknown_080E02AA[][3]
 
 static const u16 unused = 0;
 
+#define ITEM_ICON_DISPLAY_TIME  (1 * GBA_FRAMES_PER_SECOND)
+#define ITEM_ICON_DISPLAY_DELAY (int)(0.5 * GBA_FRAMES_PER_SECOND)
+
 void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
@@ -70,7 +73,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 
     itemBox = TaskGetStructPtr(t);
     itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
-    itemBox->unk80 = 0;
+    itemBox->iconOffsetY = Q_24_8(0.0);
     itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
     itemBox->y = TO_WORLD_POS(me->y, spriteRegionY);
     itemBox->base.regionX = spriteRegionX;
@@ -182,7 +185,7 @@ static void sub_808623C(void)
         itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         transform->height = 0x100;
-        itemBox->unk80 = 0;
+        itemBox->iconOffsetY = Q_24_8(0.0);
         gCurTask->main = sub_80865E4;
 
         sub_80865E4_inline();
@@ -269,7 +272,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
 
     m4aSongNumStart(SE_ITEM_BOX_2);
     CreateDustCloud(itemBox->x, itemBox->y);
-    itemBox->unk83 = 0;
+    itemBox->framesSinceOpened = 0;
     unk5510 = sub_8019224();
 
     unk5510->unk0 = 5;
@@ -312,7 +315,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
         }
     }
 
-    itemBox->unk83 = 0;
+    itemBox->framesSinceOpened = 0;
     gCurTask->main = sub_80866FC;
 }
 
@@ -346,10 +349,10 @@ static void sub_808665C(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
 
-    if (itemBox->unk83++ >= 0x3C) {
+    if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086504(itemBox);
     } else {
-        itemBox->unk80 -= 0x100;
+        itemBox->iconOffsetY -= Q_24_8(1.0);
     }
 
     sub_80868A8(itemBox, 1);
@@ -359,10 +362,10 @@ static void sub_80866AC(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
 
-    if (itemBox->unk83++ >= 0x3C) {
+    if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086890(itemBox);
     } else {
-        itemBox->unk80 -= 0x100;
+        itemBox->iconOffsetY -= Q_24_8(1.0);
     }
 
     sub_80868A8(itemBox, 1);
@@ -372,7 +375,7 @@ static void sub_80866FC(void)
 {
     Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
 
-    if (itemBox->unk83++ >= 0x1E) {
+    if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_DELAY) {
         gCurTask->main = sub_808673C;
         return;
     }
@@ -451,13 +454,13 @@ static void sub_8086858(Sprite_MysteryItemBox *itemBox)
 {
     m4aSongNumStart(SE_ITEM_BOX_2);
     CreateDustCloud(itemBox->x, itemBox->y);
-    itemBox->unk83 = 0;
+    itemBox->framesSinceOpened = 0;
     gCurTask->main = sub_80866AC;
 }
 
 static void sub_8086890(Sprite_MysteryItemBox *itemBox)
 {
-    itemBox->unk83 = 0;
+    itemBox->framesSinceOpened = 0;
     gCurTask->main = sub_80866FC;
 }
 
@@ -466,7 +469,7 @@ static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
     itemBox->box.x = itemBox->x - gCamera.x;
     itemBox->box.y = itemBox->y - gCamera.y;
     itemBox->identifier.x = itemBox->box.x;
-    itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->unk80);
+    itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->iconOffsetY);
 
     if (p2 == 0) {
         sub_80051E8(&itemBox->box);
