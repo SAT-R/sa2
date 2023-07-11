@@ -40,7 +40,6 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
-extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
 extern void TaskDestructor_801F550(struct Task *);
