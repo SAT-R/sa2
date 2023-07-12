@@ -79,7 +79,7 @@ void sub_80567F8(void)
         gCurTask->main = Task_StrawMain;
     }
 
-    ENEMY_UPDATE(s, pos);
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }
 
 void Task_StrawMain(void)
@@ -92,7 +92,7 @@ void Task_StrawMain(void)
     straw->offsetX += straw->unk4C;
     straw->offsetY += straw->unk50;
 
-    ENEMY_UPDATE_POSITION(straw, s, pos);
+    ENEMY_UPDATE_POSITION(straw, s, pos.x, pos.y);
 
     if (gPlayer.x < Q_24_8_NEW(pos.x)) {
         straw->unk4C -= 0x10;
@@ -118,7 +118,7 @@ void Task_StrawMain(void)
         straw->unk54 = 30;
     }
 
-    ENEMY_UPDATE_EX(s, pos, ENEMY_TURN_TO_PLAYER(pos, s))
+    ENEMY_UPDATE_EX(s, pos.x, pos.y, ENEMY_TURN_TO_PLAYER(pos, s))
 }
 
 void sub_8056AF4(void)
@@ -131,10 +131,10 @@ void sub_8056AF4(void)
     straw->offsetX += straw->unk4C;
     straw->offsetY += straw->unk50;
 
-    ENEMY_UPDATE_POSITION(straw, s, pos);
+    ENEMY_UPDATE_POSITION(straw, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_INVISIBLE(straw, me, s);
 
-    ENEMY_UPDATE(s, pos);
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }

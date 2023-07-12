@@ -56,7 +56,7 @@ static void Task_PikoPiko(void)
     piko->offsetX += piko->speedX;
 
     ENEMY_CLAMP_TO_GROUND(piko, piko->clampParam);
-    ENEMY_UPDATE_POSITION(piko, s, pos);
+    ENEMY_UPDATE_POSITION(piko, s, pos.x, pos.y);
 
     if (!(sub_800CA20(s, pos.x, pos.y, 1, &gPlayer) == TRUE)) {
         ENEMY_DESTROY_IF_PLAYER_HIT(s, pos);
@@ -70,7 +70,7 @@ static void Task_PikoPiko(void)
         NEGATE(piko->speedX);
     }
 
-    ENEMY_UPDATE(s, pos);
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }
 
 static void TaskDestructor_PikoPiko(struct Task *t)

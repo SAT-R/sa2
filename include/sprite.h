@@ -108,14 +108,14 @@ typedef struct {
      || ((sprite)->unk1E != (sprite)->graphics.anim))
 
 // TODO: Maybe rename this and move if out?
-#define SPRITE_MAYBE_SWITCH_ANIM(sprite)                                                \
-    if (SpriteShouldUpdate(sprite)) {                                                   \
-        (sprite)->graphics.size = 0;                                                    \
-        (sprite)->unk21 = (sprite)->variant;                                            \
-        (sprite)->unk1E = (sprite)->graphics.anim;                                      \
-        (sprite)->unk14 = 0;                                                            \
-        (sprite)->unk1C = 0;                                                            \
-        (sprite)->unk10 &= ~0x4000;                                                     \
+#define SPRITE_MAYBE_SWITCH_ANIM(_sprite)                                               \
+    if (SpriteShouldUpdate(_sprite)) {                                                  \
+        (_sprite)->graphics.size = 0;                                                   \
+        (_sprite)->unk21 = (_sprite)->variant;                                          \
+        (_sprite)->unk1E = (_sprite)->graphics.anim;                                    \
+        (_sprite)->unk14 = 0;                                                           \
+        (_sprite)->unk1C = 0;                                                           \
+        (_sprite)->unk10 &= ~0x4000;                                                    \
     }
 
 #define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \

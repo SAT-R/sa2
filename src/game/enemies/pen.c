@@ -73,7 +73,7 @@ static void Task_Move(void)
 
     ENEMY_CLAMP_TO_GROUND(pen, pen->clampParam);
 
-    ENEMY_UPDATE_POSITION(pen, s, pos);
+    ENEMY_UPDATE_POSITION(pen, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_INVISIBLE(pen, me, s);
@@ -131,7 +131,7 @@ static void Task_Turn(void)
 
     ENEMY_CLAMP_TO_GROUND(pen, pen->clampParam);
 
-    ENEMY_UPDATE_POSITION(pen, s, pos);
+    ENEMY_UPDATE_POSITION(pen, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_INVISIBLE(pen, me, s);

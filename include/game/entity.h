@@ -38,6 +38,18 @@
     eName->base.spriteX = me->x;                                                        \
     eName->base.spriteY = spriteY;
 
+#define ENTITY_INIT_2(eType, eName, _task, _taskPrio, _taskFlags, _taskDtor, _UNK4C)    \
+    struct Task *t                                                                      \
+        = TaskCreate(_task, sizeof(eType), _taskPrio, _taskFlags, _taskDtor);           \
+    eType *eName = TaskGetStructPtr(t);                                                 \
+    Sprite *s = &eName->s;                                                              \
+    eName->unk4C = _UNK4C;                                                              \
+    eName->base.regionX = spriteRegionX;                                                \
+    eName->base.regionY = spriteRegionY;                                                \
+    eName->base.me = me;                                                                \
+    eName->base.spriteX = me->x;                                                        \
+    eName->base.spriteY = spriteY;
+
 #define ENEMY_SET_SPAWN_POS_FLYING(_enemy, _mapEntity)                                  \
     _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                \
     _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));                \
@@ -52,19 +64,28 @@
                                          Q_24_8_TO_INT(_enemy->spawnX),                 \
                                          _enemy->clampParam, 8, NULL, sub_801EE64));
 
-#define ENEMY_UPDATE_EX(_s, _pos, code_insert)                                          \
-    sub_80122DC(Q_24_8_NEW(_pos.x), Q_24_8_NEW(_pos.y));                                \
+#define ENEMY_UPDATE_EX_RAW(_s, _posX, _posY, code_insert)                              \
+    sub_80122DC(_posX, _posY);                                                          \
     { code_insert };                                                                    \
     sub_8004558(_s);                                                                    \
     sub_80051E8(_s);
 
-#define ENEMY_UPDATE(_s, _pos) ENEMY_UPDATE_EX(_s, _pos, {});
+#define ENEMY_UPDATE_EX(_s, _posX, _posY, code_insert)                                  \
+    ENEMY_UPDATE_EX_RAW(_s, Q_24_8_NEW(_posX), Q_24_8_NEW(_posY), code_insert);
 
-#define ENEMY_UPDATE_POSITION(_enemy, _sprite, _pos)                                    \
-    _pos.x = Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX);                           \
-    _pos.y = Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY);                           \
-    _sprite->x = _pos.x - gCamera.x;                                                    \
-    _sprite->y = _pos.y - gCamera.y;
+#define ENEMY_UPDATE(_s, _posX, _posY) ENEMY_UPDATE_EX(_s, _posX, _posY, {});
+
+#define ENEMY_UPDATE_POSITION(_enemy, _sprite, _posX, _posY)                            \
+    _posX = Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX);                            \
+    _posY = Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY);                            \
+    _sprite->x = _posX - gCamera.x;                                                     \
+    _sprite->y = _posY - gCamera.y;
+
+#define ENEMY_UPDATE_POSITION_STATIC(_enemy, _sprite, _posX, _posY)                     \
+    _posX = Q_24_8_TO_INT(_enemy->spawnX);                                              \
+    _posY = Q_24_8_TO_INT(_enemy->spawnY);                                              \
+    _sprite->x = _posX - gCamera.x;                                                     \
+    _sprite->y = _posY - gCamera.y;
 
 #define ENEMY_TURN_TO_PLAYER(pos, s)                                                    \
     if (gPlayer.x < Q_24_8_NEW(pos.x)) {                                                \
