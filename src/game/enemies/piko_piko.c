@@ -132,3 +132,9 @@ void Task_PikoPiko(void)
     sub_8004558(s);
     sub_80051E8(s);
 }
+
+void TaskDestructor_PikoPiko(struct Task *t)
+{
+    Sprite_PikoPiko *piko = TaskGetStructPtr(t);
+    VramFree(piko->s.graphics.dest);
+}

@@ -137,7 +137,6 @@ SECTIONS
         build/sa2/src/game/enemies/bell.o(.text);
         build/sa2/asm/enemy_yado.o(.text);
         build/sa2/src/game/enemies/piko_piko.o(.text);
-        build/sa2/asm/enemy_piko_piko.o(.text);
         build/sa2/asm/enemy_circus.o(.text);
         build/sa2/asm/enemy_madillo.o(.text);
         build/sa2/src/game/enemies/straw.o(.text);
