@@ -13,14 +13,13 @@ typedef struct {
     /* 0x4C */ s32 offsetX;
     /* 0x50 */ s32 offsetY;
     /* 0x54 */ u8 unk54;
-    /* 0x56 */ s16 unk56;
+    /* 0x56 */ s16 speedX;
 } Sprite_PikoPiko; /* size: 0x58 */
 
 void Task_PikoPiko(void);
 void TaskDestructor_PikoPiko(struct Task *);
 
-// TODO: header
-bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
+#define ENEMY_SPEED_PIKOPIKO Q_24_8(1.0)
 
 void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
@@ -44,7 +43,7 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             piko->unk54 = 0;
         }
 
-        piko->unk56 = -Q_24_8(1.0);
+        piko->speedX = -ENEMY_SPEED_PIKOPIKO;
 
         piko->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
         piko->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
@@ -81,7 +80,7 @@ void Task_PikoPiko(void)
     Vec2_32 pos;
     s32 delta;
 
-    piko->offsetX += piko->unk56;
+    piko->offsetX += piko->speedX;
 
     delta = sub_801F07C(Q_24_8_TO_INT(piko->spawnY + piko->offsetY),
                         Q_24_8_TO_INT(piko->spawnX + piko->offsetX), piko->unk54, 8,
@@ -120,12 +119,12 @@ void Task_PikoPiko(void)
     }
 
     if ((Q_24_8_TO_INT(piko->offsetX) <= me->d.sData[0] * TILE_WIDTH)
-        && (piko->unk56 < 0)) {
-        NEGATE(piko->unk56);
+        && (piko->speedX < 0)) {
+        NEGATE(piko->speedX);
     } else if ((Q_24_8_TO_INT(piko->offsetX)
                 >= (me->d.sData[0] * TILE_WIDTH + me->d.uData[2] * TILE_WIDTH))
-               && (piko->unk56 > 0)) {
-        NEGATE(piko->unk56);
+               && (piko->speedX > 0)) {
+        NEGATE(piko->speedX);
     }
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
