@@ -15,7 +15,7 @@ typedef struct {
     /* 0x3C */ u8 unk3C[8]; // Extra space used by this somehow larger sprite?
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
-    /* 0x4C */ s8 unk4C;
+    /* 0x4C */ u8 unk4C;
 } Sprite_Bell; /* 0x50 */
 
 static void sub_8054BF4(void);
@@ -26,7 +26,7 @@ static void sub_8054D20(void);
 void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     ENTITY_INIT_2(Sprite_Bell, bell, sub_8054BF4, 0x4080, 0, TaskDestructor_80095E8,
-                  120);
+                  { bell->unk4C = 120; });
 
     bell->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
     bell->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
@@ -62,7 +62,7 @@ static void sub_8054BF4(void)
         if (PseudoRandom32() & 1) {
             bell->unk4C = 124;
         } else {
-            bell->unk4C = -76;
+            bell->unk4C = 180;
         }
 
         gCurTask->main = sub_8054D20;

@@ -11,15 +11,15 @@
 #include "constants/animations.h"
 
 typedef struct {
-    SpriteBase base;
-    Sprite s0; /* 0x0C */
-    Sprite s1; /* 0x3C */
-    Sprite s2; /* 0x6C */
-    Sprite_UNK28 reserved; // "overflow" from Sprite
-    s32 spawnX; // x;
-    s32 spawnY; // y;
-    s32 unkAC;
-    s32 unkB0;
+    /* 0x00 */ SpriteBase base;
+    /* 0x0C */ Sprite s;
+    /* 0x3C */ Sprite s1;
+    /* 0x6C */ Sprite s2;
+    /* 0x9C */ Sprite_UNK28 reserved; // "overflow" from Sprite
+    /* 0xA4 */ s32 spawnX;
+    /* 0xA8 */ s32 spawnY;
+    /* 0xAC */ s32 unkAC;
+    /* 0xB0 */ s32 unkB0;
 } Sprite_KuraKura; /* 0xB4*/
 
 void sub_8052024(void);
@@ -28,18 +28,10 @@ void sub_8052264(struct Task *);
 void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_8052024, 0xB4, 0x4050, 0, sub_8052264);
-    Sprite_KuraKura *kk = TaskGetStructPtr(t);
-    Sprite *s = &kk->s0;
-
-    kk->unkB0 = 0;
-    kk->unkAC = 0;
-
-    kk->base.regionX = spriteRegionX;
-    kk->base.regionY = spriteRegionY;
-    kk->base.me = me;
-    kk->base.spriteX = me->x;
-    kk->base.spriteY = spriteY;
+    ENTITY_INIT_2(Sprite_KuraKura, kk, sub_8052024, 0x4050, 0, sub_8052264, {
+        kk->unkB0 = 0;
+        kk->unkAC = 0;
+    });
 
     ENEMY_SET_SPAWN_POS_STATIC(kk, me);
 
@@ -69,7 +61,7 @@ void sub_805213C(Sprite_KuraKura *kk);
 void sub_8052024(void)
 {
     Sprite_KuraKura *kk = TaskGetStructPtr(gCurTask);
-    Sprite *s = &kk->s0;
+    Sprite *s = &kk->s;
     MapEntity *me = kk->base.me;
 
     Vec2_32 pos;
@@ -109,6 +101,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     s2->x = pos.x - gCamera.x;
     s2->y = pos.y - gCamera.y;
     sub_800C84C(s2, pos.x, pos.y);
+
     sub_8004558(s2);
     sub_80051E8(s2);
 }
@@ -116,7 +109,7 @@ void sub_805213C(Sprite_KuraKura *kk)
 void sub_8052264(struct Task *t)
 {
     Sprite_KuraKura *kk = TaskGetStructPtr(t);
-    VramFree(kk->s0.graphics.dest);
+    VramFree(kk->s.graphics.dest);
     VramFree(kk->s1.graphics.dest);
     VramFree(kk->s2.graphics.dest);
 }
