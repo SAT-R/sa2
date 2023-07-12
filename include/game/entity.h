@@ -111,11 +111,11 @@
         return;                                                                         \
     }
 
-#define ENEMY_DESTROY_IF_INVISIBLE(enemy, sprite, mapEntity)                            \
-    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(enemy->spawnX),                           \
-                                Q_24_8_TO_INT(enemy->spawnY))                           \
-        && IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {                                 \
-        SET_MAP_ENTITY_NOT_INITIALIZED(mapEntity, enemy->base.spriteX);                 \
+#define ENEMY_DESTROY_IF_INVISIBLE(_enemy, _mapEntity, _sprite)                         \
+    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(_enemy->spawnX),                          \
+                                Q_24_8_TO_INT(_enemy->spawnY))                          \
+        && IS_OUT_OF_CAM_RANGE(_sprite->x, _sprite->y)) {                               \
+        SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.spriteX);               \
         TaskDestroy(gCurTask);                                                          \
         return;                                                                         \
     }
