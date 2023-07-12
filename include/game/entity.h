@@ -39,18 +39,18 @@
     eName->base.spriteY = spriteY;
 
 #define ENEMY_SET_SPAWN_POS_FLYING(_enemy, _mapEntity)                                  \
-        _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));            \
-        _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));            \
-        _enemy->offsetX = 0;                                                            \
-        _enemy->offsetY = 0;
+    _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                \
+    _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));                \
+    _enemy->offsetX = 0;                                                                \
+    _enemy->offsetY = 0;
 
 #define ENEMY_SET_SPAWN_POS_GROUND(_enemy, _mapEntity)                                  \
-        _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));            \
-        _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));            \
-        _enemy->offsetX = 0;                                                            \
-        _enemy->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY),             \
-                                             Q_24_8_TO_INT(_enemy->spawnX),             \
-                                             _enemy->clampParam, 8, NULL, sub_801EE64));
+    _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                \
+    _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));                \
+    _enemy->offsetX = 0;                                                                \
+    _enemy->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY),                 \
+                                         Q_24_8_TO_INT(_enemy->spawnX),                 \
+                                         _enemy->clampParam, 8, NULL, sub_801EE64));
 
 #define ENEMY_UPDATE_EX(_s, _pos, code_insert)                                          \
     sub_80122DC(Q_24_8_NEW(_pos.x), Q_24_8_NEW(_pos.y));                                \
@@ -73,10 +73,10 @@
         s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;                                            \
     }
 
-#define ENEMY_CROSSED_LEFT_BORDER(_enemy, _mapEntity)                                  \
+#define ENEMY_CROSSED_LEFT_BORDER(_enemy, _mapEntity)                                   \
     ((Q_24_8_TO_INT(_enemy->offsetX) <= _mapEntity->d.sData[0] * TILE_WIDTH))
 
-#define ENEMY_CROSSED_RIGHT_BORDER(_enemy, _mapEntity)                                 \
+#define ENEMY_CROSSED_RIGHT_BORDER(_enemy, _mapEntity)                                  \
     ((Q_24_8_TO_INT(_enemy->offsetX)                                                    \
       >= (_mapEntity->d.sData[0] * TILE_WIDTH + _mapEntity->d.uData[2] * TILE_WIDTH)))
 

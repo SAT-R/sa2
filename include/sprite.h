@@ -172,7 +172,7 @@ typedef struct {
 #define SPRITE_FLAG_SHIFT_X_FLIP                10
 #define SPRITE_FLAG_SHIFT_Y_FLIP                11
 #define SPRITE_FLAG_SHIFT_PRIORITY              12
-#define SPRITE_FLAG_SHIFT_14                    14
+#define SPRITE_FLAG_SHIFT_ANIM_OVER             14
 #define SPRITE_FLAG_SHIFT_BG_ID                 15
 #define SPRITE_FLAG_SHIFT_17                    17
 #define SPRITE_FLAG_SHIFT_18                    18
@@ -189,7 +189,7 @@ typedef struct {
 #define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1)
 #define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1)
 #define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3)
-#define SPRITE_FLAG_MASK_14                    SPRITE_FLAG(14, 1)
+#define SPRITE_FLAG_MASK_ANIM_OVER             SPRITE_FLAG(ANIM_OVER, 1)
 #define SPRITE_FLAG_MASK_BG_ID                 SPRITE_FLAG(BG_ID, 3)
 #define SPRITE_FLAG_MASK_17                    SPRITE_FLAG(17, 1)
 #define SPRITE_FLAG_MASK_18                    SPRITE_FLAG(18, 1)

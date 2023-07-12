@@ -22,7 +22,7 @@ void Task_801F214(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_14) {
+        if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
             TaskDestroy(gCurTask);
             return;
         }

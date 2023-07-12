@@ -109,7 +109,8 @@ static void Task_Move(void)
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->unk21 = -1;
-    } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+    } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
+               && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_Turn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
@@ -130,10 +131,7 @@ static void Task_Turn(void)
 
     ENEMY_CLAMP_TO_GROUND(pen, pen->clampParam);
 
-    pos.x = Q_24_8_TO_INT(pen->spawnX + pen->offsetX);
-    pos.y = Q_24_8_TO_INT(pen->spawnY + pen->offsetY);
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
+    ENEMY_UPDATE_POSITION(pen, s, pos);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_INVISIBLE(pen, s, me);
