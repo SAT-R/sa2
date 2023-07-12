@@ -12,8 +12,8 @@
 typedef struct {
     SpriteBase base;
     Sprite s;
-    s32 x;
-    s32 y;
+    s32 spawnX;
+    s32 spawnY;
     u8 timer;
 } Sprite_Star;
 
@@ -28,182 +28,65 @@ static void Task_StarOpen(void);
 
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0,
-                                TaskDestructor_80095E8);
-    Sprite_Star *star = TaskGetStructPtr(t);
-    Sprite *s = &star->s;
+    ENTITY_INIT(Sprite_Star, star, Task_StarIdle, 0x4050, 0, TaskDestructor_80095E8);
 
-    star->base.regionX = spriteRegionX;
-    star->base.regionY = spriteRegionY;
-    star->base.me = me;
-    star->base.spriteX = me->x;
-    star->base.spriteY = spriteY;
+    ENEMY_SET_SPAWN_POS_STATIC(star, me);
 
-    star->x = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    star->y = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
     star->timer = IDLE_TIME;
 
     s->x = 0;
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->graphics.dest = VramMalloc(0x19);
-    s->graphics.anim = SA2_ANIM_STAR;
-    s->variant = 0;
-    s->unk1A = 0x480;
-    s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
-    s->palId = 0;
-    s->unk28[0].unk0 = -1;
-    s->unk10 = 0x2000;
+    SPRITE_INIT_EXCEPT_POS(s, 25, SA2_ANIM_STAR, 0, 0x480, 2);
 }
+
+#define STAR_SWITCH_TASK_ON_TIMER_ZERO(_star, _sprite, _time, _anim, _variant, _task)   \
+    if (--_star->timer == 0) {                                                          \
+        _star->timer = _time;                                                           \
+        _sprite->graphics.anim = _anim;                                                 \
+        _sprite->variant = _variant;                                                    \
+        _sprite->unk21 = -1;                                                            \
+        gCurTask->main = _task;                                                         \
+    }
+
+#define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                      \
+    {                                                                                   \
+        Sprite_Star *star = TaskGetStructPtr(gCurTask);                                 \
+        Sprite *s = &star->s;                                                           \
+        MapEntity *me = star->base.me;                                                  \
+                                                                                        \
+        Vec2_32 pos;                                                                    \
+        ENEMY_UPDATE_POSITION_STATIC(star, s, pos.x, pos.y);                            \
+                                                                                        \
+        { _code_insert };                                                               \
+        ENEMY_DESTROY_IF_INVISIBLE_RAW(star, me, s, pos.x, pos.y);                      \
+                                                                                        \
+        STAR_SWITCH_TASK_ON_TIMER_ZERO(star, s, _time, _anim, _variant, _nextTask);     \
+                                                                                        \
+        ENEMY_UPDATE_EX_RAW(s, star->spawnX, star->spawnY, {});                         \
+    }
 
 static void Task_StarIdle(void)
 {
-    Sprite_Star *star = TaskGetStructPtr(gCurTask);
-    Sprite *s = &star->s;
-    MapEntity *me = star->base.me;
-
-    Vec2_32 pos;
-    pos.x = Q_24_8_TO_INT(star->x);
-    pos.y = Q_24_8_TO_INT(star->y);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
-         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (--star->timer == 0) {
-        star->timer = OPEN_CLOSE_TIME;
-        s->graphics.anim = SA2_ANIM_STAR;
-        s->variant = 1;
-        s->unk21 = -1;
-        gCurTask->main = Task_StarClose;
-    }
-
-    sub_80122DC(star->x, star->y);
-    sub_8004558(s);
-    sub_80051E8(s);
+    STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 1, Task_StarClose,
+              { ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos) });
 }
 
 static void Task_StarClose(void)
 {
-    Sprite_Star *star = TaskGetStructPtr(gCurTask);
-    Sprite *s = &star->s;
-    MapEntity *me = star->base.me;
-
-    Vec2_32 pos;
-    pos.x = Q_24_8_TO_INT(star->x);
-    pos.y = Q_24_8_TO_INT(star->y);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    sub_800C84C(s, pos.x, pos.y);
-
-    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
-         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (--star->timer == 0) {
-        star->timer = SPIN_TIME;
-        s->graphics.anim = SA2_ANIM_STAR;
-        s->variant = 2;
-        s->unk21 = -1;
-        gCurTask->main = Task_StarSpin;
-    }
-
-    sub_80122DC(star->x, star->y);
-    sub_8004558(s);
-    sub_80051E8(s);
+    STAR_TASK(SPIN_TIME, SA2_ANIM_STAR, 2, Task_StarSpin,
+              { sub_800C84C(s, pos.x, pos.y); });
 }
 
 static void Task_StarSpin(void)
 {
-    Sprite_Star *star = TaskGetStructPtr(gCurTask);
-    Sprite *s = &star->s;
-    MapEntity *me = star->base.me;
-
-    Vec2_32 pos;
-    pos.x = Q_24_8_TO_INT(star->x);
-    pos.y = Q_24_8_TO_INT(star->y);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    sub_800C84C(s, pos.x, pos.y);
-
-    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
-         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (--star->timer == 0) {
-        star->timer = OPEN_CLOSE_TIME;
-        s->graphics.anim = SA2_ANIM_STAR;
-        s->variant = 3;
-        s->unk21 = -1;
-        gCurTask->main = Task_StarOpen;
-    }
-
-    sub_80122DC(star->x, star->y);
-    sub_8004558(s);
-    sub_80051E8(s);
+    STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 3, Task_StarOpen,
+              { sub_800C84C(s, pos.x, pos.y); });
 }
 
 static void Task_StarOpen(void)
 {
-    Sprite_Star *star = TaskGetStructPtr(gCurTask);
-    Sprite *s = &star->s;
-    MapEntity *me = star->base.me;
-
-    Vec2_32 pos;
-    pos.x = Q_24_8_TO_INT(star->x);
-    pos.y = Q_24_8_TO_INT(star->y);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    sub_800C84C(s, pos.x, pos.y);
-
-    if ((pos.x > gCamera.x + 0x170 || pos.x < gCamera.x - 0x80
-         || pos.y > gCamera.y + 0x120 || pos.y < gCamera.y - 0x80)
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, star->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (--star->timer == 0) {
-        star->timer = IDLE_TIME;
-        s->graphics.anim = SA2_ANIM_STAR;
-        s->variant = 0;
-        s->unk21 = -1;
-        gCurTask->main = Task_StarIdle;
-    }
-
-    sub_80122DC(star->x, star->y);
-    sub_8004558(s);
-    sub_80051E8(s);
+    STAR_TASK(IDLE_TIME, SA2_ANIM_STAR, 0, Task_StarIdle,
+              { sub_800C84C(s, pos.x, pos.y); });
 }

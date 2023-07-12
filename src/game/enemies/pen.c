@@ -117,9 +117,8 @@ static void Task_Move(void)
         s->unk21 = -1;
     }
 
-    sub_80122DC(posX_24_8, Q_24_8(pos.y));
-    sub_8004558(s);
-    sub_80051E8(s);
+    // TODO: Fix posX_24_8!
+    ENEMY_UPDATE_EX_RAW(s, posX_24_8, Q_24_8(pos.y), {});
 }
 
 static void Task_Turn(void)
