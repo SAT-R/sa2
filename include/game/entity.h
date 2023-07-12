@@ -95,6 +95,18 @@ void sub_801FD34(s32, s32, s32);
     eName->base.spriteX = me->x;                                                        \
     eName->base.spriteY = spriteY;
 
+#define ENTITY_INIT_3(eType, eName, _task, _taskPrio, _taskFlags, _taskDtor, _UNK4C)    \
+    struct Task *t                                                                      \
+        = TaskCreate(_task, sizeof(eType), _taskPrio, _taskFlags, _taskDtor);           \
+    eType *eName = TaskGetStructPtr(t);                                                 \
+    Sprite *s = &eName->s;                                                              \
+    eName->unk4C = _UNK4C;                                                              \
+    eName->base.regionX = spriteRegionX;                                                \
+    eName->base.regionY = spriteRegionY;                                                \
+    eName->base.me = me;                                                                \
+    eName->base.spriteX = me->x;                                                        \
+    eName->base.spriteY = spriteY;
+
 // Used by Enemies that do not appear in EASY-mode
 #define DIFFICULTY_LEVEL_IS_NOT_EASY                                                    \
     (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != DIFFICULTY_EASY)
@@ -139,11 +151,11 @@ void sub_801FD34(s32, s32, s32);
 #define ENEMY_UPDATE_POSITION_STATIC(_enemy, _sprite, _posX, _posY)                     \
     ENEMY_UPDATE_POSITION_RAW(_enemy, _sprite, _posX, _posY, 0, 0)
 
-#define ENEMY_TURN_TO_PLAYER(pos, s)                                                    \
-    if (gPlayer.x < Q_24_8_NEW(pos.x)) {                                                \
-        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;                                           \
+#define ENEMY_TURN_TO_PLAYER(_posX, s)                                                  \
+    if (gPlayer.x < _posX) {                                                            \
+        SPRITE_FLAG_CLEAR(s, X_FLIP);                                                   \
     } else {                                                                            \
-        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;                                            \
+        SPRITE_FLAG_SET(s, X_FLIP);                                                     \
     }
 
 #define ENEMY_CROSSED_LEFT_BORDER(_enemy, _mapEntity)                                   \

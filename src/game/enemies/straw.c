@@ -118,7 +118,7 @@ void Task_StrawMain(void)
         straw->unk54 = 30;
     }
 
-    ENEMY_UPDATE_EX(s, pos.x, pos.y, ENEMY_TURN_TO_PLAYER(pos, s))
+    ENEMY_UPDATE_EX(s, pos.x, pos.y, ENEMY_TURN_TO_PLAYER(Q_24_8(pos.x), s))
 }
 
 void sub_8056AF4(void)

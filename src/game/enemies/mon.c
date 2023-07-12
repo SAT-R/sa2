@@ -19,23 +19,14 @@ typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x3C */ s32 x;
     /* 0x40 */ s32 y;
-    /* 0x44 */ s32 deltaY;
+    /* 0x44 */ s32 offsetY;
     /* 0x48 */ s32 speedY;
 } Sprite_Mon; /* 0x4C */
 
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Enemy_Mon_Main, sizeof(Sprite_Mon), 0x4010, 0,
-                                TaskDestructor_80095E8);
-    Sprite_Mon *mon = TaskGetStructPtr(t);
-    Sprite *s = &mon->s;
     u32 r2;
-
-    mon->base.regionX = spriteRegionX;
-    mon->base.regionY = spriteRegionY;
-    mon->base.me = me;
-    mon->base.spriteX = me->x;
-    mon->base.spriteY = spriteY;
+    ENTITY_INIT(Sprite_Mon, mon, Task_Enemy_Mon_Main, 0x4010, 0, TaskDestructor_80095E8);
 
     // TODO: Isn't this always -1?
     r2 = (-me->d.sData[0] | me->d.sData[0]);
@@ -61,7 +52,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     mon->speedY = -Q_24_8(5.5);
-    mon->deltaY = +Q_24_8(0);
+    mon->offsetY = +Q_24_8(0);
     s->graphics.anim = SA2_ANIM_MON;
     s->variant = 0;
     s->unk21 = 0xFF;
@@ -91,15 +82,9 @@ static void Task_Enemy_Mon_Main(void)
             s->unk21 = 0xFF;
         }
 
-        if (gPlayer.x < mon->x) {
-            SPRITE_FLAG_CLEAR(s, X_FLIP);
-        } else {
-            SPRITE_FLAG_SET(s, X_FLIP);
-        }
+        ENEMY_TURN_TO_PLAYER(mon->x, s);
 
-        sub_80122DC(mon->x, mon->y);
-        sub_8004558(s);
-        sub_80051E8(s);
+        ENEMY_UPDATE_EX_RAW(s, mon->x, mon->y, {});
     }
 }
 
@@ -121,7 +106,7 @@ static void Task_Enemy_Mon_2(void)
         sub_80122DC(mon->x, mon->y);
         if (sub_8004558(s) == 0) {
             mon->speedY = -Q_24_8(5.5);
-            mon->deltaY = +Q_24_8(0.0);
+            mon->offsetY = +Q_24_8(0.0);
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 1;
             s->unk21 = 0xFF;
@@ -139,18 +124,18 @@ static void Task_Enemy_Mon_3(void)
     MapEntity *me = mon->base.me;
 
     mon->speedY += Q_24_8(52. / 256.);
-    mon->deltaY += mon->speedY;
+    mon->offsetY += mon->speedY;
 
     s->x = Q_24_8_TO_INT(mon->x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(mon->y + mon->deltaY) - gCamera.y;
+    s->y = Q_24_8_TO_INT(mon->y + mon->offsetY) - gCamera.y;
 
-    if (sub_800C4FC(s, Q_24_8_TO_INT(mon->x), Q_24_8_TO_INT(mon->y + mon->deltaY), 0)) {
+    if (sub_800C4FC(s, Q_24_8_TO_INT(mon->x), Q_24_8_TO_INT(mon->y + mon->offsetY), 0)) {
         TaskDestroy(gCurTask);
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if (mon->deltaY >= 0) {
+        if (mon->offsetY >= 0) {
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 3;
             s->unk21 = 0xFF;
@@ -158,9 +143,7 @@ static void Task_Enemy_Mon_3(void)
             gCurTask->main = Task_Enemy_Mon_4;
         }
 
-        sub_80122DC(mon->x, mon->y + mon->deltaY);
-        sub_8004558(s);
-        sub_80051E8(s);
+        ENEMY_UPDATE_EX_RAW(s, mon->x, mon->y + mon->offsetY, {});
     }
 }
 
@@ -182,17 +165,12 @@ static void Task_Enemy_Mon_4(void)
         sub_80122DC(mon->x, mon->y);
 
         if (sub_8004558(s) == 0) {
-
             if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.x < mon->x + Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.y > mon->y - Q_24_8(50))
                 && (gPlayer.y < mon->y + Q_24_8(50))) {
 
-                if (gPlayer.x < mon->x) {
-                    SPRITE_FLAG_CLEAR(s, X_FLIP);
-                } else {
-                    SPRITE_FLAG_SET(s, X_FLIP);
-                }
+                ENEMY_TURN_TO_PLAYER(mon->x, s);
 
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 2;

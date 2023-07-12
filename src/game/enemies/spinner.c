@@ -10,13 +10,10 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ u8 filler3C[4];
-    /* 0x40 */ s8 unk40;
-    /* 0x41 */ s8 unk41;
-    /* 0x42 */ s8 unk42;
-    /* 0x43 */ s8 unk43;
-    /* 0x44 */ s32 posX;
-    /* 0x48 */ s32 posY;
+    /* 0x3C */ Sprite_UNK28
+        reserved; // may wanna use s->unk28[1] for code if it matches?
+    /* 0x44 */ s32 spawnX;
+    /* 0x48 */ s32 spawnY;
 } Sprite_Spinner;
 
 #define GFX_TILE_COUNT_SPINNER 24
@@ -26,19 +23,11 @@ void Task_EnemySpinner(void);
 void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
-                                TaskDestructor_80095E8);
-    Sprite_Spinner *spinner = TaskGetStructPtr(t);
-    Sprite *s = &spinner->s;
+    ENTITY_INIT(Sprite_Spinner, spinner, Task_EnemySpinner, 0x4040, 0,
+                TaskDestructor_80095E8);
 
-    spinner->base.regionX = spriteRegionX;
-    spinner->base.regionY = spriteRegionY;
-    spinner->base.me = me;
-    spinner->base.spriteX = me->x;
-    spinner->base.spriteY = spriteY;
-
-    spinner->posX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    spinner->posY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    spinner->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
+    spinner->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -69,23 +58,24 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
     Sprite *s = &spinner->s;
     MapEntity *me = spinner->base.me;
 
-    posX = Q_24_8_TO_INT(spinner->posX);
-    posY = Q_24_8_TO_INT(spinner->posY);
+    posX = Q_24_8_TO_INT(spinner->spawnX);
+    posY = Q_24_8_TO_INT(spinner->spawnY);
     s->x = posX - gCamera.x;
     s->y = posY - gCamera.y;
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         struct UNK_3005A70 *u90 = gPlayer.unk90;
         if ((u90->s.unk28[0].unk0 == -1) && (u90->s.unk28[1].unk0 == -1)) {
-            someX = spinner->unk40 + posX;
+            someX = spinner->reserved.unk4 + posX;
             otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.unk28->unk4;
             if ((someX > otherX)
-                || (someX + (spinner->unk42 - spinner->unk40)) >= otherX) {
+                || (someX + (spinner->reserved.unk6 - spinner->reserved.unk4))
+                    >= otherX) {
                 // _080570C2
                 int diff = (u90->s.unk28[0].unk6 - u90->s.unk28[0].unk4);
                 if (otherX + diff >= someX) {
                 _080570D4:
-                    someY = s->unk28[1].unk5 + posY;
+                    someY = spinner->reserved.unk5 + posY;
                     otherY = Q_24_8_TO_INT(gPlayer.y) + u90->s.unk28[0].unk5;
                     if ((someY <= otherY) || (someY >= otherY)) {
 
