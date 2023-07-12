@@ -118,6 +118,36 @@ typedef struct {
         (sprite)->unk10 &= ~0x4000;                                                     \
     }
 
+#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
+    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
+    _sprite->graphics.anim = _anim;                                                     \
+    _sprite->variant = _variant;                                                        \
+    _sprite->unk1A = _UNK1A;                                                            \
+    _sprite->graphics.size = 0;                                                         \
+    _sprite->x = 0;                                                                     \
+    _sprite->y = 0;                                                                     \
+    _sprite->unk14 = 0;                                                                 \
+    _sprite->unk1C = 0;                                                                 \
+    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->unk22 = 0x10;                                                              \
+    _sprite->palId = 0;                                                                 \
+    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
+
+#define SPRITE_INIT_EXCEPT_POS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)  \
+    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
+    _sprite->graphics.anim = _anim;                                                     \
+    _sprite->variant = _variant;                                                        \
+    _sprite->unk1A = _UNK1A;                                                            \
+    _sprite->graphics.size = 0;                                                         \
+    _sprite->unk14 = 0;                                                                 \
+    _sprite->unk1C = 0;                                                                 \
+    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->unk22 = 0x10;                                                              \
+    _sprite->palId = 0;                                                                 \
+    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
+
 #define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
 
 #define SPRITE_FLAG(flagName, value) ((value) << SF_SHIFT(flagName))

@@ -74,7 +74,7 @@ CreateSuperEggRoboZ: @ 0x0804A6C8
 	adds r0, #0x48
 	adds r0, r0, r1
 	mov sb, r0
-	ldr r0, _0804A7A0 @ =gUnknown_030054EC
+	ldr r0, _0804A7A0 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0804A7A4
@@ -98,7 +98,7 @@ _0804A790: .4byte gUnknown_03005AA0
 _0804A794: .4byte Task_SuperEggRoboZMain
 _0804A798: .4byte TaskDestructor_SuperEggRoboZMain
 _0804A79C: .4byte gActiveBossTask
-_0804A7A0: .4byte gUnknown_030054EC
+_0804A7A0: .4byte gDifficultyLevel
 _0804A7A4:
 	movs r0, #8
 	strb r0, [r7, #8]

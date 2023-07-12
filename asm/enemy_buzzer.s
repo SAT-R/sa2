@@ -32,7 +32,7 @@ CreateEntity_Buzzer: @ 0x08052F94
 	asrs r0, r0, #0x18
 	cmp r0, #3
 	bgt _08052FD0
-	ldr r0, _080530B4 @ =gUnknown_030054EC
+	ldr r0, _080530B4 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _0805309A
@@ -148,7 +148,7 @@ _0805309A:
 	.align 2, 0
 _080530AC: .4byte gGameMode
 _080530B0: .4byte gCurrentLevel
-_080530B4: .4byte gUnknown_030054EC
+_080530B4: .4byte gDifficultyLevel
 _080530B8: .4byte sub_80530E0
 _080530BC: .4byte 0x00004030
 _080530C0: .4byte sub_8053770

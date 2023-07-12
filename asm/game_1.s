@@ -5,6 +5,7 @@
 .syntax unified
 .arm
 
+@ s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
 	thumb_func_start sub_801E4E4
 sub_801E4E4: @ 0x0801E4E4
 	push {r4, r5, r6, r7, lr}
@@ -274,6 +275,7 @@ _0801E6C4:
 	pop {r1}
 	bx r1
 
+@ s32 sub_801E6D4(s32, s32, s32, s32, void *, Func_801EE64);
 	thumb_func_start sub_801E6D4
 sub_801E6D4: @ 0x0801E6D4
 	push {r4, r5, r6, r7, lr}

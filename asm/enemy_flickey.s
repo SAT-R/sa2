@@ -23,7 +23,7 @@ CreateEntity_Flickey: @ 0x08058920
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _0805894C
-	ldr r0, _08058ABC @ =gUnknown_030054EC
+	ldr r0, _08058ABC @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne _0805894C
@@ -211,7 +211,7 @@ _08058AA6:
 	bx r0
 	.align 2, 0
 _08058AB8: .4byte gGameMode
-_08058ABC: .4byte gUnknown_030054EC
+_08058ABC: .4byte gDifficultyLevel
 _08058AC0: .4byte sub_8058AF4
 _08058AC4: .4byte 0x00004040
 _08058AC8: .4byte sub_8059398

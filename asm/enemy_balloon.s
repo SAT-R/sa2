@@ -25,7 +25,7 @@ CreateEntity_Balloon: @ 0x0805849C
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _080584CA
-	ldr r0, _080585B0 @ =gUnknown_030054EC
+	ldr r0, _080585B0 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _0805859C
@@ -144,7 +144,7 @@ _0805859C:
 	bx r0
 	.align 2, 0
 _080585AC: .4byte gGameMode
-_080585B0: .4byte gUnknown_030054EC
+_080585B0: .4byte gDifficultyLevel
 _080585B4: .4byte sub_80585DC
 _080585B8: .4byte 0x00004040
 _080585BC: .4byte TaskDestructor_80095E8

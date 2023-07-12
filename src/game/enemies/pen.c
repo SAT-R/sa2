@@ -16,8 +16,8 @@ typedef struct {
     /* 0x40 */ s32 spawnY;
     /* 0x44 */ s32 offsetX;
     /* 0x48 */ s32 offsetY;
-    /* 0x4C */ s32 unk4C;
-    /* 0x50 */ u8 unk50;
+    /* 0x4C */ s32 unused;
+    /* 0x50 */ bool8 clampParam;
     /* 0x51 */ bool8 boosting;
 } Sprite_Pen; /* 0x54 */
 
@@ -29,50 +29,24 @@ static void Task_Turn(void);
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Move, sizeof(Sprite_Pen), 0x4040, 0, TaskDestructor_80095E8);
-    Sprite_Pen *pen = TaskGetStructPtr(t);
-    Sprite *s = &pen->s;
-
-    pen->base.regionX = spriteRegionX;
-    pen->base.regionY = spriteRegionY;
-    pen->base.me = me;
-    pen->base.spriteX = me->x;
-    pen->base.spriteY = spriteY;
+    ENTITY_INIT(Sprite_Pen, pen, Task_Move, 0x4040, 0, TaskDestructor_80095E8);
 
     if (me->d.sData[1] != 0) {
-        pen->unk50 = 1;
+        pen->clampParam = TRUE;
     } else {
-        pen->unk50 = 0;
+        pen->clampParam = FALSE;
     }
 
-    pen->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    pen->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
-    pen->offsetX = 0;
-    // Find the floor position
-    pen->offsetY
-        = Q_24_8(sub_801F07C(Q_24_8_TO_INT(pen->spawnY), Q_24_8_TO_INT(pen->spawnX),
-                             pen->unk50, 8, NULL, sub_801EE64));
+    ENEMY_SET_SPAWN_POS_GROUND(pen, me);
 
-    pen->unk4C = 0;
+    pen->unused = 0;
     pen->boosting = FALSE;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->graphics.dest = VramMalloc(0xC);
-    s->graphics.anim = SA2_ANIM_PEN;
-    s->variant = SA2_ANIM_PEN_VARIANT_MOVE;
-    s->unk1A = 0x480;
-    s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
-    s->palId = 0;
-    s->unk28[0].unk0 = -1;
-    s->unk10 = 0x2000;
+    SPRITE_INIT_EXCEPT_POS(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
 }
 
 static void Task_Move(void)
@@ -82,12 +56,10 @@ static void Task_Move(void)
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
     s32 posX_24_8;
-    s32 delta;
 
     if ((s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         if (pen->boosting) {
             pen->offsetX += PEN_BOOST_SPEED;
-
         } else {
             pen->offsetX += PEN_MOVE_SPEED;
         }
@@ -99,38 +71,12 @@ static void Task_Move(void)
         }
     }
 
-    delta = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                        Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8, NULL,
-                        sub_801EE64);
+    ENEMY_CLAMP_TO_GROUND(pen, pen->clampParam);
 
-    if (delta < 0) {
-        pen->offsetY += Q_24_8(delta);
-        delta = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
-                            sub_801EC3C);
-    }
+    ENEMY_UPDATE_POSITION(pen, s, pos);
 
-    if (delta > 0) {
-        pen->offsetY += Q_24_8(delta);
-    }
-
-    pos.x = Q_24_8_TO_INT(pen->spawnX + pen->offsetX);
-    pos.y = Q_24_8_TO_INT(pen->spawnY + pen->offsetY);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(pen->spawnX), Q_24_8_TO_INT(pen->spawnY))
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, pen->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_INVISIBLE(pen, s, me);
 
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         s32 playerX = gPlayer.x;
@@ -158,15 +104,12 @@ static void Task_Move(void)
     }
 
     // Turn when end of range reached
-    if ((Q_24_8_TO_INT(pen->offsetX) <= me->d.sData[0] * TILE_WIDTH
-         && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
+    if (ENEMY_CROSSED_LEFT_BORDER(pen, me) && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_Turn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->unk21 = -1;
-    } else if ((Q_24_8_TO_INT(pen->offsetX)
-                    >= (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH)
-                && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+    } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_Turn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
@@ -185,38 +128,15 @@ static void Task_Turn(void)
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
 
-    s32 delta = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
-                            NULL, sub_801EE64);
-
-    if (delta < 0) {
-        pen->offsetY += Q_24_8(delta);
-        delta = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
-                            sub_801EC3C);
-    }
-
-    if (delta > 0) {
-        pen->offsetY += Q_24_8(delta);
-    }
+    ENEMY_CLAMP_TO_GROUND(pen, pen->clampParam);
 
     pos.x = Q_24_8_TO_INT(pen->spawnX + pen->offsetX);
     pos.y = Q_24_8_TO_INT(pen->spawnY + pen->offsetY);
-
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(pen->spawnX), Q_24_8_TO_INT(pen->spawnY))
-        && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, pen->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_INVISIBLE(pen, s, me);
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
     if (sub_8004558(s) == 0) {

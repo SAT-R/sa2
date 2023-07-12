@@ -40,7 +40,7 @@ CreateAeroEgg: @ 0x0804156C
 	lsls r0, r0, #0x12
 	adds r1, r1, r0
 	mov sl, r1
-	ldr r0, _080415E0 @ =gUnknown_030054EC
+	ldr r0, _080415E0 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _080415E8
@@ -57,7 +57,7 @@ _080415D0: .4byte gUnknown_03005590
 _080415D4: .4byte Task_AeroEggMain
 _080415D8: .4byte TaskDestructor_AeroEggMain
 _080415DC: .4byte gActiveBossTask
-_080415E0: .4byte gUnknown_030054EC
+_080415E0: .4byte gDifficultyLevel
 _080415E4: .4byte gGameMode
 _080415E8:
 	movs r0, #8

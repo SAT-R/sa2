@@ -24,7 +24,7 @@ CreateEntity_Gohla: @ 0x08051788
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _080517B6
-	ldr r0, _080517F8 @ =gUnknown_030054EC
+	ldr r0, _080517F8 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne _080517B6
@@ -62,7 +62,7 @@ _080517B6:
 	b _08051816
 	.align 2, 0
 _080517F4: .4byte gGameMode
-_080517F8: .4byte gUnknown_030054EC
+_080517F8: .4byte gDifficultyLevel
 _080517FC: .4byte sub_8051928
 _08051800: .4byte 0x00004040
 _08051804: .4byte sub_8051E20

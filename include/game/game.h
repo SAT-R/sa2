@@ -140,7 +140,9 @@ extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
-extern u8 gUnknown_030054EC;
+#define DIFFICULTY_NORMAL 0
+#define DIFFICULTY_EASY   1
+extern u8 gDifficultyLevel;
 
 extern s8 gTrappedAnimalVariant;
 

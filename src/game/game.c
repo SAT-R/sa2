@@ -512,9 +512,9 @@ void ApplyGameStageSettings(void)
     if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK
          || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY)
         || (gUnknown_03005424 & 0x40)) {
-        gUnknown_030054EC = 0;
+        gDifficultyLevel = 0;
     } else {
-        gUnknown_030054EC = gLoadedSaveGame->difficultyLevel;
+        gDifficultyLevel = gLoadedSaveGame->difficultyLevel;
     }
 
     if ((gUnknown_03005424 & 0x40)) {
