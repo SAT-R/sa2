@@ -427,9 +427,14 @@ extern struct Camera gCamera;
 
 // @NOTE/INVESTIGATE: Some places match with u16, some with u32,
 // but u16 is more common, so it's the default.
-#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(u16, x, y, CAM_REGION_WIDTH)
-#define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
-    IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE(_x, _y) IS_OUT_OF_RANGE(u16, _x, _y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE_TYPED(castType, _x, _y)                                     \
+    IS_OUT_OF_RANGE(castType, _x, _y, CAM_REGION_WIDTH)
+
+#define IS_OUT_OF_DISPLAY_RANGE(_x, _y)                                                 \
+    ((_x) > gCamera.x + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))                        \
+     || (_x) < gCamera.x - (CAM_REGION_WIDTH / 2) || (_y) > gCamera.y + CAM_BOUND_Y     \
+     || (_y) < gCamera.y - (CAM_REGION_WIDTH / 2))
 
 // TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
 #define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \

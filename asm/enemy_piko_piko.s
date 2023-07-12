@@ -5,8 +5,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_PikoPiko
 Task_PikoPiko: @ 0x0805560C
 	push {r4, r5, r6, r7, lr}
@@ -20,11 +18,11 @@ Task_PikoPiko: @ 0x0805560C
 	ldrh r3, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r4, r3, r0
+	adds r4, r3, r0     @ r4 = piko
 	ldr r1, _080556E8 @ =IWRAM_START + 0xC
-	adds r7, r3, r1
+	adds r7, r3, r1     @ r7 = s
 	ldr r2, [r4]
-	mov r8, r2
+	mov r8, r2          @ r8 = me
 	ldr r5, _080556EC @ =IWRAM_START + 0x56
 	adds r0, r3, r5
 	movs r1, #0
@@ -231,6 +229,7 @@ _080557CE:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start TaskDestructor_PikoPiko
 TaskDestructor_PikoPiko: @ 0x080557DC

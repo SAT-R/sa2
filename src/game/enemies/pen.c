@@ -82,7 +82,7 @@ static void Task_Move(void)
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
     s32 posX_24_8;
-    s32 val;
+    s32 delta;
 
     if ((s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         if (pen->boosting) {
@@ -99,19 +99,19 @@ static void Task_Move(void)
         }
     }
 
-    val = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                      Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8, NULL,
-                      sub_801EE64);
+    delta = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
+                        Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8, NULL,
+                        sub_801EE64);
 
-    if (val < 0) {
-        pen->offsetY += Q_24_8(val);
-        val = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                          Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
-                          sub_801EC3C);
+    if (delta < 0) {
+        pen->offsetY += Q_24_8(delta);
+        delta = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
+                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
+                            sub_801EC3C);
     }
 
-    if (val > 0) {
-        pen->offsetY += Q_24_8(val);
+    if (delta > 0) {
+        pen->offsetY += Q_24_8(delta);
     }
 
     pos.x = Q_24_8_TO_INT(pen->spawnX + pen->offsetX);
@@ -125,10 +125,7 @@ static void Task_Move(void)
         return;
     }
 
-    if ((Q_24_8_TO_INT(pen->spawnX) > gCamera.x + 368
-         || Q_24_8_TO_INT(pen->spawnX) < gCamera.x - 128
-         || Q_24_8_TO_INT(pen->spawnY) > gCamera.y + 288
-         || Q_24_8_TO_INT(pen->spawnY) < gCamera.y - 128)
+    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(pen->spawnX), Q_24_8_TO_INT(pen->spawnY))
         && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, pen->base.spriteX);
         TaskDestroy(gCurTask);
@@ -188,19 +185,19 @@ static void Task_Turn(void)
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
 
-    s32 val = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                          Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8, NULL,
-                          sub_801EE64);
+    s32 delta = sub_801F07C(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
+                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
+                            NULL, sub_801EE64);
 
-    if (val < 0) {
-        pen->offsetY += Q_24_8(val);
-        val = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
-                          Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
-                          sub_801EC3C);
+    if (delta < 0) {
+        pen->offsetY += Q_24_8(delta);
+        delta = sub_801F100(Q_24_8_TO_INT(pen->spawnY + pen->offsetY),
+                            Q_24_8_TO_INT(pen->spawnX + pen->offsetX), pen->unk50, 8,
+                            sub_801EC3C);
     }
 
-    if (val > 0) {
-        pen->offsetY += Q_24_8(val);
+    if (delta > 0) {
+        pen->offsetY += Q_24_8(delta);
     }
 
     pos.x = Q_24_8_TO_INT(pen->spawnX + pen->offsetX);
@@ -214,10 +211,7 @@ static void Task_Turn(void)
         return;
     }
 
-    if ((Q_24_8_TO_INT(pen->spawnX) > gCamera.x + 368
-         || Q_24_8_TO_INT(pen->spawnX) < gCamera.x - 128
-         || Q_24_8_TO_INT(pen->spawnY) > gCamera.y + 288
-         || Q_24_8_TO_INT(pen->spawnY) < gCamera.y - 128)
+    if (IS_OUT_OF_DISPLAY_RANGE(Q_24_8_TO_INT(pen->spawnX), Q_24_8_TO_INT(pen->spawnY))
         && IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         SET_MAP_ENTITY_NOT_INITIALIZED(me, pen->base.spriteX);
         TaskDestroy(gCurTask);

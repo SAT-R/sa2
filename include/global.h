@@ -173,6 +173,13 @@ typedef void (*VoidFn)(void);
     a = ((u8)b ^ (u8)a) * -1;                                                           \
     b = (u8)b * -1;
 
+#define NEGATE(var)                                                                     \
+    ({                                                                                  \
+        s32 temp = var;                                                                 \
+        var = -temp;                                                                    \
+    })
+#define DIRECT_NEGATE(var) (var = -var;)
+
 typedef struct {
     s16 x;
     s16 y;

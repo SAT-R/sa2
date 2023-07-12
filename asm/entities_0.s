@@ -1498,6 +1498,7 @@ _0800CA0C:
 	.align 2, 0
 _0800CA1C: .4byte gPlayer
 
+@; bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 	thumb_func_start sub_800CA20
 sub_800CA20: @ 0x0800CA20
 	push {r4, r5, r6, r7, lr}
