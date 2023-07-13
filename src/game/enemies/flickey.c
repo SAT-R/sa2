@@ -24,22 +24,21 @@ typedef struct {
     /* 0x9C */ s16 unk9C;
     /* 0x9E */ s16 unk9E;
 
-    u8 fillerA0[0x4];
+    u8 unkA0;
 
-    /* 0xA4 */ Vec2_32 posBuffer[64];
+    /* 0xA4 */ Vec2_32 positions[64];
     /* 0x2A4 */ u8 unk2A4;
 } Sprite_Flickey; /* size: 0x2A8 */
 
 void Task_FlickeyMain(void);
 void TaskDestructor_Flickey(struct Task *);
 
-#if 01
 void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
 {
     u8 i;
     s32 x, y;
-    Vec2_32 pos; // sp08+sp0C
+    Vec2_32 pos;
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         ENTITY_INIT(Sprite_Flickey, flickey, Task_FlickeyMain, 0x4040, 0,
                     TaskDestructor_Flickey);
@@ -50,14 +49,12 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         flickey->unk9E = -Q_24_8(4.0);
         flickey->unk2A4 = 0;
 
-        x = flickey->spawnX;
-        x <<= 8;
-        y = flickey->spawnY;
-        y <<= 8;
+        x = Q_24_8(flickey->spawnX);
+        y = Q_24_8(flickey->spawnY);
 
-        for (i = 0; i < ARRAY_COUNT(flickey->posBuffer); i++) {
-            flickey->posBuffer[i].x = x >> 16;
-            flickey->posBuffer[i].y = y >> 16;
+        for (i = 0; i < ARRAY_COUNT(flickey->positions); i++) {
+            flickey->positions[i].x = Q_24_8_TO_INT(x >> 8);
+            flickey->positions[i].y = Q_24_8_TO_INT(y >> 8);
         }
 
         s->x = 0;
@@ -72,7 +69,6 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         SPRITE_INIT_EXCEPT_POS(s, 8, SA2_ANIM_FLICKEY_PROJ, 0, 0x4C0, 2);
     }
 }
-#endif
 
 #if 0
 // Matches
@@ -84,8 +80,8 @@ void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
 
     for (i = 0; i < 3; i++) {
         u8 index = (flickey->unk2A4 - (i + 1) * 16) & 0x3F;
-        s->x = flickey->posBuffer[index].x - gCamera.x;
-        s->y = flickey->posBuffer[index].y - gCamera.y;
+        s->x = flickey->positions[index].x - gCamera.x;
+        s->y = flickey->positions[index].y - gCamera.y;
         sub_80051E8(s);
 
         SPRITE_FLAG_FLIP(s, X_FLIP);
