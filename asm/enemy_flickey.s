@@ -4,230 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Flickey
-CreateEntity_Flickey: @ 0x08058920
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0xc
-	mov sb, r0
-	lsls r1, r1, #0x10
-	lsrs r6, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r4, r2, #0x10
-	lsls r3, r3, #0x18
-	lsrs r5, r3, #0x18
-	ldr r0, _08058AB8 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _0805894C
-	ldr r0, _08058ABC @ =gDifficultyLevel
-	ldrb r0, [r0]
-	cmp r0, #1
-	bne _0805894C
-	b _08058AA6
-_0805894C:
-	ldr r0, _08058AC0 @ =sub_8058AF4
-	movs r1, #0xaa
-	lsls r1, r1, #2
-	ldr r2, _08058AC4 @ =0x00004040
-	ldr r3, _08058AC8 @ =sub_8059398
-	str r3, [sp]
-	movs r3, #0
-	bl TaskCreate
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r0, r2
-	mov sl, r0
-	ldr r0, _08058ACC @ =IWRAM_START + 0xC
-	adds r7, r2, r0
-	movs r1, #0
-	mov r8, r1
-	movs r1, #0
-	mov r3, sl
-	strh r6, [r3, #4]
-	strh r4, [r3, #6]
-	mov r0, sb
-	str r0, [r3]
-	ldrb r0, [r0]
-	strb r0, [r3, #8]
-	strb r5, [r3, #9]
-	ldr r3, _08058AD0 @ =IWRAM_START + 0x8C
-	adds r5, r2, r3
-	mov r3, sb
-	ldrb r0, [r3]
-	lsls r0, r0, #3
-	lsls r6, r6, #8
-	mov ip, r6
-	add r0, ip
-	lsls r0, r0, #8
-	str r0, [r5]
-	ldr r6, _08058AD4 @ =IWRAM_START + 0x90
-	adds r3, r2, r6
-	mov r6, sb
-	ldrb r0, [r6, #1]
-	lsls r0, r0, #3
-	lsls r4, r4, #8
-	adds r0, r0, r4
-	lsls r0, r0, #8
-	str r0, [r3]
-	ldr r6, _08058AD8 @ =IWRAM_START + 0x94
-	adds r0, r2, r6
-	str r1, [r0]
-	adds r6, #4
-	adds r0, r2, r6
-	str r1, [r0]
-	ldr r0, _08058ADC @ =IWRAM_START + 0x9C
-	adds r1, r2, r0
-	ldr r0, _08058AE0 @ =0x0000FE80
-	strh r0, [r1]
-	adds r6, #6
-	adds r1, r2, r6
-	movs r0, #0xfc
-	lsls r0, r0, #8
-	strh r0, [r1]
-	ldr r1, _08058AE4 @ =IWRAM_START + 0x2A4
-	adds r0, r2, r1
-	mov r6, r8
-	strb r6, [r0]
-	ldr r0, [r5]
-	lsls r0, r0, #8
-	ldr r1, [r3]
-	lsls r1, r1, #8
-	movs r3, #0
-	mov r5, ip
-	str r5, [sp, #4]
-	str r4, [sp, #8]
-	ldr r4, _08058AE8 @ =IWRAM_START + 0xA4
-	adds r6, r2, r4
-	asrs r5, r0, #0x10
-	ldr r0, _08058AEC @ =IWRAM_START + 0xA8
-	adds r2, r2, r0
-	asrs r4, r1, #0x10
-_080589EA:
-	lsls r1, r3, #3
-	adds r0, r6, r1
-	str r5, [r0]
-	adds r1, r2, r1
-	str r4, [r1]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #0x3f
-	bls _080589EA
-	movs r5, #0
-	movs r4, #0
-	strh r4, [r7, #0x16]
-	strh r4, [r7, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	mov r3, sb
-	strb r0, [r3]
-	movs r0, #0x14
-	bl VramMalloc
-	str r0, [r7, #4]
-	ldr r0, _08058AF0 @ =0x000001FB
-	strh r0, [r7, #0xa]
-	adds r1, r7, #0
-	adds r1, #0x20
-	movs r0, #1
-	strb r0, [r1]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r7, #0x1a]
-	strh r4, [r7, #8]
-	strh r4, [r7, #0x14]
-	strh r4, [r7, #0x1c]
-	adds r1, #1
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r0, r7, #0
-	adds r0, #0x22
-	movs r6, #0x10
-	strb r6, [r0]
-	adds r0, #3
-	strb r5, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	mov r8, r0
-	str r0, [r7, #0x28]
-	movs r6, #0x80
-	lsls r6, r6, #6
-	str r6, [r7, #0x10]
-	mov r7, sl
-	adds r7, #0x4c
-	mov r1, sb
-	ldrb r0, [r1]
-	lsls r0, r0, #3
-	ldr r3, [sp, #4]
-	adds r0, r0, r3
-	strh r0, [r7, #0x16]
-	ldrb r0, [r1, #1]
-	lsls r0, r0, #3
-	ldr r1, [sp, #8]
-	adds r0, r0, r1
-	strh r0, [r7, #0x18]
-	movs r0, #8
-	bl VramMalloc
-	str r0, [r7, #4]
-	movs r0, #0xfe
-	lsls r0, r0, #1
-	strh r0, [r7, #0xa]
-	mov r0, sl
-	adds r0, #0x6c
-	strb r5, [r0]
-	movs r0, #0x98
-	lsls r0, r0, #3
-	strh r0, [r7, #0x1a]
-	strh r4, [r7, #8]
-	strh r4, [r7, #0x14]
-	strh r4, [r7, #0x1c]
-	mov r1, sl
-	adds r1, #0x6d
-	movs r0, #1
-	rsbs r0, r0, #0
-	strb r0, [r1]
-	mov r0, sl
-	adds r0, #0x6e
-	movs r3, #0x10
-	strb r3, [r0]
-	adds r0, #3
-	strb r5, [r0]
-	mov r4, r8
-	str r4, [r7, #0x28]
-	str r6, [r7, #0x10]
-_08058AA6:
-	add sp, #0xc
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08058AB8: .4byte gGameMode
-_08058ABC: .4byte gDifficultyLevel
-_08058AC0: .4byte sub_8058AF4
-_08058AC4: .4byte 0x00004040
-_08058AC8: .4byte sub_8059398
-_08058ACC: .4byte IWRAM_START + 0xC
-_08058AD0: .4byte IWRAM_START + 0x8C
-_08058AD4: .4byte IWRAM_START + 0x90
-_08058AD8: .4byte IWRAM_START + 0x94
-_08058ADC: .4byte IWRAM_START + 0x9C
-_08058AE0: .4byte 0x0000FE80
-_08058AE4: .4byte IWRAM_START + 0x2A4
-_08058AE8: .4byte IWRAM_START + 0xA4
-_08058AEC: .4byte IWRAM_START + 0xA8
-_08058AF0: .4byte 0x000001FB
+.if 0
+.endif
 
-	thumb_func_start sub_8058AF4
-sub_8058AF4: @ 0x08058AF4
+	thumb_func_start Task_FlickeyMain
+Task_FlickeyMain: @ 0x08058AF4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -240,7 +21,7 @@ sub_8058AF4: @ 0x08058AF4
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r4
-	mov sl, r0
+	mov sl, r0          @sl = flickey
 	ldr r0, _08058D20 @ =IWRAM_START + 0xC
 	adds r0, r0, r4
 	mov sb, r0
@@ -702,7 +483,7 @@ _08058EAC:
 	mov r0, sb
 	bl sub_80051E8
 	mov r0, sl
-	bl sub_8059320
+	bl Flickey_RenderIronBalls
 _08058ECA:
 	add sp, #0x54
 	pop {r3, r4, r5}
@@ -1083,13 +864,13 @@ _080591B6:
 	strb r0, [r1]
 	ldr r0, _080591F4 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080591F8 @ =sub_8058AF4
+	ldr r0, _080591F8 @ =Task_FlickeyMain
 	str r0, [r1, #8]
 _080591D4:
 	mov r0, r8
 	bl sub_80051E8
 	mov r0, sb
-	bl sub_8059320
+	bl Flickey_RenderIronBalls
 _080591E0:
 	add sp, #0x48
 	pop {r3, r4, r5}
@@ -1102,7 +883,7 @@ _080591E0:
 	.align 2, 0
 _080591F0: .4byte 0x000001FB
 _080591F4: .4byte gCurTask
-_080591F8: .4byte sub_8058AF4
+_080591F8: .4byte Task_FlickeyMain
 
 	thumb_func_start sub_80591FC
 sub_80591FC: @ 0x080591FC
@@ -1247,8 +1028,10 @@ _08059314: .4byte sub_801EE64
 _08059318: .4byte gUnknown_03005590
 _0805931C: .4byte gCamera
 
-	thumb_func_start sub_8059320
-sub_8059320: @ 0x08059320
+.if 01
+@ Matched in src/game/enemies/flickey.c
+	thumb_func_start Flickey_RenderIronBalls
+Flickey_RenderIronBalls: @ 0x08059320
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -1307,8 +1090,9 @@ _0805933E:
 	.align 2, 0
 _08059394: .4byte gCamera
 
-	thumb_func_start sub_8059398
-sub_8059398: @ 0x08059398
+@ Matched in src/game/enemies/flickey.c
+	thumb_func_start TaskDestructor_Flickey
+TaskDestructor_Flickey: @ 0x08059398
 	push {r4, lr}
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0
@@ -1321,3 +1105,4 @@ sub_8059398: @ 0x08059398
 	pop {r4}
 	pop {r0}
 	bx r0
+.endif

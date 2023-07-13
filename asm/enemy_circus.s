@@ -4,179 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Circus
-CreateEntity_Circus: @ 0x080557F0
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	adds r6, r0, #0
-	adds r4, r3, #0
-	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov r8, r2
-	lsls r4, r4, #0x18
-	lsrs r4, r4, #0x18
-	ldr r0, _0805584C @ =sub_8055950
-	ldr r2, _08055850 @ =0x00004090
-	ldr r1, _08055854 @ =sub_8055EC0
-	str r1, [sp]
-	movs r1, #0x8c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r0, r1
-	mov sl, r0
-	ldr r0, _08055858 @ =IWRAM_START + 0xC
-	adds r7, r1, r0
-	mov r2, sl
-	strh r5, [r2, #4]
-	mov r0, r8
-	strh r0, [r2, #6]
-	str r6, [r2]
-	ldrb r0, [r6]
-	strb r0, [r2, #8]
-	strb r4, [r2, #9]
-	movs r0, #4
-	ldrsb r0, [r6, r0]
-	cmp r0, #0
-	beq _08055860
-	ldr r2, _0805585C @ =IWRAM_START + 0x85
-	adds r1, r1, r2
-	movs r0, #1
-	b _08055866
-	.align 2, 0
-_0805584C: .4byte sub_8055950
-_08055850: .4byte 0x00004090
-_08055854: .4byte sub_8055EC0
-_08055858: .4byte IWRAM_START + 0xC
-_0805585C: .4byte IWRAM_START + 0x85
-_08055860:
-	ldr r4, _08055948 @ =IWRAM_START + 0x85
-	adds r1, r1, r4
-	movs r0, #0
-_08055866:
-	strb r0, [r1]
-	ldrb r0, [r6]
-	lsls r0, r0, #3
-	lsls r3, r5, #8
-	adds r0, r0, r3
-	lsls r0, r0, #8
-	mov r1, sl
-	str r0, [r1, #0x7c]
-	adds r1, #0x80
-	ldrb r0, [r6, #1]
-	lsls r0, r0, #3
-	mov r4, r8
-	lsls r2, r4, #8
-	adds r0, r0, r2
-	lsls r0, r0, #8
-	str r0, [r1]
-	adds r1, #4
-	movs r4, #0
-	movs r0, #1
-	strb r0, [r1]
-	ldrb r0, [r6]
-	lsls r0, r0, #3
-	adds r0, r0, r3
-	movs r5, #0
-	strh r0, [r7, #0x16]
-	ldrb r0, [r6, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r2
-	strh r0, [r7, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r6]
-	movs r0, #0x14
-	bl VramMalloc
-	str r0, [r7, #4]
-	ldr r0, _0805594C @ =0x000001EF
-	strh r0, [r7, #0xa]
-	adds r0, r7, #0
-	adds r0, #0x20
-	strb r5, [r0]
-	movs r2, #0x90
-	lsls r2, r2, #3
-	strh r2, [r7, #0x1a]
-	strh r4, [r7, #8]
-	strh r4, [r7, #0x14]
-	strh r4, [r7, #0x1c]
-	adds r1, r7, #0
-	adds r1, #0x21
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r0, r7, #0
-	adds r0, #0x22
-	movs r1, #0x10
-	mov sb, r1
-	mov r2, sb
-	strb r2, [r0]
-	adds r0, #3
-	strb r5, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	mov r8, r0
-	str r0, [r7, #0x28]
-	movs r6, #0x80
-	lsls r6, r6, #6
-	str r6, [r7, #0x10]
-	mov r7, sl
-	adds r7, #0x44
-	strh r4, [r7, #0x16]
-	strh r4, [r7, #0x18]
-	movs r0, #0x10
-	bl VramMalloc
-	str r0, [r7, #4]
-	movs r0, #0xf8
-	lsls r0, r0, #1
-	strh r0, [r7, #0xa]
-	mov r1, sl
-	adds r1, #0x64
-	movs r0, #2
-	strb r0, [r1]
-	movs r1, #0x90
-	lsls r1, r1, #3
-	strh r1, [r7, #0x1a]
-	strh r4, [r7, #8]
-	strh r4, [r7, #0x14]
-	strh r4, [r7, #0x1c]
-	mov r1, sl
-	adds r1, #0x65
-	subs r0, #3
-	strb r0, [r1]
-	mov r0, sl
-	adds r0, #0x66
-	mov r2, sb
-	strb r2, [r0]
-	adds r0, #3
-	strb r5, [r0]
-	mov r4, r8
-	str r4, [r7, #0x28]
-	str r6, [r7, #0x10]
-	adds r0, r7, #0
-	bl sub_8004558
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08055948: .4byte IWRAM_START + 0x85
-_0805594C: .4byte 0x000001EF
+.if 0
+.endif
 
-	thumb_func_start sub_8055950
-sub_8055950: @ 0x08055950
+	thumb_func_start Task_CircusMain
+Task_CircusMain: @ 0x08055950
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -780,7 +612,7 @@ _08055E30:
 	strb r0, [r1]
 	ldr r2, _08055E84 @ =gCurTask
 	ldr r1, [r2]
-	ldr r0, _08055E88 @ =sub_8055950
+	ldr r0, _08055E88 @ =Task_CircusMain
 	str r0, [r1, #8]
 	b _08055E92
 	.align 2, 0
@@ -789,7 +621,7 @@ _08055E78: .4byte 0x000001EF
 _08055E7C: .4byte IWRAM_START + 0x2C
 _08055E80: .4byte IWRAM_START + 0x2D
 _08055E84: .4byte gCurTask
-_08055E88: .4byte sub_8055950
+_08055E88: .4byte Task_CircusMain
 _08055E8C:
 	adds r0, r6, #0
 	bl sub_80051E8
@@ -817,8 +649,8 @@ _08055EB0:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8055EC0
-sub_8055EC0: @ 0x08055EC0
+	thumb_func_start TaskDestructor_Circus
+TaskDestructor_Circus: @ 0x08055EC0
 	push {r4, lr}
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0

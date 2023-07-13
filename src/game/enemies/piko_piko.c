@@ -24,7 +24,7 @@ static void TaskDestructor_PikoPiko(struct Task *);
 void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
-    if ((gGameMode == GAME_MODE_TIME_ATTACK) || (gDifficultyLevel != 1)) {
+    if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         ENTITY_INIT(Sprite_PikoPiko, piko, Task_PikoPiko, 0x4080, 0,
                     TaskDestructor_PikoPiko);
 

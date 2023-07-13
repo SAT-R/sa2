@@ -4,6 +4,7 @@
 .syntax unified
 .arm
 
+.if 0
 	thumb_func_start CreateEntity_BulletBuzzer
 CreateEntity_BulletBuzzer: @ 0x0805971C
 	push {r4, r5, r6, r7, lr}
@@ -24,7 +25,7 @@ CreateEntity_BulletBuzzer: @ 0x0805971C
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	mov sb, r0
-	ldr r0, _0805982C @ =sub_8059858
+	ldr r0, _0805982C @ =Task_BulletBuzzerMain
 	ldr r2, _08059830 @ =0x00004040
 	ldr r1, _08059834 @ =TaskDestructor_80095E8
 	str r1, [sp]
@@ -140,7 +141,7 @@ CreateEntity_BulletBuzzer: @ 0x0805971C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0805982C: .4byte sub_8059858
+_0805982C: .4byte Task_BulletBuzzerMain
 _08059830: .4byte 0x00004040
 _08059834: .4byte TaskDestructor_80095E8
 _08059838: .4byte IWRAM_START + 0xC
@@ -151,9 +152,10 @@ _08059848: .4byte IWRAM_START + 0x2C
 _0805984C: .4byte IWRAM_START + 0x2D
 _08059850: .4byte IWRAM_START + 0x2E
 _08059854: .4byte IWRAM_START + 0x31
+.endif
 
-	thumb_func_start sub_8059858
-sub_8059858: @ 0x08059858
+	thumb_func_start Task_BulletBuzzerMain
+Task_BulletBuzzerMain: @ 0x08059858
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -668,13 +670,13 @@ _08059C3A:
 	strb r0, [r1]
 	ldr r0, _08059C7C @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08059C80 @ =sub_8059858
+	ldr r0, _08059C80 @ =Task_BulletBuzzerMain
 	str r0, [r1, #8]
 	b _08059C8A
 	.align 2, 0
 _08059C78: .4byte 0x000001F9
 _08059C7C: .4byte gCurTask
-_08059C80: .4byte sub_8059858
+_08059C80: .4byte Task_BulletBuzzerMain
 _08059C84:
 	adds r0, r6, #0
 	bl sub_80051E8

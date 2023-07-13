@@ -131,12 +131,14 @@ SECTIONS
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);
+        build/sa2/src/game/enemies/buzzer.o(.text);
         build/sa2/asm/enemy_buzzer.o(.text);
         build/sa2/asm/enemy_kiki.o(.text);
         build/sa2/asm/enemy_koura.o(.text);
         build/sa2/src/game/enemies/bell.o(.text);
         build/sa2/asm/enemy_yado.o(.text);
         build/sa2/src/game/enemies/piko_piko.o(.text);
+        build/sa2/src/game/enemies/circus.o(.text);
         build/sa2/asm/enemy_circus.o(.text);
         build/sa2/asm/enemy_madillo.o(.text);
         build/sa2/src/game/enemies/straw.o(.text);
@@ -145,9 +147,12 @@ SECTIONS
         build/sa2/asm/enemy_mouse.o(.text);
         build/sa2/src/game/enemies/pen.o(.text);
         build/sa2/asm/enemy_geji_geji.o(.text);
+        build/sa2/src/game/enemies/balloon.o(.text);
         build/sa2/asm/enemy_balloon.o(.text);
+        build/sa2/src/game/enemies/flickey.o(.text);
         build/sa2/asm/enemy_flickey.o(.text);
         build/sa2/src/game/enemies/kyura.o(.text);
+        build/sa2/src/game/enemies/bullet_buzzer.o(.text);
         build/sa2/asm/enemy_bullet_buzzer.o(.text);
         build/sa2/src/game/enemies/star.o(.text);
         build/sa2/src/game/multiplayer/mode_select.o(.text);

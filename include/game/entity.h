@@ -100,6 +100,10 @@ void sub_801FD34(s32, s32, s32);
 #define DIFFICULTY_LEVEL_IS_NOT_EASY                                                    \
     (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != DIFFICULTY_EASY)
 
+#define DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1                                  \
+    (gGameMode == GAME_MODE_TIME_ATTACK || gCurrentLevel > 3                            \
+     || gDifficultyLevel != DIFFICULTY_EASY)
+
 #define ENEMY_SET_SPAWN_POS_STATIC(_enemy, _mapEntity)                                  \
     _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                \
     _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));

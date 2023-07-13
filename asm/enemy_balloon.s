@@ -4,160 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Balloon
-CreateEntity_Balloon: @ 0x0805849C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	adds r7, r0, #0
-	lsls r1, r1, #0x10
-	lsrs r6, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov sb, r2
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	mov sl, r3
-	ldr r0, _080585AC @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _080584CA
-	ldr r0, _080585B0 @ =gDifficultyLevel
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _0805859C
-_080584CA:
-	ldr r0, _080585B4 @ =sub_80585DC
-	ldr r2, _080585B8 @ =0x00004040
-	ldr r1, _080585BC @ =TaskDestructor_80095E8
-	str r1, [sp]
-	movs r1, #0x60
-	movs r3, #0
-	bl TaskCreate
-	ldrh r4, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r4, r1
-	ldr r0, _080585C0 @ =IWRAM_START + 0xC
-	adds r5, r4, r0
-	movs r0, #0
-	mov r8, r0
-	strh r6, [r1, #4]
-	mov r0, sb
-	strh r0, [r1, #6]
-	str r7, [r1]
-	ldrb r0, [r7]
-	strb r0, [r1, #8]
-	mov r0, sl
-	strb r0, [r1, #9]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	lsls r3, r6, #8
-	adds r0, r0, r3
-	lsls r0, r0, #8
-	str r0, [r1, #0x44]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	mov r6, sb
-	lsls r2, r6, #8
-	adds r0, r0, r2
-	lsls r0, r0, #8
-	str r0, [r1, #0x48]
-	movs r0, #0
-	str r0, [r1, #0x4c]
-	str r0, [r1, #0x50]
-	movs r0, #0x80
-	str r0, [r1, #0x54]
-	movs r6, #0
-	str r6, [r1, #0x58]
-	ldr r0, _080585C4 @ =IWRAM_START + 0x5E
-	adds r1, r4, r0
-	movs r0, #0x78
-	strb r0, [r1]
-	ldrb r0, [r7, #5]
-	lsls r0, r0, #2
-	ldr r6, _080585C8 @ =IWRAM_START + 0x5C
-	adds r1, r4, r6
-	strb r0, [r1]
-	ldrb r0, [r7, #6]
-	lsls r0, r0, #2
-	adds r6, #1
-	adds r1, r4, r6
-	strb r0, [r1]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	adds r0, r0, r3
-	strh r0, [r5, #0x16]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r2
-	strh r0, [r5, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r7]
-	movs r0, #0xa
-	bl VramMalloc
-	str r0, [r5, #4]
-	ldr r0, _080585CC @ =0x000001F5
-	strh r0, [r5, #0xa]
-	subs r6, #0x31
-	adds r0, r4, r6
-	mov r1, r8
-	strb r1, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r5, #0x1a]
-	movs r6, #0
-	strh r6, [r5, #8]
-	strh r6, [r5, #0x14]
-	strh r6, [r5, #0x1c]
-	ldr r0, _080585D0 @ =IWRAM_START + 0x2D
-	adds r1, r4, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r6, _080585D4 @ =IWRAM_START + 0x2E
-	adds r1, r4, r6
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _080585D8 @ =IWRAM_START + 0x31
-	adds r4, r4, r0
-	mov r1, r8
-	strb r1, [r4]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r5, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r5, #0x10]
-_0805859C:
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080585AC: .4byte gGameMode
-_080585B0: .4byte gDifficultyLevel
-_080585B4: .4byte sub_80585DC
-_080585B8: .4byte 0x00004040
-_080585BC: .4byte TaskDestructor_80095E8
-_080585C0: .4byte IWRAM_START + 0xC
-_080585C4: .4byte IWRAM_START + 0x5E
-_080585C8: .4byte IWRAM_START + 0x5C
-_080585CC: .4byte 0x000001F5
-_080585D0: .4byte IWRAM_START + 0x2D
-_080585D4: .4byte IWRAM_START + 0x2E
-_080585D8: .4byte IWRAM_START + 0x31
+.if 0
+.endif
 
-	thumb_func_start sub_80585DC
-sub_80585DC: @ 0x080585DC
+	thumb_func_start Task_BalloonMain
+Task_BalloonMain: @ 0x080585DC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -541,7 +392,7 @@ _080588B8:
 	strb r0, [r1]
 	ldr r0, _08058918 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805891C @ =sub_80585DC
+	ldr r0, _0805891C @ =Task_BalloonMain
 	str r0, [r1, #8]
 _080588EE:
 	adds r0, r7, #0
@@ -565,4 +416,4 @@ _08058904:
 	.align 2, 0
 _08058914: .4byte 0x000001F5
 _08058918: .4byte gCurTask
-_0805891C: .4byte sub_80585DC
+_0805891C: .4byte Task_BalloonMain
