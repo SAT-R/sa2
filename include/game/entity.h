@@ -158,9 +158,14 @@ void sub_801FD34(s32, s32, s32);
     ((Q_24_8_TO_INT(_enemy->offsetX)                                                    \
       >= (_mapEntity->d.sData[0] * TILE_WIDTH + _mapEntity->d.uData[2] * TILE_WIDTH)))
 
-#define ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool)                               \
+#define ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, _task)                        \
     sub_801F100(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),                        \
                 Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX), _unknownBool, 8,       \
+                _task);
+
+#define ENEMY_CLAMP_TO_GROUND_INNER_X_FIRST(_enemy, _unknownBool)                       \
+    sub_801F100(Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),                        \
+                Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8,       \
                 sub_801EC3C);
 
 #define ENEMY_CLAMP_TO_GROUND(_enemy, _unknownBool)                                     \
@@ -171,7 +176,7 @@ void sub_801FD34(s32, s32, s32);
                                                                                         \
         if (delta < 0) {                                                                \
             _enemy->offsetY += Q_24_8(delta);                                           \
-            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool);                  \
+            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
         }                                                                               \
                                                                                         \
         if (delta > 0) {                                                                \

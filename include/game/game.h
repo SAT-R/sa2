@@ -113,7 +113,7 @@ typedef struct {
 } UNK_03005A70; /* 0x30 */
 
 struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC];
+    /* 0x00 */ u8 filler0[0xC]; // type = SpriteBase?
     /* 0x0C */ Sprite s;
 }; /* size: unknown? */
 
