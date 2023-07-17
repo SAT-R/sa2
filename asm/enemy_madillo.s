@@ -4,9 +4,7 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
+.if 01
 	thumb_func_start Task_8056230
 Task_8056230: @ 0x08056230
 	push {r4, r5, r6, r7, lr}
@@ -337,6 +335,7 @@ _0805649E:
 _080564B0: .4byte gCurTask
 _080564B4: .4byte Task_80564BC
 _080564B8: .4byte 0x000001F7
+.endif
 
 	thumb_func_start Task_80564BC
 Task_80564BC: @ 0x080564BC

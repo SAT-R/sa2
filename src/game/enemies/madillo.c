@@ -18,6 +18,7 @@ typedef struct {
 
 void Task_MadilloMain(void);
 void Task_8056230(void);
+void Task_80564BC(void);
 void TaskDestructor_80095E8(struct Task *);
 
 void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
@@ -161,6 +162,7 @@ void Task_8056230(void)
         if (ip->s.unk28[0].unk6 - ip->s.unk28[0].unk4 >= posX+r8)
         if(s->unk28[0].unk5 + posY <= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
         if((s->unk28[0].unk7 - s->unk28[0].unk5) + posY < Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+        if(s->unk28[0].unk5 + posY >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
         {
             if(otherS->unk28[0].unk7 - s->unk28[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
             if((gPlayer.itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE)

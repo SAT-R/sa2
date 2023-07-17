@@ -208,6 +208,7 @@ typedef struct {
     /* 0xAF */ s8 unkAF;
 } TailsFlags;
 
+#define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
 #define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
 #define PLAYER_ITEM_EFFECT__SPEED_UP        0x04
@@ -604,20 +605,17 @@ extern void sub_80122DC(s32, s32);
 // HandleHitPlayer
 extern void sub_800C84C(Sprite *, s32, s32);
 
-extern void sub_801EB44(s32, s32, s32);
-extern void sub_801EC3C(s32, s32, s32);
-
-extern s32 sub_801ED24(s32, s32, s32, u8 *);
-extern s32 sub_801EE64(s32, s32, s32, u8 *);
-
-typedef s32 (*Func_801EE64)(s32, s32, s32, u8 *);
+typedef s32 (*Func801F100)(s32, s32, s32);
+extern s32 sub_801EB44(s32, s32, s32);
+extern s32 sub_801EC3C(s32, s32, s32);
+extern s32 sub_801ED24(s32, s32, s32);
+extern s32 sub_801EE64(s32, s32, s32);
 
 // ground collision clamp functions
-s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
-s32 sub_801E6D4(s32, s32, s32, s32, void *, Func_801EE64);
-s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
+s32 sub_801E4E4(s32, s32, u32, s32, void *, Func801F100);
+s32 sub_801E6D4(s32, s32, s32, s32, void *, Func801F100);
+s32 sub_801F07C(s32, s32, s32, s32, void *, Func801F100);
 
-typedef void (*Func801F100)(s32, s32, s32);
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
