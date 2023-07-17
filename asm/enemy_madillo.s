@@ -18,11 +18,11 @@ Task_8056230: @ 0x08056230
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r4, r1, r0
+	adds r4, r1, r0     @ r4 = madillo
 	adds r0, #0xc
-	adds r5, r1, r0
+	adds r5, r1, r0     @ r5 = s
 	ldr r1, [r4]
-	str r1, [sp, #0xc]
+	str r1, [sp, #0xc]  @ sp0c = me
 	ldr r0, [r5, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #3
@@ -89,11 +89,11 @@ _080562CA:
 	ldr r0, [r4, #0x3c]
 	ldr r1, [r4, #0x44]
 	adds r0, r0, r1
-	asrs r6, r0, #8
+	asrs r6, r0, #8     @ r6 = posX = Q_24_8_TO_INT(madillo->spawnX + madillo->offsetX)
 	ldr r0, [r4, #0x40]
 	ldr r1, [r4, #0x48]
 	adds r0, r0, r1
-	asrs r7, r0, #8
+	asrs r7, r0, #8     @ r7 = posY = Q_24_8_TO_INT(madillo->spawnY + madillo->offsetY)
 	ldr r1, _08056428 @ =gCamera
 	ldr r0, [r1]
 	subs r0, r6, r0
@@ -105,23 +105,23 @@ _080562CA:
 	mov sl, r0
 	adds r0, #0x90
 	ldr r0, [r0]
-	mov ip, r0
+	mov ip, r0          @ ip = gPlayer.unk90
 	movs r1, #0xc
 	add r1, ip
-	mov sb, r1
+	mov sb, r1          @ sb = gPlayer.unk90->s
 	ldr r1, [r1, #0x28]
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	beq _080563B8
-	adds r0, r5, #0
+	beq _080563B8   @ (otherS->unk28[0].unk0 != -1)
+	adds r0, r5, #0     @ r0 = r5 = s
 	adds r0, #0x2c
-	ldrb r0, [r0]
+	ldrb r0, [r0]       @ r0 = s->unk28[0].unk4;
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
-	mov r8, r0
-	adds r3, r0, r6
-	mov r2, sl
+	mov r8, r0          @ r8 = r0
+	adds r3, r0, r6     @ r3 = r8 + posX
+	mov r2, sl          @ r2 = sl = gPlayer
 	ldr r0, [r2, #8]
 	asrs r0, r0, #8
 	mov r1, ip
@@ -130,9 +130,9 @@ _080562CA:
 	lsls r1, r1, #0x18
 	asrs r1, r1, #0x18
 	str r1, [sp, #0x10]
-	adds r2, r0, r1
+	adds r2, r0, r1     @ r2 = Q_INT(gPlayer.x) + gPlayer.unk90->s.unk28[0].unk4
 	cmp r3, r2
-	bgt _08056340
+	bgt _08056340   @   posX + r8 > r2
 	adds r0, r5, #0
 	adds r0, #0x2e
 	ldrb r0, [r0]
