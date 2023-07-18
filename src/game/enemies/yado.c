@@ -25,6 +25,10 @@ void TaskDestructor_Yado(struct Task *);
 #define YADO_PLAYER_ACCEL  -Q_24_8(9.0)
 #define YADO_PROJ_COOLDOWN (2 * GBA_FRAMES_PER_SECOND)
 
+#define IS_YADO_FACING_PLAYER(_yado, _yadoX, _player)                                   \
+    (((Q_24_8_TO_INT(gPlayer.x) < _yadoX) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))      \
+     || ((Q_24_8_TO_INT(gPlayer.x) > _yadoX) && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP)))
+
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s32 regX, regY;
@@ -48,7 +52,6 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     SPRITE_INIT_EXCEPT_POS(s, 12, SA2_ANIM_YADO, 0, 0x480, 2);
 }
 
-#if 01
 void Task_YadoMain(void)
 {
     Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
@@ -78,10 +81,7 @@ void Task_YadoMain(void)
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 1;
         s->unk21 = 0xFF;
-    } else if (((Q_24_8_TO_INT(gPlayer.x) < pos.x)
-                && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))
-               || ((Q_24_8_TO_INT(gPlayer.x) > pos.x)
-                   && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
+    } else if (IS_YADO_FACING_PLAYER(yado, pos.x, &gPlayer)) {
         gCurTask->main = Task_8055378;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 3;
@@ -90,4 +90,3 @@ void Task_YadoMain(void)
 
     ENEMY_UPDATE_EX_RAW(s, yado->spawnX, yado->spawnY, {});
 }
-#endif
