@@ -535,7 +535,7 @@ void GameStageStart(void)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         sub_80299F0(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
-        gUnknown_030056A4 = 0;
+        gUnknown_030056A4 = NULL;
     }
 
     gUnknown_03005590 = 0;
@@ -665,7 +665,7 @@ void CreateGameStage(void)
         }
     }
 
-    gUnknown_030056A4 = 0;
+    gUnknown_030056A4 = NULL;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreatePlayerActor(&gPlayer);

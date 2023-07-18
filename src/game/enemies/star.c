@@ -26,6 +26,15 @@ static void Task_StarOpen(void);
 #define SPIN_TIME       GBA_FRAMES_PER_SECOND * 2
 #define OPEN_CLOSE_TIME GBA_FRAMES_PER_SECOND / 3
 
+#define STAR_SWITCH_TASK_ON_TIMER_ZERO(_star, _sprite, _time, _anim, _variant, _task)   \
+    if (--_star->timer == 0) {                                                          \
+        _star->timer = _time;                                                           \
+        _sprite->graphics.anim = _anim;                                                 \
+        _sprite->variant = _variant;                                                    \
+        _sprite->unk21 = -1;                                                            \
+        gCurTask->main = _task;                                                         \
+    }
+
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     ENTITY_INIT(Sprite_Star, star, Task_StarIdle, 0x4050, 0, TaskDestructor_80095E8);
@@ -40,15 +49,6 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
     SPRITE_INIT_EXCEPT_POS(s, 25, SA2_ANIM_STAR, 0, 0x480, 2);
 }
-
-#define STAR_SWITCH_TASK_ON_TIMER_ZERO(_star, _sprite, _time, _anim, _variant, _task)   \
-    if (--_star->timer == 0) {                                                          \
-        _star->timer = _time;                                                           \
-        _sprite->graphics.anim = _anim;                                                 \
-        _sprite->variant = _variant;                                                    \
-        _sprite->unk21 = -1;                                                            \
-        gCurTask->main = _task;                                                         \
-    }
 
 #define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                      \
     {                                                                                   \

@@ -150,10 +150,18 @@ extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
 
 typedef struct {
-    s32 posX;
-    s32 posY;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 posY;
+
+    // Following here might be a Sprite (incl. unk4C-unk53)?
+    /* 0x08 */ u8 filler8[0x34];
+    /* 0x4C */ s32 unk4C;
+    /* 0x50 */ s8 unk50;
+    /* 0x51 */ s8 unk51;
+    /* 0x52 */ s8 unk52;
+    /* 0x53 */ s8 unk53;
 } UNK_30056A4; /* size: unknown */
-extern UNK_30056A4 *gUnknown_030056A4;
+extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
 
 // Some flags
 extern u32 gUnknown_03005590;
@@ -516,6 +524,7 @@ typedef struct {
 extern u8 gUnknown_03005428[4];
 extern u8 gUnknown_030053E8[4];
 
+// Some Multiplayer struct
 struct UNK_3005510 {
     u8 unk0;
     u8 unk1; // regionX (truncated)
