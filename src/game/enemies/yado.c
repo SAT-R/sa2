@@ -81,7 +81,7 @@ void Task_YadoMain(void)
     } else if (((Q_24_8_TO_INT(gPlayer.x) < pos.x)
                 && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))
                || ((Q_24_8_TO_INT(gPlayer.x) > pos.x)
-                   && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
+                   && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
         gCurTask->main = Task_8055378;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 3;
