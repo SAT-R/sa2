@@ -4,129 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Yado
-CreateEntity_Yado: @ 0x08054E0C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	adds r7, r0, #0
-	adds r4, r3, #0
-	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov r8, r2
-	lsls r4, r4, #0x18
-	lsrs r4, r4, #0x18
-	ldr r0, _08054E60 @ =sub_8054F00
-	ldr r2, _08054E64 @ =0x00004090
-	ldr r1, _08054E68 @ =sub_80554AC
-	str r1, [sp]
-	movs r1, #0x50
-	movs r3, #0
-	bl TaskCreate
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r3, r1, r0
-	adds r0, #0xc
-	adds r6, r1, r0
-	strh r5, [r3, #4]
-	mov r0, r8
-	strh r0, [r3, #6]
-	str r7, [r3]
-	ldrb r0, [r7]
-	strb r0, [r3, #8]
-	strb r4, [r3, #9]
-	movs r0, #4
-	ldrsb r0, [r7, r0]
-	cmp r0, #0
-	beq _08054E70
-	ldr r4, _08054E6C @ =IWRAM_START + 0x4D
-	adds r1, r1, r4
-	movs r0, #1
-	b _08054E76
-	.align 2, 0
-_08054E60: .4byte sub_8054F00
-_08054E64: .4byte 0x00004090
-_08054E68: .4byte sub_80554AC
-_08054E6C: .4byte IWRAM_START + 0x4D
-_08054E70:
-	ldr r0, _08054EF8 @ =IWRAM_START + 0x4D
-	adds r1, r1, r0
-	movs r0, #0
-_08054E76:
-	strb r0, [r1]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	lsls r1, r5, #8
-	adds r0, r0, r1
-	lsls r0, r0, #8
-	str r0, [r3, #0x44]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	mov r4, r8
-	lsls r2, r4, #8
-	adds r0, r0, r2
-	lsls r0, r0, #8
-	str r0, [r3, #0x48]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	adds r0, r0, r1
-	movs r5, #0
-	movs r4, #0
-	strh r0, [r6, #0x16]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r2
-	strh r0, [r6, #0x18]
-	movs r1, #2
-	rsbs r1, r1, #0
-	adds r0, r1, #0
-	strb r0, [r7]
-	movs r0, #0xc
-	bl VramMalloc
-	str r0, [r6, #4]
-	ldr r0, _08054EFC @ =0x000001F1
-	strh r0, [r6, #0xa]
-	adds r0, r6, #0
-	adds r0, #0x20
-	strb r5, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r6, #0x1a]
-	strh r4, [r6, #8]
-	strh r4, [r6, #0x14]
-	strh r4, [r6, #0x1c]
-	adds r1, r6, #0
-	adds r1, #0x21
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0x10
-	strb r0, [r1]
-	adds r0, r6, #0
-	adds r0, #0x25
-	strb r5, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r6, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r6, #0x10]
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08054EF8: .4byte IWRAM_START + 0x4D
-_08054EFC: .4byte 0x000001F1
+.if 0
+.endif
 
-	thumb_func_start sub_8054F00
-sub_8054F00: @ 0x08054F00
+	thumb_func_start Task_YadoMain
+Task_YadoMain: @ 0x08054F00
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -605,13 +487,13 @@ _08055298:
 	strb r0, [r1]
 	ldr r0, _080552DC @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080552E0 @ =sub_8054F00
+	ldr r0, _080552E0 @ =Task_YadoMain
 	str r0, [r1, #8]
 	b _08055358
 	.align 2, 0
 _080552D8: .4byte 0x000001F1
 _080552DC: .4byte gCurTask
-_080552E0: .4byte sub_8054F00
+_080552E0: .4byte Task_YadoMain
 _080552E4:
 	lsls r0, r1, #0x18
 	lsrs r0, r0, #0x18
@@ -820,13 +702,13 @@ _0805546A:
 	strb r0, [r1]
 	ldr r0, _08055490 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08055494 @ =sub_8054F00
+	ldr r0, _08055494 @ =Task_YadoMain
 	str r0, [r1, #8]
 	b _0805549E
 	.align 2, 0
 _0805548C: .4byte 0x000001F1
 _08055490: .4byte gCurTask
-_08055494: .4byte sub_8054F00
+_08055494: .4byte Task_YadoMain
 _08055498:
 	adds r0, r7, #0
 	bl sub_80051E8
@@ -839,8 +721,8 @@ _0805549E:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80554AC
-sub_80554AC: @ 0x080554AC
+	thumb_func_start TaskDestructor_Yado
+TaskDestructor_Yado: @ 0x080554AC
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
