@@ -222,3 +222,46 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
     sub_80051E8(s);
 }
 END_NONMATCH
+
+void Task_8055378(void)
+{
+    Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
+    Sprite *s = &yado->s;
+    MapEntity *me = yado->base.me;
+    Vec2_32 pos;
+
+    ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
+
+    if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
+        gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+        gPlayer.unk64 = SA2_CHAR_ANIM_50;
+        gPlayer.unk6C = 1;
+        gPlayer.unk6D = 5;
+
+        // TODO: Why is this called twice?
+        m4aSongNumStart(SE_SPRING);
+    }
+
+    ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(yado, me, s);
+
+    sub_80122DC(yado->spawnX, yado->spawnY);
+
+    if (sub_8004558(s) == 0) {
+        sub_80051E8(s);
+
+        ENEMY_TURN_AROUND(s);
+
+        s->graphics.anim = SA2_ANIM_YADO;
+        s->variant = 0;
+        s->unk21 = 0xFF;
+        gCurTask->main = Task_YadoMain;
+    } else {
+        sub_80051E8(s);
+    }
+}
+
+void TaskDestructor_Yado(struct Task *t)
+{
+    Sprite_Yado *yado = TaskGetStructPtr(t);
+    VramFree(yado->s.graphics.dest);
+}

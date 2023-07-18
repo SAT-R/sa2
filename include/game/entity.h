@@ -151,6 +151,13 @@ void sub_801FD34(s32, s32, s32);
         SPRITE_FLAG_SET(s, X_FLIP);                                                     \
     }
 
+#define ENEMY_TURN_AROUND(_s)                                                           \
+    if (_s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {                                          \
+        SPRITE_FLAG_CLEAR(_s, X_FLIP);                                                  \
+    } else {                                                                            \
+        SPRITE_FLAG_SET(_s, X_FLIP);                                                    \
+    }
+
 #define ENEMY_CROSSED_LEFT_BORDER(_enemy, _mapEntity)                                   \
     ((Q_24_8_TO_INT(_enemy->offsetX) <= _mapEntity->d.sData[0] * TILE_WIDTH))
 
