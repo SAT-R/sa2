@@ -45,8 +45,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SPRITE_INIT_EXCEPT_POS(s, 16, SA2_ANIM_MADILLO, 0, 0x480, 2);
 }
 
-// (99.94%) https://decomp.me/scratch/seFRx
-NONMATCH("asm/non_matching/Task_MadilloMain.inc", void Task_MadilloMain(void))
+void Task_MadilloMain(void)
 {
     Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
     Sprite *s = &madillo->s;
@@ -81,7 +80,7 @@ NONMATCH("asm/non_matching/Task_MadilloMain.inc", void Task_MadilloMain(void))
 
     if (Q_24_8(pos.y - 50) < gPlayer.y) {
         if (Q_24_8(pos.y + 50) > gPlayer.y) {
-            if (((Q_24_8(pos.x << 8)) > gPlayer.x)
+            if (((Q_24_8_NEW(pos.x)) > gPlayer.x)
                 && (Q_24_8(pos.x - 120) < (gPlayer.x))) {
                 if (Q_24_8_TO_INT(madillo->offsetX) > me->d.sData[0] * TILE_WIDTH) {
                     gCurTask->main = Task_8056230;
@@ -106,9 +105,8 @@ NONMATCH("asm/non_matching/Task_MadilloMain.inc", void Task_MadilloMain(void))
         }
     }
 
-    ENEMY_UPDATE_EX_RAW(s, (Q_24_8(pos.x) << 8), Q_24_8_NEW(pos.y), {});
+    ENEMY_UPDATE_EX_RAW(s, (Q_24_8_NEW(pos.x)), Q_24_8_NEW(pos.y), {});
 }
-END_NONMATCH
 
 // Task_8056230
 // // Once this matches, Task_80564BC should be straightforward
