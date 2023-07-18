@@ -170,7 +170,7 @@ struct Task *CreateStageUI(void)
     if (IS_SINGLE_PLAYER) {
         s = &ui->playerIcon;
         s->x = 6;
-        s->y = DISPLAY_HEIGHT - 18;
+        s->y = DISPLAY_HEIGHT - 18; 
 
         s->graphics.dest = VramMalloc(sAnims1UpIcons[gSelectedCharacter][0]);
 
