@@ -42,6 +42,7 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_START               0
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_EXECUTE             1
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
+#define SA2_CHAR_ANIM_50                                     50
 #define SA2_CHAR_ANIM_51                                     51 // Sonic: Bound-Attack
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_68                                     68

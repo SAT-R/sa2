@@ -5,8 +5,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_YadoMain
 Task_YadoMain: @ 0x08054F00
 	push {r4, r5, r6, r7, lr}
@@ -22,17 +20,17 @@ Task_YadoMain: @ 0x08054F00
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	add r0, sb
-	mov sl, r0
+	mov sl, r0      @ sl = yado
 	ldr r7, _08054FB8 @ =IWRAM_START + 0xC
-	add r7, sb
+	add r7, sb      @ r7 = s
 	ldr r2, [r0]
 	str r2, [sp, #8]
 	ldr r1, [r0, #0x44]
 	asrs r1, r1, #8
-	adds r5, r1, #0
+	adds r5, r1, #0         @ r5 = pos.x
 	ldr r2, [r0, #0x48]
 	asrs r2, r2, #8
-	adds r6, r2, #0
+	adds r6, r2, #0         @ r6 = pos.y
 	ldr r3, _08054FBC @ =gCamera
 	ldr r0, [r3]
 	subs r0, r5, r0
@@ -115,7 +113,7 @@ _08054FC4:
 	strb r0, [r1]
 	ldr r0, _08054FFC @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08055000 @ =sub_8055084
+	ldr r0, _08055000 @ =Task_8055084
 	str r0, [r1, #8]
 	ldr r0, _08055004 @ =0x000001F1
 	strh r0, [r7, #0xa]
@@ -131,7 +129,7 @@ _08054FC4:
 	.align 2, 0
 _08054FF8: .4byte IWRAM_START + 0x4C
 _08054FFC: .4byte gCurTask
-_08055000: .4byte sub_8055084
+_08055000: .4byte Task_8055084
 _08055004: .4byte 0x000001F1
 _08055008: .4byte IWRAM_START + 0x2C
 _0805500C: .4byte IWRAM_START + 0x2D
@@ -160,7 +158,7 @@ _08055026:
 _08055038:
 	ldr r0, _08055078 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805507C @ =sub_8055378
+	ldr r0, _0805507C @ =Task_8055378
 	str r0, [r1, #8]
 	ldr r0, _08055080 @ =0x000001F1
 	strh r0, [r7, #0xa]
@@ -192,11 +190,12 @@ _08055068:
 	bx r0
 	.align 2, 0
 _08055078: .4byte gCurTask
-_0805507C: .4byte sub_8055378
+_0805507C: .4byte Task_8055378
 _08055080: .4byte 0x000001F1
+.endif
 
-	thumb_func_start sub_8055084
-sub_8055084: @ 0x08055084
+	thumb_func_start Task_8055084
+Task_8055084: @ 0x08055084
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -572,8 +571,8 @@ _08055364:
 	.align 2, 0
 _08055374: .4byte 0x000001F1
 
-	thumb_func_start sub_8055378
-sub_8055378: @ 0x08055378
+	thumb_func_start Task_8055378
+Task_8055378: @ 0x08055378
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8

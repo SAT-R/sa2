@@ -196,12 +196,16 @@ void sub_801FD34(s32, s32, s32);
         return;                                                                         \
     }
 
-#define ENEMY_DESTROY_IF_INVISIBLE_RAW(_enemy, _mapEntity, _sprite, _posX, _posY)       \
-    if (IS_OUT_OF_DISPLAY_RANGE(_posX, _posY)                                           \
-        && IS_OUT_OF_CAM_RANGE(_sprite->x, _sprite->y)) {                               \
+#define ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(_enemy, _mapEntity, _sprite)                  \
+    if (IS_OUT_OF_CAM_RANGE(_sprite->x, _sprite->y)) {                                  \
         SET_MAP_ENTITY_NOT_INITIALIZED(_mapEntity, _enemy->base.spriteX);               \
         TaskDestroy(gCurTask);                                                          \
         return;                                                                         \
+    }
+
+#define ENEMY_DESTROY_IF_INVISIBLE_RAW(_enemy, _mapEntity, _sprite, _posX, _posY)       \
+    if (IS_OUT_OF_DISPLAY_RANGE(_posX, _posY)) {                                        \
+        ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(_enemy, _mapEntity, _sprite);                 \
     }
 
 #define ENEMY_DESTROY_IF_INVISIBLE(_enemy, _mapEntity, _sprite)                         \
