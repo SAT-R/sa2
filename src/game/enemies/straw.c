@@ -69,7 +69,7 @@ void sub_80567F8(void)
         return;
     }
 
-    ENEMY_DESTROY_IF_INVISIBLE(straw, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(straw, me, s);
 
     if (--straw->unk54 == 0) {
         s32 rand = CLAMP_SIN_PERIOD(PseudoRandom32());
@@ -107,7 +107,7 @@ void Task_StrawMain(void)
     }
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE(straw, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(straw, me, s);
 
     if (--straw->unk54 == 0) {
         if ((--straw->unk55 % 256) == 0) {
@@ -134,7 +134,7 @@ void sub_8056AF4(void)
     ENEMY_UPDATE_POSITION(straw, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE(straw, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(straw, me, s);
 
     ENEMY_UPDATE(s, pos.x, pos.y);
 }

@@ -60,7 +60,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
         ENEMY_UPDATE_POSITION_STATIC(star, s, pos.x, pos.y);                            \
                                                                                         \
         { _code_insert };                                                               \
-        ENEMY_DESTROY_IF_INVISIBLE_RAW(star, me, s, pos.x, pos.y);                      \
+        ENEMY_DESTROY_IF_OFFSCREEN_RAW(star, me, s, pos.x, pos.y);                      \
                                                                                         \
         STAR_SWITCH_TASK_ON_TIMER_ZERO(star, s, _time, _anim, _variant, _nextTask);     \
                                                                                         \

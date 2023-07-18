@@ -89,7 +89,7 @@ void Task_KyuraMain(void)
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
 
-    ENEMY_DESTROY_IF_INVISIBLE(kyura, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(kyura, me, s);
 
     if (--kyura->framesUntilTaskSwitch == 0) {
         kyura->framesUntilTaskSwitch = 4;

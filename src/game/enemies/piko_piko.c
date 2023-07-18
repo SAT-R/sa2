@@ -62,7 +62,7 @@ static void Task_PikoPiko(void)
         ENEMY_DESTROY_IF_PLAYER_HIT(s, pos);
     }
 
-    ENEMY_DESTROY_IF_INVISIBLE(piko, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(piko, me, s);
 
     if (ENEMY_CROSSED_LEFT_BORDER(piko, me) && (piko->speedX < 0)) {
         NEGATE(piko->speedX);

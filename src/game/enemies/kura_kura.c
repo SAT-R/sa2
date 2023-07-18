@@ -70,7 +70,7 @@ void sub_8052024(void)
     s->unk10 &= ~0x400;
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE_RAW(kk, me, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(kk, me, s, pos.x, pos.y);
 
     ENEMY_UPDATE_EX_RAW(s, kk->spawnX, kk->spawnY, {});
 

@@ -210,13 +210,13 @@ void sub_801FD34(s32, s32, s32);
         return;                                                                         \
     }
 
-#define ENEMY_DESTROY_IF_INVISIBLE_RAW(_enemy, _mapEntity, _sprite, _posX, _posY)       \
+#define ENEMY_DESTROY_IF_OFFSCREEN_RAW(_enemy, _mapEntity, _sprite, _posX, _posY)       \
     if (IS_OUT_OF_DISPLAY_RANGE(_posX, _posY)) {                                        \
         ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(_enemy, _mapEntity, _sprite);                 \
     }
 
-#define ENEMY_DESTROY_IF_INVISIBLE(_enemy, _mapEntity, _sprite)                         \
-    ENEMY_DESTROY_IF_INVISIBLE_RAW(_enemy, _mapEntity, _sprite,                         \
+#define ENEMY_DESTROY_IF_OFFSCREEN(_enemy, _mapEntity, _sprite)                         \
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(_enemy, _mapEntity, _sprite,                         \
                                    Q_24_8_TO_INT(_enemy->spawnX),                       \
                                    Q_24_8_TO_INT(_enemy->spawnY))
 

@@ -76,7 +76,7 @@ void Task_MadilloMain(void)
     s->y = pos.y - gCamera.y;
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE(madillo, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
     if (Q_24_8(pos.y - 50) < gPlayer.y) {
         if (Q_24_8(pos.y + 50) > gPlayer.y) {
@@ -175,7 +175,7 @@ void Task_8056230(void)
     }
     // _080563B8
     
-    ENEMY_DESTROY_IF_INVISIBLE(madillo, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
     if(s->unk10 & 0x400) {
         if((Q_24_8_TO_INT(madillo->offsetX) <= (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)){

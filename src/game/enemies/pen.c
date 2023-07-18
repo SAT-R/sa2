@@ -76,7 +76,7 @@ static void Task_Move(void)
     ENEMY_UPDATE_POSITION(pen, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE(pen, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         s32 playerX = gPlayer.x;
@@ -133,7 +133,7 @@ static void Task_Turn(void)
     ENEMY_UPDATE_POSITION(pen, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_INVISIBLE(pen, me, s);
+    ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
     if (sub_8004558(s) == 0) {
