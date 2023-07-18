@@ -238,7 +238,6 @@ void Task_8055378(void)
         gPlayer.unk6C = 1;
         gPlayer.unk6D = 5;
 
-        // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
     }
 
