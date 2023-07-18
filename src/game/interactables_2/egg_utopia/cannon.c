@@ -223,16 +223,16 @@ static void sub_807E56C(Sprite_Cannon *cannon)
 
 static void sub_807E5F0(Sprite_Cannon *cannon)
 {
-    struct UNK_808D124_UNK180 transform;
+    SpriteTransform transform;
     Sprite *sprite = &cannon->sprite2;
     sprite->x = cannon->x - gCamera.x;
     sprite->y = cannon->y - gCamera.y;
 
     transform.unk0 = cannon->unk6A;
-    transform.unk2 = 0x100;
-    transform.unk4 = 0x100;
-    transform.unk6[0] = sprite->x;
-    transform.unk6[1] = sprite->y;
+    transform.width = 0x100;
+    transform.height = 0x100;
+    transform.x = sprite->x;
+    transform.y = sprite->y;
 
     sprite->unk10 = 0x2060 | gUnknown_030054B8++;
     if (cannon->unk68 == 0) {

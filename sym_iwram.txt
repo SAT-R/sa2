@@ -93,7 +93,7 @@ build/sa2/src/core.o(.data);
 . = 0x00005AA0; gUnknown_03005AA0 = .;
 . = 0x00005AF0; gUnknown_03005AF0 = .;
 . = 0x00005AFC; gUnknown_03005AFC = .;
-. = 0x00005B34; gUnknown_03005B34 = .;
+. = 0x00005B34; gSmallAirBubbleCount = .;
 . = 0x00005B38; gPlayerControls = .;
 . = 0x00005B40; gUnknown_03005B40 = .;
 . = 0x00005B44; gStageUITask = .;

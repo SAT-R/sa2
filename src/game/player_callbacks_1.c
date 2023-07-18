@@ -6,6 +6,8 @@
 #include "game/heart_particles_effect.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
+#include "game/dust_effect_braking.h" // CreateSpindashDustEffect
+#include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/playerfn_cmds.h"
 
@@ -39,10 +41,9 @@ extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
-extern void sub_801F214(void);
+extern void Task_801F214(void);
 extern void sub_801F488(void);
-extern void sub_801F550(struct Task *);
-extern void sub_801F5CC(s32, s32);
+extern void TaskDestructor_801F550(struct Task *);
 
 extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
 extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);
@@ -729,13 +730,13 @@ void PlayerCB_802631C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->unk26 = 0;
+    p->spindashAccel = 0;
     p->speedAirX = 0;
     p->speedAirY = 0;
     p->speedGroundX = 0;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
-    sub_801F7DC();
+    CreateSpindashDustEffect();
 
     PLAYERFN_SET_AND_CALL(PlayerCB_Spindash, p);
 }
@@ -750,7 +751,7 @@ void PlayerCB_Spindash(Player *player)
         s32 speed;
         player->moveState &= ~MOVESTATE_400;
 
-        index = Q_24_8_TO_INT(player->unk26);
+        index = Q_24_8_TO_INT(player->spindashAccel);
         if (index > 8)
             index = 8;
 
@@ -765,7 +766,7 @@ void PlayerCB_Spindash(Player *player)
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
         // _08026408
-        s16 pitch = player->unk26;
+        s16 pitch = player->spindashAccel;
 
         s16 pitch2 = pitch;
         if (pitch2 != 0) {
@@ -789,7 +790,7 @@ void PlayerCB_Spindash(Player *player)
             player->unk6C = 1;
         }
         // _08026490
-        player->unk26 = pitch;
+        player->spindashAccel = pitch;
 
         if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->unk6A == 1)
             && (s->unk10 & SPRITE_FLAG_MASK_14)) {
@@ -1835,7 +1836,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 
     u16 p2_ = p2;
 
-    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
 
     taskStrc = TaskGetStructPtr(t);
     taskStrc->playerAnim = gPlayer.unk68;
@@ -2950,7 +2951,7 @@ void sub_8029FA4(Player *p)
             u17 = -u17;
         }
 
-        sub_801F5CC(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + u17);
+        CreateBrakingDustEffect(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + u17);
     }
 }
 

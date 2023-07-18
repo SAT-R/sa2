@@ -2,7 +2,6 @@
 #define GUARD_MAIN_H
 
 #include "global.h"
-#include "data.h"
 #include "task.h"
 #include "sprite.h"
 #include "input_recorder.h"
@@ -96,33 +95,45 @@ union MultiSioData {
     struct MultiSioData_0_4 pat4;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
-// Used for the background layers (1 layer in SA1/2 ; 2 layers in SA3).
-struct MapHeader {
-    /* 0x00 */ u16 xTiles; // Tiles inside Metatiles, usually 12 (0x0C)
-    /* 0x02 */ u16 yTiles; // Tiles inside Metatiles, usually 12 (0x0C)
+typedef struct {
+    /* 0x00 */ u16 xTiles;
+    /* 0x02 */ u16 yTiles;
     /* 0x04 */ u16 animTileSize;
     /* 0x06 */ u8 animFrameCount;
     /* 0x07 */ u8 animDelay;
-    /* 0x08 */ void *tileset;
-    /* 0x0C */ u32 tilesetSize;
-    /* 0x10 */ u16 *palette;
+    /* 0x08 */ const u8 *tiles;
+    /* 0x0C */ u32 tilesSize;
+    /* 0x10 */ const u16 *palette;
     /* 0x14 */ u16 palOffset;
     /* 0x16 */ u16 palLength;
-    /* 0x18 */ const u16 *metatiles;
-    /* 0x1C */ const u16 *map;
-}; /* size = 0x20 */
 
-struct MapHeader_Full {
-    struct MapHeader h;
-    u16 mapWidth; // in Metatiles
-    u16 mapHeight; // in Metatiles
+    // Can be u8* in some instances
+    // map = metatiles, when using with non-background map layers
+    /* 0x18 */ const u16 *map;
+} Tilemap; /* size = 0x1C */
+
+struct MapHeader {
+    /* 0x00 */ Tilemap h;
+    /* 0x1C */ const u16 *metatileMap;
+    /* 0x20 */ u16 mapWidth; // in Metatiles
+    /* 0x22 */ u16 mapHeight; // in Metatiles
 };
 
-struct Map {
-    struct MapHeader_Full *front;
-    struct MapHeader_Full *back;
-    struct MapHeader *background;
-};
+// Thanks @MainMemory_ for figuring out how collision works!
+typedef struct {
+    const u8 *height_map;
+    const u8 *tile_rotation;
+    const u16 *metatiles;
+    const u16 *map_front;
+    const u16 *map_back;
+    const u8 *flags;
+    u16 levelX, levelY;
+    u8 unk1C[4];
+    u16 unk20, unk22;
+} Collision;
+
+// We need 'Tilemap' in data.h, so it has to be declared later
+#include "data.h"
 
 struct Unk_03003674_1_Sub {
     u16 unk0, unk2, unk4, unk6;
@@ -253,7 +264,7 @@ extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
 
-struct MapHeader_Full **gUnknown_03002260;
+struct MapHeader **gUnknown_03002260; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
 extern void *gUnknown_030022AC;

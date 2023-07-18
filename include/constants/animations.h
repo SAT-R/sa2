@@ -43,6 +43,7 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_EXECUTE             1
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
 #define SA2_CHAR_ANIM_51                                     51 // Sonic: Bound-Attack
+#define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_68                                     68
 #define SA2_CHAR_ANIM_70                                     70
 
@@ -92,7 +93,8 @@
 #define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
 #define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
 #define SA2_ANIM_SUPER_SONIC_FROZEN          476
-#define SA2_ANIM_DUST_CLOUD                  477
+// Defeating enemies / opening item boxes
+#define SA2_ANIM_DUST_CLOUD 477
 
 // Enemies
 #define SA2_ANIM_MON                    478
@@ -251,6 +253,7 @@
 
 #define SA2_ANIM_CANNON_EGG_UTO   616
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
+#define SA2_ANIM_IRON_BALL        618
 
 #define SA2_ANIM_TAILS_CAPTURED_COPY 659
 
@@ -314,11 +317,16 @@
 #define SA2_ANIM_TITLE_SEAGULL    831
 #define SA2_ANIM_TITLE_LENS_FLARE 832
 
-#define SA2_ANIM_TAILS_TAIL_SWIPE 845
-
-#define SA2_ANIM_SHIELD_NORMAL   850
-#define SA2_ANIM_SHIELD_MAGNETIC 851
-#define SA2_ANIM_INVINCIBILITY   852
+#define SA2_ANIM_TAILS_TAIL_SWIPE         845
+#define SA2_ANIM_SPINDASH_DUST_EFFECT     846
+#define SA2_ANIM_SPINDASH_DUST_EFFECT_BIG 847
+#define SA2_ANIM_SMALL_DUST_PARTICLE      848
+#define SA2_ANIM_SPARK_EFFECT             849
+#define SA2_ANIM_SHIELD_NORMAL            850
+#define SA2_ANIM_SHIELD_MAGNETIC          851
+#define SA2_ANIM_INVINCIBILITY            852
+#define SA2_ANIM_BUBBLES_SMALL            853
+#define SA2_ANIM_BUBBLES_GROUP            854
 
 #define SA2_ANIM_HEART 858
 
@@ -327,8 +335,15 @@
 #define SA2_ANIM_SOME_JAPANESE_TXT           868
 #define SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 7
 
-#define SA2_ANIM_STAGE_GOAL_SCORE_BONUS 871
-
+#define SA2_ANIM_DROWN_COUNTDOWN           870
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_5 0
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_4 1
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_3 2
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_2 3
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_1 4
+#define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_0 5
+#define SA2_ANIM_STAGE_GOAL_SCORE_BONUS    871
+#define SA2_ANIM_BRAKING_DUST_EFFECT       872
 #define SA2_ANIM_BOOST_EFFECT              873
 #define SA2_ANIM_MAIN_MENU                 874
 #define SA2_ANIM_VARIANT_MAIN_MENU_OPTIONS 3

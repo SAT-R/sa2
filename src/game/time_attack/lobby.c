@@ -15,6 +15,7 @@
 
 #include "constants/animations.h"
 #include "constants/songs.h"
+#include "constants/tilemaps.h"
 
 struct TimeAttackLobbyScreen {
     Background unk0;
@@ -196,7 +197,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x96;
+    background->tilemapId = TM_MESSAGE_BOX_BLACK;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -213,7 +214,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(7);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = 0x97;
+    background->tilemapId = TM_GREEN_CARET;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

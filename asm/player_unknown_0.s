@@ -760,9 +760,9 @@ sub_80118FC: @ 0x080118FC
 	asrs r0, r0, #0x10
 	lsls r1, r1, #0x10
 	asrs r1, r1, #0x10
-	ldr r2, _0801194C @ =sub_801F214
+	ldr r2, _0801194C @ =Task_801F214
 	str r2, [sp]
-	ldr r2, _08011950 @ =sub_801F550
+	ldr r2, _08011950 @ =TaskDestructor_801F550
 	str r2, [sp, #4]
 	movs r2, #0x10
 	movs r3, #0
@@ -792,8 +792,8 @@ sub_80118FC: @ 0x080118FC
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0801194C: .4byte sub_801F214
-_08011950: .4byte sub_801F550
+_0801194C: .4byte Task_801F214
+_08011950: .4byte TaskDestructor_801F550
 _08011954: .4byte IWRAM_START + 0x1C
 _08011958: .4byte 0x00000229
 _0801195C: .4byte IWRAM_START + 0x3C

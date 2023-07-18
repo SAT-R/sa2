@@ -96,7 +96,7 @@ struct MenuItemTransition {
 
 struct LensFlare {
     Sprite sprites[8];
-    struct UNK_808D124_UNK180 unk180[8];
+    SpriteTransform transforms[8];
     s16 posSequenceX[8];
     s16 posSequenceY[8];
     u16 unk200;
@@ -416,9 +416,9 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config0->unk18 = 0;
     config0->unk1A = 0;
     if (gLoadedSaveGame->language < 2) {
-        config0->unk1C = TM_SA2_LOGO_JP;
+        config0->tilemapId = TM_SA2_LOGO_JP;
     } else {
-        config0->unk1C = TM_SA2_LOGO_EN;
+        config0->tilemapId = TM_SA2_LOGO_EN;
     }
     config0->unk1E = 0;
     config0->unk20 = 0;
@@ -445,7 +445,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
-    config40->unk1C = TM_TITLE_SCREEN_BG;
+    config40->tilemapId = TM_TITLE_SCREEN_BG;
     config40->unk1E = 0;
     config40->unk20 = 0;
     config40->unk22 = 0;
@@ -505,7 +505,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     config80->tilesVram = (void *)BG_SCREEN_ADDR(31);
     config80->unk18 = 0;
     config80->unk1A = 0;
-    config80->unk1C = TM_INTRO_PRESENTED_BY_SEGA;
+    config80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
     config80->unk1E = 0;
     config80->unk20 = 0;
     config80->unk22 = 0;
@@ -524,7 +524,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     config0->unk18 = 0;
     config0->unk1A = 0;
-    config0->unk1C = TM_INTRO_WATER;
+    config0->tilemapId = TM_INTRO_WATER;
     config0->unk1E = 0;
     config0->unk20 = 0;
     config0->unk22 = 0;
@@ -691,8 +691,7 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         config80->tilesVram = (void *)BG_SCREEN_ADDR(31);
         config80->unk18 = 0;
         config80->unk1A = 0;
-        // GFX asset
-        config80->unk1C = TM_INTRO_CREATED_BY_SONIC_TEAM;
+        config80->tilemapId = TM_INTRO_CREATED_BY_SONIC_TEAM;
         config80->unk1E = 0;
         config80->unk20 = 0;
         config80->unk22 = 0;
@@ -771,7 +770,7 @@ static void Task_IntroStartSkyTransition(void)
         config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
         config40->unk18 = 0;
         config40->unk1A = 0;
-        config40->unk1C = TM_TITLE_SCREEN_BG;
+        config40->tilemapId = TM_TITLE_SCREEN_BG;
         config40->unk1E = 0;
         config40->unk20 = 0;
         config40->unk22 = 0;
@@ -849,7 +848,7 @@ static void Task_IntroPanSkyAnim(void)
         config0->tilesVram = (void *)BG_SCREEN_ADDR(31);
         config0->unk18 = 0;
         config0->unk1A = 0;
-        config0->unk1C = TM_LENS_FLARE_BG;
+        config0->tilemapId = TM_LENS_FLARE_BG;
         config0->unk1E = 0;
         config0->unk20 = 0;
         config0->unk22 = 0;
@@ -949,9 +948,9 @@ static void Task_IntroSkyAnim(void)
         config0->unk1A = 0;
 
         if (gLoadedSaveGame->language < LANG_ENGLISH) {
-            config0->unk1C = TM_SA2_LOGO_JP;
+            config0->tilemapId = TM_SA2_LOGO_JP;
         } else {
-            config0->unk1C = TM_SA2_LOGO_EN;
+            config0->tilemapId = TM_SA2_LOGO_EN;
         }
 
         config0->unk1E = 0;
@@ -1359,9 +1358,9 @@ static void Task_ShowTitleScreenIntroSkipped(void)
 
     // Show japanese game logo if japanese, otherwise
     if (gLoadedSaveGame->language < LANG_ENGLISH) {
-        config0->unk1C = TM_SA2_LOGO_JP;
+        config0->tilemapId = TM_SA2_LOGO_JP;
     } else {
-        config0->unk1C = TM_SA2_LOGO_EN;
+        config0->tilemapId = TM_SA2_LOGO_EN;
     }
 
     config0->unk1E = 0;
@@ -1380,7 +1379,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
-    config40->unk1C = TM_TITLE_SCREEN_BG;
+    config40->tilemapId = TM_TITLE_SCREEN_BG;
     config40->unk1E = 0;
     config40->unk20 = 0;
     config40->unk22 = 0;
@@ -1673,13 +1672,13 @@ static void CreateLensFlareAnimation(void)
         = TaskCreate(Task_LensFlareAnim, sizeof(struct LensFlare), 0x2000, 0, 0);
     struct LensFlare *lensFlare = TaskGetStructPtr(t);
     Sprite *sprite;
-    struct UNK_808D124_UNK180 *config180;
+    SpriteTransform *transform;
     u16 posX;
     u32 i;
 
     for (i = 0; i < 8; i++) {
         sprite = &lensFlare->sprites[i];
-        config180 = &lensFlare->unk180[i];
+        transform = &lensFlare->transforms[i];
 
         sprite->graphics.dest = VramMalloc(0x40);
 
@@ -1697,10 +1696,10 @@ static void CreateLensFlareAnimation(void)
         sprite->palId = 0;
         sprite->unk10 = i | 96;
 
-        config180->unk0 = 0;
-        config180->unk4 = config180->unk2 = posX * 2 + 0xB0;
-        config180->unk6[0] = lensFlare->posSequenceX[i];
-        config180->unk6[1] = lensFlare->posSequenceY[i];
+        transform->unk0 = 0;
+        transform->height = transform->width = posX * 2 + 0xB0;
+        transform->x = lensFlare->posSequenceX[i];
+        transform->y = lensFlare->posSequenceY[i];
 
         sub_8004558(sprite);
     }
@@ -1715,7 +1714,7 @@ static void Task_LensFlareAnim(void)
 {
     struct LensFlare *lensFlare = TaskGetStructPtr(gCurTask);
     Sprite *sprite;
-    struct UNK_808D124_UNK180 *config180;
+    SpriteTransform *transform;
     u32 i;
 
     lensFlare->unk202 += 3;
@@ -1730,18 +1729,18 @@ static void Task_LensFlareAnim(void)
     if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
             sprite = &lensFlare->sprites[i];
-            config180 = &lensFlare->unk180[i];
+            transform = &lensFlare->transforms[i];
 
             // Potentially a macro
-            config180->unk6[0] = sub_8085654(lensFlare->posSequenceX[i], -0x14,
-                                             lensFlare->animFrame * 16, 8, 0);
+            transform->x = sub_8085654(lensFlare->posSequenceX[i], -0x14,
+                                       lensFlare->animFrame * 16, 8, 0);
 
-            config180->unk6[1] = sub_8085654(
-                lensFlare->posSequenceY[i] + lensFlare->unk202 - gBgScrollRegs[1][1],
-                -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
-                lensFlare->animFrame * 16, 8, 0);
+            transform->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202
+                                           - gBgScrollRegs[1][1],
+                                       -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
+                                       lensFlare->animFrame * 16, 8, 0);
 
-            sub_8004860(sprite, config180);
+            sub_8004860(sprite, transform);
             sub_80051E8(sprite);
         }
     }

@@ -12,6 +12,8 @@ gUnknown_080E0290:
 .syntax unified
 .arm
 
+@; NOTE: This procedure is referenced by boss_9,
+@;       all other procedures are not referenced at all.
 	thumb_func_start sub_8085968
 sub_8085968: @ 0x08085968
 	push {r4, r5, r6, r7, lr}

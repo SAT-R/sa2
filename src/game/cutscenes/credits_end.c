@@ -156,7 +156,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->tilesVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C = sTilemapsCreditsEndSlides[2];
+            background->tilemapId = sTilemapsCreditsEndSlides[2];
             background->unk1E = 0;
             background->unk20 = 0;
             background->unk22 = 0;
@@ -240,7 +240,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
+        background->tilemapId = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -265,7 +265,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->tilesVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = sTilemapsCreditsEndSlides[scene->unk160];
+        background->tilemapId = sTilemapsCreditsEndSlides[scene->unk160];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -322,7 +322,7 @@ static void Task_CreateCopyrightScreen(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = sTilemapsCreditsEndSlides[13];
+        background->tilemapId = sTilemapsCreditsEndSlides[13];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -345,7 +345,7 @@ static void Task_CreateCopyrightScreen(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = sTilemapsCreditsEndSlides[14];
+        background->tilemapId = sTilemapsCreditsEndSlides[14];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -381,7 +381,8 @@ static void Task_SequenceMain(void)
                 gBgScrollRegs[0][0] = 0;
                 gBgScrollRegs[0][1] = 0;
 
-                background->unk1C = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
+                background->tilemapId
+                    = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
                 background->unk26 = 0x1E;
                 background->unk28 = 0x14;
                 background->unk2E = 0;

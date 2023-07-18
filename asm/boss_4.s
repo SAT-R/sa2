@@ -1597,7 +1597,7 @@ _08042216:
 	movs r1, #0x20
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 _08042228:
 	ldr r0, [r5, #0xc]
 	subs r0, #8
@@ -2578,7 +2578,7 @@ _0804298E:
 	movs r1, #0x10
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 	ldr r0, [r5, #0x10]
 	ldr r1, [r5, #4]
 	ldr r2, [r5, #8]

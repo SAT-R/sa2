@@ -63,7 +63,14 @@ extern s8 gSelectedCharacter;
 extern u8 gMultiplayerLanguage;
 extern u32 gUnknown_030059D8;
 extern struct Task *gGameStageTask;
-extern u32 gUnknown_030059D0[2];
+
+typedef struct {
+    s8 unk0;
+    u8 filler1[3];
+    struct Task *t;
+} UNK_30059D0;
+
+extern UNK_30059D0 gUnknown_030059D0;
 
 // Sometimes loaded as s16, but as u16 most of the time.
 // If you encounter it being loaded as s16, please cast it.
@@ -113,7 +120,7 @@ struct UNK_3005A70 {
 extern u8 gUnknown_0300543C;
 
 extern struct Task *gEntitesManagerTask;
-extern u8 gUnknown_03005B34;
+extern u8 gSmallAirBubbleCount;
 
 extern u8 gUnknown_030054E4;
 
@@ -234,8 +241,8 @@ typedef struct Player_ {
 
     /* 0x24 */ u8 rotation;
     /* 0x25 */ u8 filler25[1];
-    /* 0x26 */ s16 unk26;
-    /* 0x25 */ u8 filler28[2];
+    /* 0x26 */ s16 spindashAccel;
+    /* 0x28 */ u8 filler28[2];
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u16 timerInvincibility;
@@ -388,6 +395,7 @@ struct Camera {
 extern struct Camera gCamera;
 
 #define PLAYER_IS_ALIVE     (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define IS_ALIVE(player)    (!(player->moveState & MOVESTATE_DEAD))
 #define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
 
 #define TILE_WIDTH       8
@@ -440,7 +448,9 @@ extern SomeStruct_3005498 gUnknown_03005498;
 // Or maybe this is generally used to init common palettes for the GUI?
 struct SomeStruct_5660 {
     /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
-    /* 0x01 */ u8 filler1[15];
+    /* 0x01 */ u8 filler1[3];
+    /* 0x04 */ s16 unk4;
+    /* 0x06 */ u8 filler6[0xA];
     /* 0x10 */ struct Task
         *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
 };
@@ -526,13 +536,19 @@ extern void sub_80157C8(TrickBoundPos *pos, u8 index);
 
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
-    /* 0x00 */ u8 filler0[0xC];
-    /* 0x0C */ u8 fillerC[0xA];
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
+    /* 0x0C */ u8 fillerC[0x4];
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ u16 unk12;
+    /* 0x14 */ u16 unk14;
     /* 0x16 */ AnimId playerAnim;
     /* 0x18 */ u16 playerVariant;
-    /* 0x1A */ u16 unk1A;
+    /* 0x1A */ u8 unk1A;
     /* 0x1C */ Sprite s;
-    /* 0x4C */ u8 filler4C[0xC];
+    /* 0x4C */ SpriteTransform transform;
 } TaskStrc_801F15C; /* size: 0x58 */
 
 extern struct UNK_3005510 gUnknown_03005510[16];
@@ -581,9 +597,7 @@ void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
 void sub_801F3A4(s32, s32, u32);
-
-// TODO: Find out return type
-void *sub_801F7DC();
+void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
@@ -599,8 +613,6 @@ extern void sub_80122DC(s32, s32);
 
 // HandleHitPlayer
 extern void sub_800C84C(Sprite *, s32, s32);
-
-extern void sub_800B9B8(s16, s16);
 
 extern void sub_801EB44(s32, s32, s32);
 extern void sub_801EC3C(s32, s32, s32);
@@ -618,9 +630,10 @@ s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
 typedef void (*Func801F100)(s32, s32, s32);
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
-extern void sub_801F78C(void);
-
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern void TaskDestructor_801F550(struct Task *);
+
+extern void sub_801F78C(void);
 
 extern void sub_8021350(void);
 

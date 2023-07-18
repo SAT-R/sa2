@@ -205,7 +205,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_TA_AND_MP_WHITE_BG;
+    background->tilemapId = TM_TA_AND_MP_WHITE_BG;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -222,7 +222,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_TA_ORANGE_BG;
+    background->tilemapId = TM_TA_ORANGE_BG;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

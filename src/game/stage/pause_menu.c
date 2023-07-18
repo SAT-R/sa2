@@ -197,11 +197,11 @@ void TaskDestructor_PauseMenu(struct Task *t)
     VramFree(pm->s.graphics.dest);
 }
 
-extern u16 Tileset_Stage_LeafForest_Act1[16 * 16];
+extern u8 Tileset_zone_1_act_1_fg[];
 
 void sub_800AE58(void)
 {
-    DmaCopy16(3, &Tileset_Stage_LeafForest_Act1[(2 * 16 * TILE_SIZE_4BPP) / sizeof(u16)],
+    DmaCopy16(3, &Tileset_zone_1_act_1_fg[(4 * 16 * TILE_SIZE_4BPP) / sizeof(u16)],
               (void *)(OBJ_VRAM1 + 0x3EC0), 0x140);
 
     gObjPalette[1] = RGB_WHITE;

@@ -2252,7 +2252,7 @@ _0803B440:
 	movs r1, #0x10
 	movs r2, #0x80
 	movs r3, #0x14
-	bl sub_802B4F8
+	bl CreateScreenShake
 	b _0803B490
 	.align 2, 0
 _0803B468: .4byte gUnknown_080D7AA2

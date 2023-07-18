@@ -17,7 +17,8 @@ void GameStart(void)
     u32 i;
     bool32 hasProfile = FALSE;
 
-    gUnknown_03002260 = gMapHeaders;
+    // TODO: Fix cast
+    gUnknown_03002260 = (struct MapHeader **)gTilemaps;
     gUnknown_03002794 = &gSpriteTables;
     gUnknown_03004D54 = gUnknown_03001B60[0];
     gUnknown_030022C0 = gUnknown_03001B60[1];
@@ -30,13 +31,13 @@ void GameStart(void)
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
 
-    gUnknown_030059D0[1] = 0;
+    gUnknown_030059D0.t = NULL;
     gUnknown_03005660.t = NULL;
 
     gUnknown_0300543C = 0;
     gGameMode = GAME_MODE_SINGLE_PLAYER;
     gEntitiesManagerTask = NULL;
-    gUnknown_03005B34 = 0;
+    gSmallAirBubbleCount = 0;
     gDemoPlayCounter = 0;
     // TODO: resolve this
     gUnknown_030054E4 = 0;

@@ -166,7 +166,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_MP_MESSAGE_BOX_UNKNOWN;
+    background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

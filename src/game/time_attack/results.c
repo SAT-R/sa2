@@ -30,7 +30,7 @@ struct TimeAttackResultsCutScene {
     u8 unk175;
     u8 filler176[2];
     Sprite unk178[7];
-    struct UNK_808D124_UNK180 unk2C8;
+    SpriteTransform transform;
     s16 unk2D4;
     s16 unk2D6;
     u8 unk2D8;
@@ -239,11 +239,11 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->unk10 = gUnknown_030054B8++ | 0x20;
     sub_8004558(element);
 
-    resultsCutScene->unk2C8.unk2 = 0;
-    resultsCutScene->unk2C8.unk4 = 0x100;
-    resultsCutScene->unk2C8.unk6[0] = 120;
-    resultsCutScene->unk2C8.unk6[1] = 120;
-    resultsCutScene->unk2C8.unk0 = 0;
+    resultsCutScene->transform.width = 0;
+    resultsCutScene->transform.height = 0x100;
+    resultsCutScene->transform.x = 120;
+    resultsCutScene->transform.y = 120;
+    resultsCutScene->transform.unk0 = 0;
 
     element = &resultsCutScene->unk9C[2];
     element->x = (DISPLAY_WIDTH / 2);
@@ -336,7 +336,7 @@ void sub_80897E8(void)
         if (temp > 0x10) {
             if (resultsCutScene->unk2D8) {
                 element = &resultsCutScene->unk9C[1];
-                resultsCutScene->unk2C8.unk2
+                resultsCutScene->transform.width
                     = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
                 resultsCutScene->unk2D6 += resultsCutScene->unk2D4;
 
@@ -348,10 +348,10 @@ void sub_80897E8(void)
                     }
                 }
 
-                if (resultsCutScene->unk2C8.unk2 == 0) {
-                    resultsCutScene->unk2C8.unk2 = 0x10;
+                if (resultsCutScene->transform.width == 0) {
+                    resultsCutScene->transform.width = 0x10;
                 }
-                sub_8004860(element, &resultsCutScene->unk2C8);
+                sub_8004860(element, &resultsCutScene->transform);
                 sub_80051E8(element);
             }
 

@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/dust_effect_braking.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/parameters/characters.h"
@@ -50,9 +51,8 @@ void sub_8013CA0(Player *p);
 
 void sub_8015BD4(u16);
 
-void sub_801F214(void);
-void sub_801F550(struct Task *);
-void sub_801F5CC(s32, s32);
+void Task_801F214(void);
+void TaskDestructor_801F550(struct Task *);
 
 void sub_8022318(Player *p);
 void sub_8022838(Player *p);
@@ -99,7 +99,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
         return NULL;
     }
 
-    t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, sub_801F214, sub_801F550);
+    t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
     ts = TaskGetStructPtr(t);
 
     switch (p2) {
@@ -808,7 +808,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         struct Task *t;
         TaskStrc_801F15C *ts;
         Sprite *s;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
         ts = TaskGetStructPtr(t);
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
@@ -1009,7 +1009,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         TaskStrc_801F15C *ts;
         Sprite *s;
         struct Task *t;
-        t = sub_801F15C(x, y, 232, gPlayer.unk60, sub_801F214, sub_801F550);
+        t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
         ts = TaskGetStructPtr(t);
 
         ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
@@ -1414,7 +1414,7 @@ void sub_801350C(Player *p)
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
 
-        sub_801F5CC(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + offsetY);
+        CreateBrakingDustEffect(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + offsetY);
     }
 
     sub_8022838(p);

@@ -366,7 +366,7 @@ void CreateFinalEndingFallCutScene(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E1648[1];
+    background->tilemapId = gUnknown_080E1648[1];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -383,7 +383,7 @@ void CreateFinalEndingFallCutScene(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(24);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E1648[0];
+    background->tilemapId = gUnknown_080E1648[0];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -872,12 +872,12 @@ u32 sub_80928C8(struct FinalEndingFallCutScene *scene)
     Background *background;
 
     background = &scene->unk0;
-    background->unk1C = gUnknown_080E1648[3];
+    background->tilemapId = gUnknown_080E1648[3];
     background->unk2E = 0;
     sub_8002A3C(background);
 
     background = &scene->unk40;
-    background->unk1C = gUnknown_080E1648[2];
+    background->tilemapId = gUnknown_080E1648[2];
     background->unk2E = 1;
     sub_8002A3C(background);
     return 0;

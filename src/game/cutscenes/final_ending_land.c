@@ -33,7 +33,7 @@ struct FinalEndingLandCutScene {
     Sprite unk260[2];
     Sprite unk2C0[2];
 
-    struct UNK_808D124_UNK180 unk320;
+    SpriteTransform unk320;
     struct TransitionState unk32C;
 
     u8 unk338;
@@ -133,7 +133,7 @@ static const u8 gUnknown_080E1C55[] = {
 void CreateFinalEndingLandingCutScene(void)
 {
     struct TransitionState *transition = NULL;
-    struct UNK_808D124_UNK180 *transformer = NULL;
+    SpriteTransform *transform = NULL;
     struct FinalEndingLandCutScene *scene = NULL;
 
     u8 i, j;
@@ -304,7 +304,7 @@ void CreateFinalEndingLandingCutScene(void)
 
     {
         Sprite *element;
-        transformer = &scene->unk320;
+        transform = &scene->unk320;
 
         element = &scene->unkB0;
         element->graphics.dest = (void *)scene->unk618;
@@ -323,11 +323,11 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk10 = 0x60;
         element->unk28[0].unk0 = -1;
 
-        transformer->unk0 = 0;
-        transformer->unk2 = scene->unk340;
-        transformer->unk4 = scene->unk340;
-        transformer->unk6[0] = element->x;
-        transformer->unk6[1] = element->y;
+        transform->unk0 = 0;
+        transform->width = scene->unk340;
+        transform->height = scene->unk340;
+        transform->x = element->x;
+        transform->y = element->y;
 
         sub_8004558(element);
     }
@@ -487,7 +487,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E179C[value + 1];
+        background->tilemapId = gUnknown_080E179C[value + 1];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -511,7 +511,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->tilesVram = (void *)BG_SCREEN_ADDR(24);
         background->unk18 = 0;
         background->unk1A = 0;
-        background->unk1C = gUnknown_080E179C[value];
+        background->tilemapId = gUnknown_080E179C[value];
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
@@ -725,10 +725,10 @@ void sub_8093740(struct FinalEndingLandCutScene *scene)
 void sub_8093868(struct FinalEndingLandCutScene *scene)
 {
     u8 i;
-    struct UNK_808D124_UNK180 *transformer;
+    SpriteTransform *transform;
     Sprite *element = NULL;
 
-    transformer = &scene->unk320;
+    transform = &scene->unk320;
 
     if ((gSelectedCharacter == 1 && scene->unk338 < 5)
         || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
@@ -773,11 +773,11 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         element->x = scene->unk5E0[0][0] >> 8;
         element->y = scene->unk5E0[0][1] >> 8;
 
-        transformer->unk2 = scene->unk340;
-        transformer->unk4 = scene->unk340;
-        transformer->unk6[0] = element->x;
-        transformer->unk6[1] = element->y;
-        sub_8004860(element, transformer);
+        transform->width = scene->unk340;
+        transform->height = scene->unk340;
+        transform->x = element->x;
+        transform->y = element->y;
+        sub_8004860(element, transform);
     }
 
     sub_8004558(element);

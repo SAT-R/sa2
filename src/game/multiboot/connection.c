@@ -231,7 +231,7 @@ void StartSinglePakConnect(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = TM_MP_WAIT_CONNECTION;
+    background->tilemapId = TM_MP_WAIT_CONNECTION;
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -470,7 +470,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = gUnknown_080E0218[connectScreen->unkFA];
+    background->tilemapId = gUnknown_080E0218[connectScreen->unkFA];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;

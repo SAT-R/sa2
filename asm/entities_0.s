@@ -878,7 +878,7 @@ _0800C550:
 	asrs r4, r4, #0x10
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_800B9B8
+	bl CreateDustCloud
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl CreateTrappedAnimal
@@ -1221,7 +1221,7 @@ _0800C802:
 	asrs r4, r4, #0x10
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_800B9B8
+	bl CreateDustCloud
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl CreateTrappedAnimal

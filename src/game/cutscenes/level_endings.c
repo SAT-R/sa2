@@ -474,7 +474,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->tilesVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = sTilemapsCharacterDialogue[scene->unk10E + (lang * 15)];
+    background->tilemapId = sTilemapsCharacterDialogue[scene->unk10E + (lang * 15)];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -491,7 +491,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->tilesVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
-    background->unk1C = sTilemapsCharacterSlides[scene->unk10C];
+    background->tilemapId = sTilemapsCharacterSlides[scene->unk10C];
     background->unk1E = 0;
     background->unk20 = 0;
     background->unk22 = 0;
@@ -556,7 +556,7 @@ void sub_808E4C8(void)
             background->tilesVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->unk1C
+            background->tilemapId
                 = sTilemapsCharacterDialogue[scene->unk10E + 1 + (lang * 15)];
             background->unk1E = 0;
             background->unk20 = 0;

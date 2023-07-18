@@ -20,7 +20,7 @@ s32 animCmd_10(void *cursor, Sprite *sprite);
 static s32 animCmd_SetSpritePriority(void *cursor, Sprite *sprite);
 static s32 animCmd_12(void *cursor, Sprite *sprite);
 
-extern struct SpriteTables *gUnknown_03002794;
+extern const struct SpriteTables *gUnknown_03002794;
 extern u16 gObjPalette[];
 extern u32 gFlags;
 
