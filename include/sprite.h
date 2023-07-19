@@ -216,7 +216,7 @@ void UpdateBgAnimationTiles(Background *);
         (_sprite)->unk10 &= ~0x4000;                                                    \
     }
 
-#define SPRITE_INIT_WITH_POS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
+#define SPRITE_INIT_WITH_POS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)    \
     _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
     _sprite->graphics.anim = _anim;                                                     \
     _sprite->variant = _variant;                                                        \
@@ -232,8 +232,8 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk28[0].unk0 = -1;                                                        \
     _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
 
-#define SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A,  \
-                                          _priority, _flags)                            \
+#define SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority,  \
+                               _flags)                                                  \
     _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
     _sprite->graphics.anim = _anim;                                                     \
     _sprite->variant = _variant;                                                        \
@@ -247,9 +247,8 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk28[0].unk0 = -1;                                                        \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
-#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)  \
-    SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A,      \
-                                      _priority, 0)
+#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
+    SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority, 0)
 
 #define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
 
