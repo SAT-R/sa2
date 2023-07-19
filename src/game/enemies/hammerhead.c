@@ -25,8 +25,15 @@ static void TaskDestructor_Hammerhead(struct Task *);
 void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                              u8 spriteY)
 {
-    ENTITY_INIT(Enemy_Hammerhead, hammerhead, Task_Hammerhead, 0x4040, 0,
-                TaskDestructor_Hammerhead);
+    struct Task *t = TaskCreate(Task_Hammerhead, sizeof(Enemy_Hammerhead), 0x4040, 0,
+                                TaskDestructor_Hammerhead);
+    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Sprite *s = &hammerhead->s;
+    hammerhead->base.regionX = spriteRegionX;
+    hammerhead->base.regionY = spriteRegionY;
+    hammerhead->base.me = me;
+    hammerhead->base.spriteX = me->x;
+    hammerhead->base.spriteY = spriteY;
 
     hammerhead->unk48 = 0;
     sub_8056EDC(hammerhead);

@@ -18,15 +18,23 @@ typedef struct {
     /* 0x4C */ u8 unk4C;
 } Sprite_Bell; /* 0x50 */
 
-static void sub_8054BF4(void);
+static void Task_BellMain(void);
 static void sub_8054D20(void);
 
 #define ANIM_BELL_TILES 20
 
 void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    ENTITY_INIT_2(Sprite_Bell, bell, sub_8054BF4, 0x4080, 0, TaskDestructor_80095E8,
-                  { bell->unk4C = 120; });
+    struct Task *t = TaskCreate(Task_BellMain, sizeof(Sprite_Bell), 0x4080, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Bell *bell = TaskGetStructPtr(t);
+    Sprite *s = &bell->s;
+    bell->unk4C = 120;
+    bell->base.regionX = spriteRegionX;
+    bell->base.regionY = spriteRegionY;
+    bell->base.me = me;
+    bell->base.spriteX = me->x;
+    bell->base.spriteY = spriteY;
 
     bell->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
     bell->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
@@ -38,7 +46,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     SPRITE_INIT_EXCEPT_POS(s, ANIM_BELL_TILES, SA2_ANIM_BELL, 0, 0x480, 2);
 }
 
-static void sub_8054BF4(void)
+static void Task_BellMain(void)
 {
     Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
     Sprite *s = &bell->s;
@@ -111,7 +119,7 @@ void sub_8054D20(void)
 #endif
 
             s->unk28[1].unk0 = -1;
-            gCurTask->main = sub_8054BF4;
+            gCurTask->main = Task_BellMain;
         }
     }
 

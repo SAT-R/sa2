@@ -22,16 +22,23 @@ typedef struct {
     /* 0xB0 */ s32 unkB0;
 } Sprite_KuraKura; /* 0xB4*/
 
-void sub_8052024(void);
-void sub_8052264(struct Task *);
+void Task_8052024(void);
+void TaskDestructor_8052264(struct Task *);
 
 void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
-    ENTITY_INIT_2(Sprite_KuraKura, kk, sub_8052024, 0x4050, 0, sub_8052264, {
-        kk->unkB0 = 0;
-        kk->unkAC = 0;
-    });
+    struct Task *t = TaskCreate(Task_8052024, sizeof(Sprite_KuraKura), 0x4050, 0,
+                                TaskDestructor_8052264);
+    Sprite_KuraKura *kk = TaskGetStructPtr(t);
+    Sprite *s = &kk->s;
+    kk->unkB0 = 0;
+    kk->unkAC = 0;
+    kk->base.regionX = spriteRegionX;
+    kk->base.regionY = spriteRegionY;
+    kk->base.me = me;
+    kk->base.spriteX = me->x;
+    kk->base.spriteY = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(kk, me);
 
@@ -58,7 +65,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 void sub_805213C(Sprite_KuraKura *kk);
 
-void sub_8052024(void)
+void Task_8052024(void)
 {
     Sprite_KuraKura *kk = TaskGetStructPtr(gCurTask);
     Sprite *s = &kk->s;
@@ -106,7 +113,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     sub_80051E8(s2);
 }
 
-void sub_8052264(struct Task *t)
+void TaskDestructor_8052264(struct Task *t)
 {
     Sprite_KuraKura *kk = TaskGetStructPtr(t);
     VramFree(kk->s.graphics.dest);

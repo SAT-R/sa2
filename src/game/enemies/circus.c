@@ -29,9 +29,15 @@ void TaskDestructor_Circus(struct Task *);
 
 void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    Sprite *s2;
-    ENTITY_INIT(Sprite_Circus, circus, Task_CircusMain, 0x4090, 0,
-                TaskDestructor_Circus);
+    struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0,
+                                TaskDestructor_Circus);
+    Sprite_Circus *circus = TaskGetStructPtr(t);
+    Sprite *s = &circus->s;
+    circus->base.regionX = spriteRegionX;
+    circus->base.regionY = spriteRegionY;
+    circus->base.me = me;
+    circus->base.spriteX = me->x;
+    circus->base.spriteY = spriteY;
 
     if (me->d.sData[1] != 0) {
         circus->clampParam = TRUE;

@@ -37,7 +37,15 @@ void TaskDestructor_Yado(struct Task *);
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s32 regX, regY;
-    ENTITY_INIT(Sprite_Yado, yado, Task_YadoMain, 0x4090, 0, TaskDestructor_Yado);
+    struct Task *t
+        = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
+    Sprite_Yado *yado = TaskGetStructPtr(t);
+    Sprite *s = &yado->s;
+    yado->base.regionX = spriteRegionX;
+    yado->base.regionY = spriteRegionY;
+    yado->base.me = me;
+    yado->base.spriteX = me->x;
+    yado->base.spriteY = spriteY;
 
     if (me->d.sData[1] != 0) {
         yado->clampParam = TRUE;

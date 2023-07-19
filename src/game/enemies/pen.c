@@ -21,15 +21,23 @@ typedef struct {
     /* 0x51 */ bool8 boosting;
 } Sprite_Pen; /* 0x54 */
 
-static void Task_Move(void);
-static void Task_Turn(void);
+static void Task_PenMove(void);
+static void Task_PenTurn(void);
 
 #define PEN_BOOST_SPEED Q_24_8(2.0)
 #define PEN_MOVE_SPEED  Q_24_8(0.5)
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    ENTITY_INIT(Sprite_Pen, pen, Task_Move, 0x4040, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Pen *pen = TaskGetStructPtr(t);
+    Sprite *s = &pen->s;
+    pen->base.regionX = spriteRegionX;
+    pen->base.regionY = spriteRegionY;
+    pen->base.me = me;
+    pen->base.spriteX = me->x;
+    pen->base.spriteY = spriteY;
 
     if (me->d.sData[1] != 0) {
         pen->clampParam = TRUE;
@@ -49,7 +57,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     SPRITE_INIT_EXCEPT_POS(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
 }
 
-static void Task_Move(void)
+static void Task_PenMove(void)
 {
     Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
     Sprite *s = &pen->s;
@@ -105,13 +113,13 @@ static void Task_Move(void)
 
     // Turn when end of range reached
     if (ENEMY_CROSSED_LEFT_BORDER(pen, me) && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
-        gCurTask->main = Task_Turn;
+        gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->unk21 = -1;
     } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
                && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
-        gCurTask->main = Task_Turn;
+        gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->unk21 = -1;
@@ -121,7 +129,7 @@ static void Task_Move(void)
     ENEMY_UPDATE_EX_RAW(s, posX_24_8, Q_24_8(pos.y), {});
 }
 
-static void Task_Turn(void)
+static void Task_PenTurn(void)
 {
     Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
     Sprite *s = &pen->s;
@@ -146,7 +154,7 @@ static void Task_Turn(void)
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_MOVE;
         s->unk21 = -1;
-        gCurTask->main = Task_Move;
+        gCurTask->main = Task_PenMove;
     }
     sub_80051E8(s);
 }

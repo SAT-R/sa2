@@ -32,8 +32,15 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         s32 rand;
-        ENTITY_INIT(Sprite_Straw, straw, Task_StrawMain, 0x4040, 0,
-                    TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(Task_StrawMain, sizeof(Sprite_Straw), 0x4040, 0,
+                                    TaskDestructor_80095E8);
+        Sprite_Straw *straw = TaskGetStructPtr(t);
+        Sprite *s = &straw->s;
+        straw->base.regionX = spriteRegionX;
+        straw->base.regionY = spriteRegionY;
+        straw->base.me = me;
+        straw->base.spriteX = me->x;
+        straw->base.spriteY = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(straw, me);
 

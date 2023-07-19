@@ -25,8 +25,15 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        ENTITY_INIT(Sprite_PikoPiko, piko, Task_PikoPiko, 0x4080, 0,
-                    TaskDestructor_PikoPiko);
+        struct Task *t = TaskCreate(Task_PikoPiko, sizeof(Sprite_PikoPiko), 0x4080, 0,
+                                    TaskDestructor_PikoPiko);
+        Sprite_PikoPiko *piko = TaskGetStructPtr(t);
+        Sprite *s = &piko->s;
+        piko->base.regionX = spriteRegionX;
+        piko->base.regionY = spriteRegionY;
+        piko->base.me = me;
+        piko->base.spriteX = me->x;
+        piko->base.spriteY = spriteY;
 
         if (me->d.sData[1] != 0) {
             piko->clampParam = TRUE;

@@ -29,8 +29,16 @@ void Task_BulletBuzzerMain(void);
 void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                u8 spriteY)
 {
-    ENTITY_INIT(Sprite_BulletBuzzer, bbuzzer, Task_BulletBuzzerMain, 0x4040, 0,
-                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer),
+                                0x4040, 0, TaskDestructor_80095E8);
+    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(t);
+    Sprite *s = &bbuzzer->s;
+    bbuzzer->base.regionX = spriteRegionX;
+    bbuzzer->base.regionY = spriteRegionY;
+    bbuzzer->base.me = me;
+    bbuzzer->base.spriteX = me->x;
+    bbuzzer->base.spriteY = spriteY;
+
     ENEMY_SET_SPAWN_POS_FLYING(bbuzzer, me);
 
     bbuzzer->unk54 = Q_24_8(0.0);

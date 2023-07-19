@@ -28,8 +28,16 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        ENTITY_INIT(Sprite_Balloon, balloon, Task_BalloonMain, 0x4040, 0,
-                    TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(Task_BalloonMain, sizeof(Sprite_Balloon), 0x4040, 0,
+                                    TaskDestructor_80095E8);
+        Sprite_Balloon *balloon = TaskGetStructPtr(t);
+        Sprite *s = &balloon->s;
+        balloon->base.regionX = spriteRegionX;
+        balloon->base.regionY = spriteRegionY;
+        balloon->base.me = me;
+        balloon->base.spriteX = me->x;
+        balloon->base.spriteY = spriteY;
+
         ENEMY_SET_SPAWN_POS_FLYING(balloon, me);
 
         balloon->unk54 = Q_24_8(0.5);

@@ -72,30 +72,6 @@ void sub_801FD34(s32, s32, s32);
         mapEnt->x = initialX;                                                           \
     }
 
-#define ENTITY_INIT(eType, eName, _task, _taskPrio, _taskFlags, _taskDtor)              \
-    struct Task *t                                                                      \
-        = TaskCreate(_task, sizeof(eType), _taskPrio, _taskFlags, _taskDtor);           \
-    eType *eName = TaskGetStructPtr(t);                                                 \
-    Sprite *s = &eName->s;                                                              \
-    eName->base.regionX = spriteRegionX;                                                \
-    eName->base.regionY = spriteRegionY;                                                \
-    eName->base.me = me;                                                                \
-    eName->base.spriteX = me->x;                                                        \
-    eName->base.spriteY = spriteY;
-
-#define ENTITY_INIT_2(eType, eName, _task, _taskPrio, _taskFlags, _taskDtor,            \
-                      _code_insert)                                                     \
-    struct Task *t                                                                      \
-        = TaskCreate(_task, sizeof(eType), _taskPrio, _taskFlags, _taskDtor);           \
-    eType *eName = TaskGetStructPtr(t);                                                 \
-    Sprite *s = &eName->s;                                                              \
-    { _code_insert };                                                                   \
-    eName->base.regionX = spriteRegionX;                                                \
-    eName->base.regionY = spriteRegionY;                                                \
-    eName->base.me = me;                                                                \
-    eName->base.spriteX = me->x;                                                        \
-    eName->base.spriteY = spriteY;
-
 // Used by Enemies that do not appear in EASY-mode
 #define DIFFICULTY_LEVEL_IS_NOT_EASY                                                    \
     (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != DIFFICULTY_EASY)

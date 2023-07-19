@@ -40,8 +40,15 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s32 x, y;
     Vec2_32 pos;
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        ENTITY_INIT(Sprite_Flickey, flickey, Task_FlickeyMain, 0x4040, 0,
-                    TaskDestructor_Flickey);
+        struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0,
+                                    TaskDestructor_Flickey);
+        Sprite_Flickey *flickey = TaskGetStructPtr(t);
+        Sprite *s = &flickey->s;
+        flickey->base.regionX = spriteRegionX;
+        flickey->base.regionY = spriteRegionY;
+        flickey->base.me = me;
+        flickey->base.spriteX = me->x;
+        flickey->base.spriteY = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(flickey, me);
 

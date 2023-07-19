@@ -33,7 +33,15 @@ void Task_KyuraRecover(void);
 
 void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    ENTITY_INIT(Sprite_Kyura, kyura, Task_KyuraMain, 0x4040, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Kyura *kyura = TaskGetStructPtr(t);
+    Sprite *s = &kyura->s;
+    kyura->base.regionX = spriteRegionX;
+    kyura->base.regionY = spriteRegionY;
+    kyura->base.me = me;
+    kyura->base.spriteX = me->x;
+    kyura->base.spriteY = spriteY;
 
     kyura->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
     kyura->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));

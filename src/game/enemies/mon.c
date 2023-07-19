@@ -9,10 +9,10 @@
 
 // TODO: Name the tasks accordingly
 
-static void Task_Enemy_Mon_Main(void);
-static void Task_Enemy_Mon_2(void);
-static void Task_Enemy_Mon_3(void);
-static void Task_Enemy_Mon_4(void);
+static void Task_MonMain(void);
+static void Task_Mon_2(void);
+static void Task_Mon_3(void);
+static void Task_Mon_4(void);
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -26,7 +26,15 @@ typedef struct {
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 r2;
-    ENTITY_INIT(Sprite_Mon, mon, Task_Enemy_Mon_Main, 0x4010, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Mon *mon = TaskGetStructPtr(t);
+    Sprite *s = &mon->s;
+    mon->base.regionX = spriteRegionX;
+    mon->base.regionY = spriteRegionY;
+    mon->base.me = me;
+    mon->base.spriteX = me->x;
+    mon->base.spriteY = spriteY;
 
     // TODO: Isn't this always -1?
     r2 = (-me->d.sData[0] | me->d.sData[0]);
@@ -58,7 +66,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->unk21 = 0xFF;
 }
 
-static void Task_Enemy_Mon_Main(void)
+static void Task_MonMain(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -76,7 +84,7 @@ static void Task_Enemy_Mon_Main(void)
         if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))
             && (gPlayer.x < mon->x + Q_24_8(DISPLAY_WIDTH / 2))
             && (gPlayer.y > mon->y - Q_24_8(50)) && (gPlayer.y < mon->y + Q_24_8(50))) {
-            gCurTask->main = Task_Enemy_Mon_2;
+            gCurTask->main = Task_Mon_2;
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 2;
             s->unk21 = 0xFF;
@@ -88,7 +96,7 @@ static void Task_Enemy_Mon_Main(void)
     }
 }
 
-static void Task_Enemy_Mon_2(void)
+static void Task_Mon_2(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -111,13 +119,13 @@ static void Task_Enemy_Mon_2(void)
             s->variant = 1;
             s->unk21 = 0xFF;
 
-            gCurTask->main = Task_Enemy_Mon_3;
+            gCurTask->main = Task_Mon_3;
         }
         sub_80051E8(s);
     }
 }
 
-static void Task_Enemy_Mon_3(void)
+static void Task_Mon_3(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -140,14 +148,14 @@ static void Task_Enemy_Mon_3(void)
             s->variant = 3;
             s->unk21 = 0xFF;
 
-            gCurTask->main = Task_Enemy_Mon_4;
+            gCurTask->main = Task_Mon_4;
         }
 
         ENEMY_UPDATE_EX_RAW(s, mon->x, mon->y + mon->offsetY, {});
     }
 }
 
-static void Task_Enemy_Mon_4(void)
+static void Task_Mon_4(void)
 {
     Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
     Sprite *s = &mon->s;
@@ -176,13 +184,13 @@ static void Task_Enemy_Mon_4(void)
                 s->variant = 2;
                 s->unk21 = 0xFF;
 
-                gCurTask->main = Task_Enemy_Mon_2;
+                gCurTask->main = Task_Mon_2;
             } else {
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 0;
                 s->unk21 = 0xFF;
 
-                gCurTask->main = Task_Enemy_Mon_Main;
+                gCurTask->main = Task_MonMain;
             }
         }
         sub_80051E8(s);

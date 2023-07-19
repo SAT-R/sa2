@@ -37,7 +37,15 @@ static void Task_StarOpen(void);
 
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    ENTITY_INIT(Sprite_Star, star, Task_StarIdle, 0x4050, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Star *star = TaskGetStructPtr(t);
+    Sprite *s = &star->s;
+    star->base.regionX = spriteRegionX;
+    star->base.regionY = spriteRegionY;
+    star->base.me = me;
+    star->base.spriteX = me->x;
+    star->base.spriteY = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(star, me);
 

@@ -23,8 +23,15 @@ void Task_EnemySpinner(void);
 void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
 {
-    ENTITY_INIT(Sprite_Spinner, spinner, Task_EnemySpinner, 0x4040, 0,
-                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Spinner *spinner = TaskGetStructPtr(t);
+    Sprite *s = &spinner->s;
+    spinner->base.regionX = spriteRegionX;
+    spinner->base.regionY = spriteRegionY;
+    spinner->base.me = me;
+    spinner->base.spriteX = me->x;
+    spinner->base.spriteY = spriteY;
 
     spinner->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
     spinner->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));

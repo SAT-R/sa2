@@ -24,8 +24,15 @@ void TaskDestructor_80095E8(struct Task *);
 void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
 {
-    ENTITY_INIT(Sprite_Madillo, madillo, Task_MadilloMain, 0x4040, 0,
-                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_MadilloMain, sizeof(Sprite_Madillo), 0x4040, 0,
+                                TaskDestructor_80095E8);
+    Sprite_Madillo *madillo = TaskGetStructPtr(t);
+    Sprite *s = &madillo->s;
+    madillo->base.regionX = spriteRegionX;
+    madillo->base.regionY = spriteRegionY;
+    madillo->base.me = me;
+    madillo->base.spriteX = me->x;
+    madillo->base.spriteY = spriteY;
 
     if (me->d.sData[1] != 0) {
         madillo->clampParam = TRUE;

@@ -30,8 +30,16 @@ void TaskDestructor_Buzzer(struct Task *);
 void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1) {
-        ENTITY_INIT(Sprite_Buzzer, buzzer, Task_BuzzerMain, 0x4030, 0,
-                    TaskDestructor_Buzzer);
+        struct Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0,
+                                    TaskDestructor_Buzzer);
+        Sprite_Buzzer *buzzer = TaskGetStructPtr(t);
+        Sprite *s = &buzzer->s;
+        buzzer->base.regionX = spriteRegionX;
+        buzzer->base.regionY = spriteRegionY;
+        buzzer->base.me = me;
+        buzzer->base.spriteX = me->x;
+        buzzer->base.spriteY = spriteY;
+
         ENEMY_SET_SPAWN_POS_FLYING(buzzer, me);
 
         buzzer->unk54 = Q_24_8(0.0);
