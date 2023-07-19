@@ -174,10 +174,7 @@ void Task_8055D7C(void)
     MapEntity *me = circus->base.me;
     Vec2_32 pos;
 
-    pos.x = Q_24_8_TO_INT(circus->spawnX);
-    pos.y = Q_24_8_TO_INT(circus->spawnY);
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
+    ENEMY_UPDATE_POSITION_STATIC(circus, s, pos.x, pos.y);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
 
