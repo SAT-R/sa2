@@ -117,15 +117,14 @@ void Task_8055AB8(void)
         s->variant = 2;
         s->unk21 = -1;
         gCurTask->main = Task_8055C0C;
-        return;
+    } else {
+        sub_80051E8(s);
+        s2->x = s->x;
+        s2->y = s->y - Q_24_8(0.125);
+
+        sub_800C84C(s2, pos.x, pos.y - 0x20);
+        sub_80051E8(s2);
     }
-
-    sub_80051E8(s);
-    s2->x = s->x;
-    s2->y = s->y - Q_24_8(0.125);
-
-    sub_800C84C(s2, pos.x, pos.y - 0x20);
-    sub_80051E8(s2);
 }
 
 void Task_8055C0C(void)
