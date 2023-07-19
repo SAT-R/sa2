@@ -6,7 +6,7 @@
 #define GUARD_DATA_H
 
 #include "global.h"
-//#include "core.h"
+#include "core.h"
 #include "animation_commands.h"
 
 extern const Tilemap *const gTilemaps[381];
