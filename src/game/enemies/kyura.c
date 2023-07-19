@@ -57,7 +57,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_EXCEPT_POS(s, 24, SA2_ANIM_KYURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 0x480, 2);
 }
 
 void Task_KyuraMain(void)

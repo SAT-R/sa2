@@ -54,7 +54,7 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT_EXCEPT_POS(s, NUM_TILES_STRAW, SA2_ANIM_STRAW, 0, 0x480, 1);
+        SPRITE_INIT(s, NUM_TILES_STRAW, SA2_ANIM_STRAW, 0, 0x480, 1);
     }
 }
 

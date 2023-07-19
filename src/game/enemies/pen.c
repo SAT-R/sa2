@@ -54,7 +54,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_EXCEPT_POS(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
+    SPRITE_INIT(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
 }
 
 static void Task_PenMove(void)

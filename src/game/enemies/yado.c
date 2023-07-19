@@ -62,7 +62,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_EXCEPT_POS(s, 12, SA2_ANIM_YADO, 0, 0x480, 2);
+    SPRITE_INIT(s, 12, SA2_ANIM_YADO, 0, 0x480, 2);
 }
 
 void Task_YadoMain(void)

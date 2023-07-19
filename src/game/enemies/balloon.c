@@ -50,6 +50,6 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT_EXCEPT_POS(s, 10, SA2_ANIM_BALLOON, 0, 0x480, 2);
+        SPRITE_INIT(s, 10, SA2_ANIM_BALLOON, 0, 0x480, 2);
     }
 }

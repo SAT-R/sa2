@@ -55,7 +55,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_EXCEPT_POS(s, 25, SA2_ANIM_STAR, 0, 0x480, 2);
+    SPRITE_INIT(s, 25, SA2_ANIM_STAR, 0, 0x480, 2);
 }
 
 #define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                      \

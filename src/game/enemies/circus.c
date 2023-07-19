@@ -53,12 +53,12 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_EXCEPT_POS(s, 20, SA2_ANIM_CIRCUS, 0, 0x480, 2);
+    SPRITE_INIT(s, 20, SA2_ANIM_CIRCUS, 0, 0x480, 2);
 
     s = &circus->s2;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT_EXCEPT_POS(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 0x480, 2);
+    SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 0x480, 2);
 
     sub_8004558(s);
 }

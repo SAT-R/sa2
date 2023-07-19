@@ -47,7 +47,7 @@ void CreateProjectile(ProjInit *init)
     proj->velocityY = velocityY;
 
     s = &proj->s;
-    SPRITE_INIT(s, init->numTiles, init->anim, init->variant, 0x200, 1);
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
 }
 
 void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
@@ -77,7 +77,7 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
     }
 
     s = &proj->s;
-    SPRITE_INIT(s, init->numTiles, init->anim, init->variant, 0x200, 1);
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
 }
 
 void Task_805102C(void)
