@@ -89,7 +89,7 @@ CreateEggSaucer: @ 0x08042E08
 	ldr r1, _08042F10 @ =0x000030EF
 	strh r1, [r0, #8]
 	strh r5, [r0, #0xa]
-	ldr r0, _08042F14 @ =gUnknown_030054EC
+	ldr r0, _08042F14 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _08042F1C
@@ -121,7 +121,7 @@ _08042F04: .4byte TaskDestructor_EggSaucerMain
 _08042F08: .4byte gActiveBossTask
 _08042F0C: .4byte IWRAM_START + 0x134
 _08042F10: .4byte 0x000030EF
-_08042F14: .4byte gUnknown_030054EC
+_08042F14: .4byte gDifficultyLevel
 _08042F18: .4byte gGameMode
 _08042F1C:
 	movs r0, #8

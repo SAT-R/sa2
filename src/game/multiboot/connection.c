@@ -106,7 +106,7 @@ void sub_8081200(void)
     u8 *gameMode = &gGameMode;
     u8 val = 5;
 
-    gUnknown_030059D8 = 0;
+    gUnknown_030059D8 = NULL;
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;

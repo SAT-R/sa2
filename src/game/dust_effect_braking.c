@@ -78,7 +78,7 @@ void Task_801F6E0(void)
     BrakeDustEffect *bde = TaskGetStructPtr(gCurTask);
     Sprite *s = &bde->s;
 
-    if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_14) != 0) {
+    if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
         unk->unk0++;
         TaskDestroy(gCurTask);
         return;

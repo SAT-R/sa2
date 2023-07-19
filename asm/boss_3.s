@@ -43,7 +43,7 @@ CreateEggTotem: @ 0x0803EC98
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r1, r0
-	ldr r0, _0803ED10 @ =gUnknown_030054EC
+	ldr r0, _0803ED10 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0803ED1C
@@ -61,7 +61,7 @@ _0803ED00: .4byte gPseudoRandom
 _0803ED04: .4byte gUnknown_03005590
 _0803ED08: .4byte Task_EggTotemMain
 _0803ED0C: .4byte TaskDestructor_EggTotemMain
-_0803ED10: .4byte gUnknown_030054EC
+_0803ED10: .4byte gDifficultyLevel
 _0803ED14: .4byte gGameMode
 _0803ED18: .4byte IWRAM_START + 0x32
 _0803ED1C:
@@ -401,7 +401,7 @@ _0803EF72:
 	strh r4, [r0]
 	adds r0, #2
 	strh r4, [r0]
-	ldr r7, _0803F008 @ =gUnknown_030054EC
+	ldr r7, _0803F008 @ =gDifficultyLevel
 	ldrb r0, [r7]
 	cmp r0, #0
 	beq _0803F00C
@@ -426,7 +426,7 @@ _0803EFF8: .4byte 0x000002CA
 _0803EFFC: .4byte 0x000002CD
 _0803F000: .4byte gGameMode
 _0803F004: .4byte gUnknown_080D7BE2
-_0803F008: .4byte gUnknown_030054EC
+_0803F008: .4byte gDifficultyLevel
 _0803F00C:
 	subs r0, r3, r5
 	lsls r0, r0, #2

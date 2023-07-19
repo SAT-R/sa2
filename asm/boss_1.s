@@ -42,7 +42,7 @@ CreateEggHammerTankII: @ 0x0803A24C
 	asrs r0, r0, #0x18
 	cmp r0, #0x1c
 	bne _0803A2D4
-	ldr r0, _0803A2C0 @ =gUnknown_030054EC
+	ldr r0, _0803A2C0 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0803A2C8
@@ -58,7 +58,7 @@ _0803A2B0: .4byte Task_EggHammerTankIIMain
 _0803A2B4: .4byte 0x000004A4
 _0803A2B8: .4byte TaskDestructor_EggHammerTankIIMain
 _0803A2BC: .4byte gCurrentLevel
-_0803A2C0: .4byte gUnknown_030054EC
+_0803A2C0: .4byte gDifficultyLevel
 _0803A2C4: .4byte IWRAM_START + 0xB0
 _0803A2C8:
 	ldr r2, _0803A2D0 @ =IWRAM_START + 0xB0
@@ -68,7 +68,7 @@ _0803A2C8:
 	.align 2, 0
 _0803A2D0: .4byte IWRAM_START + 0xB0
 _0803A2D4:
-	ldr r0, _0803A2EC @ =gUnknown_030054EC
+	ldr r0, _0803A2EC @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0803A2F8
@@ -81,7 +81,7 @@ _0803A2D4:
 	movs r0, #6
 	b _0803A2FE
 	.align 2, 0
-_0803A2EC: .4byte gUnknown_030054EC
+_0803A2EC: .4byte gDifficultyLevel
 _0803A2F0: .4byte gGameMode
 _0803A2F4: .4byte IWRAM_START + 0xB0
 _0803A2F8:

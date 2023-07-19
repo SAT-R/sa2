@@ -512,9 +512,9 @@ void ApplyGameStageSettings(void)
     if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK
          || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY)
         || (gUnknown_03005424 & 0x40)) {
-        gUnknown_030054EC = 0;
+        gDifficultyLevel = 0;
     } else {
-        gUnknown_030054EC = gLoadedSaveGame->difficultyLevel;
+        gDifficultyLevel = gLoadedSaveGame->difficultyLevel;
     }
 
     if ((gUnknown_03005424 & 0x40)) {
@@ -535,7 +535,7 @@ void GameStageStart(void)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         sub_80299F0(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
-        gUnknown_030056A4 = 0;
+        gUnknown_030056A4 = NULL;
     }
 
     gUnknown_03005590 = 0;
@@ -665,7 +665,7 @@ void CreateGameStage(void)
         }
     }
 
-    gUnknown_030056A4 = 0;
+    gUnknown_030056A4 = NULL;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreatePlayerActor(&gPlayer);

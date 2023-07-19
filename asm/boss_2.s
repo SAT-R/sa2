@@ -39,7 +39,7 @@ CreateEggBomberTank: @ 0x0803CCA8
 	lsls r0, r0, #0x12
 	adds r0, r0, r2
 	mov sl, r0
-	ldr r0, _0803CD20 @ =gUnknown_030054EC
+	ldr r0, _0803CD20 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _0803CD30
@@ -61,7 +61,7 @@ _0803CD10: .4byte gPseudoRandom
 _0803CD14: .4byte gUnknown_03005590
 _0803CD18: .4byte Task_EggBomberTankMain
 _0803CD1C: .4byte TaskDestructor_EggBomberTankMain
-_0803CD20: .4byte gUnknown_030054EC
+_0803CD20: .4byte gDifficultyLevel
 _0803CD24: .4byte gGameMode
 _0803CD28: .4byte IWRAM_START + 0x71
 _0803CD2C: .4byte IWRAM_START + 0x70

@@ -25,7 +25,7 @@ CreateEntity_Mouse: @ 0x080571B4
 	ldrb r0, [r0]
 	cmp r0, #1
 	beq _080571E4
-	ldr r0, _08057224 @ =gUnknown_030054EC
+	ldr r0, _08057224 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne _080571E4
@@ -62,7 +62,7 @@ _080571E4:
 	b _0805723E
 	.align 2, 0
 _08057220: .4byte gGameMode
-_08057224: .4byte gUnknown_030054EC
+_08057224: .4byte gDifficultyLevel
 _08057228: .4byte sub_8057348
 _0805722C: .4byte 0x00004040
 _08057230: .4byte TaskDestructor_80095E8

@@ -4,164 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_Buzzer
-CreateEntity_Buzzer: @ 0x08052F94
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #4
-	adds r7, r0, #0
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	mov sb, r1
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	mov sl, r2
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	mov r8, r3
-	ldr r0, _080530AC @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _08052FD0
-	ldr r0, _080530B0 @ =gCurrentLevel
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #3
-	bgt _08052FD0
-	ldr r0, _080530B4 @ =gUnknown_030054EC
-	ldrb r0, [r0]
-	cmp r0, #1
-	beq _0805309A
-_08052FD0:
-	ldr r0, _080530B8 @ =sub_80530E0
-	ldr r2, _080530BC @ =0x00004030
-	ldr r1, _080530C0 @ =sub_8053770
-	str r1, [sp]
-	movs r1, #0x6c
-	movs r3, #0
-	bl TaskCreate
-	ldrh r5, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r5, r1
-	ldr r0, _080530C4 @ =IWRAM_START + 0xC
-	adds r6, r5, r0
-	movs r4, #0
-	mov r2, sb
-	strh r2, [r1, #4]
-	mov r0, sl
-	strh r0, [r1, #6]
-	str r7, [r1]
-	ldrb r0, [r7]
-	strb r0, [r1, #8]
-	mov r2, r8
-	strb r2, [r1, #9]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	mov r2, sb
-	lsls r3, r2, #8
-	adds r0, r0, r3
-	lsls r0, r0, #8
-	str r0, [r1, #0x44]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	mov sb, r0
-	mov r0, sl
-	lsls r2, r0, #8
-	add sb, r2
-	mov r0, sb
-	lsls r0, r0, #8
-	str r0, [r1, #0x48]
-	str r4, [r1, #0x4c]
-	str r4, [r1, #0x50]
-	str r4, [r1, #0x54]
-	str r4, [r1, #0x58]
-	str r4, [r1, #0x60]
-	ldr r0, _080530C8 @ =IWRAM_START + 0x64
-	strh r4, [r0, r5]
-	adds r0, #2
-	strh r4, [r0, r5]
-	str r4, [r1, #0x5c]
-	ldr r1, _080530CC @ =IWRAM_START + 0x68
-	adds r0, r5, r1
-	movs r1, #0
-	strb r1, [r0]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	adds r0, r0, r3
-	strh r0, [r6, #0x16]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r2
-	strh r0, [r6, #0x18]
-	movs r2, #2
-	rsbs r2, r2, #0
-	adds r0, r2, #0
-	strb r0, [r7]
-	movs r0, #0x14
-	bl VramMalloc
-	str r0, [r6, #4]
-	movs r0, #0xf1
-	lsls r0, r0, #1
-	strh r0, [r6, #0xa]
-	ldr r1, _080530D0 @ =IWRAM_START + 0x2C
-	adds r0, r5, r1
-	movs r2, #0
-	strb r2, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r6, #0x1a]
-	strh r4, [r6, #8]
-	strh r4, [r6, #0x14]
-	strh r4, [r6, #0x1c]
-	ldr r0, _080530D4 @ =IWRAM_START + 0x2D
-	adds r1, r5, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r2, _080530D8 @ =IWRAM_START + 0x2E
-	adds r1, r5, r2
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _080530DC @ =IWRAM_START + 0x31
-	adds r5, r5, r0
-	movs r1, #0
-	strb r1, [r5]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r6, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r6, #0x10]
-_0805309A:
-	add sp, #4
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080530AC: .4byte gGameMode
-_080530B0: .4byte gCurrentLevel
-_080530B4: .4byte gUnknown_030054EC
-_080530B8: .4byte sub_80530E0
-_080530BC: .4byte 0x00004030
-_080530C0: .4byte sub_8053770
-_080530C4: .4byte IWRAM_START + 0xC
-_080530C8: .4byte IWRAM_START + 0x64
-_080530CC: .4byte IWRAM_START + 0x68
-_080530D0: .4byte IWRAM_START + 0x2C
-_080530D4: .4byte IWRAM_START + 0x2D
-_080530D8: .4byte IWRAM_START + 0x2E
-_080530DC: .4byte IWRAM_START + 0x31
+.if 0
+.endif
 
-	thumb_func_start sub_80530E0
-sub_80530E0: @ 0x080530E0
+	thumb_func_start Task_BuzzerMain
+Task_BuzzerMain: @ 0x080530E0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -658,7 +505,7 @@ _080534B2:
 	strb r0, [r1]
 	ldr r0, _080534E8 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _080534EC @ =sub_80530E0
+	ldr r0, _080534EC @ =Task_BuzzerMain
 	str r0, [r1, #8]
 _080534D2:
 	adds r0, r6, #0
@@ -673,7 +520,7 @@ _080534D8:
 	bx r0
 	.align 2, 0
 _080534E8: .4byte gCurTask
-_080534EC: .4byte sub_80530E0
+_080534EC: .4byte Task_BuzzerMain
 
 	thumb_func_start sub_80534F0
 sub_80534F0: @ 0x080534F0
@@ -971,7 +818,7 @@ _08053714:
 	strb r0, [r1]
 	ldr r0, _08053768 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805376C @ =sub_80530E0
+	ldr r0, _0805376C @ =Task_BuzzerMain
 	str r0, [r1, #8]
 _0805374E:
 	adds r0, r7, #0
@@ -988,10 +835,10 @@ _0805375A:
 	bx r0
 	.align 2, 0
 _08053768: .4byte gCurTask
-_0805376C: .4byte sub_80530E0
+_0805376C: .4byte Task_BuzzerMain
 
-	thumb_func_start sub_8053770
-sub_8053770: @ 0x08053770
+	thumb_func_start TaskDestructor_Buzzer
+TaskDestructor_Buzzer: @ 0x08053770
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

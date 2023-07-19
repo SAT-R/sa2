@@ -71,7 +71,7 @@ CreateEggFrog: @ 0x08047A68
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r3, r1, r0
-	ldr r0, _08047B38 @ =gUnknown_030054EC
+	ldr r0, _08047B38 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _08047B40
@@ -96,7 +96,7 @@ _08047B28: .4byte 0xFFFFCFFF
 _08047B2C: .4byte Task_EggFrogMain
 _08047B30: .4byte TaskDestructor_EggFrogMain
 _08047B34: .4byte gActiveBossTask
-_08047B38: .4byte gUnknown_030054EC
+_08047B38: .4byte gDifficultyLevel
 _08047B3C: .4byte gGameMode
 _08047B40:
 	movs r0, #8

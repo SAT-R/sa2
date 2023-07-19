@@ -506,7 +506,7 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 
         digit->palId = palId;
 
-        digit->unk10 |= SPRITE_FLAG_MASK_14;
+        digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
         sub_80051E8(digit);
 

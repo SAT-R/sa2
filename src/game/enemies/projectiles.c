@@ -34,6 +34,7 @@ void CreateProjectile(ProjInit *init)
     struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
                                 TaskDestructor_80511EC);
     ProjectileA *proj = TaskGetStructPtr(t);
+    Sprite *s;
     s32 velocityX, velocityY;
 
     proj->x = init->x;
@@ -45,20 +46,8 @@ void CreateProjectile(ProjInit *init)
     velocityY = (SIN(init->rot) * init->speed) >> 14;
     proj->velocityY = velocityY;
 
-    proj->s.graphics.dest = VramMalloc(init->numTiles);
-    proj->s.graphics.anim = init->anim;
-    proj->s.variant = init->variant;
-    proj->s.unk1A = 0x200;
-    proj->s.graphics.size = 0;
-    proj->s.x = 0;
-    proj->s.y = 0;
-    proj->s.unk14 = 0;
-    proj->s.unk1C = 0;
-    proj->s.unk21 = 0xFF;
-    proj->s.unk22 = 0x10;
-    proj->s.palId = 0;
-    proj->s.unk28[0].unk0 = -1;
-    proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s = &proj->s;
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
 }
 
 void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
@@ -66,6 +55,7 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
     struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
                                 TaskDestructor_8051200);
     ProjectileB *proj = TaskGetStructPtr(t);
+    Sprite *s;
     u8 i;
 
     if (count > NUM_PROJECTILES_MAX)
@@ -86,20 +76,8 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
         proj->isActive[i] = TRUE;
     }
 
-    proj->s.graphics.dest = VramMalloc(init->numTiles);
-    proj->s.graphics.anim = init->anim;
-    proj->s.variant = init->variant;
-    proj->s.unk1A = 0x200;
-    proj->s.graphics.size = 0;
-    proj->s.x = 0;
-    proj->s.y = 0;
-    proj->s.unk14 = 0;
-    proj->s.unk1C = 0;
-    proj->s.unk21 = 0xFF;
-    proj->s.unk22 = 0x10;
-    proj->s.palId = 0;
-    proj->s.unk28->unk0 = -1;
-    proj->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s = &proj->s;
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
 }
 
 void Task_805102C(void)

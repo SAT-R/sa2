@@ -40,10 +40,8 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
-extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
-extern void TaskDestructor_801F550(struct Task *);
 
 extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
 extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);
@@ -292,7 +290,7 @@ void PlayerCB_8025548(Player *p)
 {
     if (!sub_802A0FC(p) && !sub_8029E6C(p)
         && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !sub_802A2A8(p))) {
-        if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+        if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -328,7 +326,7 @@ void PlayerCB_802569C(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->unk6A == 0)) {
                 p->unk6A = 1;
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_UP) {
             PLAYERFN_SET(PlayerCB_8025318);
@@ -371,7 +369,7 @@ void PlayerCB_8025854(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->unk6A == 0)) {
                 p->unk6A = 1;
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_DOWN) {
             PLAYERFN_SET(PlayerCB_8025318);
@@ -418,7 +416,7 @@ void PlayerCB_8025A0C(Player *p)
         == MOVESTATE_800) {
         sub_802A360(p);
     } else {
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->unk64 = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -567,7 +565,7 @@ void PlayerCB_8025D00(Player *p)
         }
     }
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
 
@@ -793,7 +791,7 @@ void PlayerCB_Spindash(Player *player)
         player->spindashAccel = pitch;
 
         if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->unk6A == 1)
-            && (s->unk10 & SPRITE_FLAG_MASK_14)) {
+            && (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
             player->unk6A = 0;
         }
     }
@@ -1209,7 +1207,7 @@ void PlayerCB_8026F10(Player *p)
         PLAYERFN_SET_AND_CALL(PlayerCB_8026BCC, p);
     } else {
         //_08026F74
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->unk64 = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -1397,7 +1395,7 @@ void PlayerCB_80273D0(Player *p)
             } else {
                 p->unk64 = 9;
 
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
                 p->moveState &= ~MOVESTATE_IGNORE_INPUT;
 
@@ -1418,7 +1416,7 @@ void PlayerCB_GoalSlowdown(Player *p)
         || (playerX2 > 0x579)) {
         p->unk64 = 25;
 
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
         m4aSongNumStart(SE_LONG_BRAKE);
         PLAYERFN_SET_AND_CALL(PlayerCB_GoalBrake, p);
@@ -1461,7 +1459,7 @@ void PlayerCB_GoalBrake(Player *p)
         gCamera.shiftY--;
 
     if (cAnim == SA2_CHAR_ANIM_31) {
-        if ((p->unk6A == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
+        if ((p->unk6A == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->unk64 = 26;
         }
 
@@ -1489,7 +1487,7 @@ void PlayerCB_GoalBrake(Player *p)
             }
         }
 
-        if ((p->unk6A == 2) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14)) {
+        if ((p->unk6A == 2) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
             sub_802785C(p);
             return;
         }
@@ -1875,7 +1873,7 @@ void PlayerCB_80286F0(Player *p)
     p->speedAirY = 0;
 
     p->unk64 = gUnknown_080D698A[u5B];
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
     m4aSongNumStart(SE_230);
@@ -1885,7 +1883,7 @@ void PlayerCB_80286F0(Player *p)
 
 void PlayerCB_80287AC(Player *p)
 {
-    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14) {
+    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         u32 u5B = p->unk5B;
         u16 character = p->character;
         p->unk6A++;
@@ -2032,7 +2030,7 @@ void PlayerCB_8028D74(Player *p)
         }
     }
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_14;
+    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8029074, p);
@@ -3135,7 +3133,7 @@ void PlayerCB_802A3C4(Player *p)
 {
     sub_8027EF0(p);
 
-    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_14)
+    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         PLAYERFN_SET(PlayerCB_8025A0C);
 }
 

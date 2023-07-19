@@ -42,6 +42,7 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_START               0
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_EXECUTE             1
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
+#define SA2_CHAR_ANIM_50                                     50
 #define SA2_CHAR_ANIM_51                                     51 // Sonic: Bound-Attack
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_68                                     68
@@ -321,7 +322,7 @@
 #define SA2_ANIM_SPINDASH_DUST_EFFECT     846
 #define SA2_ANIM_SPINDASH_DUST_EFFECT_BIG 847
 #define SA2_ANIM_SMALL_DUST_PARTICLE      848
-#define SA2_ANIM_SPARK_EFFECT             849
+#define SA2_ANIM_SPARK_EFFECT             849 // Grinding particles
 #define SA2_ANIM_SHIELD_NORMAL            850
 #define SA2_ANIM_SHIELD_MAGNETIC          851
 #define SA2_ANIM_INVINCIBILITY            852

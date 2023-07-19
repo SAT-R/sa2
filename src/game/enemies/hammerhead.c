@@ -45,18 +45,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->graphics.dest = VramMalloc(36);
-    s->graphics.anim = SA2_ANIM_HAMMERHEAD;
-    s->variant = 0;
-    s->unk1A = 0x480;
-    s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
-    s->palId = 0;
-    s->unk28->unk0 = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    SPRITE_INIT(s, 36, SA2_ANIM_HAMMERHEAD, 0, 0x480, 2);
 }
 
 static void Task_Hammerhead(void)
