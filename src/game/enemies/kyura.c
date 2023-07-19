@@ -13,67 +13,57 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite; /* 0x0C */
+    Sprite s; /* 0x0C */
     s32 unk3C;
     s32 unk40;
-    s32 unk44;
-    s32 unk48;
-    s32 unk4C;
-    s32 unk50;
+    s32 spawnX;
+    s32 spawnY;
+    s32 offsetX;
+    s32 offsetY;
     s32 unk54;
     u8 unk58;
     u8 unk59;
-    u8 unk5A;
-    u8 unk5B;
+    u8 framesUntilTaskSwitch; // switches task once it reached '0'
+    u8 framesUntilProjectile; // name not entirely accurate as it spawns on '1', not '0'
 } Sprite_Kyura; /* 0x5C*/
 
-void sub_80594E0(void);
+void Task_KyuraMain(void);
 void TaskDestructor_80095E8(struct Task *);
-void sub_80596C4(void);
+void Task_KyuraRecover(void);
 
 void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80594E0, 0x5C, 0x4040, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0,
+                                TaskDestructor_80095E8);
     Sprite_Kyura *kyura = TaskGetStructPtr(t);
-    Sprite *sprite = &kyura->sprite;
+    Sprite *s = &kyura->s;
     kyura->base.regionX = spriteRegionX;
     kyura->base.regionY = spriteRegionY;
     kyura->base.me = me;
     kyura->base.spriteX = me->x;
     kyura->base.spriteY = spriteY;
 
-    kyura->unk44 = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    kyura->unk48 = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
-    kyura->unk4C = 0;
-    kyura->unk50 = 0;
+    kyura->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
+    kyura->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    kyura->offsetX = 0;
+    kyura->offsetY = 0;
     kyura->unk54 = 0;
     kyura->unk58 = me->d.uData[2] * 4;
     kyura->unk59 = me->d.uData[3] * 4;
-    kyura->unk5A = 8;
-    kyura->unk5B = 12;
+    kyura->framesUntilTaskSwitch = 8;
+    kyura->framesUntilProjectile = 12;
 
-    sprite->x = 0;
-    sprite->y = 0;
+    s->x = 0;
+    s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest = VramMalloc(24);
-    sprite->graphics.anim = SA2_ANIM_KYURA;
-    sprite->variant = 0;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
+    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 0x480, 2);
 }
 
-void sub_80594E0(void)
+void Task_KyuraMain(void)
 {
     Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &kyura->sprite;
+    Sprite *s = &kyura->s;
     MapEntity *me = kyura->base.me;
     u32 unk54 = kyura->unk54;
 
@@ -86,46 +76,35 @@ void sub_80594E0(void)
     asm("" ::"r"(r1));
     r5 = r1;
     r0 &= r5;
-    kyura->unk4C = (SIN(({
-                        register u32 r2 asm("r2") = 0x100;
-                        asm("" ::"r"(r2));
-                        r0 + r2;
-                    }))
-                    * kyura->unk58)
+    // This uses SIN instead of COS because COS is received by adding 0x100
+    // to the index in the sine array, and to match with the original game,
+    // we had to use inline ASM
+    // TODO: Match the inline asm (and this comment afterwards)!
+    kyura->offsetX = (SIN(({
+                          register u32 r2 asm("r2") = 0x100;
+                          asm("" ::"r"(r2));
+                          r0 + r2;
+                      }))
+                      * kyura->unk58)
         >> 6;
 #else
     u32 r5 = ONE_CYCLE;
-    kyura->unk50 = ((COS((unk54 * 5) & r5)) * kyura->unk58) >> 6;
+    kyura->offsetX = ((COS((unk54 * 5) & r5)) * kyura->unk58) >> 6;
 #endif
-    kyura->unk50 = ((SIN((unk54 * 3) & r5)) * kyura->unk59) >> 6;
+    kyura->offsetY = ((SIN((unk54 * 3) & r5)) * kyura->unk59) >> 6;
 
-    pos.x = Q_24_8_TO_INT(kyura->unk44 + kyura->unk4C);
-    pos.y = Q_24_8_TO_INT(kyura->unk48 + kyura->unk50);
+    ENEMY_UPDATE_POSITION(kyura, s, pos.x, pos.y);
 
-    sprite->x = pos.x - gCamera.x;
-    sprite->y = pos.y - gCamera.y;
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
 
-    if (sub_800C4FC(sprite, pos.x, pos.y, 0)) {
-        TaskDestroy(gCurTask);
-        return;
-    }
+    ENEMY_DESTROY_IF_OFFSCREEN(kyura, me, s);
 
-    if ((Q_24_8_TO_INT(kyura->unk44) > gCamera.x + 0x170
-         || Q_24_8_TO_INT(kyura->unk44) < gCamera.x - 0x80
-         || Q_24_8_TO_INT(kyura->unk48) > gCamera.y + 0x120
-         || Q_24_8_TO_INT(kyura->unk48) < gCamera.y - 0x80)
-        && IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, kyura->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    if (--kyura->unk5A == 0) {
-        kyura->unk5A = 4;
-        if (kyura->unk5B-- == 1) {
+    if (--kyura->framesUntilTaskSwitch == 0) {
+        kyura->framesUntilTaskSwitch = 4;
+        if (kyura->framesUntilProjectile-- == 1) {
             ProjInit init;
             u32 randomBool;
-            kyura->unk5B = 12;
+            kyura->framesUntilProjectile = 12;
 
             randomBool = PseudoRandom32() & 1;
             init.numTiles = 3;
@@ -137,23 +116,22 @@ void sub_80594E0(void)
             init.speed = Q_24_8(2.0) - (Q_24_8(1.0) * randomBool);
             CreateProjectile(&init);
         }
-        gCurTask->main = sub_80596C4;
+        gCurTask->main = Task_KyuraRecover;
     }
-    sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }
 
-void sub_80596C4(void)
+void Task_KyuraRecover(void)
 {
     Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &kyura->sprite;
+    Sprite *s = &kyura->s;
 
-    if (--kyura->unk5A == 0) {
-        kyura->unk5A = 8;
+    if (--kyura->framesUntilTaskSwitch == 0) {
+        kyura->framesUntilTaskSwitch = 8;
         kyura->unk54 = (kyura->unk54 + 8) & ONE_CYCLE;
-        gCurTask->main = sub_80594E0;
+        gCurTask->main = Task_KyuraMain;
     }
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }

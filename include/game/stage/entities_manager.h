@@ -38,6 +38,8 @@ extern struct Task *gEntitiesManagerTask;
 
 void CreateStageEntitiesManager(void);
 
+void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y);
+
 // TaskDestructor_SpriteEntity
 void TaskDestructor_80095E8(struct Task *);
 

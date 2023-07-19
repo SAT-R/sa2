@@ -59,7 +59,7 @@ CreateEggGoRound: @ 0x080459EC
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r3, r1, r0
-	ldr r0, _08045A94 @ =gUnknown_030054EC
+	ldr r0, _08045A94 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _08045AA0
@@ -81,7 +81,7 @@ _08045A84: .4byte gUnknown_03005AA0
 _08045A88: .4byte Task_EggGoRound
 _08045A8C: .4byte TaskDestructor_EggGoRound
 _08045A90: .4byte gActiveBossTask
-_08045A94: .4byte gUnknown_030054EC
+_08045A94: .4byte gDifficultyLevel
 _08045A98: .4byte gGameMode
 _08045A9C: .4byte IWRAM_START + 0x28
 _08045AA0:

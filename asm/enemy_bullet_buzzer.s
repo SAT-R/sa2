@@ -4,156 +4,11 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateEntity_BulletBuzzer
-CreateEntity_BulletBuzzer: @ 0x0805971C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0xc
-	mov r8, r0
-	adds r5, r1, #0
-	adds r6, r2, #0
-	mov sb, r3
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	lsls r6, r6, #0x10
-	lsrs r6, r6, #0x10
-	mov r0, sb
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	mov sb, r0
-	ldr r0, _0805982C @ =sub_8059858
-	ldr r2, _08059830 @ =0x00004040
-	ldr r1, _08059834 @ =TaskDestructor_80095E8
-	str r1, [sp]
-	movs r1, #0x60
-	movs r3, #0
-	bl TaskCreate
-	ldrh r4, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r4, r1
-	ldr r7, _08059838 @ =IWRAM_START + 0xC
-	adds r2, r4, r7
-	movs r0, #0
-	mov sl, r0
-	movs r3, #0
-	strh r5, [r1, #4]
-	strh r6, [r1, #6]
-	mov r7, r8
-	str r7, [r1]
-	ldrb r0, [r7]
-	strb r0, [r1, #8]
-	mov r0, sb
-	strb r0, [r1, #9]
-	ldrb r0, [r7]
-	lsls r0, r0, #3
-	lsls r5, r5, #8
-	adds r0, r0, r5
-	lsls r0, r0, #8
-	str r0, [r1, #0x44]
-	ldrb r0, [r7, #1]
-	lsls r0, r0, #3
-	lsls r6, r6, #8
-	adds r0, r0, r6
-	lsls r0, r0, #8
-	str r0, [r1, #0x48]
-	str r3, [r1, #0x4c]
-	str r3, [r1, #0x50]
-	str r3, [r1, #0x54]
-	ldrb r0, [r7, #5]
-	lsls r0, r0, #2
-	ldr r7, _0805983C @ =IWRAM_START + 0x5A
-	adds r1, r4, r7
-	strb r0, [r1]
-	mov r1, r8
-	ldrb r0, [r1, #6]
-	lsls r0, r0, #2
-	adds r7, #1
-	adds r1, r4, r7
-	strb r0, [r1]
-	ldr r1, _08059840 @ =IWRAM_START + 0x5C
-	adds r0, r4, r1
-	mov r7, sl
-	strb r7, [r0]
-	adds r1, #2
-	adds r0, r4, r1
-	strb r7, [r0]
-	mov r1, r8
-	ldrb r0, [r1]
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	strh r0, [r2, #0x16]
-	ldrb r0, [r1, #1]
-	lsls r0, r0, #3
-	adds r0, r0, r6
-	strh r0, [r2, #0x18]
-	movs r7, #2
-	rsbs r7, r7, #0
-	adds r0, r7, #0
-	strb r0, [r1]
-	movs r0, #0x18
-	str r2, [sp, #4]
-	str r3, [sp, #8]
-	bl VramMalloc
-	ldr r2, [sp, #4]
-	str r0, [r2, #4]
-	ldr r0, _08059844 @ =0x000001F9
-	strh r0, [r2, #0xa]
-	ldr r1, _08059848 @ =IWRAM_START + 0x2C
-	adds r0, r4, r1
-	mov r7, sl
-	strb r7, [r0]
-	movs r0, #0x90
-	lsls r0, r0, #3
-	strh r0, [r2, #0x1a]
-	ldr r3, [sp, #8]
-	strh r3, [r2, #8]
-	strh r3, [r2, #0x14]
-	strh r3, [r2, #0x1c]
-	ldr r0, _0805984C @ =IWRAM_START + 0x2D
-	adds r1, r4, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r7, _08059850 @ =IWRAM_START + 0x2E
-	adds r1, r4, r7
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _08059854 @ =IWRAM_START + 0x31
-	adds r4, r4, r0
-	mov r1, sl
-	strb r1, [r4]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r2, #0x28]
-	movs r0, #0x90
-	lsls r0, r0, #6
-	str r0, [r2, #0x10]
-	add sp, #0xc
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0805982C: .4byte sub_8059858
-_08059830: .4byte 0x00004040
-_08059834: .4byte TaskDestructor_80095E8
-_08059838: .4byte IWRAM_START + 0xC
-_0805983C: .4byte IWRAM_START + 0x5A
-_08059840: .4byte IWRAM_START + 0x5C
-_08059844: .4byte 0x000001F9
-_08059848: .4byte IWRAM_START + 0x2C
-_0805984C: .4byte IWRAM_START + 0x2D
-_08059850: .4byte IWRAM_START + 0x2E
-_08059854: .4byte IWRAM_START + 0x31
+.if 0
+.endif
 
-	thumb_func_start sub_8059858
-sub_8059858: @ 0x08059858
+	thumb_func_start Task_BulletBuzzerMain
+Task_BulletBuzzerMain: @ 0x08059858
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -668,13 +523,13 @@ _08059C3A:
 	strb r0, [r1]
 	ldr r0, _08059C7C @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08059C80 @ =sub_8059858
+	ldr r0, _08059C80 @ =Task_BulletBuzzerMain
 	str r0, [r1, #8]
 	b _08059C8A
 	.align 2, 0
 _08059C78: .4byte 0x000001F9
 _08059C7C: .4byte gCurTask
-_08059C80: .4byte sub_8059858
+_08059C80: .4byte Task_BulletBuzzerMain
 _08059C84:
 	adds r0, r6, #0
 	bl sub_80051E8

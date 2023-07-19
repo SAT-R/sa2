@@ -29,7 +29,7 @@ s32 sub_80036E0(Sprite *sprite)
     ACmd *script;
     ACmd *cmd;
 
-    if (sprite->unk10 & SPRITE_FLAG_MASK_14)
+    if (sprite->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
     SPRITE_MAYBE_SWITCH_ANIM(sprite);
@@ -378,7 +378,7 @@ s32 animCmd_JumpBack_COPY(void *cursor, Sprite *sprite)
 // (-4)
 s32 animCmd_End_COPY(void *cursor, Sprite *sprite)
 {
-    sprite->unk10 |= SPRITE_FLAG_MASK_14;
+    sprite->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
     return 0;
 }
@@ -562,7 +562,7 @@ s32 sub_8004558(Sprite *sprite)
 {
     SPRITE_MAYBE_SWITCH_ANIM(sprite);
 
-    if (sprite->unk10 & SPRITE_FLAG_MASK_14)
+    if (sprite->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
     if (sprite->unk1C > 0)

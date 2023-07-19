@@ -235,7 +235,7 @@ void Task_802ABC8(void)
     struct Camera *cam = &gCamera;
     Sprite *s = &item->s;
 
-    if (s->unk10 & SPRITE_FLAG_MASK_14) {
+    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         TaskDestroy(gCurTask);
     } else {
         s16 screenX = 0, screenY = 0;

@@ -61,7 +61,7 @@ extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
 extern u8 gMultiplayerLanguage;
-extern u32 gUnknown_030059D8;
+extern struct Task *gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 
 typedef struct {
@@ -113,7 +113,7 @@ typedef struct {
 } UNK_03005A70; /* 0x30 */
 
 struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC];
+    /* 0x00 */ u8 filler0[0xC]; // type = SpriteBase?
     /* 0x0C */ Sprite s;
 }; /* size: unknown? */
 
@@ -140,7 +140,9 @@ extern u8 gUnknown_030054E4;
 extern u16 gUnknown_03005424;
 extern u16 gUnknown_0300544C;
 
-extern u8 gUnknown_030054EC;
+#define DIFFICULTY_NORMAL 0
+#define DIFFICULTY_EASY   1
+extern u8 gDifficultyLevel;
 
 extern s8 gTrappedAnimalVariant;
 
@@ -148,10 +150,18 @@ extern u8 gUnknown_030055B0;
 extern u8 gUnknown_030054F8;
 
 typedef struct {
-    s32 posX;
-    s32 posY;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 posY;
+
+    // Following here might be a Sprite (incl. unk4C-unk53)?
+    /* 0x08 */ u8 filler8[0x34];
+    /* 0x4C */ s32 unk4C;
+    /* 0x50 */ s8 unk50;
+    /* 0x51 */ s8 unk51;
+    /* 0x52 */ s8 unk52;
+    /* 0x53 */ s8 unk53;
 } UNK_30056A4; /* size: unknown */
-extern UNK_30056A4 *gUnknown_030056A4;
+extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
 
 // Some flags
 extern u32 gUnknown_03005590;
@@ -206,6 +216,7 @@ typedef struct {
     /* 0xAF */ s8 unkAF;
 } TailsFlags;
 
+#define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
 #define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
 #define PLAYER_ITEM_EFFECT__SPEED_UP        0x04
@@ -427,9 +438,14 @@ extern struct Camera gCamera;
 
 // @NOTE/INVESTIGATE: Some places match with u16, some with u32,
 // but u16 is more common, so it's the default.
-#define IS_OUT_OF_CAM_RANGE(x, y) IS_OUT_OF_RANGE(u16, x, y, CAM_REGION_WIDTH)
-#define IS_OUT_OF_CAM_RANGE_TYPED(castType, x, y)                                       \
-    IS_OUT_OF_RANGE(castType, x, y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE(_x, _y) IS_OUT_OF_RANGE(u16, _x, _y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE_TYPED(castType, _x, _y)                                     \
+    IS_OUT_OF_RANGE(castType, _x, _y, CAM_REGION_WIDTH)
+
+#define IS_OUT_OF_DISPLAY_RANGE(_x, _y)                                                 \
+    ((_x) > gCamera.x + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))                        \
+     || (_x) < gCamera.x - (CAM_REGION_WIDTH / 2) || (_y) > gCamera.y + CAM_BOUND_Y     \
+     || (_y) < gCamera.y - (CAM_REGION_WIDTH / 2))
 
 // TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
 #define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
@@ -508,6 +524,7 @@ typedef struct {
 extern u8 gUnknown_03005428[4];
 extern u8 gUnknown_030053E8[4];
 
+// Some Multiplayer struct
 struct UNK_3005510 {
     u8 unk0;
     u8 unk1; // regionX (truncated)
@@ -533,23 +550,6 @@ typedef struct {
 } TrickBoundPos;
 
 extern void sub_80157C8(TrickBoundPos *pos, u8 index);
-
-// TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
-typedef struct {
-    /* 0x00 */ s32 x;
-    /* 0x04 */ s32 y;
-    /* 0x08 */ s16 unk8;
-    /* 0x0A */ s16 unkA;
-    /* 0x0C */ u8 fillerC[0x4];
-    /* 0x10 */ s16 unk10;
-    /* 0x12 */ u16 unk12;
-    /* 0x14 */ u16 unk14;
-    /* 0x16 */ AnimId playerAnim;
-    /* 0x18 */ u16 playerVariant;
-    /* 0x1A */ u8 unk1A;
-    /* 0x1C */ Sprite s;
-    /* 0x4C */ SpriteTransform transform;
-} TaskStrc_801F15C; /* size: 0x58 */
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 
@@ -596,7 +596,7 @@ void sub_802E044(u16, u16);
 void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
-void sub_801F3A4(s32, s32, u32);
+struct Task *sub_801F3A4(s32, s32, u16);
 void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);
@@ -614,21 +614,35 @@ extern void sub_80122DC(s32, s32);
 // HandleHitPlayer
 extern void sub_800C84C(Sprite *, s32, s32);
 
-extern void sub_801EB44(s32, s32, s32);
-extern void sub_801EC3C(s32, s32, s32);
-
-extern s32 sub_801ED24(s32, s32, s32, u8 *);
-extern s32 sub_801EE64(s32, s32, s32, u8 *);
-
-typedef s32 (*Func_801EE64)(s32, s32, s32, u8 *);
+typedef s32 (*Func801F100)(s32, s32, s32);
+extern s32 sub_801EB44(s32, s32, s32);
+extern s32 sub_801EC3C(s32, s32, s32);
+extern s32 sub_801ED24(s32, s32, s32);
+extern s32 sub_801EE64(s32, s32, s32);
 
 // ground collision clamp functions
-s32 sub_801E4E4(s32, s32, u32, s32, void *, Func_801EE64);
-s32 sub_801E6D4(s32, s32, s32, s32, void *, Func_801EE64);
-s32 sub_801F07C(s32, s32, s32, s32, void *, Func_801EE64);
+s32 sub_801E4E4(s32, s32, u32, s32, void *, Func801F100);
+s32 sub_801E6D4(s32, s32, s32, s32, void *, Func801F100);
+s32 sub_801F07C(s32, s32, s32, s32, void *, Func801F100);
 
-typedef void (*Func801F100)(s32, s32, s32);
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
+
+// TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
+    /* 0x0C */ u8 fillerC[0x4];
+    /* 0x10 */ s16 unk10;
+    /* 0x12 */ u16 unk12;
+    /* 0x14 */ u16 unk14;
+    /* 0x16 */ AnimId playerAnim;
+    /* 0x18 */ u16 playerVariant;
+    /* 0x1A */ u8 unk1A;
+    /* 0x1C */ Sprite s;
+    /* 0x4C */ SpriteTransform transform;
+} TaskStrc_801F15C; /* size: 0x58 */
 
 extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);

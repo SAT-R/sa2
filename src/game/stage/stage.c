@@ -14,6 +14,7 @@ asm(".section .rodata");
 extern const Collision CollHeader_zone_1_act_1_fg;
 extern const Collision CollHeader_zone_1_act_2_fg;
 extern const Collision CollHeader_zone_1_act_boss_fg;
+extern const Collision CollHeader_zone_1_act_dummy_fg;
 extern const Collision CollHeader_zone_2_act_1_fg;
 extern const Collision CollHeader_zone_2_act_2_fg;
 extern const Collision CollHeader_zone_2_act_boss_fg;
@@ -36,43 +37,27 @@ extern const Collision CollHeader_zone_final_act_xx_fg;
 extern const Collision CollHeader_zone_final_act_ta53_fg;
 extern const Collision CollHeader_zone_final_act_unused_fg;
 
-// TODO: C-ify
-asm("    .global gCollisionTable\n"
-    "gCollisionTable:\n"
-    "   .4byte CollHeader_zone_1_act_1_fg\n"
-    "   .4byte CollHeader_zone_1_act_2_fg\n"
-    "   .4byte CollHeader_zone_1_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_2_act_1_fg\n"
-    "   .4byte CollHeader_zone_2_act_2_fg\n"
-    "   .4byte CollHeader_zone_2_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_3_act_1_fg\n"
-    "   .4byte CollHeader_zone_3_act_2_fg\n"
-    "   .4byte CollHeader_zone_3_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_4_act_1_fg\n"
-    "   .4byte CollHeader_zone_4_act_2_fg\n"
-    "   .4byte CollHeader_zone_4_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_5_act_1_fg\n"
-    "   .4byte CollHeader_zone_5_act_2_fg\n"
-    "   .4byte CollHeader_zone_5_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_6_act_1_fg\n"
-    "   .4byte CollHeader_zone_6_act_2_fg\n"
-    "   .4byte CollHeader_zone_6_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_7_act_1_fg\n"
-    "   .4byte CollHeader_zone_7_act_2_fg\n"
-    "   .4byte CollHeader_zone_7_act_boss_fg\n"
-    "   .4byte CollHeader_zone_1_act_dummy_fg\n"
-    "   .4byte CollHeader_zone_final_act_xx_fg\n"
-    "   .4byte CollHeader_zone_final_act_ta53_fg\n"
-    "   .4byte CollHeader_zone_final_act_unused_fg\n");
+const Collision *const gCollisionTable[] = {
+    &CollHeader_zone_1_act_1_fg,          &CollHeader_zone_1_act_2_fg,
+    &CollHeader_zone_1_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_2_act_1_fg,          &CollHeader_zone_2_act_2_fg,
+    &CollHeader_zone_2_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_3_act_1_fg,          &CollHeader_zone_3_act_2_fg,
+    &CollHeader_zone_3_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_4_act_1_fg,          &CollHeader_zone_4_act_2_fg,
+    &CollHeader_zone_4_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_5_act_1_fg,          &CollHeader_zone_5_act_2_fg,
+    &CollHeader_zone_5_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_6_act_1_fg,          &CollHeader_zone_6_act_2_fg,
+    &CollHeader_zone_6_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_7_act_1_fg,          &CollHeader_zone_7_act_2_fg,
+    &CollHeader_zone_7_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_final_act_xx_fg,     &CollHeader_zone_final_act_ta53_fg,
+    &CollHeader_zone_final_act_unused_fg,
+};
 
-// Like AnimInfo
-const unsigned short sAnimData_StageGoalScoreBonus[5][3] = {
+// Like TileInfo16
+const u16 sAnimData_StageGoalScoreBonus[5][3] = {
     { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 1 },
     { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 2 },
     { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 3 },

@@ -811,6 +811,7 @@ _0800C4F2:
 
 @; This appears to be the (or one of the?) collision procedure(s) 
 @; between the Player and enemies.
+@; Shares a ton of code with Task_8055084 in game/enemies/yado.c
 	thumb_func_start sub_800C4FC
 sub_800C4FC: @ 0x0800C4FC
 	push {r4, r5, r6, r7, lr}
@@ -1227,7 +1228,7 @@ _0800C802:
 	bl CreateTrappedAnimal
 	adds r0, r5, #0
 	adds r1, r4, #0
-	bl sub_8009530
+	bl CreateEnemyDefeatScoreAndManageLives
 	movs r0, #1
 	b _0800C83A
 	.align 2, 0
@@ -1498,6 +1499,7 @@ _0800CA0C:
 	.align 2, 0
 _0800CA1C: .4byte gPlayer
 
+@; bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 	thumb_func_start sub_800CA20
 sub_800CA20: @ 0x0800CA20
 	push {r4, r5, r6, r7, lr}

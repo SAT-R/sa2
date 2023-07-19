@@ -1005,7 +1005,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
 }
 END_NONMATCH
 
-void sub_8009530(s16 x, s16 y)
+void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
 {
     u32 old;
     u32 temp1;
