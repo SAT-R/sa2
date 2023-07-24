@@ -35,7 +35,7 @@ u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
 u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
-s8 gUnknown_030018F0 = 0;
+u8 gUnknown_030018F0 = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 u32 gVramHeapStartAddr = 0;
@@ -62,8 +62,7 @@ u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
 void *gUnknown_030022C0 = NULL;
 
-OamData gUnknown_030022C8 ALIGNED(8) = {};
-OamData gUnknown_030022D0[] = {};
+OamData gUnknown_030022D0[] ALIGNED(16) = {};
 s16 gUnknown_030026D0 = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};

@@ -43,6 +43,8 @@ SECTIONS
         build/sa2/asm/sprite_2.o(.text);
         build/sa2/src/sprite_3.o(.text);
         build/sa2/asm/sprite_3.o(.text);
+        build/sa2/src/sprite_3_2.o(.text);
+        build/sa2/asm/sprite_3_2.o(.text);
         build/sa2/src/animation_commands.o(.text);
         build/sa2/asm/sprite_4.o(.text);
         build/sa2/src/malloc_ewram.o(.text);

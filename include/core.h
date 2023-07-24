@@ -259,7 +259,7 @@ extern s16 gUnknown_030017F4[2];
 extern u8 gUnknown_03001850[32];
 extern FuncType_030053A0 gUnknown_03001870[4];
 
-extern s8 gUnknown_030018F0;
+extern u8 gUnknown_030018F0;
 extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
