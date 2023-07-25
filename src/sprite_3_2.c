@@ -75,7 +75,7 @@ void DrawToOamBuffer(void)
         r3 = gUnknown_030018F0 - 1;
         dstOam = &gOamBuffer[r3];
 
-        for (k = 0; r3 >= 0; k++, r3--) {
+        for (k = 0; r3 >= 0; k++, r3++) {
             DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - k],
                       OAMDATA_SHORT_SIZE);
         }
