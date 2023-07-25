@@ -57,7 +57,6 @@ void DrawToOamBuffer(void)
     }
 
     if (gFlags & FLAGS_800) {
-        // __080059C6
         OamData *oam;
         r3 = gUnknown_030018F0;
         dstOam = &gOamBuffer[r3];
@@ -68,14 +67,13 @@ void DrawToOamBuffer(void)
             r3++;
         }
     } else if (gFlags & FLAGS_PAUSE_GAME) {
-        // _08005A24
         // Push all active OAM entries to the end of OAM temporarily while pausing
         s32 k;
         OamData *oamLo;
         r3 = gUnknown_030018F0 - 1;
         dstOam = &gOamBuffer[r3];
 
-        for (k = 0; r3 >= 0; k++, r3++) {
+        for (k = 0; r3 >= 0; k++, r3--) {
             DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - k],
                       OAMDATA_SHORT_SIZE);
         }
@@ -84,16 +82,14 @@ void DrawToOamBuffer(void)
 
         gUnknown_03002AE0 = OAM_ENTRY_COUNT - gUnknown_030018F0;
 
-        {
-            for (r3 = 0; r3 < gUnknown_03002AE0; r3--) {
-                DmaFill16(3, 0x200, &gOamBuffer[r3], OAMDATA_SHORT_SIZE);
-            }
+        for (r3 = 0; r3 < gUnknown_03002AE0; r3++) {
+            DmaFill16(3, 0x200, &gOamBuffer[r3], OAMDATA_SHORT_SIZE);
         }
+        
 
     } else {
         gUnknown_03002AE0 = 0;
     }
-    // _08005AB0
 
     gUnknown_030018F0 = 0;
     if (gFlags & FLAGS_4000) {
