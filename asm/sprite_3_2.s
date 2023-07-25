@@ -6,8 +6,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start DrawToOamBuffer
 DrawToOamBuffer: @ 0x0800594C
 	push {r4, r5, r6, r7, lr}
@@ -18,10 +16,10 @@ DrawToOamBuffer: @ 0x0800594C
 	sub sp, #0x10
 	ldr r5, _080059FC @ =gOamBuffer
 	movs r0, #0
-	mov sb, r0
+	mov sb, r0      @ sb = i;
 	movs r3, #0
 	ldr r1, _08005A00 @ =gUnknown_03002AE0
-	mov sl, r1
+	mov sl, r1      @ sl = gUnknown_03002AE0
 	mov r2, sp
 	adds r2, #8
 	str r2, [sp, #0xc]
@@ -50,7 +48,7 @@ _08005988:
 	ldr r0, _08005A14 @ =0x80000003
 	str r0, [r4, #8]
 	ldr r0, [r4, #8]
-	adds r5, #8
+	adds r5, #8         @ curr++
 	add r2, ip
 	mov r1, sb
 	adds r0, r1, #1
@@ -74,6 +72,7 @@ _080059B2:
 	ands r0, r1
 	cmp r0, #0
 	beq _08005A24
+__080059C6:
 	ldr r0, _08005A1C @ =gUnknown_030018F0
 	ldrb r3, [r0]
 	lsls r0, r3, #3
@@ -248,3 +247,4 @@ _08005B2C: .4byte 0x040000D4
 _08005B30: .4byte gUnknown_03001850
 _08005B34: .4byte 0x85000008
 _08005B38: .4byte gUnknown_03004D60
+.endif

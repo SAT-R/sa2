@@ -51,7 +51,8 @@
 #define OBJ_VRAM1_SIZE 0x4000
 
 #define OAM      0x7000000
-#define OAM_SIZE 0x400
+#define OAM_ENTRY_COUNT 128
+#define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160

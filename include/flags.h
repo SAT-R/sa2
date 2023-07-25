@@ -12,8 +12,9 @@
 #define FLAGS_NO_FLASH_MEMORY 0x100
 
 #define FLAGS_PAUSE_GAME 0x400
-
+#define FLAGS_800        0x800
 #define FLAGS_SKIP_INTRO 0x1000
+#define FLAGS_4000       0x4000
 
 extern u32 gFlags;
 
