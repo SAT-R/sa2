@@ -225,7 +225,7 @@ void Task_805E480(void)
                 r4 = 0;
             }
             // _0805E5CE
-            pointer = sub_80058B4((displayed->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc((displayed->unk1A & 0x7C0) >> 6);
             if (iwram_end == pointer)
                 return;
 
@@ -300,7 +300,7 @@ void Task_805E6A4(void)
                 return;
             }
 
-            pointer = sub_80058B4((displayed->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc((displayed->unk1A & 0x7C0) >> 6);
             if (iwram_end == pointer) {
                 return;
             }

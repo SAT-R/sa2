@@ -889,7 +889,7 @@ _080085C4:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r4, r0, #0
 	ldr r0, _080086A0 @ =iwram_end
 	ldr r0, [r0]
@@ -1124,7 +1124,7 @@ _08008788:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r4, r0, #0
 	ldr r0, _08008860 @ =iwram_end
 	ldr r0, [r0]

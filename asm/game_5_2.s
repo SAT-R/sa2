@@ -624,7 +624,7 @@ _080200F8:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r3, r0, #0
 	ldr r0, _080201A4 @ =iwram_end
 	ldr r0, [r0]
@@ -1049,7 +1049,7 @@ _08020454:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r3, r0, #0
 	ldr r0, _08020500 @ =iwram_end
 	ldr r0, [r0]
@@ -1634,7 +1634,7 @@ _080208DC:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r3, r0, #0
 	ldr r0, _08020984 @ =iwram_end
 	ldr r0, [r0]
@@ -2219,7 +2219,7 @@ _08020D64:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r3, r0, #0
 	ldr r0, _08020E0C @ =iwram_end
 	ldr r0, [r0]
@@ -2889,7 +2889,7 @@ _08021294:
 	adds r1, r2, #0
 	ands r0, r1
 	lsrs r0, r0, #6
-	bl sub_80058B4
+	bl OamMalloc
 	adds r3, r0, #0
 	ldr r0, _0802133C @ =iwram_end
 	ldr r0, [r0]

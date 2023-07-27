@@ -264,7 +264,7 @@ void Task_CreateStageUIMain(void)
                 sub_8004558(sd);
 
                 for (i = 0; i < gUnknown_030054F4; i++) {
-                    oam = sub_80058B4(3);
+                    oam = OamMalloc(3);
                     oam->all.attr0 = 31;
                     oam->all.attr1 = i * 8 + 4;
                     oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
@@ -287,7 +287,7 @@ void Task_CreateStageUIMain(void)
                 u32 m = sOrdersOfMagnitude[i];
 
                 digit = Div(score, m);
-                oam = sub_80058B4(3);
+                oam = OamMalloc(3);
 
                 oam->all.attr0 = 0x800E;
                 oam->all.attr1 = i * 8 + 28;
@@ -297,7 +297,7 @@ void Task_CreateStageUIMain(void)
             }
 
             /* Player-Icon */
-            oam = sub_80058B4(3);
+            oam = OamMalloc(3);
             oam->all.attr0 = DISPLAY_HEIGHT - 18;
             oam->all.attr1 = (0x4000 | 6);
             oam->all.attr2 = ui->unk2D4;
@@ -311,7 +311,7 @@ void Task_CreateStageUIMain(void)
                 i = 9;
 
             /* Lives Counter */
-            oam = sub_80058B4(3);
+            oam = OamMalloc(3);
             oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
             oam->all.attr1 = 30;
             oam->all.attr2 = ui->unk2D8[i];
@@ -319,7 +319,7 @@ void Task_CreateStageUIMain(void)
         // _0802CE6A
 
         /* Ring-Container */
-        oam = sub_80058B4(4);
+        oam = OamMalloc(4);
         oam->all.attr0 = (0x4000 | 0);
         oam->all.attr1 = (0xC000 | 509);
         oam->all.attr2 = ui->unk2D6;
@@ -332,7 +332,7 @@ void Task_CreateStageUIMain(void)
         sub_8004558(&ui->ring);
 
         /* Ring-Count */
-        oam = sub_80058B4(3);
+        oam = OamMalloc(3);
         oam->all.attr0 = 8;
         oam->all.attr1 = (0x4000 | 7);
         oam->all.attr2 = ui->unk2D2;
@@ -360,7 +360,7 @@ void Task_CreateStageUIMain(void)
                 u16 hundreds;
                 hundreds = Div(gRingCount, 100);
 
-                oam = sub_80058B4(3);
+                oam = OamMalloc(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 0 * 8);
                 oam->all.attr2 = (ui->unk2D8[hundreds] | sl);
@@ -371,7 +371,7 @@ void Task_CreateStageUIMain(void)
             { /* 10s */
                 u16 tens = Div(gRingCount - processed, 10);
 
-                oam = sub_80058B4(3);
+                oam = OamMalloc(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 1 * 8);
                 oam->all.attr2 = (ui->unk2D8[tens] | sl);
@@ -382,7 +382,7 @@ void Task_CreateStageUIMain(void)
             { /* 1s */
                 u16 ones = gRingCount - processed2;
 
-                oam = sub_80058B4(3);
+                oam = OamMalloc(3);
                 oam->all.attr0 = (0x8000 | 0);
                 oam->all.attr1 = (28 + 2 * 8);
                 oam->all.attr2 = (ui->unk2D8[ones] | sl);
@@ -401,12 +401,12 @@ void Task_CreateStageUIMain(void)
 
             sl = 0x6000;
 
-            oam = sub_80058B4(3);
+            oam = OamMalloc(3);
             oam->all.attr0 = (0x8000 | 0);
             oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
             oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
 
-            oam = sub_80058B4(3);
+            oam = OamMalloc(3);
             oam->all.attr0 = (0x8000 | 0);
             oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
             oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);

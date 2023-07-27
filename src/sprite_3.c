@@ -74,7 +74,7 @@ void sub_80051E8(Sprite *sprite)
                 oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
 
                 // oam gets zero-initialized(?)
-                oam = sub_80058B4((sprite->unk1A & 0x7C0) >> 6);
+                oam = OamMalloc((sprite->unk1A & 0x7C0) >> 6);
                 if (iwram_end == oam) {
                     return;
                 }

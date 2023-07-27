@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 
-OamData *sub_80058B4(u8 p0)
+OamData *OamMalloc(u8 p0)
 {
     OamData *result;
 

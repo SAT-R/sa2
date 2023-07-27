@@ -179,7 +179,7 @@ u32 sub_8004010(void);
 u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
 void CopyOamBufferToOam(void);
-OamData *sub_80058B4(u8 size);
+OamData *OamMalloc(u8 size);
 
 // TransformSprite
 void sub_8004860(Sprite *, SpriteTransform *);
