@@ -32,7 +32,7 @@ OamData *sub_80058B4(u8 p0)
 }
 
 #define OAMDATA_SHORT_SIZE sizeof(OamDataShort)
-void DrawToOamBuffer(void)
+void CopyOamBufferToOam(void)
 {
     OamData *dstOam = &gOamBuffer[0];
     u8 i = 0;

@@ -495,7 +495,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     gBgCntRegs[1] = temp;
 
     CpuFill16(0xF3FF, (void *)BG_SCREEN_ADDR(31), 2049);
-    CpuFill16(0xFFFF, (void *)VRAM + 1023*TILE_SIZE_4BPP, TILE_SIZE_4BPP);
+    CpuFill16(0xFFFF, (void *)VRAM + 1023 * TILE_SIZE_4BPP, TILE_SIZE_4BPP);
 
     gBgPalette[255] = RGB_RED;
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

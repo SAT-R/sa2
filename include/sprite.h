@@ -178,7 +178,7 @@ void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
-void DrawToOamBuffer(void);
+void CopyOamBufferToOam(void);
 OamData *sub_80058B4(u8 size);
 
 // TransformSprite

@@ -423,7 +423,7 @@ static void UpdateScreenDma(void)
     }
 
     if (gUnknown_030026F4 == 0xff) {
-        DrawToOamBuffer();
+        CopyOamBufferToOam();
         DmaCopy16(3, gOamBuffer, (void *)OAM, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
         DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
@@ -518,7 +518,7 @@ static void UpdateScreenCpuSet(void)
     }
 
     if (gUnknown_030026F4 == 0xff) {
-        DrawToOamBuffer();
+        CopyOamBufferToOam();
         CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
 
