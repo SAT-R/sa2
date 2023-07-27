@@ -31,7 +31,6 @@ OamData *sub_80058B4(u8 p0)
     return result;
 }
 
-#define OAMDATA_SHORT_SIZE sizeof(OamDataShort)
 void CopyOamBufferToOam(void)
 {
     OamData *dstOam = &gOamBuffer[0];
@@ -44,7 +43,7 @@ void CopyOamBufferToOam(void)
         while (index != -1) {
             u8 newI;
             u8 *byteArray = gUnknown_03002710;
-            DmaCopy16(3, &gUnknown_030022D0[index], dstOam, OAMDATA_SHORT_SIZE);
+            DmaCopy16(3, &gUnknown_030022D0[index], dstOam, sizeof(OamDataShort));
             dstOam++;
 
             byteArray += index;
@@ -60,7 +59,7 @@ void CopyOamBufferToOam(void)
         dstOam = &gOamBuffer[r3];
 
         while (r3 < gUnknown_03002AE0) {
-            DmaFill16(3, 0x200, dstOam, OAMDATA_SHORT_SIZE);
+            DmaFill16(3, 0x200, dstOam, sizeof(OamDataShort));
             dstOam++;
             r3++;
         }
@@ -72,7 +71,7 @@ void CopyOamBufferToOam(void)
         dstOam = &gOamBuffer[r3];
 
         for (k = l = 0; r3 >= 0;) {
-            s32 size = OAMDATA_SHORT_SIZE;
+            s32 size = sizeof(OamDataShort);
             DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - l], size);
             k++, r3--, l++;
         }
@@ -82,7 +81,7 @@ void CopyOamBufferToOam(void)
         gUnknown_03002AE0 = OAM_ENTRY_COUNT - gUnknown_030018F0;
 
         for (r3 = 0; r3 < gUnknown_03002AE0; r3++) {
-            DmaFill16(3, 0x200, &gOamBuffer[r3], OAMDATA_SHORT_SIZE);
+            DmaFill16(3, 0x200, &gOamBuffer[r3], sizeof(OamDataShort));
 #ifndef NON_MATCHING
             // unlike when using --, using ++ changes the condition to something entirely
             // different unless we tell the compiler that we want to use r3's values
