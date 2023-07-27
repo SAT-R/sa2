@@ -80,7 +80,7 @@ void sub_80051E8(Sprite *sprite)
                 }
 
                 if (i == 0) {
-                    sprite->oamBaseIndex = gUnknown_030018F0 - 1;
+                    sprite->oamBaseIndex = gOamFreeIndex - 1;
                 }
 
                 // oamIndex is a byte, why are they ANDing with 0x3FFF?

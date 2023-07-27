@@ -161,7 +161,7 @@ void sub_806CD68(Sprite *element)
         }
 
         if (i == 0) {
-            element->oamBaseIndex = gUnknown_030018F0 - 1;
+            element->oamBaseIndex = gOamFreeIndex - 1;
         }
 
         DmaCopy16(3, &reference[(sprDims->oamIndex + i) * 3], oam, 0x6);

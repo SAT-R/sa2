@@ -10,22 +10,21 @@ OamData *sub_80058B4(u8 p0)
         p0 = 31;
     }
 
-    if ((s8)gUnknown_030018F0 < 0) {
+    if (gOamFreeIndex > OAM_ENTRY_COUNT - 1) {
         result = (OamData *)iwram_end;
     } else {
         if (gUnknown_03001850[p0] == 0xFF) {
-            gUnknown_030022D0[gUnknown_030018F0].split.fractional = 0xFF;
-            gUnknown_03001850[p0] = gUnknown_030018F0;
-            gUnknown_03004D60[p0] = gUnknown_030018F0;
+            gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
+            gUnknown_03001850[p0] = gOamFreeIndex;
+            gUnknown_03004D60[p0] = gOamFreeIndex;
         } else {
-            gUnknown_030022D0[gUnknown_030018F0].split.fractional = 0xFF;
-            gUnknown_030022D0[gUnknown_03004D60[p0]].split.fractional
-                = gUnknown_030018F0;
-            gUnknown_03004D60[p0] = gUnknown_030018F0;
+            gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
+            gUnknown_030022D0[gUnknown_03004D60[p0]].split.fractional = gOamFreeIndex;
+            gUnknown_03004D60[p0] = gOamFreeIndex;
         }
 
-        gUnknown_030018F0++;
-        result = &gUnknown_030022D0[gUnknown_030018F0 - 1];
+        gOamFreeIndex++;
+        result = &gUnknown_030022D0[gOamFreeIndex - 1];
     }
 
     return result;
@@ -54,11 +53,10 @@ void CopyOamBufferToOam(void)
     }
 
     if (gFlags & FLAGS_800) {
-        OamData *oam;
-        r3 = gUnknown_030018F0;
+        r3 = gOamFreeIndex;
         dstOam = &gOamBuffer[r3];
 
-        while (r3 < gUnknown_03002AE0) {
+        while (r3 < gOamFirstPausedIndex) {
             DmaFill16(3, 0x200, dstOam, sizeof(OamDataShort));
             dstOam++;
             r3++;
@@ -67,7 +65,7 @@ void CopyOamBufferToOam(void)
         /* Push all active OAM entries to te end of OAM temporarily while
          * the game is paused */
         s32 k, l;
-        r3 = gUnknown_030018F0 - 1;
+        r3 = gOamFreeIndex - 1;
         dstOam = &gOamBuffer[r3];
 
         for (k = l = 0; r3 >= 0;) {
@@ -78,9 +76,9 @@ void CopyOamBufferToOam(void)
 
         // _08005A5E
 
-        gUnknown_03002AE0 = OAM_ENTRY_COUNT - gUnknown_030018F0;
+        gOamFirstPausedIndex = OAM_ENTRY_COUNT - gOamFreeIndex;
 
-        for (r3 = 0; r3 < gUnknown_03002AE0; r3++) {
+        for (r3 = 0; r3 < gOamFirstPausedIndex; r3++) {
             DmaFill16(3, 0x200, &gOamBuffer[r3], sizeof(OamDataShort));
 #ifndef NON_MATCHING
             // unlike when using --, using ++ changes the condition to something entirely
@@ -91,10 +89,10 @@ void CopyOamBufferToOam(void)
         }
 
     } else {
-        gUnknown_03002AE0 = 0;
+        gOamFirstPausedIndex = 0;
     }
 
-    gUnknown_030018F0 = 0;
+    gOamFreeIndex = 0;
     if (gFlags & FLAGS_4000) {
         CpuFill32(-1, gUnknown_03001850, sizeof(gUnknown_03001850));
         CpuFill32(-1, gUnknown_03004D60, sizeof(gUnknown_03004D60));

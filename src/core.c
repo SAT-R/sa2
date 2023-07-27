@@ -35,7 +35,7 @@ u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
 u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
-u8 gUnknown_030018F0 = 0;
+u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 u32 gVramHeapStartAddr = 0;
@@ -98,7 +98,7 @@ u16 gUnknown_03002A8C ALIGNED(4) = 0;
 struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
 
 u16 gPressedKeys ALIGNED(4) = 0;
-u8 gUnknown_03002AE0 ALIGNED(4) = 0;
+u8 gOamFirstPausedIndex ALIGNED(4) = 0;
 u8 gUnknown_03002AE4 ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
@@ -217,8 +217,8 @@ void GameInit(void)
 
     DmaFill32(3, 0, gVramGraphicsCopyQueue, sizeof(gVramGraphicsCopyQueue));
 
-    gUnknown_030018F0 = 0;
-    gUnknown_03002AE0 = 0;
+    gOamFreeIndex = 0;
+    gOamFirstPausedIndex = 0;
 
     DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
     DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
