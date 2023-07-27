@@ -31,9 +31,7 @@ OamData *sub_80058B4(u8 p0)
     return result;
 }
 
-#if 01
-#define OAMDATA_SHORT_SIZE 6 // supposed to be sizeof(OamDataShort)
-
+#define OAMDATA_SHORT_SIZE sizeof(OamDataShort)
 void DrawToOamBuffer(void)
 {
     OamData *dstOam = &gOamBuffer[0];
@@ -67,15 +65,16 @@ void DrawToOamBuffer(void)
             r3++;
         }
     } else if (gFlags & FLAGS_PAUSE_GAME) {
-        // Push all active OAM entries to the end of OAM temporarily while pausing
-        s32 k;
-        OamData *oamLo;
+        /* Push all active OAM entries to te end of OAM temporarily while
+         * the game is paused */
+        s32 k, l;
         r3 = gUnknown_030018F0 - 1;
         dstOam = &gOamBuffer[r3];
 
-        for (k = 0; r3 >= 0; k++, r3--) {
-            DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - k],
-                      OAMDATA_SHORT_SIZE);
+        for (k = l = 0; r3 >= 0;) {
+            s32 size = OAMDATA_SHORT_SIZE;
+            DmaCopy16(3, dstOam - k, &gOamBuffer[OAM_ENTRY_COUNT - 1 - l], size);
+            k++, r3--, l++;
         }
 
         // _08005A5E
@@ -84,8 +83,13 @@ void DrawToOamBuffer(void)
 
         for (r3 = 0; r3 < gUnknown_03002AE0; r3++) {
             DmaFill16(3, 0x200, &gOamBuffer[r3], OAMDATA_SHORT_SIZE);
+#ifndef NON_MATCHING
+            // unlike when using --, using ++ changes the condition to something entirely
+            // different unless we tell the compiler that we want to use r3's values
+            // (without actually doing so)
+            asm("" ::"r"(r3));
+#endif
         }
-        
 
     } else {
         gUnknown_03002AE0 = 0;
@@ -100,4 +104,3 @@ void DrawToOamBuffer(void)
         DmaFill32(3, -1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
     }
 }
-#endif
