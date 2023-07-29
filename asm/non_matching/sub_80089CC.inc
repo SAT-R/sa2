@@ -460,7 +460,7 @@ _08008D06:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08008D5A
-	ldr r1, _08008DBC @ =gUnknown_080D502C
+	ldr r1, _08008DBC @ =gSpriteInits_InteractablesMultiplayer
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -529,7 +529,7 @@ _08008DAC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08008DBC: .4byte gUnknown_080D502C
+_08008DBC: .4byte gSpriteInits_InteractablesMultiplayer
 _08008DC0: .4byte gCamera
 _08008DC4: .4byte gCurTask
 _08008DC8: .4byte sub_8008DCC

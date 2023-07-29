@@ -36,7 +36,7 @@ _08003A1A:
 	ldr r1, _08003BA8 @ =gUnknown_03004D10
 	adds r0, r0, r1
 	ldr r0, [r0]
-	str r0, [sp, #0xc]
+	str r0, [sp, #0xc]  @ sp0C = s
 	ldr r1, [r0, #0xc]
 	movs r0, #1
 	rsbs r0, r0, #0
@@ -46,7 +46,7 @@ _08003A1A:
 	bne _08003A34
 	b _08003EB2
 _08003A34:
-	mov sl, r1
+	mov sl, r1          @ sl = dims
 	ldr r3, [sp, #0xc]
 	ldr r0, [r3, #0x10]
 	movs r1, #0xc0
@@ -94,7 +94,7 @@ _08003A84:
 	lsls r0, r0, #0xd
 	lsls r0, r1
 	lsrs r0, r0, #0x10
-	str r0, [sp, #0x10]
+	str r0, [sp, #0x10]     @ sp10 = bg_affine_pixelcount
 	ldr r0, _08003BB4 @ =gUnknown_03002794
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]
@@ -104,7 +104,7 @@ _08003A84:
 	adds r0, r0, r1
 	ldr r0, [r0]
 	str r0, [sp, #0x1c]
-	mov r3, sl
+	mov r3, sl              @ r3 = sl = dims
 	ldrb r1, [r3, #1]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -119,7 +119,7 @@ _08003A84:
 	blo _08003ABE
 	b _08003EB2
 _08003ABE:
-	mov sb, sp
+	mov sb, sp      @ sb = sp = oam
 	ldr r7, [sp, #0x10]
 	lsls r0, r7, #0x18
 	lsrs r0, r0, #0x18
@@ -163,7 +163,7 @@ _08003AC8:
 	ldr r7, [sp, #0xc]
 	movs r0, #0x18
 	ldrsh r1, [r7, r0]
-	mov r2, sl
+	mov r2, sl              @ r2 = sl = dims
 	movs r5, #0xa
 	ldrsh r0, [r2, r5]
 	subs r5, r1, r0

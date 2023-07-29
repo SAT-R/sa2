@@ -384,7 +384,7 @@ const u16 enemyDefeatScores[NUN_ENEMY_DEFEAT_SCORES] = {
     100, 200, 400, 800, 1000,
 };
 
-const MapEntityInit gUnknown_080D502C[] = {
+const MapEntityInit gSpriteInits_InteractablesMultiplayer[] = {
     CreateEntity_Toggle_PlayerLayer,
     CreateEntity_Toggle_PlayerLayer,
     CreateEntity_Spring_Normal_Up,
@@ -413,7 +413,7 @@ const MapEntityInit gUnknown_080D502C[] = {
     CreateEntity_GrindRail_EndGround_Left,
     CreateEntity_GrindRail_EndAir_Left,
     CreateEntity_MysteryItemBox,
-    CreateEntity_8080368,
+    CreateEntity_MultiplayerTeleport,
 };
 
 const StagePreInitFunc gSpriteTileInits_PreStageEntry[] = {
@@ -630,8 +630,8 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
                                 s32 y = TO_WORLD_POS(me->y, regionY);
                                 if (x >= range.xLow && x <= range.xHigh
                                     && y >= range.yLow && y <= range.yHigh) {
-                                    gUnknown_080D502C[me->index](me, regionX, regionY,
-                                                                 i);
+                                    gSpriteInits_InteractablesMultiplayer[me->index](
+                                        me, regionX, regionY, i);
                                 }
                             }
                         }
@@ -882,8 +882,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range1.xHigh
                                             && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gUnknown_080D502C[me->index](me, regionX,
-                                                                         regionY, i);
+                                            gSpriteInits_InteractablesMultiplayer
+                                                [me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
@@ -986,8 +986,8 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
                                             && x <= (s32)range2.xHigh
                                             && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gUnknown_080D502C[me->index](me, regionX,
-                                                                         regionY, i);
+                                            gSpriteInits_InteractablesMultiplayer
+                                                [me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
