@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "flags.h"
 
-const u8 gOamShapesSizes[][2] = {
+const u8 gOamShapesSizes[12][2] = {
     // Square
     { 8, 8 },
     { 16, 16 },

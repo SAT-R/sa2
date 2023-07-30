@@ -63,13 +63,13 @@ _08003A34:
 	movs r1, #0xc0
 	lsls r1, r1, #0x13
 	adds r0, r0, r1
-	str r0, [sp, #0x14]
+	str r0, [sp, #0x14] @ sp14 = bgVram
 	movs r0, #0xf8
 	lsls r0, r0, #5
 	ands r0, r2
 	lsls r0, r0, #3
 	adds r0, r0, r1
-	str r0, [sp, #0x18]
+	str r0, [sp, #0x18] @ sp18 = bgBase
 	movs r0, #0x80
 	ands r0, r2
 	cmp r0, #0
@@ -136,7 +136,7 @@ _08003AC8:
 	ldr r3, [sp, #0x1c]
 	adds r3, #6
 	str r3, [sp, #0x1c]
-	mov r4, sb
+	mov r4, sb      @ r4 = sb = sp = oam
 	ldrh r3, [r4]
 	movs r1, #0xc0
 	lsls r1, r1, #8
@@ -153,26 +153,26 @@ _08003AC8:
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = tilesX
 	ldr r6, _08003BC4 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
 	mov ip, r0
-	mov r4, ip
-	ldr r7, [sp, #0xc]
+	mov r4, ip              @ r4 = ip = tilesY
+	ldr r7, [sp, #0xc]      @ r7 = s
 	movs r0, #0x18
 	ldrsh r1, [r7, r0]
 	mov r2, sl              @ r2 = sl = dims
 	movs r5, #0xa
 	ldrsh r0, [r2, r5]
-	subs r5, r1, r0
+	subs r5, r1, r0         @ r5 = yPos
 	movs r6, #0x16
 	ldrsh r1, [r7, r6]
 	movs r7, #8
 	ldrsh r0, [r2, r7]
 	subs r1, r1, r0
-	mov r8, r1
+	mov r8, r1              @ r8 = xPos
 	movs r0, #0x10
 	rsbs r0, r0, #0
 	ands r1, r0
@@ -183,21 +183,21 @@ _08003AC8:
 	asrs r0, r0, #3
 	ldr r2, [sp, #0x10]
 	muls r0, r2, r0
-	ldr r3, [sp, #0x18]
-	adds r7, r3, r0
-	ldr r5, [sp, #0xc]
+	ldr r3, [sp, #0x18]     @ r3 = sp18 = bgBase
+	adds r7, r3, r0         @ r7 = r3
+	ldr r5, [sp, #0xc]      @ r5 = s
 	ldr r1, [r5, #4]
 	ldr r6, [sp, #0x14]
 	subs r1, r1, r6
 	ldr r0, [sp, #0x28]
-	lsrs r1, r0
-	mov r3, sb
+	lsrs r1, r0             @ r1 = tileId = ((size_t)(s->graphics.dest - bgVram)) >> sp28
+	mov r3, sb              @ r3 = oam
 	ldrh r2, [r3, #4]
 	ldr r0, _08003BC8 @ =0x000003FF
 	ands r0, r2
 	adds r5, r1, r0
 	movs r6, #0xff
-	ands r5, r6
+	ands r5, r6             @ r5 = shrunkTileId
 	subs r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
@@ -205,6 +205,7 @@ _08003AC8:
 	ldr r0, [sp, #8]
 	adds r0, #1
 	str r0, [sp, #0x40]
+__08003B68:
 	cmp r4, #0
 	beq _08003C18
 	ldr r1, [sp, #0x30]
@@ -297,7 +298,7 @@ _08003C18:
 	ldrh r4, [r4, #2]
 	cmp r0, r4
 	bhs _08003C2A
-	b _08003AC8
+	b _08003AC8 @ -> for (sp08 = 0; sp08 < dims->numSubframes; sp08++)
 _08003C2A:
 	b _08003EB2
 _08003C2C:

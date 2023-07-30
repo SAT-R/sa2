@@ -171,6 +171,8 @@ typedef struct PACKED {
     /* 0x04 */ u16 variant;
 } TileInfo16;
 
+extern const u8 gOamShapesSizes[12][2];
+
 s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);

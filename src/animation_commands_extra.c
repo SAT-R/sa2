@@ -183,20 +183,23 @@ void sub_8003914(Sprite *sprite)
 }
 
 // Some VBlank function
-#if 001
+#if 00
 NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", bool32 sub_80039E4(void))
 #else
 bool32 sub_80039E4(void)
 #endif
 {
+    // tilesize (could be 32 and get optimized out?)
     s32 sp28 = 5;
 
     if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
         return FALSE;
     }
 
+    return TRUE;
+
     if (gUnknown_03005390 != 0) {
-        OamData oam;
+        OamDataShort oam;
         s32 r5;
         Sprite *s; // = sp0C
         SpriteOffset *dims;
@@ -212,6 +215,7 @@ bool32 sub_80039E4(void)
                 void *bgBase = bgVram + ((gBgCntRegs[bgId] & BGCNT_SCREENBASE(31)) * 8);
 
                 if (gBgCntRegs[bgId] & BGCNT_256COLOR) {
+                    // tilesize (could be 32 and get optimized out?)
                     sp28 = 6;
                 }
 
@@ -224,20 +228,46 @@ bool32 sub_80039E4(void)
                 if ((bgId >= 2) && ((gDispCnt & 0x3) != DISPCNT_MODE_0)) {
                     // _08003A84
                     s32 sp08;
+                    u16 sp24;
                     u8 sp30;
                     u16 affine = (gBgCntRegs[bgId] & BGCNT_AFF1024x1024) >> 14;
                     u32 bg_affine_pixelcount = ((1024 * 1024) << affine) >> 16;
                     u16 **oamSub = gUnknown_03002794->oamData;
+                    u16 shapeAndSize;
+                    u8 tilesX; // =sp20
+                    u8 tilesY; // =ip
+                    s32 xPos; // =r8
+                    s32 yPos; // =r5
+                    s32 shrunkTileId;
+                    void *r7;
 
                     // OAM entry for this sub-frame
                     OamDataShort *sp1C = (OamDataShort *)oamSub[s->graphics.anim];
                     sp1C = &sp1C[dims->oamIndex];
 
                     for (sp08 = 0; sp08 < dims->numSubframes; sp08++) {
+                        u16 tileId;
                         // _08003ABE
                         sp30 = bg_affine_pixelcount;
                         DmaCopy32(3, sp1C, &oam, sizeof(OamDataShort));
                         sp1C++;
+
+                        shapeAndSize = oam.shape << 2;
+                        shapeAndSize |= oam.size;
+                        tilesX = gOamShapesSizes[shapeAndSize][0] >> 3;
+                        tilesY = gOamShapesSizes[shapeAndSize][1] >> 3;
+                        yPos = s->y - dims->offsetY;
+                        xPos = s->x - dims->offsetX;
+                        xPos &= ~0xF;
+                        r7 = bgBase + (((oam.y + yPos) >> 3) * bg_affine_pixelcount);
+                        tileId = ((size_t)(s->graphics.dest - bgVram)) >> sp28;
+                        shrunkTileId = (oam.tileNum + tileId) & 0xFF;
+
+                        // __08003B68
+                        // sp08++;
+                        if (tilesY-- == 0) {
+                            continue;
+                        }
                     }
                 } else {
                     // _08003C2C
@@ -250,7 +280,7 @@ bool32 sub_80039E4(void)
 
     return TRUE;
 }
-#if 001
+#if 00
 END_NONMATCH
 #endif
 

@@ -77,7 +77,7 @@ void Task_Decoration(void)
 #ifndef NON_MATCHING
     register s32 screenY asm("r2");
 #else
-    s32 screenX;
+    s32 screenY;
 #endif
 
     screenX = (decoBase->base.spriteX) * TILE_WIDTH;

@@ -302,7 +302,7 @@ static void sub_807F7D0(Sprite_FlyingHandle *flyingHandle)
     register Player *player asm("r2") = p1;
 #else
     Player *player = &gPlayer;
-    u32 r1 = p1->moveState & MOVESTATE_FACING_LEFT;
+    u32 r1 = player->moveState & MOVESTATE_FACING_LEFT;
 #endif
     if (r1) {
         player->x = (flyingHandle->unk44 + flyingHandle->unk4C) + Q_24_8(4.0);
