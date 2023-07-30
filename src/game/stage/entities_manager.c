@@ -1011,9 +1011,9 @@ void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
     u32 temp1;
     u32 temp2;
     m4aSongNumStart(SE_ITEM_BOX);
-    old = gUnknown_03005450;
-    gUnknown_03005450 += enemyDefeatScores[gPlayer.defeatScoreIndex];
-    temp1 = Div(gUnknown_03005450, 50000);
+    old = gLevelScore;
+    gLevelScore += enemyDefeatScores[gPlayer.defeatScoreIndex];
+    temp1 = Div(gLevelScore, 50000);
     temp2 = Div(old, 50000);
     if (temp1 != temp2 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
         u16 numLives = (temp1 - temp2);

@@ -2464,7 +2464,7 @@ _0804423E:
 	ldrb r0, [r6, #0x11]
 	cmp r0, #0
 	bne _080442C0
-	ldr r1, _08044294 @ =gUnknown_03005450
+	ldr r1, _08044294 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #1
@@ -2503,7 +2503,7 @@ _08044288:
 	strb r0, [r1, #3]
 	b _080442C0
 	.align 2, 0
-_08044294: .4byte gUnknown_03005450
+_08044294: .4byte gLevelScore
 _08044298: .4byte 0x0000C350
 _0804429C: .4byte gGameMode
 _080442A0: .4byte gNumLives
@@ -2562,7 +2562,7 @@ _0804430A:
 	ldrb r0, [r6, #0x11]
 	cmp r0, #0
 	bne _08044364
-	ldr r1, _080444BC @ =gUnknown_03005450
+	ldr r1, _080444BC @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #1
@@ -2770,7 +2770,7 @@ _080444A8:
 	bx r0
 	.align 2, 0
 _080444B8: .4byte gUnknown_03005498
-_080444BC: .4byte gUnknown_03005450
+_080444BC: .4byte gLevelScore
 _080444C0: .4byte 0x0000C350
 _080444C4: .4byte gGameMode
 _080444C8: .4byte gNumLives
@@ -4756,7 +4756,7 @@ _080453F4:
 	adds r1, #0x20
 	movs r0, #3
 	strb r0, [r1]
-	ldr r1, _0804544C @ =gUnknown_03005450
+	ldr r1, _0804544C @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -4794,7 +4794,7 @@ _08045440:
 	strb r0, [r1, #3]
 	b _0804546E
 	.align 2, 0
-_0804544C: .4byte gUnknown_03005450
+_0804544C: .4byte gLevelScore
 _08045450: .4byte 0x0000C350
 _08045454: .4byte gGameMode
 _08045458: .4byte gNumLives

@@ -606,10 +606,10 @@ void sub_806C6A4(void)
             stage->uiTask = NULL;
         }
 
-        temp4 = gUnknown_03005450;
-        gUnknown_03005450 += temp;
+        temp4 = gLevelScore;
+        gLevelScore += temp;
 
-        temp2 = Div(gUnknown_03005450, 50000);
+        temp2 = Div(gLevelScore, 50000);
         temp3 = Div(temp4, 50000);
 
         if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {

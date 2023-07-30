@@ -278,7 +278,7 @@ void Task_CreateStageUIMain(void)
             }
 
             /* Score Value */
-            score = gUnknown_03005450;
+            score = gLevelScore;
             if (score > 999999)
                 score = 999999;
 

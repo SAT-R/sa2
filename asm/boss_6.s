@@ -3405,7 +3405,7 @@ _080474F8:
 	adds r1, #0x20
 	movs r0, #3
 	strb r0, [r1]
-	ldr r1, _08047568 @ =gUnknown_03005450
+	ldr r1, _08047568 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -3444,7 +3444,7 @@ _08047558:
 	b _08047588
 	.align 2, 0
 _08047564: .4byte 0x000002B5
-_08047568: .4byte gUnknown_03005450
+_08047568: .4byte gLevelScore
 _0804756C: .4byte 0x0000C350
 _08047570: .4byte gGameMode
 _08047574: .4byte gNumLives

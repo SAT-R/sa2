@@ -155,9 +155,9 @@ static void Task_StageGoalToggleMain(void)
             // Redundant check :/
             if (temp != 0) {
                 u32 temp2, temp3;
-                u32 prev = gUnknown_03005450;
-                gUnknown_03005450 += temp;
-                temp2 = Div(gUnknown_03005450, 50000);
+                u32 prev = gLevelScore;
+                gLevelScore += temp;
+                temp2 = Div(gLevelScore, 50000);
                 temp3 = Div(prev, 50000);
                 if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
                     u16 numLives = (temp2 - temp3);
