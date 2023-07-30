@@ -3,7 +3,9 @@
 #include "game/entity.h"
 #include "game/game.h"
 #include "game/stage/entities_manager.h"
+#include "game/enemies/projectiles.h"
 #include "task.h"
+#include "trig.h"
 
 #include "constants/animations.h"
 
@@ -53,4 +55,120 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
     SPRITE_INIT_WITH_FLAGS(s, 24, SA2_ANIM_BULLETBUZZER, 0, 0x480, 2,
                            SPRITE_FLAG_MASK_X_FLIP);
+}
+
+void sub_8059B04(void);
+
+void Task_BulletBuzzerMain(void)
+{
+    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(gCurTask);
+    Sprite *s = &bbuzzer->s;
+    MapEntity *me = bbuzzer->base.me;
+    s32 oldOffsetX = bbuzzer->offsetX;
+    Vec2_32 pos;
+    u16 value;
+    u32 index;
+
+    bbuzzer->unk54++;
+    bbuzzer->unk54 = CLAMP_SIN_PERIOD(bbuzzer->unk54);
+
+    index = CLAMP_SIN_PERIOD(bbuzzer->unk54 * 5);
+    bbuzzer->offsetX = Q_2_14_TO_Q_24_8(COS(index) * bbuzzer->unk5A);
+
+    index = CLAMP_SIN_PERIOD(bbuzzer->unk54 * 3);
+    bbuzzer->offsetY = Q_2_14_TO_Q_24_8(SIN(index) * bbuzzer->unk5B);
+
+    ENEMY_UPDATE_POSITION(bbuzzer, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+
+    if (bbuzzer->unk5C != 0) {
+        if (oldOffsetX < bbuzzer->offsetX) {
+            s->graphics.anim = SA2_ANIM_BULLETBUZZER;
+            s->variant = 1;
+            s->unk21 = -1;
+        }
+
+    } else if (oldOffsetX > bbuzzer->offsetX) {
+        s->graphics.anim = SA2_ANIM_BULLETBUZZER;
+        s->variant = 1;
+        s->unk21 = -1;
+    }
+
+    if (oldOffsetX < bbuzzer->offsetX) {
+        bbuzzer->unk5C = 0;
+    } else {
+        bbuzzer->unk5C = 1;
+    }
+
+    if (bbuzzer->unk5E != 0) {
+        bbuzzer->unk5E--;
+    }
+
+    ENEMY_DESTROY_IF_OFFSCREEN(bbuzzer, me, s);
+    value = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
+                        Q_24_8_TO_INT(gPlayer.x) - pos.x);
+
+    if (bbuzzer->unk5E == 0) {
+        if (((u16)(value - 86) < 84 && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
+            || ((u16)(value - 342) < 84 && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
+            bbuzzer->unk58 = value;
+            bbuzzer->unk5D = 0;
+            s->graphics.anim = SA2_ANIM_BULLETBUZZER;
+            s->variant = 2;
+            s->unk21 = -1;
+            gCurTask->main = sub_8059B04;
+        }
+    }
+
+    sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
+    if (sub_8004558(s) == 0) {
+        ENEMY_TURN_AROUND(s);
+        s->graphics.anim = SA2_ANIM_BULLETBUZZER;
+        s->variant = 0;
+        s->unk21 = -1;
+    }
+    sub_80051E8(s);
+}
+
+void sub_8059B04(void)
+{
+
+    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(gCurTask);
+    Sprite *s = &bbuzzer->s;
+    MapEntity *me = bbuzzer->base.me;
+    ProjInit init;
+    Vec2_32 pos;
+
+    ENEMY_UPDATE_POSITION(bbuzzer, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(bbuzzer, me, s);
+
+    if (++bbuzzer->unk5D == 34) {
+        init.numTiles = 4;
+        init.anim = SA2_ANIM_BUZZER_PROJ;
+        init.variant = 0;
+        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            init.x = Q_24_8_NEW(pos.x + 10);
+        } else {
+            init.x = Q_24_8_NEW(pos.x - 10);
+        }
+
+        init.y = Q_24_8_NEW(pos.y + 14);
+        init.rot = bbuzzer->unk58 - 16;
+        init.speed = Q_24_8(2);
+        CreateSeveralProjectiles(&init, 3, 16);
+    }
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (sub_8004558(s) == 0) {
+        sub_80051E8(s);
+        bbuzzer->unk5E = 60;
+        s->graphics.anim = SA2_ANIM_BULLETBUZZER;
+        s->variant = 0;
+        s->unk21 = -1;
+        gCurTask->main = Task_BulletBuzzerMain;
+    } else {
+        sub_80051E8(s);
+    }
 }

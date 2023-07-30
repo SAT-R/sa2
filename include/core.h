@@ -5,6 +5,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "input_recorder.h"
+#include "animation_commands.h"
 
 struct MultiSioData_0_0 {
     // id
@@ -112,6 +113,15 @@ typedef struct {
     /* 0x18 */ const u16 *map;
 } Tilemap; /* size = 0x1C */
 
+struct SpriteTables {
+    /* 0x00 */ ACmd ***animations;
+    /* 0x04 */ SpriteOffset **dimensions;
+    /* 0x08 */ u16 **oamData;
+    /* 0x0C */ u16 *palettes;
+    /* 0x10 */ u8 *tiles_4bpp;
+    /* 0x14 */ u8 *tiles_8bpp;
+};
+
 struct MapHeader {
     /* 0x00 */ Tilemap h;
     /* 0x1C */ const u16 *metatileMap;
@@ -131,9 +141,6 @@ typedef struct {
     u8 unk1C[4];
     u16 unk20, unk22;
 } Collision;
-
-// We need 'Tilemap' in data.h, so it has to be declared later
-#include "data.h"
 
 struct Unk_03003674_1_Sub {
     u16 unk0, unk2, unk4, unk6;
