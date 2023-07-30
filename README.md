@@ -30,7 +30,7 @@ It so far builds the following ROMs:
 
 ### Community
 
-Join us on [discord](https://discord.gg/rckwpnYUXF) to get started in helping out
+Join us on [discord](https://discord.gg/JQntqGR5Q) to get started in helping out
 
 ### Setting up the repository
 
