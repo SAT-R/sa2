@@ -213,13 +213,13 @@ __08003B68:
 	asrs r0, r0, #0x18
 	str r0, [sp, #0x34]
 _08003B74:
-	mov r2, sb
+	mov r2, sb              @ r2 = sb = oam
 	ldrh r0, [r2, #2]
 	ldr r1, _08003BCC @ =0x000001FF
-	ands r1, r0
+	ands r1, r0             @ r1 = oam->tileNum
 	add r1, r8
 	asrs r1, r1, #3
-	adds r2, r7, r1
+	adds r2, r7, r1         @ r2 = (bgBase + (oam.tileNum >> 3))
 	ldr r0, [sp, #0x20]
 	subs r0, #1
 	lsls r0, r0, #0x18
@@ -304,9 +304,9 @@ _08003C2A:
 _08003C2C:
 	movs r6, #0x20
 	str r6, [sp, #0x10]
-	lsls r0, r3, #1
+	lsls r0, r3, #1     @ r3 = bgId
 	adds r0, r0, r4
-	ldrh r0, [r0]
+	ldrh r0, [r0]       @ r0 = gBgCntRegs[bgId]
 	lsrs r1, r0, #0xe
 	subs r0, r1, #2
 	lsls r0, r0, #0x18
@@ -320,11 +320,11 @@ _08003C46:
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]
 	ldrh r0, [r2, #0xa]
-	ldr r1, [r1, #8]
+	ldr r1, [r1, #8]    @ r1 = gUnknown_03002794->oamData
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
-	str r0, [sp, #0x1c]
+	str r0, [sp, #0x1c] @ sp1C = gUnknown_03002794->oamData[s->graphics.anim];
 	mov r3, sl
 	ldrb r1, [r3, #1]
 	lsls r0, r1, #1

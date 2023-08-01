@@ -201,8 +201,13 @@ bool32 sub_80039E4(void)
     if (gUnknown_03005390 != 0) {
         OamDataShort oam;
         s32 r5;
+        s32 sp08;
         Sprite *s; // = sp0C
         SpriteOffset *dims;
+        u32 sp10; // bg_affine_pixelcount
+        u16 **oamSub;
+        OamDataShort *sp1C;
+
         for (r5 = 0; r5 < gUnknown_03005390; r5++) {
             // _08003A1A
             s = gUnknown_03004D10[r5];
@@ -227,12 +232,8 @@ bool32 sub_80039E4(void)
                 //       DISPCNT_MODE_3 or DISPCNT_MODE_5.
                 if ((bgId >= 2) && ((gDispCnt & 0x3) != DISPCNT_MODE_0)) {
                     // _08003A84
-                    s32 sp08;
                     u16 sp24;
                     u8 sp30;
-                    u16 affine = (gBgCntRegs[bgId] & BGCNT_AFF1024x1024) >> 14;
-                    u32 bg_affine_pixelcount = ((1024 * 1024) << affine) >> 16;
-                    u16 **oamSub = gUnknown_03002794->oamData;
                     u16 shapeAndSize;
                     u8 tilesX; // =sp20
                     u8 tilesY; // =ip
@@ -240,15 +241,18 @@ bool32 sub_80039E4(void)
                     s32 yPos; // =r5
                     s32 shrunkTileId;
                     void *r7;
+                    u16 affine = (gBgCntRegs[bgId] & BGCNT_AFF1024x1024) >> 14;
+                    sp10 = ((1024 * 1024) << affine) >> 16;
+                    oamSub = gUnknown_03002794->oamData;
 
                     // OAM entry for this sub-frame
-                    OamDataShort *sp1C = (OamDataShort *)oamSub[s->graphics.anim];
+                    sp1C = (OamDataShort *)oamSub[s->graphics.anim];
                     sp1C = &sp1C[dims->oamIndex];
 
                     for (sp08 = 0; sp08 < dims->numSubframes; sp08++) {
                         u16 tileId;
                         // _08003ABE
-                        sp30 = bg_affine_pixelcount;
+                        sp30 = sp10;
                         DmaCopy32(3, sp1C, &oam, sizeof(OamDataShort));
                         sp1C++;
 
@@ -259,18 +263,29 @@ bool32 sub_80039E4(void)
                         yPos = s->y - dims->offsetY;
                         xPos = s->x - dims->offsetX;
                         xPos &= ~0xF;
-                        r7 = bgBase + (((oam.y + yPos) >> 3) * bg_affine_pixelcount);
+                        r7 = bgBase + (((oam.y + yPos) >> 3) * sp10);
                         tileId = ((size_t)(s->graphics.dest - bgVram)) >> sp28;
                         shrunkTileId = (oam.tileNum + tileId) & 0xFF;
 
                         // __08003B68
                         // sp08++;
-                        if (tilesY-- == 0) {
-                            continue;
+                        while (tilesY-- != 0) {
+                            // _08003B74
+                            (r7 + (oam.tileNum >> 3));
+
+                            // UNFINISHED //
                         }
                     }
                 } else {
                     // _08003C2C
+                    u8 bgReg = (gBgCntRegs[bgId] >> 14);
+                    if(bgReg == 2 || bgReg == 3) {
+                        sp10 = 0x40;
+                    }
+                    // _08003C46
+                    sp1C = (OamDataShort *)gUnknown_03002794->oamData[s->graphics.anim];
+                    sp1C = &sp1C[dims->oamIndex];
+                    sp08 = 0;
                 }
             }
         }
