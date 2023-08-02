@@ -325,14 +325,14 @@ _08003C46:
 	adds r0, r0, r1
 	ldr r0, [r0]
 	str r0, [sp, #0x1c] @ sp1C = gUnknown_03002794->oamData[s->graphics.anim];
-	mov r3, sl
-	ldrb r1, [r3, #1]
+	mov r3, sl          @ r3 = dims
+	ldrb r1, [r3, #1]   @ r1 = dims->oamIndex
 	lsls r0, r1, #1
 	adds r0, r0, r1
 	lsls r0, r0, #1
 	ldr r4, [sp, #0x1c]
 	adds r4, r4, r0
-	str r4, [sp, #0x1c]
+	str r4, [sp, #0x1c] @ sp1C = &sp1C[dims->oamIndex];
 	movs r6, #0
 	str r6, [sp, #8]
 	adds r5, #1
@@ -342,7 +342,7 @@ _08003C46:
 	blo _08003C78
 	b _08003EB2
 _08003C78:
-	mov sb, sp
+	mov sb, sp  @ sb = sp = oam
 _08003C7A:
 	ldr r0, [sp, #0x1c]
 	ldr r1, _08003D18 @ =0x040000D4
@@ -355,42 +355,43 @@ _08003C7A:
 	ldr r3, [sp, #0x1c]
 	adds r3, #6
 	str r3, [sp, #0x1c]
-	mov r4, sb
+	mov r4, sb      @ r4 = sb = sp = oam
 	ldrh r2, [r4]
 	movs r1, #0xc0
 	lsls r1, r1, #8
 	ands r1, r2
-	lsrs r1, r1, #0xc
+	lsrs r1, r1, #0xc   @ r1 = oam.shape << 2
 	ldrh r3, [r4, #2]
 	movs r0, #0xc0
 	lsls r0, r0, #8
 	ands r0, r3
-	lsrs r0, r0, #0xe
-	orrs r1, r0
+	lsrs r0, r0, #0xe   @ r0 = oam.size
+	orrs r1, r0         @ r1 = shapeAndSize
 	lsls r1, r1, #1
 	ldr r5, _08003D20 @ =gOamShapesSizes
 	adds r0, r1, r5
 	ldrb r0, [r0]
 	lsrs r0, r0, #3
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20] @ sp20 = tilesX
 	ldr r6, _08003D24 @ =gOamShapesSizes+1
 	adds r1, r1, r6
 	ldrb r0, [r1]
 	lsrs r0, r0, #3
-	mov ip, r0
+	mov ip, r0          @ ip = tilesY
 	ldr r4, _08003D28 @ =0x000001FF
 	ands r4, r3
 	movs r6, #0xff
-	ands r6, r2
+	ands r6, r2         @ r6 = oamX
 	ldr r0, [sp, #0xc]
 	adds r0, #0x25
-	ldrb r0, [r0]
+	ldrb r0, [r0]       @ r0 = s->palId
 	lsls r0, r0, #0xc
 	mov r7, sb
 	ldrh r7, [r7, #4]
 	adds r0, r0, r7
 	mov r1, sb
 	strh r0, [r1, #4]
+__08003CD8:
 	ldr r2, [sp, #0xc]
 	ldr r1, [r2, #0x10]
 	lsrs r1, r1, #0xb
@@ -402,6 +403,7 @@ _08003C7A:
 	ands r0, r7
 	cmp r0, #0
 	beq _08003D4A
+___08003CEE:
 	movs r1, #0x80
 	lsls r1, r1, #6
 	adds r0, r1, #0
@@ -413,10 +415,11 @@ _08003C7A:
 	ands r0, r1
 	cmp r0, #0
 	beq _08003D2C
+__08003D04:
 	ldr r3, [sp, #0xc]
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
-	mov r7, sl
+	mov r7, sl      @ r7 = sl = dims
 	movs r2, #0xa
 	ldrsh r1, [r7, r2]
 	b _08003D3C
@@ -431,7 +434,7 @@ _08003D2C:
 	ldr r3, [sp, #0xc]
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
-	mov r7, sl
+	mov r7, sl      @ r7 = sl = dims
 	ldrh r1, [r7, #6]
 	movs r3, #0xa
 	ldrsh r2, [r7, r3]
@@ -439,7 +442,7 @@ _08003D2C:
 _08003D3C:
 	adds r0, r0, r1
 	adds r5, r0, #0
-	subs r5, #8
+	subs r5, #8         @ r5 = someOffsetY
 	lsls r0, r6, #0x10
 	rsbs r0, r0, #0
 	lsrs r6, r0, #0x10
@@ -451,7 +454,7 @@ _08003D4A:
 	mov r2, sl
 	movs r3, #0xa
 	ldrsh r0, [r2, r3]
-	subs r5, r1, r0
+	subs r5, r1, r0     @ r5 = someOffsetY
 _08003D58:
 	ldr r7, [sp, #0xc]
 	ldr r0, [r7, #0x10]
@@ -572,11 +575,11 @@ _08003DFE:
 	adds r1, r1, r0
 	lsls r1, r1, #0x10
 	lsrs r5, r1, #0x10
-	mov r1, ip
+	mov r1, ip          @ r1 = ip = tilesY
 	subs r0, r1, #1
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	mov ip, r0
+	mov ip, r0          @ ip = tilesY--;
 	ldr r6, [sp, #8]
 	adds r6, #1
 	str r6, [sp, #0x40]
