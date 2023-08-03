@@ -451,7 +451,7 @@ _08003D4A:
 	ldr r5, [sp, #0xc]
 	movs r7, #0x18
 	ldrsh r1, [r5, r7]
-	mov r2, sl
+	mov r2, sl          @ r2 = sl = dims
 	movs r3, #0xa
 	ldrsh r0, [r2, r3]
 	subs r5, r1, r0     @ r5 = someOffsetY
@@ -461,13 +461,14 @@ _08003D58:
 	lsrs r0, r0, #0xa
 	movs r3, #1
 	ands r0, r3
-	mov r1, sl
+	mov r1, sl          @ r1 = sl = dims
 	ldrb r2, [r1]
 	adds r1, r3, #0
 	ands r1, r2
 	cmp r0, r1
 	beq _08003DB4
-	mov r2, sb
+__08003D6E:
+	mov r2, sb          @ r2 = sb = oam
 	ldrh r0, [r2, #2]
 	movs r7, #0x80
 	lsls r7, r7, #5

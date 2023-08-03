@@ -183,11 +183,7 @@ void sub_8003914(Sprite *sprite)
 }
 
 // Some VBlank function
-#if 00
 NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", bool32 sub_80039E4(void))
-#else
-bool32 sub_80039E4(void)
-#endif
 {
     // tilesize (could be 32 and get optimized out?)
     s32 sp28 = 5;
@@ -322,7 +318,13 @@ bool32 sub_80039E4(void)
                             oamX = -oamX;
                         } else {
                             // _08003D4A
+                            someOffsetY = s->y - dims->offsetY;
+                        }
 
+                        if ((SPRITE_FLAG_GET(s, X_FLIP) & 0x1) != (dims->flip & 0x1)) {
+
+                        } else {
+                            //_08003DB4
                         }
                     }
                 }
@@ -334,9 +336,7 @@ bool32 sub_80039E4(void)
 
     return TRUE;
 }
-#if 00
 END_NONMATCH
-#endif
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  BgAffineReg *affine)
@@ -367,7 +367,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
 // https://decomp.me/scratch/6Xm6S
 NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 {
-    u8 bgIndex = 0;
+    u8 bgIndex;
     u16 sp00[2];
     u8 r4;
     u8 *spVramPtr;
@@ -375,7 +375,7 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 
     s32 sp08;
 
-    for (; bgIndex < 4; bgIndex++) {
+    for (bgIndex = 0; bgIndex < 4; bgIndex++) {
 
         if ((gUnknown_03002280[bgIndex][1] == gUnknown_03002280[bgIndex][3])
             && (gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][2]))
