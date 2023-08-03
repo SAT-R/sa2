@@ -11,6 +11,8 @@ typedef struct {
     /* 0x0C */ s32 x;
     /* 0x10 */ s32 y;
 } ProjInit;
-extern void CreateProjectile(ProjInit *init);
+
+void CreateProjectile(ProjInit *init);
+void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle);
 
 #endif // GUARD_ENEMY_PROJECTILE_H
