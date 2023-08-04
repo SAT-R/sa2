@@ -3330,7 +3330,7 @@ _0803BC36:
 	adds r5, r5, r7
 	mov sb, r5
 	mov r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	ldr r3, _0803BD3C @ =gPseudoRandom
 	ldr r0, [r3]
 	ldr r6, _0803BD40 @ =0x00196225
@@ -3364,7 +3364,7 @@ _0803BC36:
 	add r0, sp, #4
 	mov r1, sb
 	str r3, [sp, #0x3c]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	ldr r3, [sp, #0x3c]
 	ldr r0, [r3]
 	adds r2, r0, #0
@@ -3395,7 +3395,7 @@ _0803BC36:
 	str r0, [sp, #0x1c]
 	add r0, sp, #4
 	mov r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0803BD06:
 	ldr r1, [r7, #0x28]
 	ldr r0, _0803BD48 @ =0x000002FF
@@ -4071,7 +4071,7 @@ sub_803C198: @ 0x0803C198
 	ldr r1, _0803C328 @ =0x000002DD
 	add r1, sb
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0803C256:
 	ldr r2, _0803C310 @ =gPseudoRandom
 	ldr r1, [r2]
@@ -4157,7 +4157,7 @@ _0803C2C6:
 	ldr r3, _0803C334 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C344
@@ -4213,7 +4213,7 @@ _0803C344:
 	ldr r3, _0803C394 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C3A4
@@ -4260,7 +4260,7 @@ _0803C3A4:
 	ldr r3, _0803C3F4 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C404
@@ -4307,7 +4307,7 @@ _0803C404:
 	ldr r3, _0803C454 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C464
@@ -4354,7 +4354,7 @@ _0803C464:
 	ldr r3, _0803C4B4 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C4C4

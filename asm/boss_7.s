@@ -681,7 +681,7 @@ _08047F5E:
 	str r6, [sp, #4]
 	ldr r1, _080480D0 @ =IWRAM_START + 0x64
 	add r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804800A:
 	mov r1, sl
 	ldrb r0, [r1]
@@ -5057,7 +5057,7 @@ _0804A266:
 	ldr r1, _0804A38C @ =0x0000015D
 	add r1, r8
 	str r2, [sp, #0x30]
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18

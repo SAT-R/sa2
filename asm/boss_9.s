@@ -1941,7 +1941,7 @@ _0804DD12:
 	adds r1, r7, #0
 	adds r1, #0xe
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804DD76:
 	add sp, #0x20
 	pop {r4, r5, r6, r7}

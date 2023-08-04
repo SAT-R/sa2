@@ -65,7 +65,7 @@ void sub_8039F50(s32 p0, u8 p1)
 
 void Task_DestroyBossParts(void)
 {
-    Sprite_ExplosionParts *bc = TaskGetStructPtr(gCurTask);
-    (*bc->numCreatedParts)--;
+    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    (*parts->numCreatedParts)--;
     TaskDestroy(gCurTask);
 }

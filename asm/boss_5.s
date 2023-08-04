@@ -2141,7 +2141,7 @@ _08043EA2:
 	str r6, [sp, #0xc]
 	adds r1, r7, #0
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _08043F9A:
 	add sp, #0x28
 	pop {r3, r4}
@@ -5046,7 +5046,7 @@ _0804557A:
 	str r5, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804563E:
 	ldr r2, _08045868 @ =gUnknown_03005590
 	ldr r0, [r2]
@@ -5164,7 +5164,7 @@ _0804563E:
 	mov r1, sb
 	adds r1, #0x14
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804572E:
 	ldr r3, _08045868 @ =gUnknown_03005590
 	ldr r0, [r3]
@@ -5238,7 +5238,7 @@ _0804572E:
 	str r7, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _080457C4:
 	ldr r4, _08045868 @ =gUnknown_03005590
 	ldr r0, [r4]
@@ -5311,7 +5311,7 @@ _080457C4:
 	str r7, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _08045858:
 	add sp, #0x3c
 	pop {r3, r4, r5}

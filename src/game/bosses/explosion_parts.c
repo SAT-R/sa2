@@ -21,35 +21,37 @@ void Task_8039C4C(void);
 void Task_8039DFC(void);
 void Task_DestroyExplosionParts(void);
 
-void sub_8039B54(ExplosionParts *p0, u8 *numCreatedParts)
+#define BOSS_PARTS_DIMENSION 32
+
+void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
-    if (!(p0->unk4 & 1) || *numCreatedParts < 16) {
+    if (!(info->unk4 & 1) || *numCreatedParts < 16) {
         struct Task *t
             = TaskCreate(Task_8039C4C, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
-        Sprite_ExplosionParts *bc = TaskGetStructPtr(t);
-        Sprite *s = &bc->s;
+        Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
+        Sprite *s = &parts->s;
         s32 cos, sin;
 
-        bc->posX = Q_24_8(p0->unk14);
-        bc->posY = Q_24_8(p0->unk18);
+        parts->posX = Q_24_8(info->unk14);
+        parts->posY = Q_24_8(info->unk18);
 
-        cos = COS(p0->unkC & ONE_CYCLE) * p0->unkE;
-        bc->dirX = cos >> 14;
+        cos = COS(info->rotation & ONE_CYCLE) * info->speed;
+        parts->accelX = cos >> 14;
 
-        sin = SIN(p0->unkC & ONE_CYCLE) * p0->unkE;
-        bc->dirY = sin >> 14;
+        sin = SIN(info->rotation & ONE_CYCLE) * info->speed;
+        parts->accelY = sin >> 14;
 
-        bc->unk3C = p0->unk1C;
-        bc->numCreatedParts = numCreatedParts;
+        parts->unk3C = info->unk1C;
+        parts->numCreatedParts = numCreatedParts;
         (*numCreatedParts)++;
 
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = p0->vram;
+        s->graphics.dest = info->vram;
         s->unk1A = 0x100;
         s->graphics.size = 0;
-        s->graphics.anim = p0->anim;
-        s->variant = p0->variant;
+        s->graphics.anim = info->anim;
+        s->variant = info->variant;
         s->unk14 = 0;
         s->unk1C = 0;
         s->unk21 = -1;
@@ -62,24 +64,24 @@ void sub_8039B54(ExplosionParts *p0, u8 *numCreatedParts)
 
 void Task_8039C4C(void)
 {
-    Sprite_ExplosionParts *bc = TaskGetStructPtr(gCurTask);
-    Sprite *s = &bc->s;
+    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    Sprite *s = &parts->s;
 
     if (s->graphics.anim == SA2_ANIM_EXPLOSION) {
-        bc->dirX -= 0x100;
+        parts->accelX -= Q_24_8(1.0);
     }
 
-    bc->dirY += bc->unk3C;
-    bc->posX += bc->dirX;
-    bc->posY += bc->dirY;
+    parts->accelY += parts->unk3C;
+    parts->posX += parts->accelX;
+    parts->posY += parts->accelY;
 
-    s->x = Q_24_8_TO_INT(bc->posX);
-    s->y = Q_24_8_TO_INT(bc->posY);
+    s->x = Q_24_8_TO_INT(parts->posX);
+    s->y = Q_24_8_TO_INT(parts->posY);
 
-    if (((s->x < -32) && (bc->dirX < 0))
-        || ((s->x > (DISPLAY_WIDTH + 32)) && (bc->dirX > 0))
-        || ((s->y < -32) && (bc->dirY < 0))
-        || ((s->y > (DISPLAY_HEIGHT + 32)) && (bc->dirY > 0))) {
+    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
+        || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
+        || ((s->y < -BOSS_PARTS_DIMENSION) && (parts->accelY < 0))
+        || ((s->y > (DISPLAY_HEIGHT + BOSS_PARTS_DIMENSION)) && (parts->accelY > 0))) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
@@ -90,35 +92,35 @@ void Task_8039C4C(void)
     sub_80051E8(s);
 }
 
-void sub_8039D04(ExplosionParts *p0, u8 *numCreatedParts)
+void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
-    if (!(p0->unk4 & 1) || *numCreatedParts < 16) {
+    if (!(info->unk4 & 1) || *numCreatedParts < 16) {
         struct Task *t
             = TaskCreate(Task_8039DFC, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
-        Sprite_ExplosionParts *bc = TaskGetStructPtr(t);
-        Sprite *s = &bc->s;
+        Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
+        Sprite *s = &parts->s;
         s32 cos, sin;
 
-        bc->posX = Q_24_8(p0->unk14);
-        bc->posY = Q_24_8(p0->unk18);
+        parts->posX = Q_24_8(info->unk14);
+        parts->posY = Q_24_8(info->unk18);
 
-        cos = COS(p0->unkC & ONE_CYCLE) * p0->unkE;
-        bc->dirX = cos >> 14;
+        cos = COS(info->rotation & ONE_CYCLE) * info->speed;
+        parts->accelX = cos >> 14;
 
-        sin = SIN(p0->unkC & ONE_CYCLE) * p0->unkE;
-        bc->dirY = sin >> 14;
+        sin = SIN(info->rotation & ONE_CYCLE) * info->speed;
+        parts->accelY = sin >> 14;
 
-        bc->unk3C = p0->unk1C;
-        bc->numCreatedParts = numCreatedParts;
+        parts->unk3C = info->unk1C;
+        parts->numCreatedParts = numCreatedParts;
         (*numCreatedParts)++;
 
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = p0->vram;
+        s->graphics.dest = info->vram;
         s->unk1A = 0x100;
         s->graphics.size = 0;
-        s->graphics.anim = p0->anim;
-        s->variant = p0->variant;
+        s->graphics.anim = info->anim;
+        s->variant = info->variant;
         s->unk14 = 0;
         s->unk1C = 0;
         s->unk21 = -1;
@@ -131,20 +133,20 @@ void sub_8039D04(ExplosionParts *p0, u8 *numCreatedParts)
 
 void Task_8039DFC(void)
 {
-    Sprite_ExplosionParts *bc = TaskGetStructPtr(gCurTask);
-    Sprite *s = &bc->s;
+    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    Sprite *s = &parts->s;
 
-    bc->dirY += bc->unk3C;
-    bc->posX += bc->dirX;
-    bc->posY += bc->dirY;
+    parts->accelY += parts->unk3C;
+    parts->posX += parts->accelX;
+    parts->posY += parts->accelY;
 
-    s->x = Q_24_8_TO_INT(bc->posX) - gCamera.x;
-    s->y = Q_24_8_TO_INT(bc->posY) - gCamera.y;
+    s->x = Q_24_8_TO_INT(parts->posX) - gCamera.x;
+    s->y = Q_24_8_TO_INT(parts->posY) - gCamera.y;
 
-    if (((s->x < -32) && (bc->dirX < 0))
-        || ((s->x > (DISPLAY_WIDTH + 32)) && (bc->dirX > 0))
-        || ((s->y < -32) && (bc->dirY < 0))
-        || ((s->y > (DISPLAY_HEIGHT + 32)) && (bc->dirY > 0))) {
+    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
+        || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
+        || ((s->y < -BOSS_PARTS_DIMENSION) && (parts->accelY < 0))
+        || ((s->y > (DISPLAY_HEIGHT + BOSS_PARTS_DIMENSION)) && (parts->accelY > 0))) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
