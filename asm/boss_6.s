@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggGoRound
 CreateEggGoRound: @ 0x080459EC
 	push {r4, r5, r6, r7, lr}
@@ -1086,7 +1085,7 @@ _08046288:
 	subs r1, #0xf
 	lsls r1, r1, #0x10
 	asrs r1, r1, #0x10
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _080462D4:
 	ldr r0, [r4, #0x6c]
 	asrs r0, r0, #8
@@ -2779,7 +2778,7 @@ _08046FA2:
 	movs r2, #0xaa
 	lsls r2, r2, #1
 	adds r1, r3, r2
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -2892,7 +2891,7 @@ sub_8047060: @ 0x08047060
 	movs r1, #0xe0
 	lsls r1, r1, #1
 	add r1, ip
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _08047106:
 	add sp, #0x20
 	pop {r3}
@@ -3001,7 +3000,7 @@ sub_8047138: @ 0x08047138
 	movs r1, #0xe0
 	lsls r1, r1, #1
 	add r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _080471EE:
 	add sp, #0x20
 	pop {r3, r4}

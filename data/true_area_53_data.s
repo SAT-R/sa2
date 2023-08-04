@@ -1,22 +1,5 @@
 	.section .rodata
 
-    .global gUnknown_080D798C
-gUnknown_080D798C:
-    .4byte CreateEggHammerTankII
-    .4byte CreateEggBomberTank
-    .4byte CreateEggTotem
-    .4byte CreateAeroEgg
-    .4byte CreateEggSaucer
-    .4byte CreateEggGoRound
-    .4byte CreateEggFrog
-    .4byte CreateSuperEggRoboZ
-    .4byte CreateTrueArea53Boss
-
-    .global gUnknown_080D79B0
-gUnknown_080D79B0:
-    .4byte sub_803C80C, sub_803E3EC, sub_803FA84, sub_80425F0
-    .4byte sub_8043FD0, sub_8047224, sub_8048EB4, sub_804D594
-
     .global gUnknown_080D79D0
 gUnknown_080D79D0:
     .incbin "baserom.gba", 0x000D79D0, 0x48

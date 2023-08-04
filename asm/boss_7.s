@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggFrog
 CreateEggFrog: @ 0x08047A68
 	push {r4, r5, r6, r7, lr}
@@ -682,7 +681,7 @@ _08047F5E:
 	str r6, [sp, #4]
 	ldr r1, _080480D0 @ =IWRAM_START + 0x64
 	add r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804800A:
 	mov r1, sl
 	ldrb r0, [r1]
@@ -725,7 +724,7 @@ _0804800A:
 	asrs r1, r1, #0x10
 	movs r2, #0x90
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _08048060:
 	ldr r0, [r7, #4]
 	asrs r0, r0, #8
@@ -4068,7 +4067,7 @@ _08049AC4:
 	ldr r0, [r0]
 	str r0, [r3, #0x78]
 	movs r0, #7
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	ldrh r1, [r4]
 	ldr r0, _08049AF0 @ =0x0000FFFD
 	ands r0, r1
@@ -4197,7 +4196,7 @@ _08049BAC:
 	strb r0, [r7, #4]
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	ldr r2, _08049C9C @ =gUnknown_03005424
 	ldrh r1, [r2]
 	ldr r0, _08049CA0 @ =0x0000FFFD
@@ -5058,7 +5057,7 @@ _0804A266:
 	ldr r1, _0804A38C @ =0x0000015D
 	add r1, r8
 	str r2, [sp, #0x30]
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18

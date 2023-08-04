@@ -117,7 +117,9 @@ SECTIONS
         build/sa2/src/game/countdown.o(.text);
         build/sa2/src/game/game_over.o(.text);
         build/sa2/src/game/bosses/final_intro.o(.text);
-        build/sa2/asm/bosses_common.o(.text);
+        build/sa2/src/game/bosses/explosion_parts.o(.text);
+        build/sa2/src/game/bosses/common.o(.text);
+        build/sa2/src/game/bosses/eggmobile_escape_sequence.o(.text);
         build/sa2/asm/boss_1.o(.text);
         build/sa2/asm/boss_2.o(.text);
         build/sa2/asm/boss_3.o(.text);
@@ -328,6 +330,7 @@ SECTIONS
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);
         build/sa2/src/game/bosses/final_intro.o(.rodata);
+        build/sa2/src/game/bosses/common.o(.rodata);
         build/sa2/data/true_area_53_data.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
         build/sa2/asm/enemy_koura.o(.rodata);

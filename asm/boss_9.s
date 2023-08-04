@@ -177,7 +177,6 @@ _0804CEB8: .4byte gUnknown_080D8AAC
 _0804CEBC: .4byte 0x00001341
 _0804CEC0: .4byte gDispCnt
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateTrueArea53Boss
 CreateTrueArea53Boss: @ 0x0804CEC4
 	push {r4, r5, r6, r7, lr}
@@ -1942,7 +1941,7 @@ _0804DD12:
 	adds r1, r7, #0
 	adds r1, #0xe
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804DD76:
 	add sp, #0x20
 	pop {r4, r5, r6, r7}
