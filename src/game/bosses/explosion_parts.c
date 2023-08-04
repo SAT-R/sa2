@@ -17,8 +17,8 @@
 #include "constants/animations.h"
 #include "constants/zones.h"
 
-void Task_8039C4C(void);
-void Task_8039DFC(void);
+void Task_BossParticleWithExplosionUpdate(void);
+void Task_BossParticleStatic(void);
 void Task_DestroyExplosionParts(void);
 
 #define BOSS_PARTS_DIMENSION 32
@@ -26,8 +26,8 @@ void Task_DestroyExplosionParts(void);
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t
-            = TaskCreate(Task_8039C4C, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        struct Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate,
+                                    sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
@@ -62,7 +62,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
     }
 }
 
-void Task_8039C4C(void)
+void Task_BossParticleWithExplosionUpdate(void)
 {
     Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
     Sprite *s = &parts->s;
@@ -95,8 +95,8 @@ void Task_8039C4C(void)
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t
-            = TaskCreate(Task_8039DFC, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        struct Task *t = TaskCreate(Task_BossParticleStatic,
+                                    sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
@@ -131,7 +131,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
     }
 }
 
-void Task_8039DFC(void)
+void Task_BossParticleStatic(void)
 {
     Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
     Sprite *s = &parts->s;
