@@ -776,7 +776,7 @@ _08030A9E:
 	beq _08030AEE
 	subs r0, #0x64
 	str r0, [r1]
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	adds r0, r5, #0
 	adds r0, #0x64
@@ -817,7 +817,7 @@ _08030AEE:
 	beq _08030B40
 	subs r0, #0x64
 	str r0, [r1]
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	adds r0, r5, #0
 	adds r0, #0x64
@@ -858,7 +858,7 @@ _08030B40:
 	beq _08030B92
 	subs r0, #0x64
 	str r0, [r1]
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	adds r0, r5, #0
 	adds r0, #0x64
@@ -908,7 +908,7 @@ _08030BA2:
 	bne _08030BB0
 	b _08030CB8
 _08030BB0:
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	movs r3, #0xb0
 	lsls r3, r3, #1
@@ -944,7 +944,7 @@ _08030BB0:
 _08030BF6:
 	strb r0, [r1]
 _08030BF8:
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xb2
 	lsls r2, r2, #1
@@ -980,7 +980,7 @@ _08030BF8:
 _08030C3E:
 	strb r0, [r1]
 _08030C40:
-	ldr r1, _08030D10 @ =gUnknown_03005450
+	ldr r1, _08030D10 @ =gLevelScore
 	ldr r5, [r1]
 	movs r4, #0xae
 	lsls r4, r4, #1
@@ -1078,7 +1078,7 @@ _08030D00: .4byte gCurrentLevel
 _08030D04: .4byte gBldRegs
 _08030D08: .4byte 0x00003FAF
 _08030D0C: .4byte IWRAM_START + 0x160
-_08030D10: .4byte gUnknown_03005450
+_08030D10: .4byte gLevelScore
 _08030D14: .4byte 0x0000C350
 _08030D18: .4byte gGameMode
 _08030D1C: .4byte gNumLives

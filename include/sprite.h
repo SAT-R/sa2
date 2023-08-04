@@ -171,6 +171,8 @@ typedef struct PACKED {
     /* 0x04 */ u16 variant;
 } TileInfo16;
 
+extern const u8 gOamShapesSizes[12][2];
+
 s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);
@@ -178,8 +180,8 @@ void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
-void DrawToOamBuffer(void);
-OamData *sub_80058B4(u8 size);
+void CopyOamBufferToOam(void);
+OamData *OamMalloc(u8 size);
 
 // TransformSprite
 void sub_8004860(Sprite *, SpriteTransform *);

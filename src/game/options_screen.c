@@ -4271,8 +4271,8 @@ TimeRecordsScreenCreateCoursesViewUI(struct TimeRecordsScreen *timeRecordsScreen
     r0 = sTimeRecordsZoneActTitleDigits;
     spriteSize = MaxSpriteSize(r0, ARRAY_COUNT(sTimeRecordsZoneActTitleDigits));
 #else
-    temp = sub_806B8D4(sTimeRecordsZoneActTitleDigits,
-                       ARRAY_COUNT(sTimeRecordsZoneActTitleDigits));
+    spriteSize = MaxSpriteSize(sTimeRecordsZoneActTitleDigits,
+                               ARRAY_COUNT(sTimeRecordsZoneActTitleDigits));
 #endif
     // render "ZONE"
     sub_806A568(zoneText, RENDER_TARGET_SCREEN, 0x14, 0x418, 0x1000, 0x10, 0xC, 3, 0, 0);
@@ -4558,8 +4558,9 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
     struct TimeRecordDisplay *timeDisplay
         = (struct TimeRecordDisplay *)(offsetA + offsetB);
 #else
-    struct UNK_80637EC_UNK314 *unk314
-        = &((struct TimeRecordsScreen *)(IWRAM_START + gCurTask->data))->unk314[a];
+    struct TimeRecordDisplay *timeDisplay
+        = &((struct TimeRecordsScreen *)(IWRAM_PTR(gCurTask->data)))
+               ->timeDisplays[rowIndex];
 #endif
 
     if (frame > 0 && frame < 9) {

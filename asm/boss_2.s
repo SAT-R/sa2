@@ -597,7 +597,7 @@ _0803D0C8:
 	mov r8, r2
 	adds r0, r2, #0
 	strb r0, [r1]
-	ldr r1, _0803D1E8 @ =gUnknown_03005450
+	ldr r1, _0803D1E8 @ =gLevelScore
 	ldr r5, [r1]
 	movs r3, #0xfa
 	lsls r3, r3, #1
@@ -643,7 +643,7 @@ _0803D1D8: .4byte 0x00000281
 _0803D1DC: .4byte IWRAM_START + 0xB8
 _0803D1E0: .4byte 0x00000282
 _0803D1E4: .4byte IWRAM_START + 0xD9
-_0803D1E8: .4byte gUnknown_03005450
+_0803D1E8: .4byte gLevelScore
 _0803D1EC: .4byte 0x0000C350
 _0803D1F0: .4byte gGameMode
 _0803D1F4: .4byte gNumLives
@@ -1521,7 +1521,7 @@ _0803D8D2:
 	adds r1, #0x20
 	movs r0, #3
 	strb r0, [r1]
-	ldr r1, _0803D93C @ =gUnknown_03005450
+	ldr r1, _0803D93C @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -1559,7 +1559,7 @@ _0803D930:
 	strb r0, [r1, #3]
 	b _0803D95E
 	.align 2, 0
-_0803D93C: .4byte gUnknown_03005450
+_0803D93C: .4byte gLevelScore
 _0803D940: .4byte 0x0000C350
 _0803D944: .4byte gGameMode
 _0803D948: .4byte gNumLives
@@ -2137,7 +2137,7 @@ _0803DD16:
 	adds r7, r3, #0
 	adds r0, r3, #0
 	strb r0, [r1]
-	ldr r1, _0803DE1C @ =gUnknown_03005450
+	ldr r1, _0803DE1C @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #1
@@ -2175,7 +2175,7 @@ _0803DE0C: .4byte 0x00000286
 _0803DE10: .4byte 0x00000169
 _0803DE14: .4byte 0x00000281
 _0803DE18: .4byte 0x00000282
-_0803DE1C: .4byte gUnknown_03005450
+_0803DE1C: .4byte gLevelScore
 _0803DE20: .4byte 0x0000C350
 _0803DE24: .4byte gGameMode
 _0803DE28: .4byte gNumLives

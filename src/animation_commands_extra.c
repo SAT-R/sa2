@@ -183,7 +183,159 @@ void sub_8003914(Sprite *sprite)
 }
 
 // Some VBlank function
-NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", u32 sub_80039E4(void)) { }
+NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", bool32 sub_80039E4(void))
+{
+    // tilesize (could be 32 and get optimized out?)
+    s32 sp28 = 5;
+
+    if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
+        return FALSE;
+    }
+
+    return TRUE;
+
+    if (gUnknown_03005390 != 0) {
+        OamDataShort oam;
+        s32 r5;
+        s32 sp08;
+        u16 shapeAndSize;
+        Sprite *s; // = sp0C
+        SpriteOffset *dims;
+        u32 sp10; // bg_affine_pixelcount
+        u16 **oamSub;
+        OamDataShort *sp1C;
+        u32 tilesX; // =sp20
+        u32 tilesY; // =ip
+        s32 xPos; // =r8
+        s32 yPos; // =r5
+        u16 oamX, oamY;
+
+        for (r5 = 0; r5 < gUnknown_03005390; r5++) {
+            // _08003A1A
+            s = gUnknown_03004D10[r5];
+            dims = s->dimensions;
+
+            if (dims != (void *)-1) {
+                u32 bgId = SPRITE_FLAG_GET(s, BG_ID);
+                void *bgVram
+                    = (void *)BG_CHAR_ADDR((gBgCntRegs[bgId] & BGCNT_CHARBASE(3)) >> 2);
+                void *bgBase = bgVram + ((gBgCntRegs[bgId] & BGCNT_SCREENBASE(31)) * 8);
+
+                if (gBgCntRegs[bgId] & BGCNT_256COLOR) {
+                    // tilesize (could be 32 and get optimized out?)
+                    sp28 = 6;
+                }
+
+                // TODO: Remove this comment if it matches without what it says
+                // NOTE: This might be the following:
+                //       (... && ((gDispCnt & DISPCNT_MODE_1) || (gDispCnt &
+                //       DISPCNT_MODE_2))) But it would be UB in that case, since the
+                //       mode is determined by 3 bits, so the value could also be
+                //       DISPCNT_MODE_3 or DISPCNT_MODE_5.
+                if ((bgId >= 2) && ((gDispCnt & 0x3) != DISPCNT_MODE_0)) {
+                    // _08003A84
+                    u16 sp24;
+                    u8 sp30;
+                    s32 shrunkTileId;
+                    void *r7;
+                    u16 affine = (gBgCntRegs[bgId] & BGCNT_AFF1024x1024) >> 14;
+                    sp10 = ((1024 * 1024) << affine) >> 16;
+                    oamSub = gUnknown_03002794->oamData;
+
+                    // OAM entry for this sub-frame
+                    sp1C = (OamDataShort *)oamSub[s->graphics.anim];
+                    sp1C = &sp1C[dims->oamIndex];
+
+                    for (sp08 = 0; sp08 < dims->numSubframes; sp08++) {
+                        u16 tileId;
+                        // _08003ABE
+                        sp30 = sp10;
+                        DmaCopy16(3, sp1C, &oam, sizeof(OamDataShort));
+                        sp1C++;
+
+                        shapeAndSize = oam.shape << 2;
+                        shapeAndSize |= oam.size;
+                        tilesX = gOamShapesSizes[shapeAndSize][0] >> 3;
+                        tilesY = gOamShapesSizes[shapeAndSize][1] >> 3;
+                        yPos = s->y - dims->offsetY;
+                        xPos = s->x - dims->offsetX;
+                        xPos &= ~0xF;
+                        r7 = bgBase + (((oam.y + yPos) >> 3) * sp10);
+                        tileId = ((size_t)(s->graphics.dest - bgVram)) >> sp28;
+                        shrunkTileId = (oam.tileNum + tileId) & 0xFF;
+
+                        // __08003B68
+                        // sp08++;
+                        while (tilesY-- != 0) {
+                            // _08003B74
+                            (r7 + (oam.tileNum >> 3));
+
+                            // UNFINISHED //
+                        }
+                    }
+                } else {
+                    // _08003C2C
+                    u8 bgReg = (gBgCntRegs[bgId] >> 14);
+                    if (bgReg == 2 || bgReg == 3) {
+                        sp10 = 0x40;
+                    }
+                    // _08003C46
+                    sp1C = (OamDataShort *)gUnknown_03002794->oamData[s->graphics.anim];
+                    sp1C = (OamDataShort *)&sp1C[dims->oamIndex];
+
+                    // _08003C78
+                    for (sp08 = 0; sp08 < dims->numSubframes; sp08++) {
+                        s32 someOffsetY;
+                        u32 yFlip;
+                        DmaCopy16(3, sp1C, &oam, sizeof(OamDataShort));
+                        sp1C++;
+
+                        shapeAndSize = oam.shape << 2;
+                        shapeAndSize |= oam.size;
+                        tilesX = gOamShapesSizes[shapeAndSize][0] >> 3;
+                        tilesY = gOamShapesSizes[shapeAndSize][1] >> 3;
+                        oamY = oam.y;
+                        oamX = oam.x;
+                        oam.paletteNum += s->palId;
+                        // __08003CD8
+
+                        yFlip = s->unk10 >> 11;
+                        yFlip ^= (dims->flip >> 1);
+
+                        if (yFlip & 1) {
+                            // ___08003CEE
+                            // alt: oam.all.attr1 ^ 0x2000
+                            oam.matrixNum ^= 0x4; // do flip Y in OAM
+                            if (dims->flip & 0x1) {
+                                // __08003D04
+                                someOffsetY = s->y + dims->offsetY;
+                            } else {
+                                // _08003D2C
+                                someOffsetY = s->y + (dims->height - dims->offsetY);
+                            }
+                            // _08003D3C
+                            someOffsetY -= 8;
+                            oamX = -oamX;
+                        } else {
+                            // _08003D4A
+                            someOffsetY = s->y - dims->offsetY;
+                        }
+
+                        if ((SPRITE_FLAG_GET(s, X_FLIP) & 0x1) != (dims->flip & 0x1)) {
+
+                        } else {
+                            //_08003DB4
+                        }
+                    }
+                }
+            }
+        }
+
+        gUnknown_03005390 = 0;
+    }
+
+    return TRUE;
+}
 END_NONMATCH
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
@@ -212,7 +364,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
     }
 }
 
-// https://decomp.me/scratch/oyiq8
+// https://decomp.me/scratch/6Xm6S
 NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex;
@@ -221,10 +373,12 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
     u8 *spVramPtr;
     u16 bgSize_TxtOrAff;
 
+    s32 sp08;
+
     for (bgIndex = 0; bgIndex < 4; bgIndex++) {
 
-        if ((gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][3])
-            && (gUnknown_03002280[bgIndex][2] == gUnknown_03002280[bgIndex][0]))
+        if ((gUnknown_03002280[bgIndex][1] == gUnknown_03002280[bgIndex][3])
+            && (gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][2]))
             continue;
 
         { // _08004056
@@ -236,10 +390,12 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
 
             r4 = gUnknown_03002280[bgIndex][1];
 
+            sp08 = gUnknown_03002280[bgIndex][0];
+
             if ((bgIndex > 1)
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
-                spVramPtr = (u8 *)&vramBgCtrl[gUnknown_03002280[bgIndex][0]];
+                spVramPtr = (u8 *)&vramBgCtrl[sp08];
                 bgSize_TxtOrAff = 0x10 << (gBgCntRegs[bgIndex] >> 14);
 
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
@@ -250,7 +406,7 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
                     sp00[0] = v;
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
-                    DmaCopy16(3, &sp00, &spVramPtr[bgSize_TxtOrAff * r4],
+                    DmaCopy16(3, &sp00, &spVramPtr[bgSize_TxtOrAff],
                               (((s32)(value + (value >> 31))) >> 1));
                 } else {
                     // _080040F8
@@ -270,23 +426,24 @@ NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
             } else {
                 // _08004168
                 int tileSize = 32;
+                u8 *p1p;
 
-                if (((gBgCntRegs[bgIndex] >> 14) - 2) <= 1)
+                if ((u8)((gBgCntRegs[sp08] >> 14) - 2) <= 1)
                     tileSize = 64;
 
                 if (gUnknown_03002280[bgIndex][2] == 0xFF) {
                     u8 r1 = gUnknown_03004D80[bgIndex];
-                    u8 *p1p = &gUnknown_03002280[bgIndex][r4 * tileSize];
+                    p1p = &gUnknown_03002280[bgIndex][tileSize];
                     sp00[0] = r1;
 
-                    DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][r4 * tileSize],
-                              gUnknown_03002280[bgIndex][3]);
+                    DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][tileSize],
+                              gUnknown_03002280[bgIndex][3] - r4);
                 } else {
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
-                        u16 r1 = gUnknown_03004D80[bgIndex];
+                        u32 r1 = gUnknown_03004D80[bgIndex];
                         sp00[0] = r1;
-                        DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][r4 * tileSize],
+                        DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][tileSize],
                                   ARRAY_COUNT(gUnknown_03002280[0]));
                     }
                 }

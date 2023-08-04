@@ -51,7 +51,8 @@
 #define OBJ_VRAM1_SIZE 0x4000
 
 #define OAM      0x7000000
-#define OAM_SIZE 0x400
+#define OAM_ENTRY_COUNT 128
+#define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
@@ -60,7 +61,7 @@
 #define TILE_SIZE_8BPP 64
 
 // NOTE/TODO: Maybe this should somewhere else?
-#define GET_TILE_NUM_COMMON(vramPtr, tileSize) (((u32)(vramPtr) - OBJ_VRAM0) / (tileSize))
+#define GET_TILE_NUM_COMMON(vramPtr, tileSize) (((size_t)(vramPtr) - OBJ_VRAM0) / (tileSize))
 #define GET_TILE_NUM(vramPtr) GET_TILE_NUM_COMMON((vramPtr), TILE_SIZE_4BPP) 
 
 #define TOTAL_OBJ_TILE_COUNT 1024

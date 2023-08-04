@@ -501,7 +501,7 @@ const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void ApplyGameStageSettings(void)
 {
-    gUnknown_03005450 = 0;
+    gLevelScore = 0;
     gUnknown_030054B0 = 0;
     gNumLives = 3;
 

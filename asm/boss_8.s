@@ -4332,7 +4332,7 @@ _0804C922:
 _0804C92E:
 	cmp r2, #0
 	bne _0804C97C
-	ldr r1, _0804C9A0 @ =gUnknown_03005450
+	ldr r1, _0804C9A0 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -4388,7 +4388,7 @@ _0804C97C:
 	bx r0
 	.align 2, 0
 _0804C99C: .4byte gUnknown_030054A8
-_0804C9A0: .4byte gUnknown_03005450
+_0804C9A0: .4byte gLevelScore
 _0804C9A4: .4byte 0x0000C350
 _0804C9A8: .4byte gGameMode
 _0804C9AC: .4byte gNumLives

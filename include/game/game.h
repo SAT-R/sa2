@@ -480,7 +480,7 @@ extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gMultiplayerPseudoRandom;
 
-extern s32 gUnknown_03005450;
+extern s32 gLevelScore;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 

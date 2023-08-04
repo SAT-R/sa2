@@ -266,7 +266,7 @@ extern s16 gUnknown_030017F4[2];
 extern u8 gUnknown_03001850[32];
 extern FuncType_030053A0 gUnknown_03001870[4];
 
-extern s8 gUnknown_030018F0;
+extern u8 gOamFreeIndex;
 extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
@@ -287,7 +287,9 @@ extern u8 gUnknown_0300287C;
 extern u8 gUnknown_03002A80;
 extern u8 gVramGraphicsCopyQueueIndex;
 extern u16 gUnknown_03002A8C;
-extern u8 gUnknown_03002AE0;
+// When paused, the previously-active OAM elements get moved to the end
+// of the OAM. This is the index of the first currently-inactive element
+extern u8 gOamFirstPausedIndex;
 extern u8 gUnknown_03002AE4;
 extern Sprite *gUnknown_03004D10[16];
 extern u8 gUnknown_03004D50;

@@ -71,10 +71,10 @@
 #define PLAYERFN_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gUnknown_03005450;                                            \
-        gUnknown_03005450 += incVal;                                                    \
+        s32 old_3005450 = gLevelScore;                                                  \
+        gLevelScore += incVal;                                                          \
                                                                                         \
-        divResA = Div(gUnknown_03005450, 50000);                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
         divResB = Div(old_3005450, 50000);                                              \
                                                                                         \
         if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \

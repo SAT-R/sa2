@@ -26,7 +26,7 @@ typedef struct {
     /* 0x1A */ s16 unk1A;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ s32 someX;
-} Sprite_IaUnknown; /* size: 0x24 */
+} Sprite_MultiplayerTeleport; /* size: 0x24 */
 
 typedef struct {
     /* 0x00 */ Sprite s;
@@ -34,24 +34,25 @@ typedef struct {
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
-extern void sub_80803FC(Sprite_IaUnknown *);
-extern bool32 sub_808055C(Sprite_IaUnknown *);
-extern void sub_80805D0(Sprite_IaUnknown *);
+extern void sub_80803FC(Sprite_MultiplayerTeleport *);
+extern bool32 sub_808055C(Sprite_MultiplayerTeleport *);
+extern void sub_80805D0(Sprite_MultiplayerTeleport *);
 extern void CreateSprite_Notif_RingBonus(void);
 
 void Task_80806F4(void);
-void sub_808073C(Sprite_IaUnknown UNUSED *s);
+void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s);
 static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-void CreateEntity_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          UNUSED u8 spriteY)
+void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, UNUSED u8 spriteY)
 {
     s32 screenX, screenY;
 
-    struct Task *t = TaskCreate(Task_80806F4, sizeof(Sprite_IaUnknown), 0x2010, 0, NULL);
-    Sprite_IaUnknown *sprite = TaskGetStructPtr(t);
+    struct Task *t
+        = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
+    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(t);
 
     sprite->timer = 0;
     sprite->unk18 = 0;
@@ -72,7 +73,7 @@ void CreateEntity_8080368(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_80803FC(Sprite_IaUnknown *sprite)
+void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 {
     if ((sprite->someX < Q_24_8(sprite->posX + sprite->unk8))
         && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
@@ -142,7 +143,7 @@ void sub_80803FC(Sprite_IaUnknown *sprite)
     gCurTask->main = Task_80806F4;
 }
 
-bool32 sub_808055C(Sprite_IaUnknown *sprite)
+bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
 {
     s16 spriteX, spriteY;
     s16 playerX, playerY;
@@ -160,7 +161,7 @@ bool32 sub_808055C(Sprite_IaUnknown *sprite)
     }
 }
 
-void sub_80805D0(Sprite_IaUnknown *sprite)
+void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
 {
     if (sprite->unk1C != 0) {
         s32 xValue, yValue;
@@ -214,7 +215,7 @@ void CreateSprite_Notif_RingBonus(void)
 
 void Task_80806F4(void)
 {
-    Sprite_IaUnknown *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sprite->unk18 = sprite->unk1A;
     }
@@ -226,7 +227,7 @@ void Task_80806F4(void)
     sub_80805D0(sprite);
 }
 
-void sub_808073C(Sprite_IaUnknown UNUSED *s) { gCurTask->main = Task_80807A4; }
+void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_80807A4; }
 
 void Task_8080750(void)
 {
@@ -248,7 +249,7 @@ static void TaskDestructor_8080790(struct Task *t)
 
 static void Task_80807A4(void)
 {
-    Sprite_IaUnknown *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
     if (sub_808055C(sprite) == 0)
         sub_80803FC(sprite);
 }

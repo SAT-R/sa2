@@ -1647,8 +1647,8 @@ void Task_SkipHandlerMain(void)
 
 void sub_8039AD4(void)
 {
-    gUnknown_030018F0 = 0;
-    gUnknown_03002AE0 = 0;
+    gOamFreeIndex = 0;
+    gOamFirstPausedIndex = 0;
     CpuFill16(-1, gUnknown_03001850, sizeof(gUnknown_03001850));
     CpuFill16(-1, gUnknown_03004D60, sizeof(gUnknown_03004D60));
 

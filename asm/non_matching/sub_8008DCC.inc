@@ -572,7 +572,7 @@ _080091BE:
 	ldr r0, [sp, #0xc]
 	cmp r1, r0
 	bgt _08009208
-	ldr r1, _0800927C @ =gUnknown_080D502C
+	ldr r1, _0800927C @ =gSpriteInits_InteractablesMultiplayer
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -650,7 +650,7 @@ _0800926A:
 _08009278:
 	b _08009504
 	.align 2, 0
-_0800927C: .4byte gUnknown_080D502C
+_0800927C: .4byte gSpriteInits_InteractablesMultiplayer
 _08009280: .4byte gCamera
 _08009284:
 	ldr r0, [sp, #0x10]
@@ -945,7 +945,7 @@ _08009482:
 	ldr r0, [sp, #0x1c]
 	cmp r1, r0
 	bgt _080094CC
-	ldr r1, _08009528 @ =gUnknown_080D502C
+	ldr r1, _08009528 @ =gSpriteInits_InteractablesMultiplayer
 	ldrb r0, [r5, #2]
 	lsls r0, r0, #2
 	adds r0, r0, r1
@@ -1009,7 +1009,7 @@ _08009518:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08009528: .4byte gUnknown_080D502C
+_08009528: .4byte gSpriteInits_InteractablesMultiplayer
 _0800952C: .4byte gCamera
 
 
