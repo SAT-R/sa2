@@ -117,7 +117,7 @@ SECTIONS
         build/sa2/src/game/countdown.o(.text);
         build/sa2/src/game/game_over.o(.text);
         build/sa2/src/game/bosses/final_intro.o(.text);
-        build/sa2/src/game/bosses/explosion.o(.text);
+        build/sa2/src/game/bosses/explosion_parts.o(.text);
         build/sa2/src/game/bosses/common.o(.text);
         build/sa2/src/game/bosses/eggmobile_escape_sequence.o(.text);
         build/sa2/asm/boss_1.o(.text);

@@ -6,13 +6,13 @@ typedef void (*UnknownBossFunc)(s32, s32);
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ s32 unk30;
-    /* 0x34 */ s32 unk34;
-    /* 0x38 */ s16 unk38;
-    /* 0x3A */ s16 unk3A;
+    /* 0x30 */ s32 posX;
+    /* 0x34 */ s32 posY;
+    /* 0x38 */ s16 dirX;
+    /* 0x3A */ s16 dirY;
     /* 0x3C */ u16 unk3C;
     /* 0x40 */ u8 *numCreatedParts;
-} Sprite_BossParts; /* size: 0x44 */
+} Sprite_ExplosionParts; /* size: 0x44 */
 
 typedef struct {
     /* 0x00 */ void *vram;
@@ -25,8 +25,9 @@ typedef struct {
     /* 0x14 */ s32 unk14;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ s16 unk1C;
-} BossParts;
+} ExplosionParts;
 
-void sub_8039B54(BossParts *p0, u8 *p1);
+void sub_8039B54(ExplosionParts *p0, u8 *numCreatedParts);
+void Task_DestroyBossParts(void);
 
 #endif // GUARD_GAME_BOSSES_COMMON_H
