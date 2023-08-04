@@ -4067,7 +4067,7 @@ _08049AC4:
 	ldr r0, [r0]
 	str r0, [r3, #0x78]
 	movs r0, #7
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	ldrh r1, [r4]
 	ldr r0, _08049AF0 @ =0x0000FFFD
 	ands r0, r1
@@ -4196,7 +4196,7 @@ _08049BAC:
 	strb r0, [r7, #4]
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	ldr r2, _08049C9C @ =gUnknown_03005424
 	ldrh r1, [r2]
 	ldr r0, _08049CA0 @ =0x0000FFFD
