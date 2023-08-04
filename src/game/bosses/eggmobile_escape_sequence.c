@@ -90,7 +90,7 @@ static void Task_EggmobileMoveUp(void)
     sub_8004558(s);
     sub_80051E8(s);
 
-    if (s->y <= Q_24_8(0.1953125)) {
+    if (s->y <= 50) {
         gCurTask->main = Task_EggmobileSwitchMovement;
     }
 }
@@ -125,7 +125,7 @@ static void Task_EggmobileMoveRight(void)
     Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
     Sprite *s = &em->s2;
 
-    if (s->x > 0x10E) {
+    if (s->x > DISPLAY_WIDTH + 30) {
         m4aSongNumStop(SE_EGGMOBILE_FLEES);
         TaskDestroy(gCurTask);
     } else {
