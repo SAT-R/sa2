@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggBomberTank
 CreateEggBomberTank: @ 0x0803CCA8
 	push {r4, r5, r6, r7, lr}

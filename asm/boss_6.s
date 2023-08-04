@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggGoRound
 CreateEggGoRound: @ 0x080459EC
 	push {r4, r5, r6, r7, lr}

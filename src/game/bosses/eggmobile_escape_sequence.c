@@ -110,7 +110,7 @@ static void Task_EggmobileSwitchMovement(void)
 
         gCurTask->main = Task_EggmobileMoveRight;
     }
-    // _0803A1A2
+
     s = &em->s2;
     sub_8004558(s);
     sub_80051E8(s);

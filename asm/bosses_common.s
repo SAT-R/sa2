@@ -446,7 +446,7 @@ sub_8039EA4: @ 0x08039EA4
 	ldr r0, _08039ECC @ =0x0000FFDE
 	ands r0, r1
 	strh r0, [r2]
-	ldr r1, _08039ED0 @ =gUnknown_080D798C
+	ldr r1, _08039ED0 @ =sBossCreationFuncs
 	lsls r0, r3, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
@@ -457,7 +457,7 @@ _08039EC4:
 	.align 2, 0
 _08039EC8: .4byte gUnknown_03005424
 _08039ECC: .4byte 0x0000FFDE
-_08039ED0: .4byte gUnknown_080D798C
+_08039ED0: .4byte sBossCreationFuncs
 
 @ XX - Called on init of every boss (except for 1st?)
 	thumb_func_start sub_8039ED4

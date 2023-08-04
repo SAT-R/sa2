@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggSaucer
 CreateEggSaucer: @ 0x08042E08
 	push {r4, r5, r6, r7, lr}

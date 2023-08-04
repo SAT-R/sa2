@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggFrog
 CreateEggFrog: @ 0x08047A68
 	push {r4, r5, r6, r7, lr}

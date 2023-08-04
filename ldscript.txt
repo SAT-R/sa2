@@ -329,6 +329,7 @@ SECTIONS
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);
         build/sa2/src/game/bosses/final_intro.o(.rodata);
+        build/sa2/src/game/bosses/common.o(.rodata);
         build/sa2/data/true_area_53_data.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
         build/sa2/asm/enemy_koura.o(.rodata);

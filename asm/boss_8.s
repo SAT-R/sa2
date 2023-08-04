@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateSuperEggRoboZ
 CreateSuperEggRoboZ: @ 0x0804A6C8
 	push {r4, r5, r6, r7, lr}
