@@ -32,8 +32,8 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         Sprite *s = &parts->s;
         s32 cos, sin;
 
-        parts->posX = Q_24_8(info->unk14);
-        parts->posY = Q_24_8(info->unk18);
+        parts->posX = Q_24_8(info->spawnX);
+        parts->posY = Q_24_8(info->spawnY);
 
         cos = COS(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelX = cos >> 14;
@@ -41,7 +41,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         sin = SIN(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelY = sin >> 14;
 
-        parts->unk3C = info->unk1C;
+        parts->velocityY = info->velocity;
         parts->numCreatedParts = numCreatedParts;
         (*numCreatedParts)++;
 
@@ -71,7 +71,7 @@ void Task_8039C4C(void)
         parts->accelX -= Q_24_8(1.0);
     }
 
-    parts->accelY += parts->unk3C;
+    parts->accelY += parts->velocityY;
     parts->posX += parts->accelX;
     parts->posY += parts->accelY;
 
@@ -101,8 +101,8 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         Sprite *s = &parts->s;
         s32 cos, sin;
 
-        parts->posX = Q_24_8(info->unk14);
-        parts->posY = Q_24_8(info->unk18);
+        parts->posX = Q_24_8(info->spawnX);
+        parts->posY = Q_24_8(info->spawnY);
 
         cos = COS(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelX = cos >> 14;
@@ -110,7 +110,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         sin = SIN(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelY = sin >> 14;
 
-        parts->unk3C = info->unk1C;
+        parts->velocityY = info->velocity;
         parts->numCreatedParts = numCreatedParts;
         (*numCreatedParts)++;
 
@@ -136,7 +136,7 @@ void Task_8039DFC(void)
     Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
     Sprite *s = &parts->s;
 
-    parts->accelY += parts->unk3C;
+    parts->accelY += parts->velocityY;
     parts->posX += parts->accelX;
     parts->posY += parts->accelY;
 
