@@ -63,9 +63,9 @@ void sub_8039F50(s32 p0, u8 p1)
     }
 }
 
-void Task_8039F80(void)
+void Task_DestroyBossParts(void)
 {
-    Sprite_BossCommon *bc = TaskGetStructPtr(gCurTask);
-    (*bc->p1)--;
+    Sprite_BossParts *bc = TaskGetStructPtr(gCurTask);
+    (*bc->numCreatedParts)--;
     TaskDestroy(gCurTask);
 }
