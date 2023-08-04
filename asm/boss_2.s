@@ -800,7 +800,7 @@ _0803D316:
 	asrs r1, r1, #0x10
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 	ldr r1, [r7]
 	ldr r0, _0803D364 @ =sub_803E5B0
 	str r0, [r1, #8]

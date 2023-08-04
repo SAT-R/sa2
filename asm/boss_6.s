@@ -1086,7 +1086,7 @@ _08046288:
 	subs r1, #0xf
 	lsls r1, r1, #0x10
 	asrs r1, r1, #0x10
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _080462D4:
 	ldr r0, [r4, #0x6c]
 	asrs r0, r0, #8

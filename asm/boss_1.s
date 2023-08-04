@@ -4394,7 +4394,7 @@ _0803C4D2:
 	ldrsh r1, [r6, r2]
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _0803C4F6:
 	ldr r0, [r7, #0xc]
 	asrs r0, r0, #8

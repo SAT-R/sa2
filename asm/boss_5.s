@@ -1020,7 +1020,7 @@ _08043660:
 	asrs r1, r1, #0x10
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _080436A0:
 	adds r0, r4, #0
 	bl sub_8045898

@@ -1647,7 +1647,7 @@ _0803F914:
 	asrs r1, r1, #0x10
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 	movs r0, #1
 	mov r1, sb
 	strb r0, [r1]
