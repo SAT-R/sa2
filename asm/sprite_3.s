@@ -5,6 +5,7 @@
 .syntax unified
 .arm
 
+@ sub_081569A0 in KATAM?
 	thumb_func_start sub_800550C
 sub_800550C: @ 0x0800550C
 	push {r4, r5, r6, r7, lr}
