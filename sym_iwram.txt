@@ -2,6 +2,7 @@
 build/sa2/src/lib/m4a.o(.bss.code);
 build/sa2/src/multi_boot.o(.bss);
 /* space 0x20 */
+. = 0x00000408; gUnknown_03000408 = .; . += 2;
 . = 0x0000042C; 
 build/sa2/src/lib/agb_flash.o(.bss);
 

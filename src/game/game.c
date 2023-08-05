@@ -1,5 +1,6 @@
 #include <string.h>
 #include "core.h"
+#include "flags.h"
 #include "multi_sio.h"
 #include "trig.h"
 #include "lib/m4a.h"
@@ -81,6 +82,12 @@ void sub_801BF24(void);
 void sub_802C668(s32 *, s32 *);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
+
+#ifdef PORTABLE
+extern void sub_801E454(u32 vcount);
+#else
+extern void sub_801E454(u8 vcount);
+#endif
 
 struct Backgrounds {
     Background unk0;
@@ -359,23 +366,23 @@ const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
     { 0x40, 0x20, 0x02, 0x1C }, //
 };
 
-const u8 gUnknown_080D5B20[] = {
-    14,  0, 1, //
-    22,  0, 3, //
-    30,  0, 2, //
-    38,  0, 1, //
-    46,  0, 3, //
-    62,  0, 1, //
-    70,  0, 2, //
-    86,  0, 1, //
-    94,  0, 2, //
-    126, 0, 1, //
-    168, 1, 1, //
-    174, 1, 2, //
-    182, 2, 3, //
-    198, 3, 4, //
-    222, 4, 5, //
-    255, 5, 6, //
+const u8 gUnknown_080D5B20[16][3] = {
+    { 14, 0, 1 }, //
+    { 22, 0, 3 }, //
+    { 30, 0, 2 }, //
+    { 38, 0, 1 }, //
+    { 46, 0, 3 }, //
+    { 62, 0, 1 }, //
+    { 70, 0, 2 }, //
+    { 86, 0, 1 }, //
+    { 94, 0, 2 }, //
+    { 126, 0, 1 }, //
+    { 168, 1, 1 }, //
+    { 174, 1, 2 }, //
+    { 182, 2, 3 }, //
+    { 198, 3, 4 }, //
+    { 222, 4, 5 }, //
+    { 255, 5, 6 }, //
 };
 
 // Used by sub_801E498
@@ -2021,11 +2028,83 @@ void sub_801CB74(void)
     gBgScrollRegs[3][1] = 0;
 }
 
+// https://decomp.me/scratch/Ww1Pq
+#if 01
 NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
+#else
+void sub_801CBE8(s32 a, s32 b)
+#endif
 {
-    // TODO: similar to sub_801C94C
+    s16 r6;
+    u8 i;
+    u8 sp40;
+    Vec2_16 sp[16];
+    Vec2_16 *cursorStack;
+    u8 *cursor;
+    s32 pFlags;
+    register s16 sl asm("sl") = 0;
+    register u16 *bgBuffer asm("r5") = gUnknown_03001884;
+    register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
+
+    gBgScrollRegs[0][1] = r3;
+    gBgScrollRegs[3][1] = r3;
+
+    if (IS_SINGLE_PLAYER) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
+            if (gUnknown_03000408 == 0) {
+                gUnknown_03000408 = a;
+            }
+            gUnknown_03000408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
+            a = gUnknown_03000408;
+        } else {
+            gUnknown_03000408 = 0;
+        }
+        // _0801CC72
+        i = 0;
+
+        {
+            s32 r6 = r3;
+            cursor = (u8 *)gUnknown_080D5B20;
+            sp40 = r3;
+
+            while (r6 >= cursor[i * 3]) {
+                if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
+                    goto _0801CCA8;
+                }
+            }
+        }
+        sl = i;
+    _0801CCA8:
+
+        for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
+            sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);
+            sp[i].y = (((gUnknown_080D5B20[i][2] * a) >> 5) & 0xFF);
+        }
+        // __0801CCF0
+
+        cursorStack = &sp[sl];
+        cursor = (u8 *)gUnknown_080D5B20[sl];
+        for (i = 0; (u8)i < DISPLAY_HEIGHT - 1; sp40++, i++) {
+            *bgBuffer = cursorStack->y;
+            bgBuffer++;
+
+            *bgBuffer = cursorStack->x;
+            bgBuffer++;
+
+            if (sp40 >= *cursor) {
+                cursor += 3;
+                cursorStack++;
+            }
+        }
+
+        // __0801CD2C
+        gHBlankCallbacks[gNumHBlankCallbacks++] = sub_801E454;
+        gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
+    }
 }
+#if 01
 END_NONMATCH
+#endif
 
 void SetupSpotlightSnowAndCreateSpotlights(void)
 {
