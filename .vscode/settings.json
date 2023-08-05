@@ -244,7 +244,11 @@
     "bullet_buzzer.h": "c",
     "tilemap_table.h": "c",
     "tilemaps.h": "c",
-    "projectiles.h": "c"
+    "projectiles.h": "c",
+    "game_physics.h": "c",
+    "playerfn_cmds.h": "c",
+    "characters.h": "c",
+    "music_manager.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
