@@ -657,7 +657,7 @@ void PlayerCB_80126B0(Player *p)
             p->unk61 = 2;
         }
 
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+        p->speedAirY += Q_24_8(PLAYER_FLYING_END_GRAVITY);
     }
 
     if (p->y < Q_24_8(gCamera.unk28)) {
@@ -912,7 +912,7 @@ void PlayerCB_8012C2C(Player *p)
             p->unk61 = 2;
         }
 
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+        p->speedAirY += Q_24_8(PLAYER_FLYING_END_GRAVITY);
     }
 
     if (p->y < Q_24_8(gCamera.unk28)) {

@@ -5,4 +5,6 @@
 
 void CreateStageMusicManager(void);
 
+extern const u16 gLevelSongs[];
+
 #endif
