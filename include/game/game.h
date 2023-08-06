@@ -553,6 +553,16 @@ extern void sub_80157C8(TrickBoundPos *pos, u8 index);
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 
+struct Backgrounds {
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
+};
+
+extern struct Backgrounds gUnknown_03005850;
+extern const u32 *gUnknown_030059C8;
+
 // rodata
 extern const u16 gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 extern const u16 sAnimsGotThroughCharacterNames[5][3];

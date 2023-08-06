@@ -17,7 +17,6 @@
 #include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
 #include "game/stage/pause_menu.h"
-#include "game/stage/spot_light.h"
 #include "game/time_attack/lobby.h"
 
 #include "constants/songs.h"
@@ -83,23 +82,6 @@ void sub_802C668(s32 *, s32 *);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
 
-#ifdef PORTABLE
-extern void sub_801E454(u32 vcount);
-#else
-extern void sub_801E454(u8 vcount);
-#endif
-
-struct Backgrounds {
-    Background unk0;
-    Background unk40;
-    Background unk80;
-    Background unkC0;
-};
-
-extern struct Backgrounds gUnknown_03005850;
-extern const u32 *gUnknown_030059C8;
-
-extern const Background gUnknown_080D5864[4];
 extern const CameraMain sStageBgUpdateFuncs[];
 extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
@@ -114,7 +96,7 @@ const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
         sub_801BC88, sub_801BD08, sub_801BD74, sub_801BDE0, //
         sub_801BE4C, sub_801BEB8 };
 
-const Background gUnknown_080D5864[] = {
+const Background gUnknown_080D5864[4] = {
     {
         .graphics = {  
             .src = NULL,  
@@ -254,17 +236,17 @@ const u16 gUnknown_080D5964[][2] = {
     { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 },
 };
 
-void StageInit_Zone1(void);
-void StageInit_Zone3(void);
-void SetupSpotlightSnowAndCreateSpotlights(void);
-void StageInit_Zone5(void);
-void StageInit_Zone6_Acts(void);
-void StageInit_Zone6_Boss(void);
-void StageInit_Zone7(void);
-void StageInit_ZoneFinal_0(void);
-void StageInit_Zone2(void);
-void StageInit_Dummy(void);
-const VoidFn gUnknown_080D5988[] = {
+extern void StageInit_Zone1(void);
+extern void StageInit_Zone2(void);
+extern void StageInit_Zone3(void);
+extern void SetupSpotlightSnowAndCreateSpotlights(void);
+extern void StageInit_Zone5(void);
+extern void StageInit_Zone6_Acts(void);
+extern void StageInit_Zone6_Boss(void);
+extern void StageInit_Zone7(void);
+extern void StageInit_ZoneFinal_0(void);
+extern void StageInit_Dummy(void);
+static const VoidFn sStageInitProcedures[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = StageInit_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = StageInit_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageInit_Zone1,
@@ -301,75 +283,75 @@ const VoidFn gUnknown_080D5988[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
-void stageBgUpdateZone1Acts12(s32, s32);
-void stageBgUpdateZone2Acts12(s32, s32);
-void stageBgUpdateZone3Acts12(s32, s32);
-void stageBgUpdateZone4Acts12(s32, s32);
-void stageBgUpdateZone5Acts12(s32, s32);
-void stageBgUpdateZone6Acts12(s32, s32);
+void StageBgUpdateZone1Acts12(s32, s32);
+void StageBgUpdateZone2Acts12(s32, s32);
+void StageBgUpdateZone3Acts12(s32, s32);
+void StageBgUpdateZone4Acts12(s32, s32);
+void StageBgUpdateZone5Acts12(s32, s32);
+void StageBgUpdateZone6Acts12(s32, s32);
 void stageBgUpdateDummy(s32, s32);
-void stageBgUpdateZone1ActBoss(s32, s32);
-void stageBgUpdateZone2ActBoss(s32, s32);
-void stageBgUpdateZone3ActBoss(s32, s32);
-void stageBgUpdateZone5ActBoss(s32, s32);
-void stageBgUpdateZone6ActBoss(s32, s32);
-void stageBgUpdateZone7Acts12(s32, s32);
-void stageBgUpdateZone7ActBoss(s32, s32);
-void stageBgUpdateZoneFinalActXX(s32, s32);
-void stageBgUpdateZoneFinalActTA53(s32, s32);
+void StageBgUpdateZone1ActBoss(s32, s32);
+void StageBgUpdateZone2ActBoss(s32, s32);
+void StageBgUpdateZone3ActBoss(s32, s32);
+void StageBgUpdateZone5ActBoss(s32, s32);
+void StageBgUpdateZone6ActBoss(s32, s32);
+void StageBgUpdateZone7Acts12(s32, s32);
+void StageBgUpdateZone7ActBoss(s32, s32);
+void StageBgUpdateZoneFinalActXX(s32, s32);
+void StageBgUpdateZoneFinalActTA53(s32, s32);
 
 static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 1
-    [LEVEL_INDEX(ZONE_1, ACT_1)] = stageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_1, ACT_2)] = stageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = stageBgUpdateZone1ActBoss,
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageBgUpdateZone1ActBoss,
     [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 2
-    [LEVEL_INDEX(ZONE_2, ACT_1)] = stageBgUpdateZone2Acts12,
-    [LEVEL_INDEX(ZONE_2, ACT_2)] = stageBgUpdateZone2Acts12,
-    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = stageBgUpdateZone2ActBoss,
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = StageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = StageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageBgUpdateZone2ActBoss,
     [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 3
-    [LEVEL_INDEX(ZONE_3, ACT_1)] = stageBgUpdateZone3Acts12,
-    [LEVEL_INDEX(ZONE_3, ACT_2)] = stageBgUpdateZone3Acts12,
-    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = stageBgUpdateZone3ActBoss,
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = StageBgUpdateZone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = StageBgUpdateZone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = StageBgUpdateZone3ActBoss,
     [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 4
-    [LEVEL_INDEX(ZONE_4, ACT_1)] = stageBgUpdateZone4Acts12,
-    [LEVEL_INDEX(ZONE_4, ACT_2)] = stageBgUpdateZone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = StageBgUpdateZone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = StageBgUpdateZone4Acts12,
     [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = stageBgUpdateDummy,
     [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 5
-    [LEVEL_INDEX(ZONE_5, ACT_1)] = stageBgUpdateZone5Acts12,
-    [LEVEL_INDEX(ZONE_5, ACT_2)] = stageBgUpdateZone5Acts12,
-    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = stageBgUpdateZone5ActBoss,
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = StageBgUpdateZone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = StageBgUpdateZone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = StageBgUpdateZone5ActBoss,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 6
-    [LEVEL_INDEX(ZONE_6, ACT_1)] = stageBgUpdateZone6Acts12,
-    [LEVEL_INDEX(ZONE_6, ACT_2)] = stageBgUpdateZone6Acts12,
-    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = stageBgUpdateZone6ActBoss,
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageBgUpdateZone6ActBoss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 7
-    [LEVEL_INDEX(ZONE_7, ACT_1)] = stageBgUpdateZone7Acts12,
-    [LEVEL_INDEX(ZONE_7, ACT_2)] = stageBgUpdateZone7Acts12,
-    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = stageBgUpdateZone7ActBoss,
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = StageBgUpdateZone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = StageBgUpdateZone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = StageBgUpdateZone7ActBoss,
     [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone Final
-    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = stageBgUpdateZoneFinalActXX,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = stageBgUpdateZoneFinalActTA53,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = stageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = stageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = StageBgUpdateZoneFinalActXX,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = StageBgUpdateZoneFinalActTA53,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = StageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = StageBgUpdateZone2Acts12,
 
     // Zone Unused
-    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = stageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = stageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = StageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = StageBgUpdateZone6Acts12,
 };
 
 const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
@@ -1667,8 +1649,8 @@ void sub_801C068(u32 level)
 
     camera->unk58 = sStageBgUpdateFuncs[level];
 
-    if (gUnknown_080D5988[level] != NULL) {
-        gUnknown_080D5988[level]();
+    if (sStageInitProcedures[level] != NULL) {
+        sStageInitProcedures[level]();
     }
 }
 
@@ -1874,487 +1856,4 @@ void sub_801C708(s32 x, s32 y)
         layer->scrollY = y;
         sub_8002A3C(layer);
     }
-}
-
-void StageInit_Zone1(void)
-{
-    Background *background = &gUnknown_03005850.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
-
-    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        const Background *templates = gUnknown_080D5864;
-        memcpy(background, &templates[3], 0x40);
-
-        background->tilemapId = TM_STAGE_1_BG_0_COPY;
-        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-
-        background->unk26 = 0x20;
-        background->unk28 = 0x20;
-    } else {
-        const Background *templates = gUnknown_080D5864;
-        memcpy(background, &templates[3], 0x40);
-        background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
-
-        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-
-        background->unk26 = 0x20;
-        background->unk28 = 0x1E;
-    }
-
-    sub_8002A3C(background);
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-}
-
-void stageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
-{
-
-    s32 i;
-    s32 initial1, initial2;
-    s16 camY;
-    u16 bgScroll;
-    u16 *cursor;
-
-    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
-            s32 temp, val;
-            temp = (gPlayer.moveState & MOVESTATE_4000000) ? 7 : 0xF;
-
-            val = gBgScrollRegs[0][0];
-            if ((gUnknown_03005590 & temp) == temp) {
-                val++;
-            }
-            gBgScrollRegs[0][0] = val;
-            gBgScrollRegs[0][0] &= 0xFF;
-        } else {
-            gBgScrollRegs[0][0] = gCamera.x >> 6;
-            gBgScrollRegs[0][0] &= 0xFF;
-        }
-
-        gBgScrollRegs[0][1] = gCamera.y >> 9;
-        gFlags |= 4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 4;
-        cursor = gUnknown_03001884;
-        initial1 = 0;
-
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
-            s32 temp, val;
-            temp = (gPlayer.moveState & MOVESTATE_4000000) ? 0xF : 0x1F;
-
-            val = gBgScrollRegs[3][0];
-            if ((gUnknown_03005590 & temp) == temp) {
-                val++;
-            }
-            gBgScrollRegs[3][0] = val;
-            gBgScrollRegs[3][0] &= 0xFF;
-            bgScroll = gBgScrollRegs[3][0];
-        } else {
-            bgScroll = gCamera.x >> 7;
-            gBgScrollRegs[3][0] = bgScroll;
-        }
-
-        camY = gCamera.y >> 8;
-        initial2 = 0;
-        for (i = 0x47; i >= 0; i--) {
-            *cursor++ = initial1;
-            *cursor++ = initial2;
-        }
-
-        for (i = 0x56; i >= 0; i--) {
-            *cursor++ = bgScroll;
-            *cursor++ = camY;
-        }
-    }
-}
-
-// https://decomp.me/scratch/ekyaq
-NONMATCH("asm/non_matching/stageBgUpdateZone2Acts12.inc",
-         void stageBgUpdateZone2Acts12(s32 a, s32 b))
-{
-    u8 i, j;
-    u16 *cursor = NULL;
-    s16 something;
-    s32 x = 0;
-    if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
-        if (gBgScrollRegs[3][0] == 0) {
-            gBgScrollRegs[3][0] = a;
-        }
-        gBgScrollRegs[3][0] += (gPlayer.speedGroundX >> 8);
-        a = gBgScrollRegs[3][0];
-    }
-
-    if (IS_MULTI_PLAYER) {
-        s16 val;
-        gBgScrollRegs[3][0] = a >> 4;
-        val = Div(b, 0x10);
-        if (val > 0x100) {
-            val = 0x100;
-        }
-        gBgScrollRegs[3][1] = val;
-    } else {
-        s16 temp, temp2;
-        s32 unk5590_1;
-
-        temp = Div(b, 0x10);
-        if (temp > 0x100) {
-            temp = 0x100;
-        }
-
-        temp2 = Div(a, 0x69);
-        if (temp2 > 0x100) {
-            temp2 = 0x100;
-        }
-
-        gFlags |= 4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 4;
-
-        cursor = gUnknown_03001884;
-        unk5590_1 = gUnknown_03005590 * 0x18;
-
-        for (i = 0; i < 159; i++) {
-            s16 temp4;
-            s32 sin;
-            s32 temp3 = temp + i;
-            if ((u32)(temp3 - 0x6F) < 10) {
-                temp4 = (((temp3 - 0x6E) * a) >> 5) & 0xFF;
-            } else {
-                if (temp3 > 0x78) {
-                    temp4 = ((a * 10) >> 5) & 0xFF;
-                } else {
-                    temp4 = temp2 << 3;
-                }
-            }
-            *cursor++ = temp4;
-            *cursor++ = temp;
-            sin = SIN(((i * 8) + (temp << 3)) & ONE_CYCLE) >> 12;
-
-            if (temp + i + sin >= 178) {
-                break;
-            }
-        }
-        something = (a >> 3);
-        for (j = 0; i < 159; i++, j++) {
-            x = (x + 8);
-            x &= ONE_CYCLE;
-            *cursor++ = something + (SIN(x) >> 0xD)
-                + (COS(((gUnknown_03005590 * 2) + x) & ONE_CYCLE) >> 0xB)
-                + (SIN((unk5590_1 + (i * 0x40)) & ONE_CYCLE) >> 0xD);
-            *cursor++ = (j / 2) + temp + (SIN(x) >> 0xC)
-                + (COS((gUnknown_03005590 + (i * 8)) & ONE_CYCLE) >> 10);
-        };
-    }
-}
-END_NONMATCH
-
-void StageInit_Zone3(void)
-{
-    Background *background = &gUnknown_03005850.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1B0F;
-
-    *background = gUnknown_080D5864[3];
-
-    background->tilemapId = 0x171;
-    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    sub_8002A3C(background);
-
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[3][0] = 0;
-    gBgScrollRegs[3][1] = 0;
-}
-
-// https://decomp.me/scratch/Ww1Pq
-#if 01
-NONMATCH("asm/non_matching/stageBgUpdateZone3Acts12.inc",
-         void stageBgUpdateZone3Acts12(s32 a, s32 b))
-#else
-void stageBgUpdateZone3Acts12(s32 a, s32 b)
-#endif
-{
-    s16 r6;
-    u8 i;
-    u8 sp40;
-    Vec2_16 sp[16];
-    Vec2_16 *cursorStack;
-    u8 *cursor;
-    s32 pFlags;
-    register s16 sl asm("sl") = 0;
-    register u16 *bgBuffer asm("r5") = gUnknown_03001884;
-    register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
-
-    gBgScrollRegs[0][1] = r3;
-    gBgScrollRegs[3][1] = r3;
-
-    if (IS_SINGLE_PLAYER) {
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
-            if (gUnknown_03000408 == 0) {
-                gUnknown_03000408 = a;
-            }
-            gUnknown_03000408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
-            a = gUnknown_03000408;
-        } else {
-            gUnknown_03000408 = 0;
-        }
-        // _0801CC72
-        i = 0;
-
-        {
-            s32 r6 = r3;
-            cursor = (u8 *)gUnknown_080D5B20;
-            sp40 = r3;
-
-            while (r6 >= cursor[i * 3]) {
-                if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
-                    goto _0801CCA8;
-                }
-            }
-        }
-        sl = i;
-    _0801CCA8:
-
-        for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
-            sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);
-            sp[i].y = (((gUnknown_080D5B20[i][2] * a) >> 5) & 0xFF);
-        }
-        // __0801CCF0
-
-        cursorStack = &sp[sl];
-        cursor = (u8 *)gUnknown_080D5B20[sl];
-        for (i = 0; (u8)i < DISPLAY_HEIGHT - 1; sp40++, i++) {
-            *bgBuffer = cursorStack->y;
-            bgBuffer++;
-
-            *bgBuffer = cursorStack->x;
-            bgBuffer++;
-
-            if (sp40 >= *cursor) {
-                cursor += 3;
-                cursorStack++;
-            }
-        }
-
-        // __0801CD2C
-        gHBlankCallbacks[gNumHBlankCallbacks++] = sub_801E454;
-        gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    }
-}
-#if 01
-END_NONMATCH
-#endif
-
-void SetupSpotlightSnowAndCreateSpotlights(void)
-{
-    Background *background = &gUnknown_03005850.unk0;
-    const Background *templates;
-    gBgCntRegs[0] = 0x1B0F;
-
-    *background = gUnknown_080D5864[3];
-
-    background->tilemapId = TM_SPOTLIGHT_SNOW;
-    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2E = 0x13;
-    sub_8002A3C(background);
-
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[3][0] = 0;
-    gBgScrollRegs[3][1] = 0;
-
-    if (IS_SINGLE_PLAYER) {
-        CreateSpotLightBeams();
-    }
-}
-
-struct UNK_801CDF0 {
-    u8 unk0[0x40A];
-    s16 unk40A;
-};
-
-void stageBgUpdateZone4Acts12(s32 a, s32 b)
-{
-    Player *player = &gPlayer;
-
-    if ((player->moveState & MOVESTATE_8000000) && gUnknown_030054F4 > 6) {
-        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
-        if (unkDF0->unk40A == 0) {
-            unkDF0->unk40A = a;
-        }
-        unkDF0->unk40A += player->speedGroundX >> 8;
-        a = unkDF0->unk40A;
-    } else {
-        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
-        unkDF0->unk40A = 0;
-    }
-
-    if (IS_SINGLE_PLAYER && !(gUnknown_03005424 & 0x100)) {
-        gWinRegs[5] = 0x3e;
-        gWinRegs[4] = 0x3f3f;
-        gWinRegs[0] = 0xf0;
-        gWinRegs[2] = 0xa0;
-        gWinRegs[1] = 0xf0;
-        gWinRegs[3] = 0xa0;
-        gBldRegs.bldY = 7;
-        gBldRegs.bldCnt = 0x3f41;
-        gBldRegs.bldAlpha = 0xc0c;
-    }
-
-    sub_8002A3C(&gUnknown_03005850.unk0);
-    UpdateBgAnimationTiles(&gUnknown_03005850.unk0);
-
-    if (!(gUnknown_03005590 & 0xF)) {
-        gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
-        gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
-    }
-    gBgScrollRegs[3][0] = a >> 4;
-    gBgScrollRegs[3][1] = b >> 6;
-}
-
-void StageInit_Zone5(void)
-{
-    Background *background = &gUnknown_03005850.unk0;
-    if (IS_SINGLE_PLAYER) {
-        gDispCnt |= 0x100;
-        gBgCntRegs[0] = 0x1b0c;
-        *background = gUnknown_080D5864[3];
-        background->tilemapId = TM_SKY_CANYON_CLOUDS_FOREGROUND;
-        background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-        background->unk26 = 0x20;
-        background->unk28 = 0x20;
-        sub_8002A3C(background);
-    }
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[3][0] = 0;
-    gBgScrollRegs[3][1] = 0;
-}
-
-void stageBgUpdateZone5Acts12(s32 UNUSED a, s32 UNUSED b)
-{
-    s32 num;
-    u16 *cursor, i, val;
-    gBgScrollRegs[0][0]++;
-    gBgScrollRegs[3][0] = 0;
-    num = gUnknown_03005590 * 2;
-    if (IS_SINGLE_PLAYER) {
-        gFlags = gFlags | 4;
-        gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
-        gUnknown_03002A80 = 2;
-        cursor = gUnknown_03001884;
-        if (gCurrentLevel != 18) {
-            gDispCnt |= 0x100;
-            gDispCnt |= 0x2000;
-            gWinRegs[5] = 0x3f;
-            gWinRegs[4] = 0x3f3f;
-            gWinRegs[0] = 0xf0;
-            gWinRegs[2] = 0xa0;
-            gWinRegs[1] = 0xf0;
-            gWinRegs[3] = 0xa0;
-            gBldRegs.bldY = 7;
-            gBldRegs.bldCnt = 0x3f41;
-            gBldRegs.bldAlpha = 0x1010;
-        }
-
-        for (i = 0; i < 0x60; i++) {
-            *cursor++ = 0;
-        }
-
-        val = Div(num, 8);
-        for (; i < 100; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 7);
-        for (; i < 0x68; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 6);
-        for (; i < 0x70; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 5);
-        for (; i < 0x78; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 4);
-        for (; i < 0x80; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 3);
-        for (; i < 0x90; i++) {
-            *cursor++ = val;
-        }
-
-        val = Div(num, 2);
-        for (; i < 0x9F; i++) {
-            *cursor++ = val;
-        }
-    }
-}
-
-void StageInit_Zone6_Boss(void);
-
-void StageInit_Zone6_Acts(void)
-{
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1a0f;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 32;
-    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[3][0] = 0;
-    gBgScrollRegs[3][1] = 0;
-    gUnknown_03005590 = 0x380;
-
-    if (IS_MULTI_PLAYER) {
-        StageInit_Zone6_Boss();
-    }
-    gBgCntRegs[3] &= ~(1 | 2);
-    gBgCntRegs[3] |= 2;
-}
-
-void StageInit_Zone6_Boss(void)
-{
-    Background *background = &gUnknown_03005850.unk0;
-    gDispCnt |= 0x100;
-    gBgCntRegs[0] = 0x1a0f;
-    gUnknown_03004D80[0] = 0;
-    gUnknown_03002280[0][0] = 0;
-    gUnknown_03002280[0][1] = 0;
-    gUnknown_03002280[0][2] = 0xff;
-    gUnknown_03002280[0][3] = 32;
-    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
-    gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[3][0] = 0;
-    gBgScrollRegs[3][1] = 0;
-
-    *background = gUnknown_080D5864[3];
-    background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
-    background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(26);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-
-    sub_8002A3C(background);
 }

@@ -396,8 +396,8 @@ _0801D52C: .4byte gBgPalette
 _0801D530: .4byte gFlags
 
 @ type: CameraMain
-	thumb_func_start stageBgUpdateZone6Acts12
-stageBgUpdateZone6Acts12: @ 0x0801D534
+	thumb_func_start StageBgUpdateZone6Acts12
+StageBgUpdateZone6Acts12: @ 0x0801D534
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1904,8 +1904,8 @@ stageBgUpdateDummy: @ 0x0801E130
 	.align 2, 0
 
 @ type: CameraMain
-	thumb_func_start stageBgUpdateZone1ActBoss
-stageBgUpdateZone1ActBoss: @ 0x0801E134
+	thumb_func_start StageBgUpdateZone1ActBoss
+StageBgUpdateZone1ActBoss: @ 0x0801E134
 	push {lr}
 	ldr r3, _0801E184 @ =gCamera
 	ldr r0, _0801E188 @ =gPlayer
@@ -1956,8 +1956,8 @@ _0801E198: .4byte gNumHBlankCallbacks
 _0801E19C: .4byte HBlankCB_801E434
 _0801E1A0: .4byte gFlags
 
-	thumb_func_start stageBgUpdateZone2ActBoss
-stageBgUpdateZone2ActBoss: @ 0x0801E1A4
+	thumb_func_start StageBgUpdateZone2ActBoss
+StageBgUpdateZone2ActBoss: @ 0x0801E1A4
 	push {lr}
 	ldr r0, _0801E1C8 @ =gPlayer
 	ldr r0, [r0, #0x20]
@@ -1973,15 +1973,15 @@ _0801E1BA:
 	ldr r0, [r1]
 	movs r1, #0xfa
 	lsls r1, r1, #4
-	bl stageBgUpdateZone2Acts12
+	bl StageBgUpdateZone2Acts12
 	pop {r0}
 	bx r0
 	.align 2, 0
 _0801E1C8: .4byte gPlayer
 _0801E1CC: .4byte gUnknown_03005590
 
-	thumb_func_start stageBgUpdateZone3ActBoss
-stageBgUpdateZone3ActBoss: @ 0x0801E1D0
+	thumb_func_start StageBgUpdateZone3ActBoss
+StageBgUpdateZone3ActBoss: @ 0x0801E1D0
 	ldr r1, _0801E1E0 @ =gBgScrollRegs
 	movs r0, #0
 	strh r0, [r1, #2]
@@ -1992,8 +1992,8 @@ stageBgUpdateZone3ActBoss: @ 0x0801E1D0
 	.align 2, 0
 _0801E1E0: .4byte gBgScrollRegs
 
-	thumb_func_start stageBgUpdateZone5ActBoss
-stageBgUpdateZone5ActBoss: @ 0x0801E1E4
+	thumb_func_start StageBgUpdateZone5ActBoss
+StageBgUpdateZone5ActBoss: @ 0x0801E1E4
 	ldr r2, _0801E218 @ =gDispCnt
 	ldrh r1, [r2]
 	ldr r0, _0801E21C @ =0x0000FDFF
@@ -2028,8 +2028,8 @@ _0801E228: .4byte gNumHBlankCallbacks
 _0801E22C: .4byte sub_801E498
 _0801E230: .4byte gFlags
 
-	thumb_func_start stageBgUpdateZone6ActBoss
-stageBgUpdateZone6ActBoss: @ 0x0801E234
+	thumb_func_start StageBgUpdateZone6ActBoss
+StageBgUpdateZone6ActBoss: @ 0x0801E234
 	ldr r2, _0801E260 @ =gBgCntRegs
 	ldrh r1, [r2]
 	movs r0, #3
@@ -2057,8 +2057,8 @@ _0801E260: .4byte gBgCntRegs
 _0801E264: .4byte 0x0000FFFC
 _0801E268: .4byte gBgScrollRegs
 
-	thumb_func_start stageBgUpdateZone7Acts12
-stageBgUpdateZone7Acts12: @ 0x0801E26C
+	thumb_func_start StageBgUpdateZone7Acts12
+StageBgUpdateZone7Acts12: @ 0x0801E26C
 	push {r4, r5, r6, r7, lr}
 	adds r3, r0, #0
 	adds r7, r1, #0
@@ -2120,8 +2120,8 @@ _0801E2D0:
 _0801E2DC: .4byte gPlayer
 
 @ type: CameraMain
-	thumb_func_start stageBgUpdateZone7ActBoss
-stageBgUpdateZone7ActBoss: @ 0x0801E2E0
+	thumb_func_start StageBgUpdateZone7ActBoss
+StageBgUpdateZone7ActBoss: @ 0x0801E2E0
 	push {lr}
 	ldr r0, _0801E304 @ =gPlayer
 	ldr r0, [r0, #0x20]
@@ -2144,8 +2144,8 @@ _0801E304: .4byte gPlayer
 _0801E308: .4byte gUnknown_03005590
 _0801E30C: .4byte 0x000003B1
 
-	thumb_func_start stageBgUpdateZoneFinalActXX
-stageBgUpdateZoneFinalActXX: @ 0x0801E310
+	thumb_func_start StageBgUpdateZoneFinalActXX
+StageBgUpdateZoneFinalActXX: @ 0x0801E310
 	push {lr}
 	ldr r0, _0801E348 @ =gPlayer
 	ldr r0, [r0, #0x20]
@@ -2183,8 +2183,8 @@ _0801E354: .4byte gNumHBlankCallbacks
 _0801E358: .4byte sub_801E4C4
 _0801E35C: .4byte gFlags
 
-	thumb_func_start stageBgUpdateZoneFinalActTA53
-stageBgUpdateZoneFinalActTA53: @ 0x0801E360
+	thumb_func_start StageBgUpdateZoneFinalActTA53
+StageBgUpdateZoneFinalActTA53: @ 0x0801E360
 	push {r4, r5, r6, lr}
 	movs r1, #0
 	ldr r0, _0801E3CC @ =gActiveBossTask
@@ -2252,6 +2252,7 @@ _0801E3E4: .4byte gSineTable
 _0801E3E8: .4byte gUnknown_03005590
 _0801E3EC: .4byte 0x000003FF
 
+    @ Unused
 	thumb_func_start sub_801E3F0
 sub_801E3F0: @ 0x0801E3F0
 	push {lr}
@@ -2338,8 +2339,8 @@ _0801E488: .4byte gUnknown_030022AC
 _0801E48C: .4byte 0x0400001C
 _0801E490: .4byte 0x04000010
 
-	thumb_func_start sub_801E494
-sub_801E494: @ 0x0801E494
+	thumb_func_start nullsub_801E494
+nullsub_801E494: @ 0x0801E494
 	bx lr
 	.align 2, 0
 
