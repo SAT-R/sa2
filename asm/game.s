@@ -1892,8 +1892,8 @@ StageInit_Zone2: @ 0x0801E118
 	.align 2, 0
 _0801E128: .4byte gBgScrollRegs
 
-    thumb_func_start nullsub_801E12C
-nullsub_801E12C:
+    thumb_func_start StageInit_Dummy
+StageInit_Dummy:
     bx lr
     .align 2, 0
 
@@ -1980,8 +1980,8 @@ _0801E1BA:
 _0801E1C8: .4byte gPlayer
 _0801E1CC: .4byte gUnknown_03005590
 
-	thumb_func_start sub_801E1D0
-sub_801E1D0: @ 0x0801E1D0
+	thumb_func_start stageBgUpdateZone3ActBoss
+stageBgUpdateZone3ActBoss: @ 0x0801E1D0
 	ldr r1, _0801E1E0 @ =gBgScrollRegs
 	movs r0, #0
 	strh r0, [r1, #2]
@@ -1992,8 +1992,8 @@ sub_801E1D0: @ 0x0801E1D0
 	.align 2, 0
 _0801E1E0: .4byte gBgScrollRegs
 
-	thumb_func_start sub_801E1E4
-sub_801E1E4: @ 0x0801E1E4
+	thumb_func_start stageBgUpdateZone5ActBoss
+stageBgUpdateZone5ActBoss: @ 0x0801E1E4
 	ldr r2, _0801E218 @ =gDispCnt
 	ldrh r1, [r2]
 	ldr r0, _0801E21C @ =0x0000FDFF
@@ -2028,8 +2028,8 @@ _0801E228: .4byte gNumHBlankCallbacks
 _0801E22C: .4byte sub_801E498
 _0801E230: .4byte gFlags
 
-	thumb_func_start sub_801E234
-sub_801E234: @ 0x0801E234
+	thumb_func_start stageBgUpdateZone6ActBoss
+stageBgUpdateZone6ActBoss: @ 0x0801E234
 	ldr r2, _0801E260 @ =gBgCntRegs
 	ldrh r1, [r2]
 	movs r0, #3
@@ -2120,8 +2120,8 @@ _0801E2D0:
 _0801E2DC: .4byte gPlayer
 
 @ type: CameraMain
-	thumb_func_start sub_801E2E0
-sub_801E2E0: @ 0x0801E2E0
+	thumb_func_start stageBgUpdateZone7ActBoss
+stageBgUpdateZone7ActBoss: @ 0x0801E2E0
 	push {lr}
 	ldr r0, _0801E304 @ =gPlayer
 	ldr r0, [r0, #0x20]

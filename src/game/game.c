@@ -255,7 +255,7 @@ const u16 gUnknown_080D5964[][2] = {
 };
 
 void StageInit_Zone1(void);
-void sub_801CB74(void);
+void StageInit_Zone3(void);
 void SetupSpotlightSnowAndCreateSpotlights(void);
 void StageInit_Zone5(void);
 void StageInit_Zone6_Acts(void);
@@ -263,7 +263,7 @@ void StageInit_Zone6_Boss(void);
 void StageInit_Zone7(void);
 void StageInit_ZoneFinal_0(void);
 void StageInit_Zone2(void);
-void nullsub_801E12C(void);
+void StageInit_Dummy(void);
 const VoidFn gUnknown_080D5988[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = StageInit_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = StageInit_Zone1,
@@ -273,13 +273,13 @@ const VoidFn gUnknown_080D5988[] = {
     [LEVEL_INDEX(ZONE_2, ACT_2)] = StageInit_Zone2,
     [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageInit_Zone2,
     [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_3, ACT_1)] = sub_801CB74,
-    [LEVEL_INDEX(ZONE_3, ACT_2)] = sub_801CB74,
-    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = sub_801CB74,
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = StageInit_Zone3,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = StageInit_Zone3,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = StageInit_Zone3,
     [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_4, ACT_1)] = SetupSpotlightSnowAndCreateSpotlights,
     [LEVEL_INDEX(ZONE_4, ACT_2)] = SetupSpotlightSnowAndCreateSpotlights,
-    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = nullsub_801E12C,
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = StageInit_Dummy,
     [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_5, ACT_1)] = StageInit_Zone5,
     [LEVEL_INDEX(ZONE_5, ACT_2)] = StageInit_Zone5,
@@ -310,11 +310,11 @@ void stageBgUpdateZone6Acts12(s32, s32);
 void stageBgUpdateDummy(s32, s32);
 void stageBgUpdateZone1ActBoss(s32, s32);
 void stageBgUpdateZone2ActBoss(s32, s32);
-void sub_801E1D0(s32, s32);
-void sub_801E1E4(s32, s32);
-void sub_801E234(s32, s32);
+void stageBgUpdateZone3ActBoss(s32, s32);
+void stageBgUpdateZone5ActBoss(s32, s32);
+void stageBgUpdateZone6ActBoss(s32, s32);
 void stageBgUpdateZone7Acts12(s32, s32);
-void sub_801E2E0(s32, s32);
+void stageBgUpdateZone7ActBoss(s32, s32);
 void stageBgUpdateZoneFinalActXX(s32, s32);
 void stageBgUpdateZoneFinalActTA53(s32, s32);
 
@@ -334,7 +334,7 @@ static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 3
     [LEVEL_INDEX(ZONE_3, ACT_1)] = stageBgUpdateZone3Acts12,
     [LEVEL_INDEX(ZONE_3, ACT_2)] = stageBgUpdateZone3Acts12,
-    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = sub_801E1D0,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = stageBgUpdateZone3ActBoss,
     [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 4
@@ -346,19 +346,19 @@ static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 5
     [LEVEL_INDEX(ZONE_5, ACT_1)] = stageBgUpdateZone5Acts12,
     [LEVEL_INDEX(ZONE_5, ACT_2)] = stageBgUpdateZone5Acts12,
-    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = sub_801E1E4,
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = stageBgUpdateZone5ActBoss,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 6
     [LEVEL_INDEX(ZONE_6, ACT_1)] = stageBgUpdateZone6Acts12,
     [LEVEL_INDEX(ZONE_6, ACT_2)] = stageBgUpdateZone6Acts12,
-    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = sub_801E234,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = stageBgUpdateZone6ActBoss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone 7
     [LEVEL_INDEX(ZONE_7, ACT_1)] = stageBgUpdateZone7Acts12,
     [LEVEL_INDEX(ZONE_7, ACT_2)] = stageBgUpdateZone7Acts12,
-    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = sub_801E2E0,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = stageBgUpdateZone7ActBoss,
     [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = stageBgUpdateDummy,
 
     // Zone Final
@@ -2051,7 +2051,7 @@ NONMATCH("asm/non_matching/stageBgUpdateZone2Acts12.inc",
 }
 END_NONMATCH
 
-void sub_801CB74(void)
+void StageInit_Zone3(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= 0x100;
