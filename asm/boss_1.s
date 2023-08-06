@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggHammerTankII
 CreateEggHammerTankII: @ 0x0803A24C
 	push {r4, r5, r6, r7, lr}
@@ -2611,7 +2610,7 @@ _0803B6D8:
 	adds r1, r6, r2
 	movs r0, #3
 	strb r0, [r1]
-	ldr r1, _0803B750 @ =gUnknown_03005450
+	ldr r1, _0803B750 @ =gLevelScore
 	ldr r5, [r1]
 	adds r2, #0x50
 	adds r0, r5, r2
@@ -2649,7 +2648,7 @@ _0803B742:
 	b _0803B774
 	.align 2, 0
 _0803B74C: .4byte 0x00000275
-_0803B750: .4byte gUnknown_03005450
+_0803B750: .4byte gLevelScore
 _0803B754: .4byte 0x0000C350
 _0803B758: .4byte gGameMode
 _0803B75C: .4byte gNumLives
@@ -3331,7 +3330,7 @@ _0803BC36:
 	adds r5, r5, r7
 	mov sb, r5
 	mov r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	ldr r3, _0803BD3C @ =gPseudoRandom
 	ldr r0, [r3]
 	ldr r6, _0803BD40 @ =0x00196225
@@ -3365,7 +3364,7 @@ _0803BC36:
 	add r0, sp, #4
 	mov r1, sb
 	str r3, [sp, #0x3c]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	ldr r3, [sp, #0x3c]
 	ldr r0, [r3]
 	adds r2, r0, #0
@@ -3396,7 +3395,7 @@ _0803BC36:
 	str r0, [sp, #0x1c]
 	add r0, sp, #4
 	mov r1, sb
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0803BD06:
 	ldr r1, [r7, #0x28]
 	ldr r0, _0803BD48 @ =0x000002FF
@@ -4072,7 +4071,7 @@ sub_803C198: @ 0x0803C198
 	ldr r1, _0803C328 @ =0x000002DD
 	add r1, sb
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0803C256:
 	ldr r2, _0803C310 @ =gPseudoRandom
 	ldr r1, [r2]
@@ -4158,7 +4157,7 @@ _0803C2C6:
 	ldr r3, _0803C334 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C344
@@ -4214,7 +4213,7 @@ _0803C344:
 	ldr r3, _0803C394 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C3A4
@@ -4261,7 +4260,7 @@ _0803C3A4:
 	ldr r3, _0803C3F4 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C404
@@ -4308,7 +4307,7 @@ _0803C404:
 	ldr r3, _0803C454 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C464
@@ -4355,7 +4354,7 @@ _0803C464:
 	ldr r3, _0803C4B4 @ =0x00000229
 	adds r1, r7, r3
 	str r2, [sp, #0x30]
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 	movs r4, #0
 	ldr r2, [sp, #0x30]
 	b _0803C4C4
@@ -4394,7 +4393,7 @@ _0803C4D2:
 	ldrsh r1, [r6, r2]
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _0803C4F6:
 	ldr r0, [r7, #0xc]
 	asrs r0, r0, #8

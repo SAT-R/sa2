@@ -5,6 +5,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "input_recorder.h"
+#include "animation_commands.h"
 
 struct MultiSioData_0_0 {
     // id
@@ -112,6 +113,15 @@ typedef struct {
     /* 0x18 */ const u16 *map;
 } Tilemap; /* size = 0x1C */
 
+struct SpriteTables {
+    /* 0x00 */ ACmd ***animations;
+    /* 0x04 */ SpriteOffset **dimensions;
+    /* 0x08 */ u16 **oamData;
+    /* 0x0C */ u16 *palettes;
+    /* 0x10 */ u8 *tiles_4bpp;
+    /* 0x14 */ u8 *tiles_8bpp;
+};
+
 struct MapHeader {
     /* 0x00 */ Tilemap h;
     /* 0x1C */ const u16 *metatileMap;
@@ -131,9 +141,6 @@ typedef struct {
     u8 unk1C[4];
     u16 unk20, unk22;
 } Collision;
-
-// We need 'Tilemap' in data.h, so it has to be declared later
-#include "data.h"
 
 struct Unk_03003674_1_Sub {
     u16 unk0, unk2, unk4, unk6;
@@ -259,7 +266,7 @@ extern s16 gUnknown_030017F4[2];
 extern u8 gUnknown_03001850[32];
 extern FuncType_030053A0 gUnknown_03001870[4];
 
-extern s8 gUnknown_030018F0;
+extern u8 gOamFreeIndex;
 extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
@@ -280,7 +287,9 @@ extern u8 gUnknown_0300287C;
 extern u8 gUnknown_03002A80;
 extern u8 gVramGraphicsCopyQueueIndex;
 extern u16 gUnknown_03002A8C;
-extern u8 gUnknown_03002AE0;
+// When paused, the previously-active OAM elements get moved to the end
+// of the OAM. This is the index of the first currently-inactive element
+extern u8 gOamFirstPausedIndex;
 extern u8 gUnknown_03002AE4;
 extern Sprite *gUnknown_03004D10[16];
 extern u8 gUnknown_03004D50;

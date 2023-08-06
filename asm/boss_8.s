@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateSuperEggRoboZ
 CreateSuperEggRoboZ: @ 0x0804A6C8
 	push {r4, r5, r6, r7, lr}
@@ -2207,7 +2206,7 @@ _0804B854:
 	ldr r1, [sp, #0x28]
 	str r2, [sp, #0x40]
 	str r3, [sp, #0x44]
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -2941,7 +2940,7 @@ _0804BDF6:
 	ldr r1, [sp, #0x34]
 	str r2, [sp, #0x58]
 	str r3, [sp, #0x5c]
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
 	lsrs r6, r0, #0x18
@@ -3188,7 +3187,7 @@ _0804BFE2:
 	ldr r1, [sp, #0x2c]
 	str r2, [sp, #0x44]
 	str r3, [sp, #0x48]
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
 	lsrs r6, r0, #0x18
@@ -3323,7 +3322,7 @@ sub_804C080: @ 0x0804C080
 	str r7, [sp, #4]
 	mov r1, sl
 	adds r1, #0xc
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 	movs r0, #0x90
 	bl m4aSongNumStart
 	ldr r0, _0804C230 @ =gMPlayInfo_SE3
@@ -3441,7 +3440,7 @@ _0804C13C:
 	mov r1, sl
 	adds r1, #0xc
 	mov r0, sp
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 _0804C1FC:
 	add sp, #0x20
 	pop {r3, r4, r5}
@@ -3624,7 +3623,7 @@ _0804C294:
 	str r6, [sp, #4]
 	adds r1, r4, #0
 	adds r1, #0xc
-	bl sub_8039D04
+	bl CreateBossParticleStatic
 _0804C37C:
 	add sp, #0x24
 	pop {r3, r4, r5}
@@ -4332,7 +4331,7 @@ _0804C922:
 _0804C92E:
 	cmp r2, #0
 	bne _0804C97C
-	ldr r1, _0804C9A0 @ =gUnknown_03005450
+	ldr r1, _0804C9A0 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -4388,7 +4387,7 @@ _0804C97C:
 	bx r0
 	.align 2, 0
 _0804C99C: .4byte gUnknown_030054A8
-_0804C9A0: .4byte gUnknown_03005450
+_0804C9A0: .4byte gLevelScore
 _0804C9A4: .4byte 0x0000C350
 _0804C9A8: .4byte gGameMode
 _0804C9AC: .4byte gNumLives

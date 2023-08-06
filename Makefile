@@ -266,7 +266,6 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
 
 
-# WIP (not matching yet)
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 chao_garden/mb_chao_garden.gba: 
@@ -275,7 +274,9 @@ chao_garden/mb_chao_garden.gba:
 chao_garden: tools
 	$(MAKE) -C chao_garden
 
-multi_boot/subgame_bootstrap/subgame_bootstrap.gba:
+# Dependency here is already explicit, but we sometimes get a race condition if this
+# is not specified
+multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
 	$(MAKE) -C multi_boot/subgame_bootstrap
 
 multi_boot/programs/subgame_loader/subgame_loader.bin:

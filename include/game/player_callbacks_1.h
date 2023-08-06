@@ -19,4 +19,13 @@ s32 sub_8029B88(Player *player, u8 *p1, int *out);
 s32 sub_8029AC0(Player *player, u8 *p1, s32 *out);
 s32 sub_8029B0C(Player *player, u8 *p1, s32 *out);
 
+extern void PlayerCB_8025318(Player *p);
+extern void PlayerCB_80261D8(Player *p);
+extern void sub_8027EF0(Player *p);
+extern void sub_8028204(Player *p);
+extern void sub_80282EC(Player *p);
+extern void sub_80283C4(Player *p);
+extern void sub_8029C84(Player *p);
+extern void sub_8029FA4(Player *p);
+
 #endif // GUARD_PLAYER_CALLBACKS_1_H

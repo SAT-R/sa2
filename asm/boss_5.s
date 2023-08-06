@@ -4,7 +4,6 @@
 .syntax unified
 .arm
 
-@; Referenced inside gUnknown_080D798C
 	thumb_func_start CreateEggSaucer
 CreateEggSaucer: @ 0x08042E08
 	push {r4, r5, r6, r7, lr}
@@ -1020,7 +1019,7 @@ _08043660:
 	asrs r1, r1, #0x10
 	movs r2, #0x80
 	lsls r2, r2, #6
-	bl sub_8039FA4
+	bl CreateEggmobileEscapeSequence
 _080436A0:
 	adds r0, r4, #0
 	bl sub_8045898
@@ -2142,7 +2141,7 @@ _08043EA2:
 	str r6, [sp, #0xc]
 	adds r1, r7, #0
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _08043F9A:
 	add sp, #0x28
 	pop {r3, r4}
@@ -2464,7 +2463,7 @@ _0804423E:
 	ldrb r0, [r6, #0x11]
 	cmp r0, #0
 	bne _080442C0
-	ldr r1, _08044294 @ =gUnknown_03005450
+	ldr r1, _08044294 @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #1
@@ -2503,7 +2502,7 @@ _08044288:
 	strb r0, [r1, #3]
 	b _080442C0
 	.align 2, 0
-_08044294: .4byte gUnknown_03005450
+_08044294: .4byte gLevelScore
 _08044298: .4byte 0x0000C350
 _0804429C: .4byte gGameMode
 _080442A0: .4byte gNumLives
@@ -2562,7 +2561,7 @@ _0804430A:
 	ldrb r0, [r6, #0x11]
 	cmp r0, #0
 	bne _08044364
-	ldr r1, _080444BC @ =gUnknown_03005450
+	ldr r1, _080444BC @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #1
@@ -2770,7 +2769,7 @@ _080444A8:
 	bx r0
 	.align 2, 0
 _080444B8: .4byte gUnknown_03005498
-_080444BC: .4byte gUnknown_03005450
+_080444BC: .4byte gLevelScore
 _080444C0: .4byte 0x0000C350
 _080444C4: .4byte gGameMode
 _080444C8: .4byte gNumLives
@@ -4756,7 +4755,7 @@ _080453F4:
 	adds r1, #0x20
 	movs r0, #3
 	strb r0, [r1]
-	ldr r1, _0804544C @ =gUnknown_03005450
+	ldr r1, _0804544C @ =gLevelScore
 	ldr r5, [r1]
 	movs r2, #0xfa
 	lsls r2, r2, #2
@@ -4794,7 +4793,7 @@ _08045440:
 	strb r0, [r1, #3]
 	b _0804546E
 	.align 2, 0
-_0804544C: .4byte gUnknown_03005450
+_0804544C: .4byte gLevelScore
 _08045450: .4byte 0x0000C350
 _08045454: .4byte gGameMode
 _08045458: .4byte gNumLives
@@ -5047,7 +5046,7 @@ _0804557A:
 	str r5, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804563E:
 	ldr r2, _08045868 @ =gUnknown_03005590
 	ldr r0, [r2]
@@ -5165,7 +5164,7 @@ _0804563E:
 	mov r1, sb
 	adds r1, #0x14
 	mov r0, sp
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _0804572E:
 	ldr r3, _08045868 @ =gUnknown_03005590
 	ldr r0, [r3]
@@ -5239,7 +5238,7 @@ _0804572E:
 	str r7, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _080457C4:
 	ldr r4, _08045868 @ =gUnknown_03005590
 	ldr r0, [r4]
@@ -5312,7 +5311,7 @@ _080457C4:
 	str r7, [sp, #4]
 	mov r1, sb
 	adds r1, #0x14
-	bl sub_8039B54
+	bl CreateBossParticleWithExplosionUpdate
 _08045858:
 	add sp, #0x3c
 	pop {r3, r4, r5}

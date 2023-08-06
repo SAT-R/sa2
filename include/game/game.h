@@ -268,8 +268,8 @@ typedef struct Player_ {
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
-    /* 0x48 */ s32 unk48;
-    /* 0x4C */ s32 unk4C;
+    /* 0x48 */ s32 unk48; // acceleration?
+    /* 0x4C */ s32 unk4C; // deceleration?
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54;
@@ -480,7 +480,7 @@ extern u16 gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH];
 
 extern u32 gMultiplayerPseudoRandom;
 
-extern s32 gUnknown_03005450;
+extern s32 gLevelScore;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 

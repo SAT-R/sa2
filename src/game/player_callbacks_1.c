@@ -4,11 +4,13 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/heart_particles_effect.h"
+#include "game/stage/music_manager.h"
 
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
+#include "game/parameters/characters.h"
 #include "game/playerfn_cmds.h"
 
 #include "constants/animations.h"
@@ -63,7 +65,7 @@ extern void sub_80246DC(Player *);
 
 void PlayerCB_Idle(Player *);
 void PlayerCB_8025AB8(Player *);
-void PlayerCB_8025E18(Player *);
+void PlayerCB_Jumping(Player *);
 void sub_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
@@ -102,8 +104,6 @@ void PlayerCB_802A4FC(Player *);
 void PlayerCB_802A5C4(Player *);
 void PlayerCB_802A620(Player *);
 void PlayerCB_802A714(Player *);
-
-extern u16 gLevelSongs[];
 
 static const s16 gUnknown_080D6902[5][2] = {
     { 8, 64 }, { 12, 64 }, { 14, 64 }, { 16, 64 }, { 18, 64 },
@@ -281,7 +281,7 @@ void PlayerCB_Idle(Player *p)
         if (p->moveState & MOVESTATE_8000) {
             p->moveState &= ~MOVESTATE_IN_AIR;
         } else if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         }
     }
 }
@@ -311,7 +311,7 @@ void PlayerCB_8025548(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         }
     }
 }
@@ -354,7 +354,7 @@ void PlayerCB_802569C(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         }
     }
 }
@@ -397,7 +397,7 @@ void PlayerCB_8025854(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         }
     }
 }
@@ -520,16 +520,16 @@ void PlayerCB_8025AB8(Player *p)
             PLAYERFN_UPDATE_UNK2A(p);
 
             if (p->moveState & MOVESTATE_IN_AIR) {
-                PLAYERFN_SET(PlayerCB_8025E18);
+                PLAYERFN_SET(PlayerCB_Jumping);
             }
         }
     }
 }
 
-void PlayerCB_8025D00(Player *p)
+void PlayerCB_Jump(Player *p)
 {
     u8 rot;
-    s32 mulVal;
+    s32 jumpHeight;
     s32 accelX, accelY;
 
     sub_80218E4(p);
@@ -549,14 +549,15 @@ void PlayerCB_8025D00(Player *p)
 
     p->unk70 = 1;
 
-    mulVal = (p->moveState & MOVESTATE_40) ? Q_24_8(2.625) : Q_24_8(4.875);
+    jumpHeight = (p->moveState & MOVESTATE_40) ? Q_24_8(PLAYER_JUMP_HEIGHT_UNDER_WATER)
+                                               : Q_24_8(PLAYER_JUMP_HEIGHT);
 
-    rot = p->rotation - 0x40;
+    rot = p->rotation - 64;
 
-    accelX = Q_24_8_TO_INT(COS_24_8((u8)rot * 4) * mulVal);
+    accelX = Q_24_8_TO_INT(COS_24_8(rot * 4) * jumpHeight);
     p->speedAirX += accelX;
 
-    accelY = Q_24_8_TO_INT(SIN_24_8((u8)rot * 4) * mulVal);
+    accelY = Q_24_8_TO_INT(SIN_24_8(rot * 4) * jumpHeight);
     p->speedAirY += accelY;
 
     if (p->moveState & MOVESTATE_8) {
@@ -569,15 +570,15 @@ void PlayerCB_8025D00(Player *p)
 
     m4aSongNumStart(SE_JUMP);
 
-    PLAYERFN_SET_AND_CALL(PlayerCB_8025E18, p);
+    PLAYERFN_SET_AND_CALL(PlayerCB_Jumping, p);
 }
 
-void PlayerCB_8025E18(Player *p)
+void PlayerCB_Jumping(Player *p)
 {
-    s16 temp = -Q_24_8(3.0);
+    s16 maxJumpSpeed = -Q_24_8(PLAYER_MAX_NOT_HELD_JUMP_FORCE);
 
     if (p->moveState & MOVESTATE_40) {
-        temp = -Q_24_8(1.5);
+        maxJumpSpeed = -Q_24_8(PLAYER_MAX_NOT_HELD_JUMP_FORCE_UNDER_WATER);
     }
 
     if (p->moveState & MOVESTATE_100) {
@@ -585,8 +586,9 @@ void PlayerCB_8025E18(Player *p)
             if (sub_801251C(p) || sub_80294F4(p))
                 return;
 
-        if ((p->speedAirY < temp) && ((p->unk5C & gPlayerControls.jump) == 0)) {
-            p->speedAirY = temp;
+        // Caps the jump force if the player lets go of the jump button
+        if (p->speedAirY < maxJumpSpeed && !(p->unk5C & gPlayerControls.jump)) {
+            p->speedAirY = maxJumpSpeed;
         }
     }
 
@@ -634,7 +636,7 @@ void sub_8025F84(Player *p)
     p->unk90->s.unk10 &= ~MOVESTATE_4000;
     m4aSongNumStart(SE_JUMP);
 
-    PLAYERFN_SET_AND_CALL(PlayerCB_8025E18, p);
+    PLAYERFN_SET_AND_CALL(PlayerCB_Jumping, p);
 }
 
 void PlayerCB_8026060(Player *p)
@@ -801,9 +803,9 @@ void PlayerCB_Spindash(Player *player)
         sub_80232D0(player);
 
         if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q_24_8(12.0 / 256.0);
+            player->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
         } else {
-            player->speedAirY += Q_24_8(42.0 / 256.0);
+            player->speedAirY += Q_24_8(PLAYER_GRAVITY);
         }
 
         player->x += player->speedAirX;
@@ -812,7 +814,7 @@ void PlayerCB_Spindash(Player *player)
             player->speedAirY = -player->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
 
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
                                         : player->y + player->speedAirY;
@@ -866,7 +868,7 @@ void PlayerCB_Spindash(Player *player)
             player->speedAirY = -player->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);
+        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
 
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
                                         : player->y + player->speedAirY;
@@ -987,7 +989,7 @@ void PlayerCB_8026810(Player *p)
 
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
             m4aSongNumStop(SE_GRINDING);
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         } else {
             if (IS_SINGLE_PLAYER) {
                 sub_801F488();
@@ -1108,7 +1110,7 @@ void PlayerCB_8026BCC(Player *p)
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 14;
 
-            PLAYERFN_SET(PlayerCB_8025E18);
+            PLAYERFN_SET(PlayerCB_Jumping);
         } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8)) != MOVESTATE_800) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
@@ -2912,7 +2914,7 @@ bool32 sub_8029E6C(Player *p)
         }
 
         if (sub_8022F58(rot + Q_24_8(0.5), p) > 3) {
-            PLAYERFN_SET(PlayerCB_8025D00);
+            PLAYERFN_SET(PlayerCB_Jump);
             return TRUE;
         }
     }

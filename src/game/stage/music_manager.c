@@ -1,5 +1,6 @@
 #include "global.h"
 #include "game/game.h"
+#include "game/stage/music_manager.h"
 #include "gba/m4a_internal.h"
 #include "lib/m4a.h"
 

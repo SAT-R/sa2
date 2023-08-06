@@ -155,13 +155,13 @@ void sub_806CD68(Sprite *element)
     for (i = 0; i < numSubframes; i++) {
         u32 attr1_2;
         reference = gUnknown_03002794->oamData[element->graphics.anim];
-        oam = sub_80058B4((element->unk1A & 0x7C0) >> 6);
+        oam = OamMalloc((element->unk1A & 0x7C0) >> 6);
         if (oam == iwram_end) {
             return;
         }
 
         if (i == 0) {
-            element->oamBaseIndex = gUnknown_030018F0 - 1;
+            element->oamBaseIndex = gOamFreeIndex - 1;
         }
 
         DmaCopy16(3, &reference[(sprDims->oamIndex + i) * 3], oam, 0x6);

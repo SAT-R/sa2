@@ -43,6 +43,7 @@ SECTIONS
         build/sa2/asm/sprite_2.o(.text);
         build/sa2/src/sprite_3.o(.text);
         build/sa2/asm/sprite_3.o(.text);
+        build/sa2/src/sprite_3_2.o(.text);
         build/sa2/src/animation_commands.o(.text);
         build/sa2/asm/sprite_4.o(.text);
         build/sa2/src/malloc_ewram.o(.text);
@@ -116,7 +117,9 @@ SECTIONS
         build/sa2/src/game/countdown.o(.text);
         build/sa2/src/game/game_over.o(.text);
         build/sa2/src/game/bosses/final_intro.o(.text);
-        build/sa2/asm/bosses_common.o(.text);
+        build/sa2/src/game/bosses/explosion_parts.o(.text);
+        build/sa2/src/game/bosses/common.o(.text);
+        build/sa2/src/game/bosses/eggmobile_escape_sequence.o(.text);
         build/sa2/asm/boss_1.o(.text);
         build/sa2/asm/boss_2.o(.text);
         build/sa2/asm/boss_3.o(.text);
@@ -146,6 +149,7 @@ SECTIONS
         build/sa2/src/game/enemies/spinner.o(.text);
         build/sa2/asm/enemy_mouse.o(.text);
         build/sa2/src/game/enemies/pen.o(.text);
+        build/sa2/src/game/enemies/geji_geji.o(.text);
         build/sa2/asm/enemy_geji_geji.o(.text);
         build/sa2/src/game/enemies/balloon.o(.text);
         build/sa2/asm/enemy_balloon.o(.text);
@@ -153,7 +157,6 @@ SECTIONS
         build/sa2/asm/enemy_flickey.o(.text);
         build/sa2/src/game/enemies/kyura.o(.text);
         build/sa2/src/game/enemies/bullet_buzzer.o(.text);
-        build/sa2/asm/enemy_bullet_buzzer.o(.text);
         build/sa2/src/game/enemies/star.o(.text);
         build/sa2/src/game/multiplayer/mode_select.o(.text);
         build/sa2/src/game/multiplayer/multipak_connection.o(.text);
@@ -328,6 +331,7 @@ SECTIONS
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);
         build/sa2/src/game/bosses/final_intro.o(.rodata);
+        build/sa2/src/game/bosses/common.o(.rodata);
         build/sa2/data/true_area_53_data.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
         build/sa2/asm/enemy_koura.o(.rodata);

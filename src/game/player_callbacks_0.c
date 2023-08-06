@@ -62,15 +62,6 @@ void sub_8023610(Player *p);
 void PlayerFn_Cmd_UpdatePosition(Player *p);
 void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
-extern void PlayerCB_8025318(Player *p);
-extern void PlayerCB_80261D8(Player *p);
-extern void sub_8027EF0(Player *p);
-extern void sub_8028204(Player *p);
-extern void sub_80282EC(Player *p);
-extern void sub_80283C4(Player *p);
-extern void sub_8029C84(Player *p);
-extern void sub_8029FA4(Player *p);
-
 extern u16 gUnknown_080D6736[115][2];
 
 const u16 gUnknown_080D5518[3][3] = {
@@ -666,7 +657,7 @@ void PlayerCB_80126B0(Player *p)
             p->unk61 = 2;
         }
 
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+        p->speedAirY += Q_24_8(PLAYER_FLYING_END_GRAVITY);
     }
 
     if (p->y < Q_24_8(gCamera.unk28)) {
@@ -921,7 +912,7 @@ void PlayerCB_8012C2C(Player *p)
             p->unk61 = 2;
         }
 
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+        p->speedAirY += Q_24_8(PLAYER_FLYING_END_GRAVITY);
     }
 
     if (p->y < Q_24_8(gCamera.unk28)) {

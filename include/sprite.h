@@ -171,6 +171,8 @@ typedef struct PACKED {
     /* 0x04 */ u16 variant;
 } TileInfo16;
 
+extern const u8 gOamShapesSizes[12][2];
+
 s32 sub_8004558(Sprite *);
 
 void sub_80051E8(Sprite *);
@@ -178,8 +180,8 @@ void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
-void DrawToOamBuffer(void);
-OamData *sub_80058B4(u8 size);
+void CopyOamBufferToOam(void);
+OamData *OamMalloc(u8 size);
 
 // TransformSprite
 void sub_8004860(Sprite *, SpriteTransform *);
@@ -291,8 +293,8 @@ void UpdateBgAnimationTiles(Background *);
 #define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1)
 #define SPRITE_FLAG_MASK_OBJ_MODE              SPRITE_FLAG(OBJ_MODE, 3)
 #define SPRITE_FLAG_MASK_MOSAIC                SPRITE_FLAG(MOSAIC, 1)
-#define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1)
-#define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1)
+#define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1) // 0x400
+#define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1) // 0x800
 #define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3)
 #define SPRITE_FLAG_MASK_ANIM_OVER             SPRITE_FLAG(ANIM_OVER, 1)
 #define SPRITE_FLAG_MASK_BG_ID                 SPRITE_FLAG(BG_ID, 3)

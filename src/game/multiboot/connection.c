@@ -1,20 +1,21 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
+#include "sprite.h"
+#include "task.h"
+#include "lib/m4a.h"
+#include "mb_programs.h"
+#include "multi_boot.h"
+#include "sio32_multi_load.h"
 #include "game/game.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer/mode_select.h"
-#include "task.h"
-#include "sprite.h"
 #include "game/save.h"
-#include "game/title_screen.h"
 #include "game/screen_transition.h"
 #include "game/stage/entities_manager.h"
-#include "lib/m4a.h"
-#include "multi_boot.h"
-#include "sio32_multi_load.h"
-#include "mb_programs.h"
+#include "game/title_screen.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -288,10 +289,10 @@ void sub_8081604(void)
             sub_8081DF0(connectScreen, result);
             if (gPressedKeys & START_BUTTON) {
                 connectScreen->unkF0 = 1;
-                gFlags |= 0x8000;
-                gFlags |= 0x4000;
+                gFlags |= FLAGS_8000;
+                gFlags |= FLAGS_4000;
                 m4aMPlayAllStop();
-                gFlags &= ~0x4;
+                gFlags &= ~FLAGS_4;
                 m4aSoundVSyncOff();
                 DmaStop(0);
                 DmaStop(1);
@@ -303,8 +304,8 @@ void sub_8081604(void)
         }
     } else {
         connectScreen->unkF0 = 0;
-        gFlags &= ~0x4000;
-        gFlags &= ~0x8000;
+        gFlags &= ~FLAGS_4000;
+        gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
     }
 
@@ -325,8 +326,8 @@ void sub_8081604(void)
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
-        gFlags &= ~0x4000;
-        gFlags &= ~0x8000;
+        gFlags &= ~FLAGS_4000;
+        gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
         MultiPakCommunicationError();
         return;
@@ -401,8 +402,8 @@ void sub_80818B8(void)
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
             gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
-            gFlags &= ~0x4000;
-            gFlags &= ~0x8000;
+            gFlags &= ~FLAGS_4000;
+            gFlags &= ~FLAGS_8000;
             m4aSoundVSyncOn();
             MultiPakCommunicationError();
             return;
@@ -494,10 +495,10 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     gBgCntRegs[1] = temp;
 
     CpuFill16(0xF3FF, (void *)BG_SCREEN_ADDR(31), 2049);
-    CpuFill16(0xFFFF, (void *)VRAM + 0x7FE0, 32);
+    CpuFill16(0xFFFF, (void *)VRAM + 1023 * TILE_SIZE_4BPP, TILE_SIZE_4BPP);
 
-    gBgPalette[255] = 0x1F;
-    gFlags |= 1;
+    gBgPalette[255] = RGB_RED;
+    gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
 
 void sub_8081C0C(void)

@@ -1,12 +1,12 @@
 #ifndef GUARD_PLAYER_CB_COMMANDS_H
 #define GUARD_PLAYER_CB_COMMANDS_H
 
+#include "game/parameters/characters.h"
+
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
 #define GET_ROTATED_ACCEL_2(angle) ((SIN_24_8((angle)*4) * 5) >> 5)
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
-
-#define PLAYER_AIR_SPEED_MAX Q_24_8(15.0)
 
 #define GET_CHARACTER_ANIM(player)                                                      \
     (player->unk68 - gPlayerCharacterIdleAnims[player->character])
@@ -53,7 +53,7 @@
             player->speedAirY = -player->speedAirY;                                     \
         }                                                                               \
                                                                                         \
-        player->speedAirY = MIN(player->speedAirY, PLAYER_AIR_SPEED_MAX);               \
+        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));       \
                                                                                         \
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY                 \
                                         : player->y + player->speedAirY;                \
@@ -71,10 +71,10 @@
 #define PLAYERFN_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gUnknown_03005450;                                            \
-        gUnknown_03005450 += incVal;                                                    \
+        s32 old_3005450 = gLevelScore;                                                  \
+        gLevelScore += incVal;                                                          \
                                                                                         \
-        divResA = Div(gUnknown_03005450, 50000);                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
         divResB = Div(old_3005450, 50000);                                              \
                                                                                         \
         if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
@@ -100,16 +100,17 @@
 
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                          \
     if (player->moveState & MOVESTATE_40) {                                             \
-        player->speedAirY += Q_24_8(12.0 / 256.0);                                      \
+        player->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);                        \
     } else {                                                                            \
-        player->speedAirY += Q_24_8(42.0 / 256.0);                                      \
+        player->speedAirY += Q_24_8(PLAYER_GRAVITY);                                    \
     }
 
 // TODO: Match this without ASM!
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
     {                                                                                   \
-        s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(12.0 / 256.0)            \
-                                                       : Q_8_8(42.0 / 256.0);           \
+        s16 speed = (player->moveState & MOVESTATE_40)                                  \
+            ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER)                                         \
+            : Q_8_8(PLAYER_GRAVITY);                                                    \
                                                                                         \
         if (player->speedAirY < 0) {                                                    \
             asm("lsl r0, %0, #16\n"                                                     \

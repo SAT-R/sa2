@@ -18,6 +18,7 @@
 #include "game/stage/pause_menu.h"
 #include "game/stage/spot_light.h"
 #include "game/time_attack/lobby.h"
+#include "game/stage/music_manager.h"
 
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
@@ -46,8 +47,6 @@ void sub_8019498(void);
 void sub_80193C4(u8);
 void CreatePlayerActor(Player *);
 void sub_80191A4(void);
-
-extern const u16 gLevelSongs[];
 
 void sub_801AF14(void);
 void sub_801AFA4(void);
@@ -501,7 +500,7 @@ const u16 gUnknown_080D5CC2[16] = INCBIN_U16("graphics/080D5CC2.gbapal");
 
 void ApplyGameStageSettings(void)
 {
-    gUnknown_03005450 = 0;
+    gLevelScore = 0;
     gUnknown_030054B0 = 0;
     gNumLives = 3;
 

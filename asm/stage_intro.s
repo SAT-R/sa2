@@ -4012,7 +4012,7 @@ _0802F90A:
 	cmp r0, #0
 	bne _0802F962
 	movs r0, #0
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	b _0802F962
 	.align 2, 0
 _0802F924: .4byte gUnknown_03005424
@@ -4024,7 +4024,7 @@ _0802F938:
 	cmp r2, #0x1d
 	bne _0802F958
 	movs r0, #8
-	bl sub_8039EA4
+	bl CreateZoneBoss
 	ldr r0, _0802F954 @ =gDispCnt
 	ldrh r1, [r0]
 	movs r3, #0x80
@@ -4039,7 +4039,7 @@ _0802F958:
 	asrs r0, r0, #0x1a
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	bl sub_8039EA4
+	bl CreateZoneBoss
 _0802F962:
 	ldr r2, _0802F978 @ =gPlayer
 	ldr r0, [r2, #0x20]

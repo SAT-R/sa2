@@ -35,7 +35,7 @@ u8 gNumHBlankCallbacks ALIGNED(4) = 0;
 union MultiSioData gMultiSioRecv[4] = {};
 u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
-s8 gUnknown_030018F0 = 0;
+u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 u32 gVramHeapStartAddr = 0;
@@ -62,8 +62,7 @@ u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
 void *gUnknown_030022C0 = NULL;
 
-OamData gUnknown_030022C8 ALIGNED(8) = {};
-OamData gUnknown_030022D0[] = {};
+OamData gUnknown_030022D0[] ALIGNED(16) = {};
 s16 gUnknown_030026D0 = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
@@ -99,7 +98,7 @@ u16 gUnknown_03002A8C ALIGNED(4) = 0;
 struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
 
 u16 gPressedKeys ALIGNED(4) = 0;
-u8 gUnknown_03002AE0 ALIGNED(4) = 0;
+u8 gOamFirstPausedIndex ALIGNED(4) = 0;
 u8 gUnknown_03002AE4 ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
@@ -181,7 +180,7 @@ void GameInit(void)
     gFlagsPreVBlank = 0;
 
     if ((REG_RCNT & 0xc000) != 0x8000) {
-        gFlags = 0x200;
+        gFlags = FLAGS_200;
         DmaSet(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
     }
 
@@ -218,8 +217,8 @@ void GameInit(void)
 
     DmaFill32(3, 0, gVramGraphicsCopyQueue, sizeof(gVramGraphicsCopyQueue));
 
-    gUnknown_030018F0 = 0;
-    gUnknown_03002AE0 = 0;
+    gOamFreeIndex = 0;
+    gOamFirstPausedIndex = 0;
 
     DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
     DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
@@ -347,7 +346,7 @@ void GameLoop(void)
 {
     while (TRUE) {
         gExecSoundMain = FALSE;
-        if (!(gFlags & 0x4000)) {
+        if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
         }
 
@@ -361,21 +360,21 @@ void GameLoop(void)
 
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
-        if (gFlags & 0x4000) {
+        if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
-            if (!(gFlags & 0x400)) {
+            if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferCpuSet();
             }
         } else {
             UpdateScreenDma();
-            if (!(gFlags & 0x400)) {
+            if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferDma();
             }
         }
-        if ((gFlags & 0x400)) {
-            gFlags |= 0x800;
+        if ((gFlags & FLAGS_PAUSE_GAME)) {
+            gFlags |= FLAGS_800;
         } else {
-            gFlags &= ~0x800;
+            gFlags &= ~FLAGS_800;
         }
 
         // Wait for vblank to finish
@@ -390,14 +389,14 @@ static void UpdateScreenDma(void)
     REG_DISPCNT = gDispCnt;
     DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
 
-    if (gFlags & 1) {
+    if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
         DmaCopy32(3, gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
-        gFlags ^= 1;
+        gFlags ^= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 
-    if (gFlags & 2) {
+    if (gFlags & FLAGS_UPDATE_SPRITE_PALETTES) {
         DmaCopy32(3, gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
-        gFlags ^= 2;
+        gFlags ^= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
@@ -419,12 +418,12 @@ static void UpdateScreenDma(void)
         gNumHBlankIntrs = 0;
     }
 
-    if (gFlags & 0x4) {
+    if (gFlags & FLAGS_4) {
         DmaCopy16(3, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
     }
 
     if (gUnknown_030026F4 == 0xff) {
-        DrawToOamBuffer();
+        CopyOamBufferToOam();
         DmaCopy16(3, gOamBuffer, (void *)OAM, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
         DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
@@ -435,7 +434,7 @@ static void UpdateScreenDma(void)
         gUnknown_030053A0[i]();
     }
 
-    if (gFlags & 0x10) {
+    if (gFlags & FLAGS_10) {
         DmaFill32(3, 0, gUnknown_030053A0, sizeof(gUnknown_030053A0));
         if (gUnknown_03004D50 != 0) {
             DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
@@ -465,7 +464,7 @@ static void ClearOamBufferDma(void)
     gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    if (!(gFlags & 0x20)) {
+    if (!(gFlags & FLAGS_20)) {
         if (gUnknown_03001884 == gUnknown_03004D54) {
             gUnknown_03001884 = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
@@ -474,14 +473,14 @@ static void ClearOamBufferDma(void)
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }
-    gFlags &= ~4;
+    gFlags &= ~FLAGS_4;
     DmaFill16(3, 0x200, gOamBuffer, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
 
     gUnknown_03004D50 = 0;
-    gFlags &= ~16;
+    gFlags &= ~FLAGS_10;
 }
 
 static void UpdateScreenCpuSet(void)
@@ -490,14 +489,14 @@ static void UpdateScreenCpuSet(void)
     REG_DISPCNT = gDispCnt;
     CpuCopy32(gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
-    if (gFlags & 1) {
+    if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
         CpuFastCopy(gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
-        gFlags ^= 1;
+        gFlags ^= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 
-    if (gFlags & 2) {
+    if (gFlags & FLAGS_UPDATE_SPRITE_PALETTES) {
         CpuFastCopy(gObjPalette, (void *)OBJ_PLTT, OBJ_PLTT_SIZE);
-        gFlags ^= 2;
+        gFlags ^= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
     CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
@@ -519,7 +518,7 @@ static void UpdateScreenCpuSet(void)
     }
 
     if (gUnknown_030026F4 == 0xff) {
-        DrawToOamBuffer();
+        CopyOamBufferToOam();
         CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
 

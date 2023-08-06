@@ -6247,12 +6247,12 @@ _080242E0:
 	mov r3, ip
 	str r0, [r3, #0x20]
 	ldr r1, _080242F8 @ =gPlayer
-	ldr r0, _080242FC @ =PlayerCB_8025D00
+	ldr r0, _080242FC @ =PlayerCB_Jump
 	b _080245EC
 	.align 2, 0
 _080242F4: .4byte 0xFF9FFFFF
 _080242F8: .4byte gPlayer
-_080242FC: .4byte PlayerCB_8025D00
+_080242FC: .4byte PlayerCB_Jump
 _08024300:
 	mov r1, ip
 	ldr r0, [r1, #0x20]

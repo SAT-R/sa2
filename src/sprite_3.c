@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "flags.h"
 
-const u8 gOamShapesSizes[][2] = {
+const u8 gOamShapesSizes[12][2] = {
     // Square
     { 8, 8 },
     { 16, 16 },
@@ -74,13 +74,13 @@ void sub_80051E8(Sprite *sprite)
                 oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
 
                 // oam gets zero-initialized(?)
-                oam = sub_80058B4((sprite->unk1A & 0x7C0) >> 6);
+                oam = OamMalloc((sprite->unk1A & 0x7C0) >> 6);
                 if (iwram_end == oam) {
                     return;
                 }
 
                 if (i == 0) {
-                    sprite->oamBaseIndex = gUnknown_030018F0 - 1;
+                    sprite->oamBaseIndex = gOamFreeIndex - 1;
                 }
 
                 // oamIndex is a byte, why are they ANDing with 0x3FFF?

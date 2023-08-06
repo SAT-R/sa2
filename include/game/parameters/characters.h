@@ -2,7 +2,17 @@
 #define GUARD_PARAMETERS_CHARACTERS_H
 
 /*** Common ***/
-#define PLAYER_GRAVITY (0.033) // = (8. / 256.)
+#define PLAYER_FLYING_END_GRAVITY  (0.033) // = (8. / 256.)
+#define PLAYER_GRAVITY             42.0 / 256.0
+#define PLAYER_GRAVITY_UNDER_WATER 12.0 / 256.0
+
+#define PLAYER_JUMP_HEIGHT             4.875
+#define PLAYER_JUMP_HEIGHT_UNDER_WATER 2.625
+
+#define PLAYER_MAX_NOT_HELD_JUMP_FORCE             3.0
+#define PLAYER_MAX_NOT_HELD_JUMP_FORCE_UNDER_WATER 1.5
+
+#define PLAYER_AIR_SPEED_MAX 15.0
 
 /*** Tricks ***/
 #define TRICK__STOP_N_SLAM__DROP_SPEED Q_24_8(0.21875)
