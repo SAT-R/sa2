@@ -9,7 +9,6 @@
 #include "constants/zones.h"
 
 extern struct Backgrounds gUnknown_03005850;
-extern const u32 *gUnknown_030059C8;
 extern const Background gUnknown_080D5864[4];
 
 void StageInit_Zone1(void)
@@ -95,12 +94,12 @@ void StageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
 
         camY = gCamera.y >> 8;
         initial2 = 0;
-        for (i = 0x47; i >= 0; i--) {
+        for (i = 71; i >= 0; i--) {
             *cursor++ = initial1;
             *cursor++ = initial2;
         }
 
-        for (i = 0x56; i >= 0; i--) {
+        for (i = 86; i >= 0; i--) {
             *cursor++ = bgScroll;
             *cursor++ = camY;
         }

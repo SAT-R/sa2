@@ -4,8 +4,6 @@
 #include "trig.h"
 #include "game/game.h"
 
-extern const Background gUnknown_080D5864[4];
-
 // https://decomp.me/scratch/ekyaq
 NONMATCH("asm/non_matching/StageBgUpdateZone2Acts12.inc",
          void StageBgUpdateZone2Acts12(s32 a, s32 b))

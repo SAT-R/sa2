@@ -8,7 +8,7 @@
 
 extern const Background gUnknown_080D5864[4];
 
-void SetupSpotlightSnowAndCreateSpotlights(void)
+void StageInit_Zone4(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     const Background *templates;
