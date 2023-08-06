@@ -396,8 +396,8 @@ _0801D52C: .4byte gBgPalette
 _0801D530: .4byte gFlags
 
 @ type: CameraMain
-	thumb_func_start sub_801D534
-sub_801D534: @ 0x0801D534
+	thumb_func_start stageBgUpdateZone6Acts12
+stageBgUpdateZone6Acts12: @ 0x0801D534
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1898,14 +1898,14 @@ nullsub_801E12C:
     .align 2, 0
 
 
-	thumb_func_start nullsub_801E130
-nullsub_801E130: @ 0x0801E130
+	thumb_func_start stageBgUpdateDummy
+stageBgUpdateDummy: @ 0x0801E130
 	bx lr
 	.align 2, 0
 
 @ type: CameraMain
-	thumb_func_start sub_801E134
-sub_801E134: @ 0x0801E134
+	thumb_func_start stageBgUpdateZone1ActBoss
+stageBgUpdateZone1ActBoss: @ 0x0801E134
 	push {lr}
 	ldr r3, _0801E184 @ =gCamera
 	ldr r0, _0801E188 @ =gPlayer
@@ -1956,8 +1956,8 @@ _0801E198: .4byte gNumHBlankCallbacks
 _0801E19C: .4byte HBlankCB_801E434
 _0801E1A0: .4byte gFlags
 
-	thumb_func_start sub_801E1A4
-sub_801E1A4: @ 0x0801E1A4
+	thumb_func_start stageBgUpdateZone2ActBoss
+stageBgUpdateZone2ActBoss: @ 0x0801E1A4
 	push {lr}
 	ldr r0, _0801E1C8 @ =gPlayer
 	ldr r0, [r0, #0x20]
@@ -1973,7 +1973,7 @@ _0801E1BA:
 	ldr r0, [r1]
 	movs r1, #0xfa
 	lsls r1, r1, #4
-	bl sub_801C94C
+	bl stageBgUpdateZone2Acts12
 	pop {r0}
 	bx r0
 	.align 2, 0
@@ -2057,8 +2057,8 @@ _0801E260: .4byte gBgCntRegs
 _0801E264: .4byte 0x0000FFFC
 _0801E268: .4byte gBgScrollRegs
 
-	thumb_func_start sub_801E26C
-sub_801E26C: @ 0x0801E26C
+	thumb_func_start stageBgUpdateZone7Acts12
+stageBgUpdateZone7Acts12: @ 0x0801E26C
 	push {r4, r5, r6, r7, lr}
 	adds r3, r0, #0
 	adds r7, r1, #0
@@ -2144,8 +2144,8 @@ _0801E304: .4byte gPlayer
 _0801E308: .4byte gUnknown_03005590
 _0801E30C: .4byte 0x000003B1
 
-	thumb_func_start sub_801E310
-sub_801E310: @ 0x0801E310
+	thumb_func_start stageBgUpdateZoneFinalActXX
+stageBgUpdateZoneFinalActXX: @ 0x0801E310
 	push {lr}
 	ldr r0, _0801E348 @ =gPlayer
 	ldr r0, [r0, #0x20]
@@ -2183,8 +2183,8 @@ _0801E354: .4byte gNumHBlankCallbacks
 _0801E358: .4byte sub_801E4C4
 _0801E35C: .4byte gFlags
 
-	thumb_func_start sub_801E360
-sub_801E360: @ 0x0801E360
+	thumb_func_start stageBgUpdateZoneFinalActTA53
+stageBgUpdateZoneFinalActTA53: @ 0x0801E360
 	push {r4, r5, r6, lr}
 	movs r1, #0
 	ldr r0, _0801E3CC @ =gActiveBossTask

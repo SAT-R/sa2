@@ -100,7 +100,7 @@ extern struct Backgrounds gUnknown_03005850;
 extern const u32 *gUnknown_030059C8;
 
 extern const Background gUnknown_080D5864[4];
-extern const CameraMain gUnknown_080D5A10[];
+extern const CameraMain sStageBgUpdateFuncs[];
 extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
 const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
@@ -301,32 +301,75 @@ const VoidFn gUnknown_080D5988[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
-void sub_801C818(s32, s32);
-void sub_801C94C(s32, s32);
-void sub_801CBE8(s32, s32);
-void sub_801CDF0(s32, s32);
-void sub_801CF60(s32, s32);
-void sub_801D534(s32, s32);
-void nullsub_801E130(s32, s32);
-void sub_801E134(s32, s32);
-void sub_801E1A4(s32, s32);
+void stageBgUpdateZone1Acts12(s32, s32);
+void stageBgUpdateZone2Acts12(s32, s32);
+void stageBgUpdateZone3Acts12(s32, s32);
+void stageBgUpdateZone4Acts12(s32, s32);
+void stageBgUpdateZone5Acts12(s32, s32);
+void stageBgUpdateZone6Acts12(s32, s32);
+void stageBgUpdateDummy(s32, s32);
+void stageBgUpdateZone1ActBoss(s32, s32);
+void stageBgUpdateZone2ActBoss(s32, s32);
 void sub_801E1D0(s32, s32);
 void sub_801E1E4(s32, s32);
 void sub_801E234(s32, s32);
-void sub_801E26C(s32, s32);
+void stageBgUpdateZone7Acts12(s32, s32);
 void sub_801E2E0(s32, s32);
-void sub_801E310(s32, s32);
-void sub_801E360(s32, s32);
-const CameraMain gUnknown_080D5A10[NUM_LEVEL_IDS] = {
-    sub_801C818, sub_801C818, sub_801E134,     nullsub_801E130, // Zone 1
-    sub_801C94C, sub_801C94C, sub_801E1A4,     nullsub_801E130, // Zone 2
-    sub_801CBE8, sub_801CBE8, sub_801E1D0,     nullsub_801E130, // Zone 3
-    sub_801CDF0, sub_801CDF0, nullsub_801E130, nullsub_801E130, // Zone 4
-    sub_801CF60, sub_801CF60, sub_801E1E4,     nullsub_801E130, // Zone 5
-    sub_801D534, sub_801D534, sub_801E234,     nullsub_801E130, // Zone 6
-    sub_801E26C, sub_801E26C, sub_801E2E0,     nullsub_801E130, // Zone 7
-    sub_801E310, sub_801E360, sub_801C818,     sub_801C94C, // Zone Final
-    sub_801C818, sub_801D534,
+void stageBgUpdateZoneFinalActXX(s32, s32);
+void stageBgUpdateZoneFinalActTA53(s32, s32);
+
+static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
+    // Zone 1
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = stageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = stageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = stageBgUpdateZone1ActBoss,
+    [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 2
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = stageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = stageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = stageBgUpdateZone2ActBoss,
+    [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 3
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = stageBgUpdateZone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = stageBgUpdateZone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = sub_801E1D0,
+    [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 4
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = stageBgUpdateZone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = stageBgUpdateZone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 5
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = stageBgUpdateZone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = stageBgUpdateZone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = sub_801E1E4,
+    [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 6
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = stageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = stageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = sub_801E234,
+    [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone 7
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = stageBgUpdateZone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = stageBgUpdateZone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = sub_801E2E0,
+    [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = stageBgUpdateDummy,
+
+    // Zone Final
+    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = stageBgUpdateZoneFinalActXX,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = stageBgUpdateZoneFinalActTA53,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = stageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = stageBgUpdateZone2Acts12,
+
+    // Zone Unused
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = stageBgUpdateZone1Acts12,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = stageBgUpdateZone6Acts12,
 };
 
 const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
@@ -1622,7 +1665,7 @@ void sub_801C068(u32 level)
 
     camera->movementTask = TaskCreate(Task_801E0A8, 0, 0xF00, 0, TaskDestructor_801E040);
 
-    camera->unk58 = gUnknown_080D5A10[level];
+    camera->unk58 = sStageBgUpdateFuncs[level];
 
     if (gUnknown_080D5988[level] != NULL) {
         gUnknown_080D5988[level]();
@@ -1866,7 +1909,7 @@ void StageInit_Zone1(void)
     gBgScrollRegs[0][1] = 0;
 }
 
-void sub_801C818(s32 UNUSED a, s32 UNUSED b)
+void stageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
 {
 
     s32 i;
@@ -1929,7 +1972,8 @@ void sub_801C818(s32 UNUSED a, s32 UNUSED b)
 }
 
 // https://decomp.me/scratch/ekyaq
-NONMATCH("asm/non_matching/sub_801C94C.inc", void sub_801C94C(s32 a, s32 b))
+NONMATCH("asm/non_matching/stageBgUpdateZone2Acts12.inc",
+         void stageBgUpdateZone2Acts12(s32 a, s32 b))
 {
     u8 i, j;
     u16 *cursor = NULL;
@@ -2030,9 +2074,10 @@ void sub_801CB74(void)
 
 // https://decomp.me/scratch/Ww1Pq
 #if 01
-NONMATCH("asm/non_matching/sub_801CBE8.inc", void sub_801CBE8(s32 a, s32 b))
+NONMATCH("asm/non_matching/stageBgUpdateZone3Acts12.inc",
+         void stageBgUpdateZone3Acts12(s32 a, s32 b))
 #else
-void sub_801CBE8(s32 a, s32 b)
+void stageBgUpdateZone3Acts12(s32 a, s32 b)
 #endif
 {
     s16 r6;
@@ -2137,7 +2182,7 @@ struct UNK_801CDF0 {
     s16 unk40A;
 };
 
-void sub_801CDF0(s32 a, s32 b)
+void stageBgUpdateZone4Acts12(s32 a, s32 b)
 {
     Player *player = &gPlayer;
 
@@ -2196,7 +2241,7 @@ void StageInit_Zone5(void)
     gBgScrollRegs[3][1] = 0;
 }
 
-void sub_801CF60(s32 UNUSED a, s32 UNUSED b)
+void stageBgUpdateZone5Acts12(s32 UNUSED a, s32 UNUSED b)
 {
     s32 num;
     u16 *cursor, i, val;
