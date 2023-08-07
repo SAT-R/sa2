@@ -635,6 +635,7 @@ void sub_801C708(s32 x, s32 y)
         layer->scrollY = y;
         sub_8002A3C(layer);
         UpdateBgAnimationTiles(layer);
+
         layer++;
         gBgScrollRegs[2][0] = x & 7;
         gBgScrollRegs[2][1] = y & 7;
