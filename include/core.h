@@ -188,7 +188,21 @@ extern u32 gFlagsPreVBlank;
 
 extern u32 gFrameCount;
 
+#define INTR_INDEX_SIO     0
+#define INTR_INDEX_VBLANK  1
+#define INTR_INDEX_HBLANK  2
+#define INTR_INDEX_VCOUNT  3
+#define INTR_INDEX_TIMER0  4
+#define INTR_INDEX_TIMER1  5
+#define INTR_INDEX_TIMER2  6
+#define INTR_INDEX_DMA0    7
+#define INTR_INDEX_DMA1    8
+#define INTR_INDEX_DMA2    9
+#define INTR_INDEX_DMA3    10
+#define INTR_INDEX_KEYPAD  11
+#define INTR_INDEX_GAMEPAK 12
 extern IntrFunc gIntrTable[16];
+extern IntrFunc const gIntrTableTemplate[16];
 extern u32 gIntrMainBuf[0x80];
 
 extern struct Task *gCurTask;

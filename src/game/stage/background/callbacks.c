@@ -38,7 +38,7 @@ void HBlankCB_801E454(int_vcount vcount)
 
 void nullsub_801E494(void) { }
 
-void HBlankCB_801E498(int_vcount vcount)
+void HBlankCB_BgUpdateZone5ActBoss(int_vcount vcount)
 {
     if (vcount > 105) {
         REG_BG3HOFS = gCourseTime >> (gUnknown_080D5B50[vcount] - 1);

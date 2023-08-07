@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 
-extern void StageBgUpdateZone2Acts12(s32, s32);
+#include "game/stage/background/zone_2.h"
 
 void StageBgUpdateZone2ActBoss(void)
 {
