@@ -175,7 +175,6 @@ SECTIONS
         build/sa2/asm/enemy_mouse.o(.text);
         build/sa2/src/game/enemies/pen.o(.text);
         build/sa2/src/game/enemies/geji_geji.o(.text);
-        build/sa2/asm/enemy_geji_geji.o(.text);
         build/sa2/src/game/enemies/balloon.o(.text);
         build/sa2/asm/enemy_balloon.o(.text);
         build/sa2/src/game/enemies/flickey.o(.text);
