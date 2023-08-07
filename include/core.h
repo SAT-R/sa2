@@ -202,7 +202,7 @@ extern u32 gFrameCount;
 #define INTR_INDEX_KEYPAD  11
 #define INTR_INDEX_GAMEPAK 12
 extern IntrFunc gIntrTable[16];
-extern IntrFunc const gIntrTableTemplate[16];
+extern IntrFunc const gIntrTableTemplate[14];
 extern u32 gIntrMainBuf[0x80];
 
 extern struct Task *gCurTask;
