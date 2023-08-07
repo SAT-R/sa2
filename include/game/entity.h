@@ -174,6 +174,22 @@ void sub_801FD34(s32, s32, s32);
         }                                                                               \
     }
 
+#define ENEMY_CLAMP_TO_GROUND_2(_enemy, _unknownBool)                                   \
+    {                                                                                   \
+        s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
+                                Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
+                                _unknownBool, -8, NULL, sub_801EE64);                   \
+                                                                                        \
+        if (delta < 0) {                                                                \
+            _enemy->offsetY += Q_24_8(delta);                                           \
+            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
+        }                                                                               \
+                                                                                        \
+        if (delta > 0) {                                                                \
+            _enemy->offsetY += Q_24_8(delta);                                           \
+        }                                                                               \
+    }
+
 #define ENEMY_DESTROY_IF_PLAYER_HIT(_s, _pos)                                           \
     if (sub_800C4FC(_s, _pos.x, _pos.y, 0) == TRUE) {                                   \
         TaskDestroy(gCurTask);                                                          \

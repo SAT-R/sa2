@@ -1,6 +1,7 @@
 #include "global.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/enemies/geji_geji.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 
@@ -35,7 +36,8 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
     u8 i;
-    struct Task *t = TaskCreate(sub_8057F80, 0x280, 0x4040, 0, sub_8058480);
+    struct Task *t
+        = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
     Sprite_GejiGeji *gg = TaskGetStructPtr(t);
 
     Sprite *s = &gg->s;
