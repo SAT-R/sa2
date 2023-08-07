@@ -1,3 +1,4 @@
+.include "constants/gba_constants.inc"
 
 .syntax unified
 .text
@@ -37,7 +38,7 @@ _0801CC1A:
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0801CC6C
-	ldr r1, _0801CC68 @ =gUnknown_03000408
+	ldr r1, _0801CC68 @ =(IWRAM_START + 0x408)
 	movs r4, #0
 	ldrsh r0, [r1, r4]
 	cmp r0, #0
@@ -61,9 +62,9 @@ _0801CC58: .4byte gBgScrollRegs
 _0801CC5C: .4byte gGameMode
 _0801CC60: .4byte gPlayer
 _0801CC64: .4byte gUnknown_030054F4
-_0801CC68: .4byte gUnknown_03000408
+_0801CC68: .4byte (IWRAM_START + 0x408)
 _0801CC6C:
-	ldr r1, _0801CD5C @ =gUnknown_03000408
+	ldr r1, _0801CD5C @ =(IWRAM_START + 0x408)
 	movs r0, #0
 	strh r0, [r1]
 _0801CC72:
@@ -194,7 +195,7 @@ sub_801CBE8_return:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801CD5C: .4byte gUnknown_03000408
+_0801CD5C: .4byte (IWRAM_START + 0x408)
 _0801CD60: .4byte gUnknown_080D5B20
 _0801CD64: .4byte gUnknown_080D5B20+2
 _0801CD68: .4byte gUnknown_080D5B20+1

@@ -114,7 +114,12 @@ void StageInit_Zone3(void)
     gBgScrollRegs[3][1] = 0;
 }
 
-// https://decomp.me/scratch/Ww1Pq
+typedef struct {
+    u8 filler[0x408];
+    s16 unk408;
+} Unk3000408;
+
+// https://decomp.me/scratch/Esyzr
 #if 01
 NONMATCH("asm/non_matching/StageBgUpdateZone3Acts12.inc",
          void StageBgUpdateZone3Acts12(s32 a, s32 b))
@@ -144,13 +149,15 @@ void StageBgUpdateZone3Acts12(s32 a, s32 b)
 
     if (IS_SINGLE_PLAYER) {
         if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
-            if (gUnknown_03000408 == 0) {
-                gUnknown_03000408 = a;
+            Unk3000408 *unk = IWRAM_PTR(NULL);
+            if (unk->unk408 == 0) {
+                unk->unk408 = a;
             }
-            gUnknown_03000408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
-            a = gUnknown_03000408;
+            unk->unk408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
+            a = unk->unk408;
         } else {
-            gUnknown_03000408 = 0;
+            Unk3000408 *unk = IWRAM_PTR(NULL);
+            unk->unk408 = 0;
         }
         // _0801CC72
         i = 0;
