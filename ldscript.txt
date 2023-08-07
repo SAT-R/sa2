@@ -335,7 +335,7 @@ SECTIONS
         build/sa2/data/true_area_53_data.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
         build/sa2/asm/enemy_koura.o(.rodata);
-        build/sa2/asm/enemy_geji_geji.o(.rodata);
+        build/sa2/src/game/enemies/geji_geji.o(.rodata);
         build/sa2/src/game/multiplayer/mode_select.o(.rodata);
         build/sa2/src/game/multiplayer/multipak_connection.o(.rodata);
         build/sa2/src/game/multiplayer/communication_outcome.o(.rodata);

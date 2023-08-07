@@ -4,6 +4,8 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 
+#include "constants/animations.h"
+
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
@@ -18,10 +20,16 @@ typedef struct {
     /* 0x27E */ u8 unk27E;
 } Sprite_GejiGeji; /* size: 0x280*/
 
-void sub_8057F80(void);
-void sub_8058480(struct Task *);
+static void sub_8057F80(void);
+static void sub_8058264(void);
+static void sub_8058480(struct Task *);
 
-extern const TileInfo gUnknown_080D8F50[4];
+static const TileInfo gUnknown_080D8F50[4] = {
+    { .numTiles = 9, .anim = SA2_ANIM_GEJIGEJI, .variant = 3 },
+    { .numTiles = 9, .anim = SA2_ANIM_GEJIGEJI, .variant = 2 },
+    { .numTiles = 12, .anim = SA2_ANIM_GEJIGEJI, .variant = 1 },
+    { .numTiles = 12, .anim = SA2_ANIM_GEJIGEJI, .variant = 0 },
+};
 
 void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
@@ -72,9 +80,7 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                 gUnknown_080D8F50[gg->unk27C + 2].variant, 0x500, 2);
 }
 
-void sub_8058264(void);
-
-void sub_8057F80(void)
+static void sub_8057F80(void)
 {
     u8 i;
     Sprite_GejiGeji *gg = TaskGetStructPtr(gCurTask);
@@ -150,4 +156,70 @@ void sub_8057F80(void)
 
     gg->positions[0][gg->unk27E] = pos.x;
     gg->positions[1][gg->unk27E] = pos.y;
+}
+
+static void sub_8058264(void)
+{
+    u8 i;
+    Sprite_GejiGeji *gg = TaskGetStructPtr(gCurTask);
+    Sprite *s = &gg->s;
+    MapEntity *me = gg->base.me;
+
+    Vec2_32 pos;
+
+    pos.x = Q_24_8_TO_INT(gg->spawnX + gg->offsetX);
+    pos.y = Q_24_8_TO_INT(gg->spawnY + gg->offsetY);
+    s->x = gg->positions[0][gg->unk27E] - gCamera.x;
+    s->y = gg->positions[1][gg->unk27E] - gCamera.y;
+
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (--gg->unk27D == 0) {
+        if (gg->unk27C) {
+            if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+                s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+                gCurTask->main = sub_8057F80;
+            } else {
+                s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+                gCurTask->main = sub_8057F80;
+            }
+        } else {
+            if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                gCurTask->main = sub_8057F80;
+            } else {
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                gCurTask->main = sub_8057F80;
+            }
+        }
+    }
+
+    sub_8004558(s);
+    sub_80051E8(s);
+
+    s = &gg->s2;
+    sub_8004558(s);
+
+    for (i = 0; i < 4; i++) {
+        u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
+        s->x = gg->positions[0][index] - gCamera.x;
+        s->y = gg->positions[1][index] - gCamera.y;
+        sub_80051E8(s);
+    }
+
+    gg->unk27E = (gg->unk27E + 1) & 0x3F;
+
+    gg->positions[0][gg->unk27E] = pos.x;
+    gg->positions[1][gg->unk27E] = pos.y;
+}
+
+static void sub_8058480(struct Task *t)
+{
+    Sprite_GejiGeji *gg = TaskGetStructPtr(t);
+
+    VramFree(gg->s.graphics.dest);
+    VramFree(gg->s2.graphics.dest);
 }
