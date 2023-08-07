@@ -34,7 +34,7 @@ void sub_801F044(void);
 void sub_80213C0(u32, u32, Player *);
 void sub_80498CC(u8);
 void sub_802B708(void);
-void sub_801C068(u32);
+void InitCamera(u32);
 void sub_801BF90(void);
 
 void SetupStageLoadingScreen(void);
@@ -196,10 +196,10 @@ void CreateGameStage(void)
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateStageMusicManager();
         SetupStageLoadingScreen();
-        sub_801C068(gCurrentLevel);
+        InitCamera(gCurrentLevel);
         gUnknown_080D57DC[gCurrentLevel]();
     } else {
-        sub_801C068(0);
+        InitCamera(0);
         sub_801BF90();
         CreateCollectRingsTimeDisplay();
         gPlayer.moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);

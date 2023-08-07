@@ -307,7 +307,7 @@ static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
     { 0x40, 0x20, 0x02, 0x1C }, //
 };
 
-void sub_801C068(u32 level)
+void InitCamera(u32 level)
 {
     s32 x;
     u32 temp;
@@ -445,7 +445,7 @@ void sub_801C708(s32, s32);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
-void sub_801C394(void)
+void UpdateCamera(void)
 {
     Player *player = &gPlayer;
     struct Camera *camera = &gCamera;

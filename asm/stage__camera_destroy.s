@@ -118,7 +118,7 @@ _0801E100: .4byte Task_801E104
 	thumb_func_start Task_801E104
 Task_801E104: @ 0x0801E104
 	push {lr}
-	bl sub_801C394
+	bl UpdateCamera
 	ldr r1, _0801E114 @ =gUnknown_030054B8
 	movs r0, #4
 	strb r0, [r1]

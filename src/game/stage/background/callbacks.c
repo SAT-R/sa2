@@ -47,8 +47,7 @@ void HBlankCB_801E498(int_vcount vcount)
 
 void HBlankCB_BgUpdateZoneFinalActXX(int_vcount vcount)
 {
-    if(vcount == 88)
-    {
+    if (vcount == 88) {
         REG_BG3HOFS = (u8)gUnknown_03005590;
     }
 }
