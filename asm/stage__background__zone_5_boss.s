@@ -24,7 +24,7 @@ StageBgUpdateZone5ActBoss: @ 0x0801E1E4
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x16
 	adds r0, r0, r3
-	ldr r1, _0801E22C @ =sub_801E498
+	ldr r1, _0801E22C @ =HBlankCB_801E498
 	str r1, [r0]
 	ldr r2, _0801E230 @ =gFlags
 	ldr r0, [r2]
@@ -38,5 +38,5 @@ _0801E21C: .4byte 0x0000FDFF
 _0801E220: .4byte gBgScrollRegs
 _0801E224: .4byte gHBlankCallbacks
 _0801E228: .4byte gNumHBlankCallbacks
-_0801E22C: .4byte sub_801E498
+_0801E22C: .4byte HBlankCB_801E498
 _0801E230: .4byte gFlags

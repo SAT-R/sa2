@@ -113,6 +113,7 @@ SECTIONS
         build/sa2/asm/stage__background__zone_7_boss.o(.text);
         build/sa2/asm/stage__background__zone_final_boss.o(.text);
         build/sa2/asm/stage__background__zone_extra_boss.o(.text);
+        build/sa2/src/game/stage/background/callbacks.o(.text);
         build/sa2/asm/stage__background__callbacks.o(.text);
         build/sa2/src/game/stage/background/zone_7_2.o(.text);
         build/sa2/src/game/stage/background/zone_final.o(.text);

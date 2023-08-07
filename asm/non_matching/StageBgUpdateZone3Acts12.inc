@@ -177,7 +177,7 @@ __0801CD2C:
 	lsrs r0, r0, #0x16
 	ldr r3, _0801CD70 @ =gHBlankCallbacks
 	adds r0, r0, r3
-	ldr r4, _0801CD74 @ =sub_801E454
+	ldr r4, _0801CD74 @ =HBlankCB_801E454
 	str r4, [r0]
 	ldr r7, _0801CD78 @ =gFlags
 	ldr r0, [r7]
@@ -200,7 +200,7 @@ _0801CD64: .4byte gUnknown_080D5B20+2
 _0801CD68: .4byte gUnknown_080D5B20+1
 _0801CD6C: .4byte gNumHBlankCallbacks
 _0801CD70: .4byte gHBlankCallbacks
-_0801CD74: .4byte sub_801E454
+_0801CD74: .4byte HBlankCB_801E454
 _0801CD78: .4byte gFlags
 
 	

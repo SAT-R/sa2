@@ -56,7 +56,7 @@ s32 gNumTasks = 0;
 u8 gUnknown_03002280[4][4] = {};
 u16 gInput = 0;
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
-void *gUnknown_030022AC = NULL;
+u16 *gUnknown_030022AC = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
@@ -288,7 +288,7 @@ void GameInit(void)
     DmaFill32(3, 0, &gUnknown_03001B60, sizeof(gUnknown_03001B60));
 
     gUnknown_03001884 = gUnknown_03001B60[0];
-    gUnknown_030022AC = gUnknown_03001B60[1];
+    gUnknown_030022AC = (void *)gUnknown_03001B60[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
     gNumHBlankCallbacks = 0;

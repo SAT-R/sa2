@@ -276,7 +276,8 @@ extern u16 gUnknown_0300194C;
 struct MapHeader **gUnknown_03002260; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
-extern void *gUnknown_030022AC;
+
+extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gUnknown_030026D0;
 extern u8 gUnknown_030026F4;

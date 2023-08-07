@@ -2,17 +2,12 @@
 #include "core.h"
 #include "flags.h"
 #include "game/game.h"
+#include "game/stage/background/callbacks.h"
 
 extern const Background gUnknown_080D5864[4];
 
 // TODO: make this static!
 extern const u8 gUnknown_080D5B20[16][3];
-
-#ifdef PORTABLE
-extern void sub_801E454(u32 vcount);
-#else
-extern void sub_801E454(u8 vcount);
-#endif
 
 const u8 gUnknown_080D5B20[16][3] = {
     { 14, 0, 1 }, //
@@ -36,7 +31,7 @@ const u8 gUnknown_080D5B20[16][3] = {
 // TODO: This data is unused in this module
 //       But the place that references this is
 //       further down in code than the .rodata after this.
-const u8 gUnknown_080D5B50[160] = {
+const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = {
     // 0-105
     10, 10, 10, //
     10, 10, 10, //
@@ -196,7 +191,7 @@ void StageBgUpdateZone3Acts12(s32 a, s32 b)
         }
 
         // __0801CD2C
-        gHBlankCallbacks[gNumHBlankCallbacks++] = sub_801E454;
+        gHBlankCallbacks[gNumHBlankCallbacks++] = HBlankCB_801E454;
         gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
     }
 }
