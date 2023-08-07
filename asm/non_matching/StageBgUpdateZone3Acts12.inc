@@ -1,3 +1,4 @@
+.include "constants/gba_constants.inc"
 
 .syntax unified
 .text
@@ -7,12 +8,12 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x48
-	mov r8, r0
-	adds r0, r1, #0
+	mov r8, r0          @ r8 = a
+	adds r0, r1, #0     @ r0 = b
 	movs r1, #0
 	mov sl, r1
 	ldr r1, _0801CC54 @ =gUnknown_03001884
-	ldr r5, [r1]
+	ldr r5, [r1]        @ r5 = bgBuffer
 	movs r1, #0x3c
 	bl Div
 	lsls r0, r0, #0x10
@@ -24,7 +25,7 @@
 	ldrb r0, [r0]
 	cmp r0, #2
 	bls _0801CC1A
-	b _0801CD4C
+	b sub_801CBE8_return
 _0801CC1A:
 	ldr r2, _0801CC60 @ =gPlayer
 	ldr r0, [r2, #0x20]
@@ -37,7 +38,7 @@ _0801CC1A:
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0801CC6C
-	ldr r1, _0801CC68 @ =IWRAM_START + 0x408
+	ldr r1, _0801CC68 @ =(IWRAM_START + 0x408)
 	movs r4, #0
 	ldrsh r0, [r1, r4]
 	cmp r0, #0
@@ -61,13 +62,13 @@ _0801CC58: .4byte gBgScrollRegs
 _0801CC5C: .4byte gGameMode
 _0801CC60: .4byte gPlayer
 _0801CC64: .4byte gUnknown_030054F4
-_0801CC68: .4byte IWRAM_START + 0x408
+_0801CC68: .4byte (IWRAM_START + 0x408)
 _0801CC6C:
-	ldr r1, _0801CD5C @ =IWRAM_START + 0x408
+	ldr r1, _0801CD5C @ =(IWRAM_START + 0x408)
 	movs r0, #0
 	strh r0, [r1]
 _0801CC72:
-	movs r4, #0
+	movs r4, #0     @ r4 = i
 	lsls r0, r3, #0x10
 	asrs r2, r0, #0x10
 	ldr r1, _0801CD60 @ =gUnknown_080D5B20
@@ -134,6 +135,7 @@ _0801CCB6:
 	lsrs r4, r0, #0x18
 	cmp r4, #0xf
 	bls _0801CCB6
+__0801CCF0:
 	mov r2, sl
 	asrs r0, r2, #0x10
 	lsls r1, r0, #2
@@ -145,9 +147,9 @@ _0801CCB6:
 	movs r4, #0
 	ldr r7, [sp, #0x40]
 	lsrs r3, r7, #0x18
-_0801CD06:
+_0801CD06:              @ r5 = bgBuffer
 	ldrh r0, [r2, #2]
-	strh r0, [r5]
+	strh r0, [r5]   
 	adds r5, #2
 	ldrh r0, [r2]
 	strh r0, [r5]
@@ -166,6 +168,7 @@ _0801CD1C:
 	lsrs r4, r0, #0x18
 	cmp r4, #0x9e
 	bls _0801CD06
+__0801CD2C:
 	ldr r1, _0801CD6C @ =gNumHBlankCallbacks
 	ldrb r0, [r1]
 	adds r1, r0, #1
@@ -175,14 +178,14 @@ _0801CD1C:
 	lsrs r0, r0, #0x16
 	ldr r3, _0801CD70 @ =gHBlankCallbacks
 	adds r0, r0, r3
-	ldr r4, _0801CD74 @ =sub_801E454
+	ldr r4, _0801CD74 @ =HBlankCB_801E454
 	str r4, [r0]
 	ldr r7, _0801CD78 @ =gFlags
 	ldr r0, [r7]
 	movs r1, #8
 	orrs r0, r1
 	str r0, [r7]
-_0801CD4C:
+sub_801CBE8_return:
 	add sp, #0x48
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -192,13 +195,13 @@ _0801CD4C:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801CD5C: .4byte IWRAM_START + 0x408
+_0801CD5C: .4byte (IWRAM_START + 0x408)
 _0801CD60: .4byte gUnknown_080D5B20
 _0801CD64: .4byte gUnknown_080D5B20+2
 _0801CD68: .4byte gUnknown_080D5B20+1
 _0801CD6C: .4byte gNumHBlankCallbacks
 _0801CD70: .4byte gHBlankCallbacks
-_0801CD74: .4byte sub_801E454
+_0801CD74: .4byte HBlankCB_801E454
 _0801CD78: .4byte gFlags
 
 	

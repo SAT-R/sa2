@@ -188,7 +188,21 @@ extern u32 gFlagsPreVBlank;
 
 extern u32 gFrameCount;
 
+#define INTR_INDEX_SIO     0
+#define INTR_INDEX_VBLANK  1
+#define INTR_INDEX_HBLANK  2
+#define INTR_INDEX_VCOUNT  3
+#define INTR_INDEX_TIMER0  4
+#define INTR_INDEX_TIMER1  5
+#define INTR_INDEX_TIMER2  6
+#define INTR_INDEX_DMA0    7
+#define INTR_INDEX_DMA1    8
+#define INTR_INDEX_DMA2    9
+#define INTR_INDEX_DMA3    10
+#define INTR_INDEX_KEYPAD  11
+#define INTR_INDEX_GAMEPAK 12
 extern IntrFunc gIntrTable[16];
+extern IntrFunc const gIntrTableTemplate[14];
 extern u32 gIntrMainBuf[0x80];
 
 extern struct Task *gCurTask;
@@ -246,6 +260,8 @@ extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];
 
+extern s16 gUnknown_03000408;
+
 // TODO: Turn this into a struct-array:
 //       [4]{s16 x, s16 y}
 //       Should we introduce a
@@ -274,7 +290,8 @@ extern u16 gUnknown_0300194C;
 struct MapHeader **gUnknown_03002260; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
-extern void *gUnknown_030022AC;
+
+extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gUnknown_030026D0;
 extern u8 gUnknown_030026F4;
