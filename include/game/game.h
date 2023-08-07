@@ -163,7 +163,6 @@ typedef struct {
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
 
-// Some flags
 extern u32 gUnknown_03005590;
 
 extern u32 gUnknown_030054A0;
