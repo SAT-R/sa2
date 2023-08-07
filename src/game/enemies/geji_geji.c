@@ -71,3 +71,83 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                 gUnknown_080D8F50[gg->unk27C + 2].anim,
                 gUnknown_080D8F50[gg->unk27C + 2].variant, 0x500, 2);
 }
+
+void sub_8058264(void);
+
+void sub_8057F80(void)
+{
+    u8 i;
+    Sprite_GejiGeji *gg = TaskGetStructPtr(gCurTask);
+    MapEntity *me;
+    Vec2_32 pos;
+
+    Sprite *s = &gg->s;
+    Sprite *s2 = &gg->s2;
+
+    me = gg->base.me;
+
+    if (gg->unk27C) {
+        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            gg->offsetY += 0x180;
+        } else {
+            gg->offsetY -= 0x180;
+        }
+    } else {
+        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            gg->offsetX += 0x180;
+        } else {
+            gg->offsetX -= 0x180;
+        }
+    }
+
+    ENEMY_UPDATE_POSITION(gg, s, pos.x, pos.y);
+
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+
+    for (i = 0; i < 4; i++) {
+        u8 index2 = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
+        s2->x = gg->positions[0][index2] - gCamera.x;
+        s2->y = gg->positions[1][index2] - gCamera.y;
+        sub_800CA20(s2, gg->positions[0][index2], gg->positions[1][index2], 0, &gPlayer);
+    }
+
+    ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);
+
+    if (gg->unk27C) {
+        if (ENEMY_CROSSED_TOP_BORDER(gg, me) && !(s->unk10 & SPRITE_FLAG_MASK_Y_FLIP)) {
+            gg->unk27D = 0x3C;
+            gCurTask->main = sub_8058264;
+        } else if (ENEMY_CROSSED_BOTTOM_BORDER(gg, me)
+                   && (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP)) {
+            gg->unk27D = 0x3C;
+            gCurTask->main = sub_8058264;
+        }
+    } else {
+        if (ENEMY_CROSSED_LEFT_BORDER(gg, me) && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+            gg->unk27D = 0x3C;
+            gCurTask->main = sub_8058264;
+        } else if ((ENEMY_CROSSED_RIGHT_BORDER(gg, me)
+                    && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+            gg->unk27D = 0x3C;
+            gCurTask->main = sub_8058264;
+        }
+    }
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    sub_8004558(s);
+    sub_80051E8(s);
+    sub_8004558(s2);
+
+    for (i = 0; i < 4; i++) {
+        u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
+        s2->x = gg->positions[0][index] - gCamera.x;
+        s2->y = gg->positions[1][index] - gCamera.y;
+        sub_80051E8(s2);
+    }
+
+    gg->unk27E = (gg->unk27E + 1) & 0x3F;
+
+    gg->positions[0][gg->unk27E] = pos.x;
+    gg->positions[1][gg->unk27E] = pos.y;
+}

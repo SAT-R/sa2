@@ -267,8 +267,8 @@ typedef struct Player_ {
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
-    /* 0x48 */ s32 unk48;
-    /* 0x4C */ s32 unk4C;
+    /* 0x48 */ s32 unk48; // acceleration?
+    /* 0x4C */ s32 unk4C; // deceleration?
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54;
