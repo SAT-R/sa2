@@ -20,6 +20,10 @@ typedef void (*VoidFn)(void);
 #define UB_FIX
 #endif
 
+#if((defined PORTABLE) && !(defined NON_MATCHING))
+#define NON_MATCHING 1
+#endif
+
 #ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
@@ -214,7 +218,7 @@ typedef struct {
 } BgAffineReg;
 
 // TODO: Find better place for this
-typedef void (*HBlankFunc)(u8 vcount);
+typedef void (*HBlankFunc)(int_vcount vcount);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);

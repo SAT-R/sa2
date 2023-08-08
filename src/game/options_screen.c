@@ -4558,9 +4558,8 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
     struct TimeRecordDisplay *timeDisplay
         = (struct TimeRecordDisplay *)(offsetA + offsetB);
 #else
-    struct TimeRecordDisplay *timeDisplay
-        = &((struct TimeRecordsScreen *)(IWRAM_PTR(gCurTask->data)))
-               ->timeDisplays[rowIndex];
+    struct TimeRecordsScreen *trs = TaskGetStructPtr(gCurTask);
+    struct TimeRecordDisplay *timeDisplay = &trs->timeDisplays[rowIndex];
 #endif
 
     if (frame > 0 && frame < 9) {

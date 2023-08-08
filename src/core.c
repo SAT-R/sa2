@@ -701,7 +701,7 @@ static void GetInput(void)
 static void HBlankIntr(void)
 {
     u8 i;
-    u8 vcount = *(vu8 *)REG_ADDR_VCOUNT;
+    int_vcount vcount = *(volatile int_vcount *)REG_ADDR_VCOUNT;
 
     if (vcount < DISPLAY_HEIGHT) {
         for (i = 0; i < gNumHBlankIntrs; i++) {
