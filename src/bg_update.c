@@ -3,6 +3,7 @@
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
+// https://decomp.me/scratch/weGoy
 NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
@@ -21,8 +22,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
         // _08002B64
         REG_VCOUNT;
         {
+            Background **backgrounds = &gUnknown_03001800[0];
             s32 index = gUnknown_03002AE4;
-            bg = gUnknown_03001800[index];
+            bg = backgrounds[index];
             index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
             gUnknown_03002AE4 = index;
 
@@ -179,6 +181,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                 // _08002EE8
                 for (i = 0; i < bg->unk26;) {
+                    u32 bgUnk28;
                     s32 r1;
                     s32 r5Res;
                     u32 r8;
@@ -191,6 +194,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     sp1C = sp10_i - r5Res * bg->unk14;
                     r1 -= sp1C;
 
+                    r8 = bg->unk28;
                     if (r1 > (bg->unk26 - i))
                         r1 = (bg->unk26 - i);
 
@@ -199,13 +203,13 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                     // _08002F28
                     // sb = j
-                    r8 = bg->unk28;
-                    for (j = 0; j < bg->unk28; j++) {
+                    r8 = bgUnk28;
+                    for (j = 0; j < bgUnk28; j++) {
                         void *dmaSrc, *dmaDest;
                         s32 r4 = sp14 + i;
                         s32 r5;
                         const u16 *r1Ptr;
-                        u16 v;
+                        u32 v;
                         s32 result = Div(sp14, bg->unk16);
                         r4 -= result * bg->unk16;
                         r5 = bg->unk16 - r4;
@@ -437,7 +441,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     // _080034DC
                     u16 sp10 = (bg->scrollX / 8) + bg->unk1E;
                     u16 sp14 = (bg->scrollY / 8) + bg->unk20;
-                    u16 i, j;
+                    u32 i;
+                    u32 j;
 
                     for (i = 0; i < bg->unk26; i++) {
                         // _08003500
@@ -445,7 +450,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         u32 sp28 = bg->scrollX - (bg->unk14 * sp24);
                         u32 sp2C;
                         u32 sp34;
-                        u16 r8 = bg->unk28;
+                        u32 r8 = bg->unk28;
                         u32 r0 = bg->unk26 - i;
                         u32 r1 = bg->unk14 - sp28;
 

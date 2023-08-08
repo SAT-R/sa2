@@ -20,7 +20,7 @@ typedef void (*VoidFn)(void);
 #define UB_FIX
 #endif
 
-#if((defined PORTABLE) && !(defined NON_MATCHING))
+#if ((defined PORTABLE) && !(defined NON_MATCHING))
 #define NON_MATCHING 1
 #endif
 
