@@ -29,8 +29,6 @@ static void sub_80811A0(Sprite_SpecialRing *, u32);
 static void sub_8081134(Sprite_SpecialRing *);
 static void Task_80811BC(void);
 
-extern void sub_80122DC(s32, s32);
-
 void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
