@@ -117,7 +117,7 @@ void Task_MadilloMain(void)
 
 // Task_8056230
 // // Once this matches, Task_80564BC should be straightforward
-// https://decomp.me/scratch/jjEzG
+// https://decomp.me/scratch/UJCld
 #if 0
 void Task_8056230(void)
 {
@@ -125,10 +125,11 @@ void Task_8056230(void)
     Sprite *s = &madillo->s; // r5
     Sprite *otherS;
     struct UNK_3005A70 *ip;
+    
     MapEntity *me = madillo->base.me;
-    Player *p;
     Vec2_32 pos;
-    s32 posX, posY;
+    Player *p;
+
     s32 sp08;
 
     if(s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
@@ -153,34 +154,25 @@ void Task_8056230(void)
         }
     }
 
-    posX = Q_24_8_TO_INT(madillo->spawnX + madillo->offsetX); // r6
-    posY = Q_24_8_TO_INT(madillo->spawnY + madillo->offsetY); // r7
-    s->x = posX - gCamera.x;
-    s->y = posY - gCamera.y;
+    ENEMY_UPDATE_POSITION(madillo, s, pos.x, pos.y);
 
     ip = gPlayer.unk90;
     otherS = &ip->s;
-    if(otherS->unk28[0].unk0 != -1) {
-        u8 r8 = s->unk28[0].unk4;
-        u32 r2 = gPlayer.x;
-        u32 sp10 = ip->s.unk28[0].unk4;
-        r2 += sp10;
 
-        if(((posX+r8 > r2) && (gPlayer.x >> 8) + (ip->s.unk28[0].unk6 - sp10))
-        || ((posX+r8 + (s->unk28[0].unk6 - r8)) >= r2)
-        || (((posX+r8 >= r2) && (s->unk28[0].unk6 - r8)) >= r2)) {
- 
-            if(s->unk28[0].unk5 + posY <= (gPlayer.y >> 8) + otherS->unk28[0].unk5)
-            if((s->unk28[0].unk7 - s->unk28[0].unk5) + posY < (gPlayer.y >> 8) + otherS->unk28[0].unk5)
-            if(s->unk28[0].unk5 + posY >= (gPlayer.y >> 8) + otherS->unk28[0].unk5)
-            {
-                if(otherS->unk28[0].unk7 - s->unk28[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
-                if(!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY))
-                   sub_800CBA4(&gPlayer);
-            }
+    if(otherS->unk28[0].unk0 != -1) {
+        if(pos.x + s->unk28[0].unk4 <= Q_24_8_TO_INT(gPlayer.x) + otherS->unk28[0].unk4)
+        if ((madillo->s.unk22 - s->unk28[0].unk4 + pos.x) < s->unk28[0].unk4)
+        if (pos.x+s->unk28[0].unk4 >= s->unk28[0].unk4)
+        if (otherS->unk28[0].unk6 - otherS->unk28[0].unk4 >= pos.x+s->unk28[0].unk4)
+        if(s->unk28[0].unk5 + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+        if((s->unk28[0].unk7 - s->unk28[0].unk5) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+        if(s->unk28[0].unk5 + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+        {
+            if(otherS->unk28[0].unk7 - s->unk28[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+            if((gPlayer.itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE)
+                sub_800CBA4(&gPlayer);
         }
     }
-    // _080563B8
     
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
@@ -200,6 +192,6 @@ void Task_8056230(void)
             madillo->unk51 = 120;        
     }
 
-    ENEMY_UPDATE_EX_RAW(s, Q_24_8_NEW(posX), Q_24_8_NEW(pos.y), {});
+    ENEMY_UPDATE_EX_RAW(s, Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y), {});
 }
 #endif
