@@ -3,15 +3,23 @@
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
-// https://decomp.me/scratch/weGoy
+// (75.48%) https://decomp.me/scratch/q83Cf
+#define USE_NONMATCHED 0
+#if USE_NONMATCHED
+bool32 sub_8002B20(void)
+#else
 NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
+#endif
 {
     u16 sp00;
     s32 sp04 = 0;
     u32 sp08;
     u32 sp0C; // line-size ?
+    u16 sp10;
+    u16 sp14;
     u32 affine; // -> r3
     u32 bgId; // -> r5 = (bg->unk2E & 0x3)
+    s32 sb;
 
     while (gUnknown_03002AE4 != gUnknown_0300287C) {
         Background *bg;
@@ -28,7 +36,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
             gUnknown_03002AE4 = index;
 
-            if ((bg->unk2E & 0x20) && bg->scrollX == bg->prevScrollX)
+            if ((bg->unk2E & 0x20) && (bg->scrollX == bg->prevScrollX)
+                && bg->scrollY == bg->prevScrollY)
                 continue;
         }
         // NOTE: register r4 = sp00
@@ -38,7 +47,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             bgId = (bg->unk2E & 0x3);
             if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
                 affine = (gBgCntRegs[bgId] >> 14);
-                sp0C = 0x400 << affine;
+                sp0C = (u32)(0x100000 << affine) >> 16;
                 sp08 = 1;
             } else {
                 // _08002BD8
@@ -51,7 +60,11 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             }
 
             // _08002BF8
-            sp0C = (u16)(sp0C * sp08);
+            {
+                register u32 temp asm("r0");
+                temp = (u16)(sp0C * sp08);
+                sp0C = temp;
+            }
         }
 
         if (!(bg->unk2E & 0x20)) {
@@ -80,11 +93,11 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                             // _08002C9A
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = (r4Ptr[0 - i] ^ TileMask_FlipXY);
+                                r7[i] = (*(r4Ptr - i) ^ TileMask_FlipXY);
                             }
 
-                            ((u8 *)r7) += sp0C;
-                            ((u8 *)r4Ptr) -= (sp00 * sp08);
+                            r7 = CastPointer(r7, sp0C);
+                            r4Ptr = (void *)(((u8 *)r4Ptr) - (sp00 * sp08));
                         }
                     } else {
                         // _08002CD4
@@ -98,7 +111,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u16 i;
 
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = (r4Ptr[0 - i] ^ TileMask_FlipX);
+                                r7[i] = (*(r4Ptr - i) ^ TileMask_FlipX);
                             }
 
                             ((u8 *)r7) += sp0C;
@@ -117,15 +130,15 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         void *r1Ptr = CastPointer(bg->unk10, r0Index * sp08);
                         u16 *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
-                        while (--r5 != (u16)-1) {
+                        while (r5-- != 0) {
                             u16 i;
-                            u32 sb = sp00 * sp08;
+                            sb = sp00 * sp08;
 
                             for (i = 0; i < bg->unk26; i++) {
-                                r7[i] = r4Ptr[i] ^ TileMask_FlipY;
+                                r7[i] = r4Ptr[i] ^ 0x800;
                             }
 
-                            r4Ptr -= 16;
+                            r4Ptr -= sb;
                         }
                     } else {
                         // _08002DD4
@@ -133,7 +146,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             && ((bg->unk26 + bg->unk22 - 0x20) > 0)) {
                             // __08002DF8
                             const u16 *r4Ptr = &bg->unk10[bg->unk20 * sp00] + bg->unk1E;
-                            s32 sb = 0x20 * 2;
+                            sb = 0x20 * 2;
 
                             while (--r5 != (u16)-1) {
                                 // _08002E1C
@@ -141,7 +154,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 DmaCopy16(3, r4Ptr, sp08, sb);
                                 DmaCopy16(3, &r4Ptr[0x20 / 2], &((u8 *)r7)[sp04], sb);
 
-                                r7 += sp0C / 2;
+                                r7 = (u16 *)(((u8 *)r7) + sp0C);
                                 ((u8 *)r4Ptr) += sp00 * sp08;
                             }
 
@@ -157,9 +170,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             // r4 = r4Ptr
                             // r6 = bg
                             // r7 =
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 // _08002EA4
-                                DmaCopy16(3, r4Ptr, r7, (bg->unk26 * sp08));
+                                DmaCopy16(3, r4Ptr, r7, (s32)(bg->unk26 * sp08));
                                 ((u8 *)r7) += sp0C;
                                 r4Ptr += sp00 * sp08;
                             }
@@ -170,46 +183,45 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                 // r3 = affine
                 // r6 = bg
                 // _08002ED4
-                u32 sp10 = bg->unk1E;
-                u32 sp14 = bg->unk20;
                 s32 sp18;
                 s32 sp1C;
-                s32 sp20;
+                u32 sp20;
                 s32 sp38;
                 u32 dmaFlags; // <- sp3C
                 s32 i, j;
+                sp10 = bg->unk1E;
+                sp14 = bg->unk20;
 
                 // _08002EE8
-                for (i = 0; i < bg->unk26;) {
-                    u32 bgUnk28;
+                for (i = 0; i < bg->unk26; i++) {
                     s32 r1;
                     s32 r5Res;
                     u32 r8;
                     s32 sp10_i = sp10 + i;
+                    s32 temp;
 
                     sp18 = Div(sp10_i, bg->unk14);
                     r1 = bg->unk14;
                     r5Res = sp18;
 
                     sp1C = sp10_i - r5Res * bg->unk14;
-                    r1 -= sp1C;
 
                     r8 = bg->unk28;
-                    if (r1 > (bg->unk26 - i))
+                    temp = (bg->unk26 - i);
+                    r1 -= sp1C;
+                    if (r1 > temp)
                         r1 = (bg->unk26 - i);
 
                     sp20 = r1 * sp08;
-                    sp38 = r1 + i;
 
                     // _08002F28
                     // sb = j
-                    r8 = bgUnk28;
-                    for (j = 0; j < bgUnk28; j++) {
+                    for (j = 0; j < r8; j++) {
                         void *dmaSrc, *dmaDest;
-                        s32 r4 = sp14 + i;
                         s32 r5;
                         const u16 *r1Ptr;
                         u32 v;
+                        s32 r4 = sp14 + i;
                         s32 result = Div(sp14, bg->unk16);
                         r4 -= result * bg->unk16;
                         r5 = bg->unk16 - r4;
@@ -218,7 +230,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         r1Ptr = &bg->metatileMap[result];
 
                         // r1 = v
-                        v = r1Ptr[sp18] * bg->unk14 * bg->unk16;
+                        v = r1Ptr[sp18 * 3] + bg->unk14 * bg->unk16;
 
                         v += r4 * bg->unk14 + sp1C;
                         v *= sp08;
@@ -227,7 +239,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         {
                             u8 *r0 = CastPointer(bg->tilesVram, bg->unk24);
-                            r0 += (sp0C * j + bg->unk22);
+                            r0 += (sp0C * j);
+                            r0 += bg->unk22;
                             dmaDest = &r0[i * sp08];
                         }
 
@@ -239,17 +252,15 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         r8 -= r5;
 
                         {
-                            u32 dmaSrcSize = sp00 * sp08;
-                            while (r5--) {
-                                dmaFlags = (sp20 + (sp20 >> 31)) / 2;
+                            while (r5-- != 0) {
+                                dmaFlags = sp20;
+                                dmaFlags += ((sp20 >> 31));
                                 DmaCopy16(3, dmaSrc, dmaDest, dmaFlags);
-                                dmaSrc += dmaSrcSize;
+                                dmaSrc += sp00 * sp08;
                                 dmaDest += sp0C;
                             }
                         }
                     }
-
-                    i = sp38;
                 }
                 // _08002FD6
             }
@@ -260,31 +271,35 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             // r5 <- bgId
             // _08002FE8
             if (!(bg->unk2E & 0x40)) {
-                while (bg->scrollX >= sp00 * 8)
-                    bg->scrollX -= sp00 * 8;
+                while (bg->scrollX >= sp00 << 3)
+                    bg->scrollX -= sp00 << 3;
 
                 while (bg->scrollY >= bg->unk16 * 8) {
                     bg->scrollY -= bg->unk16 * 8;
                 }
             }
             //_08003034
-            gBgScrollRegs[bgId][0] = bg->scrollX % 8;
-            gBgScrollRegs[bgId][1] = bg->scrollY % 8;
+            gBgScrollRegs[bgId][0] = bg->scrollX & 0x7;
+            gBgScrollRegs[bgId][1] = bg->scrollY & 0x7;
 
-            if ((bg->prevScrollX / 8 != bg->scrollX / 8)
-                && (bg->prevScrollY / 8 != bg->scrollY / 8)) {
+            if ((bg->prevScrollX >> 3 != bg->scrollX >> 3)
+                || (bg->prevScrollY >> 3 != bg->scrollY >> 3)) {
                 if (!(bg->unk2E & 0x40)) {
                     // _08003072
-                    u32 sp10 = (u16)(bg->scrollX / 8 + bg->unk1E);
-                    u32 sp14 = (u16)(bg->scrollY / 8 + bg->unk20);
-                    u16 *sp3C;
-
-                    u16 *r7Ptr = CastPointer(bg->tilesVram,
-                                             (bg->unk24 * sp0C) + (bg->unk22 * sp08));
-
-                    u16 r2 = (bg->unk26 + sp10);
-                    u32 r4 = bg->unk14;
+                    // TODO: Something'S wrong with the types here (r2 should be s16?)
+                    u16 *r7Ptr;
+                    u16 r2;
+                    u32 r4;
                     u16 r5;
+                    u16 *sp3C;
+                    sp10 = (u16)((bg->scrollX >> 3) + bg->unk1E);
+                    sp14 = (u16)((bg->scrollY >> 3) + bg->unk20);
+
+                    r7Ptr = CastPointer(bg->tilesVram,
+                                        (sp0C * bg->unk24) + (bg->unk22 * sp08));
+
+                    r2 = (bg->unk26 + sp10);
+                    r4 = bg->unk14;
                     if ((r2 + 1) > r4) {
                         r2 -= (r4 - 1);
                     } else {
@@ -301,23 +316,30 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u32 index2 = ((bg->unk1E + bg->unk26) - 1);
                             u16 *r4Ptr = &r1Ptr[index2 * sp08];
 
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 // _08003108
                                 u16 i; // <- r3
                                 for (i = 0; i < bg->unk26; i++) {
+                                    u32 mask = TileMask_FlipXY;
                                     // _08003126
                                     sp3C = &r7Ptr[i];
-                                    *sp3C = (r4Ptr[0 - i] ^ TileMask_FlipXY);
+                                    *sp3C = (r4Ptr[0 - i] ^ mask);
                                 }
                             }
                         } else {
                             // _08003158
-                            u32 index = bg->unk20;
-                            u16 *r1Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
-                            u32 index2 = bg->unk1E + bg->unk26 - 1;
-                            u16 *r4Ptr = &r1Ptr[index2 * sp08];
+                            u32 index;
+                            u16 *r1Ptr;
+                            u32 index2;
+                            u16 *r4Ptr;
+                            index = bg->unk20;
+                            index *= r4;
+                            index *= sp08;
+                            r1Ptr = (u16 *)&((u8 *)bg->unk10)[index];
+                            index2 = bg->unk1E + bg->unk26 - 1;
+                            r4Ptr = &r1Ptr[index2 * sp08];
 
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 // _08003180
                                 u16 i;
                                 for (i = 0; i < bg->unk26; i++) {
@@ -354,7 +376,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u16 *r4Ptr = &r0Ptr[index2 * sp08];
 
                             // _08003298
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 u32 dmaSize = bg->unk26 - (r2 - 1);
                                 dmaSize *= sp08;
                                 dmaSize += (dmaSize >> 31);
@@ -377,27 +399,32 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             if (bg->unk2E & 0x80) {
                                 // _08003306
                                 u32 index = ((sp14 + r5) - 1) * r4;
-                                u16 *r1Ptr = (u16 *)((u8 *)&bg->unk10[index * sp08]);
+                                u16 *r1Ptr = (u16 *)&(((u8 *)bg->unk10)[index * sp08]);
                                 u16 *r4Ptr = (u16 *)((u8 *)&r1Ptr[(r2 - 1) * sp08]);
 
                                 while (--r5 != (u16)-1) {
                                     u16 i;
                                     for (i = 0; i < bg->unk26; i++) {
-                                        r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipXY;
+                                        r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipXY;
                                     }
                                     ((u8 *)r7Ptr) += sp0C;
                                     ((u8 *)r4Ptr) -= sp00 * sp08;
                                 }
                             } else {
                                 // _08003380
-                                u32 index = sp14 * r4;
-                                u8 *r1Ptr = &((u8 *)bg->unk10)[index * sp08];
-                                u16 *r4Ptr = (u16 *)&r1Ptr[(r2 - 1) * sp08];
+                                u32 index;
+                                u8 *r1Ptr;
+                                u16 *r4Ptr;
+                                index = sp14;
+                                index *= r4;
+                                index *= sp08;
+                                r1Ptr = &((u8 *)bg->unk10)[index];
+                                r4Ptr = (u16 *)&r1Ptr[(r2 - 1) * sp08];
 
                                 while (--r5 != (u16)-1) {
                                     u16 i;
                                     for (i = 0; i < bg->unk26; i++) {
-                                        r7Ptr[i] = r4Ptr[i] ^ TileMask_FlipX;
+                                        r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipX;
                                     }
                                     ((u8 *)r7Ptr) += sp0C;
                                     ((u8 *)r4Ptr) += sp00 * sp08;
@@ -425,9 +452,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 u32 index = (sp14 * r4);
                                 u16 *r4Ptr = (u16 *)&((u8 *)bg->unk10)[index * sp08];
 
-                                u32 dmaSize = r2 * sp08;
+                                u32 dmaSize = sp08 * r2;
                                 dmaSize += (dmaSize >> 31);
-                                while (--r5 != (u16)-1) {
+                                while (r5-- != 0) {
                                     // _08003492
                                     DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
 
@@ -439,20 +466,22 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     }
                 } else {
                     // _080034DC
-                    u16 sp10 = (bg->scrollX / 8) + bg->unk1E;
-                    u16 sp14 = (bg->scrollY / 8) + bg->unk20;
                     u32 i;
                     u32 j;
+                    sp10 = (bg->scrollX >> 3) + bg->unk1E;
+                    sp14 = (bg->scrollY >> 3) + bg->unk20;
 
                     for (i = 0; i < bg->unk26; i++) {
                         // _08003500
-                        u32 sp24 = Div(sp10 + i, bg->unk14);
-                        u32 sp28 = bg->scrollX - (bg->unk14 * sp24);
-                        u32 sp2C;
-                        u32 sp34;
-                        u32 r8 = bg->unk28;
-                        u32 r0 = bg->unk26 - i;
-                        u32 r1 = bg->unk14 - sp28;
+                        s32 r4 = sp10 + i;
+                        s32 sp24 = Div(r4, bg->unk14);
+                        s32 r1 = bg->unk14;
+                        s32 sp28 = r4 - (sp24 * r1);
+                        s32 sp2C;
+                        s32 sp34;
+                        s32 r8 = bg->unk28;
+                        s32 r0 = bg->unk26 - i;
+                        r1 = r1 - sp28;
 
                         if (r1 > r0)
                             r1 = r0;
@@ -463,15 +492,15 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         for (j = 0; j < bg->unk28; j++) {
                             // _08003542
-                            u32 divident = sp14 + j;
-                            u32 yPos = Div(divident, bg->unk16);
-                            u32 new_r4 = divident - (yPos * bg->unk16);
-                            u32 r5 = bg->unk16 - new_r4;
+                            s32 divident = sp14 + j;
+                            s32 yPos = Div(divident, bg->unk16);
+                            s32 new_r4 = divident - (yPos * bg->unk16);
+                            s32 r5 = bg->unk16 - new_r4;
                             yPos *= bg->mapWidth;
 
                             { // _0800355C
-                                u32 metatileIndex = bg->metatileMap[yPos + (sp24 * 2)];
-                                u32 otherVal;
+                                s32 metatileIndex = *(&bg->metatileMap[yPos] + sp24);
+                                s32 otherVal;
                                 metatileIndex *= bg->unk14;
                                 metatileIndex *= bg->unk16;
 
@@ -497,10 +526,10 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     // _080035A4
                                     // NOTE: Somehow this is different from all
                                     //       the other while-loops, where it was
-                                    //       while(--r5 != (u16)-1) instead.
-                                    dmaSize = sp2C;
-                                    dmaSize += (dmaSize >> 31);
                                     while (r5-- != 0) {
+                                        //       while(--r5 != (u16)-1) instead.
+                                        dmaSize = sp2C;
+                                        dmaSize += (dmaSize >> 31);
                                         DmaCopy16(3, dmaSrc, dmaDest, dmaSize);
                                         dmaDest += sp0C;
                                         dmaSrc += sp00 * sp08;
@@ -520,7 +549,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
     return 1;
 }
+#if (!USE_NONMATCHED)
 END_NONMATCH
+#endif
 
 void UpdateBgAnimationTiles(Background *bg)
 {
