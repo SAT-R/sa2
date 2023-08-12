@@ -3,8 +3,8 @@
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
-// (75.48%) https://decomp.me/scratch/q83Cf
-#define USE_NONMATCHED 0
+// (79.03%) https://decomp.me/scratch/1Vef2
+#define USE_NONMATCHED 1
 #if USE_NONMATCHED
 bool32 sub_8002B20(void)
 #else
@@ -13,8 +13,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
     s32 sp04 = 0;
-    u32 sp08;
-    u32 sp0C; // line-size ?
+    s32 sp08;
+    u16 sp0C; // line-size ?
     u16 sp10;
     u16 sp14;
     u32 affine; // -> r3
@@ -43,29 +43,23 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
         // NOTE: register r4 = sp00
         sp00 = bg->unk14;
 
-        {
-            bgId = (bg->unk2E & 0x3);
-            if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
-                affine = (gBgCntRegs[bgId] >> 14);
-                sp0C = (u32)(0x100000 << affine) >> 16;
-                sp08 = 1;
-            } else {
-                // _08002BD8
-                sp0C = 0x20;
-                affine = (gBgCntRegs[bgId] >> 14);
-                if ((affine == 1) || (affine == 3)) {
-                    sp04 = 0x800;
-                }
-                sp08 = 2;
+        bgId = (bg->unk2E & 0x3);
+        if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
+            affine = (gBgCntRegs[bgId] >> 14);
+            sp0C = (0x10 << affine);
+            sp08 = 1;
+        } else {
+            // _08002BD8
+            sp0C = 0x20;
+            affine = (gBgCntRegs[bgId] >> 14);
+            if ((affine == 1) || (affine == 3)) {
+                sp04 = 0x800;
             }
-
-            // _08002BF8
-            {
-                register u32 temp asm("r0");
-                temp = (u16)(sp0C * sp08);
-                sp0C = temp;
-            }
+            sp08 = 2;
         }
+
+        // _08002BF8
+        sp0C = (u16)(sp0C * sp08);
 
         if (!(bg->unk2E & 0x20)) {
             if (!(bg->unk2E & 0x40)) {
@@ -88,7 +82,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             = CastPointer(r2Ptr, ((bg->unk1E + bg->unk26) - 1) * sp08);
 
                         // _08002C7C
-                        while (--r5 != (u16)-1) {
+                        while (r5-- != 0) {
                             u16 i;
 
                             // _08002C9A
@@ -107,15 +101,15 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         u16 *r4Ptr = CastPointer(r2Ptr, index2 * sp08);
 
                         // _08002D08
-                        while (--r5 != (u16)-1) {
+                        while (r5-- != 0) {
                             u16 i;
 
                             for (i = 0; i < bg->unk26; i++) {
                                 r7[i] = (*(r4Ptr - i) ^ TileMask_FlipX);
                             }
 
-                            ((u8 *)r7) += sp0C;
-                            ((u8 *)r4Ptr) -= (sp00 * sp08);
+                            r7 = CastPointer(r7, sp0C);
+                            r4Ptr = CastPointer(r4Ptr, (sp00 * sp08));
                         }
                     }
                 } else {
@@ -132,30 +126,36 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         while (r5-- != 0) {
                             u16 i;
+                            void *r2;
                             sb = sp00 * sp08;
 
                             for (i = 0; i < bg->unk26; i++) {
                                 r7[i] = r4Ptr[i] ^ 0x800;
                             }
 
-                            r4Ptr -= sb;
+                            r7 = CastPointer(r7, sp0C);
+
+                            r4Ptr = (u16 *)(((u8 *)r4Ptr) - sb);
                         }
                     } else {
+                        s32 vR2;
                         // _08002DD4
                         if ((affine & 1) && (sp08 == 2) && ((0x20 - bg->unk22) > 0)
                             && ((bg->unk26 + bg->unk22 - 0x20) > 0)) {
                             // __08002DF8
                             const u16 *r4Ptr = &bg->unk10[bg->unk20 * sp00] + bg->unk1E;
-                            sb = 0x20 * 2;
+                            sb = (0x20 - bg->unk22) * 2;
+                            vR2 = (bg->unk26 + bg->unk22 - 0x20) * 2;
 
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 // _08002E1C
                                 // r7 <- sp08
-                                DmaCopy16(3, r4Ptr, sp08, sb);
-                                DmaCopy16(3, &r4Ptr[0x20 / 2], &((u8 *)r7)[sp04], sb);
+                                DmaCopy16(3, r4Ptr, r7, sb);
+                                DmaCopy16(3, CastPointer(r4Ptr, sb), &((u8 *)r7)[sp04],
+                                          vR2);
 
-                                r7 = (u16 *)(((u8 *)r7) + sp0C);
-                                ((u8 *)r4Ptr) += sp00 * sp08;
+                                r7 = CastPointer(r7, sp0C);
+                                r4Ptr = CastPointer(r4Ptr, (sp00 * sp08));
                             }
 
                         } else {
@@ -196,7 +196,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                 for (i = 0; i < bg->unk26; i++) {
                     s32 r1;
                     s32 r5Res;
-                    u32 r8;
+                    s32 r8;
                     s32 sp10_i = sp10 + i;
                     s32 temp;
 
@@ -267,12 +267,13 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
         } else {
             // r2 <- bg->unk2E
             // r3 <- bg->unk30
-            // r4 <- sp00
+            // r4 <- sp00 == bg->unk14
             // r5 <- bgId
             // _08002FE8
             if (!(bg->unk2E & 0x40)) {
-                while (bg->scrollX >= sp00 << 3)
-                    bg->scrollX -= sp00 << 3;
+                u32 vR2 = bg->unk14;
+                while (bg->scrollX >= bg->unk14 * 8)
+                    bg->scrollX -= vR2 * 8;
 
                 while (bg->scrollY >= bg->unk16 * 8) {
                     bg->scrollY -= bg->unk16 * 8;
@@ -466,8 +467,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     }
                 } else {
                     // _080034DC
-                    u32 i;
-                    u32 j;
+                    s32 i;
+                    s32 j;
                     sp10 = (bg->scrollX >> 3) + bg->unk1E;
                     sp14 = (bg->scrollY >> 3) + bg->unk20;
 
@@ -513,9 +514,12 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     u8 *dmaSrc = CastPointer(bg->unk10, otherVal * sp08);
                                     u8 *dmaDest;
                                     u32 dmaSize;
-                                    u8 *destPtr = CastPointer(bg->tilesVram, bg->unk24);
-                                    u32 destIndex = sp0C * j + bg->unk22;
-                                    dmaDest = CastPointer(destPtr, destIndex + i * sp08);
+                                    u32 destIndex;
+                                    register u8 *destPtr asm("r0")
+                                        = (u8 *)(((u8 *)bg->tilesVram) + bg->unk24);
+                                    destPtr += sp0C * j;
+                                    destPtr += +bg->unk22;
+                                    dmaDest = CastPointer(destPtr, i * sp08);
 
                                     j += r5;
 
@@ -524,10 +528,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     r8 -= r5;
 
                                     // _080035A4
-                                    // NOTE: Somehow this is different from all
-                                    //       the other while-loops, where it was
                                     while (r5-- != 0) {
-                                        //       while(--r5 != (u16)-1) instead.
                                         dmaSize = sp2C;
                                         dmaSize += (dmaSize >> 31);
                                         DmaCopy16(3, dmaSrc, dmaDest, dmaSize);
