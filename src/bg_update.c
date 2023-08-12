@@ -3,7 +3,7 @@
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
-// (79.03%) https://decomp.me/scratch/1Vef2
+// (82.09%) https://decomp.me/scratch/1Vef2
 #define USE_NONMATCHED 1
 #if USE_NONMATCHED
 bool32 sub_8002B20(void)
@@ -113,6 +113,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         }
                     }
                 } else {
+                    u16 *r4Ptr;
                     // r2 <- bg->unk2E
                     // r3 <- affine
                     // r4 <- sp00
@@ -122,7 +123,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     if (bg->unk2E & 0x80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00);
                         void *r1Ptr = CastPointer(bg->unk10, r0Index * sp08);
-                        u16 *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
+                        r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
                         while (r5-- != 0) {
                             u16 i;
@@ -138,12 +139,12 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             r4Ptr = (u16 *)(((u8 *)r4Ptr) - sb);
                         }
                     } else {
-                        s32 vR2;
                         // _08002DD4
                         if ((affine & 1) && (sp08 == 2) && ((0x20 - bg->unk22) > 0)
                             && ((bg->unk26 + bg->unk22 - 0x20) > 0)) {
+                            s32 vR2;
                             // __08002DF8
-                            const u16 *r4Ptr = &bg->unk10[bg->unk20 * sp00] + bg->unk1E;
+                            r4Ptr = (u16 *)(&bg->unk10[bg->unk20 * sp00] + bg->unk1E);
                             sb = (0x20 - bg->unk22) * 2;
                             vR2 = (bg->unk26 + bg->unk22 - 0x20) * 2;
 
@@ -151,8 +152,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 // _08002E1C
                                 // r7 <- sp08
                                 DmaCopy16(3, r4Ptr, r7, sb);
-                                DmaCopy16(3, CastPointer(r4Ptr, sb), &((u8 *)r7)[sp04],
-                                          vR2);
+                                DmaCopy16(3, CastPointer(r4Ptr, sb),
+                                          CastPointer(r7, sp04), vR2);
 
                                 r7 = CastPointer(r7, sp0C);
                                 r4Ptr = CastPointer(r4Ptr, (sp00 * sp08));
@@ -161,8 +162,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         } else {
                             // __08002E74
                             u32 r0Index = bg->unk20 * sp00 * sp08;
-                            void *r1Ptr = &((u8 *)bg->unk10)[bg->unk20 * sp00 * sp08];
-                            void *r4Ptr = &((u8 *)r1Ptr)[bg->unk1E * sp08];
+                            void *r1Ptr
+                                = CastPointer(bg->unk10, bg->unk20 * sp00 * sp08);
+                            void *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
                             // r0 = r0Index
                             // r1 = r1Ptr
@@ -173,8 +175,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             while (r5-- != 0) {
                                 // _08002EA4
                                 DmaCopy16(3, r4Ptr, r7, (s32)(bg->unk26 * sp08));
-                                ((u8 *)r7) += sp0C;
-                                r4Ptr += sp00 * sp08;
+                                r7 = CastPointer(r7, sp0C);
+                                r4Ptr = CastPointer(r4Ptr, sp00 * sp08);
                             }
                         }
                     }
@@ -216,32 +218,38 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                     // _08002F28
                     // sb = j
-                    for (j = 0; j < r8; j++) {
+                    for (j = 0; j < bg->unk28;) {
                         void *dmaSrc, *dmaDest;
                         s32 r5;
-                        const u16 *r1Ptr;
+                        register const u16 *r1Ptr asm("r1");
+                        register void *r2Ptr asm("r2");
+                        register void *r0Ptr asm("r0");
+                        s32 temp2;
                         u32 v;
-                        s32 r4 = sp14 + i;
-                        s32 result = Div(sp14, bg->unk16);
+                        s32 r4 = sp14 + j;
+                        s32 result = Div(r4, bg->unk16);
                         r4 -= result * bg->unk16;
                         r5 = bg->unk16 - r4;
 
                         result *= bg->mapWidth;
-                        r1Ptr = &bg->metatileMap[result];
+                        r2Ptr = (void *)bg->metatileMap;
+                        temp2 = sp18 << 1;
+                        r0Ptr = CastPointer(r2Ptr, result << 1);
+                        r1Ptr = CastPointer(r0Ptr, temp2);
 
                         // r1 = v
-                        v = r1Ptr[sp18 * 3] + bg->unk14 * bg->unk16;
-
+                        v = *((u16 *)r1Ptr) * bg->unk14 * bg->unk16;
                         v += r4 * bg->unk14 + sp1C;
                         v *= sp08;
 
                         dmaSrc = ((u8 *)bg->unk10) + v;
 
                         {
-                            u8 *r0 = CastPointer(bg->tilesVram, bg->unk24);
-                            r0 += (sp0C * j);
-                            r0 += bg->unk22;
-                            dmaDest = &r0[i * sp08];
+                            void *r0;
+                            r0 = CastPointer(bg->tilesVram, bg->unk24);
+                            r0 = CastPointer(r0, sp0C * j);
+                            r0 = CastPointer(r0, bg->unk22);
+                            dmaDest = CastPointer(r0, i * sp08);
                         }
 
                         j += r5;
@@ -251,14 +259,11 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         r8 -= r5;
 
-                        {
-                            while (r5-- != 0) {
-                                dmaFlags = sp20;
-                                dmaFlags += ((sp20 >> 31));
-                                DmaCopy16(3, dmaSrc, dmaDest, dmaFlags);
-                                dmaSrc += sp00 * sp08;
-                                dmaDest += sp0C;
-                            }
+                        while (r5-- != 0) {
+                            dmaFlags = sp20;
+                            DmaCopy16(3, dmaSrc, dmaDest, (s32)dmaFlags);
+                            dmaDest += sp0C;
+                            dmaSrc += sp00 * sp08;
                         }
                     }
                 }
@@ -272,8 +277,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             // _08002FE8
             if (!(bg->unk2E & 0x40)) {
                 u32 vR2 = bg->unk14;
-                while (bg->scrollX >= bg->unk14 * 8)
-                    bg->scrollX -= vR2 * 8;
+                while (bg->scrollX >= sp00 * 8)
+                    bg->scrollX -= sp00 * 8;
 
                 while (bg->scrollY >= bg->unk16 * 8) {
                     bg->scrollY -= bg->unk16 * 8;
@@ -290,19 +295,19 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     // TODO: Something'S wrong with the types here (r2 should be s16?)
                     u16 *r7Ptr;
                     u16 r2;
-                    u32 r4;
+                    s32 r4;
                     u16 r5;
                     u16 *sp3C;
+                    u32 notherIndex;
                     sp10 = (u16)((bg->scrollX >> 3) + bg->unk1E);
                     sp14 = (u16)((bg->scrollY >> 3) + bg->unk20);
 
-                    r7Ptr = CastPointer(bg->tilesVram,
-                                        (sp0C * bg->unk24) + (bg->unk22 * sp08));
+                    notherIndex = (bg->unk24 * sp0C);
+                    r7Ptr = CastPointer(bg->tilesVram, notherIndex);
+                    r7Ptr = CastPointer(r7Ptr, bg->unk22 * sp08);
 
-                    r2 = (bg->unk26 + sp10);
-                    r4 = bg->unk14;
-                    if ((r2 + 1) > r4) {
-                        r2 -= (r4 - 1);
+                    if (((bg->unk26 + sp10) + 1) > bg->unk14) {
+                        r2 -= (bg->unk14 - 1);
                     } else {
                         r2 = 0;
                     }
@@ -338,7 +343,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             index *= sp08;
                             r1Ptr = (u16 *)&((u8 *)bg->unk10)[index];
                             index2 = bg->unk1E + bg->unk26 - 1;
-                            r4Ptr = &r1Ptr[index2 * sp08];
+                            r4Ptr = CastPointer(r1Ptr, index2 * sp08);
 
                             while (r5-- != 0) {
                                 // _08003180
@@ -359,7 +364,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u32 index2 = sp10;
                             u16 *r4Ptr = &r0Ptr[index2 * sp08];
 
-                            while (--r5 != (u16)-1) {
+                            while (r5-- != 0) {
                                 u16 *r2Ptr = (u16 *)&((u8 *)r7Ptr)[sp0C];
                                 u16 i;
 
