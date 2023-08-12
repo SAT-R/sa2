@@ -249,7 +249,8 @@
     "playerfn_cmds.h": "c",
     "characters.h": "c",
     "music_manager.h": "c",
-    "mouse.h": "c"
+    "mouse.h": "c",
+    "common.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
