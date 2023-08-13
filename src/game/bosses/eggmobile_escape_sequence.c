@@ -23,7 +23,7 @@ static void Task_EggmobileSwitchMovement(void);
 static void Task_EggmobileMoveRight(void);
 static void TaskDestructor_EggmobileEscape(struct Task *t);
 
-void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags)
+void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
 {
     struct Task *t = TaskCreate(Task_EggmobileMoveUp, sizeof(Sprite_EggMobile), 0x3800,
                                 0, TaskDestructor_EggmobileEscape);
