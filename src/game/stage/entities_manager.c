@@ -124,7 +124,7 @@ struct Range {
     s32 xHigh, yHigh;
 };
 
-void sub_8008DCC(void);
+void Task_8008DCC(void);
 
 void sub_80095FC(struct Task *);
 
@@ -434,9 +434,9 @@ void CreateStageEntitiesManager(void)
     struct Task *t;
     EntitiesManager *em;
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(sub_8008DCC, sizeof(EntitiesManager), 0x2000, 0, sub_80095FC);
+        t = TaskCreate(Task_8008DCC, sizeof(EntitiesManager), 0x2000, 0, sub_80095FC);
     } else {
-        t = TaskCreate(sub_8008DCC, sizeof(EntitiesManager), 0x2000, 0, NULL);
+        t = TaskCreate(Task_8008DCC, sizeof(EntitiesManager), 0x2000, 0, NULL);
     }
 
     em = TaskGetStructPtr(t);
@@ -479,7 +479,7 @@ static inline MapEntity *ReadMe(void *data, u32 r6)
 
 // https://decomp.me/scratch/Co5bs
 // logic is correct. Compiling differently for some reason
-NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
+NONMATCH("asm/non_matching/SpawnMapEntities.inc", void SpawnMapEntities())
 {
     if (!(gUnknown_03005424 & 2)) {
         u32 pos;
@@ -644,13 +644,13 @@ NONMATCH("asm/non_matching/sub_80089CC.inc", void sub_80089CC())
         em->prevCamX = gCamera.x;
         em->prevCamY = gCamera.y;
         em->unk14 = 0;
-        gCurTask->main = sub_8008DCC;
+        gCurTask->main = Task_8008DCC;
     }
 }
 END_NONMATCH
 
 // https://decomp.me/scratch/ynO2N
-NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
+NONMATCH("asm/non_matching/Task_8008DCC.inc", void Task_8008DCC(void))
 {
     if (!(gUnknown_03005424 & 2)) {
         u32 pos;
@@ -667,19 +667,19 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
         EntitiesManager *em = TaskGetStructPtr(gCurTask);
 
         if (em->unk14 != 0) {
-            sub_80089CC();
+            SpawnMapEntities();
             return;
         }
         if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX
                                            : em->prevCamX - gCamera.x)
             > 248) {
-            sub_80089CC();
+            SpawnMapEntities();
             return;
         }
         if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY
                                            : em->prevCamY - gCamera.y)
             > 208) {
-            sub_80089CC();
+            SpawnMapEntities();
             return;
         }
         {
@@ -706,7 +706,7 @@ NONMATCH("asm/non_matching/sub_8008DCC.inc", void sub_8008DCC(void))
             }
 
             if (em->unk14 != 0) {
-                sub_80089CC();
+                SpawnMapEntities();
                 return;
             }
 

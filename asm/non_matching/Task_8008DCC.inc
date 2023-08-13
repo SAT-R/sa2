@@ -110,7 +110,7 @@ _08008E94:
 	cmp r0, #0
 	beq _08008EA4
 _08008E9E:
-	bl sub_80089CC
+	bl SpawnMapEntities
 	b _08009518
 _08008EA4:
 	ldr r0, [r4, #4]

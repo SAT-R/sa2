@@ -517,7 +517,7 @@ _08008D94:
 	strb r0, [r3, #0x14]
 	ldr r0, _08008DC4 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _08008DC8 @ =sub_8008DCC
+	ldr r0, _08008DC8 @ =Task_8008DCC
 	str r0, [r1, #8]
 _08008DAC:
 	add sp, #0x40
@@ -532,7 +532,7 @@ _08008DAC:
 _08008DBC: .4byte gSpriteInits_InteractablesMultiplayer
 _08008DC0: .4byte gCamera
 _08008DC4: .4byte gCurTask
-_08008DC8: .4byte sub_8008DCC
+_08008DC8: .4byte Task_8008DCC
 
 	
 .syntax divided

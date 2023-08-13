@@ -186,7 +186,7 @@ UNUSED void sub_808DAEC(u8 a, u8 b, u8 c, u8 d, u32 e, struct UNK_3005B80_UNK4 *
     gUnknown_03005B80.unk0 = f;
 }
 
-void sub_808DB2C(u8 vcount)
+void sub_808DB2C(int_vcount vcount)
 {
     struct UNK_3005B80_UNK4 *unk0 = gUnknown_03005B80.unk0;
 
