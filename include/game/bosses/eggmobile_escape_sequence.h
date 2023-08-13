@@ -1,6 +1,8 @@
 #ifndef GUARD_EGGMOBILE_ESCAPE_SEQUENCE_H
 #define GUARD_EGGMOBILE_ESCAPE_SEQUENCE_H
 
-extern void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags);
+#include "global.h"
 
-#endif // GUARD_GAME_BOSSES_COMMON_H
+void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags);
+
+#endif // GUARD_EGGMOBILE_ESCAPE_SEQUENCE_H

@@ -21,11 +21,13 @@ It so far builds the following ROMs:
 
 ### Current state
 
+- :tada: The build is shiftable! You can make any code or asset additions/modifications you like, and most aspects of the game will continue to function.
 - Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, save game logic, UI, Multiplayer code, Special Stage
+- Most aspects of the game, including all interactables, have been decompiled to matching C code. Most have not been fully documented, but major functions are.
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
-- :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
+- All sprite animation frames have been extracted to PNGs and are used to build the matching rom
+- Most tilemaps (backgrounds) have been documented and had their tiles extracted
 
 
 ### Community

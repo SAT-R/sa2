@@ -6,6 +6,7 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "game/bosses/common.h"
+#include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
 
 #include "lib/m4a.h"
@@ -31,10 +32,10 @@ typedef struct {
 
     /* 0x10 */ u8 unk10;
     /* 0x11 */ u8 unk11;
-    /* 0x12 */ s8 unk12;
-    /* 0x13 */ s8 unk13;
-    /* 0x14 */ s8 unk14;
-    /* 0x15 */ s8 unk15;
+    /* 0x12 */ u8 unk12;
+    /* 0x13 */ u8 unk13;
+    /* 0x14 */ u8 unk14;
+    /* 0x15 */ u8 unk15;
 
     /* 0x16 */ s16 unk16;
     /* 0x18 */ s16 unk18;
@@ -67,7 +68,10 @@ typedef struct {
     /* 0xBF */ u8 unkBF;
     /* 0xC0 */ s8 unkC0;
 
-    /* 0xC1 */ s8 fillerC1[111];
+    /* 0xC4 */ s32 unkC4;
+    /* 0xC8 */ s32 unkC8;
+
+    /* 0xC1 */ s8 fillerC8[100];
 
     /* 0x130 */ s16 unk130;
 
@@ -100,6 +104,9 @@ typedef struct {
 
 extern const TileInfo gUnknown_080D7FB0[];
 extern const u16 gUnknown_080D7F94[2];
+
+// stage intro related
+extern void sub_802EF68(s16, s16, u8);
 
 void Task_EggSaucerMain(void);
 void TaskDestructor_EggSaucerMain(struct Task *);
@@ -376,5 +383,49 @@ void sub_804352C(void)
         boss->unkC = 0x500;
         boss->unk11 = 0;
         gCurTask->main = sub_80435BC;
+    }
+}
+
+void sub_804598C(void);
+void sub_8044540(EggSaucer *);
+void sub_8043BEC(EggSaucer *);
+void sub_8045564(EggSaucer *);
+
+void sub_80435BC(void)
+{
+    EggSaucer *boss = TaskGetStructPtr(gCurTask);
+
+    sub_8044540(boss);
+    sub_8043BEC(boss);
+    sub_8043E2C(boss);
+    sub_8045564(boss);
+
+    if (boss->unk13 > 0) {
+        boss->unk13--;
+    }
+
+    if (Mod(gUnknown_03005590, 13) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
+         && gSelectedCharacter == CHARACTER_SONIC)
+        && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
+        if (boss->unk15 == 0 && Q_24_8_TO_INT(boss->unkC4) - gCamera.x < 50) {
+            boss->unk15 = 1;
+        }
+    } else {
+        if (boss->unk15 == 0 && Q_24_8_TO_INT(boss->unkC4) - gCamera.x < 50) {
+            boss->unk15 = 1;
+            CreateEggmobileEscapeSequence(Q_24_8_TO_INT(boss->unkC4) - gCamera.x,
+                                          Q_24_8_TO_INT(boss->unkC8) - gCamera.y,
+                                          SPRITE_FLAG(PRIORITY, 2));
+        }
+    }
+    sub_8045898(boss);
+
+    if (Q_24_8_TO_INT(boss->unkC4) - gCamera.x < -200 && boss->unk15 != 0) {
+        sub_802EF68(-40, 140, 4);
+        gCurTask->main = sub_804598C;
     }
 }
