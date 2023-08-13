@@ -506,6 +506,7 @@ struct UNK_03005AF0 {
 }; /* unknown length */
 
 extern struct UNK_03005AF0 gUnknown_03005AF0;
+extern struct UNK_03005AF0 gUnknown_03005AA0;
 
 // TODO: find out what task is parent to IA
 typedef struct {

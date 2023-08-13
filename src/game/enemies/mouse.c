@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/mouse.h"
+#include "game/stage/entities_manager.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 
@@ -18,11 +19,10 @@ typedef struct {
     /* 0x50 */ u8 unk50;
     /* 0x51 */ u8 unk51;
     /* 0x52 */ u8 unk52;
+} Sprite_Mouse; /* size: 0x54*/
 
-} Sprite_Mouse; /* size: 0x280*/
-
-void sub_8057348(void);
-void TaskDestructor_80095E8(struct Task *);
+static void sub_8057348(void);
+static void sub_8057618(void);
 
 void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -78,43 +78,114 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     }
 }
 
-// void sub_8057348(void)
-// {
-//     Sprite_Mouse *mouse = TaskGetStructPtr(gCurTask);
+static void sub_8057348(void)
+{
+    Sprite_Mouse *mouse = TaskGetStructPtr(gCurTask);
 
-//     Sprite *s = &mouse->s;
-//     MapEntity *me = &mouse->base.me;
+    Sprite *s = &mouse->s;
+    MapEntity *me = mouse->base.me;
 
-//     Vec2_32 pos;
+    Vec2_32 pos;
 
-//     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-//         if (mouse->unk52) {
-//             mouse->offsetX += 0x200;
-//         } else {
-//             mouse->offsetX -= 0x80;
-//         }
-//     } else {
-//         if (mouse->unk52) {
-//             mouse->offsetX += 0x200;
-//         } else {
-//             mouse->offsetX += 0x80;
-//         }
-//     }
+    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (mouse->unk52) {
+            mouse->offsetX += 0x200;
+        } else {
+            mouse->offsetX += 0x80;
+        }
+    } else {
+        if (mouse->unk52) {
+            mouse->offsetX -= 0x200;
+        } else {
+            mouse->offsetX -= 0x80;
+        }
+    }
 
-//     if (mouse->unk51) {
-//         ENEMY_CLAMP_TO_GROUND_2(mouse, mouse->unk50);
-//         ENEMY_UPDATE_POSITION(mouse, s, pos.x, pos.y);
-//     } else {
-//         ENEMY_CLAMP_TO_GROUND(mouse, mouse->unk50);
-//         ENEMY_UPDATE_POSITION(mouse, s, pos.x, pos.y);
-//     }
+    if (mouse->unk51) {
+        ENEMY_CLAMP_TO_GROUND_2(mouse, mouse->unk50);
+        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX) + 8;
+        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY) + 8;
 
-//     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-//     ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
+    } else {
+        ENEMY_CLAMP_TO_GROUND(mouse, mouse->unk50);
+        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX);
+        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY);
+    }
 
-//     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-//         if (gPlayer.x != Q_24_8(pos.x) && gPlayer.x <= Q_24_8(pos.x)) {
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
 
-//         }
-//     }
-// }
+    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (gPlayer.x > Q_24_8_NEW(pos.x) && gPlayer.x < Q_24_8_NEW(pos.x + 100)) {
+            mouse->unk52 = 1;
+        }
+    } else {
+        if (gPlayer.x < Q_24_8_NEW(pos.x) && gPlayer.x > Q_24_8_NEW(pos.x - 100)) {
+            mouse->unk52 = 1;
+        }
+    }
+
+    if (Q_24_8_TO_INT(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH)
+        && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+        gCurTask->main = sub_8057618;
+        s->graphics.anim = SA2_ANIM_MOUSE;
+        s->variant = 1;
+        s->unk21 = -1;
+    } else if ((Q_24_8_TO_INT(mouse->offsetX)
+                    >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
+                && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+        gCurTask->main = sub_8057618;
+        s->graphics.anim = SA2_ANIM_MOUSE;
+        s->variant = 1;
+        s->unk21 = -1;
+    }
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    sub_8004558(s);
+    sub_80051E8(s);
+}
+
+static void sub_8057618(void)
+{
+    Sprite_Mouse *mouse = TaskGetStructPtr(gCurTask);
+
+    Sprite *s = &mouse->s;
+    MapEntity *me = mouse->base.me;
+
+    Vec2_32 pos;
+
+    if (mouse->unk51) {
+        ENEMY_CLAMP_TO_GROUND_2(mouse, mouse->unk50);
+        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX) + 8;
+        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY) + 8;
+    } else {
+        ENEMY_CLAMP_TO_GROUND(mouse, mouse->unk50);
+        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX);
+        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY);
+    }
+
+    s->x = pos.x - gCamera.x;
+    s->y = pos.y - gCamera.y;
+
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (sub_8004558(s) == 0) {
+        mouse->unk52 = 0;
+
+        ENEMY_TURN_AROUND(s);
+
+        s->graphics.anim = SA2_ANIM_MOUSE;
+        s->variant = 0;
+        s->unk21 = -1;
+
+        gCurTask->main = sub_8057348;
+    }
+
+    sub_80051E8(s);
+}

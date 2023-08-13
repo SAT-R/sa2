@@ -28,4 +28,6 @@ extern void sub_80283C4(Player *p);
 extern void sub_8029C84(Player *p);
 extern void sub_8029FA4(Player *p);
 
+void sub_802A018(void);
+
 #endif // GUARD_PLAYER_CALLBACKS_1_H

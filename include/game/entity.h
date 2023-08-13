@@ -181,12 +181,12 @@ void sub_801FD34(s32, s32, s32);
                                 _unknownBool, -8, NULL, sub_801EE64);                   \
                                                                                         \
         if (delta < 0) {                                                                \
-            _enemy->offsetY += Q_24_8(delta);                                           \
+            _enemy->offsetY -= Q_24_8(delta);                                           \
             delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
         }                                                                               \
                                                                                         \
         if (delta > 0) {                                                                \
-            _enemy->offsetY += Q_24_8(delta);                                           \
+            _enemy->offsetY -= Q_24_8(delta);                                           \
         }                                                                               \
     }
 

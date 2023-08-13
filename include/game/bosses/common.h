@@ -29,5 +29,6 @@ typedef struct {
 
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *p0, u8 *numCreatedParts);
 void Task_DestroyBossParts(void);
+void sub_8039ED4(void);
 
 #endif // GUARD_GAME_BOSSES_COMMON_H

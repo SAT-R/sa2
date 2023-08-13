@@ -249,6 +249,42 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk28[0].unk0 = -1;                                                        \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
+#define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _UNK1A, _priority, _flags)   \
+    _sprite->graphics.anim = _anim;                                                     \
+    _sprite->variant = _variant;                                                        \
+    _sprite->unk1A = _UNK1A;                                                            \
+    _sprite->graphics.size = 0;                                                         \
+    _sprite->unk14 = 0;                                                                 \
+    _sprite->unk1C = 0;                                                                 \
+    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->unk22 = 0x10;                                                              \
+    _sprite->palId = 0;                                                                 \
+    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+
+#define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _UNK1A, _priority, _flags)            \
+    _sprite->unk1A = _UNK1A;                                                            \
+    _sprite->graphics.size = 0;                                                         \
+    _sprite->unk14 = 0;                                                                 \
+    _sprite->unk1C = 0;                                                                 \
+    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->unk22 = 0x10;                                                              \
+    _sprite->palId = 0;                                                                 \
+    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+
+#define SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(_sprite, _anim, _variant, _UNK1A)             \
+    _sprite->graphics.anim = _anim;                                                     \
+    _sprite->variant = _variant;                                                        \
+    _sprite->unk1A = _UNK1A;                                                            \
+    _sprite->graphics.size = 0;                                                         \
+    _sprite->unk14 = 0;                                                                 \
+    _sprite->unk1C = 0;                                                                 \
+    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->unk22 = 0x10;                                                              \
+    _sprite->palId = 0;                                                                 \
+    _sprite->unk28[0].unk0 = -1;
+
 #define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
     SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority, 0)
 
@@ -295,7 +331,7 @@ void UpdateBgAnimationTiles(Background *);
 #define SPRITE_FLAG_MASK_MOSAIC                SPRITE_FLAG(MOSAIC, 1)
 #define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1) // 0x400
 #define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1) // 0x800
-#define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3)
+#define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3) // 0x3000
 #define SPRITE_FLAG_MASK_ANIM_OVER             SPRITE_FLAG(ANIM_OVER, 1)
 #define SPRITE_FLAG_MASK_BG_ID                 SPRITE_FLAG(BG_ID, 3)
 #define SPRITE_FLAG_MASK_17                    SPRITE_FLAG(17, 1)

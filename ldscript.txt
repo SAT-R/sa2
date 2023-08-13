@@ -149,6 +149,7 @@ SECTIONS
         build/sa2/asm/boss_2.o(.text);
         build/sa2/asm/boss_3.o(.text);
         build/sa2/asm/boss_4.o(.text);
+        build/sa2/src/game/bosses/boss_5.o(.text);
         build/sa2/asm/boss_5.o(.text);
         build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
@@ -173,7 +174,6 @@ SECTIONS
         build/sa2/src/game/enemies/hammerhead.o(.text);
         build/sa2/src/game/enemies/spinner.o(.text);
         build/sa2/src/game/enemies/mouse.o(.text);
-        build/sa2/asm/enemy_mouse.o(.text);
         build/sa2/src/game/enemies/pen.o(.text);
         build/sa2/src/game/enemies/geji_geji.o(.text);
         build/sa2/src/game/enemies/balloon.o(.text);
