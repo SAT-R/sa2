@@ -131,7 +131,12 @@ gUnknown_080D7F94:
 
     .global gUnknown_080D7F98
 gUnknown_080D7F98:
-    .incbin "baserom.gba", 0x000D7F98, 0x18
+    .4byte sub_8044A14
+    .4byte sub_8044B28
+    .4byte sub_8044CBC
+    .4byte sub_8044EB0
+    .4byte sub_8044FE4
+    .4byte sub_80451C4
 
     .global gUnknown_080D7FB0
 gUnknown_080D7FB0:
