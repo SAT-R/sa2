@@ -4,12 +4,7 @@
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
 // (85.37%) https://decomp.me/scratch/617Jb
-#define USE_NONMATCHED 1
-#if USE_NONMATCHED
-bool32 sub_8002B20(void)
-#else
 NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
-#endif
 {
     u16 sp00;
     s32 sp04 = 0;
@@ -557,9 +552,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
     return 1;
 }
-#if (!USE_NONMATCHED)
 END_NONMATCH
-#endif
 
 void UpdateBgAnimationTiles(Background *bg)
 {
