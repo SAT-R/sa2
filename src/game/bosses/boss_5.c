@@ -2,6 +2,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
+#include "trig.h"
 
 #include "game/game.h"
 #include "game/save.h"
@@ -37,10 +38,10 @@ typedef struct {
     /* 0x14 */ u8 unk14;
     /* 0x15 */ u8 unk15;
 
-    /* 0x16 */ s16 unk16;
-    /* 0x18 */ s16 unk18;
+    /* 0x16 */ u16 unk16;
+    /* 0x18 */ u16 unk18;
     /* 0x1A */ s16 unk1A;
-    /* 0x1C */ s16 unk1C;
+    /* 0x1C */ u16 unk1C;
 
     /* 0x1E */ s8 unk1E;
     /* 0x1F */ s8 unk1F;
@@ -52,13 +53,13 @@ typedef struct {
     /* 0x28 */ s32 unk28;
     /* 0x2C */ s32 unk2C;
 
-    /* 0x30 */ s16 unk30;
+    /* 0x30 */ u16 unk30;
     /* 0x32 */ s16 unk32;
 
     /* 0x34 */ s16 unk34;
 
     /* 0x36 */ s16 unk36[2][32];
-    /* 0xB6 */ s8 unkB6;
+    /* 0xB6 */ u8 unkB6;
 
     /* 0xB8 */ s16 unkB8;
     /* 0xBA */ s16 unkBA;
@@ -66,12 +67,28 @@ typedef struct {
 
     /* 0xBE */ s8 unkBE;
     /* 0xBF */ u8 unkBF;
-    /* 0xC0 */ s8 unkC0;
+    /* 0xC0 */ u8 unkC0;
 
     /* 0xC4 */ s32 unkC4;
     /* 0xC8 */ s32 unkC8;
 
-    /* 0xC1 */ s8 fillerC8[100];
+    /* 0xCC */ s32 unkCC;
+    /* 0xD0 */ s32 unkD0;
+
+    /* 0xD4 */ s16 unkD4;
+    /* 0xD6 */ s16 unkD6;
+
+    /* 0xD8 */ s16 unkD8;
+    /* 0xDA */ s16 unkDA;
+
+    /* 0xDC */ s32 unkDC[6][2];
+
+    /* 0x10C */ s16 unk10C[6][2];
+
+    /* 0x124 */ s32 unk124;
+    /* 0x128 */ s32 unk128;
+    /* 0x12C */ s16 unk12C;
+    /* 0x12E */ s16 unk12E;
 
     /* 0x130 */ s16 unk130;
 
@@ -87,7 +104,9 @@ typedef struct {
     /* 0x210 */ Sprite_UNK28 unk210; // maybe
 
     /* 0x218 */ Sprite unk218; // gun base
-    /* 0x248 */ s8 unk248[20];
+
+    /* 0x248 */ s8 unk248[8];
+    /* 0x250 */ SpriteTransform transform;
 
     /* 0x25C */ Sprite unk25C; // gun projectile
     /* 0x28C */ Sprite unk28C; // arm base
@@ -427,5 +446,173 @@ void sub_80435BC(void)
     if (Q_24_8_TO_INT(boss->unkC4) - gCamera.x < -200 && boss->unk15 != 0) {
         sub_802EF68(-40, 140, 4);
         gCurTask->main = sub_804598C;
+    }
+}
+
+void sub_80436E4(EggSaucer *boss)
+{
+    u8 i;
+    u8 idx;
+    s32 x = boss->unk4;
+    s32 y = boss->unk8;
+
+    s32 x2, y2;
+    boss->unkC4 = x + ((COS(boss->unk16) * 5) >> 3); // * 0.625
+    boss->unkC8 = y + ((SIN(boss->unk16) * 5) >> 3);
+
+    boss->unkD4 = Q_8_8(5.5);
+    boss->unkD6 = -Q_8_8(4.5);
+
+    x += ((COS(boss->unk30) * 5) >> 3);
+    y += ((SIN(boss->unk30) * 5) >> 3);
+
+    boss->unkCC = x;
+    boss->unkD0 = y;
+
+    boss->unkD8 = Q_8_8(4.75);
+    boss->unkDA = -Q_8_8(4);
+
+    x += Q_24_8(2);
+    y -= Q_24_8(17);
+
+    x2 = 0;
+    y2 = 0;
+
+    for (i = 0; i < 6; i++) {
+        idx = (((boss->unkB6 - 1) - (i + 1) * 4)) & 31;
+        x2 += Q_24_8(boss->unk36[0][idx]);
+        y2 += Q_24_8(boss->unk36[1][idx]);
+
+        boss->unkDC[i][0] = x + (x2 >> 3);
+        boss->unkDC[i][1] = y + (y2 >> 3);
+#ifndef NON_MATCHING
+        boss->unk10C[i][0] = Q_8_8(5.25) - (PseudoRandom32() & 255) + i * 2 - i * 2;
+#else
+        boss->unk10C[i][0] = Q_8_8(5.25) - (PseudoRandom32() & 255);
+#endif
+        boss->unk10C[i][1] = -Q_8_8(4) - (i * Q_8_8(0.25));
+    }
+
+    idx = (boss->unkB6 + 229) & 31;
+    x2 += boss->unk36[0][idx] * Q_24_8(0.5);
+    y2 += boss->unk36[1][idx] * Q_24_8(0.5);
+    boss->unk124 = x + ((x2) >> 3);
+    boss->unk128 = y + ((y2) >> 3);
+
+    boss->unk12C = Q_8_8(5);
+    boss->unk12E = -Q_8_8(5.75);
+}
+
+void sub_8043D94(EggSaucer *, s32, s32);
+
+void sub_80438C4(EggSaucer *boss)
+{
+    Sprite *s;
+    SpriteTransform *transform;
+
+    u8 i;
+    u8 idx;
+    s32 x, y;
+    s32 x2, y2;
+
+    x = Q_24_8_TO_INT(boss->unk4) - gCamera.x;
+    y = Q_24_8_TO_INT(boss->unk8) - gCamera.y;
+
+    gBgScrollRegs[0][0] = (0x3C - x);
+    gBgScrollRegs[0][1] = 0x36 - y;
+
+    if (x < -50 || x > 300) {
+        gDispCnt &= ~0x100;
+    } else {
+        gDispCnt |= 0x100;
+    }
+
+    s = &boss->unk170;
+    s->x = x + ((COS(boss->unk16) * 5) >> 11);
+    s->y = y + ((SIN(boss->unk16) * 5) >> 11);
+    sub_8004558(s);
+    sub_80051E8(s);
+
+    s = &boss->unk1B0;
+    s->x = x + ((COS(boss->unk16) * 5) >> 11);
+    s->y = y + ((SIN(boss->unk16) * 5) >> 11);
+    sub_8004558(s);
+    sub_80051E8(s);
+
+    if (boss->unk11) {
+        s = &boss->unk218;
+        s->x = x + ((COS(boss->unk18) * 5) >> 11);
+        s->y = y + ((SIN(boss->unk18) * 5) >> 11);
+        sub_8004558(s);
+        sub_80051E8(s);
+
+        s = &boss->unk1E0;
+        transform = &boss->transform;
+        s->x = x + ((COS(boss->unk18) * 5) >> 11) - 2;
+        s->y = y + ((SIN(boss->unk18) * 5) >> 11) - 0x13;
+        s->unk10 = gUnknown_030054B8++ | 0x1060;
+
+        transform->unk0 = boss->unk1A;
+        transform->width = 0x100;
+        transform->height = 0x100;
+        transform->x = s->x;
+        transform->y = s->y;
+        sub_8004558(s);
+        sub_8004860(s, transform);
+        sub_80051E8(s);
+
+        if (PLAYER_IS_ALIVE && (boss->unk1C > 0 && boss->unk1C < 12)) {
+            s = &boss->unk25C;
+            sub_8004558(s);
+            sub_80051E8(s);
+        }
+    }
+
+    s = &boss->unk28C;
+    x += (COS(boss->unk30) * 5) >> 11;
+    y += (SIN(boss->unk30) * 5) >> 11;
+
+    s->x = x;
+    s->y = y;
+    sub_80051E8(s);
+
+    x += 2;
+    y -= 17;
+
+    x2 = 0;
+    y2 = 0;
+
+    s = &boss->unk2C4;
+
+    for (i = 0; i < 6; i++) {
+        idx = (boss->unkB6 - (i + 1) * 4) & 31;
+        x2 += (boss->unk36[0][idx]);
+        y2 += (boss->unk36[1][idx]);
+        s->x = x + (x2 >> 3);
+        s->y = y + (y2 >> 3);
+        s->unk1A = (0x13 - i) * 0x40;
+        sub_80051E8(s);
+    }
+
+    s = &boss->unk2F4;
+
+#ifndef NON_MATCHING
+    do {
+#endif
+        idx = (boss->unkB6 - 0x1C) & 31;
+        x2 += boss->unk36[0][idx] >> 1;
+        y2 += boss->unk36[1][idx] >> 1;
+#ifndef NON_MATCHING
+    } while (0);
+#endif
+
+    s->x = x + ((x2) >> 3);
+    s->y = y + ((y2) >> 3);
+
+    sub_8004558(s);
+    sub_80051E8(s);
+
+    if (boss->unkC0) {
+        sub_8043D94(boss, (x + ((x2) >> 3)) - 0x10, y + ((y2) >> 3));
     }
 }
