@@ -48,12 +48,6 @@ u32 sub_800CDBC(Sprite *, s32, s32, Player *);
 bool32 sub_800CBA4(Player *);
 
 u32 sub_800DF38(Sprite *, s32, s32, Player *);
-
-// TODO: Include header this belongs to
-u32 sub_800C944(Sprite *, s32, s32);
-
-// TODO: Include header this belongs to
-bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
 void sub_801FD34(s32, s32, s32);

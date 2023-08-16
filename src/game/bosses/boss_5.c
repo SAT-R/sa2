@@ -44,7 +44,7 @@ typedef struct {
     /* 0x1C */ u16 unk1C;
 
     /* 0x1E */ s8 unk1E;
-    /* 0x1F */ s8 unk1F;
+    /* 0x1F */ u8 unk1F;
     /* 0x20 */ u8 unk20;
 
     /* 0x22 */ s16 unk22;
@@ -90,7 +90,7 @@ typedef struct {
     /* 0x12C */ s16 unk12C;
     /* 0x12E */ s16 unk12E;
 
-    /* 0x130 */ s16 unk130;
+    /* 0x130 */ s16 unk130; // timer
 
     /* 0x134 */ EggSaucer_unk134 unk134;
 
@@ -779,4 +779,191 @@ void sub_8043FD0(s32 x, s32 y)
 
     boss->unk124 += x;
     boss->unk128 += y;
+}
+
+void sub_80452F8(EggSaucer *boss);
+void sub_8045368(EggSaucer *boss);
+void sub_8044088(EggSaucer *boss)
+{
+    u8 i;
+    Sprite *s;
+    u8 idx;
+    s32 x, y;
+    u32 temp;
+    s = &boss->unk170;
+
+    x = Q_24_8_TO_INT(boss->unk4) + ((COS(boss->unk16) * 5) >> 11);
+    y = Q_24_8_TO_INT(boss->unk8) + ((SIN(boss->unk16) * 5) >> 11);
+
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
+
+    if (sub_800CA20(s, x, y, 2, &gPlayer) == 1) {
+        sub_80452F8(boss);
+    }
+
+    sub_800C320(s, x, y, 1, &gPlayer);
+
+    if (boss->unk13 == 0) {
+        if (sub_800C320(s, x, y, 0, &gPlayer) == 1) {
+            sub_8045368(boss);
+        } else {
+            if (sub_800CA20(s, x, y, 0, &gPlayer) == 1) {
+                sub_80452F8(boss);
+            }
+        }
+    }
+
+    sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+
+    if (boss->unk13 == 0 && sub_800C418(s, x, y, 0, &gPlayer) == 1) {
+        sub_8045368(boss);
+        gUnknown_03005498.t->unk15 = 0;
+    }
+
+    if (boss->unk11 != 0 && boss->unk1F == 0) {
+        s = &boss->unk218;
+        x = Q_24_8_TO_INT(boss->unk4) + ((COS(boss->unk18) * 5) >> 11);
+        y = Q_24_8_TO_INT(boss->unk8) + ((SIN(boss->unk18) * 5) >> 11);
+
+        s->x = x - gCamera.x;
+        s->y = y - gCamera.y;
+
+        if (sub_800CA20(s, x, y, 1, &gPlayer) == 1) {
+            sub_80452F8(boss);
+        }
+
+        if (sub_800C320(s, x, y, 0, &gPlayer) == 1) {
+            boss->unk1F = 0x1E;
+            boss->unk11--;
+
+            if (boss->unk11 & 1) {
+                m4aSongNumStart(SE_143);
+            } else {
+                m4aSongNumStart(SE_235);
+            }
+
+            if (boss->unk11 == 0) {
+                u32 temp2, temp3;
+                u32 prev = gLevelScore;
+                gLevelScore += 500;
+                temp2 = Div(gLevelScore, 50000);
+                temp3 = Div(prev, 50000);
+                if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+                    u16 numLives = (temp2 - temp3);
+                    numLives += gNumLives;
+
+                    if (numLives > 0xFF) {
+                        numLives = 0xFF;
+                    }
+
+                    gNumLives = numLives;
+                    gUnknown_030054A8.unk3 = 0x10;
+                }
+            }
+        } else {
+            if (sub_800CA20(s, x, y, 0, &gPlayer) == 1) {
+                sub_80452F8(boss);
+            }
+        }
+
+        sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+
+        if (boss->unk1F == 0) {
+            if (sub_800C418(s, x, y, 0, &gPlayer) == 1) {
+                boss->unk1F = 0x1E;
+                boss->unk11--;
+
+                if (boss->unk11 & 1) {
+                    m4aSongNumStart(SE_143);
+                } else {
+                    m4aSongNumStart(SE_235);
+                }
+
+                gUnknown_03005498.t->unk15 = 0;
+                if (boss->unk11 == 0) {
+                    u32 temp2, temp3;
+                    u32 prev = gLevelScore;
+                    gLevelScore += 500;
+                    temp2 = Div(gLevelScore, 50000);
+                    temp3 = Div(prev, 50000);
+                    if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+                        u16 numLives = (temp2 - temp3);
+                        numLives += gNumLives;
+
+                        if (numLives > 0xFF) {
+                            numLives = 0xFF;
+                        }
+
+                        gNumLives = numLives;
+                        gUnknown_030054A8.unk3 = 0x10;
+                    }
+                }
+            }
+        }
+        boss->unk28 = Q_24_8_NEW(x - 5);
+        boss->unk2C = Q_24_8_NEW(y + 1);
+    }
+
+    s = &boss->unk28C;
+    x = Q_24_8_TO_INT(boss->unk4) + ((COS(boss->unk30) * 5) >> 11);
+    y = Q_24_8_TO_INT(boss->unk8) + ((SIN(boss->unk30) * 5) >> 11);
+
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
+
+    if (sub_800CA20(s, x, y, 0, &gPlayer) == 1) {
+        sub_80452F8(boss);
+    }
+
+    if (sub_800CA20(s, x, y, 1, &gPlayer) == 1) {
+        sub_80452F8(boss);
+    }
+
+    x += 2;
+    y -= 17;
+
+    for (i = 0; i < 6; i++) {
+        idx = (boss->unkB6 - (i + 1) * 4) & 31;
+        x += (boss->unk36[0][idx]) >> 3;
+        y += (boss->unk36[1][idx]) >> 3;
+    }
+
+    s = &boss->unk2F4;
+    idx = (boss->unkB6 - 28) & 31;
+    x += boss->unk36[0][idx] >> 4;
+    y += boss->unk36[1][idx] >> 4;
+
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
+
+    if (sub_800CA20(s, x, y, 1, &gPlayer) == 1) {
+        sub_80452F8(boss);
+        // insta kill
+        gPlayer.moveState |= MOVESTATE_DEAD;
+    }
+
+    if (sub_800CA20(s, x, y, 0, &gPlayer) == 1) {
+        // Normal hit
+        sub_80452F8(boss);
+    }
+}
+
+void sub_80444DC(EggSaucer *boss)
+{
+    s32 x, y;
+    s32 bottomY, bottomX;
+    x = boss->unk4 + boss->unkC;
+    boss->unk4 = x;
+    y = boss->unk8 + boss->unkE;
+    boss->unk8 = y;
+
+    bottomX = Q_24_8_TO_INT(x);
+    bottomY = Q_24_8_TO_INT(y) + 0x32;
+
+    boss->unk8 += Q_24_8(sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64));
+
+    boss->unk16 = ({ (boss->unk16 + 2) & (SIN_PERIOD - 1); });
+    boss->unk18 = ({ (boss->unk18 + 2) & (SIN_PERIOD - 1); });
+    boss->unk30 = ({ (boss->unk30 + 2) & (SIN_PERIOD - 1); });
 }

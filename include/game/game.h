@@ -637,6 +637,14 @@ s32 sub_801F07C(s32, s32, s32, s32, void *, Func801F100);
 
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
+// TODO: Include header this belongs to
+u32 sub_800C944(Sprite *, s32, s32);
+
+// TODO: Include header this belongs to
+bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
+bool32 sub_800C320(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
+bool32 sub_800C418(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
+
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
     /* 0x00 */ s32 x;
