@@ -43,7 +43,10 @@ typedef struct {
 bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
 
 u32 sub_800CDBC(Sprite *, s32, s32, Player *);
+
+// Lose rings?
 bool32 sub_800CBA4(Player *);
+
 u32 sub_800DF38(Sprite *, s32, s32, Player *);
 
 // TODO: Include header this belongs to
