@@ -28,8 +28,9 @@ typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x04 */ s32 unk4; // x
     /* 0x08 */ s32 unk8; // y
-    /* 0x0C */ s16 unkC;
-    /* 0x0E */ s16 unkE;
+
+    /* 0x0C */ s16 unkC; // speedX
+    /* 0x0E */ s16 unkE; // speedY
 
     /* 0x10 */ u8 unk10;
     /* 0x11 */ u8 unk11;
@@ -130,6 +131,12 @@ extern void sub_802EF68(s16, s16, u8);
 void Task_EggSaucerMain(void);
 void TaskDestructor_EggSaucerMain(struct Task *);
 
+#define BOSS_SPEED            5
+#define BOSS_INTRO_SPEED      4
+#define BOSS_ROTATE_SPEED_DEG 0.7038123167155426 // 2 sin units
+
+#define BOSS_HEIGHT 100
+
 void CreateEggSaucer(void)
 {
     u8 i;
@@ -201,7 +208,7 @@ void CreateEggSaucer(void)
     // timer?
     boss->unk130 = 0x50;
 
-    boss->unkC = 0x500;
+    boss->unkC = Q_24_8(BOSS_SPEED);
     boss->unkE = 0;
     boss->unk12 = 0;
     boss->unk13 = 0;
@@ -338,7 +345,7 @@ void CreateEggSaucer(void)
     }
 }
 
-void sub_80444DC(EggSaucer *);
+static void SaucerUpdatePosAndRotate(EggSaucer *);
 void sub_8044784(EggSaucer *);
 
 void sub_80459A0(EggSaucer *);
@@ -356,9 +363,9 @@ void Task_EggSaucerMain(void)
 {
     EggSaucer *boss = TaskGetStructPtr(gCurTask);
     // speed
-    boss->unk4 += Q_24_8(4);
+    boss->unk4 += Q_24_8(BOSS_INTRO_SPEED);
 
-    sub_80444DC(boss);
+    SaucerUpdatePosAndRotate(boss);
     sub_8044784(boss);
 
     gUnknown_080D7F98[boss->unkBF](boss);
@@ -383,7 +390,7 @@ void sub_804352C(void)
 {
     EggSaucer *boss = TaskGetStructPtr(gCurTask);
 
-    sub_80444DC(boss);
+    SaucerUpdatePosAndRotate(boss);
     sub_8044784(boss);
 
     gUnknown_080D7F98[boss->unkBF](boss);
@@ -399,7 +406,7 @@ void sub_804352C(void)
         gBldRegs.bldCnt = 0;
         sub_802A018();
         sub_80436E4(boss);
-        boss->unkC = 0x500;
+        boss->unkC = Q_24_8(BOSS_SPEED);
         boss->unk11 = 0;
         gCurTask->main = sub_80435BC;
     }
@@ -949,7 +956,7 @@ void sub_8044088(EggSaucer *boss)
     }
 }
 
-void sub_80444DC(EggSaucer *boss)
+static void SaucerUpdatePosAndRotate(EggSaucer *boss)
 {
     s32 x, y;
     s32 bottomY, bottomX;
@@ -959,11 +966,14 @@ void sub_80444DC(EggSaucer *boss)
     boss->unk8 = y;
 
     bottomX = Q_24_8_TO_INT(x);
-    bottomY = Q_24_8_TO_INT(y) + 0x32;
+    bottomY = Q_24_8_TO_INT(y) + (BOSS_HEIGHT / 2);
 
     boss->unk8 += Q_24_8(sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64));
 
-    boss->unk16 = ({ (boss->unk16 + 2) & (SIN_PERIOD - 1); });
-    boss->unk18 = ({ (boss->unk18 + 2) & (SIN_PERIOD - 1); });
-    boss->unk30 = ({ (boss->unk30 + 2) & (SIN_PERIOD - 1); });
+    boss->unk16
+        = ({ (boss->unk16 + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
+    boss->unk18
+        = ({ (boss->unk18 + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
+    boss->unk30
+        = ({ (boss->unk30 + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
 }
