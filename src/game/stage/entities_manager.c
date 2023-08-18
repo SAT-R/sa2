@@ -32,7 +32,7 @@
 #include "game/interactables_1/bouncy_bar.h"
 #include "game/interactables_1/spring_bouncy.h"
 #include "game/interactables_1/rotating_handle.h"
-#include "game/interactables_1/019.h"
+#include "game/interactables_1/platform_crumbling.h"
 #include "game/interactables_1/spikes.h"
 #include "game/interactables_1/booster.h"
 #include "game/interactables_1/decoration.h"
@@ -279,7 +279,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Booster,
     CreateEntity_InclineRamp,
     CreateEntity_BouncySpring,
-    CreateEntity_019,
+    CreateEntity_PlatformCrumbling,
     CreateEntity_RotatingHandle,
     CreateEntity_GappedLoop_Start,
     CreateEntity_GappedLoop_End,

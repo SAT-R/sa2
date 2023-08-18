@@ -1,12 +1,13 @@
 #include "global.h"
 #include "malloc_vram.h"
 
+#include "data.h"
+#include "sprite.h"
 #include "task.h"
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "sprite.h"
-#include "data.h"
+#include "game/interactables_1/platform_crumbling.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -37,7 +38,8 @@ static void TaskDestructor_Interactable019(struct Task *);
 // @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
 
-void CreateEntity_019(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0,
                                 TaskDestructor_Interactable019);

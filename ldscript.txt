@@ -192,7 +192,7 @@ SECTIONS
         build/sa2/src/game/interactables_1/booster.o(.text);
         build/sa2/src/game/interactables_1/incline_ramp.o(.text);
         build/sa2/src/game/interactables_1/spring_bouncy.o(.text);
-        build/sa2/src/game/interactables_1/019.o(.text);
+        build/sa2/src/game/interactables_1/platform_crumbling.o(.text);
         build/sa2/src/game/interactables_1/toggle_player_layer.o(.text);
         build/sa2/src/game/interactables_1/rotating_handle.o(.text);
         build/sa2/src/game/interactables_1/gapped_loop.o(.text);
@@ -379,7 +379,7 @@ SECTIONS
         build/sa2/src/game/interactables_1/decoration.o(.rodata);
         build/sa2/src/game/interactables_1/booster.o(.rodata);
         build/sa2/src/game/interactables_1/spring_bouncy.o(.rodata);
-        build/sa2/src/game/interactables_1/019.o(.rodata);
+        build/sa2/src/game/interactables_1/platform_crumbling.o(.rodata);
         build/sa2/src/game/interactables_1/spikes.o(.rodata);
         build/sa2/src/game/interactables_1/bouncy_bar.o(.rodata);
         build/sa2/src/game/interactables_1/checkpoint.o(.rodata);

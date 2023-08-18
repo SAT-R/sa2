@@ -77,9 +77,9 @@ char *sMapEntityKinds[4] = {
 
 char *sETypeIdents[4] = {
     [Interactable] = "IA__",
-    [Item] = "ITEM__",
-    [Enemy] = "ENEMY__",
-    [Ring] = "",
+    [Item]         = "ITEM__",
+    [Enemy]        = "ENEMY__",
+    [Ring]         = "",
 };
 
 File OpenWholeFile(char* path)

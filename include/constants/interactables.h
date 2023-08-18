@@ -3,7 +3,7 @@
 
 #define IA__TOGGLE_PLAYER_LAYER__FOREGROUND        0
 #define IA__TOGGLE_PLAYER_LAYER__BACKGROUND        1
-#define IA__002                                    2
+#define IA__PLATFORM                               2
 #define IA__SPRING__UP                             3
 #define IA__SPRING__DOWN                           4
 #define IA__SPRING__RIGHT                          5
@@ -20,7 +20,7 @@
 #define IA__BOOSTER                                16
 #define IA__INCLINE_RAMP                           17
 #define IA__BOUNCY_SPRING                          18
-#define IA__019                                    19
+#define IA__PLATFORM_CRUMBLING                     19
 #define IA__ROTATING_HANDLE                        20
 #define IA__GAPPED_LOOP__START                     21
 #define IA__GAPPED_LOOP__END                       22
