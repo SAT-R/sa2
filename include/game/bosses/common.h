@@ -1,6 +1,9 @@
 #ifndef GUARD_GAME_BOSSES_COMMON_H
 #define GUARD_GAME_BOSSES_COMMON_H
 
+#include "global.h"
+#include "core.h"
+
 extern struct Task *gActiveBossTask;
 typedef void (*UnknownBossFunc)(s32, s32);
 
