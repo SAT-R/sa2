@@ -6,7 +6,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/ice_paradise/069.h"
+#include "game/interactables_2/ice_paradise/big_snowball.h"
 #include "constants/animations.h"
 #include "constants/songs.h"
 
@@ -51,7 +51,8 @@ typedef struct {
 void Task_Interactable069(void);
 void TaskDestructor_Interactable069(struct Task *);
 
-void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                              u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable069, 0x1C0, 0x2010, 0,
                                 TaskDestructor_Interactable069);
@@ -92,7 +93,7 @@ void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = vramBase;
-    sprite->graphics.anim = 582;
+    sprite->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     sprite->variant = 0;
     sub_8004558(sprite);
 
@@ -108,7 +109,7 @@ void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = vram;
-    sprite->graphics.anim = 582;
+    sprite->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     sprite->variant = 1;
     sub_8004558(sprite);
 
@@ -124,7 +125,7 @@ void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = vram;
-    sprite->graphics.anim = 582;
+    sprite->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     sprite->variant = 2;
     sub_8004558(sprite);
 
@@ -140,7 +141,7 @@ void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = vram;
-    sprite->graphics.anim = 582;
+    sprite->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     sprite->variant = 3;
     sub_8004558(sprite);
 
@@ -156,7 +157,7 @@ void CreateEntity_069(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     sprite->unk28[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = vram;
-    sprite->graphics.anim = 582;
+    sprite->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     sprite->variant = 4;
     sub_8004558(sprite);
     SET_MAP_ENTITY_INITIALIZED(me);

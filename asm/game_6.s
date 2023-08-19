@@ -6173,6 +6173,8 @@ _08024222:
 	pop {r0}
 	bx r0
 
+@; Handles Player->unk6D value.
+@; Transitions to a different PlayerCB based on it
 	thumb_func_start sub_8024228
 sub_8024228: @ 0x08024228
 	push {lr}

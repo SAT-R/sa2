@@ -9,7 +9,7 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 unk3C;
     s32 unk40;
     s32 unk44;
@@ -50,7 +50,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010,
                                 0, TaskDestructor_NoteBlock);
     Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(t);
-    Sprite *sprite = &noteBlock->sprite;
+    Sprite *s = &noteBlock->s;
     noteBlock->unk44 = 0;
     noteBlock->unk48 = 0;
     noteBlock->unk4C = me->d.uData[0];
@@ -61,26 +61,25 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     noteBlock->base.spriteX = me->x;
     noteBlock->base.spriteY = spriteY;
 
-    sprite = &noteBlock->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest
-        = (void *)OBJ_VRAM0 + sNoteBlockAssets[noteBlock->unk4C][2] * 0x20;
-    sprite->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];
-    sprite->variant = sNoteBlockAssets[noteBlock->unk4C][1];
+    s = &noteBlock->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk21 = 0xFF;
+    s->unk22 = 0x10;
+    s->palId = 0;
+    s->unk28[0].unk0 = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = (void *)OBJ_VRAM0 + sNoteBlockAssets[noteBlock->unk4C][2] * 0x20;
+    s->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];
+    s->variant = sNoteBlockAssets[noteBlock->unk4C][1];
 
     noteBlock->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
     noteBlock->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     SET_MAP_ENTITY_INITIALIZED(me);
-    sub_8004558(sprite);
+    sub_8004558(s);
 }
 
 static void sub_80799FC(void)
@@ -127,7 +126,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
         if (temp3 < 49 && temp4 < 33) {
             s16 speedGround = gPlayer.speedGroundX;
 
-            temp = sub_800CDBC(&noteBlock->sprite, noteBlock->unk3C, noteBlock->unk40,
+            temp = sub_800CDBC(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40,
                                &gPlayer);
             if (temp == 0) {
                 return 0;
@@ -167,7 +166,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
                 gPlayer.unk6D = 5;
             }
 
-            if (gPlayer.unk3C == &noteBlock->sprite) {
+            if (gPlayer.unk3C == &noteBlock->s) {
                 gPlayer.unk3C = NULL;
                 gPlayer.moveState &= ~MOVESTATE_8;
             }
@@ -208,21 +207,21 @@ static void sub_8079CCC(Sprite_TecBaseNoteBlock *noteBlock)
 
 static void sub_8079D00(Sprite_TecBaseNoteBlock *noteBlock)
 {
-    Sprite *sprite = &noteBlock->sprite;
+    Sprite *s = &noteBlock->s;
 
-    sprite->x = noteBlock->unk3C - gCamera.x + Q_24_8_TO_INT(noteBlock->unk44);
-    sprite->y = noteBlock->unk40 - gCamera.y + Q_24_8_TO_INT(noteBlock->unk48);
+    s->x = noteBlock->unk3C - gCamera.x + Q_24_8_TO_INT(noteBlock->unk44);
+    s->y = noteBlock->unk40 - gCamera.y + Q_24_8_TO_INT(noteBlock->unk48);
 }
 
 static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)
 {
-    Sprite *sprite = &noteBlock->sprite;
+    Sprite *s = &noteBlock->s;
 
-    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    sub_80051E8(s);
 
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    sub_80051E8(s);
 }
 
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)

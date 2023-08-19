@@ -51,7 +51,7 @@
 #include "game/interactables_2/music_plant/guitar_string.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
-#include "game/interactables_2/ice_paradise/069.h"
+#include "game/interactables_2/ice_paradise/big_snowball.h"
 #include "game/interactables_2/ice_paradise/funnel_sphere.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
@@ -64,9 +64,9 @@
 
 #include "game/interactables_2/techno_base/light_globe.h"
 #include "game/interactables_2/techno_base/light_bridge.h"
-#include "game/interactables_2/techno_base/075.h"
+#include "game/interactables_2/techno_base/arrow_platform.h"
 #include "game/interactables_2/techno_base/spike_platform.h"
-#include "game/interactables_2/techno_base/note_block.h"
+#include "game/interactables_2/techno_base/bounce_block.h"
 
 #include "game/interactables_2/egg_utopia/pole.h"
 #include "game/interactables_2/egg_utopia/flying_handle.h"
@@ -329,15 +329,15 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_FunnelSphere,
     CreateEntity_HalfPipe_End,
     CreateEntity_HalfPipe_Start,
-    CreateEntity_069,
+    CreateEntity_BigSnowball,
     CreateEntity_NoteBlock,
     CreateEntity_044,
     CreateEntity_Pipe_Start,
     CreateEntity_Pipe_End,
     CreateEntity_LightBridge,
-    CreateEntity_075_0,
-    CreateEntity_075_1,
-    CreateEntity_075_2,
+    CreateEntity_ArrowPlatform_Left,
+    CreateEntity_ArrowPlatform_Right,
+    CreateEntity_ArrowPlatform_Up,
     CreateEntity_SpikePlatform,
     CreateEntity_Platform_B,
     CreateEntity_LightGlobe,

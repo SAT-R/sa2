@@ -217,7 +217,7 @@
 #define SA2_ANIM_579                             579
 #define SA2_ANIM_SPIKES_MUS_PLA                  580
 #define SA2_ANIM_PLATFORM_ICE_PAR                581
-#define SA2_ANIM_SNOWBALL                        582
+#define SA2_ANIM_BIG_SNOWBALL                    582
 #define SA2_ANIM_583                             583
 #define SA2_ANIM_DASH_RING                       584
 #define SA2_ANIM_CROSS_SKY_CAN                   585

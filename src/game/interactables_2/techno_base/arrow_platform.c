@@ -6,7 +6,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/techno_base/075.h"
+#include "game/interactables_2/techno_base/arrow_platform.h"
 #include "constants/animations.h"
 #include "constants/songs.h"
 
@@ -33,7 +33,7 @@ typedef struct {
     s32 unk98[3][2];
 } Sprite_IA75; /* 0xB0 */
 
-#define BORDER_VRAM_ADDR OBJ_VRAM0 + 0x2C80
+#define BORDER_VRAM_ADDR (OBJ_VRAM0 + 0x2C80)
 
 static void sub_807AB04(struct Task *);
 static void sub_807AA68(void);
@@ -404,17 +404,20 @@ static void sub_807AB6C(Sprite_IA75 *ia75)
     ia75->unk98[0][1] = ia75->unk78;
 }
 
-void CreateEntity_075_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_ArrowPlatform_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void CreateEntity_075_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_ArrowPlatform_Right(MapEntity *me, u16 spriteRegionX,
+                                      u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 1);
 }
 
-void CreateEntity_075_2(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_ArrowPlatform_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                   u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 2);
 }

@@ -228,10 +228,10 @@ SECTIONS
         build/sa2/src/game/interactables_2/ice_paradise/slowing_snow.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/funnel_sphere.o(.text);
         build/sa2/src/game/interactables_2/ice_paradise/half_pipe.o(.text);
-        build/sa2/src/game/interactables_2/ice_paradise/069.o(.text);
-        build/sa2/src/game/interactables_2/techno_base/note_block.o(.text);
+        build/sa2/src/game/interactables_2/ice_paradise/big_snowball.o(.text);
+        build/sa2/src/game/interactables_2/techno_base/bounce_block.o(.text);
         build/sa2/src/game/interactables_2/techno_base/light_bridge.o(.text);
-        build/sa2/src/game/interactables_2/techno_base/075.o(.text);
+        build/sa2/src/game/interactables_2/techno_base/arrow_platform.o(.text);
         build/sa2/src/game/interactables_2/techno_base/spike_platform.o(.text);
         build/sa2/src/game/interactables_2/techno_base/light_globe.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/giant_propeller.o(.text);
@@ -399,7 +399,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/music_plant/keyboard.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/german_flute.o(.rodata);
         build/sa2/src/game/interactables_2/music_plant/pipe_horn.o(.rodata);
-        build/sa2/src/game/interactables_2/techno_base/note_block.o(.rodata);
+        build/sa2/src/game/interactables_2/techno_base/bounce_block.o(.rodata);
         build/sa2/src/game/interactables_2/techno_base/light_bridge.o(.rodata);
         build/sa2/src/game/interactables_2/techno_base/spike_platform.o(.rodata);
         build/sa2/src/game/interactables_2/sky_canyon/whirlwind.o(.rodata);
