@@ -95,7 +95,7 @@
 #define IA__091_0                                  91
 #define IA__091_1                                  92
 #define IA__093                                    93
-#define IA__094                                    94
+#define IA__POLE                                   94
 #define IA__095                                    95
 #define IA__SKY_CANYON__FLYING_HANDLE              96
 #define IA__097                                    97

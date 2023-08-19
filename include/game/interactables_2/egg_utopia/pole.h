@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_094(MapEntity *, u16, u16, u8);
+void CreateEntity_Pole(MapEntity *, u16, u16, u8);
 
 #endif

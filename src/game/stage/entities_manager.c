@@ -68,7 +68,7 @@
 #include "game/interactables_2/tec_base/078.h"
 #include "game/interactables_2/tec_base/note_block.h"
 
-#include "game/interactables_2/egg_utopia/094.h"
+#include "game/interactables_2/egg_utopia/pole.h"
 #include "game/interactables_2/egg_utopia/flying_handle.h"
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 #include "game/interactables_2/egg_utopia/cannon.h"
@@ -354,7 +354,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Launcher_Left_GDown,
     CreateEntity_Launcher_Right_GDown,
     CreateEntity_Cannon,
-    CreateEntity_094,
+    CreateEntity_Pole,
     CreateEntity_095,
     CreateEntity_FlyingHandle,
     CreateEntity_SpeedingPlatform,
