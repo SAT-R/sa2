@@ -31,34 +31,34 @@ void CreateEntity_Interactable105(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_Interactable105, sizeof(Sprite_IA105), 0x1FF0, 0,
                                 TaskDestructor_Interactable105);
-    Sprite_IA105 *sprite = TaskGetStructPtr(t);
+    Sprite_IA105 *ia105 = TaskGetStructPtr(t);
 
-    sprite->posX = TO_WORLD_POS(me->x, spriteRegionX);
-    sprite->posY = TO_WORLD_POS(me->y, spriteRegionY);
-    sprite->offsetX = me->d.sData[0] * TILE_WIDTH;
-    sprite->offsetY = me->d.sData[1] * TILE_WIDTH;
-    sprite->width = me->d.uData[2] * TILE_WIDTH + sprite->offsetX;
-    sprite->height = me->d.uData[3] * TILE_WIDTH + sprite->offsetY;
-    sprite->me = me;
-    sprite->spriteX = me->x;
-    sprite->spriteY = spriteY;
+    ia105->posX = TO_WORLD_POS(me->x, spriteRegionX);
+    ia105->posY = TO_WORLD_POS(me->y, spriteRegionY);
+    ia105->offsetX = me->d.sData[0] * TILE_WIDTH;
+    ia105->offsetY = me->d.sData[1] * TILE_WIDTH;
+    ia105->width = me->d.uData[2] * TILE_WIDTH + ia105->offsetX;
+    ia105->height = me->d.uData[3] * TILE_WIDTH + ia105->offsetY;
+    ia105->me = me;
+    ia105->spriteX = me->x;
+    ia105->spriteY = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static bool32 sub_80809B8(Sprite_IA105 *sprite)
+static bool32 sub_80809B8(Sprite_IA105 *ia105)
 {
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
+    if (PLAYER_IS_ALIVE) {
         s16 screenX, screenY;
         s16 playerX, playerY;
         s16 someX, someY;
-        screenX = (sprite->posX + sprite->offsetX) - gCamera.x;
-        screenY = (sprite->posY + sprite->offsetY) - gCamera.y;
+        screenX = (ia105->posX + ia105->offsetX) - gCamera.x;
+        screenY = (ia105->posY + ia105->offsetY) - gCamera.y;
 
         playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
-        someX = sprite->width - sprite->offsetX;
-        someY = sprite->height - sprite->offsetY;
+        someX = ia105->width - ia105->offsetX;
+        someY = ia105->height - ia105->offsetY;
 
         if ((screenX <= playerX) && (screenX + someX >= playerX) && (screenY <= playerY)
             && (screenY + someY >= playerY)) {
@@ -71,24 +71,24 @@ static bool32 sub_80809B8(Sprite_IA105 *sprite)
 
 static void Task_Interactable105(void)
 {
-    Sprite_IA105 *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_IA105 *ia105 = TaskGetStructPtr(gCurTask);
 
-    if (sub_80809B8(sprite)) {
+    if (sub_80809B8(ia105)) {
         sub_800CBA4(&gPlayer);
     }
 
-    if (sub_8080A9C(sprite)) {
-        sub_8080AE4(sprite);
+    if (sub_8080A9C(ia105)) {
+        sub_8080AE4(ia105);
     }
 }
 
 static void TaskDestructor_Interactable105(struct Task UNUSED *t) { }
 
-static bool32 sub_8080A9C(Sprite_IA105 *sprite)
+static bool32 sub_8080A9C(Sprite_IA105 *ia105)
 {
     s16 screenX, screenY;
-    screenX = sprite->posX - gCamera.x;
-    screenY = sprite->posY - gCamera.y;
+    screenX = ia105->posX - gCamera.x;
+    screenY = ia105->posY - gCamera.y;
 
     // TODO: Use 'IS_OUT_OF_RANGE' instead of 'IS_OUT_OF_RANGE_'
     //       (Fix that in game/game.h)
@@ -99,8 +99,8 @@ static bool32 sub_8080A9C(Sprite_IA105 *sprite)
     return FALSE;
 }
 
-static void sub_8080AE4(Sprite_IA105 *sprite)
+static void sub_8080AE4(Sprite_IA105 *ia105)
 {
-    sprite->me->x = sprite->spriteX;
+    ia105->me->x = ia105->spriteX;
     TaskDestroy(gCurTask);
 }
