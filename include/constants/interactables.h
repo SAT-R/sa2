@@ -81,7 +81,7 @@
 #define IA__075_2                                  77
 #define IA__078                                    78
 #define IA__079                                    79
-#define IA__080                                    80
+#define IA__LIGHT_GLOBE                            80
 #define IA__081                                    81
 #define IA__SKY_CANYON__GIANT_PROPELLER            82
 #define IA__ICE_PARADISE__SLIDY_ICE                83

@@ -62,7 +62,7 @@
 #include "game/interactables_2/sky_canyon/whirlwind.h"
 #include "game/interactables_2/sky_canyon/085.h"
 
-#include "game/interactables_2/tec_base/080.h"
+#include "game/interactables_2/tec_base/light_globe.h"
 #include "game/interactables_2/tec_base/light_bridge.h"
 #include "game/interactables_2/tec_base/075.h"
 #include "game/interactables_2/tec_base/078.h"
@@ -340,7 +340,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_075_2,
     CreateEntity_078,
     CreateEntity_079,
-    CreateEntity_080,
+    CreateEntity_LightGlobe,
     CreateEntity_Platform_Square,
     CreateEntity_GiantPropeller,
     CreateEntity_SlidyIce,

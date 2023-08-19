@@ -233,7 +233,7 @@ SECTIONS
         build/sa2/src/game/interactables_2/tec_base/light_bridge.o(.text);
         build/sa2/src/game/interactables_2/tec_base/075.o(.text);
         build/sa2/src/game/interactables_2/tec_base/078.o(.text);
-        build/sa2/src/game/interactables_2/tec_base/080.o(.text);
+        build/sa2/src/game/interactables_2/tec_base/light_globe.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/giant_propeller.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/small_windmill.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/085.o(.text);
