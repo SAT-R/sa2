@@ -598,13 +598,13 @@ void sub_807D1BC(Sprite_IA86 *ia086)
     sub_807CCBC(ia086);
 }
 
-void CreateEntity_Whirlwind_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+void CreateEntity_Whirlwind_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void CreateEntity_Whirlwind_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+void CreateEntity_Whirlwind_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 1);

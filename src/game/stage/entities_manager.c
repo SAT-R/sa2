@@ -346,7 +346,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_SlidyIce,
     CreateEntity_SmallSpinnyWindmill,
     CreateEntity_085,
-    CreateEntity_Whirlwind_0,
+    CreateEntity_Whirlwind_A,
     CreateEntity_SmallPropeller_Left,
     CreateEntity_SmallPropeller_Right,
     CreateEntity_SmallPropeller_Left_Periodic,
@@ -364,7 +364,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Launcher_Left_GUp,
     CreateEntity_Launcher_Right_GUp,
     CreateEntity_SpecialRing,
-    CreateEntity_Whirlwind_1,
+    CreateEntity_Whirlwind_B,
     CreateEntity_Interactable105,
 };
 
