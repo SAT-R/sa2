@@ -1,11 +1,12 @@
 #include "global.h"
 #include "gba/types.h"
+#include "sprite.h"
+#include "task.h"
 #include "lib/m4a.h"
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "sprite.h"
-#include "task.h"
+#include "game/interactables_0/pipe.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -31,7 +32,7 @@ typedef struct {
     /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
 } MapEntity_PipeEnd PACKED;
 
-static void Task_ClearPipe_Start(void)
+static void Task_Pipe_Start(void)
 {
     Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &pipe->base;
@@ -78,7 +79,7 @@ static void Task_ClearPipe_Start(void)
     }
 }
 
-static void Task_ClearPipe_End(void)
+static void Task_Pipe_End(void)
 {
     Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &pipe->base;
@@ -124,11 +125,11 @@ static void Task_ClearPipe_End(void)
     }
 }
 
-void CreateEntity_ClearPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY)
 {
     struct Task *t
-        = TaskCreate(Task_ClearPipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+        = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
     pipe->base.regionX = spriteRegionX;
@@ -138,11 +139,11 @@ void CreateEntity_ClearPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void CreateEntity_ClearPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     struct Task *t
-        = TaskCreate(Task_ClearPipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+        = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
     pipe->base.regionX = spriteRegionX;

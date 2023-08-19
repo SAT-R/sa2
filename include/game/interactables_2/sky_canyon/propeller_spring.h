@@ -4,6 +4,6 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_085(MapEntity *, u16, u16, u8);
+void CreateEntity_PropellerSpring(MapEntity *, u16, u16, u8);
 
 #endif

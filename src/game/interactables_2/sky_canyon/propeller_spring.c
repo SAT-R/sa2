@@ -1,5 +1,5 @@
 #include "global.h"
-#include "game/interactables_2/sky_canyon/085.h"
+#include "game/interactables_2/sky_canyon/propeller_spring.h"
 #include "game/game.h"
 #include "trig.h"
 #include "lib/m4a.h"
@@ -23,6 +23,7 @@ static bool32 sub_807C598(Sprite_IA85 *);
 static void sub_807C5E0(Sprite_IA85 *);
 static void sub_807C614(void);
 static void sub_807C558(Sprite_IA85 *);
+static void TaskDestructor_Interactable085(struct Task *);
 
 static void Task_Interactable085(void)
 {
@@ -58,13 +59,9 @@ static void sub_807C2E0(void)
             r1 = 6;
         }
     } else {
-#ifndef NON_MATCHING
-        do
+        do {
             r1 = 4;
-        while (0);
-#else
-        r1 = 4;
-#endif
+        } while (0);
     }
     ia85->unk49 += r1;
     if (ia85->unk49 > 63) {
@@ -211,9 +208,9 @@ static void sub_807C614(void)
 
     unk807->unk60++;
 }
-static void TaskDestructor_Interactable085(struct Task *);
 
-void CreateEntity_085(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
                                 TaskDestructor_Interactable085);

@@ -6,7 +6,7 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/tec_base/078.h"
+#include "game/interactables_2/techno_base/spike_platform.h"
 #include "constants/animations.h"
 #include "constants/songs.h"
 
@@ -26,10 +26,10 @@ static void sub_807B004(Sprite_IA78 *);
 static void sub_807B070(Sprite_IA78 *);
 
 static const u16 gUnknown_080E00B4[][2] = {
-    { SA2_ANIM_SPIKE_SCREEN, 2 }, { SA2_ANIM_SPIKE_SCREEN, 3 },
-    { SA2_ANIM_SPIKE_SCREEN, 4 }, { SA2_ANIM_SPIKE_SCREEN, 5 },
-    { SA2_ANIM_SPIKE_SCREEN, 6 }, { SA2_ANIM_SPIKE_SCREEN, 7 },
-    { SA2_ANIM_SPIKE_SCREEN, 8 }, { SA2_ANIM_SPIKE_SCREEN, 9 },
+    { SA2_ANIM_SPIKE_PLATFORM, 2 }, { SA2_ANIM_SPIKE_PLATFORM, 3 },
+    { SA2_ANIM_SPIKE_PLATFORM, 4 }, { SA2_ANIM_SPIKE_PLATFORM, 5 },
+    { SA2_ANIM_SPIKE_PLATFORM, 6 }, { SA2_ANIM_SPIKE_PLATFORM, 7 },
+    { SA2_ANIM_SPIKE_PLATFORM, 8 }, { SA2_ANIM_SPIKE_PLATFORM, 9 },
 };
 
 static const u16 gUnknown_080E00D4[][2] = {
@@ -42,7 +42,8 @@ static const u16 gUnknown_080E00FC[][2] = {
     { 47, 0 }, { 53, 6 }, { 59, 4 }, { 51, 2 }, { 53, 0 },
 };
 
-void CreateEntity_078(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
 {
     Sprite *sprite;
     struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0,
@@ -86,21 +87,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 
         if (p2 != 0) {
             if (temp < 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 8;
                 sub_8004558(sprite);
             } else {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 9;
                 sub_8004558(sprite);
             }
         } else {
             if (temp == 0) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 8;
                 sub_8004558(sprite);
             } else if (temp == 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 9;
                 sub_8004558(sprite);
             }
@@ -124,21 +125,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 
         if (p2 != 0) {
             if (temp >= 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 3;
                 sub_8004558(sprite);
             } else {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 2;
                 sub_8004558(sprite);
             }
         } else {
             if (temp == 0) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 2;
                 sub_8004558(sprite);
             } else if (temp == 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_SCREEN;
+                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 sprite->variant = 3;
                 sub_8004558(sprite);
             }
