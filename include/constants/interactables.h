@@ -45,7 +45,7 @@
 #define IA__CORKSCREW__END                  41
 #define IA__STAGE_GOAL                      42
 #define IA__CHECKPOINT                      43
-#define IA__044                             44
+#define IA__IA044                           44
 #define IA__TOGGLE__CHECKPOINT              45
 #define IA__TOGGLE__STAGE_GOAL              46
 #define IA__WINDUP_STICK                    47
@@ -72,7 +72,7 @@
 #define IA__HALFPIPE__START                 68
 #define IA__BIG_SNOWBALL                    69
 #define IA__NOTE_BLOCK_2                    70
-#define IA__071                             71 // Same code as IA__044
+#define IA__IA071                           71 // Same code as IA__044
 #define IA__PIPE__START                     72
 #define IA__PIPE__END                       73
 #define IA__LIGHT_BRIDGE                    74
@@ -106,6 +106,6 @@
 #define IA__LAUNCHER_RIGHT__UP              102
 #define IA__SPECIAL_RING                    103
 #define IA__WHIRLWIND_B                     104
-#define IA__105                             105
+#define IA__IA105                           105
 
 #endif // GUARD_CONSTANTS_INTERACTABLES_H

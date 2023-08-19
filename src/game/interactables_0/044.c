@@ -55,7 +55,7 @@ void Task_Interactable_044(void)
                     gPlayer.unk6D = 0x17;
                     gPlayer.unk6E = 0;
 
-                    if (me->index != IA__044)
+                    if (me->index != IA__IA044)
                         gPlayer.unk6E = 1;
                 }
             }
