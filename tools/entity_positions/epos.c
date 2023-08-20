@@ -6,9 +6,8 @@
 #include "ext/c_header_parser/parser.h"
 
 /* CSV Format Example:
-Adv2,ENEMIES,,,,,
-12345,67890,KIKI,0,0,0,0
-45678,87445,MON,-5,-8,5,10
+Adv2,ENEMIES,25,10,,,,,
+20,0,10,5,KIKI,0,0,0,0
 
 */
 
