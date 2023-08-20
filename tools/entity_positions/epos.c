@@ -108,7 +108,7 @@ File OpenWholeFile(char* path)
 
         fclose(f);
     } else {
-        fprintf(stderr, "ERROR: Couldn't open '%s'", path);
+        fprintf(stderr, "ERROR: Couldn't open '%s'\n", path);
     }
 
     return file;
@@ -205,48 +205,33 @@ char *GetEntityName(EntityNameList name_list, int entity_id)
 }
 
 
-void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int rx, int ry, GameId game, EntityType etype)
+void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, EntityType etype)
 {
     EntityData *data = (EntityData *)in_data;
-    
-    s32 world_x = TO_WORLD_POS(data->x, rx);
-    s32 world_y = TO_WORLD_POS(data->y, ry);
+
+    // Output common values (coordinates)
+    fprintf(csv_handle, "%d,%d,%d,%d", region_x, region_y, data->x, data->y);
 
     switch(etype) {
-    case Interactable: {
-        // TODO: Get names from header-file tokens
-        char *ia_kind = GetEntityName(name_list, data->kind);
-        
-        fprintf(csv_handle, "%d,%d,%s,%d,%d,%d,%d",
-            world_x, world_y, ia_kind,
-            data->data[0], data->data[1], data->data[2], data->data[3]);
-
-        if(game == SA3)
-            fprintf(csv_handle, ",%d", data->data[4]);
-    } break;
     case Item: {
         // TODO: Get names from header-file tokens
         char *item_kind = GetEntityName(name_list, data->kind);
 
-        fprintf(csv_handle, "%d,%d,%s",
-            world_x, world_y, item_kind);
+        fprintf(csv_handle, ",%s", item_kind);
     } break;
         
+    case Interactable:
     case Enemy: {
-        // TODO: Get names from header-file tokens
-        char *enemy_kind = GetEntityName(name_list, data->kind);
+        char *entity_kind = GetEntityName(name_list, data->kind);
 
-        fprintf(csv_handle, "%d,%d,%s,%d,%d,%d,%d",
-            world_x, world_y, enemy_kind,
-            data->data[0], data->data[1], data->data[2], data->data[3]);
+        fprintf(csv_handle, ",%s,%d,%d,%d,%d", entity_kind, data->data[0], data->data[1], data->data[2], data->data[3]);
 
         if(game == SA3)
             fprintf(csv_handle, ",%d", data->data[4]);
     } break;
 
     case Ring: {
-        fprintf(csv_handle, "%d,%d",
-            world_x, world_y);
+        // Only stores coordinates
     } break;
     }
 
@@ -262,7 +247,7 @@ void PrintCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, 
     }
 
     // Ident-line
-    fprintf(csv_handle, "Adv%d,%s", game, sMapEntityKinds[etype]);
+    fprintf(csv_handle, "Adv%d,%s,%d,%d", game, sMapEntityKinds[etype], eh->width, eh->height);
     PrintCsvFirstLineCommas(csv_handle, game, etype);
     fprintf(csv_handle, "\n");
     
@@ -334,34 +319,38 @@ void ConvertBinaryToCsv(char* bin_path, char *csv_path, TokenList tokens, GameId
 {
     File file = OpenWholeFile(bin_path);
 
-    int uncomp_size = *((u32*)file.data) >> 8;
+    if(file.data) {
+        int uncomp_size = *((u32*)file.data) >> 8;
 
-    if(uncomp_size == file.size)
-    {
-        EntitiesHeader *eh = (void*) &file.data[4];
-        int num_regions = eh->width * eh->height;
-        if(num_regions > 0
-        && num_regions * sizeof(int) < uncomp_size)
+        if(uncomp_size == file.size)
         {
-            EntityNameList enl = CreateEntityNameList(tokens, etype);
+            EntitiesHeader *eh = (void*) &file.data[4];
+            int num_regions = eh->width * eh->height;
+            if(num_regions > 0
+            && num_regions * sizeof(int) < uncomp_size)
+            {
+                EntityNameList enl = CreateEntityNameList(tokens, etype);
 
-            PrintCsvFile(csv_path, enl, eh, game, etype);
+                PrintCsvFile(csv_path, enl, eh, game, etype);
+            }
+            else
+            {
+                fprintf(stderr,
+                    "ERROR: Data dimensions too high\n"
+                    "%d*%d*4 > 0x%X\n",
+                    eh->width, eh->height, uncomp_size);
+            }
         }
         else
         {
             fprintf(stderr,
-                "ERROR: Data dimensions too high\n"
-                "%d*%d*4 > 0x%X\n",
-                eh->width, eh->height, uncomp_size);
+                "File size does not match internal size.\n"
+                "Expected: %d\n"
+                "Is:       %d\n",
+                uncomp_size, (int)file.size);
         }
-    }
-    else
-    {
-        fprintf(stderr,
-            "File size does not match internal size.\n"
-            "Expected: %d\n"
-            "Is:       %d\n",
-            uncomp_size, (int)file.size);
+    } else {
+        fprintf(stderr, "ERROR: Couldn't create CSV file because '%s' doesn't exist\n", bin_path);
     }
 }
 
