@@ -24,10 +24,13 @@ typedef enum {
 } GameId;
 
 typedef enum {
-    Interactable = 0,
-    Item         = 1,
-    Enemy        = 2,
-    Ring         = 3,
+    EntUnknown      = -1,
+    EntInteractable = 0,
+    EntItem         = 1,
+    EntEnemy        = 2,
+    EntRing         = 3,
+
+    EntCount
 } EntityType;
 
 typedef struct {
@@ -52,12 +55,33 @@ typedef struct {
     int count;
 } EntityNameList;
 
+// Different entity types use more/less data.
+// Interactable: x, y, kind, data
+// Item:         x, y, kind
+// Enemy:        x, y, kind, data
+// Ring:         x, y
+typedef struct {
+    u8 x, y, kind;
+    s8 data[5]; // SA1/SA2: [4], SA3: [5]
+} EntityData;
+
+typedef struct {
+    char **list;
+    int capacity;
+    int count;
+} CsvLines;
+
+typedef struct {
+    EntityData *list;
+    int capacity, count;
+} MapRegion;
+
 #define da_elem_size(arr)  sizeof(*(arr)->list)
 #define DA_DEFAULT_CAPACITY 128
 #define da_append(arr, entry)                                                               \
 {                                                                                           \
     if((arr)->capacity == 0) {                                                              \
-        (arr)->list = malloc(da_elem_size(arr) * DA_DEFAULT_CAPACITY);                      \
+        (arr)->list = calloc(da_elem_size(arr) * DA_DEFAULT_CAPACITY, 1);                   \
         (arr)->capacity = DA_DEFAULT_CAPACITY;                                              \
     } else if( ((arr)->count + 1) >= (arr)->capacity) {                                     \
         (arr)->list = realloc((arr)->list, da_elem_size(arr) * (2 * (arr)->capacity));      \
@@ -75,10 +99,10 @@ char *sMapEntityKinds[4] = {
 };
 
 char *sETypeIdents[4] = {
-    [Interactable] = "IA__",
-    [Item]         = "ITEM__",
-    [Enemy]        = "ENEMY__",
-    [Ring]         = "",
+    [EntInteractable] = "IA__",
+    [EntItem]         = "ITEM__",
+    [EntEnemy]        = "ENEMY__",
+    [EntRing]         = "",
 };
 
 File OpenWholeFile(char* path)
@@ -136,35 +160,34 @@ char *GetFileExtension(char* path)
     return ext;
 }
 
-void ConvertCsvToBinary(char* csv_path, char *bin_path, TokenList tokens)
+CsvLines GetCsvLines(File file)
 {
+    CsvLines lines = {0};
 
-}
+    char *line = strtok((char*)file.data, "\n");
 
-void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype)
-{
-    int num_commas = 0;
-    int meSize = GetMapEntitySize(game, etype);
-
-    if(meSize != 0) {
-        num_commas = meSize-2;
+    while(line) {
+        da_append(&lines, line);
+        line = strtok(NULL, "\n");
     }
 
-    for(int i = 0; i < num_commas; i++)
+    return lines;
+}
+
+EntityType GetEntityTypeFromToken(char *token)
+{
+    EntityType result = EntUnknown;
+
+    for(int i = 0; i < EntCount; i++)
     {
-        fprintf(csv_handle, ",");
+        int len = strlen(token);
+        if(len > 0 && !strcmp(token, sMapEntityKinds[i])) {
+            result = (EntityType)i;
+        }
     }
-}
 
-// Different entity types use more/less data.
-// Interactable: x, y, kind, data
-// Item:         x, y, kind
-// Enemy:        x, y, kind, data
-// Ring:         x, y
-typedef struct {
-    u8 x, y, kind;
-    s8 data[5]; // SA1/SA2: [4], SA3: [5]
-} EntityData;
+    return result;
+}
 
 inline int GetMapEntitySize(GameId game, EntityType etype)
 {
@@ -172,16 +195,16 @@ inline int GetMapEntitySize(GameId game, EntityType etype)
 
     switch(etype)
     {
-        case Interactable:
-        case Enemy:
+        case EntInteractable:
+        case EntEnemy:
             size = 7 + ((game == SA3) ? 1 : 0);
             break;
             
-        case Item:
+        case EntItem:
             size = 3;
             break;
             
-        case Ring:
+        case EntRing:
             size = 2;
             break;
 
@@ -203,6 +226,288 @@ char *GetEntityName(EntityNameList name_list, int entity_id)
     return NULL;
 }
 
+inline bool IsDigit(char c)
+{
+    return ((c >= '0') && (c <= '9'));
+}
+
+int GetEntityId(EntityNameList name_list, char *name)
+{
+    if(IsDigit(name[0])) {
+        return atoi(name);
+    } else {
+        for(int i = 0; i < name_list.count; i++)
+        {
+            if(!strcmp(name_list.list[i].name, name))
+                return name_list.list[i].id;
+        }
+
+        return 0;
+    }
+}
+
+EntityNameList CreateEntityNameList(TokenList tokens, EntityType etype)
+{
+    EntityNameList list = {0};
+
+    // Rings don't have a type
+    if(etype != EntRing) {
+        int etypeIdentLength = strlen(sETypeIdents[etype]);
+
+        for(int i = 0; i < tokens.count; i++)
+        {
+            if(i + 2 < tokens.count
+            && tokens.tokens[i+0].type == POUND_DEFINE
+            && tokens.tokens[i+1].type == IDENTIFIER
+            && tokens.tokens[i+2].type == VALUE)
+            {
+                Token *tok_ident = &tokens.tokens[i+1];
+                Token *tok_value = &tokens.tokens[i+2];
+
+                // Make sure the identifier matches the Entity Type
+                if(!strncmp(tokens.tokens[i+1].text, sETypeIdents[etype], etypeIdentLength))
+                {
+                    char *entity_name = tok_ident->text + etypeIdentLength;
+                    EntityName entry = {entity_name, atoi(tok_value->text)};
+                    da_append(&list, entry);
+                }
+            }
+        }
+    }
+
+#ifdef EPOS_DEBUG
+    printf("List| Cap:%d Cnt:%d\n", list.capacity, list.count);
+
+    for(int j = 0; j < list.count; j++)
+    {
+        printf("  %d: %s\n", list.list[j].id, list.list[j].name);
+    }
+#endif
+
+    return list;
+}
+
+int GetExpectedCsvDataLineCommaCount(GameId game_id, EntityType etype)
+{
+    int expected = 0;
+
+    switch(etype)
+    {
+    case EntInteractable:
+    case EntEnemy: {
+        expected = 8 + ((game_id == SA3) ? 1 : 0);
+    } break;
+
+    case EntItem: {
+        expected = 4;
+    } break;
+
+    case EntRing: {
+        expected = 3;
+    } break;
+        
+    default: {
+        // return 0
+    } break;
+    }
+
+    return expected;
+}
+
+int count_commas(char *str)
+{
+    int len = strlen(str);
+
+    int count = 0;
+
+    for(int i = 0; i < len; i++) {
+        if(str[i] == ',')
+            count++;
+    }
+
+    return count;
+}
+
+void FillMapRegions(CsvLines lines, EntityNameList name_list, MapRegion *regions, GameId game_id, EntityType etype, int map_width, int map_height)
+{
+    int expected_comma_count = GetExpectedCsvDataLineCommaCount(game_id, etype);
+
+    printf("Got %d lines\n", lines.count);
+
+    // Line 0 is the header, so we start at line_i = 1
+    for(int line_i = 1; line_i < lines.count; line_i++) {
+        char *line = lines.list[line_i];
+
+        int num_commas = count_commas(line);
+
+        if(num_commas != expected_comma_count) {
+            fprintf(stderr, "ERROR: CSV line %d has %d commas, expected %d.\n", line_i+1, num_commas, expected_comma_count);
+            return;
+        }
+        
+        unsigned int region_x = atoi(strtok(lines.list[line_i], ","));
+        unsigned int region_y = atoi(strtok(NULL, ","));
+        unsigned int inner_x  = atoi(strtok(NULL, ","));
+        unsigned int inner_y  = atoi(strtok(NULL, ","));
+
+        if(region_x >= (unsigned)map_width) {
+            fprintf(stderr, "ERROR: region_x in line %d is %d, must be less than map-width %d\n", line_i+1, region_x, map_width);
+            return;
+        } else if(region_y >= (unsigned)map_height) {
+            fprintf(stderr, "ERROR: region_y in line %d is %d, must be less than map-height %d\n", line_i+1, region_y, map_height);
+            return;
+        } else if(inner_x > 255) {
+            fprintf(stderr, "ERROR: inner_x of CSV line %d is %d, must be less than 256\n", line_i+1, inner_x);
+            return;
+        } else if(inner_y > 255) {
+            fprintf(stderr, "ERROR: inner_y of CSV line %d is %d, must be less than 256\n", line_i+1, inner_y);
+            return;
+        }
+        
+        EntityData me = {0};
+
+        switch(etype)
+        {
+        case EntInteractable:
+        case EntEnemy: {
+            me.x = inner_x;
+            me.y = inner_y;
+
+            char *ent_type_str = strtok(NULL, ",");
+            int ent_id = GetEntityId(name_list, ent_type_str);
+            me.kind = ent_id;
+
+            int data_size = GetMapEntitySize(game_id, etype) - 3;
+            for(int d = 0; d < data_size; d++)
+            {
+                char *data_str = strtok(NULL, ",");
+                me.data[d] = atoi(data_str);
+            }
+        } break;
+
+        case EntItem: {
+            me.x = inner_x;
+            me.y = inner_y;
+            
+            char *ent_type_str = strtok(NULL, ",");
+            int ent_id = GetEntityId(name_list, ent_type_str);
+            me.kind = ent_id;
+        } break;
+
+        case EntRing: {
+            me.x = inner_x;
+            me.y = inner_y;
+        } break;
+
+        default: {
+            // Shouldn't happen...
+        } break;
+        }
+        
+        int region_i = region_y * map_width + region_x;
+
+        da_append(&regions[region_i], me);
+    }
+
+    printf("Regions (%d):\n", regions->count);
+    for(int r = 0; r < map_width * map_height; r++)
+    {
+        MapRegion *region = &regions[r];
+
+        if(region->count > 0) {
+
+            printf("r%d:\n", r);
+
+            for(int ent = 0; ent < region->count; ent++)
+            {
+                EntityData *me = &region->list[ent];
+                printf("    %d: %d %d %d\n", ent, me->x, me->y, me->kind);
+            }
+        }
+    }
+}
+
+void HandleCsvToBinaryConversion(CsvLines lines, char *bin_path, TokenList tokens)
+{
+    char *header = lines.list[0];
+
+    char *ident = strtok(header, ",");
+    if(strlen(ident) == 4) {
+        GameId game_id = ident[3] - '0';
+
+        if(game_id >= SA1 && game_id <= SA3) {
+            char *etype_str      = strtok(NULL, ",");
+            char *map_width_str  = strtok(NULL, ",");
+            char *map_height_str = strtok(NULL, ",");
+
+            EntityType etype = GetEntityTypeFromToken(etype_str);
+
+            if(etype != EntUnknown) {
+                int map_width  = atoi(map_width_str);
+                int map_height = atoi(map_height_str);
+                int num_regions = map_width * map_height;
+
+                if(map_width > 0 && map_height > 0) {
+                    MapRegion *regions = calloc(num_regions, sizeof(MapRegion));
+                    
+                    EntityNameList enl = CreateEntityNameList(tokens, etype);
+
+                    FillMapRegions(lines, enl, regions, game_id, etype, map_width, map_height);
+                }
+            } else {
+                fprintf(stderr, "ERROR: Unknown EntityType '%s'\n", etype_str);
+            }
+        }
+    } else {
+        fprintf(stderr, "ERROR: Unknown game identifier '%s'\n", ident);
+    }
+}
+
+CsvLines RemoveAllBackslashRs(CsvLines lines)
+{
+    for(int i = 0; i < lines.count; i++)
+    {
+        char *line   = lines.list[i];
+        int line_len = strlen(line);
+
+        if(line_len > 0) {
+            if( line[line_len-1] == '\r') {
+                line[line_len-1] = '\0';
+            }
+        }
+    }
+
+    return lines;
+}
+
+void ConvertCsvToBinary(char* csv_path, char *bin_path, TokenList tokens)
+{
+    File file = OpenWholeFile(csv_path);
+
+    if(file.data) {
+        CsvLines lines = GetCsvLines(file);
+        lines = RemoveAllBackslashRs(lines);
+        
+        HandleCsvToBinaryConversion(lines, bin_path, tokens);
+    } else {
+        fprintf(stderr, "ERROR: Couldn't create binary file because '%s' doesn't exist\n", csv_path);
+    }
+}
+
+void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype)
+{
+    int num_commas = 0;
+    int meSize = GetMapEntitySize(game, etype);
+
+    if(meSize != 0) {
+        num_commas = meSize-2;
+    }
+
+    for(int i = 0; i < num_commas; i++)
+    {
+        fprintf(csv_handle, ",");
+    }
+}
 
 void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, EntityType etype)
 {
@@ -212,15 +517,15 @@ void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data,
     fprintf(csv_handle, "%d,%d,%d,%d", region_x, region_y, data->x, data->y);
 
     switch(etype) {
-    case Item: {
+    case EntItem: {
         // TODO: Get names from header-file tokens
         char *item_kind = GetEntityName(name_list, data->kind);
 
         fprintf(csv_handle, ",%s", item_kind);
     } break;
         
-    case Interactable:
-    case Enemy: {
+    case EntInteractable:
+    case EntEnemy: {
         char *entity_kind = GetEntityName(name_list, data->kind);
 
         fprintf(csv_handle, ",%s,%d,%d,%d,%d", entity_kind, data->data[0], data->data[1], data->data[2], data->data[3]);
@@ -229,8 +534,13 @@ void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data,
             fprintf(csv_handle, ",%d", data->data[4]);
     } break;
 
-    case Ring: {
+    case EntRing: {
         // Only stores coordinates
+    } break;
+        
+    default: {
+        fprintf(stderr, "ERROR: etype is %d in %s. This should not happen.", etype, __FUNCTION__);
+        exit(-10);
     } break;
     }
 
@@ -273,45 +583,6 @@ void PrintCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, 
     }
 
     fclose(csv_handle);
-}
-
-EntityNameList CreateEntityNameList(TokenList tokens, EntityType etype)
-{
-    EntityNameList list = {0};
-
-    // Rings don't have a type
-    if(etype != Ring) {
-        int etypeIdentLength = strlen(sETypeIdents[etype]);
-
-        for(int i = 0; i < tokens.count; i++)
-        {
-            if(i + 2 < tokens.count
-            && tokens.tokens[i+0].type == POUND_DEFINE
-            && tokens.tokens[i+1].type == IDENTIFIER
-            && tokens.tokens[i+2].type == VALUE)
-            {
-                Token *tok_ident = &tokens.tokens[i+1];
-                Token *tok_value = &tokens.tokens[i+2];
-
-                // Make sure the identifier matches the Entity Type
-                if(!strncmp(tokens.tokens[i+1].text, sETypeIdents[etype], etypeIdentLength))
-                {
-                    char *entity_name = tok_ident->text + etypeIdentLength;
-                    EntityName entry = {entity_name, atoi(tok_value->text)};
-                    da_append(&list, entry);
-                }
-            }
-        }
-    }
-
-    printf("List| Cap:%d Cnt:%d\n", list.capacity, list.count);
-
-    for(int j = 0; j < list.count; j++)
-    {
-        printf("  %d: %s\n", list.list[j].id, list.list[j].name);
-    }
-
-    return list;
 }
 
 void ConvertBinaryToCsv(char* bin_path, char *csv_path, TokenList tokens, GameId game, EntityType etype)
@@ -396,8 +667,11 @@ int main(int argc, char **argv)
 
     while(argc > 0) {
         char *arg = GetProgramArg(&argc, &argv);
-
-        if(argc > 0) {
+        
+        if(!strcmp(arg, "--help")) {
+            PrintUsage(exe_path);
+            return -5;
+        } else if(argc > 0) {
             if(!strcmp(arg, "-header")) {
                 char *c_header_path = GetProgramArg(&argc, &argv);
                 tokens              = tokenize(&arena, c_header_path);
