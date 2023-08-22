@@ -54,7 +54,6 @@ Temporary Items
 *.elf
 *.map
 *.bin
-data/**/*.bin
 
 *.hex
 *.o

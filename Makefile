@@ -207,16 +207,16 @@ include graphics.mk
 chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
 
-%/interactables.bin: %/interactables.csv
+%interactables.bin: %interactables.csv
 	$(EPOS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
 
-%/itemboxes.bin: %/itemboxes.csv
+%itemboxes.bin: %itemboxes.csv
 	$(EPOS) $< $@ -entities ITEMS -header "./include/constants/items.h"
 
-%/enemies.bin: %/enemies.csv
+%enemies.bin: %enemies.csv
 	$(EPOS) $< $@ -entities ENEMIES -header "./include/constants/enemies.h"
 
-%/rings.bin: %/rings.csv
+%rings.bin: %rings.csv
 	$(EPOS) $< $@ -entities RINGS
 
 %.gba.lz: %.gba 
