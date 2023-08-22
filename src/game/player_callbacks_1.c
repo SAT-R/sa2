@@ -123,31 +123,43 @@ static const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 8 * (3. / 8.)), //
 };
 
-static const u16 gUnknown_080D6932[4] = { 100, 100, 100, 100 };
+#define TRICK_DIR_UP       0
+#define TRICK_DIR_DOWN     1
+#define TRICK_DIR_FORWARD  2
+#define TRICK_DIR_BACKWARD 3
+#define NUM_TRICK_DIRS     4
 
-static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
-    [0] = {
+// NOTE(Jace): It appears that they originally planned
+//             to give the player a different amount of score points
+//             depending on the direction of the trick.
+static const u16 sTrickPoints[NUM_TRICK_DIRS] = { [TRICK_DIR_UP] = 100,
+                                                  [TRICK_DIR_DOWN] = 100,
+                                                  [TRICK_DIR_FORWARD] = 100,
+                                                  [TRICK_DIR_BACKWARD] = 100 };
+
+static const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2] = {
+    [TRICK_DIR_UP] = {
         [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(-6.00)},
         [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(-6.00)},
         [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(-6.00)},
         [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(-6.00)},
         [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(-6.00)},
     },
-    [1] = {
+    [TRICK_DIR_DOWN] = {
         [CHARACTER_SONIC] = {Q_8_8(0.00), Q_8_8(1.00)},
         [CHARACTER_CREAM] = {Q_8_8(0.00), Q_8_8(0.50)},
         [CHARACTER_TAILS] = {Q_8_8(0.00), Q_8_8(0.50)},
         [CHARACTER_KNUCKLES] = {Q_8_8(0.00), Q_8_8(1.00)},
         [CHARACTER_AMY] = {Q_8_8(0.00), Q_8_8(1.00)},
     },
-    [2] = {
+    [TRICK_DIR_FORWARD] = {
         [CHARACTER_SONIC] = {Q_8_8(6.00), Q_8_8(0.00)},
         [CHARACTER_CREAM] = {Q_8_8(4.00), Q_8_8(-2.50)},
         [CHARACTER_TAILS] = {Q_8_8(4.00), Q_8_8(-2.50)},
         [CHARACTER_KNUCKLES] = {Q_8_8(6.00), Q_8_8(0.00)},
         [CHARACTER_AMY] = {Q_8_8(6.00), Q_8_8(0.00)},
     },
-    [3] = {
+    [TRICK_DIR_BACKWARD] = {
         [CHARACTER_SONIC] = {Q_8_8(-5.00), Q_8_8(-3.50)},
         [CHARACTER_CREAM] = {Q_8_8(-3.50), Q_8_8(-3.00)},
         [CHARACTER_TAILS] = {Q_8_8(-3.50), Q_8_8(-3.00)},
@@ -156,7 +168,7 @@ static const s16 gUnknown_080D693A[4][NUM_CHARACTERS][2] = {
     },
 };
 
-static const u16 gUnknown_080D698A[4] = { 33, 36, 34, 35 };
+static const u16 gUnknown_080D698A[NUM_TRICK_DIRS] = { 33, 36, 34, 35 };
 
 #define MASK_80D6992_1  0x1
 #define MASK_80D6992_2  0x2
@@ -164,29 +176,29 @@ static const u16 gUnknown_080D698A[4] = { 33, 36, 34, 35 };
 #define MASK_80D6992_8  0x8
 #define MASK_80D6992_10 0x10
 
-static const u8 gUnknown_080D6992[4][NUM_CHARACTERS] = {
-    [0] = {
+static const u8 sTrickMasks[NUM_TRICK_DIRS][NUM_CHARACTERS] = {
+    [TRICK_DIR_UP] = {
         [CHARACTER_SONIC]    = MASK_80D6992_1,
         [CHARACTER_CREAM]    = MASK_80D6992_1,
         [CHARACTER_TAILS]    = MASK_80D6992_1,
         [CHARACTER_KNUCKLES] = (MASK_80D6992_2 | MASK_80D6992_1),
         [CHARACTER_AMY]      = MASK_80D6992_1,
     },
-    [1] = {
+    [TRICK_DIR_DOWN] = {
         [CHARACTER_SONIC]    = 0,
         [CHARACTER_CREAM]    = 0,
         [CHARACTER_TAILS]    = 0,
         [CHARACTER_KNUCKLES] = 0,
         [CHARACTER_AMY]      = 0,
     },
-    [2] = {
+    [TRICK_DIR_FORWARD] = {
         [CHARACTER_SONIC]    = MASK_80D6992_8,
         [CHARACTER_CREAM]    = MASK_80D6992_10,
         [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
         [CHARACTER_KNUCKLES] = MASK_80D6992_4,
         [CHARACTER_AMY]      = MASK_80D6992_8,
     },
-    [3] = {
+    [TRICK_DIR_BACKWARD] = {
         [CHARACTER_SONIC]    = 0,
         [CHARACTER_CREAM]    = (MASK_80D6992_10 | MASK_80D6992_1),
         [CHARACTER_TAILS]    = (MASK_80D6992_10 | MASK_80D6992_1),
@@ -1852,12 +1864,12 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
     return t;
 }
 
-// Set when doing (non-downwards) tricks
+// Set when doing tricks
 void PlayerCB_80286F0(Player *p)
 {
-    u32 u5B = p->unk5B;
+    u32 dir = p->unk5B;
     u16 character = p->character;
-    u8 mask = gUnknown_080D6992[p->unk5B][character];
+    u8 mask = sTrickMasks[dir][character];
 
     sub_80218E4(p);
 
@@ -1874,7 +1886,7 @@ void PlayerCB_80286F0(Player *p)
     p->speedAirX = 0;
     p->speedAirY = 0;
 
-    p->unk64 = gUnknown_080D698A[u5B];
+    p->unk64 = gUnknown_080D698A[dir];
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
@@ -1886,12 +1898,12 @@ void PlayerCB_80286F0(Player *p)
 void PlayerCB_80287AC(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        u32 u5B = p->unk5B;
+        u32 dir = p->unk5B;
         u16 character = p->character;
         p->unk6A++;
 
-        p->speedAirX = gUnknown_080D693A[u5B][character][0];
-        p->speedAirY = gUnknown_080D693A[u5B][character][1];
+        p->speedAirX = sTrickAccel[dir][character][0];
+        p->speedAirY = sTrickAccel[dir][character][1];
 
         if (p->moveState & MOVESTATE_FACING_LEFT)
             p->speedAirX = -p->speedAirX;
@@ -1899,13 +1911,13 @@ void PlayerCB_80287AC(Player *p)
         PLAYERFN_SET(PlayerCB_802890C);
 
         if (IS_SINGLE_PLAYER) {
-            if (u5B == 2 && character == CHARACTER_SONIC) {
+            if (dir == TRICK_DIR_FORWARD && character == CHARACTER_SONIC) {
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 0);
             }
-            if (u5B == 0 && character == CHARACTER_KNUCKLES) {
+            if (dir == TRICK_DIR_UP && character == CHARACTER_KNUCKLES) {
                 sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 1);
             }
-            if (u5B == 2 && character == CHARACTER_AMY) {
+            if (dir == TRICK_DIR_FORWARD && character == CHARACTER_AMY) {
                 CreateHeartParticles();
             }
         }
@@ -1919,9 +1931,9 @@ void PlayerCB_80287AC(Player *p)
 
 void PlayerCB_802890C(Player *p)
 {
-    u32 u5B = p->unk5B;
+    u32 dir = p->unk5B;
     u16 character = p->character;
-    u8 mask = gUnknown_080D6992[u5B][character];
+    u8 mask = sTrickMasks[dir][character];
 
     if ((mask & MASK_80D6992_1) && (p->unk6A == 1) && (p->speedAirY > 0)) {
         p->unk6A = 2;
@@ -1966,16 +1978,17 @@ void PlayerCB_802890C(Player *p)
     }
 }
 
-void sub_8028ADC(Player *p)
+void DoTrickIfButtonPressed(Player *p)
 {
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0)
         && (p->unk5E & gPlayerControls.trick)) {
+
         if (p->unk5C & DPAD_UP) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[0]);
-            p->unk5B = 0;
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[0]);
+            p->unk5B = TRICK_DIR_UP;
             PLAYERFN_SET(PlayerCB_80286F0);
         } else if (p->unk5C & DPAD_DOWN) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[3]);
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[3]);
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -1994,20 +2007,20 @@ void sub_8028ADC(Player *p)
                 } break;
 
                 default: {
-                    p->unk5B = 1;
+                    p->unk5B = TRICK_DIR_DOWN;
                     PLAYERFN_SET(PlayerCB_80286F0);
                 } break;
             }
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
                    || ((p->moveState & MOVESTATE_FACING_LEFT)
                        && (p->unk5C & DPAD_LEFT))) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[2]);
-            p->unk5B = 2;
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[2]);
+            p->unk5B = TRICK_DIR_FORWARD;
 
             PLAYERFN_SET(PlayerCB_80286F0);
         } else {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[1]);
-            p->unk5B = 3;
+            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[1]);
+            p->unk5B = TRICK_DIR_BACKWARD;
 
             PLAYERFN_SET(PlayerCB_80286F0);
         }
@@ -2149,7 +2162,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
 void PlayerCB_8029074(Player *p)
 {
     sub_80246DC(p);
-    sub_8028ADC(p);
+    DoTrickIfButtonPressed(p);
     sub_8023610(p);
     sub_80236C8(p);
     sub_80232D0(p);
@@ -2264,7 +2277,7 @@ void PlayerCB_8029314(Player *p)
     if ((p->unk64 == 40) && (p->unk6A == 0) && (p->speedAirY > 0))
         p->unk6A = 1;
 
-    sub_8028ADC(p);
+    DoTrickIfButtonPressed(p);
     sub_8023708(p);
     sub_80232D0(p);
 
@@ -2281,7 +2294,7 @@ void PlayerCB_802940C(Player *p)
     }
 
     sub_80246DC(p);
-    sub_8028ADC(p);
+    DoTrickIfButtonPressed(p);
     sub_80232D0(p);
 
     PLAYERFN_UPDATE_POSITION(p);
