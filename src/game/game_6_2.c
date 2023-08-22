@@ -61,21 +61,21 @@ void sub_8024228(Player *p)
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 15 - 1: {
                 if (!GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 16 - 1: {
                 p->unk6E |= 0x20;
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 17 - 1: {
                 p->unk6E |= 0x30;
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 18 - 1: {
                 if (GRAVITY_IS_INVERTED) {
@@ -83,7 +83,7 @@ void sub_8024228(Player *p)
                 } else {
                     p->unk6E |= 0x40;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 19 - 1: {
                 if (GRAVITY_IS_INVERTED) {
@@ -91,7 +91,7 @@ void sub_8024228(Player *p)
                 } else {
                     p->unk6E |= 0x50;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 20 - 1: {
                 if (GRAVITY_IS_INVERTED) {
@@ -99,7 +99,7 @@ void sub_8024228(Player *p)
                 } else {
                     p->unk6E |= 0x60;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 21 - 1: {
                 if (GRAVITY_IS_INVERTED) {
@@ -107,7 +107,7 @@ void sub_8024228(Player *p)
                 } else {
                     p->unk6E |= 0x70;
                 }
-                PLAYERFN_SET(PlayerCB_8028E24);
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
             case 22 - 1: {
                 PLAYERFN_SET(PlayerCB_8029158);

@@ -2038,7 +2038,7 @@ void PlayerCB_8028D74(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_8029074, p);
 }
 
-void PlayerCB_8028E24(Player *p)
+void PlayerCB_TouchNormalSpring(Player *p)
 {
     u8 u6E = p->unk6E;
     u8 r5 = (u6E >> 4);
