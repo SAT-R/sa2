@@ -4,6 +4,7 @@
 #include "game/playerfn_cmds.h"
 
 #include "constants/move_states.h"
+#include "constants/player_transitions.h"
 
 void sub_8024228(Player *p)
 {
@@ -57,27 +58,27 @@ void sub_8024228(Player *p)
                     PLAYERFN_SET(PlayerCB_80273D0);
                 }
             } break;
-            case 14 - 1: {
+            case PLTRANS_SPRING_UP - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 15 - 1: {
+            case PLTRANS_SPRING_DOWN - 1: {
                 if (!GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 16 - 1: {
+            case PLTRANS_SPRING_LEFT - 1: {
                 p->unk6E |= 0x20;
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 17 - 1: {
+            case PLTRANS_SPRING_RIGHT - 1: {
                 p->unk6E |= 0x30;
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 18 - 1: {
+            case PLTRANS_SPRING_UP_LEFT - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x60;
                 } else {
@@ -85,7 +86,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 19 - 1: {
+            case PLTRANS_SPRING_UP_RIGHT - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x70;
                 } else {
@@ -93,7 +94,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 20 - 1: {
+            case PLTRANS_SPRING_DOWN_LEFT - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x40;
                 } else {
@@ -101,7 +102,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 21 - 1: {
+            case PLTRANS_SPRING_DOWN_RIGHT - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x50;
                 } else {

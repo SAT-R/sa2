@@ -10,9 +10,10 @@
 #include "game/entity.h"
 #include "game/interactables_0/spring.h"
 
-#include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -84,7 +85,10 @@ static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
 // Effects applied onto the player-state.
 // These trigger the player acceleration when touching each of the spring directions
 static const u8 gUnknown_080D53D0[SPRINGTYPE_COUNT]
-    = { 14, 15, 16, 17, 18, 19, 20, 21, 18, 19 };
+    = { PLTRANS_SPRING_UP,        PLTRANS_SPRING_DOWN,       PLTRANS_SPRING_LEFT,
+        PLTRANS_SPRING_RIGHT,     PLTRANS_SPRING_UP_LEFT,    PLTRANS_SPRING_UP_RIGHT,
+        PLTRANS_SPRING_DOWN_LEFT, PLTRANS_SPRING_DOWN_RIGHT, PLTRANS_SPRING_UP_LEFT,
+        PLTRANS_SPRING_UP_RIGHT };
 
 static const u16 sSpring_MusicPlant_Soundeffects[5]
     = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3,
