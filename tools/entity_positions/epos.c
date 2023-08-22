@@ -388,6 +388,10 @@ void FillMapRegions(char *bin_path, CsvLines lines, EntityNameList name_list, Ma
         char *line = lines.list[line_i];
 
         int num_commas = count_commas(line);
+        
+        if(num_commas == 0)
+            continue;
+
 
         if(num_commas != expected_comma_count) {
             fprintf(stderr, "ERROR: CSV line %d has %d commas, expected %d.\n", line_i+1, num_commas, expected_comma_count);
