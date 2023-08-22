@@ -9,6 +9,7 @@
 Adv2,ENEMIES,25,10,,,,,
 20,0,10,5,KIKI,0,0,0,0
 
+>> region_x,region_y,me->x,me->y,me->kind,me->data[0],me->data[1],me->data[2],me->data[3](,me->data[4] in SA3)
 */
 
 #define EPOS_DEBUG 0
@@ -381,7 +382,9 @@ void FillMapRegions(char *bin_path, CsvLines lines, EntityNameList name_list, Ma
 {
     int expected_comma_count = GetExpectedCsvDataLineCommaCount(game_id, etype);
 
+#if EPOS_DEBUG
     printf("Got %d lines\n", lines.count);
+#endif
 
     // Line 0 is the header, so we start at line_i = 1
     for(int line_i = 1; line_i < lines.count; line_i++) {
@@ -580,7 +583,6 @@ void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data,
 
     switch(etype) {
     case EntItem: {
-        // TODO: Get names from header-file tokens
         char *item_kind = GetEntityName(name_list, data->kind);
 
         fprintf(csv_handle, ",%s", item_kind);
