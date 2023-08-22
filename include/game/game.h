@@ -645,6 +645,9 @@ bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 bool32 sub_800C320(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 bool32 sub_800C418(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 
+// Lose rings?
+bool32 sub_800CBA4(Player *);
+
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {
     /* 0x00 */ s32 x;
