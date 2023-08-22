@@ -9,38 +9,38 @@ void sub_8024228(Player *p)
 {
     if (p->unk6D) {
         switch (p->unk6D - 1) {
-            case 0: {
+            case 1 - 1: {
                 PLAYERFN_SET(PlayerCB_8025318);
             } break;
-            case 1: {
+            case 2 - 1: {
                 PLAYERFN_SET(PlayerCB_8025A0C);
             } break;
-            case 2: {
+            case 3 - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(PlayerCB_Jump);
             } break;
-            case 3: {
+            case 4 - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(PlayerCB_8025F84);
             } break;
-            case 6: {
+            case 7 - 1: {
                 PLAYERFN_SET(PlayerCB_8028D74);
             } break;
-            case 5: {
+            case 6 - 1: {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(PlayerCB_8026060);
             } break;
-            case 4: {
+            case 5 - 1: {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(PlayerCB_802611C);
             } break;
-            case 7: {
+            case 8 - 1: {
                 PLAYERFN_SET(PlayerCB_801225C);
             } break;
-            case 8: {
+            case 9 - 1: {
                 PLAYERFN_SET(PlayerCB_8027250);
             } break;
-            case 9: {
+            case 10 - 1: {
                 if (gGameMode == GAME_MODE_TIME_ATTACK) {
                     gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
                 }
@@ -57,27 +57,27 @@ void sub_8024228(Player *p)
                     PLAYERFN_SET(PlayerCB_80273D0);
                 }
             } break;
-            case 13: {
+            case 14 - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 14: {
+            case 15 - 1: {
                 if (!GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 15: {
+            case 16 - 1: {
                 p->unk6E |= 0x20;
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 16: {
+            case 17 - 1: {
                 p->unk6E |= 0x30;
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 17: {
+            case 18 - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x60;
                 } else {
@@ -85,7 +85,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 18: {
+            case 19 - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x70;
                 } else {
@@ -93,7 +93,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 19: {
+            case 20 - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x40;
                 } else {
@@ -101,7 +101,7 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 20: {
+            case 21 - 1: {
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x50;
                 } else {
@@ -109,34 +109,34 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_8028E24);
             } break;
-            case 21: {
+            case 22 - 1: {
                 PLAYERFN_SET(PlayerCB_8029158);
             } break;
-            case 23: {
+            case 24 - 1: {
                 PLAYERFN_SET(PlayerCB_802A300);
             } break;
-            case 10: {
+            case 11 - 1: {
                 PLAYERFN_SET(PlayerCB_8026764);
             } break;
-            case 11: {
+            case 12 - 1: {
                 PLAYERFN_SET(PlayerCB_80269C0);
             } break;
-            case 12: {
+            case 13 - 1: {
                 PLAYERFN_SET(PlayerCB_8026A4C);
             } break;
-            case 22: {
+            case 23 - 1: {
                 PLAYERFN_SET(PlayerCB_802A258);
             } break;
-            case 24: {
+            case 25 - 1: {
                 PLAYERFN_SET(PlayerCB_8026E24);
             } break;
-            case 27: {
+            case 28 - 1: {
                 PLAYERFN_SET(PlayerCB_8026F10);
             } break;
-            case 25: {
+            case 26 - 1: {
                 PLAYERFN_SET(PlayerCB_8026FC8);
             } break;
-            case 26: {
+            case 27 - 1: {
                 PLAYERFN_SET(PlayerCB_8027114);
             } break;
         }
