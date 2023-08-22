@@ -59,9 +59,13 @@ static void sub_807C2E0(void)
             r1 = 6;
         }
     } else {
-        do {
+#ifndef NON_MATCHING
+        do
             r1 = 4;
-        } while (0);
+        while (0);
+#else
+        r1 = 4;
+#endif
     }
     ia85->unk49 += r1;
     if (ia85->unk49 > 63) {
