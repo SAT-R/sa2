@@ -11,6 +11,8 @@ Adv2,ENEMIES,25,10,,,,,
 
 */
 
+#define EPOS_DEBUG 0
+
 #define TILE_WIDTH       8
 #define CAM_REGION_WIDTH 256
 
@@ -242,7 +244,7 @@ int GetEntityId(EntityNameList name_list, char *name)
                 return name_list.list[i].id;
         }
 
-        return 0;
+        return -1;
     }
 }
 
@@ -275,7 +277,7 @@ EntityNameList CreateEntityNameList(TokenList tokens, EntityType etype)
         }
     }
 
-#ifdef EPOS_DEBUG
+#if EPOS_DEBUG
     printf("List| Cap:%d Cnt:%d\n", list.capacity, list.count);
 
     for(int j = 0; j < list.count; j++)
@@ -328,7 +330,54 @@ int count_commas(char *str)
     return count;
 }
 
-void FillMapRegions(CsvLines lines, EntityNameList name_list, MapRegion *regions, GameId game_id, EntityType etype, int map_width, int map_height)
+void CreateMapEntityBinaryFile(char *bin_path, GameId game_id, EntityType etype, MapRegion *regions, int map_width, int map_height)
+{
+    int region_count = map_width * map_height;
+
+    MemArena arena_bin;
+    memArenaInit(&arena_bin);
+    
+    u32 *bin_size = memArenaAddU32(&arena_bin, 0); // this gets set at the end
+    int bin_header_offset = arena_bin.offset;
+    memArenaAddU32(&arena_bin, map_width);
+    memArenaAddU32(&arena_bin, map_height);
+    u32 *bin_regions = memArenaReserve(&arena_bin, region_count * sizeof(u32), FALSE);
+
+    const void *file_data = (const void*)bin_size;
+    
+    int me_size = GetMapEntitySize(game_id, etype);
+
+    for(int r = 0; r < region_count; r++)
+    {
+        MapRegion *region = &regions[r];
+
+        if(region->count > 0) {
+            // Place the region's data offset
+            bin_regions[r] = arena_bin.offset - bin_header_offset;
+
+            // Add region's data
+            for(int rc = 0; rc < region->count; rc++) {
+                EntityData *src_ent = &region->list[rc];
+                memArenaAddMemory(&arena_bin, src_ent, me_size);
+            }
+
+            // Place byte signifying data's end
+            memArenaAddU8(&arena_bin, 0xFF);
+        }
+    }
+
+    *bin_size = (arena_bin.offset << 8);
+
+    FILE *bin_handle = fopen(bin_path, "wb+");
+    if(bin_handle) {
+        fwrite(file_data, 1, arena_bin.offset, bin_handle);
+        fclose(bin_handle);
+    } else {
+        fprintf(stderr, "ERROR: Could not create file '%s'\n", bin_path);
+    }
+}
+
+void FillMapRegions(char *bin_path, CsvLines lines, EntityNameList name_list, MapRegion *regions, GameId game_id, EntityType etype, int map_width, int map_height)
 {
     int expected_comma_count = GetExpectedCsvDataLineCommaCount(game_id, etype);
 
@@ -391,6 +440,11 @@ void FillMapRegions(CsvLines lines, EntityNameList name_list, MapRegion *regions
             
             char *ent_type_str = strtok(NULL, ",");
             int ent_id = GetEntityId(name_list, ent_type_str);
+
+            if(ent_id < 0) {
+                fprintf(stderr, "ERROR: Invalid entity ID in CSV line %d: %d\n", line_i+1, ent_id);
+                return;
+            }
             me.kind = ent_id;
         } break;
 
@@ -408,7 +462,10 @@ void FillMapRegions(CsvLines lines, EntityNameList name_list, MapRegion *regions
 
         da_append(&regions[region_i], me);
     }
+    
+    CreateMapEntityBinaryFile(bin_path, game_id, etype, regions, map_width, map_height);
 
+#if EPOS_DEBUG
     printf("Regions (%d):\n", regions->count);
     for(int r = 0; r < map_width * map_height; r++)
     {
@@ -425,6 +482,7 @@ void FillMapRegions(CsvLines lines, EntityNameList name_list, MapRegion *regions
             }
         }
     }
+#endif
 }
 
 void HandleCsvToBinaryConversion(CsvLines lines, char *bin_path, TokenList tokens)
@@ -452,7 +510,7 @@ void HandleCsvToBinaryConversion(CsvLines lines, char *bin_path, TokenList token
                     
                     EntityNameList enl = CreateEntityNameList(tokens, etype);
 
-                    FillMapRegions(lines, enl, regions, game_id, etype, map_width, map_height);
+                    FillMapRegions(bin_path, lines, enl, regions, game_id, etype, map_width, map_height);
                 }
             } else {
                 fprintf(stderr, "ERROR: Unknown EntityType '%s'\n", etype_str);
@@ -597,7 +655,7 @@ void ConvertBinaryToCsv(char* bin_path, char *csv_path, TokenList tokens, GameId
             EntitiesHeader *eh = (void*) &file.data[4];
             int num_regions = eh->width * eh->height;
             if(num_regions > 0
-            && num_regions * sizeof(int) < uncomp_size)
+            && (int)(num_regions * sizeof(int)) < uncomp_size)
             {
                 EntityNameList enl = CreateEntityNameList(tokens, etype);
 
@@ -693,7 +751,8 @@ int main(int argc, char **argv)
                 }
 
             } else {
-                printf("Unknown parameter '%s'\n", arg);
+                printf("Unknown parameter '%s'.\n"
+                       "Run with --help for valid parameter list\n", arg);
                 return -3;
             }
         } else {

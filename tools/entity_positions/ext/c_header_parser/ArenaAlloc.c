@@ -127,11 +127,12 @@ memArenaFree(MemArena *arena) {
 
 // Reserve 'byteCount' amount of memory and set it to zero.
 void*
-memArenaReserve(MemArena *arena, s64 byteCount) {
+memArenaReserve(MemArena *arena, s64 byteCount, bool alignTo4) {
     if (byteCount <= 0)
         return NULL;
 
-    ALIGN(arena->offset, 4);
+    if(alignTo4)
+        ALIGN(arena->offset, 4);
     
     if(arena->size < (arena->offset + byteCount)) {
         // TODO: There's a bug that stems from realloc returning a different address after calling it.
@@ -157,7 +158,7 @@ memArenaReserve(MemArena *arena, s64 byteCount) {
 
 void*
 memArenaAddMemory(MemArena *arena, void *source, s64 srcLength) {
-    u8* dest = memArenaReserve(arena, srcLength);
+    u8* dest = memArenaReserve(arena, srcLength, FALSE);
 
     memcpy(dest, source, srcLength);
 

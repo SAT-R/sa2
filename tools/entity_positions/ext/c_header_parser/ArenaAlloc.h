@@ -11,7 +11,7 @@ typedef struct {
 
 void memArenaInit(MemArena*);
 void memArenaFree(MemArena *arena);
-void* memArenaReserve(MemArena* arena, s64 srcLength);
+void* memArenaReserve(MemArena* arena, s64 srcLength, bool alignTo4);
 void *memArenaAddMemory(MemArena *arena, void *source, s64 srcLength);
 char *memArenaAddString(MemArena *arena, char *source);
 char *memArenaAddStringN(MemArena *arena, char *source, size_t length);
