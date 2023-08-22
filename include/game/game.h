@@ -495,7 +495,7 @@ extern struct ButtonConfig gPlayerControls;
 
 extern s32 gUnknown_030054D0;
 
-struct UNK_03005AF0 {
+typedef struct {
     u8 filler0[0x1C];
     u32 unk1C;
     u8 filler20[0x18];
@@ -503,10 +503,10 @@ struct UNK_03005AF0 {
     s8 unk39;
     u8 unk3A;
     s8 unk3B;
-}; /* unknown length */
+} UNK_03005AF0; /* unknown length */
 
-extern struct UNK_03005AF0 gUnknown_03005AF0;
-extern struct UNK_03005AF0 gUnknown_03005AA0;
+extern UNK_03005AF0 gUnknown_03005AF0;
+extern UNK_03005AF0 gUnknown_03005AA0;
 
 // TODO: find out what task is parent to IA
 typedef struct {

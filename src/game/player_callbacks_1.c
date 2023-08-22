@@ -66,7 +66,7 @@ extern void sub_80246DC(Player *);
 void PlayerCB_Idle(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_Jumping(Player *);
-void sub_8025F84(Player *);
+void PlayerCB_8025F84(Player *);
 void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
 void PlayerCB_8026810(Player *);
@@ -223,7 +223,7 @@ void PlayerCB_8025318(Player *p)
     u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((p->moveState & MOVESTATE_IN_AIR)) {
-            sub_8025F84(p);
+            PlayerCB_8025F84(p);
             return;
         }
     }
@@ -407,7 +407,7 @@ void PlayerCB_8025A0C(Player *p)
     u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((p->moveState & MOVESTATE_IN_AIR)) {
-            sub_8025F84(p);
+            PlayerCB_8025F84(p);
             return;
         }
     }
@@ -607,7 +607,7 @@ void PlayerCB_Jumping(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
-void sub_8025F84(Player *p)
+void PlayerCB_8025F84(Player *p)
 {
     sub_80218E4(p);
 
