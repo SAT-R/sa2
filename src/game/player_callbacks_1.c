@@ -202,14 +202,14 @@ static const u16 gUnknown_080D69A6[2][3] = {
             SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
 };
 
-static const s16 gUnknown_080D69B2[4] = {
+static const s16 sSpringAccelY[4] = {
     Q_8_8(7.5),
     Q_8_8(9.0),
     Q_8_8(10.5),
     Q_8_8(12.0),
 };
 
-static const s16 gUnknown_080D69BA[4] = {
+static const s16 sSpringAccelX[4] = {
     Q_8_8(7.5),
     Q_8_8(9.0),
     Q_8_8(10.5),
@@ -2068,15 +2068,15 @@ void PlayerCB_TouchNormalSpring(Player *p)
 
     switch (r5) {
         case 0: {
-            p->speedAirY = -gUnknown_080D69B2[r6];
+            p->speedAirY = -sSpringAccelY[r6];
         } break;
 
         case 1: {
-            p->speedAirY = +gUnknown_080D69B2[r6];
+            p->speedAirY = +sSpringAccelY[r6];
         } break;
 
         case 2: {
-            p->speedAirX = -gUnknown_080D69BA[r6];
+            p->speedAirX = -sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX < -Q_24_8(9.0)) {
                 p->unk5A = 1;
@@ -2084,7 +2084,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
         } break;
 
         case 3: {
-            p->speedAirX = +gUnknown_080D69BA[r6];
+            p->speedAirX = +sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX > +Q_24_8(9.0)) {
                 p->unk5A = 1;
@@ -2092,23 +2092,23 @@ void PlayerCB_TouchNormalSpring(Player *p)
         } break;
 
         case 4: {
-            p->speedAirX = -gUnknown_080D69BA[r6];
-            p->speedAirY = -gUnknown_080D69B2[r6];
+            p->speedAirX = -sSpringAccelX[r6];
+            p->speedAirY = -sSpringAccelY[r6];
         } break;
 
         case 5: {
-            p->speedAirX = +gUnknown_080D69BA[r6];
-            p->speedAirY = -gUnknown_080D69B2[r6];
+            p->speedAirX = +sSpringAccelX[r6];
+            p->speedAirY = -sSpringAccelY[r6];
         } break;
 
         case 6: {
-            p->speedAirX = -gUnknown_080D69BA[r6];
-            p->speedAirY = +gUnknown_080D69B2[r6];
+            p->speedAirX = -sSpringAccelX[r6];
+            p->speedAirY = +sSpringAccelY[r6];
         } break;
 
         case 7: {
-            p->speedAirX = +gUnknown_080D69BA[r6];
-            p->speedAirY = +gUnknown_080D69B2[r6];
+            p->speedAirX = +sSpringAccelX[r6];
+            p->speedAirY = +sSpringAccelY[r6];
         } break;
     }
 

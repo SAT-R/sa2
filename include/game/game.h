@@ -304,9 +304,9 @@ typedef struct Player_ {
     //  0x18 = Dash
     // Ring 0x1C = Set by IA ClearPipe_End if data[1] is 0
     //
-    /* 0x6D */ u8 unk6D;
-    /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
-    /* 0x6F */ u8 unk6F;
+    /* 0x6D */ u8 unk6D; // transition - use constants/player_transitions.h
+    /* 0x6E */ u8 unk6E; // Parameter for transition(?)
+    /* 0x6F */ u8 prevTransition;
     /* 0x70 */ u8 unk70;
     /* 0x71 */ u8 unk71;
     // unk72 appears to be a duration timer for side-forward trick animations (in

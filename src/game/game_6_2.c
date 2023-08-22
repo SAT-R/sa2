@@ -59,6 +59,7 @@ void sub_8024228(Player *p)
                 }
             } break;
             case PLTRANS_SPRING_UP - 1: {
+                // NOTE: Set to 0 or 3 in floating_spring.c
                 if (GRAVITY_IS_INVERTED) {
                     p->unk6E |= 0x10;
                 }
@@ -143,7 +144,7 @@ void sub_8024228(Player *p)
         }
     }
 
-    p->unk6F = p->unk6D;
+    p->prevTransition = p->unk6D;
     p->unk6D = 0;
 }
 

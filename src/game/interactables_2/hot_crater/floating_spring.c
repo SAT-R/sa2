@@ -8,6 +8,7 @@
 #include "game/interactables_2/hot_crater/floating_spring.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -264,7 +265,7 @@ static void sub_8075140(struct Task *t)
 
 static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
 {
-    gPlayer.unk6D = 0xE;
+    gPlayer.unk6D = PLTRANS_SPRING_UP;
 
     if (floatingSpring->unk50) {
         gPlayer.unk6E = 3;
