@@ -43,6 +43,7 @@ AS 		  := $(PREFIX)as
 FORMAT    := clang-format-13
 
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
+EPOS 	  := tools/entity_positions/epos$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
 MID2AGB   := tools/mid2agb/mid2agb$(EXE)
 SCANINC   := tools/scaninc/scaninc$(EXE)
@@ -178,7 +179,7 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/collect_rings
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
-	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+	find . \( -iwholename './data/maps/**/interactables.bin' -iwholename './data/maps/**/items.bin' -iwholename './data/maps/**/enemies.bin' -iwholename './data/maps/**/rings.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
 clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
@@ -205,6 +206,18 @@ include graphics.mk
 
 chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
+
+%/interactables.bin: %/interactables.csv
+	$(EPOS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
+
+%/itemboxes.bin: %/itemboxes.csv
+	$(EPOS) $< $@ -entities ITEMS -header "./include/constants/items.h"
+
+%/enemies.bin: %/enemies.csv
+	$(EPOS) $< $@ -entities ENEMIES -header "./include/constants/enemies.h"
+
+%/rings.bin: %/rings.csv
+	$(EPOS) $< $@ -entities RINGS
 
 %.gba.lz: %.gba 
 	$(GFX) $< $@
