@@ -10,19 +10,13 @@
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
 
+#include "game/screen_transition.h"
+
 #include "lib/m4a.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 #include "constants/animations.h"
-
-typedef struct {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 unk6;
-    s16 unk8;
-    s16 unkA;
-} EggSaucer_unk134;
+#include "flags.h"
 
 typedef struct {
     /* 0x00 */ s32 unk0;
@@ -41,10 +35,10 @@ typedef struct {
 
     /* 0x16 */ u16 unk16;
     /* 0x18 */ u16 unk18;
-    /* 0x1A */ s16 unk1A;
+    /* 0x1A */ u16 unk1A;
     /* 0x1C */ u16 unk1C;
 
-    /* 0x1E */ s8 unk1E;
+    /* 0x1E */ u8 unk1E;
     /* 0x1F */ u8 unk1F;
     /* 0x20 */ u8 unk20;
 
@@ -55,7 +49,7 @@ typedef struct {
     /* 0x2C */ s32 unk2C;
 
     /* 0x30 */ u16 unk30;
-    /* 0x32 */ s16 unk32;
+    /* 0x32 */ u16 unk32;
 
     /* 0x34 */ s16 unk34;
 
@@ -64,9 +58,9 @@ typedef struct {
 
     /* 0xB8 */ s16 unkB8;
     /* 0xBA */ s16 unkBA;
-    /* 0xBC */ s16 unkBC;
+    /* 0xBC */ u16 unkBC;
 
-    /* 0xBE */ s8 unkBE;
+    /* 0xBE */ u8 unkBE;
     /* 0xBF */ u8 unkBF;
     /* 0xC0 */ u8 unkC0;
 
@@ -93,7 +87,7 @@ typedef struct {
 
     /* 0x130 */ s16 unk130; // timer
 
-    /* 0x134 */ EggSaucer_unk134 unk134;
+    /* 0x134 */ struct TransitionState unk134;
 
     /* 0x140 */ Sprite unk140; // disk
     /* 0x170 */ Sprite unk170; // cabin
@@ -142,7 +136,7 @@ void CreateEggSaucer(void)
     u8 i;
     u32 r2;
     EggSaucer *boss;
-    EggSaucer_unk134 *unk134;
+    struct TransitionState *unk134;
     Sprite *s;
     void *vram;
     void *vramBase;
@@ -180,7 +174,7 @@ void CreateEggSaucer(void)
     unk134->unk0 = 0;
     unk134->unk4 = 0;
     unk134->unk2 = 2;
-    unk134->unk6 = 0;
+    unk134->speed = 0;
     unk134->unk8 = 12527;
     unk134->unkA = 0;
 
@@ -977,3 +971,656 @@ static void SaucerUpdatePosAndRotate(EggSaucer *boss)
     boss->unk30
         = ({ (boss->unk30 + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
 }
+
+void sub_8044540(EggSaucer *boss)
+{
+    u8 i;
+    s32 res;
+    s32 bottomX, bottomY;
+    if (boss->unkC > 0) {
+        boss->unkC -= 2;
+    }
+
+    boss->unk4 += boss->unkC;
+    boss->unk8 += boss->unkE;
+
+    bottomX = Q_24_8_TO_INT(boss->unk4);
+    bottomY = Q_24_8_TO_INT(boss->unk8) + (BOSS_HEIGHT / 2);
+
+    boss->unk8 += Q_24_8(sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64));
+    boss->unkD6 += 0x30;
+
+    boss->unkC4 += boss->unkD4;
+    boss->unkC8 += boss->unkD6;
+
+    bottomX = Q_24_8_TO_INT(boss->unkC4);
+    bottomY = Q_24_8_TO_INT(boss->unkC8);
+    res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
+    if (res < 0) {
+        boss->unkC8 += Q_24_8_NEW(res);
+        boss->unkD6 = Div(-0x46 * boss->unkD6, 100);
+        boss->unkD4 -= 24;
+    }
+
+    boss->unkDA += 0x3D;
+    boss->unkCC += boss->unkD8;
+    boss->unkD0 += boss->unkDA;
+
+    bottomX = Q_24_8_TO_INT(boss->unkCC);
+    bottomY = Q_24_8_TO_INT(boss->unkD0);
+    res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
+    if (res < 0) {
+        boss->unkD0 += Q_24_8_NEW(res);
+        boss->unkDA = Div(-0x41 * boss->unkDA, 100);
+        boss->unkD8 -= 34;
+    }
+
+    for (i = 0; i < 6; i++) {
+        boss->unk10C[i][1] += 0x38;
+        boss->unkDC[i][0] += boss->unk10C[i][0];
+        boss->unkDC[i][1] += boss->unk10C[i][1];
+
+        bottomX = Q_24_8_TO_INT(boss->unkDC[i][0]);
+        bottomY = Q_24_8_TO_INT(boss->unkDC[i][1]);
+        res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
+        if (res < 0) {
+            boss->unkDC[i][1] += Q_24_8_NEW(res);
+            boss->unk10C[i][1] = Div(boss->unk10C[i][1] * (i - 0x41), 100);
+            boss->unk10C[i][0] += (i - 0x33);
+        }
+    }
+
+    boss->unk12E += 0x40;
+    boss->unk124 += boss->unk12C;
+    boss->unk128 += boss->unk12E;
+
+    bottomX = Q_24_8_TO_INT(boss->unk124);
+    bottomY = Q_24_8_TO_INT(boss->unk128);
+    res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
+    if (res < 0) {
+        boss->unk128 += Q_24_8_NEW(res);
+        boss->unk12E = Div(-0x3C * boss->unk12E, 100);
+        boss->unk12C -= 0x34;
+    }
+}
+
+extern void sub_802E784(u16, u16, u16, s16 x, s16 y, s16);
+
+extern const u16 gUnknown_080D7F94[2];
+
+void sub_8044784(EggSaucer *boss)
+{
+    s32 x, y;
+    Sprite *s;
+    bool32 someBool;
+    u16 temp;
+
+    struct TransitionState *transition = &boss->unk134;
+
+    if (!PLAYER_IS_ALIVE) {
+        if (transition->unk4 != 0x2000) {
+            transition->unk4 = 0x2000;
+            NextTransitionFrame(transition);
+        }
+        gFlags &= ~FLAGS_4;
+        return;
+    }
+
+    if (boss->unk11 == 0) {
+        transition->unk4 = 0x2000;
+        NextTransitionFrame(transition);
+        gFlags &= ~FLAGS_4;
+        return;
+    }
+
+    x = (Q_24_8_TO_INT(boss->unk4) - gCamera.x);
+    x += ((COS(boss->unk18) * 5) >> 11);
+    x += ((COS(boss->unk1A) * 3) >> 11);
+
+    y = (Q_24_8_TO_INT(boss->unk8) - gCamera.y);
+    y += (SIN(boss->unk18) * 5) >> 11;
+    y -= 0x12;
+    y += (SIN(boss->unk1A) * 3) >> 11;
+
+    someBool = FALSE;
+    if (boss->unk1E != 0 && boss->unk1C == 0) {
+        transition->unk4 = 0x2000 - Q_8_8((--boss->unk1E));
+        sub_802E784(boss->unk1A, boss->unk1E + 8, 6, x, y, 0x20);
+
+        someBool = TRUE;
+        if (boss->unk1E == 0) {
+            boss->unk1C = gUnknown_080D7F94[boss->unk10 > 4 ? 1 : 0];
+        }
+    } else {
+        s32 tmp;
+        transition->unk4 = 0x2000;
+        tmp = boss->unk1C;
+        boss->unk1C--;
+        if (boss->unk1C == 0) {
+            m4aSongNumStart(SE_252);
+            boss->unk1E = 0x10;
+        } else if (boss->unk1C >= 0xB && boss->unk1C < 40) {
+            transition->unk4 = 0x2000 - ((tmp - 0xB) * 0x80);
+            sub_802E784(boss->unk1A, 10, 6, x, y, 0x20);
+        }
+
+        if (boss->unk1C < 0xD) {
+            s = &boss->unk25C;
+            s->x = x;
+            s->y = y;
+
+            if (boss->unk1C == 0xC) {
+                s->unk21 = -1;
+                s->graphics.anim = SA2_ANIM_EGG_SAUCER_GUN_PROJ;
+                s->variant = 0;
+            }
+        }
+    }
+
+    NextTransitionFrame(transition);
+
+    y = Q_24_8_TO_INT(gPlayer.y);
+    y += 0x13;
+    y -= (Q_24_8_TO_INT(boss->unk8) + ((SIN(boss->unk18) * 5) >> 11));
+    x = ({
+        s32 temp3;
+        x = (Q_24_8_TO_INT(gPlayer.x));
+        temp3 = x + 2;
+        temp3 - (Q_24_8_TO_INT(boss->unk4) + ((COS(boss->unk18) * 5) >> 11));
+    });
+    temp = sub_8004418(y, x);
+    if (gUnknown_03005590 & 1) {
+        if (boss->unk1A < temp) {
+            if (boss->unk1A <= 0x23F) {
+                boss->unk1A += 1;
+            }
+        } else {
+            if (boss->unk1A >= 0x1C1) {
+                boss->unk1A -= 1;
+            }
+        }
+    }
+    if (someBool && (boss->unk1A - 0x10) < temp && (boss->unk1A + 0x10) > temp) {
+        sub_800CBA4(&gPlayer);
+    }
+}
+
+// matched
+void sub_8044A14(EggSaucer *boss)
+{
+    Sprite *s;
+
+    s32 val;
+    s32 temp;
+    temp = SIN((gUnknown_03005590 << 4) & (SIN_PERIOD - 1));
+    boss->unk32 = CLAMP_SIN_PERIOD(((temp) >> 9) + 1000);
+    boss->unk36[0][boss->unkB6] = boss->unkB8;
+    boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+    val = (COS(boss->unk32) * 5) >> 11;
+
+    if (boss->unkB8 < val) {
+        boss->unkB8 += 2;
+        if (boss->unkB8 > val) {
+            boss->unkB8 = val;
+        }
+    } else {
+        boss->unkB8 -= 2;
+        if (boss->unkB8 < val) {
+            boss->unkB8 = val;
+        }
+    }
+
+    val = (SIN(boss->unk32) * 5) >> 11;
+    if (boss->unkBA < val) {
+        boss->unkBA += 2;
+        if (boss->unkBA > val) {
+            boss->unkBA = val;
+        }
+    } else {
+        boss->unkBA -= 2;
+        if (boss->unkBA < val) {
+            boss->unkBA = val;
+        }
+    }
+
+    boss->unkBC++;
+
+    if (boss->unkBC > 0x77) {
+        boss->unkBC = 0;
+        boss->unkBF = 1;
+    }
+
+    boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+
+    s = &boss->unk2F4;
+    // disable collision
+    s->unk28[0].unk0 = -1;
+    s->unk28[1].unk0 = -1;
+}
+
+void sub_8044B28(EggSaucer *boss)
+{
+    Sprite *s;
+    s32 val;
+    s32 temp;
+
+    temp = SIN((gUnknown_03005590 << 4) & (SIN_PERIOD - 1));
+    boss->unk32 = CLAMP_SIN_PERIOD(((temp) >> 9) + 1000);
+    boss->unk36[0][boss->unkB6] = boss->unkB8;
+    boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+    val = (COS(boss->unk32) * 5) >> 10;
+
+    if (boss->unkB8 < val) {
+        boss->unkB8 += 2;
+        if (boss->unkB8 > val) {
+            boss->unkB8 = val;
+        }
+    } else {
+        boss->unkB8 -= 2;
+        if (boss->unkB8 < val) {
+            boss->unkB8 = val;
+        }
+    }
+
+    val = (SIN(boss->unk32) * 5) >> 10;
+    if (boss->unkBA < val) {
+        boss->unkBA += 2;
+        if (boss->unkBA > val) {
+            boss->unkBA = val;
+        }
+    } else {
+        boss->unkBA -= 2;
+        if (boss->unkBA < val) {
+            boss->unkBA = val;
+        }
+    }
+
+    if (++boss->unkBC >= 0x50) {
+        if (boss->unk11 != 0 || (PseudoRandom32() & 1)) {
+            boss->unkBC = 0;
+            boss->unkBE = 0x40;
+            boss->unkBF = 2;
+        } else {
+            if (gUnknown_03005590 & 2) {
+                boss->unkBC = 0;
+                boss->unkBE = 0x40;
+                boss->unkBF = 4;
+
+            } else {
+                boss->unkBC = 0;
+                boss->unkBE = 0x60;
+                boss->unkBF = 5;
+            }
+        }
+        s = &boss->unk2F4;
+        s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+        s->variant = 1;
+        s->unk21 = -1;
+    } else {
+        if (boss->unkBC == 0x46) {
+            m4aSongNumStart(SE_250);
+        }
+    }
+
+    boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+}
+
+void sub_8044CBC(EggSaucer *boss)
+{
+    u8 i;
+    s32 val;
+    Sprite *s;
+#ifndef NON_MATCHING
+    register u8 r3 asm("r3");
+#endif
+    if (boss->unkBE == 64) {
+        s32 x, y;
+        x = Q_24_8_TO_INT(boss->unk4);
+        y = Q_24_8_TO_INT(boss->unk8);
+
+        x += ((COS(boss->unk30) * 5) >> 11);
+        y += (SIN(boss->unk30) * 5) >> 11;
+
+        x += 2;
+        y -= 0x11;
+
+        x = Q_24_8_TO_INT(gPlayer.x) - x;
+        y = Q_24_8_TO_INT(gPlayer.y) - y;
+        boss->unk32 = sub_8004418(y, x);
+    }
+
+    if (boss->unkBE == 0x1B) {
+        m4aSongNumStart(SE_251);
+        boss->unkC0 = 0x10;
+
+        for (i = 0; i < 8; i++) {
+            s = &boss->unk32C[i];
+            s->graphics.anim = gUnknown_080D7FB0[i].anim;
+            s->variant = gUnknown_080D7FB0[i].variant;
+            s->unk21 = -1;
+        }
+    }
+    boss->unk36[0][boss->unkB6] = boss->unkB8;
+    boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+    val = (COS(boss->unk32) * 5) >> 10;
+
+    if (boss->unkB8 < val) {
+        boss->unkB8 += 10;
+        if (boss->unkB8 > val) {
+            boss->unkB8 = val;
+        }
+    } else {
+        boss->unkB8 -= 10;
+        if (boss->unkB8 < val) {
+            boss->unkB8 = val;
+        }
+    }
+
+    val = (SIN(boss->unk32) * 5) >> 10;
+    if (boss->unkBA < val) {
+        boss->unkBA += 10;
+        if (boss->unkBA > val) {
+            boss->unkBA = val;
+        }
+    } else {
+        boss->unkBA -= 10;
+        if (boss->unkBA < val) {
+            boss->unkBA = val;
+        }
+    }
+
+    boss->unkBE--;
+#ifndef NON_MATCHING
+    r3 = 0xff;
+#endif
+
+    if (boss->unkBE == 0) {
+        if (boss->unk11 != 0) {
+            boss->unkBF = 0;
+            s = &boss->unk2F4;
+            s->unk28[0].unk0 = -1;
+            s->unk28[1].unk0 = -1;
+            s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+            s->variant = 2;
+#ifndef NON_MATCHING
+            s->unk21 |= r3;
+#else
+            s->unk21 = -1;
+#endif
+        } else {
+            boss->unkBF = 3;
+            boss->unkBE = 0x7F;
+        }
+    }
+    boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+}
+
+// void sub_8044EB0(EggSaucer *boss)
+// {
+//     Sprite *s;
+//     s32 cos, sin;
+//     boss->unk32
+//         = CLAMP_SIN_PERIOD((SIN((boss->unkBE & 0x3F) * 0x10) * 5) >> 11 +
+//         boss->unk32);
+//     boss->unk36[0][boss->unkB6] = boss->unkB8;
+//     boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+//     cos = (COS(boss->unk32) * 5) >> 10;
+
+//     if (boss->unkB8 < cos) {
+//         boss->unkB8 += 10;
+//         if (boss->unkB8 > cos) {
+//             boss->unkB8 = cos;
+//         }
+//     } else {
+//         boss->unkB8 -= 10;
+//         if (boss->unkB8 < cos) {
+//             boss->unkB8 = cos;
+//         }
+//     }
+
+//     sin = (SIN(boss->unk32) * 5) >> 10;
+//     if (boss->unkBA < sin) {
+//         boss->unkBA += 10;
+//         if (boss->unkBA > sin) {
+//             boss->unkBA = sin;
+//         }
+//     } else {
+//         boss->unkBA -= 10;
+//         if (boss->unkBA < sin) {
+//             boss->unkBA = sin;
+//         }
+//     }
+
+//     boss->unkBE--;
+
+//     if (boss->unkBE == 0) {
+//         boss->unkBF = 0;
+//         s = &boss->unk2F4;
+//         s->unk28[0].unk0 = -1;
+//         s->unk28[1].unk0 = -1;
+//         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+//         s->variant = 2;
+//         s->unk21 = -1;
+//     }
+//     boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+// }
+
+// void sub_8044FE4(EggSaucer *boss)
+// {
+//     u8 i;
+//     s32 cos, sin;
+//     Sprite *s;
+//     if (boss->unkBE == 64) {
+//         boss->unk32
+//             = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - Q_24_8_TO_INT(boss->unk8)
+//                               + ((SIN(boss->unk30) * 5) >> 11) - 0x11,
+//                           (Q_24_8_TO_INT(gPlayer.x) + 2) - Q_24_8_TO_INT(boss->unk4)
+//                               + ((COS(boss->unk18) * 5) >> 11) + 2);
+//     }
+
+//     if (boss->unkBE == 0x1B) {
+//         m4aSongNumStart(SE_251);
+//         boss->unkC0 = 0x10;
+
+//         for (i = 0; i < 8; i++) {
+//             s = &boss->unk32C[i];
+//             s->graphics.anim = gUnknown_080D7FB0[i].anim;
+//             s->variant = gUnknown_080D7FB0[i].variant;
+//             s->unk21 = -1;
+//         }
+//     }
+
+//     boss->unk36[0][boss->unkB6] = boss->unkB8;
+//     boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+//     cos = (COS(boss->unk32) * 5) >> 9;
+
+//     if (boss->unkB8 < cos) {
+//         boss->unkB8 += 10;
+//         if (boss->unkB8 > cos) {
+//             boss->unkB8 = cos;
+//         }
+//     } else {
+//         boss->unkB8 -= 10;
+//         if (boss->unkB8 < cos) {
+//             boss->unkB8 = cos;
+//         }
+//     }
+
+//     sin = (SIN(boss->unk32) * 5) >> 9;
+//     if (boss->unkBA < sin) {
+//         boss->unkBA += 10;
+//         if (boss->unkBA > sin) {
+//             boss->unkBA = sin;
+//         }
+//     } else {
+//         boss->unkBA -= 10;
+//         if (boss->unkBA < sin) {
+//             boss->unkBA = sin;
+//         }
+//     }
+
+//     boss->unkBE--;
+//     if (boss->unkBE == 0) {
+//         boss->unkBF = 0;
+//         s = &boss->unk2F4;
+//         s->unk28[0].unk0 = -1;
+//         s->unk28[1].unk0 = -1;
+//         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+//         s->variant = 2;
+//         s->unk21 = -1;
+//     }
+//     boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+// }
+
+// void sub_80451C4(EggSaucer *boss)
+// {
+//     Sprite *s;
+//     s32 cos, sin;
+//     boss->unk32
+//         = CLAMP_SIN_PERIOD((SIN((boss->unkBE & 0x3F) * 0x10) * 5) >> 11 +
+//         boss->unk32);
+//     boss->unk36[0][boss->unkB6] = boss->unkB8;
+//     boss->unk36[1][boss->unkB6] = boss->unkBA;
+
+//     cos = ((COS(boss->unk32) * 0x13) - boss->unkBE >> 4) >> 11;
+
+//     if (boss->unkB8 < cos) {
+//         boss->unkB8 += 10;
+//         if (boss->unkB8 > cos) {
+//             boss->unkB8 = cos;
+//         }
+//     } else {
+//         boss->unkB8 -= 10;
+//         if (boss->unkB8 < cos) {
+//             boss->unkB8 = cos;
+//         }
+//     }
+
+//     sin = ((SIN(boss->unk32) * 0x13) - boss->unkBE >> 4) >> 11;
+//     if (boss->unkBA < sin) {
+//         boss->unkBA += 10;
+//         if (boss->unkBA > sin) {
+//             boss->unkBA = sin;
+//         }
+//     } else {
+//         boss->unkBA -= 10;
+//         if (boss->unkBA < sin) {
+//             boss->unkBA = sin;
+//         }
+//     }
+
+//     boss->unkBE--;
+//     if (boss->unkBE == 0) {
+//         boss->unkBF = 0;
+//         s = &boss->unk2F4;
+//         s->unk28[0].unk0 = -1;
+//         s->unk28[1].unk0 = -1;
+//         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+//         s->variant = 2;
+//         s->unk21 = -1;
+//     }
+//     boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+// }
+
+// void sub_80452F8(EggSaucer *boss)
+// {
+//     Sprite *s;
+//     if (boss->unk13 == 0) {
+//         boss->unk12 = 0x1E;
+//         s = &boss->unk1B0;
+//         if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
+//              && gSelectedCharacter == CHARACTER_SONIC)
+//             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
+//             s->variant = 0;
+//             s->unk21 = -1;
+//         } else {
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
+//             s->variant = 0;
+//             s->unk21 = -1;
+//         }
+//     }
+// }
+
+// void sub_8045368(EggSaucer *boss)
+// {
+//     Sprite *s;
+//     boss->unk10--;
+
+//     if (boss->unk10 != 0) {
+//         m4aSongNumStart(SE_143);
+//     } else {
+//         m4aSongNumStart(SE_235);
+//     }
+
+//     boss->unk13 = 30;
+//     boss->unk12 = 0;
+//     s = &boss->unk1B0;
+//     if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
+//          && gSelectedCharacter == CHARACTER_SONIC)
+//         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
+//         if (boss->unk10) {
+//             u32 temp2, temp3, prev;
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
+//             s->variant = 2;
+//             s->unk21 = -1;
+
+//             prev = gLevelScore;
+//             gLevelScore += 1000;
+//             temp2 = Div(gLevelScore, 50000);
+//             temp3 = Div(prev, 50000);
+//             if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+//                 u16 numLives = (temp2 - temp3);
+//                 numLives += gNumLives;
+
+//                 if (numLives > 0xFF) {
+//                     numLives = 0xFF;
+//                 }
+
+//                 gNumLives = numLives;
+//                 gUnknown_030054A8.unk3 = 0x10;
+//             }
+//         } else {
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
+//             s->variant = 2;
+//             s->unk21 = -1;
+//         }
+//     } else {
+//         if (boss->unk10) {
+//             u32 temp2, temp3, prev;
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
+//             s->variant = 2;
+//             s->unk21 = -1;
+
+//             prev = gLevelScore;
+//             gLevelScore += 1000;
+//             temp2 = Div(gLevelScore, 50000);
+//             temp3 = Div(prev, 50000);
+//             if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
+//                 u16 numLives = (temp2 - temp3);
+//                 numLives += gNumLives;
+
+//                 if (numLives > 0xFF) {
+//                     numLives = 0xFF;
+//                 }
+
+//                 gNumLives = numLives;
+//                 gUnknown_030054A8.unk3 = 0x10;
+//             }
+//         } else {
+//             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
+//             s->variant = 2;
+//             s->unk21 = -1;
+//         }
+//     }
+
+//     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
+//         && boss->unk10 == 4) {
+//         gUnknown_030054A8.unk1 = 0x11;
+//     }
+// }
