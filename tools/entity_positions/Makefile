@@ -5,7 +5,7 @@ NO_ERROR = -Wno-error=sign-compare -Wno-error=implicit-function-declaration -Wno
 
 # TODO: Maybe change this:
 #       Needs to use -std-gnu11 to use MAP_ANONYMOUS in mmap call in ArenaAlloc.
-CFLAGS = -I $(PARSER_DIR) $(NO_ERROR) -Wall -Wextra -Werror -std=gnu11 -O2 -s
+CFLAGS = -I $(PARSER_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
 
 .PHONY: all clean
 

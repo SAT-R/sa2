@@ -46,7 +46,7 @@ typedef u32 StringId;
 #define assert(cond)                                                    \
 if (!(cond)) {                                                                    \
     fprintf(stderr, "ASSERT failed - %s:%u\n", __FILE__, __LINE__); \
-    *(int*)0 = 0x0BADC0DE;                                                        \
+    *(volatile int*)0 = 0x0BADC0DE;                                                        \
 }
 #endif
 #else

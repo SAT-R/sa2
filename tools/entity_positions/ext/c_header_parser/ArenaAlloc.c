@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
 #include <errno.h>
 
 #define _GNU_SOURCE 1
@@ -20,7 +20,6 @@ void *mremap(void *old_address, size_t old_size, size_t new_size, int flags, voi
 #include <Windows.h>
 #endif
 #endif
-#include <malloc.h> // TODO: Remove
 
 #include "types.h"
 #include "ArenaAlloc.h"
@@ -42,20 +41,21 @@ static void *memArenaVirtualAlloc(void* baseAddress, size_t size) {
     assert(size > 0);
 
     void* memory = NULL;
-    
-    // TODO/TEMP: Just reserve 2GB for each arena
-    u64 memoryAmount = GetGigabytes(1);
 
     // Call OS-specific memory alloc function
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
     memory = mmap(baseAddress, size, (PROT_READ | PROT_WRITE), (MAP_PRIVATE | MAP_ANONYMOUS), -1, 0);
     if(memory == MAP_FAILED) {
         printf("ERROR: Call to mmap failed! (Errno: %d)\n", errno);
         return NULL;
     }
 #elif (defined _MSC_VER)
+    // TODO/TEMP: Just reserve 2GB for each arena
+    u64 memoryAmount = GetGigabytes(1);
     memory = VirtualAlloc(baseAddress, memoryAmount, (MEM_COMMIT | MEM_RESERVE), PAGE_READWRITE);
 #else
+    // TODO/TEMP: Just reserve 2GB for each arena
+    u64 memoryAmount = GetGigabytes(1);
     printf("WARNING: OS-specific SDK not found. Using malloc.\n");
     memory = malloc(memoryAmount);
 
@@ -79,7 +79,7 @@ static void *memArenaVirtualRealloc(void* memory, size_t oldSize, size_t newSize
     void *newAddress = oldAddress;
 #else
     printf("OldMem: %p - PageSize: 0x%X\n", oldAddress, (u32)oldSize);
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
     newAddress = mremap(oldAddress, oldSize, oldSize/2, 0, NULL);
     if((newAddress == MAP_FAILED)) {
         printf("ERROR: Call to mremap failed! (Errno: %d)\n", errno);
@@ -100,7 +100,7 @@ static void *memArenaVirtualRealloc(void* memory, size_t oldSize, size_t newSize
 
 static void memArenaVirtualFree(MemArena* arena) {
     if(arena->memory) {
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
     munmap(arena->memory, arena->size);
 #else
 #ifdef _MSC_VER

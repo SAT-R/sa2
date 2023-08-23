@@ -1,4 +1,7 @@
+#ifdef __unix__
 #include <malloc.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
