@@ -1358,56 +1358,55 @@ void sub_8044CBC(EggSaucer *boss)
     boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
 }
 
-// void sub_8044EB0(EggSaucer *boss)
-// {
-//     Sprite *s;
-//     s32 cos, sin;
-//     boss->unk32
-//         = CLAMP_SIN_PERIOD((SIN((boss->unkBE & 0x3F) * 0x10) * 5) >> 11 +
-//         boss->unk32);
-//     boss->unk36[0][boss->unkB6] = boss->unkB8;
-//     boss->unk36[1][boss->unkB6] = boss->unkBA;
+void sub_8044EB0(EggSaucer *boss)
+{
+    Sprite *s;
+    s32 cos, sin;
+    boss->unk32
+        = CLAMP_SIN_PERIOD(((SIN((boss->unkBE & 0x3F) * 0x10) * 5) >> 11) + boss->unk32);
+    boss->unk36[0][boss->unkB6] = boss->unkB8;
+    boss->unk36[1][boss->unkB6] = boss->unkBA;
 
-//     cos = (COS(boss->unk32) * 5) >> 10;
+    cos = (COS(boss->unk32) * 5) >> 10;
 
-//     if (boss->unkB8 < cos) {
-//         boss->unkB8 += 10;
-//         if (boss->unkB8 > cos) {
-//             boss->unkB8 = cos;
-//         }
-//     } else {
-//         boss->unkB8 -= 10;
-//         if (boss->unkB8 < cos) {
-//             boss->unkB8 = cos;
-//         }
-//     }
+    if (boss->unkB8 < cos) {
+        boss->unkB8 += 10;
+        if (boss->unkB8 > cos) {
+            boss->unkB8 = cos;
+        }
+    } else {
+        boss->unkB8 -= 10;
+        if (boss->unkB8 < cos) {
+            boss->unkB8 = cos;
+        }
+    }
 
-//     sin = (SIN(boss->unk32) * 5) >> 10;
-//     if (boss->unkBA < sin) {
-//         boss->unkBA += 10;
-//         if (boss->unkBA > sin) {
-//             boss->unkBA = sin;
-//         }
-//     } else {
-//         boss->unkBA -= 10;
-//         if (boss->unkBA < sin) {
-//             boss->unkBA = sin;
-//         }
-//     }
+    sin = (SIN(boss->unk32) * 5) >> 10;
+    if (boss->unkBA < sin) {
+        boss->unkBA += 10;
+        if (boss->unkBA > sin) {
+            boss->unkBA = sin;
+        }
+    } else {
+        boss->unkBA -= 10;
+        if (boss->unkBA < sin) {
+            boss->unkBA = sin;
+        }
+    }
 
-//     boss->unkBE--;
+    boss->unkBE--;
 
-//     if (boss->unkBE == 0) {
-//         boss->unkBF = 0;
-//         s = &boss->unk2F4;
-//         s->unk28[0].unk0 = -1;
-//         s->unk28[1].unk0 = -1;
-//         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
-//         s->variant = 2;
-//         s->unk21 = -1;
-//     }
-//     boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
-// }
+    if (boss->unkBE == 0) {
+        boss->unkBF = 0;
+        s = &boss->unk2F4;
+        s->unk28[0].unk0 = -1;
+        s->unk28[1].unk0 = -1;
+        s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
+        s->variant = 2;
+        s->unk21 = -1;
+    }
+    boss->unkB6 = (boss->unkB6 + 1) & 0x1F;
+}
 
 // void sub_8044FE4(EggSaucer *boss)
 // {
