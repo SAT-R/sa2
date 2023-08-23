@@ -1,4 +1,5 @@
 #include "global.h"
+#include "core.h"
 #include "game/game.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
@@ -148,8 +149,54 @@ void sub_8024228(Player *p)
     p->unk6D = 0;
 }
 
+void sub_802460C(Player *p)
+{
+    u32 input;
+    u16 input2;
+
+    if (IS_MULTI_PLAYER && (SIO_MULTI_CNT->id != gCamera.spectatorTarget)) {
+        p->unk5C = 0;
+        input = 0;
+    } else {
+        input = p->unk5C;
+
+        if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
+            p->unk5C = gInput;
+
+            if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__40)) {
+                u8 dpad = (p->unk5C & DPAD_ANY) >> 4;
+                u32 r1 = gUnknown_03005590;
+
+                r1 = ((p->unk32 + r1) & 0x3);
+                if (!r1) {
+                    r1 = 1;
+                }
+
+                dpad <<= r1;
+                dpad = (dpad >> 4) | dpad;
+                dpad = (u8)(dpad << 4);
+
+                p->unk5C = (p->unk5C & ~DPAD_ANY) | dpad;
+
+                if (--p->unk32 == 0) {
+                    p->itemEffect &= 0xBF;
+                }
+            }
+        }
+    }
+
+    input2 = p->unk5C;
+    input ^= input2;
+#ifdef NON_MATCHING
+    input &= input2;
+#else
+    asm("and %0, %2" : "=r"(input) : "r"(input), "r"(input2));
+#endif
+    p->unk5E = input;
+}
+
 #if 0
-void sub_802486C(Player *player, UNK_03005AF0 *p2)
+void sub_802486C(Player *p, UNK_03005AF0 *p2)
 {
     
 }
