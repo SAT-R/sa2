@@ -217,7 +217,7 @@
 #define SA2_ANIM_579                             579
 #define SA2_ANIM_SPIKES_MUS_PLA                  580
 #define SA2_ANIM_PLATFORM_ICE_PAR                581
-#define SA2_ANIM_SNOWBALL                        582
+#define SA2_ANIM_BIG_SNOWBALL                    582
 #define SA2_ANIM_583                             583
 #define SA2_ANIM_DASH_RING                       584
 #define SA2_ANIM_CROSS_SKY_CAN                   585
@@ -231,7 +231,7 @@
 #define SA2_ANIM_PLATFORM_SKY_CAN_2              593
 #define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594
 #define SA2_ANIM_ARROW_SCREEN                    595
-#define SA2_ANIM_SPIKE_SCREEN                    596
+#define SA2_ANIM_SPIKE_PLATFORM                  596
 #define SA2_ANIM_PLATFORM_TEC_BAS                597
 #define SA2_ANIM_NOTE_BLOCK_TEC_BASE             598
 #define SA2_ANIM_ARROW_SCREEN_BORDER             599
