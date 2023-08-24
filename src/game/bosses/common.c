@@ -46,7 +46,7 @@ void sub_8039ED4(void)
         gPlayer.moveState &= ~MOVESTATE_8000000;
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         PLAYERFN_SET(PlayerCB_8025318);
-        gPlayer.transition = PLTRANS_PT0;
+        gPlayer.transition = PLTRANS_NONE;
     }
 }
 

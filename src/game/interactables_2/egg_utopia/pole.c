@@ -4,7 +4,6 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/egg_utopia/pole.h"
-#include "game/interactables_2/egg_utopia/094.h"
 
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
