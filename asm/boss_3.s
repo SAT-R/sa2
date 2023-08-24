@@ -1,6 +1,49 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+	.global gUnknown_080D7BB0
+gUnknown_080D7BB0:
+    .incbin "baserom.gba", 0x000D7BB0, 0x18
+
+    .global gUnknown_080D7BC8
+gUnknown_080D7BC8:
+    .incbin "baserom.gba", 0x000D7BC8, 0x10
+
+    .global gUnknown_080D7BD8
+gUnknown_080D7BD8:
+    .incbin "baserom.gba", 0x000D7BD8, 0x4
+
+    .global gUnknown_080D7BDC
+gUnknown_080D7BDC:
+    .incbin "baserom.gba", 0x000D7BDC, 0x6
+
+    .global gUnknown_080D7BE2
+gUnknown_080D7BE2:
+    .incbin "baserom.gba", 0x000D7BE2, 0x296
+
+    .global gUnknown_080D7E78
+gUnknown_080D7E78:
+    .incbin "baserom.gba", 0x000D7E78, 0x5C
+
+    .global gUnknown_080D7ED4
+gUnknown_080D7ED4:
+    .incbin "baserom.gba", 0x000D7ED4, 0x3C
+
+    .global gUnknown_080D7F10
+gUnknown_080D7F10:
+    .incbin "baserom.gba", 0x000D7F10, 0x4
+
+    .global gUnknown_080D7F14
+gUnknown_080D7F14:
+    .incbin "baserom.gba", 0x000D7F14, 0x20
+
+    .global gUnknown_080D7F34
+gUnknown_080D7F34:
+    .incbin "baserom.gba", 0x000D7F34, 0x20
+
+.text
 .syntax unified
 .arm
 

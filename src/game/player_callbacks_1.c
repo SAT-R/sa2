@@ -1495,7 +1495,7 @@ void PlayerCB_GoalBrake(Player *p)
                     r8 = 100;
 
                 if (r8 != 0) {
-                    PLAYERFN_MAYBE_INCREMENT_LIVES(p, r8);
+                    INCREMENT_SCORE(r8);
 
                     sub_801F3A4(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), r8);
                 }
@@ -1985,11 +1985,11 @@ void DoTrickIfButtonPressed(Player *p)
         && (p->unk5E & gPlayerControls.trick)) {
 
         if (p->unk5C & DPAD_UP) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[0]);
+            INCREMENT_SCORE(sTrickPoints[0]);
             p->unk5B = TRICK_DIR_UP;
             PLAYERFN_SET(PlayerCB_80286F0);
         } else if (p->unk5C & DPAD_DOWN) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[3]);
+            INCREMENT_SCORE(sTrickPoints[3]);
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -2015,12 +2015,12 @@ void DoTrickIfButtonPressed(Player *p)
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
                    || ((p->moveState & MOVESTATE_FACING_LEFT)
                        && (p->unk5C & DPAD_LEFT))) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[2]);
+            INCREMENT_SCORE(sTrickPoints[2]);
             p->unk5B = TRICK_DIR_FORWARD;
 
             PLAYERFN_SET(PlayerCB_80286F0);
         } else {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, sTrickPoints[1]);
+            INCREMENT_SCORE(sTrickPoints[1]);
             p->unk5B = TRICK_DIR_BACKWARD;
 
             PLAYERFN_SET(PlayerCB_80286F0);

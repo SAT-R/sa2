@@ -5,7 +5,7 @@
 #include "core.h"
 
 extern struct Task *gActiveBossTask;
-typedef void (*UnknownBossFunc)(s32, s32);
+typedef void (*TranslateBossFunction)(s32, s32);
 
 typedef struct {
     /* 0x00 */ Sprite s;
@@ -33,5 +33,7 @@ typedef struct {
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *p0, u8 *numCreatedParts);
 void Task_DestroyBossParts(void);
 void sub_8039ED4(void);
+
+extern const u32 gUnknown_080D79D0[][3];
 
 #endif // GUARD_GAME_BOSSES_COMMON_H

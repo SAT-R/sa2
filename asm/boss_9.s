@@ -1,6 +1,117 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+ 	.global gUnknown_080D88F0
+gUnknown_080D88F0:
+    .incbin "baserom.gba", 0x000D88F0, 0x28
+
+    .global gUnknown_080D8918
+gUnknown_080D8918:
+    .incbin "baserom.gba", 0x000D8918, 0x8D
+
+    .global gUnknown_080D89A5
+gUnknown_080D89A5:
+    .incbin "baserom.gba", 0x000D89A5, 0x7
+
+    .global gUnknown_080D89AC
+gUnknown_080D89AC:
+    .incbin "baserom.gba", 0x000D89AC, 0x1C
+
+    .global gUnknown_080D89C8
+gUnknown_080D89C8:
+    .incbin "baserom.gba", 0x000D89C8, 0x54
+
+    .global gUnknown_080D8A1C
+gUnknown_080D8A1C:
+    .incbin "baserom.gba", 0x000D8A1C, 0x18
+
+    .global gUnknown_080D8A34
+gUnknown_080D8A34:
+    .incbin "baserom.gba", 0x000D8A34, 0x18
+
+    .global gUnknown_080D8A4C
+gUnknown_080D8A4C:
+    .incbin "baserom.gba", 0x000D8A4C, 0x18
+
+    .global gUnknown_080D8A64
+gUnknown_080D8A64:
+    .incbin "baserom.gba", 0x000D8A64, 0x18
+
+    .global gUnknown_080D8A7C
+gUnknown_080D8A7C:
+    .incbin "baserom.gba", 0x000D8A7C, 0x18
+
+    .global gUnknown_080D8A94
+gUnknown_080D8A94:
+    .incbin "baserom.gba", 0x000D8A94, 0x18
+
+    .global gUnknown_080D8AAC
+gUnknown_080D8AAC:
+    .incbin "baserom.gba", 0x000D8AAC, 0x18
+
+    .global gUnknown_080D8AC4
+gUnknown_080D8AC4:
+    .incbin "baserom.gba", 0x000D8AC4, 0x18
+
+    .global gUnknown_080D8ADC
+gUnknown_080D8ADC:
+    .incbin "baserom.gba", 0x000D8ADC, 0x18
+
+    .global gUnknown_080D8AF4
+gUnknown_080D8AF4:
+    .incbin "baserom.gba", 0x000D8AF4, 0x158
+
+    .global gUnknown_080D8C4C
+gUnknown_080D8C4C:
+    .incbin "baserom.gba", 0x000D8C4C, 0x18
+
+    .global gUnknown_080D8C64
+gUnknown_080D8C64:
+    .incbin "baserom.gba", 0x000D8C64, 0x18
+
+    .global gUnknown_080D8C7C
+gUnknown_080D8C7C:
+    .incbin "baserom.gba", 0x000D8C7C, 0x18
+
+    .global gUnknown_080D8C94
+gUnknown_080D8C94:
+    .incbin "baserom.gba", 0x000D8C94, 0xD8
+
+    .global gUnknown_080D8D6C
+gUnknown_080D8D6C:
+    .incbin "baserom.gba", 0x000D8D6C, 0x60
+
+    .global gUnknown_080D8DCC
+gUnknown_080D8DCC:
+    .incbin "baserom.gba", 0x000D8DCC, 0x48
+
+    .global gUnknown_080D8E14
+gUnknown_080D8E14:
+    .incbin "baserom.gba", 0x000D8E14, 0xC
+
+    .global gUnknown_080D8E20
+gUnknown_080D8E20:
+    .incbin "baserom.gba", 0x000D8E20, 0x2
+
+    .global gUnknown_080D8E22
+gUnknown_080D8E22:
+    .incbin "baserom.gba", 0x000D8E22, 0xBE
+
+    .global gUnknown_080D8EE0
+gUnknown_080D8EE0:
+    .incbin "baserom.gba", 0x000D8EE0, 0x10
+
+    .global gUnknown_080D8EF0
+gUnknown_080D8EF0:
+    .incbin "baserom.gba", 0x000D8EF0, 0x20
+
+    .global gUnknown_080D8F10
+gUnknown_080D8F10:
+    .incbin "baserom.gba", 0x000D8F10, 0x20
+
+.text
 .syntax unified
 .arm
 

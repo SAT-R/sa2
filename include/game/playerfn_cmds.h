@@ -68,29 +68,6 @@
         player->rotation = 0;                                                           \
     }
 
-#define PLAYERFN_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
-    {                                                                                   \
-        s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gLevelScore;                                                  \
-        gLevelScore += incVal;                                                          \
-                                                                                        \
-        divResA = Div(gLevelScore, 50000);                                              \
-        divResB = Div(old_3005450, 50000);                                              \
-                                                                                        \
-        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
-            u16 lives = divResA - divResB;                                              \
-            lives += gNumLives;                                                         \
-                                                                                        \
-            gNumLives = ({                                                              \
-                if (lives > 255)                                                        \
-                    lives = 255;                                                        \
-                lives;                                                                  \
-            });                                                                         \
-                                                                                        \
-            gUnknown_030054A8.unk3 = 16;                                                \
-        }                                                                               \
-    }
-
 // TODO(Jace): This name is speculative right now, check for accuracy!
 #define PLAYERFN_MAYBE_TRANSITION_TO_GROUND(player)                                     \
     {                                                                                   \
