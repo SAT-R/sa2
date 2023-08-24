@@ -1,6 +1,17 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+    .global gUnknown_080D7F54
+gUnknown_080D7F54:
+    .incbin "baserom.gba", 0x000D7F54, 0x20
+
+    .global gUnknown_080D7F74
+gUnknown_080D7F74:
+    .incbin "baserom.gba", 0x000D7F74, 0x20
+
+.text
 .syntax unified
 .arm
 

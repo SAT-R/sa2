@@ -5,7 +5,7 @@
 #include "core.h"
 
 extern struct Task *gActiveBossTask;
-typedef void (*UnknownBossFunc)(s32, s32);
+typedef void (*TranslateBossFunction)(s32, s32);
 
 typedef struct {
     /* 0x00 */ Sprite s;
