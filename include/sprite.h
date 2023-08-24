@@ -69,9 +69,7 @@ typedef struct {
 
     u8 unk2D;
 
-    // Flags
-    // 0x200 = something about updating animations (sub_8003638)
-    u16 flags; // TODO: rename to "flags"
+    /* 0x2E */ u16 flags;
 
     // apparently NOT signed?
     /* 0x30 */ u16 scrollX;
