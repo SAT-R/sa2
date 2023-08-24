@@ -9,7 +9,7 @@
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 #define GET_CHARACTER_ANIM(player)                                                      \
-    (player->unk68 - gPlayerCharacterIdleAnims[player->character])
+    (player->anim - gPlayerCharacterIdleAnims[player->character])
 
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);

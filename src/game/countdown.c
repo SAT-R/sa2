@@ -159,7 +159,7 @@ void sub_8036168(void)
 
     if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND)
         && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
-        gPlayer.unk68 = gUnknown_080D7518[gSelectedCharacter].anim;
+        gPlayer.anim = gUnknown_080D7518[gSelectedCharacter].anim;
         gPlayer.variant = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
 

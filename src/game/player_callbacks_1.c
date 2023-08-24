@@ -1851,7 +1851,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
     t = sub_801F15C(p0, p1, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
 
     taskStrc = TaskGetStructPtr(t);
-    taskStrc->playerAnim = gPlayer.unk68;
+    taskStrc->playerAnim = gPlayer.anim;
     taskStrc->playerVariant = gPlayer.variant;
 
     s = &taskStrc->s;

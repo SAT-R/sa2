@@ -95,7 +95,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 
     switch (p2) {
         case 0: {
-            ts->playerAnim = gPlayer.unk68;
+            ts->playerAnim = gPlayer.anim;
             ts->playerVariant = gPlayer.variant;
         } break;
 
@@ -765,7 +765,7 @@ void PlayerCB_8012938(Player *p)
 void PlayerCB_8012978(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        if ((p->unk68 == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
+        if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
             && p->variant == 0) {
             p->variant++;
         }

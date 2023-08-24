@@ -18,7 +18,8 @@ void Task_801F214(void)
         return;
     }
     if ((ts->unk14 & 0x8)
-        && ((ts->playerAnim != gPlayer.unk68) || (ts->playerVariant != gPlayer.variant))) {
+        && ((ts->playerAnim != gPlayer.anim)
+            || (ts->playerVariant != gPlayer.variant))) {
         TaskDestroy(gCurTask);
         return;
     } else {

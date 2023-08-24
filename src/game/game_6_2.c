@@ -200,7 +200,7 @@ void sub_80246DC(Player *p)
 {
     Sprite *s90 = &p->unk90->s;
     u16 charAnim = p->unk64;
-    u32 r3 = p->unk68;
+    u32 r3 = p->anim;
     u32 variant = p->variant;
     u32 sl = variant;
 
@@ -245,8 +245,8 @@ void sub_80246DC(Player *p)
             if (r3 == SA2_CHAR_ANIM_53) {
                 if (variant == 0) {
                     if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-                        p->unk68 = (gPlayerCharacterIdleAnims[p->character]
-                                    + SA2_CHAR_ANIM_52);
+                        p->anim = (gPlayerCharacterIdleAnims[p->character]
+                                   + SA2_CHAR_ANIM_52);
                         p->variant = 2;
                     }
                 }

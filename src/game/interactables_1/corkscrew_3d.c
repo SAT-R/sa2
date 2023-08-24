@@ -130,7 +130,7 @@ void sub_8061AB0(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->unk68
+            player->anim
                 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
@@ -249,7 +249,7 @@ void Task_8061DA4(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
+        player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
@@ -358,7 +358,7 @@ void Task_8062100(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->unk68
+            player->anim
                 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
@@ -477,7 +477,7 @@ void Task_8062414(void)
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
-        player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
+        player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
         player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }

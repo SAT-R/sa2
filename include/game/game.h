@@ -287,7 +287,7 @@ typedef struct Player_ {
     /* 0x64 */ s16 unk64; // Character Anim? (TODO: shouldn't this be unsigned?)
     /* 0x66 */ u16 unk66; // Character Anim, too? But if these were cAnims, why do some
                           // procs recalculate them?
-    /* 0x68 */ AnimId unk68; // anim?
+    /* 0x68 */ AnimId anim;
     /* 0x6A */ u16 variant;
     /* 0x6C */ u8 unk6C;
     // 0x6D Some player state, cleared after usage
