@@ -196,6 +196,7 @@ void sub_802460C(Player *p)
     p->unk5E = input;
 }
 
+// https://decomp.me/scratch/yytPm
 void sub_80246DC(Player *p)
 {
     Sprite *s90 = &p->unk90->s;
