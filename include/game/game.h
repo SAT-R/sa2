@@ -107,15 +107,17 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u8 filler0[0x22];
-    s16 unk22;
-    s16 unk24;
-} UNK_03005A70; /* 0x30 */
+    u8 filler0[0xC];
+    Sprite s;
+} UNK_3005A70; /* 0x30 */
 
-struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC]; // type = SpriteBase?
-    /* 0x0C */ Sprite s;
-}; /* size: unknown? */
+typedef struct {
+    u8 filler0[0xC]; // Likely SpriteBase
+    Sprite s;
+} UNK_03005AF0; /* unknown length */
+
+extern UNK_03005AF0 gUnknown_03005AA0;
+extern UNK_03005AF0 gUnknown_03005AF0;
 
 extern u8 gUnknown_0300543C;
 
@@ -327,11 +329,11 @@ typedef struct Player_ {
     /* 0x87 */ u8 unk87;
     /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *spriteTask;
-    /* 0x90 */ struct UNK_3005A70 *unk90;
+    /* 0x90 */ UNK_3005A70 *unk90;
 
     // TODO: Only used for Cream/Tails?
     //       Alternatively, some of the following data might be a union
-    /* 0x94 */ struct UNK_3005A70 *unk94;
+    /* 0x94 */ UNK_3005A70 *unk94;
     /* 0x98 */ u8 filler98[1];
     /* 0x99 */ s8 unk99;
     /* 0x9A */ u8 filler9A[0x12];
@@ -493,19 +495,6 @@ extern u8 gMultiplayerConnections;
 extern struct ButtonConfig gPlayerControls;
 
 extern s32 gUnknown_030054D0;
-
-typedef struct {
-    u8 filler0[0x1C];
-    u32 unk1C;
-    u8 filler20[0x18];
-    s8 unk38;
-    s8 unk39;
-    u8 unk3A;
-    s8 unk3B;
-} UNK_03005AF0; /* unknown length */
-
-extern UNK_03005AF0 gUnknown_03005AF0;
-extern UNK_03005AF0 gUnknown_03005AA0;
 
 // TODO: find out what task is parent to IA
 typedef struct {

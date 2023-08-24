@@ -268,16 +268,19 @@ NONMATCH("asm/non_matching/sub_807E66C.inc",
         biggerX = x;
         r4 = sprite->unk28[0].unk4;
         biggerX += r4;
-        temp2 = playerX + gUnknown_03005AF0.unk38;
+        temp2 = playerX + gUnknown_03005AF0.s.unk28[0].unk4;
         if (((biggerX > temp2 || biggerX + (sprite->unk28[0].unk6 - r4) >= temp2))
-            && biggerX >= temp2 + (gUnknown_03005AF0.unk3A - gUnknown_03005AF0.unk38)) {
+            && biggerX >= temp2
+                    + (gUnknown_03005AF0.s.unk28[0].unk6
+                       - gUnknown_03005AF0.s.unk28[0].unk4)) {
             biggerY = y;
             r4 = sprite->unk28[0].unk5;
             biggerY += r4;
-            temp3 = playerY + gUnknown_03005AF0.unk39;
+            temp3 = playerY + gUnknown_03005AF0.s.unk28[0].unk5;
             if (((biggerY > temp3 || (biggerY) + (sprite->unk28[0].unk7 - r4) >= temp3))
-                && biggerY
-                    >= temp3 + (gUnknown_03005AF0.unk3B - gUnknown_03005AF0.unk39)) {
+                && biggerY >= temp3
+                        + (gUnknown_03005AF0.s.unk28[0].unk7
+                           - gUnknown_03005AF0.s.unk28[0].unk5)) {
                 return 1;
             }
         }

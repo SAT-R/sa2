@@ -166,11 +166,11 @@ void CreateEggSaucer(void)
 
     m4aSongNumStart(SE_253);
 
-    gUnknown_03005AF0.unk1C &= ~0x3000;
-    gUnknown_03005AF0.unk1C |= 0x1000;
+    gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
 
-    gUnknown_03005AA0.unk1C &= ~0x3000;
-    gUnknown_03005AA0.unk1C |= 0x1000;
+    gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
 
     gActiveBossTask
         = TaskCreate(Task_EggSaucerMain, 0x4B0, 0x4000, 0, TaskDestructor_EggSaucerMain);

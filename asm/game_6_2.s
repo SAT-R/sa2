@@ -5,17 +5,14 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
-.if 1
+.if 001
 	thumb_func_start sub_802486C
 sub_802486C: @ 0x0802486C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
-	adds r3, r0, #0
-	adds r6, r1, #0
+	adds r3, r0, #0     @ r3 = p
+	adds r6, r1, #0     @ r6 = p2
 	movs r0, #0xc
 	adds r0, r0, r6
 	mov ip, r0

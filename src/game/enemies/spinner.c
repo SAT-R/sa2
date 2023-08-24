@@ -70,7 +70,7 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
     s->y = pos.y - gCamera.y;
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
-        struct UNK_3005A70 *u90 = gPlayer.unk90;
+        UNK_3005A70 *u90 = gPlayer.unk90;
         if ((u90->s.unk28[0].unk0 == -1) && (u90->s.unk28[1].unk0 == -1)) {
             someX = s->unk28[1].unk4 + pos.x;
             otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.unk28[0].unk4;
