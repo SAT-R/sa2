@@ -250,7 +250,8 @@
     "characters.h": "c",
     "music_manager.h": "c",
     "mouse.h": "c",
-    "common.h": "c"
+    "common.h": "c",
+    "player_callbacks_1.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

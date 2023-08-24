@@ -150,7 +150,6 @@ SECTIONS
         build/sa2/asm/boss_3.o(.text);
         build/sa2/asm/boss_4.o(.text);
         build/sa2/src/game/bosses/boss_5.o(.text);
-        build/sa2/asm/boss_5.o(.text);
         build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
@@ -367,7 +366,9 @@ SECTIONS
         build/sa2/src/game/countdown.o(.rodata);
         build/sa2/src/game/bosses/final_intro.o(.rodata);
         build/sa2/src/game/bosses/common.o(.rodata);
-        build/sa2/data/true_area_53_data.o(.rodata);
+        build/sa2/data/boss_data.o(.rodata);
+        build/sa2/src/game/bosses/boss_5.o(.rodata);
+        build/sa2/data/boss_data_2.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
         build/sa2/asm/enemy_koura.o(.rodata);
         build/sa2/src/game/enemies/geji_geji.o(.rodata);

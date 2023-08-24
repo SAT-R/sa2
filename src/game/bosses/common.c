@@ -27,8 +27,8 @@ const VoidFn sBossCreationFuncs[] = {
 
 // Set position functions
 const UnknownBossFunc gUnknown_080D79B0[] = {
-    sub_803C80C, sub_803E3EC, sub_803FA84, sub_80425F0,
-    sub_8043FD0, sub_8047224, sub_8048EB4, sub_804D594,
+    sub_803C80C,   sub_803E3EC, sub_803FA84, sub_80425F0,
+    EggSaucerMove, sub_8047224, sub_8048EB4, sub_804D594,
 };
 
 void CreateZoneBoss(u8 boss)

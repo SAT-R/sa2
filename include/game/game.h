@@ -675,4 +675,27 @@ extern void sub_8021350(void);
 // NOTE: Proc type should be the same as sub_80299F0!
 extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
 
+#define INCREMENT_SCORE(incVal)                                                         \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 old_3005450 = gLevelScore;                                                  \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(old_3005450, 50000);                                              \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+                                                                                        \
+            gUnknown_030054A8.unk3 = 16;                                                \
+        }                                                                               \
+    }
+
 #endif // GUARD_GAME_H

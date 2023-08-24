@@ -1482,7 +1482,7 @@ void PlayerCB_GoalBrake(Player *p)
                     r8 = 100;
 
                 if (r8 != 0) {
-                    PLAYERFN_MAYBE_INCREMENT_LIVES(p, r8);
+                    INCREMENT_SCORE(r8);
 
                     sub_801F3A4(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), r8);
                 }
@@ -1971,11 +1971,11 @@ void sub_8028ADC(Player *p)
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0)
         && (p->unk5E & gPlayerControls.trick)) {
         if (p->unk5C & DPAD_UP) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[0]);
+            INCREMENT_SCORE(gUnknown_080D6932[0]);
             p->unk5B = 0;
             PLAYERFN_SET(PlayerCB_80286F0);
         } else if (p->unk5C & DPAD_DOWN) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[3]);
+            INCREMENT_SCORE(gUnknown_080D6932[3]);
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -2001,12 +2001,12 @@ void sub_8028ADC(Player *p)
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
                    || ((p->moveState & MOVESTATE_FACING_LEFT)
                        && (p->unk5C & DPAD_LEFT))) {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[2]);
+            INCREMENT_SCORE(gUnknown_080D6932[2]);
             p->unk5B = 2;
 
             PLAYERFN_SET(PlayerCB_80286F0);
         } else {
-            PLAYERFN_MAYBE_INCREMENT_LIVES(p, gUnknown_080D6932[1]);
+            INCREMENT_SCORE(gUnknown_080D6932[1]);
             p->unk5B = 3;
 
             PLAYERFN_SET(PlayerCB_80286F0);

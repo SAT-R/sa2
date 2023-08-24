@@ -34,4 +34,6 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *p0, u8 *numCreate
 void Task_DestroyBossParts(void);
 void sub_8039ED4(void);
 
+extern const u32 gUnknown_080D79D0[][3];
+
 #endif // GUARD_GAME_BOSSES_COMMON_H
