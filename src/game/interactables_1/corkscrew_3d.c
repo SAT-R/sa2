@@ -132,7 +132,7 @@ void sub_8061AB0(void)
         } else if (!(player->moveState & MOVESTATE_4)) {
             player->unk68
                 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
-            player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
+            player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
 }
@@ -250,7 +250,7 @@ void Task_8061DA4(void)
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
         player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
-        player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
+        player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
 
@@ -360,7 +360,7 @@ void Task_8062100(void)
         } else if (!(player->moveState & MOVESTATE_4)) {
             player->unk68
                 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
-            player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
+            player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
 }
@@ -478,7 +478,7 @@ void Task_8062414(void)
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
         player->unk68 = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
-        player->unk6A = Div((idx - 282) & ONE_CYCLE, 94);
+        player->variant = Div((idx - 282) & ONE_CYCLE, 94);
     }
 }
 

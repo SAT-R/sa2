@@ -336,15 +336,15 @@ void PlayerCB_802569C(Player *p)
     if (!sub_802A0FC(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
         u16 dpad = (p->unk5C & DPAD_ANY);
         if (dpad == 0) {
-            if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->unk6A == 0)) {
-                p->unk6A = 1;
+            if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 0)) {
+                p->variant = 1;
                 p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_UP) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->unk6A == 1)
+        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1)
             && (s->unk10 & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
@@ -379,15 +379,15 @@ void PlayerCB_8025854(Player *p)
     if (!sub_802A184(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
         u16 dpad = (p->unk5C & DPAD_ANY);
         if (dpad == 0) {
-            if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->unk6A == 0)) {
-                p->unk6A = 1;
+            if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 0)) {
+                p->variant = 1;
                 p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_DOWN) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->unk6A == 1)
+        if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 1)
             && (s->unk10 & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
@@ -798,15 +798,15 @@ void PlayerCB_Spindash(Player *player)
             pitch += Q_24_8(2.0);
             pitch = MAX(pitch, Q_24_8(8.0));
 
-            player->unk6A = 1;
+            player->variant = 1;
             player->unk6C = 1;
         }
         // _08026490
         player->spindashAccel = pitch;
 
-        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->unk6A == 1)
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->variant == 1)
             && (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
-            player->unk6A = 0;
+            player->variant = 0;
         }
     }
     // _080264B2
@@ -1473,11 +1473,11 @@ void PlayerCB_GoalBrake(Player *p)
         gCamera.shiftY--;
 
     if (cAnim == SA2_CHAR_ANIM_31) {
-        if ((p->unk6A == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->unk64 = 26;
         }
 
-        if ((p->unk6A == 1) && (p->speedGroundX <= 0)) {
+        if ((p->variant == 1) && (p->speedGroundX <= 0)) {
             p->unk64 = 27;
             p->speedGroundX = 0;
             m4aSongNumStop(SE_LONG_BRAKE);
@@ -1501,7 +1501,7 @@ void PlayerCB_GoalBrake(Player *p)
             }
         }
 
-        if ((p->unk6A == 2) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 2) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
             sub_802785C(p);
             return;
         }
@@ -1852,7 +1852,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 
     taskStrc = TaskGetStructPtr(t);
     taskStrc->playerAnim = gPlayer.unk68;
-    taskStrc->playerVariant = gPlayer.unk6A;
+    taskStrc->playerVariant = gPlayer.variant;
 
     s = &taskStrc->s;
     s->graphics.dest = VramMalloc(gUnknown_080D69A6[p2_][0]);
@@ -1900,7 +1900,7 @@ void PlayerCB_80287AC(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         u32 dir = p->unk5B;
         u16 character = p->character;
-        p->unk6A++;
+        p->variant++;
 
         p->speedAirX = sTrickAccel[dir][character][0];
         p->speedAirY = sTrickAccel[dir][character][1];
@@ -1935,8 +1935,8 @@ void PlayerCB_802890C(Player *p)
     u16 character = p->character;
     u8 mask = sTrickMasks[dir][character];
 
-    if ((mask & MASK_80D6992_1) && (p->unk6A == 1) && (p->speedAirY > 0)) {
-        p->unk6A = 2;
+    if ((mask & MASK_80D6992_1) && (p->variant == 1) && (p->speedAirY > 0)) {
+        p->variant = 2;
     }
 
     if (p->unk72 != 0) {
@@ -1973,7 +1973,7 @@ void PlayerCB_802890C(Player *p)
 
     if (!(p->moveState & MOVESTATE_IN_AIR) && (p->character == CHARACTER_KNUCKLES)
         && (p->unk5B == 2)) {
-        p->unk6A++;
+        p->variant++;
         PLAYERFN_SET(PlayerCB_802A3C4);
     }
 }
@@ -2274,8 +2274,8 @@ void PlayerCB_8029158(Player *p)
 
 void PlayerCB_8029314(Player *p)
 {
-    if ((p->unk64 == 40) && (p->unk6A == 0) && (p->speedAirY > 0))
-        p->unk6A = 1;
+    if ((p->unk64 == 40) && (p->variant == 0) && (p->speedAirY > 0))
+        p->variant = 1;
 
     DoTrickIfButtonPressed(p);
     sub_8023708(p);

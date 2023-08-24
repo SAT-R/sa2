@@ -42,7 +42,7 @@ void Task_SparkEffect(void)
     if (p->spriteTask == NULL || !(p->moveState & MOVESTATE_1000000)) {
         TaskDestroy(gCurTask);
         return;
-    } else if ((p->unk68 == SA2_CHAR_ANIM_55) && (p->unk6A == 0)) {
+    } else if ((p->unk68 == SA2_CHAR_ANIM_55) && (p->variant == 0)) {
         SparkEffect *spark = TaskGetStructPtr(gCurTask);
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;

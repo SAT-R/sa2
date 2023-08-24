@@ -121,7 +121,7 @@ static void sub_805EA94(void)
 
         gPlayer.x = Q_24_8(x);
         gPlayer.y = Q_24_8(y);
-        gPlayer.unk6A = 0;
+        gPlayer.variant = 0;
         gPlayer.unk6C = 1;
         m4aSongNumStart(SE_SPEED_BOOSTER);
         gPlayer.unk62 = 0;
@@ -238,7 +238,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
         sprite->graphics.anim = 0x222;
         sprite->variant = r2;
         sprite->unk21 = 0xFF;
-        gPlayer.unk6A = r2;
+        gPlayer.variant = r2;
         gPlayer.unk6C = 1;
         gPlayer.x = Q_24_8(x);
         gPlayer.y = Q_24_8(y);

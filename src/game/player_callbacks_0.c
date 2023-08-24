@@ -96,7 +96,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     switch (p2) {
         case 0: {
             ts->playerAnim = gPlayer.unk68;
-            ts->playerVariant = gPlayer.unk6A;
+            ts->playerVariant = gPlayer.variant;
         } break;
 
         case 1:
@@ -203,7 +203,7 @@ void PlayerCB_8011DCC(Player *p)
             p->unk64 = 50;
             p->unk6D = 5;
         } else {
-            p->unk6A = 1;
+            p->variant = 1;
             p->unk6C = 1;
 
             PLAYERFN_SET(PlayerCB_8011E88);
@@ -246,7 +246,7 @@ void PlayerCB_8011E88(Player *p)
             p->unk64 = 50;
             p->unk6D = 5;
         } else {
-            p->unk6A = 2;
+            p->variant = 2;
             p->unk6C = 1;
 
             PLAYERFN_SET(PlayerCB_80123D0);
@@ -496,7 +496,7 @@ void PlayerCB_80123FC(Player *p)
     sub_80283C4(p);
 
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->unk6A++;
+        p->variant++;
 
         p->speedAirY = Q_24_8(2.0);
         PLAYERFN_SET(PlayerCB_8011F94);
@@ -514,7 +514,7 @@ void PlayerCB_8012460(Player *p)
     p->speedAirY += Q_24_8(56.0 / 256.0);
 
     if (p->speedAirY >= 0) {
-        p->unk6A++;
+        p->variant++;
         p->unk6C = 1;
         PLAYERFN_SET(PlayerCB_8012498);
     }
@@ -766,8 +766,8 @@ void PlayerCB_8012978(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         if ((p->unk68 == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
-            && p->unk6A == 0) {
-            p->unk6A++;
+            && p->variant == 0) {
+            p->variant++;
         }
     }
 
@@ -1066,7 +1066,7 @@ void PlayerCB_8012F6C(Player *p)
             p->unk64 = 50;
             p->unk6D = 5;
         } else {
-            p->unk6A++;
+            p->variant++;
             p->unk6C = 1;
 
             if (ABS(p->speedGroundX) < Q_24_8(3.0)) {
@@ -1151,7 +1151,7 @@ void PlayerCB_80130E4(Player *p)
     sub_8029C84(p);
 
     if (--p->unk72 == -1) {
-        p->unk6A++;
+        p->variant++;
         p->unk6C = 1;
         PLAYERFN_SET(PlayerCB_8013B6C);
     }

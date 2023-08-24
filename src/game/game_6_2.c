@@ -200,9 +200,8 @@ void sub_80246DC(Player *p)
 {
     Sprite *s90 = &p->unk90->s;
     u16 charAnim = p->unk64;
-    u32 r9 = charAnim;
     u32 r3 = p->unk68;
-    u32 variant = p->unk6A;
+    u32 variant = p->variant;
     u32 sl = variant;
 
     AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
@@ -211,12 +210,12 @@ void sub_80246DC(Player *p)
     if ((charAnim == 10) || (charAnim == 11)) {
         if (variant == 0 && (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
             && (((u16)r3 - 10) == 0 || ((u16)r3 - 10) == 1)) {
-            p->unk6A = 1;
+            p->variant = 1;
             p->moveState |= MOVESTATE_4;
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
-            if ((p->speedAirY > 0) && (p->unk6A == 1)
+            if ((p->speedAirY > 0) && (p->variant == 1)
                 && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
                 s32 newY
                     = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
@@ -224,7 +223,7 @@ void sub_80246DC(Player *p)
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (newY <= 32) {
-                        p->unk6A = 2;
+                        p->variant = 2;
                     }
                 }
             }
@@ -234,11 +233,11 @@ void sub_80246DC(Player *p)
             if (r3 == SA2_CHAR_ANIM_52) {
                 if (variant == 0) {
                     if (p->speedAirY > 0) {
-                        p->unk6A = 1;
+                        p->variant = 1;
                     }
                 } else if (variant == 1) {
                     if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-                        p->unk6A = 2;
+                        p->variant = 2;
                     }
                 }
             }
@@ -248,7 +247,7 @@ void sub_80246DC(Player *p)
                     if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->unk68 = (gPlayerCharacterIdleAnims[p->character]
                                     + SA2_CHAR_ANIM_52);
-                        p->unk6A = 2;
+                        p->variant = 2;
                     }
                 }
             }
@@ -256,23 +255,23 @@ void sub_80246DC(Player *p)
             if (r3 == SA2_CHAR_ANIM_65) {
                 if (variant == 0) {
                     if (p->speedAirY > 0) {
-                        p->unk6A = 1;
+                        p->variant = 1;
                     }
                 } else if (variant == 1) {
                     if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-                        p->unk6A = 2;
+                        p->variant = 2;
                     }
                 }
             }
-        } else if (r9 == SA2_CHAR_ANIM_57) {
+        } else if (charAnim == SA2_CHAR_ANIM_57) {
             if (r3 == SA2_CHAR_ANIM_66) {
                 if (variant == 0) {
                     if (p->speedAirY > 0) {
-                        p->unk6A = 1;
+                        p->variant = 1;
                     }
                 } else if (sl == 1) {
                     if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-                        p->unk6A = 2;
+                        p->variant = 2;
                     }
                 }
             }

@@ -288,7 +288,7 @@ typedef struct Player_ {
     /* 0x66 */ u16 unk66; // Character Anim, too? But if these were cAnims, why do some
                           // procs recalculate them?
     /* 0x68 */ AnimId unk68; // anim?
-    /* 0x6A */ u16 unk6A; // variant?
+    /* 0x6A */ u16 variant;
     /* 0x6C */ u8 unk6C;
     // 0x6D Some player state, cleared after usage
     //  0x01 = PlayerCB_80124D0
