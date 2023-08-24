@@ -38,25 +38,25 @@ void sub_8002A3C(Background *background)
     gfxSize = mapHeader->h.tilesSize;
     background->graphics.size = gfxSize;
 
-    if (!(background->unk2E & BACKGROUND_UPDATE_GRAPHICS)) {
+    if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
         gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
         gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
-        background->unk2E ^= BACKGROUND_UPDATE_GRAPHICS;
+        background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
     }
 
     pal = mapHeader->h.palette;
     palSize = mapHeader->h.palLength;
     background->unk2A = mapHeader->h.palOffset;
 
-    if (!(background->unk2E & BACKGROUND_UPDATE_PALETTE)) {
+    if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
         DmaCopy16(3, pal, gBgPalette + background->unk2A, palSize * sizeof(*pal));
         gFlags |= 1;
-        background->unk2E ^= BACKGROUND_UPDATE_PALETTE;
+        background->flags ^= BACKGROUND_UPDATE_PALETTE;
     }
 
     background->unk10 = mapHeader->h.map;
 
-    if (background->unk2E & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+    if (background->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
         background->metatileMap = mapHeader->metatileMap;
         background->mapWidth = mapHeader->mapWidth;
         background->mapHeight = mapHeader->mapHeight;

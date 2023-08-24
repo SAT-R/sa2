@@ -216,7 +216,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk250;
@@ -233,7 +233,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk26 = 0x1E;
     background->unk28 = 0x28;
     background->unk2A = 0;
-    background->unk2E = 1;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk290;
@@ -250,7 +250,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk26 = 0x1E;
     background->unk28 = 10;
     background->unk2A = 0;
-    background->unk2E = 3;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 
     background = &teamPlayScreen->unk2D0;
@@ -267,7 +267,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 3;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 }
 
@@ -374,7 +374,7 @@ static void sub_805CC34(void)
                     background->unk26 = 0x1E;
                     background->unk28 = 7;
                     background->unk2A = 0;
-                    background->unk2E = 3;
+                    background->flags = BACKGROUND_FLAGS_BG_ID(3);
                     sub_8002A3C(background);
 
                     gMultiSioSend.pat0.unk0 = 0x4035;
@@ -419,7 +419,7 @@ static void sub_805CC34(void)
                 background->unk26 = 0x1E;
                 background->unk28 = 7;
                 background->unk2A = 0;
-                background->unk2E = 3;
+                background->flags = BACKGROUND_FLAGS_BG_ID(3);
                 sub_8002A3C(background);
 
                 gMultiSioSend.pat0.unk0 = 0x4035;

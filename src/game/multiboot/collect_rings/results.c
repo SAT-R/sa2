@@ -131,7 +131,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     background->unk26 = 0x1e;
     background->unk28 = 0x19;
     background->unk2A = 0;
-    background->unk2E = 3;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 }
 
@@ -308,7 +308,7 @@ void sub_80823FC(void)
             background->unk26 = 0x12;
             background->unk28 = 4;
             background->unk2A = 0;
-            background->unk2E = 2;
+            background->flags = BACKGROUND_FLAGS_BG_ID(2);
             sub_8002A3C(background);
         }
 

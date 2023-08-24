@@ -203,7 +203,7 @@ void CreateMultiplayerModeSelectScreen(void)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     background = &modeScreen->unk40;
@@ -222,7 +222,7 @@ void CreateMultiplayerModeSelectScreen(void)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 1;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
     m4aSongNumStart(MUS_VS_SELECT_PAK_MODE);
 }

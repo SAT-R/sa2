@@ -98,7 +98,7 @@ static void Task_807EA8C(void)
     }
 }
 
-static void sub_807EC70(void);
+static void Task_807EC70(void);
 
 static void sub_807EB48(Sprite_Pole *pole)
 {
@@ -119,7 +119,7 @@ static void sub_807EB48(Sprite_Pole *pole)
         }
         m4aSongNumStop(SE_290);
     }
-    gCurTask->main = sub_807EC70;
+    gCurTask->main = Task_807EC70;
 }
 
 static bool32 sub_807EBBC(Sprite_Pole *pole)
@@ -159,7 +159,7 @@ static void Task_Interactable094(void)
 static void sub_807ED48(Sprite_Pole *pole);
 static void Task_Interactable094(void);
 
-static void sub_807EC70(void)
+static void Task_807EC70(void)
 {
     Sprite_Pole *pole = TaskGetStructPtr(gCurTask);
     if (!PLAYER_IS_ALIVE) {
@@ -214,12 +214,11 @@ static void sub_807ED68(Sprite_Pole *pole)
     gCurTask->main = Task_Interactable094;
 }
 
-static void sub_807EC70(void);
 static void sub_807ED88(Sprite_Pole *pole)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     m4aSongNumStop(SE_290);
-    gCurTask->main = sub_807EC70;
+    gCurTask->main = Task_807EC70;
 }
 
 static bool32 sub_807EDB8(Sprite_Pole *pole)

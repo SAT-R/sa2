@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
 
+#include "sprite.h"
+
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
 // (85.37%) https://decomp.me/scratch/617Jb
@@ -13,7 +15,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
     u16 sp10;
     u16 sp14;
     u32 affine; // -> r3
-    u32 bgId; // -> r5 = (bg->unk2E & 0x3)
+    u32 bgId; // -> r5 = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID)
     s32 sb;
     u32 dmaSize;
 
@@ -32,14 +34,14 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
             index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
             gUnknown_03002AE4 = index;
 
-            if ((bg->unk2E & 0x20) && (bg->scrollX == bg->prevScrollX)
+            if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX)
                 && bg->scrollY == bg->prevScrollY)
                 continue;
         }
         // NOTE: register r4 = sp00
         sp00 = bg->unk14;
 
-        bgId = (bg->unk2E & 0x3);
+        bgId = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID);
         if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
             affine = (gBgCntRegs[bgId] >> 14);
             sp0C = (0x10 << affine);
@@ -57,21 +59,21 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
         // _08002BF8
         sp0C = (u16)(sp0C * sp08);
 
-        if (!(bg->unk2E & 0x20)) {
-            if (!(bg->unk2E & 0x40)) {
+        if (!(bg->flags & BACKGROUND_FLAG_20)) {
+            if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                 // _08002C20
                 u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C);
                 u16 *r7 = CastPointer(r1, bg->unk22 * sp08);
                 u16 r5 = bg->unk28;
 
-                // r2 <- bg->unk2E
+                // r2 <- bg->flags
                 // r3 <- affine
                 // r4 <- sp00
                 // r5 <- bg->unk28
                 // sb = 0x20
-                if (bg->unk2E & 0x100) {
+                if (bg->flags & BACKGROUND_FLAG_100) {
                     // _08002C46
-                    if (bg->unk2E & 0x80) {
+                    if (bg->flags & BACKGROUND_FLAG_80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
                         void *r2Ptr = CastPointer(bg->unk10, r0Index);
                         u16 *r4Ptr
@@ -110,13 +112,13 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     }
                 } else {
                     u16 *r4Ptr;
-                    // r2 <- bg->unk2E
+                    // r2 <- bg->flags
                     // r3 <- affine
                     // r4 <- sp00
                     // r5 <- r5 = bg->unk28
                     // sb = 0x20
                     // _08002D50
-                    if (bg->unk2E & 0x80) {
+                    if (bg->flags & BACKGROUND_FLAG_80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00);
                         void *r1Ptr = CastPointer(bg->unk10, r0Index * sp08);
                         r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
@@ -268,12 +270,12 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                 // _08002FD6
             }
         } else {
-            // r2 <- bg->unk2E
+            // r2 <- bg->flags
             // r3 <- bg->unk30
             // r4 <- sp00 == bg->unk14
             // r5 <- bgId
             // _08002FE8
-            if (!(bg->unk2E & 0x40)) {
+            if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                 u32 vR2 = bg->unk14;
                 while (bg->scrollX >= sp00 * 8)
                     bg->scrollX -= sp00 * 8;
@@ -288,7 +290,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
 
             if ((bg->prevScrollX >> 3 != bg->scrollX >> 3)
                 || (bg->prevScrollY >> 3 != bg->scrollY >> 3)) {
-                if (!(bg->unk2E & 0x40)) {
+                if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                     // _08003072
                     // TODO: Something'S wrong with the types here (r2 should be s16?)
                     u16 *r7Ptr;
@@ -311,9 +313,9 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                     }
 
                     r5 = bg->unk28 + 1;
-                    if (bg->unk2E & 0x100) {
+                    if (bg->flags & BACKGROUND_FLAG_100) {
                         // _080030D4
-                        if (bg->unk2E & 0x80) {
+                        if (bg->flags & BACKGROUND_FLAG_80) {
                             // _080030DC
                             u32 index = ((bg->unk20 + r5) - 1);
                             u16 *r1Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
@@ -355,7 +357,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         }
                     } else {
                         // _080031D0
-                        if (bg->unk2E & 0x80) {
+                        if (bg->flags & BACKGROUND_FLAG_80) {
                             // _080031D8
                             u32 index = ((sp14 + r5) - 1);
                             u16 *r0Ptr = (u16 *)&((u8 *)bg->unk10)[r4 * index * sp08];
@@ -399,8 +401,8 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                         u16 *r7Ptr = CastPointer(r1, displayTile * sp08);
                         u16 r5 = (bg->unk28 + 1);
 
-                        if (bg->unk2E & 0x100) {
-                            if (bg->unk2E & 0x80) {
+                        if (bg->flags & BACKGROUND_FLAG_100) {
+                            if (bg->flags & BACKGROUND_FLAG_80) {
                                 // _08003306
                                 u32 index = ((sp14 + r5) - 1) * r4;
                                 u16 *r1Ptr = (u16 *)&(((u8 *)bg->unk10)[index * sp08]);
@@ -436,7 +438,7 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
                             }
                         } else {
                             // _080033F4
-                            if (bg->unk2E & 0x80) {
+                            if (bg->flags & BACKGROUND_FLAG_80) {
                                 // _080033FC
                                 u32 index = ((sp14 + r5) - 1) * r4;
                                 u16 *r4Ptr = (u16 *)&((u8 *)bg->unk10)[index * sp08];
@@ -568,7 +570,7 @@ void UpdateBgAnimationTiles(Background *bg)
 
             animTileSize = header->h.animTileSize;
 
-            if (!(bg->unk2E & 0x200)) {
+            if (!(bg->flags & BACKGROUND_UPDATE_ANIMATIONS)) {
                 if (bg->animFrameCounter == 0) {
                     bg->graphics.src = header->h.tiles;
                 } else {

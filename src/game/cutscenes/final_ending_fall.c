@@ -374,7 +374,7 @@ void CreateFinalEndingFallCutScene(void)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     background = &scene->unk40;
@@ -391,7 +391,7 @@ void CreateFinalEndingFallCutScene(void)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 1;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
 }
 
@@ -873,12 +873,12 @@ u32 sub_80928C8(struct FinalEndingFallCutScene *scene)
 
     background = &scene->unk0;
     background->tilemapId = gUnknown_080E1648[3];
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     background = &scene->unk40;
     background->tilemapId = gUnknown_080E1648[2];
-    background->unk2E = 1;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
     return 0;
 }

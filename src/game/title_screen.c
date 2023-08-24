@@ -352,7 +352,7 @@ void CreateTitleScreen(void)
 static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
 {
     struct TransitionState *transition;
-    Background *config0, *config40;
+    Background *bg0, *config40;
 
     // Size of filler between unk2B4
     // and unkDF4
@@ -409,27 +409,27 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     gBgScrollRegs[1][0] = 8;
     gBgScrollRegs[1][1] = 512;
 
-    config0 = &titleScreen->unk0;
-    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
-    config0->graphics.anim = 0;
-    config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
-    config0->unk18 = 0;
-    config0->unk1A = 0;
+    bg0 = &titleScreen->unk0;
+    bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    bg0->graphics.anim = 0;
+    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->unk18 = 0;
+    bg0->unk1A = 0;
     if (gLoadedSaveGame->language < 2) {
-        config0->tilemapId = TM_SA2_LOGO_JP;
+        bg0->tilemapId = TM_SA2_LOGO_JP;
     } else {
-        config0->tilemapId = TM_SA2_LOGO_EN;
+        bg0->tilemapId = TM_SA2_LOGO_EN;
     }
-    config0->unk1E = 0;
-    config0->unk20 = 0;
-    config0->unk22 = 0;
-    config0->unk24 = 0;
-    config0->unk26 = 0x1a;
-    config0->unk28 = 10;
-    config0->unk2A = 0;
-    config0->unk2E = 6;
+    bg0->unk1E = 0;
+    bg0->unk20 = 0;
+    bg0->unk22 = 0;
+    bg0->unk24 = 0;
+    bg0->unk26 = 0x1a;
+    bg0->unk28 = 10;
+    bg0->unk2A = 0;
+    bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    sub_8002A3C(config0);
+    sub_8002A3C(bg0);
 
     gDispCnt &= ~DISPCNT_BG0_ON;
     gDispCnt |= DISPCNT_BG1_ON | DISPCNT_BG2_ON;
@@ -453,7 +453,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40->unk26 = 0x20;
     config40->unk28 = 0x40;
     config40->unk2A = 0;
-    config40->unk2E = 1;
+    config40->flags = BACKGROUND_FLAGS_BG_ID(1);
 
     sub_8002A3C(config40);
 
@@ -465,7 +465,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
 // Maybe create background sprites
 static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
 {
-    Background *config80, *config0;
+    Background *bg80, *bg0;
 
     gDispCnt = DISPCNT_MODE_1;
     gDispCnt |= DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
@@ -498,43 +498,43 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
-    config80 = &titleScreen->introSonicLogo;
+    bg80 = &titleScreen->introSonicLogo;
 
-    config80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
-    config80->graphics.anim = 0;
-    config80->tilesVram = (void *)BG_SCREEN_ADDR(31);
-    config80->unk18 = 0;
-    config80->unk1A = 0;
-    config80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
-    config80->unk1E = 0;
-    config80->unk20 = 0;
-    config80->unk22 = 0;
-    config80->unk24 = 0;
-    config80->unk26 = 0x1e;
-    config80->unk28 = 0x14;
-    config80->unk2A = 0;
-    config80->unk2E = 0;
+    bg80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+    bg80->graphics.anim = 0;
+    bg80->tilesVram = (void *)BG_SCREEN_ADDR(31);
+    bg80->unk18 = 0;
+    bg80->unk1A = 0;
+    bg80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
+    bg80->unk1E = 0;
+    bg80->unk20 = 0;
+    bg80->unk22 = 0;
+    bg80->unk24 = 0;
+    bg80->unk26 = 0x1e;
+    bg80->unk28 = 0x14;
+    bg80->unk2A = 0;
+    bg80->flags = 0;
 
-    sub_8002A3C(config80);
+    sub_8002A3C(bg80);
 
-    config0 = &titleScreen->unk0;
+    bg0 = &titleScreen->unk0;
 
-    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
-    config0->graphics.anim = 0;
-    config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
-    config0->unk18 = 0;
-    config0->unk1A = 0;
-    config0->tilemapId = TM_INTRO_WATER;
-    config0->unk1E = 0;
-    config0->unk20 = 0;
-    config0->unk22 = 0;
-    config0->unk24 = 0;
-    config0->unk26 = 0x20;
-    config0->unk28 = 0x20;
-    config0->unk2A = 0;
-    config0->unk2E = 6;
+    bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    bg0->graphics.anim = 0;
+    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->unk18 = 0;
+    bg0->unk1A = 0;
+    bg0->tilemapId = TM_INTRO_WATER;
+    bg0->unk1E = 0;
+    bg0->unk20 = 0;
+    bg0->unk22 = 0;
+    bg0->unk24 = 0;
+    bg0->unk26 = 0x20;
+    bg0->unk28 = 0x20;
+    bg0->unk2A = 0;
+    bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    sub_8002A3C(config0);
+    sub_8002A3C(bg0);
 }
 
 static void InitTitleScreenUI(struct TitleScreen *titleScreen)
@@ -679,28 +679,28 @@ static void Task_IntroFadeOutSegaLogoAnim(void)
 static void Task_IntroStartSonicTeamLogoAnim(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
-    Background *config80;
+    Background *bg;
 
     WavesBackgroundAnim(titleScreen);
 
     if (titleScreen->animFrame == 1) {
         // TODO: some macro for this
-        config80 = &titleScreen->introSonicLogo;
-        config80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
-        config80->graphics.anim = 0;
-        config80->tilesVram = (void *)BG_SCREEN_ADDR(31);
-        config80->unk18 = 0;
-        config80->unk1A = 0;
-        config80->tilemapId = TM_INTRO_CREATED_BY_SONIC_TEAM;
-        config80->unk1E = 0;
-        config80->unk20 = 0;
-        config80->unk22 = 0;
-        config80->unk24 = 0;
-        config80->unk26 = 0x1e;
-        config80->unk28 = 0x14;
-        config80->unk2A = 0;
-        config80->unk2E = 0x10;
-        sub_8002A3C(config80);
+        bg = &titleScreen->introSonicLogo;
+        bg->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        bg->graphics.anim = 0;
+        bg->tilesVram = (void *)BG_SCREEN_ADDR(31);
+        bg->unk18 = 0;
+        bg->unk1A = 0;
+        bg->tilemapId = TM_INTRO_CREATED_BY_SONIC_TEAM;
+        bg->unk1E = 0;
+        bg->unk20 = 0;
+        bg->unk22 = 0;
+        bg->unk24 = 0;
+        bg->unk26 = 0x1e;
+        bg->unk28 = 0x14;
+        bg->unk2A = 0;
+        bg->flags = 0x10;
+        sub_8002A3C(bg);
     }
 
     if (titleScreen->animFrame > 2) {
@@ -778,7 +778,7 @@ static void Task_IntroStartSkyTransition(void)
         config40->unk26 = 0x20;
         config40->unk28 = 0x40;
         config40->unk2A = 0;
-        config40->unk2E = 1;
+        config40->flags = BACKGROUND_FLAGS_BG_ID(1);
         sub_8002A3C(config40);
     }
 
@@ -799,7 +799,7 @@ static void Task_IntroStartSkyTransition(void)
 
 static void Task_IntroPanSkyAnim(void)
 {
-    Background *config0;
+    Background *bg0;
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
 
     if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
@@ -842,22 +842,22 @@ static void Task_IntroPanSkyAnim(void)
 
         gBldRegs.bldCnt = 0;
 
-        config0 = &titleScreen->unk0;
-        config0->graphics.dest = (void *)BG_SCREEN_ADDR(8);
-        config0->graphics.anim = 0;
-        config0->tilesVram = (void *)BG_SCREEN_ADDR(31);
-        config0->unk18 = 0;
-        config0->unk1A = 0;
-        config0->tilemapId = TM_LENS_FLARE_BG;
-        config0->unk1E = 0;
-        config0->unk20 = 0;
-        config0->unk22 = 0;
-        config0->unk24 = 0;
-        config0->unk26 = 7;
-        config0->unk28 = 0x10;
-        config0->unk2A = 0;
-        config0->unk2E = 0x10;
-        sub_8002A3C(config0);
+        bg0 = &titleScreen->unk0;
+        bg0->graphics.dest = (void *)BG_SCREEN_ADDR(8);
+        bg0->graphics.anim = 0;
+        bg0->tilesVram = (void *)BG_SCREEN_ADDR(31);
+        bg0->unk18 = 0;
+        bg0->unk1A = 0;
+        bg0->tilemapId = TM_LENS_FLARE_BG;
+        bg0->unk1E = 0;
+        bg0->unk20 = 0;
+        bg0->unk22 = 0;
+        bg0->unk24 = 0;
+        bg0->unk26 = 7;
+        bg0->unk28 = 0x10;
+        bg0->unk2A = 0;
+        bg0->flags = 0x10;
+        sub_8002A3C(bg0);
 
         gBgScrollRegs[0][1] = 0x4F;
         gCurTask->main = Task_IntroSkyAnim;
@@ -879,7 +879,7 @@ static void Task_IntroPanSkyAnim(void)
 
 static void Task_IntroSkyAnim(void)
 {
-    Background *config0;
+    Background *bg0;
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
 
     if (gPressedKeys & (A_BUTTON | START_BUTTON)) {
@@ -925,7 +925,7 @@ static void Task_IntroSkyAnim(void)
 
     if (titleScreen->animFrame > 138) {
         // Init title screen background
-        config0 = &titleScreen->unk0;
+        bg0 = &titleScreen->unk0;
 
         // Probably wrong size here (0x4000)
         DmaFill32(3, 0, (void *)VRAM, OBJ_VRAM1_SIZE);
@@ -941,28 +941,28 @@ static void Task_IntroSkyAnim(void)
         gUnknown_03002280[2][2] = 0xff;
         gUnknown_03002280[2][3] = 0x20;
 
-        config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
-        config0->graphics.anim = 0;
-        config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
-        config0->unk18 = 0;
-        config0->unk1A = 0;
+        bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+        bg0->graphics.anim = 0;
+        bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+        bg0->unk18 = 0;
+        bg0->unk1A = 0;
 
         if (gLoadedSaveGame->language < LANG_ENGLISH) {
-            config0->tilemapId = TM_SA2_LOGO_JP;
+            bg0->tilemapId = TM_SA2_LOGO_JP;
         } else {
-            config0->tilemapId = TM_SA2_LOGO_EN;
+            bg0->tilemapId = TM_SA2_LOGO_EN;
         }
 
-        config0->unk1E = 0;
-        config0->unk20 = 0;
-        config0->unk22 = 0;
-        config0->unk24 = 0;
-        config0->unk26 = 0x1A;
-        config0->unk28 = 10;
-        config0->unk2A = 0;
-        config0->unk2E = 6;
+        bg0->unk1E = 0;
+        bg0->unk20 = 0;
+        bg0->unk22 = 0;
+        bg0->unk24 = 0;
+        bg0->unk26 = 0x1A;
+        bg0->unk28 = 10;
+        bg0->unk2A = 0;
+        bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-        sub_8002A3C(config0);
+        sub_8002A3C(bg0);
 
         gBgCntRegs[2] &= 0xDFFF;
         gCurTask->main = Task_IntroFadeInTitleScreenAnim;
@@ -1335,7 +1335,7 @@ static void Task_HandleTitleScreenExit(void)
 static void Task_ShowTitleScreenIntroSkipped(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
-    Background *config0 = &titleScreen->unk0;
+    Background *bg0 = &titleScreen->unk0;
     Background *config40;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
@@ -1350,28 +1350,28 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     gUnknown_03002280[2][2] = 0xFF;
     gUnknown_03002280[2][3] = 32;
 
-    config0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
-    config0->graphics.anim = 0;
-    config0->tilesVram = (void *)BG_SCREEN_ADDR(26);
-    config0->unk18 = 0;
-    config0->unk1A = 0;
+    bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
+    bg0->graphics.anim = 0;
+    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->unk18 = 0;
+    bg0->unk1A = 0;
 
     // Show japanese game logo if japanese, otherwise
     if (gLoadedSaveGame->language < LANG_ENGLISH) {
-        config0->tilemapId = TM_SA2_LOGO_JP;
+        bg0->tilemapId = TM_SA2_LOGO_JP;
     } else {
-        config0->tilemapId = TM_SA2_LOGO_EN;
+        bg0->tilemapId = TM_SA2_LOGO_EN;
     }
 
-    config0->unk1E = 0;
-    config0->unk20 = 0;
-    config0->unk22 = 0;
-    config0->unk24 = 0;
-    config0->unk26 = 0x1A;
-    config0->unk28 = 10;
-    config0->unk2A = 0;
-    config0->unk2E = 6;
-    sub_8002A3C(config0);
+    bg0->unk1E = 0;
+    bg0->unk20 = 0;
+    bg0->unk22 = 0;
+    bg0->unk24 = 0;
+    bg0->unk26 = 0x1A;
+    bg0->unk28 = 10;
+    bg0->unk2A = 0;
+    bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
+    sub_8002A3C(bg0);
 
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -1387,7 +1387,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->unk26 = 0x20;
     config40->unk28 = 0x40;
     config40->unk2A = 0;
-    config40->unk2E = 1;
+    config40->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(config40);
 
     gDispCnt &= ~0x100;

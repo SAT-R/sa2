@@ -6395,7 +6395,7 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
 }
 
 void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d,
-                           u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY)
+                           u16 e, u16 f, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
@@ -6412,7 +6412,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->unk2A = f;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
-    background->unk2E = g;
+    background->flags = BACKGROUND_FLAGS_BG_ID(bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
     sub_8002A3C(background);

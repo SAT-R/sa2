@@ -37,7 +37,7 @@ const Background gUnknown_080D5864[4] = {
         .animFrameCounter = 0,
         .animDelayCounter = 0,
         .unk2D = 0,
-        .unk2E = 121,
+        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_UPDATE_PALETTE | BACKGROUND_UPDATE_GRAPHICS | BACKGROUND_FLAGS_BG_ID(1),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -70,7 +70,7 @@ const Background gUnknown_080D5864[4] = {
         .animFrameCounter = 0,
         .animDelayCounter = 0,
         .unk2D = 0,
-        .unk2E = 98,
+        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_FLAGS_BG_ID(2),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -103,7 +103,7 @@ const Background gUnknown_080D5864[4] = {
         .animFrameCounter = 0,
         .animDelayCounter = 0,
         .unk2D = 0,
-        .unk2E = 19,
+        .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -136,7 +136,7 @@ const Background gUnknown_080D5864[4] = {
         .animFrameCounter = 0,
         .animDelayCounter = 0,
         .unk2D = 0,
-        .unk2E = 16,
+        .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -358,8 +358,8 @@ void InitCamera(u32 level)
     gUnknown_03002280[2][3] = 0x20;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        bgs->unk40.unk2E |= 0x208;
-        bgs->unk80.unk2E |= 0x208;
+        bgs->unk40.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_UPDATE_GRAPHICS;
+        bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_UPDATE_GRAPHICS;
     }
 
     if (level != 0x1D) {

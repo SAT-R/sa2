@@ -240,7 +240,7 @@ void StartSinglePakConnect(void)
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
     m4aSongNumStart(MUS_CONNECTION_PENDING);
 
@@ -479,7 +479,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     CpuFill16(0, &gBgPalette[17], 30);

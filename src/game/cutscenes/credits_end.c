@@ -164,7 +164,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->unk26 = 0x1E;
             background->unk28 = 0x14;
             background->unk2A = 0;
-            background->unk2E = 0;
+            background->flags = BACKGROUND_FLAGS_BG_ID(0);
             sub_8002A3C(background);
         }
 
@@ -248,7 +248,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
         UpdateBgAnimationTiles(background);
     }
@@ -273,7 +273,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 5;
+        background->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(1);
         sub_8002A3C(background);
     }
 }
@@ -330,7 +330,7 @@ static void Task_CreateCopyrightScreen(void)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
     }
 
@@ -353,7 +353,7 @@ static void Task_CreateCopyrightScreen(void)
         background->unk26 = 0x1E;
         background->unk28 = 3;
         background->unk2A = 0;
-        background->unk2E = 2;
+        background->flags = BACKGROUND_FLAGS_BG_ID(2);
         sub_8002A3C(background);
 
         scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
@@ -385,7 +385,7 @@ static void Task_SequenceMain(void)
                     = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
                 background->unk26 = 0x1E;
                 background->unk28 = 0x14;
-                background->unk2E = 0;
+                background->flags = BACKGROUND_FLAGS_BG_ID(0);
                 sub_8002A3C(background);
                 scene->sonicAnimFrame++;
 

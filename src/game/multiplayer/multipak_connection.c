@@ -167,7 +167,7 @@ void StartMultiPakConnect(void)
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {

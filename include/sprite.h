@@ -19,10 +19,18 @@ struct GraphicsData {
 #define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
 #define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
 
+#define BACKGROUND_FLAGS_BG_ID(id)   (id)
+#define BACKGROUND_FLAGS_MASK_BG_ID  0x3
+#define BACKGROUND_FLAG_4            0x4
 #define BACKGROUND_UPDATE_GRAPHICS   0x8
 #define BACKGROUND_UPDATE_PALETTE    0x10
+#define BACKGROUND_FLAG_20           0x20
 #define BACKGROUND_FLAG_IS_LEVEL_MAP 0x40
+#define BACKGROUND_FLAG_80           0x80
+#define BACKGROUND_FLAG_100          0x100
 #define BACKGROUND_UPDATE_ANIMATIONS 0x200
+#define BACKGROUND_FLAG_400          0x400
+#define BACKGROUND_FLAG_800          0x800
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
 
@@ -63,7 +71,7 @@ typedef struct {
 
     // Flags
     // 0x200 = something about updating animations (sub_8003638)
-    u16 unk2E; // TODO: rename to "flags"
+    u16 flags; // TODO: rename to "flags"
 
     // apparently NOT signed?
     /* 0x30 */ u16 scrollX;

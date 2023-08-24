@@ -21,7 +21,7 @@ void StageInit_Zone4(void)
     background->tilesVram = (void *)BG_SCREEN_ADDR(27);
     background->unk26 = 0x20;
     background->unk28 = 0x20;
-    background->unk2E = 0x13;
+    background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 
     gBgScrollRegs[0][0] = 0;

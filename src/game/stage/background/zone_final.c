@@ -36,7 +36,7 @@ void StageInit_ZoneFinal_0(void)
     bgDst->tilesVram = (void *)BG_TILE_ADDR(416);
     bgDst->unk26 = 10;
     bgDst->unk28 = 9;
-    bgDst->unk2E |= 0x4;
+    bgDst->flags |= BACKGROUND_FLAG_4;
     sub_8002A3C(bgDst);
 
     bgDst = &gUnknown_03005850.unk0;
@@ -52,7 +52,7 @@ void StageInit_ZoneFinal_0(void)
     bgDst->tilesVram = (void *)BG_TILE_ADDR(480);
     bgDst->unk26 = 32;
     bgDst->unk28 = 20;
-    bgDst->unk2E = 0x0;
+    bgDst->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(bgDst);
 
     gBgScrollRegs[0][0] = 0;
