@@ -352,7 +352,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
         element->palId = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         element->unk10 = 0;
         sub_8004558(element);
     }
@@ -370,7 +370,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -390,7 +390,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -409,7 +409,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -428,7 +428,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -445,7 +445,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -462,7 +462,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -479,7 +479,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0x800;
     sub_8004558(element);
 
@@ -497,7 +497,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -514,7 +514,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 
@@ -532,7 +532,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0;
     sub_8004558(element);
 

@@ -35,8 +35,8 @@ typedef struct {
 } DashRingAnim;
 
 typedef struct {
-    /* 0x00 */ Sprite spriteA;
-    /* 0x30 */ Sprite spriteB;
+    /* 0x00 */ Sprite s1;
+    /* 0x30 */ Sprite s2;
 
     /* 0x60 */ DashRingAnim positions[3];
 

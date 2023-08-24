@@ -237,7 +237,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->unk22 = 0x10;
             element->palId = 1;
             element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
+            element->hitboxes[0].unk0 = -1;
             sub_8004558(element);
         }
 
@@ -256,7 +256,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
+            element->hitboxes[0].unk0 = -1;
         }
 
         {
@@ -276,7 +276,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->unk22 = 0x10;
             element->palId = 2;
             element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
+            element->hitboxes[0].unk0 = -1;
             sub_8004558(element);
         }
     }
@@ -298,7 +298,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -321,7 +321,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0x60;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
 
         transform->unk0 = 0;
         transform->width = scene->unk340;
@@ -349,7 +349,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -370,7 +370,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -391,7 +391,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -412,7 +412,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -433,7 +433,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -454,7 +454,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 0;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 
@@ -475,7 +475,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->unk22 = 0x10;
         element->palId = 1;
         element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        element->hitboxes[0].unk0 = -1;
         sub_8004558(element);
     }
 

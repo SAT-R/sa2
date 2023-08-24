@@ -17,7 +17,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s16 unk3C;
     s16 unk3E;
     u8 unk40;
@@ -34,7 +34,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         struct Task *t
             = TaskCreate(sub_805EA94, 0x44, 0x2010, 0, TaskDestructor_80095E8);
         Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(t);
-        Sprite *sprite = &rotatingHandle->sprite;
+        Sprite *s = &rotatingHandle->s;
         rotatingHandle->base.regionX = spriteRegionX;
         rotatingHandle->base.regionY = spriteRegionY;
         rotatingHandle->base.me = me;
@@ -44,39 +44,39 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         rotatingHandle->unk3E = 0;
         rotatingHandle->unk40 = 0;
 
-        sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
-        sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
+        s->x = TO_WORLD_POS(me->x, spriteRegionX);
+        s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        sprite->graphics.dest = VramMalloc(9);
-        sprite->graphics.anim = 546;
-        sprite->variant = 0;
+        s->graphics.dest = VramMalloc(9);
+        s->graphics.anim = 546;
+        s->variant = 0;
 
-        sprite->unk1A = 0x480;
-        sprite->graphics.size = 0;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk21 = 0xFF;
-        sprite->unk22 = 0x10;
-        sprite->palId = 0;
-        sprite->unk28[0].unk0 = -1;
-        sprite->unk10 = 0x2000;
+        s->unk1A = 0x480;
+        s->graphics.size = 0;
+        s->unk14 = 0;
+        s->unk1C = 0;
+        s->unk21 = 0xFF;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].unk0 = -1;
+        s->unk10 = 0x2000;
     }
 }
 
 static void sub_805EA94(void)
 {
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &rotatingHandle->sprite;
+    Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
     s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
-        && sub_800C204(sprite, x, y, 0, &gPlayer, 0) == 1) {
+        && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
 #ifndef NON_MATCHING
         register s32 temp1 asm("r0"), temp2;
 #else
@@ -99,22 +99,22 @@ static void sub_805EA94(void)
         if (gPlayer.speedAirX > 0) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
             if (Q_24_8_TO_INT(gPlayer.y) > y) {
-                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 0;
             } else {
-                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2E;
                 rotatingHandle->unk40 = 1;
             }
         } else {
             gPlayer.moveState |= 1;
             if (Q_24_8_TO_INT(gPlayer.y) > y) {
-                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 2;
             } else {
-                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2E;
                 rotatingHandle->unk40 = 3;
             }
@@ -129,22 +129,22 @@ static void sub_805EA94(void)
         gPlayer.moveState |= MOVESTATE_400000;
         gCurTask->main = sub_805ECA0;
     } else {
-        if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+        if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
             me->x = rotatingHandle->base.spriteX;
             TaskDestroy(gCurTask);
             return;
         }
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 // https://decomp.me/scratch/RaPDV
 NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
 {
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &rotatingHandle->sprite;
+    Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     u64 temp;
     u32 cycle;
@@ -160,12 +160,12 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
     cycle = ONE_CYCLE;
     temp = rotatingHandle->unk3C >> 4;
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = sub_805EF90;
-        sub_80051E8(sprite);
+        sub_80051E8(s);
         return;
     }
 
@@ -236,9 +236,9 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
             }
         }
 
-        sprite->graphics.anim = 0x222;
-        sprite->variant = r2;
-        sprite->unk21 = 0xFF;
+        s->graphics.anim = 0x222;
+        s->variant = r2;
+        s->unk21 = 0xFF;
         gPlayer.variant = r2;
         gPlayer.unk6C = 1;
         gPlayer.x = Q_24_8(x);
@@ -247,21 +247,21 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
         gPlayer.speedAirY = 0;
     }
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = rotatingHandle->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 END_NONMATCH
 
 static void sub_805EF90(void)
 {
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &rotatingHandle->sprite;
+    Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
     s32 y = TO_WORLD_POS(me->y, rotatingHandle->base.regionY);
@@ -280,14 +280,14 @@ static void sub_805EF90(void)
         temp3 = 0xB;
     }
 
-    sprite->graphics.anim = 0x222;
-    sprite->variant = temp3;
-    sprite->unk21 = -1;
+    s->graphics.anim = 0x222;
+    s->variant = temp3;
+    s->unk21 = -1;
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = rotatingHandle->base.spriteX;
         TaskDestroy(gCurTask);
         return;
@@ -298,6 +298,6 @@ static void sub_805EF90(void)
         rotatingHandle->unk3E = 0;
         gCurTask->main = sub_805EA94;
     }
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }

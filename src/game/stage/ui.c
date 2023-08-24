@@ -159,7 +159,7 @@ struct Task *CreateStageUI(void)
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
         s->unk10 = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
@@ -184,7 +184,7 @@ struct Task *CreateStageUI(void)
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
         s->unk10 = 0;
 
         // This can never be reached
@@ -211,7 +211,7 @@ struct Task *CreateStageUI(void)
     s->unk21 = -1;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
     s->unk10 = 0;
     sub_8004558(s);
 
@@ -231,7 +231,7 @@ struct Task *CreateStageUI(void)
     s->unk22 = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
     s->unk10 = 0;
     ui->unk2D0 = 0;
 

@@ -347,7 +347,7 @@ void CreateTrueArea53Intro(void)
         sprite->unk21 = 0xFF;
         sprite->unk22 = 0x10;
         sprite->palId = i + 1;
-        sprite->unk28[0].unk0 = -1;
+        sprite->hitboxes[0].unk0 = -1;
         sprite->unk10 = 0;
     }
 

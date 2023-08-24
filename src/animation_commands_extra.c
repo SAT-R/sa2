@@ -23,19 +23,19 @@ extern const AnimationCommandFunc animCmdTable_2[];
 // Differences to sub_8004558:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable
-s32 sub_80036E0(Sprite *sprite)
+s32 sub_80036E0(Sprite *s)
 {
     ACmd **variants;
     ACmd *script;
     ACmd *cmd;
 
-    if (sprite->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+    SPRITE_MAYBE_SWITCH_ANIM(s);
 
-    if (sprite->unk1C > 0)
-        sprite->unk1C -= 16 * sprite->unk22;
+    if (s->unk1C > 0)
+        s->unk1C -= 16 * s->unk22;
     else {
         s32 ret;
         ACmd *cmd;
@@ -43,11 +43,11 @@ s32 sub_80036E0(Sprite *sprite)
         ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gUnknown_03002794->animations[sprite->graphics.anim];
-        script = variants[sprite->variant];
-        cmd = ReadInstruction(script, sprite->unk14);
+        variants = gUnknown_03002794->animations[s->graphics.anim];
+        script = variants[s->variant];
+        cmd = ReadInstruction(script, s->unk14);
         while (cmd->id < 0) {
-            ret = animCmdTable_2[~cmd->id](cmd, sprite);
+            ret = animCmdTable_2[~cmd->id](cmd, s);
             if (ret != 1) {
 #ifndef NON_MATCHING
                 register ACmd *newScript asm("r1");
@@ -59,55 +59,54 @@ s32 sub_80036E0(Sprite *sprite)
                 }
 
                 // animation has changed
-                variants = gUnknown_03002794->animations[sprite->graphics.anim];
-                newScript = variants[sprite->variant];
+                variants = gUnknown_03002794->animations[s->graphics.anim];
+                newScript = variants[s->variant];
                 // reset cursor
-                sprite->unk14 = 0;
+                s->unk14 = 0;
                 // load the new script
                 script = newScript;
             }
-            cmd = ReadInstruction(script, sprite->unk14);
+            cmd = ReadInstruction(script, s->unk14);
         }
 
         // Display the image 'index' for 'delay' frames
-        sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
-        sprite->unk1C -= sprite->unk22 * 16;
+        s->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->unk1C -= s->unk22 * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gUnknown_03002794;
 
-                sprite->dimensions
-                    = &sprTables->dimensions[sprite->graphics.anim][frame];
+                s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
             } else {
-                sprite->dimensions = (void *)-1;
+                s->dimensions = (void *)-1;
             }
         }
 
-        sprite->unk14 += 2;
+        s->unk14 += 2;
     }
     return 1;
 }
 
 // (-1)
 // No differences to animCmd_GetTiles
-s32 animCmd_GetTiles_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_GetTiles_COPY(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+    s->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
 
-    if ((sprite->unk10 & SPRITE_FLAG_MASK_19) == 0) {
+    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
-            sprite->graphics.src
+            s->graphics.src
                 = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
-            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
-            sprite->graphics.src
+            s->graphics.src
                 = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
-            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
-        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &sprite->graphics;
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
         gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
     }
 
@@ -117,41 +116,41 @@ s32 animCmd_GetTiles_COPY(void *cursor, Sprite *sprite)
 // (-6)
 // Differences to animCmd_6:
 // - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
-s32 animCmd_6_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_6_COPY(void *cursor, Sprite *s)
 {
     ACmd_6 *cmd = (ACmd_6 *)cursor;
     s32 r3 = cmd->unk4.unk0 & 0xF;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_6);
+    s->unk14 += AnimCommandSizeInWords(ACmd_6);
 
-    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3].unk0, 8);
+    DmaCopy32(3, &cmd->unk4, &s->hitboxes[r3].unk0, 8);
 
     if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
         && (cmd->unk4.unk7 == 0)) {
-        sprite->unk28[r3].unk0 = -1;
+        s->hitboxes[r3].unk0 = -1;
     } else {
-        if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-            XOR_SWAP(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
+        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            XOR_SWAP(s->hitboxes[r3].unk5, s->hitboxes[r3].unk7);
         }
 
-        if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            XOR_SWAP(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
+        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            XOR_SWAP(s->hitboxes[r3].unk4, s->hitboxes[r3].unk6);
         }
     }
 
     return 1;
 }
 
-void sub_8003914(Sprite *sprite)
+void sub_8003914(Sprite *s)
 {
     SpriteOffset *dims;
-    gUnknown_03004D10[gUnknown_03005390] = sprite;
+    gUnknown_03004D10[gUnknown_03005390] = s;
     gUnknown_03005390++;
 
-    if (sprite->dimensions != (void *)-1) {
+    if (s->dimensions != (void *)-1) {
         u32 bgId;
 
-        dims = sprite->dimensions;
-        bgId = SPRITE_FLAG_GET(sprite, BG_ID);
+        dims = s->dimensions;
+        bgId = SPRITE_FLAG_GET(s, BG_ID);
         // Potential UB:
         //     gDispCnt 'Mode' is an int, not a bitfield!
         if ((bgId > 1) && (gDispCnt & (DISPCNT_MODE_1 | DISPCNT_MODE_2))) {
@@ -159,11 +158,11 @@ void sub_8003914(Sprite *sprite)
             s32 affineX, affineY;
             s32 posX, posY;
 
-            posX = dims->offsetX - sprite->x;
+            posX = dims->offsetX - s->x;
             affineX = Mod(posX, 16);
             gBgAffineRegs[bgId - 2].x = Q_24_8(affineX);
 
-            posY = dims->offsetY - sprite->y;
+            posY = dims->offsetY - s->y;
             affineY = Mod(posY, 8);
             gBgAffineRegs[bgId - 2].y = Q_24_8(affineY);
         } else {
@@ -171,11 +170,11 @@ void sub_8003914(Sprite *sprite)
             s32 scrollX, scrollY;
             s32 posX, posY;
 
-            posX = dims->offsetX - sprite->x;
+            posX = dims->offsetX - s->x;
             scrollX = Mod(posX, 16);
             gBgScrollRegs[bgId][0] = scrollX;
 
-            posY = dims->offsetY - sprite->y;
+            posY = dims->offsetY - s->y;
             scrollY = Mod(posY, 8);
             gBgScrollRegs[bgId][1] = scrollY;
         }
@@ -505,17 +504,16 @@ s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgC
 // - gBgPalette is used instead of gObjPalette
 // - gFlags ->  FLAGS_UPDATE_BACKGROUND_PALETTES
 //   instead of FLAGS_UPDATE_SPRITE_PALETTES
-s32 animCmd_GetPalette_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_GetPalette_COPY(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
+    s->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
 
-    if (!(sprite->unk10 & SPRITE_FLAG_MASK_18)) {
+    if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
-                  &gBgPalette[sprite->palId * 16 + cmd->insertOffset],
-                  cmd->numColors * 2);
+                  &gBgPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
@@ -524,27 +522,27 @@ s32 animCmd_GetPalette_COPY(void *cursor, Sprite *sprite)
 }
 
 // (-3)
-s32 animCmd_JumpBack_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_JumpBack_COPY(void *cursor, Sprite *s)
 {
     ACmd_JumpBack *cmd = cursor;
-    sprite->unk14 -= cmd->offset;
+    s->unk14 -= cmd->offset;
 
     return 1;
 }
 
 // (-4)
-s32 animCmd_End_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_End_COPY(void *cursor, Sprite *s)
 {
-    sprite->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
+    s->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
     return 0;
 }
 
 // (-5)
-s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+    s->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
 
     m4aSongNumStart(cmd->songId);
 
@@ -552,41 +550,41 @@ s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *sprite)
 }
 
 // (-7)
-s32 animCmd_TranslateSprite_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_TranslateSprite_COPY(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
+    s->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
 
-    sprite->x += cmd->x;
-    sprite->y += cmd->y;
+    s->x += cmd->x;
+    s->y += cmd->y;
 
     return 1;
 }
 
 // (-8)
-s32 animCmd_8_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_8_COPY(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_8);
+    s->unk14 += AnimCommandSizeInWords(ACmd_8);
 
     return 1;
 }
 
-s32 animCmd_SetIdAndVariant_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_SetIdAndVariant_COPY(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+    s->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
 
-    sprite->graphics.anim = cmd->animId;
-    sprite->unk21 = 0xFF;
-    sprite->variant = cmd->variant;
+    s->graphics.anim = cmd->animId;
+    s->unk21 = 0xFF;
+    s->variant = cmd->variant;
 
     return -1;
 }
 
-s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_10_COPY(void *cursor, Sprite *s)
 {
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_10);
+    s->unk14 += AnimCommandSizeInWords(ACmd_10);
 
 #ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
@@ -596,16 +594,16 @@ s32 animCmd_10_COPY(void *cursor, Sprite *sprite)
 }
 
 // This is not a NOP-instruction in the regular version
-s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *s)
 {
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
+    s->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
     return 1;
 }
 
 // This is not a NOP-instruction in the regular version
-s32 animCmd_12_COPY(void *cursor, Sprite *sprite)
+s32 animCmd_12_COPY(void *cursor, Sprite *s)
 {
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_12);
+    s->unk14 += AnimCommandSizeInWords(ACmd_12);
     return 1;
 }
 
@@ -715,15 +713,15 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-s32 sub_8004558(Sprite *sprite)
+s32 sub_8004558(Sprite *s)
 {
-    SPRITE_MAYBE_SWITCH_ANIM(sprite);
+    SPRITE_MAYBE_SWITCH_ANIM(s);
 
-    if (sprite->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    if (sprite->unk1C > 0)
-        sprite->unk1C -= 16 * sprite->unk22;
+    if (s->unk1C > 0)
+        s->unk1C -= 16 * s->unk22;
     else {
 
         // _080045B8
@@ -733,11 +731,11 @@ s32 sub_8004558(Sprite *sprite)
         ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gUnknown_03002794->animations[sprite->graphics.anim];
-        script = variants[sprite->variant];
-        cmd = ReadInstruction(script, sprite->unk14);
+        variants = gUnknown_03002794->animations[s->graphics.anim];
+        script = variants[s->variant];
+        cmd = ReadInstruction(script, s->unk14);
         while (cmd->id < 0) {
-            ret = animCmdTable[~cmd->id](cmd, sprite);
+            ret = animCmdTable[~cmd->id](cmd, s);
             if (ret != 1) {
 #ifndef NON_MATCHING
                 register ACmd *newScript asm("r2");
@@ -749,56 +747,55 @@ s32 sub_8004558(Sprite *sprite)
                 }
 
                 // animation has changed
-                variants = gUnknown_03002794->animations[sprite->graphics.anim];
-                newScript = variants[sprite->variant];
+                variants = gUnknown_03002794->animations[s->graphics.anim];
+                newScript = variants[s->variant];
 
                 // reset cursor
-                sprite->unk14 = 0;
+                s->unk14 = 0;
 
                 // load the new script
                 script = newScript;
             }
-            cmd = ReadInstruction(script, sprite->unk14);
+            cmd = ReadInstruction(script, s->unk14);
         }
 
         // Display the image 'index' for 'delay' frames
-        sprite->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
-        sprite->unk1C -= sprite->unk22 * 16;
+        s->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->unk1C -= s->unk22 * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gUnknown_03002794;
 
-                sprite->dimensions
-                    = &sprTables->dimensions[sprite->graphics.anim][frame];
+                s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
             } else {
-                sprite->dimensions = (void *)-1;
+                s->dimensions = (void *)-1;
             }
         }
 
-        sprite->unk14 += 2;
+        s->unk14 += 2;
     }
     return 1;
 }
 
 // (-1)
-s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
+s32 animCmd_GetTiles(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+    s->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
 
-    if ((sprite->unk10 & SPRITE_FLAG_MASK_19) == 0) {
+    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
-            sprite->graphics.src
+            s->graphics.src
                 = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
-            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
-            sprite->graphics.src
+            s->graphics.src
                 = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
-            sprite->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
-        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &sprite->graphics;
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
         gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
     }
 
@@ -806,24 +803,24 @@ s32 animCmd_GetTiles(void *cursor, Sprite *sprite)
 }
 
 // (-6)
-s32 animCmd_6(void *cursor, Sprite *sprite)
+s32 animCmd_6(void *cursor, Sprite *s)
 {
     ACmd_6 *cmd = (ACmd_6 *)cursor;
     s32 r3 = cmd->unk4.unk0 & 0xF;
-    sprite->unk14 += AnimCommandSizeInWords(ACmd_6);
+    s->unk14 += AnimCommandSizeInWords(ACmd_6);
 
-    DmaCopy32(3, &cmd->unk4, &sprite->unk28[r3].unk0, 8);
+    DmaCopy32(3, &cmd->unk4, &s->hitboxes[r3].unk0, 8);
 
     if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
         && (cmd->unk4.unk7 == 0)) {
-        sprite->unk28[r3].unk0 = -1;
+        s->hitboxes[r3].unk0 = -1;
     } else {
-        if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-            SWAP_AND_NEGATE(sprite->unk28[r3].unk5, sprite->unk28[r3].unk7);
+        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            SWAP_AND_NEGATE(s->hitboxes[r3].unk5, s->hitboxes[r3].unk7);
         }
 
-        if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            SWAP_AND_NEGATE(sprite->unk28[r3].unk4, sprite->unk28[r3].unk6);
+        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            SWAP_AND_NEGATE(s->hitboxes[r3].unk4, s->hitboxes[r3].unk6);
         }
     }
 

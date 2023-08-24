@@ -53,7 +53,7 @@ struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
     }
 

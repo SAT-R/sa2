@@ -11,7 +11,7 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite_UNK28
-        reserved; // may wanna use s->unk28[1] for code if it matches?
+        reserved; // may wanna use s->hitboxes[1] for code if it matches?
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
 } Sprite_Spinner;
@@ -50,8 +50,8 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk21 = -1;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
+    s->hitboxes[1].unk0 = -1;
     s->unk10 = 0x2000;
 }
 
@@ -71,14 +71,14 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         UNK_3005A70 *u90 = gPlayer.unk90;
-        if ((u90->s.unk28[0].unk0 == -1) && (u90->s.unk28[1].unk0 == -1)) {
-            someX = s->unk28[1].unk4 + pos.x;
-            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.unk28[0].unk4;
+        if ((u90->s.hitboxes[0].unk0 == -1) && (u90->s.hitboxes[1].unk0 == -1)) {
+            someX = s->hitboxes[1].unk4 + pos.x;
+            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.hitboxes[0].unk4;
             if ((someX > otherX)
-                || someX + (u90->s.unk28[1].unk6 - u90->s.unk28[1].unk4)) {
+                || someX + (u90->s.hitboxes[1].unk6 - u90->s.hitboxes[1].unk4)) {
                 // _080570C2
-                int diff = (u90->s.unk28[0].unk6 - u90->s.unk28[0].unk4);
-                if (otherX > diff && otherX >= u90->s.unk28[0].unk5) {
+                int diff = (u90->s.hitboxes[0].unk6 - u90->s.hitboxes[0].unk4);
+                if (otherX > diff && otherX >= u90->s.hitboxes[0].unk5) {
                     if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                         sub_800CBA4(&gPlayer);
                     }

@@ -184,7 +184,7 @@ void StartSinglePakConnect(void)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
     element->variant = gUnknown_080E018C[connectScreen->unkFA][1];
@@ -202,7 +202,7 @@ void StartSinglePakConnect(void)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
     element->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
@@ -219,7 +219,7 @@ void StartSinglePakConnect(void)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->unk28[0].unk0 = -1;
+    element->hitboxes[0].unk0 = -1;
     element->unk10 = 0x1000;
     element->graphics.anim = SA2_ANIM_MP_MSG;
     element->variant = SA2_ANIM_VARIANT_MP_MSG_2;

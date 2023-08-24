@@ -31,7 +31,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
     s->unk10 = 0;
 
     return t;

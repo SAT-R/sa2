@@ -48,7 +48,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->unk21 = -1;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
     s->unk10 = spriteFlags;
     sub_8004558(s);
 
@@ -65,7 +65,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->unk21 = -1;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
     s->unk10 = spriteFlags;
     sub_8004558(s);
 

@@ -112,7 +112,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes->unk0 = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         sub_8004558(s);
     }
@@ -232,7 +232,7 @@ static void Task_Platform_Square(void)
         u32 otherRes;
         s32 movStateCopy = p->moveState;
 
-        s->unk28->unk5 -= 3;
+        s->hitboxes->unk5 -= 3;
         x = (posX + Q_24_8_TO_INT(platform->unk40));
         y = (posY + Q_24_8_TO_INT(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
@@ -267,14 +267,14 @@ static void Task_Platform_Square(void)
             if (result & 0x10000) {
                 if (GRAVITY_IS_INVERTED) {
                     p->y -= Q_8_8(result);
-                    s->unk28->unk4 += 16;
-                    s->unk28->unk6 -= 16;
+                    s->hitboxes->unk4 += 16;
+                    s->hitboxes->unk6 -= 16;
 
                     otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(platform->unk40),
                                            posY + Q_24_8_TO_INT(platform->unk44), p);
 
-                    s->unk28->unk4 -= 16;
-                    s->unk28->unk6 += 16;
+                    s->hitboxes->unk4 -= 16;
+                    s->hitboxes->unk6 += 16;
 
                     p->y += Q_8_8(result);
                     p->moveState = movStateCopy;
@@ -354,7 +354,7 @@ static void Task_Platform_Square(void)
             }
         }
 
-        s->unk28->unk5 += 3;
+        s->hitboxes->unk5 += 3;
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
@@ -393,13 +393,13 @@ static u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 
-    s->unk28->unk5++;
-    s->unk28->unk7--;
+    s->hitboxes->unk5++;
+    s->hitboxes->unk7--;
 
     result = sub_800CCB8(s, x, y, p);
 
-    s->unk28->unk5--;
-    s->unk28->unk7++;
+    s->hitboxes->unk5--;
+    s->hitboxes->unk7++;
 
     return result;
 }

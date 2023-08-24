@@ -17,7 +17,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite sprite;
+    /* 0x0C */ Sprite s;
 } Sprite_StageGoal;
 
 typedef struct {
@@ -38,7 +38,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
                                 TaskDestructor_8062E7C);
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite *s = &stageGoal->s;
 
     stageGoal->base.regionX = spriteRegionX;
     stageGoal->base.regionY = spriteRegionY;
@@ -46,74 +46,74 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     stageGoal->base.spriteX = me->x;
     stageGoal->base.spriteY = spriteY;
 
-    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
-    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
-    sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
-    sprite->variant = 1;
-    sprite->unk21 = -1;
-    sprite->unk1A = 0x100;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x10;
-    sprite->palId = FALSE;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x1000;
-    sub_8004558(sprite);
+    s->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
+    s->graphics.anim = SA2_ANIM_GOAL_LEVER;
+    s->variant = 1;
+    s->unk21 = -1;
+    s->unk1A = 0x100;
+    s->graphics.size = 0;
+    s->unk14 = 0;
+    s->unk1C = 0;
+    s->unk22 = 0x10;
+    s->palId = FALSE;
+    s->hitboxes[0].unk0 = -1;
+    s->unk10 = 0x1000;
+    sub_8004558(s);
 }
 
 static void Task_StageGoalMain(void)
 {
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
     s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = stageGoal->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
     if (PLAYER_IS_ALIVE && !(gPlayer.moveState & MOVESTATE_400000)) {
-        if (sub_800C204(sprite, x, y, 0, &gPlayer, 0) == 1) {
-            sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
-            sprite->variant = 0;
-            sprite->unk21 = -1;
+        if (sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
+            s->graphics.anim = SA2_ANIM_GOAL_LEVER;
+            s->variant = 0;
+            s->unk21 = -1;
             gCurTask->main = Task_StageGoalAnimate;
         }
     }
-    sub_80051E8(sprite);
+    sub_80051E8(s);
 }
 
 static void Task_StageGoalAnimate(void)
 {
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
     s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = stageGoal->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 static void Task_StageGoalToggleMain(void)
@@ -322,5 +322,5 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
 static void TaskDestructor_8062E7C(struct Task *t)
 {
     Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
-    VramFree(stageGoal->sprite.graphics.dest);
+    VramFree(stageGoal->s.graphics.dest);
 }

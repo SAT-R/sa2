@@ -125,45 +125,44 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         ringType = DASH_RING__TYPE_TECHNO_BASE;
 
     {
-        Sprite *spriteA = &ring->spriteA;
-        spriteA->unk1A = 0x180;
-        spriteA->graphics.size = 0;
-        spriteA->unk14 = 0;
-        spriteA->unk1C = 0;
+        Sprite *s1 = &ring->s1;
+        s1->unk1A = 0x180;
+        s1->graphics.size = 0;
+        s1->unk14 = 0;
+        s1->unk1C = 0;
 
-        spriteA->unk21 = 0xFF;
-        spriteA->unk22 = 0x10;
-        spriteA->palId = 0;
-        spriteA->unk28->unk0 = -1;
-        spriteA->unk10 = 0x2000;
-        spriteA->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
-        spriteA->variant = sAnimInfoDashRing[ringType][ring->orientation][0][1];
-        spriteA->graphics.dest
+        s1->unk21 = 0xFF;
+        s1->unk22 = 0x10;
+        s1->palId = 0;
+        s1->hitboxes[0].unk0 = -1;
+        s1->unk10 = 0x2000;
+        s1->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
+        s1->variant = sAnimInfoDashRing[ringType][ring->orientation][0][1];
+        s1->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][0][2]);
-        spriteA->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
+        s1->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
     }
     {
-        Sprite *spriteB = &ring->spriteB;
-        spriteB->unk1A = 0x480;
-        spriteB->graphics.size = 0;
-        spriteB->unk14 = 0;
-        spriteB->unk1C = 0;
+        Sprite *s2 = &ring->s2;
+        s2->unk1A = 0x480;
+        s2->graphics.size = 0;
+        s2->unk14 = 0;
+        s2->unk1C = 0;
 
-        spriteB->unk21 = 0xFF;
-        spriteB->unk22 = 0x10;
-        spriteB->palId = 0;
-        spriteB->unk28->unk0 = -1;
-        spriteB->unk10 = 0x2000;
-        spriteB->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];
-        spriteB->variant = sAnimInfoDashRing[ringType][ring->orientation][1][1];
-        spriteB->graphics.dest
+        s2->unk21 = 0xFF;
+        s2->unk22 = 0x10;
+        s2->palId = 0;
+        s2->hitboxes[0].unk0 = -1;
+        s2->unk10 = 0x2000;
+        s2->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];
+        s2->variant = sAnimInfoDashRing[ringType][ring->orientation][1][1];
+        s2->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][1][2]);
-        spriteB->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
-
-        DashRing_UpdateScreenPos(ring);
-        sub_8004558(&ring->spriteA);
-        sub_8004558(&ring->spriteB);
+        s2->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
     }
+    DashRing_UpdateScreenPos(ring);
+    sub_8004558(&ring->s1);
+    sub_8004558(&ring->s2);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 
@@ -289,8 +288,8 @@ static void Task_Interactable_DashRing(void)
         DashRing_Despawn(ring);
     } else {
         DashRing_UpdateScreenPos(ring);
-        sub_80051E8(&ring->spriteA);
-        sub_80051E8(&ring->spriteB);
+        sub_80051E8(&ring->s1);
+        sub_80051E8(&ring->s2);
     }
 }
 
@@ -299,8 +298,8 @@ static void Task_Interactable_DashRing_AfterAcceleration(void)
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
     DashRing_UpdateScreenPos(ring);
-    sub_80051E8(&ring->spriteA);
-    sub_80051E8(&ring->spriteB);
+    sub_80051E8(&ring->s1);
+    sub_80051E8(&ring->s2);
 
     if (!DashRing_PlayerIsColliding(ring)) {
         gCurTask->main = Task_Interactable_DashRing;
@@ -311,16 +310,16 @@ static void TaskDestructor_Interactable_DashRing(struct Task *t)
 {
     Sprite_DashRing *ring = TaskGetStructPtr(t);
 
-    VramFree(ring->spriteA.graphics.dest);
-    VramFree(ring->spriteB.graphics.dest);
+    VramFree(ring->s1.graphics.dest);
+    VramFree(ring->s2.graphics.dest);
 }
 
 static void DashRing_UpdateScreenPos(Sprite_DashRing *ring)
 {
-    ring->spriteA.x = ring->posX - gCamera.x;
-    ring->spriteA.y = ring->posY - gCamera.y;
-    ring->spriteB.x = ring->posX - gCamera.x;
-    ring->spriteB.y = ring->posY - gCamera.y;
+    ring->s1.x = ring->posX - gCamera.x;
+    ring->s1.y = ring->posY - gCamera.y;
+    ring->s2.x = ring->posX - gCamera.x;
+    ring->s2.y = ring->posY - gCamera.y;
 }
 
 static bool32 DashRing_ShouldDespawn(Sprite_DashRing *ring)

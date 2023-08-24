@@ -154,7 +154,7 @@ typedef struct {
     /* 0x25 */ u8 palId;
 
     /* 0x26 */ u8 filler26[2];
-    /* 0x28 */ Sprite_UNK28 unk28[1];
+    /* 0x28 */ Sprite_UNK28 hitboxes[1];
 } Sprite /* size = 0x30 */;
 
 typedef struct {
@@ -237,7 +237,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].unk0 = -1;                                                     \
     _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
 
 #define SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority,  \
@@ -252,7 +252,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].unk0 = -1;                                                     \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _UNK1A, _priority, _flags)   \
@@ -265,7 +265,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].unk0 = -1;                                                     \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _UNK1A, _priority, _flags)            \
@@ -276,7 +276,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].unk0 = -1;                                                     \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(_sprite, _anim, _variant, _UNK1A)             \
@@ -289,7 +289,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;
+    _sprite->hitboxes[0].unk0 = -1;
 
 #define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
     SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority, 0)

@@ -56,7 +56,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         disp->unk21 = 0xFF;
         disp->unk22 = 0x10;
         disp->palId = 0;
-        disp->unk28->unk0 = -1;
+        disp->hitboxes[0].unk0 = -1;
         disp->unk10 = 0x2000;
 
         disp->graphics.dest = VramMalloc(9);

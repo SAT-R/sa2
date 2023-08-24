@@ -66,7 +66,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
+    sprite->hitboxes[0].unk0 = -1;
     sprite->unk10 = 0x2000;
 
     floatingSpring->unk4C = FALSE;
@@ -140,7 +140,7 @@ static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
                                floatingSpring->unk40, &gPlayer);
         if (temp != 0) {
             if (Q_24_8_TO_INT(gPlayer.y) < floatingSpring->unk40) {
-                gPlayer.y += Q_24_8(floatingSpring->sprite.unk28[0].unk5);
+                gPlayer.y += Q_24_8(floatingSpring->sprite.hitboxes[0].unk5);
                 if (gPlayer.speedAirY > 0) {
                     gPlayer.speedAirY = 0;
                 }

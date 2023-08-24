@@ -159,16 +159,16 @@ void Task_8056230(void)
     ip = gPlayer.unk90;
     otherS = &ip->s;
 
-    if(otherS->unk28[0].unk0 != -1) {
-        if(pos.x + s->unk28[0].unk4 <= Q_24_8_TO_INT(gPlayer.x) + otherS->unk28[0].unk4)
-        if ((madillo->s.unk22 - s->unk28[0].unk4 + pos.x) < s->unk28[0].unk4)
-        if (pos.x+s->unk28[0].unk4 >= s->unk28[0].unk4)
-        if (otherS->unk28[0].unk6 - otherS->unk28[0].unk4 >= pos.x+s->unk28[0].unk4)
-        if(s->unk28[0].unk5 + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
-        if((s->unk28[0].unk7 - s->unk28[0].unk5) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
-        if(s->unk28[0].unk5 + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+    if(otherS->hitboxes[0].unk0 != -1) {
+        if(pos.x + s->hitboxes[0].unk4 <= Q_24_8_TO_INT(gPlayer.x) + otherS->hitboxes[0].unk4)
+        if ((madillo->s.unk22 - s->hitboxes[0].unk4 + pos.x) < s->hitboxes[0].unk4)
+        if (pos.x+s->hitboxes[0].unk4 >= s->hitboxes[0].unk4)
+        if (otherS->hitboxes[0].unk6 - otherS->hitboxes[0].unk4 >= pos.x+s->hitboxes[0].unk4)
+        if(s->hitboxes[0].unk5 + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].unk5)
+        if((s->hitboxes[0].unk7 - s->hitboxes[0].unk5) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].unk5)
+        if(s->hitboxes[0].unk5 + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].unk5)
         {
-            if(otherS->unk28[0].unk7 - s->unk28[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+            if(otherS->hitboxes[0].unk7 - s->hitboxes[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].unk5)
             if((gPlayer.itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE)
                 sub_800CBA4(&gPlayer);
         }

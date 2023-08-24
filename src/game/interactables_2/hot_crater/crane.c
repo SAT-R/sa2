@@ -103,7 +103,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->unk21 = 0xFF;
     cs->s->unk22 = 0x10;
     cs->s->palId = 0;
-    cs->s->unk28->unk0 = -1;
+    cs->s->hitboxes[0].unk0 = -1;
     cs->s->unk10 = 0x2000;
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
     cs->s->graphics.anim = SA2_ANIM_CRANE;
@@ -137,7 +137,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->unk21 = 0xFF;
                 cs->s->unk22 = 0x10;
                 cs->s->palId = 0;
-                cs->s->unk28->unk0 = -1;
+                cs->s->hitboxes[0].unk0 = -1;
                 cs->s->unk10 = 0x2000;
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
                 cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
@@ -165,7 +165,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->unk21 = 0xFF;
         cs->s->unk22 = 0x10;
         cs->s->palId = 0;
-        cs->s->unk28->unk0 = -1;
+        cs->s->hitboxes[0].unk0 = -1;
         cs->s->unk10 = 0x2000;
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
         cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;

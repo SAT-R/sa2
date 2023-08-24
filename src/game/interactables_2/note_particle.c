@@ -61,7 +61,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 p2, u16 p3, s16 velocity, u8 quarterAng
     sprite->s.unk21 = 0xFF;
     sprite->s.unk22 = 0x10;
     sprite->s.palId = 0;
-    sprite->s.unk28->unk0 = -1;
+    sprite->s.hitboxes[0].unk0 = -1;
 
     sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
 
@@ -100,7 +100,7 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind
     sprite->s.unk21 = 0xFF;
     sprite->s.unk22 = 0x10;
     sprite->s.palId = 0;
-    sprite->s.unk28->unk0 = -1;
+    sprite->s.hitboxes[0].unk0 = -1;
 
     sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
 

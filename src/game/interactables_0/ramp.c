@@ -61,7 +61,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     displayed->unk21 = -1;
     displayed->unk22 = 0x10;
     displayed->palId = 0;
-    displayed->unk28[0].unk0 = -1;
+    displayed->hitboxes[0].unk0 = -1;
     displayed->unk10 = 0x2200;
 
     if (temp & 2) {
@@ -109,8 +109,8 @@ static void Task_Ramp(void)
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             } else if (!(ramp->unk3C & 2)) {
-                s32 temp8 = screenX + displayed->unk28[0].unk4;
-                s32 temp2 = displayed->unk28[0].unk6 - displayed->unk28[0].unk4;
+                s32 temp8 = screenX + displayed->hitboxes[0].unk4;
+                s32 temp2 = displayed->hitboxes[0].unk6 - displayed->hitboxes[0].unk4;
                 s32 temp9 = Q_24_8_TO_INT(player->x) - temp8;
                 if (temp9 > 0) {
                     if (temp9 > temp2) {
@@ -124,7 +124,7 @@ static void Task_Ramp(void)
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
                         s32 temp4 = Q_24_8_TO_INT(player->y) + player->unk17 - screenY;
-                        s32 temp6 = Q_24_8_TO_INT(displayed->unk28[0].unk5
+                        s32 temp6 = Q_24_8_TO_INT(displayed->hitboxes[0].unk5
                                                   * (Q_24_8(temp9) / temp2));
 
                         if (temp4 >= temp6) {

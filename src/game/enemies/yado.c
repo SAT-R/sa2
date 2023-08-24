@@ -147,22 +147,22 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         Sprite_Yado *yado2 = TaskGetStructPtr(gCurTask);
 
         if (gUnknown_030056A4->unk4C != -1) {
-            s32 r2 = s->unk28[0].unk4 + pos.x;
+            s32 r2 = s->hitboxes[0].unk4 + pos.x;
             s32 r1 = Q_24_8_TO_INT(gUnknown_030056A4->posX) + gUnknown_030056A4->unk50;
             if (((r2 > r1)
                  && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50)) >= r2)
-                || ((r2 + (s->unk28[0].unk6 - s->unk28[0].unk4)) >= r1)
+                || ((r2 + (s->hitboxes[0].unk6 - s->hitboxes[0].unk4)) >= r1)
                 || ((r2 >= r1)
                     && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50))
                         >= r2)) {
                 // _080551C2
-                s32 r3 = s->unk28[0].unk5 + pos.y;
+                s32 r3 = s->hitboxes[0].unk5 + pos.y;
                 s32 r1
                     = Q_24_8_TO_INT(gUnknown_030056A4->posY) + gUnknown_030056A4->unk51;
                 if ((((r3 > r2)
                       && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
                           >= r3))
-                    || ((r3 + (s->unk28[0].unk7 - s->unk28[0].unk5)) >= r2)
+                    || ((r3 + (s->hitboxes[0].unk7 - s->hitboxes[0].unk5)) >= r2)
                     || ((r3 >= r2)
                         && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
                             >= r3)) {

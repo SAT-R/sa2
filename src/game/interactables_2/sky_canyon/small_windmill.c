@@ -63,7 +63,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     sprite->unk21 = -1;
     sprite->unk22 = 16;
     sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
+    sprite->hitboxes[0].unk0 = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
     sprite->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;

@@ -382,7 +382,7 @@ void CreateEggSaucer(void)
     s->y = 0;
     s->graphics.dest = vram;
     SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 0x300);
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[1].unk0 = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     for (i = 0; i < 8; i++) {
@@ -1196,8 +1196,8 @@ static void sub_8044A14(EggSaucer *boss)
 
     s = &boss->hand;
     // disable collision
-    s->unk28[0].unk0 = -1;
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[0].unk0 = -1;
+    s->hitboxes[1].unk0 = -1;
 }
 
 static void sub_8044B28(EggSaucer *boss)
@@ -1342,8 +1342,8 @@ static void sub_8044CBC(EggSaucer *boss)
         if (boss->unk11 != 0) {
             boss->armState = 0;
             s = &boss->hand;
-            s->unk28[0].unk0 = -1;
-            s->unk28[1].unk0 = -1;
+            s->hitboxes[0].unk0 = -1;
+            s->hitboxes[1].unk0 = -1;
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
             s->variant = 2;
 #ifndef NON_MATCHING
@@ -1407,8 +1407,8 @@ static void sub_8044EB0(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
+        s->hitboxes[1].unk0 = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
@@ -1493,8 +1493,8 @@ static void sub_8044FE4(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
+        s->hitboxes[1].unk0 = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
@@ -1553,8 +1553,8 @@ static void sub_80451C4(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].unk0 = -1;
+        s->hitboxes[1].unk0 = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
