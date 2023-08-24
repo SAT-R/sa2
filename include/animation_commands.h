@@ -46,7 +46,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 cmdId; // -6
 
-    /* 0x04 */ Sprite_UNK28 unk4;
+    /* 0x04 */ Hitbox unk4;
 } ACmd_6;
 
 typedef struct {

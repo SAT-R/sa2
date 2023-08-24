@@ -92,26 +92,26 @@ typedef struct {
     /* 0x140 */ Sprite disk;
     /* 0x170 */ Sprite cabin;
 
-    /* 0x1A0 */ Sprite_UNK28 cabinReserved[2];
+    /* 0x1A0 */ Hitbox cabinReserved[2];
 
     /* 0x1B0 */ Sprite pilot;
     /* 0x1E0 */ Sprite gun;
-    /* 0x210 */ Sprite_UNK28 gunReserved;
+    /* 0x210 */ Hitbox gunReserved;
 
     /* 0x218 */ Sprite gunBase;
 
-    /* 0x248 */ Sprite_UNK28 gunBaseReserved;
+    /* 0x248 */ Hitbox gunBaseReserved;
 
     /* 0x250 */ SpriteTransform transform;
 
     /* 0x25C */ Sprite gunCharge;
     /* 0x28C */ Sprite armBase;
-    /* 0x2BC */ Sprite_UNK28 armReserved;
+    /* 0x2BC */ Hitbox armReserved;
 
     /* 0x2C4 */ Sprite armSegment; // arm segment
 
     /* 0x2F4 */ Sprite hand;
-    /* 0x324 */ Sprite_UNK28 handReserved;
+    /* 0x324 */ Hitbox handReserved;
 
     /* 0x32C */ Sprite smackParticles[8];
 

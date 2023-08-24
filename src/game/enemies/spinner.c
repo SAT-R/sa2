@@ -10,8 +10,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28
-        reserved; // may wanna use s->hitboxes[1] for code if it matches?
+    /* 0x3C */ Hitbox reserved; // may wanna use s->hitboxes[1] for code if it matches?
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
 } Sprite_Spinner;

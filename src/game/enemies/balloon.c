@@ -10,7 +10,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
     /* 0x4C */ s32 offsetX;

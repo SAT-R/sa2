@@ -107,7 +107,7 @@ typedef struct {
     /* 0x2D */ s8 unk5;
     /* 0x2E */ s8 unk6;
     /* 0x2F */ s8 unk7;
-} Sprite_UNK28;
+} Hitbox;
 
 // TODO: work out what makes this struct different from the above
 typedef struct {
@@ -154,7 +154,7 @@ typedef struct {
     /* 0x25 */ u8 palId;
 
     /* 0x26 */ u8 filler26[2];
-    /* 0x28 */ Sprite_UNK28 hitboxes[1];
+    /* 0x28 */ Hitbox hitboxes[1];
 } Sprite /* size = 0x30 */;
 
 typedef struct {
