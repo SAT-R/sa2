@@ -12,6 +12,7 @@
 #include "game/stage/dust_cloud.h"
 
 #include "constants/animations.h"
+#include "constants/items.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -123,7 +124,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk28[0].unk0 = -1;
     s->unk10 = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX_TYPE);
-    sub_800B580(itembox, 1);
+    sub_800B580(itembox, TRUE);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -188,7 +189,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
     u16 *rings;
 
     switch (itembox->kind) {
-        case 0: {
+        case ITEM__ONE_UP: {
             u32 newLives = gNumLives;
             if (++newLives > 255) {
                 newLives = 255;
@@ -198,7 +199,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             gUnknown_030054A8.unk3 = 16;
         } break;
 
-        case 1: {
+        case ITEM__SHIELD: {
             if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_NORMAL)) {
                 gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
@@ -210,7 +211,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
         } break;
 
-        case 2: {
+        case ITEM__SHIELD_MAGNETIC: {
             if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC)) {
                 gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SHIELD_NORMAL;
                 gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC;
@@ -222,7 +223,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
         } break;
 
-        case 3: {
+        case ITEM__INVINCIBILITY: {
             gPlayer.timerInvincibility = ITEM_DURATION_INVINCIBILITY;
 
             if (IS_SINGLE_PLAYER
@@ -233,7 +234,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
         } break;
 
-        case 4: {
+        case ITEM__SPEED_UP: {
             gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__SPEED_UP;
             gPlayer.timerSpeedup = ITEM_DURATION_SPEED_UP;
 
@@ -244,7 +245,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             }
         } break;
 
-        case 5: {
+        case ITEM__RINGS_RANDOM: {
             s32 rnd = gUnknown_080D51FC[(u32)PseudoRandom32() % 5];
             rings = &gRingCount;
             oldRingCount = *rings;
@@ -252,21 +253,21 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
-        case 6: {
+        case ITEM__RINGS_5: {
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + 5;
             ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
-        case 7: {
+        case ITEM__RINGS_10: {
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + 10;
             ITEMBOX_ADD_NEW_RINGS(oldRingCount, newRingCount);
         } break;
 
-        case 8: {
+        case ITEM__MP_8: {
             s32 smallestMagnitude = -1;
             u8 nearestPlayer = 0;
             u8 playerId;
@@ -305,28 +306,28 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             m4aSongNumStart(SE_218);
         } break;
 
-        case 9: {
+        case ITEM__MP_9: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 0;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
-        case 10: {
+        case ITEM__MP_10: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 2;
             m4aSongNumStart(SE_ITEM_CONFUSION);
         } break;
 
-        case 11: {
+        case ITEM__MP_11: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 3;
             m4aSongNumStart(SE_219);
         } break;
 
-        case 12: {
+        case ITEM__MP_12: {
             struct UNK_3005510 *unkPtr = sub_8019224();
             unkPtr->unk0 = 6;
             unkPtr->unk1 = 4;

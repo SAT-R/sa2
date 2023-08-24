@@ -49,13 +49,11 @@ Temporary Items
 # =========================
 # Build Outputs
 # =========================
-
 *.gba
 *.sav
 *.elf
 *.map
 *.bin
-!data/**/*.bin
 
 *.hex
 *.o

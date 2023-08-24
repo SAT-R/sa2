@@ -411,7 +411,8 @@ static void sub_8073280(Sprite_HookRail *hookRail)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_048(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail_Unused(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     CreateEntity_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
 }

@@ -19,7 +19,7 @@
 #include "game/interactables_0/ramp.h"
 #include "game/interactables_0/slidy_ice.h"
 #include "game/interactables_0/spring.h"
-#include "game/interactables_0/clear_pipe.h"
+#include "game/interactables_0/pipe.h"
 
 #include "game/interactables_1/windmill.h"
 #include "game/interactables_1/checkpoint.h"
@@ -32,7 +32,7 @@
 #include "game/interactables_1/bouncy_bar.h"
 #include "game/interactables_1/spring_bouncy.h"
 #include "game/interactables_1/rotating_handle.h"
-#include "game/interactables_1/019.h"
+#include "game/interactables_1/platform_crumbling.h"
 #include "game/interactables_1/spikes.h"
 #include "game/interactables_1/booster.h"
 #include "game/interactables_1/decoration.h"
@@ -51,7 +51,7 @@
 #include "game/interactables_2/music_plant/guitar_string.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
-#include "game/interactables_2/ice_paradise/069.h"
+#include "game/interactables_2/ice_paradise/big_snowball.h"
 #include "game/interactables_2/ice_paradise/funnel_sphere.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
@@ -60,15 +60,15 @@
 #include "game/interactables_2/sky_canyon/small_propeller.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
 #include "game/interactables_2/sky_canyon/whirlwind.h"
-#include "game/interactables_2/sky_canyon/085.h"
+#include "game/interactables_2/sky_canyon/propeller_spring.h"
 
-#include "game/interactables_2/tec_base/080.h"
-#include "game/interactables_2/tec_base/light_bridge.h"
-#include "game/interactables_2/tec_base/075.h"
-#include "game/interactables_2/tec_base/078.h"
-#include "game/interactables_2/tec_base/note_block.h"
+#include "game/interactables_2/techno_base/light_globe.h"
+#include "game/interactables_2/techno_base/light_bridge.h"
+#include "game/interactables_2/techno_base/arrow_platform.h"
+#include "game/interactables_2/techno_base/spike_platform.h"
+#include "game/interactables_2/techno_base/bounce_block.h"
 
-#include "game/interactables_2/egg_utopia/094.h"
+#include "game/interactables_2/egg_utopia/pole.h"
 #include "game/interactables_2/egg_utopia/flying_handle.h"
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 #include "game/interactables_2/egg_utopia/cannon.h"
@@ -262,7 +262,7 @@ const RLCompressed *const gSpritePosData_enemies[] = {
 const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Toggle_PlayerLayer,
     CreateEntity_Toggle_PlayerLayer,
-    CreateEntity_Platform,
+    CreateEntity_Platform_A,
     CreateEntity_Spring_Normal_Up,
     CreateEntity_Spring_Normal_Down,
     CreateEntity_Spring_Normal_Right,
@@ -279,7 +279,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Booster,
     CreateEntity_InclineRamp,
     CreateEntity_BouncySpring,
-    CreateEntity_019,
+    CreateEntity_PlatformCrumbling,
     CreateEntity_RotatingHandle,
     CreateEntity_GappedLoop_Start,
     CreateEntity_GappedLoop_End,
@@ -308,7 +308,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Toggle_Checkpoint,
     CreateEntity_Toggle_StageGoal,
     CreateEntity_WindUpStick,
-    CreateEntity_048,
+    CreateEntity_HookRail_Unused,
     CreateEntity_HookRail_Start,
     CreateEntity_HookRail_End,
     CreateEntity_Windmill,
@@ -329,24 +329,24 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_FunnelSphere,
     CreateEntity_HalfPipe_End,
     CreateEntity_HalfPipe_Start,
-    CreateEntity_069,
+    CreateEntity_BigSnowball,
     CreateEntity_NoteBlock,
     CreateEntity_044,
-    CreateEntity_ClearPipe_Start,
-    CreateEntity_ClearPipe_End,
+    CreateEntity_Pipe_Start,
+    CreateEntity_Pipe_End,
     CreateEntity_LightBridge,
-    CreateEntity_075_0,
-    CreateEntity_075_1,
-    CreateEntity_075_2,
-    CreateEntity_078,
-    CreateEntity_079,
-    CreateEntity_080,
+    CreateEntity_ArrowPlatform_Left,
+    CreateEntity_ArrowPlatform_Right,
+    CreateEntity_ArrowPlatform_Up,
+    CreateEntity_SpikePlatform,
+    CreateEntity_Platform_B,
+    CreateEntity_LightGlobe,
     CreateEntity_Platform_Square,
     CreateEntity_GiantPropeller,
     CreateEntity_SlidyIce,
     CreateEntity_SmallSpinnyWindmill,
-    CreateEntity_085,
-    CreateEntity_Whirlwind_0,
+    CreateEntity_PropellerSpring,
+    CreateEntity_Whirlwind_A,
     CreateEntity_SmallPropeller_Left,
     CreateEntity_SmallPropeller_Right,
     CreateEntity_SmallPropeller_Left_Periodic,
@@ -354,8 +354,8 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Launcher_Left_GDown,
     CreateEntity_Launcher_Right_GDown,
     CreateEntity_Cannon,
-    CreateEntity_094,
-    CreateEntity_095,
+    CreateEntity_Pole,
+    CreateEntity_IronBall,
     CreateEntity_FlyingHandle,
     CreateEntity_SpeedingPlatform,
     CreateEntity_Toggle_Gravity__Down,
@@ -364,7 +364,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Launcher_Left_GUp,
     CreateEntity_Launcher_Right_GUp,
     CreateEntity_SpecialRing,
-    CreateEntity_Whirlwind_1,
+    CreateEntity_Whirlwind_B,
     CreateEntity_Interactable105,
 };
 
